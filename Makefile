@@ -17,8 +17,3 @@ install-posthook:
 		echo "if it's called without any parameters."; \
 	fi
 
-OBJECTIVE_DATA =							\
-	audacious.pc:$(LIBDIR)/pkgconfig				\
-	audacious.1:$(mandir)/man1					\
-	audacious/audacious.desktop:$(datadir)/applications
-
