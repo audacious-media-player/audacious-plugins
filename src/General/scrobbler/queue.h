@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H 1
 
-#include "libaudacious/titlestring.h"
+#include "audacious/titlestring.h"
 
 #define I_ARTIST(i) i->artist
 #define I_TITLE(i) i->title

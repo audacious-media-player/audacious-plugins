@@ -1,3 +1,13 @@
+2006-09-18 09:30:20 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [16]
+  - make effect plugins build
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/src/Effect/stereo_plugin/stereo.c  
+  +0 -1           trunk/src/Effect/voice_removal/voice_removal.c  
+
+
 2006-09-18 09:28:36 +0000  William Pitcock <nenolod@nenolod.net>
   revision [14]
   - make ladspa build

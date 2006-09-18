@@ -1,7 +1,7 @@
 #ifndef NET_H
 #define NET_H 1
 
-#include "libaudacious/titlestring.h"
+#include "audacious/titlestring.h"
 
 int sc_idle(GMutex *);
 void sc_init(char *, char *);

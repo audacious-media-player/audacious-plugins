@@ -232,6 +232,7 @@ void jack_init(void)
   /* set the port connection mode */
   jack_set_port_connection_mode();
 
+  /* XXX unportable to 2.x */
   xmmslibhandle = dlopen("libaudacious.so", RTLD_NOW);
   if(xmmslibhandle)
   {

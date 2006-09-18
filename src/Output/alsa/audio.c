@@ -31,7 +31,7 @@
 
 #include "alsa.h"
 #include <ctype.h>
-#include <libaudacious/xconvert.h>
+#include <audacious/xconvert.h>
 
 static snd_pcm_t *alsa_pcm;
 static snd_output_t *logs;

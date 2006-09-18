@@ -20,7 +20,7 @@
  */
 
 #include <glib.h>
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 #include <string.h>
 
 #include <unistd.h>

@@ -31,7 +31,7 @@
 #include <stdlib.h>
 
 #include <audacious/plugin.h>
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

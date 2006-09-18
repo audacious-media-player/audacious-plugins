@@ -31,7 +31,7 @@
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
-#include <libaudacious/configdb.h>
+#include <audacious/configdb.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_thread.h>
 

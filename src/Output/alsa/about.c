@@ -17,7 +17,7 @@
  */
 
 #include "alsa.h"
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 
 void alsa_about(void)
 {

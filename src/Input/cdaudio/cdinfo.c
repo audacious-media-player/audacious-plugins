@@ -25,7 +25,7 @@
 #include <glib/gi18n.h>
 #include <glib/gprintf.h>
 
-#include <libaudacious/rcfile.h>
+#include <audacious/rcfile.h>
 
 #include "cdaudio.h"
 

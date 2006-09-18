@@ -25,7 +25,7 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 
 
 void

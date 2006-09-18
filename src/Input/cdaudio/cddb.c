@@ -25,7 +25,7 @@
 #include <gtk/gtk.h>
 #include <stdarg.h>
 
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 
 #include "http.h"
 #include "cdaudio.h"
