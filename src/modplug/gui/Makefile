@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 CFLAGS   += $(PICFLAGS) $(GTK_CFLAGS) -I../../../../intl -I../../../..
 CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../../intl -I../../../..
@@ -9,4 +9,4 @@ SOURCES = main.cxx support.cxx interface.cxx callbacks.cxx
 
 OBJECTS = ${SOURCES:.cxx=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk

@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 CXXFLAGS += $(PICFLAGS) -I../../..
 
@@ -15,4 +15,4 @@ SOURCES = archive.cxx     \
 
 OBJECTS = ${SOURCES:.cxx=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk

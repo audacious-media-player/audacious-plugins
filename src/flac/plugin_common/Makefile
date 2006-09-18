@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 CFLAGS += $(PICFLAGS) -I.. -I../../../..
 
@@ -23,4 +23,4 @@ OBJECTS = ${SOURCES:.c=.o}
 libplugin_common.a: $(OBJECTS)
 	$(AR) cq $@ $(OBJECTS)
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk

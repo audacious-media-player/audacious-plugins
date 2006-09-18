@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 SOURCES = arts_helper.c
 
@@ -12,4 +12,4 @@ CFLAGS += $(ARTSC_CFLAGS) -I../../../../intl -I../../../..
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk

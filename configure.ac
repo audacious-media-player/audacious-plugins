@@ -1053,12 +1053,6 @@ AC_SUBST(VISUALIZATION_PLUGINS)
 AC_SUBST(CONTAINER_PLUGINS)
 
 AC_CONFIG_FILES([
-	src/arts/arts_helper/Makefile
-	src/modplug/archive/Makefile
-	src/modplug/gui/Makefile
-	src/flac/plugin_common/Makefile
-	src/timidity/libtimidity/Makefile
-	src/timidity/src/Makefile
 	mk/rules.mk
 ])
 

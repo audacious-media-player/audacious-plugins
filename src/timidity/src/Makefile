@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 OBJECTIVE_LIBS = libtimidity$(SHARED_SUFFIX)
 
@@ -16,4 +16,4 @@ OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../../intl -I../../../.. -I../libtimidity
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk

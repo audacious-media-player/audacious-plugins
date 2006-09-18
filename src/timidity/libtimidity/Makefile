@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 OBJECTIVE_LIBS_NOINST = libtimidity.a
 
@@ -21,7 +21,7 @@ CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../../intl -I../../../..
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk
 
 libtimidity.a: $(OBJECTS)
 	$(AR) cq $@ $(OBJECTS)
