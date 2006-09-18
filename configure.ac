@@ -1063,28 +1063,15 @@ AC_CONFIG_FILES([
 	src/disk_writer/Makefile
 	src/pulse_audio/Makefile
 	src/sun/Makefile
-	src/mpg123/Makefile
-	src/aac/Makefile
-	src/aac/mp4ff/Makefile
-	src/aac/libfaad2/Makefile
-	src/aac/src/Makefile
 	src/modplug/Makefile
 	src/modplug/archive/Makefile
 	src/modplug/gui/Makefile
-	src/musepack/Makefile
-	src/tonegen/Makefile
-        src/vorbis/Makefile
-        src/cdaudio/Makefile
-        src/wav/Makefile
 	src/flac/Makefile
 	src/flac/plugin_common/Makefile
 	src/sid/Makefile
-	src/wma/Makefile
-	src/wma/libffwma/Makefile
 	src/timidity/Makefile
 	src/timidity/libtimidity/Makefile
 	src/timidity/src/Makefile
-	src/sexypsf/Makefile
 	src/adplug/Makefile
 	src/adplug/core/Makefile
 	src/amidi-plug/Makefile
