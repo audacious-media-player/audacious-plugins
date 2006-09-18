@@ -1,3 +1,13 @@
+2006-09-18 15:31:59 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [64]
+  Add BMP_RCPATH to configure.ac and -DBMP_RCPATH=$(BMP_RCPATH\)
+
+  Changes:        Modified:
+  +2 -0           trunk/configure.ac  
+  +1 -1           trunk/src/cdaudio/Makefile  
+  +0 -1           trunk/src/cdaudio/cdinfo.c  
+
+
 2006-09-18 15:24:01 +0000  Jonathan Schleifer <js@h3c.de>
   revision [62]
   @GTK_CFLAGS@ replaced with $(GTK_CFLAGS).

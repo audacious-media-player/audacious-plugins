@@ -1040,12 +1040,12 @@ if test "$enable_user_plugin_dir" = "no"; then
     AC_DEFINE(DISABLE_USER_PLUGIN_DIR,, [Define to disable per user plugin directory])
 fi
 
+AC_DEFINE(BMP_RCPATH, ".audacious", [Config dir to use])
+
 AC_SUBST(BEEP_DEFINES)
 
 AC_SUBST(beepdir)
 AC_SUBST(plugindir)
-
-AC_SUBST(BMP_RCPATH)
 
 AC_SUBST(EFFECT_PLUGINS)
 AC_SUBST(GENERAL_PLUGINS)
