@@ -1,7 +1,7 @@
 include ../../../mk/rules.mk
 include ../../../mk/init.mk
 
-CFLAGS += -I../include -I../../../.. -I. $(PICFLAGS)
+CFLAGS += -I../include -I../../.. -I. $(PICFLAGS)
 
 OBJECTIVE_LIBS_NOINST = libfaad.a
 
