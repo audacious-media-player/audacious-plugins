@@ -8,7 +8,7 @@ OBJECTIVE_BINS = audacious-arts-helper
 LDFLAGS = -Wl,-export-dynamic
 LIBADD = $(ARTSC_LIBS)
 
-CFLAGS += $(ARTSC_CFLAGS) -I../../../../intl -I../../../..
+CFLAGS += $(ARTSC_CFLAGS) -I../../../intl -I../../..
 
 OBJECTS = ${SOURCES:.c=.o}
 
