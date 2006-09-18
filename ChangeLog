@@ -1,3 +1,16 @@
+2006-09-18 11:12:18 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [54]
+  - fix more build issues
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/src/amidi-plug/backend-alsa/Makefile  
+  +1 -1           trunk/src/amidi-plug/backend-dummy/Makefile  
+  +1 -1           trunk/src/amidi-plug/backend-fluidsynth/Makefile  
+  +1 -1           trunk/src/amidi-plug/pcfg/Makefile  
+  +4 -4           trunk/src/paranormal/pn/Makefile  
+
+
 2006-09-18 11:09:53 +0000  William Pitcock <nenolod@nenolod.net>
   revision [52]
   - fix some build errors
