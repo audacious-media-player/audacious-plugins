@@ -19,7 +19,7 @@
 #include <string.h>
 #include <esd.h>
 
-#include <libaudacious/configdb.h>
+#include <audacious/configdb.h>
 
 #include "esdout.h"
 

@@ -1,3 +1,23 @@
+2006-09-18 09:22:03 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [10]
+  - SDK pathchange fixes
+  - enforce use of SDK
+  - always link against libaudacious
+  
+
+  Changes:        Modified:
+  +2 -16          trunk/configure.ac  
+  +1 -1           trunk/src/Input/aac/src/xmms-id3.h  
+  +1 -1           trunk/src/Input/cue/cuesheet.c  
+  +1 -1           trunk/src/Input/mpg123/http.c  
+  +1 -1           trunk/src/Input/mpg123/mpg123.h  
+  +1 -1           trunk/src/Input/mpg123/rtsp.c  
+  +0 -367         trunk/src/Input/mpg123/xmms-id3.h  
+  +1 -1           trunk/src/Input/vorbis/vcedit.c  
+  +1 -1           trunk/src/Input/vorbis/vcedit.h  
+  +1 -1           trunk/src/Input/wav/wav.h  
+
+
 2006-09-18 09:02:50 +0000  William Pitcock <nenolod@nenolod.net>
   revision [8]
   - the first pass missed some libaudacious references, this fixes them

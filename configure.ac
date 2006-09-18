@@ -606,6 +606,7 @@ if test "$enable_oss" = "yes"; then
         have_oss=yes
     fi
 
+    if test "${have_oss}" = "yes"; then
 	AC_MSG_CHECKING(whether we need -lossaudio)
         AC_TRY_LINK([
 		#include <sys/ioctl.h>
@@ -621,6 +622,7 @@ if test "$enable_oss" = "yes"; then
 		OSS_LIBS="-lossaudio"
 		AC_MSG_RESULT(yes)
         ])
+   fi
 fi
 
 if test "$have_oss" = "yes"; then

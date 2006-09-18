@@ -26,8 +26,6 @@
 
 #include <unistd.h>
 
-#include <libaudacious/util.h>
-
 #include "esdout.h"
 
 

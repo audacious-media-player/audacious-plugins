@@ -26,7 +26,7 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-#include <libaudacious/configdb.h>
+#include <audacious/configdb.h>
 
 
 static GtkWidget *configure_win;
