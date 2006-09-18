@@ -1053,7 +1053,6 @@ AC_SUBST(VISUALIZATION_PLUGINS)
 AC_SUBST(CONTAINER_PLUGINS)
 
 AC_CONFIG_FILES([
-	src/Makefile
 	src/OSS/Makefile
 	src/esd/Makefile
 	src/alsa/Makefile
@@ -1072,8 +1071,6 @@ AC_CONFIG_FILES([
 	src/timidity/Makefile
 	src/timidity/libtimidity/Makefile
 	src/timidity/src/Makefile
-	src/adplug/Makefile
-	src/adplug/core/Makefile
 	src/amidi-plug/Makefile
 	src/amidi-plug/pcfg/Makefile
 	src/amidi-plug/backend-alsa/Makefile

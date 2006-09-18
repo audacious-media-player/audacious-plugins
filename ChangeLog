@@ -1,3 +1,25 @@
+2006-09-18 10:27:46 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [28]
+  - remove some unnecessary Makefile.in's and replace them with normal Makefiles
+  
+
+  Changes:        Modified:
+  +6 -13          trunk/configure.ac  
+  +24 -6          trunk/src/aac/Makefile.in  
+  +16 -24         trunk/src/aac/libfaad2/Makefile.in  
+  +19 -16         trunk/src/aac/mp4ff/Makefile.in  
+  +14 -19         trunk/src/aac/src/Makefile.in  
+  +21 -14         trunk/src/cdaudio/Makefile.in  
+  +16 -21         trunk/src/mpg123/Makefile.in  
+  +31 -16         trunk/src/musepack/Makefile.in  
+  +14 -31         trunk/src/sexypsf/Makefile.in  
+  +16 -14         trunk/src/tonegen/Makefile.in  
+  +16 -16         trunk/src/vorbis/Makefile.in  
+  +18 -16         trunk/src/wav/Makefile.in  
+  +23 -18         trunk/src/wma/Makefile.in  
+  +0 -23          trunk/src/wma/libffwma/Makefile.in  
+
+
 2006-09-18 10:17:45 +0000  William Pitcock <nenolod@nenolod.net>
   revision [26]
   - remove unused dirs
