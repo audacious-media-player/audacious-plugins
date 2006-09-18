@@ -94,8 +94,8 @@ CONTAINER_PLUGINS="m3u pls"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.2.0],
-    [ADD_PC_REQUIRES([audacious >= 1.2.0])],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.1.99],
+    [ADD_PC_REQUIRES([audacious >= 1.1.99])],
     [AC_MSG_ERROR([Cannot find Audacious, have you installed audacious yet?])]
 )
 

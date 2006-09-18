@@ -1,3 +1,14 @@
+2006-09-18 15:59:51 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [72]
+  - build fixes.
+  
+
+  Changes:        Modified:
+  +0 -1           trunk/configure.ac  
+  +1 -0           trunk/src/alsa/init.c  
+  +1 -1           trunk/src/scrobbler/config.h  
+
+
 2006-09-18 15:54:41 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [70]
   Let us not go crazy with the ../ there, your includes are not *that* far away, hmmkay?
