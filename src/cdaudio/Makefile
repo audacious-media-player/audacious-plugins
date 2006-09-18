@@ -9,6 +9,6 @@ SOURCES = cdaudio.c cddb.c cdinfo.c configure.c http.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) @GTK_CFLAGS@ -I../../intl -I../.. -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -I../..
 
 include ../../mk/objective.mk
