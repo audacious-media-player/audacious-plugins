@@ -1,3 +1,19 @@
+2006-09-18 11:09:53 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [52]
+  - fix some build errors
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/src/aac/src/Makefile  
+  +1 -1           trunk/src/ladspa/ladspa.c  
+  +1 -1           trunk/src/stereo_plugin/stereo.c  
+  +1 -1           trunk/src/timidity/libtimidity/Makefile  
+  +1 -1           trunk/src/timidity/src/Makefile  
+  +1 -1           trunk/src/voice_removal/voice_removal.c  
+  +1 -1           trunk/src/wma/Makefile  
+  +1 -1           trunk/src/wma/libffwma/Makefile  
+
+
 2006-09-18 11:02:45 +0000  William Pitcock <nenolod@nenolod.net>
   revision [50]
   - fix another AAC build error

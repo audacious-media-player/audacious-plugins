@@ -1,12 +1,12 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 OBJECTIVE_LIBS_NOINST = libparanormal.a
 
 OBJECT_CFLAGS   = $(GTK_CFLAGS)
 OBJECT_LIBS     = $(GTK_LIBS)
 
-CFLAGS += $(PICFLAGS) -Wall -g -I../../../.. $(OBJECT_CFLAGS) $(XML_CPPFLAGS) -I..
+CFLAGS += $(PICFLAGS) -Wall -g -I../../.. $(OBJECT_CFLAGS) $(XML_CPPFLAGS) -I..
 LIBADD   = -lm $(OBJECT_LIBS) $(XML_LIBS)
 
 SOURCES =  \
@@ -43,7 +43,7 @@ SOURCES =  \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk
 
 libparanormal.a: $(OBJECTS)
 	$(AR) cq $@ $(OBJECTS)

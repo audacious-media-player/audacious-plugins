@@ -3,7 +3,7 @@ include ../../../mk/init.mk
 
 noinst_HEADERS = b-dummy.h b-dummy-config.h backend-dummy-icon.xpm
 
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) -I../../../../intl -I../../../..
+CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) -I../../..
 
 libdir = $(AMIDIPLUGBACKENDDIR)
 

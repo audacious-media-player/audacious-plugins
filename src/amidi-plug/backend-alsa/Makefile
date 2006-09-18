@@ -3,7 +3,7 @@ include ../../../mk/init.mk
 
 noinst_HEADERS = b-alsa.h b-alsa-config.h backend-alsa-icon.xpm
 
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) $(ALSA_CFLAGS) -I../../../../intl -I../../../..
+CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) $(ALSA_CFLAGS) -I../../..
 
 libdir = $(AMIDIPLUGBACKENDDIR)
 

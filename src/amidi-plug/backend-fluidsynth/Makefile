@@ -3,7 +3,7 @@ include ../../../mk/init.mk
 
 noinst_HEADERS = b-fluidsynth.h b-fluidsynth-config.h backend-fluidsynth-icon.xpm
 
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) $(FLUIDSYNTH_CFLAGS) -I../../../../intl -I../../../..
+CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) $(FLUIDSYNTH_CFLAGS) -I../../..
 
 libdir = $(AMIDIPLUGBACKENDDIR)
 
