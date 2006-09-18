@@ -1,3 +1,11 @@
+2006-09-18 15:47:33 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [68]
+  #include "audacious/util.h"? WTF? Fixed.
+
+  Changes:        Modified:
+  +1 -1           trunk/src/modplug/gui/main.cxx  
+
+
 2006-09-18 15:38:24 +0000  Jonathan Schleifer <js@h3c.de>
   revision [66]
   Removed BMP_RCPATH from configure.ac, mk/rules.mk.in and Makefiles and added it to config.h via configure.ac
