@@ -23,7 +23,6 @@
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
-#include <libaudacious/configdb.h>
 
 #include "../../../config.h"
 
