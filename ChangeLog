@@ -1,3 +1,14 @@
+2006-09-18 10:31:09 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [30]
+  - more Makefile reduction
+  
+
+  Changes:        Modified:
+  +20 -3          trunk/configure.ac  
+  +26 -20         trunk/src/adplug/Makefile.in  
+  +0 -26          trunk/src/adplug/core/Makefile.in  
+
+
 2006-09-18 10:27:46 +0000  William Pitcock <nenolod@nenolod.net>
   revision [28]
   - remove some unnecessary Makefile.in's and replace them with normal Makefiles

@@ -1067,7 +1067,6 @@ AC_CONFIG_FILES([
 	src/modplug/gui/Makefile
 	src/flac/Makefile
 	src/flac/plugin_common/Makefile
-	src/sid/Makefile
 	src/timidity/Makefile
 	src/timidity/libtimidity/Makefile
 	src/timidity/src/Makefile
@@ -1081,10 +1080,6 @@ AC_CONFIG_FILES([
 	src/song_change/Makefile
 	src/lirc/Makefile
 	src/scrobbler/Makefile
-	src/audiocompress/Makefile
-	src/ladspa/Makefile
-	src/stereo_plugin/Makefile
-	src/voice_removal/Makefile
 	mk/rules.mk
 ])
 
