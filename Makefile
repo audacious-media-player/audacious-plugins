@@ -3,7 +3,7 @@
 include mk/rules.mk
 include mk/init.mk
 
-SUBDIRS = Plugins libaudacious intl $(SUBDIR_GUESS) audacious audtool po icons skin
+SUBDIRS = src
 
 include mk/objective.mk
 
