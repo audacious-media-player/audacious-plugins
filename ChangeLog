@@ -1,3 +1,12 @@
+2006-09-18 10:41:03 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [36]
+  - oops
+  
+
+  Changes:        Modified:
+  +4 -4           trunk/src/CoreAudio/Makefile  
+
+
 2006-09-18 10:38:44 +0000  William Pitcock <nenolod@nenolod.net>
   revision [34]
   - fix a lot of paths

@@ -9,6 +9,6 @@ SOURCES = tonegen.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) @GTK_CFLAGS@ -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
 
 include ../../mk/objective.mk
