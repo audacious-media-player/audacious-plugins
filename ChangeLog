@@ -1,3 +1,13 @@
+2006-09-18 15:38:24 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [66]
+  Removed BMP_RCPATH from configure.ac, mk/rules.mk.in and Makefiles and added it to config.h via configure.ac
+
+  Changes:        Modified:
+  +2 -2           trunk/configure.ac  
+  +0 -1           trunk/mk/rules.mk.in  
+  +1 -1           trunk/src/cdaudio/Makefile  
+
+
 2006-09-18 15:31:59 +0000  Jonathan Schleifer <js@h3c.de>
   revision [64]
   Add BMP_RCPATH to configure.ac and -DBMP_RCPATH=$(BMP_RCPATH\)

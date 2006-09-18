@@ -9,7 +9,7 @@
 
 #include <gtk/gtk.h>
 #include <libintl.h>
-#include "audacious/util.c"
+#include "audacious/util.h"
 
 #include "interface.h"
 #include "support.h"
