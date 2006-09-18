@@ -8,7 +8,7 @@ SOURCES = mp4ff.c mp4atom.c mp4meta.c mp4sample.c mp4util.c \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) -DUSE_TAGGING=1 -fsigned-char -I../../../.. -I../../../../intl
+CFLAGS += $(PICFLAGS) -DUSE_TAGGING=1 -fsigned-char -I../../..
 
 include ../../../mk/objective.mk
 
