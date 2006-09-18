@@ -17,7 +17,7 @@ SOURCES = \
 	tables.c \
 	timidity.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../../intl -I../../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../..
 
 OBJECTS = ${SOURCES:.c=.o}
 

@@ -14,6 +14,6 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../../intl -I../../../.. -I../libtimidity
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../.. -I../libtimidity
 
 include ../../../mk/objective.mk

@@ -5,7 +5,7 @@
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
 
-#include "../../../config.h"
+#include "../../config.h"
 
 static void init(void);
 static void about(void);

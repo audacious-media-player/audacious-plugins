@@ -24,7 +24,7 @@
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 
-#include "../../../config.h"
+#include "../../config.h"
 
 #define PLUGIN_NAME "voice_removal " PACKAGE_VERSION
 

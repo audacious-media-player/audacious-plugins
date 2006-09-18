@@ -30,7 +30,7 @@
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
 
-#include "../../../config.h"
+#include "../../config.h"
 #include "ladspa.h"
 
 #ifndef PATH_MAX

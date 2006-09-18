@@ -13,6 +13,6 @@ SOURCES = wma.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -I./libffwma -std=c99
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../.. -I./libffwma -std=c99
 
 include ../../mk/objective.mk
