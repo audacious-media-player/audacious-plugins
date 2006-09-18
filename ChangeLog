@@ -1,3 +1,70 @@
+2006-09-18 10:38:44 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [34]
+  - fix a lot of paths
+  - reduce more makefiles
+  
+
+  Changes:        Modified:
+  +0 -17          trunk/configure.ac  
+  +4 -4           trunk/src/CoreAudio/Makefile  
+  +17 -0          trunk/src/OSS/Makefile  
+  +0 -17          trunk/src/OSS/Makefile.in  
+  +3 -3           trunk/src/aac/Makefile  
+  +5 -5           trunk/src/adplug/Makefile  
+  +18 -0          trunk/src/alsa/Makefile  
+  +0 -18          trunk/src/alsa/Makefile.in  
+  +28 -0          trunk/src/amidi-plug/Makefile  
+  +0 -28          trunk/src/amidi-plug/Makefile.in  
+  +17 -0          trunk/src/arts/Makefile  
+  +0 -17          trunk/src/arts/Makefile.in  
+  +4 -4           trunk/src/audiocompress/Makefile  
+  +16 -0          trunk/src/blur_scope/Makefile  
+  +0 -16          trunk/src/blur_scope/Makefile.in  
+  +4 -4           trunk/src/cdaudio/Makefile  
+  +4 -4           trunk/src/console/Makefile  
+  +4 -4           trunk/src/cue/Makefile  
+  +15 -0          trunk/src/disk_writer/Makefile  
+  +0 -15          trunk/src/disk_writer/Makefile.in  
+  +18 -0          trunk/src/esd/Makefile  
+  +0 -18          trunk/src/esd/Makefile.in  
+  +39 -0          trunk/src/flac/Makefile  
+  +0 -39          trunk/src/flac/Makefile.in  
+  +15 -0          trunk/src/jack/Makefile  
+  +0 -15          trunk/src/jack/Makefile.in  
+  +4 -4           trunk/src/ladspa/Makefile  
+  +15 -0          trunk/src/lirc/Makefile  
+  +0 -15          trunk/src/lirc/Makefile.in  
+  +4 -4           trunk/src/m3u/Makefile  
+  +15 -0          trunk/src/modplug/Makefile  
+  +0 -15          trunk/src/modplug/Makefile.in  
+  +5 -5           trunk/src/mpg123/Makefile  
+  +4 -4           trunk/src/musepack/Makefile  
+  +4 -4           trunk/src/notify/Makefile  
+  +4 -4           trunk/src/paranormal/Makefile  
+  +4 -4           trunk/src/pls/Makefile  
+  +15 -0          trunk/src/pulse_audio/Makefile  
+  +0 -15          trunk/src/pulse_audio/Makefile.in  
+  +16 -0          trunk/src/rocklight/Makefile  
+  +0 -16          trunk/src/rocklight/Makefile.in  
+  +30 -0          trunk/src/scrobbler/Makefile  
+  +0 -30          trunk/src/scrobbler/Makefile.in  
+  +4 -4           trunk/src/sexypsf/Makefile  
+  +5 -5           trunk/src/sid/Makefile  
+  +16 -0          trunk/src/song_change/Makefile  
+  +0 -16          trunk/src/song_change/Makefile.in  
+  +4 -4           trunk/src/stereo_plugin/Makefile  
+  +19 -0          trunk/src/sun/Makefile  
+  +0 -19          trunk/src/sun/Makefile.in  
+  +6 -0           trunk/src/timidity/Makefile  
+  +0 -6           trunk/src/timidity/Makefile.in  
+  +4 -4           trunk/src/tonegen/Makefile  
+  +4 -4           trunk/src/voice_removal/Makefile  
+  +4 -4           trunk/src/vorbis/Makefile  
+  +4 -4           trunk/src/wav/Makefile  
+  +4 -4           trunk/src/wma/Makefile  
+  +4 -4           trunk/src/xspf/Makefile  
+
+
 2006-09-18 10:34:48 +0000  William Pitcock <nenolod@nenolod.net>
   revision [32]
   - and some more of that wonderful Makefile.in -> Makefile reduction
