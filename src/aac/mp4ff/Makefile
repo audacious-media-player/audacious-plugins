@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 OBJECTIVE_LIBS_NOINST = libmp4ff.a
 
@@ -10,7 +10,7 @@ OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += $(PICFLAGS) -DUSE_TAGGING=1 -fsigned-char -I../../../.. -I../../../../intl
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk
 
 libmp4ff.a: $(OBJECTS)
 	$(AR) cq $@ $(OBJECTS)

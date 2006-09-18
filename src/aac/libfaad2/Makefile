@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 CFLAGS += -I../include -I../../../.. -I. $(PICFLAGS)
 
@@ -18,7 +18,7 @@ SOURCES = bits.c cfft.c decoder.c drc.c \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk
 
 libfaad.a: $(OBJECTS)
 	$(AR) cq $@ $(OBJECTS)

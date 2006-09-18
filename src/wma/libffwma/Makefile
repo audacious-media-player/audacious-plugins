@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 OBJECTIVE_LIBS_NOINST=	libffwma.a
 
@@ -17,7 +17,7 @@ CFLAGS+=	$(PICFLAGS) $(GTK_CFLAGS) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D
 
 OBJECTS=${SOURCES:.c=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk
 
 libffwma.a: $(OBJECTS)
 	$(AR) cq $@ $(OBJECTS)

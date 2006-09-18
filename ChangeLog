@@ -1,3 +1,24 @@
+2006-09-18 10:53:06 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [44]
+  - finish up on the Makefile reduction
+  
+
+  Changes:        Modified:
+  +0 -6           trunk/configure.ac  
+  +15 -0          trunk/src/arts/arts_helper/Makefile  
+  +0 -15          trunk/src/arts/arts_helper/Makefile.in  
+  +26 -0          trunk/src/flac/plugin_common/Makefile  
+  +0 -26          trunk/src/flac/plugin_common/Makefile.in  
+  +18 -0          trunk/src/modplug/archive/Makefile  
+  +0 -18          trunk/src/modplug/archive/Makefile.in  
+  +12 -0          trunk/src/modplug/gui/Makefile  
+  +0 -12          trunk/src/modplug/gui/Makefile.in  
+  +27 -0          trunk/src/timidity/libtimidity/Makefile  
+  +0 -27          trunk/src/timidity/libtimidity/Makefile.in  
+  +19 -0          trunk/src/timidity/src/Makefile  
+  +0 -19          trunk/src/timidity/src/Makefile.in  
+
+
 2006-09-18 10:49:03 +0000  William Pitcock <nenolod@nenolod.net>
   revision [42]
   - update configure.ac

@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 OBJECTIVE_LIBS = libaac$(SHARED_SUFFIX)
 
@@ -16,4 +16,4 @@ OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += $(GTK_CFLAGS) -I../../../../intl -I../../../.. -I../include -I../libfaad -I../mp4ff
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk
