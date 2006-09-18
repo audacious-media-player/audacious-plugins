@@ -1,3 +1,19 @@
+2006-09-18 10:48:36 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [40]
+  - makefile cleanups
+  
+
+  Changes:        Modified:
+  +17 -0          trunk/src/amidi-plug/backend-alsa/Makefile  
+  +0 -17          trunk/src/amidi-plug/backend-alsa/Makefile.in  
+  +17 -0          trunk/src/amidi-plug/backend-dummy/Makefile  
+  +0 -17          trunk/src/amidi-plug/backend-dummy/Makefile.in  
+  +17 -0          trunk/src/amidi-plug/backend-fluidsynth/Makefile  
+  +0 -17          trunk/src/amidi-plug/backend-fluidsynth/Makefile.in  
+  +14 -0          trunk/src/amidi-plug/pcfg/Makefile  
+  +0 -14          trunk/src/amidi-plug/pcfg/Makefile.in  
+
+
 2006-09-18 10:44:25 +0000  William Pitcock <nenolod@nenolod.net>
   revision [38]
   - use $(GTK_CFLAGS) instead of a preprocessor token

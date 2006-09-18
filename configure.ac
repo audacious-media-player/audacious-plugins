@@ -1059,10 +1059,6 @@ AC_CONFIG_FILES([
 	src/flac/plugin_common/Makefile
 	src/timidity/libtimidity/Makefile
 	src/timidity/src/Makefile
-	src/amidi-plug/pcfg/Makefile
-	src/amidi-plug/backend-alsa/Makefile
-	src/amidi-plug/backend-fluidsynth/Makefile
-	src/amidi-plug/backend-dummy/Makefile
 	mk/rules.mk
 ])
 
