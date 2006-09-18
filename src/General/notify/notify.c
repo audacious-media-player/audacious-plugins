@@ -13,7 +13,7 @@
 #include "audacious/plugin.h"
 #include "audacious/playlist.h"
 #include "audacious/input.h"
-#include "libaudacious/configdb.h"
+#include "audacious/configdb.h"
 
 #include "config.h"
 

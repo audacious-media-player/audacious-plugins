@@ -19,7 +19,7 @@
 
 #include "audacious/plugin.h"
 #include "audacious/output.h"
-#include "libaudacious/util.h"
+#include "audacious/util.h"
 #include "config.h"
 #include <glib.h>
 #include <stdlib.h>

@@ -18,10 +18,10 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#include "libaudacious/util.h"
-#include "libaudacious/configdb.h"
-#include "libaudacious/vfs.h"
-#include "libaudacious/titlestring.h"
+#include "audacious/util.h"
+#include "audacious/configdb.h"
+#include "audacious/vfs.h"
+#include "audacious/titlestring.h"
 #include "audacious/util.h"
 #include <tag_c.h>
 

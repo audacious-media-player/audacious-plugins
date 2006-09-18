@@ -21,7 +21,7 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 #include "xs_config.h"
-#include "libaudacious/configdb.h"
+#include "audacious/configdb.h"
 #include <stdio.h>
 #include "xs_glade.h"
 #include "xs_interface.h"

@@ -30,8 +30,8 @@
 
 #include <gtk/gtk.h>
 #include "audacious/plugin.h"
-#include "libaudacious/beepctrl.h"
-#include "libaudacious/util.h"
+#include "audacious/beepctrl.h"
+#include "audacious/util.h"
 
 #include <pulse/pulseaudio.h>
 

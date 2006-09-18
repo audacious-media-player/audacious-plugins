@@ -18,9 +18,9 @@
 
 #include "audacious/output.h"
 #include "audacious/plugin.h"
-#include "libaudacious/titlestring.h"
-#include "libaudacious/util.h"
-#include "libaudacious/vfs.h"
+#include "audacious/titlestring.h"
+#include "audacious/util.h"
+#include "audacious/vfs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

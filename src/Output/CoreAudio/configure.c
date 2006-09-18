@@ -19,7 +19,7 @@
 
 //#include <glib/gi18n.h>
 #include "coreaudio.h"
-#include "libaudacious/configdb.h"
+#include "audacious/configdb.h"
 #include <CoreAudio/CoreAudio.h>
 
 static GtkWidget *configure_win = NULL;

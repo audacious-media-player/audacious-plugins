@@ -23,7 +23,7 @@
 #include "xs_title.h"
 #include "xs_support.h"
 #include "xs_config.h"
-#include "libaudacious/titlestring.h"
+#include "audacious/titlestring.h"
 
 
 /*

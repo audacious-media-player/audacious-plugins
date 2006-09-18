@@ -29,8 +29,8 @@
 #include "i_common.h"
 #include "audacious/plugin.h"
 #include "audacious/output.h"
-#include "libaudacious/beepctrl.h"
-#include "libaudacious/vfs.h"
+#include "audacious/beepctrl.h"
+#include "audacious/vfs.h"
 #include <pthread.h>
 #include "i_backend.h"
 #include "i_configure.h"

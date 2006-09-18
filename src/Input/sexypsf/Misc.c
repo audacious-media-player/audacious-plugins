@@ -16,7 +16,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

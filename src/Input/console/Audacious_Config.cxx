@@ -11,7 +11,7 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include "libaudacious/configdb.h"
+#include "audacious/configdb.h"
 #include "Audacious_Config.h"
 
 

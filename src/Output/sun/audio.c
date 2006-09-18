@@ -20,7 +20,7 @@
 /* FIXME: g_error() is used several places, it will exit xmms */
 
 #include <errno.h>
-#include "libaudacious/util.h"
+#include "audacious/util.h"
 #include "sun.h"
 #include "resample.h"
 

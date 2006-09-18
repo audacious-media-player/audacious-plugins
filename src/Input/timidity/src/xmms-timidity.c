@@ -21,10 +21,10 @@
 #include <config.h>
 #endif
 
-#include "libaudacious/util.h"
-#include "libaudacious/configdb.h"
-#include "libaudacious/titlestring.h"
-#include "libaudacious/vfs.h"
+#include "audacious/util.h"
+#include "audacious/configdb.h"
+#include "audacious/titlestring.h"
+#include "audacious/vfs.h"
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>

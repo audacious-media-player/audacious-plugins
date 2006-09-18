@@ -27,7 +27,7 @@
 #include "i_configure-fluidsynth.h"
 #include "i_configure-dummy.h"
 #include "i_utils.h"
-#include "libaudacious/beepctrl.h"
+#include "audacious/beepctrl.h"
 
 
 amidiplug_cfg_backend_t * amidiplug_cfg_backend;

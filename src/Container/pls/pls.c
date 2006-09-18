@@ -36,7 +36,7 @@
 #include "audacious/playlist.h"
 #include "audacious/playlist_container.h"
 #include "audacious/plugin.h"
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 
 static void
 playlist_load_pls(const gchar * filename, gint pos)

@@ -18,9 +18,9 @@
 
 #include "audacious/plugin.h"
 #include "audacious/prefswin.h"
-#include "libaudacious/configdb.h"
-#include "libaudacious/beepctrl.h"
-#include "libaudacious/formatter.h"
+#include "audacious/configdb.h"
+#include "audacious/beepctrl.h"
+#include "audacious/formatter.h"
 
 static void init(void);
 static void cleanup(void);

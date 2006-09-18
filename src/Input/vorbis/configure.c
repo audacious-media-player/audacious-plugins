@@ -10,10 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "libaudacious/configdb.h"
-#include "libaudacious/dirbrowser.h"
-#include "libaudacious/titlestring.h"
-#include "libaudacious/util.h"
+#include "audacious/configdb.h"
+#include "audacious/dirbrowser.h"
+#include "audacious/titlestring.h"
+#include "audacious/util.h"
 #include "audacious/plugin.h"
 
 extern GMutex *vf_mutex;

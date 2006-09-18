@@ -18,7 +18,7 @@
  */
 
 #include "sun.h"
-#include "libaudacious/util.h"
+#include "audacious/util.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>

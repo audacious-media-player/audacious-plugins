@@ -23,7 +23,7 @@
 
 #include "i_common.h"
 #include "i_midievent.h"
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 
 #define MAKE_ID(c1, c2, c3, c4) ((c1) | ((c2) << 8) | ((c3) << 16) | ((c4) << 24))
 

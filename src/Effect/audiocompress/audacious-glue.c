@@ -8,8 +8,8 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include "audacious/plugin.h"
-#include "libaudacious/util.h"
-#include "libaudacious/configdb.h"
+#include "audacious/util.h"
+#include "audacious/configdb.h"
 
 #include "config.h"
 #include "compress.h"

@@ -13,8 +13,8 @@
 #include <libmodplug/sndfile.h>
 #include "stddefs.h"
 #include "archive/open.h"
-#include "libaudacious/configdb.h"
-#include "libaudacious/vfs.h"
+#include "audacious/configdb.h"
+#include "audacious/vfs.h"
 extern "C" {
 #include "audacious/output.h"
 }

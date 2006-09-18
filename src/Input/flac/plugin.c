@@ -26,10 +26,10 @@
 
 #include "audacious/plugin.h"
 #include "audacious/output.h"
-#include "libaudacious/util.h"
-#include "libaudacious/configdb.h"
-#include "libaudacious/titlestring.h"
-#include "libaudacious/vfs.h"
+#include "audacious/util.h"
+#include "audacious/configdb.h"
+#include "audacious/titlestring.h"
+#include "audacious/vfs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

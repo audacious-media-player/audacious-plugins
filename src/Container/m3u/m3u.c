@@ -31,7 +31,7 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 #include "audacious/main.h"
 #include "audacious/util.h"
 #include "audacious/playlist.h"

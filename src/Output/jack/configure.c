@@ -24,7 +24,7 @@
 
 #include "jack.h"
 
-#include "libaudacious/configdb.h"
+#include "audacious/configdb.h"
 
 #include <gtk/gtk.h>
 

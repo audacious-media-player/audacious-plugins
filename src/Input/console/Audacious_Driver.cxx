@@ -9,8 +9,8 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include "libaudacious/util.h"
-#include "libaudacious/titlestring.h"
+#include "audacious/util.h"
+#include "audacious/titlestring.h"
 extern "C" {
 #include "audacious/output.h"
 #include "audacious/playlist.h"

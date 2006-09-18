@@ -23,7 +23,7 @@
 #ifndef TIMIDITY_H
 #define TIMIDITY_H
 
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 #include <stdlib.h>
 
 #ifdef __cplusplus

@@ -42,7 +42,7 @@
 #include <glib/gi18n.h>
 
 #include "audacious/plugin.h"
-#include "libaudacious/beepctrl.h"
+#include "audacious/beepctrl.h"
 
 #include <lirc/lirc_client.h>
 

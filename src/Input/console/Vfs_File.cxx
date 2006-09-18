@@ -1,7 +1,7 @@
 
 #include "Vfs_File.h"
 
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 
 Vfs_File_Reader::Vfs_File_Reader() : file_( NULL ) { }
 

@@ -3,7 +3,7 @@
 
 #include <vorbis/vorbisfile.h>
 
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 
 extern ov_callbacks vorbis_callbacks;
 

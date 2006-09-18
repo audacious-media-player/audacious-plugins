@@ -25,7 +25,7 @@
 #  include <config.h>
 #endif
 
-#include "libaudacious/vfs.h"
+#include "audacious/vfs.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -41,7 +41,7 @@
 
 #include "vorbis.h"
 #include "http.h"
-#include "libaudacious/util.h"
+#include "audacious/util.h"
 #include "audacious/plugin.h"
 
 

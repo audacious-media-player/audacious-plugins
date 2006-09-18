@@ -29,8 +29,8 @@
 #include "silentopl.h"
 #include "players.h"
 #include "audacious/plugin.h"
-#include "libaudacious/util.h"
-#include "libaudacious/configdb.h"
+#include "audacious/util.h"
+#include "audacious/configdb.h"
 extern "C" {
 #include "audacious/output.h"
 }

@@ -19,8 +19,8 @@
 
 #include <errno.h>
 #include "sun.h"
-#include "libaudacious/util.h"
-#include "libaudacious/configdb.h"
+#include "audacious/util.h"
+#include "audacious/configdb.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>

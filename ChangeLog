@@ -1,3 +1,12 @@
+2006-09-18 08:21:56 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [4]
+  - denote the split in the changelog
+  
+
+  Changes:        Modified:
+  +1 -0           trunk/ChangeLog  
+
+
 2006-09-18 08:20:55 +0000  William Pitcock <nenolod@nenolod.net>
   revision [2]
   - updates here for new buildsystem
