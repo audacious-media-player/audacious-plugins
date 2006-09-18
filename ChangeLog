@@ -1,3 +1,12 @@
+2006-09-18 10:44:25 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [38]
+  - use $(GTK_CFLAGS) instead of a preprocessor token
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/src/tonegen/Makefile  
+
+
 2006-09-18 10:41:03 +0000  William Pitcock <nenolod@nenolod.net>
   revision [36]
   - oops

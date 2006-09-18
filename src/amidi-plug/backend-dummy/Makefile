@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 noinst_HEADERS = b-dummy.h b-dummy-config.h backend-dummy-icon.xpm
 
@@ -14,4 +14,4 @@ SOURCES = b-dummy.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk

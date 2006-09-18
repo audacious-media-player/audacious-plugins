@@ -1,5 +1,5 @@
-include ../../../../mk/rules.mk
-include ../../../../mk/init.mk
+include ../../../mk/rules.mk
+include ../../../mk/init.mk
 
 noinst_HEADERS = b-alsa.h b-alsa-config.h backend-alsa-icon.xpm
 
@@ -14,4 +14,4 @@ SOURCES = b-alsa.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../../mk/objective.mk
+include ../../../mk/objective.mk
