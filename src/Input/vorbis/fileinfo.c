@@ -39,8 +39,8 @@
 #include <unistd.h>
 
 #include "audacious/util.h"
-#include <libaudacious/util.h>
-#include <libaudacious/vfs.h>
+#include <audacious/util.h>
+#include <audacious/vfs.h>
 
 #include "vorbis.h"
 #include "vcedit.h"

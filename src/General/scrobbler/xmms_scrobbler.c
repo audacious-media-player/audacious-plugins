@@ -9,8 +9,8 @@
 #include <audacious/plugin.h>
 #include <audacious/prefswin.h>
 #include <audacious/playlist.h>
-#include <libaudacious/configdb.h>
-#include <libaudacious/beepctrl.h>
+#include <audacious/configdb.h>
+#include <audacious/beepctrl.h>
 
 #include <unistd.h>
 #include <stdio.h>

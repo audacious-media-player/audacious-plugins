@@ -24,7 +24,7 @@
 #include <string.h>
 #include <esd.h>
 
-#include <libaudacious/configdb.h>
+#include <audacious/configdb.h>
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -45,7 +45,7 @@
 # define OSS_AVAILABLE FALSE
 #endif
 
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 
 #define QUERY_PLAYER_ID_ATTEMPTS 5
 

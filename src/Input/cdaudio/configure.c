@@ -31,8 +31,8 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-#include <libaudacious/configdb.h>
-#include <libaudacious/titlestring.h>
+#include <audacious/configdb.h>
+#include <audacious/titlestring.h>
 
 
 #define GET_TB(b) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(b))

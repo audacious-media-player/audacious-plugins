@@ -1,3 +1,73 @@
+2006-09-18 08:35:25 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [6]
+  - move from (internal) libaudacious/ include path to audacious/ include path
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/src/Container/m3u/m3u.c  
+  +1 -1           trunk/src/Container/pls/pls.c  
+  +2 -2           trunk/src/Effect/audiocompress/audacious-glue.c  
+  +1 -1           trunk/src/Effect/stereo_plugin/stereo.c  
+  +1 -1           trunk/src/General/lirc/lirc.c  
+  +1 -1           trunk/src/General/notify/notify.c  
+  +2 -2           trunk/src/General/scrobbler/configure.c  
+  +2 -2           trunk/src/General/scrobbler/gtkstuff.c  
+  +3 -3           trunk/src/General/song_change/song_change.c  
+  +2 -2           trunk/src/Input/aac/src/mp4_utils.c  
+  +2 -2           trunk/src/Input/adplug/adplug-xmms.cc  
+  +2 -2           trunk/src/Input/amidi-plug/amidi-plug.h  
+  +1 -1           trunk/src/Input/amidi-plug/i_configure.c  
+  +1 -1           trunk/src/Input/amidi-plug/i_midi.h  
+  +1 -1           trunk/src/Input/console/Audacious_Config.cxx  
+  +2 -2           trunk/src/Input/console/Audacious_Driver.cxx  
+  +1 -1           trunk/src/Input/console/Vfs_File.cxx  
+  +1 -1           trunk/src/Input/console/abstract_file.h  
+  +4 -4           trunk/src/Input/flac/plugin.c  
+  +1 -1           trunk/src/Input/modplug/gui/main.cxx  
+  +2 -2           trunk/src/Input/modplug/modplugbmp.cxx  
+  +3 -3           trunk/src/Input/mpg123/fileinfo.c  
+  +4 -4           trunk/src/Input/mpg123/mpg123.c  
+  +4 -4           trunk/src/Input/musepack/libmpc.h  
+  +1 -1           trunk/src/Input/sexypsf/Misc.c  
+  +3 -3           trunk/src/Input/sexypsf/xmms.c  
+  +1 -1           trunk/src/Input/sid/xs_config.c  
+  +1 -1           trunk/src/Input/sid/xs_title.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/common.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/instrum.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/mix.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/playmidi.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/readmidi.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/resample.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/tables.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/timidity.c  
+  +1 -1           trunk/src/Input/timidity/libtimidity/timidity.h  
+  +4 -4           trunk/src/Input/timidity/src/xmms-timidity.c  
+  +1 -1           trunk/src/Input/tonegen/tonegen.c  
+  +4 -4           trunk/src/Input/vorbis/configure.c  
+  +1 -1           trunk/src/Input/vorbis/http.c  
+  +3 -3           trunk/src/Input/vorbis/vorbis.c  
+  +1 -1           trunk/src/Input/vorbis/vorbis.h  
+  +1 -1           trunk/src/Input/wma/libffwma/file.c  
+  +3 -3           trunk/src/Input/wma/wma.c  
+  +1 -1           trunk/src/Output/CoreAudio/about.c  
+  +1 -1           trunk/src/Output/CoreAudio/audio.c  
+  +1 -1           trunk/src/Output/CoreAudio/configure.c  
+  +1 -1           trunk/src/Output/CoreAudio/init.c  
+  +1 -1           trunk/src/Output/arts/arts.c  
+  +1 -1           trunk/src/Output/arts/arts.h  
+  +5 -5           trunk/src/Output/disk_writer/disk_writer.c  
+  +1 -1           trunk/src/Output/jack/configure.c  
+  +2 -2           trunk/src/Output/jack/jack.c  
+  +2 -2           trunk/src/Output/pulse_audio/pulse_audio.c  
+  +1 -1           trunk/src/Output/sun/about.c  
+  +1 -1           trunk/src/Output/sun/audio.c  
+  +2 -2           trunk/src/Output/sun/configure.c  
+  +1 -1           trunk/src/Output/sun/sun.c  
+  +1 -1           trunk/src/Output/sun/sun.h  
+  +2 -2           trunk/src/Visualization/blur_scope/blur_scope.c  
+  +1 -1           trunk/src/Visualization/blur_scope/config.c  
+
+
 2006-09-18 08:21:56 +0000  William Pitcock <nenolod@nenolod.net>
   revision [4]
   - denote the split in the changelog

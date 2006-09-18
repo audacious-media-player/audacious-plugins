@@ -27,8 +27,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <libaudacious/configdb.h>
-#include <libaudacious/vfs.h>
+#include <audacious/configdb.h>
+#include <audacious/vfs.h>
 
 
 static GtkWidget *configure_win = NULL;

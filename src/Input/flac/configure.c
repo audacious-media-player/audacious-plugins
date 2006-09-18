@@ -27,10 +27,10 @@
 #include <gtk/gtk.h>
 #include <math.h>
 
-#include <libaudacious/configdb.h>
-#include <libaudacious/dirbrowser.h>
-#include <libaudacious/titlestring.h>
-#include <libaudacious/util.h>
+#include <audacious/configdb.h>
+#include <audacious/dirbrowser.h>
+#include <audacious/titlestring.h>
+#include <audacious/util.h>
 #include <audacious/plugin.h>
 
 #include "plugin_common/locale_hack.h"

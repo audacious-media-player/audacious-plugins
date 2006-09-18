@@ -36,9 +36,9 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 
-#include <libaudacious/configdb.h>
-#include <libaudacious/util.h>
-#include <libaudacious/titlestring.h>
+#include <audacious/configdb.h>
+#include <audacious/util.h>
+#include <audacious/titlestring.h>
 #include "audacious/output.h"
 
 #ifdef CDROMSTOP

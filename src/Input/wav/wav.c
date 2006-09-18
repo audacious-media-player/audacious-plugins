@@ -25,8 +25,8 @@
 #include <glib/gi18n.h>
 #include <string.h>
 
-#include <libaudacious/util.h>
-#include <libaudacious/titlestring.h>
+#include <audacious/util.h>
+#include <audacious/titlestring.h>
 #include "audacious/output.h"
 
 

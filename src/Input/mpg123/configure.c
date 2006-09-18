@@ -8,9 +8,9 @@
 #include <string.h>
 #include <math.h>
 
-#include <libaudacious/configdb.h>
-#include <libaudacious/dirbrowser.h>
-#include <libaudacious/titlestring.h>
+#include <audacious/configdb.h>
+#include <audacious/dirbrowser.h>
+#include <audacious/titlestring.h>
 
 
 static GtkWidget *mpgdec_configurewin = NULL;

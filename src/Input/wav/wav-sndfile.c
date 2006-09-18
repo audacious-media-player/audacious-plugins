@@ -25,8 +25,8 @@
 #include <math.h>
 #include <stdio.h>
 
-#include <libaudacious/util.h>
-#include <libaudacious/titlestring.h>
+#include <audacious/util.h>
+#include <audacious/titlestring.h>
 #include "audacious/output.h"
 #include "wav-sndfile.h"
 

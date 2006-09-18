@@ -23,8 +23,8 @@
 
 #include "config.h"
 
-#include <libaudacious/util.h>
-#include <libaudacious/configdb.h>
+#include <audacious/util.h>
+#include <audacious/configdb.h>
 #include <audacious/main.h>
 #include <audacious/plugin.h>
 #include <glib/gi18n.h>
