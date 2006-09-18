@@ -1001,26 +1001,17 @@ AM_CONDITIONAL(USE_X86ASM, test "x$x86_asm" = xyes)
 AM_CONDITIONAL(HAVE_SOLARIS, test "x$have_solaris" = xyes)
 AM_CONDITIONAL(HAVE_SUN, test "x$have_sun" = xyes)
 
-plugindir="$libdir/audacious"
+plugindir=`pkg-config audacious --variable=plugin_dir`
 AC_SUBST(plugindir)
 
-if test "x$enable_one_plugin_dir" = "xyes"; then
-    pluginsubs="\\\"Plugins\\\""
-    INPUT_PLUGIN_DIR=Plugins
-    OUTPUT_PLUGIN_DIR=Plugins
-    EFFECT_PLUGIN_DIR=Plugins
-    GENERAL_PLUGIN_DIR=Plugins
-    VISUALIZATION_PLUGIN_DIR=Plugins
-    CONTAINER_PLUGIN_DIR=Plugins
-else
-    pluginsubs="\\\"Output\\\",\\\"Input\\\",\\\"Effect\\\",\\\"General\\\",\\\"Visualization\\\",\\\"Container\\\""
-    INPUT_PLUGIN_DIR=Input
-    OUTPUT_PLUGIN_DIR=Output
-    EFFECT_PLUGIN_DIR=Effect
-    GENERAL_PLUGIN_DIR=General
-    VISUALIZATION_PLUGIN_DIR=Visualization
-    CONTAINER_PLUGIN_DIR=Container
-fi
+dnl XXX
+
+INPUT_PLUGIN_DIR=Input
+OUTPUT_PLUGIN_DIR=Output
+EFFECT_PLUGIN_DIR=Effect
+GENERAL_PLUGIN_DIR=General
+VISUALIZATION_PLUGIN_DIR=Visualization
+CONTAINER_PLUGIN_DIR=Container
 
 AC_SUBST(INPUT_PLUGIN_DIR)
 AC_SUBST(OUTPUT_PLUGIN_DIR)

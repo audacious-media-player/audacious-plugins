@@ -1,3 +1,25 @@
+2006-09-18 09:42:15 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [18]
+  - remove last references to libaudacious.
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/src/General/scrobbler/queue.h  
+  +1 -1           trunk/src/General/scrobbler/scrobbler.h  
+  +1 -1           trunk/src/Input/cdaudio/cddb.c  
+  +1 -1           trunk/src/Input/cdaudio/cdinfo.c  
+  +1 -1           trunk/src/Input/flac/http.c  
+  +1 -1           trunk/src/Input/flac/tag.c  
+  +1 -1           trunk/src/Input/sid/xmms-sid.c  
+  +1 -1           trunk/src/Output/OSS/about.c  
+  +1 -1           trunk/src/Output/OSS/audio.c  
+  +1 -1           trunk/src/Output/OSS/init.c  
+  +1 -1           trunk/src/Output/alsa/about.c  
+  +1 -1           trunk/src/Output/alsa/audio.c  
+  +1 -0           trunk/src/Output/jack/jack.c  
+  +1 -1           trunk/src/Visualization/paranormal/client.c  
+
+
 2006-09-18 09:30:20 +0000  William Pitcock <nenolod@nenolod.net>
   revision [16]
   - make effect plugins build
