@@ -28,7 +28,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/plugin.h>
-#include <libaudacious/configdb.h>
+#include <audacious/configdb.h>
 
 #include "../../../config.h"
 #include "ladspa.h"

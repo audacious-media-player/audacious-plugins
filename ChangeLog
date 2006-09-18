@@ -1,3 +1,17 @@
+2006-09-18 09:28:00 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [12]
+  - only check for -lossaudio if have_oss is true (otherwise libESD is broken on many platforms)
+  - make ESD build
+  
+
+  Changes:        Modified:
+  +2 -0           trunk/configure.ac  
+  +1 -1           trunk/src/Output/esd/about.c  
+  +0 -2           trunk/src/Output/esd/audio.c  
+  +1 -1           trunk/src/Output/esd/configure.c  
+  +1 -1           trunk/src/Output/esd/init.c  
+
+
 2006-09-18 09:22:03 +0000  William Pitcock <nenolod@nenolod.net>
   revision [10]
   - SDK pathchange fixes
