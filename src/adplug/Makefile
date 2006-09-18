@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 SUBDIRS = core
 OBJECTIVE_LIBS = libadplug$(SHARED_SUFFIX)
@@ -13,8 +13,8 @@ SOURCES = adplug-xmms.cc
 OBJECTS = ${SOURCES:.cc=.o}
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BINIO_CFLAGS) \
-	-I../../../intl -I../../.. -I./core
+	-I../../intl -I../.. -I./core
 CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BINIO_CFLAGS) \
-	-I../../../intl -I../../.. -I./core
+	-I../../intl -I../.. -I./core
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

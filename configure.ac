@@ -1053,33 +1053,16 @@ AC_SUBST(VISUALIZATION_PLUGINS)
 AC_SUBST(CONTAINER_PLUGINS)
 
 AC_CONFIG_FILES([
-	src/OSS/Makefile
-	src/esd/Makefile
-	src/alsa/Makefile
-	src/jack/Makefile
-	src/arts/Makefile
 	src/arts/arts_helper/Makefile
-	src/disk_writer/Makefile
-	src/pulse_audio/Makefile
-	src/sun/Makefile
-	src/modplug/Makefile
 	src/modplug/archive/Makefile
 	src/modplug/gui/Makefile
-	src/flac/Makefile
 	src/flac/plugin_common/Makefile
-	src/timidity/Makefile
 	src/timidity/libtimidity/Makefile
 	src/timidity/src/Makefile
-	src/amidi-plug/Makefile
 	src/amidi-plug/pcfg/Makefile
 	src/amidi-plug/backend-alsa/Makefile
 	src/amidi-plug/backend-fluidsynth/Makefile
 	src/amidi-plug/backend-dummy/Makefile
-	src/blur_scope/Makefile
-	src/rocklight/Makefile
-	src/song_change/Makefile
-	src/lirc/Makefile
-	src/scrobbler/Makefile
 	mk/rules.mk
 ])
 

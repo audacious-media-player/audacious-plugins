@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libsong_change$(SHARED_SUFFIX)
 
@@ -11,6 +11,6 @@ SOURCES = song_change.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(BEEP_DEFINES) $(GTK_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(BEEP_DEFINES) $(GTK_CFLAGS) -I../../intl -I../..
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

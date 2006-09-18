@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libOSS$(SHARED_SUFFIX)
 
@@ -12,6 +12,6 @@ SOURCES = OSS.c mixer.c about.c configure.c audio.c init.c convert.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

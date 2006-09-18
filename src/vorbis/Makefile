@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libvorbis$(SHARED_SUFFIX)
 
@@ -11,6 +11,6 @@ OBJECTS = ${SOURCES:.c=.o}
 
 LIBADD = $(OGG_VORBIS_LIBS)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../.. -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -I../..
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

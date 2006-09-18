@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 SUBDIRS = plugin_common
 
@@ -34,6 +34,6 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../.. $(LIBFLAC_CFLAGS)
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. $(LIBFLAC_CFLAGS)
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

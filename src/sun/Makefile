@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 sunsources =	sun.c	    \
 		audio.c	    \
@@ -11,9 +11,9 @@ sunsources =	sun.c	    \
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 OBJECTIVE_LIBS = libsun$(SHARED_SUFFIX)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
 LIBADD = $(GTK_LIBS)
 SOURCES= $(sunsources)
 OBJECTS= ${SOURCES:.c=.o}
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

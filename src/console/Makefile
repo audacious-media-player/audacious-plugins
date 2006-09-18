@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libconsole$(SHARED_SUFFIX)
 
@@ -44,6 +44,6 @@ SOURCES = \
 OBJECTS = ${SOURCES:.cxx=.o}
 
 LIBADD += -lz $(GTK_LIBS) -lstdc++
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../../intl -I../../..
+CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

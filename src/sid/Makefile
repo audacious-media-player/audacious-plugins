@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libsid$(SHARED_SUFFIX)
 
@@ -9,8 +9,8 @@ OBJECTIVE_LIBS = libsid$(SHARED_SUFFIX)
 EXTRA_DIST = xmms-sid-logo.xpm
 
 # Generals
-CFLAGS   += $(PICFLAGS) -D_REENTRANT $(PLUGIN_CFLAGS) $(SIDPLAY1_INCLUDES) $(SIDPLAY2_INCLUDES) $(BUILDERS_INCLUDES) $(GTK_CFLAGS) -I../../../intl -I../../..
-CXXFLAGS  += $(PICFLAGS) -D_REENTRANT $(PLUGIN_CFLAGS) $(SIDPLAY1_INCLUDES) $(SIDPLAY2_INCLUDES) $(BUILDERS_INCLUDES) $(GTK_CFLAGS) -I../../../intl -I../../..
+CFLAGS   += $(PICFLAGS) -D_REENTRANT $(PLUGIN_CFLAGS) $(SIDPLAY1_INCLUDES) $(SIDPLAY2_INCLUDES) $(BUILDERS_INCLUDES) $(GTK_CFLAGS) -I../../intl -I../..
+CXXFLAGS  += $(PICFLAGS) -D_REENTRANT $(PLUGIN_CFLAGS) $(SIDPLAY1_INCLUDES) $(SIDPLAY2_INCLUDES) $(BUILDERS_INCLUDES) $(GTK_CFLAGS) -I../../intl -I../..
 
 # Generated libraries
 
@@ -39,4 +39,4 @@ SOURCES =	\
 OBJECTS1 = ${SOURCES:.c=.o}
 OBJECTS = ${OBJECTS1:.cc=.o}
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

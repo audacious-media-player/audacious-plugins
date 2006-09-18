@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../..les.mk
+include ../..it.mk
 
 OBJECTIVE_LIBS = libcoreaudio$(SHARED_SUFFIX)
 
@@ -12,6 +12,6 @@ SOURCES = coreaudio.c mixer.c about.c configure.c audio.c init.c convert.c dbcon
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../..tl -I../..
 
-include ../../../mk/objective.mk
+include ../..jective.mk

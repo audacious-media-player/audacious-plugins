@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libladspa$(SHARED_SUFFIX)
 
@@ -9,8 +9,8 @@ LIBADD = $(GTK_LIBS)
 
 SOURCES = ladspa.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

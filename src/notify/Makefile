@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libnotify$(SHARED_SUFFIX)
 
@@ -9,10 +9,10 @@ SOURCES = notify.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(LIBNOTIFY_CFLAGS) $(ARCH_DEFINES) -I../../../intl -I../../.. -DDATA_DIR=\"$(datadir)\"
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(LIBNOTIFY_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../.. -DDATA_DIR=\"$(datadir)\"
 
 CXXFLAGS = $(CFLAGS)
 
 LIBADD = $(GTK_LIBS) $(LIBNOTIFY_LIBS)
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libwma$(SHARED_SUFFIX)
 
@@ -13,6 +13,6 @@ SOURCES = wma.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../.. -I./libffwma -std=c99
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -I./libffwma -std=c99
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

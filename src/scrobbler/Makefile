@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 SUBDIRS = 
 
@@ -23,8 +23,8 @@ SOURCES = 			\
 	scrobbler.c		\
 	xmms_scrobbler.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

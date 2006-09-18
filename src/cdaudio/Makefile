@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libcdaudio$(SHARED_SUFFIX)
 
@@ -9,6 +9,6 @@ SOURCES = cdaudio.c cddb.c cdinfo.c configure.c http.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) @GTK_CFLAGS@ -I../../../intl -I../../.. -I../..
+CFLAGS += $(PICFLAGS) @GTK_CFLAGS@ -I../../intl -I../.. -I../..
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

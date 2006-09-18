@@ -1,3 +1,17 @@
+2006-09-18 10:34:48 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [32]
+  - and some more of that wonderful Makefile.in -> Makefile reduction
+  
+
+  Changes:        Modified:
+  +16 -5          trunk/configure.ac  
+  +16 -16         trunk/src/audiocompress/Makefile.in  
+  +42 -16         trunk/src/ladspa/Makefile.in  
+  +16 -42         trunk/src/sid/Makefile.in  
+  +16 -16         trunk/src/stereo_plugin/Makefile.in  
+  +0 -16          trunk/src/voice_removal/Makefile.in  
+
+
 2006-09-18 10:31:09 +0000  William Pitcock <nenolod@nenolod.net>
   revision [30]
   - more Makefile reduction

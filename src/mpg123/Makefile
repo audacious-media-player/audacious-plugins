@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libmpg123$(SHARED_SUFFIX)
 
@@ -13,9 +13,9 @@ SOURCES = mpg123.c configure.c fileinfo.c common.c \
 
 OBJECTS = ${SOURCES:.c=.o} tag_c_hacked.o
 
-CFLAGS   += -UPSYCHO $(PICFLAGS) $(GTK_CFLAGS) $(TAGLIB_CFLAGS) $(ARCH_DEFINES) $(LIBNMS_CFLAGS) -I../../../intl -I../../..
-CXXFLAGS += -UPSYCHO $(PICFLAGS) $(GTK_CFLAGS) $(TAGLIB_CFLAGS) $(ARCH_DEFINES) -I../../../intl -I../../..
+CFLAGS   += -UPSYCHO $(PICFLAGS) $(GTK_CFLAGS) $(TAGLIB_CFLAGS) $(ARCH_DEFINES) $(LIBNMS_CFLAGS) -I../../intl -I../..
+CXXFLAGS += -UPSYCHO $(PICFLAGS) $(GTK_CFLAGS) $(TAGLIB_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
 LIBADD = -ltag_c $(GTK_LIBS) $(TAGLIB_LIBS) $(LIBNMS_LIBS)
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

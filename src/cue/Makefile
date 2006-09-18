@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libcuesheet$(SHARED_SUFFIX)
 
@@ -9,10 +9,10 @@ SOURCES = cuesheet.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
 CXXFLAGS = $(CFLAGS)
 
 LIBADD = $(GTK_LIBS)
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

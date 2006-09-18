@@ -1,8 +1,8 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libamidi-plug$(SHARED_SUFFIX)
-SUBDIRS = pcfg @AMIDIPLUG_BACKENDS@
+SUBDIRS = pcfg 
 
 noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
                  i_configure.h i_configure_private.h \
@@ -23,6 +23,6 @@ SOURCES = amidi-plug.c i_midi.c i_backend.c \
 OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GMODULE_CFLAGS) -DAMIDIPLUGBACKENDDIR=\"$(AMIDIPLUGBACKENDDIR)\" \
-          -I../../../intl -I../../..
+          -I../../intl -I../..
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

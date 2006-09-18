@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libdisk_writer$(SHARED_SUFFIX)
 
@@ -10,6 +10,6 @@ SOURCES = disk_writer.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

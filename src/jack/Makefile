@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 SOURCES = jack.c configure.c bio2jack.c
 
@@ -7,9 +7,9 @@ OBJECTIVE_LIBS = libjackout$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -Wall $(SAMPLERATE_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -Wall $(SAMPLERATE_CFLAGS) -I../../intl -I../..
 LIBADD = $(GTK_LIBS) $(JACK_LIBS) $(SAMPLERATE_LIBS) -lpthread
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

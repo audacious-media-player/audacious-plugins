@@ -1,5 +1,5 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
 SUBDIRS = arts_helper
 
@@ -9,9 +9,9 @@ OBJECTIVE_LIBS = libarts$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -Wall $(ARTSC_CFLAGS) -I../../../intl -I../../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -Wall $(ARTSC_CFLAGS) -I../../intl -I../..
 LIBADD = $(GTK_LIBS) $(ARTSC_LIBS) -lpthread
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk

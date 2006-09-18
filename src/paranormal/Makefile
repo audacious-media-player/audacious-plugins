@@ -1,7 +1,7 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
-CFLAGS += $(PICFLAGS) -Ipn/ -I../../.. $(ARCH_DEFINES) $(GTK_CFLAGS) $(SDL_CFLAGS) $(XML_CFLAGS) $(XML_CPPFLAGS)
+CFLAGS += $(PICFLAGS) -Ipn/ -I../.. $(ARCH_DEFINES) $(GTK_CFLAGS) $(SDL_CFLAGS) $(XML_CFLAGS) $(XML_CPPFLAGS)
 
 SUBDIRS = pn
 
@@ -15,4 +15,4 @@ SOURCES = client.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-include ../../../mk/objective.mk
+include ../../mk/objective.mk
