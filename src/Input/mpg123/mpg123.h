@@ -71,8 +71,8 @@ enum {
 #include <gtk/gtk.h>
 
 #include "audacious/plugin.h"
+#include "audacious/vfs.h"
 #include "dxhead.h"
-#include "xmms-id3.h"
 
 #define         SBLIMIT                 32
 #define         SCALE_BLOCK             12

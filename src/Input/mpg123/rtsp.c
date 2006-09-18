@@ -25,7 +25,7 @@
 
 #include <nemesi/rtp.h>
 #include <nemesi/rtsp.h>
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 
 #include "mpg123.h"
 

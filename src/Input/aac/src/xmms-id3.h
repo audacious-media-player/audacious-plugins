@@ -29,7 +29,7 @@
 #define ID3_H
 
 #include <glib.h>
-#include <libaudacious/vfs.h>
+#include <audacious/vfs.h>
 
 /*
  * Option flags to id3_open_*().

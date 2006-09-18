@@ -36,7 +36,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#include <libaudacious/util.h>
+#include <audacious/util.h>
 
 #include "mpg123.h"
 

@@ -21,7 +21,7 @@
 #include <audacious/plugin.h>
 #include <audacious/output.h>
 #include <audacious/playlist.h>
-#include <libaudacious/vfs.h>
+#include <audacious/vfs.h>
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000

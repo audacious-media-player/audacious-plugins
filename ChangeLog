@@ -1,3 +1,23 @@
+2006-09-18 09:02:50 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [8]
+  - the first pass missed some libaudacious references, this fixes them
+  
+
+  Changes:        Modified:
+  +2 -2           trunk/src/General/scrobbler/xmms_scrobbler.c  
+  +3 -3           trunk/src/Input/aac/src/libmp4.c  
+  +3 -3           trunk/src/Input/cdaudio/cdaudio.c  
+  +2 -2           trunk/src/Input/cdaudio/configure.c  
+  +4 -4           trunk/src/Input/flac/configure.c  
+  +3 -3           trunk/src/Input/mpg123/configure.c  
+  +2 -2           trunk/src/Input/vorbis/fileinfo.c  
+  +2 -2           trunk/src/Input/wav/wav-sndfile.c  
+  +2 -2           trunk/src/Input/wav/wav.c  
+  +2 -2           trunk/src/Output/OSS/configure.c  
+  +2 -2           trunk/src/Output/alsa/alsa.h  
+  +2 -2           trunk/src/Output/esd/mixer.c  
+
+
 2006-09-18 08:35:25 +0000  William Pitcock <nenolod@nenolod.net>
   revision [6]
   - move from (internal) libaudacious/ include path to audacious/ include path

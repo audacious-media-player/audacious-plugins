@@ -869,22 +869,8 @@ fi
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
 
-if test -n "$GCC"
-then
-    CFLAGS="$CFLAGS -Wall -Wno-unused-parameter -Wpointer-arith -finline-functions -ffast-math"
-    case "$CFLAGS" in
-        -g*) ;;
-        *\ -g*) ;;
-        *) CFLAGS="$CFLAGS -fomit-frame-pointer" ;;
-    esac
-    case "$host" in
-        *-*-freebsd*)
-        ;;
-        *)
-        CFLAGS="$CFLAGS -funroll-all-loops"
-        ;;
-    esac
-fi
+CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
+LDFLAGS="$LDFLAGS $AUDACIOUS_LIBS"
 
 AC_MSG_CHECKING(if __ELF__ is defined)
 AC_EGREP_CPP(yes,

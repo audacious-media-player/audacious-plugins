@@ -26,7 +26,7 @@
 
 #include <sys/types.h>
 
-#include <libaudacious/vfs.h>
+#include <audacious/vfs.h>
 #include "audacious/plugin.h"
 
 #define	WAVE_FORMAT_UNKNOWN		(0x0000)
