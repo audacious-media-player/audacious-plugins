@@ -1,3 +1,11 @@
+2006-09-18 15:54:41 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [70]
+  Let us not go crazy with the ../ there, your includes are not *that* far away, hmmkay?
+
+  Changes:        Modified:
+  +3 -3           trunk/src/adplug/core/Makefile  
+
+
 2006-09-18 15:47:33 +0000  Jonathan Schleifer <js@h3c.de>
   revision [68]
   #include "audacious/util.h"? WTF? Fixed.

@@ -1,4 +1,4 @@
-#include "../../../config.h"
+#include "../../config.h"
 
 #ifndef __SCROBBLER_CONFIG_H__
 #define __SCROBBLER_CONFIG_H__
