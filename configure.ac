@@ -123,23 +123,6 @@ fi
 AC_SUBST(TAGLIB_CFLAGS)
 AC_SUBST(TAGLIB_LIBS)
 
-# Check if socklen_t is defined
-
-AC_CACHE_CHECK(for socklen_t, beep_cv_type_socklen_t,
-    [AC_TRY_COMPILE(
-         [#include <sys/types.h>
-          #include <sys/socket.h>],
-         [socklen_t s;],
-         [beep_cv_type_socklen_t=yes],
-         [beep_cv_type_socklen_t=no]
-     )
-    ]
-)
-
-if test "$beep_cv_type_socklen_t" = "no"; then
-    AC_DEFINE(socklen_t, int, [Define to int if the socklen_t type is missing])
-fi
-
 dnl IPv6 support
 dnl ========================
 AC_ARG_ENABLE(ipv6,
