@@ -429,26 +429,10 @@ void osx_flush(gint time)
 
 void osx_pause(short p)
 {
-	//printf("osx_pause(): %d\n",p);
-
 	if (p == TRUE)
-	{
-		if (AudioDeviceStop(device_id, play_callback))
-		{
-			//printf("failed to stop audio device.\n");
-		}
-
-		//printf("PAUSED!\n");
-	}
+		AudioDeviceStop(device_id, play_callback);
 	else
-	{
-		if (AudioDeviceStart(device_id, play_callback))
-		{
-			//printf("failed to start audio device.\n");
-		}
-
-		//printf("UNPAUSED!\n");
-	}
+		AudioDeviceStart(device_id, play_callback);
 
 	paused = p;
 }

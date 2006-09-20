@@ -1,3 +1,12 @@
+2006-09-20 07:48:59 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [82]
+  - release the audio buffer used by HAL when we close the device.
+  
+
+  Changes:        Modified:
+  +3 -1           trunk/src/CoreAudio/audio.c  
+
+
 2006-09-20 01:26:42 +0000  Giacomo Lozito <james@develia.org>
   revision [80]
   - fixed some issues for amidiplug compilation after migraton in audacious-plugins (backends were not compiled and amidiplug was uselessly installed twice on make install)
