@@ -1,3 +1,13 @@
+2006-09-20 01:26:42 +0000  Giacomo Lozito <james@develia.org>
+  revision [80]
+  - fixed some issues for amidiplug compilation after migraton in audacious-plugins (backends were not compiled and amidiplug was uselessly installed twice on make install)
+
+  Changes:        Modified:
+  +1 -5           trunk/configure.ac  
+  +1 -0           trunk/mk/rules.mk.in  
+  +1 -1           trunk/src/amidi-plug/Makefile  
+
+
 2006-09-19 14:53:54 +0000  Jonathan Schleifer <js@h3c.de>
   revision [78]
   Removed the check for socklen_t. This fixes building on NetBSD.

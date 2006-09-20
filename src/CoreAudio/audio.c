@@ -409,8 +409,10 @@ void osx_close(void)
 	g_free(device_name);
 
 	//printf("osx_close(): playing_flag is now %d\n",playing_flag);
-}
 
+	/* Free audio buffer */
+	g_free(buffer);
+}
 
 void osx_flush(gint time)
 {
