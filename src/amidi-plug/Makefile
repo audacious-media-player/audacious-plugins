@@ -2,7 +2,7 @@ include ../../mk/rules.mk
 include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libamidi-plug$(SHARED_SUFFIX)
-SUBDIRS = pcfg 
+SUBDIRS = pcfg $(AMIDIPLUG_BACKENDS)
 
 noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
                  i_configure.h i_configure_private.h \

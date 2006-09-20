@@ -1,3 +1,15 @@
+2006-09-19 14:53:54 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [78]
+  Removed the check for socklen_t. This fixes building on NetBSD.
+  curl defined socklen_t anyway, so no need for this.
+  This *MIGHT* break something on some systems (I haven't found one yet,
+  though), so PLEASE report all bugs to me.
+  
+
+  Changes:        Modified:
+  +0 -17          trunk/configure.ac  
+
+
 2006-09-18 20:43:46 +0000  William Pitcock <nenolod@nenolod.net>
   revision [76]
   - version bump to 1.2.1

@@ -728,7 +728,7 @@ if test "x$enable_amidiplug" = "xyes"; then
   INPUT_PLUGINS="$INPUT_PLUGINS amidi-plug"
   PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.6.0],,)
   PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= 2.6.0],,)
-  AMIDIPLUGBACKENDDIR=${libdir}/amidi-plug/backends
+  AMIDIPLUGBACKENDDIR=${libdir}/amidi-plug/audacious
   AC_SUBST(AMIDIPLUGBACKENDDIR)
   if test "x$enable_amidiplug_alsa" = "xauto" -o "x$enable_amidiplug_alsa" = "xyes"; then
     if test "x$alsalib_available" = "xcheck"; then
@@ -769,10 +769,6 @@ if test "x$enable_amidiplug" = "xyes"; then
     enable_amidiplug_dummy=yes
   fi
   AC_SUBST(AMIDIPLUG_BACKENDS)
-fi
-
-if test "x$enable_amidiplug" = "xyes"; then
-  INPUT_PLUGINS="$INPUT_PLUGINS amidi-plug"
 fi
 
 
