@@ -918,9 +918,6 @@ dnl *** Scrobbler ***
 
 scrobbler="yes"
 
-dnl Checks for libmusicbrainz
-PKG_CHECK_MODULES(MUSICBRAINZ, [libmusicbrainz >= 2.0.0], , [scrobbler="no"])
-
 dnl libcurl check
 
 my_cv_curl_vers=NONE
@@ -939,7 +936,6 @@ fi
 
 AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
-AC_SUBST(MUSICBRAINZ_LIBS)
 
 dnl *** End of Scrobbler checks ***
 

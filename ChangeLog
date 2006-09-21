@@ -1,3 +1,12 @@
+2006-09-21 05:20:52 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [88]
+  - configure option for chardet was missing.
+  
+
+  Changes:        Modified:
+  +12 -1          trunk/configure.ac  
+
+
 2006-09-20 15:25:46 +0000  Jonathan Schleifer <js@h3c.de>
   revision [86]
   Added some missing targets for the .a files
