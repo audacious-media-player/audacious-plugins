@@ -1,3 +1,12 @@
+2006-09-21 11:16:52 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [92]
+  - fix a $(BEEP_DEFINES) issue where -DDATA_DIR is wrong
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/configure.ac  
+
+
 2006-09-21 11:03:13 +0000  William Pitcock <nenolod@nenolod.net>
   revision [90]
   - drop libmusicbrainz requirement

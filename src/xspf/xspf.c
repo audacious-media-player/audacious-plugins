@@ -45,12 +45,16 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 
+#include "base64.h"
+
+#define TMP_BUF_LEN 128
+
 static void
 add_file(xmlNode *track, const gchar *filename, gint pos)
 {
 	xmlNode *nptr;
 	TitleInput *tuple;
-	gchar *locale_uri = NULL;
+	gchar *location = NULL, *b64filename = NULL, *locale_uri = NULL;
 
 	tuple = bmp_title_input_new();
 
@@ -58,16 +62,10 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 	for(nptr = track->children; nptr != NULL; nptr = nptr->next){
 		if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "location")){
 			xmlChar *str = xmlNodeGetContent(nptr);
-			locale_uri = g_locale_from_utf8(str,-1,NULL,NULL,NULL);
-			if(!locale_uri){
-				/* try ISO-8859-1 for last resort */
-				locale_uri = g_convert(str, -1, "ISO-8859-1", "UTF-8", NULL, NULL, NULL);
-			}
+			location = g_locale_from_utf8(str,-1,NULL,NULL,NULL);
+			if(!location)
+				location = g_strdup(str);
 			xmlFree(str);
-			if(locale_uri){
-				tuple->file_name = g_path_get_basename(locale_uri);
-				tuple->file_path = g_path_get_dirname(locale_uri);
-			}
 		}
 		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "creator")){
 			tuple->performer = (gchar *)xmlNodeGetContent(nptr);
@@ -88,11 +86,15 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 			tuple->track_number = atol(str);
 			xmlFree(str);
 		}
+		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "annotation")){
+			tuple->comment = (gchar *)xmlNodeGetContent(nptr);
+			continue;
+		}
 
 		//
 		// additional metadata
 		//
-		// year, date, genre, comment, file_ext, file_path, formatter
+		// year, date, genre, formatter, mtime, b64filename
 		//
 		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "meta")){
 			xmlChar *rel = NULL;
@@ -113,30 +115,26 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 				tuple->genre = (gchar *)xmlNodeGetContent(nptr);
 				continue;
 			}
-			else if(!xmlStrcmp(rel, "comment")){
-				tuple->comment = (gchar *)xmlNodeGetContent(nptr);
-				continue;
-			}
-			else if(!xmlStrcmp(rel, "file_ext")){
-				tuple->file_ext = (gchar *)xmlNodeGetContent(nptr);
-				continue;
-			}
-			else if(!xmlStrcmp(rel, "file_path")){
-				tuple->file_path = (gchar *)xmlNodeGetContent(nptr);
-				continue;
-			}
 			else if(!xmlStrcmp(rel, "formatter")){
 				tuple->formatter = (gchar *)xmlNodeGetContent(nptr);
 				continue;
 			}
 			else if(!xmlStrcmp(rel, "mtime")){
-				xmlChar *str;
+				xmlChar *str = NULL;
 				str = xmlNodeGetContent(nptr);
 				tuple->mtime = (time_t)atoll(str);
-				if(str)
-					xmlFree(str);
+				xmlFree(str);
 				continue;
 			}
+			else if(!xmlStrcmp(rel, "b64filename")){
+				gchar *b64str = NULL;
+				b64str = (gchar *)xmlNodeGetContent(nptr);
+				b64filename = g_malloc0(strlen(b64str)*3/4+1);
+				from64tobits(b64filename, b64str);
+				g_free(b64str);
+				continue;
+			}
+
 			xmlFree(rel);
 			rel = NULL;
 		}
@@ -145,13 +143,20 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 	if (tuple->length == 0) {
 		tuple->length = -1;
 	}
-	// add file to playlist
-	playlist_load_ins_file_tuple(locale_uri, filename, pos, tuple);
-	pos++;
-	if(locale_uri) {
-		g_free(locale_uri);
-		locale_uri = NULL;
+
+	locale_uri = b64filename ? b64filename : location;
+
+	if(locale_uri){
+		tuple->file_name = g_path_get_basename(locale_uri);
+		tuple->file_path = g_path_get_dirname(locale_uri);
+		tuple->file_ext = g_strdup(strrchr(locale_uri, '.'));
+		// add file to playlist
+		playlist_load_ins_file_tuple(locale_uri, filename, pos, tuple);
+		pos++;
 	}
+
+	g_free(location); g_free(b64filename);
+	locale_uri = NULL; location = NULL; b64filename = NULL;
 }
 
 static void
@@ -223,6 +228,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
 		xmlNodePtr track, location;
 		gchar *utf_filename = NULL;
+		gboolean use_base64 = FALSE;
 
 		track = xmlNewNode(NULL, "track");
 		location = xmlNewNode(NULL, "location");
@@ -231,10 +237,10 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		utf_filename = g_locale_to_utf8(entry->filename, -1, NULL, NULL, NULL);
 
 		if (!utf_filename) {
+			use_base64 = TRUE; /* filename isn't straightforward. */
 			/* if above fails, try to guess */
 			utf_filename = str_to_utf8(entry->filename);
 		}
-
 		if(!g_utf8_validate(utf_filename, -1, NULL))
 			continue;
 		xmlAddChild(location, xmlNewText(utf_filename));
@@ -271,7 +277,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 			if (entry->tuple->length > 0)
 			{
 				gchar *str;
-				str = g_malloc(128); // XXX fix me.
+				str = g_malloc(TMP_BUF_LEN);
 				tmp = xmlNewNode(NULL, "duration");
 				sprintf(str, "%d", entry->tuple->length);
 				xmlAddChild(tmp, xmlNewText(str));
@@ -282,7 +288,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 			if (entry->tuple->track_number != 0)
 			{
 				gchar *str;
-				str = g_malloc(128); // XXX fix me.
+				str = g_malloc(TMP_BUF_LEN);
 				tmp = xmlNewNode(NULL, "trackNum");
 				sprintf(str, "%d", entry->tuple->track_number);
 				xmlAddChild(tmp, xmlNewText(str));
@@ -290,15 +296,23 @@ playlist_save_xspf(const gchar *filename, gint pos)
 				xmlAddChild(track, tmp);
 			}
 
+			if (entry->tuple->comment != NULL &&
+			    g_utf8_validate(entry->tuple->comment, -1, NULL))
+			{
+				tmp = xmlNewNode(NULL, "annotation");
+				xmlAddChild(tmp, xmlNewText(entry->tuple->comment));
+				xmlAddChild(track, tmp);
+			}
+
 			//
 			// additional metadata
 			//
-			// year, date, genre, comment, file_ext, file_path, formatter
+			// year, date, genre, formatter, mtime
 			//
 			if (entry->tuple->year != 0)
 			{
 				gchar *str;
-				str = g_malloc(128); // XXX fix me.
+				str = g_malloc(TMP_BUF_LEN);
 				tmp = xmlNewNode(NULL, "meta");
 				xmlSetProp(tmp, "rel", "year");
 				sprintf(str, "%d", entry->tuple->year);
@@ -325,33 +339,6 @@ playlist_save_xspf(const gchar *filename, gint pos)
 				xmlAddChild(track, tmp);
 			}
 
-			if (entry->tuple->comment != NULL &&
-			    g_utf8_validate(entry->tuple->comment, -1, NULL))
-			{
-				tmp = xmlNewNode(NULL, "meta");
-				xmlSetProp(tmp, "rel", "comment");
-				xmlAddChild(tmp, xmlNewText(entry->tuple->comment));
-				xmlAddChild(track, tmp);
-			}
-
-			if (entry->tuple->file_ext != NULL &&
-			    g_utf8_validate(entry->tuple->file_ext, -1, NULL))
-			{
-				tmp = xmlNewNode(NULL, "meta");
-				xmlSetProp(tmp, "rel", "file_ext");
-				xmlAddChild(tmp, xmlNewText(entry->tuple->file_ext));
-				xmlAddChild(track, tmp);
-			}
-
-			if (entry->tuple->file_path != NULL &&
-			    g_utf8_validate(entry->tuple->file_path, -1, NULL))
-			{
-				tmp = xmlNewNode(NULL, "meta");
-				xmlSetProp(tmp, "rel", "file_path");
-				xmlAddChild(tmp, xmlNewText(entry->tuple->file_path));
-				xmlAddChild(track, tmp);
-			}
-
 			if (entry->tuple->formatter != NULL &&
 			    g_utf8_validate(entry->tuple->formatter, -1, NULL))
 			{
@@ -363,20 +350,32 @@ playlist_save_xspf(const gchar *filename, gint pos)
 
 			if (entry->tuple->mtime) {
 				gchar *str;
-				str = g_malloc(128); // XXX fix me.
+				str = g_malloc(TMP_BUF_LEN);
 				tmp = xmlNewNode(NULL, "meta");
 				xmlSetProp(tmp, "rel", "mtime");
 				sprintf(str, "%ld", (long) entry->tuple->mtime);
 				xmlAddChild(tmp, xmlNewText(str));
 				xmlAddChild(track, tmp);
 				g_free(str);
-			}				
+			}
 
 		}
-		if(utf_filename) {
-			g_free(utf_filename);
-			utf_filename = NULL;
+
+		if (use_base64 && entry->filename) {
+			gchar *b64str = NULL;
+			b64str = g_malloc0(strlen(entry->filename)*2);
+			to64frombits(b64str, entry->filename, strlen(entry->filename));
+			tmp = xmlNewNode(NULL, "meta");
+			xmlSetProp(tmp, "rel", "b64filename");
+			xmlAddChild(tmp, xmlNewText(b64str));
+			xmlAddChild(track, tmp);
+			g_free(b64str);
+			use_base64 = FALSE;
 		}
+
+		g_free(utf_filename);
+		utf_filename = NULL;
+
 	}
 
 	xmlSaveFormatFile(filename, doc, 1);
