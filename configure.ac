@@ -134,6 +134,17 @@ fi
 AM_CONDITIONAL(USE_IPV6,test "x$enable_ipv6" = xyes)
 AC_SUBST(USE_IPV6)
 
+dnl chardet support
+dnl ========================
+AC_ARG_ENABLE(chardet,
+	[  --enable-chardet	  enable character set detection support (default=no)],
+			enable_chardet=$enableval, enable_chardet=no)
+if test "x$enable_chardet" = xyes; then
+    AC_DEFINE(USE_CHARDET, 1, [Define if character set detection enabled] )
+fi
+AM_CONDITIONAL(USE_CHARDET,test "x$enable_chardet" = xyes)
+AC_SUBST(USE_CHARDET)
+
 dnl plugin stuff
 dnl ========================
 
@@ -1097,7 +1108,7 @@ echo "  Blur Scope:                             yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
 echo
 echo "  Container"
-echo "  -------------"
+echo "  ---------"
 echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    $have_xspf"

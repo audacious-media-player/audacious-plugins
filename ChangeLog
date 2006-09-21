@@ -1,3 +1,13 @@
+2006-09-20 15:25:46 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [86]
+  Added some missing targets for the .a files
+  
+
+  Changes:        Modified:
+  +3 -0           trunk/src/modplug/archive/Makefile  
+  +3 -0           trunk/src/modplug/gui/Makefile  
+
+
 2006-09-20 07:51:18 +0000  William Pitcock <nenolod@nenolod.net>
   revision [84]
   - cleanups
