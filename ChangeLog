@@ -1,3 +1,12 @@
+2006-09-21 11:03:13 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [90]
+  - drop libmusicbrainz requirement
+  
+
+  Changes:        Modified:
+  +0 -4           trunk/configure.ac  
+
+
 2006-09-21 05:20:52 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [88]
   - configure option for chardet was missing.
