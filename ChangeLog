@@ -1,3 +1,17 @@
+2006-09-21 14:08:55 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [94]
+  - redundant metadata has been removed.
+  - weird filename will be handled in base64 encoding.
+  - "comment" is replaced with "annotation".
+  
+
+  Changes:        Modified:
+  +1 -1           trunk/src/xspf/Makefile  
+  +114 -0         trunk/src/xspf/base64.c  
+  +28 -0          trunk/src/xspf/base64.h  
+  +68 -69         trunk/src/xspf/xspf.c  
+
+
 2006-09-21 11:16:52 +0000  William Pitcock <nenolod@nenolod.net>
   revision [92]
   - fix a $(BEEP_DEFINES) issue where -DDATA_DIR is wrong
