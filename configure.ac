@@ -495,8 +495,8 @@ fi
 
 dnl *** jack output plugin
 AC_ARG_ENABLE( jack,
-[  --disable-jack          disable jack output plugin (default=enabled)],,
-                enable_jack="yes")
+[  --disable-jack          disable jack output plugin (default=enabled)], [enable_jack=$enableval],
+                [enable_jack="yes"])
 
 if test "x$enable_jack" = xyes; then
         AM_PATH_JACK(have_jack=yes, have_jack=no)

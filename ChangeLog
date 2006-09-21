@@ -1,3 +1,11 @@
+2006-09-21 20:50:27 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [98]
+  Sync with upstream. Buffer overflow fix.
+
+  Changes:        Modified:
+  +2 -2           trunk/src/adplug/core/rol.cxx  
+
+
 2006-09-21 15:12:16 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [96]
   - remove musicbrainz stuff from rules.mk.in
