@@ -2,6 +2,7 @@
  * cuesheet.c: Support cuesheets as a media container.
  *
  * Copyright (C) 2006 William Pitcock <nenolod -at- nenolod.net>.
+ *                    Jonathan Schleifer <js@h3c.de> (only small fixes)
  *
  * This file was hacked out of of xmms-cueinfo,
  * Copyright (C) 2003  Oskar Liljeblad
@@ -256,7 +257,7 @@ static void play_cue_uri(gchar *uri)
 		real_ip->set_info = set_info_override;
 		real_ip->output = cue_ip.output;
 		real_ip->play_file(cue_file);
-		real_ip->seek(finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000);
+		real_ip->seek(finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
 	}
 
 	finetune_seek = 0;

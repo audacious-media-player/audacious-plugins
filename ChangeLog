@@ -1,3 +1,10 @@
+2006-09-22 21:18:37 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [102]
+  Fixed a crash in the cue plugin when no plugin is found / the file doesn't exist
+  trunk/src/cue/cuesheet.c |    8 +++++---
+  1 file changed, 5 insertions(+), 3 deletions(-)
+
+
 2006-09-21 21:14:05 +0000  William Pitcock <nenolod@nenolod.net>
   revision [100]
   - allow jack to be forcefully disabled
