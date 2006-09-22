@@ -1,3 +1,12 @@
+2006-09-21 21:14:05 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [100]
+  - allow jack to be forcefully disabled
+  
+
+  Changes:        Modified:
+  +2 -2           trunk/configure.ac  
+
+
 2006-09-21 20:50:27 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [98]
   Sync with upstream. Buffer overflow fix.
