@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2004 Chris Morgan <cmorgan@alum.wpi.edu>
+ * Copyright 2003-2006 Chris Morgan <cmorgan@alum.wpi.edu>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,7 +56,7 @@
 
 #define ENABLE_WARNINGS         0
 
-#define DEFAULT_RB_SIZE         16384
+#define DEFAULT_RB_SIZE         4096
 
 #define OUTFILE stderr
 
@@ -299,6 +299,34 @@ getDriver(int deviceID)
   return drv;
 }
 
+#if TRACE_getReleaseDevice
+#define tryGetDriver(x) _tryGetDriver(x,fprintf(OUTFILE, "%s::%s(%d) trying to get driver %d\n", __FILE__, __FUNCTION__, __LINE__,x)); TRACE("got driver %d\n",x);
+jack_driver_t *
+_tryGetDriver(int deviceID, int ignored)
+{
+  fflush(OUTFILE);
+#else
+jack_driver_t *
+tryGetDriver(int deviceID)
+{
+#endif
+  jack_driver_t *drv = &outDev[deviceID];
+
+  int err;
+  if((err = pthread_mutex_trylock(&drv->mutex)) == 0)
+    return drv;
+
+  if(err == EBUSY)
+  {
+    TRACE("driver %d is busy\n",deviceID);
+    return 0;
+  }
+
+  ERR("lock returned an error\n");
+  return 0;
+}
+
+
 /* release a device's mutex */
 /* */
 /* This macro is similar to the one for getDriver above, only simpler since we only
@@ -343,7 +371,7 @@ DEBUGSTATE(enum status_enum state)
 
 
 #define SAMPLE_MAX_16BIT  32767.0f
-#define SAMPLE_MAX_8BIT   127.0f
+#define SAMPLE_MAX_8BIT   255.0f
 
 /* floating point volume routine */
 /* volume should be a value between 0.0 and 1.0 */
@@ -413,7 +441,7 @@ sample_move_float_short(short *dst, sample_t * src, unsigned long nsamples)
 
 /* convert from 8 bit to floating point */
 static inline void
-sample_move_char_float(sample_t * dst, char *src, unsigned long nsamples)
+sample_move_char_float(sample_t * dst, unsigned char *src, unsigned long nsamples)
 {
   /* ALERT: signed sign-extension portability !!! */
   unsigned long i;
@@ -423,7 +451,7 @@ sample_move_char_float(sample_t * dst, char *src, unsigned long nsamples)
 
 /* convert from floating point to 8 bit */
 static inline void
-sample_move_float_char(char *dst, sample_t * src, unsigned long nsamples)
+sample_move_float_char(unsigned char *dst, sample_t * src, unsigned long nsamples)
 {
   /* ALERT: signed sign-extension portability !!! */
   unsigned long i;
@@ -527,13 +555,13 @@ JACK_callback(nframes_t nframes, void *arg)
 #endif
 
       /* make sure our buffer is large enough for the data we are writing */
-      /* ie. callback_buffer1_size < (bytes we already wrote + bytes we are going to write in this loop) */
+      /* ie. callback_buffer2_size < (bytes we already wrote + bytes we are going to write in this loop) */
       if(!ensure_buffer_size
-         (&drv->callback_buffer1, &drv->callback_buffer1_size,
+         (&drv->callback_buffer2, &drv->callback_buffer2_size,
           jackBytesAvailable))
       {
-        ERR("allocated %lu bytes, need %u bytes\n",
-            drv->callback_buffer1_size, jackBytesAvailable);
+        ERR("allocated %lu bytes, need %lu bytes\n",
+            drv->callback_buffer2_size, (unsigned long)jackBytesAvailable);
         return -1;
       }
 
@@ -603,18 +631,6 @@ JACK_callback(nframes_t nframes, void *arg)
             jackFramesAvailable -= srcdata.output_frames_gen;   /* take away what was used */
           }
         }
-
-        if(src_error == 0)
-        {
-          /* demux the stream: we skip over the number of samples we have output channels as the channel data */
-          /* is encoded like chan1,chan2,chan3,chan1,chan2,chan3... */
-          for(i = 0; i < drv->num_output_channels; i++)
-          {
-            demux(out_buffer[i],
-                  (sample_t *) drv->callback_buffer2 + i,
-                  (nframes - jackFramesAvailable), drv->num_output_channels);
-          }
-        }
       }
       else                      /* no resampling needed or requested */
       {
@@ -623,19 +639,11 @@ JACK_callback(nframes_t nframes, void *arg)
         {
           /* write as many bytes as we have space remaining, or as much as we have data to write */
           numFramesToWrite = min(jackFramesAvailable, inputFramesAvailable);
-          jack_ringbuffer_read(drv->pPlayPtr, drv->callback_buffer1,
+          jack_ringbuffer_read(drv->pPlayPtr, drv->callback_buffer2,
                                jackBytesAvailable);
           /* add on what we wrote */
           read = numFramesToWrite * drv->bytes_per_output_frame;
           jackFramesAvailable -= numFramesToWrite;      /* take away what was written */
-        }
-        /* demux the stream: we skip over the number of samples we have output channels as the channel data */
-        /* is encoded like chan1,chan2,chan3,chan1,chan2,chan3... */
-        for(i = 0; i < drv->num_output_channels; i++)
-        {
-          demux(out_buffer[i],
-                (sample_t *) drv->callback_buffer1 + i,
-                (nframes - jackFramesAvailable), drv->num_output_channels);
         }
       }
 
@@ -653,6 +661,38 @@ JACK_callback(nframes_t nframes, void *arg)
           sample_silence_float(out_buffer[i] +
                                (nframes - jackFramesAvailable),
                                jackFramesAvailable);
+      }
+
+      /* if we aren't converting or we are converting and src_error == 0 then we should */
+      /* apply volume and demux */
+      if(!(drv->output_src && drv->output_sample_rate_ratio != 1.0) || (src_error == 0))
+      {
+          /* apply volume */
+          for(i = 0; i < drv->num_output_channels; i++)
+          {
+              if(drv->volumeEffectType == dbAttenuation)
+              {
+                  /* assume the volume setting is dB of attenuation, a volume of 0 */
+                  /* is 0dB attenuation */
+                  float volume = powf(10.0, -((float) drv->volume[i]) / 20.0);
+                  float_volume_effect((sample_t *) drv->callback_buffer2 + i,
+                                      (nframes - jackFramesAvailable), volume, drv->num_output_channels);
+              } else
+              {
+                  float_volume_effect((sample_t *) drv->callback_buffer2 + i, (nframes - jackFramesAvailable),
+                                      ((float) drv->volume[i] / 100.0),
+                                      drv->num_output_channels);
+              }
+          }
+
+          /* demux the stream: we skip over the number of samples we have output channels as the channel data */
+          /* is encoded like chan1,chan2,chan3,chan1,chan2,chan3... */
+          for(i = 0; i < drv->num_output_channels; i++)
+          {
+              demux(out_buffer[i],
+                    (sample_t *) drv->callback_buffer2 + i,
+                    (nframes - jackFramesAvailable), drv->num_output_channels);
+          }
       }
     }
 
@@ -721,19 +761,21 @@ JACK_callback(nframes_t nframes, void *arg)
             /* the ringbuffer is designed such that only one thread should ever access each pointer.
                since calling read_advance here will be touching the read pointer which is also accessed
                by JACK_Read, we need to lock the mutex first for safety */
-            getDriver(drv->deviceID);
-
-            /* double check the write space after we've gained the lock, just in case JACK_Read was being called
-               before we gained it */
-            write_space = jack_ringbuffer_write_space(drv->pRecPtr);
-            if(write_space < bytes_used)
+            jack_driver_t *d = tryGetDriver(drv->deviceID);
+            if( d )
             {
-              /* hey, we warn about underruns, we might as well warn about overruns as well */
-              WARN("buffer overrun of %ld bytes\n", jack_bytes - write_space);
-              jack_ringbuffer_read_advance(drv->pRecPtr,
-                                           bytes_used - write_space);
+              /* double check the write space after we've gained the lock, just
+                 in case JACK_Read was being called before we gained it */
+              write_space = jack_ringbuffer_write_space(drv->pRecPtr);
+              if(write_space < bytes_used)
+              {
+                /* hey, we warn about underruns, we might as well warn about overruns as well */
+                WARN("buffer overrun of %ld bytes\n", jack_bytes - write_space);
+                jack_ringbuffer_read_advance(drv->pRecPtr, bytes_used - write_space);
+              }
+
+              releaseDriver(drv);
             }
-            releaseDriver(drv);
           }
 
           jack_ringbuffer_write(drv->pRecPtr, drv->callback_buffer2,
@@ -750,18 +792,19 @@ JACK_callback(nframes_t nframes, void *arg)
           /* the ringbuffer is designed such that only one thread should ever access each pointer.
              since calling read_advance here will be touching the read pointer which is also accessed
              by JACK_Read, we need to lock the mutex first for safety */
-          getDriver(drv->deviceID);
-
-          /* double check the write space after we've gained the lock, just in case JACK_Read was being called
-             before we gained it */
-          write_space = jack_ringbuffer_write_space(drv->pRecPtr);
-          if(write_space < jack_bytes)
+	        jack_driver_t *d = tryGetDriver(drv->deviceID);
+          if( d )
           {
-            ERR("buffer overrun of %ld bytes\n", jack_bytes - write_space);
-            jack_ringbuffer_read_advance(drv->pRecPtr,
-                                         jack_bytes - write_space);
+            /* double check the write space after we've gained the lock, just
+               in case JACK_Read was being called before we gained it */
+            write_space = jack_ringbuffer_write_space(drv->pRecPtr);
+            if(write_space < jack_bytes)
+            {
+             ERR("buffer overrun of %ld bytes\n", jack_bytes - write_space);
+             jack_ringbuffer_read_advance(drv->pRecPtr, jack_bytes - write_space);
+            }
+	          releaseDriver(drv);
           }
-          releaseDriver(drv);
         }
 
         jack_ringbuffer_write(drv->pRecPtr, drv->callback_buffer1,
@@ -1750,31 +1793,13 @@ JACK_Write(int deviceID, unsigned char *data, unsigned long bytes)
   switch (drv->bits_per_channel)
   {
   case 8:
-    sample_move_char_float((sample_t *) drv->rw_buffer1, (char *) data,
+    sample_move_char_float((sample_t *) drv->rw_buffer1, (unsigned char *) data,
                            frames * drv->num_output_channels);
+    break;
   case 16:
     sample_move_short_float((sample_t *) drv->rw_buffer1, (short *) data,
                             frames * drv->num_output_channels);
     break;
-  }
-
-  int i;
-  for(i = 0; i < drv->num_output_channels; i++)
-  {
-    /* apply volume to the floating value */
-    if(drv->volumeEffectType == dbAttenuation)
-    {
-      /* assume the volume setting is dB of attenuation, a volume of 0 */
-      /* is 0dB attenuation */
-      float volume = powf(10.0, -((float) drv->volume[i]) / 20.0);
-      float_volume_effect((sample_t *) drv->rw_buffer1 + i,
-                          frames, volume, drv->num_output_channels);
-    } else
-    {
-      float_volume_effect((sample_t *) drv->rw_buffer1 + i, frames,
-                          ((float) drv->volume[i] / 100.0),
-                          drv->num_output_channels);
-    }
   }
 
   DEBUG("ringbuffer read space = %d, write space = %d\n",
@@ -1878,7 +1903,7 @@ JACK_Read(int deviceID, unsigned char *data, unsigned long bytes)
   switch (drv->bits_per_channel)
   {
   case 8:
-    sample_move_float_char((char *) data, (sample_t *) drv->rw_buffer1,
+    sample_move_float_char((unsigned char *) data, (sample_t *) drv->rw_buffer1,
                            frames * drv->num_input_channels);
     break;
   case 16:

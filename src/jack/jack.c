@@ -1,7 +1,7 @@
 /*      xmms - jack output plugin
  *	Copyright 2002 Chris Morgan<cmorgan@alum.wpi.edu>
  *
- *      audacious port (2005) by Giacomo Lozito from develia.org
+ *      audacious port (2005-2006) by Giacomo Lozito from develia.org
  *
  *	This code maps xmms calls into the jack translation library
  */
@@ -69,6 +69,7 @@ static int isXmmsFrequencyAvailable = 0;
 static gboolean output_opened; /* true if we have a connection to jack */
 
 static GtkWidget *dialog, *button, *label;
+
 
 void jack_set_volume(int l, int r);
 
@@ -221,6 +222,7 @@ void jack_init(void)
   }
 
   bmp_cfg_db_close(cfgfile);
+
 
   TRACE("initializing\n");
   JACK_Init(); /* initialize the driver */
@@ -584,13 +586,13 @@ void jack_get_volume(int *l, int *r)
 
 void jack_about(void)
 {
-	static GtkWidget *aboutbox;
+	static GtkWidget *aboutbox = NULL;
 	
-	if (!aboutbox)
+	if ( aboutbox == NULL )
 	{
 		aboutbox = xmms_show_message(
-			_("About JACK Output Plugin 0.15"),
-			_("XMMS jack Driver 0.15\n\n"
+			_("About JACK Output Plugin 0.17"),
+			_("XMMS jack Driver 0.17\n\n"
 			  "xmms-jack.sf.net\nChris Morgan<cmorgan@alum.wpi.edu>\n\n"
 			  "Audacious port by\nGiacomo Lozito from develia.org"),
 			_("Ok"), FALSE, NULL, NULL);
@@ -611,7 +613,7 @@ OutputPlugin jack_op =
 {
 	NULL,
 	NULL,
-	"JACK Output Plugin 0.15",
+	"JACK Output Plugin 0.17",
 	jack_init,
 	jack_cleanup,
 	jack_about,

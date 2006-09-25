@@ -1,3 +1,10 @@
+2006-09-22 21:25:52 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [104]
+  Add +1 to the position so that the position isn't in two tracks anymore
+  trunk/src/cue/cuesheet.c |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2006-09-22 21:18:37 +0000  Jonathan Schleifer <js@h3c.de>
   revision [102]
   Fixed a crash in the cue plugin when no plugin is found / the file doesn't exist
