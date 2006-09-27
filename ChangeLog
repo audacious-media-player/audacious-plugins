@@ -1,3 +1,11 @@
+2006-09-25 18:23:54 +0000  Giacomo Lozito <james@develia.org>
+  revision [106]
+  - import latest xmms-jack version 0.17 (mostly bio2jack fixes)
+  trunk/src/jack/bio2jack.c |  169 ++++++++++++++++++++++++++--------------------
+  trunk/src/jack/jack.c     |   14 ++-
+  2 files changed, 105 insertions(+), 78 deletions(-)
+
+
 2006-09-22 21:25:52 +0000  Jonathan Schleifer <js@h3c.de>
   revision [104]
   Add +1 to the position so that the position isn't in two tracks anymore
