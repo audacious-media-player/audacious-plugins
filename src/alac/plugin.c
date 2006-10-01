@@ -88,11 +88,13 @@ gboolean is_our_file(char *filename)
 
 static void play_file(char *filename)
 {
+    going = 1;
     playback_thread = g_thread_create(decode_thread, filename, TRUE, NULL);
 }
 
 static void stop(void)
 {
+    going = 0;
     g_thread_join(playback_thread);
     output_close_audio();
 }
@@ -179,7 +181,7 @@ void GetBuffer(demux_res_t *demux_res)
 
     buffer = malloc(buffer_size);
 
-    for (i = 0; i < demux_res->num_sample_byte_sizes; i++)
+    for (i = 0; i < demux_res->num_sample_byte_sizes && going == 1; i++)
     {
         uint32_t sample_duration;
         uint32_t sample_byte_size;
@@ -238,8 +240,6 @@ gpointer decode_thread(void *args)
 
     alac_ip.output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
     alac_ip.set_info((char *) args, -1, -1, demux_res.sample_rate, demux_res.num_channels);
-
-    going = 1;
 
     /* will convert the entire buffer */
     GetBuffer(&demux_res);
