@@ -88,8 +88,6 @@ static int osx_calc_bitrate(int osx_fmt, int rate, int channels)
 		bitrate *= 2;
 	}
 
-	//printf("osx_calc_bitrate(): %d\n",bitrate);
-
 	return bitrate;
 }
 
@@ -136,8 +134,6 @@ static int osx_get_format(AFormat fmt)
 			format = fmt;
 			break;
 	}
-
-	printf("osx_get_format: in: %d, out: %d\n", fmt, format);
 
 	return format;
 }
@@ -194,8 +190,6 @@ static int osx_get_conv_format(AFormat fmt)
 			format = fmt;
 			break;
 	}
-
-	printf("osx_conv_get_format: in: %d, out: %d\n", fmt, format);
 
 	return format;
 }
