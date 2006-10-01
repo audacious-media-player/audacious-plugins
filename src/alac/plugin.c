@@ -32,9 +32,13 @@
 #include <errno.h>
 #include <string.h>
 
+#include <glib.h>
+#include <glib/gi18n.h>
+
 #include <audacious/plugin.h>
 #include <audacious/output.h>
 #include <audacious/vfs.h>
+#include <audacious/util.h>
 
 #include "demux.h"
 #include "decomp.h"
@@ -51,6 +55,23 @@ static GThread *playback_thread;
 static int going = 0;
 
 extern void set_endian();
+
+static void alac_about(void)
+{
+	static GtkWidget *aboutbox;
+    
+	if(aboutbox != NULL)
+		return;
+
+	aboutbox = xmms_show_message("About Apple Lossless Audio Plugin",
+				     "Copyright (c) 2006 Audacious team\n"
+				     "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>",
+				     _("Ok"), FALSE, NULL, NULL);
+
+	g_signal_connect(G_OBJECT(aboutbox), "destroy",
+			 G_CALLBACK(gtk_widget_destroyed),
+			 &aboutbox);
+}
 
 static void alac_init(void)
 {
@@ -117,7 +138,7 @@ InputPlugin alac_ip = {
     NULL,
     "Apple Lossless Plugin",                       /* Description */  
     alac_init,
-    NULL,
+    alac_about,
     NULL,
     is_our_file,
     NULL,
