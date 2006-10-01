@@ -229,6 +229,9 @@ void GetBuffer(demux_res_t *demux_res)
 
         produce_audio(alac_ip.output->written_time(), FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
     }
+
+    free(buffer);
+    free(pDestBuffer);
 }
 
 static void init_sound_converter(demux_res_t *demux_res)
