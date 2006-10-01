@@ -93,8 +93,37 @@ static int osx_calc_bitrate(int osx_fmt, int rate, int channels)
 	return bitrate;
 }
 
-
 static int osx_get_format(AFormat fmt)
+{
+	int format = 0;
+
+	switch (fmt)
+	{
+		case FMT_U16_NE:
+#ifdef WORDS_BIGENDIAN
+			format = FMT_U16_BE;
+#else
+			format = FMT_U16_LE;
+#endif
+			break;
+		case FMT_S16_NE:
+#ifdef WORDS_BIGENDIAN
+			format = FMT_S16_BE;
+#else
+			format = FMT_S16_LE;
+#endif
+			break;
+		default:
+			format = fmt;
+			break;
+	}
+
+	printf("in: %d, out: %d\n", fmt, format);
+
+	return format;
+}
+
+static int osx_get_conv_format(AFormat fmt)
 {
 	int format = 0;
 
@@ -146,6 +175,8 @@ static int osx_get_format(AFormat fmt)
 			format = fmt;
 			break;
 	}
+
+	printf("in: %d, out: %d\n", fmt, format);
 
 	return format;
 }
@@ -255,7 +286,10 @@ static void osx_setup_format(AFormat fmt, int rate, int nch)
 
 	osx_set_audio_params();
 
-        osx_convert_func = osx_get_convert_func(fmt, output.format.osx);
+        if (fmt != osx_get_conv_format(fmt))
+	        osx_convert_func = osx_get_convert_func(fmt, osx_get_conv_format(fmt));
+	else
+		osx_convert_func = NULL;
 
 	output.bps = osx_calc_bitrate(output.format.osx, output.frequency,output.channels);
 }
