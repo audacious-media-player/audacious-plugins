@@ -67,7 +67,6 @@ gboolean is_our_file(char *filename)
 
     if (!input_stream)
     {
-        fprintf(stderr, "failed to create input stream from file\n");
 	vfs_fclose(input_file);
         return FALSE;
     }
@@ -76,7 +75,6 @@ gboolean is_our_file(char *filename)
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
     {
-        fprintf(stderr, "failed to load the QuickTime movie headers\n");
         stream_destroy(input_stream);
 	vfs_fclose(input_file);
         return FALSE;
@@ -147,26 +145,19 @@ static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,
     unsigned int duration_cur_index = 0;
 
     if (samplenum >= demux_res->num_sample_byte_sizes)
-    {
-        fprintf(stderr, "sample %i does not exist\n", samplenum);
         return 0;
-    }
 
     if (!demux_res->num_time_to_samples)
-    {
-        fprintf(stderr, "no time to samples\n");
         return 0;
-    }
+
     while ((demux_res->time_to_sample[duration_cur_index].sample_count + duration_index_accum)
             <= samplenum)
     {
         duration_index_accum += demux_res->time_to_sample[duration_cur_index].sample_count;
         duration_cur_index++;
+
         if (duration_cur_index >= demux_res->num_time_to_samples)
-        {
-            fprintf(stderr, "sample %i does not have a duration\n", samplenum);
             return 0;
-        }
     }
 
     *sample_duration = demux_res->time_to_sample[duration_cur_index].sample_duration;
@@ -198,18 +189,10 @@ void GetBuffer(demux_res_t *demux_res)
         /* just get one sample for now */
         if (!get_sample_info(demux_res, i,
                              &sample_duration, &sample_byte_size))
-        {
-            fprintf(stderr, "sample failed\n");
             return;
-        }
 
         if (buffer_size < sample_byte_size)
-        {
-            fprintf(stderr, "sorry buffer too small! (is %i want %i)\n",
-                    buffer_size,
-                    sample_byte_size);
             return;
-        }
 
         stream_read(input_stream, sample_byte_size,
                     buffer);
@@ -243,18 +226,12 @@ gpointer decode_thread(void *args)
     input_stream = stream_create_file(input_file, 1);
 
     if (!input_stream)
-    {
-        fprintf(stderr, "failed to create input stream from file\n");
         return 0;
-    }
 
     /* if qtmovie_read returns successfully, the stream is up to
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
-    {
-        fprintf(stderr, "failed to load the QuickTime movie headers\n");
         return 0;
-    }
 
     /* initialise the sound converter */
     init_sound_converter(&demux_res);
