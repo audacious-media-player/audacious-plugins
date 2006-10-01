@@ -100,6 +100,34 @@ static int osx_get_format(AFormat fmt)
 
 	switch (fmt)
 	{
+		case FMT_U16_LE:
+#ifdef WORDS_BIGENDIAN
+			format = FMT_U16_BE;
+#else
+			format = FMT_U16_LE;
+#endif
+			break;
+		case FMT_U16_BE:
+#ifdef WORDS_BIGENDIAN
+			format = FMT_U16_LE;
+#else
+			format = FMT_U16_BE;
+#endif
+			break;
+		case FMT_S16_LE:
+#ifdef WORDS_BIGENDIAN
+			format = FMT_S16_BE;
+#else
+			format = FMT_S16_LE;
+#endif
+			break;
+		case FMT_S16_BE:
+#ifdef WORDS_BIGENDIAN
+			format = FMT_S16_LE;
+#else
+			format = FMT_S16_BE;
+#endif
+			break;
 		case FMT_U16_NE:
 #ifdef WORDS_BIGENDIAN
 			format = FMT_U16_BE;
@@ -227,9 +255,7 @@ static void osx_setup_format(AFormat fmt, int rate, int nch)
 
 	osx_set_audio_params();
 
-    osx_convert_func =
-        osx_get_convert_func(output.format.osx,
-                             osx_get_format(effect.format.xmms));
+        osx_convert_func = osx_get_convert_func(fmt, output.format.osx);
 
 	output.bps = osx_calc_bitrate(output.format.osx, output.frequency,output.channels);
 }

@@ -1,3 +1,11 @@
+2006-10-01 04:30:12 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [120]
+  - use xconvert to swap endianness if necessary (LE -> BE, vice versa)
+  
+  trunk/src/CoreAudio/audio.c |    8 ++++++++
+  1 file changed, 8 insertions(+)
+
+
 2006-10-01 04:19:52 +0000  William Pitcock <nenolod@nenolod.net>
   revision [118]
   - tell audacious that playback is starting when we open an alac file
