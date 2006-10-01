@@ -50,17 +50,13 @@
                    v = (((v) & 0x00FF) << 0x08) | \
                        (((v) & 0xFF00) >> 0x08); } while (0)
 
-#ifdef WORDS_BIGENDIAN
-int host_bigendian = 1;
-#else
-int host_bigendian = 0;
-#endif
-
 struct stream_tTAG {
     VFSFile *f;
     int bigendian;
     int eof;
 };
+
+extern int host_bigendian;
 
 void stream_read(stream_t *stream, size_t size, void *buf)
 {

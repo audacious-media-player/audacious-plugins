@@ -1,3 +1,18 @@
+2006-10-01 02:26:34 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [112]
+  - experimental ALAC plugin -- don't use this, it crashes
+  
+  trunk/src/alac/Makefile |   14 
+  trunk/src/alac/alac.c   | 1055 ++++++++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/alac/decomp.h |   13 
+  trunk/src/alac/demux.c  |  693 +++++++++++++++++++++++++++++++
+  trunk/src/alac/demux.h  |   55 ++
+  trunk/src/alac/plugin.c |  275 ++++++++++++
+  trunk/src/alac/stream.c |  181 ++++++++
+  trunk/src/alac/stream.h |   36 +
+  8 files changed, 2322 insertions(+)
+
+
 2006-10-01 01:32:24 +0000  William Pitcock <nenolod@nenolod.net>
   revision [110]
   - alac support will be a seperate plugin

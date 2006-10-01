@@ -48,6 +48,17 @@
                        (((v) & 0xFF00) >> 0x08); } while (0)
 
 
+int host_bigendian;
+
+void set_endian()
+{
+    uint32_t integer = 0x000000aa;
+    unsigned char *p = (unsigned char*)&integer;
+
+    if (p[0] == 0xaa) host_bigendian = 0;
+    else host_bigendian = 1;
+}
+
 struct alac_file
 {
     unsigned char *input_buffer;
@@ -105,9 +116,8 @@ void alac_set_info(alac_file *alac, char *inputbuffer)
   ptr += 4; /* 0 ? */
 
   alac->setinfo_max_samples_per_frame = *(uint32_t*)ptr; /* buffer size / 2 ? */
-#ifndef WORDS_BIGENDIAN
+  if (!host_bigendian)
       _Swap32(alac->setinfo_max_samples_per_frame);
-#endif
   ptr += 4;
   alac->setinfo_7a = *(uint8_t*)ptr;
   ptr += 1;
@@ -122,24 +132,20 @@ void alac_set_info(alac_file *alac, char *inputbuffer)
   alac->setinfo_7f = *(uint8_t*)ptr;
   ptr += 1;
   alac->setinfo_80 = *(uint16_t*)ptr;
-#ifndef WORDS_BIGENDIAN
+  if (!host_bigendian)
       _Swap16(alac->setinfo_80);
-#endif
   ptr += 2;
   alac->setinfo_82 = *(uint32_t*)ptr;
-#ifndef WORDS_BIGENDIAN
+  if (!host_bigendian)
       _Swap32(alac->setinfo_82);
-#endif
   ptr += 4;
   alac->setinfo_86 = *(uint32_t*)ptr;
-#ifndef WORDS_BIGENDIAN
+  if (!host_bigendian)
       _Swap32(alac->setinfo_86);
-#endif
   ptr += 4;
   alac->setinfo_8a_rate = *(uint32_t*)ptr;
-#ifndef WORDS_BIGENDIAN
+  if (!host_bigendian)
       _Swap32(alac->setinfo_8a_rate);
-#endif
   ptr += 4;
 
   allocate_buffers(alac);
@@ -630,10 +636,11 @@ void deinterlace_16(int32_t *buffer_a, int32_t *buffer_b,
             left = right + difference;
 
             /* output is always little endian */
-#ifdef WORDS_BIGENDIAN
+            if (host_bigendian)
+            {
                 _Swap16(left);
                 _Swap16(right);
-#endif
+            }
 
             buffer_out[i*numchannels] = left;
             buffer_out[i*numchannels + 1] = right;
@@ -651,10 +658,11 @@ void deinterlace_16(int32_t *buffer_a, int32_t *buffer_b,
         right = buffer_b[i];
 
         /* output is always little endian */
-#ifdef WORDS_BIGENDIAN
+        if (host_bigendian)
+        {
             _Swap16(left);
             _Swap16(right);
-#endif
+        }
 
         buffer_out[i*numchannels] = left;
         buffer_out[i*numchannels + 1] = right;
@@ -818,9 +826,8 @@ void decode_frame(alac_file *alac,
             for (i = 0; i < outputsamples; i++)
             {
                 int16_t sample = alac->outputsamples_buffer_a[i];
-#ifdef WORDS_BIGENDIAN
+                if (host_bigendian)
                     _Swap16(sample);
-#endif
                 ((int16_t*)outbuffer)[i * alac->numchannels] = sample;
             }
             break;

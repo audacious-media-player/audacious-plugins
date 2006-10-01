@@ -47,10 +47,12 @@ static int input_opened = 0;
 static stream_t *input_stream;
 
 static int write_wav_format = 0;
-static int verbose = 0;
+static int verbose = 1;
 
 gpointer decode_thread(void *args);
 static GThread *playback_thread;
+
+extern void set_endian();
 
 static void alac_init(void)
 {
@@ -61,11 +63,10 @@ gboolean is_our_file(char *filename)
 {
     demux_res_t demux_res;
     input_file = vfs_fopen(filename, "rb");
-#ifdef WORDS_BIGENDIAN
     input_stream = stream_create_file(input_file, 1);
-#else
-    input_stream = stream_create_file(input_file, 0);
-#endif
+
+    set_endian();
+
     if (!input_stream)
     {
         fprintf(stderr, "failed to create input stream from file\n");
@@ -168,13 +169,14 @@ static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,
     return 1;
 }
 
-static void GetBuffer(demux_res_t *demux_res)
+void GetBuffer(demux_res_t *demux_res)
 {
     unsigned long destBufferSize = 1024*16; /* 16kb buffer = 4096 frames = 1 alac sample */
     void *pDestBuffer = malloc(destBufferSize);
     int bytes_read = 0;
+    int going = 1;
 
-    unsigned int buffer_size = 1024*64;
+    unsigned int buffer_size = 1024*128;
     void *buffer;
 
     unsigned int i;
@@ -217,7 +219,7 @@ static void GetBuffer(demux_res_t *demux_res)
         if (verbose)
             fprintf(stderr, "read %i bytes. total: %i\n", outputBytes, bytes_read);
 
-        produce_audio(get_written_time(), FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, NULL);
+        produce_audio(alac_ip.output->written_time(), FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
     }
     if (verbose)
         fprintf(stderr, "done reading, read %i frames\n", i);
@@ -235,12 +237,13 @@ gpointer decode_thread(void *args)
     demux_res_t demux_res;
     unsigned int output_size, i;
 
+    set_endian();
+
     input_file = vfs_fopen((char *) args, "rb");
-#ifdef WORDS_BIGENDIAN
     input_stream = stream_create_file(input_file, 1);
-#else
-    input_stream = stream_create_file(input_file, 0);
-#endif
+
+    printf("filename: %s\n", (char *) args);
+
     if (!input_stream)
     {
         fprintf(stderr, "failed to create input stream from file\n");
@@ -258,6 +261,8 @@ gpointer decode_thread(void *args)
     /* initialise the sound converter */
     init_sound_converter(&demux_res);
 
+    alac_ip.output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
+
     /* will convert the entire buffer */
     GetBuffer(&demux_res);
 
@@ -265,6 +270,8 @@ gpointer decode_thread(void *args)
 
     if (input_opened)
         vfs_fclose(input_file);
+
+    alac_ip.output->close_audio();
 
     return NULL;
 }
