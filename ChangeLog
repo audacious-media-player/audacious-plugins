@@ -1,3 +1,11 @@
+2006-10-01 05:03:52 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [128]
+  - remove some spurious debugging notices
+  
+  trunk/src/CoreAudio/audio.c |    6 ------
+  1 file changed, 6 deletions(-)
+
+
 2006-10-01 04:53:30 +0000  William Pitcock <nenolod@nenolod.net>
   revision [126]
   - implement osx_format_is_neutral(), returns TRUE if endianness of the format is neutral,

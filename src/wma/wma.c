@@ -427,7 +427,7 @@ static void wma_play_file(char *filename)
     wsong_title = get_song_title(ic, filename);
     wsong_time = get_song_time(ic);
 
-    if(wma_ip.output->open_audio( FMT_S16_NE, c->sample_rate, c->channels) <= 0) return;
+    if(wma_ip.output->open_audio(FMT_S16_NE, c->sample_rate, c->channels) <= 0) return;
 
     wma_st_buff  = ST_BUFF;
 	
