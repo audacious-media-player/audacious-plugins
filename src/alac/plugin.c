@@ -48,6 +48,7 @@ static stream_t *input_stream;
 
 gpointer decode_thread(void *args);
 static GThread *playback_thread;
+static int going = 0;
 
 extern void set_endian();
 
@@ -103,6 +104,14 @@ static void seek(gint time)
 	/* unimplemented */
 }
 
+static gint get_time(void)
+{
+    if (going)
+	return get_output_time();
+    else
+	return -1;
+}
+
 InputPlugin alac_ip = {
     NULL,
     NULL,
@@ -117,7 +126,7 @@ InputPlugin alac_ip = {
     output_pause,
     seek,
     NULL,
-    get_output_time,
+    get_time,
     NULL,
     NULL,
     NULL,
@@ -171,7 +180,6 @@ void GetBuffer(demux_res_t *demux_res)
     unsigned long destBufferSize = 1024*16; /* 16kb buffer = 4096 frames = 1 alac sample */
     void *pDestBuffer = malloc(destBufferSize);
     int bytes_read = 0;
-    int going = 1;
 
     unsigned int buffer_size = 1024*128;
     void *buffer;
@@ -254,8 +262,12 @@ gpointer decode_thread(void *args)
     alac_ip.output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
     alac_ip.set_info((char *) args, -1, -1, demux_res.sample_rate, demux_res.num_channels);
 
+    going = 1;
+
     /* will convert the entire buffer */
     GetBuffer(&demux_res);
+
+    going = 0;
 
     stream_destroy(input_stream);
 

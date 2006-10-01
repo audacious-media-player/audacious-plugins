@@ -1,3 +1,11 @@
+2006-10-01 05:05:07 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [130]
+  - correct formatting issue
+  
+  trunk/src/wma/wma.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-10-01 05:03:52 +0000  William Pitcock <nenolod@nenolod.net>
   revision [128]
   - remove some spurious debugging notices
