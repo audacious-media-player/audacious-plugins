@@ -1,3 +1,11 @@
+2006-10-01 01:32:24 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [110]
+  - alac support will be a seperate plugin
+  
+  trunk/src/aac/Makefile |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-09-27 04:01:02 +0000  William Pitcock <nenolod@nenolod.net>
   revision [108]
   - merge ALAC decoder into mp4 plugin buildsystem (todo: hook into the ALAC decoder, e.g. if mp4 decoding fails)
