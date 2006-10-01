@@ -46,9 +46,6 @@ static VFSFile *input_file = NULL;
 static int input_opened = 0;
 static stream_t *input_stream;
 
-static int write_wav_format = 0;
-static int verbose = 1;
-
 gpointer decode_thread(void *args);
 static GThread *playback_thread;
 
@@ -216,13 +213,8 @@ void GetBuffer(demux_res_t *demux_res)
         /* write */
         bytes_read += outputBytes;
 
-        if (verbose)
-            fprintf(stderr, "read %i bytes. total: %i\n", outputBytes, bytes_read);
-
         produce_audio(alac_ip.output->written_time(), FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
     }
-    if (verbose)
-        fprintf(stderr, "done reading, read %i frames\n", i);
 }
 
 static void init_sound_converter(demux_res_t *demux_res)
