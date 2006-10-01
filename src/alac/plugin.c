@@ -245,6 +245,8 @@ gpointer decode_thread(void *args)
 {
     demux_res_t demux_res;
     unsigned int output_size, i;
+    gulong duration = 0;	/* samples added up */
+    gint framesize;
 
     set_endian();
 
@@ -262,8 +264,12 @@ gpointer decode_thread(void *args)
     /* initialise the sound converter */
     init_sound_converter(&demux_res);
 
+    /* Sample rates are multiples of 251?! Apple is *fucking* *insane*! -nenolod */
+    duration = (demux_res.num_sample_byte_sizes * (float)((1024 * demux_res.sample_size) - 1.0) /
+	(float)(demux_res.sample_rate / 251));
+
     alac_ip.output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
-    alac_ip.set_info((char *) args, -1, -1, demux_res.sample_rate, demux_res.num_channels);
+    alac_ip.set_info((char *) args, duration, -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
     GetBuffer(&demux_res);
