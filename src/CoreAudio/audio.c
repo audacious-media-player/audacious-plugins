@@ -42,6 +42,7 @@ gint sample_multiplier, sample_size;
 
 gboolean paused;
 
+static int (*osx_convert_func) (void **data, int length);
 
 float left_volume, right_volume;
 float base_pitch = 0.0;
@@ -226,6 +227,10 @@ static void osx_setup_format(AFormat fmt, int rate, int nch)
 
 	osx_set_audio_params();
 
+    osx_convert_func =
+        osx_get_convert_func(output.format.osx,
+                             osx_get_format(effect.format.xmms));
+
 	output.bps = osx_calc_bitrate(output.format.osx, output.frequency,output.channels);
 }
 
@@ -346,6 +351,9 @@ void osx_write(gpointer ptr, int length)
 
 	// update amount of samples received
 	written += num_samples;
+
+        if (osx_convert_func != NULL)
+            osx_convert_func(&ptr, length);
 
 	// step through audio 
 	while (num_samples > 0)
