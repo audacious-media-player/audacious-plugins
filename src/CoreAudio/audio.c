@@ -93,6 +93,25 @@ static int osx_calc_bitrate(int osx_fmt, int rate, int channels)
 	return bitrate;
 }
 
+static gboolean osx_format_is_neutral(AFormat fmt)
+{
+	gboolean ret = FALSE;
+
+	switch (fmt)
+	{
+		case FMT_U16_NE:
+		case FMT_S16_NE:
+		case FMT_U8:
+		case FMT_S8:
+			ret = TRUE;
+			break;
+		default:
+			break;
+	}
+
+	return ret;
+}
+
 static int osx_get_format(AFormat fmt)
 {
 	int format = 0;
@@ -118,7 +137,7 @@ static int osx_get_format(AFormat fmt)
 			break;
 	}
 
-	printf("in: %d, out: %d\n", fmt, format);
+	printf("osx_get_format: in: %d, out: %d\n", fmt, format);
 
 	return format;
 }
@@ -176,7 +195,7 @@ static int osx_get_conv_format(AFormat fmt)
 			break;
 	}
 
-	printf("in: %d, out: %d\n", fmt, format);
+	printf("osx_conv_get_format: in: %d, out: %d\n", fmt, format);
 
 	return format;
 }
@@ -285,11 +304,6 @@ static void osx_setup_format(AFormat fmt, int rate, int nch)
 	output.channels = nch;
 
 	osx_set_audio_params();
-
-        if (fmt != osx_get_conv_format(fmt))
-	        osx_convert_func = osx_get_convert_func(fmt, osx_get_conv_format(fmt));
-	else
-		osx_convert_func = NULL;
 
 	output.bps = osx_calc_bitrate(output.format.osx, output.frequency,output.channels);
 }
@@ -603,6 +617,11 @@ gint osx_open(AFormat fmt, gint rate, gint nch)
 	}
 
 	//printf("format is PCM\n");
+
+	if (osx_format_is_neutral(fmt) == FALSE)
+	        osx_convert_func = osx_get_convert_func(fmt, osx_get_conv_format(fmt));
+	else
+		osx_convert_func = NULL;
 
 	input.format.xmms = fmt;
 	input.frequency = rate;
