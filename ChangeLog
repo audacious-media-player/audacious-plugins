@@ -1,3 +1,13 @@
+2006-10-01 07:05:37 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [142]
+  Detect duration:
+  - this took a lot of brute forcing
+  - oh, and apparently apple has a sense of humour about their format, it uses a samplesize multiple of 251.
+  
+  trunk/src/alac/plugin.c |    8 +++++++-
+  1 file changed, 7 insertions(+), 1 deletion(-)
+
+
 2006-10-01 06:25:06 +0000  William Pitcock <nenolod@nenolod.net>
   revision [140]
   - fix memory leaks
