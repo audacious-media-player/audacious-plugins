@@ -85,7 +85,7 @@ AC_ARG_WITH(cdda-dir,
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console sexypsf wav cue"
+INPUT_PLUGINS="tonegen console sexypsf wav cue alac"
 OUTPUT_PLUGINS="disk_writer"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal"
 GENERAL_PLUGINS="song_change"
@@ -1084,6 +1084,7 @@ echo "  Commodore 64 audio (sid):               $have_sidplay"
 echo "  Game music (spc, nsf & gbs):            yes"
 echo "  PlayStation audio (sexypsf):            yes"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
+echo "  Apple Lossless Audio Codec (alac):      yes"
 echo
 echo "  General"
 echo "  -------"

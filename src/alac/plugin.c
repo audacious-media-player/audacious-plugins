@@ -234,8 +234,6 @@ gpointer decode_thread(void *args)
     input_file = vfs_fopen((char *) args, "rb");
     input_stream = stream_create_file(input_file, 1);
 
-    printf("filename: %s\n", (char *) args);
-
     if (!input_stream)
     {
         fprintf(stderr, "failed to create input stream from file\n");
@@ -254,6 +252,7 @@ gpointer decode_thread(void *args)
     init_sound_converter(&demux_res);
 
     alac_ip.output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
+    alac_ip.set_info((char *) args, -1, -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
     GetBuffer(&demux_res);

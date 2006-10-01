@@ -1,3 +1,11 @@
+2006-10-01 04:11:48 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [116]
+  - remove debugging notices
+  
+  trunk/src/alac/plugin.c |    8 --------
+  1 file changed, 8 deletions(-)
+
+
 2006-10-01 03:58:51 +0000  William Pitcock <nenolod@nenolod.net>
   revision [114]
   - fix crashing. works on my x64 box, static on bigendian (tested: x64-be, mips, ppc64)
