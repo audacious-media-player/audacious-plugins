@@ -1,3 +1,14 @@
+2006-09-27 04:01:02 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [108]
+  - merge ALAC decoder into mp4 plugin buildsystem (todo: hook into the ALAC decoder, e.g. if mp4 decoding fails)
+  
+  trunk/src/aac/Makefile      |    2 
+  trunk/src/aac/alac/Makefile |   15 
+  trunk/src/aac/alac/alac.c   | 1001 ++++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/aac/alac/alac.h   |   13 
+  4 files changed, 1030 insertions(+), 1 deletion(-)
+
+
 2006-09-25 18:23:54 +0000  Giacomo Lozito <james@develia.org>
   revision [106]
   - import latest xmms-jack version 0.17 (mostly bio2jack fixes)
