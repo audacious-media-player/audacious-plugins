@@ -86,10 +86,9 @@ InputPlugin cue_ip =
 	NULL
 };
 
-static gboolean is_our_file(gchar *filename)
+static int is_our_file(gchar *filename)
 {
 	gchar *ext;
-	gboolean ret = FALSE;
 	
 	/* is it a cue:// URI? */
 	if (!strncasecmp(filename, "cue://", 6))
@@ -103,7 +102,6 @@ static gboolean is_our_file(gchar *filename)
 	if (!strncasecmp(ext, ".cue", 4))
 	{
 		gint i;
-		ret = -1;
 
 		/* add the files, build cue urls, etc. */
 		cache_cue_file(filename);
@@ -119,7 +117,7 @@ static gboolean is_our_file(gchar *filename)
 		free_cue_info();
 	}
 
-	return ret;
+	return -1;
 }
 
 static gint get_time(void)

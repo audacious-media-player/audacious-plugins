@@ -1,3 +1,10 @@
+2006-10-02 18:40:03 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [150]
+  Typo in ChangeLog fixed.
+  trunk/ChangeLog |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-10-02 18:29:31 +0000  Jonathan Schleifer <js@h3c.de>
   revision [148]
   The mixer device isn't opened and closed for every action now, instead
