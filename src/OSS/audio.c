@@ -19,6 +19,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+extern void close_mixer_device();
+
 #include <glib.h>
 #include <audacious/util.h>
 #include <string.h>
@@ -497,6 +499,8 @@ oss_close(void)
     oss_free_convert_buffer();
     wr_index = 0;
     rd_index = 0;
+
+    close_mixer_device();
 }
 
 void

@@ -19,7 +19,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
 #include <glib.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,11 +30,15 @@
 
 #include "OSS.h"
 
+static int fd = -1;
 
-static char *
-get_mixer_device(void)
+static int
+open_mixer_device()
 {
     char *name;
+
+    if (fd != -1)
+        return 0;
 
     if (oss_cfg.use_alt_mixer_device && oss_cfg.alt_mixer_device)
         name = g_strdup(oss_cfg.alt_mixer_device);
@@ -44,52 +47,47 @@ get_mixer_device(void)
     else
         name = g_strdup(DEV_MIXER);
 
-    return name;
+    if ((fd = open(name, O_RDWR)) == -1) {
+        g_free(name);
+        return 1;
+    }
+    g_free(name);
+
+    return 0;
 }
 
 void
 oss_get_volume(int *l, int *r)
 {
-    int fd, v, devs;
+    int v, devs;
     long cmd;
-    gchar *devname;
-
-    devname = get_mixer_device();
-    fd = open(devname, O_RDONLY);
-    g_free(devname);
 
     /*
      * We dont show any errors if this fails, as this is called
      * rather often
      */
-    if (fd != -1) {
+    if (!open_mixer_device()) {
         ioctl(fd, SOUND_MIXER_READ_DEVMASK, &devs);
         if ((devs & SOUND_MASK_PCM) && (oss_cfg.use_master == 0))
             cmd = SOUND_MIXER_READ_PCM;
         else if ((devs & SOUND_MASK_VOLUME) && (oss_cfg.use_master == 1))
             cmd = SOUND_MIXER_READ_VOLUME;
-        else {
-            close(fd);
+        else
             return;
-        }
+
         ioctl(fd, cmd, &v);
         *r = (v & 0xFF00) >> 8;
         *l = (v & 0x00FF);
-        close(fd);
     }
 }
 
 void
 oss_set_volume(int l, int r)
 {
-    int fd, v, devs;
+    int v, devs;
     long cmd;
-    gchar *devname;
 
-    devname = get_mixer_device();
-    fd = open(devname, O_RDONLY);
-
-    if (fd != -1) {
+    if (!open_mixer_device()) {
         ioctl(fd, SOUND_MIXER_READ_DEVMASK, &devs);
         if ((devs & SOUND_MASK_PCM) && (oss_cfg.use_master == 0))
             cmd = SOUND_MIXER_WRITE_PCM;
@@ -101,10 +99,16 @@ oss_set_volume(int l, int r)
         }
         v = (r << 8) | l;
         ioctl(fd, cmd, &v);
-        close(fd);
     }
     else
-        g_warning("oss_set_volume(): Failed to open mixer device (%s): %s",
-                  devname, strerror(errno));
-    g_free(devname);
+        g_warning("Failed to open mixer device: %s", strerror(errno));
+}
+
+void
+close_mixer_device()
+{
+    if (fd != -1) {
+        close(fd);
+        fd = -1;
+    }
 }
