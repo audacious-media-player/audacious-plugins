@@ -1,3 +1,15 @@
+2006-10-02 18:29:31 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [148]
+  The mixer device isn't opened and closed for every action now, instead
+  it gets opened as soon as needed and closed if it's not needed anymore.
+  This fixes a lot of bugs with the mixer of the OSS plugin, including
+  the one that setting the volume on OpenBSD via OSS didn't work at all.
+  
+  trunk/src/OSS/audio.c |    4 +++
+  trunk/src/OSS/mixer.c |   54 ++++++++++++++++++++++++++------------------------
+  2 files changed, 33 insertions(+), 25 deletions(-)
+
+
 2006-10-02 17:49:55 +0000  Jonathan Schleifer <js@h3c.de>
   revision [146]
   Reverted cuesheet.c to revision 104 because it was broken with rev 144.
