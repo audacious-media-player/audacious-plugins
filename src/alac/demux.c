@@ -35,6 +35,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
 #include "stream.h"
 #include "demux.h"
 
@@ -480,6 +482,32 @@ static void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
 
     stream_skip(qtmovie->stream, size_remaining);
+#if 0
+    while (size_remaining)
+    {
+        size_t sub_chunk_len;
+        fourcc_t sub_chunk_id;
+
+        sub_chunk_len = stream_read_uint32(qtmovie->stream);
+        if (sub_chunk_len <= 1 || sub_chunk_len > size_remaining)
+            return;
+
+        sub_chunk_id = stream_read_uint32(qtmovie->stream);
+
+        switch (sub_chunk_id)
+        {
+        case MAKEFOURCC('m','e','t','a'):
+            stream_skip(qtmovie->stream, sub_chunk_len);
+            break;
+        default:
+            fprintf(stderr, "read_chunk_udta(%p, %lu): unknown chunk: %c%c%c%c\n",
+	            qtmovie, chunk_len, SPLITFOURCC(sub_chunk_id));
+	    return;
+        }
+
+        size_remaining -= sub_chunk_len;
+    }
+#endif
 }
 
 /* 'moov' movie atom - contains other atoms */
@@ -557,7 +585,7 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
     qtmovie = (qtmovie_t*)malloc(sizeof(qtmovie_t));
 
     /* construct the stream */
-    demux_res->stream = qtmovie->stream = file;
+    qtmovie->stream = file;
     qtmovie->res = demux_res;
 
     memset(demux_res, 0, sizeof(demux_res_t));

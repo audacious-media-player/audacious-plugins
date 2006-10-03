@@ -9,6 +9,9 @@ typedef uint32_t fourcc_t;
 
 typedef struct
 {
+    stream_t *stream;
+    alac_file *alac;
+
     uint16_t num_channels;
     uint16_t sample_size;
     uint32_t sample_rate;
@@ -31,9 +34,6 @@ typedef struct
 #if 0
     void *mdat;
 #endif
-
-    stream_t *stream;
-    alac_file *alac;
 } demux_res_t;
 
 int qtmovie_read(stream_t *stream, demux_res_t *demux_res);

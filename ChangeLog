@@ -1,3 +1,13 @@
+2006-10-03 01:14:15 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [154]
+  - thread safety
+  
+  trunk/src/alac/demux.c  |    3 +--
+  trunk/src/alac/demux.h  |    4 ++++
+  trunk/src/alac/plugin.c |   20 +++++++++-----------
+  3 files changed, 14 insertions(+), 13 deletions(-)
+
+
 2006-10-02 22:52:47 +0000  William Pitcock <nenolod@nenolod.net>
   revision [152]
   - too much was reverted here, only the if (!ext) return TRUE; was wrong.

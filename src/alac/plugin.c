@@ -232,10 +232,6 @@ void GetBuffer(demux_res_t *demux_res)
     free(pDestBuffer);
 }
 
-static void init_sound_converter(demux_res_t *demux_res)
-{
-}
-
 gpointer decode_thread(void *args)
 {
     demux_res_t demux_res;
@@ -244,6 +240,8 @@ gpointer decode_thread(void *args)
     gint framesize;
     VFSFile *input_file;
     stream_t *input_stream;
+
+    memset(&demux_res, '\0', sizeof(demux_res_t));
 
     set_endian();
 
@@ -257,6 +255,8 @@ gpointer decode_thread(void *args)
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
         return 0;
+
+    demux_res.stream = input_stream;
 
     /* initialise the sound converter */
     demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);
