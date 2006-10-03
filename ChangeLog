@@ -1,3 +1,13 @@
+2006-10-03 03:54:57 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [158]
+  - parse metadata on ALAC files... seems to work, but the method is inefficient
+  
+  trunk/src/alac/demux.c  |   95 +++++++++++++++++++++++++++++++++++++-----------
+  trunk/src/alac/demux.h  |   10 +++++
+  trunk/src/alac/plugin.c |   79 ++++++++++++++++++++++++++++++++++++++-
+  3 files changed, 161 insertions(+), 23 deletions(-)
+
+
 2006-10-03 02:55:45 +0000  William Pitcock <nenolod@nenolod.net>
   revision [156]
   - a few concurrency fixes

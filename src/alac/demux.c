@@ -482,7 +482,8 @@ enum
 	UDTA_ART,
 	UDTA_ALB,
 	UDTA_GEN,
-	UDTA_DAY
+	UDTA_DAY,
+	UDTA_CMT,
 };
 
 /* 'udta' user data.. contains tag info. this routine is utterly fucked because Apple's
@@ -530,6 +531,10 @@ void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
              udta_tgt = UDTA_DAY;
 	     bptr += 4;
              break;
+        case MAKEFOURCC(0xA9,'c','m','t'):
+             udta_tgt = UDTA_CMT;
+	     bptr += 4;
+             break;
         case MAKEFOURCC('d','a','t','a'):
              switch(udta_tgt)
              {
@@ -544,6 +549,9 @@ void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
                  break;
              case UDTA_DAY:
                  qtmovie->res->tuple.day = g_strdup(bptr + 12);
+                 break;
+             case UDTA_CMT:
+                 qtmovie->res->tuple.cmt = g_strdup(bptr + 12);
                  break;
              case UDTA_GEN:
                  qtmovie->res->tuple.gen = g_strdup(bptr + 12);
