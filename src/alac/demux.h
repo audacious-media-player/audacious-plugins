@@ -19,6 +19,16 @@ typedef struct
     void *buf;
 
     struct {
+        char *art;
+        char *nam;
+        char *alb;
+        char *day;
+        char *cmt;
+        char *des;
+        char *gen;
+    } tuple;
+
+    struct {
         uint32_t sample_count;
         uint32_t sample_duration;
     } *time_to_sample;

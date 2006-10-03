@@ -52,6 +52,17 @@ static int going = 0;
 
 extern void set_endian();
 
+static gchar *
+extname(const char *filename)
+{
+    gchar *ext = strrchr(filename, '.');
+
+    if (ext != NULL)
+        ++ext;
+
+    return ext;  
+}
+
 static void alac_about(void)
 {
 	static GtkWidget *aboutbox;
@@ -106,6 +117,63 @@ gboolean is_our_file(char *filename)
     return TRUE;
 }
 
+TitleInput *build_tuple_from_demux(demux_res_t *demux_res, char *path)
+{
+    TitleInput *ti = bmp_title_input_new();
+
+    if (demux_res->tuple.art != NULL)
+        ti->performer = g_strdup(demux_res->tuple.art);
+    if (demux_res->tuple.nam != NULL)
+        ti->track_name = g_strdup(demux_res->tuple.nam);
+    if (demux_res->tuple.alb != NULL)
+        ti->album_name = g_strdup(demux_res->tuple.alb);
+    if (demux_res->tuple.gen != NULL)
+        ti->genre = g_strdup(demux_res->tuple.gen);
+    if (demux_res->tuple.cmt != NULL)
+        ti->comment = g_strdup(demux_res->tuple.cmt);
+    if (demux_res->tuple.day != NULL)
+        ti->year = atoi(demux_res->tuple.day);
+
+    ti->file_name = g_path_get_basename(path);
+    ti->file_path = g_path_get_dirname(path);
+    ti->file_ext = extname(path);
+
+    return ti;
+}
+
+TitleInput *build_tuple(char *filename)
+{
+    demux_res_t demux_res;
+    VFSFile *input_file;
+    stream_t *input_stream;
+    TitleInput *ti;
+
+    input_file = vfs_fopen(filename, "rb");
+    input_stream = stream_create_file(input_file, 1);
+
+    set_endian();
+
+    if (!input_stream)
+    {
+	vfs_fclose(input_file);
+        return NULL;
+    }
+        
+    /* if qtmovie_read returns successfully, the stream is up to
+     * the movie data, which can be used directly by the decoder */
+    if (!qtmovie_read(input_stream, &demux_res))
+    {
+        stream_destroy(input_stream);
+	vfs_fclose(input_file);
+        return NULL;
+    }
+
+    stream_destroy(input_stream);
+    vfs_fclose(input_file);
+
+    return build_tuple_from_demux(&demux_res, filename);
+}
+
 static void play_file(char *filename)
 {
     going = 1;
@@ -156,7 +224,8 @@ InputPlugin alac_ip = {
     NULL,
     NULL,
     NULL,                       /* file_info_box */
-    NULL
+    NULL,
+    build_tuple
 };
 
 static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,
@@ -240,6 +309,8 @@ gpointer decode_thread(void *args)
     gint framesize;
     VFSFile *input_file;
     stream_t *input_stream;
+    TitleInput *ti;
+    gchar *title;
 
     memset(&demux_res, '\0', sizeof(demux_res_t));
 
@@ -258,6 +329,10 @@ gpointer decode_thread(void *args)
 
     demux_res.stream = input_stream;
 
+    /* Get the titlestring ready. */
+    ti = build_tuple_from_demux(&demux_res, (char *) args);
+    title = xmms_get_titlestring(xmms_get_gentitle_format(), ti);
+
     /* initialise the sound converter */
     demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);
     alac_set_info(demux_res.alac, demux_res.codecdata);
@@ -267,7 +342,7 @@ gpointer decode_thread(void *args)
 	(float)(demux_res.sample_rate / 251));
 
     alac_ip.output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
-    alac_ip.set_info((char *) args, duration, -1, demux_res.sample_rate, demux_res.num_channels);
+    alac_ip.set_info(title, duration, -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
     GetBuffer(&demux_res);

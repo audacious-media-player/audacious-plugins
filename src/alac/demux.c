@@ -475,39 +475,92 @@ static void read_chunk_mvhd(qtmovie_t *qtmovie, size_t chunk_len)
     stream_skip(qtmovie->stream, size_remaining);
 }
 
-/* 'udta' user data.. contains tag info */
-static void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
+enum
+{
+	UDTA_NIL = 0,
+	UDTA_NAM,
+	UDTA_ART,
+	UDTA_ALB,
+	UDTA_GEN,
+	UDTA_DAY
+};
+
+/* 'udta' user data.. contains tag info. this routine is utterly fucked because Apple's
+ * lovely container format is utterly fucked itself...
+ */
+void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
 {
     /* don't need anything from here atm, skip */
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
+    char *buf = g_malloc0(chunk_len);
+    char *bptr;
+    fourcc_t sub_chunk_id;   /* bptr[4] << 24 | bptr[3] << 16 | bptr[2] << 8 | bptr[1] */
+    int udta_tgt = UDTA_NIL;
 
-    stream_skip(qtmovie->stream, size_remaining);
-#if 0
-    while (size_remaining)
+    /* read the stream in for scanning -nenolod */
+    stream_read(qtmovie->stream, size_remaining, buf);
+
+    /* this is (bptr + 3) to account for the MAKEFOURCC() macro. -nenolod */
+    for (bptr = buf; (bptr + 3) - buf < size_remaining; bptr++)
     {
-        size_t sub_chunk_len;
-        fourcc_t sub_chunk_id;
-
-        sub_chunk_len = stream_read_uint32(qtmovie->stream);
-        if (sub_chunk_len <= 1 || sub_chunk_len > size_remaining)
-            return;
-
-        sub_chunk_id = stream_read_uint32(qtmovie->stream);
+        sub_chunk_id = MAKEFOURCC(*bptr, *(bptr + 1), *(bptr + 2), *(bptr + 3));
 
         switch (sub_chunk_id)
         {
         case MAKEFOURCC('m','e','t','a'):
-            stream_skip(qtmovie->stream, sub_chunk_len);
-            break;
-        default:
-            fprintf(stderr, "read_chunk_udta(%p, %lu): unknown chunk: %c%c%c%c\n",
-	            qtmovie, chunk_len, SPLITFOURCC(sub_chunk_id));
-	    return;
-        }
+             bptr += 4; /* skip meta */
+             break;
+        case MAKEFOURCC(0xA9,'n','a','m'):
+             udta_tgt = UDTA_NAM;
+	     bptr += 4;
+             break;
+        case MAKEFOURCC(0xA9,'A','R','T'):
+             udta_tgt = UDTA_ART;
+	     bptr += 4;
+             break;
+        case MAKEFOURCC(0xA9,'a','l','b'):
+             udta_tgt = UDTA_ALB;
+	     bptr += 4;
+             break;
+        case MAKEFOURCC(0xA9,'g','e','n'):
+             udta_tgt = UDTA_GEN;
+	     bptr += 4;
+             break;
+        case MAKEFOURCC(0xA9,'d','a','y'):
+             udta_tgt = UDTA_DAY;
+	     bptr += 4;
+             break;
+        case MAKEFOURCC('d','a','t','a'):
+             switch(udta_tgt)
+             {
+             case UDTA_NAM:
+                 qtmovie->res->tuple.nam = g_strdup(bptr + 12);
+                 break;
+             case UDTA_ART:
+                 qtmovie->res->tuple.art = g_strdup(bptr + 12);
+                 break;
+             case UDTA_ALB:
+                 qtmovie->res->tuple.alb = g_strdup(bptr + 12);
+                 break;
+             case UDTA_DAY:
+                 qtmovie->res->tuple.day = g_strdup(bptr + 12);
+                 break;
+             case UDTA_GEN:
+                 qtmovie->res->tuple.gen = g_strdup(bptr + 12);
+                 break;
+             default:
+	         break;
+             }
 
-        size_remaining -= sub_chunk_len;
+             bptr += 12;
+	     bptr += strlen(bptr);
+             break;
+        default:
+             break;
+        }
     }
-#endif
+
+    g_free(buf);
 }
 
 /* 'moov' movie atom - contains other atoms */

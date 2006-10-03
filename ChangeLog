@@ -1,3 +1,13 @@
+2006-10-03 02:55:45 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [156]
+  - a few concurrency fixes
+  
+  trunk/src/alac/demux.c  |   30 +++++++++++++++++++++++++++++-
+  trunk/src/alac/demux.h  |    6 +++---
+  trunk/src/alac/plugin.c |    8 ++++----
+  3 files changed, 36 insertions(+), 8 deletions(-)
+
+
 2006-10-03 01:14:15 +0000  William Pitcock <nenolod@nenolod.net>
   revision [154]
   - thread safety
