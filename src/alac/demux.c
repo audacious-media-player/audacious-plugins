@@ -557,8 +557,7 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
     qtmovie = (qtmovie_t*)malloc(sizeof(qtmovie_t));
 
     /* construct the stream */
-    qtmovie->stream = file;
-
+    demux_res->stream = qtmovie->stream = file;
     qtmovie->res = demux_res;
 
     memset(demux_res, 0, sizeof(demux_res_t));

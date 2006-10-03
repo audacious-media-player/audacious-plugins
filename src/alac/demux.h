@@ -2,6 +2,7 @@
 #define DEMUX_H
 
 #include <stdint.h>
+#include "decomp.h"
 #include "stream.h"
 
 typedef uint32_t fourcc_t;
@@ -30,6 +31,9 @@ typedef struct
 #if 0
     void *mdat;
 #endif
+
+    stream_t *stream;
+    alac_file *alac;
 } demux_res_t;
 
 int qtmovie_read(stream_t *stream, demux_res_t *demux_res);

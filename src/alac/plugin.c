@@ -44,11 +44,7 @@
 #include "decomp.h"
 #include "stream.h"
 
-alac_file *alac = NULL;
-
-static VFSFile *input_file = NULL;
 static int input_opened = 0;
-static stream_t *input_stream;
 
 gpointer decode_thread(void *args);
 static GThread *playback_thread;
@@ -81,6 +77,9 @@ static void alac_init(void)
 gboolean is_our_file(char *filename)
 {
     demux_res_t demux_res;
+    VFSFile *input_file;
+    stream_t *input_stream;
+
     input_file = vfs_fopen(filename, "rb");
     input_stream = stream_create_file(input_file, 1);
 
@@ -217,12 +216,11 @@ void GetBuffer(demux_res_t *demux_res)
         if (buffer_size < sample_byte_size)
             return;
 
-        stream_read(input_stream, sample_byte_size,
-                    buffer);
+        stream_read(demux_res->stream, sample_byte_size, buffer);
 
         /* now fetch */
         outputBytes = destBufferSize;
-        decode_frame(alac, buffer, pDestBuffer, &outputBytes);
+        decode_frame(demux_res->alac, buffer, pDestBuffer, &outputBytes);
 
         /* write */
         bytes_read += outputBytes;
@@ -236,9 +234,6 @@ void GetBuffer(demux_res_t *demux_res)
 
 static void init_sound_converter(demux_res_t *demux_res)
 {
-    alac = create_alac(demux_res->sample_size, demux_res->num_channels);
-
-    alac_set_info(alac, demux_res->codecdata);
 }
 
 gpointer decode_thread(void *args)
@@ -247,6 +242,8 @@ gpointer decode_thread(void *args)
     unsigned int output_size, i;
     gulong duration = 0;	/* samples added up */
     gint framesize;
+    VFSFile *input_file;
+    stream_t *input_stream;
 
     set_endian();
 
@@ -262,7 +259,8 @@ gpointer decode_thread(void *args)
         return 0;
 
     /* initialise the sound converter */
-    init_sound_converter(&demux_res);
+    demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);
+    alac_set_info(demux_res.alac, demux_res.codecdata);
 
     /* Sample rates are multiples of 251?! Apple is *fucking* *insane*! -nenolod */
     duration = (demux_res.num_sample_byte_sizes * (float)((1024 * demux_res.sample_size) - 1.0) /

@@ -1,3 +1,11 @@
+2006-10-02 22:52:47 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [152]
+  - too much was reverted here, only the if (!ext) return TRUE; was wrong.
+  
+  trunk/src/cue/cuesheet.c |    6 ++----
+  1 file changed, 2 insertions(+), 4 deletions(-)
+
+
 2006-10-02 18:40:03 +0000  Jonathan Schleifer <js@h3c.de>
   revision [150]
   Typo in ChangeLog fixed.
