@@ -1,3 +1,11 @@
+2006-10-03 03:58:32 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [160]
+  - parse comments
+  
+  trunk/src/alac/demux.c |   10 +++++++++-
+  1 file changed, 9 insertions(+), 1 deletion(-)
+
+
 2006-10-03 03:54:57 +0000  William Pitcock <nenolod@nenolod.net>
   revision [158]
   - parse metadata on ALAC files... seems to work, but the method is inefficient

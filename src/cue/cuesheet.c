@@ -115,9 +115,11 @@ static int is_our_file(gchar *filename)
 		}
 
 		free_cue_info();
+
+		return -1;
 	}
 
-	return -1;
+	return FALSE;
 }
 
 static gint get_time(void)
