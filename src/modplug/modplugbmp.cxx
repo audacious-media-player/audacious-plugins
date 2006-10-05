@@ -135,6 +135,10 @@ bool ModplugXMMS::CanPlayFile(const string& aFilename)
 	}
 	vfs_fseek(file, 1080, SEEK_SET);
 	vfs_fread(magic, 1, 4, file);
+	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER6, 4)) {
+		vfs_fclose(file);
+		return 1;
+	}
 	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER8, 4)) {
 		vfs_fclose(file);
 		return 1;
@@ -169,10 +173,6 @@ bool ModplugXMMS::CanPlayFile(const string& aFilename)
 		return 1;
 	}
 	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER4, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER6, 4)) {
 		vfs_fclose(file);
 		return 1;
 	}
