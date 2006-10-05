@@ -12,6 +12,8 @@ typedef struct
     stream_t *stream;
     alac_file *alac;
 
+    int format_read;
+
     uint16_t num_channels;
     uint16_t sample_size;
     uint32_t sample_rate;

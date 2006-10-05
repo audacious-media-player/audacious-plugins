@@ -312,7 +312,7 @@ gpointer decode_thread(void *args)
     TitleInput *ti;
     gchar *title;
 
-    memset(&demux_res, '\0', sizeof(demux_res_t));
+    memset(&demux_res, 0, sizeof(demux_res));
 
     set_endian();
 
@@ -320,12 +320,12 @@ gpointer decode_thread(void *args)
     input_stream = stream_create_file(input_file, 1);
 
     if (!input_stream)
-        return 0;
+        return 1;
 
     /* if qtmovie_read returns successfully, the stream is up to
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
-        return 0;
+        return 1;
 
     demux_res.stream = input_stream;
 

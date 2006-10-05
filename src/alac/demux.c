@@ -150,7 +150,7 @@ static void read_chunk_hdlr(qtmovie_t *qtmovie, size_t chunk_len)
 
 }
 
-static void read_chunk_stsd(qtmovie_t *qtmovie, size_t chunk_len)
+static int read_chunk_stsd(qtmovie_t *qtmovie, size_t chunk_len)
 {
     unsigned int i;
     uint32_t numentries;
@@ -169,9 +169,7 @@ static void read_chunk_stsd(qtmovie_t *qtmovie, size_t chunk_len)
     size_remaining -= 4;
 
     if (numentries != 1)
-    {
-        return;
-    }
+        return 0;
 
     for (i = 0; i < numentries; i++)
     {
@@ -192,7 +190,7 @@ static void read_chunk_stsd(qtmovie_t *qtmovie, size_t chunk_len)
 
         version = stream_read_uint16(qtmovie->stream);
         if (version != 1)
-		return;
+		return 0;
         entry_remaining -= 2;
 
         /* revision level */
@@ -243,12 +241,15 @@ static void read_chunk_stsd(qtmovie_t *qtmovie, size_t chunk_len)
         if (entry_remaining)
             stream_skip(qtmovie->stream, entry_remaining);
 
+	qtmovie->res->format_read = 1;
         if (qtmovie->res->format != MAKEFOURCC('a','l','a','c'))
 	{
 	    qtmovie->isfilenotalac = 1;
-            return;
+            return 0;
 	}
     }
+
+    return 1;
 }
 
 static void read_chunk_stts(qtmovie_t *qtmovie, size_t chunk_len)
@@ -323,7 +324,7 @@ static void read_chunk_stsz(qtmovie_t *qtmovie, size_t chunk_len)
         stream_skip(qtmovie->stream, size_remaining);
 }
 
-static void read_chunk_stbl(qtmovie_t *qtmovie, size_t chunk_len)
+static int read_chunk_stbl(qtmovie_t *qtmovie, size_t chunk_len)
 {
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
 
@@ -334,14 +335,15 @@ static void read_chunk_stbl(qtmovie_t *qtmovie, size_t chunk_len)
 
         sub_chunk_len = stream_read_uint32(qtmovie->stream);
         if (sub_chunk_len <= 1 || sub_chunk_len > size_remaining)
-            return;
+            return 0;
 
         sub_chunk_id = stream_read_uint32(qtmovie->stream);
 
         switch (sub_chunk_id)
         {
         case MAKEFOURCC('s','t','s','d'):
-            read_chunk_stsd(qtmovie, sub_chunk_len);
+            if (read_chunk_stsd(qtmovie, sub_chunk_len) == 0)
+	    	return 0;
             break;
         case MAKEFOURCC('s','t','t','s'):
             read_chunk_stts(qtmovie, sub_chunk_len);
@@ -355,23 +357,25 @@ static void read_chunk_stbl(qtmovie_t *qtmovie, size_t chunk_len)
             stream_skip(qtmovie->stream, sub_chunk_len - 8);
             break;
         default:
-            return;
+            return 0;
         }
 
         size_remaining -= sub_chunk_len;
     }
+
+    return 1;
 }
 
-static void read_chunk_minf(qtmovie_t *qtmovie, size_t chunk_len)
+static int read_chunk_minf(qtmovie_t *qtmovie, size_t chunk_len)
 {
     size_t dinf_size, stbl_size;
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
 
     if (stream_read_uint32(qtmovie->stream) != 16)
-        return;
+        return 0;
 
     if (stream_read_uint32(qtmovie->stream) != MAKEFOURCC('s','m','h','d'))
-        return;
+        return 0;
 
     /* now skip the rest */
     stream_skip(qtmovie->stream, 16 - 8);
@@ -381,7 +385,7 @@ static void read_chunk_minf(qtmovie_t *qtmovie, size_t chunk_len)
   /**** DINF CHUNK ****/
     dinf_size = stream_read_uint32(qtmovie->stream);
     if (stream_read_uint32(qtmovie->stream) != MAKEFOURCC('d','i','n','f'))
-        return;
+        return 0;
 
     /* skip it */
     stream_skip(qtmovie->stream, dinf_size - 8);
@@ -392,16 +396,19 @@ static void read_chunk_minf(qtmovie_t *qtmovie, size_t chunk_len)
   /**** SAMPLE TABLE ****/
     stbl_size = stream_read_uint32(qtmovie->stream);
     if (stream_read_uint32(qtmovie->stream) != MAKEFOURCC('s','t','b','l'))
-        return;
+        return 0;
 
-    read_chunk_stbl(qtmovie, stbl_size);
+    if (read_chunk_stbl(qtmovie, stbl_size) == 0)
+	return 0;
     size_remaining -= stbl_size;
 
     if (size_remaining)
         stream_skip(qtmovie->stream, size_remaining);
+
+    return 1;
 }
 
-static void read_chunk_mdia(qtmovie_t *qtmovie, size_t chunk_len)
+static int read_chunk_mdia(qtmovie_t *qtmovie, size_t chunk_len)
 {
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
 
@@ -412,7 +419,7 @@ static void read_chunk_mdia(qtmovie_t *qtmovie, size_t chunk_len)
 
         sub_chunk_len = stream_read_uint32(qtmovie->stream);
         if (sub_chunk_len <= 1 || sub_chunk_len > size_remaining)
-            return;
+            return 0;
 
         sub_chunk_id = stream_read_uint32(qtmovie->stream);
 
@@ -425,18 +432,21 @@ static void read_chunk_mdia(qtmovie_t *qtmovie, size_t chunk_len)
             read_chunk_hdlr(qtmovie, sub_chunk_len);
             break;
         case MAKEFOURCC('m','i','n','f'):
-            read_chunk_minf(qtmovie, sub_chunk_len);
+            if (read_chunk_minf(qtmovie, sub_chunk_len) == 0)
+	        return 0;
             break;
         default:
-            return;
+            return 0;
         }
 
         size_remaining -= sub_chunk_len;
     }
+
+    return 1;
 }
 
 /* 'trak' - a movie track - contains other atoms */
-static void read_chunk_trak(qtmovie_t *qtmovie, size_t chunk_len)
+static int read_chunk_trak(qtmovie_t *qtmovie, size_t chunk_len)
 {
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
 
@@ -447,7 +457,7 @@ static void read_chunk_trak(qtmovie_t *qtmovie, size_t chunk_len)
 
         sub_chunk_len = stream_read_uint32(qtmovie->stream);
         if (sub_chunk_len <= 1 || sub_chunk_len > size_remaining)
-            return;
+            return 0;
 
         sub_chunk_id = stream_read_uint32(qtmovie->stream);
 
@@ -457,21 +467,33 @@ static void read_chunk_trak(qtmovie_t *qtmovie, size_t chunk_len)
             read_chunk_tkhd(qtmovie, sub_chunk_len);
             break;
         case MAKEFOURCC('m','d','i','a'):
-            read_chunk_mdia(qtmovie, sub_chunk_len);
+            if (read_chunk_mdia(qtmovie, sub_chunk_len) == 0)
+	    	return 0;
             break;
         case MAKEFOURCC('e','d','t','s'):
             read_chunk_edts(qtmovie, sub_chunk_len);
             break;
         default:
-            return;
+            return 0;
         }
 
         size_remaining -= sub_chunk_len;
     }
+
+    return 1;
 }
 
 /* 'mvhd' movie header atom */
 static void read_chunk_mvhd(qtmovie_t *qtmovie, size_t chunk_len)
+{
+    /* don't need anything from here atm, skip */
+    size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
+
+    stream_skip(qtmovie->stream, size_remaining);
+}
+
+/* 'iods' */
+static void read_chunk_iods(qtmovie_t *qtmovie, size_t chunk_len)
 {
     /* don't need anything from here atm, skip */
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
@@ -576,7 +598,7 @@ void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
 }
 
 /* 'moov' movie atom - contains other atoms */
-static void read_chunk_moov(qtmovie_t *qtmovie, size_t chunk_len)
+static int read_chunk_moov(qtmovie_t *qtmovie, size_t chunk_len)
 {
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
 
@@ -587,7 +609,7 @@ static void read_chunk_moov(qtmovie_t *qtmovie, size_t chunk_len)
 
         sub_chunk_len = stream_read_uint32(qtmovie->stream);
         if (sub_chunk_len <= 1 || sub_chunk_len > size_remaining)
-            return;
+            return 0;
 
         sub_chunk_id = stream_read_uint32(qtmovie->stream);
 
@@ -597,7 +619,8 @@ static void read_chunk_moov(qtmovie_t *qtmovie, size_t chunk_len)
             read_chunk_mvhd(qtmovie, sub_chunk_len);
             break;
         case MAKEFOURCC('t','r','a','k'):
-            read_chunk_trak(qtmovie, sub_chunk_len);
+            if (read_chunk_trak(qtmovie, sub_chunk_len) == 0)
+	    	return 0;
             break;
         case MAKEFOURCC('u','d','t','a'):
             read_chunk_udta(qtmovie, sub_chunk_len);
@@ -605,17 +628,24 @@ static void read_chunk_moov(qtmovie_t *qtmovie, size_t chunk_len)
         case MAKEFOURCC('e','l','s','t'):
             read_chunk_elst(qtmovie, sub_chunk_len);
             break;
+	case MAKEFOURCC('i','o','d','s'):
+	    read_chunk_iods(qtmovie, sub_chunk_len);
+	    break;
         default:
-            return;
+            return 0;
         }
 
         size_remaining -= sub_chunk_len;
     }
+
+    return 1;
 }
 
 static void read_chunk_mdat(qtmovie_t *qtmovie, size_t chunk_len, int skip_mdat)
 {
     size_t size_remaining = chunk_len - 8; /* FIXME WRONG */
+
+    if (size_remaining == 0) return;
 
     qtmovie->res->mdat_len = (uint32_t)size_remaining;
     if (skip_mdat)
@@ -679,7 +709,8 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
             read_chunk_ftyp(qtmovie, chunk_len);
             break;
         case MAKEFOURCC('m','o','o','v'):
-            read_chunk_moov(qtmovie, chunk_len);
+            if (read_chunk_moov(qtmovie, chunk_len) == 0)
+	        return 0; /* failed to read moov, can't do anything */
             if (found_mdat)
             {
                 return set_saved_mdat(qtmovie);
