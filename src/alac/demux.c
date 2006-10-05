@@ -45,6 +45,7 @@ typedef struct
     stream_t *stream;
     demux_res_t *res;
     long saved_mdat_pos;
+    int isfilenotalac;
 } qtmovie_t;
 
 
@@ -243,7 +244,10 @@ static void read_chunk_stsd(qtmovie_t *qtmovie, size_t chunk_len)
             stream_skip(qtmovie->stream, entry_remaining);
 
         if (qtmovie->res->format != MAKEFOURCC('a','l','a','c'))
+	{
+	    qtmovie->isfilenotalac = 1;
             return;
+	}
     }
 }
 
@@ -648,6 +652,7 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
     /* construct the stream */
     qtmovie->stream = file;
     qtmovie->res = demux_res;
+    qtmovie->isfilenotalac = 0;
 
     memset(demux_res, 0, sizeof(demux_res_t));
 
@@ -701,7 +706,8 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
         }
 
     }
-    return 0;
+
+    return qtmovie->isfilenotalac;
 }
 
 

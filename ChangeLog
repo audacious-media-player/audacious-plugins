@@ -1,3 +1,12 @@
+2006-10-05 01:24:55 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [166]
+  The same change like for the FT8 MODs, but this time for FT6 MODs.
+  (Sorry, I forget to move them as well.)
+  
+  trunk/src/modplug/modplugbmp.cxx |    8 ++++----
+  1 file changed, 4 insertions(+), 4 deletions(-)
+
+
 2006-10-05 01:21:08 +0000  Jonathan Schleifer <js@h3c.de>
   revision [164]
   Always grab FT8 files, they're NOT Amiga MODs. (They are software mixed
