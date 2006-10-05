@@ -38,6 +38,7 @@ static void seek(gint time);
 static void stop(void);
 static TitleInput *get_tuple(gchar *uri);
 static TitleInput *get_tuple_uri(gchar *uri);
+static void get_song_info(gchar *uri, gchar **title, gint *length);
 
 static gint watchdog_func(gpointer unused);
 
@@ -79,7 +80,7 @@ InputPlugin cue_ip =
 	NULL,
 	NULL,
 	NULL,
-	NULL,		/* XXX get_song_info iface */
+	get_song_info,	/* XXX get_song_info iface */
 	NULL,
 	NULL,
 	get_tuple,
@@ -89,7 +90,7 @@ InputPlugin cue_ip =
 static int is_our_file(gchar *filename)
 {
 	gchar *ext;
-	
+
 	/* is it a cue:// URI? */
 	if (!strncasecmp(filename, "cue://", 6))
 		return TRUE;
@@ -124,7 +125,7 @@ static int is_our_file(gchar *filename)
 
 static gint get_time(void)
 {
-	return get_output_time();
+	return cue_ip.output->output_time();
 }
 
 static void play(gchar *uri)
@@ -196,6 +197,28 @@ static TitleInput *get_tuple_uri(gchar *uri)
 	out->performer = g_strdup(cue_tracks[track].performer);
 
 	return out;
+}
+
+static void get_song_info(gchar *uri, gchar **title, gint *length)
+{
+	TitleInput *tuple;
+
+	/* this isn't a cue:// uri? */
+	if (strncasecmp("cue://", uri, 6))
+	{
+		gchar *tmp = g_strdup_printf("cue://%s?0", uri);
+		tuple = get_tuple_uri(tmp);
+		g_free(tmp);
+	}
+	else
+		tuple = get_tuple_uri(uri);
+
+	g_return_if_fail(tuple != NULL);
+
+	*title = xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
+	*length = tuple->length;
+
+	bmp_title_input_free(tuple);
 }
 
 static void seek(gint time)

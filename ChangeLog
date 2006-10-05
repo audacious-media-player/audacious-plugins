@@ -1,3 +1,15 @@
+2006-10-05 04:01:38 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [170]
+  - Imported a few changes from alac decoder 0.1.3
+  - Added myself to AUTHORS
+  
+  trunk/AUTHORS           |    1 
+  trunk/src/alac/demux.c  |   89 ++++++++++++++++++++++++++++++++----------------
+  trunk/src/alac/demux.h  |    2 +
+  trunk/src/alac/plugin.c |    6 +--
+  4 files changed, 66 insertions(+), 32 deletions(-)
+
+
 2006-10-05 01:42:11 +0000  William Pitcock <nenolod@nenolod.net>
   revision [168]
   - try this
