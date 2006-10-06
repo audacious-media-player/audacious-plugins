@@ -1,3 +1,11 @@
+2006-10-05 09:33:10 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [172]
+  - some improvements to the cuesheet plugin, not totally there yet ;)
+  
+  trunk/src/cue/cuesheet.c |   29 ++++++++++++++++++++++++++---
+  1 file changed, 26 insertions(+), 3 deletions(-)
+
+
 2006-10-05 04:01:38 +0000  Jonathan Schleifer <js@h3c.de>
   revision [170]
   - Imported a few changes from alac decoder 0.1.3

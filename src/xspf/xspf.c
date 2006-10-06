@@ -140,8 +140,13 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 		}
 
 	}
+
 	if (tuple->length == 0) {
 		tuple->length = -1;
+	}
+
+	if (tuple->mtime == 0) {
+		tuple->mtime = -1;
 	}
 
 	locale_uri = b64filename ? b64filename : location;
