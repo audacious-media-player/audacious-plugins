@@ -1,3 +1,11 @@
+2006-10-06 17:51:55 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [174]
+  - mtime=-1 has been introduced to represent "uninitialized".
+  
+  trunk/src/xspf/xspf.c |    5 +++++
+  1 file changed, 5 insertions(+)
+
+
 2006-10-05 09:33:10 +0000  William Pitcock <nenolod@nenolod.net>
   revision [172]
   - some improvements to the cuesheet plugin, not totally there yet ;)
