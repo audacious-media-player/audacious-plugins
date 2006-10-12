@@ -42,6 +42,7 @@ static void
 parse_extm3u_info(const gchar * info, gchar ** title, gint * length)
 {
     gchar *str;
+    gchar *temp;
 
     g_return_if_fail(info != NULL);
     g_return_if_fail(title != NULL);
@@ -64,11 +65,12 @@ parse_extm3u_info(const gchar * info, gchar ** title, gint * length)
         *length *= 1000;
 
     if ((str = strchr(info, ','))) {
-        *title = g_strstrip(g_strdup(str + 1));
-        if (strlen(*title) < 1) {
-            g_free(*title);
-            *title = NULL;
-        }
+        temp = g_strstrip(g_strdup(str + 1));
+        if (strlen(temp) > 0)
+        	*title = g_locale_to_utf8(temp, -1, NULL, NULL, NULL);
+        
+        g_free(temp);
+        temp = NULL;
     }
 }
 

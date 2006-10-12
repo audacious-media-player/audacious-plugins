@@ -767,8 +767,10 @@ fill_entries(GtkWidget * w, gpointer data)
   if (ptr != NULL)
 	gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(genre_combo)->entry), ptr);
 
-  gtk_widget_set_sensitive(GTK_WIDGET(w), FALSE);
-  gtk_widget_set_sensitive(GTK_WIDGET(data), FALSE);
+  if (w != NULL)
+  	gtk_widget_set_sensitive(GTK_WIDGET(w), FALSE);
+  if (data != NULL)
+  	gtk_widget_set_sensitive(GTK_WIDGET(data), FALSE);
 
   taglib_file_free(taglib_file);
   taglib_tag_free_strings();
