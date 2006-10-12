@@ -1,3 +1,12 @@
+2006-10-12 12:04:58 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [178]
+  - some fixes via alxorlov on the forums
+  
+  trunk/src/m3u/m3u.c         |   12 +++++++-----
+  trunk/src/mpg123/fileinfo.c |    6 ++++--
+  2 files changed, 11 insertions(+), 7 deletions(-)
+
+
 2006-10-07 20:34:06 +0000  Jonathan Schleifer <js@h3c.de>
   revision [176]
   - Replace ?= at CFLAGS, CPPFLAGS and CXXFLAGS with +=

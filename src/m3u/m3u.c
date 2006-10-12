@@ -153,8 +153,6 @@ playlist_save_m3u(const gchar *filename, gint pos)
     if (cfg.use_pl_metadata)
         vfs_fprintf(file, "#EXTM3U\n");
 
-    PLAYLIST_LOCK();
-
     for (node = playlist_get(); node; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
 
@@ -178,8 +176,6 @@ playlist_save_m3u(const gchar *filename, gint pos)
 
         vfs_fprintf(file, "%s\n", entry->filename);
     }
-
-    PLAYLIST_UNLOCK();
 
     vfs_fclose(file);
 }
