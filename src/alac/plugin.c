@@ -49,6 +49,7 @@ static int input_opened = 0;
 gpointer decode_thread(void *args);
 static GThread *playback_thread;
 static int going = 0;
+static int seek_to = -1;
 
 extern void set_endian();
 
@@ -189,7 +190,7 @@ static void stop(void)
 
 static void seek(gint time)
 {
-	/* unimplemented */
+    seek_to = time;
 }
 
 static gint get_time(void)
@@ -277,6 +278,22 @@ void GetBuffer(demux_res_t *demux_res)
 
         int outputBytes;
 
+#if 0
+	/* XXX: Horribly inaccurate seek. -nenolod */
+	if (seek_to != -1)
+	{
+	    gulong duration =
+		(demux_res->num_sample_byte_sizes * (float)((1024 * demux_res->sample_size) - 1.0) /
+	       		(float)(demux_res->sample_rate / 251));
+
+	    i = (duration - seek_to) / demux_res->num_sample_byte_sizes;
+
+	    g_print("seek to ALAC frame: %d\n", i);
+
+	    seek_to = -1;
+	}
+#endif
+
         /* just get one sample for now */
         if (!get_sample_info(demux_res, i,
                              &sample_duration, &sample_byte_size))
@@ -320,12 +337,12 @@ gpointer decode_thread(void *args)
     input_stream = stream_create_file(input_file, 1);
 
     if (!input_stream)
-        return 1;
+        return NULL;
 
     /* if qtmovie_read returns successfully, the stream is up to
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
-        return 1;
+        return NULL;
 
     demux_res.stream = input_stream;
 
