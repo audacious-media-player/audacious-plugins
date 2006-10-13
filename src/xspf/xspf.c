@@ -228,6 +228,8 @@ playlist_save_xspf(const gchar *filename, gint pos)
 	tracklist = xmlNewNode(NULL, "trackList");
 	xmlAddChild(rootnode, tracklist);
 
+	PLAYLIST_LOCK();
+
 	for (node = playlist_get(); node != NULL; node = g_list_next(node))
 	{
 		PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
@@ -382,6 +384,8 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		utf_filename = NULL;
 
 	}
+
+	PLAYLIST_UNLOCK();
 
 	xmlSaveFormatFile(filename, doc, 1);
 	xmlFreeDoc(doc);
