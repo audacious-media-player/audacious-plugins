@@ -119,6 +119,10 @@ save_cb(GtkWidget * w, gpointer data)
 
   taglib_set_strings_unicode(1);
 
+  /* XXX: Gnome VFS workaround. -nenolod */
+  if (str_has_prefix_nocase(current_filename, "file://"))
+    current_filename += 7;
+
   taglib_file = taglib_file_new(current_filename);
   if(taglib_file) {
     taglib_tag = taglib_file_tag(taglib_file);

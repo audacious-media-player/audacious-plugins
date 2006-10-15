@@ -1,3 +1,12 @@
+2006-10-13 04:13:45 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [184]
+  - pls doesn't go along with PLAYLIST_LOCK in playlist_save().
+  
+  trunk/src/m3u/m3u.c   |    4 ++++
+  trunk/src/xspf/xspf.c |    4 ++++
+  2 files changed, 8 insertions(+)
+
+
 2006-10-12 16:05:01 +0000  William Pitcock <nenolod@nenolod.net>
   revision [182]
   - some seek code (can't be implemented right now though)
