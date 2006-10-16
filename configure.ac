@@ -1018,7 +1018,7 @@ fi
 localedir="$datadir/locale"
 AC_SUBST(localedir)
 
-BEEP_DEFINES="$CFLAGS -DDATA_DIR=\\\"$datadir/audacious-plugins\\\" -DPLUGIN_DIR=\\\"$plugindir\\\" -DPLUGINSUBS=$pluginsubs -DLOCALEDIR=\\\"$localedir\\\""
+BEEP_DEFINES="$CFLAGS -DDATA_DIR=\\\"$datadir/audacious\\\" -DPLUGIN_DIR=\\\"$plugindir\\\" -DPLUGINSUBS=$pluginsubs -DLOCALEDIR=\\\"$localedir\\\""
 CFLAGS="$CFLAGS $EXTRA_CFLAGS"
 
 if test "$enable_user_plugin_dir" = "no"; then

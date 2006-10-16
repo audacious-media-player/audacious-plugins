@@ -1,3 +1,11 @@
+2006-10-15 16:41:42 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [186]
+  - workaround for GNOME VFS crash
+  
+  trunk/src/mpg123/fileinfo.c |    4 ++++
+  1 file changed, 4 insertions(+)
+
+
 2006-10-13 04:13:45 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [184]
   - pls doesn't go along with PLAYLIST_LOCK in playlist_save().

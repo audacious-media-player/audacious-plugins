@@ -5,7 +5,7 @@ SUBDIRS =
 
 OBJECTIVE_LIBS = libscrobbler$(SHARED_SUFFIX)
 
-imagesdir = $(pkgdatadir)/images
+imagesdir = $(datadir)/audacious/images
 
 OBJECTIVE_DATA = audioscrobbler.png:$(imagesdir)	\
 	   audioscrobbler_badge.png:$(imagesdir)
