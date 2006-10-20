@@ -45,6 +45,7 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 
+#include "urlencode.h"
 #include "base64.h"
 
 #define TMP_BUF_LEN 128
@@ -61,11 +62,17 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 	// creator, album, title, duration, trackNum, annotation, image, 
 	for(nptr = track->children; nptr != NULL; nptr = nptr->next){
 		if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "location")){
+			GError *err = NULL;
+			gchar *tmp = NULL;
 			xmlChar *str = xmlNodeGetContent(nptr);
-			location = g_locale_from_utf8(str,-1,NULL,NULL,NULL);
-			if(!location)
-				location = g_strdup(str);
+			tmp = g_locale_from_utf8(str, -1, NULL, NULL, &err); //for backward compatibility
+			if(err != NULL)
+				location = xspf_url_decode(str);
+			else
+				location = xspf_url_decode(tmp);
+
 			xmlFree(str);
+			g_free(tmp); g_free(err);
 		}
 		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "creator")){
 			tuple->performer = (gchar *)xmlNodeGetContent(nptr);
@@ -126,7 +133,7 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 				xmlFree(str);
 				continue;
 			}
-			else if(!xmlStrcmp(rel, "b64filename")){
+			else if(!xmlStrcmp(rel, "b64filename")){ //for backward compatibility
 				gchar *b64str = NULL;
 				b64str = (gchar *)xmlNodeGetContent(nptr);
 				b64filename = g_malloc0(strlen(b64str)*3/4+1);
@@ -134,7 +141,6 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 				g_free(b64str);
 				continue;
 			}
-
 			xmlFree(rel);
 			rel = NULL;
 		}
@@ -234,23 +240,17 @@ playlist_save_xspf(const gchar *filename, gint pos)
 	{
 		PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
 		xmlNodePtr track, location;
-		gchar *utf_filename = NULL;
-		gboolean use_base64 = FALSE;
+		gchar *filename = NULL;
 
 		track = xmlNewNode(NULL, "track");
 		location = xmlNewNode(NULL, "location");
 
-		/* try locale encoding first */
-		utf_filename = g_locale_to_utf8(entry->filename, -1, NULL, NULL, NULL);
-
-		if (!utf_filename) {
-			use_base64 = TRUE; /* filename isn't straightforward. */
-			/* if above fails, try to guess */
-			utf_filename = str_to_utf8(entry->filename);
-		}
-		if(!g_utf8_validate(utf_filename, -1, NULL))
+		/* url encode file name */
+		filename = (gchar *)xspf_url_encode(entry->filename);
+		if(!g_utf8_validate(filename, -1, NULL))
 			continue;
-		xmlAddChild(location, xmlNewText(utf_filename));
+
+		xmlAddChild(location, xmlNewText(filename));
 		xmlAddChild(track, location);
 		xmlAddChild(tracklist, track);
 
@@ -367,22 +367,8 @@ playlist_save_xspf(const gchar *filename, gint pos)
 			}
 
 		}
-
-		if (use_base64 && entry->filename) {
-			gchar *b64str = NULL;
-			b64str = g_malloc0(strlen(entry->filename)*2);
-			to64frombits(b64str, entry->filename, strlen(entry->filename));
-			tmp = xmlNewNode(NULL, "meta");
-			xmlSetProp(tmp, "rel", "b64filename");
-			xmlAddChild(tmp, xmlNewText(b64str));
-			xmlAddChild(track, tmp);
-			g_free(b64str);
-			use_base64 = FALSE;
-		}
-
-		g_free(utf_filename);
-		utf_filename = NULL;
-
+		g_free(filename);
+		filename = NULL;
 	}
 
 	PLAYLIST_UNLOCK();

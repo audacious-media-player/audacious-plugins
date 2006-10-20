@@ -1,3 +1,11 @@
+2006-10-16 18:40:44 +0000  Giacomo Lozito <james@develia.org>
+  revision [188]
+  - do not use a different DATA_DIR for audacious-plugins
+  trunk/configure.ac           |    2 +-
+  trunk/src/scrobbler/Makefile |    2 +-
+  2 files changed, 2 insertions(+), 2 deletions(-)
+
+
 2006-10-15 16:41:42 +0000  William Pitcock <nenolod@nenolod.net>
   revision [186]
   - workaround for GNOME VFS crash

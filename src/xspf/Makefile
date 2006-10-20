@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libxspf$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(CONTAINER_PLUGIN_DIR)
 
-SOURCES = xspf.c base64.c
+SOURCES = xspf.c base64.c urlencode.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
