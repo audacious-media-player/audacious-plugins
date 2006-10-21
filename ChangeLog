@@ -1,3 +1,14 @@
+2006-10-20 07:59:45 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [190]
+  - xspf now uses url encoding for location entry.
+  
+  trunk/src/xspf/Makefile    |    2 
+  trunk/src/xspf/urlencode.c |  158 +++++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/xspf/urlencode.h |    4 +
+  trunk/src/xspf/xspf.c      |   52 +++++---------
+  4 files changed, 182 insertions(+), 34 deletions(-)
+
+
 2006-10-16 18:40:44 +0000  Giacomo Lozito <james@develia.org>
   revision [188]
   - do not use a different DATA_DIR for audacious-plugins
