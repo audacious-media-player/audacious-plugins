@@ -43,6 +43,7 @@ extern "C" {
 #endif
 
 typedef float   Float_t;         /* Type used for filtering */
+extern Float_t ReplayGainReferenceLoudness; /* in dB SPL, currently == 89.0 */
 
 int     InitGainAnalysis ( long samplefreq );
 int     AnalyzeSamples   ( const Float_t* left_samples, const Float_t* right_samples, size_t num_samples, int num_channels );

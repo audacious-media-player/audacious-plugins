@@ -1,3 +1,12 @@
+2006-10-21 16:21:12 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [192]
+  First attempt at porting our FLAC plugin to API 1.1.3 (completely incompatible, as usual!). Needs more work and a version-sensitize FLAC checker.
+  trunk/src/flac/Makefile.lite |   39 ---
+  trunk/src/flac/fileinfo.c    |   71 +++++
+  trunk/src/flac/plugin.c      |  517 +++++++++++++++----------------------------
+  3 files changed, 255 insertions(+), 372 deletions(-)
+
+
 2006-10-20 07:59:45 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [190]
   - xspf now uses url encoding for location entry.

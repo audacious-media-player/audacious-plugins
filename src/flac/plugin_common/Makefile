@@ -11,12 +11,14 @@ noinst_HEADERS = \
 	defs.h \
 	dither.h \
 	locale_hack.h \
-	tags.h
+	tags.h \
+	replaygain.h
 
 SOURCES = \
 	charset.c \
 	dither.c \
-	tags.c
+	tags.c \
+	replaygain.c
 
 OBJECTS = ${SOURCES:.c=.o}
 

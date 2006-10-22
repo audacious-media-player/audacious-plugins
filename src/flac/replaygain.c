@@ -1,5 +1,5 @@
 /* grabbag - Convenience lib for various routines common to several tools
- * Copyright (C) 2002,2003,2004,2005  Josh Coalson
+ * Copyright (C) 2002,2003,2004,2005,2006  Josh Coalson
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,11 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#if HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include "grabbag.h"
 #include "replaygain_analysis.h"
 #include "FLAC/assert.h"
-#include "FLAC/file_decoder.h"
 #include "FLAC/metadata.h"
+#include "FLAC/stream_decoder.h"
 #include <locale.h>
 #include <math.h>
 #include <stdio.h>
@@ -41,22 +45,26 @@
 #endif
 #define local_max(a,b) ((a)>(b)?(a):(b))
 
-static const FLAC__byte *tag_title_gain_ = (FLAC__byte*)"REPLAYGAIN_TRACK_GAIN";
-static const FLAC__byte *tag_title_peak_ = (FLAC__byte*)"REPLAYGAIN_TRACK_PEAK";
-static const FLAC__byte *tag_album_gain_ = (FLAC__byte*)"REPLAYGAIN_ALBUM_GAIN";
-static const FLAC__byte *tag_album_peak_ = (FLAC__byte*)"REPLAYGAIN_ALBUM_PEAK";
-static const char *peak_format_ = "%s=%1.8f";
+static const char *reference_format_ = "%s=%2.1f dB";
 static const char *gain_format_ = "%s=%+2.2f dB";
+static const char *peak_format_ = "%s=%1.8f";
 
 static double album_peak_, title_peak_;
 
-const unsigned GRABBAG__REPLAYGAIN_MAX_TAG_SPACE_REQUIRED = 148;
+const unsigned GRABBAG__REPLAYGAIN_MAX_TAG_SPACE_REQUIRED = 190;
 /*
+	FLAC__STREAM_METADATA_VORBIS_COMMENT_ENTRY_LENGTH_LEN/8 + 29 + 1 + 8 +
 	FLAC__STREAM_METADATA_VORBIS_COMMENT_ENTRY_LENGTH_LEN/8 + 21 + 1 + 10 +
 	FLAC__STREAM_METADATA_VORBIS_COMMENT_ENTRY_LENGTH_LEN/8 + 21 + 1 + 12 +
 	FLAC__STREAM_METADATA_VORBIS_COMMENT_ENTRY_LENGTH_LEN/8 + 21 + 1 + 10 +
 	FLAC__STREAM_METADATA_VORBIS_COMMENT_ENTRY_LENGTH_LEN/8 + 21 + 1 + 12
 */
+
+const FLAC__byte * const GRABBAG__REPLAYGAIN_TAG_REFERENCE_LOUDNESS = (const FLAC__byte * const)"REPLAYGAIN_REFERENCE_LOUDNESS";
+const FLAC__byte * const GRABBAG__REPLAYGAIN_TAG_TITLE_GAIN = (const FLAC__byte * const)"REPLAYGAIN_TRACK_GAIN";
+const FLAC__byte * const GRABBAG__REPLAYGAIN_TAG_TITLE_PEAK = (const FLAC__byte * const)"REPLAYGAIN_TRACK_PEAK";
+const FLAC__byte * const GRABBAG__REPLAYGAIN_TAG_ALBUM_GAIN = (const FLAC__byte * const)"REPLAYGAIN_ALBUM_GAIN";
+const FLAC__byte * const GRABBAG__REPLAYGAIN_TAG_ALBUM_PEAK = (const FLAC__byte * const)"REPLAYGAIN_ALBUM_PEAK";
 
 
 static FLAC__bool get_file_stats_(const char *filename, struct stat *stats)
@@ -82,8 +90,8 @@ static FLAC__bool append_tag_(FLAC__StreamMetadata *block, const char *format, c
 
 	FLAC__ASSERT(0 != block);
 	FLAC__ASSERT(block->type == FLAC__METADATA_TYPE_VORBIS_COMMENT);
+	FLAC__ASSERT(0 != format);
 	FLAC__ASSERT(0 != name);
-	FLAC__ASSERT(0 != value);
 
 	buffer[sizeof(buffer)-1] = '\0';
 	/*
@@ -266,7 +274,7 @@ typedef struct {
 	FLAC__bool error;
 } DecoderInstance;
 
-static FLAC__StreamDecoderWriteStatus write_callback_(const FLAC__FileDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data)
+static FLAC__StreamDecoderWriteStatus write_callback_(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data)
 {
 	DecoderInstance *instance = (DecoderInstance*)client_data;
 	const unsigned bits_per_sample = frame->header.bits_per_sample;
@@ -295,7 +303,7 @@ static FLAC__StreamDecoderWriteStatus write_callback_(const FLAC__FileDecoder *d
 		return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
 }
 
-static void metadata_callback_(const FLAC__FileDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
+static void metadata_callback_(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
 {
 	DecoderInstance *instance = (DecoderInstance*)client_data;
 
@@ -318,7 +326,7 @@ static void metadata_callback_(const FLAC__FileDecoder *decoder, const FLAC__Str
 	}
 }
 
-static void error_callback_(const FLAC__FileDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
+static void error_callback_(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
 {
 	DecoderInstance *instance = (DecoderInstance*)client_data;
 
@@ -330,7 +338,7 @@ static void error_callback_(const FLAC__FileDecoder *decoder, FLAC__StreamDecode
 const char *grabbag__replaygain_analyze_file(const char *filename, float *title_gain, float *title_peak)
 {
 	DecoderInstance instance;
-	FLAC__FileDecoder *decoder = FLAC__file_decoder_new();
+	FLAC__StreamDecoder *decoder = FLAC__stream_decoder_new();
 
 	if(0 == decoder)
 		return "memory allocation error";
@@ -338,27 +346,21 @@ const char *grabbag__replaygain_analyze_file(const char *filename, float *title_
 	instance.error = false;
 
 	/* It does these three by default but lets be explicit: */
-	FLAC__file_decoder_set_md5_checking(decoder, false);
-	FLAC__file_decoder_set_metadata_ignore_all(decoder);
-	FLAC__file_decoder_set_metadata_respond(decoder, FLAC__METADATA_TYPE_STREAMINFO);
+	FLAC__stream_decoder_set_md5_checking(decoder, false);
+	FLAC__stream_decoder_set_metadata_ignore_all(decoder);
+	FLAC__stream_decoder_set_metadata_respond(decoder, FLAC__METADATA_TYPE_STREAMINFO);
 
-	FLAC__file_decoder_set_filename(decoder, filename);
-	FLAC__file_decoder_set_write_callback(decoder, write_callback_);
-	FLAC__file_decoder_set_metadata_callback(decoder, metadata_callback_);
-	FLAC__file_decoder_set_error_callback(decoder, error_callback_);
-	FLAC__file_decoder_set_client_data(decoder, &instance);
-
-	if(FLAC__file_decoder_init(decoder) != FLAC__FILE_DECODER_OK) {
-		FLAC__file_decoder_delete(decoder);
+	if(FLAC__stream_decoder_init_file(decoder, filename, write_callback_, metadata_callback_, error_callback_, &instance) != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
+		FLAC__stream_decoder_delete(decoder);
 		return "initializing decoder";
 	}
 
-	if(!FLAC__file_decoder_process_until_end_of_file(decoder) || instance.error) {
-		FLAC__file_decoder_delete(decoder);
+	if(!FLAC__stream_decoder_process_until_end_of_stream(decoder) || instance.error) {
+		FLAC__stream_decoder_delete(decoder);
 		return "decoding file";
 	}
 
-	FLAC__file_decoder_delete(decoder);
+	FLAC__stream_decoder_delete(decoder);
 
 	grabbag__replaygain_get_title(title_gain, title_peak);
 
@@ -369,11 +371,28 @@ const char *grabbag__replaygain_store_to_vorbiscomment(FLAC__StreamMetadata *blo
 {
 	const char *error;
 
+	if(0 != (error = grabbag__replaygain_store_to_vorbiscomment_reference(block)))
+		return error;
+
 	if(0 != (error = grabbag__replaygain_store_to_vorbiscomment_title(block, title_gain, title_peak)))
 		return error;
 
 	if(0 != (error = grabbag__replaygain_store_to_vorbiscomment_album(block, album_gain, album_peak)))
 		return error;
+
+	return 0;
+}
+
+const char *grabbag__replaygain_store_to_vorbiscomment_reference(FLAC__StreamMetadata *block)
+{
+	FLAC__ASSERT(0 != block);
+	FLAC__ASSERT(block->type == FLAC__METADATA_TYPE_VORBIS_COMMENT);
+
+	if(FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)GRABBAG__REPLAYGAIN_TAG_REFERENCE_LOUDNESS) < 0)
+		return "memory allocation error";
+
+	if(!append_tag_(block, reference_format_, GRABBAG__REPLAYGAIN_TAG_REFERENCE_LOUDNESS, ReplayGainReferenceLoudness))
+		return "memory allocation error";
 
 	return 0;
 }
@@ -384,14 +403,14 @@ const char *grabbag__replaygain_store_to_vorbiscomment_album(FLAC__StreamMetadat
 	FLAC__ASSERT(block->type == FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
 	if(
-		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)tag_album_gain_) < 0 ||
-		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)tag_album_peak_) < 0
+		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)GRABBAG__REPLAYGAIN_TAG_ALBUM_GAIN) < 0 ||
+		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)GRABBAG__REPLAYGAIN_TAG_ALBUM_PEAK) < 0
 	)
 		return "memory allocation error";
 
 	if(
-		!append_tag_(block, peak_format_, tag_album_peak_, album_peak) ||
-		!append_tag_(block, gain_format_, tag_album_gain_, album_gain)
+		!append_tag_(block, gain_format_, GRABBAG__REPLAYGAIN_TAG_ALBUM_GAIN, album_gain) ||
+		!append_tag_(block, peak_format_, GRABBAG__REPLAYGAIN_TAG_ALBUM_PEAK, album_peak)
 	)
 		return "memory allocation error";
 
@@ -404,14 +423,14 @@ const char *grabbag__replaygain_store_to_vorbiscomment_title(FLAC__StreamMetadat
 	FLAC__ASSERT(block->type == FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
 	if(
-		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)tag_title_gain_) < 0 ||
-		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)tag_title_peak_) < 0
+		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)GRABBAG__REPLAYGAIN_TAG_TITLE_GAIN) < 0 ||
+		FLAC__metadata_object_vorbiscomment_remove_entries_matching(block, (const char *)GRABBAG__REPLAYGAIN_TAG_TITLE_PEAK) < 0
 	)
 		return "memory allocation error";
 
 	if(
-		!append_tag_(block, peak_format_, tag_title_peak_, title_peak) ||
-		!append_tag_(block, gain_format_, tag_title_gain_, title_gain)
+		!append_tag_(block, gain_format_, GRABBAG__REPLAYGAIN_TAG_TITLE_GAIN, title_gain) ||
+		!append_tag_(block, peak_format_, GRABBAG__REPLAYGAIN_TAG_TITLE_PEAK, title_peak)
 	)
 		return "memory allocation error";
 
@@ -515,6 +534,26 @@ const char *grabbag__replaygain_store_to_file(const char *filename, float album_
 	return 0;
 }
 
+const char *grabbag__replaygain_store_to_file_reference(const char *filename, FLAC__bool preserve_modtime)
+{
+	FLAC__Metadata_Chain *chain;
+	FLAC__StreamMetadata *block;
+	const char *error;
+
+	if(0 != (error = store_to_file_pre_(filename, &chain, &block)))
+		return error;
+
+	if(0 != (error = grabbag__replaygain_store_to_vorbiscomment_reference(block))) {
+		FLAC__metadata_chain_delete(chain);
+		return error;
+	}
+
+	if(0 != (error = store_to_file_post_(filename, chain, preserve_modtime)))
+		return error;
+
+	return 0;
+}
+
 const char *grabbag__replaygain_store_to_file_album(const char *filename, float album_gain, float album_peak, FLAC__bool preserve_modtime)
 {
 	FLAC__Metadata_Chain *chain;
@@ -570,7 +609,7 @@ static FLAC__bool parse_double_(const FLAC__StreamMetadata_VorbisComment_Entry *
 		return false;
 	q++;
 	memset(s, 0, sizeof(s)-1);
-	strncpy(s, q, local_min(sizeof(s)-1, (size_t)(entry->length - (q-p))));
+	strncpy(s, q, local_min(sizeof(s)-1, entry->length - (q-p)));
 
 	v = strtod(s, &end);
 	if(end == s)
@@ -580,22 +619,33 @@ static FLAC__bool parse_double_(const FLAC__StreamMetadata_VorbisComment_Entry *
 	return true;
 }
 
-FLAC__bool grabbag__replaygain_load_from_vorbiscomment(const FLAC__StreamMetadata *block, FLAC__bool album_mode, double *gain, double *peak)
+FLAC__bool grabbag__replaygain_load_from_vorbiscomment(const FLAC__StreamMetadata *block, FLAC__bool album_mode, FLAC__bool strict, double *reference, double *gain, double *peak)
 {
-	int gain_offset, peak_offset;
+	int reference_offset, gain_offset, peak_offset;
 
 	FLAC__ASSERT(0 != block);
+	FLAC__ASSERT(0 != reference);
+	FLAC__ASSERT(0 != gain);
+	FLAC__ASSERT(0 != peak);
 	FLAC__ASSERT(block->type == FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-	if(0 > (gain_offset = FLAC__metadata_object_vorbiscomment_find_entry_from(block, /*offset=*/0, (const char *)(album_mode? tag_album_gain_ : tag_title_gain_))))
-		return false;
-	if(0 > (peak_offset = FLAC__metadata_object_vorbiscomment_find_entry_from(block, /*offset=*/0, (const char *)(album_mode? tag_album_peak_ : tag_title_peak_))))
-		return false;
+	/* Default to current level until overridden by a detected tag; this
+	 * will always be true until we change replaygain_analysis.c
+	 */
+	*reference = ReplayGainReferenceLoudness;
+
+	if(0 <= (reference_offset = FLAC__metadata_object_vorbiscomment_find_entry_from(block, /*offset=*/0, (const char *)GRABBAG__REPLAYGAIN_TAG_REFERENCE_LOUDNESS)))
+		(void)parse_double_(block->data.vorbis_comment.comments + reference_offset, reference);
+
+	if(0 > (gain_offset = FLAC__metadata_object_vorbiscomment_find_entry_from(block, /*offset=*/0, (const char *)(album_mode? GRABBAG__REPLAYGAIN_TAG_ALBUM_GAIN : GRABBAG__REPLAYGAIN_TAG_TITLE_GAIN))))
+		return !strict && grabbag__replaygain_load_from_vorbiscomment(block, !album_mode, /*strict=*/true, reference, gain, peak);
+	if(0 > (peak_offset = FLAC__metadata_object_vorbiscomment_find_entry_from(block, /*offset=*/0, (const char *)(album_mode? GRABBAG__REPLAYGAIN_TAG_ALBUM_PEAK : GRABBAG__REPLAYGAIN_TAG_TITLE_PEAK))))
+		return !strict && grabbag__replaygain_load_from_vorbiscomment(block, !album_mode, /*strict=*/true, reference, gain, peak);
 
 	if(!parse_double_(block->data.vorbis_comment.comments + gain_offset, gain))
-		return false;
+		return !strict && grabbag__replaygain_load_from_vorbiscomment(block, !album_mode, /*strict=*/true, reference, gain, peak);
 	if(!parse_double_(block->data.vorbis_comment.comments + peak_offset, peak))
-		return false;
+		return !strict && grabbag__replaygain_load_from_vorbiscomment(block, !album_mode, /*strict=*/true, reference, gain, peak);
 
 	return true;
 }

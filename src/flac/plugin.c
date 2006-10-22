@@ -88,7 +88,7 @@ static void FLAC_XMMS__get_song_info(char *filename, char **title, int *length);
 
 static void *play_loop_(void *arg);
 
-static FLAC__bool safe_decoder_init_(const char *filename, FLAC__StreamDecoder *decoder);
+static FLAC__bool safe_decoder_init_(char *filename, FLAC__StreamDecoder *decoder);
 static void safe_decoder_finish_(FLAC__StreamDecoder *decoder);
 static void safe_decoder_delete_(FLAC__StreamDecoder *decoder);
 
@@ -186,6 +186,7 @@ void FLAC_XMMS__init()
 {
 	ConfigDb *db;
 	FLAC__uint32 test = 1;
+	gchar *tmp;
 
 	is_big_endian_host_ = (*((FLAC__byte*)(&test)))? false : true;
 
@@ -572,7 +573,7 @@ void *play_loop_(void *arg)
 	return 0; /* to silence the compiler warning about not returning a value */
 }
 
-FLAC__bool safe_decoder_init_(const char *filename, FLAC__StreamDecoder *decoder)
+FLAC__bool safe_decoder_init_(char *filename, FLAC__StreamDecoder *decoder)
 {
 	if(decoder == 0)
 		return false;
