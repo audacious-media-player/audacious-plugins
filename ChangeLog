@@ -1,3 +1,19 @@
+2006-10-22 01:02:01 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [194]
+  It compiles now.
+  trunk/src/flac/grabbag/replaygain.h                   |   12 +
+  trunk/src/flac/plugin.c                               |    5 
+  trunk/src/flac/plugin_common/Makefile                 |    6 
+  trunk/src/flac/plugin_common/Makefile.lite            |   35 ----
+  trunk/src/flac/plugin_common/README                   |    2 
+  trunk/src/flac/plugin_common/plugin_common_static.dsp |  124 ----------------
+  trunk/src/flac/plugin_common/replaygain.c             |   62 ++++++++
+  trunk/src/flac/plugin_common/replaygain.h             |   32 ++++
+  trunk/src/flac/replaygain.c                           |  138 ++++++++++++------
+  trunk/src/flac/replaygain_analysis.h                  |    1 
+  10 files changed, 206 insertions(+), 211 deletions(-)
+
+
 2006-10-21 16:21:12 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [192]
   First attempt at porting our FLAC plugin to API 1.1.3 (completely incompatible, as usual!). Needs more work and a version-sensitize FLAC checker.
