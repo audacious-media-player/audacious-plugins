@@ -291,6 +291,13 @@ mpgdec_detect_by_content(char *filename)
 	ret = TRUE;
 	goto done;
     }
+
+    if (!memcmp(tmp, "MP+", 3))
+    {
+	ret = FALSE;
+	goto done;
+    }
+
     head = convert_to_header(tmp);
     while (!mpgdec_head_check(head)) {
         /*

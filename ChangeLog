@@ -1,3 +1,10 @@
+2006-10-22 01:17:49 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [196]
+  Flac now plays on 1.13, but not on 1.12. API breakage *sucks*, upstream should stop doing it.
+  trunk/src/flac/replaygain_analysis.c |  832 +++++++++++++++++------------------
+  1 file changed, 419 insertions(+), 413 deletions(-)
+
+
 2006-10-22 01:02:01 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [194]
   It compiles now.
