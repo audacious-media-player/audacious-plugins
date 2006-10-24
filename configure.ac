@@ -478,7 +478,7 @@ else
 fi
 
 if test "$have_flac" = "yes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS flac"
+	INPUT_PLUGINS="$INPUT_PLUGINS flac$FLAC_VERSION"
 fi
 
 dnl *** WMA

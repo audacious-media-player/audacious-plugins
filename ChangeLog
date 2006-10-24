@@ -1,3 +1,48 @@
+2006-10-24 02:55:09 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [208]
+  - 1.1.2 compatible plugin (I HATE YOU FLAC PEOPLE)
+  
+  trunk/src/flac112/Makefile                               |   39 
+  trunk/src/flac112/Makefile.lite                          |   39 
+  trunk/src/flac112/charset.c                              |  194 +++
+  trunk/src/flac112/charset.h                              |   56 
+  trunk/src/flac112/configure.c                            |  685 +++++++++++
+  trunk/src/flac112/configure.h                            |   77 +
+  trunk/src/flac112/fast_float_math_hack.h                 |   39 
+  trunk/src/flac112/file.c                                 |  142 ++
+  trunk/src/flac112/fileinfo.c                             |  433 +++++++
+  trunk/src/flac112/grabbag.h                              |   28 
+  trunk/src/flac112/grabbag/cuesheet.h                     |   42 
+  trunk/src/flac112/grabbag/file.h                         |   54 
+  trunk/src/flac112/grabbag/replaygain.h                   |   64 +
+  trunk/src/flac112/grabbag/seektable.h                    |   38 
+  trunk/src/flac112/http.c                                 |  897 +++++++++++++++
+  trunk/src/flac112/http.h                                 |   26 
+  trunk/src/flac112/plugin.c                               |  862 ++++++++++++++
+  trunk/src/flac112/plugin.h                               |   24 
+  trunk/src/flac112/plugin_common/Makefile                 |   26 
+  trunk/src/flac112/plugin_common/Makefile.lite            |   35 
+  trunk/src/flac112/plugin_common/README                   |    2 
+  trunk/src/flac112/plugin_common/all.h                    |   27 
+  trunk/src/flac112/plugin_common/charset.c                |  156 ++
+  trunk/src/flac112/plugin_common/charset.h                |   39 
+  trunk/src/flac112/plugin_common/defs.h                   |   24 
+  trunk/src/flac112/plugin_common/dither.c                 |  260 ++++
+  trunk/src/flac112/plugin_common/dither.h                 |   29 
+  trunk/src/flac112/plugin_common/locale_hack.h            |   55 
+  trunk/src/flac112/plugin_common/plugin_common_static.dsp |  124 ++
+  trunk/src/flac112/plugin_common/tags.c                   |  307 +++++
+  trunk/src/flac112/plugin_common/tags.h                   |   74 +
+  trunk/src/flac112/replaygain.c                           |  615 ++++++++++
+  trunk/src/flac112/replaygain_analysis.c                  |  413 ++++++
+  trunk/src/flac112/replaygain_analysis.h                  |   57 
+  trunk/src/flac112/replaygain_synthesis.c                 |  465 +++++++
+  trunk/src/flac112/replaygain_synthesis.h                 |   51 
+  trunk/src/flac112/tag.c                                  |  149 ++
+  trunk/src/flac112/tag.h                                  |   25 
+  38 files changed, 6672 insertions(+)
+
+
 2006-10-24 02:51:39 +0000  William Pitcock <nenolod@nenolod.net>
   revision [206]
   flac -> flac113
