@@ -1,3 +1,11 @@
+2006-10-24 03:06:39 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [212]
+  - bleah fix FLAC check
+  
+  trunk/m4/libFLAC.m4 |   12 ++++++++----
+  1 file changed, 8 insertions(+), 4 deletions(-)
+
+
 2006-10-24 02:56:04 +0000  William Pitcock <nenolod@nenolod.net>
   revision [210]
   - choose between flac112 or flac113 based on which version is 
