@@ -32,7 +32,7 @@ AC_ARG_ENABLE(libFLACtest, [  --disable-libFLACtest   do not try to compile and 
     LIBFLAC_CFLAGS="-I$prefix/include"
   fi
 
-  AC_MSG_CHECKING(for libFLAC >= 1.1.3)
+  AC_MSG_CHECKING(for libFLAC >= 1.1.2)
   no_libFLAC=""
 
 
@@ -74,15 +74,19 @@ int main ()
        LIBS="$ac_save_LIBS"
   fi
 
+  if test -f conf.libFLACtest ; then
+       FLAC_VERSION=`cat conf.libFLACtest`
+       AC_DEFINE_UNQUOTED(AUD_FLAC_VERSION, $FLAC_VERSION,
+	 [Available version of FLAC on your system.])
+  fi
+
   if test "x$no_libFLAC" = "x" ; then
      AC_MSG_RESULT(yes)
      ifelse([$1], , :, [$1])     
   else
      AC_MSG_RESULT(no)
      if test -f conf.libFLACtest ; then
-       FLAC_VERSION=`cat conf.libFLACtest`
-       AC_DEFINE_UNQUOTED(AUD_FLAC_VERSION, $FLAC_VERSION,
-	 [Available version of FLAC on your system.])
+       :
      else
        echo "*** Could not run libFLAC test program, checking why..."
        CFLAGS="$CFLAGS $LIBFLAC_CFLAGS"
