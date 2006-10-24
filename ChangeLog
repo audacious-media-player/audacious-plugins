@@ -1,3 +1,11 @@
+2006-10-23 19:25:24 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [198]
+  - specifically blacklist the musepack mp2/mp3 variant
+  
+  trunk/src/mpg123/mpg123.c |    7 +++++++
+  1 file changed, 7 insertions(+)
+
+
 2006-10-22 01:17:49 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [196]
   Flac now plays on 1.13, but not on 1.12. API breakage *sucks*, upstream should stop doing it.

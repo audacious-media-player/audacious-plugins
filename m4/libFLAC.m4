@@ -32,7 +32,7 @@ AC_ARG_ENABLE(libFLACtest, [  --disable-libFLACtest   do not try to compile and 
     LIBFLAC_CFLAGS="-I$prefix/include"
   fi
 
-  AC_MSG_CHECKING(for libFLAC >= 1.1.2)
+  AC_MSG_CHECKING(for libFLAC >= 1.1.3)
   no_libFLAC=""
 
 
@@ -55,8 +55,17 @@ dnl
 
 int main ()
 {
-FLAC__format_vorbiscomment_entry_name_is_legal("foo");
-  system("touch conf.libFLACtest");
+  char cmdbuf[16384];
+
+  /* this will just bail if < 1.1.2 -nenolod */
+  FLAC__format_vorbiscomment_entry_name_is_legal("foo");
+
+  /* we need the version of FLAC available, so dump it here. */
+  sprintf(cmdbuf, "echo '%c%c%c' > conf.libFLACtest", 
+          FLAC__VERSION_STRING[0], FLAC__VERSION_STRING[2],
+	  FLAC__VERSION_STRING[4]);
+
+  system(cmdbuf);
   return 0;
 }
 
@@ -71,7 +80,9 @@ FLAC__format_vorbiscomment_entry_name_is_legal("foo");
   else
      AC_MSG_RESULT(no)
      if test -f conf.libFLACtest ; then
-       :
+       FLAC_VERSION=`cat conf.libFLACtest`
+       AC_DEFINE_UNQUOTED(AUD_FLAC_VERSION, $FLAC_VERSION,
+	 [Available version of FLAC on your system.])
      else
        echo "*** Could not run libFLAC test program, checking why..."
        CFLAGS="$CFLAGS $LIBFLAC_CFLAGS"
