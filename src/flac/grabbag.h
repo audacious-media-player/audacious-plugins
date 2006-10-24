@@ -19,10 +19,15 @@
 #ifndef SHARE__GRABBAG_H
 #define SHARE__GRABBAG_H
 
+#include <FLAC/all.h>
+#include "plugin_common/all.h"
+
+
 /* These can't be included by themselves, only from within grabbag.h */
 #include "grabbag/cuesheet.h"
 #include "grabbag/file.h"
 #include "grabbag/replaygain.h"
 #include "grabbag/seektable.h"
+
 
 #endif

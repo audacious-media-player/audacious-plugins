@@ -1,3 +1,11 @@
+2006-10-24 02:12:38 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [200]
+  - the FLAC developers suck
+  
+  trunk/m4/libFLAC.m4 |   19 +++++++++++++++----
+  1 file changed, 15 insertions(+), 4 deletions(-)
+
+
 2006-10-23 19:25:24 +0000  William Pitcock <nenolod@nenolod.net>
   revision [198]
   - specifically blacklist the musepack mp2/mp3 variant
