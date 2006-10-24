@@ -1,3 +1,30 @@
+2006-10-24 02:51:39 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [206]
+  flac -> flac113
+  
+  trunk/src/flac113/Makefile               |   78 -
+  trunk/src/flac113/charset.c              |  388 +++---
+  trunk/src/flac113/charset.h              |  112 -
+  trunk/src/flac113/configure.c            | 1370 +++++++++++------------
+  trunk/src/flac113/configure.h            |  154 +-
+  trunk/src/flac113/fast_float_math_hack.h |   78 -
+  trunk/src/flac113/file.c                 |  284 ++--
+  trunk/src/flac113/fileinfo.c             | 1000 ++++++++---------
+  trunk/src/flac113/grabbag.h              |   66 -
+  trunk/src/flac113/http.c                 | 1794 +++++++++++++++----------------
+  trunk/src/flac113/http.h                 |   52 
+  trunk/src/flac113/plugin.c               | 1436 ++++++++++++------------
+  trunk/src/flac113/plugin.h               |   48 
+  trunk/src/flac113/replaygain.c           | 1330 +++++++++++-----------
+  trunk/src/flac113/replaygain_analysis.c  |  838 +++++++-------
+  trunk/src/flac113/replaygain_analysis.h  |  116 +-
+  trunk/src/flac113/replaygain_synthesis.c |  930 ++++++++--------
+  trunk/src/flac113/replaygain_synthesis.h |  102 -
+  trunk/src/flac113/tag.c                  |  298 ++---
+  trunk/src/flac113/tag.h                  |   50 
+  20 files changed, 5262 insertions(+), 5262 deletions(-)
+
+
 2006-10-24 02:46:25 +0000  William Pitcock <nenolod@nenolod.net>
   revision [204]
   - revert to r198
