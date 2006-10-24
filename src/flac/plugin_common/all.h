@@ -24,11 +24,4 @@
 #include "locale_hack.h"
 #include "tags.h"
 
-#if (AUD_FLAC_VERSION == 112)
-#define FLAC__STREAM_DECODER_SEEK_ERROR                 \
-        FLAC__SEEKABLE_STREAM_DECODER_SEEK_ERROR
-#define FLAC__STREAM_DECODER_INIT_STATUS_OK             \
-        FLAC__SEEKABLE_STREAM_DECODER_OK
-#endif
-
 #endif
