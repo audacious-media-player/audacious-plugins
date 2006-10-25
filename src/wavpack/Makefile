@@ -1,0 +1,16 @@
+include ../../mk/rules.mk
+include ../../mk/init.mk
+
+OBJECTIVE_LIBS = libwavpack$(SHARED_SUFFIX)
+
+LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+
+SOURCES = tags.cxx ui.cxx libwavpack.cxx
+
+LIBADD = -L/usr/local/lib
+
+CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
+
+OBJECTS = ${SOURCES:.cxx=.o}
+
+include ../../mk/objective.mk

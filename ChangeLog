@@ -1,3 +1,13 @@
+2006-10-25 01:15:53 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [216]
+  - move prefswin_page_destroy(cfgdlg) to before the plugin logs out of last.fm;
+    otherwise the prefswin_page handle isn't always removed.
+    Reported on IRC by Tim Yamin <plasmaroo -at- gentoo.org>
+  
+  trunk/src/scrobbler/xmms_scrobbler.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2006-10-24 08:44:06 +0000  William Pitcock <nenolod@nenolod.net>
   revision [214]
   - 1.2.2 release
