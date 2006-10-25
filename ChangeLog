@@ -1,3 +1,11 @@
+2006-10-25 06:45:14 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [234]
+  - link against libGL
+  
+  trunk/src/iris/Makefile |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-10-25 04:25:31 +0000  William Pitcock <nenolod@nenolod.net>
   revision [232]
   - iris vis plugin port

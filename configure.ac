@@ -833,7 +833,14 @@ AC_ARG_ENABLE(iris,
 )
 
 if test "$enable_iris" = "yes"; then
-	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS iris"
+    PKG_CHECK_MODULES(XXF86VM, [xxf86vm >= 1.0.0],
+        [enable_iris=yes
+         VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS iris"],
+        [enable_iris=no]
+    )
+else
+    AC_MSG_RESULT([*** Iris plugin disabled per user request ***])
+    enable_iris=no
 fi
 
 dnl FreeBSD newpcm driver detection

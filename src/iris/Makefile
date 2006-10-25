@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libiris$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) -lGL
+LIBADD = $(GTK_LIBS) -lGL $(XXF86VM_LIBS)
 
 SOURCES = \
 	3Dstuff.c		\
@@ -29,6 +29,6 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) -D_REENTRANT $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) -D_REENTRANT $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../.. $(XXF86VM_CFLAGS)
 
 include ../../mk/objective.mk
