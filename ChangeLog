@@ -1,3 +1,13 @@
+2006-10-25 07:02:27 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [236]
+  - link against needed libs
+  
+  trunk/configure.ac      |    9 ++++++++-
+  trunk/mk/rules.mk.in    |    2 ++
+  trunk/src/iris/Makefile |    4 ++--
+  3 files changed, 12 insertions(+), 3 deletions(-)
+
+
 2006-10-25 06:45:14 +0000  William Pitcock <nenolod@nenolod.net>
   revision [234]
   - link against libGL
