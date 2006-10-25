@@ -1,3 +1,12 @@
+2006-10-25 02:13:48 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [220]
+  - autoconf support for wavpack plugin
+  
+  trunk/configure.ac   |   24 ++++++++++++++++++++++++
+  trunk/mk/rules.mk.in |    2 ++
+  2 files changed, 26 insertions(+)
+
+
 2006-10-25 02:03:53 +0000  William Pitcock <nenolod@nenolod.net>
   revision [218]
   - wavpack input plugin -- under construction

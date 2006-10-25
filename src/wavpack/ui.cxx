@@ -134,7 +134,7 @@ wv_file_info_box(char *fn)
         GtkWidget *table, *bbox, *cancel_button;
         GtkWidget *save_button, *remove_button;
 
-        window = gtk_window_new(GTK_WINDOW_DIALOG);
+        window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
         gtk_signal_connect(GTK_OBJECT(window), "destroy",
                            GTK_SIGNAL_FUNC(gtk_widget_destroyed), &window);
@@ -460,7 +460,7 @@ wv_configure(void)
         return;
     }
 
-    wv_configurewin = gtk_window_new(GTK_WINDOW_DIALOG);
+    wv_configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_signal_connect(GTK_OBJECT(wv_configurewin), "destroy",
                        GTK_SIGNAL_FUNC(gtk_widget_destroyed),
                        &wv_configurewin);

@@ -7,9 +7,9 @@ LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 SOURCES = tags.cxx ui.cxx libwavpack.cxx
 
-LIBADD = -L/usr/local/lib
+LIBADD = -L/usr/local/lib $(WAVPACK_LIBS)
 
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
+CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(WAVPACK_CFLAGS) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.cxx=.o}
 

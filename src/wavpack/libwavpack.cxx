@@ -6,6 +6,7 @@
 #include <wavpack/wputils.h>
 extern "C" {
 #include <audacious/plugin.h>
+#include <audacious/output.h>
 #include <audacious/configdb.h>
 #include <audacious/titlestring.h>
 #include <audacious/util.h>
@@ -14,7 +15,6 @@ extern "C" {
 #include <gtk/gtk.h>
 #include <iconv.h>
 #include <math.h>
-#include "equalizer.h"
 #include "tags.h"
 #ifndef M_LN10
 #define M_LN10   2.3025850929940456840179914546843642
@@ -140,9 +140,11 @@ public:
         for (int i = 0; i < num_samples * num_channels; i++) {
             output[i] = input[i];
         }
-        produce_audio(mod->output->get_output_time(), FMT_S16_LE, 
-		sample_rate, num_channels, output, 
-		num_samples * num_channels * sizeof(int16_t));
+        produce_audio(mod->output->output_time(), FMT_S16_LE, 
+		num_channels, 
+		num_samples * num_channels * sizeof(int16_t),
+		output,
+		NULL);
     }
 };
 
