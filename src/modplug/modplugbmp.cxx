@@ -111,7 +111,7 @@ bool ModplugXMMS::CanPlayFile(const string& aFilename)
 		vfs_fclose(file);
 		return 1;
 	}
-	if (!memcmp(magic, M669_MAGIC, 4)) {
+	if (!memcmp(magic, M669_MAGIC, 2)) {
 		vfs_fclose(file);
 		return 1;
 	}

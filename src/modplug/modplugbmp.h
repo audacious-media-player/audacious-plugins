@@ -37,7 +37,7 @@
 /* These nicer formats have the magic bytes at the front of the file where they belong */
 #define UMX_MAGIC	(unsigned char [4]) { 0xC1, 0x83, 0x2A, 0x9E }
 #define XM_MAGIC	(unsigned char [4]) { 0x45, 0x78, 0x74, 0x65 }			/* Exte(nded Module) */
-#define M669_MAGIC	(unsigned char [4]) { 0x69, 0x66, 0x20, 0x20 }
+#define M669_MAGIC	(unsigned char [4]) { 0x69, 0x66, 0x20, 0x20 }			/* Last two bytes are bogus, and not checked */
 #define IT_MAGIC	(unsigned char [4]) { 0x49, 0x4D, 0x50, 0x4D }			/* IMPM */
 #define MTM_MAGIC	(unsigned char [4]) { 0x4D, 0x54, 0x4D, 0x10 }
 #define PSM_MAGIC	(unsigned char [4]) { 0x50, 0x53, 0x4D, 0x20 }
