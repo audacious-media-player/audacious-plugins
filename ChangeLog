@@ -1,3 +1,33 @@
+2006-10-25 04:25:31 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [232]
+  - iris vis plugin port
+  
+  trunk/configure.ac                 |   13 
+  trunk/src/iris/3Dstuff.c           |   51 +
+  trunk/src/iris/Makefile            |   34 
+  trunk/src/iris/color.c             |   55 +
+  trunk/src/iris/config.c            | 1289 +++++++++++++++++++++++++++++++++++++
+  trunk/src/iris/config.h            |   64 +
+  trunk/src/iris/iris.c              | 1025 +++++++++++++++++++++++++++++
+  trunk/src/iris/iris.h              |  198 +++++
+  trunk/src/iris/particle.h          |  169 ++++
+  trunk/src/iris/theme.c             |  308 ++++++++
+  trunk/src/iris/theme_flash.c       |  486 +++++++++++++
+  trunk/src/iris/theme_float.c       |  367 ++++++++++
+  trunk/src/iris/theme_fountain.c    |  789 ++++++++++++++++++++++
+  trunk/src/iris/theme_knot.c        |  415 +++++++++++
+  trunk/src/iris/theme_original.c    |  366 ++++++++++
+  trunk/src/iris/theme_pinwheel.c    |  407 +++++++++++
+  trunk/src/iris/theme_pipes.c       |  368 ++++++++++
+  trunk/src/iris/theme_pyramid.c     |  140 ++++
+  trunk/src/iris/theme_spectrotoy.c  |  165 ++++
+  trunk/src/iris/theme_spectrum.c    |  278 +++++++
+  trunk/src/iris/theme_squarefield.c |  192 +++++
+  trunk/src/iris/theme_waves.c       |  160 ++++
+  trunk/src/iris/transition.c        |  184 +++++
+  23 files changed, 7523 insertions(+)
+
+
 2006-10-25 02:50:04 +0000  William Pitcock <nenolod@nenolod.net>
   revision [230]
   - make sure the tuple data is copied, not referenced (oops)

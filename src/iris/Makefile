@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libiris$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS)
+LIBADD = $(GTK_LIBS) -lGL
 
 SOURCES = \
 	3Dstuff.c		\
