@@ -101,6 +101,8 @@ static void cleanup(void)
     g_free (xmms_scrobbler.description);
     xmms_scrobbler.description = NULL;
 
+        prefswin_page_destroy(cfgdlg);
+
 	if (!going)
 		return;
 	pdebug("about to lock mutex", DEBUG);
@@ -112,8 +114,6 @@ static void cleanup(void)
 	g_thread_join(pt_scrobbler);
 
 	g_thread_join(pt_handshake);
-
-        prefswin_page_destroy(cfgdlg);
 
 	sc_cleaner();
 }
