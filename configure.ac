@@ -824,6 +824,18 @@ if test "$enable_timidity" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS timidity"
 fi
 
+dnl *** Iris
+
+AC_ARG_ENABLE(iris,
+[  --disable-iris          disable iris plugin. (default=enabled)],
+[enable_iris=$enableval],
+[enable_iris=yes]
+)
+
+if test "$enable_iris" = "yes"; then
+	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS iris"
+fi
+
 dnl FreeBSD newpcm driver detection
 
 AC_CACHE_CHECK(for FreeBSD newpcm driver, beep_cv_newpcm_driver,
@@ -1127,6 +1139,7 @@ echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
+echo "  IRIS 3D:                                $enable_iris"
 echo
 echo "  Container"
 echo "  ---------"
