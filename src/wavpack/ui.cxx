@@ -228,7 +228,7 @@ wv_file_info_box(char *fn)
                          (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
                                              GTK_SHRINK), 0, 5);
 
-        label = gtk_label_new("Track n°:");
+        label = gtk_label_new("Track number:");
         gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
         gtk_table_attach(GTK_TABLE(table), label, 2, 3, 4, 5,
                          GTK_FILL, GTK_FILL, 5, 5);
