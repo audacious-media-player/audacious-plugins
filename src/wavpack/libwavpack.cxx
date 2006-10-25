@@ -43,7 +43,7 @@ static short paused;
 static bool killDecodeThread;
 static bool AudioError;
 static GThread *thread_handle;
-static gboolean EQ_on;
+static TitleInput *wv_get_song_tuple(char *);
 
 // in ui.cpp
 void wv_configure();
@@ -80,6 +80,7 @@ InputPlugin mod = {
     wv_get_song_info,
     wv_file_info_box,          //info box
     NULL,                       //output
+    wv_get_song_tuple,
 };
 
 class WavpackDecoder
@@ -292,6 +293,37 @@ wv_play(char *filename)
     return;
 }
 
+static TitleInput *
+tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
+{
+    ape_tag tag;
+    TitleInput *ti;
+    int sample_rate = WavpackGetSampleRate(ctx);
+
+    ti = bmp_title_input_new();
+
+    ti->file_name = g_strdup(g_basename(fn));
+    ti->file_ext = "wv";
+
+    load_tag(&tag, ctx);
+
+    ti->track_name = tag.title;
+    ti->performer = tag.artist;
+    ti->album_name = tag.album;
+    ti->date = tag.year;
+    ti->track_number = atoi(tag.track);
+    if (ti->track_number < 0)
+        ti->track_number = 0;
+    ti->year = atoi(tag.year);
+    if (ti->year < 0)
+        ti->year = 0;
+    ti->genre = tag.genre;
+    ti->comment = tag.comment;
+    ti->length = (int)(WavpackGetNumSamples(ctx) / sample_rate) * 1000;
+
+    return ti;
+}
+
 static char *
 generate_title(const char *fn, WavpackContext *ctx)
 {
@@ -299,41 +331,35 @@ generate_title(const char *fn, WavpackContext *ctx)
     ape_tag tag;
     TitleInput *ti;
 
-    ti = (TitleInput *) g_malloc0(sizeof(TitleInput));
-    ti->__size = XMMS_TITLEINPUT_SIZE;
-    ti->__version = XMMS_TITLEINPUT_VERSION;
-
-    ti->file_name = g_strdup(g_basename(fn));
-    ti->file_ext = "wv";
-
-    load_tag(&tag, ctx);
-
-    // xmms doesn't support unicode...
-    ti->track_name = convertUTF8toLocale(tag.title);
-    ti->performer = convertUTF8toLocale(tag.artist);
-    ti->album_name = convertUTF8toLocale(tag.album);
-    ti->date = convertUTF8toLocale(tag.year);
-    ti->track_number = atoi(tag.track);
-    if (ti->track_number < 0)
-        ti->track_number = 0;
-    ti->year = atoi(tag.year);
-    if (ti->year < 0)
-        ti->year = 0;
-    ti->genre = convertUTF8toLocale(tag.genre);
-    ti->comment = convertUTF8toLocale(tag.comment);
+    ti = tuple_from_WavpackContext(fn, ctx);
 
     displaytitle = xmms_get_titlestring(xmms_get_gentitle_format(), ti);
     if (!displaytitle || *displaytitle == '\0'
         || (strlen(tag.title) == 0 && strlen(tag.artist) == 0))
         displaytitle = ti->file_name;
-    g_free(ti->track_name);
-    g_free(ti->performer);
-    g_free(ti->album_name);
-    g_free(ti->genre);
-    g_free(ti->comment);
-    g_free(ti);
+
+    bmp_title_input_free(ti);
 
     return displaytitle;
+}
+
+static TitleInput *
+wv_get_song_tuple(char *filename)
+{
+    TitleInput *ti;
+    char error_buff[4096]; // TODO: fixme!
+    WavpackContext *ctx = WavpackOpenFileInput(filename, error_buff, OPEN_TAGS | OPEN_WVC, 0);
+
+    if (ctx == NULL) {
+        printf("wavpack: Error opening file: \"%s: %s\"\n", filename, error_buff);
+        return NULL;
+    }
+
+    ti = tuple_from_WavpackContext(filename, ctx);
+
+    WavpackCloseFile(ctx);
+
+    return ti;
 }
 
 static void
