@@ -307,18 +307,18 @@ tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
 
     load_tag(&tag, ctx);
 
-    ti->track_name = tag.title;
-    ti->performer = tag.artist;
-    ti->album_name = tag.album;
-    ti->date = tag.year;
+    ti->track_name = g_strdup(tag.title);
+    ti->performer = g_strdup(tag.artist);
+    ti->album_name = g_strdup(tag.album);
+    ti->date = g_strdup(tag.year);
     ti->track_number = atoi(tag.track);
     if (ti->track_number < 0)
         ti->track_number = 0;
     ti->year = atoi(tag.year);
     if (ti->year < 0)
         ti->year = 0;
-    ti->genre = tag.genre;
-    ti->comment = tag.comment;
+    ti->genre = g_strdup(tag.genre);
+    ti->comment = g_strdup(tag.comment);
     ti->length = (int)(WavpackGetNumSamples(ctx) / sample_rate) * 1000;
 
     return ti;
@@ -328,15 +328,13 @@ static char *
 generate_title(const char *fn, WavpackContext *ctx)
 {
     static char *displaytitle = NULL;
-    ape_tag tag;
     TitleInput *ti;
 
     ti = tuple_from_WavpackContext(fn, ctx);
 
     displaytitle = xmms_get_titlestring(xmms_get_gentitle_format(), ti);
-    if (!displaytitle || *displaytitle == '\0'
-        || (strlen(tag.title) == 0 && strlen(tag.artist) == 0))
-        displaytitle = ti->file_name;
+    if (!displaytitle || *displaytitle == '\0')
+        displaytitle = g_strdup(fn);
 
     bmp_title_input_free(ti);
 

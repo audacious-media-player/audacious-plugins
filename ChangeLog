@@ -1,3 +1,11 @@
+2006-10-25 02:43:30 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [228]
+  - tuple support
+  
+  trunk/src/wavpack/libwavpack.cxx |   66 +++++++++++++++++++++++++++------------
+  1 file changed, 46 insertions(+), 20 deletions(-)
+
+
 2006-10-25 02:34:36 +0000  William Pitcock <nenolod@nenolod.net>
   revision [226]
   - fix a pango warning
