@@ -20,7 +20,12 @@ extern "C" {
 #define M_LN10   2.3025850929940456840179914546843642
 #endif
 
-#define DBG(format, args...) fprintf(stderr, format, ## args)
+#ifdef DEBUG
+# define DBG(format, args...) fprintf(stderr, format, ## args)
+#else
+# define DBG(format, args...)
+#endif
+
 #define BUFFER_SIZE 256 // read buffer size, in samples
 
 extern "C" InputPlugin * get_iplugin_info(void);
@@ -132,7 +137,7 @@ public:
 
     bool open_audio()
     {
-        return mod->output->open_audio(FMT_S16_LE, sample_rate, num_channels);
+        return mod->output->open_audio(FMT_S16_NE, sample_rate, num_channels);
     }
 
     void process_buffer(size_t num_samples)
@@ -140,7 +145,7 @@ public:
         for (int i = 0; i < num_samples * num_channels; i++) {
             output[i] = input[i];
         }
-        produce_audio(mod->output->output_time(), FMT_S16_LE, 
+        produce_audio(mod->output->output_time(), FMT_S16_NE, 
 		num_channels, 
 		num_samples * num_channels * sizeof(int16_t),
 		output,

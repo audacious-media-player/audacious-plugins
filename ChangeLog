@@ -1,3 +1,13 @@
+2006-10-25 02:25:50 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [222]
+  - hey, this compiles now. neat :P
+  
+  trunk/src/wavpack/Makefile       |    4 ++--
+  trunk/src/wavpack/libwavpack.cxx |   10 ++++++----
+  trunk/src/wavpack/ui.cxx         |    4 ++--
+  3 files changed, 10 insertions(+), 8 deletions(-)
+
+
 2006-10-25 02:13:48 +0000  William Pitcock <nenolod@nenolod.net>
   revision [220]
   - autoconf support for wavpack plugin
