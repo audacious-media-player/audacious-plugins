@@ -410,6 +410,29 @@ if test "$have_oggvorbis" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS vorbis"
 fi
 
+dnl *** WavPack 4.31 support
+
+AC_ARG_ENABLE(wavpack,
+    [  --disable-wavpack       disable WavPack input plugin (default=enabled)],
+    [enable_wavpack=$enableval],
+    [enable_wavpack="yes"]
+)
+
+if test "$enable_wavpack" = "yes"; then
+    PKG_CHECK_MODULES(WAVPACK, [wavpack >= 4.31],
+        [have_wavpack=yes],
+        [AC_MSG_WARN([*** Cannot find WavPack 4.31+, WavPack support will not be built ***])
+         have_wavpack=no]
+    )
+else
+    AC_MSG_RESULT([*** WavPack plugin disabled per user request ***])
+    have_wavpack=no
+fi
+
+if test "$have_wavpack" = "yes"; then
+	INPUT_PLUGINS="$INPUT_PLUGINS wavpack"
+fi
+
 dnl *** AAC
 
 AC_ARG_ENABLE(aac,
@@ -1085,6 +1108,7 @@ echo "  Game music (spc, nsf & gbs):            yes"
 echo "  PlayStation audio (sexypsf):            yes"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
+echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo
 echo "  General"
 echo "  -------"

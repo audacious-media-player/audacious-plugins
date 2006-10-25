@@ -1,3 +1,15 @@
+2006-10-25 02:03:53 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [218]
+  - wavpack input plugin -- under construction
+  
+  trunk/src/wavpack/Makefile       |   16 +
+  trunk/src/wavpack/libwavpack.cxx |  411 ++++++++++++++++++++++++++++
+  trunk/src/wavpack/tags.cxx       |  537 ++++++++++++++++++++++++++++++++++++
+  trunk/src/wavpack/tags.h         |   63 ++++
+  trunk/src/wavpack/ui.cxx         |  568 +++++++++++++++++++++++++++++++++++++++
+  5 files changed, 1595 insertions(+)
+
+
 2006-10-25 01:15:53 +0000  William Pitcock <nenolod@nenolod.net>
   revision [216]
   - move prefswin_page_destroy(cfgdlg) to before the plugin logs out of last.fm;
