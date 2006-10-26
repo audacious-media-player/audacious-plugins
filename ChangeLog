@@ -1,3 +1,11 @@
+2006-10-26 07:43:12 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [244]
+  - push fixes from p4://depot/svn-audacious-plugins-devel/virt-branches/audalarm/src
+  
+  trunk/src/alarm/alarm.c |    7 +------
+  1 file changed, 1 insertion(+), 6 deletions(-)
+
+
 2006-10-26 07:10:28 +0000  William Pitcock <nenolod@nenolod.net>
   revision [242]
   - add xmms-alarm port
