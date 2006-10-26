@@ -99,7 +99,7 @@ static void info_a52 (char *);
 InputPlugin a52_ip = {
   NULL,
   NULL,
-  "xmms-a52dec 1.0",
+  "AC-3 / A52 Decoding Plugin",
   init_a52,
   about_a52,
   configure_a52,

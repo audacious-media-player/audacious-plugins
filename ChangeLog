@@ -1,3 +1,11 @@
+2006-10-26 18:35:49 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [250]
+  - re-enable extra stereo plugin build
+  
+  trunk/configure.ac |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2006-10-26 08:52:38 +0000  William Pitcock <nenolod@nenolod.net>
   revision [248]
   - push from p4://depot/svn-audacious-plugins-devel/virt-branches/trunk/a52dec:
