@@ -33,6 +33,7 @@
 #include <audacious/util.h>
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
+#include <audacious/vfs.h>
 
 #include <a52dec/a52.h>
 #include <a52dec/mm_accel.h>
@@ -57,7 +58,7 @@ char *buf;
 long int lastset_time;
 char *name;
 int flags, sample_rate, bit_rate, frame_size, length;
-FILE *in_file;
+VFSFile *in_file;
 int a52_run, a52_not_eof;
 gint output_type; // See also: requested_output
 int output_nch;
@@ -77,7 +78,7 @@ pthread_mutex_t infile_lock;
 extern InputPlugin a52_ip;
 
 static int is_our_file_a52 (char *);
-static int synchronise_a52(FILE *, int *, int *, int *, int *);
+static int synchronise_a52(VFSFile *, int *, int *, int *, int *);
 sample_t dynamic_range(sample_t, void *);
 static void init_a52 (void);
 static void *play_loop (void *);
@@ -192,9 +193,9 @@ is_our_file_a52 (char *filename)
 {
   int l_flags, l_sample_rate, l_bit_rate, l_frame_size;
   gchar *extension;
-  FILE *temp_file;
+  VFSFile *temp_file;
 
-  temp_file = fopen (filename, "r");
+  temp_file = vfs_fopen (filename, "r");
   if (!temp_file)
     return FALSE;
 
@@ -205,11 +206,11 @@ is_our_file_a52 (char *filename)
         if (synchronise_a52(temp_file, &l_flags, &l_sample_rate, 
                         &l_bit_rate, &l_frame_size) == 0)
         {
-	  fclose (temp_file);
+	  vfs_fclose (temp_file);
 	  return TRUE;
         }
 
-  fclose (temp_file);
+  vfs_fclose (temp_file);
   return FALSE;
 }
 
@@ -224,7 +225,7 @@ is_our_file_a52 (char *filename)
    Return -1 if failed. */
 
 static int
-synchronise_a52(FILE *file, int *l_flags, int *l_sample_rate,
+synchronise_a52(VFSFile *file, int *l_flags, int *l_sample_rate,
                 int *l_bit_rate, int *l_frame_size)
 {
   int count;
@@ -232,10 +233,10 @@ synchronise_a52(FILE *file, int *l_flags, int *l_sample_rate,
   
   for (count=0; count <= SYNC_SEARCH_LIMIT; count++)
   {
-    if (fread(temp_buf, 7, 1, file) != 1)
+    if (vfs_fread(temp_buf, 7, 1, file) != 1)
       return -1;
 
-    if (fseek(file, -6, SEEK_CUR))
+    if (vfs_fseek(file, -6, SEEK_CUR))
       return -1;
 
     *l_frame_size = a52_syncinfo (temp_buf, l_flags, l_sample_rate, l_bit_rate);
@@ -250,7 +251,7 @@ synchronise_a52(FILE *file, int *l_flags, int *l_sample_rate,
 
   // Valid frame found. Go back 1 bytes to return to start of frame.
 
-  if (fseek(file, -1, SEEK_CUR))
+  if (vfs_fseek(file, -1, SEEK_CUR))
     return -1;
   
   return 0;
@@ -307,7 +308,7 @@ play_loop (void *arg)
 
       /* Lock the mutex before synch and read.
 
-         This prevent a52_seek from calling an fseek between a
+         This prevent a52_seek from calling an vfs_fseek between a
          synch and read. */
 
       pthread_mutex_lock(&infile_lock);
@@ -331,7 +332,7 @@ play_loop (void *arg)
         old_frame_size = frame_size;
       }
 
-      if(!fread(filebuf, frame_size, 1, in_file))
+      if(!vfs_fread(filebuf, frame_size, 1, in_file))
       {
         pthread_mutex_unlock(&infile_lock);
         a52_not_eof = 0;
@@ -402,7 +403,7 @@ play_loop (void *arg)
            the same. The vis data is sent in advance and must be
            set for the correct time. */
 
-        a52_ip.add_vis_pcm (ftell(in_file) / (bit_rate / 8 / 1000),
+        a52_ip.add_vis_pcm (vfs_ftell(in_file) / (bit_rate / 8 / 1000),
         		    FMT_S16_LE, output_nch, 512 * output_nch, outbuf);
       }
     }
@@ -424,7 +425,7 @@ play_loop (void *arg)
      it to end. We'll set a52_not_eof to 0 to let get_time_a52
      know that we have reached the end of file.*/
 
-  fclose (in_file);
+  vfs_fclose (in_file);
   a52_not_eof=0;
 
   pthread_exit (NULL);
@@ -881,7 +882,7 @@ play_a52 (char *filename)
   if (a52_run)
     return;
 
-  in_file = fopen (filename, "r");
+  in_file = vfs_fopen (filename, "r");
 
   if (!in_file)
     return;
@@ -889,7 +890,7 @@ play_a52 (char *filename)
   if (synchronise_a52(in_file, &flags, &sample_rate,
                       &bit_rate, &frame_size) == -1)
   {
-    fclose(in_file);
+    vfs_fclose(in_file);
     return;
   }
 
@@ -900,7 +901,7 @@ play_a52 (char *filename)
    output_nch = a52_ip.output->open_audio (FMT_S16_NE, sample_rate, 2);
    if (output_nch == 0)
     {
-      fclose (in_file);
+      vfs_fclose (in_file);
       return;
     }
   }
@@ -925,7 +926,7 @@ play_a52 (char *filename)
 
   // Get song length
 
-  fseek (in_file, 0, SEEK_END);
+  vfs_fseek (in_file, 0, SEEK_END);
 
   /* If we can get the file length, we divide it by byterate (not bitrate)
      and multiply by 1000 to get time in milliseconds.
@@ -936,7 +937,7 @@ play_a52 (char *filename)
      bit_rate : bits/second
      sample_rate : sample/second */
 
-  if ((length = ftell (in_file)) != -1)
+  if ((length = vfs_ftell (in_file)) != -1)
     a52_ip.set_info (name, length / (bit_rate / 8 / 1000), 
                      bit_rate, sample_rate, 2);
   else
@@ -946,7 +947,7 @@ play_a52 (char *filename)
 
   // Return to start of file.
 
-  fseek (in_file, 0, SEEK_SET);
+  vfs_fseek (in_file, 0, SEEK_SET);
 
   // Mutex will be used in play_loop.
 
@@ -1005,7 +1006,7 @@ static void
 get_song_info_a52 (gchar * filename, gchar ** title, gint * info_length)
 {
   int l_flags, l_sample_rate, l_bit_rate, l_frame_size;
-  FILE *temp_file;
+  VFSFile *temp_file;
   char *temp_name, *temp;
 
   // Set the song title
@@ -1022,7 +1023,7 @@ get_song_info_a52 (gchar * filename, gchar ** title, gint * info_length)
 
   // Determine the song length from filesize.
 
-  temp_file = fopen (filename, "r");
+  temp_file = vfs_fopen (filename, "r");
 
   if (synchronise_a52(temp_file, &l_flags, &l_sample_rate,
                       &l_bit_rate, &l_frame_size) == -1)
@@ -1031,9 +1032,9 @@ get_song_info_a52 (gchar * filename, gchar ** title, gint * info_length)
     return;
   }
 
-  fseek (temp_file, 0, SEEK_END);
+  vfs_fseek (temp_file, 0, SEEK_END);
 
-  if ((*info_length = ftell (temp_file)) == -1)
+  if ((*info_length = vfs_ftell (temp_file)) == -1)
     {
       // Can't get file position
       *info_length = -1;
@@ -1053,7 +1054,7 @@ seek_a52 (gint time)
   // Don't seek while play_loop is reading/synching.
   
   pthread_mutex_lock(&infile_lock);
-  fseek(in_file, time * bit_rate / 8, SEEK_SET);
+  vfs_fseek(in_file, time * bit_rate / 8, SEEK_SET);
   pthread_mutex_unlock(&infile_lock);
 
   a52_ip.output->flush (0);
@@ -1364,7 +1365,7 @@ info_a52 (char *filename)
   static GtkWidget *button_ok;
   static GtkWidget *hbox, *vbox, *label, *label2, *entry, *frame;
   static char *temp_text, *label2_text, *temp, *temp_name;
-  FILE *temp_file;
+  VFSFile *temp_file;
   int l_flags, l_sample_rate, l_bit_rate, l_frame_size, l_length;
   int no_window = 0;
   
@@ -1420,7 +1421,7 @@ info_a52 (char *filename)
 
   // Determine the song length from filesize.
 
-  temp_file = fopen (filename, "r");
+  temp_file = vfs_fopen (filename, "r");
 
   if (synchronise_a52(temp_file, &l_flags, &l_sample_rate,
                       &l_bit_rate, &l_frame_size) == -1)
@@ -1429,9 +1430,9 @@ info_a52 (char *filename)
     return;
   }
 
-  fseek (temp_file, 0, SEEK_END);
+  vfs_fseek (temp_file, 0, SEEK_END);
 
-  if ((l_length = ftell (temp_file)) == -1)
+  if ((l_length = vfs_ftell (temp_file)) == -1)
     {
       // Can't get file position
       l_length = -1;
