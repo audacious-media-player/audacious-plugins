@@ -88,7 +88,7 @@ dnl These plugins are always built.
 INPUT_PLUGINS="tonegen console sexypsf wav cue alac"
 OUTPUT_PLUGINS="disk_writer"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal"
-GENERAL_PLUGINS="song_change"
+GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope"
 CONTAINER_PLUGINS="m3u pls"
 
@@ -1131,6 +1131,7 @@ echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo
 echo "  General"
 echo "  -------"
+echo "  Alarm:                                  yes"
 echo "  Song Change:                            yes"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
