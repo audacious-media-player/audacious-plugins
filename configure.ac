@@ -87,7 +87,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console sexypsf wav cue alac"
 OUTPUT_PLUGINS="disk_writer"
-EFFECT_PLUGINS="audiocompress ladspa voice_removal"
+EFFECT_PLUGINS="audiocompress ladspa voice_removal stereo_plugin"
 GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope"
 CONTAINER_PLUGINS="m3u pls"
@@ -1142,6 +1142,7 @@ echo "  ------"
 echo "  AudioCompressor (AGC):                  yes"
 echo "  LADSPA effects host (ladspa):           yes"
 echo "  Voice Removal:                          yes"
+echo "  Extra Stereo:                           yes"
 echo
 echo "  Visualization"
 echo "  -------------"

@@ -1,3 +1,12 @@
+2006-10-26 08:52:38 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [248]
+  - push from p4://depot/svn-audacious-plugins-devel/virt-branches/trunk/a52dec:
+  + add audacious VFS support to a52dec
+  
+  trunk/src/a52dec/a52dec.c |   59 +++++++++++++++++++++++-----------------------
+  1 file changed, 30 insertions(+), 29 deletions(-)
+
+
 2006-10-26 08:47:53 +0000  William Pitcock <nenolod@nenolod.net>
   revision [246]
   - a52dec plugin port. *under construction; don't expect to work*
