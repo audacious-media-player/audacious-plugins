@@ -662,14 +662,9 @@ GeneralPlugin *get_gplugin_info()
  */
 static void threadsleep(float x)
 {
-   struct timespec rqtp, rmtp;
-
    DEBUG("threadsleep: waiting %f seconds\n", x);
 
-   rqtp.tv_sec = x;
-   rqtp.tv_nsec = (int)((float)(x - (int)x) * 1000000000.0);
-
-   nanosleep(&rqtp, &rmtp);
+   g_usleep((int) ((float) x * (float) 1000000.0));
 
    return;
 }

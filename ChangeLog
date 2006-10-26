@@ -1,3 +1,18 @@
+2006-10-26 07:10:28 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [242]
+  - add xmms-alarm port
+  
+  trunk/configure.ac          |    3 
+  trunk/src/alarm/Makefile    |   18 
+  trunk/src/alarm/alarm.c     | 1031 ++++++++++++++++++++++++++++++
+  trunk/src/alarm/alarm.h     |   58 +
+  trunk/src/alarm/callbacks.h |   49 +
+  trunk/src/alarm/interface.c | 1506 ++++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/alarm/interface.h |   12 
+  trunk/src/alarm/support.h   |    7 
+  8 files changed, 2683 insertions(+), 1 deletion(-)
+
+
 2006-10-25 20:41:36 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [240]
   669 is 2-byte, not 4-byte. Thanks to a report from Kevin Korb on #audacious.
