@@ -7,6 +7,8 @@ GtkWidget* create_alarm_dialog (void);
 GtkWidget* create_playlist_fileselection (void);
 GtkWidget* create_warning_dialog (void);
 GtkWidget* create_config_dialog (void);
+GtkWidget* create_reminder_dialog (gchar *reminder_msg);
+
 /*
  * vi:ai:expandtab:ts=2 sts=2 shiftwidth=2:nowrap:
  */

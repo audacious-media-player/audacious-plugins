@@ -11,7 +11,7 @@ LIBADD += $(GTK_LIBS)
 
 SOURCES = alarm.c interface.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) -I../../intl -I../.. -DGTK_ENABLE_BROKEN
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.c=.o}
 
