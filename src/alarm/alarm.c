@@ -1000,10 +1000,12 @@ static void alarm_cleanup()
 {
    DEBUG("alarm_cleanup\n");
 
-   pthread_cancel(start_tid);
+   if (start_tid)
+     pthread_cancel(start_tid);
    start_tid = 0;
    if(stop_tid)
      pthread_cancel(stop_tid);
+   stop_tid = 0;
 }
 
 /*
