@@ -302,7 +302,8 @@ tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
 
     ti = bmp_title_input_new();
 
-    ti->file_name = g_strdup(g_basename(fn));
+    ti->file_name = g_path_get_basename(fn);
+    ti->file_path = g_path_get_dirname(fn);
     ti->file_ext = "wv";
 
     load_tag(&tag, ctx);
