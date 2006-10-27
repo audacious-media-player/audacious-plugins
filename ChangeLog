@@ -1,3 +1,11 @@
+2006-10-27 19:07:11 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [262]
+  - apply fixes from Christian Birchinger <joker -at- gentoo.org>.
+  
+  trunk/src/alarm/interface.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-10-27 18:58:34 +0000  William Pitcock <nenolod@nenolod.net>
   revision [260]
   - provide a complete tuple (fixes albumart and such; path was missing.)

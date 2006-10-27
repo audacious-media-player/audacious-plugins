@@ -412,9 +412,10 @@ void alarm_store_playlistname(GtkButton *button, gpointer data)
 
    DEBUG("alarm_store_playlistname\n");
 
-   plist = gtk_file_selection_get_filename(fs);
+   plist = g_strdup(gtk_file_selection_get_filename(fs));
 
    gtk_entry_set_text(alarm_conf.playlist, plist);
+   g_free(plist);
 }
 
 /*
@@ -916,7 +917,7 @@ static void *alarm_start_thread(void *args)
        DEBUG("Showing reminder '%s'\n", alarm_conf.reminder_msg);
 
        GDK_THREADS_ENTER();
-       reminder_dialog = create_reminder_dialog(alarm_conf.reminder_msg);
+       reminder_dialog = (GtkWidget*) create_reminder_dialog(alarm_conf.reminder_msg);
        gtk_signal_connect(GTK_OBJECT(reminder_dialog), "destroy",
        GTK_SIGNAL_FUNC(dialog_destroyed), &reminder_dialog);
        gtk_widget_show_all(reminder_dialog);
