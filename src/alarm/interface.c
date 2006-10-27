@@ -1356,7 +1356,7 @@ create_config_dialog (void)
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (text1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow1), text1);
-  gtk_text_insert (GTK_TEXT (text1), NULL, NULL, NULL,
+  gtk_text_insert (GTK_TEXT_VIEW (text1), NULL, NULL, NULL,
                    "Time\n  Alarm at: \n    The time for the alarm to come on.\n\n  Quiet After: \n    Stop alarm after this amount of time.\n       (if the wakeup dialog is not closed)\n\n\nDays\n  Day:\n    Select the days for the alarm to activate.\n\n  Time:\n    Choose the time for the alarm on each day,\n    or select the toggle button to use the default\n    time.\n\n\nVolume\n  Fading: \n    Fade the volume up to the chosen volume \n    for this amount of time.\n\n  Start at: \n    Start fading from this volume.\n\n  Final: \n    The volume to stop fading at.  If the fading\n    time is 0 then set volume to this and start\n    playing.\n\n\nOptions:\n  Additional Command:\n    Run this command at the alarm time.\n\n  Playlist: \n    Load this playlist for playing songs from \n    (must have .m3u extension).  If no playlist\n    is given then the songs which are currently\n    in the list will be used.\n    The URL of an mp3/ogg stream can also be\n    entered here, but loading of playlists from\n    URLs is not currently supported by xmms.\n\n  Reminder:\n    Display a reminder when the alarm goes off,\n    type the reminder in the box and turn on the\n    toggle button if you want it to be shown.", 1143);
 
   label86 = gtk_label_new ("Help");
