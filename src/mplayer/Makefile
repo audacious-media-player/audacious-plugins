@@ -9,8 +9,8 @@ LIBADD += $(GTK_LIBS)
 
 SOURCES = xmmsmplayer.c common.c interface.c 
 
-CFLAGS   += $(GTK_CFLAGS) -I../../intl -I../..
-CXXFLAGS += $(GTK_CFLAGS) -I../../intl -I../..
+CFLAGS   += $(GTK_CFLAGS) $(PICFLAGS) -I../../intl -I../..
+CXXFLAGS += $(GTK_CFLAGS) $(PICFLAGS) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.c=.o}
 

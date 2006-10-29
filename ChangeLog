@@ -1,3 +1,12 @@
+2006-10-29 08:15:05 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [276]
+  - remove common files
+  
+  trunk/src/mplayer/COPYING   |  340 --------------------------------------------
+  trunk/src/mplayer/ChangeLog |    8 -
+  2 files changed, 348 deletions(-)
+
+
 2006-10-29 08:13:30 +0000  William Pitcock <nenolod@nenolod.net>
   revision [274]
   - convert to use configdb system
