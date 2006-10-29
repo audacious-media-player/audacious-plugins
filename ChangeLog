@@ -1,3 +1,40 @@
+2006-10-29 09:08:30 +0000  Aaron Sheldon <asheldon@uiuc.edu>
+  revision [284]
+  Atari XL SAP.  This compiles anything but cleanly, but somehow still 
+  works.  No one will notice anyway, though.  What percentage of the 
+  population listens to Atari XL music? I don't have an answer to that, 
+  but I'd guess that Audacious' SAP plugin will be used by approximately 2 
+  people.
+  
+  trunk/src/sap/Makefile                |   29 
+  trunk/src/sap/doc/CHANGES             |   24 
+  trunk/src/sap/doc/COMPILATION         |   40 
+  trunk/src/sap/doc/CREDITS             |   16 
+  trunk/src/sap/doc/README              |   43 
+  trunk/src/sap/doc/README.audacious    |    7 
+  trunk/src/sap/doc/TODO                |    5 
+  trunk/src/sap/fileinfo.c              |  328 +++++++
+  trunk/src/sap/fileinfo.h              |   43 
+  trunk/src/sap/sap_plug.c              |  194 ++++
+  trunk/src/sap/sap_plug.h              |   47 +
+  trunk/src/sap/sapfile.c               |  364 +++++++
+  trunk/src/sap/sapfile.h               |   39 
+  trunk/src/sap/saplib/Makefile         |   14 
+  trunk/src/sap/saplib/legal.txt        |   11 
+  trunk/src/sap/saplib/pokey0.cpp       |  132 ++
+  trunk/src/sap/saplib/pokey1.cpp       |  102 ++
+  trunk/src/sap/saplib/pokeyNamespace.h |  665 ++++++++++++++
+  trunk/src/sap/saplib/sapCpu.cpp       | 1581 ++++++++++++++++++++++++++++++++++
+  trunk/src/sap/saplib/sapEngine.cpp    |  657 ++++++++++++++
+  trunk/src/sap/saplib/sapGlobals.h     |   89 +
+  trunk/src/sap/saplib/sapLib.h         |   19 
+  trunk/src/sap/saplib/sapPokey.cpp     |   64 +
+  trunk/src/sap/scripts/gen_symbols     |    4 
+  trunk/src/sap/syms                    |    1 
+  trunk/src/sap/version.h               |   21 
+  26 files changed, 4539 insertions(+)
+
+
 2006-10-29 08:38:56 +0000  Aaron Sheldon <asheldon@uiuc.edu>
   revision [282]
   The comment probably ought to say 'enable' since that's what the command 
