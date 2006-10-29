@@ -387,6 +387,19 @@ if test "$have_adplug" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS adplug"
 fi
 
+AC_ARG_ENABLE(mplayer,
+    [  --disable-mplayer           disable mplayer plugin. (default=enabled) ],
+    [enable_mplayer=$enableval],
+    [enable_mplayer=yes]
+)
+
+if test "$enable_mplayer" = "yes"; then
+        INPUT_PLUGINS="$INPUT_PLUGINS mplayer"
+        AC_SUBST(LIBNMS_CFLAGS)
+        AC_SUBST(LIBNMS_LIBS)
+        AC_SUBST(LIBNMS_SRC)
+fi
+
 dnl *** Ogg Vorbis
 
 AC_ARG_ENABLE(vorbis,
@@ -1128,6 +1141,7 @@ echo "  PlayStation audio (sexypsf):            yes"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
+echo "  Mplayer controls (mplayer):             $enable_mplayer"
 echo
 echo "  General"
 echo "  -------"
