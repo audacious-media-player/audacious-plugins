@@ -388,7 +388,7 @@ if test "$have_adplug" = "yes"; then
 fi
 
 AC_ARG_ENABLE(mplayer,
-    [  --enable-mplayer           disable mplayer plugin. (default=disabled) ],
+    [  --enable-mplayer           enable mplayer plugin. (default=disabled) ],
     [enable_mplayer=$enableval],
     [enable_mplayer=no]
 )

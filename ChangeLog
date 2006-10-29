@@ -1,3 +1,13 @@
+2006-10-29 08:23:08 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [280]
+  - mplayer should be disabled by default due to the fact that it's only 
+    temporary in the core plugins pack (and will be moved to -ugly 
+    eventually)
+  
+  trunk/configure.ac |    7 ++-----
+  1 file changed, 2 insertions(+), 5 deletions(-)
+
+
 2006-10-29 08:20:45 +0000  William Pitcock <nenolod@nenolod.net>
   revision [278]
   - make sure libxmmsmplayer is built with PICFLAGS
