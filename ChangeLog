@@ -1,3 +1,12 @@
+2006-10-29 08:38:56 +0000  Aaron Sheldon <asheldon@uiuc.edu>
+  revision [282]
+  The comment probably ought to say 'enable' since that's what the command 
+  does
+  
+  trunk/configure.ac |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-10-29 08:23:08 +0000  William Pitcock <nenolod@nenolod.net>
   revision [280]
   - mplayer should be disabled by default due to the fact that it's only 

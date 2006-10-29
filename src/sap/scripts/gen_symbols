@@ -1,0 +1,4 @@
+#! /bin/sh
+/usr/bin/nm -B  $1      | sed -n -e 's/^.*[ 	]\([ABCDGISTW][ABCDGISTW]*\)[ 	][ 	]*\(\)\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2\3 \3/p' | sed 's/.* //' | sort | uniq > symbols        
+egrep -e "get_.plugin_info" "symbols" > syms
+rm -f symbols

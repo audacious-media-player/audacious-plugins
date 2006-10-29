@@ -1,0 +1,40 @@
+COMPILATION REQUIREMENTS
+------------------------
+
+To compile the plugin you need:
+
+ - gcc/g++ and at least libc6 2.1.x with POSIX pthreads 
+   and a linux or *BSD system
+
+     TESTED:
+     linux/x86 (gcc 2.95.2 and glibc 2.1.3) - compiles cleanly, works OK
+     linux/x86 (gcc 2.95.4 and glibc 2.2.5) - compiles cleanly, works OK
+     linux/alpha (gcc 3.2.2 and glibc 2.2.5) - compiles cleanly, works OK 
+
+ - xmms (of course :)), libxmms,libxmms-devel
+    
+     TESTED:
+     xmms 1.2.7 - OK
+     REPORTED:
+     xmms 1.2.8 - OK
+     
+ - gtk,gtk-devel, glib,glib-devel 
+    
+     TESTED:
+     gtk+ 1.2.10 glib 1.2.10 - OK
+     REPORTED
+     gtk+ 1.2.8 glib 1.2.8 - OK
+
+    
+COMPILATION INSTRUCTIONS
+------------------------
+
+NOTE: Since I cannot have access to as many platforms as linux runs on, I need the 
+information about copilation issues on different machines/oses/architectures. 
+Just compile it! If it fails drop me a line with info on your system, 
+compiler and glibc versions.
+If it compiles OK, and you use something different than the software / platform
+mentioned above as TESTED, I need the info even more. Please be helpful ;)
+
+To compile just do a 'make && make install' in the plugin source dir.
+That's it. Enjoy! 
