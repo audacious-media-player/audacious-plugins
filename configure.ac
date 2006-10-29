@@ -491,14 +491,11 @@ AC_ARG_ENABLE(modplug,
 )
 
 if test "$enable_modplug" = "yes"; then
-    AC_CHECK_LIB([modplug],[XMLinearTable],[have_modplug=yes],[have_modplug=no],[-lstdc++])
+    INPUT_PLUGINS="$INPUT_PLUGINS modplug"
+    have_modplug="yes"
 else
     AC_MSG_RESULT([*** ModPlug plugin disabled per user request ***])
     have_modplug="no"
-fi
-
-if test "$have_modplug" = "yes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS modplug"
 fi
 
 dnl *** flac

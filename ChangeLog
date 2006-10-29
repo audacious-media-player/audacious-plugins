@@ -1,3 +1,25 @@
+2006-10-29 01:08:06 +0000  Aaron Sheldon <asheldon@uiuc.edu>
+  revision [270]
+  Adds mplayer controls the plugin pack.  I don't know crap about 
+  configure.ac, so it's totally busted.  Also, I used the string "what" in 
+  common.c and interface.c.  I'm not going to pretend I actually know what 
+  I was doing there, but it seems to work despite that.
+  
+  trunk/AUTHORS                      |    1 
+  trunk/configure.ac                 |   14 
+  trunk/src/mplayer/AUTHORS          |    2 
+  trunk/src/mplayer/COPYING          |  340 +++++++++++++++++++++
+  trunk/src/mplayer/ChangeLog        |    8 
+  trunk/src/mplayer/Makefile         |   17 +
+  trunk/src/mplayer/README           |    9 
+  trunk/src/mplayer/README.audacious |   10 
+  trunk/src/mplayer/common.c         |   19 +
+  trunk/src/mplayer/interface.c      |  500 +++++++++++++++++++++++++++++++
+  trunk/src/mplayer/xmmsmplayer.c    |  591 +++++++++++++++++++++++++++++++++++++
+  trunk/src/mplayer/xmmsmplayer.h    |   89 +++++
+  12 files changed, 1600 insertions(+)
+
+
 2006-10-27 20:12:59 +0000  William Pitcock <nenolod@nenolod.net>
   revision [268]
   - fixes from Christian Birchinger <joker -at- gentoo.org>
