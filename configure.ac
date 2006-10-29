@@ -388,16 +388,13 @@ if test "$have_adplug" = "yes"; then
 fi
 
 AC_ARG_ENABLE(mplayer,
-    [  --disable-mplayer           disable mplayer plugin. (default=enabled) ],
+    [  --enable-mplayer           disable mplayer plugin. (default=disabled) ],
     [enable_mplayer=$enableval],
-    [enable_mplayer=yes]
+    [enable_mplayer=no]
 )
 
 if test "$enable_mplayer" = "yes"; then
         INPUT_PLUGINS="$INPUT_PLUGINS mplayer"
-        AC_SUBST(LIBNMS_CFLAGS)
-        AC_SUBST(LIBNMS_LIBS)
-        AC_SUBST(LIBNMS_SRC)
 fi
 
 dnl *** Ogg Vorbis
