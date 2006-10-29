@@ -11,7 +11,7 @@
 #include <gdk/gdkx.h>
 #include <audacious/plugin.h>
 #include <audacious/beepctrl.h>
-#include <audacious/rcfile.h>
+#include <audacious/configdb.h>
 #include <audacious/util.h>
 
 #include "xmmsmplayer.h"
@@ -48,7 +48,7 @@ void on_btn_cancel_clicked(GtkButton *button, gpointer user_data){
 
 
 void on_btn_ok_clicked (GtkButton *button, gpointer user_data){
-  RcFile *cfg;
+  ConfigDb *cfg;
   struct mplayer_cfg new_cfg;
   if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(vo_none)))
     new_cfg.vo=MPLAYER_VO_NONE;
@@ -82,19 +82,16 @@ void on_btn_ok_clicked (GtkButton *button, gpointer user_data){
     new_cfg.ao=MPLAYER_AO_XMMS;
   new_cfg.extra=gtk_entry_get_text(GTK_ENTRY(entry_extra_opts));
 
-//  cfg = xmms_cfg_open_default_file();
-  cfg=bmp_rcfile_open("what");
-  bmp_rcfile_write_int(cfg,"xmms-mplayer","vo",new_cfg.vo);
-  bmp_rcfile_write_int(cfg,"xmms-mplayer","ao",new_cfg.ao);
-  bmp_rcfile_write_boolean(cfg,"xmms-mplayer","zoom",new_cfg.zoom);
-  bmp_rcfile_write_boolean(cfg,"xmms-mplayer","framedrop",new_cfg.framedrop);
-  bmp_rcfile_write_boolean(cfg,"xmms-mplayer","idx",new_cfg.idx);
-  bmp_rcfile_write_boolean(cfg,"xmms-mplayer","onewin",new_cfg.onewin);
-  bmp_rcfile_write_boolean(cfg,"xmms-mplayer","xmmsaudio",new_cfg.xmmsaudio);
-  bmp_rcfile_write_string(cfg,"xmms-mplayer","extra",new_cfg.extra);
-  bmp_rcfile_write(cfg, "what");
-//  xmms_cfg_write_default_file(cfg);
-  bmp_rcfile_free(cfg);
+  cfg = bmp_cfg_db_open();
+  bmp_cfg_db_set_int(cfg,"xmms-mplayer","vo",new_cfg.vo);
+  bmp_cfg_db_set_int(cfg,"xmms-mplayer","ao",new_cfg.ao);
+  bmp_cfg_db_set_bool(cfg,"xmms-mplayer","zoom",new_cfg.zoom);
+  bmp_cfg_db_set_bool(cfg,"xmms-mplayer","framedrop",new_cfg.framedrop);
+  bmp_cfg_db_set_bool(cfg,"xmms-mplayer","idx",new_cfg.idx);
+  bmp_cfg_db_set_bool(cfg,"xmms-mplayer","onewin",new_cfg.onewin);
+  bmp_cfg_db_set_bool(cfg,"xmms-mplayer","xmmsaudio",new_cfg.xmmsaudio);
+  bmp_cfg_db_set_string(cfg,"xmms-mplayer","extra",new_cfg.extra);
+  bmp_cfg_db_close(cfg);
 
   gtk_widget_destroy(mplayer_configure_win);
   mplayer_configure_win=NULL;

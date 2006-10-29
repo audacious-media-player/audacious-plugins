@@ -1,3 +1,48 @@
+2006-10-29 08:04:52 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [272]
+  - like with so many other things, modplug is now maintained by us.
+  
+  trunk/configure.ac             |    7 
+  trunk/src/modplug/Makefile     |   37 
+  trunk/src/modplug/fastmix.cxx  | 2370 ++++++++++++++++++++++++++++++++++++++++
+  trunk/src/modplug/it_defs.h    |  134 ++
+  trunk/src/modplug/load_669.cxx |  186 +++
+  trunk/src/modplug/load_amf.cxx |  420 +++++++
+  trunk/src/modplug/load_ams.cxx |  628 ++++++++++
+  trunk/src/modplug/load_dbm.cxx |  368 ++++++
+  trunk/src/modplug/load_dmf.cxx |  606 ++++++++++
+  trunk/src/modplug/load_dsm.cxx |  236 ++++
+  trunk/src/modplug/load_far.cxx |  270 ++++
+  trunk/src/modplug/load_it.cxx  | 1511 +++++++++++++++++++++++++
+  trunk/src/modplug/load_j2b.cxx |   15 
+  trunk/src/modplug/load_mdl.cxx |  503 ++++++++
+  trunk/src/modplug/load_med.cxx |  916 +++++++++++++++
+  trunk/src/modplug/load_mod.cxx |  498 ++++++++
+  trunk/src/modplug/load_mt2.cxx |  635 ++++++++++
+  trunk/src/modplug/load_mtm.cxx |  164 ++
+  trunk/src/modplug/load_okt.cxx |  197 +++
+  trunk/src/modplug/load_psm.cxx |  839 ++++++++++++++
+  trunk/src/modplug/load_ptm.cxx |  207 +++
+  trunk/src/modplug/load_s3m.cxx |  650 +++++++++++
+  trunk/src/modplug/load_stm.cxx |  186 +++
+  trunk/src/modplug/load_ult.cxx |  222 +++
+  trunk/src/modplug/load_umx.cxx |   53 
+  trunk/src/modplug/load_wav.cxx |  220 +++
+  trunk/src/modplug/load_xm.cxx  |  892 +++++++++++++++
+  trunk/src/modplug/mmcmp.cxx    |  406 ++++++
+  trunk/src/modplug/modplug.cxx  |  271 ++++
+  trunk/src/modplug/modplug.h    |  168 ++
+  trunk/src/modplug/snd_dsp.cxx  |  485 ++++++++
+  trunk/src/modplug/snd_flt.cxx  |  101 +
+  trunk/src/modplug/snd_fx.cxx   | 2391 +++++++++++++++++++++++++++++++++++++++++
+  trunk/src/modplug/sndfile.cxx  | 1877 ++++++++++++++++++++++++++++++++
+  trunk/src/modplug/sndfile.h    | 1005 +++++++++++++++++
+  trunk/src/modplug/sndmix.cxx   | 1245 +++++++++++++++++++++
+  trunk/src/modplug/stdafx.h     |  175 +++
+  trunk/src/modplug/tables.cxx   |  377 ++++++
+  38 files changed, 21465 insertions(+), 6 deletions(-)
+
+
 2006-10-29 01:08:06 +0000  Aaron Sheldon <asheldon@uiuc.edu>
   revision [270]
   Adds mplayer controls the plugin pack.  I don't know crap about 
