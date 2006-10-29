@@ -1,3 +1,12 @@
+2006-10-29 08:13:30 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [274]
+  - convert to use configdb system
+  
+  trunk/src/mplayer/common.c    |   23 ++++++++++++-----------
+  trunk/src/mplayer/interface.c |   27 ++++++++++++---------------
+  2 files changed, 24 insertions(+), 26 deletions(-)
+
+
 2006-10-29 08:04:52 +0000  William Pitcock <nenolod@nenolod.net>
   revision [272]
   - like with so many other things, modplug is now maintained by us.
