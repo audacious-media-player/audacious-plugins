@@ -56,7 +56,8 @@ struct pn_actuator_option
 /* An operation's description */
 struct pn_actuator_desc
 {
-  const char *name;
+  const char *name;	/* e.g. "container_simple" */
+  const char *dispname;	/* e.g. "Simple Container" */
   const char *doc; /* documentation txt */
   const enum
   {

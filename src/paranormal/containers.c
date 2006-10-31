@@ -80,6 +80,7 @@ container_simple_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_container_simple =
 {
   "container_simple",
+  "Simple Container",
   "A simple (unconditional) container\n\n"
   "This is usually used as the root actuator of a list",
   ACTUATOR_FLAG_CONTAINER, NULL,
@@ -127,6 +128,7 @@ container_once_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_container_once =
 {
   "container_once",
+  "Initalization Container",
   "A container whose contents get executed exactly once.\n\n"
   "This is often used to set initial graphics states such as the\n"
   "pixel depth, or to display some text (such as credits)",
@@ -195,6 +197,7 @@ container_cycle_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_container_cycle =
 {
   "container_cycle",
+  "Branched-execution Container",
   "A container that alternates which of its children is executed;  it "
   "can either change children randomly or go in order.",
   ACTUATOR_FLAG_CONTAINER, container_cycle_opts,

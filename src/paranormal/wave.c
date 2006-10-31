@@ -51,7 +51,8 @@ wave_horizontal_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_wave_horizontal =
 {
-  "wave_horizontal", "Draws one or two waveforms horizontally across "
+  "wave_horizontal", "Horizontal Waveform",
+  "Draws one or two waveforms horizontally across "
   "the drawing surface",
   0, wave_horizontal_opts,
   NULL, NULL, wave_horizontal_exec
@@ -99,7 +100,8 @@ wave_vertical_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_wave_vertical =
 {
-  "wave_vertical", "Draws one or two waveforms vertically across "
+  "wave_vertical", "Vertical Waveform",
+  "Draws one or two waveforms vertically across "
   "the drawing surface",
   0, wave_vertical_opts,
   NULL, NULL, wave_vertical_exec
@@ -156,7 +158,8 @@ wave_normalize_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_wave_normalize =
 {
-  "wave_normalize", "Normalizes the waveform data used by the wave_* actuators",
+  "wave_normalize", "Normalize Waveform Data",
+  "Normalizes the waveform data used by the wave_* actuators",
   0, wave_normalize_opts,
   NULL, NULL, wave_normalize_exec
 };
@@ -202,7 +205,8 @@ wave_smooth_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_wave_smooth =
 {
-  "wave_smooth", "Smooth out the waveform data used by the wave_* actuators",
+  "wave_smooth", "Smooth Waveform Data",
+  "Smooth out the waveform data used by the wave_* actuators",
   0, wave_smooth_opts,
   NULL, NULL, wave_smooth_exec
 };
@@ -238,7 +242,8 @@ wave_radial_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_wave_radial =
 {
-  "wave_radial", "Draws a single waveform varying"
+  "wave_radial", "Radial Waveform",
+  "Draws a single waveform varying"
   " radially from the center of the image",
   0, wave_radial_opts,
   NULL, NULL, wave_radial_exec

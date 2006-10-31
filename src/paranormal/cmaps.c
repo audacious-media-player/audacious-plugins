@@ -53,6 +53,7 @@ cmap_gradient_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_cmap_gradient =
 {
   "cmap_gradient",
+  "Normal colourmap",
   "Sets the colormap to a gradient going from <lcolor> to "
   "<hcolor>",
   0, cmap_gradient_opts,
@@ -86,6 +87,7 @@ cmap_bwgradient_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_cmap_bwgradient =
 {
   "cmap_bwgradient",
+  "Value-based colourmap",
   "Sets the colormap to a gradient going from black to "
   "while, via an intermediate color",
   0, cmap_bwgradient_opts,

@@ -34,7 +34,7 @@ general_fade_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_general_fade =
 {
-  "general_fade", "Decreases the color index of each pixel",
+  "general_fade", "Fade-out", "Decreases the color index of each pixel",
   0, general_fade_opts,
   NULL, NULL, general_fade_exec
 };
@@ -90,7 +90,7 @@ general_blur_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_general_blur = 
 {
-  "general_blur", "A simple 1 pixel radius blur",
+  "general_blur", "Blur", "A simple 1 pixel radius blur",
   0, NULL,
   NULL, NULL, general_blur_exec
 };

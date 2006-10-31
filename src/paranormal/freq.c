@@ -34,6 +34,7 @@ freq_dots_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_freq_dots =
 {
   "freq_dots",
+  "Frequency Scope",
   "Draws dots varying vertically with the freqency data.",
   0, NULL,
   NULL, NULL, freq_dots_exec
@@ -56,6 +57,7 @@ freq_drops_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_freq_drops =
 {
   "freq_drops",
+  "Random Dots",
   "Draws dots at random on the image (louder music = more dots)",
   0, NULL,
   NULL, NULL, freq_drops_exec

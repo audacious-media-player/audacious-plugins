@@ -180,7 +180,8 @@ xform_spin_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_xform_spin =
 {
-  "xform_spin", "Rotates and radially scales the image",
+  "xform_spin", "Spin Transform", 
+  "Rotates and radially scales the image",
   0, xform_spin_opts,
   xform_spin_init, xform_spin_cleanup, xform_spin_exec
 };
@@ -280,7 +281,7 @@ xform_ripple_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_xform_ripple =
 {
-  "xform_ripple", "Creates an ripple effect",
+  "xform_ripple", "Ripple Transform", "Creates an ripple effect",
   0, xform_ripple_opts,
   xform_ripple_init, xform_ripple_cleanup, xform_ripple_exec
 };
@@ -375,7 +376,8 @@ xform_bump_spin_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_xform_bump_spin =
 {
-  "xform_bump_spin", "Rotate the image at a varying speed to create "
+  "xform_bump_spin", "Bump Transform", 
+  "Rotate the image at a varying speed to create "
   "the illusion of bumps",
   0, xform_bump_spin_opts,
   xform_bump_spin_init, xform_bump_spin_cleanup, xform_bump_spin_exec

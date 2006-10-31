@@ -1,3 +1,12 @@
+2006-10-31 09:29:30 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [308]
+  - a more complicated paranormal example preset
+  
+  trunk/src/paranormal/presets/Makefile                          |    3 
+  trunk/src/paranormal/presets/nenolod_-_flying_into_pastels.pnv |   38 ++++++++++
+  2 files changed, 40 insertions(+), 1 deletion(-)
+
+
 2006-10-31 08:20:37 +0000  William Pitcock <nenolod@nenolod.net>
   revision [306]
   - add some example presets
