@@ -16,6 +16,8 @@
 #include <setjmp.h>
 
 #include <glib.h>
+#include <glib/gi18n.h>
+
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 #include <SDL/SDL.h>

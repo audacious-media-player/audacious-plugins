@@ -1,3 +1,11 @@
+2006-10-31 20:45:32 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [314]
+  - use xmms_show_message() here.
+  
+  trunk/src/paranormal/plugin.c |   42 ++++--------------------------------------
+  1 file changed, 4 insertions(+), 38 deletions(-)
+
+
 2006-10-31 20:35:04 +0000  William Pitcock <nenolod@nenolod.net>
   revision [312]
   - use user-friendly names in most places
