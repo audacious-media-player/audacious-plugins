@@ -1,3 +1,13 @@
+2006-10-31 07:35:14 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [304]
+  - don't replace our configuration
+  - configure box tweaks
+  
+  trunk/src/paranormal/cfg.c    |    3 +--
+  trunk/src/paranormal/plugin.c |    2 --
+  2 files changed, 1 insertion(+), 4 deletions(-)
+
+
 2006-10-31 07:08:58 +0000  William Pitcock <nenolod@nenolod.net>
   revision [302]
   - fix some window titles

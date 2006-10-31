@@ -3,6 +3,8 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libparanormal$(SHARED_SUFFIX)
 
+SUBDIRS = presets
+
 LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
 
 LIBADD = $(GTK_LIBS) $(XML_LIBS) $(SDL_LIBS)
