@@ -5,7 +5,7 @@
  */
 
 #include "audacious/plugin.h"
-#include <libmodplug/modplug.h>
+#include "modplug.h"
 #include "gui/main.h"
 
 extern InputPlugin gModPlug;

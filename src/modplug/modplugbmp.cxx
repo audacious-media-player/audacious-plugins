@@ -9,8 +9,8 @@
 #include <math.h>
 
 #include "modplugbmp.h"
-#include <libmodplug/stdafx.h>
-#include <libmodplug/sndfile.h>
+#include "stdafx.h"
+#include "sndfile.h"
 #include "stddefs.h"
 #include "archive/open.h"
 #include "audacious/configdb.h"

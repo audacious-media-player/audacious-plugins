@@ -1,3 +1,12 @@
+2006-10-31 22:13:43 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [320]
+  - add quakingscope paranormal preset (fairly complex colourmap/branched execution example)
+  
+  trunk/src/paranormal/presets/Makefile                   |    3 -
+  trunk/src/paranormal/presets/nenolod_-_quakingscope.pnv |   37 ++++++++++++++++
+  2 files changed, 39 insertions(+), 1 deletion(-)
+
+
 2006-10-31 21:32:55 +0000  William Pitcock <nenolod@nenolod.net>
   revision [318]
   - more presets
