@@ -257,7 +257,7 @@ pn_xmms_about (void)
   gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
   gtk_widget_show(vbox);
 
-  label=gtk_label_new("\n\n Paranormal Visualization Studio " " VERSION "\n\n\
+  label=gtk_label_new("\n\n Paranormal Visualization Studio " VERSION "\n\n\
 Copyright (C) 2006, William Pitcock. <nenolod -at- nenolod.net>\n\
 Copyright (C) 2001, Jamie Gennis. (jgennis@mindspring.com)\n\
 \n\

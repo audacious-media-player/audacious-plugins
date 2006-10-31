@@ -1,3 +1,29 @@
+2006-10-31 07:02:33 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [298]
+  - new and IMPROVED paranormal visualization studio
+  
+  trunk/configure.ac                |    6 
+  trunk/src/paranormal/Makefile     |   28 +
+  trunk/src/paranormal/actuators.c  |  177 ++++++++++
+  trunk/src/paranormal/actuators.h  |   98 +++++
+  trunk/src/paranormal/builtins.c   |   68 ++++
+  trunk/src/paranormal/cfg.c        |  625 ++++++++++++++++++++++++++++++++++++++
+  trunk/src/paranormal/cmaps.c      |   93 +++++
+  trunk/src/paranormal/containers.c |  202 ++++++++++++
+  trunk/src/paranormal/containers.h |    8 
+  trunk/src/paranormal/freq.c       |   62 +++
+  trunk/src/paranormal/general.c    |   96 +++++
+  trunk/src/paranormal/paranormal.c |  205 ++++++++++++
+  trunk/src/paranormal/paranormal.h |   53 +++
+  trunk/src/paranormal/plugin.c     |  478 +++++++++++++++++++++++++++++
+  trunk/src/paranormal/pn_utils.h   |   15 
+  trunk/src/paranormal/presets.c    |  261 +++++++++++++++
+  trunk/src/paranormal/presets.h    |   11 
+  trunk/src/paranormal/wave.c       |  248 +++++++++++++++
+  trunk/src/paranormal/xform.c      |  383 +++++++++++++++++++++++
+  19 files changed, 3114 insertions(+), 3 deletions(-)
+
+
 2006-10-31 06:39:27 +0000  William Pitcock <nenolod@nenolod.net>
   revision [296]
   - nuke paranormal (i will put a different paranormal back soon, no worries)
