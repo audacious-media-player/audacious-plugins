@@ -1,3 +1,11 @@
+2006-10-31 06:35:55 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [294]
+  - some tweaks
+  
+  trunk/src/spectrum/spectrum.c |    7 ++++---
+  1 file changed, 4 insertions(+), 3 deletions(-)
+
+
 2006-10-31 06:31:45 +0000  William Pitcock <nenolod@nenolod.net>
   revision [292]
   - spectrum analyzer plugin based on blurscope and a little of xmms-finespectrum
