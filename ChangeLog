@@ -1,3 +1,11 @@
+2006-10-31 06:39:27 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [296]
+  - nuke paranormal (i will put a different paranormal back soon, no worries)
+  
+  trunk/configure.ac |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2006-10-31 06:35:55 +0000  William Pitcock <nenolod@nenolod.net>
   revision [294]
   - some tweaks
