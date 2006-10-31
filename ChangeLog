@@ -1,3 +1,11 @@
+2006-10-31 20:35:04 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [312]
+  - use user-friendly names in most places
+  
+  trunk/src/paranormal/cfg.c |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2006-10-31 20:07:32 +0000  William Pitcock <nenolod@nenolod.net>
   revision [310]
   - user-friendly names (UI side unimplemented still)

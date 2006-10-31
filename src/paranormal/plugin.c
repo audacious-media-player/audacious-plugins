@@ -242,24 +242,9 @@ about_closed(GtkWidget *w, GdkEvent *e, GtkWidget **window)
 static void
 pn_xmms_about (void)
 {
-  static GtkWidget *window=NULL;
-  GtkWidget *vbox, *buttonbox, *close, *label;
-
-  if(window)
-    return;
-
-  window=gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title(GTK_WINDOW(window), "Paranormal Visualization Studio " VERSION);
-  gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
-
-  vbox=gtk_vbox_new(FALSE, 4);
-  gtk_container_add(GTK_CONTAINER(window), vbox);
-  gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
-  gtk_widget_show(vbox);
-
-  label=gtk_label_new("\n\n Paranormal Visualization Studio " VERSION "\n\n\
-Copyright (C) 2006, William Pitcock. <nenolod -at- nenolod.net>\n\
-Copyright (C) 2001, Jamie Gennis. (jgennis@mindspring.com)\n\
+  xmms_show_message("Paranormal Visualization Studio " VERSION "\n\n\
+Copyright (C) 2006, William Pitcock <nenolod -at- nenolod.net>\n\
+Portions Copyright (C) 2001, Jamie Gennis <jgennis -at- mindspring.com>\n\
 \n\
 This program is free software; you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\
@@ -274,26 +259,7 @@ GNU General Public License for more details.\n\
 You should have received a copy of the GNU General Public License\n\
 along with this program; if not, write to the Free Software\n\
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307\n\
-USA");
-
-  gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 8);
-  gtk_widget_show(label);
-	
-  buttonbox=gtk_hbutton_box_new();
-  gtk_box_pack_end(GTK_BOX(vbox), buttonbox, FALSE, FALSE,8);
-  gtk_widget_show(buttonbox);
-	
-  close=gtk_button_new_with_label("Close");
-  GTK_WIDGET_SET_FLAGS(close, GTK_CAN_DEFAULT);
-  gtk_window_set_default(GTK_WINDOW(window), close);
-  gtk_hbutton_box_set_layout_default(GTK_BUTTONBOX_END);
-  gtk_box_pack_end(GTK_BOX(buttonbox), close, FALSE, FALSE,8);
-  gtk_widget_show(close);
-	
-  gtk_signal_connect(GTK_OBJECT(close), "clicked", GTK_SIGNAL_FUNC(about_close_clicked), &window);
-  gtk_signal_connect(GTK_OBJECT(window), "delete-event", GTK_SIGNAL_FUNC(about_closed), &window);
-
-  gtk_widget_show(window);
+USA", _("Ok"), FALSE, NULL, NULL);
 }
 
 static void
