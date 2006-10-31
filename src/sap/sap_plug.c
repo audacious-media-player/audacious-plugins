@@ -27,7 +27,6 @@
 #include <pthread.h>
 
 #include "sap_plug.h"
-#include "version.h"
 
 InputPlugin sap_ip = {
 
@@ -185,7 +184,7 @@ static void sap_about (void) {
 	
 	aboutbox = xmms_show_message(
 		"About SAP Plugin",
-		"SAP Player plug-in v"VERSION"\nby Michal Szwaczko <mikey@scene.pl>\n SAP library ver "SAP_VER" by Adam Bienias\n\n"
+		"SAP Player plug-in v"VERSION"\nby Michal Szwaczko <mikey@scene.pl>\n SAP library ver 0.3F by Adam Bienias\n\n"
 		"Get more POKEY sound from ASMA at:\n[http://asma.musichall.cz]\n\nEnjoy!",
 		"Ok", FALSE, NULL, NULL);
 

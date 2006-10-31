@@ -25,7 +25,6 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "version.h"
 #include "sapfile.h"
 
 int load_sap (char *fname) {

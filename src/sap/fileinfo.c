@@ -25,7 +25,6 @@
 #include <string.h>
 #include <pthread.h>
 
-#include "version.h"
 #include "fileinfo.h"
 #include "saplib/sapLib.h"
 

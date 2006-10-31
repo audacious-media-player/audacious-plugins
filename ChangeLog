@@ -1,3 +1,14 @@
+2006-10-31 01:40:00 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [288]
+  Null output plugin added; original code by Christian Birchinger <joker -at- gentoo.org>
+  
+  trunk/configure.ac      |   17 +++
+  trunk/mk/rules.mk.in    |    1 
+  trunk/src/null/Makefile |   15 ++
+  trunk/src/null/null.c   |  257 ++++++++++++++++++++++++++++++++++++++++++++++++
+  4 files changed, 290 insertions(+)
+
+
 2006-10-29 20:29:05 +0000  William Pitcock <nenolod@nenolod.net>
   revision [286]
   - overflow fixes for modplug (via Stanislav Brabec @ novell/suse).

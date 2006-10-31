@@ -3,10 +3,7 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libsapplug$(SHARED_SUFFIX)
 
-SAPLIB = saplib/pokey0.o saplib/pokey1.o saplib/sapCpu.o saplib/sapEngine.o saplib/sapPokey.o
-
-LINKER_FLAGS = -shared -Wl,-soname -Wl,$(TARGET) \
-	-Wl,-retain-symbols-file -Wl,syms
+SAPLIB = saplib/pokey0.cxx saplib/pokey1.cxx saplib/sapCpu.cxx saplib/sapEngine.cxx saplib/sapPokey.cxx
 
 TARGET = libsapplug.so
 
@@ -16,14 +13,11 @@ LIBADD += $(GTK_LIBS)
 
 SOURCES = fileinfo.c sapfile.c sap_plug.c
 
-CFLAGS   += $(GTK_CFLAGS) $(LINKER_FLAGS) -I../../intl -I../..
-CXXFLAGS += $(GTK_CFLAGS) $(LINKER_FLAGS) -I../../intl -I../..
+CFLAGS   += $(GTK_CFLAGS) $(PICFLAGS) -I../../intl -I../..
+CXXFLAGS += $(GTK_CFLAGS) $(PICFLAGS) -I../../intl -I../..
 
-OBJECTS = ${SOURCES:.c=.o} $(SAPLIB)
+OBJECTS = ${SOURCES:.c=.o} $(SAPLIB:.cxx=.o)
 
-all: library 
-
-library: 
-	cd saplib && make 
+all:
 
 include ../../mk/objective.mk
