@@ -1,3 +1,15 @@
+2006-10-31 23:29:06 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [322]
+  - fix libmodplug references
+  
+  trunk/src/modplug/modplugbmp.cxx |    4 ++--
+  trunk/src/modplug/plugin.cxx     |    2 +-
+  trunk/src/modplug/sndfile.cxx    |    4 ++--
+  trunk/src/modplug/sndmix.cxx     |    4 ++--
+  trunk/src/modplug/tables.cxx     |    4 ++--
+  5 files changed, 9 insertions(+), 9 deletions(-)
+
+
 2006-10-31 22:13:43 +0000  William Pitcock <nenolod@nenolod.net>
   revision [320]
   - add quakingscope paranormal preset (fairly complex colourmap/branched execution example)

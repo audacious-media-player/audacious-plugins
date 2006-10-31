@@ -26,8 +26,8 @@
 #include <fstream>
 
 #include "../stddefs.h"
-#include <libmodplug/stdafx.h>
-#include <libmodplug/sndfile.h>
+#include "../stdafx.h"
+#include "../sndfile.h"
 #include "../archive/open.h"
 
 #define MAX_MESSAGE_LENGTH 4000
