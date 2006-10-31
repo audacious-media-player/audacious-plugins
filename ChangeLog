@@ -1,3 +1,13 @@
+2006-10-31 21:32:55 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [318]
+  - more presets
+  
+  trunk/src/paranormal/presets/Makefile                       |    4 +
+  trunk/src/paranormal/presets/nenolod_-_phosphor_flame.pnv   |   28 ++++++++++++
+  trunk/src/paranormal/presets/nenolod_-_psuedo_starfield.pnv |   22 +++++++++
+  3 files changed, 53 insertions(+), 1 deletion(-)
+
+
 2006-10-31 20:47:07 +0000  William Pitcock <nenolod@nenolod.net>
   revision [316]
   - gi18n dependency
