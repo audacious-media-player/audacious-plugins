@@ -1,3 +1,14 @@
+2006-10-31 08:20:37 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [306]
+  - add some example presets
+  
+  trunk/src/paranormal/Makefile                            |    2 +
+  trunk/src/paranormal/presets/Makefile                    |   10 +++++
+  trunk/src/paranormal/presets/nenolod_-_bumblebees.pnv    |   27 +++++++++++++++
+  trunk/src/paranormal/presets/nenolod_-_purple_flower.pnv |   18 ++++++++++
+  4 files changed, 57 insertions(+)
+
+
 2006-10-31 07:35:14 +0000  William Pitcock <nenolod@nenolod.net>
   revision [304]
   - don't replace our configuration
