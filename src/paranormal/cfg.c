@@ -476,8 +476,7 @@ pn_configure (void)
     {
       /* The dialog */
       cfg_dialog = gtk_dialog_new ();
-      gtk_window_set_title (GTK_WINDOW (cfg_dialog), "Configuration - "
-			    PACKAGE " " VERSION);
+      gtk_window_set_title (GTK_WINDOW (cfg_dialog), "Paranormal Visualization Studio - Editor (PNS " VERSION ")");
       gtk_widget_set_usize (cfg_dialog, 530, 370);
       gtk_container_border_width (GTK_CONTAINER (cfg_dialog), 8);
       gtk_signal_connect_object (GTK_OBJECT (cfg_dialog), "delete-event",

@@ -299,8 +299,6 @@ USA");
 static void
 pn_xmms_configure (void)
 {
-  load_pn_rc ();
-
   /* We should already have a GDK_THREADS_ENTER
      but we need to give it config_mutex */
   if (config_mutex)
