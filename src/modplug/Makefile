@@ -7,7 +7,7 @@ SUBDIRS = archive gui
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I.. -I../.. -I../../intl
-LIBADD  = $(GTK_LIBS) -lstdc++ -lmodplug ./archive/libarchive.a ./gui/libgui.a
+LIBADD  = $(GTK_LIBS) -lstdc++ ./archive/libarchive.a ./gui/libgui.a
 SOURCES.plugin  = plugin.cxx modplugbmp.cxx
 SOURCES.core = tables.cxx         \
                sndmix.cxx         \
