@@ -112,7 +112,7 @@ pn_init (void)
 
   resize_video (640, 360);
 
-  SDL_WM_SetCaption (PACKAGE " " VERSION, PACKAGE);
+  SDL_WM_SetCaption ("Paranormal Visualization Studio " VERSION, PACKAGE);
 
   for(i=0; i<360; i++)
     {

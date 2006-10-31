@@ -364,7 +364,7 @@ pn_fatal_error (const char *fmt, ...)
   va_end (ap);
 
   dialog=gtk_dialog_new();
-  gtk_window_set_title(GTK_WINDOW(dialog), "Error - " PACKAGE " " VERSION);
+  gtk_window_set_title(GTK_WINDOW(dialog), "Error - Paranormal Visualization Studio - " VERSION);
   gtk_container_border_width (GTK_CONTAINER (dialog), 8);
 
   label=gtk_label_new(errstr);
@@ -405,7 +405,7 @@ pn_error (const char *fmt, ...)
   va_start (ap, fmt);
   errstr = g_strdup_vprintf (fmt, ap);
   va_end (ap);
-  fprintf (stderr, PACKAGE ": %s\n", errstr);
+  fprintf (stderr, "Paranormal-CRITICAL **: %s\n", errstr);
 
   /* This is the easiest way of making sure we don't
      get stuck trying to lock a mutex that this thread
@@ -419,7 +419,7 @@ pn_error (const char *fmt, ...)
       GtkWidget *close;
 
       err_dialog=gtk_dialog_new();
-      gtk_window_set_title (GTK_WINDOW (err_dialog), "Error - " PACKAGE " " VERSION);
+      gtk_window_set_title (GTK_WINDOW (err_dialog), "Error - Paranormal Visualization Studio - " VERSION);
       gtk_window_set_policy (GTK_WINDOW (err_dialog), FALSE, FALSE, FALSE);
       gtk_widget_set_usize (err_dialog, 400, 200);
       gtk_container_border_width (GTK_CONTAINER (err_dialog), 8);
