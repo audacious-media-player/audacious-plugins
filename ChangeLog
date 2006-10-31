@@ -1,3 +1,11 @@
+2006-10-29 20:29:05 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [286]
+  - overflow fixes for modplug (via Stanislav Brabec @ novell/suse).
+  
+  trunk/src/modplug/sndfile.cxx |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2006-10-29 09:08:30 +0000  Aaron Sheldon <asheldon@uiuc.edu>
   revision [284]
   Atari XL SAP.  This compiles anything but cleanly, but somehow still 

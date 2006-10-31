@@ -295,6 +295,22 @@ else
 	have_coreaudio=no
 fi
 
+dnl *** Null Audio
+
+AC_ARG_ENABLE(null,
+    [  --disable-null          disable Null Audio output plugin (default=enabled)],
+    [enable_null=$enableval],
+    [enable_null="yes"]
+)
+
+if test "$enable_null" = "yes"; then
+	have_null=yes
+	OUTPUT_PLUGINS="$OUTPUT_PLUGINS null"
+else
+	AC_MSG_RESULT([*** Null Audio output plugin disabled per user request ***])
+	have_null=no
+fi
+
 dnl *** AltiVec
 
 AC_CHECK_HEADERS(altivec.h,
@@ -1110,6 +1126,7 @@ echo "  Analog Realtime Synthesizer (arts):     $have_arts"
 echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
+echo "  Null Audio output (null):               $have_null"
 echo
 echo "  Input Plugins"
 echo "  -------------"
