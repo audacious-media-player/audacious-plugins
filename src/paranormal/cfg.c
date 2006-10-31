@@ -43,7 +43,7 @@ add_actuator (struct pn_actuator *a, GtkCTreeNode *parent, gboolean copy)
   g_assert (actuator_option_table);
 
   node = gtk_ctree_insert_node (GTK_CTREE (actuator_tree), parent,
-				NULL, (gchar**)&a->desc->name, 0,
+				NULL, (gchar**)&a->desc->dispname, 0,
 				NULL, NULL, NULL, NULL,
 				a->desc->flags & ACTUATOR_FLAG_CONTAINER
 				? FALSE : TRUE,
@@ -117,7 +117,7 @@ row_select_cb (GtkCTree *ctree, GtkCTreeNode *node,
   gtk_table_resize (GTK_TABLE (actuator_option_table), opt_count, 2);
 
   /* Actuator name */
-  gtk_frame_set_label (GTK_FRAME (option_frame), a->desc->name);
+  gtk_frame_set_label (GTK_FRAME (option_frame), a->desc->dispname);
 
   /* Actuator description */
   w = gtk_label_new (a->desc->doc);
@@ -274,7 +274,7 @@ add_actuator_cb (GtkButton *button, gpointer data)
   struct pn_actuator *a;
   
   gtk_label_get (GTK_LABEL (GTK_BIN (actuator_add_opmenu)->child),
-		 &actuator_name);
+                &actuator_name);
 
   a = create_actuator (actuator_name);
   g_assert (a);

@@ -1,3 +1,17 @@
+2006-10-31 20:07:32 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [310]
+  - user-friendly names (UI side unimplemented still)
+  
+  trunk/src/paranormal/actuators.h  |    3 ++-
+  trunk/src/paranormal/cmaps.c      |    2 ++
+  trunk/src/paranormal/containers.c |    3 +++
+  trunk/src/paranormal/freq.c       |    2 ++
+  trunk/src/paranormal/general.c    |    4 ++--
+  trunk/src/paranormal/wave.c       |   15 ++++++++++-----
+  trunk/src/paranormal/xform.c      |    8 +++++---
+  7 files changed, 26 insertions(+), 11 deletions(-)
+
+
 2006-10-31 09:29:30 +0000  William Pitcock <nenolod@nenolod.net>
   revision [308]
   - a more complicated paranormal example preset
