@@ -89,7 +89,7 @@ INPUT_PLUGINS="tonegen console sexypsf wav cue alac"
 OUTPUT_PLUGINS="disk_writer"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
-VISUALIZATION_PLUGINS="blur_scope"
+VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
 
 dnl Check for Audacious
@@ -1173,6 +1173,7 @@ echo
 echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             yes"
+echo "  Spectrum Analyzer:                      yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
 echo "  IRIS 3D:                                $enable_iris"
 echo

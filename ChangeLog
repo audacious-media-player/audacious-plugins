@@ -1,3 +1,28 @@
+2006-10-31 01:47:41 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [290]
+  - C++ files -> .cxx
+  - build saplib inline
+  - remove version.h and chase removal issues
+  
+  trunk/src/sap/Makefile             |   16 
+  trunk/src/sap/fileinfo.c           |    1 
+  trunk/src/sap/sap_plug.c           |    3 
+  trunk/src/sap/sapfile.c            |    1 
+  trunk/src/sap/saplib/Makefile      |   14 
+  trunk/src/sap/saplib/pokey0.cpp    |  132 ---
+  trunk/src/sap/saplib/pokey0.cxx    |  132 +++
+  trunk/src/sap/saplib/pokey1.cpp    |  102 --
+  trunk/src/sap/saplib/pokey1.cxx    |  102 ++
+  trunk/src/sap/saplib/sapCpu.cpp    | 1581 -------------------------------------
+  trunk/src/sap/saplib/sapCpu.cxx    | 1581 +++++++++++++++++++++++++++++++++++++
+  trunk/src/sap/saplib/sapEngine.cpp |  657 ---------------
+  trunk/src/sap/saplib/sapEngine.cxx |  657 +++++++++++++++
+  trunk/src/sap/saplib/sapPokey.cpp  |   64 -
+  trunk/src/sap/saplib/sapPokey.cxx  |   64 +
+  trunk/src/sap/version.h            |   21 
+  16 files changed, 2542 insertions(+), 2586 deletions(-)
+
+
 2006-10-31 01:40:00 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [288]
   Null output plugin added; original code by Christian Birchinger <joker -at- gentoo.org>
