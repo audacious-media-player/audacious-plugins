@@ -1,3 +1,19 @@
+2006-10-31 06:31:45 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [292]
+  - spectrum analyzer plugin based on blurscope and a little of xmms-finespectrum
+  
+  trunk/configure.ac                 |    3 
+  trunk/src/spectrum/Makefile        |    4 
+  trunk/src/spectrum/blur_scope.c    |  325 -------------------------------------
+  trunk/src/spectrum/blur_scope.h    |   15 -
+  trunk/src/spectrum/bscope_logo.xpm |  123 --------------
+  trunk/src/spectrum/config.c        |  131 --------------
+  trunk/src/spectrum/logo.xpm        |  123 ++++++++++++++
+  trunk/src/spectrum/spectrum.c      |  228 +++++++++++++++++++++++++
+  trunk/src/spectrum/xmms_logo.xpm   |  135 ---------------
+  9 files changed, 355 insertions(+), 732 deletions(-)
+
+
 2006-10-31 01:47:41 +0000  William Pitcock <nenolod@nenolod.net>
   revision [290]
   - C++ files -> .cxx

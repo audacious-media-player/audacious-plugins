@@ -1,5 +1,6 @@
-/*  Fine Spectrum Analyzer Visualization Plugin for XMMS
+/*  Spectrum Analyzer Visualization Plugin for Audacious
  *
+ *  Copyright (C) 2006 William Pitcock
  *  Copyright (C) 1998-2001 Vágvölgyi Attila, Peter Alm, Mikael Alm,
  *    Olle Hallnas, Thomas Nilsson and 4Front Technologies
  *
@@ -62,7 +63,7 @@ VisPlugin fsanalyzer_vp = {
 	NULL,
 	NULL,
 	0,
-	"Fine Spectrum Analyzer" VERSION,
+	"Spectrum Analyzer " VERSION,
 	0,
 	1,		
 	fsanalyzer_init, /* init */
@@ -92,7 +93,7 @@ static void fsanalyzer_init(void) {
 		return;
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(window),"Fine Spectrum Analyzer");
+	gtk_window_set_title(GTK_WINDOW(window),"Spectrum Analyzer");
 	gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
 	gtk_widget_realize(window);
 	bg_pixmap = gdk_pixmap_create_from_xpm_d(window->window,NULL,NULL,logo_xpm);
