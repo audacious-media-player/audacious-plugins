@@ -1,3 +1,11 @@
+2006-10-31 20:47:07 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [316]
+  - gi18n dependency
+  
+  trunk/src/paranormal/plugin.c |    2 ++
+  1 file changed, 2 insertions(+)
+
+
 2006-10-31 20:45:32 +0000  William Pitcock <nenolod@nenolod.net>
   revision [314]
   - use xmms_show_message() here.
