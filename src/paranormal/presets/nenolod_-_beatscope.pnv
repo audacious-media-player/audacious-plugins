@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 138 </high_index>
+    <color> 119, 239, 163 </color>
+   </cmap_bwgradient>
+   <cmap_bwgradient>
+    <low_index> 139 </low_index>
+    <high_index> 255 </high_index>
+    <color> 151, 179, 234 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <wave_horizontal>
+   <channels> -1 </channels>
+  </wave_horizontal>
+  <general_blur>
+  </general_blur>
+  <container_cycle>
+   <change_interval> 0 </change_interval>
+   <beat> TRUE </beat>
+   <xform_spin>
+    <angle> 0.00000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 1.04000 </r_scale>
+   </xform_spin>
+   <xform_spin>
+    <angle> 0.00000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 0.98700 </r_scale>
+   </xform_spin>
+   <container_cycle>
+    <change_interval> 0 </change_interval>
+    <beat> TRUE </beat>
+    <cmap_bwgradient>
+     <low_index> 0 </low_index>
+     <high_index> 138 </high_index>
+     <color> 119, 239, 163 </color>
+    </cmap_bwgradient>
+    <cmap_bwgradient>
+     <low_index> 139 </low_index>
+     <high_index> 255 </high_index>
+     <color> 151, 179, 234 </color>
+    </cmap_bwgradient>
+    <cmap_bwgradient>
+     <low_index> 0 </low_index>
+     <high_index> 138 </high_index>
+     <color> 151, 179, 234 </color>
+    </cmap_bwgradient>
+    <cmap_bwgradient>
+     <low_index> 139 </low_index>
+     <high_index> 255 </high_index>
+     <color> 119, 239, 163 </color>
+    </cmap_bwgradient>
+   </container_cycle>
+   <xform_spin>
+    <angle> 1.25000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 0.98700 </r_scale>
+   </xform_spin>
+   <xform_spin>
+    <angle> -1.25000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 1.04000 </r_scale>
+   </xform_spin>
+  </container_cycle>
+ </container_simple>
+</paranormal_preset>
