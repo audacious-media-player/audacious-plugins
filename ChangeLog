@@ -1,3 +1,12 @@
+2006-11-01 07:18:46 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [342]
+  - add OnBeat container. children are only iterated on a detected beat.
+  
+  trunk/src/paranormal/builtins.c   |    3 +++
+  trunk/src/paranormal/containers.c |   38 ++++++++++++++++++++++++++++++++++++++
+  2 files changed, 41 insertions(+)
+
+
 2006-11-01 07:13:49 +0000  William Pitcock <nenolod@nenolod.net>
   revision [340]
   - split out beat detection code into beatdetect.c

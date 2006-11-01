@@ -129,7 +129,7 @@ container_once_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_container_once =
 {
   "container_once",
-  "Initalization Container",
+  "Initialization Container",
   "A container whose contents get executed exactly once.\n\n"
   "This is often used to set initial graphics states such as the\n"
   "pixel depth, or to display some text (such as credits)",
@@ -243,7 +243,7 @@ struct pn_actuator_desc builtin_container_onbeat =
 {
   "container_onbeat",
   "OnBeat Container",
-  "A simple container which only triggers on a beat."
+  "A simple container which only triggers on a beat.",
   ACTUATOR_FLAG_CONTAINER, NULL,
   PN_ACTUATOR_INIT_FUNC (container_onbeat_init),
   PN_ACTUATOR_CLEANUP_FUNC (container_onbeat_cleanup),
