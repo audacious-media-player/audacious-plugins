@@ -154,7 +154,6 @@ struct container_cycle_data
   GSList *children;
   GSList *current;
   int last_change;
-  int last_beat;
 };
 
 static void
@@ -176,12 +175,21 @@ container_cycle_exec (const struct pn_actuator_option *opts,
 {
   struct container_cycle_data *cdata = (struct container_cycle_data*)data;
   int now;
-  int new_beat = ((pn_sound_data->pcm_data[0][0]+pn_sound_data->pcm_data[1][0]) >> 7) >= 80 ? 1 : 0;
+
+  /* quantize the average energy of the pcm_data for beat detection. */
+  int fftsum = 
+    ((pn_sound_data->pcm_data[0][0] + pn_sound_data->pcm_data[1][0]) >> 6);
+
+  /*
+   * if the energy's quantization is within this, trigger as a detected 
+   * beat.
+   */
+  int new_beat = (fftsum >= 350 && fftsum <= 600) ? 1 : 0;
 
   /*
    * Change branch if all of the requirements are met for the branch to change.
    */
-  if ((opts[1].val.bval == TRUE && new_beat != cdata->last_beat) || opts[1].val.bval == FALSE)
+  if ((opts[1].val.bval == TRUE && new_beat != 0) || opts[1].val.bval == FALSE)
     {
        now = SDL_GetTicks();	
 
@@ -195,9 +203,6 @@ container_cycle_exec (const struct pn_actuator_option *opts,
               cdata->current = cdata->current->next;
          }
     }
-
-  /* reset the tracking for on-beat branch changing. */
-  cdata->last_beat = new_beat;  
 
   if (! cdata->current)
     cdata->current = cdata->children;

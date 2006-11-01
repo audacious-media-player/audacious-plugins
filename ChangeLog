@@ -1,3 +1,11 @@
+2006-11-01 05:33:37 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [330]
+  - update this preset for the new version of the branching container.
+  
+  trunk/src/paranormal/presets/nenolod_-_quakingscope.pnv |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-01 05:28:30 +0000  William Pitcock <nenolod@nenolod.net>
   revision [328]
   - clean up about box
