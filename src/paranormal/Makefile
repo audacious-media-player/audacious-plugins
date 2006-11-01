@@ -11,6 +11,7 @@ LIBADD = $(GTK_LIBS) $(XML_LIBS) $(SDL_LIBS)
 
 SOURCES =			\
 	actuators.c		\
+	beatdetect.c		\
 	builtins.c		\
 	cfg.c			\
 	cmaps.c			\

@@ -50,4 +50,7 @@ extern struct pn_image_data *pn_image_data;
 extern float sin_val[360];
 extern float cos_val[360];
 
+/* beat detection */
+int pn_is_new_beat(void);
+
 #endif /* _PARANORMAL_H */

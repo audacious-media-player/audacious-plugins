@@ -175,16 +175,7 @@ container_cycle_exec (const struct pn_actuator_option *opts,
 {
   struct container_cycle_data *cdata = (struct container_cycle_data*)data;
   int now;
-
-  /* quantize the average energy of the pcm_data for beat detection. */
-  int fftsum = 
-    ((pn_sound_data->pcm_data[0][0] + pn_sound_data->pcm_data[1][0]) >> 6);
-
-  /*
-   * if the energy's quantization is within this, trigger as a detected 
-   * beat.
-   */
-  int new_beat = (fftsum >= 300 && fftsum <= 600) ? 1 : 0;
+  int new_beat = pn_is_new_beat();
 
   /*
    * Change branch if all of the requirements are met for the branch to change.

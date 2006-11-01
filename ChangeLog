@@ -1,3 +1,12 @@
+2006-11-01 06:55:20 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [338]
+  - another example preset showing the true power of on-beat branched execution
+  
+  trunk/src/paranormal/presets/Makefile                |    3 
+  trunk/src/paranormal/presets/nenolod_-_beatscope.pnv |   71 +++++++++++++++++++
+  2 files changed, 73 insertions(+), 1 deletion(-)
+
+
 2006-11-01 06:42:55 +0000  William Pitcock <nenolod@nenolod.net>
   revision [336]
   - support lookup of actuator templates by their display name
