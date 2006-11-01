@@ -28,6 +28,7 @@ DECLARE_ACTUATOR (general_blur);
 DECLARE_ACTUATOR (general_mosaic);
 DECLARE_ACTUATOR (general_clear);
 DECLARE_ACTUATOR (general_noop);
+DECLARE_ACTUATOR (general_invert);
 
 /* **************** wave **************** */
 DECLARE_ACTUATOR (wave_horizontal);
@@ -62,6 +63,7 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_general_mosaic,
   &builtin_general_clear,
   &builtin_general_noop,
+  &builtin_general_invert,
   /* **************** wave **************** */
   &builtin_wave_horizontal,
   &builtin_wave_vertical,

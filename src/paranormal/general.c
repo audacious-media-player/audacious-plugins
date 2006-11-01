@@ -178,3 +178,23 @@ struct pn_actuator_desc builtin_general_noop =
   NULL, NULL, general_noop_exec
 };
 
+/* **************** general_invert **************** */
+static void
+general_invert_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  int i, j;
+
+  for (j=0; j < pn_image_data->height; j++)
+    for (i=0; i < pn_image_data->width; i++)
+      pn_image_data->surface[0][PN_IMG_INDEX (i, j)] =
+	255 - pn_image_data->surface[0][PN_IMG_INDEX (i, j)];
+}
+
+struct pn_actuator_desc builtin_general_invert =
+{
+  "general_invert", "Value Invert", "Performs a value invert.",
+  0, NULL,
+  NULL, NULL, general_invert_exec
+};
+

@@ -1,3 +1,11 @@
+2006-11-01 09:50:23 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [360]
+  - take advantage of the ability to do nothing
+  
+  trunk/src/paranormal/presets/nenolod_-_branchscope.pnv |   20 +++++++++++++++--
+  1 file changed, 18 insertions(+), 2 deletions(-)
+
+
 2006-11-01 09:32:26 +0000  William Pitcock <nenolod@nenolod.net>
   revision [358]
   - NOOP instruction. What this does is basically takes a slot in a
