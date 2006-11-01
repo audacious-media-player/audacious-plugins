@@ -1,3 +1,14 @@
+2006-11-01 07:43:46 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [346]
+  - branchscope preset... a very advanced example of branching, multiple 
+    branches and well, if you didn't know better, you'd probably call it a 
+    demo. ;)
+  
+  trunk/src/paranormal/presets/Makefile                  |    3 
+  trunk/src/paranormal/presets/nenolod_-_branchscope.pnv |   98 +++++++++++++++++
+  2 files changed, 100 insertions(+), 1 deletion(-)
+
+
 2006-11-01 07:24:22 +0000  William Pitcock <nenolod@nenolod.net>
   revision [344]
   - fix typoes

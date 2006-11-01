@@ -25,6 +25,7 @@ DECLARE_ACTUATOR (freq_drops);
 /* **************** general **************** */
 DECLARE_ACTUATOR (general_fade);
 DECLARE_ACTUATOR (general_blur);
+DECLARE_ACTUATOR (general_mosaic);
 
 /* **************** wave **************** */
 DECLARE_ACTUATOR (wave_horizontal);
@@ -56,6 +57,7 @@ struct pn_actuator_desc *builtin_table[] =
   /* **************** general **************** */
   &builtin_general_fade,
   &builtin_general_blur,
+  &builtin_general_mosaic,
   /* **************** wave **************** */
   &builtin_wave_horizontal,
   &builtin_wave_vertical,

@@ -94,3 +94,48 @@ struct pn_actuator_desc builtin_general_blur =
   0, NULL,
   NULL, NULL, general_blur_exec
 };
+
+/* **************** general_mosaic **************** */
+/* FIXME: add a variable radius */
+/* FIXME: SPEEEED */
+static void
+general_mosaic_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  int i,j;
+  register guchar *srcptr = pn_image_data->surface[0];
+  register guchar *destptr = pn_image_data->surface[1];
+  register int sum;
+
+  for (j=0; j<pn_image_data->height; j += 6)
+    for (i=0; i<pn_image_data->width; i += 6)
+      {
+        int ii = 0, jj = 0;
+        guchar bval = 0;
+
+        /* find the brightest colour */
+        for (jj = 0; jj < 6 && (j + jj < pn_image_data->height); jj++)
+          for (ii = 0; ii < 6 && (i + ii < pn_image_data->width); ii++)
+            {
+               guchar val = srcptr[PN_IMG_INDEX(i + ii,  j + jj)];
+
+               if (val > bval)
+                 bval = val;
+            }
+
+        for (jj = 0; jj < 6 && (j + jj < pn_image_data->height); jj++)
+          for (ii = 0; ii < 6 && (i + ii < pn_image_data->width); ii++)
+            {
+               destptr[PN_IMG_INDEX(i + ii, j + jj)] = bval;
+            }
+      }
+
+  pn_swap_surfaces ();
+}
+
+struct pn_actuator_desc builtin_general_mosaic = 
+{
+  "general_mosaic", "Mosaic", "A simple 6 pixel radius Mosaic",
+  0, NULL,
+  NULL, NULL, general_mosaic_exec
+};

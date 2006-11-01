@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <color> 119, 239, 163 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <general_fade>
+   <amount> 255 </amount>
+  </general_fade>
+  <wave_horizontal>
+   <channels> -1 </channels>
+  </wave_horizontal>
+  <general_blur>
+  </general_blur>
+  <general_mosaic>
+  </general_mosaic>
+ </container_simple>
+</paranormal_preset>
