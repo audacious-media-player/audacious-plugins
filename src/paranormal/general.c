@@ -163,3 +163,18 @@ struct pn_actuator_desc builtin_general_clear =
   NULL, NULL, general_clear_exec
 };
 
+/* **************** general_noop **************** */
+static void
+general_noop_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  return;
+}
+
+struct pn_actuator_desc builtin_general_noop =
+{
+  "general_noop", "Do Nothing", "Does absolutely nothing.",
+  0, NULL,
+  NULL, NULL, general_noop_exec
+};
+
