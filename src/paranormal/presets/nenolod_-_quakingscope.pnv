@@ -21,7 +21,7 @@
   </general_blur>
   <container_cycle>
    <change_interval> 0 </change_interval>
-   <random> TRUE </random>
+   <beat> FALSE </beat>
    <xform_spin>
     <angle> 0.00000 </angle>
     <r_add> 0.00000 </r_add>

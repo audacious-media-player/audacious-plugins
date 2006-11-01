@@ -1,3 +1,13 @@
+2006-11-01 05:28:30 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [328]
+  - clean up about box
+  - add on-beat branch-change evaluation
+  
+  trunk/src/paranormal/containers.c |   32 ++++++++++++++++++++++----------
+  trunk/src/paranormal/plugin.c     |    4 +++-
+  2 files changed, 25 insertions(+), 11 deletions(-)
+
+
 2006-10-31 23:33:08 +0000  William Pitcock <nenolod@nenolod.net>
   revision [326]
   - @%#^#
