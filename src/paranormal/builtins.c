@@ -58,6 +58,7 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_general_fade,
   &builtin_general_blur,
   &builtin_general_mosaic,
+  &builtin_general_clear,
   /* **************** wave **************** */
   &builtin_wave_horizontal,
   &builtin_wave_vertical,

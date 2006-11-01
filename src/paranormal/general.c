@@ -21,8 +21,7 @@ static void
 general_fade_exec (const struct pn_actuator_option *opts,
 	   gpointer data)
 {
-  int amt = opts[0].val.ival > 255 || opts[0].val.ival < 0 ?
-    3 : opts[0].val.ival;
+  int amt = opts[0].val.ival > 255 || opts[0].val.ival < 0 ? 3 : opts[0].val.ival;
   int i, j;
 
   for (j=0; j<pn_image_data->height; j++)
@@ -113,7 +112,7 @@ general_mosaic_exec (const struct pn_actuator_option *opts,
   register guchar *srcptr = pn_image_data->surface[0];
   register guchar *destptr = pn_image_data->surface[1];
   register int sum;
-  int radius = opts[0].val.ival;
+  int radius = opts[0].val.ival > 255 || opts[0].val.ival < 0 ? 6 : opts[0].val.ival;
 
   for (j=0; j<pn_image_data->height; j += radius)
     for (i=0; i<pn_image_data->width; i += radius)
@@ -147,3 +146,20 @@ struct pn_actuator_desc builtin_general_mosaic =
   0, general_mosaic_opts,
   NULL, NULL, general_mosaic_exec
 };
+
+/* **************** general_clear **************** */
+static void
+general_clear_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+   memset(pn_image_data->surface[0], '\0',
+	  (pn_image_data->height * pn_image_data->width));
+}
+
+struct pn_actuator_desc builtin_general_clear =
+{
+  "general_clear", "Clear Surface", "Clears the surface.",
+  0, NULL,
+  NULL, NULL, general_clear_exec
+};
+
