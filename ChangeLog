@@ -1,3 +1,15 @@
+2006-11-01 08:54:36 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [348]
+  - mosaic effect (in progress, custom size will be in the next commit)
+  - new preset: retroscope which demonstrates it ;)
+  
+  trunk/src/paranormal/builtins.c                       |    2 
+  trunk/src/paranormal/general.c                        |   45 ++++++++++++++++++
+  trunk/src/paranormal/presets/Makefile                 |    3 -
+  trunk/src/paranormal/presets/nenolod_-_retroscope.pnv |   23 +++++++++
+  4 files changed, 72 insertions(+), 1 deletion(-)
+
+
 2006-11-01 07:43:46 +0000  William Pitcock <nenolod@nenolod.net>
   revision [346]
   - branchscope preset... a very advanced example of branching, multiple 

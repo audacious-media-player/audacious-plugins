@@ -14,7 +14,7 @@ static struct pn_actuator_option_desc general_fade_opts[] =
   { "amount", "The amount by which the color index of each "
     "pixel should be decreased by each frame (MAX 255)",
     OPT_TYPE_INT, { ival: 3 } },
-  { 0 }
+  { NULL }
 };
 
 static void
@@ -98,6 +98,13 @@ struct pn_actuator_desc builtin_general_blur =
 /* **************** general_mosaic **************** */
 /* FIXME: add a variable radius */
 /* FIXME: SPEEEED */
+static struct pn_actuator_option_desc general_mosaic_opts[] =
+{
+  { "radius", "The pixel radius that should be used for the effect.",
+    OPT_TYPE_INT, { ival: 6 } },
+  { NULL }
+};
+
 static void
 general_mosaic_exec (const struct pn_actuator_option *opts,
 	   gpointer data)
@@ -106,16 +113,17 @@ general_mosaic_exec (const struct pn_actuator_option *opts,
   register guchar *srcptr = pn_image_data->surface[0];
   register guchar *destptr = pn_image_data->surface[1];
   register int sum;
+  int radius = opts[0].val.ival;
 
-  for (j=0; j<pn_image_data->height; j += 6)
-    for (i=0; i<pn_image_data->width; i += 6)
+  for (j=0; j<pn_image_data->height; j += radius)
+    for (i=0; i<pn_image_data->width; i += radius)
       {
         int ii = 0, jj = 0;
         guchar bval = 0;
 
         /* find the brightest colour */
-        for (jj = 0; jj < 6 && (j + jj < pn_image_data->height); jj++)
-          for (ii = 0; ii < 6 && (i + ii < pn_image_data->width); ii++)
+        for (jj = 0; jj < radius && (j + jj < pn_image_data->height); jj++)
+          for (ii = 0; ii < radius && (i + ii < pn_image_data->width); ii++)
             {
                guchar val = srcptr[PN_IMG_INDEX(i + ii,  j + jj)];
 
@@ -123,8 +131,8 @@ general_mosaic_exec (const struct pn_actuator_option *opts,
                  bval = val;
             }
 
-        for (jj = 0; jj < 6 && (j + jj < pn_image_data->height); jj++)
-          for (ii = 0; ii < 6 && (i + ii < pn_image_data->width); ii++)
+        for (jj = 0; jj < radius && (j + jj < pn_image_data->height); jj++)
+          for (ii = 0; ii < radius && (i + ii < pn_image_data->width); ii++)
             {
                destptr[PN_IMG_INDEX(i + ii, j + jj)] = bval;
             }
@@ -136,6 +144,6 @@ general_mosaic_exec (const struct pn_actuator_option *opts,
 struct pn_actuator_desc builtin_general_mosaic = 
 {
   "general_mosaic", "Mosaic", "A simple 6 pixel radius Mosaic",
-  0, NULL,
+  0, general_mosaic_opts,
   NULL, NULL, general_mosaic_exec
 };
