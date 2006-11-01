@@ -26,6 +26,7 @@ DECLARE_ACTUATOR (freq_drops);
 DECLARE_ACTUATOR (general_fade);
 DECLARE_ACTUATOR (general_blur);
 DECLARE_ACTUATOR (general_mosaic);
+DECLARE_ACTUATOR (general_clear);
 
 /* **************** wave **************** */
 DECLARE_ACTUATOR (wave_horizontal);
