@@ -1,3 +1,14 @@
+2006-11-01 07:13:49 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [340]
+  - split out beat detection code into beatdetect.c
+  
+  trunk/src/paranormal/Makefile     |    1 +
+  trunk/src/paranormal/beatdetect.c |   15 +++++++++++++++
+  trunk/src/paranormal/containers.c |   11 +----------
+  trunk/src/paranormal/paranormal.h |    3 +++
+  4 files changed, 20 insertions(+), 10 deletions(-)
+
+
 2006-11-01 06:55:20 +0000  William Pitcock <nenolod@nenolod.net>
   revision [338]
   - another example preset showing the true power of on-beat branched execution

@@ -11,6 +11,7 @@
 DECLARE_ACTUATOR (container_simple);
 DECLARE_ACTUATOR (container_once);
 DECLARE_ACTUATOR (container_cycle);
+DECLARE_ACTUATOR (container_onbeat);
 
 /* **************** cmaps **************** */
 
@@ -44,6 +45,8 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_container_simple,
   &builtin_container_once,
   &builtin_container_cycle,
+  &builtin_container_onbeat,
+
   /* **************** cmaps **************** */
   &builtin_cmap_bwgradient,
   &builtin_cmap_gradient,

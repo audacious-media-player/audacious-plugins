@@ -211,3 +211,41 @@ struct pn_actuator_desc builtin_container_cycle =
   ACTUATOR_FLAG_CONTAINER, container_cycle_opts,
   container_cycle_init, container_cycle_cleanup, container_cycle_exec
 };
+
+/* **************** container_onbeat **************** */
+static void
+container_onbeat_init (GSList ***data)
+{
+  *data = g_new0 (GSList *, 1);
+}
+
+static void
+container_onbeat_cleanup (GSList **data)
+{
+  container_cleanup (data);
+  g_free (data);
+}
+
+static void
+container_onbeat_exec (const struct pn_actuator_option *opts,
+		     GSList **data)
+{
+  GSList *child;
+
+  if (pn_is_new_beat() == TRUE)
+    {
+      for (child = *data; child; child = child->next)
+        exec_actuator ((struct pn_actuator *) child->data);
+    }
+}
+
+struct pn_actuator_desc builtin_container_onbeat =
+{
+  "container_onbeat",
+  "OnBeat Container",
+  "A simple container which only triggers on a beat."
+  ACTUATOR_FLAG_CONTAINER, NULL,
+  PN_ACTUATOR_INIT_FUNC (container_onbeat_init),
+  PN_ACTUATOR_CLEANUP_FUNC (container_onbeat_cleanup),
+  PN_ACTUATOR_EXEC_FUNC (container_onbeat_exec)
+};
