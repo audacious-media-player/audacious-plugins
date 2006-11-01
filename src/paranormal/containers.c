@@ -7,6 +7,7 @@
 #include <glib.h>
 
 #include "actuators.h"
+#include "paranormal.h"
 
 /* **************** all containers **************** */
 
@@ -143,7 +144,7 @@ static struct pn_actuator_option_desc container_cycle_opts[] =
 {
   { "change_interval", "The number of seconds between changing the "
     "child to be executed", OPT_TYPE_INT, { ival: 20 } },
-  { "random", "Whether or not the change should be random",
+  { "beat", "Whether or not the change should only occur on a beat",
     OPT_TYPE_BOOLEAN, { bval: TRUE } },
   { 0 }
 };
@@ -153,6 +154,7 @@ struct container_cycle_data
   GSList *children;
   GSList *current;
   int last_change;
+  int last_beat;
 };
 
 static void
@@ -174,18 +176,28 @@ container_cycle_exec (const struct pn_actuator_option *opts,
 {
   struct container_cycle_data *cdata = (struct container_cycle_data*)data;
   int now;
+  int new_beat = ((pn_sound_data->pcm_data[0][0]+pn_sound_data->pcm_data[1][0]) >> 7) >= 80 ? 1 : 0;
 
-  now = SDL_GetTicks ();
-
-  if (now - cdata->last_change
-      > opts[0].val.ival * 1000)
+  /*
+   * Change branch if all of the requirements are met for the branch to change.
+   */
+  if ((opts[1].val.bval == TRUE && new_beat != cdata->last_beat) || opts[1].val.bval == FALSE)
     {
-      cdata->last_change = now;
+       now = SDL_GetTicks();	
 
-      /* FIXME: add randomization support */
-      if (cdata->current)
-	cdata->current = cdata->current->next;
+       if (now - cdata->last_change
+           > opts[0].val.ival * 1000)
+         {
+            cdata->last_change = now;
+
+            /* FIXME: add randomization support */
+            if (cdata->current)
+              cdata->current = cdata->current->next;
+         }
     }
+
+  /* reset the tracking for on-beat branch changing. */
+  cdata->last_beat = new_beat;  
 
   if (! cdata->current)
     cdata->current = cdata->children;
@@ -199,7 +211,7 @@ struct pn_actuator_desc builtin_container_cycle =
   "container_cycle",
   "Branched-execution Container",
   "A container that alternates which of its children is executed;  it "
-  "can either change children randomly or go in order.",
+  "can either change on an interval, or only on a beat.",
   ACTUATOR_FLAG_CONTAINER, container_cycle_opts,
   container_cycle_init, container_cycle_cleanup, container_cycle_exec
 };

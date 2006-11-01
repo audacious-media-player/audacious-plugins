@@ -244,7 +244,9 @@ about_closed(GtkWidget *w, GdkEvent *e, GtkWidget **window)
 static void
 pn_xmms_about (void)
 {
-  xmms_show_message("Paranormal Visualization Studio " VERSION "\n\n\
+  xmms_show_message("About Paranormal Visualization Studio", 
+
+"Paranormal Visualization Studio " VERSION "\n\n\
 Copyright (C) 2006, William Pitcock <nenolod -at- nenolod.net>\n\
 Portions Copyright (C) 2001, Jamie Gennis <jgennis -at- mindspring.com>\n\
 \n\
