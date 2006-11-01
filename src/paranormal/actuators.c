@@ -68,7 +68,7 @@ get_actuator_desc (const char *name)
   int i;
 
   for (i=0; builtin_table[i]; i++)
-    if (! g_strcasecmp (name, builtin_table[i]->name))
+    if (! g_strcasecmp (name, builtin_table[i]->name) || ! g_strcasecmp(name, builtin_table[i]->dispname))
       break;
 
   /* actuator not found */

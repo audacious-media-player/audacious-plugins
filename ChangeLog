@@ -1,3 +1,11 @@
+2006-11-01 06:20:56 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [334]
+  - slightly adjust the variance threshold for beat detection
+  
+  trunk/src/paranormal/containers.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-01 06:09:04 +0000  William Pitcock <nenolod@nenolod.net>
   revision [332]
   - use a quantized variance instead of a fast fft sum for beat detection with thresholding

@@ -522,7 +522,7 @@ pn_configure (void)
       for (i=0; builtin_table[i]; i++)
 	{
 	  /* FIXME: Add actuator group support */
-	  menuitem = gtk_menu_item_new_with_label (builtin_table[i]->name);
+	  menuitem = gtk_menu_item_new_with_label (builtin_table[i]->dispname);
 	  gtk_widget_show (menuitem);
 	  gtk_menu_append (GTK_MENU (menu), menuitem);
 	}
