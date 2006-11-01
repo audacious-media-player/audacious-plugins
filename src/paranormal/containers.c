@@ -184,7 +184,7 @@ container_cycle_exec (const struct pn_actuator_option *opts,
    * if the energy's quantization is within this, trigger as a detected 
    * beat.
    */
-  int new_beat = (fftsum >= 350 && fftsum <= 600) ? 1 : 0;
+  int new_beat = (fftsum >= 300 && fftsum <= 600) ? 1 : 0;
 
   /*
    * Change branch if all of the requirements are met for the branch to change.
