@@ -43,8 +43,22 @@
   <container_cycle>
    <change_interval> 0 </change_interval>
    <beat> TRUE </beat>
-   <general_blur>
-   </general_blur>
+   <container_simple>
+    <general_blur>
+    </general_blur>
+   </container_simple>
+   <general_noop>
+   </general_noop>
+   <container_simple>
+    <general_mosaic>
+     <radius> 3 </radius>
+    </general_mosaic>
+    <general_blur>
+    </general_blur>
+    <general_fade>
+     <amount> 30 </amount>
+    </general_fade>
+   </container_simple>
   </container_cycle>
   <container_cycle>
    <change_interval> 0 </change_interval>
@@ -59,6 +73,8 @@
     <high_index> 255 </high_index>
     <color> 151, 179, 234 </color>
    </cmap_bwgradient>
+   <general_noop>
+   </general_noop>
    <cmap_bwgradient>
     <low_index> 0 </low_index>
     <high_index> 138 </high_index>
