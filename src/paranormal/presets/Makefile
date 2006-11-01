@@ -10,6 +10,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_phosphor_flame.pnv:$(presetsdir)	\
 	nenolod_-_psuedo_starfield.pnv:$(presetsdir)	\
 	nenolod_-_quakingscope.pnv:$(presetsdir)	\
-	nenolod_-_beatscope.pnv:$(presetsdir)
+	nenolod_-_beatscope.pnv:$(presetsdir)		\
+	nenolod_-_branchscope.pnv:$(presetsdir)
 
 include ../../../mk/objective.mk
