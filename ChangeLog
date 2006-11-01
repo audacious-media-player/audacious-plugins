@@ -1,3 +1,11 @@
+2006-11-01 09:00:19 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [350]
+  - make mosaic sizable.
+  
+  trunk/src/paranormal/general.c |   24 ++++++++++++++++--------
+  1 file changed, 16 insertions(+), 8 deletions(-)
+
+
 2006-11-01 08:54:36 +0000  William Pitcock <nenolod@nenolod.net>
   revision [348]
   - mosaic effect (in progress, custom size will be in the next commit)

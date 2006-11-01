@@ -143,7 +143,7 @@ general_mosaic_exec (const struct pn_actuator_option *opts,
 
 struct pn_actuator_desc builtin_general_mosaic = 
 {
-  "general_mosaic", "Mosaic", "A simple 6 pixel radius Mosaic",
+  "general_mosaic", "Mosaic", "A simple mosaic effect.",
   0, general_mosaic_opts,
   NULL, NULL, general_mosaic_exec
 };
