@@ -18,6 +18,7 @@ SOURCES =			\
 	containers.c		\
 	freq.c			\
 	general.c		\
+	misc.c			\
 	paranormal.c		\
 	plugin.c		\
 	presets.c		\

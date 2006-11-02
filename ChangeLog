@@ -1,3 +1,11 @@
+2006-11-02 06:32:33 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [370]
+  - remove feedback from motion transform.
+  
+  trunk/src/paranormal/presets/nenolod_-_value_replace_fun.pnv |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-02 06:28:54 +0000  William Pitcock <nenolod@nenolod.net>
   revision [368]
   - so like, when will somebody else make some presets for this thing?

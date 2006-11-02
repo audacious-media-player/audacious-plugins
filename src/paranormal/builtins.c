@@ -31,6 +31,9 @@ DECLARE_ACTUATOR (general_noop);
 DECLARE_ACTUATOR (general_invert);
 DECLARE_ACTUATOR (general_replace);
 
+/* **************** misc **************** */
+DECLARE_ACTUATOR (misc_floater);
+
 /* **************** wave **************** */
 DECLARE_ACTUATOR (wave_horizontal);
 DECLARE_ACTUATOR (wave_vertical);
@@ -66,6 +69,8 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_general_noop,
   &builtin_general_invert,
   &builtin_general_replace,
+  /* **************** misc **************** */
+  &builtin_misc_floater,
   /* **************** wave **************** */
   &builtin_wave_horizontal,
   &builtin_wave_vertical,
