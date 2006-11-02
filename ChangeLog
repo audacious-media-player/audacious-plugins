@@ -1,3 +1,13 @@
+2006-11-02 10:30:44 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [372]
+  - add floating particles.
+  
+  trunk/src/paranormal/Makefile   |    1 
+  trunk/src/paranormal/builtins.c |    5 +
+  trunk/src/paranormal/misc.c     |  128 ++++++++++++++++++++++++++++++++++++++++
+  3 files changed, 134 insertions(+)
+
+
 2006-11-02 06:32:33 +0000  William Pitcock <nenolod@nenolod.net>
   revision [370]
   - remove feedback from motion transform.

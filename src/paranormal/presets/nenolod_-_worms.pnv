@@ -1,0 +1,920 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <color> 0, 127, 255 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <general_invert>
+  </general_invert>
+  <container_simple>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+  </container_simple>
+  <container_simple>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+   <misc_floater>
+    <value> 255 </value>
+   </misc_floater>
+  </container_simple>
+  <xform_spin>
+   <angle> 0.00000 </angle>
+   <r_add> 0.00000 </r_add>
+   <r_scale> 1.02000 </r_scale>
+  </xform_spin>
+  <general_invert>
+  </general_invert>
+ </container_simple>
+</paranormal_preset>

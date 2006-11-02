@@ -14,6 +14,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_branchscope.pnv:$(presetsdir)		\
 	nenolod_-_retroscope.pnv:$(presetsdir)		\
 	nenolod_-_value_replace_fun.pnv:$(presetsdir)	\
-	nenolod_-_rush.pnv:$(presetsdir)
+	nenolod_-_rush.pnv:$(presetsdir)		\
+	nenolod_-_worms.pnv:$(presetsdir)
 
 include ../../../mk/objective.mk
