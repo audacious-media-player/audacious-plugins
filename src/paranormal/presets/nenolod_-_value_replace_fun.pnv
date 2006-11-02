@@ -20,7 +20,7 @@
   <xform_spin>
    <angle> 0.00000 </angle>
    <r_add> 0.00000 </r_add>
-   <r_scale> -0.94000 </r_scale>
+   <r_scale> 0.94000 </r_scale>
   </xform_spin>
   <general_blur>
   </general_blur>
