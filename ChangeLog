@@ -1,3 +1,11 @@
+2006-11-02 05:52:23 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [366]
+  - allow waves to be drawn with a custom value instead of just 255
+  
+  trunk/src/paranormal/wave.c |   20 +++++++++++++-------
+  1 file changed, 13 insertions(+), 7 deletions(-)
+
+
 2006-11-02 04:50:58 +0000  William Pitcock <nenolod@nenolod.net>
   revision [364]
   - add value replace filter, replaces a range of values with a different value
