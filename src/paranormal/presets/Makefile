@@ -12,6 +12,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_quakingscope.pnv:$(presetsdir)	\
 	nenolod_-_beatscope.pnv:$(presetsdir)		\
 	nenolod_-_branchscope.pnv:$(presetsdir)		\
-	nenolod_-_retroscope.pnv:$(presetsdir)
+	nenolod_-_retroscope.pnv:$(presetsdir)		\
+	nenolod_-_value_replace_fun.pnv:$(presetsdir)
 
 include ../../../mk/objective.mk

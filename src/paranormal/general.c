@@ -198,3 +198,41 @@ struct pn_actuator_desc builtin_general_invert =
   NULL, NULL, general_invert_exec
 };
 
+/* **************** general_replace **************** */
+static struct pn_actuator_option_desc general_replace_opts[] =
+{
+  { "start", "The beginning colour value that should be replaced by the value of out.",
+    OPT_TYPE_INT, { ival: 250 } },
+  { "end", "The ending colour value that should be replaced by the value of out.",
+    OPT_TYPE_INT, { ival: 255 } },
+  { "out", "The colour value that in is replaced with.",
+    OPT_TYPE_INT, { ival: 0 } },
+  { NULL }
+};
+
+static void
+general_replace_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  register int i, j;
+  register guchar val;
+  guchar begin = opts[0].val.ival > 255 || opts[0].val.ival < 0 ? 250 : opts[0].val.ival;
+  guchar end = opts[1].val.ival > 255 || opts[1].val.ival < 0 ? 255 : opts[1].val.ival;
+  guchar out = opts[2].val.ival > 255 || opts[2].val.ival < 0 ? 0 : opts[2].val.ival;
+
+  for (j=0; j < pn_image_data->height; j++)
+    for (i=0; i < pn_image_data->width; i++)
+      {
+        val = pn_image_data->surface[0][PN_IMG_INDEX (i, j)];
+        if (val >= begin && val <= end)
+          pn_image_data->surface[0][PN_IMG_INDEX (i, j)] = out;
+      }
+}
+
+struct pn_actuator_desc builtin_general_replace =
+{
+  "general_replace", "Value Replace", "Performs a value replace on a range of values.",
+  0, general_replace_opts,
+  NULL, NULL, general_replace_exec
+};
+

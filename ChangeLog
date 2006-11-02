@@ -1,3 +1,12 @@
+2006-11-01 21:19:36 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [362]
+  - add value invert filter
+  
+  trunk/src/paranormal/builtins.c |    2 ++
+  trunk/src/paranormal/general.c  |   20 ++++++++++++++++++++
+  2 files changed, 22 insertions(+)
+
+
 2006-11-01 09:50:23 +0000  William Pitcock <nenolod@nenolod.net>
   revision [360]
   - take advantage of the ability to do nothing
