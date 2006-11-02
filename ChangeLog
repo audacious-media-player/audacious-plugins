@@ -1,3 +1,15 @@
+2006-11-02 04:50:58 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [364]
+  - add value replace filter, replaces a range of values with a different value
+  - add preset which demonstrates how this can be abused
+  
+  trunk/src/paranormal/builtins.c                              |    2 
+  trunk/src/paranormal/general.c                               |   38 +++++++++++
+  trunk/src/paranormal/presets/Makefile                        |    3 
+  trunk/src/paranormal/presets/nenolod_-_value_replace_fun.pnv |   31 ++++++++
+  4 files changed, 73 insertions(+), 1 deletion(-)
+
+
 2006-11-01 21:19:36 +0000  William Pitcock <nenolod@nenolod.net>
   revision [362]
   - add value invert filter

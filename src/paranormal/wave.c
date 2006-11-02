@@ -11,6 +11,7 @@ struct pn_actuator_option_desc wave_horizontal_opts[] =
 {
   {"channels", "Which sound channels to use: negative = channel 1, \npositive = channel 2, "
    "zero = both (two wave-forms.)", OPT_TYPE_INT, {ival: -1} },
+  {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
   { 0 }
 };
 
@@ -20,6 +21,7 @@ wave_horizontal_exec (const struct pn_actuator_option *opts,
 {
   int i;
   int channel = ( opts[0].val.ival < 0 ) ? 0 : 1;
+  guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
 
   for (i=0; i<pn_image_data->width; i++) {
 
@@ -29,7 +31,7 @@ wave_horizontal_exec (const struct pn_actuator_option *opts,
 					      - CAP (pn_sound_data->pcm_data[channel]
 						     [i*512/pn_image_data->width]>>8,
 						     (pn_image_data->height>>1)-1))]
-	= 0xff;
+	= value;
     }
 
     /*both channels, at 1/4 and 3/4 of the screen*/
@@ -38,13 +40,13 @@ wave_horizontal_exec (const struct pn_actuator_option *opts,
 					      CAP( (pn_sound_data->pcm_data[0]
 						    [i*512/pn_image_data->width]>>9),
 						   (pn_image_data->height>>2)-1))]
-	= 0xff;
+	= value;
 
       pn_image_data->surface[0][PN_IMG_INDEX( i, 3*(pn_image_data->height>>2) -
 					      CAP( (pn_sound_data->pcm_data[1]
 						    [i*512/pn_image_data->width]>>9),
 						   (pn_image_data->height>>2)-1))]
-	= 0xff;
+	= value;
     }
   }
 }
@@ -63,6 +65,7 @@ struct pn_actuator_option_desc wave_vertical_opts[] =
 {
   {"channels", "Which sound channels to use: negative = channel 1, \npositive = channel 2, "
    "zero = both (two wave-forms.)", OPT_TYPE_INT, {ival: -1} },
+  {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
   { 0 }
 };
 
@@ -72,6 +75,7 @@ wave_vertical_exec (const struct pn_actuator_option *opts,
 {
   int i;
   int channel = ( opts[0].val.ival < 0 ) ? 0 : 1;
+  guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
 
   for (i=0; i<pn_image_data->height; i++) {
     if ( opts[0].val.ival ) {
@@ -79,20 +83,20 @@ wave_vertical_exec (const struct pn_actuator_option *opts,
 					      - CAP (pn_sound_data->pcm_data[channel]
 						     [i*512/pn_image_data->height]>>8,
 						     (pn_image_data->width>>1)-1), i)]
-	= 0xff;
+	= value;
     }
     else {
       pn_image_data->surface[0][PN_IMG_INDEX ((pn_image_data->width>>2) 
 					      - CAP (pn_sound_data->pcm_data[0]
 						     [i*512/pn_image_data->height]>>9,
 						     (pn_image_data->width>>2)-1), i)]
-	= 0xff;
+	= value;
       pn_image_data->surface[0][PN_IMG_INDEX ((3*pn_image_data->width>>2) 
 						 -CAP (pn_sound_data->pcm_data[1]
 						       [i*512/pn_image_data->height]>>9,
 						       (pn_image_data->width>>2)-1), i)]
 			       
-	= 0xff;				      
+	= value;
     }
   }
 }
@@ -216,6 +220,7 @@ static struct pn_actuator_option_desc wave_radial_opts[] =
 {
   { "base_radius", " ", 
     OPT_TYPE_FLOAT, { fval: 0 } },
+  {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
   { 0 }
 };
 
@@ -224,6 +229,7 @@ wave_radial_exec (const struct pn_actuator_option *opts,
 		  gpointer data)
 {
   int i, x, y;
+  guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
   
   for(i=0; i<360; i++)
     {
@@ -236,7 +242,7 @@ wave_radial_exec (const struct pn_actuator_option *opts,
 
       pn_image_data->surface[0][PN_IMG_INDEX (CAPHILO(x,pn_image_data->width,0),
 					      CAPHILO(y,pn_image_data->height,0))]
-	= 0xff;
+	= value;
     }
 };	       
 
