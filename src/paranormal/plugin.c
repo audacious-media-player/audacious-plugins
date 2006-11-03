@@ -14,6 +14,7 @@
 #include <memory.h>
 #include <math.h>
 #include <setjmp.h>
+#include <unistd.h>
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -150,6 +151,10 @@ draw_thread_fn (gpointer data)
       SDL_mutexP (config_mutex);
       pn_render ();
       SDL_mutexV (config_mutex);
+
+#ifdef _POSIX_PRIORITY_SCHEDULING
+      sched_yield();
+#endif
     }
 
   /* Just in case a pn_quit () was called in the loop */

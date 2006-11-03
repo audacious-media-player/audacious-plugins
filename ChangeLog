@@ -1,3 +1,16 @@
+2006-11-03 22:23:17 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [408]
+  
+  Mmm..Blood....--This line, and those below, will be ignored--
+  
+  A    presets/aerdan_-_bloody_vortex.pnv
+  M    presets/Makefile
+  
+  trunk/src/paranormal/presets/Makefile                   |    3 -
+  trunk/src/paranormal/presets/aerdan_-_bloody_vortex.pnv |   33 ++++++++++++++++
+  2 files changed, 35 insertions(+), 1 deletion(-)
+
+
 2006-11-03 21:52:09 +0000  William Pitcock <nenolod@nenolod.net>
   revision [406]
   - include drawing.h
