@@ -17,6 +17,6 @@ OBJECTIVE_DATA = \
 	nenolod_-_rush.pnv:$(presetsdir)		\
 	nenolod_-_worms.pnv:$(presetsdir)		\
 	nenolod_-_smoke.pnv:$(presetsdir)		\
-	aerdan_-_cloudscape:${presetsdir}
+	aerdan_-_cloudscape.pnv:${presetsdir}
 
 include ../../../mk/objective.mk
