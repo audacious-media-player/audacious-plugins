@@ -1,3 +1,13 @@
+2006-11-03 11:10:26 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [388]
+  - faster line calculation algorithm (only calculates 256 or 128 points of the waveform)
+  - update rush preset (DON'T use lines here.)
+  
+  trunk/src/paranormal/presets/nenolod_-_rush.pnv |    4 +
+  trunk/src/paranormal/wave.c                     |   58 +++++++++++++-----------
+  2 files changed, 36 insertions(+), 26 deletions(-)
+
+
 2006-11-03 10:54:12 +0000  William Pitcock <nenolod@nenolod.net>
   revision [386]
   - rewrite line drawing algorithm for speed
