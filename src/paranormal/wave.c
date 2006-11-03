@@ -8,6 +8,8 @@
 #include "actuators.h"
 #include "pn_utils.h"
 
+#include "drawing.h"
+
 /* **************** wave_horizontal **************** */
 struct pn_actuator_option_desc wave_horizontal_opts[] =
 {
