@@ -247,12 +247,18 @@ void FLAC_XMMS__init()
 	bmp_cfg_db_get_bool(db, "flac", "stream.use_udp_channel", &flac_cfg.stream.use_udp_channel);
 
 	bmp_cfg_db_get_bool(db, NULL, "use_proxy", &flac_cfg.stream.use_proxy);
-	bmp_cfg_db_get_string(db, NULL, "proxy_host", &flac_cfg.stream.proxy_host);
+	if(!bmp_cfg_db_get_string(db, NULL, "proxy_host", &flac_cfg.stream.proxy_host))
+		flac_cfg.stream.proxy_host = NULL;
+
 	bmp_cfg_db_get_string(db, NULL, "proxy_port", &tmp);
+	if (tmp != NULL)
+                flac_cfg.stream.proxy_port = atoi(tmp);
 
 	bmp_cfg_db_get_bool(db, NULL, "proxy_use_auth", &flac_cfg.stream.proxy_use_auth);
-	bmp_cfg_db_get_string(db, NULL, "proxy_user", &flac_cfg.stream.proxy_user);
-	bmp_cfg_db_get_string(db, NULL, "proxy_pass", &flac_cfg.stream.proxy_pass);
+	if(!bmp_cfg_db_get_string(db, NULL, "proxy_user", &flac_cfg.stream.proxy_user))
+		flac_cfg.stream.proxy_user = NULL;
+	if(!bmp_cfg_db_get_string(db, NULL, "proxy_pass", &flac_cfg.stream.proxy_pass))
+		flac_cfg.stream.proxy_pass = NULL;
 
 	decoder_ = FLAC__stream_decoder_new();
 	bmp_cfg_db_close(db);

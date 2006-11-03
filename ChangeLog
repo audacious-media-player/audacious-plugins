@@ -1,3 +1,11 @@
+2006-11-03 22:57:45 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [412]
+  - spelling. just check it.
+  
+  trunk/src/paranormal/presets/Makefile |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-03 22:54:55 +0000  William Pitcock <nenolod@nenolod.net>
   revision [410]
   - yield back to the scheduler after processing a frame (maybe this will make paranormal be nicer.)
