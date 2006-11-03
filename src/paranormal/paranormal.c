@@ -11,6 +11,10 @@
 
 #include <SDL.h>
 
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
+
 #include "paranormal.h"
 #include "actuators.h"
 
@@ -103,14 +107,29 @@ void
 pn_init (void)
 {
   int i;
+#ifdef FULLSCREEN_HACK
+  char SDL_windowhack[32];
+  GdkScreen *screen;
+#endif
 
   pn_sound_data = g_new0 (struct pn_sound_data, 1);
   pn_image_data = g_new0 (struct pn_image_data, 1);
 
+#ifdef FULLSCREEN_HACK
+  screen = gdk_screen_get_default();
+  sprintf(SDL_windowhack,"SDL_WINDOWID=%d",
+          GDK_WINDOW_XWINDOW(gdk_screen_get_root_window(screen)));
+          putenv(SDL_windowhack);
+#endif FULLSCREEN_HACK
+
   if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_NOPARACHUTE) < 0)
     pn_fatal_error ("Unable to initialize SDL: %s", SDL_GetError ());
 
+#ifndef FULLSCREEN_HACK
   resize_video (640, 360);
+#else
+  resize_video (1280, 1024);
+#endif
 
   SDL_WM_SetCaption ("Paranormal Visualization Studio " VERSION, PACKAGE);
 

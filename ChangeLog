@@ -1,3 +1,11 @@
+2006-11-03 02:25:48 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [378]
+  - now working on amd64/little-endian. no idea how it was working in bigendian mode, though.
+  
+  trunk/src/paranormal/xform.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-03 02:22:02 +0000  William Pitcock <nenolod@nenolod.net>
   revision [376]
   - 64-bit safety (pass 1 of 2)
