@@ -16,7 +16,7 @@ static struct pn_actuator_option_desc misc_floater_opts[] =
 {
   { "value", "The colour value for the floater.",
     OPT_TYPE_INT, { ival: 255 } },
-  { 0 }
+  { NULL }
 };
 
 typedef enum

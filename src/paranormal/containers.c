@@ -146,7 +146,7 @@ static struct pn_actuator_option_desc container_cycle_opts[] =
     "child to be executed", OPT_TYPE_INT, { ival: 20 } },
   { "beat", "Whether or not the change should only occur on a beat",
     OPT_TYPE_BOOLEAN, { bval: TRUE } },
-  { 0 }
+  { NULL }
 };
 
 struct container_cycle_data

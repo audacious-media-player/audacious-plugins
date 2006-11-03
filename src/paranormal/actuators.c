@@ -98,10 +98,10 @@ create_actuator (const char *name)
   if (actuator->desc->option_descs)
     {
       /* count the options */
-      for (i=0; actuator->desc->option_descs[i].name; i++);
+      for (i=0; actuator->desc->option_descs[i].name != NULL; i++);
 
-      actuator->options = g_new (struct pn_actuator_option, i);
-      for (i=0; actuator->desc->option_descs[i].name; i++)
+      actuator->options = g_new0 (struct pn_actuator_option, i + 1);
+      for (i=0; actuator->desc->option_descs[i].name != NULL; i++)
 	{
 	  actuator->options[i].desc = &actuator->desc->option_descs[i];
 

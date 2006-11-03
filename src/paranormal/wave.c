@@ -12,7 +12,7 @@ struct pn_actuator_option_desc wave_horizontal_opts[] =
   {"channels", "Which sound channels to use: negative = channel 1, \npositive = channel 2, "
    "zero = both (two wave-forms.)", OPT_TYPE_INT, {ival: -1} },
   {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
-  { 0 }
+  { NULL }
 };
 
 static void
@@ -66,7 +66,7 @@ struct pn_actuator_option_desc wave_vertical_opts[] =
   {"channels", "Which sound channels to use: negative = channel 1, \npositive = channel 2, "
    "zero = both (two wave-forms.)", OPT_TYPE_INT, {ival: -1} },
   {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
-  { 0 }
+  { NULL }
 };
 
 static void
@@ -126,7 +126,7 @@ static struct pn_actuator_option_desc wave_normalize_opts[] =
   { "channels", "Which sound channel(s) to normalize: negative = channel 1,\n"
     "\tpositive = channel 2, 0 = both channels.",
     OPT_TYPE_INT, { ival: 0 } },
-  { 0 }
+  { NULL }
 };
 
 static void
@@ -221,7 +221,7 @@ static struct pn_actuator_option_desc wave_radial_opts[] =
   { "base_radius", " ", 
     OPT_TYPE_FLOAT, { fval: 0 } },
   {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
-  { 0 }
+  { NULL }
 };
 
 static void

@@ -34,7 +34,7 @@ static struct pn_actuator_option_desc cmap_gradient_opts[] =
     OPT_TYPE_COLOR, { cval: {0, 0, 0} } },
   { "hcolor", "The high color used in the gradient generation",
     OPT_TYPE_COLOR, { cval: {0, 0, 0} } },
-  { 0 }
+  { NULL }
 };
 
 static void
@@ -66,7 +66,7 @@ static struct pn_actuator_option_desc cmap_bwgradient_opts[] =
   STD_CMAP_OPTS,
   { "color", "The intermediate color to use in the gradient",
     OPT_TYPE_COLOR, { cval: {191, 191, 191} } },
-  { 0 }
+  { NULL }
 };
 
 static void

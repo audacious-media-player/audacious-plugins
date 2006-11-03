@@ -1,3 +1,12 @@
+2006-11-02 10:35:04 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [374]
+  - add worms preset. demonstrates the floating particles renderer, 298 times/frame.
+  
+  trunk/src/paranormal/presets/Makefile            |    3 
+  trunk/src/paranormal/presets/nenolod_-_worms.pnv |  920 +++++++++++++++++++++++
+  2 files changed, 922 insertions(+), 1 deletion(-)
+
+
 2006-11-02 10:30:44 +0000  William Pitcock <nenolod@nenolod.net>
   revision [372]
   - add floating particles.

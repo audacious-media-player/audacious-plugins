@@ -101,7 +101,7 @@ struct pn_actuator_option_desc xform_spin_opts[] =
     "increased (before scaling)", OPT_TYPE_FLOAT, { fval: 0.0 } },
   { "r_scale", "The amount by which the r coordinate of each pixel will "
     "be scaled", OPT_TYPE_FLOAT, { fval: 1.0 } },
-  { 0 }
+  { NULL }
 };
 
 struct xform_spin_data
@@ -146,7 +146,7 @@ xform_spin_exec (const struct pn_actuator_option *opts,
       if (d->vfield)
 	g_free (d->vfield);
 
-      d->vfield = g_malloc (sizeof(struct xform_vector)
+      d->vfield = g_malloc0 (sizeof(struct xform_vector)
 			    * d->width * d->height);
 
       for (j=-(pn_image_data->height>>1)+1; j<=pn_image_data->height>>1; j++)
@@ -196,7 +196,7 @@ struct pn_actuator_option_desc xform_ripple_opts[] =
     OPT_TYPE_FLOAT, { fval: 1 } },
   { "mod_speed", "The maximum number of pixels by which base_speed"
     " will be modified", OPT_TYPE_FLOAT, { fval: 1 } },
-  { 0 }
+  { NULL }
 };
 
 struct xform_ripple_data
@@ -297,7 +297,7 @@ struct pn_actuator_option_desc xform_bump_spin_opts[] =
   { "mod_scale", "The maximum amount that should be "
     "added to the base_scale to create the 'bump' effect",
     OPT_TYPE_FLOAT, { fval: .1 } },
-  { 0 }
+  { NULL }
 };
 
 struct xform_bump_spin_data
