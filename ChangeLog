@@ -1,3 +1,12 @@
+2006-11-03 11:55:25 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [394]
+  Preliminary cloudscape preset; will probably be updated when I can adjust the distance between the horizontal waveforms.
+  
+  trunk/src/paranormal/presets/Makefile                |    3 +
+  trunk/src/paranormal/presets/aerdan_-_cloudscape.pnv |   33 +++++++++++++++++++
+  2 files changed, 35 insertions(+), 1 deletion(-)
+
+
 2006-11-03 11:34:45 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [392]
   Relabel MPlayer plugin in plugins list and fix window title; we're not xmms, kthx.
