@@ -19,7 +19,7 @@
 #include "actuators.h"
 
 /* SDL stuffs */
-static SDL_Surface *screen;
+SDL_Surface *screen;
 
 /* Globals */
 struct pn_rc         *pn_rc;

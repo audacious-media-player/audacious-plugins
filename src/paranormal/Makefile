@@ -16,6 +16,7 @@ SOURCES =			\
 	cfg.c			\
 	cmaps.c			\
 	containers.c		\
+	drawing.c		\
 	freq.c			\
 	general.c		\
 	misc.c			\

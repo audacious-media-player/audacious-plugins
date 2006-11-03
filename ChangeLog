@@ -1,3 +1,11 @@
+2006-11-03 05:44:14 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [382]
+  - fix warning (oops)
+  
+  trunk/src/paranormal/paranormal.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-03 05:43:22 +0000  William Pitcock <nenolod@nenolod.net>
   revision [380]
   - compile with -DFULLSCREEN_HACK to get the fullscreen overlay stuff
