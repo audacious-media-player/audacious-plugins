@@ -20,6 +20,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_swarm.pnv:$(presetsdir)		\
 	aerdan_-_cloudscape.pnv:${presetsdir}		\
 	aerdan_-_dancing_snow.pnv:${presetsdir}		\
-	aerdan_-_portal_to_hell.pnv:${presetsdir}
+	aerdan_-_portal_to_hell.pnv:${presetsdir}	\
+	aerdan_-_blodoy_vortext.pnv:${presetsdir}
 
 include ../../../mk/objective.mk
