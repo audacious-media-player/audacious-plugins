@@ -12,11 +12,12 @@ struct pn_actuator_option_desc wave_horizontal_opts[] =
   {"channels", "Which sound channels to use: negative = channel 1, \npositive = channel 2, "
    "zero = both (two wave-forms.)", OPT_TYPE_INT, {ival: -1} },
   {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
+  {"lines", "Use lines instead of dots.", OPT_TYPE_BOOLEAN, {bval: TRUE} },
   { NULL }
 };
 
 static void
-wave_horizontal_exec (const struct pn_actuator_option *opts,
+wave_horizontal_exec_dots (const struct pn_actuator_option *opts,
 		    gpointer data)
 {
   int i;
@@ -51,6 +52,71 @@ wave_horizontal_exec (const struct pn_actuator_option *opts,
   }
 }
 
+void
+wave_horizontal_exec_lines (const struct pn_actuator_option *opts,
+		    gpointer data)
+{
+  int channel = ( opts[0].val.ival < 0 ) ? 0 : 1;
+  guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
+  int *x_pos, *y_pos;	/* dynamic tables which store the positions for the line */
+  int *x2_pos, *y2_pos;	/* dynamic tables which store the positions for the line */
+  int i;
+
+  x_pos = g_new0(int, pn_image_data->width + 1);
+  y_pos = g_new0(int, pn_image_data->width + 1);
+  x2_pos = g_new0(int, pn_image_data->width + 1);
+  y2_pos = g_new0(int, pn_image_data->width + 1);
+
+  /* calculate the line. */
+  for (i = 0; i < pn_image_data->width; i++)
+    {
+      if (opts[0].val.ival != 0)
+        {
+           x_pos[i] = i;
+           y_pos[i] = (pn_image_data->height>>1) - 
+			CAP (pn_sound_data->pcm_data[channel][i*512/pn_image_data->width]>>8, 
+			(pn_image_data->height>>1)-1);
+        }
+      else
+        {
+           x_pos[i] = i;
+           y_pos[i] = (pn_image_data->height>>2) - 
+			CAP (pn_sound_data->pcm_data[0][i*512/pn_image_data->width]>>9,
+			(pn_image_data->height>>2)-1);
+
+           x2_pos[i] = i;
+           y2_pos[i] = 3*(pn_image_data->height>>2) - 
+			CAP (pn_sound_data->pcm_data[1][i*512/pn_image_data->width]>>9,
+			(pn_image_data->height>>2)-1);
+
+        }
+    }
+
+  /* draw the line. */
+  for (i = 1; i < pn_image_data->width; i++)
+    {
+       pn_draw_line(x_pos[i - 1], y_pos[i - 1], x_pos[i], y_pos[i], value);
+
+       if ( opts[0].val.ival == 0 )
+         pn_draw_line(x2_pos[i - 1], y2_pos[i - 1], x2_pos[i], y2_pos[i], value);
+    }
+
+  g_free(x_pos);
+  g_free(y_pos);
+  g_free(x2_pos);
+  g_free(y2_pos);
+}
+
+static void
+wave_horizontal_exec (const struct pn_actuator_option *opts,
+		    gpointer data)
+{
+  if (opts[2].val.bval == TRUE)
+    wave_horizontal_exec_lines(opts, data);
+  else
+    wave_horizontal_exec_dots(opts, data);
+}
+
 struct pn_actuator_desc builtin_wave_horizontal =
 {
   "wave_horizontal", "Horizontal Waveform",
@@ -66,11 +132,12 @@ struct pn_actuator_option_desc wave_vertical_opts[] =
   {"channels", "Which sound channels to use: negative = channel 1, \npositive = channel 2, "
    "zero = both (two wave-forms.)", OPT_TYPE_INT, {ival: -1} },
   {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
+  {"lines", "Use lines instead of dots.", OPT_TYPE_BOOLEAN, {bval: TRUE} },
   { NULL }
 };
 
 static void
-wave_vertical_exec (const struct pn_actuator_option *opts,
+wave_vertical_exec_dots (const struct pn_actuator_option *opts,
 		    gpointer data)
 {
   int i;
@@ -101,6 +168,72 @@ wave_vertical_exec (const struct pn_actuator_option *opts,
   }
 }
 
+static void
+wave_vertical_exec_lines (const struct pn_actuator_option *opts,
+		    gpointer data)
+{
+  int channel = ( opts[0].val.ival < 0 ) ? 0 : 1;
+  guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
+  int *x_pos, *y_pos;	/* dynamic tables which store the positions for the line */
+  int *x2_pos, *y2_pos;	/* dynamic tables which store the positions for the line */
+  int i;
+
+  x_pos = g_new0(int, pn_image_data->height + 1);
+  y_pos = g_new0(int, pn_image_data->height + 1);
+  x2_pos = g_new0(int, pn_image_data->height + 1);
+  y2_pos = g_new0(int, pn_image_data->height + 1);
+
+  /* calculate the line. */
+  for (i = 0; i < pn_image_data->height; i++)
+    {
+      if (opts[0].val.ival != 0)
+        {
+           x_pos[i] = (pn_image_data->width>>1) - 
+			CAP (pn_sound_data->pcm_data[channel]
+			[i*512/pn_image_data->height]>>8,
+			(pn_image_data->width>>1)-1);
+	   y_pos[i] = i;
+        }
+      else
+        {
+           x_pos[i] = (pn_image_data->width>>2) 
+		      - CAP (pn_sound_data->pcm_data[0]
+		     [i*512/pn_image_data->height]>>9,
+		     (pn_image_data->width>>2)-1);
+           y_pos[i] = i;
+
+           x2_pos[i] = 3*(pn_image_data->width>>2) 
+		      - CAP (pn_sound_data->pcm_data[1]
+		     [i*512/pn_image_data->height]>>9,
+		     (pn_image_data->width>>2)-1);
+           y2_pos[i] = i;
+        }
+    }
+
+  /* draw the line. */
+  for (i = 1; i < pn_image_data->width; i++)
+    {
+       pn_draw_line(x_pos[i - 1], y_pos[i - 1], x_pos[i], y_pos[i], value);
+
+       if ( opts[0].val.ival == 0 )
+         pn_draw_line(x2_pos[i - 1], y2_pos[i - 1], x2_pos[i], y2_pos[i], value);
+    }
+
+  g_free(x_pos);
+  g_free(y_pos);
+  g_free(x2_pos);
+  g_free(y2_pos);
+}
+
+static void
+wave_vertical_exec (const struct pn_actuator_option *opts,
+		    gpointer data)
+{
+  if (opts[2].val.bval == TRUE)
+    wave_vertical_exec_lines(opts, data);
+  else
+    wave_vertical_exec_dots(opts, data);
+}
 
 struct pn_actuator_desc builtin_wave_vertical =
 {
@@ -221,6 +354,7 @@ static struct pn_actuator_option_desc wave_radial_opts[] =
   { "base_radius", " ", 
     OPT_TYPE_FLOAT, { fval: 0 } },
   {"value", "The colour value to use.", OPT_TYPE_INT, {ival: 255} },
+/*  {"lines", "Use lines instead of dots.", OPT_TYPE_BOOLEAN, {bval: TRUE} }, */
   { NULL }
 };
 
