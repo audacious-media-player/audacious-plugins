@@ -1,3 +1,12 @@
+2006-11-03 17:28:19 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [400]
+  - more presets
+  
+  trunk/src/paranormal/presets/Makefile            |    1 
+  trunk/src/paranormal/presets/nenolod_-_swarm.pnv |  923 +++++++++++++++++++++++
+  2 files changed, 924 insertions(+)
+
+
 2006-11-03 17:05:06 +0000  William Pitcock <nenolod@nenolod.net>
   revision [398]
   - presets end in .pnv
