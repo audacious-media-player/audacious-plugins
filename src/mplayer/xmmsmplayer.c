@@ -57,7 +57,7 @@ InputPlugin *get_iplugin_info(void){
 	if(!mplayer_ip){
 		mplayer_ip=(InputPlugin *) malloc(sizeof (InputPlugin));
 		memset(mplayer_ip,0,sizeof (InputPlugin));
-		mplayer_ip->description   = strdup("MPlayer Plugin for Xmms");
+		mplayer_ip->description   = strdup("Embedded MPlayer");
 		mplayer_ip->init          = mplayer_init;
 		mplayer_ip->is_our_file   = mplayer_is_our_file;
 		mplayer_ip->play_file     = mplayer_play_file;

@@ -125,7 +125,7 @@ mplayer_create_configure_win (void)
 
   window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_object_set_data (GTK_OBJECT (window1), "window1", window1);
-  gtk_window_set_title (GTK_WINDOW (window1), "Xmms-Mplayer");
+  gtk_window_set_title (GTK_WINDOW (window1), "MPlayer");
   gtk_widget_set_usize (window1, 550, 430);
 
 

@@ -1,3 +1,12 @@
+2006-11-03 11:23:52 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [390]
+  - another preset
+  
+  trunk/src/paranormal/presets/Makefile            |    3 +-
+  trunk/src/paranormal/presets/nenolod_-_smoke.pnv |   33 +++++++++++++++++++++++
+  2 files changed, 35 insertions(+), 1 deletion(-)
+
+
 2006-11-03 11:10:26 +0000  William Pitcock <nenolod@nenolod.net>
   revision [388]
   - faster line calculation algorithm (only calculates 256 or 128 points of the waveform)
