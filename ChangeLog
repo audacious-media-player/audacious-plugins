@@ -1,3 +1,11 @@
+2006-11-03 05:43:22 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [380]
+  - compile with -DFULLSCREEN_HACK to get the fullscreen overlay stuff
+  
+  trunk/src/paranormal/paranormal.c |   19 +++++++++++++++++++
+  1 file changed, 19 insertions(+)
+
+
 2006-11-03 02:25:48 +0000  William Pitcock <nenolod@nenolod.net>
   revision [378]
   - now working on amd64/little-endian. no idea how it was working in bigendian mode, though.

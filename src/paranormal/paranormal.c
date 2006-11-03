@@ -120,7 +120,7 @@ pn_init (void)
   sprintf(SDL_windowhack,"SDL_WINDOWID=%d",
           GDK_WINDOW_XWINDOW(gdk_screen_get_root_window(screen)));
           putenv(SDL_windowhack);
-#endif FULLSCREEN_HACK
+#endif
 
   if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_NOPARACHUTE) < 0)
     pn_fatal_error ("Unable to initialize SDL: %s", SDL_GetError ());
