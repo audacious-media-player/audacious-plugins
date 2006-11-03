@@ -12,9 +12,13 @@
   </container_once>
   <wave_horizontal>
    <channels> -1 </channels>
+   <value> 255 </value>
+   <lines> FALSE </lines>
   </wave_horizontal>
   <wave_vertical>
    <channels> -1 </channels>
+   <value> 255 </value>
+   <lines> FALSE </lines>
   </wave_vertical>
   <container_cycle>
    <change_interval> 0 </change_interval>

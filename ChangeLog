@@ -1,3 +1,13 @@
+2006-11-03 10:54:12 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [386]
+  - rewrite line drawing algorithm for speed
+  - use lines instead of dots by default in horizontal and vertical waveforms
+  
+  trunk/src/paranormal/drawing.c |   68 ++++----------------
+  trunk/src/paranormal/wave.c    |  138 ++++++++++++++++++++++++++++++++++++++++-
+  2 files changed, 151 insertions(+), 55 deletions(-)
+
+
 2006-11-03 06:19:05 +0000  William Pitcock <nenolod@nenolod.net>
   revision [384]
   - add fast linedrawing code

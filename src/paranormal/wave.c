@@ -2,6 +2,8 @@
 # include <config.h>
 #endif
 
+#include <math.h>
+
 #include "paranormal.h"
 #include "actuators.h"
 #include "pn_utils.h"
@@ -60,40 +62,42 @@ wave_horizontal_exec_lines (const struct pn_actuator_option *opts,
   guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
   int *x_pos, *y_pos;	/* dynamic tables which store the positions for the line */
   int *x2_pos, *y2_pos;	/* dynamic tables which store the positions for the line */
-  int i;
+  int i, step;
 
-  x_pos = g_new0(int, pn_image_data->width + 1);
-  y_pos = g_new0(int, pn_image_data->width + 1);
-  x2_pos = g_new0(int, pn_image_data->width + 1);
-  y2_pos = g_new0(int, pn_image_data->width + 1);
+  x_pos = g_new0(int, 257);
+  y_pos = g_new0(int, 257);
+  x2_pos = g_new0(int, 257);
+  y2_pos = g_new0(int, 257);
+
+  step = round((gfloat)pn_image_data->width / 256.0);
 
   /* calculate the line. */
-  for (i = 0; i < pn_image_data->width; i++)
+  for (i = 0; i < 256; i++)
     {
       if (opts[0].val.ival != 0)
         {
-           x_pos[i] = i;
+           x_pos[i] = i * step;
            y_pos[i] = (pn_image_data->height>>1) - 
-			CAP (pn_sound_data->pcm_data[channel][i*512/pn_image_data->width]>>8, 
+			CAP (pn_sound_data->pcm_data[channel][i * 2]>>8, 
 			(pn_image_data->height>>1)-1);
         }
       else
         {
-           x_pos[i] = i;
+           x_pos[i] = i * step;
            y_pos[i] = (pn_image_data->height>>2) - 
-			CAP (pn_sound_data->pcm_data[0][i*512/pn_image_data->width]>>9,
+			CAP (pn_sound_data->pcm_data[0][i * 2]>>9,
 			(pn_image_data->height>>2)-1);
 
-           x2_pos[i] = i;
+           x2_pos[i] = i * step;
            y2_pos[i] = 3*(pn_image_data->height>>2) - 
-			CAP (pn_sound_data->pcm_data[1][i*512/pn_image_data->width]>>9,
+			CAP (pn_sound_data->pcm_data[1][i * 2]>>9,
 			(pn_image_data->height>>2)-1);
 
         }
     }
 
   /* draw the line. */
-  for (i = 1; i < pn_image_data->width; i++)
+  for (i = 1; i < 256; i++)
     {
        pn_draw_line(x_pos[i - 1], y_pos[i - 1], x_pos[i], y_pos[i], value);
 
@@ -176,42 +180,44 @@ wave_vertical_exec_lines (const struct pn_actuator_option *opts,
   guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
   int *x_pos, *y_pos;	/* dynamic tables which store the positions for the line */
   int *x2_pos, *y2_pos;	/* dynamic tables which store the positions for the line */
-  int i;
+  int i, step;
 
-  x_pos = g_new0(int, pn_image_data->height + 1);
-  y_pos = g_new0(int, pn_image_data->height + 1);
-  x2_pos = g_new0(int, pn_image_data->height + 1);
-  y2_pos = g_new0(int, pn_image_data->height + 1);
+  x_pos = g_new0(int, 129);
+  y_pos = g_new0(int, 129);
+  x2_pos = g_new0(int, 129);
+  y2_pos = g_new0(int, 129);
+
+  step = round((gfloat)pn_image_data->height / 128.0);
 
   /* calculate the line. */
-  for (i = 0; i < pn_image_data->height; i++)
+  for (i = 0; i < 128; i++)
     {
       if (opts[0].val.ival != 0)
         {
            x_pos[i] = (pn_image_data->width>>1) - 
 			CAP (pn_sound_data->pcm_data[channel]
-			[i*512/pn_image_data->height]>>8,
+			[i*4]>>8,
 			(pn_image_data->width>>1)-1);
-	   y_pos[i] = i;
+	   y_pos[i] = i * step;
         }
       else
         {
            x_pos[i] = (pn_image_data->width>>2) 
 		      - CAP (pn_sound_data->pcm_data[0]
-		     [i*512/pn_image_data->height]>>9,
+		     [i*4]>>9,
 		     (pn_image_data->width>>2)-1);
-           y_pos[i] = i;
+           y_pos[i] = i * step;
 
            x2_pos[i] = 3*(pn_image_data->width>>2) 
 		      - CAP (pn_sound_data->pcm_data[1]
-		     [i*512/pn_image_data->height]>>9,
+		     [i*4]>>9,
 		     (pn_image_data->width>>2)-1);
-           y2_pos[i] = i;
+           y2_pos[i] = i * step;
         }
     }
 
   /* draw the line. */
-  for (i = 1; i < pn_image_data->width; i++)
+  for (i = 1; i < 128; i++)
     {
        pn_draw_line(x_pos[i - 1], y_pos[i - 1], x_pos[i], y_pos[i], value);
 
