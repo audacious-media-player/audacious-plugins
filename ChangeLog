@@ -1,3 +1,12 @@
+2006-11-03 11:34:45 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [392]
+  Relabel MPlayer plugin in plugins list and fix window title; we're not xmms, kthx.
+  
+  trunk/src/mplayer/interface.c   |    2 +-
+  trunk/src/mplayer/xmmsmplayer.c |    2 +-
+  2 files changed, 2 insertions(+), 2 deletions(-)
+
+
 2006-11-03 11:23:52 +0000  William Pitcock <nenolod@nenolod.net>
   revision [390]
   - another preset

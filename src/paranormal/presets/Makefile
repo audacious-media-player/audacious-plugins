@@ -16,6 +16,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_value_replace_fun.pnv:$(presetsdir)	\
 	nenolod_-_rush.pnv:$(presetsdir)		\
 	nenolod_-_worms.pnv:$(presetsdir)		\
-	nenolod_-_smoke.pnv:$(presetsdir)
+	nenolod_-_smoke.pnv:$(presetsdir)		\
+	aerdan_-_cloudscape:${presetsdir}
 
 include ../../../mk/objective.mk
