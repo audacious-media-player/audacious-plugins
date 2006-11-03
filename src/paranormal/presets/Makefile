@@ -21,6 +21,6 @@ OBJECTIVE_DATA = \
 	aerdan_-_cloudscape.pnv:${presetsdir}		\
 	aerdan_-_dancing_snow.pnv:${presetsdir}		\
 	aerdan_-_portal_to_hell.pnv:${presetsdir}	\
-	aerdan_-_blodoy_vortext.pnv:${presetsdir}
+	aerdan_-_bloody_vortex.pnv:${presetsdir}
 
 include ../../../mk/objective.mk
