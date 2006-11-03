@@ -1,3 +1,16 @@
+2006-11-03 02:22:02 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [376]
+  - 64-bit safety (pass 1 of 2)
+  
+  trunk/src/paranormal/actuators.c  |    6 +++---
+  trunk/src/paranormal/cmaps.c      |    4 ++--
+  trunk/src/paranormal/containers.c |    2 +-
+  trunk/src/paranormal/misc.c       |    2 +-
+  trunk/src/paranormal/wave.c       |    8 ++++----
+  trunk/src/paranormal/xform.c      |    8 ++++----
+  6 files changed, 15 insertions(+), 15 deletions(-)
+
+
 2006-11-02 10:35:04 +0000  William Pitcock <nenolod@nenolod.net>
   revision [374]
   - add worms preset. demonstrates the floating particles renderer, 298 times/frame.

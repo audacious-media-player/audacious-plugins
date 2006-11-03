@@ -17,7 +17,7 @@
 
 struct xform_vector
 {
-  guint offset; /* the offset of the top left pixel */
+  gint32 offset; /* the offset of the top left pixel */
   guint16 w; /* 4:4:4:4 NE, NW, SE, SW pixel weights
 		  The total should be 16 */
 
