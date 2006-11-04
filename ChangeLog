@@ -1,3 +1,12 @@
+2006-11-04 08:17:54 +0000  Aaron Sheldon <asheldon@uiuc.edu>
+  revision [416]
+  Compile warning fixes, xmms->audacious in a window.
+  
+  trunk/src/mplayer/xmmsmplayer.c |    2 +-
+  trunk/src/sap/fileinfo.c        |    8 ++++----
+  2 files changed, 5 insertions(+), 5 deletions(-)
+
+
 2006-11-03 23:33:42 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [414]
   Properly zero out proxy configuration strings if no value is retrieved, otherwise we crash and burn on shutdown.

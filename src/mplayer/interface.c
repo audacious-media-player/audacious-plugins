@@ -80,7 +80,7 @@ void on_btn_ok_clicked (GtkButton *button, gpointer user_data){
   new_cfg.xmmsaudio=gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(opt_xmmsaudio));
   if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(opt_xmmsaudio)))
     new_cfg.ao=MPLAYER_AO_XMMS;
-  new_cfg.extra=gtk_entry_get_text(GTK_ENTRY(entry_extra_opts));
+  new_cfg.extra=(gchar*)gtk_entry_get_text(GTK_ENTRY(entry_extra_opts));
 
   cfg = bmp_cfg_db_open();
   bmp_cfg_db_set_int(cfg,"xmms-mplayer","vo",new_cfg.vo);
