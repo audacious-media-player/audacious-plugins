@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 #include <audacious/util.h>
 #include <string.h>
-#include <pthread.h>
 
 #include "fileinfo.h"
 #include "saplib/sapLib.h"

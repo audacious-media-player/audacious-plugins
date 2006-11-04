@@ -1,3 +1,10 @@
+2006-11-04 14:06:27 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [422]
+  Yes SVN, that too!
+  trunk/src/sap/saplib/Makefile |   15 +++++++++++++++
+  1 file changed, 15 insertions(+)
+
+
 2006-11-04 14:05:38 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [420]
   Build this thing in a proper two-stage process. As it hardlocks instead of playing it is not built by default yet.
