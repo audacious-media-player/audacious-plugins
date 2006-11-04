@@ -83,7 +83,7 @@ static void *play_loop (gpointer arg)
 	    sapRenderBuffer(play_buf,N_RENDER);
 
 	    /* for spectrum analyser */
-	    produce_audio(sap_ip.output->written_time(), FMT_S16_NE, 2, N_RENDER, play_buf, &going);
+	    produce_audio(sap_ip.output->written_time(), FMT_S16_NE, 2, N_RENDER<<2, play_buf, &going);
 	}
 	
 	sap_ip.output->buffer_free();
