@@ -37,7 +37,7 @@ extern void sap_file_info_box(char *);
 
 static gboolean going;
 static gboolean audio_error;
-static GThread* play_thread;
+GThread *play_thread;
 
 int currentSong;
 static int tunes;

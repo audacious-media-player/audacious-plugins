@@ -1,3 +1,12 @@
+2006-11-04 19:46:52 +0000  Aaron Sheldon <asheldon@uiuc.edu>
+  revision [428]
+  Get rid of compile warnings. Also, note that this is a one-line fix 
+  despite appearances.
+  
+  trunk/src/sap/sap_plug.h |   88 +++++++++++++++++++++++------------------------
+  1 file changed, 44 insertions(+), 44 deletions(-)
+
+
 2006-11-04 19:35:34 +0000  Aaron Sheldon <asheldon@uiuc.edu>
   revision [426]
   Add sap plugin to configure.ac stuff

@@ -76,31 +76,23 @@ static int sap_is_our_file (char *filename) {
 	return 0;
 }
 
-static void *play_loop (void *arg) {
-
-	int datasize = N_RENDER << 2; 
-	printf("In play loop, datasize is %i and going is %i\n", datasize, going); 
-	while (going) {
-	
+static void *play_loop (gpointer arg)
+{
+	while (going)
+	{
 	    sapRenderBuffer(play_buf,N_RENDER);
 
-		if (going) 
-			produce_audio (sap_ip.output->written_time(), FMT_S16_NE, 2, N_RENDER, play_buf, &going);
-
-		while (sap_ip.output->buffer_free() < ( N_RENDER << 2 ) && going)
-			xmms_usleep(30000);
-		
+	    /* for spectrum analyser */
+	    produce_audio(sap_ip.output->written_time(), FMT_S16_NE, 2, N_RENDER, play_buf, &going);
 	}
-	printf("Left play loop\n");
+	
 	sap_ip.output->buffer_free();
 	sap_ip.output->buffer_free();
-	printf("Double buffer free completed, thread is exiting now\n");
 	g_thread_exit(NULL);
-
 }
 		
-static void sap_play_file (char *filename) {
-	
+static void sap_play_file (char *filename)
+{	
 	GString *titstr;
 
     	if ((currentFile = sapLoadMusicFile(filename)) == NULL) return;
@@ -113,13 +105,12 @@ static void sap_play_file (char *filename) {
 	/* we always start with 1st tune */
 	currentSong = 0;
 
-	printf("sapLoadMusicFile succesfully completed for %s, %i tunes present\n", filename, tunes);
 	sapPlaySong(currentSong);
 	
  	going = TRUE;
 	audio_error = FALSE;
 
-		if (sap_ip.output->open_audio(FMT_S16_NE, OUTPUT_FREQ, 2) == 0) {
+		if (sap_ip.output->open_audio(FMT_S16_LE, OUTPUT_FREQ, 2) == 0) {
 	
 			audio_error = TRUE;
 			going = FALSE;
@@ -134,14 +125,13 @@ static void sap_play_file (char *filename) {
 
 	g_string_free(titstr,TRUE);
 	
-	printf("Launching play thread NOW\n");
-	play_thread = g_thread_create((GThreadFunc)play_loop, NULL, TRUE, NULL);
-	xmms_usleep (40000);
+	play_thread = g_thread_create(play_loop, NULL, TRUE, NULL);
 }
 
-static void sap_stop (void) {
-
-	if (going) {
+static void sap_stop (void)
+{
+	if (going)
+	{
 		going = FALSE;
 		g_thread_join(play_thread);
 		sap_ip.output->close_audio();
@@ -151,15 +141,18 @@ static void sap_stop (void) {
 static void sap_seek(int time) {
 
        if (currentSong != tunes) {          
+        
 		 currentSong = (currentSong+1) % currentFile->numOfSongs;
 		 sapPlaySong(currentSong);
 	         sap_ip.output->flush(currentSong * 1000);
+       
        }
 }
 
 static void sap_pause(short paused) {
 
     sap_ip.output->pause(paused);
+	
 }
 
 static int sap_get_time(void) {
@@ -176,7 +169,7 @@ static void sap_about (void) {
 	
 	aboutbox = xmms_show_message(
 		"About SAP Plugin",
-		"SAP Player plug-in v"VERSION"\nby Michal Szwaczko <mikey@scene.pl>\nSAP library ver 0.3F by Adam Bienias\n\n"
+		"SAP Player plug-in v"VERSION"\nby Michal Szwaczko <mikey@scene.pl>\n SAP library ver 0.3F by Adam Bienias\n\n"
 		"Get more POKEY sound from ASMA at:\n[http://asma.musichall.cz]\n\nEnjoy!",
 		"Ok", FALSE, NULL, NULL);
 
