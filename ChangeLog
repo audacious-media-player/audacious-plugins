@@ -1,3 +1,11 @@
+2006-11-04 19:35:34 +0000  Aaron Sheldon <asheldon@uiuc.edu>
+  revision [426]
+  Add sap plugin to configure.ac stuff
+  
+  trunk/configure.ac |   11 +++++++++++
+  1 file changed, 11 insertions(+)
+
+
 2006-11-04 15:04:02 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [424]
   Port pthread -> gthread, port audio output to produce_audio, sprinkle debug printfs. Still broken, good luck
