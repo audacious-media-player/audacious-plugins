@@ -413,6 +413,16 @@ if test "$enable_mplayer" = "yes"; then
         INPUT_PLUGINS="$INPUT_PLUGINS mplayer"
 fi
 
+AC_ARG_ENABLE(sap,
+    [  --enable-sap           enable Atari XL SAP plugin. (default=disabled) ],
+    [enable_sap=$enableval],
+    [enable_sap=no]
+)
+
+if test "$enable_sap" = "yes"; then
+        INPUT_PLUGINS="$INPUT_PLUGINS sap"
+fi
+
 dnl *** Ogg Vorbis
 
 AC_ARG_ENABLE(vorbis,
@@ -1153,6 +1163,7 @@ echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Mplayer controls (mplayer):             $enable_mplayer"
+echo "  Atari XL SAP playback (sap):            $enable_sap"
 echo
 echo "  General"
 echo "  -------"
