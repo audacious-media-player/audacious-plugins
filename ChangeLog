@@ -1,3 +1,11 @@
+2006-11-03 23:33:42 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [414]
+  Properly zero out proxy configuration strings if no value is retrieved, otherwise we crash and burn on shutdown.
+  trunk/src/flac112/plugin.c |    9 ++++++---
+  trunk/src/flac113/plugin.c |   12 +++++++++---
+  2 files changed, 15 insertions(+), 6 deletions(-)
+
+
 2006-11-03 22:57:45 +0000  William Pitcock <nenolod@nenolod.net>
   revision [412]
   - spelling. just check it.

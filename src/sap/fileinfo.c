@@ -48,10 +48,10 @@ static void write_tag (GtkWidget *w , gpointer data) {
 	int ofd;
  
 	/* tags taken from info_box (edited or not) */
-	author = gtk_entry_get_text(GTK_ENTRY(performer_entry));
-	title = gtk_entry_get_text(GTK_ENTRY(title_entry));
-	date = gtk_entry_get_text(GTK_ENTRY(date_entry));
-	original_filename = gtk_entry_get_text(GTK_ENTRY(filename_entry));
+	author = (gchar*)gtk_entry_get_text(GTK_ENTRY(performer_entry));
+	title = (gchar*)gtk_entry_get_text(GTK_ENTRY(title_entry));
+	date = (gchar*)gtk_entry_get_text(GTK_ENTRY(date_entry));
+	original_filename = (gchar*)gtk_entry_get_text(GTK_ENTRY(filename_entry));
  
 	// prepare tmp file
 	tmpfn = g_strdup_printf("/tmp/sapplugXXXXXX");

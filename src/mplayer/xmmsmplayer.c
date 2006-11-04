@@ -139,7 +139,7 @@ void mplayer_play_file(char *filename){
 	if(mplayer_current_cfg->onewin &&(!mplayer_video)){
 /*		mplayer_video=gtk_window_new(GTK_WINDOW_DIALOG);
 		gtk_widget_set_usize(GTK_WIDGET(mplayer_video), 320, 240);
-		gtk_window_set_title(GTK_WINDOW(mplayer_video), "XMMS - MPlayer");
+		gtk_window_set_title(GTK_WINDOW(mplayer_video), "Audacious - MPlayer");
 		gtk_signal_connect(GTK_OBJECT(mplayer_video),
 				"destroy",
 				GTK_SIGNAL_FUNC(mplayer_quitting_video),
