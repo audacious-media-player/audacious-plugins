@@ -1,3 +1,11 @@
+2006-11-04 08:24:20 +0000  Aaron Sheldon <asheldon@uiuc.edu>
+  revision [418]
+  compile nicely
+  
+  trunk/src/mplayer/interface.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-04 08:17:54 +0000  Aaron Sheldon <asheldon@uiuc.edu>
   revision [416]
   Compile warning fixes, xmms->audacious in a window.
