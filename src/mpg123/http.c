@@ -625,26 +625,27 @@ http_buffer_loop(gpointer arg)
     } while (redirect);
 
     if (mpgdec_cfg.save_http_stream) {
-        gchar *output_name;
+        gchar *output_name_seed, *output_name;
         gint i = 1;
 
         file = mpgdec_http_get_title(url);
-        output_name = file;
-        if (!strncasecmp(output_name, "http://", 7))
-            output_name += 7;
-        temp = strrchr(output_name, '.');
+        output_name_seed = file;
+        if (!strncasecmp(output_name_seed, "http://", 7))
+            output_name_seed += 7;
+        temp = strrchr(output_name_seed, '.');
         if (temp && !strcasecmp(temp, ".mp3"))
             *temp = '\0';
 
-        while ((temp = strchr(output_name, '/')))
+        while ((temp = strchr(output_name_seed, '/')))
             *temp = '_';
+
         output_name = g_strdup_printf("%s/%s.mp3",
-                                      mpgdec_cfg.save_http_path, output_name);
+                                      mpgdec_cfg.save_http_path, output_name_seed);
         while (!access(output_name, F_OK) && i < 100000) {
             g_free(output_name);
             output_name = g_strdup_printf("%s/%s-%d.mp3",
                                           mpgdec_cfg.save_http_path,
-                                          output_name, i++);
+                                          output_name_seed, i++);
         }
 
         g_free(file);

@@ -1,3 +1,11 @@
+2006-11-05 07:03:45 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [434]
+  - make esd plugin assume that write() isn't always successful due to threading contingency. closes #427. patch by <sjleung -at shaw.ca>.
+  
+  trunk/src/esd/audio.c |   17 +++++++++++++----
+  1 file changed, 13 insertions(+), 4 deletions(-)
+
+
 2006-11-04 21:14:27 +0000  Aaron Sheldon <asheldon@uiuc.edu>
   revision [432]
   Works again on x86
