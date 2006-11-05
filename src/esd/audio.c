@@ -299,10 +299,19 @@ esdout_write_audio(gpointer data, gint length)
         length =
             ep->mod_samples(&data, length, input_format, input_frequency,
                             input_channels);
-    if (esd_translate)
-        output_bytes += write(fd, esd_translate(data, length), length);
-    else
-        output_bytes += write(fd, data, length);
+    while (length > 0) {
+        int num_written;
+        if (esd_translate)
+            num_written = write(fd, esd_translate(data, length), length);
+        else
+            num_written = write(fd, data, length);
+        if (num_written <= 0)
+            break;
+        length -= num_written;
+        data += num_written;
+        output_bytes += num_written;
+        }
+    }
 }
 
 
