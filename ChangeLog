@@ -1,3 +1,11 @@
+2006-11-05 18:24:30 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [442]
+  Fixed crash when a stream is in the playlist.
+  
+  trunk/src/mpg123/mpg123.c |   12 +++---------
+  1 file changed, 3 insertions(+), 9 deletions(-)
+
+
 2006-11-05 10:21:22 +0000  William Pitcock <nenolod@nenolod.net>
   revision [440]
   - allow seeking in http streams that define a content length.
