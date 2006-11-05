@@ -1,3 +1,12 @@
+2006-11-05 20:36:34 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [446]
+  - fix tuple breakage
+  
+  trunk/src/mpg123/mpg123.c |   10 +++-------
+  trunk/src/mpg123/mpg123.h |    3 +++
+  2 files changed, 6 insertions(+), 7 deletions(-)
+
+
 2006-11-05 20:31:33 +0000  William Pitcock <nenolod@nenolod.net>
   revision [444]
   - fix magic detection

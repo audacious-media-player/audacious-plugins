@@ -592,8 +592,14 @@ http_buffer_loop(gpointer arg)
                         if ((cnt = mpgdec_http_read_line(line, 1024)) != -1) {
                             if (!cnt)
                                 break;
-                            if (!strncmp(line, "icy-name:", 9))
+                            if (!strncasecmp(line, "content-length:", 15)) {
+                                mpgdec_info->filesize = atoi(line + 16);
+                            }
+                            else if (!strncmp(line, "icy-name:", 9))
+			    {
+			        mpgdec_info->filesize = 0;
                                 icy_name = g_strdup(line + 9);
+                            }
                             else if (!strncmp(line, "x-audiocast-name:", 17))
                                 icy_name = g_strdup(line + 17);
                             if (!strncmp(line, "icy-metaint:", 12))
@@ -606,10 +612,6 @@ http_buffer_loop(gpointer arg)
 #endif
 /*  								udp_serverport = atoi (line + 20); */
 
-                            }
-
-                            if (!strncasecmp(line, "content-length:", 15)) {
-                                mpgdec_info->filesize = atoi(line + 15);
                             }
                         }
                         else {
