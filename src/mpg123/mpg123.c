@@ -774,8 +774,9 @@ decode_loop(void *arg)
 	    }
         }
         else {
-            if (!mpgdec_title)
+            if (CHECK_STREAM_URI(filename))
                 mpgdec_title = mpgdec_http_get_title(filename);
+	    mpgdec_length = -1;
         }
 
         set_synth_functions(&fr);
