@@ -1,3 +1,11 @@
+2006-11-05 09:07:34 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [438]
+  - fix a typo which preventes compile
+  
+  trunk/src/esd/audio.c |    1 -
+  1 file changed, 1 deletion(-)
+
+
 2006-11-05 08:34:45 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [436]
   - fix for stream save if filename duplicates exist

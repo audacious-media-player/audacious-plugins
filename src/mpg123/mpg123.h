@@ -91,13 +91,10 @@ enum {
 int mpgdec_rtsp_open(char *url);
 int mpgdec_rtsp_read(gpointer data, gsize length);
 void mpgdec_rtsp_close (void);
-#define CHECK_STREAM(filename) \
-    (!strncasecmp(filename, "http://", 7) ||\
-     !strncasecmp(filename, "rtsp://", 7))
 #else
-#define CHECK_STREAM(filename) \
-    (!strncasecmp(filename, "http://", 7))
 #endif
+
+#define CHECK_STREAM(var_is_deprecated) (mpgdec_info->filesize == 0)
 
 struct id3v1tag_t {
     char tag[3];                /* always "TAG": defines ID3v1 tag 128 bytes before EOF */
@@ -239,7 +236,7 @@ struct mpstr {
 
 /* ------ Declarations from "http.c" ------ */
 
-extern int mpgdec_http_open(char *url);
+extern int mpgdec_http_open(char *url, unsigned long rng);
 int mpgdec_http_read(gpointer data, gsize length);
 void mpgdec_http_close(void);
 char *mpgdec_http_get_title(char *url);
@@ -251,7 +248,7 @@ extern unsigned int mpgdec_get1bit(void);
 extern unsigned int mpgdec_getbits(int);
 extern unsigned int mpgdec_getbits_fast(int);
 
-extern void mpgdec_open_stream(char *bs_filenam, int fd);
+extern void mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range);
 extern int mpgdec_head_check(unsigned long);
 extern void mpgdec_stream_close(void);
 

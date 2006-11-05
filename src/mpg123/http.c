@@ -64,6 +64,7 @@ static guint64 buffer_read = 0;
 static gchar *buffer;
 static GThread *thread;
 static GtkWidget *error_dialog = NULL;
+static unsigned long range;
 
 static VFSFile *output_file = NULL;
 
@@ -339,7 +340,7 @@ static gpointer
 http_buffer_loop(gpointer arg)
 {
     gchar line[1024], *user, *pass, *host, *filename,
-        *status, *url, *temp, *file;
+        *status, *url, *temp, *temp2, *file;
     gchar *chost;
     gint cnt, written, error, port, cport;
     guint err_len;
@@ -510,16 +511,22 @@ http_buffer_loop(gpointer arg)
                 }
                 else
                     file = g_strconcat("/", filename, NULL);
-                temp = g_strdup_printf("GET %s HTTP/1.0\r\n"
+                if (range)
+                {
+                    temp2 = g_strdup_printf("Range: bytes=%lu-\r\n", range);
+                } else
+                    temp2 = NULL;
+                temp = g_strdup_printf("GET %s HTTP/1.1\r\n"
                                        "Host: %s\r\n"
                                        "User-Agent: %s/%s\r\n"
-                                       "%s%s%s%s\r\n",
+                                       "%s%s%s%s%s\r\n",
                                        file, host, PACKAGE_NAME, PACKAGE_VERSION,
                                        proxy_auth ? proxy_auth : "",
                                        auth ? auth : "",
                                        "Icy-MetaData:1\r\n",
                                        mpgdec_cfg.
-                                       use_udp_channel ? udpspace : "");
+                                       use_udp_channel ? udpspace : "",
+				       temp2 != NULL ? temp2 : "");
 
                 g_free(file);
                 if (proxy_auth)
@@ -598,8 +605,12 @@ http_buffer_loop(gpointer arg)
                                         atoi(line + 20));
 #endif
 /*  								udp_serverport = atoi (line + 20); */
+
                             }
 
+                            if (!strncasecmp(line, "content-length:", 15)) {
+                                mpgdec_info->filesize = atoi(line + 15);
+                            }
                         }
                         else {
                             eof = TRUE;
@@ -725,7 +736,7 @@ http_buffer_loop(gpointer arg)
 }
 
 int
-mpgdec_http_open(gchar * _url)
+mpgdec_http_open(gchar * _url, unsigned long rng)
 {
     gchar *url;
 
@@ -742,6 +753,7 @@ mpgdec_http_open(gchar * _url)
     going = TRUE;
     eof = FALSE;
     buffer = g_malloc(buffer_length);
+    range = rng;
 
     thread = g_thread_create(http_buffer_loop, url, TRUE, NULL);
 

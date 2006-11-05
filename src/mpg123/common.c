@@ -167,21 +167,37 @@ static void stream_rewind(void)
 int
 mpgdec_stream_jump_to_frame(struct frame *fr, int frame)
 {
-    if (!filept)
-        return -1;
-    mpgdec_read_frame_init();
-    vfs_fseek(filept, frame * (fr->framesize + 4), SEEK_SET);
-    mpgdec_read_frame(fr);
+    if (filept == NULL)
+    {
+        unsigned long r;
+
+        r = frame * (fr->framesize + 4);
+        mpgdec_stream_close();
+        mpgdec_open_stream(mpgdec_filename, -1, r);
+    }
+    else
+    {
+        mpgdec_read_frame_init();
+        vfs_fseek(filept, frame * (fr->framesize + 4), SEEK_SET);
+        mpgdec_read_frame(fr);
+    }
     return 0;
 }
 
 int
 mpgdec_stream_jump_to_byte(struct frame *fr, int byte)
 {
-    if (!filept)
-        return -1;
-    vfs_fseek(filept, byte, SEEK_SET);
-    mpgdec_read_frame(fr);
+    if (filept == NULL)
+    {
+        mpgdec_stream_close();
+        mpgdec_open_stream(mpgdec_filename, -1, (unsigned long)byte);
+    }
+    else
+    {
+        vfs_fseek(filept, byte, SEEK_SET);
+        mpgdec_read_frame(fr);
+    }
+
     return 0;
 }
 
@@ -382,12 +398,12 @@ mpgdec_decode_header(struct frame *fr, unsigned long newhead)
 }
 
 void
-mpgdec_open_stream(char *bs_filenam, int fd)
+mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range)
 {
     filept_opened = 1;
     if (!strncasecmp(bs_filenam, "http://", 7)) {
         filept = NULL;
-        mpgdec_http_open(bs_filenam);
+        mpgdec_http_open(bs_filenam, range);
         mpgdec_info->filesize = 0;
         mpgdec_info->network_stream = TRUE;
         mpgdec_info->stream_type = STREAM_HTTP;

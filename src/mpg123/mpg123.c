@@ -698,7 +698,7 @@ decode_loop(void *arg)
 
     mpgdec_read_frame_init();
 
-    mpgdec_open_stream(filename, -1);
+    mpgdec_open_stream(filename, -1, 0);
 
     if (mpgdec_info->eof || !mpgdec_read_frame(&fr))
         mpgdec_info->eof = TRUE;
@@ -762,9 +762,10 @@ decode_loop(void *arg)
 	    mpgdec_frequency = (gint) m;
 	}
 
-        if (strncasecmp(filename, "http://", 7)) {
+        mpgdec_length = mpgdec_info->num_frames * mpgdec_info->tpf * 1000;
+
+        if (mpgdec_info->filesize == 0) {
 	    TitleInput *tuple = NULL;
-            mpgdec_length = mpgdec_info->num_frames * mpgdec_info->tpf * 1000;
             if (!mpgdec_title)
 	    {
 	        tuple = get_song_tuple(filename);
@@ -775,7 +776,6 @@ decode_loop(void *arg)
         else {
             if (!mpgdec_title)
                 mpgdec_title = mpgdec_http_get_title(filename);
-            mpgdec_length = -1;
         }
 
         set_synth_functions(&fr);
