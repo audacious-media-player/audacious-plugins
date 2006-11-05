@@ -300,7 +300,8 @@ mpgdec_read_frame(struct frame *fr)
 	if (try >= 0)
 	    g_log("mpgdec", G_LOG_LEVEL_WARNING, "mpgdec: illegal bitstream in the middle of the MPEG stream, skipped %d bytes", try);
 #endif
-        mpgdec_info->filesize -= try;
+        if (mpgdec_info->filesize > 0)
+            mpgdec_info->filesize -= try;
     }
     /* flip/init buffer for Layer 3 */
     bsbufold = bsbuf;
