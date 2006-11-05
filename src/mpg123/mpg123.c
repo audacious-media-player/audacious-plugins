@@ -349,11 +349,7 @@ is_our_file(char *filename)
 {
     gchar *ext = strrchr(filename, '.');
 
-    if ((!strncasecmp(filename, "http://", 7)
-#ifdef HAVE_NEMESI
- || !strncasecmp(filename, "rtsp://", 7)
-#endif
-         ) &&
+    if (CHECK_STREAM_URI(filename) &&
         (ext && strncasecmp(ext, ".ogg", 4)) &&
         (ext && strncasecmp(ext, ".flac", 5)))
 	return TRUE;
@@ -630,7 +626,7 @@ get_song_info(char *filename, char **title_real, int *len_real)
     /*
      * TODO: Getting song info from http streams.
      */
-    if (CHECK_STREAM(filename))
+    if (CHECK_STREAM_URI(filename))
         return;
 
     if ((tuple = get_song_tuple(filename)) != NULL) {
@@ -768,7 +764,7 @@ decode_loop(void *arg)
 
         mpgdec_length = mpgdec_info->num_frames * mpgdec_info->tpf * 1000;
 
-        if (mpgdec_info->filesize == 0) {
+        if (mpgdec_info->filesize != 0) {
 	    TitleInput *tuple = NULL;
             if (!mpgdec_title)
 	    {

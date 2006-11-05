@@ -91,7 +91,10 @@ enum {
 int mpgdec_rtsp_open(char *url);
 int mpgdec_rtsp_read(gpointer data, gsize length);
 void mpgdec_rtsp_close (void);
+#define CHECK_STREAM_URI(filename) (!g_strncasecmp(filename, "http://", 7) \
+	 || !g_strncasecmp(filename, "rtsp://", 7))
 #else
+#define CHECK_STREAM_URI(filename) (!g_strncasecmp(filename, "http://", 7))
 #endif
 
 #define CHECK_STREAM(var_is_deprecated) (mpgdec_info->filesize == 0)

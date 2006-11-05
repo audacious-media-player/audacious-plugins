@@ -1,3 +1,11 @@
+2006-11-05 20:31:33 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [444]
+  - fix magic detection
+  
+  trunk/src/mpg123/mpg123.c |   16 +++++++++++++---
+  1 file changed, 13 insertions(+), 3 deletions(-)
+
+
 2006-11-05 18:24:30 +0000  Jonathan Schleifer <js@h3c.de>
   revision [442]
   Fixed crash when a stream is in the playlist.
