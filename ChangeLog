@@ -1,3 +1,11 @@
+2006-11-05 08:34:45 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [436]
+  - fix for stream save if filename duplicates exist
+  
+  trunk/src/mpg123/http.c |   17 +++++++++--------
+  1 file changed, 9 insertions(+), 8 deletions(-)
+
+
 2006-11-05 07:03:45 +0000  William Pitcock <nenolod@nenolod.net>
   revision [434]
   - make esd plugin assume that write() isn't always successful due to threading contingency. closes #427. patch by <sjleung -at shaw.ca>.

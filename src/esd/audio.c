@@ -310,7 +310,6 @@ esdout_write_audio(gpointer data, gint length)
         length -= num_written;
         data += num_written;
         output_bytes += num_written;
-        }
     }
 }
 
