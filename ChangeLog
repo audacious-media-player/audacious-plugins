@@ -1,3 +1,14 @@
+2006-11-05 10:21:22 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [440]
+  - allow seeking in http streams that define a content length.
+  
+  trunk/src/mpg123/common.c |   38 +++++++++++++++++++++++++++-----------
+  trunk/src/mpg123/http.c   |   22 +++++++++++++++++-----
+  trunk/src/mpg123/mpg123.c |    8 ++++----
+  trunk/src/mpg123/mpg123.h |   11 ++++-------
+  4 files changed, 52 insertions(+), 27 deletions(-)
+
+
 2006-11-05 09:07:34 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [438]
   - fix a typo which preventes compile
