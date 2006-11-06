@@ -1,3 +1,10 @@
+2006-11-06 22:11:04 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [456]
+  New-style VFS probe function. If you want an #ifdef feel free to bolt some on.
+  trunk/src/sexypsf/xmms.c |   25 ++++++++++++-------------
+  1 file changed, 12 insertions(+), 13 deletions(-)
+
+
 2006-11-06 21:30:44 +0000  Jonathan Schleifer <js@h3c.de>
   revision [454]
   Fixed missing header

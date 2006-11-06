@@ -52,7 +52,8 @@ InputPlugin *get_iplugin_info(void)
          return &sexypsf_ip;
       }
 
-static int is_our_fd(gchar *filename, VFSFile *file) {
+static int is_our_file(gchar *filename) {
+	VFSFile *file;
 	gchar magic[4];
 	
 	// Filter out psflib [we use them, but we can't play them]
@@ -64,12 +65,15 @@ static int is_our_fd(gchar *filename, VFSFile *file) {
 		if (!strcasecmp(tmps, teststr))
 		return 0;
 	}
-	if (vfs_ftell(file) != 0)
-		vfs_fseek(file, 0, SEEK_SET);
-	vfs_fread(magic,1,4,file);
-	//Only allow PSF1 for now.
-	if (!strncmp(magic,"PSF\x01",4))
-		return 1;
+	if ((file = vfs_fopen(filename,"rb"))) {
+		vfs_fread(magic,1,4,file);
+		//Only allow PSF1 for now.
+		if (!strncmp(magic,"PSF\x01",4)) {
+			vfs_fclose(file);
+			return 1;
+		}
+		vfs_fclose(file);
+	}
 	return 0;
 }
 
@@ -266,7 +270,7 @@ InputPlugin sexypsf_ip =
 	0,
 	0,
 	0,
-	0,
+	is_our_file,
 	0,
 	sexypsf_xmms_play,
 	sexypsf_xmms_stop,
@@ -284,8 +288,5 @@ InputPlugin sexypsf_ip =
 	sexypsf_xmms_getsonginfo,
 	0,
 	0,
-	get_tuple_psf,
-	0,
-	0,
-	is_our_fd,
+	get_tuple_psf
 };
