@@ -1,4 +1,5 @@
 #include <audacious/configdb.h>
+#include <stdlib.h>
 #include "xmmsmplayer.h"
 
 struct mplayer_cfg *mplayer_read_cfg(){
