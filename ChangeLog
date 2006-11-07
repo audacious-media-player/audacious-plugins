@@ -1,3 +1,11 @@
+2006-11-07 10:01:22 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [486]
+  - detect filesize properly
+  
+  trunk/src/modplug/archive/arch_raw.cxx |    2 ++
+  1 file changed, 2 insertions(+)
+
+
 2006-11-07 09:56:59 +0000  William Pitcock <nenolod@nenolod.net>
   revision [484]
   - that should have been a 1

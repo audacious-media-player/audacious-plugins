@@ -193,6 +193,25 @@ public:
             return false;
         }
 
+        return true;
+    }
+
+    bool attach_to_play(const char *filename)
+    {
+        wv_Input = vfs_fopen(filename, "rb");
+
+        char *corrFilename = g_strconcat(filename, "c", NULL);
+
+        wvc_Input = vfs_fopen(corrFilename, "rb");
+
+        g_free(corrFilename);
+
+        ctx = WavpackOpenFileInputEx(&reader, wv_Input, wvc_Input, error_buff, OPEN_TAGS | OPEN_WVC, 0);
+
+        if (ctx == NULL) {
+            return false;
+        }
+
         sample_rate = WavpackGetSampleRate(ctx);
         num_channels = WavpackGetNumChannels(ctx);
         input = (int32_t *)calloc(BUFFER_SIZE, num_channels * sizeof(int32_t));
@@ -297,7 +316,7 @@ DecodeThread(void *a)
     int i;
     WavpackDecoder d(&mod);
 
-    if (!d.attach(filename)) {
+    if (!d.attach_to_play(filename)) {
         printf("wavpack: Error opening file: \"%s\"\n", filename);
         killDecodeThread = true;
         return end_thread();
