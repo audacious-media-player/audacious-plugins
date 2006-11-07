@@ -1,3 +1,11 @@
+2006-11-07 07:06:03 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [466]
+  - remove plugins that now live in -ugly
+  
+  trunk/configure.ac |   62 -----------------------------------------------------
+  1 file changed, 62 deletions(-)
+
+
 2006-11-06 23:04:13 +0000  William Pitcock <nenolod@nenolod.net>
   revision [458]
   - revert due to branching issue

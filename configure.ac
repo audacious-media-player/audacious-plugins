@@ -558,27 +558,6 @@ if test "$have_sidplay" = yes; then
 	INPUT_PLUGINS="$INPUT_PLUGINS sid"
 fi
 
-dnl *** Musepack
-
-AC_ARG_ENABLE(musepack,
-    [  --disable-musepack      disable musepack input plugin (default=enabled)],
-    [enable_musepack=$enableval],
-    [enable_musepack="yes"]
-)
-
-if test "$enable_musepack" = "yes"; then
-    AC_CHECK_HEADERS(mpcdec/config_types.h,,
-        enable_musepack=no
-    )
-else
-    AC_MSG_RESULT([*** Musepack plugin disabled per user request ***])
-    enable_musepack=no
-fi
-
-if test "$enable_musepack" = "yes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS musepack"
-fi
-
 dnl *** OSS output
 
 AC_ARG_ENABLE(oss,
@@ -1085,7 +1064,6 @@ echo "  -------------"
 echo "  MPEG 1/2/3 (mpg123):                    $enable_mp3"
 echo "  MPEG 4 Audio (AAC):                     $enable_aac"
 echo "  Windows Media Audio (wma):              $enable_wma"
-echo "  .mpc playback (musepack):               $enable_musepack"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
 echo "    -> ALSA backend:                      $enable_amidiplug_alsa"
