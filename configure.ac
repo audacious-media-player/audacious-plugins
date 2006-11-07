@@ -498,6 +498,27 @@ if test "$have_flac" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS flac$FLAC_VERSION"
 fi
 
+dnl *** Musepack
+
+AC_ARG_ENABLE(musepack,
+    [  --disable-musepack      disable musepack input plugin (default=enabled)],
+    [enable_musepack=$enableval],
+    [enable_musepack="yes"]
+)
+
+if test "$enable_musepack" = "yes"; then
+    AC_CHECK_HEADERS(mpcdec/config_types.h,,
+        enable_musepack=no
+    )
+else
+    AC_MSG_RESULT([*** Musepack plugin disabled per user request ***])
+    enable_musepack=no
+fi
+
+if test "$enable_musepack" = "yes"; then
+        INPUT_PLUGINS="$INPUT_PLUGINS musepack"
+fi
+
 dnl *** WMA
 
 AC_ARG_ENABLE(wma,
@@ -1082,6 +1103,7 @@ echo "  PlayStation audio (sexypsf):            yes"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
+echo "  Musepack support (musepack):            $enable_musepack"
 echo
 echo "  General"
 echo "  -------"
