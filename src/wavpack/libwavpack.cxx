@@ -10,6 +10,7 @@ extern "C" {
 #include <audacious/configdb.h>
 #include <audacious/titlestring.h>
 #include <audacious/util.h>
+#include <audacious/vfs.h>
 }
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -83,6 +84,62 @@ InputPlugin mod = {
     wv_get_song_tuple,
 };
 
+int32_t read_bytes (void *id, void *data, int32_t bcount)
+{
+    return vfs_fread (data, 1, bcount, (VFSFile *) id);
+}
+
+uint32_t get_pos (void *id)
+{
+    return vfs_ftell ((VFSFile *) id);
+}
+
+int set_pos_abs (void *id, uint32_t pos)
+{
+    return vfs_fseek ((VFSFile *) id, pos, SEEK_SET);
+}
+
+int set_pos_rel (void *id, int32_t delta, int mode)
+{
+    return vfs_fseek ((VFSFile *) id, delta, mode);
+}
+
+int push_back_byte (void *id, int c)
+{
+    return vfs_ungetc (c, (VFSFile *) id);
+}
+
+uint32_t get_length (void *id)
+{
+    VFSFile *file = (VFSFile *) id;
+    uint32_t sz = 0;
+
+    if (file == NULL)
+        return 0;
+
+    vfs_fseek(file, 0, SEEK_END);
+    sz = vfs_ftell(file);
+    vfs_fseek(file, 0, SEEK_SET);
+
+    return sz;
+}
+
+/* XXX streams?? */
+int can_seek (void *id)
+{
+    return 1;
+}
+
+int32_t write_bytes (void *id, void *data, int32_t bcount)
+{
+    return vfs_fwrite (data, 1, bcount, (VFSFile *) id);
+}
+
+WavpackStreamReader reader = {
+    read_bytes, get_pos, set_pos_abs, set_pos_rel, push_back_byte, get_length, can_seek,
+    write_bytes
+};
+
 class WavpackDecoder
 {
 public:
@@ -93,6 +150,7 @@ public:
     int num_channels;
     WavpackContext *ctx;
     char error_buff[4096]; // TODO: fixme!
+    VFSFile *wv_Input, *wvc_Input;
 
     WavpackDecoder(InputPlugin *mod) : mod(mod)
     {
@@ -112,14 +170,24 @@ public:
             output = NULL;
         }
         if (ctx != NULL) {
-            WavpackCloseFile(ctx);
+            vfs_fclose(wv_Input);
+            vfs_fclose(wvc_Input);
+            g_free(ctx);
             ctx = NULL;
         }
     }
 
     bool attach(const char *filename)
     {
-        ctx = WavpackOpenFileInput(filename, error_buff, OPEN_TAGS | OPEN_WVC, 0);
+        wv_Input = vfs_fopen(filename, "rb");
+
+        char *corrFilename = g_strconcat(filename, "c", NULL);
+
+        wvc_Input = vfs_fopen(corrFilename, "rb");
+
+        g_free(corrFilename);
+
+        ctx = WavpackOpenFileInputEx(&reader, wv_Input, wvc_Input, error_buff, OPEN_TAGS | OPEN_WVC, 0);
 
         if (ctx == NULL) {
             return false;
@@ -346,17 +414,14 @@ static TitleInput *
 wv_get_song_tuple(char *filename)
 {
     TitleInput *ti;
-    char error_buff[4096]; // TODO: fixme!
-    WavpackContext *ctx = WavpackOpenFileInput(filename, error_buff, OPEN_TAGS | OPEN_WVC, 0);
+    WavpackDecoder d(&mod);
 
-    if (ctx == NULL) {
-        printf("wavpack: Error opening file: \"%s: %s\"\n", filename, error_buff);
+    if (!d.attach(filename)) {
+        printf("wavpack: Error opening file: \"%s\"\n", filename);
         return NULL;
     }
 
-    ti = tuple_from_WavpackContext(filename, ctx);
-
-    WavpackCloseFile(ctx);
+    ti = tuple_from_WavpackContext(filename, d.ctx);
 
     return ti;
 }
@@ -365,20 +430,20 @@ static void
 wv_get_song_info(char *filename, char **title, int *length)
 {
     assert(filename != NULL);
-    char error_buff[4096]; // TODO: fixme!
-    WavpackContext *ctx = WavpackOpenFileInput(filename, error_buff, OPEN_TAGS | OPEN_WVC, 0);
-    if (ctx == NULL) {
-        printf("wavpack: Error opening file: \"%s: %s\"\n", filename, error_buff);
+    WavpackDecoder d(&mod);
+
+    if (!d.attach(filename)) {
+        printf("wavpack: Error opening file: \"%s\"\n", filename);
         return;
     }
-    int sample_rate = WavpackGetSampleRate(ctx);
-    int num_channels = WavpackGetNumChannels(ctx);
+
+    int sample_rate = WavpackGetSampleRate(d.ctx);
+    int num_channels = WavpackGetNumChannels(d.ctx);
     DBG("reading %s at %d rate with %d channels\n", filename, sample_rate, num_channels);
 
-    *length = (int)(WavpackGetNumSamples(ctx) / sample_rate) * 1000,
-    *title = generate_title(filename, ctx);
+    *length = (int)(WavpackGetNumSamples(d.ctx) / sample_rate) * 1000,
+    *title = generate_title(filename, d.ctx);
     DBG("title for %s = %s\n", filename, *title);
-    WavpackCloseFile(ctx);
 }
 
 static int

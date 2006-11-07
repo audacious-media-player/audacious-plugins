@@ -1,3 +1,16 @@
+2006-11-07 08:07:11 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [476]
+  - put musepack support back
+  
+  trunk/configure.ac               |   22 
+  trunk/src/musepack/Makefile      |   32 
+  trunk/src/musepack/equalizer.cxx |  196 ----
+  trunk/src/musepack/equalizer.h   |   11 
+  trunk/src/musepack/libmpc.cxx    | 1824 ++++++++++++++++++++-------------------
+  trunk/src/musepack/libmpc.h      |  356 +++----
+  6 files changed, 1159 insertions(+), 1282 deletions(-)
+
+
 2006-11-07 07:19:42 +0000  William Pitcock <nenolod@nenolod.net>
   revision [470]
   - and remove musepack from here for now
