@@ -1,3 +1,13 @@
+2006-11-07 09:55:13 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [482]
+  - VFS support
+  
+  trunk/src/modplug/archive/Makefile     |    2 +-
+  trunk/src/modplug/archive/arch_raw.cxx |   24 +++++++-----------------
+  trunk/src/modplug/archive/arch_raw.h   |    6 +++++-
+  3 files changed, 13 insertions(+), 19 deletions(-)
+
+
 2006-11-07 08:35:18 +0000  William Pitcock <nenolod@nenolod.net>
   revision [480]
   - rewrite to take advantage of already existant object-oriented framework
