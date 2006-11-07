@@ -364,25 +364,6 @@ if test "$have_lirc" = "yes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
 fi
 
-dnl *** libnotify requirement
-
-AC_ARG_ENABLE(notify,
-    [  --disable-notify        disable libnotify plugin (default=enabled)],
-    [enable_libnotify=$enableval],
-    [enable_libnotify="yes"]
-)
-
-if test "$enable_libnotify" = "yes"; then
-    PKG_CHECK_MODULES(LIBNOTIFY, [libnotify >= 0.4.2],
-        [have_libnotify=yes
-         GENERAL_PLUGINS="$GENERAL_PLUGINS notify"],
-        [have_libnotify=no]
-    )
-else
-    AC_MSG_RESULT([*** libnotify plugin disabled per user request ***])
-    have_libnotify="no"
-fi
-
 dnl *** AdPlug requirement (libbinio)
 
 AC_ARG_ENABLE(adplug,
@@ -401,26 +382,6 @@ fi
 
 if test "$have_adplug" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS adplug"
-fi
-
-AC_ARG_ENABLE(mplayer,
-    [  --enable-mplayer           enable mplayer plugin. (default=disabled) ],
-    [enable_mplayer=$enableval],
-    [enable_mplayer=no]
-)
-
-if test "$enable_mplayer" = "yes"; then
-        INPUT_PLUGINS="$INPUT_PLUGINS mplayer"
-fi
-
-AC_ARG_ENABLE(sap,
-    [  --enable-sap           enable Atari XL SAP plugin. (default=disabled) ],
-    [enable_sap=$enableval],
-    [enable_sap=no]
-)
-
-if test "$enable_sap" = "yes"; then
-        INPUT_PLUGINS="$INPUT_PLUGINS sap"
 fi
 
 dnl *** Ogg Vorbis
@@ -857,25 +818,6 @@ if test "$enable_timidity" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS timidity"
 fi
 
-dnl *** Iris
-
-AC_ARG_ENABLE(iris,
-[  --disable-iris          disable iris plugin. (default=enabled)],
-[enable_iris=$enableval],
-[enable_iris=yes]
-)
-
-if test "$enable_iris" = "yes"; then
-    PKG_CHECK_MODULES(XXF86VM, [xxf86vm >= 1.0.0],
-        [enable_iris=yes
-         VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS iris"],
-        [enable_iris=no]
-    )
-else
-    AC_MSG_RESULT([*** Iris plugin disabled per user request ***])
-    enable_iris=no
-fi
-
 dnl FreeBSD newpcm driver detection
 
 AC_CACHE_CHECK(for FreeBSD newpcm driver, beep_cv_newpcm_driver,
@@ -1162,8 +1104,6 @@ echo "  PlayStation audio (sexypsf):            yes"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
-echo "  Mplayer controls (mplayer):             $enable_mplayer"
-echo "  Atari XL SAP playback (sap):            $enable_sap"
 echo
 echo "  General"
 echo "  -------"
@@ -1171,7 +1111,6 @@ echo "  Alarm:                                  yes"
 echo "  Song Change:                            yes"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
-echo "  libnotify Plugin:                       $have_libnotify"
 echo
 echo "  Effect"
 echo "  ------"
@@ -1186,7 +1125,6 @@ echo "  -------------"
 echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
-echo "  IRIS 3D:                                $enable_iris"
 echo
 echo "  Container"
 echo "  ---------"
