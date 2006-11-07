@@ -16,36 +16,26 @@
 
 arch_Raw::arch_Raw(const string& aFileName)
 {
-	mFileDesc = open(aFileName.c_str(), O_RDONLY);
-
-	struct stat lStat;
+	mFileDesc = vfs_fopen(aFileName.c_str(), "rb");
 
 	//open and mmap the file
-	if(mFileDesc == -1)
+	if(mFileDesc == NULL)
 	{
 		mSize = 0;
 		return;
 	}
-	fstat(mFileDesc, &lStat);
-	mSize = lStat.st_size;
+	mSize = vfs_ftell(mFileDesc);
 
-	mMap =
-		(uchar*)mmap(0, mSize, PROT_READ,
-		MAP_PRIVATE, mFileDesc, 0);
-	if(!mMap)
-	{
-		close(mFileDesc);
-		mSize = 0;
-		return;
-	}
+	mMap = malloc(mSize);
+	vfs_fread(mMap, 0, mSize, mFileDesc);
 }
 
 arch_Raw::~arch_Raw()
 {
 	if(mSize != 0)
 	{
-		munmap(mMap, mSize);
-		close(mFileDesc);
+		free(mMap);
+		vfs_fclose(mFileDesc);
 	}
 }
 

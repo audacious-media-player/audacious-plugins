@@ -1,3 +1,12 @@
+2006-11-07 08:35:18 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [480]
+  - rewrite to take advantage of already existant object-oriented framework
+  - add VFS support
+  
+  trunk/src/wavpack/libwavpack.cxx |  101 ++++++++++++++++++++++++++++++++-------
+  1 file changed, 83 insertions(+), 18 deletions(-)
+
+
 2006-11-07 08:07:11 +0000  William Pitcock <nenolod@nenolod.net>
   revision [476]
   - put musepack support back

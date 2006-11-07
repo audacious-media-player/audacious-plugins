@@ -10,9 +10,13 @@
 #include "archive.h"
 #include <string>
 
+extern "C" {
+#include <audacious/vfs.h>
+};
+
 class arch_Raw: public Archive
 {
-	int mFileDesc;
+	VFSFile *mFileDesc;
 
 public:
 	arch_Raw(const string& aFileName);
