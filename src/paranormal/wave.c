@@ -71,7 +71,7 @@ wave_horizontal_exec_lines (const struct pn_actuator_option *opts,
   x2_pos = g_new0(int, 257);
   y2_pos = g_new0(int, 257);
 
-  step = round((gfloat)pn_image_data->width / 256.0);
+  step = pn_image_data->width / 256;
 
   /* calculate the line. */
   for (i = 0; i < 256; i++)
@@ -189,7 +189,7 @@ wave_vertical_exec_lines (const struct pn_actuator_option *opts,
   x2_pos = g_new0(int, 129);
   y2_pos = g_new0(int, 129);
 
-  step = round((gfloat)pn_image_data->height / 128.0);
+  step = pn_image_data->height / 128;
 
   /* calculate the line. */
   for (i = 0; i < 128; i++)
