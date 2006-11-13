@@ -370,8 +370,10 @@ static void cache_cue_file(char *f)
 		gint p;
 		gint q;
 
-		if (vfs_fgets(line, MAX_CUE_LINE_LENGTH+1, file) == NULL)
+		if (vfs_fgets(line, MAX_CUE_LINE_LENGTH+1, file) == NULL) {
+			vfs_fclose(file);
 			return;
+                }
 
 		for (p = 0; line[p] && isspace((int) line[p]); p++);
 		if (!line[p])
