@@ -1,3 +1,26 @@
+2006-11-13 12:51:30 +0000  Giacomo Lozito <james@develia.org>
+  revision [498]
+  - import amidi-plug 0.7 (among new features, a transposer to play midi files in different keys)
+  trunk/src/amidi-plug/Makefile                 |    4 
+  trunk/src/amidi-plug/amidi-plug.c             |   18 +--
+  trunk/src/amidi-plug/amidi-plug.h             |   14 +-
+  trunk/src/amidi-plug/i_backend.c              |    1 
+  trunk/src/amidi-plug/i_common.h               |    2 
+  trunk/src/amidi-plug/i_configure-alsa.c       |    1 
+  trunk/src/amidi-plug/i_configure-ap.c         |  129 +++++++++++++++++++-------
+  trunk/src/amidi-plug/i_configure-fluidsynth.c |    8 -
+  trunk/src/amidi-plug/i_configure-timidity.c   |   90 ++++++++++++++++++
+  trunk/src/amidi-plug/i_configure-timidity.h   |   30 ++++++
+  trunk/src/amidi-plug/i_configure.c            |   12 ++
+  trunk/src/amidi-plug/i_configure.h            |    2 
+  trunk/src/amidi-plug/i_midi.c                 |   46 +++++++--
+  trunk/src/amidi-plug/i_midi.h                 |    2 
+  trunk/src/amidi-plug/i_utils.h                |    1 
+  trunk/src/amidi-plug/i_vfslayer.c             |   22 ++++
+  trunk/src/amidi-plug/i_vfslayer.h             |   38 +++++++
+  17 files changed, 355 insertions(+), 65 deletions(-)
+
+
 2006-11-13 12:35:19 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [496]
   FD leak fix by TiCPU, submitted in #audacious.

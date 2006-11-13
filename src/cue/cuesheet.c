@@ -175,6 +175,9 @@ static TitleInput *get_tuple_uri(gchar *uri)
 
 	cache_cue_file(path2);
 
+	if (cue_file == NULL)
+		return NULL;
+
 	dec = input_check_file(cue_file, FALSE);
 
 	if (dec == NULL)
@@ -272,6 +275,9 @@ static void play_cue_uri(gchar *uri)
         }	
 
 	cache_cue_file(path2);
+
+        if (cue_file == NULL)
+                return NULL;
 
 	real_ip = input_check_file(cue_file, FALSE);
 
