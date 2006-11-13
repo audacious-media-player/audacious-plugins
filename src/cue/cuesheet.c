@@ -277,7 +277,7 @@ static void play_cue_uri(gchar *uri)
 	cache_cue_file(path2);
 
         if (cue_file == NULL)
-                return NULL;
+                return;
 
 	real_ip = input_check_file(cue_file, FALSE);
 
