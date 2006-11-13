@@ -214,6 +214,7 @@ cddb_query(gchar * server, cdda_disc_toc_t * info,
 
     switch (strtol(response[0], NULL, 10)) {
     case 200:
+    case 210:
         /* One exact match */
         for (i = 0; i < 4; i++) {
             if (response[i] == NULL) {
