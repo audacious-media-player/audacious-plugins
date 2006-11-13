@@ -1,3 +1,11 @@
+2006-11-13 21:25:21 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [504]
+  - fix CDDB bug where exact matches are found, treat it like a 200 OK response.
+  
+  trunk/src/cdaudio/cddb.c |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2006-11-13 14:27:29 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [502]
   - suppress compile time waring.

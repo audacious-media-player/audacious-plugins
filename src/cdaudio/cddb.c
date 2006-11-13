@@ -214,7 +214,6 @@ cddb_query(gchar * server, cdda_disc_toc_t * info,
 
     switch (strtol(response[0], NULL, 10)) {
     case 200:
-    case 210:
         /* One exact match */
         for (i = 0; i < 4; i++) {
             if (response[i] == NULL) {
@@ -225,6 +224,7 @@ cddb_query(gchar * server, cdda_disc_toc_t * info,
         cddb_info->category = g_strdup(response[1]);
         cddb_info->discid = strtoul(response[2], NULL, 16);
         break;
+    case 210:
     case 211:
         /* multiple matches - use first match */
         g_strfreev(response);
