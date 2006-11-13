@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libamidi-plug$(SHARED_SUFFIX)
 SUBDIRS = pcfg $(AMIDIPLUG_BACKENDS)
 
 noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
-                 i_configure.h i_configure_private.h \
+                 i_vfslayer.h i_configure.h i_configure_private.h \
                  i_configure-ap.h i_configure-alsa.h \
                  i_configure-fluidsynth.h i_configure-dummy.h \
                  i_fileinfo.h i_utils.h i_common.h \
@@ -15,7 +15,7 @@ noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 LIBADD = $(GTK_LIBS) $(GMODULE_LIBS) -lpthread ./pcfg/libpcfg.a
-SOURCES = amidi-plug.c i_midi.c i_backend.c \
+SOURCES = amidi-plug.c i_vfslayer.c i_midi.c i_backend.c \
           i_configure.c i_configure-ap.c i_configure-alsa.c \
           i_configure-fluidsynth.c i_configure-dummy.c \
           i_utils.c i_fileinfo.c

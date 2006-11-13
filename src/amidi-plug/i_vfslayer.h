@@ -18,30 +18,21 @@
 *
 */
 
-#ifndef _I_CONFIGURE_H
-#define _I_CONFIGURE_H 1
+
+#ifndef _I_VFSLAYER_H
+#define _I_VFSLAYER_H 1
 
 #include "i_common.h"
+#include <audacious/vfs.h>
 
 
-typedef struct
-{
-  gchar *	ap_seq_backend;
-  gint		ap_opts_transpose_value;
-  gint		ap_opts_drumshift_value;
-  gint		ap_opts_length_precalc;
-  gint		ap_opts_comments_extract;
-  gint		ap_opts_lyrics_extract;
-}
-amidiplug_cfg_ap_t;
+#define VFS_FOPEN( x , y )		vfs_fopen( x , y )
+#define VFS_FCLOSE( x )			vfs_fclose( x )
+#define VFS_FREAD( x , y , z , w )	vfs_fread( x , y , z , w )
+#define VFS_FSEEK( x , y , z )		vfs_fseek( x , y , z )
+#define VFS_FEOF( x )			vfs_feof( x )
+#define VFS_GETC( x )			vfs_getc( x )
+#define VFS_UNGETC( x , y )		vfs_ungetc( x , y )
 
 
-extern amidiplug_cfg_ap_t amidiplug_cfg_ap;
-
-
-void i_configure_gui( void );
-void i_configure_cfg_ap_read( void );
-void i_configure_cfg_ap_save( void );
-
-
-#endif /* !_I_CONFIGURE_H */
+#endif /* !_I_VFSLAYER_H */

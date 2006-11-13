@@ -50,7 +50,6 @@ enum
 };
 
 
-
 void i_configure_ev_portlv_changetoggle( GtkCellRendererToggle * rdtoggle ,
                                          gchar * path_str , gpointer data )
 {

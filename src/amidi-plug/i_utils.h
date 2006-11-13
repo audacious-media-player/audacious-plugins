@@ -31,4 +31,5 @@
 void i_about_gui( void );
 gpointer i_message_gui( gchar * , gchar * , gint , gpointer , gboolean );
 
+
 #endif /* !_I_UTILS_H */

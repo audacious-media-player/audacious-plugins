@@ -18,30 +18,5 @@
 *
 */
 
-#ifndef _I_CONFIGURE_H
-#define _I_CONFIGURE_H 1
 
-#include "i_common.h"
-
-
-typedef struct
-{
-  gchar *	ap_seq_backend;
-  gint		ap_opts_transpose_value;
-  gint		ap_opts_drumshift_value;
-  gint		ap_opts_length_precalc;
-  gint		ap_opts_comments_extract;
-  gint		ap_opts_lyrics_extract;
-}
-amidiplug_cfg_ap_t;
-
-
-extern amidiplug_cfg_ap_t amidiplug_cfg_ap;
-
-
-void i_configure_gui( void );
-void i_configure_cfg_ap_read( void );
-void i_configure_cfg_ap_save( void );
-
-
-#endif /* !_I_CONFIGURE_H */
+#include "i_vfslayer.h"

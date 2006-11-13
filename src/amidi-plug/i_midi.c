@@ -43,7 +43,7 @@ void i_midi_file_skip_bytes( midifile_t * mf , gint bytes )
 gint i_midi_file_read_byte( midifile_t * mf )
 {
   ++mf->file_offset;
-  return vfs_getc(mf->file_pointer);
+  return VFS_GETC(mf->file_pointer);
 }
 
 
@@ -55,7 +55,7 @@ gint i_midi_file_read_32_le( midifile_t * mf )
   value |= i_midi_file_read_byte(mf) << 8;
   value |= i_midi_file_read_byte(mf) << 16;
   value |= i_midi_file_read_byte(mf) << 24;
-  return !vfs_feof(mf->file_pointer) ? value : -1;
+  return !VFS_FEOF(mf->file_pointer) ? value : -1;
 }
 
 
@@ -102,7 +102,7 @@ gint i_midi_file_read_var( midifile_t * mf )
       }
     }
   }
-  return !vfs_feof(mf->file_pointer) ? value : -1;
+  return !VFS_FEOF(mf->file_pointer) ? value : -1;
 }
 
 
@@ -158,7 +158,7 @@ gint i_midi_file_read_track( midifile_t * mf , midifile_track_t * track ,
         last_cmd = cmd;
     } else {
       /* running status */
-      vfs_ungetc(c, mf->file_pointer);
+      VFS_UNGETC(c, mf->file_pointer);
       mf->file_offset--;
       cmd = last_cmd;
       if (!cmd)
@@ -181,7 +181,33 @@ gint i_midi_file_read_track( midifile_t * mf , midifile_track_t * track ,
       case 0x8: /* channel msg with 2 parameter bytes */
       case 0x9:
       case 0xa:
-      case 0xb:
+      {
+        event = i_midi_file_new_event(track, 0);
+        event->type = cmd_type[cmd >> 4];
+        event->port = port;
+        event->tick = tick;
+        event->data.d[0] = cmd & 0x0f;
+        /* if this note is not in standard drum channel (10), apply transpose */
+        if ( event->data.d[0] != 9 )
+        {
+          gint data_tr = (i_midi_file_read_byte(mf) & 0x7f) +
+                           amidiplug_cfg_ap.ap_opts_transpose_value;
+          if ( data_tr > 127 ) data_tr = 127;
+          else if ( data_tr < 0 ) data_tr = 0;
+          event->data.d[1] = (guchar)data_tr;
+        }
+        else /* this note is in standard drum channel (10), apply drum shift */
+        {
+          gint data_ds = (i_midi_file_read_byte(mf) & 0x7f) +
+                           amidiplug_cfg_ap.ap_opts_drumshift_value; /* always > 0 */
+          if ( data_ds > 127 ) data_ds -= 127;
+          event->data.d[1] = (guchar)data_ds;
+        }
+        event->data.d[2] = i_midi_file_read_byte(mf) & 0x7f;
+      }
+      break;
+
+      case 0xb: /* channel msg with 2 parameter bytes */
       case 0xe:
       {
         event = i_midi_file_new_event(track, 0);
@@ -398,7 +424,7 @@ gint i_midi_file_parse_smf( midifile_t * mf , gint port_count )
     {
       gint id = i_midi_file_read_id(mf);
       len = i_midi_file_read_int(mf,4);
-      if ( vfs_feof(mf->file_pointer) )
+      if ( VFS_FEOF(mf->file_pointer) )
       {
         g_warning( "%s: unexpected end of file\n" , mf->file_name );
         return 0;
@@ -447,7 +473,7 @@ gint i_midi_file_parse_riff( midifile_t * mf )
     gint id = i_midi_file_read_id(mf);
     gint len = i_midi_file_read_32_le(mf);
 
-    if ( vfs_feof(mf->file_pointer) )
+    if ( VFS_FEOF(mf->file_pointer) )
       return 0;
 
     if ( id == MAKE_ID('d', 'a', 't', 'a') )
@@ -720,7 +746,7 @@ gint i_midi_parse_from_filename( gchar * filename , midifile_t * mf )
 {
   i_midi_init( mf );
   DEBUGMSG( "PARSE_FROM_FILENAME requested, opening file: %s\n" , filename );
-  mf->file_pointer = vfs_fopen( filename , "rb" );
+  mf->file_pointer = VFS_FOPEN( filename , "rb" );
   if (!mf->file_pointer)
   {
     g_warning( "Cannot open %s\n" , filename );
@@ -758,7 +784,7 @@ gint i_midi_parse_from_filename( gchar * filename , midifile_t * mf )
       i_midi_setget_length( mf );
 
       /* ok, mf has been filled with information; successfully return */
-      vfs_fclose( mf->file_pointer );
+      VFS_FCLOSE( mf->file_pointer );
       return 1;
     }
 
@@ -770,6 +796,6 @@ gint i_midi_parse_from_filename( gchar * filename , midifile_t * mf )
   }
 
   /* something failed */
-  vfs_fclose( mf->file_pointer );
+  VFS_FCLOSE( mf->file_pointer );
   return 0;
 }

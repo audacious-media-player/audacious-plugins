@@ -27,11 +27,11 @@
 #define AMIDIPLUG_ERR	3
 
 #include "i_common.h"
-#include "audacious/plugin.h"
-#include "audacious/output.h"
-#include "audacious/beepctrl.h"
-#include "audacious/vfs.h"
+#include <audacious/plugin.h>
+#include <audacious/output.h>
+#include <audacious/beepctrl.h>
 #include <pthread.h>
+#include "i_vfslayer.h"
 #include "i_backend.h"
 #include "i_configure.h"
 #include "i_midi.h"
@@ -60,7 +60,11 @@ amidiplug_sequencer_backend_t backend;
 amidiplug_cfg_ap_t amidiplug_cfg_ap =
 {
   NULL,		/* ap_seq_backend */
-  0		/* ap_opts_length_precalc */
+  0,		/* ap_opts_transpose_value */
+  0,		/* ap_opts_drumshift_value */
+  0,		/* ap_opts_length_precalc */
+  0,		/* ap_opts_comments_extract */
+  0		/* ap_opts_lyrics_extract */
 };
 
 

@@ -892,10 +892,10 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
                           "This button resets the backend buffer parameters to default values.") , "" );
     gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , buffer_tuner_hscale ,
                           _("* FluidSynth backend buffer *\n"
-                          "If you notice skips during song playback and your system is not performing "
-                          "any cpu-intensive task (except FluidSynth itself), you may want to tune the "
-                          "buffer in order to prevent skipping. Try to move the \"handy buffer tuner\" "
-                          "a single step to the right until playback is fluid again.") , "" );
+                          "If you notice skips or slowness during song playback and your system is not "
+                          "performing any cpu-intensive task (except FluidSynth itself), you may want "
+                          "to adjust the buffer parameters. Try to move the \"handy buffer tuner\" "
+                          "some steps to the right until playback is fluid again.") , "" );
     gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , buffer_bufsize_spin ,
                           _("* FluidSynth backend buffer *\n"
                           "It is a good idea to make buffer adjustments with the \"handy buffer tuner\" "

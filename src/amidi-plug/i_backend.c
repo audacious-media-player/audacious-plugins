@@ -20,6 +20,7 @@
 
 #include "i_backend.h"
 
+
 gboolean i_str_has_pref_and_suff( const gchar *str , gchar *pref , gchar *suff )
 {
   if ( (g_str_has_prefix( str , pref )) &&

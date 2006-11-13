@@ -113,23 +113,37 @@ void i_configure_ev_backendlv_commit( gpointer backend_lv )
 }
 
 
-void i_configure_ev_settings_commit( gpointer settings_vbox )
+void i_configure_ev_settplay_commit( gpointer settplay_vbox )
 {
-  GtkWidget *settings_precalc_checkbt = g_object_get_data( G_OBJECT(settings_vbox) ,
+  GtkWidget *settplay_transpose_spinbt = g_object_get_data( G_OBJECT(settplay_vbox) ,
+                                                            "ap_opts_transpose_value" );
+  GtkWidget *settplay_drumshift_spinbt = g_object_get_data( G_OBJECT(settplay_vbox) ,
+                                                            "ap_opts_drumshift_value" );
+  amidiplug_cfg_ap.ap_opts_transpose_value = gtk_spin_button_get_value_as_int(
+    GTK_SPIN_BUTTON(settplay_transpose_spinbt) );
+  amidiplug_cfg_ap.ap_opts_drumshift_value = gtk_spin_button_get_value_as_int(
+    GTK_SPIN_BUTTON(settplay_drumshift_spinbt) );
+  return;
+}
+
+
+void i_configure_ev_settadva_commit( gpointer settadva_vbox )
+{
+  GtkWidget *settadva_precalc_checkbt = g_object_get_data( G_OBJECT(settadva_vbox) ,
                                                            "ap_opts_length_precalc" );
-  GtkWidget *settings_extractlyr_checkbt = g_object_get_data( G_OBJECT(settings_vbox) ,
+  GtkWidget *settadva_extractlyr_checkbt = g_object_get_data( G_OBJECT(settadva_vbox) ,
                                                               "ap_opts_lyrics_extract" );
-  GtkWidget *settings_extractcomm_checkbt = g_object_get_data( G_OBJECT(settings_vbox) ,
+  GtkWidget *settadva_extractcomm_checkbt = g_object_get_data( G_OBJECT(settadva_vbox) ,
                                                                "ap_opts_comments_extract" );
-  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settings_precalc_checkbt) ) )
+  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settadva_precalc_checkbt) ) )
     amidiplug_cfg_ap.ap_opts_length_precalc = 1;
   else
     amidiplug_cfg_ap.ap_opts_length_precalc = 0;
-  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settings_extractlyr_checkbt) ) )
+  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settadva_extractlyr_checkbt) ) )
     amidiplug_cfg_ap.ap_opts_lyrics_extract = 1;
   else
     amidiplug_cfg_ap.ap_opts_lyrics_extract = 0;
-  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settings_extractcomm_checkbt) ) )
+  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settadva_extractcomm_checkbt) ) )
     amidiplug_cfg_ap.ap_opts_comments_extract = 1;
   else
     amidiplug_cfg_ap.ap_opts_comments_extract = 0;
@@ -154,8 +168,13 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   GtkWidget *ap_page_vbox;
   GtkWidget *title_widget;
   GtkWidget *content_vbox; /* this vbox will contain two items of equal space (50%/50%) */
-  GtkWidget *settings_frame, *settings_vbox;
-  GtkWidget *settings_precalc_checkbt, *settings_extractcomm_checkbt, *settings_extractlyr_checkbt;
+  GtkWidget *settings_vbox; /* this vbox will contain all settings vbox (playback, advanced) */
+  GtkWidget *settplay_frame, *settplay_vbox;
+  GtkWidget *settplay_transpose_and_drumshift_hbox;
+  GtkWidget *settplay_transpose_hbox, *settplay_transpose_label1, *settplay_transpose_spinbt;
+  GtkWidget *settplay_drumshift_hbox, *settplay_drumshift_label1, *settplay_drumshift_spinbt;
+  GtkWidget *settadva_frame, *settadva_vbox;
+  GtkWidget *settadva_precalc_checkbt, *settadva_extractcomm_checkbt, *settadva_extractlyr_checkbt;
   GtkWidget *backend_lv_frame, *backend_lv, *backend_lv_sw;
   GtkWidget *backend_lv_hbox, *backend_lv_vbbox, *backend_lv_infobt;
   GtkListStore *backend_store;
@@ -231,34 +250,69 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   gtk_box_pack_start( GTK_BOX(backend_lv_vbbox) , backend_lv_infobt , FALSE , FALSE , 0 );
   gtk_container_add( GTK_CONTAINER(backend_lv_frame) , backend_lv_hbox );
 
-  settings_frame = gtk_frame_new( _("Advanced settings") );
-  settings_vbox = gtk_vbox_new( FALSE , 0 );
-  gtk_container_set_border_width( GTK_CONTAINER(settings_vbox), 4 );
-  settings_precalc_checkbt = gtk_check_button_new_with_label(
+  settings_vbox = gtk_vbox_new( FALSE , 2 );
+
+  settplay_frame = gtk_frame_new( _("Playback settings") );
+  settplay_vbox = gtk_vbox_new( FALSE , 0 );
+  gtk_container_set_border_width( GTK_CONTAINER(settplay_vbox), 4 );
+  settplay_transpose_and_drumshift_hbox = gtk_hbox_new( FALSE , 12 );
+  settplay_transpose_hbox = gtk_hbox_new( FALSE , 0 );
+  settplay_transpose_label1 = gtk_label_new( _("Transpose: ") );
+  settplay_transpose_spinbt = gtk_spin_button_new_with_range( -20 , 20 , 1 );
+  gtk_spin_button_set_value( GTK_SPIN_BUTTON(settplay_transpose_spinbt) ,
+                             amidiplug_cfg_ap.ap_opts_transpose_value );
+  gtk_box_pack_start( GTK_BOX(settplay_transpose_hbox) , settplay_transpose_label1 , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(settplay_transpose_hbox) , settplay_transpose_spinbt , FALSE , FALSE , 2 );
+  gtk_box_pack_start( GTK_BOX(settplay_transpose_and_drumshift_hbox) ,
+                      settplay_transpose_hbox , FALSE , FALSE , 0 );
+  settplay_drumshift_hbox = gtk_hbox_new( FALSE , 0 );
+  settplay_drumshift_label1 = gtk_label_new( _("Drum shift: ") );
+  settplay_drumshift_spinbt = gtk_spin_button_new_with_range( 0 , 127 , 1 );
+  gtk_spin_button_set_value( GTK_SPIN_BUTTON(settplay_drumshift_spinbt) ,
+                             amidiplug_cfg_ap.ap_opts_drumshift_value );
+  gtk_box_pack_start( GTK_BOX(settplay_drumshift_hbox) , settplay_drumshift_label1 , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(settplay_drumshift_hbox) , settplay_drumshift_spinbt , FALSE , FALSE , 2 );
+  gtk_box_pack_start( GTK_BOX(settplay_transpose_and_drumshift_hbox) ,
+                      settplay_drumshift_hbox , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(settplay_vbox) ,
+                      settplay_transpose_and_drumshift_hbox , FALSE , FALSE , 2 );
+  gtk_container_add( GTK_CONTAINER(settplay_frame) , settplay_vbox );
+  /* attach pointers of options to settplay_vbox so we can handle all of them in a single callback */
+  g_object_set_data( G_OBJECT(settplay_vbox) , "ap_opts_transpose_value" , settplay_transpose_spinbt );
+  g_object_set_data( G_OBJECT(settplay_vbox) , "ap_opts_drumshift_value" , settplay_drumshift_spinbt );
+  g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
+                            G_CALLBACK(i_configure_ev_settplay_commit) , settplay_vbox );
+  gtk_box_pack_start( GTK_BOX(settings_vbox) , settplay_frame , TRUE , TRUE , 0 );
+
+  settadva_frame = gtk_frame_new( _("Advanced settings") );
+  settadva_vbox = gtk_vbox_new( FALSE , 0 );
+  gtk_container_set_border_width( GTK_CONTAINER(settadva_vbox), 4 );
+  settadva_precalc_checkbt = gtk_check_button_new_with_label(
                                _("pre-calculate length of MIDI files in playlist") );
   if ( amidiplug_cfg_ap.ap_opts_length_precalc )
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settings_precalc_checkbt) , TRUE );
-  gtk_box_pack_start( GTK_BOX(settings_vbox) , settings_precalc_checkbt , FALSE , FALSE , 2 );
-  settings_extractcomm_checkbt = gtk_check_button_new_with_label(
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settadva_precalc_checkbt) , TRUE );
+  gtk_box_pack_start( GTK_BOX(settadva_vbox) , settadva_precalc_checkbt , FALSE , FALSE , 2 );
+  settadva_extractcomm_checkbt = gtk_check_button_new_with_label(
                                    _("extract comments from MIDI file (if available)") );
   if ( amidiplug_cfg_ap.ap_opts_comments_extract )
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settings_extractcomm_checkbt) , TRUE );
-  gtk_box_pack_start( GTK_BOX(settings_vbox) , settings_extractcomm_checkbt , FALSE , FALSE , 2 );
-  settings_extractlyr_checkbt = gtk_check_button_new_with_label(
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settadva_extractcomm_checkbt) , TRUE );
+  gtk_box_pack_start( GTK_BOX(settadva_vbox) , settadva_extractcomm_checkbt , FALSE , FALSE , 2 );
+  settadva_extractlyr_checkbt = gtk_check_button_new_with_label(
                                   _("extract lyrics from MIDI file (if available)") );
   if ( amidiplug_cfg_ap.ap_opts_lyrics_extract )
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settings_extractlyr_checkbt) , TRUE );
-  gtk_box_pack_start( GTK_BOX(settings_vbox) , settings_extractlyr_checkbt , FALSE , FALSE , 2 );
-  gtk_container_add( GTK_CONTAINER(settings_frame) , settings_vbox );
-  /* attach pointers of options to settings_vbox so we can handle all of them in a single callback */
-  g_object_set_data( G_OBJECT(settings_vbox) , "ap_opts_length_precalc" , settings_precalc_checkbt );
-  g_object_set_data( G_OBJECT(settings_vbox) , "ap_opts_comments_extract" , settings_extractcomm_checkbt );
-  g_object_set_data( G_OBJECT(settings_vbox) , "ap_opts_lyrics_extract" , settings_extractlyr_checkbt );
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settadva_extractlyr_checkbt) , TRUE );
+  gtk_box_pack_start( GTK_BOX(settadva_vbox) , settadva_extractlyr_checkbt , FALSE , FALSE , 2 );
+  gtk_container_add( GTK_CONTAINER(settadva_frame) , settadva_vbox );
+  /* attach pointers of options to settadva_vbox so we can handle all of them in a single callback */
+  g_object_set_data( G_OBJECT(settadva_vbox) , "ap_opts_length_precalc" , settadva_precalc_checkbt );
+  g_object_set_data( G_OBJECT(settadva_vbox) , "ap_opts_comments_extract" , settadva_extractcomm_checkbt );
+  g_object_set_data( G_OBJECT(settadva_vbox) , "ap_opts_lyrics_extract" , settadva_extractlyr_checkbt );
   g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
-                            G_CALLBACK(i_configure_ev_settings_commit) , settings_vbox );
+                            G_CALLBACK(i_configure_ev_settadva_commit) , settadva_vbox );
+  gtk_box_pack_start( GTK_BOX(settings_vbox) , settadva_frame , TRUE , TRUE , 0 );
 
   gtk_box_pack_start( GTK_BOX(content_vbox) , backend_lv_frame , TRUE , TRUE , 0 );
-  gtk_box_pack_start( GTK_BOX(content_vbox) , settings_frame , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(content_vbox) , settings_vbox , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(ap_page_vbox) , content_vbox , TRUE , TRUE , 2 );
   gtk_container_add( GTK_CONTAINER(ap_page_alignment) , ap_page_vbox );
 
@@ -273,7 +327,20 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
                         "synthesizer and/or want to pipe audio into effect and output plugins of the "
                         "player you'll want to use the good FluidSynth backend.\nPress the info "
                         "button to read specific information about each backend.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settings_precalc_checkbt ,
+  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settplay_transpose_spinbt ,
+                        _("* Transpose function *\n"
+                        "This option allows you to play the midi file transposed in a different key, "
+                        "by shifting of the desired number of semitones all its notes (excepting those "
+                        "on midi channel 10, reserved for percussions). Expecially useful if you wish "
+                        "to sing or play along with another instrument.") , "" );
+  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settplay_drumshift_spinbt ,
+                        _("* Drumshift function *\n"
+                        "This option allows you to shift notes on midi channel 10 (the standard "
+                        "percussions channel) of the desired number of semitones. This results in "
+                        "different drumset and percussions being used during midi playback, so if "
+                        "you wish to enhance (or reduce, or alter) percussion sounds, try to play "
+                        "with this value.") , "" );
+  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settadva_precalc_checkbt ,
                         _("* Pre-calculate MIDI length *\n"
                         "If this option is enabled, AMIDI-Plug will calculate the MIDI file "
                         "length as soon as the player requests it, instead of doing that only "
@@ -282,12 +349,12 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
                         "Disable this option if you want faster playlist loading (when a lot "
                         "of MIDI files are added), enable it to display more information "
                         "in the playlist straight after loading.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settings_extractcomm_checkbt ,
+  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settadva_extractcomm_checkbt ,
                         _("* Extract comments from MIDI files *\n"
                         "Some MIDI files contain text comments (author, copyright, instrument notes, "
                         "etc.). If this option is enabled, AMIDI-Plug will extract and display comments "
                         "(if available) in the file information dialog.") , "" );
-  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settings_extractlyr_checkbt ,
+  gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , settadva_extractlyr_checkbt ,
                         _("* Extract lyrics from MIDI files *\n"
                         "Some MIDI files contain song lyrics. If this option is enabled, AMIDI-Plug "
                         "will extract and display song lyrics (if available) in the file "

@@ -27,7 +27,7 @@
 #include "i_configure-fluidsynth.h"
 #include "i_configure-dummy.h"
 #include "i_utils.h"
-#include "audacious/beepctrl.h"
+#include <audacious/beepctrl.h>
 
 
 amidiplug_cfg_backend_t * amidiplug_cfg_backend;
@@ -358,6 +358,8 @@ void i_configure_cfg_ap_read( void )
   {
     /* amidi-plug defaults */
     amidiplug_cfg_ap.ap_seq_backend = g_strdup( "alsa" );
+    amidiplug_cfg_ap.ap_opts_transpose_value = 0;
+    amidiplug_cfg_ap.ap_opts_drumshift_value = 0;
     amidiplug_cfg_ap.ap_opts_length_precalc = 0;
     amidiplug_cfg_ap.ap_opts_lyrics_extract = 0;
     amidiplug_cfg_ap.ap_opts_comments_extract = 0;
@@ -366,6 +368,10 @@ void i_configure_cfg_ap_read( void )
   {
     i_pcfg_read_string( cfgfile , "general" , "ap_seq_backend" ,
                         &amidiplug_cfg_ap.ap_seq_backend , "alsa" );
+    i_pcfg_read_integer( cfgfile , "general" , "ap_opts_transpose_value" ,
+                         &amidiplug_cfg_ap.ap_opts_transpose_value , 0 );
+    i_pcfg_read_integer( cfgfile , "general" , "ap_opts_drumshift_value" ,
+                         &amidiplug_cfg_ap.ap_opts_drumshift_value , 0 );
     i_pcfg_read_integer( cfgfile , "general" , "ap_opts_length_precalc" ,
                          &amidiplug_cfg_ap.ap_opts_length_precalc , 0 );
     i_pcfg_read_integer( cfgfile , "general" , "ap_opts_lyrics_extract" ,
@@ -392,6 +398,10 @@ void i_configure_cfg_ap_save( void )
   /* save amidi-plug config information */
   i_pcfg_write_string( cfgfile , "general" , "ap_seq_backend" ,
                        amidiplug_cfg_ap.ap_seq_backend );
+  i_pcfg_write_integer( cfgfile , "general" , "ap_opts_transpose_value" ,
+                        amidiplug_cfg_ap.ap_opts_transpose_value );
+  i_pcfg_write_integer( cfgfile , "general" , "ap_opts_drumshift_value" ,
+                        amidiplug_cfg_ap.ap_opts_drumshift_value );
   i_pcfg_write_integer( cfgfile , "general" , "ap_opts_length_precalc" ,
                         amidiplug_cfg_ap.ap_opts_length_precalc );
   i_pcfg_write_integer( cfgfile , "general" , "ap_opts_lyrics_extract" ,
