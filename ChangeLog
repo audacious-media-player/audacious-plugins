@@ -1,3 +1,11 @@
+2006-11-14 21:00:10 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [512]
+  - remove convertUTF8toLocale, we obviously don't need it.
+  
+  trunk/src/wavpack/libwavpack.cxx |   24 ------------------------
+  1 file changed, 24 deletions(-)
+
+
 2006-11-14 20:58:51 +0000  William Pitcock <nenolod@nenolod.net>
   revision [510]
   - i rewrote most of this!
