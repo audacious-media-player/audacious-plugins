@@ -49,8 +49,7 @@ static GList *drives;
 
 static GtkWidget *cdda_configure_win;
 static GtkWidget *cdi_name, *cdi_name_override;
-static GtkWidget *cdi_use_cddb, *cdi_cddb_server, *cdi_use_cdin,
-    *cdi_cdin_server;
+static GtkWidget *cdi_use_cddb, *cdi_cddb_server;
 
 void cdda_cddb_show_server_dialog(GtkWidget * w, gpointer data);
 void cdda_cddb_show_network_window(GtkWidget * w, gpointer data);
@@ -114,21 +113,11 @@ cdda_configurewin_ok_cb(GtkWidget * w, gpointer data)
     cdda_cfg.use_cddb = GET_TB(cdi_use_cddb);
     cdda_cddb_set_server(gtk_entry_get_text(GTK_ENTRY(cdi_cddb_server)));
 
-    cdda_cfg.use_cdin = GET_TB(cdi_use_cdin);
-    if (strcmp
-        (cdda_cfg.cdin_server,
-         gtk_entry_get_text(GTK_ENTRY(cdi_cdin_server)))) {
-        g_free(cdda_cfg.cdin_server);
-        cdda_cfg.cdin_server =
-            g_strdup(gtk_entry_get_text(GTK_ENTRY(cdi_cdin_server)));
-    }
-
     db = bmp_cfg_db_open();
 
     drive = cdda_cfg.drives->data;
     bmp_cfg_db_set_string(db, "CDDA", "device", drive->device);
     bmp_cfg_db_set_string(db, "CDDA", "directory", drive->directory);
-//      bmp_cfg_db_set_string(db, "CDDA", "directory", "CD_AUDIO");
     bmp_cfg_db_set_int(db, "CDDA", "mixer", drive->mixer);
     bmp_cfg_db_set_int(db, "CDDA", "readmode", drive->dae);
 
@@ -142,7 +131,6 @@ cdda_configurewin_ok_cb(GtkWidget * w, gpointer data)
         bmp_cfg_db_set_string(db, "CDDA", label, drive->device);
 
         sprintf(label, "directory%d", i);
-//              bmp_cfg_db_set_string(db, "CDDA", label, "CD_AUDIO");
         bmp_cfg_db_set_string(db, "CDDA", label, drive->directory);
 
         sprintf(label, "mixer%d", i);
@@ -166,8 +154,6 @@ cdda_configurewin_ok_cb(GtkWidget * w, gpointer data)
     bmp_cfg_db_set_string(db, "CDDA", "cddb_server", cdda_cfg.cddb_server);
     bmp_cfg_db_set_int(db, "CDDA", "cddb_protocol_level",
                        cdda_cfg.cddb_protocol_level);
-    bmp_cfg_db_set_bool(db, "CDDA", "use_cdin", cdda_cfg.use_cdin);
-    bmp_cfg_db_set_string(db, "CDDA", "cdin_server", cdda_cfg.cdin_server);
     bmp_cfg_db_close(db);
 }
 
@@ -495,8 +481,6 @@ cdda_configure(void)
     GtkWidget *cdi_cddb_frame, *cdi_cddb_vbox, *cdi_cddb_hbox;
     GtkWidget *cdi_cddb_server_hbox, *cdi_cddb_server_label;
     GtkWidget *cdi_cddb_server_list, *cdi_cddb_debug_win;
-    GtkWidget *cdi_cdin_frame, *cdi_cdin_vbox;
-    GtkWidget *cdi_cdin_server_hbox, *cdi_cdin_server_label;
     GtkWidget *cdi_name_frame, *cdi_name_vbox, *cdi_name_hbox;
     GtkWidget *cdi_name_label, *cdi_desc;
     GtkWidget *cdi_name_enable_vbox;
@@ -607,37 +591,6 @@ cdda_configure(void)
     g_signal_connect(G_OBJECT(cdi_cddb_server_list), "clicked",
                      G_CALLBACK(cdda_cddb_show_server_dialog),
                      cdi_cddb_server);
-
-    /*
-     * CDindex
-     */
-    cdi_cdin_frame = gtk_frame_new(_("CD Index:"));
-    gtk_box_pack_start(GTK_BOX(cdi_vbox), cdi_cdin_frame, FALSE, FALSE, 0);
-
-    cdi_cdin_vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_border_width(GTK_CONTAINER(cdi_cdin_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(cdi_cdin_frame), cdi_cdin_vbox);
-
-    cdi_use_cdin = gtk_check_button_new_with_label(_("Use CD Index"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cdi_use_cdin),
-                                 cdda_cfg.use_cdin);
-    gtk_box_pack_start(GTK_BOX(cdi_cdin_vbox), cdi_use_cdin, FALSE, FALSE, 0);
-
-    cdi_cdin_server_hbox = gtk_hbox_new(FALSE, 5);
-    gtk_box_pack_start(GTK_BOX(cdi_cdin_vbox), cdi_cdin_server_hbox, FALSE,
-                       FALSE, 0);
-
-    cdi_cdin_server_label = gtk_label_new(_("CD Index server:"));
-    gtk_box_pack_start(GTK_BOX(cdi_cdin_server_hbox),
-                       cdi_cdin_server_label, FALSE, FALSE, 0);
-
-    cdi_cdin_server = gtk_entry_new();
-    gtk_entry_set_text(GTK_ENTRY(cdi_cdin_server), cdda_cfg.cdin_server);
-    gtk_box_pack_start(GTK_BOX(cdi_cdin_server_hbox), cdi_cdin_server,
-                       TRUE, TRUE, 0);
-#ifndef WITH_CDINDEX
-    gtk_widget_set_sensitive(cdi_cdin_frame, FALSE);
-#endif
 
     /*
      * Track names

@@ -712,16 +712,8 @@ cdda_init(void)
     bmp_cfg_db_get_string(db, "CDDA", "name_format", &cdda_cfg.name_format);
     bmp_cfg_db_get_bool(db, "CDDA", "use_cddb", &cdda_cfg.use_cddb);
     bmp_cfg_db_get_string(db, "CDDA", "cddb_server", &cdda_cfg.cddb_server);
-#ifdef WITH_CDINDEX
-    bmp_cfg_db_get_bool(db, "CDDA", "use_cdin", &cdda_cfg.use_cdin);
-#else
-    cdda_cfg.use_cdin = FALSE;
-#endif
-    bmp_cfg_db_get_string(db, "CDDA", "cdin_server", &cdda_cfg.cdin_server);
     bmp_cfg_db_close(db);
 
-    if (!cdda_cfg.cdin_server)
-        cdda_cfg.cdin_server = g_strdup("www.cdindex.org");
     if (!cdda_cfg.cddb_server)
         cdda_cfg.cddb_server = g_strdup(CDDB_DEFAULT_SERVER);
     if (!cdda_cfg.name_format)
@@ -806,11 +798,6 @@ cleanup(void)
     if (cdda_cfg.cddb_server) {
         free(cdda_cfg.cddb_server);
         cdda_cfg.cddb_server = NULL;
-    }
-
-    if (cdda_cfg.cdin_server) {
-        free(cdda_cfg.cdin_server);
-        cdda_cfg.cdin_server = NULL;
     }
 
     while (timeout_list) {

@@ -171,11 +171,6 @@ cdda_cdinfo_get(cdinfo_t * cdinfo, gint num, gchar ** artist,
 void
 cdda_cdinfo_write_file(guint32 cddb_discid, cdinfo_t * cdinfo)
 {
-    /*
-     * We currently identify cdinfo on disk with the CDDB-discid.
-     * Maybe it would be smarter to use the cdindex id instead?
-     */
-
     gchar *filename;
     RcFile *rcfile;
     gchar sectionname[10], trackstr[16];
@@ -231,8 +226,6 @@ cdda_cdinfo_read_file(guint32 cddb_discid, cdinfo_t * cdinfo)
     gboolean track_found;
 
     sprintf(sectionname, "%08x", cddb_discid);
-
-//      filename = g_strconcat(g_get_home_dir(), "/.audacious/cdinfo", NULL);
 
     filename =
         g_strconcat(g_get_home_dir(), "/", BMP_RCPATH, "/cdinfo", NULL);

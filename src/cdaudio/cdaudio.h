@@ -108,9 +108,6 @@ typedef struct {
     gint cddb_protocol_level;
     gboolean use_cddb;
 
-    gchar *cdin_server;
-    gboolean use_cdin;
-
     gboolean title_override;
     char *name_format;
 } CDDAConfig;
@@ -155,7 +152,6 @@ void cdda_configure(void);
 gboolean cdda_get_toc(cdda_disc_toc_t * info, const gchar *device);
 guint32 cdda_cddb_compute_discid(cdda_disc_toc_t * info);
 void cdda_cddb_get_info(cdda_disc_toc_t * toc, cdinfo_t * info);
-void cdda_cdindex_get_idx(cdda_disc_toc_t * toc, cdinfo_t * cdinfo);
 struct driveinfo *cdda_find_drive(gchar *filename);
 
 void cdda_cddb_show_server_dialog(GtkWidget * w, gpointer data);
