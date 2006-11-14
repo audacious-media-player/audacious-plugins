@@ -1,3 +1,11 @@
+2006-11-14 20:58:51 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [510]
+  - i rewrote most of this!
+  
+  trunk/src/wavpack/ui.cxx |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2006-11-14 20:03:25 +0000  William Pitcock <nenolod@nenolod.net>
   revision [508]
   - remove dead and pointless cdindex code... CDIndex has been nonexistant 

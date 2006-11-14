@@ -276,30 +276,6 @@ load_tag(ape_tag *tag, WavpackContext *ctx)
     WavpackGetTagItem(ctx, "Year", tag->year, sizeof(tag->year));
 }
 
-static char *
-convertUTF8toLocale(char *utf8)
-{
-    // note - opens a new iconv descriptor for each call
-    // will have to find a way to reuse the descriptor if this turns
-    // out to be too slow
-    iconv_t idesc = iconv_open("", "UTF-8");
-    if (idesc == (iconv_t) -1) {
-        perror("iconv_open failed");
-        return g_strdup(utf8);
-    }
-
-    size_t in_left = strlen(utf8);
-    size_t out_left = 2 * in_left + 1;
-    char *buf = (char *)g_malloc(out_left);
-    char *in = utf8;
-    char *out = buf;
-
-    memset(buf, 0, out_left);
-    size_t err = iconv(idesc, &in, &in_left, &out, &out_left);
-    iconv_close(idesc);
-    return buf;
-}
-
 static void *
 end_thread()
 {
