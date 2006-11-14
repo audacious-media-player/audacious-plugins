@@ -49,8 +49,8 @@ wv_about_box()
     about_window =
         xmms_show_message(g_strdup_printf
                           ("Wavpack Decoder Plugin %s", VERSION),
-                          ("Plugin code by \n" "Miles Egan\n"
-                           "Adapted from xmms-musepack plugin by Lefungus\n"
+                          ("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
+                           "Some of the plugin code was by Miles Egan\n"
                            "Visit the Wavpack site at http://www.wavpack.com/\n"),
                           ("Ok"), FALSE, NULL, NULL);
     gtk_signal_connect(GTK_OBJECT(about_window), "destroy",
