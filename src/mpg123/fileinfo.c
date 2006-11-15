@@ -117,7 +117,9 @@ save_cb(GtkWidget * w, gpointer data)
   if (str_has_prefix_nocase(current_filename, "http://"))
     return;
 
+#ifndef USE_CHARDET
   taglib_set_strings_unicode(1);
+#endif
 
   /* XXX: Gnome VFS workaround. -nenolod */
   if (str_has_prefix_nocase(current_filename, "file://"))
@@ -129,7 +131,9 @@ save_cb(GtkWidget * w, gpointer data)
     taglib_ap = taglib_file_audioproperties(taglib_file);
   } else return;
 
+#ifndef USE_CHARDET
   taglib_set_id3v2_default_text_encoding();
+#endif
   taglib_tag_set_title(taglib_tag, gtk_entry_get_text(GTK_ENTRY(title_entry)));
   taglib_tag_set_artist(taglib_tag, gtk_entry_get_text(GTK_ENTRY(artist_entry)));
   taglib_tag_set_album(taglib_tag, gtk_entry_get_text(GTK_ENTRY(album_entry)));
