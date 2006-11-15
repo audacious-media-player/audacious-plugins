@@ -125,7 +125,7 @@ save_cb(GtkWidget * w, gpointer data)
   if (str_has_prefix_nocase(current_filename, "file://"))
     current_filename += 7;
 
-  taglib_file = taglib_file_new(current_filename);
+  taglib_file = taglib_file_new_type(current_filename, TagLib_File_MPEG);
   if(taglib_file) {
     taglib_tag = taglib_file_tag(taglib_file);
     taglib_ap = taglib_file_audioproperties(taglib_file);
@@ -170,7 +170,7 @@ remove_id3_cb(GtkWidget * w, gpointer data)
   if (str_has_prefix_nocase(current_filename, "http://"))
     return;
   
-  taglib_file = taglib_file_new(current_filename);
+  taglib_file = taglib_file_new_type(current_filename, TagLib_File_MPEG);
   if(taglib_file) {
     taglib_tag = taglib_file_tag(taglib_file);
     taglib_ap = taglib_file_audioproperties(taglib_file);
@@ -700,7 +700,7 @@ fill_entries(GtkWidget * w, gpointer data)
 #ifdef USE_CHARDET
   taglib_set_strings_unicode(FALSE);
 #endif
-  taglib_file = taglib_file_new(current_filename);
+  taglib_file = taglib_file_new_type(current_filename, TagLib_File_MPEG);
   if(taglib_file) {
     taglib_tag = taglib_file_tag(taglib_file);
     taglib_ap = taglib_file_audioproperties(taglib_file);

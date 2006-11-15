@@ -549,7 +549,7 @@ get_song_tuple(char *filename)
     {
         tuple = bmp_title_input_new();
 
-        taglib_file = taglib_file_new(filename);
+        taglib_file = taglib_file_new_type(filename, TagLib_File_MPEG);
         taglib_tag = NULL;
 
         if (taglib_file != NULL)

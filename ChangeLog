@@ -1,3 +1,11 @@
+2006-11-15 19:59:28 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [516]
+  - don't save tags in unicode if chardet is enabled. bug and patch by zhllg, closes #632
+  
+  trunk/src/mpg123/fileinfo.c |    4 ++++
+  1 file changed, 4 insertions(+)
+
+
 2006-11-14 21:24:37 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [514]
   Another cloudscape. I was bored.
