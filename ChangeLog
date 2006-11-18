@@ -1,3 +1,12 @@
+2006-11-15 20:04:06 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [518]
+  - fix taglib stupidity. closes #633
+  
+  trunk/src/mpg123/fileinfo.c |    6 +++---
+  trunk/src/mpg123/mpg123.c   |    2 +-
+  2 files changed, 4 insertions(+), 4 deletions(-)
+
+
 2006-11-15 19:59:28 +0000  William Pitcock <nenolod@nenolod.net>
   revision [516]
   - don't save tags in unicode if chardet is enabled. bug and patch by zhllg, closes #632

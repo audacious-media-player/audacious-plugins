@@ -36,6 +36,7 @@ static void play_cue_uri(gchar *uri);
 static gint get_time(void);
 static void seek(gint time);
 static void stop(void);
+static void cue_pause(short);
 static TitleInput *get_tuple(gchar *uri);
 static TitleInput *get_tuple_uri(gchar *uri);
 static void get_song_info(gchar *uri, gchar **title, gint *length);
@@ -69,7 +70,7 @@ InputPlugin cue_ip =
 	NULL,		/* audio cd */
 	play,
 	stop,
-	NULL,
+	cue_pause,
 	seek,
 	NULL,		/* set eq */
 	get_time,
@@ -243,6 +244,12 @@ static void stop(void)
 		real_ip->output = NULL;
 		real_ip = NULL;
 	}
+}
+
+static void cue_pause(short p)
+{
+	if (real_ip != NULL)
+		real_ip->pause(p);
 }
 
 static void set_info_override(gchar * unused, gint length, gint rate, gint freq, gint nch)
