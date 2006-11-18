@@ -1,3 +1,11 @@
+2006-11-18 19:00:22 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [532]
+  Port to NewVFS file probe.
+  trunk/src/musepack/libmpc.cxx |   25 +++++++++++--------------
+  trunk/src/musepack/libmpc.h   |    2 +-
+  2 files changed, 12 insertions(+), 15 deletions(-)
+
+
 2006-11-18 18:02:24 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [524]
   Port to NewVFS file probe & add explicit cast to silence warning, thanks to spb.
