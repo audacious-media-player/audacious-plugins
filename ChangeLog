@@ -1,3 +1,11 @@
+2006-11-18 04:18:21 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [520]
+  - make pause do something. closes #636
+  
+  trunk/src/cue/cuesheet.c |    9 ++++++++-
+  1 file changed, 8 insertions(+), 1 deletion(-)
+
+
 2006-11-15 20:04:06 +0000  William Pitcock <nenolod@nenolod.net>
   revision [518]
   - fix taglib stupidity. closes #633
