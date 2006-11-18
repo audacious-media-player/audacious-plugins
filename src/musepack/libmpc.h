@@ -102,7 +102,7 @@ static void       mpcAboutBox();
 static void       mpcConfigBox();
 static void       toggleSwitch(GtkWidget*, gpointer);
 static void       saveConfigBox(GtkWidget*, gpointer);
-static int        mpcIsOurFile(char*);
+static int        mpcIsOurFD(char*,VFSFile* file);
 static void       mpcPlay(char*);
 static void       mpcStop();
 static void       mpcPause(short);

@@ -15,7 +15,7 @@ InputPlugin MpcPlugin = {
     mpcOpenPlugin,  //Open Plugin               [CALLBACK]
     mpcAboutBox,    //Show About box            [CALLBACK]
     mpcConfigBox,   //Show Configure box        [CALLBACK]
-    mpcIsOurFile,   //Check if it's our file    [CALLBACK]
+    NULL,           //Check if it's our file    [DEPRECATED]
     NULL,           //Scan the directory        [UNUSED]
     mpcPlay,        //Play                      [CALLBACK]
     mpcStop,        //Stop                      [CALLBACK]
@@ -33,7 +33,10 @@ InputPlugin MpcPlugin = {
     mpcGetSongInfo, //Get Title String callback [CALLBACK]
     mpcFileInfoBox, //Show File Info Box        [CALLBACK]
     NULL,           //Output Plugin Handle      OutputPlugin output
-    mpcGetSongTuple,
+    mpcGetSongTuple,//Acquire tuple for song    [CALLBACK]
+    NULL,
+    NULL,
+    mpcIsOurFD,
 };
 
 extern "C"
@@ -271,19 +274,13 @@ static void saveConfigBox(GtkWidget* p_Widget, gpointer p_Data)
     gtk_widget_destroy (widgets.configBox);
 }
 
-static int mpcIsOurFile(char* p_Filename)
+static int mpcIsOurFD(char* p_Filename, VFSFile* file)
 {
-   VFSFile *file;
-   gchar magic[3];
-   if ((file = vfs_fopen(p_Filename, "rb"))) {
-       vfs_fread(magic, 1, 3, file);
-       if (!strncmp(magic, "MP+", 3)) {
-            vfs_fclose(file);
-            return 1;
-       }
-       vfs_fclose(file);
-   }
-   return 0;
+    gchar magic[3];
+    vfs_fread(magic, 1, 3, file);
+    if (!strncmp(magic, "MP+", 3))
+        return 1;
+    return 0;
 }
 
 static void mpcPlay(char* p_Filename)
