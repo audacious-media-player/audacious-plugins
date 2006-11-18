@@ -1,3 +1,10 @@
+2006-11-18 19:46:19 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [536]
+  Port to NewVFS probe function.
+  trunk/src/alac/plugin.c |   16 ++++++----------
+  1 file changed, 6 insertions(+), 10 deletions(-)
+
+
 2006-11-18 19:20:57 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [534]
   Port to NewVFS probe function.

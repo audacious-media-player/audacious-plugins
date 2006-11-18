@@ -271,9 +271,8 @@ convert_to_header(guint8 * buf)
 #define DET_BUF_SIZE 4096
 
 static gboolean
-mpgdec_detect_by_content(char *filename)
+mpgdec_detect_by_content(VFSFile *file)
 {
-    VFSFile *file;
     guchar tmp[4];
     guint32 head;
     struct frame fr;
@@ -282,8 +281,6 @@ mpgdec_detect_by_content(char *filename)
     gboolean ret = FALSE;
     guint cyc = 0;
 
-    if ((file = vfs_fopen(filename, "rb")) == NULL)
-        return FALSE;
     if (vfs_fread(tmp, 1, 4, file) != 4)
         goto done;
     if (!memcmp(tmp, "ID3", 3))
@@ -340,29 +337,45 @@ mpgdec_detect_by_content(char *filename)
     }
 
   done:
-    vfs_fclose(file);
     return ret;
 }
 
 static int
 is_our_file(char *filename)
 {
+    VFSFile *file;
     gchar *ext = strrchr(filename, '.');
+    gboolean ret = FALSE;
+
+    file = vfs_fopen(filename, "rb");
 
     if (CHECK_STREAM_URI(filename) &&
         (ext && strncasecmp(ext, ".ogg", 4)) &&
         (ext && strncasecmp(ext, ".flac", 5)))
-	return TRUE;
-    else if (mpgdec_detect_by_content(filename))
-        return TRUE;
-#if 0
-    else if (ext && (!strncasecmp(ext, ".mp3", 4)
-	|| !strncasecmp(ext, ".mp2", 4)
-	|| !strncasecmp(ext, ".mpg", 4)))
-        return TRUE;
-#endif
+	ret = TRUE;
+    else if (mpgdec_detect_by_content(file))
+        ret = TRUE;
 
-    return FALSE;
+    if (file != NULL)
+        vfs_fclose(file);
+
+    return ret;
+}
+
+static int
+is_our_fd(char *filename, VFSFile *file)
+{
+    gchar *ext = strrchr(filename, '.');
+    gboolean ret = FALSE;
+
+    if (CHECK_STREAM_URI(filename) &&
+        (ext && strncasecmp(ext, ".ogg", 4)) &&
+        (ext && strncasecmp(ext, ".flac", 5)))
+	ret = TRUE;
+    else if (mpgdec_detect_by_content(file))
+        ret = TRUE;
+
+    return ret;
 }
 
 static void
@@ -994,7 +1007,10 @@ InputPlugin mpgdec_ip = {
     get_song_info,
     mpgdec_file_info_box,       /* file_info_box */
     NULL,
-    get_song_tuple
+    get_song_tuple,
+    NULL,
+    NULL,
+    is_our_fd,
 };
 
 InputPlugin *
