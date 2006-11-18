@@ -86,34 +86,27 @@ static void alac_init(void)
 	/* empty */
 }
 
-gboolean is_our_file(char *filename)
+gboolean is_our_fd(char *filename, VFSFile* input_file)
 {
     demux_res_t demux_res;
-    VFSFile *input_file;
     stream_t *input_stream;
 
-    input_file = vfs_fopen(filename, "rb");
     input_stream = stream_create_file(input_file, 1);
 
     set_endian();
 
     if (!input_stream)
-    {
-	vfs_fclose(input_file);
         return FALSE;
-    }
         
     /* if qtmovie_read returns successfully, the stream is up to
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
     {
         stream_destroy(input_stream);
-	vfs_fclose(input_file);
         return FALSE;
     }
 
     stream_destroy(input_stream);
-    vfs_fclose(input_file);
 
     return TRUE;
 }
@@ -208,7 +201,7 @@ InputPlugin alac_ip = {
     alac_init,
     alac_about,
     NULL,
-    is_our_file,
+    NULL,
     NULL,
     play_file,
     stop,
@@ -226,7 +219,10 @@ InputPlugin alac_ip = {
     NULL,
     NULL,                       /* file_info_box */
     NULL,
-    build_tuple
+    build_tuple,
+    NULL,
+    NULL,
+    is_our_fd,
 };
 
 static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,

@@ -1,3 +1,10 @@
+2006-11-18 19:20:57 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [534]
+  Port to NewVFS probe function.
+  trunk/src/aac/src/libmp4.c |   46 +++++++++++++++++++--------------------------
+  1 file changed, 20 insertions(+), 26 deletions(-)
+
+
 2006-11-18 19:00:22 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [532]
   Port to NewVFS file probe.
