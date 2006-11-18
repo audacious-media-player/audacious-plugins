@@ -31,7 +31,7 @@ extern "C" {
 
 extern "C" InputPlugin * get_iplugin_info(void);
 static void wv_load_config();
-static int wv_is_our_file(char *);
+static int wv_is_our_fd(gchar *filename, VFSFile *file);
 static void wv_play(char *);
 static void wv_stop(void);
 static void wv_pause(short);
@@ -63,7 +63,7 @@ InputPlugin mod = {
     wv_load_config,
     wv_about_box,
     wv_configure,
-    wv_is_our_file,
+    NULL,			//old style is_our_file
     NULL,                       //no use
     wv_play,
     wv_stop,
@@ -82,6 +82,9 @@ InputPlugin mod = {
     wv_file_info_box,          //info box
     NULL,                       //output
     wv_get_song_tuple,
+    NULL,
+    NULL,
+    wv_is_our_fd,
 };
 
 int32_t read_bytes (void *id, void *data, int32_t bcount)
@@ -250,16 +253,12 @@ get_iplugin_info(void)
 }
 
 static int
-wv_is_our_file(char *filename)
+wv_is_our_fd(gchar *filename, VFSFile *file)
 {
-    char *ext;
-
-    ext = strrchr(filename, '.');
-    if (ext) {
-        if (!strcasecmp(ext, ".wv")) {
-            return TRUE;
-        }
-    }
+    gchar magic[4];
+    vfs_fread(magic,1,4,file);
+    if (!memcmp(magic,"wvpk",4))
+        return TRUE;
     return FALSE;
 }
 
@@ -317,7 +316,7 @@ DecodeThread(void *a)
     while (!killDecodeThread) {
         if (isSeek != -1) {
             DBG("seeking to position %d\n", isSeek);
-            WavpackSeekSample(d.ctx, isSeek * d.sample_rate);
+            WavpackSeekSample(d.ctx, (int)(isSeek * d.sample_rate));
             isSeek = -1;
         }
         if (paused == 0

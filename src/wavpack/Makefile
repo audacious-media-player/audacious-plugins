@@ -11,6 +11,8 @@ LIBADD = -L/usr/local/lib $(WAVPACK_LIBS)
 
 CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(WAVPACK_CFLAGS) -I../../intl -I../..
 
+LDFLAGS += -lstdc++
+
 OBJECTS = ${SOURCES:.cxx=.o}
 
 include ../../mk/objective.mk
