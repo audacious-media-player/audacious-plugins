@@ -64,14 +64,15 @@ wave_horizontal_exec_lines (const struct pn_actuator_option *opts,
   guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
   int *x_pos, *y_pos;	/* dynamic tables which store the positions for the line */
   int *x2_pos, *y2_pos;	/* dynamic tables which store the positions for the line */
-  int i, step;
+  int i;
+  float step;
 
   x_pos = g_new0(int, 257);
   y_pos = g_new0(int, 257);
   x2_pos = g_new0(int, 257);
   y2_pos = g_new0(int, 257);
 
-  step = pn_image_data->width / 256;
+  step = pn_image_data->width / 256.;
 
   /* calculate the line. */
   for (i = 0; i < 256; i++)
@@ -182,14 +183,15 @@ wave_vertical_exec_lines (const struct pn_actuator_option *opts,
   guchar value = (opts[1].val.ival < 0 || opts[1].val.ival > 255) ? 255 : opts[1].val.ival;
   int *x_pos, *y_pos;	/* dynamic tables which store the positions for the line */
   int *x2_pos, *y2_pos;	/* dynamic tables which store the positions for the line */
-  int i, step;
+  int i;
+  float step;
 
   x_pos = g_new0(int, 129);
   y_pos = g_new0(int, 129);
   x2_pos = g_new0(int, 129);
   y2_pos = g_new0(int, 129);
 
-  step = pn_image_data->height / 128;
+  step = pn_image_data->height / 128.;
 
   /* calculate the line. */
   for (i = 0; i < 128; i++)

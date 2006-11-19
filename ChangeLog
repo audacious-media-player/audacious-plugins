@@ -1,3 +1,13 @@
+2006-11-19 16:12:42 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [564]
+  - calculate FPS for frame limiter
+  - avoid math overflows when drawing lines
+  
+  trunk/src/paranormal/drawing.c |    2 +-
+  trunk/src/paranormal/plugin.c  |   14 ++++++++++++++
+  2 files changed, 15 insertions(+), 1 deletion(-)
+
+
 2006-11-19 15:36:02 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [562]
   gtk_file_selection_get_filename wanted a const char, but was afraid to ask.
