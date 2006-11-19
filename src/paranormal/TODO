@@ -1,0 +1,20 @@
+More immediate points:
+
+- swap surface
+- blend surface
+
+- xform_half
+  halfs the surface horizontally or vertically and doublerenders.
+
+- container_stepped
+  executes <step> amount of instructions.. step increases or decreases 
+  on beat
+
+- container_repeat
+  executes the child instructions <step> amount of times.. step 
+  increases or decreases on beat
+
+Paranormal v2 (?):
+
+- some sort of mathematical expression parser, scopes & such to use it
+ 
