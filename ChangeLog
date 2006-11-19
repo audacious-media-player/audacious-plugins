@@ -1,3 +1,11 @@
+2006-11-19 03:19:36 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [554]
+  - use VFS here
+  
+  trunk/src/wavpack/tags.cxx |   69 ++++++++++++++++++++++-----------------------
+  1 file changed, 35 insertions(+), 34 deletions(-)
+
+
 2006-11-19 03:00:23 +0000  William Pitcock <nenolod@nenolod.net>
   revision [552]
   - add missing vfs_fclose().

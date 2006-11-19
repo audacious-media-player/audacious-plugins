@@ -43,6 +43,7 @@ blit_to_screen (void)
 
   SDL_SetPalette (screen, SDL_LOGPAL|SDL_PHYSPAL,
 		  (SDL_Color*)pn_image_data->cmap, 0, 256);
+  SDL_SetAlpha (screen, 0, 255);
 
   for (j=0; j<pn_image_data->height; j++)
       memcpy (screen->pixels + j*screen->pitch,
