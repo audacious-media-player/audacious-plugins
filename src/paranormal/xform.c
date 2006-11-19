@@ -388,6 +388,8 @@ struct pn_actuator_option_desc xform_halfrender_opts[] =
 {
   { "direction", "Negative is horizontal, positive is vertical.", 
     OPT_TYPE_INT, { ival: 1 } },
+  { "render_twice", "Render the second image.",
+    OPT_TYPE_BOOLEAN, { bval: TRUE } },
   { NULL }
 };
 
@@ -405,8 +407,11 @@ xform_halfrender_exec (const struct pn_actuator_option *opts,
               {
                  pn_image_data->surface[1][PN_IMG_INDEX(x, y / 2)] =
                    pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
-                 pn_image_data->surface[1][PN_IMG_INDEX(x, (y / 2) + (pn_image_data->height / 2))] =
-                   pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+	         if (opts[1].val.bval)
+                   {
+                     pn_image_data->surface[1][PN_IMG_INDEX(x, (y / 2) + (pn_image_data->height / 2))] =
+                       pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+                   }
               }
          }
     }
@@ -418,8 +423,11 @@ xform_halfrender_exec (const struct pn_actuator_option *opts,
               {
                  pn_image_data->surface[1][PN_IMG_INDEX(x / 2, y)] =
                    pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
-                 pn_image_data->surface[1][PN_IMG_INDEX((x / 2) + (pn_image_data->width / 2), y)] =
-                   pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+                 if (opts[1].val.bval)
+                   {
+                     pn_image_data->surface[1][PN_IMG_INDEX((x / 2) + (pn_image_data->width / 2), y)] =
+                       pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+                   }
               }
          }
     }

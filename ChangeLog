@@ -1,3 +1,12 @@
+2006-11-19 20:38:53 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [576]
+  Another demo of the halfrender transform.
+  
+  trunk/src/paranormal/presets/Makefile                |    3 +
+  trunk/src/paranormal/presets/aerdan_-_telestatic.pnv |   30 +++++++++++++++++++
+  2 files changed, 32 insertions(+), 1 deletion(-)
+
+
 2006-11-19 20:06:20 +0000  William Pitcock <nenolod@nenolod.net>
   revision [574]
   - add halfrender transform, and a new preset which demonstrates what it can do.
