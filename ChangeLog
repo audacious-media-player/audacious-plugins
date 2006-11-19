@@ -1,3 +1,10 @@
+2006-11-19 15:36:02 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [562]
+  gtk_file_selection_get_filename wanted a const char, but was afraid to ask.
+  trunk/src/paranormal/cfg.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2006-11-19 05:02:55 +0000  William Pitcock <nenolod@nenolod.net>
   revision [560]
   - make sure the alphachannel is always full

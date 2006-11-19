@@ -28,7 +28,7 @@ pn_draw_line (guint _x0, guint _y0, guint _x1, guint _y1, guchar value)
       while (x0 != x1)
         {
           x0 += dx;
-          y0 = round(m * x0 + b);
+          y0 = m * x0 + b;
 
           pn_image_data->surface[0][PN_IMG_INDEX(x0, y0)] = value;
         }

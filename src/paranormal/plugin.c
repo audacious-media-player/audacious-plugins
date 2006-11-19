@@ -126,6 +126,9 @@ load_pn_rc (void)
 static int
 draw_thread_fn (gpointer data)
 {
+  gfloat fps = 0.0;
+  guint last_time = 0, last_second = 0;
+  guint this_time;
   pn_init ();
 
   /* Used when pn_quit is called from this thread */
@@ -151,6 +154,17 @@ draw_thread_fn (gpointer data)
       SDL_mutexP (config_mutex);
       pn_render ();
       SDL_mutexV (config_mutex);
+
+      /* Compute the FPS */
+      this_time = SDL_GetTicks ();
+
+      fps = fps * .95 + (1000. / (gfloat) (this_time - last_time)) * .05;
+      if (this_time > 2000 + last_second)
+        {
+          last_second = this_time;
+          g_print ("FPS: %f\n", fps);
+        }
+      last_time = this_time;
 
 #ifdef _POSIX_PRIORITY_SCHEDULING
       sched_yield();
