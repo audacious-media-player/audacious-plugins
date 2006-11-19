@@ -1,3 +1,11 @@
+2006-11-19 18:34:45 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [568]
+  - by constant request, add a TODO.
+  
+  trunk/src/paranormal/TODO |   20 ++++++++++++++++++++
+  1 file changed, 20 insertions(+)
+
+
 2006-11-19 16:23:35 +0000  William Pitcock <nenolod@nenolod.net>
   revision [566]
   - properly calculate points

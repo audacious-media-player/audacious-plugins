@@ -236,3 +236,17 @@ struct pn_actuator_desc builtin_general_replace =
   NULL, NULL, general_replace_exec
 };
 
+/* **************** general_swap **************** */
+static void
+general_swap_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  pn_swap_surfaces ();
+}
+
+struct pn_actuator_desc builtin_general_swap =
+{
+  "general_swap", "Swap Surface", "Swaps the surface.",
+  0, NULL,
+  NULL, NULL, general_swap_exec
+};
