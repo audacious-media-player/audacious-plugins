@@ -1,3 +1,10 @@
+2006-11-19 00:26:08 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [546]
+  So input.c wants to have the old-style function available...
+  trunk/src/alac/plugin.c |   34 +++++++++++++++++++++++++++++++++-
+  1 file changed, 33 insertions(+), 1 deletion(-)
+
+
 2006-11-19 00:21:15 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [544]
   So input.c wants to have the old-style function available...

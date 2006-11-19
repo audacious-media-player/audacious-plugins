@@ -36,6 +36,7 @@ static void	mp4_seek(int);
 static int	mp4_getTime(void);
 static void	mp4_cleanup(void);
 static int	mp4_IsOurFD(char *, VFSFile *);
+static int	mp4_IsOurFile(char *);
 static void	mp4_getSongTitle(char *filename, char **, int *);
 static void*	mp4Decode(void *);
 static TitleInput *mp4_get_song_tuple(char *);
@@ -51,7 +52,7 @@ InputPlugin mp4_ip =
     mp4_init,
     mp4_about,
     0,	// configuration
-    0,
+    mp4_IsOurFile,
     0,	//scandir
     mp4_play,
     mp4_stop,
@@ -150,6 +151,39 @@ static void mp4_stop(void)
     mp4_ip.output->close_audio();
     g_thread_join(decodeThread);
   }
+}
+
+static int	mp4_IsOurFile(char *filename)
+{
+  VFSFile *file;
+  gchar* extension;
+  gchar magic[8];
+ 
+  extension = strrchr(filename, '.');
+  if ((file = vfs_fopen(filename, "rb"))) {
+      vfs_fread(magic, 1, 8, file);
+      if (!memcmp(magic, AAC_MAGIC, 4)) {
+           vfs_fclose(file);
+           return 1;
+      }
+      if (!memcmp(magic, "ID3", 3)) {		// ID3 tag bolted to the front, obfuscated magic bytes
+           vfs_fclose(file);
+           if (extension &&(
+	      !strcasecmp(extension, ".mp4") ||	// official extension
+	      !strcasecmp(extension, ".m4a") ||	// Apple mp4 extension
+	      !strcasecmp(extension, ".aac")	// old MPEG2/4-AAC extension
+	   ))
+	      return 1;
+	   else
+	      return 0;
+      }
+      if (!memcmp(&magic[4], "ftyp", 4)) {
+           vfs_fclose(file);
+           return 1;
+      }
+      vfs_fclose(file);
+  }
+  return 0;
 }
 
 static int	mp4_IsOurFD(char *filename, VFSFile* file)
