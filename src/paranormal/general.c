@@ -266,3 +266,46 @@ struct pn_actuator_desc builtin_general_copy =
   0, NULL,
   NULL, NULL, general_copy_exec
 };
+
+/* **************** general_flip **************** */
+static struct pn_actuator_option_desc general_flip_opts[] =
+{
+  { "direction", "Negative is horizontal, positive is vertical.",
+    OPT_TYPE_INT, { ival: -1 } },
+  { NULL }
+};
+
+static void
+general_flip_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  gint x, y;
+
+  if (opts[0].val.ival < 0)
+    {
+      for (y = 0; y < pn_image_data->height; y++)
+        for (x = 0; x < pn_image_data->width; x++)
+          {
+             pn_image_data->surface[1][PN_IMG_INDEX(pn_image_data->width - x, y)] = 
+               pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+          }
+    }
+  else
+    {
+      for (y = 0; y < pn_image_data->height; y++)
+        for (x = 0; x < pn_image_data->width; x++)
+          {
+             pn_image_data->surface[1][PN_IMG_INDEX(x, pn_image_data->height - y)] = 
+               pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+          }
+    }
+
+    pn_swap_surfaces ();
+}
+
+struct pn_actuator_desc builtin_general_flip =
+{
+  "general_flip", "Flip Surface", "Flips the surface.",
+  0, general_flip_opts,
+  NULL, NULL, general_flip_exec
+};
