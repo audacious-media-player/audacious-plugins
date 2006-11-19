@@ -351,7 +351,7 @@ load_sel_cb (GtkButton *button, GtkFileSelection *selector)
 {
   if (selector)
     {
-      char *fname;
+      const char *fname;
       struct pn_actuator *a;
       GtkCTreeNode *root;
 
@@ -398,7 +398,7 @@ save_sel_cb (GtkButton *button, GtkFileSelection *selector)
 {
   if (selector)
     {
-      char *fname;
+      const char *fname;
       struct pn_actuator *a;
 
       fname = gtk_file_selection_get_filename (selector);
