@@ -20,6 +20,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_smoke.pnv:$(presetsdir)		\
 	nenolod_-_swarm.pnv:$(presetsdir)		\
 	nenolod_-_interlaced.pnv:$(presetsdir)		\
+	nenolod_-_cubism.pnv:$(presetsdir)		\
 	aerdan_-_bloody_vortex.pnv:${presetsdir}	\
 	aerdan_-_cloudscape.pnv:${presetsdir}		\
 	aerdan_-_cloudscape2.pnv:${presetsdir}		\

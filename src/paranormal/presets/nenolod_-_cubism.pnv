@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <color> 0, 0, 255 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <wave_horizontal>
+   <channels> -1 </channels>
+   <value> 250 </value>
+   <lines> TRUE </lines>
+  </wave_horizontal>
+  <xform_halfrender>
+   <direction> -1 </direction>
+   <render_twice> FALSE </render_twice>
+  </xform_halfrender>
+  <xform_halfrender>
+   <direction> 1 </direction>
+   <render_twice> FALSE </render_twice>
+  </xform_halfrender>
+  <xform_spin>
+   <angle> -4.00000 </angle>
+   <r_add> 0.00000 </r_add>
+   <r_scale> 0.90000 </r_scale>
+  </xform_spin>
+  <xform_spin>
+   <angle> 1.00000 </angle>
+   <r_add> 0.00000 </r_add>
+   <r_scale> -1.00000 </r_scale>
+  </xform_spin>
+  <container_cycle>
+   <change_interval> 0 </change_interval>
+   <beat> TRUE </beat>
+   <general_invert>
+   </general_invert>
+   <general_noop>
+   </general_noop>
+  </container_cycle>
+  <general_replace>
+   <start> 250 </start>
+   <end> 255 </end>
+   <out> 0 </out>
+  </general_replace>
+  <general_replace>
+   <start> 128 </start>
+   <end> 149 </end>
+   <out> 0 </out>
+  </general_replace>
+ </container_simple>
+</paranormal_preset>

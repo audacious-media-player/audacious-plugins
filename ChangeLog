@@ -1,3 +1,12 @@
+2006-11-19 22:35:54 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [580]
+  - another preset
+  
+  trunk/src/paranormal/presets/Makefile                 |    1 
+  trunk/src/paranormal/presets/nenolod_-_interlaced.pnv |   55 ++++++++++++++++++
+  2 files changed, 56 insertions(+)
+
+
 2006-11-19 22:11:07 +0000  William Pitcock <nenolod@nenolod.net>
   revision [578]
   - add an option to make it only render the downscaled image.
