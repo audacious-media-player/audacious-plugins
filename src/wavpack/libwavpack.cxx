@@ -31,6 +31,7 @@ extern "C" {
 
 extern "C" InputPlugin * get_iplugin_info(void);
 static void wv_load_config();
+static int wv_is_our_file(gchar *filename);
 static int wv_is_our_fd(gchar *filename, VFSFile *file);
 static void wv_play(char *);
 static void wv_stop(void);
@@ -63,7 +64,7 @@ InputPlugin mod = {
     wv_load_config,
     wv_about_box,
     wv_configure,
-    NULL,			//old style is_our_file
+    wv_is_our_file,		//old style is_our_file
     NULL,                       //no use
     wv_play,
     wv_stop,
@@ -79,7 +80,7 @@ InputPlugin mod = {
     NULL,
     NULL,
     wv_get_song_info,
-    wv_file_info_box,          //info box
+    wv_file_info_box,           //info box
     NULL,                       //output
     wv_get_song_tuple,
     NULL,
@@ -259,6 +260,23 @@ wv_is_our_fd(gchar *filename, VFSFile *file)
     vfs_fread(magic,1,4,file);
     if (!memcmp(magic,"wvpk",4))
         return TRUE;
+    return FALSE;
+}
+
+static int
+wv_is_our_file(gchar *filename)
+{
+    VFSFile *file = vfs_fopen(filename, "rb");
+    gchar magic[4];
+
+    if (!file)
+	return FALSE;
+
+    vfs_fread(magic,1,4,file);
+
+    if (!memcmp(magic,"wvpk",4))
+        return TRUE;
+
     return FALSE;
 }
 
