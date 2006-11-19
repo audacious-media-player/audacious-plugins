@@ -1,3 +1,10 @@
+2006-11-19 00:16:01 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [542]
+  So input.c wants to have the old-style function available...
+  trunk/src/sexypsf/xmms.c |   31 ++++++++++++++++++++++++++-----
+  1 file changed, 26 insertions(+), 5 deletions(-)
+
+
 2006-11-19 00:09:09 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [540]
   So input.c wants to have the old-style function available...
