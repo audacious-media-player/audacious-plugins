@@ -19,10 +19,11 @@ OBJECTIVE_DATA = \
 	nenolod_-_worms.pnv:$(presetsdir)		\
 	nenolod_-_smoke.pnv:$(presetsdir)		\
 	nenolod_-_swarm.pnv:$(presetsdir)		\
+	aerdan_-_bloody_vortex.pnv:${presetsdir}	\
 	aerdan_-_cloudscape.pnv:${presetsdir}		\
 	aerdan_-_cloudscape2.pnv:${presetsdir}		\
 	aerdan_-_dancing_snow.pnv:${presetsdir}		\
 	aerdan_-_portal_to_hell.pnv:${presetsdir}	\
-	aerdan_-_bloody_vortex.pnv:${presetsdir}
+	aerdan_-_telestatic.pnv:${presetsdir}
 
 include ../../../mk/objective.mk

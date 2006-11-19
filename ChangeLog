@@ -1,3 +1,14 @@
+2006-11-19 20:06:20 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [574]
+  - add halfrender transform, and a new preset which demonstrates what it can do.
+  
+  trunk/src/paranormal/builtins.c                                   |    2 
+  trunk/src/paranormal/presets/Makefile                             |    1 
+  trunk/src/paranormal/presets/nenolod_-_technicolour_nightmare.pnv |   72 ++++++++++
+  trunk/src/paranormal/xform.c                                      |   51 +++++++
+  4 files changed, 126 insertions(+)
+
+
 2006-11-19 19:27:16 +0000  William Pitcock <nenolod@nenolod.net>
   revision [572]
   - add copy surface
