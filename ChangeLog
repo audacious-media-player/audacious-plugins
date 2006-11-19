@@ -1,3 +1,11 @@
+2006-11-19 00:21:15 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [544]
+  So input.c wants to have the old-style function available...
+  trunk/src/musepack/libmpc.cxx |   19 +++++++++++++++++--
+  trunk/src/musepack/libmpc.h   |    3 ++-
+  2 files changed, 19 insertions(+), 3 deletions(-)
+
+
 2006-11-19 00:16:01 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [542]
   So input.c wants to have the old-style function available...
