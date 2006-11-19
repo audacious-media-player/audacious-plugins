@@ -383,3 +383,54 @@ struct pn_actuator_desc builtin_xform_bump_spin =
   xform_bump_spin_init, xform_bump_spin_cleanup, xform_bump_spin_exec
 };
 
+/* **************** xform_halfrender **************** */
+struct pn_actuator_option_desc xform_halfrender_opts[] =
+{
+  { "direction", "Negative is horizontal, positive is vertical.", 
+    OPT_TYPE_INT, { ival: 1 } },
+  { NULL }
+};
+
+static void
+xform_halfrender_exec (const struct pn_actuator_option *opts,
+		 gpointer data)
+{
+  gint x, y;
+
+  if (opts[0].val.ival < 0)
+    {
+       for (y = 0; y < pn_image_data->height; y += 2)
+         {
+            for (x = 0; x < pn_image_data->width; x++)
+              {
+                 pn_image_data->surface[1][PN_IMG_INDEX(x, y / 2)] =
+                   pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+                 pn_image_data->surface[1][PN_IMG_INDEX(x, (y / 2) + (pn_image_data->height / 2))] =
+                   pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+              }
+         }
+    }
+  else
+    {
+       for (y = 0; y < pn_image_data->height; y++)
+         {
+            for (x = 0; x < pn_image_data->width; x += 2)
+              {
+                 pn_image_data->surface[1][PN_IMG_INDEX(x / 2, y)] =
+                   pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+                 pn_image_data->surface[1][PN_IMG_INDEX((x / 2) + (pn_image_data->width / 2), y)] =
+                   pn_image_data->surface[0][PN_IMG_INDEX(x, y)];
+              }
+         }
+    }
+
+    pn_swap_surfaces ();
+}
+
+struct pn_actuator_desc builtin_xform_halfrender =
+{
+  "xform_halfrender", "Halfrender Transform",
+  "Divides the surface in half and renders it twice.",
+  0, xform_halfrender_opts,
+  NULL, NULL, xform_halfrender_exec
+};

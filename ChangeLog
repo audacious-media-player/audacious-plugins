@@ -1,3 +1,12 @@
+2006-11-19 19:27:16 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [572]
+  - add copy surface
+  
+  trunk/src/paranormal/builtins.c |    2 ++
+  trunk/src/paranormal/general.c  |   16 ++++++++++++++++
+  2 files changed, 18 insertions(+)
+
+
 2006-11-19 19:20:18 +0000  William Pitcock <nenolod@nenolod.net>
   revision [570]
   - add swap surface
