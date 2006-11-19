@@ -273,6 +273,7 @@ wv_is_our_file(gchar *filename)
 	return FALSE;
 
     vfs_fread(magic,1,4,file);
+    vfs_fclose(file);
 
     if (!memcmp(magic,"wvpk",4))
         return TRUE;

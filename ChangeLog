@@ -1,3 +1,11 @@
+2006-11-19 02:56:23 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [550]
+  - fix wavpack plugin
+  
+  trunk/src/wavpack/libwavpack.cxx |   22 ++++++++++++++++++++--
+  1 file changed, 20 insertions(+), 2 deletions(-)
+
+
 2006-11-19 00:29:50 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [548]
   So input.c wants to have the old-style function available...
