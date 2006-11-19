@@ -52,17 +52,38 @@ InputPlugin *get_iplugin_info(void)
          return &sexypsf_ip;
       }
 
-static int is_our_fd(gchar *filename, VFSFile *file) {
-	gchar magic[4];
-	
+static int is_our_file(gchar *filename) {
+	VFSFile *file;
+	gchar magic[4], *tmps;
 	// Filter out psflib [we use them, but we can't play them]
-	gchar *tmps;
 	static const gchar *teststr = "psflib";
 	if (strlen(teststr) < strlen(filename)) {
 		tmps = filename + strlen(filename);
 		tmps -= strlen(teststr);
 		if (!strcasecmp(tmps, teststr))
-		return 0;
+			return 0;
+	}
+	if ((file = vfs_fopen(filename,"rb"))) {
+		vfs_fread(magic,1,4,file);
+		//Only allow PSF1 for now.
+		if (!memcmp(magic,"PSF\x01",4)) {
+			vfs_fclose(file);
+			return 1;
+		}
+		vfs_fclose(file);
+	}
+	return 0;
+}
+
+static int is_our_fd(gchar *filename, VFSFile *file) {
+	gchar magic[4], *tmps;
+	// Filter out psflib [we use them, but we can't play them]
+	static const gchar *teststr = "psflib";
+	if (strlen(teststr) < strlen(filename)) {
+		tmps = filename + strlen(filename);
+		tmps -= strlen(teststr);
+		if (!strcasecmp(tmps, teststr))
+			return 0;
 	}
 	vfs_fread(magic,1,4,file);
 	//Only allow PSF1 for now.
@@ -264,7 +285,7 @@ InputPlugin sexypsf_ip =
 	0,
 	0,
 	0,
-	0,
+	is_our_file,
 	0,
 	sexypsf_xmms_play,
 	sexypsf_xmms_stop,
