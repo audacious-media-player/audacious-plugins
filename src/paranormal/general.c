@@ -250,3 +250,19 @@ struct pn_actuator_desc builtin_general_swap =
   0, NULL,
   NULL, NULL, general_swap_exec
 };
+
+/* **************** general_copy **************** */
+static void
+general_copy_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  memcpy(pn_image_data->surface[1], pn_image_data->surface[0], 
+         (pn_image_data->width * pn_image_data->height));
+}
+
+struct pn_actuator_desc builtin_general_copy =
+{
+  "general_copy", "Copy Surface", "Copies the surface to the other surface.",
+  0, NULL,
+  NULL, NULL, general_copy_exec
+};
