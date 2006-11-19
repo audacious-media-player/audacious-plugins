@@ -21,12 +21,14 @@
 #define XMMS_TIMIDITY_H
 
 #include <audacious/plugin.h>
+#include <audacious/vfs.h>
 
 extern InputPlugin xmmstimid_ip;
 
 static void xmmstimid_init(void);
 static void xmmstimid_about(void);
 static void xmmstimid_configure(void);
+static int xmmstimid_is_our_fd(char *filename, VFSFile *fp);
 static int xmmstimid_is_our_file(char *filename);
 static void xmmstimid_play_file(char *filename);
 static void xmmstimid_stop(void);

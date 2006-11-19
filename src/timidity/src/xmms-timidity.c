@@ -60,7 +60,11 @@ InputPlugin xmmstimid_ip = {
 	NULL,
 	xmmstimid_get_song_info,
 	NULL,
-	NULL
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	xmmstimid_is_our_fd,
 };
 
 static struct {
@@ -240,36 +244,57 @@ void xmmstimid_conf_ok(GtkButton *button, gpointer user_data) {
 
 static gint xmmstimid_is_our_file( gchar * filename )
 {
-    VFSFile * fp;
-    gchar magic_bytes[4];
+	VFSFile * fp;
+	gchar magic_bytes[4];
 
-    fp = vfs_fopen( filename , "rb" );
+	fp = vfs_fopen( filename , "rb" );
 
-    if (fp == NULL)
+ 	if (fp == NULL)
+		return FALSE;
+
+	vfs_fread( magic_bytes , 1 , 4 , fp );
+
+	if ( !memcmp( magic_bytes , "MThd" , 4 ) )
+	{
+		vfs_fclose( fp );
+		return TRUE;
+	}
+
+	if ( !memcmp( magic_bytes , "RIFF" , 4 ) )
+	{
+		/* skip the four bytes after RIFF,
+		   then read the next four */
+		vfs_fseek( fp , 4 , SEEK_CUR );
+		vfs_fread( magic_bytes , 1 , 4 , fp );
+		if ( !memcmp( magic_bytes , "RMID" , 4 ) )
+		{
+			vfs_fclose( fp );
+			return TRUE;
+		}
+	}
+	vfs_fclose( fp );
 	return FALSE;
+}
 
-    vfs_fread( magic_bytes , 1 , 4 , fp );
+static gint xmmstimid_is_our_fd( gchar * filename, VFSFile * fp )
+{
+	gchar magic_bytes[4];
 
-    if ( !strncmp( magic_bytes , "MThd" , 4 ) )
-    {
-      vfs_fclose( fp );
-      return TRUE;
-    }
+	vfs_fread( magic_bytes , 1 , 4 , fp );
 
-    if ( !strncmp( magic_bytes , "RIFF" , 4 ) )
-    {
-      /* skip the four bytes after RIFF,
-         then read the next four */
-      vfs_fseek( fp , 4 , SEEK_CUR );
-      vfs_fread( magic_bytes , 1 , 4 , fp );
-      if ( !strncmp( magic_bytes , "RMID" , 4 ) )
-      {
-        vfs_fclose( fp );
-        return TRUE;
-      }
-    }
-    vfs_fclose( fp );
-  return FALSE;
+	if ( !memcmp( magic_bytes , "MThd" , 4 ) )
+		return TRUE;
+
+	if ( !memcmp( magic_bytes , "RIFF" , 4 ) )
+	{
+	/* skip the four bytes after RIFF,
+	   then read the next four */
+	vfs_fseek( fp , 4 , SEEK_CUR );
+	vfs_fread( magic_bytes , 1 , 4 , fp );
+	if ( !memcmp( magic_bytes , "RMID" , 4 ) )
+		return TRUE;
+	}
+	return FALSE;
 }
 
 static void *xmmstimid_play_loop(void *arg) {
