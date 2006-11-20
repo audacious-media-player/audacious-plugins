@@ -1,3 +1,16 @@
+2006-11-20 06:54:10 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [586]
+  build fixes:
+  - now configure properly find flac 1.1.3beta2
+  - fix CXXFLAGS. it would lose audacious include path if --with-libFLAC was given.
+  - suppress gcc 4.1.1 compile warnings
+  
+  trunk/m4/libFLAC.m4        |    6 +++---
+  trunk/src/paranormal/cfg.c |    4 ++--
+  trunk/src/xspf/urlencode.c |    1 +
+  3 files changed, 6 insertions(+), 5 deletions(-)
+
+
 2006-11-19 23:37:28 +0000  William Pitcock <nenolod@nenolod.net>
   revision [584]
   - add surface flip
