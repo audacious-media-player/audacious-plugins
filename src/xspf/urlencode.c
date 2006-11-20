@@ -1,6 +1,7 @@
 /* the original code was taken from wget-1.10.2 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <glib.h>
 #include <ctype.h>

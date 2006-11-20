@@ -355,7 +355,7 @@ load_sel_cb (GtkButton *button, GtkFileSelection *selector)
       struct pn_actuator *a;
       GtkCTreeNode *root;
 
-      fname = gtk_file_selection_get_filename (selector);
+      fname = (char *) gtk_file_selection_get_filename (selector);
       a = load_preset (fname);
       if (! a)
 	pn_error ("Unable to load file: \"%s\"", fname);
@@ -401,7 +401,7 @@ save_sel_cb (GtkButton *button, GtkFileSelection *selector)
       const char *fname;
       struct pn_actuator *a;
 
-      fname = gtk_file_selection_get_filename (selector);
+      fname = (char *) gtk_file_selection_get_filename (selector);
       a = extract_actuator ();
 
       if (! save_preset (fname, a))

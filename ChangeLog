@@ -1,3 +1,12 @@
+2006-11-19 23:37:28 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [584]
+  - add surface flip
+  
+  trunk/src/paranormal/builtins.c |    2 +
+  trunk/src/paranormal/general.c  |   43 ++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 45 insertions(+)
+
+
 2006-11-19 22:54:33 +0000  William Pitcock <nenolod@nenolod.net>
   revision [582]
   - more presets

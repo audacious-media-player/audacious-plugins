@@ -22,12 +22,12 @@ AC_ARG_ENABLE(libFLACtest, [  --disable-libFLACtest   do not try to compile and 
     LIBFLAC_LIBS="-L$libdir"
   fi
 
-  LIBFLAC_LIBS="$LIBFLAC_LIBS -lFLAC -lm"
+  LIBFLAC_LIBS="$LIBFLAC_LIBS -lFLAC -logg -lm"
 
   if test "x$libFLAC_includes" != "x" ; then
-    LIBFLAC_CFLAGS="-I$libFLAC_includes"
+    LIBFLAC_CFLAGS="-I$prefix/include -I$libFLAC_includes"
   elif test "x$libFLAC_prefix" != "x" ; then
-    LIBFLAC_CFLAGS="-I$libFLAC_prefix/include"
+    LIBFLAC_CFLAGS="-I$prefix/include -I$libFLAC_prefix/include"
   elif test "$prefix" != "xNONE"; then
     LIBFLAC_CFLAGS="-I$prefix/include"
   fi
