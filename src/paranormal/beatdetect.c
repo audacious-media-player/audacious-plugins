@@ -1,15 +1,30 @@
 #include "paranormal.h"
 
+/*
+ * This algorithm is by Janusz Gregorcyzk, the implementation is
+ * mine, however.
+ *
+ *   -- nenolod
+ */
 int
 pn_is_new_beat(void)
 {
-  /* quantize the average energy of the pcm_data for beat detection. */
-  int fftsum =
-    ((pn_sound_data->pcm_data[0][0] + pn_sound_data->pcm_data[1][0]) >> 6);
+  gint i;
+  gint total = 0;
+  gboolean ret = FALSE;
+  static gint previous;
 
-  /*
-   * if the energy's quantization is within this, trigger as a detected
-   * beat, otherwise don't.
-   */
-  return (fftsum >= 300 && fftsum <= 600) ? 1 : 0;
+  for (i = 1; i < 512; i++)
+    {
+       total += abs (pn_sound_data->pcm_data[0][i] -
+		     pn_sound_data->pcm_data[0][i - 1]);
+    }
+
+  total /= 512;
+
+  ret = (total > (2 * previous));
+
+  previous = total;
+
+  return ret;
 }
