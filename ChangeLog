@@ -1,3 +1,24 @@
+2006-11-20 21:26:09 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [600]
+  - add libcalc from xvs and link to build
+  
+  trunk/src/paranormal/Makefile           |    4 
+  trunk/src/paranormal/libcalc/Makefile   |   19 
+  trunk/src/paranormal/libcalc/calc.h     |   30 
+  trunk/src/paranormal/libcalc/dict.c     |   99 ++
+  trunk/src/paranormal/libcalc/dict.h     |   46 +
+  trunk/src/paranormal/libcalc/execute.c  |  121 +++
+  trunk/src/paranormal/libcalc/execute.h  |   46 +
+  trunk/src/paranormal/libcalc/function.c |   81 ++
+  trunk/src/paranormal/libcalc/function.h |   32 
+  trunk/src/paranormal/libcalc/parser.c   | 1178 ++++++++++++++++++++++++++++++++
+  trunk/src/paranormal/libcalc/parser.h   |   40 +
+  trunk/src/paranormal/libcalc/parser.y   |  284 +++++++
+  trunk/src/paranormal/libcalc/storage.c  |   79 ++
+  trunk/src/paranormal/libcalc/storage.h  |   42 +
+  14 files changed, 2099 insertions(+), 2 deletions(-)
+
+
 2006-11-20 21:06:08 +0000  William Pitcock <nenolod@nenolod.net>
   revision [598]
   - pinch xvs's beat detection algorithm.

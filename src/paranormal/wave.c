@@ -10,6 +10,8 @@
 
 #include "drawing.h"
 
+#include "libcalc/calc.h"
+
 /* **************** wave_horizontal **************** */
 struct pn_actuator_option_desc wave_horizontal_opts[] =
 {
@@ -398,6 +400,29 @@ struct pn_actuator_desc builtin_wave_radial =
   0, wave_radial_opts,
   NULL, NULL, wave_radial_exec
 };
+#if 0
+/* **************** wave_scope **************** */
 
+static struct pn_actuator_option_desc wave_scope_opts[] =
+{
+  {"init_script", "Initialization script.", OPT_TYPE_STRING, {sval: "value=255; points=128;"} },
+  {"frame_script", "Script to run at the beginning of each frame.", OPT_TYPE_STRING, {sval: "x=0; y=0; step=width/points;"} },
+  {"sample_script", "Script to run for each sample.", OPT_TYPE_STRING, {sval: "y = value; x = x + step;"},
+  {"lines", "Use lines instead of dots.", OPT_TYPE_BOOLEAN, {bval: TRUE} },
+  { NULL }
+};
 
+struct pn_scope_data
+{
+  expression_t *expr_on_init, *expr_on_frame, *expr_on_sample;
+  symbol_dict_t *dict;
+};
 
+struct pn_actuator_desc builtin_wave_scope =
+{
+  "wave_scope", "Scope",
+  "A programmable scope.",
+  0, wave_scope_opts,
+  wave_scope_init, wave_scope_cleanup, wave_scope_exec
+};
+#endif
