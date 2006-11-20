@@ -3,11 +3,11 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libparanormal$(SHARED_SUFFIX)
 
-SUBDIRS = presets
+SUBDIRS = libcalc presets
 
 LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(XML_LIBS) $(SDL_LIBS)
+LIBADD = $(GTK_LIBS) $(XML_LIBS) $(SDL_LIBS) libcalc/libcalc.a
 
 SOURCES =			\
 	actuators.c		\

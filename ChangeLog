@@ -1,3 +1,11 @@
+2006-11-20 21:06:08 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [598]
+  - pinch xvs's beat detection algorithm.
+  
+  trunk/src/paranormal/beatdetect.c |   31 +++++++++++++++++++++++--------
+  1 file changed, 23 insertions(+), 8 deletions(-)
+
+
 2006-11-20 17:06:45 +0000  Derek Pomery <nemo@m8y.org>
   revision [594]
   typo
