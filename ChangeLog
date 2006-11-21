@@ -1,3 +1,11 @@
+2006-11-20 22:35:24 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [602]
+  - some base code for Scope, not yet enabled.
+  
+  trunk/src/paranormal/wave.c |   25 +++++++++++++++++++++++++
+  1 file changed, 25 insertions(+)
+
+
 2006-11-20 21:26:09 +0000  William Pitcock <nenolod@nenolod.net>
   revision [600]
   - add libcalc from xvs and link to build
