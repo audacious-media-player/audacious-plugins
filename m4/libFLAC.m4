@@ -24,12 +24,14 @@ AC_ARG_ENABLE(libFLACtest, [  --disable-libFLACtest   do not try to compile and 
 
   LIBFLAC_LIBS="$LIBFLAC_LIBS -lFLAC -logg -lm"
 
-  if test "x$libFLAC_includes" != "x" ; then
-    LIBFLAC_CFLAGS="-I$prefix/include -I$libFLAC_includes"
-  elif test "x$libFLAC_prefix" != "x" ; then
-    LIBFLAC_CFLAGS="-I$prefix/include -I$libFLAC_prefix/include"
-  elif test "x$prefix" != "xNONE"; then
+  if test "x$prefix" != "xNONE"; then
     LIBFLAC_CFLAGS="-I$prefix/include"
+  fi
+
+  if test "x$libFLAC_includes" != "x" ; then
+    LIBFLAC_CFLAGS="$LIBFLAC_CFLAGS -I$libFLAC_includes"
+  elif test "x$libFLAC_prefix" != "x" ; then
+    LIBFLAC_CFLAGS="$LIBFLAC_CFLAGS -I$libFLAC_prefix/include"
   fi
 
   AC_MSG_CHECKING(for libFLAC >= 1.1.2)

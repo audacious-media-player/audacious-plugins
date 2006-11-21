@@ -1,3 +1,11 @@
+2006-11-21 03:41:23 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [608]
+  - fix flac113 crashes at startup time.
+  
+  trunk/src/flac113/plugin.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-21 02:24:07 +0000  William Pitcock <nenolod@nenolod.net>
   revision [604]
   - wavpack/wputils.h is deprecated, wavpack/wavpack.h should be used instead.
