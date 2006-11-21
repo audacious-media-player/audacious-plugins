@@ -186,7 +186,7 @@ void FLAC_XMMS__init()
 {
 	ConfigDb *db;
 	FLAC__uint32 test = 1;
-	gchar *tmp;
+	gchar *tmp = NULL;
 
 	is_big_endian_host_ = (*((FLAC__byte*)(&test)))? false : true;
 

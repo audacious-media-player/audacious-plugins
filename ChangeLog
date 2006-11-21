@@ -1,3 +1,12 @@
+2006-11-21 02:24:07 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [604]
+  - wavpack/wputils.h is deprecated, wavpack/wavpack.h should be used instead.
+  
+  trunk/src/wavpack/libwavpack.cxx |    2 +-
+  trunk/src/wavpack/ui.cxx         |    2 +-
+  2 files changed, 2 insertions(+), 2 deletions(-)
+
+
 2006-11-20 22:35:24 +0000  William Pitcock <nenolod@nenolod.net>
   revision [602]
   - some base code for Scope, not yet enabled.
