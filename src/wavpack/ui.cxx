@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include <wavpack/wavpack.h>
 extern "C" {
+#include <wavpack/wavpack.h>
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
 #include <audacious/titlestring.h>

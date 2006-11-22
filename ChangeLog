@@ -1,3 +1,11 @@
+2006-11-22 22:52:47 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [636]
+  - hook up scope
+  
+  trunk/src/paranormal/builtins.c |    2 ++
+  1 file changed, 2 insertions(+)
+
+
 2006-11-22 22:52:05 +0000  William Pitcock <nenolod@nenolod.net>
   revision [634]
   - Scope implementation, not yet hooked up.
