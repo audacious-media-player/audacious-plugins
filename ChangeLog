@@ -1,3 +1,11 @@
+2006-11-22 06:09:05 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [614]
+  - add formal support for objective make overlays. this needs testing on BSD, but should work as I only used posix-compliant commands.
+  
+  trunk/mk/objective.mk |   43 +++++++++++++++++++++++++++++++++++++++----
+  1 file changed, 39 insertions(+), 4 deletions(-)
+
+
 2006-11-21 03:45:10 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [610]
   - revise CXXFLAGS fix.

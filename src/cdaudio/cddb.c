@@ -109,14 +109,17 @@ static gchar *
 cddb_generate_offset_string(cdda_disc_toc_t * info)
 {
     gchar *buffer;
+    gchar offset[8];
     int i;
 
     buffer = g_malloc(info->last_track * 7 + 1);
 
     sprintf(buffer, "%d", LBA(info->track[info->first_track]));
 
-    for (i = info->first_track + 1; i <= info->last_track; i++)
-        sprintf(buffer, "%s+%d", buffer, LBA(info->track[i]));
+    for (i = info->first_track + 1; i <= info->last_track; i++) {
+        sprintf(offset, "+%d", LBA(info->track[i]));
+        strcat(buffer, offset);
+    }
 
     return buffer;
 }
