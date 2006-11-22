@@ -10,12 +10,20 @@ install: build
 			$(INSTALL) -d -m 755 $(DESTDIR)/$$i; \
 		fi; \
 	done;
+	@if [ "x$(OVERLAYS)" != "x" ]; then \
+		for i in `find $(OVERLAYS) -type d -maxdepth 1 -mindepth 1`; do \
+			if [ $(VERBOSITY) -gt 0 ]; then \
+				echo "[installing overlay: $$i]"; \
+			fi; \
+			(pushd $$i > /dev/null; OVERLAYS="" $(MAKE) install || exit; cd ..); \
+		done; \
+	fi
 	@if [ "x$(SUBDIRS)" != "x" ]; then \
 		for i in $(SUBDIRS); do \
 			if [ $(VERBOSITY) -gt 0 ]; then \
 				echo "[installing subobjective: $$i]"; \
 			fi; \
-			(cd $$i; $(MAKE) install || exit; cd ..); \
+			(cd $$i; OVERLAYS="" $(MAKE) install || exit; cd ..); \
 		done; \
 	fi
 	@if [ "x$(OBJECTIVE_DIRECTORIES)" != "x" ]; then \
@@ -60,12 +68,20 @@ install: build
 
 clean:
 	$(MAKE) clean-prehook
+	@if [ "x$(OVERLAYS)" != "x" ]; then \
+		for i in `find $(OVERLAYS) -type d -maxdepth 1 -mindepth 1`; do \
+			if [ $(VERBOSITY) -gt 0 ]; then \
+				echo "[cleaning overlay: $$i]"; \
+			fi; \
+			(pushd $$i > /dev/null; OVERLAYS="" $(MAKE) clean || exit; popd); \
+		done; \
+	fi
 	@if [ "x$(SUBDIRS)" != "x" ]; then \
 		for i in $(SUBDIRS); do \
 			if [ $(VERBOSITY) -gt 0 ]; then \
 				echo "[cleaning subobjective: $$i]"; \
 			fi; \
-			(cd $$i; $(MAKE) clean || exit; cd ..); \
+			(cd $$i; OVERLAYS="" $(MAKE) clean || exit; cd ..); \
 		done; \
 	fi
 	$(MAKE) clean-posthook
@@ -90,12 +106,20 @@ clean:
 	fi
 
 distclean: clean
+	@if [ "x$(OVERLAYS)" != "x" ]; then \
+		for i in `find $(OVERLAYS) -type d -maxdepth 1 -mindepth 1`; do \
+			if [ $(VERBOSITY) -gt 0 ]; then \
+				echo "[distcleaning overlay: $$i]"; \
+			fi; \
+			(pushd $$i > /dev/null; OVERLAYS="" $(MAKE) distclean || exit; popd); \
+		done; \
+	fi
 	@if [ "x$(SUBDIRS)" != "x" ]; then \
 		for i in $(SUBDIRS); do \
 			if [ $(VERBOSITY) -gt 0 ]; then \
 				echo "[distcleaning subobjective: $$i]"; \
 			fi; \
-			(cd $$i; $(MAKE) distclean || exit; cd ..); \
+			(cd $$i; OVERLAYS="" $(MAKE) distclean || exit; cd ..); \
 		done; \
 	fi
 	@if [ -f Makefile.in ]; then \
@@ -107,12 +131,23 @@ distclean: clean
 
 build:
 	$(MAKE) build-prehook
+	@if [ "x$(OVERLAYS)" != "x" ]; then \
+		for i in `find $(OVERLAYS) -type d -maxdepth 1 -mindepth 1`; do \
+			if [ $(VERBOSITY) -gt 0 ]; then \
+				echo "[building overlay: $$i]"; \
+			fi; \
+			(pushd $$i > /dev/null; OVERLAYS="" $(MAKE) || exit; popd); \
+			if [ $(VERBOSITY) -gt 0 ]; then \
+				echo "[finished overlay: $$i]"; \
+			fi; \
+		done; \
+	fi
 	@if [ "x$(SUBDIRS)" != "x" ]; then \
 		for i in $(SUBDIRS); do \
 			if [ $(VERBOSITY) -gt 0 ]; then \
 				echo "[building subobjective: $$i]"; \
 			fi; \
-			cd $$i; $(MAKE) || exit; cd ..; \
+			(cd $$i; OVERLAYS="" $(MAKE) || exit; cd ..); \
 			if [ $(VERBOSITY) -gt 0 ]; then \
 				echo "[finished subobjective: $$i]"; \
 			fi; \
