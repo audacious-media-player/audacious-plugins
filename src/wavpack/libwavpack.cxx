@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <wavpack/wavpack.h>
 extern "C" {
+#include <wavpack/wavpack.h>
 #include <audacious/plugin.h>
 #include <audacious/output.h>
 #include <audacious/configdb.h>

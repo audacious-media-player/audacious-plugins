@@ -1,3 +1,24 @@
+2006-11-22 17:55:20 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [626]
+  - add TrueAudio plugin
+  
+  trunk/configure.ac          |   23 +
+  trunk/src/tta/Copying       |  459 ++++++++++++++++++++
+  trunk/src/tta/Makefile      |   16 
+  trunk/src/tta/Readme        |   72 +++
+  trunk/src/tta/aud-support.h |   24 +
+  trunk/src/tta/aud-tta.c     |  968 ++++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/tta/crc32.h       |  114 +++++
+  trunk/src/tta/filters.h     |  110 +++++
+  trunk/src/tta/id3.c         |   81 +++
+  trunk/src/tta/id3genre.h    |  155 +++++++
+  trunk/src/tta/ttadec.c      |  506 +++++++++++++++++++++++
+  trunk/src/tta/ttadec.h      |  136 ++++++
+  trunk/src/tta/ttaid3tag.h   |   95 ++++
+  trunk/src/tta/ttalib.h      |  142 ++++++
+  14 files changed, 2901 insertions(+)
+
+
 2006-11-22 17:53:40 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [624]
   - bump version to 1.3.0
