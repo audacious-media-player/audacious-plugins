@@ -1,3 +1,11 @@
+2006-11-22 22:13:24 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [630]
+  - make wavpack/wavpack.h include forced extern "C".
+  
+  trunk/src/wavpack/libwavpack.cxx |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2006-11-22 17:55:20 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [626]
   - add TrueAudio plugin

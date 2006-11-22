@@ -400,14 +400,14 @@ struct pn_actuator_desc builtin_wave_radial =
   0, wave_radial_opts,
   NULL, NULL, wave_radial_exec
 };
-#if 0
+
 /* **************** wave_scope **************** */
 
 static struct pn_actuator_option_desc wave_scope_opts[] =
 {
   {"init_script", "Initialization script.", OPT_TYPE_STRING, {sval: "value=255; points=128;"} },
   {"frame_script", "Script to run at the beginning of each frame.", OPT_TYPE_STRING, {sval: "x=0; y=0; step=width/points;"} },
-  {"sample_script", "Script to run for each sample.", OPT_TYPE_STRING, {sval: "y = value; x = x + step;"},
+  {"sample_script", "Script to run for each sample.", OPT_TYPE_STRING, {sval: "y = value; x = x + step;" }},
   {"lines", "Use lines instead of dots.", OPT_TYPE_BOOLEAN, {bval: TRUE} },
   { NULL }
 };
@@ -416,7 +416,104 @@ struct pn_scope_data
 {
   expression_t *expr_on_init, *expr_on_frame, *expr_on_sample;
   symbol_dict_t *dict;
+  gboolean reset;
 };
+
+static void
+wave_scope_init(gpointer *data)
+{
+  *data = g_new0(struct pn_scope_data, 1);
+
+  /* the expressions will need to be compiled, so prepare for that */
+  ((struct pn_scope_data *)*data)->reset = TRUE;
+}
+
+static void
+wave_scope_cleanup(gpointer op_data)
+{
+  struct pn_scope_data *data = (struct pn_scope_data *) op_data;
+
+  g_return_if_fail(data != NULL);
+
+  if (data->expr_on_init)
+    expr_free(data->expr_on_init);
+
+  if (data->expr_on_frame)
+    expr_free(data->expr_on_frame);
+
+  if (data->expr_on_sample)
+    expr_free(data->expr_on_sample);
+
+  if (data->dict)
+    dict_free(data->dict);
+
+  if (data)
+    g_free(data);
+}
+
+static void
+wave_scope_exec(const struct pn_actuator_option *opts,
+		gpointer op_data)
+{
+  struct pn_scope_data *data = (struct pn_scope_data *) op_data;
+  gint i;
+  gdouble *xf, *yf, *index, *value;
+
+  if (data->reset)
+    {
+       if (data->dict)
+         dict_free(data->dict);
+
+       data->dict = dict_new();
+
+       if (opts[0].val.sval != NULL)
+         data->expr_on_init = expr_compile_string(opts[0].val.sval, data->dict);
+
+       if (opts[1].val.sval != NULL)
+         data->expr_on_frame = expr_compile_string(opts[1].val.sval, 
+		data->dict);
+
+       if (opts[2].val.sval != NULL)
+         data->expr_on_sample = expr_compile_string(opts[2].val.sval, 
+		data->dict);
+
+       if (data->expr_on_init != NULL)
+         expr_execute(data->expr_on_init, data->dict);
+
+       data->reset = FALSE;
+    }
+
+  xf = dict_variable(data->dict, "x");
+  yf = dict_variable(data->dict, "y");
+  index = dict_variable(data->dict, "index");
+  value = dict_variable(data->dict, "value");
+
+  if (data->expr_on_frame != NULL)
+    expr_execute(data->expr_on_frame, data->dict);
+
+  if (data->expr_on_sample != NULL)
+    {
+       for (i = 0; i < 513; i++)
+          {
+             gint x, y;
+             static gint oldx, oldy;
+
+             *value = 1.0 * pn_sound_data->pcm_data[0][i & 511] / 32768.0;
+             *index = i / 512.0;
+
+             expr_execute(data->expr_on_sample, data->dict);
+
+             x = (gint)(((*xf + 1.0) * (pn_image_data->width - 1) / 2) + 0.5);
+             y = (gint)(((*yf + 1.0) * (pn_image_data->height - 1) / 2) + 0.5);
+
+             if (i != 0)
+               pn_draw_line(oldx, oldy, x, y, 255);
+
+             oldx = x;
+             oldy = y;
+          }
+    }
+}
 
 struct pn_actuator_desc builtin_wave_scope =
 {
@@ -425,4 +522,3 @@ struct pn_actuator_desc builtin_wave_scope =
   0, wave_scope_opts,
   wave_scope_init, wave_scope_cleanup, wave_scope_exec
 };
-#endif
