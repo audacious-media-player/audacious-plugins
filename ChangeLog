@@ -1,3 +1,11 @@
+2006-11-22 12:51:29 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [616]
+  - fix for buffer usage in cddb.c by Richard Chan <rspchan -at starhub.net.sg>
+  
+  trunk/src/cdaudio/cddb.c |    7 +++++--
+  1 file changed, 5 insertions(+), 2 deletions(-)
+
+
 2006-11-22 06:09:05 +0000  William Pitcock <nenolod@nenolod.net>
   revision [614]
   - add formal support for objective make overlays. this needs testing on BSD, but should work as I only used posix-compliant commands.

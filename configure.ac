@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [1.2.2], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [1.3.0], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -94,8 +94,8 @@ CONTAINER_PLUGINS="m3u pls"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.1.99],
-    [ADD_PC_REQUIRES([audacious >= 1.1.99])],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.2.99],
+    [ADD_PC_REQUIRES([audacious >= 1.2.99])],
     [AC_MSG_ERROR([Cannot find Audacious, have you installed audacious yet?])]
 )
 
