@@ -1,0 +1,16 @@
+include ../../mk/rules.mk
+include ../../mk/init.mk
+
+OBJECTIVE_LIBS = libtta.so
+
+LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+
+SOURCES = aud-tta.c id3.c ttadec.c
+
+OBJECTS = ${SOURCES:.c=.o}
+
+CFLAGS += -fPIC -DPIC $(GTK_CFLAGS) -I../../intl -I../..
+
+LIBADD = -lid3tag
+
+include ../../mk/objective.mk

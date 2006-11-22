@@ -993,6 +993,28 @@ if test "$have_xspf" = "yes"; then
 	AC_DEFINE(HAVE_XSPF_PLAYLIST, 1, [Define if XSPF playlists are available.])
 fi
 
+dnl *** TTA
+
+AC_ARG_ENABLE(tta,
+    [  --disable-tta           disable TrueAudio plugin (default=enabled) ],
+    [enable_tta=$enableval],
+    [enable_tta=yes]
+)
+
+if test "$enable_tta" = "yes"; then
+    AC_CHECK_HEADERS([id3tag.h], [enable_tta=yes], [enable_tta=no])
+    if test "$enable_tta" = "yes"; then
+        AC_CHECK_LIB([id3tag], [id3_file_open], [enable_tta=yes], [enable_tta=no])
+    fi
+else
+    AC_MSG_RESULT([*** TrueAudio plugin disabled per user request ***])
+    enable_tta=no
+fi
+
+if test "$enable_tta" = "yes"; then
+	INPUT_PLUGINS="$INPUT_PLUGINS tta"
+fi
+
 dnl *** End of all plugin checks ***
 
 AC_SUBST(ARCH_DEFINES)
@@ -1104,6 +1126,7 @@ echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Musepack support (musepack):            $enable_musepack"
+echo "  TrueAudio (tta):                        $enable_tta"
 echo
 echo "  General"
 echo "  -------"

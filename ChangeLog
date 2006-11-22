@@ -1,3 +1,11 @@
+2006-11-22 17:53:40 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [624]
+  - bump version to 1.3.0
+  
+  trunk/configure.ac |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2006-11-22 12:51:29 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [616]
   - fix for buffer usage in cddb.c by Richard Chan <rspchan -at starhub.net.sg>
