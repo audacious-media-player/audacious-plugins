@@ -1,3 +1,11 @@
+2006-11-22 22:52:05 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [634]
+  - Scope implementation, not yet hooked up.
+  
+  trunk/src/paranormal/wave.c |  102 ++++++++++++++++++++++++++++++++++++++++++--
+  1 file changed, 99 insertions(+), 3 deletions(-)
+
+
 2006-11-22 22:13:24 +0000  William Pitcock <nenolod@nenolod.net>
   revision [630]
   - make wavpack/wavpack.h include forced extern "C".

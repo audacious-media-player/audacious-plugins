@@ -43,6 +43,7 @@ DECLARE_ACTUATOR (wave_vertical);
 DECLARE_ACTUATOR (wave_normalize);
 DECLARE_ACTUATOR (wave_smooth);
 DECLARE_ACTUATOR (wave_radial);
+DECLARE_ACTUATOR (wave_scope);
 
 /* **************** xform **************** */
 DECLARE_ACTUATOR (xform_spin);
@@ -84,6 +85,7 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_wave_normalize,
   &builtin_wave_smooth,
   &builtin_wave_radial,
+  &builtin_wave_scope,
   /* **************** xform **************** */
   &builtin_xform_spin,
   &builtin_xform_ripple,
