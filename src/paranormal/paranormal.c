@@ -30,6 +30,8 @@ struct pn_sound_data *pn_sound_data;
 float sin_val[360];
 float cos_val[360];
 
+gboolean pn_new_beat;
+
 /* **************** drawing doodads **************** */
 
 static void
@@ -196,6 +198,8 @@ pn_render (void)
 	  break;
 	}
     }
+
+  pn_new_beat = pn_is_new_beat();
 
   if (pn_rc->actuator)
     {

@@ -175,12 +175,11 @@ container_cycle_exec (const struct pn_actuator_option *opts,
 {
   struct container_cycle_data *cdata = (struct container_cycle_data*)data;
   int now;
-  int new_beat = pn_is_new_beat();
 
   /*
    * Change branch if all of the requirements are met for the branch to change.
    */
-  if ((opts[1].val.bval == TRUE && new_beat != 0) || opts[1].val.bval == FALSE)
+  if ((opts[1].val.bval == TRUE && pn_new_beat != FAlSE) || opts[1].val.bval == FALSE)
     {
        now = SDL_GetTicks();	
 
@@ -232,7 +231,7 @@ container_onbeat_exec (const struct pn_actuator_option *opts,
 {
   GSList *child;
 
-  if (pn_is_new_beat() == TRUE)
+  if (pn_new_beat == TRUE)
     {
       for (child = *data; child; child = child->next)
         exec_actuator ((struct pn_actuator *) child->data);

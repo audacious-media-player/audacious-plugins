@@ -46,6 +46,8 @@ extern struct pn_rc         *pn_rc;
 extern struct pn_sound_data *pn_sound_data;
 extern struct pn_image_data *pn_image_data;
 
+extern gboolean pn_new_beat;
+
 /* global trig pre-computes */
 extern float sin_val[360];
 extern float cos_val[360];

@@ -88,7 +88,7 @@ misc_floater_exec(const struct pn_actuator_option *opts, gpointer data)
     }
 
   /* check if we need to change direction yet, and if so, do so. */
-  if (pn_is_new_beat() == TRUE)
+  if (pn_new_beat == TRUE)
     opaque_data->dir = (FloaterDirection) rand() % 15; /* sum of all dir values */
 
   /* now adjust the direction so we stay in boundary */
