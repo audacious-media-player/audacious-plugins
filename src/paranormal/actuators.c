@@ -45,6 +45,8 @@ copy_actuator (const struct pn_actuator *a)
 		      sizeof (union actuator_option_val));
 	      break;
 	    case OPT_TYPE_STRING:
+              actuator->options[i].val.sval = g_strdup(a->options[i].val.sval);
+              break;
 	    default:
 	      break;
 	    }
