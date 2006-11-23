@@ -457,7 +457,7 @@ wave_scope_exec(const struct pn_actuator_option *opts,
 {
   struct pn_scope_data *data = (struct pn_scope_data *) op_data;
   gint i;
-  gdouble *xf, *yf, *index, *value;
+  gdouble *xf, *yf, *index, *value, *points;
 
   if (data->reset)
     {
@@ -487,19 +487,23 @@ wave_scope_exec(const struct pn_actuator_option *opts,
   yf = dict_variable(data->dict, "y");
   index = dict_variable(data->dict, "index");
   value = dict_variable(data->dict, "value");
+  points = dict_variable(data->dict, "points");
 
   if (data->expr_on_frame != NULL)
     expr_execute(data->expr_on_frame, data->dict);
 
+  if (*points > 513 || *points == 0)
+      *points = 513;
+
   if (data->expr_on_sample != NULL)
     {
-       for (i = 0; i < 513; i++)
+       for (i = 0; i < *points; i++)
           {
              gint x, y;
              static gint oldx, oldy;
 
              *value = 1.0 * pn_sound_data->pcm_data[0][i & 511] / 32768.0;
-             *index = i / 512.0;
+             *index = i / (*points - 1);
 
              expr_execute(data->expr_on_sample, data->dict);
 
