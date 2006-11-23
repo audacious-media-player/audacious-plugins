@@ -1,3 +1,11 @@
+2006-11-23 05:57:19 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [650]
+  - make linedrawing code support offscreen surfaces more robustly.
+  
+  trunk/src/paranormal/drawing.c |    6 ++++++
+  1 file changed, 6 insertions(+)
+
+
 2006-11-23 05:44:54 +0000  William Pitcock <nenolod@nenolod.net>
   revision [648]
   - better default values for Scope.

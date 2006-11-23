@@ -17,6 +17,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_value_replace_fun.pnv:$(presetsdir)	\
 	nenolod_-_rush.pnv:$(presetsdir)		\
 	nenolod_-_worms.pnv:$(presetsdir)		\
+	nenolod_-_scopefun.pnv:$(presetsdir)		\
 	nenolod_-_smoke.pnv:$(presetsdir)		\
 	nenolod_-_swarm.pnv:$(presetsdir)		\
 	nenolod_-_interlaced.pnv:$(presetsdir)		\
