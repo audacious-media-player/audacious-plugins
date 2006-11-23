@@ -2,9 +2,6 @@ More immediate points:
 
 - blend surface
 
-- xform_half
-  halfs the surface horizontally or vertically and doublerenders.
-
 - container_stepped
   executes <step> amount of instructions.. step increases or decreases 
   on beat
@@ -13,7 +10,4 @@ More immediate points:
   executes the child instructions <step> amount of times.. step 
   increases or decreases on beat
 
-Paranormal v2 (?):
-
-- some sort of mathematical expression parser, scopes & such to use it
  
