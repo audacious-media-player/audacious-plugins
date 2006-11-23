@@ -405,9 +405,9 @@ struct pn_actuator_desc builtin_wave_radial =
 
 static struct pn_actuator_option_desc wave_scope_opts[] =
 {
-  {"init_script", "Initialization script.", OPT_TYPE_STRING, {sval: "value=255; points=128;"} },
-  {"frame_script", "Script to run at the beginning of each frame.", OPT_TYPE_STRING, {sval: "x=0; y=0; step=width/points;"} },
-  {"sample_script", "Script to run for each sample.", OPT_TYPE_STRING, {sval: "y = value; x = x + step;" }},
+  {"init_script", "Initialization script.", OPT_TYPE_STRING, {sval: "n = 800; t = -0.05;"} },
+  {"frame_script", "Script to run at the beginning of each frame.", OPT_TYPE_STRING, {sval: "t = t + 0.05;"} },
+  {"sample_script", "Script to run for each sample.", OPT_TYPE_STRING, {sval: "d = index + value; r = t + index * 3.141952924 * 4; x = cos(r) * d; y = sin(r) * d;"} },
   {"lines", "Use lines instead of dots.", OPT_TYPE_BOOLEAN, {bval: TRUE} },
   { NULL }
 };
