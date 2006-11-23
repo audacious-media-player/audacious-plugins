@@ -1,3 +1,12 @@
+2006-11-23 06:25:50 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [652]
+  - add a demo preset for the new programmable scope.
+  
+  trunk/src/paranormal/presets/Makefile               |    1 
+  trunk/src/paranormal/presets/nenolod_-_scopefun.pnv |   26 ++++++++++++++++++++
+  2 files changed, 27 insertions(+)
+
+
 2006-11-23 05:57:19 +0000  William Pitcock <nenolod@nenolod.net>
   revision [650]
   - make linedrawing code support offscreen surfaces more robustly.
