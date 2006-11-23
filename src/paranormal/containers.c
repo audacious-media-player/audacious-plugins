@@ -179,7 +179,7 @@ container_cycle_exec (const struct pn_actuator_option *opts,
   /*
    * Change branch if all of the requirements are met for the branch to change.
    */
-  if ((opts[1].val.bval == TRUE && pn_new_beat != FAlSE) || opts[1].val.bval == FALSE)
+  if ((opts[1].val.bval == TRUE && pn_new_beat != FALSE) || opts[1].val.bval == FALSE)
     {
        now = SDL_GetTicks();	
 
