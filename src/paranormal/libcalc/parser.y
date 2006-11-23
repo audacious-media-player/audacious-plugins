@@ -19,6 +19,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
  */
 
+/* suppress conflict warnings */
+%expect 37
+
 /* C declarations. */
 %{
 #include <ctype.h>
@@ -266,7 +269,7 @@ expression_t *expr_compile_string (const char* str, symbol_dict_t *dict) {
   parser_control pc;
   FILE *stream;
 
-  stream = fmemopen (str, strlen (str), "r");
+  stream = (FILE *) fmemopen ( (char *) str, strlen (str), "r");
 
   pc.input = stream;
   pc.expr = expr_new ();
