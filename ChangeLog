@@ -1,3 +1,13 @@
+2006-11-23 08:02:25 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [662]
+  - add pn_draw_dot() and convert some functions to use that instead of redundant checks all over the code.
+  
+  trunk/src/paranormal/drawing.c |   19 +++++++++++--------
+  trunk/src/paranormal/drawing.h |    1 +
+  trunk/src/paranormal/wave.c    |   10 +++++++---
+  3 files changed, 19 insertions(+), 11 deletions(-)
+
+
 2006-11-23 07:00:31 +0000  William Pitcock <nenolod@nenolod.net>
   revision [660]
   - damn shift key

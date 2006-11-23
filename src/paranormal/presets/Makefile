@@ -28,6 +28,7 @@ OBJECTIVE_DATA = \
 	aerdan_-_cloudscape2.pnv:${presetsdir}		\
 	aerdan_-_dancing_snow.pnv:${presetsdir}		\
 	aerdan_-_portal_to_hell.pnv:${presetsdir}	\
-	aerdan_-_telestatic.pnv:${presetsdir}
+	aerdan_-_telestatic.pnv:${presetsdir}		\
+	ticpu_-_colored_beat-o-scope.pnv:$(presetsdir)
 
 include ../../../mk/objective.mk
