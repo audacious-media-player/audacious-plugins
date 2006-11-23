@@ -1,3 +1,11 @@
+2006-11-23 05:44:54 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [648]
+  - better default values for Scope.
+  
+  trunk/src/paranormal/wave.c |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2006-11-23 05:30:18 +0000  William Pitcock <nenolod@nenolod.net>
   revision [646]
   - fix handling of strings

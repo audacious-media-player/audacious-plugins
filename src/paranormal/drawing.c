@@ -17,6 +17,9 @@ pn_draw_line (guint _x0, guint _y0, guint _x1, guint _y1, guchar value)
   gint dx = x1 - x0;
   gint dy = y1 - y0;
 
+  if (x0 > pn_image_data->width || x0 < 0 || y0 > pn_image_data->height || y0 < 0)
+     return;
+
   pn_image_data->surface[0][PN_IMG_INDEX(x0, y0)] = value;
 
   if (dx != 0)
@@ -29,6 +32,9 @@ pn_draw_line (guint _x0, guint _y0, guint _x1, guint _y1, guchar value)
         {
           x0 += dx;
           y0 = m * x0 + b;
+
+          if (x0 > pn_image_data->width || x0 < 0 || y0 > pn_image_data->height || y0 < 0)
+            continue;
 
           pn_image_data->surface[0][PN_IMG_INDEX(x0, y0)] = value;
         }
