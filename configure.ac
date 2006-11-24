@@ -90,7 +90,7 @@ OUTPUT_PLUGINS="disk_writer"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
-CONTAINER_PLUGINS="m3u pls"
+CONTAINER_PLUGINS="m3u pls stdio"
 
 dnl Check for Audacious
 

@@ -1,3 +1,12 @@
+2006-11-23 08:28:10 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [664]
+  - add a preset by ticpu
+  
+  trunk/src/paranormal/presets/Makefile                         |    3 
+  trunk/src/paranormal/presets/ticpu_-_colored_beat-o-scope.pnv |   86 ++++++++++
+  2 files changed, 88 insertions(+), 1 deletion(-)
+
+
 2006-11-23 08:02:25 +0000  William Pitcock <nenolod@nenolod.net>
   revision [662]
   - add pn_draw_dot() and convert some functions to use that instead of redundant checks all over the code.
