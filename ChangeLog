@@ -1,3 +1,13 @@
+2006-11-24 04:20:01 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [668]
+  - pluginize the transport layer.
+  
+  trunk/configure.ac       |    2 
+  trunk/src/stdio/Makefile |   19 ++++
+  trunk/src/stdio/stdio.c  |  203 +++++++++++++++++++++++++++++++++++++++++++++++
+  3 files changed, 223 insertions(+), 1 deletion(-)
+
+
 2006-11-23 08:28:10 +0000  William Pitcock <nenolod@nenolod.net>
   revision [664]
   - add a preset by ticpu
