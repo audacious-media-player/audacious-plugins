@@ -283,6 +283,7 @@ static void play_cue_uri(gchar *uri)
         gchar *_path = strchr(path2, '?');
 	gint file_length = 0;
 	gint track = 0;
+	gchar *dummy = NULL;
 
         if (_path != NULL && *_path == '?')
         {
@@ -304,7 +305,8 @@ static void play_cue_uri(gchar *uri)
 		real_ip->output = cue_ip.output;
 		real_ip->play_file(cue_file);
 		real_ip->seek(finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
-		real_ip->get_song_info(cue_file, NULL, &file_length);
+		real_ip->get_song_info(cue_file, &dummy, &file_length); // in some plugins, NULL as 2nd arg caauses crash.
+		g_free(dummy);
 		cue_tracks[last_cue_track].index = file_length;
 	}
 
