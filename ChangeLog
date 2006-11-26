@@ -1,3 +1,11 @@
+2006-11-26 03:48:27 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [672]
+  - cuesheet plugin improvements via hiro @ audacious boards
+  
+  trunk/src/cue/cuesheet.c |   49 +++++++++++++++++++++++------------------------
+  1 file changed, 25 insertions(+), 24 deletions(-)
+
+
 2006-11-24 11:27:57 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [670]
   Path saving functionality by TiCPU on #audacious. Whitespace fixed, again.

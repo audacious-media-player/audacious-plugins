@@ -281,6 +281,7 @@ static void play_cue_uri(gchar *uri)
 {
         gchar *path2 = g_strdup(uri + 6);
         gchar *_path = strchr(path2, '?');
+	gint file_length = 0;
 	gint track = 0;
 
         if (_path != NULL && *_path == '?')
