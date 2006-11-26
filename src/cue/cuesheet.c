@@ -23,6 +23,7 @@
 #include <audacious/output.h>
 #include <audacious/playlist.h>
 #include <audacious/vfs.h>
+#include <audacious/util.h>
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000
@@ -126,7 +127,10 @@ static int is_our_file(gchar *filename)
 
 static gint get_time(void)
 {
-	return cue_ip.output->output_time();
+	if (real_ip)
+		return real_ip->get_time();
+
+	return -1;
 }
 
 static void play(gchar *uri)
@@ -164,6 +168,8 @@ static TitleInput *get_tuple_uri(gchar *uri)
         gchar *path2 = g_strdup(uri + 6);
         gchar *_path = strchr(path2, '?');
 	gint track = 0;
+	gint file_length = 0;
+
 	InputPlugin *dec;
 	TitleInput *phys_tuple, *out;
 
@@ -184,7 +190,10 @@ static TitleInput *get_tuple_uri(gchar *uri)
 	if (dec == NULL)
 		return NULL;
 
-	phys_tuple = dec->get_song_tuple(cue_file);
+	if (dec->get_song_tuple)
+		phys_tuple = dec->get_song_tuple(cue_file);
+	else
+		phys_tuple = input_get_song_tuple(cue_file);
 
 	out = bmp_title_input_new();
 
@@ -294,6 +303,8 @@ static void play_cue_uri(gchar *uri)
 		real_ip->output = cue_ip.output;
 		real_ip->play_file(cue_file);
 		real_ip->seek(finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
+		real_ip->get_song_info(cue_file, NULL, &file_length);
+		cue_tracks[last_cue_track].index = file_length;
 	}
 
 	finetune_seek = 0;
@@ -330,6 +341,9 @@ static gint watchdog_func(gpointer unused)
 {
 	gint time = get_output_time();
 	gboolean dir = FALSE;
+
+	if (time == -1)
+		time = G_MAXINT;
 
 	while (time < cue_tracks[cur_cue_track].index)
 	{
@@ -399,17 +413,11 @@ static void cache_cue_file(char *f)
 
 		if (strcasecmp(line+p, "PERFORMER") == 0) {
 			fix_cue_argument(line+q);
-			if (last_cue_track == 0) {
-				if (!g_utf8_validate(line + q, -1, NULL)) {
-					cue_performer = g_locale_to_utf8 (line + q, -1, NULL, NULL, NULL);
-				} else
-					cue_performer = g_strdup(line+q);
-			} else {
-				if (!g_utf8_validate(line + q, -1, NULL)) {
-					cue_tracks[last_cue_track-1].performer = g_locale_to_utf8 (line + q, -1, NULL, NULL, NULL);
-				} else
-					cue_tracks[last_cue_track-1].performer = g_strdup(line+q);
-			}
+
+			if (last_cue_track == 0)
+				cue_performer = str_to_utf8(line + q);
+			else
+				cue_tracks[last_cue_track - 1].performer = str_to_utf8(line + q);
 		}
 		else if (strcasecmp(line+p, "FILE") == 0) {
 			gchar *tmp = g_path_get_dirname(f);
@@ -419,17 +427,10 @@ static void cache_cue_file(char *f)
 		}
 		else if (strcasecmp(line+p, "TITLE") == 0) {
 			fix_cue_argument(line+q);
-			if (last_cue_track == 0) {
-				if (!g_utf8_validate(line + q, -1, NULL)) {
-					cue_title = g_locale_to_utf8 (line + q, -1, NULL, NULL, NULL);
-				} else
-					cue_title = g_strdup(line+q);
-			} else {
-				if (!g_utf8_validate(line + q, -1, NULL)) {
-					cue_tracks[last_cue_track-1].title = g_locale_to_utf8 (line + q, -1, NULL, NULL, NULL);
-				} else
-					cue_tracks[last_cue_track-1].title = g_strdup(line+q);
-			}
+			if (last_cue_track == 0)
+				cue_title = str_to_utf8(line + q);
+			else
+				cue_tracks[last_cue_track-1].title = str_to_utf8(line + q);
 		}
 		else if (strcasecmp(line+p, "TRACK") == 0) {
 			gint track;

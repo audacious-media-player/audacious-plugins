@@ -1,3 +1,10 @@
+2006-11-24 11:27:57 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [670]
+  Path saving functionality by TiCPU on #audacious. Whitespace fixed, again.
+  trunk/src/paranormal/cfg.c |   14 +++++++++++++-
+  1 file changed, 13 insertions(+), 1 deletion(-)
+
+
 2006-11-24 04:20:01 +0000  William Pitcock <nenolod@nenolod.net>
   revision [668]
   - pluginize the transport layer.
