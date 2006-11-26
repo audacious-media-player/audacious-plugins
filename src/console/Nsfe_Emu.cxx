@@ -109,7 +109,6 @@ struct nsfe_info_t {
 	unsigned char track_count;
 	unsigned char first_track;
 };
-BOOST_STATIC_ASSERT( sizeof (nsfe_info_t) == 10 );
 
 blargg_err_t Nsfe_Info::load( const header_t& nsfe_tag, Emu_Reader& in, Nsf_Emu* nsf_emu )
 {
