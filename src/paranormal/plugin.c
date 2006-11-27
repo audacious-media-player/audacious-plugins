@@ -199,7 +199,8 @@ static void
 pn_xmms_init (void)
 {
   /* If it isn't already loaded, load the run control */
-  load_pn_rc ();
+  if (! pn_rc)
+	  load_pn_rc ();
 
   sound_data_mutex = SDL_CreateMutex ();
   config_mutex = SDL_CreateMutex ();
@@ -293,6 +294,9 @@ pn_xmms_configure (void)
   if (config_mutex)
     SDL_mutexP (config_mutex);
 
+  if (! pn_rc)
+	  load_pn_rc ();
+
   pn_configure ();
 
   if (config_mutex)
@@ -324,6 +328,9 @@ pn_set_rc (struct pn_rc *new_rc)
 {
   if (config_mutex)
     SDL_mutexP (config_mutex);
+
+  if (! pn_rc)
+    load_pn_rc ();
 
   if (pn_rc->actuator)
     destroy_actuator (pn_rc->actuator);

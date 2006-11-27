@@ -1,3 +1,11 @@
+2006-11-26 19:45:22 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [678]
+  - fix debian BTFS on arm
+  
+  trunk/src/console/Nsfe_Emu.cxx |    1 -
+  1 file changed, 1 deletion(-)
+
+
 2006-11-26 08:50:00 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [676]
   - get_song_info() in some plugins, typically wav, would crash with NULL argument.
