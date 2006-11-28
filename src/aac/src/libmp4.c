@@ -537,6 +537,11 @@ static int my_decode_mp4( char *filename, mp4ff_t *mp4file )
 				buffer=NULL;
 				bufferSize=0;
 			}
+			if (buffer_playing == FALSE)
+			{
+				mp4_ip.output->close_audio();
+				return FALSE;
+			}
 			produce_audio(mp4_ip.output->written_time(),
 					   FMT_S16_NE,
 					   channels,

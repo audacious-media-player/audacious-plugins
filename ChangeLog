@@ -1,3 +1,11 @@
+2006-11-27 03:47:44 +0000  Jerome Poulin <ticpu@ticpu.net>
+  revision [680]
+  Allow modyfing configuration before loading Paranormal, without crashing.
+  
+  trunk/src/paranormal/plugin.c |    9 ++++++++-
+  1 file changed, 8 insertions(+), 1 deletion(-)
+
+
 2006-11-26 19:45:22 +0000  William Pitcock <nenolod@nenolod.net>
   revision [678]
   - fix debian BTFS on arm
