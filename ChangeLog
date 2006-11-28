@@ -1,3 +1,11 @@
+2006-11-28 02:10:41 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [682]
+  - be more robust
+  
+  trunk/src/aac/src/libmp4.c |    5 +++++
+  1 file changed, 5 insertions(+)
+
+
 2006-11-27 03:47:44 +0000  Jerome Poulin <ticpu@ticpu.net>
   revision [680]
   Allow modyfing configuration before loading Paranormal, without crashing.

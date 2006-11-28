@@ -863,7 +863,7 @@ then
         *-*-freebsd*)
             AC_DEFINE(BEEP_CDROM_BSD,, [Define if cdrom access is in BSD style])
         ;;
-        *-*-netbsd* | *-*-openbsd*)
+        *-*-netbsd* | *-*-openbsd* | *-*-mirbsd*)
             AC_DEFINE(BEEP_CDROM_BSD,, [Define if cdrom access is in BSD style])
             AC_DEFINE(BEEP_CDROM_BSD_NETBSD,, [Define if cdrom access uses NetBSD variant])
         ;;
@@ -896,7 +896,7 @@ have_solaris=no
 have_sun=no
 ARCH_DEFINES=""
 case "$host" in
-    *-*-openbsd* | *-*-netbsd*)
+    *-*-openbsd* | *-*-netbsd* | *-*-mirbsd*)
         have_sun=yes
         if test "${is_elf}" = "no"
         then
@@ -921,7 +921,7 @@ case "$host" in
     i386-*-* | i486-*-* | i586-*-* | i686-*-* | i86pc-*-*)
         arch_type=ix86
         case "$host" in
-            *-*-netbsd* | *-*openbsd*)
+            *-*-netbsd* | *-*openbsd* | *-*-mirbsd*)
             ;;
             *)
                 ARCH_DEFINES="-DI386_ASSEM"
