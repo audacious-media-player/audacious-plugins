@@ -85,7 +85,7 @@ AC_ARG_WITH(cdda-dir,
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console sexypsf wav cue alac"
+INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom"
 OUTPUT_PLUGINS="disk_writer"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
@@ -1127,6 +1127,7 @@ echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Musepack support (musepack):            $enable_musepack"
 echo "  TrueAudio (tta):                        $enable_tta"
+echo "  Metronom:                               yes"
 echo
 echo "  General"
 echo "  -------"
