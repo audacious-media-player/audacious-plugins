@@ -1,5 +1,4 @@
-
-// Nes_Snd_Emu 0.1.7. http://www.slack.net/~ant/
+// Nes_Snd_Emu 0.1.8. http://www.slack.net/~ant/
 
 #include "Nes_Namco_Apu.h"
 
@@ -9,22 +8,18 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
 Nes_Namco_Apu::Nes_Namco_Apu()
 {
 	output( NULL );
 	volume( 1.0 );
 	reset();
-}
-
-Nes_Namco_Apu::~Nes_Namco_Apu()
-{
 }
 
 void Nes_Namco_Apu::reset()
@@ -54,7 +49,7 @@ void Nes_Namco_Apu::output( Blip_Buffer* buf )
 /*
 void Nes_Namco_Apu::reflect_state( Tagged_Data& data )
 {
-	reflect_int16( data, 'ADDR', &addr_reg );
+	reflect_int16( data, BLARGG_4CHAR('A','D','D','R'), &addr_reg );
 	
 	static const char hex [17] = "0123456789ABCDEF";
 	int i;
@@ -63,13 +58,13 @@ void Nes_Namco_Apu::reflect_state( Tagged_Data& data )
 	
 	for ( i = 0; i < osc_count; i++ )
 	{
-		reflect_int32( data, 'DLY0' + i, &oscs [i].delay );
-		reflect_int16( data, 'POS0' + i, &oscs [i].wave_pos );
+		reflect_int32( data, BLARGG_4CHAR('D','L','Y','0') + i, &oscs [i].delay );
+		reflect_int16( data, BLARGG_4CHAR('P','O','S','0') + i, &oscs [i].wave_pos );
 	}
 }
 */
 
-void Nes_Namco_Apu::end_frame( nes_time_t time )
+void Nes_Namco_Apu::end_frame( blip_time_t time )
 {
 	if ( time > last_time )
 		run_until( time );
@@ -78,9 +73,7 @@ void Nes_Namco_Apu::end_frame( nes_time_t time )
 	last_time -= time;
 }
 
-#include BLARGG_ENABLE_OPTIMIZER
-
-void Nes_Namco_Apu::run_until( nes_time_t nes_end_time )
+void Nes_Namco_Apu::run_until( blip_time_t nes_end_time )
 {
 	int active_oscs = (reg [0x7F] >> 4 & 7) + 1;
 	for ( int i = osc_count - active_oscs; i < osc_count; i++ )
@@ -89,6 +82,7 @@ void Nes_Namco_Apu::run_until( nes_time_t nes_end_time )
 		Blip_Buffer* output = osc.output;
 		if ( !output )
 			continue;
+		output->set_modified();
 		
 		blip_resampled_time_t time =
 				output->resampled_time( last_time ) + osc.delay;
@@ -104,7 +98,7 @@ void Nes_Namco_Apu::run_until( nes_time_t nes_end_time )
 			if ( !volume )
 				continue;
 			
-			long freq = (osc_reg [4] & 3) * 0x10000 + osc_reg [2] * 0x100L + osc_reg [0];
+			blargg_long freq = (osc_reg [4] & 3) * 0x10000 + osc_reg [2] * 0x100L + osc_reg [0];
 			if ( freq < 64 * active_oscs )
 				continue; // prevent low frequencies from excessively delaying freq changes
 			blip_resampled_time_t period =

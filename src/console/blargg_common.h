@@ -1,100 +1,122 @@
-
 // Sets up common environment for Shay Green's libraries.
-//
 // To change configuration options, modify blargg_config.h, not this file.
 
 #ifndef BLARGG_COMMON_H
 #define BLARGG_COMMON_H
 
-// HAVE_CONFIG_H: If defined, include user's "config.h" first (which *can*
-// re-include blargg_common.h if it needs to)
-#ifdef HAVE_CONFIG_H
-	#undef BLARGG_COMMON_H
-	#include "config.h"
-	#define BLARGG_COMMON_H
+#include <stddef.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+
+#undef BLARGG_COMMON_H
+// allow blargg_config.h to #include blargg_common.h
+#include "blargg_config.h"
+#ifndef BLARGG_COMMON_H
+#define BLARGG_COMMON_H
+
+// STATIC_CAST(T,expr): Used in place of static_cast<T> (expr)
+#ifndef STATIC_CAST
+	#define STATIC_CAST(T,expr) ((T) (expr))
 #endif
 
-// BLARGG_NONPORTABLE: If defined to 1, platform-specific (and possibly non-portable)
-// optimizations are used. Defaults to off. Report any problems that occur only when
-// this is enabled.
-#ifndef BLARGG_NONPORTABLE
-	#define BLARGG_NONPORTABLE 0
+// blargg_err_t (0 on success, otherwise error string)
+#ifndef blargg_err_t
+	typedef const char* blargg_err_t;
 #endif
 
-// BLARGG_BIG_ENDIAN, BLARGG_LITTLE_ENDIAN: Determined automatically, otherwise only
-// one must be #defined to 1. Only needed if something actually depends on byte order.
-#if !defined (BLARGG_BIG_ENDIAN) && !defined (BLARGG_LITTLE_ENDIAN)
-	#if defined (MSB_FIRST) || defined (__powerc) || defined (macintosh) || \
-			defined (WORDS_BIGENDIAN) || defined (__BIG_ENDIAN__)
-		#define BLARGG_BIG_ENDIAN 1
+// blargg_vector - very lightweight vector of POD types (no constructor/destructor)
+template<class T>
+class blargg_vector {
+	T* begin_;
+	size_t size_;
+public:
+	blargg_vector() : begin_( 0 ), size_( 0 ) { }
+	~blargg_vector() { free( begin_ ); }
+	size_t size() const { return size_; }
+	T* begin() const { return begin_; }
+	T* end() const { return begin_ + size_; }
+	blargg_err_t resize( size_t n )
+	{
+		void* p = realloc( begin_, n * sizeof (T) );
+		if ( !p && n )
+			return "Out of memory";
+		begin_ = (T*) p;
+		size_ = n;
+		return 0;
+	}
+	void clear() { void* p = begin_; begin_ = 0; size_ = 0; free( p ); }
+	T& operator [] ( size_t n ) const
+	{
+		assert( n <= size_ ); // <= to allow past-the-end value
+		return begin_ [n];
+	}
+};
+
+#ifndef BLARGG_DISABLE_NOTHROW
+	#define BLARGG_DISABLE_NOTHROW \
+		void* operator new ( size_t s ) { return malloc( s ); }\
+		void operator delete ( void* p ) { free( p ); }
+	#define BLARGG_NEW new
+#else
+	#include <new>
+	#define BLARGG_NEW new (std::nothrow)
+#endif
+
+#define BLARGG_4CHAR( a, b, c, d ) \
+	((a&0xFF)*0x1000000L + (b&0xFF)*0x10000L + (c&0xFF)*0x100L + (d&0xFF))
+
+// BOOST_STATIC_ASSERT( expr ): Generates compile error if expr is 0.
+#ifndef BOOST_STATIC_ASSERT
+	#ifdef _MSC_VER
+		// MSVC6 (_MSC_VER < 1300) fails for use of __LINE__ when /Zl is specified
+		#define BOOST_STATIC_ASSERT( expr ) \
+			void blargg_failed_( int (*arg) [2 / !!(expr) - 1] )
 	#else
-		#define BLARGG_LITTLE_ENDIAN 1
+		// Some other compilers fail when declaring same function multiple times in class,
+		// so differentiate them by line
+		#define BOOST_STATIC_ASSERT( expr ) \
+			void blargg_failed_( int (*arg) [2 / !!(expr) - 1] [__LINE__] )
 	#endif
 #endif
 
-// Determine compiler's language support
-
-// Metrowerks CodeWarrior
-#if defined (__MWERKS__)
-	#define BLARGG_COMPILER_HAS_NAMESPACE 1
-	#if !__option(bool)
+// BLARGG_COMPILER_HAS_BOOL: If 0, provides bool support for old compiler. If 1,
+// compiler is assumed to support bool. If undefined, availability is determined.
+#ifndef BLARGG_COMPILER_HAS_BOOL
+	#if defined (__MWERKS__)
+		#if !__option(bool)
+			#define BLARGG_COMPILER_HAS_BOOL 0
+		#endif
+	#elif defined (_MSC_VER)
+		#if _MSC_VER < 1100
+			#define BLARGG_COMPILER_HAS_BOOL 0
+		#endif
+	#elif defined (__GNUC__)
+		// supports bool
+	#elif __cplusplus < 199711
 		#define BLARGG_COMPILER_HAS_BOOL 0
 	#endif
-	#define STATIC_CAST(T,expr) static_cast< T > (expr)
-
-// Microsoft Visual C++
-#elif defined (_MSC_VER)
-	#if _MSC_VER < 1100
-		#define BLARGG_COMPILER_HAS_BOOL 0
-	#endif
-
-// GNU C++
-#elif defined (__GNUC__)
-	#if __GNUC__ > 2
-		#define BLARGG_COMPILER_HAS_NAMESPACE 1
-	#endif
-
-// Mingw
-#elif defined (__MINGW32__)
-	// empty
-
-// Pre-ISO C++ compiler
-#elif __cplusplus < 199711
-	#ifndef BLARGG_COMPILER_HAS_BOOL
-		#define BLARGG_COMPILER_HAS_BOOL 0
-	#endif
-
 #endif
-
-/* BLARGG_COMPILER_HAS_BOOL: If 0, provides bool support for old compilers.
-   If errors occur here, add the following line to your config.h file:
-	#define BLARGG_COMPILER_HAS_BOOL 0
-*/
 #if defined (BLARGG_COMPILER_HAS_BOOL) && !BLARGG_COMPILER_HAS_BOOL
+	// If you get errors here, modify your blargg_config.h file
 	typedef int bool;
 	const bool true  = 1;
 	const bool false = 0;
 #endif
 
-// BLARGG_USE_NAMESPACE: If 1, use <cxxx> headers rather than <xxxx.h>
-#if BLARGG_USE_NAMESPACE || (!defined (BLARGG_USE_NAMESPACE) && BLARGG_COMPILER_HAS_NAMESPACE)
-	#include <cstddef>
-	#include <cstdlib>
-	#include <cassert>
-	#include <climits>
-	#define STD std
+// blargg_long/blargg_ulong = at least 32 bits, int if it's big enough
+#include <limits.h>
+
+#if INT_MAX >= 0x7FFFFFFF
+	typedef int blargg_long;
 #else
-	#include <stddef.h>
-	#include <stdlib.h>
-	#include <assert.h>
-	#include <limits.h>
-	#define STD
+	typedef long blargg_long;
 #endif
 
-// BLARGG_NEW is used in place of 'new' to create objects. By default, plain new is used.
-// To prevent an exception if out of memory, #define BLARGG_NEW new (std::nothrow)
-#ifndef BLARGG_NEW
-	#define BLARGG_NEW new
+#if UINT_MAX >= 0xFFFFFFFF
+	typedef unsigned blargg_ulong;
+#else
+	typedef unsigned long blargg_ulong;
 #endif
 
 // BOOST::int8_t etc.
@@ -144,99 +166,5 @@
 	};
 #endif
 
-// BLARGG_SOURCE_BEGIN: Library sources #include this after other #includes.
-#ifndef BLARGG_SOURCE_BEGIN
-	#define BLARGG_SOURCE_BEGIN "blargg_source.h"
 #endif
-
-// BLARGG_ENABLE_OPTIMIZER: Library sources #include this for speed-critical code
-#ifndef BLARGG_ENABLE_OPTIMIZER
-	#define BLARGG_ENABLE_OPTIMIZER "blargg_common.h"
 #endif
-
-// BLARGG_CPU_*: Used to select between some optimizations
-#if !defined (BLARGG_CPU_POWERPC) && !defined (BLARGG_CPU_X86)
-	#if defined (__powerc)
-		#define BLARGG_CPU_POWERPC 1
-	#elif defined (_MSC_VER) && defined (_M_IX86)
-		#define BLARGG_CPU_X86 1
-	#endif
-#endif
-
-// BOOST_STATIC_ASSERT( expr ): Generates compile error if expr is 0.
-#ifndef BOOST_STATIC_ASSERT
-	#ifdef _MSC_VER
-		// MSVC6 (_MSC_VER < 1300) fails for use of __LINE__ when /Zl is specified
-		#define BOOST_STATIC_ASSERT( expr ) \
-			void blargg_failed_( int (*arg) [2 / ((expr) ? 1 : 0) - 1] )
-	#else
-		// Some other compilers fail when declaring same function multiple times in class,
-		// so differentiate them by line
-		#define BOOST_STATIC_ASSERT( expr ) \
-			void blargg_failed_( int (*arg) [2 / ((expr) ? 1 : 0) - 1] [__LINE__] )
-	#endif
-#endif
-
-// STATIC_CAST(T,expr): Used in place of static_cast<T> (expr)
-#ifndef STATIC_CAST
-	#define STATIC_CAST(T,expr) ((T) (expr))
-#endif
-
-// blargg_err_t (NULL on success, otherwise error string)
-#ifndef blargg_err_t
-	typedef const char* blargg_err_t;
-#endif
-const char* const blargg_success = 0;
-
-// blargg_vector: Simple array that does *not* work for types with a constructor (non-POD).
-template<class T>
-class blargg_vector {
-	T* begin_;
-	STD::size_t size_;
-public:
-	blargg_vector() : begin_( 0 ), size_( 0 ) { }
-	~blargg_vector() { STD::free( begin_ ); }
-	
-	typedef STD::size_t size_type;
-	
-	blargg_err_t resize( size_type n )
-	{
-		void* p = STD::realloc( begin_, n * sizeof (T) );
-		if ( !p && n )
-			return "Out of memory";
-		begin_ = (T*) p;
-		size_ = n;
-		return 0;
-	}
-	
-	void clear()
-	{
-		void* p = begin_;
-		begin_ = 0;
-		size_ = 0;
-		STD::free( p );
-	}
-	
-	size_type size() const { return size_; }
-	
-	T* begin() { return begin_; }
-	T* end()   { return begin_ + size_; }
-	
-	const T* begin() const { return begin_; }
-	const T* end() const   { return begin_ + size_; }
-	
-	T& operator [] ( size_type n )
-	{
-		assert( n <= size_ ); // allow for past-the-end value
-		return begin_ [n];
-	}
-	
-	const T& operator [] ( size_type n ) const
-	{
-		assert( n <= size_ ); // allow for past-the-end value
-		return begin_ [n];
-	}
-};
-
-#endif
-

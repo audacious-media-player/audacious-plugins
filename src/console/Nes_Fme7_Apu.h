@@ -1,15 +1,13 @@
-
 // Sunsoft FME-7 sound emulator
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef NES_FME7_APU_H
 #define NES_FME7_APU_H
 
 #include "blargg_common.h"
 #include "Blip_Buffer.h"
 
-struct fme7_snapshot_t
+struct fme7_apu_state_t
 {
 	enum { reg_count = 14 };
 	BOOST::uint8_t regs [reg_count];
@@ -17,12 +15,10 @@ struct fme7_snapshot_t
 	BOOST::uint8_t latch;
 	BOOST::uint16_t delays [3]; // a, b, c
 };
-BOOST_STATIC_ASSERT( sizeof (fme7_snapshot_t) == 24 );
+BOOST_STATIC_ASSERT( sizeof (fme7_apu_state_t) == 24 );
 
-class Nes_Fme7_Apu : private fme7_snapshot_t {
+class Nes_Fme7_Apu : private fme7_apu_state_t {
 public:
-	Nes_Fme7_Apu();
-	
 	// See Nes_Apu.h for reference
 	void reset();
 	void volume( double );
@@ -31,8 +27,8 @@ public:
 	enum { osc_count = 3 };
 	void osc_output( int index, Blip_Buffer* );
 	void end_frame( blip_time_t );
-	void save_snapshot( fme7_snapshot_t* ) const;
-	void load_snapshot( fme7_snapshot_t const& );
+	void save_state( fme7_apu_state_t* ) const;
+	void load_state( fme7_apu_state_t const& );
 	
 	// Mask and addresses of registers
 	enum { addr_mask = 0xe000 };
@@ -45,13 +41,15 @@ public:
 	// (addr & addr_mask) == data_addr
 	void write_data( blip_time_t, int data );
 	
-	// End of public interface
+public:
+	Nes_Fme7_Apu();
+	BLARGG_DISABLE_NOTHROW
 private:
 	// noncopyable
 	Nes_Fme7_Apu( const Nes_Fme7_Apu& );
 	Nes_Fme7_Apu& operator = ( const Nes_Fme7_Apu& );
 	
-	static unsigned char amp_table [16];
+	static unsigned char const amp_table [16];
 	
 	struct {
 		Blip_Buffer* output;
@@ -119,17 +117,16 @@ inline void Nes_Fme7_Apu::end_frame( blip_time_t time )
 	last_time -= time;
 }
 
-inline void Nes_Fme7_Apu::save_snapshot( fme7_snapshot_t* out ) const
+inline void Nes_Fme7_Apu::save_state( fme7_apu_state_t* out ) const
 {
 	*out = *this;
 }
 
-inline void Nes_Fme7_Apu::load_snapshot( fme7_snapshot_t const& in )
+inline void Nes_Fme7_Apu::load_state( fme7_apu_state_t const& in )
 {
 	reset();
-	fme7_snapshot_t* state = this;
+	fme7_apu_state_t* state = this;
 	*state = in;
 }
 
 #endif
-

@@ -1,13 +1,8 @@
-
 // Nintendo Game Boy PAPU sound chip emulator
 
-// Gb_Snd_Emu 0.1.4
-
+// Gb_Snd_Emu 0.1.5
 #ifndef GB_APU_H
 #define GB_APU_H
-
-typedef long     gb_time_t; // clock cycle count
-typedef unsigned gb_addr_t; // 16-bit address
 
 #include "Gb_Oscs.h"
 
@@ -40,35 +35,34 @@ public:
 	
 	// Reads and writes at addr must satisfy start_addr <= addr <= end_addr
 	enum { start_addr = 0xFF10 };
-	enum { end_addr   = 0xFF3f };
+	enum { end_addr   = 0xFF3F };
 	enum { register_count = end_addr - start_addr + 1 };
 	
 	// Write 'data' to address at specified time
-	void write_register( gb_time_t, gb_addr_t, int data );
+	void write_register( blip_time_t, unsigned addr, int data );
 	
 	// Read from address at specified time
-	int read_register( gb_time_t, gb_addr_t );
+	int read_register( blip_time_t, unsigned addr );
 	
 	// Run all oscillators up to specified time, end current time frame, then
-	// start a new frame at time 0. Returns true if any oscillators added
-	// sound to one of the left/right buffers, false if they only added
-	// to the center buffer.
-	bool end_frame( gb_time_t );
+	// start a new frame at time 0.
+	void end_frame( blip_time_t );
+	
+	void set_tempo( double );
 	
 public:
 	Gb_Apu();
-	~Gb_Apu();
 private:
 	// noncopyable
 	Gb_Apu( const Gb_Apu& );
 	Gb_Apu& operator = ( const Gb_Apu& );
 	
 	Gb_Osc*     oscs [osc_count];
-	gb_time_t   next_frame_time;
-	gb_time_t   last_time;
+	blip_time_t   next_frame_time;
+	blip_time_t   last_time;
+	blip_time_t frame_period;
 	double      volume_unit;
 	int         frame_count;
-	bool        stereo_found;
 	
 	Gb_Square   square1;
 	Gb_Square   square2;
@@ -79,7 +73,7 @@ private:
 	Gb_Wave::Synth   other_synth;  // used by wave and noise
 	
 	void update_volume();
-	void run_until( gb_time_t );
+	void run_until( blip_time_t );
 	void write_osc( int index, int reg, int data );
 };
 
@@ -94,4 +88,3 @@ inline void Gb_Apu::volume( double vol )
 }
 
 #endif
-

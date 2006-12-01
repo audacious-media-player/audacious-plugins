@@ -1,6 +1,6 @@
+// Low-level parts of Vgm_Emu
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef VGM_EMU_IMPL_H
 #define VGM_EMU_IMPL_H
 
@@ -27,8 +27,6 @@ public:
 class Vgm_Emu_Impl : public Classic_Emu, private Dual_Resampler {
 public:
 	typedef Classic_Emu::sample_t sample_t;
-	typedef BOOST::uint8_t byte;
-	
 protected:
 	enum { stereo = 2 };
 	
@@ -71,4 +69,3 @@ protected:
 };
 
 #endif
-

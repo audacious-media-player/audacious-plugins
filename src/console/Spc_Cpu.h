@@ -1,15 +1,13 @@
-
 // Super Nintendo (SNES) SPC-700 CPU emulator
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef SPC_CPU_H
 #define SPC_CPU_H
 
 #include "blargg_common.h"
 
 typedef unsigned spc_addr_t;
-typedef long     spc_time_t;
+typedef blargg_long spc_time_t;
 
 class Snes_Spc;
 
@@ -57,4 +55,3 @@ private:
 inline spc_time_t Spc_Cpu::remain() const { return remain_; }
 
 #endif
-

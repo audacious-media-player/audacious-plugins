@@ -1,5 +1,4 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 #include "Vgm_Emu.h"
 
@@ -13,12 +12,12 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
 enum {
 	cmd_gg_stereo       = 0x4F,
@@ -63,7 +62,8 @@ inline int command_len( int command )
 			return 5;
 	}
 	
-	return 0;
+	check( false );
+	return 1;
 }
 
 template<class Emu>
@@ -120,11 +120,13 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 	{
 		set_track_ended();
 		if ( pos > data_end )
-			log_error();
+			set_warning( "Stream lacked end event" );
 	}
 	
 	while ( vgm_time < end_time && pos < data_end )
 	{
+		// TODO: be sure there are enough bytes left in stream for particular command
+		// so we don't read past end
 		switch ( *pos++ )
 		{
 		case cmd_end:
@@ -204,15 +206,15 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 		
 		default:
 			int cmd = pos [-1];
-			switch ( cmd & 0xf0 )
+			switch ( cmd & 0xF0 )
 			{
 				case cmd_pcm_delay:
-					vgm_time += cmd & 0x0f;
 					write_pcm( vgm_time, *pcm_pos++ );
+					vgm_time += cmd & 0x0F;
 					break;
 				
 				case cmd_short_delay:
-					vgm_time += (cmd & 0x0f) + 1;
+					vgm_time += (cmd & 0x0F) + 1;
 					break;
 				
 				case 0x50:
@@ -221,7 +223,7 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 				
 				default:
 					pos += command_len( cmd ) - 1;
-					log_error();
+					set_warning( "Unknown stream event" );
 			}
 		}
 	}
@@ -242,6 +244,7 @@ int Vgm_Emu_Impl::play_frame( blip_time_t blip_time, int sample_count, sample_t*
 	int pairs = min_pairs;
 	while ( (pairs = to_fm_time( vgm_time )) < min_pairs )
 		vgm_time++;
+	//dprintf( "pairs: %d, min_pairs: %d\n", pairs, min_pairs );
 	
 	if ( ym2612.enabled() )
 	{
@@ -268,7 +271,7 @@ int Vgm_Emu_Impl::play_frame( blip_time_t blip_time, int sample_count, sample_t*
 // Update pre-1.10 header FM rates by scanning commands
 void Vgm_Emu_Impl::update_fm_rates( long* ym2413_rate, long* ym2612_rate ) const
 {
-	byte const* p = data;
+	byte const* p = data + 0x40;
 	while ( p < data_end )
 	{
 		switch ( *p )
@@ -309,4 +312,3 @@ void Vgm_Emu_Impl::update_fm_rates( long* ym2413_rate, long* ym2612_rate ) const
 		}
 	}
 }
-

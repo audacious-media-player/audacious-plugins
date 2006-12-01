@@ -1,5 +1,4 @@
-
-// Nes_Snd_Emu 0.1.7. http://www.slack.net/~ant/
+// Nes_Snd_Emu 0.1.8. http://www.slack.net/~ant/
 
 #include "Nes_Apu.h"
 
@@ -9,12 +8,12 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
 int const amp_range = 15;
 
@@ -22,8 +21,9 @@ Nes_Apu::Nes_Apu() :
 	square1( &square_synth ),
 	square2( &square_synth )
 {
+	tempo_ = 1.0;
 	dmc.apu = this;
-	dmc.rom_reader = NULL;
+	dmc.prg_reader = NULL;
 	irq_notifier_ = NULL;
 	
 	oscs [0] = &square1;
@@ -35,10 +35,6 @@ Nes_Apu::Nes_Apu() :
 	output( NULL );
 	volume( 1.0 );
 	reset( false );
-}
-
-Nes_Apu::~Nes_Apu()
-{
 }
 
 void Nes_Apu::treble_eq( const blip_eq_t& eq )
@@ -81,11 +77,18 @@ void Nes_Apu::output( Blip_Buffer* buffer )
 		osc_output( i, buffer );
 }
 
+void Nes_Apu::set_tempo( double t )
+{
+	tempo_ = t;
+	frame_period = (dmc.pal_mode ? 8314 : 7458);
+	if ( t != 1.0 )
+		frame_period = (int) (frame_period / t) & ~1; // must be even
+}
+
 void Nes_Apu::reset( bool pal_mode, int initial_dmc_dac )
 {
-	// to do: time pal frame periods exactly
-	frame_period = pal_mode ? 8314 : 7458;
 	dmc.pal_mode = pal_mode;
+	set_tempo( tempo_ );
 	
 	square1.reset();
 	square2.reset();
@@ -106,8 +109,10 @@ void Nes_Apu::reset( bool pal_mode, int initial_dmc_dac )
 		write_register( 0, addr, (addr & 3) ? 0x00 : 0x10 );
 	
 	dmc.dac = initial_dmc_dac;
-	//if ( !dmc.nonlinear ) // to do: remove?
-	//  dmc.last_amp = initial_dmc_dac; // prevent output transition
+	if ( !dmc.nonlinear )
+		triangle.last_amp = 15;
+	if ( !dmc.nonlinear ) // TODO: remove?
+		dmc.last_amp = initial_dmc_dac; // prevent output transition
 }
 
 void Nes_Apu::irq_changed()
@@ -177,8 +182,8 @@ void Nes_Apu::run_until_( nes_time_t end_time )
 		switch ( frame++ )
 		{
 			case 0:
-				if ( !(frame_mode & 0xc0) ) {
-		 			next_irq = time + frame_period * 4 + 1;
+				if ( !(frame_mode & 0xC0) ) {
+		 			next_irq = time + frame_period * 4 + 2;
 		 			irq_flag = true;
 		 		}
 		 		// fall through
@@ -191,11 +196,16 @@ void Nes_Apu::run_until_( nes_time_t end_time )
 				
 				square1.clock_sweep( -1 );
 				square2.clock_sweep( 0 );
+				
+				// frame 2 is slightly shorter in mode 1
+				if ( dmc.pal_mode && frame == 3 )
+					frame_delay -= 2;
 		 		break;
 		 	
 			case 1:
-				// frame 1 is slightly shorter
-				frame_delay -= 2;
+				// frame 1 is slightly shorter in mode 0
+				if ( !dmc.pal_mode )
+					frame_delay -= 2;
 				break;
 			
 		 	case 3:
@@ -203,7 +213,7 @@ void Nes_Apu::run_until_( nes_time_t end_time )
 		 		
 		 		// frame 3 is almost twice as long in mode 1
 		 		if ( frame_mode & 0x80 )
-					frame_delay += frame_period - 6;
+					frame_delay += frame_period - (dmc.pal_mode ? 2 : 6);
 				break;
 		}
 		
@@ -214,9 +224,6 @@ void Nes_Apu::run_until_( nes_time_t end_time )
 		noise.clock_envelope();
 	}
 }
-
-// to do: remove
-static long abs_time;
 
 template<class T>
 inline void zero_apu_osc( T* osc, nes_time_t time )
@@ -232,8 +239,6 @@ void Nes_Apu::end_frame( nes_time_t end_time )
 {
 	if ( end_time > last_time )
 		run_until_( end_time );
-	
-	abs_time += end_time;
 	
 	if ( dmc.nonlinear )
 	{
@@ -253,11 +258,11 @@ void Nes_Apu::end_frame( nes_time_t end_time )
 	
 	if ( next_irq != no_irq ) {
 		next_irq -= end_time;
-		assert( next_irq >= 0 );
+		check( next_irq >= 0 );
 	}
 	if ( dmc.next_irq != no_irq ) {
 		dmc.next_irq -= end_time;
-		assert( dmc.next_irq >= 0 );
+		check( dmc.next_irq >= 0 );
 	}
 	if ( earliest_irq_ != no_irq ) {
 		earliest_irq_ -= end_time;
@@ -278,10 +283,10 @@ static const unsigned char length_table [0x20] = {
 void Nes_Apu::write_register( nes_time_t time, nes_addr_t addr, int data )
 {
 	require( addr > 0x20 ); // addr must be actual address (i.e. 0x40xx)
-	require( (unsigned) data <= 0xff );
+	require( (unsigned) data <= 0xFF );
 	
 	// Ignore addresses outside range
-	if ( addr < start_addr || end_addr < addr )
+	if ( unsigned (addr - start_addr) > end_addr - start_addr )
 		return;
 	
 	run_until_( time );
@@ -305,7 +310,7 @@ void Nes_Apu::write_register( nes_time_t time, nes_addr_t addr, int data )
 		{
 			// load length counter
 			if ( (osc_enables >> osc_index) & 1 )
-				osc->length_counter = length_table [(data >> 3) & 0x1f];
+				osc->length_counter = length_table [(data >> 3) & 0x1F];
 			
 			// reset square phase
 			if ( osc_index < 2 )
@@ -354,7 +359,7 @@ void Nes_Apu::write_register( nes_time_t time, nes_addr_t addr, int data )
 			frame = 1;
 			frame_delay += frame_period;
 			if ( irq_enabled )
-				next_irq = time + frame_delay + frame_period * 3;
+				next_irq = time + frame_delay + frame_period * 3 + 1;
 		}
 		
 		irq_changed();
@@ -373,11 +378,14 @@ int Nes_Apu::read_status( nes_time_t time )
 	
 	run_until_( time );
 	
-	if ( irq_flag ) {
+	if ( irq_flag )
+	{
+		result |= 0x40;
 		irq_flag = false;
 		irq_changed();
 	}
 	
+	//dprintf( "%6d/%d Read $4015->$%02X\n", frame_delay, frame, result );
+	
 	return result;
 }
-

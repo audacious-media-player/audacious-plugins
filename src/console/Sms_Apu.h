@@ -1,12 +1,8 @@
-
 // Sega Master System SN76489 PSG sound chip emulator
 
-// Sms_Snd_Emu 0.1.3
-
+// Sms_Snd_Emu 0.1.4
 #ifndef SMS_APU_H
 #define SMS_APU_H
-
-typedef long sms_time_t; // clock cycle count
 
 #include "Sms_Oscs.h"
 
@@ -34,19 +30,17 @@ public:
 	void osc_output( int index, Blip_Buffer* center, Blip_Buffer* left, Blip_Buffer* right );
 	
 	// Reset oscillators and internal state
-	void reset();
+	void reset( unsigned noise_feedback = 0, int noise_width = 0 );
 	
 	// Write GameGear left/right assignment byte
-	void write_ggstereo( sms_time_t, int );
+	void write_ggstereo( blip_time_t, int );
 	
 	// Write to data port
-	void write_data( sms_time_t, int );
+	void write_data( blip_time_t, int );
 	
 	// Run all oscillators up to specified time, end current frame, then
-	// start a new frame at time 0. Returns true if any oscillators added
-	// sound to one of the left/right buffers, false if they only added
-	// to the center buffer.
-	bool end_frame( sms_time_t );
+	// start a new frame at time 0.
+	void end_frame( blip_time_t );
 
 public:
 	Sms_Apu();
@@ -59,12 +53,13 @@ private:
 	Sms_Osc*    oscs [osc_count];
 	Sms_Square  squares [3];
 	Sms_Square::Synth square_synth; // used by squares
-	sms_time_t  last_time;
+	blip_time_t last_time;
 	int         latch;
-	bool        stereo_found;
 	Sms_Noise   noise;
+	unsigned    noise_feedback;
+	unsigned    looped_feedback;
 	
-	void run_until( sms_time_t );
+	void run_until( blip_time_t );
 };
 
 struct sms_apu_state_t
@@ -78,4 +73,3 @@ inline void Sms_Apu::output( Blip_Buffer* b ) { output( b, b, b ); }
 inline void Sms_Apu::osc_output( int i, Blip_Buffer* b ) { osc_output( i, b, b, b ); }
 
 #endif
-

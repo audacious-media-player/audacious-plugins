@@ -1,12 +1,9 @@
-
 // Private oscillators used by Sms_Apu
 
-// Sms_Snd_Emu 0.1.3
-
+// Sms_Snd_Emu 0.1.4
 #ifndef SMS_OSCS_H
 #define SMS_OSCS_H
 
-#include "blargg_common.h"
 #include "Blip_Buffer.h"
 
 struct Sms_Osc
@@ -32,21 +29,20 @@ struct Sms_Square : Sms_Osc
 	const Synth* synth;
 	
 	void reset();
-	void run( sms_time_t, sms_time_t );
+	void run( blip_time_t, blip_time_t );
 };
 
 struct Sms_Noise : Sms_Osc
 {
 	const int* period;
 	unsigned shifter;
-	unsigned tap;
+	unsigned feedback;
 	
 	typedef Blip_Synth<blip_med_quality,1> Synth;
 	Synth synth;
 	
 	void reset();
-	void run( sms_time_t, sms_time_t );
+	void run( blip_time_t, blip_time_t );
 };
 
 #endif
-

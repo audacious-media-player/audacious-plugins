@@ -1,10 +1,10 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 #include "Nsfe_Emu.h"
 
 #include "blargg_endian.h"
 #include <string.h>
+#include <ctype.h>
 
 /* Copyright (C) 2005-2006 Shay Green. This module is free software; you
 can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -12,84 +12,61 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
-#define NSFE_TAG( a, b, c, d ) (d*0x1000000L + c*0x10000L + b*0x100L + a)
-
-Nsfe_Info::Nsfe_Info()
-{
-	playlist_enabled = false;
-}
+Nsfe_Info::Nsfe_Info() { playlist_disabled = false; }
 
 Nsfe_Info::~Nsfe_Info() { }
 
-void Nsfe_Info::enable_playlist( bool b )
+inline void Nsfe_Info::unload()
 {
-	playlist_enabled = b;
-	info_.track_count = (b && playlist_size()) ? playlist_size() : track_count_;
+	track_name_data.clear();
+	track_names.clear();
+	playlist.clear();
+	track_times.clear();
 }
 
-int Nsfe_Info::remap_track( int i ) const
+// TODO: if no playlist, treat as if there is a playlist that is just 1,2,3,4,5... ?
+void Nsfe_Info::disable_playlist( bool b )
 {
-	if ( !playlist_enabled || !playlist_size() )
-		return i;
-	
-	return playlist_entry( i );
+	playlist_disabled = b;
+	info.track_count = playlist.size();
+	if ( !info.track_count || playlist_disabled )
+		info.track_count = actual_track_count_;
 }
 
-void Nsfe_Emu::start_track( int i )
+int Nsfe_Info::remap_track( int track ) const
 {
-	Nsf_Emu::start_track( remap_track( i ) );
-}
-
-const char* Nsfe_Info::track_name( unsigned i ) const
-{
-	i = remap_track( i );
-	if ( i < track_names.size() )
-		return track_names [i];
-	
-	return "";
-}
-
-long Nsfe_Info::track_time( unsigned i ) const
-{
-	i = remap_track( i );
-	if ( i < track_times.size() )
-		return track_times [i];
-	
-	return 0;
-}
-
-// Read little-endian 32-bit int
-static blargg_err_t read_le32( Emu_Reader& in, long* out )
-{
-	unsigned char buf [4];
-	BLARGG_RETURN_ERR( in.read( buf, sizeof buf ) );
-	*out = get_le32( buf );
-	return blargg_success;
+	if ( !playlist_disabled && (unsigned) track < playlist.size() )
+		track = playlist [track];
+	return track;
 }
 
 // Read multiple strings and separate into individual strings
-static blargg_err_t read_strs( Emu_Reader& in, long size, std::vector<char>& chars,
-		std::vector<const char*>& strs )
+static blargg_err_t read_strs( Data_Reader& in, long size, blargg_vector<char>& chars,
+		blargg_vector<const char*>& strs )
 {
-	chars.resize( size + 1 );
+	RETURN_ERR( chars.resize( size + 1 ) );
 	chars [size] = 0; // in case last string doesn't have terminator
-	BLARGG_RETURN_ERR( in.read( &chars [0], size ) );
+	RETURN_ERR( in.read( &chars [0], size ) );
 	
+	RETURN_ERR( strs.resize( 128 ) );
+	int count = 0;
 	for ( int i = 0; i < size; i++ )
 	{
-		strs.push_back( &chars [i] );
+		if ( (int) strs.size() <= count )
+			RETURN_ERR( strs.resize( count * 2 ) );
+		strs [count++] = &chars [i];
 		while ( i < size && chars [i] )
 			i++;
 	}
 	
-	return blargg_success;
+	return strs.resize( count );
 }
 
 // Copy in to out, where out has out_max characters allocated. Truncate to
@@ -100,21 +77,28 @@ static void copy_str( const char* in, char* out, int out_max )
 	strncpy( out, in, out_max - 1 );
 }
 
-struct nsfe_info_t {
-	unsigned char load_addr [2];
-	unsigned char init_addr [2];
-	unsigned char play_addr [2];
-	unsigned char speed_flags;
-	unsigned char chip_flags;
-	unsigned char track_count;
-	unsigned char first_track;
+struct nsfe_info_t
+{
+	byte load_addr [2];
+	byte init_addr [2];
+	byte play_addr [2];
+	byte speed_flags;
+	byte chip_flags;
+	byte track_count;
+	byte first_track;
+	byte unused [6];
 };
+BOOST_STATIC_ASSERT( sizeof (nsfe_info_t) == 16 );
 
-blargg_err_t Nsfe_Info::load( const header_t& nsfe_tag, Emu_Reader& in, Nsf_Emu* nsf_emu )
+blargg_err_t Nsfe_Info::load( Data_Reader& in, Nsf_Emu* nsf_emu )
 {
 	// check header
-	if ( memcmp( nsfe_tag.tag, "NSFE", 4 ) )
-		return "Not an NSFE file";
+	byte signature [4];
+	blargg_err_t err = in.read( signature, sizeof signature );
+	if ( err )
+		return (err == in.eof_error ? gme_wrong_file_type : err);
+	if ( memcmp( signature, "NSFE", 4 ) )
+		return gme_wrong_file_type;
 	
 	// free previous info
 	track_name_data.clear();
@@ -136,7 +120,7 @@ blargg_err_t Nsfe_Info::load( const header_t& nsfe_tag, Emu_Reader& in, Nsf_Emu*
 		0, 0,               // flags
 		{0,0,0,0}           // unused
 	};
-	Nsf_Emu::header_t& header = info_;
+	Nsf_Emu::header_t& header = info;
 	header = base_header;
 	
 	// parse tags
@@ -144,83 +128,82 @@ blargg_err_t Nsfe_Info::load( const header_t& nsfe_tag, Emu_Reader& in, Nsf_Emu*
 	while ( phase != 3 )
 	{
 		// read size and tag
-		long size = 0;
-		long tag = 0;
-		BLARGG_RETURN_ERR( read_le32( in, &size ) );
-		BLARGG_RETURN_ERR( read_le32( in, &tag ) );
+		byte block_header [2] [4];
+		RETURN_ERR( in.read( block_header, sizeof block_header ) );
+		blargg_long size = get_le32( block_header [0] );
+		blargg_long tag  = get_le32( block_header [1] );
+		
+		//dprintf( "tag: %c%c%c%c\n", char(tag), char(tag>>8), char(tag>>16), char(tag>>24) );
 		
 		switch ( tag )
 		{
-			case NSFE_TAG('I','N','F','O'): {
+			case BLARGG_4CHAR('O','F','N','I'): {
 				check( phase == 0 );
 				if ( size < 8 )
-					return "Bad NSFE file";
+					return "Corrupt file";
 				
-				nsfe_info_t info;
-				info.track_count = 1;
-				info.first_track = 0;
+				nsfe_info_t finfo;
+				finfo.track_count = 1;
+				finfo.first_track = 0;
 				
-				int s = size;
-				if ( s > (int) sizeof info )
-					s = sizeof info;
-				BLARGG_RETURN_ERR( in.read( &info, s ) );
-				BLARGG_RETURN_ERR( in.skip( size - s ) );
+				RETURN_ERR( in.read( &finfo, min( size, (blargg_long) sizeof finfo ) ) );
+				if ( size > (int) sizeof finfo )
+					RETURN_ERR( in.skip( size - sizeof finfo ) );
 				phase = 1;
-				info_.speed_flags = info.speed_flags;
-				info_.chip_flags = info.chip_flags;
-				info_.track_count = info.track_count;
-				this->track_count_ = info.track_count;
-				info_.first_track = info.first_track;
-				std::memcpy( info_.load_addr, info.load_addr, 2 * 3 );
+				info.speed_flags = finfo.speed_flags;
+				info.chip_flags  = finfo.chip_flags;
+				info.track_count = finfo.track_count;
+				this->actual_track_count_ = finfo.track_count;
+				info.first_track = finfo.first_track;
+				memcpy( info.load_addr, finfo.load_addr, 2 * 3 );
 				break;
 			}
 			
-			case NSFE_TAG('B','A','N','K'):
-				if ( size > (int) sizeof info_.banks )
-					return "Bad NSFE file";
-				BLARGG_RETURN_ERR( in.read( info_.banks, size ) );
+			case BLARGG_4CHAR('K','N','A','B'):
+				if ( size > (int) sizeof info.banks )
+					return "Corrupt file";
+				RETURN_ERR( in.read( info.banks, size ) );
 				break;
 			
-			case NSFE_TAG('a','u','t','h'): {
-				std::vector<char> chars;
-				std::vector<const char*> strs;
-				BLARGG_RETURN_ERR( read_strs( in, size, chars, strs ) );
+			case BLARGG_4CHAR('h','t','u','a'): {
+				blargg_vector<char> chars;
+				blargg_vector<const char*> strs;
+				RETURN_ERR( read_strs( in, size, chars, strs ) );
 				int n = strs.size();
 				
 				if ( n > 3 )
-					copy_str( strs [3], info_.ripper, sizeof info_.ripper );
+					copy_str( strs [3], info.dumper, sizeof info.dumper );
 				
 				if ( n > 2 )
-					copy_str( strs [2], info_.copyright, sizeof info_.copyright );
+					copy_str( strs [2], info.copyright, sizeof info.copyright );
 				
 				if ( n > 1 )
-					copy_str( strs [1], info_.author, sizeof info_.author );
+					copy_str( strs [1], info.author, sizeof info.author );
 				
 				if ( n > 0 )
-					copy_str( strs [0], info_.game, sizeof info_.game );
+					copy_str( strs [0], info.game, sizeof info.game );
 				
 				break;
 			}
 			
-			case NSFE_TAG('t','i','m','e'): {
-				track_times.resize( size / 4 );
-				for ( unsigned i = 0; i < track_times.size(); i++ )
-					BLARGG_RETURN_ERR( read_le32( in, &track_times [i] ) );
-				break;
-			}
-			
-			case NSFE_TAG('t','l','b','l'):
-				BLARGG_RETURN_ERR( read_strs( in, size, track_name_data, track_names ) );
+			case BLARGG_4CHAR('e','m','i','t'):
+				RETURN_ERR( track_times.resize( size / 4 ) );
+				RETURN_ERR( in.read( track_times.begin(), track_times.size() * 4 ) );
 				break;
 			
-			case NSFE_TAG('p','l','s','t'):
-				playlist.resize( size );
-				BLARGG_RETURN_ERR( in.read( &playlist [0], size ) );
+			case BLARGG_4CHAR('l','b','l','t'):
+				RETURN_ERR( read_strs( in, size, track_name_data, track_names ) );
 				break;
 			
-			case NSFE_TAG('D','A','T','A'): {
+			case BLARGG_4CHAR('t','s','l','p'):
+				RETURN_ERR( playlist.resize( size ) );
+				RETURN_ERR( in.read( &playlist [0], size ) );
+				break;
+			
+			case BLARGG_4CHAR('A','T','A','D'): {
 				check( phase == 1 );
 				phase = 2;
+				disable_playlist( false );
 				if ( !nsf_emu )
 				{
 					in.skip( size );
@@ -228,41 +211,118 @@ blargg_err_t Nsfe_Info::load( const header_t& nsfe_tag, Emu_Reader& in, Nsf_Emu*
 				else
 				{
 					Subset_Reader sub( &in, size ); // limit emu to nsf data
-					BLARGG_RETURN_ERR( nsf_emu->load( info_, sub ) );
-					check( sub.remain() == 0 );
+					Remaining_Reader rem( &header, sizeof header, &sub );
+					RETURN_ERR( nsf_emu->load( rem ) );
+					check( rem.remain() == 0 );
 				}
+				disable_playlist( false ); // TODO: fix this crappy hack (unload() disables playlist)
 				break;
 			}
 			
-			case NSFE_TAG('N','E','N','D'):
+			case BLARGG_4CHAR('D','N','E','N'):
 				check( phase == 2 );
 				phase = 3;
 				break;
 			
 			default:
 				// tags that can be skipped start with a lowercase character
-				check( std::islower( (tag >> 24) & 0xff ) );
-				BLARGG_RETURN_ERR( in.skip( size ) );
+				check( islower( (tag >> 24) & 0xFF ) );
+				RETURN_ERR( in.skip( size ) );
 				break;
 		}
 	}
 	
-	enable_playlist( playlist_enabled );
+	return 0;
+}
+
+blargg_err_t Nsfe_Info::track_info_( track_info_t* out, int track ) const
+{
+	int remapped = remap_track( track );
+	if ( (unsigned) remapped < track_times.size() )
+	{
+		long length = (BOOST::int32_t) get_le32( track_times [remapped] );
+		if ( length > 0 )
+			out->length = length;
+	}
+	if ( (unsigned) remapped < track_names.size() )
+		Gme_File::copy_field_( out->song, track_names [remapped] );
 	
-	return blargg_success;
+	GME_COPY_FIELD( info, out, game );
+	GME_COPY_FIELD( info, out, author );
+	GME_COPY_FIELD( info, out, copyright );
+	GME_COPY_FIELD( info, out, dumper );
+	return 0;
 }
 
-blargg_err_t Nsfe_Info::load( Emu_Reader& in, Nsf_Emu* nsf_emu )
+Nsfe_Emu::Nsfe_Emu()
 {
-	header_t h;
-	BLARGG_RETURN_ERR( in.read( &h, sizeof h ) );
-	return load( h, in, nsf_emu );
+	loading = false;
+	set_type( gme_nsfe_type );
 }
 
-blargg_err_t Nsfe_Info::load_file( const char* path, Nsf_Emu* emu )
+Nsfe_Emu::~Nsfe_Emu() { }
+
+void Nsfe_Emu::unload()
 {
-	Std_File_Reader in;
-	BLARGG_RETURN_ERR( in.open( path ) );
-	return load( in, emu );
+	if ( !loading )
+		info.unload(); // TODO: extremely hacky!
+	Nsf_Emu::unload();
 }
 
+blargg_err_t Nsfe_Emu::track_info_( track_info_t* out, int track ) const
+{
+	return info.track_info_( out, track );
+}
+
+struct Nsfe_File : Gme_Info_
+{
+	Nsfe_Info info;
+	
+	Nsfe_File() { set_type( gme_nsfe_type ); }
+	
+	blargg_err_t load_( Data_Reader& in )
+	{
+		RETURN_ERR( info.load( in, 0 ) );
+		set_track_count( info.info.track_count );
+		return 0;
+	}
+	
+	blargg_err_t track_info_( track_info_t* out, int track ) const
+	{
+		return info.track_info_( out, track );
+	}
+};
+
+static Music_Emu* new_nsfe_emu () { return BLARGG_NEW Nsfe_Emu ; }
+static Music_Emu* new_nsfe_file() { return BLARGG_NEW Nsfe_File; }
+
+gme_type_t_ const gme_nsfe_type [1] = { "Nintendo NES", 0, &new_nsfe_emu, &new_nsfe_file, "NSFE", 1 };
+
+blargg_err_t Nsfe_Emu::load_( Data_Reader& in )
+{
+	if ( loading )
+		return Nsf_Emu::load_( in );
+	
+	// TODO: this hacky recursion-avoidance could have subtle problems
+	loading = true;
+	blargg_err_t err = info.load( in, this );
+	loading = false;
+	return err;
+}
+
+void Nsfe_Emu::disable_playlist( bool b )
+{
+	info.disable_playlist( b );
+	set_track_count( info.info.track_count );
+}
+
+void Nsfe_Emu::clear_playlist_()
+{
+	disable_playlist();
+	Nsf_Emu::clear_playlist_();
+}
+
+blargg_err_t Nsfe_Emu::start_track_( int track )
+{
+	return Nsf_Emu::start_track_( info.remap_track( track ) );
+}

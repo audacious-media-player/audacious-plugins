@@ -1,8 +1,6 @@
-
 // YM2413 FM sound chip emulator interface
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef YM2413_EMU_H
 #define YM2413_EMU_H
 
@@ -33,4 +31,3 @@ public:
 };
 
 #endif
-

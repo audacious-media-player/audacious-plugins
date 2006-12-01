@@ -1,19 +1,38 @@
-Game_Music_Emu 0.3.0: Game Music Emulators
+Game_Music_Emu 0.5.1: Game Music Emulators
 ------------------------------------------
-Game_Music_Emu is a collection of portable video game music emulators. Its
-modular design allows elimination of any unneeded emulators and features.
-Modules are included supporting the following file formats:
+Game_Music_Emu is a collection of video game music file emulators that
+support the following formats and systems:
 
-GBS     Nintendo Game Boy
-VGM/VGZ Sega Master System/Genesis/Mega Drive/Mark III/BBC Micro
-GYM     Sega Genesis
-SPC     Super Nintendo
-NSF     Nintendo NES (with VRC6, N106, and FME-7 sound)
+AY        Sinclair Spectrum
+GBS       Nintendo Game Boy
+GYM       Sega Genesis/Mega Drive
+HES       NEC TurboGrafx-16/PC Engine
+KSS       MSX Home Computer/other Z80 systems (doesn't support FM sound)
+NSF/NSFE  Nintendo NES/Famicom (with VRC 6, Namco 106, and FME-7 sound)
+SAP       Atari systems using POKEY sound chip
+SPC       Super Nintendo/Super Famicom
+VGM/VGZ   Sega Master System/Mark III, Sega Genesis/Mega Drive,BBC Micro
 
-This library has been used in game music players for Win32, Linux x86-32/64,
-Mac OS X, Mac OS Classic, MorphOS (Amiga), PlayStation Portable, and GP2X.
+Features:
+* Every emulator works the same way
+* High emphasis on being easy to use
+* Several examples, including music player using SDL
+* Includes C interface that supports the main features
+* Portable code for use on any system with modern or older C++ compilers
+* Adjustable output sample rate using quality band-limited resampling
+* Uniform access to text information fields and track timing information
+* End-of-track fading and automatic look ahead silence detection
+* Treble/bass and stereo echo for AY/GBS/HES/KSS/NSF/NSFE/SAP/VGM
+* Tempo can be adjusted and individual voices can be muted while playing
+* Can read music data from file, memory, or custom reader function/class
+* Access to track information without having to load into full emulator
+* M3U track listing support for multi-track formats
+* Modular design allows elimination of unneeded emulators/features
 
-Author : Shay Green <hotpop.com@blargg>
+This library has been used in game music players for Windows, Linux, Mac
+OS, MorphOS, Xbox, PlayStation Portable, GP2X, and Nintendo DS.
+
+Author : Shay Green <gblargg@gmail.com>
 Website: http://www.slack.net/~ant/
 Forum  : http://groups.google.com/group/blargg-sound-libs
 License: GNU Lesser General Public License (LGPL)
@@ -21,53 +40,101 @@ License: GNU Lesser General Public License (LGPL)
 
 Getting Started
 ---------------
-Build a program consisting of demo/basics.cpp, demo/Wave_Writer.cpp, and all
-source files in gme/ except Gzip_File.cpp. Be sure "test.nsf" is in the same
-directory. Running the program should generate a WAVE sound file "out.wav" of
-music.
+Build a program consisting of demo/c_basics.c, demo/Wave_Writer.cpp, and
+all source files in gme/. Be sure "test.nsf" is in the same directory.
+Running the program should generate the recording "out.wav".
 
-See notes.txt for more information, and respective header (.h) files for
-reference. Post to the discussion forum for assistance.
+To enable transparent support for gzipped files, see blargg_config.h.
+
+Read gme.txt for more information. Post to the discussion forum for
+assistance.
 
 
 Files
 -----
-notes.txt               General notes about the library
-changes.txt             Changes made since previous releases
-design.txt              Library design notes
-LGPL.txt                GNU Lesser General Public License
+gme.txt               General notes about the library
+changes.txt           Changes made since previous releases
+design.txt            Library design notes
+license.txt           GNU Lesser General Public License
 
-test.nsf                Test file for NSF emulator
+test.nsf              Test file for NSF emulator
+test.m3u              Test m3u playlist for playlist.c demo
 
 demo/
-  basics.cpp            Loads game music file and records to wave sound file
-  info_fields.cpp       Reads information tags from files
-  multi_format.cpp      Handles multiple game music types
-  custom_reader.cpp     Loads music data from gzip file and memory block
-  stereo_effects.cpp    Uses Effects_Buffer to add stereo echo
-
-  simple_player.cpp     Uses Music_Player to make simple player
-  Music_Player.cpp      Simple game music player module using SDL sound
-  Music_Player.h
-
-  Wave_Writer.h         WAVE sound file writer used for demo output
+  basics.c            Records NSF file to wave sound file
+  cpp_basics.cpp      C++ version of basics.c
+  features.c          Demonstrates the main library features
+  Wave_Writer.h       WAVE sound file writer used for demo output
   Wave_Writer.cpp
 
+player/               Player using the SDL multimedia library
+  player.cpp          Simple music player with waveform display
+  Music_Player.cpp    Stand alone player for background music
+  Music_Player.h
+  Audio_Scope.cpp     Audio waveform scope
+  Audio_Scope.h
+
 gme/
-  Effects_Buffer.h      Sound buffer with adjustable stereo echo and panning
+  blargg_config.h     Library configuration (modify this file as needed)
+
+  gme.h               C interface
+  gme.cpp
+  gme_type_list.cpp   gme_type_list() support
+  
+  Gme_File.h          File loading and track information
+  Music_Emu.h         Track playback and adjustments
+  Data_Reader.h       Custom data readers
+  
+  Effects_Buffer.h    Sound buffer with stereo echo and panning
   Effects_Buffer.cpp
+  
+  M3u_Playlist.h      M3U playlist support
+  M3u_Playlist.cpp
 
-  Gzip_File.h           Gzip reader for transparent access to gzipped files
-  Gzip_File.cpp
+  Ay_Emu.h            Sinclair Spectrum AY emulator
+  Ay_Emu.cpp
+  Ay_Apu.cpp
+  Ay_Apu.h
+  Ay_Cpu.cpp
+  Ay_Cpu.h
 
-  Music_Emu.h           Game music emulator interface
+  Gbs_Emu.h           Nintendo Game Boy GBS emulator
+  Gbs_Emu.cpp
+  Gb_Apu.cpp
+  Gb_Apu.h
+  Gb_Cpu.cpp
+  Gb_Cpu.h
+  gb_cpu_io.h
+  Gb_Oscs.cpp
+  Gb_Oscs.h
 
-  Nsf_Emu.h             Nintendo NES NSF emulator
+  Hes_Emu.h           TurboGrafx-16/PC Engine HES emulator
+  Hes_Apu.cpp
+  Hes_Apu.h
+  Hes_Cpu.cpp
+  Hes_Cpu.h
+  hes_cpu_io.h
+  Hes_Emu.cpp
+  
+  Kss_Emu.h           MSX Home Computer/other Z80 systems KSS emulator
+  Kss_Emu.cpp
+  Kss_Cpu.cpp
+  Kss_Cpu.h
+  Kss_Scc_Apu.cpp
+  Kss_Scc_Apu.h
+  Ay_Apu.h
+  Ay_Apu.cpp
+  Sms_Apu.h
+  Sms_Apu.cpp
+  Sms_Oscs.h
+
+  Nsf_Emu.h           Nintendo NES NSF/NSFE emulator
   Nsf_Emu.cpp
   Nes_Apu.cpp
   Nes_Apu.h
   Nes_Cpu.cpp
   Nes_Cpu.h
+  nes_cpu_io.h
   Nes_Oscs.cpp
   Nes_Oscs.h
   Nes_Fme7_Apu.cpp
@@ -76,17 +143,10 @@ gme/
   Nes_Namco_Apu.h
   Nes_Vrc6_Apu.cpp
   Nes_Vrc6_Apu.h
+  Nsfe_Emu.h          NSFE support
+  Nsfe_Emu.cpp
 
-  Gbs_Emu.h             Nintendo Game Boy GBS emulator
-  Gbs_Emu.cpp
-  Gb_Apu.cpp
-  Gb_Apu.h
-  Gb_Cpu.cpp
-  Gb_Cpu.h
-  Gb_Oscs.cpp
-  Gb_Oscs.h
-
-  Spc_Emu.h             Super Nintendo SPC emulator
+  Spc_Emu.h           Super Nintendo SPC emulator
   Spc_Emu.cpp
   Snes_Spc.cpp
   Snes_Spc.h
@@ -97,15 +157,23 @@ gme/
   Fir_Resampler.cpp
   Fir_Resampler.h
 
-  Gym_Emu.h             Sega Genesis GYM emulator
-  Gym_Emu.cpp
-  Vgm_Emu.h             Sega VGM emulator
+  Sap_Emu.h           Atari SAP emulator
+  Sap_Emu.cpp
+  Sap_Apu.cpp
+  Sap_Apu.h
+  Sap_Cpu.cpp
+  Sap_Cpu.h
+  sap_cpu_io.h
+
+  Vgm_Emu.h           Sega VGM emulator
   Vgm_Emu_Impl.cpp
   Vgm_Emu_Impl.h
   Vgm_Emu.cpp
   Ym2413_Emu.cpp
   Ym2413_Emu.h
-  Sms_Apu.cpp           Common Sega emulator files
+  Gym_Emu.h           Sega Genesis GYM emulator
+  Gym_Emu.cpp
+  Sms_Apu.cpp         Common Sega emulator files
   Sms_Apu.h
   Sms_Oscs.h
   Ym2612_Emu.cpp
@@ -115,18 +183,18 @@ gme/
   Fir_Resampler.cpp
   Fir_Resampler.h
   
-  blargg_common.h       Common files
+  blargg_common.h     Common files needed by all emulators
   blargg_endian.h
   blargg_source.h
   Blip_Buffer.cpp
   Blip_Buffer.h
+  Gme_File.cpp
   Music_Emu.cpp
   Classic_Emu.h
   Classic_Emu.cpp
   Multi_Buffer.h
   Multi_Buffer.cpp
-  abstract_file.cpp
-  abstract_file.h
+  Data_Reader.cpp
 
 
 Legal
@@ -134,3 +202,6 @@ Legal
 Game_Music_Emu library copyright (C) 2003-2006 Shay Green.
 SNES SPC DSP emulator based on OpenSPC, copyright (C) 2002 Brad Martin.
 Sega Genesis YM2612 emulator copyright (C) 2002 Stephane Dallongeville.
+
+-- 
+Shay Green <gblargg@gmail.com>

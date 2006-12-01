@@ -14,6 +14,7 @@
 #include "audacious/configdb.h"
 #include "Audacious_Config.h"
 
+// TODO: add UI for echo
 
 void console_cfg_load( void )
 {
@@ -25,6 +26,7 @@ void console_cfg_load( void )
 	bmp_cfg_db_get_int(db, "console", "treble", &audcfg.treble);
 	bmp_cfg_db_get_int(db, "console", "bass", &audcfg.bass);
 	bmp_cfg_db_get_bool(db, "console", "ignore_spc_length", &audcfg.ignore_spc_length);
+	bmp_cfg_db_get_int(db, "console", "echo", &audcfg.echo);
 	bmp_cfg_db_close(db);
 }
 
@@ -39,6 +41,7 @@ void console_cfg_save( void )
 	bmp_cfg_db_set_int(db, "console", "treble", audcfg.treble);
 	bmp_cfg_db_set_int(db, "console", "bass", audcfg.bass);
 	bmp_cfg_db_set_bool(db, "console", "ignore_spc_length", audcfg.ignore_spc_length);
+	bmp_cfg_db_set_int(db, "console", "echo", audcfg.echo);
 	bmp_cfg_db_close(db);
 }
 

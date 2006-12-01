@@ -1,5 +1,4 @@
-
-// Sms_Snd_Emu 0.1.3. http://www.slack.net/~ant/
+// Sms_Snd_Emu 0.1.4. http://www.slack.net/~ant/
 
 #include "Sms_Apu.h"
 
@@ -9,22 +8,22 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
 // Sms_Osc
 
 Sms_Osc::Sms_Osc()
 {
-	output = NULL;
-	outputs [0] = NULL; // always stays NULL
-	outputs [1] = NULL;
-	outputs [2] = NULL;
-	outputs [3] = NULL;
+	output = 0;
+	outputs [0] = 0; // always stays NULL
+	outputs [1] = 0;
+	outputs [2] = 0;
+	outputs [3] = 0;
 }
 
 void Sms_Osc::reset()
@@ -45,7 +44,7 @@ inline void Sms_Square::reset()
 	Sms_Osc::reset();
 }
 
-void Sms_Square::run( sms_time_t time, sms_time_t end_time )
+void Sms_Square::run( blip_time_t time, blip_time_t end_time )
 {
 	if ( !volume || period <= 128 )
 	{
@@ -99,17 +98,17 @@ void Sms_Square::run( sms_time_t time, sms_time_t end_time )
 
 // Sms_Noise
 
-static const int noise_periods [3] = { 0x100, 0x200, 0x400 };
+static int const noise_periods [3] = { 0x100, 0x200, 0x400 };
 
 inline void Sms_Noise::reset()
 {
 	period = &noise_periods [0];
 	shifter = 0x8000;
-	tap = 12;
+	feedback = 0x9000;
 	Sms_Osc::reset();
 }
 
-void Sms_Noise::run( sms_time_t time, sms_time_t end_time )
+void Sms_Noise::run( blip_time_t time, blip_time_t end_time )
 {
 	int amp = volume;
 	if ( shifter & 1 )
@@ -137,9 +136,9 @@ void Sms_Noise::run( sms_time_t time, sms_time_t end_time )
 		
 		do
 		{
-			int changed = (shifter + 1) & 2; // set if prev and next bits differ
-			shifter = (((shifter << 15) ^ (shifter << tap)) & 0x8000) | (shifter >> 1);
-			if ( changed )
+			int changed = shifter + 1;
+			shifter = (feedback & -(shifter & 1)) ^ (shifter >> 1);
+			if ( changed & 2 ) // true if bits 0 and 1 differ
 			{
 				delta = -delta;
 				synth.offset_inline( time, delta, output );
@@ -203,11 +202,24 @@ void Sms_Apu::output( Blip_Buffer* center, Blip_Buffer* left, Blip_Buffer* right
 		osc_output( i, center, left, right );
 }
 
-void Sms_Apu::reset()
+void Sms_Apu::reset( unsigned feedback, int noise_width )
 {
-	stereo_found = false;
 	last_time = 0;
 	latch = 0;
+	
+	if ( !feedback || !noise_width )
+	{
+		feedback = 0x0009;
+		noise_width = 16;
+	}
+	// convert to "Galios configuration"
+	looped_feedback = 1 << (noise_width - 1);
+	noise_feedback  = 0;
+	while ( noise_width-- )
+	{
+		noise_feedback = (noise_feedback << 1) | (feedback & 1);
+		feedback >>= 1;
+	}
 	
 	squares [0].reset();
 	squares [1].reset();
@@ -215,7 +227,7 @@ void Sms_Apu::reset()
 	noise.reset();
 }
 
-void Sms_Apu::run_until( sms_time_t end_time )
+void Sms_Apu::run_until( blip_time_t end_time )
 {
 	require( end_time >= last_time ); // end_time must not be before previous time
 	
@@ -227,9 +239,7 @@ void Sms_Apu::run_until( sms_time_t end_time )
 			Sms_Osc& osc = *oscs [i];
 			if ( osc.output )
 			{
-				if ( osc.output != osc.outputs [3] )
-					stereo_found = true; // playing on side output
-				
+				osc.output->set_modified();
 				if ( i < 3 )
 					squares [i].run( last_time, end_time );
 				else
@@ -241,20 +251,16 @@ void Sms_Apu::run_until( sms_time_t end_time )
 	}
 }
 
-bool Sms_Apu::end_frame( sms_time_t end_time )
+void Sms_Apu::end_frame( blip_time_t end_time )
 {
 	if ( end_time > last_time )
 		run_until( end_time );
 	
 	assert( last_time >= end_time );
 	last_time -= end_time;
-	
-	bool result = stereo_found;
-	stereo_found = false;
-	return result;
 }
 
-void Sms_Apu::write_ggstereo( sms_time_t time, int data )
+void Sms_Apu::write_ggstereo( blip_time_t time, int data )
 {
 	require( (unsigned) data <= 0xFF );
 	
@@ -270,18 +276,21 @@ void Sms_Apu::write_ggstereo( sms_time_t time, int data )
 		if ( osc.output != old_output && osc.last_amp )
 		{
 			if ( old_output )
+			{
+				old_output->set_modified();
 				square_synth.offset( time, -osc.last_amp, old_output );
+			}
 			osc.last_amp = 0;
 		}
 	}
 }
 
-static const unsigned char volumes [16] = {
-	// volumes [i] = 64 * pow( 1.26, 15 - i ) / pow( 1.26, 15 )
+// volumes [i] = 64 * pow( 1.26, 15 - i ) / pow( 1.26, 15 )
+static unsigned char const volumes [16] = {
 	64, 50, 39, 31, 24, 19, 15, 12, 9, 7, 5, 4, 3, 2, 1, 0
 };
 
-void Sms_Apu::write_data( sms_time_t time, int data )
+void Sms_Apu::write_data( blip_time_t time, int data )
 {
 	require( (unsigned) data <= 0xFF );
 	
@@ -311,9 +320,7 @@ void Sms_Apu::write_data( sms_time_t time, int data )
 		else
 			noise.period = &squares [2].period;
 		
-		int const tap_disabled = 16;
-		noise.tap = (data & 0x04) ? 12 : tap_disabled;
+		noise.feedback = (data & 0x04) ? noise_feedback : looped_feedback;
 		noise.shifter = 0x8000;
 	}
 }
-

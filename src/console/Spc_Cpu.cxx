@@ -1,9 +1,6 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 #include "Spc_Cpu.h"
-
-#include <limits.h>
 
 #include "blargg_endian.h"
 #include "Snes_Spc.h"
@@ -14,12 +11,12 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
 // Several instructions are commented out (or not even implemented). These aren't
 // used by the SPC files tested.
@@ -43,6 +40,7 @@ Spc_Cpu::Spc_Cpu( Snes_Spc* e, uint8_t* ram_in ) : ram( ram_in ), emu( *e )
 {
 	remain_ = 0;
 	BOOST_STATIC_ASSERT( sizeof (int) >= 4 );
+	blargg_verify_byte_order();
 }
 
 #define READ( addr )            (emu.read( addr ))
@@ -65,7 +63,7 @@ void Spc_Cpu::write( spc_addr_t addr, int data )
 }
 
 // Cycle table derived from text copy of SPC-700 manual (using regular expressions)
-static const unsigned char cycle_table [0x100] = {
+static unsigned char const cycle_table [0x100] = {
 //  0 1 2 3 4 5 6 7 8 9 A B C D E F
 	2,8,4,5,3,4,3,6,2,6,5,4,5,4,6,8, // 0
 	2,8,4,5,4,5,5,6,5,5,6,5,2,2,4,6, // 1
@@ -90,11 +88,9 @@ static const unsigned char cycle_table [0x100] = {
 unsigned Spc_Cpu::mem_bit( spc_addr_t pc )
 {
 	unsigned addr = READ_PROG16( pc );
-	unsigned t = READ( addr & 0x1fff ) >> (addr >> 13);
+	unsigned t = READ( addr & 0x1FFF ) >> (addr >> 13);
 	return (t << 8) & 0x100;
 }
-
-#include BLARGG_ENABLE_OPTIMIZER
 
 spc_time_t Spc_Cpu::run( spc_time_t cycle_count )
 {
@@ -105,7 +101,7 @@ spc_time_t Spc_Cpu::run( spc_time_t cycle_count )
 	// Stack pointer is kept one greater than usual SPC stack pointer to allow
 	// common pre-decrement and post-increment memory instructions that some
 	// processors have. Address wrap-around isn't supported.
-	#define PUSH( v )       (*--sp = (v))
+	#define PUSH( v )       (*--sp = uint8_t (v))
 	#define PUSH16( v )     (sp -= 2, SET_LE16( sp, v ))
 	#define POP()           (*sp++)
 	#define SET_SP( v )     (sp = ram + 0x101 + (v))
@@ -115,7 +111,7 @@ spc_time_t Spc_Cpu::run( spc_time_t cycle_count )
 	SET_SP( r.sp );
 	
 	// registers
-	unsigned pc = r.pc;
+	unsigned pc = (unsigned) r.pc;
 	int a = r.a;
 	int x = r.x;
 	int y = r.y;
@@ -149,9 +145,9 @@ spc_time_t Spc_Cpu::run( spc_time_t cycle_count )
 		dp = (in << 3) & 0x100;                     \
 	} while ( 0 )
 	
-	uint8_t status;
+	int status;
 	int c;  // store C as 'c' & 0x100.
-	int nz; // Z set if (nz & 0xff) == 0, N set if (nz & 0x880) != 0
+	int nz; // Z set if (nz & 0xFF) == 0, N set if (nz & 0x880) != 0
 	unsigned dp; // direct page base
 	{
 		int temp = r.status;
@@ -173,9 +169,9 @@ loop:
 	check( (unsigned) pc < 0x10000 );
 	check( (unsigned) GET_SP() < 0x100 );
 	
-	assert( (unsigned) a < 0x100 );
-	assert( (unsigned) x < 0x100 );
-	assert( (unsigned) y < 0x100 );
+	check( (unsigned) a < 0x100 );
+	check( (unsigned) x < 0x100 );
+	check( (unsigned) y < 0x100 );
 	
 	unsigned opcode = READ_PROG( pc );
 	pc++;
@@ -412,14 +408,14 @@ loop:
 	case 0x68: // CMP imm
 		nz = a - data;
 		c = ~nz;
-		nz &= 0xff;
+		nz &= 0xFF;
 		goto inc_pc_loop;
 	
 	case 0x79: // CMP (X),(Y)
 		data = READ_DP( x );
 		nz = data - READ_DP( y );
 		c = ~nz;
-		nz &= 0xff;
+		nz &= 0xFF;
 		goto loop;
 	
 	case 0x69: // CMP (dp),(dp)
@@ -428,7 +424,7 @@ loop:
 		pc++;
 		nz = READ_DP( READ_PROG( pc ) ) - data;
 		c = ~nz;
-		nz &= 0xff;
+		nz &= 0xFF;
 		goto inc_pc_loop;
 	
 	case 0x3E: // CMP X,dp
@@ -442,7 +438,7 @@ loop:
 	case 0xC8: // CMP X,imm
 		nz = x - data;
 		c = ~nz;
-		nz &= 0xff;
+		nz &= 0xFF;
 		goto inc_pc_loop;
 	
 	case 0x7E: // CMP Y,dp
@@ -456,7 +452,7 @@ loop:
 	case 0xAD: // CMP Y,imm
 		nz = y - data;
 		c = ~nz;
-		nz &= 0xff;
+		nz &= 0xFF;
 		goto inc_pc_loop;
 	
 	{
@@ -489,7 +485,7 @@ loop:
 		nz = a;
 	adc_data: {
 		if ( opcode & 0x20 )
-			data ^= 0xff; // SBC
+			data ^= 0xFF; // SBC
 		int carry = (c >> 8) & 1;
 		int ov = (nz ^ 0x80) + carry + (BOOST::int8_t) data; // sign-extend
 		int hc = (nz & 15) + carry;
@@ -613,7 +609,7 @@ loop:
 
 	case 0xBA: // MOVW YA,dp
 		a = READ_DP( data );
-		nz = (a & 0x7f) | (a >> 1);
+		nz = (a & 0x7F) | (a >> 1);
 		y = READ_DP( uint8_t (data + 1) );
 		nz |= y;
 		goto inc_pc_loop;
@@ -632,7 +628,7 @@ loop:
 		// low byte
 		int temp = READ( data );
 		temp += ((opcode >> 4) & 2) - 1; // +1 for INCW, -1 for DECW
-		nz = ((temp >> 1) | temp) & 0x7f;
+		nz = ((temp >> 1) | temp) & 0x7F;
 		WRITE( data, (uint8_t) temp );
 		
 		// high byte
@@ -665,12 +661,12 @@ loop:
 		// add low byte (A)
 		temp += a;
 		a = (uint8_t) temp;
-		nz = (temp | (temp >> 1)) & 0x7f;
+		nz = (temp | (temp >> 1)) & 0x7F;
 		
 		// add high byte (Y)
 		temp >>= 8;
 		c = y + temp;
-		nz = (nz | c) & 0xff;
+		nz = (nz | c) & 0xFF;
 		
 		// half-carry (temporary avoids CodeWarrior optimizer bug)
 		unsigned hc = (c & 15) - (y & 15);
@@ -686,12 +682,12 @@ loop:
 	
 	case 0x5A: { // CMPW YA,dp
 		int temp = a - READ_DP( data );
-		nz = ((temp >> 1) | temp) & 0x7f;
+		nz = ((temp >> 1) | temp) & 0x7F;
 		temp = y + (temp >> 8);
 		temp -= READ_DP( uint8_t (data + 1) );
 		nz |= temp;
 		c = ~temp;
-		nz &= 0xff;
+		nz &= 0xFF;
 		goto inc_pc_loop;
 	}
 	
@@ -700,7 +696,7 @@ loop:
 	case 0xCF: { // MUL YA
 		unsigned temp = y * a;
 		a = (uint8_t) temp;
-		nz = ((temp >> 1) | temp) & 0x7f;
+		nz = ((temp >> 1) | temp) & 0x7F;
 		y = temp >> 8;
 		nz |= y;
 		goto loop;
@@ -826,7 +822,7 @@ loop:
 	case 0x0F: // BRK
 		check( false ); // untested
 		PUSH16( pc + 1 );
-		pc = READ_PROG16( 0xffde ); // vector address verified
+		pc = READ_PROG16( 0xFFDE ); // vector address verified
 		int temp;
 		CALC_STATUS( temp );
 		PUSH( temp );
@@ -836,7 +832,7 @@ loop:
 	case 0x4F: // PCALL offset
 		pc++;
 		PUSH16( pc );
-		pc = 0xff00 + data;
+		pc = 0xFF00 + data;
 		goto loop;
 	
 	case 0x01: // TCALL n
@@ -856,7 +852,7 @@ loop:
 	case 0xE1:
 	case 0xF1:
 		PUSH16( pc );
-		pc = READ_PROG16( 0xffde - (opcode >> 3) );
+		pc = READ_PROG16( 0xFFDE - (opcode >> 3) );
 		goto loop;
 	
 // 14. STACK OPERATION COMMANDS
@@ -977,19 +973,19 @@ loop:
 	case 0xEA: { // NOT1 mem.bit
 		data = READ_PROG16( pc );
 		pc += 2;
-		unsigned temp = READ( data & 0x1fff );
+		unsigned temp = READ( data & 0x1FFF );
 		temp ^= 1 << (data >> 13);
-		WRITE( data & 0x1fff, temp );
+		WRITE( data & 0x1FFF, temp );
 		goto loop;
 	}
 	
 	case 0xCA: { // MOV1 mem.bit,C
 		data = READ_PROG16( pc );
 		pc += 2;
-		unsigned temp = READ( data & 0x1fff );
+		unsigned temp = READ( data & 0x1FFF );
 		unsigned bit = data >> 13;
 		temp = (temp & ~(1 << bit)) | (((c >> 8) & 1) << bit);
-		WRITE( data & 0x1fff, temp );
+		WRITE( data & 0x1FFF, temp );
 		goto loop;
 	}
 	
@@ -1052,15 +1048,14 @@ stop:
 	{
 		int temp;
 		CALC_STATUS( temp );
-		r.status = temp;
+		r.status = (uint8_t) temp;
 	}
 	
 	r.pc = pc;
-	r.sp = GET_SP();
-	r.a = a;
-	r.x = x;
-	r.y = y;
+	r.sp = (uint8_t) GET_SP();
+	r.a  = (uint8_t) a;
+	r.x  = (uint8_t) x;
+	r.y  = (uint8_t) y;
 	
 	return remain_;
 }
-

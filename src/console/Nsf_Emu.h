@@ -1,8 +1,6 @@
+// Nintendo NES/Famicom NSF music file emulator
 
-// Nintendo Entertainment System (NES) NSF music file emulator
-
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef NSF_EMU_H
 #define NSF_EMU_H
 
@@ -10,14 +8,12 @@
 #include "Nes_Apu.h"
 #include "Nes_Cpu.h"
 
-typedef Nes_Emu Nsf_Emu;
-
-class Nes_Emu : public Classic_Emu {
+class Nsf_Emu : private Nes_Cpu, public Classic_Emu {
+	typedef Nes_Cpu cpu;
 public:
-
-	// Set internal gain, where 1.0 results in almost no clamping. Default gain
-	// roughly matches volume of other emulators.
-	Nes_Emu( double gain = 1.4 );
+	// Equalizer profiles for US NES and Japanese Famicom
+	static equalizer_t const nes_eq;
+	static equalizer_t const famicom_eq;
 	
 	// NSF file header
 	struct header_t
@@ -38,100 +34,73 @@ public:
 		byte speed_flags;
 		byte chip_flags;
 		byte unused [4];
-		
-		enum { song = 0 }; // no song titles
 	};
 	BOOST_STATIC_ASSERT( sizeof (header_t) == 0x80 );
 	
-	// Load NSF data
-	blargg_err_t load( Data_Reader& );
-	
-	// Load NSF using already-loaded header and remaining data
-	blargg_err_t load( header_t const&, Data_Reader& );
-	
-	// Header for currently loaded NSF
+	// Header for currently loaded file
 	header_t const& header() const { return header_; }
 	
-	// Equalizer profiles for US NES and Japanese Famicom
-	static equalizer_t const nes_eq;
-	static equalizer_t const famicom_eq;
+	static gme_type_t static_type() { return gme_nsf_type; }
 	
 public:
-	~Nes_Emu();
-	void start_track( int );
+	// deprecated
+	Music_Emu::load;
+	blargg_err_t load( header_t const& h, Data_Reader& in ) // use Remaining_Reader
+			{ return load_remaining_( &h, sizeof h, in ); }
+
+public:
+	Nsf_Emu();
+	~Nsf_Emu();
 	Nes_Apu* apu_() { return &apu; }
-	const char** voice_names() const;
 protected:
+	blargg_err_t track_info_( track_info_t*, int track ) const;
+	blargg_err_t load_( Data_Reader& );
+	blargg_err_t start_track_( int );
+	blargg_err_t run_clocks( blip_time_t&, int );
+	void set_tempo_( double );
 	void set_voice( int, Blip_Buffer*, Blip_Buffer*, Blip_Buffer* );
 	void update_eq( blip_eq_t const& );
-	blip_time_t run_clocks( blip_time_t, bool* );
-	virtual void call_play();
+	void unload();
 protected:
-	// initial state
 	enum { bank_count = 8 };
 	byte initial_banks [bank_count];
-	int initial_pcm_dac;
-	double gain;
-	bool needs_long_frames;
+	nes_addr_t init_addr;
+	nes_addr_t play_addr;
+	double clock_rate_;
 	bool pal_only;
-	unsigned init_addr;
-	unsigned play_addr;
-	int exp_flags;
 	
 	// timing
+	Nes_Cpu::registers_t saved_state;
 	nes_time_t next_play;
-	long play_period;
+	nes_time_t play_period;
 	int play_extra;
-	nes_time_t clock() const;
-	nes_time_t next_irq( nes_time_t end_time );
-	static void irq_changed( void* );
+	int play_ready;
 	
-	// rom
-	int total_banks;
-	blargg_vector<byte> rom;
-	static int read_code( Nsf_Emu*, nes_addr_t );
-	void unload();
+	enum { rom_begin = 0x8000 };
+	enum { bank_select_addr = 0x5FF8 };
+	enum { bank_size = 0x1000 };
+	Rom_Data<bank_size> rom;
 	
-	blargg_err_t init_sound();
+public: private: friend class Nes_Cpu;
+	void cpu_jsr( nes_addr_t );
+	int cpu_read( nes_addr_t );
+	void cpu_write( nes_addr_t, int );
+	void cpu_write_misc( nes_addr_t, int );
+	enum { badop_addr = bank_select_addr };
 	
-	// expansion sound
-	
+private:
 	class Nes_Namco_Apu* namco;
-	static int read_namco( Nsf_Emu*, nes_addr_t );
-	static void write_namco( Nsf_Emu*, nes_addr_t, int );
-	static void write_namco_addr( Nsf_Emu*, nes_addr_t, int );
-	
-	class Nes_Vrc6_Apu* vrc6;
-	static void write_vrc6( Nsf_Emu*, nes_addr_t, int );
-	
-	class Nes_Fme7_Apu* fme7;
-	static void write_fme7( Nsf_Emu*, nes_addr_t, int );
-	
-	// large objects
+	class Nes_Vrc6_Apu*  vrc6;
+	class Nes_Fme7_Apu*  fme7;
+	Nes_Apu apu;
+	static int pcm_read( void*, nes_addr_t );
+	blargg_err_t init_sound();
 	
 	header_t header_;
 	
-	// cpu
-	Nes_Cpu cpu;
-	void cpu_jsr( unsigned pc, int adj );
-	static int read_low_mem( Nsf_Emu*, nes_addr_t );
-	static void write_low_mem( Nsf_Emu*, nes_addr_t, int );
-	static int read_unmapped( Nsf_Emu*, nes_addr_t );
-	static void write_unmapped( Nsf_Emu*, nes_addr_t, int );
-	static void write_exram( Nsf_Emu*, nes_addr_t, int );
-	
-	// apu
-	Nes_Apu apu;
-	static int read_snd( Nsf_Emu*, nes_addr_t );
-	static void write_snd( Nsf_Emu*, nes_addr_t, int );
-	static int pcm_read( void*, nes_addr_t );
-	
-	// sram
-	enum { sram_size = 0x2000 };
-	byte sram [sram_size];
-	static int read_sram( Nsf_Emu*, nes_addr_t );
-	static void write_sram( Nsf_Emu*, nes_addr_t, int );
+	enum { sram_addr = 0x6000 };
+	byte sram [0x2000];
+	byte unmapped_code [Nes_Cpu::page_size + 8];
 };
 
 #endif
-

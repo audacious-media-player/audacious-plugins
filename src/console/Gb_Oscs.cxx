@@ -1,5 +1,4 @@
-
-// Gb_Snd_Emu 0.1.4. http://www.slack.net/~ant/
+// Gb_Snd_Emu 0.1.5. http://www.slack.net/~ant/
 
 #include "Gb_Apu.h"
 
@@ -11,12 +10,12 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
 // Gb_Osc
 
@@ -53,7 +52,7 @@ bool Gb_Env::write_register( int reg, int data )
 	switch ( reg )
 	{
 	case 1:
-		length = 64 - (regs [1] & 0x3f);
+		length = 64 - (regs [1] & 0x3F);
 		break;
 	
 	case 2:
@@ -111,7 +110,7 @@ void Gb_Square::clock_sweep()
 	}
 }
 
-void Gb_Square::run( gb_time_t time, gb_time_t end_time, int playing )
+void Gb_Square::run( blip_time_t time, blip_time_t end_time, int playing )
 {
 	if ( sweep_freq == 2048 )
 		playing = false;
@@ -167,9 +166,7 @@ void Gb_Square::run( gb_time_t time, gb_time_t end_time, int playing )
 
 // Gb_Noise
 
-#include BLARGG_ENABLE_OPTIMIZER
-
-void Gb_Noise::run( gb_time_t time, gb_time_t end_time, int playing )
+void Gb_Noise::run( blip_time_t time, blip_time_t end_time, int playing )
 {
 	int amp = volume & playing;
 	int tap = 13 - (regs [3] & 8);
@@ -251,7 +248,7 @@ inline void Gb_Wave::write_register( int reg, int data )
 	}
 }
 
-void Gb_Wave::run( gb_time_t time, gb_time_t end_time, int playing )
+void Gb_Wave::run( blip_time_t time, blip_time_t end_time, int playing )
 {
 	int volume_shift = (volume - 1) & 7; // volume = 0 causes shift = 7
 	int amp = (wave [wave_pos] >> volume_shift & playing) * 2;
@@ -330,4 +327,3 @@ void Gb_Apu::write_osc( int index, int reg, int data )
 			noise.bits = 0x7FFF;
 	}
 }
-

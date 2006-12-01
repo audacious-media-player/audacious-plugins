@@ -1,8 +1,6 @@
-
 // Private oscillators used by Nes_Apu
 
-// Nes_Snd_Emu 0.1.7
-
+// Nes_Snd_Emu 0.1.8
 #ifndef NES_OSCS_H
 #define NES_OSCS_H
 
@@ -22,7 +20,7 @@ struct Nes_Osc
 	
 	void clock_length( int halt_mask );
 	int period() const {
-		return (regs [3] & 7) * 0x100 + (regs [2] & 0xff);
+		return (regs [3] & 7) * 0x100 + (regs [2] & 0xFF);
 	}
 	void reset() {
 		delay = 0;
@@ -69,6 +67,8 @@ struct Nes_Square : Nes_Envelope
 		sweep_delay = 0;
 		Nes_Envelope::reset();
 	}
+	nes_time_t maintain_phase( nes_time_t time, nes_time_t end_time,
+			nes_time_t timer_period );
 };
 
 // Nes_Triangle
@@ -84,9 +84,11 @@ struct Nes_Triangle : Nes_Osc
 	void clock_linear_counter();
 	void reset() {
 		linear_counter = 0;
-		phase = phase_range;
+		phase = 1;
 		Nes_Osc::reset();
 	}
+	nes_time_t maintain_phase( nes_time_t time, nes_time_t end_time,
+			nes_time_t timer_period );
 };
 
 // Nes_Noise
@@ -124,8 +126,8 @@ struct Nes_Dmc : Nes_Osc
 	bool pal_mode;
 	bool nonlinear;
 	
-	int (*rom_reader)( void*, nes_addr_t ); // needs to be initialized to rom read function
-	void* rom_reader_data;
+	int (*prg_reader)( void*, nes_addr_t ); // needs to be initialized to prg read function
+	void* prg_reader_data;
 	
 	Nes_Apu* apu;
 	
@@ -143,4 +145,3 @@ struct Nes_Dmc : Nes_Osc
 };
 
 #endif
-

@@ -1,10 +1,9 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 #include "Gym_Emu.h"
 
-#include <string.h>
 #include "blargg_endian.h"
+#include <string.h>
 
 /* Copyright (C) 2003-2006 Shay Green. This module is free software; you
 can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -12,152 +11,83 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
-double const gain = 3.0;
+double const min_tempo = 0.25;
 double const oversample_factor = 5 / 3.0;
+double const fm_gain = 3.0;
 
 const long base_clock = 53700300;
 const long clock_rate = base_clock / 15;
 
 Gym_Emu::Gym_Emu()
 {
-	data = NULL;
-	pos = NULL;
-}
-
-Gym_Emu::~Gym_Emu()
-{
-	unload();
-}
-
-void Gym_Emu::unload()
-{
-	data = NULL;
-	pos = NULL;
-	set_track_ended( false );
-	mem.clear();
-}
-
-blargg_err_t Gym_Emu::set_sample_rate( long sample_rate )
-{
-	blip_eq_t eq( -32, 8000, sample_rate );
-	apu.treble_eq( eq );
-	apu.volume( 0.135 * gain );
-	dac_synth.treble_eq( eq );
-	dac_synth.volume( 0.125 / 256 * gain );
+	data = 0;
+	pos  = 0;
+	set_type( gme_gym_type );
 	
-	BLARGG_RETURN_ERR( blip_buf.set_sample_rate( sample_rate, 1000 / 60 ) );
-	blip_buf.clock_rate( clock_rate );
-	
-	double factor = Dual_Resampler::setup( oversample_factor, 0.990, gain );
-	double fm_sample_rate = sample_rate * factor;
-	BLARGG_RETURN_ERR( fm.set_rate( fm_sample_rate, base_clock / 7.0 ) );
-	BLARGG_RETURN_ERR( Dual_Resampler::resize( sample_rate / 60 ) );
-	
-	return Music_Emu::set_sample_rate( sample_rate );
-}
-
-void Gym_Emu::mute_voices( int mask )
-{
-	Music_Emu::mute_voices( mask );
-	fm.mute_voices( mask );
-	dac_muted = mask & 0x40;
-	apu.output( (mask & 0x80) ? NULL : &blip_buf );
-}
-
-const char** Gym_Emu::voice_names() const
-{
-	static const char* names [] = {
+	static const char* const names [] = {
 		"FM 1", "FM 2", "FM 3", "FM 4", "FM 5", "FM 6", "PCM", "PSG"
 	};
-	return names;
+	set_voice_names( names );
+	set_silence_lookahead( 1 ); // tracks should already be trimmed
 }
 
-static blargg_err_t check_header( const Gym_Emu::header_t& h, int* data_offset = NULL )
+Gym_Emu::~Gym_Emu() { }
+
+// Track info
+
+static void get_gym_info( Gym_Emu::header_t const& h, long length, track_info_t* out )
 {
-	if ( memcmp( h.tag, "GYMX", 4 ) == 0 )
+	if ( !memcmp( h.tag, "GYMX", 4 ) )
 	{
-		if ( memcmp( h.packed, "\0\0\0\0", 4 ) != 0 )
-			return "Packed GYM file not supported";
+		length = length * 50 / 3; // 1000 / 60
+		long loop = get_le32( h.loop_start );
+		if ( loop )
+		{
+			out->intro_length = loop * 50 / 3;
+			out->loop_length  = length - out->intro_length;
+		}
+		else
+		{
+			out->length = length;
+			out->intro_length = length; // make it clear that track is no longer than length
+			out->loop_length = 0;
+		}
 		
-		if ( data_offset )
-			*data_offset = sizeof h;
+		// more stupidity where the field should have been left
+		if ( strcmp( h.song, "Unknown Song" ) )
+			GME_COPY_FIELD( h, out, song );
+		
+		if ( strcmp( h.game, "Unknown Game" ) )
+			GME_COPY_FIELD( h, out, game );
+		
+		if ( strcmp( h.copyright, "Unknown Publisher" ) )
+			GME_COPY_FIELD( h, out, copyright );
+		
+		if ( strcmp( h.dumper, "Unknown Person" ) )
+			GME_COPY_FIELD( h, out, dumper );
+		
+		if ( strcmp( h.comment, "Header added by YMAMP" ) )
+			GME_COPY_FIELD( h, out, comment );
 	}
-	else if ( h.tag [0] != 0 && h.tag [0] != 1 )
-	{
-		// not a headerless GYM
-		// to do: more thorough check, or just require a damn header
-		return "Not a GYM file";
-	}
-	
-	return blargg_success;
 }
 
-blargg_err_t Gym_Emu::load_( const void* file, long data_offset, long file_size )
+blargg_err_t Gym_Emu::track_info_( track_info_t* out, int ) const
 {
-	require( blip_buf.length() );
-	
-	data = (const byte*) file + data_offset;
-	data_end = (const byte*) file + file_size;
-	
-	loop_begin = NULL;
-	if ( data_offset )
-		header_ = *(header_t*) file;
-	else
-		memset( &header_, 0, sizeof header_ );
-	
-	set_voice_count( 8 );
-	set_track_count( 1 );
-	remute_voices();
-	
-	return blargg_success;
+	get_gym_info( header_, track_length(), out );
+	return 0;
 }
 
-blargg_err_t Gym_Emu::load( const void* file, long file_size )
-{
-	unload();
-	
-	if ( file_size < (int) sizeof (header_t) )
-		return "Not a GYM file";
-	
-	int data_offset = 0;
-	BLARGG_RETURN_ERR( check_header( *(header_t*) file, &data_offset ) );
-	
-	return load_( file, data_offset, file_size );
-}
-
-blargg_err_t Gym_Emu::load( Data_Reader& in )
-{
-	header_t h;
-	BLARGG_RETURN_ERR( in.read( &h, sizeof h ) );
-	return load( h, in );
-}
-
-blargg_err_t Gym_Emu::load( const header_t& h, Data_Reader& in )
-{
-	unload();
-	
-	int data_offset = 0;
-	BLARGG_RETURN_ERR( check_header( h, &data_offset ) );
-	
-	BLARGG_RETURN_ERR( mem.resize( sizeof h + in.remain() ) );
-	memcpy( mem.begin(), &h, sizeof h );
-	BLARGG_RETURN_ERR( in.read( &mem [sizeof h], mem.size() - sizeof h ) );
-	
-	return load_( mem.begin(), data_offset, mem.size() );
-}
-
-long Gym_Emu::track_length() const
+static long gym_track_length( byte const* p, byte const* end )
 {
 	long time = 0;
-	const byte* p = data;
-	while ( p < data_end )
+	while ( p < end )
 	{
 		switch ( *p++ )
 		{
@@ -178,23 +108,141 @@ long Gym_Emu::track_length() const
 	return time;
 }
 
-void Gym_Emu::start_track( int track )
+long Gym_Emu::track_length() const { return gym_track_length( data, data_end ); }
+
+static blargg_err_t check_header( byte const* in, long size, int* data_offset = 0 )
 {
-	require( data );
+	if ( size < 4 )
+		return gme_wrong_file_type;
 	
-	Music_Emu::start_track( track );
+	if ( memcmp( in, "GYMX", 4 ) == 0 )
+	{
+		if ( size < (long) sizeof (Gym_Emu::header_t) + 1 )
+			return gme_wrong_file_type;
+		
+		if ( memcmp( ((Gym_Emu::header_t const*) in)->packed, "\0\0\0\0", 4 ) != 0 )
+			return "Packed GYM file not supported";
+		
+		if ( data_offset )
+			*data_offset = sizeof (Gym_Emu::header_t);
+	}
+	else if ( *in != 0 && *in != 1 )
+	{
+		return gme_wrong_file_type;
+	}
 	
-	pos = &data [0];
+	return 0;
+}
+
+struct Gym_File : Gme_Info_
+{
+	byte const* file_begin;
+	byte const* file_end;
+	int data_offset;
+	
+	Gym_File() { set_type( gme_gym_type ); }
+	
+	blargg_err_t load_mem_( byte const* in, long size )
+	{
+		file_begin = in;
+		file_end   = in + size;
+		data_offset = 0;
+		return check_header( in, size, &data_offset );
+	}
+	
+	blargg_err_t track_info_( track_info_t* out, int ) const
+	{
+		long length = gym_track_length( &file_begin [data_offset], file_end );
+		get_gym_info( *(Gym_Emu::header_t const*) file_begin, length, out );
+		return 0;
+	}
+};
+
+static Music_Emu* new_gym_emu () { return BLARGG_NEW Gym_Emu ; }
+static Music_Emu* new_gym_file() { return BLARGG_NEW Gym_File; }
+
+gme_type_t_ const gme_gym_type [1] = { "Sega Genesis", 1, &new_gym_emu, &new_gym_file, "GYM", 0 };
+
+// Setup
+
+blargg_err_t Gym_Emu::set_sample_rate_( long sample_rate )
+{
+	blip_eq_t eq( -32, 8000, sample_rate );
+	apu.treble_eq( eq );
+	dac_synth.treble_eq( eq );
+	apu.volume( 0.135 * fm_gain * gain() );
+	dac_synth.volume( 0.125 / 256 * fm_gain * gain() );
+	double factor = Dual_Resampler::setup( oversample_factor, 0.990, fm_gain * gain() );
+	fm_sample_rate = sample_rate * factor;
+	
+	RETURN_ERR( blip_buf.set_sample_rate( sample_rate, int (1000 / 60.0 / min_tempo) ) );
+	blip_buf.clock_rate( clock_rate );
+	
+	RETURN_ERR( fm.set_rate( fm_sample_rate, base_clock / 7.0 ) );
+	RETURN_ERR( Dual_Resampler::reset( long (1.0 / 60 / min_tempo * sample_rate) ) );
+	
+	return 0;
+}
+
+void Gym_Emu::set_tempo_( double t )
+{
+	if ( t < min_tempo )
+	{
+		set_tempo( min_tempo );
+		return;
+	}
+	
+	if ( blip_buf.sample_rate() )
+	{
+		clocks_per_frame = long (clock_rate / 60 / tempo());
+		Dual_Resampler::resize( long (sample_rate() / (60.0 * tempo())) );
+	}
+}
+
+void Gym_Emu::mute_voices_( int mask )
+{
+	Music_Emu::mute_voices_( mask );
+	fm.mute_voices( mask );
+	dac_muted = mask & 0x40;
+	apu.output( (mask & 0x80) ? 0 : &blip_buf );
+}
+
+blargg_err_t Gym_Emu::load_mem_( byte const* in, long size )
+{
+	int offset = 0;
+	RETURN_ERR( check_header( in, size, &offset ) );
+	set_voice_count( 8 );
+	
+	data     = in + offset;
+	data_end = in + size;
+	loop_begin = 0;
+	
+	if ( offset )
+		header_ = *(header_t const*) in;
+	else
+		memset( &header_, 0, sizeof header_ );
+	
+	return 0;
+}
+
+// Emulation
+
+blargg_err_t Gym_Emu::start_track_( int track )
+{
+	RETURN_ERR( Music_Emu::start_track_( track ) );
+	
+	pos         = data;
 	loop_remain = get_le32( header_.loop_start );
 	
 	prev_dac_count = 0;
-	dac_enabled = false;
-	dac_amp = -1;
+	dac_enabled    = false;
+	dac_amp        = -1;
 	
 	fm.reset();
 	apu.reset();
 	blip_buf.clear();
 	Dual_Resampler::clear();
+	return 0;
 }
 
 void Gym_Emu::run_dac( int dac_count )
@@ -228,8 +276,7 @@ void Gym_Emu::run_dac( int dac_count )
 	}
 	
 	// Evenly space samples within buffer section being used
-	blip_resampled_time_t period =
-			blip_buf.resampled_duration( clock_rate / 60 ) / rate_count;
+	blip_resampled_time_t period = blip_buf.resampled_duration( clocks_per_frame ) / rate_count;
 	
 	blip_resampled_time_t time = blip_buf.resampled_time( 0 ) +
 			period * start + (period >> 1);
@@ -296,8 +343,7 @@ void Gym_Emu::parse_frame()
 	// loop
 	if ( pos >= data_end )
 	{
-		if ( pos > data_end )
-			log_error();
+		check( pos == data_end );
 		
 		if ( loop_begin )
 			pos = loop_begin;
@@ -325,26 +371,8 @@ int Gym_Emu::play_frame( blip_time_t blip_time, int sample_count, sample_t* buf 
 	return sample_count;
 }
 
-void Gym_Emu::play( long count, sample_t* out )
+blargg_err_t Gym_Emu::play_( long count, sample_t* out )
 {
-	require( pos );
-	
-	Dual_Resampler::play( count, out, blip_buf );
+	Dual_Resampler::dual_play( count, out, blip_buf );
+	return 0;
 }
-
-void Gym_Emu::skip( long count )
-{
-	// to do: figure out why total muting generated access violation on MorphOS
-	const int buf_size = 1024;
-	sample_t buf [buf_size];
-	
-	while ( count )
-	{
-		int n = buf_size;
-		if ( n > count )
-			n = count;
-		count -= n;
-		play( n, buf );
-	}
-}
-

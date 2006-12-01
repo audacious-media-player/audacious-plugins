@@ -1,8 +1,6 @@
-
 // Private oscillators used by Gb_Apu
 
-// Gb_Snd_Emu 0.1.4
-
+// Gb_Snd_Emu 0.1.5
 #ifndef GB_OSCS_H
 #define GB_OSCS_H
 
@@ -52,7 +50,7 @@ struct Gb_Square : Gb_Env
 	
 	void reset();
 	void clock_sweep();
-	void run( gb_time_t, gb_time_t, int playing );
+	void run( blip_time_t, blip_time_t, int playing );
 };
 
 struct Gb_Noise : Gb_Env
@@ -61,7 +59,7 @@ struct Gb_Noise : Gb_Env
 	Synth const* synth;
 	unsigned bits;
 	
-	void run( gb_time_t, gb_time_t, int playing );
+	void run( blip_time_t, blip_time_t, int playing );
 };
 
 struct Gb_Wave : Gb_Osc
@@ -73,7 +71,7 @@ struct Gb_Wave : Gb_Osc
 	BOOST::uint8_t wave [wave_size];
 	
 	void write_register( int, int );
-	void run( gb_time_t, gb_time_t, int playing );
+	void run( blip_time_t, blip_time_t, int playing );
 };
 
 inline void Gb_Env::reset()
@@ -83,4 +81,3 @@ inline void Gb_Env::reset()
 }
 
 #endif
-

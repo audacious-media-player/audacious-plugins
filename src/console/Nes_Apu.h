@@ -1,24 +1,21 @@
-
 // NES 2A03 APU sound chip emulator
 
-// Nes_Snd_Emu 0.1.7
-
+// Nes_Snd_Emu 0.1.8
 #ifndef NES_APU_H
 #define NES_APU_H
 
-typedef long     nes_time_t; // CPU clock cycle count
+#include "blargg_common.h"
+
+typedef blargg_long nes_time_t; // CPU clock cycle count
 typedef unsigned nes_addr_t; // 16-bit memory address
 
 #include "Nes_Oscs.h"
 
-struct apu_snapshot_t;
-class Nonlinear_Buffer;
+struct apu_state_t;
+class Nes_Buffer;
 
 class Nes_Apu {
 public:
-	Nes_Apu();
-	~Nes_Apu();
-	
 	// Set buffer to generate all sound into, or disable sound if NULL
 	void output( Blip_Buffer* );
 	
@@ -51,11 +48,14 @@ public:
 	// Use PAL timing if pal_timing is true, otherwise use NTSC timing.
 	// Set the DMC oscillator's initial DAC value to initial_dmc_dac without
 	// any audible click.
-	void reset( bool pal_timing = false, int initial_dmc_dac = 0 );
+	void reset( bool pal_mode = false, int initial_dmc_dac = 0 );
 	
-	// Save/load snapshot of exact emulation state
-	void save_snapshot( apu_snapshot_t* out ) const;
-	void load_snapshot( apu_snapshot_t const& );
+	// Adjust frame period
+	void set_tempo( double );
+	
+	// Save/load exact emulation state
+	void save_state( apu_state_t* out ) const;
+	void load_state( apu_state_t const& );
 	
 	// Set overall volume (default is 1.0)
 	void volume( double );
@@ -94,7 +94,9 @@ public:
 	// accounted for (i.e. inserting CPU wait states).
 	void run_until( nes_time_t );
 	
-// End of public interface.
+public:
+	Nes_Apu();
+	BLARGG_DISABLE_NOTHROW
 private:
 	friend class Nes_Nonlinearizer;
 	void enable_nonlinear( double volume );
@@ -113,6 +115,7 @@ private:
 	Nes_Triangle        triangle;
 	Nes_Dmc             dmc;
 	
+	double tempo_;
 	nes_time_t last_time; // has been run until this time in current frame
 	nes_time_t last_dmc_time;
 	nes_time_t earliest_irq_;
@@ -130,6 +133,9 @@ private:
 	void irq_changed();
 	void state_restored();
 	void run_until_( nes_time_t );
+	
+	// TODO: remove
+	friend class Nes_Core;
 };
 
 inline void Nes_Apu::osc_output( int osc, Blip_Buffer* buf )
@@ -145,8 +151,8 @@ inline nes_time_t Nes_Apu::earliest_irq( nes_time_t ) const
 
 inline void Nes_Apu::dmc_reader( int (*func)( void*, nes_addr_t ), void* user_data )
 {
-	dmc.rom_reader_data = user_data;
-	dmc.rom_reader = func;
+	dmc.prg_reader_data = user_data;
+	dmc.prg_reader = func;
 }
 
 inline void Nes_Apu::irq_notifier( void (*func)( void* user_data ), void* user_data )
@@ -171,4 +177,3 @@ inline nes_time_t Nes_Dmc::next_read_time() const
 inline nes_time_t Nes_Apu::next_dmc_read_time() const { return dmc.next_read_time(); }
 
 #endif
-

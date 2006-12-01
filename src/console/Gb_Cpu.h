@@ -1,103 +1,93 @@
-
 // Nintendo Game Boy CPU emulator
+// Treats every instruction as taking 4 cycles
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef GB_CPU_H
 #define GB_CPU_H
 
 #include "blargg_common.h"
+#include "blargg_endian.h"
 
 typedef unsigned gb_addr_t; // 16-bit CPU address
 
-class Gbs_Emu;
-
-// Game Boy CPU emulator. Currently treats every instruction as taking 4 cycles.
 class Gb_Cpu {
-	typedef BOOST::uint8_t uint8_t;
-	enum { page_bits = 8 };
-	enum { page_count = 0x10000 >> page_bits };
-	uint8_t const* code_map [page_count + 1];
-	long remain_;
-	Gbs_Emu* callback_data;
+	enum { clocks_per_instr = 4 };
 public:
+	typedef BOOST::uint8_t uint8_t;
 	
-	Gb_Cpu( Gbs_Emu* );
+	// Clear registers and map all pages to unmapped
+	void reset( void* unmapped = 0 );
 	
-	// Memory read/write function types. Reader must return value from 0 to 255.
-	typedef int (*reader_t)( Gbs_Emu*, gb_addr_t );
-	typedef void (*writer_t)( Gbs_Emu*, gb_addr_t, int data );
+	// Map code memory (memory accessed via the program counter). Start and size
+	// must be multiple of page_size.
+	enum { page_size = 0x2000 };
+	void map_code( gb_addr_t start, unsigned size, void* code );
 	
-	// Clear registers, unmap memory, and map code pages to unmapped_page.
-	void reset( const void* unmapped_page = NULL, reader_t read = NULL, writer_t write = NULL );
-	
-	// Memory mapping functions take a block of memory of specified 'start' address
-	// and 'size' in bytes. Both start address and size must be a multiple of page_size.
-	enum { page_size = 1L << page_bits };
-	
-	// Map code memory to 'code' (memory accessed via the program counter)
-	void map_code( gb_addr_t start, unsigned long size, const void* code );
-	
-	// Map data memory to read and write functions
-	void map_memory( gb_addr_t start, unsigned long size, reader_t, writer_t );
-	
-	// Access memory as the emulated CPU does.
-	int  read( gb_addr_t );
-	void write( gb_addr_t, int data );
-	uint8_t* get_code( gb_addr_t ); // non-const to allow debugger to modify code
+	uint8_t* get_code( gb_addr_t );
 	
 	// Push a byte on the stack
 	void push_byte( int );
 	
 	// Game Boy Z80 registers. *Not* kept updated during a call to run().
-	struct registers_t {
-		gb_addr_t pc; // more than 16 bits to allow overflow detection
+	struct core_regs_t {
+	#if BLARGG_BIG_ENDIAN
+		uint8_t b, c, d, e, h, l, flags, a;
+	#else
+		uint8_t c, b, e, d, l, h, a, flags;
+	#endif
+	};
+	
+	struct registers_t : core_regs_t {
+		long pc; // more than 16 bits to allow overflow detection
 		BOOST::uint16_t sp;
-		uint8_t flags;
-		uint8_t a;
-		uint8_t b;
-		uint8_t c;
-		uint8_t d;
-		uint8_t e;
-		uint8_t h;
-		uint8_t l;
 	};
 	registers_t r;
 	
 	// Interrupt enable flag set by EI and cleared by DI
-	bool interrupts_enabled;
+	//bool interrupts_enabled; // unused
 	
 	// Base address for RST vectors (normally 0)
 	gb_addr_t rst_base;
 	
-	// Reasons that run() returns
-	enum result_t {
-		result_cycles,      // Requested number of cycles (or more) were executed
-		result_halt,        // PC is at HALT instruction
-		result_badop        // PC is at bad (unimplemented) instruction
-	};
+	// If CPU executes opcode 0xFF at this address, it treats as illegal instruction
+	enum { idle_addr = 0xF00D };
 	
-	// Run CPU for at least 'count' cycles, or until one of the above conditions
-	// arises. Returns reason for stopping.
-	result_t run( long count );
+	// Run CPU for at least 'count' cycles and return false, or return true if
+	// illegal instruction is encountered.
+	bool run( blargg_long count );
 	
 	// Number of clock cycles remaining for most recent run() call
-	long remain() const;
+	blargg_long remain() const { return state->remain * clocks_per_instr; }
 	
+	// Can read this many bytes past end of a page
+	enum { cpu_padding = 8 };
+	
+public:
+	Gb_Cpu() : rst_base( 0 ) { state = &state_; }
+	enum { page_shift = 13 };
+	enum { page_count = 0x10000 >> page_shift };
 private:
 	// noncopyable
 	Gb_Cpu( const Gb_Cpu& );
 	Gb_Cpu& operator = ( const Gb_Cpu& );
 	
-	reader_t data_reader [page_count + 1]; // extra entry catches address overflow
-	writer_t data_writer [page_count + 1];
-	void set_code_page( int, uint8_t const* );
+	struct state_t {
+		uint8_t* code_map [page_count + 1];
+		blargg_long remain;
+	};
+	state_t* state; // points to state_ or a local copy within run()
+	state_t state_;
+	
+	void set_code_page( int, uint8_t* );
 };
 
-inline long Gb_Cpu::remain() const
+inline BOOST::uint8_t* Gb_Cpu::get_code( gb_addr_t addr )
 {
-	return remain_;
+	return state->code_map [addr >> page_shift] + addr
+	#if !BLARGG_NONPORTABLE
+		% (unsigned) page_size
+	#endif
+	;
 }
 
 #endif
-

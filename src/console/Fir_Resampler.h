@@ -1,8 +1,6 @@
-
 // Finite impulse response (FIR) resampler with adjustable FIR size
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef FIR_RESAMPLER_H
 #define FIR_RESAMPLER_H
 
@@ -50,7 +48,7 @@ public:
 // Output
 	
 	// Number of extra input samples needed until 'count' output samples are available
-	int input_needed( long count ) const;
+	int input_needed( blargg_long count ) const;
 	
 	// Number of output samples available
 	int avail() const { return avail_( write_pos - &buf [width_ * stereo] ); }
@@ -66,14 +64,14 @@ protected:
 	int imp;
 	int const width_;
 	int const write_offset;
-	unsigned long skip_bits;
+	blargg_ulong skip_bits;
 	int step;
 	int input_per_cycle;
 	double ratio_;
 	sample_t* impulses;
 	
 	Fir_Resampler_( int width, sample_t* );
-	int avail_( long input_count ) const;
+	int avail_( blargg_long input_count ) const;
 };
 
 // Width is number of points in FIR. Must be even and 4 or more. More points give
@@ -87,7 +85,7 @@ public:
 	
 	// Read at most 'count' samples. Returns number of samples actually read.
 	typedef short sample_t;
-	int read( sample_t* out, long count );
+	int read( sample_t* out, blargg_long count );
 };
 
 // End of public interface
@@ -99,12 +97,12 @@ inline void Fir_Resampler_::write( long count )
 }
 
 template<int width>
-int Fir_Resampler<width>::read( sample_t* out_begin, long count )
+int Fir_Resampler<width>::read( sample_t* out_begin, blargg_long count )
 {
 	sample_t* out = out_begin;
 	const sample_t* in = buf.begin();
 	sample_t* end_pos = write_pos;
-	unsigned long skip = skip_bits >> this->imp;
+	blargg_ulong skip = skip_bits >> this->imp;
 	sample_t const* imp = impulses [this->imp];
 	int remain = res - this->imp;
 	int const step = this->step;
@@ -119,8 +117,8 @@ int Fir_Resampler<width>::read( sample_t* out_begin, long count )
 			count--;
 			
 			// accumulate in extended precision
-			long l = 0;
-			long r = 0;
+			blargg_long l = 0;
+			blargg_long r = 0;
 			
 			const sample_t* i = in;
 			if ( count < 0 )
@@ -154,8 +152,8 @@ int Fir_Resampler<width>::read( sample_t* out_begin, long count )
 				remain = res;
 			}
 			
-			out [0] = l;
-			out [1] = r;
+			out [0] = (sample_t) l;
+			out [1] = (sample_t) r;
 			out += 2;
 		}
 		while ( in <= end_pos );
@@ -171,4 +169,3 @@ int Fir_Resampler<width>::read( sample_t* out_begin, long count )
 }
 
 #endif
-

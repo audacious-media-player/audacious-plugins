@@ -1,13 +1,11 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 // Based on Brad Martin's OpenSPC DSP emulator
 
 #include "Spc_Dsp.h"
 
-#include <string.h>
-
 #include "blargg_endian.h"
+#include <string.h>
 
 /* Copyright (C) 2002 Brad Martin */
 /* Copyright (C) 2004-2006 Shay Green. This module is free software; you
@@ -16,12 +14,16 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
+
+#ifdef BLARGG_ENABLE_OPTIMIZER
+	#include BLARGG_ENABLE_OPTIMIZER
+#endif
 
 Spc_Dsp::Spc_Dsp( uint8_t* ram_ ) : ram( ram_ )
 {
@@ -30,6 +32,7 @@ Spc_Dsp::Spc_Dsp( uint8_t* ram_ ) : ram( ram_ )
 	disable_surround( false );
 	
 	BOOST_STATIC_ASSERT( sizeof (g) == register_count && sizeof (voice) == register_count );
+	blargg_verify_byte_order();
 }
 
 void Spc_Dsp::mute_voices( int mask )
@@ -67,17 +70,17 @@ void Spc_Dsp::write( int i, int data )
 	
 	reg [i] = data;
 	int high = i >> 4;
-	switch ( i & 0x0f )
+	switch ( i & 0x0F )
 	{
 		// voice volume
 		case 0:
 		case 1: {
 			short* volume = voice_state [high].volume;
 			int left  = (int8_t) reg [i & ~1];
-			int right = (int8_t) reg [i | 1];
+			int right = (int8_t) reg [i |  1];
 			volume [0] = left;
 			volume [1] = right;
-			// kill surround only if signs of volumes differ
+			// kill surround only if enabled and signs of volumes differ
 			if ( left * right < surround_threshold )
 			{
 				if ( left < 0 )
@@ -89,7 +92,7 @@ void Spc_Dsp::write( int i, int data )
 		}
 		
 		// fir coefficients
-		case 0x0f:
+		case 0x0F:
 			fir_coeff [high] = (int8_t) data; // sign-extend
 			break;
 	}
@@ -100,7 +103,7 @@ void Spc_Dsp::write( int i, int data )
 // The counter starts at 30720 (0x7800). Each count divides exactly into
 // 0x7800 without remainder.
 const int env_rate_init = 0x7800;
-static const short env_rates [0x20] =
+static short const env_rates [0x20] =
 {
 	0x0000, 0x000F, 0x0014, 0x0018, 0x001E, 0x0028, 0x0030, 0x003C,
 	0x0050, 0x0060, 0x0078, 0x00A0, 0x00C0, 0x00F0, 0x0140, 0x0180,
@@ -192,7 +195,7 @@ inline int Spc_Dsp::clock_envelope( int v )
 				// Docs: "SR [is multiplied] by the fixed value 1-1/256."
 				// Multiplying ENVX by 255/256 every time SUSTAIN is
 				// updated. 
-				cnt -= env_rates [raw_voice.adsr [1] & 0x1f];
+				cnt -= env_rates [raw_voice.adsr [1] & 0x1F];
 				if ( cnt <= 0 )
 				{
 					cnt = env_rate_init;
@@ -340,6 +343,7 @@ void Spc_Dsp::run( long count, short* out_buf )
 				
 				noise_amp = BOOST::int16_t (noise * 2);
 				
+				// TODO: switch to Galios style
 				int feedback = (noise << 13) ^ (noise << 14);
 				noise = (feedback & 0x4000) | (noise >> 1);
 			}
@@ -347,7 +351,7 @@ void Spc_Dsp::run( long count, short* out_buf )
 		
 		// What is the expected behavior when pitch modulation is enabled on
 		// voice 0? Jurassic Park 2 does this. Assume 0 for now.
-		long prev_outx = 0;
+		blargg_long prev_outx = 0;
 		
 		int echol = 0;
 		int echor = 0;
@@ -367,7 +371,7 @@ void Spc_Dsp::run( long count, short* out_buf )
 				voice.block_remain = 1;
 				voice.envx = 0;
 				voice.block_header = 0;
-				voice.fraction = 0x3fff; // decode three samples immediately
+				voice.fraction = 0x3FFF; // decode three samples immediately
 				voice.interp0 = 0; // BRR decoder filter uses previous two samples
 				voice.interp1 = 0;
 				
@@ -474,29 +478,25 @@ void Spc_Dsp::run( long count, short* out_buf )
 				// One, two and three point IIR filters
 				int smp1 = voice.interp0;
 				int smp2 = voice.interp1;
-				switch ( (voice.block_header >> 2) & 3 )
+				if ( voice.block_header & 8 )
 				{
-					case 0:
-						break;
-					
-					case 1:
-						delta += smp1 >> 1;
-						delta += (-smp1) >> 5;
-						break;
-					
-					case 2:
-						delta += smp1;
-						delta += (-(smp1 + (smp1 >> 1))) >> 5;
-						delta -= smp2 >> 1;
+					delta += smp1;
+					delta -= smp2 >> 1;
+					if ( !(voice.block_header & 4) )
+					{
+						delta += (-smp1 - (smp1 >> 1)) >> 5;
 						delta += smp2 >> 5;
-						break;
-					
-					case 3:
-						delta += smp1;
-						delta += (-(smp1 + (smp1 << 2) + (smp1 << 3))) >> 7;
-						delta -= smp2 >> 1;
+					}
+					else
+					{
+						delta += (-smp1 * 13) >> 7;
 						delta += (smp2 + (smp2 >> 1)) >> 4;
-						break;
+					}
+				}
+				else if ( voice.block_header & 4 )
+				{
+					delta += smp1 >> 1;
+					delta += (-smp1) >> 5;
 				}
 				
 				voice.interp3 = voice.interp2;
@@ -513,16 +513,16 @@ void Spc_Dsp::run( long count, short* out_buf )
 			// Gaussian interpolation using most recent 4 samples
 			int index = voice.fraction >> 2 & 0x3FC;
 			voice.fraction = (voice.fraction & 0x0FFF) + rate;
-			const BOOST::int16_t* table  = (BOOST::int16_t*) ((char*) gauss + index);
-			const BOOST::int16_t* table2 = (BOOST::int16_t*) ((char*) gauss + (255*4 - index));
+			const BOOST::int16_t* table  = (BOOST::int16_t const*) ((char const*) gauss + index);
+			const BOOST::int16_t* table2 = (BOOST::int16_t const*) ((char const*) gauss + (255*4 - index));
 			int s = ((table  [0] * voice.interp3) >> 12) +
-					((table  [1] * voice.interp2) >> 12);
-			s +=    ((table2 [1] * voice.interp1) >> 12) +
-			// to do: should clamp here
-					((table2 [0] * voice.interp0) >> 12);
-			int output = noise_amp; // noise is rarely used
-			if ( !(g.noise_enables & vbit) )
-				output = clamp_16( s * 2 );
+					((table  [1] * voice.interp2) >> 12) +
+					((table2 [1] * voice.interp1) >> 12);
+			s = (BOOST::int16_t) (s * 2);
+			s += (table2 [0] * voice.interp0) >> 11 & ~1;
+			int output = clamp_16( s );
+			if ( g.noise_enables & vbit )
+				output = noise_amp;
 			
 			// scale output and set outx values
 			output = (output * envx) >> 11 & ~1;
@@ -532,13 +532,13 @@ void Spc_Dsp::run( long count, short* out_buf )
 			int l = (voice.volume [0] * output) >> voice.enabled;
 			int r = (voice.volume [1] * output) >> voice.enabled;
 			prev_outx = output;
-			raw_voice.outx = output >> 8;
+			raw_voice.outx = int8_t (output >> 8);
 			if ( g.echo_ons & vbit )
 			{
 				echol += l;
 				echor += r;
 			}
-			left += l;
+			left  += l;
 			right += r;
 		}
 		// end of channel loop
@@ -563,10 +563,10 @@ void Spc_Dsp::run( long count, short* out_buf )
 		const int fir_offset = this->fir_offset;
 		short (*fir_pos) [2] = &fir_buf [fir_offset];
 		this->fir_offset = (fir_offset + 7) & 7; // move backwards one step
-		fir_pos [0] [0] = fb_left;
-		fir_pos [0] [1] = fb_right;
-		fir_pos [8] [0] = fb_left; // duplicate at +8 eliminates wrap checking below
-		fir_pos [8] [1] = fb_right;
+		fir_pos [0] [0] = (short) fb_left;
+		fir_pos [0] [1] = (short) fb_right;
+		fir_pos [8] [0] = (short) fb_left; // duplicate at +8 eliminates wrap checking below
+		fir_pos [8] [1] = (short) fb_right;
 		
 		// FIR
 		fb_left =       fb_left * fir_coeff [7] +
@@ -608,8 +608,8 @@ void Spc_Dsp::run( long count, short* out_buf )
 			
 			int mute = g.flags & 0x40;
 			
-			out_buf [0] = left;
-			out_buf [1] = right;
+			out_buf [0] = (short) left;
+			out_buf [1] = (short) right;
 			out_buf += 2;
 			
 			// muting
@@ -663,4 +663,3 @@ const BOOST::int16_t Spc_Dsp::gauss [512] =
    0, 434,   0, 430,   0, 426,   0, 422,   0, 418,   0, 414,   0, 410,   0, 405,
    0, 401,   0, 397,   0, 393,   0, 389,   0, 385,   0, 381,   0, 378,   0, 374,
 };
-

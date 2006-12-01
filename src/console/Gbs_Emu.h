@@ -1,8 +1,6 @@
-
 // Nintendo Game Boy GBS music file emulator
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef GBS_EMU_H
 #define GBS_EMU_H
 
@@ -10,12 +8,12 @@
 #include "Gb_Apu.h"
 #include "Gb_Cpu.h"
 
-class Gbs_Emu : public Classic_Emu {
+class Gbs_Emu : private Gb_Cpu, public Classic_Emu {
+	typedef Gb_Cpu cpu;
 public:
-	
-	// Sets internal gain, where 1.0 results in almost no clamping. Default gain
-	// roughly matches volume of other emulators.
-	Gbs_Emu( double gain = 1.2 );
+	// Equalizer profiles for Game Boy Color speaker and headphones
+	static equalizer_t const handheld_eq;
+	static equalizer_t const headphones_eq;
 	
 	// GBS file header
 	struct header_t
@@ -33,76 +31,58 @@ public:
 		char game [32];
 		char author [32];
 		char copyright [32];
-		
-		enum { song = 0 }; // no song titles
 	};
 	BOOST_STATIC_ASSERT( sizeof (header_t) == 112 );
 	
-	// Load GBS data
-	blargg_err_t load( Data_Reader& );
-	
-	// Load GBS using already-loaded header and remaining data
-	blargg_err_t load( header_t const&, Data_Reader& );
-	
-	// Header for currently loaded GBS
+	// Header for currently loaded file
 	header_t const& header() const { return header_; }
 	
-	// Equalizer profiles for Game Boy Color speaker and headphones
-	static equalizer_t const handheld_eq;
-	static equalizer_t const headphones_eq;
+	static gme_type_t static_type() { return gme_gbs_type; }
 	
 public:
+	// deprecated
+	Music_Emu::load;
+	blargg_err_t load( header_t const& h, Data_Reader& in ) // use Remaining_Reader
+			{ return load_remaining_( &h, sizeof h, in ); }
+
+public:
+	Gbs_Emu();
 	~Gbs_Emu();
-	const char** voice_names() const;
-	void start_track( int );
 protected:
+	blargg_err_t track_info_( track_info_t*, int track ) const;
+	blargg_err_t load_( Data_Reader& );
+	blargg_err_t start_track_( int );
+	blargg_err_t run_clocks( blip_time_t&, int );
+	void set_tempo_( double );
 	void set_voice( int, Blip_Buffer*, Blip_Buffer*, Blip_Buffer* );
 	void update_eq( blip_eq_t const& );
-	blip_time_t run_clocks( blip_time_t, bool* );
+	void unload();
 private:
 	// rom
-	const byte* rom_bank;
-	blargg_vector<byte> rom;
-	void unload();
-	int bank_count;
+	enum { bank_size = 0x4000 };
+	Rom_Data<bank_size> rom;
 	void set_bank( int );
-	static void write_rom( Gbs_Emu*, gb_addr_t, int );
-	static int read_rom( Gbs_Emu*, gb_addr_t );
-	static int read_bank( Gbs_Emu*, gb_addr_t );
-	
-	// state
-	gb_addr_t load_addr;
-	gb_addr_t init_addr;
-	gb_addr_t play_addr;
-	gb_addr_t stack_ptr;
-	int timer_modulo_init;
-	int timer_mode;
 	
 	// timer
-	gb_time_t cpu_time;
-	gb_time_t play_period;
-	gb_time_t next_play;
-	int double_speed;
-	
-	// hardware
-	Gb_Apu apu;
-	void set_timer( int tma, int tmc );
-	static int read_io( Gbs_Emu*, gb_addr_t );
-	static void write_io( Gbs_Emu*, gb_addr_t, int );
-	static int read_unmapped( Gbs_Emu*, gb_addr_t );
-	static void write_unmapped( Gbs_Emu*, gb_addr_t, int );
-	
-	// large objects
+	blip_time_t cpu_time;
+	blip_time_t play_period;
+	blip_time_t next_play;
+	void update_timer();
 	
 	header_t header_;
-	byte hi_page [0x100];
-	Gb_Cpu cpu;
 	void cpu_jsr( gb_addr_t );
-	gb_time_t clock() const;
-	byte ram [0x4000];
-	static int read_ram( Gbs_Emu*, gb_addr_t );
-	static void write_ram( Gbs_Emu*, gb_addr_t, int );
+	
+public: private: friend class Gb_Cpu;
+	blip_time_t clock() const { return cpu_time - cpu::remain(); }
+	
+	enum { joypad_addr = 0xFF00 };
+	enum { ram_addr = 0xA000 };
+	enum { hi_page = 0xFF00 - ram_addr };
+	byte ram [0x4000 + 0x2000 + Gb_Cpu::cpu_padding];
+	Gb_Apu apu;
+	
+	int cpu_read( gb_addr_t );
+	void cpu_write( gb_addr_t, int );
 };
 
 #endif
-

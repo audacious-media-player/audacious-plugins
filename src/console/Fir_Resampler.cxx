@@ -1,5 +1,4 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 #include "Fir_Resampler.h"
 
@@ -14,80 +13,44 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
-// to do: fix problems with rolloff < 0.99 or so, and rolloff == 1.0, and related problems
+#undef PI
+#define PI 3.1415926535897932384626433832795029
 
-// Sinc impulse genertor
-
-const bool show_impulse = 0;
-
-static const double pi = 3.1415926535897932384626433832795029L;
-
-class Dsf {
-	double rolloff;
-	double factor;
-public:
-	Dsf( double r ) : rolloff( r )
-	{
-		factor = 1.0;
-		//if ( rolloff < 1.0 )
-		//  factor = 1.0 / (*this)( 0 );
-	}
-	
-	double operator () ( double angle ) const
-	{
-		double const n_harm = 256;
-		angle /= n_harm;
-		double pow_a_n = pow( rolloff, n_harm );
-		//double rescale = 1.0 / n_harm;
-		
-		double num = 1.0 - rolloff * cos( angle ) -
-				pow_a_n * cos( n_harm * angle ) +
-				pow_a_n * rolloff * cos( (n_harm - 1) * angle );
-		double den = 1 + rolloff * (rolloff - 2 * cos( angle ));
-		
-		return (num / den - 1) / n_harm * factor;
-	}
-};
-
-template<class Sinc>
-void gen_sinc( int width, double offset, double spacing, int count, double scale, short* p,
-		const Sinc& sinc )
+static void gen_sinc( double rolloff, int width, double offset, double spacing, double scale,
+		int count, short* out )
 {
-	double range = pi * (width / 2);
-	double step = pi * spacing;
-	double a = -step * (count / 2 - 1);
-	a -= offset * step;
+	double const maxh = 256;
+	double const step = PI / maxh * spacing;
+	double const to_w = maxh * 2 / width;
+	double const pow_a_n = pow( rolloff, maxh );
+	scale /= maxh * 2;
 	
+	double angle = (count / 2 - 1 + offset) * -step;
 	while ( count-- )
 	{
-		double w = a / range;
-		double y = 0.0;
-		if ( fabs( w ) < 1.0 )
+		*out++ = 0;
+		double w = angle * to_w;
+		if ( fabs( w ) < PI )
 		{
-			double window = cos( pi * w ) * 0.5 + 0.5;
-			y = sinc( a ) * window;
+			double rolloff_cos_a = rolloff * cos( angle );
+			double num = 1 - rolloff_cos_a -
+					pow_a_n * cos( maxh * angle ) +
+					pow_a_n * rolloff * cos( (maxh - 1) * angle );
+			double den = 1 - rolloff_cos_a - rolloff_cos_a + rolloff * rolloff;
+			double sinc = scale * num / den - scale;
+			
+			out [-1] = (short) (cos( w ) * sinc + sinc);
 		}
-		
-		*p++ = (short) (y * scale);
-		a += step;
+		angle += step;
 	}
 }
-
-/*
-static double plain_sinc( double a )
-{
-	return fabs( a ) < 0.00001 ? 1.0 : sin( a ) / a;
-}
-*/
-
-// Fir_Resampler
 
 Fir_Resampler_::Fir_Resampler_( int width, sample_t* impulses_ ) :
 	width_( width ),
@@ -102,9 +65,7 @@ Fir_Resampler_::Fir_Resampler_( int width, sample_t* impulses_ ) :
 	ratio_ = 1.0;
 }
 
-Fir_Resampler_::~Fir_Resampler_()
-{
-}
+Fir_Resampler_::~Fir_Resampler_() { }
 
 void Fir_Resampler_::clear()
 {
@@ -118,9 +79,9 @@ void Fir_Resampler_::clear()
 
 blargg_err_t Fir_Resampler_::buffer_size( int new_size )
 {
-	BLARGG_RETURN_ERR( buf.resize( new_size + write_offset ) );
+	RETURN_ERR( buf.resize( new_size + write_offset ) );
 	clear();
-	return blargg_success;
+	return 0;
 }
 	
 double Fir_Resampler_::time_ratio( double new_factor, double rolloff, double gain )
@@ -156,21 +117,11 @@ double Fir_Resampler_::time_ratio( double new_factor, double rolloff, double gai
 	double filter = (ratio_ < 1.0) ? 1.0 : 1.0 / ratio_;
 	double pos = 0.0;
 	input_per_cycle = 0;
-	Dsf dsf( rolloff );
 	for ( int i = 0; i < res; i++ )
 	{
-		if ( show_impulse )
-			printf( "pos = %f\n", pos );
-		
-		gen_sinc( int (width_ * filter + 1) & ~1, pos, filter, (int) width_,
-				double (0x7fff * gain * filter), impulses + i * width_, dsf );
-		
-		if ( show_impulse )
-		{
-			for ( int j = 0; j < width_; j++ )
-				printf( "%d ", (int) impulses [i * width_ + j] );
-			printf( "\n" );
-		}
+		gen_sinc( rolloff, int (width_ * filter + 1) & ~1, pos, filter,
+				double (0x7FFF * gain * filter),
+				(int) width_, impulses + i * width_ );
 		
 		pos += fstep;
 		input_per_cycle += step;
@@ -182,20 +133,14 @@ double Fir_Resampler_::time_ratio( double new_factor, double rolloff, double gai
 		}
 	}
 	
-	if ( show_impulse )
-	{
-		printf( "skip = %8lX\n", (long) skip_bits );
-		printf( "step = %d\n", step );
-	}
-	
 	clear();
 	
 	return ratio_;
 }
 
-int Fir_Resampler_::input_needed( long output_count ) const
+int Fir_Resampler_::input_needed( blargg_long output_count ) const
 {
-	long input_count = 0;
+	blargg_long input_count = 0;
 	
 	unsigned long skip = skip_bits >> imp;
 	int remain = res - imp;
@@ -217,13 +162,13 @@ int Fir_Resampler_::input_needed( long output_count ) const
 	return input_extra;
 }
 
-int Fir_Resampler_::avail_( long input_count ) const
+int Fir_Resampler_::avail_( blargg_long input_count ) const
 {
 	int cycle_count = input_count / input_per_cycle;
 	int output_count = cycle_count * res * stereo;
 	input_count -= cycle_count * input_per_cycle;
 	
-	unsigned long skip = skip_bits >> imp;
+	blargg_ulong skip = skip_bits >> imp;
 	int remain = res - imp;
 	while ( input_count >= 0 )
 	{
@@ -243,7 +188,6 @@ int Fir_Resampler_::skip_input( long count )
 {
 	int remain = write_pos - buf.begin();
 	int avail = remain - width_ * stereo;
-	if ( avail < 0 ) avail = 0; // inserted
 	if ( count > avail )
 		count = avail;
 	
@@ -253,4 +197,3 @@ int Fir_Resampler_::skip_input( long count )
 	
 	return count;
 }
-

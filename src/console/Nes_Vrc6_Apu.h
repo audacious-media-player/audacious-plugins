@@ -1,21 +1,16 @@
-
 // Konami VRC6 sound chip emulator
 
-// Nes_Snd_Emu 0.1.7
-
+// Nes_Snd_Emu 0.1.8
 #ifndef NES_VRC6_APU_H
 #define NES_VRC6_APU_H
 
-#include "Nes_Apu.h"
+#include "blargg_common.h"
 #include "Blip_Buffer.h"
 
-struct vrc6_snapshot_t;
+struct vrc6_apu_state_t;
 
 class Nes_Vrc6_Apu {
 public:
-	Nes_Vrc6_Apu();
-	~Nes_Vrc6_Apu();
-	
 	// See Nes_Apu.h for reference
 	void reset();
 	void volume( double );
@@ -23,9 +18,9 @@ public:
 	void output( Blip_Buffer* );
 	enum { osc_count = 3 };
 	void osc_output( int index, Blip_Buffer* );
-	void end_frame( nes_time_t );
-	void save_snapshot( vrc6_snapshot_t* ) const;
-	void load_snapshot( vrc6_snapshot_t const& );
+	void end_frame( blip_time_t );
+	void save_state( vrc6_apu_state_t* ) const;
+	void load_state( vrc6_apu_state_t const& );
 	
 	// Oscillator 0 write-only registers are at $9000-$9002
 	// Oscillator 1 write-only registers are at $A000-$A002
@@ -33,8 +28,11 @@ public:
 	enum { reg_count = 3 };
 	enum { base_addr = 0x9000 };
 	enum { addr_step = 0x1000 };
-	void write_osc( nes_time_t, int osc, int reg, int data );
+	void write_osc( blip_time_t, int osc, int reg, int data );
 	
+public:
+	Nes_Vrc6_Apu();
+	BLARGG_DISABLE_NOTHROW
 private:
 	// noncopyable
 	Nes_Vrc6_Apu( const Nes_Vrc6_Apu& );
@@ -51,22 +49,22 @@ private:
 		
 		int period() const
 		{
-			return (regs [2] & 0x0f) * 0x100L + regs [1] + 1;
+			return (regs [2] & 0x0F) * 0x100L + regs [1] + 1;
 		}
 	};
 	
 	Vrc6_Osc oscs [osc_count];
-	nes_time_t last_time;
+	blip_time_t last_time;
 	
 	Blip_Synth<blip_med_quality,1> saw_synth;
 	Blip_Synth<blip_good_quality,1> square_synth;
 	
-	void run_until( nes_time_t );
-	void run_square( Vrc6_Osc& osc, nes_time_t );
-	void run_saw( nes_time_t );
+	void run_until( blip_time_t );
+	void run_square( Vrc6_Osc& osc, blip_time_t );
+	void run_saw( blip_time_t );
 };
 
-struct vrc6_snapshot_t
+struct vrc6_apu_state_t
 {
 	BOOST::uint8_t regs [3] [3];
 	BOOST::uint8_t saw_amp;
@@ -74,7 +72,7 @@ struct vrc6_snapshot_t
 	BOOST::uint8_t phases [3];
 	BOOST::uint8_t unused;
 };
-BOOST_STATIC_ASSERT( sizeof (vrc6_snapshot_t) == 20 );
+BOOST_STATIC_ASSERT( sizeof (vrc6_apu_state_t) == 20 );
 
 inline void Nes_Vrc6_Apu::osc_output( int i, Blip_Buffer* buf )
 {
@@ -96,4 +94,3 @@ inline void Nes_Vrc6_Apu::treble_eq( blip_eq_t const& eq )
 }
 
 #endif
-

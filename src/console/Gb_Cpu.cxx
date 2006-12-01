@@ -1,12 +1,10 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 #include "Gb_Cpu.h"
 
 #include <string.h>
-#include <limits.h>
 
-#include "blargg_endian.h"
+//#include "gb_cpu_log.h"
 
 /* Copyright (C) 2003-2006 Shay Green. This module is free software; you
 can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -14,12 +12,14 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "gb_cpu_io.h"
+
+#include "blargg_source.h"
 
 // Common instructions:
 //
@@ -47,43 +47,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 	#define PAGE_OFFSET( addr ) ((addr) & (page_size - 1))
 #endif
 
-Gb_Cpu::Gb_Cpu( Gbs_Emu* gbs_emu )
+inline void Gb_Cpu::set_code_page( int i, uint8_t* p )
 {
-	callback_data = gbs_emu;
-	rst_base = 0;
-	reset();
+	state->code_map [i] = p - PAGE_OFFSET( i * (blargg_long) page_size );
 }
 
-inline void Gb_Cpu::set_code_page( int i, uint8_t const* p )
+void Gb_Cpu::reset( void* unmapped )
 {
-	code_map [i] = p - PAGE_OFFSET( i * page_size );
-}
-
-void Gb_Cpu::reset( const void* unmapped_code_page, reader_t read, writer_t write )
-{
-	interrupts_enabled = false;
-	remain_ = 0;
+	check( state == &state_ );
+	state = &state_;
 	
-	r.pc = 0;
-	r.sp = 0;
-	r.flags = 0;
-	r.a = 0;
-	r.b = 0;
-	r.c = 0;
-	r.d = 0;
-	r.e = 0;
-	r.h = 0;
-	r.l = 0;
+	state_.remain = 0;
 	
 	for ( int i = 0; i < page_count + 1; i++ )
-	{
-		set_code_page( i, (uint8_t*) unmapped_code_page );
-		data_reader [i] = read;
-		data_writer [i] = write;
-	}
+		set_code_page( i, (uint8_t*) unmapped );
+	
+	memset( &r, 0, sizeof r );
+	//interrupts_enabled = false;
+	
+	blargg_verify_byte_order();
 }
 
-void Gb_Cpu::map_code( gb_addr_t start, unsigned long size, const void* data )
+void Gb_Cpu::map_code( gb_addr_t start, unsigned size, void* data )
 {
 	// address range must begin and end on page boundaries
 	require( start % page_size == 0 );
@@ -94,79 +79,33 @@ void Gb_Cpu::map_code( gb_addr_t start, unsigned long size, const void* data )
 		set_code_page( first_page + i, (uint8_t*) data + i * page_size );
 }
 
-void Gb_Cpu::map_memory( gb_addr_t start, unsigned long size, reader_t read, writer_t write )
+#define READ( addr )            CPU_READ( this, (addr), s.remain )
+#define WRITE( addr, data )     {CPU_WRITE( this, (addr), (data), s.remain );}
+#define READ_FAST( addr, out )  CPU_READ_FAST( this, (addr), s.remain, out )
+#define READ_PROG( addr )       (s.code_map [(addr) >> page_shift] [PAGE_OFFSET( addr )])
+
+unsigned const z_flag = 0x80;
+unsigned const n_flag = 0x40;
+unsigned const h_flag = 0x20;
+unsigned const c_flag = 0x10;
+
+bool Gb_Cpu::run( blargg_long cycle_count )
 {
-	// address range must begin and end on page boundaries
-	require( start % page_size == 0 );
-	require( size % page_size == 0 );
+	state_.remain = blargg_ulong (cycle_count + clocks_per_instr) / clocks_per_instr;
+	state_t s;
+	this->state = &s;
+	memcpy( &s, &this->state_, sizeof s );
 	
-	unsigned first_page = start / page_size;
-	for ( unsigned i = size / page_size; i--; )
-	{
-		data_reader [first_page + i] = read;
-		data_writer [first_page + i] = write;
-	}
-}
-
-// Note: 'addr' is evaulated more than once in the following macros, so it
-// must not contain side-effects.
-
-#define READ( addr )        (data_reader [(addr) >> page_bits]( callback_data, addr ))
-#define WRITE( addr, data ) (data_writer [(addr) >> page_bits]( callback_data, addr, data ))
-
-#define READ_PROG( addr )   (code_map [(addr) >> page_bits] [PAGE_OFFSET( addr )])
-#define READ_PROG16( addr ) GET_LE16( &READ_PROG( addr ) )
-
-int Gb_Cpu::read( gb_addr_t addr )
-{
-	return READ( addr );
-}
-
-void Gb_Cpu::write( gb_addr_t addr, int data )
-{
-	WRITE( addr, data );
-}
-
-BOOST::uint8_t* Gb_Cpu::get_code( gb_addr_t addr )
-{
-	return (uint8_t*) &READ_PROG( addr );
-}
-
-#ifndef GB_CPU_GLUE_ONLY
-
-const unsigned z_flag = 0x80;
-const unsigned n_flag = 0x40;
-const unsigned h_flag = 0x20;
-const unsigned c_flag = 0x10;
-
-#include BLARGG_ENABLE_OPTIMIZER
-
-Gb_Cpu::result_t Gb_Cpu::run( long cycle_count )
-{
-	const int cycles_per_instruction = 4;
-	
-	// to do: use cycle table
-	remain_ = cycle_count + cycles_per_instruction;
-	
-	Gb_Cpu::result_t result = result_cycles;
-	
-#if BLARGG_CPU_POWERPC
-	const reader_t* data_reader = this->data_reader; // cache
-	const writer_t* data_writer = this->data_writer; // cache
+#if BLARGG_BIG_ENDIAN
+	#define R8( n ) (r8_ [n]) 
+#elif BLARGG_LITTLE_ENDIAN
+	#define R8( n ) (r8_ [(n) ^ 1]) 
+#else
+	#error "Byte order of CPU must be known"
 #endif
 	
 	union {
-		struct {
-#if BLARGG_BIG_ENDIAN
-			uint8_t b, c, d, e, h, l, unused, a;
-#   define R8( n ) (r8_ [n]) 
-#elif BLARGG_LITTLE_ENDIAN
-			uint8_t c, b, e, d, l, h, a, unused;
-#   define R8( n ) (r8_ [(n) ^ 1]) 
-#else
-#   error "Byte order of CPU must be known"
-#endif
-		} rg; // registers
+		core_regs_t rg; // individual registers
 		
 		struct {
 			BOOST::uint16_t bc, de, hl, unused; // pairs
@@ -177,35 +116,42 @@ Gb_Cpu::result_t Gb_Cpu::run( long cycle_count )
 	};
 	BOOST_STATIC_ASSERT( sizeof rg == 8 && sizeof rp == 8 );
 	
-	rg.a = r.a;
-	rg.b = r.b;
-	rg.c = r.c;
-	rg.d = r.d;
-	rg.e = r.e;
-	rg.h = r.h;
-	rg.l = r.l;
+	rg = r;
 	unsigned pc = r.pc;
 	unsigned sp = r.sp;
 	unsigned flags = r.flags;
 	
 loop:
 	
-	int new_remain = remain_ - cycles_per_instruction;
+	check( (unsigned long) pc < 0x10000 );
+	check( (unsigned long) sp < 0x10000 );
+	check( (flags & ~0xF0) == 0 );
 	
-	check( (unsigned) pc < 0x10000 );
-	check( (unsigned) sp < 0x10000 );
-	check( (flags & ~0xf0) == 0 );
+	uint8_t const* instr = s.code_map [pc >> page_shift];
+	unsigned op;
 	
-	uint8_t const* page = code_map [pc >> page_bits];
-	unsigned op = page [PAGE_OFFSET( pc )];
-	unsigned data = page [PAGE_OFFSET( pc ) + 1];
-	check( op == 0xC9 || &READ_PROG( pc + 1 ) == &page [PAGE_OFFSET( pc ) + 1] );
+	// TODO: eliminate this special case
+	#if BLARGG_NONPORTABLE
+		op = instr [pc];
+		pc++;
+		instr += pc;
+	#else
+		instr += PAGE_OFFSET( pc );
+		op = *instr++;
+		pc++;
+	#endif
 	
-	pc++;
+#define GET_ADDR()  GET_LE16( instr )
 	
-	remain_ = new_remain;
-	if ( new_remain <= 0 )
+	if ( !--s.remain )
 		goto stop;
+	
+	unsigned data;
+	data = *instr;
+	
+	#ifdef GB_CPU_LOG_H
+		gb_cpu_log( "new", pc - 1, op, data, instr [1] );
+	#endif
 	
 	switch ( op )
 	{
@@ -225,7 +171,7 @@ loop:
 		BRANCH( !(flags & z_flag) )
 	
 	case 0x21: // LD HL,IMM (common)
-		rp.hl = READ_PROG16( pc );
+		rp.hl = GET_ADDR();
 		pc += 2;
 		goto loop;
 	
@@ -234,14 +180,13 @@ loop:
 	
 	{
 		unsigned temp;
-		
-	case 0xF0: // LD A,(0xff00+imm)
-		temp = data + 0xff00;
+	case 0xF0: // LD A,(0xFF00+imm)
+		temp = data | 0xFF00;
 		pc++;
 		goto ld_a_ind_comm;
 	
-	case 0xF2: // LD A,(0xff00+C)
-		temp = rg.c + 0xff00;
+	case 0xF2: // LD A,(0xFF00+C)
+		temp = rg.c | 0xFF00;
 		goto ld_a_ind_comm;
 	
 	case 0x0A: // LD A,(BC)
@@ -263,10 +208,10 @@ loop:
 		goto ld_a_ind_comm;
 		
 	case 0xFA: // LD A,IND16 (common)
-		temp = READ_PROG16( pc );
+		temp = GET_ADDR();
 		pc += 2;
 	ld_a_ind_comm:
-		rg.a = READ( temp );
+		READ_FAST( temp, rg.a );
 		goto loop;
 	}
 	
@@ -292,7 +237,7 @@ loop:
 		flags = ((op & 15) - (data & 15)) & h_flag;
 		flags |= (data >> 4) & c_flag;
 		flags |= n_flag;
-		if ( data & 0xff )
+		if ( data & 0xFF )
 			goto loop;
 		flags |= z_flag;
 		goto loop;
@@ -303,9 +248,11 @@ loop:
 	case 0x5E: // LD E,(HL)
 	case 0x66: // LD H,(HL)
 	case 0x6E: // LD L,(HL)
-	case 0x7E: // LD A,(HL)
-		R8( (op >> 3) & 7 ) = READ( rp.hl );
+	case 0x7E:{// LD A,(HL)
+		unsigned addr = rp.hl;
+		READ_FAST( addr, R8( (op >> 3) & 7 ) );
 		goto loop;
+	}
 	
 	case 0xC4: // CNZ (next-most-common)
 		pc += 2;
@@ -315,12 +262,12 @@ loop:
 		pc -= 2;
 	case 0xCD: // CALL (most-common)
 		data = pc + 2;
-		pc = READ_PROG16( pc );
+		pc = GET_ADDR();
 	push:
 		sp = (sp - 1) & 0xFFFF;
 		WRITE( sp, data >> 8 );
 		sp = (sp - 1) & 0xFFFF;
-		WRITE( sp, data & 0xff );
+		WRITE( sp, data & 0xFF );
 		goto loop;
 	
 	case 0xC8: // RNZ (next-most-common)
@@ -329,7 +276,7 @@ loop:
 	case 0xC9: // RET (most common)
 	ret:
 		pc = READ( sp );
-		pc += 0x100 * READ( (sp + 1) & 0xFFFF );
+		pc += 0x100 * READ( sp + 1 );
 		sp = (sp + 2) & 0xFFFF;
 		goto loop;
 	
@@ -352,7 +299,6 @@ loop:
 			
 		{
 			int temp;
-			
 		case 0x46: // BIT b,(HL)
 		case 0x4E:
 		case 0x56:
@@ -361,8 +307,11 @@ loop:
 		case 0x6E:
 		case 0x76:
 		case 0x7E:
-			temp = READ( rp.hl );
-			goto bit_comm;
+			{
+				unsigned addr = rp.hl;
+				READ_FAST( addr, temp );
+				goto bit_comm;
+			}
 		
 		case 0x40: case 0x41: case 0x42: case 0x43: // BIT b,r
 		case 0x44: case 0x45: case 0x47: case 0x48:
@@ -526,7 +475,7 @@ loop:
 			op |= (op << 1) & 0x80;
 	shift_comm:
 		data &= 7;
-		if ( !(op & 0xff) )
+		if ( !(op & 0xFF) )
 			flags |= z_flag;
 		if ( data == 6 )
 			goto write_hl_op_ff;
@@ -544,7 +493,7 @@ loop:
 	case 0x77: // LD (HL),A
 		op = R8( op & 7 );
 	write_hl_op_ff:
-		WRITE( rp.hl, op & 0xff );
+		WRITE( rp.hl, op & 0xFF );
 		goto loop;
 
 	case 0x41: case 0x42: case 0x43: case 0x44: case 0x45: case 0x47: // LD r,r
@@ -558,9 +507,9 @@ loop:
 		goto loop;
 
 	case 0x08: // LD IND16,SP
-		data = READ_PROG16( pc );
+		data = GET_ADDR();
 		pc += 2;
-		WRITE( data, sp&0xff );
+		WRITE( data, sp&0xFF );
 		data++;
 		WRITE( data, sp >> 8 );
 		goto loop;
@@ -570,25 +519,25 @@ loop:
 		goto loop;
 
 	case 0x31: // LD SP,IMM
-		sp = READ_PROG16( pc );
+		sp = GET_ADDR();
 		pc += 2;
 		goto loop;
 	
 	case 0x01: // LD BC,IMM
 	case 0x11: // LD DE,IMM
-		r16 [op >> 4] = READ_PROG16( pc );
+		r16 [op >> 4] = GET_ADDR();
 		pc += 2;
 		goto loop;
 	
 	{
 		unsigned temp;
-	case 0xE0: // LD (0xff00+imm),A
-		temp = data + 0xff00;
+	case 0xE0: // LD (0xFF00+imm),A
+		temp = data | 0xFF00;
 		pc++;
 		goto write_data_rg_a;
 	
-	case 0xE2: // LD (0xff00+C),A
-		temp = rg.c + 0xff00;
+	case 0xE2: // LD (0xFF00+C),A
+		temp = rg.c | 0xFF00;
 		goto write_data_rg_a;
 
 	case 0x32: // LD (HL-),A
@@ -610,7 +559,7 @@ loop:
 		goto write_data_rg_a;
 		
 	case 0xEA: // LD IND16,A (common)
-		temp = READ_PROG16( pc );
+		temp = GET_ADDR();
 		pc += 2;
 	write_data_rg_a:
 		WRITE( temp, rg.a );
@@ -683,7 +632,7 @@ loop:
 		op = rp.hl;
 		data = READ( op );
 		data++;
-		WRITE( op, data & 0xff );
+		WRITE( op, data & 0xFF );
 		goto inc_comm;
 	
 	case 0x04: // INC B
@@ -703,7 +652,7 @@ loop:
 		op = rp.hl;
 		data = READ( op );
 		data--;
-		WRITE( op, data & 0xff );
+		WRITE( op, data & 0xFF );
 		goto dec_comm;
 	
 	case 0x05: // DEC B
@@ -718,7 +667,7 @@ loop:
 		R8( op ) = data;
 	dec_comm:
 		flags = (flags & c_flag) | n_flag | (((data & 15) + 0x31) & h_flag);
-		if ( data & 0xff )
+		if ( data & 0xFF )
 			goto loop;
 		flags |= z_flag;
 		goto loop;
@@ -726,7 +675,7 @@ loop:
 // Add 16-bit
 
 	{
-		unsigned long temp; // need more than 16 bits for carry
+		blargg_ulong temp; // need more than 16 bits for carry
 		unsigned prev;
 		
 	case 0xF8: // LD HL,SP+imm
@@ -743,7 +692,7 @@ loop:
 		flags = 0;
 		temp += sp;
 		prev = sp;
-		sp = temp & 0xffff;
+		sp = temp & 0xFFFF;
 		goto add_16_comm;
 
 	case 0x39: // ADD HL,SP
@@ -762,7 +711,7 @@ loop:
 		rp.hl = temp;
 	add_16_comm:
 		flags |= (temp >> 12) & c_flag;
-		flags |= (((temp & 0x0fff) - (prev & 0x0fff)) >> 7) & h_flag;
+		flags |= (((temp & 0x0FFF) - (prev & 0x0FFF)) >> 7) & h_flag;
 		goto loop;
 	}
 	
@@ -788,7 +737,7 @@ loop:
 		flags = ((data & 15) - (flags & 15)) & h_flag;
 		flags |= (data >> 4) & c_flag;
 		rg.a = data;
-		if ( data & 0xff )
+		if ( data & 0xFF )
 			goto loop;
 		flags |= z_flag;
 		goto loop;
@@ -813,7 +762,7 @@ loop:
 		pc++;
 	adc_comm:
 		data += (flags >> 4) & 1;
-		data &= 0xff; // to do: does carry get set when sum + carry = 0x100?
+		data &= 0xFF; // to do: does carry get set when sum + carry = 0x100?
 		goto add_comm;
 
 	case 0x96: // SUB (HL)
@@ -856,7 +805,7 @@ loop:
 		pc++;
 	sbc_comm:
 		data += (flags >> 4) & 1;
-		data &= 0xff; // to do: does carry get set when sum + carry = 0x100?
+		data &= 0xFF; // to do: does carry get set when sum + carry = 0x100?
 		goto sub_comm;
 
 // Logical
@@ -929,21 +878,18 @@ loop:
 
 // Stack
 
+	case 0xF1: // POP FA
 	case 0xC1: // POP BC
 	case 0xD1: // POP DE
-	case 0xE1:{// POP HL (common)
-		int temp = READ( sp );
-		r16 [(op >> 4) & 3] = temp + 0x100 * READ( (sp + 1) & 0xFFFF );
+	case 0xE1: // POP HL (common)
+		data = READ( sp );
+		r16 [(op >> 4) & 3] = data + 0x100 * READ( sp + 1 );
 		sp = (sp + 2) & 0xFFFF;
+		if ( op != 0xF1 )
+			goto loop;
+		flags = rg.flags & 0xF0;
 		goto loop;
-	}
 	
-	case 0xF1: // POP FA
-		rg.a = READ( sp );
-		flags = READ( (sp + 1) & 0xFFFF ) & 0xf0;
-		sp = (sp + 2) & 0xFFFF;
-		goto loop;
-
 	case 0xC5: // PUSH BC
 		data = rp.bc;
 		goto push;
@@ -961,13 +907,16 @@ loop:
 		goto push;
 
 // Flow control
-
+	
+	case 0xFF:
+		if ( pc == idle_addr + 1 )
+			goto stop;
 	case 0xC7: case 0xCF: case 0xD7: case 0xDF:  // RST
-	case 0xE7: case 0xEF: case 0xF7: case 0xFF:
+	case 0xE7: case 0xEF: case 0xF7:
 		data = pc;
 		pc = (op & 0x38) + rst_base;
 		goto push;
-
+	
 	case 0xCC: // CZ
 		pc += 2;
 		if ( flags & z_flag )
@@ -987,7 +936,7 @@ loop:
 		goto loop;
 
 	case 0xD9: // RETI
-		Gb_Cpu::interrupts_enabled = 1;
+		//interrupts_enabled = 1;
 		goto ret;
 	
 	case 0xC0: // RZ
@@ -1019,7 +968,7 @@ loop:
 		goto loop;
 
 	case 0xC3: // JP (next-most-common)
-		pc = READ_PROG16( pc );
+		pc = GET_ADDR();
 		goto loop;
 	
 	case 0xC2: // JP NZ
@@ -1034,7 +983,7 @@ loop:
 			goto loop;
 	jp_taken:
 		pc -= 2;
-		pc = READ_PROG16( pc );
+		pc = GET_ADDR();
 		goto loop;
 	
 	case 0xD2: // JP NC
@@ -1065,11 +1014,11 @@ loop:
 		goto loop;
 
 	case 0xF3: // DI
-		interrupts_enabled = 0;
+		//interrupts_enabled = 0;
 		goto loop;
 
 	case 0xFB: // EI
-		interrupts_enabled = 1;
+		//interrupts_enabled = 1;
 		goto loop;
 
 // Special
@@ -1080,11 +1029,8 @@ loop:
 	case 0x27: // DAA (I'll have to implement this eventually...)
 	case 0xBF:
 	case 0xED: // Z80 prefix
-		result = Gb_Cpu::result_badop;
-		goto stop;
-	
 	case 0x76: // HALT
-		result = Gb_Cpu::result_halt;
+		s.remain++;
 		goto stop;
 	}
 	
@@ -1095,19 +1041,13 @@ stop:
 	pc--;
 	
 	// copy state back
+	STATIC_CAST(core_regs_t&,r) = rg;
 	r.pc = pc;
 	r.sp = sp;
 	r.flags = flags;
-	r.a = rg.a;
-	r.b = rg.b;
-	r.c = rg.c;
-	r.d = rg.d;
-	r.e = rg.e;
-	r.h = rg.h;
-	r.l = rg.l;
 	
-	return result;
+	this->state = &state_;
+	memcpy( &this->state_, &s, sizeof this->state_ );
+	
+	return s.remain > 0;
 }
-
-#endif
-

@@ -1,5 +1,4 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 // Based on Gens 2.10 ym2612.c
 
@@ -19,10 +18,10 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
 // This is mostly the original source in its C style and all.
 //
@@ -32,6 +31,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 // compared to the Sega Genesis sound, particularly being mixed at such a
 // high sample accuracy (the Genesis sounds like it has only 8 bit samples).
 // - Shay
+
+#ifdef BLARGG_ENABLE_OPTIMIZER
+	#include BLARGG_ENABLE_OPTIMIZER
+#endif
 
 const int output_bits = 14;
 
@@ -547,7 +550,7 @@ int Ym2612_Impl::YM_SET(int Adr, int data)
 			break;
 
 		case 0x25:
-			YM2612.TimerA = (YM2612.TimerA & 0x3fc) | (data & 3);
+			YM2612.TimerA = (YM2612.TimerA & 0x3FC) | (data & 3);
 
 			if (YM2612.TimerAL != (1024 - YM2612.TimerA) << 12)
 			{
@@ -636,7 +639,6 @@ void Ym2612_Impl::set_rate( double sample_rate, double clock_rate )
 	// prescale set to 6 by default
 	
 	double Frequence = clock_rate / sample_rate / 144.0;
-	//dprintf( "Frequence: %.40f\n", Frequence );
 	if ( fabs( Frequence - 1.0 ) < 0.0000001 )
 		Frequence = 1.0;
 	YM2612.TimerBase = int (Frequence * 4096.0);
@@ -1318,4 +1320,3 @@ void Ym2612_Impl::run( int pair_count, Ym2612_Emu::sample_t* out )
 }
 
 void Ym2612_Emu::run( int pair_count, sample_t* out ) { impl->run( pair_count, out ); }
-

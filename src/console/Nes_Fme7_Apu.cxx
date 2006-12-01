@@ -1,5 +1,4 @@
-
-// Game_Music_Emu 0.3.0. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
 
 #include "Nes_Fme7_Apu.h"
 
@@ -11,12 +10,12 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
 void Nes_Fme7_Apu::reset()
 {
@@ -25,13 +24,11 @@ void Nes_Fme7_Apu::reset()
 	for ( int i = 0; i < osc_count; i++ )
 		oscs [i].last_amp = 0;
 	
-	fme7_snapshot_t* state = this;
+	fme7_apu_state_t* state = this;
 	memset( state, 0, sizeof *state );
 }
 
-#include BLARGG_ENABLE_OPTIMIZER
-
-unsigned char Nes_Fme7_Apu::amp_table [16] =
+unsigned char const Nes_Fme7_Apu::amp_table [16] =
 {
 	#define ENTRY( n ) (unsigned char) (n * amp_range + 0.5)
 	ENTRY(0.0000), ENTRY(0.0078), ENTRY(0.0110), ENTRY(0.0156),
@@ -51,8 +48,10 @@ void Nes_Fme7_Apu::run_until( blip_time_t end_time )
 		int vol_mode = regs [010 + index];
 		int volume = amp_table [vol_mode & 0x0f];
 		
-		if ( !oscs [index].output )
+		Blip_Buffer* const osc_output = oscs [index].output;
+		if ( !osc_output )
 			continue;
+		osc_output->set_modified();
 		
 		// check for unsupported mode
 		#ifndef NDEBUG
@@ -83,15 +82,13 @@ void Nes_Fme7_Apu::run_until( blip_time_t end_time )
 		if ( delta )
 		{
 			oscs [index].last_amp = amp;
-			synth.offset( last_time, delta, oscs [index].output );
+			synth.offset( last_time, delta, osc_output );
 		}
 		
 		blip_time_t time = last_time + delays [index];
 		if ( time < end_time )
 		{
-			Blip_Buffer* const osc_output = oscs [index].output;
 			int delta = amp * 2 - volume;
-			
 			if ( volume )
 			{
 				do
@@ -110,7 +107,7 @@ void Nes_Fme7_Apu::run_until( blip_time_t end_time )
 				// maintain phase when silent
 				int count = (end_time - time + period - 1) / period;
 				phases [index] ^= count & 1;
-				time += (long) count * period;
+				time += (blargg_long) count * period;
 			}
 		}
 		

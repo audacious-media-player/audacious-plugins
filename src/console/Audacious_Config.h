@@ -17,10 +17,11 @@ typedef struct {
 	gint loop_length;   // length of tracks that lack timing information
 	gboolean resample;  // whether or not to resample
 	gint resample_rate; // rate to resample at
-	gboolean nsfe_playlist; // if true, use optional NSFE playlist
+	gboolean nsfe_playlist; // TODO: remove (nsfe playlist is now always enabled)
 	gint treble; // -100 to +100
 	gint bass;   // -100 to +100
 	gboolean ignore_spc_length; // if true, ignore length from SPC tags
+	gint echo;   // 0 to +100
 }
 AudaciousConsoleConfig;
 

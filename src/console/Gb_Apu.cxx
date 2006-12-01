@@ -1,5 +1,4 @@
-
-// Gb_Snd_Emu 0.1.4. http://www.slack.net/~ant/
+// Gb_Snd_Emu 0.1.5. http://www.slack.net/~ant/
 
 #include "Gb_Apu.h"
 
@@ -11,15 +10,15 @@ General Public License as published by the Free Software Foundation; either
 version 2.1 of the License, or (at your option) any later version. This
 module is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
-more details. You should have received a copy of the GNU Lesser General
-Public License along with this module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details. You should have received a copy of the GNU Lesser General Public
+License along with this module; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
-#include BLARGG_SOURCE_BEGIN
+#include "blargg_source.h"
 
-const unsigned vol_reg    = 0xFF24;
-const unsigned status_reg = 0xFF26;
+unsigned const vol_reg    = 0xFF24;
+unsigned const status_reg = 0xFF26;
 
 Gb_Apu::Gb_Apu()
 {
@@ -37,19 +36,16 @@ Gb_Apu::Gb_Apu()
 	{
 		Gb_Osc& osc = *oscs [i];
 		osc.regs = &regs [i * 5];
-		osc.output = NULL;
-		osc.outputs [0] = NULL;
-		osc.outputs [1] = NULL;
-		osc.outputs [2] = NULL;
-		osc.outputs [3] = NULL;
+		osc.output = 0;
+		osc.outputs [0] = 0;
+		osc.outputs [1] = 0;
+		osc.outputs [2] = 0;
+		osc.outputs [3] = 0;
 	}
 	
+	set_tempo( 1.0 );
 	volume( 1.0 );
 	reset();
-}
-
-Gb_Apu::~Gb_Apu()
-{
 }
 
 void Gb_Apu::treble_eq( const blip_eq_t& eq )
@@ -77,14 +73,15 @@ void Gb_Apu::output( Blip_Buffer* center, Blip_Buffer* left, Blip_Buffer* right 
 
 void Gb_Apu::update_volume()
 {
-	// to do: doesn't handle differing left/right global volume
+	// TODO: doesn't handle differing left/right global volume (support would
+	// require modification to all oscillator code)
 	int data = regs [vol_reg - start_addr];
 	double vol = (max( data & 7, data >> 4 & 7 ) + 1) * volume_unit;
 	square_synth.volume( vol );
 	other_synth.volume( vol );
 }
 
-static unsigned char const powerup_regs [0x30] = {
+static unsigned char const powerup_regs [0x20] = {
 	0x80,0x3F,0x00,0xFF,0xBF, // square 1
 	0xFF,0x3F,0x00,0xFF,0xBF, // square 2
 	0x7F,0xFF,0x9F,0xFF,0xBF, // wave
@@ -92,17 +89,21 @@ static unsigned char const powerup_regs [0x30] = {
 	0x00, // left/right enables
 	0x77, // master volume
 	0x80, // power
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0x84,0x40,0x43,0xAA,0x2D,0x78,0x92,0x3C, // wave table
-	0x60,0x59,0x59,0xB0,0x34,0xB8,0x2E,0xDA
+	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF
 };
+
+void Gb_Apu::set_tempo( double t )
+{
+	frame_period = 4194304 / 256; // 256 Hz
+	if ( t != 1.0 )
+		frame_period = blip_time_t (frame_period / t);
+}
 
 void Gb_Apu::reset()
 {
 	next_frame_time = 0;
-	last_time = 0;
-	frame_count = 0;
-	stereo_found = false;
+	last_time       = 0;
+	frame_count     = 0;
 	
 	square1.reset();
 	square2.reset();
@@ -117,12 +118,15 @@ void Gb_Apu::reset()
 	
 	regs [status_reg - start_addr] = 0x01; // force power
 	write_register( 0, status_reg, 0x00 );
+	
+	static unsigned char const initial_wave [] = {
+		0x84,0x40,0x43,0xAA,0x2D,0x78,0x92,0x3C, // wave table
+		0x60,0x59,0x59,0xB0,0x34,0xB8,0x2E,0xDA
+	};
+	memcpy( wave.wave, initial_wave, sizeof wave.wave );
 }
 
-// to do: remove
-static unsigned long abs_time;
-
-void Gb_Apu::run_until( gb_time_t end_time )
+void Gb_Apu::run_until( blip_time_t end_time )
 {
 	require( end_time >= last_time ); // end_time must not be before previous time
 	if ( end_time == last_time )
@@ -130,7 +134,7 @@ void Gb_Apu::run_until( gb_time_t end_time )
 	
 	while ( true )
 	{
-		gb_time_t time = next_frame_time;
+		blip_time_t time = next_frame_time;
 		if ( time > end_time )
 			time = end_time;
 		
@@ -140,12 +144,11 @@ void Gb_Apu::run_until( gb_time_t end_time )
 			Gb_Osc& osc = *oscs [i];
 			if ( osc.output )
 			{
+				osc.output->set_modified(); // TODO: misses optimization opportunities?
 				int playing = false;
 				if ( osc.enabled && osc.volume &&
 						(!(osc.regs [4] & osc.len_enabled_mask) || osc.length) )
 					playing = -1;
-				if ( osc.output != osc.outputs [3] )
-					stereo_found = true;
 				switch ( i )
 				{
 				case 0: square1.run( last_time, time, playing ); break;
@@ -160,7 +163,7 @@ void Gb_Apu::run_until( gb_time_t end_time )
 		if ( time == end_time )
 			break;
 		
-		next_frame_time += 4194304 / 256; // 256 Hz
+		next_frame_time += frame_period;
 		
 		// 256 Hz actions
 		square1.clock_length();
@@ -182,25 +185,19 @@ void Gb_Apu::run_until( gb_time_t end_time )
 	}
 }
 
-bool Gb_Apu::end_frame( gb_time_t end_time )
+void Gb_Apu::end_frame( blip_time_t end_time )
 {
 	if ( end_time > last_time )
 		run_until( end_time );
-	
-	abs_time += end_time;
 	
 	assert( next_frame_time >= end_time );
 	next_frame_time -= end_time;
 	
 	assert( last_time >= end_time );
 	last_time -= end_time;
-	
-	bool result = stereo_found;
-	stereo_found = false;
-	return result;
 }
 
-void Gb_Apu::write_register( gb_time_t time, gb_addr_t addr, int data )
+void Gb_Apu::write_register( blip_time_t time, unsigned addr, int data )
 {
 	require( (unsigned) data < 0x100 );
 	
@@ -266,7 +263,7 @@ void Gb_Apu::write_register( gb_time_t time, gb_addr_t addr, int data )
 		{
 			if ( !(data & 0x80) )
 			{
-				for ( int i = 0; i < (int) sizeof powerup_regs; i++ )
+				for ( unsigned i = 0; i < sizeof powerup_regs; i++ )
 				{
 					if ( i != status_reg - start_addr )
 						write_register( time, i + start_addr, powerup_regs [i] );
@@ -280,14 +277,13 @@ void Gb_Apu::write_register( gb_time_t time, gb_addr_t addr, int data )
 	}
 	else if ( addr >= 0xFF30 )
 	{
-		
 		int index = (addr & 0x0F) * 2;
 		wave.wave [index] = data >> 4;
 		wave.wave [index + 1] = data & 0x0F;
 	}
 }
 
-int Gb_Apu::read_register( gb_time_t time, gb_addr_t addr )
+int Gb_Apu::read_register( blip_time_t time, unsigned addr )
 {
 	run_until( time );
 	
@@ -308,4 +304,3 @@ int Gb_Apu::read_register( gb_time_t time, gb_addr_t addr )
 	
 	return data;
 }
-

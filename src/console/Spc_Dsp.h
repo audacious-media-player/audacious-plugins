@@ -1,8 +1,6 @@
-
 // Super Nintendo (SNES) SPC DSP emulator
 
-// Game_Music_Emu 0.3.0
-
+// Game_Music_Emu 0.5.1
 #ifndef SPC_DSP_H
 #define SPC_DSP_H
 
@@ -109,7 +107,7 @@ private:
 	
 	int surround_threshold;
 	
-	static const BOOST::int16_t gauss [];
+	static BOOST::int16_t const gauss [];
 	
 	enum state_t {
 		state_attack,
@@ -152,4 +150,3 @@ inline int Spc_Dsp::read( int i )
 }
 
 #endif
-
