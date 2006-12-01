@@ -191,10 +191,6 @@ int Fir_Resampler_::skip_input( long count )
 	if ( count > avail )
 		count = avail;
 
-	/* if the resampler is not used, then bail --nenolod */
-	if ( buf.size() == 0 )
-		return count;
-	
 	remain -= count;
 	write_pos = &buf [remain];
 	memmove( buf.begin(), &buf [count], remain * sizeof buf [0] );
