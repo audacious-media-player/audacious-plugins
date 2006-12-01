@@ -190,6 +190,10 @@ int Fir_Resampler_::skip_input( long count )
 	int avail = remain - width_ * stereo;
 	if ( count > avail )
 		count = avail;
+
+	/* if the resampler is not used, then bail --nenolod */
+	if ( buf.size() == 0 )
+		return count;
 	
 	remain -= count;
 	write_pos = &buf [remain];
