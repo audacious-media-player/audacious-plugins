@@ -441,7 +441,7 @@ static gint is_our_file( gchar* filename )
 	gme_type_t type = gme_identify_extension( gme_identify_header( header ), gme_type_list() );
 	
 	if ( type )
-		ret = 1;
+		ret = -1;
 
 	return ret;
 }
