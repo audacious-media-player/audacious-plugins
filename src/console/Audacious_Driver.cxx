@@ -432,13 +432,9 @@ static gint is_our_file( gchar* filename )
 
 	// open file if not already open
 	Vfs_File_Reader in;
-	if ( !fd )
-	{
-		if ( log_err( in.open( url.path ) ) ) return false;
-		fd = in.file();
-		// in will be closed when function ends
-	}
-	
+	if ( log_err( in.open( url.path ) ) ) return false;
+	fd = in.file();
+
 	// read header and identify type
 	gchar header [4] = { };
 	vfs_fread( header, sizeof header, 1, fd );
