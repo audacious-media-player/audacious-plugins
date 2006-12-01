@@ -237,7 +237,7 @@ blargg_err_t Hes_Emu::start_track_( int track )
 	vdp.next_vbl  = 0;
 	
 	ram [0x1FF] = (idle_addr - 1) >> 8;
-	ram [0x1FE] = (idle_addr - 1);
+	ram [0x1FE] = (idle_addr - 1) & 0xFF;
 	r.sp = 0xFD;
 	r.pc = get_le16( header_.init_addr );
 	r.a  = track;

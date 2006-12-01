@@ -472,7 +472,7 @@ blargg_err_t Nsf_Emu::start_track_( int track )
 	
 	saved_state.pc = badop_addr;
 	low_mem [0x1FF] = (badop_addr - 1) >> 8;
-	low_mem [0x1FE] = (badop_addr - 1);
+	low_mem [0x1FE] = (badop_addr - 1) & 0xFF;
 	r.sp = 0xFD;
 	r.pc = init_addr;
 	r.a  = track;
@@ -523,7 +523,7 @@ blargg_err_t Nsf_Emu::run_clocks( blip_time_t& duration, int )
 				
 				r.pc = play_addr;
 				low_mem [0x100 + r.sp--] = (badop_addr - 1) >> 8;
-				low_mem [0x100 + r.sp--] = (badop_addr - 1);
+				low_mem [0x100 + r.sp--] = (badop_addr - 1) & 0xFF;
 			}
 		}
 	}

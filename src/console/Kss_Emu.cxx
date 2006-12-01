@@ -235,7 +235,7 @@ blargg_err_t Kss_Emu::start_track_( int track )
 		sn->reset();
 	r.sp = 0xF380;
 	ram [--r.sp] = idle_addr >> 8;
-	ram [--r.sp] = idle_addr;
+	ram [--r.sp] = idle_addr & 0xFF;
 	r.b.a = track;
 	r.pc = get_le16( header_.init_addr );
 	next_play = play_period;
@@ -384,7 +384,7 @@ blargg_err_t Kss_Emu::run_clocks( blip_time_t& duration, int )
 				}
 				
 				ram [--r.sp] = idle_addr >> 8;
-				ram [--r.sp] = idle_addr;
+				ram [--r.sp] = idle_addr & 0xFF;
 				r.pc = get_le16( header_.play_addr );
 			}
 		}

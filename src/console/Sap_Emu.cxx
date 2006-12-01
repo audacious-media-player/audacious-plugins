@@ -292,7 +292,7 @@ void Sap_Emu::cpu_jsr( sap_addr_t addr )
 		r.sp = 0xFF; // pop extra byte off
 	mem [0x100 + r.sp--] = high_byte; // some routines use RTI to return
 	mem [0x100 + r.sp--] = high_byte;
-	mem [0x100 + r.sp--] = idle_addr - 1;
+	mem [0x100 + r.sp--] = (idle_addr - 1) & 0xFF;
 }
 
 void Sap_Emu::run_routine( sap_addr_t addr )
