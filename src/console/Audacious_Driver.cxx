@@ -83,8 +83,7 @@ Url_Parser::Url_Parser( gchar* path_in )
 		{
 			*args = '\0';
 			track = atoi( args + 1 );
-			if ( track )
-				track_specified = true;
+			track_specified = true;
 		}
 	}
 }
@@ -117,7 +116,7 @@ static blargg_err_t load_in_emu( Music_Emu* emu, const char* path, VFSFile* fd =
 		err = in.open( path );
 	
 	if ( !err )
-		emu->load( in );
+		err = emu->load( in );
 	in.close();
 	
 	if ( !err )
@@ -369,7 +368,7 @@ static gint is_our_file_from_vfs( gchar* filename, VFSFile* fd )
 {
 	Url_Parser url( filename );
 	if ( !url.path ) return false;
-	
+
 	// open file if not already open
 	Vfs_File_Reader in;
 	if ( !fd )
