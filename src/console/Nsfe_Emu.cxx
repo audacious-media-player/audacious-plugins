@@ -307,6 +307,7 @@ blargg_err_t Nsfe_Emu::load_( Data_Reader& in )
 	loading = true;
 	blargg_err_t err = info.load( in, this );
 	loading = false;
+	disable_playlist( false );
 	return err;
 }
 
