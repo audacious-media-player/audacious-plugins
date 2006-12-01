@@ -424,7 +424,7 @@ static gint is_our_file_from_vfs( gchar* filename, VFSFile* fd )
 
 static gint is_our_file( gchar* filename )
 {
-	return is_our_file_from_vfs( filename, 0 );
+	return -1;
 }
 
 // Setup
