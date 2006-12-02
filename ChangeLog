@@ -1,3 +1,11 @@
+2006-12-01 08:03:10 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [714]
+  - disable the playlist when loading = false.
+  
+  trunk/src/console/Nsfe_Emu.cxx |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2006-12-01 07:08:19 +0000  William Pitcock <nenolod@nenolod.net>
   revision [712]
   - should return -1, not 1.

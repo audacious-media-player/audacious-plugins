@@ -53,8 +53,11 @@ stdio_vfs_fclose_impl(VFSFile * file)
     if (file == NULL)
         return -1;
 
-    if (file->handle) {
-        if (fclose(file->handle) != 0)
+    if (file->handle)
+    {
+        FILE *handle = (FILE *) file->handle;
+
+        if (fclose(handle) != 0)
             ret = -1;
     }
 
@@ -67,10 +70,14 @@ stdio_vfs_fread_impl(gpointer ptr,
           size_t nmemb,
           VFSFile * file)
 {
+    FILE *handle;
+
     if (file == NULL)
         return 0;
 
-    return fread(ptr, size, nmemb, file->handle);
+    handle = (FILE *) file->handle;
+
+    return fread(ptr, size, nmemb, handle);
 }
 
 size_t
@@ -79,22 +86,30 @@ stdio_vfs_fwrite_impl(gconstpointer ptr,
            size_t nmemb,
            VFSFile * file)
 {
+    FILE *handle;
+
     if (file == NULL)
         return 0;
 
-    return fwrite(ptr, size, nmemb, file->handle);
+    handle = (FILE *) file->handle;
+
+    return fwrite(ptr, size, nmemb, handle);
 }
 
 gint
 stdio_vfs_getc_impl(VFSFile *stream)
 {
-  return getc( stream->handle );
+  FILE *handle = (FILE *) stream->handle;
+
+  return getc( handle );
 }
 
 gint
 stdio_vfs_ungetc_impl(gint c, VFSFile *stream)
 {
-  return ungetc( c , stream->handle );
+  FILE *handle = (FILE *) stream->handle;
+
+  return ungetc( c , handle );
 }
 
 gint
@@ -102,46 +117,66 @@ stdio_vfs_fseek_impl(VFSFile * file,
           glong offset,
           gint whence)
 {
+    FILE *handle;
+
     if (file == NULL)
         return 0;
 
-    return fseek(file->handle, offset, whence);
+    handle = (FILE *) file->handle;
+
+    return fseek(handle, offset, whence);
 }
 
 void
 stdio_vfs_rewind_impl(VFSFile * file)
 {
+    FILE *handle;
+
     if (file == NULL)
         return;
 
-    rewind(file->handle);
+    handle = (FILE *) file->handle;
+
+    rewind(handle);
 }
 
 glong
 stdio_vfs_ftell_impl(VFSFile * file)
 {
+    FILE *handle;
+
     if (file == NULL)
         return 0;
 
-    return ftell(file->handle);
+    handle = (FILE *) file->handle;
+
+    return ftell(handle);
 }
 
 gboolean
 stdio_vfs_feof_impl(VFSFile * file)
 {
+    FILE *handle;
+
     if (file == NULL)
         return FALSE;
 
-    return (gboolean) feof(file->handle);
+    handle = (FILE *) file->handle;
+
+    return (gboolean) feof(handle);
 }
 
 gint
 stdio_vfs_truncate_impl(VFSFile * file, glong size)
 {
+    FILE *handle;
+
     if (file == NULL)
         return -1;
 
-    return ftruncate(fileno(file->handle), size);
+    handle = (FILE *) file->handle;
+
+    return ftruncate(fileno(handle), size);
 }
 
 VFSConstructor file_const = {
