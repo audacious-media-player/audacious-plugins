@@ -341,9 +341,13 @@ if test "$enable_mp3" = "yes"; then
         AC_SUBST(LIBNMS_SRC)
 fi
 
-dnl *** ThinkLight support
+dnl *** Rocklight
 
-AC_CHECK_FILE([/proc/acpi/ibm/light], [VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rocklight"])
+AC_CHECK_FILE([/proc/acpi/ibm/light], [VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rocklight"
+				       LEDCODE=thinklight.c])
+AC_CHECK_FILE([/sys/class/leds/pmu-front-led/brightness], [VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rocklight"
+				       			   LEDCODE=apple_pmu.c])
+AC_SUBST(LEDCODE)
 
 dnl *** LIRC client libraries
 

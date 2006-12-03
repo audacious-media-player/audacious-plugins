@@ -7,7 +7,7 @@ LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
 
 LIBADD = $(GTK_LIBS)
 
-SOURCES = rocklight.c thinklight.c
+SOURCES = rocklight.c $(LEDCODE)
 
 OBJECTS = ${SOURCES:.c=.o}
 
