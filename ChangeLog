@@ -1,3 +1,10 @@
+2006-12-04 09:07:59 +0000  Daniel Bradshaw <nazca@atheme.org>
+  revision [720]
+  Well I think it's pretty
+  trunk/src/paranormal/presets/nazca_-_smoke_on_the_water.pnv |   37 ++++++++++++
+  1 file changed, 37 insertions(+)
+
+
 2006-12-03 02:17:14 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [718]
   Add support for Apple PMU front LED to Rocklight. Tested on PowerBook 5,9; works but is rather slow to update.

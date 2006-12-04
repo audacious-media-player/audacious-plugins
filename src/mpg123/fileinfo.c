@@ -38,9 +38,7 @@
 #include <errno.h>
 
 #include "audacious/util.h"
-#include "audacious/util.h"
 #include "audacious/vfs.h"
-#include "audacious/xentry.h"
 
 #include "mp3.xpm"
 
