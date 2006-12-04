@@ -213,32 +213,6 @@ fi
 
 AC_SUBST(CONFIGDB_BACKEND)
 
-dnl GnomeVFS support
-
-AC_ARG_ENABLE( gnome-vfs,
-    [  --enable-gnome-vfs      enable GnomeVFS support (default=disabled)],
-    [enable_gnomevfs=$enableval],
-    [enable_gnomevfs="no"]
-)
-
-if test "$enable_gnomevfs" = "yes"; then
-    PKG_CHECK_MODULES(GNOMEVFS, [gnome-vfs-2.0 >= 2.6.0],
-        [
-         AC_DEFINE(HAVE_GNOME_VFS, , [Define if building with GnomeVFS support])
-         ADD_PC_REQUIRES([gnome-vfs-2.0 >= 2.6.0])
-        ],
-        [AC_MSG_ERROR([Cannot find GnomeVFS])]
-    )
-fi
-
-if test "$enable_gnomevfs" = "yes"; then
-	VFS_BACKEND="gnome"
-else
-	VFS_BACKEND="stdio"
-fi
-
-AC_SUBST(VFS_BACKEND)
-
 dnl Check for esound
 
 AC_ARG_ENABLE( esd,

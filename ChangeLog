@@ -1,3 +1,20 @@
+2006-12-04 21:50:33 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [724]
+  - portability fixes:
+    + use old inttypes.h if stdint.h is not available
+    + use NULL instead of 0 when dealing with pointers
+  
+  trunk/src/aac/mp4ff/mp4ff_int_types.h |   10 ++++++++-
+  trunk/src/alac/alac.c                 |   10 ++++++++-
+  trunk/src/alac/demux.c                |   11 +++++++++-
+  trunk/src/alac/demux.h                |   11 +++++++++-
+  trunk/src/alac/plugin.c               |   12 ++++++++++-
+  trunk/src/alac/stream.c               |   11 +++++++++-
+  trunk/src/alac/stream.h               |   10 ++++++++-
+  trunk/src/sexypsf/xmms.c              |   36 +++++++++++++++++-----------------
+  8 files changed, 86 insertions(+), 25 deletions(-)
+
+
 2006-12-04 21:18:25 +0000  William Pitcock <nenolod@nenolod.net>
   revision [722]
   - remove xentry.h reference
