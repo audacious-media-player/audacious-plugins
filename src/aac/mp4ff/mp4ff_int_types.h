@@ -1,3 +1,5 @@
+#include "../../../config.h"
+
 #ifndef _MP4FF_INT_TYPES_H_
 #define _MP4FF_INT_TYPES_H_
 
@@ -15,7 +17,13 @@ typedef unsigned __int64 uint64_t;
 
 #else
 
-#include <stdint.h>
+#if HAVE_STDINT_H
+# include <stdint.h>
+#else
+# if HAVE_INTTYPES_H
+# include <inttypes.h>
+# endif
+#endif
 
 #endif
 

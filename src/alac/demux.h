@@ -1,7 +1,16 @@
 #ifndef DEMUX_H
 #define DEMUX_H
 
-#include <stdint.h>
+#include "config.h"
+
+#if HAVE_STDINT_H
+# include <stdint.h>
+#else
+# if HAVE_INTTYPES_H
+# include <inttypes.h>
+# endif
+#endif
+
 #include "decomp.h"
 #include "stream.h"
 

@@ -3,7 +3,15 @@
 
 /* stream.h */
 
-#include <stdint.h>
+#include "config.h"
+
+#if HAVE_STDINT_H
+# include <stdint.h>
+#else
+# if HAVE_INTTYPES_H
+# include <inttypes.h>
+# endif
+#endif
 
 #include <audacious/plugin.h>
 #include <audacious/vfs.h>

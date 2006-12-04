@@ -29,9 +29,18 @@
  *
  */
 
+#include "config.h"
 
 #include <stdio.h>
-#include <stdint.h>
+
+#if HAVE_STDINT_H
+# include <stdint.h>
+#else
+# if HAVE_INTTYPES_H
+# include <inttypes.h>
+# endif
+#endif
+
 #include <stdlib.h>
 #include <errno.h>
 

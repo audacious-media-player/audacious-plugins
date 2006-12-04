@@ -29,11 +29,19 @@
  *
  */
 
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
+
+#if HAVE_STDINT_H
+# include <stdint.h>
+#else
+# if HAVE_INTTYPES_H
+# include <inttypes.h>
+# endif
+#endif
 
 #include "decomp.h"
 
