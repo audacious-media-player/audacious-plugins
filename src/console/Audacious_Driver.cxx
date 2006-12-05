@@ -422,30 +422,6 @@ static gint is_our_file_from_vfs( gchar* filename, VFSFile* fd )
 	return result;
 }
 
-static gint is_our_file( gchar* filename )
-{
-	VFSFile *fd;
-	gint ret = 0;
-
-	Url_Parser url( filename );
-	if ( !url.path ) return false;
-
-	// open file if not already open
-	Vfs_File_Reader in;
-	if ( log_err( in.open( url.path ) ) ) return false;
-	fd = in.file();
-
-	// read header and identify type
-	gchar header [4] = { };
-	vfs_fread( header, sizeof header, 1, fd );
-	gme_type_t type = gme_identify_extension( gme_identify_header( header ), gme_type_list() );
-	
-	if ( type )
-		ret = -1;
-
-	return ret;
-}
-
 // Setup
 
 static void console_init(void)
@@ -478,7 +454,7 @@ InputPlugin console_ip =
 	console_init,
 	console_aboutbox,
 	console_cfg_ui,
-	is_our_file,
+	NULL,
 	NULL,
 	play_file,
 	console_stop,

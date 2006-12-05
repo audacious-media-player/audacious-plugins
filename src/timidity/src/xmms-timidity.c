@@ -43,7 +43,7 @@ InputPlugin xmmstimid_ip = {
 	xmmstimid_init,
 	xmmstimid_about,
 	xmmstimid_configure,
-	xmmstimid_is_our_file,
+	NULL,
 	NULL,
 	xmmstimid_play_file,
 	xmmstimid_stop,
@@ -240,40 +240,6 @@ void xmmstimid_conf_ok(GtkButton *button, gpointer user_data) {
 	bmp_cfg_db_close(db);
 
 	gtk_widget_hide(xmmstimid_conf_wnd);
-}
-
-static gint xmmstimid_is_our_file( gchar * filename )
-{
-	VFSFile * fp;
-	gchar magic_bytes[4];
-
-	fp = vfs_fopen( filename , "rb" );
-
- 	if (fp == NULL)
-		return FALSE;
-
-	vfs_fread( magic_bytes , 1 , 4 , fp );
-
-	if ( !memcmp( magic_bytes , "MThd" , 4 ) )
-	{
-		vfs_fclose( fp );
-		return TRUE;
-	}
-
-	if ( !memcmp( magic_bytes , "RIFF" , 4 ) )
-	{
-		/* skip the four bytes after RIFF,
-		   then read the next four */
-		vfs_fseek( fp , 4 , SEEK_CUR );
-		vfs_fread( magic_bytes , 1 , 4 , fp );
-		if ( !memcmp( magic_bytes , "RMID" , 4 ) )
-		{
-			vfs_fclose( fp );
-			return TRUE;
-		}
-	}
-	vfs_fclose( fp );
-	return FALSE;
 }
 
 static gint xmmstimid_is_our_fd( gchar * filename, VFSFile * fp )

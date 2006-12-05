@@ -31,7 +31,6 @@ extern "C" {
 
 extern "C" InputPlugin * get_iplugin_info(void);
 static void wv_load_config();
-static int wv_is_our_file(gchar *filename);
 static int wv_is_our_fd(gchar *filename, VFSFile *file);
 static void wv_play(char *);
 static void wv_stop(void);
@@ -64,7 +63,7 @@ InputPlugin mod = {
     wv_load_config,
     wv_about_box,
     wv_configure,
-    wv_is_our_file,		//old style is_our_file
+    NULL,
     NULL,                       //no use
     wv_play,
     wv_stop,

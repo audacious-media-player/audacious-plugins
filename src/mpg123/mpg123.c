@@ -341,28 +341,6 @@ mpgdec_detect_by_content(VFSFile *file)
 }
 
 static int
-is_our_file(char *filename)
-{
-    VFSFile *file;
-    gchar *ext = strrchr(filename, '.');
-    gboolean ret = FALSE;
-
-    file = vfs_fopen(filename, "rb");
-
-    if (CHECK_STREAM_URI(filename) &&
-        (ext && strncasecmp(ext, ".ogg", 4)) &&
-        (ext && strncasecmp(ext, ".flac", 5)))
-	ret = TRUE;
-    else if (mpgdec_detect_by_content(file))
-        ret = TRUE;
-
-    if (file != NULL)
-        vfs_fclose(file);
-
-    return ret;
-}
-
-static int
 is_our_fd(char *filename, VFSFile *file)
 {
     gchar *ext = strrchr(filename, '.');
@@ -992,7 +970,7 @@ InputPlugin mpgdec_ip = {
     init,
     aboutbox,
     mpgdec_configure,
-    is_our_file,
+    NULL,
     NULL,
     play_file,
     stop,
