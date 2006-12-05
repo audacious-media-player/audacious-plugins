@@ -262,24 +262,6 @@ wv_is_our_fd(gchar *filename, VFSFile *file)
     return FALSE;
 }
 
-static int
-wv_is_our_file(gchar *filename)
-{
-    VFSFile *file = vfs_fopen(filename, "rb");
-    gchar magic[4];
-
-    if (!file)
-	return FALSE;
-
-    vfs_fread(magic,1,4,file);
-    vfs_fclose(file);
-
-    if (!memcmp(magic,"wvpk",4))
-        return TRUE;
-
-    return FALSE;
-}
-
 void
 load_tag(ape_tag *tag, WavpackContext *ctx) 
 {
