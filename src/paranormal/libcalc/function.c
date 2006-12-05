@@ -33,12 +33,32 @@ typedef struct {
 
 /* */
 
+static double f_log (ex_stack *stack) {
+  return log (pop (stack));
+}
+
 static double f_sin (ex_stack *stack) {
   return sin (pop (stack));
 }
 
 static double f_cos (ex_stack *stack) {
   return cos (pop (stack));
+}
+
+static double f_tan (ex_stack *stack) {
+  return tan (pop (stack));
+}
+
+static double f_asin (ex_stack *stack) {
+  return asin (pop (stack));
+}
+
+static double f_acos (ex_stack *stack) {
+  return acos (pop (stack));
+}
+
+static double f_atan (ex_stack *stack) {
+  return atan (pop (stack));
 }
 
 static double f_if (ex_stack *stack) {
@@ -58,6 +78,11 @@ static double f_div (ex_stack *stack) {
 static const func_t init[] = {
   { "sin", f_sin },
   { "cos", f_cos },
+  { "tan", f_tan },
+  { "asin", f_asin },
+  { "acos", f_acos },
+  { "atan", f_atan },
+  { "log", f_log },
   { "if", f_if },
   { "div", f_div }
 };

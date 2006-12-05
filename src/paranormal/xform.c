@@ -63,6 +63,9 @@ apply_xform (struct xform_vector *vfield)
   register guchar *destptr;
   register int color;
 
+  if (vfield == NULL)
+      return;
+
   for (i=0, v=vfield, destptr=pn_image_data->surface[1];
        i<pn_image_data->width*pn_image_data->height;
        i++, v++, destptr++)
