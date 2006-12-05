@@ -51,6 +51,7 @@ DECLARE_ACTUATOR (xform_ripple);
 DECLARE_ACTUATOR (xform_bump_spin);
 DECLARE_ACTUATOR (xform_halfrender);
 DECLARE_ACTUATOR (xform_movement);
+DECLARE_ACTUATOR (xform_dynmovement);
 
 /* **************** builtin_table **************** */
 struct pn_actuator_desc *builtin_table[] =
@@ -93,6 +94,7 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_xform_bump_spin,
   &builtin_xform_halfrender,
   &builtin_xform_movement,
+  &builtin_xform_dynmovement,
   /* **************** the end! **************** */
   NULL
 };

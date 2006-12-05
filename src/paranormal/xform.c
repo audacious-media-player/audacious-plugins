@@ -564,3 +564,155 @@ struct pn_actuator_desc builtin_xform_movement =
   0, xform_movement_opts,
   xform_movement_init, xform_movement_cleanup, xform_movement_exec
 };
+
+/* **************** xform_dynmovement **************** */
+struct pn_actuator_option_desc xform_dynmovement_opts[] =
+{
+  { "init_script", "The formula to evaluate on init.",
+    OPT_TYPE_STRING, { sval: "" } },
+  { "frame_script", "The formula to evaluate on each frame.",
+    OPT_TYPE_STRING, { sval: "" } },
+  { "point_script", "The formula to evaluate.",
+    OPT_TYPE_STRING, { sval: "d = 0.15;" } },
+  { NULL }
+};
+
+typedef struct {
+  int width, height;                 /* Previous width and height. */
+  expression_t *expr_init;
+  expression_t *expr_frame;
+  expression_t *expr_point;
+  symbol_dict_t *dict;
+  struct xform_vector *vfield;
+} PnDynMovementData;
+
+static void
+xform_dynmovement_init (gpointer *data)
+{
+    *data = g_new0(PnDynMovementData, 1);
+}
+
+static void
+xform_dynmovement_cleanup (gpointer data)
+{
+    PnDynMovementData *d = (PnDynMovementData *) data;
+
+    if (d)
+      {
+         if (d->expr_init)
+             expression_free (d->expr_init);
+         if (d->expr_frame)
+             expression_free (d->expr_frame);
+         if (d->expr_point)
+             expression_free (d->expr_point);
+         if (d->dict)
+             dict_free (d->dict);
+         if (d->vfield)
+ 	     g_free (d->vfield);
+         g_free (d);
+      }
+}
+
+static void
+xform_dynmovement_exec (const struct pn_actuator_option *opts,
+		 gpointer odata)
+{
+  PnDynMovementData *d = (PnDynMovementData *) odata;
+  gint i, j;
+  gdouble *rf, *df;
+  gdouble xf, yf;
+  gint xn, yn;
+
+  if (d->width != pn_image_data->width
+      || d->height != pn_image_data->height)
+    {
+      d->width = pn_image_data->width;
+      d->height = pn_image_data->height;
+
+      if (d->vfield)
+        {
+  	  g_free (d->vfield);
+          d->vfield = NULL;
+        }
+
+      if (opts[2].val.sval == NULL)
+          return;
+
+      if (!d->dict)
+          d->dict = dict_new();
+      else
+        {
+          dict_free(d->dict);
+          d->dict = dict_new();
+        }
+
+      rf = dict_variable(d->dict, "r");
+      df = dict_variable(d->dict, "d");
+
+      if (d->expr_init)
+        {
+          expression_free(d->expr_init);
+          d->expr_init = NULL;
+        }
+
+      /* initialize */
+      d->expr_init = expr_compile_string(opts[0].val.sval, d->dict);
+
+      if (d->expr_init != NULL)
+        {
+           expr_execute(d->expr_init, d->dict);
+        }
+
+      d->expr_frame = expr_compile_string(opts[1].val.sval, d->dict);
+      d->expr_point = expr_compile_string(opts[2].val.sval, d->dict);
+
+      d->vfield = g_malloc (sizeof(struct xform_vector)
+			    * d->width * d->height);
+   }
+
+   /* run the on-frame script. */
+   if (d->expr_frame != NULL)
+     expr_execute(d->expr_frame, d->dict);
+
+   for (j = 0; j < pn_image_data->height; j++)
+     for (i = 0; i < pn_image_data->width; i++)
+       {
+         /* Points (xf, yf) must be in a (-1..1) square. */
+         xf = 2.0 * i / (pn_image_data->width - 1) - 1.0;
+         yf = 2.0 * j / (pn_image_data->height - 1) - 1.0;
+
+         /* Now, convert to polar coordinates r and d. */
+         *rf = hypot(xf, yf);
+         *df = atan2(yf, xf);
+
+         /* Run the script. */
+         if (d->expr_point != NULL)
+           expr_execute(d->expr_point, d->dict);
+
+         /* Back to (-1..1) square. */
+         xf = (*rf) * cos ((*df));
+         yf = (*rf) * sin ((*df));
+
+         /* Convert back to physical coordinates. */
+         xn = (int)(((xf + 1.0) * (pn_image_data->width - 1) / 2) + 0.5);
+         yn = (int)(((yf + 1.0) * (pn_image_data->height - 1) / 2) + 0.5);
+
+         if (xn < 0 || xn >= pn_image_data->width || yn < 0 || yn >= pn_image_data->height)
+           {
+             xn = i; yn = j;
+           }
+
+         xfvec (xn, yn, &d->vfield[PN_IMG_INDEX (i, j)]);
+       }
+
+  apply_xform (d->vfield);
+  pn_swap_surfaces ();
+}
+
+struct pn_actuator_desc builtin_xform_dynmovement =
+{
+  "xform_dynmovement", "Dynamic Movement Transform",
+  "A customizable blitter.",
+  0, xform_dynmovement_opts,
+  xform_dynmovement_init, xform_dynmovement_cleanup, xform_dynmovement_exec
+};
