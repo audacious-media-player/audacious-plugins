@@ -1,3 +1,18 @@
+2006-12-05 09:07:41 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [728]
+  Remove old-style is_our_file() where a new-style is_our_fd() exists
+  
+  trunk/src/alac/plugin.c                |   34 -------------------------------
+  trunk/src/console/Audacious_Driver.cxx |   26 -----------------------
+  trunk/src/mpg123/mpg123.c              |   24 ----------------------
+  trunk/src/paranormal/cfg.c             |    2 -
+  trunk/src/sexypsf/xmms.c               |   25 ----------------------
+  trunk/src/timidity/src/xmms-timidity.c |   36 ---------------------------------
+  trunk/src/timidity/src/xmms-timidity.h |    3 --
+  trunk/src/wavpack/libwavpack.cxx       |    3 --
+  8 files changed, 8 insertions(+), 145 deletions(-)
+
+
 2006-12-04 23:26:12 +0000  William Pitcock <nenolod@nenolod.net>
   revision [726]
   - remove gnomevfs reference

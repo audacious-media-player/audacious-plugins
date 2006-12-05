@@ -15,6 +15,8 @@
 #include "actuators.h"
 #include "pn_utils.h"
 
+#include "libcalc/calc.h"
+
 struct xform_vector
 {
   gint32 offset; /* the offset of the top left pixel */
@@ -441,4 +443,121 @@ struct pn_actuator_desc builtin_xform_halfrender =
   "Divides the surface in half and renders it twice.",
   0, xform_halfrender_opts,
   NULL, NULL, xform_halfrender_exec
+};
+
+/* **************** xform_movement **************** */
+struct pn_actuator_option_desc xform_movement_opts[] =
+{
+  { "formula", "The formula to evaluate.",
+    OPT_TYPE_STRING, { sval: "d = 0.15;" } },
+  { NULL }
+};
+
+typedef struct {
+  int width, height;                 /* Previous width and height. */
+  struct xform_vector *vfield;
+} PnMovementData;
+
+static void
+xform_movement_init (gpointer *data)
+{
+    *data = g_new0(PnMovementData, 1);
+}
+
+static void
+xform_movement_cleanup (gpointer data)
+{
+    PnMovementData *d = (PnMovementData *) data;
+
+    if (d)
+      {
+         if (d->vfield)
+ 	     g_free (d->vfield);
+         g_free (d);
+      }
+}
+
+static void
+xform_movement_exec (const struct pn_actuator_option *opts,
+		 gpointer odata)
+{
+  PnMovementData *d = (PnMovementData *) odata;
+
+  if (d->width != pn_image_data->width
+      || d->height != pn_image_data->height)
+    {
+      gint i, j;
+      gdouble *rf, *df;
+      gdouble xf, yf;
+      gint xn, yn;
+      expression_t *expr;
+      symbol_dict_t *dict;
+
+      d->width = pn_image_data->width;
+      d->height = pn_image_data->height;
+
+      if (d->vfield)
+        {
+  	  g_free (d->vfield);
+          d->vfield = NULL;
+        }
+
+      if (opts[0].val.sval == NULL)
+        return;
+
+      dict = dict_new();
+      expr = expr_compile_string(opts[0].val.sval, dict);
+      if (!expr)
+        {
+           dict_free(dict);
+           return;
+        }
+
+      rf = dict_variable(dict, "r");
+      df = dict_variable(dict, "d");
+
+      d->vfield = g_malloc (sizeof(struct xform_vector)
+			    * d->width * d->height);
+
+      for (j = 0; j < pn_image_data->height; j++)
+	for (i = 0; i < pn_image_data->width; i++)
+	  {
+            /* Points (xf, yf) must be in a (-1..1) square. */
+            xf = 2.0 * i / (pn_image_data->width - 1) - 1.0;
+            yf = 2.0 * j / (pn_image_data->height - 1) - 1.0;
+
+            /* Now, convert to polar coordinates r and d. */
+            *rf = hypot(xf, yf);
+            *df = atan2(yf, xf);
+
+            /* Run the script. */
+            expr_execute(expr, dict);
+
+            /* Back to (-1..1) square. */
+            xf = (*rf) * cos ((*df));
+            yf = (*rf) * sin ((*df));
+
+            /* Convert back to physical coordinates. */
+            xn = (int)(((xf + 1.0) * (pn_image_data->width - 1) / 2) + 0.5);
+            yn = (int)(((yf + 1.0) * (pn_image_data->height - 1) / 2) + 0.5);
+
+            if (xn < 0 || xn >= pn_image_data->width || yn < 0 || yn >= pn_image_data->height)
+              {
+                xn = i; yn = j;
+              }
+
+	    xfvec (xn, yn, &d->vfield[PN_IMG_INDEX (i, j)]);
+	  }
+    }
+
+  apply_xform (d->vfield);
+  pn_swap_surfaces ();
+}
+
+struct pn_actuator_desc builtin_xform_movement =
+{
+  "xform_movement", "Movement Transform",
+  "A customizable blitter.",
+  0, xform_movement_opts,
+  xform_movement_init, xform_movement_cleanup, xform_movement_exec
 };

@@ -4,6 +4,7 @@ include ../../../mk/init.mk
 presetsdir = $(pkgdatadir)/paranormal/Presets
 
 OBJECTIVE_DATA = \
+	nazca_-_smoke_on_the_water.pnv:$(presetsdir)	\
 	nenolod_-_3d_wave.pnv:$(presetsdir)		\
 	nenolod_-_purple_flower.pnv:$(presetsdir)	\
 	nenolod_-_bumblebees.pnv:$(presetsdir)		\
@@ -23,6 +24,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_swarm.pnv:$(presetsdir)		\
 	nenolod_-_interlaced.pnv:$(presetsdir)		\
 	nenolod_-_cubism.pnv:$(presetsdir)		\
+	nenolod_-_transform_fun.pnv:$(presetsdir)	\
 	aerdan_-_bloody_vortex.pnv:${presetsdir}	\
 	aerdan_-_cloudscape.pnv:${presetsdir}		\
 	aerdan_-_cloudscape2.pnv:${presetsdir}		\
