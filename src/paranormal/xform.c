@@ -566,6 +566,7 @@ struct pn_actuator_desc builtin_xform_movement =
 };
 
 /* **************** xform_dynmovement **************** */
+/* FIXME: really slow */
 struct pn_actuator_option_desc xform_dynmovement_opts[] =
 {
   { "init_script", "The formula to evaluate on init.",
@@ -600,11 +601,11 @@ xform_dynmovement_cleanup (gpointer data)
     if (d)
       {
          if (d->expr_init)
-             expression_free (d->expr_init);
+             expr_free (d->expr_init);
          if (d->expr_frame)
-             expression_free (d->expr_frame);
+             expr_free (d->expr_frame);
          if (d->expr_point)
-             expression_free (d->expr_point);
+             expr_free (d->expr_point);
          if (d->dict)
              dict_free (d->dict);
          if (d->vfield)
@@ -646,12 +647,9 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
           d->dict = dict_new();
         }
 
-      rf = dict_variable(d->dict, "r");
-      df = dict_variable(d->dict, "d");
-
       if (d->expr_init)
         {
-          expression_free(d->expr_init);
+          expr_free(d->expr_init);
           d->expr_init = NULL;
         }
 
@@ -669,6 +667,9 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
       d->vfield = g_malloc (sizeof(struct xform_vector)
 			    * d->width * d->height);
    }
+
+   rf = dict_variable(d->dict, "r");
+   df = dict_variable(d->dict, "d");
 
    /* run the on-frame script. */
    if (d->expr_frame != NULL)
