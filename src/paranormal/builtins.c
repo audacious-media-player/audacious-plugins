@@ -17,6 +17,7 @@ DECLARE_ACTUATOR (container_onbeat);
 
 DECLARE_ACTUATOR (cmap_bwgradient);
 DECLARE_ACTUATOR (cmap_gradient);
+DECLARE_ACTUATOR (cmap_dynamic);
 
 /* **************** freq **************** */
 DECLARE_ACTUATOR (freq_dots);
@@ -65,6 +66,7 @@ struct pn_actuator_desc *builtin_table[] =
   /* **************** cmaps **************** */
   &builtin_cmap_bwgradient,
   &builtin_cmap_gradient,
+  &builtin_cmap_dynamic,
   /* **************** freq **************** */
   &builtin_freq_dots,
   &builtin_freq_drops,

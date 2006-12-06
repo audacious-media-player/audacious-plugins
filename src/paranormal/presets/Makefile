@@ -25,6 +25,8 @@ OBJECTIVE_DATA = \
 	nenolod_-_interlaced.pnv:$(presetsdir)		\
 	nenolod_-_cubism.pnv:$(presetsdir)		\
 	nenolod_-_transform_fun.pnv:$(presetsdir)	\
+	nenolod_-_tunnel_vision.pnv:$(presetsdir)	\
+	nenolod_-_kaliedoscope.pnv:$(presetsdir)	\
 	aerdan_-_bloody_vortex.pnv:${presetsdir}	\
 	aerdan_-_cloudscape.pnv:${presetsdir}		\
 	aerdan_-_cloudscape2.pnv:${presetsdir}		\
