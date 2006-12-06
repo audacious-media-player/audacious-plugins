@@ -23,7 +23,7 @@
 #define H_ADPLUG_FILEPROVIDER
 
 #include <string>
-#include <binio.h>
+#include "binio_virtual.h"
 
 class CFileProvider
 {

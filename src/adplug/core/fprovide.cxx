@@ -52,7 +52,7 @@ unsigned long CFileProvider::filesize(binistream *f)
 
 /***** CProvider_Filesystem *****/
 
-vfsistream *CProvider_Filesystem::open(std::string filename) const
+binistream *CProvider_Filesystem::open(std::string filename) const
 {
   vfsistream *f = new vfsistream(filename);
 

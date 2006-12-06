@@ -1,3 +1,17 @@
+2006-12-06 15:37:05 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [742]
+  - implement virtual class to use VFS through binio
+  - update the places where binio is used directly to use vfs[io]stream instead of bin[io]stream, respectively
+  - make CFileProvider use vfsistream instead of binifstream.
+  
+  trunk/src/adplug/core/Makefile        |    4 -
+  trunk/src/adplug/core/binio_virtual.h |  102 ++++++++++++++++++++++++++++++++++
+  trunk/src/adplug/core/database.cxx    |    7 +-
+  trunk/src/adplug/core/database.h      |    3 -
+  trunk/src/adplug/core/fprovide.cxx    |    7 +-
+  5 files changed, 112 insertions(+), 11 deletions(-)
+
+
 2006-12-06 13:09:57 +0000  William Pitcock <nenolod@nenolod.net>
   revision [740]
   - some more presets
