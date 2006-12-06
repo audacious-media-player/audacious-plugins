@@ -52,9 +52,9 @@ unsigned long CFileProvider::filesize(binistream *f)
 
 /***** CProvider_Filesystem *****/
 
-binistream *CProvider_Filesystem::open(std::string filename) const
+vfsistream *CProvider_Filesystem::open(std::string filename) const
 {
-  binifstream *f = new binifstream(filename);
+  vfsistream *f = new vfsistream(filename);
 
   if(!f) return 0;
   if(f->error()) { delete f; return 0; }
@@ -67,10 +67,9 @@ binistream *CProvider_Filesystem::open(std::string filename) const
 
 void CProvider_Filesystem::close(binistream *f) const
 {
-  binifstream *ff = (binifstream *)f;
+  vfsistream *ff = (vfsistream *)f;
 
   if(f) {
-    ff->close();
     delete ff;
   }
 }

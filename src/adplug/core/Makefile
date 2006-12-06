@@ -18,8 +18,8 @@ flash.h hyp.h psi.h rat.h hybrid.h rol.h adtrack.h cff.h dtm.h fprovide.h \
 database.h players.h xsm.h adlibemu.h kemuopl.h dro.h dmo.h s3m.h temuopl.h \
 msc.h rix.h adl.h
 
-CXXFLAGS += $(PICFLAGS) $(BINIO_CFLAGS) -I../../../../intl -I../../../.. -Dstricmp=strcasecmp
-CFLAGS += $(PICFLAGS) $(BINIO_CFLAGS) -I../../../../intl -I../../../.. -Dstricmp=strcasecmp
+CXXFLAGS += $(PICFLAGS) $(BINIO_CFLAGS) -I../../../../intl -I../../../.. -Dstricmp=strcasecmp $(BEEP_DEFINES)
+CFLAGS += $(PICFLAGS) $(BINIO_CFLAGS) -I../../../../intl -I../../../.. -Dstricmp=strcasecmp $(BEEP_DEFINES)
 
 OBJECTS = ${SOURCES:.c=.o} ${SOURCES:.cxx=.o}
 

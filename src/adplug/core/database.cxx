@@ -21,8 +21,7 @@
  * Copyright (c) 2002, 2003, 2006 Simon Peter <dn.tlp@gmx.net>
  */
 
-#include <binio.h>
-#include <binfile.h>
+#include "binio_virtual.h"
 #include <string.h>
 
 #include "database.h"
@@ -55,7 +54,7 @@ CAdPlugDatabase::~CAdPlugDatabase()
 
 bool CAdPlugDatabase::load(std::string db_name)
 {
-  binifstream f(db_name);
+  vfsistream f(db_name);
   if(f.error()) return false;
   return load(f);
 }
@@ -86,7 +85,7 @@ bool CAdPlugDatabase::load(binistream &f)
 
 bool CAdPlugDatabase::save(std::string db_name)
 {
-  binofstream f(db_name);
+  vfsostream f(db_name);
   if(f.error()) return false;
   return save(f);
 }
