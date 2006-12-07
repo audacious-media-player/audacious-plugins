@@ -23,10 +23,11 @@ extern "C" {
 #include "Audacious_Config.h"
 
 #include "Music_Emu.h"
-#include "Vfs_File.h"
+#include "Gzip_Reader.h"
 
 int const fade_threshold = 10 * 1000;
 int const fade_length    = 8 * 1000;
+int const path_max = 4096;
 
 AudaciousConsoleConfig audcfg = { 180, FALSE, 32000, TRUE, 0, 0, FALSE, 0 };
 static GThread* decode_thread;
@@ -35,7 +36,6 @@ static int console_ip_is_going;
 static volatile long pending_seek;
 extern InputPlugin console_ip;
 static Music_Emu* emu = 0;
-static int track_ended;
 
 static blargg_err_t log_err( blargg_err_t err )
 {
@@ -59,84 +59,126 @@ static void unload_file()
 	emu = NULL;
 }
 
-// Extracts track number from file path, also frees memory at end of block
-
-struct Url_Parser
-{
-	gchar* path; // path without track number specification
-	int track;   // track number (0 = first track)
-	bool track_specified; // false if no track number was specified in path
-	Url_Parser( gchar* path );
-	~Url_Parser() { g_free( path ); }
+// Handles URL parsing, file opening and identification, and file loading.
+// Keeps file header around when loading rest of file to avoid seeking
+// and re-reading.
+class File_Handler {
+public:
+	gchar* path;            // path without track number specification
+	int track;              // track number (0 = first track)
+	bool track_specified;   // false if no track number was specified in path
+	Music_Emu* emu;         // set to 0 to take ownership
+	gme_type_t type;
+	
+	// Parses path and identifies file type
+	File_Handler( const char* path, VFSFile* fd = 0 );
+	
+	// Creates emulator and returns 0. If this wasn't a music file or
+	// emulator couldn't be created, returns 1.
+	int load( long sample_rate );
+	
+	// Deletes owned emu and closes file
+	~File_Handler();
+private:
+	char header [4];
+	Vfs_File_Reader vfs_in;
+	Gzip_Reader in;
 };
 
-Url_Parser::Url_Parser( gchar* path_in )
+File_Handler::File_Handler( const char* path_in, VFSFile* fd )
 {
+	emu   = 0;
+	type  = 0;
 	track = 0;
 	track_specified = false;
 	
 	path = g_strdup( path_in );
-	if ( path )
+	if ( !path )
+		return; // out of memory
+	
+	// extract track number
+	gchar* args = strchr( path, '?' ); // TODO: use strrchr()?
+	if ( args )
 	{
-		gchar* args = strchr( path, '?' );
-		if ( args )
+		*args = '\0';
+		// TODO: use func with better error reporting, and perhaps don't
+		// truncate path if there is no number after ?
+		track = atoi( args + 1 );
+		track_specified = true;
+	}
+	
+	// open vfs
+	if ( fd )
+		vfs_in.reset( fd );
+	else if ( log_err( vfs_in.open( path ) ) )
+		return;
+	
+	// now open gzip_reader on top of vfs
+	if ( log_err( in.open( &vfs_in ) ) )
+		return;
+	
+	// read and identify header
+	if ( !log_err( in.read( header, sizeof header ) ) )
+	{
+		type = gme_identify_extension( gme_identify_header( header ) );
+		if ( !type )
 		{
-			*args = '\0';
-			track = atoi( args + 1 );
-			track_specified = true;
+			type = gme_identify_extension( path );
+			if ( type != gme_gym_type ) // only trust file extension for headerless .gym files
+				type = 0;
 		}
 	}
 }
 
-// Determine file type based on header contents. Returns 0 if unrecognized or path is NULL.
-static gme_type_t identify_file( gchar* path )
+File_Handler::~File_Handler()
 {
-	if ( path )
-	{
-		char header [4] = { };
-		GME_FILE_READER in;
-		if ( !log_err( in.open( path ) ) && !log_err( in.read( header, sizeof header ) ) )
-			return gme_identify_extension( gme_identify_header( header ), gme_type_list() );
-	}
-	return 0;
+	gme_delete( emu );
+	g_free( path );
 }
 
-// Load file into emulator/info reader and load m3u in same directory, if present.
-// If emu is NULL, returns out of memory error.
-static blargg_err_t load_in_emu( Music_Emu* emu, const char* path, VFSFile* fd = 0 )
+int File_Handler::load( long sample_rate )
 {
+	if ( !type )
+		return 1;
+	
+	emu = gme_new_emu( type, sample_rate );
 	if ( !emu )
-		return "Out of memory";
-	
-	Vfs_File_Reader in;
-	blargg_err_t err = 0;
-	if ( fd )
-		in.reset( fd ); // use fd and let caller close it
-	else
-		err = in.open( path );
-	
-	if ( !err )
-		err = emu->load( in );
-	in.close();
-	
-	if ( !err )
 	{
-		log_warning( emu );
-		
-		// load .m3u in same directory
-		int const path_max = 4096;
-		char m3u_path [path_max + 5];
-		strncpy( m3u_path, path, path_max );
-		m3u_path [path_max] = 0;
-		char* p = strrchr( m3u_path, '.' );
-		if ( !p )
-			p = m3u_path + strlen( m3u_path );
-		strcpy( p, ".m3u" );
-		
-		if ( emu->load_m3u( m3u_path ) ) { } // TODO: log error if m3u file exists
+		log_err( "Out of memory" );
+		return 1;
 	}
 	
-	return err;
+	{
+		// combine header with remaining file data
+		Remaining_Reader reader( header, sizeof header, &in );
+		if ( log_err( emu->load( reader ) ) )
+			return 1;
+	}
+	
+	// files can be closed now
+	in.close();
+	vfs_in.close();
+	
+	log_warning( emu );
+	
+	// load .m3u from same directory( replace/add extension with ".m3u")
+	char m3u_path [path_max + 5];
+	strncpy( m3u_path, path, path_max );
+	m3u_path [path_max] = 0;
+	// TODO: use better path-building functions
+	char* p = strrchr( m3u_path, '.' );
+	if ( !p )
+		p = m3u_path + strlen( m3u_path );
+	strcpy( p, ".m3u" );
+	
+	Vfs_File_Reader m3u;
+	if ( !m3u.open( m3u_path ) )
+	{
+		if ( log_err( emu->load_m3u( m3u ) ) ) // TODO: fail if m3u can't be loaded?
+			log_warning( emu ); // this will log line number of first problem in m3u
+	}
+	
+	return 0;
 }
 
 // Get info
@@ -154,6 +196,7 @@ static TitleInput* get_track_ti( const char* path, track_info_t const& info, int
 		if ( info.track_count > 1 )
 			ti->track_number = track + 1;
 		ti->comment    = g_strdup( info.copyright );
+		ti->genre      = g_strconcat( "Console: ", info.system, NULL );
 		
 		int length = info.length;
 		if ( length <= 0 )
@@ -180,14 +223,13 @@ static char* format_and_free_ti( TitleInput* ti, int* length )
 static TitleInput *get_song_tuple( gchar *path )
 {
 	TitleInput* result = 0;
-	
-	Url_Parser url( path );
-	Music_Emu* emu = gme_new_info( identify_file( url.path ) );
-	track_info_t info;
-	if ( !log_err( load_in_emu( emu, url.path ) ) &&
-			!log_err( emu->track_info( &info, url.track ) ) )
-		result = get_track_ti( url.path, info, url.track );
-	delete emu;
+	File_Handler fh( path );
+	if ( !fh.load( gme_info_only ) )
+	{
+		track_info_t info;
+		if ( !log_err( fh.emu->track_info( &info, fh.track ) ) )
+			result = get_track_ti( fh.path, info, fh.track );
+	}
 	return result;
 }
 
@@ -207,11 +249,8 @@ static void* play_loop_track( gpointer )
 {
 	g_static_mutex_lock( &playback_mutex );
 	
-	while ( console_ip_is_going )
+	while ( console_ip_is_going && !emu->track_ended() )
 	{
-		int const buf_size = 1024;
-		Music_Emu::sample_t buf [buf_size];
-		
 		// handle pending seek
 		long s = pending_seek;
 		pending_seek = -1; // TODO: use atomic swap
@@ -220,21 +259,13 @@ static void* play_loop_track( gpointer )
 			console_ip.output->flush( s * 1000 );
 			emu->seek( s * 1000 );
 		}
-
-		// fill buffer
-		if ( track_ended )
-		{
-			// TODO: remove delay once host doesn't cut the end of track off
-			int const delay = 0; // seconds
-			if ( track_ended++ > delay * emu->sample_rate() / (buf_size / 2) )
-				console_ip_is_going = false;
-			memset( buf, 0, sizeof buf );
-		}
-		else
-		{
-			emu->play( buf_size, buf );
-			track_ended = emu->track_ended();
-		}
+		
+		// fill and play buffer of audio
+		// TODO: see if larger buffer helps efficiency
+		int const buf_size = 1024;
+		Music_Emu::sample_t buf [buf_size];
+		emu->play( buf_size, buf );
+		
 		produce_audio( console_ip.output->written_time(), 
 			FMT_S16_NE, 1, sizeof buf, buf, 
 			&console_ip_is_going );
@@ -255,29 +286,25 @@ static void play_file( char* path )
 	unload_file();
 	
 	// identify file
-	Url_Parser url( path );
-	gme_type_t type = identify_file( url.path );
-	if ( !type ) return;
+	File_Handler fh( path );
+	if ( !fh.type )
+		return;
 	
-	// sample rate
+	// select sample rate
 	long sample_rate = 0;
-	if ( type == gme_spc_type )
+	if ( fh.type == gme_spc_type )
 		sample_rate = 32000;
 	if ( audcfg.resample )
 		sample_rate = audcfg.resample_rate;
 	if ( !sample_rate )
 		sample_rate = 44100;
 	
-	// create emulator and load
-	emu = gme_new_emu( type, sample_rate );
-	if ( load_in_emu( emu, url.path ) )
-	{
-		unload_file();
+	// create emulator and load file
+	if ( fh.load( sample_rate ) )
 		return;
-	}
 	
 	// stereo echo depth
-	gme_set_stereo_depth( emu, 1.0 / 100 * audcfg.echo );
+	gme_set_stereo_depth( fh.emu, 1.0 / 100 * audcfg.echo );
 	
 	// set equalizer
 	if ( audcfg.treble || audcfg.bass )
@@ -292,53 +319,54 @@ static void play_file( char* path )
 		double treble = audcfg.treble / 100.0;
 		eq.treble = treble * (treble < 0 ? 50.0 : 5.0);
 		
-		emu->set_equalizer(eq);
+		fh.emu->set_equalizer(eq);
 	}
 	
 	// get info
 	int length = -1;
 	track_info_t info;
-	if ( !log_err( emu->track_info( &info, url.track ) ) )
+	if ( !log_err( fh.emu->track_info( &info, fh.track ) ) )
 	{
-		if ( type == gme_spc_type && audcfg.ignore_spc_length )
+		if ( fh.type == gme_spc_type && audcfg.ignore_spc_length )
 			info.length = -1;
-		TitleInput* ti = get_track_ti( url.path, info, url.track );
+		TitleInput* ti = get_track_ti( fh.path, info, fh.track );
 		if ( ti )
 		{
 			char* title = format_and_free_ti( ti, &length );
 			if ( title )
 			{
-				console_ip.set_info( title, length, emu->voice_count() * 1000, sample_rate, 2 );
+				console_ip.set_info( title, length, fh.emu->voice_count() * 1000, sample_rate, 2 );
 				g_free( title );
 			}
 		}
 	}
-	if ( length <= 0 )
-		length = audcfg.loop_length * 1000;
-	
-	if ( log_err( emu->start_track( url.track ) ) )
-	{
-		unload_file();
-		return;
-	}
-	log_warning( emu );
 	
 	// start track
-    if ( !console_ip.output->open_audio( FMT_S16_NE, sample_rate, 2 ) )
+	if ( log_err( fh.emu->start_track( fh.track ) ) )
 		return;
-	pending_seek = -1;
-	track_ended = 0;
+	log_warning( fh.emu );
+	if ( !console_ip.output->open_audio( FMT_S16_NE, sample_rate, 2 ) )
+		return;
+	
+	// set fade time
+	if ( length <= 0 )
+		length = audcfg.loop_length * 1000;
 	if ( length >= fade_threshold + fade_length )
 		length -= fade_length;
-	emu->set_fade( length, fade_length );
+	fh.emu->set_fade( length, fade_length );
+	
+	// take ownership of emu
+	emu = fh.emu;
+	fh.emu = 0;
+	
+	pending_seek = -1;
 	console_ip_is_going = 1;
 	decode_thread = g_thread_create( play_loop_track, NULL, TRUE, NULL );
 }
 
 static void seek( gint time )
 {
-	// TODO: be sure seek works at all
-	// TODO: disallow seek on slow formats (SPC, GYM, VGM using FM)?
+	// TODO: use thread-safe atomic set
 	pending_seek = time;
 }
 
@@ -364,59 +392,37 @@ static int get_time(void)
 	return console_ip_is_going ? console_ip.output->output_time() : -1;
 }
 
-static gint is_our_file_from_vfs( gchar* filename, VFSFile* fd )
+static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
 {
-	Url_Parser url( filename );
-	if ( !url.path ) return false;
-
-	// open file if not already open
-	Vfs_File_Reader in;
-	if ( !fd )
-	{
-		if ( log_err( in.open( url.path ) ) ) return false;
-		fd = in.file();
-		// in will be closed when function ends
-	}
-	
-	// read header and identify type
-	gchar header [4] = { };
-	vfs_fread( header, sizeof header, 1, fd );
-	gme_type_t type = gme_identify_extension( gme_identify_header( header ), gme_type_list() );
-	
 	gint result = 0;
-	if ( type )
+	File_Handler fh( path, fd );
+	if ( fh.type )
 	{
-		if ( url.track_specified || type->track_count == 1 )
+		if ( fh.track_specified || fh.type->track_count == 1 )
 		{
 			// don't even need to read file if track is specified or
 			// that file format can't have more than one track per file
 			result = 1;
 		}
-		else
+		else if ( !fh.load( gme_info_only ) )
 		{
 			// format requires reading file info to get track count
-			Music_Emu* emu = gme_new_info( type );
-			vfs_rewind( fd );
-			if ( !log_err( load_in_emu( emu, url.path, fd ) ) )
+			if ( fh.emu->track_count() == 1 )
 			{
-				if ( emu->track_count() == 1 )
-				{
-					result = 1;
-				}
-				else
-				{
-					// for multi-track types, add each track to playlist
-					for (int i = 0; i < emu->track_count(); i++)
-					{
-						gchar _buf[4096];
-						g_snprintf(_buf, 4096, "%s?%d", url.path, i);
-
-						playlist_add_url(_buf);
-					}
-					result = -1;
-				}
+				result = 1;
 			}
-			delete emu;
+			else
+			{
+				// for multi-track types, add each track to playlist
+				for (int i = 0; i < fh.emu->track_count(); i++)
+				{
+					gchar _buf[path_max];
+					g_snprintf(_buf, path_max, "%s?%d", fh.path, i);
+
+					playlist_add_url(_buf);
+				}
+				result = -1;
+			}
 		}
 	}
 	return result;
@@ -436,7 +442,7 @@ extern "C" void console_aboutbox(void)
 	if (!aboutbox)
 	{
 		aboutbox = xmms_show_message(_("About the Console Music Decoder"),
-						_("Console music decoder engine based on Game_Music_Emu 0.5.1.\n"
+						_("Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
 						"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
 						"        Shay Green <gblargg@gmail.com>"),
 						_("Ok"),

@@ -1,6 +1,6 @@
 // Konami SCC sound chip emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef KSS_SCC_APU_H
 #define KSS_SCC_APU_H
 
@@ -97,13 +97,8 @@ inline void Scc_Apu::reset()
 {
 	last_time = 0;
 	
-	osc_t* osc = &oscs [osc_count];
-	do
-	{
-		osc--;
-		memset( osc, 0, offsetof (osc_t,output) );
-	}
-	while ( osc != oscs );
+	for ( int i = 0; i < osc_count; i++ )
+		memset( &oscs [i], 0, offsetof (osc_t,output) );
 	
 	memset( regs, 0, sizeof regs );
 }

@@ -1,6 +1,6 @@
 // MSX computer KSS music file emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef KSS_EMU_H
 #define KSS_EMU_H
 
@@ -14,6 +14,7 @@ class Kss_Emu : private Kss_Cpu, public Classic_Emu {
 	typedef Kss_Cpu cpu;
 public:
 	// KSS file header
+	enum { header_size = 0x10 };
 	struct header_t
 	{
 		byte tag [4];
@@ -26,8 +27,8 @@ public:
 		byte extra_header;
 		byte device_flags;
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 0x10 );
 	
+	enum { ext_header_size = 0x10 };
 	struct ext_header_t
 	{
 		byte data_size [4];
@@ -39,7 +40,6 @@ public:
 		byte msx_music_vol;
 		byte msx_audio_vol;
 	};
-	BOOST_STATIC_ASSERT( sizeof (ext_header_t) == 0x10 );
 	
 	struct composite_header_t : header_t, ext_header_t { };
 	
@@ -62,7 +62,6 @@ protected:
 private:
 	Rom_Data<page_size> rom;
 	composite_header_t header_;
-	byte* unmapped_write() { return rom.unmapped(); }
 	
 	bool scc_accessed;
 	bool gain_updated;
@@ -90,6 +89,8 @@ private:
 	Ay_Apu ay;
 	Scc_Apu scc;
 	Sms_Apu* sn;
+	byte unmapped_read  [0x100];
+	byte unmapped_write [page_size];
 };
 
 #endif

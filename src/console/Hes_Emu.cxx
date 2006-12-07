@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Hes_Emu.h"
 
@@ -105,8 +105,8 @@ static blargg_err_t check_hes_header( void const* header )
 
 struct Hes_File : Gme_Info_
 {
-	struct {
-		Hes_Emu::header_t h;
+	struct header_t {
+		char header [Hes_Emu::header_size];
 		char unused [0x20];
 		byte fields [0x30 * 3];
 	} h;
@@ -115,6 +115,7 @@ struct Hes_File : Gme_Info_
 	
 	blargg_err_t load_( Data_Reader& in )
 	{
+		assert( offsetof (header_t,fields) == Hes_Emu::header_size + 0x20 );
 		blargg_err_t err = in.read( &h, sizeof h );
 		if ( err )
 			return (err == in.eof_error ? gme_wrong_file_type : err);
@@ -137,7 +138,8 @@ gme_type_t_ const gme_hes_type [1] = { "PC Engine", 256, &new_hes_emu, &new_hes_
 
 blargg_err_t Hes_Emu::load_( Data_Reader& in )
 {
-	RETURN_ERR( rom.load( in, sizeof header_, &header_, unmapped ) );
+	assert( offsetof (header_t,unused [4]) == header_size );
+	RETURN_ERR( rom.load( in, header_size, &header_, unmapped ) );
 	
 	RETURN_ERR( check_hes_header( header_.tag ) );
 	
@@ -243,6 +245,7 @@ blargg_err_t Hes_Emu::start_track_( int track )
 	r.a  = track;
 	
 	recalc_timer_load();
+	last_frame_hook = 0;
 	
 	return 0;
 }
@@ -282,6 +285,7 @@ void Hes_Emu::cpu_write_( hes_addr_t addr, int data )
 {
 	if ( unsigned (addr - apu.start_addr) <= apu.end_addr - apu.start_addr )
 	{
+		GME_APU_HOOK( this, addr - apu.start_addr, data );
 		// avoid going way past end when a long block xfer is writing to I/O space
 		hes_time_t t = min( time(), end_time() + 8 );
 		apu.write_data( t, addr, data );
@@ -458,6 +462,17 @@ int Hes_Emu::cpu_done()
 			timer.fired = true;
 			irq.timer = future_hes_time;
 			irq_changed(); // overkill, but not worth writing custom code
+			#if GME_FRAME_HOOK_DEFINED
+			{
+				unsigned const threshold = period_60hz / 30;
+				unsigned long elapsed = present - last_frame_hook;
+				if ( elapsed - period_60hz + threshold / 2 < threshold )
+				{
+					last_frame_hook = present;
+					GME_FRAME_HOOK( this );
+				}
+			}
+			#endif
 			return 0x0A;
 		}
 		
@@ -467,6 +482,10 @@ int Hes_Emu::cpu_done()
 			//run_until( present );
 			//irq.vdp = future_hes_time;
 			//irq_changed();
+			#if GME_FRAME_HOOK_DEFINED
+				last_frame_hook = present;
+				GME_FRAME_HOOK( this );
+			#endif
 			return 0x08;
 		}
 	}
@@ -498,6 +517,9 @@ blargg_err_t Hes_Emu::run_clocks( blip_time_t& duration_, int )
 	// end time frame
 	timer.last_time -= duration;
 	vdp.next_vbl    -= duration;
+	#if GME_FRAME_HOOK_DEFINED
+		last_frame_hook -= duration;
+	#endif
 	cpu::end_frame( duration );
 	::adjust_time( irq.timer, duration );
 	::adjust_time( irq.vdp,   duration );

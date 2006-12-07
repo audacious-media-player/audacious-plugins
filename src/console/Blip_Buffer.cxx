@@ -120,9 +120,9 @@ Blip_Buffer::blargg_err_t Blip_Buffer::set_sample_rate( long new_rate, int msec 
 	return 0; // success
 }
 
-blip_resampled_time_t Blip_Buffer::clock_rate_factor( long clock_rate ) const
+blip_resampled_time_t Blip_Buffer::clock_rate_factor( long rate ) const
 {
-	double ratio = (double) sample_rate_ / clock_rate;
+	double ratio = (double) sample_rate_ / rate;
 	blip_long factor = (blip_long) floor( ratio * (1L << BLIP_BUFFER_ACCURACY) + 0.5 );
 	assert( factor > 0 || !sample_rate_ ); // fails if clock/output ratio is too large
 	return (blip_resampled_time_t) factor;
@@ -189,19 +189,19 @@ void Blip_Buffer::remove_samples( long count )
 
 // Blip_Synth_
 
-#if BLIP_BUFFER_FAST
-	Blip_Synth_::Blip_Synth_()
-	{
-		buf = 0;
-		last_amp = 0;
-		delta_factor = 0;
-	}
+Blip_Synth_Fast_::Blip_Synth_Fast_()
+{
+	buf = 0;
+	last_amp = 0;
+	delta_factor = 0;
+}
 
-	void Blip_Synth_::volume_unit( double new_unit )
-	{
-		delta_factor = int (new_unit * (1L << blip_sample_bits) + 0.5);
-	}
-#else
+void Blip_Synth_Fast_::volume_unit( double new_unit )
+{
+	delta_factor = int (new_unit * (1L << blip_sample_bits) + 0.5);
+}
+
+#if !BLIP_BUFFER_FAST
 
 Blip_Synth_::Blip_Synth_( short* p, int w ) :
 	impulses( p ),

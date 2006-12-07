@@ -133,9 +133,11 @@ void Nes_Square::run( nes_time_t time, nes_time_t end_time )
 		if ( phase < duty )
 			amp ^= volume;
 		
-		int delta = update_amp( amp );
-		if ( delta )
-			synth.offset( time, delta, output );
+		{
+			int delta = update_amp( amp );
+			if ( delta )
+				synth.offset( time, delta, output );
+		}
 		
 		time += delay;
 		if ( time < end_time )
@@ -489,9 +491,11 @@ void Nes_Noise::run( nes_time_t time, nes_time_t end_time )
 	
 	const int volume = this->volume();
 	int amp = (noise & 1) ? volume : 0;
-	int delta = update_amp( amp );
-	if ( delta )
-		synth.offset( time, delta, output );
+	{
+		int delta = update_amp( amp );
+		if ( delta )
+			synth.offset( time, delta, output );
+	}
 	
 	time += delay;
 	if ( time < end_time )

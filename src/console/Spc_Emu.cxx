@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Spc_Emu.h"
 
@@ -218,14 +218,14 @@ struct Spc_File : Gme_Info_
 		long file_size = in.remain();
 		if ( file_size < Snes_Spc::spc_file_size )
 			return gme_wrong_file_type;
-		RETURN_ERR( in.read( &header, sizeof header ) );
+		RETURN_ERR( in.read( &header, Spc_Emu::header_size ) );
 		RETURN_ERR( check_spc_header( header.tag ) );
 		long const xid6_offset = 0x10200;
 		long xid6_size = file_size - xid6_offset;
 		if ( xid6_size > 0 )
 		{
 			RETURN_ERR( xid6.resize( xid6_size ) );
-			RETURN_ERR( in.skip( xid6_offset - sizeof header ) );
+			RETURN_ERR( in.skip( xid6_offset - Spc_Emu::header_size ) );
 			RETURN_ERR( in.read( xid6.begin(), xid6.size() ) );
 		}
 		return 0;
@@ -264,6 +264,7 @@ void Spc_Emu::mute_voices_( int m )
 
 blargg_err_t Spc_Emu::load_mem_( byte const* in, long size )
 {
+	assert( offsetof (header_t,unused2 [46]) == header_size );
 	file_data = in;
 	file_size = size;
 	set_voice_count( Snes_Spc::voice_count );
@@ -291,8 +292,7 @@ blargg_err_t Spc_Emu::skip_( long count )
 	{
 		count = long (count * resampler.ratio()) & ~1;
 		count -= resampler.skip_input( count );
-	} 
-
+	}
 	if ( count > 0 )
 		RETURN_ERR( apu.skip( count ) );
 	

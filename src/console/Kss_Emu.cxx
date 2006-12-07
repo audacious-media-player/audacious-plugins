@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Kss_Emu.h"
 
@@ -37,6 +37,8 @@ Kss_Emu::Kss_Emu()
 		wave_type | 3, wave_type | 4, wave_type | 5, wave_type | 6, wave_type | 7
 	};
 	set_voice_types( types );
+	
+	memset( unmapped_read, 0xFF, sizeof unmapped_read );
 }
 
 Kss_Emu::~Kss_Emu() { unload(); }
@@ -54,7 +56,11 @@ static void copy_kss_fields( Kss_Emu::header_t const& h, track_info_t* out )
 {
 	const char* system = "MSX";
 	if ( h.device_flags & 0x02 )
+	{
 		system = "Sega Master System";
+		if ( h.device_flags & 0x04 )
+			system = "Game Gear";
+	}
 	Gme_File::copy_field_( out->system, system );
 }
 
@@ -79,10 +85,9 @@ struct Kss_File : Gme_Info_
 	
 	blargg_err_t load_( Data_Reader& in )
 	{
-		long file_size = in.remain();
-		if ( file_size < (long) sizeof (Kss_Emu::composite_header_t) )
-			return gme_wrong_file_type;
-		RETURN_ERR( in.read( &header_, sizeof header_ ) );
+		blargg_err_t err = in.read( &header_, Kss_Emu::header_size );
+		if ( err )
+			return (err == in.eof_error ? gme_wrong_file_type : err);
 		return check_kss_header( &header_ );
 	}
 	
@@ -114,7 +119,9 @@ void Kss_Emu::update_gain()
 blargg_err_t Kss_Emu::load_( Data_Reader& in )
 {
 	memset( &header_, 0, sizeof header_ );
-	RETURN_ERR( rom.load( in, sizeof (header_t), STATIC_CAST(header_t*,&header_), 0 ) );
+	assert( offsetof (header_t,device_flags) == header_size - 1 );
+	assert( offsetof (ext_header_t,msx_audio_vol) == ext_header_size - 1 );
+	RETURN_ERR( rom.load( in, header_size, STATIC_CAST(header_t*,&header_), 0 ) );
 	
 	RETURN_ERR( check_kss_header( header_.tag ) );
 	
@@ -134,7 +141,7 @@ blargg_err_t Kss_Emu::load_( Data_Reader& in )
 	else
 	{
 		ext_header_t& ext = header_;
-		memcpy( &ext, rom.begin(), min( (int) sizeof ext, (int) header_.extra_header ) );
+		memcpy( &ext, rom.begin(), min( (int) ext_header_size, (int) header_.extra_header ) );
 		if ( header_.extra_header > 0x10 )
 			set_warning( "Unknown data in header" );
 	}
@@ -226,7 +233,7 @@ blargg_err_t Kss_Emu::start_track_( int track )
 	//dprintf( "bank_count: %d (%d claimed)\n", bank_count, header_.bank_mode & 0x7F );
 	
 	ram [idle_addr] = 0xFF;
-	cpu::reset( ram, ram );
+	cpu::reset( unmapped_write, unmapped_read );
 	cpu::map_mem( 0, mem_size, ram, ram );
 	
 	ay.reset();
@@ -242,6 +249,7 @@ blargg_err_t Kss_Emu::start_track_( int track )
 	scc_accessed = false;
 	gain_updated = false;
 	update_gain();
+	ay_latch = 0;
 	
 	return 0;
 }
@@ -265,7 +273,7 @@ void Kss_Emu::set_bank( int logical, int physical )
 		long phys = physical * (blargg_long) bank_size;
 		for ( unsigned offset = 0; offset < bank_size; offset += page_size )
 			cpu::map_mem( addr + offset, page_size,
-					unmapped_write(), rom.at_addr( phys + offset ) );
+					unmapped_write, rom.at_addr( phys + offset ) );
 	}
 }
 
@@ -312,6 +320,7 @@ void kss_cpu_out( Kss_Cpu* cpu, cpu_time_t time, unsigned addr, int data )
 		return;
 	
 	case 0xA1:
+		GME_APU_HOOK( &emu, emu.ay_latch, data );
 		emu.ay.write( time, emu.ay_latch, data );
 		return;
 	
@@ -327,6 +336,7 @@ void kss_cpu_out( Kss_Cpu* cpu, cpu_time_t time, unsigned addr, int data )
 	case 0x7F:
 		if ( emu.sn )
 		{
+			GME_APU_HOOK( &emu, 16, data );
 			emu.sn->write_data( time, data );
 			return;
 		}
@@ -386,6 +396,7 @@ blargg_err_t Kss_Emu::run_clocks( blip_time_t& duration, int )
 				ram [--r.sp] = idle_addr >> 8;
 				ram [--r.sp] = idle_addr & 0xFF;
 				r.pc = get_le16( header_.play_addr );
+				GME_FRAME_HOOK( this );
 			}
 		}
 	}

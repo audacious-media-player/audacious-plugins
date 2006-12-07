@@ -23,8 +23,8 @@ SOURCES = \
 	Gb_Oscs.cxx             \
 	gme.cxx                 \
 	Gme_File.cxx            \
-	gme_type_list.cxx       \
 	Gym_Emu.cxx             \
+	Gzip_Reader.cxx         \
 	Hes_Apu.cxx             \
 	Hes_Cpu.cxx             \
 	Hes_Emu.cxx             \
@@ -54,7 +54,8 @@ SOURCES = \
 	Vgm_Emu.cxx             \
 	Vgm_Emu_Impl.cxx        \
 	Ym2413_Emu.cxx          \
-	Ym2612_Emu.cxx
+	Ym2612_Emu.cxx          \
+	Zlib_Inflater.cxx
 
 OBJECTS = ${SOURCES:.cxx=.o}
 

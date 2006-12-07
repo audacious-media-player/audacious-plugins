@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Kss_Scc_Apu.h"
 
@@ -46,12 +46,14 @@ void Scc_Apu::run_until( blip_time_t end_time )
 		BOOST::int8_t const* wave = (BOOST::int8_t*) regs + index * wave_size;
 		if ( index == osc_count - 1 )
 			wave -= wave_size; // last two oscs share wave
-		int amp = wave [osc.phase] * volume;
-		int delta = amp - osc.last_amp;
-		if ( delta )
 		{
-			osc.last_amp = amp;
-			synth.offset( last_time, delta, output );
+			int amp = wave [osc.phase] * volume;
+			int delta = amp - osc.last_amp;
+			if ( delta )
+			{
+				osc.last_amp = amp;
+				synth.offset( last_time, delta, output );
+			}
 		}
 		
 		blip_time_t time = last_time + osc.delay;

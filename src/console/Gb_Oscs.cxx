@@ -129,11 +129,13 @@ void Gb_Square::run( blip_time_t time, blip_time_t end_time, int playing )
 		playing = false;
 	}
 	
-	int delta = amp - last_amp;
-	if ( delta )
 	{
-		last_amp = amp;
-		synth->offset( time, delta, output );
+		int delta = amp - last_amp;
+		if ( delta )
+		{
+			last_amp = amp;
+			synth->offset( time, delta, output );
+		}
 	}
 	
 	time += delay;
@@ -173,13 +175,15 @@ void Gb_Noise::run( blip_time_t time, blip_time_t end_time, int playing )
 	if ( bits >> tap & 2 )
 		amp = -amp;
 	
-	int delta = amp - last_amp;
-	if ( delta )
 	{
-		last_amp = amp;
-		synth->offset( time, delta, output );
+		int delta = amp - last_amp;
+		if ( delta )
+		{
+			last_amp = amp;
+			synth->offset( time, delta, output );
+		}
 	}
-		
+	
 	time += delay;
 	if ( !playing )
 		time = end_time;
@@ -251,20 +255,23 @@ inline void Gb_Wave::write_register( int reg, int data )
 void Gb_Wave::run( blip_time_t time, blip_time_t end_time, int playing )
 {
 	int volume_shift = (volume - 1) & 7; // volume = 0 causes shift = 7
-	int amp = (wave [wave_pos] >> volume_shift & playing) * 2;
-	
-	int frequency = this->frequency();
-	if ( unsigned (frequency - 1) > 2044 ) // frequency < 1 || frequency > 2045
+	int frequency;
 	{
-		amp = 30 >> volume_shift & playing;
-		playing = false;
-	}
-	
-	int delta = amp - last_amp;
-	if ( delta )
-	{
-		last_amp = amp;
-		synth->offset( time, delta, output );
+		int amp = (wave [wave_pos] >> volume_shift & playing) * 2;
+		
+		frequency = this->frequency();
+		if ( unsigned (frequency - 1) > 2044 ) // frequency < 1 || frequency > 2045
+		{
+			amp = 30 >> volume_shift & playing;
+			playing = false;
+		}
+		
+		int delta = amp - last_amp;
+		if ( delta )
+		{
+			last_amp = amp;
+			synth->offset( time, delta, output );
+		}
 	}
 	
 	time += delay;

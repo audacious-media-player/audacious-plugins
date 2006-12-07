@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Gme_File.h"
 
@@ -37,12 +37,18 @@ void Gme_File::unload()
 
 Gme_File::Gme_File()
 {
-	type_ = 0;
+	type_         = 0;
+	user_data_    = 0;
+	user_cleanup_ = 0;
 	unload(); // clears fields
 	blargg_verify_byte_order(); // used by most emulator types, so save them the trouble
 }
 
-Gme_File::~Gme_File() { }
+Gme_File::~Gme_File()
+{
+	if ( user_cleanup_ )
+		user_cleanup_( user_data_ );
+}
 
 blargg_err_t Gme_File::load_mem_( byte const* data, long size )
 {
@@ -145,7 +151,7 @@ void Gme_File::copy_field_( char* out, const char* in )
 	copy_field_( out, in, max_field_ );
 }
 
-blargg_err_t Gme_File::remap_track( int* track_io ) const
+blargg_err_t Gme_File::remap_track_( int* track_io ) const
 {
 	if ( (unsigned) *track_io >= (unsigned) track_count() )
 		return "Invalid track";
@@ -188,7 +194,7 @@ blargg_err_t Gme_File::track_info( track_info_t* out, int track ) const
 	copy_field_( out->system, type()->system );
 	
 	int remapped = track;
-	RETURN_ERR( remap_track( &remapped ) );
+	RETURN_ERR( remap_track_( &remapped ) );
 	RETURN_ERR( track_info_( out, remapped ) );
 	
 	// override with m3u info

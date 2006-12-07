@@ -1,6 +1,6 @@
 // Finite impulse response (FIR) resampler with adjustable FIR size
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef FIR_RESAMPLER_H
 #define FIR_RESAMPLER_H
 
@@ -61,7 +61,7 @@ protected:
 	blargg_vector<sample_t> buf;
 	sample_t* write_pos;
 	int res;
-	int imp;
+	int imp_phase;
 	int const width_;
 	int const write_offset;
 	blargg_ulong skip_bits;
@@ -102,9 +102,9 @@ int Fir_Resampler<width>::read( sample_t* out_begin, blargg_long count )
 	sample_t* out = out_begin;
 	const sample_t* in = buf.begin();
 	sample_t* end_pos = write_pos;
-	blargg_ulong skip = skip_bits >> this->imp;
-	sample_t const* imp = impulses [this->imp];
-	int remain = res - this->imp;
+	blargg_ulong skip = skip_bits >> imp_phase;
+	sample_t const* imp = impulses [imp_phase];
+	int remain = res - imp_phase;
 	int const step = this->step;
 	
 	count >>= 1;
@@ -159,7 +159,7 @@ int Fir_Resampler<width>::read( sample_t* out_begin, blargg_long count )
 		while ( in <= end_pos );
 	}
 	
-	this->imp = res - remain;
+	imp_phase = res - remain;
 	
 	int left = write_pos - in;
 	write_pos = &buf [left];

@@ -1,6 +1,6 @@
 // Common interface to game music file loading and information
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef GME_FILE_H
 #define GME_FILE_H
 
@@ -55,6 +55,17 @@ public:
 	// See gme.h for definition of struct track_info_t.
 	blargg_err_t track_info( track_info_t* out, int track ) const;
 	
+// User data/cleanup
+	
+	// Set/get pointer to data you want to associate with this emulator.
+	// You can use this for whatever you want.
+	void set_user_data( void* p )       { user_data_ = p; }
+	void* user_data() const             { return user_data_; }
+	
+	// Register cleanup function to be called when deleting emulator, or NULL to
+	// clear it. Passes user_data to cleanup function.
+	void set_user_cleanup( gme_user_cleanup_t func ) { user_cleanup_ = func; }
+	
 public:
 	// deprecated
 	int error_count() const; // use warning()
@@ -79,8 +90,8 @@ protected:
 	virtual void post_load_();
 	virtual void clear_playlist_() { }
 	
-protected:
-	blargg_err_t remap_track( int* track_io ) const; // need by Music_Emu
+public:
+	blargg_err_t remap_track_( int* track_io ) const; // need by Music_Emu
 private:
 	// noncopyable
 	Gme_File( const Gme_File& );
@@ -90,7 +101,10 @@ private:
 	int track_count_;
 	int raw_track_count_;
 	const char* warning_;
+	void* user_data_;
+	gme_user_cleanup_t user_cleanup_;
 	M3u_Playlist playlist;
+	char playlist_warning [64];
 	blargg_vector<byte> file_data; // only if loaded into memory using default load
 	
 	blargg_err_t load_m3u_( blargg_err_t );
@@ -113,6 +127,8 @@ Music_Emu* gme_new_( Music_Emu*, long sample_rate );
 	#else
 		#define GME_FILE_READER Std_File_Reader
 	#endif
+#elif defined (GME_FILE_READER_INCLUDE)
+	#include GME_FILE_READER_INCLUDE
 #endif
 
 inline gme_type_t Gme_File::type() const            { return type_; }

@@ -43,7 +43,7 @@ Vfs_File_Reader::error_t Vfs_File_Reader::seek( long n )
 	if ( n == 0 ) // optimization
 		vfs_rewind( file_ );
 	else if ( vfs_fseek( file_, n, SEEK_SET ) != 0 )
-		return "Error seeking in file";
+		return eof_error;
 	return 0;
 }
 

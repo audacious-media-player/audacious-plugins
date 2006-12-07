@@ -1,6 +1,6 @@
 // Atari 6502 CPU emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef SAP_CPU_H
 #define SAP_CPU_H
 

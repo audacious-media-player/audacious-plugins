@@ -70,11 +70,13 @@ void Sms_Square::run( blip_time_t time, blip_time_t end_time )
 	else
 	{
 		int amp = phase ? volume : -volume;
-		int delta = amp - last_amp;
-		if ( delta )
 		{
-			last_amp = amp;
-			synth->offset( time, delta, output );
+			int delta = amp - last_amp;
+			if ( delta )
+			{
+				last_amp = amp;
+				synth->offset( time, delta, output );
+			}
 		}
 		
 		time += delay;
@@ -114,11 +116,13 @@ void Sms_Noise::run( blip_time_t time, blip_time_t end_time )
 	if ( shifter & 1 )
 		amp = -amp;
 	
-	int delta = amp - last_amp;
-	if ( delta )
 	{
-		last_amp = amp;
-		synth.offset( time, delta, output );
+		int delta = amp - last_amp;
+		if ( delta )
+		{
+			last_amp = amp;
+			synth.offset( time, delta, output );
+		}
 	}
 	
 	time += delay;

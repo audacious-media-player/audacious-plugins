@@ -1,6 +1,6 @@
 // Common aspects of emulators which use Blip_Buffer for sound output
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef CLASSIC_EMU_H
 #define CLASSIC_EMU_H
 
@@ -19,6 +19,7 @@ protected:
 	void set_voice_types( int const* t ) { voice_types = t; }
 	blargg_err_t setup_buffer( long clock_rate );
 	long clock_rate() const { return clock_rate_; }
+	void change_clock_rate( long ); // experimental
 	
 	// Overridable
 	virtual void set_voice( int index, Blip_Buffer* center,
@@ -112,5 +113,15 @@ public:
 		return &rom [offset];
 	}
 };
+
+#ifndef GME_APU_HOOK
+	#define GME_APU_HOOK( emu, addr, data ) ((void) 0)
+#endif
+
+#ifndef GME_FRAME_HOOK
+	#define GME_FRAME_HOOK( emu ) ((void) 0)
+#else
+	#define GME_FRAME_HOOK_DEFINED 1
+#endif
 
 #endif

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Nes_Cpu.h"
 
@@ -22,8 +22,8 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 	#include BLARGG_ENABLE_OPTIMIZER
 #endif
 
-#define SYNC_TIME()     (void) (s.time = s_time)
-#define RELOAD_TIME()   (void) (s_time = s.time)
+#define FLUSH_TIME()    (void) (s.time = s_time)
+#define CACHE_TIME()    (void) (s_time = s.time)
 
 #include "nes_cpu_io.h"
 
@@ -36,9 +36,9 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 #ifndef CPU_READ_PPU
 	#define CPU_READ_PPU( cpu, addr, out, time )\
 	{\
-		SYNC_TIME();\
+		FLUSH_TIME();\
 		out = CPU_READ( cpu, addr, time );\
-		RELOAD_TIME();\
+		CACHE_TIME();\
 	}
 #endif
 
@@ -138,18 +138,18 @@ bool Nes_Cpu::run( nes_time_t end_time )
 	// status flags
 	#define IS_NEG (nz & 0x8080)
 	
-	#define CALC_STATUS( out ) do {             \
-		out = status & (st_v | st_d | st_i);    \
-		out |= ((nz >> 8) | nz) & st_n;         \
-		out |= c >> 8 & st_c;                   \
-		if ( !(nz & 0xFF) ) out |= st_z;        \
+	#define CALC_STATUS( out ) do {\
+		out = status & (st_v | st_d | st_i);\
+		out |= ((nz >> 8) | nz) & st_n;\
+		out |= c >> 8 & st_c;\
+		if ( !(nz & 0xFF) ) out |= st_z;\
 	} while ( 0 )
 
-	#define SET_STATUS( in ) do {               \
-		status = in & (st_v | st_d | st_i);     \
-		nz = in << 8;                           \
-		c = nz;                                 \
-		nz |= ~in & st_z;                       \
+	#define SET_STATUS( in ) do {\
+		status = in & (st_v | st_d | st_i);\
+		nz = in << 8;\
+		c = nz;\
+		nz |= ~in & st_z;\
 	} while ( 0 )
 	
 	fuint8 status;
@@ -166,6 +166,7 @@ dec_clock_loop:
 loop:
 	
 	check( (unsigned) GET_SP() < 0x100 );
+	check( (unsigned) pc < 0x10000 );
 	check( (unsigned) a < 0x100 );
 	check( (unsigned) x < 0x100 );
 	check( (unsigned) y < 0x100 );
@@ -237,7 +238,7 @@ possibly_out_of_time:
 // Macros
 
 #define GET_MSB()   (instr [1])
-#define ADD_PAGE    (pc++, data += 0x100 * GET_MSB());
+#define ADD_PAGE()  (pc++, data += 0x100 * GET_MSB())
 #define GET_ADDR()  GET_LE16( instr )
 
 #define NO_PAGE_CROSSING( lsb )
@@ -245,53 +246,54 @@ possibly_out_of_time:
 
 #define INC_DEC_XY( reg, n ) reg = uint8_t (nz = reg + n); goto loop;
 
-#define IND_Y( cross, out ) {                                   \
-		fuint16 temp = READ_LOW( data ) + y;                    \
-		out = temp + 0x100 * READ_LOW( uint8_t (data + 1) );    \
-		cross( temp );                                          \
+#define IND_Y( cross, out ) {\
+		fuint16 temp = READ_LOW( data ) + y;\
+		out = temp + 0x100 * READ_LOW( uint8_t (data + 1) );\
+		cross( temp );\
 	}
 	
-#define IND_X( out ) {                                          \
-		fuint16 temp = data + x;                                \
-		out = 0x100 * READ_LOW( uint8_t (temp + 1) ) + READ_LOW( uint8_t (temp) ); \
+#define IND_X( out ) {\
+		fuint16 temp = data + x;\
+		out = 0x100 * READ_LOW( uint8_t (temp + 1) ) + READ_LOW( uint8_t (temp) );\
 	}
 	
-#define ARITH_ADDR_MODES( op )  \
-case op - 0x04: /* (ind,x) */           \
-	IND_X( data )                       \
-	goto ptr##op;                       \
-case op + 0x0C: /* (ind),y */           \
-	IND_Y( HANDLE_PAGE_CROSSING, data ) \
-	goto ptr##op;                       \
-case op + 0x10: /* zp,X */              \
-	data = uint8_t (data + x);          \
-case op + 0x00: /* zp */                \
-	data = READ_LOW( data );            \
-	goto imm##op;                       \
-case op + 0x14: /* abs,Y */             \
-	data += y;                          \
-	goto ind##op;                       \
-case op + 0x18: /* abs,X */             \
-	data += x;                          \
-ind##op:                                \
-	HANDLE_PAGE_CROSSING( data );       \
-case op + 0x08: /* abs */               \
-	ADD_PAGE                            \
-ptr##op:                                \
-	SYNC_TIME();                        \
-	data = READ( data );                \
-	RELOAD_TIME();                      \
-case op + 0x04: /* imm */               \
-imm##op:                                \
+#define ARITH_ADDR_MODES( op )\
+case op - 0x04: /* (ind,x) */\
+	IND_X( data )\
+	goto ptr##op;\
+case op + 0x0C: /* (ind),y */\
+	IND_Y( HANDLE_PAGE_CROSSING, data )\
+	goto ptr##op;\
+case op + 0x10: /* zp,X */\
+	data = uint8_t (data + x);\
+case op + 0x00: /* zp */\
+	data = READ_LOW( data );\
+	goto imm##op;\
+case op + 0x14: /* abs,Y */\
+	data += y;\
+	goto ind##op;\
+case op + 0x18: /* abs,X */\
+	data += x;\
+ind##op:\
+	HANDLE_PAGE_CROSSING( data );\
+case op + 0x08: /* abs */\
+	ADD_PAGE();\
+ptr##op:\
+	FLUSH_TIME();\
+	data = READ( data );\
+	CACHE_TIME();\
+case op + 0x04: /* imm */\
+imm##op:
 
-#define BRANCH( cond )                          \
-{                                               \
-	fint16 offset = (BOOST::int8_t) data;       \
+// TODO: more efficient way to handle negative branch that wraps PC around
+#define BRANCH( cond )\
+{\
+	fint16 offset = (BOOST::int8_t) data;\
 	fuint16 extra_clock = (++pc & 0xFF) + offset;\
-	if ( !(cond) ) goto dec_clock_loop;         \
-	pc += offset;                               \
-	s_time += extra_clock >> 8 & 1;             \
-	goto loop;                                  \
+	if ( !(cond) ) goto dec_clock_loop;\
+	pc = BOOST::uint16_t (pc + offset);\
+	s_time += extra_clock >> 8 & 1;\
+	goto loop;\
 }
 
 // Often-Used
@@ -407,9 +409,9 @@ imm##op:                                \
 			goto loop;
 		}
 	sta_ptr:
-		SYNC_TIME();
+		FLUSH_TIME();
 		WRITE( addr, a );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto loop;
 		
 	case 0x91: // STA (ind),Y
@@ -466,9 +468,9 @@ imm##op:                                \
 		if ( (addr ^ 0x8000) <= 0x9FFF )
 			goto loop;
 	a_nz_read_addr:
-		SYNC_TIME();
+		FLUSH_TIME();
 		a = nz = READ( addr );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto loop;
 	
 	}
@@ -529,9 +531,9 @@ imm##op:                                \
 	case 0xAC:{// LDY abs
 		unsigned addr = data + 0x100 * GET_MSB();
 		pc += 2;
-		SYNC_TIME();
+		FLUSH_TIME();
 		y = nz = READ( addr );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto loop;
 	}
 	
@@ -541,9 +543,9 @@ imm##op:                                \
 	case 0xAE:{// LDX abs
 		unsigned addr = data + 0x100 * GET_MSB();
 		pc += 2;
-		SYNC_TIME();
+		FLUSH_TIME();
 		x = nz = READ( addr );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto loop;
 	}
 	
@@ -563,9 +565,9 @@ imm##op:                                \
 			WRITE_LOW( addr, temp );
 			goto loop;
 		}
-		SYNC_TIME();
+		FLUSH_TIME();
 		WRITE( addr, temp );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto loop;
 	}
 
@@ -574,9 +576,9 @@ imm##op:                                \
 	case 0xEC:{// CPX abs
 		unsigned addr = GET_ADDR();
 		pc++;
-		SYNC_TIME();
+		FLUSH_TIME();
 		data = READ( addr );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto cpx_data;
 	}
 	
@@ -593,9 +595,9 @@ imm##op:                                \
 	case 0xCC:{// CPY abs
 		unsigned addr = GET_ADDR();
 		pc++;
-		SYNC_TIME();
+		FLUSH_TIME();
 		data = READ( addr );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto cpy_data;
 	}
 	
@@ -699,8 +701,8 @@ imm##op:                                \
 		c = 0;
 	case 0x6E: // ROR abs
 	ror_abs: {
-		ADD_PAGE
-		SYNC_TIME();
+		ADD_PAGE();
+		FLUSH_TIME();
 		int temp = READ( data );
 		nz = (c >> 1 & 0x80) | (temp >> 1);
 		c = temp << 8;
@@ -717,14 +719,14 @@ imm##op:                                \
 		c = 0;
 	case 0x2E: // ROL abs
 	rol_abs:
-		ADD_PAGE
+		ADD_PAGE();
 		nz = c >> 8 & 1;
-		SYNC_TIME();
+		FLUSH_TIME();
 		nz |= (c = READ( data ) << 1);
 	rotate_common:
 		pc++;
 		WRITE( data, (uint8_t) nz );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto loop;
 	
 	case 0x7E: // ROR abs,X
@@ -805,11 +807,11 @@ imm##op:                                \
 	dec_ptr:
 		nz = (unsigned) -1;
 	inc_common:
-		SYNC_TIME();
+		FLUSH_TIME();
 		nz += READ( data );
 		pc += 2;
 		WRITE( data, (uint8_t) nz );
-		RELOAD_TIME();
+		CACHE_TIME();
 		goto loop;
 		
 // Transfer
@@ -1050,9 +1052,9 @@ interrupt:
 	
 out_of_time:
 	pc--;
-	SYNC_TIME();
+	FLUSH_TIME();
 	CPU_DONE( this, TIME, result_ );
-	RELOAD_TIME();
+	CACHE_TIME();
 	if ( result_ >= 0 )
 		goto interrupt;
 	if ( s_time < 0 )

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Gb_Cpu.h"
 
@@ -96,6 +96,8 @@ bool Gb_Cpu::run( blargg_long cycle_count )
 	this->state = &s;
 	memcpy( &s, &this->state_, sizeof s );
 	
+	typedef BOOST::uint16_t uint16_t;
+	
 #if BLARGG_BIG_ENDIAN
 	#define R8( n ) (r8_ [n]) 
 #elif BLARGG_LITTLE_ENDIAN
@@ -156,13 +158,14 @@ loop:
 	switch ( op )
 	{
 
-#define BRANCH( cond )          \
-{                               \
-	pc++;                       \
-	int offset = (BOOST::int8_t) data;  \
-	if ( !(cond) ) goto loop;   \
-	pc += offset;               \
-	goto loop;                  \
+// TODO: more efficient way to handle negative branch that wraps PC around
+#define BRANCH( cond )\
+{\
+	pc++;\
+	int offset = (BOOST::int8_t) data;\
+	if ( !(cond) ) goto loop;\
+	pc = uint16_t (pc + offset);\
+	goto loop;\
 }
 
 // Most Common

@@ -1,4 +1,4 @@
-Game_Music_Emu 0.5.1 Design
+Game_Music_Emu 0.5.2 Design
 ---------------------------
 
 Architecture

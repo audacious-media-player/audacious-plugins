@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Nes_Fme7_Apu.h"
 
@@ -78,11 +78,13 @@ void Nes_Fme7_Apu::run_until( blip_time_t end_time )
 		int amp = volume;
 		if ( !phases [index] )
 			amp = 0;
-		int delta = amp - oscs [index].last_amp;
-		if ( delta )
 		{
-			oscs [index].last_amp = amp;
-			synth.offset( last_time, delta, osc_output );
+			int delta = amp - oscs [index].last_amp;
+			if ( delta )
+			{
+				oscs [index].last_amp = amp;
+				synth.offset( last_time, delta, osc_output );
+			}
 		}
 		
 		blip_time_t time = last_time + delays [index];

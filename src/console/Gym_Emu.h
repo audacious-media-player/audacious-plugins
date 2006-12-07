@@ -1,7 +1,7 @@
 // Sega Genesis/Mega Drive GYM music file emulator
 // Includes with PCM timing recovery to improve sample quality.
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef GYM_EMU_H
 #define GYM_EMU_H
 
@@ -13,6 +13,7 @@
 class Gym_Emu : public Music_Emu, private Dual_Resampler {
 public:
 	// GYM file header
+	enum { header_size = 428 };
 	struct header_t
 	{
 	    char tag [4];
@@ -25,7 +26,6 @@ public:
 	    byte loop_start [4]; // in 1/60 seconds, 0 if not looped
 	    byte packed [4];
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 428 );
 	
 	// Header for currently loaded file
 	header_t const& header() const { return header_; }

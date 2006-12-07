@@ -1,6 +1,6 @@
 // Multi-channel effects buffer with panning, echo and reverb
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef EFFECTS_BUFFER_H
 #define EFFECTS_BUFFER_H
 

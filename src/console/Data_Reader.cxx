@@ -2,6 +2,7 @@
 
 #include "Data_Reader.h"
 
+#include "blargg_endian.h"
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
@@ -17,11 +18,11 @@ details. You should have received a copy of the GNU Lesser General Public
 License along with this module; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
+#include "blargg_source.h"
+
 const char Data_Reader::eof_error [] = "Unexpected end of file";
 
-typedef Data_Reader::error_t error_t;
-
-error_t Data_Reader::read( void* p, long s )
+blargg_err_t Data_Reader::read( void* p, long s )
 {
 	long result = read_avail( p, s );
 	if ( result != s )
@@ -35,7 +36,7 @@ error_t Data_Reader::read( void* p, long s )
 	return 0;
 }
 
-error_t Data_Reader::skip( long count )
+blargg_err_t Data_Reader::skip( long count )
 {
 	char buf [512];
 	while ( count )
@@ -44,19 +45,19 @@ error_t Data_Reader::skip( long count )
 		if ( n > count )
 			n = count;
 		count -= n;
-		error_t err = read( buf, n );
-		if ( err )
-			return err;
+		RETURN_ERR( read( buf, n ) );
 	}
 	return 0;
 }
 
 long File_Reader::remain() const { return size() - tell(); }
 
-error_t File_Reader::skip( long n )
+blargg_err_t File_Reader::skip( long n )
 {
 	assert( n >= 0 );
-	return n ? seek( tell() + n ) : 0;
+	if ( !n )
+		return 0;
+	return seek( tell() + n );
 }
 
 // Subset_Reader
@@ -97,9 +98,9 @@ long Remaining_Reader::read_first( void* out, long count )
 	{
 		if ( first > count )
 			first = count;
-		void const* in = header;
+		void const* old = header;
 		header += first;
-		memcpy( out, in, first );
+		memcpy( out, old, first );
 	}
 	return first;
 }
@@ -107,23 +108,23 @@ long Remaining_Reader::read_first( void* out, long count )
 long Remaining_Reader::read_avail( void* out, long count )
 {
 	long first = read_first( out, count );
-	long remain = count - first;
-	if ( remain )
+	long second = count - first;
+	if ( second )
 	{
-		remain = in->read_avail( (char*) out + first, remain );
-		if ( remain <= 0 )
-			return remain;
+		second = in->read_avail( (char*) out + first, second );
+		if ( second <= 0 )
+			return second;
 	}
-	return first + remain;
+	return first + second;
 }
 
-error_t Remaining_Reader::read( void* out, long count )
+blargg_err_t Remaining_Reader::read( void* out, long count )
 {
 	long first = read_first( out, count );
-	long remain = count - first;
-	if ( !remain )
+	long second = count - first;
+	if ( !second )
 		return 0;
-	return in->read( (char*) out + first, remain );
+	return in->read( (char*) out + first, second );
 }
 
 // Mem_File_Reader
@@ -149,69 +150,12 @@ long Mem_File_Reader::read_avail( void* p, long s )
 
 long Mem_File_Reader::tell() const { return pos; }
 
-error_t Mem_File_Reader::seek( long n )
+blargg_err_t Mem_File_Reader::seek( long n )
 {
 	if ( n > size_ )
 		return eof_error;
 	pos = n;
 	return 0;
-}
-
-// Std_File_Reader
-
-Std_File_Reader::Std_File_Reader() : file_( 0 ) { }
-
-Std_File_Reader::~Std_File_Reader() { close(); }
-
-error_t Std_File_Reader::open( const char* path )
-{
-	file_ = fopen( path, "rb" );
-	if ( !file_ )
-		return "Couldn't open file";
-	return 0;
-}
-
-long Std_File_Reader::size() const
-{
-	long pos = tell();
-	fseek( (FILE*) file_, 0, SEEK_END );
-	long result = tell();
-	fseek( (FILE*) file_, pos, SEEK_SET );
-	return result;
-}
-
-long Std_File_Reader::read_avail( void* p, long s )
-{
-	return fread( p, 1, s, (FILE*) file_ );
-}
-
-error_t Std_File_Reader::read( void* p, long s )
-{
-	if ( s == (long) fread( p, 1, s, (FILE*) file_ ) )
-		return 0;
-	if ( feof( (FILE*) file_ ) )
-		return eof_error;
-	return "Couldn't read from file";
-}
-
-long Std_File_Reader::tell() const { return ftell( (FILE*) file_ ); }
-
-error_t Std_File_Reader::seek( long n )
-{
-	if ( !fseek( (FILE*) file_, n, SEEK_SET ) )
-		return 0;
-	if ( n > size() )
-		return eof_error;
-	return "Error seeking in file";
-}
-
-void Std_File_Reader::close()
-{
-	if ( file_ )
-	{
-		fclose( (FILE*) file_ );
-		file_ = 0;
-	}
 }
 
 // Callback_Reader
@@ -234,11 +178,68 @@ long Callback_Reader::read_avail( void* out, long count )
 	return count;
 }
 
-Callback_Reader::error_t Callback_Reader::read( void* out, long count )
+blargg_err_t Callback_Reader::read( void* out, long count )
 {
 	if ( count > remain_ )
 		return eof_error;
 	return callback( data, out, count );
+}
+
+// Std_File_Reader
+
+Std_File_Reader::Std_File_Reader() : file_( 0 ) { }
+
+Std_File_Reader::~Std_File_Reader() { close(); }
+
+blargg_err_t Std_File_Reader::open( const char* path )
+{
+	file_ = fopen( path, "rb" );
+	if ( !file_ )
+		return "Couldn't open file";
+	return 0;
+}
+
+long Std_File_Reader::size() const
+{
+	long pos = tell();
+	fseek( (FILE*) file_, 0, SEEK_END );
+	long result = tell();
+	fseek( (FILE*) file_, pos, SEEK_SET );
+	return result;
+}
+
+long Std_File_Reader::read_avail( void* p, long s )
+{
+	return fread( p, 1, s, (FILE*) file_ );
+}
+
+blargg_err_t Std_File_Reader::read( void* p, long s )
+{
+	if ( s == (long) fread( p, 1, s, (FILE*) file_ ) )
+		return 0;
+	if ( feof( (FILE*) file_ ) )
+		return eof_error;
+	return "Couldn't read from file";
+}
+
+long Std_File_Reader::tell() const { return ftell( (FILE*) file_ ); }
+
+blargg_err_t Std_File_Reader::seek( long n )
+{
+	if ( !fseek( (FILE*) file_, n, SEEK_SET ) )
+		return 0;
+	if ( n > size() )
+		return eof_error;
+	return "Error seeking in file";
+}
+
+void Std_File_Reader::close()
+{
+	if ( file_ )
+	{
+		fclose( (FILE*) file_ );
+		file_ = 0;
+	}
 }
 
 // Gzip_File_Reader
@@ -254,11 +255,11 @@ static const char* get_gzip_eof( const char* path, long* eof )
 		return "Couldn't open file";
 	
 	unsigned char buf [4];
-	if ( fread( buf, 2, 1, file ) == 1 && buf [0] == 0x1F && buf [1] == 0x8B )
+	if ( fread( buf, 2, 1, file ) > 0 && buf [0] == 0x1F && buf [1] == 0x8B )
 	{
 		fseek( file, -4, SEEK_END );
 		fread( buf, 4, 1, file );
-		*eof = buf [3] * 0x1000000L + buf [2] * 0x10000L + buf [1] * 0x100L + buf [0];
+		*eof = get_le32( buf );
 	}
 	else
 	{
@@ -274,13 +275,11 @@ Gzip_File_Reader::Gzip_File_Reader() : file_( 0 ) { }
 
 Gzip_File_Reader::~Gzip_File_Reader() { close(); }
 
-error_t Gzip_File_Reader::open( const char* path )
+blargg_err_t Gzip_File_Reader::open( const char* path )
 {
 	close();
 	
-	error_t err = get_gzip_eof( path, &size_ );
-	if ( err )
-		return err;
+	RETURN_ERR( get_gzip_eof( path, &size_ ) );
 	
 	file_ = gzopen( path, "rb" );
 	if ( !file_ )
@@ -295,7 +294,7 @@ long Gzip_File_Reader::read_avail( void* p, long s ) { return gzread( file_, p, 
 
 long Gzip_File_Reader::tell() const { return gztell( file_ ); }
 
-error_t Gzip_File_Reader::seek( long n )
+blargg_err_t Gzip_File_Reader::seek( long n )
 {
 	if ( gzseek( file_, n, SEEK_SET ) >= 0 )
 		return 0;

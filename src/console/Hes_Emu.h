@@ -1,6 +1,6 @@
 // TurboGrafx-16/PC Engine HES music file emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef HES_EMU_H
 #define HES_EMU_H
 
@@ -12,6 +12,7 @@ class Hes_Emu : private Hes_Cpu, public Classic_Emu {
 	typedef Hes_Cpu cpu;
 public:
 	// HES file header
+	enum { header_size = 0x20 };
 	struct header_t
 	{
 		byte tag [4];
@@ -24,7 +25,6 @@ public:
 		byte addr [4];
 		byte unused [4];
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 0x20 );
 	
 	// Header for currently loaded file
 	header_t const& header() const { return header_; }
@@ -57,6 +57,7 @@ private:
 	Rom_Data<page_size> rom;
 	header_t header_;
 	hes_time_t play_period;
+	hes_time_t last_frame_hook;
 	int timer_base;
 	
 	struct {

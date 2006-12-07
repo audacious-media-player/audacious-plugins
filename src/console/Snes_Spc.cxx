@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Snes_Spc.h"
 
@@ -20,12 +20,13 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 // always in the future (CPU time can go over 0, but not by this much)
 int const timer_disabled_time = 127;
 
-Snes_Spc::Snes_Spc() : dsp( ram ), cpu( this, ram )
+Snes_Spc::Snes_Spc() : dsp( mem.ram ), cpu( this, mem.ram )
 {
 	set_tempo( 1.0 );
 	
-	// Put STOP instruction past end of memory to catch PC overflow.
-	memset( ram + ram_size, 0xFF, (sizeof ram) - ram_size );
+	// Put STOP instruction around memory to catch PC underflow/overflow.
+	memset( mem.padding1, 0xFF, sizeof mem.padding1 );
+	memset( mem.padding2, 0xFF, sizeof mem.padding2 );
 	
 	// A few tracks read from the last four bytes of IPL ROM
 	boot_rom [sizeof boot_rom - 2] = 0xC0;
@@ -65,7 +66,7 @@ blargg_err_t Snes_Spc::load_spc( const void* data, long size )
 		uint8_t dsp [128];
 		uint8_t ipl_rom [128];
 	};
-	BOOST_STATIC_ASSERT( sizeof (spc_file_t) == spc_file_size + 128 );
+	assert( offsetof (spc_file_t,ipl_rom) == spc_file_size );
 	
 	const spc_file_t* spc = (spc_file_t const*) data;
 	
@@ -98,8 +99,8 @@ void Snes_Spc::clear_echo()
 	if ( !(dsp.read( 0x6C ) & 0x20) )
 	{
 		unsigned addr = 0x100 * dsp.read( 0x6D );
-		unsigned size = 0x800 * dsp.read( 0x7D );
-		memset( ram + addr, 0xFF, min( size, ram_size - addr ) );
+		size_t   size = 0x800 * dsp.read( 0x7D );
+		memset( mem.ram + addr, 0xFF, min( size, sizeof mem.ram - addr ) );
 	}
 }
 
@@ -119,11 +120,11 @@ blargg_err_t Snes_Spc::load_state( const registers_t& cpu_state, const void* new
 	extra_cycles = 32; 
 	
 	// ram
-	memcpy( ram, new_ram, ram_size );
-	memcpy( extra_ram, ram + rom_addr, sizeof extra_ram );
+	memcpy( mem.ram, new_ram, sizeof mem.ram );
+	memcpy( extra_ram, mem.ram + rom_addr, sizeof extra_ram );
 	
 	// boot rom (have to force enable_rom() to update it)
-	rom_enabled = !(ram [0xF1] & 0x80);
+	rom_enabled = !(mem.ram [0xF1] & 0x80);
 	enable_rom( !rom_enabled );
 	
 	// dsp
@@ -138,27 +139,27 @@ blargg_err_t Snes_Spc::load_state( const registers_t& cpu_state, const void* new
 		Timer& t = timer [i];
 		
 		t.next_tick = 0;
-		t.enabled = (ram [0xF1] >> i) & 1;
+		t.enabled = (mem.ram [0xF1] >> i) & 1;
 		if ( !t.enabled )
 			t.next_tick = timer_disabled_time;
 		t.count = 0;
-		t.counter = ram [0xFD + i] & 15;
+		t.counter = mem.ram [0xFD + i] & 15;
 		
-		int p = ram [0xFA + i];
+		int p = mem.ram [0xFA + i];
 		t.period = p ? p : 0x100;
 	}
 	
 	// Handle registers which already give 0 when read by setting RAM and not changing it.
 	// Put STOP instruction in registers which can be read, to catch attempted CPU execution.
-	ram [0xF0] = 0;
-	ram [0xF1] = 0;
-	ram [0xF3] = 0xFF;
-	ram [0xFA] = 0;
-	ram [0xFB] = 0;
-	ram [0xFC] = 0;
-	ram [0xFD] = 0xFF;
-	ram [0xFE] = 0xFF;
-	ram [0xFF] = 0xFF;
+	mem.ram [0xF0] = 0;
+	mem.ram [0xF1] = 0;
+	mem.ram [0xF3] = 0xFF;
+	mem.ram [0xFA] = 0;
+	mem.ram [0xFB] = 0;
+	mem.ram [0xFC] = 0;
+	mem.ram [0xFD] = 0xFF;
+	mem.ram [0xFE] = 0xFF;
+	mem.ram [0xFF] = 0xFF;
 	
 	return 0; // success
 }
@@ -238,7 +239,7 @@ inline void Snes_Spc::check_for_echo_access( spc_addr_t addr )
 
 int Snes_Spc::read( spc_addr_t addr )
 {
-	int result = ram [addr];
+	int result = mem.ram [addr];
 	
 	if ( (rom_addr <= addr && addr < 0xFFFC || addr >= 0xFFFE) && rom_enabled )
 		dprintf( "Read from ROM: %04X -> %02X\n", addr, result );
@@ -253,25 +254,25 @@ int Snes_Spc::read( spc_addr_t addr )
 		{
 			Timer& t = timer [i];
 			t.run_until( time() );
-			int result = t.counter;
+			int old = t.counter;
 			t.counter = 0;
-			return result;
+			return old;
 		}
 		
 		// dsp
 		if ( addr == 0xF3 )
 		{
 			run_dsp( time() );
-			if ( ram [0xF2] >= Spc_Dsp::register_count )
-				dprintf( "DSP read from $%02X\n", (int) ram [0xF2] );
-			return dsp.read( ram [0xF2] & 0x7F );
+			if ( mem.ram [0xF2] >= Spc_Dsp::register_count )
+				dprintf( "DSP read from $%02X\n", (int) mem.ram [0xF2] );
+			return dsp.read( mem.ram [0xF2] & 0x7F );
 		}
 		
 		if ( addr == 0xF0 || addr == 0xF1 || addr == 0xF8 ||
 				addr == 0xF9 || addr == 0xFA )
 			dprintf( "Read from register $%02X\n", (int) addr );
 		
-		// Registers which always read as 0 are handled by setting ram [reg] to 0
+		// Registers which always read as 0 are handled by setting mem.ram [reg] to 0
 		// at startup then never changing that value.
 		
 		check(( check_for_echo_access( addr ), true ));
@@ -288,7 +289,7 @@ void Snes_Spc::enable_rom( bool enable )
 	if ( rom_enabled != enable )
 	{
 		rom_enabled = enable;
-		memcpy( ram + rom_addr, (enable ? boot_rom : extra_ram), rom_size );
+		memcpy( mem.ram + rom_addr, (enable ? boot_rom : extra_ram), rom_size );
 		// TODO: ROM can still get overwritten when DSP writes to echo buffer
 	}
 }
@@ -297,7 +298,7 @@ void Snes_Spc::write( spc_addr_t addr, int data )
 {
 	// first page is very common
 	if ( addr < 0xF0 ) {
-		ram [addr] = (uint8_t) data;
+		mem.ram [addr] = (uint8_t) data;
 	}
 	else switch ( addr )
 	{
@@ -305,12 +306,12 @@ void Snes_Spc::write( spc_addr_t addr, int data )
 		default:
 			check(( check_for_echo_access( addr ), true ));
 			if ( addr < rom_addr ) {
-				ram [addr] = (uint8_t) data;
+				mem.ram [addr] = (uint8_t) data;
 			}
 			else {
 				extra_ram [addr - rom_addr] = (uint8_t) data;
 				if ( !rom_enabled )
-					ram [addr] = (uint8_t) data;
+					mem.ram [addr] = (uint8_t) data;
 			}
 			break;
 		
@@ -318,7 +319,7 @@ void Snes_Spc::write( spc_addr_t addr, int data )
 		//case 0xF2: // mapped to RAM
 		case 0xF3: {
 			run_dsp( time() );
-			int reg = ram [0xF2];
+			int reg = mem.ram [0xF2];
 			if ( next_dsp > 0 ) {
 				// skip mode
 				
@@ -367,12 +368,12 @@ void Snes_Spc::write( spc_addr_t addr, int data )
 			
 			// port clears
 			if ( data & 0x10 ) {
-				ram [0xF4] = 0;
-				ram [0xF5] = 0;
+				mem.ram [0xF4] = 0;
+				mem.ram [0xF5] = 0;
 			}
 			if ( data & 0x20 ) {
-				ram [0xF6] = 0;
-				ram [0xF7] = 0;
+				mem.ram [0xF6] = 0;
+				mem.ram [0xF7] = 0;
 			}
 			
 			enable_rom( data & 0x80 );

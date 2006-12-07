@@ -1,6 +1,6 @@
 // Nintendo NES/Famicom NSF music file emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef NSF_EMU_H
 #define NSF_EMU_H
 
@@ -16,6 +16,7 @@ public:
 	static equalizer_t const famicom_eq;
 	
 	// NSF file header
+	enum { header_size = 0x80 };
 	struct header_t
 	{
 		char tag [5];
@@ -35,7 +36,6 @@ public:
 		byte chip_flags;
 		byte unused [4];
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 0x80 );
 	
 	// Header for currently loaded file
 	header_t const& header() const { return header_; }

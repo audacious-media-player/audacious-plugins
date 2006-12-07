@@ -1,10 +1,9 @@
 // Common interface to game music file emulators
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef MUSIC_EMU_H
 #define MUSIC_EMU_H
 
-#include "blargg_common.h"
 #include "Gme_File.h"
 class Multi_Buffer;
 

@@ -1,6 +1,6 @@
 // Nintendo Game Boy GBS music file emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef GBS_EMU_H
 #define GBS_EMU_H
 
@@ -16,6 +16,7 @@ public:
 	static equalizer_t const headphones_eq;
 	
 	// GBS file header
+	enum { header_size = 112 };
 	struct header_t
 	{
 		char tag [3];
@@ -32,7 +33,6 @@ public:
 		char author [32];
 		char copyright [32];
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 112 );
 	
 	// Header for currently loaded file
 	header_t const& header() const { return header_; }

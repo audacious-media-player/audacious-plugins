@@ -1,6 +1,6 @@
 // Sinclair Spectrum AY music file emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef AY_EMU_H
 #define AY_EMU_H
 
@@ -12,6 +12,7 @@ class Ay_Emu : private Ay_Cpu, public Classic_Emu {
 	typedef Ay_Cpu cpu;
 public:
 	// AY file header
+	enum { header_size = 0x14 };
 	struct header_t
 	{
 		byte tag [8];
@@ -24,7 +25,6 @@ public:
 		byte first_track;
 		byte track_info [2];
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 0x14 );
 	
 	static gme_type_t static_type() { return gme_ay_type; }
 public:
@@ -53,11 +53,18 @@ private:
 	int beeper_delta;
 	int last_beeper;
 	int apu_addr;
+	int cpc_latch;
+	bool spectrum_mode;
+	bool cpc_mode;
 	
 	// large items
-	byte mem [0x10000 + cpu_padding];
+	struct {
+		byte padding1 [0x100];
+		byte ram [0x10000 + 0x100];
+	} mem;
 	Ay_Apu apu;
 	friend void ay_cpu_out( Ay_Cpu*, cpu_time_t, unsigned addr, int data );
+	void cpu_out_misc( cpu_time_t, unsigned addr, int data );
 };
 
 #endif

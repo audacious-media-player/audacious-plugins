@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Ay_Emu.h"
 
@@ -17,6 +17,9 @@ License along with this module; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
 #include "blargg_source.h"
+
+long const spectrum_clock = 3546900;
+long const cpc_clock      = 2000000;
 
 unsigned const ram_start = 0x4000;
 int const osc_count = Ay_Apu::osc_count + 1;
@@ -59,7 +62,7 @@ static blargg_err_t parse_header( byte const* in, long size, Ay_Emu::file_t* out
 	out->header = (header_t const*) in;
 	out->end    = in + size;
 	
-	if ( size < (long) sizeof (header_t) )
+	if ( size < Ay_Emu::header_size )
 		return gme_wrong_file_type;
 	
 	header_t const& h = *(header_t const*) in;
@@ -113,12 +116,14 @@ struct Ay_File : Gme_Info_
 static Music_Emu* new_ay_emu () { return BLARGG_NEW Ay_Emu ; }
 static Music_Emu* new_ay_file() { return BLARGG_NEW Ay_File; }
 
-gme_type_t_ const gme_ay_type [1] = { "Sinclair Spectrum", 0, &new_ay_emu, &new_ay_file, "AY", 1 };
+gme_type_t_ const gme_ay_type [1] = { "ZX Spectrum", 0, &new_ay_emu, &new_ay_file, "AY", 1 };
 
 // Setup
 
 blargg_err_t Ay_Emu::load_mem_( byte const* in, long size )
 {
+	assert( offsetof (header_t,track_info [2]) == header_size );
+	
 	RETURN_ERR( parse_header( in, size, &file ) );
 	set_track_count( file.header->max_track + 1 );
 	
@@ -128,7 +133,7 @@ blargg_err_t Ay_Emu::load_mem_( byte const* in, long size )
 	set_voice_count( osc_count );
 	apu.volume( gain() );
 	
-	return setup_buffer( 3546900 );
+	return setup_buffer( spectrum_clock );
 }
 	
 void Ay_Emu::update_eq( blip_eq_t const& eq )
@@ -155,9 +160,11 @@ blargg_err_t Ay_Emu::start_track_( int track )
 {
 	RETURN_ERR( Classic_Emu::start_track_( track ) );
 	
-	memset( mem + 0x0000, 0xC9, 0x100 ); // fill RST vectors with RET
-	memset( mem + 0x0100, 0xFF, 0x4000 - 0x100 );
-	memset( mem + ram_start, 0x00, sizeof mem - ram_start );
+	memset( mem.ram + 0x0000, 0xC9, 0x100 ); // fill RST vectors with RET
+	memset( mem.ram + 0x0100, 0xFF, 0x4000 - 0x100 );
+	memset( mem.ram + ram_start, 0x00, sizeof mem.ram - ram_start );
+	memset( mem.padding1, 0xFF, sizeof mem.padding1 );
+	memset( mem.ram + 0x10000, 0xFF, sizeof mem.ram - 0x10000 );
 	
 	// locate data blocks
 	byte const* const data = get_data( file, file.tracks + track * 4 + 2, 14 );
@@ -170,7 +177,7 @@ blargg_err_t Ay_Emu::start_track_( int track )
 	if ( !blocks ) return "File data missing";
 	
 	// initial addresses
-	cpu::reset( mem );
+	cpu::reset( mem.ram );
 	r.sp = get_be16( more_data );
 	r.b.a = r.b.b = r.b.d = r.b.h = data [8];
 	r.b.flags = r.b.c = r.b.e = r.b.l = data [9];
@@ -204,7 +211,7 @@ blargg_err_t Ay_Emu::start_track_( int track )
 		//dprintf( "addr: $%04X, len: $%04X\n", addr, len );
 		if ( addr < ram_start && addr >= 0x400 ) // several tracks use low data
 			dprintf( "Block addr in ROM\n" );
-		memcpy( mem + addr, in, len );
+		memcpy( mem.ram + addr, in, len );
 		
 		if ( file.end - blocks < 8 )
 		{
@@ -232,37 +239,98 @@ blargg_err_t Ay_Emu::start_track_( int track )
 		0xCD, 0, 0, // CALL play
 		0x18, 0xF7  // JR LOOP
 	};
-	memcpy( mem, passive, sizeof passive );
+	memcpy( mem.ram, passive, sizeof passive );
 	unsigned play_addr = get_be16( more_data + 4 );
 	//dprintf( "Play: $%04X\n", play_addr );
 	if ( play_addr )
 	{
-		memcpy( mem, active, sizeof active );
-		mem [ 9] = play_addr;
-		mem [10] = play_addr >> 8;
+		memcpy( mem.ram, active, sizeof active );
+		mem.ram [ 9] = play_addr;
+		mem.ram [10] = play_addr >> 8;
 	}
-	mem [2] = init;
-	mem [3] = init >> 8;
+	mem.ram [2] = init;
+	mem.ram [3] = init >> 8;
 	
-	mem [0x38] = 0xFB; // Put EI at interrupt vector (followed by RET)
+	mem.ram [0x38] = 0xFB; // Put EI at interrupt vector (followed by RET)
 	
-	memcpy( mem + 0x10000, mem, sizeof mem - 0x10000 ); // some code wraps around (ugh)
+	memcpy( mem.ram + 0x10000, mem.ram, 0x80 ); // some code wraps around (ugh)
 	
 	beeper_delta = int (apu.amp_range * 0.65);
 	last_beeper = 0;
 	apu.reset();
 	next_play = play_period;
 	
+	// start at spectrum speed
+	change_clock_rate( spectrum_clock );
+	set_tempo( tempo() );
+	
+	spectrum_mode = false;
+	cpc_mode      = false;
+	cpc_latch     = 0;
+	
 	return 0;
 }
 
 // Emulation
 
+void Ay_Emu::cpu_out_misc( cpu_time_t time, unsigned addr, int data )
+{
+	if ( !cpc_mode )
+	{
+		switch ( addr & 0xFEFF )
+		{
+		case 0xFEFD:
+			spectrum_mode = true;
+			apu_addr = data & 0x0F;
+			return;
+		
+		case 0xBEFD:
+			spectrum_mode = true;
+			apu.write( time, apu_addr, data );
+			return;
+		}
+	}
+	
+	if ( !spectrum_mode )
+	{
+		switch ( addr >> 8 )
+		{
+		case 0xF6:
+			switch ( data & 0xC0 )
+			{
+			case 0xC0:
+				apu_addr = cpc_latch & 0x0F;
+				goto enable_cpc;
+			
+			case 0x80:
+				apu.write( time, apu_addr, cpc_latch );
+				goto enable_cpc;
+			}
+			break;
+		
+		case 0xF4:
+			cpc_latch = data;
+			goto enable_cpc;
+		}
+	}
+	
+	dprintf( "Unmapped OUT: $%04X <- $%02X\n", addr, data );
+	return;
+	
+enable_cpc:
+	if ( !cpc_mode )
+	{
+		cpc_mode = true;
+		change_clock_rate( cpc_clock );
+		set_tempo( tempo() );
+	}
+}
+
 void ay_cpu_out( Ay_Cpu* cpu, cpu_time_t time, unsigned addr, int data )
 {
 	Ay_Emu& emu = STATIC_CAST(Ay_Emu&,*cpu);
 	
-	if ( (addr & 0xFF) == 0xFE )
+	if ( (addr & 0xFF) == 0xFE && !emu.cpc_mode )
 	{
 		int delta = emu.beeper_delta;
 		data &= 0x10;
@@ -270,31 +338,22 @@ void ay_cpu_out( Ay_Cpu* cpu, cpu_time_t time, unsigned addr, int data )
 		{
 			emu.last_beeper = data;
 			emu.beeper_delta = -delta;
+			emu.spectrum_mode = true;
 			if ( emu.beeper_output )
 				emu.apu.synth_.offset( time, delta, emu.beeper_output );
 		}
-		return;
 	}
-	
-	switch ( addr & 0xFEFF )
+	else
 	{
-	case 0xFEFD:
-		emu.apu_addr = data & 0x0F;
-		return;
-	
-	case 0xBEFD:
-		emu.apu.write( time, emu.apu_addr, data );
-		//remote_write( apu_addr, data );
-		return;
+		emu.cpu_out_misc( time, addr, data );
 	}
-	
-	dprintf( "Unmapped OUT: $%04X <- $%02X\n", addr, data );
 }
 
 int ay_cpu_in( Ay_Cpu*, unsigned addr )
 {
 	// keyboard read and other things
-	if ( (addr & 0xFF) == 0xFE ) return 0xFF; // other values break some beeper tunes
+	if ( (addr & 0xFF) == 0xFE )
+		return 0xFF; // other values break some beeper tunes
 	
 	dprintf( "Unmapped IN : $%04X\n", addr );
 	return 0xFF;
@@ -303,9 +362,11 @@ int ay_cpu_in( Ay_Cpu*, unsigned addr )
 blargg_err_t Ay_Emu::run_clocks( blip_time_t& duration, int )
 {
 	set_time( 0 );
+	if ( !(spectrum_mode | cpc_mode) )
+		duration /= 2; // until mode is set, leave room for halved clock rate
+	
 	while ( time() < duration )
 	{
-		//long start = time();
 		cpu::run( min( duration, next_play ) );
 		
 		if ( time() >= next_play )
@@ -314,26 +375,23 @@ blargg_err_t Ay_Emu::run_clocks( blip_time_t& duration, int )
 			
 			if ( r.iff1 )
 			{
-				// TODO: don't interrupt if not enabled
-				if ( mem [r.pc] == 0x76 )
+				if ( mem.ram [r.pc] == 0x76 )
 					r.pc++;
 				
 				r.iff1 = r.iff2 = 0;
 				
-				mem [--r.sp] = r.pc >> 8;
-				mem [--r.sp] = r.pc;
+				mem.ram [--r.sp] = r.pc >> 8;
+				mem.ram [--r.sp] = r.pc;
 				r.pc = 0x38;
 				cpu::adjust_time( 12 );
 				if ( r.im == 2 )
 				{
 					cpu::adjust_time( 6 );
 					unsigned addr = r.i * 0x100u + 0xFF;
-					r.pc = mem [(addr + 1) & 0xFFFF] * 0x100u + mem [addr];
+					r.pc = mem.ram [(addr + 1) & 0xFFFF] * 0x100u + mem.ram [addr];
 				}
 			}
 		}
-		//dprintf( "elapsed: %d\n", time() - start );
-		//remote_frame();
 	}
 	duration = time();
 	next_play -= duration;

@@ -1,6 +1,6 @@
 // Sunsoft FME-7 sound emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef NES_FME7_APU_H
 #define NES_FME7_APU_H
 
@@ -15,7 +15,6 @@ struct fme7_apu_state_t
 	BOOST::uint8_t latch;
 	BOOST::uint16_t delays [3]; // a, b, c
 };
-BOOST_STATIC_ASSERT( sizeof (fme7_apu_state_t) == 24 );
 
 class Nes_Fme7_Apu : private fme7_apu_state_t {
 public:

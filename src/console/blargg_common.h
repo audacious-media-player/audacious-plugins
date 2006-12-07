@@ -54,8 +54,13 @@ public:
 };
 
 #ifndef BLARGG_DISABLE_NOTHROW
+	#if __cplusplus < 199711
+		#define BLARGG_THROWS( spec )
+	#else
+		#define BLARGG_THROWS( spec ) throw spec
+	#endif
 	#define BLARGG_DISABLE_NOTHROW \
-		void* operator new ( size_t s ) { return malloc( s ); }\
+		void* operator new ( size_t s ) BLARGG_THROWS(()) { return malloc( s ); }\
 		void operator delete ( void* p ) { free( p ); }
 	#define BLARGG_NEW new
 #else

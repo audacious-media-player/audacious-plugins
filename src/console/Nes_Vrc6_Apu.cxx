@@ -72,6 +72,7 @@ void Nes_Vrc6_Apu::end_frame( blip_time_t time )
 
 void Nes_Vrc6_Apu::save_state( vrc6_apu_state_t* out ) const
 {
+	assert( sizeof (vrc6_apu_state_t) == 20 );
 	out->saw_amp = oscs [2].amp;
 	for ( int i = 0; i < osc_count; i++ )
 	{

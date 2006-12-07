@@ -26,7 +26,10 @@ void Gbs_Emu::cpu_write( gb_addr_t addr, int data )
 		if ( (addr ^ 0xE000) <= 0x1F80 - 1 )
 		{
 			if ( unsigned (addr - Gb_Apu::start_addr) < Gb_Apu::register_count )
+			{
+				GME_APU_HOOK( this, addr - Gb_Apu::start_addr, data );
 				apu.write_register( clock(), addr, data );
+			}
 			else if ( (addr ^ 0xFF06) < 2 )
 				update_timer();
 			else if ( addr == joypad_addr )

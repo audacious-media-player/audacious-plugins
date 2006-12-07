@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Fir_Resampler.h"
 
@@ -57,19 +57,19 @@ Fir_Resampler_::Fir_Resampler_( int width, sample_t* impulses_ ) :
 	write_offset( width * stereo - stereo ),
 	impulses( impulses_ )
 {
-	write_pos = NULL;
-	res = 1;
-	imp = 0;
+	write_pos = 0;
+	res       = 1;
+	imp_phase = 0;
 	skip_bits = 0;
-	step = stereo;
-	ratio_ = 1.0;
+	step      = stereo;
+	ratio_    = 1.0;
 }
 
 Fir_Resampler_::~Fir_Resampler_() { }
 
 void Fir_Resampler_::clear()
 {
-	imp = 0;
+	imp_phase = 0;
 	if ( buf.size() )
 	{
 		write_pos = &buf [write_offset];
@@ -142,8 +142,8 @@ int Fir_Resampler_::input_needed( blargg_long output_count ) const
 {
 	blargg_long input_count = 0;
 	
-	unsigned long skip = skip_bits >> imp;
-	int remain = res - imp;
+	unsigned long skip = skip_bits >> imp_phase;
+	int remain = res - imp_phase;
 	while ( (output_count -= 2) > 0 )
 	{
 		input_count += step + (skip & 1) * stereo;
@@ -168,8 +168,8 @@ int Fir_Resampler_::avail_( blargg_long input_count ) const
 	int output_count = cycle_count * res * stereo;
 	input_count -= cycle_count * input_per_cycle;
 	
-	blargg_ulong skip = skip_bits >> imp;
-	int remain = res - imp;
+	blargg_ulong skip = skip_bits >> imp_phase;
+	int remain = res - imp_phase;
 	while ( input_count >= 0 )
 	{
 		input_count -= step + (skip & 1) * stereo;
@@ -187,10 +187,10 @@ int Fir_Resampler_::avail_( blargg_long input_count ) const
 int Fir_Resampler_::skip_input( long count )
 {
 	int remain = write_pos - buf.begin();
-	int avail = remain - width_ * stereo;
-	if ( count > avail )
-		count = avail;
-
+	int max_count = remain - width_ * stereo;
+	if ( count > max_count )
+		count = max_count;
+	
 	remain -= count;
 	write_pos = &buf [remain];
 	memmove( buf.begin(), &buf [count], remain * sizeof buf [0] );

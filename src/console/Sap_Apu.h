@@ -1,6 +1,6 @@
 // Atari POKEY sound chip emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef SAP_APU_H
 #define SAP_APU_H
 

@@ -1,9 +1,9 @@
-Game_Music_Emu 0.5.1: Game Music Emulators
+Game_Music_Emu 0.5.2: Game Music Emulators
 ------------------------------------------
 Game_Music_Emu is a collection of video game music file emulators that
 support the following formats and systems:
 
-AY        Sinclair Spectrum
+AY        ZX Spectrum/Amstrad CPC
 GBS       Nintendo Game Boy
 GYM       Sega Genesis/Mega Drive
 HES       NEC TurboGrafx-16/PC Engine
@@ -79,7 +79,6 @@ gme/
 
   gme.h               C interface
   gme.cpp
-  gme_type_list.cpp   gme_type_list() support
   
   Gme_File.h          File loading and track information
   Music_Emu.h         Track playback and adjustments
@@ -91,7 +90,7 @@ gme/
   M3u_Playlist.h      M3U playlist support
   M3u_Playlist.cpp
 
-  Ay_Emu.h            Sinclair Spectrum AY emulator
+  Ay_Emu.h            ZX Spectrum AY emulator
   Ay_Emu.cpp
   Ay_Apu.cpp
   Ay_Apu.h

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Gbs_Emu.h"
 
@@ -81,7 +81,7 @@ struct Gbs_File : Gme_Info_
 	
 	blargg_err_t load_( Data_Reader& in )
 	{
-		blargg_err_t err = in.read( &h, sizeof h );
+		blargg_err_t err = in.read( &h, Gbs_Emu::header_size );
 		if ( err )
 			return (err == in.eof_error ? gme_wrong_file_type : err);
 		
@@ -105,8 +105,8 @@ gme_type_t_ const gme_gbs_type [1] = { "Game Boy", 0, &new_gbs_emu, &new_gbs_fil
 
 blargg_err_t Gbs_Emu::load_( Data_Reader& in )
 {
-	unload();
-	RETURN_ERR( rom.load( in, sizeof header_, &header_, 0 ) );
+	assert( offsetof (header_t,copyright [32]) == header_size );
+	RETURN_ERR( rom.load( in, header_size, &header_, 0 ) );
 	
 	set_track_count( header_.track_count );
 	RETURN_ERR( check_gbs_header( &header_ ) );
@@ -259,6 +259,8 @@ blargg_err_t Gbs_Emu::run_clocks( blip_time_t& duration, int )
 					cpu_time = next_play;
 				next_play += play_period;
 				cpu_jsr( get_le16( header_.play_addr ) );
+				GME_FRAME_HOOK( this );
+				// TODO: handle timer rates different than 60 Hz
 			}
 			else if ( cpu::r.pc > 0xFFFF )
 			{

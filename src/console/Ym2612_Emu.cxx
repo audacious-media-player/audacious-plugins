@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 // Based on Gens 2.10 ym2612.c
 
@@ -741,10 +741,7 @@ void Ym2612_Impl::set_rate( double sample_rate, double clock_rate )
 		double x = i * 3;           // 3 and not 6 (Mickey Mania first music for test)
 		x /= ENV_STEP;
 
-		int j = (int) x;
-		j <<= ENV_LBITS;
-
-		g.SL_TAB [i] = j + ENV_DECAY;
+		g.SL_TAB [i] = ((int) x << ENV_LBITS) + ENV_DECAY;
 	}
 
 	g.SL_TAB [15] = ((ENV_LENGHT - 1) << ENV_LBITS) + ENV_DECAY; // special case : volume off
@@ -804,13 +801,13 @@ void Ym2612_Impl::set_rate( double sample_rate, double clock_rate )
 		for (int j = 0; j < 32; j++)
 		{
 #if ((SIN_LBITS + SIN_HBITS - 21) < 0)
-			double x = (double) DT_DEF_TAB [(i << 5) + j] * Frequence / (double) (1 << (21 - SIN_LBITS - SIN_HBITS));
+			double y = (double) DT_DEF_TAB [(i << 5) + j] * Frequence / (double) (1 << (21 - SIN_LBITS - SIN_HBITS));
 #else
-			double x = (double) DT_DEF_TAB [(i << 5) + j] * Frequence * (double) (1 << (SIN_LBITS + SIN_HBITS - 21));
+			double y = (double) DT_DEF_TAB [(i << 5) + j] * Frequence * (double) (1 << (SIN_LBITS + SIN_HBITS - 21));
 #endif
 
-			g.DT_TAB [i + 0] [j] = (int) x;
-			g.DT_TAB [i + 4] [j] = (int) -x;
+			g.DT_TAB [i + 0] [j] = (int)  y;
+			g.DT_TAB [i + 4] [j] = (int) -y;
 		}
 	}
 	

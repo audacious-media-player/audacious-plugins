@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Hes_Cpu.h"
 
@@ -227,12 +227,13 @@ possibly_out_of_time:
 
 // Branch
 
+// TODO: more efficient way to handle negative branch that wraps PC around
 #define BRANCH( cond )\
 {\
 	fint16 offset = (BOOST::int8_t) data;\
 	pc++;\
 	if ( !(cond) ) goto branch_not_taken;\
-	pc += offset;\
+	pc = BOOST::uint16_t (pc + offset);\
 	goto loop;\
 }
 

@@ -7,7 +7,7 @@
 
 void Sap_Emu::cpu_write( sap_addr_t addr, int data )
 {
-	mem [addr] = data;
+	mem.ram [addr] = data;
 	if ( (addr >> 8) == 0xD2 )
 		cpu_write_( addr, data );
 }
@@ -21,6 +21,6 @@ void Sap_Emu::cpu_write( sap_addr_t addr, int data )
 	{
 		if ( (addr & 0xF900) == 0xD000 )
 			dprintf( "Unmapped read $%04X\n", addr );
-		return mem [addr];
+		return mem.ram [addr];
 	}
 #endif

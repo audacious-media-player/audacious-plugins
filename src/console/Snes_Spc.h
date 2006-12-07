@@ -1,6 +1,6 @@
 // Super Nintendo (SNES) SPC-700 APU Emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef SNES_SPC_H
 #define SNES_SPC_H
 
@@ -102,9 +102,13 @@ private:
 	
 	// CPU and RAM (at end because it's large)
 	Spc_Cpu cpu;
-	enum { ram_size = 0x10000 };
 	uint8_t extra_ram [rom_size];
-	uint8_t ram [ram_size + 0x100]; // padding for catching jumps past end
+	struct {
+		// padding to catch jumps before beginning or past end
+		uint8_t padding1 [0x100];
+		uint8_t ram [0x10000];
+		uint8_t padding2 [0x100];
+	} mem;
 	uint8_t boot_rom [rom_size];
 };
 

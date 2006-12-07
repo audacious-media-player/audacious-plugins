@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 // Based on Brad Martin's OpenSPC DSP emulator
 
@@ -31,7 +31,8 @@ Spc_Dsp::Spc_Dsp( uint8_t* ram_ ) : ram( ram_ )
 	mute_voices( 0 );
 	disable_surround( false );
 	
-	BOOST_STATIC_ASSERT( sizeof (g) == register_count && sizeof (voice) == register_count );
+	assert( offsetof (globals_t,unused9 [2]) == register_count );
+	assert( sizeof (voice) == register_count );
 	blargg_verify_byte_order();
 }
 

@@ -1,6 +1,6 @@
 // Super Nintendo (SNES) SPC DSP emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef SPC_DSP_H
 #define SPC_DSP_H
 
@@ -52,37 +52,37 @@ private:
 		int8_t  unused [6];
 	};
 	
+	struct globals_t {
+		int8_t  unused1 [12];
+		int8_t  left_volume;        // 0C   Main Volume Left (-.7)
+		int8_t  echo_feedback;      // 0D   Echo Feedback (-.7)
+		int8_t  unused2 [14];
+		int8_t  right_volume;       // 1C   Main Volume Right (-.7)
+		int8_t  unused3 [15];
+		int8_t  left_echo_volume;   // 2C   Echo Volume Left (-.7)
+		uint8_t pitch_mods;         // 2D   Pitch Modulation on/off for each voice
+		int8_t  unused4 [14];
+		int8_t  right_echo_volume;  // 3C   Echo Volume Right (-.7)
+		uint8_t noise_enables;      // 3D   Noise output on/off for each voice
+		int8_t  unused5 [14];
+		uint8_t key_ons;            // 4C   Key On for each voice
+		uint8_t echo_ons;           // 4D   Echo on/off for each voice
+		int8_t  unused6 [14];
+		uint8_t key_offs;           // 5C   key off for each voice (instantiates release mode)
+		uint8_t wave_page;          // 5D   source directory (wave table offsets)
+		int8_t  unused7 [14];
+		uint8_t flags;              // 6C   flags and noise freq
+		uint8_t echo_page;          // 6D
+		int8_t  unused8 [14];
+		uint8_t wave_ended;         // 7C
+		uint8_t echo_delay;         // 7D   ms >> 4
+		char    unused9 [2];
+	};
+	
 	union {
 		raw_voice_t voice [voice_count];
-		
 		uint8_t reg [register_count];
-		
-		struct {
-			int8_t  unused1 [12];
-			int8_t  left_volume;        // 0C   Main Volume Left (-.7)
-			int8_t  echo_feedback;      // 0D   Echo Feedback (-.7)
-			int8_t  unused2 [14];
-			int8_t  right_volume;       // 1C   Main Volume Right (-.7)
-			int8_t  unused3 [15];
-			int8_t  left_echo_volume;   // 2C   Echo Volume Left (-.7)
-			uint8_t pitch_mods;         // 2D   Pitch Modulation on/off for each voice
-			int8_t  unused4 [14];
-			int8_t  right_echo_volume;  // 3C   Echo Volume Right (-.7)
-			uint8_t noise_enables;      // 3D   Noise output on/off for each voice
-			int8_t  unused5 [14];
-			uint8_t key_ons;            // 4C   Key On for each voice
-			uint8_t echo_ons;           // 4D   Echo on/off for each voice
-			int8_t  unused6 [14];
-			uint8_t key_offs;           // 5C   key off for each voice (instantiates release mode)
-			uint8_t wave_page;          // 5D   source directory (wave table offsets)
-			int8_t  unused7 [14];
-			uint8_t flags;              // 6C   flags and noise freq
-			uint8_t echo_page;          // 6D
-			int8_t  unused8 [14];
-			uint8_t wave_ended;         // 7C
-			uint8_t echo_delay;         // 7D   ms >> 4
-			char    unused9 [2];
-		} g;
+		globals_t g;
 	};
 	
 	uint8_t* const ram;

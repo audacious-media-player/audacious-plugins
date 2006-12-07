@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Sap_Emu.h"
 
@@ -288,11 +288,11 @@ void Sap_Emu::cpu_jsr( sap_addr_t addr )
 	check( r.sp >= 0xFE ); // catch anything trying to leave data on stack
 	r.pc = addr;
 	int high_byte = (idle_addr - 1) >> 8;
-	if ( r.sp == 0xFE && mem [0x1FF] == high_byte )
+	if ( r.sp == 0xFE && mem.ram [0x1FF] == high_byte )
 		r.sp = 0xFF; // pop extra byte off
-	mem [0x100 + r.sp--] = high_byte; // some routines use RTI to return
-	mem [0x100 + r.sp--] = high_byte;
-	mem [0x100 + r.sp--] = (idle_addr - 1) & 0xFF;
+	mem.ram [0x100 + r.sp--] = high_byte; // some routines use RTI to return
+	mem.ram [0x100 + r.sp--] = high_byte;
+	mem.ram [0x100 + r.sp--] = (idle_addr - 1) & 0xFF;
 }
 
 void Sap_Emu::run_routine( sap_addr_t addr )
@@ -327,7 +327,8 @@ blargg_err_t Sap_Emu::start_track_( int track )
 {
 	RETURN_ERR( Classic_Emu::start_track_( track ) );
 	
-	memset( mem, 0, sizeof mem );
+	memset( &mem, 0, sizeof mem );
+
 	byte const* in = info.rom_data;
 	while ( file_end - in >= 5 )
 	{
@@ -347,7 +348,7 @@ blargg_err_t Sap_Emu::start_track_( int track )
 			break;
 		}
 		
-		memcpy( mem + start, in, len );
+		memcpy( mem.ram + start, in, len );
 		in += len;
 		if ( file_end - in >= 2 && in [0] == 0xFF && in [1] == 0xFF )
 			in += 2;
@@ -355,7 +356,7 @@ blargg_err_t Sap_Emu::start_track_( int track )
 	
 	apu.reset( &apu_impl );
 	apu2.reset( &apu_impl );
-	cpu::reset( mem );
+	cpu::reset( mem.ram );
 	time_mask = 0; // disables sound during init
 	call_init( track );
 	time_mask = -1;
@@ -373,6 +374,7 @@ void Sap_Emu::cpu_write_( sap_addr_t addr, int data )
 {
 	if ( (addr ^ Sap_Apu::start_addr) <= (Sap_Apu::end_addr - Sap_Apu::start_addr) )
 	{
+		GME_APU_HOOK( this, addr - Sap_Apu::start_addr, data );
 		apu.write_data( time() & time_mask, addr, data );
 		return;
 	}
@@ -380,6 +382,7 @@ void Sap_Emu::cpu_write_( sap_addr_t addr, int data )
 	if ( (addr ^ (Sap_Apu::start_addr + 0x10)) <= (Sap_Apu::end_addr - Sap_Apu::start_addr) &&
 			info.stereo )
 	{
+		GME_APU_HOOK( this, addr - 0x10 - Sap_Apu::start_addr + 10, data );
 		apu2.write_data( time() & time_mask, addr ^ 0x10, data );
 		return;
 	}
@@ -417,6 +420,7 @@ blargg_err_t Sap_Emu::run_clocks( blip_time_t& duration, int )
 				set_time( next_play );
 				next_play += play_period();
 				call_play();
+				GME_FRAME_HOOK( this );
 			}
 			else
 			{

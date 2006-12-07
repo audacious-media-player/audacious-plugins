@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Nsfe_Emu.h"
 
@@ -88,10 +88,12 @@ struct nsfe_info_t
 	byte first_track;
 	byte unused [6];
 };
-BOOST_STATIC_ASSERT( sizeof (nsfe_info_t) == 16 );
 
 blargg_err_t Nsfe_Info::load( Data_Reader& in, Nsf_Emu* nsf_emu )
 {
+	int const nsfe_info_size = 16;
+	assert( offsetof (nsfe_info_t,unused [6]) == nsfe_info_size );
+	
 	// check header
 	byte signature [4];
 	blargg_err_t err = in.read( signature, sizeof signature );
@@ -146,9 +148,9 @@ blargg_err_t Nsfe_Info::load( Data_Reader& in, Nsf_Emu* nsf_emu )
 				finfo.track_count = 1;
 				finfo.first_track = 0;
 				
-				RETURN_ERR( in.read( &finfo, min( size, (blargg_long) sizeof finfo ) ) );
-				if ( size > (int) sizeof finfo )
-					RETURN_ERR( in.skip( size - sizeof finfo ) );
+				RETURN_ERR( in.read( &finfo, min( size, (blargg_long) nsfe_info_size ) ) );
+				if ( size > nsfe_info_size )
+					RETURN_ERR( in.skip( size - nsfe_info_size ) );
 				phase = 1;
 				info.speed_flags = finfo.speed_flags;
 				info.chip_flags  = finfo.chip_flags;
@@ -203,19 +205,17 @@ blargg_err_t Nsfe_Info::load( Data_Reader& in, Nsf_Emu* nsf_emu )
 			case BLARGG_4CHAR('A','T','A','D'): {
 				check( phase == 1 );
 				phase = 2;
-				disable_playlist( false );
 				if ( !nsf_emu )
 				{
-					in.skip( size );
+					RETURN_ERR( in.skip( size ) );
 				}
 				else
 				{
 					Subset_Reader sub( &in, size ); // limit emu to nsf data
-					Remaining_Reader rem( &header, sizeof header, &sub );
+					Remaining_Reader rem( &header, Nsf_Emu::header_size, &sub );
 					RETURN_ERR( nsf_emu->load( rem ) );
 					check( rem.remain() == 0 );
 				}
-				disable_playlist( false ); // TODO: fix this crappy hack (unload() disables playlist)
 				break;
 			}
 			
@@ -283,6 +283,7 @@ struct Nsfe_File : Gme_Info_
 	blargg_err_t load_( Data_Reader& in )
 	{
 		RETURN_ERR( info.load( in, 0 ) );
+		info.disable_playlist( false );
 		set_track_count( info.info.track_count );
 		return 0;
 	}

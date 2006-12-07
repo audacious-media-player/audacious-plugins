@@ -1,6 +1,6 @@
 // Sega Master System/Mark III, Sega Genesis/Mega Drive, BBC Micro VGM music file emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef VGM_EMU_H
 #define VGM_EMU_H
 
@@ -22,6 +22,7 @@ public:
 	void disable_oversampling( bool disable = true ) { disable_oversampling_ = disable; }
 	
 	// VGM header format
+	enum { header_size = 0x40 };
 	struct header_t
 	{
 		char tag [4];
@@ -42,7 +43,6 @@ public:
 		byte data_offset [4];
 		byte unused2 [8];
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 0x40 );
 	
 	// Header for currently loaded file
 	header_t const& header() const { return *(header_t const*) data; }

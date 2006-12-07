@@ -1,4 +1,4 @@
-Game_Music_Emu 0.5.1
+Game_Music_Emu 0.5.2
 --------------------
 Author : Shay Green <gblargg@gmail.com>
 Website: http://www.slack.net/~ant/libs/
@@ -31,6 +31,7 @@ This library contains several game music file emulators with a common
 interface. Each can load a game music file and play from any track. To
 play a track from a game music file, do the following:
 
+** TODO: things are simpler now
 * Determine file's type (i.e. gme_nsf_emu, gme_spc_emu, etc.)
 * Create appropriate emulator and set sample rate with gme_new_emu()
 * Load file into emulator with gme_load()

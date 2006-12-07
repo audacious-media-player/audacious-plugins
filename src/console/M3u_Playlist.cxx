@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "M3u_Playlist.h"
 #include "Music_Emu.h"
@@ -22,9 +22,29 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
 blargg_err_t Gme_File::load_m3u_( blargg_err_t err )
 {
-	if ( !err && playlist.size() )
-		track_count_ = playlist.size();
 	require( raw_track_count_ ); // file must be loaded first
+	
+	if ( !err )
+	{
+		if ( playlist.size() )
+			track_count_ = playlist.size();
+		
+		int line = playlist.first_error();
+		if ( line )
+		{
+			// avoid using bloated printf()
+			char* out = &playlist_warning [sizeof playlist_warning];
+			*--out = 0;
+			do {
+				*--out = line % 10 + '0';
+			} while ( (line /= 10) > 0 );
+			
+			static const char str [] = "Problem in m3u at line ";
+			out -= sizeof str - 1;
+			memcpy( out, str, sizeof str - 1 );
+			set_warning( out );
+		}
+	}
 	return err;
 }
 
@@ -32,9 +52,9 @@ blargg_err_t Gme_File::load_m3u( const char* path ) { return load_m3u_( playlist
 
 blargg_err_t Gme_File::load_m3u( Data_Reader& in )  { return load_m3u_( playlist.load( in ) ); }
 
-const char* gme_load_m3u( Music_Emu* me, const char* path ) { return me->load_m3u( path ); }
+gme_err_t gme_load_m3u( Music_Emu* me, const char* path ) { return me->load_m3u( path ); }
 
-const char* gme_load_m3u_data( Music_Emu* me, const void* data, long size )
+gme_err_t gme_load_m3u_data( Music_Emu* me, const void* data, long size )
 {
 	Mem_File_Reader in( data, size );
 	return me->load_m3u( in );

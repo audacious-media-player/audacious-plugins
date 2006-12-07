@@ -1,6 +1,6 @@
 // AY-3-8910 sound chip emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef AY_APU_H
 #define AY_APU_H
 
@@ -16,6 +16,7 @@ public:
 	void reset();
 	
 	// Write to register at specified time
+	enum { reg_count = 16 };
 	void write( blip_time_t time, int addr, int data );
 	
 	// Run sound to specified time, end current time frame, then start a new
@@ -50,7 +51,7 @@ private:
 	} oscs [osc_count];
 	blip_time_t last_time;
 	byte latch;
-	byte regs [16];
+	byte regs [reg_count];
 	
 	struct {
 		blip_time_t delay;

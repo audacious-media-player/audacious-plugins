@@ -4,7 +4,7 @@ This plugin plays music from video game consoles of the 1980s and early
 1990s. It uses the Game_Music_Emu sound engine and supports the
 following file formats:
 
-AY        Sinclair Spectrum
+AY        ZX Spectrum/Amstrad CPC
 GBS       Nintendo Game Boy
 GYM       Sega Genesis/Mega Drive
 HES       NEC TurboGrafx-16/PC Engine
@@ -43,18 +43,15 @@ unfortunately.
 
 Things not supported
 --------------------
-* Gzipped files (Audacious needs to support these in its VFS layer)
-
 * KSS: FM sound
-
-* GYM: files without a header
 
 * HES: ADPCM samples (used in only a few soundtracks, if that)
 
 * SAP: "digimusic samples" and more obscure tracker formats
 
 * VGM/VGZ: original Sega Master System FM sound chip (Sega Genesis/Mega
-Drive music plays fine)
+Drive music plays fine). See the following discussion for a way to add
+support for this: http://www.smspower.org/forums/viewtopic.php?t=9321
 
 
 Source code notes
@@ -65,21 +62,13 @@ gme_readme.txt and gme.txt for library documentation.
 * See TODO comments in Audacious_Config.cxx and Audacious_Driver.cxx for
 things which would be good to address.
 
-* The library does not use C++ exceptions, so you could disable them in
-the makefile to reduce code size a bit.
+* C++ exceptions and RTTI are not used or needed.
 
-* The cause of errors and also warnings about possible problems are
-logged in log_err() and log_warning() using printf().
-
-* The vfs_* functions are used for file access, so gzipped game music
-files must currently be decompressed before playback (in particular,
-.vgz files).
-
-* File types are determined based on the first four bytes of a file; the
-file extension is never examined. Some .gym files don't have any header,
-so these won't play.
+* File types are determined based on the first four bytes of a file
+except for .gym files, some of which have no file header at all.
 
 * Some music formats have more than one track in a file. This track is
 specified to the console plugin by appending ?i to the end of the file
 path, where i is the track index, starting at 0. For example, foo.nsf?2
-specifies the third track.
+specifies the third track. This is an internal thing, as the user should
+never see these modified paths.

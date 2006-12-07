@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Vgm_Emu.h"
 
@@ -108,7 +108,7 @@ byte const* Vgm_Emu::gd3_data( int* size ) const
 	if ( gd3_offset < 0 )
 		return 0;
 	
-	byte const* gd3 = data + sizeof (header_t) + gd3_offset;
+	byte const* gd3 = data + header_size + gd3_offset;
 	long gd3_size = check_gd3_header( gd3, data_end - gd3 );
 	if ( !gd3_size )
 		return 0;
@@ -168,14 +168,14 @@ struct Vgm_File : Gme_Info_
 	blargg_err_t load_( Data_Reader& in )
 	{
 		long file_size = in.remain();
-		if ( file_size <= (long) sizeof h )
+		if ( file_size <= Vgm_Emu::header_size )
 			return gme_wrong_file_type;
 		
-		RETURN_ERR( in.read( &h, sizeof h ) );
+		RETURN_ERR( in.read( &h, Vgm_Emu::header_size ) );
 		RETURN_ERR( check_vgm_header( h ) );
 		
 		long gd3_offset = get_le32( h.gd3_offset ) - 0x2C;
-		long remain = file_size - sizeof h - gd3_offset;
+		long remain = file_size - Vgm_Emu::header_size - gd3_offset;
 		byte gd3_h [gd3_header_size];
 		if ( gd3_offset > 0 || remain >= gd3_header_size )
 		{
@@ -269,7 +269,9 @@ void Vgm_Emu::mute_voices_( int mask )
 
 blargg_err_t Vgm_Emu::load_mem_( byte const* new_data, long new_size )
 {
-	if ( new_size <= (long) sizeof (header_t) )
+	assert( offsetof (header_t,unused2 [8]) == header_size );
+	
+	if ( new_size <= header_size )
 		return gme_wrong_file_type;
 	
 	header_t const& h = *(header_t const*) new_data;
@@ -365,7 +367,7 @@ blargg_err_t Vgm_Emu::start_track_( int track )
 	psg.reset( get_le16( header().noise_feedback ), header().noise_width );
 	
 	dac_disabled = -1;
-	pos          = data + sizeof (header_t);
+	pos          = data + header_size;
 	pcm_data     = pos;
 	pcm_pos      = pos;
 	dac_amp      = -1;

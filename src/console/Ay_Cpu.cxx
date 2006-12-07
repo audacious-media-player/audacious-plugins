@@ -1,8 +1,10 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
-// Last validated with zexall 2006.11.21 5:26 PM
-// Doesn't implement interrupts or the R register, though both would be
-// easy to support.
+/*
+Last validated with zexall 2006.11.21 5:26 PM
+* Doesn't implement the R register or immediate interrupt after EI.
+* Address wrap-around isn't completely correct, but is prevented from crashing emulator.
+*/
 
 #include "Ay_Cpu.h"
 
@@ -27,10 +29,10 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
 // Callbacks to emulator
 
-#define CPU_OUT( cpu, addr, data, TIME ) \
+#define CPU_OUT( cpu, addr, data, TIME )\
 	ay_cpu_out( cpu, TIME, addr, data )
 
-#define CPU_IN( cpu, addr, TIME ) \
+#define CPU_IN( cpu, addr, TIME )\
 	ay_cpu_in( cpu, addr )
 
 #include "blargg_source.h"
@@ -105,7 +107,7 @@ void Ay_Cpu::reset( void* m )
 //#define R16( n, shift, offset )   (r16_ [((n) >> shift) - (offset >> shift)])
 
 // help compiler see that it can just adjust stack offset, saving an extra instruction
-#define R16( n, shift, offset ) \
+#define R16( n, shift, offset )\
 	(*(uint16_t*) ((char*) r16_ - (offset >> (shift - 1)) + ((n) >> (shift - 1))))
 
 #define CASE5( a, b, c, d, e          ) case 0x##a:case 0x##b:case 0x##c:case 0x##d:case 0x##e
@@ -354,7 +356,14 @@ possibly_out_of_time:
 		goto loop;
 	}
 	
-	CASE8( C7, CF, D7, DF, E7, EF, F7, FF ): // RST
+	case 0xFF: // RST
+		if ( (pc - 1) > 0xFFFF )
+		{
+			pc = uint16_t (pc - 1);
+			s_time -= 11;
+			goto loop;
+		}
+	CASE7( C7, CF, D7, DF, E7, EF, F7 ):
 		data = pc;
 		pc = opcode & 0x38;
 		goto push_data;
@@ -1297,6 +1306,9 @@ possibly_out_of_time:
 		s_time += ed_dd_timing [data] & 0x0F;
 		switch ( data )
 		{
+	// TODO: more efficient way of avoid negative address
+	#define IXY_DISP( ixy, disp )   uint16_t ((ixy) + (disp))
+	
 	#define SET_IXY( in ) if ( opcode == 0xDD ) ix = in; else iy = in;
 	
 	// ADD/ADC/SUB/SBC
@@ -1308,7 +1320,7 @@ possibly_out_of_time:
 		case 0x8E: // ADC (IXY+disp)
 			pc++;
 			opcode = data;
-			data = READ( ixy + (int8_t) data2 );
+			data = READ( IXY_DISP( ixy, (int8_t) data2 ) );
 			goto adc_data;
 		
 		case 0x94: // SUB HXY
@@ -1330,26 +1342,26 @@ possibly_out_of_time:
 			goto adc_data;
 		
 		{
-			unsigned data2;
+			unsigned temp;
 		case 0x39: // ADD IXY,SP
-			data2 = sp;
+			temp = sp;
 			goto add_ixy_data;
 		
 		case 0x29: // ADD IXY,HL
-			data2 = ixy;
+			temp = ixy;
 			goto add_ixy_data;
 		
 		case 0x09: // ADD IXY,BC
 		case 0x19: // ADD IXY,DE
-			data2 = R16( data, 4, 0x09 );
+			temp = R16( data, 4, 0x09 );
 		add_ixy_data: {
-			blargg_ulong sum = ixy + data2;
-			data2 ^= ixy;
-			ixy = sum;
+			blargg_ulong sum = ixy + temp;
+			temp ^= ixy;
+			ixy = (uint16_t) sum;
 			flags = (flags & (S80 | Z40 | V04)) |
 					(sum >> 16) |
 					(sum >> 8 & (F20 | F08)) |
-					((data2 ^ sum) >> 8 & H10);
+					((temp ^ sum) >> 8 & H10);
 			goto set_ixy;
 		}
 		}
@@ -1357,7 +1369,7 @@ possibly_out_of_time:
 	// AND
 		case 0xA6: // AND (IXY+disp)
 			pc++;
-			data = READ( ixy + (int8_t) data2 );
+			data = READ( IXY_DISP( ixy, (int8_t) data2 ) );
 			goto and_data;
 		
 		case 0xA4: // AND HXY
@@ -1371,7 +1383,7 @@ possibly_out_of_time:
 	// OR
 		case 0xB6: // OR (IXY+disp)
 			pc++;
-			data = READ( ixy + (int8_t) data2 );
+			data = READ( IXY_DISP( ixy, (int8_t) data2 ) );
 			goto or_data;
 		
 		case 0xB4: // OR HXY
@@ -1385,7 +1397,7 @@ possibly_out_of_time:
 	// XOR
 		case 0xAE: // XOR (IXY+disp)
 			pc++;
-			data = READ( ixy + (int8_t) data2 );
+			data = READ( IXY_DISP( ixy, (int8_t) data2 ) );
 			goto xor_data;
 		
 		case 0xAC: // XOR HXY
@@ -1399,7 +1411,7 @@ possibly_out_of_time:
 	// CP
 		case 0xBE: // CP (IXY+disp)
 			pc++;
-			data = READ( ixy + (int8_t) data2  );
+			data = READ( IXY_DISP( ixy, (int8_t) data2 )  );
 			goto cp_data;
 		
 		case 0xBC: // CP HXY
@@ -1417,7 +1429,7 @@ possibly_out_of_time:
 		case 0x36: // LD (IXY+disp),imm
 				pc++, data = READ_PROG( pc );
 			pc++;
-			WRITE( ixy + (int8_t) data2, data );
+			WRITE( IXY_DISP( ixy, (int8_t) data2 ), data );
 			goto loop;
 
 		CASE5( 44, 4C, 54, 5C, 7C ): // LD r,HXY
@@ -1434,7 +1446,7 @@ possibly_out_of_time:
 		
 		CASE7( 46, 4E, 56, 5E, 66, 6E, 7E ): // LD r,(IXY+disp)
 			pc++;
-			R8( data >> 3, 8 ) = READ( ixy + (int8_t) data2 );
+			R8( data >> 3, 8 ) = READ( IXY_DISP( ixy, (int8_t) data2 ) );
 			goto loop;
 		
 		case 0x26: // LD HXY,imm
@@ -1497,7 +1509,7 @@ possibly_out_of_time:
 		
 	// DD/FD CB prefix
 		case 0xCB: {
-			data = ixy + (int8_t) data2;
+			data = IXY_DISP( ixy, (int8_t) data2 );
 			pc++;
 			data2 = READ_PROG( pc );
 			pc++;
@@ -1550,14 +1562,14 @@ possibly_out_of_time:
 			goto set_ixy;
 		
 		case 0x34: // INC (IXY+disp)
-			ixy += (int8_t) data2;
+			ixy = IXY_DISP( ixy, (int8_t) data2 );
 			pc++;
 			data = READ( ixy ) + 1;
 			WRITE( ixy, data );
 			goto inc_set_flags;
 		
 		case 0x35: // DEC (IXY+disp)
-			ixy += (int8_t) data2;
+			ixy = IXY_DISP( ixy, (int8_t) data2 );
 			pc++;
 			data = READ( ixy ) - 1;
 			WRITE( ixy, data );
@@ -1639,12 +1651,12 @@ halt:
 out_of_time:
 	pc--;
 	
-	s.time = s_time;
+	s.time   = s_time;
 	rg.flags = flags;
-	r.ix    = ix;
-	r.iy    = iy;
-	r.sp    = sp;
-	r.pc    = pc;
+	r.ix     = ix;
+	r.iy     = iy;
+	r.sp     = sp;
+	r.pc     = pc;
 	this->r.b = rg;
 	this->state_ = s;
 	this->state = &this->state_;

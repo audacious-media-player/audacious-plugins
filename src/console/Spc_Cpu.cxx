@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Spc_Cpu.h"
 
@@ -39,7 +39,7 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 Spc_Cpu::Spc_Cpu( Snes_Spc* e, uint8_t* ram_in ) : ram( ram_in ), emu( *e )
 {
 	remain_ = 0;
-	BOOST_STATIC_ASSERT( sizeof (int) >= 4 );
+	assert( INT_MAX >= 0x7FFFFFFF ); // requires 32-bit int
 	blargg_verify_byte_order();
 }
 
@@ -129,20 +129,20 @@ spc_time_t Spc_Cpu::run( spc_time_t cycle_count )
 	
 	#define IS_NEG (nz & 0x880)
 	
-	#define CALC_STATUS( out ) do {                 \
-		out = status & ~(st_n | st_z | st_c);       \
-		out |= (c >> 8) & st_c;                     \
-		out |= (dp >> 3) & st_p;                    \
-		if ( IS_NEG ) out |= st_n;                  \
-		if ( !(nz & 0xFF) ) out |= st_z;            \
+	#define CALC_STATUS( out ) do {\
+		out = status & ~(st_n | st_z | st_c);\
+		out |= (c >> 8) & st_c;\
+		out |= (dp >> 3) & st_p;\
+		if ( IS_NEG ) out |= st_n;\
+		if ( !(nz & 0xFF) ) out |= st_z;\
 	} while ( 0 )       
 
-	#define SET_STATUS( in ) do {                   \
-		status = in & ~(st_n | st_z | st_c | st_p); \
-		c = in << 8;                                \
-		nz = (in << 4) & 0x800;                     \
-		nz |= ~in & st_z;                           \
-		dp = (in << 3) & 0x100;                     \
+	#define SET_STATUS( in ) do {\
+		status = in & ~(st_n | st_z | st_c | st_p);\
+		c = in << 8;\
+		nz = (in << 4) & 0x800;\
+		nz |= ~in & st_z;\
+		dp = (in << 3) & 0x100;\
 	} while ( 0 )
 	
 	int status;
@@ -188,14 +188,14 @@ loop:
 	switch ( opcode )
 	{
 	
-	#define BRANCH( cond ) {        \
-		pc++;                       \
-		int offset = (BOOST::int8_t) data; \
-		if ( cond ) {               \
-			pc += offset;           \
-			remain_ -= 2;           \
-		}                           \
-		goto loop;                  \
+	#define BRANCH( cond ) {\
+		pc++;\
+		int offset = (BOOST::int8_t) data;\
+		if ( cond ) {\
+			pc += offset;\
+			remain_ -= 2;\
+		}\
+		goto loop;\
 	}
 	
 // Most-Common
@@ -220,31 +220,31 @@ loop:
 
 // Define common address modes based on opcode for immediate mode. Execution
 // ends with data set to the address of the operand.
-#define ADDR_MODES( op )                \
-	CASE( op - 0x02 ) /* (X) */         \
-		data = x + dp;                  \
-		pc--;                           \
-		goto end_##op;                  \
-	CASE( op + 0x0F ) /* (dp)+Y */      \
+#define ADDR_MODES( op )\
+	CASE( op - 0x02 ) /* (X) */\
+		data = x + dp;\
+		pc--;\
+		goto end_##op;\
+	CASE( op + 0x0F ) /* (dp)+Y */\
 		data = READ_PROG16( data + dp ) + y;\
-		goto end_##op;                  \
-	CASE( op - 0x01 ) /* (dp+X) */      \
+		goto end_##op;\
+	CASE( op - 0x01 ) /* (dp+X) */\
 		data = READ_PROG16( uint8_t (data + x) + dp );\
-		goto end_##op;                  \
-	CASE( op + 0x0E ) /* abs+Y */       \
-		data += y;                      \
-		goto abs_##op;                  \
-	CASE( op + 0x0D ) /* abs+X */       \
-		data += x;                      \
-	CASE( op - 0x03 ) /* abs */         \
-	abs_##op:                           \
-		pc++;                           \
+		goto end_##op;\
+	CASE( op + 0x0E ) /* abs+Y */\
+		data += y;\
+		goto abs_##op;\
+	CASE( op + 0x0D ) /* abs+X */\
+		data += x;\
+	CASE( op - 0x03 ) /* abs */\
+	abs_##op:\
+		pc++;\
 		data += 0x100 * READ_PROG( pc );\
-		goto end_##op;                  \
-	CASE( op + 0x0C ) /* dp+X */        \
-		data = uint8_t (data + x);      \
-	CASE( op - 0x04 ) /* dp */          \
-		data += dp;                     \
+		goto end_##op;\
+	CASE( op + 0x0C ) /* dp+X */\
+		data = uint8_t (data + x);\
+	CASE( op - 0x04 ) /* dp */\
+		data += dp;\
 	end_##op:
 
 // 1. 8-bit Data Transmission Commands. Group I
@@ -372,27 +372,27 @@ loop:
 	
 // 5. 8-BIT LOGIC OPERATION COMMANDS
 	
-#define LOGICAL_OP( op, func )  \
-	ADDR_MODES( op ) /* addr */ \
-		data = READ( data );    \
-	case op: /* imm */          \
-		nz = a func##= data;    \
-		goto inc_pc_loop;       \
-	{   unsigned addr;          \
-	case op + 0x11: /* X,Y */   \
-		data = READ_DP( y );    \
-		addr = x + dp;          \
-		pc--;                   \
-		goto addr_##op;         \
-	case op + 0x01: /* dp,dp */ \
-		data = READ_DP( data ); \
+#define LOGICAL_OP( op, func )\
+	ADDR_MODES( op ) /* addr */\
+		data = READ( data );\
+	case op: /* imm */\
+		nz = a func##= data;\
+		goto inc_pc_loop;\
+	{   unsigned addr;\
+	case op + 0x11: /* X,Y */\
+		data = READ_DP( y );\
+		addr = x + dp;\
+		pc--;\
+		goto addr_##op;\
+	case op + 0x01: /* dp,dp */\
+		data = READ_DP( data );\
 	case op + 0x10: /*dp,imm*/\
-		pc++;                   \
+		pc++;\
 		addr = READ_PROG( pc ) + dp;\
-	addr_##op:                  \
+	addr_##op:\
 		nz = data func READ( addr );\
-		WRITE( addr, nz );      \
-		goto inc_pc_loop;       \
+		WRITE( addr, nz );\
+		goto inc_pc_loop;\
 	}
 	
 	LOGICAL_OP( 0x28, & ); // AND
@@ -504,9 +504,9 @@ loop:
 	
 // 6. ADDITION & SUBTRACTION COMMANDS
 
-#define INC_DEC_REG( reg, n )   \
-		nz = reg + n;           \
-		reg = (uint8_t) nz;     \
+#define INC_DEC_REG( reg, n )\
+		nz = reg + n;\
+		reg = (uint8_t) nz;\
 		goto loop;
 
 	case 0xBC: INC_DEC_REG( a, 1 )  // INC A
@@ -819,7 +819,7 @@ loop:
 	
 // 13. SUB-ROUTINE CALL RETURN COMMANDS
 	
-	case 0x0F: // BRK
+	case 0x0F:{// BRK
 		check( false ); // untested
 		PUSH16( pc + 1 );
 		pc = READ_PROG16( 0xFFDE ); // vector address verified
@@ -828,6 +828,7 @@ loop:
 		PUSH( temp );
 		status = (status | st_b) & ~st_i;
 		goto loop;
+	}
 	
 	case 0x4F: // PCALL offset
 		pc++;

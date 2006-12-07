@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Ay_Apu.h"
 
@@ -74,13 +74,13 @@ Ay_Apu::Ay_Apu()
 	{
 		byte* out = env.modes [m];
 		int flags = modes [m];
-		for ( int n = 3; --n >= 0; )
+		for ( int x = 3; --x >= 0; )
 		{
 			int amp = flags & 1;
 			int end = flags >> 1 & 1;
 			int step = end - amp;
 			amp *= 15;
-			for ( int n = 16; --n >= 0; )
+			for ( int y = 16; --y >= 0; )
 			{
 				*out++ = amp_table [amp];
 				amp += step;
@@ -119,6 +119,8 @@ void Ay_Apu::reset()
 
 void Ay_Apu::write_data_( int addr, int data )
 {
+	assert( (unsigned) addr < reg_count );
+	
 	if ( (unsigned) addr >= 14 )
 	{
 		#ifdef dprintf
@@ -268,11 +270,13 @@ void Ay_Apu::run_until( blip_time_t final_end_time )
 			int amp = 0;
 			if ( (osc_mode | osc->phase) & 1 & (osc_mode >> 3 | noise_lfsr) )
 				amp = volume;
-			int delta = amp - osc->last_amp;
-			if ( delta )
 			{
-				osc->last_amp = amp;
-				synth_.offset( start_time, delta, osc_output );
+				int delta = amp - osc->last_amp;
+				if ( delta )
+				{
+					osc->last_amp = amp;
+					synth_.offset( start_time, delta, osc_output );
+				}
 			}
 			
 			// Run wave and noise interleved with each catching up to the other.

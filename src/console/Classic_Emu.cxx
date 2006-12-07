@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Classic_Emu.h"
 
@@ -43,7 +43,7 @@ void Classic_Emu::set_equalizer_( equalizer_t const& eq )
 		buf->bass_freq( equalizer().bass );
 }
 	
-blargg_err_t Classic_Emu::set_sample_rate_( long sample_rate )
+blargg_err_t Classic_Emu::set_sample_rate_( long rate )
 {
 	if ( !buf )
 	{
@@ -51,7 +51,7 @@ blargg_err_t Classic_Emu::set_sample_rate_( long sample_rate )
 			CHECK_ALLOC( stereo_buffer = BLARGG_NEW Stereo_Buffer );
 		buf = stereo_buffer;
 	}
-	return buf->set_sample_rate( sample_rate, 1000 / 20 );
+	return buf->set_sample_rate( rate, 1000 / 20 );
 }
 
 void Classic_Emu::mute_voices_( int mask )
@@ -73,10 +73,15 @@ void Classic_Emu::mute_voices_( int mask )
 	}
 }
 
-blargg_err_t Classic_Emu::setup_buffer( long rate )
+void Classic_Emu::change_clock_rate( long rate )
 {
 	clock_rate_ = rate;
 	buf->clock_rate( rate );
+}
+
+blargg_err_t Classic_Emu::setup_buffer( long rate )
+{
+	change_clock_rate( rate );
 	RETURN_ERR( buf->set_channel_count( voice_count() ) );
 	set_equalizer( equalizer() );
 	buf_changed_count = buf->channels_changed_count();

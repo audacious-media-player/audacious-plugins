@@ -149,6 +149,17 @@ private:
 	int const blip_res = 1 << BLIP_PHASE_BITS;
 	class blip_eq_t;
 	
+	class Blip_Synth_Fast_ {
+	public:
+		Blip_Buffer* buf;
+		int last_amp;
+		int delta_factor;
+		
+		void volume_unit( double );
+		Blip_Synth_Fast_();
+		void treble_eq( blip_eq_t const& ) { }
+	};
+	
 	class Blip_Synth_ {
 	public:
 		Blip_Buffer* buf;
@@ -156,10 +167,6 @@ private:
 		int delta_factor;
 		
 		void volume_unit( double );
-	#if BLIP_BUFFER_FAST
-		Blip_Synth_();
-		void treble_eq( blip_eq_t const& ) { }
-	#else
 		Blip_Synth_( short* impulses, int width );
 		void treble_eq( blip_eq_t const& );
 	private:
@@ -169,7 +176,6 @@ private:
 		blip_long kernel_unit;
 		int impulses_size() const { return blip_res / 2 * width + 1; }
 		void adjust_impulse();
-	#endif
 	};
 
 // Quality level. Start with blip_good_quality.
@@ -217,8 +223,10 @@ public:
 	}
 	
 private:
+#if BLIP_BUFFER_FAST
+	Blip_Synth_Fast_ impl;
+#else
 	Blip_Synth_ impl;
-#if !BLIP_BUFFER_FAST
 	typedef short imp_t;
 	imp_t impulses [blip_res * (quality / 2) + 1];
 public:

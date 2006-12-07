@@ -1,4 +1,4 @@
-// File_Reader based on a VFSFile
+// File_Reader wrapper over a VFSFile
 
 #ifndef VFS_FILE_H
 #define VFS_FILE_H

@@ -1,6 +1,6 @@
 // Super Nintendo SPC music file emulator
 
-// Game_Music_Emu 0.5.1
+// Game_Music_Emu 0.5.2
 #ifndef SPC_EMU_H
 #define SPC_EMU_H
 
@@ -15,6 +15,7 @@ public:
 	enum { native_sample_rate = 32000 };
 	
 	// SPC file header
+	enum { header_size = 0x100 };
 	struct header_t
 	{
 		char tag [35];
@@ -35,7 +36,6 @@ public:
 		byte emulator;
 		byte unused2 [46];
 	};
-	BOOST_STATIC_ASSERT( sizeof (header_t) == 0x100 );
 	
 	// Header for currently loaded file
 	header_t const& header() const { return *(header_t const*) file_data; }

@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Nsf_Emu.h"
 
@@ -106,7 +106,7 @@ struct Nsf_File : Gme_Info_
 	
 	blargg_err_t load_( Data_Reader& in )
 	{
-		blargg_err_t err = in.read( &h, sizeof h );
+		blargg_err_t err = in.read( &h, Nsf_Emu::header_size );
 		if ( err )
 			return (err == in.eof_error ? gme_wrong_file_type : err);
 		
@@ -213,13 +213,15 @@ blargg_err_t Nsf_Emu::init_sound()
 			CHECK_ALLOC( vrc6 );
 			adjusted_gain *= 0.75;
 			
-			int const count = Nes_Apu::osc_count + Nes_Vrc6_Apu::osc_count;
-			static const char* const names [count] = {
-				APU_NAMES,
-				"Saw Wave", "Square 3", "Square 4"
-			};
-			set_voice_count( count );
-			set_voice_names( names );
+			{
+				int const count = Nes_Apu::osc_count + Nes_Vrc6_Apu::osc_count;
+				static const char* const names [count] = {
+					APU_NAMES,
+					"Saw Wave", "Square 3", "Square 4"
+				};
+				set_voice_count( count );
+				set_voice_names( names );
+			}
 			
 			if ( header_.chip_flags & namco_flag )
 			{
@@ -264,8 +266,8 @@ blargg_err_t Nsf_Emu::init_sound()
 
 blargg_err_t Nsf_Emu::load_( Data_Reader& in )
 {
-	unload();
-	RETURN_ERR( rom.load( in, sizeof header_, &header_, 0 ) );
+	assert( offsetof (header_t,unused [4]) == header_size );
+	RETURN_ERR( rom.load( in, header_size, &header_, 0 ) );
 	
 	set_track_count( header_.track_count );
 	RETURN_ERR( check_nsf_header( &header_ ) );
@@ -388,13 +390,13 @@ void Nsf_Emu::cpu_write_misc( nes_addr_t addr, int data )
 		{
 			switch ( addr )
 			{
-				case Nes_Namco_Apu::data_reg_addr:
-					namco->write_data( time(), data );
-					return;
-				
-				case Nes_Namco_Apu::addr_reg_addr:
-					namco->write_addr( data );
-					return;
+			case Nes_Namco_Apu::data_reg_addr:
+				namco->write_data( time(), data );
+				return;
+			
+			case Nes_Namco_Apu::addr_reg_addr:
+				namco->write_addr( data );
+				return;
 			}
 		}
 		
@@ -402,13 +404,13 @@ void Nsf_Emu::cpu_write_misc( nes_addr_t addr, int data )
 		{
 			switch ( addr & Nes_Fme7_Apu::addr_mask )
 			{
-				case Nes_Fme7_Apu::latch_addr:
-					fme7->write_latch( data );
-					return;
-				
-				case Nes_Fme7_Apu::data_addr:
-					fme7->write_data( time(), data );
-					return;
+			case Nes_Fme7_Apu::latch_addr:
+				fme7->write_latch( data );
+				return;
+			
+			case Nes_Fme7_Apu::data_addr:
+				fme7->write_data( time(), data );
+				return;
 			}
 		}
 		
@@ -524,6 +526,7 @@ blargg_err_t Nsf_Emu::run_clocks( blip_time_t& duration, int )
 				r.pc = play_addr;
 				low_mem [0x100 + r.sp--] = (badop_addr - 1) >> 8;
 				low_mem [0x100 + r.sp--] = (badop_addr - 1) & 0xFF;
+				GME_FRAME_HOOK( this );
 			}
 		}
 	}

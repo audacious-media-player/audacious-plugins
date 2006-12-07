@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Gym_Emu.h"
 
@@ -117,16 +117,16 @@ static blargg_err_t check_header( byte const* in, long size, int* data_offset = 
 	
 	if ( memcmp( in, "GYMX", 4 ) == 0 )
 	{
-		if ( size < (long) sizeof (Gym_Emu::header_t) + 1 )
+		if ( size < Gym_Emu::header_size + 1 )
 			return gme_wrong_file_type;
 		
 		if ( memcmp( ((Gym_Emu::header_t const*) in)->packed, "\0\0\0\0", 4 ) != 0 )
 			return "Packed GYM file not supported";
 		
 		if ( data_offset )
-			*data_offset = sizeof (Gym_Emu::header_t);
+			*data_offset = Gym_Emu::header_size;
 	}
-	else if ( *in != 0 && *in != 1 )
+	else if ( *in > 3 )
 	{
 		return gme_wrong_file_type;
 	}
@@ -209,6 +209,7 @@ void Gym_Emu::mute_voices_( int mask )
 
 blargg_err_t Gym_Emu::load_mem_( byte const* in, long size )
 {
+	assert( offsetof (header_t,packed [4]) == header_size );
 	int offset = 0;
 	RETURN_ERR( check_header( in, size, &offset ) );
 	set_voice_count( 8 );

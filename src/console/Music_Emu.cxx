@@ -1,4 +1,4 @@
-// Game_Music_Emu 0.5.1. http://www.slack.net/~ant/
+// Game_Music_Emu 0.5.2. http://www.slack.net/~ant/
 
 #include "Music_Emu.h"
 
@@ -134,7 +134,7 @@ blargg_err_t Music_Emu::start_track( int track )
 	clear_track_vars();
 	
 	int remapped = track;
-	RETURN_ERR( remap_track( &remapped ) );
+	RETURN_ERR( remap_track_( &remapped ) );
 	current_track_ = track;
 	RETURN_ERR( start_track_( remapped ) );
 	
