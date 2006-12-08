@@ -24,12 +24,14 @@
 
 #include <glib.h>
 #include <stdio.h>
+#include <audacious/vfs.h>
+#include <audacious/vfs_buffer.h>
 
 #include "execute.h"
 
 /* Structure passed do yyparse. */
 typedef struct {
-  FILE *input;
+  VFSFile *input;
   expression_t *expr;
   symbol_dict_t *dict;
 } parser_control;

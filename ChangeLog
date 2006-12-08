@@ -1,3 +1,106 @@
+2006-12-07 23:20:41 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [746]
+  - merge in blargg's changes
+  
+  trunk/src/console/Audacious_Driver.cxx |  312 ++++++++++++++++-----------------
+  trunk/src/console/Ay_Apu.cxx           |   18 +
+  trunk/src/console/Ay_Apu.h             |    5 
+  trunk/src/console/Ay_Cpu.cxx           |   74 ++++---
+  trunk/src/console/Ay_Cpu.h             |    2 
+  trunk/src/console/Ay_Emu.cxx           |  138 ++++++++++----
+  trunk/src/console/Ay_Emu.h             |   13 +
+  trunk/src/console/Blip_Buffer.cxx      |   28 +-
+  trunk/src/console/Blip_Buffer.h        |   20 +-
+  trunk/src/console/Classic_Emu.cxx      |   13 -
+  trunk/src/console/Classic_Emu.h        |   13 +
+  trunk/src/console/Data_Reader.cxx      |  117 ++++++------
+  trunk/src/console/Data_Reader.h        |   39 +---
+  trunk/src/console/Dual_Resampler.cxx   |    2 
+  trunk/src/console/Dual_Resampler.h     |    2 
+  trunk/src/console/Effects_Buffer.cxx   |    2 
+  trunk/src/console/Effects_Buffer.h     |    2 
+  trunk/src/console/Fir_Resampler.cxx    |   30 +--
+  trunk/src/console/Fir_Resampler.h      |   12 -
+  trunk/src/console/Gb_Cpu.cxx           |   19 +-
+  trunk/src/console/Gb_Cpu.h             |    2 
+  trunk/src/console/Gb_Oscs.cxx          |   51 +++--
+  trunk/src/console/Gbs_Emu.cxx          |   10 -
+  trunk/src/console/Gbs_Emu.h            |    4 
+  trunk/src/console/Gme_File.cxx         |   16 +
+  trunk/src/console/Gme_File.h           |   22 ++
+  trunk/src/console/Gym_Emu.cxx          |    9 
+  trunk/src/console/Gym_Emu.h            |    4 
+  trunk/src/console/Gzip_Reader.cxx      |  108 +++++++++++
+  trunk/src/console/Gzip_Reader.h        |   31 +++
+  trunk/src/console/Hes_Apu.cxx          |    2 
+  trunk/src/console/Hes_Cpu.cxx          |    5 
+  trunk/src/console/Hes_Cpu.h            |    2 
+  trunk/src/console/Hes_Emu.cxx          |   30 ++-
+  trunk/src/console/Hes_Emu.h            |    5 
+  trunk/src/console/Kss_Cpu.cxx          |   65 +++---
+  trunk/src/console/Kss_Cpu.h            |    2 
+  trunk/src/console/Kss_Emu.cxx          |   29 ++-
+  trunk/src/console/Kss_Emu.h            |    9 
+  trunk/src/console/Kss_Scc_Apu.cxx      |   14 -
+  trunk/src/console/Kss_Scc_Apu.h        |   11 -
+  trunk/src/console/M3u_Playlist.cxx     |   30 ++-
+  trunk/src/console/M3u_Playlist.h       |    2 
+  trunk/src/console/Makefile             |    5 
+  trunk/src/console/Music_Emu.cxx        |    4 
+  trunk/src/console/Music_Emu.h          |    3 
+  trunk/src/console/Nes_Cpu.cxx          |  162 ++++++++---------
+  trunk/src/console/Nes_Cpu.h            |    2 
+  trunk/src/console/Nes_Fme7_Apu.cxx     |   12 -
+  trunk/src/console/Nes_Fme7_Apu.h       |    3 
+  trunk/src/console/Nes_Oscs.cxx         |   16 +
+  trunk/src/console/Nes_Vrc6_Apu.cxx     |    1 
+  trunk/src/console/Nes_Vrc6_Apu.h       |    1 
+  trunk/src/console/Nsf_Emu.cxx          |   53 ++---
+  trunk/src/console/Nsf_Emu.h            |    4 
+  trunk/src/console/Nsfe_Emu.cxx         |   19 +-
+  trunk/src/console/Nsfe_Emu.h           |    2 
+  trunk/src/console/Sap_Apu.cxx          |    2 
+  trunk/src/console/Sap_Apu.h            |    2 
+  trunk/src/console/Sap_Cpu.cxx          |  159 ++++++++--------
+  trunk/src/console/Sap_Cpu.h            |    2 
+  trunk/src/console/Sap_Emu.cxx          |   20 +-
+  trunk/src/console/Sap_Emu.h            |    8 
+  trunk/src/console/Sms_Apu.cxx          |   20 +-
+  trunk/src/console/Snes_Spc.cxx         |   77 ++++----
+  trunk/src/console/Snes_Spc.h           |   10 -
+  trunk/src/console/Spc_Cpu.cxx          |  133 +++++++-------
+  trunk/src/console/Spc_Cpu.h            |    2 
+  trunk/src/console/Spc_Dsp.cxx          |    5 
+  trunk/src/console/Spc_Dsp.h            |   58 +++---
+  trunk/src/console/Spc_Emu.cxx          |   10 -
+  trunk/src/console/Spc_Emu.h            |    4 
+  trunk/src/console/Vfs_File.cxx         |    2 
+  trunk/src/console/Vfs_File.h           |    2 
+  trunk/src/console/Vgm_Emu.cxx          |   16 -
+  trunk/src/console/Vgm_Emu.h            |    4 
+  trunk/src/console/Vgm_Emu_Impl.cxx     |    2 
+  trunk/src/console/Vgm_Emu_Impl.h       |    2 
+  trunk/src/console/Ym2413_Emu.cxx       |    2 
+  trunk/src/console/Ym2413_Emu.h         |    2 
+  trunk/src/console/Ym2612_Emu.cxx       |   15 -
+  trunk/src/console/Ym2612_Emu.h         |    2 
+  trunk/src/console/Zlib_Inflater.cxx    |  175 ++++++++++++++++++
+  trunk/src/console/Zlib_Inflater.h      |   48 +++++
+  trunk/src/console/blargg_common.h      |    7 
+  trunk/src/console/blargg_config.h      |   14 -
+  trunk/src/console/blargg_endian.h      |    2 
+  trunk/src/console/gb_cpu_io.h          |    3 
+  trunk/src/console/gme.cxx              |  166 +++++++++++++----
+  trunk/src/console/gme.h                |  209 ++++++++++++----------
+  trunk/src/console/gme_design.txt       |    2 
+  trunk/src/console/gme_notes.txt        |    3 
+  trunk/src/console/gme_readme.txt       |    7 
+  trunk/src/console/nes_cpu_io.h         |    7 
+  trunk/src/console/readme.txt           |   27 --
+  trunk/src/console/sap_cpu_io.h         |    4 
+  96 files changed, 1767 insertions(+), 1079 deletions(-)
+
+
 2006-12-06 15:57:05 +0000  William Pitcock <nenolod@nenolod.net>
   revision [744]
   - fix fprovide.[cxx,h] -- they were the wrong revision
