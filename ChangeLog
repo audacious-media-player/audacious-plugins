@@ -1,3 +1,11 @@
+2006-12-09 03:33:49 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [754]
+  - turn debugging off by default
+  
+  trunk/src/scrobbler/settings.h |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2006-12-09 03:31:43 +0000  William Pitcock <nenolod@nenolod.net>
   revision [752]
   - Merge audacious-scrobbler III, new features include:
