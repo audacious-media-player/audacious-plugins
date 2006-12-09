@@ -48,8 +48,8 @@ static void saveconfig(GtkWidget *wid __attribute__((unused)), gpointer data)
 
         const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
         const char *pwd = gtk_entry_get_text(GTK_ENTRY(entry2));
-        const char *ge_uid = gtk_entry_get_text(GTK_ENTRY(entry1));
-        const char *ge_pwd = gtk_entry_get_text(GTK_ENTRY(entry2));
+        const char *ge_uid = gtk_entry_get_text(GTK_ENTRY(ge_entry1));
+        const char *ge_pwd = gtk_entry_get_text(GTK_ENTRY(ge_entry2));
 
         if ((cfgfile = bmp_cfg_db_open()))
 	{
