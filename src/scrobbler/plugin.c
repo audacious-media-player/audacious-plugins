@@ -30,6 +30,8 @@
 #include "configure.h"
 
 #define XS_CS xmms_scrobbler.xmms_session
+#define XS_SLEEP 1
+#define HS_SLEEP 10
 
 typedef struct submit_t
 {
@@ -43,9 +45,12 @@ static void *hs_thread(void *);
 static int sc_going, ge_going, ha_going;
 static GtkWidget *cfgdlg;
 
-static GThread *pt_scrobbler;
 static GMutex *m_scrobbler;
+static GThread *pt_scrobbler;
 static GThread *pt_handshake;
+
+static GMutex *hs_mutex, *xs_mutex;
+static GCond *hs_cond, *xs_cond;
 
 static GeneralPlugin xmms_scrobbler =
 {
@@ -67,6 +72,7 @@ static void init(void)
 	ConfigDb *cfgfile;
 	sc_going = 1;
 	ge_going = 1;
+	ha_going = 1;
 	GError **moo = NULL;
 	cfgdlg = create_cfgdlg();
 
@@ -125,7 +131,12 @@ static void init(void)
 	g_free(ha_password);
 
 	m_scrobbler = g_mutex_new();
-	if ((pt_scrobbler = g_thread_create(xs_thread, m_scrobbler, TRUE, moo)) == NULL)
+	hs_mutex = g_mutex_new();
+	xs_mutex = g_mutex_new();
+	hs_cond = g_cond_new();
+	xs_cond = g_cond_new();
+
+	if ((pt_scrobbler = g_thread_create(xs_thread, NULL, TRUE, moo)) == NULL)
 	{
 		pdebug(fmt_vastr("Error creating scrobbler thread: %s", moo), DEBUG);
 		sc_going = 0;
@@ -134,7 +145,7 @@ static void init(void)
 		return;
 	}
 
-	if ((pt_handshake = g_thread_create(hs_thread, m_scrobbler, TRUE, NULL)) == NULL)
+	if ((pt_handshake = g_thread_create(hs_thread, NULL, TRUE, moo)) == NULL)
 	{
 		pdebug(fmt_vastr("Error creating handshake thread: %s", moo), DEBUG);
 		sc_going = 0;
@@ -153,18 +164,33 @@ static void cleanup(void)
 
         prefswin_page_destroy(cfgdlg);
 
-	if (!sc_going && !ge_going)
+	if (!sc_going && !ge_going && ! ha_going)
 		return;
 	pdebug("about to lock mutex", DEBUG);
 	g_mutex_lock(m_scrobbler);
 	pdebug("locked mutex", DEBUG);
 	sc_going = 0;
 	ge_going = 0;
+	ha_going = 0;
 	g_mutex_unlock(m_scrobbler);
 	pdebug("joining threads", DEBUG);
+
+	/* wake up waiting threads */
+	pdebug("send signal to xs and hs", DEBUG);
+	g_cond_signal(xs_cond);
+	g_cond_signal(hs_cond);
+
+	pdebug("wait xs", DEBUG);
 	g_thread_join(pt_scrobbler);
 
+	pdebug("wait hs", DEBUG);
 	g_thread_join(pt_handshake);
+
+	g_cond_free(hs_cond);
+	g_cond_free(xs_cond);
+	g_mutex_free(hs_mutex);
+	g_mutex_free(xs_mutex);
+	g_mutex_free(m_scrobbler);
 
 	sc_cleaner();
 	gerpok_sc_cleaner();
@@ -421,7 +447,8 @@ static void *xs_thread(void *data __attribute__((unused)))
 {
 	int run = 1;
 	submit_t dosubmit;
-	
+	GTimeVal sleeptime;
+
 	while (run) {
 		/* Error catching */
 		if(sc_catch_error())
@@ -470,10 +497,16 @@ static void *xs_thread(void *data __attribute__((unused)))
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
 		}
+		g_get_current_time(&sleeptime);
+		sleeptime.tv_sec += XS_SLEEP;
+
 		g_mutex_lock(m_scrobbler);
 		run = (sc_going != 0 || ge_going != 0 || ha_going != 0);
 		g_mutex_unlock(m_scrobbler);
-		g_usleep(100000);
+
+		g_mutex_lock(xs_mutex);
+		g_cond_timed_wait(xs_cond, xs_mutex, &sleeptime);
+		g_mutex_unlock(xs_mutex);
 	}
 	pdebug("scrobbler thread: exiting", DEBUG);
 	g_thread_exit(NULL);
@@ -484,7 +517,8 @@ static void *xs_thread(void *data __attribute__((unused)))
 static void *hs_thread(void *data __attribute__((unused)))
 {
 	int run = 1;
-	
+	GTimeVal sleeptime;
+
 	while(run)
 	{
 		if(sc_idle(m_scrobbler))
@@ -492,7 +526,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);
 			sc_going = 0;
-			g_mutex_lock(m_scrobbler);
+			g_mutex_unlock(m_scrobbler);
 		}
 
 		if(gerpok_sc_idle(m_scrobbler))
@@ -500,7 +534,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);
 			ge_going = 0;
-			g_mutex_lock(m_scrobbler);
+			g_mutex_unlock(m_scrobbler);
 		}
 
 		if(hatena_sc_idle(m_scrobbler))
@@ -508,13 +542,21 @@ static void *hs_thread(void *data __attribute__((unused)))
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);
 			ha_going = 0;
-			g_mutex_lock(m_scrobbler);
+			g_mutex_unlock(m_scrobbler);
 		}
 
 		g_mutex_lock(m_scrobbler);
 		run = (sc_going != 0 || ge_going != 0 || ha_going != 0);
 		g_mutex_unlock(m_scrobbler);
-		g_usleep(1000000);
+
+		if(run) {
+			g_get_current_time(&sleeptime);
+			sleeptime.tv_sec += HS_SLEEP;
+
+			g_mutex_lock(hs_mutex);
+			g_cond_timed_wait(hs_cond, hs_mutex, &sleeptime);
+			g_mutex_unlock(hs_mutex);
+		}
 	}
 	pdebug("handshake thread: exiting", DEBUG);
 	g_thread_exit(NULL);
