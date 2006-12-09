@@ -527,6 +527,14 @@ void alsa_set_volume(int l, int r)
 					    SND_MIXER_SCHN_FRONT_LEFT, l);
 	snd_mixer_selem_set_playback_volume(pcm_element,
 					    SND_MIXER_SCHN_FRONT_RIGHT, r);
+
+	if (snd_mixer_selem_has_playback_switch(pcm_element))
+	{
+		snd_mixer_selem_set_playback_switch(pcm_element,
+			SND_MIXER_SCHN_FRONT_LEFT, l != 0);
+		snd_mixer_selem_set_playback_switch(pcm_element,
+			SND_MIXER_SCHN_FRONT_RIGHT, r != 0);
+	}
 }
 
 
