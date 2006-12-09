@@ -1,3 +1,23 @@
+2006-12-09 03:31:43 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [752]
+  - Merge audacious-scrobbler III, new features include:
+  + Gerpok support
+  + Better queue management
+  
+  trunk/src/scrobbler/Makefile         |    2 
+  trunk/src/scrobbler/config.h         |   14 
+  trunk/src/scrobbler/configure.c      |   76 ++
+  trunk/src/scrobbler/gerpok.c         |  936 +++++++++++++++++++++++++++++++++++
+  trunk/src/scrobbler/gerpok.h         |   13 
+  trunk/src/scrobbler/gtkstuff.c       |    1 
+  trunk/src/scrobbler/queue.c          |  159 -----
+  trunk/src/scrobbler/queue.h          |   30 -
+  trunk/src/scrobbler/scrobbler.c      |  177 ++++++
+  trunk/src/scrobbler/settings.h       |   14 
+  trunk/src/scrobbler/xmms_scrobbler.c |   85 ++-
+  11 files changed, 1280 insertions(+), 227 deletions(-)
+
+
 2006-12-09 01:52:54 +0000  William Pitcock <nenolod@nenolod.net>
   revision [750]
   - mute the soundcard if volume is 0.
