@@ -1,3 +1,5 @@
+#include "settings.h"
+
 #include <pthread.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -9,12 +11,11 @@
 #include "md5.h"
 #include "scrobbler.h"
 #include "config.h"
-#include "settings.h"
 #include <glib.h>
 
 #include <audacious/titlestring.h>
 
-#define SCROBBLER_HS_URL "http://post.audioscrobbler.com"
+#define SCROBBLER_HS_URL "http://post.gerpok.com"
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800
 #define SCROBBLER_SB_WAIT 10
@@ -25,25 +26,25 @@
 
 /* Scrobblerbackend for xmms plugin, first draft */
 
-static int	sc_hs_status,
-		sc_hs_timeout,
-		sc_hs_errors,
-		sc_sb_errors,
-		sc_bad_users,
-		sc_submit_interval,
-		sc_submit_timeout,
-		sc_srv_res_size,
-		sc_giveup,
-		sc_major_error_present;
+static int	gerpok_sc_hs_status,
+		gerpok_sc_hs_timeout,
+		gerpok_sc_hs_errors,
+		gerpok_sc_sb_errors,
+		gerpok_sc_bad_users,
+		gerpok_sc_submit_interval,
+		gerpok_sc_submit_timeout,
+		gerpok_sc_srv_res_size,
+		gerpok_sc_giveup,
+		gerpok_sc_major_error_present;
 
-static char 	*sc_submit_url,
-		*sc_username,
-		*sc_password,
-		*sc_challenge_hash,
-		sc_response_hash[33],
-		*sc_srv_res,
-		sc_curl_errbuf[CURL_ERROR_SIZE],
-		*sc_major_error;
+static char 	*gerpok_sc_submit_url,
+		*gerpok_sc_username,
+		*gerpok_sc_password,
+		*gerpok_sc_challenge_hash,
+		gerpok_sc_response_hash[33],
+		*gerpok_sc_srv_res,
+		gerpok_sc_curl_errbuf[CURL_ERROR_SIZE],
+		*gerpok_sc_major_error;
 
 static void dump_queue();
 
@@ -222,87 +223,87 @@ static int q_len(void)
 
 /* Error functions */
 
-static void sc_throw_error(char *errortxt)
+static void gerpok_sc_throw_error(char *errortxt)
 {
-	sc_major_error_present = 1;
-	if(sc_major_error == NULL)
-		sc_major_error = strdup(errortxt);
+	gerpok_sc_major_error_present = 1;
+	if(gerpok_sc_major_error == NULL)
+		gerpok_sc_major_error = strdup(errortxt);
 
 	return;
 }
 
-int sc_catch_error(void)
+int gerpok_sc_catch_error(void)
 {
-	return sc_major_error_present;
+	return gerpok_sc_major_error_present;
 }
 
-char *sc_fetch_error(void)
+char *gerpok_sc_fetch_error(void)
 {
-	return sc_major_error;
+	return gerpok_sc_major_error;
 }
 
-void sc_clear_error(void)
+void gerpok_sc_clear_error(void)
 {
-	sc_major_error_present = 0;
-	if(sc_major_error != NULL)
-		free(sc_major_error);
-	sc_major_error = NULL;
+	gerpok_sc_major_error_present = 0;
+	if(gerpok_sc_major_error != NULL)
+		free(gerpok_sc_major_error);
+	gerpok_sc_major_error = NULL;
 
 	return;
 }
 
-static size_t sc_store_res(void *ptr, size_t size,
+static size_t gerpok_sc_store_res(void *ptr, size_t size,
 		size_t nmemb,
 		void *stream __attribute__((unused)))
 {
 	int len = size * nmemb;
 
-	sc_srv_res = realloc(sc_srv_res, sc_srv_res_size + len + 1);
-	memcpy(sc_srv_res + sc_srv_res_size,
+	gerpok_sc_srv_res = realloc(gerpok_sc_srv_res, gerpok_sc_srv_res_size + len + 1);
+	memcpy(gerpok_sc_srv_res + gerpok_sc_srv_res_size,
 			ptr, len);
-	sc_srv_res_size += len;
+	gerpok_sc_srv_res_size += len;
 	return len;
 }
 
-static void sc_free_res(void)
+static void gerpok_sc_free_res(void)
 {
-	if(sc_srv_res != NULL)
-		free(sc_srv_res);
-	sc_srv_res = NULL;
-	sc_srv_res_size = 0;
+	if(gerpok_sc_srv_res != NULL)
+		free(gerpok_sc_srv_res);
+	gerpok_sc_srv_res = NULL;
+	gerpok_sc_srv_res_size = 0;
 }
 
-static int sc_parse_hs_res(void)
+static int gerpok_sc_parse_hs_res(void)
 {
 	char *interval;
 
-	if (!sc_srv_res_size) {
+	if (!gerpok_sc_srv_res_size) {
 		pdebug("No reply from server", DEBUG);
 		return -1;
 	}
-	*(sc_srv_res + sc_srv_res_size) = 0;
+	*(gerpok_sc_srv_res + gerpok_sc_srv_res_size) = 0;
 
-	if (!strncmp(sc_srv_res, "FAILED ", 7)) {
-		interval = strstr(sc_srv_res, "INTERVAL");
+	if (!strncmp(gerpok_sc_srv_res, "FAILED ", 7)) {
+		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if(!interval) {
 			pdebug("missing INTERVAL", DEBUG);
 		}
 		else
 		{
 			*(interval - 1) = 0;
-			sc_submit_interval = strtol(interval + 8, NULL, 10);
+			gerpok_sc_submit_interval = strtol(interval + 8, NULL, 10);
 		}
 
 		/* Throwing a major error, just in case */
-		/* sc_throw_error(fmt_vastr("%s", sc_srv_res));
-		   sc_hs_errors++; */
-		pdebug(fmt_vastr("error: %s", sc_srv_res), DEBUG);
+		/* gerpok_sc_throw_error(fmt_vastr("%s", gerpok_sc_srv_res));
+		   gerpok_sc_hs_errors++; */
+		pdebug(fmt_vastr("error: %s", gerpok_sc_srv_res), DEBUG);
 
 		return -1;
 	}
 
-	if (!strncmp(sc_srv_res, "UPDATE ", 7)) {
-		interval = strstr(sc_srv_res, "INTERVAL");
+	if (!strncmp(gerpok_sc_srv_res, "UPDATE ", 7)) {
+		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if(!interval)
 		{
 			pdebug("missing INTERVAL", DEBUG);
@@ -310,32 +311,32 @@ static int sc_parse_hs_res(void)
 		else
 		{
 			*(interval - 1) = 0;
-			sc_submit_interval = strtol(interval + 8, NULL, 10);
+			gerpok_sc_submit_interval = strtol(interval + 8, NULL, 10);
 		}
 
-		sc_submit_url = strchr(strchr(sc_srv_res, '\n') + 1, '\n') + 1;
-		*(sc_submit_url - 1) = 0;
-		sc_submit_url = strdup(sc_submit_url);
-		sc_challenge_hash = strchr(sc_srv_res, '\n') + 1;
-		*(sc_challenge_hash - 1) = 0;
-		sc_challenge_hash = strdup(sc_challenge_hash);
+		gerpok_sc_submit_url = strchr(strchr(gerpok_sc_srv_res, '\n') + 1, '\n') + 1;
+		*(gerpok_sc_submit_url - 1) = 0;
+		gerpok_sc_submit_url = strdup(gerpok_sc_submit_url);
+		gerpok_sc_challenge_hash = strchr(gerpok_sc_srv_res, '\n') + 1;
+		*(gerpok_sc_challenge_hash - 1) = 0;
+		gerpok_sc_challenge_hash = strdup(gerpok_sc_challenge_hash);
 
 		/* Throwing major error. Need to alert client to update. */
-		sc_throw_error(fmt_vastr("Please update Audacious.\n"
+		gerpok_sc_throw_error(fmt_vastr("Please update Audacious.\n"
 			"Update available at: http://audacious-media-player.org"));
-		pdebug(fmt_vastr("update client: %s", sc_srv_res + 7), DEBUG);
+		pdebug(fmt_vastr("update client: %s", gerpok_sc_srv_res + 7), DEBUG);
 
 		/*
 		 * Russ isn't clear on whether we can submit with a not-updated
 		 * client.  Neither is RJ.  I use what we did before.
 		 */
-		sc_giveup = -1;
+		gerpok_sc_giveup = -1;
 		return -1;
 	}
-	if (!strncmp(sc_srv_res, "UPTODATE\n", 9)) {
-		sc_bad_users = 0;
+	if (!strncmp(gerpok_sc_srv_res, "UPTODATE\n", 9)) {
+		gerpok_sc_bad_users = 0;
 
-		interval = strstr(sc_srv_res, "INTERVAL");
+		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if (!interval) {
 			pdebug("missing INTERVAL", DEBUG);
 			/*
@@ -348,25 +349,25 @@ static int sc_parse_hs_res(void)
 		else
 		{
 			*(interval - 1) = 0;
-			sc_submit_interval = strtol(interval + 8, NULL, 10);
+			gerpok_sc_submit_interval = strtol(interval + 8, NULL, 10);
 		}
 
-		sc_submit_url = strchr(strchr(sc_srv_res, '\n') + 1, '\n') + 1;
-		*(sc_submit_url - 1) = 0;
-		sc_submit_url = strdup(sc_submit_url);
-		sc_challenge_hash = strchr(sc_srv_res, '\n') + 1;
-		*(sc_challenge_hash - 1) = 0;
-		sc_challenge_hash = strdup(sc_challenge_hash);
+		gerpok_sc_submit_url = strchr(strchr(gerpok_sc_srv_res, '\n') + 1, '\n') + 1;
+		*(gerpok_sc_submit_url - 1) = 0;
+		gerpok_sc_submit_url = strdup(gerpok_sc_submit_url);
+		gerpok_sc_challenge_hash = strchr(gerpok_sc_srv_res, '\n') + 1;
+		*(gerpok_sc_challenge_hash - 1) = 0;
+		gerpok_sc_challenge_hash = strdup(gerpok_sc_challenge_hash);
 
 		return 0;
 	}
-	if(!strncmp(sc_srv_res, "BADUSER", 7)) {
+	if(!strncmp(gerpok_sc_srv_res, "BADUSER", 7)) {
 		/* Throwing major error. */
-		sc_throw_error("Incorrect username/password.\n"
+		gerpok_sc_throw_error("Incorrect username/password.\n"
 				"Please fix in configuration.");
 		pdebug("incorrect username/password", DEBUG);
 
-		interval = strstr(sc_srv_res, "INTERVAL");
+		interval = strstr(gerpok_sc_srv_res, "INTERVAL");
 		if(!interval)
 		{
 			pdebug("missing INTERVAL", DEBUG);
@@ -374,23 +375,23 @@ static int sc_parse_hs_res(void)
 		else
 		{
 			*(interval - 1) = 0;
-			sc_submit_interval = strtol(interval + 8, NULL, 10);
+			gerpok_sc_submit_interval = strtol(interval + 8, NULL, 10);
 		}
 
 		return -1;
 	}
 
-	pdebug(fmt_vastr("unknown server-reply '%s'", sc_srv_res), DEBUG);
+	pdebug(fmt_vastr("unknown server-reply '%s'", gerpok_sc_srv_res), DEBUG);
 	return -1;
 }
 
 static void hexify(char *pass, int len)
 {
-	char *bp = sc_response_hash;
+	char *bp = gerpok_sc_response_hash;
 	char hexchars[] = "0123456789abcdef";
 	int i;
 
-	memset(sc_response_hash, 0, sizeof(sc_response_hash));
+	memset(gerpok_sc_response_hash, 0, sizeof(gerpok_sc_response_hash));
 	
 	for(i = 0; i < len; i++) {
 		*(bp++) = hexchars[(pass[i] >> 4) & 0x0f];
@@ -401,7 +402,7 @@ static void hexify(char *pass, int len)
 	return;
 }
 
-static int sc_handshake(void)
+static int gerpok_sc_handshake(void)
 {
 	int status;
 	char buf[4096];
@@ -409,93 +410,93 @@ static int sc_handshake(void)
 
 	snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s",
 			SCROBBLER_HS_URL, SCROBBLER_VERSION,
-			SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username);
+			SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, gerpok_sc_username);
 
 	curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
 	curl_easy_setopt(curl, CURLOPT_URL, buf);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, 
-			sc_store_res);
-	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
-	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
+			gerpok_sc_store_res);
+	memset(gerpok_sc_curl_errbuf, 0, sizeof(gerpok_sc_curl_errbuf));
+	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, gerpok_sc_curl_errbuf);
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 	status = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 
-	sc_hs_timeout = time(NULL) + SCROBBLER_HS_WAIT;
+	gerpok_sc_hs_timeout = time(NULL) + SCROBBLER_HS_WAIT;
 
 	if (status) {
-		pdebug(sc_curl_errbuf, DEBUG);
-		sc_hs_errors++;
-		sc_free_res();
+		pdebug(gerpok_sc_curl_errbuf, DEBUG);
+		gerpok_sc_hs_errors++;
+		gerpok_sc_free_res();
 		return -1;
 	}
 
-	if (sc_parse_hs_res()) {
-		sc_hs_errors++;
-		sc_free_res();
+	if (gerpok_sc_parse_hs_res()) {
+		gerpok_sc_hs_errors++;
+		gerpok_sc_free_res();
 		return -1;
 	}
 
-	if (sc_challenge_hash != NULL) {
+	if (gerpok_sc_challenge_hash != NULL) {
 		md5_state_t md5state;
 		unsigned char md5pword[16];
 		
 		md5_init(&md5state);
-		/*pdebug(fmt_vastr("Pass Hash: %s", sc_password), DEBUG);*/
-		md5_append(&md5state, (unsigned const char *)sc_password,
-				strlen(sc_password));
-		/*pdebug(fmt_vastr("Challenge Hash: %s", sc_challenge_hash), DEBUG);*/
-		md5_append(&md5state, (unsigned const char *)sc_challenge_hash,
-				strlen(sc_challenge_hash));
+		/*pdebug(fmt_vastr("Pass Hash: %s", gerpok_sc_password), DEBUG);*/
+		md5_append(&md5state, (unsigned const char *)gerpok_sc_password,
+				strlen(gerpok_sc_password));
+		/*pdebug(fmt_vastr("Challenge Hash: %s", gerpok_sc_challenge_hash), DEBUG);*/
+		md5_append(&md5state, (unsigned const char *)gerpok_sc_challenge_hash,
+				strlen(gerpok_sc_challenge_hash));
 		md5_finish(&md5state, md5pword);
 		hexify((char*)md5pword, sizeof(md5pword));
-		/*pdebug(fmt_vastr("Response Hash: %s", sc_response_hash), DEBUG);*/
+		/*pdebug(fmt_vastr("Response Hash: %s", gerpok_sc_response_hash), DEBUG);*/
 	}
 
-	sc_hs_errors = 0;
-	sc_hs_status = 1;
+	gerpok_sc_hs_errors = 0;
+	gerpok_sc_hs_status = 1;
 
-	sc_free_res();
+	gerpok_sc_free_res();
 
 	pdebug(fmt_vastr("submiturl: %s - interval: %d", 
-				sc_submit_url, sc_submit_interval), DEBUG);
+				gerpok_sc_submit_url, gerpok_sc_submit_interval), DEBUG);
 
 	return 0;
 }
 
-static int sc_parse_sb_res(void)
+static int gerpok_sc_parse_sb_res(void)
 {
 	char *ch, *ch2;
 
-	if (!sc_srv_res_size) {
+	if (!gerpok_sc_srv_res_size) {
 		pdebug("No response from server", DEBUG);
 		return -1;
 	}
-	*(sc_srv_res + sc_srv_res_size) = 0;
+	*(gerpok_sc_srv_res + gerpok_sc_srv_res_size) = 0;
 
-	if (!strncmp(sc_srv_res, "OK", 2)) {
-		if ((ch = strstr(sc_srv_res, "INTERVAL"))) {
-			sc_submit_interval = strtol(ch + 8, NULL, 10);
+	if (!strncmp(gerpok_sc_srv_res, "OK", 2)) {
+		if ((ch = strstr(gerpok_sc_srv_res, "INTERVAL"))) {
+			gerpok_sc_submit_interval = strtol(ch + 8, NULL, 10);
 			pdebug(fmt_vastr("got new interval: %d",
-						sc_submit_interval), DEBUG);
+						gerpok_sc_submit_interval), DEBUG);
 		}
 
-		pdebug(fmt_vastr("submission ok: %s", sc_srv_res), DEBUG);
+		pdebug(fmt_vastr("submission ok: %s", gerpok_sc_srv_res), DEBUG);
 
 		return 0;
 	}
 
-	if (!strncmp(sc_srv_res, "BADAUTH", 7)) {
-		if ((ch = strstr(sc_srv_res, "INTERVAL"))) {
-			sc_submit_interval = strtol(ch + 8, NULL, 10);
+	if (!strncmp(gerpok_sc_srv_res, "BADAUTH", 7)) {
+		if ((ch = strstr(gerpok_sc_srv_res, "INTERVAL"))) {
+			gerpok_sc_submit_interval = strtol(ch + 8, NULL, 10);
 			pdebug(fmt_vastr("got new interval: %d",
-						sc_submit_interval), DEBUG);
+						gerpok_sc_submit_interval), DEBUG);
 		}
 
 		pdebug("incorrect username/password", DEBUG);
 
-		sc_giveup = 0;
+		gerpok_sc_giveup = 0;
 
 		/*
 		 * We obviously aren't authenticated.  The server might have
@@ -503,45 +504,45 @@ static int sc_parse_sb_res(void)
 		 * re-handshaking...  This might not be proper.
 		 * (we don't give up)
 		 */
-		sc_hs_status = 0;
+		gerpok_sc_hs_status = 0;
 
-		if(sc_challenge_hash != NULL)
-			free(sc_challenge_hash);
-		if(sc_submit_url != NULL)
-			free(sc_submit_url);
+		if(gerpok_sc_challenge_hash != NULL)
+			free(gerpok_sc_challenge_hash);
+		if(gerpok_sc_submit_url != NULL)
+			free(gerpok_sc_submit_url);
 
-		sc_challenge_hash = sc_submit_url = NULL;
-		sc_bad_users++;
+		gerpok_sc_challenge_hash = gerpok_sc_submit_url = NULL;
+		gerpok_sc_bad_users++;
 
-		if(sc_bad_users > 2)
+		if(gerpok_sc_bad_users > 2)
 		{
 			pdebug("3 BADAUTH returns on submission. Halting "
 				"submissions until login fixed.", DEBUG)
-			sc_throw_error("Incorrect username/password.\n"
+			gerpok_sc_throw_error("Incorrect username/password.\n"
 				"Please fix in configuration.");
 		}
 
 		return -1;
 	}
 
-	if (!strncmp(sc_srv_res, "FAILED", 6))  {
-		if ((ch = strstr(sc_srv_res, "INTERVAL"))) {
-			sc_submit_interval = strtol(ch + 8, NULL, 10);
+	if (!strncmp(gerpok_sc_srv_res, "FAILED", 6))  {
+		if ((ch = strstr(gerpok_sc_srv_res, "INTERVAL"))) {
+			gerpok_sc_submit_interval = strtol(ch + 8, NULL, 10);
 			pdebug(fmt_vastr("got new interval: %d",
-						sc_submit_interval), DEBUG);
+						gerpok_sc_submit_interval), DEBUG);
 		}
 
 		/* This could be important. (Such as FAILED - Get new plugin) */
-		/*sc_throw_error(fmt_vastr("%s", sc_srv_res));*/
+		/*gerpok_sc_throw_error(fmt_vastr("%s", gerpok_sc_srv_res));*/
 
-		pdebug(sc_srv_res, DEBUG);
+		pdebug(gerpok_sc_srv_res, DEBUG);
 
 		return -1;
 	}
 
-	if (!strncmp(sc_srv_res, "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">", 50)) {
-		ch = strstr(sc_srv_res, "<TITLE>") + 7;
-		ch2 = strstr(sc_srv_res, "</TITLE>");
+	if (!strncmp(gerpok_sc_srv_res, "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">", 50)) {
+		ch = strstr(gerpok_sc_srv_res, "<TITLE>") + 7;
+		ch2 = strstr(gerpok_sc_srv_res, "</TITLE>");
 		*ch2 = '\0';
 
 		pdebug(fmt_vastr("HTTP Error (%d): '%s'",
@@ -551,12 +552,12 @@ static int sc_parse_sb_res(void)
 		return -1;
 	}
 
-	pdebug(fmt_vastr("unknown server-reply %s", sc_srv_res), DEBUG);
+	pdebug(fmt_vastr("unknown server-reply %s", gerpok_sc_srv_res), DEBUG);
 
 	return -1;
 }
 
-static gchar *sc_itemtag(char c, int n, char *str)
+static gchar *gerpok_sc_itemtag(char c, int n, char *str)
 {
     static char buf[SCROBBLER_SB_MAXLEN]; 
     snprintf(buf, SCROBBLER_SB_MAXLEN, "&%c[%d]=%s", c, n, str);
@@ -567,7 +568,7 @@ static gchar *sc_itemtag(char c, int n, char *str)
 curl_formadd(f, l, CURLFORM_COPYNAME, n, \
 		CURLFORM_PTRCONTENTS, v, CURLFORM_END)
 
-static int sc_generateentry(GString *submission)
+static int gerpok_sc_generateentry(GString *submission)
 {
 	int i;
 	item_t *item;
@@ -582,12 +583,12 @@ static int sc_generateentry(GString *submission)
 		if (!item)
 			return i;
 
-                g_string_append(submission,sc_itemtag('a',i,I_ARTIST(item)));
-                g_string_append(submission,sc_itemtag('t',i,I_TITLE(item)));
-                g_string_append(submission,sc_itemtag('l',i,I_LEN(item)));
-                g_string_append(submission,sc_itemtag('i',i,I_TIME(item)));
-                g_string_append(submission,sc_itemtag('m',i,I_MB(item)));
-                g_string_append(submission,sc_itemtag('b',i,I_ALBUM(item)));
+                g_string_append(submission,gerpok_sc_itemtag('a',i,I_ARTIST(item)));
+                g_string_append(submission,gerpok_sc_itemtag('t',i,I_TITLE(item)));
+                g_string_append(submission,gerpok_sc_itemtag('l',i,I_LEN(item)));
+                g_string_append(submission,gerpok_sc_itemtag('i',i,I_TIME(item)));
+                g_string_append(submission,gerpok_sc_itemtag('m',i,I_MB(item)));
+                g_string_append(submission,gerpok_sc_itemtag('b',i,I_ALBUM(item)));
 
 		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
 				i, I_ARTIST(item),
@@ -604,7 +605,7 @@ static int sc_generateentry(GString *submission)
 	return i;
 }
 
-static int sc_submitentry(gchar *entry)
+static int gerpok_sc_submitentry(gchar *entry)
 {
 	CURL *curl;
 	/* struct HttpPost *post = NULL , *last = NULL; */
@@ -613,26 +614,26 @@ static int sc_submitentry(gchar *entry)
 
 	curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
-	curl_easy_setopt(curl, CURLOPT_URL, sc_submit_url);
+	curl_easy_setopt(curl, CURLOPT_URL, gerpok_sc_submit_url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
-			sc_store_res);
+			gerpok_sc_store_res);
 	curl_easy_setopt(curl, CURLOPT_USERAGENT, USER_AGENT);
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 	/*cfa(&post, &last, "debug", "failed");*/
 
-	/*pdebug(fmt_vastr("Username: %s", sc_username), DEBUG);*/
+	/*pdebug(fmt_vastr("Username: %s", gerpok_sc_username), DEBUG);*/
         submission = g_string_new("u=");
-        g_string_append(submission,(gchar *)sc_username);
+        g_string_append(submission,(gchar *)gerpok_sc_username);
 
-	/*pdebug(fmt_vastr("Response Hash: %s", sc_response_hash), DEBUG);*/
+	/*pdebug(fmt_vastr("Response Hash: %s", gerpok_sc_response_hash), DEBUG);*/
         g_string_append(submission,"&s=");
-        g_string_append(submission,(gchar *)sc_response_hash);
+        g_string_append(submission,(gchar *)gerpok_sc_response_hash);
 
 	g_string_append(submission, entry);
 
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *)submission->str);
-	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
-	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
+	memset(gerpok_sc_curl_errbuf, 0, sizeof(gerpok_sc_curl_errbuf));
+	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, gerpok_sc_curl_errbuf);
 
 	/*
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
@@ -646,36 +647,36 @@ static int sc_submitentry(gchar *entry)
         g_string_free(submission,TRUE);
 
 	if (status) {
-		pdebug(sc_curl_errbuf, DEBUG);
-		sc_sb_errors++;
-		sc_free_res();
+		pdebug(gerpok_sc_curl_errbuf, DEBUG);
+		gerpok_sc_sb_errors++;
+		gerpok_sc_free_res();
 		return -1;
 	}
 
-	if (sc_parse_sb_res()) {
-		sc_sb_errors++;
-		sc_free_res();
+	if (gerpok_sc_parse_sb_res()) {
+		gerpok_sc_sb_errors++;
+		gerpok_sc_free_res();
 		pdebug(fmt_vastr("Retrying in %d secs, %d elements in queue",
-					sc_submit_interval, q_len()), DEBUG);
+					gerpok_sc_submit_interval, q_len()), DEBUG);
 		return -1;
 	}
-	sc_free_res();
+	gerpok_sc_free_res();
 	return 0;
 }
 
-static void sc_handlequeue(GMutex *mutex)
+static void gerpok_sc_handlequeue(GMutex *mutex)
 {
 	GString *submitentry;
 	int nsubmit;
 	int wait;
 
-	if(sc_submit_timeout < time(NULL) && sc_bad_users < 3)
+	if(gerpok_sc_submit_timeout < time(NULL) && gerpok_sc_bad_users < 3)
 	{
 		submitentry = g_string_new("");
 
 		g_mutex_lock(mutex);
 
-		nsubmit = sc_generateentry(submitentry);
+		nsubmit = gerpok_sc_generateentry(submitentry);
 
 		g_mutex_unlock(mutex);
 
@@ -684,7 +685,7 @@ static void sc_handlequeue(GMutex *mutex)
 			pdebug(fmt_vastr("Number submitting: %d", nsubmit), DEBUG);
 			pdebug(fmt_vastr("Submission: %s", submitentry->str), DEBUG);
 
-			if(!sc_submitentry(submitentry->str))
+			if(!gerpok_sc_submitentry(submitentry->str))
 			{
 				g_mutex_lock(mutex);
 
@@ -702,20 +703,20 @@ static void sc_handlequeue(GMutex *mutex)
 
 				g_mutex_unlock(mutex);
 
-				sc_sb_errors = 0;
+				gerpok_sc_sb_errors = 0;
 			}
-			if(sc_sb_errors)
+			if(gerpok_sc_sb_errors)
 			{
-				if(sc_sb_errors < 5)
+				if(gerpok_sc_sb_errors < 5)
 					/* Retry after 1 min */
 					wait = 60;
 				else
-					wait = /* sc_submit_interval + */
-						( ((sc_sb_errors - 5) < 7) ?
-						(60 << (sc_sb_errors-5)) :
+					wait = /* gerpok_sc_submit_interval + */
+						( ((gerpok_sc_sb_errors - 5) < 7) ?
+						(60 << (gerpok_sc_sb_errors-5)) :
 						7200 );
 				
-				sc_submit_timeout = time(NULL) + wait;
+				gerpok_sc_submit_timeout = time(NULL) + wait;
 
 				pdebug(fmt_vastr("Error while submitting. "
 					"Retrying after %d seconds.", wait),
@@ -736,7 +737,7 @@ static void read_cache(void)
 
 	cachesize = written = 0;
 
-	snprintf(buf, sizeof(buf), "%s/.audacious/scrobblerqueue.txt", g_get_home_dir());
+	snprintf(buf, sizeof(buf), "%s/.audacious/gerpokqueue.txt", g_get_home_dir());
 
 	if (!(fd = fopen(buf, "r")))
 		return;
@@ -820,7 +821,7 @@ static void dump_queue(void)
 		return;
 	}
 
-	snprintf(buf, sizeof(buf), "%s/.audacious/scrobblerqueue.txt", home);
+	snprintf(buf, sizeof(buf), "%s/.audacious/gerpokqueue.txt", home);
 
 	if (!(fd = fopen(buf, "w")))
 	{
@@ -847,46 +848,46 @@ static void dump_queue(void)
 
 /* This was made public */
 
-void sc_cleaner(void)
+void gerpok_sc_cleaner(void)
 {
-	if(sc_submit_url != NULL)
-		free(sc_submit_url);
-	if(sc_username != NULL)
-		free(sc_username);
-	if(sc_password != NULL)
-		free(sc_password);
-	if(sc_challenge_hash != NULL)
-		free(sc_challenge_hash);
-	if(sc_srv_res != NULL)
-		free(sc_srv_res);
-	if(sc_major_error != NULL)
-		free(sc_major_error);
+	if(gerpok_sc_submit_url != NULL)
+		free(gerpok_sc_submit_url);
+	if(gerpok_sc_username != NULL)
+		free(gerpok_sc_username);
+	if(gerpok_sc_password != NULL)
+		free(gerpok_sc_password);
+	if(gerpok_sc_challenge_hash != NULL)
+		free(gerpok_sc_challenge_hash);
+	if(gerpok_sc_srv_res != NULL)
+		free(gerpok_sc_srv_res);
+	if(gerpok_sc_major_error != NULL)
+		free(gerpok_sc_major_error);
 	dump_queue();
 	q_free();
 	pdebug("scrobbler shutting down", DEBUG);
 }
 
-static void sc_checkhandshake(void)
+static void gerpok_sc_checkhandshake(void)
 {
 	int wait;
 
-	if (sc_hs_status)
+	if (gerpok_sc_hs_status)
 		return;
-	if (sc_hs_timeout < time(NULL))
+	if (gerpok_sc_hs_timeout < time(NULL))
 	{
-		sc_handshake();
+		gerpok_sc_handshake();
 
-		if(sc_hs_errors)
+		if(gerpok_sc_hs_errors)
 		{
-			if(sc_hs_errors < 5)
+			if(gerpok_sc_hs_errors < 5)
 				/* Retry after 60 seconds */
 				wait = 60;
 			else
-				wait = /* sc_submit_interval + */
-					( ((sc_hs_errors - 5) < 7) ?
-					(60 << (sc_hs_errors-5)) :
+				wait = /* gerpok_sc_submit_interval + */
+					( ((gerpok_sc_hs_errors - 5) < 7) ?
+					(60 << (gerpok_sc_hs_errors-5)) :
 					7200 );
-			sc_hs_timeout = time(NULL) + wait;
+			gerpok_sc_hs_timeout = time(NULL) + wait;
 			pdebug(fmt_vastr("Error while handshaking. Retrying "
 				"after %d seconds.", wait), DEBUG);
 		}
@@ -897,22 +898,22 @@ static void sc_checkhandshake(void)
 
 /* Called at session startup*/
 
-void sc_init(char *uname, char *pwd)
+void gerpok_sc_init(char *uname, char *pwd)
 {
-	sc_hs_status = sc_hs_timeout = sc_hs_errors = sc_submit_timeout =
-		sc_srv_res_size = sc_giveup = sc_major_error_present =
-		sc_bad_users = sc_sb_errors = 0;
-	sc_submit_interval = 100;
+	gerpok_sc_hs_status = gerpok_sc_hs_timeout = gerpok_sc_hs_errors = gerpok_sc_submit_timeout =
+		gerpok_sc_srv_res_size = gerpok_sc_giveup = gerpok_sc_major_error_present =
+		gerpok_sc_bad_users = gerpok_sc_sb_errors = 0;
+	gerpok_sc_submit_interval = 100;
 
-	sc_submit_url = sc_username = sc_password = sc_srv_res =
-		sc_challenge_hash = sc_major_error = NULL;
-	sc_username = strdup(uname);
-	sc_password = strdup(pwd);
+	gerpok_sc_submit_url = gerpok_sc_username = gerpok_sc_password = gerpok_sc_srv_res =
+		gerpok_sc_challenge_hash = gerpok_sc_major_error = NULL;
+	gerpok_sc_username = strdup(uname);
+	gerpok_sc_password = strdup(pwd);
 	read_cache();
 	pdebug("scrobbler starting up", DEBUG);
 }
 
-void sc_addentry(GMutex *mutex, TitleInput *tuple, int len)
+void gerpok_sc_addentry(GMutex *mutex, TitleInput *tuple, int len)
 {
 	g_mutex_lock(mutex);
 	q_put(tuple, len);
@@ -925,11 +926,11 @@ void sc_addentry(GMutex *mutex, TitleInput *tuple, int len)
 }
 
 /* Call periodically from the plugin */
-int sc_idle(GMutex *mutex)
+int gerpok_sc_idle(GMutex *mutex)
 {
-	sc_checkhandshake();
-	if (sc_hs_status)
-		sc_handlequeue(mutex);
+	gerpok_sc_checkhandshake();
+	if (gerpok_sc_hs_status)
+		gerpok_sc_handlequeue(mutex);
 
-	return sc_giveup;
+	return gerpok_sc_giveup;
 }

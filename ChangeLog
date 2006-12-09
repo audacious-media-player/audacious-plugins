@@ -1,3 +1,11 @@
+2006-12-09 01:52:54 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [750]
+  - mute the soundcard if volume is 0.
+  
+  trunk/src/alsa/audio.c |    8 ++++++++
+  1 file changed, 8 insertions(+)
+
+
 2006-12-08 11:27:31 +0000  William Pitcock <nenolod@nenolod.net>
   revision [748]
   - port from fmemopen() to vfs_buffer_new_from_string().

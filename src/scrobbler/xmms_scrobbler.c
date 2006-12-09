@@ -1,3 +1,4 @@
+#include "settings.h"
 #include "config.h"
 
 #include <glib.h>
@@ -21,6 +22,7 @@
 #include <sys/time.h>
 
 #include "scrobbler.h"
+#include "gerpok.h"
 #include "gtkstuff.h"
 #include "config.h"
 #include "fmt.h"
@@ -37,7 +39,7 @@ static void init(void);
 static void cleanup(void);
 static void *xs_thread(void *);
 static void *hs_thread(void *);
-static int going;
+static int sc_going, ge_going;
 static GtkWidget *cfgdlg;
 
 static GThread *pt_scrobbler;
@@ -59,40 +61,68 @@ static GeneralPlugin xmms_scrobbler =
 static void init(void)
 {
 	char *username = NULL, *password = NULL;
+	char *ge_username = NULL, *ge_password = NULL;
 	ConfigDb *cfgfile;
-	going = 1;
+	sc_going = 1;
+	ge_going = 1;
 	GError **moo = NULL;
 	cfgdlg = create_cfgdlg();
 
-        prefswin_page_new(cfgdlg, "Last.FM", DATA_DIR "/images/audioscrobbler.png");
+        prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
 
 	if ((cfgfile = bmp_cfg_db_open()) != NULL) {
 		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "username",
 				&username);
 		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "password",
 				&password);
+		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_username",
+				&ge_username);
+		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_password",
+				&ge_password);
 		bmp_cfg_db_close(cfgfile);
 	}
-	if ((!username || !password) || (!*username || !*password)) {
-		pdebug("username/password not found - not starting",
+
+	if ((!username || !password) || (!*username || !*password))
+	{
+		pdebug("username/password not found - not starting last.fm support",
 			DEBUG);
-		going = 0;
-		return;
+		sc_going = 0;
 	}
-	sc_init(username, password);
+	else
+		sc_init(username, password);
+
 	g_free(username);
 	g_free(password);
+	
+	if ((!ge_username || !ge_password) || (!*ge_username || !*ge_password))
+	{
+		pdebug("username/password not found - not starting Gerpok support",
+			DEBUG);
+		ge_going = 0;
+	}
+	else
+		gerpok_sc_init(ge_username, ge_password);
+
+	g_free(ge_username);
+	g_free(ge_password);
+
 	m_scrobbler = g_mutex_new();
-	if ((pt_scrobbler = g_thread_create(xs_thread, m_scrobbler, TRUE, moo)) == NULL) {
+	if ((pt_scrobbler = g_thread_create(xs_thread, m_scrobbler, TRUE, moo)) == NULL)
+	{
 		pdebug(fmt_vastr("Error creating scrobbler thread: %s", moo), DEBUG);
-		going = 0;
+		sc_going = 0;
+		ge_going = 0;
 		return;
 	}
-	if ((pt_handshake = g_thread_create(hs_thread, m_scrobbler, TRUE, NULL)) == NULL) {
-		pdebug("Error creating handshake thread", DEBUG);
-		going = 0;
+
+	if ((pt_handshake = g_thread_create(hs_thread, m_scrobbler, TRUE, NULL)) == NULL)
+	{
+		pdebug(fmt_vastr("Error creating handshake thread: %s", moo), DEBUG);
+		sc_going = 0;
+		ge_going = 0;
 		return;
 	}
+
 	pdebug("plugin started", DEBUG);
 }
 
@@ -103,12 +133,13 @@ static void cleanup(void)
 
         prefswin_page_destroy(cfgdlg);
 
-	if (!going)
+	if (!sc_going && !ge_going)
 		return;
 	pdebug("about to lock mutex", DEBUG);
 	g_mutex_lock(m_scrobbler);
 	pdebug("locked mutex", DEBUG);
-	going = 0;
+	sc_going = 0;
+	ge_going = 0;
 	g_mutex_unlock(m_scrobbler);
 	pdebug("joining threads", DEBUG);
 	g_thread_join(pt_scrobbler);
@@ -116,6 +147,7 @@ static void cleanup(void)
 	g_thread_join(pt_handshake);
 
 	sc_cleaner();
+	gerpok_sc_cleaner();
 }
 
 static char ishttp(const char *a)
@@ -377,6 +409,12 @@ static void *xs_thread(void *data __attribute__((unused)))
 			sc_clear_error();
 		}
 
+		if(gerpok_sc_catch_error())
+		{
+			errorbox_show(gerpok_sc_fetch_error());
+			gerpok_sc_clear_error();
+		}
+
 		/* Check for ability to submit */
 		dosubmit = get_song_status();
 
@@ -397,12 +435,14 @@ static void *xs_thread(void *data __attribute__((unused)))
 					tuple->performer, tuple->track_name), DEBUG);
 				sc_addentry(m_scrobbler, tuple,
 					dosubmit.len/1000);
+				gerpok_sc_addentry(m_scrobbler, tuple,
+					dosubmit.len/1000);
 			}
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
 		}
 		g_mutex_lock(m_scrobbler);
-		run = going;
+		run = (sc_going != 0 || ge_going != 0);
 		g_mutex_unlock(m_scrobbler);
 		g_usleep(100000);
 	}
@@ -422,11 +462,20 @@ static void *hs_thread(void *data __attribute__((unused)))
 		{
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);
-			going = 0;
+			sc_going = 0;
 			g_mutex_lock(m_scrobbler);
 		}
+
+		if(gerpok_sc_idle(m_scrobbler))
+		{
+			pdebug("Giving up due to fatal error", DEBUG);
+			g_mutex_lock(m_scrobbler);
+			ge_going = 0;
+			g_mutex_lock(m_scrobbler);
+		}
+
 		g_mutex_lock(m_scrobbler);
-		run = going;
+		run = (sc_going != 0 || ge_going != 0);
 		g_mutex_unlock(m_scrobbler);
 		g_usleep(1000000);
 	}

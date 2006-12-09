@@ -19,8 +19,8 @@ SOURCES = 			\
 	configure.c		\
 	gtkstuff.c		\
 	md5.c			\
-	queue.c			\
 	scrobbler.c		\
+	gerpok.c		\
 	xmms_scrobbler.c
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../..
