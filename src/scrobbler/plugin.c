@@ -23,6 +23,7 @@
 
 #include "scrobbler.h"
 #include "gerpok.h"
+#include "hatena.h"
 #include "gtkstuff.h"
 #include "config.h"
 #include "fmt.h"
@@ -39,7 +40,7 @@ static void init(void);
 static void cleanup(void);
 static void *xs_thread(void *);
 static void *hs_thread(void *);
-static int sc_going, ge_going;
+static int sc_going, ge_going, ha_going;
 static GtkWidget *cfgdlg;
 
 static GThread *pt_scrobbler;
@@ -62,6 +63,7 @@ static void init(void)
 {
 	char *username = NULL, *password = NULL;
 	char *ge_username = NULL, *ge_password = NULL;
+	char *ha_username = NULL, *ha_password = NULL;
 	ConfigDb *cfgfile;
 	sc_going = 1;
 	ge_going = 1;
@@ -79,6 +81,10 @@ static void init(void)
 				&ge_username);
 		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_password",
 				&ge_password);
+		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "ha_username",
+				&ha_username);
+		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "ha_password",
+				&ha_password);
 		bmp_cfg_db_close(cfgfile);
 	}
 
@@ -106,12 +112,25 @@ static void init(void)
 	g_free(ge_username);
 	g_free(ge_password);
 
+	if ((!ha_username || !ha_password) || (!*ha_username || !*ha_password))
+	{
+		pdebug("username/password not found - not starting Hatena support",
+			DEBUG);
+		ha_going = 0;
+	}
+	else
+		hatena_sc_init(ha_username, ha_password);
+
+	g_free(ha_username);
+	g_free(ha_password);
+
 	m_scrobbler = g_mutex_new();
 	if ((pt_scrobbler = g_thread_create(xs_thread, m_scrobbler, TRUE, moo)) == NULL)
 	{
 		pdebug(fmt_vastr("Error creating scrobbler thread: %s", moo), DEBUG);
 		sc_going = 0;
 		ge_going = 0;
+		ha_going = 0;
 		return;
 	}
 
@@ -120,6 +139,7 @@ static void init(void)
 		pdebug(fmt_vastr("Error creating handshake thread: %s", moo), DEBUG);
 		sc_going = 0;
 		ge_going = 0;
+		ha_going = 0;
 		return;
 	}
 
@@ -148,6 +168,7 @@ static void cleanup(void)
 
 	sc_cleaner();
 	gerpok_sc_cleaner();
+	hatena_sc_cleaner();
 }
 
 static char ishttp(const char *a)
@@ -415,6 +436,12 @@ static void *xs_thread(void *data __attribute__((unused)))
 			gerpok_sc_clear_error();
 		}
 
+		if(hatena_sc_catch_error())
+		{
+			errorbox_show(hatena_sc_fetch_error());
+			hatena_sc_clear_error();
+		}
+
 		/* Check for ability to submit */
 		dosubmit = get_song_status();
 
@@ -437,12 +464,14 @@ static void *xs_thread(void *data __attribute__((unused)))
 					dosubmit.len/1000);
 				gerpok_sc_addentry(m_scrobbler, tuple,
 					dosubmit.len/1000);
+				hatena_sc_addentry(m_scrobbler, tuple,
+					dosubmit.len/1000);
 			}
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
 		}
 		g_mutex_lock(m_scrobbler);
-		run = (sc_going != 0 || ge_going != 0);
+		run = (sc_going != 0 || ge_going != 0 || ha_going != 0);
 		g_mutex_unlock(m_scrobbler);
 		g_usleep(100000);
 	}
@@ -474,8 +503,16 @@ static void *hs_thread(void *data __attribute__((unused)))
 			g_mutex_lock(m_scrobbler);
 		}
 
+		if(hatena_sc_idle(m_scrobbler))
+		{
+			pdebug("Giving up due to fatal error", DEBUG);
+			g_mutex_lock(m_scrobbler);
+			ha_going = 0;
+			g_mutex_lock(m_scrobbler);
+		}
+
 		g_mutex_lock(m_scrobbler);
-		run = (sc_going != 0 || ge_going != 0);
+		run = (sc_going != 0 || ge_going != 0 || ha_going != 0);
 		g_mutex_unlock(m_scrobbler);
 		g_usleep(1000000);
 	}

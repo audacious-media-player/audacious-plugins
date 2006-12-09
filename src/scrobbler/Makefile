@@ -21,6 +21,7 @@ SOURCES = 			\
 	md5.c			\
 	scrobbler.c		\
 	gerpok.c		\
+	hatena.c		\
 	plugin.c
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../..
