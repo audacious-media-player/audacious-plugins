@@ -1,3 +1,15 @@
+2006-12-09 11:37:53 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [766]
+  - add support for hatena (experimental)
+  
+  trunk/src/scrobbler/Makefile    |    1 
+  trunk/src/scrobbler/configure.c |   54 ++
+  trunk/src/scrobbler/hatena.c    |  901 ++++++++++++++++++++++++++++++++++++++++
+  trunk/src/scrobbler/hatena.h    |   13 
+  trunk/src/scrobbler/plugin.c    |   43 +
+  5 files changed, 1007 insertions(+), 5 deletions(-)
+
+
 2006-12-09 10:55:44 +0000  William Pitcock <nenolod@nenolod.net>
   revision [762]
   - fix some configure behaviour regarding Gerpok
