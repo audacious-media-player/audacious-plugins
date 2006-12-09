@@ -38,8 +38,8 @@ static int	gerpok_sc_hs_status,
 		gerpok_sc_major_error_present;
 
 static char 	*gerpok_sc_submit_url,
-		*gerpok_sc_username,
-		*gerpok_sc_password,
+		*gerpok_sc_username = NULL,
+		*gerpok_sc_password = NULL,
 		*gerpok_sc_challenge_hash,
 		gerpok_sc_response_hash[33],
 		*gerpok_sc_srv_res,
@@ -870,6 +870,9 @@ void gerpok_sc_cleaner(void)
 static void gerpok_sc_checkhandshake(void)
 {
 	int wait;
+
+	if (!gerpok_sc_username || !gerpok_sc_password)
+		return;
 
 	if (gerpok_sc_hs_status)
 		return;

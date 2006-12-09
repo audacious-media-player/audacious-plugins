@@ -37,8 +37,8 @@ static int	sc_hs_status,
 		sc_major_error_present;
 
 static char 	*sc_submit_url,
-		*sc_username,
-		*sc_password,
+		*sc_username = NULL,
+		*sc_password = NULL,
 		*sc_challenge_hash,
 		sc_response_hash[33],
 		*sc_srv_res,
@@ -869,6 +869,9 @@ void sc_cleaner(void)
 static void sc_checkhandshake(void)
 {
 	int wait;
+
+	if (!sc_username || !sc_password)
+		return;
 
 	if (sc_hs_status)
 		return;
