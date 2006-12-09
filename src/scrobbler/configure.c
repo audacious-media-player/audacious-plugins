@@ -200,6 +200,7 @@ create_cfgdlg(void)
                 if (username) {
                         gtk_entry_set_text(GTK_ENTRY(entry1), username);
                         g_free(username);
+			username = NULL;
                 }
                 bmp_cfg_db_get_string(db, "audioscrobbler", "ge_username",
                         &username);
