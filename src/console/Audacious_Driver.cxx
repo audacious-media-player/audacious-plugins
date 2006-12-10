@@ -443,6 +443,7 @@ extern "C" void console_aboutbox(void)
 	{
 		aboutbox = xmms_show_message(_("About the Console Music Decoder"),
 						_("Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+						"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 						"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
 						"        Shay Green <gblargg@gmail.com>"),
 						_("Ok"),
@@ -486,6 +487,6 @@ InputPlugin console_ip =
 
 extern "C" InputPlugin *get_iplugin_info(void)
 {
-	console_ip.description = g_strdup_printf(_("AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ module decoder"));
+	console_ip.description = g_strdup_printf(_("Game console audio module decoder"));
 	return &console_ip;
 }
