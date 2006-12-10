@@ -119,6 +119,8 @@ create_cfgdlg(void)
   notebook1 = gtk_notebook_new();
   gtk_widget_show (notebook1);
 
+
+  // last fm
   align1 = gtk_alignment_new(0, 0, 0, 0);
   gtk_widget_show (align1);
   gtk_alignment_set_padding(GTK_ALIGNMENT(align1), 0, 0, 12, 0);
@@ -157,6 +159,8 @@ create_cfgdlg(void)
   gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
   gtk_notebook_append_page(GTK_NOTEBOOK(notebook1), GTK_WIDGET(align1), label1);
 
+
+  // gerpok
   align1 = gtk_alignment_new(0, 0, 0, 0);
   gtk_widget_show (align1);
   gtk_alignment_set_padding(GTK_ALIGNMENT(align1), 0, 0, 12, 0);
@@ -195,6 +199,8 @@ create_cfgdlg(void)
   gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
   gtk_notebook_append_page(GTK_NOTEBOOK(notebook1), GTK_WIDGET(align1), label1);
 
+
+  // hatena
   align1 = gtk_alignment_new(0, 0, 0, 0);
   gtk_widget_show (align1);
   gtk_alignment_set_padding(GTK_ALIGNMENT(align1), 0, 0, 12, 0);
@@ -224,7 +230,7 @@ create_cfgdlg(void)
   gtk_table_attach_defaults (GTK_TABLE (table1), ha_entry1, 1, 2, 2, 3);
 
   ha_entry2 = gtk_entry_new ();
-  gtk_entry_set_visibility(GTK_ENTRY(ge_entry2), FALSE);
+  gtk_entry_set_visibility(GTK_ENTRY(ha_entry2), FALSE);
   gtk_widget_show (ha_entry2);
   gtk_table_attach_defaults (GTK_TABLE (table1), ha_entry2, 1, 2, 3, 4);
   g_signal_connect(ha_entry2, "changed", (GCallback) saveconfig, NULL);
@@ -233,6 +239,8 @@ create_cfgdlg(void)
   gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
   gtk_notebook_append_page(GTK_NOTEBOOK(notebook1), GTK_WIDGET(align1), label1);
 
+
+  // common
   gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 6);
 
   himage1 = gtk_image_new_from_file (DATA_DIR "/images/audioscrobbler_badge.png");
@@ -245,6 +253,7 @@ create_cfgdlg(void)
 
         if ((db = bmp_cfg_db_open())) {
                 gchar *username = NULL;
+		// last fm
                 bmp_cfg_db_get_string(db, "audioscrobbler", "username",
                         &username);
                 if (username) {
@@ -252,10 +261,18 @@ create_cfgdlg(void)
                         g_free(username);
 			username = NULL;
                 }
+		// gerpok
                 bmp_cfg_db_get_string(db, "audioscrobbler", "ge_username",
                         &username);
                 if (username) {
                         gtk_entry_set_text(GTK_ENTRY(ge_entry1), username);
+                        g_free(username);
+                }
+		// hatena
+                bmp_cfg_db_get_string(db, "audioscrobbler", "ha_username",
+                        &username);
+                if (username) {
+                        gtk_entry_set_text(GTK_ENTRY(ha_entry1), username);
                         g_free(username);
                 }
                 bmp_cfg_db_close(db);

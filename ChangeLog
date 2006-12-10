@@ -1,3 +1,12 @@
+2006-12-09 16:32:41 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [772]
+  - replace g_usleep() with g_cond_timed_wait()
+  - some bug fixes
+  
+  trunk/src/scrobbler/plugin.c |   64 +++++++++++++++++++++++++++++++++++--------
+  1 file changed, 53 insertions(+), 11 deletions(-)
+
+
 2006-12-09 13:52:12 +0000  William Pitcock <nenolod@nenolod.net>
   revision [770]
   - you know, it'd help if binio were better documented.
