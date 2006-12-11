@@ -966,9 +966,29 @@ if test "$have_paranormal" = "yes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
 fi
 
-if test "$have_xspf" = "yes"; then
-	CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
-	AC_DEFINE(HAVE_XSPF_PLAYLIST, 1, [Define if XSPF playlists are available.])
+dnl *** ProjectM (GL Milkdrop port)
+
+AC_ARG_ENABLE(projectm,
+[  --disable-projectm          disable projectM vis plugin. (default=enabled)],
+[have_projectm=$enableval],
+[have_projectm=yes])
+
+if test "$have_projectm" = "yes"; then
+	PKG_CHECK_MODULES(LIBPROJECTM, libprojectM >= 0.0.0, [have_projectm="yes"], [have_projectm="no"])
+	if test x$libprjM = xno; then
+	        AC_MSG_WARN([*** libprojectM not found.
+	                        libprojectM is needed to build this package.
+	                        You can download libprojectM at http://xmms-projectM.sf.net/])
+	fi
+	LIBPROJECTM_datadir=`pkg-config --variable=pkgdatadir libprojectM`;
+	LIBPROJECTM_sysconfdir=`pkg-config --variable=sysconfdir libprojectM`;
+	LIBPROJECTM_CFLAGS="$LIBPROJECTM_CFLAGS -DPROJECTM_DATADIR=\\\"$LIBPROJECTM_datadir\\\" -DPROJECTM_SYSCONFDIR=\\\"$LIBPROJECTM_sysconfdir\\\"";
+fi
+AC_SUBST(LIBPROJECTM_LIBS)
+AC_SUBST(LIBPROJECTM_CFLAGS)
+
+if test "$have_projectm" = "yes"; then
+	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm"
 fi
 
 dnl *** TTA
@@ -1127,6 +1147,7 @@ echo "  -------------"
 echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
+echo "  ProjectM (GL milkdrop):                 $have_projectm"
 echo
 echo "  Container"
 echo "  ---------"
