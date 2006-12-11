@@ -215,7 +215,7 @@ static TitleInput *get_tuple_uri(gchar *uri)
 	out->performer = g_strdup(cue_tracks[track].performer);
 	out->album_name = g_strdup(cue_title);
 	out->genre = g_strdup(cue_genre);
-	out->year = atoi(cue_year);
+	out->year = cue_year ? atoi(cue_year) : 0;
 	out->track_number = track + 1;
 	return out;
 }

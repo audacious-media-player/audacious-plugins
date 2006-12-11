@@ -1,3 +1,13 @@
+2006-12-11 04:33:47 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [780]
+  cuesheet improvement:
+  - can fill all visible tuple elements
+  - support "stop after current song"
+  
+  trunk/src/cue/cuesheet.c |   68 +++++++++++++++++++++++++++++++++++------------
+  1 file changed, 52 insertions(+), 16 deletions(-)
+
+
 2006-12-10 09:53:35 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [778]
   Move supported formats to plugin info, rename plugin to 'Game console audio module decoder'.
