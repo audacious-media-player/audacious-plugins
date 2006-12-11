@@ -1,3 +1,17 @@
+2006-12-11 06:50:34 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [784]
+  - add support for projectM
+  
+  trunk/configure.ac                 |   27 +-
+  trunk/mk/rules.mk.in               |    2 
+  trunk/src/projectm/Makefile        |   16 +
+  trunk/src/projectm/main.c          |  466 +++++++++++++++++++++++++++++++++++++
+  trunk/src/projectm/sdltoprojectM.h |  148 +++++++++++
+  trunk/src/projectm/video_init.c    |  198 +++++++++++++++
+  trunk/src/projectm/video_init.h    |    5 
+  7 files changed, 859 insertions(+), 3 deletions(-)
+
+
 2006-12-11 06:10:32 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [782]
   - fix for potential bug.

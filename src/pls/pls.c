@@ -42,8 +42,8 @@ static void
 playlist_load_pls(const gchar * filename, gint pos)
 {
     guint i, count, added_count = 0;
-    gchar key[10];
-    gchar *line;
+    gchar line_key[10], title_key[10];
+    gchar *line, *title;
 
     g_return_if_fail(filename != NULL);
 
@@ -57,9 +57,21 @@ playlist_load_pls(const gchar * filename, gint pos)
     g_free(line);
 
     for (i = 1; i <= count; i++) {
-        g_snprintf(key, sizeof(key), "File%d", i);
-        if ((line = read_ini_string(filename, "playlist", key))) {
-            playlist_load_ins_file(line, filename, pos, NULL, -1);
+        g_snprintf(line_key, sizeof(line_key), "File%d", i);
+        if ((line = read_ini_string(filename, "playlist", line_key)))
+	{
+	    if (cfg.read_pl_metadata)
+	    {
+		g_snprintf(title_key, sizeof(title_key), "Title%d", i);
+
+		if ((title = read_ini_string(filename, "playlist", title_key)))
+	            playlist_load_ins_file(line, filename, pos, title, -1);
+		else
+		    playlist_load_ins_file(line, filename, pos, NULL, -1);
+	    }
+	    else
+		playlist_load_ins_file(line, filename, pos, NULL -1);
+
             added_count++;
 
             if (pos >= 0)
