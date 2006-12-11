@@ -1,3 +1,13 @@
+2006-12-11 13:19:44 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [794]
+  - fix other plugins dependant on the playlist framework
+  
+  trunk/src/console/Audacious_Driver.cxx |    2 +-
+  trunk/src/cue/cuesheet.c               |   18 +++++++++++-------
+  trunk/src/scrobbler/plugin.c           |    2 +-
+  3 files changed, 13 insertions(+), 9 deletions(-)
+
+
 2006-12-11 13:15:01 +0000  William Pitcock <nenolod@nenolod.net>
   revision [792]
   - nevermind, m3u did need an update.

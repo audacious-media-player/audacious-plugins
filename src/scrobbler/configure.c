@@ -267,6 +267,7 @@ create_cfgdlg(void)
                 if (username) {
                         gtk_entry_set_text(GTK_ENTRY(ge_entry1), username);
                         g_free(username);
+			username = NULL;
                 }
 		// hatena
                 bmp_cfg_db_get_string(db, "audioscrobbler", "ha_username",
@@ -274,6 +275,7 @@ create_cfgdlg(void)
                 if (username) {
                         gtk_entry_set_text(GTK_ENTRY(ha_entry1), username);
                         g_free(username);
+			username = NULL;
                 }
                 bmp_cfg_db_close(db);
         }

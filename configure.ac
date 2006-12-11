@@ -966,6 +966,10 @@ if test "$have_paranormal" = "yes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
 fi
 
+if test "$have_xspf" = "yes"; then
+	CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
+fi
+
 dnl *** ProjectM (GL Milkdrop port)
 
 AC_ARG_ENABLE(projectm,

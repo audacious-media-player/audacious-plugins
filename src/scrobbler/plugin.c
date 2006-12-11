@@ -101,10 +101,12 @@ static void init(void)
 		sc_going = 0;
 	}
 	else
+	{
 		sc_init(username, password);
 
-	g_free(username);
-	g_free(password);
+		g_free(username);
+		g_free(password);
+	}
 	
 	if ((!ge_username || !ge_password) || (!*ge_username || !*ge_password))
 	{
@@ -113,10 +115,12 @@ static void init(void)
 		ge_going = 0;
 	}
 	else
+	{
 		gerpok_sc_init(ge_username, ge_password);
 
-	g_free(ge_username);
-	g_free(ge_password);
+		g_free(ge_username);
+		g_free(ge_password);
+	}
 
 	if ((!ha_username || !ha_password) || (!*ha_username || !*ha_password))
 	{
@@ -125,10 +129,12 @@ static void init(void)
 		ha_going = 0;
 	}
 	else
+	{
 		hatena_sc_init(ha_username, ha_password);
 
-	g_free(ha_username);
-	g_free(ha_password);
+		g_free(ha_username);
+		g_free(ha_password);
+	}
 
 	m_scrobbler = g_mutex_new();
 	hs_mutex = g_mutex_new();
