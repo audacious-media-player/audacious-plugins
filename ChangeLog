@@ -1,3 +1,10 @@
+2006-12-10 09:53:35 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [778]
+  Move supported formats to plugin info, rename plugin to 'Game console audio module decoder'.
+  trunk/src/console/Audacious_Driver.cxx |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2006-12-10 09:14:33 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [776]
   - add missing code

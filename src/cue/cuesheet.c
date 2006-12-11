@@ -24,6 +24,7 @@
 #include <audacious/playlist.h>
 #include <audacious/vfs.h>
 #include <audacious/util.h>
+#include <audacious/main.h>
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000
@@ -44,16 +45,22 @@ static void get_song_info(gchar *uri, gchar **title, gint *length);
 
 static gint watchdog_func(gpointer unused);
 
-static gchar *cue_performer = NULL;
-static gchar *cue_title = NULL;
 static gchar *cue_file = NULL;
+static gchar *cue_title = NULL;
+static gchar *cue_performer = NULL;
+static gchar *cue_genre = NULL;
+static gchar *cue_year = NULL;
+static gchar *cue_track = NULL;
+
 static gint last_cue_track = 0;
 static gint cur_cue_track = 0;
+
 static struct {
-	gchar *performer;
 	gchar *title;
+	gchar *performer;
 	gint index;
 } cue_tracks[MAX_CUE_TRACKS];
+
 static gint timeout_tag = 0;
 static gint finetune_seek = 0;
 
@@ -197,8 +204,6 @@ static TitleInput *get_tuple_uri(gchar *uri)
 
 	out = bmp_title_input_new();
 
-	out->genre = g_strdup(phys_tuple->genre);	
-	out->album_name = g_strdup(phys_tuple->album_name);
 	out->file_path = g_strdup(phys_tuple->file_path);	
 	out->file_name = g_strdup(phys_tuple->file_name);
 	out->file_ext = g_strdup(phys_tuple->file_ext);
@@ -208,7 +213,10 @@ static TitleInput *get_tuple_uri(gchar *uri)
 
 	out->track_name = g_strdup(cue_tracks[track].title);
 	out->performer = g_strdup(cue_tracks[track].performer);
-
+	out->album_name = g_strdup(cue_title);
+	out->genre = g_strdup(cue_genre);
+	out->year = atoi(cue_year);
+	out->track_number = track + 1;
 	return out;
 }
 
@@ -305,7 +313,8 @@ static void play_cue_uri(gchar *uri)
 		real_ip->output = cue_ip.output;
 		real_ip->play_file(cue_file);
 		real_ip->seek(finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
-		real_ip->get_song_info(cue_file, &dummy, &file_length); // in some plugins, NULL as 2nd arg caauses crash.
+		// in some plugins, NULL as 2nd arg causes crash.
+		real_ip->get_song_info(cue_file, &dummy, &file_length);
 		g_free(dummy);
 		cue_tracks[last_cue_track].index = file_length;
 	}
@@ -364,6 +373,10 @@ static gint watchdog_func(gpointer unused)
 		cur_cue_track++;
 		if (!(time > cue_tracks[cur_cue_track].index))
 			finetune_seek = time;
+		if(cfg.stopaftersong) {
+			stop();
+			return TRUE;
+		}
 		playlist_next();
 		time = get_output_time();
 		g_usleep(10000);
@@ -376,12 +389,13 @@ static gint watchdog_func(gpointer unused)
 
 static void free_cue_info(void)
 {
-	g_free(cue_performer);
-	cue_performer = NULL;
-	g_free(cue_title);
-	cue_title = NULL;
-	g_free(cue_file);
-	cue_file = NULL;
+	g_free(cue_file);	cue_file = NULL;
+	g_free(cue_title);	cue_title = NULL;
+	g_free(cue_performer);	cue_performer = NULL;
+	g_free(cue_genre);	cue_genre = NULL;
+	g_free(cue_year); 	cue_year = NULL;
+	g_free(cue_track);	cue_track = NULL;
+
 	for (; last_cue_track > 0; last_cue_track--) {
 		g_free(cue_tracks[last_cue_track-1].performer);
 		g_free(cue_tracks[last_cue_track-1].title);
@@ -413,8 +427,30 @@ static void cache_cue_file(char *f)
 			continue;
 		line[q] = '\0';
 		for (q++; line[q] && isspace((int) line[q]); q++);
-
-		if (strcasecmp(line+p, "PERFORMER") == 0) {
+		if (strcasecmp(line+p, "REM") == 0) {
+			gint r;
+			for (r = q; line[r] && !isspace((int) line[r]); r++);
+			if (!line[r])
+				continue;
+			line[r] = '\0';
+			for (r++; line[r] && isspace((int) line[r]); r++);
+			if(strcasecmp(line+q, "GENRE") == 0) {
+				fix_cue_argument(line+r);
+				if (last_cue_track == 0)
+					cue_genre = str_to_utf8(line + r);
+			}
+			if(strcasecmp(line+q, "DATE") == 0) {
+				gchar *tmp;
+				fix_cue_argument(line+r);
+				if (last_cue_track == 0) {
+					tmp = g_strdup(line + r);
+					if (tmp) {
+						cue_year = strtok(tmp, "/"); // XXX: always in the same format?
+					}
+				}
+			}
+		}
+		else if (strcasecmp(line+p, "PERFORMER") == 0) {
 			fix_cue_argument(line+q);
 
 			if (last_cue_track == 0)
@@ -425,7 +461,7 @@ static void cache_cue_file(char *f)
 		else if (strcasecmp(line+p, "FILE") == 0) {
 			gchar *tmp = g_path_get_dirname(f);
 			fix_cue_argument(line+q);
-			cue_file = g_strdup_printf("%s/%s", tmp, line+q);	/* XXX: yaz might need to UTF validate this?? -nenolod */
+			cue_file = g_strdup_printf("%s/%s", tmp, line+q);	/* XXX: yaz might need to UTF validate this?? -nenolod */ /* as far as I know, all FILEs are in plain ASCII - yaz */
 			g_free(tmp);
 		}
 		else if (strcasecmp(line+p, "TITLE") == 0) {
