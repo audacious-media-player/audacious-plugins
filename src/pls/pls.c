@@ -60,7 +60,7 @@ playlist_load_pls(const gchar * filename, gint pos)
         g_snprintf(line_key, sizeof(line_key), "File%d", i);
         if ((line = read_ini_string(filename, "playlist", line_key)))
 	{
-	    if (cfg.read_pl_metadata)
+	    if (cfg.use_pl_metadata)
 	    {
 		g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 
@@ -70,7 +70,7 @@ playlist_load_pls(const gchar * filename, gint pos)
 		    playlist_load_ins_file(line, filename, pos, NULL, -1);
 	    }
 	    else
-		playlist_load_ins_file(line, filename, pos, NULL -1);
+		playlist_load_ins_file(line, filename, pos, NULL, -1);
 
             added_count++;
 
