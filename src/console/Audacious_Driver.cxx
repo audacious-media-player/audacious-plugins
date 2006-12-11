@@ -419,7 +419,7 @@ static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
 					gchar _buf[path_max];
 					g_snprintf(_buf, path_max, "%s?%d", fh.path, i);
 
-					playlist_add_url(_buf);
+					playlist_add_url(playlist_get_active(), _buf);
 				}
 				result = -1;
 			}

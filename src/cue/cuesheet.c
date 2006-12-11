@@ -121,7 +121,7 @@ static int is_our_file(gchar *filename)
 			gchar _buf[65535];
 
 			g_snprintf(_buf, 65535, "cue://%s?%d", filename, i);
-			playlist_add_url(_buf);
+			playlist_add_url(playlist_get_active(), _buf);
 		}
 
 		free_cue_info();
@@ -272,15 +272,18 @@ static void cue_pause(short p)
 static void set_info_override(gchar * unused, gint length, gint rate, gint freq, gint nch)
 {
 	gchar *title;
+	Playlist *playlist = playlist_get_active();
+
+	g_return_if_fail(playlist != NULL);
 
 	/* annoying. */
-	if (playlist_position->tuple == NULL)
+	if (playlist->position->tuple == NULL)
 	{
-		gint pos = playlist_get_position();
-		playlist_get_tuple(pos);
+		gint pos = playlist_get_position(playlist);
+		playlist_get_tuple(playlist, pos);
 	}
 
-	title = g_strdup(playlist_position->title);
+	title = g_strdup(playlist->position->title);
 
 	cue_ip.set_info(title, length, rate, freq, nch);
 }
@@ -353,6 +356,7 @@ static gint watchdog_func(gpointer unused)
 {
 	gint time = get_output_time();
 	gboolean dir = FALSE;
+	Playlist *playlist = playlist_get_active();
 
 	if (time == -1)
 		time = G_MAXINT;
@@ -362,7 +366,7 @@ static gint watchdog_func(gpointer unused)
 		cur_cue_track--;
 		if (!(time < cue_tracks[cur_cue_track].index))
 			finetune_seek = time;
-		playlist_prev();
+		playlist_prev(playlist);
 		dir = TRUE;
 		time = get_output_time();
 		g_usleep(10000);
@@ -377,7 +381,7 @@ static gint watchdog_func(gpointer unused)
 			stop();
 			return TRUE;
 		}
-		playlist_next();
+		playlist_next(playlist);
 		time = get_output_time();
 		g_usleep(10000);
 	}

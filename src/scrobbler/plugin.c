@@ -477,7 +477,7 @@ static void *xs_thread(void *data __attribute__((unused)))
 
 			pdebug("Submitting song.", DEBUG);
 
-			tuple = playlist_get_tuple(dosubmit.pos_c);
+			tuple = playlist_get_tuple(playlist_get_active(), dosubmit.pos_c);
 
 			if (ishttp(tuple->file_name))
 				continue;
