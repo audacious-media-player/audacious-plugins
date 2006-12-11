@@ -83,6 +83,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
     gsize line_len = 1024;
     gint ext_len = -1;
     gboolean is_extm3u = FALSE;
+    Playlist *playlist = playlist_get_active();
 
     if ((file = vfs_fopen(filename, "rb")) == NULL)
         return;
@@ -124,7 +125,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
             ext_info = NULL;
         }
 
-        playlist_load_ins_file(line, filename, pos, ext_title, ext_len);
+        playlist_load_ins_file(playlist, line, filename, pos, ext_title, ext_len);
 
         str_replace_in(&ext_title, NULL);
         ext_len = -1;
