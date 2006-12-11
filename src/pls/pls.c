@@ -44,6 +44,7 @@ playlist_load_pls(const gchar * filename, gint pos)
     guint i, count, added_count = 0;
     gchar line_key[10], title_key[10];
     gchar *line, *title;
+    Playlist *playlist = playlist_get_active();
 
     g_return_if_fail(filename != NULL);
 
@@ -65,12 +66,12 @@ playlist_load_pls(const gchar * filename, gint pos)
 		g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 
 		if ((title = read_ini_string(filename, "playlist", title_key)))
-	            playlist_load_ins_file(line, filename, pos, title, -1);
+	            playlist_load_ins_file(playlist, line, filename, pos, title, -1);
 		else
-		    playlist_load_ins_file(line, filename, pos, NULL, -1);
+		    playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
 	    }
 	    else
-		playlist_load_ins_file(line, filename, pos, NULL, -1);
+		playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
 
             added_count++;
 
@@ -91,7 +92,7 @@ playlist_save_pls(const gchar *filename, gint pos)
     g_return_if_fail(file != NULL);
 
     vfs_fprintf(file, "[playlist]\n");
-    vfs_fprintf(file, "NumberOfEntries=%d\n", playlist_get_length());
+    vfs_fprintf(file, "NumberOfEntries=%d\n", playlist_get_length(playlist_get_active()));
 
     PLAYLIST_LOCK();
 

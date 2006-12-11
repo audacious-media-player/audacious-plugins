@@ -56,6 +56,7 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 	xmlNode *nptr;
 	TitleInput *tuple;
 	gchar *location = NULL, *b64filename = NULL, *locale_uri = NULL;
+	Playlist *playlist = playlist_get_active();
 
 	tuple = bmp_title_input_new();
 
@@ -162,7 +163,7 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 		tuple->file_path = g_path_get_dirname(locale_uri);
 		tuple->file_ext = g_strdup(strrchr(locale_uri, '.'));
 		// add file to playlist
-		playlist_load_ins_file_tuple(locale_uri, filename, pos, tuple);
+		playlist_load_ins_file_tuple(playlist, locale_uri, filename, pos, tuple);
 		pos++;
 	}
 
