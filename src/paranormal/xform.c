@@ -655,6 +655,8 @@ xform_dynmovement_cleanup (gpointer data)
       {
          if (d->expr_init)
              expr_free (d->expr_init);
+         if (d->expr_beat)
+             expr_free (d->expr_beat);
          if (d->expr_frame)
              expr_free (d->expr_frame);
          if (d->expr_point)
@@ -677,7 +679,8 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
   gdouble xf, yf;
   gint xn, yn;
   void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) = 
-        opts[3].val.bval == TRUE ? xform_trans_polar : xform_trans_literal;
+        opts[4].val.bval == TRUE ? xform_trans_polar : xform_trans_literal;
+  gboolean make_table = FALSE;
 
   if (d->width != pn_image_data->width
       || d->height != pn_image_data->height)
@@ -691,7 +694,7 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
           d->vfield = NULL;
         }
 
-      if (opts[2].val.sval == NULL)
+      if (opts[3].val.sval == NULL)
           return;
 
       if (!d->dict)
@@ -716,20 +719,26 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
            expr_execute(d->expr_init, d->dict);
         }
 
-      d->expr_frame = expr_compile_string(opts[1].val.sval, d->dict);
-      d->expr_point = expr_compile_string(opts[2].val.sval, d->dict);
+      d->expr_beat = expr_compile_string(opts[1].val.sval, d->dict);
+      d->expr_frame = expr_compile_string(opts[2].val.sval, d->dict);
+      d->expr_point = expr_compile_string(opts[3].val.sval, d->dict);
 
       d->vfield = g_malloc (sizeof(struct xform_vector)
 			    * d->width * d->height);
+
+      make_table = TRUE;
    }
 
    rf = dict_variable(d->dict, "r");
    df = dict_variable(d->dict, "d");
 
+   if (*opts[2].val.sval != '\0' || pn_new_beat)
+       make_table = TRUE;
+
    /* run the on-frame script. */
-   if (d->expr_frame != NULL || (d->expr_beat != NULL && pn_is_new_beat()))
+   if (make_table == TRUE)
      {
-       if (d->expr_beat != NULL && pn_is_new_beat())
+       if (d->expr_beat != NULL)
          expr_execute(d->expr_beat, d->dict);
 
        if (d->expr_frame != NULL)
