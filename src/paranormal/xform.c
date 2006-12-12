@@ -619,6 +619,8 @@ struct pn_actuator_option_desc xform_dynmovement_opts[] =
 {
   { "init_script", "The formula to evaluate on init.",
     OPT_TYPE_STRING, { sval: "" } },
+  { "beat_script", "The formula to evaluate on each beat.",
+    OPT_TYPE_STRING, { sval: "" } },
   { "frame_script", "The formula to evaluate on each frame.",
     OPT_TYPE_STRING, { sval: "" } },
   { "point_script", "The formula to evaluate.",
@@ -632,6 +634,7 @@ typedef struct {
   int width, height;                 /* Previous width and height. */
   expression_t *expr_init;
   expression_t *expr_frame;
+  expression_t *expr_beat;
   expression_t *expr_point;
   symbol_dict_t *dict;
   struct xform_vector *vfield;
@@ -724,14 +727,20 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
    df = dict_variable(d->dict, "d");
 
    /* run the on-frame script. */
-   if (d->expr_frame != NULL)
-     expr_execute(d->expr_frame, d->dict);
+   if (d->expr_frame != NULL || (d->expr_beat != NULL && pn_is_new_beat()))
+     {
+       if (d->expr_beat != NULL && pn_is_new_beat())
+         expr_execute(d->expr_beat, d->dict);
 
-   for (j = 0; j < pn_image_data->height; j++)
-     for (i = 0; i < pn_image_data->width; i++)
-       {
-         transform_func(d->vfield, i, j, d->expr_point, d->dict);
-       }
+       if (d->expr_frame != NULL)
+         expr_execute(d->expr_frame, d->dict);
+
+       for (j = 0; j < pn_image_data->height; j++)
+         for (i = 0; i < pn_image_data->width; i++)
+           {
+             transform_func(d->vfield, i, j, d->expr_point, d->dict);
+           }
+     }
 
   apply_xform (d->vfield);
   pn_swap_surfaces ();
