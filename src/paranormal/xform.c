@@ -452,7 +452,9 @@ struct pn_actuator_desc builtin_xform_halfrender =
 struct pn_actuator_option_desc xform_movement_opts[] =
 {
   { "formula", "The formula to evaluate.",
-    OPT_TYPE_STRING, { sval: "d = 0.15;" } },
+    OPT_TYPE_STRING, { sval: "r = r * cos(r); d = sin(d);" } },
+  { "polar", "Whether the coordinates are polar or not.",
+    OPT_TYPE_BOOLEAN, { bval: TRUE } },
   { NULL }
 };
 
@@ -480,11 +482,81 @@ xform_movement_cleanup (gpointer data)
       }
 }
 
+inline void
+xform_trans_polar (struct xform_vector *vfield, gint x, gint y,
+	expression_t *expr, symbol_dict_t *dict)
+{
+  gdouble *rf, *df;
+  gdouble xf, yf;
+  gint xn, yn;
+
+  rf = dict_variable(dict, "r");
+  df = dict_variable(dict, "d");
+
+  /* Points (xf, yf) must be in a (-1..1) square. */
+  xf = 2.0 * x / (pn_image_data->width - 1) - 1.0;
+  yf = 2.0 * y / (pn_image_data->height - 1) - 1.0;
+
+  /* Now, convert to polar coordinates r and d. */
+  *rf = hypot(xf, yf);
+  *df = atan2(yf, xf);
+
+  /* Run the script. */
+  expr_execute(expr, dict);
+
+  /* Back to (-1..1) square. */
+  xf = (*rf) * cos ((*df));
+  yf = (*rf) * sin ((*df));
+
+  /* Convert back to physical coordinates. */
+  xn = (int)(((xf + 1.0) * (pn_image_data->width - 1) / 2) + 0.5);
+  yn = (int)(((yf + 1.0) * (pn_image_data->height - 1) / 2) + 0.5);
+
+  if (xn < 0 || xn >= pn_image_data->width || yn < 0 || yn >= pn_image_data->height)
+    {
+      xn = x; yn = y;
+    }
+
+  xfvec (xn, yn, &vfield[PN_IMG_INDEX (x, y)]);
+}
+
+inline void
+xform_trans_literal (struct xform_vector *vfield, gint x, gint y,
+	expression_t *expr, symbol_dict_t *dict)
+{
+  gdouble rf, df;
+  gdouble *xf, *yf;
+  gint xn, yn;
+
+  xf = dict_variable(dict, "x");
+  yf = dict_variable(dict, "y");
+
+  /* Points (xf, yf) must be in a (-1..1) square. */
+  *xf = 2.0 * x / (pn_image_data->width - 1) - 1.0;
+  *yf = 2.0 * y / (pn_image_data->height - 1) - 1.0;
+
+  /* Run the script. */
+  expr_execute(expr, dict);
+
+  /* Convert back to physical coordinates. */
+  xn = (int)(((*xf + 1.0) * (pn_image_data->width - 1) / 2) + 0.5);
+  yn = (int)(((*yf + 1.0) * (pn_image_data->height - 1) / 2) + 0.5);
+
+  if (xn < 0 || xn >= pn_image_data->width || yn < 0 || yn >= pn_image_data->height)
+    {
+      xn = x; yn = y;
+    }
+
+  xfvec (xn, yn, &vfield[PN_IMG_INDEX (x, y)]);
+}
+
 static void
 xform_movement_exec (const struct pn_actuator_option *opts,
 		 gpointer odata)
 {
   PnMovementData *d = (PnMovementData *) odata;
+  void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) = 
+        opts[1].val.bval == TRUE ? xform_trans_polar : xform_trans_literal;
 
   if (d->width != pn_image_data->width
       || d->height != pn_image_data->height)
@@ -525,31 +597,7 @@ xform_movement_exec (const struct pn_actuator_option *opts,
       for (j = 0; j < pn_image_data->height; j++)
 	for (i = 0; i < pn_image_data->width; i++)
 	  {
-            /* Points (xf, yf) must be in a (-1..1) square. */
-            xf = 2.0 * i / (pn_image_data->width - 1) - 1.0;
-            yf = 2.0 * j / (pn_image_data->height - 1) - 1.0;
-
-            /* Now, convert to polar coordinates r and d. */
-            *rf = hypot(xf, yf);
-            *df = atan2(yf, xf);
-
-            /* Run the script. */
-            expr_execute(expr, dict);
-
-            /* Back to (-1..1) square. */
-            xf = (*rf) * cos ((*df));
-            yf = (*rf) * sin ((*df));
-
-            /* Convert back to physical coordinates. */
-            xn = (int)(((xf + 1.0) * (pn_image_data->width - 1) / 2) + 0.5);
-            yn = (int)(((yf + 1.0) * (pn_image_data->height - 1) / 2) + 0.5);
-
-            if (xn < 0 || xn >= pn_image_data->width || yn < 0 || yn >= pn_image_data->height)
-              {
-                xn = i; yn = j;
-              }
-
-	    xfvec (xn, yn, &d->vfield[PN_IMG_INDEX (i, j)]);
+            transform_func(d->vfield, i, j, expr, dict);
 	  }
     }
 
@@ -575,6 +623,8 @@ struct pn_actuator_option_desc xform_dynmovement_opts[] =
     OPT_TYPE_STRING, { sval: "" } },
   { "point_script", "The formula to evaluate.",
     OPT_TYPE_STRING, { sval: "d = 0.15;" } },
+  { "polar", "Whether or not the coordinates to use are polar.",
+    OPT_TYPE_BOOLEAN, { bval: TRUE } },
   { NULL }
 };
 
@@ -623,6 +673,8 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
   gdouble *rf, *df;
   gdouble xf, yf;
   gint xn, yn;
+  void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) = 
+        opts[3].val.bval == TRUE ? xform_trans_polar : xform_trans_literal;
 
   if (d->width != pn_image_data->width
       || d->height != pn_image_data->height)
@@ -678,32 +730,7 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
    for (j = 0; j < pn_image_data->height; j++)
      for (i = 0; i < pn_image_data->width; i++)
        {
-         /* Points (xf, yf) must be in a (-1..1) square. */
-         xf = 2.0 * i / (pn_image_data->width - 1) - 1.0;
-         yf = 2.0 * j / (pn_image_data->height - 1) - 1.0;
-
-         /* Now, convert to polar coordinates r and d. */
-         *rf = hypot(xf, yf);
-         *df = atan2(yf, xf);
-
-         /* Run the script. */
-         if (d->expr_point != NULL)
-           expr_execute(d->expr_point, d->dict);
-
-         /* Back to (-1..1) square. */
-         xf = (*rf) * cos ((*df));
-         yf = (*rf) * sin ((*df));
-
-         /* Convert back to physical coordinates. */
-         xn = (int)(((xf + 1.0) * (pn_image_data->width - 1) / 2) + 0.5);
-         yn = (int)(((yf + 1.0) * (pn_image_data->height - 1) / 2) + 0.5);
-
-         if (xn < 0 || xn >= pn_image_data->width || yn < 0 || yn >= pn_image_data->height)
-           {
-             xn = i; yn = j;
-           }
-
-         xfvec (xn, yn, &d->vfield[PN_IMG_INDEX (i, j)]);
+         transform_func(d->vfield, i, j, d->expr_point, d->dict);
        }
 
   apply_xform (d->vfield);
