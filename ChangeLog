@@ -1,3 +1,11 @@
+2006-12-13 04:10:43 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [818]
+  - fix MP4 extension table
+  
+  trunk/src/aac/src/libmp4.c |    4 +++-
+  1 file changed, 3 insertions(+), 1 deletion(-)
+
+
 2006-12-13 03:43:58 +0000  William Pitcock <nenolod@nenolod.net>
   revision [816]
   - extension-assist for wav files

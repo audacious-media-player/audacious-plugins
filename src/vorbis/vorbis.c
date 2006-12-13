@@ -88,6 +88,8 @@ ov_callbacks vorbis_callbacks = {
     ovcb_tell
 };
 
+gchar *vorbis_fmts[] = { "ogg", "ogm", NULL };
+
 InputPlugin vorbis_ip = {
     NULL,
     NULL,
@@ -117,7 +119,6 @@ InputPlugin vorbis_ip = {
     NULL,
     NULL,
     NULL,
-    { "ogg", "ogm", NULL },
 };
 
 static OggVorbis_File vf;
