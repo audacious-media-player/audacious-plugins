@@ -204,6 +204,8 @@ static gint get_time(void)
 	return -1;
 }
 
+gchar *alac_fmts[] = { "m4a", "alac", NULL };
+
 InputPlugin alac_ip = {
     NULL,
     NULL,
@@ -233,6 +235,7 @@ InputPlugin alac_ip = {
     NULL,
     NULL,
     is_our_fd,
+    alac_fmts
 };
 
 static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,

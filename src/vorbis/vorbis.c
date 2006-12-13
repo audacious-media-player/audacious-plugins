@@ -113,7 +113,8 @@ InputPlugin vorbis_ip = {
     vorbis_get_song_info,
     vorbis_file_info_box,       /* file info box, tag editing */
     NULL,
-    get_song_tuple
+    get_song_tuple,
+    NULL,
     NULL,
     NULL,
     { "ogg", "ogm", NULL },

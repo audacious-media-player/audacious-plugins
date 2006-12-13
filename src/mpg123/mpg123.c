@@ -963,6 +963,8 @@ aboutbox(void)
                      G_CALLBACK(gtk_widget_destroyed), &aboutbox);
 }
 
+gchar *mpgdec_fmts[] = { "mp3", "mp2", "mpa", "mpg", NULL };
+
 InputPlugin mpgdec_ip = {
     NULL,
     NULL,
@@ -989,7 +991,7 @@ InputPlugin mpgdec_ip = {
     NULL,
     NULL,
     is_our_fd,
-    { "mp3", "mp2", "mpa", "mpg", NULL },
+    mpgdec_fmts,
 };
 
 InputPlugin *

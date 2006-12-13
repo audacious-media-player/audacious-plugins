@@ -74,6 +74,11 @@ void ShowFileInfoBox(char* aFilename)
 	ShowInfoWindow(aFilename);
 }
 
+gchar *fmts[] =
+	{ "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "j2b", "mt2",
+	  "mdz", "mdr", "mdgz", "mdbz", "s3z", "s3r", "s3gz", "xmz", "xmr", "xmgz",
+	  "itz", "itr", "itgz", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2", NULL };
+
 InputPlugin gModPlug =
 {
 	NULL,
@@ -102,10 +107,9 @@ InputPlugin gModPlug =
 	NULL,	// output
 	NULL,   // tuple
 	NULL,
+	NULL,
 	NULL,	// vfs
-	{ "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "j2b", "mt2",
-	  "mdz", "mdr", "mdgz", "mdbz", "s3z", "s3r", "s3gz", "xmz", "xmr", "xmgz",
-	  "itz", "itr", "itgz", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2", NULL },
+	fmts,
 };
 
 extern "C"

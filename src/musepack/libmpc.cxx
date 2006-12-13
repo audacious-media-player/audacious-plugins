@@ -8,6 +8,8 @@ using TagLib::Tag;
 using TagLib::String;
 using TagLib::APE::ItemListMap;
 
+gchar *mpc_fmts[] = { "mpc", NULL };
+
 InputPlugin MpcPlugin = {
     NULL,           //File Handle               FILE* handle
     NULL,           //Filename                  char* filename
@@ -37,7 +39,7 @@ InputPlugin MpcPlugin = {
     NULL,
     NULL,
     mpcIsOurFD,
-    { "mpc", NULL },
+    mpc_fmts
 };
 
 extern "C"

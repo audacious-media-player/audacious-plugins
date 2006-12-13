@@ -75,6 +75,8 @@ static void about ();
 static TitleInput *get_song_tuple(char *filename);
 static gchar *extname(const char *filename);
 
+gchar *tta_fmts[] = { "tta", NULL };
+
 InputPlugin tta_ip = 
 {
     NULL,
@@ -104,7 +106,8 @@ InputPlugin tta_ip =
     get_song_tuple, // get_song_tuple
     NULL, // set_song_tuple
     NULL, // buffer
-    { "tta", NULL },
+    NULL, // vfs
+    tta_fmts,
 };
 
 InputPlugin *

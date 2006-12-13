@@ -90,6 +90,8 @@ static GtkWidget *dialog1, *button1, *label1;
 
 InputPlugin *get_iplugin_info(void);
 
+gchar *wma_fmts[] = { "wma", NULL };
+
 InputPlugin wma_ip =
 {
     NULL,           	// Filled in by xmms
@@ -119,7 +121,8 @@ InputPlugin wma_ip =
     wma_get_song_tuple, // Tuple builder
     NULL,
     NULL,
-    { "wma", NULL },
+    NULL,		// vfs
+    wma_fmts
 };
 
 InputPlugin *get_iplugin_info(void)

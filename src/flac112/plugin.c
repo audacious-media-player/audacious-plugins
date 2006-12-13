@@ -132,6 +132,8 @@ static void error_callback_(const void *decoder, FLAC__StreamDecoderErrorStatus 
 static void init_decoder_func_tables();
 static decoder_t source_to_decoder_type (const char *source);
 
+gchar *flac_fmts[] = { "flac", NULL };
+
 InputPlugin flac_ip =
 {
 	NULL,
@@ -158,10 +160,11 @@ InputPlugin flac_ip =
 	FLAC_XMMS__get_song_info,
 	FLAC_XMMS__file_info_box,
 	NULL,
-	flac_get_tuple
+	flac_get_tuple,
+        NULL,		// set tuple
         NULL,
-        NULL,
-        { "flac", NULL },
+	NULL,
+	flac_fmts,
 };
 
 #define SAMPLES_PER_WRITE 512

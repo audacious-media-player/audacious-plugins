@@ -97,6 +97,8 @@ static FLAC__StreamDecoderWriteStatus write_callback_(const FLAC__StreamDecoder 
 static void metadata_callback_(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
 static void error_callback_(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data);
 
+gchar *flac_fmts[] = { "flac", NULL };
+
 InputPlugin flac_ip =
 {
 	NULL,
@@ -123,10 +125,11 @@ InputPlugin flac_ip =
 	FLAC_XMMS__get_song_info,
 	FLAC_XMMS__file_info_box,
 	NULL,
-	flac_get_tuple
+	flac_get_tuple,
+        NULL,		// set tuple
         NULL,
-        NULL,
-        { "flac", NULL },
+	NULL,
+	flac_fmts,
 };
 
 #define SAMPLES_PER_WRITE 512

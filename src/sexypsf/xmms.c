@@ -254,6 +254,8 @@ static gchar *get_title_psf(gchar *fn) {
 	return title;
 }
 
+gchar *sexypsf_fmts[] = { "psf", "minipsf", NULL };
+
 InputPlugin sexypsf_ip =
 {
 	NULL,
@@ -284,5 +286,5 @@ InputPlugin sexypsf_ip =
 	NULL,
 	NULL,
 	is_our_fd,
-        { "psf", "minipsf", NULL },
+	sexypsf_fmts,
 };
