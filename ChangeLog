@@ -1,3 +1,22 @@
+2006-12-13 03:43:23 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [814]
+  - finalize the plugin-side of the extension-assist ABI
+  
+  trunk/src/aac/src/libmp4.c       |    2 +-
+  trunk/src/alac/plugin.c          |    3 +++
+  trunk/src/flac112/plugin.c       |    9 ++++++---
+  trunk/src/flac113/plugin.c       |    9 ++++++---
+  trunk/src/modplug/plugin.cxx     |   10 +++++++---
+  trunk/src/mpg123/mpg123.c        |    4 +++-
+  trunk/src/musepack/libmpc.cxx    |    4 +++-
+  trunk/src/sexypsf/xmms.c         |    4 +++-
+  trunk/src/tta/aud-tta.c          |    5 ++++-
+  trunk/src/vorbis/vorbis.c        |    3 ++-
+  trunk/src/wavpack/libwavpack.cxx |    4 +++-
+  trunk/src/wma/wma.c              |    5 ++++-
+  12 files changed, 45 insertions(+), 17 deletions(-)
+
+
 2006-12-13 03:03:49 +0000  William Pitcock <nenolod@nenolod.net>
   revision [812]
   - missing NULL

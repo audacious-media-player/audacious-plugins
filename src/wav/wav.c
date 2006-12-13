@@ -29,6 +29,7 @@
 #include <audacious/titlestring.h>
 #include "audacious/output.h"
 
+gchar *wav_fmts[] = { "wav", "raw", "pcm", NULL };
 
 InputPlugin wav_ip = {
     NULL,
@@ -55,7 +56,7 @@ InputPlugin wav_ip = {
     get_song_info,
     NULL,                       /* file_info_box */
     NULL,
-    { "wav", "raw", "pcm", NULL },
+    wav_fmts,
 };
 
 WaveFile *wav_file = NULL;
