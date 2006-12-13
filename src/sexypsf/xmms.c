@@ -284,4 +284,5 @@ InputPlugin sexypsf_ip =
 	NULL,
 	NULL,
 	is_our_fd,
+        { "psf", "minipsf", NULL },
 };

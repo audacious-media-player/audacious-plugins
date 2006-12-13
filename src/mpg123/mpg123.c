@@ -989,6 +989,7 @@ InputPlugin mpgdec_ip = {
     NULL,
     NULL,
     is_our_fd,
+    { "mp3", "mp2", "mpa", "mpg", NULL },
 };
 
 InputPlugin *

@@ -103,7 +103,8 @@ InputPlugin tta_ip =
     NULL,
     get_song_tuple, // get_song_tuple
     NULL, // set_song_tuple
-    NULL  // buffer
+    NULL, // buffer
+    { "tta", NULL },
 };
 
 InputPlugin *

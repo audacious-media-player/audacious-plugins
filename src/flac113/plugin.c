@@ -124,6 +124,9 @@ InputPlugin flac_ip =
 	FLAC_XMMS__file_info_box,
 	NULL,
 	flac_get_tuple
+        NULL,
+        NULL,
+        { "flac", NULL },
 };
 
 #define SAMPLES_PER_WRITE 512

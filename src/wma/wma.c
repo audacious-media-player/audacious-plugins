@@ -117,6 +117,9 @@ InputPlugin wma_ip =
     NULL,               // Bring up an info window for the filename passed in
     NULL,           	// Handle to the current output plugin. Filled in by xmms
     wma_get_song_tuple, // Tuple builder
+    NULL,
+    NULL,
+    { "wma", NULL },
 };
 
 InputPlugin *get_iplugin_info(void)

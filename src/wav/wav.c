@@ -54,7 +54,8 @@ InputPlugin wav_ip = {
     NULL,
     get_song_info,
     NULL,                       /* file_info_box */
-    NULL
+    NULL,
+    { "wav", "raw", "pcm", NULL },
 };
 
 WaveFile *wav_file = NULL;

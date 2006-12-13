@@ -114,6 +114,9 @@ InputPlugin vorbis_ip = {
     vorbis_file_info_box,       /* file info box, tag editing */
     NULL,
     get_song_tuple
+    NULL,
+    NULL,
+    { "ogg", "ogm", NULL },
 };
 
 static OggVorbis_File vf;

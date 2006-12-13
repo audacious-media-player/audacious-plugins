@@ -37,6 +37,7 @@ InputPlugin MpcPlugin = {
     NULL,
     NULL,
     mpcIsOurFD,
+    { "mpc", NULL },
 };
 
 extern "C"

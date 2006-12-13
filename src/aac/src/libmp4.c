@@ -74,6 +74,7 @@ InputPlugin mp4_ip =
     0,
     0,
     mp4_IsOurFD,
+    { "m4a", "mp4", "aac", NULL };
   };
 
 typedef struct  _mp4cfg{

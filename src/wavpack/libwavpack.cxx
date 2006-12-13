@@ -85,6 +85,7 @@ InputPlugin mod = {
     NULL,
     NULL,
     wv_is_our_fd,
+    { "wv", NULL },
 };
 
 int32_t read_bytes (void *id, void *data, int32_t bcount)
