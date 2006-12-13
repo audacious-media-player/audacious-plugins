@@ -44,6 +44,8 @@ static TitleInput *mp4_get_song_tuple(char *);
 void     audmp4_file_info_box(gchar *);
 gboolean buffer_playing;
 
+gchar *mp4_fmts[] = { "m4a", "mp4", "aac", NULL };
+
 InputPlugin mp4_ip =
   {
     0,	// handle
@@ -74,7 +76,7 @@ InputPlugin mp4_ip =
     0,
     0,
     mp4_IsOurFD,
-    { "m4a", "mp4", "aac", NULL },
+    mp4_fmts,
   };
 
 typedef struct  _mp4cfg{

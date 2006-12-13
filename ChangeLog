@@ -1,3 +1,11 @@
+2006-12-13 03:43:58 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [816]
+  - extension-assist for wav files
+  
+  trunk/src/wav/wav.c |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2006-12-13 03:43:23 +0000  William Pitcock <nenolod@nenolod.net>
   revision [814]
   - finalize the plugin-side of the extension-assist ABI
