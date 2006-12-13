@@ -99,7 +99,13 @@ InputPlugin gModPlug =
 	NULL,
 	GetSongInfo,
 	ShowFileInfoBox,
-	NULL
+	NULL,	// output
+	NULL,   // tuple
+	NULL,
+	NULL,	// vfs
+	{ "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "j2b", "mt2",
+	  "mdz", "mdr", "mdgz", "mdbz", "s3z", "s3r", "s3gz", "xmz", "xmr", "xmgz",
+	  "itz", "itr", "itgz", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2" },
 };
 
 extern "C"
