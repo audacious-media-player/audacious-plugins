@@ -453,6 +453,9 @@ extern "C" void console_aboutbox(void)
 	}
 }
 
+gchar *gme_fmts[] = { "ay", "gbs", "gym", "hes", "kss", "nsf", "nsfe", 
+		      "sap", "spc", "vgm", "vgz", NULL };
+
 InputPlugin console_ip =
 {
 	NULL,
@@ -482,7 +485,8 @@ InputPlugin console_ip =
 	get_song_tuple,
 	NULL,
 	NULL,
-	is_our_file_from_vfs
+	is_our_file_from_vfs,
+	gme_fmts
 };
 
 extern "C" InputPlugin *get_iplugin_info(void)
