@@ -50,7 +50,7 @@ InputPlugin xs_plugin_ip = {
 	NULL, NULL,		/* FILLED BY XMMS */
 	xs_get_song_info,	/* Get song title and length */
 	xs_fileinfo,		/* Show file-information dialog */
-	NULL			/* FILLED BY XMMS */
+	NULL,			/* FILLED BY XMMS */
 	NULL,			/* Tuple */
 	NULL,			/* Tuple */
 	NULL,			/* Buffer */
