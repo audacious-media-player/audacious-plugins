@@ -25,6 +25,8 @@
 #include "xs_config.h"
 #include "xs_fileinfo.h"
 
+gchar *sid_fmts[] = { "sid", "psid", NULL };
+
 InputPlugin xs_plugin_ip = {
 	NULL,			/* FILLED BY XMMS */
 	NULL,			/* FILLED BY XMMS */
@@ -49,6 +51,11 @@ InputPlugin xs_plugin_ip = {
 	xs_get_song_info,	/* Get song title and length */
 	xs_fileinfo,		/* Show file-information dialog */
 	NULL			/* FILLED BY XMMS */
+	NULL,			/* Tuple */
+	NULL,			/* Tuple */
+	NULL,			/* Buffer */
+	NULL,			/* VFS */
+	sid_fmts,		/* ext assist */
 };
 
 
