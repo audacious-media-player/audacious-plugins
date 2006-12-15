@@ -106,6 +106,11 @@ File_Handler::File_Handler( const char* path_in, VFSFile* fd )
 		track = atoi( args + 1 );
 		track_specified = true;
 	}
+
+	// if the track is specified, then we have a match. don't worry
+	// about it right now -nenolod
+	if (track_specified)
+		return;
 	
 	// open vfs
 	if ( fd )
