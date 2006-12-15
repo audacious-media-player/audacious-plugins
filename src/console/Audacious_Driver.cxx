@@ -430,6 +430,11 @@ static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
 			}
 		}
 	}
+	else if (fh.track_specified)
+	{
+		result = 1;
+	}
+
 	return result;
 }
 
