@@ -40,7 +40,7 @@ static Music_Emu* emu = 0;
 static blargg_err_t log_err( blargg_err_t err )
 {
 	if ( err )
-		printf( "console error: %s\n", err );
+		g_critical( "console error: %s\n", err );
 	return err;
 }
 
@@ -48,7 +48,7 @@ static void log_warning( Music_Emu* emu )
 {
 	const char* w = emu->warning();
 	if ( w )
-		printf( "console warning: %s\n", w );
+		g_warning( "console warning: %s\n", w );
 }
 
 static void unload_file()
