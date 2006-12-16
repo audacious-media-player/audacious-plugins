@@ -1,3 +1,11 @@
+2006-12-15 02:24:21 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [836]
+  - really fix HES/other multitrack this time
+  
+  trunk/src/console/Audacious_Driver.cxx |    5 +++++
+  1 file changed, 5 insertions(+)
+
+
 2006-12-15 02:12:13 +0000  William Pitcock <nenolod@nenolod.net>
   revision [834]
   - avoid opening VFS FDs for track URIs where we know that the file is valid

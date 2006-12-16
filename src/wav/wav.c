@@ -56,6 +56,10 @@ InputPlugin wav_ip = {
     get_song_info,
     NULL,                       /* file_info_box */
     NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     wav_fmts,
 };
 
