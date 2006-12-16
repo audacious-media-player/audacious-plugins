@@ -144,8 +144,10 @@ playlist_save_m3u(const gchar *filename, gint pos)
     GList *node;
     gchar *outstr = NULL;
     VFSFile *file;
+    Playlist *playlist = playlist_get_active();
 
     g_return_if_fail(filename != NULL);
+    g_return_if_fail(playlist != NULL);
 
     file = vfs_fopen(filename, "wb");
 
@@ -156,7 +158,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
 
     PLAYLIST_LOCK();
 
-    for (node = playlist_get(); node; node = g_list_next(node)) {
+    for (node = playlist->entries; node; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
 
         if (entry->title && cfg.use_pl_metadata) {

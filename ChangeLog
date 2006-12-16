@@ -1,3 +1,11 @@
+2006-12-16 01:11:51 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [838]
+  - fix wav.c improper initialization of wav_fmts()
+  
+  trunk/src/wav/wav.c |    4 ++++
+  1 file changed, 4 insertions(+)
+
+
 2006-12-15 02:24:21 +0000  William Pitcock <nenolod@nenolod.net>
   revision [836]
   - really fix HES/other multitrack this time

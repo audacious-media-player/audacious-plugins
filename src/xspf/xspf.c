@@ -220,6 +220,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 	xmlDocPtr doc;
 	xmlNodePtr rootnode, tmp, tracklist;
 	GList *node;
+	Playlist *playlist = playlist_get_active();
 
 	doc = xmlNewDoc("1.0");
 
@@ -237,7 +238,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 
 	PLAYLIST_LOCK();
 
-	for (node = playlist_get(); node != NULL; node = g_list_next(node))
+	for (node = playlist->entries; node != NULL; node = g_list_next(node))
 	{
 		PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
 		xmlNodePtr track, location;
