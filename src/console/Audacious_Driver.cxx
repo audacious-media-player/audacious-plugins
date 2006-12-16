@@ -71,7 +71,7 @@ public:
 	gme_type_t type;
 	
 	// Parses path and identifies file type
-	File_Handler( const char* path, VFSFile* fd = 0 );
+	File_Handler( const char* path, VFSFile* fd = 0, gboolean is_our_file_hack = FALSE );
 	
 	// Creates emulator and returns 0. If this wasn't a music file or
 	// emulator couldn't be created, returns 1.
@@ -85,7 +85,7 @@ private:
 	Gzip_Reader in;
 };
 
-File_Handler::File_Handler( const char* path_in, VFSFile* fd )
+File_Handler::File_Handler( const char* path_in, VFSFile* fd, gboolean is_our_file_hack )
 {
 	emu   = 0;
 	type  = 0;
@@ -109,7 +109,7 @@ File_Handler::File_Handler( const char* path_in, VFSFile* fd )
 
 	// if the track is specified, then we have a match. don't worry
 	// about it right now -nenolod
-	if (track_specified)
+	if (track_specified && is_our_file_hack)
 		return;
 	
 	// open vfs
@@ -400,7 +400,7 @@ static int get_time(void)
 static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
 {
 	gint result = 0;
-	File_Handler fh( path, fd );
+	File_Handler fh( path, fd, TRUE );
 	if ( fh.type )
 	{
 		if ( fh.track_specified || fh.type->track_count == 1 )
