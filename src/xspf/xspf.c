@@ -220,7 +220,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 	xmlDocPtr doc;
 	xmlNodePtr rootnode, tmp, tracklist;
 	GList *node;
-	Playlist *playlist = playlist_get_active();
+        Playlist *playlist = playlist_get_active();
 
 	doc = xmlNewDoc("1.0");
 
@@ -236,7 +236,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 	tracklist = xmlNewNode(NULL, "trackList");
 	xmlAddChild(rootnode, tracklist);
 
-	PLAYLIST_LOCK();
+	PLAYLIST_LOCK(playlist->mutex);
 
 	for (node = playlist->entries; node != NULL; node = g_list_next(node))
 	{
@@ -373,7 +373,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		filename = NULL;
 	}
 
-	PLAYLIST_UNLOCK();
+	PLAYLIST_UNLOCK(playlist->mutex);
 
 	xmlSaveFormatFile(filename, doc, 1);
 	xmlFreeDoc(doc);

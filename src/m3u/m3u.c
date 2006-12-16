@@ -156,7 +156,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
     if (cfg.use_pl_metadata)
         vfs_fprintf(file, "#EXTM3U\n");
 
-    PLAYLIST_LOCK();
+    PLAYLIST_LOCK(playlist->mutex);
 
     for (node = playlist->entries; node; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
@@ -182,7 +182,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
         vfs_fprintf(file, "%s\n", entry->filename);
     }
 
-    PLAYLIST_UNLOCK();
+    PLAYLIST_UNLOCK(playlist->mutex);
 
     vfs_fclose(file);
 }
