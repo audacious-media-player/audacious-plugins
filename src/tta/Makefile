@@ -9,8 +9,8 @@ SOURCES = aud-tta.c id3.c ttadec.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += -fPIC -DPIC $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) -I../../intl -I../..
+CFLAGS += -fPIC -DPIC $(GTK_CFLAGS) -I../../intl -I../..
 
-LIBADD = -lid3tag $(AUDACIOUS_LIBS)
+LIBADD = -lid3tag
 
 include ../../mk/objective.mk

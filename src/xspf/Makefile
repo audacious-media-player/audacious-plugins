@@ -9,10 +9,10 @@ SOURCES = xspf.c base64.c urlencode.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) -I../../intl -I../..
 
 CXXFLAGS = $(CFLAGS)
 
-LIBADD = $(GTK_LIBS) $(XML_LIBS) $(AUDACIOUS_LIBS)
+LIBADD = $(GTK_LIBS) $(XML_LIBS)
 
 include ../../mk/objective.mk

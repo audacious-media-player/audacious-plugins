@@ -11,8 +11,8 @@ sunsources =	sun.c	    \
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 OBJECTIVE_LIBS = libsun$(SHARED_SUFFIX)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) -I../../intl -I../..
-LIBADD = $(GTK_LIBS) $(AUDACIOUS_LIBS)
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
+LIBADD = $(GTK_LIBS)
 SOURCES= $(sunsources)
 OBJECTS= ${SOURCES:.c=.o}
 

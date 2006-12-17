@@ -9,10 +9,10 @@ SOURCES = cuesheet.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
 CXXFLAGS = $(CFLAGS)
 
-LIBADD = $(GTK_LIBS) $(AUDACIOUS_LIBS)
+LIBADD = $(GTK_LIBS)
 
 include ../../mk/objective.mk

@@ -7,7 +7,7 @@ SUBDIRS = libcalc presets
 
 LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(XML_LIBS) $(SDL_LIBS) $(AUDACIOUS_LIBS) libcalc/libcalc.a
+LIBADD = $(GTK_LIBS) $(XML_LIBS) $(SDL_LIBS) libcalc/libcalc.a
 
 SOURCES =			\
 	actuators.c		\
@@ -28,6 +28,6 @@ SOURCES =			\
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) $(SDL_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) $(SDL_CFLAGS) -I../../intl -I../..
 
 include ../../mk/objective.mk

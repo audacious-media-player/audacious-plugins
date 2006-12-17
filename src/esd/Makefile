@@ -7,12 +7,12 @@ noinst_HEADERS = esdout.h
 
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(ESD_LIBS) $(OSS_LIBS) $(AUDACIOUS_LIBS)
+LIBADD = $(GTK_LIBS) $(ESD_LIBS) $(OSS_LIBS)
 SOURCES = esd.c mixer.c about.c configure.c audio.c init.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ESD_CFLAGS) $(AUDACIOUS_CFLAGS) \
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ESD_CFLAGS) \
 	-I../../intl -I../.. -I..
 
 include ../../mk/objective.mk

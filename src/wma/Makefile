@@ -7,12 +7,12 @@ SUBDIRS = libffwma
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = ./libffwma/libffwma.a $(AUDACIOUS_LIBS)
+LIBADD = ./libffwma/libffwma.a
 
 SOURCES = wma.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) -I../.. -I./libffwma -std=c99
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../.. -I./libffwma -std=c99
 
 include ../../mk/objective.mk

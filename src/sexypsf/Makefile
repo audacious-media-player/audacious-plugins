@@ -19,11 +19,11 @@ SOURCES = \
 	spu/spu.c \
 	xmms.c
 
-LIBADD = -lz $(AUDACIOUS_LIBS)
+LIBADD = -lz
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += -Wno-nonnull $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
+CFLAGS += -Wno-nonnull $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
 
 include ../../mk/objective.mk
 

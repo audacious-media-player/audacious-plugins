@@ -7,11 +7,11 @@ noinst_HEADERS = OSS.h soundcard.h
 
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 
-LIBADD = $(OSS_LIBS) $(GTK_LIBS) $(AUDACIOUS_LIBS)
+LIBADD = $(OSS_LIBS) $(GTK_LIBS)
 SOURCES = OSS.c mixer.c about.c configure.c audio.c init.c convert.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
 
 include ../../mk/objective.mk
