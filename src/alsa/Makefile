@@ -7,12 +7,12 @@ noinst_HEADERS = alsa.h
 
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(ALSA_LIBS) -lpthread
+LIBADD = $(GTK_LIBS) $(ALSA_LIBS) $(AUDACIOUS_LIBS) -lpthread
 SOURCES = alsa.c about.c audio.c configure.c init.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ALSA_CFLAGS) \
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ALSA_CFLAGS) $(AUDACIOUS_CFLAGS) \
 	-I../../intl -I../..
 
 include ../../mk/objective.mk

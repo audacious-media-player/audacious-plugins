@@ -7,9 +7,9 @@ LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 SOURCES = tags.cxx ui.cxx libwavpack.cxx
 
-LIBADD = -L/usr/local/lib $(WAVPACK_LIBS)
+LIBADD = -L/usr/local/lib $(WAVPACK_LIBS) $(AUDACIOUS_LIBS)
 
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(WAVPACK_CFLAGS) -I../../intl -I../..
+CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) $(WAVPACK_CFLAGS) -I../../intl -I../..
 
 LDFLAGS += -lstdc++
 

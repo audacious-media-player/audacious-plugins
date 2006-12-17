@@ -9,8 +9,8 @@ SOURCES = configure.c  fileinfo.c  http.c  vcedit.c  vorbis.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-LIBADD = $(OGG_VORBIS_LIBS)
+LIBADD = $(OGG_VORBIS_LIBS) $(AUDACIOUS_LIBS)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) -I../../intl -I../.. -I../..
 
 include ../../mk/objective.mk

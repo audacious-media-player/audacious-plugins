@@ -5,12 +5,12 @@ OBJECTIVE_LIBS = libbscope$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS)
+LIBADD = $(GTK_LIBS) $(AUDACIOUS_LIBS)
 
 SOURCES = blur_scope.c config.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
 include ../../mk/objective.mk

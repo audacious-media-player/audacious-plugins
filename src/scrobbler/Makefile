@@ -12,7 +12,7 @@ OBJECTIVE_DATA = audioscrobbler.png:$(imagesdir)	\
 
 LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
-LIBADD += $(GTK_LIBS) $(CURL_LIBS) $(MUSICBRAINZ_LIBS)
+LIBADD += $(GTK_LIBS) $(CURL_LIBS) $(MUSICBRAINZ_LIBS) $(AUDACIOUS_LIBS)
 
 SOURCES = 			\
 	fmt.c			\
@@ -24,7 +24,7 @@ SOURCES = 			\
 	hatena.c		\
 	plugin.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) $(AUDACIOUS_CFLAGS) $(CURL_CFLAGS) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.c=.o}
 

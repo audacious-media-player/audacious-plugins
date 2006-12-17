@@ -7,11 +7,11 @@ OBJECTIVE_LIBS = libalarm$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
-LIBADD += $(GTK_LIBS)
+LIBADD += $(GTK_LIBS) $(AUDACIOUS_LIBS)
 
 SOURCES = alarm.c interface.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BEEP_DEFINES) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS) $(BEEP_DEFINES) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.c=.o}
 
