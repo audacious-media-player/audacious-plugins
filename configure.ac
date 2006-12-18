@@ -1082,6 +1082,7 @@ AC_SUBST(CONTAINER_PLUGINS)
 
 AC_CONFIG_FILES([
 	mk/rules.mk
+	po/Makefile.in.in
 ])
 
 AC_OUTPUT
