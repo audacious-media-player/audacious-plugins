@@ -10,33 +10,33 @@
 #
 # Origin: gettext-0.14.4
 
-PACKAGE = @PACKAGE@
-VERSION = @VERSION@
-PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
+PACKAGE = audacious-plugins
+VERSION = 1.3.0
+PACKAGE_BUGREPORT = bugs+audacious-plugins@atheme.org
 
 SHELL = /bin/sh
-@SET_MAKE@
 
-srcdir = @srcdir@
-top_srcdir = @top_srcdir@
-VPATH = @srcdir@
 
-prefix = @prefix@
-exec_prefix = @exec_prefix@
-datadir = @datadir@
+srcdir = .
+top_srcdir = ..
+
+
+prefix = /usr/local
+exec_prefix = ${prefix}
+datadir = ${prefix}/share
 localedir = $(datadir)/locale
 gettextsrcdir = $(datadir)/gettext/po
 
-INSTALL = @INSTALL@
-INSTALL_DATA = @INSTALL_DATA@
-MKINSTALLDIRS = @MKINSTALLDIRS@
+INSTALL = /usr/bin/install -c
+INSTALL_DATA = ${INSTALL} -m 644
+MKINSTALLDIRS = $(top_builddir)/./mkinstalldirs
 mkinstalldirs = $(SHELL) $(MKINSTALLDIRS)
 
-GMSGFMT = @GMSGFMT@
-MSGFMT = @MSGFMT@
-XGETTEXT = @XGETTEXT@
+GMSGFMT = /usr/bin/gmsgfmt
+MSGFMT = /usr/bin/msgfmt
+XGETTEXT = /usr/bin/xgettext
 MSGMERGE = msgmerge
-MSGMERGE_UPDATE = @MSGMERGE@ --update
+MSGMERGE_UPDATE = /usr/bin/msgmerge --update
 MSGINIT = msginit
 MSGCONV = msgconv
 MSGFILTER = msgfilter
@@ -75,7 +75,7 @@ CATALOGS = @CATALOGS@
 	mv t-$@ $@
 
 
-all: all-@USE_NLS@
+all: all-yes
 
 all-yes: stamp-po
 all-no:
@@ -156,7 +156,7 @@ $(POFILES): $(srcdir)/$(DOMAIN).pot
 
 install: install-exec install-data
 install-exec:
-install-data: install-data-@USE_NLS@
+install-data: install-data-yes
 	if test "$(PACKAGE)" = "gettext-tools"; then \
 	  $(mkinstalldirs) $(DESTDIR)$(gettextsrcdir); \
 	  for file in $(DISTFILES.common) Makevars.template; do \
@@ -215,7 +215,7 @@ install-strip: install
 
 installdirs: installdirs-exec installdirs-data
 installdirs-exec:
-installdirs-data: installdirs-data-@USE_NLS@
+installdirs-data: installdirs-data-yes
 	if test "$(PACKAGE)" = "gettext-tools"; then \
 	  $(mkinstalldirs) $(DESTDIR)$(gettextsrcdir); \
 	else \
@@ -260,7 +260,7 @@ installcheck:
 
 uninstall: uninstall-exec uninstall-data
 uninstall-exec:
-uninstall-data: uninstall-data-@USE_NLS@
+uninstall-data: uninstall-data-yes
 	if test "$(PACKAGE)" = "gettext-tools"; then \
 	  for file in $(DISTFILES.common) Makevars.template; do \
 	    rm -f $(DESTDIR)$(gettextsrcdir)/$$file; \

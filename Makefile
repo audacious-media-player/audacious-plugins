@@ -3,7 +3,7 @@
 include mk/rules.mk
 include mk/init.mk
 
-SUBDIRS = src
+SUBDIRS = src po
 
 include mk/objective.mk
 

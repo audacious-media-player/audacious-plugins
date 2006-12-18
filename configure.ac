@@ -47,6 +47,9 @@ AC_PATH_PROG(CP, cp)
 AC_PATH_PROG(AR, ar)
 AC_PATH_PROG(RANLIB, ranlib)
 
+dnl Gettext -nenolod
+AM_GNU_GETTEXT([external])
+
 dnl Path settings
 
 AC_ARG_WITH(dev-dsp,
@@ -1082,7 +1085,7 @@ AC_SUBST(CONTAINER_PLUGINS)
 
 AC_CONFIG_FILES([
 	mk/rules.mk
-	po/Makefile.in.in
+	po/Makefile
 ])
 
 AC_OUTPUT

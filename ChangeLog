@@ -1,3 +1,12 @@
+2006-12-18 20:03:57 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [854]
+  - add infrastructure for plugin i18n
+  
+  trunk/configure.ac      |    1 
+  trunk/po/Makefile.in.in |  269 ++++++++++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 270 insertions(+)
+
+
 2006-12-17 16:46:44 +0000  Giacomo Lozito <james@develia.org>
   revision [850]
   reverted to 844, to be re-reconsidered later
