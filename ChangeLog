@@ -1,3 +1,28 @@
+2006-12-18 20:25:28 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [856]
+  - translation framework
+  
+  trunk/Makefile                 |    2 
+  trunk/config.rpath             |  133 --
+  trunk/configure.ac             |    5 
+  trunk/mkinstalldirs            |   69 +
+  trunk/po/ChangeLog             |   12 
+  trunk/po/Makefile.in           |  384 +++++++
+  trunk/po/Makefile.in.in        |  455 +++++----
+  trunk/po/Makevars              |   43 
+  trunk/po/Makevars.template     |   41 
+  trunk/po/POTFILES.in           |   52 +
+  trunk/po/Rules-quot            |   47 
+  trunk/po/audacious-plugins.pot | 2026 +++++++++++++++++++++++++++++++++++++++++
+  trunk/po/boldquot.sed          |   10 
+  trunk/po/en@boldquot.header    |   25 
+  trunk/po/en@quot.header        |   22 
+  trunk/po/insert-header.sin     |   23 
+  trunk/po/quot.sed              |    6 
+  trunk/po/remove-potcdate.sin   |   19 
+  18 files changed, 3099 insertions(+), 275 deletions(-)
+
+
 2006-12-18 20:03:57 +0000  William Pitcock <nenolod@nenolod.net>
   revision [854]
   - add infrastructure for plugin i18n
