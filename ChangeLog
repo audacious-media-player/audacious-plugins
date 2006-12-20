@@ -1,3 +1,12 @@
+2006-12-19 07:45:10 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [858]
+  - build fix
+  
+  trunk/configure.ac   |    2 
+  trunk/po/Makefile.in |  384 ---------------------------------------------------
+  2 files changed, 1 insertion(+), 385 deletions(-)
+
+
 2006-12-18 20:25:28 +0000  William Pitcock <nenolod@nenolod.net>
   revision [856]
   - translation framework

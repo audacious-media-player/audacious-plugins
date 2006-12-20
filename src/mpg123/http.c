@@ -518,6 +518,7 @@ http_buffer_loop(gpointer arg)
                     temp2 = NULL;
                 temp = g_strdup_printf("GET %s HTTP/1.1\r\n"
                                        "Host: %s\r\n"
+                                       "Connection: close\r\n"
                                        "User-Agent: %s/%s\r\n"
                                        "%s%s%s%s%s\r\n",
                                        file, host, PACKAGE_NAME, PACKAGE_VERSION,
