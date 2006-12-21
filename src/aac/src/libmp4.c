@@ -161,7 +161,9 @@ static int	mp4_IsOurFile(char *filename)
   VFSFile *file;
   gchar* extension;
   gchar magic[8];
- 
+
+  memset(magic, '\0', 8);
+
   extension = strrchr(filename, '.');
   if ((file = vfs_fopen(filename, "rb"))) {
       vfs_fread(magic, 1, 8, file);
