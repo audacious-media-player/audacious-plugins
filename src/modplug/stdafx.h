@@ -21,7 +21,7 @@
 
 inline void ProcessPlugins(int n) {}
 
-#elif defined(__x86_64__)
+#elif defined(__x86_64__) || defined(__powerpc64__)
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -99,7 +99,7 @@ typedef signed char CHAR;
 typedef unsigned char UCHAR;
 typedef unsigned char* PUCHAR;
 typedef unsigned short USHORT;
-#if defined(__x86_64__)
+#if defined(__x86_64__) || defined(__powerpc64__)
 typedef unsigned int ULONG;
 typedef unsigned int UINT;
 typedef unsigned int DWORD;
