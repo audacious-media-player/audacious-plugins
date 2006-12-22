@@ -1,3 +1,22 @@
+2006-12-21 20:49:30 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [862]
+  Fix:
+  
+  (WARN: 12386, in pid 29842)
+  Conditional jump or move depends on uninitialised values:
+     at 0x583C3BA: mp4_IsOurFD <libmp4.c:199>
+     by 0x805F5DC: input_check_file <input.c:461>
+     by 0x806233F: playlist_entry_get_info <playlist.c:193>
+     by 0x8065177: playlist_get_songtitle <playlist.c:1719>
+     by 0x807D070: playlistwin_update_sinfo <ui_playlist.c:406>
+     by 0x8064EEF: playlist_load_ins <playlist.c:1639>
+     by 0x8064A1E: playlist_load <playlist.c:1501>
+     by 0x806C084: main <main.c:1114>
+  
+  trunk/src/aac/src/libmp4.c |    4 +++-
+  1 file changed, 3 insertions(+), 1 deletion(-)
+
+
 2006-12-20 11:51:01 +0000  William Pitcock <nenolod@nenolod.net>
   revision [860]
   - ensure that HTTP streams are connection: close.
