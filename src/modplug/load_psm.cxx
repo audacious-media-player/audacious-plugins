@@ -85,6 +85,10 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 	BYTE samplemap[MAX_SAMPLES];
 	UINT nPatterns;
 
+	pfh->id = bswapLE32(pfh->id);
+	pfh->len = bswapLE32(pfh->len);
+	pfh->listid = bswapLE32(pfh->listid);
+
 	// Chunk0: "PSM ",filesize,"FILE"
 	if (dwMemLength < 256) return FALSE;
 	if (pfh->id == PSM_ID_OLD)
@@ -109,6 +113,11 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 	while (dwMemPos+8 < dwMemLength)
 	{
 		PSMCHUNK *pchunk = (PSMCHUNK *)(lpStream+dwMemPos);
+
+		pchunk->id = bswapLE32(pchunk->id);
+		pchunk->len = bswapLE32(pchunk->len);
+		pchunk->listid = bswapLE32(pchunk->listid);
+
 		if ((pchunk->len >= dwMemLength - 8) || (dwMemPos + pchunk->len + 8 > dwMemLength)) break;
 		dwMemPos += 8;
 		PUCHAR pdata = (PUCHAR)(lpStream+dwMemPos);
@@ -142,6 +151,13 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 				m_nSamples++;
 				MODINSTRUMENT *pins = &Ins[m_nSamples];
 				PSMSAMPLE *psmp = (PSMSAMPLE *)pdata;
+
+				psmp->smpid = bswapLE32(psmp->smpid);
+				psmp->length = bswapLE32(psmp->length);
+				psmp->loopstart = bswapLE32(psmp->loopstart); 
+				psmp->loopend = bswapLE32(psmp->loopend);
+				psmp->samplerate = bswapLE32(psmp->samplerate);
+
 				smpnames[m_nSamples] = psmp->smpid;
 				memcpy(m_szNames[m_nSamples], psmp->samplename, 31);
 				m_szNames[m_nSamples][31] = 0;
@@ -193,6 +209,11 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 		while (dwMemPos + 8 < dwSongEnd)
 		{
 			PSMCHUNK *pchunk = (PSMCHUNK *)(lpStream+dwMemPos);
+
+			pchunk->id = bswapLE32(pchunk->id);
+			pchunk->len = bswapLE32(pchunk->len);
+			pchunk->listid = bswapLE32(pchunk->listid);
+
 			dwMemPos += 8;
 			if ((pchunk->len > dwSongEnd) || (dwMemPos + pchunk->len > dwSongEnd)) break;
 			PUCHAR pdata = (PUCHAR)(lpStream+dwMemPos);
@@ -251,6 +272,11 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 	for (UINT nPat=0; nPat<nPatterns; nPat++)
 	{
 		PSMPATTERN *pPsmPat = (PSMPATTERN *)(lpStream+patptrs[nPat]+8);
+
+		pPsmPat->size = bswapLE32(pPsmPat->size);
+		pPsmPat->name = bswapLE32(pPsmPat->name);
+		pPsmPat->rows = bswapLE16(pPsmPat->rows);
+
 		ULONG len = *(DWORD *)(lpStream+patptrs[nPat]+4) - 12;
 		UINT nRows = pPsmPat->rows;
 		if (len > pPsmPat->size) len = pPsmPat->size;
