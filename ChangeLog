@@ -1,3 +1,11 @@
+2006-12-23 22:46:28 +0000  Michael Hanselmann <hansmi@forkbomb.ch>
+  revision [870]
+  Fix endian issues on ppc32.
+  
+  trunk/src/modplug/load_psm.cxx |   26 ++++++++++++++++++++++++++
+  1 file changed, 26 insertions(+)
+
+
 2006-12-22 23:34:37 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [868]
   Portability fix for PPC64 (64-bit userland).
