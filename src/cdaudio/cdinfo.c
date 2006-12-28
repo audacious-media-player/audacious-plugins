@@ -118,18 +118,23 @@ cdda_cdinfo_track_set(cdinfo_t * cdinfo, gint num, gchar * artist,
 
 
 /*
- * Function cdda_cdinfo_cd_set (cdinfo, cdname, cdartist)
+ * Function cdda_cdinfo_cd_set (cdinfo, cdname, cdartist, discid,
+ * genre, year)
  *
- *    Set name and artist for a cd.  If CD is a multiartist disc, the
- *    `artist' should be set to NULL.
+ *    Set name, artist, discid, genre and year for a cd. If CD is a
+ *    multiartist disc, the `artist' should be set to NULL.
  *
  */
 void
-cdda_cdinfo_cd_set(cdinfo_t * cdinfo, gchar * cdname, gchar * cdartist)
+cdda_cdinfo_cd_set(cdinfo_t * cdinfo, gchar * cdname, gchar * cdartist,
+                   gchar * discid, gchar * genre, gchar *year)
 {
+    cdinfo->is_valid = TRUE;
     cdinfo->albname = cdname;
     cdinfo->artname = cdartist;
-    cdinfo->is_valid = TRUE;
+    cdinfo->discid = discid ? atoi(discid) : 0;
+    cdinfo->genre = genre;
+    cdinfo->year = year ? atoi(year) : 0;
 }
 
 
@@ -188,9 +193,20 @@ cdda_cdinfo_write_file(guint32 cddb_discid, cdinfo_t * cdinfo)
                                 cdinfo->albname);
     else
         bmp_rcfile_write_string(rcfile, sectionname, "Albumname", "");
+
     if (cdinfo->artname)
         bmp_rcfile_write_string(rcfile, sectionname, "Artistname",
                                 cdinfo->artname);
+    if (cdinfo->year) {
+        gchar *yearstr = g_strdup_printf("%4d", cdinfo->year);
+        bmp_rcfile_write_string(rcfile, sectionname, "Year", yearstr);
+        g_free(yearstr);
+    }
+
+    if (cdinfo->genre)
+        bmp_rcfile_write_string(rcfile, sectionname, "Genre", cdinfo->genre);
+
+
     for (i = 1; i <= numtracks; i++) {
         if (cdinfo->tracks[i].artist) {
             sprintf(trackstr, "track_artist%d", i);
@@ -224,6 +240,7 @@ cdda_cdinfo_read_file(guint32 cddb_discid, cdinfo_t * cdinfo)
     gchar sectionname[10], trackstr[16];
     gint i, numtracks = cddb_discid & 0xff;
     gboolean track_found;
+    gchar *yearstr = NULL;
 
     sprintf(sectionname, "%08x", cddb_discid);
 
@@ -241,6 +258,15 @@ cdda_cdinfo_read_file(guint32 cddb_discid, cdinfo_t * cdinfo)
 
     bmp_rcfile_read_string(rcfile, sectionname, "Artistname",
                            &cdinfo->artname);
+
+    bmp_rcfile_read_string(rcfile, sectionname, "Year", &yearstr);
+    if (yearstr) {
+        cdinfo->year = atoi(yearstr);
+	g_free(yearstr);
+	yearstr = NULL;
+    }
+
+    bmp_rcfile_read_string(rcfile, sectionname, "Genre", &cdinfo->genre);
 
     for (i = 1; i <= numtracks; i++) {
         track_found = FALSE;

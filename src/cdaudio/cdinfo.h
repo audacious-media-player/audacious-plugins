@@ -36,8 +36,11 @@ typedef struct {
  */
 typedef struct {
     gboolean is_valid;
+    gint discid;
     gchar *albname;
     gchar *artname;
+    gchar *genre;
+    gint year;
     trackinfo_t tracks[100];
 } cdinfo_t;
 
@@ -45,9 +48,8 @@ void cdda_cdinfo_flush(cdinfo_t * cdinfo);
 cdinfo_t *cdda_cdinfo_new(void);
 void cdda_cdinfo_delete(cdinfo_t * info);
 void cdda_cdinfo_track_set(cdinfo_t * cdinfo, gint, gchar *, gchar *);
-void cdda_cdinfo_cd_set(cdinfo_t * cdinfo, gchar *, gchar *);
-gint cdda_cdinfo_get(cdinfo_t * cdinfo, gint num, gchar **, gchar **,
-                     gchar **);
+void cdda_cdinfo_cd_set(cdinfo_t * cdinfo, gchar *, gchar *, gchar *, gchar *, gchar *);
+gint cdda_cdinfo_get(cdinfo_t * cdinfo, gint num, gchar **, gchar **, gchar **);
 gboolean cdda_cdinfo_read_file(guint32 cddb_discid, cdinfo_t * cdinfo);
 void cdda_cdinfo_write_file(guint32 cddb_discid, cdinfo_t * cdinfo);
 

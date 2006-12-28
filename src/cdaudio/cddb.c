@@ -302,9 +302,11 @@ cddb_read(gchar * server, cddb_disc_header_t * cddb_info, cdinfo_t * cdinfo)
 {
     gint sock;
     gchar *readstr;
-    gchar buffer[256], buffer2[BUF2SIZE];
+    gchar buffer[256];	/* http line buffer */
+    gchar *discid = NULL, *dartist = NULL, *dtitle = NULL,
+	    *dyear = NULL, *dgenre = NULL, *ttitle = NULL;
     gchar *realstr, *temp;
-    gint len, command, bufs;
+    gint len, command;
     gint num, oldnum;
 
     if ((sock = cddb_http_open_connection(server, 80)) == 0)
@@ -331,10 +333,8 @@ cddb_read(gchar * server, cddb_disc_header_t * cddb_info, cdinfo_t * cdinfo)
     cddb_log("Read response: %s", buffer);
 
     command = 1;
-    bufs = 0;
     oldnum = -1;
     do {
-/*              fprintf(stderr,"%s\n",buffer); */
         realstr = strchr(buffer, '=');
         if (buffer[0] == '#' || !realstr)
             continue;
@@ -344,58 +344,55 @@ cddb_read(gchar * server, cddb_disc_header_t * cddb_info, cdinfo_t * cdinfo)
 
         switch (command) {
         case 1:
-            if (!strncmp(buffer, "DISCID", 6))
-                break;
+            if (!strncmp(buffer, "DISCID", 6)) {
+                discid = g_strdup(realstr);
+                break;			
+            }
             command++;
         case 2:
             if (!strncmp(buffer, "DTITLE", 6)) {
-                strncpy(buffer2 + bufs, realstr, BUF2SIZE - bufs);
-                bufs += len;
-                break;
-            }
-            if (bufs > 0) {
-                buffer2[BUF2SIZE - 1] = '\0';
-                if ((temp = strstr(buffer2, " / ")) != NULL) {
-                    cdda_cdinfo_cd_set(cdinfo, g_strdup(temp + 3),
-                                       g_strndup(buffer2, temp - buffer2));
+                if((temp = strstr(buffer, " / ")) != NULL) {
+                    dtitle = g_strdup(temp+3);
+                    dartist = g_strndup(realstr, temp - realstr);
                 }
-                else
-                    cdda_cdinfo_cd_set(cdinfo, g_strdup(buffer2),
-                                       g_strdup(buffer2));
-                bufs = 0;
+                else {
+                    dtitle = g_strdup(realstr);
+                }
+                break;
             }
             command++;
         case 3:
             if (!strncmp(buffer, "DYEAR", 5)) {
+                dyear = g_strdup(realstr);
                 break;
             }
             command++;
         case 4:
             if (!strncmp(buffer, "DGENRE", 6)) {
+                dgenre = g_strdup(realstr);
                 break;
             }
+
+            // we have obtained all necessary data to set discinfo
+            cdda_cdinfo_cd_set(cdinfo, dtitle, dartist, discid, dgenre, dyear);
+            
             command++;
         case 5:
             if (!strncmp(buffer, "TTITLE", 6)) {
                 num = atoi(buffer + 6);
                 if (oldnum < 0 || num == oldnum) {
-                    strncpy(buffer2 + bufs, realstr, BUF2SIZE - bufs);
-                    bufs += len;
+                    ttitle = g_strdup(realstr);
                 }
                 else {
-                    buffer2[BUF2SIZE - 1] = '\0';
-                    cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL,
-                                          g_strdup(buffer2));
-                    strncpy(buffer2, realstr, BUF2SIZE);
-                    bufs = len;
+                    cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, ttitle);
+                    ttitle = g_strdup(realstr);
                 }
                 oldnum = num;
                 break;
             }
             if (oldnum >= 0)
-                cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL,
-                                      g_strdup(buffer2));
-            bufs = 0;
+                cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, ttitle);
+
             oldnum = -1;
             command++;
         case 6:
@@ -422,7 +419,7 @@ cddb_read(gchar * server, cddb_disc_header_t * cddb_info, cdinfo_t * cdinfo)
     } while (http_read_line(sock, buffer, 256) >= 0);
 
     if (oldnum >= 0)
-        cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, g_strdup(buffer2));
+        cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, ttitle);
 
     http_close_connection(sock);
     return TRUE;
@@ -553,16 +550,17 @@ cddb_read_file(gchar * file, cddb_disc_header_t * cddb_info,
                cdinfo_t * cdinfo)
 {
     FILE *fd;
-    gchar buffer[256], buffer2[BUF2SIZE];
+    gchar buffer[256];
     gchar *realstr, *temp;
-    gint len, command, bufs;
+    gchar *discid = NULL, *dartist = NULL, *dtitle = NULL,
+	    *dyear = NULL, *dgenre = NULL, *ttitle = NULL;
+    gint len, command;
     gint num, oldnum;
 
     if ((fd = fopen(file, "r")) == NULL)
         return 0;
 
     command = 1;
-    bufs = 0;
     oldnum = -1;
     while (fgets(buffer, 256, fd) != NULL) {
         realstr = strchr(buffer, '=');
@@ -576,58 +574,55 @@ cddb_read_file(gchar * file, cddb_disc_header_t * cddb_info,
 
         switch (command) {
         case 1:
-            if (!strncmp(buffer, "DISCID", 6))
+            if (!strncmp(buffer, "DISCID", 6)) {
+                discid = g_strdup(realstr);
                 break;
+            }
             command++;
         case 2:
             if (!strncmp(buffer, "DTITLE", 6)) {
-                strncpy(buffer2 + bufs, realstr, BUF2SIZE - bufs);
-                bufs += len;
-                break;
-            }
-            if (bufs > 0) {
-                buffer2[BUF2SIZE - 1] = '\0';
-                if ((temp = strstr(buffer2, " / ")) != NULL) {
-                    cdda_cdinfo_cd_set(cdinfo, g_strdup(temp + 3),
-                                       g_strndup(buffer2, temp - buffer2));
+                if((temp = strstr(buffer, " / ")) != NULL) {
+                    dtitle = g_strdup(temp+3);
+                    dartist = g_strndup(realstr, temp - realstr);
                 }
-                else
-                    cdda_cdinfo_cd_set(cdinfo, g_strdup(buffer2),
-                                       g_strdup(buffer2));
-                bufs = 0;
+                else {
+                    dtitle = g_strdup(realstr);
+                }
+                break;
             }
             command++;
         case 3:
             if (!strncmp(buffer, "DYEAR", 5)) {
+                dyear = g_strdup(realstr);
                 break;
             }
             command++;
         case 4:
             if (!strncmp(buffer, "DGENRE", 6)) {
+                dgenre = g_strdup(realstr);
                 break;
             }
+
+            // we have obtained all necessary data to set discinfo
+            cdda_cdinfo_cd_set(cdinfo, dtitle, dartist, discid, dgenre, dyear);
+
             command++;
         case 5:
             if (!strncmp(buffer, "TTITLE", 6)) {
                 num = atoi(buffer + 6);
                 if (oldnum < 0 || num == oldnum) {
-                    strncpy(buffer2 + bufs, realstr, BUF2SIZE - bufs);
-                    bufs += len;
+                    ttitle = g_strdup(realstr);
                 }
                 else {
-                    buffer2[BUF2SIZE - 1] = '\0';
-                    cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL,
-                                          g_strdup(buffer2));
-                    strncpy(buffer2, realstr, BUF2SIZE);
-                    bufs = len;
+                    cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, ttitle);
+                    ttitle = g_strdup(realstr);
                 }
                 oldnum = num;
                 break;
             }
             if (oldnum >= 0)
-                cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL,
-                                      g_strdup(buffer2));
-            bufs = 0;
+                cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, ttitle);
+
             oldnum = -1;
             command++;
         case 6:
@@ -654,7 +649,7 @@ cddb_read_file(gchar * file, cddb_disc_header_t * cddb_info,
     }
 
     if (oldnum >= 0)
-        cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, g_strdup(buffer2));
+        cdda_cdinfo_track_set(cdinfo, oldnum + 1, NULL, ttitle);
 
     fclose(fd);
     return (1);

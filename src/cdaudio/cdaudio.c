@@ -1058,6 +1058,9 @@ cdda_get_tuple(cdda_disc_toc_t * toc, int track)
     if (!tuple->track_name)
         tuple->track_name = g_strdup_printf(_("CD Audio Track %02u"), track);
 
+    tuple->genre = g_strdup(cdinfo.genre);
+    tuple->year = cdinfo.year;
+
     return tuple;
 }
 
