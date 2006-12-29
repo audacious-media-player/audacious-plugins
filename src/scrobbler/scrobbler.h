@@ -3,6 +3,8 @@
 
 #include "audacious/titlestring.h"
 
+#define SC_CURL_TIMEOUT 5
+
 int sc_idle(GMutex *);
 void sc_init(char *, char *);
 void sc_addentry(GMutex *, TitleInput *, int);

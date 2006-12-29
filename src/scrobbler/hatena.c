@@ -387,6 +387,8 @@ static int hatena_sc_handshake(void)
 	memset(hatena_sc_curl_errbuf, 0, sizeof(hatena_sc_curl_errbuf));
 	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, hatena_sc_curl_errbuf);
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
 	status = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 
@@ -596,6 +598,8 @@ static int hatena_sc_submitentry(gchar *entry)
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *)submission->str);
 	memset(hatena_sc_curl_errbuf, 0, sizeof(hatena_sc_curl_errbuf));
 	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, hatena_sc_curl_errbuf);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
 
 	/*
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);

@@ -419,6 +419,8 @@ static int sc_handshake(void)
 	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
 	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
 	status = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 
@@ -633,6 +635,8 @@ static int sc_submitentry(gchar *entry)
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *)submission->str);
 	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
 	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
 
 	/*
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);

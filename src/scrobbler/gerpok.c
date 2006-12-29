@@ -420,6 +420,8 @@ static int gerpok_sc_handshake(void)
 	memset(gerpok_sc_curl_errbuf, 0, sizeof(gerpok_sc_curl_errbuf));
 	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, gerpok_sc_curl_errbuf);
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
 	status = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 
@@ -634,6 +636,8 @@ static int gerpok_sc_submitentry(gchar *entry)
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *)submission->str);
 	memset(gerpok_sc_curl_errbuf, 0, sizeof(gerpok_sc_curl_errbuf));
 	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, gerpok_sc_curl_errbuf);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
 
 	/*
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
