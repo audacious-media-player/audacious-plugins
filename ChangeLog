@@ -1,3 +1,14 @@
+2006-12-28 10:57:42 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [874]
+  - add DYEAR and DGENRE support.
+  
+  trunk/src/cdaudio/cdaudio.c |    3 +
+  trunk/src/cdaudio/cddb.c    |  111 +++++++++++++++++++++-----------------------
+  trunk/src/cdaudio/cdinfo.c  |   36 ++++++++++++--
+  trunk/src/cdaudio/cdinfo.h  |    8 +--
+  4 files changed, 92 insertions(+), 66 deletions(-)
+
+
 2006-12-24 15:08:26 +0000  Michael Hanselmann <hansmi@forkbomb.ch>
   revision [872]
   Add .s3m to allowed extensions, reported by Chainsaw.
