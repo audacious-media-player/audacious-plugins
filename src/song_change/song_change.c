@@ -17,7 +17,7 @@
 #include <string.h>
 
 #include "audacious/plugin.h"
-#include "audacious/prefswin.h"
+#include "audacious/ui_preferences.h"
 #include "audacious/configdb.h"
 #include "audacious/beepctrl.h"
 #include "audacious/formatter.h"

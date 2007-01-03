@@ -8,7 +8,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/plugin.h>
-#include <audacious/prefswin.h>
+#include <audacious/ui_preferences.h>
 #include <audacious/playlist.h>
 #include <audacious/configdb.h>
 #include <audacious/beepctrl.h>
