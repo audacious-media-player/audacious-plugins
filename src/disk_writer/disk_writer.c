@@ -65,6 +65,7 @@ static VFSFile *output_file = NULL;
 static struct wavhead header;
 static guint64 written = 0;
 static AFormat afmt;
+static gint arate, ach;
 gint ctrlsocket_get_session_id(void);		/* FIXME */
 
 static void disk_init(void);
@@ -132,6 +133,8 @@ static gint disk_open(AFormat fmt, gint rate, gint nch)
 
 	written = 0;
 	afmt = fmt;
+	arate = rate;
+	ach = nch;
 
 	if (xmms_check_realtime_priority())
 	{
@@ -276,6 +279,11 @@ static void disk_close(void)
 
 static void disk_flush(gint time)
 {
+	if (time == 0)
+	{
+		disk_close();
+		disk_open(afmt, arate, ach);
+	}
 }
 
 static void disk_pause(short p)
