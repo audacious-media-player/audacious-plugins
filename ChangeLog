@@ -1,3 +1,10 @@
+2007-01-03 23:24:10 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [884]
+  Replace xmms_create_dir_browser & fix other issues. Patch by external contributor Michael Faerber <01mf02 -at- gmail.com>
+  trunk/src/disk_writer/disk_writer.c |   93 ++++++++++++++----------------------
+  1 file changed, 37 insertions(+), 56 deletions(-)
+
+
 2007-01-03 20:45:05 +0000  William Pitcock <nenolod@nenolod.net>
   revision [882]
   - reopen on flush(0)

@@ -97,20 +97,24 @@ load_pn_rc (void)
   if (! a) goto ugh;
   b = create_actuator ("cmap_bwgradient");
   if (! b) goto ugh;
-  b->options[2].val.cval.r = b->options[2].val.cval.g = 0;
+  b->options[2].val.cval.r = 64;
+  b->options[2].val.cval.g = 128;
   container_add_actuator (a, b);
   container_add_actuator (pn_rc->actuator, a);
-  a = create_actuator ("general_fade");
-  if (! a) goto ugh;
-  container_add_actuator (pn_rc->actuator, a);
-  a = create_actuator ("xform_spin");
-  if (! a) goto ugh;
-  a->options[0].val.fval = -4.0;
-  a->options[2].val.fval = 0.9;
-  container_add_actuator (pn_rc->actuator, a);
+
   a = create_actuator ("wave_horizontal");
   if (! a) goto ugh;
   container_add_actuator (pn_rc->actuator, a);
+
+  a = create_actuator ("xform_movement");
+  if (! a) goto ugh;
+  a->options[0].val.sval = g_strdup("d = cos(d)^2;");
+  container_add_actuator (pn_rc->actuator, a);
+
+  a = create_actuator ("general_fade");
+  if (! a) goto ugh;
+  container_add_actuator (pn_rc->actuator, a);
+
   a = create_actuator ("general_blur");
   if (! a) goto ugh;
   container_add_actuator (pn_rc->actuator, a);
