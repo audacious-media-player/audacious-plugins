@@ -448,8 +448,6 @@ static int timeout_func(gpointer data)
 	char *current_file;
 	char *current_track;
 
-	GDK_THREADS_ENTER();
-
 	playing = xmms_remote_is_playing(sc_gp.xmms_session);
 	pos = xmms_remote_get_playlist_pos(sc_gp.xmms_session);
 	current_file = xmms_remote_get_playlist_file(sc_gp.xmms_session, pos);
@@ -503,8 +501,6 @@ static int timeout_func(gpointer data)
 
 	g_free(current_file);
 	current_file = NULL;
-
-	GDK_THREADS_LEAVE();
 
 	return TRUE;
 }

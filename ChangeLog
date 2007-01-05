@@ -1,3 +1,11 @@
+2007-01-04 22:15:14 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [886]
+  - new default preset
+  
+  trunk/src/paranormal/plugin.c |   16 ++++++++++------
+  1 file changed, 10 insertions(+), 6 deletions(-)
+
+
 2007-01-03 23:24:10 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [884]
   Replace xmms_create_dir_browser & fix other issues. Patch by external contributor Michael Faerber <01mf02 -at- gmail.com>
