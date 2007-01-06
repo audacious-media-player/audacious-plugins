@@ -1,3 +1,11 @@
+2007-01-06 09:59:37 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [896]
+  - actuatorbin.c was missing.
+  
+  trunk/src/rovascope/actuatorbin.c |   76 ++++++++++++++++++++++++++++++++++++++
+  1 file changed, 76 insertions(+)
+
+
 2007-01-06 09:57:34 +0000  William Pitcock <nenolod@nenolod.net>
   revision [894]
   - rovascope -- a variant of the paranormal visualization engine that is 

@@ -35,18 +35,12 @@ struct pn_actuator *
 rovascope_get_random_normal_scope(void)
 {
    struct pn_actuator *out;
-   static gint ret = 0;
 
    gchar *candidates[] = {
       "wave_horizontal", "wave_vertical", "wave_radial",
    };
 
-   if (ret >= G_N_ELEMENTS(candidates))
-       ret = 0;
-
-   out = create_actuator(candidates[ret]);
-
-   ret++;
+   out = create_actuator(candidates[rand() % G_N_ELEMENTS(candidates)]);
 
    return out;
 }
