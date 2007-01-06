@@ -1,3 +1,19 @@
+2007-01-06 09:57:34 +0000  William Pitcock <nenolod@nenolod.net>
+  revision [894]
+  - rovascope -- a variant of the paranormal visualization engine that is 
+    uses random data instead of presets.
+  
+  trunk/configure.ac               |    2 
+  trunk/src/rovascope/Makefile     |    7 
+  trunk/src/rovascope/cfg.c        |  636 --------------------------
+  trunk/src/rovascope/paranormal.c |   27 -
+  trunk/src/rovascope/paranormal.h |    6 
+  trunk/src/rovascope/plugin.c     |  940 +++++++++++++++++++--------------------
+  trunk/src/rovascope/presets.c    |  261 ----------
+  trunk/src/rovascope/presets.h    |   11 
+  8 files changed, 494 insertions(+), 1396 deletions(-)
+
+
 2007-01-06 03:31:47 +0000  William Pitcock <nenolod@nenolod.net>
   revision [892]
   - update to Objective-Make II
