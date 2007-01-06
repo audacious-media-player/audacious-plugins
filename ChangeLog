@@ -1,3 +1,20 @@
+2007-01-06 15:40:46 +0000  Michael Hanselmann <hansmi@forkbomb.ch>
+  revision [900]
+  - Rework and clean up code
+  - Add generic support for /sys/class/leds/ LEDs, used for Apple PMU and SMU
+  - Make rocklight configurable in configure
+  
+  trunk/configure.ac               |   14 ++--
+  trunk/src/rocklight/Makefile     |    2 
+  trunk/src/rocklight/apple_pmu.c  |   50 ---------------
+  trunk/src/rocklight/rocklight.c  |  128 +++++++++++++++++++++++++++------------
+  trunk/src/rocklight/rocklight.h  |   28 ++++++++
+  trunk/src/rocklight/sysled.c     |   38 +++++++++++
+  trunk/src/rocklight/thinklight.c |   26 +++----
+  trunk/src/rocklight/thinklight.h |   34 ----------
+  8 files changed, 179 insertions(+), 141 deletions(-)
+
+
 2007-01-06 10:00:15 +0000  William Pitcock <nenolod@nenolod.net>
   revision [898]
   - select waves randomly
