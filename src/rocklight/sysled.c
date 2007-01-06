@@ -1,13 +1,7 @@
-/***************************************************************************
- *            thinklight.h
- *
- *  Sun Dec 26 17:01:00 2004
- *  Copyright  2004  Benedikt 'Hunz' Heinz
- *  rocklight@hunz.org
- *  $Id: thinklight.h,v 1.2 2005/03/26 21:29:17 hunz Exp $
- ****************************************************************************/
-
 /*
+ *  Copyright (C) 2006 Tony Vroon <chainsaw@gentoo.org>
+ *  Copyright (C) 2007 Michael Hanselmann <audacious@hansmi.ch>
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -23,12 +17,22 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
  
-#ifndef _THINKLIGHT_H
-#define _THINKLIGHT_H
+#include <unistd.h>
+#include <stdlib.h>
 
-int thinklight_open(void);
-void thinklight_close(int fd);
-int thinklight_set(int fd, int state);
-int thinklight_get(int fd);
+#include "rocklight.h"
 
-#endif /* _THINKLIGHT_H */
+int sysled_set(int fd, int state) {
+	if (state) {
+		return write(fd, "255\n", 4);
+	} else {
+		return write(fd, "0\n", 2);
+	}
+}
+
+int sysled_get(int fd) {
+	char buf[256];
+	int ret = read(fd, &buf, sizeof(buf));
+
+	return (strtol(buf, NULL, 10) == 255);
+}

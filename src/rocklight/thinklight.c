@@ -28,29 +28,27 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-int thinklight_open(void) {
-	return open("/proc/acpi/ibm/light",O_RDWR);
-}
-
-void thinklight_close(int fd) {
-	close(fd);	
-}
+#include "rocklight.h"
 
 int thinklight_set(int fd, int state) {
-	return write(fd,state?"on\n":"off\n",state?3:4);
+	if (state) {
+		return write(fd, "on\n", 3);
+	} else {
+		return write(fd, "off\n", 4);
+	}
 }
 
 int thinklight_get(int fd) {
 	char buf[256];
-	int ret=read(fd,&buf,sizeof(buf));
-	
-	if(ret<0)
+	int ret = read(fd, &buf, sizeof(buf));
+
+	if (ret < 0)
 		return ret;
-	else if(ret<11)
+	else if (ret < 11)
 		return -23;
-	else if(buf[10]=='f')
+	else if (buf[10] == 'f')
 		return 0;
-	else if(buf[10]=='n')
+	else if (buf[10] == 'n')
 		return 1;
 	else
 		return -42;
