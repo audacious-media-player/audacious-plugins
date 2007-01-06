@@ -1,3 +1,10 @@
+2007-01-05 12:54:33 +0000  Giacomo Lozito <james@develia.org>
+  revision [890]
+  - removed gdk_threads_enter/leave from song_change.c, it's not needed here and brings troubles too
+  trunk/src/song_change/song_change.c |    4 ----
+  1 file changed, 4 deletions(-)
+
+
 2007-01-04 22:15:14 +0000  William Pitcock <nenolod@nenolod.net>
   revision [886]
   - new default preset

@@ -85,7 +85,7 @@ clean:
 		done; \
 	fi
 	$(MAKE) clean-posthook
-	rm -f *.o *.lo *.so *.a *.sl
+	rm -f *.o *.lo *.so *.a *.sl .depend-done
 	@if [ "x$(OBJECTIVE_BINS)" != "x" ]; then \
 		for i in $(OBJECTIVE_BINS); do \
 			rm -f $$i; \
@@ -129,7 +129,7 @@ distclean: clean
 		rm -f mk/rules.mk; \
 	fi
 
-build:
+build: depend
 	$(MAKE) build-prehook
 	@if [ "x$(OVERLAYS)" != "x" ]; then \
 		for i in `find $(OVERLAYS) -type d -maxdepth 1 -mindepth 1`; do \
@@ -211,11 +211,11 @@ $(OBJECTIVE_LIBS): $(OBJECTS)
 	if [ "x$(OBJECTS)" != "x" ]; then \
 		$(MAKE) $(OBJECTS) || exit;		\
 		printf "%10s     %-20s\n" LINK $@; \
-		(if [ "x$(SHARED_SUFFIX)" = "xso" ]; then \
+		(if [ "x$(SHARED_SUFFIX)" = "x.so" ]; then \
 			(if [ "x$(OBJECTIVE_SONAME_SUFFIX)" != "x" ]; then \
-				$(CC) $(PICLDFLAGS) -o $@ -Wl,-soname=$@.$(OBJECTIVE_SONAME_SUFFIX) $(OBJECTS) $(LDFLAGS) $(LIBADD); \
+				$(CC) $(PICLDFLAGS) -o $@ -Wl,-h$@.$(OBJECTIVE_SONAME_SUFFIX) $(OBJECTS) $(LDFLAGS) $(LIBADD); \
 			else \
-				$(CC) $(PICLDFLAGS) -o $@ -Wl,-soname=$@ $(OBJECTS) $(LDFLAGS) $(LIBADD); \
+				$(CC) $(PICLDFLAGS) -o $@ -Wl,-h$@ $(OBJECTS) $(LDFLAGS) $(LIBADD); \
 			fi;) \
 		 else \
 			$(CC) $(PICLDFLAGS) -o $@ $(OBJECTS) $(LDFLAGS) $(LIBADD); \
@@ -243,9 +243,6 @@ build-posthook:
 install-prehook:
 install-posthook:
 
-# compatibility with automake follows
-am--refresh:
-
 mk/rules.mk:
 	@if [ -f "configure" ]; then \
 		echo "[building rules.mk for posix target, run configure manually if you do not want this]"; \
@@ -253,3 +250,31 @@ mk/rules.mk:
 		echo "[complete]"; \
 	fi
 
+.PHONY: .depend depend clean distclean
+.depend:
+
+# default depend rule. if something else is needed -- override depend target
+depend:
+	@if [ "x$(SUBDIRS)" != "x" ]; then \
+		for i in $(SUBDIRS); do \
+			if [ $(VERBOSITY) -gt 0 ]; then \
+				echo "[building depend file for subobjective: $$i]"; \
+			fi; \
+			cd $$i; touch .depend; $(MAKE) || exit; cd ..; \
+			if [ $(VERBOSITY) -gt 0 ]; then \
+				echo "[finished subobjective: $$i]"; \
+			fi; \
+		done; \
+	fi
+	if [ ! -f .depend-done ]; then \
+		for i in ${SOURCES}; do \
+			echo "[generating dependencies for objective: $$i]"; \
+			${CC} -MM ${PICFLAGS} ${CPPFLAGS} ${CFLAGS} $$i >> .depend; \
+		done; \
+		touch .depend-done; \
+	fi;
+
+# compatibility with automake follows
+am--refresh:
+
+include .depend
