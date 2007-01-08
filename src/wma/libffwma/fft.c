@@ -105,7 +105,7 @@ int has_altivec(void)
       } else {
         canjump = 1;
 
-        asm volatile ("mtspr 256, %0\n\t"
+        __asm__ volatile ("mtspr 256, %0\n\t"
                       "vand %%v0, %%v0, %%v0"
                       :
                       : "r" (-1));
