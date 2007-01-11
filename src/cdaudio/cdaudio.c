@@ -679,7 +679,8 @@ cdda_init(void)
     bmp_cfg_db_get_string(db, "CDDA", "device", &drive->device);
     bmp_cfg_db_get_string(db, "CDDA", "directory", &drive->directory);
     bmp_cfg_db_get_int(db, "CDDA", "mixer", &drive->mixer);
-    bmp_cfg_db_get_int(db, "CDDA", "readmode", &drive->dae);
+    if (bmp_cfg_db_get_int(db, "CDDA", "readmode", &drive->dae)==FALSE)
+        drive->dae = 1; /* default to digital */
 
     if (!drive->device)
         drive->device = g_strdup(CDDA_DEVICE);
