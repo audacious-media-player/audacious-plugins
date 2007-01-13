@@ -17,13 +17,32 @@ rovascope_get_random_colourmap(void)
 }
 
 struct pn_actuator *
+rovascope_get_random_transform(void)
+{
+   struct pn_actuator *out;
+   gchar *candidates[] = {
+      "d = cos(d) ^ 2;",
+      "r = sin(r);",
+      "r = sin(r); d = cos(d) ^ 2;",
+   };
+
+   srand(time(NULL));
+
+   out = create_actuator("xform_movement");
+   out->options[0].val.sval = 
+	g_strdup(candidates[rand() % G_N_ELEMENTS(candidates)]);
+
+   return out;
+}
+
+struct pn_actuator *
 rovascope_get_random_general(void)
 {
    struct pn_actuator *out;
 
    gchar *candidates[] = {
       "general_fade", "general_blur", "general_mosaic", 
-      "general_flip",
+      "general_flip", "general_fade", "general_fade",
    };
 
    out = create_actuator(candidates[rand() % G_N_ELEMENTS(candidates)]);
@@ -50,21 +69,16 @@ rovascope_get_random_actuator(void)
 {
    struct pn_actuator *out;
    struct pn_actuator *(*func)();
-   static gint ret = 0;
 
    void *candidates[] = {
 	rovascope_get_random_colourmap,
 	rovascope_get_random_general,
 	rovascope_get_random_normal_scope,
+	rovascope_get_random_transform,
    };
 
-   if (ret >= G_N_ELEMENTS(candidates))
-       ret = 0;   
-
-   func = candidates[ret];
+   func = candidates[rand() % G_N_ELEMENTS(candidates)];
    out = func();
-
-   ret++;
 
    return out;
 }
