@@ -1,3 +1,16 @@
+2007-01-13 22:52:28 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [922]
+  - rovascope: more randomization
+  - build system: same changes as audacious r3658
+  
+  trunk/configure.ac                |    7 
+  trunk/libtool.m4                  | 6248 --------------------------------------
+  trunk/missing                     |  360 --
+  trunk/mkinstalldirs               |  150 
+  trunk/src/rovascope/actuatorbin.c |   30 
+  5 files changed, 28 insertions(+), 6767 deletions(-)
+
+
 2007-01-13 16:27:42 +0000  Michael Hanselmann <hansmi@forkbomb.ch>
   revision [920]
   Copy Makevars from audacious-devel, fixes "make[1]: *** No rule to make target `depend'.  Stop."

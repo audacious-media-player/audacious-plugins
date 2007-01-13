@@ -28,7 +28,6 @@
 #include <math.h>
 
 #include <audacious/configdb.h>
-#include <audacious/dirbrowser.h>
 #include <audacious/titlestring.h>
 #include <audacious/util.h>
 #include <audacious/plugin.h>
@@ -110,7 +109,7 @@ static GtkWidget *resolution_replaygain_bps_out_radio_16bps;
 static GtkWidget *resolution_replaygain_bps_out_radio_24bps;
 
 static GtkObject *streaming_size_adj, *streaming_pre_adj;
-static GtkWidget *streaming_save_use, *streaming_save_entry;
+static GtkWidget *streaming_save_use;
 #ifdef FLAC_ICECAST
 static GtkWidget *streaming_cast_title, *streaming_udp_title;
 #endif
@@ -154,7 +153,8 @@ static void flac_configurewin_ok(GtkWidget * widget, gpointer data)
 	if (flac_cfg.stream.save_http_path != NULL)
 		g_free(flac_cfg.stream.save_http_path);
 
-	flac_cfg.stream.save_http_path = g_strdup(gtk_entry_get_text(GTK_ENTRY(streaming_save_entry)));
+	flac_cfg.stream.save_http_path =
+		g_strdup(gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser)));
 
 #ifdef FLAC_ICECAST
 	flac_cfg.stream.cast_title_streaming = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_cast_title));
@@ -264,25 +264,6 @@ static void resolution_replaygain_bps_out_cb(GtkWidget *widget, gpointer data)
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(resolution_replaygain_bps_out_radio_24bps))? 24 :
 		16
 	;
-}
-
-static void streaming_save_dirbrowser_cb(gchar * dir)
-{
-	gtk_entry_set_text(GTK_ENTRY(streaming_save_entry), dir);
-}
-
-static void streaming_save_browse_cb(GtkWidget * w, gpointer data)
-{
-	(void) w;
-	(void) data;
-	if (!streaming_save_dirbrowser)
-	{
-		streaming_save_dirbrowser = xmms_create_dir_browser(_("Select the directory where you want to store the MPEG streams:"),
-								    flac_cfg.stream.save_http_path, GTK_SELECTION_SINGLE, streaming_save_dirbrowser_cb);
-		gtk_signal_connect(GTK_OBJECT(streaming_save_dirbrowser), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &streaming_save_dirbrowser);
-		gtk_window_set_transient_for(GTK_WINDOW(streaming_save_dirbrowser), GTK_WINDOW(flac_configurewin));
-		gtk_widget_show(streaming_save_dirbrowser);
-	}
 }
 
 static void streaming_save_use_cb(GtkWidget * w, gpointer data)
@@ -595,13 +576,12 @@ void FLAC_XMMS__configure(void)
 	streaming_save_label = gtk_label_new(_("Path:"));
 	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_label, FALSE, FALSE, 0);
 
-	streaming_save_entry = gtk_entry_new();
-	gtk_entry_set_text(GTK_ENTRY(streaming_save_entry), flac_cfg.stream.save_http_path);
-	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_entry, TRUE, TRUE, 0);
+	streaming_save_dirbrowser  =
+		gtk_file_chooser_button_new (_("Pick a folder"), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser),
+										flac_cfg.stream.save_http_path);
+	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_dirbrowser, TRUE, TRUE, 0);
 
-	streaming_save_browse = gtk_button_new_with_label(_("Browse"));
-	gtk_signal_connect(GTK_OBJECT(streaming_save_browse), "clicked", GTK_SIGNAL_FUNC(streaming_save_browse_cb), NULL);
-	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_browse, FALSE, FALSE, 0);
 
 #ifdef FLAC_ICECAST
 	streaming_cast_frame = gtk_frame_new(_("SHOUT/Icecast:"));

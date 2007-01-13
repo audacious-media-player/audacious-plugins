@@ -9,7 +9,6 @@
 #include <math.h>
 
 #include <audacious/configdb.h>
-#include <audacious/dirbrowser.h>
 #include <audacious/titlestring.h>
 
 
@@ -24,7 +23,7 @@ static GtkWidget *decode_freq_frame, *decode_freq_vbox, *decode_freq_1to1,
     *decode_freq_1to2, *decode_freq_1to4;
 
 static GtkObject *streaming_size_adj, *streaming_pre_adj;
-static GtkWidget *streaming_save_use, *streaming_save_entry;
+static GtkWidget *streaming_save_use;
 static GtkWidget *streaming_udp_title;
 static GtkWidget *streaming_save_dirbrowser;
 static GtkWidget *streaming_save_hbox, *title_id3_box, *title_tag_desc;
@@ -64,7 +63,7 @@ mpgdec_configurewin_ok(GtkWidget * widget, gpointer data)
     if (mpgdec_cfg.save_http_path)
         g_free(mpgdec_cfg.save_http_path);
     mpgdec_cfg.save_http_path =
-        g_strdup(gtk_entry_get_text(GTK_ENTRY(streaming_save_entry)));
+		g_strdup(gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser)));
 
     mpgdec_cfg.use_udp_channel =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_udp_title));
@@ -102,31 +101,6 @@ mpgdec_configurewin_ok(GtkWidget * widget, gpointer data)
 }
 
 static void
-streaming_save_dirbrowser_cb(gchar * dir)
-{
-    gtk_entry_set_text(GTK_ENTRY(streaming_save_entry), dir);
-}
-
-static void
-streaming_save_browse_cb(GtkWidget * w, gpointer data)
-{
-    if (!streaming_save_dirbrowser) {
-        streaming_save_dirbrowser =
-            xmms_create_dir_browser(_
-                                    ("Select the directory where you want to store the MPEG streams:"),
-                                    mpgdec_cfg.save_http_path,
-                                    GTK_SELECTION_SINGLE,
-                                    streaming_save_dirbrowser_cb);
-        g_signal_connect(G_OBJECT(streaming_save_dirbrowser), "destroy",
-                         G_CALLBACK(gtk_widget_destroyed),
-                         &streaming_save_dirbrowser);
-        gtk_window_set_transient_for(GTK_WINDOW(streaming_save_dirbrowser),
-                                     GTK_WINDOW(mpgdec_configurewin));
-        gtk_widget_show(streaming_save_dirbrowser);
-    }
-}
-
-static void
 streaming_save_use_cb(GtkWidget * w, gpointer data)
 {
     gboolean save_stream;
@@ -150,8 +124,7 @@ title_override_cb(GtkWidget * w, gpointer data)
 static void
 configure_destroy(GtkWidget * w, gpointer data)
 {
-    if (streaming_save_dirbrowser)
-        gtk_widget_destroy(streaming_save_dirbrowser);
+	// nothing at the moment?
 }
 
 void
@@ -364,17 +337,12 @@ mpgdec_configure(void)
     gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_label,
                        FALSE, FALSE, 0);
 
-    streaming_save_entry = gtk_entry_new();
-    gtk_entry_set_text(GTK_ENTRY(streaming_save_entry),
-                       mpgdec_cfg.save_http_path);
-    gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_entry,
-                       TRUE, TRUE, 0);
+	streaming_save_dirbrowser =
+		gtk_file_chooser_button_new (_("Pick a folder"), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser),
+										mpgdec_cfg.save_http_path);
+	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_dirbrowser, TRUE, TRUE, 0);
 
-    streaming_save_browse = gtk_button_new_with_label(_("Browse"));
-    g_signal_connect(G_OBJECT(streaming_save_browse), "clicked",
-                     G_CALLBACK(streaming_save_browse_cb), NULL);
-    gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_browse,
-                       FALSE, FALSE, 0);
 
     streaming_cast_frame = gtk_frame_new(_("SHOUT/Icecast:"));
     gtk_container_set_border_width(GTK_CONTAINER(streaming_cast_frame), 5);
