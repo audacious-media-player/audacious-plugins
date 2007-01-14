@@ -11,7 +11,6 @@
 #include <string.h>
 
 #include "audacious/configdb.h"
-#include "audacious/dirbrowser.h"
 #include "audacious/titlestring.h"
 #include "audacious/util.h"
 #include "audacious/plugin.h"
@@ -21,7 +20,6 @@ extern GMutex *vf_mutex;
 static GtkWidget *vorbis_configurewin = NULL;
 static GtkWidget *vbox, *notebook;
 
-static GtkWidget *streaming_save_entry;
 static GtkWidget *streaming_save_use, *streaming_size_spin,
     *streaming_pre_spin;
 static GtkWidget *streaming_save_dirbrowser, *streaming_save_hbox;
@@ -46,10 +44,14 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
 
     vorbis_cfg.save_http_stream =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_save_use));
-    g_free(vorbis_cfg.save_http_path);
+
+	if (vorbis_cfg.save_http_path != NULL)
+		g_free(vorbis_cfg.save_http_path);
     vorbis_cfg.save_http_path =
-        g_strdup(gtk_entry_get_text(GTK_ENTRY(streaming_save_entry)));
-    g_free(vorbis_cfg.tag_format);
+		g_strdup(gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser)));
+
+	if (vorbis_cfg.tag_format != NULL)
+		g_free(vorbis_cfg.tag_format);
     vorbis_cfg.tag_format =
         g_strdup(gtk_entry_get_text(GTK_ENTRY(title_tag_entry)));
 
@@ -92,32 +94,6 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
 }
 
 static void
-streaming_save_dirbrowser_cb(gchar * dir)
-{
-    gtk_entry_set_text(GTK_ENTRY(streaming_save_entry), dir);
-}
-
-static void
-streaming_save_browse_cb(GtkWidget * w, gpointer data)
-{
-    if (streaming_save_dirbrowser)
-        return;
-
-    streaming_save_dirbrowser =
-        xmms_create_dir_browser(_("Select the directory where you want "
-                                  "to store the Ogg Vorbis streams:"),
-                                vorbis_cfg.save_http_path,
-                                GTK_SELECTION_SINGLE,
-                                streaming_save_dirbrowser_cb);
-    g_signal_connect(G_OBJECT(streaming_save_dirbrowser),
-                     "destroy", G_CALLBACK(gtk_widget_destroyed),
-                     &streaming_save_dirbrowser);
-    gtk_window_set_transient_for(GTK_WINDOW(streaming_save_dirbrowser),
-                                 GTK_WINDOW(vorbis_configurewin));
-    gtk_widget_show(streaming_save_dirbrowser);
-}
-
-static void
 streaming_save_use_cb(GtkWidget * w, gpointer data)
 {
     gboolean save_stream;
@@ -131,8 +107,7 @@ streaming_save_use_cb(GtkWidget * w, gpointer data)
 static void
 configure_destroy(GtkWidget * w, gpointer data)
 {
-/*  	if (streaming_save_dirbrowser) */
-/*  		gtk_widget_destroy(streaming_save_dirbrowser); */
+	// nothing here currently
 }
 
 static void
@@ -161,7 +136,7 @@ vorbis_configure(void)
     GtkWidget *streaming_size_box, *streaming_size_label;
     GtkWidget *streaming_pre_box, *streaming_pre_label;
     GtkWidget *streaming_save_frame, *streaming_save_vbox;
-    GtkWidget *streaming_save_label, *streaming_save_browse;
+    GtkWidget *streaming_save_label;
     GtkWidget *title_frame, *title_tag_vbox, *title_tag_label;
     GtkWidget *rg_frame, *rg_vbox;
     GtkWidget *bbox, *ok, *cancel;
@@ -264,17 +239,11 @@ vorbis_configure(void)
     gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_label,
                        FALSE, FALSE, 0);
 
-    streaming_save_entry = gtk_entry_new();
-    gtk_entry_set_text(GTK_ENTRY(streaming_save_entry),
-                       vorbis_cfg.save_http_path);
-    gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_entry,
-                       TRUE, TRUE, 0);
-
-    streaming_save_browse = gtk_button_new_with_label(_("Browse"));
-    g_signal_connect(G_OBJECT(streaming_save_browse), "clicked",
-                     G_CALLBACK(streaming_save_browse_cb), NULL);
-    gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_browse,
-                       FALSE, FALSE, 0);
+	streaming_save_dirbrowser = 
+		gtk_file_chooser_button_new (_("Pick a folder"), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser),
+										vorbis_cfg.save_http_path);
+	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_dirbrowser, TRUE, TRUE, 0);
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), streaming_vbox,
                              gtk_label_new(_("Streaming")));

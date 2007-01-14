@@ -136,7 +136,7 @@ mpgdec_configure(void)
         *streaming_size_spin;
     GtkWidget *streaming_pre_box, *streaming_pre_label, *streaming_pre_spin;
     GtkWidget *streaming_save_frame, *streaming_save_vbox;
-    GtkWidget *streaming_save_label, *streaming_save_browse;
+    GtkWidget *streaming_save_label;
     GtkWidget *streaming_cast_frame, *streaming_cast_vbox;
     GtkWidget *title_frame, *title_id3_vbox, *title_id3_label;
     GtkWidget *bbox, *ok, *cancel;

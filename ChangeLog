@@ -1,3 +1,12 @@
+2007-01-13 23:22:28 +0000  Michael Farber <01mf02@gmail.com>
+  revision [924]
+  Replaced xmms_create_dir_browser
+  trunk/src/flac112/configure.c |   37 +++++++-------------------------
+  trunk/src/flac113/configure.c |   36 +++++++------------------------
+  trunk/src/mpg123/configure.c  |   48 +++++++-----------------------------------
+  3 files changed, 24 insertions(+), 97 deletions(-)
+
+
 2007-01-13 22:52:28 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [922]
   - rovascope: more randomization
