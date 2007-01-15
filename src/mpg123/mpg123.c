@@ -346,11 +346,7 @@ is_our_fd(char *filename, VFSFile *file)
     gchar *ext = strrchr(filename, '.');
     gboolean ret = FALSE;
 
-    if (CHECK_STREAM_URI(filename) &&
-        (ext && strncasecmp(ext, ".ogg", 4)) &&
-        (ext && strncasecmp(ext, ".flac", 5)))
-	ret = TRUE;
-    else if (mpgdec_detect_by_content(file))
+    if (mpgdec_detect_by_content(file))
         ret = TRUE;
 
     return ret;

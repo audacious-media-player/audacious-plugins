@@ -1,3 +1,10 @@
+2007-01-15 10:48:34 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [946]
+  pause functionality should play if not already playing, now
+  trunk/src/evdev-plug/ed.c |    5 ++++-
+  1 file changed, 4 insertions(+), 1 deletion(-)
+
+
 2007-01-15 07:53:59 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [944]
   Support shoutcast (over TCP) with VFS HTTP code. mpg123 has to accept
