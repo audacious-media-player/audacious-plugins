@@ -1,3 +1,13 @@
+2007-01-15 07:53:59 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [944]
+  Support shoutcast (over TCP) with VFS HTTP code. mpg123 has to accept
+  failure on seeking to the end of the file.
+  
+  trunk/src/curl/curl.c     |   24 ++++++++++++++++--------
+  trunk/src/mpg123/common.c |    6 ++++--
+  2 files changed, 20 insertions(+), 10 deletions(-)
+
+
 2007-01-15 06:39:39 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [942]
   - buildsystem glue for curl http:// transport

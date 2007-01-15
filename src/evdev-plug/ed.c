@@ -152,7 +152,10 @@ ed_action_pb_stop ( gpointer param )
 void
 ed_action_pb_pause ( gpointer param )
 {
-  xmms_remote_pause( ed_gp.xmms_session );
+  if (xmms_remote_is_playing( ed_gp.xmms_session ) || xmms_remote_is_paused( ed_gp.xmms_session ))
+    xmms_remote_pause( ed_gp.xmms_session );
+  else
+    xmms_remote_play( ed_gp.xmms_session );
 }
 
 void
