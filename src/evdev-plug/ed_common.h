@@ -21,8 +21,6 @@
 #ifndef _I_ED_COMMON_H
 #define _I_ED_COMMON_H 1
 
-#define DEBUG 1
-
 #ifdef DEBUG
 #include <stdio.h>
 #define DEBUGMSG(...) { fprintf(stderr, "evdev-plug(%s:%s:%d): ", __FILE__, __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }

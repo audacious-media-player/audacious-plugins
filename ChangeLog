@@ -1,3 +1,22 @@
+2007-01-15 01:55:24 +0000  Giacomo Lozito <james@develia.org>
+  revision [928]
+  - added evdev-plug, written-from-scratch plugin that allows to control the player via event devices on linux systems
+  trunk/configure.ac                       |   28 
+  trunk/src/evdev-plug/Makefile            |   18 
+  trunk/src/evdev-plug/ed.c                |  239 ++++
+  trunk/src/evdev-plug/ed.h                |   45 
+  trunk/src/evdev-plug/ed_actions.h        |   60 +
+  trunk/src/evdev-plug/ed_bindings_store.c |  137 ++
+  trunk/src/evdev-plug/ed_bindings_store.h |   37 
+  trunk/src/evdev-plug/ed_common.h         |   41 
+  trunk/src/evdev-plug/ed_internals.c      | 1005 ++++++++++++++++++++
+  trunk/src/evdev-plug/ed_internals.h      |   66 +
+  trunk/src/evdev-plug/ed_types.h          |   62 +
+  trunk/src/evdev-plug/ed_ui.c             | 1527 +++++++++++++++++++++++++++++++
+  trunk/src/evdev-plug/ed_ui.h             |   31 
+  13 files changed, 3296 insertions(+)
+
+
 2007-01-14 10:35:15 +0000  Michael Farber <01mf02@gmail.com>
   revision [926]
   More xmms_create_dirbrowser cleanup
