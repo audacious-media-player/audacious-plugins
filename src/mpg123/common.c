@@ -402,14 +402,10 @@ void
 mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range)
 {
     filept_opened = 1;
-    if (!strncasecmp(bs_filenam, "http://", 7)) {
-        filept = NULL;
-        mpgdec_http_open(bs_filenam, range);
-        mpgdec_info->filesize = 0;
-        mpgdec_info->network_stream = TRUE;
-        mpgdec_info->stream_type = STREAM_HTTP;
-    } 
-    else
+    filept = vfs_fopen(bs_filenam, "rb");
+    if (filept != NULL) {
+        if (stream_init() == -1) mpgdec_info->eof = TRUE;
+    } else
 #ifdef HAVE_NEMESI
     if (!strncasecmp(bs_filenam, "rtsp://", 7)) {
         filept = NULL;
@@ -417,15 +413,20 @@ mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range)
         mpgdec_info->network_stream = TRUE;
         mpgdec_info->stream_type = STREAM_RTSP;
         if (mpgdec_rtsp_open(bs_filenam)) mpgdec_info->eof = TRUE;
-    } else {
-#else
-    {
+    } else 
 #endif
-        if ((filept = vfs_fopen(bs_filenam, "rb")) == NULL ||
-            stream_init() == -1)
-            mpgdec_info->eof = TRUE;
+#if 1
+    if (!strncasecmp(bs_filenam, "http://", 7)) {
+        filept = NULL;
+        mpgdec_http_open(bs_filenam, range);
+        mpgdec_info->filesize = 0;
+        mpgdec_info->network_stream = TRUE;
+        mpgdec_info->stream_type = STREAM_HTTP;
+    } else
+#endif
+    {
+        mpgdec_info->eof = TRUE;
     }
-
 }
 
 void
