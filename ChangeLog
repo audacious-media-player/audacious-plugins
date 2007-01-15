@@ -1,3 +1,13 @@
+2007-01-14 10:35:15 +0000  Michael Farber <01mf02@gmail.com>
+  revision [926]
+  More xmms_create_dirbrowser cleanup
+  trunk/src/flac112/configure.c |    2 -
+  trunk/src/flac113/configure.c |    2 -
+  trunk/src/mpg123/configure.c  |    2 -
+  trunk/src/vorbis/configure.c  |   59 +++++++++---------------------------------
+  4 files changed, 17 insertions(+), 48 deletions(-)
+
+
 2007-01-13 23:22:28 +0000  Michael Farber <01mf02@gmail.com>
   revision [924]
   Replaced xmms_create_dir_browser
