@@ -962,7 +962,7 @@ check_hex="070907"
 
 AC_MSG_CHECKING([for curl >= $check])
 
-PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], , [scrobbler="no"])
+PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [	CONTAINER_PLUGINS="$CONTAINER_PLUGINS curl" ], [scrobbler="no"])
 
 if test "x$scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"

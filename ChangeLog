@@ -1,3 +1,12 @@
+2007-01-15 06:34:57 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [940]
+  Add code for a plugin to use CURL for http. Needs some build-system
+  stuff before it will actually get built and installed.
+  
+  trunk/src/curl/curl.c |  452 ++++++++++++++++++++++++++++++++++++++++++++++++++
+  1 file changed, 452 insertions(+)
+
+
 2007-01-15 06:31:16 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [938]
   Use a VFSFile instead of the built-in http, if the VFS supports it.
