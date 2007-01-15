@@ -1,3 +1,11 @@
+2007-01-15 06:31:16 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [938]
+  Use a VFSFile instead of the built-in http, if the VFS supports it.
+  
+  trunk/src/mpg123/common.c |   31 ++++++++++++++++---------------
+  1 file changed, 16 insertions(+), 15 deletions(-)
+
+
 2007-01-15 03:32:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [936]
   - fix dependency generation
