@@ -1,3 +1,12 @@
+2007-01-15 16:33:07 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [948]
+  - remove blanket http:// grabbing -- probing for mp3 now works by VFS 
+    (even with shoutcast)
+  
+  trunk/src/mpg123/mpg123.c |    6 +-----
+  1 file changed, 1 insertion(+), 5 deletions(-)
+
+
 2007-01-15 10:48:34 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [946]
   pause functionality should play if not already playing, now

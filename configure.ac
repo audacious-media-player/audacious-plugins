@@ -381,6 +381,26 @@ if test "x$have_evdevplug" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS evdev-plug"
 fi
 
+dnl *** Status Icon plugin (for X11 only)
+
+AC_ARG_ENABLE(statusicon,
+    [  --disable-statusicon    disable X11 Status Icon plugin (default=enabled)],
+    [enable_statusicon=$enableval],
+    [enable_statusicon="yes"]
+)
+
+if test "x$enable_statusicon" = "xyes"; then
+    have_statusicon="yes"
+    PKG_CHECK_MODULES(GDKX11,[gdk-x11-2.0 >= 2.6.0],,[have_statusicon="no"])
+else
+    AC_MSG_RESULT([*** X11 Status Icon plugin disabled per user request ***])
+    have_statusicon="yes"
+fi
+
+if test "x$have_statusicon" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
+fi
+
 dnl *** AdPlug requirement (libbinio)
 
 AC_ARG_ENABLE(adplug,
@@ -1175,6 +1195,7 @@ echo "  General"
 echo "  -------"
 echo "  Alarm:                                  yes"
 echo "  Song Change:                            yes"
+echo "  Status Icon:                            $have_statusicon"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
