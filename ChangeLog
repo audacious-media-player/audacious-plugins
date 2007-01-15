@@ -1,3 +1,20 @@
+2007-01-15 21:25:41 +0000  Giacomo Lozito <james@develia.org>
+  revision [958]
+  - amidiplug: on midi backend init, pass a function that helps the backend to get the location of amidi-plug.conf
+  trunk/src/amidi-plug/Makefile                          |    2 -
+  trunk/src/amidi-plug/backend-alsa/b-alsa.c             |    9 ++---
+  trunk/src/amidi-plug/backend-alsa/b-alsa.h             |    3 +
+  trunk/src/amidi-plug/backend-dummy/b-dummy.c           |    9 ++---
+  trunk/src/amidi-plug/backend-dummy/b-dummy.h           |    3 +
+  trunk/src/amidi-plug/backend-fluidsynth/b-fluidsynth.c |    9 ++---
+  trunk/src/amidi-plug/backend-fluidsynth/b-fluidsynth.h |    3 +
+  trunk/src/amidi-plug/i_backend.c                       |    4 +-
+  trunk/src/amidi-plug/i_backend.h                       |    3 +
+  trunk/src/amidi-plug/i_configure.c                     |   29 ++++++++---------
+  trunk/src/amidi-plug/i_configure_file.h                |   29 +++++++++++++++++
+  11 files changed, 67 insertions(+), 36 deletions(-)
+
+
 2007-01-15 20:46:38 +0000  Giacomo Lozito <james@develia.org>
   revision [956]
   - make amidi-plug use audacious_get_localdir()

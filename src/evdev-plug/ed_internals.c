@@ -802,7 +802,6 @@ ed_config_save_from_list ( GList * config_devices_list )
 
   config_datadir = (gchar*)audacious_get_localdir();
   config_pathfilename = g_build_filename( config_datadir , PLAYER_LOCALRC_FILE , NULL );
-  g_free( config_datadir );
 
   keyfile = g_key_file_new();
 
@@ -825,13 +824,22 @@ ed_config_save_from_list ( GList * config_devices_list )
   }
 
   keyfile_str = g_key_file_to_data( keyfile , &keyfile_str_len , NULL );
-  iochan = g_io_channel_new_file( config_pathfilename , "w" , NULL );
-  g_io_channel_set_encoding( iochan , "UTF-8" , NULL );
-  g_io_channel_write_chars( iochan , keyfile_str , keyfile_str_len , NULL , NULL );
-  g_io_channel_shutdown( iochan , TRUE , NULL );
-  g_io_channel_unref( iochan );
+  if ( g_file_test( config_datadir , G_FILE_TEST_IS_DIR ) == TRUE )
+  {
+    iochan = g_io_channel_new_file( config_pathfilename , "w" , NULL );
+    g_io_channel_set_encoding( iochan , "UTF-8" , NULL );
+    g_io_channel_write_chars( iochan , keyfile_str , keyfile_str_len , NULL , NULL );
+    g_io_channel_shutdown( iochan , TRUE , NULL );
+    g_io_channel_unref( iochan );
+  }
+  else
+  {
+    g_warning( _("event-device-plugin: unable to access local directory %s , settings will not be saved.\n") ,
+               config_datadir );
+  }
 
   g_free( keyfile_str );
+  g_free( config_datadir );
   g_key_file_free( keyfile );
   return 0;
 }
