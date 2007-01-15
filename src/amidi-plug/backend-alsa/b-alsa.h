@@ -23,6 +23,7 @@
 
 #include <alsa/asoundlib.h>
 #include "../i_common.h"
+#include "../i_configure_file.h"
 #include "../pcfg/i_pcfg.h"
 #include "../i_midievent.h"
 
@@ -56,7 +57,7 @@ gint i_seq_event_common_init( midievent_t * );
 GSList * i_seq_mixctl_get_list( gint );
 void i_seq_mixctl_free_list( GSList * );
 gint i_seq_mixer_find_selem( snd_mixer_t * , gchar * , gchar * , gint , snd_mixer_elem_t ** );
-void i_cfg_read( void );
+void i_cfg_read( i_cfg_get_file_cb );
 void i_cfg_free( void );
 gint i_util_str_count( gchar * , gchar );
 

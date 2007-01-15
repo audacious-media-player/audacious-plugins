@@ -6,7 +6,7 @@ SUBDIRS = pcfg $(AMIDIPLUG_BACKENDS)
 
 noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
                  i_vfslayer.h i_configure.h i_configure_private.h \
-                 i_configure-ap.h i_configure-alsa.h \
+                 i_configure_file.h i_configure-ap.h i_configure-alsa.h \
                  i_configure-fluidsynth.h i_configure-dummy.h \
                  i_fileinfo.h i_utils.h i_common.h \
                  amidi-plug-icon.xpm amidi-plug.logo.xpm \

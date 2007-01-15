@@ -21,6 +21,7 @@
 
 #include "i_configure.h"
 #include "i_configure_private.h"
+#include "i_configure_file.h"
 #include "i_backend.h"
 #include "i_configure-ap.h"
 #include "i_configure-alsa.h"
@@ -272,7 +273,7 @@ void i_configure_ev_bok( GtkWidget * button_ok , gpointer configwin )
     {
       DEBUGMSG( "the selected backend is already loaded, so just perform backend cleanup and reinit\n" );
       backend.cleanup();
-      backend.init();
+      backend.init( i_configure_cfg_get_file );
     }
   }
 
@@ -311,10 +312,8 @@ void i_configure_cfg_backend_free( void )
 void i_configure_cfg_backend_read( void )
 {
   pcfg_t *cfgfile;
-  gchar * config_datadir = (gchar*)audacious_get_localdir();
-  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
+  gchar *config_pathfilename = i_configure_cfg_get_file();
 
-  g_free( config_datadir );
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   i_configure_cfg_alsa_read( cfgfile ); /* get alsa backend configuration */
@@ -331,10 +330,8 @@ void i_configure_cfg_backend_read( void )
 void i_configure_cfg_backend_save( void )
 {
   pcfg_t *cfgfile;
-  gchar * config_datadir = (gchar*)audacious_get_localdir();
-  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
+  gchar *config_pathfilename = i_configure_cfg_get_file();
 
-  g_free( config_datadir );
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if (!cfgfile)
@@ -354,10 +351,8 @@ void i_configure_cfg_backend_save( void )
 void i_configure_cfg_ap_read( void )
 {
   pcfg_t *cfgfile;
-  gchar * config_datadir = (gchar*)audacious_get_localdir();
-  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
+  gchar *config_pathfilename = i_configure_cfg_get_file();
 
-  g_free( config_datadir );
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if (!cfgfile)
@@ -394,10 +389,7 @@ void i_configure_cfg_ap_read( void )
 void i_configure_cfg_ap_save( void )
 {
   pcfg_t *cfgfile;
-  gchar * config_datadir = (gchar*)audacious_get_localdir();
-  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
-
-  g_free( config_datadir );
+  gchar *config_pathfilename = i_configure_cfg_get_file();
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if (!cfgfile)
@@ -420,4 +412,13 @@ void i_configure_cfg_ap_save( void )
   i_pcfg_write_to_file( cfgfile , config_pathfilename );
   i_pcfg_free( cfgfile );
   g_free( config_pathfilename );
+}
+
+
+gchar * i_configure_cfg_get_file( void )
+{
+  gchar * config_datadir = (gchar*)audacious_get_localdir();
+  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
+  g_free( config_datadir );
+  return config_pathfilename;
 }

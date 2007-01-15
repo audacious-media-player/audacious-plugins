@@ -1,3 +1,10 @@
+2007-01-15 20:46:38 +0000  Giacomo Lozito <james@develia.org>
+  revision [956]
+  - make amidi-plug use audacious_get_localdir()
+  trunk/src/amidi-plug/i_configure.c |   24 ++++++++++++++++--------
+  1 file changed, 16 insertions(+), 8 deletions(-)
+
+
 2007-01-15 20:38:45 +0000  Giacomo Lozito <james@develia.org>
   revision [954]
   - added audacious_get_localdir() in util.c/h, returns a string with the full path of audacious local datadir

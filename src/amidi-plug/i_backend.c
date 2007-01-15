@@ -49,7 +49,7 @@ GSList * i_backend_list_lookup( void )
         gchar * module_pathfilename = g_strjoin( "" , AMIDIPLUGBACKENDDIR , "/" ,
                                                  backend_directory_entry , NULL );
         /* seems to be a backend for amidi-plug , try to load it */
-        module = g_module_open( module_pathfilename , 0 );
+        module = g_module_open( module_pathfilename , G_MODULE_BIND_LOCAL );
         if ( module == NULL )
           g_warning( "Error loading module %s - %s\n" , module_pathfilename , g_module_error() );
         else
@@ -141,7 +141,7 @@ gint i_backend_load( gchar * module_name )
     getapmoduleinfo( &backend.name , NULL , NULL , NULL );
     backend.autonomous_audio = checkautonomousaudio();
     DEBUGMSG( "backend %s (name '%s') successfully loaded\n" , module_pathfilename , backend.name );
-    backend.init();
+    backend.init( i_configure_cfg_get_file );
     g_free( module_pathfilename );
     return 1;
   }

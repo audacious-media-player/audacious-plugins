@@ -18,33 +18,12 @@
 *
 */
 
-#ifndef _B_DUMMY_H
-#define _B_DUMMY_H 1
+#ifndef _I_CONFIGURE_FILE_H
+#define _I_CONFIGURE_FILE_H 1
 
+#include <glib.h>
 
-#include "../i_common.h"
-#include "../i_configure_file.h"
-#include <glib/gprintf.h>
-#include "../pcfg/i_pcfg.h"
-#include "../i_midievent.h"
+typedef gchar * (*i_cfg_get_file_cb)( void );
+gchar * i_configure_cfg_get_file( void );
 
-
-typedef struct
-{
-  FILE * file;
-
-  gint ppq;
-  gdouble usec_per_tick;
-  guint tick_offset;
-
-  GTimer * timer_seq;
-}
-sequencer_client_t;
-
-
-void i_sleep( guint );
-void i_printf( FILE * , const gchar * , ... );
-void i_cfg_read( i_cfg_get_file_cb );
-void i_cfg_free( void );
-
-#endif /* !_B_DUMMY_H */
+#endif /* !_I_CONFIGURE_FILE_H */

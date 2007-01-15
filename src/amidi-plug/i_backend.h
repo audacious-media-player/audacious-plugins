@@ -23,6 +23,7 @@
 
 #include <gmodule.h>
 #include "i_midievent.h"
+#include "i_configure_file.h"
 #include "i_common.h"
 
 
@@ -42,7 +43,7 @@ typedef struct
   gint id;
   GModule * gmodule;
   gchar * name;
-  gint (*init)( void );
+  gint (*init)( i_cfg_get_file_cb );
   gint (*cleanup)( void );
   gint (*audio_info_get)( gint * , gint * , gint * );
   gint (*audio_volume_get)( gint * , gint * );

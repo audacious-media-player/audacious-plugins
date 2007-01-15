@@ -24,6 +24,7 @@
 #include <fluidsynth.h>
 #include <math.h>
 #include "../i_common.h"
+#include "../i_configure_file.h"
 #include "../pcfg/i_pcfg.h"
 #include "../i_midievent.h"
 
@@ -50,7 +51,7 @@ sequencer_client_t;
 
 void i_sleep( guint );
 void i_soundfont_load( void );
-void i_cfg_read( void );
+void i_cfg_read( i_cfg_get_file_cb );
 void i_cfg_free( void );
 
 #endif /* !_B_FLUIDSYNTH_H */

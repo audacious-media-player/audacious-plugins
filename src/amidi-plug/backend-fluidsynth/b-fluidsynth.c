@@ -46,10 +46,10 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
 }
 
 
-gint backend_init( void )
+gint backend_init( i_cfg_get_file_cb callback )
 {
   /* read configuration options */
-  i_cfg_read();
+  i_cfg_read( callback );
 
   sc.soundfont_ids = g_array_new( FALSE , FALSE , sizeof(gint) );
   sc.sample_rate = amidiplug_cfg_fsyn.fsyn_synth_samplerate;
@@ -391,11 +391,10 @@ gboolean i_bounds_check( gint value , gint min , gint max )
 }
 
 
-void i_cfg_read( void )
+void i_cfg_read( i_cfg_get_file_cb callback )
 {
   pcfg_t *cfgfile;
-  gchar * config_pathfilename = g_strjoin( "" , g_get_home_dir() , "/" ,
-                                           PLAYER_LOCALRCDIR , "/amidi-plug.conf" , NULL );
+  gchar * config_pathfilename = callback();
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if ( !cfgfile )

@@ -49,10 +49,10 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
 }
 
 
-gint backend_init( void )
+gint backend_init( i_cfg_get_file_cb callback )
 {
   /* read configuration options */
-  i_cfg_read();
+  i_cfg_read( callback );
 
   sc.seq = NULL;
   sc.client_port = 0;
@@ -833,11 +833,10 @@ gint i_util_str_count( gchar * string , gchar c )
 }
 
 
-void i_cfg_read( void )
+void i_cfg_read( i_cfg_get_file_cb callback )
 {
   pcfg_t *cfgfile;
-  gchar * config_pathfilename = g_strjoin( "" , g_get_home_dir() , "/" ,
-                                           PLAYER_LOCALRCDIR , "/amidi-plug.conf" , NULL );
+  gchar * config_pathfilename = callback();
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if ( !cfgfile )
