@@ -26,6 +26,7 @@
 #include <audacious/plugin.h>
 #include <audacious/util.h>
 #include <audacious/configdb.h>
+#include "../../config.h"
 
 static GTimer *timer;
 static gulong offset_time, written;

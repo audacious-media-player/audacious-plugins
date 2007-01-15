@@ -16,6 +16,7 @@ extern "C" {
 #include <iconv.h>
 #include <math.h>
 #include "tags.h"
+#include "../../config.h"
 #ifndef M_LN10
 #define M_LN10   2.3025850929940456840179914546843642
 #endif

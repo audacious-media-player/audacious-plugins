@@ -1,3 +1,21 @@
+2007-01-15 19:54:32 +0000  Giacomo Lozito <james@develia.org>
+  revision [950]
+  - added status icon plugin (written from scratch, with code from gtk 2.10)
+  trunk/configure.ac                     |   21 +
+  trunk/mk/rules.mk.in                   |    2 
+  trunk/src/statusicon/Makefile          |   18 +
+  trunk/src/statusicon/gtktrayicon-x11.c |  522 +++++++++++++++++++++++++++++++++
+  trunk/src/statusicon/gtktrayicon.h     |   75 ++++
+  trunk/src/statusicon/si.c              |  103 ++++++
+  trunk/src/statusicon/si.h              |   44 ++
+  trunk/src/statusicon/si.xpm            |  117 +++++++
+  trunk/src/statusicon/si_audacious.h    |   30 +
+  trunk/src/statusicon/si_common.h       |   35 ++
+  trunk/src/statusicon/si_ui.c           |  148 +++++++++
+  trunk/src/statusicon/si_ui.h           |   32 ++
+  12 files changed, 1147 insertions(+)
+
+
 2007-01-15 16:33:07 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [948]
   - remove blanket http:// grabbing -- probing for mp3 now works by VFS 
