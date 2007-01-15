@@ -24,6 +24,7 @@
 #include "ed_bindings_store.h"
 #include "ed_common.h"
 
+#include <audacious/util.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <linux/input.h>
@@ -470,10 +471,12 @@ ed_device_get_list_from_config ( void )
   gchar **device_names = NULL;
   gsize device_names_num = 0;
   gchar *config_pathfilename = NULL;
+  gchar *config_datadir = NULL;
   gint i = 0;
 
-  config_pathfilename = g_strjoin( "" , g_get_home_dir() ,
-    "/" PLAYER_LOCALRC_DIR "/" PLAYER_LOCALRC_FILE , NULL );
+  config_datadir = (gchar*)audacious_get_localdir();
+  config_pathfilename = g_build_filename( config_datadir , PLAYER_LOCALRC_FILE , NULL );
+  g_free( config_datadir );
   keyfile = g_key_file_new();
   is_loaded = g_key_file_load_from_file( keyfile , config_pathfilename , G_KEY_FILE_NONE , NULL );
   g_free( config_pathfilename );
@@ -561,11 +564,13 @@ ed_device_start_listening_from_config ( void )
   gchar **device_names = NULL;
   gsize device_names_num = 0;
   gchar *config_pathfilename = NULL;
+  gchar *config_datadir = NULL;
   GList *system_devices_list = NULL;
   gint i = 0;
 
-  config_pathfilename = g_strjoin( "" , g_get_home_dir() ,
-    "/" PLAYER_LOCALRC_DIR "/" PLAYER_LOCALRC_FILE , NULL );
+  config_datadir = (gchar*)audacious_get_localdir();
+  config_pathfilename = g_build_filename( config_datadir , PLAYER_LOCALRC_FILE , NULL );
+  g_free( config_datadir );
   keyfile = g_key_file_new();
   is_loaded = g_key_file_load_from_file( keyfile , config_pathfilename , G_KEY_FILE_NONE , NULL );
   g_free( config_pathfilename );
@@ -793,9 +798,11 @@ ed_config_save_from_list ( GList * config_devices_list )
   gsize keyfile_str_len = 0;
   GIOChannel *iochan;
   gchar *config_pathfilename = NULL;
+  gchar *config_datadir = NULL;
 
-  config_pathfilename = g_strjoin( "" , g_get_home_dir() ,
-    "/" PLAYER_LOCALRC_DIR "/" PLAYER_LOCALRC_FILE , NULL );
+  config_datadir = (gchar*)audacious_get_localdir();
+  config_pathfilename = g_build_filename( config_datadir , PLAYER_LOCALRC_FILE , NULL );
+  g_free( config_datadir );
 
   keyfile = g_key_file_new();
 

@@ -33,7 +33,6 @@
 #define ED_VERSION_PLUGIN "0.1beta"
 #define ED_VERSION_CONFIG "0"
 
-#define PLAYER_LOCALRC_DIR ".audacious"
 #define PLAYER_LOCALRC_FILE "evdev-plug.conf"
 
 #endif /* !_I_ED_COMMON_H */
