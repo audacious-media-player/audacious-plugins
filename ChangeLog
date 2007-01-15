@@ -1,3 +1,11 @@
+2007-01-15 02:59:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [932]
+  - gettext requires mkinstalldirs (todo: OBJECTIVE_PO omk instruction)
+  
+  trunk/mkinstalldirs |  111 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+  1 file changed, 111 insertions(+)
+
+
 2007-01-15 01:57:10 +0000  Giacomo Lozito <james@develia.org>
   revision [930]
   - turn debug off for evdev-plug
