@@ -1,3 +1,12 @@
+2007-01-15 06:39:39 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [942]
+  - buildsystem glue for curl http:// transport
+  
+  trunk/configure.ac      |    2 +-
+  trunk/src/curl/Makefile |   18 ++++++++++++++++++
+  2 files changed, 19 insertions(+), 1 deletion(-)
+
+
 2007-01-15 06:34:57 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [940]
   Add code for a plugin to use CURL for http. Needs some build-system

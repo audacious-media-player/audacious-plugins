@@ -222,8 +222,10 @@ get_fileinfo(void)
 
     if (filept == NULL)
         return -1;
-    if (vfs_fseek(filept, 0, SEEK_END) < 0)
-        return -1;
+    if (vfs_fseek(filept, 0, SEEK_END) < 0) {
+        mpgdec_info->filesize = 0;
+        return 0;
+    }
 
     mpgdec_info->filesize = vfs_ftell(filept);
     if (vfs_fseek(filept, -128, SEEK_END) < 0)

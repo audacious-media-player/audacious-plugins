@@ -30,7 +30,7 @@ typedef struct _CurlHandle CurlHandle;
 struct _CurlHandle {
   CURL *curl;
 
-  gsize length; // the length of the file
+  gssize length; // the length of the file
   gsize rd_abs; // the absolute position for reading from the stream
   gsize wr_abs; // the absolute position where the input connection is
 
@@ -46,7 +46,7 @@ struct _CurlHandle {
 };
 
 /* TODO:
- *  - Icecast
+ *  - Fix hang if the server closes the connection in the middle
  *  - Clever buffer stuff when you read a bit of the beginning and a bit of the
  *    end of a file
  */
@@ -97,9 +97,13 @@ static void update_length(CurlHandle *handle)
       if (retcode == CURLE_OK)
 	{
 	  handle->length = value;
+	  if (handle->length == 0)
+	    handle->length = -2;
+	  //g_print("Length: %d\n", handle->length);
 	}
       else
 	{
+	  handle->length = -2;
 	  g_print("getinfo gave error\n");
 	}
     }
@@ -140,6 +144,7 @@ static gpointer
 curl_manage_request(gpointer arg)
 {
   CurlHandle *handle = arg;
+  CURLcode result;
   //g_print("Connect %p\n", handle);
 
   if (handle->no_data)
@@ -153,8 +158,13 @@ curl_manage_request(gpointer arg)
       curl_easy_setopt(handle->curl, CURLOPT_HTTPGET, 1);
     }
 
-  curl_easy_perform(handle->curl);
-  update_length(handle);
+  result = curl_easy_perform(handle->curl);
+  if (result == CURLE_OK)
+    update_length(handle);
+  if (result != CURLE_OK && result != CURLE_WRITE_ERROR)
+    {
+      g_print("Got curl error %d\n", result);
+    }
   //g_print("Done %p%s", handle, handle->cancel ? " (aborted)\n" : "\n");
   handle->cancel = 1;
   return NULL;
@@ -271,9 +281,7 @@ curl_vfs_fread_impl(gpointer ptr,
   while (ret < sz)
     {
       size_t available;
-      while (!(available = buf_available(handle)) && 
-	     (handle->length == -1 || handle->rd_abs < handle->length) &&
-	     !handle->cancel)
+      while (!(available = buf_available(handle)) && !handle->cancel)
 	g_usleep(10000);
       if (available > sz - ret)
 	available = sz - ret;
@@ -345,7 +353,7 @@ curl_vfs_fseek_impl(VFSFile * file,
 	}
     }
 
-  if (whence == SEEK_END && handle->length == -1)
+  if (whence == SEEK_END && handle->length < 0)
     {
       //g_print("Tried to seek to the end of a file with unknown length\n");
       // don't know how long it is...
