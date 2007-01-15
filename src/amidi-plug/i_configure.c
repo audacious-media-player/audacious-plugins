@@ -28,6 +28,7 @@
 #include "i_configure-dummy.h"
 #include "i_utils.h"
 #include <audacious/beepctrl.h>
+#include <audacious/util.h>
 
 
 amidiplug_cfg_backend_t * amidiplug_cfg_backend;
@@ -310,9 +311,10 @@ void i_configure_cfg_backend_free( void )
 void i_configure_cfg_backend_read( void )
 {
   pcfg_t *cfgfile;
+  gchar * config_datadir = (gchar*)audacious_get_localdir();
+  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
 
-  gchar * config_pathfilename = g_strjoin( "" , g_get_home_dir() , "/" ,
-                                           PLAYER_LOCALRCDIR , "/amidi-plug.conf" , NULL );
+  g_free( config_datadir );
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   i_configure_cfg_alsa_read( cfgfile ); /* get alsa backend configuration */
@@ -329,8 +331,10 @@ void i_configure_cfg_backend_read( void )
 void i_configure_cfg_backend_save( void )
 {
   pcfg_t *cfgfile;
-  gchar * config_pathfilename = g_strjoin( "" , g_get_home_dir() , "/" ,
-                                           PLAYER_LOCALRCDIR , "/amidi-plug.conf" , NULL );
+  gchar * config_datadir = (gchar*)audacious_get_localdir();
+  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
+
+  g_free( config_datadir );
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if (!cfgfile)
@@ -350,8 +354,10 @@ void i_configure_cfg_backend_save( void )
 void i_configure_cfg_ap_read( void )
 {
   pcfg_t *cfgfile;
-  gchar * config_pathfilename = g_strjoin( "" , g_get_home_dir() , "/" ,
-                                           PLAYER_LOCALRCDIR , "/amidi-plug.conf" , NULL );
+  gchar * config_datadir = (gchar*)audacious_get_localdir();
+  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
+
+  g_free( config_datadir );
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if (!cfgfile)
@@ -388,8 +394,10 @@ void i_configure_cfg_ap_read( void )
 void i_configure_cfg_ap_save( void )
 {
   pcfg_t *cfgfile;
-  gchar * config_pathfilename = g_strjoin( "" , g_get_home_dir() , "/" ,
-                                           PLAYER_LOCALRCDIR , "/amidi-plug.conf" , NULL );
+  gchar * config_datadir = (gchar*)audacious_get_localdir();
+  gchar * config_pathfilename = g_build_filename( config_datadir , "amidi-plug.conf" , NULL );
+
+  g_free( config_datadir );
   cfgfile = i_pcfg_new_from_file( config_pathfilename );
 
   if (!cfgfile)

@@ -1,3 +1,11 @@
+2007-01-15 20:38:45 +0000  Giacomo Lozito <james@develia.org>
+  revision [954]
+  - added audacious_get_localdir() in util.c/h, returns a string with the full path of audacious local datadir
+  trunk/src/evdev-plug/ed_common.h    |    1 -
+  trunk/src/evdev-plug/ed_internals.c |   19 +++++++++++++------
+  2 files changed, 13 insertions(+), 7 deletions(-)
+
+
 2007-01-15 20:02:09 +0000  Giacomo Lozito <james@develia.org>
   revision [952]
   - add missing config.h inclusion for wavpack, null and metronom plugin
