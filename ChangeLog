@@ -1,3 +1,10 @@
+2007-01-15 01:57:10 +0000  Giacomo Lozito <james@develia.org>
+  revision [930]
+  - turn debug off for evdev-plug
+  trunk/src/evdev-plug/ed_common.h |    2 --
+  1 file changed, 2 deletions(-)
+
+
 2007-01-15 01:55:24 +0000  Giacomo Lozito <james@develia.org>
   revision [928]
   - added evdev-plug, written-from-scratch plugin that allows to control the player via event devices on linux systems
