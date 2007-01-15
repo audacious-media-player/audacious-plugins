@@ -60,6 +60,7 @@ SOURCES = \
 OBJECTS = ${SOURCES:.cxx=.o}
 
 LIBADD += -lz $(GTK_LIBS) -lstdc++
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
 include ../../mk/objective.mk
