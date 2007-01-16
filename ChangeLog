@@ -1,3 +1,10 @@
+2007-01-16 20:50:30 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [970]
+  One more. Seems like one meant id3v1, not id3v2 for the 30 char limit.
+  trunk/src/tta/aud-tta.c |    6 ++++--
+  1 file changed, 4 insertions(+), 2 deletions(-)
+
+
 2007-01-16 20:47:04 +0000  Jonathan Schleifer <js@h3c.de>
   revision [968]
   I committed too fast, there was even more.

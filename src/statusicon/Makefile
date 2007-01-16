@@ -3,7 +3,7 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libstatusicon$(SHARED_SUFFIX)
 
-noinst_HEADERS = si.h si_ui.h si_audacious.h si_common.h gtktrayicon.h
+noinst_HEADERS = si.h si_ui.h si_audacious.h si_common.h gtktrayicon.h si.xpm si2.xpm
 
 LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
