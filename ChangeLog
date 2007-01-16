@@ -1,3 +1,10 @@
+2007-01-16 22:41:44 +0000  Alexandr Orlov <alxorlov@pochta.ru>
+  revision [974]
+  Add russian translation
+  trunk/po/ru.po | 2207 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  1 file changed, 2207 insertions(+)
+
+
 2007-01-16 21:14:04 +0000  Giacomo Lozito <james@develia.org>
   revision [972]
   - status icon plugins: provide a couple of different icon pixmap files
