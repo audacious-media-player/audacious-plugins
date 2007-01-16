@@ -954,8 +954,10 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 
 			  // comment
 			  str = tta_input_id3_get_string (tag, ID3_FRAME_COMMENT);
-			  if(str)
-				  strncpy(ttainfo->id3v2.comment, str, 30);
+			  if(str) {
+				  strncpy(ttainfo->id3v2.comment, str, MAX_LINE);
+				  strncpy(ttainfo->id3v1.comment, str, 30);
+			  }
 			  free(str);
 			  str = NULL;
 

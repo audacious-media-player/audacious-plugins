@@ -1,3 +1,11 @@
+2007-01-16 20:47:04 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [968]
+  I committed too fast, there was even more.
+  trunk/src/tta/aud-tta.c   |   12 +++++-------
+  trunk/src/tta/ttaid3tag.h |    9 ++++++---
+  2 files changed, 11 insertions(+), 10 deletions(-)
+
+
 2007-01-16 20:41:40 +0000  Jonathan Schleifer <js@h3c.de>
   revision [966]
   Fix of possible buffer overflow.
