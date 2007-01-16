@@ -906,7 +906,7 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 
 			  str = tta_input_id3_get_string (tag, ID3_FRAME_ALBUM);
 			  if(str){
-				  strcpy(ttainfo->id3v2.album, str);
+				  strncpy(ttainfo->id3v2.album, str, MAX_LINE);
 				  strncpy(ttainfo->id3v1.album, str, 30);
 			  }
 			  free(str);
@@ -914,7 +914,7 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 
 			  str = tta_input_id3_get_string (tag, ID3_FRAME_TITLE);
 			  if(str) {
-				  strcpy(ttainfo->id3v2.title, str);
+				  strncpy(ttainfo->id3v2.title, str, MAX_LINE);
 				  strncpy(ttainfo->id3v1.title, str, 30);
 			  }
 			  free(str);
@@ -936,7 +936,7 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 			  // track number
 			  str = tta_input_id3_get_string (tag, ID3_FRAME_TRACK);
 			  if(str)
-				  strcpy(ttainfo->id3v2.track, str);
+				  strncpy(ttainfo->id3v2.track, str, MAX_TRACK);
 			  free(str);
 			  str = NULL;
 
@@ -944,7 +944,7 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 			  str = tta_input_id3_get_string (tag, ID3_FRAME_GENRE);
 			  if(str) {
 				  id3_ucs4_t *tmp = NULL;
-				  strcpy(ttainfo->id3v2.genre, str);
+				  strncpy(ttainfo->id3v2.genre, str, MAX_GENRE);
 				  tmp = id3_latin1_ucs4duplicate((id3_latin1_t *)str);
 				  ttainfo->id3v1.genre =  id3_genre_number(tmp);
 				  g_free(tmp);
@@ -954,10 +954,8 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 
 			  // comment
 			  str = tta_input_id3_get_string (tag, ID3_FRAME_COMMENT);
-			  if(str) {
-				  strcpy(ttainfo->id3v2.comment, str);
+			  if(str)
 				  strncpy(ttainfo->id3v2.comment, str, 30);
-			  }
 			  free(str);
 			  str = NULL;
 

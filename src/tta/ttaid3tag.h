@@ -8,6 +8,9 @@
 #pragma pack(1)
 
 #define MAX_LINE 4096
+#define MAX_YEAR 5
+#define MAX_TRACK 3
+#define MAX_GENRE 256
 //#define ID3_VERSION 3
 
 /* ID3 common headers set */
@@ -85,9 +88,9 @@ typedef struct {
 	unsigned char  artist[MAX_LINE];
 	unsigned char  album[MAX_LINE];
 	unsigned char  comment[MAX_LINE];
-	unsigned char  year[5];
-	unsigned char  track[3];
-	unsigned char  genre[256];
+	unsigned char  year[MAX_YEAR];
+	unsigned char  track[MAX_TRACK];
+	unsigned char  genre[MAX_GENRE];
 	unsigned char  id3has;
 	unsigned long  size;
 } id3v2_data;
