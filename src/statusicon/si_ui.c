@@ -23,8 +23,12 @@
 #include "si_common.h"
 #include "gtktrayicon.h"
 #include "si.xpm"
+#include <audacious/playlist.h>
+#include <audacious/titlestring.h>
+#include <audacious/ui_fileinfopopup.h>
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
 
@@ -68,15 +72,124 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
       break;
     }
 
-/*
+    /*
     case 3:
     {
+
       GtkWidget *si_rmenu = GTK_WIDGET(g_object_get_data( G_OBJECT(evbox) , "rmenu" ));
       gtk_menu_popup( GTK_MENU(si_rmenu) , NULL , NULL ,
                       NULL , NULL , event->button , event->time );
       break;
     }
-*/
+    */
+  }
+
+  return FALSE;
+}
+
+
+static gboolean
+si_ui_statusicon_popup_show ( gpointer evbox )
+{
+  if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "timer_active" )) == 1 )
+  {
+    TitleInput *tuple;
+    Playlist *pl_active = playlist_get_active();
+    gint pos = playlist_get_position(pl_active);
+    GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
+
+    tuple = playlist_get_tuple( pl_active , pos );
+    audacious_fileinfopopup_show_from_tuple( popup , tuple );
+
+    g_object_set_data( G_OBJECT(evbox) , "popup_active" , GINT_TO_POINTER(1) );
+  }
+
+  g_object_set_data( G_OBJECT(evbox) , "timer_id" , GINT_TO_POINTER(0) );
+  g_object_set_data( G_OBJECT(evbox) , "timer_active" , GINT_TO_POINTER(0) );
+  return FALSE;
+}
+
+
+static void
+si_ui_statusicon_popup_hide ( gpointer evbox )
+{
+  if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 )
+  {
+    GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
+    g_object_set_data( G_OBJECT(evbox) , "popup_active" , GINT_TO_POINTER(0) );
+    audacious_fileinfopopup_hide( popup , NULL );
+  }
+}
+
+
+static void
+si_ui_statusicon_popup_timer_start ( GtkWidget * evbox )
+{
+  gint timer_id = g_timeout_add( 500 , si_ui_statusicon_popup_show , evbox );
+  g_object_set_data( G_OBJECT(evbox) , "timer_id" , GINT_TO_POINTER(timer_id) );
+  g_object_set_data( G_OBJECT(evbox) , "timer_active" , GINT_TO_POINTER(1) );
+  return;
+}
+
+
+static void
+si_ui_statusicon_popup_timer_stop ( GtkWidget * evbox )
+{
+  if ( GPOINTER_TO_INT(g_object_get_data(G_OBJECT(evbox),"timer_active")) == 1 )
+    g_source_remove( GPOINTER_TO_INT(g_object_get_data(G_OBJECT(evbox),"timer_id")) );
+
+  g_object_set_data( G_OBJECT(evbox) , "timer_id" , GINT_TO_POINTER(0) );
+  g_object_set_data( G_OBJECT(evbox) , "timer_active" , GINT_TO_POINTER(0) );
+  return;
+}
+
+
+static gboolean
+si_ui_statusicon_cb_popup ( GtkWidget * evbox , GdkEvent * event )
+{
+  if ((event->type == GDK_LEAVE_NOTIFY || event->type == GDK_ENTER_NOTIFY) &&
+    event->crossing.detail == GDK_NOTIFY_INFERIOR)
+      return FALSE;
+
+  if ( event->type != GDK_KEY_PRESS && event->type != GDK_KEY_RELEASE )
+  {
+    GtkWidget *event_widget = gtk_get_event_widget( event );
+    if ( event_widget != evbox )
+      return FALSE;
+  }
+
+  switch (event->type)
+  {
+    case GDK_EXPOSE:
+      /* do nothing */
+      break;
+
+    case GDK_ENTER_NOTIFY:
+        si_ui_statusicon_popup_timer_start( evbox );
+      break;
+
+     case GDK_LEAVE_NOTIFY:
+       si_ui_statusicon_popup_timer_stop( evbox );
+       if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 )
+         si_ui_statusicon_popup_hide( evbox );
+       break;
+
+     case GDK_MOTION_NOTIFY:
+       break; /* ignore */
+
+     case GDK_BUTTON_PRESS:
+     case GDK_BUTTON_RELEASE:
+     case GDK_KEY_PRESS:
+     case GDK_KEY_RELEASE:
+     case GDK_PROXIMITY_IN:
+     case GDK_SCROLL:
+       si_ui_statusicon_popup_timer_stop( evbox );
+       if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 )
+         si_ui_statusicon_popup_hide( evbox );
+       break;
+
+     default:
+       break;
   }
 
   return FALSE;
@@ -88,6 +201,7 @@ si_ui_statusicon_show ( void )
 {
   GtkWidget *si_image;
   GtkWidget *si_rmenu;
+  GtkWidget *si_popup;
   GdkPixbuf *si_pixbuf;
   GtkTrayIcon *si_applet;
 
@@ -104,11 +218,21 @@ si_ui_statusicon_show ( void )
 
   si_evbox = gtk_event_box_new();
   si_rmenu = si_ui_rmenu_create( si_evbox );
+  si_popup = audacious_fileinfopopup_create();
 
   g_object_set_data( G_OBJECT(si_evbox) , "rmenu" , si_rmenu );
   g_object_set_data( G_OBJECT(si_evbox) , "applet" , si_applet );
+
+  g_object_set_data( G_OBJECT(si_evbox) , "timer_id" , GINT_TO_POINTER(0) );
+  g_object_set_data( G_OBJECT(si_evbox) , "timer_active" , GINT_TO_POINTER(0) );
+
+  g_object_set_data( G_OBJECT(si_evbox) , "popup_active" , GINT_TO_POINTER(0) );
+  g_object_set_data( G_OBJECT(si_evbox) , "popup" , si_popup );
+
   g_signal_connect( G_OBJECT(si_evbox) , "button-press-event" ,
                     G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
+  g_signal_connect_after( G_OBJECT(si_evbox) , "event-after" ,
+                          G_CALLBACK(si_ui_statusicon_cb_popup) , NULL );
 
   gtk_container_add( GTK_CONTAINER(si_evbox), si_image );
   gtk_container_add( GTK_CONTAINER(si_applet), si_evbox );
@@ -125,6 +249,7 @@ si_ui_statusicon_hide ( void )
   {
     GtkTrayIcon *si_applet = g_object_get_data( G_OBJECT(si_evbox) , "applet" );
     GtkWidget *si_rmenu = g_object_get_data( G_OBJECT(si_evbox) , "rmenu" );
+    si_ui_statusicon_popup_timer_stop( si_evbox ); /* just in case the timer is active */
     gtk_widget_destroy( GTK_WIDGET(si_evbox) );
     gtk_widget_destroy( GTK_WIDGET(si_rmenu) );
     gtk_widget_destroy( GTK_WIDGET(si_applet) );

@@ -1,3 +1,10 @@
+2007-01-15 22:04:11 +0000  Giacomo Lozito <james@develia.org>
+  revision [960]
+  - evdev-plug: check that the player local datadir exists before attempting to create evdev-plug.conf
+  trunk/src/evdev-plug/ed_internals.c |   20 ++++++++++++++------
+  1 file changed, 14 insertions(+), 6 deletions(-)
+
+
 2007-01-15 21:25:41 +0000  Giacomo Lozito <james@develia.org>
   revision [958]
   - amidiplug: on midi backend init, pass a function that helps the backend to get the location of amidi-plug.conf
