@@ -1,3 +1,12 @@
+2007-01-16 18:34:12 +0000  Giacomo Lozito <james@develia.org>
+  revision [962]
+  - status icon plugin: made a tooltip popup that displays metadata of the current song
+  trunk/src/statusicon/si.h        |    2 
+  trunk/src/statusicon/si_common.h |    2 
+  trunk/src/statusicon/si_ui.c     |  129 ++++++++++++++++++++++++++++++++++++++-
+  3 files changed, 129 insertions(+), 4 deletions(-)
+
+
 2007-01-15 22:04:11 +0000  Giacomo Lozito <james@develia.org>
   revision [960]
   - evdev-plug: check that the player local datadir exists before attempting to create evdev-plug.conf

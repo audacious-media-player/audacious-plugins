@@ -196,13 +196,54 @@ si_ui_statusicon_cb_popup ( GtkWidget * evbox , GdkEvent * event )
 }
 
 
+static void
+si_ui_statusicon_image_update ( GtkWidget * image )
+{
+  GdkPixbuf *si_pixbuf, *si_scaled_pixbuf;
+  gint size = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(image) , "size" ));
+
+  si_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char**)si_xpm );
+  si_scaled_pixbuf = gdk_pixbuf_scale_simple( si_pixbuf , size , size , GDK_INTERP_BILINEAR );
+  gtk_image_set_from_pixbuf( GTK_IMAGE(image) , si_scaled_pixbuf );
+  g_object_unref( si_pixbuf );
+  g_object_unref( si_scaled_pixbuf );
+
+  return;
+}
+
+
+static void
+si_ui_statusicon_cb_image_sizalloc ( GtkWidget * image , GtkAllocation * allocation , gpointer si_applet )
+{
+  GtkOrientation orientation;
+  static gint prev_size = 0;
+  gint size = 0;
+
+  orientation = _gtk_tray_icon_get_orientation( GTK_TRAY_ICON(si_applet) );
+  if ( orientation == GTK_ORIENTATION_HORIZONTAL )
+    size = allocation->height;
+  else
+    size = allocation->width;
+
+  if ( prev_size != size )
+  {
+    prev_size = size;
+    g_object_set_data( G_OBJECT(image) , "size" , GINT_TO_POINTER(size) );
+    si_ui_statusicon_image_update( image );
+  }
+
+  return;
+}
+
+
 void
 si_ui_statusicon_show ( void )
 {
   GtkWidget *si_image;
   GtkWidget *si_rmenu;
   GtkWidget *si_popup;
-  GdkPixbuf *si_pixbuf;
+  gint w, h;
+  GtkSettings *settings = NULL;
   GtkTrayIcon *si_applet;
 
   si_applet = si_ui_statusicon_create();
@@ -212,9 +253,11 @@ si_ui_statusicon_show ( void )
     return;
   }
 
-  si_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char**)si_xpm );
-  si_image = gtk_image_new_from_pixbuf( si_pixbuf );
-  g_object_unref( si_pixbuf );
+  si_image = gtk_image_new();
+  g_object_set_data( G_OBJECT(si_image) , "size" , GINT_TO_POINTER(0) );
+
+  g_signal_connect( si_image , "size-allocate" ,
+                    G_CALLBACK(si_ui_statusicon_cb_image_sizalloc) , si_applet );
 
   si_evbox = gtk_event_box_new();
   si_rmenu = si_ui_rmenu_create( si_evbox );
