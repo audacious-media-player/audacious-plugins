@@ -898,7 +898,7 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 		  if (tag) {
 			  str = tta_input_id3_get_string (tag, ID3_FRAME_ARTIST);
 			  if(str) {
-				strcpy(ttainfo->id3v2.artist, str);
+				strncpy(ttainfo->id3v2.artist, str, MAX_LINE);
 				strncpy(ttainfo->id3v1.artist, str, 30);
 			  }
 			  free(str);

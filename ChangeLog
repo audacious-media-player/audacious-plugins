@@ -1,3 +1,10 @@
+2007-01-16 20:17:06 +0000  Giacomo Lozito <james@develia.org>
+  revision [964]
+  - status icon plugin: try to auto-detect the correct size for the status icon
+  trunk/src/statusicon/si_ui.c |   51 +++++++++++++++++++++++++++++++++++++++----
+  1 file changed, 47 insertions(+), 4 deletions(-)
+
+
 2007-01-16 18:34:12 +0000  Giacomo Lozito <james@develia.org>
   revision [962]
   - status icon plugin: made a tooltip popup that displays metadata of the current song
