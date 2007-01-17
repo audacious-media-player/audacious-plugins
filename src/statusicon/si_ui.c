@@ -26,6 +26,7 @@
 #include <audacious/playlist.h>
 #include <audacious/titlestring.h>
 #include <audacious/ui_fileinfopopup.h>
+#include <audacious/util.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gdk/gdk.h>
@@ -48,19 +49,6 @@ si_ui_statusicon_create ( void )
 }
 
 
-static GtkWidget *
-si_ui_rmenu_create ( GtkWidget * evbox )
-{
-  GtkWidget *menu;
-  GtkWidget *menuitem;
-
-  menu = gtk_menu_new();
-
-  /* gtk_widget_show_all( GTK_WIDGET(menu) ); */
-  return menu;
-}
-
-
 static gboolean
 si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
 {
@@ -72,16 +60,11 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
       break;
     }
 
-    /*
     case 3:
     {
-
-      GtkWidget *si_rmenu = GTK_WIDGET(g_object_get_data( G_OBJECT(evbox) , "rmenu" ));
-      gtk_menu_popup( GTK_MENU(si_rmenu) , NULL , NULL ,
-                      NULL , NULL , event->button , event->time );
+      audacious_menu_main_show( event->x_root , event->y_root , 3 , event->time );
       break;
     }
-    */
   }
 
   return FALSE;
@@ -240,7 +223,6 @@ void
 si_ui_statusicon_show ( void )
 {
   GtkWidget *si_image;
-  GtkWidget *si_rmenu;
   GtkWidget *si_popup;
   GtkTrayIcon *si_applet;
   GtkRequisition req;
@@ -260,10 +242,8 @@ si_ui_statusicon_show ( void )
                     G_CALLBACK(si_ui_statusicon_cb_image_sizalloc) , si_applet );
 
   si_evbox = gtk_event_box_new();
-  si_rmenu = si_ui_rmenu_create( si_evbox );
   si_popup = audacious_fileinfopopup_create();
 
-  g_object_set_data( G_OBJECT(si_evbox) , "rmenu" , si_rmenu );
   g_object_set_data( G_OBJECT(si_evbox) , "applet" , si_applet );
 
   g_object_set_data( G_OBJECT(si_evbox) , "timer_id" , GINT_TO_POINTER(0) );
@@ -299,10 +279,8 @@ si_ui_statusicon_hide ( void )
   if ( si_evbox != NULL )
   {
     GtkTrayIcon *si_applet = g_object_get_data( G_OBJECT(si_evbox) , "applet" );
-    GtkWidget *si_rmenu = g_object_get_data( G_OBJECT(si_evbox) , "rmenu" );
     si_ui_statusicon_popup_timer_stop( si_evbox ); /* just in case the timer is active */
     gtk_widget_destroy( GTK_WIDGET(si_evbox) );
-    gtk_widget_destroy( GTK_WIDGET(si_rmenu) );
     gtk_widget_destroy( GTK_WIDGET(si_applet) );
   }
   return;
