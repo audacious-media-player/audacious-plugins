@@ -104,7 +104,6 @@ extern "C" {
 #define ATOM_GENRE2 20
 #define ATOM_TEMPO 21
 #define ATOM_COVER 22
-#define ATOM_DRMS 23
 #define ATOM_SINF 24
 #define ATOM_SCHI 25
 

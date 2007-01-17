@@ -29,8 +29,6 @@
 #include <string.h>
 #include "mp4ffint.h"
 
-#include "drms.h"
-
 mp4ff_t *mp4ff_open_read(mp4ff_callback_t *f)
 {
     mp4ff_t *ff = malloc(sizeof(mp4ff_t));
@@ -72,10 +70,6 @@ void mp4ff_close(mp4ff_t *ff)
 				free(ff->track[i]->ctts_sample_count);
 			if (ff->track[i]->ctts_sample_offset)
 				free(ff->track[i]->ctts_sample_offset);
-#ifdef ITUNES_DRM
-            if (ff->track[i]->p_drms)
-                drms_free(ff->track[i]->p_drms);
-#endif
             free(ff->track[i]);
         }
     }
@@ -409,12 +403,6 @@ int32_t mp4ff_read_sample(mp4ff_t *f, const int32_t track, const int32_t sample,
         return 0;
 	}
 
-#ifdef ITUNES_DRM
-    if (f->track[track]->p_drms != NULL)
-    {
-        drms_decrypt(f->track[track]->p_drms, (uint32_t*)*audio_buffer, *bytes);
-    }
-#endif
 
     return *bytes;
 }
@@ -427,13 +415,6 @@ int32_t mp4ff_read_sample_v2(mp4ff_t *f, const int track, const int sample,unsig
 	if (size<=0) return 0;
 	mp4ff_set_sample_position(f, track, sample);
 	result = mp4ff_read_data(f,buffer,size);
-
-#ifdef ITUNES_DRM
-    if (f->track[track]->p_drms != NULL)
-    {
-        drms_decrypt(f->track[track]->p_drms, (uint32_t*)buffer, size);
-    }
-#endif
 
     return result;
 }

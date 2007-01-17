@@ -1,3 +1,11 @@
+2007-01-17 08:23:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [982]
+  - remove visual studio file from src/aac/mp4ff
+  
+  trunk/src/aac/mp4ff/mp4ff.dsp |  144 ------------------------------------------
+  1 file changed, 144 deletions(-)
+
+
 2007-01-17 03:40:59 +0000  Giacomo Lozito <james@develia.org>
   revision [980]
   status icon plugin: ensure that the size-allocate signal is called for the tray icon widget
