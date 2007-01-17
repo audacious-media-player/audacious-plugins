@@ -201,6 +201,17 @@ si_ui_statusicon_image_update ( GtkWidget * image )
 {
   GdkPixbuf *si_pixbuf, *si_scaled_pixbuf;
   gint size = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(image) , "size" ));
+  static gchar *wmname = NULL;
+
+  /* sometimes, KDE won't give the correct size-allocation; workaround this */
+  if ( wmname == NULL )
+  {
+    GdkScreen *screen = gdk_screen_get_default();
+    if ( screen != NULL )
+      wmname = (gchar*)gdk_x11_screen_get_window_manager_name( screen );
+  }
+  else if ( ( size > 22 ) && ( !strcmp("KWin",wmname) ) )
+    size = 22;
 
   si_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char**)si_xpm );
   si_scaled_pixbuf = gdk_pixbuf_scale_simple( si_pixbuf , size , size , GDK_INTERP_BILINEAR );
