@@ -1,3 +1,17 @@
+2007-01-17 08:29:28 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [984]
+  - remove broken iTunes 4/5 DRM support due to portability issues
+  
+  trunk/src/aac/mp4ff/Makefile     |    2 
+  trunk/src/aac/mp4ff/drms.c       | 1043 ---------------------------------------
+  trunk/src/aac/mp4ff/drms.h       |   40 -
+  trunk/src/aac/mp4ff/drmstables.h |  449 ----------------
+  trunk/src/aac/mp4ff/mp4atom.c    |  138 -----
+  trunk/src/aac/mp4ff/mp4ff.c      |   19 
+  trunk/src/aac/mp4ff/mp4ffint.h   |    1 
+  7 files changed, 1 insertion(+), 1691 deletions(-)
+
+
 2007-01-17 08:23:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [982]
   - remove visual studio file from src/aac/mp4ff

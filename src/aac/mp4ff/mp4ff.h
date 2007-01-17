@@ -87,6 +87,7 @@ uint32_t mp4ff_get_audio_type(const mp4ff_t * f,const int32_t track);
 int mp4ff_meta_get_num_items(const mp4ff_t *f);
 int mp4ff_meta_get_by_index(const mp4ff_t *f, unsigned int index,
                             char **item, char **value);
+int mp4ff_meta_find_by_name(const mp4ff_t *f, const char *item, char **value);
 int mp4ff_meta_get_title(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_artist(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_writer(const mp4ff_t *f, char **value);
@@ -107,6 +108,7 @@ typedef struct
 {
     char *item;
     char *value;
+    uint32_t value_length;
 } mp4ff_tag_t;
 
 /* metadata list structure */

@@ -30,13 +30,20 @@
 
 int32_t mp4ff_read_data(mp4ff_t *f, uint8_t *data, uint32_t size)
 {
-    int32_t result = 1;
+    int32_t result;
+    uint32_t read = 0;
 
-    result = f->stream->read(f->stream->user_data, data, size);
+    while (read < size) {
+        result = f->stream->read(f->stream->user_data, data+read, size-read);
+	if (result <= 0) {
+		break;
+	}
+	read += result;
+    }
 
-    f->current_position += size;
+    f->current_position += read;
 
-    return result;
+    return read;
 }
 
 int32_t mp4ff_truncate(mp4ff_t * f)
