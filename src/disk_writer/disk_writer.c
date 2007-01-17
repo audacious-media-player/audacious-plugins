@@ -30,7 +30,6 @@
 
 #include "audacious/plugin.h"
 #include "audacious/beepctrl.h"
-#include "audacious/dirbrowser.h"
 #include "audacious/configdb.h"
 #include "audacious/util.h"
 #include "audacious/vfs.h"
