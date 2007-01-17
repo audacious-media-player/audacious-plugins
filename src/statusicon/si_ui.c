@@ -242,9 +242,9 @@ si_ui_statusicon_show ( void )
   GtkWidget *si_image;
   GtkWidget *si_rmenu;
   GtkWidget *si_popup;
-  gint w, h;
-  GtkSettings *settings = NULL;
   GtkTrayIcon *si_applet;
+  GtkRequisition req;
+  GtkAllocation allocation;
 
   si_applet = si_ui_statusicon_create();
   if ( si_applet == NULL )
@@ -279,8 +279,16 @@ si_ui_statusicon_show ( void )
 
   gtk_container_add( GTK_CONTAINER(si_evbox), si_image );
   gtk_container_add( GTK_CONTAINER(si_applet), si_evbox );
-
+  
   gtk_widget_show_all( GTK_WIDGET(si_applet) );
+
+  gtk_widget_size_request( GTK_WIDGET(si_applet) , &req );
+  allocation.x = 0;
+  allocation.y = 0;
+  allocation.width = req.width;
+  allocation.height = req.height;
+  gtk_widget_size_allocate( GTK_WIDGET(si_applet) , &allocation );
+    
   return;
 }
 
