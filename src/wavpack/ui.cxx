@@ -85,13 +85,13 @@ save_cb(GtkWidget * w, gpointer data)
 {
     ape_tag Tag;
 
-    strcpy(Tag.title, gtk_entry_get_text(GTK_ENTRY(title_entry)));
-    strcpy(Tag.artist, gtk_entry_get_text(GTK_ENTRY(performer_entry)));
-    strcpy(Tag.album, gtk_entry_get_text(GTK_ENTRY(album_entry)));
-    strcpy(Tag.comment, gtk_entry_get_text(GTK_ENTRY(user_comment_entry)));
-    strcpy(Tag.track, gtk_entry_get_text(GTK_ENTRY(tracknumber_entry)));
-    strcpy(Tag.year, gtk_entry_get_text(GTK_ENTRY(date_entry)));
-    strcpy(Tag.genre, gtk_entry_get_text(GTK_ENTRY(genre_entry)));
+    strncpy(Tag.title, gtk_entry_get_text(GTK_ENTRY(title_entry)), MAX_LEN);
+    strncpy(Tag.artist, gtk_entry_get_text(GTK_ENTRY(performer_entry)), MAX_LEN);
+    strncpy(Tag.album, gtk_entry_get_text(GTK_ENTRY(album_entry)), MAX_LEN);
+    strncpy(Tag.comment, gtk_entry_get_text(GTK_ENTRY(user_comment_entry)), MAX_LEN);
+    strncpy(Tag.track, gtk_entry_get_text(GTK_ENTRY(tracknumber_entry)), MAX_LEN2);
+    strncpy(Tag.year, gtk_entry_get_text(GTK_ENTRY(date_entry)), MAX_LEN2);
+    strncpy(Tag.genre, gtk_entry_get_text(GTK_ENTRY(genre_entry)), MAX_LEN);
     WriteAPE2Tag(filename, &Tag);
     g_free(filename);
     gtk_widget_destroy(window);

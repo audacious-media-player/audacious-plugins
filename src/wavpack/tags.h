@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 const int MAX_LEN = 2048;
+const int MAX_LEN = 128;
 const int TAG_NONE = 0;
 const int TAG_ID3 = 1;
 const int TAG_APE = 2;
@@ -14,8 +15,8 @@ typedef struct {
     char    album           [MAX_LEN];
     char    comment         [MAX_LEN];
     char    genre           [MAX_LEN];
-    char    track           [128];
-    char    year            [128];
+    char    track           [MAX_LEN2];
+    char    year            [MAX_LEN2];
     int     _genre;
 } ape_tag;
 

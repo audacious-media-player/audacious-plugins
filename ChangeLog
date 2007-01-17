@@ -1,3 +1,12 @@
+2007-01-17 17:14:03 +0000  Giacomo Lozito <james@develia.org>
+  revision [998]
+  - evdev-plug: added volume->mute and win->jumptofile actions
+  trunk/src/evdev-plug/ed.c         |   44 +++++++++++++++++++++++++++++++++++++-
+  trunk/src/evdev-plug/ed_actions.h |    4 ++-
+  trunk/src/evdev-plug/ed_ui.c      |    3 +-
+  3 files changed, 48 insertions(+), 3 deletions(-)
+
+
 2007-01-17 16:52:04 +0000  Giacomo Lozito <james@develia.org>
   revision [996]
   - status icon plugin: better logic for KWin workaround
