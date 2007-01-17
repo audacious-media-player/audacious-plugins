@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 const int MAX_LEN = 2048;
-const int MAX_LEN = 128;
+const int MAX_LEN2 = 128;
 const int TAG_NONE = 0;
 const int TAG_ID3 = 1;
 const int TAG_APE = 2;
