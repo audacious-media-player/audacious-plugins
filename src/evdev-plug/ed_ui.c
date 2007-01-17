@@ -1338,10 +1338,11 @@ cfg_ui_bindings_show ( ed_device_t * dev , GtkTreeRowReference * rowref )
   action_store_add( ED_ACTION_VOL_DOWN5 );
   action_store_add( ED_ACTION_VOL_UP10 );
   action_store_add( ED_ACTION_VOL_DOWN10 );
-  action_store_add( ED_ACTION_VOL_UP5 );
+  action_store_add( ED_ACTION_VOL_MUTE );
   action_store_add( ED_ACTION_WIN_MAIN );
   action_store_add( ED_ACTION_WIN_PLAYLIST );
   action_store_add( ED_ACTION_WIN_EQUALIZER );
+  action_store_add( ED_ACTION_WIN_JTF );
   g_object_set_data_full( G_OBJECT(bindings_win) , "action_store" , action_store , g_object_unref );
 
   /* info table */

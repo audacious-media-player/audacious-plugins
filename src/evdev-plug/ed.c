@@ -42,9 +42,11 @@ void ed_action_vol_up5 ( gpointer );
 void ed_action_vol_down5 ( gpointer );
 void ed_action_vol_up10 ( gpointer );
 void ed_action_vol_down10 ( gpointer );
+void ed_action_vol_mute ( gpointer );
 void ed_action_win_main ( gpointer );
 void ed_action_win_playlist ( gpointer );
 void ed_action_win_equalizer ( gpointer );
+void ed_action_win_jtf ( gpointer );
 void ed_action_pl_repeat ( gpointer );
 void ed_action_pl_shuffle ( gpointer );
 
@@ -65,10 +67,12 @@ ed_action_t player_actions[] =
   [ED_ACTION_VOL_DOWN5] = { N_("Volume->Down_5") , ed_action_vol_down5 },
   [ED_ACTION_VOL_UP10] = { N_("Volume->Up_10") , ed_action_vol_up10 },
   [ED_ACTION_VOL_DOWN10] = { N_("Volume->Down_10") , ed_action_vol_down10 },
+  [ED_ACTION_VOL_MUTE] = { N_("Volume->Mute") , ed_action_vol_mute },
 
   [ED_ACTION_WIN_MAIN] = { N_("Window->Main") , ed_action_win_main },
   [ED_ACTION_WIN_PLAYLIST] = { N_("Window->Playlist") , ed_action_win_playlist },
-  [ED_ACTION_WIN_EQUALIZER] = { N_("Window->Equalizer") , ed_action_win_equalizer }
+  [ED_ACTION_WIN_EQUALIZER] = { N_("Window->Equalizer") , ed_action_win_equalizer },
+  [ED_ACTION_WIN_JTF] = { N_("Window->JumpToFile") , ed_action_win_jtf }
 };
 
 
@@ -221,6 +225,38 @@ ed_action_vol_down10 ( gpointer param )
 }
 
 void
+ed_action_vol_mute ( gpointer param )
+{
+  static gint vl = -1;
+  static gint vr = -1;
+
+  if ( vl == -1 ) /* no previous memory of volume before mute action */
+  {
+    xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr ); /* memorize volume before mute */
+    xmms_remote_set_volume( ed_gp.xmms_session , 0 , 0 ); /* mute */
+  }
+  else /* memorized volume values exist */
+  {
+    gint vl_now = 0;
+    gint vr_now = 0;
+
+    xmms_remote_get_volume( ed_gp.xmms_session , &vl_now , &vr_now );
+    if (( vl_now == 0 ) && ( vr_now == 0 ))
+    {
+      /* the volume is still muted, restore the old values */
+      xmms_remote_set_volume( ed_gp.xmms_session , vl , vr );
+      vl = -1; vr = -1; /* reset these for next use */
+    }
+    else
+    {
+      /* the volume has been raised with other commands, act as if there wasn't a previous memory */
+      xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr ); /* memorize volume before mute */
+      xmms_remote_set_volume( ed_gp.xmms_session , 0 , 0 ); /* mute */
+    }
+  }
+}
+
+void
 ed_action_win_main ( gpointer param )
 {
   xmms_remote_main_win_toggle( ed_gp.xmms_session ,
@@ -239,4 +275,10 @@ ed_action_win_equalizer ( gpointer param )
 {
   xmms_remote_eq_win_toggle( ed_gp.xmms_session ,
     !xmms_remote_is_eq_win ( ed_gp.xmms_session ) );
+}
+
+void
+ed_action_win_jtf ( gpointer param )
+{
+  xmms_remote_show_jtf_box( ed_gp.xmms_session );
 }
