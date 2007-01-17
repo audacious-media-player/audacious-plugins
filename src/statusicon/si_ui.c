@@ -72,6 +72,23 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
 
 
 static gboolean
+si_ui_statusicon_cb_btscroll ( GtkWidget * evbox , GdkEventScroll * event )
+{
+  switch ( event->direction )
+  {
+    case GDK_SCROLL_UP:
+      si_audacious_volume_change( 5 );
+      break;
+    case GDK_SCROLL_DOWN:
+      si_audacious_volume_change( -5 );
+      break;
+  }
+
+  return FALSE;
+}
+
+
+static gboolean
 si_ui_statusicon_popup_show ( gpointer evbox )
 {
   if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "timer_active" )) == 1 )
@@ -254,12 +271,14 @@ si_ui_statusicon_show ( void )
 
   g_signal_connect( G_OBJECT(si_evbox) , "button-press-event" ,
                     G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
+  g_signal_connect( G_OBJECT(si_evbox) , "scroll-event" ,
+                    G_CALLBACK(si_ui_statusicon_cb_btscroll) , NULL );
   g_signal_connect_after( G_OBJECT(si_evbox) , "event-after" ,
                           G_CALLBACK(si_ui_statusicon_cb_popup) , NULL );
 
   gtk_container_add( GTK_CONTAINER(si_evbox), si_image );
   gtk_container_add( GTK_CONTAINER(si_applet), si_evbox );
-  
+
   gtk_widget_show_all( GTK_WIDGET(si_applet) );
 
   gtk_widget_size_request( GTK_WIDGET(si_applet) , &req );

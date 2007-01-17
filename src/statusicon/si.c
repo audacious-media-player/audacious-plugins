@@ -22,6 +22,7 @@
 #include "si_ui.h"
 #include "si_audacious.h"
 #include "si_common.h"
+#include <audacious/beepctrl.h>
 
 
 static gboolean plugin_active = FALSE;
@@ -100,4 +101,13 @@ si_audacious_toggle_visibility ( void )
     if ( pl_prevstatus == TRUE )
       xmms_remote_pl_win_toggle( si_gp.xmms_session , TRUE );
   }
+}
+
+void
+si_audacious_volume_change ( gint value )
+{
+  gint vl, vr;
+  xmms_remote_get_volume( si_gp.xmms_session , &vl , &vr );
+  xmms_remote_set_volume( si_gp.xmms_session , 
+    CLAMP(vl + value, 0, 100) , CLAMP(vr + value, 0, 100) );
 }

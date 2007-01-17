@@ -22,9 +22,11 @@
 #define _I_SI_AUDACIOUS_H 1
 
 #include "si_common.h"
+#include <glib.h>
 
 
 void si_audacious_toggle_visibility ( void );
+void si_audacious_volume_change ( gint );
 
 
 #endif /* !_I_SI_AUDACIOUS_H */
