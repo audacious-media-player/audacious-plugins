@@ -287,7 +287,7 @@ si_ui_statusicon_show ( void )
   allocation.width = req.width;
   allocation.height = req.height;
   gtk_widget_size_allocate( GTK_WIDGET(si_applet) , &allocation );
-    
+
   return;
 }
 
@@ -309,13 +309,28 @@ si_ui_statusicon_hide ( void )
 void
 si_ui_about_show ( void )
 {
-  GtkWidget *about_dlg = gtk_message_dialog_new(
-    NULL , 0 , GTK_MESSAGE_INFO , GTK_BUTTONS_CLOSE ,
-    _( "Status Icon Plugin " SI_VERSION_PLUGIN "\n"
-       "written by Giacomo Lozito < james@develia.org >\n\n"
-       "This plugin provides a status icon, placed in\n"
-       "the system tray area of the window manager.\n" ) );
-  gtk_dialog_run( GTK_DIALOG(about_dlg) );
-  gtk_widget_destroy( about_dlg );
+  static GtkWidget *about_dlg = NULL;
+  gchar *about_title;
+  gchar *about_text;
+
+  if ( about_dlg != NULL )
+  {
+    gtk_window_present( GTK_WINDOW(about_dlg) );
+    return;
+  }
+
+  about_title = g_strdup( _("About Status Icon Plugin") );
+  about_text = g_strjoin( "" , "Status Icon Plugin " , SI_VERSION_PLUGIN ,
+                 _("\nwritten by Giacomo Lozito < james@develia.org >\n\n"
+                   "This plugin provides a status icon, placed in\n"
+                   "the system tray area of the window manager.\n") , NULL );
+
+  about_dlg = xmms_show_message( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
+  g_signal_connect( G_OBJECT(about_dlg) , "destroy" ,
+                    G_CALLBACK(gtk_widget_destroyed), &about_dlg );
+  g_free( about_text );
+  g_free( about_title );
+
+  gtk_widget_show_all( about_dlg );
   return;
 }

@@ -1,3 +1,12 @@
+2007-01-17 11:34:44 +0000  Giacomo Lozito <james@develia.org>
+  revision [990]
+  - status icon plugin: use scroll wheel on the status icon to change volume
+  trunk/src/statusicon/si.c           |   10 ++++++++++
+  trunk/src/statusicon/si_audacious.h |    2 ++
+  trunk/src/statusicon/si_ui.c        |   21 ++++++++++++++++++++-
+  3 files changed, 32 insertions(+), 1 deletion(-)
+
+
 2007-01-17 11:13:34 +0000  Giacomo Lozito <james@develia.org>
   revision [988]
   - status icon plugin: display main menu on right click
