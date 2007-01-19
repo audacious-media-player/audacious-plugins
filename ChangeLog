@@ -1,3 +1,10 @@
+2007-01-17 18:50:00 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [1002]
+  D'oh, a 2 was missing.
+  trunk/src/wavpack/tags.h |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-17 18:49:17 +0000  Jonathan Schleifer <js@h3c.de>
   revision [1000]
   Fixed possible buffer overflow.

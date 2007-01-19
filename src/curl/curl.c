@@ -24,6 +24,12 @@
 #include <string.h>
 
 #define BUFFER_SIZE 256 * 1024
+#define REVERSE_SEEK_SIZE 2048
+
+#define DEBUG_CONNECTION 0
+#define DEBUG_OPEN_CLOSE 0
+#define DEBUG_SEEK 0
+#define DEBUG_READ 0
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -42,6 +48,7 @@ struct _CurlHandle {
 
   gboolean no_data; // true if we're only looking for length currently
   gboolean cancel; // true if the thread should be cancelled
+  gboolean failed; // true if we've tried and failed already
   GThread *thread; // the thread that's reading from the connection
 };
 
@@ -59,7 +66,7 @@ struct _CurlHandle {
 
 static size_t buf_space(CurlHandle *handle)
 {
-  size_t rd_edge = handle->rd_abs - 2048;
+  size_t rd_edge = handle->rd_abs - REVERSE_SEEK_SIZE;
   if (rd_edge < 0)
     rd_edge = 0;
   size_t buffer_limit = handle->buffer_length - 
@@ -145,13 +152,15 @@ curl_manage_request(gpointer arg)
 {
   CurlHandle *handle = arg;
   CURLcode result;
-  //g_print("Connect %p\n", handle);
+  if (DEBUG_CONNECTION)
+    g_print("Connect %p\n", handle);
 
   if (handle->no_data)
     curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 1);
   else
     {
-      //g_print("Start from %d\n", handle->wr_abs);
+      if (DEBUG_CONNECTION)
+	g_print("Start from %d\n", handle->wr_abs);
       curl_easy_setopt(handle->curl, CURLOPT_RESUME_FROM, handle->wr_abs);
 
       curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 0);
@@ -161,24 +170,35 @@ curl_manage_request(gpointer arg)
   result = curl_easy_perform(handle->curl);
   if (result == CURLE_OK)
     update_length(handle);
-  if (result != CURLE_OK && result != CURLE_WRITE_ERROR)
+  // We expect to get CURLE_WRITE_ERROR if we cancel.
+  // We get CURLE_GOT_NOTHING if we send a HEAD request to a shoutcast server.
+  if (result != CURLE_OK && result != CURLE_WRITE_ERROR && 
+      result != CURLE_GOT_NOTHING)
     {
       g_print("Got curl error %d\n", result);
+      handle->failed = 1;
     }
-  //g_print("Done %p%s", handle, handle->cancel ? " (aborted)\n" : "\n");
+  if (DEBUG_CONNECTION)
+    g_print("Done %p%s", handle, handle->cancel ? " (aborted)\n" : "\n");
   handle->cancel = 1;
   return NULL;
 }
 
 static void curl_req_xfer(CurlHandle *handle)
 {
+  if (handle->failed)
+    {
+      handle->cancel = 1;
+      return;
+    }
   if (!handle->thread)
     {
       handle->cancel = 0;
       handle->wr_index = 0;
       handle->rd_index = 0;
       handle->wr_abs = handle->rd_abs;
-      //g_print("Starting connection %p at %d\n", handle, handle->wr_abs);
+      if (DEBUG_CONNECTION)
+	g_print("Starting connection %p at %d\n", handle, handle->wr_abs);
       handle->thread = g_thread_create(curl_manage_request, handle, 
 				       TRUE, NULL);
     }
@@ -226,14 +246,17 @@ curl_vfs_fopen_impl(const gchar * path,
   handle->thread = NULL;
   handle->length = -1;
   handle->cancel = 0;
+  handle->failed = 0;
   handle->no_data = 0;
   curl_easy_setopt(handle->curl, CURLOPT_URL, url);
   curl_easy_setopt(handle->curl, CURLOPT_WRITEFUNCTION, curl_writecb);
   curl_easy_setopt(handle->curl, CURLOPT_WRITEDATA, handle);
+  curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 10);
 
   file->handle = handle;
 
-  //g_print("Open %s with curl => %p\n", url, handle);
+  if (DEBUG_OPEN_CLOSE)
+    g_print("Open %s with curl => %p\n", url, handle);
 
   return file;
 }
@@ -244,13 +267,16 @@ curl_vfs_fclose_impl(VFSFile * file)
   gint ret = 0;
   if (file == NULL)
     return -1;
-  //g_print("Close %p\n", file->handle);
+  if (DEBUG_OPEN_CLOSE)
+    g_print("Close %p\n", file->handle);
   if (file->handle)
     {
       CurlHandle *handle = file->handle;
-      //g_print("Cancel transfer\n");
+      if (DEBUG_CONNECTION)
+	g_print("Cancel transfer\n");
       curl_req_no_xfer(handle);
-      //g_print("Okay\n");
+      if (DEBUG_CONNECTION)
+	g_print("Okay\n");
 
       g_free(handle->buffer);
       curl_easy_cleanup(handle->curl);
@@ -335,16 +361,19 @@ curl_vfs_fseek_impl(VFSFile * file,
 {
   size_t posn;
   CurlHandle *handle = file->handle;
-  //g_print("Seek %p to %d %d\n", handle, offset, whence);
+  if (DEBUG_SEEK)
+    g_print("Seek %p to %d %d\n", handle, offset, whence);
   if (whence == SEEK_END && handle->length == -1)
     {
       if (!handle->thread)
 	{
 	  // We need a HEAD to find out the length
 	  handle->no_data = 1;
-	  //g_print("Request for head info\n");
+	  if (DEBUG_CONNECTION)
+	    g_print("Request for head info\n");
 	  curl_manage_request(handle);
-	  //g_print("Completed\n");
+	  if (DEBUG_CONNECTION)
+	    g_print("Completed\n");
 	  handle->no_data = 0;
 	}
       else
@@ -378,18 +407,22 @@ curl_vfs_fseek_impl(VFSFile * file,
       if (handle->rd_abs + handle->buffer_length < handle->wr_abs ||
 	  handle->rd_abs > handle->wr_abs)
 	{
-	  //g_print("Stop transfer\n");
+	  if (DEBUG_CONNECTION)
+	    g_print("Stop transfer\n");
 	  curl_req_no_xfer(handle);
-	  //g_print("Okay\n");
+	  if (DEBUG_CONNECTION)
+	    g_print("Okay\n");
 	}
       else
 	{
-	  //g_print("Continue transfer\n");
+	  if (DEBUG_CONNECTION)
+	    g_print("Continue transfer\n");
 	  curl_req_sync_xfer(handle, posn);
 	}
     }
 
-  //g_print("Seeked %p from %d to %d\n", handle, posn, handle->rd_abs);
+  if (DEBUG_SEEK)
+    g_print("Seeked %p from %d to %d\n", handle, posn, handle->rd_abs);
   return 0;
 }
 
