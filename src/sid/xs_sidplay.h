@@ -11,12 +11,18 @@ t_xs_tuneinfo *TFUNCTION(gchar * pcFilename)
 	TTUNE *testTune;
 	gboolean haveInfo = TRUE;
 	gint i;
+	gchar *buffer = NULL;
+	glong buffer_size = 0;
+
+	if ( TBUFFGETFUNC( pcFilename , &buffer , &buffer_size ) != 0 )
+		return NULL;
 
 	/* Check if the tune exists and is readable */
-	if ((testTune = new TTUNE(pcFilename)) == NULL)
+	if ((testTune = new TTUNE((TBUFFTYPEMEM)buffer,(TBUFFTYPESIZE)buffer_size)) == NULL)
 		return NULL;
 
 	if (!testTune->getStatus()) {
+		g_free( buffer );
 		delete testTune;
 		return NULL;
 	}
@@ -40,6 +46,7 @@ t_xs_tuneinfo *TFUNCTION(gchar * pcFilename)
 				  tuneInfo.loadAddr, tuneInfo.initAddr, tuneInfo.playAddr, tuneInfo.dataFileLen);
 
 	if (!pResult) {
+		g_free( buffer );
 		delete testTune;
 		return NULL;
 	}
@@ -62,6 +69,7 @@ t_xs_tuneinfo *TFUNCTION(gchar * pcFilename)
 			pResult->subTunes[i].tuneLength = -1;
 	}
 
+	g_free( buffer );
 	delete testTune;
 
 	return pResult;
@@ -71,3 +79,6 @@ t_xs_tuneinfo *TFUNCTION(gchar * pcFilename)
 #undef TFUNCTION
 #undef TTUNEINFO
 #undef TTUNE
+#undef TBUFFGETFUNC
+#undef TBUFFTYPEMEM
+#undef TBUFFTYPESIZE

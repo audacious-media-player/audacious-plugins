@@ -38,6 +38,7 @@
 #ifdef HAVE_HARDSID_BUILDER
 #include <sidplay/builders/hardsid.h>
 #endif
+#include <audacious/vfs.h>
 
 
 typedef struct
@@ -53,22 +54,78 @@ typedef struct
 extern "C"
 {
 
+static gboolean xs_sidplay2_detect_by_content( VFSFile * fp )
+{
+	gchar magic_bytes[4];
+	gboolean res = FALSE;
+
+	if ( fp == NULL )
+		return FALSE;
+
+	if ( vfs_fread( magic_bytes , 1 , 4 , fp ) != 4 )
+		return FALSE;
+
+	if ( !strncmp( magic_bytes , "PSID" , 4 ) )
+		return TRUE;
+	else
+		return FALSE;
+  return FALSE;
+}
+
+
+static gint xs_sidplay2_load_file_in_buffer( gchar * pcFilename , gchar ** buffer , glong * buffer_size )
+{
+	VFSFile *fp;
+
+	if ( *buffer != NULL ) {
+		g_free( *buffer );
+		*buffer = NULL;
+	}
+
+	fp = vfs_fopen( pcFilename , "rb" );
+
+	if ( fp == NULL )
+		return -1;
+
+	vfs_fseek( fp , 0 , SEEK_END );
+	*buffer_size = vfs_ftell( fp );
+
+	if ( *buffer_size > 0 )
+	{
+		glong readsize;
+		*buffer = (gchar*)g_malloc(*buffer_size);
+		vfs_fseek( fp , 0 , SEEK_SET );
+		readsize = vfs_fread( *buffer , 1 , *buffer_size , fp );
+		vfs_fclose( fp );
+		if ( readsize != *buffer_size )
+			return -1;
+		else
+			return 0;
+	}
+	else
+	{
+		vfs_fclose( fp );
+		return -1;
+	}
+}
+
 
 /* Check if we can play the given file
  */
 gboolean xs_sidplay2_isourfile(gchar * pcFilename)
 {
-	SidTune *testTune = new SidTune(pcFilename);
+	VFSFile * fp;
+	gboolean result = FALSE;
 
-	if (!testTune) return FALSE;
+	fp = vfs_fopen( pcFilename , "rb" );
 
-	if (!testTune->getStatus()) {
-		delete testTune;
+	if ( fp == NULL )
 		return FALSE;
-	}
 
-	delete testTune;
-	return TRUE;
+	result = xs_sidplay2_detect_by_content( fp );
+	vfs_fclose( fp );
+
+	return result;
 }
 
 
@@ -344,6 +401,11 @@ void xs_sidplay2_close(t_xs_status * myStatus)
 
 	g_free(myEngine);
 	myStatus->sidEngine = NULL;
+
+	if ( myStatus->buffer != NULL ) {
+		g_free(myStatus->buffer);
+		myStatus->buffer = NULL;
+	}
 }
 
 
@@ -391,6 +453,7 @@ gboolean xs_sidplay2_loadsid(t_xs_status * myStatus, gchar * pcFilename)
 {
 	t_xs_sidplay2 *myEngine;
 	assert(myStatus);
+	glong buffer_size = 0;
 
 	myEngine = (t_xs_sidplay2 *) myStatus->sidEngine;
 	if (!myEngine) return FALSE;
@@ -398,7 +461,10 @@ gboolean xs_sidplay2_loadsid(t_xs_status * myStatus, gchar * pcFilename)
 	/* Try to get the tune */
 	if (!pcFilename) return FALSE;
 
-	if (!myEngine->currTune->load(pcFilename))
+	if ( xs_sidplay2_load_file_in_buffer( pcFilename , &myStatus->buffer , &buffer_size ) != 0 )
+		return FALSE;
+
+	if (!myEngine->currTune->read((uint_least8_t*)myStatus->buffer,(uint_least32_t)buffer_size))
 		return FALSE;
 
 	return TRUE;
@@ -420,6 +486,9 @@ void xs_sidplay2_deletesid(t_xs_status * myStatus)
 #define TFUNCTION	xs_sidplay2_getsidinfo
 #define TTUNEINFO	SidTuneInfo
 #define TTUNE		SidTune
+#define TBUFFGETFUNC	xs_sidplay2_load_file_in_buffer
+#define TBUFFTYPEMEM	uint_least8_t*
+#define TBUFFTYPESIZE	uint_least32_t
 #include "xs_sidplay.h"
 
 }				/* extern "C" */

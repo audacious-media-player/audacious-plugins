@@ -158,6 +158,7 @@ typedef struct t_xs_status {
 	gint		currSong,		/* Current sub-tune */
 			lastTime;
 	t_xs_tuneinfo	*tuneInfo;
+	gchar		*buffer;		/* Added by Audacious, to store file content got via VFS */
 } t_xs_status;
 
 

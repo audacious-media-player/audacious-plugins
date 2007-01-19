@@ -162,6 +162,7 @@ void xs_reinit(void)
 	xs_status.audioFormat = -1;
 	xs_status.oversampleEnable = xs_cfg.oversampleEnable;
 	xs_status.oversampleFactor = xs_cfg.oversampleFactor;
+	xs_status.buffer = NULL;
 
 	/* Try to initialize emulator engine */
 	XSDEBUG("initializing emulator engine #%i...\n", xs_cfg.playerEngine);
