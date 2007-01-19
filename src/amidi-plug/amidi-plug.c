@@ -28,49 +28,64 @@ InputPlugin *get_iplugin_info(void)
 }
 
 
-static gint amidiplug_is_our_file( gchar * filename )
+static gboolean amidiplug_detect_by_content( VFSFile * fp )
 {
-#if defined(MIDIFILE_PROBE_MAGICBYTES)
-    VFSFile * fp;
-    gchar magic_bytes[4];
+  gchar magic_bytes[4];
+  gint res = 0;
 
-    fp = VFS_FOPEN( filename , "rb" );
+  if ( fp == NULL )
+    return FALSE;
 
-    if ( fp == NULL )
+  if ( VFS_FREAD( magic_bytes , 1 , 4 , fp ) != 4 )
+    return FALSE;
+
+  if ( !strncmp( magic_bytes , "MThd" , 4 ) )
+  {
+    DEBUGMSG( "MIDI found, %s is a standard midi file\n" , filename );
+    return TRUE;
+  }
+
+  if ( !strncmp( magic_bytes , "RIFF" , 4 ) )
+  {
+    /* skip the four bytes after RIFF,
+       then read the next four */
+    if ( VFS_FSEEK( fp , 4 , SEEK_CUR ) != 0 )
       return FALSE;
 
-    VFS_FREAD( magic_bytes , 1 , 4 , fp );
+    if ( VFS_FREAD( magic_bytes , 1 , 4 , fp ) != 4 )
+      return FALSE;
 
-    if ( !strncmp( magic_bytes , "MThd" , 4 ) )
+    if ( !strncmp( magic_bytes , "RMID" , 4 ) )
     {
-      VFS_FCLOSE( fp );
-      DEBUGMSG( "MIDI found, %s is a standard midi file\n" , filename );
+      DEBUGMSG( "MIDI found, %s is a riff midi file\n" , filename );
       return TRUE;
     }
+  }
 
-    if ( !strncmp( magic_bytes , "RIFF" , 4 ) )
-    {
-      /* skip the four bytes after RIFF,
-         then read the next four */
-      VFS_FSEEK( fp , 4 , SEEK_CUR );
-      VFS_FREAD( magic_bytes , 1 , 4 , fp );
-      if ( !strncmp( magic_bytes , "RMID" , 4 ) )
-      {
-        VFS_FCLOSE( fp );
-        DEBUGMSG( "MIDI found, %s is a riff midi file\n" , filename );
-        return TRUE;
-      }
-    }
-    VFS_FCLOSE( fp );
-#else
-    gchar * ext = strrchr( filename, '.' );
-    /* check the filename extension */
-    if ( ( ext ) &&
-         (( !strcasecmp(ext,".mid") ) || ( !strcasecmp(ext,".midi") ) ||
-          ( !strcasecmp(ext,".rmi") ) || ( !strcasecmp(ext,".rmid") )) )
-      return TRUE;
-#endif
   return FALSE;
+}
+
+
+static gint amidiplug_is_our_file( gchar * filename )
+{
+  VFSFile * fp;
+  gboolean result = FALSE;
+
+  fp = VFS_FOPEN( filename , "rb" );
+
+  if ( fp == NULL )
+    return FALSE;
+
+  result = amidiplug_detect_by_content( fp );
+  VFS_FCLOSE( fp );
+
+  return result;
+}
+
+
+static gint amidiplug_is_our_file_from_vfs( gchar *filename , VFSFile *fp )
+{
+  return amidiplug_detect_by_content( fp );
 }
 
 

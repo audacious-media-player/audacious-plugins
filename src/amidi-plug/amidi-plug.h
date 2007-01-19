@@ -39,12 +39,6 @@
 #include "i_utils.h"
 
 
-/* if this is defined, possible midi files are
-   checked by looking at their first (magic) bytes
-   instead of just reading the file extension */
-#define MIDIFILE_PROBE_MAGICBYTES 1
-
-
 static pthread_t amidiplug_play_thread;
 static pthread_t amidiplug_audio_thread;
 static pthread_mutex_t amidiplug_gettime_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -67,6 +61,7 @@ amidiplug_cfg_ap_t amidiplug_cfg_ap =
   0		/* ap_opts_lyrics_extract */
 };
 
+gchar *amidiplug_vfs_extensions[] = { "mid" , "midi" , "rmi" , "rmid" , NULL };
 
 void * amidiplug_play_loop( void * );
 void * amidiplug_audio_loop( void * );
@@ -76,6 +71,7 @@ static void amidiplug_cleanup( void );
 static void amidiplug_aboutbox( void );
 static void amidiplug_configure( void );
 static gint amidiplug_is_our_file( gchar * );
+static gint amidiplug_is_our_file_from_vfs( gchar * , VFSFile * );
 static void amidiplug_play( gchar * );
 static void amidiplug_stop( void );
 static void amidiplug_pause( gshort );
@@ -88,31 +84,35 @@ static void amidiplug_file_info_box( gchar * );
 
 InputPlugin amidiplug_ip =
 {
-  NULL,				/* handle */
-  NULL,				/* filename */
-  NULL,				/* description */
-  amidiplug_init,		/* init */
-  amidiplug_aboutbox,		/* aboutbox */
-  amidiplug_configure,		/* configure */
-  amidiplug_is_our_file,	/* is_our_file */
-  NULL,				/* scan_dir */
-  amidiplug_play,		/* play_file */
-  amidiplug_stop,		/* stop */
-  amidiplug_pause,		/* pause */
-  amidiplug_seek,		/* seek */
-  NULL,				/* set_eq */
-  amidiplug_get_time,		/* get_time */
-  amidiplug_get_volume,		/* get_volume */
-  amidiplug_set_volume,		/* set_volume */
-  amidiplug_cleanup,		/* cleanup */
-  NULL,				/* get_vis_type */
-  NULL,				/* add_vis_pcm */
-  NULL,				/* set_info */
-  NULL,				/* set_info_text */
-  amidiplug_get_song_info,	/* get_song_info */
-  amidiplug_file_info_box,	/* file_info_box */
-  NULL,				/* output */
-  NULL				/* get_song_tuple */
+  NULL,					/* handle */
+  NULL,					/* filename */
+  NULL,					/* description */
+  amidiplug_init,			/* init */
+  amidiplug_aboutbox,			/* aboutbox */
+  amidiplug_configure,			/* configure */
+  amidiplug_is_our_file,		/* is_our_file */
+  NULL,					/* scan_dir */
+  amidiplug_play,			/* play_file */
+  amidiplug_stop,			/* stop */
+  amidiplug_pause,			/* pause */
+  amidiplug_seek,			/* seek */
+  NULL,					/* set_eq */
+  amidiplug_get_time,			/* get_time */
+  amidiplug_get_volume,			/* get_volume */
+  amidiplug_set_volume,			/* set_volume */
+  amidiplug_cleanup,			/* cleanup */
+  NULL,					/* get_vis_type */
+  NULL,					/* add_vis_pcm */
+  NULL,					/* set_info */
+  NULL,					/* set_info_text */
+  amidiplug_get_song_info,		/* get_song_info */
+  amidiplug_file_info_box,		/* file_info_box */
+  NULL,					/* output */
+  NULL,					/* get_song_tuple */
+  NULL,					/* set_song_tuple */
+  NULL,					/* set_status_buffering */
+  amidiplug_is_our_file_from_vfs,	/* is_our_file_from_vfs */
+  amidiplug_vfs_extensions		/* vfs_extensions */
 };
 
 #endif /* !_I_AMIDIPLUG_H */
