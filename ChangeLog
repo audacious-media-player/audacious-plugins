@@ -1,3 +1,16 @@
+2007-01-19 18:55:44 +0000  Giacomo Lozito <james@develia.org>
+  revision [1010]
+  - added is_our_file_from_vfs function to sid, for both libsidplay v1 and v2
+  trunk/src/sid/xmms-sid.c     |   23 +++++++++++++++++++++--
+  trunk/src/sid/xmms-sid.h     |    3 +++
+  trunk/src/sid/xs_init.c      |    4 ++--
+  trunk/src/sid/xs_sidplay1.cc |    9 ++++++++-
+  trunk/src/sid/xs_sidplay1.h  |    1 +
+  trunk/src/sid/xs_sidplay2.cc |   10 ++++++++--
+  trunk/src/sid/xs_sidplay2.h  |    1 +
+  7 files changed, 44 insertions(+), 7 deletions(-)
+
+
 2007-01-19 17:56:06 +0000  Giacomo Lozito <james@develia.org>
   revision [1008]
   - modified the sid plugin to use vfs, for both libsidplay v1 and v2; still requires testing and some work in the is_our_file part

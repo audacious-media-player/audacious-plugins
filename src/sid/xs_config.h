@@ -105,7 +105,6 @@ extern struct t_xs_cfg {
 	gchar		*hvscPath;		/* Path-prefix for HVSC */
 
 	gint		subsongControl;
-	gboolean	detectMagic;
 
 	gboolean	titleOverride;		/* TRUE if XMMS titles are overriden */
 	gchar		*titleFormat;

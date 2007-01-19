@@ -178,9 +178,6 @@ create_xs_configwin (void)
   GtkObject *cfg_subauto_mintime_adj;
   GtkWidget *cfg_subauto_mintime;
   GtkWidget *label53;
-  GtkWidget *frame22;
-  GtkWidget *vbox22;
-  GtkWidget *cfg_detectmagic;
   GtkWidget *label3;
   GtkWidget *hbuttonbox1;
   GtkWidget *cfg_ok;
@@ -1464,33 +1461,6 @@ create_xs_configwin (void)
   gtk_widget_show (label53);
   gtk_box_pack_start (GTK_BOX (hbox20), label53, FALSE, FALSE, 0);
   gtk_misc_set_alignment (GTK_MISC (label53), 0, 0.5);
-
-  frame22 = gtk_frame_new ("Miscellaneous options: ");
-  gtk_widget_set_name (frame22, "frame22");
-  gtk_widget_ref (frame22);
-  g_object_set_data_full (G_OBJECT (xs_configwin), "frame22", frame22,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (frame22);
-  gtk_box_pack_start (GTK_BOX (vbox19), frame22, FALSE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (frame22), 4);
-
-  vbox22 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_set_name (vbox22, "vbox22");
-  gtk_widget_ref (vbox22);
-  g_object_set_data_full (G_OBJECT (xs_configwin), "vbox22", vbox22,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox22);
-  gtk_container_add (GTK_CONTAINER (frame22), vbox22);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox22), 2);
-
-  cfg_detectmagic = gtk_check_button_new_with_label ("Detect file by contents (slower)");
-  gtk_widget_set_name (cfg_detectmagic, "cfg_detectmagic");
-  gtk_widget_ref (cfg_detectmagic);
-  g_object_set_data_full (G_OBJECT (xs_configwin), "cfg_detectmagic", cfg_detectmagic,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (cfg_detectmagic);
-  gtk_box_pack_start (GTK_BOX (vbox22), cfg_detectmagic, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, cfg_detectmagic, "Determine if file is a SID-tune by checking the file contents. If NOT selected, filetype is determined by checking filename extension (.sid, .dat, ...)", NULL);
 
   label3 = gtk_label_new ("Misc");
   gtk_widget_set_name (label3, "label3");

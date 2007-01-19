@@ -80,7 +80,6 @@ t_xs_cfg_item xs_cfgtable[] = {
 { CTYPE_STR,	&xs_cfg.hvscPath,		"hvscPath" },
 
 { CTYPE_INT,	&xs_cfg.subsongControl,		"subsongControl" },
-{ CTYPE_BOOL,	&xs_cfg.detectMagic,		"detectMagic" },
 
 { CTYPE_BOOL,	&xs_cfg.titleOverride,		"titleOverride" },
 { CTYPE_STR,	&xs_cfg.titleFormat,		"titleFormat" },
@@ -141,8 +140,6 @@ t_xs_wid_item xs_widtable[] = {
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_subctrl_seek",	&xs_cfg.subsongControl,		XS_SSC_SEEK },
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_subctrl_popup",	&xs_cfg.subsongControl,		XS_SSC_POPUP },
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_subctrl_patch",	&xs_cfg.subsongControl,		XS_SSC_PATCH },
-
-{ WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_detectmagic",	&xs_cfg.detectMagic,		0 },
 
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_ftitle_override",	&xs_cfg.titleOverride,		0 },
 { WTYPE_TEXT,	CTYPE_STR,	"cfg_ftitle_format",	&xs_cfg.titleFormat,		0 },
@@ -227,8 +224,6 @@ void xs_init_configuration(void)
 #else
 	xs_cfg.subsongControl = XS_SSC_POPUP;
 #endif
-
-	xs_cfg.detectMagic = FALSE;
 
 #ifdef HAVE_XMMSEXTRA
 	xs_cfg.titleOverride = FALSE;
