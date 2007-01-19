@@ -11,6 +11,7 @@ extern "C" {
 #endif
 
 gboolean	xs_sidplay1_isourfile(gchar *);
+gboolean	xs_sidplay1_isourfile_vfs(gchar *,VFSFile *);
 void		xs_sidplay1_close(t_xs_status *);
 gboolean	xs_sidplay1_init(t_xs_status *);
 gboolean	xs_sidplay1_initsong(t_xs_status *);

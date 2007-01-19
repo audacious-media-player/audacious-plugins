@@ -64,7 +64,6 @@ static gboolean xs_sidplay1_detect_by_content( VFSFile * fp )
 		return TRUE;
 	else
 		return FALSE;
-  return FALSE;
 }
 
 
@@ -121,6 +120,14 @@ gboolean xs_sidplay1_isourfile(gchar * pcFilename)
 	vfs_fclose( fp );
 
 	return result;
+}
+
+
+/* Check if we can play the given file (VFS)
+ */
+gboolean xs_sidplay1_isourfile_vfs(gchar * pcFilename, VFSFile * fp)
+{
+	return xs_sidplay1_detect_by_content( fp );
 }
 
 

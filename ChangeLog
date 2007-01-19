@@ -1,3 +1,14 @@
+2007-01-19 17:56:06 +0000  Giacomo Lozito <james@develia.org>
+  revision [1008]
+  - modified the sid plugin to use vfs, for both libsidplay v1 and v2; still requires testing and some work in the is_our_file part
+  trunk/src/sid/xmms-sid.c     |    1 
+  trunk/src/sid/xmms-sid.h     |    1 
+  trunk/src/sid/xs_sidplay.h   |   13 +++++-
+  trunk/src/sid/xs_sidplay1.cc |   88 ++++++++++++++++++++++++++++++++++++++-----
+  trunk/src/sid/xs_sidplay2.cc |   85 +++++++++++++++++++++++++++++++++++++----
+  5 files changed, 170 insertions(+), 18 deletions(-)
+
+
 2007-01-19 12:46:00 +0000  Giacomo Lozito <james@develia.org>
   revision [1006]
   - updated amidi-plug to the new plugin API

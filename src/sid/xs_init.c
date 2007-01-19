@@ -54,8 +54,8 @@ InputPlugin xs_plugin_ip = {
 	NULL,			/* Tuple */
 	NULL,			/* Tuple */
 	NULL,			/* Buffer */
-	NULL,			/* VFS */
-	sid_fmts,		/* ext assist */
+	xs_is_our_file_vfs,	/* VFS */
+	sid_fmts		/* ext assist */
 };
 
 

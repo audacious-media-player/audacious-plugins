@@ -34,6 +34,7 @@
 #endif
 
 #include <glib.h>
+#include <audacious/vfs.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -132,6 +133,7 @@ struct t_xs_status;
 typedef struct {
 	gint		plrIdent;
 	gboolean	(*plrIsOurFile)(gchar *);
+	gboolean	(*plrIsOurFileVfs)(gchar *,VFSFile *);
 	gboolean	(*plrInit)(struct t_xs_status *);
 	void		(*plrClose)(struct t_xs_status *);
 	gboolean	(*plrInitSong)(struct t_xs_status *);
@@ -173,6 +175,7 @@ void	xs_init(void);
 void	xs_reinit(void);
 void	xs_close(void);
 gint	xs_is_our_file(gchar *);
+gint	xs_is_our_file_vfs(gchar *,VFSFile *);
 void	xs_play_file(gchar *);
 void	xs_stop(void);
 void	xs_pause(short);

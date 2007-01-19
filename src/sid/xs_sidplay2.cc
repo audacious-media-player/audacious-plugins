@@ -65,11 +65,10 @@ static gboolean xs_sidplay2_detect_by_content( VFSFile * fp )
 	if ( vfs_fread( magic_bytes , 1 , 4 , fp ) != 4 )
 		return FALSE;
 
-	if ( !strncmp( magic_bytes , "PSID" , 4 ) )
+	if ( !strncmp( magic_bytes , "PSID" , 4 ) || !strncmp( magic_bytes , "RSID" , 4 ) )
 		return TRUE;
 	else
 		return FALSE;
-  return FALSE;
 }
 
 
@@ -128,6 +127,13 @@ gboolean xs_sidplay2_isourfile(gchar * pcFilename)
 	return result;
 }
 
+
+/* Check if we can play the given file (VFS)
+ */
+gboolean xs_sidplay2_isourfile_vfs(gchar * pcFilename, VFSFile * fp)
+{
+	return xs_sidplay2_detect_by_content( fp );
+}
 
 
 /* Initialize SIDPlay2

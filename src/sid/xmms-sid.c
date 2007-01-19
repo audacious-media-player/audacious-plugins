@@ -33,6 +33,7 @@
 #include <audacious/plugin.h>
 #include <audacious/output.h>
 #include <audacious/util.h>
+#include <audacious/vfs.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -62,7 +63,7 @@
 t_xs_player xs_playerlist[] = {
 #ifdef HAVE_SIDPLAY1
 	{XS_ENG_SIDPLAY1,
-	 xs_sidplay1_isourfile,
+	 xs_sidplay1_isourfile, xs_sidplay1_isourfile_vfs,
 	 xs_sidplay1_init, xs_sidplay1_close,
 	 xs_sidplay1_initsong, xs_sidplay1_fillbuffer,
 	 xs_sidplay1_loadsid, xs_sidplay1_deletesid,
@@ -71,7 +72,7 @@ t_xs_player xs_playerlist[] = {
 #endif
 #ifdef HAVE_SIDPLAY2
 	{XS_ENG_SIDPLAY2,
-	 xs_sidplay2_isourfile,
+	 xs_sidplay2_isourfile, xs_sidplay2_isourfile_vfs,
 	 xs_sidplay2_init, xs_sidplay2_close,
 	 xs_sidplay2_initsong, xs_sidplay2_fillbuffer,
 	 xs_sidplay2_loadsid, xs_sidplay2_deletesid,
@@ -266,6 +267,24 @@ gint xs_is_our_file(gchar * pcFilename)
 		return FALSE;
 
 	if (xs_status.sidPlayer->plrIsOurFile(pcFilename))
+		return TRUE;
+
+	return FALSE;
+}
+
+
+/*
+ * Check whether the given file is handled by this plugin (VFS)
+ */
+gint xs_is_our_file_vfs(gchar * pcFilename, VFSFile * fp)
+{
+	assert(xs_status.sidPlayer);
+
+	/* Check the filename */
+	if (pcFilename == NULL)
+		return FALSE;
+
+	if (xs_status.sidPlayer->plrIsOurFileVfs(pcFilename,fp))
 		return TRUE;
 
 	return FALSE;

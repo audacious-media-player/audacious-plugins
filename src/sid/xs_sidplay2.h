@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 gboolean	xs_sidplay2_isourfile(gchar *);
+gboolean	xs_sidplay2_isourfile_vfs(gchar *,VFSFile *);
 void		xs_sidplay2_close(t_xs_status *);
 gboolean	xs_sidplay2_init(t_xs_status *);
 gboolean	xs_sidplay2_initsong(t_xs_status *);
