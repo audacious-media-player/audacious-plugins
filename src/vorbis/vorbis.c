@@ -55,7 +55,6 @@
 #include "audacious/titlestring.h"
 
 #include "vorbis.h"
-#include "http.h"
 
 extern vorbis_config_t vorbis_cfg;
 
@@ -1002,49 +1001,23 @@ ovcb_read(void *ptr, size_t size, size_t nmemb, void *datasource)
 {
     size_t tmp;
 
-
-    if (vorbis_is_streaming) {
-        /* this is a stream */
-        tmp = vorbis_http_read(ptr, size * nmemb);
-        vorbis_bytes_streamed += tmp;
-        return tmp;
-    }
-
     return vfs_fread(ptr, size, nmemb, (VFSFile *) datasource);
 }
 
 static int
 ovcb_seek(void *datasource, int64_t offset, int whence)
 {
-    if (vorbis_is_streaming) {
-        /* this is a stream */
-        /* streams aren't seekable */
-        return -1;
-    }
-
     return vfs_fseek((VFSFile *) datasource, offset, whence);
 }
 
 static int
 ovcb_close(void *datasource)
 {
-    if (vorbis_is_streaming) {
-        /* this is a stream */
-        vorbis_http_close();
-        return 0;
-    }
-
     return vfs_fclose((VFSFile *) datasource);
 }
 
 static long
 ovcb_tell(void *datasource)
 {
-    if (vorbis_is_streaming) {
-        /* this is a stream */
-        /* return bytes read */
-        return vorbis_bytes_streamed;
-    }
-
     return vfs_ftell((VFSFile *) datasource);
 }

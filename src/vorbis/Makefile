@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libvorbis$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-SOURCES = configure.c  fileinfo.c  http.c  vcedit.c  vorbis.c
+SOURCES = configure.c  fileinfo.c  vcedit.c  vorbis.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
