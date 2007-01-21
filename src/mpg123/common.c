@@ -104,7 +104,7 @@ gchar *mpgdec_metadata(const gchar *id)
 	if (filept == NULL)
 		return NULL;
 
-	return vfs_get_metadata(filept, id);
+	return g_strdup(vfs_get_metadata(filept, id));
 }
 
 /**************************************** 

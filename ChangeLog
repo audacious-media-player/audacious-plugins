@@ -1,3 +1,13 @@
+2007-01-21 09:49:43 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1020]
+  - implement mpgdec_metadata()
+  - partial shoutcast streamtitle support
+  
+  trunk/src/mpg123/common.c |    8 ++++++++
+  trunk/src/mpg123/mpg123.c |    3 +--
+  2 files changed, 9 insertions(+), 2 deletions(-)
+
+
 2007-01-21 07:31:12 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [1018]
   Handle inline metadata. Parsing of tags needs work before it will not crash on
