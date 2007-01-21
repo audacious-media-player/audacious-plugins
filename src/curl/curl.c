@@ -463,9 +463,9 @@ curl_vfs_fopen_impl(const gchar * path,
 
   sprintf(url, "http://%s", path);
 
-  file = g_new(VFSFile, 1);
+  file = g_new0(VFSFile, 1);
 
-  handle = g_new(CurlHandle, 1);
+  handle = g_new0(CurlHandle, 1);
   handle->curl = curl_easy_init();
   handle->rd_index = 0;
   handle->wr_index = 0;
