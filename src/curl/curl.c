@@ -68,6 +68,8 @@ struct _CurlHandle {
   gchar *title;
 };
 
+VFSConstructor curl_const;
+
 /* TODO:
  *  - Fix hang if the server closes the connection in the middle
  *  - Clever buffer stuff when you read a bit of the beginning and a bit of the
@@ -495,6 +497,7 @@ curl_vfs_fopen_impl(const gchar * path,
   }
 
   file->handle = handle;
+  file->base = &curl_const;
 
   if (DEBUG_OPEN_CLOSE)
     g_print("Open %s with curl => %p\n", url, handle);
