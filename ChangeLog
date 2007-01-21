@@ -1,3 +1,14 @@
+2007-01-21 05:40:49 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1016]
+  Provide "name" metadata when the url is a shoutcast stream.
+  
+  We read the stream headers ourselves, because curl doesn't deal with
+  ICY headers.
+  
+  trunk/src/curl/curl.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++----
+  1 file changed, 116 insertions(+), 8 deletions(-)
+
+
 2007-01-19 19:05:40 +0000  Giacomo Lozito <james@develia.org>
   revision [1012]
   - sid plugin: removed plugin option to check files by content, that kind of option is handled by the player

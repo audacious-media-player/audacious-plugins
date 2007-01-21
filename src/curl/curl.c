@@ -31,6 +31,10 @@
 #define DEBUG_SEEK 0
 #define DEBUG_READ 0
 #define DEBUG_HEADERS 0
+#define DEBUG_ICY 0
+#define DEBUG_ICY_VERBOSE 0
+#define XXXX_FIXED_METADATA 0
+#define DEBUG_METADATA_REPORT 0
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -40,6 +44,11 @@ struct _CurlHandle {
   gssize length; // the length of the file
   gsize rd_abs; // the absolute position for reading from the stream
   gsize wr_abs; // the absolute position where the input connection is
+
+  gsize icy_left;
+  gsize icy_interval;
+  gint in_icy_meta; // 0=no, 1=before size, 2=in data
+  gsize meta_abs; // the absolute position where the metadata changes
 
   gsize buffer_length;
   gchar *buffer;
@@ -56,6 +65,7 @@ struct _CurlHandle {
   GThread *thread; // the thread that's reading from the connection
 
   gchar *name;
+  gchar *title;
 };
 
 /* TODO:
@@ -73,12 +83,21 @@ struct _CurlHandle {
 static size_t buf_space(CurlHandle *handle)
 {
   size_t rd_edge = handle->rd_abs - REVERSE_SEEK_SIZE;
+  size_t buffer_limit;
+  size_t cont_limit;
   if (rd_edge < 0)
     rd_edge = 0;
-  size_t buffer_limit = handle->buffer_length - 
+  buffer_limit = handle->buffer_length - 
     (handle->wr_abs - rd_edge);
-  size_t cont_limit = handle->buffer_length - handle->wr_index;
-  return buffer_limit < cont_limit ? buffer_limit : cont_limit;
+  cont_limit = handle->buffer_length - handle->wr_index;
+  if (cont_limit < buffer_limit)
+    buffer_limit = cont_limit;
+  if (handle->icy_interval)
+    {
+      if (handle->icy_left < buffer_limit)
+	buffer_limit = handle->icy_left;
+    }
+  return buffer_limit;
 }
 
 static size_t buf_available(CurlHandle *handle)
@@ -162,8 +181,51 @@ static void got_header(CurlHandle *handle, size_t size)
     }
   if (match_header(handle, size, ICY_METAINT))
     {
-      
+      gchar *value = get_value(handle, size, ICY_METAINT);
+      handle->icy_interval = atoi(value);
+      free(value);
+      if (DEBUG_HEADERS)
+	g_print("Metadata interval: %d\n", handle->icy_interval);
     }
+}
+
+#define TITLE_INLINE "StreamTitle="
+
+static gboolean match_inline(CurlHandle *handle, size_t posn, 
+			     const char *name)
+{
+  // XXXX Wrapped
+  return (!strncmp(handle->buffer + posn, name, strlen(name)));
+}
+
+static gchar *get_inline_value(CurlHandle *handle, size_t posn,
+			       const char *name)
+{
+  // XXXX Wrapped
+  size_t end;
+  size_t sz;
+  gchar *ret;
+  posn += strlen(name);
+  end = posn + 1;
+  while (handle->buffer[end] != ';')
+    end++;
+  sz = end - posn - 1;
+  ret = g_malloc(sz);
+  memcpy(ret, handle->buffer + posn + 1, sz);
+  ret[sz - 1] = '\0';
+  return ret;
+}
+
+static void got_inline_metadata(CurlHandle *handle)
+{
+  size_t i = (handle->hdr_index + 1) % handle->buffer_length;
+  if (match_inline(handle, i, TITLE_INLINE))
+    {
+      handle->title = get_inline_value(handle, i, TITLE_INLINE);
+      if (DEBUG_ICY)
+	g_print("Title: '%s'\n", handle->title);
+    }
+  handle->meta_abs = handle->wr_abs;
 }
 
 static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
@@ -190,7 +252,76 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
       memcpy(handle->buffer + handle->wr_index, ptr + ret, trans);
 
       if (!handle->header)
-	handle->wr_abs += trans;
+	{
+	  if (handle->icy_interval)
+	    handle->icy_left -= trans;
+	  if (!handle->in_icy_meta)
+	    {
+	      handle->wr_abs += trans;
+	      // write download here
+	      if (handle->icy_interval && !handle->icy_left)
+		{
+		  if (DEBUG_ICY)
+		    g_print("Metadata inline after %d\n", handle->wr_abs);
+		  handle->in_icy_meta = 1;
+		  handle->icy_left = 1;
+		}
+	    }
+	  else if (handle->in_icy_meta == 1)
+	    {
+	      // Track where the header insert starts
+	      handle->hdr_index = handle->wr_index;
+	      handle->icy_left = 
+		((unsigned char)(handle->buffer[handle->wr_index])) * 16;
+	      if (DEBUG_ICY)
+		g_print("Metadata of size %d\n", handle->icy_left);
+	      if (handle->icy_left)
+		{
+		  handle->in_icy_meta = 2;
+		}
+	      else
+		{
+		  handle->in_icy_meta = 0;
+		  handle->icy_left = handle->icy_interval;
+		  handle->wr_index--;
+		}
+	    }
+	  else
+	    {
+	      if (!handle->icy_left)
+		{
+		  handle->wr_index = (handle->wr_index + trans) % 
+		    handle->buffer_length;
+		  if (DEBUG_ICY_VERBOSE)
+		    {
+		      if (handle->wr_index < handle->hdr_index)
+			{
+			  // wrapped
+			  fwrite(handle->buffer + handle->hdr_index + 1,
+				 handle->buffer_length - handle->hdr_index - 1,
+				 1, stdout);
+			  fwrite(handle->buffer, handle->wr_index, 1, stdout);
+			}
+		      else
+			{
+			  fwrite(handle->buffer + handle->hdr_index, 
+				 handle->wr_index - handle->hdr_index, 1, 
+				 stdout);
+			}
+		      g_print("\n");
+		    }
+		  if (XXXX_FIXED_METADATA)
+		    got_inline_metadata(handle);
+
+		  // Rewind the buffer usage to write over the
+		  // metadata with content. -trans because we're about
+		  // to add it.
+		  handle->wr_index = handle->hdr_index - trans;
+		  handle->in_icy_meta = 0;
+		  handle->icy_left = handle->icy_interval;
+		}
+	    }
+	}
       handle->wr_index = (handle->wr_index + trans) % handle->buffer_length;
       ret += trans;
 
@@ -219,6 +350,17 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 		      // the header.
 		      handle->wr_abs +=
 			(handle->wr_index - handle->hdr_index + handle->buffer_length) % handle->buffer_length;
+		      // write download here...
+		      //handle->icy_interval = 0;
+		      handle->icy_left = handle->icy_interval;
+		      if (handle->icy_interval)
+			{
+			  handle->icy_left -=
+			    (handle->wr_index - handle->hdr_index + handle->buffer_length) % handle->buffer_length;
+			}
+		      if (DEBUG_ICY)
+			g_print("Left %d\n", handle->icy_left);
+		      handle->in_icy_meta = 0;
 		      break;
 		    }
 		  handle->hdr_index = (i + 2) % handle->buffer_length;
@@ -226,7 +368,6 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 	      i = (i + 1) % handle->buffer_length;
 	    }
 	}
-
     }
   return ret;
 }
@@ -253,6 +394,7 @@ curl_manage_request(gpointer arg)
 
   handle->header = 1;
   handle->hdr_index = 0;
+  handle->icy_interval = 0;
 
   result = curl_easy_perform(handle->curl);
   if (result == CURLE_OK)
@@ -327,6 +469,7 @@ curl_vfs_fopen_impl(const gchar * path,
   handle->curl = curl_easy_init();
   handle->rd_index = 0;
   handle->wr_index = 0;
+  handle->meta_abs = 0;
   handle->rd_abs = 0;
   handle->wr_abs = 0;
   handle->buffer_length = BUFFER_SIZE;
@@ -345,7 +488,11 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 10);
 
   //add header icy-metadata:1 (when we're ready for it)
-  //curl_easy_setopt(handle->curl, CURLOPT_HTTPHEADER, "icy-metadata:1");
+  {
+    struct curl_slist *hdr = NULL;
+    hdr = curl_slist_append(hdr, "icy-metadata:1");
+    curl_easy_setopt(handle->curl, CURLOPT_HTTPHEADER, hdr);
+  }
 
   file->handle = handle;
 
@@ -412,6 +559,12 @@ curl_vfs_fread_impl(gpointer ptr,
 
       handle->rd_index = 
 	(handle->rd_index + available) % handle->buffer_length;
+      if (handle->rd_abs < handle->meta_abs &&
+	  handle->rd_abs + available >= handle->meta_abs)
+	{
+	  if (DEBUG_METADATA_REPORT)
+	    g_print("New song: '%s'\n", handle->title);
+	}
       handle->rd_abs += available;
       ret += available;
       if (!available)
@@ -554,8 +707,10 @@ gchar *
 curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
   CurlHandle *handle = file->handle;
-  if (!strcmp(field, "name"))
+  if (!strcmp(field, "stream-name"))
     return strdup(handle->name);
+  if (!strcmp(field, "track-name"))
+    return strdup(handle->title);
   return NULL;
 }
 
