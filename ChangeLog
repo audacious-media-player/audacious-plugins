@@ -1,3 +1,11 @@
+2007-01-21 10:56:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1042]
+  - whoever wrote this plugin was a jerk
+  
+  trunk/src/vorbis/vorbis.c |   64 ++++++++++++++++++++++++++++++++--------------
+  1 file changed, 45 insertions(+), 19 deletions(-)
+
+
 2007-01-21 10:40:50 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1040]
   - cleanups
