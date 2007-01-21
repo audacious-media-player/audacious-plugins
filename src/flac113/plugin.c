@@ -621,10 +621,16 @@ static FLAC__bool safe_decoder_init_(char *filename, FLAC__StreamDecoder *decode
 	if ( FLAC__stream_decoder_init_stream(decoder, read_callback_, seek_callback_,
                tell_callback_, length_callback_, eof_callback_, write_callback_, metadata_callback_,
                error_callback_, /*client_data=*/&stream_data_) != FLAC__STREAM_DECODER_INIT_STATUS_OK )
+	{
+		vfs_fclose( stream_data_.vfsfile );
 		return false;
+	}
 
 	if(!FLAC__stream_decoder_process_until_end_of_metadata(decoder))
+	{
+		vfs_fclose( stream_data_.vfsfile );
 		return false;
+	}
 
 	return true;
 }
@@ -762,8 +768,6 @@ static FLAC__StreamDecoderSeekStatus seek_callback_(const FLAC__StreamDecoder *d
 {
 	stream_data_struct *stream_data = (stream_data_struct *)client_data;
 	(void)decoder;
-
-	g_print("SEEK\n");
 
 	if ( vfs_fseek( stream_data->vfsfile , (glong)absolute_byte_offset , SEEK_SET ) < 0 )
 		return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;

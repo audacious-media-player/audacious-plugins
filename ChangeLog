@@ -1,3 +1,11 @@
+2007-01-21 23:33:20 +0000  Giacomo Lozito <james@develia.org>
+  revision [1066]
+  flac 112 plugin: disabled built-in http stream support
+  trunk/src/flac112/configure.c |   14 ++++++++++----
+  trunk/src/flac112/plugin.c    |    6 +++++-
+  2 files changed, 15 insertions(+), 5 deletions(-)
+
+
 2007-01-21 23:15:38 +0000  Giacomo Lozito <james@develia.org>
   revision [1064]
   flac 112 plugin: playback and detection use vfs; current situation is pretty similar to the one of flac 113 plugin
