@@ -865,6 +865,7 @@ decode_loop(void *arg)
                     disp_count--;
                 play_frame(&fr);
 
+		if (mpgdec_info->filesize == 0)
 	        {
 		    gchar *new_title = mpgdec_metadata("track-name");
 		    gchar *srv_name = mpgdec_metadata("stream-name");
