@@ -396,13 +396,11 @@ void FLAC_XMMS__pause(short p)
 
 void FLAC_XMMS__seek(int time)
 {
-	if(!stream_data_.is_http_source) {
-		stream_data_.seek_to_in_sec = time;
-		stream_data_.eof = false;
+	stream_data_.seek_to_in_sec = time;
+	stream_data_.eof = false;
 
-		while(stream_data_.seek_to_in_sec != -1)
-			xmms_usleep(10000);
-	}
+	while(stream_data_.seek_to_in_sec != -1)
+		xmms_usleep(10000);
 }
 
 int FLAC_XMMS__get_time()
@@ -522,7 +520,7 @@ static void *play_loop_(void *arg)
 				}
 				blocksize = sample_buffer_last_ - sample_buffer_first_ - s;
 				decode_position_frame_last = decode_position_frame;
-				if(stream_data_.is_http_source || !FLAC__stream_decoder_get_decode_position(decoder_, &decode_position_frame))
+				if(!FLAC__stream_decoder_get_decode_position(decoder_, &decode_position_frame))
 					decode_position_frame = 0;
 			}
 			if(sample_buffer_last_ - sample_buffer_first_ > 0) {
@@ -561,7 +559,7 @@ static void *play_loop_(void *arg)
 		}
 		else
 			xmms_usleep(10000);
-		if(!stream_data_.is_http_source && stream_data_.seek_to_in_sec != -1) {
+		if(stream_data_.seek_to_in_sec != -1) {
 			const double distance = (double)stream_data_.seek_to_in_sec * 1000.0 / (double)stream_data_.length_in_msec;
 			FLAC__uint64 target_sample = (FLAC__uint64)(distance * (double)stream_data_.total_samples);
 			if(stream_data_.total_samples > 0 && target_sample >= stream_data_.total_samples)
@@ -765,8 +763,7 @@ static FLAC__StreamDecoderSeekStatus seek_callback_(const FLAC__StreamDecoder *d
 	stream_data_struct *stream_data = (stream_data_struct *)client_data;
 	(void)decoder;
 
-	if ( stream_data->is_http_source )
-		return FLAC__STREAM_DECODER_SEEK_STATUS_UNSUPPORTED;
+	g_print("SEEK\n");
 
 	if ( vfs_fseek( stream_data->vfsfile , (glong)absolute_byte_offset , SEEK_SET ) < 0 )
 		return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
@@ -779,9 +776,6 @@ static FLAC__StreamDecoderTellStatus tell_callback_(const FLAC__StreamDecoder *d
 	stream_data_struct *stream_data = (stream_data_struct *)client_data;
 	glong pos;
 	(void)decoder;
-
-	if ( stream_data->is_http_source )
-		return FLAC__STREAM_DECODER_TELL_STATUS_UNSUPPORTED;
 
 	if ( (pos = vfs_ftell(stream_data->vfsfile)) < 0 )
 		return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
@@ -798,9 +792,6 @@ static FLAC__StreamDecoderLengthStatus length_callback_(const FLAC__StreamDecode
 	glong current_pos = 0;
 	glong length = 0;
 	(void)decoder;
-
-	if ( stream_data->is_http_source )
-		return FLAC__STREAM_DECODER_LENGTH_STATUS_UNSUPPORTED;
 
 	current_pos = vfs_ftell(stream_data->vfsfile);
 	if ( current_pos < 0 )
@@ -828,8 +819,5 @@ static FLAC__bool eof_callback_(const FLAC__StreamDecoder *decoder, void *client
 	stream_data_struct *stream_data = (stream_data_struct *)client_data;
 	(void)decoder;
 
-	if ( stream_data->is_http_source )
-		return FALSE;
-	else
-		return vfs_feof( stream_data->vfsfile );
+	return vfs_feof( stream_data->vfsfile );
 }

@@ -1,3 +1,10 @@
+2007-01-21 19:00:54 +0000  Giacomo Lozito <james@develia.org>
+  revision [1060]
+  - flac 113 plugin: placed a label in configure dialog, explaning that stream options are currently ignored
+  trunk/src/flac113/configure.c |   14 ++++++++++----
+  1 file changed, 10 insertions(+), 4 deletions(-)
+
+
 2007-01-21 18:40:40 +0000  Giacomo Lozito <james@develia.org>
   revision [1058]
   - flac 113 plugin: moved to vfs for file detection and playback; plays http files as well, but it does not use flac/http.c code to do it, so there's no metadata parsing and flac http options are ignored; flac tags are still read directly from stdio, with checks that prevents tag reading if file is not stdio-readable
