@@ -61,6 +61,7 @@ extern vorbis_config_t vorbis_cfg;
 
 static TitleInput *get_song_tuple(gchar *filename);
 static int vorbis_check_file(char *filename);
+static int vorbis_check_fd(char *filename, VFSFile *stream);
 static void vorbis_play(char *filename);
 static void vorbis_stop(void);
 static void vorbis_pause(short p);
@@ -118,7 +119,8 @@ InputPlugin vorbis_ip = {
     get_song_tuple,
     NULL,
     NULL,
-    NULL,
+    vorbis_check_fd,
+    vorbis_fmts,
 };
 
 static OggVorbis_File vf;
@@ -149,17 +151,6 @@ vorbis_check_file(char *filename)
     OggVorbis_File vfile;       /* avoid thread interaction */
     char *ext;
     gint result;
-
-    /* is this our http resource? */
-    if (strncasecmp(filename, "http://", 7) == 0) {
-        ext = strrchr(filename, '.');
-        if (ext) {
-            if (!strncasecmp(ext, ".ogg", 4)) {
-                return TRUE;
-            }
-        }
-        return FALSE;
-    }
 
     if (!(stream = vfs_fopen(filename, "r"))) {
         return FALSE;
@@ -225,6 +216,79 @@ vorbis_check_file(char *filename)
         break;
     }
 
+    ov_clear(&vfile);           /* once the ov_open succeeds, the stream belongs to
+                                   vorbisfile.a.  ov_clear will fclose it */
+    g_mutex_unlock(vf_mutex);
+    return TRUE;
+}
+
+static int
+vorbis_check_fd(char *filename, VFSFile *stream)
+{
+    OggVorbis_File vfile;       /* avoid thread interaction */
+    char *ext;
+    gint result;
+
+    /*
+     * The open function performs full stream detection and machine
+     * initialization.  If it returns zero, the stream *is* Vorbis and
+     * we're fully ready to decode.
+     */
+
+    /* libvorbisfile isn't thread safe... */
+    memset(&vfile, 0, sizeof(vfile));
+    g_mutex_lock(vf_mutex);
+
+    result = ov_test_callbacks(stream, &vfile, NULL, 0, vorbis_callbacks);
+
+    switch (result) {
+    case OV_EREAD:
+#ifdef DEBUG
+        g_message("** vorbis.c: Media read error: %s", filename);
+#endif
+        g_mutex_unlock(vf_mutex);
+        vfs_fclose(stream);
+        return FALSE;
+        break;
+    case OV_ENOTVORBIS:
+#ifdef DEBUG
+        g_message("** vorbis.c: Not Vorbis data: %s", filename);
+#endif
+        g_mutex_unlock(vf_mutex);
+        vfs_fclose(stream);
+        return FALSE;
+        break;
+    case OV_EVERSION:
+#ifdef DEBUG
+        g_message("** vorbis.c: Version mismatch: %s", filename);
+#endif
+        g_mutex_unlock(vf_mutex);
+        vfs_fclose(stream);
+        return FALSE;
+        break;
+    case OV_EBADHEADER:
+#ifdef DEBUG
+        g_message("** vorbis.c: Invalid Vorbis bistream header: %s",
+                  filename);
+#endif
+        g_mutex_unlock(vf_mutex);
+        vfs_fclose(stream);
+        return FALSE;
+        break;
+    case OV_EFAULT:
+#ifdef DEBUG
+        g_message("** vorbis.c: Internal logic fault while reading %s",
+                  filename);
+#endif
+        g_mutex_unlock(vf_mutex);
+        vfs_fclose(stream);
+        return FALSE;
+        break;
+    case 0:
+        break;
+    default:
+        break;
+    }
 
     ov_clear(&vfile);           /* once the ov_open succeeds, the stream belongs to
                                    vorbisfile.a.  ov_clear will fclose it */

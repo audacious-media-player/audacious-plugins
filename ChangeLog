@@ -1,3 +1,11 @@
+2007-01-21 10:21:50 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1034]
+  - fix weird "(null) (Radioseven - www.radioseven.se)" glitch
+  
+  trunk/src/mpg123/mpg123.c |   13 ++++++++++---
+  1 file changed, 10 insertions(+), 3 deletions(-)
+
+
 2007-01-21 10:18:37 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1032]
   - use g_new0
