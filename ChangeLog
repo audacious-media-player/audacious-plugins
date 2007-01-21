@@ -1,3 +1,11 @@
+2007-01-21 18:40:40 +0000  Giacomo Lozito <james@develia.org>
+  revision [1058]
+  - flac 113 plugin: moved to vfs for file detection and playback; plays http files as well, but it does not use flac/http.c code to do it, so there's no metadata parsing and flac http options are ignored; flac tags are still read directly from stdio, with checks that prevents tag reading if file is not stdio-readable
+  trunk/src/flac113/plugin.c             |  215 ++++++++++++++++++++++++---------
+  trunk/src/flac113/plugin_common/tags.c |    5 
+  2 files changed, 165 insertions(+), 55 deletions(-)
+
+
 2007-01-21 12:51:28 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1056]
   - turn debugging back off
