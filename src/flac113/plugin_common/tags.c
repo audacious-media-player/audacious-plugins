@@ -160,6 +160,11 @@ static char *local__convert_ucs2_to_utf8(const FLAC__uint16 *src, unsigned lengt
 
 FLAC__bool FLAC_plugin__tags_get(const char *filename, FLAC__StreamMetadata **tags)
 {
+	/* NOTE vfs is not used here, so only try
+	   to pick tags if you can do it with flac library stdio */
+	if ( strncmp(filename,"/",1) )
+		return false;
+
 	if(!FLAC__metadata_get_tags(filename, tags))
 		if(0 == (*tags = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT)))
 			return false;

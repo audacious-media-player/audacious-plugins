@@ -1,3 +1,12 @@
+2007-01-21 12:51:28 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1056]
+  - turn debugging back off
+  - remove XXXX_FIXED_METADATA since metadata is fixed now
+  
+  trunk/src/curl/curl.c |    4 +---
+  1 file changed, 1 insertion(+), 3 deletions(-)
+
+
 2007-01-21 12:01:04 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1054]
   - do not close FDs that do not belong to us.

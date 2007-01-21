@@ -25,12 +25,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "audacious/plugin.h"
-#include "audacious/output.h"
-#include "audacious/util.h"
-#include "audacious/configdb.h"
-#include "audacious/titlestring.h"
-#include "audacious/vfs.h"
+#include <audacious/plugin.h>
+#include <audacious/output.h>
+#include <audacious/util.h>
+#include <audacious/configdb.h>
+#include <audacious/titlestring.h>
+#include <audacious/vfs.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -46,8 +46,8 @@
 #include "replaygain_synthesis.h"
 #include "configure.h"
 #include "charset.h"
-#include "http.h"
 #include "tag.h"
+#include "http.h"
 
 #ifdef min
 #undef min
@@ -74,10 +74,12 @@ typedef struct {
 	FLAC__bool has_replaygain;
 	double replay_scale;
 	DitherContext dither_context;
+	VFSFile *vfsfile;
 } stream_data_struct;
 
 static void FLAC_XMMS__init();
 static int  FLAC_XMMS__is_our_file(char *filename);
+static int  FLAC_XMMS__is_our_file_from_vfs(char *filename, VFSFile *vfsfile);
 static void FLAC_XMMS__play_file(char *filename);
 static void FLAC_XMMS__stop();
 static void FLAC_XMMS__pause(short p);
@@ -92,10 +94,14 @@ static FLAC__bool safe_decoder_init_(char *filename, FLAC__StreamDecoder *decode
 static void safe_decoder_finish_(FLAC__StreamDecoder *decoder);
 static void safe_decoder_delete_(FLAC__StreamDecoder *decoder);
 
-static FLAC__StreamDecoderReadStatus http_read_callback_(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);
 static FLAC__StreamDecoderWriteStatus write_callback_(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data);
 static void metadata_callback_(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
 static void error_callback_(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data);
+static FLAC__StreamDecoderReadStatus read_callback_(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);
+static FLAC__StreamDecoderSeekStatus seek_callback_(const FLAC__StreamDecoder *decoder, FLAC__uint64 absolute_byte_offset, void *client_data);
+static FLAC__StreamDecoderTellStatus tell_callback_(const FLAC__StreamDecoder *decoder, FLAC__uint64 *absolute_byte_offset, void *client_data);
+static FLAC__StreamDecoderLengthStatus length_callback_(const FLAC__StreamDecoder *decoder, FLAC__uint64 *stream_length, void *client_data);
+static FLAC__bool eof_callback_(const FLAC__StreamDecoder *decoder, void *client_data);
 
 gchar *flac_fmts[] = { "flac", NULL };
 
@@ -128,7 +134,7 @@ InputPlugin flac_ip =
 	flac_get_tuple,
         NULL,		// set tuple
         NULL,
-	NULL,
+	FLAC_XMMS__is_our_file_from_vfs,
 	flac_fmts,
 };
 
@@ -268,33 +274,44 @@ void FLAC_XMMS__init()
 
 	decoder_ = FLAC__stream_decoder_new();
 	bmp_cfg_db_close(db);
+
+	stream_data_.vfsfile = NULL;
+}
+
+int FLAC_XMMS__is_our_file_from_vfs( gchar * filename , VFSFile * vfsfile )
+{
+	gchar magic_bytes[4];
+
+	if ( vfsfile == NULL )
+		return 0;
+
+	if ( vfs_fread( magic_bytes , 1 , 4 , vfsfile ) != 4 )
+		return 0;
+
+	if ( !strncmp( magic_bytes , "fLaC" , 4 ) )
+		return 1;
+	else
+		return 0;
 }
 
 int FLAC_XMMS__is_our_file(char *filename)
 {
-	FILE *f;
-	FLAC__StreamMetadata streaminfo;
+	VFSFile *vfsfile;
+	gint result = 0;
 
-	if(!is_http_source(filename)) {
-		if(0 == (f = fopen(filename, "r")))
-			return 0;
-		fclose(f);
-		if(FLAC__metadata_get_streaminfo(filename, &streaminfo))
-			return 1;
-		return 0;
-	}
+	vfsfile = vfs_fopen( filename , "rb" );
 
-	if(!safe_decoder_init_(filename, decoder2))
-		return 0;
+	if ( vfsfile == NULL ) return 0;
 
-	safe_decoder_finish_(decoder2);   
-	return 1;
+	result = FLAC_XMMS__is_our_file_from_vfs( filename , vfsfile );
+
+	vfs_fclose( vfsfile );
+
+	return result;
 }
 
 void FLAC_XMMS__play_file(char *filename)
 {
-	FILE *f;
-
 	sample_buffer_first_ = sample_buffer_last_ = 0;
 	audio_error_ = false;
 	stream_data_.abort_flag = false;
@@ -303,12 +320,6 @@ void FLAC_XMMS__play_file(char *filename)
 	stream_data_.eof = false;
 	stream_data_.play_thread_open = false;
 	stream_data_.has_replaygain = false;
-
-	if(!is_http_source(filename)) {
-		if(0 == (f = fopen(filename, "r")))
-			return;
-		fclose(f);
-	}
 
 	if(decoder_ == 0)
 		return;
@@ -446,6 +457,15 @@ void FLAC_XMMS__get_song_info(char *filename, char **title, int *length_in_msec)
 	if(0 == filename)
 		filename = "";
 
+	/* NOTE vfs is not used here, so only try
+	   to pick tags if you can do it with flac library stdio */
+	if ( strncmp(filename,"/",1) )
+	{
+		*title = g_strdup(filename);
+		*length_in_msec = -1;
+		return;
+	}
+
 	if(!FLAC__metadata_get_streaminfo(filename, &streaminfo)) {
 		/* @@@ how to report the error? */
 		if(title) {
@@ -477,7 +497,7 @@ void FLAC_XMMS__get_song_info(char *filename, char **title, int *length_in_msec)
  * local routines
  **********************************************************************/
 
-void *play_loop_(void *arg)
+static void *play_loop_(void *arg)
 {
 	unsigned written_time_last = 0, bh_index_last_w = 0, bh_index_last_o = BITRATE_HIST_SIZE, blocksize = 1;
 	FLAC__uint64 decode_position_last = 0, decode_position_frame_last = 0, decode_position_frame = 0;
@@ -585,26 +605,25 @@ void *play_loop_(void *arg)
 	return 0; /* to silence the compiler warning about not returning a value */
 }
 
-FLAC__bool safe_decoder_init_(char *filename, FLAC__StreamDecoder *decoder)
+static FLAC__bool safe_decoder_init_(char *filename, FLAC__StreamDecoder *decoder)
 {
 	if(decoder == 0)
 		return false;
 
 	safe_decoder_finish_(decoder);
 
+	if ( ( stream_data_.vfsfile = vfs_fopen( filename , "rb" ) ) == NULL )
+		return false;
+
 	FLAC__stream_decoder_set_md5_checking(decoder, false);
 	FLAC__stream_decoder_set_metadata_ignore_all(decoder);
 	FLAC__stream_decoder_set_metadata_respond(decoder, FLAC__METADATA_TYPE_STREAMINFO);
 	FLAC__stream_decoder_set_metadata_respond(decoder, FLAC__METADATA_TYPE_VORBIS_COMMENT);
-	if(stream_data_.is_http_source) {
-		flac_http_open(filename, 0);
-		if(FLAC__stream_decoder_init_stream(decoder, http_read_callback_, /*seek_callback=*/0, /*tell_callback=*/0, /*length_callback=*/0, /*eof_callback=*/0, write_callback_, metadata_callback_, error_callback_, /*client_data=*/&stream_data_) != FLAC__STREAM_DECODER_INIT_STATUS_OK)
-			return false;
-	}
-	else {
-		if(FLAC__stream_decoder_init_file(decoder, filename, write_callback_, metadata_callback_, error_callback_, /*client_data=*/&stream_data_) != FLAC__STREAM_DECODER_INIT_STATUS_OK)
-			return false;
-	}
+
+	if ( FLAC__stream_decoder_init_stream(decoder, read_callback_, seek_callback_,
+               tell_callback_, length_callback_, eof_callback_, write_callback_, metadata_callback_,
+               error_callback_, /*client_data=*/&stream_data_) != FLAC__STREAM_DECODER_INIT_STATUS_OK )
+		return false;
 
 	if(!FLAC__stream_decoder_process_until_end_of_metadata(decoder))
 		return false;
@@ -612,28 +631,23 @@ FLAC__bool safe_decoder_init_(char *filename, FLAC__StreamDecoder *decoder)
 	return true;
 }
 
-void safe_decoder_finish_(FLAC__StreamDecoder *decoder)
+static void safe_decoder_finish_(FLAC__StreamDecoder *decoder)
 {
+	if ( stream_data_.vfsfile != NULL )
+	{
+		vfs_fclose( stream_data_.vfsfile );
+		stream_data_.vfsfile = NULL;
+	}
 	if(decoder && FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_UNINITIALIZED)
 		FLAC__stream_decoder_finish(decoder);
-	if(stream_data_.is_http_source)
-		flac_http_close();
 }
 
-void safe_decoder_delete_(FLAC__StreamDecoder *decoder)
+static void safe_decoder_delete_(FLAC__StreamDecoder *decoder)
 {
 	if(decoder) {
 		safe_decoder_finish_(decoder);
 		FLAC__stream_decoder_delete(decoder);
 	}
-}
-
-FLAC__StreamDecoderReadStatus http_read_callback_(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data)
-{
-	(void)decoder;
-	(void)client_data;
-	*bytes = flac_http_read(buffer, *bytes);
-	return *bytes ? FLAC__STREAM_DECODER_READ_STATUS_CONTINUE : FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
 }
 
 FLAC__StreamDecoderWriteStatus write_callback_(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data)
@@ -696,7 +710,7 @@ FLAC__StreamDecoderWriteStatus write_callback_(const FLAC__StreamDecoder *decode
 	return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
 
-void metadata_callback_(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
+static void metadata_callback_(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
 {
 	stream_data_struct *stream_data = (stream_data_struct *)client_data;
 	(void)decoder;
@@ -721,10 +735,101 @@ void metadata_callback_(const FLAC__StreamDecoder *decoder, const FLAC__StreamMe
 	}
 }
 
-void error_callback_(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
+static void error_callback_(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
 {
 	stream_data_struct *stream_data = (stream_data_struct *)client_data;
 	(void)decoder;
 	if(status != FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC)
 		stream_data->abort_flag = true;
+}
+
+static FLAC__StreamDecoderReadStatus read_callback_(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data)
+{
+	stream_data_struct *stream_data = (stream_data_struct *)client_data;
+	(void)decoder;
+
+	if( *bytes > 0 )
+	{
+		*bytes = vfs_fread( buffer , sizeof(FLAC__byte) , *bytes , stream_data->vfsfile );
+		if ( *bytes == 0 )
+			 return FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
+		else
+			return FLAC__STREAM_DECODER_READ_STATUS_CONTINUE;
+	}
+	else
+		return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
+}
+
+static FLAC__StreamDecoderSeekStatus seek_callback_(const FLAC__StreamDecoder *decoder, FLAC__uint64 absolute_byte_offset, void *client_data)
+{
+	stream_data_struct *stream_data = (stream_data_struct *)client_data;
+	(void)decoder;
+
+	if ( stream_data->is_http_source )
+		return FLAC__STREAM_DECODER_SEEK_STATUS_UNSUPPORTED;
+
+	if ( vfs_fseek( stream_data->vfsfile , (glong)absolute_byte_offset , SEEK_SET ) < 0 )
+		return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
+	else
+		return FLAC__STREAM_DECODER_SEEK_STATUS_OK;
+}
+
+static FLAC__StreamDecoderTellStatus tell_callback_(const FLAC__StreamDecoder *decoder, FLAC__uint64 *absolute_byte_offset, void *client_data)
+{
+	stream_data_struct *stream_data = (stream_data_struct *)client_data;
+	glong pos;
+	(void)decoder;
+
+	if ( stream_data->is_http_source )
+		return FLAC__STREAM_DECODER_TELL_STATUS_UNSUPPORTED;
+
+	if ( (pos = vfs_ftell(stream_data->vfsfile)) < 0 )
+		return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
+	else
+	{
+		*absolute_byte_offset = (FLAC__uint64)pos;
+		return FLAC__STREAM_DECODER_TELL_STATUS_OK;
+	}
+}
+
+static FLAC__StreamDecoderLengthStatus length_callback_(const FLAC__StreamDecoder *decoder, FLAC__uint64 *stream_length, void *client_data)
+{
+	stream_data_struct *stream_data = (stream_data_struct *)client_data;
+	glong current_pos = 0;
+	glong length = 0;
+	(void)decoder;
+
+	if ( stream_data->is_http_source )
+		return FLAC__STREAM_DECODER_LENGTH_STATUS_UNSUPPORTED;
+
+	current_pos = vfs_ftell(stream_data->vfsfile);
+	if ( current_pos < 0 )
+		return FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+
+	if ( vfs_fseek( stream_data->vfsfile , 0 , SEEK_END ) < 0 )
+		return FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+
+	length = vfs_ftell(stream_data->vfsfile);
+	if ( length < 0 )
+		return FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+
+	/* put back stream position */
+	if ( vfs_fseek( stream_data->vfsfile , current_pos , SEEK_SET ) < 0 )
+		return FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+	else
+	{
+		*stream_length = (FLAC__uint64)length;
+		return FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
+	}
+}
+
+static FLAC__bool eof_callback_(const FLAC__StreamDecoder *decoder, void *client_data)
+{
+	stream_data_struct *stream_data = (stream_data_struct *)client_data;
+	(void)decoder;
+
+	if ( stream_data->is_http_source )
+		return FALSE;
+	else
+		return vfs_feof( stream_data->vfsfile );
 }
