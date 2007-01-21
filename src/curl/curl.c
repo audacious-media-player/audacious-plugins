@@ -33,8 +33,7 @@
 #define DEBUG_HEADERS 0
 #define DEBUG_ICY 0
 #define DEBUG_ICY_VERBOSE 0
-#define XXXX_FIXED_METADATA 1
-#define DEBUG_METADATA_REPORT 1
+#define DEBUG_METADATA_REPORT 0
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -312,7 +311,6 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 			}
 		      g_print("\n");
 		    }
-		  if (XXXX_FIXED_METADATA)
 		    got_inline_metadata(handle);
 
 		  // Rewind the buffer usage to write over the
