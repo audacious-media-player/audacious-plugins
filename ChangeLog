@@ -1,3 +1,11 @@
+2007-01-21 11:32:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1046]
+  - touch .depend after blanking it out
+  
+  trunk/mk/objective.mk |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2007-01-21 11:01:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1044]
   - remove .depend on make clean

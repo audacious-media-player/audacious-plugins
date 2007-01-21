@@ -819,20 +819,20 @@ get_song_tuple(gchar *filename)
     OggVorbis_File vfile;          /* avoid thread interaction */
     TitleInput *tuple = NULL;
     gboolean is_stream = FALSE;
+    VFSVorbisFile *fd = NULL;
 
-    if (strncasecmp(filename, "http://", 7)) {
-        if ((stream = vfs_fopen(filename, "r")) == NULL)
-            return NULL;
-    }
-    else
-        is_stream = TRUE;
+    if ((stream = vfs_fopen(filename, "r")) == NULL)
+        return NULL;
+
+    fd = g_new0(VFSVorbisFile, 1);
+    fd->fd = stream;
 
     /*
      * The open function performs full stream detection and
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks(stream, &vfile, NULL, 0, vorbis_callbacks) < 0) {
+    if (ov_open_callbacks(fd, &vfile, NULL, 0, vorbis_callbacks) < 0) {
         if (is_stream == FALSE)
             vfs_fclose(stream);
         return NULL;
