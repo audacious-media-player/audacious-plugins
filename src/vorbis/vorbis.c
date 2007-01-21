@@ -262,7 +262,6 @@ vorbis_check_fd(char *filename, VFSFile *stream)
         g_message("** vorbis.c: Media read error: %s", filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
         return FALSE;
         break;
     case OV_ENOTVORBIS:
@@ -270,7 +269,6 @@ vorbis_check_fd(char *filename, VFSFile *stream)
         g_message("** vorbis.c: Not Vorbis data: %s", filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
         return FALSE;
         break;
     case OV_EVERSION:
@@ -278,7 +276,6 @@ vorbis_check_fd(char *filename, VFSFile *stream)
         g_message("** vorbis.c: Version mismatch: %s", filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
         return FALSE;
         break;
     case OV_EBADHEADER:
@@ -287,7 +284,6 @@ vorbis_check_fd(char *filename, VFSFile *stream)
                   filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
         return FALSE;
         break;
     case OV_EFAULT:
@@ -296,7 +292,6 @@ vorbis_check_fd(char *filename, VFSFile *stream)
                   filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
         return FALSE;
         break;
     case 0:
