@@ -1,3 +1,11 @@
+2007-01-21 11:01:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1044]
+  - remove .depend on make clean
+  
+  trunk/mk/objective.mk |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-21 10:56:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1042]
   - whoever wrote this plugin was a jerk
