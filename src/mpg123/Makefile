@@ -8,7 +8,7 @@ LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 SOURCES = mpg123.c configure.c fileinfo.c common.c \
 	resample.c \
 	layer1.c layer2.c layer3.c \
-	tabinit.c http.c $(LIBNMS_SRC) \
+	tabinit.c $(LIBNMS_SRC) \
 	dxhead.c decode.c $(DCT64) paranoia.c interface.c
 
 OBJECTS = ${SOURCES:.c=.o} tag_c_hacked.o

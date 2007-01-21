@@ -51,9 +51,6 @@ fullread(VFSFile * fd, unsigned char *buf, int count)
             ret = vfs_fread(buf + cnt, 1, count - cnt, fd);
         else
             switch(mpgdec_info->stream_type) {
-                case STREAM_HTTP:
-                    ret = mpgdec_http_read(buf + cnt, count - cnt);
-                    break;
 #ifdef HAVE_NEMESI
                 case STREAM_RTSP:
                     ret = mpgdec_rtsp_read(buf + cnt, count - cnt);
@@ -86,9 +83,6 @@ mpgdec_stream_close(void)
         vfs_fclose(filept);
     else 
         switch(mpgdec_info->stream_type) {
-            case STREAM_HTTP:
-                mpgdec_http_close();
-                break;
 #ifdef HAVE_NEMESI
             case STREAM_RTSP:
                 mpgdec_rtsp_close();
@@ -424,15 +418,6 @@ mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range)
         mpgdec_info->stream_type = STREAM_RTSP;
         if (mpgdec_rtsp_open(bs_filenam)) mpgdec_info->eof = TRUE;
     } else 
-#endif
-#if 1
-    if (!strncasecmp(bs_filenam, "http://", 7)) {
-        filept = NULL;
-        mpgdec_http_open(bs_filenam, range);
-        mpgdec_info->filesize = 0;
-        mpgdec_info->network_stream = TRUE;
-        mpgdec_info->stream_type = STREAM_HTTP;
-    } else
 #endif
     {
         mpgdec_info->eof = TRUE;

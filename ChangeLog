@@ -1,3 +1,11 @@
+2007-01-21 10:11:26 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1026]
+  - only parse handed-off shoutcast information on streams
+  
+  trunk/src/mpg123/mpg123.c |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2007-01-21 10:09:42 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1024]
   - fix crash

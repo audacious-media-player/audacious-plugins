@@ -237,15 +237,6 @@ struct mpstr {
 
 #define AUSHIFT		3
 
-/* ------ Declarations from "http.c" ------ */
-
-extern int mpgdec_http_open(char *url, unsigned long rng);
-int mpgdec_http_read(gpointer data, gsize length);
-void mpgdec_http_close(void);
-char *mpgdec_http_get_title(char *url);
-int mpgdec_http_get_length(void);
-void mpgdec_http_seek(long pos);
-
 /* ------ Declarations from "common.c" ------ */
 extern unsigned int mpgdec_get1bit(void);
 extern unsigned int mpgdec_getbits(int);
