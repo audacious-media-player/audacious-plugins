@@ -1,3 +1,11 @@
+2007-01-21 10:40:50 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1040]
+  - cleanups
+  
+  trunk/src/vorbis/vorbis.c |    6 +-----
+  1 file changed, 1 insertion(+), 5 deletions(-)
+
+
 2007-01-21 10:38:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1038]
   - remove integrated http in lieu of builtin vorbis http

@@ -88,6 +88,11 @@ ov_callbacks vorbis_callbacks = {
     ovcb_tell
 };
 
+typedef struct {
+    VFSFile *fd;
+    gboolean probe;
+} VFSVorbisFile;
+
 gchar *vorbis_fmts[] = { "ogg", "ogm", NULL };
 
 InputPlugin vorbis_ip = {
@@ -150,10 +155,16 @@ vorbis_check_file(char *filename)
     OggVorbis_File vfile;       /* avoid thread interaction */
     char *ext;
     gint result;
+    VFSVorbisFile *fd;
 
     if (!(stream = vfs_fopen(filename, "r"))) {
         return FALSE;
     }
+
+    fd = g_new0(VFSVorbisFile, 1);
+    fd->fd = stream;
+    fd->probe = TRUE;
+
     /*
      * The open function performs full stream detection and machine
      * initialization.  If it returns zero, the stream *is* Vorbis and
@@ -164,7 +175,7 @@ vorbis_check_file(char *filename)
     memset(&vfile, 0, sizeof(vfile));
     g_mutex_lock(vf_mutex);
 
-    result = ov_test_callbacks(stream, &vfile, NULL, 0, vorbis_callbacks);
+    result = ov_test_callbacks(fd, &vfile, NULL, 0, vorbis_callbacks);
 
     switch (result) {
     case OV_EREAD:
@@ -227,6 +238,11 @@ vorbis_check_fd(char *filename, VFSFile *stream)
     OggVorbis_File vfile;       /* avoid thread interaction */
     char *ext;
     gint result;
+    VFSVorbisFile *fd;
+
+    fd = g_new0(VFSVorbisFile, 1);
+    fd->fd = stream;
+    fd->probe = TRUE;
 
     /*
      * The open function performs full stream detection and machine
@@ -238,7 +254,7 @@ vorbis_check_fd(char *filename, VFSFile *stream)
     memset(&vfile, 0, sizeof(vfile));
     g_mutex_lock(vf_mutex);
 
-    result = ov_test_callbacks(stream, &vfile, NULL, 0, vorbis_callbacks);
+    result = ov_test_callbacks(fd, &vfile, NULL, 0, vorbis_callbacks);
 
     switch (result) {
     case OV_EREAD:
@@ -431,6 +447,7 @@ vorbis_play_loop(gpointer arg)
     long timercount = 0;
     vorbis_info *vi;
     long br;
+    VFSVorbisFile *fd = NULL;
 
     int last_section = -1;
 
@@ -442,19 +459,14 @@ vorbis_play_loop(gpointer arg)
 
     memset(&vf, 0, sizeof(vf));
 
-    if (strncasecmp("http://", filename, 7) != 0) {
-        /* file is a real file */
-        if ((stream = vfs_fopen(filename, "r")) == NULL) {
-            vorbis_eos = TRUE;
-            goto play_cleanup;
-        }
-        datasource = (void *) stream;
+    if ((stream = vfs_fopen(filename, "r")) == NULL) {
+        vorbis_eos = TRUE;
+        goto play_cleanup;
     }
-    else {
-        /* file is a stream */
-        vorbis_is_streaming = 1;
-        datasource = "NULL";
-    }
+
+    fd = g_new0(VFSVorbisFile, 1);
+    fd->fd = stream;
+    datasource = (void *) fd;
 
     /*
      * The open function performs full stream detection and
@@ -995,25 +1007,39 @@ vorbis_cleanup(void)
 static size_t
 ovcb_read(void *ptr, size_t size, size_t nmemb, void *datasource)
 {
-    size_t tmp;
+    VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
 
-    return vfs_fread(ptr, size, nmemb, (VFSFile *) datasource);
+    return vfs_fread(ptr, size, nmemb, handle->fd);
 }
 
 static int
 ovcb_seek(void *datasource, int64_t offset, int whence)
 {
-    return vfs_fseek((VFSFile *) datasource, offset, whence);
+    VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
+
+    return vfs_fseek(handle->fd, offset, whence);
 }
 
 static int
 ovcb_close(void *datasource)
 {
-    return vfs_fclose((VFSFile *) datasource);
+    VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
+
+    gint ret = 0;
+
+    if (handle->probe == FALSE)
+    {
+        ret = vfs_fclose(handle->fd);
+	g_free(handle);
+    }
+
+    return ret;
 }
 
 static long
 ovcb_tell(void *datasource)
 {
-    return vfs_ftell((VFSFile *) datasource);
+    VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
+
+    return vfs_ftell(handle->fd);
 }
