@@ -852,7 +852,11 @@ static void init_decoder_func_tables()
 
 static decoder_t source_to_decoder_type (const char *source)
 {
-	return strncasecmp(source, "http://", 7) ? DECODER_FILE : DECODER_HTTP;
+	/* NOTE: in Audacious, always use DECODER_FILE to pick files via VFS;
+                 http flac stream support is not used */
+	return DECODER_FILE;
+
+/*	return strncasecmp(source, "http://", 7) ? DECODER_FILE : DECODER_HTTP; */
 }
 
 static void change_decoder_if_needed (decoder_t new_decoder_type, void **decoderp, decoder_funcs_t const ** fntabp)

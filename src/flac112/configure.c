@@ -289,7 +289,7 @@ void FLAC_XMMS__configure(void)
 	GtkWidget *bbox, *ok, *cancel;
 	GList *list;
 
-	GtkWidget *streaming_vbox;
+	GtkWidget *streaming_vbox, *streaming_vbox_c;
 	GtkWidget *streaming_buf_frame, *streaming_buf_hbox;
 	GtkWidget *streaming_size_box, *streaming_size_label, *streaming_size_spin;
 	GtkWidget *streaming_pre_box, *streaming_pre_label, *streaming_pre_spin;
@@ -524,10 +524,15 @@ void FLAC_XMMS__configure(void)
 	/* Streaming */
 
 	streaming_vbox = gtk_vbox_new(FALSE, 0);
+	streaming_vbox_c = gtk_vbox_new(FALSE, 0);
+
+        gtk_box_pack_start(GTK_BOX(streaming_vbox), gtk_label_new(
+          _("\n- THESE OPTIONS ARE CURRENTLY IGNORED BY AUDACIOUS -\n") ) , FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_vbox_c , TRUE , TRUE, 0);
 
 	streaming_buf_frame = gtk_frame_new(_("Buffering:"));
 	gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_frame), 5);
-	gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_buf_frame, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(streaming_vbox_c), streaming_buf_frame, FALSE, FALSE, 0);
 
 	streaming_buf_hbox = gtk_hbox_new(TRUE, 5);
 	gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_hbox), 5);
@@ -558,7 +563,7 @@ void FLAC_XMMS__configure(void)
 	 */
 	streaming_save_frame = gtk_frame_new(_("Save stream to disk:"));
 	gtk_container_set_border_width(GTK_CONTAINER(streaming_save_frame), 5);
-	gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_save_frame, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(streaming_vbox_c), streaming_save_frame, FALSE, FALSE, 0);
 
 	streaming_save_vbox = gtk_vbox_new(FALSE, 5);
 	gtk_container_set_border_width(GTK_CONTAINER(streaming_save_vbox), 5);
@@ -585,7 +590,7 @@ void FLAC_XMMS__configure(void)
 #ifdef FLAC_ICECAST
 	streaming_cast_frame = gtk_frame_new(_("SHOUT/Icecast:"));
 	gtk_container_set_border_width(GTK_CONTAINER(streaming_cast_frame), 5);
-	gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_cast_frame, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(streaming_vbox_c), streaming_cast_frame, FALSE, FALSE, 0);
 
 	streaming_cast_vbox = gtk_vbox_new(5, FALSE);
 	gtk_container_add(GTK_CONTAINER(streaming_cast_frame), streaming_cast_vbox);
@@ -598,6 +603,7 @@ void FLAC_XMMS__configure(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_udp_title), flac_cfg.stream.use_udp_channel);
 	gtk_box_pack_start(GTK_BOX(streaming_cast_vbox), streaming_udp_title, FALSE, FALSE, 0);
 #endif
+	gtk_widget_set_sensitive( GTK_WIDGET(streaming_vbox_c) , FALSE );
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), streaming_vbox, gtk_label_new(_("Streaming")));
 

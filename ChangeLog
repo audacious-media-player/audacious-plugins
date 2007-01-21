@@ -1,3 +1,11 @@
+2007-01-21 23:15:38 +0000  Giacomo Lozito <james@develia.org>
+  revision [1064]
+  flac 112 plugin: playback and detection use vfs; current situation is pretty similar to the one of flac 113 plugin
+  trunk/src/flac112/plugin.c             |  247 ++++++++++++++++++++++++---------
+  trunk/src/flac112/plugin_common/tags.c |    5 
+  2 files changed, 191 insertions(+), 61 deletions(-)
+
+
 2007-01-21 19:17:52 +0000  Giacomo Lozito <james@develia.org>
   revision [1062]
   - flac 113 plugin: allow to do seek and other operations on http sources
