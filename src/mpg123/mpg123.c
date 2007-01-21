@@ -872,11 +872,18 @@ decode_loop(void *arg)
 
 		    if (old_title == NULL || g_strcasecmp(old_title, new_title))
                     {
-			g_free(mpgdec_title);
-			mpgdec_title = g_strdup_printf("%s (%s)", 
-							new_title, srv_name);
+			if (mpgdec_title != NULL)
+				g_free(mpgdec_title);
 
-			g_free(old_title);
+			if (new_title != NULL)
+				mpgdec_title = g_strdup_printf("%s (%s)", 
+							new_title, srv_name);
+			else
+				mpgdec_title = g_strdup(srv_name);
+
+			if (old_title != NULL)
+				g_free(old_title);
+	
 			old_title = new_title;
 
 			g_free(srv_name);
