@@ -99,6 +99,14 @@ mpgdec_stream_close(void)
         }
 }
 
+gchar *mpgdec_metadata(const gchar *id)
+{
+	if (filept == NULL)
+		return NULL;
+
+	return vfs_get_metadata(filept, id);
+}
+
 /**************************************** 
  * HACK,HACK,HACK: step back <num> frames 
  * can only work if the 'stream' isn't a mpgdec_real stream but a file

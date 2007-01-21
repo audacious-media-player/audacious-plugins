@@ -1,3 +1,12 @@
+2007-01-21 07:31:12 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1018]
+  Handle inline metadata. Parsing of tags needs work before it will not crash on
+  occasion, so it's disabled for now.
+  
+  trunk/src/curl/curl.c |  171 +++++++++++++++++++++++++++++++++++++++++++++++---
+  1 file changed, 163 insertions(+), 8 deletions(-)
+
+
 2007-01-21 05:40:49 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [1016]
   Provide "name" metadata when the url is a shoutcast stream.
