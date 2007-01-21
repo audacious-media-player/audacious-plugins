@@ -453,7 +453,6 @@ vorbis_play_loop(gpointer arg)
     else {
         /* file is a stream */
         vorbis_is_streaming = 1;
-        vorbis_http_open(filename);
         datasource = "NULL";
     }
 
@@ -851,10 +850,7 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
                                               vorbis_cfg.tag_format :
                                               xmms_get_gentitle_format(),
                                               input))) {
-        if (!vorbis_is_streaming)
-            displaytitle = g_strdup(input->file_name);
-        else
-            displaytitle = vorbis_http_get_title(filename);
+        displaytitle = g_strdup(input->file_name);
     }
 
     bmp_title_input_free(input);
