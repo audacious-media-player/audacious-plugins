@@ -671,6 +671,7 @@ mpgdec_seek(struct frame *fr, xing_header_t * xh, gboolean vbr, int time)
 static void *
 decode_loop(void *arg)
 {
+    static gchar *old_title = NULL;
     gboolean have_xing_header = FALSE, vbr = FALSE;
     int disp_count = 0;
     char *filename = arg;
@@ -761,7 +762,17 @@ decode_loop(void *arg)
 	    }
         }
         else {
-            mpgdec_title = mpgdec_metadata("stream-name");
+            gchar *tmp = mpgdec_metadata("stream-name");
+	    old_title = mpgdec_metadata("track-name");
+
+	    if (old_title != NULL)
+	    {
+	        mpgdec_title = g_strdup_printf("%s (%s)", old_title, tmp);
+		g_free(tmp);
+	    }
+            else
+		mpgdec_title = tmp;
+
 	    mpgdec_length = -1;
         }
 
@@ -848,10 +859,32 @@ decode_loop(void *arg)
                                            mpgdec_bitrate * 1000,
                                            mpgdec_frequency, mpgdec_stereo);
                     }
+
                 }
                 else
                     disp_count--;
                 play_frame(&fr);
+
+	        {
+		    gchar *new_title = mpgdec_metadata("track-name");
+		    gchar *srv_name = mpgdec_metadata("stream-name");
+
+		    if (old_title == NULL || g_strcasecmp(old_title, new_title))
+                    {
+			g_free(mpgdec_title);
+			mpgdec_title = g_strdup_printf("%s (%s)", 
+							new_title, srv_name);
+
+			g_free(old_title);
+			old_title = new_title;
+
+			g_free(srv_name);
+
+                        mpgdec_ip.set_info(mpgdec_title, mpgdec_length,
+                                           mpgdec_bitrate * 1000,
+                                           mpgdec_frequency, mpgdec_stereo);
+		    }
+		}
             }
             else {
                 mpgdec_ip.output->buffer_free();
@@ -865,6 +898,11 @@ decode_loop(void *arg)
         }
     }
     g_free(mpgdec_title);
+
+    if (old_title != NULL)
+        g_free(old_title);
+
+    old_title = NULL;
     mpgdec_title = NULL;
     mpgdec_stream_close();
     if (output_opened && !audio_error)

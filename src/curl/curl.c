@@ -33,8 +33,8 @@
 #define DEBUG_HEADERS 0
 #define DEBUG_ICY 0
 #define DEBUG_ICY_VERBOSE 0
-#define XXXX_FIXED_METADATA 0
-#define DEBUG_METADATA_REPORT 0
+#define XXXX_FIXED_METADATA 1
+#define DEBUG_METADATA_REPORT 1
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -707,9 +707,9 @@ gchar *
 curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
   CurlHandle *handle = file->handle;
-  if (!strcmp(field, "stream-name"))
+  if (!strcmp(field, "stream-name") && handle->name != NULL)
     return strdup(handle->name);
-  if (!strcmp(field, "track-name"))
+  if (!strcmp(field, "track-name") && handle->title != NULL)
     return strdup(handle->title);
   return NULL;
 }
