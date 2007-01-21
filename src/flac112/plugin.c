@@ -24,12 +24,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "audacious/plugin.h"
-#include "audacious/output.h"
-#include "audacious/util.h"
-#include "audacious/configdb.h"
-#include "audacious/titlestring.h"
-#include "audacious/vfs.h"
+#include <audacious/plugin.h>
+#include <audacious/output.h>
+#include <audacious/util.h>
+#include <audacious/configdb.h>
+#include <audacious/titlestring.h>
+#include <audacious/vfs.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -79,6 +79,7 @@ typedef struct {
 	FLAC__bool has_replaygain;
 	double replay_scale;
 	DitherContext dither_context;
+	VFSFile *vfsfile;
 } file_info_struct;
 
 typedef FLAC__StreamDecoderWriteStatus (*WriteCallback) (const void *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data);
@@ -88,8 +89,9 @@ typedef void (*ErrorCallback) (const void *decoder, FLAC__StreamDecoderErrorStat
 typedef struct {
 	FLAC__bool seekable;
 	void* (*new_decoder) (void);
-	FLAC__bool (*set_md5_checking) (void *decoder, FLAC__bool value);
 	FLAC__bool (*set_source) (void *decoder, const char* source);
+	FLAC__bool (*unset_source) (void *decoder);
+	FLAC__bool (*set_md5_checking) (void *decoder, FLAC__bool value);
 	FLAC__bool (*set_metadata_ignore_all) (void *decoder);
 	FLAC__bool (*set_metadata_respond) (void *decoder, FLAC__MetadataType type);
 	FLAC__bool (*set_write_callback) (void *decoder, WriteCallback value);
@@ -112,6 +114,7 @@ typedef enum {
 
 static void FLAC_XMMS__init();
 static int  FLAC_XMMS__is_our_file(char *filename);
+static int  FLAC_XMMS__is_our_file_from_vfs(char *filename, VFSFile *vfsfile);
 static void FLAC_XMMS__play_file(char *filename);
 static void FLAC_XMMS__stop();
 static void FLAC_XMMS__pause(short p);
@@ -163,7 +166,7 @@ InputPlugin flac_ip =
 	flac_get_tuple,
         NULL,		// set tuple
         NULL,
-	NULL,
+	FLAC_XMMS__is_our_file_from_vfs,
 	flac_fmts,
 };
 
@@ -302,31 +305,40 @@ void FLAC_XMMS__init()
 	bmp_cfg_db_close(db);
 }
 
-int FLAC_XMMS__is_our_file(char *filename)
+int FLAC_XMMS__is_our_file_from_vfs( gchar * filename , VFSFile * vfsfile )
 {
-	FILE *f;
-	FLAC__StreamMetadata streaminfo;
+	gchar magic_bytes[4];
 
-        if (source_to_decoder_type (filename) == DECODER_FILE) {
-                if(0 == (f = fopen(filename, "r")))
-                        return 0;
-                fclose(f);
-	        if(!FLAC__metadata_get_streaminfo(filename, &streaminfo))
-			return 0;
-		return 1;
-        }
-
-	if(!safe_decoder_init_(filename, &decoder2, &decoder_func_table2))
+	if ( vfsfile == NULL )
 		return 0;
 
-	decoder_func_table2 -> safe_decoder_finish(decoder2);	
-	return 1;
+	if ( vfs_fread( magic_bytes , 1 , 4 , vfsfile ) != 4 )
+		return 0;
+
+	if ( !strncmp( magic_bytes , "fLaC" , 4 ) )
+		return 1;
+	else
+		return 0;
+}
+
+int FLAC_XMMS__is_our_file(char *filename)
+{
+	VFSFile *vfsfile;
+	gint result = 0;
+
+	vfsfile = vfs_fopen( filename , "rb" );
+
+	if ( vfsfile == NULL ) return 0;
+
+	result = FLAC_XMMS__is_our_file_from_vfs( filename , vfsfile );
+
+	vfs_fclose( vfsfile );
+
+	return result;
 }
 
 void FLAC_XMMS__play_file(char *filename)
 {
-	FILE *f;
-
 	sample_buffer_first_ = sample_buffer_last_ = 0;
 	audio_error_ = false;
 	file_info_.abort_flag = false;
@@ -334,12 +346,6 @@ void FLAC_XMMS__play_file(char *filename)
 	file_info_.eof = false;
 	file_info_.play_thread_open = false;
 	file_info_.has_replaygain = false;
-
-	if (source_to_decoder_type (filename) == DECODER_FILE) {
-		if(0 == (f = fopen(filename, "r")))
-			return;
-		fclose(f);
-	}
 
 	if(decoder_ == 0)
 		return;
@@ -529,7 +535,7 @@ void *play_loop_(void *arg)
 				}
 				blocksize = sample_buffer_last_ - sample_buffer_first_ - s;
 				decode_position_frame_last = decode_position_frame;
-				if(!decoder_func_table_->seekable || !FLAC__file_decoder_get_decode_position(decoder_, &decode_position_frame))
+				if(!decoder_func_table_->seekable || !FLAC__seekable_stream_decoder_get_decode_position(decoder_, &decode_position_frame))
 					decode_position_frame = 0;
 			}
 			if(sample_buffer_last_ - sample_buffer_first_ > 0) {
@@ -571,10 +577,10 @@ void *play_loop_(void *arg)
 		if(decoder_func_table_->seekable && file_info_.seek_to_in_sec != -1) {
 			const double distance = (double)file_info_.seek_to_in_sec * 1000.0 / (double)file_info_.length_in_msec;
 			unsigned target_sample = (unsigned)(distance * (double)file_info_.total_samples);
-			if(FLAC__file_decoder_seek_absolute(decoder_, (FLAC__uint64)target_sample)) {
+			if(FLAC__seekable_stream_decoder_seek_absolute(decoder_, (FLAC__uint64)target_sample)) {
 				flac_ip.output->flush(file_info_.seek_to_in_sec * 1000);
 				bh_index_last_w = bh_index_last_o = flac_ip.output->output_time() / BITRATE_HIST_SEGMENT_MSEC % BITRATE_HIST_SIZE;
-				if(!FLAC__file_decoder_get_decode_position(decoder_, &decode_position_frame))
+				if(!FLAC__seekable_stream_decoder_get_decode_position(decoder_, &decode_position_frame))
 					decode_position_frame = 0;
 				file_info_.seek_to_in_sec = -1;
 				file_info_.eof = false;
@@ -605,65 +611,172 @@ void *play_loop_(void *arg)
 
 /*********** File decoder functions */
 
-static FLAC__bool file_decoder_init (void *decoder)
+static FLAC__bool file_decoder_unset_source(void *decoder)
 {
-	return FLAC__file_decoder_init( (FLAC__FileDecoder*) decoder) == FLAC__FILE_DECODER_OK;
+	if ( file_info_.vfsfile != NULL )
+	{
+		vfs_fclose( file_info_.vfsfile );
+		file_info_.vfsfile = NULL;
+	}
 }
 
 static void file_decoder_safe_decoder_finish_(void *decoder)
 {
-	if(decoder && FLAC__file_decoder_get_state((FLAC__FileDecoder *) decoder) != FLAC__FILE_DECODER_UNINITIALIZED)
-		FLAC__file_decoder_finish((FLAC__FileDecoder *) decoder);
+	file_decoder_unset_source(decoder);
+	if(decoder && FLAC__seekable_stream_decoder_get_state((FLAC__SeekableStreamDecoder *) decoder) != FLAC__SEEKABLE_STREAM_DECODER_UNINITIALIZED)
+		FLAC__seekable_stream_decoder_finish((FLAC__SeekableStreamDecoder *) decoder);
 }
 
 static void file_decoder_safe_decoder_delete_(void *decoder)
 {
 	if(decoder) {
 		file_decoder_safe_decoder_finish_(decoder);
-		FLAC__file_decoder_delete( (FLAC__FileDecoder *) decoder);
+		FLAC__seekable_stream_decoder_delete( (FLAC__SeekableStreamDecoder *) decoder);
 	}
 }
 
 static FLAC__bool file_decoder_is_eof(void *decoder)
 {
-	return FLAC__file_decoder_get_state((FLAC__FileDecoder *) decoder) == FLAC__FILE_DECODER_END_OF_FILE;
+	return FLAC__seekable_stream_decoder_get_state((FLAC__SeekableStreamDecoder *) decoder) == FLAC__SEEKABLE_STREAM_DECODER_END_OF_STREAM;
+}
+
+static FLAC__bool file_decoder_set_source(void *decoder, const char *filename)
+{
+	if ( ( file_info_.vfsfile = vfs_fopen( filename , "rb" ) ) == NULL )
+		return false;
+	else
+		return true;
+}
+
+static FLAC__SeekableStreamDecoderReadStatus file_decoder_read_callback (const FLAC__SeekableStreamDecoder *decoder, FLAC__byte buffer[], unsigned *bytes, void *client_data)
+{
+	file_info_struct *file_info = (file_info_struct *)client_data;
+	(void) decoder;
+
+	if( *bytes > 0 )
+	{
+		*bytes = vfs_fread( buffer , sizeof(FLAC__byte) , *bytes , file_info->vfsfile );
+		if ( *bytes == 0 )
+			 return FLAC__SEEKABLE_STREAM_DECODER_READ_STATUS_ERROR;
+		else
+			return FLAC__SEEKABLE_STREAM_DECODER_READ_STATUS_OK;
+	}
+	else
+		return FLAC__SEEKABLE_STREAM_DECODER_READ_STATUS_ERROR;	
+}
+
+static FLAC__SeekableStreamDecoderSeekStatus file_decoder_seek_callback(const FLAC__SeekableStreamDecoder *decoder, FLAC__uint64 absolute_byte_offset, void *client_data)
+{
+	file_info_struct *file_info = (file_info_struct *)client_data;
+	(void) decoder;
+
+	if ( vfs_fseek( file_info->vfsfile , (glong)absolute_byte_offset , SEEK_SET ) < 0 )
+		return FLAC__SEEKABLE_STREAM_DECODER_SEEK_STATUS_ERROR;
+	else
+		return FLAC__SEEKABLE_STREAM_DECODER_SEEK_STATUS_OK;
+}
+
+static FLAC__SeekableStreamDecoderTellStatus file_decoder_tell_callback(const FLAC__SeekableStreamDecoder *decoder, FLAC__uint64 *absolute_byte_offset, void *client_data)
+{
+	file_info_struct *file_info = (file_info_struct *)client_data;
+	glong pos;
+	(void)decoder;
+
+	if ( (pos = vfs_ftell(file_info->vfsfile)) < 0 )
+		return FLAC__SEEKABLE_STREAM_DECODER_TELL_STATUS_ERROR;
+	else
+	{
+		*absolute_byte_offset = (FLAC__uint64)pos;
+		return FLAC__SEEKABLE_STREAM_DECODER_TELL_STATUS_OK;
+	}
+}
+
+static FLAC__SeekableStreamDecoderLengthStatus file_decoder_length_callback(const FLAC__SeekableStreamDecoder *decoder, FLAC__uint64 *stream_length, void *client_data)
+{
+	file_info_struct *file_info = (file_info_struct *)client_data;
+	glong current_pos = 0;
+	glong length = 0;
+	(void)decoder;
+
+	current_pos = vfs_ftell(file_info->vfsfile);
+	if ( current_pos < 0 )
+		return FLAC__SEEKABLE_STREAM_DECODER_LENGTH_STATUS_ERROR;
+
+	if ( vfs_fseek( file_info->vfsfile , 0 , SEEK_END ) < 0 )
+		return FLAC__SEEKABLE_STREAM_DECODER_LENGTH_STATUS_ERROR;
+
+	length = vfs_ftell(file_info->vfsfile);
+	if ( length < 0 )
+		return FLAC__SEEKABLE_STREAM_DECODER_LENGTH_STATUS_ERROR;
+
+	/* put back stream position */
+	if ( vfs_fseek( file_info->vfsfile , current_pos , SEEK_SET ) < 0 )
+		return FLAC__SEEKABLE_STREAM_DECODER_LENGTH_STATUS_ERROR;
+	else
+	{
+		*stream_length = (FLAC__uint64)length;
+		return FLAC__SEEKABLE_STREAM_DECODER_LENGTH_STATUS_OK;
+	}
+}
+
+static FLAC__bool file_decoder_eof_callback (const FLAC__SeekableStreamDecoder *decoder, void *client_data)
+{
+	file_info_struct *file_info = (file_info_struct *)client_data;
+	(void)decoder;
+
+	return vfs_feof( file_info->vfsfile );
+}
+
+static FLAC__bool file_decoder_init (void *decoder)
+{
+	gint result = 0;
+	FLAC__seekable_stream_decoder_set_read_callback(decoder, file_decoder_read_callback);
+	FLAC__seekable_stream_decoder_set_seek_callback(decoder, file_decoder_seek_callback);
+	FLAC__seekable_stream_decoder_set_tell_callback(decoder, file_decoder_tell_callback);
+	FLAC__seekable_stream_decoder_set_length_callback(decoder, file_decoder_length_callback);
+	FLAC__seekable_stream_decoder_set_eof_callback(decoder, file_decoder_eof_callback);
+	return FLAC__seekable_stream_decoder_init( (FLAC__SeekableStreamDecoder*) decoder) == FLAC__SEEKABLE_STREAM_DECODER_OK;
 }
 
 static const decoder_funcs_t FILE_DECODER_FUNCTIONS = {
 	true,
-	(void* (*) (void)) FLAC__file_decoder_new,
-	(FLAC__bool (*) (void *, FLAC__bool)) FLAC__file_decoder_set_md5_checking,
-	(FLAC__bool (*) (void *, const char*)) FLAC__file_decoder_set_filename,
-	(FLAC__bool (*) (void *)) FLAC__file_decoder_set_metadata_ignore_all,
-	(FLAC__bool (*) (void *, FLAC__MetadataType)) FLAC__file_decoder_set_metadata_respond,
-	(FLAC__bool (*) (void *, WriteCallback)) FLAC__file_decoder_set_write_callback,
-	(FLAC__bool (*) (void *, MetadataCallback)) FLAC__file_decoder_set_metadata_callback,
-	(FLAC__bool (*) (void *, ErrorCallback)) FLAC__file_decoder_set_error_callback,
-	(FLAC__bool (*) (void *, void *)) FLAC__file_decoder_set_client_data,
+	(void* (*) (void)) FLAC__seekable_stream_decoder_new,
+	(FLAC__bool (*) (void *, const char*)) file_decoder_set_source,
+	(FLAC__bool (*) (void *)) file_decoder_unset_source,
+	(FLAC__bool (*) (void *, FLAC__bool)) FLAC__seekable_stream_decoder_set_md5_checking,
+	(FLAC__bool (*) (void *)) FLAC__seekable_stream_decoder_set_metadata_ignore_all,
+	(FLAC__bool (*) (void *, FLAC__MetadataType)) FLAC__seekable_stream_decoder_set_metadata_respond,
+	(FLAC__bool (*) (void *, WriteCallback)) FLAC__seekable_stream_decoder_set_write_callback,
+	(FLAC__bool (*) (void *, MetadataCallback)) FLAC__seekable_stream_decoder_set_metadata_callback,
+	(FLAC__bool (*) (void *, ErrorCallback)) FLAC__seekable_stream_decoder_set_error_callback,
+	(FLAC__bool (*) (void *, void *)) FLAC__seekable_stream_decoder_set_client_data,
 	(FLAC__bool (*) (void *)) file_decoder_init,
 	(void (*) (void *)) file_decoder_safe_decoder_finish_,
 	(void (*) (void *)) file_decoder_safe_decoder_delete_,
-	(FLAC__bool (*) (void *)) FLAC__file_decoder_process_until_end_of_metadata,
-	(FLAC__bool (*) (void *)) FLAC__file_decoder_process_single,
+	(FLAC__bool (*) (void *)) FLAC__seekable_stream_decoder_process_until_end_of_metadata,
+	(FLAC__bool (*) (void *)) FLAC__seekable_stream_decoder_process_single,
 	file_decoder_is_eof
 };
 
 /*********** HTTP decoder functions */
 
-static gchar *url_;
-
-static FLAC__bool http_decoder_set_md5_checking (void *decoder, FLAC__bool value)
-{
-	(void) value;
-	// operation unsupported
-	return FLAC__stream_decoder_get_state ((const FLAC__StreamDecoder *) decoder) ==
-		FLAC__STREAM_DECODER_UNINITIALIZED;
-}
+static gchar *url_ = NULL;
 
 static FLAC__bool http_decoder_set_url (void *decoder, const char* url)
 {
 	(void) decoder;
 	url_ = g_strdup (url);
+	return true;
+}
+
+static FLAC__bool http_decoder_unset_url (void *decoder)
+{
+	(void) decoder;
+	if ( url_ != NULL )
+	{
+		g_free(url_);
+		url_ = NULL;
+	}
 	return true;
 }
 
@@ -678,9 +791,14 @@ static FLAC__StreamDecoderReadStatus http_decoder_read_callback (const FLAC__Str
 static FLAC__bool http_decoder_init (void *decoder)
 {
 	flac_http_open (url_, 0);
-	g_free (url_);
+	http_decoder_unset_url(decoder);
 	FLAC__stream_decoder_set_read_callback (decoder, http_decoder_read_callback);
 	return FLAC__stream_decoder_init( (FLAC__StreamDecoder*) decoder) == FLAC__STREAM_DECODER_SEARCH_FOR_METADATA;
+}
+
+static FLAC__bool http_decoder_set_md5_checking (void *decoder, FLAC__bool value)
+{
+	return false;
 }
 
 static void http_decoder_safe_decoder_finish_(void *decoder)
@@ -707,8 +825,9 @@ static FLAC__bool http_decoder_is_eof(void *decoder)
 static const decoder_funcs_t HTTP_DECODER_FUNCTIONS = {
 	false,
 	(void* (*) (void)) FLAC__stream_decoder_new,
-	http_decoder_set_md5_checking,
 	(FLAC__bool (*) (void *, const char*)) http_decoder_set_url,
+	(FLAC__bool (*) (void *)) http_decoder_unset_url,
+	(FLAC__bool (*) (void *, FLAC__bool)) http_decoder_set_md5_checking,
 	(FLAC__bool (*) (void *)) FLAC__stream_decoder_set_metadata_ignore_all,
 	(FLAC__bool (*) (void *, FLAC__MetadataType)) FLAC__stream_decoder_set_metadata_respond,
 	(FLAC__bool (*) (void *, WriteCallback)) FLAC__stream_decoder_set_write_callback,
@@ -762,8 +881,8 @@ FLAC__bool safe_decoder_init_(const char *filename, void **decoderp, decoder_fun
 		decoder = *decoderp;
 		fntab = *fntabp;
 
-		fntab -> set_md5_checking(decoder, false);
 		fntab -> set_source(decoder, filename);
+		fntab -> set_md5_checking(decoder, false);
 		fntab -> set_metadata_ignore_all(decoder);
 		fntab -> set_metadata_respond(decoder, FLAC__METADATA_TYPE_STREAMINFO);
 		fntab -> set_metadata_respond(decoder, FLAC__METADATA_TYPE_VORBIS_COMMENT);
@@ -772,10 +891,16 @@ FLAC__bool safe_decoder_init_(const char *filename, void **decoderp, decoder_fun
 		fntab -> set_error_callback(decoder, error_callback_);
 		fntab -> set_client_data(decoder, &file_info_);
 		if(!fntab -> decoder_init(decoder))
+		{
+			fntab -> unset_source(decoder);
 			return false;
+		}
 
 		if(!fntab -> process_until_end_of_metadata(decoder))
+		{
+			fntab -> unset_source(decoder);
 			return false;
+		}
 	}
 
 	return true;
