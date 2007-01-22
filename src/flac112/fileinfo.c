@@ -240,6 +240,11 @@ void FLAC_XMMS__file_info_box(char *filename)
 	gchar *title;
 	gchar *filename_utf8;
 
+	/* NOTE vfs is not used here, so only try
+	   to pick tags if you can do it with flac library stdio */
+	if ( strncmp(filename,"/",1) )
+		return;
+
 	if (!window)
 	{
 		GtkWidget *vbox, *hbox, *left_vbox, *table;
