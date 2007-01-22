@@ -599,11 +599,9 @@ curl_vfs_getc_impl(VFSFile *stream)
 
   g_return_val_if_fail(handle != NULL, EOF);
 
-  g_print("curl_vfs_getc reached\n");
-
   if (handle->charstack != NULL)
   {
-    c = GPOINTER_TO_INT(handle->charstack->data);
+    c = GPOINTER_TO_UINT(handle->charstack->data);
     handle->charstack = g_slist_delete_link(handle->charstack, handle->charstack);
     return c;
   }
@@ -621,9 +619,7 @@ curl_vfs_ungetc_impl(gint c, VFSFile *stream)
 
   g_return_val_if_fail(handle != NULL, EOF);
 
-  g_print("curl_vfs_ungetc reached\n");
-
-  handle->charstack = g_slist_prepend(handle->charstack, GINT_TO_POINTER(c));
+  handle->charstack = g_slist_prepend(handle->charstack, GUINT_TO_POINTER(c));
 
   if (handle->charstack != NULL)
     return c;
