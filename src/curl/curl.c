@@ -622,7 +622,10 @@ curl_vfs_ungetc_impl(gint c, VFSFile *stream)
   handle->charstack = g_slist_prepend(handle->charstack, GUINT_TO_POINTER(c));
 
   if (handle->charstack != NULL)
+  {
+    handle->rd_abs--;
     return c;
+  }
 
   /* only reached if there is an error... */
   return EOF;
@@ -718,7 +721,7 @@ gboolean
 curl_vfs_feof_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
-  return handle->rd_abs == handle->length;
+  return (handle->rd_abs == handle->length);
 }
 
 gint

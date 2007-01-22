@@ -1,3 +1,11 @@
+2007-01-22 03:48:38 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1078]
+  - enforce UINT in charstack
+  
+  trunk/src/curl/curl.c |    8 ++------
+  1 file changed, 2 insertions(+), 6 deletions(-)
+
+
 2007-01-22 03:46:43 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1076]
   - fix getc emulation
