@@ -40,6 +40,8 @@ typedef struct _CurlHandle CurlHandle;
 struct _CurlHandle {
   CURL *curl;
 
+  GSList *charstack; // getc/ungetc emulation  --nenolod
+
   gssize length; // the length of the file
   gsize rd_abs; // the absolute position for reading from the stream
   gsize wr_abs; // the absolute position where the input connection is
@@ -65,8 +67,6 @@ struct _CurlHandle {
 
   gchar *name;
   gchar *title;
-
-  GSList *charstack; // getc/ungetc emulation  --nenolod
 };
 
 VFSConstructor curl_const;
@@ -627,7 +627,6 @@ curl_vfs_ungetc_impl(gint c, VFSFile *stream)
 
   if (handle->charstack != NULL)
   {
-    handle->rd_abs--;
     return c;
   }
 
@@ -725,7 +724,7 @@ gboolean
 curl_vfs_feof_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
-  return (handle->rd_abs == handle->length);
+  return ((handle->rd_abs == handle->length) && g_slist_length(handle->charstack) == 0);
 }
 
 gint
