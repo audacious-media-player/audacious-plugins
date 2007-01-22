@@ -18,11 +18,12 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#include "audacious/util.h"
-#include "audacious/configdb.h"
-#include "audacious/vfs.h"
-#include "audacious/titlestring.h"
-#include "audacious/util.h"
+#include <audacious/util.h>
+#include <audacious/configdb.h>
+#include <audacious/vfs.h>
+#include <audacious/titlestring.h>
+#include <audacious/util.h>
+#include <audacious/strings.h>
 #include <tag_c.h>
 
 #define BUFSIZE_X	2048

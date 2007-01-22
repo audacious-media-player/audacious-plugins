@@ -245,6 +245,7 @@ void FLAC_XMMS__init()
 	bmp_cfg_db_close(db);
 
 	decoder_ = FLAC__seekable_stream_decoder_new();
+	file_info_.vfsfile = NULL;
 }
 
 int FLAC_XMMS__is_our_file_from_vfs( gchar * filename , VFSFile * vfsfile )

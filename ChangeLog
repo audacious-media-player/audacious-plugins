@@ -1,3 +1,10 @@
+2007-01-22 18:32:03 +0000  Giacomo Lozito <james@develia.org>
+  revision [1124]
+  - re-add code that was accidentally removed after merge of getc/ungetc implementation
+  trunk/src/curl/curl.c |   92 +++++++++++++++++++++++++++++++++++++++-----------
+  1 file changed, 73 insertions(+), 19 deletions(-)
+
+
 2007-01-22 17:47:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1122]
   - add some presets i had sitting around

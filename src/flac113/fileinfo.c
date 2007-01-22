@@ -26,7 +26,8 @@
 #include <stdarg.h>
 #include <gtk/gtk.h>
 
-#include "audacious/util.h"
+#include <audacious/util.h>
+#include <audacious/strings.h>
 #include "FLAC/metadata.h"
 #include "charset.h"
 #include "configure.h"

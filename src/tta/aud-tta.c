@@ -44,8 +44,8 @@
 #include <audacious/titlestring.h>
 #include <audacious/vfs.h>
 #include "aud-support.h"
-#include "audacious/output.h"
-#include "audacious/util.h"
+#include <audacious/output.h>
+#include <audacious/strings.h>
 
 #include <id3tag.h>
 

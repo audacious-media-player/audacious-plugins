@@ -25,6 +25,7 @@
 #include <audacious/vfs.h>
 #include <audacious/util.h>
 #include <audacious/main.h>
+#include <audacious/strings.h>
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000

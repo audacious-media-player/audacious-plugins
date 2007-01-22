@@ -28,7 +28,7 @@ InputPlugin *get_iplugin_info(void)
 }
 
 
-static gboolean amidiplug_detect_by_content( VFSFile * fp )
+static gboolean amidiplug_detect_by_content( gchar * filename , VFSFile * fp )
 {
   gchar magic_bytes[4];
   gint res = 0;
@@ -76,7 +76,7 @@ static gint amidiplug_is_our_file( gchar * filename )
   if ( fp == NULL )
     return FALSE;
 
-  result = amidiplug_detect_by_content( fp );
+  result = amidiplug_detect_by_content( filename , fp );
   VFS_FCLOSE( fp );
 
   return result;
@@ -85,7 +85,7 @@ static gint amidiplug_is_our_file( gchar * filename )
 
 static gint amidiplug_is_our_file_from_vfs( gchar *filename , VFSFile *fp )
 {
-  return amidiplug_detect_by_content( fp );
+  return amidiplug_detect_by_content( filename , fp );
 }
 
 

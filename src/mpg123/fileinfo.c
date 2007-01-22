@@ -37,8 +37,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include "audacious/util.h"
-#include "audacious/vfs.h"
+#include <audacious/util.h>
+#include <audacious/vfs.h>
+#include <audacious/strings.h>
 
 #include "mp3.xpm"
 
