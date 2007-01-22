@@ -1,3 +1,16 @@
+2007-01-22 09:00:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1102]
+  - newvfs probing
+  
+  trunk/src/wma/libffwma/avformat.h |    4 ++
+  trunk/src/wma/libffwma/avio.c     |   32 ++++++++++++++++++
+  trunk/src/wma/libffwma/avio.h     |    4 ++
+  trunk/src/wma/libffwma/aviobuf.c  |   18 +++++++++-
+  trunk/src/wma/libffwma/futils.c   |   67 ++++++++++++++++++++++++++++++++++++++
+  trunk/src/wma/wma.c               |   21 +++++++++++
+  6 files changed, 143 insertions(+), 3 deletions(-)
+
+
 2007-01-22 06:18:40 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [1100]
   Fix case in curl where icecast metadata is wrapped around the end of
