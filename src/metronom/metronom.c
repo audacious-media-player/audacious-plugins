@@ -159,7 +159,7 @@ static void metronom_play(char *filename)
 	metronom_t *pmetronom;
 	gint flag,id;
 
-	pmetronom=(metronom_t *)malloc(sizeof(metronom_t));
+	pmetronom=(metronom_t *)g_malloc(sizeof(metronom_t));
 	if(!pmetronom)return;
 
 	count=sscanf(filename, "tact://%d*%d/%d", &pmetronom->bpm,&pmetronom->num,&pmetronom->den);
