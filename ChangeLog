@@ -1,3 +1,11 @@
+2007-01-22 06:14:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1096]
+  - tweak behaviour a little
+  
+  trunk/src/curl/curl.c |    7 +++----
+  1 file changed, 3 insertions(+), 4 deletions(-)
+
+
 2007-01-22 06:03:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1094]
   - fix

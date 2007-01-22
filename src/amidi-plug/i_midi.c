@@ -102,7 +102,7 @@ gint i_midi_file_read_var( midifile_t * mf )
       }
     }
   }
-  return !VFS_FEOF(mf->file_pointer) ? value : -1;
+  return value;
 }
 
 
