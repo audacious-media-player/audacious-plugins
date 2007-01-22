@@ -47,7 +47,6 @@
 #include "configure.h"
 #include "charset.h"
 #include "tag.h"
-#include "http.h"
 
 #ifdef min
 #undef min
@@ -59,7 +58,6 @@ extern void FLAC_XMMS__file_info_box(char *filename);
 typedef struct {
 	FLAC__bool abort_flag;
 	FLAC__bool is_playing;
-	FLAC__bool is_http_source;
 	FLAC__bool eof;
 	FLAC__bool play_thread_open; /* if true, is_playing must also be true */
 	FLAC__uint64 total_samples;
@@ -189,11 +187,6 @@ static gchar* homedir()
 	return result;
 }
 
-static FLAC__bool is_http_source(const char *source)
-{
-	return 0 == strncasecmp(source, "http://", 7);
-}
-
 void FLAC_XMMS__init()
 {
 	ConfigDb *db;
@@ -274,8 +267,8 @@ void FLAC_XMMS__init()
 	if(!bmp_cfg_db_get_string(db, NULL, "proxy_pass", &flac_cfg.stream.proxy_pass))
 		flac_cfg.stream.proxy_pass = NULL;
 
-	decoder_ = FLAC__stream_decoder_new();
 	bmp_cfg_db_close(db);
+	decoder_ = FLAC__stream_decoder_new();
 
 	stream_data_.vfsfile = NULL;
 }
@@ -318,7 +311,6 @@ void FLAC_XMMS__play_file(char *filename)
 	audio_error_ = false;
 	stream_data_.abort_flag = false;
 	stream_data_.is_playing = false;
-	stream_data_.is_http_source = is_http_source(filename);
 	stream_data_.eof = false;
 	stream_data_.play_thread_open = false;
 	stream_data_.has_replaygain = false;
@@ -469,13 +461,9 @@ void FLAC_XMMS__get_song_info(char *filename, char **title, int *length_in_msec)
 	if(!FLAC__metadata_get_streaminfo(filename, &streaminfo)) {
 		/* @@@ how to report the error? */
 		if(title) {
-			if (!is_http_source(filename)) {
-				static const char *errtitle = "Invalid FLAC File: ";
-				*title = g_malloc(strlen(errtitle) + 1 + strlen(filename) + 1 + 1);
-				sprintf(*title, "%s\"%s\"", errtitle, filename);
-			} else {
-				*title = NULL;
-			}
+			static const char *errtitle = "Invalid FLAC File: ";
+			*title = g_malloc(strlen(errtitle) + 1 + strlen(filename) + 1 + 1);
+			sprintf(*title, "%s\"%s\"", errtitle, filename);
 		}
 		if(length_in_msec)
 			*length_in_msec = -1;
