@@ -91,7 +91,14 @@ TitleInput *flac_get_tuple(char *filename)
 	FLAC__StreamMetadata *tags;
 	FLAC__StreamMetadata info;
 	char *title, *artist, *performer, *album, *date, *tracknumber, *genre, *description;
-	gchar *filename_proxy = g_strdup(filename);
+	gchar *filename_proxy;
+
+	/* NOTE vfs is not yet used here, so only try
+	   to pick tags if you can do it with flac library stdio */
+	if ( strncmp(filename,"/",1) )
+		return NULL;
+
+	filename_proxy = g_strdup(filename);
 
 	FLAC_plugin__tags_get(filename_proxy, &tags);
 

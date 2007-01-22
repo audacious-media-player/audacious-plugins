@@ -1,3 +1,12 @@
+2007-01-22 20:32:00 +0000  Giacomo Lozito <james@develia.org>
+  revision [1130]
+  - flac 112 plugin: do not try to pick tuple from file if file is not accessible via stdio (and stop crashing when such attempts are done); TODO: pick tags from flac via vfs
+  trunk/src/flac112/fileinfo.c |    5 +++++
+  trunk/src/flac112/plugin.c   |   43 ++++++++++++++++++++++---------------------
+  trunk/src/flac112/tag.c      |    9 ++++++++-
+  3 files changed, 35 insertions(+), 22 deletions(-)
+
+
 2007-01-22 20:21:31 +0000  Giacomo Lozito <james@develia.org>
   revision [1128]
   - refinements for getc/ungetc in curl

@@ -399,9 +399,6 @@ void FLAC_XMMS__get_song_info(char *filename, char **title, int *length_in_msec)
 {
 	FLAC__StreamMetadata streaminfo;
 
-	if(0 == filename)
-		filename = "";
-
 	/* NOTE vfs is not used here, so only try
 	   to pick tags if you can do it with flac library stdio */
 	if ( strncmp(filename,"/",1) )
