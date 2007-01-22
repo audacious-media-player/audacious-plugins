@@ -1,6 +1,8 @@
 #ifndef AVIO_H
 #define AVIO_H
 
+#include <audacious/vfs.h>
+
 /* output byte stream handling */
 
 typedef int64_t offset_t;
@@ -30,6 +32,7 @@ typedef struct URLPollEntry {
 
 typedef int URLInterruptCB(void);
 
+int url_vopen(URLContext **h, VFSFile *fd);
 int url_open(URLContext **h, const char *filename, int flags);
 int url_read(URLContext *h, unsigned char *buf, int size);
 int url_write(URLContext *h, unsigned char *buf, int size);
@@ -135,6 +138,7 @@ static inline int url_is_streamed(ByteIOContext *s)
     return s->is_streamed;
 }
 
+int url_vfdopen(ByteIOContext *s, VFSFile *f);
 int url_fdopen(ByteIOContext *s, URLContext *h);
 int url_setbufsize(ByteIOContext *s, int buf_size);
 int url_fopen(ByteIOContext *s, const char *filename, int flags);

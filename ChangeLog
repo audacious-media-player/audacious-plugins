@@ -1,3 +1,12 @@
+2007-01-22 06:18:40 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1100]
+  Fix case in curl where icecast metadata is wrapped around the end of
+  the ring buffer.
+  
+  trunk/src/curl/curl.c |   42 ++++++++++++++++++++++++++++++++++--------
+  1 file changed, 34 insertions(+), 8 deletions(-)
+
+
 2007-01-22 06:15:24 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1098]
   - don't depend on feof here, as it's reliability is not guaranteed. 

@@ -526,6 +526,10 @@ int av_open_input_file(AVFormatContext **ic_ptr, const char *filename,
                        AVInputFormat *fmt,
                        int buf_size,
                        AVFormatParameters *ap);
+int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *fn, VFSFile *fd, 
+                       AVInputFormat *fmt,
+                       int buf_size,
+                       AVFormatParameters *ap);
 
 #define AVERROR_UNKNOWN     (-1)  /* unknown error */
 #define AVERROR_IO          (-2)  /* i/o error */

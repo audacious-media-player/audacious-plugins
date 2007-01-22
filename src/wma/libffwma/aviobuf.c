@@ -271,7 +271,6 @@ int url_fdopen(ByteIOContext *s, URLContext *h)
 {
     uint8_t *buffer;
     int buffer_size, max_packet_size;
-
     
     max_packet_size = url_get_max_packet_size(h);
     if (max_packet_size) {
@@ -279,7 +278,7 @@ int url_fdopen(ByteIOContext *s, URLContext *h)
     } else {
         buffer_size = IO_BUFFER_SIZE;
     }
-    buffer = av_malloc(buffer_size);
+    buffer = av_mallocz(buffer_size);
     if (!buffer)
         return -ENOMEM;
 
@@ -326,6 +325,21 @@ int url_fopen(ByteIOContext *s, const char *filename, int flags)
     err = url_fdopen(s, h);
     if (err < 0) {
         url_close(h);
+        return err;
+    }
+    return 0;
+}
+
+int url_vfdopen(ByteIOContext *s, VFSFile *fd)
+{
+    URLContext *h;
+    int err;
+
+    err = url_vopen(&h, fd);
+    if (err < 0)
+        return err;
+    err = url_fdopen(s, h);
+    if (err < 0) {
         return err;
     }
     return 0;

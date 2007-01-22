@@ -34,6 +34,38 @@ int register_protocol(URLProtocol *protocol)
     return 0;
 }
 
+int url_vopen(URLContext **puc, VFSFile *fd)
+{
+    URLContext *uc;
+    URLProtocol *up;
+    const char *p;
+    char proto_str[128], *q;
+    int err;
+
+    up = first_protocol;
+    uc = av_malloc(sizeof(URLContext) + strlen(fd->uri ? fd->uri : ""));
+    if (!uc) {
+        err = -ENOMEM;
+        goto fail;
+    }
+    strcpy(uc->filename, fd->uri ? fd->uri : "");
+    uc->prot = up;
+    uc->flags = URL_RDONLY;
+    uc->is_streamed = 0; /* default = not streamed */
+    uc->max_packet_size = 0; /* default: stream file */
+    uc->priv_data = fd;
+    if (err < 0) {
+        free(uc);
+        *puc = NULL;
+        return err;
+    }
+    *puc = uc;
+    return 0;
+ fail:
+    *puc = NULL;
+    return err;
+}
+
 int url_open(URLContext **puc, const char *filename, int flags)
 {
     URLContext *uc;

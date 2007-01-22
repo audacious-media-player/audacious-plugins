@@ -76,6 +76,7 @@ char description[64];
 static void wma_about(void);
 static void wma_init(void);
 static int wma_is_our_file(char *filename);
+static int wma_is_our_fd(char *filename, VFSFile *fd);
 static void wma_play_file(char *filename);
 static void wma_stop(void);
 static void wma_seek(int time);
@@ -121,7 +122,7 @@ InputPlugin wma_ip =
     wma_get_song_tuple, // Tuple builder
     NULL,
     NULL,
-    NULL,		// vfs
+    wma_is_our_fd,	// vfs
     wma_fmts
 };
 
@@ -216,6 +217,24 @@ static int wma_is_our_file(char *filename)
     }
 	
     av_close_input_file(ic2);
+    return 1;
+}
+
+static int wma_is_our_fd(char *filename, VFSFile *fd)
+{
+    AVCodec *codec2;
+
+    if(av_open_input_vfsfile(&ic2, filename, fd, NULL, 0, NULL) < 0) return 0;
+
+    for(wma_idx2 = 0; wma_idx2 < ic2->nb_streams; wma_idx2++) {
+        c2 = &ic2->streams[wma_idx2]->codec;
+        if(c2->codec_type == CODEC_TYPE_AUDIO) break;
+    }
+
+    av_find_stream_info(ic2);
+
+    codec2 = avcodec_find_decoder(c2->codec_id);
+
     return 1;
 }
 
