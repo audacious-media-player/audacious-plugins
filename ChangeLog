@@ -1,3 +1,12 @@
+2007-01-22 17:20:08 +0000  Giacomo Lozito <james@develia.org>
+  revision [1120]
+  - flac 113 plugin: get rid of old http options in ui
+  trunk/src/flac113/configure.c |  163 +-----------------------------------------
+  trunk/src/flac113/configure.h |   15 ---
+  trunk/src/flac113/plugin.c    |   47 ------------
+  3 files changed, 4 insertions(+), 221 deletions(-)
+
+
 2007-01-22 17:08:16 +0000  Giacomo Lozito <james@develia.org>
   revision [1118]
   - flac 113 plugin: get rid of http.c and http.h stuff in flac 113 as well

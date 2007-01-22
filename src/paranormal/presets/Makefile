@@ -6,6 +6,7 @@ presetsdir = $(pkgdatadir)/paranormal/Presets
 OBJECTIVE_DATA = \
 	nazca_-_smoke_on_the_water.pnv:$(presetsdir)	\
 	nenolod_-_3d_wave.pnv:$(presetsdir)		\
+	nenolod_-_aquamarine_dream.pnv:$(presetsdir)	\
 	nenolod_-_purple_flower.pnv:$(presetsdir)	\
 	nenolod_-_bumblebees.pnv:$(presetsdir)		\
 	nenolod_-_flying_into_pastels.pnv:$(presetsdir)	\
@@ -16,6 +17,7 @@ OBJECTIVE_DATA = \
 	nenolod_-_branchscope.pnv:$(presetsdir)		\
 	nenolod_-_retroscope.pnv:$(presetsdir)		\
 	nenolod_-_technicolour_nightmare.pnv:$(presetsdir) \
+	nenolod_-_trapped.pnv:$(presetsdir)	\
 	nenolod_-_value_replace_fun.pnv:$(presetsdir)	\
 	nenolod_-_rush.pnv:$(presetsdir)		\
 	nenolod_-_worms.pnv:$(presetsdir)		\
@@ -27,6 +29,8 @@ OBJECTIVE_DATA = \
 	nenolod_-_transform_fun.pnv:$(presetsdir)	\
 	nenolod_-_tunnel_vision.pnv:$(presetsdir)	\
 	nenolod_-_kaliedoscope.pnv:$(presetsdir)	\
+	nenolod_-_simple_yet_pretty.pnv:$(presetsdir)	\
+	nenolod_-_quasar.pnv:$(presetsdir)		\
 	aerdan_-_bloody_vortex.pnv:${presetsdir}	\
 	aerdan_-_cloudscape.pnv:${presetsdir}		\
 	aerdan_-_cloudscape2.pnv:${presetsdir}		\
