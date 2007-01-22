@@ -1,3 +1,16 @@
+2007-01-22 05:15:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1090]
+  - remove broken mms code, libmms-based transport in progress
+  
+  trunk/src/wma/libffwma/Makefile |    2 
+  trunk/src/wma/libffwma/mms.c    | 1496 ----------------------------------------
+  trunk/src/wma/libffwma/mms.h    |   65 -
+  trunk/src/wma/libffwma/mmsh.c   | 1274 ----------------------------------
+  trunk/src/wma/libffwma/mmsh.h   |   53 -
+  trunk/src/wma/libffwma/mmsio.h  |   80 --
+  6 files changed, 1 insertion(+), 2969 deletions(-)
+
+
 2007-01-22 05:01:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1088]
   - ssl support (no idea why, but hey, we can!)

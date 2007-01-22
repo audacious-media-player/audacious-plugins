@@ -980,9 +980,12 @@ check="7.9.7"
 dnl check_hex must be UPPERCASE if any hex letters are present
 check_hex="070907"
 
-AC_MSG_CHECKING([for curl >= $check])
-
-PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [	CONTAINER_PLUGINS="$CONTAINER_PLUGINS curl" ], [scrobbler="no"])
+have_curl="no"
+PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
+[
+	CONTAINER_PLUGINS="$CONTAINER_PLUGINS curl"
+	have_curl="yes"
+], [scrobbler="no"])
 
 if test "x$scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
@@ -992,6 +995,21 @@ AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
 
 dnl *** End of Scrobbler checks ***
+
+dnl *** MMS
+
+AC_ARG_ENABLE(mms,
+[  --disable-mms           disable mms support. (default=enabled)],
+[have_mms=$enableval],
+[have_mms=yes])
+
+if test "x$ap_disable_paranormal" = "xyes"; then
+    have_mms=no
+    AC_MSG_RESULT([*** mms plugin disabled by request ***])
+else
+    have_mms=yes
+    PKG_CHECK_MODULES(MMS, [libmms >= 0.3], [CONTAINER_PLUGINS="$CONTAINER_PLUGINS mms" ], [have_mms="no"])
+fi
 
 dnl *** libparanormal checks
 
@@ -1214,6 +1232,12 @@ echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
 echo "  ProjectM (GL milkdrop):                 $have_projectm"
+echo
+echo "  Transport"
+echo "  ---------"
+echo "  stdio transport:                        yes"
+echo "  curl-based http/https:                  $have_curl"
+echo "  libmms-based mms:                       $have_mms"
 echo
 echo "  Container"
 echo "  ---------"
