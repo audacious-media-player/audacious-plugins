@@ -1,3 +1,12 @@
+2007-01-22 04:51:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1086]
+  - URIs are now passed naked instead of mangled by the VFS subsystem.
+  
+  trunk/src/curl/curl.c   |    4 +--
+  trunk/src/stdio/stdio.c |   53 +++++++++++++++++++++++++++++++++++++++++++++++-
+  2 files changed, 54 insertions(+), 3 deletions(-)
+
+
 2007-01-22 04:25:59 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1084]
   - labotomize the ffmpeg I/O code, making it an over-engineered VFS 

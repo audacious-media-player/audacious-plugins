@@ -490,6 +490,9 @@ curl_vfs_fopen_impl(const gchar * path,
 
   curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 10);
 
+  curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
+
   //add header icy-metadata:1 (when we're ready for it)
   {
     struct curl_slist *hdr = NULL;
@@ -758,15 +761,33 @@ VFSConstructor curl_const = {
   curl_vfs_metadata_impl
 };
 
+VFSConstructor curl_https_const = {
+  "https://",
+  curl_vfs_fopen_impl,
+  curl_vfs_fclose_impl,
+  curl_vfs_fread_impl,
+  curl_vfs_fwrite_impl,
+  curl_vfs_getc_impl,
+  curl_vfs_ungetc_impl,
+  curl_vfs_fseek_impl,
+  curl_vfs_rewind_impl,
+  curl_vfs_ftell_impl,
+  curl_vfs_feof_impl,
+  curl_vfs_truncate_impl,
+  curl_vfs_metadata_impl
+};
+
 static void init(void)
 {
   vfs_register_transport(&curl_const);
+  vfs_register_transport(&curl_https_const);
 }
 
 static void cleanup(void)
 {
 #if 0
   vfs_unregister_transport(&curl_const);
+  vfs_unregister_transport(&curl_https_const);
 #endif
 }
 
