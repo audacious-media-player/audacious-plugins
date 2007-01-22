@@ -1,3 +1,12 @@
+2007-01-22 16:27:39 +0000  Giacomo Lozito <james@develia.org>
+  revision [1108]
+  - removed http code from flac 112 plugin; still have to remove http options from gui
+  trunk/src/flac112/Makefile   |    2 
+  trunk/src/flac112/fileinfo.c |    4 
+  trunk/src/flac112/plugin.c   |  259 +++++++------------------------------------
+  3 files changed, 49 insertions(+), 216 deletions(-)
+
+
 2007-01-22 14:19:50 +0000  Giacomo Lozito <james@develia.org>
   revision [1106]
   - written ungetc for curl vfs plugin (works along with getc, fread, ftell, feof, fseek)

@@ -701,12 +701,6 @@ static FLAC__bool file_decoder_eof_callback (const FLAC__SeekableStreamDecoder *
 
 static FLAC__bool file_decoder_init (void *decoder)
 {
-	gint result = 0;
-	FLAC__seekable_stream_decoder_set_read_callback(decoder, file_decoder_read_callback);
-	FLAC__seekable_stream_decoder_set_seek_callback(decoder, file_decoder_seek_callback);
-	FLAC__seekable_stream_decoder_set_tell_callback(decoder, file_decoder_tell_callback);
-	FLAC__seekable_stream_decoder_set_length_callback(decoder, file_decoder_length_callback);
-	FLAC__seekable_stream_decoder_set_eof_callback(decoder, file_decoder_eof_callback);
 	return FLAC__seekable_stream_decoder_init( (FLAC__SeekableStreamDecoder*) decoder) == FLAC__SEEKABLE_STREAM_DECODER_OK;
 }
 
@@ -732,6 +726,11 @@ FLAC__bool safe_decoder_init_(const char *filename, void *decoder)
 	FLAC__seekable_stream_decoder_set_metadata_callback(decoder, metadata_callback_);
 	FLAC__seekable_stream_decoder_set_error_callback(decoder, error_callback_);
 	FLAC__seekable_stream_decoder_set_client_data(decoder, &file_info_);
+	FLAC__seekable_stream_decoder_set_read_callback(decoder, file_decoder_read_callback);
+	FLAC__seekable_stream_decoder_set_seek_callback(decoder, file_decoder_seek_callback);
+	FLAC__seekable_stream_decoder_set_tell_callback(decoder, file_decoder_tell_callback);
+	FLAC__seekable_stream_decoder_set_length_callback(decoder, file_decoder_length_callback);
+	FLAC__seekable_stream_decoder_set_eof_callback(decoder, file_decoder_eof_callback);
 
 	if ( !file_decoder_init(decoder) )
 	{
