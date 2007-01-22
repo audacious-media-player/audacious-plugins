@@ -10,84 +10,85 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: audacious HEAD\n"
-"Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n" "POT-Creation-Date: 2007-01-19 22:53-0600\n"
+"Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
+"POT-Creation-Date: 2007-01-22 10:42-0600\n"
 "PO-Revision-Date: 2007-01-21 04:26+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=EUC-JP\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/CoreAudio/coreaudio.c:49
 msgid "CoreAudio Output Plugin"
-msgstr "CoreAudio ½ĞÎÏ¥×¥é¥°¥¤¥ó"
+msgstr "CoreAudio å‡ºåŠ›ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
 #: src/OSS/configure.c:150
 #, c-format
 msgid "Default (%s)"
-msgstr "¥Ç¥Õ¥©¥ë¥È (%s)"
+msgstr "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ (%s)"
 
 #: src/OSS/configure.c:168
 msgid "Default"
-msgstr "¥Ç¥Õ¥©¥ë¥È"
+msgstr "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ"
 
 #: src/OSS/configure.c:200
 msgid "OSS Driver configuration"
-msgstr "OSS ¥É¥é¥¤¥Ğ¤ÎÀßÄê"
+msgstr "OSS ãƒ‰ãƒ©ã‚¤ãƒã®è¨­å®š"
 
 #: src/OSS/configure.c:216 src/sun/configure.c:182
 msgid "Audio device:"
-msgstr "¥ª¡¼¥Ç¥£¥ª¡¦¥Ç¥Ğ¥¤¥¹:"
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ‡ãƒã‚¤ã‚¹:"
 
 #: src/OSS/configure.c:238 src/OSS/configure.c:279
 msgid "Use alternate device:"
-msgstr "ÂåÂØ¥Ç¥Ğ¥¤¥¹¤ò»ÈÍÑ¤¹¤ë:"
+msgstr "ä»£æ›¿ãƒ‡ãƒã‚¤ã‚¹ã‚’ä½¿ç”¨ã™ã‚‹:"
 
 #: src/OSS/configure.c:259 src/sun/configure.c:219
 msgid "Mixer device:"
-msgstr "¥ß¥­¥µ¡¦¥Ç¥Ğ¥¤¥¹:"
+msgstr "ãƒŸã‚­ã‚µãƒ»ãƒ‡ãƒã‚¤ã‚¹:"
 
 #: src/OSS/configure.c:301 src/sun/configure.c:247
 msgid "Devices"
-msgstr "¥Ç¥Ğ¥¤¥¹"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹"
 
-#: src/OSS/configure.c:303 src/esd/configure.c:171 src/mpg123/configure.c:296
-#: src/sun/configure.c:258 src/vorbis/configure.c:198
+#: src/OSS/configure.c:303 src/esd/configure.c:171 src/mpg123/configure.c:269
+#: src/sun/configure.c:258 src/vorbis/configure.c:173
 msgid "Buffering:"
-msgstr "¥Ğ¥Ã¥Õ¥¡¥ê¥ó¥°:"
+msgstr "ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°:"
 
 #: src/OSS/configure.c:316 src/esd/configure.c:184 src/sun/configure.c:271
 msgid "Buffer size (ms):"
-msgstr "¥Ğ¥Ã¥Õ¥¡¤Î¥µ¥¤¥º (¥ß¥êÉÃ):"
+msgstr "ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º (ãƒŸãƒªç§’):"
 
-#: src/OSS/configure.c:330 src/esd/configure.c:198 src/mpg123/configure.c:324
-#: src/sun/configure.c:289 src/vorbis/configure.c:224
+#: src/OSS/configure.c:330 src/esd/configure.c:198 src/mpg123/configure.c:297
+#: src/sun/configure.c:289 src/vorbis/configure.c:199
 msgid "Pre-buffer (percent):"
-msgstr "»öÁ°¤Ë¥Ğ¥Ã¥Õ¥¡¥ê¥ó¥°¤¹¤ë³ä¹ç (¡ó):"
+msgstr "äº‹å‰ã«ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã™ã‚‹å‰²åˆ (ï¼…):"
 
 #: src/OSS/configure.c:341 src/esd/configure.c:209 src/sun/configure.c:303
 msgid "Buffering"
-msgstr "¥Ğ¥Ã¥Õ¥¡¥ê¥ó¥°"
+msgstr "ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°"
 
 #: src/OSS/configure.c:342
 msgid "Mixer Settings:"
-msgstr "¥ß¥­¥µ¤ÎÀßÄê:"
+msgstr "ãƒŸã‚­ã‚µã®è¨­å®š:"
 
 #: src/OSS/configure.c:348
 msgid "Volume controls Master not PCM"
-msgstr "²»ÎÌ¤ÎÄ´À°¤Ï PCM ¤Ç¤Ï¤Ê¤¯¥Ş¥¹¥¿¤ò»ÈÍÑ¤¹¤ë"
+msgstr "éŸ³é‡ã®èª¿æ•´ã¯ PCM ã§ã¯ãªããƒã‚¹ã‚¿ã‚’ä½¿ç”¨ã™ã‚‹"
 
 #: src/OSS/configure.c:354 src/sun/configure.c:393
 msgid "Mixer"
-msgstr "¥ß¥­¥µ"
+msgstr "ãƒŸã‚­ã‚µ"
 
 #: src/OSS/OSS.c:53
 msgid "OSS Output Plugin"
-msgstr "OSS ½ĞÎÏ¥×¥é¥°¥¤¥ó"
+msgstr "OSS å‡ºåŠ›ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
 #: src/OSS/about.c:39
 msgid "About OSS Driver"
-msgstr "OSS ¥É¥é¥¤¥Ğ¤Ë¤Ä¤¤¤Æ"
+msgstr "OSS ãƒ‰ãƒ©ã‚¤ãƒã«ã¤ã„ã¦"
 
 #: src/OSS/about.c:40
 msgid ""
@@ -108,39 +109,39 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Audacious OSS ¥É¥é¥¤¥Ğ\n"
+"Audacious OSS ãƒ‰ãƒ©ã‚¤ãƒ\n"
 "\n"
-"¤³¤Î¥×¥í¥°¥é¥à¤Ï¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢¤Ç¤¹;\n"
-"¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢ºâÃÄ¤¬Äó¶¡¤¹¤ë GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ\n"
-"¤ÎÂèÆóÈÇ¡¢¤¢¤ë¤¤¤Ï¤½¤ì°Ê¹ß¤ÎÈÇ¤¬Äê¤á¤ë¾ò¹à¤Î²¼¤Ç\n"
-"ËÜ¥×¥í¥°¥é¥à¤òºÆÈÒÉÛ¤Ş¤¿¤ÏÊÑ¹¹¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£\n"
+"ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã§ã™;\n"
+"ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢è²¡å›£ãŒæä¾›ã™ã‚‹ GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸\n"
+"ã®ç¬¬äºŒç‰ˆã€ã‚ã‚‹ã„ã¯ãã‚Œä»¥é™ã®ç‰ˆãŒå®šã‚ã‚‹æ¡é …ã®ä¸‹ã§\n"
+"æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’å†é ’å¸ƒã¾ãŸã¯å¤‰æ›´ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚\n"
 "\n"
-"ËÜ¥×¥í¥°¥é¥à¤ÏÍ­ÍÑ¤È¤Ï»×¤¤¤Ş¤¹¤¬¡¢\n"
-"ÈÒÉÛ¤Ë¤¢¤¿¤Ã¤Æ¤Ï¡¢»Ô¾ìÀ­µÚ¤ÓÆÃÄêÌÜÅª¡¢Å¬¹çÀ­¤Ë¤Ä¤¤¤Æ¤Î\n"
-"°ÅÌÛ¤ÎÊİ¾Ú¤ò´Ş¤á¤Æ¡¢¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤Ê¤¤¤Ş¤»¤ó¡£\n"
-"¾ÜºÙ¤Ë¤Ä¤¤¤Æ¤Ï GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ¤ò¤´Í÷²¼¤µ¤¤¡£\n"
+"æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯æœ‰ç”¨ã¨ã¯æ€ã„ã¾ã™ãŒã€\n"
+"é ’å¸ƒã«ã‚ãŸã£ã¦ã¯ã€å¸‚å ´æ€§åŠã³ç‰¹å®šç›®çš„ã€é©åˆæ€§ã«ã¤ã„ã¦ã®\n"
+"æš—é»™ã®ä¿è¨¼ã‚’å«ã‚ã¦ã€ã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œãªã„ã¾ã›ã‚“ã€‚\n"
+"è©³ç´°ã«ã¤ã„ã¦ã¯ GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸ã‚’ã”è¦§ä¸‹ã•ã„ã€‚\n"
 "\n"
-"¤¢¤Ê¤¿¤Ï¡¢ËÜ¥×¥í¥°¥é¥à¤È°ì½ï¤Ë GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ¤Î\n"
-"¼Ì¤·¤ò¼õ¤±¼è¤Ã¤Æ¤¤¤ë¤Ï¤º¤Ç¤¹¡£¤½¤¦¤Ç¤Ê¤¤¾ì¹ç¤Ï¡¢Free Software\n"
+"ã‚ãªãŸã¯ã€æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨ä¸€ç·’ã« GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸ã®\n"
+"å†™ã—ã‚’å—ã‘å–ã£ã¦ã„ã‚‹ã¯ãšã§ã™ã€‚ãã†ã§ãªã„å ´åˆã¯ã€Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA. ¤Ø¼ê»æ¤ò½ñ¤¤¤Æ²¼¤µ¤¤¡£"
+"USA. ã¸æ‰‹ç´™ã‚’æ›¸ã„ã¦ä¸‹ã•ã„ã€‚"
 
 #: src/OSS/about.c:54 src/adplug/adplug-xmms.cc:155 src/alac/plugin.c:87
 #: src/audiocompress/audacious-glue.c:103 src/console/Audacious_Driver.cxx:459
 #: src/echo_plugin/gui.c:23 src/echo_plugin/gui.c:134 src/esd/about.c:49
-#: src/jack/jack.c:598 src/mpg123/mpg123.c:959 src/mpg123/http.c:222
-#: src/null/null.c:62 src/paranormal/plugin.c:286 src/scrobbler/gtkstuff.c:24
+#: src/jack/jack.c:598 src/mpg123/mpg123.c:1000 src/null/null.c:63
+#: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:24
 #: src/stereo_plugin/stereo.c:59 src/stereo_plugin/stereo.c:122
 #: src/sun/configure.c:558 src/sun/about.c:38
 #: src/timidity/src/xmms-timidity.c:140 src/timidity/src/interface.c:223
-#: src/tonegen/tonegen.c:57 src/vorbis/http.c:218 src/vorbis/fileinfo.c:212
-#: src/vorbis/vorbis.c:829 src/wav/wav-sndfile.c:263
+#: src/tonegen/tonegen.c:57 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:895
+#: src/wav/wav-sndfile.c:263
 msgid "Ok"
 msgstr "OK"
 
 #: src/adplug/adplug-xmms.cc:146
 msgid "About "
-msgstr "¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
 #: src/adplug/adplug-xmms.cc:149
 msgid ""
@@ -157,16 +158,16 @@ msgstr ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
 "\n"
-"¤³¤Î¥×¥é¥°¥¤¥ó¤Ï GNU LGPL ¤Î¾ò¹à¤È¾ò·ï¤Î¤â¤È¤ËÇÛÉÛ¤µ¤ì¤Æ¤¤¤ë¡£\n"
-"¾ÜºÙ¤Ï http://www.gnu.org/licenses/lgpl.html ¤ò¸«¤è¡£\n"
+"ã“ã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã¯ GNU LGPL ã®æ¡é …ã¨æ¡ä»¶ã®ã‚‚ã¨ã«é…å¸ƒã•ã‚Œã¦ã„ã‚‹ã€‚\n"
+"è©³ç´°ã¯ http://www.gnu.org/licenses/lgpl.html ã‚’è¦‹ã‚ˆã€‚\n"
 "\n"
-"¤³¤Î¥×¥é¥°¥¤¥ó¤Ï¡¢copyright (C) Simon Peter ¤ª¤è¤Ó¤½¤ÎÂ¾¤Ë¤è¤ëAdPlug ¥é¥¤¥Ö¥é"
-"¥ê¤òÍÑ¤¤¤Æ¤¤¤ë¡£\n"
-"¥ê¥ó¥¯¤·¤Æ¤¤¤ë AdPlug ¥é¥¤¥Ö¥é¥ê¤Î¥ô¥¡¡¼¥¸¥ç¥ó: "
+"ã“ã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã¯ã€copyright (C) Simon Peter ãŠã‚ˆã³ãã®ä»–ã«ã‚ˆã‚‹AdPlug ãƒ©ã‚¤ãƒ–ãƒ©"
+"ãƒªã‚’ç”¨ã„ã¦ã„ã‚‹ã€‚\n"
+"ãƒªãƒ³ã‚¯ã—ã¦ã„ã‚‹ AdPlug ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒ´ã‚¡ãƒ¼ã‚¸ãƒ§ãƒ³: "
 
 #: src/audiocompress/audacious-glue.c:96
 msgid "AudioCompress "
-msgstr "¥ª¡¼¥Ç¥£¥ª°µ½Ì "
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªåœ§ç¸® "
 
 #: src/audiocompress/audacious-glue.c:97
 msgid ""
@@ -179,26 +180,26 @@ msgid ""
 msgstr ""
 "\n"
 "(c)2003 trikuare studios(http://trikuare.cx)\n"
-"Tony Vroon (chainsaw@gentoo.org) ¤Ë¤è¤ë Audacious ¤Ø¤Î¥İ¡¼¥È\n"
+"Tony Vroon (chainsaw@gentoo.org) ã«ã‚ˆã‚‹ Audacious ã¸ã®ãƒãƒ¼ãƒˆ\n"
 "\n"
-"¥Ü¥ê¥å¡¼¥à¤ò°ìÄê¤Î¥ì¥Ù¥ë¤ËÆ©²áÅª¤Ë¾å¤²²¼¤²¤¹¤ë\n"
-"¥·¥ó¥×¥ë¤Ê¥À¥¤¥Ê¥ß¥Ã¥¯¥ì¥ó¥¸¥³¥ó¥×¥ì¥Ã¥µ"
+"ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’ä¸€å®šã®ãƒ¬ãƒ™ãƒ«ã«é€éçš„ã«ä¸Šã’ä¸‹ã’ã™ã‚‹\n"
+"ã‚·ãƒ³ãƒ—ãƒ«ãªãƒ€ã‚¤ãƒŠãƒŸãƒƒã‚¯ãƒ¬ãƒ³ã‚¸ã‚³ãƒ³ãƒ—ãƒ¬ãƒƒã‚µ"
 
 #: src/audiocompress/audacious-glue.c:102
 msgid "About AudioCompress"
-msgstr "AudioCompress ¤Ë¤Ä¤¤¤Æ"
+msgstr "AudioCompress ã«ã¤ã„ã¦"
 
 #: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
-msgstr "Blur ¥¹¥³¡¼¥×: ¿§¤ÎÁªÂò"
+msgstr "Blur ã‚¹ã‚³ãƒ¼ãƒ—: è‰²ã®é¸æŠ"
 
 #: src/blur_scope/config.c:83
 msgid "Options:"
-msgstr "¥ª¥×¥·¥ç¥ó:"
+msgstr "ã‚ªãƒ—ã‚·ãƒ§ãƒ³:"
 
 #: src/blur_scope/blur_scope.c:57
 msgid "/Toggle Decorations"
-msgstr "/Áõ¾ş¤ÎÀÚ¤êÂØ¤¨"
+msgstr "/è£…é£¾ã®åˆ‡ã‚Šæ›¿ãˆ"
 
 #: src/blur_scope/blur_scope.c:59
 msgid "/-"
@@ -206,17 +207,17 @@ msgstr "/-"
 
 #: src/blur_scope/blur_scope.c:60
 msgid "/Close"
-msgstr "/ÊÄ¤¸¤ë"
+msgstr "/é–‰ã˜ã‚‹"
 
 #: src/blur_scope/blur_scope.c:194
 msgid "Blur scope"
-msgstr "Blur ¥¹¥³¡¼¥×"
+msgstr "Blur ã‚¹ã‚³ãƒ¼ãƒ—"
 
 #: src/cdaudio/configure.c:185 src/cdaudio/configure.c:199
 #: src/cdaudio/configure.c:525
 #, c-format
 msgid "Drive %d"
-msgstr "¥É¥é¥¤¥Ö %d"
+msgstr "ãƒ‰ãƒ©ã‚¤ãƒ– %d"
 
 #: src/cdaudio/configure.c:245
 #, c-format
@@ -225,7 +226,7 @@ msgid ""
 "Error: %s\n"
 "\n"
 msgstr ""
-"¥Ç¥Ğ¥¤¥¹ %s ¤Î¥ª¡¼¥×¥ó¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n"
+"ãƒ‡ãƒã‚¤ã‚¹ %s ã®ã‚ªãƒ¼ãƒ—ãƒ³ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n"
 "[ERROR] %s\n"
 "\n"
 
@@ -235,8 +236,8 @@ msgid ""
 "Maybe no disc in the drive?\n"
 "\n"
 msgstr ""
-"\"ÌÜ¼¡\" ¤ÎÆÉ¤ß¹ş¤ß¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n"
-"¥É¥é¥¤¥Ö¤Ë¥Ç¥£¥¹¥¯¤¬Æş¤Ã¤Æ¤¤¤Ê¤¤¤«¤â¡©\n"
+"\"ç›®æ¬¡\" ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n"
+"ãƒ‰ãƒ©ã‚¤ãƒ–ã«ãƒ‡ã‚£ã‚¹ã‚¯ãŒå…¥ã£ã¦ã„ãªã„ã‹ã‚‚ï¼Ÿ\n"
 "\n"
 
 #: src/cdaudio/configure.c:256
@@ -245,13 +246,13 @@ msgid ""
 "Device %s OK.\n"
 "Disc has %d tracks"
 msgstr ""
-"¥Ç¥Ğ¥¤¥¹ %s ¤Ï OK ¤Ç¤¹¡£\n"
-"¥Ç¥£¥¹¥¯¤Ë¤Ï %d ¸Ä¤Î¥È¥é¥Ã¥¯¤¬¤¢¤ê¤Ş¤¹¡£"
+"ãƒ‡ãƒã‚¤ã‚¹ %s ã¯ OK ã§ã™ã€‚\n"
+"ãƒ‡ã‚£ã‚¹ã‚¯ã«ã¯ %d å€‹ã®ãƒˆãƒ©ãƒƒã‚¯ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: src/cdaudio/configure.c:265
 #, c-format
 msgid " (%d data tracks)"
-msgstr " (%d ¸Ä¤Î¥Ç¡¼¥¿¡¦¥È¥é¥Ã¥¯)"
+msgstr " (%d å€‹ã®ãƒ‡ãƒ¼ã‚¿ãƒ»ãƒˆãƒ©ãƒƒã‚¯)"
 
 #: src/cdaudio/configure.c:266
 #, c-format
@@ -260,26 +261,26 @@ msgid ""
 "Total length: %d:%d\n"
 msgstr ""
 "\n"
-"±éÁÕ»ş´Ö¤Î¹ç·×: %d:%d\n"
+"æ¼”å¥æ™‚é–“ã®åˆè¨ˆ: %d:%d\n"
 
 #: src/cdaudio/configure.c:271
 msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
 msgstr ""
-"¥Ç¥£¥¹¥¯¤Ë¥ª¡¼¥Ç¥£¥ª¡¦¥È¥é¥Ã¥¯¤¬Ìµ¤¤¤Î¤Ç¡¢¥Ç¥£¥¸¥¿¥ë¡¦¥ª¡¼¥Ç¥£¥ªÃê½Ğ¤Î¥Æ¥¹¥È"
-"¤Ï¹Ô¤¤¤Ş¤»¤ó¡£\n"
+"ãƒ‡ã‚£ã‚¹ã‚¯ã«ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒˆãƒ©ãƒƒã‚¯ãŒç„¡ã„ã®ã§ã€ãƒ‡ã‚£ã‚¸ã‚¿ãƒ«ãƒ»ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªæŠ½å‡ºã®ãƒ†ã‚¹ãƒˆ"
+"ã¯è¡Œã„ã¾ã›ã‚“ã€‚\n"
 
 #: src/cdaudio/configure.c:288
 msgid ""
 "Digital audio extraction test: OK\n"
 "\n"
-msgstr "¥Ç¥£¥¸¥¿¥ë¡¦¥ª¡¼¥Ç¥£¥ªÃê½Ğ¤Î¥Æ¥¹¥È: OK\n"
+msgstr "ãƒ‡ã‚£ã‚¸ã‚¿ãƒ«ãƒ»ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªæŠ½å‡ºã®ãƒ†ã‚¹ãƒˆ: OK\n"
 
 #: src/cdaudio/configure.c:292
 #, c-format
 msgid ""
 "Digital audio extraction test failed: %s\n"
 "\n"
-msgstr "¥Ç¥£¥¸¥¿¥ë¡¦¥ª¡¼¥Ç¥£¥ªÃê½Ğ¤Î¥Æ¥¹¥È: ¼ºÇÔ (%s)\n"
+msgstr "ãƒ‡ã‚£ã‚¸ã‚¿ãƒ«ãƒ»ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªæŠ½å‡ºã®ãƒ†ã‚¹ãƒˆ: å¤±æ•— (%s)\n"
 
 #: src/cdaudio/configure.c:302
 #, c-format
@@ -287,78 +288,78 @@ msgid ""
 "Failed to check directory %s\n"
 "Error: %s"
 msgstr ""
-"¥Ç¥£¥ì¥¯¥È¥ê %s ¤Î¥Á¥§¥Ã¥¯¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n"
+"ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª %s ã®ãƒã‚§ãƒƒã‚¯ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n"
 "[ERROR] %s"
 
 #: src/cdaudio/configure.c:308
 #, c-format
 msgid "Error: %s exist, but is not a directory"
-msgstr "[ERROR] %s ¤ÏÂ¸ºß¤·¤Æ¤¤¤Ş¤¹¤¬¡¢¥Ç¥£¥ì¥¯¥È¥ê¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "[ERROR] %s ã¯å­˜åœ¨ã—ã¦ã„ã¾ã™ãŒã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: src/cdaudio/configure.c:311
 #, c-format
 msgid "Directory %s OK."
-msgstr "¥Ç¥£¥ì¥¯¥È¥ê %s: OK"
+msgstr "ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª %s: OK"
 
 #: src/cdaudio/configure.c:355
 msgid "Device:"
-msgstr "¥Ç¥Ğ¥¤¥¹:"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹:"
 
 #: src/cdaudio/configure.c:363
 msgid "_Device:"
-msgstr "¥Ç¥Ğ¥¤¥¹(_D):"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹(_D):"
 
 #: src/cdaudio/configure.c:373
 msgid "Dir_ectory:"
-msgstr "¥Ç¥£¥ì¥¯¥È¥ê(_E):"
+msgstr "ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª(_E):"
 
 #: src/cdaudio/configure.c:385
 msgid "Play mode:"
-msgstr "±éÁÕ¥â¡¼¥É:"
+msgstr "æ¼”å¥ãƒ¢ãƒ¼ãƒ‰:"
 
 #: src/cdaudio/configure.c:391
 msgid "Analog"
-msgstr "¥¢¥Ê¥í¥°"
+msgstr "ã‚¢ãƒŠãƒ­ã‚°"
 
 #: src/cdaudio/configure.c:399
 msgid "Digital audio extraction"
-msgstr "¥Ç¥£¥¸¥¿¥ë¡¦¥ª¡¼¥Ç¥£¥ªÃê½Ğ"
+msgstr "ãƒ‡ã‚£ã‚¸ã‚¿ãƒ«ãƒ»ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªæŠ½å‡º"
 
 #: src/cdaudio/configure.c:409
 msgid "Volume control:"
-msgstr "²»ÎÌ¥³¥ó¥È¥í¡¼¥ë:"
+msgstr "éŸ³é‡ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«:"
 
 #: src/cdaudio/configure.c:415
 msgid "No mixer"
-msgstr "¥ß¥­¥µ¤Ê¤·"
+msgstr "ãƒŸã‚­ã‚µãªã—"
 
 #: src/cdaudio/configure.c:421
 msgid "CDROM drive"
-msgstr "CD-ROM ¥É¥é¥¤¥Ö"
+msgstr "CD-ROM ãƒ‰ãƒ©ã‚¤ãƒ–"
 
 #: src/cdaudio/configure.c:427
 msgid "OSS mixer"
-msgstr "OSS ¥ß¥­¥µ"
+msgstr "OSS ãƒŸã‚­ã‚µ"
 
 #: src/cdaudio/configure.c:450
 msgid "Check drive..."
-msgstr "¥É¥é¥¤¥Ö¤Î¥Á¥§¥Ã¥¯..."
+msgstr "ãƒ‰ãƒ©ã‚¤ãƒ–ã®ãƒã‚§ãƒƒã‚¯..."
 
 #: src/cdaudio/configure.c:456
 msgid "Remove drive"
-msgstr "¥É¥é¥¤¥Ö¤Îºï½ü"
+msgstr "ãƒ‰ãƒ©ã‚¤ãƒ–ã®å‰Šé™¤"
 
 #: src/cdaudio/configure.c:499
 msgid "CD Audio Player Configuration"
-msgstr "CD ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥ì¥¤¥ä¤ÎÀßÄê"
+msgstr "CD ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ¬ã‚¤ãƒ¤ã®è¨­å®š"
 
 #: src/cdaudio/configure.c:537
 msgid "Add drive"
-msgstr "¥É¥é¥¤¥Ö¤ÎÄÉ²Ã"
+msgstr "ãƒ‰ãƒ©ã‚¤ãƒ–ã®è¿½åŠ "
 
 #: src/cdaudio/configure.c:545
 msgid "Device"
-msgstr "¥Ç¥Ğ¥¤¥¹"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹"
 
 #: src/cdaudio/configure.c:555
 msgid "CDDB:"
@@ -366,53 +367,53 @@ msgstr "CDDB:"
 
 #: src/cdaudio/configure.c:566
 msgid "Use CDDB"
-msgstr "CDDB ¤òÍøÍÑ¤¹¤ë"
+msgstr "CDDB ã‚’åˆ©ç”¨ã™ã‚‹"
 
 #: src/cdaudio/configure.c:570
 msgid "Get server list"
-msgstr "¥µ¡¼¥Ğ¡¦¥ê¥¹¥È¤Î¼èÆÀ"
+msgstr "ã‚µãƒ¼ãƒãƒ»ãƒªã‚¹ãƒˆã®å–å¾—"
 
 #: src/cdaudio/configure.c:573
 msgid "Show network window"
-msgstr "¥Í¥Ã¥È¥ï¡¼¥¯¡¦¥¦¥£¥ó¥É¥¦¤ÎÉ½¼¨"
+msgstr "ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ»ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º"
 
 #: src/cdaudio/configure.c:583
 msgid "CDDB server:"
-msgstr "CDDB ¥µ¡¼¥Ğ:"
+msgstr "CDDB ã‚µãƒ¼ãƒ:"
 
 #: src/cdaudio/configure.c:598
 msgid "Track names:"
-msgstr "¥È¥é¥Ã¥¯Ì¾:"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯å:"
 
-#: src/cdaudio/configure.c:605 src/mpg123/configure.c:414
-#: src/vorbis/configure.c:292
+#: src/cdaudio/configure.c:605 src/mpg123/configure.c:382
+#: src/vorbis/configure.c:261
 msgid "Override generic titles"
-msgstr "¥ª¥ê¥¸¥Ê¥ë¤Î¥¿¥¤¥È¥ë¤ò¾å½ñ¤­¤¹¤ë"
+msgstr "ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’ä¸Šæ›¸ãã™ã‚‹"
 
 #: src/cdaudio/configure.c:621
 msgid "Name format:"
-msgstr "Ì¾Á°¤Î½ñ¼°:"
+msgstr "åå‰ã®æ›¸å¼:"
 
 #: src/cdaudio/configure.c:633
 msgid "CD Info"
-msgstr "CD ¤Î¾ğÊó"
+msgstr "CD ã®æƒ…å ±"
 
 #: src/cdaudio/cdaudio.c:186
 msgid "CD Audio Plugin"
-msgstr "CD ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó"
+msgstr "CD ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
-#: src/cdaudio/cdaudio.c:1054 src/cdaudio/cdaudio.c:1059
+#: src/cdaudio/cdaudio.c:1055 src/cdaudio/cdaudio.c:1060
 #, c-format
 msgid "CD Audio Track %02u"
-msgstr "CD ¥ª¡¼¥Ç¥£¥ª¡¦¥È¥é¥Ã¥¯ %02u"
+msgstr "CD ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒˆãƒ©ãƒƒã‚¯ %02u"
 
-#: src/cdaudio/cdinfo.c:156 src/cdaudio/cdinfo.c:157 src/cdaudio/cdinfo.c:158
+#: src/cdaudio/cdinfo.c:161 src/cdaudio/cdinfo.c:162 src/cdaudio/cdinfo.c:163
 msgid "(unknown)"
-msgstr "(ÉÔÌÀ)"
+msgstr "(ä¸æ˜)"
 
 #: src/console/Audacious_Driver.cxx:454
 msgid "About the Console Music Decoder"
-msgstr "¥³¥ó¥½¡¼¥ë¥ß¥å¡¼¥¸¥Ã¥¯¥Ç¥³¡¼¥À¤Ë¤Ä¤¤¤Æ"
+msgstr "ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ãƒŸãƒ¥ãƒ¼ã‚¸ãƒƒã‚¯ãƒ‡ã‚³ãƒ¼ãƒ€ã«ã¤ã„ã¦"
 
 #: src/console/Audacious_Driver.cxx:455
 msgid ""
@@ -421,56 +422,57 @@ msgid ""
 "Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 msgstr ""
-"Game_Music_Emu 0.5.2 ¤ò¥Ù¡¼¥¹¤Ë¤·¤¿¥³¥ó¥½¡¼¥ë¥ß¥å¡¼¥¸¥Ã¥¯¥Ç¥³¡¼¥À¥¨¥ó¥¸¥ó¤Ç"
-"¤¹¡£\n"
-"¥µ¥İ¡¼¥È¤¹¤ë¥Õ¥©¡¼¥Ş¥Ã¥È: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Audacious ¤Î¼ÂÁõ¤Ï William Pitcock <nenolod@nenolod.net> ¤È\n"
-"Shay Green <hotpop.com@blargg> ¤Ë¤è¤ê¤Ş¤¹¡£"
+"Game_Music_Emu 0.5.2 ã‚’ãƒ™ãƒ¼ã‚¹ã«ã—ãŸã‚³ãƒ³ã‚½ãƒ¼ãƒ«ãƒŸãƒ¥ãƒ¼ã‚¸ãƒƒã‚¯ãƒ‡ã‚³ãƒ¼ãƒ€ã‚¨ãƒ³ã‚¸ãƒ³ã§"
+"ã™ã€‚\n"
+"ã‚µãƒãƒ¼ãƒˆã™ã‚‹ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
+"VGZ\n"
+"Audacious ã®å®Ÿè£…ã¯ William Pitcock <nenolod@nenolod.net> ã¨\n"
+"Shay Green <hotpop.com@blargg> ã«ã‚ˆã‚Šã¾ã™ã€‚"
 
 #: src/console/Audacious_Driver.cxx:504
 msgid "Game console audio module decoder"
-msgstr "¥²¡¼¥à¥³¥ó¥½¡¼¥ë¥ª¡¼¥Ç¥£¥ª¥â¥¸¥å¡¼¥ë¥Ç¥³¡¼¥À"
+msgstr "ã‚²ãƒ¼ãƒ ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ‡ã‚³ãƒ¼ãƒ€"
 
 #: src/console/Audacious_Config.cxx:123
 msgid "Console Music Decoder"
-msgstr "¥³¥ó¥½¡¼¥ë¥ß¥å¡¼¥¸¥Ã¥¯¥Ç¥³¡¼¥À"
+msgstr "ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ãƒŸãƒ¥ãƒ¼ã‚¸ãƒƒã‚¯ãƒ‡ã‚³ãƒ¼ãƒ€"
 
 #: src/console/Audacious_Config.cxx:143
 msgid "General"
-msgstr "°ìÈÌ"
+msgstr "ä¸€èˆ¬"
 
 #: src/console/Audacious_Config.cxx:145
 msgid "Playback"
-msgstr "±éÁÕ"
+msgstr "æ¼”å¥"
 
 #: src/console/Audacious_Config.cxx:160
 msgid "Bass:"
-msgstr "¥Ù¡¼¥¹:"
+msgstr "ãƒ™ãƒ¼ã‚¹:"
 
 #: src/console/Audacious_Config.cxx:164 src/console/Audacious_Config.cxx:175
 #: src/console/Audacious_Config.cxx:196
 msgid "secs"
-msgstr "ÉÃ"
+msgstr "ç§’"
 
 #: src/console/Audacious_Config.cxx:171
 msgid "Treble:"
-msgstr "¥È¥ê¥Ğ¥ë:"
+msgstr "ãƒˆãƒªãƒãƒ«:"
 
 #: src/console/Audacious_Config.cxx:192
 msgid "Default song length:"
-msgstr "¥Ç¥Õ¥©¥ë¥È¤Î¶Ê¤ÎÄ¹¤µ:"
+msgstr "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ›²ã®é•·ã•:"
 
 #: src/console/Audacious_Config.cxx:198
 msgid "Resampling"
-msgstr "¥ê¥µ¥ó¥×¥ê¥ó¥°"
+msgstr "ãƒªã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°"
 
 #: src/console/Audacious_Config.cxx:204
 msgid "Enable audio resampling"
-msgstr "¥ª¡¼¥Ç¥£¥ª¡¦¥ê¥µ¥ó¥×¥ê¥ó¥°¤òÍ­¸ú¤Ë¤¹¤ë"
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒªã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã‚’æœ‰åŠ¹ã«ã™ã‚‹"
 
 #: src/console/Audacious_Config.cxx:219
 msgid "Resampling rate:"
-msgstr "¥ê¥µ¥ó¥×¥ê¥ó¥°¡¦¥ì¡¼¥È:"
+msgstr "ãƒªã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ»ãƒ¬ãƒ¼ãƒˆ:"
 
 #: src/console/Audacious_Config.cxx:223
 msgid "Hz"
@@ -482,7 +484,7 @@ msgstr "NSF/NSFE"
 
 #: src/console/Audacious_Config.cxx:234
 msgid "Use optional NSFE playlist"
-msgstr "¥ª¥×¥·¥ç¥ó¤Î NSFE ±éÁÕ°ìÍ÷¤ò»È¤¦"
+msgstr "ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã® NSFE æ¼”å¥ä¸€è¦§ã‚’ä½¿ã†"
 
 #: src/console/Audacious_Config.cxx:245
 msgid "SPC"
@@ -490,7 +492,7 @@ msgstr "SPC"
 
 #: src/console/Audacious_Config.cxx:246
 msgid "Ignore length from SPC tags"
-msgstr "SPC ¥¿¥°¤«¤é¤ÎÄ¹¤µ¤òÌµ»ë¤¹¤ë"
+msgstr "SPC ã‚¿ã‚°ã‹ã‚‰ã®é•·ã•ã‚’ç„¡è¦–ã™ã‚‹"
 
 #: src/console/Audacious_Config.cxx:266
 msgid ""
@@ -498,64 +500,47 @@ msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
-"* ¥Ç¥Õ¥©¥ë¥È¤Î¶Ê¤ÎÄ¹¤µ *\n"
-"ÉÃ¿ô¤ÇÉ½¸½¤µ¤ì¤ë¥Ç¥Õ¥©¥ë¥È¤Î¶Ê¤ÎÄ¹¤µ¤Ï¡¢Ä¹¤µ¾ğÊó¤òÄó¶¡¤·¤Ê¤¤¶Ê "
-"(Îã¤¨¤Ğ¥ë¡¼¥×¤¹¤ë¥È¥é¥Ã¥¯) ¤ËÍÑ¤¤¤é¤ì¤Ş¤¹¡£"
+"* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ›²ã®é•·ã• *\n"
+"ç§’æ•°ã§è¡¨ç¾ã•ã‚Œã‚‹ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ›²ã®é•·ã•ã¯ã€é•·ã•æƒ…å ±ã‚’æä¾›ã—ãªã„æ›² (ä¾‹ãˆã°ãƒ«ãƒ¼ãƒ—"
+"ã™ã‚‹ãƒˆãƒ©ãƒƒã‚¯) ã«ç”¨ã„ã‚‰ã‚Œã¾ã™ã€‚"
 
 #: src/disk_writer/disk_writer.c:111
 #, c-format
 msgid "Disk Writer Plugin %s"
-msgstr "¥Ç¥£¥¹¥¯¡¦¥é¥¤¥¿¡¼¡¦¥×¥é¥°¥¤¥ó %s"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ãƒ»ãƒ©ã‚¤ã‚¿ãƒ¼ãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ %s"
 
-#: src/disk_writer/disk_writer.c:138 src/mpg123/http.c:222
-#: src/vorbis/http.c:218
+#: src/disk_writer/disk_writer.c:140
 msgid "Error"
-msgstr "¥¨¥é¡¼"
+msgstr "ã‚¨ãƒ©ãƒ¼"
 
-#: src/disk_writer/disk_writer.c:139
+#: src/disk_writer/disk_writer.c:141
 msgid ""
 "You cannot use the Disk Writer plugin\n"
 "when you're running in realtime mode."
 msgstr ""
-"¥ê¥¢¥ë¥¿¥¤¥à¡¦¥â¡¼¥É¤Ç¼Â¹Ô¤·¤Æ¤¤¤ë¤È¤­\n"
-"¥Ç¥£¥¹¥¯¡¦¥é¥¤¥¿¡¼¡¦¥×¥é¥°¥¤¥ó¤ÏÍøÍÑ¤Ç¤­¤Ş¤»¤ó¡£"
+"ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ãƒ»ãƒ¢ãƒ¼ãƒ‰ã§å®Ÿè¡Œã—ã¦ã„ã‚‹ã¨ã\n"
+"ãƒ‡ã‚£ã‚¹ã‚¯ãƒ»ãƒ©ã‚¤ã‚¿ãƒ¼ãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã¯åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚"
 
-#: src/disk_writer/disk_writer.c:141 src/disk_writer/disk_writer.c:406
+#: src/disk_writer/disk_writer.c:143
 msgid "OK"
 msgstr "OK"
 
-#: src/disk_writer/disk_writer.c:316
-msgid "Select the directory where you want to store the output files:"
-msgstr "½ĞÎÏ¥Õ¥¡¥¤¥ë¤ò³ÊÇ¼¤¹¤ë¥Ç¥£¥ì¥¯¥È¥ê¤òÁªÂò¤·¤Æ²¼¤µ¤¤:"
-
-#: src/disk_writer/disk_writer.c:360
+#: src/disk_writer/disk_writer.c:356
 msgid "Disk Writer Configuration"
-msgstr "¥Ç¥£¥¹¥¯¡¦¥é¥¤¥¿¡¼¤ÎÀßÄê"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ãƒ»ãƒ©ã‚¤ã‚¿ãƒ¼ã®è¨­å®š"
 
-#: src/disk_writer/disk_writer.c:371 src/mpg123/configure.c:363
-#: src/vorbis/configure.c:263
-msgid "Path:"
-msgstr "¥Ñ¥¹Ì¾:"
+#: src/disk_writer/disk_writer.c:367
+msgid "Output file folder:"
+msgstr ""
 
-#: src/disk_writer/disk_writer.c:382 src/mpg123/configure.c:373
-#: src/vorbis/configure.c:273
-msgid "Browse"
-msgstr "»²¾È"
-
-#: src/disk_writer/disk_writer.c:389
+#: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
-msgstr "¥Õ¥¡¥¤¥ëÌ¾¤Î³ÈÄ¥»Ò¤ò¼è¤ê½ü¤«¤Ê¤¤"
-
-#: src/disk_writer/disk_writer.c:413 src/echo_plugin/gui.c:142
-#: src/stereo_plugin/stereo.c:131 src/sun/configure.c:566
-#: src/timidity/src/interface.c:231
-msgid "Cancel"
-msgstr "¥­¥ã¥ó¥»¥ë"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«åã®æ‹¡å¼µå­ã‚’å–ã‚Šé™¤ã‹ãªã„"
 
 #: src/echo_plugin/echo.c:44
 #, c-format
 msgid "Echo Plugin %s"
-msgstr "¥¨¥³¡¼¡¦¥×¥é¥°¥¤¥ó %s"
+msgstr "ã‚¨ã‚³ãƒ¼ãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ %s"
 
 #: src/echo_plugin/gui.c:8
 msgid ""
@@ -564,66 +549,71 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
-"¥¨¥³¡¼¡¦¥×¥é¥°¥¤¥ó\n"
-"1999Ç¯ Johan Levin ¤Ë¤è¤ë\n"
+"ã‚¨ã‚³ãƒ¼ãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³\n"
+"1999å¹´ Johan Levin ã«ã‚ˆã‚‹\n"
 "\n"
-"¥µ¥é¥¦¥ó¥É¡¦¥¨¥³¡¼¤Ï 1999 Ç¯ Carl van Schaik ¤Ë¤è¤ë"
+"ã‚µãƒ©ã‚¦ãƒ³ãƒ‰ãƒ»ã‚¨ã‚³ãƒ¼ã¯ 1999 å¹´ Carl van Schaik ã«ã‚ˆã‚‹"
 
 #: src/echo_plugin/gui.c:22
 msgid "About Echo Plugin"
-msgstr "¥¨¥³¡¼¡¦¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "ã‚¨ã‚³ãƒ¼ãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
 #: src/echo_plugin/gui.c:73
 msgid "Configure Echo"
-msgstr "¥¨¥³¡¼ÀßÄê"
+msgstr "ã‚¨ã‚³ãƒ¼è¨­å®š"
 
 #: src/echo_plugin/gui.c:86
 msgid "Delay: (ms)"
-msgstr "ÃÙ±ä: (¥ß¥êÉÃ)"
+msgstr "é…å»¶: (ãƒŸãƒªç§’)"
 
 #: src/echo_plugin/gui.c:91
 msgid "Feedback: (%)"
-msgstr "¥Õ¥£¡¼¥É¥Ğ¥Ã¥¯: (%)"
+msgstr "ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯: (%)"
 
 #: src/echo_plugin/gui.c:96
 msgid "Volume: (%)"
-msgstr "²»ÎÌ: (%)"
+msgstr "éŸ³é‡: (%)"
 
 #: src/echo_plugin/gui.c:119
 msgid "Surround echo"
-msgstr "¥µ¥é¥¦¥ó¥É¡¦¥¨¥³¡¼"
+msgstr "ã‚µãƒ©ã‚¦ãƒ³ãƒ‰ãƒ»ã‚¨ã‚³ãƒ¼"
+
+#: src/echo_plugin/gui.c:142 src/stereo_plugin/stereo.c:131
+#: src/sun/configure.c:566 src/timidity/src/interface.c:231
+msgid "Cancel"
+msgstr "ã‚­ãƒ£ãƒ³ã‚»ãƒ«"
 
 #: src/echo_plugin/gui.c:149 src/stereo_plugin/stereo.c:138
 msgid "Apply"
-msgstr "Å¬ÍÑ"
+msgstr "é©ç”¨"
 
 #: src/esd/configure.c:102
 msgid "ESD Output Plugin configuration"
-msgstr "ESD ½ĞÎÏ¥×¥é¥°¥¤¥ó¤ÎÀßÄê"
+msgstr "ESD å‡ºåŠ›ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®è¨­å®š"
 
 #: src/esd/configure.c:114 src/esd/configure.c:144
 msgid "Host:"
-msgstr "¥Û¥¹¥ÈÌ¾:"
+msgstr "ãƒ›ã‚¹ãƒˆå:"
 
 #: src/esd/configure.c:125
 msgid "Use remote host"
-msgstr "¥ê¥â¡¼¥È¡¦¥Û¥¹¥È¤òÍøÍÑ¤¹¤ë"
+msgstr "ãƒªãƒ¢ãƒ¼ãƒˆãƒ»ãƒ›ã‚¹ãƒˆã‚’åˆ©ç”¨ã™ã‚‹"
 
 #: src/esd/configure.c:132
 msgid "Volume controls OSS mixer"
-msgstr "²»ÎÌ¤ÎÄ´À°¤Ï OSS ¥ß¥­¥µ¤ò»ÈÍÑ¤¹¤ë"
+msgstr "éŸ³é‡ã®èª¿æ•´ã¯ OSS ãƒŸã‚­ã‚µã‚’ä½¿ç”¨ã™ã‚‹"
 
 #: src/esd/configure.c:153
 msgid "Port:"
-msgstr "¥İ¡¼¥ÈÈÖ¹æ:"
+msgstr "ãƒãƒ¼ãƒˆç•ªå·:"
 
 #: src/esd/configure.c:169
 msgid "Server"
-msgstr "¥µ¡¼¥Ğ"
+msgstr "ã‚µãƒ¼ãƒ"
 
 #: src/esd/about.c:34
 msgid "About ESounD Plugin"
-msgstr "ESounD ¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "ESounD ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
 #: src/esd/about.c:35
 msgid ""
@@ -644,30 +634,30 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Audacious ESounD ¥×¥é¥°¥¤¥ó\n"
+"Audacious ESounD ãƒ—ãƒ©ã‚°ã‚¤ãƒ³\n"
 "\n"
-"¤³¤Î¥×¥í¥°¥é¥à¤Ï¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢¤Ç¤¹;\n"
-"¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢ºâÃÄ¤¬Äó¶¡¤¹¤ë GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ\n"
-"¤ÎÂèÆóÈÇ¡¢¤¢¤ë¤¤¤Ï¤½¤ì°Ê¹ß¤ÎÈÇ¤¬Äê¤á¤ë¾ò¹à¤Î²¼¤Ç\n"
-"ËÜ¥×¥í¥°¥é¥à¤òºÆÈÒÉÛ¤Ş¤¿¤ÏÊÑ¹¹¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£\n"
+"ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã§ã™;\n"
+"ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢è²¡å›£ãŒæä¾›ã™ã‚‹ GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸\n"
+"ã®ç¬¬äºŒç‰ˆã€ã‚ã‚‹ã„ã¯ãã‚Œä»¥é™ã®ç‰ˆãŒå®šã‚ã‚‹æ¡é …ã®ä¸‹ã§\n"
+"æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’å†é ’å¸ƒã¾ãŸã¯å¤‰æ›´ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚\n"
 "\n"
-"ËÜ¥×¥í¥°¥é¥à¤ÏÍ­ÍÑ¤È¤Ï»×¤¤¤Ş¤¹¤¬¡¢\n"
-"ÈÒÉÛ¤Ë¤¢¤¿¤Ã¤Æ¤Ï¡¢»Ô¾ìÀ­µÚ¤ÓÆÃÄêÌÜÅª¡¢Å¬¹çÀ­¤Ë¤Ä¤¤¤Æ¤Î\n"
-"°ÅÌÛ¤ÎÊİ¾Ú¤ò´Ş¤á¤Æ¡¢¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤Ê¤¤¤Ş¤»¤ó¡£\n"
-"¾ÜºÙ¤Ë¤Ä¤¤¤Æ¤Ï GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ¤ò¤´Í÷²¼¤µ¤¤¡£\n"
+"æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯æœ‰ç”¨ã¨ã¯æ€ã„ã¾ã™ãŒã€\n"
+"é ’å¸ƒã«ã‚ãŸã£ã¦ã¯ã€å¸‚å ´æ€§åŠã³ç‰¹å®šç›®çš„ã€é©åˆæ€§ã«ã¤ã„ã¦ã®\n"
+"æš—é»™ã®ä¿è¨¼ã‚’å«ã‚ã¦ã€ã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œãªã„ã¾ã›ã‚“ã€‚\n"
+"è©³ç´°ã«ã¤ã„ã¦ã¯ GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸ã‚’ã”è¦§ä¸‹ã•ã„ã€‚\n"
 "\n"
-"¤¢¤Ê¤¿¤Ï¡¢ËÜ¥×¥í¥°¥é¥à¤È°ì½ï¤Ë GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ¤Î\n"
-"¼Ì¤·¤ò¼õ¤±¼è¤Ã¤Æ¤¤¤ë¤Ï¤º¤Ç¤¹¡£¤½¤¦¤Ç¤Ê¤¤¾ì¹ç¤Ï¡¢the Free Software\n"
+"ã‚ãªãŸã¯ã€æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨ä¸€ç·’ã« GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸ã®\n"
+"å†™ã—ã‚’å—ã‘å–ã£ã¦ã„ã‚‹ã¯ãšã§ã™ã€‚ãã†ã§ãªã„å ´åˆã¯ã€the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA.¤Ø¼ê»æ¤ò½ñ¤¤¤Æ²¼¤µ¤¤¡£"
+"USA.ã¸æ‰‹ç´™ã‚’æ›¸ã„ã¦ä¸‹ã•ã„ã€‚"
 
 #: src/esd/esd.c:49
 msgid "eSound Output Plugin"
-msgstr "eSound ½ĞÎÏ¥×¥é¥°¥¤¥ó"
+msgstr "eSound å‡ºåŠ›ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
 #: src/jack/jack.c:594
 msgid "About JACK Output Plugin 0.17"
-msgstr "JACK ½ĞÎÏ¥×¥é¥°¥¤¥ó 0.17 ¤Ë¤Ä¤¤¤Æ"
+msgstr "JACK å‡ºåŠ›ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ 0.17 ã«ã¤ã„ã¦"
 
 #: src/jack/jack.c:595
 msgid ""
@@ -679,22 +669,22 @@ msgid ""
 "Audacious port by\n"
 "Giacomo Lozito from develia.org"
 msgstr ""
-"XMMS jack ¥É¥é¥¤¥Ğ 0.17\n"
+"XMMS jack ãƒ‰ãƒ©ã‚¤ãƒ 0.17\n"
 "\n"
 "xmms-jack.sf.net\n"
 "Chris Morgan<cmorgan@alum.wpi.edu>\n"
 "\n"
-"Audacious ¥İ¡¼¥È¤Ï\n"
-"develia.org ¤«¤é Giacomo Lozito ¤Ë¤è¤ë¡£"
+"Audacious ãƒãƒ¼ãƒˆã¯\n"
+"develia.org ã‹ã‚‰ Giacomo Lozito ã«ã‚ˆã‚‹ã€‚"
 
 #: src/lirc/lirc.c:66
 msgid "LIRC Plugin"
-msgstr "LIRC ¥×¥é¥°¥¤¥ó"
+msgstr "LIRC ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
 #: src/lirc/lirc.c:84
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: LIRC ¥µ¥İ¡¼¥È¤ò½é´ü²½¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿\n"
+msgstr "%s: LIRC ã‚µãƒãƒ¼ãƒˆã‚’åˆæœŸåŒ–ã§ãã¾ã›ã‚“ã§ã—ãŸ\n"
 
 #: src/lirc/lirc.c:92
 #, c-format
@@ -703,27 +693,27 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: LIRC ÀßÄê¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤á¤Ş¤»¤ó¤Ç¤·¤¿\n"
-"%s: Àµ¤·¤¤ÀßÄê¥Õ¥¡¥¤¥ë¤Îºî¤êÊı¤òÃÎ¤ë¤Ë¤Ï\n"
-"%s: LIRC ¤Î¥É¥­¥å¥á¥ó¥È¤òÆÉ¤ó¤Ç¤¯¤À¤µ¤¤\n"
+"%s: LIRC è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸ\n"
+"%s: æ­£ã—ã„è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œã‚Šæ–¹ã‚’çŸ¥ã‚‹ã«ã¯\n"
+"%s: LIRC ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’èª­ã‚“ã§ãã ã•ã„\n"
 
 #: src/lirc/lirc.c:338
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: ÉÔÌÀ¤Ê¥³¥Ş¥ó¥É \"%s\"\n"
+msgstr "%s: ä¸æ˜ãªã‚³ãƒãƒ³ãƒ‰ \"%s\"\n"
 
 #: src/lirc/lirc.c:348
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: LIRC ¤«¤éÀÚÃÇ¤µ¤ì¤Ş¤·¤¿\n"
+msgstr "%s: LIRC ã‹ã‚‰åˆ‡æ–­ã•ã‚Œã¾ã—ãŸ\n"
 
 #: src/lirc/about.c:65
 msgid "About LIRC Audacious Plugin"
-msgstr "LIRC Audacious ¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "LIRC Audacious ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
 #: src/lirc/about.c:92
 msgid "LIRC Plugin "
-msgstr "LIRC ¥×¥é¥°¥¤¥ó"
+msgstr "LIRC ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
 #: src/lirc/about.c:94
 msgid ""
@@ -739,359 +729,359 @@ msgid ""
 "http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 msgstr ""
 "\n"
-"LIRC ¥ê¥â¡¼¥È¥³¥ó¥È¥í¡¼¥ë¥Ç¡¼¥â¥ó¤òÍÑ¤¤¤Æ\n"
-"Audacious ¤ò¥³¥ó¥È¥í¡¼¥ë¤¹¤ë¥·¥ó¥×¥ë¤Ê¥×¥é¥°¥¤¥ó\n"
+"LIRC ãƒªãƒ¢ãƒ¼ãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ãƒ¢ãƒ³ã‚’ç”¨ã„ã¦\n"
+"Audacious ã‚’ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã™ã‚‹ã‚·ãƒ³ãƒ—ãƒ«ãªãƒ—ãƒ©ã‚°ã‚¤ãƒ³\n"
 "\n"
-"Tony Vroon <chainsaw@gentoo.org> ¤Ë¤è¤ë Audacious ¤Ø¤ÎÅ¬ÍÑ\n"
-"¸µ¤È¤Ê¤Ã¤¿ XMMS LIRC ¥×¥é¥°¥¤¥ó¤Ï\n"
+"Tony Vroon <chainsaw@gentoo.org> ã«ã‚ˆã‚‹ Audacious ã¸ã®é©ç”¨\n"
+"å…ƒã¨ãªã£ãŸ XMMS LIRC ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã¯\n"
 "Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de> ¤Ë¤è¤ë¡£\n"
-"LIRC ¤Î¾ğÊó¤Ï°Ê²¼¤ÇÆÀ¤é¤ì¤ë¡£\n"
+"Christoph Bartelmus <xmms@bartelmus.de> ã«ã‚ˆã‚‹ã€‚\n"
+"LIRC ã®æƒ…å ±ã¯ä»¥ä¸‹ã§å¾—ã‚‰ã‚Œã‚‹ã€‚\n"
 "http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 
 #: src/lirc/about.c:116
 msgid "Close"
-msgstr "ÊÄ¤¸¤ë"
+msgstr "é–‰ã˜ã‚‹"
 
 #: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
 msgid "Blues"
-msgstr "¥Ö¥ë¡¼¥¹"
+msgstr "ãƒ–ãƒ«ãƒ¼ã‚¹"
 
 #: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
 msgid "Classic Rock"
-msgstr "¥¯¥é¥·¥Ã¥¯¡¦¥í¥Ã¥¯"
+msgstr "ã‚¯ãƒ©ã‚·ãƒƒã‚¯ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
 msgid "Country"
-msgstr "¥«¥ó¥È¥ê¡¼"
+msgstr "ã‚«ãƒ³ãƒˆãƒªãƒ¼"
 
 #: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
 msgid "Dance"
-msgstr "¥À¥ó¥¹"
+msgstr "ãƒ€ãƒ³ã‚¹"
 
 #: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
 msgid "Disco"
-msgstr "¥Ç¥£¥¹¥³"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚³"
 
 #: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
 msgid "Funk"
-msgstr "¥Õ¥¡¥ó¥­¡¼"
+msgstr "ãƒ•ã‚¡ãƒ³ã‚­ãƒ¼"
 
 #: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
 msgid "Grunge"
-msgstr "¥°¥é¥ó¥¸"
+msgstr "ã‚°ãƒ©ãƒ³ã‚¸"
 
 #: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
 msgid "Hip-Hop"
-msgstr "¥Ò¥Ã¥×¡¦¥Û¥Ã¥×"
+msgstr "ãƒ’ãƒƒãƒ—ãƒ»ãƒ›ãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
 msgid "Jazz"
-msgstr "¥¸¥ã¥º"
+msgstr "ã‚¸ãƒ£ã‚º"
 
 #: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
 msgid "Metal"
-msgstr "¥á¥¿¥ë"
+msgstr "ãƒ¡ã‚¿ãƒ«"
 
 #: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
 msgid "New Age"
-msgstr "¥Ë¥å¡¼¥¨¥¤¥¸"
+msgstr "ãƒ‹ãƒ¥ãƒ¼ã‚¨ã‚¤ã‚¸"
 
 #: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
 msgid "Oldies"
-msgstr "¥ª¡¼¥ë¥Ç¥£¡¼¥º"
+msgstr "ã‚ªãƒ¼ãƒ«ãƒ‡ã‚£ãƒ¼ã‚º"
 
 #: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
 msgid "Other"
-msgstr "¤½¤ÎÂ¾"
+msgstr "ãã®ä»–"
 
 #: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
 msgid "Pop"
-msgstr "¥İ¥Ã¥×"
+msgstr "ãƒãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
 msgid "R&B"
-msgstr "£Ò¡õ£Â"
+msgstr "ï¼²ï¼†ï¼¢"
 
 #: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
 msgid "Rap"
-msgstr "¥é¥Ã¥×"
+msgstr "ãƒ©ãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
 msgid "Reggae"
-msgstr "¥ì¥²¥§"
+msgstr "ãƒ¬ã‚²ã‚§"
 
 #: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
 msgid "Rock"
-msgstr "¥í¥Ã¥¯"
+msgstr "ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
 msgid "Techno"
-msgstr "¥Æ¥¯¥Î"
+msgstr "ãƒ†ã‚¯ãƒ"
 
 #: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
 msgid "Industrial"
-msgstr "¥¤¥ó¥À¥¹¥È¥ê¥¢¥ë"
+msgstr "ã‚¤ãƒ³ãƒ€ã‚¹ãƒˆãƒªã‚¢ãƒ«"
 
 #: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
 msgid "Alternative"
-msgstr "¥ª¥ë¥¿¥Ê¥Æ¥£¥ô"
+msgstr "ã‚ªãƒ«ã‚¿ãƒŠãƒ†ã‚£ãƒ´"
 
 #: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
 msgid "Ska"
-msgstr "¥¹¥«"
+msgstr "ã‚¹ã‚«"
 
 #: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
 msgid "Death Metal"
-msgstr "¥Ç¥¹¥á¥¿¥ë"
+msgstr "ãƒ‡ã‚¹ãƒ¡ã‚¿ãƒ«"
 
 #: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
 msgid "Pranks"
-msgstr "¥×¥é¥ó¥¯"
+msgstr "ãƒ—ãƒ©ãƒ³ã‚¯"
 
 #: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
 msgid "Soundtrack"
-msgstr "¥µ¥¦¥ó¥É¥È¥é¥Ã¥¯"
+msgstr "ã‚µã‚¦ãƒ³ãƒ‰ãƒˆãƒ©ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
 msgid "Euro-Techno"
-msgstr "¥æ¡¼¥í¡¦¥Æ¥¯¥Î"
+msgstr "ãƒ¦ãƒ¼ãƒ­ãƒ»ãƒ†ã‚¯ãƒ"
 
 #: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
 msgid "Ambient"
-msgstr "¥¢¥ó¥Ó¥¨¥ó¥È"
+msgstr "ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆ"
 
 #: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
 msgid "Trip-Hop"
-msgstr "¥È¥ê¥Ã¥×¡¦¥Û¥Ã¥×"
+msgstr "ãƒˆãƒªãƒƒãƒ—ãƒ»ãƒ›ãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
 msgid "Vocal"
-msgstr "¥ô¥©¡¼¥«¥ë"
+msgstr "ãƒ´ã‚©ãƒ¼ã‚«ãƒ«"
 
 #: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
 msgid "Jazz+Funk"
-msgstr "¥¸¥ã¥º+¥Õ¥¡¥ó¥¯"
+msgstr "ã‚¸ãƒ£ã‚º+ãƒ•ã‚¡ãƒ³ã‚¯"
 
 #: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
 msgid "Fusion"
-msgstr "¥Õ¥å¡¼¥¸¥ç¥ó"
+msgstr "ãƒ•ãƒ¥ãƒ¼ã‚¸ãƒ§ãƒ³"
 
 #: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
 msgid "Trance"
-msgstr "¥È¥é¥ó¥¹"
+msgstr "ãƒˆãƒ©ãƒ³ã‚¹"
 
 #: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
 msgid "Classical"
-msgstr "¥¯¥é¥·¥«¥ë"
+msgstr "ã‚¯ãƒ©ã‚·ã‚«ãƒ«"
 
 #: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
 msgid "Instrumental"
-msgstr "¥¤¥ó¥¹¥È¥¥¥ë¥á¥ó¥¿¥ë"
+msgstr "ã‚¤ãƒ³ã‚¹ãƒˆã‚¥ãƒ«ãƒ¡ãƒ³ã‚¿ãƒ«"
 
 #: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
 msgid "Acid"
-msgstr "¥¢¥·¥Ã¥É"
+msgstr "ã‚¢ã‚·ãƒƒãƒ‰"
 
 #: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
 msgid "House"
-msgstr "¥Ï¥¦¥¹"
+msgstr "ãƒã‚¦ã‚¹"
 
 #: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
 msgid "Game"
-msgstr "¥²¡¼¥à"
+msgstr "ã‚²ãƒ¼ãƒ "
 
 #: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
 msgid "Sound Clip"
-msgstr "¥µ¥¦¥ó¥É¡¦¥¯¥ê¥Ã¥×"
+msgstr "ã‚µã‚¦ãƒ³ãƒ‰ãƒ»ã‚¯ãƒªãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
 msgid "Gospel"
-msgstr "¥´¥¹¥Ú¥ë"
+msgstr "ã‚´ã‚¹ãƒšãƒ«"
 
 #: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
 msgid "Noise"
-msgstr "¥Î¥¤¥º"
+msgstr "ãƒã‚¤ã‚º"
 
 #: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
 msgid "AlternRock"
-msgstr "¥ª¥ë¥¿¥Ê¥í¥Ã¥¯"
+msgstr "ã‚ªãƒ«ã‚¿ãƒŠãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
 msgid "Bass"
-msgstr "¥Ù¡¼¥¹"
+msgstr "ãƒ™ãƒ¼ã‚¹"
 
 #: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
 msgid "Soul"
-msgstr "¥½¥¦¥ë"
+msgstr "ã‚½ã‚¦ãƒ«"
 
 #: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
 msgid "Punk"
-msgstr "¥Ñ¥ó¥¯"
+msgstr "ãƒ‘ãƒ³ã‚¯"
 
 #: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
 msgid "Space"
-msgstr "¥¹¥Ú¡¼¥¹"
+msgstr "ã‚¹ãƒšãƒ¼ã‚¹"
 
 #: src/mpg123/mpg123.c:60 src/vorbis/fileinfo.c:94
 msgid "Meditative"
-msgstr "¶µ²ñ²»³Ú"
+msgstr "æ•™ä¼šéŸ³æ¥½"
 
 #: src/mpg123/mpg123.c:60 src/vorbis/fileinfo.c:94
 msgid "Instrumental Pop"
-msgstr "¥¤¥ó¥¹¥È¥¥¥ë¥á¥ó¥¿¥ë¡¦¥İ¥Ã¥×"
+msgstr "ã‚¤ãƒ³ã‚¹ãƒˆã‚¥ãƒ«ãƒ¡ãƒ³ã‚¿ãƒ«ãƒ»ãƒãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:61 src/vorbis/fileinfo.c:95
 msgid "Instrumental Rock"
-msgstr "¥¤¥ó¥¹¥È¥¥¥ë¥á¥ó¥¿¥ë¡¦¥í¥Ã¥¯"
+msgstr "ã‚¤ãƒ³ã‚¹ãƒˆã‚¥ãƒ«ãƒ¡ãƒ³ã‚¿ãƒ«ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:61 src/vorbis/fileinfo.c:95
 msgid "Ethnic"
-msgstr "¥¨¥¹¥Ë¥Ã¥¯"
+msgstr "ã‚¨ã‚¹ãƒ‹ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:61 src/vorbis/fileinfo.c:95
 msgid "Gothic"
-msgstr "¥´¥·¥Ã¥¯"
+msgstr "ã‚´ã‚·ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:62 src/vorbis/fileinfo.c:96
 msgid "Darkwave"
-msgstr "¥À¡¼¥¯¥¦¥§¡¼¥ô"
+msgstr "ãƒ€ãƒ¼ã‚¯ã‚¦ã‚§ãƒ¼ãƒ´"
 
 #: src/mpg123/mpg123.c:62 src/vorbis/fileinfo.c:96
 msgid "Techno-Industrial"
-msgstr "¥Æ¥¯¥Î¡¦¥¤¥ó¥¹¥Ä¥ë¥á¥ó¥È"
+msgstr "ãƒ†ã‚¯ãƒãƒ»ã‚¤ãƒ³ã‚¹ãƒ„ãƒ«ãƒ¡ãƒ³ãƒˆ"
 
 #: src/mpg123/mpg123.c:62 src/vorbis/fileinfo.c:96
 msgid "Electronic"
-msgstr "¥¨¥ì¥¯¥È¥í¥Ë¥Ã¥¯"
+msgstr "ã‚¨ãƒ¬ã‚¯ãƒˆãƒ­ãƒ‹ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:63 src/vorbis/fileinfo.c:97
 msgid "Pop-Folk"
-msgstr "¥İ¥Ã¥×¡¦¥Õ¥©¡¼¥¯"
+msgstr "ãƒãƒƒãƒ—ãƒ»ãƒ•ã‚©ãƒ¼ã‚¯"
 
 #: src/mpg123/mpg123.c:63 src/vorbis/fileinfo.c:97
 msgid "Eurodance"
-msgstr "¥æ¡¼¥í¥À¥ó¥¹"
+msgstr "ãƒ¦ãƒ¼ãƒ­ãƒ€ãƒ³ã‚¹"
 
 #: src/mpg123/mpg123.c:63 src/vorbis/fileinfo.c:97
 msgid "Dream"
-msgstr "¥É¥ê¡¼¥à"
+msgstr "ãƒ‰ãƒªãƒ¼ãƒ "
 
 #: src/mpg123/mpg123.c:64 src/vorbis/fileinfo.c:98
 msgid "Southern Rock"
-msgstr "¥µ¥¶¥ó¡¦¥í¥Ã¥¯"
+msgstr "ã‚µã‚¶ãƒ³ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:64 src/vorbis/fileinfo.c:98
 msgid "Comedy"
-msgstr "¥³¥á¥Ç¥£"
+msgstr "ã‚³ãƒ¡ãƒ‡ã‚£"
 
 #: src/mpg123/mpg123.c:64 src/vorbis/fileinfo.c:98
 msgid "Cult"
-msgstr "¥«¥ë¥È"
+msgstr "ã‚«ãƒ«ãƒˆ"
 
 #: src/mpg123/mpg123.c:65 src/vorbis/fileinfo.c:99
 msgid "Gangsta Rap"
-msgstr "¥®¥ã¥ó¥°¥¹¥¿¡¦¥é¥Ã¥×"
+msgstr "ã‚®ãƒ£ãƒ³ã‚°ã‚¹ã‚¿ãƒ»ãƒ©ãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:65 src/vorbis/fileinfo.c:99
 msgid "Top 40"
-msgstr "¥È¥Ã¥× 40"
+msgstr "ãƒˆãƒƒãƒ— 40"
 
 #: src/mpg123/mpg123.c:65 src/vorbis/fileinfo.c:99
 msgid "Christian Rap"
-msgstr "¥¯¥ê¥¹¥Á¥ã¥ó¡¦¥é¥Ã¥×"
+msgstr "ã‚¯ãƒªã‚¹ãƒãƒ£ãƒ³ãƒ»ãƒ©ãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:66 src/vorbis/fileinfo.c:100
 msgid "Pop/Funk"
-msgstr "¥İ¥Ã¥×/¥Õ¥¡¥ó¥­¡¼"
+msgstr "ãƒãƒƒãƒ—/ãƒ•ã‚¡ãƒ³ã‚­ãƒ¼"
 
 #: src/mpg123/mpg123.c:66 src/vorbis/fileinfo.c:100
 msgid "Jungle"
-msgstr "¥¸¥ã¥ó¥°¥ë"
+msgstr "ã‚¸ãƒ£ãƒ³ã‚°ãƒ«"
 
 #: src/mpg123/mpg123.c:66 src/vorbis/fileinfo.c:100
 msgid "Native American"
-msgstr "¥Í¥¤¥Æ¥£¥ô¡¦¥¢¥á¥ê¥«¥ó"
+msgstr "ãƒã‚¤ãƒ†ã‚£ãƒ´ãƒ»ã‚¢ãƒ¡ãƒªã‚«ãƒ³"
 
 #: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
 msgid "Cabaret"
-msgstr "¥­¥ã¥Ğ¥ì¡¼"
+msgstr "ã‚­ãƒ£ãƒãƒ¬ãƒ¼"
 
 #: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
 msgid "New Wave"
-msgstr "¥Ë¥å¡¼¥¦¥§¡¼¥Ö"
+msgstr "ãƒ‹ãƒ¥ãƒ¼ã‚¦ã‚§ãƒ¼ãƒ–"
 
 #: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
 msgid "Psychedelic"
-msgstr "¥µ¥¤¥±¥Ç¥ê¥Ã¥¯"
+msgstr "ã‚µã‚¤ã‚±ãƒ‡ãƒªãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
 msgid "Rave"
-msgstr "¥ì¥¤¥Ö"
+msgstr "ãƒ¬ã‚¤ãƒ–"
 
 #: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
 msgid "Showtunes"
-msgstr "¥·¥ç¡¼¥Á¥å¡¼¥ó"
+msgstr "ã‚·ãƒ§ãƒ¼ãƒãƒ¥ãƒ¼ãƒ³"
 
 #: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
 msgid "Trailer"
-msgstr "¥È¥ì¥¤¥é¡¼"
+msgstr "ãƒˆãƒ¬ã‚¤ãƒ©ãƒ¼"
 
 #: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
 msgid "Lo-Fi"
-msgstr "¥í¡¼¥Õ¥¡¥¤"
+msgstr "ãƒ­ãƒ¼ãƒ•ã‚¡ã‚¤"
 
 #: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
 msgid "Tribal"
-msgstr "¥È¥ê¥Ğ¥ë"
+msgstr "ãƒˆãƒªãƒãƒ«"
 
 #: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
 msgid "Acid Punk"
-msgstr "¥¢¥·¥Ã¥É¡¦¥Ñ¥ó¥¯"
+msgstr "ã‚¢ã‚·ãƒƒãƒ‰ãƒ»ãƒ‘ãƒ³ã‚¯"
 
 #: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
 msgid "Acid Jazz"
-msgstr "¥¢¥·¥Ã¥É¡¦¥¸¥ã¥º"
+msgstr "ã‚¢ã‚·ãƒƒãƒ‰ãƒ»ã‚¸ãƒ£ã‚º"
 
 #: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
 msgid "Polka"
-msgstr "¥İ¥ë¥«"
+msgstr "ãƒãƒ«ã‚«"
 
 #: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
 msgid "Retro"
-msgstr "¥ì¥È¥í"
+msgstr "ãƒ¬ãƒˆãƒ­"
 
 #: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
 msgid "Musical"
-msgstr "¥ß¥å¡¼¥¸¥«¥ë"
+msgstr "ãƒŸãƒ¥ãƒ¼ã‚¸ã‚«ãƒ«"
 
 #: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
 msgid "Rock & Roll"
-msgstr "¥í¥Ã¥¯¥ó¥í¡¼¥ë"
+msgstr "ãƒ­ãƒƒã‚¯ãƒ³ãƒ­ãƒ¼ãƒ«"
 
 #: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
 msgid "Hard Rock"
-msgstr "¥Ï¡¼¥É¥í¥Ã¥¯"
+msgstr "ãƒãƒ¼ãƒ‰ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
 msgid "Folk"
-msgstr "¥Õ¥©¡¼¥¯"
+msgstr "ãƒ•ã‚©ãƒ¼ã‚¯"
 
 #: src/mpg123/mpg123.c:71 src/vorbis/fileinfo.c:105
 msgid "Folk/Rock"
-msgstr "¥Õ¥©¡¼¥¯/¥í¥Ã¥¯"
+msgstr "ãƒ•ã‚©ãƒ¼ã‚¯/ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:71 src/vorbis/fileinfo.c:105
 msgid "National Folk"
-msgstr "¥Ê¥·¥ç¥Ê¥ë¡¦¥Õ¥©¡¼¥¯"
+msgstr "ãƒŠã‚·ãƒ§ãƒŠãƒ«ãƒ»ãƒ•ã‚©ãƒ¼ã‚¯"
 
 #: src/mpg123/mpg123.c:71 src/vorbis/fileinfo.c:105
 msgid "Swing"
-msgstr "¥¹¥¦¥£¥ó¥°"
+msgstr "ã‚¹ã‚¦ã‚£ãƒ³ã‚°"
 
 #: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
 msgid "Fast-Fusion"
-msgstr "¥Õ¥¡¥¹¥È¡¦¥Õ¥å¡¼¥¸¥ç¥ó"
+msgstr "ãƒ•ã‚¡ã‚¹ãƒˆãƒ»ãƒ•ãƒ¥ãƒ¼ã‚¸ãƒ§ãƒ³"
 
 #: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
 msgid "Bebob"
@@ -1099,257 +1089,257 @@ msgstr "Bebob"
 
 #: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
 msgid "Latin"
-msgstr "¥é¥Æ¥ó"
+msgstr "ãƒ©ãƒ†ãƒ³"
 
 #: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
 msgid "Revival"
-msgstr "¥ê¥Ğ¥¤¥Ğ¥ë"
+msgstr "ãƒªãƒã‚¤ãƒãƒ«"
 
 #: src/mpg123/mpg123.c:73 src/vorbis/fileinfo.c:107
 msgid "Celtic"
-msgstr "¥»¥ë¥Æ¥£¥Ã¥¯"
+msgstr "ã‚»ãƒ«ãƒ†ã‚£ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:73 src/vorbis/fileinfo.c:107
 msgid "Bluegrass"
-msgstr "¥Ö¥ë¡¼¥°¥é¥¹"
+msgstr "ãƒ–ãƒ«ãƒ¼ã‚°ãƒ©ã‚¹"
 
 #: src/mpg123/mpg123.c:73 src/vorbis/fileinfo.c:107
 msgid "Avantgarde"
-msgstr "¥¢¥Ğ¥ó¥®¥ã¥ë¥É"
+msgstr "ã‚¢ãƒãƒ³ã‚®ãƒ£ãƒ«ãƒ‰"
 
 #: src/mpg123/mpg123.c:74 src/vorbis/fileinfo.c:108
 msgid "Gothic Rock"
-msgstr "¥´¥·¥Ã¥¯¡¦¥í¥Ã¥¯"
+msgstr "ã‚´ã‚·ãƒƒã‚¯ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:74 src/vorbis/fileinfo.c:108
 msgid "Progressive Rock"
-msgstr "¥×¥í¥°¥ì¥Ã¥·¥ô¡¦¥í¥Ã¥¯"
+msgstr "ãƒ—ãƒ­ã‚°ãƒ¬ãƒƒã‚·ãƒ´ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:75 src/vorbis/fileinfo.c:109
 msgid "Psychedelic Rock"
-msgstr "¥µ¥¤¥±¥Ç¥ê¥Ã¥¯¡¦¥í¥Ã¥¯"
+msgstr "ã‚µã‚¤ã‚±ãƒ‡ãƒªãƒƒã‚¯ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:75 src/vorbis/fileinfo.c:109
 msgid "Symphonic Rock"
-msgstr "¥·¥ó¥Õ¥©¥Ë¥Ã¥¯¡¦¥í¥Ã¥¯"
+msgstr "ã‚·ãƒ³ãƒ•ã‚©ãƒ‹ãƒƒã‚¯ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:75 src/vorbis/fileinfo.c:109
 msgid "Slow Rock"
-msgstr "¥¹¥í¡¼¡¦¥í¥Ã¥¯"
+msgstr "ã‚¹ãƒ­ãƒ¼ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:76 src/vorbis/fileinfo.c:110
 msgid "Big Band"
-msgstr "¥Ó¥Ã¥°¡¦¥Ğ¥ó¥É"
+msgstr "ãƒ“ãƒƒã‚°ãƒ»ãƒãƒ³ãƒ‰"
 
 #: src/mpg123/mpg123.c:76 src/vorbis/fileinfo.c:110
 msgid "Chorus"
-msgstr "¥³¡¼¥é¥¹"
+msgstr "ã‚³ãƒ¼ãƒ©ã‚¹"
 
 #: src/mpg123/mpg123.c:76 src/vorbis/fileinfo.c:110
 msgid "Easy Listening"
-msgstr "¥¤¡¼¥¸¡¼¥ê¥¹¥Ë¥ó¥°"
+msgstr "ã‚¤ãƒ¼ã‚¸ãƒ¼ãƒªã‚¹ãƒ‹ãƒ³ã‚°"
 
 #: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
 msgid "Acoustic"
-msgstr "¥¢¥³¡¼¥¹¥Æ¥£¥Ã¥¯"
+msgstr "ã‚¢ã‚³ãƒ¼ã‚¹ãƒ†ã‚£ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
 msgid "Humour"
-msgstr "¥æ¡¼¥â¥¢"
+msgstr "ãƒ¦ãƒ¼ãƒ¢ã‚¢"
 
 #: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
 msgid "Speech"
-msgstr "¥¹¥Ô¡¼¥Á"
+msgstr "ã‚¹ãƒ”ãƒ¼ãƒ"
 
 #: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
 msgid "Chanson"
-msgstr "¥·¥ã¥ó¥½¥ó"
+msgstr "ã‚·ãƒ£ãƒ³ã‚½ãƒ³"
 
 #: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
 msgid "Opera"
-msgstr "¥ª¥Ú¥é"
+msgstr "ã‚ªãƒšãƒ©"
 
 #: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
 msgid "Chamber Music"
-msgstr "¥Á¥ã¥ó¥Ğ¡¼¡¦¥ß¥å¡¼¥¸¥Ã¥¯"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ¼ãƒ»ãƒŸãƒ¥ãƒ¼ã‚¸ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
 msgid "Sonata"
-msgstr "¥½¥Ê¥¿"
+msgstr "ã‚½ãƒŠã‚¿"
 
 #: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
 msgid "Symphony"
-msgstr "¥·¥ó¥Õ¥©¥Ë¡¼"
+msgstr "ã‚·ãƒ³ãƒ•ã‚©ãƒ‹ãƒ¼"
 
 #: src/mpg123/mpg123.c:79 src/vorbis/fileinfo.c:113
 msgid "Booty Bass"
-msgstr "¥Ö¡¼¥Æ¥£¡¦¥Ù¡¼¥¹"
+msgstr "ãƒ–ãƒ¼ãƒ†ã‚£ãƒ»ãƒ™ãƒ¼ã‚¹"
 
 #: src/mpg123/mpg123.c:79 src/vorbis/fileinfo.c:113
 msgid "Primus"
-msgstr "¥×¥ê¥Ş¥¹"
+msgstr "ãƒ—ãƒªãƒã‚¹"
 
 #: src/mpg123/mpg123.c:79 src/vorbis/fileinfo.c:113
 msgid "Porn Groove"
-msgstr "¥İ¥ë¥Î¡¦¥°¥ë¡¼¥ô"
+msgstr "ãƒãƒ«ãƒãƒ»ã‚°ãƒ«ãƒ¼ãƒ´"
 
 #: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
 msgid "Satire"
-msgstr "¥µ¥Æ¥£¥¢"
+msgstr "ã‚µãƒ†ã‚£ã‚¢"
 
 #: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
 msgid "Slow Jam"
-msgstr "¥¹¥í¡¼¥¸¥ã¥à"
+msgstr "ã‚¹ãƒ­ãƒ¼ã‚¸ãƒ£ãƒ "
 
 #: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
 msgid "Club"
-msgstr "¥¯¥é¥Ö"
+msgstr "ã‚¯ãƒ©ãƒ–"
 
 #: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
 msgid "Tango"
-msgstr "¥¿¥ó¥´"
+msgstr "ã‚¿ãƒ³ã‚´"
 
 #: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
 msgid "Samba"
-msgstr "¥µ¥ó¥Ğ"
+msgstr "ã‚µãƒ³ãƒ"
 
 #: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
 msgid "Folklore"
-msgstr "¥Õ¥©¡¼¥¯¥í¥¢"
+msgstr "ãƒ•ã‚©ãƒ¼ã‚¯ãƒ­ã‚¢"
 
 #: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
 msgid "Ballad"
-msgstr "¥Ğ¥é¡¼¥É"
+msgstr "ãƒãƒ©ãƒ¼ãƒ‰"
 
 #: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
 msgid "Power Ballad"
-msgstr "¥Ñ¥ï¡¼¡¦¥Ğ¥é¡¼¥É"
+msgstr "ãƒ‘ãƒ¯ãƒ¼ãƒ»ãƒãƒ©ãƒ¼ãƒ‰"
 
 #: src/mpg123/mpg123.c:82 src/vorbis/fileinfo.c:116
 msgid "Rhythmic Soul"
-msgstr "¥ê¥º¥ß¥Ã¥¯¡¦¥½¥¦¥ë"
+msgstr "ãƒªã‚ºãƒŸãƒƒã‚¯ãƒ»ã‚½ã‚¦ãƒ«"
 
 #: src/mpg123/mpg123.c:82 src/vorbis/fileinfo.c:116
 msgid "Freestyle"
-msgstr "¥Õ¥ê¡¼¥¹¥¿¥¤¥ë"
+msgstr "ãƒ•ãƒªãƒ¼ã‚¹ã‚¿ã‚¤ãƒ«"
 
 #: src/mpg123/mpg123.c:82 src/vorbis/fileinfo.c:116
 msgid "Duet"
-msgstr "¥Ç¥å¥¨¥Ã¥È"
+msgstr "ãƒ‡ãƒ¥ã‚¨ãƒƒãƒˆ"
 
 #: src/mpg123/mpg123.c:83 src/vorbis/fileinfo.c:117
 msgid "Punk Rock"
-msgstr "¥Ñ¥ó¥¯¡¦¥í¥Ã¥¯"
+msgstr "ãƒ‘ãƒ³ã‚¯ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:83 src/vorbis/fileinfo.c:117
 msgid "Drum Solo"
-msgstr "¥É¥é¥à¥½¥í"
+msgstr "ãƒ‰ãƒ©ãƒ ã‚½ãƒ­"
 
 #: src/mpg123/mpg123.c:83 src/vorbis/fileinfo.c:117
 msgid "A Cappella"
-msgstr "¥¢¡¦¥«¥Ú¥é"
+msgstr "ã‚¢ãƒ»ã‚«ãƒšãƒ©"
 
 #: src/mpg123/mpg123.c:84 src/vorbis/fileinfo.c:118
 msgid "Euro-House"
-msgstr "¥æ¡¼¥í¥Ï¥¦¥¹"
+msgstr "ãƒ¦ãƒ¼ãƒ­ãƒã‚¦ã‚¹"
 
 #: src/mpg123/mpg123.c:84 src/vorbis/fileinfo.c:118
 msgid "Dance Hall"
-msgstr "¥À¥ó¥¹¡¦¥Û¡¼¥ë"
+msgstr "ãƒ€ãƒ³ã‚¹ãƒ»ãƒ›ãƒ¼ãƒ«"
 
 #: src/mpg123/mpg123.c:84 src/vorbis/fileinfo.c:118
 msgid "Goa"
-msgstr "¥´¥¢"
+msgstr "ã‚´ã‚¢"
 
 #: src/mpg123/mpg123.c:85 src/vorbis/fileinfo.c:119
 msgid "Drum & Bass"
-msgstr "¥É¥é¥à¡õ¥Ğ¥¹"
+msgstr "ãƒ‰ãƒ©ãƒ ï¼†ãƒã‚¹"
 
 #: src/mpg123/mpg123.c:85 src/vorbis/fileinfo.c:119
 msgid "Club-House"
-msgstr "¥¯¥é¥Ö¥Ï¥¦¥¹"
+msgstr "ã‚¯ãƒ©ãƒ–ãƒã‚¦ã‚¹"
 
 #: src/mpg123/mpg123.c:85 src/vorbis/fileinfo.c:119
 msgid "Hardcore"
-msgstr "¥Ï¡¼¥É¥³¥¢"
+msgstr "ãƒãƒ¼ãƒ‰ã‚³ã‚¢"
 
 #: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
 msgid "Terror"
-msgstr "¥Æ¥é¡¼"
+msgstr "ãƒ†ãƒ©ãƒ¼"
 
 #: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
 msgid "Indie"
-msgstr "¥¤¥ó¥Ç¥£¡¼¥º"
+msgstr "ã‚¤ãƒ³ãƒ‡ã‚£ãƒ¼ã‚º"
 
 #: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
 msgid "BritPop"
-msgstr "¥Ö¥ê¥Ã¥È¡¦¥İ¥Ã¥×"
+msgstr "ãƒ–ãƒªãƒƒãƒˆãƒ»ãƒãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
 msgid "Negerpunk"
-msgstr "¥Ë¥¬¡¼¥Ñ¥ó¥¯"
+msgstr "ãƒ‹ã‚¬ãƒ¼ãƒ‘ãƒ³ã‚¯"
 
 #: src/mpg123/mpg123.c:87 src/vorbis/fileinfo.c:121
 msgid "Polsk Punk"
-msgstr "¥İ¥ë¥¹¥¯¥Ñ¥ó¥¯"
+msgstr "ãƒãƒ«ã‚¹ã‚¯ãƒ‘ãƒ³ã‚¯"
 
 #: src/mpg123/mpg123.c:87 src/vorbis/fileinfo.c:121
 msgid "Beat"
-msgstr "¥Ó¡¼¥È"
+msgstr "ãƒ“ãƒ¼ãƒˆ"
 
 #: src/mpg123/mpg123.c:87 src/vorbis/fileinfo.c:121
 msgid "Christian Gangsta Rap"
-msgstr "¥¯¥ê¥¹¥Á¥ã¥ó¡¦¥®¥ã¥ó¥°¥¹¥¿¡¦¥é¥Ã¥×"
+msgstr "ã‚¯ãƒªã‚¹ãƒãƒ£ãƒ³ãƒ»ã‚®ãƒ£ãƒ³ã‚°ã‚¹ã‚¿ãƒ»ãƒ©ãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:88 src/vorbis/fileinfo.c:122
 msgid "Heavy Metal"
-msgstr "¥Ø¥ô¥£¡¼¥á¥¿¥ë"
+msgstr "ãƒ˜ãƒ´ã‚£ãƒ¼ãƒ¡ã‚¿ãƒ«"
 
 #: src/mpg123/mpg123.c:88 src/vorbis/fileinfo.c:122
 msgid "Black Metal"
-msgstr "¥Ö¥é¥Ã¥¯¥á¥¿¥ë"
+msgstr "ãƒ–ãƒ©ãƒƒã‚¯ãƒ¡ã‚¿ãƒ«"
 
 #: src/mpg123/mpg123.c:88 src/vorbis/fileinfo.c:122
 msgid "Crossover"
-msgstr "¥¯¥í¥¹¥ª¡¼¥Ğ¡¼"
+msgstr "ã‚¯ãƒ­ã‚¹ã‚ªãƒ¼ãƒãƒ¼"
 
 #: src/mpg123/mpg123.c:89 src/vorbis/fileinfo.c:123
 msgid "Contemporary Christian"
-msgstr "¥³¥ó¥Æ¥ó¥İ¥é¥ê¡¦¥¯¥ê¥¹¥Á¥ã¥ó"
+msgstr "ã‚³ãƒ³ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ»ã‚¯ãƒªã‚¹ãƒãƒ£ãƒ³"
 
 #: src/mpg123/mpg123.c:89 src/vorbis/fileinfo.c:123
 msgid "Christian Rock"
-msgstr "¥¯¥ê¥¹¥Á¥ã¥ó¡¦¥í¥Ã¥¯"
+msgstr "ã‚¯ãƒªã‚¹ãƒãƒ£ãƒ³ãƒ»ãƒ­ãƒƒã‚¯"
 
 #: src/mpg123/mpg123.c:90 src/vorbis/fileinfo.c:124
 msgid "Merengue"
-msgstr "¥á¥ì¥ó¥²"
+msgstr "ãƒ¡ãƒ¬ãƒ³ã‚²"
 
 #: src/mpg123/mpg123.c:90 src/vorbis/fileinfo.c:124
 msgid "Salsa"
-msgstr "¥µ¥ë¥µ"
+msgstr "ã‚µãƒ«ã‚µ"
 
 #: src/mpg123/mpg123.c:90 src/vorbis/fileinfo.c:124
 msgid "Thrash Metal"
-msgstr "¥È¥é¥Ã¥·¥å¥á¥¿¥ë"
+msgstr "ãƒˆãƒ©ãƒƒã‚·ãƒ¥ãƒ¡ã‚¿ãƒ«"
 
 #: src/mpg123/mpg123.c:91 src/vorbis/fileinfo.c:125
 msgid "Anime"
-msgstr "¥¢¥Ë¥á"
+msgstr "ã‚¢ãƒ‹ãƒ¡"
 
 #: src/mpg123/mpg123.c:91 src/vorbis/fileinfo.c:125
 msgid "JPop"
-msgstr "J¥İ¥Ã¥×"
+msgstr "Jãƒãƒƒãƒ—"
 
 #: src/mpg123/mpg123.c:91 src/vorbis/fileinfo.c:125
 msgid "Synthpop"
-msgstr "¥·¥ó¥»¥İ¥Ã¥×"
+msgstr "ã‚·ãƒ³ã‚»ãƒãƒƒãƒ—"
 
-#: src/mpg123/mpg123.c:954
+#: src/mpg123/mpg123.c:995
 msgid "About MPEG Audio Plugin"
-msgstr "MPEG ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "MPEG ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
-#: src/mpg123/mpg123.c:955
+#: src/mpg123/mpg123.c:996
 msgid ""
 "Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, derived "
 "from:\n"
@@ -1357,175 +1347,133 @@ msgid ""
 "Derived partially from mpg123 0.59s.mc3 as well.\n"
 "Based on the original XMMS plugin."
 msgstr ""
-"William Pitcock <nenolod@nenolod.net> ¤Ë¤è¤ë Audacious ¥Ç¥³¡¼¥Ç¥£¥ó¥°¥¨¥ó¥¸"
-"¥ó¡£\n"
-"Michael Hipp <mh@mpg123.de> ¤Ë¤è¤ë mpg123 ¥Ç¥³¡¼¥Ç¥£¥ó¥°¥¨¥ó¥¸¥ó¤«¤éÇÉÀ¸¡£\n"
-"Æ±ÍÍ¤Ë mpg123 0.59s.mc3 ¤«¤éÉôÊ¬Åª¤ËÇÉÀ¸¡£\n"
-"¥ª¥ê¥¸¥Ê¥ë¤Î XMMS ¥×¥é¥°¥¤¥ó¤ò¥Ù¡¼¥¹¤È¤¹¤ë¡£"
+"William Pitcock <nenolod@nenolod.net> ã«ã‚ˆã‚‹ Audacious ãƒ‡ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚¨ãƒ³ã‚¸"
+"ãƒ³ã€‚\n"
+"Michael Hipp <mh@mpg123.de> ã«ã‚ˆã‚‹ mpg123 ãƒ‡ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰æ´¾ç”Ÿã€‚\n"
+"åŒæ§˜ã« mpg123 0.59s.mc3 ã‹ã‚‰éƒ¨åˆ†çš„ã«æ´¾ç”Ÿã€‚\n"
+"ã‚ªãƒªã‚¸ãƒŠãƒ«ã® XMMS ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’ãƒ™ãƒ¼ã‚¹ã¨ã™ã‚‹ã€‚"
 
-#: src/mpg123/mpg123.c:1000
+#: src/mpg123/mpg123.c:1041
 msgid "MPEG Audio Plugin"
-msgstr "MPEG ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó"
+msgstr "MPEG ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
-#: src/mpg123/http.c:387 src/mpg123/http.c:440 src/vorbis/http.c:338
-#: src/vorbis/http.c:390
-#, c-format
-msgid "CONNECTING TO %s:%d"
-msgstr "%s:%d ¤ØÀÜÂ³Ãæ"
-
-#: src/mpg123/http.c:402 src/vorbis/http.c:353
-#, c-format
-msgid "Couldn't connect to host %s:%d"
-msgstr "¥Û¥¹¥È %s:%d ¤ØÀÜÂ³¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
-
-#: src/mpg123/http.c:408 src/mpg123/http.c:425 src/vorbis/http.c:360
-#: src/vorbis/http.c:375
-#, c-format
-msgid "Couldn't look up host %s"
-msgstr "¥Û¥¹¥È %s ¤ò¸«¤Ä¤±¤é¤ì¤Ş¤»¤ó¤Ç¤·¤¿"
-
-#: src/mpg123/http.c:420 src/vorbis/http.c:370
-#, c-format
-msgid "LOOKING UP %s"
-msgstr "%s ¤Î¸¡º÷Ãæ"
-
-#: src/mpg123/http.c:448 src/mpg123/http.c:469 src/vorbis/http.c:398
-#: src/vorbis/http.c:419
-#, c-format
-msgid "Couldn't connect to host %s"
-msgstr "¥Û¥¹¥È %s ¤ØÀÜÂ³¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
-
-#: src/mpg123/http.c:538 src/vorbis/http.c:467
-msgid "CONNECTED: WAITING FOR REPLY"
-msgstr "ÀÜÂ³´°Î»: ±şÅú¤òÂÔ¤Ã¤Æ¤¤¤Ş¤¹"
-
-#: src/mpg123/http.c:575 src/vorbis/http.c:504
-#, c-format
-msgid ""
-"Couldn't connect to host %s\n"
-"Server reported: %s"
-msgstr ""
-"¥Û¥¹¥È %s ¤ØÀÜÂ³¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿¡£\n"
-"¥µ¡¼¥Ğ¤«¤é¤ÎÊó¹ğ: %s"
-
-#: src/mpg123/http.c:704
-#, c-format
-msgid "PRE-BUFFERING: %zuKB/%zuKB"
-msgstr "¥×¥ì¡¦¥Ğ¥Ã¥Õ¥¡¥ê¥ó¥°Ãæ: %zu/%zu K¥Ğ¥¤¥È"
-
-#: src/mpg123/configure.c:116
-msgid "Select the directory where you want to store the MPEG streams:"
-msgstr "MPEG ¥¹¥È¥ê¡¼¥à¤ò³ÊÇ¼¤¹¤ë¥Ç¥£¥ì¥¯¥È¥ê¤òÁªÂò¤·¤Æ²¼¤µ¤¤:"
-
-#: src/mpg123/configure.c:185
+#: src/mpg123/configure.c:158
 msgid "MPEG Audio Plugin Configuration"
-msgstr "MPEG ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó¤ÎÀßÄê"
+msgstr "MPEG ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®è¨­å®š"
 
-#: src/mpg123/configure.c:202
+#: src/mpg123/configure.c:175
 msgid "Resolution:"
-msgstr "²òÁüÅÙ:"
+msgstr "è§£åƒåº¦:"
 
-#: src/mpg123/configure.c:210 src/timidity/src/interface.c:141
+#: src/mpg123/configure.c:183 src/timidity/src/interface.c:141
 msgid "16 bit"
-msgstr "16¥Ó¥Ã¥È"
+msgstr "16ãƒ“ãƒƒãƒˆ"
 
-#: src/mpg123/configure.c:219 src/timidity/src/interface.c:133
+#: src/mpg123/configure.c:192 src/timidity/src/interface.c:133
 msgid "8 bit"
-msgstr " 8¥Ó¥Ã¥È"
+msgstr " 8ãƒ“ãƒƒãƒˆ"
 
-#: src/mpg123/configure.c:226 src/vorbis/fileinfo.c:863
+#: src/mpg123/configure.c:199 src/vorbis/fileinfo.c:863
 #: src/vorbis/fileinfo.c:919
 msgid "Channels:"
-msgstr "¥Á¥ã¥ó¥Í¥ë¿ô:"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ«æ•°:"
+
+#: src/mpg123/configure.c:207
+msgid "Stereo (if available)"
+msgstr "ã‚¹ãƒ†ãƒ¬ã‚ª (å¯èƒ½ãªã‚‰ã°)"
+
+#: src/mpg123/configure.c:218 src/timidity/src/interface.c:166
+msgid "Mono"
+msgstr "ãƒ¢ãƒãƒ©ãƒ«"
+
+#: src/mpg123/configure.c:225
+msgid "Down sample:"
+msgstr "ãƒ€ã‚¦ãƒ³ãƒ»ã‚µãƒ³ãƒ—ãƒ«:"
 
 #: src/mpg123/configure.c:234
-msgid "Stereo (if available)"
-msgstr "¥¹¥Æ¥ì¥ª (²ÄÇ½¤Ê¤é¤Ğ)"
-
-#: src/mpg123/configure.c:245 src/timidity/src/interface.c:166
-msgid "Mono"
-msgstr "¥â¥Î¥é¥ë"
-
-#: src/mpg123/configure.c:252
-msgid "Down sample:"
-msgstr "¥À¥¦¥ó¡¦¥µ¥ó¥×¥ë:"
-
-#: src/mpg123/configure.c:261
 msgid "1:1 (44 kHz)"
 msgstr "1:1 (44 kHz)"
 
-#: src/mpg123/configure.c:272
+#: src/mpg123/configure.c:245
 msgid "1:2 (22 kHz)"
 msgstr "1:2 (22 kHz)"
 
-#: src/mpg123/configure.c:283
+#: src/mpg123/configure.c:256
 msgid "1:4 (11 kHz)"
 msgstr "1:4 (11 kHz)"
 
-#: src/mpg123/configure.c:292
+#: src/mpg123/configure.c:265
 msgid "Decoder"
-msgstr "¥Ç¥³¡¼¥À"
+msgstr "ãƒ‡ã‚³ãƒ¼ãƒ€"
 
-#: src/mpg123/configure.c:309 src/vorbis/configure.c:210
+#: src/mpg123/configure.c:282 src/vorbis/configure.c:185
 msgid "Buffer size (kb):"
-msgstr "¥Ğ¥Ã¥Õ¥¡¤Î¥µ¥¤¥º (K¥Ğ¥¤¥È):"
+msgstr "ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º (Kãƒã‚¤ãƒˆ):"
 
-#: src/mpg123/configure.c:338 src/vorbis/configure.c:238
+#: src/mpg123/configure.c:311 src/vorbis/configure.c:213
 msgid "Save stream to disk:"
-msgstr "¥¹¥È¥ê¡¼¥à¤ÎÊİÂ¸:"
+msgstr "ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ä¿å­˜:"
 
-#: src/mpg123/configure.c:349 src/vorbis/configure.c:249
+#: src/mpg123/configure.c:322 src/vorbis/configure.c:224
 msgid "Save stream to disk"
-msgstr "¥¹¥È¥ê¡¼¥à¤ò¥Ç¥£¥¹¥¯¤ËÊİÂ¸¤¹¤ë"
+msgstr "ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ãƒ‡ã‚£ã‚¹ã‚¯ã«ä¿å­˜ã™ã‚‹"
 
-#: src/mpg123/configure.c:379
+#: src/mpg123/configure.c:336 src/vorbis/configure.c:238
+msgid "Path:"
+msgstr "ãƒ‘ã‚¹å:"
+
+#: src/mpg123/configure.c:341 src/vorbis/configure.c:243
+msgid "Pick a folder"
+msgstr ""
+
+#: src/mpg123/configure.c:347
 msgid "SHOUT/Icecast:"
 msgstr "SHOUT/Icecast:"
 
-#: src/mpg123/configure.c:390
+#: src/mpg123/configure.c:358
 msgid "Enable Icecast Metadata UDP Channel"
-msgstr "Icecast ¥á¥¿¥Ç¡¼¥¿ UDP ¥Á¥ã¥ó¥Í¥ë¤òÍ­¸ú¤Ë¤¹¤ë"
+msgstr "Icecast ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ UDP ãƒãƒ£ãƒ³ãƒãƒ«ã‚’æœ‰åŠ¹ã«ã™ã‚‹"
 
-#: src/mpg123/configure.c:397 src/vorbis/configure.c:280
+#: src/mpg123/configure.c:365 src/vorbis/configure.c:249
 msgid "Streaming"
-msgstr "¥¹¥È¥ê¡¼¥ß¥ó¥°"
+msgstr "ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°"
 
-#: src/mpg123/configure.c:399
+#: src/mpg123/configure.c:367
 msgid "ID3 Tags:"
-msgstr "ID3 ¥¿¥°:"
+msgstr "ID3 ã‚¿ã‚°:"
 
-#: src/mpg123/configure.c:407
+#: src/mpg123/configure.c:375
 msgid "Disable ID3V2 tags"
-msgstr "ID3V2 ¤Î¥¿¥°¤òÌµ¸ú¤Ë¤¹¤ë"
+msgstr "ID3V2 ã®ã‚¿ã‚°ã‚’ç„¡åŠ¹ã«ã™ã‚‹"
 
-#: src/mpg123/configure.c:427
+#: src/mpg123/configure.c:395
 msgid "ID3 format:"
-msgstr "ID3 ¤Î½ñ¼°:"
+msgstr "ID3 ã®æ›¸å¼:"
 
-#: src/mpg123/configure.c:441 src/vorbis/configure.c:319
+#: src/mpg123/configure.c:409 src/vorbis/configure.c:288
 msgid "Title"
-msgstr "¥¿¥¤¥È¥ë"
+msgstr "ã‚¿ã‚¤ãƒˆãƒ«"
 
 #: src/mpg123/fileinfo.c:211 src/timidity/src/interface.c:174
 msgid "Stereo"
-msgstr "¥¹¥Æ¥ì¥ª"
+msgstr "ã‚¹ãƒ†ãƒ¬ã‚ª"
 
 #: src/mpg123/fileinfo.c:211
 msgid "Joint stereo"
-msgstr "¥¸¥ç¥¤¥ó¥È¡¦¥¹¥Æ¥ì¥ª"
+msgstr "ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆãƒ»ã‚¹ãƒ†ãƒ¬ã‚ª"
 
 #: src/mpg123/fileinfo.c:212
 msgid "Dual channel"
-msgstr "¥Ç¥å¥¢¥ë¡¦¥Á¥ã¥ó¥Í¥ë"
+msgstr "ãƒ‡ãƒ¥ã‚¢ãƒ«ãƒ»ãƒãƒ£ãƒ³ãƒãƒ«"
 
 #: src/mpg123/fileinfo.c:212
 msgid "Single channel"
-msgstr "¥·¥ó¥°¥ë¡¦¥Á¥ã¥ó¥Í¥ë"
+msgstr "ã‚·ãƒ³ã‚°ãƒ«ãƒ»ãƒãƒ£ãƒ³ãƒãƒ«"
 
 #: src/mpg123/fileinfo.c:227 src/mpg123/fileinfo.c:769
 #, c-format
 msgid "%d KBit/s"
-msgstr "%d K¥Ó¥Ã¥È/ÉÃ"
+msgstr "%d Kãƒ“ãƒƒãƒˆ/ç§’"
 
 #: src/mpg123/fileinfo.c:228 src/mpg123/fileinfo.c:764
 #, c-format
@@ -1534,7 +1482,7 @@ msgstr "%ld Hz"
 
 #: src/mpg123/fileinfo.c:245
 msgid "None"
-msgstr "¤Ê¤·"
+msgstr "ãªã—"
 
 #: src/mpg123/fileinfo.c:246
 msgid "50/15 ms"
@@ -1546,91 +1494,91 @@ msgstr "CCIT J.17"
 
 #: src/mpg123/fileinfo.c:249
 msgid "No"
-msgstr "¤¤¤¤¤¨"
+msgstr "ã„ã„ãˆ"
 
 #: src/mpg123/fileinfo.c:250
 msgid "Yes"
-msgstr "¤Ï¤¤"
+msgstr "ã¯ã„"
 
 #: src/mpg123/fileinfo.c:294 src/vorbis/fileinfo.c:558
 msgid "Name:"
-msgstr "Ì¾Á°:"
+msgstr "åå‰:"
 
 #: src/mpg123/fileinfo.c:310
 msgid " MPEG Info "
-msgstr " MPEG ¾ğÊó "
+msgstr " MPEG æƒ…å ± "
 
 #: src/mpg123/fileinfo.c:325 src/mpg123/fileinfo.c:647
 msgid "MPEG Level:"
-msgstr "MPEG ¥ì¥Ù¥ë:"
+msgstr "MPEG ãƒ¬ãƒ™ãƒ«:"
 
 #: src/mpg123/fileinfo.c:338 src/mpg123/fileinfo.c:650
 #: src/vorbis/fileinfo.c:837 src/vorbis/fileinfo.c:913
 msgid "Bit rate:"
-msgstr "¥Ó¥Ã¥È¡¦¥ì¡¼¥È:"
+msgstr "ãƒ“ãƒƒãƒˆãƒ»ãƒ¬ãƒ¼ãƒˆ:"
 
 #: src/mpg123/fileinfo.c:351 src/mpg123/fileinfo.c:653
 #: src/vorbis/fileinfo.c:850 src/vorbis/fileinfo.c:916
 msgid "Sample rate:"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¡¦¥ì¡¼¥È:"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ»ãƒ¬ãƒ¼ãƒˆ:"
 
 #: src/mpg123/fileinfo.c:365 src/mpg123/fileinfo.c:668
 #: src/vorbis/fileinfo.c:889 src/vorbis/fileinfo.c:925
 msgid "File size:"
-msgstr "¥Õ¥¡¥¤¥ë¡¦¥µ¥¤¥º:"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ãƒ»ã‚µã‚¤ã‚º:"
 
 #: src/mpg123/fileinfo.c:378 src/mpg123/fileinfo.c:671
 msgid "Mode:"
-msgstr "¥â¡¼¥É:"
+msgstr "ãƒ¢ãƒ¼ãƒ‰:"
 
 #: src/mpg123/fileinfo.c:401 src/mpg123/fileinfo.c:656
 msgid "Error Protection:"
-msgstr "¥¨¥é¡¼Êİ¸î:"
+msgstr "ã‚¨ãƒ©ãƒ¼ä¿è­·:"
 
 #: src/mpg123/fileinfo.c:414 src/mpg123/fileinfo.c:659
 #: src/vorbis/fileinfo.c:719
 msgid "Copyright:"
-msgstr "Ãøºî¸¢:"
+msgstr "è‘—ä½œæ¨©:"
 
 #: src/mpg123/fileinfo.c:427 src/mpg123/fileinfo.c:662
 msgid "Original:"
-msgstr "¥ª¥ê¥¸¥Ê¥ë:"
+msgstr "ã‚ªãƒªã‚¸ãƒŠãƒ«:"
 
 #: src/mpg123/fileinfo.c:440 src/mpg123/fileinfo.c:665
 msgid "Emphasis:"
-msgstr "¶¯Ä´:"
+msgstr "å¼·èª¿:"
 
 #: src/mpg123/fileinfo.c:454
 msgid " ID3 Tag "
-msgstr " ID3 ¥¿¥° "
+msgstr " ID3 ã‚¿ã‚° "
 
 #: src/mpg123/fileinfo.c:462 src/vorbis/fileinfo.c:581
 msgid "Title:"
-msgstr "¥¿¥¤¥È¥ë:"
+msgstr "ã‚¿ã‚¤ãƒˆãƒ«:"
 
 #: src/mpg123/fileinfo.c:473 src/vorbis/fileinfo.c:592
 msgid "Artist:"
-msgstr "¥¢¡¼¥Æ¥£¥¹¥È:"
+msgstr "ã‚¢ãƒ¼ãƒ†ã‚£ã‚¹ãƒˆ:"
 
 #: src/mpg123/fileinfo.c:484 src/vorbis/fileinfo.c:603
 msgid "Album:"
-msgstr "¥¢¥ë¥Ğ¥àÌ¾:"
+msgstr "ã‚¢ãƒ«ãƒãƒ å:"
 
 #: src/mpg123/fileinfo.c:495 src/vorbis/fileinfo.c:614
 msgid "Comment:"
-msgstr "¥³¥á¥ó¥È:"
+msgstr "ã‚³ãƒ¡ãƒ³ãƒˆ:"
 
 #: src/mpg123/fileinfo.c:506
 msgid "Year:"
-msgstr "À©ºîÇ¯:"
+msgstr "åˆ¶ä½œå¹´:"
 
 #: src/mpg123/fileinfo.c:518 src/vorbis/fileinfo.c:637
 msgid "Track number:"
-msgstr "¥È¥é¥Ã¥¯ÈÖ¹æ:"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯ç•ªå·:"
 
 #: src/mpg123/fileinfo.c:530 src/vorbis/fileinfo.c:649
 msgid "Genre:"
-msgstr "¥¸¥ã¥ó¥ë:"
+msgstr "ã‚¸ãƒ£ãƒ³ãƒ«:"
 
 #: src/mpg123/fileinfo.c:630 src/vorbis/fileinfo.c:1015
 #, c-format
@@ -1657,37 +1605,38 @@ msgstr "%s"
 #: src/mpg123/fileinfo.c:821
 #, c-format
 msgid "%lu Bytes"
-msgstr "%lu ¥Ğ¥¤¥È"
-
-#: src/null/null.c:58
-msgid "About Null Output"
-msgstr "¥Ì¥ë½ĞÎÏ¤Ë¤Ä¤¤¤Æ"
+msgstr "%lu ãƒã‚¤ãƒˆ"
 
 #: src/null/null.c:59
-msgid "Null output plugin "
-msgstr "¥Ì¥ë½ĞÎÏ¥×¥é¥°¥¤¥ó"
+msgid "About Null Output"
+msgstr "ãƒŒãƒ«å‡ºåŠ›ã«ã¤ã„ã¦"
 
 #: src/null/null.c:60
+msgid "Null output plugin "
+msgstr "ãƒŒãƒ«å‡ºåŠ›ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
+
+#: src/null/null.c:61
+#, fuzzy
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 " based on the XMMS plugin by HÃ¥vard KvÃ¥l <havardk@xmms.org>"
 msgstr ""
-" Christian Birchinger <joker@netswarm.net> ¤Ë¤è¤ë\n"
-" HÃ¥vard KvÃ¥l <havardk@xmms.org> ¤Ë¤è¤ë XMMS ¥×¥é¥°¥¤¥ó¤¬´ğ¤Ç¤¢¤ë"
+" Christian Birchinger <joker@netswarm.net> ã«ã‚ˆã‚‹\n"
+" Hå¥ªvard Kvå¥ªl <havardk@xmms.org> ã«ã‚ˆã‚‹ XMMS ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãŒåŸºã§ã‚ã‚‹"
 
 #: src/scrobbler/configure.c:112
 msgid "<b>Services</b>"
-msgstr "<b>¥µ¡¼¥Ó¥¹</b>"
+msgstr "<b>ã‚µãƒ¼ãƒ“ã‚¹</b>"
 
 #: src/scrobbler/configure.c:134 src/scrobbler/configure.c:174
 #: src/scrobbler/configure.c:214
 msgid "Username:"
-msgstr "¥æ¡¼¥¶Ì¾:"
+msgstr "ãƒ¦ãƒ¼ã‚¶å:"
 
 #: src/scrobbler/configure.c:140 src/scrobbler/configure.c:180
 #: src/scrobbler/configure.c:220
 msgid "Password:"
-msgstr "¥Ñ¥¹¥ï¡¼¥É:"
+msgstr "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰:"
 
 #: src/scrobbler/configure.c:158
 msgid "<b>Last.FM</b>"
@@ -1703,11 +1652,11 @@ msgstr "<b>Hatena</b>"
 
 #: src/scrobbler/gtkstuff.c:22
 msgid "About Scrobbler Plugin"
-msgstr "Scrobbler ¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "Scrobbler ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
 #: src/scrobbler/plugin.c:575
 msgid "Scrobbler Plugin"
-msgstr "Scrobbler ¥×¥é¥°¥¤¥ó"
+msgstr "Scrobbler ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
 #: src/song_change/song_change.c:55
 #, c-format
@@ -1716,24 +1665,24 @@ msgstr "Song Change %s"
 
 #: src/song_change/song_change.c:179
 msgid "Commands"
-msgstr "¥³¥Ş¥ó¥É"
+msgstr "ã‚³ãƒãƒ³ãƒ‰"
 
 #: src/song_change/song_change.c:186
 msgid "Command to run when Audacious starts a new song."
-msgstr "Audacious ¤¬¿·¤·¤¤¶Ê¤ò³«»Ï¤·¤¿¤È¤­¤Ë¼Â¹Ô¤¹¤ë¥³¥Ş¥ó¥É"
+msgstr "Audacious ãŒæ–°ã—ã„æ›²ã‚’é–‹å§‹ã—ãŸã¨ãã«å®Ÿè¡Œã™ã‚‹ã‚³ãƒãƒ³ãƒ‰"
 
 #: src/song_change/song_change.c:195 src/song_change/song_change.c:217
 #: src/song_change/song_change.c:238
 msgid "Command:"
-msgstr "¥³¥Ş¥ó¥É:"
+msgstr "ã‚³ãƒãƒ³ãƒ‰:"
 
 #: src/song_change/song_change.c:209
 msgid "Command to run toward the end of a song."
-msgstr "¶Ê¤Î½ª¤ï¤ê¤Ç¼Â¹Ô¤¹¤ë¥³¥Ş¥ó¥É"
+msgstr "æ›²ã®çµ‚ã‚ã‚Šã§å®Ÿè¡Œã™ã‚‹ã‚³ãƒãƒ³ãƒ‰"
 
 #: src/song_change/song_change.c:229
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Audacious ¤¬±éÁÕ°ìÍ÷¤ÎºÇ¸å¤ËÅşÃ£¤·¤¿¤È¤­¤Ë¼Â¹Ô¤¹¤ë¥³¥Ş¥ó¥É"
+msgstr "Audacious ãŒæ¼”å¥ä¸€è¦§ã®æœ€å¾Œã«åˆ°é”ã—ãŸã¨ãã«å®Ÿè¡Œã™ã‚‹ã‚³ãƒãƒ³ãƒ‰"
 
 #: src/song_change/song_change.c:250
 #, c-format
@@ -1751,25 +1700,25 @@ msgid ""
 "%%t: Playlist position (%%02d)\n"
 "%%p: Currently playing (1 or 0)"
 msgstr ""
-"¥³¥Ş¥ó¥É¤ò¸Æ¤Ó½Ğ¤¹Á°¤ËÃÖ´¹¤µ¤ì¤ë°Ê²¼¤Î¥Õ¥©¡¼¥Ş¥Ã¥ÈÊ¸»úÎó¤òÍøÍÑ¤Ç¤­¤Ş¤¹(±éÁÕ°ì"
-"Í÷¤ÎºÇ¸å¤Î¥³¥Ş¥ó¥É¤Ë¤Ï¤¹¤Ù¤Æ¤¬Í­¸ú¤Ç¤Ï¤¢¤ê¤»¤ó)¡£\n"
+"ã‚³ãƒãƒ³ãƒ‰ã‚’å‘¼ã³å‡ºã™å‰ã«ç½®æ›ã•ã‚Œã‚‹ä»¥ä¸‹ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæ–‡å­—åˆ—ã‚’åˆ©ç”¨ã§ãã¾ã™(æ¼”å¥ä¸€"
+"è¦§ã®æœ€å¾Œã®ã‚³ãƒãƒ³ãƒ‰ã«ã¯ã™ã¹ã¦ãŒæœ‰åŠ¹ã§ã¯ã‚ã‚Šã›ã‚“)ã€‚\n"
 "\n"
-"%%F: ¼şÇÈ¿ô (¥Ø¥ë¥Ä)\n"
-"%%c: ¥Á¥ã¥ó¥Í¥ë¿ô\n"
-"%%f: ¥Õ¥¡¥¤¥ëÌ¾ (¥Õ¥ë¥Ñ¥¹)\n"
-"%%l: Ä¹¤µ (¥ß¥êÉÃ)\n"
-"%%n ¤Ş¤¿¤Ï %%s: ¶ÊÌ¾\n"
-"%%r: ¥ì¡¼¥È (¥Ó¥Ã¥ÈËèÉÃ)\n"
-"%%t: ±éÁÕ°ìÍ÷¤Î°ÌÃÖ (%%02d)\n"
-"%%p: ¸½ºß±éÁÕÃæ¤« (1 or 0)"
+"%%F: å‘¨æ³¢æ•° (ãƒ˜ãƒ«ãƒ„)\n"
+"%%c: ãƒãƒ£ãƒ³ãƒãƒ«æ•°\n"
+"%%f: ãƒ•ã‚¡ã‚¤ãƒ«å (ãƒ•ãƒ«ãƒ‘ã‚¹)\n"
+"%%l: é•·ã• (ãƒŸãƒªç§’)\n"
+"%%n ã¾ãŸã¯ %%s: æ›²å\n"
+"%%r: ãƒ¬ãƒ¼ãƒˆ (ãƒ“ãƒƒãƒˆæ¯ç§’)\n"
+"%%t: æ¼”å¥ä¸€è¦§ã®ä½ç½® (%%02d)\n"
+"%%p: ç¾åœ¨æ¼”å¥ä¸­ã‹ (1 or 0)"
 
 #: src/song_change/song_change.c:275
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>¥·¥§¥ë¤ËÅÏ¤µ¤ì¤ë¥Ñ¥é¥á¡¼¥¿¤Ï¥¯¥©¡¼¥È¤Ç¤¯¤¯¤é¤ì¤ë¤Ù¤­¤Ç¤¹¡£"
-"¤µ¤â¤Ê¤¤¤È¥»¥­¥å¥ê¥Æ¥£¾å¤Î´í¸±¤¬¤¢¤ê¤Ş¤¹¡£</span>"
+"<span size='small'>ã‚·ã‚§ãƒ«ã«æ¸¡ã•ã‚Œã‚‹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯ã‚¯ã‚©ãƒ¼ãƒˆã§ããã‚‰ã‚Œã‚‹ã¹ãã§ã™ã€‚"
+"ã•ã‚‚ãªã„ã¨ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ä¸Šã®å±é™ºãŒã‚ã‚Šã¾ã™ã€‚</span>"
 
 #: src/stereo_plugin/stereo.c:29
 msgid ""
@@ -1777,55 +1726,55 @@ msgid ""
 "\n"
 "By Johan Levin 1999."
 msgstr ""
-"¥¨¥¯¥¹¥È¥é¡¦¥¹¥Æ¥ì¥ª¡¦¥×¥é¥°¥¤¥ó\n"
+"ã‚¨ã‚¯ã‚¹ãƒˆãƒ©ãƒ»ã‚¹ãƒ†ãƒ¬ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³\n"
 "\n"
-"1999. Johan Levin ¤Ë¤è¤ë"
+"1999. Johan Levin ã«ã‚ˆã‚‹"
 
 #: src/stereo_plugin/stereo.c:38
 #, c-format
 msgid "Extra Stereo Plugin %s"
-msgstr "¥¨¥¯¥¹¥È¥é¡¦¥¹¥Æ¥ì¥ª¡¦¥×¥é¥°¥¤¥ó %s"
+msgstr "ã‚¨ã‚¯ã‚¹ãƒˆãƒ©ãƒ»ã‚¹ãƒ†ãƒ¬ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ %s"
 
 #: src/stereo_plugin/stereo.c:58
 msgid "About Extra Stereo Plugin"
-msgstr "¥¨¥¯¥¹¥È¥é¡¦¥¹¥Æ¥ì¥ª¡¦¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "ã‚¨ã‚¯ã‚¹ãƒˆãƒ©ãƒ»ã‚¹ãƒ†ãƒ¬ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
 #: src/stereo_plugin/stereo.c:99
 msgid "Configure Extra Stereo"
-msgstr "¥¨¥¯¥¹¥È¥é¡¦¥¹¥Æ¥ì¥ª¤ÎÀßÄê"
+msgstr "ã‚¨ã‚¯ã‚¹ãƒˆãƒ©ãƒ»ã‚¹ãƒ†ãƒ¬ã‚ªã®è¨­å®š"
 
 #: src/stereo_plugin/stereo.c:101
 msgid "Effect intensity:"
-msgstr "¥¨¥Õ¥§¥¯¥È¤Î¶¯¤µ:"
+msgstr "ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å¼·ã•:"
 
 #: src/sun/configure.c:200
 msgid "Audio control device:"
-msgstr "¥ª¡¼¥Ç¥£¥ª¥³¥ó¥È¥í¡¼¥ë¥Ç¥Ğ¥¤¥¹:"
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒã‚¤ã‚¹:"
 
 #: src/sun/configure.c:349
 msgid "Volume controls device:"
-msgstr "²»ÎÌ¥³¥ó¥È¥í¡¼¥ë¥Ç¥Ğ¥¤¥¹:"
+msgstr "éŸ³é‡ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒã‚¤ã‚¹:"
 
 #: src/sun/configure.c:362
 msgid "XMMS uses mixer exclusively."
-msgstr "¥ß¥­¥µ¤òÇÓÂ¾Åª¤Ë»È¤¦"
+msgstr "ãƒŸã‚­ã‚µã‚’æ’ä»–çš„ã«ä½¿ã†"
 
 #: src/sun/configure.c:487
 msgid "Status"
-msgstr "¾õÂÖ"
+msgstr "çŠ¶æ…‹"
 
 #: src/sun/configure.c:537
 msgid "Sun driver configuration"
-msgstr "Sun ¥É¥é¥¤¥Ğ¤ÎÀßÄê"
+msgstr "Sun ãƒ‰ãƒ©ã‚¤ãƒã®è¨­å®š"
 
 #: src/sun/sun.c:55
 #, c-format
 msgid "BSD Sun Driver %s"
-msgstr "BSD Sub ¥É¥é¥¤¥Ğ %s"
+msgstr "BSD Sub ãƒ‰ãƒ©ã‚¤ãƒ %s"
 
 #: src/sun/about.c:34
 msgid "About the Sun Driver"
-msgstr "Sun ¥É¥é¥¤¥Ğ¤Ë¤Ä¤¤¤Æ"
+msgstr "Sun ãƒ‰ãƒ©ã‚¤ãƒã«ã¤ã„ã¦"
 
 #: src/sun/about.c:35
 msgid ""
@@ -1834,15 +1783,15 @@ msgid ""
 "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
 "Maintainer: <vedge at csoft.org>.\n"
 msgstr ""
-"XMMS BSD Sun ¥É¥é¥¤¥Ğ\n"
+"XMMS BSD Sun ãƒ‰ãƒ©ã‚¤ãƒ\n"
 "\n"
 "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-"¥á¥ó¥Æ¥Ê: <vedge at csoft.org>.\n"
+"ãƒ¡ãƒ³ãƒ†ãƒŠ: <vedge at csoft.org>.\n"
 
 #: src/timidity/src/xmms-timidity.c:103
 #, c-format
 msgid "TiMidity Player %s"
-msgstr "TiMidity ¥×¥ì¥¤¥ä¡¼ %s"
+msgstr "TiMidity ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ %s"
 
 #: src/timidity/src/xmms-timidity.c:138
 msgid ""
@@ -1850,26 +1799,26 @@ msgid ""
 "http://libtimidity.sourceforge.net\n"
 "by Konstantin Korikov"
 msgstr ""
-"TiMidity ¥×¥é¥°¥¤¥ó\n"
+"TiMidity ãƒ—ãƒ©ã‚°ã‚¤ãƒ³\n"
 "http://libtimidity.sourceforge.net\n"
-"Konstantin Korikov ¤Ë¤è¤ë"
+"Konstantin Korikov ã«ã‚ˆã‚‹"
 
 #: src/timidity/src/xmms-timidity.c:139
 #, c-format
 msgid "TiMidity Plugin %s"
-msgstr "TiMidity ¥×¥é¥°¥¤¥ó %s"
+msgstr "TiMidity ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ %s"
 
 #: src/timidity/src/xmms-timidity.c:363
 msgid "Couldn't load MIDI file"
-msgstr "MIDI ¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤á¤Ş¤»¤ó"
+msgstr "MIDI ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“"
 
 #: src/timidity/src/interface.c:55
 msgid "TiMidity Configuration"
-msgstr "TiMidity ¤ÎÀßÄê"
+msgstr "TiMidity ã®è¨­å®š"
 
 #: src/timidity/src/interface.c:75
 msgid "Sampling Rate"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¡¦¥ì¡¼¥È"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ»ãƒ¬ãƒ¼ãƒˆ"
 
 #: src/timidity/src/interface.c:92
 msgid "11000 Hz"
@@ -1885,19 +1834,19 @@ msgstr "44100 Hz"
 
 #: src/timidity/src/interface.c:116
 msgid "Sample Width"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°Éı"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°å¹…"
 
 #: src/timidity/src/interface.c:149
 msgid "Channels"
-msgstr "¥Á¥ã¥ó¥Í¥ë¿ô"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ«æ•°"
 
 #: src/timidity/src/interface.c:182
 msgid "TiMidity Configuration File"
-msgstr "TiMidity ÀßÄê¥Õ¥¡¥¤¥ë"
+msgstr "TiMidity è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«"
 
 #: src/tonegen/tonegen.c:51
 msgid "About Tone Generator"
-msgstr "¥È¡¼¥ó¡¦¥¸¥§¥Í¥ì¡¼¥¿¤Ë¤Ä¤¤¤Æ"
+msgstr "ãƒˆãƒ¼ãƒ³ãƒ»ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ã«ã¤ã„ã¦"
 
 #: src/tonegen/tonegen.c:53
 msgid ""
@@ -1907,78 +1856,69 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
-"Haavard Kvaalen <havardk@xmms.org> ¤Ë¤è¤ë¥µ¥¤¥ó¡¦¥È¡¼¥ó¡¦¥¸¥§¥Í¡¼¥ì¡¼¥¿\n"
-"Daniel J. Peng <danielpeng@bigfoot.com> ¤Ë¤è¤ë½¤Àµ\n"
+"Haavard Kvaalen <havardk@xmms.org> ã«ã‚ˆã‚‹ã‚µã‚¤ãƒ³ãƒ»ãƒˆãƒ¼ãƒ³ãƒ»ã‚¸ã‚§ãƒãƒ¼ãƒ¬ãƒ¼ã‚¿\n"
+"Daniel J. Peng <danielpeng@bigfoot.com> ã«ã‚ˆã‚‹ä¿®æ­£\n"
 "\n"
-"URL¤Ë tone://frequency1;frequency2;frequency3;... ¤ÈÄÉ²Ã¤·¤Æ»ÈÍÑ¤·¤Ş¤¹\n"
-"Îã tone://2000;2005 ¤Ï 2000Hz ¥È¡¼¥ó¤È 2005Hz ¥È¡¼¥ó¤ò±éÁÕ¤·¤Ş¤¹"
+"URLã« tone://frequency1;frequency2;frequency3;... ã¨è¿½åŠ ã—ã¦ä½¿ç”¨ã—ã¾ã™\n"
+"ä¾‹ tone://2000;2005 ã¯ 2000Hz ãƒˆãƒ¼ãƒ³ã¨ 2005Hz ãƒˆãƒ¼ãƒ³ã‚’æ¼”å¥ã—ã¾ã™"
 
 #: src/tonegen/tonegen.c:165
 msgid "Tone Generator: "
-msgstr "¥È¡¼¥ó¡¦¥¸¥§¥Í¥ì¡¼¥¿: "
+msgstr "ãƒˆãƒ¼ãƒ³ãƒ»ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿: "
 
 #: src/tonegen/tonegen.c:265
 #, c-format
 msgid "Tone Generator %s"
-msgstr "¥È¡¼¥ó¡¦¥¸¥§¥Í¥ì¡¼¥¿ %s"
+msgstr "ãƒˆãƒ¼ãƒ³ãƒ»ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ %s"
 
 #: src/tta/aud-tta.c:417
 #, c-format
 msgid "File Info - %s"
-msgstr "¥Õ¥¡¥¤¥ë¾ğÊó - %s"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ± - %s"
 
-#: src/vorbis/configure.c:107
-msgid "Select the directory where you want to store the Ogg Vorbis streams:"
-msgstr "Ogg Vorbis ¥¹¥È¥ê¡¼¥à¤ò³ÊÇ¼¤¹¤ë¥Ç¥£¥ì¥¯¥È¥ê¤ÎÁªÂò:"
-
-#: src/vorbis/configure.c:186
+#: src/vorbis/configure.c:161
 msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Ogg Vorbis ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó¤ÎÀßÄê"
+msgstr "Ogg Vorbis ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®è¨­å®š"
 
-#: src/vorbis/configure.c:284
+#: src/vorbis/configure.c:253
 msgid "Ogg Vorbis Tags:"
-msgstr "Ogg Vorbis ¥¿¥°:"
+msgstr "Ogg Vorbis ã‚¿ã‚°:"
+
+#: src/vorbis/configure.c:274
+msgid "Title format:"
+msgstr "ã‚¿ã‚¤ãƒˆãƒ«ã®æ›¸å¼:"
+
+#: src/vorbis/configure.c:292
+msgid "ReplayGain Settings:"
+msgstr "ãƒªãƒ—ãƒ¬ã‚¤ãƒ»ã‚²ã‚¤ãƒ³ã®è¨­å®š:"
+
+#: src/vorbis/configure.c:300
+msgid "Enable Clipping Prevention"
+msgstr "ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°å›é¿æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹"
 
 #: src/vorbis/configure.c:305
-msgid "Title format:"
-msgstr "¥¿¥¤¥È¥ë¤Î½ñ¼°:"
+msgid "Enable ReplayGain"
+msgstr "ãƒªãƒ—ãƒ¬ã‚¤ãƒ»ã‚²ã‚¤ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹"
 
-#: src/vorbis/configure.c:323
-msgid "ReplayGain Settings:"
-msgstr "¥ê¥×¥ì¥¤¡¦¥²¥¤¥ó¤ÎÀßÄê:"
+#: src/vorbis/configure.c:310
+msgid "ReplayGain Type:"
+msgstr "ãƒªãƒ—ãƒ¬ã‚¤ã‚²ã‚¤ãƒ³ã®ç¨®é¡:"
+
+#: src/vorbis/configure.c:321
+msgid "use Track Gain/Peak"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯ã®ã‚²ã‚¤ãƒ³/ãƒ”ãƒ¼ã‚¯ã‚’ä½¿ç”¨ã™ã‚‹"
 
 #: src/vorbis/configure.c:331
-msgid "Enable Clipping Prevention"
-msgstr "¥¯¥ê¥Ã¥Ô¥ó¥°²óÈòµ¡Ç½¤òÍ­¸ú¤Ë¤¹¤ë"
-
-#: src/vorbis/configure.c:336
-msgid "Enable ReplayGain"
-msgstr "¥ê¥×¥ì¥¤¡¦¥²¥¤¥ó¤òÍ­¸ú¤Ë¤¹¤ë"
-
-#: src/vorbis/configure.c:341
-msgid "ReplayGain Type:"
-msgstr "¥ê¥×¥ì¥¤¥²¥¤¥ó¤Î¼ïÎà:"
-
-#: src/vorbis/configure.c:352
-msgid "use Track Gain/Peak"
-msgstr "¥È¥é¥Ã¥¯¤Î¥²¥¤¥ó/¥Ô¡¼¥¯¤ò»ÈÍÑ¤¹¤ë"
-
-#: src/vorbis/configure.c:362
 msgid "use Album Gain/Peak"
-msgstr "¥¢¥ë¥Ğ¥à¤Î¥²¥¤¥ó/¥Ô¡¼¥¯¤ò»ÈÍÑ¤¹¤ë"
+msgstr "ã‚¢ãƒ«ãƒãƒ ã®ã‚²ã‚¤ãƒ³/ãƒ”ãƒ¼ã‚¯ã‚’ä½¿ç”¨ã™ã‚‹"
 
-#: src/vorbis/configure.c:374
+#: src/vorbis/configure.c:343
 msgid "Enable 6dB Boost + Hard Limiting"
-msgstr "6dB ¥Ö¡¼¥¹¥È + ¥Ï¡¼¥É¡¦¥ê¥ß¥Ã¥È¤òÍ­¸ú¤Ë¤¹¤ë"
+msgstr "6dB ãƒ–ãƒ¼ã‚¹ãƒˆ + ãƒãƒ¼ãƒ‰ãƒ»ãƒªãƒŸãƒƒãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹"
 
-#: src/vorbis/configure.c:380
+#: src/vorbis/configure.c:349
 msgid "ReplayGain"
-msgstr "¥ê¥×¥ì¥¤¡¦¥²¥¤¥ó"
-
-#: src/vorbis/http.c:607
-#, c-format
-msgid "PRE-BUFFERING: %dKB/%dKB"
-msgstr "¥×¥ì¡¦¥Ğ¥Ã¥Õ¥¡¥ê¥ó¥°Ãæ: %d/%d K¥Ğ¥¤¥È"
+msgstr "ãƒªãƒ—ãƒ¬ã‚¤ãƒ»ã‚²ã‚¤ãƒ³"
 
 #: src/vorbis/fileinfo.c:210
 #, c-format
@@ -1986,85 +1926,85 @@ msgid ""
 "An error occured:\n"
 "%s"
 msgstr ""
-"¥¨¥é¡¼È¯À¸:\n"
+"ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿ:\n"
 "%s"
 
 #: src/vorbis/fileinfo.c:212
 msgid "Error!"
-msgstr "¥¨¥é¡¼¡ª"
+msgstr "ã‚¨ãƒ©ãƒ¼ï¼"
 
 #: src/vorbis/fileinfo.c:242
 msgid "Failed to modify tag (open)"
-msgstr "¥¿¥°¤Î½¤Àµ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿ (open)"
+msgstr "ã‚¿ã‚°ã®ä¿®æ­£ã«å¤±æ•—ã—ã¾ã—ãŸ (open)"
 
 #: src/vorbis/fileinfo.c:295
 msgid "Failed to modify tag (close)"
-msgstr "¥¿¥°¤Î½¤Àµ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿ (close)"
+msgstr "ã‚¿ã‚°ã®ä¿®æ­£ã«å¤±æ•—ã—ã¾ã—ãŸ (close)"
 
 #: src/vorbis/fileinfo.c:320 src/vorbis/fileinfo.c:329
 msgid "Failed to modify tag"
-msgstr "¥¿¥°¤Î½¤Àµ¤Ë¼ºÇÔ"
+msgstr "ã‚¿ã‚°ã®ä¿®æ­£ã«å¤±æ•—"
 
 #: src/vorbis/fileinfo.c:573
 msgid " Ogg Vorbis Tag "
-msgstr " Ogg Vorbis ¥¿¥° "
+msgstr " Ogg Vorbis ã‚¿ã‚° "
 
 #: src/vorbis/fileinfo.c:625
 msgid "Date:"
-msgstr "ÆüÉÕ:"
+msgstr "æ—¥ä»˜:"
 
 #: src/vorbis/fileinfo.c:667
 msgid "Description:"
-msgstr "¾ÜºÙ:"
+msgstr "è©³ç´°:"
 
 #: src/vorbis/fileinfo.c:677
 msgid "Location:"
-msgstr "¾ì½ê:"
+msgstr "å ´æ‰€:"
 
 #: src/vorbis/fileinfo.c:687
 msgid "Version:"
-msgstr "¥Ğ¡¼¥¸¥ç¥ó:"
+msgstr "ãƒãƒ¼ã‚¸ãƒ§ãƒ³:"
 
 #: src/vorbis/fileinfo.c:698
 msgid "ISRC number:"
-msgstr "ISRC ÈÖ¹æ:"
+msgstr "ISRC ç•ªå·:"
 
 #: src/vorbis/fileinfo.c:709
 msgid "Organization:"
-msgstr "ÁÈ¿¥:"
+msgstr "çµ„ç¹”:"
 
 #: src/vorbis/fileinfo.c:756
 msgid " Ogg Vorbis ReplayGain "
-msgstr " Ogg Vorbis ¥ê¥×¥ì¥¤¥²¥¤¥ó "
+msgstr " Ogg Vorbis ãƒªãƒ—ãƒ¬ã‚¤ã‚²ã‚¤ãƒ³ "
 
 #: src/vorbis/fileinfo.c:762
 msgid "Track gain:"
-msgstr "¥È¥é¥Ã¥¯¤Î¥²¥¤¥ó:"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯ã®ã‚²ã‚¤ãƒ³:"
 
 #: src/vorbis/fileinfo.c:772
 msgid "Track peak:"
-msgstr "¥È¥é¥Ã¥¯¤Î¥Ô¡¼¥¯:"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯ã®ãƒ”ãƒ¼ã‚¯:"
 
 #: src/vorbis/fileinfo.c:783
 msgid "Album gain:"
-msgstr "¥¢¥ë¥Ğ¥à¤Î¥²¥¤¥ó:"
+msgstr "ã‚¢ãƒ«ãƒãƒ ã®ã‚²ã‚¤ãƒ³:"
 
 #: src/vorbis/fileinfo.c:793
 msgid "Album peak:"
-msgstr "¥¢¥ë¥Ğ¥à¤Î¥Ô¡¼¥¯:"
+msgstr "ã‚¢ãƒ«ãƒãƒ ã®ãƒ”ãƒ¼ã‚¯:"
 
 #: src/vorbis/fileinfo.c:822
 msgid " Ogg Vorbis Info "
-msgstr " Ogg Vorbis ¾ğÊó "
+msgstr " Ogg Vorbis æƒ…å ± "
 
 #: src/vorbis/fileinfo.c:876 src/vorbis/fileinfo.c:922
 msgid "Length:"
-msgstr "±éÁÕ»ş´Ö:"
+msgstr "æ¼”å¥æ™‚é–“:"
 
 #: src/vorbis/fileinfo.c:956
 #, c-format
 msgid "%d KBit/s (nominal)"
-msgstr "%d K¥Ó¥Ã¥È/ÉÃ (¥Î¡¼¥Ş¥ë)"
+msgstr "%d Kãƒ“ãƒƒãƒˆ/ç§’ (ãƒãƒ¼ãƒãƒ«)"
 
 #: src/vorbis/fileinfo.c:957
 #, c-format
@@ -2084,17 +2024,17 @@ msgstr "%d:%.2d"
 #: src/vorbis/fileinfo.c:962
 #, c-format
 msgid "%d Bytes"
-msgstr "%d ¥Ğ¥¤¥È"
+msgstr "%d ãƒã‚¤ãƒˆ"
 
-#: src/vorbis/vorbis.c:141
+#: src/vorbis/vorbis.c:147
 msgid "Ogg Vorbis Audio Plugin"
-msgstr "Ogg Vorbis ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó"
+msgstr "Ogg Vorbis ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
-#: src/vorbis/vorbis.c:811
+#: src/vorbis/vorbis.c:877
 msgid "About Ogg Vorbis Audio Plugin"
-msgstr "Ogg Vorbis ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó¤Ë¤Ä¤¤¤Æ"
+msgstr "Ogg Vorbis ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ã¤ã„ã¦"
 
-#: src/vorbis/vorbis.c:817
+#: src/vorbis/vorbis.c:883
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -2111,9 +2051,9 @@ msgid ""
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
-"Ogg Vorbis ¥×¥é¥°¥¤¥ó¤ÎÄó¶¡: Xiph.org Foundation\n"
+"Ogg Vorbis ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®æä¾›: Xiph.org Foundation\n"
 "\n"
-"¥ª¥ê¥¸¥Ê¥ë¤Î¥³¡¼¥É:\n"
+"ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ã‚³ãƒ¼ãƒ‰:\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
 "Contributions from\n"
 "Chris Montgomery <monty@xiph.org>\n"
@@ -2124,11 +2064,11 @@ msgstr ""
 "Haavard Kvaalen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "\n"
-"Xiph.org Foundation <http://www.xiph.org/> ¤â¤´Í÷²¼¤µ¤¤¡£\n"
+"Xiph.org Foundation <http://www.xiph.org/> ã‚‚ã”è¦§ä¸‹ã•ã„ã€‚\n"
 
 #: src/wav/wav-sndfile.c:246
 msgid "About sndfile WAV support"
-msgstr "sndfile WAV ¥µ¥İ¡¼¥È¤Ë¤Ä¤¤¤Æ"
+msgstr "sndfile WAV ã‚µãƒãƒ¼ãƒˆã«ã¤ã„ã¦"
 
 #: src/wav/wav-sndfile.c:247
 msgid ""
@@ -2152,44 +2092,87 @@ msgid ""
 "51 Franklin Street, Fifth Floor, \n"
 "Boston, MA  02110-1301  USA"
 msgstr ""
-"Tony Vroon <chainsaw@gentoo.org> ¤Ë¤è¤ë xmms_sndfile ¥×¥é¥°¥¤¥ó¤Î\n"
-"Audacious ¤Ø¤ÎÅ¬±ş:\n"
+"Tony Vroon <chainsaw@gentoo.org> ã«ã‚ˆã‚‹ xmms_sndfile ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®\n"
+"Audacious ã¸ã®é©å¿œ:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
 "\n"
-"¤³¤Î¥×¥í¥°¥é¥à¤Ï¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢¤Ç¤¹;\n"
-"¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢ºâÃÄ¤¬Äó¶¡¤¹¤ë GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ\n"
-"¤ÎÂèÆóÈÇ¡¢¤¢¤ë¤¤¤Ï¤½¤ì°Ê¹ß¤ÎÈÇ¤¬Äê¤á¤ë¾ò¹à¤Î²¼¤Ç\n"
-"ËÜ¥×¥í¥°¥é¥à¤òºÆÈÒÉÛ¤Ş¤¿¤ÏÊÑ¹¹¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£\n"
+"ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã§ã™;\n"
+"ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢è²¡å›£ãŒæä¾›ã™ã‚‹ GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸\n"
+"ã®ç¬¬äºŒç‰ˆã€ã‚ã‚‹ã„ã¯ãã‚Œä»¥é™ã®ç‰ˆãŒå®šã‚ã‚‹æ¡é …ã®ä¸‹ã§\n"
+"æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’å†é ’å¸ƒã¾ãŸã¯å¤‰æ›´ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚\n"
 "\n"
-"ËÜ¥×¥í¥°¥é¥à¤ÏÍ­ÍÑ¤È¤Ï»×¤¤¤Ş¤¹¤¬¡¢\n"
-"ÈÒÉÛ¤Ë¤¢¤¿¤Ã¤Æ¤Ï¡¢»Ô¾ìÀ­µÚ¤ÓÆÃÄêÌÜÅª¡¢Å¬¹çÀ­¤Ë¤Ä¤¤¤Æ¤Î\n"
-"°ÅÌÛ¤ÎÊİ¾Ú¤ò´Ş¤á¤Æ¡¢¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤Ê¤¤¤Ş¤»¤ó¡£\n"
-"¾ÜºÙ¤Ë¤Ä¤¤¤Æ¤Ï GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ¤ò¤´Í÷²¼¤µ¤¤¡£\n"
+"æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯æœ‰ç”¨ã¨ã¯æ€ã„ã¾ã™ãŒã€\n"
+"é ’å¸ƒã«ã‚ãŸã£ã¦ã¯ã€å¸‚å ´æ€§åŠã³ç‰¹å®šç›®çš„ã€é©åˆæ€§ã«ã¤ã„ã¦ã®\n"
+"æš—é»™ã®ä¿è¨¼ã‚’å«ã‚ã¦ã€ã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œãªã„ã¾ã›ã‚“ã€‚\n"
+"è©³ç´°ã«ã¤ã„ã¦ã¯ GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸ã‚’ã”è¦§ä¸‹ã•ã„ã€‚\n"
 "\n"
-"¤¢¤Ê¤¿¤Ï¡¢ËÜ¥×¥í¥°¥é¥à¤È°ì½ï¤Ë\n"
-"GNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú·ÀÌó½ñ¤Î¼Ì¤·¤ò¼õ¤±¼è¤Ã¤Æ¤¤¤ë¤Ï¤º¤Ç¤¹¡£\n"
-"¤½¤¦¤Ç¤Ê¤¤¾ì¹ç¤Ï¡¢the Free Software Foundation, Inc., \n"
+"ã‚ãªãŸã¯ã€æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨ä¸€ç·’ã«\n"
+"GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾å¥‘ç´„æ›¸ã®å†™ã—ã‚’å—ã‘å–ã£ã¦ã„ã‚‹ã¯ãšã§ã™ã€‚\n"
+"ãã†ã§ãªã„å ´åˆã¯ã€the Free Software Foundation, Inc., \n"
 "51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA ¤Ø¼ê»æ¤ò½ñ¤¤¤Æ²¼¤µ¤¤¡£"
+"Boston, MA  02110-1301  USA ã¸æ‰‹ç´™ã‚’æ›¸ã„ã¦ä¸‹ã•ã„ã€‚"
 
 #: src/wav/wav-sndfile.c:272
 msgid "sndfile WAV plugin"
-msgstr "sndfile WAV ¥×¥é¥°¥¤¥ó"
+msgstr "sndfile WAV ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
 #: src/wav/wav.c:73
 msgid "WAV Audio Plugin"
-msgstr "WAV ¥ª¡¼¥Ç¥£¥ª¡¦¥×¥é¥°¥¤¥ó"
+msgstr "WAV ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ—ãƒ©ã‚°ã‚¤ãƒ³"
 
-#: src/wma/wma.c:131
+#: src/wma/wma.c:132
 #, c-format
 msgid "WMA Player %s"
-msgstr "WMA ¥×¥ì¥¤¥ä¡¼ %s"
+msgstr "WMA ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ %s"
 
-#: src/wma/wma.c:164
+#: src/wma/wma.c:165
 #, c-format
 msgid "About %s"
-msgstr "%s ¤Ë¤Ä¤¤¤Æ"
+msgstr "%s ã«ã¤ã„ã¦"
 
-#: src/wma/wma.c:177
+#: src/wma/wma.c:178
 msgid " Close "
-msgstr " ÊÄ¤¸¤ë "
+msgstr " é–‰ã˜ã‚‹ "
+
+#~ msgid "Select the directory where you want to store the output files:"
+#~ msgstr "å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ ¼ç´ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸æŠã—ã¦ä¸‹ã•ã„:"
+
+#~ msgid "Browse"
+#~ msgstr "å‚ç…§"
+
+#~ msgid "CONNECTING TO %s:%d"
+#~ msgstr "%s:%d ã¸æ¥ç¶šä¸­"
+
+#~ msgid "Couldn't connect to host %s:%d"
+#~ msgstr "ãƒ›ã‚¹ãƒˆ %s:%d ã¸æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸ"
+
+#~ msgid "Couldn't look up host %s"
+#~ msgstr "ãƒ›ã‚¹ãƒˆ %s ã‚’è¦‹ã¤ã‘ã‚‰ã‚Œã¾ã›ã‚“ã§ã—ãŸ"
+
+#~ msgid "LOOKING UP %s"
+#~ msgstr "%s ã®æ¤œç´¢ä¸­"
+
+#~ msgid "Couldn't connect to host %s"
+#~ msgstr "ãƒ›ã‚¹ãƒˆ %s ã¸æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸ"
+
+#~ msgid "CONNECTED: WAITING FOR REPLY"
+#~ msgstr "æ¥ç¶šå®Œäº†: å¿œç­”ã‚’å¾…ã£ã¦ã„ã¾ã™"
+
+#~ msgid ""
+#~ "Couldn't connect to host %s\n"
+#~ "Server reported: %s"
+#~ msgstr ""
+#~ "ãƒ›ã‚¹ãƒˆ %s ã¸æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸã€‚\n"
+#~ "ã‚µãƒ¼ãƒã‹ã‚‰ã®å ±å‘Š: %s"
+
+#~ msgid "PRE-BUFFERING: %zuKB/%zuKB"
+#~ msgstr "ãƒ—ãƒ¬ãƒ»ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ä¸­: %zu/%zu Kãƒã‚¤ãƒˆ"
+
+#~ msgid "Select the directory where you want to store the MPEG streams:"
+#~ msgstr "MPEG ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’æ ¼ç´ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸æŠã—ã¦ä¸‹ã•ã„:"
+
+#~ msgid "Select the directory where you want to store the Ogg Vorbis streams:"
+#~ msgstr "Ogg Vorbis ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’æ ¼ç´ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®é¸æŠ:"
+
+#~ msgid "PRE-BUFFERING: %dKB/%dKB"
+#~ msgstr "ãƒ—ãƒ¬ãƒ»ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ä¸­: %d/%d Kãƒã‚¤ãƒˆ"

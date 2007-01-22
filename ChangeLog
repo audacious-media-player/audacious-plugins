@@ -1,3 +1,10 @@
+2007-01-22 16:46:58 +0000  Giacomo Lozito <james@develia.org>
+  revision [1114]
+  - flac 112 plugin: small ui updates
+  trunk/src/flac112/configure.c |    7 ++++---
+  1 file changed, 4 insertions(+), 3 deletions(-)
+
+
 2007-01-22 16:42:50 +0000  Giacomo Lozito <james@develia.org>
   revision [1112]
   - flac 112 plugin: removed ui options related to old http support

@@ -1,86 +1,105 @@
+# Welsh translation for Audacious-Plugins.
+# Copyright (c) 2007 William Pitcock, et al.
+# This file is licensed under the same license as audacious.
 msgid ""
 msgstr ""
-"Project-Id-Version: de\n"
+"Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-01-22 10:42-0600\n"
-"PO-Revision-Date: 2007-01-06 18:31+0100\n"
-"Last-Translator: Michael Hanselmann\n"
-"Language-Team: german <audacious@hansmi.ch>\n"
+"PO-Revision-Date: 2007-01-22 10:57-0600\n"
+"Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
+"Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
+"X-Poedit-Language: Welsh\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: src/CoreAudio/coreaudio.c:49
 msgid "CoreAudio Output Plugin"
-msgstr "CoreAudio-Ausgabe-Plugin"
+msgstr "Gyrrwr CoreAudio"
 
 #: src/OSS/configure.c:150
 #, c-format
 msgid "Default (%s)"
-msgstr "Standard (%s)"
+msgstr "Rhagosodedig (%s)"
 
 #: src/OSS/configure.c:168
 msgid "Default"
-msgstr "Standard"
+msgstr "Rhagosodedig"
 
 #: src/OSS/configure.c:200
 msgid "OSS Driver configuration"
-msgstr "OSS-Treiber-Konfiguration"
+msgstr "Ffurfweddu'r Gyrrwr OSS"
 
-#: src/OSS/configure.c:216 src/sun/configure.c:182
+#: src/OSS/configure.c:216
+#: src/sun/configure.c:182
 msgid "Audio device:"
-msgstr "Audiogerät:"
+msgstr "Dyfais sain:"
 
-#: src/OSS/configure.c:238 src/OSS/configure.c:279
+#: src/OSS/configure.c:238
+#: src/OSS/configure.c:279
 msgid "Use alternate device:"
-msgstr "Alternatives Gerät benutzen:"
+msgstr "Defnyddiwr ddyfais arall:"
 
-#: src/OSS/configure.c:259 src/sun/configure.c:219
+#: src/OSS/configure.c:259
+#: src/sun/configure.c:219
 msgid "Mixer device:"
-msgstr ""
+msgstr "Dyfais cymysgu:"
 
-#: src/OSS/configure.c:301 src/sun/configure.c:247
+#: src/OSS/configure.c:301
+#: src/sun/configure.c:247
 msgid "Devices"
-msgstr "Geräte"
+msgstr "Dyfeisiau"
 
-#: src/OSS/configure.c:303 src/esd/configure.c:171 src/mpg123/configure.c:269
-#: src/sun/configure.c:258 src/vorbis/configure.c:173
+#: src/OSS/configure.c:303
+#: src/esd/configure.c:171
+#: src/mpg123/configure.c:269
+#: src/sun/configure.c:258
+#: src/vorbis/configure.c:173
 msgid "Buffering:"
-msgstr "Zwischenspeichern:"
+msgstr "Byffyru:"
 
-#: src/OSS/configure.c:316 src/esd/configure.c:184 src/sun/configure.c:271
+#: src/OSS/configure.c:316
+#: src/esd/configure.c:184
+#: src/sun/configure.c:271
 msgid "Buffer size (ms):"
-msgstr "Puffergrösse (ms):"
+msgstr "Maint y byffer (ms):"
 
-#: src/OSS/configure.c:330 src/esd/configure.c:198 src/mpg123/configure.c:297
-#: src/sun/configure.c:289 src/vorbis/configure.c:199
+#: src/OSS/configure.c:330
+#: src/esd/configure.c:198
+#: src/mpg123/configure.c:297
+#: src/sun/configure.c:289
+#: src/vorbis/configure.c:199
 msgid "Pre-buffer (percent):"
-msgstr ""
+msgstr "Cyn fyffer (y cant):"
 
-#: src/OSS/configure.c:341 src/esd/configure.c:209 src/sun/configure.c:303
+#: src/OSS/configure.c:341
+#: src/esd/configure.c:209
+#: src/sun/configure.c:303
 msgid "Buffering"
-msgstr "Zwischenspeichern"
+msgstr "Byffyru"
 
 #: src/OSS/configure.c:342
 msgid "Mixer Settings:"
-msgstr ""
+msgstr "Gosodiadau Cymysgu:"
 
 #: src/OSS/configure.c:348
 msgid "Volume controls Master not PCM"
-msgstr ""
+msgstr "Nid yw'r Prif reolwr sain yn PCM"
 
-#: src/OSS/configure.c:354 src/sun/configure.c:393
+#: src/OSS/configure.c:354
+#: src/sun/configure.c:393
 msgid "Mixer"
-msgstr ""
+msgstr "Cymysgu"
 
 #: src/OSS/OSS.c:53
 msgid "OSS Output Plugin"
-msgstr "OSS-Ausgabe-Plugin"
+msgstr "Gyrrwr OSS"
 
 #: src/OSS/about.c:39
 msgid "About OSS Driver"
-msgstr "Über OSS-Treiber"
+msgstr "Ynghylch Gyrrwr OSS"
 
 #: src/OSS/about.c:40
 msgid ""
@@ -101,23 +120,52 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Gyrrwr OSS Audacious\n"
+"\n"
+" Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
+"ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
+"cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
+"drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
+"\n"
+"Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
+"yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
+"o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
+"BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
+"\n"
+"Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad cysylltwch\n"
+"â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, Boston,\n"
+" MA 02111-1307,\n"
+"USA."
 
-#: src/OSS/about.c:54 src/adplug/adplug-xmms.cc:155 src/alac/plugin.c:87
-#: src/audiocompress/audacious-glue.c:103 src/console/Audacious_Driver.cxx:459
-#: src/echo_plugin/gui.c:23 src/echo_plugin/gui.c:134 src/esd/about.c:49
-#: src/jack/jack.c:598 src/mpg123/mpg123.c:1000 src/null/null.c:63
-#: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:24
-#: src/stereo_plugin/stereo.c:59 src/stereo_plugin/stereo.c:122
-#: src/sun/configure.c:558 src/sun/about.c:38
-#: src/timidity/src/xmms-timidity.c:140 src/timidity/src/interface.c:223
-#: src/tonegen/tonegen.c:57 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:895
+#: src/OSS/about.c:54
+#: src/adplug/adplug-xmms.cc:155
+#: src/alac/plugin.c:87
+#: src/audiocompress/audacious-glue.c:103
+#: src/console/Audacious_Driver.cxx:459
+#: src/echo_plugin/gui.c:23
+#: src/echo_plugin/gui.c:134
+#: src/esd/about.c:49
+#: src/jack/jack.c:598
+#: src/mpg123/mpg123.c:1000
+#: src/null/null.c:63
+#: src/paranormal/plugin.c:290
+#: src/scrobbler/gtkstuff.c:24
+#: src/stereo_plugin/stereo.c:59
+#: src/stereo_plugin/stereo.c:122
+#: src/sun/configure.c:558
+#: src/sun/about.c:38
+#: src/timidity/src/xmms-timidity.c:140
+#: src/timidity/src/interface.c:223
+#: src/tonegen/tonegen.c:57
+#: src/vorbis/fileinfo.c:212
+#: src/vorbis/vorbis.c:895
 #: src/wav/wav-sndfile.c:263
 msgid "Ok"
-msgstr "OK"
+msgstr "Iawn"
 
 #: src/adplug/adplug-xmms.cc:146
 msgid "About "
-msgstr "Über"
+msgstr "Ynghylch"
 
 #: src/adplug/adplug-xmms.cc:149
 msgid ""
@@ -127,14 +175,13 @@ msgid ""
 "This plugin is released under the terms and conditions of the GNU LGPL.\n"
 "See http://www.gnu.org/licenses/lgpl.html for details.\n"
 "\n"
-"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et "
-"al.\n"
+"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et al.\n"
 "Linked AdPlug library version: "
 msgstr ""
 
 #: src/audiocompress/audacious-glue.c:96
 msgid "AudioCompress "
-msgstr "AudioCompress"
+msgstr "AudioCompress "
 
 #: src/audiocompress/audacious-glue.c:97
 msgid ""
@@ -148,7 +195,7 @@ msgstr ""
 
 #: src/audiocompress/audacious-glue.c:102
 msgid "About AudioCompress"
-msgstr "Über AudioCompress"
+msgstr "Ynghylch AudioCompress"
 
 #: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
@@ -156,29 +203,30 @@ msgstr ""
 
 #: src/blur_scope/config.c:83
 msgid "Options:"
-msgstr "Optionen:"
+msgstr "Dewisiadau:"
 
 #: src/blur_scope/blur_scope.c:57
 msgid "/Toggle Decorations"
-msgstr "/Dekorationen umschalten"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:59
 msgid "/-"
-msgstr "/-"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:60
 msgid "/Close"
-msgstr "/Schliessen"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:194
 msgid "Blur scope"
-msgstr "Blur-Scope"
+msgstr ""
 
-#: src/cdaudio/configure.c:185 src/cdaudio/configure.c:199
+#: src/cdaudio/configure.c:185
+#: src/cdaudio/configure.c:199
 #: src/cdaudio/configure.c:525
 #, c-format
 msgid "Drive %d"
-msgstr "Laufwerk %d"
+msgstr "Gyrrwr %d"
 
 #: src/cdaudio/configure.c:245
 #, c-format
@@ -187,7 +235,8 @@ msgid ""
 "Error: %s\n"
 "\n"
 msgstr ""
-"Fehler beim Öffnen des Geräts %s: %s\n"
+"Meth agor dyfais %s\n"
+"Gwall: %s\n"
 "\n"
 
 #: src/cdaudio/configure.c:252
@@ -196,6 +245,9 @@ msgid ""
 "Maybe no disc in the drive?\n"
 "\n"
 msgstr ""
+"Methu darllen \"Tabl Cynnwys\"\n"
+"Efallai bod dim disg yn y gyrrwr?\n"
+"\n"
 
 #: src/cdaudio/configure.c:256
 #, c-format
@@ -203,11 +255,13 @@ msgid ""
 "Device %s OK.\n"
 "Disc has %d tracks"
 msgstr ""
+"Dyfais %s Iawn.\n"
+"%d trac ar y ddisg"
 
 #: src/cdaudio/configure.c:265
 #, c-format
 msgid " (%d data tracks)"
-msgstr ""
+msgstr " (%d trac data)"
 
 #: src/cdaudio/configure.c:266
 #, c-format
@@ -215,16 +269,20 @@ msgid ""
 "\n"
 "Total length: %d:%d\n"
 msgstr ""
+"\n"
+"Cyfanswm hyd: %d:%.2d\n"
 
 #: src/cdaudio/configure.c:271
 msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
-msgstr ""
+msgstr "Heb brofi tynnu sain ddigidol - does gan y ddisg ddim traciau sain\n"
 
 #: src/cdaudio/configure.c:288
 msgid ""
 "Digital audio extraction test: OK\n"
 "\n"
 msgstr ""
+"Prawf tynnu sain digidol: Iawn\n"
+"\n"
 
 #: src/cdaudio/configure.c:292
 #, c-format
@@ -232,6 +290,8 @@ msgid ""
 "Digital audio extraction test failed: %s\n"
 "\n"
 msgstr ""
+"Methodd prawf tynnu sain digidol: %s\n"
+"\n"
 
 #: src/cdaudio/configure.c:302
 #, c-format
@@ -252,31 +312,31 @@ msgstr ""
 
 #: src/cdaudio/configure.c:355
 msgid "Device:"
-msgstr "Gerät:"
+msgstr ""
 
 #: src/cdaudio/configure.c:363
 msgid "_Device:"
-msgstr "_Gerät:"
+msgstr ""
 
 #: src/cdaudio/configure.c:373
 msgid "Dir_ectory:"
-msgstr "V_erzeichnis:"
+msgstr ""
 
 #: src/cdaudio/configure.c:385
 msgid "Play mode:"
-msgstr "Abspielmodus:"
+msgstr ""
 
 #: src/cdaudio/configure.c:391
 msgid "Analog"
-msgstr "Analog"
+msgstr ""
 
 #: src/cdaudio/configure.c:399
 msgid "Digital audio extraction"
-msgstr "Digitale Audioextraktion"
+msgstr ""
 
 #: src/cdaudio/configure.c:409
 msgid "Volume control:"
-msgstr "Lautstärkesteuerung:"
+msgstr ""
 
 #: src/cdaudio/configure.c:415
 msgid "No mixer"
@@ -284,7 +344,7 @@ msgstr ""
 
 #: src/cdaudio/configure.c:421
 msgid "CDROM drive"
-msgstr "CD-ROM-Gerät"
+msgstr ""
 
 #: src/cdaudio/configure.c:427
 msgid "OSS mixer"
@@ -292,39 +352,39 @@ msgstr ""
 
 #: src/cdaudio/configure.c:450
 msgid "Check drive..."
-msgstr "Gerät prüfen…"
+msgstr ""
 
 #: src/cdaudio/configure.c:456
 msgid "Remove drive"
-msgstr "Gerät löschen"
+msgstr ""
 
 #: src/cdaudio/configure.c:499
 msgid "CD Audio Player Configuration"
-msgstr "CD-Audio-Player-Konfiguration"
+msgstr ""
 
 #: src/cdaudio/configure.c:537
 msgid "Add drive"
-msgstr "Gerät hinzufügen"
+msgstr ""
 
 #: src/cdaudio/configure.c:545
 msgid "Device"
-msgstr "Gerät"
+msgstr ""
 
 #: src/cdaudio/configure.c:555
 msgid "CDDB:"
-msgstr "CDDB:"
+msgstr ""
 
 #: src/cdaudio/configure.c:566
 msgid "Use CDDB"
-msgstr "CDDB benutzen"
+msgstr ""
 
 #: src/cdaudio/configure.c:570
 msgid "Get server list"
-msgstr "Serverliste holen"
+msgstr ""
 
 #: src/cdaudio/configure.c:573
 msgid "Show network window"
-msgstr "Netzwerkfenster anzeigen"
+msgstr ""
 
 #: src/cdaudio/configure.c:583
 msgid "CDDB server:"
@@ -334,7 +394,8 @@ msgstr ""
 msgid "Track names:"
 msgstr ""
 
-#: src/cdaudio/configure.c:605 src/mpg123/configure.c:382
+#: src/cdaudio/configure.c:605
+#: src/mpg123/configure.c:382
 #: src/vorbis/configure.c:261
 msgid "Override generic titles"
 msgstr ""
@@ -351,12 +412,15 @@ msgstr ""
 msgid "CD Audio Plugin"
 msgstr ""
 
-#: src/cdaudio/cdaudio.c:1055 src/cdaudio/cdaudio.c:1060
+#: src/cdaudio/cdaudio.c:1055
+#: src/cdaudio/cdaudio.c:1060
 #, c-format
 msgid "CD Audio Track %02u"
 msgstr ""
 
-#: src/cdaudio/cdinfo.c:161 src/cdaudio/cdinfo.c:162 src/cdaudio/cdinfo.c:163
+#: src/cdaudio/cdinfo.c:161
+#: src/cdaudio/cdinfo.c:162
+#: src/cdaudio/cdinfo.c:163
 msgid "(unknown)"
 msgstr ""
 
@@ -392,7 +456,8 @@ msgstr ""
 msgid "Bass:"
 msgstr ""
 
-#: src/console/Audacious_Config.cxx:164 src/console/Audacious_Config.cxx:175
+#: src/console/Audacious_Config.cxx:164
+#: src/console/Audacious_Config.cxx:175
 #: src/console/Audacious_Config.cxx:196
 msgid "secs"
 msgstr ""
@@ -419,11 +484,11 @@ msgstr ""
 
 #: src/console/Audacious_Config.cxx:223
 msgid "Hz"
-msgstr "Hz"
+msgstr ""
 
 #: src/console/Audacious_Config.cxx:233
 msgid "NSF/NSFE"
-msgstr "NSF/NSFE"
+msgstr ""
 
 #: src/console/Audacious_Config.cxx:234
 msgid "Use optional NSFE playlist"
@@ -440,18 +505,17 @@ msgstr ""
 #: src/console/Audacious_Config.cxx:266
 msgid ""
 "* Default song length *\n"
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not provide length information (i.e. looping tracks)."
 msgstr ""
 
 #: src/disk_writer/disk_writer.c:111
 #, c-format
 msgid "Disk Writer Plugin %s"
-msgstr "Disk-Writer-Plugin %s"
+msgstr ""
 
 #: src/disk_writer/disk_writer.c:140
 msgid "Error"
-msgstr "Fehler"
+msgstr ""
 
 #: src/disk_writer/disk_writer.c:141
 msgid ""
@@ -461,7 +525,7 @@ msgstr ""
 
 #: src/disk_writer/disk_writer.c:143
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: src/disk_writer/disk_writer.c:356
 msgid "Disk Writer Configuration"
@@ -473,12 +537,12 @@ msgstr ""
 
 #: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
-msgstr "Dateiendung nicht entfernen"
+msgstr ""
 
 #: src/echo_plugin/echo.c:44
 #, c-format
 msgid "Echo Plugin %s"
-msgstr "Echo-Plugin %s"
+msgstr ""
 
 #: src/echo_plugin/gui.c:8
 msgid ""
@@ -490,42 +554,46 @@ msgstr ""
 
 #: src/echo_plugin/gui.c:22
 msgid "About Echo Plugin"
-msgstr "Über Echo-Plugin"
+msgstr ""
 
 #: src/echo_plugin/gui.c:73
 msgid "Configure Echo"
-msgstr "Echo-Plugin konfigurieren"
+msgstr ""
 
 #: src/echo_plugin/gui.c:86
 msgid "Delay: (ms)"
-msgstr "Verzögerung: (ms)"
+msgstr ""
 
 #: src/echo_plugin/gui.c:91
 msgid "Feedback: (%)"
-msgstr "Rückkoppelung: (%)"
+msgstr ""
 
 #: src/echo_plugin/gui.c:96
 msgid "Volume: (%)"
-msgstr "Lautstärke: (%)"
+msgstr ""
 
 #: src/echo_plugin/gui.c:119
 msgid "Surround echo"
-msgstr "Surround-Echo"
+msgstr ""
 
-#: src/echo_plugin/gui.c:142 src/stereo_plugin/stereo.c:131
-#: src/sun/configure.c:566 src/timidity/src/interface.c:231
+#: src/echo_plugin/gui.c:142
+#: src/stereo_plugin/stereo.c:131
+#: src/sun/configure.c:566
+#: src/timidity/src/interface.c:231
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr ""
 
-#: src/echo_plugin/gui.c:149 src/stereo_plugin/stereo.c:138
+#: src/echo_plugin/gui.c:149
+#: src/stereo_plugin/stereo.c:138
 msgid "Apply"
-msgstr "Übernehmen"
+msgstr ""
 
 #: src/esd/configure.c:102
 msgid "ESD Output Plugin configuration"
-msgstr "ESD-Ausgabe-Plugin-Konfiguration"
+msgstr ""
 
-#: src/esd/configure.c:114 src/esd/configure.c:144
+#: src/esd/configure.c:114
+#: src/esd/configure.c:144
 msgid "Host:"
 msgstr ""
 
@@ -641,595 +709,743 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
 msgid "Blues"
 msgstr ""
 
-#: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
 msgid "Classic Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
 msgid "Country"
 msgstr ""
 
-#: src/mpg123/mpg123.c:49 src/vorbis/fileinfo.c:83
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
 msgid "Dance"
 msgstr ""
 
-#: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
 msgid "Disco"
 msgstr ""
 
-#: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
 msgid "Funk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
 msgid "Grunge"
 msgstr ""
 
-#: src/mpg123/mpg123.c:50 src/vorbis/fileinfo.c:84
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
 msgid "Hip-Hop"
 msgstr ""
 
-#: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
 msgid "Jazz"
 msgstr ""
 
-#: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
 msgid "Metal"
 msgstr ""
 
-#: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
 msgid "New Age"
 msgstr ""
 
-#: src/mpg123/mpg123.c:51 src/vorbis/fileinfo.c:85
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
 msgid "Oldies"
 msgstr ""
 
-#: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
 msgid "Other"
 msgstr ""
 
-#: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
 msgid "Pop"
 msgstr ""
 
-#: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
 msgid "R&B"
 msgstr ""
 
-#: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
 msgid "Rap"
 msgstr ""
 
-#: src/mpg123/mpg123.c:52 src/vorbis/fileinfo.c:86
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
 msgid "Reggae"
 msgstr ""
 
-#: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
 msgid "Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
 msgid "Techno"
 msgstr ""
 
-#: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
 msgid "Industrial"
 msgstr ""
 
-#: src/mpg123/mpg123.c:53 src/vorbis/fileinfo.c:87
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
 msgid "Alternative"
 msgstr ""
 
-#: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
 msgid "Ska"
 msgstr ""
 
-#: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
 msgid "Death Metal"
 msgstr ""
 
-#: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
 msgid "Pranks"
 msgstr ""
 
-#: src/mpg123/mpg123.c:54 src/vorbis/fileinfo.c:88
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
 msgid "Soundtrack"
 msgstr ""
 
-#: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
 msgid "Euro-Techno"
 msgstr ""
 
-#: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
 msgid "Ambient"
 msgstr ""
 
-#: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
 msgid "Trip-Hop"
 msgstr ""
 
-#: src/mpg123/mpg123.c:55 src/vorbis/fileinfo.c:89
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
 msgid "Vocal"
 msgstr ""
 
-#: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
 msgid "Jazz+Funk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
 msgid "Fusion"
 msgstr ""
 
-#: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
 msgid "Trance"
 msgstr ""
 
-#: src/mpg123/mpg123.c:56 src/vorbis/fileinfo.c:90
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
 msgid "Classical"
 msgstr ""
 
-#: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
 msgid "Instrumental"
 msgstr ""
 
-#: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
 msgid "Acid"
 msgstr ""
 
-#: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
 msgid "House"
 msgstr ""
 
-#: src/mpg123/mpg123.c:57 src/vorbis/fileinfo.c:91
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
 msgid "Game"
 msgstr ""
 
-#: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
 msgid "Sound Clip"
 msgstr ""
 
-#: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
 msgid "Gospel"
 msgstr ""
 
-#: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
 msgid "Noise"
 msgstr ""
 
-#: src/mpg123/mpg123.c:58 src/vorbis/fileinfo.c:92
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
 msgid "AlternRock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
 msgid "Bass"
 msgstr ""
 
-#: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
 msgid "Soul"
 msgstr ""
 
-#: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
 msgid "Punk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:59 src/vorbis/fileinfo.c:93
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
 msgid "Space"
 msgstr ""
 
-#: src/mpg123/mpg123.c:60 src/vorbis/fileinfo.c:94
+#: src/mpg123/mpg123.c:60
+#: src/vorbis/fileinfo.c:94
 msgid "Meditative"
 msgstr ""
 
-#: src/mpg123/mpg123.c:60 src/vorbis/fileinfo.c:94
+#: src/mpg123/mpg123.c:60
+#: src/vorbis/fileinfo.c:94
 msgid "Instrumental Pop"
 msgstr ""
 
-#: src/mpg123/mpg123.c:61 src/vorbis/fileinfo.c:95
+#: src/mpg123/mpg123.c:61
+#: src/vorbis/fileinfo.c:95
 msgid "Instrumental Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:61 src/vorbis/fileinfo.c:95
+#: src/mpg123/mpg123.c:61
+#: src/vorbis/fileinfo.c:95
 msgid "Ethnic"
 msgstr ""
 
-#: src/mpg123/mpg123.c:61 src/vorbis/fileinfo.c:95
+#: src/mpg123/mpg123.c:61
+#: src/vorbis/fileinfo.c:95
 msgid "Gothic"
 msgstr ""
 
-#: src/mpg123/mpg123.c:62 src/vorbis/fileinfo.c:96
+#: src/mpg123/mpg123.c:62
+#: src/vorbis/fileinfo.c:96
 msgid "Darkwave"
 msgstr ""
 
-#: src/mpg123/mpg123.c:62 src/vorbis/fileinfo.c:96
+#: src/mpg123/mpg123.c:62
+#: src/vorbis/fileinfo.c:96
 msgid "Techno-Industrial"
 msgstr ""
 
-#: src/mpg123/mpg123.c:62 src/vorbis/fileinfo.c:96
+#: src/mpg123/mpg123.c:62
+#: src/vorbis/fileinfo.c:96
 msgid "Electronic"
 msgstr ""
 
-#: src/mpg123/mpg123.c:63 src/vorbis/fileinfo.c:97
+#: src/mpg123/mpg123.c:63
+#: src/vorbis/fileinfo.c:97
 msgid "Pop-Folk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:63 src/vorbis/fileinfo.c:97
+#: src/mpg123/mpg123.c:63
+#: src/vorbis/fileinfo.c:97
 msgid "Eurodance"
 msgstr ""
 
-#: src/mpg123/mpg123.c:63 src/vorbis/fileinfo.c:97
+#: src/mpg123/mpg123.c:63
+#: src/vorbis/fileinfo.c:97
 msgid "Dream"
 msgstr ""
 
-#: src/mpg123/mpg123.c:64 src/vorbis/fileinfo.c:98
+#: src/mpg123/mpg123.c:64
+#: src/vorbis/fileinfo.c:98
 msgid "Southern Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:64 src/vorbis/fileinfo.c:98
+#: src/mpg123/mpg123.c:64
+#: src/vorbis/fileinfo.c:98
 msgid "Comedy"
 msgstr ""
 
-#: src/mpg123/mpg123.c:64 src/vorbis/fileinfo.c:98
+#: src/mpg123/mpg123.c:64
+#: src/vorbis/fileinfo.c:98
 msgid "Cult"
 msgstr ""
 
-#: src/mpg123/mpg123.c:65 src/vorbis/fileinfo.c:99
+#: src/mpg123/mpg123.c:65
+#: src/vorbis/fileinfo.c:99
 msgid "Gangsta Rap"
 msgstr ""
 
-#: src/mpg123/mpg123.c:65 src/vorbis/fileinfo.c:99
+#: src/mpg123/mpg123.c:65
+#: src/vorbis/fileinfo.c:99
 msgid "Top 40"
 msgstr ""
 
-#: src/mpg123/mpg123.c:65 src/vorbis/fileinfo.c:99
+#: src/mpg123/mpg123.c:65
+#: src/vorbis/fileinfo.c:99
 msgid "Christian Rap"
 msgstr ""
 
-#: src/mpg123/mpg123.c:66 src/vorbis/fileinfo.c:100
+#: src/mpg123/mpg123.c:66
+#: src/vorbis/fileinfo.c:100
 msgid "Pop/Funk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:66 src/vorbis/fileinfo.c:100
+#: src/mpg123/mpg123.c:66
+#: src/vorbis/fileinfo.c:100
 msgid "Jungle"
 msgstr ""
 
-#: src/mpg123/mpg123.c:66 src/vorbis/fileinfo.c:100
+#: src/mpg123/mpg123.c:66
+#: src/vorbis/fileinfo.c:100
 msgid "Native American"
 msgstr ""
 
-#: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
 msgid "Cabaret"
 msgstr ""
 
-#: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
 msgid "New Wave"
 msgstr ""
 
-#: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
 msgid "Psychedelic"
 msgstr ""
 
-#: src/mpg123/mpg123.c:67 src/vorbis/fileinfo.c:101
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
 msgid "Rave"
 msgstr ""
 
-#: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
 msgid "Showtunes"
 msgstr ""
 
-#: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
 msgid "Trailer"
 msgstr ""
 
-#: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
 msgid "Lo-Fi"
 msgstr ""
 
-#: src/mpg123/mpg123.c:68 src/vorbis/fileinfo.c:102
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
 msgid "Tribal"
 msgstr ""
 
-#: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
 msgid "Acid Punk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
 msgid "Acid Jazz"
 msgstr ""
 
-#: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
 msgid "Polka"
 msgstr ""
 
-#: src/mpg123/mpg123.c:69 src/vorbis/fileinfo.c:103
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
 msgid "Retro"
 msgstr ""
 
-#: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
 msgid "Musical"
 msgstr ""
 
-#: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
 msgid "Rock & Roll"
 msgstr ""
 
-#: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
 msgid "Hard Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:70 src/vorbis/fileinfo.c:104
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
 msgid "Folk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:71 src/vorbis/fileinfo.c:105
+#: src/mpg123/mpg123.c:71
+#: src/vorbis/fileinfo.c:105
 msgid "Folk/Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:71 src/vorbis/fileinfo.c:105
+#: src/mpg123/mpg123.c:71
+#: src/vorbis/fileinfo.c:105
 msgid "National Folk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:71 src/vorbis/fileinfo.c:105
+#: src/mpg123/mpg123.c:71
+#: src/vorbis/fileinfo.c:105
 msgid "Swing"
 msgstr ""
 
-#: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
 msgid "Fast-Fusion"
 msgstr ""
 
-#: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
 msgid "Bebob"
 msgstr ""
 
-#: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
 msgid "Latin"
 msgstr ""
 
-#: src/mpg123/mpg123.c:72 src/vorbis/fileinfo.c:106
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
 msgid "Revival"
 msgstr ""
 
-#: src/mpg123/mpg123.c:73 src/vorbis/fileinfo.c:107
+#: src/mpg123/mpg123.c:73
+#: src/vorbis/fileinfo.c:107
 msgid "Celtic"
 msgstr ""
 
-#: src/mpg123/mpg123.c:73 src/vorbis/fileinfo.c:107
+#: src/mpg123/mpg123.c:73
+#: src/vorbis/fileinfo.c:107
 msgid "Bluegrass"
 msgstr ""
 
-#: src/mpg123/mpg123.c:73 src/vorbis/fileinfo.c:107
+#: src/mpg123/mpg123.c:73
+#: src/vorbis/fileinfo.c:107
 msgid "Avantgarde"
 msgstr ""
 
-#: src/mpg123/mpg123.c:74 src/vorbis/fileinfo.c:108
+#: src/mpg123/mpg123.c:74
+#: src/vorbis/fileinfo.c:108
 msgid "Gothic Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:74 src/vorbis/fileinfo.c:108
+#: src/mpg123/mpg123.c:74
+#: src/vorbis/fileinfo.c:108
 msgid "Progressive Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:75 src/vorbis/fileinfo.c:109
+#: src/mpg123/mpg123.c:75
+#: src/vorbis/fileinfo.c:109
 msgid "Psychedelic Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:75 src/vorbis/fileinfo.c:109
+#: src/mpg123/mpg123.c:75
+#: src/vorbis/fileinfo.c:109
 msgid "Symphonic Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:75 src/vorbis/fileinfo.c:109
+#: src/mpg123/mpg123.c:75
+#: src/vorbis/fileinfo.c:109
 msgid "Slow Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:76 src/vorbis/fileinfo.c:110
+#: src/mpg123/mpg123.c:76
+#: src/vorbis/fileinfo.c:110
 msgid "Big Band"
 msgstr ""
 
-#: src/mpg123/mpg123.c:76 src/vorbis/fileinfo.c:110
+#: src/mpg123/mpg123.c:76
+#: src/vorbis/fileinfo.c:110
 msgid "Chorus"
 msgstr ""
 
-#: src/mpg123/mpg123.c:76 src/vorbis/fileinfo.c:110
+#: src/mpg123/mpg123.c:76
+#: src/vorbis/fileinfo.c:110
 msgid "Easy Listening"
 msgstr ""
 
-#: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
 msgid "Acoustic"
 msgstr ""
 
-#: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
 msgid "Humour"
 msgstr ""
 
-#: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
 msgid "Speech"
 msgstr ""
 
-#: src/mpg123/mpg123.c:77 src/vorbis/fileinfo.c:111
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
 msgid "Chanson"
 msgstr ""
 
-#: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
 msgid "Opera"
 msgstr ""
 
-#: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
 msgid "Chamber Music"
 msgstr ""
 
-#: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
 msgid "Sonata"
 msgstr ""
 
-#: src/mpg123/mpg123.c:78 src/vorbis/fileinfo.c:112
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
 msgid "Symphony"
 msgstr ""
 
-#: src/mpg123/mpg123.c:79 src/vorbis/fileinfo.c:113
+#: src/mpg123/mpg123.c:79
+#: src/vorbis/fileinfo.c:113
 msgid "Booty Bass"
 msgstr ""
 
-#: src/mpg123/mpg123.c:79 src/vorbis/fileinfo.c:113
+#: src/mpg123/mpg123.c:79
+#: src/vorbis/fileinfo.c:113
 msgid "Primus"
 msgstr ""
 
-#: src/mpg123/mpg123.c:79 src/vorbis/fileinfo.c:113
+#: src/mpg123/mpg123.c:79
+#: src/vorbis/fileinfo.c:113
 msgid "Porn Groove"
 msgstr ""
 
-#: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
 msgid "Satire"
 msgstr ""
 
-#: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
 msgid "Slow Jam"
 msgstr ""
 
-#: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
 msgid "Club"
 msgstr ""
 
-#: src/mpg123/mpg123.c:80 src/vorbis/fileinfo.c:114
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
 msgid "Tango"
 msgstr ""
 
-#: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
 msgid "Samba"
 msgstr ""
 
-#: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
 msgid "Folklore"
 msgstr ""
 
-#: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
 msgid "Ballad"
 msgstr ""
 
-#: src/mpg123/mpg123.c:81 src/vorbis/fileinfo.c:115
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
 msgid "Power Ballad"
 msgstr ""
 
-#: src/mpg123/mpg123.c:82 src/vorbis/fileinfo.c:116
+#: src/mpg123/mpg123.c:82
+#: src/vorbis/fileinfo.c:116
 msgid "Rhythmic Soul"
 msgstr ""
 
-#: src/mpg123/mpg123.c:82 src/vorbis/fileinfo.c:116
+#: src/mpg123/mpg123.c:82
+#: src/vorbis/fileinfo.c:116
 msgid "Freestyle"
 msgstr ""
 
-#: src/mpg123/mpg123.c:82 src/vorbis/fileinfo.c:116
+#: src/mpg123/mpg123.c:82
+#: src/vorbis/fileinfo.c:116
 msgid "Duet"
 msgstr ""
 
-#: src/mpg123/mpg123.c:83 src/vorbis/fileinfo.c:117
+#: src/mpg123/mpg123.c:83
+#: src/vorbis/fileinfo.c:117
 msgid "Punk Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:83 src/vorbis/fileinfo.c:117
+#: src/mpg123/mpg123.c:83
+#: src/vorbis/fileinfo.c:117
 msgid "Drum Solo"
 msgstr ""
 
-#: src/mpg123/mpg123.c:83 src/vorbis/fileinfo.c:117
+#: src/mpg123/mpg123.c:83
+#: src/vorbis/fileinfo.c:117
 msgid "A Cappella"
 msgstr ""
 
-#: src/mpg123/mpg123.c:84 src/vorbis/fileinfo.c:118
+#: src/mpg123/mpg123.c:84
+#: src/vorbis/fileinfo.c:118
 msgid "Euro-House"
 msgstr ""
 
-#: src/mpg123/mpg123.c:84 src/vorbis/fileinfo.c:118
+#: src/mpg123/mpg123.c:84
+#: src/vorbis/fileinfo.c:118
 msgid "Dance Hall"
 msgstr ""
 
-#: src/mpg123/mpg123.c:84 src/vorbis/fileinfo.c:118
+#: src/mpg123/mpg123.c:84
+#: src/vorbis/fileinfo.c:118
 msgid "Goa"
 msgstr ""
 
-#: src/mpg123/mpg123.c:85 src/vorbis/fileinfo.c:119
+#: src/mpg123/mpg123.c:85
+#: src/vorbis/fileinfo.c:119
 msgid "Drum & Bass"
 msgstr ""
 
-#: src/mpg123/mpg123.c:85 src/vorbis/fileinfo.c:119
+#: src/mpg123/mpg123.c:85
+#: src/vorbis/fileinfo.c:119
 msgid "Club-House"
 msgstr ""
 
-#: src/mpg123/mpg123.c:85 src/vorbis/fileinfo.c:119
+#: src/mpg123/mpg123.c:85
+#: src/vorbis/fileinfo.c:119
 msgid "Hardcore"
 msgstr ""
 
-#: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
 msgid "Terror"
 msgstr ""
 
-#: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
 msgid "Indie"
 msgstr ""
 
-#: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
 msgid "BritPop"
 msgstr ""
 
-#: src/mpg123/mpg123.c:86 src/vorbis/fileinfo.c:120
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
 msgid "Negerpunk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:87 src/vorbis/fileinfo.c:121
+#: src/mpg123/mpg123.c:87
+#: src/vorbis/fileinfo.c:121
 msgid "Polsk Punk"
 msgstr ""
 
-#: src/mpg123/mpg123.c:87 src/vorbis/fileinfo.c:121
+#: src/mpg123/mpg123.c:87
+#: src/vorbis/fileinfo.c:121
 msgid "Beat"
 msgstr ""
 
-#: src/mpg123/mpg123.c:87 src/vorbis/fileinfo.c:121
+#: src/mpg123/mpg123.c:87
+#: src/vorbis/fileinfo.c:121
 msgid "Christian Gangsta Rap"
 msgstr ""
 
-#: src/mpg123/mpg123.c:88 src/vorbis/fileinfo.c:122
+#: src/mpg123/mpg123.c:88
+#: src/vorbis/fileinfo.c:122
 msgid "Heavy Metal"
 msgstr ""
 
-#: src/mpg123/mpg123.c:88 src/vorbis/fileinfo.c:122
+#: src/mpg123/mpg123.c:88
+#: src/vorbis/fileinfo.c:122
 msgid "Black Metal"
 msgstr ""
 
-#: src/mpg123/mpg123.c:88 src/vorbis/fileinfo.c:122
+#: src/mpg123/mpg123.c:88
+#: src/vorbis/fileinfo.c:122
 msgid "Crossover"
 msgstr ""
 
-#: src/mpg123/mpg123.c:89 src/vorbis/fileinfo.c:123
+#: src/mpg123/mpg123.c:89
+#: src/vorbis/fileinfo.c:123
 msgid "Contemporary Christian"
 msgstr ""
 
-#: src/mpg123/mpg123.c:89 src/vorbis/fileinfo.c:123
+#: src/mpg123/mpg123.c:89
+#: src/vorbis/fileinfo.c:123
 msgid "Christian Rock"
 msgstr ""
 
-#: src/mpg123/mpg123.c:90 src/vorbis/fileinfo.c:124
+#: src/mpg123/mpg123.c:90
+#: src/vorbis/fileinfo.c:124
 msgid "Merengue"
 msgstr ""
 
-#: src/mpg123/mpg123.c:90 src/vorbis/fileinfo.c:124
+#: src/mpg123/mpg123.c:90
+#: src/vorbis/fileinfo.c:124
 msgid "Salsa"
 msgstr ""
 
-#: src/mpg123/mpg123.c:90 src/vorbis/fileinfo.c:124
+#: src/mpg123/mpg123.c:90
+#: src/vorbis/fileinfo.c:124
 msgid "Thrash Metal"
 msgstr ""
 
-#: src/mpg123/mpg123.c:91 src/vorbis/fileinfo.c:125
+#: src/mpg123/mpg123.c:91
+#: src/vorbis/fileinfo.c:125
 msgid "Anime"
 msgstr ""
 
-#: src/mpg123/mpg123.c:91 src/vorbis/fileinfo.c:125
+#: src/mpg123/mpg123.c:91
+#: src/vorbis/fileinfo.c:125
 msgid "JPop"
 msgstr ""
 
-#: src/mpg123/mpg123.c:91 src/vorbis/fileinfo.c:125
+#: src/mpg123/mpg123.c:91
+#: src/vorbis/fileinfo.c:125
 msgid "Synthpop"
 msgstr ""
 
@@ -1239,8 +1455,7 @@ msgstr ""
 
 #: src/mpg123/mpg123.c:996
 msgid ""
-"Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, derived "
-"from:\n"
+"Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, derived from:\n"
 "mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
 "Derived partially from mpg123 0.59s.mc3 as well.\n"
 "Based on the original XMMS plugin."
@@ -1256,28 +1471,32 @@ msgstr ""
 
 #: src/mpg123/configure.c:175
 msgid "Resolution:"
-msgstr "Auflösung:"
+msgstr ""
 
-#: src/mpg123/configure.c:183 src/timidity/src/interface.c:141
+#: src/mpg123/configure.c:183
+#: src/timidity/src/interface.c:141
 msgid "16 bit"
-msgstr "16 bit"
+msgstr ""
 
-#: src/mpg123/configure.c:192 src/timidity/src/interface.c:133
+#: src/mpg123/configure.c:192
+#: src/timidity/src/interface.c:133
 msgid "8 bit"
-msgstr "8 bit"
+msgstr ""
 
-#: src/mpg123/configure.c:199 src/vorbis/fileinfo.c:863
+#: src/mpg123/configure.c:199
+#: src/vorbis/fileinfo.c:863
 #: src/vorbis/fileinfo.c:919
 msgid "Channels:"
-msgstr "Kanäle:"
+msgstr ""
 
 #: src/mpg123/configure.c:207
 msgid "Stereo (if available)"
-msgstr "Stereo (falls vorhanden)"
+msgstr ""
 
-#: src/mpg123/configure.c:218 src/timidity/src/interface.c:166
+#: src/mpg123/configure.c:218
+#: src/timidity/src/interface.c:166
 msgid "Mono"
-msgstr "Mono"
+msgstr ""
 
 #: src/mpg123/configure.c:225
 msgid "Down sample:"
@@ -1285,37 +1504,42 @@ msgstr ""
 
 #: src/mpg123/configure.c:234
 msgid "1:1 (44 kHz)"
-msgstr "1:1 (44 kHz)"
+msgstr ""
 
 #: src/mpg123/configure.c:245
 msgid "1:2 (22 kHz)"
-msgstr "1:2 (22 kHz)"
+msgstr ""
 
 #: src/mpg123/configure.c:256
 msgid "1:4 (11 kHz)"
-msgstr "1:4 (11 kHz)"
+msgstr ""
 
 #: src/mpg123/configure.c:265
 msgid "Decoder"
-msgstr "Dekoder"
+msgstr ""
 
-#: src/mpg123/configure.c:282 src/vorbis/configure.c:185
+#: src/mpg123/configure.c:282
+#: src/vorbis/configure.c:185
 msgid "Buffer size (kb):"
-msgstr "Puffergrösse (Kb):"
+msgstr ""
 
-#: src/mpg123/configure.c:311 src/vorbis/configure.c:213
+#: src/mpg123/configure.c:311
+#: src/vorbis/configure.c:213
 msgid "Save stream to disk:"
-msgstr "Stream auf Festplatte speichern:"
+msgstr ""
 
-#: src/mpg123/configure.c:322 src/vorbis/configure.c:224
+#: src/mpg123/configure.c:322
+#: src/vorbis/configure.c:224
 msgid "Save stream to disk"
-msgstr "Stream auf Festplatte speichern"
+msgstr ""
 
-#: src/mpg123/configure.c:336 src/vorbis/configure.c:238
+#: src/mpg123/configure.c:336
+#: src/vorbis/configure.c:238
 msgid "Path:"
-msgstr "Pfad:"
+msgstr ""
 
-#: src/mpg123/configure.c:341 src/vorbis/configure.c:243
+#: src/mpg123/configure.c:341
+#: src/vorbis/configure.c:243
 msgid "Pick a folder"
 msgstr ""
 
@@ -1327,7 +1551,8 @@ msgstr ""
 msgid "Enable Icecast Metadata UDP Channel"
 msgstr ""
 
-#: src/mpg123/configure.c:365 src/vorbis/configure.c:249
+#: src/mpg123/configure.c:365
+#: src/vorbis/configure.c:249
 msgid "Streaming"
 msgstr ""
 
@@ -1343,13 +1568,15 @@ msgstr ""
 msgid "ID3 format:"
 msgstr ""
 
-#: src/mpg123/configure.c:409 src/vorbis/configure.c:288
+#: src/mpg123/configure.c:409
+#: src/vorbis/configure.c:288
 msgid "Title"
-msgstr "Titel"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:211 src/timidity/src/interface.c:174
+#: src/mpg123/fileinfo.c:211
+#: src/timidity/src/interface.c:174
 msgid "Stereo"
-msgstr "Stereo"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:211
 msgid "Joint stereo"
@@ -1363,23 +1590,25 @@ msgstr ""
 msgid "Single channel"
 msgstr ""
 
-#: src/mpg123/fileinfo.c:227 src/mpg123/fileinfo.c:769
+#: src/mpg123/fileinfo.c:227
+#: src/mpg123/fileinfo.c:769
 #, c-format
 msgid "%d KBit/s"
-msgstr "%d KBit/s"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:228 src/mpg123/fileinfo.c:764
+#: src/mpg123/fileinfo.c:228
+#: src/mpg123/fileinfo.c:764
 #, c-format
 msgid "%ld Hz"
-msgstr "%ld Hz"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:245
 msgid "None"
-msgstr "Kein"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:246
 msgid "50/15 ms"
-msgstr "50/15 ms"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:248
 msgid "CCIT J.17"
@@ -1387,126 +1616,155 @@ msgstr ""
 
 #: src/mpg123/fileinfo.c:249
 msgid "No"
-msgstr "Nein"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:250
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:294 src/vorbis/fileinfo.c:558
+#: src/mpg123/fileinfo.c:294
+#: src/vorbis/fileinfo.c:558
 msgid "Name:"
-msgstr "Name:"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:310
 msgid " MPEG Info "
-msgstr "MPEG-Info"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:325 src/mpg123/fileinfo.c:647
+#: src/mpg123/fileinfo.c:325
+#: src/mpg123/fileinfo.c:647
 msgid "MPEG Level:"
-msgstr "MPEG-Level:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:338 src/mpg123/fileinfo.c:650
-#: src/vorbis/fileinfo.c:837 src/vorbis/fileinfo.c:913
+#: src/mpg123/fileinfo.c:338
+#: src/mpg123/fileinfo.c:650
+#: src/vorbis/fileinfo.c:837
+#: src/vorbis/fileinfo.c:913
 msgid "Bit rate:"
-msgstr "Bitrate:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:351 src/mpg123/fileinfo.c:653
-#: src/vorbis/fileinfo.c:850 src/vorbis/fileinfo.c:916
+#: src/mpg123/fileinfo.c:351
+#: src/mpg123/fileinfo.c:653
+#: src/vorbis/fileinfo.c:850
+#: src/vorbis/fileinfo.c:916
 msgid "Sample rate:"
 msgstr ""
 
-#: src/mpg123/fileinfo.c:365 src/mpg123/fileinfo.c:668
-#: src/vorbis/fileinfo.c:889 src/vorbis/fileinfo.c:925
+#: src/mpg123/fileinfo.c:365
+#: src/mpg123/fileinfo.c:668
+#: src/vorbis/fileinfo.c:889
+#: src/vorbis/fileinfo.c:925
 msgid "File size:"
-msgstr "Dateigrösse:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:378 src/mpg123/fileinfo.c:671
+#: src/mpg123/fileinfo.c:378
+#: src/mpg123/fileinfo.c:671
 msgid "Mode:"
-msgstr "Modus:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:401 src/mpg123/fileinfo.c:656
+#: src/mpg123/fileinfo.c:401
+#: src/mpg123/fileinfo.c:656
 msgid "Error Protection:"
-msgstr "Fehlerschutz:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:414 src/mpg123/fileinfo.c:659
+#: src/mpg123/fileinfo.c:414
+#: src/mpg123/fileinfo.c:659
 #: src/vorbis/fileinfo.c:719
 msgid "Copyright:"
-msgstr "Copyright:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:427 src/mpg123/fileinfo.c:662
+#: src/mpg123/fileinfo.c:427
+#: src/mpg123/fileinfo.c:662
 msgid "Original:"
-msgstr "Original:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:440 src/mpg123/fileinfo.c:665
+#: src/mpg123/fileinfo.c:440
+#: src/mpg123/fileinfo.c:665
 msgid "Emphasis:"
 msgstr ""
 
 #: src/mpg123/fileinfo.c:454
 msgid " ID3 Tag "
-msgstr "ID3-Tag"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:462 src/vorbis/fileinfo.c:581
+#: src/mpg123/fileinfo.c:462
+#: src/vorbis/fileinfo.c:581
 msgid "Title:"
-msgstr "Titel:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:473 src/vorbis/fileinfo.c:592
+#: src/mpg123/fileinfo.c:473
+#: src/vorbis/fileinfo.c:592
 msgid "Artist:"
-msgstr "Künstler:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:484 src/vorbis/fileinfo.c:603
+#: src/mpg123/fileinfo.c:484
+#: src/vorbis/fileinfo.c:603
 msgid "Album:"
-msgstr "Album:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:495 src/vorbis/fileinfo.c:614
+#: src/mpg123/fileinfo.c:495
+#: src/vorbis/fileinfo.c:614
 msgid "Comment:"
-msgstr "Kommentar:"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:506
 msgid "Year:"
-msgstr "Jahr:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:518 src/vorbis/fileinfo.c:637
+#: src/mpg123/fileinfo.c:518
+#: src/vorbis/fileinfo.c:637
 msgid "Track number:"
-msgstr "Titelnummer:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:530 src/vorbis/fileinfo.c:649
+#: src/mpg123/fileinfo.c:530
+#: src/vorbis/fileinfo.c:649
 msgid "Genre:"
-msgstr "Genre:"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:630 src/vorbis/fileinfo.c:1015
+#: src/mpg123/fileinfo.c:630
+#: src/vorbis/fileinfo.c:1015
 #, c-format
 msgid "%s - Audacious"
-msgstr "%s - Audacious"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:648 src/mpg123/fileinfo.c:651
-#: src/mpg123/fileinfo.c:654 src/mpg123/fileinfo.c:657
-#: src/mpg123/fileinfo.c:660 src/mpg123/fileinfo.c:663
-#: src/mpg123/fileinfo.c:666 src/mpg123/fileinfo.c:669
-#: src/mpg123/fileinfo.c:672 src/vorbis/fileinfo.c:914
-#: src/vorbis/fileinfo.c:917 src/vorbis/fileinfo.c:920
-#: src/vorbis/fileinfo.c:923 src/vorbis/fileinfo.c:926
+#: src/mpg123/fileinfo.c:648
+#: src/mpg123/fileinfo.c:651
+#: src/mpg123/fileinfo.c:654
+#: src/mpg123/fileinfo.c:657
+#: src/mpg123/fileinfo.c:660
+#: src/mpg123/fileinfo.c:663
+#: src/mpg123/fileinfo.c:666
+#: src/mpg123/fileinfo.c:669
+#: src/mpg123/fileinfo.c:672
+#: src/vorbis/fileinfo.c:914
+#: src/vorbis/fileinfo.c:917
+#: src/vorbis/fileinfo.c:920
+#: src/vorbis/fileinfo.c:923
+#: src/vorbis/fileinfo.c:926
 msgid "N/A"
-msgstr "K/A"
+msgstr ""
 
-#: src/mpg123/fileinfo.c:816 src/mpg123/fileinfo.c:818
-#: src/mpg123/fileinfo.c:819 src/mpg123/fileinfo.c:820
+#: src/mpg123/fileinfo.c:816
+#: src/mpg123/fileinfo.c:818
+#: src/mpg123/fileinfo.c:819
+#: src/mpg123/fileinfo.c:820
 #: src/mpg123/fileinfo.c:822
 #, c-format
 msgid "%s"
-msgstr "%s"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:821
 #, c-format
 msgid "%lu Bytes"
-msgstr "%lu Bytes"
+msgstr ""
 
 #: src/null/null.c:59
 msgid "About Null Output"
-msgstr "Über Null-Ausgabe-Plugin"
+msgstr ""
 
 #: src/null/null.c:60
 msgid "Null output plugin "
-msgstr "Null-Ausgabe-Plugin"
+msgstr ""
 
 #: src/null/null.c:61
 msgid ""
@@ -1516,21 +1774,23 @@ msgstr ""
 
 #: src/scrobbler/configure.c:112
 msgid "<b>Services</b>"
-msgstr "<b>Dienste</b>"
+msgstr ""
 
-#: src/scrobbler/configure.c:134 src/scrobbler/configure.c:174
+#: src/scrobbler/configure.c:134
+#: src/scrobbler/configure.c:174
 #: src/scrobbler/configure.c:214
 msgid "Username:"
-msgstr "Benutzername:"
+msgstr ""
 
-#: src/scrobbler/configure.c:140 src/scrobbler/configure.c:180
+#: src/scrobbler/configure.c:140
+#: src/scrobbler/configure.c:180
 #: src/scrobbler/configure.c:220
 msgid "Password:"
-msgstr "Passwort:"
+msgstr ""
 
 #: src/scrobbler/configure.c:158
 msgid "<b>Last.FM</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/scrobbler/configure.c:198
 msgid "<b>Gerpok</b>"
@@ -1542,11 +1802,11 @@ msgstr ""
 
 #: src/scrobbler/gtkstuff.c:22
 msgid "About Scrobbler Plugin"
-msgstr "Über Scrobbler-Plugin"
+msgstr ""
 
 #: src/scrobbler/plugin.c:575
 msgid "Scrobbler Plugin"
-msgstr "Scrobbler-Plugin"
+msgstr ""
 
 #: src/song_change/song_change.c:55
 #, c-format
@@ -1561,10 +1821,11 @@ msgstr ""
 msgid "Command to run when Audacious starts a new song."
 msgstr ""
 
-#: src/song_change/song_change.c:195 src/song_change/song_change.c:217
+#: src/song_change/song_change.c:195
+#: src/song_change/song_change.c:217
 #: src/song_change/song_change.c:238
 msgid "Command:"
-msgstr "Befehl:"
+msgstr ""
 
 #: src/song_change/song_change.c:209
 msgid "Command to run toward the end of a song."
@@ -1592,9 +1853,7 @@ msgid ""
 msgstr ""
 
 #: src/song_change/song_change.c:275
-msgid ""
-"<span size='small'>Parameters passed to the shell should be encapsulated in "
-"quotes. Doing otherwise is a security risk.</span>"
+msgid "<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 
 #: src/stereo_plugin/stereo.c:29
@@ -1619,7 +1878,7 @@ msgstr ""
 
 #: src/stereo_plugin/stereo.c:101
 msgid "Effect intensity:"
-msgstr "Effektstärke"
+msgstr ""
 
 #: src/sun/configure.c:200
 msgid "Audio control device:"
@@ -1635,7 +1894,7 @@ msgstr ""
 
 #: src/sun/configure.c:487
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #: src/sun/configure.c:537
 msgid "Sun driver configuration"
@@ -1689,15 +1948,15 @@ msgstr ""
 
 #: src/timidity/src/interface.c:92
 msgid "11000 Hz"
-msgstr "11000 Hz"
+msgstr ""
 
 #: src/timidity/src/interface.c:100
 msgid "22000 Hz"
-msgstr "22000 Hz"
+msgstr ""
 
 #: src/timidity/src/interface.c:108
 msgid "44100 Hz"
-msgstr "44100 Hz"
+msgstr ""
 
 #: src/timidity/src/interface.c:116
 msgid "Sample Width"
@@ -1705,7 +1964,7 @@ msgstr ""
 
 #: src/timidity/src/interface.c:149
 msgid "Channels"
-msgstr "Kanäle"
+msgstr ""
 
 #: src/timidity/src/interface.c:182
 msgid "TiMidity Configuration File"
@@ -1713,7 +1972,7 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:51
 msgid "About Tone Generator"
-msgstr "Über Ton-Generator"
+msgstr ""
 
 #: src/tonegen/tonegen.c:53
 msgid ""
@@ -1726,17 +1985,17 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:165
 msgid "Tone Generator: "
-msgstr "Ton-Generator:"
+msgstr ""
 
 #: src/tonegen/tonegen.c:265
 #, c-format
 msgid "Tone Generator %s"
-msgstr "Ton-Generator %s"
+msgstr ""
 
 #: src/tta/aud-tta.c:417
 #, c-format
 msgid "File Info - %s"
-msgstr "Dateiinformationen - %s"
+msgstr ""
 
 #: src/vorbis/configure.c:161
 msgid "Ogg Vorbis Audio Plugin Configuration"
@@ -1780,7 +2039,7 @@ msgstr ""
 
 #: src/vorbis/configure.c:349
 msgid "ReplayGain"
-msgstr "ReplayGain"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:210
 #, c-format
@@ -1788,12 +2047,10 @@ msgid ""
 "An error occured:\n"
 "%s"
 msgstr ""
-"Es ist ein Fehler aufgetreten:\n"
-"%s"
 
 #: src/vorbis/fileinfo.c:212
 msgid "Error!"
-msgstr "Fehler!"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:242
 msgid "Failed to modify tag (open)"
@@ -1803,7 +2060,8 @@ msgstr ""
 msgid "Failed to modify tag (close)"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:320 src/vorbis/fileinfo.c:329
+#: src/vorbis/fileinfo.c:320
+#: src/vorbis/fileinfo.c:329
 msgid "Failed to modify tag"
 msgstr ""
 
@@ -1813,27 +2071,27 @@ msgstr ""
 
 #: src/vorbis/fileinfo.c:625
 msgid "Date:"
-msgstr "Datum:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:667
 msgid "Description:"
-msgstr "Beschreibung:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:677
 msgid "Location:"
-msgstr "Ort:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:687
 msgid "Version:"
-msgstr "Version:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:698
 msgid "ISRC number:"
-msgstr "ISRC-Nummer:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:709
 msgid "Organization:"
-msgstr "Organisation:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:756
 msgid " Ogg Vorbis ReplayGain "
@@ -1857,11 +2115,12 @@ msgstr ""
 
 #: src/vorbis/fileinfo.c:822
 msgid " Ogg Vorbis Info "
-msgstr " Ogg-Vorbis-Informationen"
+msgstr ""
 
-#: src/vorbis/fileinfo.c:876 src/vorbis/fileinfo.c:922
+#: src/vorbis/fileinfo.c:876
+#: src/vorbis/fileinfo.c:922
 msgid "Length:"
-msgstr "Länge:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:956
 #, c-format
@@ -1871,30 +2130,30 @@ msgstr ""
 #: src/vorbis/fileinfo.c:957
 #, c-format
 msgid "%d Hz"
-msgstr "%d Hz"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:958
 #, c-format
 msgid "%d"
-msgstr "%d"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:960
 #, c-format
 msgid "%d:%.2d"
-msgstr "%d:%.2d"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:962
 #, c-format
 msgid "%d Bytes"
-msgstr "%d Bytes"
+msgstr ""
 
 #: src/vorbis/vorbis.c:147
 msgid "Ogg Vorbis Audio Plugin"
-msgstr "Ogg-Vorbis-Audio-Plugin"
+msgstr "Ategyn Sain Ogg Vorbis"
 
 #: src/vorbis/vorbis.c:877
 msgid "About Ogg Vorbis Audio Plugin"
-msgstr "Über Ogg-Vorbis-Audio-Plugin"
+msgstr "Ynghylch Ategyn Ogg Vorbis"
 
 #: src/vorbis/vorbis.c:883
 msgid ""
@@ -1913,10 +2172,24 @@ msgid ""
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
+"Ogg Vorbis Plugin gan Xiphophorus\n"
+"\n"
+"Cod gwreiddiol gan\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Cyfraniadau gan\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"\n"
+"Ewch i Xiph.org Founfation yn http://www.xiph.org/\n"
 
 #: src/wav/wav-sndfile.c:246
 msgid "About sndfile WAV support"
-msgstr ""
+msgstr "Ynghylch ategyn sndfile-WAV"
 
 #: src/wav/wav-sndfile.c:247
 msgid ""
@@ -1943,25 +2216,23 @@ msgstr ""
 
 #: src/wav/wav-sndfile.c:272
 msgid "sndfile WAV plugin"
-msgstr ""
+msgstr "Ategyn Sain WAV (sndfile)"
 
 #: src/wav/wav.c:73
 msgid "WAV Audio Plugin"
-msgstr ""
+msgstr "Ategyn Sain WAV"
 
 #: src/wma/wma.c:132
 #, c-format
 msgid "WMA Player %s"
-msgstr ""
+msgstr "Chwaraeydd WMA %s"
 
 #: src/wma/wma.c:165
 #, c-format
 msgid "About %s"
-msgstr "Über %s"
+msgstr "Ynghylch %s"
 
 #: src/wma/wma.c:178
 msgid " Close "
-msgstr " Schliessen"
+msgstr "Cau"
 
-#~ msgid "Browse"
-#~ msgstr "Suchen"

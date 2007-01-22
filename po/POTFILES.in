@@ -25,7 +25,6 @@ src/jack/jack.c
 src/lirc/lirc.c
 src/lirc/about.c
 src/mpg123/mpg123.c
-src/mpg123/http.c
 src/mpg123/configure.c
 src/mpg123/rtsp.c
 src/mpg123/fileinfo.c
@@ -44,7 +43,6 @@ src/timidity/src/interface.c
 src/tonegen/tonegen.c
 src/tta/aud-tta.c
 src/vorbis/configure.c
-src/vorbis/http.c
 src/vorbis/fileinfo.c
 src/vorbis/vorbis.c
 src/wav/wav-sndfile.c

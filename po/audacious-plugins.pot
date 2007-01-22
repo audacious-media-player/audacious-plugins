@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
+# Copyright (C) YEAR Translator <translator@invalid>
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: bugs+audacious-plugins@atheme.org\n"
-"POT-Creation-Date: 2006-12-18 15:08-0600\n"
+"Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
+"POT-Creation-Date: 2007-01-22 10:42-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,8 +49,8 @@ msgstr ""
 msgid "Devices"
 msgstr ""
 
-#: src/OSS/configure.c:303 src/esd/configure.c:171 src/mpg123/configure.c:296
-#: src/sun/configure.c:258 src/vorbis/configure.c:198
+#: src/OSS/configure.c:303 src/esd/configure.c:171 src/mpg123/configure.c:269
+#: src/sun/configure.c:258 src/vorbis/configure.c:173
 msgid "Buffering:"
 msgstr ""
 
@@ -58,8 +58,8 @@ msgstr ""
 msgid "Buffer size (ms):"
 msgstr ""
 
-#: src/OSS/configure.c:330 src/esd/configure.c:198 src/mpg123/configure.c:324
-#: src/sun/configure.c:289 src/vorbis/configure.c:224
+#: src/OSS/configure.c:330 src/esd/configure.c:198 src/mpg123/configure.c:297
+#: src/sun/configure.c:289 src/vorbis/configure.c:199
 msgid "Pre-buffer (percent):"
 msgstr ""
 
@@ -110,13 +110,13 @@ msgstr ""
 #: src/OSS/about.c:54 src/adplug/adplug-xmms.cc:155 src/alac/plugin.c:87
 #: src/audiocompress/audacious-glue.c:103 src/console/Audacious_Driver.cxx:459
 #: src/echo_plugin/gui.c:23 src/echo_plugin/gui.c:134 src/esd/about.c:49
-#: src/jack/jack.c:598 src/mpg123/mpg123.c:959 src/mpg123/http.c:222
-#: src/null/null.c:62 src/paranormal/plugin.c:286 src/scrobbler/gtkstuff.c:24
+#: src/jack/jack.c:598 src/mpg123/mpg123.c:1000 src/null/null.c:63
+#: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:24
 #: src/stereo_plugin/stereo.c:59 src/stereo_plugin/stereo.c:122
 #: src/sun/configure.c:558 src/sun/about.c:38
 #: src/timidity/src/xmms-timidity.c:140 src/timidity/src/interface.c:223
-#: src/tonegen/tonegen.c:57 src/vorbis/http.c:218 src/vorbis/fileinfo.c:212
-#: src/vorbis/vorbis.c:829 src/wav/wav-sndfile.c:263
+#: src/tonegen/tonegen.c:57 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:895
+#: src/wav/wav-sndfile.c:263
 msgid "Ok"
 msgstr ""
 
@@ -337,8 +337,8 @@ msgstr ""
 msgid "Track names:"
 msgstr ""
 
-#: src/cdaudio/configure.c:605 src/mpg123/configure.c:414
-#: src/vorbis/configure.c:292
+#: src/cdaudio/configure.c:605 src/mpg123/configure.c:382
+#: src/vorbis/configure.c:261
 msgid "Override generic titles"
 msgstr ""
 
@@ -354,12 +354,12 @@ msgstr ""
 msgid "CD Audio Plugin"
 msgstr ""
 
-#: src/cdaudio/cdaudio.c:1054 src/cdaudio/cdaudio.c:1059
+#: src/cdaudio/cdaudio.c:1055 src/cdaudio/cdaudio.c:1060
 #, c-format
 msgid "CD Audio Track %02u"
 msgstr ""
 
-#: src/cdaudio/cdinfo.c:156 src/cdaudio/cdinfo.c:157 src/cdaudio/cdinfo.c:158
+#: src/cdaudio/cdinfo.c:161 src/cdaudio/cdinfo.c:162 src/cdaudio/cdinfo.c:163
 msgid "(unknown)"
 msgstr ""
 
@@ -452,47 +452,30 @@ msgstr ""
 msgid "Disk Writer Plugin %s"
 msgstr ""
 
-#: src/disk_writer/disk_writer.c:138 src/mpg123/http.c:222
-#: src/vorbis/http.c:218
+#: src/disk_writer/disk_writer.c:140
 msgid "Error"
 msgstr ""
 
-#: src/disk_writer/disk_writer.c:139
+#: src/disk_writer/disk_writer.c:141
 msgid ""
 "You cannot use the Disk Writer plugin\n"
 "when you're running in realtime mode."
 msgstr ""
 
-#: src/disk_writer/disk_writer.c:141 src/disk_writer/disk_writer.c:406
+#: src/disk_writer/disk_writer.c:143
 msgid "OK"
 msgstr ""
 
-#: src/disk_writer/disk_writer.c:316
-msgid "Select the directory where you want to store the output files:"
-msgstr ""
-
-#: src/disk_writer/disk_writer.c:360
+#: src/disk_writer/disk_writer.c:356
 msgid "Disk Writer Configuration"
 msgstr ""
 
-#: src/disk_writer/disk_writer.c:371 src/mpg123/configure.c:363
-#: src/vorbis/configure.c:263
-msgid "Path:"
+#: src/disk_writer/disk_writer.c:367
+msgid "Output file folder:"
 msgstr ""
 
-#: src/disk_writer/disk_writer.c:382 src/mpg123/configure.c:373
-#: src/vorbis/configure.c:273
-msgid "Browse"
-msgstr ""
-
-#: src/disk_writer/disk_writer.c:389
+#: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
-msgstr ""
-
-#: src/disk_writer/disk_writer.c:413 src/echo_plugin/gui.c:142
-#: src/stereo_plugin/stereo.c:131 src/sun/configure.c:566
-#: src/timidity/src/interface.c:231
-msgid "Cancel"
 msgstr ""
 
 #: src/echo_plugin/echo.c:44
@@ -530,6 +513,11 @@ msgstr ""
 
 #: src/echo_plugin/gui.c:119
 msgid "Surround echo"
+msgstr ""
+
+#: src/echo_plugin/gui.c:142 src/stereo_plugin/stereo.c:131
+#: src/sun/configure.c:566 src/timidity/src/interface.c:231
+msgid "Cancel"
 msgstr ""
 
 #: src/echo_plugin/gui.c:149 src/stereo_plugin/stereo.c:138
@@ -1248,11 +1236,11 @@ msgstr ""
 msgid "Synthpop"
 msgstr ""
 
-#: src/mpg123/mpg123.c:954
+#: src/mpg123/mpg123.c:995
 msgid "About MPEG Audio Plugin"
 msgstr ""
 
-#: src/mpg123/mpg123.c:955
+#: src/mpg123/mpg123.c:996
 msgid ""
 "Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, derived "
 "from:\n"
@@ -1261,144 +1249,104 @@ msgid ""
 "Based on the original XMMS plugin."
 msgstr ""
 
-#: src/mpg123/mpg123.c:1000
+#: src/mpg123/mpg123.c:1041
 msgid "MPEG Audio Plugin"
 msgstr ""
 
-#: src/mpg123/http.c:387 src/mpg123/http.c:440 src/vorbis/http.c:338
-#: src/vorbis/http.c:390
-#, c-format
-msgid "CONNECTING TO %s:%d"
-msgstr ""
-
-#: src/mpg123/http.c:402 src/vorbis/http.c:353
-#, c-format
-msgid "Couldn't connect to host %s:%d"
-msgstr ""
-
-#: src/mpg123/http.c:408 src/mpg123/http.c:425 src/vorbis/http.c:360
-#: src/vorbis/http.c:375
-#, c-format
-msgid "Couldn't look up host %s"
-msgstr ""
-
-#: src/mpg123/http.c:420 src/vorbis/http.c:370
-#, c-format
-msgid "LOOKING UP %s"
-msgstr ""
-
-#: src/mpg123/http.c:448 src/mpg123/http.c:469 src/vorbis/http.c:398
-#: src/vorbis/http.c:419
-#, c-format
-msgid "Couldn't connect to host %s"
-msgstr ""
-
-#: src/mpg123/http.c:538 src/vorbis/http.c:467
-msgid "CONNECTED: WAITING FOR REPLY"
-msgstr ""
-
-#: src/mpg123/http.c:575 src/vorbis/http.c:504
-#, c-format
-msgid ""
-"Couldn't connect to host %s\n"
-"Server reported: %s"
-msgstr ""
-
-#: src/mpg123/http.c:704
-#, c-format
-msgid "PRE-BUFFERING: %zuKB/%zuKB"
-msgstr ""
-
-#: src/mpg123/configure.c:116
-msgid "Select the directory where you want to store the MPEG streams:"
-msgstr ""
-
-#: src/mpg123/configure.c:185
+#: src/mpg123/configure.c:158
 msgid "MPEG Audio Plugin Configuration"
 msgstr ""
 
-#: src/mpg123/configure.c:202
+#: src/mpg123/configure.c:175
 msgid "Resolution:"
 msgstr ""
 
-#: src/mpg123/configure.c:210 src/timidity/src/interface.c:141
+#: src/mpg123/configure.c:183 src/timidity/src/interface.c:141
 msgid "16 bit"
 msgstr ""
 
-#: src/mpg123/configure.c:219 src/timidity/src/interface.c:133
+#: src/mpg123/configure.c:192 src/timidity/src/interface.c:133
 msgid "8 bit"
 msgstr ""
 
-#: src/mpg123/configure.c:226 src/vorbis/fileinfo.c:863
+#: src/mpg123/configure.c:199 src/vorbis/fileinfo.c:863
 #: src/vorbis/fileinfo.c:919
 msgid "Channels:"
 msgstr ""
 
-#: src/mpg123/configure.c:234
+#: src/mpg123/configure.c:207
 msgid "Stereo (if available)"
 msgstr ""
 
-#: src/mpg123/configure.c:245 src/timidity/src/interface.c:166
+#: src/mpg123/configure.c:218 src/timidity/src/interface.c:166
 msgid "Mono"
 msgstr ""
 
-#: src/mpg123/configure.c:252
+#: src/mpg123/configure.c:225
 msgid "Down sample:"
 msgstr ""
 
-#: src/mpg123/configure.c:261
+#: src/mpg123/configure.c:234
 msgid "1:1 (44 kHz)"
 msgstr ""
 
-#: src/mpg123/configure.c:272
+#: src/mpg123/configure.c:245
 msgid "1:2 (22 kHz)"
 msgstr ""
 
-#: src/mpg123/configure.c:283
+#: src/mpg123/configure.c:256
 msgid "1:4 (11 kHz)"
 msgstr ""
 
-#: src/mpg123/configure.c:292
+#: src/mpg123/configure.c:265
 msgid "Decoder"
 msgstr ""
 
-#: src/mpg123/configure.c:309 src/vorbis/configure.c:210
+#: src/mpg123/configure.c:282 src/vorbis/configure.c:185
 msgid "Buffer size (kb):"
 msgstr ""
 
-#: src/mpg123/configure.c:338 src/vorbis/configure.c:238
+#: src/mpg123/configure.c:311 src/vorbis/configure.c:213
 msgid "Save stream to disk:"
 msgstr ""
 
-#: src/mpg123/configure.c:349 src/vorbis/configure.c:249
+#: src/mpg123/configure.c:322 src/vorbis/configure.c:224
 msgid "Save stream to disk"
 msgstr ""
 
-#: src/mpg123/configure.c:379
+#: src/mpg123/configure.c:336 src/vorbis/configure.c:238
+msgid "Path:"
+msgstr ""
+
+#: src/mpg123/configure.c:341 src/vorbis/configure.c:243
+msgid "Pick a folder"
+msgstr ""
+
+#: src/mpg123/configure.c:347
 msgid "SHOUT/Icecast:"
 msgstr ""
 
-#: src/mpg123/configure.c:390
+#: src/mpg123/configure.c:358
 msgid "Enable Icecast Metadata UDP Channel"
 msgstr ""
 
-#: src/mpg123/configure.c:397 src/vorbis/configure.c:280
+#: src/mpg123/configure.c:365 src/vorbis/configure.c:249
 msgid "Streaming"
 msgstr ""
 
-#: src/mpg123/configure.c:399
+#: src/mpg123/configure.c:367
 msgid "ID3 Tags:"
 msgstr ""
 
-#: src/mpg123/configure.c:407
+#: src/mpg123/configure.c:375
 msgid "Disable ID3V2 tags"
 msgstr ""
 
-#: src/mpg123/configure.c:427
+#: src/mpg123/configure.c:395
 msgid "ID3 format:"
 msgstr ""
 
-#: src/mpg123/configure.c:441 src/vorbis/configure.c:319
+#: src/mpg123/configure.c:409 src/vorbis/configure.c:288
 msgid "Title"
 msgstr ""
 
@@ -1555,15 +1503,15 @@ msgstr ""
 msgid "%lu Bytes"
 msgstr ""
 
-#: src/null/null.c:58
+#: src/null/null.c:59
 msgid "About Null Output"
 msgstr ""
 
-#: src/null/null.c:59
+#: src/null/null.c:60
 msgid "Null output plugin "
 msgstr ""
 
-#: src/null/null.c:60
+#: src/null/null.c:61
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 " based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
@@ -1793,57 +1741,48 @@ msgstr ""
 msgid "File Info - %s"
 msgstr ""
 
-#: src/vorbis/configure.c:107
-msgid "Select the directory where you want to store the Ogg Vorbis streams:"
-msgstr ""
-
-#: src/vorbis/configure.c:186
+#: src/vorbis/configure.c:161
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr ""
 
-#: src/vorbis/configure.c:284
+#: src/vorbis/configure.c:253
 msgid "Ogg Vorbis Tags:"
 msgstr ""
 
-#: src/vorbis/configure.c:305
+#: src/vorbis/configure.c:274
 msgid "Title format:"
 msgstr ""
 
-#: src/vorbis/configure.c:323
+#: src/vorbis/configure.c:292
 msgid "ReplayGain Settings:"
 msgstr ""
 
-#: src/vorbis/configure.c:331
+#: src/vorbis/configure.c:300
 msgid "Enable Clipping Prevention"
 msgstr ""
 
-#: src/vorbis/configure.c:336
+#: src/vorbis/configure.c:305
 msgid "Enable ReplayGain"
 msgstr ""
 
-#: src/vorbis/configure.c:341
+#: src/vorbis/configure.c:310
 msgid "ReplayGain Type:"
 msgstr ""
 
-#: src/vorbis/configure.c:352
+#: src/vorbis/configure.c:321
 msgid "use Track Gain/Peak"
 msgstr ""
 
-#: src/vorbis/configure.c:362
+#: src/vorbis/configure.c:331
 msgid "use Album Gain/Peak"
 msgstr ""
 
-#: src/vorbis/configure.c:374
+#: src/vorbis/configure.c:343
 msgid "Enable 6dB Boost + Hard Limiting"
 msgstr ""
 
-#: src/vorbis/configure.c:380
+#: src/vorbis/configure.c:349
 msgid "ReplayGain"
-msgstr ""
-
-#: src/vorbis/http.c:607
-#, c-format
-msgid "PRE-BUFFERING: %dKB/%dKB"
 msgstr ""
 
 #: src/vorbis/fileinfo.c:210
@@ -1950,15 +1889,15 @@ msgstr ""
 msgid "%d Bytes"
 msgstr ""
 
-#: src/vorbis/vorbis.c:141
+#: src/vorbis/vorbis.c:147
 msgid "Ogg Vorbis Audio Plugin"
 msgstr ""
 
-#: src/vorbis/vorbis.c:811
+#: src/vorbis/vorbis.c:877
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr ""
 
-#: src/vorbis/vorbis.c:817
+#: src/vorbis/vorbis.c:883
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -2011,16 +1950,16 @@ msgstr ""
 msgid "WAV Audio Plugin"
 msgstr ""
 
-#: src/wma/wma.c:131
+#: src/wma/wma.c:132
 #, c-format
 msgid "WMA Player %s"
 msgstr ""
 
-#: src/wma/wma.c:164
+#: src/wma/wma.c:165
 #, c-format
 msgid "About %s"
 msgstr ""
 
-#: src/wma/wma.c:177
+#: src/wma/wma.c:178
 msgid " Close "
 msgstr ""
