@@ -588,6 +588,7 @@ curl_vfs_fread_impl(gpointer ptr,
       uc = GPOINTER_TO_INT(handle->stream_stack->data);
       handle->stream_stack = g_slist_delete_link( handle->stream_stack , handle->stream_stack );
       memcpy( ptr + ret , &uc , 1 );
+      handle->rd_abs++;
       ret++;
     }
   }
@@ -649,6 +650,7 @@ curl_vfs_getc_impl(VFSFile *stream)
   {
     uc = GPOINTER_TO_INT(handle->stream_stack->data);
     handle->stream_stack = g_slist_delete_link( handle->stream_stack , handle->stream_stack );
+    handle->rd_abs++;
     return uc;
   }
   else if (curl_vfs_fread_impl(&uc, 1, 1, stream) != 1)
@@ -665,7 +667,10 @@ curl_vfs_ungetc_impl(gint c, VFSFile *stream)
 
   handle->stream_stack = g_slist_prepend( handle->stream_stack , GINT_TO_POINTER(c) );
   if ( handle->stream_stack != NULL )
+  {
+    handle->rd_abs--;
     return c;
+  }
   else
     return EOF;
 }
@@ -759,20 +764,14 @@ glong
 curl_vfs_ftell_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
-  if ( handle->stream_stack != NULL )
-    return handle->rd_abs - g_slist_length( handle->stream_stack );
-  else
-    return handle->rd_abs;
+  return handle->rd_abs;
 }
 
 gboolean
 curl_vfs_feof_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
-  if ( handle->stream_stack != NULL )
-    return (handle->rd_abs - g_slist_length( handle->stream_stack )) == handle->length;
-  else
-    return handle->rd_abs == handle->length;
+  return handle->rd_abs == handle->length;
 }
 
 gint

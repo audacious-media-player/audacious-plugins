@@ -1,3 +1,17 @@
+2007-01-22 18:36:50 +0000  Giacomo Lozito <james@develia.org>
+  revision [1126]
+  - add missing inclusion of audacious/strings.h where necessary
+  trunk/src/amidi-plug/amidi-plug.c |    6 +++---
+  trunk/src/cue/cuesheet.c          |    1 +
+  trunk/src/flac112/plugin.c        |    1 +
+  trunk/src/flac113/fileinfo.c      |    3 ++-
+  trunk/src/mpg123/fileinfo.c       |    5 +++--
+  trunk/src/mpg123/mpg123.c         |   11 ++++++-----
+  trunk/src/tta/aud-tta.c           |    4 ++--
+  trunk/src/wma/wma.c               |   12 ++++++------
+  8 files changed, 24 insertions(+), 19 deletions(-)
+
+
 2007-01-22 18:32:03 +0000  Giacomo Lozito <james@develia.org>
   revision [1124]
   - re-add code that was accidentally removed after merge of getc/ungetc implementation
