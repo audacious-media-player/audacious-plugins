@@ -6,7 +6,6 @@ SUBDIRS = plugin_common
 noinst_HEADERS = \
 	charset.h \
 	configure.h \
-	http.h \
 	plugin.h \
 	tag.h \
 	fast_float_math_hack.h \
@@ -24,7 +23,6 @@ SOURCES = \
 	charset.c \
 	configure.c \
 	fileinfo.c \
-	http.c \
 	plugin.c \
 	tag.c \
 	replaygain_synthesis.c \
