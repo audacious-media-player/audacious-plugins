@@ -1,3 +1,15 @@
+2007-01-22 05:45:52 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1092]
+  - mms transport
+  - summarize which transports will be built in configure
+  
+  trunk/configure.ac     |   30 +++++-
+  trunk/mk/rules.mk.in   |    2 
+  trunk/src/mms/Makefile |   19 +++
+  trunk/src/mms/mms.c    |  238 +++++++++++++++++++++++++++++++++++++++++++++++++
+  4 files changed, 286 insertions(+), 3 deletions(-)
+
+
 2007-01-22 05:15:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1090]
   - remove broken mms code, libmms-based transport in progress

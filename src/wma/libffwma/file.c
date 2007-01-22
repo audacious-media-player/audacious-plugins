@@ -23,7 +23,6 @@
 #include <sys/ioctl.h>
 #include <sys/time.h>
 #include "audacious/vfs.h"
-#include "mms.h"
 
 /* standard file protocol */
 
