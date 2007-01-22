@@ -405,7 +405,8 @@ curl_manage_request(gpointer arg)
   // We get CURLE_GOT_NOTHING if we send a HEAD request to a shoutcast server.
   // We get CURLE_HTTP_RANGE_ERROR if we try to use range with shoutcast.
   if (result != CURLE_OK && result != CURLE_WRITE_ERROR && 
-      result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR)
+      result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR &&
+      result != CURLE_PARTIAL_FILE)
     {
       g_print("Got curl error %d\n", result);
       handle->failed = 1;
