@@ -1,3 +1,12 @@
+2007-01-22 13:15:36 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1104]
+  - add japanese translation from dai
+  
+  trunk/po/LINGUAS |    2 
+  trunk/po/ja.po   | 2195 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 2197 insertions(+)
+
+
 2007-01-22 09:00:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1102]
   - newvfs probing

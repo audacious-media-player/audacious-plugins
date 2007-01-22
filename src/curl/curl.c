@@ -26,13 +26,12 @@
 #define BUFFER_SIZE 256 * 1024
 #define REVERSE_SEEK_SIZE 2048
 
-#define DEBUG_CONNECTION 0
-#define DEBUG_OPEN_CLOSE 0
-#define DEBUG_SEEK 0
-#define DEBUG_READ 0
+#define DEBUG_CONNECTION 1
+#define DEBUG_OPEN_CLOSE 1
+#define DEBUG_SEEK 1
+#define DEBUG_READ 1
 #define DEBUG_HEADERS 0
 #define DEBUG_ICY 0
-#define DEBUG_ICY_WRAP 0
 #define DEBUG_ICY_VERBOSE 0
 #define DEBUG_METADATA_REPORT 0
 
@@ -40,8 +39,6 @@ typedef struct _CurlHandle CurlHandle;
 
 struct _CurlHandle {
   CURL *curl;
-
-  GSList *charstack; // getc/ungetc emulation  --nenolod
 
   gssize length; // the length of the file
   gsize rd_abs; // the absolute position for reading from the stream
@@ -59,6 +56,8 @@ struct _CurlHandle {
   gsize wr_index;
 
   gsize hdr_index;
+
+  GSList *stream_stack; // stack for stream functions (getc, ungetc)
 
   gboolean header; // true if we haven't finished the header yet
   gboolean no_data; // true if we're only looking for length currently
@@ -198,47 +197,24 @@ static void got_header(CurlHandle *handle, size_t size)
 static gboolean match_inline(CurlHandle *handle, size_t posn, 
 			     const char *name)
 {
-  size_t len = strlen(name);
-  size_t i;
-  if (DEBUG_ICY_WRAP)
-    g_print("Posn=%d\n", posn);
-  if (DEBUG_ICY_WRAP && posn + len > handle->buffer_length)
-    g_print("Wrapped inline key\n");
-  if (((handle->wr_index - posn + handle->buffer_length) %
-       handle->buffer_length) <= len)
-    return FALSE;
-  for (i = 0; i < len; i++)
-    if (handle->buffer[(posn + i) % handle->buffer_length] != name[i])
-      {
-	return FALSE;
-      }
-  return TRUE;
+  // XXXX Wrapped
+  return (!strncmp(handle->buffer + posn, name, strlen(name)));
 }
 
 static gchar *get_inline_value(CurlHandle *handle, size_t posn,
 			       const char *name)
 {
+  // XXXX Wrapped
   size_t end;
   size_t sz;
   gchar *ret;
-  posn = (posn + strlen(name) + 1) % handle->buffer_length;
-  end = posn;
-  while (handle->buffer[end % handle->buffer_length] != ';')
+  posn += strlen(name);
+  end = posn + 1;
+  while (handle->buffer[end] != ';')
     end++;
-  sz = (end - posn + handle->buffer_length) % handle->buffer_length;
+  sz = end - posn - 1;
   ret = g_malloc(sz);
-  if (end % handle->buffer_length < posn % handle->buffer_length)
-    {
-      size_t prewrap = handle->buffer_length - posn;
-      memcpy(ret, handle->buffer + posn, prewrap);
-      memcpy(ret + prewrap, handle->buffer, sz - prewrap);
-      if (DEBUG_ICY_WRAP)
-	g_print("Wrapped inline metadata value\n");
-    }
-  else
-    {
-      memcpy(ret, handle->buffer + posn, sz);
-    }
+  memcpy(ret, handle->buffer + posn + 1, sz);
   ret[sz - 1] = '\0';
   return ret;
 }
@@ -248,8 +224,6 @@ static void got_inline_metadata(CurlHandle *handle)
   size_t i = (handle->hdr_index + 1) % handle->buffer_length;
   if (match_inline(handle, i, TITLE_INLINE))
     {
-      if (handle->title)
-	free(handle->title);
       handle->title = get_inline_value(handle, i, TITLE_INLINE);
       if (DEBUG_ICY)
 	g_print("Title: '%s'\n", handle->title);
@@ -431,8 +405,7 @@ curl_manage_request(gpointer arg)
   // We get CURLE_GOT_NOTHING if we send a HEAD request to a shoutcast server.
   // We get CURLE_HTTP_RANGE_ERROR if we try to use range with shoutcast.
   if (result != CURLE_OK && result != CURLE_WRITE_ERROR && 
-      result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR &&
-      result != CURLE_PARTIAL_FILE)
+      result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR)
     {
       g_print("Got curl error %d\n", result);
       handle->failed = 1;
@@ -484,13 +457,13 @@ VFSFile *
 curl_vfs_fopen_impl(const gchar * path,
 		    const gchar * mode)
 {
-  gchar *url;
+  gchar *url = g_malloc(strlen(path) + strlen("http://") + 1);
   CurlHandle *handle;
   VFSFile *file;
   if (!path || !mode)
     return NULL;
 
-  url = g_strdup(path);
+  sprintf(url, "http://%s", path);
 
   file = g_new0(VFSFile, 1);
 
@@ -508,6 +481,7 @@ curl_vfs_fopen_impl(const gchar * path,
   handle->cancel = 0;
   handle->failed = 0;
   handle->no_data = 0;
+  handle->stream_stack = NULL;
 
   curl_easy_setopt(handle->curl, CURLOPT_URL, url);
   curl_easy_setopt(handle->curl, CURLOPT_WRITEFUNCTION, curl_writecb);
@@ -515,9 +489,6 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_HEADERDATA, handle);
 
   curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 10);
-
-  curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
-  curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
 
   //add header icy-metadata:1 (when we're ready for it)
   {
@@ -555,6 +526,8 @@ curl_vfs_fclose_impl(VFSFile * file)
       g_free(handle->buffer);
       if (handle->name)
 	g_free(handle->name);
+      if (handle->stream_stack != NULL)
+        g_slist_free(handle->stream_stack);
       curl_easy_cleanup(handle->curl);
       g_free(handle);
     }
@@ -575,6 +548,19 @@ curl_vfs_fread_impl(gpointer ptr,
     return 0;
 
   //g_print("Reading %d*%d=%d from %p\n", size, nmemb, sz, handle);
+
+  /* check if there are ungetted chars that should be picked before the real fread */
+  if ( handle->stream_stack != NULL )
+  {
+    guchar uc;
+    while ( (ret < sz) && (handle->stream_stack != NULL) )
+    {
+      uc = GPOINTER_TO_INT(handle->stream_stack->data);
+      handle->stream_stack = g_slist_delete_link( handle->stream_stack , handle->stream_stack );
+      memcpy( ptr + ret , &uc , 1 );
+      ret++;
+    }
+  }
 
   curl_req_xfer(handle);
 
@@ -624,40 +610,28 @@ curl_vfs_fwrite_impl(gconstpointer ptr,
 gint
 curl_vfs_getc_impl(VFSFile *stream)
 {
-  CurlHandle *handle = (CurlHandle *) stream->handle;
-  guchar c;
-
-  g_return_val_if_fail(handle != NULL, EOF);
-
-  if (handle->charstack != NULL)
+  CurlHandle *handle = stream->handle;
+  guchar uc;
+  if ( handle->stream_stack != NULL ) /* check if some char was ungetc'ed before */
   {
-    c = GPOINTER_TO_UINT(handle->charstack->data);
-    handle->charstack = g_slist_delete_link(handle->charstack, handle->charstack);
-    return c;
+    uc = GPOINTER_TO_INT(handle->stream_stack->data);
+    handle->stream_stack = g_slist_delete_link( handle->stream_stack , handle->stream_stack );
+    return uc;
   }
-
-  if (curl_vfs_fread_impl(&c, 1, 1, stream))
-    return c;
-
-  return EOF;
+  else if (curl_vfs_fread_impl(&uc, 1, 1, stream) != 1)
+    return -1;
+  return uc;
 }
 
 gint
 curl_vfs_ungetc_impl(gint c, VFSFile *stream)
 {
-  CurlHandle *handle = (CurlHandle *) stream->handle;
-
-  g_return_val_if_fail(handle != NULL, EOF);
-
-  handle->charstack = g_slist_prepend(handle->charstack, GUINT_TO_POINTER(c));
-
-  if (handle->charstack != NULL)
-  {
+  CurlHandle *handle = stream->handle;
+  handle->stream_stack = g_slist_prepend( handle->stream_stack , GINT_TO_POINTER(c) );
+  if ( handle->stream_stack != NULL )
     return c;
-  }
-
-  /* only reached if there is an error... */
-  return EOF;
+  else
+    return -1;
 }
 
 gint
@@ -667,6 +641,12 @@ curl_vfs_fseek_impl(VFSFile * file,
 {
   size_t posn;
   CurlHandle *handle = file->handle;
+  /* when a seek is requested, trash the stack of ungetted chars */
+  if ( handle->stream_stack != NULL )
+  {
+    g_slist_free( handle->stream_stack );
+    handle->stream_stack = NULL;
+  }
   if (DEBUG_SEEK)
     g_print("Seek %p to %d %d\n", handle, offset, whence);
   if (whence == SEEK_END && handle->length == -1)
@@ -743,14 +723,20 @@ glong
 curl_vfs_ftell_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
-  return handle->rd_abs;
+  if ( handle->stream_stack != NULL )
+    return handle->rd_abs - g_slist_length( handle->stream_stack );
+  else
+    return handle->rd_abs;
 }
 
 gboolean
 curl_vfs_feof_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
-  return ((handle->rd_abs == handle->length) && g_slist_length(handle->charstack) == 0);
+  if ( handle->stream_stack != NULL )
+    return (handle->rd_abs - g_slist_length( handle->stream_stack )) == handle->length;
+  else
+    return handle->rd_abs == handle->length;
 }
 
 gint
@@ -786,33 +772,15 @@ VFSConstructor curl_const = {
   curl_vfs_metadata_impl
 };
 
-VFSConstructor curl_https_const = {
-  "https://",
-  curl_vfs_fopen_impl,
-  curl_vfs_fclose_impl,
-  curl_vfs_fread_impl,
-  curl_vfs_fwrite_impl,
-  curl_vfs_getc_impl,
-  curl_vfs_ungetc_impl,
-  curl_vfs_fseek_impl,
-  curl_vfs_rewind_impl,
-  curl_vfs_ftell_impl,
-  curl_vfs_feof_impl,
-  curl_vfs_truncate_impl,
-  curl_vfs_metadata_impl
-};
-
 static void init(void)
 {
   vfs_register_transport(&curl_const);
-  vfs_register_transport(&curl_https_const);
 }
 
 static void cleanup(void)
 {
 #if 0
   vfs_unregister_transport(&curl_const);
-  vfs_unregister_transport(&curl_https_const);
 #endif
 }
 
