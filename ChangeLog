@@ -1,3 +1,11 @@
+2007-01-22 05:01:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1088]
+  - ssl support (no idea why, but hey, we can!)
+  
+  trunk/src/curl/curl.c |   21 +++++++++++++++++++++
+  1 file changed, 21 insertions(+)
+
+
 2007-01-22 04:51:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1086]
   - URIs are now passed naked instead of mangled by the VFS subsystem.
