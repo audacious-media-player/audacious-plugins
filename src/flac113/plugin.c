@@ -213,6 +213,8 @@ void FLAC_XMMS__init()
 
 	bmp_cfg_db_get_bool(db, "flac", "title.tag_override", &flac_cfg.title.tag_override);
 
+	bmp_cfg_db_get_bool(db, "flac", "title.disable_bitrate_update", &flac_cfg.title.disable_bitrate_update);
+
 	if(!bmp_cfg_db_get_string(db, "flac", "title.tag_format", &flac_cfg.title.tag_format))
 		flac_cfg.title.tag_format = g_strdup("%p - %t");
 
@@ -419,28 +421,28 @@ void FLAC_XMMS__cleanup()
     flac_ip.description = NULL;
 
     if (flac_cfg.title.tag_format) {
-        free(flac_cfg.title.tag_format);
+        g_free(flac_cfg.title.tag_format);
         flac_cfg.title.tag_format = NULL;
     }
 
     if (flac_cfg.title.user_char_set) {
-        free(flac_cfg.title.user_char_set);
+        g_free(flac_cfg.title.user_char_set);
         flac_cfg.title.user_char_set = NULL;
     }
 
     if (flac_cfg.stream.proxy_host) {
-        free(flac_cfg.stream.proxy_host);
+        g_free(flac_cfg.stream.proxy_host);
         flac_cfg.stream.proxy_host = NULL;
     }
 
     if (flac_cfg.stream.proxy_user) {
-        free(flac_cfg.stream.proxy_user);
+        g_free(flac_cfg.stream.proxy_user);
         flac_cfg.stream.proxy_user = NULL;
 
     }
 
     if (flac_cfg.stream.proxy_pass) {
-        free(flac_cfg.stream.proxy_pass);
+        g_free(flac_cfg.stream.proxy_pass);
         flac_cfg.stream.proxy_pass = NULL;
     }
 
@@ -581,7 +583,8 @@ static void *play_loop_(void *arg)
 			}
 			stream_data_.seek_to_in_sec = -1;
 		}
-		else {
+		else if ( !flac_cfg.title.disable_bitrate_update )
+		{
 			/* display the right bitrate from history */
 			unsigned bh_index_o = flac_ip.output->output_time() / BITRATE_HIST_SEGMENT_MSEC % BITRATE_HIST_SIZE;
 			if(bh_index_o != bh_index_last_o && bh_index_o != bh_index_last_w && bh_index_o != (bh_index_last_w + 1) % BITRATE_HIST_SIZE) {

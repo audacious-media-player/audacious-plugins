@@ -29,6 +29,7 @@ typedef struct {
 		gchar *tag_format;
 		gboolean convert_char_set;
 		gchar *user_char_set;
+		gboolean disable_bitrate_update;
 	} title;
 
 	struct {

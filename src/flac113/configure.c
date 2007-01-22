@@ -46,7 +46,8 @@ flac_config_t flac_cfg = {
 		FALSE, /* tag_override */
 		NULL, /* tag_format */
 		FALSE, /* convert_char_set */
-		NULL /* user_char_set */
+		NULL, /* user_char_set */
+		FALSE /* disable bitrate update */
 	},
 	/* stream */
 	{
@@ -92,7 +93,7 @@ flac_config_t flac_cfg = {
 static GtkWidget *flac_configurewin = NULL;
 static GtkWidget *vbox, *notebook;
 
-static GtkWidget *title_tag_override, *title_tag_box, *title_tag_entry, *title_desc;
+static GtkWidget *title_tag_override, *title_tag_box, *title_tag_entry, *title_desc, *title_disable_bitrate_update;
 static GtkWidget *convert_char_set, *fileCharacterSetEntry, *userCharacterSetEntry;
 static GtkWidget *replaygain_enable, *replaygain_album_mode;
 static GtkWidget *replaygain_preamp_hscale, *replaygain_preamp_label, *replaygain_hard_limit;
@@ -126,12 +127,14 @@ static void flac_configurewin_ok(GtkWidget * widget, gpointer data)
 
 	(void)widget, (void)data; /* unused arguments */
 	g_free(flac_cfg.title.tag_format);
+	g_free(flac_cfg.title.user_char_set);
 	flac_cfg.title.tag_format = g_strdup(gtk_entry_get_text(GTK_ENTRY(title_tag_entry)));
-	flac_cfg.title.user_char_set = Charset_Get_Name_From_Title(gtk_entry_get_text_1(userCharacterSetEntry));
+	flac_cfg.title.user_char_set = g_strdup(Charset_Get_Name_From_Title(gtk_entry_get_text_1(userCharacterSetEntry)));
 
 	db = bmp_cfg_db_open();
 	/* title */
 	bmp_cfg_db_set_bool(db, "flac", "title.tag_override", flac_cfg.title.tag_override);
+	bmp_cfg_db_set_bool(db, "flac", "title.disable_bitrate_update", flac_cfg.title.disable_bitrate_update);
 	bmp_cfg_db_set_string(db, "flac", "title.tag_format", flac_cfg.title.tag_format);
 	bmp_cfg_db_set_bool(db, "flac", "title.convert_char_set", flac_cfg.title.convert_char_set);
 	bmp_cfg_db_set_string(db, "flac", "title.user_char_set", flac_cfg.title.user_char_set);
@@ -196,6 +199,12 @@ static void convert_char_set_cb(GtkWidget *widget, gpointer data)
 
 	gtk_widget_set_sensitive(fileCharacterSetEntry, FALSE);
 	gtk_widget_set_sensitive(userCharacterSetEntry, flac_cfg.title.convert_char_set);
+}
+
+static void disable_bitrate_update_cb(GtkWidget *widget, gpointer data)
+{
+	(void)widget, (void)data; /* unused arguments */
+	flac_cfg.title.disable_bitrate_update = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(title_disable_bitrate_update));
 }
 
 static void replaygain_enable_cb(GtkWidget *widget, gpointer data)
@@ -377,6 +386,12 @@ void FLAC_XMMS__configure(void)
 	title_desc = xmms_titlestring_descriptions("pafFetnygc", 2);
 	gtk_widget_set_sensitive(title_desc, flac_cfg.title.tag_override);
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), title_desc, FALSE, FALSE, 0);
+
+	gtk_box_pack_start(GTK_BOX(title_tag_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+	title_disable_bitrate_update = gtk_check_button_new_with_label(_("Disable bitrate update during playback (saves cpu)"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(title_disable_bitrate_update), flac_cfg.title.disable_bitrate_update);
+	gtk_signal_connect(GTK_OBJECT(title_disable_bitrate_update), "clicked", (GCallback)disable_bitrate_update_cb, NULL);
+	gtk_box_pack_start(GTK_BOX(title_tag_vbox), title_disable_bitrate_update, FALSE, FALSE, 0);
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), title_frame, gtk_label_new(_("Title")));
 
