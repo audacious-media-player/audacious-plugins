@@ -1,3 +1,12 @@
+2007-01-22 00:08:19 +0000  Giacomo Lozito <james@develia.org>
+  revision [1072]
+  flac 113 plugin: stability fixes and a new option to disable bitrate update in player window during playback (saves cpu, this is the solution for most people playing flac and reporting high cpu usage)
+  trunk/src/flac113/configure.c |   21 ++++++++++++++++++---
+  trunk/src/flac113/configure.h |    1 +
+  trunk/src/flac113/plugin.c    |   15 +++++++++------
+  3 files changed, 28 insertions(+), 9 deletions(-)
+
+
 2007-01-22 00:03:30 +0000  Giacomo Lozito <james@develia.org>
   revision [1070]
   flac 112 plugin: stability fixes and a new option to disable bitrate update in player window during playback (saves cpu, this is the solution for most people playing flac and reporting high cpu usage)

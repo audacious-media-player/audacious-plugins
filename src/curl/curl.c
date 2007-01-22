@@ -65,6 +65,8 @@ struct _CurlHandle {
 
   gchar *name;
   gchar *title;
+
+  GSList *charstack; // getc/ungetc emulation  --nenolod
 };
 
 VFSConstructor curl_const;
@@ -592,17 +594,41 @@ curl_vfs_fwrite_impl(gconstpointer ptr,
 gint
 curl_vfs_getc_impl(VFSFile *stream)
 {
+  CurlHandle *handle = (CurlHandle *) stream->handle;
   gchar c;
-  if (curl_vfs_fread_impl(&c, 1, 1, stream) != 1)
+
+  g_return_val_if_fail(handle != NULL, EOF);
+
+  g_print("curl_vfs_getc reached\n");
+
+  if (handle->charstack != NULL)
+  {
+    c = GPOINTER_TO_INT(handle->charstack->data);
+    handle->charstack = g_slist_delete_link(handle->charstack, handle->charstack);
+    return c;
+  }
+  else if (curl_vfs_fread_impl(&c, 1, 1, stream) != 1)
     return -1;
+
   return c;
 }
 
 gint
 curl_vfs_ungetc_impl(gint c, VFSFile *stream)
 {
-  g_print("Tried ungetc\n");
-  return -1;
+  CurlHandle *handle = (CurlHandle *) stream->handle;
+
+  g_return_val_if_fail(handle != NULL, EOF);
+
+  g_print("curl_vfs_ungetc reached\n");
+
+  handle->charstack = g_slist_prepend(handle->charstack, GINT_TO_POINTER(c));
+
+  if (handle->charstack != NULL)
+    return c;
+
+  /* only reached if there is an error... */
+  return EOF;
 }
 
 gint
