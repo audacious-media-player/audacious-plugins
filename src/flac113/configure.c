@@ -49,21 +49,6 @@ flac_config_t flac_cfg = {
 		NULL, /* user_char_set */
 		FALSE /* disable bitrate update */
 	},
-	/* stream */
-	{
-		100 /* KB */, /* http_buffer_size */
-		50, /* http_prebuffer */
-		FALSE, /* use_proxy */
-		"", /* proxy_host */
-		0, /* proxy_port */
-		FALSE, /* proxy_use_auth */
-		"", /* proxy_user */
-		"", /* proxy_pass */
-		FALSE, /* save_http_stream */
-		"", /* save_http_path */
-		FALSE, /* cast_title_streaming */
-		FALSE /* use_udp_channel */
-	},
 	/* output */
 	{
 		/* replaygain */
@@ -109,14 +94,6 @@ static GtkWidget *resolution_replaygain_bps_out_frame;
 static GtkWidget *resolution_replaygain_bps_out_radio_16bps;
 static GtkWidget *resolution_replaygain_bps_out_radio_24bps;
 
-static GtkObject *streaming_size_adj, *streaming_pre_adj;
-static GtkWidget *streaming_save_use;
-#ifdef FLAC_ICECAST
-static GtkWidget *streaming_cast_title, *streaming_udp_title;
-#endif
-static GtkWidget *streaming_save_dirbrowser;
-static GtkWidget *streaming_save_hbox;
-
 static const gchar *gtk_entry_get_text_1 (GtkWidget *widget);
 static void flac_configurewin_ok(GtkWidget * widget, gpointer data);
 static void configure_destroy(GtkWidget * w, gpointer data);
@@ -147,31 +124,6 @@ static void flac_configurewin_ok(GtkWidget * widget, gpointer data)
 	bmp_cfg_db_set_bool(db, "flac", "output.resolution.replaygain.dither", flac_cfg.output.resolution.replaygain.dither);
 	bmp_cfg_db_set_int(db, "flac", "output.resolution.replaygain.noise_shaping", flac_cfg.output.resolution.replaygain.noise_shaping);
 	bmp_cfg_db_set_int(db, "flac", "output.resolution.replaygain.bps_out", flac_cfg.output.resolution.replaygain.bps_out);
-	/* streaming */
-	flac_cfg.stream.http_buffer_size = (gint) GTK_ADJUSTMENT(streaming_size_adj)->value;
-	flac_cfg.stream.http_prebuffer = (gint) GTK_ADJUSTMENT(streaming_pre_adj)->value;
-
-	flac_cfg.stream.save_http_stream = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_save_use));
-
-	if (flac_cfg.stream.save_http_path != NULL)
-		g_free(flac_cfg.stream.save_http_path);
-
-	flac_cfg.stream.save_http_path =
-		g_strdup(gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser)));
-
-#ifdef FLAC_ICECAST
-	flac_cfg.stream.cast_title_streaming = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_cast_title));
-	flac_cfg.stream.use_udp_channel = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_udp_title));
-#endif
-
-	bmp_cfg_db_set_int(db, "flac", "stream.http_buffer_size", flac_cfg.stream.http_buffer_size);
-	bmp_cfg_db_set_int(db, "flac", "stream.http_prebuffer", flac_cfg.stream.http_prebuffer);
-	bmp_cfg_db_set_bool(db, "flac", "stream.save_http_stream", flac_cfg.stream.save_http_stream);
-	bmp_cfg_db_set_string(db, "flac", "stream.save_http_path", flac_cfg.stream.save_http_path);
-#ifdef FLAC_ICECAST
-	bmp_cfg_db_set_bool(db, "flac", "stream.cast_title_streaming", flac_cfg.stream.cast_title_streaming);
-	bmp_cfg_db_set_bool(db, "flac", "stream.use_udp_channel", flac_cfg.stream.use_udp_channel);
-#endif
 
 	bmp_cfg_db_close(db);
 	gtk_widget_destroy(flac_configurewin);
@@ -275,17 +227,6 @@ static void resolution_replaygain_bps_out_cb(GtkWidget *widget, gpointer data)
 	;
 }
 
-static void streaming_save_use_cb(GtkWidget * w, gpointer data)
-{
-	gboolean save_stream;
-	(void) w;
-	(void) data;
-
-	save_stream = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_save_use));
-
-	gtk_widget_set_sensitive(streaming_save_hbox, save_stream);
-}
-
 
 void FLAC_XMMS__configure(void)
 {
@@ -297,16 +238,6 @@ void FLAC_XMMS__configure(void)
 	GtkWidget *label, *hbox;
 	GtkWidget *bbox, *ok, *cancel;
 	GList *list;
-
-	GtkWidget *streaming_vbox, *streaming_vbox_c;
-	GtkWidget *streaming_buf_frame, *streaming_buf_hbox;
-	GtkWidget *streaming_size_box, *streaming_size_label, *streaming_size_spin;
-	GtkWidget *streaming_pre_box, *streaming_pre_label, *streaming_pre_spin;
-	GtkWidget *streaming_save_frame, *streaming_save_vbox;
-	GtkWidget *streaming_save_label;
-#ifdef FLAC_ICECAST
-	GtkWidget *streaming_cast_frame, *streaming_cast_vbox;
-#endif
 
 	if (flac_configurewin != NULL) {
 		gdk_window_raise(flac_configurewin->window);
@@ -388,7 +319,7 @@ void FLAC_XMMS__configure(void)
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), title_desc, FALSE, FALSE, 0);
 
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
-	title_disable_bitrate_update = gtk_check_button_new_with_label(_("Disable bitrate update during playback (saves cpu)"));
+	title_disable_bitrate_update = gtk_check_button_new_with_label(_("Disable bitrate update during playback (saves cpu usage)"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(title_disable_bitrate_update), flac_cfg.title.disable_bitrate_update);
 	gtk_signal_connect(GTK_OBJECT(title_disable_bitrate_update), "clicked", (GCallback)disable_bitrate_update_cb, NULL);
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), title_disable_bitrate_update, FALSE, FALSE, 0);
@@ -536,93 +467,6 @@ void FLAC_XMMS__configure(void)
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), output_vbox, gtk_label_new(_("Output")));
 
-	/* Streaming */
-
-	streaming_vbox = gtk_vbox_new(FALSE, 0);
-	streaming_vbox_c = gtk_vbox_new(FALSE, 0);
-
-        gtk_box_pack_start(GTK_BOX(streaming_vbox), gtk_label_new(
-          _("\n- THESE OPTIONS ARE CURRENTLY IGNORED BY AUDACIOUS -\n") ) , FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_vbox_c , TRUE , TRUE, 0);
-
-	streaming_buf_frame = gtk_frame_new(_("Buffering:"));
-	gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_frame), 5);
-	gtk_box_pack_start(GTK_BOX(streaming_vbox_c), streaming_buf_frame, FALSE, FALSE, 0);
-
-	streaming_buf_hbox = gtk_hbox_new(TRUE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_hbox), 5);
-	gtk_container_add(GTK_CONTAINER(streaming_buf_frame), streaming_buf_hbox);
-
-	streaming_size_box = gtk_hbox_new(FALSE, 5);
-	/*gtk_table_attach_defaults(GTK_TABLE(streaming_buf_table),streaming_size_box,0,1,0,1); */
-	gtk_box_pack_start(GTK_BOX(streaming_buf_hbox), streaming_size_box, TRUE, TRUE, 0);
-	streaming_size_label = gtk_label_new(_("Buffer size (kb):"));
-	gtk_box_pack_start(GTK_BOX(streaming_size_box), streaming_size_label, FALSE, FALSE, 0);
-	streaming_size_adj = gtk_adjustment_new(flac_cfg.stream.http_buffer_size, 4, 4096, 4, 4, 4);
-	streaming_size_spin = gtk_spin_button_new(GTK_ADJUSTMENT(streaming_size_adj), 8, 0);
-	gtk_widget_set_usize(streaming_size_spin, 60, -1);
-	gtk_box_pack_start(GTK_BOX(streaming_size_box), streaming_size_spin, FALSE, FALSE, 0);
-
-	streaming_pre_box = gtk_hbox_new(FALSE, 5);
-	/*gtk_table_attach_defaults(GTK_TABLE(streaming_buf_table),streaming_pre_box,1,2,0,1); */
-	gtk_box_pack_start(GTK_BOX(streaming_buf_hbox), streaming_pre_box, TRUE, TRUE, 0);
-	streaming_pre_label = gtk_label_new(_("Pre-buffer (percent):"));
-	gtk_box_pack_start(GTK_BOX(streaming_pre_box), streaming_pre_label, FALSE, FALSE, 0);
-	streaming_pre_adj = gtk_adjustment_new(flac_cfg.stream.http_prebuffer, 0, 90, 1, 1, 1);
-	streaming_pre_spin = gtk_spin_button_new(GTK_ADJUSTMENT(streaming_pre_adj), 1, 0);
-	gtk_widget_set_usize(streaming_pre_spin, 60, -1);
-	gtk_box_pack_start(GTK_BOX(streaming_pre_box), streaming_pre_spin, FALSE, FALSE, 0);
-
-	/*
-	 * Save to disk config.
-	 */
-	streaming_save_frame = gtk_frame_new(_("Save stream to disk:"));
-	gtk_container_set_border_width(GTK_CONTAINER(streaming_save_frame), 5);
-	gtk_box_pack_start(GTK_BOX(streaming_vbox_c), streaming_save_frame, FALSE, FALSE, 0);
-
-	streaming_save_vbox = gtk_vbox_new(FALSE, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(streaming_save_vbox), 5);
-	gtk_container_add(GTK_CONTAINER(streaming_save_frame), streaming_save_vbox);
-
-	streaming_save_use = gtk_check_button_new_with_label(_("Save stream to disk"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_save_use), flac_cfg.stream.save_http_stream);
-	gtk_signal_connect(GTK_OBJECT(streaming_save_use), "clicked", GTK_SIGNAL_FUNC(streaming_save_use_cb), NULL);
-	gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_use, FALSE, FALSE, 0);
-
-	streaming_save_hbox = gtk_hbox_new(FALSE, 5);
-	gtk_widget_set_sensitive(streaming_save_hbox, flac_cfg.stream.save_http_stream);
-	gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_hbox, FALSE, FALSE, 0);
-
-	streaming_save_label = gtk_label_new(_("Path:"));
-	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_label, FALSE, FALSE, 0);
-
-	streaming_save_dirbrowser  =
-		gtk_file_chooser_button_new (_("Pick a folder"), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser),
-										flac_cfg.stream.save_http_path);
-	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_dirbrowser, TRUE, TRUE, 0);
-
-
-#ifdef FLAC_ICECAST
-	streaming_cast_frame = gtk_frame_new(_("SHOUT/Icecast:"));
-	gtk_container_set_border_width(GTK_CONTAINER(streaming_cast_frame), 5);
-	gtk_box_pack_start(GTK_BOX(streaming_vbox_c), streaming_cast_frame, FALSE, FALSE, 0);
-
-	streaming_cast_vbox = gtk_vbox_new(5, FALSE);
-	gtk_container_add(GTK_CONTAINER(streaming_cast_frame), streaming_cast_vbox);
-
-	streaming_cast_title = gtk_check_button_new_with_label(_("Enable SHOUT/Icecast title streaming"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_cast_title), flac_cfg.stream.cast_title_streaming);
-	gtk_box_pack_start(GTK_BOX(streaming_cast_vbox), streaming_cast_title, FALSE, FALSE, 0);
-
-	streaming_udp_title = gtk_check_button_new_with_label(_("Enable Icecast Metadata UDP Channel"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_udp_title), flac_cfg.stream.use_udp_channel);
-	gtk_box_pack_start(GTK_BOX(streaming_cast_vbox), streaming_udp_title, FALSE, FALSE, 0);
-#endif
-	gtk_widget_set_sensitive( GTK_WIDGET(streaming_vbox_c) , FALSE );
-
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), streaming_vbox, gtk_label_new(_("Streaming")));
-
 	/* Buttons */
 
 	bbox = gtk_hbutton_box_new();
@@ -649,7 +493,7 @@ void FLAC_XMMS__aboutbox()
 	static GtkWidget *about_window;
 
 	if (about_window)
-		gdk_window_raise(about_window->window);
+		gtk_window_present(GTK_WINDOW(about_window));
 	else
 	{
 		about_window = xmms_show_message(
@@ -660,7 +504,8 @@ void FLAC_XMMS__aboutbox()
 			  "......\n"
 			  "and\n"
 			  "Daisuke Shimamura\n"
-			  "Visit http://flac.sourceforge.net/"),
+			  "Visit http://flac.sourceforge.net/\n\n"
+                    "Audacious Team port"),
 			_("Ok"), FALSE, NULL, NULL);
 		gtk_signal_connect(GTK_OBJECT(about_window), "destroy",
 				   GTK_SIGNAL_FUNC(gtk_widget_destroyed),

@@ -1,3 +1,13 @@
+2007-01-22 17:08:16 +0000  Giacomo Lozito <james@develia.org>
+  revision [1118]
+  - flac 113 plugin: get rid of http.c and http.h stuff in flac 113 as well
+  trunk/src/flac113/Makefile |    2 
+  trunk/src/flac113/http.c   |  897 ---------------------------------------------
+  trunk/src/flac113/http.h   |   26 -
+  trunk/src/flac113/plugin.c |   20 -
+  4 files changed, 4 insertions(+), 941 deletions(-)
+
+
 2007-01-22 16:58:57 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1116]
   - update-po
