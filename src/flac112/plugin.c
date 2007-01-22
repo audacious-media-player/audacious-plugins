@@ -403,33 +403,38 @@ void FLAC_XMMS__cleanup()
 
 void FLAC_XMMS__get_song_info(char *filename, char **title, int *length_in_msec)
 {
-	/* NOTE vfs is not yet used here, so only try
+	FLAC__StreamMetadata streaminfo;
+
+	/* NOTE vfs is not used here, so only try
 	   to pick tags if you can do it with flac library stdio */
 	if ( strncmp(filename,"/",1) )
 	{
-		FLAC__StreamMetadata streaminfo;
-		if(!FLAC__metadata_get_streaminfo(filename, &streaminfo)) {
-			/* @@@ how to report the error? */
-			if(title) {
-				if (source_to_decoder_type (filename) == DECODER_FILE) {
-					static const char *errtitle = "Invalid FLAC File: ";
-					*title = g_malloc(strlen(errtitle) + 1 + strlen(filename) + 1 + 1);
-					sprintf(*title, "%s\"%s\"", errtitle, filename);
-				} else {
-					*title = NULL;
-				}
-			}
-			if(length_in_msec)
-				*length_in_msec = -1;
-			return;
-		}
+		*title = g_strdup(filename);
+		*length_in_msec = -1;
+		return;
+	}
 
+	if(!FLAC__metadata_get_streaminfo(filename, &streaminfo)) {
+		/* @@@ how to report the error? */
 		if(title) {
-			*title = flac_format_song_title(filename);
+			if (source_to_decoder_type (filename) == DECODER_FILE) {
+				static const char *errtitle = "Invalid FLAC File: ";
+				*title = g_malloc(strlen(errtitle) + 1 + strlen(filename) + 1 + 1);
+				sprintf(*title, "%s\"%s\"", errtitle, filename);
+			} else {
+				*title = NULL;
+			}
 		}
 		if(length_in_msec)
-			*length_in_msec = (unsigned)((double)streaminfo.data.stream_info.total_samples / (double)streaminfo.data.stream_info.sample_rate * 1000.0 + 0.5);
+			*length_in_msec = -1;
+		return;
 	}
+
+	if(title) {
+		*title = flac_format_song_title(filename);
+	}
+	if(length_in_msec)
+		*length_in_msec = (unsigned)((double)streaminfo.data.stream_info.total_samples / (double)streaminfo.data.stream_info.sample_rate * 1000.0 + 0.5);
 }
 
 /***********************************************************************

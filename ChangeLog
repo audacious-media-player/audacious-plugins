@@ -1,3 +1,12 @@
+2007-01-22 21:30:28 +0000  Giacomo Lozito <james@develia.org>
+  revision [1132]
+  - flac 113 plugin: do not try to pick tuple from file if file is not accessible via stdio (and stop crashing when such attempts are done); TODO: pick tags from flac via vfs
+  trunk/src/flac113/fileinfo.c |    5 +++++
+  trunk/src/flac113/plugin.c   |    3 ---
+  trunk/src/flac113/tag.c      |    9 ++++++++-
+  3 files changed, 13 insertions(+), 4 deletions(-)
+
+
 2007-01-22 20:32:00 +0000  Giacomo Lozito <james@develia.org>
   revision [1130]
   - flac 112 plugin: do not try to pick tuple from file if file is not accessible via stdio (and stop crashing when such attempts are done); TODO: pick tags from flac via vfs
