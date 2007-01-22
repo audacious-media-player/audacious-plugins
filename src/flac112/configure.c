@@ -319,7 +319,7 @@ void FLAC_XMMS__configure(void)
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), title_desc, FALSE, FALSE, 0);
 
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
-	title_disable_bitrate_update = gtk_check_button_new_with_label(_("Disable bitrate update during playback (saves cpu)"));
+	title_disable_bitrate_update = gtk_check_button_new_with_label(_("Disable bitrate update during playback (saves cpu usage)"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(title_disable_bitrate_update), flac_cfg.title.disable_bitrate_update);
 	gtk_signal_connect(GTK_OBJECT(title_disable_bitrate_update), "clicked", (GCallback)disable_bitrate_update_cb, NULL);
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), title_disable_bitrate_update, FALSE, FALSE, 0);
@@ -493,7 +493,7 @@ void FLAC_XMMS__aboutbox()
 	static GtkWidget *about_window;
 
 	if (about_window)
-		gdk_window_raise(about_window->window);
+		gtk_window_present(GTK_WINDOW(about_window));
 	else
 	{
 		about_window = xmms_show_message(
@@ -504,7 +504,8 @@ void FLAC_XMMS__aboutbox()
 			  "......\n"
 			  "and\n"
 			  "Daisuke Shimamura\n"
-			  "Visit http://flac.sourceforge.net/"),
+			  "Visit http://flac.sourceforge.net/\n\n"
+                    "Audacious Team port"),
 			_("Ok"), FALSE, NULL, NULL);
 		gtk_signal_connect(GTK_OBJECT(about_window), "destroy",
 				   GTK_SIGNAL_FUNC(gtk_widget_destroyed),

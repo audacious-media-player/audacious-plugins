@@ -1,3 +1,12 @@
+2007-01-22 16:42:50 +0000  Giacomo Lozito <james@develia.org>
+  revision [1112]
+  - flac 112 plugin: removed ui options related to old http support
+  trunk/src/flac112/configure.c |  155 ------------------------------------------
+  trunk/src/flac112/configure.h |   15 ----
+  trunk/src/flac112/plugin.c    |   49 -------------
+  3 files changed, 1 insertion(+), 218 deletions(-)
+
+
 2007-01-22 16:32:48 +0000  Giacomo Lozito <james@develia.org>
   revision [1110]
   - flac 112 plugin: removed http.c and http.h, plus some fixes
