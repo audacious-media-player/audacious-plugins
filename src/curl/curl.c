@@ -32,6 +32,7 @@
 #define DEBUG_READ 0
 #define DEBUG_HEADERS 0
 #define DEBUG_ICY 0
+#define DEBUG_ICY_WRAP 0
 #define DEBUG_ICY_VERBOSE 0
 #define DEBUG_METADATA_REPORT 0
 
@@ -197,24 +198,47 @@ static void got_header(CurlHandle *handle, size_t size)
 static gboolean match_inline(CurlHandle *handle, size_t posn, 
 			     const char *name)
 {
-  // XXXX Wrapped
-  return (!strncmp(handle->buffer + posn, name, strlen(name)));
+  size_t len = strlen(name);
+  size_t i;
+  if (DEBUG_ICY_WRAP)
+    g_print("Posn=%d\n", posn);
+  if (DEBUG_ICY_WRAP && posn + len > handle->buffer_length)
+    g_print("Wrapped inline key\n");
+  if (((handle->wr_index - posn + handle->buffer_length) %
+       handle->buffer_length) <= len)
+    return FALSE;
+  for (i = 0; i < len; i++)
+    if (handle->buffer[(posn + i) % handle->buffer_length] != name[i])
+      {
+	return FALSE;
+      }
+  return TRUE;
 }
 
 static gchar *get_inline_value(CurlHandle *handle, size_t posn,
 			       const char *name)
 {
-  // XXXX Wrapped
   size_t end;
   size_t sz;
   gchar *ret;
-  posn += strlen(name);
-  end = posn + 1;
-  while (handle->buffer[end] != ';')
+  posn = (posn + strlen(name) + 1) % handle->buffer_length;
+  end = posn;
+  while (handle->buffer[end % handle->buffer_length] != ';')
     end++;
-  sz = end - posn - 1;
+  sz = (end - posn + handle->buffer_length) % handle->buffer_length;
   ret = g_malloc(sz);
-  memcpy(ret, handle->buffer + posn + 1, sz);
+  if (end % handle->buffer_length < posn % handle->buffer_length)
+    {
+      size_t prewrap = handle->buffer_length - posn;
+      memcpy(ret, handle->buffer + posn, prewrap);
+      memcpy(ret + prewrap, handle->buffer, sz - prewrap);
+      if (DEBUG_ICY_WRAP)
+	g_print("Wrapped inline metadata value\n");
+    }
+  else
+    {
+      memcpy(ret, handle->buffer + posn, sz);
+    }
   ret[sz - 1] = '\0';
   return ret;
 }
@@ -224,6 +248,8 @@ static void got_inline_metadata(CurlHandle *handle)
   size_t i = (handle->hdr_index + 1) % handle->buffer_length;
   if (match_inline(handle, i, TITLE_INLINE))
     {
+      if (handle->title)
+	free(handle->title);
       handle->title = get_inline_value(handle, i, TITLE_INLINE);
       if (DEBUG_ICY)
 	g_print("Title: '%s'\n", handle->title);
