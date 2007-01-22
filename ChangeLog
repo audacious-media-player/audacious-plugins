@@ -1,3 +1,12 @@
+2007-01-22 16:32:48 +0000  Giacomo Lozito <james@develia.org>
+  revision [1110]
+  - flac 112 plugin: removed http.c and http.h, plus some fixes
+  trunk/src/flac112/http.c   |  897 ---------------------------------------------
+  trunk/src/flac112/http.h   |   26 -
+  trunk/src/flac112/plugin.c |   11 
+  3 files changed, 5 insertions(+), 929 deletions(-)
+
+
 2007-01-22 16:27:39 +0000  Giacomo Lozito <james@develia.org>
   revision [1108]
   - removed http code from flac 112 plugin; still have to remove http options from gui

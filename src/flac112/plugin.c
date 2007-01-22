@@ -242,40 +242,9 @@ void FLAC_XMMS__init()
 	if(!bmp_cfg_db_get_int(db, "flac", "output.resolution.replaygain.bps_out", &flac_cfg.output.resolution.replaygain.bps_out))
 		flac_cfg.output.resolution.replaygain.bps_out = 16;
 
-	/* stream */
-
-	bmp_cfg_db_get_int(db, "flac", "stream.http_buffer_size", &flac_cfg.stream.http_buffer_size);
-	bmp_cfg_db_get_int(db, "flac", "stream.http_prebuffer", &flac_cfg.stream.http_prebuffer);
-	bmp_cfg_db_get_bool(db, "flac", "stream.save_http_stream", &flac_cfg.stream.save_http_stream);
-	if (!bmp_cfg_db_get_string(db, "flac", "stream.save_http_path", &flac_cfg.stream.save_http_path) ||
-		 ! *flac_cfg.stream.save_http_path) {
-	  /* TODO: Is this a memory leak ?? */
-	  /*
-		if (flac_cfg.stream.save_http_path)
-			g_free (flac_cfg.stream.save_http_path);
-	  */
-		flac_cfg.stream.save_http_path = homedir();
-	}
-	bmp_cfg_db_get_bool(db, "flac", "stream.cast_title_streaming", &flac_cfg.stream.cast_title_streaming);
-	bmp_cfg_db_get_bool(db, "flac", "stream.use_udp_channel", &flac_cfg.stream.use_udp_channel);
+	bmp_cfg_db_close(db);
 
 	decoder_ = FLAC__seekable_stream_decoder_new();
-
-	bmp_cfg_db_get_bool(db, NULL, "use_proxy", &flac_cfg.stream.use_proxy);
-	if(!bmp_cfg_db_get_string(db, NULL, "proxy_host", &flac_cfg.stream.proxy_host))
-		flac_cfg.stream.proxy_host = NULL;
-	bmp_cfg_db_get_string(db, NULL, "proxy_port", &tmp);
-
-	if (tmp != NULL)
-		flac_cfg.stream.proxy_port = atoi(tmp);
-
-	bmp_cfg_db_get_bool(db, NULL, "proxy_use_auth", &flac_cfg.stream.proxy_use_auth);
-	if(!bmp_cfg_db_get_string(db, NULL, "proxy_user", &flac_cfg.stream.proxy_user))
-		flac_cfg.stream.proxy_user = NULL;
-	if(!bmp_cfg_db_get_string(db, NULL, "proxy_pass", &flac_cfg.stream.proxy_pass))
-		flac_cfg.stream.proxy_pass = NULL;
-
-	bmp_cfg_db_close(db);
 }
 
 int FLAC_XMMS__is_our_file_from_vfs( gchar * filename , VFSFile * vfsfile )
@@ -425,22 +394,6 @@ void FLAC_XMMS__cleanup()
     if (flac_cfg.title.user_char_set) {
         g_free(flac_cfg.title.user_char_set);
         flac_cfg.title.user_char_set = NULL;
-    }
-
-    if (flac_cfg.stream.proxy_host) {
-        g_free(flac_cfg.stream.proxy_host);
-        flac_cfg.stream.proxy_host = NULL;
-    }
-
-    if (flac_cfg.stream.proxy_user) {
-        g_free(flac_cfg.stream.proxy_user);
-        flac_cfg.stream.proxy_user = NULL;
-
-    }
-
-    if (flac_cfg.stream.proxy_pass) {
-        g_free(flac_cfg.stream.proxy_pass);
-        flac_cfg.stream.proxy_pass = NULL;
     }
 
 	file_decoder_safe_decoder_delete_(decoder_);
