@@ -26,12 +26,13 @@
 #define BUFFER_SIZE 256 * 1024
 #define REVERSE_SEEK_SIZE 2048
 
-#define DEBUG_CONNECTION 1
-#define DEBUG_OPEN_CLOSE 1
-#define DEBUG_SEEK 1
-#define DEBUG_READ 1
+#define DEBUG_CONNECTION 0
+#define DEBUG_OPEN_CLOSE 0
+#define DEBUG_SEEK 0
+#define DEBUG_READ 0
 #define DEBUG_HEADERS 0
 #define DEBUG_ICY 0
+#define DEBUG_ICY_WRAP 0
 #define DEBUG_ICY_VERBOSE 0
 #define DEBUG_METADATA_REPORT 0
 
@@ -197,24 +198,47 @@ static void got_header(CurlHandle *handle, size_t size)
 static gboolean match_inline(CurlHandle *handle, size_t posn, 
 			     const char *name)
 {
-  // XXXX Wrapped
-  return (!strncmp(handle->buffer + posn, name, strlen(name)));
+  size_t len = strlen(name);
+  size_t i;
+  if (DEBUG_ICY_WRAP)
+    g_print("Posn=%d\n", posn);
+  if (DEBUG_ICY_WRAP && posn + len > handle->buffer_length)
+    g_print("Wrapped inline key\n");
+  if (((handle->wr_index - posn + handle->buffer_length) %
+       handle->buffer_length) <= len)
+    return FALSE;
+  for (i = 0; i < len; i++)
+    if (handle->buffer[(posn + i) % handle->buffer_length] != name[i])
+      {
+	return FALSE;
+      }
+  return TRUE;
 }
 
 static gchar *get_inline_value(CurlHandle *handle, size_t posn,
 			       const char *name)
 {
-  // XXXX Wrapped
   size_t end;
   size_t sz;
   gchar *ret;
-  posn += strlen(name);
-  end = posn + 1;
-  while (handle->buffer[end] != ';')
+  posn = (posn + strlen(name) + 1) % handle->buffer_length;
+  end = posn;
+  while (handle->buffer[end % handle->buffer_length] != ';')
     end++;
-  sz = end - posn - 1;
+  sz = (end - posn + handle->buffer_length) % handle->buffer_length;
   ret = g_malloc(sz);
-  memcpy(ret, handle->buffer + posn + 1, sz);
+  if (end % handle->buffer_length < posn % handle->buffer_length)
+    {
+      size_t prewrap = handle->buffer_length - posn;
+      memcpy(ret, handle->buffer + posn, prewrap);
+      memcpy(ret + prewrap, handle->buffer, sz - prewrap);
+      if (DEBUG_ICY_WRAP)
+	g_print("Wrapped inline metadata value\n");
+    }
+  else
+    {
+      memcpy(ret, handle->buffer + posn, sz);
+    }
   ret[sz - 1] = '\0';
   return ret;
 }
@@ -224,6 +248,8 @@ static void got_inline_metadata(CurlHandle *handle)
   size_t i = (handle->hdr_index + 1) % handle->buffer_length;
   if (match_inline(handle, i, TITLE_INLINE))
     {
+      if (handle->title)
+	free(handle->title);
       handle->title = get_inline_value(handle, i, TITLE_INLINE);
       if (DEBUG_ICY)
 	g_print("Title: '%s'\n", handle->title);
@@ -405,7 +431,8 @@ curl_manage_request(gpointer arg)
   // We get CURLE_GOT_NOTHING if we send a HEAD request to a shoutcast server.
   // We get CURLE_HTTP_RANGE_ERROR if we try to use range with shoutcast.
   if (result != CURLE_OK && result != CURLE_WRITE_ERROR && 
-      result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR)
+      result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR &&
+      result != CURLE_PARTIAL_FILE)
     {
       g_print("Got curl error %d\n", result);
       handle->failed = 1;
@@ -457,13 +484,13 @@ VFSFile *
 curl_vfs_fopen_impl(const gchar * path,
 		    const gchar * mode)
 {
-  gchar *url = g_malloc(strlen(path) + strlen("http://") + 1);
+  gchar *url;
   CurlHandle *handle;
   VFSFile *file;
   if (!path || !mode)
     return NULL;
 
-  sprintf(url, "http://%s", path);
+  url = g_strdup(path);
 
   file = g_new0(VFSFile, 1);
 
@@ -489,6 +516,9 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_HEADERDATA, handle);
 
   curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 10);
+
+  curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
 
   //add header icy-metadata:1 (when we're ready for it)
   {
@@ -610,8 +640,11 @@ curl_vfs_fwrite_impl(gconstpointer ptr,
 gint
 curl_vfs_getc_impl(VFSFile *stream)
 {
-  CurlHandle *handle = stream->handle;
+  CurlHandle *handle = (CurlHandle *) stream->handle;
   guchar uc;
+
+  g_return_val_if_fail(handle != NULL, EOF);
+
   if ( handle->stream_stack != NULL ) /* check if some char was ungetc'ed before */
   {
     uc = GPOINTER_TO_INT(handle->stream_stack->data);
@@ -619,19 +652,22 @@ curl_vfs_getc_impl(VFSFile *stream)
     return uc;
   }
   else if (curl_vfs_fread_impl(&uc, 1, 1, stream) != 1)
-    return -1;
+    return EOF;
   return uc;
 }
 
 gint
 curl_vfs_ungetc_impl(gint c, VFSFile *stream)
 {
-  CurlHandle *handle = stream->handle;
+  CurlHandle *handle = (CurlHandle *) stream->handle;
+
+  g_return_val_if_fail(handle != NULL, EOF);
+
   handle->stream_stack = g_slist_prepend( handle->stream_stack , GINT_TO_POINTER(c) );
   if ( handle->stream_stack != NULL )
     return c;
   else
-    return -1;
+    return EOF;
 }
 
 gint
@@ -772,15 +808,33 @@ VFSConstructor curl_const = {
   curl_vfs_metadata_impl
 };
 
+VFSConstructor curl_https_const = {
+  "https://",
+  curl_vfs_fopen_impl,
+  curl_vfs_fclose_impl,
+  curl_vfs_fread_impl,
+  curl_vfs_fwrite_impl,
+  curl_vfs_getc_impl,
+  curl_vfs_ungetc_impl,
+  curl_vfs_fseek_impl,
+  curl_vfs_rewind_impl,
+  curl_vfs_ftell_impl,
+  curl_vfs_feof_impl,
+  curl_vfs_truncate_impl,
+  curl_vfs_metadata_impl
+};
+
 static void init(void)
 {
   vfs_register_transport(&curl_const);
+  vfs_register_transport(&curl_https_const);
 }
 
 static void cleanup(void)
 {
 #if 0
   vfs_unregister_transport(&curl_const);
+  vfs_unregister_transport(&curl_https_const);
 #endif
 }
 
