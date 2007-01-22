@@ -1,3 +1,10 @@
+2007-01-21 23:34:56 +0000  Giacomo Lozito <james@develia.org>
+  revision [1068]
+  flac 113 plugin: small fixes
+  trunk/src/flac113/plugin.c |    8 ++++++--
+  1 file changed, 6 insertions(+), 2 deletions(-)
+
+
 2007-01-21 23:33:20 +0000  Giacomo Lozito <james@develia.org>
   revision [1066]
   flac 112 plugin: disabled built-in http stream support
