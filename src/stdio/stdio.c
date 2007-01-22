@@ -24,18 +24,69 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <string.h>
+
+static gchar *
+vfs_stdio_urldecode_path(const gchar * encoded_path)
+{
+    const gchar *cur, *ext;
+    gchar *path, *tmp;
+    gint realchar;
+
+    if (!encoded_path)
+        return NULL;
+
+    if (!str_has_prefix_nocase(encoded_path, "file:"))
+        return NULL;
+
+    cur = encoded_path + 5;
+
+    if (str_has_prefix_nocase(cur, "//localhost"))
+        cur += 11;
+
+    if (*cur == '/')
+        while (cur[1] == '/')
+            cur++;
+
+    tmp = g_malloc0(strlen(cur) + 1);
+
+    while ((ext = strchr(cur, '%')) != NULL) {
+        strncat(tmp, cur, ext - cur);
+        ext++;
+        cur = ext + 2;
+        if (!sscanf(ext, "%2x", &realchar)) {
+            /* Assume it is a literal '%'.  Several file
+             * managers send unencoded file: urls on drag
+             * and drop. */
+            realchar = '%';
+            cur -= 2;
+        }
+        tmp[strlen(tmp)] = realchar;
+    }
+
+    path = g_strconcat(tmp, cur, NULL);
+    g_free(tmp);
+    return path;
+}
+
 VFSFile *
 stdio_vfs_fopen_impl(const gchar * path,
           const gchar * mode)
 {
     VFSFile *file;
+    gchar *decpath;
 
     if (!path || !mode)
 	return NULL;
 
+    decpath = vfs_stdio_urldecode_path(path);
+
     file = g_new(VFSFile, 1);
 
-    file->handle = fopen(path, mode);
+    file->handle = fopen(decpath != NULL ? decpath : path, mode);
+
+    if (decpath != NULL)
+        g_free(decpath);
 
     if (file->handle == NULL) {
         g_free(file);

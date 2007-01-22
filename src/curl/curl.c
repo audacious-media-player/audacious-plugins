@@ -458,13 +458,13 @@ VFSFile *
 curl_vfs_fopen_impl(const gchar * path,
 		    const gchar * mode)
 {
-  gchar *url = g_malloc(strlen(path) + strlen("http://") + 1);
+  gchar *url;
   CurlHandle *handle;
   VFSFile *file;
   if (!path || !mode)
     return NULL;
 
-  sprintf(url, "http://%s", path);
+  url = g_strdup(path);
 
   file = g_new0(VFSFile, 1);
 
