@@ -595,7 +595,7 @@ gint
 curl_vfs_getc_impl(VFSFile *stream)
 {
   CurlHandle *handle = (CurlHandle *) stream->handle;
-  gchar c;
+  guchar c;
 
   g_return_val_if_fail(handle != NULL, EOF);
 
@@ -607,10 +607,11 @@ curl_vfs_getc_impl(VFSFile *stream)
     handle->charstack = g_slist_delete_link(handle->charstack, handle->charstack);
     return c;
   }
-  else if (curl_vfs_fread_impl(&c, 1, 1, stream) != 1)
-    return -1;
 
-  return c;
+  if (curl_vfs_fread_impl(&c, 1, 1, stream))
+    return c;
+
+  return EOF;
 }
 
 gint

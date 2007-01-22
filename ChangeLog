@@ -1,3 +1,11 @@
+2007-01-22 03:36:36 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1074]
+  - getc/ungetc emulation
+  
+  trunk/src/curl/curl.c |   32 +++++++++++++++++++++++++++++---
+  1 file changed, 29 insertions(+), 3 deletions(-)
+
+
 2007-01-22 00:08:19 +0000  Giacomo Lozito <james@develia.org>
   revision [1072]
   flac 113 plugin: stability fixes and a new option to disable bitrate update in player window during playback (saves cpu, this is the solution for most people playing flac and reporting high cpu usage)
