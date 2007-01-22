@@ -1,3 +1,10 @@
+2007-01-22 21:35:34 +0000  Giacomo Lozito <james@develia.org>
+  revision [1134]
+  - flac 112 plugin: last fix; hopefully, everything is ok now; for both 112 and 113 playback works and http stream works
+  trunk/src/flac112/plugin.c |   43 ++++++++++++++++++++++++-------------------
+  1 file changed, 24 insertions(+), 19 deletions(-)
+
+
 2007-01-22 21:30:28 +0000  Giacomo Lozito <james@develia.org>
   revision [1132]
   - flac 113 plugin: do not try to pick tuple from file if file is not accessible via stdio (and stop crashing when such attempts are done); TODO: pick tags from flac via vfs
