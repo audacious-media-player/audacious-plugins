@@ -34,6 +34,8 @@
 #  include "config.h"
 #endif
 
+#define DEBUG
+
 #include <glib.h>
 #include <gtk/gtk.h>
 
@@ -367,7 +369,7 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
                     2, 1, &current_section);
     }
 
-    switch (bytes) {
+    if (bytes <= 0) {
     case 0:
         /* EOF */
         g_mutex_unlock(vf_mutex);
@@ -375,12 +377,6 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
         vorbis_ip.output->buffer_free();
         vorbis_eos = TRUE;
         return last_section;
-
-    case OV_HOLE:
-    case OV_EBADLINK:
-	g_mutex_unlock(vf_mutex);
-	return current_section;
-	break;
     }
 
     if (current_section != last_section) {
@@ -517,6 +513,7 @@ vorbis_play_loop(gpointer arg)
             do_seek();
 
         if (vorbis_eos) {
+	    g_print("vorbis_eos true\n");
             xmms_usleep(20000);
             continue;
         }
