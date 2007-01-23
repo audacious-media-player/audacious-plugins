@@ -369,9 +369,10 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
                     2, 1, &current_section);
     }
 
+    /*
+     * We got some sort of error. Bail.
+     */
     if (bytes <= 0) {
-    case 0:
-        /* EOF */
         g_mutex_unlock(vf_mutex);
         vorbis_ip.output->buffer_free();
         vorbis_ip.output->buffer_free();
