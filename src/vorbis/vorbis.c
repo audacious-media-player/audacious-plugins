@@ -513,7 +513,6 @@ vorbis_play_loop(gpointer arg)
             do_seek();
 
         if (vorbis_eos) {
-	    g_print("vorbis_eos true\n");
             xmms_usleep(20000);
             continue;
         }

@@ -1,3 +1,12 @@
+2007-01-23 14:20:09 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1160]
+  - treat all failures the same. this is XIPH. we're not going to ever be 
+    able to recover from it.
+  
+  trunk/src/vorbis/vorbis.c |   11 ++++-------
+  1 file changed, 4 insertions(+), 7 deletions(-)
+
+
 2007-01-23 12:34:30 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1158]
   - kill dumb debug notice
