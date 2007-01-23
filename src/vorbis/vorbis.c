@@ -34,8 +34,6 @@
 #  include "config.h"
 #endif
 
-#define DEBUG
-
 #include <glib.h>
 #include <gtk/gtk.h>
 
@@ -379,10 +377,9 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
         return last_section;
 
     case OV_HOLE:
-	break;
     case OV_EBADLINK:
-	g_print("OV_EBADLINK\n");
-	return last_section;
+	g_mutex_unlock(vf_mutex);
+	return current_section;
 	break;
     }
 

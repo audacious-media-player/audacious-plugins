@@ -1,3 +1,11 @@
+2007-01-23 12:31:53 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1154]
+  - support ice-name: icecast2 header
+  
+  trunk/src/curl/curl.c |   17 ++++++++++++++---
+  1 file changed, 14 insertions(+), 3 deletions(-)
+
+
 2007-01-23 12:14:48 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1152]
   - fix uninitialized value conditional jump, maybe it will help
