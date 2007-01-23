@@ -34,6 +34,8 @@
 #  include "config.h"
 #endif
 
+#define DEBUG
+
 #include <glib.h>
 #include <gtk/gtk.h>
 
@@ -349,7 +351,7 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
      * alert us what section we're currently decoding in case we
      * need to change playback settings at a section boundary
      */
-    int current_section;
+    int current_section = last_section;
 
     g_mutex_lock(vf_mutex);
     if (use_rg) {
@@ -377,14 +379,11 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
         return last_section;
 
     case OV_HOLE:
+	break;
     case OV_EBADLINK:
-        /*
-         * error in the stream.  Not a problem, just
-         * reporting it in case we (the app) cares.
-         * In this case, we don't.
-         */
-        g_mutex_unlock(vf_mutex);
-        return last_section;
+	g_print("OV_EBADLINK\n");
+	return last_section;
+	break;
     }
 
     if (current_section != last_section) {
@@ -478,10 +477,11 @@ vorbis_play_loop(gpointer arg)
     }
     vi = ov_info(&vf, -1);
 
+    /* XXX this isn't very correct, but it works */
+    vorbis_is_streaming = ((time = ov_time_total(&vf, -1)) <= 1.);
+
     if (vorbis_is_streaming)
         time = -1;
-    else
-        time = ov_time_total(&vf, -1) * 1000;
 
     if (vi->channels > 2) {
         vorbis_eos = TRUE;
@@ -520,6 +520,7 @@ vorbis_play_loop(gpointer arg)
             do_seek();
 
         if (vorbis_eos) {
+	    g_print("vorbis_eos true\n");
             xmms_usleep(20000);
             continue;
         }
@@ -533,6 +534,7 @@ vorbis_play_loop(gpointer arg)
              */
             if (title)
                 g_free(title);
+
             g_mutex_lock(vf_mutex);
             title = vorbis_generate_title(&vf, filename);
             use_rg = vorbis_update_replaygain(&rg_scale);

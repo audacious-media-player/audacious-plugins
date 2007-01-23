@@ -1,3 +1,11 @@
+2007-01-23 11:00:28 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1150]
+  - if the performer of a track is not specified in cue sheet, the performer of the album will be used.
+  
+  trunk/src/cue/cuesheet.c |    4 +++-
+  1 file changed, 3 insertions(+), 1 deletion(-)
+
+
 2007-01-23 06:23:12 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1148]
   - update welsh translation:
