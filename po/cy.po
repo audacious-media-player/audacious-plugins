@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-01-22 10:42-0600\n"
-"PO-Revision-Date: 2007-01-23 00:12-0600\n"
+"PO-Revision-Date: 2007-01-23 00:21-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
 "MIME-Version: 1.0\n"
@@ -690,6 +690,13 @@ msgid ""
 "Audacious port by\n"
 "Giacomo Lozito from develia.org"
 msgstr ""
+"XMMS jack Driver 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Audacious ategyn gan\n"
+"Giacomo Lozito o develia.org"
 
 #: src/lirc/lirc.c:66
 msgid "LIRC Plugin"
@@ -711,7 +718,7 @@ msgstr ""
 #: src/lirc/lirc.c:338
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: gorchymyn anhysbys \"%s\"\n"
 
 #: src/lirc/lirc.c:348
 #, c-format

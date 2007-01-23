@@ -1,3 +1,12 @@
+2007-01-23 06:14:42 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1146]
+  - update welsh translation:
+  413 translated messages, 15 untranslated messages.
+  
+  trunk/po/cy.po |  675 ++++++++++++++++++++++++++++++---------------------------
+  1 file changed, 359 insertions(+), 316 deletions(-)
+
+
 2007-01-23 03:31:27 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1144]
   - some more work here:
