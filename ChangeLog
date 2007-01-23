@@ -1,3 +1,11 @@
+2007-01-23 12:33:51 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1156]
+  - make sure g_mutex_unlock(vf_mutex); is done
+  
+  trunk/src/vorbis/vorbis.c |    7 ++-----
+  1 file changed, 2 insertions(+), 5 deletions(-)
+
+
 2007-01-23 12:31:53 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1154]
   - support ice-name: icecast2 header
