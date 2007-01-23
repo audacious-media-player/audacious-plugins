@@ -24,6 +24,7 @@
 #include <audacious/playlist.h>
 #include <audacious/vfs.h>
 #include <audacious/util.h>
+#include <audacious/strings.h>
 #include <audacious/main.h>
 #include <audacious/strings.h>
 
@@ -213,7 +214,8 @@ static TitleInput *get_tuple_uri(gchar *uri)
 	bmp_title_input_free(phys_tuple);
 
 	out->track_name = g_strdup(cue_tracks[track].title);
-	out->performer = g_strdup(cue_tracks[track].performer);
+	out->performer = g_strdup(cue_tracks[track].performer ?
+				  cue_tracks[track].performer : cue_performer);
 	out->album_name = g_strdup(cue_title);
 	out->genre = g_strdup(cue_genre);
 	out->year = cue_year ? atoi(cue_year) : 0;
