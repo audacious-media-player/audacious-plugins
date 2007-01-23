@@ -1,3 +1,12 @@
+2007-01-23 03:31:27 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1144]
+  - some more work here:
+  107 translated messages, 321 untranslated messages.
+  
+  trunk/po/cy.po |  153 +++++++++++++++++++++++++++++++++------------------------
+  1 file changed, 91 insertions(+), 62 deletions(-)
+
+
 2007-01-23 02:53:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1142]
   - add config.h includes where needed
