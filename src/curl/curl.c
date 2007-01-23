@@ -151,6 +151,7 @@ static void update_length(CurlHandle *handle)
 
 #define PROBE 262140
 
+#define ICE_NAME "ice-name:"
 #define ICY_NAME "icy-name:"
 #define ICY_METAINT "icy-metaint:"
 
@@ -178,6 +179,14 @@ static void got_header(CurlHandle *handle, size_t size)
   if (match_header(handle, size, ICY_NAME))
     {
       handle->name = get_value(handle, size, ICY_NAME);
+      if (DEBUG_HEADERS)
+	{
+	  g_print("Stream name: %s\n", handle->name);
+	}
+    }
+  if (match_header(handle, size, ICE_NAME))
+    {
+      handle->name = get_value(handle, size, ICE_NAME);
       if (DEBUG_HEADERS)
 	{
 	  g_print("Stream name: %s\n", handle->name);
@@ -272,7 +281,7 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
       while (!(trans = buf_space(handle)) && !handle->cancel)
 	{
 	  g_usleep(10000);
-	  //g_print("Wait for free space\n");
+	  g_print("Wait for free space\n");
 	}
       if (handle->cancel)
 	break;
@@ -577,7 +586,7 @@ curl_vfs_fread_impl(gpointer ptr,
   if (sz < 0)
     return 0;
 
-  //g_print("Reading %d*%d=%d from %p\n", size, nmemb, sz, handle);
+//  g_print("Reading %d*%d=%d from %p\n", size, nmemb, sz, handle);
 
   /* check if there are ungetted chars that should be picked before the real fread */
   if ( handle->stream_stack != NULL )
@@ -597,6 +606,8 @@ curl_vfs_fread_impl(gpointer ptr,
 
   if (DEBUG_SEEK)
     check(handle);
+
+  memset(ptr, '\0', sz);
 
   while (ret < sz)
     {
@@ -624,7 +635,7 @@ curl_vfs_fread_impl(gpointer ptr,
 	}
     }
 
-  //g_print("Read %d from %p\n", ret, handle);
+//  g_print("Read %d from %p\n", ret, handle);
 
   return ret;
 }

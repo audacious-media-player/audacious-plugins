@@ -1,3 +1,11 @@
+2007-01-23 12:14:48 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1152]
+  - fix uninitialized value conditional jump, maybe it will help
+  
+  trunk/src/vorbis/vorbis.c |   22 ++++++++++++----------
+  1 file changed, 12 insertions(+), 10 deletions(-)
+
+
 2007-01-23 11:00:28 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1150]
   - if the performer of a track is not specified in cue sheet, the performer of the album will be used.
