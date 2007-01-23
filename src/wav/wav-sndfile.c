@@ -20,13 +20,13 @@
  */
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 
 #include <audacious/util.h>
 #include <audacious/titlestring.h>
+#include <audacious/i18n.h>
 #include "audacious/output.h"
 #include "wav-sndfile.h"
 

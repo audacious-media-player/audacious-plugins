@@ -36,7 +36,6 @@
 #include <sys/stat.h>
 #include <glib.h>
 #include <pthread.h>
-#include <glib/gi18n.h>
 #include <string.h>
 
 #include <audacious/util.h>
@@ -46,6 +45,7 @@
 #include "aud-support.h"
 #include <audacious/output.h>
 #include <audacious/strings.h>
+#include <audacious/i18n.h>
 
 #include <id3tag.h>
 

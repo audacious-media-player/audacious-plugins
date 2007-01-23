@@ -27,7 +27,7 @@
 #include <audacious/configdb.h>
 #include <audacious/main.h>
 #include <audacious/plugin.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 
 #define ALSA_PCM_NEW_HW_PARAMS_API
 #define ALSA_PCM_NEW_SW_PARAMS_API

@@ -24,7 +24,7 @@
 #include "ed_actions.h"
 #include "ed_ui.h"
 #include "ed_common.h"
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include <audacious/beepctrl.h>
 
 

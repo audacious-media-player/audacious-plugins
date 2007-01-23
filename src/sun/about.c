@@ -17,11 +17,11 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <glib.h>
+
 #include "sun.h"
 #include "audacious/util.h"
-
-#include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 
 void sun_about(void)
 {

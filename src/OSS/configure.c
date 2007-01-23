@@ -22,13 +22,13 @@
 #include "OSS.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <audacious/configdb.h>
 #include <audacious/vfs.h>
+#include <audacious/i18n.h>
 
 
 static GtkWidget *configure_win = NULL;

@@ -39,7 +39,7 @@
 #include <gtk/gtk.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 
 #include "audacious/plugin.h"
 #include "audacious/beepctrl.h"

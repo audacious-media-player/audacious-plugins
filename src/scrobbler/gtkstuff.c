@@ -2,7 +2,7 @@
 #include "audacious/configdb.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 
 #include <stdio.h>
 #include <string.h>

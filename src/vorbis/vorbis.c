@@ -35,7 +35,6 @@
 #endif
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include <stdlib.h>
@@ -53,6 +52,7 @@
 #include "audacious/util.h"
 #include "audacious/configdb.h"
 #include "audacious/titlestring.h"
+#include <audacious/i18n.h>
 
 #include "vorbis.h"
 

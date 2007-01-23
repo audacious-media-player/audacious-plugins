@@ -26,12 +26,12 @@
 #include "audacious/titlestring.h"
 #include "audacious/vfs.h"
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include <timidity.h>
 #include <stdio.h>
 #include "audacious/output.h"
+#include <audacious/i18n.h>
 
 #include "xmms-timidity.h"
 #include "interface.h"

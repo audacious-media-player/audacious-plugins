@@ -20,13 +20,13 @@
 #include "audacious/plugin.h"
 #include "audacious/output.h"
 #include "audacious/util.h"
+#include <audacious/i18n.h>
 #include "config.h"
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
-#include <glib/gi18n.h>
 
 #define MIN_FREQ 10
 #define MAX_FREQ 20000

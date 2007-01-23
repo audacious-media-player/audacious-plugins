@@ -1,3 +1,10 @@
+2007-01-22 22:56:02 +0000  Giacomo Lozito <james@develia.org>
+  revision [1138]
+  - metronom: use g_malloc in place of malloc
+  trunk/src/metronom/metronom.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-22 22:52:22 +0000  Giacomo Lozito <james@develia.org>
   revision [1136]
   - mpg123: fix warnings in compilation, added function prototype to common.h

@@ -9,7 +9,7 @@
  */
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include "audacious/configdb.h"
 #include "Audacious_Config.h"

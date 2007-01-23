@@ -1,5 +1,5 @@
 #include <gtk/gtk.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include "audacious/util.h"
 
 #include <audacious/plugin.h>

@@ -17,13 +17,14 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <glib.h>
+
 #include <errno.h>
+
 #include "sun.h"
 #include "audacious/util.h"
 #include "audacious/configdb.h"
-
-#include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 
 #include "mixer.h"
 

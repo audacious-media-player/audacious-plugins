@@ -1,5 +1,4 @@
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
@@ -12,6 +11,7 @@
 #include <audacious/util.h>
 #include <audacious/titlestring.h>
 #include <audacious/vfs.h>
+#include <audacious/i18n.h>
 
 #define MP4_VERSION	VERSION
 

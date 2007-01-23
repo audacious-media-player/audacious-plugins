@@ -26,7 +26,6 @@
 #endif
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
@@ -41,6 +40,7 @@
 #include "audacious/util.h"
 #include <audacious/util.h>
 #include <audacious/vfs.h>
+#include <audacious/i18n.h>
 
 #include "vorbis.h"
 #include "vcedit.h"

@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include <glib.h>
-#include <glib/gi18n.h>
 
 #include "coreaudio.h"
 
 #include "audacious/plugin.h"
+#include <audacious/i18n.h>
 
 OutputPlugin osx_op =
 	{

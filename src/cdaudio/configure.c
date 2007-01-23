@@ -22,7 +22,7 @@
 #include "cdaudio.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include <glib/gprintf.h>
 #include <string.h>
 

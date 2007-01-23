@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include "audacious/plugin.h"
 #include "audacious/util.h"
 #include "audacious/configdb.h"

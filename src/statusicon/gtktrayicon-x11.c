@@ -27,7 +27,7 @@
 #include "si_common.h"
 #include <string.h>
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/gi18n.h>
 
 #include <gtk/gtkprivate.h>
 #include "gtktrayicon.h"

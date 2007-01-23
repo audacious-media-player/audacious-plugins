@@ -17,10 +17,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-//#include <glib/gi18n.h>
 #include "coreaudio.h"
 #include "audacious/configdb.h"
 #include <CoreAudio/CoreAudio.h>
+
+#include <audacious/i18n.h>
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *mixer_usemaster_check, *buffer_size_spin, *buffer_pre_spin;

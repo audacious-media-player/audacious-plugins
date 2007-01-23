@@ -31,7 +31,6 @@
 #include <string.h>
 #include <strings.h>
 #include <glib.h>
-#include <glib/gi18n.h>
 
 #include <audacious/plugin.h>
 #include <audacious/output.h>
@@ -39,6 +38,7 @@
 #include <audacious/titlestring.h>
 #include <audacious/vfs.h>
 #include <audacious/strings.h>
+#include <audacious/i18n.h>
 
 #include "avcodec.h"
 #include "avformat.h"

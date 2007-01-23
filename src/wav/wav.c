@@ -22,12 +22,12 @@
 #include "wav.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <string.h>
 
 #include <audacious/util.h>
 #include <audacious/titlestring.h>
 #include "audacious/output.h"
+#include <audacious/i18n.h>
 
 gchar *wav_fmts[] = { "wav", "raw", "pcm", NULL };
 

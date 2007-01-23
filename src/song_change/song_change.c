@@ -5,7 +5,6 @@
 #include "config.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -21,6 +20,7 @@
 #include "audacious/configdb.h"
 #include "audacious/beepctrl.h"
 #include "audacious/formatter.h"
+#include <audacious/i18n.h>
 
 static void init(void);
 static void cleanup(void);

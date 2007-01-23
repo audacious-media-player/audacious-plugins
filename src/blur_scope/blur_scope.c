@@ -25,7 +25,7 @@
 #endif
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include "audacious/plugin.h"

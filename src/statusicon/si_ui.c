@@ -27,8 +27,8 @@
 #include <audacious/titlestring.h>
 #include <audacious/ui_fileinfopopup.h>
 #include <audacious/util.h>
+#include <audacious/i18n.h>
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 

@@ -17,11 +17,12 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <glib.h>
+
 #include "sun.h"
 #include "audacious/configdb.h"
+#include <audacious/i18n.h>
 
-#include <glib.h>
-#include <glib/gi18n.h>
 #include <errno.h>
 
 struct sun_audio audio;

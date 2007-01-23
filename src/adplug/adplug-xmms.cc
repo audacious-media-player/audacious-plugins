@@ -23,7 +23,6 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <gtk/gtk.h>
-#include <glib/gi18n.h>
 #include "adplug.h"
 #include "emuopl.h"
 #include "silentopl.h"
@@ -31,6 +30,7 @@
 #include "audacious/plugin.h"
 #include "audacious/util.h"
 #include "audacious/configdb.h"
+#include <audacious/i18n.h>
 extern "C" {
 #include "audacious/output.h"
 }

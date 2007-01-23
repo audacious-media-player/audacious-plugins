@@ -10,7 +10,7 @@
 #include "audacious/util.h"
 #include <dlfcn.h>
 #include <gtk/gtk.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include <stdio.h>
 #include "config.h"
 #include "bio2jack.h" /* includes for the bio2jack library */

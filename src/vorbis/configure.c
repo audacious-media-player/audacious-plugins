@@ -5,7 +5,6 @@
 #include "vorbis.h"
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +13,7 @@
 #include "audacious/titlestring.h"
 #include "audacious/util.h"
 #include "audacious/plugin.h"
+#include <audacious/i18n.h>
 
 extern GMutex *vf_mutex;
 

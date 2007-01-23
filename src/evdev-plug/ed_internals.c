@@ -37,7 +37,7 @@
 /* for variadic */
 #include <stdarg.h>
 
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 
 
 static gboolean ed_device_giofunc ( GIOChannel * , GIOCondition , gpointer );

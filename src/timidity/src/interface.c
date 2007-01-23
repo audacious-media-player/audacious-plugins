@@ -12,9 +12,10 @@
 #include <string.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
+
+#include <audacious/i18n.h>
 
 #include "callbacks.h"
 #include "interface.h"
