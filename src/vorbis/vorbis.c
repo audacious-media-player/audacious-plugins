@@ -363,10 +363,12 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
                                               pcmout, rg_scale);
     }
     else {
-        bytes =
-            ov_read(&vf, pcmout, sizeof(pcmout),
-                    (int) (G_BYTE_ORDER == G_BIG_ENDIAN),
-                    2, 1, &current_section);
+        do {
+            bytes =
+                ov_read(&vf, pcmout, sizeof(pcmout),
+                        (int) (G_BYTE_ORDER == G_BIG_ENDIAN),
+                         2, 1, &current_section);
+	} while (bytes == OV_HOLE);
     }
 
     /*

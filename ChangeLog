@@ -1,3 +1,11 @@
+2007-01-23 14:24:14 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1164]
+  - some tweaks
+  
+  trunk/src/vorbis/vorbis.c |    5 +++--
+  1 file changed, 3 insertions(+), 2 deletions(-)
+
+
 2007-01-23 14:22:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1162]
   - remove other debug notices
