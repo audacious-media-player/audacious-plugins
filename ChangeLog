@@ -1,3 +1,20 @@
+2007-01-23 02:53:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1142]
+  - add config.h includes where needed
+  
+  trunk/src/adplug/adplug-xmms.cc          |    4 ++++
+  trunk/src/audiocompress/audacious-glue.c |    4 ++++
+  trunk/src/cdaudio/cdinfo.c               |    2 +-
+  trunk/src/console/Audacious_Config.cxx   |    4 ++++
+  trunk/src/console/Audacious_Driver.cxx   |    4 ++++
+  trunk/src/echo_plugin/gui.c              |    4 ++++
+  trunk/src/statusicon/gtktrayicon-x11.c   |    2 +-
+  trunk/src/tta/aud-tta.c                  |    5 +++++
+  trunk/src/wav/wav-sndfile.c              |    4 ++++
+  trunk/src/wav/wav.c                      |    4 ++++
+  10 files changed, 35 insertions(+), 2 deletions(-)
+
+
 2007-01-23 02:41:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1140]
   - glib/gi18n.h -> audacious/i18n.h for automatic dgettext support

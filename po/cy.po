@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-01-22 10:42-0600\n"
-"PO-Revision-Date: 2007-01-22 10:57-0600\n"
+"PO-Revision-Date: 2007-01-22 21:30-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
 "MIME-Version: 1.0\n"
@@ -219,7 +219,7 @@ msgstr ""
 
 #: src/blur_scope/blur_scope.c:194
 msgid "Blur scope"
-msgstr ""
+msgstr "Blur scope"
 
 #: src/cdaudio/configure.c:185
 #: src/cdaudio/configure.c:199
@@ -299,134 +299,136 @@ msgid ""
 "Failed to check directory %s\n"
 "Error: %s"
 msgstr ""
+"Methu gwirio'r cyfeiradur %s\n"
+"Gwall: %s"
 
 #: src/cdaudio/configure.c:308
 #, c-format
 msgid "Error: %s exist, but is not a directory"
-msgstr ""
+msgstr "Gwall: %s yn bodoli ond nid yw'n gyfeiriadur"
 
 #: src/cdaudio/configure.c:311
 #, c-format
 msgid "Directory %s OK."
-msgstr ""
+msgstr "Cyfeiradur %s Iawn."
 
 #: src/cdaudio/configure.c:355
 msgid "Device:"
-msgstr ""
+msgstr "Dyfais:"
 
 #: src/cdaudio/configure.c:363
 msgid "_Device:"
-msgstr ""
+msgstr "_Dyfais:"
 
 #: src/cdaudio/configure.c:373
 msgid "Dir_ectory:"
-msgstr ""
+msgstr "Cyf_eiradur:"
 
 #: src/cdaudio/configure.c:385
 msgid "Play mode:"
-msgstr ""
+msgstr "Modd chwarae:"
 
 #: src/cdaudio/configure.c:391
 msgid "Analog"
-msgstr ""
+msgstr "Analog"
 
 #: src/cdaudio/configure.c:399
 msgid "Digital audio extraction"
-msgstr ""
+msgstr "Tynnu awdio digidôl"
 
 #: src/cdaudio/configure.c:409
 msgid "Volume control:"
-msgstr ""
+msgstr "Rheolwr sain:"
 
 #: src/cdaudio/configure.c:415
 msgid "No mixer"
-msgstr ""
+msgstr "Dim cymysgwr"
 
 #: src/cdaudio/configure.c:421
 msgid "CDROM drive"
-msgstr ""
+msgstr "Gyrrwr CDROM"
 
 #: src/cdaudio/configure.c:427
 msgid "OSS mixer"
-msgstr ""
+msgstr "Cymysgwr OSS"
 
 #: src/cdaudio/configure.c:450
 msgid "Check drive..."
-msgstr ""
+msgstr "Gwirio'r gyrrwr..."
 
 #: src/cdaudio/configure.c:456
 msgid "Remove drive"
-msgstr ""
+msgstr "Tynnu gyrrwr"
 
 #: src/cdaudio/configure.c:499
 msgid "CD Audio Player Configuration"
-msgstr ""
+msgstr "Ffurfweddiad Chwaraeydd CD Sain"
 
 #: src/cdaudio/configure.c:537
 msgid "Add drive"
-msgstr ""
+msgstr "Ychwaneg gyrrwr"
 
 #: src/cdaudio/configure.c:545
 msgid "Device"
-msgstr ""
+msgstr "Dyfais"
 
 #: src/cdaudio/configure.c:555
 msgid "CDDB:"
-msgstr ""
+msgstr "CDDB:"
 
 #: src/cdaudio/configure.c:566
 msgid "Use CDDB"
-msgstr ""
+msgstr "Defnyddiwch CDDB"
 
 #: src/cdaudio/configure.c:570
 msgid "Get server list"
-msgstr ""
+msgstr "Estyn rhestr gwasanaethwr"
 
 #: src/cdaudio/configure.c:573
 msgid "Show network window"
-msgstr ""
+msgstr "Dangos ffenestr rhwydwaith"
 
 #: src/cdaudio/configure.c:583
 msgid "CDDB server:"
-msgstr ""
+msgstr "Gwasanaethwr CDDB:"
 
 #: src/cdaudio/configure.c:598
 msgid "Track names:"
-msgstr ""
+msgstr "Enwau'r Traciau:"
 
 #: src/cdaudio/configure.c:605
 #: src/mpg123/configure.c:382
 #: src/vorbis/configure.c:261
 msgid "Override generic titles"
-msgstr ""
+msgstr "Diystyru'r teitlau cyffredinol"
 
 #: src/cdaudio/configure.c:621
 msgid "Name format:"
-msgstr ""
+msgstr "Fformat enw:"
 
 #: src/cdaudio/configure.c:633
 msgid "CD Info"
-msgstr ""
+msgstr "Gwybodaeth am y CD"
 
 #: src/cdaudio/cdaudio.c:186
 msgid "CD Audio Plugin"
-msgstr ""
+msgstr "Chwaraeydd CD Sain"
 
 #: src/cdaudio/cdaudio.c:1055
 #: src/cdaudio/cdaudio.c:1060
 #, c-format
 msgid "CD Audio Track %02u"
-msgstr ""
+msgstr "Trac CD Sain %02u"
 
 #: src/cdaudio/cdinfo.c:161
 #: src/cdaudio/cdinfo.c:162
 #: src/cdaudio/cdinfo.c:163
 msgid "(unknown)"
-msgstr ""
+msgstr "(anhysbys)"
 
 #: src/console/Audacious_Driver.cxx:454
 msgid "About the Console Music Decoder"
-msgstr ""
+msgstr "Ynghylch Ategyn Cerdd Console"
 
 #: src/console/Audacious_Driver.cxx:455
 msgid ""
@@ -435,18 +437,22 @@ msgid ""
 "Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Ategyn cerdd console tarddu Game_Music_Emu 0.5.2.\n"
+"Atgyfnerthu rhyw: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Audacious fersiwn at: William Pitcock <nenolod@nenolod.net>, \n"
+"        Shay Green <gblargg@gmail.com>"
 
 #: src/console/Audacious_Driver.cxx:504
 msgid "Game console audio module decoder"
-msgstr ""
+msgstr "Ategyn chwaraeydd sbort modiwl"
 
 #: src/console/Audacious_Config.cxx:123
 msgid "Console Music Decoder"
-msgstr ""
+msgstr "Chwaraeydd Sbort Modiwl"
 
 #: src/console/Audacious_Config.cxx:143
 msgid "General"
-msgstr ""
+msgstr "Cadfridog "
 
 #: src/console/Audacious_Config.cxx:145
 msgid "Playback"
@@ -454,17 +460,17 @@ msgstr ""
 
 #: src/console/Audacious_Config.cxx:160
 msgid "Bass:"
-msgstr ""
+msgstr "Bas:"
 
 #: src/console/Audacious_Config.cxx:164
 #: src/console/Audacious_Config.cxx:175
 #: src/console/Audacious_Config.cxx:196
 msgid "secs"
-msgstr ""
+msgstr "eiliad"
 
 #: src/console/Audacious_Config.cxx:171
 msgid "Treble:"
-msgstr ""
+msgstr "Trebl:"
 
 #: src/console/Audacious_Config.cxx:192
 msgid "Default song length:"
@@ -484,11 +490,11 @@ msgstr ""
 
 #: src/console/Audacious_Config.cxx:223
 msgid "Hz"
-msgstr ""
+msgstr "Hz"
 
 #: src/console/Audacious_Config.cxx:233
 msgid "NSF/NSFE"
-msgstr ""
+msgstr "NSF/NSFE"
 
 #: src/console/Audacious_Config.cxx:234
 msgid "Use optional NSFE playlist"
@@ -496,7 +502,7 @@ msgstr ""
 
 #: src/console/Audacious_Config.cxx:245
 msgid "SPC"
-msgstr ""
+msgstr "SPC"
 
 #: src/console/Audacious_Config.cxx:246
 msgid "Ignore length from SPC tags"
@@ -515,25 +521,28 @@ msgstr ""
 
 #: src/disk_writer/disk_writer.c:140
 msgid "Error"
-msgstr ""
+msgstr "Gwall"
 
 #: src/disk_writer/disk_writer.c:141
 msgid ""
 "You cannot use the Disk Writer plugin\n"
 "when you're running in realtime mode."
 msgstr ""
+"Nid oes modd defnyddio ategyn Disk Writer\n"
+"\n"
+"pan fyddwch yn rhedeg ym modd realtime."
 
 #: src/disk_writer/disk_writer.c:143
 msgid "OK"
-msgstr ""
+msgstr "Iawn"
 
 #: src/disk_writer/disk_writer.c:356
 msgid "Disk Writer Configuration"
-msgstr ""
+msgstr "Ffurfweddiad Disk Writer"
 
 #: src/disk_writer/disk_writer.c:367
 msgid "Output file folder:"
-msgstr ""
+msgstr "Cyfeiriadur ffeiliau allbwn:"
 
 #: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
@@ -542,7 +551,7 @@ msgstr ""
 #: src/echo_plugin/echo.c:44
 #, c-format
 msgid "Echo Plugin %s"
-msgstr ""
+msgstr "Ategyn Echo %s"
 
 #: src/echo_plugin/gui.c:8
 msgid ""
@@ -551,71 +560,75 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
+"Echo Plugin\n"
+"Gan Johan Levin 1999.\n"
+"\n"
+"Surround echo gan Carl van Schaik 1999"
 
 #: src/echo_plugin/gui.c:22
 msgid "About Echo Plugin"
-msgstr ""
+msgstr "Ynghylch Ategyn Echo"
 
 #: src/echo_plugin/gui.c:73
 msgid "Configure Echo"
-msgstr ""
+msgstr "Ffurfweddu Echo"
 
 #: src/echo_plugin/gui.c:86
 msgid "Delay: (ms)"
-msgstr ""
+msgstr "Oediad: (ms)"
 
 #: src/echo_plugin/gui.c:91
 msgid "Feedback: (%)"
-msgstr ""
+msgstr "Adborth: (%)"
 
 #: src/echo_plugin/gui.c:96
 msgid "Volume: (%)"
-msgstr ""
+msgstr "Sain: (%)"
 
 #: src/echo_plugin/gui.c:119
 msgid "Surround echo"
-msgstr ""
+msgstr "Adlais o amgylch"
 
 #: src/echo_plugin/gui.c:142
 #: src/stereo_plugin/stereo.c:131
 #: src/sun/configure.c:566
 #: src/timidity/src/interface.c:231
 msgid "Cancel"
-msgstr ""
+msgstr "Dileu"
 
 #: src/echo_plugin/gui.c:149
 #: src/stereo_plugin/stereo.c:138
 msgid "Apply"
-msgstr ""
+msgstr "Gosod"
 
 #: src/esd/configure.c:102
 msgid "ESD Output Plugin configuration"
-msgstr ""
+msgstr "Ffurfweddu Ategyn ESD"
 
 #: src/esd/configure.c:114
 #: src/esd/configure.c:144
 msgid "Host:"
-msgstr ""
+msgstr "Gwesteiwr:"
 
 #: src/esd/configure.c:125
 msgid "Use remote host"
-msgstr ""
+msgstr "Defnyddio gwesteiwr pell"
 
 #: src/esd/configure.c:132
 msgid "Volume controls OSS mixer"
-msgstr ""
+msgstr "Rheolwr sain cymysgydd OSS"
 
 #: src/esd/configure.c:153
 msgid "Port:"
-msgstr ""
+msgstr "Porth:"
 
 #: src/esd/configure.c:169
 msgid "Server"
-msgstr ""
+msgstr "Gwasanaethwr"
 
 #: src/esd/about.c:34
 msgid "About ESounD Plugin"
-msgstr ""
+msgstr "Ynghylch Ategyn ESounD"
 
 #: src/esd/about.c:35
 msgid ""
@@ -636,10 +649,26 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Audacious ESounD Plugin\n"
+"\n"
+" Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
+"ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
+"cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
+"drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
+"\n"
+"Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
+"yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
+"o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
+"BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
+"\n"
+"Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad cysylltwch\n"
+"â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, Boston,\n"
+" MA 02111-1307,\n"
+"USA."
 
 #: src/esd/esd.c:49
 msgid "eSound Output Plugin"
-msgstr ""
+msgstr "Ategyn Allbwn eSound"
 
 #: src/jack/jack.c:594
 msgid "About JACK Output Plugin 0.17"
