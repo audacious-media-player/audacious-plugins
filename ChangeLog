@@ -1,3 +1,66 @@
+2007-01-23 02:41:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1140]
+  - glib/gi18n.h -> audacious/i18n.h for automatic dgettext support
+  
+  trunk/src/CoreAudio/configure.c          |    3 ++-
+  trunk/src/CoreAudio/coreaudio.c          |    2 +-
+  trunk/src/OSS/OSS.c                      |    2 +-
+  trunk/src/OSS/about.c                    |    2 +-
+  trunk/src/OSS/configure.c                |    2 +-
+  trunk/src/aac/src/libmp4.c               |    2 +-
+  trunk/src/adplug/adplug-xmms.cc          |    2 +-
+  trunk/src/alac/plugin.c                  |    2 +-
+  trunk/src/alsa/alsa.h                    |    2 +-
+  trunk/src/audiocompress/audacious-glue.c |    2 +-
+  trunk/src/blur_scope/blur_scope.c        |    2 +-
+  trunk/src/blur_scope/config.c            |    2 +-
+  trunk/src/cdaudio/cdaudio.c              |    2 +-
+  trunk/src/cdaudio/cdinfo.c               |    2 +-
+  trunk/src/cdaudio/configure.c            |    2 +-
+  trunk/src/console/Audacious_Config.cxx   |    2 +-
+  trunk/src/console/Audacious_Driver.cxx   |    2 +-
+  trunk/src/disk_writer/disk_writer.c      |    2 +-
+  trunk/src/echo_plugin/echo.c             |    2 +-
+  trunk/src/echo_plugin/gui.c              |    2 +-
+  trunk/src/esd/about.c                    |    2 +-
+  trunk/src/esd/configure.c                |    2 +-
+  trunk/src/esd/esd.c                      |    2 +-
+  trunk/src/evdev-plug/ed.c                |    2 +-
+  trunk/src/evdev-plug/ed_internals.c      |    2 +-
+  trunk/src/evdev-plug/ed_ui.c             |    2 +-
+  trunk/src/jack/jack.c                    |    2 +-
+  trunk/src/lirc/about.c                   |    2 +-
+  trunk/src/lirc/lirc.c                    |    2 +-
+  trunk/src/mpg123/configure.c             |    2 +-
+  trunk/src/mpg123/fileinfo.c              |    2 +-
+  trunk/src/mpg123/mpg123.c                |    2 +-
+  trunk/src/mpg123/rtsp.c                  |    2 +-
+  trunk/src/null/null.c                    |    2 +-
+  trunk/src/paranormal/plugin.c            |    2 +-
+  trunk/src/rovascope/plugin.c             |    2 +-
+  trunk/src/scrobbler/configure.c          |    2 +-
+  trunk/src/scrobbler/gtkstuff.c           |    2 +-
+  trunk/src/scrobbler/plugin.c             |    2 +-
+  trunk/src/song_change/song_change.c      |    2 +-
+  trunk/src/statusicon/gtktrayicon-x11.c   |    2 +-
+  trunk/src/statusicon/si_ui.c             |    2 +-
+  trunk/src/stereo_plugin/stereo.c         |    2 +-
+  trunk/src/sun/about.c                    |    6 +++---
+  trunk/src/sun/configure.c                |    7 ++++---
+  trunk/src/sun/sun.c                      |    5 +++--
+  trunk/src/timidity/src/interface.c       |    3 ++-
+  trunk/src/timidity/src/xmms-timidity.c   |    2 +-
+  trunk/src/tonegen/tonegen.c              |    2 +-
+  trunk/src/tta/aud-tta.c                  |    2 +-
+  trunk/src/vorbis/configure.c             |    2 +-
+  trunk/src/vorbis/fileinfo.c              |    2 +-
+  trunk/src/vorbis/vorbis.c                |    2 +-
+  trunk/src/wav/wav-sndfile.c              |    2 +-
+  trunk/src/wav/wav.c                      |    2 +-
+  trunk/src/wma/wma.c                      |    2 +-
+  56 files changed, 65 insertions(+), 61 deletions(-)
+
+
 2007-01-22 22:56:02 +0000  Giacomo Lozito <james@develia.org>
   revision [1138]
   - metronom: use g_malloc in place of malloc

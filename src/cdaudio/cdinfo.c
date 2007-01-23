@@ -21,7 +21,7 @@
 #include "cdinfo.h"
 
 #include <glib.h>
-#include <audacious/gi18n.h>
+#include <audacious/i18n.h>
 #include <glib/gprintf.h>
 
 #include <audacious/rcfile.h>

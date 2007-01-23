@@ -8,6 +8,10 @@
  * Libconsole preferences GUI by Giacomo Lozito
  */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
