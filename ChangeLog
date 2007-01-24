@@ -1,3 +1,10 @@
+2007-01-24 00:44:29 +0000  Giacomo Lozito <james@develia.org>
+  revision [1170]
+  - made popup window use audacious_fileinfopopup_show_from_title if track_name and song length is not available
+  trunk/src/statusicon/si_ui.c |   12 +++++++++++-
+  1 file changed, 11 insertions(+), 1 deletion(-)
+
+
 2007-01-23 17:21:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1168]
   - portability fixes for solaris

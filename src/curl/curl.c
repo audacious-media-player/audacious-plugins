@@ -66,6 +66,8 @@ struct _CurlHandle {
   gboolean failed; // true if we've tried and failed already
   GThread *thread; // the thread that's reading from the connection
 
+  VFSFile *download; // file to write to as we download
+
   gchar *name;
   gchar *title;
 };
@@ -280,8 +282,8 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
     {
       while (!(trans = buf_space(handle)) && !handle->cancel)
 	{
+	  //g_print("Wait for free space on %p\n", handle);
 	  g_usleep(10000);
-	  g_print("Wait for free space\n");
 	}
       if (handle->cancel)
 	break;
@@ -296,7 +298,10 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 	  if (!handle->in_icy_meta)
 	    {
 	      handle->wr_abs += trans;
-	      // write download here
+	      if (handle->download)
+		{
+		  vfs_fwrite(ptr + ret, trans, 1, handle->download);
+		}
 	      if (handle->icy_interval && !handle->icy_left)
 		{
 		  if (DEBUG_ICY)
@@ -378,6 +383,7 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 		  got_header(handle, size);
 		  if (i == handle->hdr_index)
 		    {
+		      size_t leftover;
 		      // Empty header means the end of the headers
 		      handle->header = 0;
 		      handle->hdr_index = (i + 2) % handle->buffer_length;
@@ -385,10 +391,16 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 		      handle->rd_index = handle->hdr_index;
 		      // We've already written the amount that's after
 		      // the header.
-		      handle->wr_abs +=
-			(handle->wr_index - handle->hdr_index + handle->buffer_length) % handle->buffer_length;
-		      // write download here...
-		      //handle->icy_interval = 0;
+		      leftover = (handle->wr_index - handle->hdr_index + handle->buffer_length) % handle->buffer_length;
+		      handle->wr_abs += leftover;
+		      if (handle->download)
+			{
+			  // the data which has to go into the
+			  // beginning of the file must be at the end
+			  // of the input that we've dealt with.
+			  vfs_fwrite(ptr + ret - leftover, leftover, 1, 
+				     handle->download);
+			}
 		      handle->icy_left = handle->icy_interval;
 		      if (handle->icy_interval)
 			{
@@ -529,12 +541,13 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
 
-  //add header icy-metadata:1 (when we're ready for it)
   {
     struct curl_slist *hdr = NULL;
     hdr = curl_slist_append(hdr, "icy-metadata:1");
     curl_easy_setopt(handle->curl, CURLOPT_HTTPHEADER, hdr);
   }
+
+  //handle->download = vfs_fopen(FILENAME, "wb");
 
   file->handle = handle;
   file->base = &curl_const;
@@ -568,6 +581,12 @@ curl_vfs_fclose_impl(VFSFile * file)
       if (handle->stream_stack != NULL)
         g_slist_free(handle->stream_stack);
       curl_easy_cleanup(handle->curl);
+
+      if (handle->download)
+	{
+	  vfs_fclose(handle->download);
+	}
+
       g_free(handle);
     }
   return ret;
@@ -613,7 +632,10 @@ curl_vfs_fread_impl(gpointer ptr,
     {
       size_t available;
       while (!(available = buf_available(handle)) && !handle->cancel)
-	g_usleep(10000);
+	{
+	  //g_print("Wait for data on %p\n", handle);
+	  g_usleep(10000);
+	}
       if (available > sz - ret)
 	available = sz - ret;
       memcpy(ptr + ret, handle->buffer + handle->rd_index, available);
