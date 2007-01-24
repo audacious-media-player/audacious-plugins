@@ -30,6 +30,7 @@
 #include <audacious/i18n.h>
 #include <glib.h>
 #include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
 
@@ -99,7 +100,16 @@ si_ui_statusicon_popup_show ( gpointer evbox )
     GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
 
     tuple = playlist_get_tuple( pl_active , pos );
-    audacious_fileinfopopup_show_from_tuple( popup , tuple );
+    if (( tuple == NULL ) || (( tuple->track_name == NULL ) && ( tuple->length < 1 )))
+    {
+      gchar *title = playlist_get_songtitle( pl_active , pos );
+      audacious_fileinfopopup_show_from_title( popup , title );
+      g_free( title );
+    }
+    else
+    {
+      audacious_fileinfopopup_show_from_tuple( popup , tuple );
+    }
 
     g_object_set_data( G_OBJECT(evbox) , "popup_active" , GINT_TO_POINTER(1) );
   }
