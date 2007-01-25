@@ -6,13 +6,15 @@
 # Takeshi AIHANA <aihana@gnome.gr.jp>, 2004. (bmp)
 # -----------------------------------------------------
 # dai <d+po@vdr.jp>, 2005-2007.
+# Thanks to:
+#	KAZUKI SHIMURA <kazuki@ma.ccnw.ne.jp>
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious HEAD\n"
+"Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-01-22 10:42-0600\n"
-"PO-Revision-Date: 2007-01-21 04:26+0900\n"
+"POT-Creation-Date: 2007-01-19 22:53-0600\n"
+"PO-Revision-Date: 2007-01-25 23:52+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,8 +54,8 @@ msgstr "ミキサ・デバイス:"
 msgid "Devices"
 msgstr "デバイス"
 
-#: src/OSS/configure.c:303 src/esd/configure.c:171 src/mpg123/configure.c:269
-#: src/sun/configure.c:258 src/vorbis/configure.c:173
+#: src/OSS/configure.c:303 src/esd/configure.c:171 src/mpg123/configure.c:296
+#: src/sun/configure.c:258 src/vorbis/configure.c:198
 msgid "Buffering:"
 msgstr "バッファリング:"
 
@@ -61,8 +63,8 @@ msgstr "バッファリング:"
 msgid "Buffer size (ms):"
 msgstr "バッファのサイズ (ミリ秒):"
 
-#: src/OSS/configure.c:330 src/esd/configure.c:198 src/mpg123/configure.c:297
-#: src/sun/configure.c:289 src/vorbis/configure.c:199
+#: src/OSS/configure.c:330 src/esd/configure.c:198 src/mpg123/configure.c:324
+#: src/sun/configure.c:289 src/vorbis/configure.c:224
 msgid "Pre-buffer (percent):"
 msgstr "事前にバッファリングする割合 (％):"
 
@@ -129,13 +131,13 @@ msgstr ""
 #: src/OSS/about.c:54 src/adplug/adplug-xmms.cc:155 src/alac/plugin.c:87
 #: src/audiocompress/audacious-glue.c:103 src/console/Audacious_Driver.cxx:459
 #: src/echo_plugin/gui.c:23 src/echo_plugin/gui.c:134 src/esd/about.c:49
-#: src/jack/jack.c:598 src/mpg123/mpg123.c:1000 src/null/null.c:63
-#: src/paranormal/plugin.c:290 src/scrobbler/gtkstuff.c:24
+#: src/jack/jack.c:598 src/mpg123/mpg123.c:959 src/mpg123/http.c:222
+#: src/null/null.c:62 src/paranormal/plugin.c:286 src/scrobbler/gtkstuff.c:24
 #: src/stereo_plugin/stereo.c:59 src/stereo_plugin/stereo.c:122
 #: src/sun/configure.c:558 src/sun/about.c:38
 #: src/timidity/src/xmms-timidity.c:140 src/timidity/src/interface.c:223
-#: src/tonegen/tonegen.c:57 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:895
-#: src/wav/wav-sndfile.c:263
+#: src/tonegen/tonegen.c:57 src/vorbis/http.c:218 src/vorbis/fileinfo.c:212
+#: src/vorbis/vorbis.c:829 src/wav/wav-sndfile.c:263
 msgid "Ok"
 msgstr "OK"
 
@@ -385,8 +387,8 @@ msgstr "CDDB サーバ:"
 msgid "Track names:"
 msgstr "トラック名:"
 
-#: src/cdaudio/configure.c:605 src/mpg123/configure.c:382
-#: src/vorbis/configure.c:261
+#: src/cdaudio/configure.c:605 src/mpg123/configure.c:414
+#: src/vorbis/configure.c:292
 msgid "Override generic titles"
 msgstr "オリジナルのタイトルを上書きする"
 
@@ -402,12 +404,12 @@ msgstr "CD の情報"
 msgid "CD Audio Plugin"
 msgstr "CD オーディオ・プラグイン"
 
-#: src/cdaudio/cdaudio.c:1055 src/cdaudio/cdaudio.c:1060
+#: src/cdaudio/cdaudio.c:1054 src/cdaudio/cdaudio.c:1059
 #, c-format
 msgid "CD Audio Track %02u"
 msgstr "CD オーディオ・トラック %02u"
 
-#: src/cdaudio/cdinfo.c:161 src/cdaudio/cdinfo.c:162 src/cdaudio/cdinfo.c:163
+#: src/cdaudio/cdinfo.c:156 src/cdaudio/cdinfo.c:157 src/cdaudio/cdinfo.c:158
 msgid "(unknown)"
 msgstr "(不明)"
 
@@ -424,8 +426,7 @@ msgid ""
 msgstr ""
 "Game_Music_Emu 0.5.2 をベースにしたコンソールミュージックデコーダエンジンで"
 "す。\n"
-"サポートするフォーマット: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
-"VGZ\n"
+"サポートするフォーマット: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 "Audacious の実装は William Pitcock <nenolod@nenolod.net> と\n"
 "Shay Green <hotpop.com@blargg> によります。"
 
@@ -484,7 +485,7 @@ msgstr "NSF/NSFE"
 
 #: src/console/Audacious_Config.cxx:234
 msgid "Use optional NSFE playlist"
-msgstr "オプションの NSFE 演奏一覧を使う"
+msgstr "オプションの NSFE プレイリストを使う"
 
 #: src/console/Audacious_Config.cxx:245
 msgid "SPC"
@@ -501,19 +502,20 @@ msgid ""
 "provide length information (i.e. looping tracks)."
 msgstr ""
 "* デフォルトの曲の長さ *\n"
-"秒数で表現されるデフォルトの曲の長さは、長さ情報を提供しない曲 (例えばループ"
-"するトラック) に用いられます。"
+"秒数で表現されるデフォルトの曲の長さは、長さ情報を提供しない曲 "
+"(例えばループするトラック) に用いられます。"
 
 #: src/disk_writer/disk_writer.c:111
 #, c-format
 msgid "Disk Writer Plugin %s"
 msgstr "ディスク・ライター・プラグイン %s"
 
-#: src/disk_writer/disk_writer.c:140
+#: src/disk_writer/disk_writer.c:138 src/mpg123/http.c:222
+#: src/vorbis/http.c:218
 msgid "Error"
 msgstr "エラー"
 
-#: src/disk_writer/disk_writer.c:141
+#: src/disk_writer/disk_writer.c:139
 msgid ""
 "You cannot use the Disk Writer plugin\n"
 "when you're running in realtime mode."
@@ -521,21 +523,37 @@ msgstr ""
 "リアルタイム・モードで実行しているとき\n"
 "ディスク・ライター・プラグインは利用できません。"
 
-#: src/disk_writer/disk_writer.c:143
+#: src/disk_writer/disk_writer.c:141 src/disk_writer/disk_writer.c:406
 msgid "OK"
 msgstr "OK"
 
-#: src/disk_writer/disk_writer.c:356
+#: src/disk_writer/disk_writer.c:316
+msgid "Select the directory where you want to store the output files:"
+msgstr "出力ファイルを格納するディレクトリを選択して下さい:"
+
+#: src/disk_writer/disk_writer.c:360
 msgid "Disk Writer Configuration"
 msgstr "ディスク・ライターの設定"
 
-#: src/disk_writer/disk_writer.c:367
-msgid "Output file folder:"
-msgstr ""
+#: src/disk_writer/disk_writer.c:371 src/mpg123/configure.c:363
+#: src/vorbis/configure.c:263
+msgid "Path:"
+msgstr "パス名:"
 
-#: src/disk_writer/disk_writer.c:377
+#: src/disk_writer/disk_writer.c:382 src/mpg123/configure.c:373
+#: src/vorbis/configure.c:273
+msgid "Browse"
+msgstr "参照"
+
+#: src/disk_writer/disk_writer.c:389
 msgid "Don't strip file name extension"
 msgstr "ファイル名の拡張子を取り除かない"
+
+#: src/disk_writer/disk_writer.c:413 src/echo_plugin/gui.c:142
+#: src/stereo_plugin/stereo.c:131 src/sun/configure.c:566
+#: src/timidity/src/interface.c:231
+msgid "Cancel"
+msgstr "キャンセル"
 
 #: src/echo_plugin/echo.c:44
 #, c-format
@@ -577,11 +595,6 @@ msgstr "音量: (%)"
 #: src/echo_plugin/gui.c:119
 msgid "Surround echo"
 msgstr "サラウンド・エコー"
-
-#: src/echo_plugin/gui.c:142 src/stereo_plugin/stereo.c:131
-#: src/sun/configure.c:566 src/timidity/src/interface.c:231
-msgid "Cancel"
-msgstr "キャンセル"
 
 #: src/echo_plugin/gui.c:149 src/stereo_plugin/stereo.c:138
 msgid "Apply"
@@ -1335,11 +1348,11 @@ msgstr "Jポップ"
 msgid "Synthpop"
 msgstr "シンセポップ"
 
-#: src/mpg123/mpg123.c:995
+#: src/mpg123/mpg123.c:954
 msgid "About MPEG Audio Plugin"
 msgstr "MPEG オーディオ・プラグインについて"
 
-#: src/mpg123/mpg123.c:996
+#: src/mpg123/mpg123.c:955
 msgid ""
 "Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, derived "
 "from:\n"
@@ -1353,104 +1366,146 @@ msgstr ""
 "同様に mpg123 0.59s.mc3 から部分的に派生。\n"
 "オリジナルの XMMS プラグインをベースとする。"
 
-#: src/mpg123/mpg123.c:1041
+#: src/mpg123/mpg123.c:1000
 msgid "MPEG Audio Plugin"
 msgstr "MPEG オーディオ・プラグイン"
 
-#: src/mpg123/configure.c:158
+#: src/mpg123/http.c:387 src/mpg123/http.c:440 src/vorbis/http.c:338
+#: src/vorbis/http.c:390
+#, c-format
+msgid "CONNECTING TO %s:%d"
+msgstr "%s:%d へ接続中"
+
+#: src/mpg123/http.c:402 src/vorbis/http.c:353
+#, c-format
+msgid "Couldn't connect to host %s:%d"
+msgstr "ホスト %s:%d へ接続できませんでした"
+
+#: src/mpg123/http.c:408 src/mpg123/http.c:425 src/vorbis/http.c:360
+#: src/vorbis/http.c:375
+#, c-format
+msgid "Couldn't look up host %s"
+msgstr "ホスト %s を見つけられませんでした"
+
+#: src/mpg123/http.c:420 src/vorbis/http.c:370
+#, c-format
+msgid "LOOKING UP %s"
+msgstr "%s の検索中"
+
+#: src/mpg123/http.c:448 src/mpg123/http.c:469 src/vorbis/http.c:398
+#: src/vorbis/http.c:419
+#, c-format
+msgid "Couldn't connect to host %s"
+msgstr "ホスト %s へ接続できませんでした"
+
+#: src/mpg123/http.c:538 src/vorbis/http.c:467
+msgid "CONNECTED: WAITING FOR REPLY"
+msgstr "接続完了: 応答を待っています"
+
+#: src/mpg123/http.c:575 src/vorbis/http.c:504
+#, c-format
+msgid ""
+"Couldn't connect to host %s\n"
+"Server reported: %s"
+msgstr ""
+"ホスト %s へ接続できませんでした。\n"
+"サーバからの報告: %s"
+
+#: src/mpg123/http.c:704
+#, c-format
+msgid "PRE-BUFFERING: %zuKB/%zuKB"
+msgstr "プレ・バッファリング中: %zu/%zu Kバイト"
+
+#: src/mpg123/configure.c:116
+msgid "Select the directory where you want to store the MPEG streams:"
+msgstr "MPEG ストリームを格納するディレクトリを選択して下さい:"
+
+#: src/mpg123/configure.c:185
 msgid "MPEG Audio Plugin Configuration"
 msgstr "MPEG オーディオ・プラグインの設定"
 
-#: src/mpg123/configure.c:175
+#: src/mpg123/configure.c:202
 msgid "Resolution:"
 msgstr "解像度:"
 
-#: src/mpg123/configure.c:183 src/timidity/src/interface.c:141
+#: src/mpg123/configure.c:210 src/timidity/src/interface.c:141
 msgid "16 bit"
 msgstr "16ビット"
 
-#: src/mpg123/configure.c:192 src/timidity/src/interface.c:133
+#: src/mpg123/configure.c:219 src/timidity/src/interface.c:133
 msgid "8 bit"
 msgstr " 8ビット"
 
-#: src/mpg123/configure.c:199 src/vorbis/fileinfo.c:863
+#: src/mpg123/configure.c:226 src/vorbis/fileinfo.c:863
 #: src/vorbis/fileinfo.c:919
 msgid "Channels:"
 msgstr "チャンネル数:"
 
-#: src/mpg123/configure.c:207
+#: src/mpg123/configure.c:234
 msgid "Stereo (if available)"
 msgstr "ステレオ (可能ならば)"
 
-#: src/mpg123/configure.c:218 src/timidity/src/interface.c:166
+#: src/mpg123/configure.c:245 src/timidity/src/interface.c:166
 msgid "Mono"
 msgstr "モノラル"
 
-#: src/mpg123/configure.c:225
+#: src/mpg123/configure.c:252
 msgid "Down sample:"
 msgstr "ダウン・サンプル:"
 
-#: src/mpg123/configure.c:234
+#: src/mpg123/configure.c:261
 msgid "1:1 (44 kHz)"
 msgstr "1:1 (44 kHz)"
 
-#: src/mpg123/configure.c:245
+#: src/mpg123/configure.c:272
 msgid "1:2 (22 kHz)"
 msgstr "1:2 (22 kHz)"
 
-#: src/mpg123/configure.c:256
+#: src/mpg123/configure.c:283
 msgid "1:4 (11 kHz)"
 msgstr "1:4 (11 kHz)"
 
-#: src/mpg123/configure.c:265
+#: src/mpg123/configure.c:292
 msgid "Decoder"
 msgstr "デコーダ"
 
-#: src/mpg123/configure.c:282 src/vorbis/configure.c:185
+#: src/mpg123/configure.c:309 src/vorbis/configure.c:210
 msgid "Buffer size (kb):"
 msgstr "バッファのサイズ (Kバイト):"
 
-#: src/mpg123/configure.c:311 src/vorbis/configure.c:213
+#: src/mpg123/configure.c:338 src/vorbis/configure.c:238
 msgid "Save stream to disk:"
 msgstr "ストリームの保存:"
 
-#: src/mpg123/configure.c:322 src/vorbis/configure.c:224
+#: src/mpg123/configure.c:349 src/vorbis/configure.c:249
 msgid "Save stream to disk"
 msgstr "ストリームをディスクに保存する"
 
-#: src/mpg123/configure.c:336 src/vorbis/configure.c:238
-msgid "Path:"
-msgstr "パス名:"
-
-#: src/mpg123/configure.c:341 src/vorbis/configure.c:243
-msgid "Pick a folder"
-msgstr ""
-
-#: src/mpg123/configure.c:347
+#: src/mpg123/configure.c:379
 msgid "SHOUT/Icecast:"
 msgstr "SHOUT/Icecast:"
 
-#: src/mpg123/configure.c:358
+#: src/mpg123/configure.c:390
 msgid "Enable Icecast Metadata UDP Channel"
 msgstr "Icecast メタデータ UDP チャンネルを有効にする"
 
-#: src/mpg123/configure.c:365 src/vorbis/configure.c:249
+#: src/mpg123/configure.c:397 src/vorbis/configure.c:280
 msgid "Streaming"
 msgstr "ストリーミング"
 
-#: src/mpg123/configure.c:367
+#: src/mpg123/configure.c:399
 msgid "ID3 Tags:"
 msgstr "ID3 タグ:"
 
-#: src/mpg123/configure.c:375
+#: src/mpg123/configure.c:407
 msgid "Disable ID3V2 tags"
 msgstr "ID3V2 のタグを無効にする"
 
-#: src/mpg123/configure.c:395
+#: src/mpg123/configure.c:427
 msgid "ID3 format:"
 msgstr "ID3 の書式:"
 
-#: src/mpg123/configure.c:409 src/vorbis/configure.c:288
+#: src/mpg123/configure.c:441 src/vorbis/configure.c:319
 msgid "Title"
 msgstr "タイトル"
 
@@ -1607,22 +1662,22 @@ msgstr "%s"
 msgid "%lu Bytes"
 msgstr "%lu バイト"
 
-#: src/null/null.c:59
+#: src/null/null.c:58
 msgid "About Null Output"
 msgstr "ヌル出力について"
 
-#: src/null/null.c:60
+#: src/null/null.c:59
 msgid "Null output plugin "
 msgstr "ヌル出力プラグイン"
 
-#: src/null/null.c:61
-#, fuzzy
+#: src/null/null.c:60
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 " based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+
 msgstr ""
 " Christian Birchinger <joker@netswarm.net> による\n"
-" H奪vard Kv奪l <havardk@xmms.org> による XMMS プラグインが基である"
+" Håvard Kvål <havardk@xmms.org> による XMMS プラグインが基である"
 
 #: src/scrobbler/configure.c:112
 msgid "<b>Services</b>"
@@ -1682,7 +1737,7 @@ msgstr "曲の終わりで実行するコマンド"
 
 #: src/song_change/song_change.c:229
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Audacious が演奏一覧の最後に到達したときに実行するコマンド"
+msgstr "Audacious がプレイリストの最後に到達したときに実行するコマンド"
 
 #: src/song_change/song_change.c:250
 #, c-format
@@ -1700,8 +1755,8 @@ msgid ""
 "%%t: Playlist position (%%02d)\n"
 "%%p: Currently playing (1 or 0)"
 msgstr ""
-"コマンドを呼び出す前に置換される以下のフォーマット文字列を利用できます(演奏一"
-"覧の最後のコマンドにはすべてが有効ではありせん)。\n"
+"コマンドを呼び出す前に置換される以下のフォーマット文字列を利用できます"
+"(プレイリストの最後のコマンドにはすべてが有効ではありせん)。\n"
 "\n"
 "%%F: 周波数 (ヘルツ)\n"
 "%%c: チャンネル数\n"
@@ -1709,7 +1764,7 @@ msgstr ""
 "%%l: 長さ (ミリ秒)\n"
 "%%n または %%s: 曲名\n"
 "%%r: レート (ビット毎秒)\n"
-"%%t: 演奏一覧の位置 (%%02d)\n"
+"%%t: プレイリストの位置 (%%02d)\n"
 "%%p: 現在演奏中か (1 or 0)"
 
 #: src/song_change/song_change.c:275
@@ -1876,49 +1931,58 @@ msgstr "トーン・ジェネレータ %s"
 msgid "File Info - %s"
 msgstr "ファイル情報 - %s"
 
-#: src/vorbis/configure.c:161
+#: src/vorbis/configure.c:107
+msgid "Select the directory where you want to store the Ogg Vorbis streams:"
+msgstr "Ogg Vorbis ストリームを格納するディレクトリの選択:"
+
+#: src/vorbis/configure.c:186
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis オーディオ・プラグインの設定"
 
-#: src/vorbis/configure.c:253
+#: src/vorbis/configure.c:284
 msgid "Ogg Vorbis Tags:"
 msgstr "Ogg Vorbis タグ:"
 
-#: src/vorbis/configure.c:274
+#: src/vorbis/configure.c:305
 msgid "Title format:"
 msgstr "タイトルの書式:"
 
-#: src/vorbis/configure.c:292
+#: src/vorbis/configure.c:323
 msgid "ReplayGain Settings:"
 msgstr "リプレイ・ゲインの設定:"
 
-#: src/vorbis/configure.c:300
+#: src/vorbis/configure.c:331
 msgid "Enable Clipping Prevention"
 msgstr "クリッピング回避機能を有効にする"
 
-#: src/vorbis/configure.c:305
+#: src/vorbis/configure.c:336
 msgid "Enable ReplayGain"
 msgstr "リプレイ・ゲインを有効にする"
 
-#: src/vorbis/configure.c:310
+#: src/vorbis/configure.c:341
 msgid "ReplayGain Type:"
 msgstr "リプレイゲインの種類:"
 
-#: src/vorbis/configure.c:321
+#: src/vorbis/configure.c:352
 msgid "use Track Gain/Peak"
 msgstr "トラックのゲイン/ピークを使用する"
 
-#: src/vorbis/configure.c:331
+#: src/vorbis/configure.c:362
 msgid "use Album Gain/Peak"
 msgstr "アルバムのゲイン/ピークを使用する"
 
-#: src/vorbis/configure.c:343
+#: src/vorbis/configure.c:374
 msgid "Enable 6dB Boost + Hard Limiting"
 msgstr "6dB ブースト + ハード・リミットを有効にする"
 
-#: src/vorbis/configure.c:349
+#: src/vorbis/configure.c:380
 msgid "ReplayGain"
 msgstr "リプレイ・ゲイン"
+
+#: src/vorbis/http.c:607
+#, c-format
+msgid "PRE-BUFFERING: %dKB/%dKB"
+msgstr "プレ・バッファリング中: %d/%d Kバイト"
 
 #: src/vorbis/fileinfo.c:210
 #, c-format
@@ -2026,15 +2090,15 @@ msgstr "%d:%.2d"
 msgid "%d Bytes"
 msgstr "%d バイト"
 
-#: src/vorbis/vorbis.c:147
+#: src/vorbis/vorbis.c:141
 msgid "Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ・プラグイン"
 
-#: src/vorbis/vorbis.c:877
+#: src/vorbis/vorbis.c:811
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ・プラグインについて"
 
-#: src/vorbis/vorbis.c:883
+#: src/vorbis/vorbis.c:817
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -2120,59 +2184,16 @@ msgstr "sndfile WAV プラグイン"
 msgid "WAV Audio Plugin"
 msgstr "WAV オーディオ・プラグイン"
 
-#: src/wma/wma.c:132
+#: src/wma/wma.c:131
 #, c-format
 msgid "WMA Player %s"
 msgstr "WMA プレイヤー %s"
 
-#: src/wma/wma.c:165
+#: src/wma/wma.c:164
 #, c-format
 msgid "About %s"
 msgstr "%s について"
 
-#: src/wma/wma.c:178
+#: src/wma/wma.c:177
 msgid " Close "
 msgstr " 閉じる "
-
-#~ msgid "Select the directory where you want to store the output files:"
-#~ msgstr "出力ファイルを格納するディレクトリを選択して下さい:"
-
-#~ msgid "Browse"
-#~ msgstr "参照"
-
-#~ msgid "CONNECTING TO %s:%d"
-#~ msgstr "%s:%d へ接続中"
-
-#~ msgid "Couldn't connect to host %s:%d"
-#~ msgstr "ホスト %s:%d へ接続できませんでした"
-
-#~ msgid "Couldn't look up host %s"
-#~ msgstr "ホスト %s を見つけられませんでした"
-
-#~ msgid "LOOKING UP %s"
-#~ msgstr "%s の検索中"
-
-#~ msgid "Couldn't connect to host %s"
-#~ msgstr "ホスト %s へ接続できませんでした"
-
-#~ msgid "CONNECTED: WAITING FOR REPLY"
-#~ msgstr "接続完了: 応答を待っています"
-
-#~ msgid ""
-#~ "Couldn't connect to host %s\n"
-#~ "Server reported: %s"
-#~ msgstr ""
-#~ "ホスト %s へ接続できませんでした。\n"
-#~ "サーバからの報告: %s"
-
-#~ msgid "PRE-BUFFERING: %zuKB/%zuKB"
-#~ msgstr "プレ・バッファリング中: %zu/%zu Kバイト"
-
-#~ msgid "Select the directory where you want to store the MPEG streams:"
-#~ msgstr "MPEG ストリームを格納するディレクトリを選択して下さい:"
-
-#~ msgid "Select the directory where you want to store the Ogg Vorbis streams:"
-#~ msgstr "Ogg Vorbis ストリームを格納するディレクトリの選択:"
-
-#~ msgid "PRE-BUFFERING: %dKB/%dKB"
-#~ msgstr "プレ・バッファリング中: %d/%d Kバイト"
