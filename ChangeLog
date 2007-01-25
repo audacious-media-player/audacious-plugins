@@ -1,3 +1,12 @@
+2007-01-25 14:55:33 +0000  
+  revision [1180]
+  * Update Japanese translation.
+  - Thanks to KAZUKI SHIMURA <kazuki@ma.ccnw.ne.jp>.
+  
+  trunk/po/ja.po |  291 ++++++++++++++++++++++++++++++---------------------------
+  1 file changed, 156 insertions(+), 135 deletions(-)
+
+
 2007-01-25 12:50:20 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1178]
   - this should have been a VFSVorbisFile, not a direct VFS fd

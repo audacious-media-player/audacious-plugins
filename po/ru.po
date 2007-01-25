@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-01-22 10:42-0600\n"
-"PO-Revision-Date: 2007-01-08 13:48+0400\n"
+"PO-Revision-Date: 2007-01-26 00:17+0300\n"
 "Last-Translator: Alexandr Orlov <alxorlov@pochta.ru>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -431,7 +431,7 @@ msgstr ""
 "Поддерживаемые форматы: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
 "VGZ\n"
 "Портирование под Audacious: William Pitcock <nenolod@nenolod.net>, \n"
-"        Shay Green <hotpop.com@blargg>"
+"        Shay Green <gblargg@gmail.com>"
 
 #: src/console/Audacious_Driver.cxx:504
 msgid "Game console audio module decoder"
@@ -536,7 +536,7 @@ msgstr "Настройка записи на диск"
 
 #: src/disk_writer/disk_writer.c:367
 msgid "Output file folder:"
-msgstr ""
+msgstr "Каталог для выходных файлов:"
 
 #: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
@@ -1431,7 +1431,7 @@ msgstr "Путь:"
 
 #: src/mpg123/configure.c:341 src/vorbis/configure.c:243
 msgid "Pick a folder"
-msgstr ""
+msgstr "Выберите каталог"
 
 #: src/mpg123/configure.c:347
 msgid "SHOUT/Icecast:"
@@ -1497,7 +1497,7 @@ msgstr "50/15 мс"
 
 #: src/mpg123/fileinfo.c:248
 msgid "CCIT J.17"
-msgstr "CCIT J.17"
+msgstr ""
 
 #: src/mpg123/fileinfo.c:249
 msgid "No"
@@ -1623,13 +1623,12 @@ msgid "Null output plugin "
 msgstr "Модуль Ноль-вывод "
 
 #: src/null/null.c:61
-#, fuzzy
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 " based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
 msgstr ""
 " автор Christian Birchinger <joker@netswarm.net>\n"
-" основано на модуле для XMMS, от Hц╔vard Kvц╔l <havardk@xmms.org>"
+" основано на модуле для XMMS, от Håvard Kvål <havardk@xmms.org>"
 
 #: src/scrobbler/configure.c:112
 msgid "<b>Services</b>"
@@ -2144,45 +2143,3 @@ msgstr "О программе %s"
 msgid " Close "
 msgstr " Закрыть "
 
-#~ msgid "Select the directory where you want to store the output files:"
-#~ msgstr "Выберите каталог, в котором вы хотите сохранять полученные файлы:"
-
-#~ msgid "Browse"
-#~ msgstr "Обзор"
-
-#~ msgid "CONNECTING TO %s:%d"
-#~ msgstr "ПОДКЛЮЧЕНИЕ К %s:%d"
-
-#~ msgid "Couldn't connect to host %s:%d"
-#~ msgstr "Не могу подключиться к узлу %s:%d"
-
-#~ msgid "Couldn't look up host %s"
-#~ msgstr "Не могу найти узел %s"
-
-#~ msgid "LOOKING UP %s"
-#~ msgstr "ПОИСК %s"
-
-#~ msgid "Couldn't connect to host %s"
-#~ msgstr "Не могу подключиться к узлу %s"
-
-#~ msgid "CONNECTED: WAITING FOR REPLY"
-#~ msgstr "ПОДКЛЮЧЕН: ЖДУ ОТВЕТА"
-
-#~ msgid ""
-#~ "Couldn't connect to host %s\n"
-#~ "Server reported: %s"
-#~ msgstr ""
-#~ "Не могу подключиться к узлу %s\n"
-#~ "Сервер возвратил: %s"
-
-#~ msgid "PRE-BUFFERING: %zuKB/%zuKB"
-#~ msgstr "ПРЕБУФЕРИЗАЦИЯ: %zuКб/%zuКб"
-
-#~ msgid "Select the directory where you want to store the MPEG streams:"
-#~ msgstr "Выберите каталог, в котором вы хотите сохранять потоки MPEG:"
-
-#~ msgid "Select the directory where you want to store the Ogg Vorbis streams:"
-#~ msgstr "Выберите каталог, в котором вы хотите сохранять потоки Ogg Vorbis:"
-
-#~ msgid "PRE-BUFFERING: %dKB/%dKB"
-#~ msgstr "ПРЕБУФЕРИЗАЦИЯ: %dКб/%dКб"
