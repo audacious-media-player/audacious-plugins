@@ -859,7 +859,7 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
         displaytitle = g_strdup(input->file_name);
     }
 
-    if ((tmp = vfs_get_metadata((VFSFile *) vorbisfile->datasource, "stream-name")) != NULL)
+    if ((tmp = vfs_get_metadata(((VFSVorbisFile *) vorbisfile->datasource)->fd, "stream-name")) != NULL)
     {
         gchar *old = displaytitle;
         displaytitle = g_strdup_printf("%s (%s)", displaytitle, tmp);

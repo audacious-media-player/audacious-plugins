@@ -1,3 +1,11 @@
+2007-01-25 12:43:18 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1176]
+  - display the stream title if it's available, like in mp3 streams
+  
+  trunk/src/vorbis/vorbis.c |   11 +++++++++++
+  1 file changed, 11 insertions(+)
+
+
 2007-01-25 09:39:09 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1174]
   - fix a warning
