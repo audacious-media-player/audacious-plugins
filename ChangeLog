@@ -1,3 +1,11 @@
+2007-01-24 04:19:01 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1172]
+  Support for writing downloaded data to a file (no UI provided yet).
+  
+  trunk/src/curl/curl.c |   38 ++++++++++++++++++++++++++++++--------
+  1 file changed, 30 insertions(+), 8 deletions(-)
+
+
 2007-01-24 00:44:29 +0000  Giacomo Lozito <james@develia.org>
   revision [1170]
   - made popup window use audacious_fileinfopopup_show_from_title if track_name and song length is not available

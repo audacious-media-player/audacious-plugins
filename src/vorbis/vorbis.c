@@ -363,18 +363,15 @@ vorbis_process_data(int last_section, gboolean use_rg, float rg_scale)
                                               pcmout, rg_scale);
     }
     else {
-        do {
-            bytes =
-                ov_read(&vf, pcmout, sizeof(pcmout),
+        bytes = ov_read(&vf, pcmout, sizeof(pcmout),
                         (int) (G_BYTE_ORDER == G_BIG_ENDIAN),
-                         2, 1, &current_section);
-	} while (bytes == OV_HOLE);
+                        2, 1, &current_section);
     }
 
     /*
      * We got some sort of error. Bail.
      */
-    if (bytes <= 0) {
+    if (bytes <= 0 && bytes != OV_HOLE) {
         g_mutex_unlock(vf_mutex);
         vorbis_ip.output->buffer_free();
         vorbis_ip.output->buffer_free();
@@ -477,7 +474,10 @@ vorbis_play_loop(gpointer arg)
     vorbis_is_streaming = ((time = ov_time_total(&vf, -1)) <= 1.);
 
     if (vorbis_is_streaming)
+    {
         time = -1;
+	vf.seekable = FALSE;   /* XXX: don't ask. -nenolod */
+    }
 
     if (vi->channels > 2) {
         vorbis_eos = TRUE;
