@@ -1,6 +1,7 @@
 /*
  * Copyright (C) Tony Arcieri <bascule@inferno.tusculum.edu>
  * Copyright (C) 2001-2002  Haavard Kvaalen <havardk@xmms.org>
+ * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  *
  * ReplayGain processing Copyright (C) 2002 Gian-Carlo Pascutto <gcp@sjeng.org>
  *
@@ -847,6 +848,7 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
     /* Caller should hold vf_mutex */
     gchar *displaytitle = NULL;
     TitleInput *input;
+    gchar *tmp;
 
     input = get_tuple_for_vorbisfile(vorbisfile, filename, vorbis_is_streaming);
 
@@ -855,6 +857,15 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
                                               xmms_get_gentitle_format(),
                                               input))) {
         displaytitle = g_strdup(input->file_name);
+    }
+
+    if ((tmp = vfs_get_metadata((VFSFile *) vorbisfile->datasource, "stream-name")) != NULL)
+    {
+        gchar *old = displaytitle;
+        displaytitle = g_strdup_printf("%s (%s)", displaytitle, tmp);
+
+	g_free(old);
+	g_free(tmp);
     }
 
     bmp_title_input_free(input);
