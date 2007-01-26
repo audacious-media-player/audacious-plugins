@@ -1,3 +1,11 @@
+2007-01-26 06:27:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1186]
+  - who the fuck put that there
+  
+  trunk/src/sexypsf/Makefile |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-26 05:44:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1184]
   - songchange: use asynchronous hooks instead of a polling event

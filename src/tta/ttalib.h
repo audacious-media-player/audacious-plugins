@@ -60,12 +60,12 @@ typedef struct {
 	unsigned short  BPS;		// bits per sample
 	unsigned short  BSIZE;		// byte size
 	unsigned short  FORMAT;		// audio format
-	unsigned long   SAMPLERATE;	// samplerate (sps)
-	unsigned long   DATALENGTH;	// data length in samples
-	unsigned long   FRAMELEN;	// frame length
-	unsigned long   LENGTH;		// playback time (sec)
-	unsigned long   STATE;		// return code
-	unsigned long   DATAPOS;	// size of ID3v2 header
+	unsigned int   SAMPLERATE;	// samplerate (sps)
+	unsigned int   DATALENGTH;	// data length in samples
+	unsigned int   FRAMELEN;	// frame length
+	unsigned int   LENGTH;		// playback time (sec)
+	unsigned int   STATE;		// return code
+	unsigned int   DATAPOS;	// size of ID3v2 header
 	id3v1_data	id3v1;
 	id3v2_data	id3v2;
 } tta_info;
@@ -89,10 +89,10 @@ static void tta_error (int error) {
 }
 #endif /* LIBTEST */
 
-long    open_tta_file (		// FUNCTION: opens TTA file
+int    open_tta_file (		// FUNCTION: opens TTA file
         const char *filename,	// file to open
         tta_info *info,		// file info structure
-        unsigned long offset);	// ID3v2 header size
+        unsigned int offset);	// ID3v2 header size
 /*
  * RETURN VALUE
  * This function returns 0 if success. Otherwise, -1 is  returned
@@ -104,8 +104,8 @@ long    open_tta_file (		// FUNCTION: opens TTA file
 void    close_tta_file (	// FUNCTION: closes currently playing file
         tta_info *info);	// file info structure
 
-long    set_position (		// FUNCTION: sets playback position
-        unsigned long pos);	// seek position = seek_time_ms / SEEK_STEP
+int    set_position (		// FUNCTION: sets playback position
+        unsigned int pos);	// seek position = seek_time_ms / SEEK_STEP
 /*
  * RETURN VALUE
  * This function returns 0 if success. Otherwise, -1 is  returned
@@ -114,7 +114,7 @@ long    set_position (		// FUNCTION: sets playback position
  *
  */
 
-long    player_init (		// FUNCTION: initializes TTA player
+int    player_init (		// FUNCTION: initializes TTA player
         tta_info *info);	// file info structure
 /*
  * RETURN VALUE
@@ -126,7 +126,7 @@ long    player_init (		// FUNCTION: initializes TTA player
 
 void    player_stop (void);	// FUNCTION: destroys memory pools
 
-long    get_samples (		// FUNCTION: decode PCM_BUFFER_LENGTH samples
+int    get_samples (		// FUNCTION: decode PCM_BUFFER_LENGTH samples
         unsigned char *buffer);	// into the current PCM buffer position
 /*
  * RETURN VALUE
@@ -136,7 +136,7 @@ long    get_samples (		// FUNCTION: decode PCM_BUFFER_LENGTH samples
  *
  */
 
-long	get_bitrate (void);	// RETURN VALUE: TTA dynamic bitrate
+int	get_bitrate (void);	// RETURN VALUE: TTA dynamic bitrate
 
 #endif /* TTALIB_H_ */
 

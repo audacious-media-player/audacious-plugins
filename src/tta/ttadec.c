@@ -41,28 +41,28 @@
 
 static unsigned char isobuffers[ISO_BUFFERS_SIZE + 4];
 static unsigned char *iso_buffers_end = isobuffers + ISO_BUFFERS_SIZE;
-static unsigned long pcm_buffer_size;
+static unsigned int pcm_buffer_size;
 
 static decoder	tta[MAX_NCH];	// decoder state
-static long	cache[MAX_NCH];		// decoder cache
+static int	cache[MAX_NCH];		// decoder cache
 
 tta_info *ttainfo;	// currently playing file info
 
-static unsigned long fframes;	// number of frames in file
-static unsigned long framelen;	// the frame length in samples
-static unsigned long lastlen;	// the length of the last frame in samples
-static unsigned long data_pos;	// currently playing frame index
-static unsigned long data_cur;	// the playing position in frame
+static unsigned int fframes;	// number of frames in file
+static unsigned int framelen;	// the frame length in samples
+static unsigned int lastlen;	// the length of the last frame in samples
+static unsigned int data_pos;	// currently playing frame index
+static unsigned int data_cur;	// the playing position in frame
 
-static long maxvalue;	// output data max value
-static unsigned long *seek_table; // the playing position table
-static unsigned long st_state; //seek table status
+static int maxvalue;	// output data max value
+static unsigned int *seek_table; // the playing position table
+static unsigned int st_state; //seek table status
 
-static unsigned long frame_crc32;
-static unsigned long bit_count;
-static unsigned long bit_cache;
+static unsigned int frame_crc32;
+static unsigned int bit_count;
+static unsigned int bit_cache;
 static unsigned char *bitpos;
-static unsigned long bitrate;
+static unsigned int bitrate;
 
 void get_id3v1_tag (tta_info *ttainfo);
 int  get_id3v2_tag (tta_info *ttainfo);
@@ -75,10 +75,10 @@ static void init_buffer_read() {
     bitpos = iso_buffers_end;
 }
 
-__inline void get_binary(unsigned long *value, unsigned long bits) {
+__inline void get_binary(unsigned int *value, unsigned int bits) {
     while (bit_count < bits) {
 		if (bitpos == iso_buffers_end) {
-			long res = fread(isobuffers, 1,
+			int res = fread(isobuffers, 1,
 				ISO_BUFFERS_SIZE, ttainfo->HANDLE);
 			if (!res) {
 				ttainfo->STATE = READ_ERROR;
@@ -99,12 +99,12 @@ __inline void get_binary(unsigned long *value, unsigned long bits) {
     bit_cache &= bit_mask[bit_count];
 }
 
-__inline void get_unary(unsigned long *value) {
+__inline void get_unary(unsigned int *value) {
     *value = 0;
 
     while (!(bit_cache ^ bit_mask[bit_count])) {
 		if (bitpos == iso_buffers_end) {
-			long res = fread(isobuffers, 1,
+			int res = fread(isobuffers, 1,
 				ISO_BUFFERS_SIZE, ttainfo->HANDLE);
 			if (!res) {
 				ttainfo->STATE = READ_ERROR;
@@ -129,12 +129,12 @@ __inline void get_unary(unsigned long *value) {
     bit_count--;
 }
 
-static long done_buffer_read() {
-    unsigned long crc32, rbytes, res;
+static int done_buffer_read() {
+    unsigned int crc32, rbytes, res;
     frame_crc32 ^= 0xFFFFFFFFUL;
 
     rbytes = iso_buffers_end - bitpos;
-    if (rbytes < sizeof(long)) {
+    if (rbytes < sizeof(int)) {
 		memcpy(isobuffers, bitpos, 4);
 		res = fread(isobuffers + rbytes, 1,
 			ISO_BUFFERS_SIZE - rbytes, ttainfo->HANDLE);
@@ -147,7 +147,7 @@ static long done_buffer_read() {
 
     memcpy(&crc32, bitpos, 4);
     crc32 = ENDSWAP_INT32(crc32);
-    bitpos += sizeof(long);
+    bitpos += sizeof(int);
     res = (crc32 != frame_crc32);
 
     bit_cache = bit_count = 0;
@@ -165,14 +165,14 @@ static long done_buffer_read() {
 
 /************************* decoder functions ****************************/
 
-static long skip_id3v2_header (FILE *infile) {
+static int skip_id3v2_header (FILE *infile) {
 	struct {
 		unsigned char	id[3];
 		unsigned short	version;
 		unsigned char	flags;
 		unsigned char	size[4];
 	} __ATTRIBUTE_PACKED__ id3v2;
-	unsigned long len = 0;
+	unsigned int len = 0;
 
 	// read ID3V2 header
 	if (fread (&id3v2, sizeof(id3v2), 1, infile) == 0) {
@@ -200,10 +200,10 @@ static long skip_id3v2_header (FILE *infile) {
 	return len;
 }
 
-long open_tta_file (const char *filename, tta_info *info, unsigned long data_offset) {
+int open_tta_file (const char *filename, tta_info *info, unsigned int data_offset) {
 	FILE *infile;
 	tta_hdr ttahdr;
-	unsigned long checksum;
+	unsigned int checksum;
 
 	// clear the memory
 	memset (info, 0, sizeof(tta_info));
@@ -241,7 +241,7 @@ long open_tta_file (const char *filename, tta_info *info, unsigned long data_off
 
 	ttahdr.CRC32 = ENDSWAP_INT32(ttahdr.CRC32);
 	checksum = crc32((unsigned char *) &ttahdr,
-	sizeof(tta_hdr) - sizeof(long));
+	sizeof(tta_hdr) - sizeof(int));
 	if (checksum != ttahdr.CRC32) {
 		fclose (infile);
 		info->STATE = FILE_ERROR;
@@ -280,7 +280,7 @@ long open_tta_file (const char *filename, tta_info *info, unsigned long data_off
 	info->FORMAT = ttahdr.AudioFormat;
 	info->SAMPLERATE = ttahdr.SampleRate;
 	info->DATALENGTH = ttahdr.DataLength;
-	info->FRAMELEN = (long) (FRAME_TIME * ttahdr.SampleRate);
+	info->FRAMELEN = (int) (FRAME_TIME * ttahdr.SampleRate);
 	info->LENGTH = ttahdr.DataLength / ttahdr.SampleRate;
 	info->DATAPOS = data_offset;
 
@@ -288,16 +288,16 @@ long open_tta_file (const char *filename, tta_info *info, unsigned long data_off
 	return 0;
 }
 
-static void rice_init(adapt *rice, unsigned long k0, unsigned long k1) {
+static void rice_init(adapt *rice, unsigned int k0, unsigned int k1) {
     rice->k0 = k0;
     rice->k1 = k1;
     rice->sum0 = shift_16[k0];
     rice->sum1 = shift_16[k1];
 }
 
-static void decoder_init(decoder *tta, long nch, long byte_size) {
-    long shift = flt_set[byte_size - 1];
-    long i;
+static void decoder_init(decoder *tta, int nch, int byte_size) {
+    int shift = flt_set[byte_size - 1];
+    int i;
 
     for (i = 0; i < nch; i++) {
 		filter_init(&tta[i].fst, shift);
@@ -306,9 +306,9 @@ static void decoder_init(decoder *tta, long nch, long byte_size) {
     }
 }
 
-static void seek_table_init (unsigned long *seek_table,
-	unsigned long len, unsigned long data_offset) {
-	unsigned long *st, frame_len;
+static void seek_table_init (unsigned int *seek_table,
+	unsigned int len, unsigned int data_offset) {
+	unsigned int *st, frame_len;
 
 	for (st = seek_table; st < (seek_table + len); st++) {
 		frame_len = ENDSWAP_INT32(*st);
@@ -317,8 +317,8 @@ static void seek_table_init (unsigned long *seek_table,
 	}
 }
 
-long set_position (unsigned long pos) {
-	unsigned long seek_pos;
+int set_position (unsigned int pos) {
+	unsigned int seek_pos;
 
 	if (pos >= fframes) return 0;
 	if (!st_state) {
@@ -338,10 +338,10 @@ long set_position (unsigned long pos) {
 	return 0;
 }
 
-long player_init (tta_info *info) {
-	unsigned long checksum;
-	unsigned long data_offset;
-	unsigned long st_size;
+int player_init (tta_info *info) {
+	unsigned int checksum;
+	unsigned int data_offset;
+	unsigned int st_size;
 
 	ttainfo = info;
 
@@ -352,9 +352,9 @@ long player_init (tta_info *info) {
 
 	lastlen = ttainfo->DATALENGTH % ttainfo->FRAMELEN;
 	fframes = ttainfo->DATALENGTH / ttainfo->FRAMELEN + (lastlen ? 1:0);
-	st_size = (fframes + 1) * sizeof(long);
+	st_size = (fframes + 1) * sizeof(int);
 
-	seek_table = (unsigned long *) malloc(st_size);
+	seek_table = (unsigned int *) malloc(st_size);
 	if (!seek_table) {
 		ttainfo->STATE = MEMORY_ERROR;
 		return -1;
@@ -366,7 +366,7 @@ long player_init (tta_info *info) {
 		return -1;
 	}
 
-	checksum = crc32((unsigned char *) seek_table, st_size - sizeof(long));
+	checksum = crc32((unsigned char *) seek_table, st_size - sizeof(int));
 	st_state = (checksum == ENDSWAP_INT32(seek_table[fframes]));
 	data_offset = sizeof(tta_hdr) + st_size;
 
@@ -396,21 +396,21 @@ void player_stop () {
 	}
 }
 
-long get_bitrate () {
+int get_bitrate () {
 	return bitrate;
 }
 
-long get_samples (byte *buffer) {
-	unsigned long k, depth, unary, binary;
+int get_samples (byte *buffer) {
+	unsigned int k, depth, unary, binary;
 	byte *p = buffer;
 	decoder *dec = tta;
-	long *prev = cache;
-	long value, res;
+	int *prev = cache;
+	int value, res;
 
 	for (res = 0; p < buffer + pcm_buffer_size;) {
 		fltst *fst = &dec->fst;
 		adapt *rice = &dec->rice;
-		long  *last = &dec->last;
+		int  *last = &dec->last;
 
 		if (data_cur == framelen) {
 			if (data_pos == fframes) break;
@@ -474,7 +474,7 @@ long get_samples (byte *buffer) {
 
 		// check for errors
 		if (abs(value) > maxvalue) {
-			unsigned long tail =
+			unsigned int tail =
 				pcm_buffer_size / (ttainfo->BSIZE * ttainfo->NCH) - res;
 			memset(buffer, 0, pcm_buffer_size);
 			data_cur += tail; res += tail;
@@ -486,7 +486,7 @@ long get_samples (byte *buffer) {
 		} else {
 			*prev = value;
 			if (ttainfo->NCH > 1) {
-				long *r = prev - 1;
+				int *r = prev - 1;
 				for (*prev += *r/2; r >= cache; r--)
 					*r = *(r + 1) - *r;
 				for (r = cache; r < prev; r++)

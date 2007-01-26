@@ -49,10 +49,10 @@
 #ifdef _WIN32
 	typedef unsigned __int64 uint64;
 #else
-	typedef unsigned long long uint64;
+	typedef unsigned long int uint64;
 #endif
 
-const unsigned long bit_mask[] = {
+const unsigned int bit_mask[] = {
     0x00000000, 0x00000001, 0x00000003, 0x00000007,
     0x0000000f, 0x0000001f, 0x0000003f, 0x0000007f,
     0x000000ff, 0x000001ff, 0x000003ff, 0x000007ff,
@@ -64,7 +64,7 @@ const unsigned long bit_mask[] = {
     0xffffffff
 };
 
-const unsigned long bit_shift[] = {
+const unsigned int bit_shift[] = {
     0x00000001, 0x00000002, 0x00000004, 0x00000008,
     0x00000010, 0x00000020, 0x00000040, 0x00000080,
     0x00000100, 0x00000200, 0x00000400, 0x00000800,
@@ -77,7 +77,7 @@ const unsigned long bit_shift[] = {
     0x80000000, 0x80000000, 0x80000000, 0x80000000
 };
 
-const unsigned long *shift_16 = bit_shift + 4;
+const unsigned int *shift_16 = bit_shift + 4;
 
 typedef unsigned char byte;
 
@@ -101,36 +101,36 @@ typedef unsigned char byte;
 #define DEC(x)			(((x)&1)?(++(x)>>1):(-(x)>>1))
 
 typedef struct {
-    unsigned long TTAid;
+    unsigned int TTAid;
     unsigned short AudioFormat;
     unsigned short NumChannels;
     unsigned short BitsPerSample;
-    unsigned long SampleRate;
-    unsigned long DataLength;
-    unsigned long CRC32;
+    unsigned int SampleRate;
+    unsigned int DataLength;
+    unsigned int CRC32;
 } __ATTRIBUTE_PACKED__ tta_hdr;
 
 typedef struct {
-	unsigned long k0;
-	unsigned long k1;
-	unsigned long sum0;
-	unsigned long sum1;
+	unsigned int k0;
+	unsigned int k1;
+	unsigned int sum0;
+	unsigned int sum1;
 } adapt;
 
 typedef struct {
-	long shift;
-	long round;
-	long error;
-	long mutex;
-	long qm[MAX_ORDER+1];
-	long dx[MAX_ORDER+1];
-	long dl[MAX_ORDER+1];
+	int shift;
+	int round;
+	int error;
+	int mutex;
+	int qm[MAX_ORDER+1];
+	int dx[MAX_ORDER+1];
+	int dl[MAX_ORDER+1];
 } fltst;
 
 typedef struct {
 	fltst fst;
 	adapt rice;
-	long last;
+	int last;
 } decoder;
 
 #endif /* TTADEC_H_ */
