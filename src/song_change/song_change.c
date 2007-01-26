@@ -21,18 +21,18 @@
 #include "audacious/beepctrl.h"
 #include "audacious/formatter.h"
 #include <audacious/i18n.h>
+#include <audacious/hook.h>
 
 static void init(void);
 static void cleanup(void);
 static GtkWidget *configure(void);
-static int timeout_func(gpointer);
+static void songchange_playback_begin(gpointer unused);
+static void songchange_playback_end(gpointer unused);
+static void songchange_playlist_eof(gpointer unused);
 
-static int timeout_tag = 0;
-static int previous_song = -1;
 static char *cmd_line = NULL;
 static char *cmd_line_after = NULL;
 static char *cmd_line_end = NULL;
-static gboolean possible_pl_end;
 
 static GtkWidget *configure_vbox = NULL;
 static GtkWidget *cmd_entry, *cmd_after_entry, *cmd_end_entry;
@@ -56,6 +56,141 @@ GeneralPlugin *get_gplugin_info(void)
 	return &sc_gp;
 }
 
+static void bury_child(int signal)
+{
+	waitpid(-1, NULL, WNOHANG);
+}
+
+static void execute_command(char *cmd)
+{
+	char *argv[4] = {"/bin/sh", "-c", NULL, NULL};
+	int i;
+	argv[2] = cmd;
+	signal(SIGCHLD, bury_child);
+	if (fork() == 0)
+	{
+		/* We don't want this process to hog the audio device etc */
+		for (i = 3; i < 255; i++)
+			close(i);
+		execv("/bin/sh", argv);
+	}
+}
+
+/*
+ * escape_shell_chars()
+ *
+ * Escapes characters that are special to the shell inside double quotes.
+ */
+static char* escape_shell_chars(const char *string)
+{
+	const char *special = "$`\"\\"; /* Characters to escape */
+	const char *in = string;
+	char *out;
+	char *escaped;
+	int num = 0;
+
+	while (*in != '\0')
+		if (strchr(special, *in++))
+			num++;
+
+	escaped = g_malloc(strlen(string) + num + 1);
+
+	in = string;
+	out = escaped;
+
+	while (*in != '\0')
+	{
+		if (strchr(special, *in))
+			*out++ = '\\';
+		*out++ = *in++;
+	}
+	*out = '\0';
+
+	return escaped;
+}
+
+/* Format codes:
+ *
+ *   F - frequency (in hertz)
+ *   c - number of channels
+ *   f - filename (full path)
+ *   l - length (in milliseconds)
+ *   n - name
+ *   r - rate (in bits per second)
+ *   s - name (since everyone's used to it)
+ *   t - playlist position (%02d)
+ *   p - currently playing (1 or 0)
+ */
+/* do_command(): do @cmd after replacing the format codes
+   @cmd: command to run
+   @current_file: file name of current song
+   @pos: playlist_pos */
+static void
+do_command(char *cmd, const char *current_file, int pos)
+{
+	int length, rate, freq, nch;
+	char *str, *shstring = NULL, *temp, numbuf[16];
+	gboolean playing;
+	Formatter *formatter;
+
+	if (cmd && strlen(cmd) > 0)
+	{
+		formatter = xmms_formatter_new();
+		str = xmms_remote_get_playlist_title(sc_gp.xmms_session, pos);
+		if (str)
+		{
+			temp = escape_shell_chars(str);
+			xmms_formatter_associate(formatter, 's', temp);
+			xmms_formatter_associate(formatter, 'n', temp);
+			g_free(str);
+			g_free(temp);
+		}
+		else
+		{
+			xmms_formatter_associate(formatter, 's', "");
+			xmms_formatter_associate(formatter, 'n', "");
+		}
+
+		if (current_file)
+		{
+			temp = escape_shell_chars(current_file);
+			xmms_formatter_associate(formatter, 'f', temp);
+			g_free(temp);
+		}
+		else
+			xmms_formatter_associate(formatter, 'f', "");
+		sprintf(numbuf, "%02d", pos + 1);
+		xmms_formatter_associate(formatter, 't', numbuf);
+		length = xmms_remote_get_playlist_time(sc_gp.xmms_session, pos);
+		if (length != -1)
+		{
+			sprintf(numbuf, "%d", length);
+			xmms_formatter_associate(formatter, 'l', numbuf);
+		}
+		else
+			xmms_formatter_associate(formatter, 'l', "0");
+		xmms_remote_get_info(sc_gp.xmms_session, &rate, &freq, &nch);
+		sprintf(numbuf, "%d", rate);
+		xmms_formatter_associate(formatter, 'r', numbuf);
+		sprintf(numbuf, "%d", freq);
+		xmms_formatter_associate(formatter, 'F', numbuf);
+		sprintf(numbuf, "%d", nch);
+		xmms_formatter_associate(formatter, 'c', numbuf);
+		playing = xmms_remote_is_playing(sc_gp.xmms_session);
+		sprintf(numbuf, "%d", playing);
+		xmms_formatter_associate(formatter, 'p', numbuf);
+		shstring = xmms_formatter_format(formatter, cmd);
+		xmms_formatter_destroy(formatter);
+
+		if (shstring)
+		{
+			execute_command(shstring);
+			/* FIXME: This can possibly be freed too early */
+			g_free(shstring);
+		}
+	}
+}
+
 static void read_config(void)
 {
 	ConfigDb *db;
@@ -73,9 +208,9 @@ static void read_config(void)
 
 static void cleanup(void)
 {
-	if (timeout_tag)
-		gtk_timeout_remove(timeout_tag);
-	timeout_tag = 0;
+	hook_dissociate("playback begin", songchange_playback_begin);
+	hook_dissociate("playback end", songchange_playback_end);
+	hook_dissociate("playlist end reached", songchange_playlist_eof);
 
 	g_free(cmd_line);
 	g_free(cmd_line_after);
@@ -103,15 +238,20 @@ static void save_and_close(GtkWidget *w, gpointer data)
 	bmp_cfg_db_set_string(db, "song_change", "cmd_line_end", cmd_end);
 	bmp_cfg_db_close(db);
 
-	if (timeout_tag)
-	{
+	if (cmd_line != NULL)
 		g_free(cmd_line);
-		cmd_line = g_strdup(cmd);
+
+	cmd_line = g_strdup(cmd);
+
+	if (cmd_line_after != NULL)
 		g_free(cmd_line_after);
-		cmd_line_after = g_strdup(cmd_after);
+
+	cmd_line_after = g_strdup(cmd_after);
+
+	if (cmd_line_end != NULL)
 		g_free(cmd_line_end);
-		cmd_line_end = g_strdup(cmd_end);
-	}
+
+	cmd_line_end = g_strdup(cmd_end);
 
 	g_free(cmd);
 	g_free(cmd_after);
@@ -290,217 +430,55 @@ static void init(void)
 {
 	read_config();
 
-	previous_song = -1;
-	timeout_tag = gtk_timeout_add(100, timeout_func, NULL);
-
 	configure_vbox = configure();
 	prefswin_page_new(configure_vbox, "Song Change", DATA_DIR "/images/plugins.png");
+
+	hook_associate("playback begin", songchange_playback_begin);
+	hook_associate("playback end", songchange_playback_end);
+	hook_associate("playlist end reached", songchange_playlist_eof);
 
 	configure_ok_cb(NULL, NULL);
 }
 
-
-static void bury_child(int signal)
-{
-	waitpid(-1, NULL, WNOHANG);
-}
-
-static void execute_command(char *cmd)
-{
-	char *argv[4] = {"/bin/sh", "-c", NULL, NULL};
-	int i;
-	argv[2] = cmd;
-	signal(SIGCHLD, bury_child);
-	if (fork() == 0)
-	{
-		/* We don't want this process to hog the audio device etc */
-		for (i = 3; i < 255; i++)
-			close(i);
-		execv("/bin/sh", argv);
-	}
-}
-
-/*
- * escape_shell_chars()
- *
- * Escapes characters that are special to the shell inside double quotes.
- */
-
-static char* escape_shell_chars(const char *string)
-{
-	const char *special = "$`\"\\"; /* Characters to escape */
-	const char *in = string;
-	char *out;
-	char *escaped;
-	int num = 0;
-
-	while (*in != '\0')
-		if (strchr(special, *in++))
-			num++;
-
-	escaped = g_malloc(strlen(string) + num + 1);
-
-	in = string;
-	out = escaped;
-
-	while (*in != '\0')
-	{
-		if (strchr(special, *in))
-			*out++ = '\\';
-		*out++ = *in++;
-	}
-	*out = '\0';
-
-	return escaped;
-}
-
-
-
-/* Format codes:
- *
- *   F - frequency (in hertz)
- *   c - number of channels
- *   f - filename (full path)
- *   l - length (in milliseconds)
- *   n - name
- *   r - rate (in bits per second)
- *   s - name (since everyone's used to it)
- *   t - playlist position (%02d)
- *   p - currently playing (1 or 0)
- */
-/* do_command(): do @cmd after replacing the format codes
-   @cmd: command to run
-   @current_file: file name of current song
-   @pos: playlist_pos */
-void do_command(char *cmd, const char *current_file, int pos)
-{
-	int length, rate, freq, nch;
-	char *str, *shstring = NULL, *temp, numbuf[16];
-	gboolean playing;
-	Formatter *formatter;
-
-	if (cmd && strlen(cmd) > 0)
-	{
-		formatter = xmms_formatter_new();
-		str = xmms_remote_get_playlist_title(sc_gp.xmms_session, pos);
-		if (str)
-		{
-			temp = escape_shell_chars(str);
-			xmms_formatter_associate(formatter, 's', temp);
-			xmms_formatter_associate(formatter, 'n', temp);
-			g_free(str);
-			g_free(temp);
-		}
-		else
-		{
-			xmms_formatter_associate(formatter, 's', "");
-			xmms_formatter_associate(formatter, 'n', "");
-		}
-
-		if (current_file)
-		{
-			temp = escape_shell_chars(current_file);
-			xmms_formatter_associate(formatter, 'f', temp);
-			g_free(temp);
-		}
-		else
-			xmms_formatter_associate(formatter, 'f', "");
-		sprintf(numbuf, "%02d", pos + 1);
-		xmms_formatter_associate(formatter, 't', numbuf);
-		length = xmms_remote_get_playlist_time(sc_gp.xmms_session, pos);
-		if (length != -1)
-		{
-			sprintf(numbuf, "%d", length);
-			xmms_formatter_associate(formatter, 'l', numbuf);
-		}
-		else
-			xmms_formatter_associate(formatter, 'l', "0");
-		xmms_remote_get_info(sc_gp.xmms_session, &rate, &freq, &nch);
-		sprintf(numbuf, "%d", rate);
-		xmms_formatter_associate(formatter, 'r', numbuf);
-		sprintf(numbuf, "%d", freq);
-		xmms_formatter_associate(formatter, 'F', numbuf);
-		sprintf(numbuf, "%d", nch);
-		xmms_formatter_associate(formatter, 'c', numbuf);
-		playing = xmms_remote_is_playing(sc_gp.xmms_session);
-		sprintf(numbuf, "%d", playing);
-		xmms_formatter_associate(formatter, 'p', numbuf);
-		shstring = xmms_formatter_format(formatter, cmd);
-		xmms_formatter_destroy(formatter);
-
-		if (shstring)
-		{
-			execute_command(shstring);
-			/* FIXME: This can possibly be freed too early */
-			g_free(shstring);
-		}
-	}
-}
-
-
-static int timeout_func(gpointer data)
+static void
+songchange_playback_begin(gpointer unused)
 {
 	int pos;
-	gboolean playing;
-	static char *previous_file = NULL;
-	static char *previous_track = NULL;
-	static gboolean cmd_after_already_run = FALSE;
 	char *current_file;
-	char *current_track;
 
-	playing = xmms_remote_is_playing(sc_gp.xmms_session);
 	pos = xmms_remote_get_playlist_pos(sc_gp.xmms_session);
 	current_file = xmms_remote_get_playlist_file(sc_gp.xmms_session, pos);
-	current_track = xmms_remote_get_playlist_title(sc_gp.xmms_session, pos);
-	
-	if ((pos != previous_song ||
-	     (!previous_file && current_file) ||
-	     (previous_file && !current_file) ||
-	     (previous_file && current_file &&
-	      strcmp(previous_file, current_file)) ||
-	     (!previous_track && current_track) ||
-	     (previous_track && !current_track) ||
-	     (previous_track && current_track &&
-	      strcmp(previous_track, current_track))) &&
-	    xmms_remote_get_output_time(sc_gp.xmms_session) > 0)
-	{
-		do_command(cmd_line, current_file, pos);
-		g_free(previous_file);
-		g_free(previous_track);
-		previous_file = g_strdup(current_file);
-		previous_track = g_strdup(current_track);
-		previous_song = pos;
-		cmd_after_already_run = FALSE;
-	}
-	if (!cmd_after_already_run &&
-	    ((xmms_remote_get_playlist_time(sc_gp.xmms_session,pos) -
-	      xmms_remote_get_output_time(sc_gp.xmms_session)) < 100))
-	{
-		do_command(cmd_line_after, current_file, pos);
-		cmd_after_already_run = TRUE;
-	}
 
-	if (playing)
-	{
-		int playlist_length = xmms_remote_get_playlist_length(sc_gp.xmms_session);
-		if (pos + 1 == playlist_length)
-			possible_pl_end = TRUE;
-		else
-			possible_pl_end = FALSE;
-	}
-	else if (possible_pl_end)
-	{
-		if (pos == 0)
-			do_command(cmd_line_end, current_file, pos);
-		possible_pl_end = FALSE;
-		g_free(previous_file);
-		g_free(previous_track);
-		previous_file = NULL;
-		previous_track = NULL;
-	}
+	do_command(cmd_line, current_file, pos);
 
 	g_free(current_file);
-	current_file = NULL;
-
-	return TRUE;
 }
+
+static void
+songchange_playback_end(gpointer unused)
+{
+	int pos;
+	char *current_file;
+
+	pos = xmms_remote_get_playlist_pos(sc_gp.xmms_session);
+	current_file = xmms_remote_get_playlist_file(sc_gp.xmms_session, pos);
+
+	do_command(cmd_line_after, current_file, pos);
+
+	g_free(current_file);
+}
+
+static void
+songchange_playlist_eof(gpointer unused)
+{
+	int pos;
+	char *current_file;
+
+	pos = xmms_remote_get_playlist_pos(sc_gp.xmms_session);
+	current_file = xmms_remote_get_playlist_file(sc_gp.xmms_session, pos);
+
+	do_command(cmd_line_end, current_file, pos);
+
+	g_free(current_file);
+}
+
