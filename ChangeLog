@@ -1,3 +1,11 @@
+2007-01-26 05:44:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1184]
+  - songchange: use asynchronous hooks instead of a polling event
+  
+  trunk/src/song_change/song_change.c |  376 ++++++++++++++++--------------------
+  1 file changed, 177 insertions(+), 199 deletions(-)
+
+
 2007-01-25 21:21:21 +0000  Alexandr Orlov <alxorlov@pochta.ru>
   revision [1182]
   Update russian translation

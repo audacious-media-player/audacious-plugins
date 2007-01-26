@@ -23,7 +23,7 @@ LIBADD = -lz
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += -Wno-nonnull $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
 
 include ../../mk/objective.mk
 
