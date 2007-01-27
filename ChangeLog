@@ -1,3 +1,16 @@
+2007-01-26 06:52:52 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1188]
+  - change some references for long to int, reported by and patch by 
+    Kazuki Oikawa, closes #769.
+  
+  trunk/src/tta/crc32.h   |   10 ++--
+  trunk/src/tta/filters.h |   16 +++----
+  trunk/src/tta/ttadec.c  |  104 ++++++++++++++++++++++++------------------------
+  trunk/src/tta/ttadec.h  |   40 +++++++++---------
+  trunk/src/tta/ttalib.h  |   26 ++++++------
+  5 files changed, 98 insertions(+), 98 deletions(-)
+
+
 2007-01-26 06:27:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1186]
   - who the fuck put that there

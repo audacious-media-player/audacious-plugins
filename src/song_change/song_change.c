@@ -135,52 +135,52 @@ do_command(char *cmd, const char *current_file, int pos)
 
 	if (cmd && strlen(cmd) > 0)
 	{
-		formatter = xmms_formatter_new();
+		formatter = formatter_new();
 		str = xmms_remote_get_playlist_title(sc_gp.xmms_session, pos);
 		if (str)
 		{
 			temp = escape_shell_chars(str);
-			xmms_formatter_associate(formatter, 's', temp);
-			xmms_formatter_associate(formatter, 'n', temp);
+			formatter_associate(formatter, 's', temp);
+			formatter_associate(formatter, 'n', temp);
 			g_free(str);
 			g_free(temp);
 		}
 		else
 		{
-			xmms_formatter_associate(formatter, 's', "");
-			xmms_formatter_associate(formatter, 'n', "");
+			formatter_associate(formatter, 's', "");
+			formatter_associate(formatter, 'n', "");
 		}
 
 		if (current_file)
 		{
 			temp = escape_shell_chars(current_file);
-			xmms_formatter_associate(formatter, 'f', temp);
+			formatter_associate(formatter, 'f', temp);
 			g_free(temp);
 		}
 		else
-			xmms_formatter_associate(formatter, 'f', "");
+			formatter_associate(formatter, 'f', "");
 		sprintf(numbuf, "%02d", pos + 1);
-		xmms_formatter_associate(formatter, 't', numbuf);
+		formatter_associate(formatter, 't', numbuf);
 		length = xmms_remote_get_playlist_time(sc_gp.xmms_session, pos);
 		if (length != -1)
 		{
 			sprintf(numbuf, "%d", length);
-			xmms_formatter_associate(formatter, 'l', numbuf);
+			formatter_associate(formatter, 'l', numbuf);
 		}
 		else
-			xmms_formatter_associate(formatter, 'l', "0");
+			formatter_associate(formatter, 'l', "0");
 		xmms_remote_get_info(sc_gp.xmms_session, &rate, &freq, &nch);
 		sprintf(numbuf, "%d", rate);
-		xmms_formatter_associate(formatter, 'r', numbuf);
+		formatter_associate(formatter, 'r', numbuf);
 		sprintf(numbuf, "%d", freq);
-		xmms_formatter_associate(formatter, 'F', numbuf);
+		formatter_associate(formatter, 'F', numbuf);
 		sprintf(numbuf, "%d", nch);
-		xmms_formatter_associate(formatter, 'c', numbuf);
+		formatter_associate(formatter, 'c', numbuf);
 		playing = xmms_remote_is_playing(sc_gp.xmms_session);
 		sprintf(numbuf, "%d", playing);
-		xmms_formatter_associate(formatter, 'p', numbuf);
-		shstring = xmms_formatter_format(formatter, cmd);
-		xmms_formatter_destroy(formatter);
+		formatter_associate(formatter, 'p', numbuf);
+		shstring = formatter_format(formatter, cmd);
+		formatter_destroy(formatter);
 
 		if (shstring)
 		{
