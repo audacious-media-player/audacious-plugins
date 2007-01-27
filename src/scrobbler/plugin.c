@@ -316,6 +316,7 @@ static submit_t get_song_status(void)
 	case start:
 	  pdebug("*** START ***", SUB_DEBUG);
 	  dosubmit.gerpok = 1;
+          dosubmit.len = len;
 	  break;
 	case stop:
 	  pdebug("*** STOP ***", SUB_DEBUG);
