@@ -35,7 +35,7 @@
 
 typedef struct submit_t
 {
-	int dosubmit, pos_c, len;
+	int dosubmit, pos_c, len, gerpok;
 } submit_t;
 
 static void init(void);
@@ -248,7 +248,7 @@ static submit_t get_song_status(void)
 	struct timeval timetmp;
 
 	/* clear dosubmit */
-	dosubmit.dosubmit = dosubmit.pos_c = dosubmit.len = 0;
+	dosubmit.dosubmit = dosubmit.pos_c = dosubmit.len = dosubmit.gerpok = 0;
 
 	/* current music number */
 	pos_c = xmms_remote_get_playlist_pos(XS_CS);
@@ -276,15 +276,6 @@ static submit_t get_song_status(void)
 
 	/* repeat setting */
 	repeat = xmms_remote_is_repeat(XS_CS);
-
-	/*
-#ifdef MAKE_XMMS
-	// advance setting (required xmms-1.2.11 or over)
-	advance = xmms_remote_is_advance(XS_CS);
-#else
-	advance = 1;
-#endif
-	*/
 
 	if( ps_p == ps_stop && ps_c == ps_stop )        playstate = stopping;
 	else if( ps_p == ps_stop && ps_c == ps_play )   playstate = start;
@@ -324,6 +315,7 @@ static submit_t get_song_status(void)
 	switch( playstate ){
 	case start:
 	  pdebug("*** START ***", SUB_DEBUG);
+	  dosubmit.gerpok = 1;
 	  break;
 	case stop:
 	  pdebug("*** STOP ***", SUB_DEBUG);
@@ -437,6 +429,9 @@ static submit_t get_song_status(void)
 	  }
 	}
 
+	if (playstate != start)
+		dosubmit.gerpok = 0;
+
 	g_free(file_p);
 
 	/* keep current value for next iteration */
@@ -478,6 +473,28 @@ static void *xs_thread(void *data __attribute__((unused)))
 		/* Check for ability to submit */
 		dosubmit = get_song_status();
 
+		if(dosubmit.gerpok) {
+			TitleInput *tuple;
+
+			pdebug("Submitting song.", DEBUG);
+
+			tuple = playlist_get_tuple(playlist_get_active(), dosubmit.pos_c);
+
+			if (ishttp(tuple->file_name))
+				continue;
+
+			if(tuple->performer != NULL && tuple->track_name != NULL)
+			{
+				pdebug(fmt_vastr(
+					"submitting artist: %s, title: %s",
+					tuple->performer, tuple->track_name), DEBUG);
+				gerpok_sc_addentry(m_scrobbler, tuple,
+					dosubmit.len/1000);
+			}
+			else
+				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);			
+		}
+
 		if(dosubmit.dosubmit) {
 			TitleInput *tuple;
 
@@ -494,8 +511,6 @@ static void *xs_thread(void *data __attribute__((unused)))
 					"submitting artist: %s, title: %s",
 					tuple->performer, tuple->track_name), DEBUG);
 				sc_addentry(m_scrobbler, tuple,
-					dosubmit.len/1000);
-				gerpok_sc_addentry(m_scrobbler, tuple,
 					dosubmit.len/1000);
 				hatena_sc_addentry(m_scrobbler, tuple,
 					dosubmit.len/1000);
