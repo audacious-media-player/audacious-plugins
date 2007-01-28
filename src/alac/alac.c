@@ -291,6 +291,14 @@ static int count_leading_zeros(int input)
     }
     return output;
 }
+#elif defined (__powerpc__) || defined (__ppc__) || defined (__POWERPC__) || defined (__powerc)
+static int count_leading_zeros(int input)
+{
+	int output = 0;
+	if (!input) return 32;
+	asm("cntlzw %0, %1": "=r"(output):"r"(input));
+	return output;
+}
 #else
 #warning using generic count leading zeroes. You may wish to write one for your CPU / compiler
 static int count_leading_zeros(int input)
