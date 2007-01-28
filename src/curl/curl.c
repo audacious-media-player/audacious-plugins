@@ -16,6 +16,10 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <audacious/vfs.h>
 #include <audacious/plugin.h>
 
@@ -544,6 +548,7 @@ curl_vfs_fopen_impl(const gchar * path,
   {
     struct curl_slist *hdr = NULL;
     hdr = curl_slist_append(hdr, "icy-metadata:1");
+    hdr = curl_slist_append(hdr, "User-Agent: Audacious/" VERSION " (curl transport)");
     curl_easy_setopt(handle->curl, CURLOPT_HTTPHEADER, hdr);
   }
 
