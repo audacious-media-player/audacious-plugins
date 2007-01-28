@@ -5,6 +5,11 @@
 
 #include "audacious/vfs.h"
 
+typedef struct {
+    VFSFile *fd;
+    gboolean probe;
+} VFSVorbisFile;
+
 extern ov_callbacks vorbis_callbacks;
 
 void vorbis_configure(void);

@@ -91,11 +91,6 @@ ov_callbacks vorbis_callbacks = {
     ovcb_tell
 };
 
-typedef struct {
-    VFSFile *fd;
-    gboolean probe;
-} VFSVorbisFile;
-
 gchar *vorbis_fmts[] = { "ogg", "ogm", NULL };
 
 InputPlugin vorbis_ip = {

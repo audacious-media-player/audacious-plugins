@@ -1,3 +1,10 @@
+2007-01-28 11:51:32 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [1200]
+  Count leading zeroes as PPC assembler. Implemented by Joseph Jezak (JoseJX) from Gentoo.
+  trunk/src/alac/alac.c |    8 ++++++++
+  1 file changed, 8 insertions(+)
+
+
 2007-01-28 10:32:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1198]
   - User-Agent: Audacious/$version (curl transport)

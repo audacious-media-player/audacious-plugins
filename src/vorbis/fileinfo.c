@@ -498,7 +498,7 @@ vorbis_file_info_box(gchar * filename)
     vorbis_info *vi;
     vorbis_comment *comment = NULL;
 
-    VFSFile *fh;
+    VFSVorbisFile *fh = g_new0(VFSVorbisFile, 1);
 
     gboolean clear_vf = FALSE;
 
@@ -925,7 +925,7 @@ vorbis_file_info_box(gchar * filename)
     gtk_label_set_text(GTK_LABEL(filesize_label), _("File size:"));
     gtk_label_set_text(GTK_LABEL(filesize_label_val), _("N/A"));
 
-    if ((fh = vfs_fopen(vte.filename, "r")) != NULL) {
+    if ((fh->fd = vfs_fopen(vte.filename, "r")) != NULL) {
         g_mutex_lock(vf_mutex);
 
         if (ov_open_callbacks(fh, &vf, NULL, 0, vorbis_callbacks) == 0) {
@@ -949,8 +949,8 @@ vorbis_file_info_box(gchar * filename)
             time = ov_time_total(&vf, -1);
             minutes = time / 60;
             seconds = time % 60;
-            vfs_fseek(fh, 0, SEEK_END);
-            filesize = vfs_ftell(fh);
+            vfs_fseek(fh->fd, 0, SEEK_END);
+            filesize = vfs_ftell(fh->fd);
 
             label_set_text(GTK_LABEL(bitrate_label_val),
                            _("%d KBit/s (nominal)"), bitrate);
@@ -963,7 +963,7 @@ vorbis_file_info_box(gchar * filename)
 
         }
         else
-            vfs_fclose(fh);
+            vfs_fclose(fh->fd);
     }
 
     rg_track_gain = get_comment(comment, "replaygain_track_gain");
@@ -1065,4 +1065,6 @@ vorbis_file_info_box(gchar * filename)
 
     gtk_widget_set_sensitive(save_button, FALSE);
     gtk_widget_set_sensitive(remove_button, FALSE);
+
+    g_free(fh);
 }
