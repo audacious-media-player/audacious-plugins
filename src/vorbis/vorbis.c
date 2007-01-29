@@ -68,7 +68,6 @@ static void vorbis_play(InputPlayback *data);
 static void vorbis_stop(InputPlayback *data);
 static void vorbis_pause(InputPlayback *data, short p);
 static void vorbis_seek(InputPlayback *data, int time);
-static int vorbis_time(InputPlayback *data);
 static void vorbis_get_song_info(char *filename, char **title, int *length);
 static gchar *vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * fn);
 static void vorbis_aboutbox(void);
@@ -107,7 +106,7 @@ InputPlugin vorbis_ip = {
     vorbis_pause,
     vorbis_seek,
     NULL,                       /* set eq */
-    vorbis_time,
+    NULL,
     NULL,
     NULL,
     vorbis_cleanup,
@@ -128,14 +127,11 @@ InputPlugin vorbis_ip = {
 static OggVorbis_File vf;
 
 static GThread *thread;
-int vorbis_playing = 0;
-static int vorbis_eos = 0;
 static int vorbis_is_streaming = 0;
 static int vorbis_bytes_streamed = 0;
 static volatile int seekneeded = -1;
 static int samplerate, channels;
 GMutex *vf_mutex;
-static gboolean output_error;
 
 gchar **vorbis_tag_encoding_list = NULL;
 
@@ -329,7 +325,7 @@ do_seek(InputPlayback *playback)
     if (seekneeded != -1 && !vorbis_is_streaming) {
         vorbis_jump_to_time(playback, seekneeded);
         seekneeded = -1;
-        vorbis_eos = FALSE;
+        playback->eof = FALSE;
     }
 }
 
@@ -372,7 +368,7 @@ vorbis_process_data(InputPlayback *playback, int last_section,
         g_mutex_unlock(vf_mutex);
         playback->output->buffer_free();
         playback->output->buffer_free();
-        vorbis_eos = TRUE;
+        playback->eof = TRUE;
         return last_section;
     }
 
@@ -385,7 +381,7 @@ vorbis_process_data(InputPlayback *playback, int last_section,
         vorbis_info *vi = ov_info(&vf, -1);
 
         if (vi->channels > 2) {
-            vorbis_eos = TRUE;
+            playback->eof = TRUE;
             g_mutex_unlock(vf_mutex);
             return current_section;
         }
@@ -399,8 +395,8 @@ vorbis_process_data(InputPlayback *playback, int last_section,
             playback->output->close_audio();
             if (!playback->output->
                 open_audio(FMT_S16_NE, vi->rate, vi->channels)) {
-                output_error = TRUE;
-                vorbis_eos = TRUE;
+                playback->error = TRUE;
+                playback->eof = TRUE;
                 g_mutex_unlock(vf_mutex);
                 return current_section;
             }
@@ -410,14 +406,14 @@ vorbis_process_data(InputPlayback *playback, int last_section,
 
     g_mutex_unlock(vf_mutex);
 
-    if (!vorbis_playing)
+    if (!playback->playing)
         return current_section;
 
     if (seekneeded != -1)
         do_seek(playback);
 
     produce_audio(playback->output->written_time(),
-                  FMT_S16_NE, channels, bytes, pcmout, &vorbis_playing);
+                  FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
 
     return current_section;
 }
@@ -426,7 +422,7 @@ static gpointer
 vorbis_play_loop(gpointer arg)
 {
     InputPlayback *playback = arg;
-    char *filename = (char *) playback->data;
+    char *filename = playback->filename;
     gchar *title = NULL;
     double time;
     long timercount = 0;
@@ -445,7 +441,7 @@ vorbis_play_loop(gpointer arg)
     memset(&vf, 0, sizeof(vf));
 
     if ((stream = vfs_fopen(filename, "r")) == NULL) {
-        vorbis_eos = TRUE;
+        playback->eof = TRUE;
         goto play_cleanup;
     }
 
@@ -463,7 +459,7 @@ vorbis_play_loop(gpointer arg)
     if (ov_open_callbacks(datasource, &vf, NULL, 0, vorbis_callbacks) < 0) {
         vorbis_callbacks.close_func(datasource);
         g_mutex_unlock(vf_mutex);
-        vorbis_eos = TRUE;
+        playback->eof = TRUE;
         goto play_cleanup;
     }
     vi = ov_info(&vf, -1);
@@ -478,7 +474,7 @@ vorbis_play_loop(gpointer arg)
     }
 
     if (vi->channels > 2) {
-        vorbis_eos = TRUE;
+        playback->eof = TRUE;
         g_mutex_unlock(vf_mutex);
         goto play_cleanup;
     }
@@ -494,7 +490,7 @@ vorbis_play_loop(gpointer arg)
 
     vorbis_ip.set_info(title, time, br, samplerate, channels);
     if (!playback->output->open_audio(FMT_S16_NE, vi->rate, vi->channels)) {
-        output_error = TRUE;
+        playback->error = TRUE;
         goto play_cleanup;
     }
 
@@ -507,13 +503,13 @@ vorbis_play_loop(gpointer arg)
      * using the ov_ interface.
      */
 
-    while (vorbis_playing) {
+    while (playback->playing) {
         int current_section;
 
         if (seekneeded != -1)
             do_seek(playback);
 
-        if (vorbis_eos) {
+        if (playback->eof) {
             xmms_usleep(20000);
             continue;
         }
@@ -563,7 +559,7 @@ vorbis_play_loop(gpointer arg)
             timercount = playback->output->output_time();
         }
     }
-    if (!output_error)
+    if (!playback->error)
         playback->output->close_audio();
     /* fall through intentional */
 
@@ -584,19 +580,19 @@ vorbis_play_loop(gpointer arg)
 static void
 vorbis_play(InputPlayback *playback)
 {
-    vorbis_playing = 1;
+    playback->playing = 1;
     vorbis_bytes_streamed = 0;
-    vorbis_eos = 0;
-    output_error = FALSE;
+    playback->eof = 0;
+    playback->error = FALSE;
 
     thread = g_thread_create(vorbis_play_loop, playback, TRUE, NULL);
 }
 
 static void
-vorbis_stop(InputPlayback *data)
+vorbis_stop(InputPlayback *playback)
 {
-    if (vorbis_playing) {
-        vorbis_playing = 0;
+    if (playback->playing) {
+        playback->playing = 0;
         g_thread_join(thread);
     }
 }
@@ -605,16 +601,6 @@ static void
 vorbis_pause(InputPlayback *playback, short p)
 {
     playback->output->pause(p);
-}
-
-static int
-vorbis_time(InputPlayback *playback)
-{
-    if (output_error)
-        return -2;
-    if (vorbis_eos && !playback->output->buffer_playing())
-        return -1;
-    return playback->output->output_time();
 }
 
 static void

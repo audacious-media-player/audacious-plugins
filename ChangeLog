@@ -1,3 +1,11 @@
+2007-01-29 06:15:52 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1212]
+  Fix sid for current API.
+  
+  trunk/src/sid/xmms-sid.c |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2007-01-29 06:14:55 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [1210]
   Use InputPlayback standard flags in mpg123, drop set_time().
