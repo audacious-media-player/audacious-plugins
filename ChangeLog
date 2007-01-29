@@ -1,3 +1,10 @@
+2007-01-29 15:00:45 +0000  Giacomo Lozito <james@develia.org>
+  revision [1226]
+  - aosd: do not try to save skin_file, not implemented yet
+  trunk/src/aosd/aosd_cfg.c |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2007-01-29 14:40:04 +0000  Giacomo Lozito <james@develia.org>
   revision [1224]
   - added Audacious OSD, yet-another-written-from-scratch plugin to display OSD, based on Ghosd library; currently untied from configure, to compile it you have to run make in its directory; will be added to configure after some testing

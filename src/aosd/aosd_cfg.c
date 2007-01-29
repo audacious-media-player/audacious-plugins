@@ -109,8 +109,10 @@ aosd_cfg_osd_delete ( aosd_cfg_osd_t * cfg_osd )
       if ( cfg_osd->text.fonts_name[i] != NULL )
         g_free( cfg_osd->text.fonts_name[i] );
     }
+    /* TODO not implemented yet
     if ( cfg_osd->decoration.skin_file != NULL )
       g_free( cfg_osd->decoration.skin_file );
+    */
     if ( cfg_osd->decoration.colors != NULL )
       g_array_free( cfg_osd->decoration.colors , TRUE );
   }
@@ -178,7 +180,7 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
   }
   g_print("\nDECORATION\n");
   g_print("  code: %i\n", cfg->osd->decoration.code);
-  g_print("  custom skin file: %s\n", cfg->osd->decoration.skin_file);
+  /*g_print("  custom skin file: %s\n", cfg->osd->decoration.skin_file);*/
   for ( i = 0 ; i < cfg->osd->decoration.colors->len ; i++ )
   {
     aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
@@ -257,9 +259,12 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
        "decoration_code" , &(cfg->osd->decoration.code) ) )
     cfg->osd->decoration.code = aosd_deco_style_get_first_code();
 
+  /* TODO not implemented yet 
   if ( !bmp_cfg_db_get_string( cfgfile , "aosd" ,
        "decoration_skin_file" , &(cfg->osd->decoration.skin_file) ) )
     cfg->osd->decoration.skin_file = g_strdup( "" );
+  */
+  cfg->osd->decoration.skin_file = NULL;
 
   /* decoration - colors */
   max_numcol = aosd_deco_style_get_max_numcol();
