@@ -3,7 +3,7 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libaosd$(SHARED_SUFFIX)
 
-noinst_HEADERS = aosd.h aosd_osd.h aosd_style.h aosd_ui.h aosd_cfg.h aosd_common.h ghosd.h ghosd-text.h ghosd-internal.h
+noinst_HEADERS = aosd.h aosd_osd.h aosd_style.h aosd_style_private.h aosd_ui.h aosd_cfg.h aosd_common.h ghosd.h ghosd-text.h ghosd-internal.h
 
 LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
