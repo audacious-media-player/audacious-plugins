@@ -1,3 +1,11 @@
+2007-01-29 16:38:56 +0000  Giacomo Lozito <james@develia.org>
+  revision [1232]
+  - aosd: modified ghosd library source to ignore EINTR when polling
+  trunk/src/aosd/aosd_cfg.c   |    2 +-
+  trunk/src/aosd/ghosd-main.c |    9 +++++++--
+  2 files changed, 8 insertions(+), 3 deletions(-)
+
+
 2007-01-29 15:50:26 +0000  Giacomo Lozito <james@develia.org>
   revision [1230]
   - aosd: paranoid fixes
