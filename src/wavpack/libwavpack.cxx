@@ -33,11 +33,11 @@ extern "C" {
 extern "C" InputPlugin * get_iplugin_info(void);
 static void wv_load_config();
 static int wv_is_our_fd(gchar *filename, VFSFile *file);
-static void wv_play(char *);
-static void wv_stop(void);
-static void wv_pause(short);
-static void wv_seek(int);
-static int wv_get_time(void);
+static void wv_play(InputPlayback *);
+static void wv_stop(InputPlayback *);
+static void wv_pause(InputPlayback *, short);
+static void wv_seek(InputPlayback *, int);
+static int wv_get_time(InputPlayback *);
 static void wv_get_song_info(char *, char **, int *);
 static char *generate_title(const char *, WavpackContext *ctx);
 static double isSeek;
@@ -349,13 +349,13 @@ DecodeThread(void *a)
 }
 
 static void
-wv_play(char *filename)
+wv_play(InputPlayback *data)
 {
     paused = 0;
     isSeek = -1;
     killDecodeThread = false;
     AudioError = false;
-    thread_handle = g_thread_create(DecodeThread, (void *) filename, TRUE, NULL);
+    thread_handle = g_thread_create(DecodeThread, (void *) data->filename, TRUE, NULL);
     return;
 }
 
@@ -445,33 +445,32 @@ wv_get_song_info(char *filename, char **title, int *length)
 }
 
 static int
-wv_get_time(void)
+wv_get_time(InputPlayback *data)
 {
-    if (!mod.output)
+    if (data->output == NULL)
         return -1;
     if (AudioError)
         return -2;
-    if (killDecodeThread && !mod.output->buffer_playing())
+    if (killDecodeThread && !data->output->buffer_playing())
         return -1;
-    return mod.output->output_time();
+    return data->output->output_time();
 }
 
-
 static void
-wv_seek(int sec)
+wv_seek(InputPlayback *data, int sec)
 {
     isSeek = sec;
-    mod.output->flush((int) (1000 * isSeek));
+    data->output->flush((int) (1000 * isSeek));
 }
 
 static void
-wv_pause(short pause)
+wv_pause(InputPlayback *data, short pause)
 {
-    mod.output->pause(paused = pause);
+    data->output->pause(paused = pause);
 }
 
 static void
-wv_stop(void)
+wv_stop(InputPlayback *data)
 {
     killDecodeThread = true;
     if (thread_handle != 0) {
