@@ -301,16 +301,16 @@ static int mpcIsOurFD(char* p_Filename, VFSFile* file)
     return 0;
 }
 
-static void mpcPlay(char* p_Filename)
+static void mpcPlay(InputPlayback *data)
 {
     mpcDecoder.offset   = -1;
     mpcDecoder.isAlive  = true;
     mpcDecoder.isOutput = false;
     mpcDecoder.isPause  = false;
-    threadHandle = g_thread_create(GThreadFunc(decodeStream), (void *) g_strdup(p_Filename), TRUE, NULL);
+    threadHandle = g_thread_create(GThreadFunc(decodeStream), (void *) g_strdup(data->filename), TRUE, NULL);
 }
 
-static void mpcStop()
+static void mpcStop(InputPlayback *data)
 {
     setAlive(false);
     if (threadHandle)
@@ -318,34 +318,34 @@ static void mpcStop()
         g_thread_join(threadHandle);
         if (mpcDecoder.isOutput)
         {
-            MpcPlugin.output->buffer_free();
-            MpcPlugin.output->close_audio();
+            data->output->buffer_free();
+            data->output->close_audio();
             mpcDecoder.isOutput = false;
         }
     }
 }
 
-static void mpcPause(short p_Pause)
+static void mpcPause(InputPlayback *data, short p_Pause)
 {
     lockAcquire();
     mpcDecoder.isPause = p_Pause;
-    MpcPlugin.output->pause(p_Pause);
+    data->output->pause(p_Pause);
     lockRelease();
 }
 
-static void mpcSeek(int p_Offset)
+static void mpcSeek(InputPlayback *data, int p_Offset)
 {
     lockAcquire();
     mpcDecoder.offset = static_cast<double> (p_Offset);
-    MpcPlugin.output->flush(1000 * p_Offset);
+    data->output->flush(1000 * p_Offset);
     lockRelease();
 }
 
-static int mpcGetTime()
+static int mpcGetTime(InputPlayback *data)
 {
     if(!isAlive())
         return -1;
-    return MpcPlugin.output->output_time();
+    return data->output->output_time();
 }
 
 static TitleInput *mpcGetSongTuple(char* p_Filename)
