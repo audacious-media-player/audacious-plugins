@@ -1,3 +1,11 @@
+2007-01-29 11:34:57 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1222]
+  - fix seek() routine for InputPlayback API.
+  
+  trunk/src/tta/aud-tta.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-29 11:33:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1220]
   - update to new plugin API
