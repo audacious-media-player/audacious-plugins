@@ -27,7 +27,7 @@
 
 static	void 	plugin_init (void);
 static	int	is_our_file (char *filename);
-static	void 	play_start (InputPlayback *playback)
+static	void 	play_start (InputPlayback *playback);
 static	void 	play_stop (InputPlayback *playback);
 static	void 	file_seek (InputPlayback *playback, int time);
 static	int	get_time (InputPlayback *playback);

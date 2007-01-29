@@ -1,3 +1,11 @@
+2007-01-29 06:42:40 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1214]
+  Fix a dumb mistake, and also use generic flags and get_time.
+  
+  trunk/src/vorbis/vorbis.c |   58 +++++++++++++++++-----------------------------
+  1 file changed, 22 insertions(+), 36 deletions(-)
+
+
 2007-01-29 06:15:52 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [1212]
   Fix sid for current API.

@@ -28,6 +28,7 @@
 #include <math.h>
 #include <stdio.h>
 
+#include <audacious/plugin.h>
 #include <audacious/util.h>
 #include <audacious/titlestring.h>
 #include <audacious/i18n.h>
