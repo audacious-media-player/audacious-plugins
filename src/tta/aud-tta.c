@@ -571,7 +571,7 @@ stop (InputPlayback *playback)
 }
 
 static void
-seek (int time)
+seek (InputPlayback *data, int time)
 {
     if (playing)
     {
