@@ -23,27 +23,28 @@ static int CanPlayFile(char* aFilename)
 	return 0;
 }
 
-static void PlayFile(char* aFilename)
+static void PlayFile(InputPlayback *data)
 {
+        char* aFilename = data->filename;
 	gModplugXMMS.SetOutputPlugin(*gModPlug.output);
 	gModplugXMMS.PlayFile(aFilename);
 }
 
-static void Stop(void)
+static void Stop(InputPlayback *data)
 {
 	gModplugXMMS.Stop();
 }
 
-static void Pause(short aPaused)
+static void Pause(InputPlayback *data, short aPaused)
 {
 	gModplugXMMS.Pause((bool)aPaused);
 }
 
-static void Seek(int aTime)
+static void Seek(InputPlayback *data, int aTime)
 {
 	gModplugXMMS.Seek(float32(aTime));
 }
-static int GetTime(void)
+static int GetTime(InputPlayback *data)
 {
 	float32 lTime;
 	

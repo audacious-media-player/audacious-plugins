@@ -129,7 +129,7 @@ static void amidiplug_file_info_box( gchar * filename )
 }
 
 
-static void amidiplug_stop( void )
+static void amidiplug_stop( InputPlayback * data )
 {
   DEBUGMSG( "STOP request at tick: %i\n" , midifile.playing_tick );
   pthread_mutex_lock( &amidiplug_playing_mutex );
@@ -177,7 +177,7 @@ static void amidiplug_stop( void )
 }
 
 
-static void amidiplug_pause( gshort paused )
+static void amidiplug_pause( InputPlayback * data, gshort paused )
 {
   if ( paused )
   {
@@ -226,7 +226,7 @@ static void amidiplug_pause( gshort paused )
 }
 
 
-static void amidiplug_seek( gint time )
+static void amidiplug_seek( InputPlayback * data, gint time )
 {
   DEBUGMSG( "SEEK requested (time %i), pausing song...\n" , time );
   pthread_mutex_lock( &amidiplug_playing_mutex );
@@ -262,7 +262,7 @@ static void amidiplug_seek( gint time )
 }
 
 
-static gint amidiplug_get_time( void )
+static gint amidiplug_get_time( InputPlayback *data )
 {
   if ( backend.autonomous_audio == FALSE )
   {
@@ -366,8 +366,9 @@ static void amidiplug_get_song_info( gchar * filename , gchar ** title , gint * 
 }
 
 
-static void amidiplug_play( gchar * filename )
+static void amidiplug_play( InputPlayback * data)
 {
+  gchar * filename = data->filename;
   gint port_count = 0;
   gint au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
 
@@ -485,7 +486,6 @@ static void amidiplug_play( gchar * filename )
   }
 
   VFS_FCLOSE( midifile.file_pointer );
-  return;
 }
 
 

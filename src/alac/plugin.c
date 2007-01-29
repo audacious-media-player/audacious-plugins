@@ -178,25 +178,31 @@ TitleInput *build_tuple(char *filename)
     return build_tuple_from_demux(&demux_res, filename);
 }
 
-static void play_file(char *filename)
+static void play_file(InputPlayback *data)
 {
+    char *filename = data->filename;
     going = 1;
     playback_thread = g_thread_create(decode_thread, filename, TRUE, NULL);
 }
 
-static void stop(void)
+static void stop(InputPlayback * data)
 {
     going = 0;
     g_thread_join(playback_thread);
     output_close_audio();
 }
 
-static void seek(gint time)
+static void do_pause(InputPlayback *data, short paused)
+{
+    output_pause(paused);
+}
+
+static void seek(InputPlayback * data, gint time)
 {
     seek_to = time;
 }
 
-static gint get_time(void)
+static gint get_time(InputPlayback *data)
 {
     if (going)
 	return get_output_time();
@@ -217,7 +223,7 @@ InputPlugin alac_ip = {
     NULL,
     play_file,
     stop,
-    output_pause,
+    do_pause,
     seek,
     NULL,
     get_time,

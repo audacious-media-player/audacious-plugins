@@ -310,8 +310,9 @@ play_loop(gpointer arg)
 }
 
 static void
-play_file(gchar * filename)
+play_file(InputPlayback * data)
 {
+    gchar * filename = data->filename;
     gchar magic[4], *name;
     gulong len;
     gint rate;
@@ -427,7 +428,7 @@ play_file(gchar * filename)
 }
 
 static void
-stop(void)
+stop(InputPlayback * data)
 {
     if (wav_file && wav_file->going) {
         wav_file->going = 0;
@@ -439,13 +440,13 @@ stop(void)
 }
 
 static void
-wav_pause(gshort p)
+wav_pause(InputPlayback * data, gshort p)
 {
     wav_ip.output->pause(p);
 }
 
 static void
-seek(gint time)
+seek(InputPlayback * data, gint time)
 {
     wav_file->seek_to = time;
 
@@ -456,7 +457,7 @@ seek(gint time)
 }
 
 static int
-get_time(void)
+get_time(InputPlayback *data)
 {
     if (audio_error)
         return -2;

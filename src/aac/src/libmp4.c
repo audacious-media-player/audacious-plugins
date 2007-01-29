@@ -29,11 +29,11 @@
 
 static void	mp4_init(void);
 static void	mp4_about(void);
-static void	mp4_play(char *);
-static void	mp4_stop(void);
-static void	mp4_pause(short);
-static void	mp4_seek(int);
-static int	mp4_getTime(void);
+static void	mp4_play(InputPlayback *);
+static void	mp4_stop(InputPlayback *);
+static void	mp4_pause(InputPlayback *, short);
+static void	mp4_seek(InputPlayback *, int);
+static int	mp4_getTime(InputPlayback *);
 static void	mp4_cleanup(void);
 static int	mp4_IsOurFD(char *, VFSFile *);
 static int	mp4_IsOurFile(char *);
@@ -140,14 +140,14 @@ static void mp4_init(void)
   return;
 }
 
-static void mp4_play(char *filename)
+static void mp4_play(InputPlayback *data)
 {
+  char *filename = data->filename;
   buffer_playing = TRUE;
   decodeThread = g_thread_create((GThreadFunc)mp4Decode, g_strdup(filename), TRUE, NULL);
-  return;
 }
 
-static void mp4_stop(void)
+static void mp4_stop(InputPlayback *data)
 {
   if(buffer_playing){
     buffer_playing = FALSE;
@@ -230,19 +230,19 @@ static void	mp4_about(void)
                      &aboutbox);
 }
 
-static void	mp4_pause(short flag)
+static void	mp4_pause(InputPlayback *data, short flag)
 {
   mp4_ip.output->pause(flag);
 }
 
-static void	mp4_seek(int time)
+static void	mp4_seek(InputPlayback *data, int time)
 {
   seekPosition = time;
   while(buffer_playing && seekPosition!=-1)
     xmms_usleep(10000);
 }
 
-static int	mp4_getTime(void)
+static int	mp4_getTime(InputPlayback *data)
 {
   if(!buffer_playing)
     return (-1);

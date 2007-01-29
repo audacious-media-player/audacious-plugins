@@ -86,6 +86,8 @@ static struct {
   GtkDialog		*infodlg;
 } plr = { 0, 0, 0, 0, -1, "", NULL, 0.0f, false, 0, NULL, NULL };
 
+static InputPlayback *playback;
+
 /***** Debugging *****/
 
 #ifdef DEBUG
@@ -402,14 +404,16 @@ static CPlayer *factory(const std::string &filename, Copl *newopl)
   return CAdPlug::factory(filename, newopl, cfg.players);
 }
 
-static void adplug_stop(void);
-static void adplug_play(char *filename);
+static void adplug_stop(InputPlayback *data);
+static void adplug_play(InputPlayback *data);
+
+
 
 static void subsong_slider(GtkAdjustment *adj)
 {
-  adplug_stop();
+  adplug_stop(NULL);
   plr.subsong = (unsigned int)adj->value - 1;
-  adplug_play(plr.filename);
+  adplug_play(playback);
 }
 
 static void close_infobox(GtkDialog *infodlg)
@@ -723,7 +727,7 @@ static int adplug_is_our_file(char *filename)
   return FALSE;
 }
 
-static int adplug_get_time(void)
+static int adplug_get_time(InputPlayback *data)
 {
   if(audio_error) { dbg_printf("adplug_get_time(): returned -2\n"); return -2; }
   if(!plr.playing) { dbg_printf("adplug_get_time(): returned -1\n"); return -1; }
@@ -758,8 +762,10 @@ static void adplug_song_info(char *filename, char **title, int *length)
 
 /***** Player control *****/
 
-static void adplug_play(char *filename)
+static void adplug_play(InputPlayback *data)
 {
+  char *filename = data->filename;
+  playback = data;
   dbg_printf("adplug_play(\"%s\"): ", filename);
   audio_error = FALSE;
 
@@ -787,7 +793,7 @@ static void adplug_play(char *filename)
   dbg_printf(".\n");
 }
 
-static void adplug_stop(void)
+static void adplug_stop(InputPlayback * data)
 {
   dbg_printf("adplug_stop(): join, ");
   plr.playing = false; g_thread_join(plr.play_thread); // stop player thread
@@ -795,13 +801,13 @@ static void adplug_stop(void)
   dbg_printf(".\n");
 }
 
-static void adplug_pause(short paused)
+static void adplug_pause(InputPlayback * data, short paused)
 {
   dbg_printf("adplug_pause(%d)\n", paused);
   adplug_ip.output->pause(paused);
 }
 
-static void adplug_seek(int time)
+static void adplug_seek(InputPlayback * data, int time)
 {
   dbg_printf("adplug_seek(%d)\n", time);
   plr.seek = time * 1000; // time is in seconds, but we count in ms

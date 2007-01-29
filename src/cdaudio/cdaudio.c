@@ -110,11 +110,11 @@ static gboolean stop_timeout(gpointer data);
 static void cdda_init(void);
 static int is_our_file(char *filename);
 static GList *scan_dir(char *dir);
-static void play_file(char *filename);
-static void stop(void);
-static void cdda_pause(short p);
-static void seek(int time);
-static int get_time(void);
+static void play_file(InputPlayback *playback);
+static void stop(InputPlayback *playback);
+static void cdda_pause(InputPlayback *playback, short p);
+static void seek(InputPlayback *playback, int time);
+static int get_time(InputPlayback *playback);
 static void get_song_info(char *filename, char **title, int *length);
 static TitleInput *get_song_tuple(char *filename);
 static void get_volume(int *l, int *r);
@@ -945,8 +945,9 @@ dae_play(void)
 }
 
 static void
-play_file(char *filename)
+play_file(InputPlayback *playback)
 {
+    char *filename = playback->filename;
     char *tmp;
     struct driveinfo *drive;
     int track;
@@ -1003,7 +1004,8 @@ play_file(char *filename)
     if (drive->dae)
         dae_play();
     else
-        seek(0);
+        seek(playback, 0);
+    return;
 }
 
 static TitleInput *
@@ -1089,7 +1091,7 @@ stop_timeout(gpointer data)
 }
 
 static void
-stop(void)
+stop(InputPlayback * data)
 {
     struct timeout *to_info;
     if (cdda_playing.fd < 0)
@@ -1117,14 +1119,14 @@ stop(void)
 }
 
 static void
-cdda_pause(short p)
+cdda_pause(InputPlayback *data, short p)
 {
     if (cdda_playing.drive.dae) {
         cdda_ip.output->pause(p);
         return;
     }
     if (p) {
-        pause_time = get_time();
+        pause_time = get_time(data);
         ioctl(cdda_playing.fd, XMMS_PAUSE, 0);
     }
     else {
@@ -1137,7 +1139,7 @@ cdda_pause(short p)
 
 
 static void
-seek(int time)
+seek(InputPlayback *data, int time)
 {
     struct cdda_msf *end, start;
     int track = cdda_playing.track;
@@ -1162,7 +1164,7 @@ seek(int time)
     play_ioctl(&start, end);
 
     if (is_paused) {
-        cdda_pause(TRUE);
+        cdda_pause(data, TRUE);
         pause_time = time * 1000;
     }
 }
@@ -1202,7 +1204,7 @@ get_time_dae(void)
 }
 
 static int
-get_time(void)
+get_time(InputPlayback *playback)
 {
     if (cdda_playing.fd == -1)
         return -1;

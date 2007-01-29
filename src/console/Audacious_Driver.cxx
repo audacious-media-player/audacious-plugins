@@ -290,8 +290,9 @@ static void* play_loop_track( gpointer )
 	return NULL;
 }
 
-static void play_file( char* path )
+static void play_file( InputPlayback *data )
 {
+        char* path = data->filename;
 	unload_file();
 	
 	// identify file
@@ -373,13 +374,13 @@ static void play_file( char* path )
 	decode_thread = g_thread_create( play_loop_track, NULL, TRUE, NULL );
 }
 
-static void seek( gint time )
+static void seek( InputPlayback * data, gint time )
 {
 	// TODO: use thread-safe atomic set
 	pending_seek = time;
 }
 
-static void console_stop(void)
+static void console_stop(InputPlayback *data)
 {
 	console_ip_is_going = 0;
 	if ( decode_thread )
@@ -391,12 +392,12 @@ static void console_stop(void)
 	unload_file();
 }
 
-static void console_pause(gshort p)
+static void console_pause(InputPlayback * data, gshort p)
 {
 	console_ip.output->pause(p);
 }
 
-static int get_time(void)
+static int get_time(InputPlayback *data)
 {
 	return console_ip_is_going ? console_ip.output->output_time() : -1;
 }

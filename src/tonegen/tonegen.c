@@ -178,7 +178,7 @@ static char* tone_title(char *filename)
 }
 	
 
-static void tone_play(char *filename)
+static void tone_play(InputPlayback *playback, char *filename)
 {
 	GArray* frequencies;
 	char *name;
@@ -202,7 +202,7 @@ static void tone_play(char *filename)
 	play_thread = g_thread_create((GThreadFunc)play_loop, frequencies, TRUE, NULL);
 }
 
-static void tone_stop(void)
+static void tone_stop(InputPlayback *data)
 {
 	if (going)
 	{
@@ -212,12 +212,12 @@ static void tone_stop(void)
 	}
 }
 
-static void tone_pause(short paused)
+static void tone_pause(InputPlayback *data, short paused)
 {
 	tone_ip.output->pause(paused);
 }
 
-static int tone_get_time(void)
+static int tone_get_time(InputPlayback *data)
 {
 	if (audio_error)
 		return -2;

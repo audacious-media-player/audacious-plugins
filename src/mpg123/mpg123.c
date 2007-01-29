@@ -924,8 +924,9 @@ decode_loop(void *arg)
 }
 
 static void
-play_file(char *filename)
+play_file(InputPlayback *data)
 {
+    char *filename = data->filename;
     memset(&fr, 0, sizeof(struct frame));
     memset(&temp_fr, 0, sizeof(struct frame));
 
@@ -944,7 +945,7 @@ play_file(char *filename)
 }
 
 static void
-stop(void)
+stop(InputPlayback * data)
 {
     if (mpgdec_info && mpgdec_info->going) {
         mpgdec_info->going = FALSE;
@@ -955,7 +956,7 @@ stop(void)
 }
 
 static void
-seek(int time)
+seek(InputPlayback * data, int time)
 {
     mpgdec_info->jump_to_time = time;
 
@@ -964,7 +965,7 @@ seek(int time)
 }
 
 static void
-do_pause(short p)
+do_pause(InputPlayback * data, short p)
 {
     if (output_opened)
         mpgdec_ip.output->pause(p);
@@ -973,7 +974,7 @@ do_pause(short p)
 }
 
 static int
-get_time(void)
+get_time(InputPlayback * data)
 {
     if (audio_error)
         return -2;

@@ -77,11 +77,11 @@ static void wma_about(void);
 static void wma_init(void);
 static int wma_is_our_file(char *filename);
 static int wma_is_our_fd(char *filename, VFSFile *fd);
-static void wma_play_file(char *filename);
-static void wma_stop(void);
-static void wma_seek(int time);
-static void wma_do_pause(short p);
-static int wma_get_time(void);
+static void wma_play_file(InputPlayback *data);
+static void wma_stop(InputPlayback *data);
+static void wma_seek(InputPlayback *data, int time);
+static void wma_do_pause(InputPlayback *data, short p);
+static int wma_get_time(InputPlayback *data);
 static void wma_get_song_info(char *filename, char **title, int *length);
 static TitleInput *wma_get_song_tuple(char *filename);
 static char *wsong_title;
@@ -238,13 +238,13 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
     return 1;
 }
 
-static void wma_do_pause(short p)
+static void wma_do_pause(InputPlayback *data, short p)
 {
     wma_pause = p;
     wma_ip.output->pause(wma_pause);
 }
 
-static void wma_seek(int time) 
+static void wma_seek(InputPlayback *data, int time) 
 {
     wma_seekpos = time;
     if(wma_pause) wma_ip.output->pause(0);
@@ -252,7 +252,7 @@ static void wma_seek(int time)
     if(wma_pause) wma_ip.output->pause(1);
 }
 
-static int wma_get_time(void)
+static int wma_get_time(InputPlayback *data)
 {
     wma_ip.output->buffer_free();
     if(wma_decode) return wma_ip.output->output_time();
@@ -430,8 +430,9 @@ static void *wma_play_loop(void *arg)
     return(NULL);
 }
 
-static void wma_play_file(char *filename) 
+static void wma_play_file(InputPlayback *data)
 {
+    char *filename = data->filename;
     AVCodec *codec;
     
     if(av_open_input_file(&ic, str_twenty_to_space(filename), NULL, 0, NULL) < 0) return;
@@ -467,10 +468,10 @@ static void wma_play_file(char *filename)
     wma_decode_thread = g_thread_create((GThreadFunc)wma_play_loop, NULL, TRUE, NULL);
 }
 
-static void wma_stop(void) 
+static void wma_stop(InputPlayback *data) 
 {
     wma_decode = 0;
-    if(wma_pause) wma_do_pause(0);
+    if(wma_pause) wma_do_pause(data, 0);
     g_thread_join(wma_decode_thread);
     wma_ip.output->close_audio();
 }	

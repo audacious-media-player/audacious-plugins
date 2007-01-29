@@ -142,8 +142,9 @@ dofunky:
 	return(NULL);
 }
 
-static void sexypsf_xmms_play(char *fn)
+static void sexypsf_xmms_play(InputPlayback *data)
 {
+        char *fn = data->filename;
 	if(playing)
 		return;
 	nextsong=0;
@@ -169,7 +170,7 @@ static void sexypsf_xmms_play(char *fn)
 	}
 }
 
-static void sexypsf_xmms_stop(void)
+static void sexypsf_xmms_stop(InputPlayback * data)
 {
 	if(!playing) return;
 
@@ -190,20 +191,20 @@ static void sexypsf_xmms_stop(void)
 	PSFInfo=NULL;
 }
 
-static void sexypsf_xmms_pause(short p)
+static void sexypsf_xmms_pause(InputPlayback * data, short p)
 {
 	if(!playing) return;
 	sexypsf_ip.output->pause(p);
 	paused = p;
 }
 
-static void sexypsf_xmms_seek(int time)
+static void sexypsf_xmms_seek(InputPlayback * data, int time)
 {
 	if(!playing) return;
 	command=CMD_SEEK|time;
 }
 
-static int sexypsf_xmms_gettime(void)
+static int sexypsf_xmms_gettime(InputPlayback *data)
 {
 	if(nextsong)
 		return(-1);

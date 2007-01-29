@@ -152,8 +152,9 @@ static void* play_loop(void *arg)
 	g_thread_exit(NULL);
 }
 
-static void metronom_play(char *filename)
+static void metronom_play(InputPlayback *data)
 {
+        char *filename = data->filename;
 	gchar *name;
 	size_t count;	
 	metronom_t *pmetronom;
@@ -199,7 +200,7 @@ static void metronom_play(char *filename)
 	play_thread = g_thread_create((GThreadFunc)play_loop, pmetronom, TRUE, NULL);
 }
 
-static void metronom_stop(void)
+static void metronom_stop(InputPlayback *data)
 {
 	if (going)
 	{
@@ -209,12 +210,12 @@ static void metronom_stop(void)
 	}
 }
 
-static void metronom_pause(short paused)
+static void metronom_pause(InputPlayback *data, short paused)
 {
 	metronom_ip.output->pause(paused);
 }
 
-static int metronom_get_time(void)
+static int metronom_get_time(InputPlayback *data)
 {
 	if (audio_error)
 		return -2;

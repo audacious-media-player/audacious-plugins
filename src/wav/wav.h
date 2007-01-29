@@ -54,11 +54,11 @@ typedef struct {
 
 static void wav_init(void);
 static int is_our_file(char *filename);
-static void play_file(char *filename);
-static void stop(void);
-static void seek(int time);
-static void wav_pause(short p);
-static int get_time(void);
+static void play_file(InputPlayback * data);
+static void stop(InputPlayback * data);
+static void seek(InputPlayback * data, int time);
+static void wav_pause(InputPlayback * data, short p);
+static int get_time(InputPlayback * data);
 static void get_song_info(char *filename, char **title, int *length);
 
 #endif

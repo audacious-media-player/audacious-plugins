@@ -64,11 +64,11 @@ extern vorbis_config_t vorbis_cfg;
 static TitleInput *get_song_tuple(gchar *filename);
 static int vorbis_check_file(char *filename);
 static int vorbis_check_fd(char *filename, VFSFile *stream);
-static void vorbis_play(char *filename);
-static void vorbis_stop(void);
-static void vorbis_pause(short p);
-static void vorbis_seek(int time);
-static int vorbis_time(void);
+static void vorbis_play(InputPlayback *data);
+static void vorbis_stop(InputPlayback *data);
+static void vorbis_pause(InputPlayback *data, short p);
+static void vorbis_seek(InputPlayback *data, int time);
+static int vorbis_time(InputPlayback *data);
 static void vorbis_get_song_info(char *filename, char **title, int *length);
 static gchar *vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * fn);
 static void vorbis_aboutbox(void);
@@ -580,8 +580,9 @@ vorbis_play_loop(gpointer arg)
 }
 
 static void
-vorbis_play(char *filename)
+vorbis_play(InputPlayback *data)
 {
+    char *filename = data->filename;
     vorbis_playing = 1;
     vorbis_bytes_streamed = 0;
     vorbis_eos = 0;
@@ -592,7 +593,7 @@ vorbis_play(char *filename)
 }
 
 static void
-vorbis_stop(void)
+vorbis_stop(InputPlayback *data)
 {
     if (vorbis_playing) {
         vorbis_playing = 0;
@@ -601,13 +602,13 @@ vorbis_stop(void)
 }
 
 static void
-vorbis_pause(short p)
+vorbis_pause(InputPlayback *data, short p)
 {
     vorbis_ip.output->pause(p);
 }
 
 static int
-vorbis_time(void)
+vorbis_time(InputPlayback *data)
 {
     if (output_error)
         return -2;
@@ -617,7 +618,7 @@ vorbis_time(void)
 }
 
 static void
-vorbis_seek(int time)
+vorbis_seek(InputPlayback *data, int time)
 {
     if (vorbis_is_streaming)
         return;

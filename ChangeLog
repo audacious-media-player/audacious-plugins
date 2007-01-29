@@ -1,3 +1,13 @@
+2007-01-28 22:37:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1202]
+  - fix vorbis fileinfo stuff
+  
+  trunk/src/vorbis/fileinfo.c |   12 +++++++-----
+  trunk/src/vorbis/vorbis.c   |    5 -----
+  trunk/src/vorbis/vorbis.h   |    5 +++++
+  3 files changed, 12 insertions(+), 10 deletions(-)
+
+
 2007-01-28 11:51:32 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [1200]
   Count leading zeroes as PPC assembler. Implemented by Joseph Jezak (JoseJX) from Gentoo.

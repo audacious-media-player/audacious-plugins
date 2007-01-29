@@ -35,17 +35,17 @@ static void cache_cue_file(gchar *f);
 static void free_cue_info(void);
 static void fix_cue_argument(char *line);
 static gboolean is_our_file(gchar *filespec);
-static void play(gchar *uri);
-static void play_cue_uri(gchar *uri);
-static gint get_time(void);
-static void seek(gint time);
-static void stop(void);
-static void cue_pause(short);
+static void play(InputPlayback *data);
+static void play_cue_uri(InputPlayback *data, gchar *uri);
+static gint get_time(InputPlayback *data);
+static void seek(InputPlayback *data, gint time);
+static void stop(InputPlayback *data);
+static void cue_pause(InputPlayback *data, short);
 static TitleInput *get_tuple(gchar *uri);
 static TitleInput *get_tuple_uri(gchar *uri);
 static void get_song_info(gchar *uri, gchar **title, gint *length);
 
-static gint watchdog_func(gpointer unused);
+static gint watchdog_func(gpointer data);
 
 static gchar *cue_file = NULL;
 static gchar *cue_title = NULL;
@@ -66,7 +66,7 @@ static struct {
 static gint timeout_tag = 0;
 static gint finetune_seek = 0;
 
-static InputPlugin *real_ip = NULL;
+static InputPlayback *real_ip = NULL;
 
 InputPlugin cue_ip =
 {
@@ -134,26 +134,27 @@ static int is_our_file(gchar *filename)
 	return FALSE;
 }
 
-static gint get_time(void)
+static gint get_time(InputPlayback *playback)
 {
 	if (real_ip)
-		return real_ip->get_time();
+		return real_ip->plugin->get_time(real_ip);
 
 	return -1;
 }
 
-static void play(gchar *uri)
+static void play(InputPlayback *data)
 {
+        gchar *uri = data->filename;
 	/* this isn't a cue:// uri? */
 	if (strncasecmp("cue://", uri, 6))
 	{
 		gchar *tmp = g_strdup_printf("cue://%s?0", uri);
-		play_cue_uri(tmp);
+		play_cue_uri(data, tmp);
 		g_free(tmp);
 		return;
 	}
 
-	play_cue_uri(uri);
+	play_cue_uri(data, uri);
 }
 
 static TitleInput *get_tuple(gchar *uri)
@@ -245,31 +246,32 @@ static void get_song_info(gchar *uri, gchar **title, gint *length)
 	bmp_title_input_free(tuple);
 }
 
-static void seek(gint time)
+static void seek(InputPlayback * data, gint time)
 {
 	if (real_ip != NULL)
-		real_ip->seek(time);
+		real_ip->plugin->seek(real_ip, time);
 }
 
-static void stop(void)
+static void stop(InputPlayback * data)
 {
 	if (real_ip != NULL)
-		real_ip->stop();
+		real_ip->plugin->stop(real_ip);
 
 	gtk_timeout_remove(timeout_tag);
 	free_cue_info();
 
 	if (real_ip != NULL) {
-		real_ip->set_info = cue_ip.set_info;
-		real_ip->output = NULL;
+		real_ip->plugin->set_info = cue_ip.set_info;
+		real_ip->plugin->output = NULL;
+		g_free(real_ip);
 		real_ip = NULL;
 	}
 }
 
-static void cue_pause(short p)
+static void cue_pause(InputPlayback * data, short p)
 {
 	if (real_ip != NULL)
-		real_ip->pause(p);
+		real_ip->plugin->pause(real_ip, p);
 }
 
 static void set_info_override(gchar * unused, gint length, gint rate, gint freq, gint nch)
@@ -291,13 +293,14 @@ static void set_info_override(gchar * unused, gint length, gint rate, gint freq,
 	cue_ip.set_info(title, length, rate, freq, nch);
 }
 
-static void play_cue_uri(gchar *uri)
+static void play_cue_uri(InputPlayback * data, gchar *uri)
 {
         gchar *path2 = g_strdup(uri + 6);
         gchar *_path = strchr(path2, '?');
 	gint file_length = 0;
 	gint track = 0;
 	gchar *dummy = NULL;
+	InputPlugin *real_ip_plugin;
 
         if (_path != NULL && *_path == '?')
         {
@@ -311,16 +314,21 @@ static void play_cue_uri(gchar *uri)
         if (cue_file == NULL)
                 return;
 
-	real_ip = input_check_file(cue_file, FALSE);
+	real_ip_plugin = input_check_file(cue_file, FALSE);
 
-	if (real_ip != NULL)
+	if (real_ip_plugin != NULL)
 	{
-		real_ip->set_info = set_info_override;
-		real_ip->output = cue_ip.output;
-		real_ip->play_file(cue_file);
-		real_ip->seek(finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
+	        if (real_ip)
+	                g_free(real_ip);
+	        real_ip = g_new0(InputPlayback, 1);
+		real_ip->plugin = real_ip_plugin;
+		real_ip->plugin->set_info = set_info_override;
+		real_ip->plugin->output = cue_ip.output;
+		real_ip->filename = cue_file;
+		real_ip->plugin->play_file(real_ip);
+		real_ip->plugin->seek(real_ip, finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
 		// in some plugins, NULL as 2nd arg causes crash.
-		real_ip->get_song_info(cue_file, &dummy, &file_length);
+		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
 		g_free(dummy);
 		cue_tracks[last_cue_track].index = file_length;
 	}
@@ -329,7 +337,7 @@ static void play_cue_uri(gchar *uri)
 
 	cur_cue_track = track;
 
-	timeout_tag = gtk_timeout_add(100, watchdog_func, NULL);
+	timeout_tag = gtk_timeout_add(100, watchdog_func, data);
 }
 
 InputPlugin *get_iplugin_info(void)
@@ -355,7 +363,7 @@ InputPlugin *get_iplugin_info(void)
  *
  *     - nenolod
  */
-static gint watchdog_func(gpointer unused)
+static gint watchdog_func(gpointer data)
 {
 	gint time = get_output_time();
 	gboolean dir = FALSE;
@@ -381,7 +389,7 @@ static gint watchdog_func(gpointer unused)
 		if (!(time > cue_tracks[cur_cue_track].index))
 			finetune_seek = time;
 		if(cfg.stopaftersong) {
-			stop();
+			stop(data);
 			return TRUE;
 		}
 		playlist_next(playlist);
