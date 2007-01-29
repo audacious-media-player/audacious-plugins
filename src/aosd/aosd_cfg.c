@@ -93,7 +93,6 @@ aosd_cfg_osd_new( void )
   aosd_cfg_osd_t *cfg_osd = g_malloc0(sizeof(aosd_cfg_osd_t));
   cfg_osd->decoration.colors = g_array_sized_new( FALSE , TRUE , sizeof(aosd_color_t) ,
                                                   aosd_deco_style_get_max_numcol() );
-  cfg_osd->decoration.skin_file = NULL; /* TODO paranoid, remove me when implemented */
   return cfg_osd;
 }
 
@@ -265,6 +264,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
        "decoration_skin_file" , &(cfg->osd->decoration.skin_file) ) )
     cfg->osd->decoration.skin_file = g_strdup( "" );
   */
+  cfg->osd->decoration.skin_file = NULL;
 
   /* decoration - colors */
   max_numcol = aosd_deco_style_get_max_numcol();

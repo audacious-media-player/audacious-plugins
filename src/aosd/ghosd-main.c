@@ -11,6 +11,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "ghosd.h"
 #include "ghosd-internal.h"
@@ -70,8 +71,12 @@ ghosd_main_until(Ghosd *ghosd, struct timeval *until) {
     struct pollfd pollfd = { ghosd_get_socket(ghosd), POLLIN, 0 };
     int ret = poll(&pollfd, 1, dt);
     if (ret < 0) {
-      perror("poll");
-      exit(1);
+      if ( errno != EINTR )
+      {
+        perror("poll");
+        exit(1);
+      }
+      /* else go on, ignore EINTR */
     } else if (ret > 0) {
       ghosd_main_iterations(ghosd);
     } else {

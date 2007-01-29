@@ -1,3 +1,10 @@
+2007-01-29 15:50:26 +0000  Giacomo Lozito <james@develia.org>
+  revision [1230]
+  - aosd: paranoid fixes
+  trunk/src/aosd/aosd_cfg.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-29 15:46:29 +0000  Giacomo Lozito <james@develia.org>
   revision [1228]
   - aosd: remove other skin_file manipulation
