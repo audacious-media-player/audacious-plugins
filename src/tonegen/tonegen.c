@@ -72,7 +72,8 @@ static int tone_is_our_file(char *filename)
 
 static void* play_loop(void *arg)
 {
-	GArray* frequencies = arg;
+        InputPlayback *playback = arg;
+	GArray* frequencies = playback->data;
 	gint16 data[BUF_SAMPLES];
 	gsize i;
 	struct {
@@ -108,17 +109,17 @@ static void* play_loop(void *arg)
 			data[i] = rint(((1 << 15) - 1) *
 				       (sum_sines / frequencies->len));
 		}
-		while (tone_ip.output->buffer_free() < BUF_BYTES && going)
-			xmms_usleep(30000);
-		produce_audio(tone_ip.output->written_time(), FMT_S16_NE, 1, BUF_BYTES, data, &going);
+		while (playback->output->buffer_free() < BUF_BYTES && going)
+		        xmms_usleep(30000);
+		produce_audio(playback->output->written_time(), FMT_S16_NE, 1, BUF_BYTES, data, &going);
 	}
 
 	g_array_free(frequencies, TRUE);
 	g_free(tone);
 
 	/* Make sure the output plugin stops prebuffering */
-	tone_ip.output->buffer_free();
-	tone_ip.output->buffer_free();
+	playback->output->buffer_free();
+	playback->output->buffer_free();
 
 	g_thread_exit(NULL);
 	return(NULL);
@@ -178,8 +179,9 @@ static char* tone_title(char *filename)
 }
 	
 
-static void tone_play(InputPlayback *playback, char *filename)
+static void tone_play(InputPlayback *playback)
 {
+        char *filename = playback->filename;
 	GArray* frequencies;
 	char *name;
 
@@ -189,7 +191,7 @@ static void tone_play(InputPlayback *playback, char *filename)
 
  	going = TRUE;
 	audio_error = FALSE;
-	if (tone_ip.output->open_audio(FMT_S16_NE, OUTPUT_FREQ, 1) == 0)
+	if (playback->output->open_audio(FMT_S16_NE, OUTPUT_FREQ, 1) == 0)
 	{
 		audio_error = TRUE;
 		going = FALSE;
@@ -199,31 +201,32 @@ static void tone_play(InputPlayback *playback, char *filename)
 	name = tone_title(filename);
 	tone_ip.set_info(name, -1, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
 	g_free(name);
-	play_thread = g_thread_create((GThreadFunc)play_loop, frequencies, TRUE, NULL);
+	playback->data = frequencies;
+	play_thread = g_thread_create((GThreadFunc)play_loop, playback, TRUE, NULL);
 }
 
-static void tone_stop(InputPlayback *data)
+static void tone_stop(InputPlayback *playback)
 {
 	if (going)
 	{
 		going = FALSE;
 		g_thread_join(play_thread);
-		tone_ip.output->close_audio();
+		playback->output->close_audio();
 	}
 }
 
-static void tone_pause(InputPlayback *data, short paused)
+static void tone_pause(InputPlayback *playback, short paused)
 {
-	tone_ip.output->pause(paused);
+	playback->output->pause(paused);
 }
 
-static int tone_get_time(InputPlayback *data)
+static int tone_get_time(InputPlayback *playback)
 {
 	if (audio_error)
 		return -2;
-	if (!going && !tone_ip.output->buffer_playing())
+	if (!going && !playback->output->buffer_playing())
 		return -1;
-	return tone_ip.output->output_time();
+	return playback->output->output_time();
 }
 
 static void tone_song_info(char *filename, char **title, int *length)

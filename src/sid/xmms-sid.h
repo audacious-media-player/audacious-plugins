@@ -176,11 +176,11 @@ void	xs_reinit(void);
 void	xs_close(void);
 gint	xs_is_our_file(gchar *);
 gint	xs_is_our_file_vfs(gchar *,VFSFile *);
-void	xs_play_file(gchar *);
-void	xs_stop(void);
-void	xs_pause(short);
-void	xs_seek(gint);
-gint	xs_get_time(void);
+void	xs_play_file(InputPlayback *);
+void	xs_stop(InputPlayback *);
+void	xs_pause(InputPlayback *, short);
+void	xs_seek(InputPlayback *,gint);
+gint	xs_get_time(InputPlayback *);
 void	xs_get_song_info(gchar *, gchar **, gint *);
 void	xs_about(void);
 

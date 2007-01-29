@@ -117,8 +117,8 @@ static void seek(InputPlayback *playback, int time);
 static int get_time(InputPlayback *playback);
 static void get_song_info(char *filename, char **title, int *length);
 static TitleInput *get_song_tuple(char *filename);
-static void get_volume(int *l, int *r);
-static void set_volume(int l, int r);
+static gint get_volume(int *l, int *r);
+static gint set_volume(int l, int r);
 static void cleanup(void);
 void cdda_fileinfo(char *filename);
 
@@ -857,8 +857,9 @@ cdda_calculate_track_length(cdda_disc_toc_t * toc, int track)
 }
 
 static void *
-dae_play_loop(void *arg)
+dae_play_loop(void *data)
 {
+    InputPlayback *playback = data;
     char *buffer = g_malloc(CD_FRAMESIZE_RAW * CDDA_DAE_FRAMES);
     int pos = LBA(cdda_playing.cd_toc.track[cdda_playing.track]);
     int end, frames;
@@ -873,7 +874,7 @@ dae_play_loop(void *arg)
         char *data;
 
         if (dae_data.seek != -1) {
-            cdda_ip.output->flush(dae_data.seek * 1000);
+	    playback->output->flush(dae_data.seek * 1000);
             pos = LBA(cdda_playing.cd_toc.track[cdda_playing.track])
                 + dae_data.seek * 75;
             dae_data.seek = -1;
@@ -909,21 +910,21 @@ dae_play_loop(void *arg)
         data = buffer;
         while (cdda_playing.playing && left > 0 && dae_data.seek == -1) {
             int cur = MIN(512 * 2 * 2, left);
-            cdda_ip.add_vis_pcm(cdda_ip.output->written_time(),
+            cdda_ip.add_vis_pcm(playback->output->written_time(),
                                 FMT_S16_LE, 2, cur, data);
-            while (cdda_ip.output->buffer_free() < cur &&
+            while (playback->output->buffer_free() < cur &&
                    cdda_playing.playing && dae_data.seek == -1)
                 xmms_usleep(30000);
             if (cdda_playing.playing && dae_data.seek == -1)
-                produce_audio(cdda_ip.output->written_time(), FMT_S16_LE, 2, cur, data, &cdda_playing.playing);
+                produce_audio(playback->output->written_time(), FMT_S16_LE, 2, cur, data, &cdda_playing.playing);
             left -= cur;
             data += cur;
         }
         pos += frames;
     }
 
-    cdda_ip.output->buffer_free();
-    cdda_ip.output->buffer_free();
+    playback->output->buffer_free();
+    playback->output->buffer_free();
     g_free(buffer);
 
     g_thread_exit(NULL);
@@ -931,9 +932,9 @@ dae_play_loop(void *arg)
 }
 
 static void
-dae_play(void)
+dae_play(InputPlayback *playback)
 {
-    if (cdda_ip.output->open_audio(FMT_S16_LE, 44100, 2) == 0) {
+    if (playback->output->open_audio(FMT_S16_LE, 44100, 2) == 0) {
         dae_data.audio_error = TRUE;
         cdda_playing.playing = FALSE;
         return;
@@ -941,7 +942,7 @@ dae_play(void)
     dae_data.seek = -1;
     dae_data.eof = FALSE;
     dae_data.audio_error = FALSE;
-    dae_data.thread = g_thread_create(dae_play_loop, NULL, TRUE, NULL);
+    dae_data.thread = g_thread_create(dae_play_loop, playback, TRUE, NULL);
 }
 
 static void
@@ -1002,7 +1003,7 @@ play_file(InputPlayback *playback)
 
     cdda_playing.playing = TRUE;
     if (drive->dae)
-        dae_play();
+        dae_play(playback);
     else
         seek(playback, 0);
     return;
@@ -1091,7 +1092,7 @@ stop_timeout(gpointer data)
 }
 
 static void
-stop(InputPlayback * data)
+stop(InputPlayback * playback)
 {
     struct timeout *to_info;
     if (cdda_playing.fd < 0)
@@ -1101,7 +1102,7 @@ stop(InputPlayback * data)
 
     if (cdda_playing.drive.dae) {
         g_thread_join(dae_data.thread);
-        cdda_ip.output->close_audio();
+        playback->output->close_audio();
     }
     else
         ioctl(cdda_playing.fd, XMMS_PAUSE, 0);
@@ -1119,14 +1120,14 @@ stop(InputPlayback * data)
 }
 
 static void
-cdda_pause(InputPlayback *data, short p)
+cdda_pause(InputPlayback *playback, short p)
 {
     if (cdda_playing.drive.dae) {
-        cdda_ip.output->pause(p);
+        playback->output->pause(p);
         return;
     }
     if (p) {
-        pause_time = get_time(data);
+        pause_time = get_time(playback);
         ioctl(cdda_playing.fd, XMMS_PAUSE, 0);
     }
     else {
@@ -1193,14 +1194,14 @@ get_time_analog(void)
 }
 
 static int
-get_time_dae(void)
+get_time_dae(InputPlayback *playback)
 {
     if (dae_data.audio_error)
         return -2;
     if (!cdda_playing.playing ||
-        (dae_data.eof && !cdda_ip.output->buffer_playing()))
+        (dae_data.eof && !playback->output->buffer_playing()))
         return -1;
-    return cdda_ip.output->output_time();
+    return playback->output->output_time();
 }
 
 static int
@@ -1210,7 +1211,7 @@ get_time(InputPlayback *playback)
         return -1;
 
     if (cdda_playing.drive.dae)
-        return get_time_dae();
+        return get_time_dae(playback);
     else
         return get_time_analog();
 }
@@ -1324,24 +1325,26 @@ oss_set_volume(int l, int r, int mixer_line)
 #endif
 
 
-static void
+static gint
 get_volume(int *l, int *r)
 {
     if (cdda_playing.drive.dae)
-        cdda_ip.output->get_volume(l, r);
+        return 0;
     else if (cdda_playing.drive.mixer == CDDA_MIXER_OSS)
         oss_get_volume(l, r, cdda_playing.drive.oss_mixer);
     else if (cdda_playing.drive.mixer == CDDA_MIXER_DRIVE)
         drive_get_volume(l, r);
+    return 1;
 }
 
-static void
+static gint
 set_volume(int l, int r)
 {
     if (cdda_playing.drive.dae)
-        cdda_ip.output->set_volume(l, r);
+        return 0;
     else if (cdda_playing.drive.mixer == CDDA_MIXER_OSS)
         oss_set_volume(l, r, cdda_playing.drive.oss_mixer);
     else if (cdda_playing.drive.mixer == CDDA_MIXER_DRIVE)
         drive_set_volume(l, r);
+    return 1;
 }

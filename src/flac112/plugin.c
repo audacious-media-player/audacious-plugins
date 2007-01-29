@@ -93,11 +93,11 @@ typedef enum {
 static void FLAC_XMMS__init();
 static int  FLAC_XMMS__is_our_file(char *filename);
 static int  FLAC_XMMS__is_our_file_from_vfs(char *filename, VFSFile *vfsfile);
-static void FLAC_XMMS__play_file(char *filename);
-static void FLAC_XMMS__stop();
-static void FLAC_XMMS__pause(short p);
-static void FLAC_XMMS__seek(int time);
-static int  FLAC_XMMS__get_time();
+static void FLAC_XMMS__play_file(InputPlayback *playback);
+static void FLAC_XMMS__stop(InputPlayback *playback);
+static void FLAC_XMMS__pause(InputPlayback *playback, short p);
+static void FLAC_XMMS__seek(InputPlayback *playback, int time);
+static int  FLAC_XMMS__get_time(InputPlayback *playback);
 static void FLAC_XMMS__cleanup();
 static void FLAC_XMMS__get_song_info(char *filename, char **title, int *length);
 
@@ -280,8 +280,9 @@ int FLAC_XMMS__is_our_file(char *filename)
 	return result;
 }
 
-void FLAC_XMMS__play_file(char *filename)
+void FLAC_XMMS__play_file(InputPlayback *playback)
 {
+        char *filename = playback->filename;
 	sample_buffer_first_ = sample_buffer_last_ = 0;
 	audio_error_ = false;
 	file_info_.abort_flag = false;
@@ -331,7 +332,7 @@ void FLAC_XMMS__play_file(char *filename)
 	FLAC__replaygain_synthesis__init_dither_context(&file_info_.dither_context, file_info_.sample_format_bytes_per_sample * 8, flac_cfg.output.resolution.replaygain.noise_shaping);
 	file_info_.is_playing = true;
 
-	if(flac_ip.output->open_audio(file_info_.sample_format, file_info_.sample_rate, file_info_.channels) == 0) {
+	if(playback->output->open_audio(file_info_.sample_format, file_info_.sample_rate, file_info_.channels) == 0) {
 		audio_error_ = true;
 		file_decoder_safe_decoder_finish_(decoder_);
 		return;
@@ -342,10 +343,10 @@ void FLAC_XMMS__play_file(char *filename)
 
 	file_info_.seek_to_in_sec = -1;
 	file_info_.play_thread_open = true;
-	decode_thread_ = g_thread_create((GThreadFunc)play_loop_, NULL, TRUE, NULL);
+	decode_thread_ = g_thread_create((GThreadFunc)play_loop_, playback, TRUE, NULL);
 }
 
-void FLAC_XMMS__stop()
+void FLAC_XMMS__stop(InputPlayback *playback)
 {
 	if(file_info_.is_playing) {
 		file_info_.is_playing = false;
@@ -353,17 +354,17 @@ void FLAC_XMMS__stop()
 			file_info_.play_thread_open = false;
 			g_thread_join(decode_thread_);
 		}
-		flac_ip.output->close_audio();
+		playback->output->close_audio();
 		file_decoder_safe_decoder_finish_(decoder_);
 	}
 }
 
-void FLAC_XMMS__pause(short p)
+void FLAC_XMMS__pause(InputPlayback *playback, short p)
 {
-	flac_ip.output->pause(p);
+        playback->output->pause(p);
 }
 
-void FLAC_XMMS__seek(int time)
+void FLAC_XMMS__seek(InputPlayback *playback, int time)
 {
 	file_info_.seek_to_in_sec = time;
 	file_info_.eof = false;
@@ -372,14 +373,14 @@ void FLAC_XMMS__seek(int time)
 		xmms_usleep(10000);
 }
 
-int FLAC_XMMS__get_time()
+int FLAC_XMMS__get_time(InputPlayback *playback)
 {
 	if(audio_error_)
 		return -2;
-	if(!file_info_.is_playing || (file_info_.eof && !flac_ip.output->buffer_playing()))
+	if(!file_info_.is_playing || (file_info_.eof && !playback->output->buffer_playing()))
 		return -1;
 	else
-		return flac_ip.output->output_time();
+		return playback->output->output_time();
 }
 
 void FLAC_XMMS__cleanup()
@@ -443,10 +444,9 @@ void FLAC_XMMS__get_song_info(char *filename, char **title, int *length_in_msec)
 
 void *play_loop_(void *arg)
 {
+        InputPlayback *playback = arg;
 	unsigned written_time_last = 0, bh_index_last_w = 0, bh_index_last_o = BITRATE_HIST_SIZE, blocksize = 1;
 	FLAC__uint64 decode_position_last = 0, decode_position_frame_last = 0, decode_position_frame = 0;
-
-	(void)arg;
 
 	while(file_info_.is_playing) {
 		if(!file_info_.eof) {
@@ -477,15 +477,15 @@ void *play_loop_(void *arg)
 				FLAC__uint64 decode_position;
 
 				sample_buffer_first_ += n;
-				while(flac_ip.output->buffer_free() < (int)bytes && file_info_.is_playing && file_info_.seek_to_in_sec == -1)
+				while(playback->output->buffer_free() < (int)bytes && file_info_.is_playing && file_info_.seek_to_in_sec == -1)
 					xmms_usleep(10000);
 				if(file_info_.is_playing && file_info_.seek_to_in_sec == -1)
-					produce_audio(flac_ip.output->written_time(), file_info_.sample_format,
+					produce_audio(playback->output->written_time(), file_info_.sample_format,
 						file_info_.channels, bytes, sample_buffer_start, NULL);
 
 				/* compute current bitrate */
 
-				written_time = flac_ip.output->written_time();
+				written_time = playback->output->written_time();
 				bh_index_w = written_time / BITRATE_HIST_SEGMENT_MSEC % BITRATE_HIST_SIZE;
 				if(bh_index_w != bh_index_last_w) {
 					bh_index_last_w = bh_index_w;
@@ -509,8 +509,8 @@ void *play_loop_(void *arg)
 			const double distance = (double)file_info_.seek_to_in_sec * 1000.0 / (double)file_info_.length_in_msec;
 			unsigned target_sample = (unsigned)(distance * (double)file_info_.total_samples);
 			if(FLAC__seekable_stream_decoder_seek_absolute(decoder_, (FLAC__uint64)target_sample)) {
-				flac_ip.output->flush(file_info_.seek_to_in_sec * 1000);
-				bh_index_last_w = bh_index_last_o = flac_ip.output->output_time() / BITRATE_HIST_SEGMENT_MSEC % BITRATE_HIST_SIZE;
+				playback->output->flush(file_info_.seek_to_in_sec * 1000);
+				bh_index_last_w = bh_index_last_o = playback->output->output_time() / BITRATE_HIST_SEGMENT_MSEC % BITRATE_HIST_SIZE;
 				if(!FLAC__seekable_stream_decoder_get_decode_position(decoder_, &decode_position_frame))
 					decode_position_frame = 0;
 				file_info_.seek_to_in_sec = -1;
@@ -521,7 +521,7 @@ void *play_loop_(void *arg)
 		else if ( !flac_cfg.title.disable_bitrate_update )
 		{
 			/* display the right bitrate from history */
-			unsigned bh_index_o = flac_ip.output->output_time() / BITRATE_HIST_SEGMENT_MSEC % BITRATE_HIST_SIZE;
+			unsigned bh_index_o = playback->output->output_time() / BITRATE_HIST_SEGMENT_MSEC % BITRATE_HIST_SIZE;
 			if(bh_index_o != bh_index_last_o && bh_index_o != bh_index_last_w && bh_index_o != (bh_index_last_w + 1) % BITRATE_HIST_SIZE) {
 				bh_index_last_o = bh_index_o;
 				flac_ip.set_info(file_info_.title, file_info_.length_in_msec, bitrate_history_[bh_index_o], file_info_.sample_rate, file_info_.channels);
@@ -532,8 +532,8 @@ void *play_loop_(void *arg)
 	file_decoder_safe_decoder_finish_(decoder_);
 
 	/* are these two calls necessary? */
-	flac_ip.output->buffer_free();
-	flac_ip.output->buffer_free();
+	playback->output->buffer_free();
+	playback->output->buffer_free();
 
 	g_free(file_info_.title);
 

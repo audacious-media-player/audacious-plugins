@@ -588,10 +588,12 @@ static void update_infobox(void)
 // Define sampsize macro (only usable inside play_loop()!)
 #define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
 
-static void *play_loop(void *filename)
+static void *play_loop(void *data)
 /* Main playback thread. Takes the filename to play as argument. */
 {
-  dbg_printf("play_loop(\"%s\"): ", (char *)filename);
+  InputPlayback *playback = (InputPlayback *) data;
+  char *filename = (char *) playback->data;
+  dbg_printf("play_loop(\"%s\"): ", filename);
   CEmuopl opl(cfg.freq, cfg.bit16, cfg.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
@@ -602,7 +604,7 @@ static void *play_loop(void *filename)
 
   // Try to load module
   dbg_printf("factory, ");
-  if(!(plr.p = factory((char *)filename, &opl))) {
+  if(!(plr.p = factory(filename, &opl))) {
     dbg_printf("error!\n");
    // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
     plr.playing = false;
@@ -622,8 +624,8 @@ static void *play_loop(void *filename)
 
   // reset to first subsong on new file
   dbg_printf("subsong, ");
-  if(strcmp((char *)filename, plr.filename)) {
-    strcpy(plr.filename, (char *)filename);
+  if(strcmp(filename, plr.filename)) {
+    strcpy(plr.filename, filename);
     plr.subsong = 0;
   }
 
@@ -656,7 +658,7 @@ static void *play_loop(void *filename)
         plr.time_ms += 1000 / plr.p->getrefresh();
 
       // Reset output plugin and some values
-      adplug_ip.output->flush((int)plr.time_ms);
+      playback->output->flush((int)plr.time_ms);
       plr.seek = -1;
     }
 
@@ -675,8 +677,8 @@ static void *play_loop(void *filename)
     }
 
     // write sound buffer
-    while(adplug_ip.output->buffer_free() < SNDBUFSIZE * sampsize) xmms_usleep(10000);
-    produce_audio(adplug_ip.output->written_time(),
+    while(playback->output->buffer_free() < SNDBUFSIZE * sampsize) xmms_usleep(10000);
+    produce_audio(playback->output->written_time(),
 			  bit16 ? FORMAT_16 : FORMAT_8,
 			  stereo ? 2 : 1, SNDBUFSIZE * sampsize, sndbuf, NULL);
 
@@ -685,13 +687,13 @@ static void *play_loop(void *filename)
   }
 
   // playback finished - deinit
-  dbg_printf("play_loop(\"%s\"): ", (char *)filename);
+  dbg_printf("play_loop(\"%s\"): ", filename);
   if(!playing) { // wait for output plugin to finish if song has self-ended
     dbg_printf("wait, ");
-    while(adplug_ip.output->buffer_playing()) xmms_usleep(10000);
+    while(playback->output->buffer_playing()) xmms_usleep(10000);
   } else { // or else, flush its output buffers
     dbg_printf("flush, ");
-    adplug_ip.output->buffer_free(); adplug_ip.output->buffer_free();
+    playback->output->buffer_free(); playback->output->buffer_free();
   }
 
   // free everything and exit
@@ -731,7 +733,7 @@ static int adplug_get_time(InputPlayback *data)
 {
   if(audio_error) { dbg_printf("adplug_get_time(): returned -2\n"); return -2; }
   if(!plr.playing) { dbg_printf("adplug_get_time(): returned -1\n"); return -1; }
-  return adplug_ip.output->output_time();
+  return playback->output->output_time();
 }
 
 static void adplug_song_info(char *filename, char **title, int *length)
@@ -776,7 +778,7 @@ static void adplug_play(InputPlayback *data)
 
   // open output plugin
   dbg_printf("open, ");
-  if (!adplug_ip.output->open_audio(cfg.bit16 ? FORMAT_16 : FORMAT_8, cfg.freq, cfg.stereo ? 2 : 1)) {
+  if (!playback->output->open_audio(cfg.bit16 ? FORMAT_16 : FORMAT_8, cfg.freq, cfg.stereo ? 2 : 1)) {
     audio_error = TRUE;
     return;
   }
@@ -789,22 +791,22 @@ static void adplug_play(InputPlayback *data)
 
   // start player thread
   dbg_printf("create");
-  plr.play_thread = g_thread_create(play_loop, filename, TRUE, NULL);
+  plr.play_thread = g_thread_create(play_loop, playback, TRUE, NULL);
   dbg_printf(".\n");
 }
 
-static void adplug_stop(InputPlayback * data)
+static void adplug_stop(InputPlayback * playback)
 {
   dbg_printf("adplug_stop(): join, ");
   plr.playing = false; g_thread_join(plr.play_thread); // stop player thread
-  dbg_printf("close"); adplug_ip.output->close_audio();
+  dbg_printf("close"); playback->output->close_audio();
   dbg_printf(".\n");
 }
 
-static void adplug_pause(InputPlayback * data, short paused)
+static void adplug_pause(InputPlayback * playback, short paused)
 {
   dbg_printf("adplug_pause(%d)\n", paused);
-  adplug_ip.output->pause(paused);
+  playback->output->pause(paused);
 }
 
 static void adplug_seek(InputPlayback * data, int time)

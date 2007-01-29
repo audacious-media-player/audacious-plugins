@@ -254,8 +254,9 @@ static void get_song_info( char* path, char** title, int* length )
 
 // Playback
 
-static void* play_loop_track( gpointer )
+static void* play_loop_track( gpointer arg )
 {
+        InputPlayback *playback = (InputPlayback *) arg;
 	g_static_mutex_lock( &playback_mutex );
 	
 	while ( console_ip_is_going && !emu->track_ended() )
@@ -265,7 +266,7 @@ static void* play_loop_track( gpointer )
 		pending_seek = -1; // TODO: use atomic swap
 		if ( s >= 0 )
 		{
-			console_ip.output->flush( s * 1000 );
+			playback->output->flush( s * 1000 );
 			emu->seek( s * 1000 );
 		}
 		
@@ -275,14 +276,14 @@ static void* play_loop_track( gpointer )
 		Music_Emu::sample_t buf [buf_size];
 		emu->play( buf_size, buf );
 		
-		produce_audio( console_ip.output->written_time(), 
+		produce_audio( playback->output->written_time(), 
 			FMT_S16_NE, 1, sizeof buf, buf, 
 			&console_ip_is_going );
 	}
 	
 	// stop playing
 	unload_file();
-	console_ip.output->close_audio();
+	playback->output->close_audio();
 	console_ip_is_going = 0;
 	g_static_mutex_unlock( &playback_mutex );
 	// TODO: should decode_thread be cleared here?
@@ -290,9 +291,9 @@ static void* play_loop_track( gpointer )
 	return NULL;
 }
 
-static void play_file( InputPlayback *data )
+static void play_file( InputPlayback *playback )
 {
-        char* path = data->filename;
+        char* path = playback->filename;
 	unload_file();
 	
 	// identify file
@@ -355,7 +356,7 @@ static void play_file( InputPlayback *data )
 	if ( log_err( fh.emu->start_track( fh.track ) ) )
 		return;
 	log_warning( fh.emu );
-	if ( !console_ip.output->open_audio( FMT_S16_NE, sample_rate, 2 ) )
+	if ( !playback->output->open_audio( FMT_S16_NE, sample_rate, 2 ) )
 		return;
 	
 	// set fade time
@@ -380,7 +381,7 @@ static void seek( InputPlayback * data, gint time )
 	pending_seek = time;
 }
 
-static void console_stop(InputPlayback *data)
+static void console_stop(InputPlayback *playback)
 {
 	console_ip_is_going = 0;
 	if ( decode_thread )
@@ -388,18 +389,18 @@ static void console_stop(InputPlayback *data)
 		g_thread_join( decode_thread );
 		decode_thread = NULL;
 	}
-	console_ip.output->close_audio();
+	playback->output->close_audio();
 	unload_file();
 }
 
-static void console_pause(InputPlayback * data, gshort p)
+static void console_pause(InputPlayback * playback, gshort p)
 {
-	console_ip.output->pause(p);
+	playback->output->pause(p);
 }
 
-static int get_time(InputPlayback *data)
+static int get_time(InputPlayback *playback)
 {
-	return console_ip_is_going ? console_ip.output->output_time() : -1;
+	return console_ip_is_going ? playback->output->output_time() : -1;
 }
 
 static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )

@@ -76,19 +76,21 @@ static void SI(gchar *filename)
 	g_free(name);
 }
 
+static InputPlayback *playback;
+
 void sexypsf_update(unsigned char *Buffer, long count)
 {
 	int mask = ~((((16 / 8) * 2)) - 1);
 
 	while(count>0)
 	{
-		int t=sexypsf_ip.output->buffer_free() & mask;
+		int t=playback->output->buffer_free() & mask;
 		if(t>count)		
-			produce_audio(sexypsf_ip.output->written_time(), FMT_S16_NE, 2, count, Buffer, NULL);
+			produce_audio(playback->output->written_time(), FMT_S16_NE, 2, count, Buffer, NULL);
 		else
 		{
 			if(t)
-				produce_audio(sexypsf_ip.output->written_time(), FMT_S16_NE, 2, t, Buffer, NULL);
+				produce_audio(playback->output->written_time(), FMT_S16_NE, 2, t, Buffer, NULL);
 			g_usleep((count-t)*1000*5/441/2);
 		}
 		count-=t;
@@ -99,7 +101,7 @@ void sexypsf_update(unsigned char *Buffer, long count)
 		int t=(command&~(CMD_SEEK|CMD_STOP))*1000;
 
 		if(sexypsf_seek(t))
-			sexypsf_ip.output->flush(t);
+			playback->output->flush(t);
 		else	// Negative time!  Must make a C time machine.
 		{
 			sexypsf_stop();
@@ -118,25 +120,25 @@ dofunky:
 	sexypsf_execute();
 
 	/* We have reached the end of the song. Now what... */
-	sexypsf_ip.output->buffer_free();
-	sexypsf_ip.output->buffer_free();
+	playback->output->buffer_free();
+	playback->output->buffer_free();
 
 	while(!(command&CMD_STOP)) 
 	{
 		if(command&CMD_SEEK)
 			{
 			int t=(command&~(CMD_SEEK|CMD_STOP))*1000;
-			sexypsf_ip.output->flush(t);
+			playback->output->flush(t);
 			if(!(PSFInfo=sexypsf_load(fnsave)))
 				break;
 			sexypsf_seek(t); 
 			command&=~CMD_SEEK;
 			goto dofunky;
 			}
-		if(!sexypsf_ip.output->buffer_playing()) break;
+		if(!playback->output->buffer_playing()) break;
 			usleep(2000);
 	}
-	sexypsf_ip.output->close_audio();
+	playback->output->close_audio();
 	if(!(command&CMD_STOP)) nextsong=1;
 	g_thread_exit(NULL);
 	return(NULL);
@@ -147,9 +149,10 @@ static void sexypsf_xmms_play(InputPlayback *data)
         char *fn = data->filename;
 	if(playing)
 		return;
+	playback = data;
 	nextsong=0;
 	paused = 0;
-	if(!sexypsf_ip.output->open_audio(FMT_S16_NE, 44100, 2))
+	if(!playback->output->open_audio(FMT_S16_NE, 44100, 2))
 	{
 		puts("Error opening audio.");
 		return;
@@ -158,7 +161,7 @@ static void sexypsf_xmms_play(InputPlayback *data)
 	strcpy(fnsave,fn);
 	if(!(PSFInfo=sexypsf_load(fn)))
 	{
-		sexypsf_ip.output->close_audio();
+		playback->output->close_audio();
 		nextsong=1;
 	}
  	else
@@ -170,12 +173,12 @@ static void sexypsf_xmms_play(InputPlayback *data)
 	}
 }
 
-static void sexypsf_xmms_stop(InputPlayback * data)
+static void sexypsf_xmms_stop(InputPlayback * playback)
 {
 	if(!playing) return;
 
 	if(paused)
-		sexypsf_ip.output->pause(0);
+		playback->output->pause(0);
 	paused = 0;
 
 	command=CMD_STOP;
@@ -191,10 +194,10 @@ static void sexypsf_xmms_stop(InputPlayback * data)
 	PSFInfo=NULL;
 }
 
-static void sexypsf_xmms_pause(InputPlayback * data, short p)
+static void sexypsf_xmms_pause(InputPlayback * playback, short p)
 {
 	if(!playing) return;
-	sexypsf_ip.output->pause(p);
+	playback->output->pause(p);
 	paused = p;
 }
 
@@ -204,12 +207,12 @@ static void sexypsf_xmms_seek(InputPlayback * data, int time)
 	command=CMD_SEEK|time;
 }
 
-static int sexypsf_xmms_gettime(InputPlayback *data)
+static int sexypsf_xmms_gettime(InputPlayback *playback)
 {
 	if(nextsong)
 		return(-1);
 	if(!playing) return(0);
-		return sexypsf_ip.output->output_time();
+		return playback->output->output_time();
 }
 
 static void sexypsf_xmms_getsonginfo(char *fn, char **title, int *length)

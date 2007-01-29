@@ -254,6 +254,7 @@ read_le_short(VFSFile * file, gshort * ret)
 static gpointer
 play_loop(gpointer arg)
 {
+    InputPlayback *playback = arg;
     gchar data[2048 * 2];
     gsize bytes, blk_size, rate;
     gint actual_read;
@@ -272,12 +273,12 @@ play_loop(gpointer arg)
 
                 if (actual_read == 0) {
                     wav_file->eof = 1;
-                    wav_ip.output->buffer_free();
-                    wav_ip.output->buffer_free();
+                    playback->output->buffer_free();
+                    playback->output->buffer_free();
                 }
                 else {
                     if (wav_file->seek_to == -1)
-                        produce_audio(wav_ip.output->written_time(),
+                        produce_audio(playback->output->written_time(),
                                       (wav_file->bits_per_sample ==
                                        16) ? FMT_S16_LE : FMT_U8,
                                       wav_file->channels, bytes, data,
@@ -287,8 +288,8 @@ play_loop(gpointer arg)
             }
             else {
                 wav_file->eof = TRUE;
-                wav_ip.output->buffer_free();
-                wav_ip.output->buffer_free();
+                playback->output->buffer_free();
+                playback->output->buffer_free();
                 xmms_usleep(10000);
             }
         }
@@ -298,7 +299,7 @@ play_loop(gpointer arg)
             wav_file->position = wav_file->seek_to * rate;
             vfs_fseek(wav_file->file,
                       wav_file->position + wav_file->data_offset, SEEK_SET);
-            wav_ip.output->flush(wav_file->seek_to * 1000);
+            playback->output->flush(wav_file->seek_to * 1000);
             wav_file->seek_to = -1;
         }
 
@@ -310,9 +311,9 @@ play_loop(gpointer arg)
 }
 
 static void
-play_file(InputPlayback * data)
+play_file(InputPlayback * playback)
 {
-    gchar * filename = data->filename;
+    gchar * filename = playback->filename;
     gchar magic[4], *name;
     gulong len;
     gint rate;
@@ -405,7 +406,7 @@ play_file(InputPlayback * data)
         wav_file->position = 0;
         wav_file->going = 1;
 
-        if (wav_ip.output->
+        if (playback->output->
             open_audio((wav_file->bits_per_sample ==
                         16) ? FMT_S16_LE : FMT_U8,
                        wav_file->samples_per_sec, wav_file->channels) == 0) {
@@ -428,21 +429,21 @@ play_file(InputPlayback * data)
 }
 
 static void
-stop(InputPlayback * data)
+stop(InputPlayback * playback)
 {
     if (wav_file && wav_file->going) {
         wav_file->going = 0;
         g_thread_join(decode_thread);
-        wav_ip.output->close_audio();
+        playback->output->close_audio();
         g_free(wav_file);
         wav_file = NULL;
     }
 }
 
 static void
-wav_pause(InputPlayback * data, gshort p)
+wav_pause(InputPlayback * playback, gshort p)
 {
-    wav_ip.output->pause(p);
+    playback->output->pause(p);
 }
 
 static void
@@ -457,17 +458,17 @@ seek(InputPlayback * data, gint time)
 }
 
 static int
-get_time(InputPlayback *data)
+get_time(InputPlayback *playback)
 {
     if (audio_error)
         return -2;
     if (!wav_file)
         return -1;
     if (!wav_file->going
-        || (wav_file->eof && !wav_ip.output->buffer_playing()))
+        || (wav_file->eof && !playback->output->buffer_playing()))
         return -1;
     else {
-        return wav_ip.output->output_time();
+        return playback->output->output_time();
     }
 }
 

@@ -27,10 +27,10 @@
 
 static	void 	plugin_init (void);
 static	int	is_our_file (char *filename);
-static	void 	play_start (char *filename);
-static	void 	play_stop (void);
-static	void 	file_seek (int time);
-static	int	get_time (void);
+static	void 	play_start (InputPlayback *playback)
+static	void 	play_stop (InputPlayback *playback);
+static	void 	file_seek (InputPlayback *playback, int time);
+static	int	get_time (InputPlayback *playback);
 static	void 	get_song_info (char *filename, char **title, int *length);
 static  void    wav_about (void);
 

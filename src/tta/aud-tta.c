@@ -69,11 +69,11 @@
 static void init ();
 static void cleanup ();
 static int  is_our_file (char *filename);
-static void play_file (char *filename);
-static void tta_pause (short paused);
-static void stop (void);
-static void seek (int time);
-static int  get_time (void);
+static void play_file (InputPlayback *playback);
+static void tta_pause (InputPlayback *playback, short paused);
+static void stop (InputPlayback *playback);
+static void seek (InputPlayback *playback, int time);
+static int  get_time (InputPlayback *playback);
 static void get_song_info (char *filename, char **title, int *length);
 static void file_info (char *filename);
 static void about ();
@@ -202,6 +202,7 @@ get_title (char *filename, tta_info *ttainfo)
 static void *
 play_loop (void *arg)
 {
+    InputPlayback *playback = arg;
     int  bufsize = PCM_BUFFER_LENGTH  * info.BSIZE * info.NCH;
 
     ////////////////////////////////////////
@@ -213,7 +214,7 @@ play_loop (void *arg)
 	while ((read_samples = get_samples (sample_buffer)) > 0)
 	{
 
-	    while ((tta_ip.output->buffer_free () < bufsize)
+	    while ((playback->output->buffer_free () < bufsize)
 		   && seek_position == -1)
 	    {
 		if (!playing)
@@ -222,7 +223,7 @@ play_loop (void *arg)
 	    }
 	    if (seek_position == -1)
 	    {
-		produce_audio(tta_ip.output->written_time(),
+		produce_audio(playback->output->written_time(),
 			      ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE),
 			      info.NCH,
 			      read_samples * info.NCH * info.BSIZE,
@@ -232,12 +233,12 @@ play_loop (void *arg)
 	    else
 	    {
 		set_position (seek_position);
-		tta_ip.output->flush (seek_position * SEEK_STEP);
+		playback->output->flush (seek_position * SEEK_STEP);
 		seek_position = -1;
 	    }
 	}
-	tta_ip.output->buffer_free ();
-	tta_ip.output->buffer_free ();
+	playback->output->buffer_free ();
+	playback->output->buffer_free ();
 	xmms_usleep(10000);
     }
   DONE:
@@ -484,8 +485,9 @@ is_our_file (char *filename)
 }
 
 static void
-play_file (char *filename)
+play_file (InputPlayback *playback)
 {
+    char *filename = playback->filename;
     char *title;
     long datasize, origsize, bitrate;
 
@@ -510,7 +512,7 @@ play_file (char *filename)
     }
 
 
-    if (tta_ip.output->open_audio ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE,
+    if (playback->output->open_audio ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE,
 				   info.SAMPLERATE, info.NCH) == 0)
     {
 	tta_error (OUTPUT_ERROR);
@@ -547,22 +549,22 @@ play_file (char *filename)
     seek_position = -1;
     read_samples = -1;
 
-    pthread_create (&decode_thread, NULL, play_loop, NULL);
+    pthread_create (&decode_thread, NULL, play_loop, playback);
 }
 
 static void
-tta_pause (short paused)
+tta_pause (InputPlayback *playback, short paused)
 {
-    tta_ip.output->pause (paused);
+    playback->output->pause (paused);
 }
 static void
-stop (void)
+stop (InputPlayback *playback)
 {
     if (playing)
     {
 	playing = FALSE;
 	pthread_join (decode_thread, NULL);
-	tta_ip.output->close_audio ();
+	playback->output->close_audio ();
 	close_tta_file (&info);
 	read_samples = 0;
     }
@@ -581,10 +583,10 @@ seek (int time)
 }
 
 static int
-get_time (void)
+get_time (InputPlayback *playback)
 {
-    if (playing && (read_samples || tta_ip.output->buffer_playing()))
-	return tta_ip.output->output_time();
+    if (playing && (read_samples || playback->output->buffer_playing()))
+        return playback->output->output_time();
 
     return -1;
 }

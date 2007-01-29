@@ -296,14 +296,13 @@ gint xs_is_our_file_vfs(gchar * pcFilename, VFSFile * fp)
  */
 void *xs_playthread(void *argPointer)
 {
+        InputPlayback *playback = argPointer;
 	t_xs_status myStatus;
 	t_xs_tuneinfo *myTune;
 	gboolean audioOpen = FALSE, doPlay = FALSE, isFound = FALSE;
 	gboolean playedTune[XS_STIL_MAXENTRY + 1];
 	gint audioGot, songLength, i;
 	gchar *audioBuffer = NULL, *oversampleBuffer = NULL;
-
-	(void) argPointer;
 
 	/* Initialize */
 	XSDEBUG("entering player thread\n");
@@ -404,7 +403,7 @@ void *xs_playthread(void *argPointer)
 
 
 		/* Open the audio output */
-		if (!xs_plugin_ip.output->
+		if (!playback->output->
 		    open_audio(myStatus.audioFormat, myStatus.audioFrequency, myStatus.audioChannels)) {
 			XSERR("Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n", myStatus.audioFormat,
 			      myStatus.audioFrequency, myStatus.audioChannels);
@@ -454,29 +453,29 @@ void *xs_playthread(void *argPointer)
 				audioGot = myStatus.sidPlayer->plrFillBuffer(&myStatus, audioBuffer, XS_AUDIOBUF_SIZE);
 
 			/* I <3 visualice/haujobb */
-			produce_audio(xs_plugin_ip.output->written_time(),
+			produce_audio(playback->output->written_time(),
 				 myStatus.audioFormat, myStatus.audioChannels, audioGot, audioBuffer, NULL);
 
 			/* Wait a little */
 			while (xs_status.isPlaying &&
 			       (xs_status.currSong == myStatus.currSong) &&
-			       (xs_plugin_ip.output->buffer_free() < audioGot))
+			       (playback->output->buffer_free() < audioGot))
 				xmms_usleep(500);
 
 			/* Check if we have played enough */
 			if (xs_cfg.playMaxTimeEnable) {
 				if (xs_cfg.playMaxTimeUnknown) {
 					if ((songLength < 0) &&
-					    (xs_plugin_ip.output->output_time() >= (xs_cfg.playMaxTime * 1000)))
+					    (playback->output->output_time() >= (xs_cfg.playMaxTime * 1000)))
 						myStatus.isPlaying = FALSE;
 				} else {
-					if (xs_plugin_ip.output->output_time() >= (xs_cfg.playMaxTime * 1000))
+					if (playback->output->output_time() >= (xs_cfg.playMaxTime * 1000))
 						myStatus.isPlaying = FALSE;
 				}
 			}
 
 			if (songLength >= 0) {
-				if (xs_plugin_ip.output->output_time() >= (songLength * 1000))
+				if (playback->output->output_time() >= (songLength * 1000))
 					myStatus.isPlaying = FALSE;
 			}
 		}
@@ -486,7 +485,7 @@ void *xs_playthread(void *argPointer)
 		/* Close audio output plugin */
 		if (audioOpen) {
 			XSDEBUG("close audio #1\n");
-			xs_plugin_ip.output->close_audio();
+			playback->output->close_audio();
 			audioOpen = FALSE;
 		}
 
@@ -499,7 +498,7 @@ void *xs_playthread(void *argPointer)
 	/* Close audio output plugin */
 	if (audioOpen) {
 		XSDEBUG("close audio #2\n");
-		xs_plugin_ip.output->close_audio();
+		playback->output->close_audio();
 	}
 
 	g_free(audioBuffer);
@@ -527,8 +526,9 @@ void *xs_playthread(void *argPointer)
  * Usually you would also initialize the output-plugin, but
  * this is XMMS-SID and we do it on the player thread instead.
  */
-void xs_play_file(gchar * pcFilename)
+void xs_play_file(InputPlayback *playback)
 {
+        gchar * pcFilename = playback->filename;
 	assert(xs_status.sidPlayer);
 
 	XSDEBUG("play '%s'\n", pcFilename);
@@ -552,7 +552,7 @@ void xs_play_file(gchar * pcFilename)
 	xs_status.currSong = xs_status.tuneInfo->startTune;
 
 	/* Start the playing thread! */
-	xs_decode_thread = g_thread_create((GThreadFunc)xs_playthread, NULL, TRUE, NULL);
+	xs_decode_thread = g_thread_create((GThreadFunc)xs_playthread, playback, TRUE, NULL);
 	if (xs_decode_thread == NULL) {
 		XSERR("Couldn't start playing thread!\n");
 		xs_tuneinfo_free(xs_status.tuneInfo);
@@ -578,7 +578,7 @@ void xs_play_file(gchar * pcFilename)
  *
  * Finally tune and other memory allocations are free'd.
  */
-void xs_stop(void)
+void xs_stop(InputPlayback *playback)
 {
 	XSDEBUG("STOP_REQ\n");
 
@@ -612,7 +612,7 @@ void xs_stop(void)
 /*
  * Pause/unpause the playing
  */
-void xs_pause(short pauseState)
+void xs_pause(InputPlayback *playback, short pauseState)
 {
 	g_static_mutex_lock(&xs_status_mutex);
 	/* FIXME FIX ME todo: pause should disable sub-tune controls */
@@ -620,7 +620,7 @@ void xs_pause(short pauseState)
 
 	xs_subctrl_close();
 	xs_fileinfo_update();
-	xs_plugin_ip.output->pause(pauseState);
+	playback->output->pause(pauseState);
 }
 
 
@@ -854,7 +854,7 @@ void xs_seek(gint iTime)
  * END OF SONG! Return value of -2 means error, XMMS opens an audio
  * error dialog. -1 means end of song (if one was playing currently).
  */
-gint xs_get_time(void)
+gint xs_get_time(InputPlayback *playback)
 {
 	/* If errorflag is set, return -2 to signal it to XMMS's idle callback */
 	g_static_mutex_lock(&xs_status_mutex);
@@ -878,7 +878,7 @@ gint xs_get_time(void)
 	/* Let's see what we do */
 	switch (xs_cfg.subsongControl) {
 	case XS_SSC_SEEK:
-		xs_status.lastTime = (xs_plugin_ip.output->output_time() / 1000);
+		xs_status.lastTime = (playback->output->output_time() / 1000);
 		break;
 
 #ifdef HAVE_SONG_POSITION
@@ -891,7 +891,7 @@ gint xs_get_time(void)
 	g_static_mutex_unlock(&xs_status_mutex);
 
 	/* Return output time reported by audio output plugin */
-	return xs_plugin_ip.output->output_time();
+	return playback->output->output_time();
 }
 
 

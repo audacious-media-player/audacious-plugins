@@ -178,10 +178,13 @@ TitleInput *build_tuple(char *filename)
     return build_tuple_from_demux(&demux_res, filename);
 }
 
+static InputPlayback *playback;
+
 static void play_file(InputPlayback *data)
 {
     char *filename = data->filename;
     going = 1;
+    playback = data;
     playback_thread = g_thread_create(decode_thread, filename, TRUE, NULL);
 }
 
@@ -326,7 +329,7 @@ void GetBuffer(demux_res_t *demux_res)
         /* write */
         bytes_read += outputBytes;
 
-        produce_audio(alac_ip.output->written_time(), FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
+        produce_audio(playback->output->written_time(), FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
     }
 
     free(buffer);
@@ -373,7 +376,7 @@ gpointer decode_thread(void *args)
     duration = (demux_res.num_sample_byte_sizes * (float)((1024 * demux_res.sample_size) - 1.0) /
 	(float)(demux_res.sample_rate / 251));
 
-    alac_ip.output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
+    playback->output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
     alac_ip.set_info(title, duration, -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
@@ -386,7 +389,7 @@ gpointer decode_thread(void *args)
     if (input_opened)
         vfs_fclose(input_file);
 
-    alac_ip.output->close_audio();
+    playback->output->close_audio();
 
     return NULL;
 }

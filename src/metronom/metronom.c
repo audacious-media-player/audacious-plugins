@@ -98,7 +98,8 @@ static int metronom_is_our_file(char *filename)
 static void* play_loop(void *arg)
 {
 	gint16 data[BUF_SAMPLES];
-	metronom_t *pmetronom=(metronom_t *)arg;
+	InputPlayback *playback = arg;
+	metronom_t *pmetronom=(metronom_t *)playback->data;
 	gint i;
 	
 	gint16 t = 0,tact;
@@ -140,21 +141,21 @@ static void* play_loop(void *arg)
 			datagoal=(datamiddle+7*datagoal)/8;
 			t++;
 		}
-		while(metronom_ip.output->buffer_free() < BUF_BYTES && going)
+		while(playback->output->buffer_free() < BUF_BYTES && going)
 			xmms_usleep(30000);
 		if (going)
-			produce_audio(metronom_ip.output->written_time(), FMT_S16_LE, 1, BUF_BYTES, data, &going);
+			produce_audio(playback->output->written_time(), FMT_S16_LE, 1, BUF_BYTES, data, &going);
 	}
 	/* Make sure the output plugin stops prebuffering */
 	free(arg);
-	metronom_ip.output->buffer_free();
-	metronom_ip.output->buffer_free();
+	playback->output->buffer_free();
+	playback->output->buffer_free();
 	g_thread_exit(NULL);
 }
 
-static void metronom_play(InputPlayback *data)
+static void metronom_play(InputPlayback *playback)
 {
-        char *filename = data->filename;
+        char *filename = playback->filename;
 	gchar *name;
 	size_t count;	
 	metronom_t *pmetronom;
@@ -184,7 +185,7 @@ static void metronom_play(InputPlayback *data)
 	
 	going = TRUE;
 	audio_error = FALSE;
-	if (metronom_ip.output->open_audio(FMT_S16_LE, 44100, 1) == 0)
+	if (playback->output->open_audio(FMT_S16_LE, 44100, 1) == 0)
 	{
 		audio_error = TRUE;
 		going = FALSE;
@@ -197,31 +198,32 @@ static void metronom_play(InputPlayback *data)
 	}
 	metronom_ip.set_info(name, -1, 16 * 44100, 44100, 1);
 	g_free(name);
-	play_thread = g_thread_create((GThreadFunc)play_loop, pmetronom, TRUE, NULL);
+	playback->data = pmetronom;
+	play_thread = g_thread_create((GThreadFunc)play_loop, playback, TRUE, NULL);
 }
 
-static void metronom_stop(InputPlayback *data)
+static void metronom_stop(InputPlayback *playback)
 {
 	if (going)
 	{
 		going = FALSE;
 		g_thread_join(play_thread);
-		metronom_ip.output->close_audio();
+		playback->output->close_audio();
 	}
 }
 
-static void metronom_pause(InputPlayback *data, short paused)
+static void metronom_pause(InputPlayback *playback, short paused)
 {
-	metronom_ip.output->pause(paused);
+	playback->output->pause(paused);
 }
 
-static int metronom_get_time(InputPlayback *data)
+static int metronom_get_time(InputPlayback *playback)
 {
 	if (audio_error)
 		return -2;
-	if (!going && !metronom_ip.output->buffer_playing())
+	if (!going && !playback->output->buffer_playing())
 		return -1;
-	return metronom_ip.output->output_time();
+	return playback->output->output_time();
 }
 
 static void metronom_song_info(char *filename, char **title, int *length)

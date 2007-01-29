@@ -1709,7 +1709,7 @@ III_hybrid(mpgdec_real fsIn[SBLIMIT][SSLIMIT],
     }
 }
 int
-mpgdec_do_layer3(struct frame *fr)
+mpgdec_do_layer3(InputPlayback *playback, struct frame *fr)
 {
     int gr, ch, ss;
     int scalefacs[2][39];       /* max 39 for short[13][3] mode, mixed: 38, long: 22 */
@@ -1849,7 +1849,7 @@ mpgdec_do_layer3(struct frame *fr)
 #endif
 
         if (mpgdec_info->output_audio && mpgdec_info->jump_to_time == -1) {
-            produce_audio(mpgdec_ip.output->written_time(),
+            produce_audio(playback->output->written_time(),
                           mpgdec_cfg.resolution ==
                           16 ? FMT_S16_NE : FMT_U8,
                           mpgdec_cfg.channels ==

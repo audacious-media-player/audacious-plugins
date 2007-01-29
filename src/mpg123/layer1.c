@@ -118,7 +118,7 @@ void I_step_two(mpgdec_real fraction[2][SBLIMIT],unsigned int balloc[2*SBLIMIT],
 }
 
 int
-mpgdec_do_layer1(struct frame *fr)
+mpgdec_do_layer1(InputPlayback *playback, struct frame *fr)
 {
     int i, stereo = fr->stereo;
     unsigned int balloc[2 * SBLIMIT];
@@ -152,7 +152,7 @@ mpgdec_do_layer1(struct frame *fr)
 	psycho_process(mpgdec_pcm_sample, mpgdec_pcm_point, mpgdec_cfg.channels == 2 ? fr->stereo : 1);
 #endif
         if (mpgdec_info->output_audio && mpgdec_info->jump_to_time == -1) {
-            produce_audio(mpgdec_ip.output->written_time(),
+            produce_audio(playback->output->written_time(),
                           mpgdec_cfg.resolution ==
                           16 ? FMT_S16_NE : FMT_U8,
                           mpgdec_cfg.channels ==

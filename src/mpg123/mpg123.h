@@ -163,7 +163,7 @@ struct frame {
     int down_sample;
     int header_change;
     int lay;
-    int (*do_layer) (struct frame * fr);
+    int (*do_layer) (InputPlayback * playback, struct frame * fr);
     int error_protection;
     int bitrate_index;
     int sampling_frequency;
@@ -291,9 +291,9 @@ int mpgdec_stream_check_for_xing_header(struct frame *fr,
                                         xing_header_t * xhead);
 int mpgdec_calc_numframes(struct frame *fr);
 
-extern int mpgdec_do_layer3(struct frame *fr);
-extern int mpgdec_do_layer2(struct frame *fr);
-extern int mpgdec_do_layer1(struct frame *fr);
+extern int mpgdec_do_layer3(InputPlayback *playback, struct frame *fr);
+extern int mpgdec_do_layer2(InputPlayback *playback, struct frame *fr);
+extern int mpgdec_do_layer1(InputPlayback *playback, struct frame *fr);
 
 extern int mpgdec_synth_1to1(mpgdec_real *, int, unsigned char *, int *);
 extern int mpgdec_synth_1to1_8bit(mpgdec_real *, int, unsigned char *, int *);

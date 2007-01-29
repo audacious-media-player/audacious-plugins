@@ -125,6 +125,7 @@ static void*
 play_loop (void *arg)
 {	static short buffer [BUFFER_SIZE];
 	int samples;
+	InputPlayback *playback = arg;
 
 	g_static_mutex_lock(&decode_mutex);
 
@@ -135,10 +136,10 @@ play_loop (void *arg)
 		samples = sf_read_short (sndfile, buffer, BUFFER_SIZE);
 
 		if (samples > 0 && decoding)
-		{	while ((wav_ip.output->buffer_free () < (samples * sizeof (short))) && decoding)
+		{	while ((playback->output->buffer_free () < (samples * sizeof (short))) && decoding)
 				xmms_usleep (10000);
 
-			produce_audio (wav_ip.output->written_time (), FMT_S16_NE, sfinfo.channels, 
+			produce_audio (playback->output->written_time (), FMT_S16_NE, sfinfo.channels, 
 				samples * sizeof (short), buffer, &decoding);
 		}
 		else
@@ -147,7 +148,7 @@ play_loop (void *arg)
 		/* Do seek if seek_time is valid. */
 		if (seek_time > 0)
 		{	sf_seek (sndfile, seek_time * sfinfo.samplerate, SEEK_SET);
-			wav_ip.output->flush (seek_time * 1000);
+			playback->output->flush (seek_time * 1000);
 			seek_time = -1;
    			};
 
@@ -159,8 +160,9 @@ play_loop (void *arg)
 } /* play_loop */
 
 static void
-play_start (char *filename)
+play_start (InputPlayback *playback)
 {
+        char *filename = playback->filename;
 	int pcmbitwidth;
 	gchar *song_title;
 
@@ -181,7 +183,7 @@ play_start (char *filename)
 	else
 		song_length = 0;
 
-	if (! wav_ip.output->open_audio (FMT_S16_NE, sfinfo.samplerate, sfinfo.channels))
+	if (! playback->output->open_audio (FMT_S16_NE, sfinfo.samplerate, sfinfo.channels))
 	{	sf_close (sndfile);
 		sndfile = NULL;
 		return;
@@ -190,13 +192,13 @@ play_start (char *filename)
 	wav_ip.set_info (song_title, song_length, bit_rate, sfinfo.samplerate, sfinfo.channels);
 	g_free (song_title);
 
-	decode_thread = g_thread_create ((GThreadFunc)play_loop, NULL, TRUE, NULL);
+	decode_thread = g_thread_create ((GThreadFunc)play_loop, playback, TRUE, NULL);
 
     	xmms_usleep (40000);
 } /* play_start */
 
 static void
-play_stop (void)
+play_stop (InputPlayback *playback)
 {
 	if (decode_thread == NULL)
 		return;
@@ -204,7 +206,7 @@ play_stop (void)
 	decoding = FALSE;
 
 	g_thread_join (decode_thread);
-	wav_ip.output->close_audio ();
+	playback->output->close_audio ();
 
 	sf_close (sndfile);
 	sndfile = NULL;
@@ -214,7 +216,7 @@ play_stop (void)
 } /* play_stop */
 
 static void
-file_seek (int time)
+file_seek (InputPlayback *playback, int time)
 {
 	if (! sfinfo.seekable)
 		return;
@@ -226,12 +228,12 @@ file_seek (int time)
 } /* file_seek */
 
 static int
-get_time (void)
+get_time (InputPlayback *playback)
 {
-	if ( ! (wav_ip.output->buffer_playing () && decoding))
+	if ( ! (playback->output->buffer_playing () && decoding))
 		return -1;
 
-	return wav_ip.output->output_time ();
+	return playback->output->output_time ();
 } /* get_time */
 
 static void

@@ -1,3 +1,10 @@
+2007-01-29 01:41:50 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [1206]
+  made null always build
+  trunk/configure.ac |   20 ++------------------
+  1 file changed, 2 insertions(+), 18 deletions(-)
+
+
 2007-01-29 01:02:41 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [1204]
   Update plugins to the new input plugin API

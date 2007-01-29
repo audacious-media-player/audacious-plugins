@@ -354,13 +354,13 @@ is_our_fd(char *filename, VFSFile *file)
 }
 
 static void
-play_frame(struct frame *fr)
+play_frame(InputPlayback *playback, struct frame *fr)
 {
     if (fr->error_protection) {
         bsi.wordpointer += 2;
         /*  mpgdec_getbits(16); *//* skip crc */
     }
-    if (!fr->do_layer(fr)) {
+    if (!fr->do_layer(playback, fr)) {
         skip_frames = 2;
         mpgdec_info->output_audio = FALSE;
     }
@@ -626,17 +626,17 @@ get_song_info(char *filename, char **title_real, int *len_real)
 }
 
 static int
-open_output(void)
+open_output(InputPlayback *playback)
 {
     int r;
     AFormat fmt = mpgdec_cfg.resolution == 16 ? FMT_S16_NE : FMT_U8;
 /*    int freq = mpgdec_freqs[fr.sampling_frequency] >> mpgdec_cfg.downsample; */
     int freq = mpgdec_frequency;
     int channels = mpgdec_cfg.channels == 2 ? fr.stereo : 1;
-    r = mpgdec_ip.output->open_audio(fmt, freq, channels);
+    r = playback->output->open_audio(fmt, freq, channels);
 
     if (r && dopause) {
-        mpgdec_ip.output->pause(TRUE);
+        playback->output->pause(TRUE);
         dopause = FALSE;
     }
 
@@ -675,7 +675,8 @@ decode_loop(void *arg)
     static gchar *old_title = NULL;
     gboolean have_xing_header = FALSE, vbr = FALSE;
     int disp_count = 0;
-    char *filename = arg;
+    InputPlayback *playback = arg;
+    char *filename = playback->filename;
     xing_header_t xing_header;
 
     /* This is used by fileinfo on http streams */
@@ -786,12 +787,12 @@ decode_loop(void *arg)
 
         output_opened = TRUE;
 
-        if (!open_output()) {
+        if (!open_output(playback)) {
             audio_error = TRUE;
             mpgdec_info->eof = TRUE;
         }
         else
-            play_frame(&fr);
+            play_frame(playback, &fr);
     }
 
     mpgdec_info->first_frame = FALSE;
@@ -801,7 +802,7 @@ decode_loop(void *arg)
             if (have_xing_header)
                 xp = &xing_header;
             if (mpgdec_seek(&fr, xp, vbr, mpgdec_info->jump_to_time) > -1) {
-                mpgdec_ip.output->flush(mpgdec_info->jump_to_time * 1000);
+                playback->output->flush(mpgdec_info->jump_to_time * 1000);
                 mpgdec_info->eof = FALSE;
             }
             mpgdec_info->jump_to_time = -1;
@@ -841,7 +842,7 @@ decode_loop(void *arg)
                             double rel = mpgdec_relative_pos();
                             if (rel) {
                                 mpgdec_length =
-                                    mpgdec_ip.output->written_time() / rel;
+                                    playback->output->written_time() / rel;
                                 vbr = TRUE;
                             }
 
@@ -864,7 +865,7 @@ decode_loop(void *arg)
                 }
                 else
                     disp_count--;
-                play_frame(&fr);
+                play_frame(playback, &fr);
 
 		if (mpgdec_info->filesize == 0)
 	        {
@@ -896,8 +897,8 @@ decode_loop(void *arg)
 		}
             }
             else {
-                mpgdec_ip.output->buffer_free();
-                mpgdec_ip.output->buffer_free();
+                playback->output->buffer_free();
+                playback->output->buffer_free();
                 mpgdec_info->eof = TRUE;
                 g_usleep(10000);
             }
@@ -915,7 +916,7 @@ decode_loop(void *arg)
     mpgdec_title = NULL;
     mpgdec_stream_close();
     if (output_opened && !audio_error)
-        mpgdec_ip.output->close_audio();
+        playback->output->close_audio();
     g_free(mpgdec_pcm_sample);
     mpgdec_filename = NULL;
     g_free(filename);
@@ -924,9 +925,8 @@ decode_loop(void *arg)
 }
 
 static void
-play_file(InputPlayback *data)
+play_file(InputPlayback *playback)
 {
-    char *filename = data->filename;
     memset(&fr, 0, sizeof(struct frame));
     memset(&temp_fr, 0, sizeof(struct frame));
 
@@ -940,7 +940,7 @@ play_file(InputPlayback *data)
     output_opened = FALSE;
     dopause = FALSE;
 
-    decode_thread = g_thread_create(decode_loop, g_strdup(filename), TRUE,
+    decode_thread = g_thread_create(decode_loop, playback, TRUE,
                                     NULL);
 }
 
@@ -965,25 +965,25 @@ seek(InputPlayback * data, int time)
 }
 
 static void
-do_pause(InputPlayback * data, short p)
+do_pause(InputPlayback * playback, short p)
 {
     if (output_opened)
-        mpgdec_ip.output->pause(p);
+        playback->output->pause(p);
     else
         dopause = p;
 }
 
 static int
-get_time(InputPlayback * data)
+get_time(InputPlayback * playback)
 {
     if (audio_error)
         return -2;
     if (!mpgdec_info)
         return -1;
     if (!mpgdec_info->going
-        || (mpgdec_info->eof && !mpgdec_ip.output->buffer_playing()))
+        || (mpgdec_info->eof && !playback->output->buffer_playing()))
         return -1;
-    return mpgdec_ip.output->output_time();
+    return playback->output->output_time();
 }
 
 static void

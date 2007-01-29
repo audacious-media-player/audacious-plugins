@@ -287,7 +287,7 @@ II_select_table (struct frame *fr)
 
 
 int
-mpgdec_do_layer2 (struct frame *fr)
+mpgdec_do_layer2 (InputPlayback *playback, struct frame *fr)
 {
   int i, j;
   int stereo = fr->stereo;
@@ -335,7 +335,7 @@ mpgdec_do_layer2 (struct frame *fr)
 #endif
   if (mpgdec_info->output_audio)
     {
-      produce_audio (mpgdec_ip.output->written_time (),
+      produce_audio (playback->output->written_time (),
 		     mpgdec_cfg.resolution == 16 ? FMT_S16_NE : FMT_U8,
 		     mpgdec_cfg.channels == 2 ? fr->stereo : 1,
 		     mpgdec_pcm_point, mpgdec_pcm_sample, &mpgdec_pcm_point);

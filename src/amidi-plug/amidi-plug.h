@@ -77,8 +77,8 @@ static void amidiplug_stop( InputPlayback * );
 static void amidiplug_pause( InputPlayback *, gshort );
 static void amidiplug_seek( InputPlayback *, gint );
 static gint amidiplug_get_time( InputPlayback * );
-static void amidiplug_get_volume( gint * , gint * );
-static void amidiplug_set_volume( gint , gint );
+static gint amidiplug_get_volume( gint * , gint * );
+static gint amidiplug_set_volume( gint , gint );
 static void amidiplug_get_song_info( gchar * , gchar ** , gint * );
 static void amidiplug_file_info_box( gchar * );
 
