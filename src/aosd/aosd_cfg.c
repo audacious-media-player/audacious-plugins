@@ -362,8 +362,9 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
   bmp_cfg_db_set_int( cfgfile , "aosd" ,
     "decoration_code" , cfg->osd->decoration.code );
 
+  /* TODO skip this since it's not implemented yet
   bmp_cfg_db_set_string( cfgfile , "aosd" ,
-    "decoration_skin_file" , cfg->osd->decoration.skin_file );
+    "decoration_skin_file" , cfg->osd->decoration.skin_file ); */
 
   /* decoration - colors */
   max_numcol = aosd_deco_style_get_max_numcol();

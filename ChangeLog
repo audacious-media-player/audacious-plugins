@@ -1,3 +1,30 @@
+2007-01-29 14:40:04 +0000  Giacomo Lozito <james@develia.org>
+  revision [1224]
+  - added Audacious OSD, yet-another-written-from-scratch plugin to display OSD, based on Ghosd library; currently untied from configure, to compile it you have to run make in its directory; will be added to configure after some testing
+  trunk/src/aosd/Makefile             |   18 
+  trunk/src/aosd/aosd.c               |  140 +++++
+  trunk/src/aosd/aosd.h               |   45 +
+  trunk/src/aosd/aosd_cfg.c           |  386 ++++++++++++++++
+  trunk/src/aosd/aosd_cfg.h           |  125 +++++
+  trunk/src/aosd/aosd_common.h        |   35 +
+  trunk/src/aosd/aosd_osd.c           |  344 ++++++++++++++
+  trunk/src/aosd/aosd_osd.h           |   32 +
+  trunk/src/aosd/aosd_style.c         |  332 +++++++++++++
+  trunk/src/aosd/aosd_style.h         |   39 +
+  trunk/src/aosd/aosd_style_private.h |   71 ++
+  trunk/src/aosd/aosd_ui.c            |  867 ++++++++++++++++++++++++++++++++++++
+  trunk/src/aosd/aosd_ui.c.old        |  159 ++++++
+  trunk/src/aosd/aosd_ui.h            |   32 +
+  trunk/src/aosd/ghosd-internal.h     |   25 +
+  trunk/src/aosd/ghosd-license        |   20 
+  trunk/src/aosd/ghosd-main.c         |  171 +++++++
+  trunk/src/aosd/ghosd-text.c         |   53 ++
+  trunk/src/aosd/ghosd-text.h         |   14 
+  trunk/src/aosd/ghosd.c              |  248 ++++++++++
+  trunk/src/aosd/ghosd.h              |   38 +
+  21 files changed, 3194 insertions(+)
+
+
 2007-01-29 11:34:57 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1222]
   - fix seek() routine for InputPlayback API.
