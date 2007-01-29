@@ -129,7 +129,8 @@ struct id3tag_t {
 };
 
 typedef struct {
-    int going, num_frames, eof, jump_to_time, eq_active;
+    InputPlayback *playback;
+    int num_frames, jump_to_time, eq_active;
     int songtime;
     double tpf;
     float eq_mul[576];
@@ -242,7 +243,8 @@ extern unsigned int mpgdec_get1bit(void);
 extern unsigned int mpgdec_getbits(int);
 extern unsigned int mpgdec_getbits_fast(int);
 
-extern void mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range);
+extern void mpgdec_open_stream(InputPlayback *playback, char *bs_filenam,
+			       int fd, unsigned long range);
 extern int mpgdec_head_check(unsigned long);
 extern void mpgdec_stream_close(void);
 
@@ -285,8 +287,10 @@ extern long mpgdec_tell_stream(void);
 extern void mpgdec_read_frame_init(void);
 extern int mpgdec_read_frame(struct frame *fr);
 extern int mpgdec_back_frame(struct frame *fr, int num);
-int mpgdec_stream_jump_to_frame(struct frame *fr, int frame);
-int mpgdec_stream_jump_to_byte(struct frame *fr, int byte);
+int mpgdec_stream_jump_to_frame(InputPlayback *playback, struct frame *fr, 
+				int frame);
+int mpgdec_stream_jump_to_byte(InputPlayback *playback, struct frame *fr,
+			       int byte);
 int mpgdec_stream_check_for_xing_header(struct frame *fr,
                                         xing_header_t * xhead);
 int mpgdec_calc_numframes(struct frame *fr);

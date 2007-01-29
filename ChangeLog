@@ -1,3 +1,36 @@
+2007-01-29 05:09:12 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1208]
+  Convert plugins to use InputPlayback.output instead of InputPlugin.output
+  
+  trunk/src/aac/src/libmp4.c             |   64 ++++++++++++++++----------------
+  trunk/src/adplug/adplug-xmms.cc        |   38 ++++++++++---------
+  trunk/src/alac/plugin.c                |    9 +++-
+  trunk/src/amidi-plug/amidi-plug.c      |   64 +++++++++++++++++---------------
+  trunk/src/amidi-plug/amidi-plug.h      |    4 +-
+  trunk/src/cdaudio/cdaudio.c            |   55 ++++++++++++++-------------
+  trunk/src/console/Audacious_Driver.cxx |   27 +++++++------
+  trunk/src/flac112/plugin.c             |   52 +++++++++++++-------------
+  trunk/src/flac113/plugin.c             |   40 ++++++++++----------
+  trunk/src/metronom/metronom.c          |   34 +++++++++--------
+  trunk/src/modplug/plugin.cxx           |    2 -
+  trunk/src/mpg123/layer1.c              |    4 +-
+  trunk/src/mpg123/layer2.c              |    4 +-
+  trunk/src/mpg123/layer3.c              |    4 +-
+  trunk/src/mpg123/mpg123.c              |   44 +++++++++++-----------
+  trunk/src/mpg123/mpg123.h              |    8 ++--
+  trunk/src/sexypsf/xmms.c               |   37 ++++++++++--------
+  trunk/src/sid/xmms-sid.c               |   36 +++++++++---------
+  trunk/src/sid/xmms-sid.h               |   10 ++---
+  trunk/src/tonegen/tonegen.c            |   35 +++++++++--------
+  trunk/src/tta/aud-tta.c                |   42 +++++++++++----------
+  trunk/src/vorbis/vorbis.c              |   66 ++++++++++++++++-----------------
+  trunk/src/wav/wav-sndfile.c            |   26 +++++++------
+  trunk/src/wav/wav-sndfile.h            |    8 ++--
+  trunk/src/wav/wav.c                    |   33 ++++++++--------
+  trunk/src/wma/wma.c                    |   43 +++++++++++----------
+  26 files changed, 408 insertions(+), 381 deletions(-)
+
+
 2007-01-29 01:41:50 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [1206]
   made null always build

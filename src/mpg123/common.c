@@ -167,7 +167,8 @@ static void stream_rewind(void)
 */
 
 int
-mpgdec_stream_jump_to_frame(struct frame *fr, int frame)
+mpgdec_stream_jump_to_frame(InputPlayback *playback, struct frame *fr,
+			    int frame)
 {
     if (filept == NULL)
     {
@@ -175,7 +176,7 @@ mpgdec_stream_jump_to_frame(struct frame *fr, int frame)
 
         r = frame * (fr->framesize + 4);
         mpgdec_stream_close();
-        mpgdec_open_stream(mpgdec_filename, -1, r);
+        mpgdec_open_stream(playback, mpgdec_filename, -1, r);
     }
     else
     {
@@ -187,12 +188,12 @@ mpgdec_stream_jump_to_frame(struct frame *fr, int frame)
 }
 
 int
-mpgdec_stream_jump_to_byte(struct frame *fr, int byte)
+mpgdec_stream_jump_to_byte(InputPlayback *playback, struct frame *fr, int byte)
 {
     if (filept == NULL)
     {
         mpgdec_stream_close();
-        mpgdec_open_stream(mpgdec_filename, -1, (unsigned long)byte);
+        mpgdec_open_stream(playback, mpgdec_filename, -1, (unsigned long)byte);
     }
     else
     {
@@ -403,12 +404,13 @@ mpgdec_decode_header(struct frame *fr, unsigned long newhead)
 }
 
 void
-mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range)
+mpgdec_open_stream(InputPlayback *playback,
+		   char *bs_filenam, int fd, unsigned long range)
 {
     filept_opened = 1;
     filept = vfs_fopen(bs_filenam, "rb");
     if (filept != NULL) {
-        if (stream_init() == -1) mpgdec_info->eof = TRUE;
+        if (stream_init() == -1) playback->eof = TRUE;
     } else
 #ifdef HAVE_NEMESI
     if (!strncasecmp(bs_filenam, "rtsp://", 7)) {
@@ -416,11 +418,11 @@ mpgdec_open_stream(char *bs_filenam, int fd, unsigned long range)
         mpgdec_info->filesize = 0;
         mpgdec_info->network_stream = TRUE;
         mpgdec_info->stream_type = STREAM_RTSP;
-        if (mpgdec_rtsp_open(bs_filenam)) mpgdec_info->eof = TRUE;
+        if (mpgdec_rtsp_open(bs_filenam)) playback->eof = TRUE;
     } else 
 #endif
     {
-        mpgdec_info->eof = TRUE;
+        playback->eof = TRUE;
     }
 }
 

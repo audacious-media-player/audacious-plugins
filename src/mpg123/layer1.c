@@ -157,7 +157,7 @@ mpgdec_do_layer1(InputPlayback *playback, struct frame *fr)
                           16 ? FMT_S16_NE : FMT_U8,
                           mpgdec_cfg.channels ==
                           2 ? fr->stereo : 1, mpgdec_pcm_point,
-                          mpgdec_pcm_sample, &mpgdec_info->going);
+                          mpgdec_pcm_sample, &playback->playing);
         }
 
         mpgdec_pcm_point = 0;
