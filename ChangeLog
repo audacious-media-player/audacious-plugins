@@ -1,3 +1,10 @@
+2007-01-29 15:46:29 +0000  Giacomo Lozito <james@develia.org>
+  revision [1228]
+  - aosd: remove other skin_file manipulation
+  trunk/src/aosd/aosd_cfg.c |    7 ++++++-
+  1 file changed, 6 insertions(+), 1 deletion(-)
+
+
 2007-01-29 15:00:45 +0000  Giacomo Lozito <james@develia.org>
   revision [1226]
   - aosd: do not try to save skin_file, not implemented yet
