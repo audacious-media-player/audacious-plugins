@@ -1,3 +1,27 @@
+2007-01-29 01:02:41 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1204]
+  Update plugins to the new input plugin API
+  
+  trunk/src/aac/src/libmp4.c             |   22 +++++-----
+  trunk/src/adplug/adplug-xmms.cc        |   24 ++++++-----
+  trunk/src/alac/plugin.c                |   16 +++++--
+  trunk/src/amidi-plug/amidi-plug.c      |   12 ++---
+  trunk/src/amidi-plug/amidi-plug.h      |   10 ++--
+  trunk/src/cdaudio/cdaudio.c            |   28 ++++++------
+  trunk/src/console/Audacious_Driver.cxx |   11 ++---
+  trunk/src/cue/cuesheet.c               |   72 ++++++++++++++++++---------------
+  trunk/src/metronom/metronom.c          |    9 ++--
+  trunk/src/modplug/plugin.cxx           |   11 ++---
+  trunk/src/mpg123/mpg123.c              |   11 ++---
+  trunk/src/sexypsf/xmms.c               |   11 ++---
+  trunk/src/tonegen/tonegen.c            |    8 +--
+  trunk/src/vorbis/vorbis.c              |   21 +++++----
+  trunk/src/wav/wav.c                    |   11 ++---
+  trunk/src/wav/wav.h                    |   10 ++--
+  trunk/src/wma/wma.c                    |   23 +++++-----
+  17 files changed, 170 insertions(+), 140 deletions(-)
+
+
 2007-01-28 22:37:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1202]
   - fix vorbis fileinfo stuff

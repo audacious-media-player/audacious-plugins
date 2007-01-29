@@ -94,7 +94,7 @@ AC_ARG_WITH(cdda-dir,
 dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom"
-OUTPUT_PLUGINS="disk_writer"
+OUTPUT_PLUGINS="disk_writer null"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
@@ -275,22 +275,6 @@ if test "$enable_coreaudio" = "yes"; then
 else
 	AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
 	have_coreaudio=no
-fi
-
-dnl *** Null Audio
-
-AC_ARG_ENABLE(null,
-    [  --disable-null          disable Null Audio output plugin (default=enabled)],
-    [enable_null=$enableval],
-    [enable_null="yes"]
-)
-
-if test "$enable_null" = "yes"; then
-	have_null=yes
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS null"
-else
-	AC_MSG_RESULT([*** Null Audio output plugin disabled per user request ***])
-	have_null=no
 fi
 
 dnl *** AltiVec
@@ -1180,7 +1164,7 @@ echo "  Analog Realtime Synthesizer (arts):     $have_arts"
 echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
-echo "  Null Audio output (null):               $have_null"
+echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
 echo "  -------------"
