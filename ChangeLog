@@ -1,3 +1,15 @@
+2007-01-29 06:14:55 +0000  Daniel Barkalow <barkalow@iabervon.org>
+  revision [1210]
+  Use InputPlayback standard flags in mpg123, drop set_time().
+  
+  trunk/src/mpg123/common.c |   18 +++++++-----
+  trunk/src/mpg123/layer1.c |    2 -
+  trunk/src/mpg123/layer3.c |    2 -
+  trunk/src/mpg123/mpg123.c |   65 +++++++++++++++++++---------------------------
+  trunk/src/mpg123/mpg123.h |   12 +++++---
+  5 files changed, 47 insertions(+), 52 deletions(-)
+
+
 2007-01-29 05:09:12 +0000  Daniel Barkalow <barkalow@iabervon.org>
   revision [1208]
   Convert plugins to use InputPlayback.output instead of InputPlugin.output

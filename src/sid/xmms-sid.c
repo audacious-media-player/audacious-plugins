@@ -138,7 +138,7 @@ void xs_reinit(void)
 	g_static_mutex_lock(&xs_status_mutex);
 	if (xs_status.isPlaying) {
 		g_static_mutex_unlock(&xs_status_mutex);
-		xs_stop();
+		xs_stop(NULL);
 	} else {
 		g_static_mutex_unlock(&xs_status_mutex);
 	}
@@ -241,7 +241,7 @@ void xs_close(void)
 	XSDEBUG("xs_close(): shutting down...\n");
 
 	/* Stop playing, free structures */
-	xs_stop();
+	xs_stop(NULL);
 
 	xs_tuneinfo_free(xs_status.tuneInfo);
 	xs_status.tuneInfo = NULL;
@@ -809,7 +809,7 @@ void xs_subctrl_open(void)
  * This function is called whenever position slider is clicked or
  * other method of seeking is used (keyboard, etc.)
  */
-void xs_seek(gint iTime)
+void xs_seek(InputPlayback *playback, gint iTime)
 {
 	/* Check status */
 	g_static_mutex_lock(&xs_status_mutex);
