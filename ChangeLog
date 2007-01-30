@@ -1,3 +1,11 @@
+2007-01-30 19:17:25 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1250]
+  - pass a valid InputPlayback handle to the play thread
+  
+  trunk/src/console/Audacious_Driver.cxx |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-30 19:05:31 +0000  Giacomo Lozito <james@develia.org>
   revision [1248]
   - mpg123: do not try to pick a tuple from http:// sources
