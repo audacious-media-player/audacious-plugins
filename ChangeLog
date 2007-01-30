@@ -1,3 +1,10 @@
+2007-01-30 19:05:31 +0000  Giacomo Lozito <james@develia.org>
+  revision [1248]
+  - mpg123: do not try to pick a tuple from http:// sources
+  trunk/src/mpg123/mpg123.c |    3 +++
+  1 file changed, 3 insertions(+)
+
+
 2007-01-30 16:36:50 +0000  Giacomo Lozito <james@develia.org>
   revision [1246]
   - converted timidity plugin to InputPlayback

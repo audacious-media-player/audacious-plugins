@@ -372,7 +372,7 @@ static void play_file( InputPlayback *playback )
 	
 	pending_seek = -1;
 	console_ip_is_going = 1;
-	decode_thread = g_thread_create( play_loop_track, NULL, TRUE, NULL );
+	decode_thread = g_thread_create( play_loop_track, playback, TRUE, NULL );
 }
 
 static void seek( InputPlayback * data, gint time )
