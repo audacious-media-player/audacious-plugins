@@ -395,6 +395,37 @@ if test "x$have_statusicon" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
 fi
 
+dnl *** Audacious OSD plugin (pangocairo-based)
+
+AC_ARG_ENABLE(aosd,
+    [  --disable-aosd          disable X11 Audacious OSD plugin (default=enabled)],
+    [enable_aosd=$enableval],
+    [enable_aosd="yes"]
+)
+
+if test "x$enable_aosd" = "xyes"; then
+    have_aosd="yes"
+    PKG_CHECK_MODULES(PANGO,[pango >= 1.14.7],,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** pango >= 1.14.7 is required for Audacious OSD plugin ***])]
+    )
+    PKG_CHECK_MODULES(CAIRO,[cairo >= 1.2.6],,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** cairo >= 1.2.6 is required for Audacious OSD plugin ***])]
+    )
+    PKG_CHECK_MODULES(PANGOCAIRO,[pangocairo >= 1.14.7],,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** pangocairo >= 1.14.7 is required for Audacious OSD plugin ***])]
+    )
+else
+    AC_MSG_RESULT([*** Audacious OSD plugin disabled per user request ***])
+    have_aosd="yes"
+fi
+
+if test "x$have_aosd" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"
+fi
+
 dnl *** AdPlug requirement (libbinio)
 
 AC_ARG_ENABLE(adplug,
@@ -1208,6 +1239,7 @@ echo "  -------"
 echo "  Alarm:                                  yes"
 echo "  Song Change:                            yes"
 echo "  Status Icon:                            $have_statusicon"
+echo "  Audacious OSD:                          $have_aosd"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"

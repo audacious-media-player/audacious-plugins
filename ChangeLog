@@ -1,3 +1,70 @@
+2007-01-30 16:04:43 +0000  Giacomo Lozito <james@develia.org>
+  revision [1242]
+  - splitted GTK_CFLAGS in GTK_CFLAGS, GLIB_CFLAGS and PANGO_CFLAGS, splitted GTK_LIBS in GTK_LIBS, GLIB_LIBS, PANGO_LIBS
+  trunk/configure.ac                      |   16 +++++++++++++---
+  trunk/mk/rules.mk.in                    |    2 ++
+  trunk/src/CoreAudio/Makefile            |    4 ++--
+  trunk/src/OSS/Makefile                  |    4 ++--
+  trunk/src/aac/src/Makefile              |    4 ++--
+  trunk/src/adplug/Makefile               |    6 +++---
+  trunk/src/alac/Makefile                 |    3 ++-
+  trunk/src/alarm/Makefile                |    4 ++--
+  trunk/src/alsa/Makefile                 |    4 ++--
+  trunk/src/amidi-plug/Makefile           |    4 ++--
+  trunk/src/aosd/Makefile                 |    4 ++--
+  trunk/src/arts/Makefile                 |    4 ++--
+  trunk/src/audiocompress/Makefile        |    4 ++--
+  trunk/src/blur_scope/Makefile           |    4 ++--
+  trunk/src/cdaudio/Makefile              |    3 ++-
+  trunk/src/console/Makefile              |    6 +++---
+  trunk/src/cue/Makefile                  |    4 ++--
+  trunk/src/curl/Makefile                 |    4 ++--
+  trunk/src/disk_writer/Makefile          |    4 ++--
+  trunk/src/echo_plugin/Makefile          |    4 ++--
+  trunk/src/esd/Makefile                  |    4 ++--
+  trunk/src/evdev-plug/Makefile           |    4 ++--
+  trunk/src/flac112/Makefile              |    4 ++--
+  trunk/src/flac113/Makefile              |    4 ++--
+  trunk/src/jack/Makefile                 |    4 ++--
+  trunk/src/ladspa/Makefile               |    4 ++--
+  trunk/src/lirc/Makefile                 |    4 ++--
+  trunk/src/m3u/Makefile                  |    4 ++--
+  trunk/src/metronom/Makefile             |    3 ++-
+  trunk/src/mms/Makefile                  |    4 ++--
+  trunk/src/modplug/Makefile              |    6 +++---
+  trunk/src/modplug/archive/Makefile      |    2 +-
+  trunk/src/modplug/gui/Makefile          |    4 ++--
+  trunk/src/mpg123/Makefile               |    6 +++---
+  trunk/src/musepack/Makefile             |    4 ++--
+  trunk/src/paranormal/Makefile           |    4 ++--
+  trunk/src/pls/Makefile                  |    4 ++--
+  trunk/src/projectm/Makefile             |    4 ++--
+  trunk/src/pulse_audio/Makefile          |    4 ++--
+  trunk/src/rocklight/Makefile            |    4 ++--
+  trunk/src/rovascope/Makefile            |    4 ++--
+  trunk/src/scrobbler/Makefile            |    4 ++--
+  trunk/src/sexypsf/Makefile              |    3 ++-
+  trunk/src/sid/Makefile                  |    6 +++---
+  trunk/src/song_change/Makefile          |    4 ++--
+  trunk/src/spectrum/Makefile             |    4 ++--
+  trunk/src/statusicon/Makefile           |    4 ++--
+  trunk/src/stdio/Makefile                |    4 ++--
+  trunk/src/stereo_plugin/Makefile        |    4 ++--
+  trunk/src/sun/Makefile                  |    4 ++--
+  trunk/src/timidity/libtimidity/Makefile |    2 +-
+  trunk/src/timidity/src/Makefile         |    4 ++--
+  trunk/src/tonegen/Makefile              |    3 ++-
+  trunk/src/tta/Makefile                  |    6 +++---
+  trunk/src/voice_removal/Makefile        |    4 ++--
+  trunk/src/vorbis/Makefile               |    4 ++--
+  trunk/src/wav/Makefile                  |    4 ++--
+  trunk/src/wavpack/Makefile              |    4 ++--
+  trunk/src/wma/Makefile                  |    4 ++--
+  trunk/src/wma/libffwma/Makefile         |    2 +-
+  trunk/src/xspf/Makefile                 |    4 ++--
+  61 files changed, 136 insertions(+), 119 deletions(-)
+
+
 2007-01-30 02:35:59 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1240]
   - don't percent encode urls beginning with http:// or https:// for now.
