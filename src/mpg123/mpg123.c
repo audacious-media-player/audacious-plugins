@@ -529,6 +529,9 @@ get_song_tuple(char *filename)
     TagLib_File *taglib_file;
     TagLib_Tag *taglib_tag;
 
+    if (str_has_prefix_nocase(filename, "http://"))
+        return NULL;
+
 #ifdef USE_CHARDET
     taglib_set_strings_unicode(FALSE);
 #endif

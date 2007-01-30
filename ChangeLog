@@ -1,3 +1,11 @@
+2007-01-30 16:36:50 +0000  Giacomo Lozito <james@develia.org>
+  revision [1246]
+  - converted timidity plugin to InputPlayback
+  trunk/src/timidity/src/xmms-timidity.c |   26 ++++++++++++++------------
+  trunk/src/timidity/src/xmms-timidity.h |   10 +++++-----
+  2 files changed, 19 insertions(+), 17 deletions(-)
+
+
 2007-01-30 16:24:40 +0000  Giacomo Lozito <james@develia.org>
   revision [1244]
   - added audacious osd in configure.ac
