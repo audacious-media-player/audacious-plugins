@@ -264,6 +264,7 @@ static gint xmmstimid_is_our_fd( gchar * filename, VFSFile * fp )
 }
 
 static void *xmmstimid_play_loop(void *arg) {
+	InputPlayback *playback = arg;
 	size_t buffer_size;
 	void *buffer;
 	size_t bytes_read;
@@ -290,7 +291,7 @@ static void *xmmstimid_play_loop(void *arg) {
 
 		if (xmmstimid_seek_to != -1) {
 			mid_song_seek(xmmstimid_song, xmmstimid_seek_to * 1000);
-			xmmstimid_ip.output->flush(xmmstimid_seek_to * 1000);
+			playback->output->flush(xmmstimid_seek_to * 1000);
 			xmmstimid_seek_to = -1;
 			bytes_read = 0;
 		}
@@ -331,7 +332,8 @@ static gchar *xmmstimid_get_title(gchar *filename) {
 	return title;
 }
 
-void xmmstimid_play_file(char *filename) {
+void xmmstimid_play_file(InputPlayback * playback) {
+	char *filename = playback->filename;
 	MidIStream *stream;
 	gchar *title;
 
@@ -364,7 +366,7 @@ void xmmstimid_play_file(char *filename) {
 		return;
 	}
 
-	if (xmmstimid_ip.output->open_audio(
+	if (playback->output->open_audio(
 				(xmmstimid_opts.format == MID_AUDIO_S16LSB) ?
 				FMT_S16_LE : FMT_S8,
 				xmmstimid_opts.rate, xmmstimid_opts.channels) == 0) {
@@ -385,28 +387,28 @@ void xmmstimid_play_file(char *filename) {
 	xmmstimid_eof = FALSE;
 	xmmstimid_seek_to = -1;
 
-	xmmstimid_decode_thread = g_thread_create((GThreadFunc)xmmstimid_play_loop, NULL, TRUE, NULL);
+	xmmstimid_decode_thread = g_thread_create((GThreadFunc)xmmstimid_play_loop, playback, TRUE, NULL);
 	if (xmmstimid_decode_thread == NULL) {
 		mid_song_free(xmmstimid_song);
-		xmmstimid_stop();
+		xmmstimid_stop(playback);
 	}
 }
 
-void xmmstimid_stop(void) {
+void xmmstimid_stop(InputPlayback * playback) {
 	if (xmmstimid_song != NULL && xmmstimid_going) {
 		xmmstimid_going = FALSE;
 		g_thread_join(xmmstimid_decode_thread);
-		xmmstimid_ip.output->close_audio();
+		playback->output->close_audio();
 		mid_song_free(xmmstimid_song);
 		xmmstimid_song = NULL;
 	}
 }
 
-void xmmstimid_pause(short p) {
-	xmmstimid_ip.output->pause(p);
+void xmmstimid_pause(InputPlayback * playback, short p) {
+	playback->output->pause(p);
 }
 
-void xmmstimid_seek(int time) {
+void xmmstimid_seek(InputPlayback * playback, int time) {
 	xmmstimid_seek_to = time;
 	xmmstimid_eof = FALSE;
 
@@ -414,13 +416,13 @@ void xmmstimid_seek(int time) {
 		xmms_usleep(10000);
 }
 
-int xmmstimid_get_time(void) {
+int xmmstimid_get_time(InputPlayback * playback) {
 	if (xmmstimid_audio_error)
 		return -2;
 	if (xmmstimid_song == NULL)
 		return -1;
 	if (!xmmstimid_going || (xmmstimid_eof &&
-				xmmstimid_ip.output->buffer_playing()))
+				playback->output->buffer_playing()))
 		return -1;
 
 	return mid_song_get_time(xmmstimid_song);

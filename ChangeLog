@@ -1,3 +1,12 @@
+2007-01-30 16:24:40 +0000  Giacomo Lozito <james@develia.org>
+  revision [1244]
+  - added audacious osd in configure.ac
+  trunk/configure.ac      |   32 ++++++++++++++++++++++++++++++++
+  trunk/mk/rules.mk.in    |    4 ++++
+  trunk/src/aosd/Makefile |    4 ++--
+  3 files changed, 38 insertions(+), 2 deletions(-)
+
+
 2007-01-30 16:04:43 +0000  Giacomo Lozito <james@develia.org>
   revision [1242]
   - splitted GTK_CFLAGS in GTK_CFLAGS, GLIB_CFLAGS and PANGO_CFLAGS, splitted GTK_LIBS in GTK_LIBS, GLIB_LIBS, PANGO_LIBS

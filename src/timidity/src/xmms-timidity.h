@@ -29,11 +29,11 @@ static void xmmstimid_init(void);
 static void xmmstimid_about(void);
 static void xmmstimid_configure(void);
 static int xmmstimid_is_our_fd( char * filename, VFSFile * fp );
-static void xmmstimid_play_file(char *filename);
-static void xmmstimid_stop(void);
-static void xmmstimid_pause(short p);
-static void xmmstimid_seek(int time);
-static int xmmstimid_get_time(void);
+static void xmmstimid_play_file(InputPlayback * playback);
+static void xmmstimid_stop(InputPlayback * playback);
+static void xmmstimid_pause(InputPlayback * playback, short p);
+static void xmmstimid_seek(InputPlayback * playback, int time);
+static int xmmstimid_get_time(InputPlayback * playback);
 static void xmmstimid_cleanup(void);
 static void xmmstimid_get_song_info(char *filename, char **title, int *length);
 
