@@ -1,3 +1,11 @@
+2007-01-30 01:47:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1238]
+  - build fix. adjust prototypes to new input API.
+  
+  trunk/src/flac113/plugin.c |    8 ++++----
+  1 file changed, 4 insertions(+), 4 deletions(-)
+
+
 2007-01-29 17:14:19 +0000  Giacomo Lozito <james@develia.org>
   revision [1236]
   - aosd: added missing header in Makefile

@@ -247,8 +247,14 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		track = xmlNewNode(NULL, "track");
 		location = xmlNewNode(NULL, "location");
 
-		/* url encode file name */
-		filename = (gchar *)xspf_url_encode(entry->filename);
+		/* url encode file name. exclude streaming for now. */
+		if (strncasecmp("http://", entry->filename, 7) &&
+		    strncasecmp("https://", entry->filename, 8)) {
+			filename = (gchar *)xspf_url_encode(entry->filename);
+		}
+		else {
+			filename = strdup(entry->filename);
+		}
 		if(!g_utf8_validate(filename, -1, NULL))
 			continue;
 
