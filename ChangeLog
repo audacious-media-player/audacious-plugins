@@ -1,3 +1,14 @@
+2007-01-30 20:55:38 +0000  Michael Farber <01mf02@gmail.com>
+  revision [1252]
+  - Fixed crash at opening AAC files
+  - However, still crashes when current song is stopped (can't fix this 
+  now)
+  
+  
+  trunk/src/aac/src/libmp4.c | 1033 +++++++++++++++++++++------------------------
+  1 file changed, 504 insertions(+), 529 deletions(-)
+
+
 2007-01-30 19:17:25 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1250]
   - pass a valid InputPlayback handle to the play thread

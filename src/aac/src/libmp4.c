@@ -49,33 +49,33 @@ gboolean        buffer_playing;
 
 InputPlugin mp4_ip =
 {
-    0,  // handle
-    0,  // filename
+    NULL,  // handle
+    NULL,  // filename
     "MP4 Audio Plugin",
     mp4_init,
     mp4_about,
-    0,  // configuration
+    NULL,  // configuration
     mp4_is_our_file,
-    0,  //scandir
+    NULL,  //scandir
     mp4_play,
     mp4_stop,
     mp4_pause,
     mp4_seek,
-    0,  // set equalizer
+    NULL,  // set equalizer
     mp4_get_time,
-    0,  // get volume
-    0,
+    NULL,  // get volume
+    NULL,
     mp4_cleanup,
-    0,  // obsolete
-    0,  // send visualisation data
-    0,  // set player window info
-    0,  // set song title text
+    NULL,  // obsolete
+    NULL,  // send visualisation data
+    NULL,  // set player window info
+    NULL,  // set song title text
     mp4_get_song_title_len,  // get song title text
-    0,  // info box
-    0,  // to output plugin
+    NULL,  // info box
+    NULL,  // to output plugin
     mp4_get_song_tuple,
-    0,
-    0,
+    NULL,
+    NULL,
     mp4_is_our_fd,
     mp4_fmts,
 };
@@ -151,7 +151,7 @@ static void mp4_stop(InputPlayback *playback)
     }
 }
 
-static int  mp4_is_our_file(char *filename)
+static int mp4_is_our_file(char *filename)
 {
   VFSFile *file;
   gchar* extension;
@@ -212,44 +212,41 @@ static int mp4_is_our_fd(char *filename, VFSFile* file)
 
 static void mp4_about(void)
 {
-  static GtkWidget *aboutbox;
-
-  if(aboutbox!=NULL)
-    return;
-  aboutbox = xmms_show_message("About MP4 AAC player plugin",
+    static GtkWidget *aboutbox = NULL;
+    aboutbox = xmms_show_message("About MP4 AAC player plugin",
                    "Using libfaad2-" FAAD2_VERSION " for decoding.\n"
                    "Copyright (c) 2005-2006 Audacious team",
                    "Ok", FALSE, NULL, NULL);
-  g_signal_connect(G_OBJECT(aboutbox), "destroy",
+    g_signal_connect(G_OBJECT(aboutbox), "destroy",
                      G_CALLBACK(gtk_widget_destroyed),
                      &aboutbox);
 }
 
 static void mp4_pause(InputPlayback *playback, short flag)
 {
-  playback->output->pause(flag);
+    playback->output->pause(flag);
 }
 
 static void mp4_seek(InputPlayback *data, int time)
 {
-  seekPosition = time;
-  while(buffer_playing && seekPosition!=-1)
-    xmms_usleep(10000);
+    seekPosition = time;
+    while(buffer_playing && seekPosition != -1)
+        xmms_usleep(10000);
 }
 
-static int  mp4_get_time(InputPlayback *playback)
+static int mp4_get_time(InputPlayback *playback)
 {
-  if(!buffer_playing)
-    return (-1);
-  else
-    return (playback->output->output_time());
+    if(!buffer_playing)
+        return (-1);
+    else
+        return (playback->output->output_time());
 }
 
 static void mp4_cleanup(void)
 {
 }
 
-static TitleInput   *mp4_get_song_tuple(char *fn)
+static TitleInput *mp4_get_song_tuple(char *fn)
 {
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
     VFSFile *mp4fh;
@@ -402,154 +399,153 @@ static gchar   *mp4_get_song_title(char *filename)
 
 static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4file )
 {
-    // We are reading a MP4 file
+    // We are reading an MP4 file
     gint mp4track= getAACTrack(mp4file);
 
-    if ( mp4track < 0 ) {
-        //TODO: check here for others Audio format.....
+    if (mp4track < 0)
+    {
         g_print("Unsupported Audio track type\n");
+        return TRUE;
     }
-    else {
-        faacDecHandle   decoder;
-        unsigned char   *buffer = NULL;
-        guint       bufferSize = 0;
-        gulong      samplerate;
-        guchar      channels;
-        //guint     avgBitrate;
-        gulong      msDuration;
-        gulong      numSamples;
-        gulong      sampleID = 1;
-        unsigned int    framesize = 1024;
-        mp4AudioSpecificConfig mp4ASC;
 
-        gchar *xmmstitle = NULL;
-        xmmstitle = mp4_get_song_title(filename);
-        if(xmmstitle == NULL)
-            xmmstitle = g_strdup(filename);
+    faacDecHandle   decoder;
+    mp4AudioSpecificConfig mp4ASC;
+    guchar      *buffer = NULL;
+    guint       bufferSize = 0;
+    gulong      samplerate;
+    guchar      channels;
+    gulong      msDuration;
+    gulong      numSamples;
+    gulong      sampleID = 1;
+    guint       framesize = 1024;
 
-        decoder = faacDecOpen();
-        mp4ff_get_decoder_config(mp4file, mp4track, &buffer, &bufferSize);
-        if ( !buffer ) {
-            faacDecClose(decoder);
-            return FALSE;
+    gchar *xmmstitle = NULL;
+    xmmstitle = mp4_get_song_title(filename);
+    if(xmmstitle == NULL)
+        xmmstitle = g_strdup(filename);
+
+    decoder = faacDecOpen();
+    mp4ff_get_decoder_config(mp4file, mp4track, &buffer, &bufferSize);
+    if ( !buffer ) {
+        faacDecClose(decoder);
+        return FALSE;
+    }
+    if ( faacDecInit2(decoder, buffer, bufferSize, 
+              &samplerate, &channels) < 0 ) {
+        faacDecClose(decoder);
+
+        return FALSE;
+    }
+
+    /* Add some hacks for SBR profile */
+    if (AudioSpecificConfig(buffer, bufferSize, &mp4ASC) >= 0) {
+        if (mp4ASC.frameLengthFlag == 1) framesize = 960;
+        if (mp4ASC.sbr_present_flag == 1) framesize *= 2;
+    }
+        
+    g_free(buffer);
+    if( !channels ) {
+        faacDecClose(decoder);
+
+        return FALSE;
+    }
+    numSamples = mp4ff_num_samples(mp4file, mp4track);
+    msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
+    playback->output->open_audio(FMT_S16_NE, samplerate, channels);
+    playback->output->flush(0);
+
+    mp4_ip.set_info(xmmstitle, msDuration, 
+            mp4ff_get_avg_bitrate( mp4file, mp4track ), 
+            samplerate,channels);
+
+    while ( buffer_playing ) {
+        void*           sampleBuffer;
+        faacDecFrameInfo    frameInfo;    
+        gint            rc;
+
+        /* Seek if seek position has changed */
+        if ( seekPosition!=-1 ) {
+            sampleID =  (float)seekPosition*(float)samplerate/(float)(framesize - 1.0);
+            playback->output->flush(seekPosition*1000);
+            seekPosition = -1;
         }
-        if ( faacDecInit2(decoder, buffer, bufferSize, 
-                  &samplerate, &channels) < 0 ) {
-            faacDecClose(decoder);
 
-            return FALSE;
-        }
+        /* Otherwise continue playing */
+        buffer=NULL;
+        bufferSize=0;
 
-        /* Add some hacks for SBR profile */
-        if (AudioSpecificConfig(buffer, bufferSize, &mp4ASC) >= 0) {
-            if (mp4ASC.frameLengthFlag == 1) framesize = 960;
-            if (mp4ASC.sbr_present_flag == 1) framesize *= 2;
-        }
-            
-        g_free(buffer);
-        if( !channels ) {
-            faacDecClose(decoder);
-
-            return FALSE;
-        }
-        numSamples = mp4ff_num_samples(mp4file, mp4track);
-        msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
-        playback->output->open_audio(FMT_S16_NE, samplerate, channels);
-        playback->output->flush(0);
-
-        mp4_ip.set_info(xmmstitle, msDuration, 
-                mp4ff_get_avg_bitrate( mp4file, mp4track ), 
-                samplerate,channels);
-
-        while ( buffer_playing ) {
-            void*           sampleBuffer;
-            faacDecFrameInfo    frameInfo;    
-            gint            rc;
-
-            /* Seek if seek position has changed */
-            if ( seekPosition!=-1 ) {
-                sampleID =  (float)seekPosition*(float)samplerate/(float)(framesize - 1.0);
-                playback->output->flush(seekPosition*1000);
-                seekPosition = -1;
+        /* If we've run to the end of the file, we're done. */
+        if(sampleID >= numSamples){
+            /* Finish playing before we close the
+               output. */
+            while ( playback->output->buffer_playing() ) {
+                xmms_usleep(10000);
             }
 
-            /* Otherwise continue playing */
-            buffer=NULL;
-            bufferSize=0;
+            playback->output->flush(seekPosition*1000);
+            playback->output->close_audio();
+            faacDecClose(decoder);
 
-            /* If we've run to the end of the file, we're done. */
-            if(sampleID >= numSamples){
-                /* Finish playing before we close the
-                   output. */
-                while ( playback->output->buffer_playing() ) {
-                    xmms_usleep(10000);
-                }
+            g_static_mutex_lock(&mutex);
+            buffer_playing = FALSE;
+            g_static_mutex_unlock(&mutex);
+            g_thread_exit(NULL);
 
-                playback->output->flush(seekPosition*1000);
-                playback->output->close_audio();
-                faacDecClose(decoder);
+            return FALSE;
+        }
+        rc= mp4ff_read_sample(mp4file, mp4track, 
+                  sampleID++, &buffer, &bufferSize);
 
-                g_static_mutex_lock(&mutex);
-                buffer_playing = FALSE;
-                g_static_mutex_unlock(&mutex);
-                g_thread_exit(NULL);
+        /*g_print(":: %d/%d\n", sampleID-1, numSamples);*/
 
-                return FALSE;
-            }
-            rc= mp4ff_read_sample(mp4file, mp4track, 
-                      sampleID++, &buffer, &bufferSize);
+        /* If we can't read the file, we're done. */
+        if((rc == 0) || (buffer== NULL) || (bufferSize == 0) || (bufferSize > BUFFER_SIZE)){
+            g_print("MP4: read error\n");
+            sampleBuffer = NULL;
+            sampleID=0;
+            playback->output->buffer_free();
+            playback->output->close_audio();
 
-            /*g_print(":: %d/%d\n", sampleID-1, numSamples);*/
+            faacDecClose(decoder);
 
-            /* If we can't read the file, we're done. */
-            if((rc == 0) || (buffer== NULL) || (bufferSize == 0) || (bufferSize > BUFFER_SIZE)){
-                g_print("MP4: read error\n");
-                sampleBuffer = NULL;
-                sampleID=0;
-                playback->output->buffer_free();
-                playback->output->close_audio();
-
-                faacDecClose(decoder);
-
-                return FALSE;
-            }
+            return FALSE;
+        }
 
 /*          g_print(" :: %d/%d\n", bufferSize, BUFFER_SIZE); */
 
-            sampleBuffer= faacDecDecode(decoder, 
-                            &frameInfo, 
-                            buffer, 
-                            bufferSize);
+        sampleBuffer= faacDecDecode(decoder, 
+                        &frameInfo, 
+                        buffer, 
+                        bufferSize);
 
-            /* If there was an error decoding, we're done. */
-            if(frameInfo.error > 0){
-                g_print("MP4: %s\n",
-                    faacDecGetErrorMessage(frameInfo.error));
-                playback->output->close_audio();
-                faacDecClose(decoder);
+        /* If there was an error decoding, we're done. */
+        if(frameInfo.error > 0){
+            g_print("MP4: %s\n",
+                faacDecGetErrorMessage(frameInfo.error));
+            playback->output->close_audio();
+            faacDecClose(decoder);
 
-                return FALSE;
-            }
-            if(buffer){
-                g_free(buffer);
-                buffer=NULL;
-                bufferSize=0;
-            }
-            if (buffer_playing == FALSE)
-            {
-                    playback->output->close_audio();
-                return FALSE;
-            }
-            produce_audio(playback->output->written_time(),
-                       FMT_S16_NE,
-                       channels,
-                       frameInfo.samples<<1,
-                       sampleBuffer, &buffer_playing);
+            return FALSE;
         }
-        playback->output->close_audio();
-
-        faacDecClose(decoder);
+        if(buffer){
+            g_free(buffer);
+            buffer=NULL;
+            bufferSize=0;
+        }
+        if (buffer_playing == FALSE)
+        {
+                playback->output->close_audio();
+            return FALSE;
+        }
+        produce_audio(playback->output->written_time(),
+                   FMT_S16_NE,
+                   channels,
+                   frameInfo.samples<<1,
+                   sampleBuffer, &buffer_playing);
     }
+
+    playback->output->close_audio();
+    faacDecClose(decoder);
 
     return TRUE;
 }
