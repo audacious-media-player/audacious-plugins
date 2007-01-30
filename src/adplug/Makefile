@@ -6,15 +6,15 @@ OBJECTIVE_LIBS = libadplug$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = ./core/libadplugcore.a $(BINIO_LIBS) -lstdc++
+LIBADD = ./core/libadplugcore.a $(BINIO_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -lstdc++
 
 SOURCES = adplug-xmms.cc
 
 OBJECTS = ${SOURCES:.cc=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BINIO_CFLAGS) \
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BINIO_CFLAGS) \
 	-I../../intl -I../.. -I./core
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(BINIO_CFLAGS) \
+CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BINIO_CFLAGS) \
 	-I../../intl -I../.. -I./core
 
 include ../../mk/objective.mk

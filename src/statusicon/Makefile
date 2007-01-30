@@ -7,12 +7,12 @@ noinst_HEADERS = si.h si_ui.h si_audacious.h si_common.h gtktrayicon.h si.xpm si
 
 LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(GDKX11_LIBS)
+LIBADD = $(GTK_LIBS) $(GDKX11_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 SOURCES = si.c si_ui.c gtktrayicon-x11.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GDKX11_CFLAGS) \
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GDKX11_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) \
 	-I../../intl -I../.. -I..
 
 include ../../mk/objective.mk

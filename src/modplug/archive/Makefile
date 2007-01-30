@@ -1,7 +1,7 @@
 include ../../../mk/rules.mk
 include ../../../mk/init.mk
 
-CXXFLAGS += $(PICFLAGS) -I../../.. $(GTK_CFLAGS) $(AUDACIOUS_CFLAGS)
+CXXFLAGS += $(PICFLAGS) -I../../.. $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(AUDACIOUS_CFLAGS)
 
 OBJECTIVE_LIBS_NOINST = libarchive.a
 

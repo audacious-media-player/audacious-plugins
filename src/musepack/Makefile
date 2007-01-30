@@ -7,10 +7,10 @@ LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 SOURCES = libmpc.cxx
 
-LIBADD = -lmpcdec $(TAGLIB_LIBS) $(GTK_LIBS)
+LIBADD = -lmpcdec $(TAGLIB_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 OBJECTS = ${SOURCES:.cxx=.o}
 
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(TAGLIB_CFLAGS) -I../../intl -I../..
+CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(TAGLIB_CFLAGS) -I../../intl -I../..
 
 include ../../mk/objective.mk

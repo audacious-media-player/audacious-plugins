@@ -3,6 +3,7 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libsexypsf$(SHARED_SUFFIX)
 
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 SOURCES = \
@@ -23,7 +24,7 @@ LIBADD = -lz
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
 
 include ../../mk/objective.mk
 

@@ -9,8 +9,8 @@ SOURCES = aud-tta.c id3.c ttadec.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += -fPIC -DPIC $(GTK_CFLAGS) -I../../intl -I../..
+CFLAGS += -fPIC -DPIC $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
 
-LIBADD = -lid3tag
+LIBADD = -lid3tag $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 include ../../mk/objective.mk

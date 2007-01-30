@@ -109,9 +109,19 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.2.99],
 
 dnl Check for GTK/GLib/GThread/Pango
 
-PKG_CHECK_MODULES(GTK, [glib-2.0 >= 2.6.0 gtk+-2.0 >= 2.6.0 gthread-2.0 pango],
-    [ADD_PC_REQUIRES([glib-2.0 >= 2.6.0, gtk+-2.0 >= 2.6.0])],
-    [AC_MSG_ERROR([Cannot find glib2/gtk2/pango])]
+PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.6.0 gthread-2.0],
+    [ADD_PC_REQUIRES([glib-2.0 >= 2.6.0])],
+    [AC_MSG_ERROR([Cannot find glib2 >= 2.6.0])]
+)
+
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.6.0],
+    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.6.0])],
+    [AC_MSG_ERROR([Cannot find gtk2 >= 2.6.0])]
+)
+
+PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
+    [ADD_PC_REQUIRES([pango >= 1.8.0])],
+    [AC_MSG_ERROR([Cannot find pango >= 1.8.0])]
 )
 
 dnl Check for libglade

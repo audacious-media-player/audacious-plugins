@@ -9,10 +9,10 @@ SOURCES = pls.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
 CXXFLAGS = $(CFLAGS)
 
-LIBADD = $(GTK_LIBS)
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 include ../../mk/objective.mk

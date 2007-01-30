@@ -14,7 +14,7 @@ noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(GMODULE_LIBS) -lpthread ./pcfg/libpcfg.a
+LIBADD = $(GTK_LIBS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GMODULE_LIBS) -lpthread ./pcfg/libpcfg.a
 SOURCES = amidi-plug.c i_vfslayer.c i_midi.c i_backend.c \
           i_configure.c i_configure-ap.c i_configure-alsa.c \
           i_configure-fluidsynth.c i_configure-dummy.c \
@@ -22,7 +22,7 @@ SOURCES = amidi-plug.c i_vfslayer.c i_midi.c i_backend.c \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GMODULE_CFLAGS) -DAMIDIPLUGBACKENDDIR=\"$(AMIDIPLUGBACKENDDIR)\" \
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GMODULE_CFLAGS) -DAMIDIPLUGBACKENDDIR=\"$(AMIDIPLUGBACKENDDIR)\" \
           -I../../intl -I../..
 
 include ../../mk/objective.mk

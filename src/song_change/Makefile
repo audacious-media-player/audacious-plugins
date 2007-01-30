@@ -5,12 +5,12 @@ OBJECTIVE_LIBS = libsong_change$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS)
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 SOURCES = song_change.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(BEEP_DEFINES) $(GTK_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(BEEP_DEFINES) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
 
 include ../../mk/objective.mk

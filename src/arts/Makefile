@@ -9,8 +9,8 @@ OBJECTIVE_LIBS = libarts$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -Wall $(ARTSC_CFLAGS) -I../../intl -I../..
-LIBADD = $(GTK_LIBS) $(ARTSC_LIBS) -lpthread
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -Wall $(ARTSC_CFLAGS) -I../../intl -I../..
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(ARTSC_LIBS) -lpthread
 
 OBJECTS = ${SOURCES:.c=.o}
 

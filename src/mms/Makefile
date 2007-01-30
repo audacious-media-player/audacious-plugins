@@ -10,10 +10,10 @@ SOURCES = mms.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(MMS_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(MMS_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
 
 CXXFLAGS = $(CFLAGS)
 
-LIBADD = $(GTK_LIBS) $(MMS_LIBS)
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(MMS_LIBS)
 
 include ../../mk/objective.mk

@@ -5,11 +5,11 @@ OBJECTIVE_LIBS = libvoice_removal$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(EFFECT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS)
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 SOURCES = voice_removal.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
 
 OBJECTS = ${SOURCES:.c=.o}
 

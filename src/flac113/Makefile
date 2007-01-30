@@ -17,7 +17,7 @@ OBJECTIVE_LIBS = libflac$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = $(LIBFLAC_LIBS)  -L./plugin_common -lplugin_common
+LIBADD = $(LIBFLAC_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -L./plugin_common -lplugin_common
 
 SOURCES = \
 	charset.c \
@@ -32,6 +32,6 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. $(LIBFLAC_CFLAGS)
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. $(LIBFLAC_CFLAGS)
 
 include ../../mk/objective.mk

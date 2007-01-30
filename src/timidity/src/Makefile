@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libtimidity$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = ../libtimidity/libtimidity.a
+LIBADD = ../libtimidity/libtimidity.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 SOURCES = \
 	callbacks.c \
@@ -14,6 +14,6 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../.. -I../libtimidity
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../.. -I../libtimidity
 
 include ../../../mk/objective.mk
