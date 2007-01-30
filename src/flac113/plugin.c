@@ -78,10 +78,10 @@ typedef struct {
 static void FLAC_XMMS__init();
 static int  FLAC_XMMS__is_our_file(char *filename);
 static int  FLAC_XMMS__is_our_file_from_vfs(char *filename, VFSFile *vfsfile);
-static void FLAC_XMMS__play_file(char *filename);
-static void FLAC_XMMS__stop();
-static void FLAC_XMMS__pause(short p);
-static void FLAC_XMMS__seek(int time);
+static void FLAC_XMMS__play_file(InputPlayback *playback);
+static void FLAC_XMMS__stop(InputPlayback *playback);
+static void FLAC_XMMS__pause(InputPlayback *playback, short p);
+static void FLAC_XMMS__seek(InputPlayback *playback, int time);
 static int  FLAC_XMMS__get_time();
 static void FLAC_XMMS__cleanup();
 static void FLAC_XMMS__get_song_info(char *filename, char **title, int *length);

@@ -1,3 +1,10 @@
+2007-01-29 17:14:19 +0000  Giacomo Lozito <james@develia.org>
+  revision [1236]
+  - aosd: added missing header in Makefile
+  trunk/src/aosd/Makefile |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-29 16:40:14 +0000  Giacomo Lozito <james@develia.org>
   revision [1234]
   - aosd: paranoid fixes part 2
