@@ -1,5 +1,8 @@
 /* ghosd -- OSD with fake transparency, cairo, and pango.
  * Copyright (C) 2006 Evan Martin <martine@danga.com>
+ *
+ * With further development by Giacomo Lozito <james@develia.org>
+ * for the ghosd-based Audacious OSD
  */
 
 #include <X11/Xlib.h>
@@ -12,6 +15,11 @@ typedef struct {
   void (*data_destroy)(void*);
 } RenderCallback;
 
+typedef struct {
+  GhosdEventButtonCb func;
+  void *data;
+} EventButtonCallback;
+
 struct _Ghosd {
   Display *dpy;
   Window win;
@@ -20,6 +28,7 @@ struct _Ghosd {
   
   Pixmap background;
   RenderCallback render;
+  EventButtonCallback eventbutton;
 };
 
 /* vim: set ts=2 sw=2 et cino=(0 : */

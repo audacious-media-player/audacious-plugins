@@ -1,5 +1,8 @@
 /* ghosd -- OSD with fake transparency, cairo, and pango.
  * Copyright (C) 2006 Evan Martin <martine@danga.com>
+ *
+ * With further development by Giacomo Lozito <james@develia.org>
+ * for the ghosd-based Audacious OSD
  */
 
 #include "config.h"
@@ -12,6 +15,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
+#include <gdk/gdk.h>
 
 #include "ghosd.h"
 #include "ghosd-internal.h"
@@ -45,6 +49,21 @@ ghosd_main_iteration(Ghosd *ghosd) {
         XMoveResizeWindow(ghosd->dpy, ghosd->win,
                           ghosd->x, ghosd->y, ghosd->width, ghosd->height);
       }
+    }
+    break;
+  case ButtonPress:
+    /* create a GhosdEventButton event and pass it to callback function */
+    if ( ghosd->eventbutton.func != NULL )
+    {
+      GhosdEventButton gevb;
+      gevb.x = ev.xbutton.x;
+      gevb.y = ev.xbutton.y;
+      gevb.x_root = ev.xbutton.x_root;
+      gevb.y_root = ev.xbutton.y_root;
+      gevb.button = ev.xbutton.button;
+      gevb.send_event = ev.xbutton.send_event;
+      gevb.time = ev.xbutton.time;
+      ghosd->eventbutton.func( ghosd , &gevb , ghosd->eventbutton.data );
     }
     break;
   }

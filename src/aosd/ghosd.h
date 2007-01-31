@@ -1,5 +1,8 @@
 /* ghosd -- OSD with fake transparency, cairo, and pango.
  * Copyright (C) 2006 Evan Martin <martine@danga.com>
+ *
+ * With further development by Giacomo Lozito <james@develia.org>
+ * for the ghosd-based Audacious OSD
  */
 
 #ifndef __GHOSD_H__
@@ -12,7 +15,19 @@
 
 typedef struct _Ghosd Ghosd;
 
+/* minimal struct to handle button events */
+typedef struct
+{
+  int x, y;
+  int send_event;
+  int x_root, y_root;
+  unsigned int button;
+  unsigned long time;
+}
+GhosdEventButton;
+
 typedef void (*GhosdRenderFunc)(Ghosd *ghosd, cairo_t *cr, void *user_data);
+typedef void (*GhosdEventButtonCb)(Ghosd *ghosd, GhosdEventButton *event, void *user_data);
 
 Ghosd *ghosd_new(void);
 void   ghosd_destroy(Ghosd* ghosd);
@@ -26,6 +41,8 @@ void ghosd_set_render(Ghosd *ghosd, GhosdRenderFunc render_func,
 void ghosd_render(Ghosd *ghosd);
 void ghosd_show(Ghosd *ghosd);
 void ghosd_hide(Ghosd *ghosd);
+
+void ghosd_set_event_button_cb(Ghosd *ghosd, GhosdEventButtonCb cb, void *user_data );
 
 void ghosd_main_iterations(Ghosd *ghosd);
 void ghosd_main_until(Ghosd *ghosd, struct timeval *until);

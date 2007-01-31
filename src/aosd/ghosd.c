@@ -1,5 +1,8 @@
 /* ghosd -- OSD with fake transparency, cairo, and pango.
  * Copyright (C) 2006 Evan Martin <martine@danga.com>
+ *
+ * With further development by Giacomo Lozito <james@develia.org>
+ * for the ghosd-based Audacious OSD
  */
 
 #include "config.h"
@@ -127,7 +130,7 @@ make_window(Display *dpy) {
   att.border_pixel = 0;
   att.background_pixmap = None;
   att.save_under = True;
-  att.event_mask = ExposureMask | StructureNotifyMask;
+  att.event_mask = ExposureMask | StructureNotifyMask | ButtonPressMask;
   att.override_redirect = True;
 
   win = XCreateWindow(dpy, DefaultRootWindow(dpy),
@@ -201,6 +204,13 @@ ghosd_set_position(Ghosd *ghosd, int x, int y, int width, int height) {
                     ghosd->x, ghosd->y, ghosd->width, ghosd->height);
 }
 
+void
+ghosd_set_event_button_cb(Ghosd *ghosd, GhosdEventButtonCb func, void *user_data)
+{
+  ghosd->eventbutton.func = func;
+  ghosd->eventbutton.data = user_data;
+}
+
 #if 0
 static int
 x_error_handler(Display *dpy, XErrorEvent* evt) {
@@ -229,6 +239,7 @@ ghosd_new(void) {
   ghosd->dpy = dpy;
   ghosd->win = win;
   ghosd->transparent = 1;
+  ghosd->eventbutton.func = NULL;
 
   return ghosd;
 }
