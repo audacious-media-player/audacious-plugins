@@ -85,6 +85,19 @@ aosd_fade_func ( Ghosd * osd , cairo_t * cr , void * user_data )
 }
 
 
+static void
+aosd_button_func ( Ghosd * osd , GhosdEventButton * ev , void * user_data )
+{
+  if ( ev->button == 1 )
+  {
+    pthread_mutex_lock( &aosd_status_mutex );
+    aosd_status = AOSD_STATUS_INTERRUPT;
+    pthread_mutex_unlock( &aosd_status_mutex );
+  }
+  return;
+}
+
+
 static void *
 aosd_thread_func ( void * arg )
 {
@@ -203,6 +216,8 @@ aosd_thread_func ( void * arg )
   ghosd_set_position( osd , pos_x , pos_y ,
     layout_width + pad_left + pad_right ,
     layout_height + pad_top + pad_bottom );
+
+  ghosd_set_event_button_cb( osd , aosd_button_func , &stop_now );
 
   /* the aosd_status must be checked during the fade and display process
      (if another message arrives, the current transition must be abandoned ) */
