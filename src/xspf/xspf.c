@@ -64,39 +64,46 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 	for(nptr = track->children; nptr != NULL; nptr = nptr->next){
 		if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "location")){
 			GError *err = NULL;
-			gchar *tmp = NULL;
+			gchar *tmp = NULL, *tmp2 = NULL;
 			xmlChar *str = xmlNodeGetContent(nptr);
 			tmp = g_locale_from_utf8(str, -1, NULL, NULL, &err); //for backward compatibility
-			if(err != NULL)
-				location = xspf_url_decode(str);
-			else
-				location = xspf_url_decode(tmp);
-
+			if(err != NULL) {
+				tmp2 = xspf_url_decode(str);
+			}
+			else {
+				tmp2= xspf_url_decode(tmp);
+			}
+			if(strstr(tmp2, "file://")){
+				location = g_strdup(tmp2+7);
+			}
+			else {
+				location = g_strdup(tmp2);
+			}
 			xmlFree(str);
-			g_free(tmp); g_free(err);
-		}
-		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "creator")){
-			tuple->performer = (gchar *)xmlNodeGetContent(nptr);
-		}
-		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "album")){
-			tuple->album_name = (gchar *)xmlNodeGetContent(nptr);
+			g_free(tmp); g_free(err); g_free(tmp2);
 		}
 		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "title")){
 			tuple->track_name = (gchar *)xmlNodeGetContent(nptr);
 		}
-		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "duration")){
-			xmlChar *str = xmlNodeGetContent(nptr);
-			tuple->length = atol(str);
-			xmlFree(str);
+		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "creator")){
+			tuple->performer = (gchar *)xmlNodeGetContent(nptr);
+		}
+		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "annotation")){
+			tuple->comment = (gchar *)xmlNodeGetContent(nptr);
+			continue;
+		}
+		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "album")){
+			tuple->album_name = (gchar *)xmlNodeGetContent(nptr);
 		}
 		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "trackNum")){
 			xmlChar *str = xmlNodeGetContent(nptr);
 			tuple->track_number = atol(str);
 			xmlFree(str);
 		}
-		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "annotation")){
-			tuple->comment = (gchar *)xmlNodeGetContent(nptr);
-			continue;
+		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, "duration")){
+			xmlChar *str = xmlNodeGetContent(nptr);
+			tuple->length = atol(str);
+			xmlFree(str);
 		}
 
 		//
@@ -224,6 +231,9 @@ playlist_save_xspf(const gchar *filename, gint pos)
 
 	doc = xmlNewDoc("1.0");
 
+	doc->charset  = XML_CHAR_ENCODING_UTF8;
+	doc->encoding = xmlStrdup("UTF-8");
+
 	rootnode = xmlNewNode(NULL, XSPF_ROOT_NODE_NAME);
 	xmlSetProp(rootnode, "xmlns", XSPF_XMLNS);
 	xmlSetProp(rootnode, "version", "1");
@@ -249,12 +259,15 @@ playlist_save_xspf(const gchar *filename, gint pos)
 
 		/* url encode file name. exclude streaming for now. */
 		if (strncasecmp("http://", entry->filename, 7) &&
-		    strncasecmp("https://", entry->filename, 8)) {
-			filename = (gchar *)xspf_url_encode(entry->filename);
+		    strncasecmp("https://", entry->filename, 8)) { /* the rest */
+			gchar *tmp = (gchar *)xspf_url_encode(entry->filename);
+			filename = g_strdup_printf("file://%s", tmp);
+			g_free(tmp);
 		}
-		else {
+		else { /* streaming */
 			filename = strdup(entry->filename);
 		}
+
 		if(!g_utf8_validate(filename, -1, NULL))
 			continue;
 
@@ -265,22 +278,6 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		/* do we have a tuple? */
 		if (entry->tuple != NULL)
 		{
-			if (entry->tuple->performer != NULL &&
-			    g_utf8_validate(entry->tuple->performer, -1, NULL))
-			{
-				tmp = xmlNewNode(NULL, "creator");
-				xmlAddChild(tmp, xmlNewText(entry->tuple->performer));
-				xmlAddChild(track, tmp);
-			}
-
-			if (entry->tuple->album_name != NULL &&
-			    g_utf8_validate(entry->tuple->album_name, -1, NULL))
-			{
-				tmp = xmlNewNode(NULL, "album");
-				xmlAddChild(tmp, xmlNewText(entry->tuple->album_name));
-				xmlAddChild(track, tmp);
-			}
-
 			if (entry->tuple->track_name != NULL &&
 			    g_utf8_validate(entry->tuple->track_name, -1, NULL))
 			{
@@ -289,14 +286,27 @@ playlist_save_xspf(const gchar *filename, gint pos)
 				xmlAddChild(track, tmp);
 			}
 
-			if (entry->tuple->length > 0)
+			if (entry->tuple->performer != NULL &&
+			    g_utf8_validate(entry->tuple->performer, -1, NULL))
 			{
-				gchar *str;
-				str = g_malloc(TMP_BUF_LEN);
-				tmp = xmlNewNode(NULL, "duration");
-				sprintf(str, "%d", entry->tuple->length);
-				xmlAddChild(tmp, xmlNewText(str));
-				g_free(str);
+				tmp = xmlNewNode(NULL, "creator");
+				xmlAddChild(tmp, xmlNewText(entry->tuple->performer));
+				xmlAddChild(track, tmp);
+			}
+
+			if (entry->tuple->comment != NULL &&
+			    g_utf8_validate(entry->tuple->comment, -1, NULL))
+			{
+				tmp = xmlNewNode(NULL, "annotation");
+				xmlAddChild(tmp, xmlNewText(entry->tuple->comment));
+				xmlAddChild(track, tmp);
+			}
+
+			if (entry->tuple->album_name != NULL &&
+			    g_utf8_validate(entry->tuple->album_name, -1, NULL))
+			{
+				tmp = xmlNewNode(NULL, "album");
+				xmlAddChild(tmp, xmlNewText(entry->tuple->album_name));
 				xmlAddChild(track, tmp);
 			}
 
@@ -311,11 +321,14 @@ playlist_save_xspf(const gchar *filename, gint pos)
 				xmlAddChild(track, tmp);
 			}
 
-			if (entry->tuple->comment != NULL &&
-			    g_utf8_validate(entry->tuple->comment, -1, NULL))
+			if (entry->tuple->length > 0)
 			{
-				tmp = xmlNewNode(NULL, "annotation");
-				xmlAddChild(tmp, xmlNewText(entry->tuple->comment));
+				gchar *str;
+				str = g_malloc(TMP_BUF_LEN);
+				tmp = xmlNewNode(NULL, "duration");
+				sprintf(str, "%d", entry->tuple->length);
+				xmlAddChild(tmp, xmlNewText(str));
+				g_free(str);
 				xmlAddChild(track, tmp);
 			}
 

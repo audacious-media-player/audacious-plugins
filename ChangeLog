@@ -1,3 +1,12 @@
+2007-01-30 21:41:14 +0000  Michael Farber <01mf02@gmail.com>
+  revision [1254]
+  - Cleaned up AAC plugin a bit more, but still couldn't fix the bug
+  
+  
+  trunk/src/aac/src/libmp4.c |  300 ++++++++++++++++++++++-----------------------
+  1 file changed, 148 insertions(+), 152 deletions(-)
+
+
 2007-01-30 20:55:38 +0000  Michael Farber <01mf02@gmail.com>
   revision [1252]
   - Fixed crash at opening AAC files
