@@ -1,3 +1,14 @@
+2007-01-31 16:42:04 +0000  Giacomo Lozito <james@develia.org>
+  revision [1258]
+  - aosd: added experimental multiple monitor support, plus max_width setting
+  trunk/src/aosd/aosd_cfg.c    |   18 ++++++++++
+  trunk/src/aosd/aosd_cfg.h    |    2 +
+  trunk/src/aosd/aosd_common.h |    2 -
+  trunk/src/aosd/aosd_osd.c    |   74 ++++++++++++++++++++++++++++++-------------
+  trunk/src/aosd/aosd_ui.c     |   58 ++++++++++++++++++++++++++++++++-
+  5 files changed, 129 insertions(+), 25 deletions(-)
+
+
 2007-01-31 07:14:02 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1256]
   tweak xspf plugin to conform xspf specification version 1.
