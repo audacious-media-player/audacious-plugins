@@ -96,22 +96,52 @@ aosd_thread_func ( void * arg )
   GhosdFadeData fade_data = { NULL , 0 , NULL , 0 , 0 , 0 };
   PangoContext *context;
   PangoLayout *osd_layout;
-  gint max_width, layout_width, layout_height, pos_x = 0, pos_y = 0;
+  gint max_width, layout_width, layout_height;
+  gint pos_x = 0, pos_y = 0;
   gint pad_left = 0 , pad_right = 0 , pad_top = 0 , pad_bottom = 0;
-  const gint screen_width = gdk_screen_get_width( gdk_screen_get_default() );
-  const gint screen_height = gdk_screen_get_height( gdk_screen_get_default() );
+  gint screen_width, screen_height;
   const gint STEP_MS = 50;
   const gfloat dalpha_in = 1.0 / ( cfg_osd->animation.timing_fadein / (gfloat)STEP_MS );
   const gfloat dalpha_out = 1.0 / ( cfg_osd->animation.timing_fadeout / (gfloat)STEP_MS );
   struct timeval tv_nextupdate;
   gboolean stop_now = FALSE;
   aosd_deco_style_data_t style_data;
+  GdkScreen *screen = gdk_screen_get_default();
+
+  /* calculate screen_width and screen_height */
+  if ( cfg_osd->position.multimon_id > -1 )
+  {
+    /* adjust coordinates and size according to selected monitor */
+    GdkRectangle rect;
+    gdk_screen_get_monitor_geometry( screen , cfg_osd->position.multimon_id , &rect );
+    pos_x = rect.x;
+    pos_y = rect.y;
+    screen_width = rect.width;
+    screen_height = rect.height;
+  }
+  else
+  {
+    /* use total space available, even when composed by multiple monitor */
+    screen_width = gdk_screen_get_width( screen );
+    screen_height = gdk_screen_get_height( screen );
+    pos_x = 0;
+    pos_y = 0;
+  }
 
   /* pick padding from selected decoration style */
   aosd_deco_style_get_padding( cfg_osd->decoration.code ,
     &pad_top , &pad_bottom , &pad_left , &pad_right );
 
-  max_width = screen_width - pad_left - pad_right - abs(cfg_osd->position.offset_x);
+  if ( cfg_osd->position.maxsize_width > 0 )
+  {
+    max_width = cfg_osd->position.maxsize_width - pad_left - pad_right;
+    if ( max_width < 1 ) /* ignore user-defined max_width if it is too small */
+      max_width = screen_width - pad_left - pad_right - abs(cfg_osd->position.offset_x);
+  }
+  else
+  {
+    max_width = screen_width - pad_left - pad_right - abs(cfg_osd->position.offset_x);
+  }
   context = pango_cairo_font_map_create_context(
               PANGO_CAIRO_FONT_MAP(pango_cairo_font_map_get_default()));
   osd_layout = pango_layout_new(context);
@@ -127,41 +157,41 @@ aosd_thread_func ( void * arg )
   switch ( cfg_osd->position.placement )
   {
     case AOSD_POSITION_PLACEMENT_TOP:
-      pos_x = (screen_width - (layout_width + pad_left + pad_right)) / 2;
-      pos_y = 0;
+      pos_x += (screen_width - (layout_width + pad_left + pad_right)) / 2;
+      pos_y += 0;
       break;
     case AOSD_POSITION_PLACEMENT_TOPRIGHT:
-      pos_x = screen_width - (layout_width + pad_left + pad_right);
-      pos_y = 0;
+      pos_x += screen_width - (layout_width + pad_left + pad_right);
+      pos_y += 0;
       break;
     case AOSD_POSITION_PLACEMENT_MIDDLELEFT:
-      pos_x = 0;
-      pos_y = (screen_height - (layout_height + pad_top + pad_bottom)) / 2;
+      pos_x += 0;
+      pos_y += (screen_height - (layout_height + pad_top + pad_bottom)) / 2;
       break;
     case AOSD_POSITION_PLACEMENT_MIDDLE:
-      pos_x = (screen_width - (layout_width + pad_left + pad_right)) / 2;
-      pos_y = (screen_height - (layout_height + pad_top + pad_bottom)) / 2;
+      pos_x += (screen_width - (layout_width + pad_left + pad_right)) / 2;
+      pos_y += (screen_height - (layout_height + pad_top + pad_bottom)) / 2;
       break;
     case AOSD_POSITION_PLACEMENT_MIDDLERIGHT:
-      pos_x = screen_width - (layout_width + pad_left + pad_right);
-      pos_y = (screen_height - (layout_height + pad_top + pad_bottom)) / 2;
+      pos_x += screen_width - (layout_width + pad_left + pad_right);
+      pos_y += (screen_height - (layout_height + pad_top + pad_bottom)) / 2;
       break;
     case AOSD_POSITION_PLACEMENT_BOTTOMLEFT:
-      pos_x = 0;
-      pos_y = screen_height - (layout_height + pad_top + pad_bottom);
+      pos_x += 0;
+      pos_y += screen_height - (layout_height + pad_top + pad_bottom);
       break;
     case AOSD_POSITION_PLACEMENT_BOTTOM:
-      pos_x = (screen_width - (layout_width + pad_left + pad_right)) / 2;
-      pos_y = screen_height - (layout_height + pad_top + pad_bottom);
+      pos_x += (screen_width - (layout_width + pad_left + pad_right)) / 2;
+      pos_y += screen_height - (layout_height + pad_top + pad_bottom);
       break;
     case AOSD_POSITION_PLACEMENT_BOTTOMRIGHT:
-      pos_x = screen_width - (layout_width + pad_left + pad_right);
-      pos_y = screen_height - (layout_height + pad_top + pad_bottom);
+      pos_x += screen_width - (layout_width + pad_left + pad_right);
+      pos_y += screen_height - (layout_height + pad_top + pad_bottom);
       break;
     case AOSD_POSITION_PLACEMENT_TOPLEFT:
     default:
-      pos_x = 0;
-      pos_y = 0;
+      pos_x += 0;
+      pos_y += 0;
       break;
   }
 

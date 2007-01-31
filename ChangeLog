@@ -1,3 +1,15 @@
+2007-01-31 07:14:02 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1256]
+  tweak xspf plugin to conform xspf specification version 1.
+  - arrange the order of elements to pass several validators.
+  - specify character set and encoding as UTF-8.
+  - now urls beginning with file:// can be used.
+  - prepend file:// onto local file entry to save (tentative).
+  
+  trunk/src/xspf/xspf.c |   99 ++++++++++++++++++++++++++++----------------------
+  1 file changed, 56 insertions(+), 43 deletions(-)
+
+
 2007-01-30 21:41:14 +0000  Michael Farber <01mf02@gmail.com>
   revision [1254]
   - Cleaned up AAC plugin a bit more, but still couldn't fix the bug

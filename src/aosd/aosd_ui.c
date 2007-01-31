@@ -126,6 +126,24 @@ aosd_cb_configure_position_offset_commit ( GtkWidget * table , aosd_cfg_t * cfg 
 }
 
 
+static void
+aosd_cb_configure_position_maxsize_commit ( GtkWidget * table , aosd_cfg_t * cfg )
+{
+  cfg->osd->position.maxsize_width = gtk_spin_button_get_value_as_int(
+    GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(table),"maxsize_width")) );
+  return;
+}
+
+
+static void
+aosd_cb_configure_position_multimon_commit ( GtkWidget * combo , aosd_cfg_t * cfg )
+{
+  gint active = gtk_combo_box_get_active( GTK_COMBO_BOX(combo) );
+  cfg->osd->position.multimon_id = ( active > -1 ) ? (active - 1) : -1;
+  return;
+}
+
+
 static GtkWidget *
 aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
 {
@@ -134,9 +152,14 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkWidget *pos_placement_bt[9], *pos_placement_bt_darea[9];
   GtkWidget *pos_offset_table, *pos_offset_x_label, *pos_offset_x_spinbt;
   GtkWidget *pos_offset_y_label, *pos_offset_y_spinbt;
+  GtkWidget *pos_maxsize_width_label, *pos_maxsize_width_spinbt;
+  GtkWidget *pos_multimon_frame, *pos_multimon_hbox;
+  GtkWidget *pos_multimon_label;
+  GtkWidget *pos_multimon_combobox;
+  gint monitors_num = gdk_screen_get_n_monitors( gdk_screen_get_default() );
   gint i = 0;
 
-  pos_vbox = gtk_vbox_new( FALSE , 0 );
+  pos_vbox = gtk_vbox_new( FALSE , 4 );
   gtk_container_set_border_width( GTK_CONTAINER(pos_vbox) , 6 );
 
   pos_placement_frame = gtk_frame_new( _("Placement") );
@@ -170,10 +193,11 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
 
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , gtk_vseparator_new() , FALSE , FALSE , 6 );
 
-  pos_offset_table = gtk_table_new( 2 , 2 , FALSE );
+  pos_offset_table = gtk_table_new( 3 , 2 , FALSE );
   gtk_table_set_row_spacings( GTK_TABLE(pos_offset_table) , 4 );
   gtk_table_set_col_spacings( GTK_TABLE(pos_offset_table) , 4 );
   pos_offset_x_label = gtk_label_new( _( "Relative X offset:" ) );
+  gtk_misc_set_alignment( GTK_MISC(pos_offset_x_label) , 0 , 0.5 );
   gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_offset_x_label ,
                     0 , 1 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
   pos_offset_x_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
@@ -182,6 +206,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
                     1 , 2 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
   g_object_set_data( G_OBJECT(pos_offset_table) , "offx" , pos_offset_x_spinbt );
   pos_offset_y_label = gtk_label_new( _( "Relative Y offset:" ) );
+  gtk_misc_set_alignment( GTK_MISC(pos_offset_y_label) , 0 , 0.5 );
   gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_offset_y_label ,
                     0 , 1 , 1 , 2 , GTK_FILL , GTK_FILL , 0 , 0 );
   pos_offset_y_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
@@ -189,8 +214,37 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_offset_y_spinbt ,
                     1 , 2 , 1 , 2 , GTK_FILL , GTK_FILL , 0 , 0 );
   g_object_set_data( G_OBJECT(pos_offset_table) , "offy" , pos_offset_y_spinbt );
+  pos_maxsize_width_label = gtk_label_new( _("Max OSD width:") );
+  gtk_misc_set_alignment( GTK_MISC(pos_maxsize_width_label) , 0 , 0.5 );
+  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_maxsize_width_label ,
+                    0 , 1 , 2 , 3 , GTK_FILL , GTK_FILL , 0 , 0 );
+  pos_maxsize_width_spinbt = gtk_spin_button_new_with_range( 0 , 99999 , 1 );
+  g_object_set_data( G_OBJECT(pos_offset_table) , "maxsize_width" , pos_maxsize_width_spinbt );
+  gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_maxsize_width_spinbt) , cfg->osd->position.maxsize_width );
+  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_maxsize_width_spinbt ,
+                    1 , 2 , 2 , 3 , GTK_FILL , GTK_FILL , 0 , 0 );
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_offset_table , FALSE , FALSE , 0 );
   aosd_callback_list_add( cb_list , pos_offset_table , aosd_cb_configure_position_offset_commit );
+  aosd_callback_list_add( cb_list , pos_offset_table , aosd_cb_configure_position_maxsize_commit );
+
+  pos_multimon_frame = gtk_frame_new( "Multi-Monitor options" );
+  pos_multimon_hbox = gtk_hbox_new( FALSE , 4 );
+  gtk_container_set_border_width( GTK_CONTAINER(pos_multimon_hbox) , 6 );
+  gtk_container_add( GTK_CONTAINER(pos_multimon_frame), pos_multimon_hbox );
+  pos_multimon_label = gtk_label_new( _("Display OSD using:") );
+  pos_multimon_combobox = gtk_combo_box_new_text();
+  gtk_combo_box_append_text( GTK_COMBO_BOX(pos_multimon_combobox) , _("all monitors") );
+  for ( i = 0 ; i < monitors_num ; i++ )
+  {
+    gchar *mon_str = g_strdup_printf( _("monitor %i") , i + 1 );
+    gtk_combo_box_append_text( GTK_COMBO_BOX(pos_multimon_combobox) , mon_str );
+    g_free( mon_str );
+  }
+  gtk_combo_box_set_active( GTK_COMBO_BOX(pos_multimon_combobox) , (cfg->osd->position.multimon_id + 1) );
+  aosd_callback_list_add( cb_list , pos_multimon_combobox , aosd_cb_configure_position_multimon_commit );
+  gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_label , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_combobox , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_vbox) , pos_multimon_frame , FALSE , FALSE , 0 );
 
   return pos_vbox;
 }

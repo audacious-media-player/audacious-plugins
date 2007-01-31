@@ -132,6 +132,8 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
   cfg_osd_copy->position.placement = cfg_osd->position.placement;
   cfg_osd_copy->position.offset_x = cfg_osd->position.offset_x;
   cfg_osd_copy->position.offset_y = cfg_osd->position.offset_y;
+  cfg_osd_copy->position.maxsize_width = cfg_osd->position.maxsize_width;
+  cfg_osd_copy->position.multimon_id = cfg_osd->position.multimon_id;
   cfg_osd_copy->animation.timing_display = cfg_osd->animation.timing_display;
   cfg_osd_copy->animation.timing_fadein = cfg_osd->animation.timing_fadein;
   cfg_osd_copy->animation.timing_fadeout = cfg_osd->animation.timing_fadeout;
@@ -163,6 +165,8 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
   g_print("  placement: %i\n", cfg->osd->position.placement);
   g_print("  offset x: %i\n", cfg->osd->position.offset_x);
   g_print("  offset y: %i\n", cfg->osd->position.offset_y);
+  g_print("  max OSD width: %i\n", cfg->osd->position.maxsize_width);
+  g_print("  multi-monitor id: %i\n", cfg->osd->position.multimon_id);
   g_print("\nANIMATION\n");
   g_print("  timing display: %i\n", cfg->osd->animation.timing_display);
   g_print("  timing fade in: %i\n", cfg->osd->animation.timing_fadein);
@@ -214,6 +218,14 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   if ( !bmp_cfg_db_get_int( cfgfile , "aosd" ,
        "position_offset_y" , &(cfg->osd->position.offset_y) ) )
     cfg->osd->position.offset_y = 0;
+
+  if ( !bmp_cfg_db_get_int( cfgfile , "aosd" ,
+       "position_maxsize_width" , &(cfg->osd->position.maxsize_width) ) )
+    cfg->osd->position.maxsize_width = 0;
+
+  if ( !bmp_cfg_db_get_int( cfgfile , "aosd" ,
+       "position_multimon_id" , &(cfg->osd->position.multimon_id) ) )
+    cfg->osd->position.multimon_id = -1;
 
   /* animation */
   if ( !bmp_cfg_db_get_int( cfgfile , "aosd" ,
@@ -325,6 +337,12 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
 
   bmp_cfg_db_set_int( cfgfile , "aosd" ,
     "position_offset_y" , cfg->osd->position.offset_y );
+
+  bmp_cfg_db_set_int( cfgfile , "aosd" ,
+    "position_maxsize_width" , cfg->osd->position.maxsize_width );
+
+  bmp_cfg_db_set_int( cfgfile , "aosd" ,
+    "position_multimon_id" , cfg->osd->position.multimon_id );
 
   /* animation */
   bmp_cfg_db_set_int( cfgfile , "aosd" ,

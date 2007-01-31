@@ -88,6 +88,8 @@ typedef struct
   gint placement;
   gint offset_x;
   gint offset_y;
+  gint maxsize_width;
+  gint multimon_id;
 }
 aosd_cfg_osd_position_t;
 
