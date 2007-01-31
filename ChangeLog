@@ -1,3 +1,10 @@
+2007-01-31 16:59:20 +0000  Giacomo Lozito <james@develia.org>
+  revision [1260]
+  - aosd: prevent user from setting an excessively large max_width
+  trunk/src/aosd/aosd_osd.c |    6 ++++--
+  1 file changed, 4 insertions(+), 2 deletions(-)
+
+
 2007-01-31 16:42:04 +0000  Giacomo Lozito <james@develia.org>
   revision [1258]
   - aosd: added experimental multiple monitor support, plus max_width setting

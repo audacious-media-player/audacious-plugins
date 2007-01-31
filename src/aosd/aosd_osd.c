@@ -137,7 +137,7 @@ aosd_thread_func ( void * arg )
     gint max_width_default = screen_width - pad_left - pad_right - abs(cfg_osd->position.offset_x);
     max_width = cfg_osd->position.maxsize_width - pad_left - pad_right;
     /* ignore user-defined max_width if it is too small or too large */
-    if ( max_width < 1 ) || ( max_width > max_width_default )
+    if (( max_width < 1 ) || ( max_width > max_width_default ))
       max_width = max_width_default;
   }
   else
