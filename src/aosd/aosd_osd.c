@@ -34,14 +34,13 @@
 #include "ghosd-text.h"
 
 
-#define AOSD_STATUS_HIDDEN 0
-#define AOSD_STATUS_SHOWN  1
-#define AOSD_STATUS_UPDATE 2
+#define AOSD_STATUS_HIDDEN    0
+#define AOSD_STATUS_SHOWN     1
+#define AOSD_STATUS_INTERRUPT 2
 
 
 static pthread_t * aosd_thread = NULL;
 static pthread_mutex_t aosd_status_mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t aosd_status_cond = PTHREAD_COND_INITIALIZER;
 static gboolean aosd_status = AOSD_STATUS_HIDDEN;
 
 
@@ -227,7 +226,7 @@ aosd_thread_func ( void * arg )
     for ( fade_data.alpha = 0 ; fade_data.alpha < 1.0 ; fade_data.alpha += dalpha_in )
     {
       pthread_mutex_lock( &aosd_status_mutex );
-      if ( aosd_status == AOSD_STATUS_UPDATE )
+      if ( aosd_status == AOSD_STATUS_INTERRUPT )
         { pthread_mutex_unlock( &aosd_status_mutex ); stop_now = TRUE; break; }
       pthread_mutex_unlock( &aosd_status_mutex );
 
@@ -250,7 +249,7 @@ aosd_thread_func ( void * arg )
     while ( time_iter_ms < cfg_osd->animation.timing_display )
     {
       pthread_mutex_lock( &aosd_status_mutex );
-      if ( aosd_status == AOSD_STATUS_UPDATE )
+      if ( aosd_status == AOSD_STATUS_INTERRUPT )
         { pthread_mutex_unlock( &aosd_status_mutex ); stop_now = TRUE; break; }
       pthread_mutex_unlock( &aosd_status_mutex );
 
@@ -267,7 +266,7 @@ aosd_thread_func ( void * arg )
     for ( fade_data.alpha = 1 ; fade_data.alpha > 0.0 ; fade_data.alpha -= dalpha_out )
     {
       pthread_mutex_lock( &aosd_status_mutex );
-      if ( aosd_status == AOSD_STATUS_UPDATE )
+      if ( aosd_status == AOSD_STATUS_INTERRUPT )
         { pthread_mutex_unlock( &aosd_status_mutex ); stop_now = TRUE; break; }
       pthread_mutex_unlock( &aosd_status_mutex );
 
@@ -289,17 +288,8 @@ aosd_thread_func ( void * arg )
     cairo_surface_destroy( fade_data.surface );
 
   pthread_mutex_lock( &aosd_status_mutex );
-  if ( aosd_status == AOSD_STATUS_UPDATE )
-  {
-    aosd_status = AOSD_STATUS_SHOWN;
-    pthread_mutex_unlock( &aosd_status_mutex );
-    pthread_cond_signal( &aosd_status_cond );
-  }
-  else
-  {
-    aosd_status = AOSD_STATUS_HIDDEN;
-    pthread_mutex_unlock( &aosd_status_mutex );
-  }
+  aosd_status = AOSD_STATUS_HIDDEN;
+  pthread_mutex_unlock( &aosd_status_mutex );
 
   g_free( markup_string );
   if ( thread_data->cfg_is_copied == TRUE )
@@ -333,8 +323,7 @@ aosd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_
   {
     /* a message is already being shown in osd, stop the
        display of that message cause there is a new one */
-    aosd_status = AOSD_STATUS_UPDATE;
-    pthread_cond_wait( &aosd_status_cond , &aosd_status_mutex );
+    aosd_status = AOSD_STATUS_INTERRUPT;
   }
   else
   {
@@ -348,6 +337,7 @@ aosd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_
   else
     aosd_thread = g_malloc(sizeof(pthread_t));
 
+  aosd_status = AOSD_STATUS_SHOWN; /* aosd_thread joined, no need to mutex this */
   pthread_create( aosd_thread , NULL , aosd_thread_func , thread_data );
   return 0;
 }
@@ -363,8 +353,7 @@ aosd_shutdown ( void )
     {
       /* a message is being shown in osd,
          stop the display of that message */
-      aosd_status = AOSD_STATUS_UPDATE;
-      pthread_cond_wait( &aosd_status_cond , &aosd_status_mutex );
+      aosd_status = AOSD_STATUS_INTERRUPT;
     }
     pthread_mutex_unlock( &aosd_status_mutex );
     pthread_join( *aosd_thread , NULL );
