@@ -48,24 +48,27 @@ enum
 {
   AOSD_DECO_STYLE_RECT = 0,
   AOSD_DECO_STYLE_ROUNDRECT = 1,
-  AOSD_DECO_STYLE_CONCAVERECT = 2
+  AOSD_DECO_STYLE_CONCAVERECT = 2,
+  AOSD_DECO_STYLE_NONE
 };
 
 /* decoration style codes array size */
-#define AOSD_DECO_STYLE_CODES_ARRAY_SIZE 3
+#define AOSD_DECO_STYLE_CODES_ARRAY_SIZE 4
 
 /* decoration style codes array */
 gint aosd_deco_style_codes[] =
 {
   AOSD_DECO_STYLE_RECT,
   AOSD_DECO_STYLE_ROUNDRECT,
-  AOSD_DECO_STYLE_CONCAVERECT
+  AOSD_DECO_STYLE_CONCAVERECT,
+  AOSD_DECO_STYLE_NONE
 };
 
 /* prototypes of render functions */
 static void aosd_deco_rfunc_rect ( Ghosd * , cairo_t * , aosd_deco_style_data_t * );
 static void aosd_deco_rfunc_roundrect ( Ghosd * , cairo_t * , aosd_deco_style_data_t * );
 static void aosd_deco_rfunc_concaverect ( Ghosd * , cairo_t * , aosd_deco_style_data_t * );
+static void aosd_deco_rfunc_none ( Ghosd * , cairo_t * , aosd_deco_style_data_t * );
 
 /* map decoration style codes to decoration objects */
 aosd_deco_style_t aosd_deco_styles[] =
@@ -80,7 +83,11 @@ aosd_deco_style_t aosd_deco_styles[] =
 
   [AOSD_DECO_STYLE_CONCAVERECT] = { N_("Concave Rectangle") ,
                                     aosd_deco_rfunc_concaverect ,
-                                    2 , { 10 , 10 , 10 , 10 } }
+                                    2 , { 10 , 10 , 10 , 10 } },
+
+  [AOSD_DECO_STYLE_NONE] = { N_("None") ,
+                             aosd_deco_rfunc_none ,
+                             0 , { 2 , 2 , 2 , 2 } }
 };
 
 
@@ -328,5 +335,42 @@ aosd_deco_rfunc_concaverect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_
   cairo_move_to( cr ,
     aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.left ,
     aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.top );
+  pango_cairo_show_layout( cr , osd_layout );
+}
+
+
+static void
+aosd_deco_rfunc_none ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * data )
+{
+  /* decoration information
+     ----------------------
+     does not draw any decoration around text; uses 0 colors
+     and 1 font (user font 1), with optional shadow
+  */
+  PangoLayout *osd_layout = data->layout;
+  aosd_color_t textcolor0 = data->text->fonts_color[0];
+  aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
+  gboolean draw_shadow = data->text->fonts_draw_shadow[0];
+  gint width = 0, height = 0;
+
+  pango_layout_get_pixel_size( osd_layout , &width , &height );
+
+  if ( draw_shadow == TRUE )
+  {
+    /* draw text shadow */
+    cairo_set_source_rgba( cr , (gdouble)shadowcolor0.red / 65535 , (gdouble)shadowcolor0.green / 65535 ,
+      (gdouble)shadowcolor0.blue / 65535 , (gdouble)shadowcolor0.alpha / 65535 );
+    cairo_move_to( cr ,
+      aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.left + 2 ,
+      aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.top + 2 );
+    pango_cairo_show_layout( cr , osd_layout );
+  }
+
+  /* draw text */
+  cairo_set_source_rgba( cr , (gdouble)textcolor0.red / 65535 , (gdouble)textcolor0.green / 65535 ,
+    (gdouble)textcolor0.blue / 65535 , (gdouble)textcolor0.alpha / 65535 );
+  cairo_move_to( cr ,
+    aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.left ,
+    aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.top );
   pango_cairo_show_layout( cr , osd_layout );
 }

@@ -1,3 +1,10 @@
+2007-01-31 17:00:15 +0000  Giacomo Lozito <james@develia.org>
+  revision [1262]
+  - aosd: fix typo
+  trunk/src/aosd/aosd_osd.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-01-31 16:59:20 +0000  Giacomo Lozito <james@develia.org>
   revision [1260]
   - aosd: prevent user from setting an excessively large max_width
