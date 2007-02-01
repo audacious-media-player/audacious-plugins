@@ -730,12 +730,15 @@ static void *mp4_decode( void *args )
     if ( mp4cfg.file_type == FILE_MP4 ) {
         my_decode_mp4( playback, filename, mp4file );
 
+        /*
+         * What's this shit good for?
         g_free(args);
         vfs_fclose(mp4fh);
         g_static_mutex_lock(&mutex);
         buffer_playing = FALSE;
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
+         */
     }
     else {
         my_decode_aac( playback, filename );
