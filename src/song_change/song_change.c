@@ -26,9 +26,9 @@
 static void init(void);
 static void cleanup(void);
 static GtkWidget *configure(void);
-static void songchange_playback_begin(gpointer unused);
-static void songchange_playback_end(gpointer unused);
-static void songchange_playlist_eof(gpointer unused);
+static void songchange_playback_begin(gpointer unused, gpointer unused2);
+static void songchange_playback_end(gpointer unused, gpointer unused2);
+static void songchange_playlist_eof(gpointer unused, gpointer unused2);
 
 static char *cmd_line = NULL;
 static char *cmd_line_after = NULL;
@@ -433,15 +433,15 @@ static void init(void)
 	configure_vbox = configure();
 	prefswin_page_new(configure_vbox, "Song Change", DATA_DIR "/images/plugins.png");
 
-	hook_associate("playback begin", songchange_playback_begin);
-	hook_associate("playback end", songchange_playback_end);
-	hook_associate("playlist end reached", songchange_playlist_eof);
+	hook_associate("playback begin", songchange_playback_begin, NULL);
+	hook_associate("playback end", songchange_playback_end, NULL);
+	hook_associate("playlist end reached", songchange_playlist_eof, NULL);
 
 	configure_ok_cb(NULL, NULL);
 }
 
 static void
-songchange_playback_begin(gpointer unused)
+songchange_playback_begin(gpointer unused, gpointer unused2)
 {
 	int pos;
 	char *current_file;
@@ -455,7 +455,7 @@ songchange_playback_begin(gpointer unused)
 }
 
 static void
-songchange_playback_end(gpointer unused)
+songchange_playback_end(gpointer unused, gpointer unused2)
 {
 	int pos;
 	char *current_file;
@@ -469,7 +469,7 @@ songchange_playback_end(gpointer unused)
 }
 
 static void
-songchange_playlist_eof(gpointer unused)
+songchange_playlist_eof(gpointer unused, gpointer unused2)
 {
 	int pos;
 	char *current_file;
