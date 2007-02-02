@@ -1,3 +1,14 @@
+2007-02-02 00:45:47 +0000  Giacomo Lozito <james@develia.org>
+  revision [1278]
+  - aosd: replaced polling with hooks; added trigger options as well, working triggers are playback start and title changes
+  trunk/src/aosd/Makefile   |    4 -
+  trunk/src/aosd/aosd.c     |   57 +------------------------
+  trunk/src/aosd/aosd_cfg.c |   41 ++++++++++++++++++
+  trunk/src/aosd/aosd_cfg.h |    9 ++++
+  trunk/src/aosd/aosd_ui.c  |  102 ++++++++++++++++++++++++++++++++++++++++------
+  5 files changed, 145 insertions(+), 68 deletions(-)
+
+
 2007-02-01 19:12:38 +0000  Michael Farber <01mf02@gmail.com>
   revision [1276]
   - Uncommented some (obviously unneeded?) stuff -> fixed crash
