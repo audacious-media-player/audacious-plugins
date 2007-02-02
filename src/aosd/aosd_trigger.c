@@ -139,14 +139,28 @@ static void
 aosd_trigger_func_pb_start_cb ( gpointer plentry_gp , gpointer unused )
 {
   PlaylistEntry *pl_entry = plentry_gp;
-  if (( plentry_gp != NULL ) && ( pl_entry->title != NULL ))
+  if ( plentry_gp != NULL )
   {
-    gchar *utf8_title = str_to_utf8( pl_entry->title );
+    gchar *title;
+    if ( pl_entry->title != NULL )
+    {
+      /* if there is a proper title, use it */
+      title = g_strdup(pl_entry->title);
+    }
+    else
+    {
+      /* pick what we have as song title */
+      Playlist *active = playlist_get_active();
+      gint pos = playlist_get_position(active);
+      title = playlist_get_songtitle(active, pos);
+    }
+    gchar *utf8_title = str_to_utf8( title );
     gchar *utf8_title_markup = g_markup_printf_escaped(
       "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
     aosd_display( utf8_title_markup , global_config->osd , FALSE );
     g_free( utf8_title_markup );
     g_free( utf8_title );
+    g_free( title );
   }
   return;
 }
@@ -199,9 +213,9 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
 
     if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
     {
-      if ( !strcmp(pl_entry->filename,prevs->filename) )
+      if ( ( pl_entry->filename != NULL ) && ( !strcmp(pl_entry->filename,prevs->filename) ) )
       {
-        if ( strcmp(pl_entry->title,prevs->title) )
+        if ( ( pl_entry->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
         {
           /* string formatting is done here a.t.m. - TODO - improve this area */
           gchar *utf8_title = str_to_utf8( pl_entry->title );
