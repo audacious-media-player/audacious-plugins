@@ -1,3 +1,10 @@
+2007-02-02 12:34:35 +0000  Giacomo Lozito <james@develia.org>
+  revision [1282]
+  - aosd: stability fixes for triggers (handle situation where a plentry exists but plentry->title is null)
+  trunk/src/aosd/aosd_trigger.c |   22 ++++++++++++++++++----
+  1 file changed, 18 insertions(+), 4 deletions(-)
+
+
 2007-02-02 00:46:20 +0000  Giacomo Lozito <james@develia.org>
   revision [1280]
   - aosd: add missing aosd_trigger* sources
