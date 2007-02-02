@@ -1,0 +1,2320 @@
+# translation of audacious-plugins-tr.po to
+# translation of audacious-plugins.po to
+# Copyright (C) YEAR Translator <translator@invalid>
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Murat Şenel <muratasenel@gmail.com>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: audacious-plugins-tr\n"
+"Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
+"POT-Creation-Date: 2007-01-22 10:42-0600\n"
+"PO-Revision-Date: 2007-02-02 22:58+0200\n"
+"Last-Translator: Murat Şenel <muratasenel@gmail.com>\n"
+"Language-Team:  <tr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: src/CoreAudio/coreaudio.c:49
+msgid "CoreAudio Output Plugin"
+msgstr "CoreAudio Output Eklentisi"
+
+#: src/OSS/configure.c:150
+#, c-format
+msgid "Default (%s)"
+msgstr "Varsayılan %s"
+
+#: src/OSS/configure.c:168
+msgid "Default"
+msgstr "Vasyılan"
+
+#: src/OSS/configure.c:200
+msgid "OSS Driver configuration"
+msgstr "OSS Sürücüsü ayarları"
+
+#: src/OSS/configure.c:216
+#: src/sun/configure.c:182
+msgid "Audio device:"
+msgstr "Ses aygıtı:"
+
+#: src/OSS/configure.c:238
+#: src/OSS/configure.c:279
+msgid "Use alternate device:"
+msgstr "Farklı aygıt kullan:"
+
+#: src/OSS/configure.c:259
+#: src/sun/configure.c:219
+msgid "Mixer device:"
+msgstr "Karıştırıcı aygıt"
+
+#: src/OSS/configure.c:301
+#: src/sun/configure.c:247
+msgid "Devices"
+msgstr "Aygıtlar"
+
+#: src/OSS/configure.c:303
+#: src/esd/configure.c:171
+#: src/mpg123/configure.c:269
+#: src/sun/configure.c:258
+#: src/vorbis/configure.c:173
+msgid "Buffering:"
+msgstr "Tamponlanan:"
+
+#: src/OSS/configure.c:316
+#: src/esd/configure.c:184
+#: src/sun/configure.c:271
+msgid "Buffer size (ms):"
+msgstr "Tampon boyutu (ms):"
+
+#: src/OSS/configure.c:330
+#: src/esd/configure.c:198
+#: src/mpg123/configure.c:297
+#: src/sun/configure.c:289
+#: src/vorbis/configure.c:199
+msgid "Pre-buffer (percent):"
+msgstr "Ön tampon (yüzde):"
+
+#: src/OSS/configure.c:341
+#: src/esd/configure.c:209
+#: src/sun/configure.c:303
+msgid "Buffering"
+msgstr "Tamponlanıyor"
+
+#: src/OSS/configure.c:342
+msgid "Mixer Settings:"
+msgstr "Karıştırıcı Ayarları:"
+
+#: src/OSS/configure.c:348
+msgid "Volume controls Master not PCM"
+msgstr "Ses Master'ı değil, PCM'yi kontrol ediyor"
+
+#: src/OSS/configure.c:354
+#: src/sun/configure.c:393
+msgid "Mixer"
+msgstr "Karıştırıcı"
+
+#: src/OSS/OSS.c:53
+msgid "OSS Output Plugin"
+msgstr "OSS Output Eklentisi"
+
+#: src/OSS/about.c:39
+msgid "About OSS Driver"
+msgstr "OSS Sürücüsü Hakkında"
+
+#: src/OSS/about.c:40
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
+#: src/OSS/about.c:54
+#: src/adplug/adplug-xmms.cc:155
+#: src/alac/plugin.c:87
+#: src/audiocompress/audacious-glue.c:103
+#: src/console/Audacious_Driver.cxx:459
+#: src/echo_plugin/gui.c:23
+#: src/echo_plugin/gui.c:134
+#: src/esd/about.c:49
+#: src/jack/jack.c:598
+#: src/mpg123/mpg123.c:1000
+#: src/null/null.c:63
+#: src/paranormal/plugin.c:290
+#: src/scrobbler/gtkstuff.c:24
+#: src/stereo_plugin/stereo.c:59
+#: src/stereo_plugin/stereo.c:122
+#: src/sun/configure.c:558
+#: src/sun/about.c:38
+#: src/timidity/src/xmms-timidity.c:140
+#: src/timidity/src/interface.c:223
+#: src/tonegen/tonegen.c:57
+#: src/vorbis/fileinfo.c:212
+#: src/vorbis/vorbis.c:895
+#: src/wav/wav-sndfile.c:263
+msgid "Ok"
+msgstr "Tamam"
+
+#: src/adplug/adplug-xmms.cc:146
+msgid "About "
+msgstr "Hakkında"
+
+#: src/adplug/adplug-xmms.cc:149
+msgid ""
+"\n"
+"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+"\n"
+"This plugin is released under the terms and conditions of the GNU LGPL.\n"
+"See http://www.gnu.org/licenses/lgpl.html for details.\n"
+"\n"
+"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et al.\n"
+"Linked AdPlug library version: "
+msgstr ""
+"\n"
+"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+"\n"
+"This plugin is released under the terms and conditions of the GNU LGPL.\n"
+"See http://www.gnu.org/licenses/lgpl.html for details.\n"
+"\n"
+"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et al.\n"
+"Linked AdPlug library version: "
+
+#: src/audiocompress/audacious-glue.c:96
+msgid "AudioCompress "
+msgstr "AudioCompress"
+
+#: src/audiocompress/audacious-glue.c:97
+msgid ""
+"\n"
+"(c)2003 trikuare studios(http://trikuare.cx)\n"
+"Ported to Audacious by Tony Vroon (chainsaw@gentoo.org)\n"
+"\n"
+"Simple dynamic range compressor for transparently\n"
+"keeping the volume level more or less consistent"
+msgstr ""
+"\n"
+"(c)2003 trikuare studios(http://trikuare.cx)\n"
+"Audacious'a Tony Vroon (chainsaw@gentoo.org) tarafından aktarıldı\n"
+"\n"
+"Simple dynamic range compressor for transparently\n"
+"keeping the volume level more or less consistent"
+
+#: src/audiocompress/audacious-glue.c:102
+msgid "About AudioCompress"
+msgstr "AudioCompress Hakkında"
+
+#: src/blur_scope/config.c:73
+msgid "Blur Scope: Color selection"
+msgstr "Bulanıklık Kapsam: Renk seçimi"
+
+#: src/blur_scope/config.c:83
+msgid "Options:"
+msgstr "Seçenekler:"
+
+#: src/blur_scope/blur_scope.c:57
+msgid "/Toggle Decorations"
+msgstr "/Değiştirme Dekorasyonu"
+
+#: src/blur_scope/blur_scope.c:59
+msgid "/-"
+msgstr "/-"
+
+#: src/blur_scope/blur_scope.c:60
+msgid "/Close"
+msgstr "/Kapat"
+
+#: src/blur_scope/blur_scope.c:194
+msgid "Blur scope"
+msgstr "Bulanıklık kapsamı"
+
+#: src/cdaudio/configure.c:185
+#: src/cdaudio/configure.c:199
+#: src/cdaudio/configure.c:525
+#, c-format
+msgid "Drive %d"
+msgstr "Sürücü %d"
+
+#: src/cdaudio/configure.c:245
+#, c-format
+msgid ""
+"Failed to open device %s\n"
+"Error: %s\n"
+"\n"
+msgstr ""
+"%s aygıtı açılamadı\n"
+"Hata: %s\n"
+"\n"
+
+#: src/cdaudio/configure.c:252
+msgid ""
+"Failed to read \"Table of Contents\"\n"
+"Maybe no disc in the drive?\n"
+"\n"
+msgstr ""
+"\"İçerik\" okunamadı\n"
+"Sürücüde disk olmayabilir?\n"
+"\n"
+
+#: src/cdaudio/configure.c:256
+#, c-format
+msgid ""
+"Device %s OK.\n"
+"Disc has %d tracks"
+msgstr ""
+"%s ayıtı tamam.\n"
+"Disk üzerinde %d adet parça var"
+
+#: src/cdaudio/configure.c:265
+#, c-format
+msgid " (%d data tracks)"
+msgstr " (%d veri parçaları)"
+
+#: src/cdaudio/configure.c:266
+#, c-format
+msgid ""
+"\n"
+"Total length: %d:%d\n"
+msgstr ""
+"\n"
+"Toplam uzunluk: %d:%d\n"
+
+#: src/cdaudio/configure.c:271
+msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
+msgstr "Disk üzerinde ses dosyası olmadığı için sayısal ses çıkarma test edilemedi\n"
+
+#: src/cdaudio/configure.c:288
+msgid ""
+"Digital audio extraction test: OK\n"
+"\n"
+msgstr ""
+"Sayısal ses çıkarma testi: OK\n"
+"\n"
+
+#: src/cdaudio/configure.c:292
+#, c-format
+msgid ""
+"Digital audio extraction test failed: %s\n"
+"\n"
+msgstr ""
+"Sayısal ses çıkartma testi başarısızlığa uğradı: %s\n"
+"\n"
+
+#: src/cdaudio/configure.c:302
+#, c-format
+msgid ""
+"Failed to check directory %s\n"
+"Error: %s"
+msgstr ""
+"%s dizini kontrol edilemedi\n"
+"Hata: %s"
+
+#: src/cdaudio/configure.c:308
+#, c-format
+msgid "Error: %s exist, but is not a directory"
+msgstr "Hata: %s var, fakat bir dizin değil"
+
+#: src/cdaudio/configure.c:311
+#, c-format
+msgid "Directory %s OK."
+msgstr "%s dizini tamam."
+
+#: src/cdaudio/configure.c:355
+msgid "Device:"
+msgstr "Aygıt:"
+
+#: src/cdaudio/configure.c:363
+msgid "_Device:"
+msgstr "_Aygıt:"
+
+#: src/cdaudio/configure.c:373
+msgid "Dir_ectory:"
+msgstr "_Dizin:"
+
+#: src/cdaudio/configure.c:385
+msgid "Play mode:"
+msgstr "Çalma kipi:"
+
+#: src/cdaudio/configure.c:391
+msgid "Analog"
+msgstr "Analog"
+
+#: src/cdaudio/configure.c:399
+msgid "Digital audio extraction"
+msgstr "Sayısal ses çıkarma"
+
+#: src/cdaudio/configure.c:409
+msgid "Volume control:"
+msgstr "Ses kontrolü"
+
+#: src/cdaudio/configure.c:415
+msgid "No mixer"
+msgstr "Karıştırıcı yok"
+
+#: src/cdaudio/configure.c:421
+msgid "CDROM drive"
+msgstr "CDROM sürücüsü"
+
+#: src/cdaudio/configure.c:427
+msgid "OSS mixer"
+msgstr "OSS karıştırıcısı"
+
+#: src/cdaudio/configure.c:450
+msgid "Check drive..."
+msgstr "Sürücüyü kontrol et..."
+
+#: src/cdaudio/configure.c:456
+msgid "Remove drive"
+msgstr "Sürücüyü kaldır"
+
+#: src/cdaudio/configure.c:499
+msgid "CD Audio Player Configuration"
+msgstr "CD Ses Çalıcısı Ayarları"
+
+#: src/cdaudio/configure.c:537
+msgid "Add drive"
+msgstr "Sürücü ekle"
+
+#: src/cdaudio/configure.c:545
+msgid "Device"
+msgstr "Aygıt"
+
+#: src/cdaudio/configure.c:555
+msgid "CDDB:"
+msgstr "CDDB:"
+
+#: src/cdaudio/configure.c:566
+msgid "Use CDDB"
+msgstr "CDDB kullan"
+
+#: src/cdaudio/configure.c:570
+msgid "Get server list"
+msgstr "Sunucu listesini al"
+
+#: src/cdaudio/configure.c:573
+msgid "Show network window"
+msgstr "Ağ penceresini göster"
+
+#: src/cdaudio/configure.c:583
+msgid "CDDB server:"
+msgstr "CDDB sunucusu:"
+
+#: src/cdaudio/configure.c:598
+msgid "Track names:"
+msgstr "Parça isimleri:"
+
+#: src/cdaudio/configure.c:605
+#: src/mpg123/configure.c:382
+#: src/vorbis/configure.c:261
+msgid "Override generic titles"
+msgstr "Genel başlıkları geçersiz kıl"
+
+#: src/cdaudio/configure.c:621
+msgid "Name format:"
+msgstr "İsim biçimi:"
+
+#: src/cdaudio/configure.c:633
+msgid "CD Info"
+msgstr "CD Bilgisi"
+
+#: src/cdaudio/cdaudio.c:186
+msgid "CD Audio Plugin"
+msgstr "CD Ses Eklentisi"
+
+#: src/cdaudio/cdaudio.c:1055
+#: src/cdaudio/cdaudio.c:1060
+#, c-format
+msgid "CD Audio Track %02u"
+msgstr "%02u CD Ses Parçası"
+
+#: src/cdaudio/cdinfo.c:161
+#: src/cdaudio/cdinfo.c:162
+#: src/cdaudio/cdinfo.c:163
+msgid "(unknown)"
+msgstr "(bilinmeyen)"
+
+#: src/console/Audacious_Driver.cxx:454
+msgid "About the Console Music Decoder"
+msgstr "Konsol Müzik Çözücüsü Hakkında"
+
+#: src/console/Audacious_Driver.cxx:455
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
+"        Shay Green <gblargg@gmail.com>"
+msgstr ""
+"Game_Music_Emu 0.5.2 tabanlı konsol müzik çözücüsü.\n"
+"Desteklenen biçimler: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Audacious için uyarlayan: William Pitcock <nenolod@nenolod.net>, \n"
+"        Shay Green <gblargg@gmail.com>"
+
+#: src/console/Audacious_Driver.cxx:504
+msgid "Game console audio module decoder"
+msgstr "Oyun konsolu ses modülü çözücüsü"
+
+#: src/console/Audacious_Config.cxx:123
+msgid "Console Music Decoder"
+msgstr "Konsol Müzik Çözücüsü"
+
+#: src/console/Audacious_Config.cxx:143
+msgid "General"
+msgstr "Genel"
+
+#: src/console/Audacious_Config.cxx:145
+msgid "Playback"
+msgstr "Çal"
+
+#: src/console/Audacious_Config.cxx:160
+msgid "Bass:"
+msgstr "Bas:"
+
+#: src/console/Audacious_Config.cxx:164
+#: src/console/Audacious_Config.cxx:175
+#: src/console/Audacious_Config.cxx:196
+msgid "secs"
+msgstr "saniye"
+
+#: src/console/Audacious_Config.cxx:171
+msgid "Treble:"
+msgstr "Tiz:"
+
+#: src/console/Audacious_Config.cxx:192
+msgid "Default song length:"
+msgstr "Varsayılan şarkı uzunluğu:"
+
+#: src/console/Audacious_Config.cxx:198
+msgid "Resampling"
+msgstr "Yeniden örnekleme"
+
+#: src/console/Audacious_Config.cxx:204
+msgid "Enable audio resampling"
+msgstr "Ses örneklemesini etkinleştir"
+
+#: src/console/Audacious_Config.cxx:219
+msgid "Resampling rate:"
+msgstr "Örnekleme oranı:"
+
+#: src/console/Audacious_Config.cxx:223
+msgid "Hz"
+msgstr "Hz"
+
+#: src/console/Audacious_Config.cxx:233
+msgid "NSF/NSFE"
+msgstr "NSF/NSFE"
+
+#: src/console/Audacious_Config.cxx:234
+msgid "Use optional NSFE playlist"
+msgstr "Seçmeli NSFE çalma listesi kullan"
+
+#: src/console/Audacious_Config.cxx:245
+msgid "SPC"
+msgstr "SPC"
+
+#: src/console/Audacious_Config.cxx:246
+msgid "Ignore length from SPC tags"
+msgstr "SPC etiketlerindeki uzunluğu gözardı et"
+
+#: src/console/Audacious_Config.cxx:266
+msgid ""
+"* Default song length *\n"
+"The default song length, expressed in seconds, is used for songs that do not provide length information (i.e. looping tracks)."
+msgstr ""
+"* Vasayılan şarkı uzunluğu *\n"
+"Saniyelerle belirtilen varsayılan şarkı uzunluğu, uzunluk bilgisi bulunmayan parçalar için kullanılır."
+
+#: src/disk_writer/disk_writer.c:111
+#, c-format
+msgid "Disk Writer Plugin %s"
+msgstr "Disk Yazma Eklentisi %s"
+
+#: src/disk_writer/disk_writer.c:140
+msgid "Error"
+msgstr "Hata"
+
+#: src/disk_writer/disk_writer.c:141
+msgid ""
+"You cannot use the Disk Writer plugin\n"
+"when you're running in realtime mode."
+msgstr ""
+"Gerçek zamanlı kipte çalışırken\n"
+"disk yazma eklentisini kullanamazsınız."
+
+#: src/disk_writer/disk_writer.c:143
+msgid "OK"
+msgstr "Tamam"
+
+#: src/disk_writer/disk_writer.c:356
+msgid "Disk Writer Configuration"
+msgstr "Disk Yazıcı Ayarları"
+
+#: src/disk_writer/disk_writer.c:367
+msgid "Output file folder:"
+msgstr "Çıktı dosya klasörü"
+
+#: src/disk_writer/disk_writer.c:377
+msgid "Don't strip file name extension"
+msgstr "Dosya ismi uzantılarını daraltma"
+
+#: src/echo_plugin/echo.c:44
+#, c-format
+msgid "Echo Plugin %s"
+msgstr "Echo Eklentisi %s"
+
+#: src/echo_plugin/gui.c:8
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin 1999.\n"
+"\n"
+"Surround echo by Carl van Schaik 1999"
+msgstr ""
+"Echo Eklentisi\n"
+"Johan Levin 1999.\n"
+"\n"
+"Surround echo - Carl van Schaik 1999"
+
+#: src/echo_plugin/gui.c:22
+msgid "About Echo Plugin"
+msgstr "Echo Eklentisi Hakkında"
+
+#: src/echo_plugin/gui.c:73
+msgid "Configure Echo"
+msgstr "Echo Eklentisini Yapılandır"
+
+#: src/echo_plugin/gui.c:86
+msgid "Delay: (ms)"
+msgstr "Gecikme: (ms )"
+
+#: src/echo_plugin/gui.c:91
+msgid "Feedback: (%)"
+msgstr "Geribesleme: (%)"
+
+#: src/echo_plugin/gui.c:96
+msgid "Volume: (%)"
+msgstr "Ses: (%)"
+
+#: src/echo_plugin/gui.c:119
+msgid "Surround echo"
+msgstr "Surround echo"
+
+#: src/echo_plugin/gui.c:142
+#: src/stereo_plugin/stereo.c:131
+#: src/sun/configure.c:566
+#: src/timidity/src/interface.c:231
+msgid "Cancel"
+msgstr "İptal"
+
+#: src/echo_plugin/gui.c:149
+#: src/stereo_plugin/stereo.c:138
+msgid "Apply"
+msgstr "Uygula"
+
+#: src/esd/configure.c:102
+msgid "ESD Output Plugin configuration"
+msgstr "ESD Output Eklentisi yapılandırması"
+
+#: src/esd/configure.c:114
+#: src/esd/configure.c:144
+msgid "Host:"
+msgstr "Makine:"
+
+#: src/esd/configure.c:125
+msgid "Use remote host"
+msgstr "Uzaktaki makineyi kullan"
+
+#: src/esd/configure.c:132
+msgid "Volume controls OSS mixer"
+msgstr "Ses OSS karıştırıcısını kontrol ediyor"
+
+#: src/esd/configure.c:153
+msgid "Port:"
+msgstr "Port:"
+
+#: src/esd/configure.c:169
+msgid "Server"
+msgstr "Sunucu"
+
+#: src/esd/about.c:34
+msgid "About ESounD Plugin"
+msgstr "ESounD Eklentisi Hakkında"
+
+#: src/esd/about.c:35
+msgid ""
+"Audacious ESounD Plugin\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious ESounD Eklentisi\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
+#: src/esd/esd.c:49
+msgid "eSound Output Plugin"
+msgstr "eSound Output Eklentisi"
+
+#: src/jack/jack.c:594
+msgid "About JACK Output Plugin 0.17"
+msgstr "JACK Output Eklentisi 0.17 Hakkında"
+
+#: src/jack/jack.c:595
+msgid ""
+"XMMS jack Driver 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Audacious port by\n"
+"Giacomo Lozito from develia.org"
+msgstr ""
+"XMMS jack Sürücüsü 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Audacious uyarlaması\n"
+"develia.org'tan Giacomo Lozito"
+
+#: src/lirc/lirc.c:66
+msgid "LIRC Plugin"
+msgstr "LIRC Eklentisi"
+
+#: src/lirc/lirc.c:84
+#, c-format
+msgid "%s: could not init LIRC support\n"
+msgstr "%s: LIRC desteği başlatılamadı\n"
+
+#: src/lirc/lirc.c:92
+#, c-format
+msgid ""
+"%s: could not read LIRC config file\n"
+"%s: please read the documentation of LIRC\n"
+"%s: how to create a proper config file\n"
+msgstr ""
+"%s: LIRC yapılandırma dosyası okunamadı\n"
+"%s: lütfen LIRC belgelerini okuyun\n"
+"%s: uygun yapılandırma dosyası nasıl oluşturulur\n"
+
+#: src/lirc/lirc.c:338
+#, c-format
+msgid "%s: unknown command \"%s\"\n"
+msgstr "%s: bilinmeyen komut \"%s\"\n"
+
+#: src/lirc/lirc.c:348
+#, c-format
+msgid "%s: disconnected from LIRC\n"
+msgstr "%s: LIRC bağlantısı kesildi\n"
+
+#: src/lirc/about.c:65
+msgid "About LIRC Audacious Plugin"
+msgstr "LIRC Audacious Eklentisi Hakkında"
+
+#: src/lirc/about.c:92
+msgid "LIRC Plugin "
+msgstr "LIRC Eklentisi"
+
+#: src/lirc/about.c:94
+msgid ""
+"\n"
+"A simple plugin that lets you control\n"
+"Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"You can get LIRC information at:\n"
+"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+msgstr ""
+"\n"
+"LIRC uzaktan kontrol sunucusunu kullanarak\n"
+"Audacious'u kontrol etmenizi sağlayan bir eklenti\n"
+"\n"
+"Audacious kullanımı için uyarlandı - Tony Vroon <chainsaw@gentoo.org>\n"
+"XMMS LIRC eklentisinden:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"LIRC hakkında bilgi almak için:\n"
+"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+
+#: src/lirc/about.c:116
+msgid "Close"
+msgstr "Kapat"
+
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
+msgid "Blues"
+msgstr "Blues"
+
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
+msgid "Classic Rock"
+msgstr "Klasik Rock"
+
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
+msgid "Country"
+msgstr "Country"
+
+#: src/mpg123/mpg123.c:49
+#: src/vorbis/fileinfo.c:83
+msgid "Dance"
+msgstr "Dans"
+
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
+msgid "Disco"
+msgstr "Disko"
+
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
+msgid "Funk"
+msgstr "Funk"
+
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
+msgid "Grunge"
+msgstr "Grunge"
+
+#: src/mpg123/mpg123.c:50
+#: src/vorbis/fileinfo.c:84
+msgid "Hip-Hop"
+msgstr "Hip-Hop"
+
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
+msgid "Jazz"
+msgstr "Jazz"
+
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
+msgid "Metal"
+msgstr "Metal"
+
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
+msgid "New Age"
+msgstr "New Age"
+
+#: src/mpg123/mpg123.c:51
+#: src/vorbis/fileinfo.c:85
+msgid "Oldies"
+msgstr "Eskiler"
+
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
+msgid "Other"
+msgstr "Diğer"
+
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
+msgid "Pop"
+msgstr "Pop"
+
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
+msgid "R&B"
+msgstr "R&B"
+
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
+msgid "Rap"
+msgstr "Rap"
+
+#: src/mpg123/mpg123.c:52
+#: src/vorbis/fileinfo.c:86
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
+msgid "Rock"
+msgstr "Rock"
+
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
+msgid "Techno"
+msgstr "Tekno"
+
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
+msgid "Industrial"
+msgstr "Endüstriyel"
+
+#: src/mpg123/mpg123.c:53
+#: src/vorbis/fileinfo.c:87
+msgid "Alternative"
+msgstr "Alternatif"
+
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
+msgid "Ska"
+msgstr "Ska"
+
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
+msgid "Death Metal"
+msgstr "Death Metal"
+
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
+msgid "Pranks"
+msgstr "Pranks"
+
+#: src/mpg123/mpg123.c:54
+#: src/vorbis/fileinfo.c:88
+msgid "Soundtrack"
+msgstr "Soundtrack"
+
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
+msgid "Euro-Techno"
+msgstr "Euro-Techno"
+
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
+msgid "Ambient"
+msgstr "Ambiyans"
+
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
+msgid "Trip-Hop"
+msgstr "Trip-Hop"
+
+#: src/mpg123/mpg123.c:55
+#: src/vorbis/fileinfo.c:89
+msgid "Vocal"
+msgstr "Vokal"
+
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
+msgid "Jazz+Funk"
+msgstr "Jazz+Funk"
+
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
+msgid "Fusion"
+msgstr "Fusion"
+
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
+msgid "Trance"
+msgstr "Trance"
+
+#: src/mpg123/mpg123.c:56
+#: src/vorbis/fileinfo.c:90
+msgid "Classical"
+msgstr "Klasik"
+
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
+msgid "Instrumental"
+msgstr "Enstrümantal"
+
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
+msgid "Acid"
+msgstr "Asit"
+
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
+msgid "House"
+msgstr "House"
+
+#: src/mpg123/mpg123.c:57
+#: src/vorbis/fileinfo.c:91
+msgid "Game"
+msgstr "Oyun"
+
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
+msgid "Sound Clip"
+msgstr "Ses Klibi"
+
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
+msgid "Gospel"
+msgstr "Gospel"
+
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
+msgid "Noise"
+msgstr "Gürültü"
+
+#: src/mpg123/mpg123.c:58
+#: src/vorbis/fileinfo.c:92
+msgid "AlternRock"
+msgstr "Alternatif Rock"
+
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
+msgid "Bass"
+msgstr "Bas"
+
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
+msgid "Soul"
+msgstr "Soul"
+
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
+msgid "Punk"
+msgstr "Punk"
+
+#: src/mpg123/mpg123.c:59
+#: src/vorbis/fileinfo.c:93
+msgid "Space"
+msgstr "Uzay"
+
+#: src/mpg123/mpg123.c:60
+#: src/vorbis/fileinfo.c:94
+msgid "Meditative"
+msgstr "Düşünceli"
+
+#: src/mpg123/mpg123.c:60
+#: src/vorbis/fileinfo.c:94
+msgid "Instrumental Pop"
+msgstr "Enstrümantal Pop"
+
+#: src/mpg123/mpg123.c:61
+#: src/vorbis/fileinfo.c:95
+msgid "Instrumental Rock"
+msgstr "Enstrümantal Rock"
+
+#: src/mpg123/mpg123.c:61
+#: src/vorbis/fileinfo.c:95
+msgid "Ethnic"
+msgstr "Etnik"
+
+#: src/mpg123/mpg123.c:61
+#: src/vorbis/fileinfo.c:95
+msgid "Gothic"
+msgstr "Gotik"
+
+#: src/mpg123/mpg123.c:62
+#: src/vorbis/fileinfo.c:96
+msgid "Darkwave"
+msgstr "Darkwave"
+
+#: src/mpg123/mpg123.c:62
+#: src/vorbis/fileinfo.c:96
+msgid "Techno-Industrial"
+msgstr "Tekno-Endüstriyel"
+
+#: src/mpg123/mpg123.c:62
+#: src/vorbis/fileinfo.c:96
+msgid "Electronic"
+msgstr "Elektronik"
+
+#: src/mpg123/mpg123.c:63
+#: src/vorbis/fileinfo.c:97
+msgid "Pop-Folk"
+msgstr "Pop-Folk"
+
+#: src/mpg123/mpg123.c:63
+#: src/vorbis/fileinfo.c:97
+msgid "Eurodance"
+msgstr "Eurodance"
+
+#: src/mpg123/mpg123.c:63
+#: src/vorbis/fileinfo.c:97
+msgid "Dream"
+msgstr "Rüya"
+
+#: src/mpg123/mpg123.c:64
+#: src/vorbis/fileinfo.c:98
+msgid "Southern Rock"
+msgstr "Southern Rock"
+
+#: src/mpg123/mpg123.c:64
+#: src/vorbis/fileinfo.c:98
+msgid "Comedy"
+msgstr "Komedi"
+
+#: src/mpg123/mpg123.c:64
+#: src/vorbis/fileinfo.c:98
+msgid "Cult"
+msgstr "Cult"
+
+#: src/mpg123/mpg123.c:65
+#: src/vorbis/fileinfo.c:99
+msgid "Gangsta Rap"
+msgstr "Gangsta Rap"
+
+#: src/mpg123/mpg123.c:65
+#: src/vorbis/fileinfo.c:99
+msgid "Top 40"
+msgstr "Top 40"
+
+#: src/mpg123/mpg123.c:65
+#: src/vorbis/fileinfo.c:99
+msgid "Christian Rap"
+msgstr "Christian Rap"
+
+#: src/mpg123/mpg123.c:66
+#: src/vorbis/fileinfo.c:100
+msgid "Pop/Funk"
+msgstr "Pop/Funk"
+
+#: src/mpg123/mpg123.c:66
+#: src/vorbis/fileinfo.c:100
+msgid "Jungle"
+msgstr "Jungle"
+
+#: src/mpg123/mpg123.c:66
+#: src/vorbis/fileinfo.c:100
+msgid "Native American"
+msgstr "Native American"
+
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
+msgid "Cabaret"
+msgstr "Kabare"
+
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
+msgid "New Wave"
+msgstr "New Wave"
+
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
+msgid "Psychedelic"
+msgstr "Psychedelic"
+
+#: src/mpg123/mpg123.c:67
+#: src/vorbis/fileinfo.c:101
+msgid "Rave"
+msgstr "Rave"
+
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
+msgid "Showtunes"
+msgstr "Showtunes"
+
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
+msgid "Trailer"
+msgstr "Trailer"
+
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
+msgid "Lo-Fi"
+msgstr "Lo-Fi"
+
+#: src/mpg123/mpg123.c:68
+#: src/vorbis/fileinfo.c:102
+msgid "Tribal"
+msgstr "Tribal"
+
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
+msgid "Acid Punk"
+msgstr "Acid Punk"
+
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
+msgid "Acid Jazz"
+msgstr "Acid Jazz"
+
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
+msgid "Polka"
+msgstr "Polka"
+
+#: src/mpg123/mpg123.c:69
+#: src/vorbis/fileinfo.c:103
+msgid "Retro"
+msgstr "Retro"
+
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
+msgid "Musical"
+msgstr "Müzikal"
+
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
+msgid "Rock & Roll"
+msgstr "Rock & Roll"
+
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
+msgid "Hard Rock"
+msgstr "Hard Rock"
+
+#: src/mpg123/mpg123.c:70
+#: src/vorbis/fileinfo.c:104
+msgid "Folk"
+msgstr "Folk"
+
+#: src/mpg123/mpg123.c:71
+#: src/vorbis/fileinfo.c:105
+msgid "Folk/Rock"
+msgstr "Folk/Rock"
+
+#: src/mpg123/mpg123.c:71
+#: src/vorbis/fileinfo.c:105
+msgid "National Folk"
+msgstr "Ulusal Folk"
+
+#: src/mpg123/mpg123.c:71
+#: src/vorbis/fileinfo.c:105
+msgid "Swing"
+msgstr "Swing"
+
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
+msgid "Fast-Fusion"
+msgstr "Fast-Fusion"
+
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
+msgid "Bebob"
+msgstr "Bebob"
+
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
+msgid "Latin"
+msgstr "Latin"
+
+#: src/mpg123/mpg123.c:72
+#: src/vorbis/fileinfo.c:106
+msgid "Revival"
+msgstr "Revival"
+
+#: src/mpg123/mpg123.c:73
+#: src/vorbis/fileinfo.c:107
+msgid "Celtic"
+msgstr "Celtic"
+
+#: src/mpg123/mpg123.c:73
+#: src/vorbis/fileinfo.c:107
+msgid "Bluegrass"
+msgstr "Bluegrass"
+
+#: src/mpg123/mpg123.c:73
+#: src/vorbis/fileinfo.c:107
+msgid "Avantgarde"
+msgstr "Avantgarde"
+
+#: src/mpg123/mpg123.c:74
+#: src/vorbis/fileinfo.c:108
+msgid "Gothic Rock"
+msgstr "Gothic Rock"
+
+#: src/mpg123/mpg123.c:74
+#: src/vorbis/fileinfo.c:108
+msgid "Progressive Rock"
+msgstr "Progressive Rock"
+
+#: src/mpg123/mpg123.c:75
+#: src/vorbis/fileinfo.c:109
+msgid "Psychedelic Rock"
+msgstr "Psychedelic Rock"
+
+#: src/mpg123/mpg123.c:75
+#: src/vorbis/fileinfo.c:109
+msgid "Symphonic Rock"
+msgstr "Senfonik Rock"
+
+#: src/mpg123/mpg123.c:75
+#: src/vorbis/fileinfo.c:109
+msgid "Slow Rock"
+msgstr "Slow Rock"
+
+#: src/mpg123/mpg123.c:76
+#: src/vorbis/fileinfo.c:110
+msgid "Big Band"
+msgstr "Big Band"
+
+#: src/mpg123/mpg123.c:76
+#: src/vorbis/fileinfo.c:110
+msgid "Chorus"
+msgstr "Chorus"
+
+#: src/mpg123/mpg123.c:76
+#: src/vorbis/fileinfo.c:110
+msgid "Easy Listening"
+msgstr "Easy Listening"
+
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
+msgid "Acoustic"
+msgstr "Akustik"
+
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
+msgid "Humour"
+msgstr "Humour"
+
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
+msgid "Speech"
+msgstr "Konuşma"
+
+#: src/mpg123/mpg123.c:77
+#: src/vorbis/fileinfo.c:111
+msgid "Chanson"
+msgstr "Türkü"
+
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
+msgid "Opera"
+msgstr "Opera"
+
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
+msgid "Chamber Music"
+msgstr "Oda Müziği"
+
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
+msgid "Sonata"
+msgstr "Sonata"
+
+#: src/mpg123/mpg123.c:78
+#: src/vorbis/fileinfo.c:112
+msgid "Symphony"
+msgstr "Senfoni"
+
+#: src/mpg123/mpg123.c:79
+#: src/vorbis/fileinfo.c:113
+msgid "Booty Bass"
+msgstr "Booty Bass"
+
+#: src/mpg123/mpg123.c:79
+#: src/vorbis/fileinfo.c:113
+msgid "Primus"
+msgstr "Primus"
+
+#: src/mpg123/mpg123.c:79
+#: src/vorbis/fileinfo.c:113
+msgid "Porn Groove"
+msgstr "Porn Groove"
+
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
+msgid "Satire"
+msgstr "Taşlama"
+
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
+msgid "Slow Jam"
+msgstr "Slow Jam"
+
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
+msgid "Club"
+msgstr "Club"
+
+#: src/mpg123/mpg123.c:80
+#: src/vorbis/fileinfo.c:114
+msgid "Tango"
+msgstr "Tango"
+
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
+msgid "Samba"
+msgstr "Samba"
+
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
+msgid "Folklore"
+msgstr "Folklor"
+
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
+msgid "Ballad"
+msgstr "Ballad"
+
+#: src/mpg123/mpg123.c:81
+#: src/vorbis/fileinfo.c:115
+msgid "Power Ballad"
+msgstr "Power Ballad"
+
+#: src/mpg123/mpg123.c:82
+#: src/vorbis/fileinfo.c:116
+msgid "Rhythmic Soul"
+msgstr "Ritmik Soul"
+
+#: src/mpg123/mpg123.c:82
+#: src/vorbis/fileinfo.c:116
+msgid "Freestyle"
+msgstr "Freestyle"
+
+#: src/mpg123/mpg123.c:82
+#: src/vorbis/fileinfo.c:116
+msgid "Duet"
+msgstr "Düet"
+
+#: src/mpg123/mpg123.c:83
+#: src/vorbis/fileinfo.c:117
+msgid "Punk Rock"
+msgstr "Punk Rock"
+
+#: src/mpg123/mpg123.c:83
+#: src/vorbis/fileinfo.c:117
+msgid "Drum Solo"
+msgstr "Davul Solo"
+
+#: src/mpg123/mpg123.c:83
+#: src/vorbis/fileinfo.c:117
+msgid "A Cappella"
+msgstr "Cappella"
+
+#: src/mpg123/mpg123.c:84
+#: src/vorbis/fileinfo.c:118
+msgid "Euro-House"
+msgstr "Euro-House"
+
+#: src/mpg123/mpg123.c:84
+#: src/vorbis/fileinfo.c:118
+msgid "Dance Hall"
+msgstr "Dans Salonu"
+
+#: src/mpg123/mpg123.c:84
+#: src/vorbis/fileinfo.c:118
+msgid "Goa"
+msgstr "Goa"
+
+#: src/mpg123/mpg123.c:85
+#: src/vorbis/fileinfo.c:119
+msgid "Drum & Bass"
+msgstr "Davul & Bas"
+
+#: src/mpg123/mpg123.c:85
+#: src/vorbis/fileinfo.c:119
+msgid "Club-House"
+msgstr "Club-House"
+
+#: src/mpg123/mpg123.c:85
+#: src/vorbis/fileinfo.c:119
+msgid "Hardcore"
+msgstr "Hardcore"
+
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
+msgid "Terror"
+msgstr "Terör"
+
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
+msgid "Indie"
+msgstr "Indie"
+
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
+msgid "BritPop"
+msgstr "BritPop"
+
+#: src/mpg123/mpg123.c:86
+#: src/vorbis/fileinfo.c:120
+msgid "Negerpunk"
+msgstr "Negerpunk"
+
+#: src/mpg123/mpg123.c:87
+#: src/vorbis/fileinfo.c:121
+msgid "Polsk Punk"
+msgstr "Polsk Punk"
+
+#: src/mpg123/mpg123.c:87
+#: src/vorbis/fileinfo.c:121
+msgid "Beat"
+msgstr "Beat"
+
+#: src/mpg123/mpg123.c:87
+#: src/vorbis/fileinfo.c:121
+msgid "Christian Gangsta Rap"
+msgstr "Christian Gangsta Rap"
+
+#: src/mpg123/mpg123.c:88
+#: src/vorbis/fileinfo.c:122
+msgid "Heavy Metal"
+msgstr "Heavy Metal"
+
+#: src/mpg123/mpg123.c:88
+#: src/vorbis/fileinfo.c:122
+msgid "Black Metal"
+msgstr "Black Metal"
+
+#: src/mpg123/mpg123.c:88
+#: src/vorbis/fileinfo.c:122
+msgid "Crossover"
+msgstr "Crossover"
+
+#: src/mpg123/mpg123.c:89
+#: src/vorbis/fileinfo.c:123
+msgid "Contemporary Christian"
+msgstr "Contemporary Christian"
+
+#: src/mpg123/mpg123.c:89
+#: src/vorbis/fileinfo.c:123
+msgid "Christian Rock"
+msgstr "Christian Rock"
+
+#: src/mpg123/mpg123.c:90
+#: src/vorbis/fileinfo.c:124
+msgid "Merengue"
+msgstr "Merengue"
+
+#: src/mpg123/mpg123.c:90
+#: src/vorbis/fileinfo.c:124
+msgid "Salsa"
+msgstr "Salsa"
+
+#: src/mpg123/mpg123.c:90
+#: src/vorbis/fileinfo.c:124
+msgid "Thrash Metal"
+msgstr "Thrash Metal"
+
+#: src/mpg123/mpg123.c:91
+#: src/vorbis/fileinfo.c:125
+msgid "Anime"
+msgstr "Anime"
+
+#: src/mpg123/mpg123.c:91
+#: src/vorbis/fileinfo.c:125
+msgid "JPop"
+msgstr "JPop"
+
+#: src/mpg123/mpg123.c:91
+#: src/vorbis/fileinfo.c:125
+msgid "Synthpop"
+msgstr "Synthpop"
+
+#: src/mpg123/mpg123.c:995
+msgid "About MPEG Audio Plugin"
+msgstr "MPEG Ses Eklentisi Hakkında"
+
+#: src/mpg123/mpg123.c:996
+msgid ""
+"Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, derived from:\n"
+"mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
+"Derived partially from mpg123 0.59s.mc3 as well.\n"
+"Based on the original XMMS plugin."
+msgstr ""
+
+#: src/mpg123/mpg123.c:1041
+msgid "MPEG Audio Plugin"
+msgstr "MPEG Ses Eklentisi"
+
+#: src/mpg123/configure.c:158
+msgid "MPEG Audio Plugin Configuration"
+msgstr "MPEG Ses Eklentisi Yapılandırması"
+
+#: src/mpg123/configure.c:175
+msgid "Resolution:"
+msgstr "Çözünürlük:"
+
+#: src/mpg123/configure.c:183
+#: src/timidity/src/interface.c:141
+msgid "16 bit"
+msgstr "16 bit"
+
+#: src/mpg123/configure.c:192
+#: src/timidity/src/interface.c:133
+msgid "8 bit"
+msgstr "8 bit"
+
+#: src/mpg123/configure.c:199
+#: src/vorbis/fileinfo.c:863
+#: src/vorbis/fileinfo.c:919
+msgid "Channels:"
+msgstr "Kanallar:"
+
+#: src/mpg123/configure.c:207
+msgid "Stereo (if available)"
+msgstr "Stereo (varsa)"
+
+#: src/mpg123/configure.c:218
+#: src/timidity/src/interface.c:166
+msgid "Mono"
+msgstr "Mono"
+
+#: src/mpg123/configure.c:225
+msgid "Down sample:"
+msgstr "Alt örnek:"
+
+#: src/mpg123/configure.c:234
+msgid "1:1 (44 kHz)"
+msgstr "1:1 (44 kHz)"
+
+#: src/mpg123/configure.c:245
+msgid "1:2 (22 kHz)"
+msgstr "1:2 (22 kHz)"
+
+#: src/mpg123/configure.c:256
+msgid "1:4 (11 kHz)"
+msgstr "1:4 (11 kHz)"
+
+#: src/mpg123/configure.c:265
+msgid "Decoder"
+msgstr "Çözücü"
+
+#: src/mpg123/configure.c:282
+#: src/vorbis/configure.c:185
+msgid "Buffer size (kb):"
+msgstr "Tampon boyutu (kb):"
+
+#: src/mpg123/configure.c:311
+#: src/vorbis/configure.c:213
+msgid "Save stream to disk:"
+msgstr "Akışı diske kaydet:"
+
+#: src/mpg123/configure.c:322
+#: src/vorbis/configure.c:224
+msgid "Save stream to disk"
+msgstr "Akışı diske kaydet"
+
+#: src/mpg123/configure.c:336
+#: src/vorbis/configure.c:238
+msgid "Path:"
+msgstr "Yol:"
+
+#: src/mpg123/configure.c:341
+#: src/vorbis/configure.c:243
+msgid "Pick a folder"
+msgstr "Bir klasör seçin"
+
+#: src/mpg123/configure.c:347
+msgid "SHOUT/Icecast:"
+msgstr "SHOUT/Icecast:"
+
+#: src/mpg123/configure.c:358
+msgid "Enable Icecast Metadata UDP Channel"
+msgstr "Icecast Metadata UDP Kanalını etkinleştirin"
+
+#: src/mpg123/configure.c:365
+#: src/vorbis/configure.c:249
+msgid "Streaming"
+msgstr "Duraksız İşlem"
+
+#: src/mpg123/configure.c:367
+msgid "ID3 Tags:"
+msgstr "ID3 Etiketleri:"
+
+#: src/mpg123/configure.c:375
+msgid "Disable ID3V2 tags"
+msgstr "ID3V2 etiketlerini kapat"
+
+#: src/mpg123/configure.c:395
+msgid "ID3 format:"
+msgstr "ID3 biçimi:"
+
+#: src/mpg123/configure.c:409
+#: src/vorbis/configure.c:288
+msgid "Title"
+msgstr "Başlık"
+
+#: src/mpg123/fileinfo.c:211
+#: src/timidity/src/interface.c:174
+msgid "Stereo"
+msgstr "Stereo"
+
+#: src/mpg123/fileinfo.c:211
+msgid "Joint stereo"
+msgstr "Birleşik Stereo"
+
+#: src/mpg123/fileinfo.c:212
+msgid "Dual channel"
+msgstr "Çift kanal"
+
+#: src/mpg123/fileinfo.c:212
+msgid "Single channel"
+msgstr "Tek kanal"
+
+#: src/mpg123/fileinfo.c:227
+#: src/mpg123/fileinfo.c:769
+#, c-format
+msgid "%d KBit/s"
+msgstr "%d KBit/s"
+
+#: src/mpg123/fileinfo.c:228
+#: src/mpg123/fileinfo.c:764
+#, c-format
+msgid "%ld Hz"
+msgstr "%ld Hz"
+
+#: src/mpg123/fileinfo.c:245
+msgid "None"
+msgstr "Hiçbiri"
+
+#: src/mpg123/fileinfo.c:246
+msgid "50/15 ms"
+msgstr "50/15 ms"
+
+#: src/mpg123/fileinfo.c:248
+msgid "CCIT J.17"
+msgstr "CCIT J.17"
+
+#: src/mpg123/fileinfo.c:249
+msgid "No"
+msgstr "Hayır"
+
+#: src/mpg123/fileinfo.c:250
+msgid "Yes"
+msgstr "Evet"
+
+#: src/mpg123/fileinfo.c:294
+#: src/vorbis/fileinfo.c:558
+msgid "Name:"
+msgstr "İsim:"
+
+#: src/mpg123/fileinfo.c:310
+msgid " MPEG Info "
+msgstr " MPEG Bilgisi "
+
+#: src/mpg123/fileinfo.c:325
+#: src/mpg123/fileinfo.c:647
+msgid "MPEG Level:"
+msgstr "MPEG Seviyesi:"
+
+#: src/mpg123/fileinfo.c:338
+#: src/mpg123/fileinfo.c:650
+#: src/vorbis/fileinfo.c:837
+#: src/vorbis/fileinfo.c:913
+msgid "Bit rate:"
+msgstr "Bit oranı:"
+
+#: src/mpg123/fileinfo.c:351
+#: src/mpg123/fileinfo.c:653
+#: src/vorbis/fileinfo.c:850
+#: src/vorbis/fileinfo.c:916
+msgid "Sample rate:"
+msgstr "Örnekleme oranı:"
+
+#: src/mpg123/fileinfo.c:365
+#: src/mpg123/fileinfo.c:668
+#: src/vorbis/fileinfo.c:889
+#: src/vorbis/fileinfo.c:925
+msgid "File size:"
+msgstr "Dosya boytu:"
+
+#: src/mpg123/fileinfo.c:378
+#: src/mpg123/fileinfo.c:671
+msgid "Mode:"
+msgstr "Kip:"
+
+#: src/mpg123/fileinfo.c:401
+#: src/mpg123/fileinfo.c:656
+msgid "Error Protection:"
+msgstr "Hata Koruması:"
+
+#: src/mpg123/fileinfo.c:414
+#: src/mpg123/fileinfo.c:659
+#: src/vorbis/fileinfo.c:719
+msgid "Copyright:"
+msgstr "Telif Hakkı:"
+
+#: src/mpg123/fileinfo.c:427
+#: src/mpg123/fileinfo.c:662
+msgid "Original:"
+msgstr "Orjinal:"
+
+#: src/mpg123/fileinfo.c:440
+#: src/mpg123/fileinfo.c:665
+msgid "Emphasis:"
+msgstr "Vurgu:"
+
+#: src/mpg123/fileinfo.c:454
+msgid " ID3 Tag "
+msgstr "ID3 Etiketi"
+
+#: src/mpg123/fileinfo.c:462
+#: src/vorbis/fileinfo.c:581
+msgid "Title:"
+msgstr "Başlık:"
+
+#: src/mpg123/fileinfo.c:473
+#: src/vorbis/fileinfo.c:592
+msgid "Artist:"
+msgstr "Sanatçı:"
+
+#: src/mpg123/fileinfo.c:484
+#: src/vorbis/fileinfo.c:603
+msgid "Album:"
+msgstr "Albüm:"
+
+#: src/mpg123/fileinfo.c:495
+#: src/vorbis/fileinfo.c:614
+msgid "Comment:"
+msgstr "Yorum:"
+
+#: src/mpg123/fileinfo.c:506
+msgid "Year:"
+msgstr "Yıl:"
+
+#: src/mpg123/fileinfo.c:518
+#: src/vorbis/fileinfo.c:637
+msgid "Track number:"
+msgstr "Parça numarası:"
+
+#: src/mpg123/fileinfo.c:530
+#: src/vorbis/fileinfo.c:649
+msgid "Genre:"
+msgstr "Tür:"
+
+#: src/mpg123/fileinfo.c:630
+#: src/vorbis/fileinfo.c:1015
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/mpg123/fileinfo.c:648
+#: src/mpg123/fileinfo.c:651
+#: src/mpg123/fileinfo.c:654
+#: src/mpg123/fileinfo.c:657
+#: src/mpg123/fileinfo.c:660
+#: src/mpg123/fileinfo.c:663
+#: src/mpg123/fileinfo.c:666
+#: src/mpg123/fileinfo.c:669
+#: src/mpg123/fileinfo.c:672
+#: src/vorbis/fileinfo.c:914
+#: src/vorbis/fileinfo.c:917
+#: src/vorbis/fileinfo.c:920
+#: src/vorbis/fileinfo.c:923
+#: src/vorbis/fileinfo.c:926
+msgid "N/A"
+msgstr "N/A"
+
+#: src/mpg123/fileinfo.c:816
+#: src/mpg123/fileinfo.c:818
+#: src/mpg123/fileinfo.c:819
+#: src/mpg123/fileinfo.c:820
+#: src/mpg123/fileinfo.c:822
+#, c-format
+msgid "%s"
+msgstr "%s"
+
+#: src/mpg123/fileinfo.c:821
+#, c-format
+msgid "%lu Bytes"
+msgstr "%lu Byte"
+
+#: src/null/null.c:59
+msgid "About Null Output"
+msgstr "Null Output Hakkında"
+
+#: src/null/null.c:60
+msgid "Null output plugin "
+msgstr "Null Output eklentisi"
+
+#: src/null/null.c:61
+msgid ""
+" by Christian Birchinger <joker@netswarm.net>\n"
+" based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+msgstr ""
+"Christian Birchinger <joker@netswarm.net>\n"
+"XMMS eklentisi tabanlı - Håvard Kvål <havardk@xmms.org>"
+
+#: src/scrobbler/configure.c:112
+msgid "<b>Services</b>"
+msgstr "<b>Hizmetler</b>"
+
+#: src/scrobbler/configure.c:134
+#: src/scrobbler/configure.c:174
+#: src/scrobbler/configure.c:214
+msgid "Username:"
+msgstr "Kullanıcı adı:"
+
+#: src/scrobbler/configure.c:140
+#: src/scrobbler/configure.c:180
+#: src/scrobbler/configure.c:220
+msgid "Password:"
+msgstr "Şifre:"
+
+#: src/scrobbler/configure.c:158
+msgid "<b>Last.FM</b>"
+msgstr "<b>Last.FM</b>"
+
+#: src/scrobbler/configure.c:198
+msgid "<b>Gerpok</b>"
+msgstr "<b>Gerpok</b>"
+
+#: src/scrobbler/configure.c:238
+msgid "<b>Hatena</b>"
+msgstr "<b>Hatena</b>"
+
+#: src/scrobbler/gtkstuff.c:22
+msgid "About Scrobbler Plugin"
+msgstr "Scrobbler Eklentisi Hakkında"
+
+#: src/scrobbler/plugin.c:575
+msgid "Scrobbler Plugin"
+msgstr "Scrobbler Eklentisi"
+
+#: src/song_change/song_change.c:55
+#, c-format
+msgid "Song Change %s"
+msgstr "Şarkı Değişimi %s"
+
+#: src/song_change/song_change.c:179
+msgid "Commands"
+msgstr "Komutlar"
+
+#: src/song_change/song_change.c:186
+msgid "Command to run when Audacious starts a new song."
+msgstr "Audacious yeni bir şarkı başlattığında çalışacak komut."
+
+#: src/song_change/song_change.c:195
+#: src/song_change/song_change.c:217
+#: src/song_change/song_change.c:238
+msgid "Command:"
+msgstr "Komut:"
+
+#: src/song_change/song_change.c:209
+msgid "Command to run toward the end of a song."
+msgstr "Bir şarkının sonuna doğru çalışacak komut."
+
+#: src/song_change/song_change.c:229
+msgid "Command to run when Audacious reaches the end of the playlist."
+msgstr "Audacious çalma listesinin sonuna ulaştığında çalıştırılacak komut."
+
+#: src/song_change/song_change.c:250
+#, c-format
+msgid ""
+"You can use the following format strings which\n"
+"will be substituted before calling the command\n"
+"(not all are useful for the end-of-playlist command).\n"
+"\n"
+"%%F: Frequency (in hertz)\n"
+"%%c: Number of channels\n"
+"%%f: filename (full path)\n"
+"%%l: length (in milliseconds)\n"
+"%%n or %%s: Song name\n"
+"%%r: Rate (in bits per second)\n"
+"%%t: Playlist position (%%02d)\n"
+"%%p: Currently playing (1 or 0)"
+msgstr ""
+"Komut vermeden önce değiştirilecek olan alttaki\n biçimi kullanabilirsiniz\n"
+"(çalma listesi sonu komutu için hepsi kullanışlı değil).\n"
+"\n"
+"%%F: Frekans (hertz)\n"
+"%%c: Kanal sayısı\n"
+"%%f: dosya adı (tam yol)\n"
+"%%l: uzunluk (milisaniye)\n"
+"%%n veya %%s: Şarkı adı\n"
+"%%r: Oran (bit/sn)\n"
+"%%t: Çalma listesi durumu (%%02d)\n"
+"%%p: Şu an oynatılan (1 or 0)"
+
+#: src/song_change/song_change.c:275
+msgid "<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"
+msgstr "<span size='small'>Kabuğa yollanan parametreler tırnak içinde belirtilmeli. Aksi takdirde güvenlik sorunu yaratır. </span>"
+
+#: src/stereo_plugin/stereo.c:29
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin 1999."
+msgstr ""
+"Ekstra Stereo Eklentisi\n"
+"\n"
+"Johan Levin 1999."
+
+#: src/stereo_plugin/stereo.c:38
+#, c-format
+msgid "Extra Stereo Plugin %s"
+msgstr "Ekstra Stereo Eklentisi %s"
+
+#: src/stereo_plugin/stereo.c:58
+msgid "About Extra Stereo Plugin"
+msgstr "Ekstra Stereo Eklentisi Hakkında"
+
+#: src/stereo_plugin/stereo.c:99
+msgid "Configure Extra Stereo"
+msgstr "Ekstra Stereo Eklentisini Yapılandır"
+
+#: src/stereo_plugin/stereo.c:101
+msgid "Effect intensity:"
+msgstr "Efekt yoğunluğu:"
+
+#: src/sun/configure.c:200
+msgid "Audio control device:"
+msgstr "Ses kontrol aygıtı:"
+
+#: src/sun/configure.c:349
+msgid "Volume controls device:"
+msgstr "Ses kontrolleri aygıtı"
+
+#: src/sun/configure.c:362
+msgid "XMMS uses mixer exclusively."
+msgstr "XMMS, sadece karıştırıcıyı kullanıyor."
+
+#: src/sun/configure.c:487
+msgid "Status"
+msgstr "Durum"
+
+#: src/sun/configure.c:537
+msgid "Sun driver configuration"
+msgstr "Sun sürücüsü yapılandırması"
+
+#: src/sun/sun.c:55
+#, c-format
+msgid "BSD Sun Driver %s"
+msgstr "BSD Sun sürücüsü %s"
+
+#: src/sun/about.c:34
+msgid "About the Sun Driver"
+msgstr "Sun Sürücüsü Hakkında"
+
+#: src/sun/about.c:35
+msgid ""
+"XMMS BSD Sun Driver\n"
+"\n"
+"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+"Maintainer: <vedge at csoft.org>.\n"
+msgstr ""
+"XMMS BSD Sun Sürücüsü\n"
+"\n"
+"Telif Hakkı (c) 2001 CubeSoft Communications, Inc.\n"
+"Sorumlu: <vedge at csoft.org>.\n"
+
+#: src/timidity/src/xmms-timidity.c:103
+#, c-format
+msgid "TiMidity Player %s"
+msgstr "TiMidity Oynatıcısı %s"
+
+#: src/timidity/src/xmms-timidity.c:138
+msgid ""
+"TiMidity Plugin\n"
+"http://libtimidity.sourceforge.net\n"
+"by Konstantin Korikov"
+msgstr ""
+"TiMidity Eklentisi\n"
+"http://libtimidity.sourceforge.net\n"
+"Konstantin Korikov"
+
+#: src/timidity/src/xmms-timidity.c:139
+#, c-format
+msgid "TiMidity Plugin %s"
+msgstr "TiMidity Eklentisi %s"
+
+#: src/timidity/src/xmms-timidity.c:363
+msgid "Couldn't load MIDI file"
+msgstr "MIDI dosyası yüklenemedi"
+
+#: src/timidity/src/interface.c:55
+msgid "TiMidity Configuration"
+msgstr "TiMidity Yapılandırması"
+
+#: src/timidity/src/interface.c:75
+msgid "Sampling Rate"
+msgstr "Örnekleme Oranı"
+
+#: src/timidity/src/interface.c:92
+msgid "11000 Hz"
+msgstr "11000 Hz"
+
+#: src/timidity/src/interface.c:100
+msgid "22000 Hz"
+msgstr "22000 Hz"
+
+#: src/timidity/src/interface.c:108
+msgid "44100 Hz"
+msgstr "44100 Hz"
+
+#: src/timidity/src/interface.c:116
+msgid "Sample Width"
+msgstr "Örnekleme Genişliği"
+
+#: src/timidity/src/interface.c:149
+msgid "Channels"
+msgstr "Kanallar"
+
+#: src/timidity/src/interface.c:182
+msgid "TiMidity Configuration File"
+msgstr "TiMidity Yapılandırma Dosyası"
+
+#: src/tonegen/tonegen.c:51
+msgid "About Tone Generator"
+msgstr "Ton Oluşturucusu Hakkında"
+
+#: src/tonegen/tonegen.c:53
+msgid ""
+"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+msgstr ""
+"Sinus tonu oluşturucusu - Haavard Kvaalen <havardk@xmms.org>\n"
+"Düzenleyen - Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"Kullanmak için bir URL ekleyin: tone://frequency1;frequency2;frequency3;...\n"
+"ör: 2000Hz ton ve 2005Hz ton çalmak için tone://2000;2005"
+
+#: src/tonegen/tonegen.c:165
+msgid "Tone Generator: "
+msgstr "Tone Oluşturucu:"
+
+#: src/tonegen/tonegen.c:265
+#, c-format
+msgid "Tone Generator %s"
+msgstr "Tone Oluşturucu %s"
+
+#: src/tta/aud-tta.c:417
+#, c-format
+msgid "File Info - %s"
+msgstr "Dosya Bilgisi - %s"
+
+#: src/vorbis/configure.c:161
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr "Ogg Vorbis Ses Eklentisi Yapılandırması"
+
+#: src/vorbis/configure.c:253
+msgid "Ogg Vorbis Tags:"
+msgstr "Ogg Vorbis Etiketleri:"
+
+#: src/vorbis/configure.c:274
+msgid "Title format:"
+msgstr "Başlık biçimi:"
+
+#: src/vorbis/configure.c:292
+msgid "ReplayGain Settings:"
+msgstr "ReplayGain Ayarları:"
+
+#: src/vorbis/configure.c:300
+msgid "Enable Clipping Prevention"
+msgstr "Klipleme Korumasını Etkinleştir"
+
+#: src/vorbis/configure.c:305
+msgid "Enable ReplayGain"
+msgstr "ReplayGain Etkinleştir"
+
+#: src/vorbis/configure.c:310
+msgid "ReplayGain Type:"
+msgstr "ReplayGain Türü:"
+
+#: src/vorbis/configure.c:321
+msgid "use Track Gain/Peak"
+msgstr "Parçada Gain/Peak kullan"
+
+#: src/vorbis/configure.c:331
+msgid "use Album Gain/Peak"
+msgstr "Albümde Gain/Peak kullan"
+
+#: src/vorbis/configure.c:343
+msgid "Enable 6dB Boost + Hard Limiting"
+msgstr "6dB Boost + Hard Limiting Etkinleştir"
+
+#: src/vorbis/configure.c:349
+msgid "ReplayGain"
+msgstr "ReplayGain"
+
+#: src/vorbis/fileinfo.c:210
+#, c-format
+msgid ""
+"An error occured:\n"
+"%s"
+msgstr ""
+"Bir hata oluştu:\n"
+"%s"
+
+#: src/vorbis/fileinfo.c:212
+msgid "Error!"
+msgstr "Hata!"
+
+#: src/vorbis/fileinfo.c:242
+msgid "Failed to modify tag (open)"
+msgstr "Etiket düzenlenemedi (aç)"
+
+#: src/vorbis/fileinfo.c:295
+msgid "Failed to modify tag (close)"
+msgstr "Etiket düzenlenemedi (kapat)"
+
+#: src/vorbis/fileinfo.c:320
+#: src/vorbis/fileinfo.c:329
+msgid "Failed to modify tag"
+msgstr "Etiket düzenlenemedi"
+
+#: src/vorbis/fileinfo.c:573
+msgid " Ogg Vorbis Tag "
+msgstr " Ogg Vorbis Etiketi "
+
+#: src/vorbis/fileinfo.c:625
+msgid "Date:"
+msgstr "Tarih:"
+
+#: src/vorbis/fileinfo.c:667
+msgid "Description:"
+msgstr "Açıklama:"
+
+#: src/vorbis/fileinfo.c:677
+msgid "Location:"
+msgstr "Yer:"
+
+#: src/vorbis/fileinfo.c:687
+msgid "Version:"
+msgstr "Sürüm:"
+
+#: src/vorbis/fileinfo.c:698
+msgid "ISRC number:"
+msgstr "ISRC numarası:"
+
+#: src/vorbis/fileinfo.c:709
+msgid "Organization:"
+msgstr "Kurum:"
+
+#: src/vorbis/fileinfo.c:756
+msgid " Ogg Vorbis ReplayGain "
+msgstr " Ogg Vorbis ReplayGain "
+
+#: src/vorbis/fileinfo.c:762
+msgid "Track gain:"
+msgstr "Parça gain:"
+
+#: src/vorbis/fileinfo.c:772
+msgid "Track peak:"
+msgstr "Parça doruğu:"
+
+#: src/vorbis/fileinfo.c:783
+msgid "Album gain:"
+msgstr "Albüm gain:"
+
+#: src/vorbis/fileinfo.c:793
+msgid "Album peak:"
+msgstr "Albüm doruğu:"
+
+#: src/vorbis/fileinfo.c:822
+msgid " Ogg Vorbis Info "
+msgstr " Ogg Vorbis Bilgisi "
+
+#: src/vorbis/fileinfo.c:876
+#: src/vorbis/fileinfo.c:922
+msgid "Length:"
+msgstr "Uzunluk:"
+
+#: src/vorbis/fileinfo.c:956
+#, c-format
+msgid "%d KBit/s (nominal)"
+msgstr "%d KBit/s (nominal)"
+
+#: src/vorbis/fileinfo.c:957
+#, c-format
+msgid "%d Hz"
+msgstr "%d Hz"
+
+#: src/vorbis/fileinfo.c:958
+#, c-format
+msgid "%d"
+msgstr "%d"
+
+#: src/vorbis/fileinfo.c:960
+#, c-format
+msgid "%d:%.2d"
+msgstr "%d:%.2d"
+
+#: src/vorbis/fileinfo.c:962
+#, c-format
+msgid "%d Bytes"
+msgstr "%d Byte"
+
+#: src/vorbis/vorbis.c:147
+msgid "Ogg Vorbis Audio Plugin"
+msgstr "OGG Vorbis Ses Eklentisi"
+
+#: src/vorbis/vorbis.c:877
+msgid "About Ogg Vorbis Audio Plugin"
+msgstr "OGG Vorbis Ses Eklentisi Hakkında"
+
+#: src/vorbis/vorbis.c:883
+msgid ""
+"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
+"\n"
+"Original code by\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Contributions from\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"\n"
+"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+msgstr "Xiph.org Kurumu tarafından hazırlanan Ogg Vorbis Eklentisi\n"
+
+#: src/wav/wav-sndfile.c:246
+msgid "About sndfile WAV support"
+msgstr "sndfile WAV desteği hakkında"
+
+#: src/wav/wav-sndfile.c:247
+msgid ""
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the xmms_sndfile plugin which is:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"This program is free software ; you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation ; either version 2 of the License, or \n"
+"(at your option) any later version. \n"
+" \n"
+"This program is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+"See the GNU General Public License for more details. \n"
+"\n"
+"You should have received a copy of the GNU General Public \n"
+"License along with this program ; if not, write to \n"
+"the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA"
+msgstr ""
+
+#: src/wav/wav-sndfile.c:272
+msgid "sndfile WAV plugin"
+msgstr "sndfile WAV eklentisi"
+
+#: src/wav/wav.c:73
+msgid "WAV Audio Plugin"
+msgstr "WAV Ses Eklentisi"
+
+#: src/wma/wma.c:132
+#, c-format
+msgid "WMA Player %s"
+msgstr "%s WMA Oynatıcı"
+
+#: src/wma/wma.c:165
+#, c-format
+msgid "About %s"
+msgstr "%s Hakkında"
+
+#: src/wma/wma.c:178
+msgid " Close "
+msgstr " Kapat "
+
