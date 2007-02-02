@@ -20,6 +20,7 @@
 
 #include "aosd_ui.h"
 #include "aosd_style.h"
+#include "aosd_trigger.h"
 #include "aosd_cfg.h"
 #include "aosd_osd.h"
 #include <glib.h>
@@ -629,6 +630,47 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
 }
 
 
+static void
+aosd_cb_configure_trigger_lvchanged ( GtkTreeSelection *sel , gpointer nb )
+{
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+
+  if ( gtk_tree_selection_get_selected( sel , &model , &iter ) == TRUE )
+  {
+    gint page_num = 0;
+    gtk_tree_model_get( model , &iter , 2 , &page_num , -1 );
+    gtk_notebook_set_current_page( GTK_NOTEBOOK(nb) , page_num );
+  }
+  return;
+}
+
+
+static gboolean
+aosd_cb_configure_trigger_findinarr ( GArray * array , gint value )
+{
+  gint i = 0;
+  for ( i = 0 ; i < array->len ; i++ )
+  {
+    if ( g_array_index( array , gint , i ) == value )
+      return TRUE;
+  }
+  return FALSE;
+}
+
+
+static void
+aosd_cb_configure_trigger_commit ( GtkWidget * cbt , aosd_cfg_t * cfg )
+{
+  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) ) == TRUE )
+  {
+    gint value = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(cbt),"code"));
+    g_array_append_val( cfg->osd->trigger.active , value );
+  }
+  return;
+}
+
+
 static GtkWidget *
 aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
 {
@@ -639,27 +681,63 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkTreeViewColumn *tri_event_lv_col_desc;
   GtkTreeSelection *tri_event_lv_sel;
   GtkTreeIter iter;
-  GtkWidget *tri_event_label;
+  gint *trigger_code_array, trigger_code_array_size;
+  GtkWidget *tri_event_nb;
+  gint i = 0;
+
+  tri_event_nb = gtk_notebook_new();
+  gtk_notebook_set_tab_pos( GTK_NOTEBOOK(tri_event_nb) , GTK_POS_LEFT );
+  gtk_notebook_set_show_tabs( GTK_NOTEBOOK(tri_event_nb) , FALSE );
+  gtk_notebook_set_show_border( GTK_NOTEBOOK(tri_event_nb) , FALSE );
 
   tri_hbox = gtk_hbox_new( FALSE , 4 );
   gtk_container_set_border_width( GTK_CONTAINER(tri_hbox) , 6 );
 
-  /* TODO this part will probably be changed in future! */
-
-  /* event model
+  /* trigger model
      ---------------------------------------------
-     G_TYPE_STRING -> decoration description
+     G_TYPE_STRING -> trigger description
+     G_TYPE_INT -> trigger code
+     G_TYPE_INT -> gtk notebook page number
      ---------------------------------------------
   */
-  tri_event_store = gtk_list_store_new( 1 , G_TYPE_STRING );
-  gtk_list_store_append( tri_event_store , &iter );
-  gtk_list_store_set( tri_event_store , &iter , 0 , _("Song Change") , -1 );
+  tri_event_store = gtk_list_store_new( 3 , G_TYPE_STRING , G_TYPE_INT , G_TYPE_INT );
+  aosd_trigger_get_codes_array ( &trigger_code_array , &trigger_code_array_size );
+  for ( i = 0 ; i < trigger_code_array_size ; i ++ )
+  {
+    GtkWidget *frame, *vbox, *label, *checkbt;
+    gtk_list_store_append( tri_event_store , &iter );
+    gtk_list_store_set( tri_event_store , &iter ,
+      0 , aosd_trigger_get_name( trigger_code_array[i] ) ,
+      1 , trigger_code_array[i] , 2 , i , -1 );
+    vbox = gtk_vbox_new( FALSE , 0 );
+    gtk_container_set_border_width( GTK_CONTAINER(vbox) , 6 );
+    label = gtk_label_new( aosd_trigger_get_desc( trigger_code_array[i] ) );
+    gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
+    gtk_misc_set_alignment( GTK_MISC(label) , 0.0 , 0.0 );
+    checkbt = gtk_check_button_new_with_label( _("Enable trigger") );
+    if ( aosd_cb_configure_trigger_findinarr( cfg->osd->trigger.active , trigger_code_array[i] ) )
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , TRUE );
+    else
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , FALSE );
+    gtk_box_pack_start( GTK_BOX(vbox) , checkbt , FALSE , FALSE , 0 );
+    gtk_box_pack_start( GTK_BOX(vbox) , gtk_hseparator_new() , FALSE , FALSE , 4 );
+    gtk_box_pack_start( GTK_BOX(vbox) , label , FALSE , FALSE , 0 );
+    frame = gtk_frame_new( NULL );
+    gtk_container_add( GTK_CONTAINER(frame) , vbox );
+    gtk_notebook_append_page( GTK_NOTEBOOK(tri_event_nb) , frame , NULL );
+    g_object_set_data( G_OBJECT(checkbt) , "code" , GINT_TO_POINTER(trigger_code_array[i]) );
+    aosd_callback_list_add( cb_list , checkbt , aosd_cb_configure_trigger_commit );
+  }
 
   tri_event_lv_frame = gtk_frame_new( NULL );
   tri_event_lv = gtk_tree_view_new_with_model( GTK_TREE_MODEL(tri_event_store) );
   g_object_unref( tri_event_store );
   tri_event_lv_sel = gtk_tree_view_get_selection( GTK_TREE_VIEW(tri_event_lv) );
   gtk_tree_selection_set_mode( tri_event_lv_sel , GTK_SELECTION_BROWSE );
+  g_signal_connect( G_OBJECT(tri_event_lv_sel) , "changed" ,
+                    G_CALLBACK(aosd_cb_configure_trigger_lvchanged) , tri_event_nb );
+  if ( gtk_tree_model_get_iter_first( GTK_TREE_MODEL(tri_event_store) , &iter ) == TRUE )
+    gtk_tree_selection_select_iter( tri_event_lv_sel , &iter );
 
   tri_event_lv_rndr_text = gtk_cell_renderer_text_new();
   tri_event_lv_col_desc = gtk_tree_view_column_new_with_attributes(
@@ -674,11 +752,7 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
 
   gtk_box_pack_start( GTK_BOX(tri_hbox) , tri_event_lv_frame , FALSE , FALSE , 0 );
 
-  tri_event_label = gtk_label_new( _("Song Change is currently the only event that triggers "
-    "the OSD. Other events will be added in next Audacious OSD versions.") );
-  gtk_label_set_line_wrap( GTK_LABEL(tri_event_label) , TRUE );
-  gtk_misc_set_alignment( GTK_MISC(tri_event_label) , 0.5 , 0.0 );
-  gtk_box_pack_start( GTK_BOX(tri_hbox) , tri_event_label , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(tri_hbox) , tri_event_nb , TRUE , TRUE , 0 );
 
   return tri_hbox;
 }
@@ -727,9 +801,11 @@ aosd_cb_configure_ok ( gpointer cfg_win )
   if ( global_config != NULL )
   {
     /* plugin is active */
+    aosd_trigger_stop( &global_config->osd->trigger ); /* stop triggers */
     aosd_cfg_delete( global_config ); /* delete old global_config */
     global_config = cfg; /* put the new one */
     aosd_cfg_save( cfg ); /* save the new configuration on config file */
+    aosd_trigger_start( &cfg->osd->trigger ); /* restart triggers */
   }
   else
   {

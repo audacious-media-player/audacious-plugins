@@ -94,6 +94,14 @@ typedef struct
 aosd_cfg_osd_position_t;
 
 
+/* config portion containing osd position information */
+typedef struct
+{
+  GArray *active;
+}
+aosd_cfg_osd_trigger_t;
+
+
 /* config portion containing all information */
 typedef struct
 {
@@ -101,6 +109,7 @@ typedef struct
   aosd_cfg_osd_animation_t animation;
   aosd_cfg_osd_text_t text;
   aosd_cfg_osd_decoration_t decoration;
+  aosd_cfg_osd_trigger_t trigger;
 }
 aosd_cfg_osd_t;
 

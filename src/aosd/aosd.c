@@ -21,54 +21,11 @@
 #include "aosd.h"
 #include "aosd_osd.h"
 #include "aosd_cfg.h"
+#include "aosd_trigger.h"
 #include <audacious/input.h>
-#include <audacious/playlist.h>
-#include <audacious/strings.h>
 
 
-static guint timeout_sid = 0;
-static gchar *prev_title = NULL;
-static gboolean was_playing = FALSE;
 aosd_cfg_t * global_config = NULL;
-
-
-gboolean
-aosd_check_pl_change ( gpointer data )
-{
-  if ( ip_data.playing )
-  {
-    Playlist *active = playlist_get_active();
-    gint pos = playlist_get_position(active);
-    gchar *title = playlist_get_songtitle(active, pos);
-
-    if   ( ( title != NULL ) &&
-         ( (( prev_title != NULL ) && ( strcmp(title,prev_title) )) ||
-           ( was_playing == FALSE ) ) )
-    {
-      /* string formatting is done here a.t.m. - TODO - improve this area */
-      gchar *utf8_title = str_to_utf8( title );
-      gchar *utf8_title_markup = g_markup_printf_escaped(
-        "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
-      aosd_display( utf8_title_markup , global_config->osd , FALSE );
-      g_free( utf8_title_markup );
-      g_free( utf8_title );
-    }
-
-    if ( prev_title != NULL )
-      g_free(prev_title);
-    prev_title = g_strdup(title);
-
-    g_free( title );
-  }
-  else
-  {
-    if ( prev_title != NULL )
-      { g_free(prev_title); prev_title = NULL; }
-  }
-
-  was_playing = ip_data.playing;
-  return TRUE;
-}
 
 
 /* ***************** */
@@ -88,7 +45,8 @@ aosd_init ( void )
   global_config = aosd_cfg_new();
   aosd_cfg_load( global_config );
 
-  timeout_sid = g_timeout_add( 500 , (GSourceFunc)aosd_check_pl_change , NULL );
+  aosd_trigger_start( &global_config->osd->trigger );
+
   return;
 }
 
@@ -96,14 +54,7 @@ aosd_init ( void )
 void
 aosd_cleanup ( void )
 {
-  if ( timeout_sid > 0 )
-    g_source_remove( timeout_sid );
-
-  if ( prev_title != NULL )
-  {
-    g_free(prev_title);
-    prev_title = NULL;
-  }
+  aosd_trigger_stop( &global_config->osd->trigger );
 
   aosd_shutdown();
 

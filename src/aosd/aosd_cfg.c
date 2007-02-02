@@ -70,6 +70,7 @@ aosd_cfg_new ( void )
   aosd_cfg_osd_t *cfg_osd = aosd_cfg_osd_new();
   cfg->set = FALSE;
   cfg->osd = cfg_osd;
+  cfg->osd->trigger.active = g_array_new( FALSE , TRUE , sizeof(gint) );
   return cfg;
 }
 
@@ -81,6 +82,7 @@ aosd_cfg_delete ( aosd_cfg_t * cfg )
   {
     if ( cfg->osd != NULL )
       aosd_cfg_osd_delete( cfg->osd );
+    g_array_free( cfg->osd->trigger.active , TRUE );
     g_free( cfg );
   }
   return;
@@ -160,6 +162,7 @@ void
 aosd_cfg_debug ( aosd_cfg_t * cfg )
 {
   gint i = 0;
+  GString *string = g_string_new( "" );
   g_print("\n***** debug configuration *****\n\n");
   g_print("POSITION\n");
   g_print("  placement: %i\n", cfg->osd->position.placement);
@@ -191,6 +194,13 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
     aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
     g_print("  color %i: %i,%i,%i (alpha %i)\n", i, color.red, color.green, color.blue, color.alpha);
   }
+  g_print("\TRIGGER\n");
+  for ( i = 0 ; i < cfg->osd->trigger.active->len ; i++ )
+    g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , gint , i ) );
+  if ( string->len > 1 )
+    g_string_truncate( string , string->len - 1 );
+  g_print("  active: %s\n", string->str);
+  g_string_free( string , TRUE );
   g_print("\nEXTRA\n");
   g_print("  set: %i\n", cfg->set);
   g_print("\n*******************************\n\n");
@@ -205,6 +215,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   ConfigDb *cfgfile = bmp_cfg_db_open();
   gint i = 0;
   gint max_numcol;
+  gchar *trig_active_str;
 
   /* position */
   if ( !bmp_cfg_db_get_int( cfgfile , "aosd" ,
@@ -309,6 +320,25 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     g_array_insert_val( cfg->osd->decoration.colors , i , color );
   }
 
+  /* trigger */
+  if ( !bmp_cfg_db_get_string( cfgfile , "aosd" , "trigger_active" , &trig_active_str ) )
+  {
+    gint trig_active_defval = 0;
+    g_array_append_val( cfg->osd->trigger.active , trig_active_defval );
+  }
+  else if ( strcmp("x",trig_active_str) )
+  {
+    gchar **trig_active_strv = g_strsplit( trig_active_str , "," , 0 );
+    gint j = 0;
+    while ( trig_active_strv[j] != NULL )
+    {
+      gint trig_active_val = strtol( trig_active_strv[j] , NULL , 10 );
+      g_array_append_val( cfg->osd->trigger.active , trig_active_val );
+      j++;
+    }
+    g_strfreev( trig_active_strv );
+  }
+
   bmp_cfg_db_close( cfgfile );
 
   /* the config object has been filled with information */
@@ -324,6 +354,7 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
   ConfigDb *cfgfile = bmp_cfg_db_open();
   gint i = 0;
   gint max_numcol;
+  GString *string = g_string_new( "" );
 
   if ( cfg->set == FALSE )
     return -1;
@@ -403,6 +434,16 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
     g_free( key_str );
     g_free( color_str );
   }
+
+  /* trigger */
+  for ( i = 0 ; i < cfg->osd->trigger.active->len ; i++ )
+    g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , gint , i ) );
+  if ( string->len > 1 )
+    g_string_truncate( string , string->len - 1 );
+  else
+    g_string_assign( string , "x" );
+  bmp_cfg_db_set_string( cfgfile , "aosd" , "trigger_active" , string->str );
+  g_string_free( string , TRUE );
 
   bmp_cfg_db_close( cfgfile );
 
