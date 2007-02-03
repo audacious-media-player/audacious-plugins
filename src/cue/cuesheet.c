@@ -136,10 +136,7 @@ static int is_our_file(gchar *filename)
 
 static gint get_time(InputPlayback *playback)
 {
-	if (real_ip)
-		return real_ip->plugin->get_time(real_ip);
-
-	return -1;
+	return playback->output->output_time();
 }
 
 static void play(InputPlayback *data)
@@ -325,6 +322,11 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip->plugin->set_info = set_info_override;
 		real_ip->plugin->output = cue_ip.output;
 		real_ip->filename = cue_file;
+
+		/* need to pass playback->output to real_ip */
+		real_ip->output = data->output;
+		real_ip->data = data->data;
+
 		real_ip->plugin->play_file(real_ip);
 		real_ip->plugin->seek(real_ip, finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
 		// in some plugins, NULL as 2nd arg causes crash.
