@@ -20,9 +20,6 @@ extern GMutex *vf_mutex;
 static GtkWidget *vorbis_configurewin = NULL;
 static GtkWidget *vbox, *notebook;
 
-static GtkWidget *streaming_save_use, *streaming_size_spin,
-    *streaming_pre_spin;
-static GtkWidget *streaming_save_dirbrowser, *streaming_save_hbox;
 static GtkWidget *title_tag_override, *title_tag_box, *title_tag_entry,
     *title_desc;
 static GtkWidget *rg_switch, *rg_clip_switch, *rg_booster_switch,
@@ -35,20 +32,6 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
 {
     ConfigDb *db;
     GtkToggleButton *tb;
-
-    vorbis_cfg.http_buffer_size =
-        gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON
-                                         (streaming_size_spin));
-    vorbis_cfg.http_prebuffer =
-        gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(streaming_pre_spin));
-
-    vorbis_cfg.save_http_stream =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_save_use));
-
-	if (vorbis_cfg.save_http_path != NULL)
-		g_free(vorbis_cfg.save_http_path);
-    vorbis_cfg.save_http_path =
-		g_strdup(gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser)));
 
 	if (vorbis_cfg.tag_format != NULL)
 		g_free(vorbis_cfg.tag_format);
@@ -71,14 +54,6 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
 
     db = bmp_cfg_db_open();
 
-    bmp_cfg_db_set_int(db, "vorbis", "http_buffer_size",
-                       vorbis_cfg.http_buffer_size);
-    bmp_cfg_db_set_int(db, "vorbis", "http_prebuffer",
-                       vorbis_cfg.http_prebuffer);
-    bmp_cfg_db_set_bool(db, "vorbis", "save_http_stream",
-                        vorbis_cfg.save_http_stream);
-    bmp_cfg_db_set_string(db, "vorbis", "save_http_path",
-                          vorbis_cfg.save_http_path);
     bmp_cfg_db_set_bool(db, "vorbis", "tag_override",
                         vorbis_cfg.tag_override);
     bmp_cfg_db_set_string(db, "vorbis", "tag_format", vorbis_cfg.tag_format);
@@ -91,17 +66,6 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
     bmp_cfg_db_set_bool(db, "vorbis", "use_booster", vorbis_cfg.use_booster);
     bmp_cfg_db_close(db);
     gtk_widget_destroy(vorbis_configurewin);
-}
-
-static void
-streaming_save_use_cb(GtkWidget * w, gpointer data)
-{
-    gboolean save_stream;
-
-    save_stream =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_save_use));
-
-    gtk_widget_set_sensitive(streaming_save_hbox, save_stream);
 }
 
 static void
@@ -131,17 +95,10 @@ rg_switch_cb(GtkWidget * w, gpointer data)
 void
 vorbis_configure(void)
 {
-    GtkWidget *streaming_vbox;
-    GtkWidget *streaming_buf_frame, *streaming_buf_hbox;
-    GtkWidget *streaming_size_box, *streaming_size_label;
-    GtkWidget *streaming_pre_box, *streaming_pre_label;
-    GtkWidget *streaming_save_frame, *streaming_save_vbox;
-    GtkWidget *streaming_save_label;
     GtkWidget *title_frame, *title_tag_vbox, *title_tag_label;
     GtkWidget *rg_frame, *rg_vbox;
     GtkWidget *bbox, *ok, *cancel;
     GtkWidget *rg_type_frame, *rg_type_vbox, *rg_album_gain;
-    GtkObject *streaming_size_adj, *streaming_pre_adj;
 
     if (vorbis_configurewin != NULL) {
         gtk_window_present(GTK_WINDOW(vorbis_configurewin));
@@ -167,86 +124,6 @@ vorbis_configure(void)
 
     notebook = gtk_notebook_new();
     gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
-
-    streaming_vbox = gtk_vbox_new(FALSE, 0);
-
-    streaming_buf_frame = gtk_frame_new(_("Buffering:"));
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_frame), 5);
-    gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_buf_frame, FALSE,
-                       FALSE, 0);
-
-    streaming_buf_hbox = gtk_hbox_new(TRUE, 5);
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_hbox), 5);
-    gtk_container_add(GTK_CONTAINER(streaming_buf_frame), streaming_buf_hbox);
-
-    streaming_size_box = gtk_hbox_new(FALSE, 5);
-    gtk_box_pack_start(GTK_BOX(streaming_buf_hbox), streaming_size_box,
-                       TRUE, TRUE, 0);
-    streaming_size_label = gtk_label_new(_("Buffer size (kb):"));
-    gtk_box_pack_start(GTK_BOX(streaming_size_box), streaming_size_label,
-                       FALSE, FALSE, 0);
-    streaming_size_adj =
-        gtk_adjustment_new(vorbis_cfg.http_buffer_size, 4, 4096, 4, 4, 4);
-    streaming_size_spin =
-        gtk_spin_button_new(GTK_ADJUSTMENT(streaming_size_adj), 8, 0);
-    gtk_widget_set_usize(streaming_size_spin, 60, -1);
-    gtk_box_pack_start(GTK_BOX(streaming_size_box), streaming_size_spin,
-                       FALSE, FALSE, 0);
-
-    streaming_pre_box = gtk_hbox_new(FALSE, 5);
-    gtk_box_pack_start(GTK_BOX(streaming_buf_hbox), streaming_pre_box,
-                       TRUE, TRUE, 0);
-    streaming_pre_label = gtk_label_new(_("Pre-buffer (percent):"));
-    gtk_box_pack_start(GTK_BOX(streaming_pre_box), streaming_pre_label,
-                       FALSE, FALSE, 0);
-    streaming_pre_adj =
-        gtk_adjustment_new(vorbis_cfg.http_prebuffer, 0, 90, 1, 1, 1);
-    streaming_pre_spin =
-        gtk_spin_button_new(GTK_ADJUSTMENT(streaming_pre_adj), 1, 0);
-    gtk_widget_set_usize(streaming_pre_spin, 60, -1);
-    gtk_box_pack_start(GTK_BOX(streaming_pre_box), streaming_pre_spin,
-                       FALSE, FALSE, 0);
-
-    /*
-     * Save to disk config.
-     */
-    streaming_save_frame = gtk_frame_new(_("Save stream to disk:"));
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_save_frame), 5);
-    gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_save_frame,
-                       FALSE, FALSE, 0);
-
-    streaming_save_vbox = gtk_vbox_new(FALSE, 5);
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_save_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(streaming_save_frame),
-                      streaming_save_vbox);
-
-    streaming_save_use =
-        gtk_check_button_new_with_label(_("Save stream to disk"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_save_use),
-                                 vorbis_cfg.save_http_stream);
-    g_signal_connect(G_OBJECT(streaming_save_use), "clicked",
-                     G_CALLBACK(streaming_save_use_cb), NULL);
-    gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_use,
-                       FALSE, FALSE, 0);
-
-    streaming_save_hbox = gtk_hbox_new(FALSE, 5);
-    gtk_widget_set_sensitive(streaming_save_hbox,
-                             vorbis_cfg.save_http_stream);
-    gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_hbox,
-                       FALSE, FALSE, 0);
-
-    streaming_save_label = gtk_label_new(_("Path:"));
-    gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_label,
-                       FALSE, FALSE, 0);
-
-	streaming_save_dirbrowser = 
-		gtk_file_chooser_button_new (_("Pick a folder"), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser),
-										vorbis_cfg.save_http_path);
-	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_dirbrowser, TRUE, TRUE, 0);
-
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), streaming_vbox,
-                             gtk_label_new(_("Streaming")));
 
     /* Title config.. */
 
