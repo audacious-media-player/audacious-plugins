@@ -271,18 +271,19 @@ void FLAC_XMMS__configure(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(convert_char_set), flac_cfg.title.convert_char_set);
 	gtk_signal_connect(GTK_OBJECT(convert_char_set), "clicked", (GCallback)convert_char_set_cb, NULL);
 	gtk_box_pack_start(GTK_BOX(title_tag_vbox), convert_char_set, FALSE, FALSE, 0);
+
 	/*  Combo boxes... */
 	hbox = gtk_hbox_new(FALSE,4);
 	gtk_container_add(GTK_CONTAINER(title_tag_vbox),hbox);
 	label = gtk_label_new(_("Convert character set from :"));
 	gtk_box_pack_start(GTK_BOX(hbox),label,FALSE,FALSE,0);
 	fileCharacterSetEntry = gtk_combo_new();
-	gtk_box_pack_start(GTK_BOX(hbox),fileCharacterSetEntry,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(hbox),fileCharacterSetEntry, FALSE, FALSE, 0);
 
 	label = gtk_label_new (_("to :"));
 	gtk_box_pack_start(GTK_BOX(hbox),label,FALSE,FALSE,0);
 	userCharacterSetEntry = gtk_combo_new();
-	gtk_box_pack_start(GTK_BOX(hbox),userCharacterSetEntry,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(hbox),userCharacterSetEntry, FALSE, FALSE,0);
 
 	gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(fileCharacterSetEntry)->entry),FALSE);
 	gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(userCharacterSetEntry)->entry),FALSE);
@@ -359,7 +360,7 @@ void FLAC_XMMS__configure(void)
 	gtk_signal_connect(GTK_OBJECT(replaygain_preamp), "value-changed", (GCallback)replaygain_preamp_cb, NULL);
 	replaygain_preamp_hscale = gtk_hscale_new(GTK_ADJUSTMENT(replaygain_preamp));
 	gtk_scale_set_draw_value(GTK_SCALE(replaygain_preamp_hscale), FALSE);
-	gtk_box_pack_start(GTK_BOX(hbox),replaygain_preamp_hscale,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(hbox),replaygain_preamp_hscale,FALSE,FALSE,0);
 	replaygain_preamp_label = gtk_label_new(_("0 dB"));
 	gtk_box_pack_start(GTK_BOX(hbox),replaygain_preamp_label,FALSE,FALSE,0);
 	gtk_adjustment_value_changed(GTK_ADJUSTMENT(replaygain_preamp));
