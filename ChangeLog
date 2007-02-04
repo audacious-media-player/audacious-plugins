@@ -1,3 +1,11 @@
+2007-02-04 20:21:34 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1300]
+  - remove streaming configuration since it's no longer relevant.
+  
+  trunk/src/vorbis/configure.c |  123 -------------------------------------------
+  1 file changed, 123 deletions(-)
+
+
 2007-02-04 20:19:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1298]
   - clean up the configure GUI a little.

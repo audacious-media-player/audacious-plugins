@@ -37,6 +37,8 @@
 
 #define DEBUG
 
+#define REMOVE_NONEXISTANT_TAG(x)   if (!*x) { x = NULL; }
+
 #include <glib.h>
 #include <gtk/gtk.h>
 
@@ -782,6 +784,13 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename, gboolean 
         tuple->genre = g_strdup(vorbis_comment_query(comment, "genre", 0));
         tuple->comment =
             g_strdup(vorbis_comment_query(comment, "comment", 0));
+
+        /* remove any blank tags */
+        REMOVE_NONEXISTANT_TAG(tuple->performer);
+        REMOVE_NONEXISTANT_TAG(tuple->album_name);
+        REMOVE_NONEXISTANT_TAG(tuple->track_name);
+        REMOVE_NONEXISTANT_TAG(tuple->genre);
+        REMOVE_NONEXISTANT_TAG(tuple->comment);
     }
 
     return tuple;
