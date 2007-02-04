@@ -1,3 +1,11 @@
+2007-02-04 04:06:57 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1292]
+  - don't fill in tuple fields with "".
+  
+  trunk/src/console/Audacious_Driver.cxx |   16 ++++++++++++----
+  1 file changed, 12 insertions(+), 4 deletions(-)
+
+
 2007-02-03 16:55:23 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1290]
   - adaptation for playback API. make cuesheet plugin pass playback->output to real_ip.

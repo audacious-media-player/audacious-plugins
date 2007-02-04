@@ -201,7 +201,7 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 
 static void copy_sap_fields( Sap_Emu::info_t const& in, track_info_t* out )
 {
-	Gme_File::copy_field_( out->game,      in.name );
+	Gme_File::copy_field_( out->song,      in.name );
 	Gme_File::copy_field_( out->author,    in.author );
 	Gme_File::copy_field_( out->copyright, in.copyright );
 }
