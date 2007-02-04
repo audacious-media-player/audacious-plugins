@@ -192,6 +192,14 @@ int File_Handler::load( long sample_rate )
 
 // Get info
 
+static inline gchar *selective_strdup(const gchar *in)
+{
+	if (in == NULL || *in == '\0')
+		return NULL;
+
+	return g_strdup(in);
+}
+
 static TitleInput* get_track_ti( const char* path, track_info_t const& info, int track )
 {
 	TitleInput* ti = bmp_title_input_new();
@@ -199,12 +207,12 @@ static TitleInput* get_track_ti( const char* path, track_info_t const& info, int
 	{
 		ti->file_name  = g_path_get_basename( path );
 		ti->file_path  = g_path_get_dirname ( path );
-		ti->performer  = g_strdup( info.author );
-		ti->album_name = g_strdup( info.game );
-		ti->track_name = g_strdup( info.song ? info.song : ti->file_name );
+		ti->performer  = selective_strdup( info.author );
+		ti->album_name = selective_strdup( info.game );
+		ti->track_name = selective_strdup( info.song ? info.song : ti->file_name );
 		if ( info.track_count > 1 )
 			ti->track_number = track + 1;
-		ti->comment    = g_strdup( info.copyright );
+		ti->comment    = selective_strdup( info.copyright );
 		ti->genre      = g_strconcat( "Console: ", info.system, NULL );
 		
 		int length = info.length;
