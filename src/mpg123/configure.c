@@ -22,11 +22,7 @@ static GtkWidget *decode_ch_frame, *decode_ch_vbox, *decode_ch_stereo,
 static GtkWidget *decode_freq_frame, *decode_freq_vbox, *decode_freq_1to1,
     *decode_freq_1to2, *decode_freq_1to4;
 
-static GtkObject *streaming_size_adj, *streaming_pre_adj;
-static GtkWidget *streaming_save_use;
-static GtkWidget *streaming_udp_title;
-static GtkWidget *streaming_save_dirbrowser;
-static GtkWidget *streaming_save_hbox, *title_id3_box, *title_tag_desc;
+static GtkWidget *title_id3_box, *title_tag_desc;
 static GtkWidget *title_override, *title_id3_entry, *title_id3v2_disable;
 
 MPG123Config mpgdec_cfg;
@@ -52,21 +48,6 @@ mpgdec_configurewin_ok(GtkWidget * widget, gpointer data)
         mpgdec_cfg.downsample = 1;
     if (GTK_TOGGLE_BUTTON(decode_freq_1to4)->active)
         mpgdec_cfg.downsample = 2;
-
-    mpgdec_cfg.http_buffer_size =
-        (gint) GTK_ADJUSTMENT(streaming_size_adj)->value;
-    mpgdec_cfg.http_prebuffer =
-        (gint) GTK_ADJUSTMENT(streaming_pre_adj)->value;
-
-    mpgdec_cfg.save_http_stream =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_save_use));
-    if (mpgdec_cfg.save_http_path)
-        g_free(mpgdec_cfg.save_http_path);
-    mpgdec_cfg.save_http_path =
-		g_strdup(gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser)));
-
-    mpgdec_cfg.use_udp_channel =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_udp_title));
 
     mpgdec_cfg.title_override =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(title_override));
@@ -101,17 +82,6 @@ mpgdec_configurewin_ok(GtkWidget * widget, gpointer data)
 }
 
 static void
-streaming_save_use_cb(GtkWidget * w, gpointer data)
-{
-    gboolean save_stream;
-
-    save_stream =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(streaming_save_use));
-
-    gtk_widget_set_sensitive(streaming_save_hbox, save_stream);
-}
-
-static void
 title_override_cb(GtkWidget * w, gpointer data)
 {
     gboolean override;
@@ -130,14 +100,6 @@ configure_destroy(GtkWidget * w, gpointer data)
 void
 mpgdec_configure(void)
 {
-    GtkWidget *streaming_vbox;
-    GtkWidget *streaming_buf_frame, *streaming_buf_hbox;
-    GtkWidget *streaming_size_box, *streaming_size_label,
-        *streaming_size_spin;
-    GtkWidget *streaming_pre_box, *streaming_pre_label, *streaming_pre_spin;
-    GtkWidget *streaming_save_frame, *streaming_save_vbox;
-    GtkWidget *streaming_save_label;
-    GtkWidget *streaming_cast_frame, *streaming_cast_vbox;
     GtkWidget *title_frame, *title_id3_vbox, *title_id3_label;
     GtkWidget *bbox, *ok, *cancel;
 
@@ -263,106 +225,6 @@ mpgdec_configure(void)
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), decode_vbox,
                              gtk_label_new(_("Decoder")));
-
-    streaming_vbox = gtk_vbox_new(FALSE, 0);
-
-    streaming_buf_frame = gtk_frame_new(_("Buffering:"));
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_frame), 5);
-    gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_buf_frame, FALSE,
-                       FALSE, 0);
-
-    streaming_buf_hbox = gtk_hbox_new(TRUE, 5);
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_buf_hbox), 5);
-    gtk_container_add(GTK_CONTAINER(streaming_buf_frame), streaming_buf_hbox);
-
-    streaming_size_box = gtk_hbox_new(FALSE, 5);
-    /*gtk_table_attach_defaults(GTK_TABLE(streaming_buf_table),streaming_size_box,0,1,0,1); */
-    gtk_box_pack_start(GTK_BOX(streaming_buf_hbox), streaming_size_box,
-                       TRUE, TRUE, 0);
-    streaming_size_label = gtk_label_new(_("Buffer size (kb):"));
-    gtk_box_pack_start(GTK_BOX(streaming_size_box), streaming_size_label,
-                       FALSE, FALSE, 0);
-    streaming_size_adj =
-        gtk_adjustment_new(mpgdec_cfg.http_buffer_size, 4, 4096, 4, 4, 4);
-    streaming_size_spin =
-        gtk_spin_button_new(GTK_ADJUSTMENT(streaming_size_adj), 8, 0);
-    gtk_widget_set_usize(streaming_size_spin, 60, -1);
-    gtk_box_pack_start(GTK_BOX(streaming_size_box), streaming_size_spin,
-                       FALSE, FALSE, 0);
-
-    streaming_pre_box = gtk_hbox_new(FALSE, 5);
-    /*gtk_table_attach_defaults(GTK_TABLE(streaming_buf_table),streaming_pre_box,1,2,0,1); */
-    gtk_box_pack_start(GTK_BOX(streaming_buf_hbox), streaming_pre_box,
-                       TRUE, TRUE, 0);
-    streaming_pre_label = gtk_label_new(_("Pre-buffer (percent):"));
-    gtk_box_pack_start(GTK_BOX(streaming_pre_box), streaming_pre_label,
-                       FALSE, FALSE, 0);
-    streaming_pre_adj =
-        gtk_adjustment_new(mpgdec_cfg.http_prebuffer, 0, 90, 1, 1, 1);
-    streaming_pre_spin =
-        gtk_spin_button_new(GTK_ADJUSTMENT(streaming_pre_adj), 1, 0);
-    gtk_widget_set_usize(streaming_pre_spin, 60, -1);
-    gtk_box_pack_start(GTK_BOX(streaming_pre_box), streaming_pre_spin,
-                       FALSE, FALSE, 0);
-
-    /*
-     * Save to disk config.
-     */
-    streaming_save_frame = gtk_frame_new(_("Save stream to disk:"));
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_save_frame), 5);
-    gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_save_frame,
-                       FALSE, FALSE, 0);
-
-    streaming_save_vbox = gtk_vbox_new(FALSE, 5);
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_save_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(streaming_save_frame),
-                      streaming_save_vbox);
-
-    streaming_save_use =
-        gtk_check_button_new_with_label(_("Save stream to disk"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_save_use),
-                                 mpgdec_cfg.save_http_stream);
-    g_signal_connect(G_OBJECT(streaming_save_use), "clicked",
-                     G_CALLBACK(streaming_save_use_cb), NULL);
-    gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_use,
-                       FALSE, FALSE, 0);
-
-    streaming_save_hbox = gtk_hbox_new(FALSE, 5);
-    gtk_widget_set_sensitive(streaming_save_hbox,
-                             mpgdec_cfg.save_http_stream);
-    gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_hbox,
-                       FALSE, FALSE, 0);
-
-    streaming_save_label = gtk_label_new(_("Path:"));
-    gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_label,
-                       FALSE, FALSE, 0);
-
-	streaming_save_dirbrowser =
-		gtk_file_chooser_button_new (_("Pick a folder"), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(streaming_save_dirbrowser),
-										mpgdec_cfg.save_http_path);
-	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_dirbrowser, TRUE, TRUE, 0);
-
-
-    streaming_cast_frame = gtk_frame_new(_("SHOUT/Icecast:"));
-    gtk_container_set_border_width(GTK_CONTAINER(streaming_cast_frame), 5);
-    gtk_box_pack_start(GTK_BOX(streaming_vbox), streaming_cast_frame,
-                       FALSE, FALSE, 0);
-
-    streaming_cast_vbox = gtk_vbox_new(5, FALSE);
-    gtk_container_add(GTK_CONTAINER(streaming_cast_frame),
-                      streaming_cast_vbox);
-
-    streaming_udp_title =
-        gtk_check_button_new_with_label(_
-                                        ("Enable Icecast Metadata UDP Channel"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_udp_title),
-                                 mpgdec_cfg.use_udp_channel);
-    gtk_box_pack_start(GTK_BOX(streaming_cast_vbox), streaming_udp_title,
-                       FALSE, FALSE, 0);
-
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), streaming_vbox,
-                             gtk_label_new(_("Streaming")));
 
     title_frame = gtk_frame_new(_("ID3 Tags:"));
     gtk_container_border_width(GTK_CONTAINER(title_frame), 5);
