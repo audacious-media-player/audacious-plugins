@@ -232,6 +232,10 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
       {
         g_free(prevs->filename);
         prevs->filename = g_strdup(pl_entry->filename);
+        /* if filename changes, reset title as well */
+        if ( prevs->title != NULL )
+          g_free(prevs->title);
+        prevs->title = g_strdup(pl_entry->title);
       }
     }
     else
