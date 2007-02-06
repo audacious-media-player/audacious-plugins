@@ -66,6 +66,14 @@
 
 extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
 
+// new VFS handles url.
+static void input_parse_url(struct mad_info_t *info)
+{
+    info->filename = g_strdup(info->url);
+    return;
+}
+
+
 /**
  * init the mad_info_t struct.
  */
@@ -101,12 +109,13 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->mp3gain_minmax_str = 0;
 
     info->tuple = NULL;
-    info->filename = g_strdup(url);
+
+    input_parse_url(info);
 
     info->infile = vfs_fopen(info->filename, "rb");
-    if (info->infile == NULL)
+    if (info->infile == NULL) {
         return FALSE;
-
+    }
     // obtain file size
     vfs_fseek(info->infile, 0, SEEK_END);
     info->size = vfs_ftell(info->infile);
@@ -114,7 +123,6 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->remote = info->size == 0 ? TRUE : FALSE;
 
 #ifdef DEBUG
-    g_message("i: info->size == %lu", info->size);
     g_message("e: input_init");
 #endif
     return TRUE;
@@ -159,7 +167,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 
     tail = (id3_ucs4_t *)string + mad_ucs4len((id3_ucs4_t *)string);
 
-    ret = g_malloc0(1024); // realloc() is too picky
+    ret = g_malloc0(1024);
 
     for(ptr = (id3_ucs4_t *)string; *ptr != 0 && ptr <= tail; ptr++) {
         if(*ptr == '(') {
@@ -168,7 +176,6 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
                     end++;
                 }
                 end++; //include trailing ')'
-//                ret = g_realloc(ret, BYTES(end - ptr + 1));
                 memcpy(ret, ptr, BYTES(end - ptr));
                 ret_len += (end - ptr);
                 *(ret + ret_len) = 0; //terminate
@@ -192,7 +199,6 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 
                 tmp_len = mad_ucs4len(genre);
 
-//                ret = g_realloc(ret, BYTES(ret_len + tmp_len + 1));
                 memcpy(ret + BYTES(ret_len), genre, BYTES(tmp_len));
 
                 ret_len += tmp_len;
@@ -231,14 +237,12 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 
                 tmp_len = mad_ucs4len(genre);
 
-//                ret = g_realloc(ret, BYTES(ret_len + tmp_len + 1));
                 memcpy(ret + BYTES(ret_len), genre, BYTES(tmp_len));
 
                 ret_len += tmp_len;
                 *(ret + ret_len) = 0; //terminate
             }
             else { // plain text
-//                ret = g_realloc(ret, BYTES(end - ptr + 1));
 #ifdef DEBUG
                 printf("plain!\n");
                 printf("ret_len = %d\n", ret_len);
@@ -257,16 +261,19 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 {
     gchar *rtn;
+    gchar *rtn2;
     const id3_ucs4_t *string_const;
     id3_ucs4_t *string;
+    id3_ucs4_t *ucsptr;
     struct id3_frame *frame;
     union id3_field *field;
+    gboolean flagutf = FALSE;
 
     frame = id3_tag_findframe(tag, frame_name, 0);
     if (!frame)
         return NULL;
 
-    if (frame_name == ID3_FRAME_COMMENT)
+    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
         field = id3_frame_field(frame, 3);
     else
         field = id3_frame_field(frame, 1);
@@ -274,7 +281,7 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     if (!field)
         return NULL;
 
-    if (frame_name == ID3_FRAME_COMMENT)
+    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
         string_const = id3_field_getfullstring(field);
     else
         string_const = id3_field_getstrings(field, 0);
@@ -284,21 +291,38 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 
     string = mad_ucs4dup((id3_ucs4_t *)string_const);
 
-    if (frame_name == ID3_FRAME_GENRE) {
+    if (!strcmp(frame_name, ID3_FRAME_GENRE)) {
         id3_ucs4_t *string2 = NULL;
         string2 = mad_parse_genre(string);
         g_free((void *)string);
         string = string2;
     }
 
-    {
-        id3_utf8_t *string2 = id3_ucs4_utf8duplicate(string);
-        rtn = str_to_utf8(string2);
-        g_free(string2);
+    ucsptr = (id3_ucs4_t *)string;
+    while (*ucsptr) {
+        if (*ucsptr > 0x000000ffL) {
+            flagutf = TRUE;
+            break;
+        }
+        ucsptr++;
     }
 
+    if (flagutf) {
 #ifdef DEBUG
-    g_print("i: string = %s\n", rtn);
+        g_print("aud-mad: flagutf!\n");
+#endif
+        rtn = (gchar *)id3_ucs4_utf8duplicate(string);
+    }
+    else {
+        rtn = (gchar *)id3_ucs4_latin1duplicate(string);
+        rtn2 = str_to_utf8(rtn);
+        free(rtn);
+        rtn = rtn2;
+    }
+    g_free(string);
+    string = NULL;
+#ifdef DEBUG
+    g_print("string = %s\n", rtn);
 #endif
     return rtn;
 }
@@ -379,15 +403,14 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
     input_read_replaygain(info);
 
     /* scan mp3 file, decoding headers unless fast_scan is set */
-    if (scan_file(info, fast_scan) == FALSE)
+    if (scan_file(info, fast_scan) == FALSE) {
         return FALSE;
-
+    }
     /* reset the input file to the start */
-    vfs_rewind(info->infile);
+    vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
 
-    if (info->remote)
-    {
+    if(info->remote){
         gchar *stream_name = vfs_get_metadata(info->infile, "stream-name");
         gchar *track_name = vfs_get_metadata(info->infile, "track-name");
         gchar *tmp = NULL;
@@ -407,8 +430,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
     }
 
     /* use the filename for the title as a last resort */
-    if (!info->title)
-    {
+    if (!info->title) {
         char *pos = strrchr(info->filename, DIR_SEPARATOR);
         if (pos)
             info->title = g_strdup(pos + 1);
@@ -423,29 +445,33 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 }
 
 
+
 /**
  * Read data from the source given my madinfo into the buffer
  * provided.  Return the number of bytes read.
  * @return 0 on EOF
  * @return -1 on error
  */
+// this function may be called before info->playback initialized.
 int
 input_get_data(struct mad_info_t *madinfo, guchar * buffer,
                int buffer_size)
 {
     int len = 0;
 #ifdef DEBUG
-//  g_message ("f: input_get_data: %d", buffer_size);
+#ifdef DEBUG_INTENSIVELY
+  g_message ("f: input_get_data: %d", buffer_size);
 #endif
-
+#endif
     /* simply read to data from the file */
-    len = vfs_fread(buffer, 1, buffer_size, madinfo->infile);
+    len = vfs_fread(buffer, 1, buffer_size, madinfo->infile); //vfs_fread returns num of element.
 
-    if (len == 0 && madinfo->playback)
-        madinfo->playback->eof = TRUE;
-
-    if (madinfo->remote)
-    {
+    if(len == 0){
+	    if(madinfo->playback)
+		    madinfo->playback->eof = TRUE;
+    }
+    
+    if(madinfo->remote) {
         gchar *stream_name = vfs_get_metadata(madinfo->infile, "stream-name");
         gchar *track_name = vfs_get_metadata(madinfo->infile, "track-name");
         gchar *tmp = NULL;
@@ -459,13 +485,15 @@ input_get_data(struct mad_info_t *madinfo, guchar * buffer,
         madinfo->tuple->album_name = g_strdup(stream_name);
         tmp = g_strdup_printf("%s (%s)", track_name, stream_name);
         mad_plugin->set_info(tmp,
-                             -1, // indicates the stream is unseekable
-                             madinfo->bitrate, madinfo->freq, madinfo->channels);
+                             -1, // indicate the stream is unseekable
+			     madinfo->bitrate, madinfo->freq, madinfo->channels);
         g_free(tmp); g_free(stream_name); g_free(track_name);
     }
-
+    
 #ifdef DEBUG
-//  g_message ("e: input_get_data: size=%d offset=%d", len, madinfo->offset);
+#ifdef DEBUG_INTENSIVELY
+    g_message ("e: input_get_data: size=%d offset=%d", len, madinfo->offset);
+#endif
 #endif
     madinfo->offset += len;
     return len;

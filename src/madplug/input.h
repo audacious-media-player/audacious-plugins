@@ -23,13 +23,11 @@
 #define INPUT_H
 
 #include "plugin.h"
-
 gboolean input_init(struct mad_info_t *songinfo, const gchar * url);
 gboolean input_term(struct mad_info_t *songinfo);
 gboolean input_get_info(struct mad_info_t *songinfo, gboolean fast_scan);
 gint input_get_data(struct mad_info_t *songinfo, guchar * buffer,
                     gint buffer_size);
-gint input_udp_read();
 gchar *input_id3_get_string(struct id3_tag *tag, char *frame_name);
 
 #endif                          /* ! INPUT_H */

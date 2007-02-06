@@ -27,6 +27,7 @@
 #include <audacious/plugin.h>
 #include <audacious/output.h>
 #include <audacious/util.h>
+#include <sys/time.h>
 #include "plugin.h"
 #include "input.h"
 
@@ -152,11 +153,11 @@ write_output(struct mad_info_t *info, struct mad_pcm *pcm,
         }
     }
     assert(pos == olen);
-    if (info->playback->playing == 0)
+    if (!info->playback->playing)
         return;
-    produce_audio(mad_plugin->output->written_time(),
-                  FMT_S16_LE, MAD_NCHANNELS(header), olen, output, NULL);
-    if (info->playback->playing == 0)
+    produce_audio(info->playback->output->written_time(),
+                  FMT_S16_LE, MAD_NCHANNELS(header), olen, output, &(info->playback->playing));
+    if (!info->playback->playing)
         return;
     g_free(output);
 }
@@ -245,10 +246,12 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             }
             info->frames++;
 #ifdef DEBUG
+#ifdef DEBUG_INTENSIVELY
             g_message("duration = %lu",
                       mad_timer_count(header.duration,
                                       MAD_UNITS_MILLISECONDS));
             g_message("size = %d", stream.next_frame - stream.this_frame);
+#endif
 #endif
             mad_timer_add(&info->duration, header.duration);
             data_used += stream.next_frame - stream.this_frame;
@@ -301,7 +304,6 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             if (fast && info->frames >= N_AVERAGE_FRAMES) {
                 float frame_size = ((double) data_used) / N_AVERAGE_FRAMES;
                 info->frames = (info->size - tagsize) / frame_size;
-                //int frame_frac = (info->size - tagsize) % frame_size;
                 info->duration.seconds /= N_AVERAGE_FRAMES;
                 info->duration.fraction /= N_AVERAGE_FRAMES;
                 mad_timer_multiply(&info->duration, info->frames);
@@ -309,7 +311,6 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 g_message("using fast playtime calculation");
                 g_message("data used = %d [tagsize=%d framesize=%f]",
                           data_used, tagsize, frame_size);
-                //g_message ("frame_size = %f [frac=%d]", frame_size, frame_frac);
                 g_message("frames = %d, frequecy = %d, channels = %d",
                           info->frames, info->freq, info->channels);
                 long millis = mad_timer_count(info->duration,
@@ -335,14 +336,15 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #ifdef DEBUG
     g_message("e: scan_file");
 #endif                          /* DEBUG */
-    return (info->frames != 0 || info->remote == TRUE);
+//    return info->frames != 0;
+    return (info->frames != 0 || info->remote == TRUE); // suspicious
 }
 
 gpointer decode_loop(gpointer arg)
 {
     unsigned char buffer[BUFFER_SIZE];
     int len;
-    int seek_skip = 0;
+    gboolean seek_skip = FALSE;
     int remainder = 0;
     gint tlen;
 
@@ -363,12 +365,20 @@ gpointer decode_loop(gpointer arg)
     mad_stream_init(&stream);
     mad_synth_init(&synth);
 
-    if (!mad_plugin->output->
-        open_audio(info->fmt, info->freq, info->channels)) {
+    if(!info->playback){
+        g_print("decode: playback == NULL\n");
+        return NULL;
+    }
+
+    if (!info->playback->output->open_audio(info->fmt, info->freq, info->channels)) {
+        g_mutex_lock(pb_mutex);
+        info->playback->error = TRUE;
+        info->playback->eof = 1;
+        g_mutex_unlock(pb_mutex);        
         audmad_error("failed to open audio output: %s",
-                      mad_plugin->output->description);
+                      info->playback->output->description);
         g_message("failed to open audio output: %s",
-                  mad_plugin->output->description);
+                  info->playback->output->description);
         return NULL;
     }
 
@@ -378,6 +388,7 @@ gpointer decode_loop(gpointer arg)
     info->title =
         xmms_get_titlestring(xmms_get_gentitle_format(), info->tuple);
 
+    
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
     
     mad_plugin->set_info(info->title,
@@ -386,7 +397,7 @@ gpointer decode_loop(gpointer arg)
 
     /* main loop */
     do {
-        if (info->playback->playing == 0) {
+        if (!info->playback->playing) {
 #ifdef DEBUG
             g_message("decode: stop signaled");
 #endif                          /* DEBUG */
@@ -427,14 +438,19 @@ gpointer decode_loop(gpointer arg)
                     if (--skip == 0)
                         mad_synth_frame(&synth, &frame);
                 }
-                else if (!MAD_RECOVERABLE(stream.error))
+                else if (!MAD_RECOVERABLE(stream.error)) {
+                    g_mutex_lock(pb_mutex);
+                    info->playback->error = TRUE;
+                    info->playback->eof = 1;
+                    g_mutex_unlock(pb_mutex);
                     break;
+                }
             }
             while (skip);
-            seek_skip = 0;
+            seek_skip = FALSE;
         }
 
-        while (!info->playback->playing == 0) {
+        while (info->playback->playing) {
             if (info->seek != -1 && !info->remote) {
 #ifdef DEBUG
                 g_message("seeking: %d", info->seek);
@@ -448,6 +464,9 @@ gpointer decode_loop(gpointer arg)
                 mad_timer_set(&info->pos, info->seek, 0, 0);
                 new_position =
                     ((double) info->seek / (double) seconds) * info->size;
+
+                if(new_position < 0)
+                    new_position = 0;
 #ifdef DEBUG
                 g_message("seeking to: %d bytes", new_position);
 #endif
@@ -456,18 +475,17 @@ gpointer decode_loop(gpointer arg)
                 mad_frame_mute(&frame);
                 mad_synth_mute(&synth);
                 stream.error = MAD_ERROR_BUFLEN;
-                mad_plugin->output->flush(mad_timer_count
-                                         (info->pos,
-                                          MAD_UNITS_MILLISECONDS));
+                info->playback->output->flush(mad_timer_count(info->pos, MAD_UNITS_MILLISECONDS));
                 stream.sync = 0;
                 info->seek = -1;
-                seek_skip = 1;
+                seek_skip = TRUE;
                 break;
             }
 
             if (mad_header_decode(&frame.header, &stream) == -1) {
-                if (!MAD_RECOVERABLE(stream.error))
+                if (!MAD_RECOVERABLE(stream.error)) {
                     break;
+                }
                 if (stream.error == MAD_ERROR_LOSTSYNC) {
                     /* ignore LOSTSYNC due to ID3 tags */
                     int tagsize = id3_tag_query(stream.this_frame,
@@ -500,9 +518,7 @@ gpointer decode_loop(gpointer arg)
 
             if (info->freq != frame.header.samplerate
                 || info->channels !=
-                (guint) MAD_NCHANNELS(&frame.header))
-	    {
-		tlen = mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS);
+                (guint) MAD_NCHANNELS(&frame.header)) {
 #ifdef DEBUG
                 g_message("re-opening audio due to change in audio type");
                 g_message("old: frequency = %d, channels = %d", info->freq,
@@ -511,24 +527,24 @@ gpointer decode_loop(gpointer arg)
                           frame.header.samplerate,
                           (guint) MAD_NCHANNELS(&frame.header));
 #endif                          /* DEBUG */
-
                 info->freq = frame.header.samplerate;
                 info->channels = MAD_NCHANNELS(&frame.header);
-                mad_plugin->output->close_audio();
-                if (!mad_plugin->output->open_audio(info->fmt, info->freq,
+                info->playback->output->close_audio();
+                if (!info->playback->output->open_audio(info->fmt, info->freq,
                                                    info->channels)) {
+                    g_mutex_lock(pb_mutex);
+                    info->playback->error = TRUE;
+                    info->playback->eof = 1;
+                    g_mutex_unlock(pb_mutex);
                     audmad_error("failed to re-open audio output: %s",
-                                  mad_plugin->output->description);
+                                  info->playback->output->description);
                 }
-
-		mad_plugin->set_info(info->title,
-                        tlen != 0 ? tlen : -1,
-                        info->bitrate, info->freq, info->channels);
             }
-            if (info->playback->playing == 0)
+            if (!info->playback->playing)
                 break;
             mad_synth_frame(&synth, &frame);
             mad_stream_sync(&stream);
+
             write_output(info, &synth.pcm, &frame.header);
             mad_timer_add(&info->pos, frame.header.duration);
         }
@@ -540,17 +556,30 @@ gpointer decode_loop(gpointer arg)
     mad_stream_finish(&stream);
     mad_synth_finish(&synth);
 
-    if (!info->playback->playing == 0) {
-        mad_plugin->output->buffer_free();
-        mad_plugin->output->buffer_free();
-        while (mad_plugin->output->buffer_playing()) {
+    if (info->playback->playing) {
+        GTimeVal sleeptime;
+
+        info->playback->output->buffer_free();
+        info->playback->output->buffer_free();
+        while (info->playback->output->buffer_playing()) {
 #ifdef DEBUG
             g_message("f: buffer_playing=%d",
-                      mad_plugin->output->buffer_playing());
+                      info->playback->output->buffer_playing());
 #endif
-            xmms_usleep(10000);
-            if (info->playback->playing == 0)
+            g_get_current_time(&sleeptime);
+            sleeptime.tv_usec += 500000;
+            if(sleeptime.tv_usec >= 1000000) {
+                sleeptime.tv_sec += 1;
+                sleeptime.tv_usec -= 1000000;
+            }
+
+            g_mutex_lock(mad_mutex);
+            g_cond_timed_wait(mad_cond, mad_mutex, &sleeptime);
+            if (!info->playback->playing) {
+                g_mutex_unlock(mad_mutex);
                 break;
+            }
+            g_mutex_unlock(mad_mutex);
         }
     }
 #ifdef DEBUG
@@ -560,8 +589,10 @@ gpointer decode_loop(gpointer arg)
     bmp_title_input_free(info->tuple);
     info->tuple = NULL;
 
-    mad_plugin->output->close_audio();
+    info->playback->output->close_audio();
+    g_mutex_lock(mad_mutex);
     info->playback->playing = 0;
+    g_mutex_unlock(mad_mutex);
     g_thread_exit(0);
     return NULL; /* dummy */
 }

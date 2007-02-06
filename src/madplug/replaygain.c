@@ -58,7 +58,7 @@ static gdouble strgain2double(gchar * s, int len)
 
 // Reads APE v2.0 tag ending at current pos in fp
 
-static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file)
+static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
 {
     unsigned long vsize;
     unsigned long isize;
@@ -110,12 +110,12 @@ static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file)
             gdouble *scale = NULL;
             gchar **str = NULL;
             if (uncase_strcmp(p, "REPLAYGAIN_ALBUM_GAIN") == 0) {
-                scale = &file->replaygain_album_scale;
-                str = &file->replaygain_album_str;
+                scale = &file_info->replaygain_album_scale;
+                str = &file_info->replaygain_album_str;
             }
             if (uncase_strcmp(p, "REPLAYGAIN_TRACK_GAIN") == 0) {
-                scale = &file->replaygain_track_scale;
-                str = &file->replaygain_track_str;
+                scale = &file_info->replaygain_track_scale;
+                str = &file_info->replaygain_track_str;
             }
             if (str != NULL) {
                 assert(scale != NULL);
@@ -125,12 +125,12 @@ static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file)
             //* case of peak info tags : */
             str = NULL;
             if (uncase_strcmp(p, "REPLAYGAIN_TRACK_PEAK") == 0) {
-                scale = &file->replaygain_track_peak;
-                str = &file->replaygain_track_peak_str;
+                scale = &file_info->replaygain_track_peak;
+                str = &file_info->replaygain_track_peak_str;
             }
             if (uncase_strcmp(p, "REPLAYGAIN_ALBUM_PEAK") == 0) {
-                scale = &file->replaygain_album_peak;
-                str = &file->replaygain_album_peak_str;
+                scale = &file_info->replaygain_album_peak;
+                str = &file_info->replaygain_album_peak_str;
             }
             if (str != NULL) {
                 *scale = g_strtod(p + isize + 1, NULL);
@@ -143,15 +143,15 @@ static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file)
                -> 1.501*gain dB
              */
             if (uncase_strcmp(p, "MP3GAIN_UNDO") == 0) {
-                str = &file->mp3gain_undo_str;
-                scale = &file->mp3gain_undo;
+                str = &file_info->mp3gain_undo_str;
+                scale = &file_info->mp3gain_undo;
                 assert(4 < vsize);  /* this tag is +left,+right */
                 *str = g_strndup(p + isize + 1, vsize);
                 *scale = 1.50515 * atoi(*str);
             }
             if (uncase_strcmp(p, "MP3GAIN_MINMAX") == 0) {
-                str = &file->mp3gain_minmax_str;
-                scale = &file->mp3gain_minmax;
+                str = &file_info->mp3gain_minmax_str;
+                scale = &file_info->mp3gain_minmax;
                 *str = g_strndup(p + isize + 1, vsize);
                 assert(4 < vsize);  /* this tag is min,max */
                 *scale = 1.50515 * (atoi((*str) + 4) - atoi(*str));
@@ -194,18 +194,18 @@ static int find_offset(VFSFile * fp)
     return last_match + 1 - 8 + sizeof(struct APETagFooterStruct) - N;
 }
 
-void input_read_replaygain(struct mad_info_t *file)
+void input_read_replaygain(struct mad_info_t *file_info)
 {
-    file->has_replaygain = FALSE;
-    file->replaygain_album_scale = -1;
-    file->replaygain_track_scale = -1;
-    file->mp3gain_undo = -77;
-    file->mp3gain_minmax = -77;
+    file_info->has_replaygain = FALSE;
+    file_info->replaygain_album_scale = -1;
+    file_info->replaygain_track_scale = -1;
+    file_info->mp3gain_undo = -77;
+    file_info->mp3gain_minmax = -77;
 
 
     VFSFile *fp;
 
-    if ((fp = vfs_fopen(file->filename, "rb")) == NULL)
+    if ((fp = vfs_fopen(file_info->filename, "rb")) == NULL)
         return;
 
     if (vfs_fseek(fp, 0L, SEEK_END) != 0) {
@@ -219,7 +219,7 @@ void input_read_replaygain(struct mad_info_t *file)
         // try skipping an id3 tag
         vfs_fseek(fp, pos, SEEK_SET);
         vfs_fseek(fp, try * -128, SEEK_CUR);
-        res = ReadAPE2Tag(fp, file);
+        res = ReadAPE2Tag(fp, file_info);
         ++try;
     }
     if (res != 0) {
@@ -229,7 +229,7 @@ void input_read_replaygain(struct mad_info_t *file)
         if (offs <= 0) {        // found !
             vfs_fseek(fp, pos, SEEK_SET);
             vfs_fseek(fp, offs, SEEK_CUR);
-            res = ReadAPE2Tag(fp, file);
+            res = ReadAPE2Tag(fp, file_info);
             if (res != 0) {
                 g_message
                     ("hmpf, was supposed to find a tag.. offs=%d, res=%d",
@@ -238,17 +238,16 @@ void input_read_replaygain(struct mad_info_t *file)
         }
     }
 #ifdef DEBUG
-//#if 1
     if (res == 0) {             // got APE tags, show the result
         printf("RG album scale= %g, RG track scale = %g, in %s \n",
-               file->replaygain_album_scale,
-               file->replaygain_track_scale, file->filename);
+               file_info->replaygain_album_scale,
+               file_info->replaygain_track_scale, file_info->filename);
     }
 #endif
 
-    if (file->replaygain_album_scale != -1
-        || file->replaygain_track_scale != -1)
-        file->has_replaygain = TRUE;
+    if (file_info->replaygain_album_scale != -1
+        || file_info->replaygain_track_scale != -1)
+        file_info->has_replaygain = TRUE;
 
     vfs_fclose(fp);
 }

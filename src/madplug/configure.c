@@ -27,7 +27,7 @@
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *vbox;
-static GtkWidget *fast_playback, *use_xing, *dither;
+static GtkWidget *fast_playback, *use_xing, *dither, *sjis;
 static GtkWidget *RG_enable, *RG_track_mode, *RG_default, *pregain,
     *hard_limit;
 static GtkWidget *title_id3_box, *title_tag_desc;
@@ -47,6 +47,8 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_xing));
     audmad_config.dither =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dither));
+    audmad_config.sjis =
+        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(sjis));
 
     audmad_config.replaygain.enable =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(RG_enable));
@@ -69,6 +71,7 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
                         audmad_config.fast_play_time_calc);
     bmp_cfg_db_set_bool(db, "MAD", "use_xing", audmad_config.use_xing);
     bmp_cfg_db_set_bool(db, "MAD", "dither", audmad_config.dither);
+    bmp_cfg_db_set_bool(db, "MAD", "sjis", audmad_config.sjis);
     bmp_cfg_db_set_bool(db, "MAD", "hard_limit",
                         audmad_config.hard_limit);
     bmp_cfg_db_set_string(db, "MAD", "pregain_db",
@@ -101,6 +104,116 @@ title_override_cb(GtkWidget * w, gpointer data)
     gtk_widget_set_sensitive(title_id3_box, override);
     gtk_widget_set_sensitive(title_tag_desc, override);
 }
+
+#if 0
+// derived from xmms-mad.
+void audmad_configure(void)
+{
+    GtkWidget *bbox, *ok, *cancel;
+    GtkWidget *label, *RG_default_hbox, *pregain_hbox;
+
+    if (configure_win != NULL) {
+        gdk_window_raise(configure_win->window);
+        return;
+    }
+
+    configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
+                       GTK_SIGNAL_FUNC(gtk_widget_destroyed),
+                       &configure_win);
+    gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
+                       GTK_SIGNAL_FUNC(configure_destroy), &configure_win);
+    gtk_window_set_title(GTK_WINDOW(configure_win),
+                         "MAD Input Plugin Configuration");
+    gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, FALSE, FALSE);
+    gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
+
+    vbox = gtk_vbox_new(FALSE, 10);
+    gtk_container_add(GTK_CONTAINER(configure_win), vbox);
+
+    fast_playback =
+        gtk_check_button_new_with_label("Use fast playtime calculation");
+    gtk_box_pack_start(GTK_BOX(vbox), fast_playback, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fast_playback),
+                                 audmad_config.fast_play_time_calc);
+
+    use_xing = gtk_check_button_new_with_label("Parse XING headers");
+    gtk_box_pack_start(GTK_BOX(vbox), use_xing, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_xing),
+                                 audmad_config.use_xing);
+
+    dither =
+        gtk_check_button_new_with_label
+        ("Dither output when rounding to 16-bit");
+    gtk_box_pack_start(GTK_BOX(vbox), dither, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dither),
+                                 audmad_config.dither);
+
+    sjis = gtk_check_button_new_with_label("Use SJIS to write ID3 tags instead of UTF-8");
+    gtk_box_pack_start(GTK_BOX(vbox), sjis, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sjis), audmad_config.sjis);
+
+    /* SKR added config : */
+    RG_enable = gtk_check_button_new_with_label("Enable replaygain");
+    gtk_box_pack_start(GTK_BOX(vbox), RG_enable, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(RG_enable),
+                                 audmad_config.replaygain.enable);
+    RG_track_mode =
+        gtk_check_button_new_with_label("Prefer TRACK replaygain");
+    gtk_box_pack_start(GTK_BOX(vbox), RG_track_mode, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(RG_track_mode),
+                                 audmad_config.replaygain.track_mode);
+
+    hard_limit =
+        gtk_check_button_new_with_label
+        ("hard-limit samples (prevent clipping)");
+    gtk_box_pack_start(GTK_BOX(vbox), hard_limit, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(hard_limit),
+                                 audmad_config.hard_limit);
+
+    label = gtk_label_new("gain to use if no RG tag (dB):");
+    RG_default_hbox = gtk_hbox_new(FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(vbox), RG_default_hbox, TRUE, TRUE, 0);
+    RG_default = gtk_entry_new();
+    gtk_widget_set_usize(RG_default, 80, -1);
+    gtk_entry_set_text(GTK_ENTRY(RG_default),
+                       audmad_config.replaygain.default_db);
+    gtk_box_pack_start(GTK_BOX(RG_default_hbox), label, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(RG_default_hbox), RG_default, FALSE, TRUE,
+                       0);
+
+    label = gtk_label_new("Pre-gain (dB):");
+    pregain_hbox = gtk_hbox_new(FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(vbox), pregain_hbox, TRUE, TRUE, 0);
+    pregain = gtk_entry_new();
+    gtk_widget_set_usize(pregain, 80, -1);
+    gtk_entry_set_text(GTK_ENTRY(pregain), audmad_config.pregain_db);
+    gtk_box_pack_start(GTK_BOX(pregain_hbox), label, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(pregain_hbox), pregain, FALSE, TRUE, 0);
+
+
+    bbox = gtk_hbutton_box_new();
+    gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
+    gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+    gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
+
+    ok = gtk_button_new_with_label("Ok");
+    gtk_signal_connect(GTK_OBJECT(ok), "clicked",
+                       GTK_SIGNAL_FUNC(configure_win_ok), NULL);
+    GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
+    gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
+    gtk_widget_grab_default(ok);
+
+    cancel = gtk_button_new_with_label("Cancel");
+    gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
+                              GTK_SIGNAL_FUNC(gtk_widget_destroy),
+                              GTK_OBJECT(configure_win));
+    GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
+    gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
+
+    gtk_widget_show_all(configure_win);
+}
+#endif
 
 void audmad_configure(void)
 {
@@ -146,6 +259,10 @@ void audmad_configure(void)
     gtk_box_pack_start(GTK_BOX(vbox2), use_xing, TRUE, TRUE, 0);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_xing),
                                  audmad_config.use_xing);
+
+    sjis = gtk_check_button_new_with_label("Use SJIS to write ID3 tags instead of UTF-8");
+    gtk_box_pack_start(GTK_BOX(vbox2), sjis, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sjis), audmad_config.sjis);
 
     dither =
         gtk_check_button_new_with_label

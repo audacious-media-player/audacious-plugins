@@ -37,8 +37,10 @@
  * Global variables
  */
 struct audmad_config_t audmad_config;   /**< global configuration */
-static GStaticMutex mutex;
 InputPlugin *mad_plugin = NULL;
+GMutex *mad_mutex;
+GMutex *pb_mutex;
+GCond *mad_cond;
 
 /*
  * static variables
@@ -68,6 +70,7 @@ static gchar *extname(const char *filename)
 
     return ext;
 }
+
 
 void audmad_config_compute(struct audmad_config_t *config)
 {
@@ -99,6 +102,7 @@ static void audmad_init()
     audmad_config.fast_play_time_calc = TRUE;
     audmad_config.use_xing = TRUE;
     audmad_config.dither = TRUE;
+    audmad_config.sjis = FALSE;
     audmad_config.pregain_db = "+0.00";
     audmad_config.replaygain.enable = TRUE;
     audmad_config.replaygain.track_mode = FALSE;
@@ -112,6 +116,7 @@ static void audmad_init()
         bmp_cfg_db_get_bool(db, "MAD", "use_xing",
                             &audmad_config.use_xing);
         bmp_cfg_db_get_bool(db, "MAD", "dither", &audmad_config.dither);
+        bmp_cfg_db_get_bool(db, "MAD", "sjis", &audmad_config.sjis);
         bmp_cfg_db_get_bool(db, "MAD", "hard_limit",
                             &audmad_config.hard_limit);
         bmp_cfg_db_get_string(db, "MAD", "pregain_db",
@@ -122,15 +127,13 @@ static void audmad_init()
                             &audmad_config.replaygain.track_mode);
         bmp_cfg_db_get_string(db, "MAD", "RG.default_db",
                               &audmad_config.replaygain.default_db);
-        bmp_cfg_db_get_bool(db, "MAD", "title_override",
-                            &audmad_config.title_override);
-        bmp_cfg_db_get_string(db, "MAD", "id3_format",
-                              &audmad_config.id3_format);
 
         bmp_cfg_db_close(db);
     }
 
-    g_static_mutex_init(&mutex);
+    mad_mutex = g_mutex_new();
+    pb_mutex = g_mutex_new();
+    mad_cond = g_cond_new();
     audmad_config_compute(&audmad_config);
 
 }
@@ -183,6 +186,8 @@ static int mp3_head_convert(const guchar * hbuf)
         ((unsigned long) hbuf[2] << 8) | (unsigned long) hbuf[3];
 }
 
+#if 0
+// XXX: can't add remote stream from add URL dialog. temporally disabled.
 // audacious vfs fast version
 static int audmad_is_our_fd(char *filename, VFSFile *fin)
 {
@@ -238,6 +243,64 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     return 1;
 }
+#endif
+
+// this function will be replaced soon.
+static int audmad_is_our_fd(char *filename, VFSFile *fin)
+{
+    int rtn = 0;
+    guchar check[4];
+
+    info.remote = FALSE; //awkward...
+
+#ifdef DEBUG
+    g_message("audmad: filename = %s\n", filename);
+#endif
+
+    // 0. if url is beginning with http://, take it blindly.
+    if (!strncasecmp("http://", filename, strlen("http://")) ||
+	!strncasecmp("https://", filename, strlen("https://"))) {
+        g_message("audmad: remote\n");
+        info.remote = TRUE;
+        return 1; //ours
+    }
+
+    // 1. check embeded signature 
+    if (fin && vfs_fread(check, 1, 4, fin) == 4) {
+        /*
+         * or three bytes are "ID3"
+         */
+        if (mp3_head_check(check)) {
+            rtn = 1;
+        }
+        else if (memcmp(check, "ID3", 3) == 0) {
+            rtn = 1;
+        }
+        else if (memcmp(check, "RIFF", 4) == 0) {
+            vfs_fseek(fin, 4, SEEK_CUR);
+            vfs_fread(check, 1, 4, fin);
+
+            if (memcmp(check, "RMP3", 4) == 0) {
+                rtn = 1;
+            }
+        }
+    }
+    // 2. exclude files with folloing extensions
+    if (strcasecmp("flac", filename + strlen(filename) - 4) == 0 ||
+        strcasecmp("mpc", filename + strlen(filename) - 3) == 0 ||
+        strcasecmp("tta", filename + strlen(filename) - 3) == 0) {
+        rtn = 0;
+        goto tail;
+    }
+
+    // 3. if we haven't found any signature, take the files with .mp3 extension.
+    if (rtn == 0 && strcasecmp("mp3", filename + strlen(filename) - 3) == 0) {
+        rtn = 1;
+    }
+
+  tail:
+    return rtn;
+}
 
 // audacious vfs version
 static int audmad_is_our_file(char *filename)
@@ -261,9 +324,17 @@ static void audmad_stop(InputPlayback *playback)
 #ifdef DEBUG
     g_message("f: audmad_stop");
 #endif                          /* DEBUG */
-    g_static_mutex_lock(&mutex);
+    g_mutex_lock(mad_mutex);
+    info.playback = playback;
+    g_mutex_unlock(mad_mutex);
+
     if (decode_thread) {
+
+        g_mutex_lock(mad_mutex);
         info.playback->playing = 0;
+        g_mutex_unlock(mad_mutex);
+        g_cond_signal(mad_cond);
+
 #ifdef DEBUG
         g_message("waiting for thread");
 #endif                          /* DEBUG */
@@ -273,10 +344,12 @@ static void audmad_stop(InputPlayback *playback)
 #endif                          /* DEBUG */
         input_term(&info);
         decode_thread = NULL;
-    }
-    g_static_mutex_unlock(&mutex);
-}
 
+    }
+#ifdef DEBUG
+    g_message("e: audmad_stop");
+#endif                          /* DEBUG */
+}
 
 static void audmad_play_file(InputPlayback *playback)
 {
@@ -307,20 +380,28 @@ static void audmad_play_file(InputPlayback *playback)
 
 static void audmad_pause(InputPlayback *playback, short paused)
 {
-    mad_plugin->output->pause(paused);
+    g_mutex_lock(pb_mutex);
+    info.playback = playback;
+    g_mutex_unlock(pb_mutex);
+    playback->output->pause(paused);
 }
 
 static void audmad_seek(InputPlayback *playback, int time)
 {
+    g_mutex_lock(pb_mutex);
+    info.playback = playback;
     /* xmms gives us the desired seek time in seconds */
     info.seek = time;
+    g_mutex_unlock(pb_mutex);
+
 }
 
 /**
  * Scan the given file or URL.
  * Fills in the title string and the track length in milliseconds.
  */
-void audmad_get_song_info(char *url, char **title, int *length)
+static void
+audmad_get_song_info(char *url, char **title, int *length)
 {
     struct mad_info_t myinfo;
 #ifdef DEBUG
@@ -329,19 +410,18 @@ void audmad_get_song_info(char *url, char **title, int *length)
 
     input_init(&myinfo, url);
 
-    if (input_get_info(&myinfo, audmad_config.fast_play_time_calc) == TRUE)
-    {
-        *title = strdup(myinfo.title);
+    if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
+        if(myinfo.tuple->track_name)
+            *title = strdup(myinfo.tuple->track_name);
+        else
+            *title = strdup(url);
         *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
     }
-    else
-    {
+    else {
         *title = strdup(url);
         *length = -1;
     }
-
     input_term(&myinfo);
-
 #ifdef DEBUG
     g_message("e: audmad_get_song_info");
 #endif                          /* DEBUG */
@@ -409,6 +489,7 @@ void audmad_error(char *error, ...)
 extern void audmad_get_file_info(char *filename);
 extern void audmad_configure();
 
+
 // tuple stuff
 static TitleInput *audmad_get_song_tuple(char *filename)
 {
@@ -428,9 +509,28 @@ static TitleInput *audmad_get_song_tuple(char *filename)
     }
 #endif
 
-    if ((file = vfs_fopen(filename, "rb")) != NULL) {
+    // can't re-open remote stream
+    if(info.remote){
         tuple = bmp_title_input_new();
 
+        tuple->track_name = vfs_get_metadata(info.infile, "track-name");
+        tuple->album_name = vfs_get_metadata(info.infile, "stream-name");
+#ifdef DEBUG
+        printf("audmad_get_song_tuple: track_name = %s\n", tuple->track_name);
+        printf("audmad_get_song_tuple: stream_name = %s\n", tuple->album_name);
+#endif
+        tuple->file_name = g_path_get_basename(filename);
+        tuple->file_path = g_path_get_dirname(filename);
+        tuple->file_ext = extname(filename);
+        tuple->length = -1;
+	tuple->mtime = 0; // this indicates streaming
+
+        return tuple;
+    }
+
+    if ((file = vfs_fopen(filename, "rb")) != NULL) {
+
+        tuple = bmp_title_input_new();
         id3file = id3_file_open(filename, ID3_FILE_MODE_READONLY);
 
         if (id3file) {
@@ -466,7 +566,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
                     int length = 0;
                     audmad_get_song_info(filename, &dummy, &length);
                     tuple->length = length;
-		    g_free(dummy);
+                    g_free(dummy);
                 }
 
                 // track number
@@ -485,21 +585,31 @@ static TitleInput *audmad_get_song_tuple(char *filename)
                 tuple->comment =
                     input_id3_get_string(tag, ID3_FRAME_COMMENT);
 
-                // mtime
-//                        tuple->mtime = audmad_get_mtime(filename);
-
             }
             id3_file_close(id3file);
+        }
+        else {
+            tuple->file_name = g_path_get_basename(filename);
+            tuple->file_path = g_path_get_dirname(filename);
+            tuple->file_ext = extname(filename);
+            // length
+            {
+                char *dummy = NULL;
+                int length = 0;
+                audmad_get_song_info(filename, &dummy, &length);
+                tuple->length = length;
+                g_free(dummy);
+            }
         }
         vfs_fclose(file);
     }
 #ifdef DEBUG
     g_message("e: mad: audmad_get_song_tuple");
 #endif
-    tuple->formatter = NULL;    //ensure
     return tuple;
 
 }
+
 
 /**
  * Retrieve meta-information about URL.
@@ -509,10 +619,12 @@ gboolean mad_get_info(struct mad_info_t * info, gboolean fast_scan)
 {
     TitleInput *tuple = NULL;
 
+#ifdef DEBUG
     g_message("f: mad_get_info: %s", info->filename);
-
-    if (info->remote)
+#endif
+    if (info->remote) {
         return TRUE;
+    }
 
     tuple = audmad_get_song_tuple(info->filename);
     info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
@@ -534,9 +646,11 @@ gboolean mad_get_info(struct mad_info_t * info, gboolean fast_scan)
             info->title = g_strdup(pos + 1);
         else
             info->title = g_strdup(info->filename);
-    }
+     }
 
+#ifdef DEBUG
     g_message("e: mad_get_info");
+#endif
     return TRUE;
 }
 

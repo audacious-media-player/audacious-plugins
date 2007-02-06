@@ -1,3 +1,24 @@
+2007-02-05 20:28:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1306]
+  - add madplug. It is not yet hooked up, I'll do that later.
+  
+  trunk/src/madplug/Makefile     |   25 +
+  trunk/src/madplug/configure.c  |  251 ++++++++++
+  trunk/src/madplug/decoder.c    |  567 ++++++++++++++++++++++++
+  trunk/src/madplug/dither.c     |  115 ++++
+  trunk/src/madplug/fileinfo.c   |  644 +++++++++++++++++++++++++++
+  trunk/src/madplug/input.c      |  518 ++++++++++++++++++++++
+  trunk/src/madplug/input.h      |   35 +
+  trunk/src/madplug/mp3.xpm      |  963 +++++++++++++++++++++++++++++++++++++++++
+  trunk/src/madplug/plugin.c     |  568 ++++++++++++++++++++++++
+  trunk/src/madplug/plugin.h     |  131 +++++
+  trunk/src/madplug/replaygain.c |  254 ++++++++++
+  trunk/src/madplug/replaygain.h |   44 +
+  trunk/src/madplug/xing.c       |   91 +++
+  trunk/src/madplug/xing.h       |   48 ++
+  14 files changed, 4254 insertions(+)
+
+
 2007-02-05 00:43:27 +0000  Giacomo Lozito <james@develia.org>
   revision [1304]
   - aosd: avoid collision between playback start trigger and titlechange trigger, that occurred when the next file in playlist was played

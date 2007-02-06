@@ -22,13 +22,14 @@
 #ifndef AUD_MAD_H
 #define AUD_MAD_H
 
-//#define DEBUG 1
-#undef DEBUG
+#define DEBUG 1
+/* #define DEBUG_INTENSIVELY 1 */
+/* #define DEBUG_DITHER 1 */
 
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "MADPlug"
 
-#include "config.h"
+//#include "config.h" // is it needed when in src tree?
 
 #undef PACKAGE
 #define PACKAGE "audacious-plugins"
@@ -39,7 +40,9 @@
 #include <unistd.h>
 #include <audacious/plugin.h>
 #include <audacious/titlestring.h>
+#include <audacious/util.h>
 #include <audacious/strings.h>
+#include <audacious/vfs.h>
 #include <audacious/i18n.h>
 #include <id3tag.h>
 #include <mad.h>
@@ -48,8 +51,11 @@
 
 struct mad_info_t
 {
+    /* InputPlayback */
     InputPlayback *playback;
-    int seek;
+
+    /* flags */
+    gint seek;      /**< seek time in seconds */
 
     /* state */
     guint current_frame;/**< current mp3 frame */
@@ -94,9 +100,8 @@ struct mad_info_t
     VFSFile *infile;
     gint offset;
 
-    gint remote;
-    struct streamdata_t *sdata;
-                  /**< stream data for remote connections */
+    gboolean remote;
+
 };
 
 struct audmad_config_t
@@ -105,6 +110,7 @@ struct audmad_config_t
     gboolean fast_play_time_calc;
     gboolean use_xing;
     gboolean dither;
+    gboolean sjis;
     gboolean hard_limit;
     gchar *pregain_db;          // gain applied to samples at decoding stage.
     gdouble pregain_scale;      // pow(10, pregain/20)
@@ -118,6 +124,11 @@ struct audmad_config_t
     gboolean title_override;
     gchar *id3_format;
 };
+
+// gcond
+extern GMutex *mad_mutex;
+extern GMutex *pb_mutex;
+extern GCond *mad_cond;
 
 void audmad_config_compute(struct audmad_config_t *config);
 // compute scale values from "_db" strings
