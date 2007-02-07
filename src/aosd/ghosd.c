@@ -15,6 +15,30 @@
 #include "ghosd.h"
 #include "ghosd-internal.h"
 
+static unsigned long
+get_current_workspace(Ghosd *ghosd) {
+  Atom cur_workspace_atom;
+  Atom type;
+  int format;
+  unsigned long nitems, bytes_after;
+  unsigned char *data;
+
+  cur_workspace_atom = XInternAtom(ghosd->dpy, "_NET_CURRENT_DESKTOP", False);
+  XGetWindowProperty(ghosd->dpy, DefaultRootWindow(ghosd->dpy), cur_workspace_atom,
+    0, ULONG_MAX, False, XA_CARDINAL, &type, &format, &nitems, &bytes_after, &data);
+
+  if ( type == XA_CARDINAL )
+  {
+    unsigned long cur_workspace = (unsigned long)*data;
+    g_print("debug: %i\n", cur_workspace);
+    XFree( data );
+    return cur_workspace;
+  }
+
+  /* fall back to desktop number 0 */
+  return 0;
+}
+
 static Pixmap
 take_snapshot(Ghosd *ghosd) {
   Pixmap pixmap;
@@ -96,6 +120,7 @@ set_hints(Display *dpy, Window win) {
   /* turn off window decorations.
    * we could pull this in from a motif header, but it's easier to
    * use this snippet i found on a mailing list.  */
+  XSizeHints *sizehints;
   Atom mwm_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
 #define MWM_HINTS_DECORATIONS (1<<1)
   struct {
@@ -116,6 +141,17 @@ set_hints(Display *dpy, Window win) {
   };
   XChangeProperty(dpy, win, win_state, XA_ATOM, 32,
                   PropModeReplace, (unsigned char*)&win_state_setting, 3);
+
+  /* give initial pos/size information to window manager
+     about the window, this prevents flickering */
+  sizehints = XAllocSizeHints();
+  sizehints->flags = USPosition | USSize;
+  sizehints->x = -1;
+  sizehints->y = -1;
+  sizehints->width = 1;
+  sizehints->height = 1;
+  XSetWMNormalHints(dpy, win, sizehints);
+  XFree( sizehints );
 }
 
 static Window
@@ -131,7 +167,7 @@ make_window(Display *dpy) {
   att.background_pixmap = None;
   att.save_under = True;
   att.event_mask = ExposureMask | StructureNotifyMask | ButtonPressMask;
-  att.override_redirect = True;
+  att.override_redirect = False;
 
   win = XCreateWindow(dpy, DefaultRootWindow(dpy),
                       -1, -1, 1, 1, 0,
