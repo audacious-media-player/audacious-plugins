@@ -1,3 +1,22 @@
+2007-02-06 20:11:42 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1308]
+  merge recent changes from yaz's branch.
+  - stable shoutcast playback.
+  - tag handling improvement.
+  - view track detail on streaming won't crash. (disabled.)
+  - filepopup for streaming is partially supported. filepopup displays track name and stream name, but not updated automatically.
+  
+  trunk/src/madplug/configure.c  |  119 +++++++++++++
+  trunk/src/madplug/decoder.c    |  113 ++++++++----
+  trunk/src/madplug/fileinfo.c   |  369 +++++++++++++++++++++++++++++++++++++----
+  trunk/src/madplug/input.c      |  100 +++++++----
+  trunk/src/madplug/input.h      |    2 
+  trunk/src/madplug/plugin.c     |  168 +++++++++++++++---
+  trunk/src/madplug/plugin.h     |   25 ++
+  trunk/src/madplug/replaygain.c |   55 +++---
+  8 files changed, 779 insertions(+), 172 deletions(-)
+
+
 2007-02-05 20:28:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1306]
   - add madplug. It is not yet hooked up, I'll do that later.

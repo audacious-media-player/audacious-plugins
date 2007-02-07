@@ -186,8 +186,7 @@ static int mp3_head_convert(const guchar * hbuf)
         ((unsigned long) hbuf[2] << 8) | (unsigned long) hbuf[3];
 }
 
-#if 0
-// XXX: can't add remote stream from add URL dialog. temporally disabled.
+
 // audacious vfs fast version
 static int audmad_is_our_fd(char *filename, VFSFile *fin)
 {
@@ -197,6 +196,14 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     guchar buf[4];
     guchar tmp[4096];
     gint ret, i;
+
+#if 1
+    // XXX: temporary fix
+    if (!strncasecmp("http://", filename, 7) ||	!strncasecmp("https://", filename, 8)) {
+        g_message("audmad_is_our_fe: remote");
+        info.remote = TRUE;
+    }
+#endif
 
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
@@ -225,7 +232,7 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     while (!mp3_head_check(check))
     {
         ret = vfs_fread(tmp, 1, 4096, fin);
-	if (ret == 0)
+        if (ret == 0)
             return 0;
 
         for (i = 0; i < ret; i++)
@@ -242,64 +249,6 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     }
 
     return 1;
-}
-#endif
-
-// this function will be replaced soon.
-static int audmad_is_our_fd(char *filename, VFSFile *fin)
-{
-    int rtn = 0;
-    guchar check[4];
-
-    info.remote = FALSE; //awkward...
-
-#ifdef DEBUG
-    g_message("audmad: filename = %s\n", filename);
-#endif
-
-    // 0. if url is beginning with http://, take it blindly.
-    if (!strncasecmp("http://", filename, strlen("http://")) ||
-	!strncasecmp("https://", filename, strlen("https://"))) {
-        g_message("audmad: remote\n");
-        info.remote = TRUE;
-        return 1; //ours
-    }
-
-    // 1. check embeded signature 
-    if (fin && vfs_fread(check, 1, 4, fin) == 4) {
-        /*
-         * or three bytes are "ID3"
-         */
-        if (mp3_head_check(check)) {
-            rtn = 1;
-        }
-        else if (memcmp(check, "ID3", 3) == 0) {
-            rtn = 1;
-        }
-        else if (memcmp(check, "RIFF", 4) == 0) {
-            vfs_fseek(fin, 4, SEEK_CUR);
-            vfs_fread(check, 1, 4, fin);
-
-            if (memcmp(check, "RMP3", 4) == 0) {
-                rtn = 1;
-            }
-        }
-    }
-    // 2. exclude files with folloing extensions
-    if (strcasecmp("flac", filename + strlen(filename) - 4) == 0 ||
-        strcasecmp("mpc", filename + strlen(filename) - 3) == 0 ||
-        strcasecmp("tta", filename + strlen(filename) - 3) == 0) {
-        rtn = 0;
-        goto tail;
-    }
-
-    // 3. if we haven't found any signature, take the files with .mp3 extension.
-    if (rtn == 0 && strcasecmp("mp3", filename + strlen(filename) - 3) == 0) {
-        rtn = 1;
-    }
-
-  tail:
-    return rtn;
 }
 
 // audacious vfs version
@@ -323,7 +272,7 @@ static void audmad_stop(InputPlayback *playback)
 {
 #ifdef DEBUG
     g_message("f: audmad_stop");
-#endif                          /* DEBUG */
+#endif
     g_mutex_lock(mad_mutex);
     info.playback = playback;
     g_mutex_unlock(mad_mutex);
@@ -337,18 +286,18 @@ static void audmad_stop(InputPlayback *playback)
 
 #ifdef DEBUG
         g_message("waiting for thread");
-#endif                          /* DEBUG */
+#endif
         g_thread_join(decode_thread);
 #ifdef DEBUG
         g_message("thread done");
-#endif                          /* DEBUG */
+#endif
         input_term(&info);
         decode_thread = NULL;
 
     }
 #ifdef DEBUG
     g_message("e: audmad_stop");
-#endif                          /* DEBUG */
+#endif
 }
 
 static void audmad_play_file(InputPlayback *playback)

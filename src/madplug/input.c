@@ -397,7 +397,7 @@ static void input_read_tag(struct mad_info_t *info)
 gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 {
 #ifdef DEBUG
-    g_message("f: input_get_info: %s", info->title);
+    g_message("f: input_get_info: %s, fast_scan = %s", info->title, fast_scan ? "TRUE" : "FALSE");
 #endif                          /* DEBUG */
     input_read_tag(info);
     input_read_replaygain(info);
