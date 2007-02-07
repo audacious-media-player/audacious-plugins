@@ -1,11 +1,11 @@
--: to do, X: done, x: test needed, ?: questionableness
+-: to do, X: done, x: test needed, ?: uncertainty
 
 X remove info->stop
 X frame_name == ID3_FRAME_COMMENT code highly depends on address of strings. strcmp() is safer way.
 X replace copy right notices
 X import title override feature
 x import neno's configure dialog
-- bug fix: press F5 on not yet played stream hangs.
+X bug fix: press F5 on not yet played stream hangs.
 - tidy up mad_info_t
 - remove pb_mutex ?
 x replace tag editor with neno's

@@ -197,10 +197,12 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     guchar tmp[4096];
     gint ret, i;
 
+    info.remote = FALSE;
+
 #if 1
     // XXX: temporary fix
-    if (!strncasecmp("http://", filename, 7) ||	!strncasecmp("https://", filename, 8)) {
-        g_message("audmad_is_our_fe: remote");
+    if (!strncasecmp("http://", filename, 7) || !strncasecmp("https://", filename, 8)) {
+        g_message("audmad_is_our_fd: remote");
         info.remote = TRUE;
     }
 #endif
@@ -320,9 +322,10 @@ static void audmad_play_file(InputPlayback *playback)
         g_message("error reading input info");
         return;
     }
-
+    g_mutex_lock(pb_mutex);
     info.playback = playback;
     info.playback->playing = 1;
+    g_mutex_unlock(pb_mutex);
 
     decode_thread = g_thread_create(decode_loop, (void *) &info, TRUE, NULL);
 }
@@ -357,7 +360,16 @@ audmad_get_song_info(char *url, char **title, int *length)
     g_message("f: audmad_get_song_info: %s", url);
 #endif                          /* DEBUG */
 
-    input_init(&myinfo, url);
+    if (input_init(&myinfo, url) == FALSE) {
+        g_message("error initialising input");
+        return;
+    }
+
+    // don't try to get from stopped stream.
+    if(myinfo.remote && (!myinfo.playback || !myinfo.playback->playing)){
+        g_print("get_song_info: remote!\n");
+        return;
+    }
 
     if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
         if(myinfo.tuple->track_name)
@@ -452,29 +464,36 @@ static TitleInput *audmad_get_song_tuple(char *filename)
 #ifdef DEBUG
     string = str_to_utf8(filename);
     g_message("f: mad: audmad_get_song_tuple: %s", string);
-    if (string) {
-        g_free(string);
-        string = NULL;
-    }
+    g_free(string);
+    string = NULL;
 #endif
 
-    // can't re-open remote stream
     if(info.remote){
-        tuple = bmp_title_input_new();
-
-        tuple->track_name = vfs_get_metadata(info.infile, "track-name");
-        tuple->album_name = vfs_get_metadata(info.infile, "stream-name");
+        if(info.playback && info.playback->playing) {
+            tuple = bmp_title_input_new();
 #ifdef DEBUG
-        printf("audmad_get_song_tuple: track_name = %s\n", tuple->track_name);
-        printf("audmad_get_song_tuple: stream_name = %s\n", tuple->album_name);
+            printf("info.playback->playing = %d\n",info.playback->playing);
 #endif
-        tuple->file_name = g_path_get_basename(filename);
-        tuple->file_path = g_path_get_dirname(filename);
-        tuple->file_ext = extname(filename);
-        tuple->length = -1;
-	tuple->mtime = 0; // this indicates streaming
-
-        return tuple;
+            tuple->track_name = vfs_get_metadata(info.infile, "track-name");
+            tuple->album_name = vfs_get_metadata(info.infile, "stream-name");
+#ifdef DEBUG
+            printf("audmad_get_song_tuple: track_name = %s\n", tuple->track_name);
+            printf("audmad_get_song_tuple: stream_name = %s\n", tuple->album_name);
+#endif
+            tuple->file_name = g_path_get_basename(filename);
+            tuple->file_path = g_path_get_dirname(filename);
+            tuple->file_ext = extname(filename);
+            tuple->length = -1;
+            tuple->mtime = 0; // this indicates streaming
+#ifdef DEBUG
+            printf("get_song_tuple remote: tuple\n");
+#endif
+            return tuple;
+        }
+#ifdef DEBUG
+        printf("get_song_tuple: remote: NULL\n");
+#endif
+        return NULL;
     }
 
     if ((file = vfs_fopen(filename, "rb")) != NULL) {
@@ -528,7 +547,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
                 // genre
                 tuple->genre = input_id3_get_string(tag, ID3_FRAME_GENRE);
 #ifdef DEBUG
-                g_message("genre = %s\n", tuple->genre);
+                g_message("genre = %s", tuple->genre);
 #endif
                 // comment
                 tuple->comment =

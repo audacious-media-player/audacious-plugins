@@ -813,10 +813,9 @@ void audmad_get_file_info(char *filename)
 #endif
     input_init(&info, filename);
 
-    if (!strncasecmp("http://", filename, strlen("http://")) ||
-	!strncasecmp("https://", filename, strlen("https://"))) {
+    if (!strncasecmp("http://", filename, 7) || !strncasecmp("https://", filename, 8)) {
         info.remote = TRUE;
-	return; //tentative
+	return; //file info dialog for remote streaming doesn't make sense.
     }
 
     utf_filename = str_to_utf8(filename);

@@ -123,6 +123,7 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->remote = info->size == 0 ? TRUE : FALSE;
 
 #ifdef DEBUG
+    g_message("i: info->size == %lu", info->size);
     g_message("e: input_init");
 #endif
     return TRUE;

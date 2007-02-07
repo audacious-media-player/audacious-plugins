@@ -1,3 +1,14 @@
+2007-02-07 05:01:15 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1310]
+  - fix for audmad_is_our_fd()
+  - added my TODO list ;p
+  
+  trunk/src/madplug/TODO     |   15 ++++++++
+  trunk/src/madplug/input.c  |    2 -
+  trunk/src/madplug/plugin.c |   79 +++++++--------------------------------------
+  3 files changed, 30 insertions(+), 66 deletions(-)
+
+
 2007-02-06 20:11:42 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1308]
   merge recent changes from yaz's branch.
