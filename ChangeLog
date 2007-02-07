@@ -1,3 +1,10 @@
+2007-02-07 11:52:25 +0000  Giacomo Lozito <james@develia.org>
+  revision [1314]
+  - aosd, further work on ghosd source: do not use a override_redirect=true window and give the WM information about initial pos/size of osd (prevents flickering with normal windows); now the osd won't be displayed in multiple workspaces, only in the one where it's initially triggered
+  trunk/src/aosd/ghosd.c |   38 +++++++++++++++++++++++++++++++++++++-
+  1 file changed, 37 insertions(+), 1 deletion(-)
+
+
 2007-02-07 09:10:37 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1312]
   - press F5 on not yet played stream no longer hangs.

@@ -37,7 +37,7 @@
 
 #define DEBUG
 
-#define REMOVE_NONEXISTANT_TAG(x)   if (!*x) { x = NULL; }
+#define REMOVE_NONEXISTANT_TAG(x)   if (x != NULL && !*x) { x = NULL; }
 
 #include <glib.h>
 #include <gtk/gtk.h>
