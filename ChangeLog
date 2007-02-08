@@ -1,3 +1,15 @@
+2007-02-08 07:31:26 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1322]
+  - revise input_id3_get_string() to take encoding of field into account.
+  - restore title_override options I accidentally dropped.
+  - remove unnecessary code.
+  
+  trunk/src/madplug/configure.c |  110 ------------------------------------------
+  trunk/src/madplug/input.c     |   60 +++++++++++-----------
+  trunk/src/madplug/plugin.c    |    4 +
+  3 files changed, 33 insertions(+), 141 deletions(-)
+
+
 2007-02-08 02:26:47 +0000  Giacomo Lozito <james@develia.org>
   revision [1320]
   - aosd: added window class hints (aosd.Audacious)

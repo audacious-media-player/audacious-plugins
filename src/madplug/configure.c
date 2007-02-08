@@ -62,6 +62,12 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
     text = gtk_entry_get_text(GTK_ENTRY(pregain));
     audmad_config.pregain_db = g_strdup(text);
 
+    audmad_config.title_override =
+        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(title_override));
+
+    text = gtk_entry_get_text(GTK_ENTRY(title_id3_entry));
+    audmad_config.id3_format = g_strdup(text);
+
     audmad_config_compute(&audmad_config);
 
     db = bmp_cfg_db_open();

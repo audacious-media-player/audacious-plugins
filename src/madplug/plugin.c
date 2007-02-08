@@ -599,6 +599,7 @@ gboolean mad_get_info(struct mad_info_t * info, gboolean fast_scan)
     }
 
     tuple = audmad_get_song_tuple(info->filename);
+    
     info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
 	audmad_config.id3_format : xmms_get_gentitle_format(), tuple);
 

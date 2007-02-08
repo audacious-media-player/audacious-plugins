@@ -385,9 +385,8 @@ gpointer decode_loop(gpointer arg)
     /* set mainwin title */
     if (info->title)
         g_free(info->title);
-    info->title =
-        xmms_get_titlestring(xmms_get_gentitle_format(), info->tuple);
-
+    info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
+        audmad_config.id3_format : xmms_get_gentitle_format(), info->tuple);
     
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
     
