@@ -273,9 +273,8 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 
     field = id3_frame_field(frame, 0);
     encoding = id3_field_gettextencoding(field);
-    g_print("encoding = %d\n", encoding);
 
-    if (frame_name == ID3_FRAME_COMMENT)
+    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
         field = id3_frame_field(frame, 3);
     else
         field = id3_frame_field(frame, 1);
@@ -283,7 +282,7 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     if (!field)
         return NULL;
 
-    if (frame_name == ID3_FRAME_COMMENT)
+    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
         string_const = id3_field_getfullstring(field);
     else
         string_const = id3_field_getstrings(field, 0);
@@ -293,7 +292,7 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 
     string = mad_ucs4dup((id3_ucs4_t *)string_const);
 
-    if (frame_name == ID3_FRAME_GENRE) {
+    if (!strcmp(frame_name, ID3_FRAME_GENRE)) {
         id3_ucs4_t *string2 = NULL;
         string2 = mad_parse_genre(string);
         g_free((void *)string);
@@ -302,17 +301,14 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 
     switch (encoding) {
     case ID3_FIELD_TEXTENCODING_ISO_8859_1:
-        g_print("latin1\n");
         rtn0 = id3_ucs4_latin1duplicate(string);
         break;
     case ID3_FIELD_TEXTENCODING_UTF_16:
     case ID3_FIELD_TEXTENCODING_UTF_16BE:
-        g_print("UTF16\n");
         rtn0 = id3_ucs4_utf16duplicate(string);
         break;
     case ID3_FIELD_TEXTENCODING_UTF_8:
     default:
-        g_print("UTF8\n");
         rtn0 = id3_ucs4_utf8duplicate(string);
         break;
     }
