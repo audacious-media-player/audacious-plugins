@@ -303,10 +303,6 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     case ID3_FIELD_TEXTENCODING_ISO_8859_1:
         rtn0 = id3_ucs4_latin1duplicate(string);
         break;
-    case ID3_FIELD_TEXTENCODING_UTF_16:
-    case ID3_FIELD_TEXTENCODING_UTF_16BE:
-        rtn0 = id3_ucs4_utf16duplicate(string);
-        break;
     case ID3_FIELD_TEXTENCODING_UTF_8:
     default:
         rtn0 = id3_ucs4_utf8duplicate(string);
