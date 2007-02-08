@@ -113,6 +113,11 @@ ghosd_render(Ghosd *ghosd) {
 
 static void
 set_hints(Display *dpy, Window win) {
+  XSizeHints *sizehints;
+  XClassHint *classhints;
+  char *res_class = "Audacious";
+  char *res_name = "aosd";
+
   /* we're almost a _NET_WM_WINDOW_TYPE_SPLASH, but we don't want
    * to be centered on the screen.  instead, manually request the
    * behavior we want. */
@@ -120,7 +125,6 @@ set_hints(Display *dpy, Window win) {
   /* turn off window decorations.
    * we could pull this in from a motif header, but it's easier to
    * use this snippet i found on a mailing list.  */
-  XSizeHints *sizehints;
   Atom mwm_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
 #define MWM_HINTS_DECORATIONS (1<<1)
   struct {
@@ -161,6 +165,12 @@ set_hints(Display *dpy, Window win) {
   sizehints->height = 1;
   XSetWMNormalHints(dpy, win, sizehints);
   XFree( sizehints );
+
+  classhints = XAllocClassHint();
+  classhints->res_name = res_name;
+  classhints->res_class = res_class;
+  XSetClassHint(dpy, win, classhints);
+  XFree( classhints );
 }
 
 static Window
@@ -168,8 +178,6 @@ make_window(Display *dpy) {
   Window win;
   XSetWindowAttributes att;
 
-  /* XXX I don't understand X well enough to know if these are the correct
-   * settings. */
   att.backing_store = WhenMapped;
   att.background_pixel = None;
   att.border_pixel = 0;
@@ -186,8 +194,6 @@ make_window(Display *dpy) {
                       &att);
 
   set_hints(dpy, win);
-
-  /* XXX: XSetClassHint? */
 
   return win;
 }
