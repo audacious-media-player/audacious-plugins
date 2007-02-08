@@ -307,14 +307,16 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "$enable_mp3" = "yes"; then
-        INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
-        PKG_CHECK_MODULES(LIBNMS,[libnms >= 0.6.0],
-            [LIBNMS_SRC=rtsp.c
-             AC_DEFINE(HAVE_NEMESI,,[Define if rtp/rtsp support is available])
-            ],[LIBNMS_SRC=""])
-        AC_SUBST(LIBNMS_CFLAGS)
-        AC_SUBST(LIBNMS_LIBS)
-        AC_SUBST(LIBNMS_SRC)
+	PKG_CHECK_MODULES(MAD, [mad id3tag],
+	     [INPUT_PLUGINS="$INPUT_PLUGINS madplug"])
+# XXX rtsp support
+#        PKG_CHECK_MODULES(LIBNMS,[libnms >= 0.6.0],
+#            [LIBNMS_SRC=rtsp.c
+#             AC_DEFINE(HAVE_NEMESI,,[Define if rtp/rtsp support is available])
+#            ],[LIBNMS_SRC=""])
+#        AC_SUBST(LIBNMS_CFLAGS)
+#        AC_SUBST(LIBNMS_LIBS)
+#        AC_SUBST(LIBNMS_SRC)
 fi
 
 dnl *** Rocklight
@@ -1209,7 +1211,7 @@ echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
 echo "  -------------"
-echo "  MPEG 1/2/3 (mpg123):                    $enable_mp3"
+echo "  MPEG 1/2/3 (madplug):                   $enable_mp3"
 echo "  MPEG 4 Audio (AAC):                     $enable_aac"
 echo "  Windows Media Audio (wma):              $enable_wma"
 echo "  Module decoder (modplug):               $have_modplug"
