@@ -258,23 +258,24 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
     return ret;
 }
 
-
 gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 {
-    gchar *rtn;
-    gchar *rtn2;
+    gchar *rtn0 = NULL, *rtn = NULL;
     const id3_ucs4_t *string_const;
     id3_ucs4_t *string;
-    id3_ucs4_t *ucsptr;
     struct id3_frame *frame;
     union id3_field *field;
-    gboolean flagutf = FALSE;
+    int encoding = -1;
 
     frame = id3_tag_findframe(tag, frame_name, 0);
     if (!frame)
         return NULL;
 
-    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
+    field = id3_frame_field(frame, 0);
+    encoding = id3_field_gettextencoding(field);
+    g_print("encoding = %d\n", encoding);
+
+    if (frame_name == ID3_FRAME_COMMENT)
         field = id3_frame_field(frame, 3);
     else
         field = id3_frame_field(frame, 1);
@@ -282,7 +283,7 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     if (!field)
         return NULL;
 
-    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
+    if (frame_name == ID3_FRAME_COMMENT)
         string_const = id3_field_getfullstring(field);
     else
         string_const = id3_field_getstrings(field, 0);
@@ -292,38 +293,35 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 
     string = mad_ucs4dup((id3_ucs4_t *)string_const);
 
-    if (!strcmp(frame_name, ID3_FRAME_GENRE)) {
+    if (frame_name == ID3_FRAME_GENRE) {
         id3_ucs4_t *string2 = NULL;
         string2 = mad_parse_genre(string);
         g_free((void *)string);
         string = string2;
     }
 
-    ucsptr = (id3_ucs4_t *)string;
-    while (*ucsptr) {
-        if (*ucsptr > 0x000000ffL) {
-            flagutf = TRUE;
-            break;
-        }
-        ucsptr++;
+    switch (encoding) {
+    case ID3_FIELD_TEXTENCODING_ISO_8859_1:
+        g_print("latin1\n");
+        rtn0 = id3_ucs4_latin1duplicate(string);
+        break;
+    case ID3_FIELD_TEXTENCODING_UTF_16:
+    case ID3_FIELD_TEXTENCODING_UTF_16BE:
+        g_print("UTF16\n");
+        rtn0 = id3_ucs4_utf16duplicate(string);
+        break;
+    case ID3_FIELD_TEXTENCODING_UTF_8:
+    default:
+        g_print("UTF8\n");
+        rtn0 = id3_ucs4_utf8duplicate(string);
+        break;
     }
 
-    if (flagutf) {
+    rtn = str_to_utf8(rtn0);
+    g_free(rtn0);
+        
 #ifdef DEBUG
-        g_print("aud-mad: flagutf!\n");
-#endif
-        rtn = (gchar *)id3_ucs4_utf8duplicate(string);
-    }
-    else {
-        rtn = (gchar *)id3_ucs4_latin1duplicate(string);
-        rtn2 = str_to_utf8(rtn);
-        free(rtn);
-        rtn = rtn2;
-    }
-    g_free(string);
-    string = NULL;
-#ifdef DEBUG
-    g_print("string = %s\n", rtn);
+    g_print("i: string = %s\n", rtn);
 #endif
     return rtn;
 }
@@ -465,7 +463,7 @@ input_get_data(struct mad_info_t *madinfo, guchar * buffer,
 #endif
 #endif
     /* simply read to data from the file */
-    len = vfs_fread(buffer, 1, buffer_size, madinfo->infile); //vfs_fread returns num of element.
+    len = vfs_fread(buffer, 1, buffer_size, madinfo->infile); //vfs_fread returns num of elements.
 
     if(len == 0){
 	    if(madinfo->playback)

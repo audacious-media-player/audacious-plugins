@@ -127,6 +127,10 @@ static void audmad_init()
                             &audmad_config.replaygain.track_mode);
         bmp_cfg_db_get_string(db, "MAD", "RG.default_db",
                               &audmad_config.replaygain.default_db);
+        bmp_cfg_db_get_bool(db, "MAD", "title_override",
+                            &audmad_config.title_override);
+        bmp_cfg_db_get_string(db, "MAD", "id3_format",
+                              &audmad_config.id3_format);
 
         bmp_cfg_db_close(db);
     }

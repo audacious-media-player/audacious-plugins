@@ -1,3 +1,10 @@
+2007-02-08 02:26:47 +0000  Giacomo Lozito <james@develia.org>
+  revision [1320]
+  - aosd: added window class hints (aosd.Audacious)
+  trunk/src/aosd/ghosd.c |   16 +++++++++++-----
+  1 file changed, 11 insertions(+), 5 deletions(-)
+
+
 2007-02-08 01:46:12 +0000  Giacomo Lozito <james@develia.org>
   revision [1318]
   - aosd: added _NET_WM_WINDOW_TYPE_DOCK to osd window hints
