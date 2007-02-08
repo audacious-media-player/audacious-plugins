@@ -1,3 +1,11 @@
+2007-02-07 18:35:13 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1316]
+  - avoid NULL dereference. closes mandriva #28603.
+  
+  trunk/src/vorbis/vorbis.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-02-07 11:52:25 +0000  Giacomo Lozito <james@develia.org>
   revision [1314]
   - aosd, further work on ghosd source: do not use a override_redirect=true window and give the WM information about initial pos/size of osd (prevents flickering with normal windows); now the osd won't be displayed in multiple workspaces, only in the one where it's initially triggered
