@@ -113,7 +113,6 @@ ghosd_render(Ghosd *ghosd) {
 
 static void
 set_hints(Display *dpy, Window win) {
-  XSizeHints *sizehints;
   XClassHint *classhints;
   char *res_class = "Audacious";
   char *res_name = "aosd";
@@ -148,6 +147,7 @@ set_hints(Display *dpy, Window win) {
 
   /* give initial pos/size information to window manager
      about the window, this prevents flickering */
+  /* NOTE: unneeded if override_redirect is set to True
   sizehints = XAllocSizeHints();
   sizehints->flags = USPosition | USSize;
   sizehints->x = -1;
@@ -155,7 +155,7 @@ set_hints(Display *dpy, Window win) {
   sizehints->width = 1;
   sizehints->height = 1;
   XSetWMNormalHints(dpy, win, sizehints);
-  XFree( sizehints );
+  XFree( sizehints );*/
 
   classhints = XAllocClassHint();
   classhints->res_name = res_name;
@@ -175,7 +175,7 @@ make_window(Display *dpy) {
   att.background_pixmap = None;
   att.save_under = True;
   att.event_mask = ExposureMask | StructureNotifyMask | ButtonPressMask;
-  att.override_redirect = False;
+  att.override_redirect = True;
 
   win = XCreateWindow(dpy, DefaultRootWindow(dpy),
                       -1, -1, 1, 1, 0,
