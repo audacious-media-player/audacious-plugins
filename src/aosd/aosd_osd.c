@@ -31,7 +31,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include "ghosd.h"
-#include "ghosd-text.h"
 
 
 #define AOSD_STATUS_HIDDEN    0

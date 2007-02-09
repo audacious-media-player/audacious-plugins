@@ -1,3 +1,14 @@
+2007-02-08 17:10:38 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1330]
+  - remove the buggy memoryleaking mpg123 and integrate madplug into the 
+    buildsystem
+  
+  trunk/configure.ac         |   20 +++++++++++---------
+  trunk/mk/rules.mk.in       |    2 ++
+  trunk/src/madplug/Makefile |    5 ++---
+  3 files changed, 15 insertions(+), 12 deletions(-)
+
+
 2007-02-08 09:52:27 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1328]
   - remove ID3_FIELD_TEXTENCODING_UTF_16 case.

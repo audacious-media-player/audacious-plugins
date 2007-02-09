@@ -136,15 +136,6 @@ set_hints(Display *dpy, Window win) {
     mwm_hints, mwm_hints, 32, PropModeReplace,
     (unsigned char *)&mwm_hints_setting, 4);
 
-  /* setting the window type to _NET_WM_WINDOW_TYPE_DOCK helps with
-     windowmaker (and hopefully doesn't break compatibility with other wm) */
-  Atom win_type = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
-  Atom win_type_setting[] = {
-    XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DOCK", False)
-  };
-  XChangeProperty(dpy, win, win_type, XA_ATOM, 32,
-                  PropModeReplace, (unsigned char*)&win_type_setting, 1);
-
   /* always on top, not in taskbar or pager. */
   Atom win_state = XInternAtom(dpy, "_NET_WM_STATE", False);
   Atom win_state_setting[] = {

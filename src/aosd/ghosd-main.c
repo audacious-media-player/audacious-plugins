@@ -24,7 +24,7 @@ static void
 ghosd_main_iteration(Ghosd *ghosd) {
   XEvent ev, pev;
   XNextEvent(ghosd->dpy, &ev);
-  
+
   /* smash multiple configure/exposes into one. */
   if (ev.type == ConfigureNotify) {
     while (XPending(ghosd->dpy)) {

@@ -35,24 +35,28 @@ extern aosd_cfg_t * global_config;
 enum
 {
   AOSD_TRIGGER_PB_START = 0,
-  AOSD_TRIGGER_PB_TITLECHANGE = 1
+  AOSD_TRIGGER_PB_TITLECHANGE = 1,
+  AOSD_TRIGGER_VOL_CHANGE = 2
 };
 
 /* trigger codes array size */
-#define AOSD_TRIGGER_CODES_ARRAY_SIZE 2
+#define AOSD_TRIGGER_CODES_ARRAY_SIZE 3
 
 /* trigger codes array */
 gint aosd_trigger_codes[] =
 {
   AOSD_TRIGGER_PB_START,
-  AOSD_TRIGGER_PB_TITLECHANGE
+  AOSD_TRIGGER_PB_TITLECHANGE,
+  AOSD_TRIGGER_VOL_CHANGE
 };
 
 /* prototypes of trigger functions */
 static void aosd_trigger_func_pb_start_onoff ( gboolean );
 static void aosd_trigger_func_pb_start_cb ( gpointer , gpointer );
-static void aosd_trigger_func_pb_titlechange_onff ( gboolean );
+static void aosd_trigger_func_pb_titlechange_onoff ( gboolean );
 static void aosd_trigger_func_pb_titlechange_cb ( gpointer , gpointer );
+static void aosd_trigger_func_vol_change_onoff ( gboolean );
+static void aosd_trigger_func_vol_change_cb ( gpointer , gpointer );
 
 /* map trigger codes to trigger objects */
 aosd_trigger_t aosd_triggers[] =
@@ -66,8 +70,13 @@ aosd_trigger_t aosd_triggers[] =
                                     N_("Trigger OSD when, during playback, the song title changes "
                                        "but the filename is the same. This is mostly useful to display "
                                        "title changes in internet streams.") ,
-                                    aosd_trigger_func_pb_titlechange_onff ,
-                                    aosd_trigger_func_pb_titlechange_cb }
+                                    aosd_trigger_func_pb_titlechange_onoff ,
+                                    aosd_trigger_func_pb_titlechange_cb },
+
+  [AOSD_TRIGGER_VOL_CHANGE] = { N_("Volume Change") ,
+                                N_("Volume blah blah.") ,
+                                aosd_trigger_func_vol_change_onoff ,
+                                aosd_trigger_func_vol_change_cb }
 };
 
 
@@ -176,7 +185,7 @@ aosd_pb_titlechange_prevs_t;
 
 
 static void
-aosd_trigger_func_pb_titlechange_onff ( gboolean turn_on )
+aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
 {
   static aosd_pb_titlechange_prevs_t *prevs = NULL;
 
@@ -248,4 +257,17 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
       prevs->filename = g_strdup(pl_entry->filename);
     }
   }
+}
+
+
+static void
+aosd_trigger_func_vol_change_onoff ( gboolean turn_on )
+{
+  return;
+}
+
+static void
+aosd_trigger_func_vol_change_cb ( gpointer plentry_gp , gpointer prevs_gp )
+{
+  return;
 }

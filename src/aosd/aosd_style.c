@@ -27,7 +27,6 @@
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>
 #include "ghosd.h"
-#include "ghosd-text.h"
 
 
 /* HOW TO ADD A NEW DECORATION STYLE
