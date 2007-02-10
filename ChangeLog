@@ -1,3 +1,10 @@
+2007-02-09 15:21:13 +0000  Giacomo Lozito <james@develia.org>
+  revision [1334]
+  - aosd: put back override_redirect=True
+  trunk/src/aosd/ghosd.c |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2007-02-09 00:20:27 +0000  Giacomo Lozito <james@develia.org>
   revision [1332]
   - aosd: revert window type setting

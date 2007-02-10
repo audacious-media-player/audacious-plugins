@@ -545,6 +545,8 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
 
+  curl_easy_setopt(handle->curl, CURLOPT_FOLLOWLOCATION, 1);
+
   {
     struct curl_slist *hdr = NULL;
     hdr = curl_slist_append(hdr, "icy-metadata:1");
