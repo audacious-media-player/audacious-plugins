@@ -40,7 +40,7 @@ int url_vopen(URLContext **puc, VFSFile *fd)
     URLProtocol *up;
     const char *p;
     char proto_str[128], *q;
-    int err;
+    int err = 0;
 
     up = first_protocol;
     uc = av_malloc(sizeof(URLContext) + strlen(fd->uri ? fd->uri : ""));
