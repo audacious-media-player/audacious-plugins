@@ -209,7 +209,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
         mad_stream_buffer(&stream, buffer, len + remainder);
 
-        while (1) {
+        while (info->duration.seconds == 0) {
             if (mad_header_decode(&header, &stream) == -1) {
                 if (stream.error == MAD_ERROR_BUFLEN) {
                     break;
@@ -311,7 +311,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 g_message("using fast playtime calculation");
                 g_message("data used = %d [tagsize=%d framesize=%f]",
                           data_used, tagsize, frame_size);
-                g_message("frames = %d, frequecy = %d, channels = %d",
+                g_message("frames = %d, frequency = %d, channels = %d",
                           info->frames, info->freq, info->channels);
                 long millis = mad_timer_count(info->duration,
                                               MAD_UNITS_MILLISECONDS);
