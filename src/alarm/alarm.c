@@ -858,7 +858,7 @@ static void *alarm_start_thread(void *args)
        DEBUG("playlist is not blank, aparently\n");
        /* Is this a url? */
        /* Thanks Thomer */
-       if(!strncmp(playlist, "http://", 7))
+       if(!strncmp(playlist, "http://", 7) || !strncmp(playlist, "https://", 8))
        {
          /* Yes */
          DEBUG("This looks like a URL to me...\n");

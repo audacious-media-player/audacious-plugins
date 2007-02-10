@@ -234,6 +234,8 @@ save_cb(GtkWidget * w, gpointer data)
 
     if (!g_strncasecmp(vte.filename, "http://", 7))
         return;
+    if (!g_strncasecmp(vte.filename, "https://", 8))
+        return;
 
     state = vcedit_new_state();
 
@@ -311,6 +313,8 @@ remove_cb(GtkWidget * w, gpointer data)
     vorbis_comment *comment;
 
     if (!g_strncasecmp(vte.filename, "http://", 7))
+        return;
+    if (!g_strncasecmp(vte.filename, "https://", 8))
         return;
 
     state = vcedit_new_state();
@@ -905,7 +909,8 @@ vorbis_file_info_box(gchar * filename)
     else
         gtk_window_present(GTK_WINDOW(window));
 
-    if (!g_strncasecmp(vte.filename, "http://", 7))
+    if (!g_strncasecmp(vte.filename, "http://", 7)
+        || !g_strncasecmp(vte.filename, "https://", 8))
         gtk_widget_set_sensitive(tag_frame, FALSE);
     else
         gtk_widget_set_sensitive(tag_frame, TRUE);
