@@ -307,8 +307,9 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "$enable_mp3" = "yes"; then
-	PKG_CHECK_MODULES(MAD, [mad id3tag],
+	PKG_CHECK_MODULES(MAD, [mad],
 	     [INPUT_PLUGINS="$INPUT_PLUGINS madplug"])
+fi
 # XXX rtsp support
 #        PKG_CHECK_MODULES(LIBNMS,[libnms >= 0.6.0],
 #            [LIBNMS_SRC=rtsp.c
@@ -317,7 +318,7 @@ if test "$enable_mp3" = "yes"; then
 #        AC_SUBST(LIBNMS_CFLAGS)
 #        AC_SUBST(LIBNMS_LIBS)
 #        AC_SUBST(LIBNMS_SRC)
-fi
+# fi
 
 dnl *** Rocklight
 
@@ -1106,16 +1107,6 @@ AC_ARG_ENABLE(tta,
     [enable_tta=$enableval],
     [enable_tta=yes]
 )
-
-if test "$enable_tta" = "yes"; then
-    AC_CHECK_HEADERS([id3tag.h], [enable_tta=yes], [enable_tta=no])
-    if test "$enable_tta" = "yes"; then
-        AC_CHECK_LIB([id3tag], [id3_file_open], [enable_tta=yes], [enable_tta=no])
-    fi
-else
-    AC_MSG_RESULT([*** TrueAudio plugin disabled per user request ***])
-    enable_tta=no
-fi
 
 if test "$enable_tta" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS tta"

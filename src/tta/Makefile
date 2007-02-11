@@ -11,6 +11,6 @@ OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += -fPIC -DPIC $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
 
-LIBADD = -lid3tag $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+LIBADD = -L$(libdir) -lid3tag $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 include ../../mk/objective.mk

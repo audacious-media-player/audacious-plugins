@@ -591,7 +591,7 @@ void audmad_get_file_info(char *filename)
     char *utf_filename;
 
 #ifdef DEBUG
-    g_message("f: audmad_get_file_info: %s\n", filename);
+    g_message("f: audmad_get_file_info: %s", filename);
 #endif
     input_init(&info, filename);
 

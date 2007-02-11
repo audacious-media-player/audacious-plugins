@@ -1,3 +1,11 @@
+2007-02-11 10:44:18 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1352]
+  - filter out .ogg extension
+  
+  trunk/src/madplug/plugin.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-02-11 09:46:36 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1350]
   - remove some fuzzies
