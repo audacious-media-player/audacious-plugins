@@ -1,3 +1,12 @@
+2007-02-10 20:36:14 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1342]
+  - patch from Mark Glines to polish up https:// support.
+  
+  trunk/src/alarm/alarm.c     |    2 +-
+  trunk/src/vorbis/fileinfo.c |    7 ++++++-
+  2 files changed, 7 insertions(+), 2 deletions(-)
+
+
 2007-02-10 20:06:11 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [1340]
   Break out of the loop once we know the length. No using spinning around all day.
