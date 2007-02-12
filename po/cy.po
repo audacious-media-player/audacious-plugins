@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-02-11 03:19-0600\n"
-"PO-Revision-Date: 2007-02-11 03:44-0600\n"
+"PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
 "MIME-Version: 1.0\n"
@@ -184,6 +184,14 @@ msgid ""
 "This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et al.\n"
 "Linked AdPlug library version: "
 msgstr ""
+"\n"
+"Hawlfraint (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+"\n"
+"Mae'r rhaglen hwn yn rhyddhau â GNU LGPL.\n"
+"Canfod http://www.gnu.org/licenses/lgpl.html am manylion.\n"
+"\n"
+"Mae'r rhaglen defnyddio yn AdPlug llyfrgell, pa ys hawlfraint (C) Simon Peter, et al.\n"
+"Fersiwn cynnwys AdPlug llyfrgell:"
 
 #: src/audiocompress/audacious-glue.c:100
 msgid "AudioCompress "
@@ -497,7 +505,7 @@ msgstr "Samplo"
 
 #: src/console/Audacious_Config.cxx:208
 msgid "Enable audio resampling"
-msgstr ""
+msgstr "Gallougi sain dyblusampl"
 
 #: src/console/Audacious_Config.cxx:223
 msgid "Resampling rate:"
@@ -513,7 +521,7 @@ msgstr "NSF/NSFE"
 
 #: src/console/Audacious_Config.cxx:238
 msgid "Use optional NSFE playlist"
-msgstr ""
+msgstr "Defnyddio NSFE rhestr chwarae"
 
 #: src/console/Audacious_Config.cxx:249
 msgid "SPC"
@@ -521,13 +529,15 @@ msgstr "SPC"
 
 #: src/console/Audacious_Config.cxx:250
 msgid "Ignore length from SPC tags"
-msgstr ""
+msgstr "Diystyru hyd am SPC tagiau"
 
 #: src/console/Audacious_Config.cxx:270
 msgid ""
 "* Default song length *\n"
 "The default song length, expressed in seconds, is used for songs that do not provide length information (i.e. looping tracks)."
 msgstr ""
+"* Rhagosodedig hyd sain *\n"
+"Rhagosodedig hyd sain, mynegiau yn eiliad, ys gallougi am sain pa arlwyo na hyd gwybodaeth (dollenau trac)."
 
 #: src/disk_writer/disk_writer.c:111
 #, c-format
@@ -564,7 +574,7 @@ msgstr "Ffeil cyfeiriadur allbwn:"
 
 #: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
-msgstr ""
+msgstr "Cadw enw ffeil estyniad"
 
 #: src/echo_plugin/echo.c:44
 #, c-format
@@ -723,7 +733,7 @@ msgstr "Ategyn LIRC"
 #: src/lirc/lirc.c:84
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr ""
+msgstr "%s: methu â ymgychwyn LIRC ateg\n"
 
 #: src/lirc/lirc.c:92
 #, c-format
@@ -732,6 +742,9 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
+"%s: methu â darllen LIRC ffurfweddiad ffeil\n"
+"%s: plesio darllen yn dogfennau am LIRC\n"
+"%s: pa at creu y addas ffurfweddiad ffeil\n"
 
 #: src/lirc/lirc.c:338
 #, c-format
@@ -741,7 +754,7 @@ msgstr "%s: gorchymyn anhysbys \"%s\"\n"
 #: src/lirc/lirc.c:348
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr ""
+msgstr "%s: datgysylltu am LIRC\n"
 
 #: src/lirc/about.c:65
 msgid "About LIRC Audacious Plugin"
@@ -984,7 +997,7 @@ msgstr "44100 Hz"
 
 #: src/timidity/src/interface.c:117
 msgid "Sample Width"
-msgstr ""
+msgstr "Maint y Samplo"
 
 #: src/timidity/src/interface.c:134
 msgid "8 bit"
@@ -2328,7 +2341,7 @@ msgstr "ALSA %s ategyn allbwn"
 
 #: src/alsa/configure.c:150
 msgid "Unknown soundcard"
-msgstr ""
+msgstr "Cerdyn sain anhysbys"
 
 #: src/alsa/configure.c:205
 #, c-format
@@ -2370,16 +2383,16 @@ msgstr "Cyfnod amser (ms):"
 #: src/alsa/configure.c:398
 #: src/amidi-plug/i_configure-ap.c:287
 msgid "Advanced settings"
-msgstr ""
+msgstr "Gosodiadau uwch"
 
 #: src/amidi-plug/amidi-plug.c:26
 #, c-format
 msgid "AMIDI-Plug %s (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug %s (Chwarae MIDI)"
 
 #: src/amidi-plug/amidi-plug.c:380
 msgid "AMIDI-Plug - warning"
-msgstr ""
+msgstr "AMIDI-Plug - rhybudd"
 
 #: src/amidi-plug/amidi-plug.c:381
 msgid ""
@@ -2619,15 +2632,15 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "SoundFont settings"
-msgstr ""
+msgstr "Ffurfweddu SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
-msgstr ""
+msgstr "Enw ffeil"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:452
 msgid "Size (bytes)"
-msgstr ""
+msgstr "Maint Ffeil (bytes)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:501
 msgid "Load SF on player start"
@@ -2835,11 +2848,11 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
-msgstr ""
+msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr ""
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
@@ -2859,19 +2872,19 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
-msgstr ""
+msgstr "  (UTF-8 annybis)"
 
 #: src/aosd/aosd_style.c:76
 msgid "Rectangle"
-msgstr ""
+msgstr "Cyfongl"
 
 #: src/aosd/aosd_style.c:80
 msgid "Rounded Rectangle"
-msgstr ""
+msgstr "Cyfongl Cwmpas"
 
 #: src/aosd/aosd_style.c:84
 msgid "Concave Rectangle"
-msgstr ""
+msgstr "Cyfongl Cafniog"
 
 #: src/aosd/aosd_style.c:88
 msgid "None"
@@ -2972,11 +2985,11 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:717
 msgid "Enable trigger"
-msgstr ""
+msgstr "Galluogi clicied"
 
 #: src/aosd/aosd_ui.c:744
 msgid "Event"
-msgstr ""
+msgstr "Achlysur"
 
 #: src/aosd/aosd_ui.c:845
 msgid "Audacious OSD - configuration"
@@ -2984,7 +2997,7 @@ msgstr "Audacious OSD - ffurfweddiad"
 
 #: src/aosd/aosd_ui.c:866
 msgid "Test"
-msgstr ""
+msgstr "Prawf"
 
 #: src/aosd/aosd_ui.c:881
 #, fuzzy
@@ -2998,7 +3011,7 @@ msgstr "Corff:"
 
 #: src/aosd/aosd_ui.c:891
 msgid "Text"
-msgstr ""
+msgstr "Testun"
 
 #: src/aosd/aosd_ui.c:896
 msgid "Decoration"
@@ -3011,7 +3024,7 @@ msgstr "Trailer"
 
 #: src/aosd/aosd_ui.c:937
 msgid "Audacious OSD - about"
-msgstr ""
+msgstr "Audacious OSD - ynghylch"
 
 #: src/aosd/aosd_ui.c:968
 msgid ""
@@ -3033,6 +3046,15 @@ msgid ""
 "http://neugierig.org/software/ghosd/\n"
 "\n"
 msgstr ""
+"\n"
+"http://www.develia.org/projects.php?p=aosd\n"
+"ysgrifenedig am Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"On-Screen-Display ys tarddu gan Ghosd llyfrgell\n"
+"ysgrifenedig am Evan Martin\n"
+"http://neugierig.org/software/ghosd/\n"
+"\n"
 
 #: src/arts/configure.c:51
 msgid "aRts Driver configuration"
@@ -3302,13 +3324,15 @@ msgstr ""
 
 #: src/evdev-plug/ed_ui.c:1448
 msgid "EvDev-Plug - about"
-msgstr ""
+msgstr "EvDev-Plug - ynghylch"
 
 #: src/evdev-plug/ed_ui.c:1479
 msgid ""
 "\n"
 "EvDev-Plug "
 msgstr ""
+"\n"
+"EvDev-Plug "
 
 #: src/evdev-plug/ed_ui.c:1480
 msgid ""
@@ -3324,392 +3348,392 @@ msgstr ""
 #: src/flac112/charset.c:40
 #: src/flac113/charset.c:40
 msgid "Arabic (IBM-864)"
-msgstr ""
+msgstr "Arabic (IBM-864)"
 
 #: src/flac112/charset.c:41
 #: src/flac113/charset.c:41
 msgid "Arabic (ISO-8859-6)"
-msgstr ""
+msgstr "Arabic (ISO-8859-6)"
 
 #: src/flac112/charset.c:42
 #: src/flac113/charset.c:42
 msgid "Arabic (Windows-1256)"
-msgstr ""
+msgstr "Arabic (Windows-1256)"
 
 #: src/flac112/charset.c:43
 #: src/flac113/charset.c:43
 msgid "Baltic (ISO-8859-13)"
-msgstr ""
+msgstr "Baltic (ISO-8859-13)"
 
 #: src/flac112/charset.c:44
 #: src/flac113/charset.c:44
 msgid "Baltic (ISO-8859-4)"
-msgstr ""
+msgstr "Baltic (ISO-8859-4)"
 
 #: src/flac112/charset.c:45
 #: src/flac113/charset.c:45
 msgid "Baltic (Windows-1257)"
-msgstr ""
+msgstr "Baltic (Windows-1257)"
 
 #: src/flac112/charset.c:46
 #: src/flac113/charset.c:46
 msgid "Celtic (ISO-8859-14)"
-msgstr ""
+msgstr "Celtic (ISO-8859-14)"
 
 #: src/flac112/charset.c:47
 #: src/flac113/charset.c:47
 msgid "Central European (IBM-852)"
-msgstr ""
+msgstr "Central European (IBM-852)"
 
 #: src/flac112/charset.c:48
 #: src/flac113/charset.c:48
 msgid "Central European (ISO-8859-2)"
-msgstr ""
+msgstr "Central European (ISO-8859-2)"
 
 #: src/flac112/charset.c:49
 #: src/flac113/charset.c:49
 msgid "Central European (Windows-1250)"
-msgstr ""
+msgstr "Central European (Windows-1250)"
 
 #: src/flac112/charset.c:50
 #: src/flac113/charset.c:50
 msgid "Chinese Simplified (GB18030)"
-msgstr ""
+msgstr "Chinese Simplified (GB18030)"
 
 #: src/flac112/charset.c:51
 #: src/flac113/charset.c:51
 msgid "Chinese Simplified (GB2312)"
-msgstr ""
+msgstr "Chinese Simplified (GB2312)"
 
 #: src/flac112/charset.c:52
 #: src/flac113/charset.c:52
 msgid "Chinese Traditional (Big5)"
-msgstr ""
+msgstr "Chinese Traditional (Big5)"
 
 #: src/flac112/charset.c:53
 #: src/flac113/charset.c:53
 msgid "Chinese Traditional (Big5-HKSCS)"
-msgstr ""
+msgstr "Chinese Traditional (Big5-HKSCS)"
 
 #: src/flac112/charset.c:54
 #: src/flac113/charset.c:54
 msgid "Cyrillic (IBM-855)"
-msgstr ""
+msgstr "Cyrillic (IBM-855)"
 
 #: src/flac112/charset.c:55
 #: src/flac113/charset.c:55
 msgid "Cyrillic (ISO-8859-5)"
-msgstr ""
+msgstr "Cyrillic (ISO-8859-5)"
 
 #: src/flac112/charset.c:56
 #: src/flac113/charset.c:56
 msgid "Cyrillic (ISO-IR-111)"
-msgstr ""
+msgstr "Cyrillic (ISO-IR-111)"
 
 #: src/flac112/charset.c:57
 #: src/flac113/charset.c:57
 msgid "Cyrillic (KOI8-R)"
-msgstr ""
+msgstr "Cyrillic (KOI8-R)"
 
 #: src/flac112/charset.c:58
 #: src/flac113/charset.c:58
 msgid "Cyrillic (Windows-1251)"
-msgstr ""
+msgstr "Cyrillic (Windows-1251)"
 
 #: src/flac112/charset.c:59
 #: src/flac113/charset.c:59
 msgid "Cyrillic/Russian (CP-866)"
-msgstr ""
+msgstr "Cyrillic/Russian (CP-866)"
 
 #: src/flac112/charset.c:60
 #: src/flac113/charset.c:60
 msgid "Cyrillic/Ukrainian (KOI8-U)"
-msgstr ""
+msgstr "Cyrillic/Ukrainian (KOI8-U)"
 
 #: src/flac112/charset.c:61
 #: src/flac113/charset.c:61
 msgid "English (US-ASCII)"
-msgstr ""
+msgstr "English (US-ASCII)"
 
 #: src/flac112/charset.c:62
 #: src/flac113/charset.c:62
 msgid "Greek (ISO-8859-7)"
-msgstr ""
+msgstr "Greek (ISO-8859-7)"
 
 #: src/flac112/charset.c:63
 #: src/flac113/charset.c:63
 msgid "Greek (Windows-1253)"
-msgstr ""
+msgstr "Greek (Windows-1253)"
 
 #: src/flac112/charset.c:64
 #: src/flac113/charset.c:64
 msgid "Hebrew (IBM-862)"
-msgstr ""
+msgstr "Hebrew (IBM-862)"
 
 #: src/flac112/charset.c:65
 #: src/flac113/charset.c:65
 msgid "Hebrew (Windows-1255)"
-msgstr ""
+msgstr "Hebrew (Windows-1255)"
 
 #: src/flac112/charset.c:66
 #: src/flac113/charset.c:66
 msgid "Japanese (EUC-JP)"
-msgstr ""
+msgstr "Japanese (EUC-JP)"
 
 #: src/flac112/charset.c:67
 #: src/flac113/charset.c:67
 msgid "Japanese (ISO-2022-JP)"
-msgstr ""
+msgstr "Japanese (ISO-2022-JP)"
 
 #: src/flac112/charset.c:68
 #: src/flac113/charset.c:68
 msgid "Japanese (Shift_JIS)"
-msgstr ""
+msgstr "Japanese (Shift_JIS)"
 
 #: src/flac112/charset.c:69
 #: src/flac113/charset.c:69
 msgid "Korean (EUC-KR)"
-msgstr ""
+msgstr "Korean (EUC-KR)"
 
 #: src/flac112/charset.c:70
 #: src/flac113/charset.c:70
 msgid "Nordic (ISO-8859-10)"
-msgstr ""
+msgstr "Nordic (ISO-8859-10)"
 
 #: src/flac112/charset.c:71
 #: src/flac113/charset.c:71
 msgid "South European (ISO-8859-3)"
-msgstr ""
+msgstr "South European (ISO-8859-3)"
 
 #: src/flac112/charset.c:72
 #: src/flac113/charset.c:72
 msgid "Thai (TIS-620)"
-msgstr ""
+msgstr "Thai (TIS-620)"
 
 #: src/flac112/charset.c:73
 #: src/flac113/charset.c:73
 msgid "Turkish (IBM-857)"
-msgstr ""
+msgstr "Turkish (IBM-857)"
 
 #: src/flac112/charset.c:74
 #: src/flac113/charset.c:74
 msgid "Turkish (ISO-8859-9)"
-msgstr ""
+msgstr "Turkish (ISO-8859-9)"
 
 #: src/flac112/charset.c:75
 #: src/flac113/charset.c:75
 msgid "Turkish (Windows-1254)"
-msgstr ""
+msgstr "Turkish (Windows-1254)"
 
 #: src/flac112/charset.c:76
 #: src/flac113/charset.c:76
 msgid "Unicode (UTF-7)"
-msgstr ""
+msgstr "Unicode (UTF-7)"
 
 #: src/flac112/charset.c:77
 #: src/flac113/charset.c:77
 msgid "Unicode (UTF-8)"
-msgstr ""
+msgstr "Unicode (UTF-8)"
 
 #: src/flac112/charset.c:78
 #: src/flac113/charset.c:78
 msgid "Unicode (UTF-16BE)"
-msgstr ""
+msgstr "Unicode (UTF-16BE)"
 
 #: src/flac112/charset.c:79
 #: src/flac113/charset.c:79
 msgid "Unicode (UTF-16LE)"
-msgstr ""
+msgstr "Unicode (UTF-16LE)"
 
 #: src/flac112/charset.c:80
 #: src/flac113/charset.c:80
 msgid "Unicode (UTF-32BE)"
-msgstr ""
+msgstr "Unicode (UTF-32BE)"
 
 #: src/flac112/charset.c:81
 #: src/flac113/charset.c:81
 msgid "Unicode (UTF-32LE)"
-msgstr ""
+msgstr "Unicode (UTF-32LE)"
 
 #: src/flac112/charset.c:82
 #: src/flac113/charset.c:82
 msgid "Vietnamese (VISCII)"
-msgstr ""
+msgstr "Vietnamese (VISCII)"
 
 #: src/flac112/charset.c:83
 #: src/flac113/charset.c:83
 msgid "Vietnamese (Windows-1258)"
-msgstr ""
+msgstr "Vietnamese (Windows-1258)"
 
 #: src/flac112/charset.c:84
 #: src/flac113/charset.c:84
 msgid "Visual Hebrew (ISO-8859-8)"
-msgstr ""
+msgstr "Visual Hebrew (ISO-8859-8)"
 
 #: src/flac112/charset.c:85
 #: src/flac113/charset.c:85
 msgid "Western (IBM-850)"
-msgstr ""
+msgstr "Western (IBM-850)"
 
 #: src/flac112/charset.c:86
 #: src/flac113/charset.c:86
 msgid "Western (ISO-8859-1)"
-msgstr ""
+msgstr "Western (ISO-8859-1)"
 
 #: src/flac112/charset.c:87
 #: src/flac113/charset.c:87
 msgid "Western (ISO-8859-15)"
-msgstr ""
+msgstr "Western (ISO-8859-15)"
 
 #: src/flac112/charset.c:88
 #: src/flac113/charset.c:88
 msgid "Western (Windows-1252)"
-msgstr ""
+msgstr "Western (Windows-1252)"
 
 #: src/flac112/charset.c:94
 #: src/flac113/charset.c:94
 msgid "Arabic (IBM-864-I)"
-msgstr ""
+msgstr "Arabic (IBM-864-I)"
 
 #: src/flac112/charset.c:95
 #: src/flac113/charset.c:95
 msgid "Arabic (ISO-8859-6-E)"
-msgstr ""
+msgstr "Arabic (ISO-8859-6-E)"
 
 #: src/flac112/charset.c:96
 #: src/flac113/charset.c:96
 msgid "Arabic (ISO-8859-6-I)"
-msgstr ""
+msgstr "Arabic (ISO-8859-6-I)"
 
 #: src/flac112/charset.c:97
 #: src/flac113/charset.c:97
 msgid "Arabic (MacArabic)"
-msgstr ""
+msgstr "Arabic (MacArabic)"
 
 #: src/flac112/charset.c:98
 #: src/flac113/charset.c:98
 msgid "Armenian (ARMSCII-8)"
-msgstr ""
+msgstr "Armenian (ARMSCII-8)"
 
 #: src/flac112/charset.c:99
 #: src/flac113/charset.c:99
 msgid "Central European (MacCE)"
-msgstr ""
+msgstr "Central European (MacCE)"
 
 #: src/flac112/charset.c:100
 #: src/flac113/charset.c:100
 msgid "Chinese Simplified (GBK)"
-msgstr ""
+msgstr "Chinese Simplified (GBK)"
 
 #: src/flac112/charset.c:101
 #: src/flac113/charset.c:101
 msgid "Chinese Simplified (HZ)"
-msgstr ""
+msgstr "Chinese Simplified (HZ)"
 
 #: src/flac112/charset.c:102
 #: src/flac113/charset.c:102
 msgid "Chinese Traditional (EUC-TW)"
-msgstr ""
+msgstr "Chinese Traditional (EUC-TW)"
 
 #: src/flac112/charset.c:103
 #: src/flac113/charset.c:103
 msgid "Croatian (MacCroatian)"
-msgstr ""
+msgstr "Croatian (MacCroatian)"
 
 #: src/flac112/charset.c:104
 #: src/flac113/charset.c:104
 msgid "Cyrillic (MacCyrillic)"
-msgstr ""
+msgstr "Cyrillic (MacCyrillic)"
 
 #: src/flac112/charset.c:105
 #: src/flac113/charset.c:105
 msgid "Cyrillic/Ukrainian (MacUkrainian)"
-msgstr ""
+msgstr "Cyrillic/Ukrainian (MacUkrainian)"
 
 #: src/flac112/charset.c:106
 #: src/flac113/charset.c:106
 msgid "Farsi (MacFarsi)"
-msgstr ""
+msgstr "Farsi (MacFarsi)"
 
 #: src/flac112/charset.c:107
 #: src/flac113/charset.c:107
 msgid "Greek (MacGreek)"
-msgstr ""
+msgstr "Greek (MacGreek)"
 
 #: src/flac112/charset.c:108
 #: src/flac113/charset.c:108
 msgid "Gujarati (MacGujarati)"
-msgstr ""
+msgstr "Gujarati (MacGujarati)"
 
 #: src/flac112/charset.c:109
 #: src/flac113/charset.c:109
 msgid "Gurmukhi (MacGurmukhi)"
-msgstr ""
+msgstr "Gurmukhi (MacGurmukhi)"
 
 #: src/flac112/charset.c:110
 #: src/flac113/charset.c:110
 msgid "Hebrew (ISO-8859-8-E)"
-msgstr ""
+msgstr "Hebrew (ISO-8859-8-E)"
 
 #: src/flac112/charset.c:111
 #: src/flac113/charset.c:111
 msgid "Hebrew (ISO-8859-8-I)"
-msgstr ""
+msgstr "Hebrew (ISO-8859-8-I)"
 
 #: src/flac112/charset.c:112
 #: src/flac113/charset.c:112
 msgid "Hebrew (MacHebrew)"
-msgstr ""
+msgstr "Hebrew (MacHebrew)"
 
 #: src/flac112/charset.c:113
 #: src/flac113/charset.c:113
 msgid "Hindi (MacDevanagari)"
-msgstr ""
+msgstr "Hindi (MacDevanagari)"
 
 #: src/flac112/charset.c:114
 #: src/flac113/charset.c:114
 msgid "Icelandic (MacIcelandic)"
-msgstr ""
+msgstr "Icelandic (MacIcelandic)"
 
 #: src/flac112/charset.c:115
 #: src/flac113/charset.c:115
 msgid "Korean (JOHAB)"
-msgstr ""
+msgstr "Korean (JOHAB)"
 
 #: src/flac112/charset.c:116
 #: src/flac113/charset.c:116
 msgid "Korean (UHC)"
-msgstr ""
+msgstr "Korean (UHC)"
 
 #: src/flac112/charset.c:117
 #: src/flac113/charset.c:117
 msgid "Romanian (MacRomanian)"
-msgstr ""
+msgstr "Romanian (MacRomanian)"
 
 #: src/flac112/charset.c:118
 #: src/flac113/charset.c:118
 msgid "Turkish (MacTurkish)"
-msgstr ""
+msgstr "Turkish (MacTurkish)"
 
 #: src/flac112/charset.c:119
 #: src/flac113/charset.c:119
 msgid "User Defined"
-msgstr ""
+msgstr "User Defined"
 
 #: src/flac112/charset.c:120
 #: src/flac113/charset.c:120
 msgid "Vietnamese (TCVN)"
-msgstr ""
+msgstr "Vietnamese (TCVN)"
 
 #: src/flac112/charset.c:121
 #: src/flac113/charset.c:121
 msgid "Vietnamese (VPS)"
-msgstr ""
+msgstr "Vietnamese (VPS)"
 
 #: src/flac112/charset.c:122
 #: src/flac113/charset.c:122
 msgid "Western (MacRoman)"
-msgstr ""
+msgstr "Western (MacRoman)"
 
 #: src/flac112/configure.c:249
 #: src/flac113/configure.c:249
@@ -3957,20 +3981,18 @@ msgstr "Tynnu gyrrwr"
 
 #: src/flac112/fileinfo.c:368
 #: src/flac113/fileinfo.c:410
-#, fuzzy
 msgid "FLAC Info:"
-msgstr "Gwybodaeth am y CD"
+msgstr "Gwybodaeth FLAC:"
 
 #: src/flac112/plugin.c:170
 #: src/flac113/plugin.c:161
-#, fuzzy
 msgid "FLAC Audio Plugin"
-msgstr "Ategynnau Sain CD"
+msgstr "Ategynnau Sain FLAC"
 
 #: src/flac113/fileinfo.c:233
-#, fuzzy, c-format
+#, c-format
 msgid "Filesize: %lld B"
-msgstr "Maint ffeil:"
+msgstr "Maint ffeil: %lld B"
 
 #: src/flac113/fileinfo.c:268
 #, c-format
@@ -3988,9 +4010,9 @@ msgid "ReplayGain Album Gain: %+2.2f dB"
 msgstr ""
 
 #: src/flac113/fileinfo.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "ReplayGain Track Peak: %1.8f"
-msgstr "Math ReplayGain:"
+msgstr "Math ReplayGain: %1.8f"
 
 #: src/flac113/fileinfo.c:276
 #, c-format
