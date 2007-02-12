@@ -1,3 +1,10 @@
+2007-02-12 16:02:53 +0000  Giacomo Lozito <james@develia.org>
+  revision [1362]
+  - aosd: prevent aosd_cleanup from freeing stuff if aosd_init has never been called, closes bug #790
+  trunk/src/aosd/aosd.c |   21 ++++++++++++++-------
+  1 file changed, 14 insertions(+), 7 deletions(-)
+
+
 2007-02-12 15:20:56 +0000  Giacomo Lozito <james@develia.org>
   revision [1360]
   - aosd: completed volume change trigger, works now
