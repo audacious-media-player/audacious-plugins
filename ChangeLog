@@ -1,3 +1,12 @@
+2007-02-12 20:54:12 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1366]
+  - add Catalan translation file. Closes #787.
+  
+  trunk/po/LINGUAS |    1 
+  trunk/po/ca.po   | 2126 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 2127 insertions(+)
+
+
 2007-02-12 18:12:29 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1364]
   - follow the changes of libaudid3tag.

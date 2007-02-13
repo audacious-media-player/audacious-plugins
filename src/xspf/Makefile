@@ -5,11 +5,11 @@ OBJECTIVE_LIBS = libxspf$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(CONTAINER_PLUGIN_DIR)
 
-SOURCES = xspf.c base64.c urlencode.c
+SOURCES = xspf.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) -I../../intl -I../.. -Wall
 
 CXXFLAGS = $(CFLAGS)
 
