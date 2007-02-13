@@ -219,7 +219,6 @@ static void save_cb(GtkWidget * w, gpointer data)
     id3_file_close(id3file);
 }
 
-#if 0
 static void remove_id3_cb(GtkWidget * w, gpointer data)
 {
     struct id3_file *id3file;
@@ -251,49 +250,6 @@ static void remove_id3_cb(GtkWidget * w, gpointer data)
     gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(genre_combo)->entry), "");
     gtk_widget_set_sensitive(GTK_WIDGET(w), FALSE);
     gtk_widget_set_sensitive(GTK_WIDGET(data), FALSE);
-}
-#endif
-
-static void remove_id3_cb(GtkWidget * w, gpointer data)
-{
-    struct id3_file *id3file;
-    struct id3_tag *id3tag;
-
-    /* read tag from file */
-    id3file = id3_file_open(info.filename, ID3_FILE_MODE_READWRITE);
-    if (!id3file)
-        return;
-
-    id3tag = id3_file_tag(id3file);
-    if(id3tag) {
-        /* since current libid3tag cannot delete tag completely, just add a dummy. */
-        const char *dummy = "";
-        update_id3_frame(id3tag, ID3_FRAME_TITLE, dummy);
-        update_id3_frame(id3tag, ID3_FRAME_ARTIST, dummy);
-        update_id3_frame(id3tag, ID3_FRAME_ALBUM, dummy);
-        update_id3_frame(id3tag, ID3_FRAME_YEAR, dummy);
-        update_id3_frame(id3tag, ID3_FRAME_TRACK, dummy);
-        update_id3_frame(id3tag, ID3_FRAME_GENRE, "Other");
-        update_id3_frame(id3tag, ID3_FRAME_COMMENT, dummy);
-
-        if (id3_file_update(id3file) != 0) {
-            xmms_show_message("File Info", "Couldn't write tag!", "OK", FALSE,
-                              NULL, NULL);
-        }
-    }
-
-    id3_file_close(id3file);
-
-    gtk_entry_set_text(GTK_ENTRY(title_entry), "");
-    gtk_entry_set_text(GTK_ENTRY(artist_entry), "");
-    gtk_entry_set_text(GTK_ENTRY(album_entry), "");
-    gtk_entry_set_text(GTK_ENTRY(comment_entry), "");
-    gtk_entry_set_text(GTK_ENTRY(year_entry), "");
-    gtk_entry_set_text(GTK_ENTRY(tracknum_entry), "");
-    gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(genre_combo)->entry), "");
-    gtk_widget_set_sensitive(GTK_WIDGET(w), FALSE);
-    gtk_widget_set_sensitive(GTK_WIDGET(data), FALSE);
-    
 }
 
 static void

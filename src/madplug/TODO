@@ -11,5 +11,5 @@ X bug fix: press F5 on not yet played stream hangs.
 x replace tag editor with neno's
 X rename files for convenience of taking diff
 - utf8 id3v1 writing ?? (it requires modification to libid3tag.)
-- complete tag deletion code
+X complete tag deletion code
 - stream recording feature ??
