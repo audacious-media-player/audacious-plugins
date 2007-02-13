@@ -1,3 +1,25 @@
+2007-02-13 04:02:17 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1368]
+  libxspf improvements:
+  
+  - now libxspf can parse relative path with xml:base notation.
+  - backward compatibility support for base64 and locale_to_utf8 has been removed.
+  - make use of libxml2's url encoding/decoding.
+  - now mtime is always recorded even if the value is 0.
+  - tentative support for "staticlist".
+   -- if a mtime entry for each track is set to 0, metadata for corresponding track will not be updated automatically.
+   -- if there is an element shown below in the playlist-element, all mtime entries in the playlist will be regarded as 0 so that whole metadata in the playlist will be conserved.
+  
+     staticlist element:
+     <extension application="audacious">
+       <options staticlist="true"/>
+     </extension>
+  
+  trunk/src/xspf/Makefile |    4 
+  trunk/src/xspf/xspf.c   |  243 ++++++++++++++++++++++++++----------------------
+  2 files changed, 135 insertions(+), 112 deletions(-)
+
+
 2007-02-12 20:54:12 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1366]
   - add Catalan translation file. Closes #787.

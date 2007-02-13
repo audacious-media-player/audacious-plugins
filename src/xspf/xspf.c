@@ -282,7 +282,6 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		if (strncasecmp("http://", entry->filename, 7) &&
 		    strncasecmp("https://", entry->filename, 8)) { /* the rest */
 			gchar *tmp = (gchar *)xmlPathToURI((const xmlChar *)entry->filename);
-			printf("xmlPathToURI = %s\n", tmp);
 			filename = g_strdup_printf("file://%s", tmp);
 			g_free(tmp);
 		}
