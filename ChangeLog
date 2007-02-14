@@ -1,3 +1,11 @@
+2007-02-14 15:24:59 +0000  
+  revision [1384]
+  * Update Japanese translation.
+  
+  trunk/po/ja.po | 1224 ++++++++++++++++++++++++++++-----------------------------
+  1 file changed, 612 insertions(+), 612 deletions(-)
+
+
 2007-02-14 09:43:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1382]
   - fix timing on fades

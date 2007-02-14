@@ -140,6 +140,8 @@ static void audmad_init()
     mad_cond = g_cond_new();
     audmad_config_compute(&audmad_config);
 
+    if (audmad_config.id3_format != NULL)
+        audmad_config.id3_format = g_strdup("");
 }
 
 static void audmad_cleanup()
