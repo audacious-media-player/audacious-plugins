@@ -1,3 +1,12 @@
+2007-02-14 05:50:01 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1374]
+  temporary fix for SIGSEGV in g_utf8_validate() when xmlURIEscape returns NULL.
+  thank nhjm449 for reporting.
+  
+  trunk/src/xspf/xspf.c |    4 +++-
+  1 file changed, 3 insertions(+), 1 deletion(-)
+
+
 2007-02-13 13:55:00 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1372]
   - switch from pseudo delete tag call back to genuine one.

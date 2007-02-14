@@ -48,6 +48,7 @@ static GtkWidget *mpeg_fileinfo, *mpeg_replaygain, *mpeg_replaygain2,
 static GList *genre_list = 0;
 static struct mad_info_t info;
 struct id3_frame *id3_frame_new(const char *str);
+id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string);
 
 #ifndef NOGUI
 static void
@@ -670,17 +671,20 @@ void audmad_get_file_info(char *filename)
     /* work out the index of the genre in the list */
     {
         const id3_ucs4_t *string;
+        id3_ucs4_t *genre;
         struct id3_frame *frame;
         union id3_field *field;
         frame = id3_tag_findframe(info.tag, ID3_FRAME_GENRE, 0);
         if (frame) {
             field = id3_frame_field(frame, 1);
             string = id3_field_getstrings(field, 0);
-            string = id3_genre_name(string);
-            if (string)
+            genre = mad_parse_genre(string);
+            if (genre) {
                 gtk_list_select_item(GTK_LIST
                                      (GTK_COMBO(genre_combo)->list),
-                                     id3_genre_number(string));
+                                     id3_genre_number(genre));
+                g_free((void *)genre);
+            }
         }
     }
 

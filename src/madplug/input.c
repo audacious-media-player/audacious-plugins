@@ -123,7 +123,7 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->remote = info->size == 0 ? TRUE : FALSE;
 
 #ifdef DEBUG
-    g_message("i: info->size == %lu", info->size);
+    g_message("i: info->size == %lu", (long unsigned int)info->size);
     g_message("e: input_init");
 #endif
     return TRUE;
@@ -290,27 +290,25 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     if (!string_const)
         return NULL;
 
-    string = mad_ucs4dup((id3_ucs4_t *)string_const);
-
     if (!strcmp(frame_name, ID3_FRAME_GENRE)) {
-        id3_ucs4_t *string2 = NULL;
-        string2 = mad_parse_genre(string);
-        g_free((void *)string);
-        string = string2;
+        string = mad_parse_genre(string_const);
+    }
+    else {
+        string = mad_ucs4dup((id3_ucs4_t *)string_const);
     }
 
     switch (encoding) {
     case ID3_FIELD_TEXTENCODING_ISO_8859_1:
-        rtn0 = id3_ucs4_latin1duplicate(string);
+        rtn0 = (gchar *)id3_ucs4_latin1duplicate(string);
+        rtn = str_to_utf8(rtn0);
+        g_free(rtn0);
         break;
     case ID3_FIELD_TEXTENCODING_UTF_8:
     default:
-        rtn0 = id3_ucs4_utf8duplicate(string);
+        rtn = (gchar *)id3_ucs4_utf8duplicate(string);
         break;
     }
-
-    rtn = str_to_utf8(rtn0);
-    g_free(rtn0);
+    g_free((void *)string);
         
 #ifdef DEBUG
     g_print("i: string = %s\n", rtn);
