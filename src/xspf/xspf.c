@@ -278,16 +278,19 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		track = xmlNewNode(NULL, (xmlChar *)"track");
 		location = xmlNewNode(NULL, (xmlChar *)"location");
 
-		/* url encode file name. exclude streaming for now. */
-		if (strncasecmp("http://", entry->filename, 7) &&
-		    strncasecmp("https://", entry->filename, 8)) { /* the rest */
-			gchar *tmp = (gchar *)xmlPathToURI((const xmlChar *)entry->filename);
-			filename = g_strdup_printf("file://%s", tmp);
-			g_free(tmp);
-		}
-		else { /* streaming */
+		/* uri escape entry->filename */
+		if ( !strncasecmp("http://", entry->filename, 7)  ||
+		     !strncasecmp("https://", entry->filename, 8) ||
+		     !strncasecmp("mms://", entry->filename, 6) ) /* streaming */
+		{
 			gchar *tmp = (gchar *)xmlURIEscape((xmlChar *)entry->filename);
 			filename = g_strdup(tmp ? tmp : entry->filename);
+			g_free(tmp);
+		}
+		else /* local file */
+		{
+			gchar *tmp = (gchar *)xmlPathToURI((const xmlChar *)entry->filename);
+			filename = g_strdup_printf("file://%s", tmp);
 			g_free(tmp);
 		}
 
