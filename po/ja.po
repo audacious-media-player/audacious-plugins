@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-02-11 03:19-0600\n"
-"PO-Revision-Date: 2007-02-01 17:03+0900\n"
+"PO-Revision-Date: 2007-02-15 00:20+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr "OSS ドライバの設定"
 
 #: src/OSS/configure.c:216 src/sun/configure.c:183 src/alsa/configure.c:285
 msgid "Audio device:"
-msgstr "オーディオ・デバイス:"
+msgstr "オーディオデバイス:"
 
 #: src/OSS/configure.c:238 src/OSS/configure.c:279
 msgid "Use alternate device:"
@@ -48,7 +48,7 @@ msgstr "代替デバイスを使用する:"
 
 #: src/OSS/configure.c:259 src/sun/configure.c:220 src/alsa/configure.c:330
 msgid "Mixer device:"
-msgstr "ミキサ・デバイス:"
+msgstr "ミキサデバイス:"
 
 #: src/OSS/configure.c:301 src/sun/configure.c:248
 msgid "Devices"
@@ -257,7 +257,7 @@ msgstr ""
 #: src/cdaudio/configure.c:265
 #, c-format
 msgid " (%d data tracks)"
-msgstr " (%d 個のデータ・トラック)"
+msgstr " (%d 個のデータトラック)"
 
 #: src/cdaudio/configure.c:266
 #, c-format
@@ -271,21 +271,21 @@ msgstr ""
 #: src/cdaudio/configure.c:271
 msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
 msgstr ""
-"ディスクにオーディオ・トラックが無いので, ディジタル・オーディオ抽出のテスト"
+"ディスクにオーディオトラックが無いので, ディジタルオーディオ抽出のテスト"
 "は行いません.\n"
 
 #: src/cdaudio/configure.c:288
 msgid ""
 "Digital audio extraction test: OK\n"
 "\n"
-msgstr "ディジタル・オーディオ抽出のテスト: OK\n"
+msgstr "ディジタルオーディオ抽出のテスト: OK\n"
 
 #: src/cdaudio/configure.c:292
 #, c-format
 msgid ""
 "Digital audio extraction test failed: %s\n"
 "\n"
-msgstr "ディジタル・オーディオ抽出のテスト: 失敗 (%s)\n"
+msgstr "ディジタルオーディオ抽出のテスト: 失敗 (%s)\n"
 
 #: src/cdaudio/configure.c:302
 #, c-format
@@ -328,7 +328,7 @@ msgstr "アナログ"
 
 #: src/cdaudio/configure.c:399
 msgid "Digital audio extraction"
-msgstr "ディジタル・オーディオ抽出"
+msgstr "ディジタルオーディオ抽出"
 
 #: src/cdaudio/configure.c:409
 msgid "Volume control:"
@@ -356,7 +356,7 @@ msgstr "ドライブの削除"
 
 #: src/cdaudio/configure.c:499
 msgid "CD Audio Player Configuration"
-msgstr "CD オーディオ・プレイヤの設定"
+msgstr "CD オーディオプレイヤの設定"
 
 #: src/cdaudio/configure.c:537
 msgid "Add drive"
@@ -376,11 +376,11 @@ msgstr "CDDB を利用する"
 
 #: src/cdaudio/configure.c:570
 msgid "Get server list"
-msgstr "サーバ・リストの取得"
+msgstr "サーバリストの取得"
 
 #: src/cdaudio/configure.c:573
 msgid "Show network window"
-msgstr "ネットワーク・ウィンドウの表示"
+msgstr "ネットワークウィンドウの表示"
 
 #: src/cdaudio/configure.c:583
 msgid "CDDB server:"
@@ -406,12 +406,12 @@ msgstr "CD の情報"
 
 #: src/cdaudio/cdaudio.c:186
 msgid "CD Audio Plugin"
-msgstr "CD オーディオ・プラグイン"
+msgstr "CD オーディオ プラグイン"
 
 #: src/cdaudio/cdaudio.c:1058 src/cdaudio/cdaudio.c:1063
 #, c-format
 msgid "CD Audio Track %02u"
-msgstr "CD オーディオ・トラック %02u"
+msgstr "CD オーディオトラック %02u"
 
 #: src/cdaudio/cdinfo.c:161 src/cdaudio/cdinfo.c:162 src/cdaudio/cdinfo.c:163
 msgid "(unknown)"
@@ -474,11 +474,11 @@ msgstr "リサンプリング"
 
 #: src/console/Audacious_Config.cxx:208
 msgid "Enable audio resampling"
-msgstr "オーディオ・リサンプリングを有効にする"
+msgstr "オーディオリサンプリングを有効にする"
 
 #: src/console/Audacious_Config.cxx:223
 msgid "Resampling rate:"
-msgstr "リサンプリング・レート:"
+msgstr "リサンプリングレート:"
 
 #: src/console/Audacious_Config.cxx:227
 msgid "Hz"
@@ -513,7 +513,7 @@ msgstr ""
 #: src/disk_writer/disk_writer.c:111
 #, c-format
 msgid "Disk Writer Plugin %s"
-msgstr "ディスク・ライター・プラグイン %s"
+msgstr "ディスクライター プラグイン %s"
 
 #: src/disk_writer/disk_writer.c:140 src/evdev-plug/ed_ui.c:318
 msgid "Error"
@@ -524,8 +524,8 @@ msgid ""
 "You cannot use the Disk Writer plugin\n"
 "when you're running in realtime mode."
 msgstr ""
-"リアルタイム・モードで実行しているとき\n"
-"ディスク・ライター・プラグインは利用できません."
+"リアルタイムモードで実行しているとき\n"
+"ディスクライター プラグインは利用できません."
 
 #: src/disk_writer/disk_writer.c:143 src/alsa/about.c:46
 #: src/alsa/configure.c:405
@@ -534,11 +534,11 @@ msgstr "OK"
 
 #: src/disk_writer/disk_writer.c:356
 msgid "Disk Writer Configuration"
-msgstr "ディスク・ライターの設定"
+msgstr "ディスクライターの設定"
 
 #: src/disk_writer/disk_writer.c:367
 msgid "Output file folder:"
-msgstr ""
+msgstr "ファイル出力先ディレクトリ:"
 
 #: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
@@ -547,7 +547,7 @@ msgstr "ファイル名の拡張子を取り除かない"
 #: src/echo_plugin/echo.c:44
 #, c-format
 msgid "Echo Plugin %s"
-msgstr "エコー・プラグイン %s"
+msgstr "エコー プラグイン %s"
 
 #: src/echo_plugin/gui.c:12
 msgid ""
@@ -556,14 +556,14 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
-"エコー・プラグイン\n"
+"エコー プラグイン\n"
 "1999年 Johan Levin による\n"
 "\n"
-"サラウンド・エコーは 1999 年 Carl van Schaik による"
+"サラウンドエコーは 1999 年 Carl van Schaik による"
 
 #: src/echo_plugin/gui.c:26
 msgid "About Echo Plugin"
-msgstr "エコー・プラグインについて"
+msgstr "エコー プラグインについて"
 
 #: src/echo_plugin/gui.c:77
 msgid "Configure Echo"
@@ -583,7 +583,7 @@ msgstr "音量: (%)"
 
 #: src/echo_plugin/gui.c:123
 msgid "Surround echo"
-msgstr "サラウンド・エコー"
+msgstr "サラウンドエコー"
 
 #: src/echo_plugin/gui.c:146 src/stereo_plugin/stereo.c:131
 #: src/sun/configure.c:567 src/timidity/src/interface.c:232
@@ -607,7 +607,7 @@ msgstr "ホスト名:"
 
 #: src/esd/configure.c:125
 msgid "Use remote host"
-msgstr "リモート・ホストを利用する"
+msgstr "リモートホストを利用する"
 
 #: src/esd/configure.c:132
 msgid "Volume controls OSS mixer"
@@ -871,22 +871,22 @@ msgid ""
 "\n"
 "By Johan Levin 1999."
 msgstr ""
-"エクストラ・ステレオ・プラグイン\n"
+"エクストラステレオ プラグイン\n"
 "\n"
 "1999. Johan Levin による"
 
 #: src/stereo_plugin/stereo.c:38
 #, c-format
 msgid "Extra Stereo Plugin %s"
-msgstr "エクストラ・ステレオ・プラグイン %s"
+msgstr "エクストラステレオ プラグイン %s"
 
 #: src/stereo_plugin/stereo.c:58
 msgid "About Extra Stereo Plugin"
-msgstr "エクストラ・ステレオ・プラグインについて"
+msgstr "エクストラステレオ プラグインについて"
 
 #: src/stereo_plugin/stereo.c:99
 msgid "Configure Extra Stereo"
-msgstr "エクストラ・ステレオの設定"
+msgstr "エクストラステレオの設定"
 
 #: src/stereo_plugin/stereo.c:101
 msgid "Effect intensity:"
@@ -963,7 +963,7 @@ msgstr "TiMidity の設定"
 
 #: src/timidity/src/interface.c:76
 msgid "Sampling Rate"
-msgstr "サンプリング・レート"
+msgstr "サンプリングレート"
 
 #: src/timidity/src/interface.c:93
 msgid "11000 Hz"
@@ -1007,7 +1007,7 @@ msgstr "TiMidity 設定ファイル"
 
 #: src/tonegen/tonegen.c:51
 msgid "About Tone Generator"
-msgstr "トーン・ジェネレータについて"
+msgstr "トーンジェネレータについて"
 
 #: src/tonegen/tonegen.c:53
 msgid ""
@@ -1017,7 +1017,7 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
-"Haavard Kvaalen <havardk@xmms.org> によるサイン・トーン・ジェネーレータ\n"
+"Haavard Kvaalen <havardk@xmms.org> によるサイントーンジェネーレータ\n"
 "Daniel J. Peng <danielpeng@bigfoot.com> による修正\n"
 "\n"
 "URLに tone://frequency1;frequency2;frequency3;... と追加して使用します\n"
@@ -1025,12 +1025,12 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:166
 msgid "Tone Generator: "
-msgstr "トーン・ジェネレータ: "
+msgstr "トーンジェネレータ: "
 
 #: src/tonegen/tonegen.c:268
 #, c-format
 msgid "Tone Generator %s"
-msgstr "トーン・ジェネレータ %s"
+msgstr "トーンジェネレータ %s"
 
 #: src/tta/aud-tta.c:423 src/flac112/fileinfo.c:420 src/flac113/fileinfo.c:487
 #, c-format
@@ -1039,7 +1039,7 @@ msgstr "ファイル情報 - %s"
 
 #: src/vorbis/configure.c:118
 msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Ogg Vorbis オーディオ・プラグインの設定"
+msgstr "Ogg Vorbis オーディオ プラグインの設定"
 
 #: src/vorbis/configure.c:130
 msgid "Ogg Vorbis Tags:"
@@ -1057,7 +1057,7 @@ msgstr "タイトル"
 
 #: src/vorbis/configure.c:169
 msgid "ReplayGain Settings:"
-msgstr "リプレイ・ゲインの設定:"
+msgstr "リプレイゲインの設定:"
 
 #: src/vorbis/configure.c:177
 msgid "Enable Clipping Prevention"
@@ -1065,7 +1065,7 @@ msgstr "クリッピング回避機能を有効にする"
 
 #: src/vorbis/configure.c:182
 msgid "Enable ReplayGain"
-msgstr "リプレイ・ゲインを有効にする"
+msgstr "リプレイゲインを有効にする"
 
 #: src/vorbis/configure.c:187
 msgid "ReplayGain Type:"
@@ -1081,12 +1081,12 @@ msgstr "アルバムのゲイン/ピークを使用する"
 
 #: src/vorbis/configure.c:220
 msgid "Enable 6dB Boost + Hard Limiting"
-msgstr "6dB ブースト + ハード・リミットを有効にする"
+msgstr "6dB ブースト + ハードリミットを有効にする"
 
 #: src/vorbis/configure.c:226 src/flac112/configure.c:337
 #: src/flac113/configure.c:337
 msgid "ReplayGain"
-msgstr "リプレイ・ゲイン"
+msgstr "リプレイゲイン"
 
 #: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
 #: src/flac113/fileinfo.c:51
@@ -1096,7 +1096,7 @@ msgstr "ブルース"
 #: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
 #: src/flac113/fileinfo.c:51
 msgid "Classic Rock"
-msgstr "クラシック・ロック"
+msgstr "クラシックロック"
 
 #: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
 #: src/flac113/fileinfo.c:51
@@ -1126,7 +1126,7 @@ msgstr "グランジ"
 #: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
 #: src/flac113/fileinfo.c:52
 msgid "Hip-Hop"
-msgstr "ヒップ・ホップ"
+msgstr "ヒップホップ"
 
 #: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
 #: src/flac113/fileinfo.c:53
@@ -1216,7 +1216,7 @@ msgstr "サウンドトラック"
 #: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
 #: src/flac113/fileinfo.c:57
 msgid "Euro-Techno"
-msgstr "ユーロ・テクノ"
+msgstr "ユーロテクノ"
 
 #: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
 #: src/flac113/fileinfo.c:57
@@ -1226,7 +1226,7 @@ msgstr "アンビエント"
 #: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
 #: src/flac113/fileinfo.c:57
 msgid "Trip-Hop"
-msgstr "トリップ・ホップ"
+msgstr "トリップホップ"
 
 #: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
 #: src/flac113/fileinfo.c:57
@@ -1276,7 +1276,7 @@ msgstr "ゲーム"
 #: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
 #: src/flac113/fileinfo.c:60
 msgid "Sound Clip"
-msgstr "サウンド・クリップ"
+msgstr "サウンドクリップ"
 
 #: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
 #: src/flac113/fileinfo.c:60
@@ -1320,12 +1320,12 @@ msgstr "教会音楽"
 #: src/vorbis/fileinfo.c:94 src/flac112/fileinfo.c:59
 #: src/flac113/fileinfo.c:62
 msgid "Instrumental Pop"
-msgstr "インストゥルメンタル・ポップ"
+msgstr "インストゥルメンタルポップ"
 
 #: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
 #: src/flac113/fileinfo.c:63
 msgid "Instrumental Rock"
-msgstr "インストゥルメンタル・ロック"
+msgstr "インストゥルメンタルロック"
 
 #: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
 #: src/flac113/fileinfo.c:63
@@ -1345,7 +1345,7 @@ msgstr "ダークウェーヴ"
 #: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
 #: src/flac113/fileinfo.c:64
 msgid "Techno-Industrial"
-msgstr "テクノ・インスツルメント"
+msgstr "テクノインスツルメント"
 
 #: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
 #: src/flac113/fileinfo.c:64
@@ -1355,7 +1355,7 @@ msgstr "エレクトロニック"
 #: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
 #: src/flac113/fileinfo.c:65
 msgid "Pop-Folk"
-msgstr "ポップ・フォーク"
+msgstr "ポップフォーク"
 
 #: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
 #: src/flac113/fileinfo.c:65
@@ -1370,7 +1370,7 @@ msgstr "ドリーム"
 #: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
 #: src/flac113/fileinfo.c:66
 msgid "Southern Rock"
-msgstr "サザン・ロック"
+msgstr "サザンロック"
 
 #: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
 #: src/flac113/fileinfo.c:66
@@ -1385,7 +1385,7 @@ msgstr "カルト"
 #: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
 #: src/flac113/fileinfo.c:67
 msgid "Gangsta Rap"
-msgstr "ギャングスタ・ラップ"
+msgstr "ギャングスタラップ"
 
 #: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
 #: src/flac113/fileinfo.c:67
@@ -1395,7 +1395,7 @@ msgstr "トップ 40"
 #: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
 #: src/flac113/fileinfo.c:67
 msgid "Christian Rap"
-msgstr "クリスチャン・ラップ"
+msgstr "クリスチャンラップ"
 
 #: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
 #: src/flac113/fileinfo.c:68
@@ -1410,7 +1410,7 @@ msgstr "ジャングル"
 #: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
 #: src/flac113/fileinfo.c:68
 msgid "Native American"
-msgstr "ネイティヴ・アメリカン"
+msgstr "ネイティヴアメリカン"
 
 #: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
 #: src/flac113/fileinfo.c:69
@@ -1455,12 +1455,12 @@ msgstr "トリバル"
 #: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
 #: src/flac113/fileinfo.c:71
 msgid "Acid Punk"
-msgstr "アシッド・パンク"
+msgstr "アシッドパンク"
 
 #: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
 #: src/flac113/fileinfo.c:71
 msgid "Acid Jazz"
-msgstr "アシッド・ジャズ"
+msgstr "アシッドジャズ"
 
 #: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
 #: src/flac113/fileinfo.c:71
@@ -1500,7 +1500,7 @@ msgstr "フォーク/ロック"
 #: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
 #: src/flac113/fileinfo.c:73
 msgid "National Folk"
-msgstr "ナショナル・フォーク"
+msgstr "ナショナルフォーク"
 
 #: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
 #: src/flac113/fileinfo.c:73
@@ -1510,7 +1510,7 @@ msgstr "スウィング"
 #: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
 #: src/flac113/fileinfo.c:74
 msgid "Fast-Fusion"
-msgstr "ファスト・フュージョン"
+msgstr "ファストフュージョン"
 
 #: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
 #: src/flac113/fileinfo.c:74
@@ -1545,32 +1545,32 @@ msgstr "アバンギャルド"
 #: src/vorbis/fileinfo.c:108 src/flac112/fileinfo.c:73
 #: src/flac113/fileinfo.c:76
 msgid "Gothic Rock"
-msgstr "ゴシック・ロック"
+msgstr "ゴシックロック"
 
 #: src/vorbis/fileinfo.c:108 src/flac112/fileinfo.c:73
 #: src/flac113/fileinfo.c:76
 msgid "Progressive Rock"
-msgstr "プログレッシヴ・ロック"
+msgstr "プログレッシヴロック"
 
 #: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
 #: src/flac113/fileinfo.c:77
 msgid "Psychedelic Rock"
-msgstr "サイケデリック・ロック"
+msgstr "サイケデリックロック"
 
 #: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
 #: src/flac113/fileinfo.c:77
 msgid "Symphonic Rock"
-msgstr "シンフォニック・ロック"
+msgstr "シンフォニックロック"
 
 #: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
 #: src/flac113/fileinfo.c:77
 msgid "Slow Rock"
-msgstr "スロー・ロック"
+msgstr "スローロック"
 
 #: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
 #: src/flac113/fileinfo.c:78
 msgid "Big Band"
-msgstr "ビッグ・バンド"
+msgstr "ビッグバンド"
 
 #: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
 #: src/flac113/fileinfo.c:78
@@ -1610,7 +1610,7 @@ msgstr "オペラ"
 #: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
 #: src/flac113/fileinfo.c:80
 msgid "Chamber Music"
-msgstr "チャンバー・ミュージック"
+msgstr "チャンバーミュージック"
 
 #: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
 #: src/flac113/fileinfo.c:80
@@ -1625,7 +1625,7 @@ msgstr "シンフォニー"
 #: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
 #: src/flac113/fileinfo.c:81
 msgid "Booty Bass"
-msgstr "ブーティ・ベース"
+msgstr "ブーティベース"
 
 #: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
 #: src/flac113/fileinfo.c:81
@@ -1635,7 +1635,7 @@ msgstr "プリマス"
 #: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
 #: src/flac113/fileinfo.c:81
 msgid "Porn Groove"
-msgstr "ポルノ・グルーヴ"
+msgstr "ポルノグルーヴ"
 
 #: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
 #: src/flac113/fileinfo.c:82
@@ -1675,12 +1675,12 @@ msgstr "バラード"
 #: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
 #: src/flac113/fileinfo.c:83
 msgid "Power Ballad"
-msgstr "パワー・バラード"
+msgstr "パワーバラード"
 
 #: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
 #: src/flac113/fileinfo.c:84
 msgid "Rhythmic Soul"
-msgstr "リズミック・ソウル"
+msgstr "リズミックソウル"
 
 #: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
 #: src/flac113/fileinfo.c:84
@@ -1695,7 +1695,7 @@ msgstr "デュエット"
 #: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
 #: src/flac113/fileinfo.c:85
 msgid "Punk Rock"
-msgstr "パンク・ロック"
+msgstr "パンクロック"
 
 #: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
 #: src/flac113/fileinfo.c:85
@@ -1715,7 +1715,7 @@ msgstr "ユーロハウス"
 #: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
 #: src/flac113/fileinfo.c:86
 msgid "Dance Hall"
-msgstr "ダンス・ホール"
+msgstr "ダンスホール"
 
 #: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
 #: src/flac113/fileinfo.c:86
@@ -1750,7 +1750,7 @@ msgstr "インディーズ"
 #: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
 #: src/flac113/fileinfo.c:88
 msgid "BritPop"
-msgstr "ブリット・ポップ"
+msgstr "ブリットポップ"
 
 #: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
 #: src/flac113/fileinfo.c:88
@@ -1770,7 +1770,7 @@ msgstr "ビート"
 #: src/vorbis/fileinfo.c:121 src/flac112/fileinfo.c:86
 #: src/flac113/fileinfo.c:89
 msgid "Christian Gangsta Rap"
-msgstr "クリスチャン・ギャングスタ・ラップ"
+msgstr "クリスチャンギャングスタラップ"
 
 #: src/vorbis/fileinfo.c:122 src/flac112/fileinfo.c:87
 #: src/flac113/fileinfo.c:90
@@ -1790,12 +1790,12 @@ msgstr "クロスオーバー"
 #: src/vorbis/fileinfo.c:123 src/flac112/fileinfo.c:88
 #: src/flac113/fileinfo.c:91
 msgid "Contemporary Christian"
-msgstr "コンテンポラリ・クリスチャン"
+msgstr "コンテンポラリクリスチャン"
 
 #: src/vorbis/fileinfo.c:123 src/flac112/fileinfo.c:88
 #: src/flac113/fileinfo.c:91
 msgid "Christian Rock"
-msgstr "クリスチャン・ロック"
+msgstr "クリスチャンロック"
 
 #: src/vorbis/fileinfo.c:124 src/flac112/fileinfo.c:89
 #: src/flac113/fileinfo.c:92
@@ -1945,11 +1945,11 @@ msgstr " Ogg Vorbis 情報 "
 
 #: src/vorbis/fileinfo.c:841 src/vorbis/fileinfo.c:918
 msgid "Bit rate:"
-msgstr "ビット・レート:"
+msgstr "ビットレート:"
 
 #: src/vorbis/fileinfo.c:854 src/vorbis/fileinfo.c:921
 msgid "Sample rate:"
-msgstr "サンプリング・レート:"
+msgstr "サンプリングレート:"
 
 #: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
 msgid "Channels:"
@@ -1961,7 +1961,7 @@ msgstr "演奏時間:"
 
 #: src/vorbis/fileinfo.c:893 src/vorbis/fileinfo.c:930
 msgid "File size:"
-msgstr "ファイル・サイズ:"
+msgstr "ファイルサイズ:"
 
 #: src/vorbis/fileinfo.c:919 src/vorbis/fileinfo.c:922
 #: src/vorbis/fileinfo.c:925 src/vorbis/fileinfo.c:928
@@ -2001,11 +2001,11 @@ msgstr "%s - Audacious"
 
 #: src/vorbis/vorbis.c:143
 msgid "Ogg Vorbis Audio Plugin"
-msgstr "Ogg Vorbis オーディオ・プラグイン"
+msgstr "Ogg Vorbis オーディオ プラグイン"
 
 #: src/vorbis/vorbis.c:876
 msgid "About Ogg Vorbis Audio Plugin"
-msgstr "Ogg Vorbis オーディオ・プラグインについて"
+msgstr "Ogg Vorbis オーディオ プラグインについて"
 
 #: src/vorbis/vorbis.c:882
 msgid ""
@@ -2091,7 +2091,7 @@ msgstr "sndfile WAV プラグイン"
 
 #: src/wav/wav.c:77
 msgid "WAV Audio Plugin"
-msgstr "WAV オーディオ・プラグイン"
+msgstr "WAV オーディオ プラグイン"
 
 #: src/wma/wma.c:132
 #, c-format
@@ -2108,12 +2108,10 @@ msgid " Close "
 msgstr " 閉じる "
 
 #: src/alsa/about.c:30
-#, fuzzy
 msgid "About ALSA Driver"
-msgstr "OSS ドライバについて"
+msgstr "ALSA ドライバについて"
 
 #: src/alsa/about.c:31
-#, fuzzy
 msgid ""
 "Audacious ALSA Driver\n"
 "\n"
@@ -2133,7 +2131,7 @@ msgid ""
 "USA.\n"
 "Author: Matthieu Sozeau (mattam@altern.org)"
 msgstr ""
-"Audacious OSS ドライバ\n"
+"Audacious ALSA ドライバ\n"
 "\n"
 "このプログラムはフリーソフトウェアです;\n"
 "フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
@@ -2148,80 +2146,75 @@ msgstr ""
 "あなたは, 本プログラムと一緒に GNU 一般公有使用許諾契約書の\n"
 "写しを受け取っているはずです. そうでない場合は, Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA. へ手紙を書いて下さい."
+"USA. へ手紙を書いて下さい.\n"
+"作者: Matthieu Sozeau (mattam@altern.org)"
 
 #: src/alsa/alsa.c:47
-#, fuzzy, c-format
+#, c-format
 msgid "ALSA %s output plugin"
-msgstr "ヌル出力プラグイン"
+msgstr "ALSA %s 出力プラグイン"
 
 #: src/alsa/configure.c:150
 msgid "Unknown soundcard"
-msgstr ""
+msgstr "不明なサウンドカード"
 
 #: src/alsa/configure.c:205
-#, fuzzy, c-format
+#, c-format
 msgid "Default PCM device (%s)"
-msgstr "デフォルト (%s)"
+msgstr "デフォルト PCM デバイス (%s)"
 
 #: src/alsa/configure.c:271
-#, fuzzy
 msgid "ALSA Driver configuration"
-msgstr "OSS ドライバの設定"
+msgstr "ALSA ドライバ設定"
 
 #: src/alsa/configure.c:299
-#, fuzzy
 msgid "Mixer:"
-msgstr "ミキサ"
+msgstr "ミキサ:"
 
 #: src/alsa/configure.c:307
-#, fuzzy
 msgid "Use software volume control"
-msgstr "音量コントロール:"
+msgstr "ソフトウェア音量コントロールを使う"
 
 #: src/alsa/configure.c:317
-#, fuzzy
 msgid "Mixer card:"
-msgstr "ミキサ・デバイス:"
+msgstr "ミキサカード:"
 
 #: src/alsa/configure.c:350
-#, fuzzy
 msgid "Device settings"
-msgstr "ミキサの設定:"
+msgstr "デバイス設定:"
 
 #: src/alsa/configure.c:356
-#, fuzzy
 msgid "Soundcard:"
-msgstr "サウンドトラック"
+msgstr "サウンドカード:"
 
 #: src/alsa/configure.c:369
-#, fuzzy
 msgid "Buffer time (ms):"
-msgstr "バッファのサイズ (ミリ秒):"
+msgstr "バッファ時間 (ミリ秒):"
 
 #: src/alsa/configure.c:383
-#, fuzzy
 msgid "Period time (ms):"
-msgstr "バッファのサイズ (ミリ秒):"
+msgstr "休止時間 (ミリ秒):"
 
 #: src/alsa/configure.c:398 src/amidi-plug/i_configure-ap.c:287
 msgid "Advanced settings"
-msgstr ""
+msgstr "高度な設定"
 
 #: src/amidi-plug/amidi-plug.c:26
 #, c-format
 msgid "AMIDI-Plug %s (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug %s (MIDI プレイヤ)"
 
 #: src/amidi-plug/amidi-plug.c:380
 msgid "AMIDI-Plug - warning"
-msgstr ""
+msgstr "AMIDI-Plug - 警告"
 
 #: src/amidi-plug/amidi-plug.c:381
 msgid ""
 "No sequencer backend has been selected!\n"
 "Please configure AMIDI-Plug before playing."
 msgstr ""
+"シーケンサバックエンドが選択されていません!\n"
+"演奏前に AMIDI-Plug を設定してください."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -2234,6 +2227,14 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"このバックエンドは MIDI イベントをユーザが選択した ALSA シーケンサポートの"
+"グループに送ります. ALSA シーケンサインターフェイスは非常に用途が広く, "
+"emu10k1 のようなハードウェアシンセサイザーだけでなく, ソフトウェアシンセや"
+"外部デバイスなどへのポートも提供できます.\n"
+"このバックエンドはオーディオを生成せず, MIDI イベントは ALSA ポートの背後の"
+"デバイス/プログラムから直接取り扱われます. 例えば, ハードウェアシンセに"
+"送られた MIDI イベントは直接演奏されるでしょう.\n"
+"バックエンドは Giacomo Lozito によって書かれました."
 
 #: src/amidi-plug/backend-dummy/b-dummy.c:37
 msgid ""
@@ -2242,6 +2243,10 @@ msgid ""
 "standard error or file.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"このバックエンドはオーディオを全く生成しません. これは全ての MIDI イベントを"
+"標準出力, 標準エラー出力, ファイルにロギングできるので, "
+"解析やテスト目的にとても有用です.\n"
+"バックエンドは Giacomo Lozito によって書かれました."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
 msgid ""
@@ -2252,41 +2257,44 @@ msgid ""
 "by chosen ouput plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"このバックエンドは MIDI イベントを, SoundFont2 仕様に基づくリアルタイム"
+"ソフトウェアシンセサイザーである FluidSynth (www.fluidsynth.org) に"
+"送ることでオーディオを生成します.\n"
+"生成されたオーディオはプレイヤのエフェクトプラグインを通して操作でき, "
+"選択された出力プラグインによって処理されます.\n"
+"バックエンドは Giacomo Lozito によって書かれました."
 
 #: src/amidi-plug/i_configure-alsa.c:221
 msgid "ALSA BACKEND CONFIGURATION"
-msgstr ""
+msgstr "ALSA バックエンド設定"
 
 #: src/amidi-plug/i_configure-alsa.c:326
-#, fuzzy
 msgid "Port"
-msgstr "ポート番号:"
+msgstr "ポート"
 
 #: src/amidi-plug/i_configure-alsa.c:328
 msgid "Client name"
-msgstr ""
+msgstr "クライアント名"
 
 #: src/amidi-plug/i_configure-alsa.c:330
 msgid "Port name"
-msgstr ""
+msgstr "ポート名"
 
 #: src/amidi-plug/i_configure-alsa.c:341
 msgid "ALSA output ports"
-msgstr ""
+msgstr "ALSA 出力ポート"
 
 #: src/amidi-plug/i_configure-alsa.c:394
 msgid "Soundcard: "
-msgstr ""
+msgstr "サウンドカード: "
 
 #: src/amidi-plug/i_configure-alsa.c:396
-#, fuzzy
 msgid "Mixer control: "
-msgstr "音量コントロール:"
+msgstr "ミキサコントロール:"
 
 #: src/amidi-plug/i_configure-alsa.c:408
-#, fuzzy
 msgid "Mixer settings"
-msgstr "ミキサの設定:"
+msgstr "ミキサ設定"
 
 #: src/amidi-plug/i_configure-alsa.c:421
 msgid ""
@@ -2295,6 +2303,10 @@ msgid ""
 "audio card provides a hardware synth and you want to play MIDI with it, "
 "you'll probably want to select the wavetable synthesizer ports."
 msgstr ""
+"* ALSA 出力ポートを選択してください *\n"
+"MIDI イベントはここで選択されたポートに送られます. 例えば, あなたの"
+"オーディオカードがハードウェアシンセを提供し, それで MIDI を演奏したい"
+"ならば, ウェーブテーブルシンセサイザーポートを選ぶとよいでしょう."
 
 #: src/amidi-plug/i_configure-alsa.c:426
 msgid ""
@@ -2304,6 +2316,12 @@ msgid ""
 "manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
+"* ALSA ミキサカードを選択してください *\n"
+"ALSA バックエンドは ALSA を直接通して出力しますので, プレイヤのエフェクトや"
+"出力プラグインは使用しません. 再生中, プレイヤのボリュームスライダは"
+"ここで選択したミキサコントロールを操作します. ウェーブテーブル"
+"シンセサイザーポートを使っているならば, ここでシンセコントロールを"
+"選ぶとよいでしょう."
 
 #: src/amidi-plug/i_configure-alsa.c:433
 msgid ""
@@ -2313,51 +2331,56 @@ msgid ""
 "will manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
+"* ALSA ミキサコントロールを選択してください *\n"
+"ALSA バックエンドは ALSA を直接通して出力しますので, プレイヤのエフェクトや"
+"出力プラグインは使用しません. 再生中, プレイヤのボリュームスライダは"
+"ここで選択したミキサコントロールを操作します. ウェーブテーブル"
+"シンセサイザーポートを使っているならば, ここでシンセコントロールを"
+"選ぶとよいでしょう."
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "ALSA Backend not loaded or not available"
-msgstr ""
+msgstr "ALSA バックエンドが読み込まれていないか有効ではありません"
 
 #: src/amidi-plug/i_configure-ap.c:56
 msgid "AMIDI-Plug - backend information"
-msgstr ""
+msgstr "AMIDI-Plug - バックエンド情報"
 
 #: src/amidi-plug/i_configure-ap.c:194
 msgid "AMIDI-PLUG PREFERENCES"
-msgstr ""
+msgstr "AMIDI-PLUG 設定"
 
 #: src/amidi-plug/i_configure-ap.c:221
 msgid "Backend selection"
-msgstr ""
+msgstr "バックエンド選択"
 
 #: src/amidi-plug/i_configure-ap.c:225
 msgid "Available backends"
-msgstr ""
+msgstr "有効なバックエンド"
 
 #: src/amidi-plug/i_configure-ap.c:255
-#, fuzzy
 msgid "Playback settings"
-msgstr "リプレイ・ゲインの設定:"
+msgstr "演奏設定"
 
 #: src/amidi-plug/i_configure-ap.c:260
 msgid "Transpose: "
-msgstr ""
+msgstr "トランスポーズ: "
 
 #: src/amidi-plug/i_configure-ap.c:269
 msgid "Drum shift: "
-msgstr ""
+msgstr "ドラムシフト: "
 
 #: src/amidi-plug/i_configure-ap.c:291
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "プレイリストの MIDI ファイルの長さを前もって計算する"
 
 #: src/amidi-plug/i_configure-ap.c:296
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI ファイルからコメントを抽出する (可能ならば)"
 
 #: src/amidi-plug/i_configure-ap.c:301
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI ファイルから歌詞を抽出する (可能ならば)"
 
 #: src/amidi-plug/i_configure-ap.c:320
 msgid ""
@@ -2374,6 +2397,17 @@ msgid ""
 "FluidSynth backend.\n"
 "Press the info button to read specific information about each backend."
 msgstr ""
+"* バックエンドを選択してください *\n"
+"AMIDI-Plug はモジュール形式のバックエンドと動作します. ここでバックエンドを"
+"選択してください. それによって, MIDI イベントは取り扱われ, 演奏されます.\n"
+"あなたのオーディオカードにハードウェアシンセサイザーがついていて, "
+"ALSA がそれをサポートしているならば, ALSA バックエンドを使うとよいでしょう."
+"これはソフトウェアシンセや外部デバイスを含む, ALSA シーケンサへの"
+"インターフェイスを提供するあらゆるものを用いることができます.\n"
+"ソフトウェアシンセサイザーを当てにしたい, およびオーディオをプレイヤの"
+"エフェクトや出力プラグインに通したいならば, 有用な FluidSynth バックエンドを"
+"用いるとよいでしょう.\n"
+"それぞれのバックエンドの特定の情報を読むには情報ボタンを押してください."
 
 #: src/amidi-plug/i_configure-ap.c:331
 msgid ""
@@ -2383,6 +2417,11 @@ msgid ""
 "those on midi channel 10, reserved for percussions). Expecially useful if "
 "you wish to sing or play along with another instrument."
 msgstr ""
+"* トランスポーズ機能 *\n"
+"このオプションは MIDI ファイルを, 全ての音(パーカッションのために予約された"
+" MIDI チャンネル 10 を除く)の半音を要求された数で変化させた異なるキーで, "
+"トランスポーズして演奏できるようにします."
+"他の楽器を加えて演奏させたいならば非常に有用です."
 
 #: src/amidi-plug/i_configure-ap.c:337
 msgid ""
@@ -2393,6 +2432,12 @@ msgid ""
 "wish to enhance (or reduce, or alter) percussion sounds, try to play with "
 "this value."
 msgstr ""
+"* ドラムシフト機能 *\n"
+"このオプションは, MIDI チャンネル 10 (標準のパーカッションチャンネル) の"
+"半音を要求された数で変化させるようにします. "
+"MIDI の演奏中に異なるドラムセットとパーカッションが用いられることにより, "
+"この値を用いて演奏することにより, パーカッションの音を高める"
+" (または弱める, または変える) ことができます."
 
 #: src/amidi-plug/i_configure-ap.c:344
 msgid ""
@@ -2404,6 +2449,14 @@ msgid ""
 "faster playlist loading (when a lot of MIDI files are added), enable it to "
 "display more information in the playlist straight after loading."
 msgstr ""
+"* MIDI 長を前もって計算 *\n"
+"このオプションが有効ならば, AMIDI-Plug は MIDI ファイルの長さを, "
+"MIDI ファイルが演奏されようとしたときだけではなく, "
+"プレイヤが要求したときすぐに計算します. 例えば, MIDI ファイルがプレイリスト中に"
+"追加された直後に MIDI 長を計算します. "
+"(多くの MIDI ファイルが追加されているとき) プレイリストの読み込みを"
+"早くしたいならば, このオプションを無効にします."
+"プレイリストを読み込んだ直後により多くの情報を表示させたいならば, 有効にします. "
 
 #: src/amidi-plug/i_configure-ap.c:353
 msgid ""
@@ -2412,6 +2465,10 @@ msgid ""
 "etc.). If this option is enabled, AMIDI-Plug will extract and display "
 "comments (if available) in the file information dialog."
 msgstr ""
+"* MIDI ファイルからコメントを抽出 *\n"
+"MIDI ファイルはテキストコメント(作者, 著作権情報, 楽譜など)を含んでいることが"
+"あります. このオプションが有効ならば, AMIDI-Plug はコメントを抽出し, "
+"ファイル情報ダイアログ内に表示します (可能ならば)."
 
 #: src/amidi-plug/i_configure-ap.c:358
 msgid ""
@@ -2420,190 +2477,181 @@ msgid ""
 "will extract and display song lyrics (if available) in the file information "
 "dialog."
 msgstr ""
+"* MIDI ファイルから歌詞を抽出 *\n"
+"MIDI ファイルは歌詞を含んでいることがあります. "
+"このオプションが有効ならば, AMIDI-Plug は歌詞を抽出し, "
+"ファイル情報ダイアログ内に表示します (可能ならば)."
 
 #: src/amidi-plug/i_configure-dummy.c:137
 msgid "DUMMY BACKEND CONFIGURATION"
-msgstr ""
+msgstr "ダミーバックエンド設定"
 
 #: src/amidi-plug/i_configure-dummy.c:173
-#, fuzzy
 msgid "MIDI logger settings"
-msgstr "ミキサの設定:"
+msgstr "MIDI ロガー設定"
 
 #: src/amidi-plug/i_configure-dummy.c:181
 msgid "Do not log anything"
-msgstr ""
+msgstr "何も記録しない"
 
 #: src/amidi-plug/i_configure-dummy.c:185
 msgid "Log MIDI events to standard output"
-msgstr ""
+msgstr "MIDI イベントを標準出力に記録する"
 
 #: src/amidi-plug/i_configure-dummy.c:189
 msgid "Log MIDI events to standard error"
-msgstr ""
+msgstr "MIDI イベントを標準エラー出力に記録する"
 
 #: src/amidi-plug/i_configure-dummy.c:193
 msgid "Log MIDI events to file"
-msgstr ""
+msgstr "MIDI イベントをファイルに記録する"
 
 #: src/amidi-plug/i_configure-dummy.c:202
-#, fuzzy
 msgid "Logfile settings"
-msgstr "ミキサの設定:"
+msgstr "ログファイル設定"
 
 #: src/amidi-plug/i_configure-dummy.c:209
 msgid "Use a single file to log everything (rewrite)"
-msgstr ""
+msgstr "すべてのログを単一のファイルに上書きする"
 
 #: src/amidi-plug/i_configure-dummy.c:213
 msgid "Use a single file to log everything (append)"
-msgstr ""
+msgstr "すべてのログを単一のファイルに追記する"
 
 #: src/amidi-plug/i_configure-dummy.c:217
 msgid "Use a different logfile for each MIDI file"
-msgstr ""
+msgstr "MIDI ファイルごとに異なるログファイルを使う"
 
 #: src/amidi-plug/i_configure-dummy.c:223
 msgid "» Log dir:"
-msgstr ""
+msgstr "≫ ログディレクトリ:"
 
 #: src/amidi-plug/i_configure-dummy.c:229
 #: src/amidi-plug/i_configure-dummy.c:241
-#, fuzzy
 msgid "browse"
 msgstr "参照"
 
 #: src/amidi-plug/i_configure-dummy.c:235
 msgid "» Log file:"
-msgstr ""
+msgstr "≫ ログファイル:"
 
 #: src/amidi-plug/i_configure-dummy.c:267
-#, fuzzy
 msgid "Playback speed"
-msgstr "演奏"
+msgstr "演奏速度"
 
 #: src/amidi-plug/i_configure-dummy.c:272
 msgid "Play at normal speed"
-msgstr ""
+msgstr "通常速度で演奏"
 
 #: src/amidi-plug/i_configure-dummy.c:275
 msgid "Play as fast as possible"
-msgstr ""
+msgstr "できるだけ速く演奏"
 
 #: src/amidi-plug/i_configure-dummy.c:329
 msgid "Dummy Backend not loaded or not available"
-msgstr ""
+msgstr "ダミーバックエンドが読み込まれていないか有効ではありません"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr ""
+msgstr "AMIDI-Plug - サウンドフォント ファイルの選択"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:362
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-msgstr ""
+msgstr "FLUIDSYNTH バックエンド設定"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "SoundFont settings"
-msgstr ""
+msgstr "サウンドフォント設定"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
-msgstr ""
+msgstr "ファイル名"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:452
 msgid "Size (bytes)"
-msgstr ""
+msgstr "サイズ (バイト)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:501
 msgid "Load SF on player start"
-msgstr ""
+msgstr "プレイヤ起動時に SF を読み込む"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:505
 msgid "Load SF on first midifile play"
-msgstr ""
+msgstr "MIDI ファイルの最初の演奏時に SF を読み込む"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:520
-#, fuzzy
 msgid "Synthesizer settings"
-msgstr "ミキサの設定:"
+msgstr "シンセサイザ設定"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:529
-#, fuzzy
 msgid "gain"
-msgstr "ラテン"
+msgstr "ゲイン"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:535
 #: src/amidi-plug/i_configure-fluidsynth.c:563
 #: src/amidi-plug/i_configure-fluidsynth.c:591
 #: src/amidi-plug/i_configure-fluidsynth.c:622
-#, fuzzy
 msgid "use default"
-msgstr "デフォルト"
+msgstr "デフォルトを使用"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:538
 #: src/amidi-plug/i_configure-fluidsynth.c:566
 msgid "value:"
-msgstr ""
+msgstr "値:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:557
 msgid "poliphony"
-msgstr ""
+msgstr "ポリフォニー"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:585
-#, fuzzy
 msgid "reverb"
-msgstr "サーバ"
+msgstr "リバーブ"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:594
 #: src/amidi-plug/i_configure-fluidsynth.c:625
-#, fuzzy
 msgid "yes"
 msgstr "はい"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:596
 #: src/amidi-plug/i_configure-fluidsynth.c:627
-#, fuzzy
 msgid "no"
-msgstr "モノラル"
+msgstr "いいえ"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:616
-#, fuzzy
 msgid "chorus"
 msgstr "コーラス"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:647
-#, fuzzy
 msgid "sample rate"
-msgstr "サンプリング・レート:"
+msgstr "サンプリングレート"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:662
 msgid "custom "
-msgstr ""
+msgstr "カスタム "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:705
-#, fuzzy
 msgid "Buffer settings"
-msgstr "バッファリング"
+msgstr "バッファ設定"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:714
 msgid "<span size=\"smaller\">def</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">def</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:723
 msgid "<span size=\"smaller\">handy buffer tuner</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">ハンディ バッファチューナー</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:737
 msgid "<span size=\"smaller\">size</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">サイズ</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:751
 msgid "<span size=\"smaller\">margin</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">マージン</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:765
 msgid "<span size=\"smaller\">increment</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">増分</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:807
 msgid ""
@@ -2612,6 +2660,10 @@ msgid ""
 "valid SoundFont file here (use absolute paths). The loading order is from "
 "the top (first) to the bottom (last)."
 msgstr ""
+"* サウンドフォント ファイルの選択 *\n"
+"FluidSynth で MIDI を演奏するには, ここで少なくとも1つの有効なサウンドフォント "
+"ファイルを絶対パスで指定する必要があります. 読み込み順序は上(先)から下(後)に"
+"なります."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:812
 msgid ""
@@ -2622,6 +2674,13 @@ msgid ""
 "start, or before the first MIDI file is played (the latter is a better "
 "choice if you don't use your player to listen MIDI files only)."
 msgstr ""
+"* サウンドフォントをプレイヤ起動時に読み込む *\n"
+"システムの速さによりますが, FluidSynth でのサウンドフォントの読み込みには"
+"数分かかります. これはプレイヤの起動時か, 最初の MIDI ファイルが演奏される前に"
+"一度だけ行われます. MIDI ファイルを聴くことだけにプレイヤを使うのでなければ, "
+"後者を選択するのがよいでしょう."
+" (サウンドフォントは, それが変更さえるかバックエンドが取り外されるまで, "
+"読み込まれたままです). "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:820
 msgid ""
@@ -2632,6 +2691,13 @@ msgid ""
 "start, or before the first MIDI file is played (the latter is a better "
 "choice if you don't use your player to listen MIDI files only)."
 msgstr ""
+"* サウンドフォントを最初の MIDI ファイル演奏時に読み込む *\n"
+"システムの速さによりますが, FluidSynth でのサウンドフォントの読み込みには"
+"数分かかります. これはプレイヤの起動時か, 最初の MIDI ファイルが演奏される前に"
+"一度だけ行われます. MIDI ファイルを聴くことだけにプレイヤを使うのでなければ, "
+"後者を選択するのがよいでしょう."
+" (サウンドフォントは, それが変更さえるかバックエンドが取り外されるまで, "
+"読み込まれたままです). "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:828
 msgid ""
@@ -2640,6 +2706,10 @@ msgid ""
 "the synthesizer; it is set to a low value by default to avoid the saturation "
 "of the output when random MIDI files are played."
 msgstr ""
+"* シンセサイザーゲイン *\n"
+"FluidSynth の文書より: ゲインはシンセサイザーの最後かマスタ出力に適用されます. "
+"ランダムな MIDI ファイルが演奏されるときに, 出力の飽和を避けるため, "
+"デフォルトでは低い値に設定されています. "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:833
 msgid ""
@@ -2652,6 +2722,13 @@ msgid ""
 "channels; the number of voices activated depends on the number of instrument "
 "zones that fall in the correspond to the velocity and key of the played note."
 msgstr ""
+"* シンセサイザーポリフォニー *\n"
+"FluidSynth の文書より: ポリフォニーはどれだけの音声が並行に演奏されるかを"
+"定義します. 音声の数は, 同時に演奏される音の数と同じである必要はありません. "
+"実際は, ある音が特定の MIDI チャンネルで鳴らされたとき, そのチャンネルの"
+"プリセットは, 例えば, 一つは左のオーディオチャンネルに, 一つは右の"
+"オーディオチャンネルに, いくつかの音声を生成します. 生成された音声の数は, "
+"演奏された音の高さとキーに対応している楽器の数に依存します. "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:843
 #: src/amidi-plug/i_configure-fluidsynth.c:849
@@ -2662,6 +2739,11 @@ msgid ""
 "sent to the reverb module depends on the \"reverb send\" generator defined "
 "in the SoundFont."
 msgstr ""
+"* シンセサイザーリバーブ *\n"
+"FluidSynth の文書より: \"はい\" に設定するとリバーブエフェクトモジュールが"
+"有効になります. リバーブモジュールが有効なときは, 多数のシグナルが"
+"サウンドフォントで定義された \"リバーブ センド\" ジェネレータに依存している"
+"リバーブモジュールに送られることに注意してください. "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:855
 #: src/amidi-plug/i_configure-fluidsynth.c:861
@@ -2672,6 +2754,11 @@ msgid ""
 "sent to the chorus module depends on the \"chorus send\" generator defined "
 "in the SoundFont."
 msgstr ""
+"* シンセサイザーコーラス *\n"
+"FluidSynth の文書より: \"はい\" に設定するとコーラスエフェクトモジュールが"
+"有効になります. コーラスモジュールが有効なときは, 多数のシグナルが"
+"サウンドフォントで定義された \"コーラス センド\" ジェネレータに依存している"
+"コーラスモジュールに送られることに注意してください. "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:867
 #: src/amidi-plug/i_configure-fluidsynth.c:873
@@ -2684,12 +2771,20 @@ msgid ""
 "NOTE: the default buffer parameters are tuned for 44100Hz; changing the "
 "sample rate may require buffer params tuning to obtain good sound quality."
 msgstr ""
+"* シンセサイザーサンプリングレート *\n"
+"シンセサイザーで生成されたオーディオのサンプリングレートです. "
+"22050Hz-96000Hz の間でカスタム値を指定することもできます.\n"
+"注意: デフォルトのバッファパラメータは 44100Hz に設定されています. "
+"サンプリングレートを変更したら, よい音質を得るために, "
+"バッファパラメータのチューニングが必要になります. "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:891
 msgid ""
 "* FluidSynth backend buffer *\n"
 "This button resets the backend buffer parameters to default values."
 msgstr ""
+"* FluidSynth バックエンドバッファ *\n"
+"このボタンはバックエンドバッファをデフォルト値にリセットします."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:894
 msgid ""
@@ -2699,6 +2794,13 @@ msgid ""
 "to adjust the buffer parameters. Try to move the \"handy buffer tuner\" some "
 "steps to the right until playback is fluid again."
 msgstr ""
+"* FluidSynth バックエンドバッファ *\n"
+"曲の演奏中に音飛びや遅延が発生し, システムが FluidSynth 自身を除いた "
+"CPU を多く消費するタスクを実施していないならば, "
+"バッファパラメータの調整を行ってください. "
+"演奏が再び流れるようになるまで, \"ハンディバッファチューナー\" を"
+"右に進めてみてください. "
+
 
 #: src/amidi-plug/i_configure-fluidsynth.c:900
 #: src/amidi-plug/i_configure-fluidsynth.c:911
@@ -2716,111 +2818,117 @@ msgid ""
 "where extramargin is a value computed as number_of_seconds_of_playback / "
 "margin_INCREMENT ."
 msgstr ""
+"* FluidSynth バックエンドバッファ *\n"
+"バッファパラメータを手で修正する前に、\"ハンディ バッファチューナー\" で"
+"バッファ調整を行うのがよいでしょう. \n"
+"しかし, よいチューニングを行いたい, 何をやろうとしているか知りたいならば, "
+"バックエンドコード (b-fluidsynth.c) を読むことでそれぞれのパラメータが"
+"どのように機能しているかを知ることができます. 簡単に言うと, "
+"あらゆる時間 (buffer_SIZE とサンプリングレートに比例) "
+"サンプリングを集める直前に, バッファは次の式で調整されます:\n"
+"buffer_SIZE + buffer_MARGIN + extramargin\n"
+"extramargin は number_of_seconds_of_playback / margin_INCREMENT で"
+"計算される値です."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:937
 msgid "FluidSynth Backend not loaded or not available"
-msgstr ""
+msgstr "FluidSynth バックエンドが読み込まれていないか有効ではありません"
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
-msgstr ""
+msgstr "TIMIDITY バックエンド設定"
 
 #: src/amidi-plug/i_configure.c:75
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Plug - ファイル選択"
 
 #: src/amidi-plug/i_configure.c:122
-#, fuzzy
 msgid "AMIDI-Plug - configuration"
-msgstr "ESD 出力プラグインの設定"
+msgstr "AMIDI-Plug - 設定"
 
 #: src/amidi-plug/i_configure.c:241
 msgid "AMIDI-Plug message"
-msgstr ""
+msgstr "AMIDI-Plug メッセージ"
 
 #: src/amidi-plug/i_configure.c:242
 msgid "Please stop the player before changing AMIDI-Plug settings."
-msgstr ""
+msgstr "AMIDI-Plug 設定を変更する前にプレイヤを停止してください."
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI 情報 </span>"
 
 #: src/amidi-plug/i_fileinfo.c:205
-#, fuzzy
 msgid "Format:"
-msgstr "ID3 の書式:"
+msgstr "形式:"
 
 #: src/amidi-plug/i_fileinfo.c:208
-#, fuzzy
 msgid "Length (msec):"
-msgstr "演奏時間:"
+msgstr "長さ (ミリ秒):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
-msgstr ""
+msgstr "トラック数:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr ""
+msgstr "可変"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
-msgstr ""
+msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr ""
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr ""
+msgstr "時間軸:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI コメントと歌詞 </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
-msgstr ""
+msgstr "* MIDI ファイル中に有効なコメントがありません *"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no lyrics available in this MIDI file *"
-msgstr ""
+msgstr "* MIDI ファイル中に有効な歌詞がありません *"
 
 #: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
-msgstr ""
+msgstr "  (無効な UTF-8)"
 
 #: src/aosd/aosd_style.c:76
 msgid "Rectangle"
-msgstr ""
+msgstr "矩形"
 
 #: src/aosd/aosd_style.c:80
 msgid "Rounded Rectangle"
-msgstr ""
+msgstr "角丸矩形"
 
 #: src/aosd/aosd_style.c:84
 msgid "Concave Rectangle"
-msgstr ""
+msgstr "凹矩形"
 
 #: src/aosd/aosd_style.c:88
 msgid "None"
 msgstr "なし"
 
 #: src/aosd/aosd_trigger.c:60
-#, fuzzy
 msgid "Playback Start"
-msgstr "演奏"
+msgstr "演奏開始"
 
 #: src/aosd/aosd_trigger.c:61
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
+msgstr "プレイリストエントリの演奏が OSD のトリガーとなります."
 
 #: src/aosd/aosd_trigger.c:65
-#, fuzzy
 msgid "Title Change"
-msgstr "シングル・チャンネル"
+msgstr "タイトル変更"
 
 #: src/aosd/aosd_trigger.c:66
 msgid ""
@@ -2828,80 +2936,82 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
+"演奏中, 曲のタイトルが変更されたがファイル名が同じであれば, "
+"OSD のトリガーとなります. これはインターネットストリームのタイトル変更を"
+"表示するのにとても役立ちます. "
 
 #: src/aosd/aosd_ui.c:166
 msgid "Placement"
-msgstr ""
+msgstr "位置"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
-msgstr ""
+msgstr "相対 X オフセット:"
 
 #: src/aosd/aosd_ui.c:209
 msgid "Relative Y offset:"
-msgstr ""
+msgstr "相対 Y オフセット:"
 
 #: src/aosd/aosd_ui.c:218
 msgid "Max OSD width:"
-msgstr ""
+msgstr "最大 OSD 幅:"
 
 #: src/aosd/aosd_ui.c:235
 msgid "Display OSD using:"
-msgstr ""
+msgstr "OSD を表示するモニタ:"
 
 #: src/aosd/aosd_ui.c:237
 msgid "all monitors"
-msgstr ""
+msgstr "全てのモニタ"
 
 #: src/aosd/aosd_ui.c:240
 #, c-format
 msgid "monitor %i"
-msgstr ""
+msgstr "モニタ %i"
 
 #: src/aosd/aosd_ui.c:293
 msgid "Timing (ms)"
-msgstr ""
+msgstr "タイミング (ミリ秒)"
 
 #: src/aosd/aosd_ui.c:298
 msgid "Display:"
-msgstr ""
+msgstr "表示:"
 
 #: src/aosd/aosd_ui.c:303
 msgid "Fade in:"
-msgstr ""
+msgstr "フェードイン:"
 
 #: src/aosd/aosd_ui.c:308
 msgid "Fade out:"
-msgstr ""
+msgstr "フェードアウト:"
 
 #: src/aosd/aosd_ui.c:380
 msgid "Fonts"
-msgstr ""
+msgstr "フォント"
 
 #: src/aosd/aosd_ui.c:405
 msgid "Shadow"
-msgstr ""
+msgstr "影"
 
 #: src/aosd/aosd_ui.c:449
 msgid "Select Skin File"
-msgstr ""
+msgstr "スキンファイル選択"
 
 #: src/aosd/aosd_ui.c:557
 msgid "Render Style"
-msgstr ""
+msgstr "描画形式"
 
 #: src/aosd/aosd_ui.c:573
-#, fuzzy
 msgid "Colors"
-msgstr "閉じる"
+msgstr "色"
 
 #: src/aosd/aosd_ui.c:606
 msgid "Custom Skin"
-msgstr ""
+msgstr "カスタムスキン"
 
 #: src/aosd/aosd_ui.c:612
 msgid "Skin file:"
-msgstr ""
+msgstr "スキンファイル:"
 
 #: src/aosd/aosd_ui.c:615
 msgid "Browse"
@@ -2909,55 +3019,51 @@ msgstr "参照"
 
 #: src/aosd/aosd_ui.c:717
 msgid "Enable trigger"
-msgstr ""
+msgstr "トリガー有効"
 
 #: src/aosd/aosd_ui.c:744
 msgid "Event"
-msgstr ""
+msgstr "イベント"
 
 #: src/aosd/aosd_ui.c:845
-#, fuzzy
 msgid "Audacious OSD - configuration"
-msgstr "CD オーディオ・プレイヤの設定"
+msgstr "Audacious OSD - 設定"
 
 #: src/aosd/aosd_ui.c:866
 msgid "Test"
-msgstr ""
+msgstr "テスト"
 
 #: src/aosd/aosd_ui.c:881
-#, fuzzy
 msgid "Position"
-msgstr "詳細:"
+msgstr "位置"
 
 #: src/aosd/aosd_ui.c:886
-#, fuzzy
 msgid "Animation"
-msgstr "組織:"
+msgstr "アニメーション"
 
 #: src/aosd/aosd_ui.c:891
 msgid "Text"
-msgstr ""
+msgstr "文字"
 
 #: src/aosd/aosd_ui.c:896
-#, fuzzy
 msgid "Decoration"
-msgstr "詳細:"
+msgstr "装飾"
 
 #: src/aosd/aosd_ui.c:901
-#, fuzzy
 msgid "Trigger"
-msgstr "トレイラー"
+msgstr "トリガー"
 
 #: src/aosd/aosd_ui.c:937
 msgid "Audacious OSD - about"
-msgstr ""
+msgstr "Audacious OSD について"
 
 #: src/aosd/aosd_ui.c:968
-#, fuzzy
 msgid ""
 "\n"
 "Audacious OSD "
-msgstr "%s - Audacious"
+msgstr ""
+"\n"
+"Audacious OSD "
 
 #: src/aosd/aosd_ui.c:969
 msgid ""
@@ -2971,85 +3077,87 @@ msgid ""
 "http://neugierig.org/software/ghosd/\n"
 "\n"
 msgstr ""
+"\n"
+"http://www.develia.org/projects.php?p=aosd\n"
+" Giacomo Lozito\n"
+"< james@develia.org > によって書かれた.\n"
+"\n"
+"On-Screen-Display は Ghosd ライブラリに基づく.\n"
+"Evan Martin によって書かれた.\n"
+"http://neugierig.org/software/ghosd/\n"
+"\n"
 
 #: src/arts/configure.c:51
-#, fuzzy
 msgid "aRts Driver configuration"
-msgstr "OSS ドライバの設定"
+msgstr "aRts ドライバ設定"
 
 #: src/evdev-plug/ed.c:56
-#, fuzzy
 msgid "Playback->Play"
-msgstr "演奏"
+msgstr "演奏->開始"
 
 #: src/evdev-plug/ed.c:57
-#, fuzzy
 msgid "Playback->Stop"
-msgstr "演奏"
+msgstr "演奏->停止"
 
 #: src/evdev-plug/ed.c:58
-#, fuzzy
 msgid "Playback->Pause"
-msgstr "演奏"
+msgstr "演奏->一時停止"
 
 #: src/evdev-plug/ed.c:59
-#, fuzzy
 msgid "Playback->Prev"
-msgstr "演奏"
+msgstr "演奏->前の曲"
 
 #: src/evdev-plug/ed.c:60
-#, fuzzy
 msgid "Playback->Next"
-msgstr "演奏"
+msgstr "演奏->次の曲"
 
 #: src/evdev-plug/ed.c:61
-#, fuzzy
 msgid "Playback->Eject"
-msgstr "演奏"
+msgstr "演奏->イジェクト"
 
 #: src/evdev-plug/ed.c:63
 msgid "Playlist->Repeat"
-msgstr ""
+msgstr "演奏->リピート"
 
 #: src/evdev-plug/ed.c:64
 msgid "Playlist->Shuffle"
-msgstr ""
+msgstr "演奏->シャッフル"
 
 #: src/evdev-plug/ed.c:66
 msgid "Volume->Up_5"
-msgstr ""
+msgstr "音量->5上げる"
 
 #: src/evdev-plug/ed.c:67
 msgid "Volume->Down_5"
-msgstr ""
+msgstr "音量->5下げる"
 
 #: src/evdev-plug/ed.c:68
 msgid "Volume->Up_10"
-msgstr ""
+msgstr "音量->10上げる"
 
 #: src/evdev-plug/ed.c:69
 msgid "Volume->Down_10"
-msgstr ""
+msgstr "音量->10下げる"
 
 #: src/evdev-plug/ed.c:70
 msgid "Volume->Mute"
-msgstr ""
+msgstr "音量->ミュート"
 
 #: src/evdev-plug/ed.c:72
 msgid "Window->Main"
-msgstr ""
+msgstr "ウィンドウ->メイン"
 
 #: src/evdev-plug/ed.c:73
 msgid "Window->Playlist"
-msgstr ""
+msgstr "ウィンドウ->プレイリスト"
 
 #: src/evdev-plug/ed.c:74
 msgid "Window->Equalizer"
-msgstr ""
+msgstr "ウィンドウ->イコライザー"
 
 #: src/evdev-plug/ed.c:75
 msgid "Window->JumpToFile"
-msgstr ""
+msgstr "ウィンドウ->ファイルへジャンプ"
 
 #: src/evdev-plug/ed_internals.c:93
 #, c-format
@@ -3057,6 +3165,9 @@ msgid ""
 "event-device-plugin: unable to open device file %s , skipping this device; "
 "check that the file exists and that you have read permission for it\n"
 msgstr ""
+"event-device-plugin: デバイスファイル %s を開けません, "
+"このデバイスをスキップします; "
+"ファイルが存在することと読み込みパーミッションがあるか確認してください\n"
 
 #: src/evdev-plug/ed_internals.c:102
 #, c-format
@@ -3064,29 +3175,38 @@ msgid ""
 "event-device-plugin: unable to create a io_channel for device file %s ,"
 "skipping this device\n"
 msgstr ""
+"event-device-plugin: デバイスファイル %s の io_channel を作成できません,"
+"このデバイスをスキップします\n"
 
 #: src/evdev-plug/ed_internals.c:339
 msgid ""
 "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
 "detection of event devices won't work.\n"
 msgstr ""
+"event-device-plugin: /proc/bus/input/devices を開けません, "
+"イベントデバイスの自動検出は動作しません.\n"
 
 #: src/evdev-plug/ed_internals.c:348
 msgid ""
 "event-device-plugin: unable to open a io_channel for /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
+"event-device-plugin: /proc/bus/input/ デバイスの io_channel を開けません, "
+"イベントデバイスの自動検出は動作しません.\n"
 
 #: src/evdev-plug/ed_internals.c:358
 msgid ""
 "event-device-plugin: an error occurred while reading /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
+"event-device-plugin: /proc/bus/input/ デバイスの読み込み中に"
+"エラーが発生しました, イベントデバイスの自動検出は動作しません.\n"
 
 #: src/evdev-plug/ed_internals.c:421
 #, c-format
 msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
-msgstr ""
+msgstr "event-device-plugin: デバイス %s が /dev/input に見つかりません, "
+"スキップします.\n"
 
 #: src/evdev-plug/ed_internals.c:486 src/evdev-plug/ed_internals.c:580
 #, c-format
@@ -3094,6 +3214,8 @@ msgid ""
 "event-device-plugin: unable to load config file %s , default settings will "
 "be used.\n"
 msgstr ""
+"event-device-plugin: コンフィグファイル %s が読み込めません, "
+"デフォルト設定が用いられます.\n"
 
 #: src/evdev-plug/ed_internals.c:532
 #, c-format
@@ -3101,6 +3223,8 @@ msgid ""
 "event-device-plugin: incomplete information in config file for device \"%s"
 "\" , skipping.\n"
 msgstr ""
+"event-device-plugin: デバイス \"%s\" のコンフィグファイルの情報が不完全です, "
+"スキップします.\n"
 
 #: src/evdev-plug/ed_internals.c:601 src/evdev-plug/ed_internals.c:933
 #, c-format
@@ -3108,6 +3232,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_active value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"event-device-plugin: 設定: デバイス \"%s\" の is_active 値が取得できません, "
+"スキップします.\n"
 
 #: src/evdev-plug/ed_internals.c:837
 #, c-format
@@ -3115,6 +3241,8 @@ msgid ""
 "event-device-plugin: unable to access local directory %s , settings will not "
 "be saved.\n"
 msgstr ""
+"event-device-plugin: ローカルディレクトリ %s にアクセスできません, "
+"設定は保存されません.\n"
 
 #: src/evdev-plug/ed_internals.c:887
 #, c-format
@@ -3122,6 +3250,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get filename value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"event-device-plugin: 設定: デバイス \"%s\" のファイル名が取得できません, "
+"スキップします.\n"
 
 #: src/evdev-plug/ed_internals.c:903
 #, c-format
@@ -3129,6 +3259,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
 "\", skipping it.\n"
 msgstr ""
+"event-device-plugin: 設定: デバイス \"%s\" の phys 値が取得できません, "
+"スキップします.\n"
 
 #: src/evdev-plug/ed_internals.c:919
 #, c-format
@@ -3136,6 +3268,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_custom value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"event-device-plugin: 設定: デバイス \"%s\" の is_custom 値が取得できません, "
+"スキップします.\n"
 
 #: src/evdev-plug/ed_internals.c:943
 #, c-format
@@ -3143,28 +3277,33 @@ msgid ""
 "event-device-plugin: configuration, unexpected value for device \"%s\", "
 "skipping it.\n"
 msgstr ""
+"event-device-plugin: 設定: デバイス \"%s\" の予期せぬ値です, "
+"スキップします.\n"
 
 #: src/evdev-plug/ed_ui.c:274 src/evdev-plug/ed_ui.c:410
 #: src/evdev-plug/ed_ui.c:862
-#, fuzzy
 msgid "Information"
-msgstr "ID3 の書式:"
+msgstr "情報"
 
 #: src/evdev-plug/ed_ui.c:275
 msgid ""
 "Cannot open bindings window for a not-detected device.\n"
 "Ensure that the device has been correctly plugged in."
 msgstr ""
+"デバイスが検出されていないため, バインディングウィンドウが開けません.\n"
+"デバイスが正しく接続されていることを確認してください."
 
 #: src/evdev-plug/ed_ui.c:319
 msgid ""
 "Unable to open selected device.\n"
 "Please check read permissions on device file."
 msgstr ""
+"選択されたデバイスが開けません.\n"
+"デバイスファイルの読み込みパーミッションを確認してください."
 
 #: src/evdev-plug/ed_ui.c:340
 msgid "EvDev-Plug - Add custom device"
-msgstr ""
+msgstr "EvDev-Plug - カスタムデバイスの追加"
 
 #: src/evdev-plug/ed_ui.c:352
 msgid ""
@@ -3175,59 +3314,59 @@ msgid ""
 "/dev/input/ ), you may want to add a custom device, explicitly specifying\n"
 "name and device file."
 msgstr ""
+"EvDev-Plug は, システムで有効なイベントデバイスの情報を自動的に検出して更新"
+"しようとします.\n"
+"しかし, システムで自動検出が動作しない, あるいはイベントデバイスが非標準な位置"
+"にある場合(現状 /dev/input/ のみを検索します), \n"
+"名前とデバイスファイルを明確に指定してカスタムデバイスとして追加してください."
 
 #: src/evdev-plug/ed_ui.c:360
-#, fuzzy
 msgid "Device name:"
-msgstr "デバイス:"
+msgstr "デバイス名:"
 
 #: src/evdev-plug/ed_ui.c:364
-#, fuzzy
 msgid "Device file:"
-msgstr "デバイス:"
+msgstr "デバイスファイル:"
 
 #: src/evdev-plug/ed_ui.c:411
 msgid ""
 "Please specify both name and filename.\n"
 "Filename must be specified with absolute path."
 msgstr ""
+"名前とファイル名の両方を指定してください.\n"
+"ファイル名は絶対パスで指定しなければなりません."
 
 #: src/evdev-plug/ed_ui.c:446
 msgid "Do you want to remove the existing configuration for selected device?\n"
-msgstr ""
+msgstr "選択したデバイスを現在の設定から削除しますか?\n"
 
 #: src/evdev-plug/ed_ui.c:465
 msgid "Do you want to remove the selected custom device?\n"
-msgstr ""
+msgstr "選択したカスタムデバイスを削除しますか?\n"
 
 #: src/evdev-plug/ed_ui.c:612
-#, fuzzy
 msgid "EvDev-Plug - Configuration"
-msgstr "MPEG オーディオ・プラグインの設定"
+msgstr "EvDev-Plug - 設定"
 
 #: src/evdev-plug/ed_ui.c:651
-#, fuzzy
 msgid "Active"
-msgstr "アシッド"
+msgstr "アクティブ"
 
 #: src/evdev-plug/ed_ui.c:664
-#, fuzzy
 msgid "Device Name"
-msgstr "デバイス"
+msgstr "デバイス名"
 
 #: src/evdev-plug/ed_ui.c:668
-#, fuzzy
 msgid "Device File"
-msgstr "デバイス"
+msgstr "デバイスファイル"
 
 #: src/evdev-plug/ed_ui.c:672
-#, fuzzy
 msgid "Device Address"
-msgstr "デバイス"
+msgstr "デバイスアドレス"
 
 #: src/evdev-plug/ed_ui.c:689
 msgid "_Bindings"
-msgstr ""
+msgstr "バインディング(_B)"
 
 #: src/evdev-plug/ed_ui.c:826
 msgid ""
@@ -3235,6 +3374,9 @@ msgid ""
 "if no key is pressed in five seconds, this window\n"
 "will close without binding changes."
 msgstr ""
+"バインドするデバイスのキーを押してください.\n"
+"5秒以内にキーが押されなければ, \n"
+"バインディングを変更せずにウィンドウを閉じます. "
 
 #: src/evdev-plug/ed_ui.c:863
 msgid ""
@@ -3243,35 +3385,38 @@ msgid ""
 "It's not possible to assign multiple actions to the same input event "
 "(although it's possible to assign the same action to multiple events)."
 msgstr ""
+"この入力イベントは既に割り当てられています.\n"
+"\n"
+"同じ入力イベントに複数のアクションを割り当てることはできません. "
+"(しかし, 複数のイベントに同じアクションを割り当てることは可能です)"
 
 #: src/evdev-plug/ed_ui.c:1312
-#, fuzzy
 msgid "EvDev-Plug - Bindings Configuration"
-msgstr "MPEG オーディオ・プラグインの設定"
+msgstr "EvDev-Plug - バインディング設定"
 
 #: src/evdev-plug/ed_ui.c:1352
-#, fuzzy
 msgid "<b>Name: </b>"
-msgstr "<b>Hatena</b>"
+msgstr "<b>名前: </b>"
 
 #: src/evdev-plug/ed_ui.c:1361
-#, fuzzy
 msgid "<b>Filename: </b>"
-msgstr "<b>Hatena</b>"
+msgstr "<b>ファイル名: </b>"
 
 #: src/evdev-plug/ed_ui.c:1370
 msgid "<b>Phys.Address: </b>"
-msgstr ""
+msgstr "<b>Phys.アドレス: </b>"
 
 #: src/evdev-plug/ed_ui.c:1448
 msgid "EvDev-Plug - about"
-msgstr ""
+msgstr "EvDev-Plug について"
 
 #: src/evdev-plug/ed_ui.c:1479
 msgid ""
 "\n"
 "EvDev-Plug "
 msgstr ""
+"\n"
+"EvDev-Plug "
 
 #: src/evdev-plug/ed_ui.c:1480
 msgid ""
@@ -3283,437 +3428,431 @@ msgid ""
 "< james@develia.org >\n"
 "\n"
 msgstr ""
+"\n"
+"イベントデバイスによってプレイヤを遠隔操作\n"
+"http://www.develia.org/projects.php?p=evdevplug\n"
+"\n"
+"Giacomo Lozito によって書かれた.\n"
+"< james@develia.org >\n"
+"\n"
 
 #: src/flac112/charset.c:40 src/flac113/charset.c:40
 msgid "Arabic (IBM-864)"
-msgstr ""
+msgstr "アラビア語 (IBM-864)"
 
 #: src/flac112/charset.c:41 src/flac113/charset.c:41
 msgid "Arabic (ISO-8859-6)"
-msgstr ""
+msgstr "アラビア語 (ISO-8859-6)"
 
 #: src/flac112/charset.c:42 src/flac113/charset.c:42
 msgid "Arabic (Windows-1256)"
-msgstr ""
+msgstr "アラビア語 (Windows-1256)"
 
 #: src/flac112/charset.c:43 src/flac113/charset.c:43
 msgid "Baltic (ISO-8859-13)"
-msgstr ""
+msgstr "バルト諸語 (ISO-8859-13)"
 
 #: src/flac112/charset.c:44 src/flac113/charset.c:44
 msgid "Baltic (ISO-8859-4)"
-msgstr ""
+msgstr "バルト諸語 (ISO-8859-4)"
 
 #: src/flac112/charset.c:45 src/flac113/charset.c:45
 msgid "Baltic (Windows-1257)"
-msgstr ""
+msgstr "バルト諸語 (Windows-1257)"
 
 #: src/flac112/charset.c:46 src/flac113/charset.c:46
 msgid "Celtic (ISO-8859-14)"
-msgstr ""
+msgstr "ケルト語 (ISO-8859-14)"
 
 #: src/flac112/charset.c:47 src/flac113/charset.c:47
 msgid "Central European (IBM-852)"
-msgstr ""
+msgstr "中欧諸語 (IBM-852)"
 
 #: src/flac112/charset.c:48 src/flac113/charset.c:48
 msgid "Central European (ISO-8859-2)"
-msgstr ""
+msgstr "中欧諸語 (ISO-8859-2)"
 
 #: src/flac112/charset.c:49 src/flac113/charset.c:49
 msgid "Central European (Windows-1250)"
-msgstr ""
+msgstr "中欧諸語 (Windows-1250)"
 
 #: src/flac112/charset.c:50 src/flac113/charset.c:50
 msgid "Chinese Simplified (GB18030)"
-msgstr ""
+msgstr "簡体字中国語 (GB18030)"
 
 #: src/flac112/charset.c:51 src/flac113/charset.c:51
 msgid "Chinese Simplified (GB2312)"
-msgstr ""
+msgstr "簡体字中国語 (GB2312)"
 
 #: src/flac112/charset.c:52 src/flac113/charset.c:52
 msgid "Chinese Traditional (Big5)"
-msgstr ""
+msgstr "繁体字中国語 (Big5)"
 
 #: src/flac112/charset.c:53 src/flac113/charset.c:53
 msgid "Chinese Traditional (Big5-HKSCS)"
-msgstr ""
+msgstr "繁体字中国語 (Big5-HKSCS)"
 
 #: src/flac112/charset.c:54 src/flac113/charset.c:54
 msgid "Cyrillic (IBM-855)"
-msgstr ""
+msgstr "キリル文字 (IBM-855)"
 
 #: src/flac112/charset.c:55 src/flac113/charset.c:55
 msgid "Cyrillic (ISO-8859-5)"
-msgstr ""
+msgstr "キリル文字 (ISO-8859-5)"
 
 #: src/flac112/charset.c:56 src/flac113/charset.c:56
 msgid "Cyrillic (ISO-IR-111)"
-msgstr ""
+msgstr "キリル文字 (ISO-IR-111)"
 
 #: src/flac112/charset.c:57 src/flac113/charset.c:57
 msgid "Cyrillic (KOI8-R)"
-msgstr ""
+msgstr "キリル文字 (KOI8-R)"
 
 #: src/flac112/charset.c:58 src/flac113/charset.c:58
 msgid "Cyrillic (Windows-1251)"
-msgstr ""
+msgstr "キリル文字 (Windows-1251)"
 
 #: src/flac112/charset.c:59 src/flac113/charset.c:59
 msgid "Cyrillic/Russian (CP-866)"
-msgstr ""
+msgstr "キリル文字/ロシア語 (CP-866)"
 
 #: src/flac112/charset.c:60 src/flac113/charset.c:60
 msgid "Cyrillic/Ukrainian (KOI8-U)"
-msgstr ""
+msgstr "キリル文字/ウクライナ語 (KOI8-U)"
 
 #: src/flac112/charset.c:61 src/flac113/charset.c:61
 msgid "English (US-ASCII)"
-msgstr ""
+msgstr "英語 (US-ASCII)"
 
 #: src/flac112/charset.c:62 src/flac113/charset.c:62
 msgid "Greek (ISO-8859-7)"
-msgstr ""
+msgstr "ギリシャ語 (ISO-8859-7)"
 
 #: src/flac112/charset.c:63 src/flac113/charset.c:63
 msgid "Greek (Windows-1253)"
-msgstr ""
+msgstr "ギリシャ語 (Windows-1253)"
 
 #: src/flac112/charset.c:64 src/flac113/charset.c:64
 msgid "Hebrew (IBM-862)"
-msgstr ""
+msgstr "ヘブライ語 (IBM-862)"
 
 #: src/flac112/charset.c:65 src/flac113/charset.c:65
 msgid "Hebrew (Windows-1255)"
-msgstr ""
+msgstr "ヘブライ語 (Windows-1255)"
 
 #: src/flac112/charset.c:66 src/flac113/charset.c:66
 msgid "Japanese (EUC-JP)"
-msgstr ""
+msgstr "日本語 (EUC-JP)"
 
 #: src/flac112/charset.c:67 src/flac113/charset.c:67
 msgid "Japanese (ISO-2022-JP)"
-msgstr ""
+msgstr "日本語 (ISO-2022-JP)"
 
 #: src/flac112/charset.c:68 src/flac113/charset.c:68
 msgid "Japanese (Shift_JIS)"
-msgstr ""
+msgstr "日本語 (Shift_JIS)"
 
 #: src/flac112/charset.c:69 src/flac113/charset.c:69
 msgid "Korean (EUC-KR)"
-msgstr ""
+msgstr "韓国語 (EUC-KR)"
 
 #: src/flac112/charset.c:70 src/flac113/charset.c:70
 msgid "Nordic (ISO-8859-10)"
-msgstr ""
+msgstr "北欧諸語 (ISO-8859-10)"
 
 #: src/flac112/charset.c:71 src/flac113/charset.c:71
 msgid "South European (ISO-8859-3)"
-msgstr ""
+msgstr "南欧諸語 (ISO-8859-3)"
 
 #: src/flac112/charset.c:72 src/flac113/charset.c:72
 msgid "Thai (TIS-620)"
-msgstr ""
+msgstr "タイ語 (TIS-620)"
 
 #: src/flac112/charset.c:73 src/flac113/charset.c:73
 msgid "Turkish (IBM-857)"
-msgstr ""
+msgstr "トルコ語 (IBM-857)"
 
 #: src/flac112/charset.c:74 src/flac113/charset.c:74
 msgid "Turkish (ISO-8859-9)"
-msgstr ""
+msgstr "トルコ語 (ISO-8859-9)"
 
 #: src/flac112/charset.c:75 src/flac113/charset.c:75
 msgid "Turkish (Windows-1254)"
-msgstr ""
+msgstr "トルコ語 (Windows-1254)"
 
 #: src/flac112/charset.c:76 src/flac113/charset.c:76
 msgid "Unicode (UTF-7)"
-msgstr ""
+msgstr "Unicode (UTF-7)"
 
 #: src/flac112/charset.c:77 src/flac113/charset.c:77
 msgid "Unicode (UTF-8)"
-msgstr ""
+msgstr "Unicode (UTF-8)"
 
 #: src/flac112/charset.c:78 src/flac113/charset.c:78
 msgid "Unicode (UTF-16BE)"
-msgstr ""
+msgstr "Unicode (UTF-16BE)"
 
 #: src/flac112/charset.c:79 src/flac113/charset.c:79
 msgid "Unicode (UTF-16LE)"
-msgstr ""
+msgstr "Unicode (UTF-16LE)"
 
 #: src/flac112/charset.c:80 src/flac113/charset.c:80
 msgid "Unicode (UTF-32BE)"
-msgstr ""
+msgstr "Unicode (UTF-32BE)"
 
 #: src/flac112/charset.c:81 src/flac113/charset.c:81
 msgid "Unicode (UTF-32LE)"
-msgstr ""
+msgstr "Unicode (UTF-32LE)"
 
 #: src/flac112/charset.c:82 src/flac113/charset.c:82
 msgid "Vietnamese (VISCII)"
-msgstr ""
+msgstr "ヴェトナム語 (VISCII)"
 
 #: src/flac112/charset.c:83 src/flac113/charset.c:83
 msgid "Vietnamese (Windows-1258)"
-msgstr ""
+msgstr "ヴェトナム語 (Windows-1258)"
 
 #: src/flac112/charset.c:84 src/flac113/charset.c:84
 msgid "Visual Hebrew (ISO-8859-8)"
-msgstr ""
+msgstr "ヘブライ語(表示用) (ISO-8859-8)"
 
 #: src/flac112/charset.c:85 src/flac113/charset.c:85
 msgid "Western (IBM-850)"
-msgstr ""
+msgstr "西欧諸語 (IBM-850)"
 
 #: src/flac112/charset.c:86 src/flac113/charset.c:86
 msgid "Western (ISO-8859-1)"
-msgstr ""
+msgstr "西欧諸語 (ISO-8859-1)"
 
 #: src/flac112/charset.c:87 src/flac113/charset.c:87
 msgid "Western (ISO-8859-15)"
-msgstr ""
+msgstr "西欧諸語 (ISO-8859-15)"
 
 #: src/flac112/charset.c:88 src/flac113/charset.c:88
 msgid "Western (Windows-1252)"
-msgstr ""
+msgstr "西欧諸語 (Windows-1252)"
 
 #: src/flac112/charset.c:94 src/flac113/charset.c:94
 msgid "Arabic (IBM-864-I)"
-msgstr ""
+msgstr "アラビア語 (IBM-864-I)"
 
 #: src/flac112/charset.c:95 src/flac113/charset.c:95
 msgid "Arabic (ISO-8859-6-E)"
-msgstr ""
+msgstr "アラビア語 (ISO-8859-6-E)"
 
 #: src/flac112/charset.c:96 src/flac113/charset.c:96
 msgid "Arabic (ISO-8859-6-I)"
-msgstr ""
+msgstr "アラビア語 (ISO-8859-6-I)"
 
 #: src/flac112/charset.c:97 src/flac113/charset.c:97
 msgid "Arabic (MacArabic)"
-msgstr ""
+msgstr "アラビア語 (MacArabic)"
 
 #: src/flac112/charset.c:98 src/flac113/charset.c:98
 msgid "Armenian (ARMSCII-8)"
-msgstr ""
+msgstr "アルメニア語 (ARMSCII-8)"
 
 #: src/flac112/charset.c:99 src/flac113/charset.c:99
 msgid "Central European (MacCE)"
-msgstr ""
+msgstr "中欧諸語 (MacCE)"
 
 #: src/flac112/charset.c:100 src/flac113/charset.c:100
 msgid "Chinese Simplified (GBK)"
-msgstr ""
+msgstr "簡体字中国語 (GBK)"
 
 #: src/flac112/charset.c:101 src/flac113/charset.c:101
 msgid "Chinese Simplified (HZ)"
-msgstr ""
+msgstr "簡体字中国語 (HZ)"
 
 #: src/flac112/charset.c:102 src/flac113/charset.c:102
 msgid "Chinese Traditional (EUC-TW)"
-msgstr ""
+msgstr "繁体字中国語 (EUC-TW)"
 
 #: src/flac112/charset.c:103 src/flac113/charset.c:103
 msgid "Croatian (MacCroatian)"
-msgstr ""
+msgstr "クロアチア語 (MacCroatian)"
 
 #: src/flac112/charset.c:104 src/flac113/charset.c:104
 msgid "Cyrillic (MacCyrillic)"
-msgstr ""
+msgstr "キリル文字 (MacCyrillic)"
 
 #: src/flac112/charset.c:105 src/flac113/charset.c:105
 msgid "Cyrillic/Ukrainian (MacUkrainian)"
-msgstr ""
+msgstr "キリル文字/ウクライナ語 (MacUkrainian)"
 
 #: src/flac112/charset.c:106 src/flac113/charset.c:106
 msgid "Farsi (MacFarsi)"
-msgstr ""
+msgstr "ペルシャ語 (MacFarsi)"
 
 #: src/flac112/charset.c:107 src/flac113/charset.c:107
 msgid "Greek (MacGreek)"
-msgstr ""
+msgstr "ギリシャ語 (MacGreek)"
 
 #: src/flac112/charset.c:108 src/flac113/charset.c:108
 msgid "Gujarati (MacGujarati)"
-msgstr ""
+msgstr "グジャラート語 (MacGujarati)"
 
 #: src/flac112/charset.c:109 src/flac113/charset.c:109
 msgid "Gurmukhi (MacGurmukhi)"
-msgstr ""
+msgstr "グルムキー文字 (MacGurmukhi)"
 
 #: src/flac112/charset.c:110 src/flac113/charset.c:110
 msgid "Hebrew (ISO-8859-8-E)"
-msgstr ""
+msgstr "ヘブライ語 (ISO-8859-8-E)"
 
 #: src/flac112/charset.c:111 src/flac113/charset.c:111
 msgid "Hebrew (ISO-8859-8-I)"
-msgstr ""
+msgstr "ヘブライ語 (ISO-8859-8-I)"
 
 #: src/flac112/charset.c:112 src/flac113/charset.c:112
 msgid "Hebrew (MacHebrew)"
-msgstr ""
+msgstr "ヘブライ語 (MacHebrew)"
 
 #: src/flac112/charset.c:113 src/flac113/charset.c:113
 msgid "Hindi (MacDevanagari)"
-msgstr ""
+msgstr "ヒンディ語 (MacDevanagari)"
 
 #: src/flac112/charset.c:114 src/flac113/charset.c:114
 msgid "Icelandic (MacIcelandic)"
-msgstr ""
+msgstr "アイスランド語 (MacIcelandic)"
 
 #: src/flac112/charset.c:115 src/flac113/charset.c:115
 msgid "Korean (JOHAB)"
-msgstr ""
+msgstr "朝鮮語 (JOHAB)"
 
 #: src/flac112/charset.c:116 src/flac113/charset.c:116
 msgid "Korean (UHC)"
-msgstr ""
+msgstr "朝鮮語 (UHC)"
 
 #: src/flac112/charset.c:117 src/flac113/charset.c:117
 msgid "Romanian (MacRomanian)"
-msgstr ""
+msgstr "ルーマニア語 (MacRomanian)"
 
 #: src/flac112/charset.c:118 src/flac113/charset.c:118
 msgid "Turkish (MacTurkish)"
-msgstr ""
+msgstr "トルコ語 (MacTurkish)"
 
 #: src/flac112/charset.c:119 src/flac113/charset.c:119
 msgid "User Defined"
-msgstr ""
+msgstr "ユーザ定義"
 
 #: src/flac112/charset.c:120 src/flac113/charset.c:120
 msgid "Vietnamese (TCVN)"
-msgstr ""
+msgstr "ヴェトナム語 (TCVN)"
 
 #: src/flac112/charset.c:121 src/flac113/charset.c:121
 msgid "Vietnamese (VPS)"
-msgstr ""
+msgstr "ヴェトナム語 (VPS)"
 
 #: src/flac112/charset.c:122 src/flac113/charset.c:122
 msgid "Western (MacRoman)"
-msgstr ""
+msgstr "西欧諸語 (MacRoman)"
 
 #: src/flac112/configure.c:249 src/flac113/configure.c:249
-#, fuzzy
 msgid "Flac Configuration"
-msgstr "TiMidity の設定"
+msgstr "Flac 設定"
 
 #: src/flac112/configure.c:261 src/flac113/configure.c:261
 msgid "Tag Handling"
-msgstr ""
+msgstr "タグの取扱"
 
 #: src/flac112/configure.c:270 src/flac113/configure.c:270
 msgid "Convert Character Set"
-msgstr ""
+msgstr "キャラクタセット変換"
 
 #: src/flac112/configure.c:278 src/flac113/configure.c:278
 msgid "Convert character set from :"
-msgstr ""
+msgstr "キャラクタセットを変換する"
 
 #: src/flac112/configure.c:283 src/flac113/configure.c:283
 msgid "to :"
-msgstr ""
+msgstr " -> "
 
 #: src/flac112/configure.c:323 src/flac113/configure.c:323
 msgid "Disable bitrate update during playback (saves cpu usage)"
-msgstr ""
+msgstr "演奏中のビットレート更新を無効にする (CPU 利用を節約)"
 
 #: src/flac112/configure.c:345 src/flac113/configure.c:345
 #: src/madplug/configure.c:175
-#, fuzzy
 msgid "Enable ReplayGain processing"
-msgstr "リプレイ・ゲインを有効にする"
+msgstr "リプレイゲイン処理を有効にする"
 
 #: src/flac112/configure.c:350 src/flac113/configure.c:350
-#, fuzzy
 msgid "Album mode"
-msgstr "アルバムのピーク:"
+msgstr "アルバムモード"
 
 #: src/flac112/configure.c:357 src/flac113/configure.c:357
-#, fuzzy
 msgid "Preamp:"
-msgstr "ドリーム"
+msgstr "プリアンプ:"
 
 #: src/flac112/configure.c:364 src/flac113/configure.c:364
 msgid "0 dB"
-msgstr ""
+msgstr "0 dB"
 
 #: src/flac112/configure.c:368 src/flac113/configure.c:368
 #: src/madplug/configure.c:187
-#, fuzzy
 msgid "6dB hard limiting"
-msgstr "6dB ブースト + ハード・リミットを有効にする"
+msgstr "6dB ハードリミット"
 
 #: src/flac112/configure.c:377 src/flac113/configure.c:377
-#, fuzzy
 msgid "Resolution"
-msgstr "解像度:"
+msgstr "解像度"
 
 #: src/flac112/configure.c:385 src/flac113/configure.c:385
-#, fuzzy
 msgid "Without ReplayGain"
-msgstr "リプレイ・ゲイン"
+msgstr "リプレイゲインなし"
 
 #: src/flac112/configure.c:393 src/flac113/configure.c:393
 msgid "Dither 24bps to 16bps"
-msgstr ""
+msgstr "24bps から 16bps へディザリング"
 
 #: src/flac112/configure.c:398 src/flac113/configure.c:398
-#, fuzzy
 msgid "With ReplayGain"
-msgstr "リプレイ・ゲイン"
+msgstr "リプレイゲインあり"
 
 #: src/flac112/configure.c:406 src/flac113/configure.c:406
-#, fuzzy
 msgid "Enable dithering"
-msgstr "オーディオ・リサンプリングを有効にする"
+msgstr "ディザリングを有効にする"
 
 #: src/flac112/configure.c:415 src/flac113/configure.c:415
-#, fuzzy
 msgid "Noise shaping"
-msgstr "リサンプリング"
+msgstr "ノイズシェーピング"
 
 #: src/flac112/configure.c:423 src/flac113/configure.c:423
-#, fuzzy
 msgid "none"
 msgstr "なし"
 
 #: src/flac112/configure.c:429 src/flac113/configure.c:429
 msgid "low"
-msgstr ""
+msgstr "低"
 
 #: src/flac112/configure.c:435 src/flac113/configure.c:435
 msgid "medium"
-msgstr ""
+msgstr "中"
 
 #: src/flac112/configure.c:441 src/flac113/configure.c:441
 msgid "high"
-msgstr ""
+msgstr "高"
 
 #: src/flac112/configure.c:447 src/flac113/configure.c:447
 msgid "Dither to"
-msgstr ""
+msgstr "ディザリング"
 
 #: src/flac112/configure.c:455 src/flac113/configure.c:455
-#, fuzzy
 msgid "16 bps"
-msgstr "16ビット"
+msgstr "16 bps"
 
 #: src/flac112/configure.c:461 src/flac113/configure.c:461
 msgid "24 bps"
-msgstr ""
+msgstr "24 bps"
 
 #: src/flac112/configure.c:469 src/flac113/configure.c:469
 msgid "Output"
-msgstr ""
+msgstr "出力"
 
 #: src/flac112/configure.c:501 src/flac113/configure.c:501
-#, fuzzy
 msgid "About Flac Plugin"
-msgstr "エコー・プラグインについて"
+msgstr "Flac プラグインについて"
 
 #: src/flac112/configure.c:502 src/flac113/configure.c:502
 msgid ""
@@ -3727,30 +3866,39 @@ msgid ""
 "\n"
 "Audacious Team port"
 msgstr ""
+"Josh Coalson による Flac プラグイン\n"
+"貢献者\n"
+"......\n"
+"......\n"
+"と\n"
+"Daisuke Shimamura\n"
+"http://flac.sourceforge.net/ を訪れてください\n"
+"\n"
+"Audacious Team port"
 
 #: src/flac112/fileinfo.c:57 src/flac113/fileinfo.c:60
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #: src/flac112/fileinfo.c:214 src/flac113/fileinfo.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Samplerate: %d Hz"
-msgstr "サンプリング・レート:"
+msgstr "サンプリングレート: %d Hz"
 
 #: src/flac112/fileinfo.c:215 src/flac113/fileinfo.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "Channels: %d"
-msgstr "チャンネル数:"
+msgstr "チャンネル数: %d"
 
 #: src/flac112/fileinfo.c:216 src/flac113/fileinfo.c:219
 #, c-format
 msgid "Bits/Sample: %d"
-msgstr ""
+msgstr "ビット/サンプリング: %d"
 
 #: src/flac112/fileinfo.c:218 src/flac113/fileinfo.c:221
 #, c-format
 msgid "Blocksize: %d"
-msgstr ""
+msgstr "ブロックサイズ: %d"
 
 #: src/flac112/fileinfo.c:220 src/flac113/fileinfo.c:223
 #, c-format
@@ -3758,20 +3906,22 @@ msgid ""
 "Blocksize: variable\n"
 "  min/max: %d/%d"
 msgstr ""
+"ブロックサイズ: 可変\n"
+"     最小/最大: %d/%d"
 
 #: src/flac112/fileinfo.c:223 src/flac113/fileinfo.c:226
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Samples: %llu\n"
 "Length: %d:%.2d"
 msgstr ""
-"\n"
-"演奏時間の合計: %d:%d\n"
+"サンプリング: %llu\n"
+"長さ: %d:%.2d"
 
 #: src/flac112/fileinfo.c:229 src/flac113/fileinfo.c:235
-#, fuzzy, c-format
+#, c-format
 msgid "Filesize: %ld B"
-msgstr "ファイル・サイズ:"
+msgstr "ファイルサイズ: %ld B"
 
 #: src/flac112/fileinfo.c:231 src/flac113/fileinfo.c:238
 #, c-format
@@ -3779,96 +3929,90 @@ msgid ""
 "Avg. bitrate: %.1f kb/s\n"
 "Compression ratio: %.1f%%"
 msgstr ""
+"平均ビットレート；: %.1f kb/s\n"
+"圧縮率: %.1f%%"
 
 #: src/flac112/fileinfo.c:266 src/flac113/fileinfo.c:308
-#, fuzzy
 msgid "Filename:"
-msgstr "ユーザ名:"
+msgstr "ファイル名:"
 
 #: src/flac112/fileinfo.c:278 src/flac113/fileinfo.c:320
-#, fuzzy
 msgid "Tag:"
-msgstr "タンゴ"
+msgstr "タグ:"
 
 #: src/flac112/fileinfo.c:352 src/flac113/fileinfo.c:394
-#, fuzzy
 msgid "Save"
-msgstr "レイブ"
+msgstr "保存"
 
 #: src/flac112/fileinfo.c:358 src/flac113/fileinfo.c:400
-#, fuzzy
 msgid "Remove Tag"
-msgstr "ドライブの削除"
+msgstr "タグの削除"
 
 #: src/flac112/fileinfo.c:368 src/flac113/fileinfo.c:410
-#, fuzzy
 msgid "FLAC Info:"
-msgstr "CD の情報"
+msgstr "FLAC 情報:"
 
 #: src/flac112/plugin.c:170 src/flac113/plugin.c:161
-#, fuzzy
 msgid "FLAC Audio Plugin"
-msgstr "CD オーディオ・プラグイン"
+msgstr "FLAC オーディオ プラグイン"
 
 #: src/flac113/fileinfo.c:233
-#, fuzzy, c-format
+#, c-format
 msgid "Filesize: %lld B"
-msgstr "ファイル・サイズ:"
+msgstr "ファイルサイズ: %lld B"
 
 #: src/flac113/fileinfo.c:268
 #, c-format
 msgid "ReplayGain Reference Loudness: %2.1f dB"
-msgstr ""
+msgstr "リプレイゲイン リファレンスラウドネス: %2.1f dB"
 
 #: src/flac113/fileinfo.c:270
 #, c-format
 msgid "ReplayGain Track Gain: %+2.2f dB"
-msgstr ""
+msgstr "リプレイゲイン トラック ゲイン: %+2.2f dB"
 
 #: src/flac113/fileinfo.c:272
 #, c-format
 msgid "ReplayGain Album Gain: %+2.2f dB"
-msgstr ""
+msgstr "リプレイゲイン アルバム ゲイン: %+2.2f dB"
 
 #: src/flac113/fileinfo.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "ReplayGain Track Peak: %1.8f"
-msgstr "リプレイゲインの種類:"
+msgstr "リプレイゲイン トラック ピーク: %1.8f"
 
 #: src/flac113/fileinfo.c:276
 #, c-format
 msgid "ReplayGain Album Peak: %1.8f"
-msgstr ""
+msgstr "リプレイゲイン アルバム ピーク: %1.8f"
 
 #: src/madplug/configure.c:136
 msgid "MPEG Audio Plugin Configuration"
-msgstr "MPEG オーディオ・プラグインの設定"
+msgstr "MPEG オーディオ プラグインの設定"
 
 #: src/madplug/configure.c:149
 msgid "Enable fast play-length calculation"
-msgstr ""
+msgstr "高速演奏長計算を有効にする"
 
 #: src/madplug/configure.c:154
 msgid "Parse XING headers"
-msgstr ""
+msgstr "XING ヘッダをパースする"
 
 #: src/madplug/configure.c:165
 msgid "Dither output when rounding to 16-bit"
-msgstr ""
+msgstr "16ビットに丸めるとき出力をディザリングする"
 
 #: src/madplug/configure.c:180
-#, fuzzy
 msgid "Track mode"
-msgstr "トラック名:"
+msgstr "トラックモード"
 
 #: src/madplug/configure.c:192
-#, fuzzy
 msgid "Default gain (dB):"
-msgstr "デフォルト (%s)"
+msgstr "デフォルトゲイン (dB):"
 
 #: src/madplug/configure.c:203
 msgid "Preamp (dB):"
-msgstr ""
+msgstr "プリアンプ (dB):"
 
 #: src/madplug/configure.c:230
 msgid "ID3 format:"
@@ -3884,21 +4028,19 @@ msgstr " ID3 タグ "
 
 #: src/madplug/plugin.c:638
 msgid "MPEG Audio Plugin"
-msgstr "MPEG オーディオ・プラグイン"
+msgstr "MPEG オーディオ プラグイン"
 
 #: src/statusicon/gtktrayicon-x11.c:97
-#, fuzzy
 msgid "Orientation"
-msgstr "組織:"
+msgstr "向き"
 
 #: src/statusicon/gtktrayicon-x11.c:98
 msgid "The orientation of the tray"
-msgstr ""
+msgstr "トレイの向き"
 
 #: src/statusicon/si_ui.c:343
-#, fuzzy
 msgid "About Status Icon Plugin"
-msgstr "ESounD プラグインについて"
+msgstr "ステータスアイコン プラグインについて"
 
 #: src/statusicon/si_ui.c:345
 msgid ""
@@ -3908,150 +4050,8 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager.\n"
 msgstr ""
-
-#~ msgid "Select the directory where you want to store the output files:"
-#~ msgstr "出力ファイルを格納するディレクトリを選択して下さい:"
-
-#~ msgid "Path:"
-#~ msgstr "パス名:"
-
-#~ msgid "About MPEG Audio Plugin"
-#~ msgstr "MPEG オーディオ・プラグインについて"
-
-#~ msgid ""
-#~ "Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, "
-#~ "derived from:\n"
-#~ "mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
-#~ "Derived partially from mpg123 0.59s.mc3 as well.\n"
-#~ "Based on the original XMMS plugin."
-#~ msgstr ""
-#~ "William Pitcock <nenolod@nenolod.net> による Audacious デコーディングエン"
-#~ "ジン.\n"
-#~ "Michael Hipp <mh@mpg123.de> による mpg123 デコーディングエンジンから派"
-#~ "生.\n"
-#~ "同様に mpg123 0.59s.mc3 から部分的に派生.\n"
-#~ "オリジナルの XMMS プラグインをベースとする."
-
-#~ msgid "CONNECTING TO %s:%d"
-#~ msgstr "%s:%d へ接続中"
-
-#~ msgid "Couldn't connect to host %s:%d"
-#~ msgstr "ホスト %s:%d へ接続できませんでした"
-
-#~ msgid "Couldn't look up host %s"
-#~ msgstr "ホスト %s を見つけられませんでした"
-
-#~ msgid "LOOKING UP %s"
-#~ msgstr "%s の検索中"
-
-#~ msgid "Couldn't connect to host %s"
-#~ msgstr "ホスト %s へ接続できませんでした"
-
-#~ msgid "CONNECTED: WAITING FOR REPLY"
-#~ msgstr "接続完了: 応答を待っています"
-
-#~ msgid ""
-#~ "Couldn't connect to host %s\n"
-#~ "Server reported: %s"
-#~ msgstr ""
-#~ "ホスト %s へ接続できませんでした.\n"
-#~ "サーバからの報告: %s"
-
-#~ msgid "PRE-BUFFERING: %zuKB/%zuKB"
-#~ msgstr "プレ・バッファリング中: %zu/%zu Kバイト"
-
-#~ msgid "Select the directory where you want to store the MPEG streams:"
-#~ msgstr "MPEG ストリームを格納するディレクトリを選択して下さい:"
-
-#~ msgid "Stereo (if available)"
-#~ msgstr "ステレオ (可能ならば)"
-
-#~ msgid "Down sample:"
-#~ msgstr "ダウン・サンプル:"
-
-#~ msgid "1:1 (44 kHz)"
-#~ msgstr "1:1 (44 kHz)"
-
-#~ msgid "1:2 (22 kHz)"
-#~ msgstr "1:2 (22 kHz)"
-
-#~ msgid "1:4 (11 kHz)"
-#~ msgstr "1:4 (11 kHz)"
-
-#~ msgid "Decoder"
-#~ msgstr "デコーダ"
-
-#~ msgid "Buffer size (kb):"
-#~ msgstr "バッファのサイズ (Kバイト):"
-
-#~ msgid "Save stream to disk:"
-#~ msgstr "ストリームの保存:"
-
-#~ msgid "Save stream to disk"
-#~ msgstr "ストリームをディスクに保存する"
-
-#~ msgid "SHOUT/Icecast:"
-#~ msgstr "SHOUT/Icecast:"
-
-#~ msgid "Enable Icecast Metadata UDP Channel"
-#~ msgstr "Icecast メタデータ UDP チャンネルを有効にする"
-
-#~ msgid "Streaming"
-#~ msgstr "ストリーミング"
-
-#~ msgid "ID3 Tags:"
-#~ msgstr "ID3 タグ:"
-
-#~ msgid "Disable ID3V2 tags"
-#~ msgstr "ID3V2 のタグを無効にする"
-
-#~ msgid "Joint stereo"
-#~ msgstr "ジョイント・ステレオ"
-
-#~ msgid "Dual channel"
-#~ msgstr "デュアル・チャンネル"
-
-#~ msgid "%d KBit/s"
-#~ msgstr "%d Kビット/秒"
-
-#~ msgid "%ld Hz"
-#~ msgstr "%ld Hz"
-
-#~ msgid "50/15 ms"
-#~ msgstr "50/15 ms"
-
-#~ msgid "CCIT J.17"
-#~ msgstr "CCIT J.17"
-
-#~ msgid "No"
-#~ msgstr "いいえ"
-
-#~ msgid "MPEG Level:"
-#~ msgstr "MPEG レベル:"
-
-#~ msgid "Mode:"
-#~ msgstr "モード:"
-
-#~ msgid "Error Protection:"
-#~ msgstr "エラー保護:"
-
-#~ msgid "Original:"
-#~ msgstr "オリジナル:"
-
-#~ msgid "Emphasis:"
-#~ msgstr "強調:"
-
-#~ msgid "Year:"
-#~ msgstr "制作年:"
-
-#~ msgid "%s"
-#~ msgstr "%s"
-
-#~ msgid "%lu Bytes"
-#~ msgstr "%lu バイト"
-
-#~ msgid "Select the directory where you want to store the Ogg Vorbis streams:"
-#~ msgstr "Ogg Vorbis ストリームを格納するディレクトリの選択:"
-
-#~ msgid "PRE-BUFFERING: %dKB/%dKB"
-#~ msgstr "プレ・バッファリング中: %d/%d Kバイト"
+"\n"
+"Giacomo Lozito < james@develia.org > によって書かれた\n"
+"\n"
+"このプラグインは, ウィンドウマネージャの\n"
+"システムトレイエリアに置かれるステータスアイコンを提供します.\n"
