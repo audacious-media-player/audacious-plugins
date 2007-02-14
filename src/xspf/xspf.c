@@ -286,7 +286,9 @@ playlist_save_xspf(const gchar *filename, gint pos)
 			g_free(tmp);
 		}
 		else { /* streaming */
-			filename = (gchar *)xmlURIEscape((xmlChar *)entry->filename);
+			gchar *tmp = (gchar *)xmlURIEscape((xmlChar *)entry->filename);
+			filename = g_strdup(tmp ? tmp : entry->filename);
+			g_free(tmp);
 		}
 
 		if(!g_utf8_validate(filename, -1, NULL))
