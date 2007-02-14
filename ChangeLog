@@ -1,3 +1,14 @@
+2007-02-14 06:10:05 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1376]
+  - revise input_id3_get_string().
+  - make audmad_get_file_info() use mad_parse_genre() to obtain genre description.
+  
+  trunk/src/madplug/Makefile   |    2 +-
+  trunk/src/madplug/fileinfo.c |   10 +++++++---
+  trunk/src/madplug/input.c    |   22 ++++++++++------------
+  3 files changed, 18 insertions(+), 16 deletions(-)
+
+
 2007-02-14 05:50:01 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1374]
   temporary fix for SIGSEGV in g_utf8_validate() when xmlURIEscape returns NULL.

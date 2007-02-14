@@ -205,7 +205,8 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
 #if 1
     // XXX: temporary fix
-    if (!strncasecmp("http://", filename, 7) || !strncasecmp("https://", filename, 8)) {
+    if (!strncasecmp("http://", filename, 7) || !strncasecmp("https://", filename, 8))
+    {
         g_message("audmad_is_our_fd: remote");
         info.remote = TRUE;
     }
@@ -213,8 +214,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
-    if (!strcasecmp(".flac", ext) || !strcasecmp(".mpc", ext) ||
-        !strcasecmp(".tta", ext) || !strcasecmp(".ogg", ext))
+    if (!strcasecmp("flac", ext) || !strcasecmp("mpc", ext) ||
+        !strcasecmp("tta", ext) || !strcasecmp("ogg", ext) ||
+	!strcasecmp("wma", ext) )
         return FALSE;
 
     if (fin == NULL)
