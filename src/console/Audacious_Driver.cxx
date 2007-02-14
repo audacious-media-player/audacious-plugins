@@ -371,7 +371,7 @@ static void play_file( InputPlayback *playback )
 	if ( length <= 0 )
 		length = audcfg.loop_length * 1000;
 	if ( length >= fade_threshold + fade_length )
-		length -= fade_length;
+		length -= fade_length / 2;
 	fh.emu->set_fade( length, fade_length );
 	
 	// take ownership of emu
