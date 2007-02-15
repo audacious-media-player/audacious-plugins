@@ -103,11 +103,10 @@ static void audmad_init()
     audmad_config.use_xing = TRUE;
     audmad_config.dither = TRUE;
     audmad_config.sjis = FALSE;
-    audmad_config.pregain_db = "+0.00";
+    audmad_config.hard_limit = FALSE;
     audmad_config.replaygain.enable = TRUE;
     audmad_config.replaygain.track_mode = FALSE;
-    audmad_config.hard_limit = FALSE;
-    audmad_config.replaygain.default_db = "-9.00";
+    audmad_config.title_override = FALSE;
 
     db = bmp_cfg_db_open();
     if (db) {
@@ -140,7 +139,13 @@ static void audmad_init()
     mad_cond = g_cond_new();
     audmad_config_compute(&audmad_config);
 
-    if (audmad_config.id3_format != NULL)
+    if (!audmad_config.pregain_db)
+        audmad_config.pregain_db = g_strdup("+0.00");
+
+    if (!audmad_config.replaygain.default_db)
+        audmad_config.replaygain.default_db = g_strdup("-9.00");
+
+    if (!audmad_config.id3_format)
         audmad_config.id3_format = g_strdup("");
 }
 

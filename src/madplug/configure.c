@@ -57,15 +57,18 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
     audmad_config.hard_limit =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(hard_limit));
     text = gtk_entry_get_text(GTK_ENTRY(RG_default));
+    g_free(audmad_config.replaygain.default_db);
     audmad_config.replaygain.default_db = g_strdup(text);
 
     text = gtk_entry_get_text(GTK_ENTRY(pregain));
+    g_free(audmad_config.pregain_db);
     audmad_config.pregain_db = g_strdup(text);
 
     audmad_config.title_override =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(title_override));
 
     text = gtk_entry_get_text(GTK_ENTRY(title_id3_entry));
+    g_free(audmad_config.id3_format);
     audmad_config.id3_format = g_strdup(text);
 
     audmad_config_compute(&audmad_config);
