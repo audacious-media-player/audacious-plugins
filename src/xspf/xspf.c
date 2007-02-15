@@ -51,6 +51,31 @@
 gchar *base = NULL;
 gboolean override_mtime = FALSE;
 
+// this function is taken from libxml2-2.6.27.
+static xmlChar *
+audPathToURI(const xmlChar *path)
+{
+    xmlURIPtr uri;
+    xmlURI temp;
+    xmlChar *ret, *cal;
+
+    if (path == NULL)
+        return(NULL);
+
+    if ((uri = xmlParseURI((const char *) path)) != NULL) {
+	xmlFreeURI(uri);
+	return xmlStrdup(path);
+    }
+    cal = xmlCanonicPath(path);
+    if (cal == NULL)
+        return(NULL);
+    memset(&temp, 0, sizeof(temp));
+    temp.path = (char *) cal;
+    ret = xmlSaveUri(&temp);
+    xmlFree(cal);
+    return(ret);
+}
+
 static void
 add_file(xmlNode *track, const gchar *filename, gint pos)
 {
@@ -289,7 +314,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 		}
 		else /* local file */
 		{
-			gchar *tmp = (gchar *)xmlPathToURI((const xmlChar *)entry->filename);
+			gchar *tmp = (gchar *)audPathToURI((const xmlChar *)entry->filename);
 			filename = g_strdup_printf("file://%s", tmp);
 			g_free(tmp);
 		}
