@@ -81,13 +81,19 @@ void audmad_config_compute(struct audmad_config_t *config)
     gdouble x;
 
     text = config->pregain_db;
-    x = g_strtod(text, NULL);
+    if ( text != NULL )
+      x = g_strtod(text, NULL);
+    else
+      x = 0;
     config->pregain_scale = (x != 0) ? pow(10.0, x / 20) : 1;
 #ifdef DEBUG
     g_message("pregain=[%s] -> %g  -> %g", text, x, config->pregain_scale);
 #endif
     text = config->replaygain.default_db;
-    x = g_strtod(text, NULL);
+    if ( text != NULL )
+      x = g_strtod(text, NULL);
+    else
+      x = 0;
     config->replaygain.default_scale = (x != 0) ? pow(10.0, x / 20) : 1;
 #ifdef DEBUG
     g_message("RG.default=[%s] -> %g  -> %g", text, x,
