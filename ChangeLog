@@ -1,3 +1,10 @@
+2007-02-15 13:10:08 +0000  Giacomo Lozito <james@develia.org>
+  revision [1392]
+  - madplug: check that text is not null before using g_strtod
+  trunk/src/madplug/plugin.c |   10 ++++++++--
+  1 file changed, 8 insertions(+), 2 deletions(-)
+
+
 2007-02-15 07:23:21 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1390]
   - import xmlPathToURI() from libxml2-2.6.27 as audPathToURI(). this function is newly introduced at 2.6.27.

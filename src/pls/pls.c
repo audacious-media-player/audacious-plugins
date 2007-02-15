@@ -51,36 +51,42 @@ playlist_load_pls(const gchar * filename, gint pos)
     if (!str_has_suffix_nocase(filename, ".pls"))
         return;
 
-    if (!(line = read_ini_string(filename, "playlist", "NumberOfEntries")))
+    INIFile *inifile = open_ini_file(filename);
+    if (!(line = read_ini_string(inifile, "playlist", "NumberOfEntries")))
+    {
+        close_ini_file(inifile);
         return;
+    }
 
     count = atoi(line);
     g_free(line);
 
     for (i = 1; i <= count; i++) {
         g_snprintf(line_key, sizeof(line_key), "File%d", i);
-        if ((line = read_ini_string(filename, "playlist", line_key)))
-	{
-	    if (cfg.use_pl_metadata)
-	    {
-		g_snprintf(title_key, sizeof(title_key), "Title%d", i);
+        if ((line = read_ini_string(inifile, "playlist", line_key)))
+        {
+            if (cfg.use_pl_metadata)
+            {
+                g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 
-		if ((title = read_ini_string(filename, "playlist", title_key)))
-	            playlist_load_ins_file(playlist, line, filename, pos, title, -1);
-		else
-		    playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
-	    }
-	    else
-		playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
+                if ((title = read_ini_string(inifile, "playlist", title_key)))
+                    playlist_load_ins_file(playlist, line, filename, pos, title, -1);
+                else
+                    playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
+            }
+            else
+                playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
 
-            added_count++;
+                added_count++;
 
-            if (pos >= 0)
-                pos++;
+                if (pos >= 0)
+                    pos++;
 
-            g_free(line);
+                g_free(line);
         }
     }
+
+    close_ini_file(inifile);
 }
 
 static void
@@ -102,7 +108,7 @@ playlist_save_pls(const gchar *filename, gint pos)
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
 
         vfs_fprintf(file, "File%d=%s\n", g_list_position(playlist->entries, node) + 1,
-                  entry->filename);
+                    entry->filename);
     }
 
     PLAYLIST_UNLOCK(playlist->mutex);
@@ -111,20 +117,20 @@ playlist_save_pls(const gchar *filename, gint pos)
 }
 
 PlaylistContainer plc_pls = {
-	.name = "Winamp .pls Playlist Format",
-	.ext = "pls",
-	.plc_read = playlist_load_pls,
-	.plc_write = playlist_save_pls,
+    .name = "Winamp .pls Playlist Format",
+    .ext = "pls",
+    .plc_read = playlist_load_pls,
+    .plc_write = playlist_save_pls,
 };
 
 static void init(void)
 {
-	playlist_container_register(&plc_pls);
+    playlist_container_register(&plc_pls);
 }
 
 static void cleanup(void)
 {
-	playlist_container_unregister(&plc_pls);
+    playlist_container_unregister(&plc_pls);
 }
 
 LowlevelPlugin llp_pls = {
@@ -137,5 +143,5 @@ LowlevelPlugin llp_pls = {
 
 LowlevelPlugin *get_lplugin_info(void)
 {
-        return &llp_pls;
+    return &llp_pls;
 }
