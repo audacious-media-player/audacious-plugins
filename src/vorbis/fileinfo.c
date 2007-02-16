@@ -1071,5 +1071,5 @@ vorbis_file_info_box(gchar * filename)
     gtk_widget_set_sensitive(save_button, FALSE);
     gtk_widget_set_sensitive(remove_button, FALSE);
 
-    g_free(fh);
+    g_free(fh); // see vorbis.c ovcb_close() --yaz
 }

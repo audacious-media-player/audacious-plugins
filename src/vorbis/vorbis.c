@@ -1024,7 +1024,7 @@ ovcb_close(void *datasource)
     if (handle->probe == FALSE)
     {
         ret = vfs_fclose(handle->fd);
-	g_free(handle);
+//        g_free(handle); // it causes double free. i'm not really sure that commenting out at here is correct. --yaz
     }
 
     return ret;
