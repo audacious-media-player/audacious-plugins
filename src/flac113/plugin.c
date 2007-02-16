@@ -337,7 +337,7 @@ void FLAC_XMMS__play_file(InputPlayback *playback)
 
 	stream_data_.seek_to_in_sec = -1;
 	stream_data_.play_thread_open = true;
-	decode_thread_ = g_thread_create((GThreadFunc)play_loop_, NULL, TRUE, NULL);
+	decode_thread_ = g_thread_create((GThreadFunc)play_loop_, playback, TRUE, NULL);
 }
 
 void FLAC_XMMS__stop(InputPlayback *playback)

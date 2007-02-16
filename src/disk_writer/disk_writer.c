@@ -34,6 +34,14 @@
 #include "audacious/util.h"
 #include "audacious/vfs.h"
 
+
+struct format_info { 
+	AFormat format;
+	int frequency;
+	int channels;
+};
+struct format_info input;
+
 struct wavhead
 {
 	guint32 main_chunk;
@@ -193,6 +201,10 @@ static gint disk_open(AFormat fmt, gint rate, gint nch)
 	header.data_length = GUINT32_TO_LE(0);
 	vfs_fwrite(&header, sizeof (struct wavhead), 1, output_file);
 
+	input.format = fmt;
+	input.frequency = rate;
+	input.channels = nch;
+
 	return 1;
 }
 
@@ -250,6 +262,26 @@ static void convert_buffer(gpointer buffer, gint length)
 
 static void disk_write(void *ptr, gint length)
 {
+	AFormat new_format;
+	int new_frequency, new_channels;
+	EffectPlugin *ep;
+
+	new_format = input.format;
+	new_frequency = input.frequency;
+	new_channels = input.channels;
+
+	ep = get_current_effect_plugin();
+	if ( effects_enabled() && ep && ep->query_format ) { 
+		ep->query_format(&new_format,&new_frequency,&new_channels);
+	}
+
+	if ( effects_enabled() && ep && ep->mod_samples ) { 
+		length = ep->mod_samples(&ptr,length,
+					input.format,
+					input.frequency,
+					input.channels );
+	}
+
 	if (afmt == FMT_S8 || afmt == FMT_S16_BE ||
 	    afmt == FMT_U16_LE || afmt == FMT_U16_BE || afmt == FMT_U16_NE)
 		convert_buffer(ptr, length);
