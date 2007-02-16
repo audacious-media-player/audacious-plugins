@@ -86,14 +86,22 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 
 	tuple = bmp_title_input_new();
 
-    // staticlist hack
-    tuple->mtime = -1; // mark as uninitialized.
+	// staticlist hack
+	tuple->mtime = -1; // mark as uninitialized.
 
 	// creator, album, title, duration, trackNum, annotation, image, 
 	for(nptr = track->children; nptr != NULL; nptr = nptr->next){
 		if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, (xmlChar *)"location")){
 			gchar *str = (gchar *)xmlNodeGetContent(nptr);
-			gchar *tmp = (gchar *)xmlURIUnescapeString(str, -1, NULL);
+			gchar *tmp;
+
+			if( strncmp(str, "http://", 7) && strncmp(str, "https://", 8) && 
+			    strncmp(str, "mms://", 6) ) { /* not a streaming */
+				tmp = (gchar *)xmlURIUnescapeString(str, -1, NULL); 
+			}
+			else { /* streaming */
+				tmp = g_strdup(str);
+			}
 
 			if(strstr(tmp, "file://")){
 				location = g_strdup_printf("%s%s", base ? base : "", tmp+7);
@@ -172,9 +180,9 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 		tuple->length = -1;
 	}
 
-    if(override_mtime) {
-        tuple->mtime = 0; //when mtime=0, scanning will be skipped.  --yaz
-    }
+	if(override_mtime) {
+		tuple->mtime = 0; //when mtime=0, scanning will be skipped.  --yaz
+	}
 
 	if(location){
 		tuple->file_name = g_path_get_basename(location);
