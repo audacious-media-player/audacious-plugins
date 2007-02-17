@@ -443,6 +443,7 @@ static MpcInfo getTags(const char* p_Filename)
     REMOVE_NONEXISTANT_TAG(tags.comment);
     tags.year    = poTag->year();
     tags.track   = poTag->track();
+#if 0
     TagLib::APE::Tag* ape = oFile.APETag(false);
     if(ape)
     {
@@ -456,6 +457,7 @@ static MpcInfo getTags(const char* p_Filename)
             tags.date = g_strdup_printf("%d", tags.year);
         }
     }
+#endif
     return tags;
 }
 
