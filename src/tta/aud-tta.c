@@ -52,7 +52,7 @@
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
 
-#include <id3tag.h>
+#include <audacious/id3tag.h>
 
 
 
