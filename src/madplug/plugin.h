@@ -44,7 +44,7 @@
 #include <audacious/strings.h>
 #include <audacious/vfs.h>
 #include <audacious/i18n.h>
-#include <id3tag.h>
+#include <audacious/id3tag.h>
 #include <mad.h>
 
 #include "xing.h"
