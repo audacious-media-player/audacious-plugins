@@ -124,23 +124,6 @@ PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [AC_MSG_ERROR([Cannot find pango >= 1.8.0])]
 )
 
-dnl Check for libglade
-
-PKG_CHECK_MODULES(LIBGLADE, [libglade-2.0 >= 2.3.1],
-    [],
-    [AC_MSG_ERROR([Cannot find libglade])]
-)
-
-AC_PATH_PROG(TAGLIB_CONFIG, taglib-config, [no], [$PATH:$prefix/bin])
-if test "x$TAGLIB_CONFIG" = "xno" ; then
-AC_MSG_ERROR([Cannot find taglib])
-else
-    TAGLIB_CFLAGS=[`$TAGLIB_CONFIG --cflags`]
-    TAGLIB_LIBS=[`$TAGLIB_CONFIG --libs`]
-fi
-AC_SUBST(TAGLIB_CFLAGS)
-AC_SUBST(TAGLIB_LIBS)
-
 dnl IPv6 support
 dnl ========================
 AC_ARG_ENABLE(ipv6,
@@ -204,32 +187,6 @@ case "$target" in
 		AC_MSG_RESULT([no])
 		;;
 esac
-
-dnl GConf support
-
-AC_ARG_ENABLE( gconf,
-    [  --enable-gconf          enable GConf support (default=disabled)],
-    [enable_gconf=$enableval],
-    [enable_gconf="no"]
-)
-
-if test "$enable_gconf" = "yes"; then
-    PKG_CHECK_MODULES(GCONF, [gconf-2.0 >= 2.6.0],
-        [
-         AC_DEFINE(HAVE_GCONF, , [Define if building with GConf support])
-         ADD_PC_REQUIRES([gconf-2.0 >= 2.6.0])
-        ],
-        [AC_MSG_ERROR([Cannot find GConf])]
-    )
-fi
-
-if test "$enable_gconf" = "yes"; then
-	CONFIGDB_BACKEND="gconf"
-else
-	CONFIGDB_BACKEND="rcfile"
-fi
-
-AC_SUBST(CONFIGDB_BACKEND)
 
 dnl Check for esound
 
@@ -572,9 +529,11 @@ AC_ARG_ENABLE(musepack,
 )
 
 if test "$enable_musepack" = "yes"; then
-    AC_CHECK_HEADERS(mpcdec/config_types.h,,
-        enable_musepack=no
-    )
+    PKG_CHECK_MODULES(TAGLIB, [taglib >= 1.4], [ 
+       AC_CHECK_HEADERS(mpcdec/config_types.h,, [
+           enable_musepack=no
+       ])
+    ], [enable_musepack=no])
 else
     AC_MSG_RESULT([*** Musepack plugin disabled per user request ***])
     enable_musepack=no
