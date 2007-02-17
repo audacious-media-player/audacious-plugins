@@ -1,3 +1,12 @@
+2007-02-17 09:41:14 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1410]
+  - remove a bunch of audacious-core cruft
+  - make taglib unavailability not cause configure to die
+  
+  trunk/configure.ac |   51 +++++----------------------------------------------
+  1 file changed, 5 insertions(+), 46 deletions(-)
+
+
 2007-02-17 09:34:18 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1408]
   - id3tag.h -> audacious/id3tag.h

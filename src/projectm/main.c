@@ -206,7 +206,7 @@ void worker_func()
   
   projectM_resetGL( globalPM, wvw, wvh );
 
-  title_timer = SDL_AddTimer(500, get_xmms_title, NULL);
+  title_timer = SDL_AddTimer(500, (SDL_NewTimerCallback) get_xmms_title, NULL);
    
     /** Initialise the thread */
  
@@ -254,7 +254,7 @@ void worker_func()
             } 
             else if ( evt == PROJECTM_VIDEOQUIT ) {
 
-	(void) gtk_idle_add (disable_projectm, NULL);
+	(void) g_idle_add ((GSourceFunc) disable_projectm, NULL);
 	/*				if(quit_timer == NULL)
 	                quit_timer = SDL_AddTimer(500, disable_projectm, NULL);*/
             }
