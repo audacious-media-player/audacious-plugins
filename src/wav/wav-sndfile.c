@@ -147,8 +147,8 @@ play_loop (gpointer arg)
 	int samples;
 	InputPlayback *playback = arg;
 
-	do
-	{
+	for (;;)
+ 	{
 		GTimeVal sleeptime;
 
 		g_get_current_time(&sleeptime);
@@ -199,21 +199,33 @@ play_loop (gpointer arg)
 
 		/* Do seek if seek_time is valid. */
 		if (seek_time > 0)
-		{	sf_seek (sndfile, seek_time * sfinfo.samplerate, SEEK_SET);
+		{
+			sf_seek (sndfile, seek_time * sfinfo.samplerate, SEEK_SET);
 			playback->output->flush (seek_time * 1000);
 			seek_time = -1;
    		}
 
+		g_cond_timed_wait(decode_cond,
+			decode_mutex, &sleeptime);
+
+		if (playback->playing == FALSE)
+		{
+			g_mutex_unlock(decode_mutex);
+			break;	
+		}
+
 		g_mutex_unlock(decode_mutex);
-	} while (playback->playing == TRUE);
+	}
 
 	sf_close (sndfile);
 	sndfile = NULL;
 	seek_time = -1;
 
+	playback->output->close_audio();
+
 	g_thread_exit (NULL);
 	return NULL;
-} /* play_loop */
+}
 
 static void
 play_start (InputPlayback *playback)
