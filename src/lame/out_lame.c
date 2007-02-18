@@ -216,7 +216,7 @@ static void outlame_init(void)
     printf("fle_path = %s\n", file_path);
 #endif
     //validate the path
-    if(opendir(file_path) == NULL) { //error
+    if(file_path != NULL && opendir(file_path) == NULL) { //error
 #ifdef DEBUG
 	    printf("file_path freed\n");
 #endif
