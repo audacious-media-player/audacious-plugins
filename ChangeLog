@@ -1,3 +1,11 @@
+2007-02-18 04:57:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1420]
+  - make use of playlist->eof effectively.
+  
+  trunk/src/wav/wav-sndfile.c |   11 ++++-------
+  1 file changed, 4 insertions(+), 7 deletions(-)
+
+
 2007-02-18 04:50:45 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1418]
   - some further adjustments
