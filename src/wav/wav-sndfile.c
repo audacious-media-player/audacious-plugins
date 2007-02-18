@@ -187,14 +187,11 @@ play_loop (gpointer arg)
 		}
 		else
 		{
-			g_cond_timed_wait(decode_cond,
-				decode_mutex, &sleeptime);
+			playback->eof = TRUE;
+			playback->playing = FALSE;
 
-			if (playback->playing == FALSE)
-			{
-				g_mutex_unlock(decode_mutex);
-				break;	
-			}
+			g_mutex_unlock(decode_mutex);
+			break;	
 		}
 
 		/* Do seek if seek_time is valid. */
