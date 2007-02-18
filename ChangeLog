@@ -1,3 +1,13 @@
+2007-02-18 08:07:48 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1422]
+  - add lame encoder plugin. not yet hooked up.
+  - with this plugin, audacious can rip cd with tags using cddb, and can cut out tracks with tags from one big data file with a cue sheet.
+  
+  trunk/src/lame/Makefile   |   15 
+  trunk/src/lame/out_lame.c | 2348 ++++++++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 2363 insertions(+)
+
+
 2007-02-18 04:57:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1420]
   - make use of playlist->eof effectively.
