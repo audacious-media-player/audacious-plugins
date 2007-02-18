@@ -23,7 +23,6 @@
 #define WAV_SNDFILE_H
 
 #define BUFFER_SIZE 			8192
-#define	TITLE_LEN			64
 
 static	void 	plugin_init (void);
 static	int	is_our_file (char *filename);
@@ -33,5 +32,6 @@ static	void 	file_seek (InputPlayback *playback, int time);
 static	int	get_time (InputPlayback *playback);
 static	void 	get_song_info (char *filename, char **title, int *length);
 static  void    wav_about (void);
+static	void	play_pause (InputPlayback *playback, gshort p);
 
 #endif
