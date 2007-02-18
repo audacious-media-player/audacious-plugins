@@ -227,9 +227,11 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
-    if (!strcasecmp("flac", ext) || !strcasecmp("mpc", ext) ||
-        !strcasecmp("tta", ext) || !strcasecmp("ogg", ext) ||
-	!strcasecmp("wma", ext) )
+    if ((ext != NULL) && 
+        (!strcasecmp("flac", ext) || !strcasecmp("mpc", ext) ||
+         !strcasecmp("tta", ext)  || !strcasecmp("ogg", ext) ||
+         !strcasecmp("wma", ext) )
+			 )
         return FALSE;
 
     if (fin == NULL)
