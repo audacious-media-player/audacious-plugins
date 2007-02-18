@@ -108,7 +108,8 @@ plugin_init (void)
 
 static int
 is_our_file (char *filename)
-{	SNDFILE	*tmp_sndfile;
+{
+	SNDFILE	*tmp_sndfile;
 	SF_INFO tmp_sfinfo;
 
 	/* Have to open the file to see if libsndfile can handle it. */
@@ -124,7 +125,8 @@ is_our_file (char *filename)
 
 static void*
 play_loop (void *arg)
-{	static short buffer [BUFFER_SIZE];
+{
+	static short buffer [BUFFER_SIZE];
 	int samples;
 	InputPlayback *playback = arg;
 
@@ -177,7 +179,7 @@ play_start (InputPlayback *playback)
 	if (! (sndfile = sf_open (filename, SFM_READ, &sfinfo)))
 		return;
 
-	bit_rate = sfinfo.samplerate * pcmbitwidth * sfinfo.channels;
+	bit_rate = sfinfo.samplerate * pcmbitwidth;
 
 	if (sfinfo.samplerate > 0)
 		song_length = (int) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate);
