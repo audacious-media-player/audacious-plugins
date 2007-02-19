@@ -177,6 +177,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     unsigned char buffer[BUFFER_SIZE];
     struct mad_frame frame;     /* to read xing data */
     gboolean has_xing = FALSE;
+    int bitrate_frames = 0;
 
     mad_stream_init(&stream);
     mad_header_init(&header);
@@ -290,8 +291,10 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 /* perhaps we have a VRB file */
                 if (info->bitrate != header.bitrate)
                     info->vbr = TRUE;
-                if (info->vbr)
+                if (info->vbr) {
                     info->bitrate += header.bitrate;
+                    bitrate_frames++;
+                }
                 /* check for changin layer/samplerate/channels */
                 if (info->mpeg_layer != header.layer)
                     g_warning("layer varies!!");
@@ -326,7 +329,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     }
 
     if (info->vbr && !has_xing)
-        info->bitrate = info->bitrate / info->frames;
+        info->bitrate = info->bitrate / bitrate_frames;
 
     mad_frame_finish(&frame);
     mad_header_finish(&header);
@@ -347,6 +350,7 @@ gpointer decode_loop(gpointer arg)
     gboolean seek_skip = FALSE;
     int remainder = 0;
     gint tlen;
+    unsigned int iteration = 0;
 
     /* mad structs */
     struct mad_stream stream;
@@ -502,6 +506,15 @@ gpointer decode_loop(gpointer arg)
 #endif                          /* DEBUG */
                 continue;
             }
+
+            info->bitrate = frame.header.bitrate;
+
+            if (info->vbr && (iteration % 40 == 0)) {
+                mad_plugin->set_info(info->title,
+                                     tlen == 0 ? -1 : tlen,
+                                     info->bitrate, info->freq, info->channels);
+            }
+            iteration++;
 
             if (mad_frame_decode(&frame, &stream) == -1) {
                 if (!MAD_RECOVERABLE(stream.error))
