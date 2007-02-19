@@ -517,7 +517,11 @@ else
 fi
 
 if test "$have_flac" = "yes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS flac$FLAC_VERSION"
+	if test "$FLAC_VERSION" -le 112; then
+	   INPUT_PLUGINS="$INPUT_PLUGINS flac112"
+	else
+	   INPUT_PLUGINS="$INPUT_PLUGINS flac113"
+	fi	
 fi
 
 dnl *** Musepack
