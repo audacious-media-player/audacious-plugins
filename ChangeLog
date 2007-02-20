@@ -1,3 +1,108 @@
+2007-02-20 12:37:37 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1448]
+  - synchronise with FAAD 2.5
+  
+  trunk/src/aac/libfaad2/analysis.h        |   13 
+  trunk/src/aac/libfaad2/bits.c            |  160 ++++-
+  trunk/src/aac/libfaad2/bits.h            |  162 ++++-
+  trunk/src/aac/libfaad2/cfft.c            |   25 
+  trunk/src/aac/libfaad2/cfft.h            |   13 
+  trunk/src/aac/libfaad2/cfft_tab.h        |   21 
+  trunk/src/aac/libfaad2/codebook/hcb.h    |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_1.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_10.h |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_11.h |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_2.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_3.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_4.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_5.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_6.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_7.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_8.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_9.h  |   13 
+  trunk/src/aac/libfaad2/codebook/hcb_sf.h |   13 
+  trunk/src/aac/libfaad2/common.c          |   27 
+  trunk/src/aac/libfaad2/decoder.c         |  127 ++++
+  trunk/src/aac/libfaad2/decoder.h         |   13 
+  trunk/src/aac/libfaad2/drc.c             |   13 
+  trunk/src/aac/libfaad2/drc.h             |   13 
+  trunk/src/aac/libfaad2/drm_dec.c         |  121 +---
+  trunk/src/aac/libfaad2/drm_dec.h         |   15 
+  trunk/src/aac/libfaad2/error.c           |   20 
+  trunk/src/aac/libfaad2/error.h           |   15 
+  trunk/src/aac/libfaad2/filtbank.c        |   13 
+  trunk/src/aac/libfaad2/filtbank.h        |   13 
+  trunk/src/aac/libfaad2/fixed.h           |   14 
+  trunk/src/aac/libfaad2/hcr.c             |   34 +
+  trunk/src/aac/libfaad2/huffman.c         |   13 
+  trunk/src/aac/libfaad2/huffman.h         |   13 
+  trunk/src/aac/libfaad2/ic_predict.c      |   42 -
+  trunk/src/aac/libfaad2/ic_predict.h      |   13 
+  trunk/src/aac/libfaad2/iq_table.h        |   13 
+  trunk/src/aac/libfaad2/is.c              |   15 
+  trunk/src/aac/libfaad2/is.h              |   13 
+  trunk/src/aac/libfaad2/kbd_win.h         |   13 
+  trunk/src/aac/libfaad2/lt_predict.c      |   18 
+  trunk/src/aac/libfaad2/lt_predict.h      |   13 
+  trunk/src/aac/libfaad2/mdct.c            |   13 
+  trunk/src/aac/libfaad2/mdct.h            |   13 
+  trunk/src/aac/libfaad2/mdct_tab.h        |   13 
+  trunk/src/aac/libfaad2/mp4.c             |   27 
+  trunk/src/aac/libfaad2/mp4.h             |   13 
+  trunk/src/aac/libfaad2/ms.c              |   15 
+  trunk/src/aac/libfaad2/ms.h              |   13 
+  trunk/src/aac/libfaad2/output.c          |   21 
+  trunk/src/aac/libfaad2/output.h          |   13 
+  trunk/src/aac/libfaad2/pns.c             |   38 -
+  trunk/src/aac/libfaad2/pns.h             |   16 
+  trunk/src/aac/libfaad2/ps_dec.c          |  151 ++---
+  trunk/src/aac/libfaad2/ps_dec.h          |   13 
+  trunk/src/aac/libfaad2/ps_syntax.c       |   26 
+  trunk/src/aac/libfaad2/ps_tables.h       |   23 
+  trunk/src/aac/libfaad2/pulse.c           |   16 
+  trunk/src/aac/libfaad2/pulse.h           |   13 
+  trunk/src/aac/libfaad2/rvlc.c            |   13 
+  trunk/src/aac/libfaad2/rvlc.h            |   13 
+  trunk/src/aac/libfaad2/sbr_dct.c         |  842 +++++++++++++++----------------
+  trunk/src/aac/libfaad2/sbr_dct.h         |   13 
+  trunk/src/aac/libfaad2/sbr_dec.c         |  110 +++-
+  trunk/src/aac/libfaad2/sbr_dec.h         |   23 
+  trunk/src/aac/libfaad2/sbr_e_nf.c        |   13 
+  trunk/src/aac/libfaad2/sbr_e_nf.h        |   13 
+  trunk/src/aac/libfaad2/sbr_fbt.c         |   13 
+  trunk/src/aac/libfaad2/sbr_fbt.h         |   13 
+  trunk/src/aac/libfaad2/sbr_hfadj.c       |   59 +-
+  trunk/src/aac/libfaad2/sbr_hfadj.h       |   19 
+  trunk/src/aac/libfaad2/sbr_hfgen.c       |   14 
+  trunk/src/aac/libfaad2/sbr_hfgen.h       |   13 
+  trunk/src/aac/libfaad2/sbr_huff.c        |   13 
+  trunk/src/aac/libfaad2/sbr_huff.h        |   13 
+  trunk/src/aac/libfaad2/sbr_noise.h       |   13 
+  trunk/src/aac/libfaad2/sbr_qmf.c         |   31 -
+  trunk/src/aac/libfaad2/sbr_qmf.h         |   13 
+  trunk/src/aac/libfaad2/sbr_qmf_c.h       |   21 
+  trunk/src/aac/libfaad2/sbr_syntax.c      |   75 ++
+  trunk/src/aac/libfaad2/sbr_syntax.h      |   16 
+  trunk/src/aac/libfaad2/sbr_tf_grid.c     |   13 
+  trunk/src/aac/libfaad2/sbr_tf_grid.h     |   13 
+  trunk/src/aac/libfaad2/sine_win.h        |   13 
+  trunk/src/aac/libfaad2/specrec.c         |  149 +++--
+  trunk/src/aac/libfaad2/specrec.h         |   13 
+  trunk/src/aac/libfaad2/ssr.c             |   13 
+  trunk/src/aac/libfaad2/ssr.h             |   13 
+  trunk/src/aac/libfaad2/ssr_fb.c          |   13 
+  trunk/src/aac/libfaad2/ssr_fb.h          |   19 
+  trunk/src/aac/libfaad2/ssr_ipqf.c        |   13 
+  trunk/src/aac/libfaad2/ssr_ipqf.h        |   19 
+  trunk/src/aac/libfaad2/ssr_win.h         |   19 
+  trunk/src/aac/libfaad2/structs.h         |  445 ++++++++--------
+  trunk/src/aac/libfaad2/syntax.c          |  308 +++++++----
+  trunk/src/aac/libfaad2/syntax.h          |   20 
+  trunk/src/aac/libfaad2/tns.c             |   23 
+  trunk/src/aac/libfaad2/tns.h             |   13 
+  98 files changed, 2557 insertions(+), 1532 deletions(-)
+
+
 2007-02-20 12:36:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1446]
   - satisfy Nero AG attribution requirement for FAAD 2.5 code import

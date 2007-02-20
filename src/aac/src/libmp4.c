@@ -666,10 +666,6 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
-    input = bmp_title_input_new();
-    input->file_name = (char*)g_basename(temp);
-    input->file_ext = ext ? ext+1 : NULL;
-    input->file_path = temp;
     if(!strncmp((char*)buffer, "ID3", 3)){
         gint size = 0;
 
@@ -679,12 +675,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
         vfs_fread(buffer, 1, size, file);
         buffervalid = vfs_fread(buffer, 1, BUFFER_SIZE, file);
     }
-    xmmstitle = xmms_get_titlestring(xmms_get_gentitle_format(), input);
-    if(xmmstitle == NULL)
-        xmmstitle = g_strdup(input->file_name);
-    if(temp) g_free(temp);
-
-    bmp_title_input_free(input);
+    xmmstitle = g_strdup(g_basename(temp));
 
     bufferconsumed = faacDecInit(decoder,
                      buffer,
