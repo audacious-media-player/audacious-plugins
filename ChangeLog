@@ -1,3 +1,10 @@
+2007-02-20 14:11:10 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [1460]
+  Revert r1456, this gives problems with some files with broken ID3-Tags.
+  trunk/src/madplug/input.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-02-20 13:51:43 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1458]
   - remove some pointless bloat

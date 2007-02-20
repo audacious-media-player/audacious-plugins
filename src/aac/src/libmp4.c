@@ -738,10 +738,19 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
                          BUFFER_SIZE-buffervalid, file);
             bufferconsumed = 0;
         }
+
         sample_buffer = faacDecDecode(decoder, &finfo, buffer, buffervalid);
+
+        bufferconsumed += finfo.bytesconsumed;
+        samplesdecoded = finfo.samples;
+
         if(finfo.error > 0){
             buffervalid--;
             memmove(buffer, &buffer[1], buffervalid);
+            if(buffervalid < BUFFER_SIZE) {
+               buffervalid +=
+                 vfs_fread(&buffer[buffervalid], 1, BUFFER_SIZE-buffervalid, file);
+	    }
             bufferconsumed = aac_probe(buffer, buffervalid);
             if(bufferconsumed) {
                memmove(buffer, &buffer[bufferconsumed], buffervalid-bufferconsumed);
@@ -750,8 +759,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
             }
             continue;
         }
-        bufferconsumed += finfo.bytesconsumed;
-        samplesdecoded = finfo.samples;
+
         if((samplesdecoded <= 0) && !sample_buffer){
             g_print("AAC: decoded %d samples!\n", samplesdecoded);
             continue;
