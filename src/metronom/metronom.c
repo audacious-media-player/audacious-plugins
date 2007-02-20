@@ -1,5 +1,5 @@
 /*
- *  Copyright 2000 Martin Strauﬂ <mys@faveve.uni-stuttgart.de>
+ *  Copyright 2000 Martin Strau? <mys@faveve.uni-stuttgart.de>
  *
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -78,7 +78,7 @@ static void metronom_about(void)
 	static GtkWidget *box;
 	box = xmms_show_message(
 		"About Metronom",
-		"A Tact Generator by Martin Strauﬂ <mys@faveve.uni-stuttgart.de>\n\nTo use it, add a URL: tact://beats*num/den\ne.g. tact://77 to play 77 beats per minute\nor   tact://60*3/4 to play 60 bpm in 3/4 tacts", "Ok",
+		"A Tact Generator by Martin Strau? <mys@faveve.uni-stuttgart.de>\n\nTo use it, add a URL: tact://beats*num/den\ne.g. tact://77 to play 77 beats per minute\nor   tact://60*3/4 to play 60 bpm in 3/4 tacts", "Ok",
 		FALSE, NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(box), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &box);
@@ -147,7 +147,6 @@ static void* play_loop(void *arg)
 			produce_audio(playback->output->written_time(), FMT_S16_LE, 1, BUF_BYTES, data, &going);
 	}
 	/* Make sure the output plugin stops prebuffering */
-	free(arg);
 	playback->output->buffer_free();
 	playback->output->buffer_free();
 	g_thread_exit(NULL);
