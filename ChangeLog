@@ -1,3 +1,11 @@
+2007-02-20 12:13:46 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1444]
+  - remove a bunch of pointless code. we don't do ID3 for raw AAC files at this time.
+  
+  trunk/src/aac/src/libmp4.c |   10 ++++------
+  1 file changed, 4 insertions(+), 6 deletions(-)
+
+
 2007-02-20 12:10:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1442]
   - allow static AAC files to play. working on AACplus, but this brings us closer.

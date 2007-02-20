@@ -281,6 +281,7 @@ static void mp4_about(void)
     static GtkWidget *aboutbox = NULL;
     aboutbox = xmms_show_message("About MP4 AAC player plugin",
                    "Using libfaad2-" FAAD2_VERSION " for decoding.\n"
+		   "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
                    "Copyright (c) 2005-2006 Audacious team",
                    "Ok", FALSE, NULL, NULL);
     g_signal_connect(G_OBJECT(aboutbox), "destroy",
