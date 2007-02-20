@@ -753,7 +753,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
 	    }
             bufferconsumed = aac_probe(buffer, buffervalid);
             if(bufferconsumed) {
-               memmove(buffer, &buffer[bufferconsumed], buffervalid-bufferconsumed);
+               memmove(buffer, &buffer[bufferconsumed], buffervalid);
                buffervalid -= bufferconsumed;
                bufferconsumed = 0;
             }

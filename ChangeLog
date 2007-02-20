@@ -1,3 +1,12 @@
+2007-02-20 14:17:27 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1462]
+  - some ringbuffering fixes -- aac+ shouldn't crash now, but more 
+    extensive testing will be needed.
+  
+  trunk/src/aac/src/libmp4.c |   12 ++++++++++--
+  1 file changed, 10 insertions(+), 2 deletions(-)
+
+
 2007-02-20 14:11:10 +0000  Jonathan Schleifer <js@h3c.de>
   revision [1460]
   Revert r1456, this gives problems with some files with broken ID3-Tags.
