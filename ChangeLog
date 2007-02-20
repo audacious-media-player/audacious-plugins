@@ -1,3 +1,15 @@
+2007-02-20 02:08:27 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1434]
+  madplug bug fix:
+  - no longer crashes on extra long TCON tag.
+  - now scan_file() calculates track length properly.
+  
+  trunk/src/madplug/decoder.c |   14 ++++++++++----
+  trunk/src/madplug/input.c   |   12 +++++++++---
+  trunk/src/madplug/plugin.c  |    2 ++
+  3 files changed, 21 insertions(+), 7 deletions(-)
+
+
 2007-02-19 12:55:14 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1432]
   - calculate vbr bitrate properly.

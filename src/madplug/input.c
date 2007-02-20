@@ -170,7 +170,12 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
     string_len = mad_ucs4len((id3_ucs4_t *)string);
     tail = (id3_ucs4_t *)string + string_len;
 
-    ret = g_malloc0(BYTES(string_len + 1));
+    if(BYTES(string_len + 1) > 1024) {
+        ret = g_malloc0(BYTES(string_len + 1));
+    }
+    else {
+        ret = g_malloc0(1024);
+    }
 
     for(ptr = (id3_ucs4_t *)string; *ptr != 0 && ptr <= tail; ptr++) {
         if(*ptr == '(') {
@@ -264,8 +269,8 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
 {
     gchar *rtn0 = NULL, *rtn = NULL;
-    const id3_ucs4_t *string_const;
-    id3_ucs4_t *string;
+    const id3_ucs4_t *string_const = NULL;
+    id3_ucs4_t *string = NULL;
     struct id3_frame *frame;
     union id3_field *field;
     int encoding = -1;
