@@ -658,6 +658,8 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
     gchar       *ext  = strrchr(temp, '.');
     gchar       *xmmstitle = NULL;
     faacDecConfigurationPtr config;
+    gboolean    remote = str_has_prefix_nocase(filename, "http:") ||
+			 str_has_prefix_nocase(filename, "https:");
 
     vfs_rewind(file);
     if((decoder = faacDecOpen()) == NULL){
@@ -772,8 +774,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         bufferconsumed += finfo.bytesconsumed;
         samplesdecoded = finfo.samples;
 
-        if(finfo.error > 0){
-            buffervalid--;
+        if(finfo.error > 0 && remote != FALSE){
             memmove(buffer, &buffer[1], buffervalid);
             if(buffervalid < BUFFER_SIZE) {
                buffervalid +=
