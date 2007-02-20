@@ -113,6 +113,7 @@ static void audmad_init()
     audmad_config.replaygain.enable = TRUE;
     audmad_config.replaygain.track_mode = FALSE;
     audmad_config.title_override = FALSE;
+    audmad_config.show_avg_vbr_bitrate = TRUE;
 
     db = bmp_cfg_db_open();
     if (db) {
@@ -136,6 +137,8 @@ static void audmad_init()
                             &audmad_config.title_override);
         bmp_cfg_db_get_string(db, "MAD", "id3_format",
                               &audmad_config.id3_format);
+        bmp_cfg_db_get_bool(db, "MAD", "show_avg_vbr_bitrate",
+                            &audmad_config.show_avg_vbr_bitrate);
 
         bmp_cfg_db_close(db);
     }

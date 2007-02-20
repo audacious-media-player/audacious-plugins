@@ -27,7 +27,7 @@
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *vbox;
-static GtkWidget *fast_playback, *use_xing, *dither, *sjis;
+static GtkWidget *fast_playback, *use_xing, *dither, *sjis, *show_avg;
 static GtkWidget *RG_enable, *RG_track_mode, *RG_default, *pregain,
     *hard_limit;
 static GtkWidget *title_id3_box, *title_tag_desc;
@@ -49,6 +49,8 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dither));
     audmad_config.sjis =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(sjis));
+    audmad_config.show_avg_vbr_bitrate =
+        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(show_avg));
 
     audmad_config.replaygain.enable =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(RG_enable));
@@ -95,6 +97,9 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
 
     bmp_cfg_db_set_bool(db, "MAD", "title_override", audmad_config.title_override);
     bmp_cfg_db_set_string(db, "MAD", "id3_format", audmad_config.id3_format);
+
+    bmp_cfg_db_set_bool(db, "MAD", "show_avg_vbr_bitrate",
+                            audmad_config.show_avg_vbr_bitrate);
 
     bmp_cfg_db_close(db);
     gtk_widget_destroy(configure_win);
@@ -148,6 +153,12 @@ void audmad_configure(void)
 
     vbox2 = gtk_vbox_new(FALSE, 5);
 
+    dither = gtk_check_button_new_with_label
+        (_("Dither output when rounding to 16-bit"));
+    gtk_box_pack_start(GTK_BOX(vbox2), dither, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dither),
+                                 audmad_config.dither);
+
     fast_playback =
         gtk_check_button_new_with_label(_("Enable fast play-length calculation"));
     gtk_box_pack_start(GTK_BOX(vbox2), fast_playback, TRUE, TRUE, 0);
@@ -163,12 +174,10 @@ void audmad_configure(void)
     gtk_box_pack_start(GTK_BOX(vbox2), sjis, TRUE, TRUE, 0);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sjis), audmad_config.sjis);
 
-    dither =
-        gtk_check_button_new_with_label
-        (_("Dither output when rounding to 16-bit"));
-    gtk_box_pack_start(GTK_BOX(vbox2), dither, TRUE, TRUE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dither),
-                                 audmad_config.dither);
+    show_avg = gtk_check_button_new_with_label(_("Display average bitrate for VBR"));
+    gtk_box_pack_start(GTK_BOX(vbox2), show_avg, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(show_avg),
+                                 audmad_config.show_avg_vbr_bitrate);
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("General")));
 

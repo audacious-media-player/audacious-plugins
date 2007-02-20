@@ -515,7 +515,7 @@ gpointer decode_loop(gpointer arg)
 
             info->bitrate = frame.header.bitrate;
 
-            if (info->vbr && (iteration % 40 == 0)) {
+            if (!audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
                 mad_plugin->set_info(info->title,
                                      tlen == 0 ? -1 : tlen,
                                      info->bitrate, info->freq, info->channels);

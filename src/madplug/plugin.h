@@ -123,6 +123,7 @@ struct audmad_config_t
     } replaygain;
     gboolean title_override;
     gchar *id3_format;
+    gboolean show_avg_vbr_bitrate;
 };
 
 // gcond
