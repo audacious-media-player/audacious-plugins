@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -19,15 +19,10 @@
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Software using this code must display the following message visibly in or
-** on each copy of the software:
-** "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com"
-** in, for example, the about-box or help/startup screen.
-**
 ** Commercial non-GPL licensing of this software is possible.
-** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
 **
-** $Id: mp4.c,v 1.35 2006/08/06 18:57:15 menno Exp $
+** $Id: mp4.c,v 1.32 2004/09/04 14:56:28 menno Exp $
 **/
 
 #include "common.h"
@@ -63,7 +58,11 @@ static uint8_t ObjectTypesTable[32] = {
 #else
     0, /*  5 SBR */
 #endif
+#ifdef SCALABLE_DEC
+    1, /*  6 AAC Scalable */
+#else
     0, /*  6 AAC Scalable */
+#endif
     0, /*  7 TwinVQ */
     0, /*  8 CELP */
     0, /*  9 HVXC */
@@ -84,7 +83,11 @@ static uint8_t ObjectTypesTable[32] = {
 #else
     0, /* 19 ER AAC LTP */
 #endif
+#ifdef SCALABLE_DEC
+    1, /* 20 ER AAC scalable */
+#else
     0, /* 20 ER AAC scalable */
+#endif
     0, /* 21 ER TwinVQ */
     0, /* 22 ER BSAC */
 #ifdef LD_DEC
@@ -245,7 +248,7 @@ int8_t AudioSpecificConfig2(uint8_t *pBuffer,
 
         if (syncExtensionType == 0x2b7)
         {
-            uint8_t tmp_OTi = (uint8_t)faad_getbits(&ld, 5
+            mp4ASC->objectTypeIndex = (uint8_t)faad_getbits(&ld, 5
                 DEBUGVAR(1,10,"parse_audio_decoder_specific_info(): extensionAudioObjectType"));
 
             if (mp4ASC->objectTypeIndex == 5)
@@ -256,10 +259,6 @@ int8_t AudioSpecificConfig2(uint8_t *pBuffer,
                 if (mp4ASC->sbr_present_flag)
                 {
                     uint8_t tmp;
-
-					/* Don't set OT to SBR until checked that it is actually there */
-					mp4ASC->objectTypeIndex = tmp_OTi;
-
                     tmp = (uint8_t)faad_getbits(&ld, 4
                         DEBUGVAR(1,12,"parse_audio_decoder_specific_info(): extensionSamplingFrequencyIndex"));
 

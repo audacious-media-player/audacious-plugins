@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -19,15 +19,10 @@
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Software using this code must display the following message visibly in or
-** on each copy of the software:
-** "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com"
-** in, for example, the about-box or help/startup screen.
-**
 ** Commercial non-GPL licensing of this software is possible.
-** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
 **
-** $Id: ic_predict.c,v 1.26 2006/05/17 18:49:21 menno Exp $
+** $Id: ic_predict.c,v 1.23 2004/09/04 14:56:28 menno Exp $
 **/
 
 #include "common.h"
@@ -86,8 +81,7 @@ static void ic_predict(pred_state *state, real_t input, real_t *output, uint8_t 
 {
     uint16_t tmp;
     int16_t i, j;
-    real_t dr1;
-	float32_t predictedvalue;
+    real_t dr1, predictedvalue;
     real_t e0, e1;
     real_t k1, k2;
 
@@ -120,7 +114,7 @@ static void ic_predict(pred_state *state, real_t input, real_t *output, uint8_t 
 #define B 0.953125
         real_t c = COR[0];
         real_t v = VAR[0];
-        float32_t tmp;
+        real_t tmp;
         if (c == 0 || v <= 1)
         {
             k1 = 0;
@@ -150,7 +144,7 @@ static void ic_predict(pred_state *state, real_t input, real_t *output, uint8_t 
 #define B 0.953125
         real_t c = COR[1];
         real_t v = VAR[1];
-        float32_t tmp;
+        real_t tmp;
         if (c == 0 || v <= 1)
         {
             k2 = 0;
@@ -215,7 +209,7 @@ void pns_reset_pred_state(ic_stream *ics, pred_state *state)
                 if (is_noise(ics, g, sfb))
                 {
                     offs = ics->swb_offset[sfb];
-                    offs2 = min(ics->swb_offset[sfb+1], ics->swb_offset_max);
+                    offs2 = ics->swb_offset[sfb+1];
 
                     for (i = offs; i < offs2; i++)
                         reset_pred_state(&state[i]);
@@ -247,7 +241,7 @@ void ic_prediction(ic_stream *ics, real_t *spec, pred_state *state,
         for (sfb = 0; sfb < max_pred_sfb(sf_index); sfb++)
         {
             uint16_t low  = ics->swb_offset[sfb];
-            uint16_t high = min(ics->swb_offset[sfb+1], ics->swb_offset_max);
+            uint16_t high = ics->swb_offset[sfb+1];
 
             for (bin = low; bin < high; bin++)
             {

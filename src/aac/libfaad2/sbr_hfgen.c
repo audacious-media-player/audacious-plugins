@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -19,15 +19,10 @@
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Software using this code must display the following message visibly in or
-** on each copy of the software:
-** "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com"
-** in, for example, the about-box or help/startup screen.
-**
 ** Commercial non-GPL licensing of this software is possible.
-** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
 **
-** $Id: sbr_hfgen.c,v 1.24 2006/05/07 18:09:02 menno Exp $
+** $Id: sbr_hfgen.c,v 1.22 2004/09/08 09:43:11 gcp Exp $
 **/
 
 /* High Frequency generation */
@@ -40,6 +35,7 @@
 #include "sbr_syntax.h"
 #include "sbr_hfgen.h"
 #include "sbr_fbt.h"
+
 
 /* static function declarations */
 #ifdef SBR_LOW_POWER

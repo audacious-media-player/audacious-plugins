@@ -14,7 +14,7 @@
 **
 ** You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
@@ -22,7 +22,10 @@
 ** Commercial non-GPL licensing of this software is possible.
 ** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
 **
-** $Id: common.h,v 1.65 2004/09/08 09:43:11 gcp Exp $
+** Initially modified for use with MPlayer by Arpad Gereöffy on 2003/08/30
+** $Id: common.h 18786 2006-06-22 13:34:00Z diego $
+** detailed changelog at http://svn.mplayerhq.hu/mplayer/trunk/
+** local_changes.diff contains the exact changes to this file.
 **/
 
 #ifndef __COMMON_H__
@@ -32,8 +35,13 @@
 extern "C" {
 #endif
 
+/* Allow build on Cygwin*/
+#if defined(__CYGWIN__)
+#define __STRICT_ANSI__
+#endif
+
 #ifdef HAVE_CONFIG_H
-#  include "config.h"
+#include "config.h"
 #endif
 
 #define INLINE __inline
@@ -61,7 +69,7 @@ extern "C" {
 /* Use if target platform has address generators with autoincrement */
 //#define PREFER_POINTERS
 
-#ifdef _WIN32_WCE
+#if defined(_WIN32_WCE) || defined(__arm__)
 #define FIXED_POINT
 #endif
 
@@ -154,6 +162,7 @@ extern "C" {
 
 #include <stdlib.h>
 
+#if 0
 typedef unsigned __int64 uint64_t;
 typedef unsigned __int32 uint32_t;
 typedef unsigned __int16 uint16_t;
@@ -162,10 +171,30 @@ typedef __int64 int64_t;
 typedef __int32 int32_t;
 typedef __int16 int16_t;
 typedef __int8  int8_t;
+#else
+#include <inttypes.h>
+#endif
+
 typedef float float32_t;
 
 
 #else
+
+/* #undef HAVE_FLOAT32_T */
+/* Define if you have the <inttypes.h> header file. */
+#define HAVE_INTTYPES_H 1
+
+/* Define if you have the `memcpy' function. */
+#define HAVE_MEMCPY 1
+
+/* Define if you have the <stdint.h> header file. */
+#define HAVE_STDINT_H 1
+
+/* Define if you have the `strchr' function. */
+#define HAVE_STRCHR 1
+
+/* Define if you have the ANSI C header files. */
+#define STDC_HEADERS 1
 
 #include <stdio.h>
 #if HAVE_SYS_TYPES_H
@@ -291,6 +320,35 @@ char *strchr(), *strrchr();
       *y2 = MUL_F(x2, c1) - MUL_F(x1, c2);
   }
 
+
+  #if defined(_WIN32) && !defined(__MINGW32__) && !defined(HAVE_LRINTF)
+    #define HAS_LRINTF
+    static INLINE int lrintf(float f)
+    {
+        int i;
+        __asm
+        {
+            fld   f
+            fistp i
+        }
+        return i;
+    }
+  #elif (defined(__i386__) && defined(__GNUC__)) && !defined(HAVE_LRINTF)
+    #define HAS_LRINTF
+    // from http://www.stereopsis.com/FPU.html
+    static INLINE int lrintf(float f)
+    {
+        int i;
+        __asm__ __volatile__ (
+            "flds %1        \n\t"
+            "fistpl %0      \n\t"
+            : "=m" (i)
+            : "m" (f));
+        return i;
+    }
+  #endif
+
+
   #ifdef __ICL /* only Intel C compiler has fmath ??? */
 
     #include <mathf.h>
@@ -304,6 +362,8 @@ char *strchr(), *strrchr();
 
   #else
 
+#include <math.h>
+
 #ifdef HAVE_LRINTF
 #  define HAS_LRINTF
 #  define _ISOC9X_SOURCE 1
@@ -311,8 +371,6 @@ char *strchr(), *strrchr();
 #  define __USE_ISOC9X   1
 #  define __USE_ISOC99   1
 #endif
-
-    #include <math.h>
 
 #ifdef HAVE_SINF
 #  define sin sinf

@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -19,15 +19,10 @@
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Software using this code must display the following message visibly in or
-** on each copy of the software:
-** "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com"
-** in, for example, the about-box or help/startup screen.
-**
 ** Commercial non-GPL licensing of this software is possible.
-** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
 **
-** $Id: sbr_hfadj.c,v 1.20 2006/05/07 18:09:01 menno Exp $
+** $Id: sbr_hfadj.c,v 1.18 2004/09/04 14:56:28 menno Exp $
 **/
 
 /* High Frequency adjustment */
@@ -44,8 +39,8 @@
 
 
 /* static function declarations */
-static uint8_t estimate_current_envelope(sbr_info *sbr, sbr_hfadj_info *adj,
-                                         qmf_t Xsbr[MAX_NTSRHFG][64], uint8_t ch);
+static void estimate_current_envelope(sbr_info *sbr, sbr_hfadj_info *adj,
+                                      qmf_t Xsbr[MAX_NTSRHFG][64], uint8_t ch);
 static void calculate_gain(sbr_info *sbr, sbr_hfadj_info *adj, uint8_t ch);
 #ifdef SBR_LOW_POWER
 static void calc_gain_groups(sbr_info *sbr, sbr_hfadj_info *adj, real_t *deg, uint8_t ch);
@@ -54,14 +49,13 @@ static void aliasing_reduction(sbr_info *sbr, sbr_hfadj_info *adj, real_t *deg, 
 static void hf_assembly(sbr_info *sbr, sbr_hfadj_info *adj, qmf_t Xsbr[MAX_NTSRHFG][64], uint8_t ch);
 
 
-uint8_t hf_adjustment(sbr_info *sbr, qmf_t Xsbr[MAX_NTSRHFG][64]
+void hf_adjustment(sbr_info *sbr, qmf_t Xsbr[MAX_NTSRHFG][64]
 #ifdef SBR_LOW_POWER
-                      ,real_t *deg /* aliasing degree */
+                   ,real_t *deg /* aliasing degree */
 #endif
-                      ,uint8_t ch)
+                   ,uint8_t ch)
 {
     ALIGN sbr_hfadj_info adj = {{{0}}};
-    uint8_t ret = 0;
 
     if (sbr->bs_frame_class[ch] == FIXFIX)
     {
@@ -78,9 +72,7 @@ uint8_t hf_adjustment(sbr_info *sbr, qmf_t Xsbr[MAX_NTSRHFG][64]
             sbr->l_A[ch] = sbr->L_E[ch] + 1 - sbr->bs_pointer[ch];
     }
 
-    ret = estimate_current_envelope(sbr, &adj, Xsbr, ch);
-    if (ret > 0)
-        return 1;
+    estimate_current_envelope(sbr, &adj, Xsbr, ch);
 
     calculate_gain(sbr, &adj, ch);
 
@@ -90,8 +82,6 @@ uint8_t hf_adjustment(sbr_info *sbr, qmf_t Xsbr[MAX_NTSRHFG][64]
 #endif
 
     hf_assembly(sbr, &adj, Xsbr, ch);
-
-    return 0;
 }
 
 static uint8_t get_S_mapped(sbr_info *sbr, uint8_t ch, uint8_t l, uint8_t current_band)
@@ -135,8 +125,8 @@ static uint8_t get_S_mapped(sbr_info *sbr, uint8_t ch, uint8_t l, uint8_t curren
     return 0;
 }
 
-static uint8_t estimate_current_envelope(sbr_info *sbr, sbr_hfadj_info *adj,
-                                         qmf_t Xsbr[MAX_NTSRHFG][64], uint8_t ch)
+static void estimate_current_envelope(sbr_info *sbr, sbr_hfadj_info *adj,
+                                      qmf_t Xsbr[MAX_NTSRHFG][64], uint8_t ch)
 {
     uint8_t m, l, j, k, k_l, k_h, p;
     real_t nrg, div;
@@ -151,9 +141,6 @@ static uint8_t estimate_current_envelope(sbr_info *sbr, sbr_hfadj_info *adj,
             u_i = sbr->t_E[ch][l+1];
 
             div = (real_t)(u_i - l_i);
-
-            if (div == 0)
-                div = 1;
 
             for (m = 0; m < sbr->M; m++)
             {
@@ -205,9 +192,6 @@ static uint8_t estimate_current_envelope(sbr_info *sbr, sbr_hfadj_info *adj,
 
                     div = (real_t)((u_i - l_i)*(k_h - k_l));
 
-                    if (div == 0)
-                        div = 1;
-
                     for (i = l_i + sbr->tHFAdj; i < u_i + sbr->tHFAdj; i++)
                     {
                         for (j = k_l; j < k_h; j++)
@@ -241,8 +225,6 @@ static uint8_t estimate_current_envelope(sbr_info *sbr, sbr_hfadj_info *adj,
             }
         }
     }
-
-    return 0;
 }
 
 #ifdef FIXED_POINT
@@ -1360,27 +1342,15 @@ static void calc_gain_groups(sbr_info *sbr, sbr_hfadj_info *adj, real_t *deg, ui
 {
     uint8_t l, k, i;
     uint8_t grouping;
-    uint8_t S_mapped;
 
     for (l = 0; l < sbr->L_E[ch]; l++)
     {
-        uint8_t current_res_band = 0;
         i = 0;
         grouping = 0;
 
-        S_mapped = get_S_mapped(sbr, ch, l, current_res_band);
-
         for (k = sbr->kx; k < sbr->kx + sbr->M - 1; k++)
         {
-            if (k == sbr->f_table_res[sbr->f[ch][l]][current_res_band+1])
-            {
-                /* step to next resolution band */
-                current_res_band++;
-
-                S_mapped = get_S_mapped(sbr, ch, l, current_res_band);
-            }
-
-            if (deg[k + 1] && S_mapped == 0)
+            if (deg[k + 1] && adj->S_mapped[l][k-sbr->kx] == 0)
             {
                 if (grouping == 0)
                 {
@@ -1391,7 +1361,7 @@ static void calc_gain_groups(sbr_info *sbr, sbr_hfadj_info *adj, real_t *deg, ui
             } else {
                 if (grouping)
                 {
-                    if (S_mapped)
+                    if (adj->S_mapped[l][k-sbr->kx])
                     {
                         sbr->f_group[l][i] = k;
                     } else {
