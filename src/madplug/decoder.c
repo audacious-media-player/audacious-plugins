@@ -186,6 +186,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
     info->bitrate = 0;
     info->pos = mad_timer_zero;
+    info->duration.seconds = 0; // should be cleared before loop, if we use it as break condition.
 
 #ifdef DEBUG
     g_message("f: scan_file");
@@ -210,7 +211,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
         mad_stream_buffer(&stream, buffer, len + remainder);
 
-        while (info->duration.seconds == 0) {
+        while (!fast || (fast && info->frames < N_AVERAGE_FRAMES)) {
             if (mad_header_decode(&header, &stream) == -1) {
                 if (stream.error == MAD_ERROR_BUFLEN) {
                     break;
@@ -246,6 +247,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 continue;
             }
             info->frames++;
+
 #ifdef DEBUG
 #ifdef DEBUG_INTENSIVELY
             g_message("duration = %lu",
@@ -266,8 +268,12 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
                 if (audmad_config.use_xing) {
                     frame.header = header;
-                    if (mad_frame_decode(&frame, &stream) == -1)
-                        break;
+                    if (mad_frame_decode(&frame, &stream) == -1) {
+#ifdef DEBUG
+                        printf("xing frame decode failed\n");
+#endif
+                        goto no_xing;
+                    }
                     if (xing_parse
                         (&info->xing, stream.anc_ptr,
                          stream.anc_bitlen) == 0) {
@@ -303,7 +309,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 if (info->channels != MAD_NCHANNELS(&header))
                     g_warning("number of channels varies!!");
             }
-
+        no_xing:
             if (fast && info->frames >= N_AVERAGE_FRAMES) {
                 float frame_size = ((double) data_used) / N_AVERAGE_FRAMES;
                 info->frames = (info->size - tagsize) / frame_size;

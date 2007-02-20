@@ -1,3 +1,12 @@
+2007-02-19 12:55:14 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1432]
+  - calculate vbr bitrate properly.
+  - mainwin shows dynamic bitrate for vbr.
+  
+  trunk/src/madplug/decoder.c |   17 +++++++++++++++--
+  1 file changed, 15 insertions(+), 2 deletions(-)
+
+
 2007-02-19 08:02:50 +0000  
   revision [1430]
   fix flac detection, now flac >= 1.1.4 is supported as well

@@ -220,7 +220,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     // XXX: temporary fix
     if (!strncasecmp("http://", filename, 7) || !strncasecmp("https://", filename, 8))
     {
+#ifdef DEBUG
         g_message("audmad_is_our_fd: remote");
+#endif
         info.remote = TRUE;
     }
 #endif

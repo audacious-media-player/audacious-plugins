@@ -123,7 +123,7 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->remote = info->size == 0 ? TRUE : FALSE;
 
 #ifdef DEBUG
-    g_message("i: info->size == %lu", (long unsigned int)info->size);
+    g_message("i: info->size = %lu", (long unsigned int)info->size);
     g_message("e: input_init");
 #endif
     return TRUE;
@@ -164,11 +164,13 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
     id3_ucs4_t *ptr, *end, *tail, *tp;
     size_t ret_len = 0; //num of ucs4 char!
     size_t tmp_len = 0;
+    size_t string_len = 0;
     gboolean is_num = TRUE;
 
-    tail = (id3_ucs4_t *)string + mad_ucs4len((id3_ucs4_t *)string);
+    string_len = mad_ucs4len((id3_ucs4_t *)string);
+    tail = (id3_ucs4_t *)string + string_len;
 
-    ret = g_malloc0(1024);
+    ret = g_malloc0(BYTES(string_len + 1));
 
     for(ptr = (id3_ucs4_t *)string; *ptr != 0 && ptr <= tail; ptr++) {
         if(*ptr == '(') {
@@ -247,6 +249,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 #ifdef DEBUG
                 printf("plain!\n");
                 printf("ret_len = %d\n", ret_len);
+                printf("end - ptr = %d\n", BYTES(end - ptr));
 #endif
                 memcpy(ret + BYTES(ret_len), ptr, BYTES(end - ptr));
                 ret_len = ret_len + (end - ptr);
@@ -296,6 +299,9 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     else {
         string = mad_ucs4dup((id3_ucs4_t *)string_const);
     }
+
+    if (!string)
+        return NULL;
 
     switch (encoding) {
     case ID3_FIELD_TEXTENCODING_ISO_8859_1:
