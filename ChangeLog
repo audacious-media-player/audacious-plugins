@@ -1,3 +1,11 @@
+2007-02-20 12:10:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1442]
+  - allow static AAC files to play. working on AACplus, but this brings us closer.
+  
+  trunk/src/aac/src/libmp4.c |   99 ++++++++++++++++++++++++++++++++++-----------
+  1 file changed, 76 insertions(+), 23 deletions(-)
+
+
 2007-02-20 10:18:49 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1440]
   - fix missing names in the ChangeLog.

@@ -665,7 +665,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
-    XMMS_NEW_TITLEINPUT(input);
+    input = bmp_title_input_new();
     input->file_name = (char*)g_basename(temp);
     input->file_ext = ext ? ext+1 : NULL;
     input->file_path = temp;
@@ -682,11 +682,9 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
     if(xmmstitle == NULL)
         xmmstitle = g_strdup(input->file_name);
     if(temp) g_free(temp);
-    if(input->performer) g_free(input->performer);
-    if(input->album_name) g_free(input->album_name);
-    if(input->track_name) g_free(input->track_name);
-    if(input->genre) g_free(input->genre);
-    g_free(input);
+
+    bmp_title_input_free(input);
+
     bufferconsumed = faacDecInit(decoder,
                      buffer,
                      buffervalid,
