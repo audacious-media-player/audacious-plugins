@@ -639,10 +639,8 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     return TRUE;
 }
 
-static void my_decode_aac( InputPlayback *playback, char *filename )
+static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 {
-    // WE ARE READING AN AAC FILE
-    VFSFile     *file = NULL;
     faacDecHandle   decoder = 0;
     guchar      *buffer = 0;
     gulong      bufferconsumed = 0;
@@ -655,12 +653,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
     gchar       *xmmstitle = NULL;
     faacDecConfigurationPtr config;
 
-    if((file = vfs_fopen(filename, "rb")) == 0){
-        g_print("AAC: can't find file %s\n", filename);
-        buffer_playing = FALSE;
-        g_static_mutex_unlock(&mutex);
-        g_thread_exit(NULL);
-    }
+    vfs_rewind(file);
     if((decoder = faacDecOpen()) == NULL){
         g_print("AAC: Open Decoder Error\n");
         vfs_fclose(file);
@@ -802,15 +795,16 @@ static void *mp4_decode( void *args )
     buffer_playing= TRUE;
     g_static_mutex_unlock(&mutex);
 
+    if (mp4fh == NULL)
+        g_thread_exit(NULL);
+
     ret = parse_aac_stream(mp4fh);
     vfs_rewind(mp4fh);
     mp4file= mp4ff_open_read(mp4cb);
   
     if( ret == TRUE ) {
-        my_decode_aac( playback, filename );
-        mp4cfg.file_type = FILE_AAC;
-        vfs_fclose(mp4fh);
         g_free(mp4cb);
+        my_decode_aac( playback, filename, mp4fh );
     }
     else
         my_decode_mp4( playback, filename, mp4file );
