@@ -647,7 +647,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
 static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 {
     faacDecHandle   decoder = 0;
-    guchar      *buffer = 0;
+    guchar      buffer[BUFFER_SIZE];
     gulong      bufferconsumed = 0;
     gulong      samplerate = 0;
     guchar      channels;
@@ -667,17 +667,8 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
-    if((buffer = g_malloc(BUFFER_SIZE * 2)) == NULL){
-        g_print("AAC: error g_malloc\n");
-        vfs_fclose(file);
-        buffer_playing = FALSE;
-        faacDecClose(decoder);
-        g_static_mutex_unlock(&mutex);
-        g_thread_exit(NULL);
-    }
     if((buffervalid = vfs_fread(buffer, 1, BUFFER_SIZE, file))==0){
         g_print("AAC: Error reading file\n");
-        g_free(buffer);
         vfs_fclose(file);
         buffer_playing = FALSE;
         faacDecClose(decoder);
@@ -723,7 +714,6 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
 #endif
     if(playback->output->open_audio(FMT_S16_NE,samplerate,channels) == FALSE){
         g_print("AAC: Output Error\n");
-        g_free(buffer); buffer=0;
         faacDecClose(decoder);
         vfs_fclose(file);
         playback->output->close_audio();
@@ -812,7 +802,6 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
     playback->output->buffer_free();
     playback->output->close_audio();
     buffer_playing = FALSE;
-    g_free(buffer);
     faacDecClose(decoder);
     g_free(xmmstitle);
     vfs_fclose(file);
