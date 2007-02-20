@@ -1,3 +1,14 @@
+2007-02-20 03:39:42 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1438]
+  - show dynamic bitrate for vbr is off by default. now it is configurable from preferences.
+  
+  trunk/src/madplug/configure.c |   23 ++++++++++++++++-------
+  trunk/src/madplug/decoder.c   |    2 +-
+  trunk/src/madplug/plugin.c    |    3 +++
+  trunk/src/madplug/plugin.h    |    1 +
+  4 files changed, 21 insertions(+), 8 deletions(-)
+
+
 2007-02-20 02:53:25 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1436]
   - if genre name is generated from number, it may exceed allocated memory block.
@@ -27,7 +38,7 @@
   1 file changed, 15 insertions(+), 2 deletions(-)
 
 
-2007-02-19 08:02:50 +0000  
+2007-02-19 08:02:50 +0000  Goetz Waschk <waschk@mandriva.org>
   revision [1430]
   fix flac detection, now flac >= 1.1.4 is supported as well
   
