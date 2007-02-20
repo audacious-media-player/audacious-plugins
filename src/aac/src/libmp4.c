@@ -668,11 +668,6 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
-#if 0
-    config = faacDecGetCurrentConfiguration(decoder);
-    config->useOldADTSFormat = 0;
-    faacDecSetConfiguration(decoder, config);
-#endif
     if((buffer = g_malloc(BUFFER_SIZE)) == NULL){
         g_print("AAC: error g_malloc\n");
         vfs_fclose(file);
@@ -745,33 +740,15 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
         }
         sample_buffer = faacDecDecode(decoder, &finfo, buffer, buffervalid);
         if(finfo.error > 0){
-            config = faacDecGetCurrentConfiguration(decoder);
-            if(config->useOldADTSFormat != 1){
-                faacDecClose(decoder);
-                decoder = faacDecOpen();
-                config = faacDecGetCurrentConfiguration(decoder);
-                config->useOldADTSFormat = 1;
-                faacDecSetConfiguration(decoder, config);
-                finfo.bytesconsumed=0;
-                finfo.samples = 0;
-                faacDecInit(decoder,
-                        buffer,
-                        buffervalid,
-                        &samplerate,
-                        &channels);
+            buffervalid--;
+            memmove(buffer, &buffer[1], buffervalid);
+            bufferconsumed = aac_probe(buffer, buffervalid);
+            if(bufferconsumed) {
+               memmove(buffer, &buffer[bufferconsumed], buffervalid-bufferconsumed);
+               buffervalid -= bufferconsumed;
+               bufferconsumed = 0;
             }
-	    else
-	    {
-	        buffervalid--;
-                memmove(buffer, &buffer[1], buffervalid);
-                bufferconsumed = aac_probe(buffer, buffervalid);
-                if(bufferconsumed) {
-                   memmove(buffer, &buffer[bufferconsumed], buffervalid-bufferconsumed);
-                   buffervalid -= bufferconsumed;
-                   bufferconsumed = 0;
-                }
-                continue;
-	    }
+            continue;
         }
         bufferconsumed += finfo.bytesconsumed;
         samplesdecoded = finfo.samples;
