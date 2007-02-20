@@ -1,3 +1,11 @@
+2007-02-20 14:23:44 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1464]
+  - some additional cleanups
+  
+  trunk/src/aac/src/libmp4.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-02-20 14:17:27 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1462]
   - some ringbuffering fixes -- aac+ shouldn't crash now, but more 
