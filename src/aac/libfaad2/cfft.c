@@ -1,28 +1,33 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
-**
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+**  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-**
+** 
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-**
+** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** Software using this code must display the following message visibly in or
+** on each copy of the software:
+** "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com"
+** in, for example, the about-box or help/startup screen.
 **
-** $Id: cfft.c,v 1.30 2004/09/08 09:43:11 gcp Exp $
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: cfft.c,v 1.33 2006/08/07 18:09:05 menno Exp $
 **/
 
 /*
@@ -546,7 +551,7 @@ static void passf5(const uint16_t ido, const uint16_t l1, const complex_t *cc,
                 ComplexMult(&RE(c4), &RE(c5),
                     ti12, ti11, RE(t5), RE(t4));
                 ComplexMult(&IM(c4), &IM(c5),
-                    ti12, ti12, IM(t5), IM(t4));
+                    ti12, ti11, IM(t5), IM(t4));
 
                 RE(ch[ah+l1]) = RE(c2) + IM(c5);
                 IM(ch[ah+l1]) = IM(c2) - RE(c5);
@@ -648,7 +653,7 @@ static void passf5(const uint16_t ido, const uint16_t l1, const complex_t *cc,
                     ComplexMult(&RE(c4), &RE(c5),
                         ti12, ti11, RE(t5), RE(t4));
                     ComplexMult(&IM(c4), &IM(c5),
-                        ti12, ti12, IM(t5), IM(t4));
+                        ti12, ti11, IM(t5), IM(t4));
 
                     IM(d2) = IM(c2) - RE(c5);
                     IM(d3) = IM(c3) - RE(c4);

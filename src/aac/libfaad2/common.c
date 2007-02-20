@@ -1,28 +1,33 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
-**
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+**  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-**
+** 
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-**
+** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** Software using this code must display the following message visibly in or
+** on each copy of the software:
+** "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com"
+** in, for example, the about-box or help/startup screen.
 **
-** $Id: common.c,v 1.22 2004/09/08 09:43:11 gcp Exp $
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: common.c,v 1.24 2006/05/07 18:09:00 menno Exp $
 **/
 
 /* just some common functions that could be used anywhere */
@@ -229,16 +234,16 @@ static uint32_t  __r2 = 1;
  *  which gives a period of 18.410.713.077.675.721.215. The result is the
  *  XORed values of both generators.
  */
-uint32_t random_int(void)
+uint32_t ne_rng(uint32_t *__r1, uint32_t *__r2)
 {
     uint32_t  t1, t2, t3, t4;
 
-    t3   = t1 = __r1;   t4   = t2 = __r2;       // Parity calculation is done via table lookup, this is also available
+    t3   = t1 = *__r1;  t4   = t2 = *__r2;      // Parity calculation is done via table lookup, this is also available
     t1  &= 0xF5;        t2 >>= 25;              // on CPUs without parity, can be implemented in C and avoid unpredictable
     t1   = Parity [t1]; t2  &= 0x63;            // jumps and slow rotate through the carry flag operations.
     t1 <<= 31;          t2   = Parity [t2];
 
-    return (__r1 = (t3 >> 1) | t1 ) ^ (__r2 = (t4 + t4) | t2 );
+    return (*__r1 = (t3 >> 1) | t1 ) ^ (*__r2 = (t4 + t4) | t2 );
 }
 
 uint32_t ones32(uint32_t x)
