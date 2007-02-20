@@ -15,6 +15,8 @@
 
 #define MP4_VERSION VERSION
 
+#define SBR_DEC
+
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
  * We use this for sanity checks, among other things, as mp4ff needs
@@ -213,6 +215,26 @@ static gboolean parse_aac_stream(VFSFile *stream)
                 return FALSE;
 
         return TRUE;
+}
+
+static int aac_probe(unsigned char *buffer, int len)
+{
+  int i = 0, pos = 0;
+  g_print("\nAAC_PROBE: %d bytes\n", len);
+  while(i <= len-4) {
+    if(
+       ((buffer[i] == 0xff) && ((buffer[i+1] & 0xf6) == 0xf0)) ||
+       (buffer[i] == 'A' && buffer[i+1] == 'D' && buffer[i+2] == 'I' && buffer[i+3] == 'F')
+    ) {
+      pos = i;
+      break;
+    }
+    g_print("AUDIO PAYLOAD: %x %x %x %x\n", 
+	buffer[i], buffer[i+1], buffer[i+2], buffer[i+3]);
+    i++;
+  }
+  g_print("\nAAC_PROBE: ret %d\n", pos);
+  return pos;
 }
 
 static int mp4_is_our_file(char *filename)
@@ -646,9 +668,11 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
+#if 0
     config = faacDecGetCurrentConfiguration(decoder);
     config->useOldADTSFormat = 0;
     faacDecSetConfiguration(decoder, config);
+#endif
     if((buffer = g_malloc(BUFFER_SIZE)) == NULL){
         g_print("AAC: error g_malloc\n");
         vfs_fclose(file);
@@ -677,11 +701,21 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
     }
     xmmstitle = g_strdup(g_basename(temp));
 
+    bufferconsumed = aac_probe(buffer, buffervalid);
+    if(bufferconsumed) {
+      memmove(buffer, &buffer[bufferconsumed], buffervalid-bufferconsumed);
+      buffervalid -= bufferconsumed;
+      buffervalid += vfs_fread(&buffer[buffervalid], 1,
+                     BUFFER_SIZE-buffervalid, file);
+      bufferconsumed = 0;
+    }
+
     bufferconsumed = faacDecInit(decoder,
                      buffer,
                      buffervalid,
                      &samplerate,
                      &channels);
+    g_print("samplerate: %d, channels: %d\n", samplerate, channels);
     if(playback->output->open_audio(FMT_S16_NE,samplerate,channels) == FALSE){
         g_print("AAC: Output Error\n");
         g_free(buffer); buffer=0;
@@ -710,7 +744,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
             bufferconsumed = 0;
         }
         sample_buffer = faacDecDecode(decoder, &finfo, buffer, buffervalid);
-        if(finfo.error){
+        if(finfo.error > 0){
             config = faacDecGetCurrentConfiguration(decoder);
             if(config->useOldADTSFormat != 1){
                 faacDecClose(decoder);
@@ -725,15 +759,24 @@ static void my_decode_aac( InputPlayback *playback, char *filename )
                         buffervalid,
                         &samplerate,
                         &channels);
-            }else{
-                g_print("FAAD2 Warning %s\n", faacDecGetErrorMessage(finfo.error));
-                buffervalid = 0;
             }
+	    else
+	    {
+	        buffervalid--;
+                memmove(buffer, &buffer[1], buffervalid);
+                bufferconsumed = aac_probe(buffer, buffervalid);
+                if(bufferconsumed) {
+                   memmove(buffer, &buffer[bufferconsumed], buffervalid-bufferconsumed);
+                   buffervalid -= bufferconsumed;
+                   bufferconsumed = 0;
+                }
+                continue;
+	    }
         }
         bufferconsumed += finfo.bytesconsumed;
         samplesdecoded = finfo.samples;
-        if((samplesdecoded<=0) && !sample_buffer){
-            g_print("AAC: error sample decoding\n");
+        if((samplesdecoded <= 0) && !sample_buffer){
+            g_print("AAC: decoded %d samples!\n", samplesdecoded);
             continue;
         }
         produce_audio(playback->output->written_time(),
