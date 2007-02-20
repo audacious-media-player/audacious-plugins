@@ -1,3 +1,11 @@
+2007-02-20 12:42:48 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1450]
+  - i really hate this plugin
+  
+  trunk/src/aac/src/libmp4.c |   11 +----------
+  1 file changed, 1 insertion(+), 10 deletions(-)
+
+
 2007-02-20 12:37:37 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1448]
   - synchronise with FAAD 2.5

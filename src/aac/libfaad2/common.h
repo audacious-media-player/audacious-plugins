@@ -117,6 +117,9 @@ extern "C" {
 # ifdef MAIN_DEC
 #  undef MAIN_DEC
 # endif
+# ifdef SBR_DEC
+#  undef SBR_DEC
+# endif
 #endif // FIXED_POINT
 
 #ifdef DRM
