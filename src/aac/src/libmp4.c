@@ -496,13 +496,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
 {
     // We are reading an MP4 file
     gint mp4track= getAACTrack(mp4file);
-
-    if (mp4track < 0)
-    {
-        g_print("Unsupported Audio track type\n");
-        return TRUE;
-    }
-
     faacDecHandle   decoder;
     mp4AudioSpecificConfig mp4ASC;
     guchar      *buffer = NULL;
@@ -513,6 +506,12 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     gulong      numSamples;
     gulong      sampleID = 1;
     guint       framesize = 1024;
+
+    if (mp4track < 0)
+    {
+        g_print("Unsupported Audio track type\n");
+        return TRUE;
+    }
 
     gchar *xmmstitle = NULL;
     xmmstitle = mp4_get_song_title(filename);
@@ -668,7 +667,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
-    if((buffer = g_malloc(BUFFER_SIZE)) == NULL){
+    if((buffer = g_malloc(BUFFER_SIZE * 2)) == NULL){
         g_print("AAC: error g_malloc\n");
         vfs_fclose(file);
         buffer_playing = FALSE;
@@ -737,7 +736,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
     mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
     playback->output->flush(0);
 
-    while(buffer_playing && buffervalid > 0){
+    while(buffer_playing && buffervalid > 0 && buffer != NULL){
         faacDecFrameInfo    finfo;
         unsigned long   samplesdecoded;
         char*       sample_buffer = NULL;
