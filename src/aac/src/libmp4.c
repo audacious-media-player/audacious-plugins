@@ -151,6 +151,70 @@ static void mp4_stop(InputPlayback *playback)
     }
 }
 
+/*
+ * These routines are derived from MPlayer.
+ */
+
+/// \param srate (out) sample rate
+/// \param num (out) number of audio frames in this ADTS frame
+/// \return size of the ADTS frame in bytes
+/// aac_parse_frames needs a buffer at least 8 bytes long
+int aac_parse_frame(guchar *buf, int *srate, int *num)
+{
+        int i = 0, sr, fl = 0, id;
+        static int srates[] = {96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 0, 0, 0};
+
+        if((buf[i] != 0xFF) || ((buf[i+1] & 0xF6) != 0xF0))
+                return 0;
+
+        id = (buf[i+1] >> 3) & 0x01;    //id=1 mpeg2, 0: mpeg4
+        sr = (buf[i+2] >> 2)  & 0x0F;
+        if(sr > 11)
+                return 0;
+        *srate = srates[sr];
+
+        fl = ((buf[i+3] & 0x03) << 11) | (buf[i+4] << 3) | ((buf[i+5] >> 5) & 0x07);
+        *num = (buf[i+6] & 0x02) + 1;
+
+        return fl;
+}
+
+static gboolean parse_aac_stream(VFSFile *stream)
+{
+        int cnt = 0, c, len, srate, num;
+        off_t init, probed;
+	static guchar buf[8];
+
+        init = probed = vfs_ftell(stream);
+        while(probed-init <= 32768 && cnt < 8)
+        {
+                c = 0;
+                while(probed-init <= 32768 && c != 0xFF)
+                {
+                        c = vfs_getc(stream);
+                        if(c < 0)
+                                return FALSE;
+	                probed = vfs_ftell(stream);
+                }
+                buf[0] = 0xFF;
+                if(vfs_fread(&(buf[1]), 1, 7, stream) < 7)
+                        return FALSE;
+
+                len = aac_parse_frame(buf, &srate, &num);
+                if(len > 0)
+                {
+                        cnt++;
+                        vfs_fseek(stream, len - 8, SEEK_CUR);
+                }
+                probed = vfs_ftell(stream);
+        }
+
+        if(cnt < 8)
+                return FALSE;
+
+        return TRUE;
+}
+
 static int mp4_is_our_file(char *filename)
 {
   VFSFile *file;
@@ -162,9 +226,10 @@ static int mp4_is_our_file(char *filename)
   extension = strrchr(filename, '.');
   if ((file = vfs_fopen(filename, "rb"))) {
       vfs_fread(magic, 1, 8, file);
-      if (!memcmp(magic, AAC_MAGIC, 4)) {
+      vfs_rewind(file);
+      if (parse_aac_stream(file) == TRUE) {
            vfs_fclose(file);
-           return 1;
+           return TRUE;
       }
       if (!memcmp(magic, "ID3", 3)) {       // ID3 tag bolted to the front, obfuscated magic bytes
            vfs_fclose(file);
@@ -193,7 +258,8 @@ static int mp4_is_our_fd(char *filename, VFSFile* file)
 
   extension = strrchr(filename, '.');
   vfs_fread(magic, 1, 8, file);
-  if (!memcmp(magic, AAC_MAGIC, 4))
+  vfs_rewind(file);
+  if (parse_aac_stream(file) == TRUE)
     return 1;
   if (!memcmp(&magic[4], "ftyp", 4))
     return 1;
@@ -703,6 +769,7 @@ static void *mp4_decode( void *args )
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
     VFSFile *mp4fh;
     mp4ff_t *mp4file;
+    gboolean ret;
 
     InputPlayback *playback = args;
     char *filename = playback->filename;
@@ -717,32 +784,18 @@ static void *mp4_decode( void *args )
     buffer_playing= TRUE;
     g_static_mutex_unlock(&mutex);
 
+    ret = parse_aac_stream(mp4fh);
+    vfs_rewind(mp4fh);
     mp4file= mp4ff_open_read(mp4cb);
-    if( !mp4file ) {
+  
+    if( ret == TRUE ) {
+        my_decode_aac( playback, filename );
         mp4cfg.file_type = FILE_AAC;
         vfs_fclose(mp4fh);
         g_free(mp4cb);
     }
-    else {
-        mp4cfg.file_type = FILE_MP4;
-    }
-
-    if ( mp4cfg.file_type == FILE_MP4 ) {
+    else
         my_decode_mp4( playback, filename, mp4file );
-
-        /*
-         * What's this shit good for?
-        g_free(args);
-        vfs_fclose(mp4fh);
-        g_static_mutex_lock(&mutex);
-        buffer_playing = FALSE;
-        g_static_mutex_unlock(&mutex);
-        g_thread_exit(NULL);
-         */
-    }
-    else {
-        my_decode_aac( playback, filename );
-    }
 
     return NULL;
 }
