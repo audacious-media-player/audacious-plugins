@@ -1,3 +1,12 @@
+2007-02-20 15:00:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1470]
+  - fix another potential synchronization problem
+  - be more efficient wrt fds
+  
+  trunk/src/aac/src/libmp4.c |   18 ++++++------------
+  1 file changed, 6 insertions(+), 12 deletions(-)
+
+
 2007-02-20 14:38:03 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1468]
   - oh yes, commit mplayer patches as well

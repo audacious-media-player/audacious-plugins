@@ -220,7 +220,9 @@ static gboolean parse_aac_stream(VFSFile *stream)
 static int aac_probe(unsigned char *buffer, int len)
 {
   int i = 0, pos = 0;
+#ifdef DEBUG
   g_print("\nAAC_PROBE: %d bytes\n", len);
+#endif
   while(i <= len-4) {
     if(
        ((buffer[i] == 0xff) && ((buffer[i+1] & 0xf6) == 0xf0)) ||
@@ -229,11 +231,15 @@ static int aac_probe(unsigned char *buffer, int len)
       pos = i;
       break;
     }
+#ifdef DEBUG
     g_print("AUDIO PAYLOAD: %x %x %x %x\n", 
 	buffer[i], buffer[i+1], buffer[i+2], buffer[i+3]);
+#endif
     i++;
   }
+#ifdef DEBUG
   g_print("\nAAC_PROBE: ret %d\n", pos);
+#endif
   return pos;
 }
 
@@ -648,6 +654,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
     guchar      channels;
     gulong      buffervalid = 0;
     TitleInput* input;
+    gchar       *ttemp = NULL, *stemp = NULL;
     gchar       *temp = g_strdup(filename);
     gchar       *ext  = strrchr(temp, '.');
     gchar       *xmmstitle = NULL;
@@ -687,7 +694,16 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         vfs_fread(buffer, 1, size, file);
         buffervalid = vfs_fread(buffer, 1, BUFFER_SIZE, file);
     }
-    xmmstitle = g_strdup(g_basename(temp));
+
+    ttemp = vfs_get_metadata(file, "stream-name");
+
+    if (ttemp != NULL)
+    {
+        xmmstitle = g_strdup(ttemp);
+        g_free(ttemp);
+    }
+    else
+        xmmstitle = g_strdup(g_basename(temp));
 
     bufferconsumed = aac_probe(buffer, buffervalid);
     if(bufferconsumed) {
@@ -703,7 +719,9 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
                      buffervalid,
                      &samplerate,
                      &channels);
+#ifdef DEBUG
     g_print("samplerate: %d, channels: %d\n", samplerate, channels);
+#endif
     if(playback->output->open_audio(FMT_S16_NE,samplerate,channels) == FALSE){
         g_print("AAC: Output Error\n");
         g_free(buffer); buffer=0;
@@ -730,6 +748,34 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
             buffervalid += vfs_fread(&buffer[buffervalid], 1,
                          BUFFER_SIZE-buffervalid, file);
             bufferconsumed = 0;
+
+            ttemp = vfs_get_metadata(file, "stream-name");
+
+            if (ttemp != NULL)
+                stemp = vfs_get_metadata(file, "track-name");
+
+            if (stemp != NULL)
+            {
+                static gchar *ostmp = NULL;
+
+                if (ostmp == NULL || g_ascii_strcasecmp(stemp, ostmp))
+                {
+                    if (xmmstitle != NULL)
+                        g_free(xmmstitle);
+
+                    xmmstitle = g_strdup_printf("%s (%s)", stemp, ttemp);
+
+                    if (ostmp != NULL)
+                        g_free(ostmp);
+
+                    ostmp = stemp;
+
+                    mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
+                }
+            }
+
+            g_free(ttemp);
+            ttemp = NULL;
         }
 
         sample_buffer = faacDecDecode(decoder, &finfo, buffer, buffervalid);
@@ -754,9 +800,12 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         }
 
         if((samplesdecoded <= 0) && !sample_buffer){
+#ifdef DEBUG
             g_print("AAC: decoded %d samples!\n", samplesdecoded);
+#endif
             continue;
         }
+
         produce_audio(playback->output->written_time(),
                    FMT_S16_LE, channels,
                    samplesdecoded<<1, sample_buffer, &buffer_playing);
