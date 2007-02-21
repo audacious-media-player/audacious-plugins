@@ -314,11 +314,7 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     switch (encoding) {
     case ID3_FIELD_TEXTENCODING_ISO_8859_1:
         rtn0 = (gchar *)id3_ucs4_latin1duplicate(string);
-#ifdef USE_CHARDET
         rtn = str_to_utf8(rtn0);
-#else
-	rtn = g_convert(rtn0, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
-#endif
         g_free(rtn0);
         break;
     case ID3_FIELD_TEXTENCODING_UTF_8:
