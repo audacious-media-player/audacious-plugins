@@ -1,3 +1,11 @@
+2007-02-21 02:12:05 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1484]
+  - TCON frame without string crashes mad_parse_genre().
+  
+  trunk/src/madplug/input.c |    3 +++
+  1 file changed, 3 insertions(+)
+
+
 2007-02-20 21:50:17 +0000  Derek Pomery <nemo@m8y.org>
   revision [1482]
   Bug #806

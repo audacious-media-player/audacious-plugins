@@ -728,12 +728,14 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
     mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
     playback->output->flush(0);
 
-    while(buffer_playing && buffervalid > 0 && buffer != NULL){
+    while(buffer_playing && buffervalid > 0 && buffer != NULL)
+    {
         faacDecFrameInfo    finfo;
         unsigned long   samplesdecoded;
         char*       sample_buffer = NULL;
 
-        if(bufferconsumed > 0){
+        if(bufferconsumed > 0)
+        {
             memmove(buffer, &buffer[bufferconsumed], buffervalid);
             buffervalid -= bufferconsumed;
             buffervalid += vfs_fread(&buffer[buffervalid], 1,
@@ -774,7 +776,8 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         bufferconsumed += finfo.bytesconsumed;
         samplesdecoded = finfo.samples;
 
-        if(finfo.error > 0 && remote != FALSE){
+        if(finfo.error > 0 && remote != FALSE)
+        {
             memmove(buffer, &buffer[1], buffervalid);
             if(buffervalid < BUFFER_SIZE) {
                buffervalid +=
@@ -782,8 +785,8 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
 	    }
             bufferconsumed = aac_probe(buffer, buffervalid);
             if(bufferconsumed) {
-               memmove(buffer, &buffer[bufferconsumed], buffervalid);
                buffervalid -= bufferconsumed;
+               memmove(buffer, &buffer[bufferconsumed], buffervalid);
                bufferconsumed = 0;
             }
             continue;
