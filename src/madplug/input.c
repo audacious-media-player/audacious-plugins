@@ -167,6 +167,9 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
     size_t string_len = 0;
     gboolean is_num = TRUE;
 
+    if(!string)
+        return NULL;
+
     string_len = mad_ucs4len((id3_ucs4_t *)string);
     tail = (id3_ucs4_t *)string + string_len;
 
