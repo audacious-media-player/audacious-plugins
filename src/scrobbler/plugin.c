@@ -12,6 +12,7 @@
 #include <audacious/playlist.h>
 #include <audacious/configdb.h>
 #include <audacious/beepctrl.h>
+#include <audacious/strings.h>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -205,19 +206,7 @@ static void cleanup(void)
 
 static char ishttp(const char *a)
 {
-	char *tmp, *bp;
-	int status = 0;
-
-	if (!a || !*a)
-		return 0;
-
-	tmp = strdup(a);
-	for (bp = tmp; *bp; bp++)
-		*bp = toupper((int) *bp);
-	if (strstr(tmp, "HTTP://"))
-		status = -1;
-	free(tmp);
-	return status;
+	return str_has_prefix_nocase(a, "http://");
 }
 
 /* Following code thanks to nosuke 
@@ -254,6 +243,10 @@ static submit_t get_song_status(void)
 	pos_c = xmms_remote_get_playlist_pos(XS_CS);
 	/* current file name */
 	file_c = xmms_remote_get_playlist_file(XS_CS, pos_c); 
+
+	if (ishttp(file_c))
+		return dosubmit;
+
 	/* total number */
 	playlistlen_c = xmms_remote_get_playlist_length(XS_CS);
 	/* current playtime */
