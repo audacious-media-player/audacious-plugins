@@ -1,3 +1,11 @@
+2007-02-24 17:02:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1506]
+  - C99 style enforcement
+  
+  trunk/src/madplug/replaygain.c |    9 ++++-----
+  1 file changed, 4 insertions(+), 5 deletions(-)
+
+
 2007-02-24 16:59:37 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1504]
   - ensure that we only operate on a duplicated fd if our source is 
