@@ -17,7 +17,7 @@ OBJECTIVE_LIBS = libflac$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -L./libflac -L./plugin_common -lplugin_common
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -L./libflac -L./plugin_common -lflac -logg -lplugin_common
 
 SOURCES = \
 	charset.c \

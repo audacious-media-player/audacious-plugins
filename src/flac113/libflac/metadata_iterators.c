@@ -29,6 +29,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <audacious/vfs.h>
+
 #if HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -46,10 +48,6 @@
 #endif
 #include <io.h> /* for chmod() */
 #include <sys/types.h> /* for off_t */
-#if _MSC_VER <= 1600 || defined __BORLANDC__ /* @@@ [2G limit] */
-#define fseeko fseek
-#define ftello ftell
-#endif
 #else
 #include <sys/types.h> /* some flavors of BSD (like OS X) require this to get time_t */
 #include <utime.h> /* for utime() */
@@ -100,8 +98,8 @@ static FLAC__Metadata_SimpleIteratorStatus read_metadata_block_data_cuesheet_cb_
 static FLAC__Metadata_SimpleIteratorStatus read_metadata_block_data_picture_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Read read_cb, FLAC__StreamMetadata_Picture *block);
 static FLAC__Metadata_SimpleIteratorStatus read_metadata_block_data_unknown_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Read read_cb, FLAC__StreamMetadata_Unknown *block, unsigned block_length);
 
-static FLAC__bool write_metadata_block_header_(FILE *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block);
-static FLAC__bool write_metadata_block_data_(FILE *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block);
+static FLAC__bool write_metadata_block_header_(VFSFile *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block);
+static FLAC__bool write_metadata_block_data_(VFSFile *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block);
 static FLAC__bool write_metadata_block_header_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Write write_cb, const FLAC__StreamMetadata *block);
 static FLAC__bool write_metadata_block_data_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Write write_cb, const FLAC__StreamMetadata *block);
 static FLAC__bool write_metadata_block_data_streaminfo_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Write write_cb, const FLAC__StreamMetadata_StreamInfo *block);
@@ -121,19 +119,19 @@ static void simple_iterator_push_(FLAC__Metadata_SimpleIterator *iterator);
 static FLAC__bool simple_iterator_pop_(FLAC__Metadata_SimpleIterator *iterator);
 
 static unsigned seek_to_first_metadata_block_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Read read_cb, FLAC__IOCallback_Seek seek_cb);
-static unsigned seek_to_first_metadata_block_(FILE *f);
+static unsigned seek_to_first_metadata_block_(VFSFile *f);
 
-static FLAC__bool simple_iterator_copy_file_prefix_(FLAC__Metadata_SimpleIterator *iterator, FILE **tempfile, char **tempfilename, FLAC__bool append);
-static FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *iterator, FILE **tempfile, char **tempfilename, int fixup_is_last_code, off_t fixup_is_last_flag_offset, FLAC__bool backup);
+static FLAC__bool simple_iterator_copy_file_prefix_(FLAC__Metadata_SimpleIterator *iterator, VFSFile **tempfile, char **tempfilename, FLAC__bool append);
+static FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *iterator, VFSFile **tempfile, char **tempfilename, int fixup_is_last_code, off_t fixup_is_last_flag_offset, FLAC__bool backup);
 
-static FLAC__bool copy_n_bytes_from_file_(FILE *file, FILE *tempfile, off_t bytes, FLAC__Metadata_SimpleIteratorStatus *status);
+static FLAC__bool copy_n_bytes_from_file_(VFSFile *file, VFSFile *tempfile, off_t bytes, FLAC__Metadata_SimpleIteratorStatus *status);
 static FLAC__bool copy_n_bytes_from_file_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Read read_cb, FLAC__IOHandle temp_handle, FLAC__IOCallback_Write temp_write_cb, off_t bytes, FLAC__Metadata_SimpleIteratorStatus *status);
-static FLAC__bool copy_remaining_bytes_from_file_(FILE *file, FILE *tempfile, FLAC__Metadata_SimpleIteratorStatus *status);
+static FLAC__bool copy_remaining_bytes_from_file_(VFSFile *file, VFSFile *tempfile, FLAC__Metadata_SimpleIteratorStatus *status);
 static FLAC__bool copy_remaining_bytes_from_file_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Read read_cb, FLAC__IOCallback_Eof eof_cb, FLAC__IOHandle temp_handle, FLAC__IOCallback_Write temp_write_cb, FLAC__Metadata_SimpleIteratorStatus *status);
 
-static FLAC__bool open_tempfile_(const char *filename, const char *tempfile_path_prefix, FILE **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status);
-static FLAC__bool transport_tempfile_(const char *filename, FILE **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status);
-static void cleanup_tempfile_(FILE **tempfile, char **tempfilename);
+static FLAC__bool open_tempfile_(const char *filename, const char *tempfile_path_prefix, VFSFile **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status);
+static FLAC__bool transport_tempfile_(const char *filename, VFSFile **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status);
+static void cleanup_tempfile_(VFSFile **tempfile, char **tempfilename);
 
 static FLAC__bool get_file_stats_(const char *filename, struct stat *stats);
 static void set_file_stats_(const char *filename, struct stat *stats);
@@ -145,15 +143,15 @@ static FLAC__Metadata_ChainStatus get_equivalent_status_(FLAC__Metadata_SimpleIt
 
 
 #ifdef FLAC__VALGRIND_TESTING
-static size_t local__fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)
+static size_t local__fwrite(const void *ptr, size_t size, size_t nmemb, VFSFile *stream)
 {
-	size_t ret = fwrite(ptr, size, nmemb, stream);
+	size_t ret = vfs_fwrite(ptr, size, nmemb, stream);
 	if(!ferror(stream))
 		fflush(stream);
 	return ret;
 }
 #else
-#define local__fwrite fwrite
+#define local__fwrite vfs_fwrite
 #endif
 
 /****************************************************************************
@@ -342,7 +340,7 @@ FLAC_API FLAC__bool FLAC__metadata_get_picture(const char *filename, FLAC__Strea
 /* 1 for initial offset, +4 for our own personal use */
 
 struct FLAC__Metadata_SimpleIterator {
-	FILE *file;
+	VFSFile *file;
 	char *filename, *tempfile_path_prefix;
 	struct stat stats;
 	FLAC__bool has_stats;
@@ -397,7 +395,7 @@ static void simple_iterator_free_guts_(FLAC__Metadata_SimpleIterator *iterator)
 	FLAC__ASSERT(0 != iterator);
 
 	if(0 != iterator->file) {
-		fclose(iterator->file);
+		vfs_fclose(iterator->file);
 		iterator->file = 0;
 		if(iterator->has_stats)
 			set_file_stats_(iterator->filename, &iterator->stats);
@@ -437,10 +435,10 @@ static FLAC__bool simple_iterator_prime_input_(FLAC__Metadata_SimpleIterator *it
 
 	FLAC__ASSERT(0 != iterator);
 
-	if(read_only || 0 == (iterator->file = fopen(iterator->filename, "r+b"))) {
+	if(read_only || 0 == (iterator->file = vfs_fopen(iterator->filename, "r+b"))) {
 		iterator->is_writable = false;
 		if(read_only || errno == EACCES) {
-			if(0 == (iterator->file = fopen(iterator->filename, "rb"))) {
+			if(0 == (iterator->file = vfs_fopen(iterator->filename, "rb"))) {
 				iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_ERROR_OPENING_FILE;
 				return false;
 			}
@@ -458,7 +456,7 @@ static FLAC__bool simple_iterator_prime_input_(FLAC__Metadata_SimpleIterator *it
 	switch(ret) {
 		case 0:
 			iterator->depth = 0;
-			iterator->first_offset = iterator->offset[iterator->depth] = ftello(iterator->file);
+			iterator->first_offset = iterator->offset[iterator->depth] = vfs_ftell(iterator->file);
 			return read_metadata_block_header_(iterator);
 		case 1:
 			iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_READ_ERROR;
@@ -533,12 +531,12 @@ FLAC_API FLAC__bool FLAC__metadata_simple_iterator_next(FLAC__Metadata_SimpleIte
 	if(iterator->is_last)
 		return false;
 
-	if(0 != fseeko(iterator->file, iterator->length, SEEK_CUR)) {
+	if(0 != vfs_fseek(iterator->file, iterator->length, SEEK_CUR)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
 
-	iterator->offset[iterator->depth] = ftello(iterator->file);
+	iterator->offset[iterator->depth] = vfs_ftell(iterator->file);
 
 	return read_metadata_block_header_(iterator);
 }
@@ -553,7 +551,7 @@ FLAC_API FLAC__bool FLAC__metadata_simple_iterator_prev(FLAC__Metadata_SimpleIte
 	if(iterator->offset[iterator->depth] == iterator->first_offset)
 		return false;
 
-	if(0 != fseeko(iterator->file, iterator->first_offset, SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, iterator->first_offset, SEEK_SET)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
@@ -562,12 +560,12 @@ FLAC_API FLAC__bool FLAC__metadata_simple_iterator_prev(FLAC__Metadata_SimpleIte
 		return false;
 
 	/* we ignore any error from ftello() and catch it in fseeko() */
-	while(ftello(iterator->file) + (off_t)iterator->length < iterator->offset[iterator->depth]) {
-		if(0 != fseeko(iterator->file, iterator->length, SEEK_CUR)) {
+	while(vfs_ftell(iterator->file) + (off_t)iterator->length < iterator->offset[iterator->depth]) {
+		if(0 != vfs_fseek(iterator->file, iterator->length, SEEK_CUR)) {
 			iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 			return false;
 		}
-		this_offset = ftello(iterator->file);
+		this_offset = vfs_ftell(iterator->file);
 		if(!read_metadata_block_header_(iterator))
 			return false;
 	}
@@ -602,7 +600,7 @@ FLAC_API FLAC__StreamMetadata *FLAC__metadata_simple_iterator_get_block(FLAC__Me
 		}
 
 		/* back up to the beginning of the block data to stay consistent */
-		if(0 != fseeko(iterator->file, iterator->offset[iterator->depth] + FLAC__STREAM_METADATA_HEADER_LENGTH, SEEK_SET)) {
+		if(0 != vfs_fseek(iterator->file, iterator->offset[iterator->depth] + FLAC__STREAM_METADATA_HEADER_LENGTH, SEEK_SET)) {
 			iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 			FLAC__metadata_object_delete(block);
 			return 0;
@@ -643,13 +641,13 @@ FLAC_API FLAC__bool FLAC__metadata_simple_iterator_set_block(FLAC__Metadata_Simp
 		if(use_padding && iterator->length >= FLAC__STREAM_METADATA_HEADER_LENGTH + block->length) {
 			ret = write_metadata_block_stationary_with_padding_(iterator, block, iterator->length - FLAC__STREAM_METADATA_HEADER_LENGTH - block->length, block->is_last);
 			FLAC__ASSERT(!ret || iterator->offset[iterator->depth] == debug_target_offset);
-			FLAC__ASSERT(!ret || ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+			FLAC__ASSERT(!ret || vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 			return ret;
 		}
 		else {
 			ret = rewrite_whole_file_(iterator, block, /*append=*/false);
 			FLAC__ASSERT(!ret || iterator->offset[iterator->depth] == debug_target_offset);
-			FLAC__ASSERT(!ret || ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+			FLAC__ASSERT(!ret || vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 			return ret;
 		}
 	}
@@ -692,21 +690,21 @@ FLAC_API FLAC__bool FLAC__metadata_simple_iterator_set_block(FLAC__Metadata_Simp
 			if(padding_leftover == 0) {
 				ret = write_metadata_block_stationary_(iterator, block);
 				FLAC__ASSERT(!ret || iterator->offset[iterator->depth] == debug_target_offset);
-				FLAC__ASSERT(!ret || ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+				FLAC__ASSERT(!ret || vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 				return ret;
 			}
 			else {
 				FLAC__ASSERT(padding_leftover >= FLAC__STREAM_METADATA_HEADER_LENGTH);
 				ret = write_metadata_block_stationary_with_padding_(iterator, block, padding_leftover - FLAC__STREAM_METADATA_HEADER_LENGTH, padding_is_last);
 				FLAC__ASSERT(!ret || iterator->offset[iterator->depth] == debug_target_offset);
-				FLAC__ASSERT(!ret || ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+				FLAC__ASSERT(!ret || vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 				return ret;
 			}
 		}
 		else {
 			ret = rewrite_whole_file_(iterator, block, /*append=*/false);
 			FLAC__ASSERT(!ret || iterator->offset[iterator->depth] == debug_target_offset);
-			FLAC__ASSERT(!ret || ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+			FLAC__ASSERT(!ret || vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 			return ret;
 		}
 	}
@@ -772,21 +770,21 @@ FLAC_API FLAC__bool FLAC__metadata_simple_iterator_insert_block_after(FLAC__Meta
 		if(padding_leftover == 0) {
 			ret = write_metadata_block_stationary_(iterator, block);
 			FLAC__ASSERT(iterator->offset[iterator->depth] == debug_target_offset);
-			FLAC__ASSERT(ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+			FLAC__ASSERT(vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 			return ret;
 		}
 		else {
 			FLAC__ASSERT(padding_leftover >= FLAC__STREAM_METADATA_HEADER_LENGTH);
 			ret = write_metadata_block_stationary_with_padding_(iterator, block, padding_leftover - FLAC__STREAM_METADATA_HEADER_LENGTH, padding_is_last);
 			FLAC__ASSERT(iterator->offset[iterator->depth] == debug_target_offset);
-			FLAC__ASSERT(ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+			FLAC__ASSERT(vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 			return ret;
 		}
 	}
 	else {
 		ret = rewrite_whole_file_(iterator, block, /*append=*/true);
 		FLAC__ASSERT(iterator->offset[iterator->depth] == debug_target_offset);
-		FLAC__ASSERT(ftello(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
+		FLAC__ASSERT(vfs_ftell(iterator->file) == debug_target_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH);
 		return ret;
 	}
 }
@@ -816,13 +814,13 @@ FLAC_API FLAC__bool FLAC__metadata_simple_iterator_delete_block(FLAC__Metadata_S
 		if(!FLAC__metadata_simple_iterator_prev(iterator))
 			return false;
 		FLAC__ASSERT(iterator->offset[iterator->depth] + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH + (off_t)iterator->length == debug_target_offset);
-		FLAC__ASSERT(ftello(iterator->file) + (off_t)iterator->length == debug_target_offset);
+		FLAC__ASSERT(vfs_ftell(iterator->file) + (off_t)iterator->length == debug_target_offset);
 		return true;
 	}
 	else {
 		ret = rewrite_whole_file_(iterator, 0, /*append=*/false);
 		FLAC__ASSERT(iterator->offset[iterator->depth] + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH + (off_t)iterator->length == debug_target_offset);
-		FLAC__ASSERT(ftello(iterator->file) + (off_t)iterator->length == debug_target_offset);
+		FLAC__ASSERT(vfs_ftell(iterator->file) + (off_t)iterator->length == debug_target_offset);
 		return ret;
 	}
 }
@@ -1319,27 +1317,27 @@ static FLAC__bool chain_rewrite_metadata_in_place_cb_(FLAC__Metadata_Chain *chai
 
 static FLAC__bool chain_rewrite_metadata_in_place_(FLAC__Metadata_Chain *chain)
 {
-	FILE *file;
+	VFSFile *file;
 	FLAC__bool ret;
 
 	FLAC__ASSERT(0 != chain->filename);
 
-	if(0 == (file = fopen(chain->filename, "r+b"))) {
+	if(0 == (file = vfs_fopen(chain->filename, "r+b"))) {
 		chain->status = FLAC__METADATA_CHAIN_STATUS_ERROR_OPENING_FILE;
 		return false;
 	}
 
 	/* chain_rewrite_metadata_in_place_cb_() sets chain->status for us */
-	ret = chain_rewrite_metadata_in_place_cb_(chain, (FLAC__IOHandle)file, (FLAC__IOCallback_Write)fwrite, fseek_wrapper_);
+	ret = chain_rewrite_metadata_in_place_cb_(chain, (FLAC__IOHandle)file, (FLAC__IOCallback_Write)vfs_fwrite, fseek_wrapper_);
 
-	fclose(file);
+	vfs_fclose(file);
 
 	return ret;
 }
 
 static FLAC__bool chain_rewrite_file_(FLAC__Metadata_Chain *chain, const char *tempfile_path_prefix)
 {
-	FILE *f, *tempfile;
+	VFSFile *f, *tempfile;
 	char *tempfilename;
 	FLAC__Metadata_SimpleIteratorStatus status;
 	const FLAC__Metadata_Node *node;
@@ -1349,7 +1347,7 @@ static FLAC__bool chain_rewrite_file_(FLAC__Metadata_Chain *chain, const char *t
 	FLAC__ASSERT(0 != chain->head);
 
 	/* copy the file prefix (data up to first metadata block */
-	if(0 == (f = fopen(chain->filename, "rb"))) {
+	if(0 == (f = vfs_fopen(chain->filename, "rb"))) {
 		chain->status = FLAC__METADATA_CHAIN_STATUS_ERROR_OPENING_FILE;
 		return false;
 	}
@@ -1378,7 +1376,7 @@ static FLAC__bool chain_rewrite_file_(FLAC__Metadata_Chain *chain, const char *t
 	/*FLAC__ASSERT(fflush(), ftello() == chain->last_offset);*/
 
 	/* copy the file postfix (everything after the metadata) */
-	if(0 != fseeko(f, chain->last_offset, SEEK_SET)) {
+	if(0 != vfs_fseek(f, chain->last_offset, SEEK_SET)) {
 		cleanup_tempfile_(&tempfile, &tempfilename);
 		chain->status = FLAC__METADATA_CHAIN_STATUS_SEEK_ERROR;
 		return false;
@@ -1390,7 +1388,7 @@ static FLAC__bool chain_rewrite_file_(FLAC__Metadata_Chain *chain, const char *t
 	}
 
 	/* move the tempfile on top of the original */
-	(void)fclose(f);
+	(void)vfs_fclose(f);
 	if(!transport_tempfile_(chain->filename, &tempfile, &tempfilename, &status))
 		return false;
 
@@ -1471,7 +1469,7 @@ FLAC_API FLAC__Metadata_ChainStatus FLAC__metadata_chain_status(FLAC__Metadata_C
 
 static FLAC__bool chain_read_(FLAC__Metadata_Chain *chain, const char *filename, FLAC__bool is_ogg)
 {
-	FILE *file;
+	VFSFile *file;
 	FLAC__bool ret;
 
 	FLAC__ASSERT(0 != chain);
@@ -1486,18 +1484,18 @@ static FLAC__bool chain_read_(FLAC__Metadata_Chain *chain, const char *filename,
 
 	chain->is_ogg = is_ogg;
 
-	if(0 == (file = fopen(filename, "rb"))) {
+	if(0 == (file = vfs_fopen(filename, "rb"))) {
 		chain->status = FLAC__METADATA_CHAIN_STATUS_ERROR_OPENING_FILE;
 		return false;
 	}
 
 	/* the function also sets chain->status for us */
 	ret = is_ogg?
-		chain_read_ogg_cb_(chain, file, (FLAC__IOCallback_Read)fread) :
-		chain_read_cb_(chain, file, (FLAC__IOCallback_Read)fread, fseek_wrapper_, ftell_wrapper_)
+		chain_read_ogg_cb_(chain, file, (FLAC__IOCallback_Read)vfs_fread) :
+		chain_read_cb_(chain, file, (FLAC__IOCallback_Read)vfs_fread, fseek_wrapper_, ftell_wrapper_)
 	;
 
-	fclose(file);
+	vfs_fclose(file);
 
 	return ret;
 }
@@ -1999,7 +1997,7 @@ FLAC__bool read_metadata_block_header_(FLAC__Metadata_SimpleIterator *iterator)
 	FLAC__ASSERT(0 != iterator);
 	FLAC__ASSERT(0 != iterator->file);
 
-	if(!read_metadata_block_header_cb_((FLAC__IOHandle)iterator->file, (FLAC__IOCallback_Read)fread, &iterator->is_last, &iterator->type, &iterator->length)) {
+	if(!read_metadata_block_header_cb_((FLAC__IOHandle)iterator->file, (FLAC__IOCallback_Read)vfs_fread, &iterator->is_last, &iterator->type, &iterator->length)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_READ_ERROR;
 		return false;
 	}
@@ -2012,7 +2010,7 @@ FLAC__bool read_metadata_block_data_(FLAC__Metadata_SimpleIterator *iterator, FL
 	FLAC__ASSERT(0 != iterator);
 	FLAC__ASSERT(0 != iterator->file);
 
-	iterator->status = read_metadata_block_data_cb_((FLAC__IOHandle)iterator->file, (FLAC__IOCallback_Read)fread, fseek_wrapper_, block);
+	iterator->status = read_metadata_block_data_cb_((FLAC__IOHandle)iterator->file, (FLAC__IOCallback_Read)vfs_fread, fseek_wrapper_, block);
 
 	return (iterator->status == FLAC__METADATA_SIMPLE_ITERATOR_STATUS_OK);
 }
@@ -2420,12 +2418,12 @@ FLAC__Metadata_SimpleIteratorStatus read_metadata_block_data_unknown_cb_(FLAC__I
 	return FLAC__METADATA_SIMPLE_ITERATOR_STATUS_OK;
 }
 
-FLAC__bool write_metadata_block_header_(FILE *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block)
+FLAC__bool write_metadata_block_header_(VFSFile *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block)
 {
 	FLAC__ASSERT(0 != file);
 	FLAC__ASSERT(0 != status);
 
-	if(!write_metadata_block_header_cb_((FLAC__IOHandle)file, (FLAC__IOCallback_Write)fwrite, block)) {
+	if(!write_metadata_block_header_cb_((FLAC__IOHandle)file, (FLAC__IOCallback_Write)vfs_fwrite, block)) {
 		*status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_WRITE_ERROR;
 		return false;
 	}
@@ -2433,12 +2431,12 @@ FLAC__bool write_metadata_block_header_(FILE *file, FLAC__Metadata_SimpleIterato
 	return true;
 }
 
-FLAC__bool write_metadata_block_data_(FILE *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block)
+FLAC__bool write_metadata_block_data_(VFSFile *file, FLAC__Metadata_SimpleIteratorStatus *status, const FLAC__StreamMetadata *block)
 {
 	FLAC__ASSERT(0 != file);
 	FLAC__ASSERT(0 != status);
 
-	if (write_metadata_block_data_cb_((FLAC__IOHandle)file, (FLAC__IOCallback_Write)fwrite, block)) {
+	if (write_metadata_block_data_cb_((FLAC__IOHandle)file, (FLAC__IOCallback_Write)vfs_fwrite, block)) {
 		*status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_OK;
 		return true;
 	}
@@ -2775,7 +2773,7 @@ FLAC__bool write_metadata_block_data_unknown_cb_(FLAC__IOHandle handle, FLAC__IO
 
 FLAC__bool write_metadata_block_stationary_(FLAC__Metadata_SimpleIterator *iterator, const FLAC__StreamMetadata *block)
 {
-	if(0 != fseeko(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
@@ -2786,7 +2784,7 @@ FLAC__bool write_metadata_block_stationary_(FLAC__Metadata_SimpleIterator *itera
 	if(!write_metadata_block_data_(iterator->file, &iterator->status, block))
 		return false;
 
-	if(0 != fseeko(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
@@ -2798,7 +2796,7 @@ FLAC__bool write_metadata_block_stationary_with_padding_(FLAC__Metadata_SimpleIt
 {
 	FLAC__StreamMetadata *padding;
 
-	if(0 != fseeko(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
@@ -2829,7 +2827,7 @@ FLAC__bool write_metadata_block_stationary_with_padding_(FLAC__Metadata_SimpleIt
 
 	FLAC__metadata_object_delete(padding);
 
-	if(0 != fseeko(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
@@ -2839,7 +2837,7 @@ FLAC__bool write_metadata_block_stationary_with_padding_(FLAC__Metadata_SimpleIt
 
 FLAC__bool rewrite_whole_file_(FLAC__Metadata_SimpleIterator *iterator, FLAC__StreamMetadata *block, FLAC__bool append)
 {
-	FILE *tempfile;
+	VFSFile *tempfile;
 	char *tempfilename;
 	int fixup_is_last_code = 0; /* 0 => no need to change any is_last flags */
 	off_t fixup_is_last_flag_offset = -1;
@@ -2899,7 +2897,7 @@ FLAC__bool simple_iterator_pop_(FLAC__Metadata_SimpleIterator *iterator)
 {
 	FLAC__ASSERT(iterator->depth > 0);
 	iterator->depth--;
-	if(0 != fseeko(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, iterator->offset[iterator->depth], SEEK_SET)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
@@ -2963,16 +2961,16 @@ unsigned seek_to_first_metadata_block_cb_(FLAC__IOHandle handle, FLAC__IOCallbac
 		return 3;
 }
 
-unsigned seek_to_first_metadata_block_(FILE *f)
+unsigned seek_to_first_metadata_block_(VFSFile *f)
 {
-	return seek_to_first_metadata_block_cb_((FLAC__IOHandle)f, (FLAC__IOCallback_Read)fread, fseek_wrapper_);
+	return seek_to_first_metadata_block_cb_((FLAC__IOHandle)f, (FLAC__IOCallback_Read)vfs_fread, fseek_wrapper_);
 }
 
-FLAC__bool simple_iterator_copy_file_prefix_(FLAC__Metadata_SimpleIterator *iterator, FILE **tempfile, char **tempfilename, FLAC__bool append)
+FLAC__bool simple_iterator_copy_file_prefix_(FLAC__Metadata_SimpleIterator *iterator, VFSFile **tempfile, char **tempfilename, FLAC__bool append)
 {
 	const off_t offset_end = append? iterator->offset[iterator->depth] + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH + (off_t)iterator->length : iterator->offset[iterator->depth];
 
-	if(0 != fseeko(iterator->file, 0, SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, 0, SEEK_SET)) {
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
 	}
@@ -2988,12 +2986,12 @@ FLAC__bool simple_iterator_copy_file_prefix_(FLAC__Metadata_SimpleIterator *iter
 	return true;
 }
 
-FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *iterator, FILE **tempfile, char **tempfilename, int fixup_is_last_code, off_t fixup_is_last_flag_offset, FLAC__bool backup)
+FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *iterator, VFSFile **tempfile, char **tempfilename, int fixup_is_last_code, off_t fixup_is_last_flag_offset, FLAC__bool backup)
 {
 	off_t save_offset = iterator->offset[iterator->depth];
 	FLAC__ASSERT(0 != *tempfile);
 
-	if(0 != fseeko(iterator->file, save_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH + (off_t)iterator->length, SEEK_SET)) {
+	if(0 != vfs_fseek(iterator->file, save_offset + (off_t)FLAC__STREAM_METADATA_HEADER_LENGTH + (off_t)iterator->length, SEEK_SET)) {
 		cleanup_tempfile_(tempfile, tempfilename);
 		iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 		return false;
@@ -3012,12 +3010,12 @@ FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *ite
 		 */
 		/* MAGIC NUMBERs here; we know the is_last flag is the high bit of the byte at this location */
 		FLAC__byte x;
-		if(0 != fseeko(*tempfile, fixup_is_last_flag_offset, SEEK_SET)) {
+		if(0 != vfs_fseek(*tempfile, fixup_is_last_flag_offset, SEEK_SET)) {
 			cleanup_tempfile_(tempfile, tempfilename);
 			iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 			return false;
 		}
-		if(fread(&x, 1, 1, *tempfile) != 1) {
+		if(vfs_fread(&x, 1, 1, *tempfile) != 1) {
 			cleanup_tempfile_(tempfile, tempfilename);
 			iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_READ_ERROR;
 			return false;
@@ -3030,7 +3028,7 @@ FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *ite
 			FLAC__ASSERT(!(x & 0x80));
 			x |= 0x80;
 		}
-		if(0 != fseeko(*tempfile, fixup_is_last_flag_offset, SEEK_SET)) {
+		if(0 != vfs_fseek(*tempfile, fixup_is_last_flag_offset, SEEK_SET)) {
 			cleanup_tempfile_(tempfile, tempfilename);
 			iterator->status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_SEEK_ERROR;
 			return false;
@@ -3042,7 +3040,7 @@ FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *ite
 		}
 	}
 
-	(void)fclose(iterator->file);
+	(void)vfs_fclose(iterator->file);
 
 	if(!transport_tempfile_(iterator->filename, tempfile, tempfilename, &iterator->status))
 		return false;
@@ -3067,7 +3065,7 @@ FLAC__bool simple_iterator_copy_file_postfix_(FLAC__Metadata_SimpleIterator *ite
 	}
 }
 
-FLAC__bool copy_n_bytes_from_file_(FILE *file, FILE *tempfile, off_t bytes, FLAC__Metadata_SimpleIteratorStatus *status)
+FLAC__bool copy_n_bytes_from_file_(VFSFile *file, VFSFile *tempfile, off_t bytes, FLAC__Metadata_SimpleIteratorStatus *status)
 {
 	FLAC__byte buffer[8192];
 	size_t n;
@@ -3075,7 +3073,7 @@ FLAC__bool copy_n_bytes_from_file_(FILE *file, FILE *tempfile, off_t bytes, FLAC
 	FLAC__ASSERT(bytes >= 0);
 	while(bytes > 0) {
 		n = min(sizeof(buffer), (size_t)bytes);
-		if(fread(buffer, 1, n, file) != n) {
+		if(vfs_fread(buffer, 1, n, file) != n) {
 			*status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_READ_ERROR;
 			return false;
 		}
@@ -3111,14 +3109,14 @@ FLAC__bool copy_n_bytes_from_file_cb_(FLAC__IOHandle handle, FLAC__IOCallback_Re
 	return true;
 }
 
-FLAC__bool copy_remaining_bytes_from_file_(FILE *file, FILE *tempfile, FLAC__Metadata_SimpleIteratorStatus *status)
+FLAC__bool copy_remaining_bytes_from_file_(VFSFile *file, VFSFile *tempfile, FLAC__Metadata_SimpleIteratorStatus *status)
 {
 	FLAC__byte buffer[8192];
 	size_t n;
 
-	while(!feof(file)) {
-		n = fread(buffer, 1, sizeof(buffer), file);
-		if(n == 0 && !feof(file)) {
+	while(!vfs_feof(file)) {
+		n = vfs_fread(buffer, 1, sizeof(buffer), file);
+		if(n == 0 && !vfs_feof(file)) {
 			*status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_READ_ERROR;
 			return false;
 		}
@@ -3151,7 +3149,7 @@ FLAC__bool copy_remaining_bytes_from_file_cb_(FLAC__IOHandle handle, FLAC__IOCal
 	return true;
 }
 
-FLAC__bool open_tempfile_(const char *filename, const char *tempfile_path_prefix, FILE **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status)
+FLAC__bool open_tempfile_(const char *filename, const char *tempfile_path_prefix, VFSFile **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status)
 {
 	static const char *tempfile_suffix = ".metadata_edit";
 	if(0 == tempfile_path_prefix) {
@@ -3179,7 +3177,7 @@ FLAC__bool open_tempfile_(const char *filename, const char *tempfile_path_prefix
 		strcat(*tempfilename, tempfile_suffix);
 	}
 
-	if(0 == (*tempfile = fopen(*tempfilename, "w+b"))) {
+	if(0 == (*tempfile = vfs_fopen(*tempfilename, "w+b"))) {
 		*status = FLAC__METADATA_SIMPLE_ITERATOR_STATUS_ERROR_OPENING_FILE;
 		return false;
 	}
@@ -3187,7 +3185,7 @@ FLAC__bool open_tempfile_(const char *filename, const char *tempfile_path_prefix
 	return true;
 }
 
-FLAC__bool transport_tempfile_(const char *filename, FILE **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status)
+FLAC__bool transport_tempfile_(const char *filename, VFSFile **tempfile, char **tempfilename, FLAC__Metadata_SimpleIteratorStatus *status)
 {
 	FLAC__ASSERT(0 != filename);
 	FLAC__ASSERT(0 != tempfile);
@@ -3196,7 +3194,7 @@ FLAC__bool transport_tempfile_(const char *filename, FILE **tempfile, char **tem
 	FLAC__ASSERT(0 != *tempfilename);
 	FLAC__ASSERT(0 != status);
 
-	(void)fclose(*tempfile);
+	(void)vfs_fclose(*tempfile);
 	*tempfile = 0;
 
 #if defined _MSC_VER || defined __BORLANDC__ || defined __MINGW32__ || defined __EMX__
@@ -3220,10 +3218,10 @@ FLAC__bool transport_tempfile_(const char *filename, FILE **tempfile, char **tem
 	return true;
 }
 
-void cleanup_tempfile_(FILE **tempfile, char **tempfilename)
+void cleanup_tempfile_(VFSFile **tempfile, char **tempfilename)
 {
 	if(0 != *tempfile) {
-		(void)fclose(*tempfile);
+		(void)vfs_fclose(*tempfile);
 		*tempfile = 0;
 	}
 
@@ -3260,12 +3258,12 @@ void set_file_stats_(const char *filename, struct stat *stats)
 
 int fseek_wrapper_(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 {
-	return fseeko((FILE*)handle, (off_t)offset, whence);
+	return vfs_fseek((VFSFile*)handle, (off_t)offset, whence);
 }
 
 FLAC__int64 ftell_wrapper_(FLAC__IOHandle handle)
 {
-	return ftello((FILE*)handle);
+	return vfs_ftell((VFSFile*)handle);
 }
 
 FLAC__Metadata_ChainStatus get_equivalent_status_(FLAC__Metadata_SimpleIteratorStatus status)
