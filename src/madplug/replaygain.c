@@ -206,7 +206,7 @@ void input_read_replaygain(struct mad_info_t *file_info)
     glong curpos = 0;
 
     if (file_info->infile) {
-        fp = file_info->infile;
+        fp = vfs_dup(file_info->infile);
         curpos = vfs_ftell(fp);
     } else {
         if ((fp = vfs_fopen(file_info->filename, "rb")) == NULL)
