@@ -1,3 +1,83 @@
+2007-02-24 04:23:34 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1492]
+  - rework AdPlug to use VFS properly
+  see http://sacredspiral.co.uk/~nenolod/adplug-vfs-ng.diff for a diff.
+  
+  trunk/src/adplug/adplug-xmms.cc        |   62 ++++++++++++++++++++++++++++-----
+  trunk/src/adplug/core/README.audacious |   10 +++++
+  trunk/src/adplug/core/a2m.cxx          |    4 +-
+  trunk/src/adplug/core/a2m.h            |    2 -
+  trunk/src/adplug/core/adl.cxx          |    5 +-
+  trunk/src/adplug/core/adl.h            |    2 -
+  trunk/src/adplug/core/adplug.cxx       |   11 ++---
+  trunk/src/adplug/core/adplug.h         |    2 -
+  trunk/src/adplug/core/adtrack.cxx      |   11 +++--
+  trunk/src/adplug/core/adtrack.h        |    2 -
+  trunk/src/adplug/core/amd.cxx          |    4 +-
+  trunk/src/adplug/core/amd.h            |    2 -
+  trunk/src/adplug/core/bam.cxx          |    4 +-
+  trunk/src/adplug/core/bam.h            |    2 -
+  trunk/src/adplug/core/binio_virtual.h  |   20 +++++-----
+  trunk/src/adplug/core/cff.cxx          |    4 +-
+  trunk/src/adplug/core/cff.h            |    2 -
+  trunk/src/adplug/core/d00.cxx          |    5 +-
+  trunk/src/adplug/core/d00.h            |    2 -
+  trunk/src/adplug/core/dfm.cxx          |    4 +-
+  trunk/src/adplug/core/dfm.h            |    2 -
+  trunk/src/adplug/core/dmo.cxx          |    5 +-
+  trunk/src/adplug/core/dmo.h            |    2 -
+  trunk/src/adplug/core/dro.cxx          |    4 +-
+  trunk/src/adplug/core/dro.h            |    2 -
+  trunk/src/adplug/core/dtm.cxx          |    4 +-
+  trunk/src/adplug/core/dtm.h            |    2 -
+  trunk/src/adplug/core/fmc.cxx          |    4 +-
+  trunk/src/adplug/core/fmc.h            |    2 -
+  trunk/src/adplug/core/fprovide.cxx     |    4 +-
+  trunk/src/adplug/core/fprovide.h       |    4 +-
+  trunk/src/adplug/core/hsc.cxx          |    8 ++--
+  trunk/src/adplug/core/hsc.h            |    2 -
+  trunk/src/adplug/core/hsp.cxx          |    5 +-
+  trunk/src/adplug/core/hsp.h            |    2 -
+  trunk/src/adplug/core/imf.cxx          |    8 ++--
+  trunk/src/adplug/core/imf.h            |    2 -
+  trunk/src/adplug/core/ksm.cxx          |    9 +++-
+  trunk/src/adplug/core/ksm.h            |    2 -
+  trunk/src/adplug/core/lds.cxx          |    5 +-
+  trunk/src/adplug/core/lds.h            |    2 -
+  trunk/src/adplug/core/mad.cxx          |    4 +-
+  trunk/src/adplug/core/mad.h            |    2 -
+  trunk/src/adplug/core/mid.cxx          |   11 +++--
+  trunk/src/adplug/core/mid.h            |    2 -
+  trunk/src/adplug/core/mkj.cxx          |    6 +--
+  trunk/src/adplug/core/mkj.h            |    2 -
+  trunk/src/adplug/core/msc.cxx          |    4 +-
+  trunk/src/adplug/core/msc.h            |    2 -
+  trunk/src/adplug/core/mtk.cxx          |    4 +-
+  trunk/src/adplug/core/mtk.h            |    2 -
+  trunk/src/adplug/core/player.h         |    2 -
+  trunk/src/adplug/core/rad.cxx          |    4 +-
+  trunk/src/adplug/core/rad.h            |    2 -
+  trunk/src/adplug/core/raw.cxx          |    4 +-
+  trunk/src/adplug/core/raw.h            |    2 -
+  trunk/src/adplug/core/rix.cxx          |    5 +-
+  trunk/src/adplug/core/rix.h            |    2 -
+  trunk/src/adplug/core/rol.cxx          |    9 +++-
+  trunk/src/adplug/core/rol.h            |    2 -
+  trunk/src/adplug/core/s3m.cxx          |    4 +-
+  trunk/src/adplug/core/s3m.h            |    2 -
+  trunk/src/adplug/core/sa2.cxx          |    6 +--
+  trunk/src/adplug/core/sa2.h            |    2 -
+  trunk/src/adplug/core/sng.cxx          |    4 +-
+  trunk/src/adplug/core/sng.h            |    2 -
+  trunk/src/adplug/core/u6m.cxx          |    4 +-
+  trunk/src/adplug/core/u6m.h            |    2 -
+  trunk/src/adplug/core/xad.cxx          |    4 +-
+  trunk/src/adplug/core/xad.h            |    2 -
+  trunk/src/adplug/core/xsm.cxx          |    4 +-
+  trunk/src/adplug/core/xsm.h            |    2 -
+  72 files changed, 210 insertions(+), 139 deletions(-)
+
+
 2007-02-22 15:19:39 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1490]
   - remove %expect 37

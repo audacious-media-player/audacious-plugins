@@ -84,7 +84,7 @@ public:
 	~ModplugXMMS();
 	
 	void Init();                      // Called when the plugin is loaded
-	bool CanPlayFile(const string& aFilename);// Return true if the plugin can handle the file
+	bool CanPlayFileFromVFS(const string& aFilename, VFSFile *file);	// Return true if the plugin can handle the file
 
 	void CloseConfigureBox();
 

@@ -16,9 +16,9 @@ static void Init(void)
 	gModplugXMMS.Init();
 }
 
-static int CanPlayFile(char* aFilename)
+static int CanPlayFileFromVFS(char* aFilename, VFSFile *VFSFile)
 {
-	if(gModplugXMMS.CanPlayFile(aFilename))
+	if(gModplugXMMS.CanPlayFileFromVFS(aFilename, VFSFile))
 		return 1;
 	return 0;
 }
@@ -88,7 +88,7 @@ InputPlugin gModPlug =
 	Init,
 	ShowAboutBox,
 	ShowConfigureBox,
-	CanPlayFile,
+	NULL,
 	NULL,
 	PlayFile,
 	Stop,
@@ -109,7 +109,7 @@ InputPlugin gModPlug =
 	NULL,   // tuple
 	NULL,
 	NULL,
-	NULL,	// vfs
+	CanPlayFileFromVFS,	// vfs
 	fmts,
 };
 

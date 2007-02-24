@@ -93,111 +93,65 @@ void ModplugXMMS::Init(void)
 	bmp_cfg_db_close(db);
 }
 
-bool ModplugXMMS::CanPlayFile(const string& aFilename)
+bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 {
 	string lExt;
 	uint32 lPos;
 
-	VFSFile *file;
 	gchar magic[4];
 
-	if ((file = vfs_fopen(aFilename.c_str(), "rb"))) {
 	vfs_fread(magic, 1, 4, file);
-	if (!memcmp(magic, UMX_MAGIC, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, XM_MAGIC, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, M669_MAGIC, 2)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, IT_MAGIC, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MTM_MAGIC, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, PSM_MAGIC, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
+	if (!memcmp(magic, UMX_MAGIC, 4))
+		return true;
+	if (!memcmp(magic, XM_MAGIC, 4))
+		return true;
+	if (!memcmp(magic, M669_MAGIC, 2))
+		return true;
+	if (!memcmp(magic, IT_MAGIC, 4))
+		return true;
+	if (!memcmp(magic, MTM_MAGIC, 4))
+		return true;
+	if (!memcmp(magic, PSM_MAGIC, 4))
+		return true;
+
 	vfs_fseek(file, 44, SEEK_SET);
 	vfs_fread(magic, 1, 4, file);
-	if (!memcmp(magic, S3M_MAGIC, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
+	if (!memcmp(magic, S3M_MAGIC, 4))
+		return true;
 	vfs_fseek(file, 1080, SEEK_SET);
 	vfs_fread(magic, 1, 4, file);
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER6, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER8, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
+	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER6, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER8, 4))
+		return true;
 	if(mModProps.mGrabAmigaMOD) {
-	if (!memcmp(magic, MOD_MAGIC_PROTRACKER4, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_PROTRACKER4X, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_NOISETRACKER, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_STARTRACKER4, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_STARTRACKER8, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_STARTRACKER4X, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_STARTRACKER8X, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER4, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_OKTALYZER8, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_OKTALYZER8X, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_TAKETRACKER16, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
-	if (!memcmp(magic, MOD_MAGIC_TAKETRACKER32, 4)) {
-		vfs_fclose(file);
-		return 1;
-	}
+	if (!memcmp(magic, MOD_MAGIC_PROTRACKER4, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_PROTRACKER4X, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_NOISETRACKER, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_STARTRACKER4, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_STARTRACKER8, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_STARTRACKER4X, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_STARTRACKER8X, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER4, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_OKTALYZER8, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_OKTALYZER8X, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_TAKETRACKER16, 4))
+		return true;
+	if (!memcmp(magic, MOD_MAGIC_TAKETRACKER32, 4))
+		return true;
 	} /* end of if(mModProps.mGrabAmigaMOD) */
 
 	/* We didn't find the magic bytes, fall back to extension check */
-	vfs_fclose(file);
-	} /* end of vfs_open main if statement */
-
 	lPos = aFilename.find_last_of('.');
 	if((int)lPos == -1)
 		return false;
