@@ -22,6 +22,7 @@
 
 #include <audacious/vfs.h>
 #include <audacious/plugin.h>
+#include <audacious/configdb.h>
 
 #include <curl/curl.h>
 
@@ -546,6 +547,55 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
 
   curl_easy_setopt(handle->curl, CURLOPT_FOLLOWLOCATION, 1);
+
+
+  {
+    gboolean tmp = FALSE;
+    ConfigDb *db;
+
+    db = bmp_cfg_db_open();
+
+    bmp_cfg_db_get_bool(db, NULL, "proxy_use", &tmp);
+    if (tmp == TRUE)
+    {
+      gchar *proxy_host = NULL;
+      gint proxy_port = 0;
+
+      bmp_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host);
+      bmp_cfg_db_get_int(db, NULL, "proxy_port", &proxy_port);
+
+      curl_easy_setopt(handle->curl, CURLOPT_PROXY, proxy_host);
+      curl_easy_setopt(handle->curl, CURLOPT_PROXYPORT, proxy_port);
+
+      tmp = FALSE;
+
+      bmp_cfg_db_get_bool(db, NULL, "proxy_use_auth", &tmp);
+      if (tmp == TRUE)
+      {
+        gchar *userbuf, *proxy_user = NULL, *proxy_pass = NULL;
+
+        bmp_cfg_db_get_string(db, NULL, "proxy_user", &proxy_user);
+        bmp_cfg_db_get_string(db, NULL, "proxy_pass", &proxy_pass);
+
+        userbuf = g_strdup_printf("%s:%s",
+          proxy_user != NULL ? proxy_user : "", 
+          proxy_pass != NULL ? proxy_pass : "");
+
+        if (proxy_user != NULL)
+          g_free(proxy_user);
+
+        if (proxy_pass != NULL)
+          g_free(proxy_pass);
+
+        curl_easy_setopt(handle->curl, CURLOPT_PROXYUSERPWD, userbuf);
+
+        g_free(userbuf);
+      }
+
+      if (proxy_host != NULL)
+        g_free(proxy_host);
+    }
+  }
 
   {
     struct curl_slist *hdr = NULL;
