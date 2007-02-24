@@ -1,3 +1,11 @@
+2007-02-24 17:22:04 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1512]
+  - reset position if we were passed a live FD.
+  
+  trunk/src/madplug/replaygain.c |    3 +++
+  1 file changed, 3 insertions(+)
+
+
 2007-02-24 17:17:39 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1510]
   - rename parser.y to parser.yacc so braindead GNU make gets the picture

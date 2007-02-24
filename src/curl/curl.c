@@ -554,7 +554,7 @@ curl_vfs_fopen_impl(const gchar * path,
 
     db = bmp_cfg_db_open();
 
-    bmp_cfg_db_get_bool(db, NULL, "proxy_use", &tmp);
+    bmp_cfg_db_get_bool(db, NULL, "use_proxy", &tmp);
     if (tmp == TRUE)
     {
       gchar *proxy_host = NULL;
