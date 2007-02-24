@@ -75,6 +75,11 @@ struct _CurlHandle {
 
   gchar *name;
   gchar *title;
+
+  struct {
+    gchar *proxy_host;
+    gchar *proxy_auth;
+  } proxy_info;
 };
 
 VFSConstructor curl_const;
@@ -557,13 +562,13 @@ curl_vfs_fopen_impl(const gchar * path,
     bmp_cfg_db_get_bool(db, NULL, "use_proxy", &tmp);
     if (tmp == TRUE)
     {
-      gchar *proxy_host = NULL;
       gint proxy_port = 0;
 
-      bmp_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host);
+      bmp_cfg_db_get_string(db, NULL, "proxy_host", 
+        &handle->proxy_info.proxy_host);
       bmp_cfg_db_get_int(db, NULL, "proxy_port", &proxy_port);
 
-      curl_easy_setopt(handle->curl, CURLOPT_PROXY, proxy_host);
+      curl_easy_setopt(handle->curl, CURLOPT_PROXY, handle->proxy_info.proxy_host);
       curl_easy_setopt(handle->curl, CURLOPT_PROXYPORT, proxy_port);
 
       tmp = FALSE;
@@ -571,28 +576,20 @@ curl_vfs_fopen_impl(const gchar * path,
       bmp_cfg_db_get_bool(db, NULL, "proxy_use_auth", &tmp);
       if (tmp == TRUE)
       {
-        gchar *userbuf, *proxy_user = NULL, *proxy_pass = NULL;
+        gchar *proxy_user = NULL, *proxy_pass = NULL;
 
         bmp_cfg_db_get_string(db, NULL, "proxy_user", &proxy_user);
         bmp_cfg_db_get_string(db, NULL, "proxy_pass", &proxy_pass);
 
-        userbuf = g_strdup_printf("%s:%s",
+        handle->proxy_info.proxy_auth = g_strdup_printf("%s:%s",
           proxy_user != NULL ? proxy_user : "", 
           proxy_pass != NULL ? proxy_pass : "");
 
-        if (proxy_user != NULL)
-          g_free(proxy_user);
-
-        if (proxy_pass != NULL)
-          g_free(proxy_pass);
-
-        curl_easy_setopt(handle->curl, CURLOPT_PROXYUSERPWD, userbuf);
+        curl_easy_setopt(handle->curl, CURLOPT_PROXYUSERPWD, 
+	  handle->proxy_info.proxy_auth);
 
         g_free(userbuf);
       }
-
-      if (proxy_host != NULL)
-        g_free(proxy_host);
     }
 
     bmp_cfg_db_close(db);
@@ -639,6 +636,12 @@ curl_vfs_fclose_impl(VFSFile * file)
       if (handle->stream_stack != NULL)
         g_slist_free(handle->stream_stack);
       curl_easy_cleanup(handle->curl);
+
+      if (handle->proxy_info.proxy_host != NULL)
+        g_free(handle->proxy_info.proxy_host);
+
+      if (handle->proxy_info.proxy_auth != NULL)
+        g_free(handle->proxy_info.proxy_auth);
 
       if (handle->download)
 	{
