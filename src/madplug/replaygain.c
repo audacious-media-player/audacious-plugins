@@ -254,5 +254,8 @@ void input_read_replaygain(struct mad_info_t *file_info)
         || file_info->replaygain_track_scale != -1)
         file_info->has_replaygain = TRUE;
 
+    if (file_info->infile)
+        vfs_fseek(fp, curpos, SEEK_SET);
+
     vfs_fclose(fp);        
 }
