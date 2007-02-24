@@ -587,8 +587,6 @@ curl_vfs_fopen_impl(const gchar * path,
 
         curl_easy_setopt(handle->curl, CURLOPT_PROXYUSERPWD, 
 	  handle->proxy_info.proxy_auth);
-
-        g_free(userbuf);
       }
     }
 
