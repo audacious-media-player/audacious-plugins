@@ -32,6 +32,7 @@
 #ifndef FLAC__STREAM_DECODER_H
 #define FLAC__STREAM_DECODER_H
 
+#include <audacious/vfs.h>
 #include <stdio.h> /* for FILE */
 #include "export.h"
 #include "format.h"
@@ -1202,7 +1203,7 @@ FLAC_API FLAC__StreamDecoderInitStatus FLAC__stream_decoder_init_ogg_stream(
  */
 FLAC_API FLAC__StreamDecoderInitStatus FLAC__stream_decoder_init_FILE(
 	FLAC__StreamDecoder *decoder,
-	FILE *file,
+	VFSFile *file,
 	FLAC__StreamDecoderWriteCallback write_callback,
 	FLAC__StreamDecoderMetadataCallback metadata_callback,
 	FLAC__StreamDecoderErrorCallback error_callback,
@@ -1252,7 +1253,7 @@ FLAC_API FLAC__StreamDecoderInitStatus FLAC__stream_decoder_init_FILE(
  */
 FLAC_API FLAC__StreamDecoderInitStatus FLAC__stream_decoder_init_ogg_FILE(
 	FLAC__StreamDecoder *decoder,
-	FILE *file,
+	VFSFile *file,
 	FLAC__StreamDecoderWriteCallback write_callback,
 	FLAC__StreamDecoderMetadataCallback metadata_callback,
 	FLAC__StreamDecoderErrorCallback error_callback,
