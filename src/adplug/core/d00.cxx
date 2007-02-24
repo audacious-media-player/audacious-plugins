@@ -53,14 +53,15 @@ CPlayer *Cd00Player::factory(Copl *newopl)
   return new Cd00Player(newopl);
 }
 
-bool Cd00Player::load(const std::string &filename, const CFileProvider &fp)
+bool Cd00Player::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream	*f = fp.open(filename); if(!f) return false;
+  binistream	*f = fp.open(fd); if(!f) return false;
   d00header	*checkhead;
   d00header1	*ch;
   unsigned long	filesize;
   int		i,ver1=0;
   char		*str;
+  std::string   filename(fd->uri);
 
   // file validation section
   checkhead = new d00header;

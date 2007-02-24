@@ -35,9 +35,9 @@ CxadPlayer::~CxadPlayer()
     delete [] tune;
 }
 
-bool CxadPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CxadPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   bool ret = false;
 
   // load header

@@ -91,9 +91,10 @@ CrolPlayer::~CrolPlayer()
     }
 }
 //---------------------------------------------------------
-bool CrolPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CrolPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-    binistream *f = fp.open(filename); if(!f) return false;
+    binistream *f = fp.open(fd); if(!f) return false;
+    std::string filename(fd->uri);
 
     char *fn = new char[filename.length()+12];
     int i;
@@ -468,7 +469,8 @@ void CrolPlayer::load_tempo_events( binistream *f )
 bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename, const CFileProvider &fp )
 {
     SBnkHeader bnk_header;
-    binistream *bnk_file = fp.open( bnk_filename.c_str() );
+    VFSFile *fd = vfs_fopen(bnk_filename.c_str(), "rb");
+    binistream *bnk_file = fp.open(fd);
 
     if( bnk_file )
     {
@@ -490,6 +492,7 @@ bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename
         }
 
         fp.close(bnk_file);
+        vfs_fclose(fd);
 
         return true;
     }

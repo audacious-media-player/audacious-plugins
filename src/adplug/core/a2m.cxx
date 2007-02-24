@@ -60,9 +60,9 @@ CPlayer *Ca2mLoader::factory(Copl *newopl)
   return new Ca2mLoader(newopl);
 }
 
-bool Ca2mLoader::load(const std::string &filename, const CFileProvider &fp)
+bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   struct {
     char id[10];
     unsigned long crc;

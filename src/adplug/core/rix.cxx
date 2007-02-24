@@ -63,10 +63,11 @@ CrixPlayer::~CrixPlayer()
     delete [] file_buffer;
 }
 
-bool CrixPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CrixPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   unsigned long i=0;
+  std::string filename(fd->uri);
 
   if(stricmp(filename.substr(filename.length()-4,4).c_str(),".mkf")==0)
   {

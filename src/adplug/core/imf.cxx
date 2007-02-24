@@ -53,9 +53,9 @@ CPlayer *CimfPlayer::factory(Copl *newopl)
   return new CimfPlayer(newopl);
 }
 
-bool CimfPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CimfPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   unsigned long fsize, flsize, mfsize = 0;
   unsigned int i;
 
@@ -68,7 +68,7 @@ bool CimfPlayer::load(const std::string &filename, const CFileProvider &fp)
     version = f->readInt(1);
 
     if(strncmp(header, "ADLIB", 5) || version != 1) {
-      if(!fp.extension(filename, ".imf") && !fp.extension(filename, ".wlf")) {
+      if(!fp.extension(fd->uri, ".imf") && !fp.extension(fd->uri, ".wlf")) {
 	// It's no IMF file at all
 	fp.close(f);
 	return false;
@@ -120,7 +120,7 @@ bool CimfPlayer::load(const std::string &filename, const CFileProvider &fp)
       footer[footerlen] = '\0';	// Make ASCIIZ string
     }
 
-  rate = getrate(filename, fp, f);
+  rate = getrate(fd->uri, fp, f);
   fp.close(f);
   rewind(0);
   return true;

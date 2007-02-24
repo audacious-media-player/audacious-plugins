@@ -20,6 +20,11 @@ private:
 
 public:
 	vfsistream() {};
+	~vfsistream() {};
+
+	vfsistream(VFSFile *fd) {
+		this->fd = fd;
+	};
 
 	vfsistream(const char *file) {
 		this->fd = vfs_fopen(file, "rb");
@@ -27,11 +32,6 @@ public:
 
 	vfsistream(std::string &file) {
 		this->fd = vfs_fopen(file.c_str(), "rb");
-	};
-
-	~vfsistream() {
-		if (this->fd != NULL)
-			vfs_fclose(this->fd);
 	};
 
 	void open(const char *file) {
@@ -80,6 +80,11 @@ private:
 
 public:
 	vfsostream() {};
+	~vfsostream() {};
+
+	vfsostream(VFSFile *fd) {
+		this->fd = fd;
+	};
 
 	vfsostream(const char *file) {
 		this->fd = vfs_fopen(file, "wb");
@@ -87,11 +92,6 @@ public:
 
 	vfsostream(std::string &file) {
 		this->fd = vfs_fopen(file.c_str(), "wb");
-	};
-
-	~vfsostream() {
-		if (this->fd != NULL)
-			vfs_fclose(this->fd);
 	};
 
 	void open(const char *file) {

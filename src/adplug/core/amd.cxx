@@ -29,9 +29,9 @@ CPlayer *CamdLoader::factory(Copl *newopl)
   return new CamdLoader(newopl);
 }
 
-bool CamdLoader::load(const std::string &filename, const CFileProvider &fp)
+bool CamdLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
-        binistream *f = fp.open(filename); if(!f) return false;
+        binistream *f = fp.open(fd); if(!f) return false;
 	struct {
 		char id[9];
 		unsigned char version;

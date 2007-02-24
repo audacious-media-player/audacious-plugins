@@ -194,9 +194,10 @@ bool CmidPlayer::load_sierra_ins(const std::string &fname, const CFileProvider &
       }
     sprintf(pfilename+j+3,"patch.003");
 
-    f = fp.open(pfilename);
+    VFSFile *instfd = vfs_fopen(pfilename, "rb");
+    f = fp.open(instfd);
     free(pfilename);
-    if(!f) return false;
+    if(!f) { vfs_fclose(instfd); return false; }
 
     f->ignore(2);
     stins = 0;
@@ -240,6 +241,7 @@ bool CmidPlayer::load_sierra_ins(const std::string &fname, const CFileProvider &
         }
 
     fp.close(f);
+    vfs_fclose(instfd);
     memcpy(smyinsbank, myinsbank, 128 * 16);
     return true;
 }
@@ -280,11 +282,12 @@ void CmidPlayer::sierra_next_section()
     doing=1;
 }
 
-bool CmidPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CmidPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-    binistream *f = fp.open(filename); if(!f) return false;
+    binistream *f = fp.open(fd); if(!f) return false;
     int good;
     unsigned char s[6];
+    std::string filename(fd->uri);
 
     f->readString((char *)s, 6);
     good=0;

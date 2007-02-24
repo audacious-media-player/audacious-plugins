@@ -28,9 +28,9 @@ CPlayer *CmadLoader::factory(Copl *newopl)
   return new CmadLoader(newopl);
 }
 
-bool CmadLoader::load(const std::string &filename, const CFileProvider &fp)
+bool CmadLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   const unsigned char conv_inst[10] = { 2,1,10,9,4,3,6,5,8,7 };
   unsigned int i, j, k, t = 0;
 

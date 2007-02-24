@@ -40,10 +40,11 @@ CPlayer *CksmPlayer::factory(Copl *newopl)
   return new CksmPlayer(newopl);
 }
 
-bool CksmPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CksmPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
   binistream	*f;
   int		i;
+  std::string   filename(fd->uri);
   char		*fn = new char[filename.length() + 9];
 
   // file validation section
@@ -61,7 +62,8 @@ bool CksmPlayer::load(const std::string &filename, const CFileProvider &fp)
       break;
   strcpy(fn + i + 1, "insts.dat");
   AdPlug_LogWrite("Instruments file: \"%s\"\n", fn);
-  f = fp.open(fn);
+  VFSFile *instfd = vfs_fopen(fn, "rb");
+  f = fp.open(instfd);
   delete [] fn;
   if(!f) {
     AdPlug_LogWrite("Couldn't open instruments file! Aborting!\n");
@@ -70,8 +72,9 @@ bool CksmPlayer::load(const std::string &filename, const CFileProvider &fp)
   }
   loadinsts(f);
   fp.close(f);
+  vfs_fclose(instfd);
 
-  f = fp.open(filename); if(!f) return false;
+  f = fp.open(fd); if(!f) return false;
   for(i = 0; i < 16; i++) trinst[i] = f->readInt(1);
   for(i = 0; i < 16; i++) trquant[i] = f->readInt(1);
   for(i = 0; i < 16; i++) trchan[i] = f->readInt(1);

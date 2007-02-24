@@ -2317,9 +2317,10 @@ void CadlPlayer::play(uint8_t track) {
 // 	playSoundEffect(1);
 // }
 
-bool CadlPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CadlPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream	*f = fp.open(filename);
+  binistream	*f = fp.open(fd);
+  std::string   filename(fd->uri);
 
   // file validation section
   if(!f || !fp.extension(filename, ".adl")) {

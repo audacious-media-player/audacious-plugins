@@ -33,9 +33,9 @@ CxsmPlayer::~CxsmPlayer()
   if(music) delete [] music;
 }
 
-bool CxsmPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CxsmPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   char			id[6];
   int			i, j;
 

@@ -29,9 +29,9 @@ CPlayer *CradLoader::factory(Copl *newopl)
   return new CradLoader(newopl);
 }
 
-bool CradLoader::load(const std::string &filename, const CFileProvider &fp)
+bool CradLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
-        binistream *f = fp.open(filename); if(!f) return false;
+        binistream *f = fp.open(fd); if(!f) return false;
 	char id[16];
 	unsigned char buf,ch,c,b,inp;
 	char bufstr[2] = "\0";

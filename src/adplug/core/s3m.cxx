@@ -55,9 +55,9 @@ Cs3mPlayer::Cs3mPlayer(Copl *newopl): CPlayer(newopl)
 			}
 }
 
-bool Cs3mPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool Cs3mPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
-        binistream *f = fp.open(filename); if(!f) return false;
+        binistream *f = fp.open(fd); if(!f) return false;
 	unsigned short	insptr[99],pattptr[99];
 	int		i,row;
 	unsigned char	bufval,bufval2;

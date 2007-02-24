@@ -62,13 +62,13 @@ CmscPlayer::~CmscPlayer()
 		delete [] desc;
 }
 
-bool CmscPlayer::load(const std::string & filename, const CFileProvider & fp)
+bool CmscPlayer::load(VFSFile * fd, const CFileProvider & fp)
 {
 	binistream * 	bf;
 	msc_header	hdr;
 
 	// open and validate the file
-	bf = fp.open (filename);
+	bf = fp.open (fd);
 	if (! bf)
 		return false;
 	

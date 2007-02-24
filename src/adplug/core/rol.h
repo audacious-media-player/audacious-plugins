@@ -37,7 +37,7 @@ public:
 
     ~CrolPlayer();
 
-    bool  load      (const std::string &filename, const CFileProvider &fp);
+    bool  load      (VFSFile *fd, const CFileProvider &fp);
     bool  update    ();
     void  rewind    (int subsong);	// rewinds to specified subsong
     float getrefresh();			// returns needed timer refresh rate

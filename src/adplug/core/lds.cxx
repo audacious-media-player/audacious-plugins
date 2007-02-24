@@ -83,15 +83,16 @@ CldsPlayer::~CldsPlayer()
   if(patterns) delete [] patterns;
 }
 
-bool CldsPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool CldsPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
   binistream	*f;
   unsigned int	i, j;
   SoundBank	*sb;
+  std::string   filename(fd->uri);
 
   // file validation section (actually just an extension check)
+  f = fp.open(fd); if(!f) return false;
   if(!fp.extension(filename, ".lds")) return false;
-  f = fp.open(filename); if(!f) return false;
 
   // file load section (header)
   mode = f->readInt(1);

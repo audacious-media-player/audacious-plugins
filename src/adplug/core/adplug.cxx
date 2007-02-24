@@ -127,22 +127,21 @@ const CPlayers &CAdPlug::init_players(const CPlayerDesc pd[])
 const CPlayers CAdPlug::players = CAdPlug::init_players(CAdPlug::allplayers);
 CAdPlugDatabase *CAdPlug::database = 0;
 
-CPlayer *CAdPlug::factory(const std::string &fn, Copl *opl, const CPlayers &pl,
+CPlayer *CAdPlug::factory(VFSFile *fd, Copl *opl, const CPlayers &pl,
 			  const CFileProvider &fp)
 {
   CPlayer			*p;
   CPlayers::const_iterator	i;
   unsigned int			j;
 
-  AdPlug_LogWrite("*** CAdPlug::factory(\"%s\",opl,fp) ***\n", fn.c_str());
-
   // Try a direct hit by file extension
   for(i = pl.begin(); i != pl.end(); i++)
     for(j = 0; (*i)->get_extension(j); j++)
-      if(fp.extension(fn, (*i)->get_extension(j))) {
+      if(fp.extension(fd->uri, (*i)->get_extension(j))) {
 	AdPlug_LogWrite("Trying direct hit: %s\n", (*i)->filetype.c_str());
+        vfs_rewind(fd);
 	if((p = (*i)->factory(opl)))
-	  if(p->load(fn, fp)) {
+	  if(p->load(fd, fp)) {
 	    AdPlug_LogWrite("got it!\n");
 	    AdPlug_LogWrite("--- CAdPlug::factory ---\n");
 	    return p;
@@ -154,7 +153,7 @@ CPlayer *CAdPlug::factory(const std::string &fn, Copl *opl, const CPlayers &pl,
   for(i = pl.begin(); i != pl.end(); i++) {
     AdPlug_LogWrite("Trying: %s\n", (*i)->filetype.c_str());
     if((p = (*i)->factory(opl)))
-      if(p->load(fn, fp)) {
+      if(p->load(fd, fp)) {
         AdPlug_LogWrite("got it!\n");
         AdPlug_LogWrite("--- CAdPlug::factory ---\n");
 	return p;

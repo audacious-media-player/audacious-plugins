@@ -42,7 +42,7 @@ class Cu6mPlayer: public CPlayer
         if(song_data) delete[] song_data;
     };
 
-	bool load(const std::string &filename, const CFileProvider &fp);
+	bool load(VFSFile *fd, const CFileProvider &fp);
 	bool update();
 	void rewind(int subsong);
 	float getrefresh();

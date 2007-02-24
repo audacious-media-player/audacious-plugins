@@ -88,6 +88,9 @@ static struct {
 
 static InputPlayback *playback;
 
+// XXX: this function is not in the public API yet.
+extern "C" VFSFile *vfs_buffered_file_new_from_uri(gchar *uri);
+
 /***** Debugging *****/
 
 #ifdef DEBUG
@@ -396,12 +399,12 @@ static void add_instlist(GtkCList *instlist, const char *t1, const char *t2)
   g_free(rowstr[0]); g_free(rowstr[1]);
 }
 
-static CPlayer *factory(const std::string &filename, Copl *newopl)
+static CPlayer *factory(VFSFile *fd, Copl *newopl)
 {
   CPlayers::const_iterator	i;
 
-  dbg_printf("factory(\"%s\",opl): ", filename.c_str());
-  return CAdPlug::factory(filename, newopl, cfg.players);
+  dbg_printf("factory(%p<%s>,opl): ", fd, fd->uri != NULL ? fd->uri : "unknown");
+  return CAdPlug::factory(fd, newopl, cfg.players);
 }
 
 static void adplug_stop(InputPlayback *data);
@@ -429,8 +432,12 @@ static void close_infobox(GtkDialog *infodlg)
 static void adplug_info_box(char *filename)
 {
   CSilentopl tmpopl;
+  VFSFile *fd = vfs_buffered_file_new_from_uri(filename);
+
+  if (!fd) return;
+
   CPlayer *p = (strcmp(filename, plr.filename) || !plr.p) ?
-    factory(filename, &tmpopl) : plr.p;
+    factory(fd, &tmpopl) : plr.p;
 
   if(!p) return; // bail out if no player could be created
   if(p == plr.p && plr.infodlg) return; // only one info box for active song
@@ -592,7 +599,7 @@ static void *play_loop(void *data)
 /* Main playback thread. Takes the filename to play as argument. */
 {
   InputPlayback *playback = (InputPlayback *) data;
-  char *filename = (char *) playback->data;
+  char *filename = (char *) playback->filename;
   dbg_printf("play_loop(\"%s\"): ", filename);
   CEmuopl opl(cfg.freq, cfg.bit16, cfg.stereo);
   long toadd = 0, i, towrite;
@@ -602,9 +609,16 @@ static void *play_loop(void *data)
     stereo = cfg.stereo;	// the user changes it while we're playing.
   unsigned long freq = cfg.freq;
 
+  // we use VfsBufferedFile class here because adplug does a lot of
+  // probing. a short delay before probing begins is better than
+  // a lot of delay during probing.
+  VFSFile *fd = vfs_buffered_file_new_from_uri(playback->filename);
+
+  if (!fd) { plr.playing = false; g_thread_exit(NULL); }
+
   // Try to load module
   dbg_printf("factory, ");
-  if(!(plr.p = factory(filename, &opl))) {
+  if(!(plr.p = factory(fd, &opl))) {
     dbg_printf("error!\n");
    // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
     plr.playing = false;
@@ -703,6 +717,7 @@ static void *play_loop(void *data)
   free(sndbuf);
   plr.playing = false; // important! XMMS won't get a self-ended song without it.
   dbg_printf(".\n");
+  vfs_fclose(fd);
   g_thread_exit(NULL);
   return(NULL);
 }
@@ -712,10 +727,30 @@ static void *play_loop(void *data)
 
 /***** Informational *****/
 
+static int adplug_is_our_fd(gchar *filename, VFSFile *fd)
+{
+  CSilentopl tmpopl;
+
+  CPlayer *p = factory(fd,&tmpopl);
+
+  dbg_printf("adplug_is_our_file(\"%s\"): returned ",filename);
+
+  if(p) {
+    delete p;
+    dbg_printf("TRUE\n");
+    return TRUE;
+  }
+
+  dbg_printf("FALSE\n");
+  return FALSE;
+}
+
 static int adplug_is_our_file(char *filename)
 {
   CSilentopl tmpopl;
-  CPlayer *p = factory(filename,&tmpopl);
+  VFSFile *fd = vfs_buffered_file_new_from_uri(filename); if (!fd) return FALSE;
+
+  CPlayer *p = factory(fd,&tmpopl);
 
   dbg_printf("adplug_is_our_file(\"%s\"): returned ",filename);
 
@@ -739,7 +774,11 @@ static int adplug_get_time(InputPlayback *data)
 static void adplug_song_info(char *filename, char **title, int *length)
 {
   CSilentopl tmpopl;
-  CPlayer *p = factory(filename, &tmpopl);
+  VFSFile *fd = vfs_buffered_file_new_from_uri(filename);
+
+  if (!fd) return;
+
+  CPlayer *p = factory(fd, &tmpopl);
 
   dbg_printf("adplug_song_info(\"%s\", \"%s\", %d): ", filename, *title, *length);
 
@@ -929,7 +968,12 @@ InputPlugin adplug_ip =
     NULL,                       // set_info_text (filled by XMMS)
     adplug_song_info,
     adplug_info_box,            // adplug_info_box was here (but it used deprecated GTK+ functions)
-    NULL                        // output plugin (filled by XMMS)
+    NULL,                       // output plugin (filled by XMMS)
+    NULL,
+    NULL,
+    NULL,
+    adplug_is_our_fd,
+    NULL,
   };
 
 extern "C" InputPlugin *get_iplugin_info(void)

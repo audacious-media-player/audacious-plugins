@@ -1,0 +1,10 @@
+This is a summary of changes made to the AdPlug core in the plugin for
+Audacious:
+
+- every replayer is now passed a VFS fd
+- there is a binio virtual which is now used to wrap the VFS in a way 
+  that is non-intrusive
+- some blatantly bad coding practices have been corrected
+
+--
+William Pitcock <nenolod -at- sacredspiral.co.uk>

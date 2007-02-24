@@ -30,9 +30,9 @@ CPlayer *CdfmLoader::factory(Copl *newopl)
   return new CdfmLoader(newopl);
 }
 
-bool CdfmLoader::load(const std::string &filename, const CFileProvider &fp)
+bool CdfmLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   unsigned char		npats,n,note,fx,c,r,param;
   unsigned int		i;
   const unsigned char	convfx[8] = {255,255,17,19,23,24,255,13};

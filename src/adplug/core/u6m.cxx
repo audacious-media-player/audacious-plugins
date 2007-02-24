@@ -34,14 +34,14 @@ CPlayer *Cu6mPlayer::factory(Copl *newopl)
   return new Cu6mPlayer(newopl);
 }
 
-bool Cu6mPlayer::load(const std::string &filename, const CFileProvider &fp)
+bool Cu6mPlayer::load(VFSFile *fd, const CFileProvider &fp)
 {
     // file validation section
     // this section only checks a few *necessary* conditions
     unsigned long filesize, decompressed_filesize;
     binistream *f;
 
-    f = fp.open(filename); if(!f) return false;
+    f = fp.open(fd); if(!f) return false;
     filesize = fp.filesize(f);
 
     if (filesize >= 6)

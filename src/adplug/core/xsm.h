@@ -29,7 +29,7 @@ public:
   CxsmPlayer(Copl *newopl);
   ~CxsmPlayer();
 
-  bool load(const std::string &filename, const CFileProvider &fp);
+  bool load(VFSFile *fd, const CFileProvider &fp);
   bool update();
   void rewind(int subsong);
   float getrefresh();

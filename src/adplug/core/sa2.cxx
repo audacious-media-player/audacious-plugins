@@ -30,9 +30,9 @@ CPlayer *Csa2Loader::factory(Copl *newopl)
   return new Csa2Loader(newopl);
 }
 
-bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
+bool Csa2Loader::load(VFSFile *fd, const CFileProvider &fp)
 {
-        binistream *f = fp.open(filename); if(!f) return false;
+        binistream *f = fp.open(fd); if(!f) return false;
 	struct {
 		unsigned char data[11],arpstart,arpspeed,arppos,arpspdcnt;
 	} insts;
@@ -161,7 +161,7 @@ bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
 
         AdPlug_LogWrite("Csa2Loader::load(\"%s\"): sat_type = %x, nop = %d, "
 		 "length = %d, restartpos = %d, activechan = %x, bpm = %d\n",
-		 filename.c_str(), sat_type, nop, length, restartpos, activechan, bpm);
+		 fd->uri, sat_type, nop, length, restartpos, activechan, bpm);
 
 	// track data
 	if(sat_type & HAS_OLDPATTERNS) {

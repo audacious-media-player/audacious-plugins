@@ -42,15 +42,16 @@ CPlayer *CadtrackLoader::factory(Copl *newopl)
   return new CadtrackLoader(newopl);
 }
 
-bool CadtrackLoader::load(const std::string &filename, const CFileProvider &fp)
+bool CadtrackLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
-  binistream *f = fp.open(filename); if(!f) return false;
+  binistream *f = fp.open(fd); if(!f) return false;
   binistream *instf;
   char note[2];
   unsigned short rwp;
   unsigned char chp, octave, pnote = 0;
   int i,j;
   AdTrackInst myinst;
+  std::string filename(fd->uri);
 
   // file validation
   if(!fp.extension(filename, ".sng") || fp.filesize(f) != 36000)
@@ -61,8 +62,10 @@ bool CadtrackLoader::load(const std::string &filename, const CFileProvider &fp)
   instfilename += ".ins";
   AdPlug_LogWrite("CadtrackLoader::load(,\"%s\"): Checking for \"%s\"...\n",
 		  filename.c_str(), instfilename.c_str());
-  instf = fp.open(instfilename);
-  if(!instf || fp.filesize(instf) != 468) { fp.close(f); return false; }
+
+  VFSFile *instfd = vfs_fopen(instfilename.c_str(), "rb");
+  instf = fp.open(instfd);
+  if(!instf || fp.filesize(instf) != 468) { fp.close(f); vfs_fclose(instfd); return false; }
 
   // give CmodPlayer a hint on what we're up to
   realloc_patterns(1,1000,9); realloc_instruments(9); realloc_order(1);

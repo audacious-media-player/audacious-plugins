@@ -28,9 +28,9 @@ CPlayer *CmtkLoader::factory(Copl *newopl)
   return new CmtkLoader(newopl);
 }
 
-bool CmtkLoader::load(const std::string &filename, const CFileProvider &fp)
+bool CmtkLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
-        binistream *f = fp.open(filename); if(!f) return false;
+        binistream *f = fp.open(fd); if(!f) return false;
 	struct {
 		char id[18];
 		unsigned short crc,size;
