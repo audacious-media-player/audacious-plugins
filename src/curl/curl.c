@@ -548,7 +548,6 @@ curl_vfs_fopen_impl(const gchar * path,
 
   curl_easy_setopt(handle->curl, CURLOPT_FOLLOWLOCATION, 1);
 
-
   {
     gboolean tmp = FALSE;
     ConfigDb *db;
@@ -595,6 +594,8 @@ curl_vfs_fopen_impl(const gchar * path,
       if (proxy_host != NULL)
         g_free(proxy_host);
     }
+
+    bmp_cfg_db_close(db);
   }
 
   {

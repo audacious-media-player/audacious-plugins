@@ -1,3 +1,11 @@
+2007-02-24 16:09:24 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1500]
+  - proxy support. somebody test this.
+  
+  trunk/src/curl/curl.c |   50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+  1 file changed, 50 insertions(+)
+
+
 2007-02-24 15:49:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1498]
   - make use of the new id3_file_vfsopen() function.
