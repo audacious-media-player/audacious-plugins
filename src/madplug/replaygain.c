@@ -196,14 +196,14 @@ static int find_offset(VFSFile * fp)
 
 void input_read_replaygain(struct mad_info_t *file_info)
 {
+    VFSFile *fp;
+    glong curpos = 0;
+
     file_info->has_replaygain = FALSE;
     file_info->replaygain_album_scale = -1;
     file_info->replaygain_track_scale = -1;
     file_info->mp3gain_undo = -77;
     file_info->mp3gain_minmax = -77;
-
-    VFSFile *fp;
-    glong curpos = 0;
 
     if (file_info->infile) {
         fp = vfs_dup(file_info->infile);
@@ -257,6 +257,5 @@ void input_read_replaygain(struct mad_info_t *file_info)
     if (curpos)
         vfs_fseek(fp, curpos, SEEK_SET);
     else
-        vfs_fclose(fp);
-        
+        vfs_fclose(fp);        
 }
