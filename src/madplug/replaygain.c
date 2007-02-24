@@ -202,16 +202,21 @@ void input_read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_undo = -77;
     file_info->mp3gain_minmax = -77;
 
-
     VFSFile *fp;
+    glong curpos = 0;
 
-    if ((fp = vfs_fopen(file_info->filename, "rb")) == NULL)
-        return;
-
-    if (vfs_fseek(fp, 0L, SEEK_END) != 0) {
-        vfs_fclose(fp);
-        return;
+    if (file_info->infile) {
+        fp = file_info->infile;
+        curpos = vfs_ftell(fp);
+    } else {
+        if ((fp = vfs_fopen(file_info->filename, "rb")) == NULL)
+            return;
+        if (vfs_fseek(fp, 0L, SEEK_END) != 0) {
+            vfs_fclose(fp);
+            return;
+        }
     }
+    
     long pos = vfs_ftell(fp);
     int res = -1;
     int try = 0;
@@ -249,5 +254,9 @@ void input_read_replaygain(struct mad_info_t *file_info)
         || file_info->replaygain_track_scale != -1)
         file_info->has_replaygain = TRUE;
 
-    vfs_fclose(fp);
+    if (curpos)
+        vfs_fseek(fp, curpos, SEEK_SET);
+    else
+        vfs_fclose(fp);
+        
 }

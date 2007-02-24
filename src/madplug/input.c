@@ -345,7 +345,10 @@ static void input_read_tag(struct mad_info_t *info)
     else
         title_input = info->tuple;
 
-    info->id3file = id3_file_open(info->filename, ID3_FILE_MODE_READONLY);
+    if(info->infile)
+      info->id3file = id3_file_vfsopen(info->infile, ID3_FILE_MODE_READONLY);
+    else
+      info->id3file = id3_file_open(info->filename, ID3_FILE_MODE_READONLY);
     if (!info->id3file) {
         return;
     }
