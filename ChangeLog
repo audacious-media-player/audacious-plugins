@@ -1,3 +1,11 @@
+2007-02-24 17:43:51 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1514]
+  - fix proxy_use vs use_proxy. reported by joker on IRC.
+  
+  trunk/src/curl/curl.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-02-24 17:22:04 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1512]
   - reset position if we were passed a live FD.
