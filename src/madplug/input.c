@@ -120,7 +120,10 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     vfs_fseek(info->infile, 0, SEEK_END);
     info->size = vfs_ftell(info->infile);
     vfs_fseek(info->infile, 0, SEEK_SET);
-    info->remote = info->size == 0 ? TRUE : FALSE;
+    info->remote = info->size == 0 ? TRUE : FALSE; //proxy connection may result in non-zero size.
+    if (!strncasecmp("http://", url, 7) || !strncasecmp("https://", url, 8)) {
+        info->remote = TRUE;
+    }
 
 #ifdef DEBUG
     g_message("i: info->size = %lu", (long unsigned int)info->size);

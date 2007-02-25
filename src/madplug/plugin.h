@@ -29,8 +29,6 @@
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "MADPlug"
 
-//#include "config.h" // is it needed when in src tree?
-
 #undef PACKAGE
 #define PACKAGE "audacious-plugins"
 
