@@ -1,3 +1,15 @@
+2007-02-25 01:09:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1534]
+  - libflac -> libaudflac to prevent collision in the sun studio linker
+  - remove some checks wrt vfs which are obsolete due to flac import
+  
+  trunk/src/flac/Makefile             |    2 +-
+  trunk/src/flac/libflac/Makefile     |    4 ++--
+  trunk/src/flac/plugin_common/tags.c |    5 -----
+  trunk/src/flac/tag.c                |    5 -----
+  4 files changed, 3 insertions(+), 13 deletions(-)
+
+
 2007-02-25 00:36:25 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1532]
   - enforce $(PICFLAGS)
