@@ -1,7 +1,7 @@
 include ../../../mk/rules.mk
 include ../../../mk/init.mk
 
-OBJECTIVE_LIBS_NOINST = libflac.a
+OBJECTIVE_LIBS_NOINST = libaudflac.a
 
 SOURCES = \
 	  bitmath.c			\
@@ -30,7 +30,7 @@ OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += $(PICFLAGS) -I. -IFLAC
 
-libflac.a: ${OBJECTS}
+libaudflac.a: ${OBJECTS}
 	${AR} cq $@ ${OBJECTS}
 
 include ../../../mk/objective.mk
