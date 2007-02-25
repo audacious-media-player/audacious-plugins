@@ -1,3 +1,11 @@
+2007-02-24 19:40:20 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [1528]
+  More VFS stuff.
+  trunk/src/flac113/libflac/FLAC/stream_decoder.h |    5 +-
+  trunk/src/flac113/libflac/stream_decoder.c      |   58 +++++++++++++++++++-----
+  2 files changed, 50 insertions(+), 13 deletions(-)
+
+
 2007-02-24 19:04:38 +0000  Jonathan Schleifer <js@h3c.de>
   revision [1526]
   * Link libogg and static libflac

@@ -510,18 +510,11 @@ AC_ARG_ENABLE( flac,
                 enable_flac="yes")
 
 if test "x$enable_flac" = xyes; then
-        AM_PATH_LIBFLAC(have_flac=yes, have_flac=no)
+        INPUT_PLUGINS="$INPUT_PLUGINS flac"
+        have_flac=yes
 else
         AC_MSG_RESULT([*** flac plugin disabled per user request ***])
         have_flac=no
-fi
-
-if test "$have_flac" = "yes"; then
-	if test "$FLAC_VERSION" -le 112; then
-	   INPUT_PLUGINS="$INPUT_PLUGINS flac112"
-	else
-	   INPUT_PLUGINS="$INPUT_PLUGINS flac113"
-	fi	
 fi
 
 dnl *** Musepack
