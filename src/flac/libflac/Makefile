@@ -28,7 +28,7 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += -I. -IFLAC
+CFLAGS += $(PICFLAGS) -I. -IFLAC
 
 libflac.a: ${OBJECTS}
 	${AR} cq $@ ${OBJECTS}
