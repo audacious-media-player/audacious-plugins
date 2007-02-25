@@ -510,8 +510,13 @@ AC_ARG_ENABLE( flac,
                 enable_flac="yes")
 
 if test "x$enable_flac" = xyes; then
-        INPUT_PLUGINS="$INPUT_PLUGINS flac"
-        have_flac=yes
+	if test "x$have_oggvorbis" = xyes; then
+	        INPUT_PLUGINS="$INPUT_PLUGINS flac"
+        	have_flac=yes
+	else
+		AC_MSG_RESULT([*** flac plugin couldn't be enabled due to missing dependencies ***])
+		have_flac=no
+	fi
 else
         AC_MSG_RESULT([*** flac plugin disabled per user request ***])
         have_flac=no
