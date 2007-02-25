@@ -1,3 +1,11 @@
+2007-02-25 04:27:03 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1536]
+  - without this, libconsole.so doesn't compile.
+  
+  trunk/configure.ac |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2007-02-25 01:09:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1534]
   - libflac -> libaudflac to prevent collision in the sun studio linker

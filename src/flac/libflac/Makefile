@@ -28,7 +28,7 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) -I. -IFLAC
+CFLAGS += $(PICFLAGS) -I. -IFLAC $(OGG_VORBIS_CFLAGS)
 
 libaudflac.a: ${OBJECTS}
 	${AR} cq $@ ${OBJECTS}

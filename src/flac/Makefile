@@ -17,7 +17,7 @@ OBJECTIVE_LIBS = libflac$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -L./libflac -L./plugin_common -laudflac -logg -lplugin_common
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -L./libflac -L./plugin_common -laudflac -lplugin_common $(OGG_VORBIS_LIBS)
 
 SOURCES = \
 	charset.c \
@@ -32,6 +32,7 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -I./libflac
+# XXX: debian
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -I./libflac $(OGG_VORBIS_CFLAGS)
 
 include ../../mk/objective.mk
