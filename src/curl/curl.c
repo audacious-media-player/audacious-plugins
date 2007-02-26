@@ -80,6 +80,8 @@ struct _CurlHandle {
     gchar *proxy_host;
     gchar *proxy_auth;
   } proxy_info;
+  
+  gchar *local_ip;
 };
 
 VFSConstructor curl_const;
@@ -559,6 +561,14 @@ curl_vfs_fopen_impl(const gchar * path,
 
     db = bmp_cfg_db_open();
 
+    bmp_cfg_db_get_bool(db, NULL, "use_local_ip", &tmp);
+    if (tmp == TRUE)
+    {
+      bmp_cfg_db_get_string(db, NULL, "local_ip", &handle->local_ip);
+      curl_easy_setopt(handle->curl, CURLOPT_INTERFACE, handle->local_ip);
+    }
+    tmp = FALSE;
+
     bmp_cfg_db_get_bool(db, NULL, "use_proxy", &tmp);
     if (tmp == TRUE)
     {
@@ -634,6 +644,9 @@ curl_vfs_fclose_impl(VFSFile * file)
       if (handle->stream_stack != NULL)
         g_slist_free(handle->stream_stack);
       curl_easy_cleanup(handle->curl);
+
+      if (handle->local_ip != NULL)
+        g_free(handle->local_ip);
 
       if (handle->proxy_info.proxy_host != NULL)
         g_free(handle->proxy_info.proxy_host);

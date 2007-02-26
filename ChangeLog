@@ -1,3 +1,12 @@
+2007-02-26 07:22:16 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1558]
+  - now fileinfo dialog shows "Unknown" instead of "Blues" if genre name isn't specified.
+  - when "Unknown" is specified in fileinfo dialog, the dialog removes TCON frame.
+  
+  trunk/src/madplug/fileinfo.c |   37 +++++++++++++++++++++++++++++++------
+  1 file changed, 31 insertions(+), 6 deletions(-)
+
+
 2007-02-26 01:41:03 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1556]
   - properly report if madplug will not be built.
