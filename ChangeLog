@@ -1,3 +1,12 @@
+2007-02-26 11:38:03 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1560]
+  - add a (hidden for now) configuration option, use_local_ip and local_ip 
+    which plugins can use to bind to a specific IP/interface.
+  
+  trunk/src/curl/curl.c |   13 +++++++++++++
+  1 file changed, 13 insertions(+)
+
+
 2007-02-26 07:22:16 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1558]
   - now fileinfo dialog shows "Unknown" instead of "Blues" if genre name isn't specified.

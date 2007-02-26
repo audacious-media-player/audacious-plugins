@@ -14,6 +14,7 @@
 #include <glib.h>
 
 #include <audacious/titlestring.h>
+#include <audacious/util.h>
 
 #define SCROBBLER_HS_URL "http://music.hatelabo.jp/trackauth"
 #define SCROBBLER_CLI_ID "aud"
@@ -703,7 +704,7 @@ static void read_cache(void)
 
 	cachesize = written = 0;
 
-	snprintf(buf, sizeof(buf), "%s/.audacious/gerpokqueue.txt", g_get_home_dir());
+	snprintf(buf, sizeof(buf), "%s/hatenaqueue.txt", audacious_get_localdir());
 
 	if (!(fd = fopen(buf, "r")))
 		return;
