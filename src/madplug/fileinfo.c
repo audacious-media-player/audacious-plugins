@@ -105,8 +105,18 @@ update_id3_frame(struct id3_tag *tag, const char *frame_name,
         char *tmp;
         int index = id3_genre_number(ucs4);
         g_free(ucs4);
-        tmp = g_strdup_printf("%d", index);
-        ucs4 = id3_latin1_ucs4duplicate((unsigned char *) tmp);
+
+        if(index == -1) { // unknown genre. remove TCON frame.
+#ifdef DEBUG
+            printf("remove genre frame\n");
+#endif
+            id3_tag_detachframe(tag, frame);
+        }
+        else { // meaningful genre
+            tmp = g_strdup_printf("%d", index);
+            ucs4 = id3_latin1_ucs4duplicate((unsigned char *) tmp);
+        }
+        
     }
 
     // write string
@@ -207,12 +217,15 @@ static void save_cb(GtkWidget * w, gpointer data)
 
     text = gtk_editable_get_chars(GTK_EDITABLE(GTK_COMBO(genre_combo)->entry),
                                0, -1);
-    text2 = g_convert(text, strlen(text), encoding, "UTF-8", NULL, NULL, NULL);
-    update_id3_frame(id3tag, ID3_FRAME_GENRE, text2);
+#ifdef DEBUG
+    g_print("genre entry = %s\n", text);
+#endif
+    update_id3_frame(id3tag, ID3_FRAME_GENRE, text);
     free(text);
-    free(text2);
 
+#ifdef DEBUG
     printf("about to write id3tag\n");
+#endif
     if (id3_file_update(id3file) != 0) {
         xmms_show_message("File Info", "Couldn't write tag!", "Ok", FALSE,
                           NULL, NULL);
@@ -459,6 +472,10 @@ void create_window()
     if (!genre_list) {
         int i = 0;
         const id3_ucs4_t *ucs4 = id3_genre_index(i);
+
+        //add "Unknown" to the first. we must shift index.
+        genre_list = g_list_append(genre_list, "Unknown");
+
         while (ucs4) {
             genre_list =
                 g_list_append(genre_list, id3_ucs4_utf8duplicate(ucs4));
@@ -679,10 +696,18 @@ void audmad_get_file_info(char *filename)
             field = id3_frame_field(frame, 1);
             string = id3_field_getstrings(field, 0);
             genre = mad_parse_genre(string);
+#ifdef DEBUG
+            {
+                gchar *utf = (gchar *)id3_ucs4_utf8duplicate(genre);
+                g_print("genre = %s\n", utf);
+                g_print("genre num = %d\n", id3_genre_number(genre));
+                g_free(utf);
+            }
+#endif
             if (genre) {
                 gtk_list_select_item(GTK_LIST
                                      (GTK_COMBO(genre_combo)->list),
-                                     id3_genre_number(genre));
+                                     id3_genre_number(genre)+1); //shift one for "Unknown".
                 g_free((void *)genre);
             }
         }
