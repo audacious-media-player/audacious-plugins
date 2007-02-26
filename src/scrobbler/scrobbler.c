@@ -825,7 +825,7 @@ static void dump_queue(void)
 		return;
 	}
 
-	snprintf(buf, sizeof(buf), "%s/.audacious/scrobblerqueue.txt", home);
+	snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", audacious_get_localdir());
 
 	if (!(fd = fopen(buf, "w")))
 	{

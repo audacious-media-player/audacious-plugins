@@ -788,7 +788,7 @@ static void dump_queue(void)
 		return;
 	}
 
-	snprintf(buf, sizeof(buf), "%s/.audacious/gerpokqueue.txt", home);
+	snprintf(buf, sizeof(buf), "%s/hatenaqueue.txt", audacious_get_localdir());
 
 	if (!(fd = fopen(buf, "w")))
 	{
