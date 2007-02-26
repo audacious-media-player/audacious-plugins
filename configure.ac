@@ -265,7 +265,7 @@ AC_ARG_ENABLE(mp3,
 
 if test "$enable_mp3" = "yes"; then
 	PKG_CHECK_MODULES(MAD, [mad],
-	     [INPUT_PLUGINS="$INPUT_PLUGINS madplug"])
+	     [INPUT_PLUGINS="$INPUT_PLUGINS madplug"], [enable_mp3="no"])
 fi
 # XXX rtsp support
 #        PKG_CHECK_MODULES(LIBNMS,[libnms >= 0.6.0],
