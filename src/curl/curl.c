@@ -814,7 +814,7 @@ curl_vfs_fseek_impl(VFSFile * file,
 	}
     }
 
-  if (whence == SEEK_END && handle->length < 0)
+  if (whence == SEEK_END && handle->length <= 0)
     {
       if (DEBUG_SEEK)
 	g_print("Tried to seek to the end of a file with unknown length\n");
