@@ -256,7 +256,12 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             g_message("size = %d", stream.next_frame - stream.this_frame);
 #endif
 #endif
-            mad_timer_add(&info->duration, header.duration);
+            if(info->tuple->length == -1)
+                mad_timer_add(&info->duration, header.duration);
+            else {
+                info->duration.seconds = info->tuple->length / 1000;
+                info->duration.fraction = info->tuple->length % 1000;
+            }
             data_used += stream.next_frame - stream.this_frame;
             if (info->frames == 1) {
                 /* most of these *should* remain constant */
@@ -283,7 +288,12 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                         has_xing = TRUE;
                         info->vbr = TRUE;   /* otherwise xing header would have been 'Info' */
                         info->frames = info->xing.frames;
-                        mad_timer_multiply(&info->duration, info->frames);
+                        if(info->tuple->length == -1)
+                            mad_timer_multiply(&info->duration, info->frames);
+                        else {
+                            info->duration.seconds = info->tuple->length / 1000;
+                            info->duration.fraction = info->tuple->length % 1000;
+                        }
                         info->bitrate =
                             8.0 * info->xing.bytes /
                             mad_timer_count(info->duration,
@@ -313,9 +323,15 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             if (fast && info->frames >= N_AVERAGE_FRAMES) {
                 float frame_size = ((double) data_used) / N_AVERAGE_FRAMES;
                 info->frames = (info->size - tagsize) / frame_size;
-                info->duration.seconds /= N_AVERAGE_FRAMES;
-                info->duration.fraction /= N_AVERAGE_FRAMES;
-                mad_timer_multiply(&info->duration, info->frames);
+                if(info->tuple->length == -1) {
+                    info->duration.seconds /= N_AVERAGE_FRAMES;
+                    info->duration.fraction /= N_AVERAGE_FRAMES;
+                    mad_timer_multiply(&info->duration, info->frames);
+                }
+                else {
+                    info->duration.seconds = info->tuple->length / 1000;
+                    info->duration.fraction = info->tuple->length % 1000;
+                }
 #ifdef DEBUG
                 g_message("using fast playtime calculation");
                 g_message("data used = %d [tagsize=%d framesize=%f]",

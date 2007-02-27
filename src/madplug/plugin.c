@@ -402,7 +402,10 @@ audmad_get_song_info(char *url, char **title, int *length)
             *title = strdup(myinfo.tuple->track_name);
         else
             *title = strdup(url);
-        *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
+        if(myinfo.tuple->length == -1)
+            *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
+        else
+            *length = myinfo.tuple->length;
     }
     else {
         *title = strdup(url);
@@ -555,7 +558,17 @@ static TitleInput *audmad_get_song_tuple(char *filename)
                 tuple->file_ext = extname(filename);
 
                 // length
-                {
+                tuple->length = -1;
+                string = input_id3_get_string(tag, "TLEN");
+                if (string) {
+                    tuple->length = atoi(string);
+#ifdef DEBUG
+                    printf("get_song_tuple: TLEN = %d\n", tuple->length);
+#endif	
+                    g_free(string);
+                    string = NULL;
+                }
+                else {
                     char *dummy = NULL;
                     int length = 0;
                     audmad_get_song_info(filename, &dummy, &length);
@@ -582,7 +595,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
             }
             id3_file_close(id3file);
         }
-        else {
+        else { // no id3tag
             tuple->file_name = g_path_get_basename(filename);
             tuple->file_path = g_path_get_dirname(filename);
             tuple->file_ext = extname(filename);
@@ -590,8 +603,10 @@ static TitleInput *audmad_get_song_tuple(char *filename)
             {
                 char *dummy = NULL;
                 int length = 0;
-                audmad_get_song_info(filename, &dummy, &length);
-                tuple->length = length;
+                if(tuple->length == -1) {
+                    audmad_get_song_info(filename, &dummy, &length);
+                    tuple->length = length;
+                }
                 g_free(dummy);
             }
         }

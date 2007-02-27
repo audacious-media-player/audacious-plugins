@@ -388,6 +388,18 @@ static void input_read_tag(struct mad_info_t *info)
         string = NULL;
     }
 
+    // length
+    title_input->length = -1;
+    string = input_id3_get_string(info->tag, "TLEN");
+    if (string) {
+        title_input->length = atoi(string);
+#ifdef DEBUG
+        printf("input_read_tag: TLEN = %d\n", title_input->length);
+#endif	
+        g_free(string);
+        string = NULL;
+    }
+
     title_input->file_name = g_strdup(g_basename(info->filename));
     title_input->file_path = g_path_get_dirname(info->filename);
     if ((string = strrchr(title_input->file_name, '.'))) {
@@ -408,13 +420,15 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 #ifdef DEBUG
     g_message("f: input_get_info: %s, fast_scan = %s", info->title, fast_scan ? "TRUE" : "FALSE");
 #endif                          /* DEBUG */
+
     input_read_tag(info);
     input_read_replaygain(info);
 
-    /* scan mp3 file, decoding headers unless fast_scan is set */
+    /* scan mp3 file, decoding headers */
     if (scan_file(info, fast_scan) == FALSE) {
         return FALSE;
     }
+
     /* reset the input file to the start */
     vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;

@@ -201,6 +201,11 @@ static void save_cb(GtkWidget * w, gpointer data)
     free(text);
     free(text2);
 
+    // update TLEN frame
+    text = g_strdup_printf("%ld", mad_timer_count(info.duration, MAD_UNITS_MILLISECONDS));
+    update_id3_frame(id3tag, "TLEN", text);
+    free(text);
+
     text = gtk_editable_get_chars(GTK_EDITABLE(comment_entry), 0, -1);
     text2 =
         g_convert(text, strlen(text), encoding, "UTF-8", NULL, NULL, NULL);
