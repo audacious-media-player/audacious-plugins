@@ -646,10 +646,10 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     return TRUE;
 }
 
-static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
+void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 {
     faacDecHandle   decoder = 0;
-    guchar      buffer[BUFFER_SIZE];
+    guchar      streambuffer[BUFFER_SIZE];
     gulong      bufferconsumed = 0;
     gulong      samplerate = 0;
     guchar      channels;
@@ -671,7 +671,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
-    if((buffervalid = vfs_fread(buffer, 1, BUFFER_SIZE, file))==0){
+    if((buffervalid = vfs_fread(streambuffer, 1, BUFFER_SIZE, file))==0){
         g_print("AAC: Error reading file\n");
         vfs_fclose(file);
         buffer_playing = FALSE;
@@ -679,14 +679,15 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
-    if(!strncmp((char*)buffer, "ID3", 3)){
+    if(!strncmp((char*)streambuffer, "ID3", 3)){
         gint size = 0;
 
         vfs_fseek(file, 0, SEEK_SET);
-        size = (buffer[6]<<21) | (buffer[7]<<14) | (buffer[8]<<7) | buffer[9];
+        size = (streambuffer[6]<<21) | (streambuffer[7]<<14) | 
+		(streambuffer[8]<<7) | streambuffer[9];
         size+=10;
-        vfs_fread(buffer, 1, size, file);
-        buffervalid = vfs_fread(buffer, 1, BUFFER_SIZE, file);
+        vfs_fread(streambuffer, 1, size, file);
+        buffervalid = vfs_fread(streambuffer, 1, BUFFER_SIZE, file);
     }
 
     ttemp = vfs_get_metadata(file, "stream-name");
@@ -699,17 +700,17 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
     else
         xmmstitle = g_strdup(g_basename(temp));
 
-    bufferconsumed = aac_probe(buffer, buffervalid);
+    bufferconsumed = aac_probe(streambuffer, buffervalid);
     if(bufferconsumed) {
-      memmove(buffer, &buffer[bufferconsumed], buffervalid);
       buffervalid -= bufferconsumed;
-      buffervalid += vfs_fread(&buffer[buffervalid], 1,
+      memmove(streambuffer, &streambuffer[bufferconsumed], buffervalid);
+      buffervalid += vfs_fread(&streambuffer[buffervalid], 1,
                      BUFFER_SIZE-buffervalid, file);
       bufferconsumed = 0;
     }
 
     bufferconsumed = faacDecInit(decoder,
-                     buffer,
+                     streambuffer,
                      buffervalid,
                      &samplerate,
                      &channels);
@@ -730,7 +731,7 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
     mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
     playback->output->flush(0);
 
-    while(buffer_playing && buffervalid > 0 && buffer != NULL)
+    while(buffer_playing && buffervalid > 0 && streambuffer != NULL)
     {
         faacDecFrameInfo    finfo;
         unsigned long   samplesdecoded;
@@ -738,9 +739,9 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
 
         if(bufferconsumed > 0)
         {
-            memmove(buffer, &buffer[bufferconsumed], buffervalid);
             buffervalid -= bufferconsumed;
-            buffervalid += vfs_fread(&buffer[buffervalid], 1,
+            memmove(streambuffer, &streambuffer[bufferconsumed], buffervalid);
+            buffervalid += vfs_fread(&streambuffer[buffervalid], 1,
                          BUFFER_SIZE-buffervalid, file);
             bufferconsumed = 0;
 
@@ -773,22 +774,22 @@ static void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *fil
             ttemp = NULL;
         }
 
-        sample_buffer = faacDecDecode(decoder, &finfo, buffer, buffervalid);
+        sample_buffer = faacDecDecode(decoder, &finfo, streambuffer, buffervalid);
 
         bufferconsumed += finfo.bytesconsumed;
         samplesdecoded = finfo.samples;
 
         if(finfo.error > 0 && remote != FALSE)
         {
-            memmove(buffer, &buffer[1], buffervalid);
+            memmove(streambuffer, &streambuffer[1], buffervalid);
             if(buffervalid < BUFFER_SIZE) {
                buffervalid +=
-                 vfs_fread(&buffer[buffervalid], 1, BUFFER_SIZE-buffervalid, file);
+                 vfs_fread(&streambuffer[buffervalid], 1, BUFFER_SIZE-buffervalid, file);
 	    }
-            bufferconsumed = aac_probe(buffer, buffervalid);
+            bufferconsumed = aac_probe(streambuffer, buffervalid);
             if(bufferconsumed) {
                buffervalid -= bufferconsumed;
-               memmove(buffer, &buffer[bufferconsumed], buffervalid);
+               memmove(streambuffer, &streambuffer[bufferconsumed], buffervalid);
                bufferconsumed = 0;
             }
             continue;
