@@ -10,7 +10,7 @@
 
 #include <cairo/cairo.h>
 
-#include <values.h>  /* MAXINT */
+#include <limits.h>  /* INT_MAX */
 #include <sys/time.h>  /* timeval */
 
 typedef struct _Ghosd Ghosd;
@@ -32,7 +32,7 @@ typedef void (*GhosdEventButtonCb)(Ghosd *ghosd, GhosdEventButton *event, void *
 Ghosd *ghosd_new(void);
 void   ghosd_destroy(Ghosd* ghosd);
 
-#define GHOSD_COORD_CENTER MAXINT
+#define GHOSD_COORD_CENTER INT_MAX
 void ghosd_set_transparent(Ghosd *ghosd, int transparent);
 void ghosd_set_position(Ghosd *ghosd, int x, int y, int width, int height);
 void ghosd_set_render(Ghosd *ghosd, GhosdRenderFunc render_func,

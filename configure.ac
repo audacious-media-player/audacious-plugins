@@ -876,7 +876,9 @@ AC_CHECK_HEADERS(limits.h)
 AC_CHECK_HEADERS(wchar.h)
 AC_CHECK_HEADERS(fts.h)
 
-AC_CHECK_FUNCS([mkdtemp getmntinfo statvfs strtoul lrintf])
+AC_CHECK_DECL([lrintf],[AC_DEFINE(HAVE_LRINTF,1,[Define this if the 'lrintf' function is declared in math.h])],[
+    AC_CHECK_FUNCS([lrintf])])
+AC_CHECK_FUNCS([mkdtemp getmntinfo statvfs strtoul])
 
 
 if test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes"
