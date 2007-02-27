@@ -876,8 +876,10 @@ AC_CHECK_HEADERS(limits.h)
 AC_CHECK_HEADERS(wchar.h)
 AC_CHECK_HEADERS(fts.h)
 
-AC_CHECK_DECL([lrintf],[AC_DEFINE(HAVE_LRINTF,1,[Define this if the 'lrintf' function is declared in math.h])],[
-    AC_CHECK_FUNCS([lrintf])])
+AC_CHECK_DECL([lrintf],[AC_DEFINE(HAVE_LRINTF,1)],[AC_CHECK_FUNCS([lrintf])],[
+#define _ISOC9X_SOURCE
+#include <math.h>
+], [AC_CHECK_FUNCS([lrintf])])
 AC_CHECK_FUNCS([mkdtemp getmntinfo statvfs strtoul])
 
 

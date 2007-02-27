@@ -1,3 +1,44 @@
+2007-02-27 09:40:23 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1568]
+  - sync audacious-sid with latest xmms-sid, from Matti Hamalainen (ccr).
+  
+  trunk/src/sid/Makefile       |    7 
+  trunk/src/sid/xmms-sid.c     |  538 +++--
+  trunk/src/sid/xmms-sid.glade | 4398 +++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/sid/xmms-sid.h     |  180 -
+  trunk/src/sid/xs_about.c     |  116 -
+  trunk/src/sid/xs_config.c    |  508 +++-
+  trunk/src/sid/xs_config.h    |   61 
+  trunk/src/sid/xs_curve.c     |  721 +++++++
+  trunk/src/sid/xs_curve.h     |   68 
+  trunk/src/sid/xs_fileinfo.c  |  236 +-
+  trunk/src/sid/xs_fileinfo.h  |    2 
+  trunk/src/sid/xs_filter.c    |   12 
+  trunk/src/sid/xs_genui.c     |   27 
+  trunk/src/sid/xs_genui.h     |   16 
+  trunk/src/sid/xs_glade.c     |  158 -
+  trunk/src/sid/xs_glade.h     |   37 
+  trunk/src/sid/xs_init.c      |   20 
+  trunk/src/sid/xs_interface.c | 2903 ++++++++++++++--------------
+  trunk/src/sid/xs_length.c    |  270 --
+  trunk/src/sid/xs_length.h    |   19 
+  trunk/src/sid/xs_md5.c       |  479 +---
+  trunk/src/sid/xs_md5.h       |   18 
+  trunk/src/sid/xs_player.h    |   59 
+  trunk/src/sid/xs_sidplay.h   |  183 +
+  trunk/src/sid/xs_sidplay1.cc |  200 -
+  trunk/src/sid/xs_sidplay1.h  |   22 
+  trunk/src/sid/xs_sidplay2.cc |  242 +-
+  trunk/src/sid/xs_sidplay2.h  |   20 
+  trunk/src/sid/xs_stil.c      |  388 +--
+  trunk/src/sid/xs_stil.h      |   21 
+  trunk/src/sid/xs_support.c   |  148 +
+  trunk/src/sid/xs_support.h   |   62 
+  trunk/src/sid/xs_title.c     |  228 +-
+  trunk/src/sid/xs_title.h     |    8 
+  34 files changed, 9067 insertions(+), 3308 deletions(-)
+
+
 2007-02-27 09:27:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1566]
   - freebsd portability fixes from "The_Paya". Closes #814.
