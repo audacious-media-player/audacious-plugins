@@ -1,3 +1,11 @@
+2007-02-27 14:41:02 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1584]
+  - fix a crash reported by grufti.
+  
+  trunk/src/wav/wav.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-02-27 13:43:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1582]
   - fix icecast2, i think.

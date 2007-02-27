@@ -242,9 +242,9 @@ static submit_t get_song_status(void)
 	/* current music number */
 	pos_c = xmms_remote_get_playlist_pos(XS_CS);
 	/* current file name */
-	file_c = xmms_remote_get_playlist_file(XS_CS, pos_c); 
+	file_c = xmms_remote_get_playlist_file(XS_CS, pos_c);
 
-	if (ishttp(file_c))
+	if ((file_c != NULL) && (ishttp(file_c)))
 		return dosubmit;
 
 	/* total number */
