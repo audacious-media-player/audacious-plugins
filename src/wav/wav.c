@@ -424,7 +424,7 @@ play_file(InputPlayback * playback)
                         wav_file->samples_per_sec, wav_file->channels);
         g_free(name);
         wav_file->seek_to = -1;
-        decode_thread = g_thread_create(play_loop, NULL, TRUE, NULL);
+        decode_thread = g_thread_create(play_loop, playback, TRUE, NULL);
     }
 }
 
