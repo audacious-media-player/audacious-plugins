@@ -4,7 +4,7 @@
    Plugin initialization point
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2005 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,21 +16,21 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   You should have received a copy of the GNU General Public License along
+   with this program; if not, write to the Free Software Foundation, Inc.,
+   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
 #include "xmms-sid.h"
 #include "xs_config.h"
 #include "xs_fileinfo.h"
 
-gchar *sid_fmts[] = { "sid", "psid", NULL };
+static gchar *xs_sid_fmts[] = { "sid", "psid", NULL };
+
 
 InputPlugin xs_plugin_ip = {
 	NULL,			/* FILLED BY XMMS */
 	NULL,			/* FILLED BY XMMS */
-	"SID Tune Plugin",	/* Plugin description */
+	XS_PACKAGE_STRING,	/* Plugin description */
 	xs_init,		/* Initialization */
 	xs_about,		/* Show aboutbox */
 	xs_configure,		/* Show/edit configuration */
@@ -51,11 +51,11 @@ InputPlugin xs_plugin_ip = {
 	xs_get_song_info,	/* Get song title and length */
 	xs_fileinfo,		/* Show file-information dialog */
 	NULL,			/* FILLED BY XMMS */
+	xs_get_song_tuple,	/* Tuple */
 	NULL,			/* Tuple */
-	NULL,			/* Tuple */
-	NULL,			/* Buffer */
+	NULL,			/* Buffering status */
 	xs_is_our_file_vfs,	/* VFS */
-	sid_fmts		/* ext assist */
+	xs_sid_fmts		/* File ext assist */
 };
 
 

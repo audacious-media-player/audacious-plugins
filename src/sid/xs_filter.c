@@ -4,7 +4,7 @@
    Audio rate-conversion filter
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2005 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,9 +16,9 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   You should have received a copy of the GNU General Public License along
+   with this program; if not, write to the Free Software Foundation, Inc.,
+   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "xs_filter.h"
 
@@ -40,8 +40,8 @@
 static gint32 xs_filter_mbn = 0;
 
 
-gint xs_filter_rateconv(void *destBuf, void *srcBuf, const AFormat audioFormat, const gint oversampleFactor,
-			const gint bufSize)
+gint xs_filter_rateconv(void *destBuf, void *srcBuf, const AFormat audioFormat,
+			const gint oversampleFactor, const gint bufSize)
 {
 	static gint32 tmp;
 	XS_FVAR(s, 8,);

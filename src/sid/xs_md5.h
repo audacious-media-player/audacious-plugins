@@ -7,13 +7,12 @@
 extern "C" {
 #endif
 
-/*
- * Typedefs
+/* Typedefs
  */
 typedef struct md5_state_s {
-    guint32 count[2];	/* message length in bits, lsw first */
-    guint32 abcd[4];	/* digest buffer */
-    guint8 buf[64];	/* accumulate block */
+	guint32 bits[2];	/* message length in bits, lsw first */
+	guint32 buf[4];		/* digest buffer */
+	guint8 in[64];		/* accumulate block */
 } t_xs_md5state;
 
 #define XS_MD5HASH_LENGTH	(16)
@@ -22,12 +21,11 @@ typedef struct md5_state_s {
 typedef guint8 t_xs_md5hash[XS_MD5HASH_LENGTH];
 
 
-/*
- * Functions
+/* Functions
  */
-void xs_md5_init(t_xs_md5state *pms);
-void xs_md5_append(t_xs_md5state *pms, const guint8 *data, int nbytes);
-void xs_md5_finish(t_xs_md5state *pms, t_xs_md5hash digest);
+void xs_md5_init(t_xs_md5state *ctx);
+void xs_md5_append(t_xs_md5state *ctx, const guint8 *buf, guint len);
+void xs_md5_finish(t_xs_md5state *ctx, t_xs_md5hash digest);
 
 
 #ifdef __cplusplus

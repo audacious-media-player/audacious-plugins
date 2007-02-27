@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-/*
- * Functions
- */
-gchar *xs_make_titlestring(gchar *, gint, gint, gint, const gchar *, const gchar *, const gchar *, const gchar *);
+gchar *xs_make_titlestring(t_xs_tuneinfo *, gint);
+#ifdef AUDACIOUS_PLUGIN
+TitleInput * xs_make_titletuple(t_xs_tuneinfo *p, gint subTune);
+#endif
 
 #ifdef __cplusplus
 }

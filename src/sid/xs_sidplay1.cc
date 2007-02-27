@@ -4,7 +4,7 @@
    libSIDPlay v1 support
 
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2005 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,118 +16,65 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   You should have received a copy of the GNU General Public License along
+   with this program; if not, write to the Free Software Foundation, Inc.,
+   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "xmms-sid.h"
 
 #ifdef HAVE_SIDPLAY1
 
-#include "xs_sidplay1.h"
 #include <stdio.h>
+#include "xs_sidplay1.h"
 #include "xs_config.h"
-#include "xs_length.h"
-#include "xs_title.h"
 
 #include <sidplay/player.h>
 #include <sidplay/myendian.h>
 #include <sidplay/fformat.h>
-#include <audacious/vfs.h>
 
 
-typedef struct
-{
+/* Maximum audio frequency supported by libSIDPlay v1 */
+#define SIDPLAY1_MAX_FREQ	(48000)
+
+
+typedef struct {
 	emuEngine *currEng;
 	emuConfig currConfig;
 	sidTune *currTune;
+	guint8 *buf;
+	size_t bufSize;
 } t_xs_sidplay1;
 
 
 /* We need to 'export' all this pseudo-C++ crap */
-extern "C"
-{
+extern "C" {
 
 
-static gboolean xs_sidplay1_detect_by_content( VFSFile * fp )
-{
-	gchar magic_bytes[4];
-	gboolean res = FALSE;
-
-	if ( fp == NULL )
-		return FALSE;
-
-	if ( vfs_fread( magic_bytes , 1 , 4 , fp ) != 4 )
-		return FALSE;
-
-	if ( !strncmp( magic_bytes , "PSID" , 4 ) )
-		return TRUE;
-	else
-		return FALSE;
-}
-
-
-static gint xs_sidplay1_load_file_in_buffer( gchar * pcFilename , gchar ** buffer , glong * buffer_size )
-{
-	VFSFile *fp;
-
-	if ( *buffer != NULL ) {
-		g_free( *buffer );
-		*buffer = NULL;
-	}
-
-	fp = vfs_fopen( pcFilename , "rb" );
-
-	if ( fp == NULL )
-		return -1;
-
-	vfs_fseek( fp , 0 , SEEK_END );
-	*buffer_size = vfs_ftell( fp );
-
-	if ( *buffer_size > 0 )
-	{
-		glong readsize;
-		*buffer = (gchar*)g_malloc(*buffer_size);
-		vfs_fseek( fp , 0 , SEEK_SET );
-		readsize = vfs_fread( *buffer , 1 , *buffer_size , fp );
-		vfs_fclose( fp );
-		if ( readsize != *buffer_size )
-			return -1;
-		else
-			return 0;
-	}
-	else
-	{
-		vfs_fclose( fp );
-		return -1;
-	}
-}
+/* Return song information
+ */
+#define	TFUNCTION	xs_sidplay1_getinfo
+#define	TFUNCTION2	xs_sidplay1_updateinfo
+#define	TTUNEINFO	sidTuneInfo
+#define	TTUNE		sidTune
+#define TENGINE		t_xs_sidplay1
+#include "xs_sidplay.h"
 
 
 /* Check if we can play the given file
  */
-gboolean xs_sidplay1_isourfile(gchar * pcFilename)
+gboolean xs_sidplay1_probe(t_xs_file *f)
 {
-	VFSFile * fp;
-	gboolean result = FALSE;
-
-	fp = vfs_fopen( pcFilename , "rb" );
-
-	if ( fp == NULL )
+	gchar tmpBuf[4];
+	
+	if (!f) return FALSE;
+	
+	if (xs_fread(tmpBuf, sizeof(gchar), 4, f) != 4)
 		return FALSE;
-
-	result = xs_sidplay1_detect_by_content( fp );
-	vfs_fclose( fp );
-
-	return result;
-}
-
-
-/* Check if we can play the given file (VFS)
- */
-gboolean xs_sidplay1_isourfile_vfs(gchar * pcFilename, VFSFile * fp)
-{
-	return xs_sidplay1_detect_by_content( fp );
+	
+	if (!strncmp(tmpBuf, "PSID", 4))
+		return TRUE;
+	else
+		return FALSE;
 }
 
 
@@ -146,14 +93,14 @@ gboolean xs_sidplay1_init(t_xs_status * myStatus)
 	/* Initialize engine */
 	myEngine->currEng = new emuEngine();
 	if (!myEngine->currEng) {
-		XSERR("Could not initialize libSIDPlay1 emulation engine\n");
+		xs_error(_("[SIDPlay1] Could not initialize emulation engine.\n"));
 		g_free(myEngine);
 		return FALSE;
 	}
 
 	/* Verify endianess */
 	if (!myEngine->currEng->verifyEndianess()) {
-		XSERR("Endianess verification failed\n");
+		xs_error(_("[SIDPlay1] Endianess verification failed.\n"));
 		delete myEngine->currEng;
 		g_free(myEngine);
 		return FALSE;
@@ -281,17 +228,24 @@ gboolean xs_sidplay1_init(t_xs_status * myStatus)
 	/* if (xs_cfg.forceModel) */
 	myEngine->currConfig.mos8580 = xs_cfg.mos8580;
 	myEngine->currConfig.emulateFilter = xs_cfg.emulateFilters;
-	myEngine->currConfig.filterFs = xs_cfg.filterFs;
-	myEngine->currConfig.filterFm = xs_cfg.filterFm;
-	myEngine->currConfig.filterFt = xs_cfg.filterFt;
+	myEngine->currConfig.filterFs = xs_cfg.sid1FilterFs;
+	myEngine->currConfig.filterFm = xs_cfg.sid1FilterFm;
+	myEngine->currConfig.filterFt = xs_cfg.sid1FilterFt;
 
 
 	/* Now set the emulator configuration */
 	if (!myEngine->currEng->setConfig(myEngine->currConfig)) {
-		XSERR("Emulator engine configuration failed!\n");
+		xs_error(_("[SIDPlay1] Emulator engine configuration failed!\n"));
 		return FALSE;
 	}
-
+	
+	/* Create sidtune object */
+	myEngine->currTune = new sidTune(0);
+	if (!myEngine->currTune) {
+		xs_error(_("[SIDPlay1] Could not initialize SIDTune object.\n"));
+		return FALSE;
+	}
+	
 	return TRUE;
 }
 
@@ -311,13 +265,15 @@ void xs_sidplay1_close(t_xs_status * myStatus)
 		myEngine->currEng = NULL;
 	}
 
+	if (myEngine->currTune) {
+		delete myEngine->currTune;
+		myEngine->currTune = NULL;
+	}
+
+	xs_sidplay1_delete(myStatus);
+	
 	g_free(myEngine);
 	myStatus->sidEngine = NULL;
-
-	if ( myStatus->buffer != NULL ) {
-		g_free(myStatus->buffer);
-		myStatus->buffer = NULL;
-	}
 }
 
 
@@ -332,14 +288,16 @@ gboolean xs_sidplay1_initsong(t_xs_status * myStatus)
 	if (!myEngine) return FALSE;
 
 	if (!myEngine->currTune) {
-		XSERR("Tune was NULL\n");
+		xs_error(_("[SIDPlay1] SID-tune struct pointer was NULL. This should not happen, report to XMMS-SID author.\n"));
 		return FALSE;
 	}
 
 	if (!myEngine->currTune->getStatus()) {
-		XSERR("Tune status check failed\n");
+		xs_error(_("[SIDPlay1] SID-tune status check failed. This should not happen, report to XMMS-SID author.\n"));
 		return FALSE;
 	}
+
+	myStatus->isInitialized = TRUE;
 
 	return sidEmuInitializeSong(*myEngine->currEng, *myEngine->currTune, myStatus->currSong);
 }
@@ -363,26 +321,23 @@ guint xs_sidplay1_fillbuffer(t_xs_status * myStatus, gchar * audioBuffer, guint 
 
 /* Load a given SID-tune file
  */
-gboolean xs_sidplay1_loadsid(t_xs_status * myStatus, gchar * pcFilename)
+gboolean xs_sidplay1_load(t_xs_status * myStatus, gchar * pcFilename)
 {
 	t_xs_sidplay1 *myEngine;
-	sidTune *newTune;
 	assert(myStatus);
-	glong buffer_size = 0;
+	myStatus->isInitialized = FALSE;
 
 	myEngine = (t_xs_sidplay1 *) myStatus->sidEngine;
 	if (!myEngine) return FALSE;
 
-	/* Try to load the file/tune */
+	/* Try to get the tune */
 	if (!pcFilename) return FALSE;
-
-	if ( xs_sidplay1_load_file_in_buffer( pcFilename , &myStatus->buffer , &buffer_size ) != 0 )
+	
+	if (xs_fload_buffer(pcFilename, &(myEngine->buf), &(myEngine->bufSize)) != 0)
 		return FALSE;
-
-	newTune = new sidTune((ubyte*)myStatus->buffer,(udword)buffer_size);
-	if (!newTune) return FALSE;
-
-	myEngine->currTune = newTune;
+	
+	if (!myEngine->currTune->load(myEngine->buf, myEngine->bufSize))
+		return FALSE;
 
 	return TRUE;
 }
@@ -390,30 +345,19 @@ gboolean xs_sidplay1_loadsid(t_xs_status * myStatus, gchar * pcFilename)
 
 /* Delete INTERNAL information
  */
-void xs_sidplay1_deletesid(t_xs_status * myStatus)
+void xs_sidplay1_delete(t_xs_status * myStatus)
 {
 	t_xs_sidplay1 *myEngine;
 	assert(myStatus);
 
 	myEngine = (t_xs_sidplay1 *) myStatus->sidEngine;
 	if (!myEngine) return;
-
-	if (myEngine->currTune) {
-		delete myEngine->currTune;
-		myEngine->currTune = NULL;
-	}
+	
+	g_free(myEngine->buf);
+	myEngine->buf = NULL;
+	myEngine->bufSize = 0;
 }
 
 
-/* Return song information
- */
-#define TFUNCTION	xs_sidplay1_getsidinfo
-#define TTUNEINFO	sidTuneInfo
-#define TTUNE		sidTune
-#define TBUFFGETFUNC	xs_sidplay1_load_file_in_buffer
-#define TBUFFTYPEMEM	ubyte*
-#define TBUFFTYPESIZE	udword
-#include "xs_sidplay.h"
-
-}				/* extern "C" */
-#endif				/* HAVE_SIDPLAY1 */
+}	/* extern "C" */
+#endif	/* HAVE_SIDPLAY1 */

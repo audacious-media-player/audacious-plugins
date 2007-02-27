@@ -5,8 +5,27 @@
 extern "C" {
 #endif
 
-#include "xmms-sid.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <glib.h>
 #include <stdio.h>
+
+#ifdef AUDACIOUS_PLUGIN
+#include <audacious/plugin.h>
+#include <audacious/output.h>
+#include <audacious/util.h>  
+#else
+#include <xmms/plugin.h>
+#include <xmms/util.h>
+#endif
+
+#ifdef HAVE_ASSERT_H
+#include <assert.h>
+#else
+#define assert(x) /* stub */
+#endif
 
 #ifdef HAVE_STRING_H
 #include <string.h>
@@ -21,20 +40,45 @@ extern "C" {
 #endif
 
 
-/*
- * Functions
+/* VFS replacement functions
  */
-guint16 xs_rd_be16(FILE *);
-guint32 xs_rd_be32(FILE *);
-size_t	xs_rd_str(FILE *, gchar *, size_t);
+#ifdef __AUDACIOUS_NEWVFS__
+#include <audacious/vfs.h>
+#define t_xs_file VFSFile
+#define xs_fopen(a,b) vfs_fopen(a,b)
+#define xs_fclose(a) vfs_fclose(a)
+#define xs_fgetc(a) vfs_getc(a)
+#define xs_fread(a,b,c,d) vfs_fread(a,b,c,d)
+#define xs_feof(a) vfs_feof(a)
+#define xs_ferror(a) (0)
+#define xs_ftell(a) vfs_ftell(a)
+#define xs_fseek(a,b,c) vfs_fseek(a,b,c)
+#else
+#define t_xs_file FILE
+t_xs_file *xs_fopen(const gchar *, const gchar *);
+gint	xs_fclose(t_xs_file *);
+gint	xs_fgetc(t_xs_file *);
+size_t	xs_fread(void *, size_t, size_t, t_xs_file *);
+gint	xs_feof(t_xs_file *);
+gint	xs_ferror(t_xs_file *);
+glong	xs_ftell(t_xs_file *);
+gint	xs_fseek(t_xs_file *, glong, gint);
+#endif
+guint16 xs_fread_be16(t_xs_file *);
+guint32 xs_fread_be32(t_xs_file *);
+gint	xs_fload_buffer(gchar *, guint8 **, size_t *);
+
+
+/* Misc functions
+ */
 gchar	*xs_strncpy(gchar *, gchar *, size_t);
 gint	xs_pstrcpy(gchar **, const gchar *);
 gint	xs_pstrcat(gchar **, const gchar *);
 void	xs_pnstrcat(gchar *, size_t, gchar *);
 gchar	*xs_strrchr(gchar *, gchar);
-inline 	void xs_findnext(gchar *, guint *);
-inline 	void xs_findeol(gchar *, guint *);
-inline	void xs_findnum(gchar *, guint *);
+void	xs_findnext(gchar *, size_t *);
+void	xs_findeol(gchar *, size_t *);
+void	xs_findnum(gchar *, size_t *);
 
 #ifdef HAVE_MEMSET
 #define	xs_memset memset

@@ -4,7 +4,7 @@
    Get song length from SLDB for PSID/RSID files
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2005 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 */
 #include "xs_length.h"
 #include "xs_support.h"
-#include "xs_config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -63,7 +62,7 @@ static void xs_sldb_node_insert(t_xs_sldb *db, t_xs_sldb_node *pNode)
 
 /* Parse a time-entry in SLDB format
  */
-static gint xs_sldb_gettime(gchar *pcStr, gint *piPos)
+static gint xs_sldb_gettime(gchar *pcStr, size_t *piPos)
 {
 	gint iResult, iTemp;
 
@@ -103,14 +102,15 @@ static gint xs_sldb_gettime(gchar *pcStr, gint *piPos)
  */
 t_xs_sldb_node * xs_sldb_read_entry(gchar *inLine)
 {
-	gint linePos, savePos, i, tmpLen, l;
+	size_t linePos;
+	gint i;
 	gboolean iOK;
 	t_xs_sldb_node *tmpNode;
 
 	/* Allocate new node */
 	tmpNode = (t_xs_sldb_node *) g_malloc0(sizeof(t_xs_sldb_node));
 	if (!tmpNode) {
-		XSERR("Error allocating new node. Fatal error.\n");
+		xs_error(_("Error allocating new node. Fatal error.\n"));
 		return NULL;
 	}
 
@@ -125,10 +125,12 @@ t_xs_sldb_node * xs_sldb_read_entry(gchar *inLine)
 	/* Get playtimes */
 	if (inLine[linePos] != 0) {
 		if (inLine[linePos] != '=') {
-			XSERR("'=' expected on column #%d.\n", linePos);
+			xs_error(_("'=' expected on column #%d.\n"), linePos);
 			xs_sldb_node_free(tmpNode);
 			return NULL;
 		} else {
+			size_t tmpLen, savePos;
+			
 			/* First playtime is after '=' */
 			savePos = ++linePos;
 			tmpLen = strlen(inLine);
@@ -145,9 +147,14 @@ t_xs_sldb_node * xs_sldb_read_entry(gchar *inLine)
 			}
 			
 			/* Allocate memory for lengths */
-			tmpNode->sLengths = (gint *) g_malloc0(tmpNode->nLengths * sizeof(gint));
-			if (!tmpNode->sLengths) {
-				XSERR("Could not allocate memory for node.\n");
+			if (tmpNode->nLengths > 0) {
+				tmpNode->sLengths = (gint *) g_malloc0(tmpNode->nLengths * sizeof(gint));
+				if (!tmpNode->sLengths) {
+					xs_error(_("Could not allocate memory for node.\n"));
+					xs_sldb_node_free(tmpNode);
+					return NULL;
+				}
+			} else {
 				xs_sldb_node_free(tmpNode);
 				return NULL;
 			}
@@ -157,6 +164,8 @@ t_xs_sldb_node * xs_sldb_read_entry(gchar *inLine)
 			linePos = savePos;
 			iOK = TRUE;
 			while ((linePos < tmpLen) && (i < tmpNode->nLengths) && iOK) {
+				gint l;
+				
 				xs_findnext(inLine, &linePos);
 
 				l = xs_sldb_gettime(inLine, &linePos);
@@ -186,25 +195,25 @@ gint xs_sldb_read(t_xs_sldb *db, const gchar *dbFilename)
 {
 	FILE *inFile;
 	gchar inLine[XS_BUF_SIZE];
-	gint lineNum;
+	size_t lineNum;
 	t_xs_sldb_node *tmpNode;
 	assert(db);
 
 	/* Try to open the file */
 	if ((inFile = fopen(dbFilename, "ra")) == NULL) {
-		XSERR("Could not open SongLengthDB '%s'\n", dbFilename);
+		xs_error(_("Could not open SongLengthDB '%s'\n"), dbFilename);
 		return -1;
 	}
 
 	/* Read and parse the data */
 	lineNum = 0;
 
-	while (!feof(inFile)) {
-		gint linePos;
-		fgets(inLine, XS_BUF_SIZE, inFile);
-		inLine[XS_BUF_SIZE - 1] = 0;
+	while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
+		size_t linePos;
 		linePos = 0;
 		lineNum++;
+		
+		xs_findnext(inLine, &linePos);
 
 		/* Check if it is datafield */
 		if (isxdigit(inLine[linePos])) {
@@ -213,19 +222,19 @@ gint xs_sldb_read(t_xs_sldb *db, const gchar *dbFilename)
 			for (hashLen = 0; inLine[linePos] && isxdigit(inLine[linePos]); hashLen++, linePos++);
 
 			if (hashLen != XS_MD5HASH_LENGTH_CH) {
-				XSERR("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n",
+				xs_error(_("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n"),
 					dbFilename, lineNum);
 			} else {
 				/* Parse and add node to db */
 				if ((tmpNode = xs_sldb_read_entry(inLine)) != NULL) {
 					xs_sldb_node_insert(db, tmpNode);
 				} else {
-					XSERR("Invalid entry in SongLengthDB file '%s' line #%d!\n",
+					xs_error(_("Invalid entry in SongLengthDB file '%s' line #%d!\n"),
 						dbFilename, lineNum);
 				}
 			}
-		} else if ((inLine[linePos] != ';') && (inLine[linePos] != '[')) {
-			XSERR("Invalid line in SongLengthDB file '%s' line #%d\n",
+		} else if ((inLine[linePos] != ';') && (inLine[linePos] != '[') && (inLine[linePos] != 0)) {
+			xs_error(_("Invalid line in SongLengthDB file '%s' line #%d\n"),
 				dbFilename, lineNum);
 		}
 
@@ -255,64 +264,6 @@ static gint xs_sldb_cmphash(t_xs_md5hash testHash1, t_xs_md5hash testHash2)
 }
 
 
-/* Get node from db index via binary search
- */
-static t_xs_sldb_node *xs_sldb_get_node(t_xs_sldb * db, t_xs_md5hash pHash)
-{
-	gint iStartNode, iEndNode, iQNode, r, i;
-	gboolean iFound;
-	t_xs_sldb_node *pResult;
-
-	/* Check the database pointers */
-	if (!db || !db->pNodes || !db->ppIndex)
-		return NULL;
-
-	/* Look-up via index using binary search */
-	pResult = NULL;
-	iStartNode = 0;
-	iEndNode = (db->n - 1);
-	iQNode = (iEndNode / 2);
-	iFound = FALSE;
-
-	while ((!iFound) && ((iEndNode - iStartNode) > XS_BIN_BAILOUT)) {
-		r = xs_sldb_cmphash(pHash, db->ppIndex[iQNode]->md5Hash);
-		if (r < 0) {
-			/* Hash was in the <- LEFT side */
-			iEndNode = iQNode;
-			iQNode = iStartNode + ((iEndNode - iStartNode) / 2);
-		} else if (r > 0) {
-			/* Hash was in the RIGHT -> side */
-			iStartNode = iQNode;
-			iQNode = iStartNode + ((iEndNode - iStartNode) / 2);
-		} else
-			iFound = TRUE;
-	}
-
-	/* If not found already */
-	if (!iFound) {
-		/* Search the are linearly */
-		iFound = FALSE;
-		i = iStartNode;
-		while ((i <= iEndNode) && (!iFound)) {
-			if (xs_sldb_cmphash(pHash, db->ppIndex[i]->md5Hash) == 0)
-				iFound = TRUE;
-			else
-				i++;
-		}
-
-		/* Check the result */
-		if (iFound)
-			pResult = db->ppIndex[i];
-
-	} else {
-		/* Found via binary search */
-		pResult = db->ppIndex[iQNode];
-	}
-
-	return pResult;
-}
-
-
 /* Compare two nodes
  */
 static gint xs_sldb_cmp(const void *pNode1, const void *pNode2)
@@ -329,7 +280,7 @@ static gint xs_sldb_cmp(const void *pNode1, const void *pNode2)
 gint xs_sldb_index(t_xs_sldb * db)
 {
 	t_xs_sldb_node *pCurr;
-	gint i;
+	size_t i;
 	assert(db);
 
 	/* Free old index */
@@ -429,7 +380,7 @@ typedef struct
 
 static gint xs_get_sid_hash(const gchar *pcFilename, t_xs_md5hash hash)
 {
-	FILE *inFile;
+	t_xs_file *inFile;
 	t_xs_md5state inState;
 	t_xs_psidv1_header psidH;
 	t_xs_psidv2_header psidH2;
@@ -438,49 +389,58 @@ static gint xs_get_sid_hash(const gchar *pcFilename, t_xs_md5hash hash)
 	gint iIndex, iRes;
 
 	/* Try to open the file */
-	if ((inFile = fopen(pcFilename, "rb")) == NULL)
+	if ((inFile = xs_fopen(pcFilename, "rb")) == NULL)
 		return -1;
 
 	/* Read PSID header in */
-	xs_rd_str(inFile, psidH.magicID, sizeof(psidH.magicID));
-	if ((psidH.magicID[0] != 'P' && psidH.magicID[0] != 'R') ||
-	    (psidH.magicID[1] != 'S') || (psidH.magicID[2] != 'I') || (psidH.magicID[3] != 'D')) {
-		fclose(inFile);
+	xs_fread(psidH.magicID, sizeof(psidH.magicID), 1, inFile);
+	if (strncmp(psidH.magicID, "PSID", 4) && strncmp(psidH.magicID, "RSID", 4)) {
+		xs_fclose(inFile);
+		xs_error(_("Not a PSID or RSID file '%s'\n"), pcFilename);
 		return -2;
 	}
 
-	psidH.version = xs_rd_be16(inFile);
-	psidH.dataOffset = xs_rd_be16(inFile);
-	psidH.loadAddress = xs_rd_be16(inFile);
-	psidH.initAddress = xs_rd_be16(inFile);
-	psidH.playAddress = xs_rd_be16(inFile);
-	psidH.nSongs = xs_rd_be16(inFile);
-	psidH.startSong = xs_rd_be16(inFile);
-	psidH.speed = xs_rd_be32(inFile);
+	psidH.version = xs_fread_be16(inFile);
+	psidH.dataOffset = xs_fread_be16(inFile);
+	psidH.loadAddress = xs_fread_be16(inFile);
+	psidH.initAddress = xs_fread_be16(inFile);
+	psidH.playAddress = xs_fread_be16(inFile);
+	psidH.nSongs = xs_fread_be16(inFile);
+	psidH.startSong = xs_fread_be16(inFile);
+	psidH.speed = xs_fread_be32(inFile);
 
-	xs_rd_str(inFile, psidH.sidName, sizeof(psidH.sidName));
-	xs_rd_str(inFile, psidH.sidAuthor, sizeof(psidH.sidAuthor));
-	xs_rd_str(inFile, psidH.sidCopyright, sizeof(psidH.sidCopyright));
-
+	xs_fread(psidH.sidName, sizeof(gchar), sizeof(psidH.sidName), inFile);
+	xs_fread(psidH.sidAuthor, sizeof(gchar), sizeof(psidH.sidAuthor), inFile);
+	xs_fread(psidH.sidCopyright, sizeof(gchar), sizeof(psidH.sidCopyright), inFile);
+	
+	if (xs_feof(inFile) || xs_ferror(inFile)) {
+		xs_fclose(inFile);
+		xs_error(_("Error reading SID file header from '%s'\n"), pcFilename);
+		return -4;
+	}
+	
 	/* Check if we need to load PSIDv2NG header ... */
+	psidH2.flags = 0;	/* Just silence a stupid gcc warning */
+	
 	if (psidH.version == 2) {
 		/* Yes, we need to */
-		psidH2.flags = xs_rd_be16(inFile);
-		psidH2.startPage = fgetc(inFile);
-		psidH2.pageLength = fgetc(inFile);
-		psidH2.reserved = xs_rd_be16(inFile);
+		psidH2.flags = xs_fread_be16(inFile);
+		psidH2.startPage = xs_fgetc(inFile);
+		psidH2.pageLength = xs_fgetc(inFile);
+		psidH2.reserved = xs_fread_be16(inFile);
 	}
 
 	/* Allocate buffer */
 	songData = (guint8 *) g_malloc(XS_SIDBUF_SIZE * sizeof(guint8));
 	if (!songData) {
-		fclose(inFile);
+		xs_fclose(inFile);
+		xs_error(_("Error allocating temp data buffer for file '%s'\n"), pcFilename);
 		return -3;
 	}
 
 	/* Read data to buffer */
-	iRes = fread(songData, sizeof(guint8), XS_SIDBUF_SIZE, inFile);
-	fclose(inFile);
+	iRes = xs_fread(songData, sizeof(guint8), XS_SIDBUF_SIZE, inFile);
+	xs_fclose(inFile);
 
 	/* Initialize and start MD5-hash calculation */
 	xs_md5_init(&inState);
@@ -531,98 +491,28 @@ static gint xs_get_sid_hash(const gchar *pcFilename, t_xs_md5hash hash)
 }
 
 
-/* Get song lengths
+/* Get node from db index via binary search
  */
 t_xs_sldb_node *xs_sldb_get(t_xs_sldb *db, const gchar *pcFilename)
 {
-	t_xs_sldb_node *pResult;
-	t_xs_md5hash dbHash;
+	t_xs_sldb_node keyItem, *key, **item;
+
+	/* Check the database pointers */
+	if (!db || !db->pNodes || !db->ppIndex)
+		return NULL;
 
 	/* Get the hash and then look up from db */
-	if (xs_get_sid_hash(pcFilename, dbHash) == 0)
-		pResult = xs_sldb_get_node(db, dbHash);
-	else
-		pResult = NULL;
-
-	return pResult;
+	if (xs_get_sid_hash(pcFilename, keyItem.md5Hash) == 0) {
+		key = &keyItem;
+		item = bsearch(&key, db->ppIndex, db->n,
+			sizeof(db->ppIndex[0]), xs_sldb_cmp);
+		
+		if (item)
+			return *item;
+		else
+			return NULL;
+	} else
+		return NULL;
 }
 
 
-/*
- * These should be moved out of this module some day ...
- */
-static t_xs_sldb *xs_sldb_db = NULL;
-extern GStaticMutex xs_cfg_mutex;
-GStaticMutex xs_sldb_db_mutex = G_STATIC_MUTEX_INIT;
-
-gint xs_songlen_init(void)
-{
-	g_static_mutex_lock(&xs_cfg_mutex);
-
-	if (!xs_cfg.songlenDBPath) {
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		return -1;
-	}
-
-	g_static_mutex_lock(&xs_sldb_db_mutex);
-
-	/* Check if already initialized */
-	if (xs_sldb_db)
-		xs_sldb_free(xs_sldb_db);
-
-	/* Allocate database */
-	xs_sldb_db = (t_xs_sldb *) g_malloc0(sizeof(t_xs_sldb));
-	if (!xs_sldb_db) {
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		g_static_mutex_unlock(&xs_sldb_db_mutex);
-		return -2;
-	}
-
-	/* Read the database */
-	if (xs_sldb_read(xs_sldb_db, xs_cfg.songlenDBPath) != 0) {
-		xs_sldb_free(xs_sldb_db);
-		xs_sldb_db = NULL;
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		g_static_mutex_unlock(&xs_sldb_db_mutex);
-		return -3;
-	}
-
-	/* Create index */
-	if (xs_sldb_index(xs_sldb_db) != 0) {
-		xs_sldb_free(xs_sldb_db);
-		xs_sldb_db = NULL;
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		g_static_mutex_unlock(&xs_sldb_db_mutex);
-		return -4;
-	}
-
-	g_static_mutex_unlock(&xs_cfg_mutex);
-	g_static_mutex_unlock(&xs_sldb_db_mutex);
-	return 0;
-}
-
-
-void xs_songlen_close(void)
-{
-	g_static_mutex_lock(&xs_sldb_db_mutex);
-	xs_sldb_free(xs_sldb_db);
-	xs_sldb_db = NULL;
-	g_static_mutex_unlock(&xs_sldb_db_mutex);
-}
-
-
-t_xs_sldb_node *xs_songlen_get(const gchar * pcFilename)
-{
-	t_xs_sldb_node *pResult;
-
-	g_static_mutex_lock(&xs_sldb_db_mutex);
-
-	if (xs_cfg.songlenDBEnable && xs_sldb_db)
-		pResult = xs_sldb_get(xs_sldb_db, pcFilename);
-	else
-		pResult = NULL;
-
-	g_static_mutex_unlock(&xs_sldb_db_mutex);
-
-	return pResult;
-}

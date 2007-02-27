@@ -4,7 +4,7 @@
    Configuration dialog
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2005 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
    
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,16 +16,48 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   You should have received a copy of the GNU General Public License along
+   with this program; if not, write to the Free Software Foundation, Inc.,
+   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "xs_config.h"
-#include "audacious/configdb.h"
+
+#ifdef AUDACIOUS_PLUGIN
+#include <audacious/configdb.h>
+#define XS_CONFIG_FILE		ConfigDb
+#define XS_CONFIG_OPEN		bmp_cfg_db_open
+#define XS_CONFIG_FREE		bmp_cfg_db_close
+#define XS_CONFIG_WRITE
+
+#define XS_CFG_SET_STRING	bmp_cfg_db_set_string
+#define XS_CFG_SET_FLOAT	bmp_cfg_db_set_float
+#define XS_CFG_SET_INT		bmp_cfg_db_set_int
+#define XS_CFG_SET_BOOL		bmp_cfg_db_set_bool
+#define XS_CFG_GET_STRING	bmp_cfg_db_get_string
+#define XS_CFG_GET_FLOAT	bmp_cfg_db_get_float
+#define XS_CFG_GET_INT		bmp_cfg_db_get_int
+#define XS_CFG_GET_BOOL		bmp_cfg_db_get_bool
+#else
+#include <xmms/configfile.h>
+#define XS_CONFIG_FILE		ConfigFile
+#define XS_CONFIG_OPEN		xmms_cfg_open_default_file
+#define XS_CONFIG_FREE		xmms_cfg_free
+#define XS_CONFIG_WRITE		xmms_cfg_write_default_file
+
+#define XS_CFG_SET_STRING	xmms_cfg_write_string
+#define XS_CFG_SET_FLOAT	xmms_cfg_write_float
+#define XS_CFG_SET_INT		xmms_cfg_write_int
+#define XS_CFG_SET_BOOL		xmms_cfg_write_boolean
+#define XS_CFG_GET_STRING	xmms_cfg_read_string
+#define XS_CFG_GET_FLOAT	xmms_cfg_read_float
+#define XS_CFG_GET_INT		xmms_cfg_read_int
+#define XS_CFG_GET_BOOL		xmms_cfg_read_boolean
+#endif
 #include <stdio.h>
 #include "xs_glade.h"
 #include "xs_interface.h"
 #include "xs_support.h"
+
 
 /*
  * Global widgets
@@ -41,7 +73,7 @@ static GtkWidget *xs_configwin = NULL,
 /*
  * Configuration specific stuff
  */
-GStaticMutex xs_cfg_mutex = G_STATIC_MUTEX_INIT;
+XS_MUTEX(xs_cfg);
 struct t_xs_cfg xs_cfg;
 
 t_xs_cfg_item xs_cfgtable[] = {
@@ -52,9 +84,9 @@ t_xs_cfg_item xs_cfgtable[] = {
 { CTYPE_BOOL,	&xs_cfg.mos8580,		"mos8580" },
 { CTYPE_BOOL,	&xs_cfg.forceModel,		"forceModel" },
 { CTYPE_BOOL,	&xs_cfg.emulateFilters,		"emulateFilters" },
-{ CTYPE_FLOAT,	&xs_cfg.filterFs,		"filterFs" },
-{ CTYPE_FLOAT,	&xs_cfg.filterFm,		"filterFm" },
-{ CTYPE_FLOAT,	&xs_cfg.filterFt,		"filterFt" },
+{ CTYPE_FLOAT,	&xs_cfg.sid1FilterFs,		"filterFs" },
+{ CTYPE_FLOAT,	&xs_cfg.sid1FilterFm,		"filterFm" },
+{ CTYPE_FLOAT,	&xs_cfg.sid1FilterFt,		"filterFt" },
 { CTYPE_INT,	&xs_cfg.memoryMode,		"memoryMode" },
 { CTYPE_INT,	&xs_cfg.clockSpeed,		"clockSpeed" },
 { CTYPE_BOOL,	&xs_cfg.forceSpeed,		"forceSpeed" },
@@ -80,6 +112,7 @@ t_xs_cfg_item xs_cfgtable[] = {
 { CTYPE_STR,	&xs_cfg.hvscPath,		"hvscPath" },
 
 { CTYPE_INT,	&xs_cfg.subsongControl,		"subsongControl" },
+{ CTYPE_BOOL,	&xs_cfg.detectMagic,		"detectMagic" },
 
 { CTYPE_BOOL,	&xs_cfg.titleOverride,		"titleOverride" },
 { CTYPE_STR,	&xs_cfg.titleFormat,		"titleFormat" },
@@ -98,7 +131,7 @@ t_xs_wid_item xs_widtable[] = {
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_chn_mono",		&xs_cfg.audioChannels,		XS_CHN_MONO },
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_chn_stereo",	&xs_cfg.audioChannels,		XS_CHN_STEREO },
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_chn_autopan",	&xs_cfg.audioChannels,		XS_CHN_AUTOPAN },
-{ WTYPE_SPIN,	CTYPE_INT,	"cfg_samplerate",	&xs_cfg.audioFrequency,		0 },
+{ WTYPE_COMBO,	CTYPE_INT,	"cfg_samplerate",	&xs_cfg.audioFrequency,		XS_AUDIO_FREQ },
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_oversample",	&xs_cfg.oversampleEnable,	0 },
 { WTYPE_SPIN,	CTYPE_INT,	"cfg_oversample_factor",&xs_cfg.oversampleFactor,	0 },
 
@@ -114,15 +147,15 @@ t_xs_wid_item xs_widtable[] = {
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_emu_clock_ntsc",	&xs_cfg.clockSpeed,		XS_CLOCK_NTSC },
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_emu_clock_pal",	&xs_cfg.clockSpeed,		XS_CLOCK_PAL },
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_emu_clock_force",	&xs_cfg.forceSpeed,		0 },
-{ WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_emu_sidplay2_opt",	&xs_cfg.sid2OptLevel,		0 },
+{ WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_emu_sp2_opt",	&xs_cfg.sid2OptLevel,		0 },
 
-{ WTYPE_BGROUP,	CTYPE_INT,	"cfg_emu_sidplay2_resid",&xs_cfg.sid2Builder,		XS_BLD_RESID },
-{ WTYPE_BGROUP,	CTYPE_INT,	"cfg_emu_sidplay2_hardsid",&xs_cfg.sid2Builder,		XS_BLD_HARDSID },
+{ WTYPE_BGROUP,	CTYPE_INT,	"cfg_emu_sp2_resid",	&xs_cfg.sid2Builder,		XS_BLD_RESID },
+{ WTYPE_BGROUP,	CTYPE_INT,	"cfg_emu_sp2_hardsid",	&xs_cfg.sid2Builder,		XS_BLD_HARDSID },
 
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_emu_filters",	&xs_cfg.emulateFilters,		0 },
-{ WTYPE_SCALE,	CTYPE_FLOAT,	"cfg_emu_filt_fs",	&xs_cfg.filterFs,		0 },
-{ WTYPE_SCALE,	CTYPE_FLOAT,	"cfg_emu_filt_fm",	&xs_cfg.filterFm,		0 },
-{ WTYPE_SCALE,	CTYPE_FLOAT,	"cfg_emu_filt_ft",	&xs_cfg.filterFt,		0 },
+{ WTYPE_SCALE,	CTYPE_FLOAT,	"cfg_sp1_filter_fs",	&xs_cfg.sid1FilterFs,		0 },
+{ WTYPE_SCALE,	CTYPE_FLOAT,	"cfg_sp1_filter_fm",	&xs_cfg.sid1FilterFm,		0 },
+{ WTYPE_SCALE,	CTYPE_FLOAT,	"cfg_sp1_filter_ft",	&xs_cfg.sid1FilterFt,		0 },
 
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_maxtime_enable",	&xs_cfg.playMaxTimeEnable,	0 },
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_maxtime_unknown",	&xs_cfg.playMaxTimeUnknown,	0 },
@@ -141,6 +174,8 @@ t_xs_wid_item xs_widtable[] = {
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_subctrl_popup",	&xs_cfg.subsongControl,		XS_SSC_POPUP },
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_subctrl_patch",	&xs_cfg.subsongControl,		XS_SSC_PATCH },
 
+{ WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_detectmagic",	&xs_cfg.detectMagic,		0 },
+
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_ftitle_override",	&xs_cfg.titleOverride,		0 },
 { WTYPE_TEXT,	CTYPE_STR,	"cfg_ftitle_format",	&xs_cfg.titleFormat,		0 },
 
@@ -152,27 +187,26 @@ t_xs_wid_item xs_widtable[] = {
 static const gint xs_widtable_max = (sizeof(xs_widtable) / sizeof(t_xs_wid_item));
 
 
-/*
- * Reset/initialize the configuration
+/* Reset/initialize the configuration
  */
 void xs_init_configuration(void)
 {
 	/* Lock configuration mutex */
 	XSDEBUG("initializing configuration ...\n");
-	g_static_mutex_lock(&xs_cfg_mutex);
+	XS_MUTEX_LOCK(xs_cfg);
 
 	/* Initialize values with sensible defaults */
 	xs_cfg.audioBitsPerSample = XS_RES_16BIT;
 	xs_cfg.audioChannels = XS_CHN_MONO;
-	xs_cfg.audioFrequency = 44100;
+	xs_cfg.audioFrequency = XS_AUDIO_FREQ;
 
 	xs_cfg.mos8580 = FALSE;
 	xs_cfg.forceModel = FALSE;
 
 	xs_cfg.emulateFilters = TRUE;
-	xs_cfg.filterFs = XS_SIDPLAY1_FS;
-	xs_cfg.filterFm = XS_SIDPLAY1_FM;
-	xs_cfg.filterFt = XS_SIDPLAY1_FT;
+	xs_cfg.sid1FilterFs = XS_SIDPLAY1_FS;
+	xs_cfg.sid1FilterFm = XS_SIDPLAY1_FM;
+	xs_cfg.sid1FilterFt = XS_SIDPLAY1_FT;
 
 #ifdef HAVE_SIDPLAY2
 	xs_cfg.playerEngine = XS_ENG_SIDPLAY2;
@@ -189,7 +223,7 @@ void xs_init_configuration(void)
 	xs_cfg.clockSpeed = XS_CLOCK_PAL;
 	xs_cfg.forceSpeed = FALSE;
 
-	xs_cfg.sid2OptLevel = FALSE;
+	xs_cfg.sid2OptLevel = 0;
 #ifdef HAVE_RESID_BUILDER
 	xs_cfg.sid2Builder = XS_BLD_RESID;
 #else
@@ -225,12 +259,14 @@ void xs_init_configuration(void)
 	xs_cfg.subsongControl = XS_SSC_POPUP;
 #endif
 
-#ifdef HAVE_XMMSEXTRA
+	xs_cfg.detectMagic = FALSE;
+
+#if defined(HAVE_XMMSEXTRA) || defined(AUDACIOUS_PLUGIN)
 	xs_cfg.titleOverride = FALSE;
 #else
 	xs_cfg.titleOverride = TRUE;
 #endif
-	xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) [%n/%N][%m]");
+	xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) [%n/%N][%m/%C]");
 
 
 	xs_cfg.subAutoEnable = FALSE;
@@ -239,118 +275,267 @@ void xs_init_configuration(void)
 
 
 	/* Unlock the configuration */
-	g_static_mutex_unlock(&xs_cfg_mutex);
+	XS_MUTEX_UNLOCK(xs_cfg);
 }
 
 
-/*
- * Get the configuration (from file or default)
+/* Filter configuration handling
+ */
+#define XS_FITEM (4 * 2)
+
+static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, t_xs_sid2_filter *pResult)
+{
+	gchar tmpKey[64], *tmpStr;
+	gint i, j;
+
+	/* Get fields from config */
+	g_snprintf(tmpKey, sizeof(tmpKey), "filter%dNPoints", nFilter);
+	if (!XS_CFG_GET_INT(cfg, XS_CONFIG_IDENT, tmpKey, &(pResult->npoints)))
+		return FALSE;
+	if (pResult->npoints > XS_SIDPLAY2_NFPOINTS)
+		return FALSE;
+	
+	g_snprintf(tmpKey, sizeof(tmpKey), "filter%dName", nFilter);
+	if (!XS_CFG_GET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, &tmpStr))
+		return FALSE;
+	
+	pResult->name = strdup(tmpStr);
+	if (pResult->name == NULL) {
+		g_free(pResult);
+		return FALSE;
+	}
+	
+	g_snprintf(tmpKey, sizeof(tmpKey), "filter%dPoints", nFilter);
+	if (!XS_CFG_GET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, &tmpStr))
+		return FALSE;
+	
+	for (i = 0, j = 0; i < pResult->npoints; i++, j += XS_FITEM) {
+		sscanf(&tmpStr[j], "%4x%4x",
+			&(pResult->points[i].x),
+			&(pResult->points[i].y));
+	}
+	
+	return TRUE;
+}
+
+
+static t_xs_sid2_filter * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
+{
+	t_xs_sid2_filter *pResult;
+	
+	/* Allocate filter struct */
+	if ((pResult = g_malloc0(sizeof(t_xs_sid2_filter))) == NULL)
+		return NULL;
+	
+	if (!xs_filter_load_into(cfg, nFilter, pResult)) {
+		g_free(pResult);
+		return NULL;
+	} else
+		return pResult;
+}
+
+
+static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, t_xs_sid2_filter *pFilter, gint nFilter)
+{
+	gchar *tmpValue, tmpKey[64];
+	gint i, j;
+	
+	/* Allocate memory for value string */
+	tmpValue = g_malloc(sizeof(gchar) * XS_FITEM * (pFilter->npoints + 1));
+	if (tmpValue == NULL)
+		return FALSE;
+	
+	/* Make value string */
+	for (i = 0, j = 0; i < pFilter->npoints; i++, j += XS_FITEM) {
+		g_snprintf(&tmpValue[j], XS_FITEM+1, "%04x%04x",
+			pFilter->points[i].x,
+			pFilter->points[i].y);
+	}
+	
+	/* Write into the configuration */
+	g_snprintf(tmpKey, sizeof(tmpKey), "filter%dName", nFilter);
+	XS_CFG_SET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, pFilter->name);
+	
+	g_snprintf(tmpKey, sizeof(tmpKey), "filter%dNPoints", nFilter);
+	XS_CFG_SET_INT(cfg, XS_CONFIG_IDENT, tmpKey, pFilter->npoints);
+
+	g_snprintf(tmpKey, sizeof(tmpKey), "filter%dPoints", nFilter);
+	XS_CFG_SET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, tmpValue);
+	
+	g_free(tmpValue);
+	return TRUE;
+}
+
+
+/* Filter exporting and importing. These functions export/import
+ * filter settings to/from SIDPlay2 INI-type files.
+ */
+static gboolean xs_filters_import(gchar *pcFilename, t_xs_sid2_filter **pFilters, gint *nFilters)
+{
+	FILE *inFile;
+	t_xs_sid2_filter *f;
+	
+	if ((inFile = fopen(pcFilename, "rb")) == NULL)
+		return FALSE;
+	
+	
+	
+	fclose(inFile);
+	return FALSE;
+}
+
+
+static gboolean xs_filters_export(gchar *pcFilename, t_xs_sid2_filter *pFilters, gint nFilters)
+{
+	FILE *outFile;
+	t_xs_sid2_filter *f = pFilters;
+	gint n;
+	
+	/* Open/create the file */
+	if ((outFile = fopen(pcFilename, "wb")) == NULL)
+		return FALSE;
+	
+	/* Write each filter spec in "INI"-style format */
+	for (n = 0; n < nFilters; n++) {
+		gint i;
+		
+		fprintf(outFile,
+		"[%s]\n"
+		"type=1\n"
+		"points=%d\n",
+		f->name, f->npoints);
+	
+		for (i = 0; i < f->npoints; i++) {
+			fprintf(outFile,
+			"point%d=%d,%d\n",
+			i + 1,
+			f->points[i].x,
+			f->points[i].y);
+		}
+	
+		fprintf(outFile, "\n");
+		f++;
+	}
+	
+	fclose(outFile);
+	return TRUE;
+}
+
+
+/* Get the configuration (from file or default)
  */
 void xs_read_configuration(void)
 {
-	gchar *tmpStr;
-	ConfigDb *db;
+	XS_CONFIG_FILE *cfg;
 	gint i;
+	gchar *tmpStr;
 
-	/* Try to open the configuration database */
-	g_static_mutex_lock(&xs_cfg_mutex);
+	/* Try to open the XMMS configuration file  */
+	XS_MUTEX_LOCK(xs_cfg);
 	XSDEBUG("loading from config-file ...\n");
-	db = bmp_cfg_db_open();
 
-	/* Read the new settings from configuration database */
+	cfg = XS_CONFIG_OPEN();
+
+	if (cfg == NULL) {
+		XSDEBUG("Could not open configuration, trying to write defaults...\n");
+		xs_write_configuration();
+		return;
+	}
+
+	/* Read the new settings from XMMS configuration file */
 	for (i = 0; i < xs_cfgtable_max; i++) {
 		switch (xs_cfgtable[i].itemType) {
 		case CTYPE_INT:
-			bmp_cfg_db_get_int(db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName,
-					  (gint *) xs_cfgtable[i].itemData);
+			XS_CFG_GET_INT(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName,
+				(gint *) xs_cfgtable[i].itemData);
 			break;
 
 		case CTYPE_BOOL:
-			bmp_cfg_db_get_bool(db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName,
-					      (gboolean *) xs_cfgtable[i].itemData);
+			XS_CFG_GET_BOOL(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName,
+				(gboolean *) xs_cfgtable[i].itemData);
 			break;
 
 		case CTYPE_FLOAT:
-			bmp_cfg_db_get_float(db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName,
-					    (gfloat *) xs_cfgtable[i].itemData);
+			XS_CFG_GET_FLOAT(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName,
+				(gfloat *) xs_cfgtable[i].itemData);
 			break;
-
+		
 		case CTYPE_STR:
-			if (bmp_cfg_db_get_string
-			    (db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName, (gchar **) & tmpStr)) {
-				/* Read was successfull */
+			if (XS_CFG_GET_STRING(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName, (gchar **) &tmpStr)) {
 				xs_pstrcpy((gchar **) xs_cfgtable[i].itemData, tmpStr);
 				g_free(tmpStr);
 			}
 			break;
-
-		default:
-			XSERR
-			    ("Internal: Unsupported setting type found while reading configuration file. Please report to author!\n");
-			break;
 		}
 	}
+	
+	XS_CONFIG_FREE(cfg);
 
-	bmp_cfg_db_close(db);
-
-	g_static_mutex_unlock(&xs_cfg_mutex);
+	XS_MUTEX_UNLOCK(xs_cfg);
 	XSDEBUG("OK\n");
 }
 
 
-
-/*
- * Write the current configuration
+/* Write the current configuration
  */
 gint xs_write_configuration(void)
 {
-	ConfigDb *db;
+	XS_CONFIG_FILE *cfg;
 	gint i;
 
 	XSDEBUG("writing configuration ...\n");
-	g_static_mutex_lock(&xs_cfg_mutex);
-	db = bmp_cfg_db_open();
+	XS_MUTEX_LOCK(xs_cfg);
 
-	/* Write the new settings to configuration database */
+	/* Try to open the XMMS configuration file  */
+	cfg = XS_CONFIG_OPEN();
+
+#ifndef AUDACIOUS_PLUGIN
+	if (!cfg) cfg = xmms_cfg_new();
+#endif
+
+	/* Write the new settings to XMMS configuration file */
 	for (i = 0; i < xs_cfgtable_max; i++) {
 		switch (xs_cfgtable[i].itemType) {
 		case CTYPE_INT:
-			bmp_cfg_db_set_int(db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName,
-					   *(gint *) xs_cfgtable[i].itemData);
+			XS_CFG_SET_INT(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName,
+				*(gint *) xs_cfgtable[i].itemData);
 			break;
 
 		case CTYPE_BOOL:
-			bmp_cfg_db_set_bool(db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName,
-					       *(gboolean *) xs_cfgtable[i].itemData);
+			XS_CFG_SET_BOOL(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName,
+				*(gboolean *) xs_cfgtable[i].itemData);
 			break;
 
 		case CTYPE_FLOAT:
-			bmp_cfg_db_set_float(db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName,
-					     *(gfloat *) xs_cfgtable[i].itemData);
+			XS_CFG_SET_FLOAT(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName,
+				*(gfloat *) xs_cfgtable[i].itemData);
 			break;
 
 		case CTYPE_STR:
-			bmp_cfg_db_set_string(db, XS_CONFIG_IDENT, xs_cfgtable[i].itemName,
-					      *(gchar **) xs_cfgtable[i].itemData);
-			break;
-
-		default:
-			XSERR
-			    ("Internal: Unsupported setting type found while writing configuration file. Please report to author!\n");
+			XS_CFG_SET_STRING(cfg, XS_CONFIG_IDENT,
+				xs_cfgtable[i].itemName,
+				*(gchar **) xs_cfgtable[i].itemData);
 			break;
 		}
 	}
 
-	bmp_cfg_db_close(db);
+	XS_CONFIG_WRITE(cfg);
+	XS_CONFIG_FREE(cfg);
 
-	g_static_mutex_unlock(&xs_cfg_mutex);
+	XS_MUTEX_UNLOCK(xs_cfg);
 
 	return 0;
 }
 
 
-/*
- * Configuration panel was canceled
+/* Configuration panel was canceled
  */
 void xs_cfg_cancel(void)
 {
@@ -359,13 +544,17 @@ void xs_cfg_cancel(void)
 }
 
 
-/*
- * Configuration was accepted (OK), save the settings
+/* Configuration was accepted, save the settings
  */
 void xs_cfg_ok(void)
 {
 	gint i;
 	gfloat tmpValue;
+	gint tmpInt;
+	gchar *tmpStr;
+
+	/* Get lock on configuration */
+	XS_MUTEX_LOCK(xs_cfg);
 
 	XSDEBUG("get data from widgets to config...\n");
 
@@ -379,21 +568,30 @@ void xs_cfg_ok(void)
 			}
 			break;
 
+		case WTYPE_COMBO:
+			/* Get text from text-widget */
+			tmpStr = gtk_entry_get_text(GTK_ENTRY(LUW(xs_widtable[i].widName)));
+			if (sscanf(tmpStr, "%d", &tmpInt) != 1)
+				tmpInt = xs_widtable[i].itemSet;
+
+			*((gint *) xs_widtable[i].itemData) = tmpInt;
+			break;
+			
 		case WTYPE_SPIN:
 		case WTYPE_SCALE:
 			/* Get the value */
 			switch (xs_widtable[i].widType) {
 			case WTYPE_SPIN:
-				tmpValue =
-				    gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(LUW(xs_widtable[i].widName)))->value;
+				tmpValue = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(LUW(xs_widtable[i].widName)))->value;
 				break;
 
 			case WTYPE_SCALE:
 				tmpValue = gtk_range_get_adjustment(GTK_RANGE(LUW(xs_widtable[i].widName)))->value;
 				break;
-
+			
 			default:
 				tmpValue = -1;
+				break;
 			}
 
 			/* Set the value */
@@ -411,18 +609,20 @@ void xs_cfg_ok(void)
 		case WTYPE_BUTTON:
 			/* Check if toggle-button is active */
 			*((gboolean *) xs_widtable[i].itemData) =
-			    (GTK_TOGGLE_BUTTON(LUW(xs_widtable[i].widName))->active);
+				(GTK_TOGGLE_BUTTON(LUW(xs_widtable[i].widName))->active);
 			break;
 
 		case WTYPE_TEXT:
 			/* Get text from text-widget */
 			xs_pstrcpy((gchar **) xs_widtable[i].itemData,
-				   gtk_entry_get_text(GTK_ENTRY(LUW(xs_widtable[i].widName)))
-			    );
+				gtk_entry_get_text(GTK_ENTRY(LUW(xs_widtable[i].widName))));
 			break;
 		}
 	}
 
+	/* Release lock */
+	XS_MUTEX_UNLOCK(xs_cfg);
+	
 	/* Close window */
 	gtk_widget_destroy(xs_configwin);
 	xs_configwin = NULL;
@@ -435,10 +635,9 @@ void xs_cfg_ok(void)
 }
 
 
-/*
- * Reset filter settings to defaults
+/* Reset filter settings to defaults
  */
-void xs_cfg_filter_reset(GtkButton * button, gpointer user_data)
+void xs_cfg_sp1_filter_reset(GtkButton * button, gpointer user_data)
 {
 	(void) button;
 	(void) user_data;
@@ -449,10 +648,7 @@ void xs_cfg_filter_reset(GtkButton * button, gpointer user_data)
 }
 
 
-
-
-/*
- * HVSC songlength-database file selector response-functions
+/* HVSC songlength-database file selector response-functions
  */
 void xs_cfg_sld_dbbrowse(GtkButton * button, gpointer user_data)
 {
@@ -465,9 +661,9 @@ void xs_cfg_sld_dbbrowse(GtkButton * button, gpointer user_data)
 	}
 
 	xs_sldb_fileselector = create_xs_sldbfileselector();
-	g_static_mutex_lock(&xs_cfg_mutex);
+	XS_MUTEX_LOCK(xs_cfg);
 	gtk_file_selection_set_filename(GTK_FILE_SELECTION(xs_sldb_fileselector), xs_cfg.songlenDBPath);
-	g_static_mutex_unlock(&xs_cfg_mutex);
+	XS_MUTEX_UNLOCK(xs_cfg);
 	gtk_widget_show(xs_sldb_fileselector);
 }
 
@@ -492,8 +688,7 @@ void xs_cfg_sldb_fs_cancel(void)
 }
 
 
-/*
- * STIL-database file selector response-functions
+/* STIL-database file selector response-functions
  */
 void xs_cfg_stil_browse(GtkButton * button, gpointer user_data)
 {
@@ -506,9 +701,9 @@ void xs_cfg_stil_browse(GtkButton * button, gpointer user_data)
 	}
 
 	xs_stil_fileselector = create_xs_stilfileselector();
-	g_static_mutex_lock(&xs_cfg_mutex);
+	XS_MUTEX_LOCK(xs_cfg);
 	gtk_file_selection_set_filename(GTK_FILE_SELECTION(xs_stil_fileselector), xs_cfg.stilDBPath);
-	g_static_mutex_unlock(&xs_cfg_mutex);
+	XS_MUTEX_UNLOCK(xs_cfg);
 	gtk_widget_show(xs_stil_fileselector);
 }
 
@@ -533,8 +728,7 @@ void xs_cfg_stil_fs_cancel(void)
 }
 
 
-/*
- * HVSC location selector response-functions
+/* HVSC location selector response-functions
  */
 void xs_cfg_hvsc_browse(GtkButton * button, gpointer user_data)
 {
@@ -547,9 +741,9 @@ void xs_cfg_hvsc_browse(GtkButton * button, gpointer user_data)
 	}
 
 	xs_hvsc_pathselector = create_xs_hvscpathselector();
-	g_static_mutex_lock(&xs_cfg_mutex);
+	XS_MUTEX_LOCK(xs_cfg);
 	gtk_file_selection_set_filename(GTK_FILE_SELECTION(xs_hvsc_pathselector), xs_cfg.hvscPath);
-	g_static_mutex_unlock(&xs_cfg_mutex);
+	XS_MUTEX_UNLOCK(xs_cfg);
 	gtk_widget_show(xs_hvsc_pathselector);
 }
 
@@ -574,8 +768,7 @@ void xs_cfg_hvsc_fs_cancel(void)
 }
 
 
-/*
- * Selection toggle handlers
+/* Selection toggle handlers
  */
 void xs_cfg_emu_filters_toggled(GtkToggleButton * togglebutton, gpointer user_data)
 {
@@ -593,9 +786,7 @@ void xs_cfg_ftitle_override_toggled(GtkToggleButton * togglebutton, gpointer use
 
 	(void) user_data;
 
-	gtk_widget_set_sensitive(LUW("cfg_ftitle_format"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_ftitle_desc1"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_ftitle_desc2"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_ftitle_box"), isActive);
 }
 
 
@@ -614,21 +805,21 @@ void xs_cfg_emu_sidplay2_toggled(GtkToggleButton * togglebutton, gpointer user_d
 
 	gtk_widget_set_sensitive(LUW("cfg_emu_mem_real"), isActive);
 
-	gtk_widget_set_sensitive(LUW("cfg_sidplay2_grp"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay2_opt"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_sidplay2_frame"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_emu_sp2_opt"), isActive);
 
 	gtk_widget_set_sensitive(LUW("cfg_chn_autopan"), !isActive);
 
 #ifdef HAVE_RESID_BUILDER
-	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay2_resid"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_emu_sp2_resid"), isActive);
 #else
-	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay2_resid"), FALSE);
+	gtk_widget_set_sensitive(LUW("cfg_emu_sp2_resid"), FALSE);
 #endif
 
 #ifdef HAVE_HARDSID_BUILDER
-	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay2_hardsid"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_emu_sp2_hardsid"), isActive);
 #else
-	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay2_hardsid"), FALSE);
+	gtk_widget_set_sensitive(LUW("cfg_emu_sp2_hardsid"), FALSE);
 #endif
 }
 
@@ -639,9 +830,7 @@ void xs_cfg_oversample_toggled(GtkToggleButton * togglebutton, gpointer user_dat
 
 	(void) user_data;
 
-	gtk_widget_set_sensitive(LUW("cfg_oversample_factor"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_oversample_label1"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_oversample_label2"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_oversample_box"), isActive);
 }
 
 
@@ -651,9 +840,7 @@ void xs_cfg_mintime_enable_toggled(GtkToggleButton * togglebutton, gpointer user
 
 	(void) user_data;
 
-	gtk_widget_set_sensitive(LUW("cfg_mintime"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_mintime_label1"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_mintime_label2"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_mintime_box"), isActive);
 }
 
 
@@ -665,9 +852,7 @@ void xs_cfg_maxtime_enable_toggled(GtkToggleButton * togglebutton, gpointer user
 	(void) user_data;
 
 	gtk_widget_set_sensitive(LUW("cfg_maxtime_unknown"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_maxtime"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_maxtime_label1"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_maxtime_label2"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_maxtime_box"), isActive);
 }
 
 
@@ -677,9 +862,7 @@ void xs_cfg_sld_enable_toggled(GtkToggleButton * togglebutton, gpointer user_dat
 
 	(void) user_data;
 
-	gtk_widget_set_sensitive(LUW("cfg_sld_dbpath"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_sld_dbbrowse"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_sld_label1"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_sld_box"), isActive);
 }
 
 
@@ -689,13 +872,8 @@ void xs_cfg_stil_enable_toggled(GtkToggleButton * togglebutton, gpointer user_da
 
 	(void) user_data;
 
-	gtk_widget_set_sensitive(LUW("cfg_stil_dbpath"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_stil_browse"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_stil_label1"), isActive);
-
-	gtk_widget_set_sensitive(LUW("cfg_hvsc_path"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_hvsc_browse"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_hvsc_label1"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_stil_box1"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_stil_box2"), isActive);
 }
 
 
@@ -706,7 +884,7 @@ void xs_cfg_subauto_enable_toggled(GtkToggleButton * togglebutton, gpointer user
 	(void) user_data;
 
 	gtk_widget_set_sensitive(LUW("cfg_subauto_min_only"), isActive);
-	gtk_widget_set_sensitive(LUW("cfg_subauto_mintime"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_subauto_box"), isActive);
 }
 
 
@@ -717,7 +895,7 @@ void xs_cfg_subauto_min_only_toggled(GtkToggleButton * togglebutton, gpointer us
 
 	(void) user_data;
 
-	gtk_widget_set_sensitive(LUW("cfg_subauto_mintime"), isActive);
+	gtk_widget_set_sensitive(LUW("cfg_subauto_box"), isActive);
 }
 
 
@@ -753,18 +931,14 @@ void xs_cfg_maxtime_changed(GtkEditable * editable, gpointer user_data)
 }
 
 
-void xs_cfg_filter2_reset(GtkButton * button, gpointer user_data)
-{
-	(void) button; (void) user_data;
-}
-
-/*
- * Execute the configuration panel
+/* Execute the configuration panel
  */
 void xs_configure(void)
 {
 	gint i;
 	gfloat tmpValue;
+	gchar tmpStr[32];
+	GtkWidget *c;
 
 	/* Check if the window already exists */
 	if (xs_configwin != NULL) {
@@ -776,7 +950,23 @@ void xs_configure(void)
 	xs_configwin = create_xs_configwin();
 
 	/* Get lock on configuration */
-	g_static_mutex_lock(&xs_cfg_mutex);
+	XS_MUTEX_LOCK(xs_cfg);
+
+	/* Create the custom filter curve widget for libSIDPlay2 */
+	c = xs_curve_new();
+	xs_curve_reset(XS_CURVE(c));
+	xs_curve_set_range(XS_CURVE(c),
+		0,0, XS_SIDPLAY2_NFPOINTS, XS_SIDPLAY2_FMAX);
+	xs_curve_set_points(XS_CURVE(c),
+		xs_cfg.sid2Filter.points, xs_cfg.sid2Filter.npoints);
+	
+	gtk_widget_set_name(c, "cfg_sp2_filter_curve");
+	gtk_widget_ref(c);
+	gtk_object_set_data_full(GTK_OBJECT(xs_configwin),
+		"cfg_sp2_filter_curve", c, (GtkDestroyNotify) gtk_widget_unref);
+	gtk_widget_show(c);
+	gtk_container_add(GTK_CONTAINER(LUW("cfg_sp2_filter_frame")), c);
+
 
 	/* Based on available optional parts, gray out options */
 #ifndef HAVE_SIDPLAY1
@@ -789,7 +979,7 @@ void xs_configure(void)
 	gtk_widget_set_sensitive(LUW("cfg_box_sidplay2"), FALSE);
 #endif
 
-#ifndef HAVE_XMMSEXTRA
+#if !defined(HAVE_XMMSEXTRA) && !defined(AUDACIOUS_PLUGIN)
 	gtk_widget_set_sensitive(LUW("cfg_ftitle_override"), FALSE);
 	xs_cfg.titleOverride = TRUE;
 #endif
@@ -798,7 +988,13 @@ void xs_configure(void)
 	gtk_widget_set_sensitive(LUW("cfg_subctrl_patch"), FALSE);
 #endif
 
+#ifdef AUDACIOUS_PLUGIN
+	gtk_widget_set_sensitive(LUW("cfg_detectmagic"), FALSE);
+#endif
+
 	/* Update the widget sensitivities */
+	gtk_widget_set_sensitive(LUW("cfg_resid_frame"), FALSE);
+		
 	xs_cfg_emu_filters_toggled((GtkToggleButton *) LUW("cfg_emu_filters"), NULL);
 	xs_cfg_ftitle_override_toggled((GtkToggleButton *) LUW("cfg_ftitle_override"), NULL);
 	xs_cfg_emu_sidplay1_toggled((GtkToggleButton *) LUW("cfg_emu_sidplay1"), NULL);
@@ -816,13 +1012,18 @@ void xs_configure(void)
 	for (i = 0; i < xs_widtable_max; i++) {
 		switch (xs_widtable[i].widType) {
 		case WTYPE_BGROUP:
+			assert(xs_widtable[i].itemType == CTYPE_INT);
 			/* Check if current value matches the given one */
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(LUW(xs_widtable[i].widName)),
-						     (*((gint *) xs_widtable[i].itemData) == xs_widtable[i].itemSet)
-			    );
+				(*((gint *) xs_widtable[i].itemData) == xs_widtable[i].itemSet));
 			break;
 
-
+		case WTYPE_COMBO:
+			assert(xs_widtable[i].itemType == CTYPE_INT);
+			g_snprintf(tmpStr, sizeof(tmpStr), "%d", *(gint *) xs_widtable[i].itemData);
+			gtk_entry_set_text(GTK_ENTRY(LUW(xs_widtable[i].widName)), tmpStr);
+			break;
+			
 		case WTYPE_SPIN:
 		case WTYPE_SCALE:
 			/* Get the value */
@@ -837,41 +1038,44 @@ void xs_configure(void)
 
 			default:
 				tmpValue = -1;
+				assert(0);
+				break;
 			}
 
 			/* Set the value */
 			switch (xs_widtable[i].widType) {
 			case WTYPE_SPIN:
 				gtk_adjustment_set_value(gtk_spin_button_get_adjustment
-							 (GTK_SPIN_BUTTON(LUW(xs_widtable[i].widName))), tmpValue);
+					(GTK_SPIN_BUTTON(LUW(xs_widtable[i].widName))), tmpValue);
 				break;
 
 			case WTYPE_SCALE:
 				gtk_adjustment_set_value(gtk_range_get_adjustment
-							 (GTK_RANGE(LUW(xs_widtable[i].widName))), tmpValue);
+					(GTK_RANGE(LUW(xs_widtable[i].widName))), tmpValue);
 				break;
 			}
 			break;
 
 		case WTYPE_BUTTON:
+			assert(xs_widtable[i].itemType == CTYPE_BOOL);
 			/* Set toggle-button */
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(LUW(xs_widtable[i].widName)),
-						     *((gboolean *) xs_widtable[i].itemData)
-			    );
+				*((gboolean *) xs_widtable[i].itemData));
 			break;
 
 		case WTYPE_TEXT:
+			assert(xs_widtable[i].itemType == CTYPE_STR);
 			/* Set text to text-widget */
 			if (*(gchar **) xs_widtable[i].itemData != NULL) {
 				gtk_entry_set_text(GTK_ENTRY(LUW(xs_widtable[i].widName)),
-						   *(gchar **) xs_widtable[i].itemData);
+				*(gchar **) xs_widtable[i].itemData);
 			}
 			break;
 		}
 	}
 
 	/* Release the configuration */
-	g_static_mutex_unlock(&xs_cfg_mutex);
+	XS_MUTEX_UNLOCK(xs_cfg);
 
 	/* Show the widget */
 	gtk_widget_show(xs_configwin);

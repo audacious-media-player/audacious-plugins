@@ -2,10 +2,6 @@
 
 
 void
-xs_cfg_samplerate_menu_clicked         (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 xs_cfg_oversample_toggled              (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
@@ -22,19 +18,23 @@ xs_cfg_emu_filters_toggled             (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
 void
-xs_cfg_filter_reset                    (GtkButton       *button,
+xs_cfg_sp1_filter_reset                (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-xs_cfg_filter_sync_clicked             (GtkButton       *button,
+xs_cfg_sp2_filter_load                 (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-xs_cfg_filter2_reset                   (GtkButton       *button,
+xs_cfg_sp2_filter_save                 (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-xs_cfg_filter2_sync_clicked            (GtkButton       *button,
+xs_cfg_sp2_filter_import               (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+xs_cfg_sp2_filter_export               (GtkButton       *button,
                                         gpointer         user_data);
 
 void

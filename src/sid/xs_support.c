@@ -4,7 +4,7 @@
    Miscellaneous support functions
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2005 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,39 +16,135 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   You should have received a copy of the GNU General Public License along
+   with this program; if not, write to the Free Software Foundation, Inc.,
+   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "xmms-sid.h"
 #include "xs_support.h"
 #include <ctype.h>
 
 
-/* Bigendian file reading functions
+#ifndef __AUDACIOUS_NEWVFS__
+/* File handling
  */
-guint16 xs_rd_be16(FILE * f)
+t_xs_file *xs_fopen(const gchar *path, const gchar *mode)
 {
-	return (((guint16) fgetc(f)) << 8) | ((guint16) fgetc(f));
+	return fopen(path, mode);
 }
 
 
-guint32 xs_rd_be32(FILE * f)
+gint xs_fclose(t_xs_file *f)
 {
-	return (((guint32) fgetc(f)) << 24) |
-	    (((guint32) fgetc(f)) << 16) | (((guint32) fgetc(f)) << 8) | ((guint32) fgetc(f));
+	return fclose(f);
 }
 
 
-size_t xs_rd_str(FILE * f, gchar * s, size_t l)
+gint xs_fgetc(t_xs_file *f)
 {
-	return fread(s, sizeof(gchar), l, f);
+	return fgetc(f);
 }
+
+
+size_t xs_fread(void *p, size_t s, size_t n, t_xs_file *f)
+{
+	return fread(p, s, n, f);
+}
+
+
+gint xs_feof(t_xs_file *f)
+{
+	return feof(f);
+}
+
+
+gint xs_ferror(t_xs_file *f)
+{
+	return ferror(f);
+}
+
+
+glong xs_ftell(t_xs_file *f)
+{
+	return ftell(f);
+}
+
+
+gint xs_fseek(t_xs_file *f, glong o, gint w)
+{
+	return fseek(f, o, w);
+}
+#endif
+
+
+guint16 xs_fread_be16(t_xs_file *f)
+{
+	return (((guint16) xs_fgetc(f)) << 8) | ((guint16) xs_fgetc(f));
+}
+
+
+guint32 xs_fread_be32(t_xs_file *f)
+{
+	return (((guint32) xs_fgetc(f)) << 24) |
+		(((guint32) xs_fgetc(f)) << 16) |
+		(((guint32) xs_fgetc(f)) << 8) |
+		((guint32) xs_fgetc(f));
+}
+
+
+/* Load a file to a buffer, return 0 on success, negative value on error
+ */
+gint xs_fload_buffer(gchar *pcFilename, guint8 **buf, size_t *bufSize)
+{
+	t_xs_file *f;
+	glong seekPos;
+	
+	/* Open file, get file size */
+	if ((f = xs_fopen(pcFilename, "rb")) == NULL)
+		return -1;
+
+	xs_fseek(f, 0, SEEK_END);
+	seekPos = xs_ftell(f);
+	
+	if (seekPos > 0) {
+		size_t readSize = seekPos;
+		if (readSize >= *bufSize || *buf == NULL) {
+			/* Only re-allocate if the required size > current */
+			if (*buf != NULL) {
+				g_free(*buf);
+				*buf = NULL;
+			}
+	
+			*bufSize = seekPos;
+			
+			*buf = (guint8 *) g_malloc(*bufSize * sizeof(guint8));
+			if (*buf == NULL) {
+				xs_fclose(f);
+				return -2;
+			}
+		}
+		
+		/* Read data */	
+		xs_fseek(f, 0, SEEK_SET);
+		readSize = xs_fread(*buf, sizeof(guint8), *bufSize, f);
+		xs_fclose(f);
+		
+		if (readSize != *bufSize)
+			return -3;
+		else
+			return 0;
+	} else {
+		xs_fclose(f);
+		return -4;
+	}
+}
+
+
+
 
 
 /* Copy a string
  */
-gchar *xs_strncpy(gchar * pDest, gchar * pSource, size_t n)
+gchar *xs_strncpy(gchar *pDest, gchar *pSource, size_t n)
 {
 	gchar *s, *d;
 	size_t i;
@@ -81,7 +177,7 @@ gchar *xs_strncpy(gchar * pDest, gchar * pSource, size_t n)
 
 /* Copy a given string over in *ppResult.
  */
-gint xs_pstrcpy(gchar ** ppResult, const gchar * pStr)
+gint xs_pstrcpy(gchar **ppResult, const gchar *pStr)
 {
 	/* Check the string pointers */
 	if (!ppResult || !pStr)
@@ -103,7 +199,7 @@ gint xs_pstrcpy(gchar ** ppResult, const gchar * pStr)
 
 /* Concatenates a given string into string pointed by *ppResult.
  */
-gint xs_pstrcat(gchar ** ppResult, const gchar * pStr)
+gint xs_pstrcat(gchar **ppResult, const gchar *pStr)
 {
 	/* Check the string pointers */
 	if (!ppResult || !pStr)
@@ -128,7 +224,7 @@ gint xs_pstrcat(gchar ** ppResult, const gchar * pStr)
 /* Concatenate a given string up to given dest size or \n.
  * If size max is reached, change the end to "..."
  */
-void xs_pnstrcat(gchar * pDest, size_t iSize, gchar * pStr)
+void xs_pnstrcat(gchar *pDest, size_t iSize, gchar *pStr)
 {
 	size_t i, n;
 	gchar *s, *d;
@@ -166,7 +262,7 @@ void xs_pnstrcat(gchar * pDest, size_t iSize, gchar * pStr)
 
 /* Locate character in string
  */
-gchar *xs_strrchr(gchar * pcStr, gchar ch)
+gchar *xs_strrchr(gchar *pcStr, gchar ch)
 {
 	gchar *lastPos = NULL;
 
@@ -180,21 +276,21 @@ gchar *xs_strrchr(gchar * pcStr, gchar ch)
 }
 
 
-void xs_findnext(gchar * pcStr, guint * piPos)
+void xs_findnext(gchar *pcStr, size_t *piPos)
 {
 	while (pcStr[*piPos] && isspace(pcStr[*piPos]))
 		(*piPos)++;
 }
 
 
-void xs_findeol(gchar * pcStr, guint * piPos)
+void xs_findeol(gchar *pcStr, size_t *piPos)
 {
 	while (pcStr[*piPos] && (pcStr[*piPos] != '\n') && (pcStr[*piPos] != '\r'))
 		(*piPos)++;
 }
 
 
-void xs_findnum(gchar * pcStr, guint * piPos)
+void xs_findnum(gchar *pcStr, size_t *piPos)
 {
 	while (pcStr[*piPos] && isdigit(pcStr[*piPos]))
 		(*piPos)++;
@@ -204,13 +300,11 @@ void xs_findnum(gchar * pcStr, guint * piPos)
 #ifndef HAVE_MEMSET
 void *xs_memset(void *p, int c, size_t n)
 {
-	gchar *dp;
+	guint8 *dp;
 
-	dp = (gchar *) p;
-	while (n--) {
-		*dp = (gchar) c;
-		n--;
-	}
+	dp = (guint8 *) p;
+	while (n--)
+		*(dp++) = c;
 
 	return p;
 }

@@ -4,7 +4,7 @@
    STIL-database handling functions
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2005 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,21 +16,84 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   You should have received a copy of the GNU General Public License along
+   with this program; if not, write to the Free Software Foundation, Inc.,
+   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "xs_stil.h"
 #include "xs_support.h"
-#include "xs_config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 
 /* Database handling functions
  */
-static t_xs_stil_node *xs_stildb_node_new(gchar * pcFilename)
+static gboolean xs_stildb_node_realloc(t_xs_stil_node *pNode, gint nsubTunes)
+{
+	if (!pNode) return FALSE;
+
+	/* Re-allocate subTune structure if needed */
+	if (nsubTunes > pNode->nsubTunes) {
+		pNode->subTunes =
+			(t_xs_stil_subnode **) g_realloc(pNode->subTunes,
+			(nsubTunes + 1) * sizeof(t_xs_stil_subnode **));
+
+		if (!pNode->subTunes) {
+			xs_error(_("SubTune pointer structure realloc failed.\n"));
+			return FALSE;
+		}
+		
+		/* Clear the newly allocated memory */
+		xs_memset(&(pNode->subTunes[pNode->nsubTunes]), 0,
+		(nsubTunes - pNode->nsubTunes + 1) * sizeof(t_xs_stil_subnode **));
+		
+		pNode->nsubTunes = nsubTunes;
+	}
+
+	/* Allocate memory for subTune */
+	if (!pNode->subTunes[nsubTunes]) {
+		pNode->subTunes[nsubTunes] = (t_xs_stil_subnode *)
+			g_malloc0(sizeof(t_xs_stil_subnode));
+		
+		if (!pNode->subTunes[nsubTunes]) {
+			xs_error(_("SubTune structure malloc failed!\n"));
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+
+static void xs_stildb_node_free(t_xs_stil_node *pNode)
+{
+	gint i;
+	t_xs_stil_subnode *pSub;
+
+	if (pNode) {
+		/* Free subtune information */
+		for (i = 0; i <= pNode->nsubTunes; i++) {
+			pSub = pNode->subTunes[i];
+			if (pSub) {
+				g_free(pSub->pName);
+				g_free(pSub->pAuthor);
+				g_free(pSub->pInfo);
+				g_free(pSub->pTitle);
+
+				g_free(pSub);
+			}
+		}
+		
+		g_free(pNode->subTunes);
+		g_free(pNode->pcFilename);
+		g_free(pNode);
+	}
+}
+
+
+static t_xs_stil_node *xs_stildb_node_new(gchar *pcFilename)
 {
 	t_xs_stil_node *pResult;
 
@@ -39,37 +102,20 @@ static t_xs_stil_node *xs_stildb_node_new(gchar * pcFilename)
 	if (!pResult)
 		return NULL;
 
+	/* Allocate filename and initial space for one subtune */
 	pResult->pcFilename = g_strdup(pcFilename);
-	if (!pResult->pcFilename) {
-		g_free(pResult);
+	if (!pResult->pcFilename || !xs_stildb_node_realloc(pResult, 1)) {
+		xs_stildb_node_free(pResult);
 		return NULL;
 	}
-
+	
 	return pResult;
-}
-
-
-static void xs_stildb_node_free(t_xs_stil_node * pNode)
-{
-	gint i;
-
-	if (pNode) {
-		/* Free subtune information */
-		for (i = 0; i <= XS_STIL_MAXENTRY; i++) {
-			g_free(pNode->subTunes[i].pName);
-			g_free(pNode->subTunes[i].pAuthor);
-			g_free(pNode->subTunes[i].pInfo);
-		}
-
-		g_free(pNode->pcFilename);
-		g_free(pNode);
-	}
 }
 
 
 /* Insert given node to db linked list
  */
-static void xs_stildb_node_insert(t_xs_stildb * db, t_xs_stil_node * pNode)
+static void xs_stildb_node_insert(t_xs_stildb *db, t_xs_stil_node *pNode)
 {
 	assert(db);
 
@@ -89,22 +135,38 @@ static void xs_stildb_node_insert(t_xs_stildb * db, t_xs_stil_node * pNode)
 
 /* Read database (additively) to given db-structure
  */
-#define XS_STILDB_MULTI if (isMulti) { isMulti = FALSE; xs_pstrcat(&(tmpNode->subTunes[subEntry].pInfo), "\n"); }
+#define XS_STILDB_MULTI							\
+	if (isMulti) {							\
+		isMulti = FALSE;					\
+		xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), "\n");\
+	}
 
+static void XS_STILDB_ERR(gint lineNum, gchar *inLine, const char *fmt, ...)
+{
+	va_list ap;
 
-gint xs_stildb_read(t_xs_stildb * db, gchar * dbFilename)
+	va_start(ap, fmt);
+	xs_error(fmt, ap);
+	va_end(ap);
+	
+	fprintf(stderr, "#%d: '%s'\n", lineNum, inLine);
+}
+
+gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 {
 	FILE *inFile;
 	gchar inLine[XS_BUF_SIZE + 16];	/* Since we add some chars here and there */
-	guint lineNum, linePos, eolPos;
+	size_t lineNum;
 	t_xs_stil_node *tmpNode;
 	gboolean isError, isMulti;
 	gint subEntry;
+	gchar *tmpLine;
 	assert(db);
 
 	/* Try to open the file */
 	if ((inFile = fopen(dbFilename, "ra")) == NULL) {
-		XSERR("Could not open STILDB '%s'\n", dbFilename);
+		xs_error(_("Could not open STILDB '%s'\n"),
+			dbFilename);
 		return -1;
 	}
 
@@ -115,31 +177,33 @@ gint xs_stildb_read(t_xs_stildb * db, gchar * dbFilename)
 	tmpNode = NULL;
 	subEntry = 0;
 
-	while (!feof(inFile) && !isError) {
-		fgets(inLine, XS_BUF_SIZE, inFile);
-		inLine[XS_BUF_SIZE - 1] = 0;
+	while (!isError && fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
+		size_t linePos, eolPos;
 		linePos = eolPos = 0;
 		xs_findeol(inLine, &eolPos);
 		inLine[eolPos] = 0;
 		lineNum++;
+		
+		tmpLine = XS_CS_STIL(inLine);
 
-		switch (inLine[0]) {
+		switch (tmpLine[0]) {
 		case '/':
 			/* Check if we are already parsing entry */
 			isMulti = FALSE;
 			if (tmpNode) {
-				XSERR("New entry ('%s') before end of current ('%s')! Possibly malformed STIL-file!\n",
-				      inLine, tmpNode->pcFilename);
-
+				XS_STILDB_ERR(lineNum, tmpLine,
+					"New entry found before end of current ('%s')!\n",
+					tmpNode->pcFilename);
 				xs_stildb_node_free(tmpNode);
 			}
 
 			/* A new node */
 			subEntry = 0;
-			tmpNode = xs_stildb_node_new(inLine);
+			tmpNode = xs_stildb_node_new(tmpLine);
 			if (!tmpNode) {
 				/* Allocation failed */
-				XSERR("Could not allocate new STILdb-node for '%s'!\n", inLine);
+				XS_STILDB_ERR(lineNum, tmpLine,
+					"Could not allocate new STILdb-node!\n");
 				isError = TRUE;
 			}
 			break;
@@ -148,20 +212,30 @@ gint xs_stildb_read(t_xs_stildb * db, gchar * dbFilename)
 			/* A new sub-entry */
 			isMulti = FALSE;
 			linePos++;
-			if (inLine[linePos] == '#') {
+			if (tmpLine[linePos] == '#') {
 				linePos++;
-				if (inLine[linePos]) {
-					xs_findnum(inLine, &linePos);
-					inLine[linePos] = 0;
-					subEntry = atol(&inLine[2]);
+				if (isdigit(tmpLine[linePos])) {
+					size_t savePos = linePos;
+					xs_findnum(tmpLine, &linePos);
+					tmpLine[linePos] = 0;
+					subEntry = atol(&tmpLine[savePos]);
 
 					/* Sanity check */
-					if ((subEntry < 1) || (subEntry > XS_STIL_MAXENTRY)) {
-						XSERR("Number of subEntry (%i) for '%s' is invalid\n", subEntry,
-						      tmpNode->pcFilename);
+					if (subEntry < 1) {
+						XS_STILDB_ERR(lineNum, tmpLine,
+							"Number of subEntry (%i) for '%s' is invalid\n",
+							subEntry, tmpNode->pcFilename);
 						subEntry = 0;
 					}
+				} else {
+					XS_STILDB_ERR(lineNum, tmpLine,
+						"Syntax error, expected subEntry number.\n");
+					subEntry = 0;
 				}
+			} else {
+				XS_STILDB_ERR(lineNum, tmpLine,
+					"Syntax error, expected '#' before subEntry number.\n");
+				subEntry = 0;
 			}
 
 			break;
@@ -182,35 +256,53 @@ gint xs_stildb_read(t_xs_stildb * db, gchar * dbFilename)
 		default:
 			/* Check if we are parsing an entry */
 			if (!tmpNode) {
-				XSERR("Entry data encountered outside of entry!\n");
+				XS_STILDB_ERR(lineNum, tmpLine,
+					"Entry data encountered outside of entry or syntax error!\n");
 				break;
 			}
 
+			if (!xs_stildb_node_realloc(tmpNode, subEntry)) {
+				XS_STILDB_ERR(lineNum, tmpLine,
+					"Could not (re)allocate memory for subEntries!\n");
+				isError = TRUE;
+				break;
+			}
+			
 			/* Some other type */
-			if (strncmp(inLine, "   NAME:", 8) == 0) {
-				XS_STILDB_MULTI g_free(tmpNode->subTunes[subEntry].pName);
-				tmpNode->subTunes[subEntry].pName = g_strdup(&inLine[9]);
-			} else if (strncmp(inLine, " AUTHOR:", 8) == 0) {
-				XS_STILDB_MULTI g_free(tmpNode->subTunes[subEntry].pAuthor);
-				tmpNode->subTunes[subEntry].pAuthor = g_strdup(&inLine[9]);
-			} else if (strncmp(inLine, "  TITLE:", 8) == 0) {
-				XS_STILDB_MULTI inLine[eolPos++] = '\n';
-				inLine[eolPos++] = 0;
-				xs_pstrcat(&(tmpNode->subTunes[subEntry].pInfo), &inLine[2]);
-			} else if (strncmp(inLine, " ARTIST:", 8) == 0) {
-				XS_STILDB_MULTI inLine[eolPos++] = '\n';
-				inLine[eolPos++] = 0;
-				xs_pstrcat(&(tmpNode->subTunes[subEntry].pInfo), &inLine[1]);
-			} else if (strncmp(inLine, "COMMENT:", 8) == 0) {
-				XS_STILDB_MULTI isMulti = TRUE;
-				xs_pstrcat(&(tmpNode->subTunes[subEntry].pInfo), inLine);
-			} else if (strncmp(inLine, "        ", 8) == 0) {
-				xs_pstrcat(&(tmpNode->subTunes[subEntry].pInfo), &inLine[8]);
+			if (strncmp(tmpLine, " NAME:", 8) == 0) {
+				XS_STILDB_MULTI;
+				g_free(tmpNode->subTunes[subEntry]->pName);
+				tmpNode->subTunes[subEntry]->pName = g_strdup(&tmpLine[9]);
+			} else if (strncmp(tmpLine, "  TITLE:", 8) == 0) {
+				XS_STILDB_MULTI;
+				g_free(tmpNode->subTunes[subEntry]->pTitle);
+				tmpNode->subTunes[subEntry]->pTitle = g_strdup(&tmpLine[9]);
+			} else if (strncmp(tmpLine, " AUTHOR:", 8) == 0) {
+				XS_STILDB_MULTI;
+				g_free(tmpNode->subTunes[subEntry]->pAuthor);
+				tmpNode->subTunes[subEntry]->pAuthor = g_strdup(&tmpLine[9]);
+			} else if (strncmp(tmpLine, " ARTIST:", 8) == 0) {
+				XS_STILDB_MULTI;
+				isMulti = TRUE;
+				xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), &tmpLine[1]);
+			} else if (strncmp(tmpLine, "COMMENT:", 8) == 0) {
+				XS_STILDB_MULTI;
+				isMulti = TRUE;
+				xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), tmpLine);
+			} else if (strncmp(tmpLine, "        ", 8) == 0) {
+				if (isMulti) {
+					xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), &tmpLine[8]);
+				} else {
+					XS_STILDB_ERR(lineNum, tmpLine,
+					"Entry continuation found when isMulti == FALSE.\n");
+				}
 			}
 			break;
 		}
+		
+		g_free(tmpLine);
 
-	}			/* while */
+	} /* while */
 
 	/* Check if there is one remaining node */
 	if (tmpNode)
@@ -228,16 +320,18 @@ gint xs_stildb_read(t_xs_stildb * db, gchar * dbFilename)
 static gint xs_stildb_cmp(const void *pNode1, const void *pNode2)
 {
 	/* We assume here that we never ever get NULL-pointers or similar */
-	return strcmp((*(t_xs_stil_node **) pNode1)->pcFilename, (*(t_xs_stil_node **) pNode2)->pcFilename);
+	return strcmp(
+		(*(t_xs_stil_node **) pNode1)->pcFilename,
+		(*(t_xs_stil_node **) pNode2)->pcFilename);
 }
 
 
 /* (Re)create index
  */
-gint xs_stildb_index(t_xs_stildb * db)
+gint xs_stildb_index(t_xs_stildb *db)
 {
 	t_xs_stil_node *pCurr;
-	gint i;
+	size_t i;
 
 	/* Free old index */
 	if (db->ppIndex) {
@@ -275,9 +369,10 @@ gint xs_stildb_index(t_xs_stildb * db)
 	return 0;
 }
 
+
 /* Free a given STIL database
  */
-void xs_stildb_free(t_xs_stildb * db)
+void xs_stildb_free(t_xs_stildb *db)
 {
 	t_xs_stil_node *pCurr, *pNext;
 
@@ -308,155 +403,20 @@ void xs_stildb_free(t_xs_stildb * db)
 
 /* Get STIL information node from database
  */
-static t_xs_stil_node *xs_stildb_get_node(t_xs_stildb * db, gchar * pcFilename)
+t_xs_stil_node *xs_stildb_get_node(t_xs_stildb *db, gchar *pcFilename)
 {
-	gint iStartNode, iEndNode, iQNode, r, i;
-	gboolean iFound;
-	t_xs_stil_node *pResult;
+	t_xs_stil_node keyItem, *key, **item;
 
 	/* Check the database pointers */
 	if (!db || !db->pNodes || !db->ppIndex)
 		return NULL;
 
-	/* Look-up via index using binary search */
-	pResult = NULL;
-	iStartNode = 0;
-	iEndNode = (db->n - 1);
-	iQNode = (iEndNode / 2);
-	iFound = FALSE;
-
-	while ((!iFound) && ((iEndNode - iStartNode) > XS_BIN_BAILOUT)) {
-		r = strcmp(pcFilename, db->ppIndex[iQNode]->pcFilename);
-		if (r < 0) {
-			/* Hash was in the <- LEFT side */
-			iEndNode = iQNode;
-			iQNode = iStartNode + ((iEndNode - iStartNode) / 2);
-		} else if (r > 0) {
-			/* Hash was in the RIGHT -> side */
-			iStartNode = iQNode;
-			iQNode = iStartNode + ((iEndNode - iStartNode) / 2);
-		} else
-			iFound = TRUE;
-	}
-
-	/* If not found already */
-	if (!iFound) {
-		/* Search the are linearly */
-		iFound = FALSE;
-		i = iStartNode;
-		while ((i <= iEndNode) && (!iFound)) {
-			if (strcmp(pcFilename, db->ppIndex[i]->pcFilename) == 0)
-				iFound = TRUE;
-			else
-				i++;
-		}
-
-		/* Check the result */
-		if (iFound)
-			pResult = db->ppIndex[i];
-
-	} else {
-		/* Found via binary search */
-		pResult = db->ppIndex[iQNode];
-	}
-
-	return pResult;
-}
-
-
-/*
- * These should be moved out of this module some day ...
- */
-static t_xs_stildb *xs_stildb_db = NULL;
-GStaticMutex xs_stildb_db_mutex = G_STATIC_MUTEX_INIT;
-extern GStaticMutex xs_cfg_mutex;
-
-gint xs_stil_init(void)
-{
-	g_static_mutex_lock(&xs_cfg_mutex);
-
-	if (!xs_cfg.stilDBPath) {
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		return -1;
-	}
-
-	g_static_mutex_lock(&xs_stildb_db_mutex);
-
-	/* Check if already initialized */
-	if (xs_stildb_db)
-		xs_stildb_free(xs_stildb_db);
-
-	/* Allocate database */
-	xs_stildb_db = (t_xs_stildb *) g_malloc0(sizeof(t_xs_stildb));
-	if (!xs_stildb_db) {
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		g_static_mutex_unlock(&xs_stildb_db_mutex);
-		return -2;
-	}
-
-	/* Read the database */
-	if (xs_stildb_read(xs_stildb_db, xs_cfg.stilDBPath) != 0) {
-		xs_stildb_free(xs_stildb_db);
-		xs_stildb_db = NULL;
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		g_static_mutex_unlock(&xs_stildb_db_mutex);
-		return -3;
-	}
-
-	/* Create index */
-	if (xs_stildb_index(xs_stildb_db) != 0) {
-		xs_stildb_free(xs_stildb_db);
-		xs_stildb_db = NULL;
-		g_static_mutex_unlock(&xs_cfg_mutex);
-		g_static_mutex_unlock(&xs_stildb_db_mutex);
-		return -4;
-	}
-
-	g_static_mutex_unlock(&xs_cfg_mutex);
-	g_static_mutex_unlock(&xs_stildb_db_mutex);
-	return 0;
-}
-
-
-void xs_stil_close(void)
-{
-	g_static_mutex_lock(&xs_stildb_db_mutex);
-	xs_stildb_free(xs_stildb_db);
-	xs_stildb_db = NULL;
-	g_static_mutex_unlock(&xs_stildb_db_mutex);
-}
-
-
-t_xs_stil_node *xs_stil_get(gchar * pcFilename)
-{
-	t_xs_stil_node *pResult;
-	gchar *tmpFilename;
-
-	g_static_mutex_lock(&xs_stildb_db_mutex);
-	g_static_mutex_lock(&xs_cfg_mutex);
-
-	if (xs_cfg.stilDBEnable && xs_stildb_db) {
-		if (xs_cfg.hvscPath) {
-			/* Remove postfixed directory separator from HVSC-path */
-			tmpFilename = xs_strrchr(xs_cfg.hvscPath, '/');
-			if (tmpFilename && (tmpFilename[1] == 0))
-				tmpFilename[0] = 0;
-
-			/* Remove HVSC location-prefix from filename */
-			tmpFilename = strstr(pcFilename, xs_cfg.hvscPath);
-			if (tmpFilename)
-				tmpFilename += strlen(xs_cfg.hvscPath);
-			else
-				tmpFilename = pcFilename;
-		} else
-			tmpFilename = pcFilename;
-
-		pResult = xs_stildb_get_node(xs_stildb_db, tmpFilename);
-	} else
-		pResult = NULL;
-
-	g_static_mutex_unlock(&xs_stildb_db_mutex);
-	g_static_mutex_unlock(&xs_cfg_mutex);
-
-	return pResult;
+	/* Look-up index using binary search */
+	keyItem.pcFilename = pcFilename;
+	key = &keyItem;
+	item = bsearch(&key, db->ppIndex, db->n, sizeof(t_xs_stil_node *), xs_stildb_cmp);
+	if (item)
+		return *item;
+	else
+		return NULL;
 }
