@@ -829,9 +829,6 @@ static void *mp4_decode( void *args )
     char *filename = playback->filename;
 
     mp4fh = vfs_buffered_file_new_from_uri(filename);
-    mp4cb->read = mp4_read_callback;
-    mp4cb->seek = mp4_seek_callback;
-    mp4cb->user_data = mp4fh;
 
     g_static_mutex_lock(&mutex);
     seekPosition= -1;
@@ -842,7 +839,13 @@ static void *mp4_decode( void *args )
         g_thread_exit(NULL);
 
     ret = parse_aac_stream(mp4fh);
-    vfs_rewind(mp4fh);
+    vfs_fclose(mp4fh);
+
+    mp4fh = vfs_fopen(filename, "rb");
+    mp4cb->read = mp4_read_callback;
+    mp4cb->seek = mp4_seek_callback;
+    mp4cb->user_data = mp4fh;
+
     mp4file= mp4ff_open_read(mp4cb);
   
     if( ret == TRUE ) {
