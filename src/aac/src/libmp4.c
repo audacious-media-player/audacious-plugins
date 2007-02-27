@@ -17,6 +17,8 @@
 
 #define SBR_DEC
 
+extern VFSFile *vfs_buffered_file_new_from_uri(gchar *uri);
+
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
  * We use this for sanity checks, among other things, as mp4ff needs
@@ -826,7 +828,7 @@ static void *mp4_decode( void *args )
     InputPlayback *playback = args;
     char *filename = playback->filename;
 
-    mp4fh = vfs_fopen(filename, "rb");
+    mp4fh = vfs_buffered_file_new_from_uri(filename);
     mp4cb->read = mp4_read_callback;
     mp4cb->seek = mp4_seek_callback;
     mp4cb->user_data = mp4fh;
