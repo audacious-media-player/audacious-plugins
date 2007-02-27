@@ -893,6 +893,8 @@ curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
     return strdup(handle->name);
   if (!strcmp(field, "track-name") && handle->title != NULL)
     return strdup(handle->title);
+  if (!strcmp(field, "content-length"))
+    return g_strdup_printf("%ld", handle->length);
   return NULL;
 }
 
