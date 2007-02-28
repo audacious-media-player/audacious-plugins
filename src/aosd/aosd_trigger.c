@@ -22,7 +22,7 @@
 #include "aosd_trigger_private.h"
 #include "aosd_cfg.h"
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include <audacious/playlist.h>
 #include <audacious/strings.h>
 #include <audacious/hook.h>
