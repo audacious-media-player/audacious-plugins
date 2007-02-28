@@ -93,7 +93,7 @@ AC_ARG_WITH(cdda-dir,
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom"
+INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom vtx"
 OUTPUT_PLUGINS="disk_writer null"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
