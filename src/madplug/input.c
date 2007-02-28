@@ -445,7 +445,12 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
         info->title = g_strdup(track_name);
         info->tuple->track_name = g_strdup(track_name);
         info->tuple->album_name = g_strdup(stream_name);
-        tmp = g_strdup_printf("%s (%s)", track_name, stream_name);
+
+        if (track_name != NULL)
+            tmp = g_strdup_printf("%s (%s)", track_name, stream_name);
+        else
+	    tmp = g_strdup(stream_name);
+
         mad_plugin->set_info(tmp,
                              -1, // indicates the stream is unseekable
                              info->bitrate, info->freq, info->channels);
@@ -506,7 +511,12 @@ input_get_data(struct mad_info_t *madinfo, guchar * buffer,
         madinfo->title = g_strdup(track_name);
         madinfo->tuple->track_name = g_strdup(track_name);
         madinfo->tuple->album_name = g_strdup(stream_name);
-        tmp = g_strdup_printf("%s (%s)", track_name, stream_name);
+
+        if (track_name != NULL)
+            tmp = g_strdup_printf("%s (%s)", track_name, stream_name);
+        else
+	    tmp = g_strdup(stream_name);
+
         mad_plugin->set_info(tmp,
                              -1, // indicate the stream is unseekable
 			     madinfo->bitrate, madinfo->freq, madinfo->channels);

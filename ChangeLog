@@ -1,3 +1,23 @@
+2007-02-28 12:38:53 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1596]
+  - vtx input plugin based on a submission from Pavel Vymetalek.
+  
+  trunk/configure.ac            |    2 
+  trunk/src/vtx/Makefile        |   16 +
+  trunk/src/vtx/about.c         |   35 ++
+  trunk/src/vtx/ay8912.c        |  494 ++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/vtx/ayemu.h         |   77 ++++++
+  trunk/src/vtx/ayemu_8912.h    |  150 ++++++++++++
+  trunk/src/vtx/ayemu_vtxfile.h |   92 +++++++
+  trunk/src/vtx/config.c        |   10 
+  trunk/src/vtx/info.c          |   49 ++++
+  trunk/src/vtx/lh5dec.c        |  297 +++++++++++++++++++++++++
+  trunk/src/vtx/vtx.c           |  330 ++++++++++++++++++++++++++++
+  trunk/src/vtx/vtx.h           |   28 ++
+  trunk/src/vtx/vtxfile.c       |  321 +++++++++++++++++++++++++++
+  13 files changed, 1900 insertions(+), 1 deletion(-)
+
+
 2007-02-28 10:14:00 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1594]
   - using mad.pc makes us dependant on a nonstandard packaging of mad -- 
