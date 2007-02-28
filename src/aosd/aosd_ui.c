@@ -23,8 +23,8 @@
 #include "aosd_trigger.h"
 #include "aosd_cfg.h"
 #include "aosd_osd.h"
+#include <audacious/i18n.h>
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
