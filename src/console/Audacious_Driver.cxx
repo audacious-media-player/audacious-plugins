@@ -102,7 +102,7 @@ File_Handler::File_Handler( const char* path_in, VFSFile* fd, gboolean is_our_fi
 	
 	// extract track number
 	gchar* args = strchr( path, '?' ); // TODO: use strrchr()?
-	if ( args && g_ascii_isdigit( args + 1 ) )
+	if ( args && g_ascii_isdigit( (guchar) *(args + 1) ) )
 	{
 		*args = '\0';
 		// TODO: use func with better error reporting, and perhaps don't
