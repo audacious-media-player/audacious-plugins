@@ -1079,6 +1079,20 @@ if test "$enable_tta" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS tta"
 fi
 
+dnl *** LAME
+
+AC_ARG_ENABLE(lame,
+    [  --disable-lame           disable lame encoder plugin (default=enabled) ],
+    [enable_lame=$enableval],
+    [enable_lame=yes]
+)
+
+if test "$enable_lame" = "yes"; then
+   AC_CHECK_LIB(mp3lame -lm, lame_init,
+   [OUTPUT_PLUGINS="$OUTPUT_PLUGINS lame"],
+   [enable_lame="no"])
+fi
+
 dnl *** End of all plugin checks ***
 
 AC_SUBST(ARCH_DEFINES)
@@ -1165,6 +1179,7 @@ echo "  Analog Realtime Synthesizer (arts):     $have_arts"
 echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
+echo "  Lame encoder (lame):                    $enable_lame"
 echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
