@@ -1,3 +1,12 @@
+2007-03-01 05:16:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1622]
+  - enable seeking on HTTP streams.
+  
+  trunk/src/madplug/decoder.c |    2 +-
+  trunk/src/madplug/plugin.c  |    1 -
+  2 files changed, 1 insertion(+), 2 deletions(-)
+
+
 2007-03-01 05:02:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1620]
   - support id3 reading of static files
