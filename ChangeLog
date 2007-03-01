@@ -1,3 +1,12 @@
+2007-03-01 03:26:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1616]
+  - when shifting the ringbuffer to left by one byte to regain alignment, 
+    make sure that buffervalid is decremented.
+  
+  trunk/src/aac/src/libmp4.c |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2007-03-01 02:25:09 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1614]
   - remove dead header, reported by joecool.

@@ -351,7 +351,28 @@ static TitleInput *mp4_get_song_tuple(char *fn)
     TitleInput *input = NULL;
     gchar *filename = g_strdup(fn);
 
-    mp4fh = vfs_fopen(filename, "rb");
+    mp4fh = vfs_buffered_file_new_from_uri(filename);
+
+    /* check if this file is an ADTS stream, if so return a blank tuple */
+    if (parse_aac_stream(mp4fh))
+    {
+        g_free(mp4cb);
+
+        input = bmp_title_input_new();
+
+        input->track_name = vfs_get_metadata(mp4fh, "track-name");
+        input->album_name = vfs_get_metadata(mp4fh, "stream-name");
+
+        input->file_name = g_path_get_basename(filename);
+        input->file_path = g_path_get_dirname(filename);
+        input->file_ext = extname(filename);
+
+        input->mtime = 0;
+        input->length = -1;
+
+        return input;
+    }
+
     mp4cb->read = mp4_read_callback;
     mp4cb->seek = mp4_seek_callback;
     mp4cb->user_data = mp4fh;   
