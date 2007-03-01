@@ -32,7 +32,7 @@
 #define REVERSE_SEEK_SIZE 2048
 
 #define DEBUG_CONNECTION 0
-#define DEBUG_OPEN_CLOSE 0
+#define DEBUG_OPEN_CLOSE 1
 #define DEBUG_SEEK 0
 #define DEBUG_READ 0
 #define DEBUG_HEADERS 0
@@ -61,7 +61,6 @@ struct _CurlHandle {
   gsize rd_index;
   gsize wr_index;
 
-  gsize hdrs_start;
   gsize hdr_index;
 
   GSList *stream_stack; // stack for stream functions (getc, ungetc)
@@ -400,12 +399,11 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 		      // Empty header means the end of the headers
 		      handle->header = 0;
 		      handle->hdr_index = (i + 2) % handle->buffer_length;
-		      // There's some after the header; we have to put
-		      // it in the buffer where we started the headers
-		      // and account for it in wr_abs.
-		      leftover = (handle->wr_index - handle->hdr_index + 
-				  handle->buffer_length) % 
-			handle->buffer_length;
+		      // We read from the start of the data in the request
+		      handle->rd_index = handle->hdr_index;
+		      // We've already written the amount that's after
+		      // the header.
+		      leftover = (handle->wr_index - handle->hdr_index + handle->buffer_length) % handle->buffer_length;
 		      handle->wr_abs += leftover;
 		      if (handle->download)
 			{
@@ -415,24 +413,6 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 			  vfs_fwrite(ptr + ret - leftover, leftover, 1, 
 				     handle->download);
 			}
-		      handle->wr_index = handle->hdrs_start;
-		      if (handle->wr_index + leftover > handle->buffer_length)
-			{
-			  g_print("Wrapped rewrite\n");
-			  memcpy(handle->buffer + handle->wr_index, ptr + ret,
-				 handle->buffer_length - handle->wr_index);
-			  memcpy(handle->buffer, ptr + ret +
-				 handle->buffer_length - handle->wr_index,
-				 leftover - handle->buffer_length +
-				 handle->wr_index);
-			}
-		      else
-			{
-			  memcpy(handle->buffer + handle->wr_index, ptr + ret,
-				 leftover);
-			}
-		      handle->wr_index = (handle->wr_index + leftover) %
-			handle->buffer_length;
 		      handle->icy_left = handle->icy_interval;
 		      if (handle->icy_interval)
 			{
@@ -458,60 +438,40 @@ curl_manage_request(gpointer arg)
 {
   CurlHandle *handle = arg;
   CURLcode result;
-  do
+  if (DEBUG_CONNECTION)
+    g_print("Connect %p\n", handle);
+
+  if (handle->no_data)
+    curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 1);
+  else
     {
       if (DEBUG_CONNECTION)
-	g_print("Connect %p\n", handle);
+	g_print("Start from %d\n", handle->wr_abs);
+      curl_easy_setopt(handle->curl, CURLOPT_RESUME_FROM, handle->wr_abs);
 
-      if (handle->no_data)
-	curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 1);
-      else
-	{
-	  if (DEBUG_CONNECTION)
-	    g_print("Start from %d\n", handle->wr_abs);
-	  curl_easy_setopt(handle->curl, CURLOPT_RESUME_FROM, handle->wr_abs);
-	  
-	  curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 0);
-	  curl_easy_setopt(handle->curl, CURLOPT_HTTPGET, 1);
-	}
-      
-      handle->header = 1;
-      handle->hdr_index = handle->wr_index;
-      handle->hdrs_start = handle->wr_index;
-      handle->icy_interval = 0;
-
-      if (DEBUG_CONNECTION)
-	g_print("About to perform %p\n", handle);
-      result = curl_easy_perform(handle->curl);
-      if (result == CURLE_OK)
-	{
-	  update_length(handle);
-	  //g_print("Length: %d\n", handle->length);
-	}
-      // We expect to get CURLE_WRITE_ERROR if we cancel.
-      // We get CURLE_GOT_NOTHING if we send a HEAD request to a shoutcast server.
-      // We get CURLE_HTTP_RANGE_ERROR if we try to use range with shoutcast.
-      // Why do we get CURLE_PARTIAL_FILE?
-      if (result != CURLE_OK && result != CURLE_WRITE_ERROR && 
-	  result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR &&
-	  result != CURLE_PARTIAL_FILE)
-	{
-	  g_print("Got curl error %d\n", result);
-	  handle->failed = 1;
-	}
-      if (DEBUG_CONNECTION)
-	g_print("Got curl error %d\n", result);
-      if (result == CURLE_PARTIAL_FILE)
-	{
-	  if (DEBUG_CONNECTION)
-	    g_print("Lost connection %p; restarting\n", handle);
-	  continue;
-	}
-      if (DEBUG_CONNECTION)
-	g_print("Done %p%s", handle, handle->cancel ? " (aborted)\n" : "\n");
-      break;
+      curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 0);
+      curl_easy_setopt(handle->curl, CURLOPT_HTTPGET, 1);
     }
-  while (1);
+
+  handle->header = 1;
+  handle->hdr_index = 0;
+  handle->icy_interval = 0;
+
+  result = curl_easy_perform(handle->curl);
+  if (result == CURLE_OK)
+    update_length(handle);
+  // We expect to get CURLE_WRITE_ERROR if we cancel.
+  // We get CURLE_GOT_NOTHING if we send a HEAD request to a shoutcast server.
+  // We get CURLE_HTTP_RANGE_ERROR if we try to use range with shoutcast.
+  if (result != CURLE_OK && result != CURLE_WRITE_ERROR && 
+      result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR &&
+      result != CURLE_PARTIAL_FILE)
+    {
+      g_print("Got curl error %d\n", result);
+      handle->failed = 1;
+    }
+  if (DEBUG_CONNECTION)
+    g_print("Done %p%s", handle, handle->cancel ? " (aborted)\n" : "\n");
   handle->cancel = 1;
   return NULL;
 }
@@ -526,8 +486,8 @@ static void curl_req_xfer(CurlHandle *handle)
   if (!handle->thread)
     {
       handle->cancel = 0;
-      handle->rd_index = 0; //BUFFER_SIZE - 100;
-      handle->wr_index = handle->rd_index;
+      handle->wr_index = 0;
+      handle->rd_index = 0;
       handle->wr_abs = handle->rd_abs;
       if (DEBUG_CONNECTION)
 	g_print("Starting connection %p at %d\n", handle, handle->wr_abs);
@@ -867,25 +827,9 @@ curl_vfs_fseek_impl(VFSFile * file,
   if (whence == SEEK_SET)
     handle->rd_abs = offset;
   else if (whence == SEEK_END)
-    {
-      if (-offset > handle->length)
-	handle->rd_abs = 0;
-      else
-	handle->rd_abs = handle->length + offset;
-    }
+    handle->rd_abs = handle->length + offset;
   else
-    {
-      if (-offset > handle->rd_abs)
-	handle->rd_abs = 0;
-      else
-	handle->rd_abs = handle->rd_abs + offset;
-    }
-
-  if (handle->rd_abs > handle->length)
-    {
-      g_print("Seek before start of file: %d %d = %d\n", posn, offset, 
-	      handle->rd_abs);
-    }
+    handle->rd_abs = handle->rd_abs + offset;
 
   // XXXX
   // There's a race here between finding available space and
