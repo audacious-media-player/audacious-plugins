@@ -433,7 +433,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
     vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
 
-    if(info->remote){
+    if(info->remote && info->size == 0){
         gchar *stream_name = vfs_get_metadata(info->infile, "stream-name");
         gchar *track_name = vfs_get_metadata(info->infile, "track-name");
         gchar *tmp = NULL;
@@ -499,7 +499,7 @@ input_get_data(struct mad_info_t *madinfo, guchar * buffer,
 		    madinfo->playback->eof = TRUE;
     }
     
-    if(madinfo->remote) {
+    if(madinfo->remote && madinfo->size == 0) {
         gchar *stream_name = vfs_get_metadata(madinfo->infile, "stream-name");
         gchar *track_name = vfs_get_metadata(madinfo->infile, "track-name");
         gchar *tmp = NULL;

@@ -1,3 +1,12 @@
+2007-03-01 01:52:11 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1606]
+  - fix a ringbuffering error in curl which caused trouble with icecast2 
+    MP3. Closes #816.
+  
+  trunk/src/curl/curl.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-03-01 01:33:16 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1604]
   - set timeout value to 3 seconds
