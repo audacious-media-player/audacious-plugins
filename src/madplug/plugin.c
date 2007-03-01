@@ -497,7 +497,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
     string = NULL;
 #endif
 
-    if(info.remote){
+    if(info.remote && info.size == 0){
         if(info.playback && info.playback->playing) {
             tuple = bmp_title_input_new();
 #ifdef DEBUG

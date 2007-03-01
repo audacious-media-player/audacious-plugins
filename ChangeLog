@@ -1,3 +1,11 @@
+2007-03-01 03:48:28 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1618]
+  - add tuple building for ADTS/Shoutcast streams
+  
+  trunk/src/aac/src/libmp4.c |   23 ++++++++++++++++++++++-
+  1 file changed, 22 insertions(+), 1 deletion(-)
+
+
 2007-03-01 03:26:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1616]
   - when shifting the ringbuffer to left by one byte to regain alignment, 
