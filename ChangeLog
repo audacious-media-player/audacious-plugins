@@ -1,3 +1,11 @@
+2007-03-01 02:22:17 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1612]
+  - hook up lame encoder plugin.
+  
+  trunk/configure.ac |   15 +++++++++++++++
+  1 file changed, 15 insertions(+)
+
+
 2007-03-01 02:19:30 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1610]
   - some missing headers
