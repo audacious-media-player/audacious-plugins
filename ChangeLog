@@ -1,3 +1,11 @@
+2007-03-01 02:00:41 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1608]
+  - only do shoutcast stuff if info::size = 0. closes #601 again.
+  
+  trunk/src/madplug/input.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-03-01 01:52:11 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1606]
   - fix a ringbuffering error in curl which caused trouble with icecast2 
