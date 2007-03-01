@@ -1,3 +1,11 @@
+2007-03-01 02:25:09 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1614]
+  - remove dead header, reported by joecool.
+  
+  trunk/src/lame/out_lame.c |    1 -
+  1 file changed, 1 deletion(-)
+
+
 2007-03-01 02:22:17 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1612]
   - hook up lame encoder plugin.

@@ -781,6 +781,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 
         if(finfo.error > 0 && remote != FALSE)
         {
+	    buffervalid--;
             memmove(streambuffer, &streambuffer[1], buffervalid);
             if(buffervalid < BUFFER_SIZE) {
                buffervalid +=
