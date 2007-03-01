@@ -341,6 +341,9 @@ static void input_read_tag(struct mad_info_t *info)
     gchar *string = NULL;
     TitleInput *title_input;
 
+#ifdef DEBUG
+    g_message("f: input_read_tag\n");
+#endif
     if (info->tuple == NULL) {
         title_input = bmp_title_input_new();
         info->tuple = title_input;
@@ -394,7 +397,7 @@ static void input_read_tag(struct mad_info_t *info)
     if (string) {
         title_input->length = atoi(string);
 #ifdef DEBUG
-        printf("input_read_tag: TLEN = %d\n", title_input->length);
+        g_message("input_read_tag: TLEN = %d\n", title_input->length);
 #endif	
         g_free(string);
         string = NULL;
@@ -409,6 +412,11 @@ static void input_read_tag(struct mad_info_t *info)
 
     info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
         audmad_config.id3_format : xmms_get_gentitle_format(), title_input);
+
+#ifdef DEBUG
+    g_message("e: input_read_tag\n");
+#endif
+
 }
 
 /**
@@ -433,7 +441,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
     vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
 
-    if(info->remote && info->size == 0){
+    if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) == 0){
         gchar *stream_name = vfs_get_metadata(info->infile, "stream-name");
         gchar *track_name = vfs_get_metadata(info->infile, "track-name");
         gchar *tmp = NULL;
@@ -499,7 +507,7 @@ input_get_data(struct mad_info_t *madinfo, guchar * buffer,
 		    madinfo->playback->eof = TRUE;
     }
     
-    if(madinfo->remote && madinfo->size == 0) {
+    if(madinfo->remote && mad_timer_count(madinfo->duration, MAD_UNITS_SECONDS) == 0){
         gchar *stream_name = vfs_get_metadata(madinfo->infile, "stream-name");
         gchar *track_name = vfs_get_metadata(madinfo->infile, "track-name");
         gchar *tmp = NULL;
