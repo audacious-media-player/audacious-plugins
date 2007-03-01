@@ -110,7 +110,7 @@ static size_t buf_space(CurlHandle *handle)
   cont_limit = handle->buffer_length - handle->wr_index;
   if (cont_limit < buffer_limit)
     buffer_limit = cont_limit;
-  if (handle->icy_interval)
+  if (handle->icy_interval && handle->icy_left)
     {
       if (handle->icy_left < buffer_limit)
 	buffer_limit = handle->icy_left;
@@ -605,7 +605,7 @@ curl_vfs_fopen_impl(const gchar * path,
 
   {
     struct curl_slist *hdr = NULL;
-    hdr = curl_slist_append(hdr, "icy-metadata:1");
+    hdr = curl_slist_append(hdr, "Icy-MetaData: 1");
     hdr = curl_slist_append(hdr, "User-Agent: Audacious/" VERSION " (curl transport)");
     curl_easy_setopt(handle->curl, CURLOPT_HTTPHEADER, hdr);
   }
