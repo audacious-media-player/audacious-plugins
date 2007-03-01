@@ -476,7 +476,7 @@ gpointer decode_loop(gpointer arg)
         }
 
         while (info->playback->playing) {
-            if (info->seek != -1 && !info->remote) {
+            if (info->seek != -1 && info->size != 0) {
 #ifdef DEBUG
                 g_message("seeking: %d", info->seek);
 #endif

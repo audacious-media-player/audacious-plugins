@@ -371,7 +371,6 @@ static void audmad_seek(InputPlayback *playback, int time)
     /* xmms gives us the desired seek time in seconds */
     info.seek = time;
     g_mutex_unlock(pb_mutex);
-
 }
 
 /**
