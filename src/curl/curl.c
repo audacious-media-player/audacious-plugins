@@ -32,7 +32,7 @@
 #define REVERSE_SEEK_SIZE 2048
 
 #define DEBUG_CONNECTION 0
-#define DEBUG_OPEN_CLOSE 0
+#define DEBUG_OPEN_CLOSE 1
 #define DEBUG_SEEK 0
 #define DEBUG_READ 0
 #define DEBUG_HEADERS 0
@@ -548,7 +548,7 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_WRITEDATA, handle);
   curl_easy_setopt(handle->curl, CURLOPT_HEADERDATA, handle);
 
-  curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 10);
+  curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 3);
 
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
