@@ -206,6 +206,13 @@ static int mp3_head_convert(const guchar * hbuf)
         ((unsigned long) hbuf[2] << 8) | (unsigned long) hbuf[3];
 }
 
+gboolean audmad_is_remote(gchar *url)
+{
+    if (!strncasecmp("http://", url, 7) || !strncasecmp("https://", url, 8))
+        return TRUE;
+    else
+        return FALSE;
+}
 
 // audacious vfs fast version
 static int audmad_is_our_fd(char *filename, VFSFile *fin)
@@ -219,16 +226,8 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     info.remote = FALSE;
 
-#if 1
-    // XXX: temporary fix
-    if (!strncasecmp("http://", filename, 7) || !strncasecmp("https://", filename, 8))
-    {
-#ifdef DEBUG
-        g_message("audmad_is_our_fd: remote");
-#endif
+    if(audmad_is_remote(filename))
         info.remote = TRUE;
-    }
-#endif
 
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
@@ -342,7 +341,8 @@ static void audmad_play_file(InputPlayback *playback)
         return;
     }
 
-    rtn = input_get_info(&info, audmad_config.fast_play_time_calc);
+    // remote access must use fast scan.
+    rtn = input_get_info(&info, audmad_is_remote(url) ? TRUE : audmad_config.fast_play_time_calc);
 
     if (rtn == FALSE) {
         g_message("error reading input info");
@@ -392,7 +392,9 @@ audmad_get_song_info(char *url, char **title, int *length)
 
     // don't try to get from stopped stream.
     if(myinfo.remote && (!myinfo.playback || !myinfo.playback->playing)){
-        g_print("get_song_info: remote!\n");
+#ifdef DEBUG
+        g_message("get_song_info: remote and not playing.");
+#endif
         return;
     }
 
@@ -496,17 +498,28 @@ static TitleInput *audmad_get_song_tuple(char *filename)
     string = NULL;
 #endif
 
-    if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) == 0){
+    if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
         if(info.playback && info.playback->playing) {
+            gchar *tmp = NULL;
             tuple = bmp_title_input_new();
 #ifdef DEBUG
-            printf("info.playback->playing = %d\n",info.playback->playing);
+            g_message("info.playback->playing = %d",info.playback->playing);
 #endif
-            tuple->track_name = vfs_get_metadata(info.infile, "track-name");
-            tuple->album_name = vfs_get_metadata(info.infile, "stream-name");
+            tmp = vfs_get_metadata(info.infile, "track-name");
+            if(tmp){
+                tuple->track_name = str_to_utf8(tmp);
+                g_free(tmp);
+                tmp = NULL;
+            }
+            tmp = vfs_get_metadata(info.infile, "stream-name");
+            if(tmp){
+                tuple->album_name = str_to_utf8(tmp);
+                g_free(tmp);
+                tmp = NULL;
+            }
 #ifdef DEBUG
-            printf("audmad_get_song_tuple: track_name = %s\n", tuple->track_name);
-            printf("audmad_get_song_tuple: stream_name = %s\n", tuple->album_name);
+            g_message("audmad_get_song_tuple: track_name = %s", tuple->track_name);
+            g_message("audmad_get_song_tuple: stream_name = %s", tuple->album_name);
 #endif
             tuple->file_name = g_path_get_basename(filename);
             tuple->file_path = g_path_get_dirname(filename);
@@ -514,12 +527,12 @@ static TitleInput *audmad_get_song_tuple(char *filename)
             tuple->length = -1;
             tuple->mtime = 0; // this indicates streaming
 #ifdef DEBUG
-            printf("get_song_tuple remote: tuple\n");
+            g_message("get_song_tuple remote: tuple");
 #endif
             return tuple;
         }
 #ifdef DEBUG
-        printf("get_song_tuple: remote: NULL\n");
+        g_message("get_song_tuple: remote: NULL");
 #endif
         return NULL;
     }
@@ -562,7 +575,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
                 if (string) {
                     tuple->length = atoi(string);
 #ifdef DEBUG
-                    printf("get_song_tuple: TLEN = %d\n", tuple->length);
+                    g_message("get_song_tuple: TLEN = %d", tuple->length);
 #endif	
                     g_free(string);
                     string = NULL;
@@ -618,7 +631,8 @@ static TitleInput *audmad_get_song_tuple(char *filename)
 
 }
 
-
+// probably this function is nolonger needed.
+#if 0
 /**
  * Retrieve meta-information about URL.
  * For local files this means ID3 tag etc.
@@ -662,6 +676,8 @@ gboolean mad_get_info(struct mad_info_t * info, gboolean fast_scan)
 #endif
     return TRUE;
 }
+#endif
+
 
 static gchar *fmts[] = { "mp3", "mp2", "mpg", NULL };
 

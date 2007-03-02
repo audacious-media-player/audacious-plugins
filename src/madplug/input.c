@@ -121,9 +121,8 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->size = vfs_ftell(info->infile);
     vfs_fseek(info->infile, 0, SEEK_SET);
     info->remote = info->size == 0 ? TRUE : FALSE; //proxy connection may result in non-zero size.
-    if (!strncasecmp("http://", url, 7) || !strncasecmp("https://", url, 8)) {
+    if(audmad_is_remote((gchar *)url))
         info->remote = TRUE;
-    }
 
 #ifdef DEBUG
     g_message("i: info->size = %lu", (long unsigned int)info->size);
@@ -342,7 +341,7 @@ static void input_read_tag(struct mad_info_t *info)
     TitleInput *title_input;
 
 #ifdef DEBUG
-    g_message("f: input_read_tag\n");
+    g_message("f: input_read_tag");
 #endif
     if (info->tuple == NULL) {
         title_input = bmp_title_input_new();
@@ -397,7 +396,7 @@ static void input_read_tag(struct mad_info_t *info)
     if (string) {
         title_input->length = atoi(string);
 #ifdef DEBUG
-        g_message("input_read_tag: TLEN = %d\n", title_input->length);
+        g_message("input_read_tag: TLEN = %d", title_input->length);
 #endif	
         g_free(string);
         string = NULL;
@@ -414,10 +413,52 @@ static void input_read_tag(struct mad_info_t *info)
         audmad_config.id3_format : xmms_get_gentitle_format(), title_input);
 
 #ifdef DEBUG
-    g_message("e: input_read_tag\n");
+    g_message("e: input_read_tag");
 #endif
 
 }
+
+static void input_process_remote_metadata(struct mad_info_t *info)
+{
+    if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) <= 0){
+        gchar *tmp = NULL;
+
+        g_free(info->title);
+        info->title = NULL;
+        g_free(info->tuple->track_name);
+        info->tuple->track_name = NULL;
+        g_free(info->tuple->album_name);
+        info->tuple->album_name = NULL;
+
+        tmp = vfs_get_metadata(info->infile, "track-name");
+        if(tmp){
+            info->tuple->track_name = str_to_utf8(tmp);
+            info->title = g_strdup(info->tuple->track_name);
+            g_free(tmp);
+            tmp = NULL;
+        }
+
+        tmp = vfs_get_metadata(info->infile, "stream-name");
+        if(tmp){
+            info->tuple->album_name = str_to_utf8(tmp);
+            g_free(tmp);
+            tmp = NULL;
+        }
+
+        if (info->tuple->track_name && info->tuple->album_name)
+            tmp = g_strdup_printf("%s (%s)", info->tuple->track_name, info->tuple->album_name);
+        else if (info->tuple->album_name)
+            tmp = g_strdup(info->tuple->album_name);
+        else
+            tmp = g_strdup(""); // really?
+
+        mad_plugin->set_info(tmp,
+                             -1, // indicate the stream is unseekable
+                             info->bitrate, info->freq, info->channels);
+        g_free(tmp);
+    }
+}
+
 
 /**
  * Retrieve meta-information about URL.
@@ -441,29 +482,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
     vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
 
-    if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) == 0){
-        gchar *stream_name = vfs_get_metadata(info->infile, "stream-name");
-        gchar *track_name = vfs_get_metadata(info->infile, "track-name");
-        gchar *tmp = NULL;
-
-        g_free(info->title);
-        g_free(info->tuple->track_name);
-        g_free(info->tuple->album_name);
-
-        info->title = g_strdup(track_name);
-        info->tuple->track_name = g_strdup(track_name);
-        info->tuple->album_name = g_strdup(stream_name);
-
-        if (track_name != NULL)
-            tmp = g_strdup_printf("%s (%s)", track_name, stream_name);
-        else
-	    tmp = g_strdup(stream_name);
-
-        mad_plugin->set_info(tmp,
-                             -1, // indicates the stream is unseekable
-                             info->bitrate, info->freq, info->channels);
-        g_free(tmp); g_free(stream_name); g_free(track_name);
-    }
+    input_process_remote_metadata(info);
 
     /* use the filename for the title as a last resort */
     if (!info->title) {
@@ -490,7 +509,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
  */
 // this function may be called before info->playback initialized.
 int
-input_get_data(struct mad_info_t *madinfo, guchar * buffer,
+input_get_data(struct mad_info_t *info, guchar * buffer,
                int buffer_size)
 {
     int len = 0;
@@ -500,43 +519,21 @@ input_get_data(struct mad_info_t *madinfo, guchar * buffer,
 #endif
 #endif
     /* simply read to data from the file */
-    len = vfs_fread(buffer, 1, buffer_size, madinfo->infile); //vfs_fread returns num of elements.
+    len = vfs_fread(buffer, 1, buffer_size, info->infile); //vfs_fread returns num of elements.
 
     if(len == 0){
-	    if(madinfo->playback)
-		    madinfo->playback->eof = TRUE;
+	    if(info->playback)
+		    info->playback->eof = TRUE;
     }
-    
-    if(madinfo->remote && mad_timer_count(madinfo->duration, MAD_UNITS_SECONDS) == 0){
-        gchar *stream_name = vfs_get_metadata(madinfo->infile, "stream-name");
-        gchar *track_name = vfs_get_metadata(madinfo->infile, "track-name");
-        gchar *tmp = NULL;
 
-        g_free(madinfo->title);
-        g_free(madinfo->tuple->track_name);
-        g_free(madinfo->tuple->album_name);
-
-        madinfo->title = g_strdup(track_name);
-        madinfo->tuple->track_name = g_strdup(track_name);
-        madinfo->tuple->album_name = g_strdup(stream_name);
-
-        if (track_name != NULL)
-            tmp = g_strdup_printf("%s (%s)", track_name, stream_name);
-        else
-	    tmp = g_strdup(stream_name);
-
-        mad_plugin->set_info(tmp,
-                             -1, // indicate the stream is unseekable
-			     madinfo->bitrate, madinfo->freq, madinfo->channels);
-        g_free(tmp); g_free(stream_name); g_free(track_name);
-    }
+    input_process_remote_metadata(info);
     
 #ifdef DEBUG
 #ifdef DEBUG_INTENSIVELY
-    g_message ("e: input_get_data: size=%d offset=%d", len, madinfo->offset);
+    g_message ("e: input_get_data: size=%d offset=%d", len, info->offset);
 #endif
 #endif
-    madinfo->offset += len;
+    info->offset += len;
     return len;
 }
 

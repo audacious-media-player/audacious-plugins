@@ -70,8 +70,7 @@ struct mad_info_t
     gint fmt;       /**< sample format */
     gint size;      /**< file size in bytes or -1 */
     gchar *title;   /**< title for xmms */
-    mad_timer_t duration;
-            /**< total play time */
+    mad_timer_t duration;   /**< total play time */
     struct id3_tag *tag;
     struct id3_file *id3file;
     struct xing xing;
@@ -131,6 +130,7 @@ extern GCond *mad_cond;
 
 void audmad_config_compute(struct audmad_config_t *config);
 // compute scale values from "_db" strings
+gboolean audmad_is_remote(gchar *url);
 
 extern gpointer decode_loop(gpointer arg);
 extern void audmad_error(gchar * fmt, ...);

@@ -190,6 +190,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
 #ifdef DEBUG
     g_message("f: scan_file");
+    g_message("scan_file frames = %d\n", info->frames);
 #endif                          /* DEBUG */
 
     while (1) {

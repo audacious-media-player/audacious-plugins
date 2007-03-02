@@ -1,3 +1,11 @@
+2007-03-02 04:09:48 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1632]
+  - try to use str_to_utf8() to fill up tuple. we discovered that indecent ogg stream sends non-utf8 metadata.
+  
+  trunk/src/vorbis/vorbis.c |   12 ++++++------
+  1 file changed, 6 insertions(+), 6 deletions(-)
+
+
 2007-03-02 02:22:51 +0000  Giacomo Lozito <james@develia.org>
   revision [1630]
   - extra check with g_utf8_validate to avoid the osd crash when a non-utf8 string survives the str_to_utf8 conversion
