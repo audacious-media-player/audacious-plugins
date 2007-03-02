@@ -770,20 +770,20 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename, gboolean 
 
     if ((comment = ov_comment(vorbisfile, -1))) {
         tuple->track_name =
-            g_strdup(vorbis_comment_query(comment, "title", 0));
+            str_to_utf8(vorbis_comment_query(comment, "title", 0));
         tuple->performer =
-            g_strdup(vorbis_comment_query(comment, "artist", 0));
+            str_to_utf8(vorbis_comment_query(comment, "artist", 0));
         tuple->album_name =
-            g_strdup(vorbis_comment_query(comment, "album", 0));
+            str_to_utf8(vorbis_comment_query(comment, "album", 0));
 
         if (vorbis_comment_query(comment, "tracknumber", 0) != NULL)
             tuple->track_number =
                 atoi(vorbis_comment_query(comment, "tracknumber", 0));
 
-        tuple->date = g_strdup(vorbis_comment_query(comment, "date", 0));
-        tuple->genre = g_strdup(vorbis_comment_query(comment, "genre", 0));
+        tuple->date = str_to_utf8(vorbis_comment_query(comment, "date", 0));
+        tuple->genre = str_to_utf8(vorbis_comment_query(comment, "genre", 0));
         tuple->comment =
-            g_strdup(vorbis_comment_query(comment, "comment", 0));
+            str_to_utf8(vorbis_comment_query(comment, "comment", 0));
 
         /* remove any blank tags */
         REMOVE_NONEXISTANT_TAG(tuple->performer);
