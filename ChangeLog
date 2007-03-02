@@ -1,3 +1,19 @@
+2007-03-02 08:14:11 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1634]
+  - remote metadata handling is moved into input_process_remote_metadata(). this function converts string into utf-8 if necessary (mainly for zina).
+  - revise seekable determination logic. duration may be negative value (zina..).
+  - if remote url is passed, scan_file() will use fast scan method irrespective of preference value.
+  - scattered http:// matching codes are aggregate into audmad_is_remote().
+  - some cleanups.
+  
+  trunk/src/madplug/decoder.c  |    1 
+  trunk/src/madplug/fileinfo.c |    4 -
+  trunk/src/madplug/input.c    |  111 ++++++++++++++++++++-----------------------
+  trunk/src/madplug/plugin.c   |   58 ++++++++++++++--------
+  trunk/src/madplug/plugin.h   |    4 -
+  5 files changed, 96 insertions(+), 82 deletions(-)
+
+
 2007-03-02 04:09:48 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1632]
   - try to use str_to_utf8() to fill up tuple. we discovered that indecent ogg stream sends non-utf8 metadata.

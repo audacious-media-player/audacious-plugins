@@ -58,7 +58,7 @@ extern "C" {
 /* #define to enable spurious debugging messages for development
  * purposes. Output goes to stderr. See also DEBUG_NP below.
  */
-#define DEBUG
+#undef DEBUG
 
 /* Define to ISO C99 macro for debugging instead of varargs function.
  * This provides more useful information, but is incompatible with
