@@ -800,6 +800,7 @@ void xs_subctrl_open(void)
 	g_signal_connect(G_OBJECT(xs_subctrl_adj), "value_changed", G_CALLBACK(xs_subctrl_setsong), NULL);
 
 	subctrl_current = gtk_hscale_new(GTK_ADJUSTMENT(xs_subctrl_adj));
+	gtk_widget_set_size_request(subctrl_current, 80, -1);
 	gtk_widget_set_name(subctrl_current, "subctrl_current");
 	gtk_box_pack_start(GTK_BOX(hbox15), subctrl_current, FALSE, TRUE, 0);
 	gtk_scale_set_digits(GTK_SCALE(subctrl_current), 0);

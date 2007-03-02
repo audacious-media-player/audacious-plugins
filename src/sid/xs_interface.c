@@ -1649,6 +1649,7 @@ create_xs_fileinfowin (void)
   xs_fileinfowin = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_set_name (xs_fileinfowin, "xs_fileinfowin");
   gtk_window_set_title (GTK_WINDOW (xs_fileinfowin), _("Audacious-SID Fileinfo"));
+  gtk_window_set_default_size (GTK_WINDOW (xs_fileinfowin), 400, -1);
 
   w_vbox14 = gtk_vbox_new (FALSE, 0);
   gtk_widget_set_name (w_vbox14, "w_vbox14");
@@ -1682,6 +1683,7 @@ create_xs_fileinfowin (void)
   gtk_widget_set_name (fileinfo_subctrl_adj, "fileinfo_subctrl_adj");
   gtk_widget_show (fileinfo_subctrl_adj);
   gtk_box_pack_start (GTK_BOX (w_hbox19), fileinfo_subctrl_adj, TRUE, TRUE, 0);
+  gtk_widget_set_size_request (fileinfo_subctrl_adj, 80, -1);
   gtk_scale_set_digits (GTK_SCALE (fileinfo_subctrl_adj), 0);
 
   fileinfo_subctrl_next = gtk_button_new_with_mnemonic (_(" > "));
@@ -1881,6 +1883,7 @@ create_xs_fileinfowin (void)
   gtk_widget_set_name (button2, "button2");
   gtk_widget_show (button2);
   gtk_box_pack_start (GTK_BOX (w_vbox14), button2, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (button2), 6);
   GTK_WIDGET_SET_FLAGS (button2, GTK_CAN_DEFAULT);
 
   g_signal_connect ((gpointer) xs_fileinfowin, "delete_event",
