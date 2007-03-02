@@ -164,10 +164,13 @@ aosd_trigger_func_pb_start_cb ( gpointer plentry_gp , gpointer unused )
       title = playlist_get_songtitle(active, pos);
     }
     gchar *utf8_title = str_to_utf8( title );
-    gchar *utf8_title_markup = g_markup_printf_escaped(
-      "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
-    aosd_display( utf8_title_markup , global_config->osd , FALSE );
-    g_free( utf8_title_markup );
+    if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
+    {
+      gchar *utf8_title_markup = g_markup_printf_escaped(
+        "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
+      aosd_display( utf8_title_markup , global_config->osd , FALSE );
+      g_free( utf8_title_markup );
+    }
     g_free( utf8_title );
     g_free( title );
   }
@@ -228,10 +231,13 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
         {
           /* string formatting is done here a.t.m. - TODO - improve this area */
           gchar *utf8_title = str_to_utf8( pl_entry->title );
-          gchar *utf8_title_markup = g_markup_printf_escaped(
-            "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
-          aosd_display( utf8_title_markup , global_config->osd , FALSE );
-          g_free( utf8_title_markup );
+          if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
+          {
+            gchar *utf8_title_markup = g_markup_printf_escaped(
+              "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
+            aosd_display( utf8_title_markup , global_config->osd , FALSE );
+            g_free( utf8_title_markup );
+          }
           g_free( utf8_title );
           g_free( prevs->title );
           prevs->title = g_strdup(pl_entry->title);

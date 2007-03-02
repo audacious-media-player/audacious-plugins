@@ -1,3 +1,12 @@
+2007-03-01 14:31:20 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1628]
+  - determine whether stream is seekable or not by checking duration. it is safe to use with proxy.
+  
+  trunk/src/madplug/input.c  |   14 +++++++++++---
+  trunk/src/madplug/plugin.c |    2 +-
+  2 files changed, 12 insertions(+), 4 deletions(-)
+
+
 2007-03-01 12:33:43 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1626]
   - revert r1624 due to the fact that it breaks
