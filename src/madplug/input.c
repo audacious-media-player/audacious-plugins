@@ -363,14 +363,10 @@ static void input_read_tag(struct mad_info_t *info)
     else
         title_input = info->tuple;
 
-#define REUSE_FD 1
-#if REUSE_FD
-    if(info->infile) {
+    if(info->infile)
         info->id3file = id3_file_vfsopen(info->infile, ID3_FILE_MODE_READONLY);
-    }
     else
-#endif
-      info->id3file = id3_file_open(info->filename, ID3_FILE_MODE_READONLY);
+        info->id3file = id3_file_open(info->filename, ID3_FILE_MODE_READONLY);
 
     if (!info->id3file) {
 #ifdef DEBUG
@@ -499,9 +495,9 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 #endif                          /* DEBUG */
 
     input_alloc_tag(info);
+    input_read_tag(info);
 
     if(!info->remote) { // reduce startup delay
-        input_read_tag(info);
         read_replaygain(info);
     }
 
