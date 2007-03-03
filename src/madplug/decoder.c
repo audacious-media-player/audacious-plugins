@@ -186,11 +186,11 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
     info->bitrate = 0;
     info->pos = mad_timer_zero;
-    info->duration.seconds = 0; // should be cleared before loop, if we use it as break condition.
+    info->duration = mad_timer_zero; // should be cleared before loop, if we use it as break condition.
 
 #ifdef DEBUG
     g_message("f: scan_file");
-    g_message("scan_file frames = %d\n", info->frames);
+    g_message("scan_file frames = %d", info->frames);
 #endif                          /* DEBUG */
 
     while (1) {
@@ -207,8 +207,12 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
         len = input_get_data(info, buffer + remainder,
                              BUFFER_SIZE - remainder);
 
-        if (len <= 0)
+        if (len <= 0) {
+#ifdef DEBUG
+            g_message("scan_file: len <= 0 abort.");
+#endif
             break;
+        }
 
         mad_stream_buffer(&stream, buffer, len + remainder);
 
@@ -276,7 +280,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                     frame.header = header;
                     if (mad_frame_decode(&frame, &stream) == -1) {
 #ifdef DEBUG
-                        printf("xing frame decode failed\n");
+                        g_message("xing frame decode failed");
 #endif
                         goto no_xing;
                     }
@@ -323,7 +327,15 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
         no_xing:
             if (fast && info->frames >= N_AVERAGE_FRAMES) {
                 float frame_size = ((double) data_used) / N_AVERAGE_FRAMES;
-                info->frames = (info->size - tagsize) / frame_size;
+#ifdef DEBUG
+                g_message("info->frames = %d info->size = %d tagsize = %d frame_size = %lf",
+                          info->frames, info->size, tagsize, frame_size);
+#endif
+                if(info->size != 0)
+                    info->frames = (info->size - tagsize) / frame_size;
+#ifdef DEBUG
+                g_message("info->frames = %d", info->frames);
+#endif
                 if(info->tuple->length == -1) {
                     info->duration.seconds /= N_AVERAGE_FRAMES;
                     info->duration.fraction /= N_AVERAGE_FRAMES;
@@ -362,8 +374,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #ifdef DEBUG
     g_message("e: scan_file");
 #endif                          /* DEBUG */
-//    return info->frames != 0;
-    return (info->frames != 0 || info->remote == TRUE); // suspicious
+    return (info->frames != 0 || info->remote == TRUE);
 }
 
 gpointer decode_loop(gpointer arg)
@@ -393,17 +404,20 @@ gpointer decode_loop(gpointer arg)
     mad_synth_init(&synth);
 
     if(!info->playback){
-        g_print("decode: playback == NULL\n");
+#ifdef DEBUG
+        g_message("decode: playback == NULL");
+#endif
         return NULL;
     }
 
+#ifdef DEBUG
+    g_message("decode: fmt = %d freq = %d channels = %d", info->fmt, info->freq, info->channels);
+#endif
     if (!info->playback->output->open_audio(info->fmt, info->freq, info->channels)) {
         g_mutex_lock(pb_mutex);
         info->playback->error = TRUE;
         info->playback->eof = 1;
         g_mutex_unlock(pb_mutex);        
-        audmad_error("failed to open audio output: %s",
-                      info->playback->output->description);
         g_message("failed to open audio output: %s",
                   info->playback->output->description);
         return NULL;
@@ -413,13 +427,15 @@ gpointer decode_loop(gpointer arg)
     if (info->title)
         g_free(info->title);
     info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
-        audmad_config.id3_format : xmms_get_gentitle_format(), info->tuple);
+                                       audmad_config.id3_format : xmms_get_gentitle_format(), info->tuple);
     
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
-    
-    mad_plugin->set_info(info->title,
-                        tlen == 0 ? -1 : tlen,
-                        info->bitrate, info->freq, info->channels);
+        mad_plugin->set_info(info->title,
+                             tlen == 0 ? -1 : tlen,
+                             info->bitrate, info->freq, info->channels);
+#ifdef DEBUG
+    g_message("decode: tlen = %d\n", tlen);
+#endif
 
     /* main loop */
     do {
@@ -437,6 +453,9 @@ gpointer decode_loop(gpointer arg)
         }
         len = input_get_data(info, buffer + remainder,
                              BUFFER_SIZE - remainder);
+
+        input_process_remote_metadata(info);
+
         if (len <= 0) {
 #ifdef DEBUG
             g_message("finished decoding");
@@ -532,7 +551,7 @@ gpointer decode_loop(gpointer arg)
 
             info->bitrate = frame.header.bitrate;
 
-            if (!audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
+            if (!info->remote && !audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
                 mad_plugin->set_info(info->title,
                                      tlen == 0 ? -1 : tlen,
                                      info->bitrate, info->freq, info->channels);

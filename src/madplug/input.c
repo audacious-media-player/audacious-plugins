@@ -66,14 +66,6 @@
 
 extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
 
-// new VFS handles url.
-static void input_parse_url(struct mad_info_t *info)
-{
-    info->filename = g_strdup(info->url);
-    return;
-}
-
-
 /**
  * init the mad_info_t struct.
  */
@@ -108,9 +100,16 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->mp3gain_undo_str = 0;
     info->mp3gain_minmax_str = 0;
 
+    // from input_read_replaygain()
+    info->has_replaygain = FALSE;
+    info->replaygain_album_scale = -1;
+    info->replaygain_track_scale = -1;
+    info->mp3gain_undo = -77;
+    info->mp3gain_minmax = -77;
+
     info->tuple = NULL;
 
-    input_parse_url(info);
+    info->filename = g_strdup(url);
 
     info->infile = vfs_fopen(info->filename, "rb");
     if (info->infile == NULL) {
@@ -332,6 +331,20 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     return rtn;
 }
 
+
+static void input_alloc_tag(struct mad_info_t *info)
+{
+    TitleInput *title_input;
+
+    if (info->tuple == NULL) {
+        title_input = bmp_title_input_new();
+        info->tuple = title_input;
+        info->tuple->length = -1; //will be refferd in decoder.c
+    }
+    else
+        title_input = info->tuple;
+}
+
 /**
  * read the ID3 tag 
  */
@@ -350,16 +363,27 @@ static void input_read_tag(struct mad_info_t *info)
     else
         title_input = info->tuple;
 
-    if(info->infile)
-      info->id3file = id3_file_vfsopen(info->infile, ID3_FILE_MODE_READONLY);
+#define REUSE_FD 1
+#if REUSE_FD
+    if(info->infile) {
+        info->id3file = id3_file_vfsopen(info->infile, ID3_FILE_MODE_READONLY);
+    }
     else
+#endif
       info->id3file = id3_file_open(info->filename, ID3_FILE_MODE_READONLY);
+
     if (!info->id3file) {
+#ifdef DEBUG
+        g_message("read_tag: no id3file");
+#endif
         return;
     }
 
     info->tag = id3_file_tag(info->id3file);
     if (!info->tag) {
+#ifdef DEBUG
+        g_message("read_tag: no tag");
+#endif
         return;
     }
 
@@ -418,11 +442,15 @@ static void input_read_tag(struct mad_info_t *info)
 
 }
 
-static void input_process_remote_metadata(struct mad_info_t *info)
+void input_process_remote_metadata(struct mad_info_t *info)
 {
     if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) <= 0){
         gchar *tmp = NULL;
-
+#ifdef DEBUG
+#ifdef DEBUG_INTENSIVELY
+        g_message("process_remote_meta");
+#endif
+#endif
         g_free(info->title);
         info->title = NULL;
         g_free(info->tuple->track_name);
@@ -450,7 +478,7 @@ static void input_process_remote_metadata(struct mad_info_t *info)
         else if (info->tuple->album_name)
             tmp = g_strdup(info->tuple->album_name);
         else
-            tmp = g_strdup(""); // really?
+            tmp = g_strdup(g_basename(info->filename));
 
         mad_plugin->set_info(tmp,
                              -1, // indicate the stream is unseekable
@@ -467,22 +495,27 @@ static void input_process_remote_metadata(struct mad_info_t *info)
 gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 {
 #ifdef DEBUG
-    g_message("f: input_get_info: %s, fast_scan = %s", info->title, fast_scan ? "TRUE" : "FALSE");
+    g_message("f: input_get_info: %s, fast_scan = %s", info->filename, fast_scan ? "TRUE" : "FALSE");
 #endif                          /* DEBUG */
 
-    input_read_tag(info);
-    input_read_replaygain(info);
+    input_alloc_tag(info);
+
+    if(!info->remote) { // reduce startup delay
+        input_read_tag(info);
+        read_replaygain(info);
+    }
 
     /* scan mp3 file, decoding headers */
     if (scan_file(info, fast_scan) == FALSE) {
+#ifdef DEBUG
+        g_message("input_get_info: scan_file failed");
+#endif
         return FALSE;
     }
 
     /* reset the input file to the start */
     vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
-
-    input_process_remote_metadata(info);
 
     /* use the filename for the title as a last resort */
     if (!info->title) {
@@ -526,8 +559,6 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
 		    info->playback->eof = TRUE;
     }
 
-    input_process_remote_metadata(info);
-    
 #ifdef DEBUG
 #ifdef DEBUG_INTENSIVELY
     g_message ("e: input_get_data: size=%d offset=%d", len, info->offset);

@@ -386,14 +386,8 @@ audmad_get_song_info(char *url, char **title, int *length)
 #endif                          /* DEBUG */
 
     if (input_init(&myinfo, url) == FALSE) {
-        g_message("error initialising input");
-        return;
-    }
-
-    // don't try to get from stopped stream.
-    if(myinfo.remote && (!myinfo.playback || !myinfo.playback->playing)){
 #ifdef DEBUG
-        g_message("get_song_info: remote and not playing.");
+        g_message("error initialising input");
 #endif
         return;
     }
@@ -486,7 +480,6 @@ static TitleInput *audmad_get_song_tuple(char *filename)
 {
     TitleInput *tuple = NULL;
     gchar *string = NULL;
-    VFSFile *file;
 
     struct id3_file *id3file = NULL;
     struct id3_tag *tag = NULL;
@@ -527,7 +520,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
             tuple->length = -1;
             tuple->mtime = 0; // this indicates streaming
 #ifdef DEBUG
-            g_message("get_song_tuple remote: tuple");
+            g_message("get_song_tuple: remote: tuple");
 #endif
             return tuple;
         }
@@ -537,146 +530,94 @@ static TitleInput *audmad_get_song_tuple(char *filename)
         return NULL;
     }
 
-    if ((file = vfs_fopen(filename, "rb")) != NULL) {
+    tuple = bmp_title_input_new();
 
-        tuple = bmp_title_input_new();
-        id3file = id3_file_open(filename, ID3_FILE_MODE_READONLY);
+    id3file = id3_file_open(filename, ID3_FILE_MODE_READONLY);
+    if (id3file) {
 
-        if (id3file) {
-            tag = id3_file_tag(id3file);
+        tag = id3_file_tag(id3file);
+        if (tag) {
+            tuple->performer =
+                input_id3_get_string(tag, ID3_FRAME_ARTIST);
+            tuple->album_name =
+                input_id3_get_string(tag, ID3_FRAME_ALBUM);
+            tuple->track_name =
+                input_id3_get_string(tag, ID3_FRAME_TITLE);
 
-            if (tag) {
-                tuple->performer =
-                    input_id3_get_string(tag, ID3_FRAME_ARTIST);
-                tuple->album_name =
-                    input_id3_get_string(tag, ID3_FRAME_ALBUM);
-                tuple->track_name =
-                    input_id3_get_string(tag, ID3_FRAME_TITLE);
+            // year
+            string = NULL;
+            string = input_id3_get_string(tag, ID3_FRAME_YEAR); //TDRC
+            if (!string)
+                string = input_id3_get_string(tag, "TYER");
 
-                // year
+            if (string) {
+                tuple->year = atoi(string);
+                g_free(string);
                 string = NULL;
-                string = input_id3_get_string(tag, ID3_FRAME_YEAR); //TDRC
-                if (!string)
-                    string = input_id3_get_string(tag, "TYER");
-
-                if (string) {
-                    tuple->year = atoi(string);
-                    g_free(string);
-                    string = NULL;
-                }
-
-                tuple->file_name = g_path_get_basename(filename);
-                tuple->file_path = g_path_get_dirname(filename);
-                tuple->file_ext = extname(filename);
-
-                // length
-                tuple->length = -1;
-                string = input_id3_get_string(tag, "TLEN");
-                if (string) {
-                    tuple->length = atoi(string);
-#ifdef DEBUG
-                    g_message("get_song_tuple: TLEN = %d", tuple->length);
-#endif	
-                    g_free(string);
-                    string = NULL;
-                }
-                else {
-                    char *dummy = NULL;
-                    int length = 0;
-                    audmad_get_song_info(filename, &dummy, &length);
-                    tuple->length = length;
-                    g_free(dummy);
-                }
-
-                // track number
-                string = input_id3_get_string(tag, ID3_FRAME_TRACK);
-                if (string) {
-                    tuple->track_number = atoi(string);
-                    g_free(string);
-                    string = NULL;
-                }
-                // genre
-                tuple->genre = input_id3_get_string(tag, ID3_FRAME_GENRE);
-#ifdef DEBUG
-                g_message("genre = %s", tuple->genre);
-#endif
-                // comment
-                tuple->comment =
-                    input_id3_get_string(tag, ID3_FRAME_COMMENT);
-
             }
-            id3_file_close(id3file);
-        }
-        else { // no id3tag
+
             tuple->file_name = g_path_get_basename(filename);
             tuple->file_path = g_path_get_dirname(filename);
             tuple->file_ext = extname(filename);
+
             // length
-            {
+            tuple->length = -1;
+            string = input_id3_get_string(tag, "TLEN");
+            if (string) {
+                tuple->length = atoi(string);
+#ifdef DEBUG
+                g_message("get_song_tuple: TLEN = %d", tuple->length);
+#endif	
+                g_free(string);
+                string = NULL;
+            }
+            else {
                 char *dummy = NULL;
                 int length = 0;
-                if(tuple->length == -1) {
-                    audmad_get_song_info(filename, &dummy, &length);
-                    tuple->length = length;
-                }
+                audmad_get_song_info(filename, &dummy, &length);
+                tuple->length = length;
                 g_free(dummy);
             }
+
+            // track number
+            string = input_id3_get_string(tag, ID3_FRAME_TRACK);
+            if (string) {
+                tuple->track_number = atoi(string);
+                g_free(string);
+                string = NULL;
+            }
+            // genre
+            tuple->genre = input_id3_get_string(tag, ID3_FRAME_GENRE);
+#ifdef DEBUG
+            g_message("genre = %s", tuple->genre);
+#endif
+            // comment
+            tuple->comment =
+                input_id3_get_string(tag, ID3_FRAME_COMMENT);
+
         }
-        vfs_fclose(file);
+        id3_file_close(id3file);
+    }
+    else { // no id3tag
+        tuple->file_name = g_path_get_basename(filename);
+        tuple->file_path = g_path_get_dirname(filename);
+        tuple->file_ext = extname(filename);
+        // length
+        {
+            char *dummy = NULL;
+            int length = 0;
+            if(tuple->length == -1) {
+                audmad_get_song_info(filename, &dummy, &length);
+                tuple->length = length;
+            }
+            g_free(dummy);
+        }
     }
 #ifdef DEBUG
     g_message("e: mad: audmad_get_song_tuple");
 #endif
     return tuple;
-
 }
-
-// probably this function is nolonger needed.
-#if 0
-/**
- * Retrieve meta-information about URL.
- * For local files this means ID3 tag etc.
- */
-gboolean mad_get_info(struct mad_info_t * info, gboolean fast_scan)
-{
-    TitleInput *tuple = NULL;
-
-#ifdef DEBUG
-    g_message("f: mad_get_info: %s", info->filename);
-#endif
-    if (info->remote) {
-        return TRUE;
-    }
-
-    tuple = audmad_get_song_tuple(info->filename);
-    
-    info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
-	audmad_config.id3_format : xmms_get_gentitle_format(), tuple);
-
-    /* scan mp3 file, decoding headers unless fast_scan is set */
-    if (scan_file(info, fast_scan) == FALSE)
-        return FALSE;
-
-    /* reset the input file to the start */
-    vfs_rewind(info->infile);
-    info->offset = 0;
-
-    /* use the filename for the title as a last resort */
-    if (!info->title)
-    {
-        char *pos = strrchr(info->filename, '/');
-        if (pos)
-            info->title = g_strdup(pos + 1);
-        else
-            info->title = g_strdup(info->filename);
-     }
-
-#ifdef DEBUG
-    g_message("e: mad_get_info");
-#endif
-    return TRUE;
-}
-#endif
 
 
 static gchar *fmts[] = { "mp3", "mp2", "mpg", NULL };

@@ -123,19 +123,21 @@ struct audmad_config_t
     gboolean show_avg_vbr_bitrate;
 };
 
+// global variables
+InputPlugin *mad_plugin;
+struct audmad_config_t audmad_config;
+
 // gcond
 extern GMutex *mad_mutex;
 extern GMutex *pb_mutex;
 extern GCond *mad_cond;
 
+// prototypes
 void audmad_config_compute(struct audmad_config_t *config);
-// compute scale values from "_db" strings
 gboolean audmad_is_remote(gchar *url);
-
-extern gpointer decode_loop(gpointer arg);
-extern void audmad_error(gchar * fmt, ...);
-extern void audmad_configure();
-extern InputPlugin *mad_plugin;
-extern struct audmad_config_t audmad_config;
+void input_process_remote_metadata(struct mad_info_t *info);
+gpointer decode_loop(gpointer arg);
+void audmad_error(gchar * fmt, ...);
+void audmad_configure(void);
 
 #endif                          /* !AUD_MAD_H */

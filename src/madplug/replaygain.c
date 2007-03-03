@@ -194,10 +194,14 @@ static int find_offset(VFSFile * fp)
     return last_match + 1 - 8 + sizeof(struct APETagFooterStruct) - N;
 }
 
-void input_read_replaygain(struct mad_info_t *file_info)
+void read_replaygain(struct mad_info_t *file_info)
 {
     VFSFile *fp;
     glong curpos = 0;
+
+#ifdef DEBUG
+    g_message("f: read_replaygain");
+#endif
 
     file_info->has_replaygain = FALSE;
     file_info->replaygain_album_scale = -1;
@@ -206,12 +210,18 @@ void input_read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_minmax = -77;
 
     if (file_info->infile) {
+#ifdef DEBUG
+        g_message("replaygain: dup");
+#endif
         fp = vfs_dup(file_info->infile);
         curpos = vfs_ftell(fp);
     } else {
         if ((fp = vfs_fopen(file_info->filename, "rb")) == NULL)
             return;
         if (vfs_fseek(fp, 0L, SEEK_END) != 0) {
+#ifdef DEBUG
+            g_message("replaygain: seek error");
+#endif
             vfs_fclose(fp);
             return;
         }
@@ -241,12 +251,16 @@ void input_read_replaygain(struct mad_info_t *file_info)
                      offs, res);
             }
         }
+#ifdef DEBUG
+        else 
+            g_message("replaygain: not found");
+#endif
     }
 #ifdef DEBUG
     if (res == 0) {             // got APE tags, show the result
-        printf("RG album scale= %g, RG track scale = %g, in %s \n",
-               file_info->replaygain_album_scale,
-               file_info->replaygain_track_scale, file_info->filename);
+        g_message("RG album scale= %g, RG track scale = %g, in %s",
+		  file_info->replaygain_album_scale,
+		  file_info->replaygain_track_scale, file_info->filename);
     }
 #endif
 
@@ -257,5 +271,9 @@ void input_read_replaygain(struct mad_info_t *file_info)
     if (file_info->infile)
         vfs_fseek(fp, curpos, SEEK_SET);
 
-    vfs_fclose(fp);        
+    vfs_fclose(fp);
+
+#ifdef DEBUG
+    g_message("e: read_replaygain");
+#endif
 }

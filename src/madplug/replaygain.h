@@ -39,6 +39,6 @@ struct APETagFooterStruct
 };
 
 /* prototypes */
-void input_read_replaygain(struct mad_info_t *file_info);
+void read_replaygain(struct mad_info_t *file_info);
 
 #endif
