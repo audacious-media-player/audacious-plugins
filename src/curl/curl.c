@@ -731,7 +731,7 @@ curl_vfs_fread_impl(gpointer ptr,
 
 //  g_print("Read %d from %p\n", ret, handle);
 
-  return ret;
+  return (size_t)(ret / size);
 }
 
 size_t

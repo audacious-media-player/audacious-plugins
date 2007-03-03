@@ -1,3 +1,19 @@
+2007-03-03 04:28:55 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1644]
+  - reduce connection latency to http stream.
+  - remove unnecessary functions.
+  - remove redundant dialog which had been shown when madplug failed to open audio output.
+  - some cleanups.
+  
+  trunk/src/madplug/decoder.c    |   51 +++++++---
+  trunk/src/madplug/input.c      |   73 ++++++++++-----
+  trunk/src/madplug/plugin.c     |  195 ++++++++++++++---------------------------
+  trunk/src/madplug/plugin.h     |   16 +--
+  trunk/src/madplug/replaygain.c |   28 ++++-
+  trunk/src/madplug/replaygain.h |    2 
+  6 files changed, 188 insertions(+), 177 deletions(-)
+
+
 2007-03-03 04:17:50 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1642]
   - include strings.h
