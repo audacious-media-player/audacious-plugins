@@ -58,6 +58,7 @@
 #include "audacious/configdb.h"
 #include "audacious/titlestring.h"
 #include <audacious/i18n.h>
+#include <audacious/strings.h>
 
 #include "vorbis.h"
 
