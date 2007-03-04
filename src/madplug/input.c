@@ -352,6 +352,7 @@ static void input_read_tag(struct mad_info_t *info)
 {
     gchar *string = NULL;
     TitleInput *title_input;
+    glong curpos;
 
 #ifdef DEBUG
     g_message("f: input_read_tag");
@@ -363,8 +364,10 @@ static void input_read_tag(struct mad_info_t *info)
     else
         title_input = info->tuple;
 
-    if(info->infile)
+    if(info->infile) {
+        curpos = vfs_ftell(info->infile);
         info->id3file = id3_file_vfsopen(info->infile, ID3_FILE_MODE_READONLY);
+    }
     else
         info->id3file = id3_file_open(info->filename, ID3_FILE_MODE_READONLY);
 
@@ -432,6 +435,10 @@ static void input_read_tag(struct mad_info_t *info)
     info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
         audmad_config.id3_format : xmms_get_gentitle_format(), title_input);
 
+    // for connection via proxy, we have to stop transfer once. I can't explain the reason.
+    vfs_fseek(info->infile, -1, SEEK_SET); // impossible request
+    vfs_fseek(info->infile, curpos, SEEK_SET);
+    
 #ifdef DEBUG
     g_message("e: input_read_tag");
 #endif
