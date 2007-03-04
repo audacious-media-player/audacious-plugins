@@ -206,6 +206,7 @@ static void cleanup(void)
 
 static char ishttp(const char *a)
 {
+	g_return_val_if_fail(a != NULL, NULL);
 	return str_has_prefix_nocase(a, "http://");
 }
 

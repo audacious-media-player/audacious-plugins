@@ -1,3 +1,11 @@
+2007-03-04 01:36:01 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1650]
+  - by unknown reason, http connection via proxy server needs a transfer stop after tag retrieving.
+  
+  trunk/src/madplug/input.c |    9 ++++++++-
+  1 file changed, 8 insertions(+), 1 deletion(-)
+
+
 2007-03-03 13:55:23 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1648]
   - with fixed curl, read id3 tag over network works now.
