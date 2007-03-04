@@ -1,3 +1,11 @@
+2007-03-04 06:55:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1654]
+  - hide seek bar for unseekable (info->size = 0) stream.
+  
+  trunk/src/madplug/decoder.c |   11 +++++++----
+  1 file changed, 7 insertions(+), 4 deletions(-)
+
+
 2007-03-04 03:27:40 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1652]
   - ishttp() should check string is not NULL. closes #832.

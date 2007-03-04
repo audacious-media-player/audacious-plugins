@@ -1,7 +1,7 @@
 include ../../../mk/rules.mk
 include ../../../mk/init.mk
 
-CFLAGS += $(PICFLAGS) -I.. -I../../..
+CFLAGS += $(PICFLAGS) -I.. -I../../.. -I../libflac
 
 OBJECTIVE_LIBS_NOINST = libplugin_common.a
 
