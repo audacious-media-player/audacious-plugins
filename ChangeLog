@@ -1,3 +1,11 @@
+2007-03-04 03:27:40 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1652]
+  - ishttp() should check string is not NULL. closes #832.
+  
+  trunk/src/scrobbler/plugin.c |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2007-03-04 01:36:01 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1650]
   - by unknown reason, http connection via proxy server needs a transfer stop after tag retrieving.

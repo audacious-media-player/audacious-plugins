@@ -431,7 +431,7 @@ gpointer decode_loop(gpointer arg)
     
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
         mad_plugin->set_info(info->title,
-                             tlen == 0 ? -1 : tlen,
+                             (tlen == 0 || info->size <= 0) ? -1 : tlen,
                              info->bitrate, info->freq, info->channels);
 #ifdef DEBUG
     g_message("decode: tlen = %d\n", tlen);
@@ -496,7 +496,7 @@ gpointer decode_loop(gpointer arg)
         }
 
         while (info->playback->playing) {
-            if (info->seek != -1 && info->size != 0) {
+            if (info->seek != -1 && info->size > 0) {
 #ifdef DEBUG
                 g_message("seeking: %d", info->seek);
 #endif
@@ -551,9 +551,12 @@ gpointer decode_loop(gpointer arg)
 
             info->bitrate = frame.header.bitrate;
 
-            if (!info->remote && !audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
+            if (!audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
+#ifdef DEBUG
+                g_message("decode vbr tlen = %d", tlen);
+#endif
                 mad_plugin->set_info(info->title,
-                                     tlen == 0 ? -1 : tlen,
+                                     (tlen == 0 || info->size <= 0) ? -1 : tlen,
                                      info->bitrate, info->freq, info->channels);
             }
             iteration++;
