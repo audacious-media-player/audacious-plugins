@@ -1,3 +1,10 @@
+2007-03-05 00:45:52 +0000  Giacomo Lozito <james@develia.org>
+  revision [1658]
+  - aosd: experimental single-threaded osd; now the osd works in the same thread of the player, thus issues related to cairo and pango hopefully should go away; further testing on different system is required
+  trunk/src/aosd/aosd_osd.c |  399 +++++++++++++++++++++++++---------------------
+  1 file changed, 223 insertions(+), 176 deletions(-)
+
+
 2007-03-04 09:50:27 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1656]
   - fix for missing ordinals, closes #830.

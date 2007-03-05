@@ -27,7 +27,6 @@
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>
 #include <gdk/gdk.h>
-#include <pthread.h>
 #include <stdlib.h>
 #include <sys/time.h>
 #include "ghosd.h"
