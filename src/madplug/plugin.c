@@ -247,6 +247,8 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     if (memcmp(buf, "ID3", 3) == 0)
         return 1;
+    else if (memcmp(buf, "OggS", 4) == 0)
+        return 0;
     else if (memcmp(buf, "RIFF", 4) == 0)
     {
         vfs_fseek(fin, 4, SEEK_CUR);
