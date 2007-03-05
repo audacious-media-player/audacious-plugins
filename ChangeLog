@@ -1,3 +1,11 @@
+2007-03-04 09:50:27 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1656]
+  - fix for missing ordinals, closes #830.
+  
+  trunk/src/flac/plugin_common/Makefile |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-03-04 06:55:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1654]
   - hide seek bar for unseekable (info->size = 0) stream.

@@ -33,30 +33,20 @@
 #include "ghosd.h"
 
 
-#define AOSD_STATUS_HIDDEN    0
-#define AOSD_STATUS_SHOWN     1
-#define AOSD_STATUS_INTERRUPT 2
-
-
-static pthread_t * aosd_thread = NULL;
-static pthread_mutex_t aosd_status_mutex = PTHREAD_MUTEX_INITIALIZER;
-static gboolean aosd_status = AOSD_STATUS_HIDDEN;
-
-
-typedef struct
-{
-  gchar * markup_message;
-  aosd_cfg_osd_t * cfg_osd;
-  gboolean cfg_is_copied;
-}
-aosd_thread_data_t;
+#define AOSD_STATUS_HIDDEN       0
+#define AOSD_STATUS_FADEIN       1
+#define AOSD_STATUS_SHOW         2
+#define AOSD_STATUS_FADEOUT      3
+#define AOSD_STATUS_DESTROY      4
+/* updating OSD every 50 msec */
+#define AOSD_TIMING              50
 
 
 typedef struct
 {
   cairo_surface_t * surface;
-  float alpha;
-  void * user_data;
+  gfloat alpha;
+  gpointer user_data;
   gint width;
   gint height;
   gint deco_code;
@@ -64,8 +54,100 @@ typedef struct
 GhosdFadeData;
 
 
+typedef struct
+{
+  gchar * markup_message;
+  gboolean cfg_is_copied;
+  gfloat dalpha_in, dalpha_out, ddisplay_stay;
+
+  PangoContext *pango_context;
+  PangoLayout *pango_layout;
+
+  aosd_cfg_osd_t * cfg_osd;
+
+  GhosdFadeData fade_data;
+}
+GhosdData;
+
+
+static gint osd_source_id = 0;
+static gint osd_status = AOSD_STATUS_HIDDEN;
+static Ghosd *osd;
+static GhosdData *osd_data;
+
+
 static void
-aosd_fade_func ( Ghosd * osd , cairo_t * cr , void * user_data )
+aosd_osd_data_alloc ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
+{
+  osd_data = g_malloc0(sizeof(GhosdData));
+  osd_data->markup_message = g_strdup( markup_string );
+  if ( copy_cfg == TRUE )
+  {
+    osd_data->cfg_osd = aosd_cfg_osd_copy( cfg_osd );
+    osd_data->cfg_is_copied = TRUE;
+  }
+  else
+  {
+    osd_data->cfg_osd = cfg_osd;
+    osd_data->cfg_is_copied = FALSE;
+  }
+  return;
+}
+
+
+static void
+aosd_osd_data_free ( void )
+{
+  if ( osd_data->fade_data.surface != NULL )
+  {
+    cairo_surface_destroy( osd_data->fade_data.surface );
+    osd_data->fade_data.surface = NULL;
+  }
+
+  if ( osd_data->markup_message != NULL )
+  {
+    g_free( osd_data->markup_message );
+    osd_data->markup_message = NULL;
+  }
+
+  if ( osd_data->cfg_is_copied == TRUE )
+  {
+    aosd_cfg_osd_delete( osd_data->cfg_osd );
+    osd_data->cfg_osd = NULL;
+  }
+
+  if ( osd_data->pango_layout != NULL )
+  {
+    g_object_unref( osd_data->pango_layout );
+    osd_data->pango_layout = NULL;
+  }
+
+  if ( osd_data->pango_context != NULL )
+  {
+    g_object_unref( osd_data->pango_context );
+    osd_data->pango_context = NULL;
+  }
+
+  g_free( osd_data );
+}
+
+
+static void
+aosd_osd_hideanddestroy ( void )
+{
+  if ( osd != NULL )
+  {
+    ghosd_hide( osd );
+    ghosd_main_iterations( osd );
+    ghosd_destroy( osd );
+    osd = NULL;
+  }
+  return;
+}
+
+
+static void
+aosd_fade_func ( Ghosd * gosd , cairo_t * cr , void * user_data )
 {
   GhosdFadeData *fade_data = user_data;
 
@@ -75,7 +157,7 @@ aosd_fade_func ( Ghosd * osd , cairo_t * cr , void * user_data )
     fade_data->surface = cairo_surface_create_similar( cairo_get_target( cr ) ,
                            CAIRO_CONTENT_COLOR_ALPHA , fade_data->width , fade_data->height );
     rendered_cr = cairo_create( fade_data->surface );
-    aosd_deco_style_render( fade_data->deco_code , osd , rendered_cr , fade_data->user_data );
+    aosd_deco_style_render( fade_data->deco_code , gosd , rendered_cr , fade_data->user_data );
     cairo_destroy( rendered_cr );
   }
 
@@ -85,46 +167,32 @@ aosd_fade_func ( Ghosd * osd , cairo_t * cr , void * user_data )
 
 
 static void
-aosd_button_func ( Ghosd * osd , GhosdEventButton * ev , void * user_data )
+aosd_button_func ( Ghosd * gosd , GhosdEventButton * ev , void * user_data )
 {
   if ( ev->button == 1 )
   {
-    pthread_mutex_lock( &aosd_status_mutex );
-    aosd_status = AOSD_STATUS_INTERRUPT;
-    pthread_mutex_unlock( &aosd_status_mutex );
+    osd_status = AOSD_STATUS_DESTROY; /* move to status destroy */
   }
   return;
 }
 
 
-static void *
-aosd_thread_func ( void * arg )
+static void
+aosd_osd_create ( void )
 {
-  aosd_thread_data_t *thread_data = (aosd_thread_data_t*)arg;
-  gchar *markup_string = thread_data->markup_message;
-  aosd_cfg_osd_t *cfg_osd = thread_data->cfg_osd;
-  Ghosd *osd;
-  GhosdFadeData fade_data = { NULL , 0 , NULL , 0 , 0 , 0 };
-  PangoContext *context;
-  PangoLayout *osd_layout;
   gint max_width, layout_width, layout_height;
+  GdkScreen *screen = gdk_screen_get_default();
   gint pos_x = 0, pos_y = 0;
   gint pad_left = 0 , pad_right = 0 , pad_top = 0 , pad_bottom = 0;
   gint screen_width, screen_height;
-  const gint STEP_MS = 50;
-  const gfloat dalpha_in = 1.0 / ( cfg_osd->animation.timing_fadein / (gfloat)STEP_MS );
-  const gfloat dalpha_out = 1.0 / ( cfg_osd->animation.timing_fadeout / (gfloat)STEP_MS );
-  struct timeval tv_nextupdate;
-  gboolean stop_now = FALSE;
   aosd_deco_style_data_t style_data;
-  GdkScreen *screen = gdk_screen_get_default();
 
   /* calculate screen_width and screen_height */
-  if ( cfg_osd->position.multimon_id > -1 )
+  if ( osd_data->cfg_osd->position.multimon_id > -1 )
   {
     /* adjust coordinates and size according to selected monitor */
     GdkRectangle rect;
-    gdk_screen_get_monitor_geometry( screen , cfg_osd->position.multimon_id , &rect );
+    gdk_screen_get_monitor_geometry( screen , osd_data->cfg_osd->position.multimon_id , &rect );
     pos_x = rect.x;
     pos_y = rect.y;
     screen_width = rect.width;
@@ -140,34 +208,34 @@ aosd_thread_func ( void * arg )
   }
 
   /* pick padding from selected decoration style */
-  aosd_deco_style_get_padding( cfg_osd->decoration.code ,
+  aosd_deco_style_get_padding( osd_data->cfg_osd->decoration.code ,
     &pad_top , &pad_bottom , &pad_left , &pad_right );
 
-  if ( cfg_osd->position.maxsize_width > 0 )
+  if ( osd_data->cfg_osd->position.maxsize_width > 0 )
   {
-    gint max_width_default = screen_width - pad_left - pad_right - abs(cfg_osd->position.offset_x);
-    max_width = cfg_osd->position.maxsize_width - pad_left - pad_right;
+    gint max_width_default = screen_width - pad_left - pad_right - abs(osd_data->cfg_osd->position.offset_x);
+    max_width = osd_data->cfg_osd->position.maxsize_width - pad_left - pad_right;
     /* ignore user-defined max_width if it is too small or too large */
     if (( max_width < 1 ) || ( max_width > max_width_default ))
       max_width = max_width_default;
   }
   else
   {
-    max_width = screen_width - pad_left - pad_right - abs(cfg_osd->position.offset_x);
+    max_width = screen_width - pad_left - pad_right - abs(osd_data->cfg_osd->position.offset_x);
   }
-  context = pango_cairo_font_map_create_context(
-              PANGO_CAIRO_FONT_MAP(pango_cairo_font_map_get_default()));
-  osd_layout = pango_layout_new(context);
-  pango_layout_set_markup( osd_layout, markup_string , -1 );
-  pango_layout_set_ellipsize( osd_layout , PANGO_ELLIPSIZE_NONE );
-  pango_layout_set_justify( osd_layout , FALSE );
-  pango_layout_set_width( osd_layout , PANGO_SCALE * max_width );
-  pango_layout_get_pixel_size( osd_layout , &layout_width , &layout_height );
+  osd_data->pango_context = pango_cairo_font_map_create_context(
+                              PANGO_CAIRO_FONT_MAP(pango_cairo_font_map_get_default()));
+  osd_data->pango_layout = pango_layout_new(osd_data->pango_context);
+  pango_layout_set_markup( osd_data->pango_layout, osd_data->markup_message , -1 );
+  pango_layout_set_ellipsize( osd_data->pango_layout , PANGO_ELLIPSIZE_NONE );
+  pango_layout_set_justify( osd_data->pango_layout , FALSE );
+  pango_layout_set_width( osd_data->pango_layout , PANGO_SCALE * max_width );
+  pango_layout_get_pixel_size( osd_data->pango_layout , &layout_width , &layout_height );
 
   osd = ghosd_new();
 
   /* osd position */
-  switch ( cfg_osd->position.placement )
+  switch ( osd_data->cfg_osd->position.placement )
   {
     case AOSD_POSITION_PLACEMENT_TOP:
       pos_x += (screen_width - (layout_width + pad_left + pad_right)) / 2;
@@ -209,150 +277,136 @@ aosd_thread_func ( void * arg )
   }
 
   /* add offset to position */
-  pos_x += cfg_osd->position.offset_x;
-  pos_y += cfg_osd->position.offset_y;
+  pos_x += osd_data->cfg_osd->position.offset_x;
+  pos_y += osd_data->cfg_osd->position.offset_y;
 
   ghosd_set_position( osd , pos_x , pos_y ,
     layout_width + pad_left + pad_right ,
     layout_height + pad_top + pad_bottom );
 
-  ghosd_set_event_button_cb( osd , aosd_button_func , &stop_now );
+  ghosd_set_event_button_cb( osd , aosd_button_func , NULL );
 
-  /* the aosd_status must be checked during the fade and display process
-     (if another message arrives, the current transition must be abandoned ) */
-
-  style_data.layout = osd_layout;
-  style_data.text = &(cfg_osd->text);
-  style_data.decoration = &(cfg_osd->decoration);
-  fade_data.user_data = &style_data;
-  fade_data.width = layout_width + pad_left + pad_right;
-  fade_data.height = layout_height + pad_top + pad_bottom;
-  fade_data.alpha = 0;
-  fade_data.deco_code = cfg_osd->decoration.code;
-  ghosd_set_render( osd , (GhosdRenderFunc)aosd_fade_func , &fade_data , NULL );
+  style_data.layout = osd_data->pango_layout;
+  style_data.text = &(osd_data->cfg_osd->text);
+  style_data.decoration = &(osd_data->cfg_osd->decoration);
+  osd_data->fade_data.surface = NULL;
+  osd_data->fade_data.user_data = &style_data;
+  osd_data->fade_data.width = layout_width + pad_left + pad_right;
+  osd_data->fade_data.height = layout_height + pad_top + pad_bottom;
+  osd_data->fade_data.alpha = 0;
+  osd_data->fade_data.deco_code = osd_data->cfg_osd->decoration.code;
+  osd_data->dalpha_in = 1.0 / ( osd_data->cfg_osd->animation.timing_fadein / (gfloat)AOSD_TIMING );
+  osd_data->dalpha_out = 1.0 / ( osd_data->cfg_osd->animation.timing_fadeout / (gfloat)AOSD_TIMING );
+  osd_data->ddisplay_stay = 1.0 / ( osd_data->cfg_osd->animation.timing_display / (gfloat)AOSD_TIMING );
+  ghosd_set_render( osd , (GhosdRenderFunc)aosd_fade_func , &(osd_data->fade_data) , NULL );
 
   /* show the osd (with alpha 0, invisible) */
   ghosd_show( osd );
+  return;
+}
 
-  if ( stop_now != TRUE )
+
+static gboolean
+aosd_timer_func ( gpointer none )
+{
+  static gfloat display_time = 0;
+
+  switch ( osd_status )
   {
-    /* fade in */
-    for ( fade_data.alpha = 0 ; fade_data.alpha < 1.0 ; fade_data.alpha += dalpha_in )
+    case AOSD_STATUS_FADEIN:
     {
-      pthread_mutex_lock( &aosd_status_mutex );
-      if ( aosd_status == AOSD_STATUS_INTERRUPT )
-        { pthread_mutex_unlock( &aosd_status_mutex ); stop_now = TRUE; break; }
-      pthread_mutex_unlock( &aosd_status_mutex );
+      /* fade in */
+      osd_data->fade_data.alpha += osd_data->dalpha_in;
+      if ( osd_data->fade_data.alpha < 1.0 )
+      {
+        ghosd_render( osd );
+        ghosd_main_iterations( osd );
+      }
+      else
+      {
+        osd_data->fade_data.alpha = 1.0;
+        display_time = 0;
+        osd_status = AOSD_STATUS_SHOW; /* move to next phase */
+        ghosd_render( osd );
+        ghosd_main_iterations( osd );
+      }
+      return TRUE;
+    }
 
-      if (fade_data.alpha > 1.0) fade_data.alpha = 1.0;
-      ghosd_render( osd );
-      gettimeofday( &tv_nextupdate , NULL );
-      tv_nextupdate.tv_usec += STEP_MS*1000;
-      ghosd_main_until( osd , &tv_nextupdate );
+    case AOSD_STATUS_SHOW:
+    {
+      display_time += osd_data->ddisplay_stay;
+      if ( display_time >= 1.0 )
+      {
+        osd_status = AOSD_STATUS_FADEOUT; /* move to next phase */
+        ghosd_main_iterations( osd );
+      }
+      else
+      {
+        ghosd_main_iterations( osd );
+      }
+      return TRUE;
+    }
+
+    case AOSD_STATUS_FADEOUT:
+    {
+      /* fade out */
+      osd_data->fade_data.alpha -= osd_data->dalpha_out;
+      if ( osd_data->fade_data.alpha > 0.0 )
+      {
+        ghosd_render( osd );
+        ghosd_main_iterations( osd );
+      }
+      else
+      {
+        osd_data->fade_data.alpha = 0.0;
+        osd_status = AOSD_STATUS_DESTROY; /* move to next phase */
+        ghosd_render( osd );
+        ghosd_main_iterations( osd );
+      }
+      return TRUE;
+    }
+
+    case AOSD_STATUS_DESTROY:
+    {
+      aosd_osd_hideanddestroy();
+      aosd_osd_data_free();
+
+      osd_status = AOSD_STATUS_HIDDEN; /* reset status */
+      osd_source_id = 0;
+      return FALSE;
     }
   }
 
-  if ( stop_now != TRUE )
-  {
-    /* show the osd for the desidered amount of time */
-    gint time_iter_ms = 0;
-
-    fade_data.alpha = 1.0;
-    ghosd_render( osd );
-
-    while ( time_iter_ms < cfg_osd->animation.timing_display )
-    {
-      pthread_mutex_lock( &aosd_status_mutex );
-      if ( aosd_status == AOSD_STATUS_INTERRUPT )
-        { pthread_mutex_unlock( &aosd_status_mutex ); stop_now = TRUE; break; }
-      pthread_mutex_unlock( &aosd_status_mutex );
-
-      gettimeofday(&tv_nextupdate, NULL);
-      tv_nextupdate.tv_usec += STEP_MS*1000;
-      time_iter_ms += STEP_MS;
-      ghosd_main_until( osd , &tv_nextupdate);
-    }
-  }
-
-  if ( stop_now != TRUE )
-  {
-    /* fade out */
-    for ( fade_data.alpha = 1 ; fade_data.alpha > 0.0 ; fade_data.alpha -= dalpha_out )
-    {
-      pthread_mutex_lock( &aosd_status_mutex );
-      if ( aosd_status == AOSD_STATUS_INTERRUPT )
-        { pthread_mutex_unlock( &aosd_status_mutex ); stop_now = TRUE; break; }
-      pthread_mutex_unlock( &aosd_status_mutex );
-
-      if (fade_data.alpha < 0.0) fade_data.alpha = 0;
-      ghosd_render( osd );
-      gettimeofday( &tv_nextupdate , NULL );
-      tv_nextupdate.tv_usec += STEP_MS*1000;
-      ghosd_main_until( osd , &tv_nextupdate );
-    }
-  }
-
-  fade_data.alpha = 0;
-  ghosd_render( osd );
-
-  ghosd_hide( osd );
-  ghosd_main_iterations( osd );
-  ghosd_destroy( osd );
-  if ( fade_data.surface != NULL )
-    cairo_surface_destroy( fade_data.surface );
-
-  pthread_mutex_lock( &aosd_status_mutex );
-  aosd_status = AOSD_STATUS_HIDDEN;
-  pthread_mutex_unlock( &aosd_status_mutex );
-
-  g_free( markup_string );
-  if ( thread_data->cfg_is_copied == TRUE )
-    aosd_cfg_osd_delete( cfg_osd );
-  g_free( thread_data );
-  g_object_unref( osd_layout );
-  g_object_unref( context );
-  pthread_exit(NULL);
+  return TRUE;
 }
 
 
 gint
 aosd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
 {
-  aosd_thread_data_t *thread_data = g_malloc(sizeof(aosd_thread_data_t));
-  thread_data->markup_message = g_strdup( markup_string );
-  if ( copy_cfg == TRUE )
+  if ( osd_status == AOSD_STATUS_HIDDEN )
   {
-    thread_data->cfg_osd = aosd_cfg_osd_copy( cfg_osd );
-    thread_data->cfg_is_copied = TRUE;
+    aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
+    aosd_osd_create();
+    osd_status = AOSD_STATUS_FADEIN;
+    osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
+                                        aosd_timer_func , NULL , NULL );
   }
   else
   {
-    thread_data->cfg_osd = cfg_osd;
-    thread_data->cfg_is_copied = FALSE;
+    g_source_remove( osd_source_id ); /* remove timer */
+    osd_source_id = 0;
+    aosd_osd_hideanddestroy();
+    aosd_osd_data_free();
+    osd_status = AOSD_STATUS_HIDDEN;
+    /* now display new OSD */
+    aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
+    aosd_osd_create();
+    osd_status = AOSD_STATUS_FADEIN;
+    osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
+                                        aosd_timer_func , NULL , NULL );
   }
-
-  /* check if osd is already displaying a message now */
-  pthread_mutex_lock( &aosd_status_mutex );
-  if ( aosd_status == AOSD_STATUS_SHOWN )
-  {
-    /* a message is already being shown in osd, stop the
-       display of that message cause there is a new one */
-    aosd_status = AOSD_STATUS_INTERRUPT;
-  }
-  else
-  {
-    /* no message is being shown in osd, show one now */
-    aosd_status = AOSD_STATUS_SHOWN;
-  }
-  pthread_mutex_unlock( &aosd_status_mutex );
-
-  if ( aosd_thread != NULL )
-    pthread_join( *aosd_thread , NULL );
-  else
-    aosd_thread = g_malloc(sizeof(pthread_t));
-
-  aosd_status = AOSD_STATUS_SHOWN; /* aosd_thread joined, no need to mutex this */
-  pthread_create( aosd_thread , NULL , aosd_thread_func , thread_data );
   return 0;
 }
 
@@ -360,20 +414,13 @@ aosd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_
 void
 aosd_shutdown ( void )
 {
-  if ( aosd_thread != NULL )
+  if ( osd_status != AOSD_STATUS_HIDDEN ) /* osd is being displayed */
   {
-    pthread_mutex_lock( &aosd_status_mutex );
-    if ( aosd_status == AOSD_STATUS_SHOWN )
-    {
-      /* a message is being shown in osd,
-         stop the display of that message */
-      aosd_status = AOSD_STATUS_INTERRUPT;
-    }
-    pthread_mutex_unlock( &aosd_status_mutex );
-    pthread_join( *aosd_thread , NULL );
-    g_free( aosd_thread );
-    aosd_thread = NULL;
-    aosd_status = AOSD_STATUS_HIDDEN; /* aosd_thread joined, no need to mutex this */
+    g_source_remove( osd_source_id ); /* remove timer */
+    osd_source_id = 0;
+    aosd_osd_hideanddestroy();
+    aosd_osd_data_free();
+    osd_status = AOSD_STATUS_HIDDEN;
   }
   return;
 }
