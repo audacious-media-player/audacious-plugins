@@ -210,21 +210,17 @@ void read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_minmax = -77;
 
     if (file_info->infile) {
-#ifdef DEBUG
-        g_message("replaygain: dup");
-#endif
         fp = vfs_dup(file_info->infile);
         curpos = vfs_ftell(fp);
-    } else {
+    }
+    else {
         if ((fp = vfs_fopen(file_info->filename, "rb")) == NULL)
             return;
-        if (vfs_fseek(fp, 0L, SEEK_END) != 0) {
-#ifdef DEBUG
-            g_message("replaygain: seek error");
-#endif
-            vfs_fclose(fp);
-            return;
-        }
+    }
+
+    if (vfs_fseek(fp, 0L, SEEK_END) != 0) {
+        vfs_fclose(fp);
+        return;
     }
     
     long pos = vfs_ftell(fp);

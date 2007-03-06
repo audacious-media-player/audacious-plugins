@@ -434,7 +434,7 @@ gpointer decode_loop(gpointer arg)
                              (tlen == 0 || info->size <= 0) ? -1 : tlen,
                              info->bitrate, info->freq, info->channels);
 #ifdef DEBUG
-    g_message("decode: tlen = %d\n", tlen);
+    g_message("decode: tlen = %d", tlen);
 #endif
 
     /* main loop */
@@ -553,7 +553,9 @@ gpointer decode_loop(gpointer arg)
 
             if (!audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
 #ifdef DEBUG
+#ifdef DEBUG_INTENSIVELY
                 g_message("decode vbr tlen = %d", tlen);
+#endif
 #endif
                 mad_plugin->set_info(info->title,
                                      (tlen == 0 || info->size <= 0) ? -1 : tlen,

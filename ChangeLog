@@ -1,3 +1,13 @@
+2007-03-05 08:48:01 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1664]
+  - check the result of vfs_fread() strictly.
+  
+  trunk/src/madplug/decoder.c |    4 ++--
+  trunk/src/madplug/input.c   |    5 ++---
+  trunk/src/madplug/plugin.c  |   17 +++++++++--------
+  3 files changed, 13 insertions(+), 13 deletions(-)
+
+
 2007-03-05 08:28:52 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1662]
   - reject files which use Ogg container magic
