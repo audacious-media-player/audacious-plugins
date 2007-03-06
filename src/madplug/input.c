@@ -557,8 +557,9 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
     /* simply read to data from the file */
     len = vfs_fread(buffer, 1, buffer_size, info->infile); //vfs_fread returns num of elements.
 
-    if(len == 0 && info->playback){
-        info->playback->eof = TRUE;
+    if(len == 0){
+	    if(info->playback)
+		    info->playback->eof = TRUE;
     }
 
 #ifdef DEBUG

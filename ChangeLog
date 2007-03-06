@@ -1,3 +1,11 @@
+2007-03-06 14:53:31 +0000  Giacomo Lozito <james@develia.org>
+  revision [1672]
+  aosd: do not use str_to_utf8
+  trunk/src/aosd/aosd_common.h  |    2 +-
+  trunk/src/aosd/aosd_trigger.c |    4 ++--
+  2 files changed, 3 insertions(+), 3 deletions(-)
+
+
 2007-03-06 13:17:29 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1670]
   - avoid crash when error message doesn't contain <TITLE>.

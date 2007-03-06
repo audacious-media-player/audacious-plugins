@@ -195,7 +195,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
     while (1) {
         remainder = stream.bufend - stream.next_frame;
-	
+
         /*
            if (remainder >= BUFFER_SIZE)
            {
@@ -211,7 +211,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #ifdef DEBUG
             g_message("scan_file: len <= 0 abort.");
 #endif
-            return 0;
+            break;
         }
 
         mad_stream_buffer(&stream, buffer, len + remainder);

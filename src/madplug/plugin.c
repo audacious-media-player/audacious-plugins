@@ -224,9 +224,6 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     guchar tmp[4096];
     gint ret, i;
 
-    if (fin == NULL)
-        return 0;
-
     info.remote = FALSE;
 
     if(audmad_is_remote(filename))
@@ -239,10 +236,12 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
          !strcasecmp("tta", ext)  || !strcasecmp("ogg", ext) ||
          !strcasecmp("wma", ext) )
 			 )
-        return 0;
+        return FALSE;
 
-    if(vfs_fread(buf, 1, 4, fin) == 0)
-        return 0;
+    if (fin == NULL)
+        return FALSE;
+
+    vfs_fread(buf, 1, 4, fin);
 
     check = mp3_head_convert(buf);
 
@@ -253,8 +252,7 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     else if (memcmp(buf, "RIFF", 4) == 0)
     {
         vfs_fseek(fin, 4, SEEK_CUR);
-        if(vfs_fread(buf, 1, 4, fin) == 0)
-            return 0;
+        vfs_fread(buf, 1, 4, fin);
 
         if (memcmp(buf, "RMP3", 4) == 0)
             return 1;
@@ -262,7 +260,8 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     while (!mp3_head_check(check))
     {
-        if(vfs_fread(tmp, 1, 4096, fin) == 0)
+        ret = vfs_fread(tmp, 1, 4096, fin);
+        if (ret == 0)
             return 0;
 
         for (i = 0; i < ret; i++)
