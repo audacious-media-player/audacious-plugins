@@ -350,8 +350,10 @@ static TitleInput *mp4_get_song_tuple(char *fn)
     mp4ff_t *mp4file;
     TitleInput *input = NULL;
     gchar *filename = g_strdup(fn);
+    gboolean remote = str_has_prefix_nocase(filename, "http:") ||
+	              str_has_prefix_nocase(filename, "https:");
 
-    mp4fh = vfs_buffered_file_new_from_uri(filename);
+    mp4fh = remote ? vfs_buffered_file_new_from_uri(filename) : vfs_fopen(filename, "rb");
 
     /* check if this file is an ADTS stream, if so return a blank tuple */
     if (parse_aac_stream(mp4fh))
@@ -372,6 +374,8 @@ static TitleInput *mp4_get_song_tuple(char *fn)
 
         return input;
     }
+
+    vfs_rewind(mp4fh);
 
     mp4cb->read = mp4_read_callback;
     mp4cb->seek = mp4_seek_callback;
