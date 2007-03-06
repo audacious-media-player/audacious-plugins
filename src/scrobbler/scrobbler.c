@@ -543,13 +543,16 @@ static int sc_parse_sb_res(void)
 	}
 
 	if (!strncmp(sc_srv_res, "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">", 50)) {
-		ch = strstr(sc_srv_res, "<TITLE>") + 7;
+		ch = strstr(sc_srv_res, "<TITLE>");
 		ch2 = strstr(sc_srv_res, "</TITLE>");
-		*ch2 = '\0';
+		if (ch != NULL && ch2 != NULL) {
+			ch += strlen("<TITLE>");
+			*ch2 = '\0';
 
-		pdebug(fmt_vastr("HTTP Error (%d): '%s'",
-					atoi(ch), ch + 4), DEBUG);
-		*ch2 = '<';
+			pdebug(fmt_vastr("HTTP Error (%d): '%s'",
+					 atoi(ch), ch + 4), DEBUG);
+//			*ch2 = '<'; // needed? --yaz
+		}
 
 		return -1;
 	}
