@@ -1,3 +1,17 @@
+2007-03-07 06:08:18 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1676]
+  revising vfs_fread() check code.
+  - check vfs handle code has been restored to original position.
+  - accidentally removed substitution to ret has been restored.
+  - in audmad_is_our_fd(), check code just puts log message instead of return. please let me know if log message would be put upon proper mp3 file.
+  - in scan_file(), check code returns if vfs_fread() fails. this fixes open audio with bogus parameters problem.
+  
+  trunk/src/madplug/decoder.c |    6 ++----
+  trunk/src/madplug/input.c   |    5 ++---
+  trunk/src/madplug/plugin.c  |   25 +++++++++++++++----------
+  3 files changed, 19 insertions(+), 17 deletions(-)
+
+
 2007-03-06 23:43:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1674]
   - revert r1664 as it breaks too much

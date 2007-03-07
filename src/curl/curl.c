@@ -467,7 +467,7 @@ curl_manage_request(gpointer arg)
       result != CURLE_GOT_NOTHING && result != CURLE_HTTP_RANGE_ERROR &&
       result != CURLE_PARTIAL_FILE)
     {
-      g_print("Got curl error %d\n", result);
+      g_print("Got curl error %d: %s\n", result, curl_easy_strerror(result));
       handle->failed = 1;
     }
   if (DEBUG_CONNECTION)
