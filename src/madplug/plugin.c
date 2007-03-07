@@ -235,13 +235,17 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
         (!strcasecmp("flac", ext) || !strcasecmp("mpc", ext) ||
          !strcasecmp("tta", ext)  || !strcasecmp("ogg", ext) ||
          !strcasecmp("wma", ext) )
-			 )
-        return FALSE;
+        )
+        return 0;
 
-    if (fin == NULL)
-        return FALSE;
+    if (fin == NULL) {
+        g_message("fin = NULL");
+        return 0;
+    }
 
-    vfs_fread(buf, 1, 4, fin);
+    if(vfs_fread(buf, 1, 4, fin) == 0) {
+        g_message("vfs_fread failed @1 %s", g_filename_to_utf8(filename, -1, NULL, NULL, NULL));
+    }
 
     check = mp3_head_convert(buf);
 
@@ -252,7 +256,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     else if (memcmp(buf, "RIFF", 4) == 0)
     {
         vfs_fseek(fin, 4, SEEK_CUR);
-        vfs_fread(buf, 1, 4, fin);
+        if(vfs_fread(buf, 1, 4, fin) == 0) {
+            g_message("vfs_fread failed @2 %s", g_filename_to_utf8(filename, -1, NULL, NULL, NULL));
+        }
 
         if (memcmp(buf, "RMP3", 4) == 0)
             return 1;
@@ -260,10 +266,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     while (!mp3_head_check(check))
     {
-        ret = vfs_fread(tmp, 1, 4096, fin);
-        if (ret == 0)
-            return 0;
-
+        if((ret = vfs_fread(tmp, 1, 4096, fin)) == 0){
+            g_message("vfs_fread failed @3 %s", g_filename_to_utf8(filename, -1, NULL, NULL, NULL));
+        }
         for (i = 0; i < ret; i++)
         {
             check <<= 8;

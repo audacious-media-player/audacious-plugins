@@ -1,3 +1,13 @@
+2007-03-06 23:43:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1674]
+  - revert r1664 as it breaks too much
+  
+  trunk/src/madplug/decoder.c |    4 ++--
+  trunk/src/madplug/input.c   |    5 +++--
+  trunk/src/madplug/plugin.c  |   17 ++++++++---------
+  3 files changed, 13 insertions(+), 13 deletions(-)
+
+
 2007-03-06 14:53:31 +0000  Giacomo Lozito <james@develia.org>
   revision [1672]
   aosd: do not use str_to_utf8
