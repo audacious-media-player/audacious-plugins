@@ -352,7 +352,7 @@ static void input_read_tag(struct mad_info_t *info)
 {
     gchar *string = NULL;
     TitleInput *title_input;
-    glong curpos;
+    glong curpos = 0;
 
 #ifdef DEBUG
     g_message("f: input_read_tag");
@@ -436,8 +436,10 @@ static void input_read_tag(struct mad_info_t *info)
         audmad_config.id3_format : xmms_get_gentitle_format(), title_input);
 
     // for connection via proxy, we have to stop transfer once. I can't explain the reason.
-    vfs_fseek(info->infile, -1, SEEK_SET); // an impossible request
-    vfs_fseek(info->infile, curpos, SEEK_SET);
+    if (info->infile != NULL) {
+        vfs_fseek(info->infile, -1, SEEK_SET); // an impossible request
+        vfs_fseek(info->infile, curpos, SEEK_SET);
+    }
     
 #ifdef DEBUG
     g_message("e: input_read_tag");
