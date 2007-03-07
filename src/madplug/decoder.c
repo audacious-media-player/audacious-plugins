@@ -208,7 +208,9 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                              BUFFER_SIZE - remainder);
 
         if (len <= 0) {
-            g_message("scan_file: len <= 0! len = %d\n", len);
+#ifdef DEBUG
+            g_message("scan_file: len <= 0! len = %d", len);
+#endif
             break;
         }
 
@@ -411,6 +413,14 @@ gpointer decode_loop(gpointer arg)
 #ifdef DEBUG
     g_message("decode: fmt = %d freq = %d channels = %d", info->fmt, info->freq, info->channels);
 #endif
+    // sanity check.
+    if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)
+        return NULL;
+    if(info->freq < 0) // not sure about maximum frequency. --yaz
+        return NULL;
+    if(info->channels < 1 || info->channels > 2)
+        return NULL;
+    
     if (!info->playback->output->open_audio(info->fmt, info->freq, info->channels)) {
         g_mutex_lock(pb_mutex);
         info->playback->error = TRUE;
