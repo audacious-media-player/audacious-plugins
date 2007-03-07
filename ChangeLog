@@ -1,3 +1,11 @@
+2007-03-07 14:16:04 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1684]
+  - add sanity check for open audio parameters.
+  
+  trunk/src/madplug/decoder.c |   12 +++++++++++-
+  1 file changed, 11 insertions(+), 1 deletion(-)
+
+
 2007-03-07 13:36:20 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1682]
   - I was noticed vfs_fread check still causes problem. disable for now.

@@ -597,14 +597,24 @@ gpointer decode_loop(gpointer arg)
                 info->freq = frame.header.samplerate;
                 info->channels = MAD_NCHANNELS(&frame.header);
                 info->playback->output->close_audio();
+
+                // sanity check.
+                if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)
+                    return NULL;
+                if(info->freq < 0) // not sure about maximum frequency. --yaz
+                    return NULL;
+                if(info->channels < 1 || info->channels > 2)
+                    return NULL;
+
                 if (!info->playback->output->open_audio(info->fmt, info->freq,
                                                    info->channels)) {
                     g_mutex_lock(pb_mutex);
                     info->playback->error = TRUE;
                     info->playback->eof = 1;
                     g_mutex_unlock(pb_mutex);
-                    audmad_error("failed to re-open audio output: %s",
+                    g_message("failed to re-open audio output: %s",
                                   info->playback->output->description);
+                    return NULL;
                 }
             }
             if (!info->playback->playing)
