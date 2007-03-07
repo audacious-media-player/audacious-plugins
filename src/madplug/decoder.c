@@ -208,8 +208,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                              BUFFER_SIZE - remainder);
 
         if (len <= 0) {
-            g_message("scan_file: len <= 0 abort.");
-            return 0;
+            g_message("scan_file: len <= 0! len = %d\n", len);
+            break;
         }
 
         mad_stream_buffer(&stream, buffer, len + remainder);
