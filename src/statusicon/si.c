@@ -43,7 +43,7 @@ si_init ( void )
   g_type_init();
   g_log_set_handler( NULL , G_LOG_LEVEL_WARNING , g_log_default_handler , NULL );
   plugin_active = TRUE;
-  si_ui_statusicon_show();
+  si_ui_statusicon_enable( TRUE );
   return;
 }
 
@@ -54,7 +54,7 @@ si_cleanup ( void )
   if ( plugin_active == TRUE )
   {
     plugin_active = FALSE;
-    si_ui_statusicon_hide();
+    si_ui_statusicon_enable( FALSE );
   }
   return;
 }

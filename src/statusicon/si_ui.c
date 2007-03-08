@@ -34,7 +34,15 @@
 #include <gtk/gtk.h>
 
 
-static GtkWidget * si_evbox = NULL;
+
+/* this stuff required to make titlechange hook work properly */
+typedef struct
+{
+  gchar *title;
+  gchar *filename;
+  gpointer evbox;
+}
+si_hook_tchange_prevs_t;
 
 
 static GtkTrayIcon *
@@ -100,7 +108,7 @@ si_ui_statusicon_popup_show ( gpointer evbox )
     GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
 
     tuple = playlist_get_tuple( pl_active , pos );
-    if (( tuple == NULL ) || (( tuple->track_name == NULL ) && ( tuple->length < 1 )))
+    if ( ( tuple == NULL ) || ( tuple->length < 1 ) )
     {
       gchar *title = playlist_get_songtitle( pl_active , pos );
       audacious_fileinfopopup_show_from_title( popup , title );
@@ -151,6 +159,63 @@ si_ui_statusicon_popup_timer_stop ( GtkWidget * evbox )
   g_object_set_data( G_OBJECT(evbox) , "timer_id" , GINT_TO_POINTER(0) );
   g_object_set_data( G_OBJECT(evbox) , "timer_active" , GINT_TO_POINTER(0) );
   return;
+}
+
+
+static void
+si_ui_statusicon_cb_hook_pbstart ( gpointer plentry_gp , gpointer evbox )
+{
+  if ( ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 ) &&
+       ( plentry_gp != NULL ) )
+  {
+    si_ui_statusicon_popup_hide( evbox );
+    si_ui_statusicon_popup_timer_start( evbox );
+  }
+}
+
+
+static void
+si_ui_statusicon_cb_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
+{
+  si_hook_tchange_prevs_t *prevs = prevs_gp;
+  if ( ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(prevs->evbox) , "popup_active" )) == 1 ) &&
+       ( plentry_gp != NULL ) )
+  {
+    PlaylistEntry *pl_entry = plentry_gp;
+    if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
+    {
+      if ( ( pl_entry->filename != NULL ) &&
+           ( !strcmp(pl_entry->filename,prevs->filename) ) )
+      {
+        if ( ( pl_entry->title != NULL ) &&
+             ( strcmp(pl_entry->title,prevs->title) ) )
+        {
+          si_ui_statusicon_popup_hide( prevs->evbox );
+          si_ui_statusicon_popup_timer_start( prevs->evbox );
+          g_free( prevs->title );
+          prevs->title = g_strdup(pl_entry->title);
+        }
+      }
+      else
+      {
+        g_free(prevs->filename);
+        prevs->filename = g_strdup(pl_entry->filename);
+        /* if filename changes, reset title as well */
+        if ( prevs->title != NULL )
+          g_free(prevs->title);
+        prevs->title = g_strdup(pl_entry->title);
+      }
+    }
+    else
+    {
+      if ( prevs->title != NULL )
+        g_free(prevs->title);
+      prevs->title = g_strdup(pl_entry->title);
+      if ( prevs->filename != NULL )
+        g_free(prevs->filename);
+      prevs->filename = g_strdup(pl_entry->filename);
+    }
+  }
 }
 
 
@@ -258,72 +323,89 @@ si_ui_statusicon_cb_image_sizalloc ( GtkWidget * image , GtkAllocation * allocat
 
 
 void
-si_ui_statusicon_show ( void )
+si_ui_statusicon_enable ( gboolean enable )
 {
-  GtkWidget *si_image;
-  GtkWidget *si_popup;
-  GtkTrayIcon *si_applet;
-  GtkRequisition req;
-  GtkAllocation allocation;
+  static GtkWidget * si_evbox = NULL;
+  static si_hook_tchange_prevs_t * si_hook_tchange_prevs = NULL;
 
-  si_applet = si_ui_statusicon_create();
-  if ( si_applet == NULL )
+  if ( enable == TRUE )
   {
-    g_warning( "StatusIcon plugin: unable to create a status icon.\n" );
+    GtkWidget *si_image;
+    GtkWidget *si_popup;
+    GtkTrayIcon *si_applet;
+    GtkRequisition req;
+    GtkAllocation allocation;
+
+    si_applet = si_ui_statusicon_create();
+    if ( si_applet == NULL )
+    {
+      g_warning( "StatusIcon plugin: unable to create a status icon.\n" );
+      return;
+    }
+
+    si_image = gtk_image_new();
+    g_object_set_data( G_OBJECT(si_image) , "size" , GINT_TO_POINTER(0) );
+
+    g_signal_connect( si_image , "size-allocate" ,
+                      G_CALLBACK(si_ui_statusicon_cb_image_sizalloc) , si_applet );
+
+    si_evbox = gtk_event_box_new();
+    si_popup = audacious_fileinfopopup_create();
+
+    g_object_set_data( G_OBJECT(si_evbox) , "applet" , si_applet );
+
+    g_object_set_data( G_OBJECT(si_evbox) , "timer_id" , GINT_TO_POINTER(0) );
+    g_object_set_data( G_OBJECT(si_evbox) , "timer_active" , GINT_TO_POINTER(0) );
+
+    g_object_set_data( G_OBJECT(si_evbox) , "popup_active" , GINT_TO_POINTER(0) );
+    g_object_set_data( G_OBJECT(si_evbox) , "popup" , si_popup );
+
+    g_signal_connect( G_OBJECT(si_evbox) , "button-press-event" ,
+                      G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
+    g_signal_connect( G_OBJECT(si_evbox) , "scroll-event" ,
+                      G_CALLBACK(si_ui_statusicon_cb_btscroll) , NULL );
+    g_signal_connect_after( G_OBJECT(si_evbox) , "event-after" ,
+                            G_CALLBACK(si_ui_statusicon_cb_popup) , NULL );
+
+    gtk_container_add( GTK_CONTAINER(si_evbox), si_image );
+    gtk_container_add( GTK_CONTAINER(si_applet), si_evbox );
+
+    gtk_widget_show_all( GTK_WIDGET(si_applet) );
+
+    gtk_widget_size_request( GTK_WIDGET(si_applet) , &req );
+    allocation.x = 0;
+    allocation.y = 0;
+    allocation.width = req.width;
+    allocation.height = req.height;
+    gtk_widget_size_allocate( GTK_WIDGET(si_applet) , &allocation );
+
+    hook_associate( "playback begin" , si_ui_statusicon_cb_hook_pbstart , si_evbox );
+    si_hook_tchange_prevs = g_malloc0(sizeof(si_hook_tchange_prevs_t));
+    si_hook_tchange_prevs->title = NULL;
+    si_hook_tchange_prevs->filename = NULL;
+    si_hook_tchange_prevs->evbox = si_evbox;
+    hook_associate( "playlist set info" , si_ui_statusicon_cb_hook_tchange , si_hook_tchange_prevs );
+
     return;
   }
-
-  si_image = gtk_image_new();
-  g_object_set_data( G_OBJECT(si_image) , "size" , GINT_TO_POINTER(0) );
-
-  g_signal_connect( si_image , "size-allocate" ,
-                    G_CALLBACK(si_ui_statusicon_cb_image_sizalloc) , si_applet );
-
-  si_evbox = gtk_event_box_new();
-  si_popup = audacious_fileinfopopup_create();
-
-  g_object_set_data( G_OBJECT(si_evbox) , "applet" , si_applet );
-
-  g_object_set_data( G_OBJECT(si_evbox) , "timer_id" , GINT_TO_POINTER(0) );
-  g_object_set_data( G_OBJECT(si_evbox) , "timer_active" , GINT_TO_POINTER(0) );
-
-  g_object_set_data( G_OBJECT(si_evbox) , "popup_active" , GINT_TO_POINTER(0) );
-  g_object_set_data( G_OBJECT(si_evbox) , "popup" , si_popup );
-
-  g_signal_connect( G_OBJECT(si_evbox) , "button-press-event" ,
-                    G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
-  g_signal_connect( G_OBJECT(si_evbox) , "scroll-event" ,
-                    G_CALLBACK(si_ui_statusicon_cb_btscroll) , NULL );
-  g_signal_connect_after( G_OBJECT(si_evbox) , "event-after" ,
-                          G_CALLBACK(si_ui_statusicon_cb_popup) , NULL );
-
-  gtk_container_add( GTK_CONTAINER(si_evbox), si_image );
-  gtk_container_add( GTK_CONTAINER(si_applet), si_evbox );
-
-  gtk_widget_show_all( GTK_WIDGET(si_applet) );
-
-  gtk_widget_size_request( GTK_WIDGET(si_applet) , &req );
-  allocation.x = 0;
-  allocation.y = 0;
-  allocation.width = req.width;
-  allocation.height = req.height;
-  gtk_widget_size_allocate( GTK_WIDGET(si_applet) , &allocation );
-
-  return;
-}
-
-
-void
-si_ui_statusicon_hide ( void )
-{
-  if ( si_evbox != NULL )
+  else
   {
-    GtkTrayIcon *si_applet = g_object_get_data( G_OBJECT(si_evbox) , "applet" );
-    si_ui_statusicon_popup_timer_stop( si_evbox ); /* just in case the timer is active */
-    gtk_widget_destroy( GTK_WIDGET(si_evbox) );
-    gtk_widget_destroy( GTK_WIDGET(si_applet) );
+    if ( si_evbox != NULL )
+    {
+      GtkTrayIcon *si_applet = g_object_get_data( G_OBJECT(si_evbox) , "applet" );
+      si_ui_statusicon_popup_timer_stop( si_evbox ); /* just in case the timer is active */
+      gtk_widget_destroy( GTK_WIDGET(si_evbox) );
+      gtk_widget_destroy( GTK_WIDGET(si_applet) );
+      hook_dissociate( "playback begin" , si_ui_statusicon_cb_hook_pbstart );
+      hook_dissociate( "playlist set info" , si_ui_statusicon_cb_hook_tchange );
+      if ( si_hook_tchange_prevs->title != NULL ) g_free( si_hook_tchange_prevs->title );
+      if ( si_hook_tchange_prevs->filename != NULL ) g_free( si_hook_tchange_prevs->filename );
+      g_free( si_hook_tchange_prevs );
+      si_hook_tchange_prevs = NULL;
+      si_evbox = NULL;
+    }
+    return;
   }
-  return;
 }
 
 
