@@ -1,3 +1,12 @@
+2007-03-08 00:45:38 +0000  Giacomo Lozito <james@develia.org>
+  revision [1688]
+  - statusicon: re-display statusicon popup with updated information when song (or title) changes, closes bug #846
+  trunk/src/statusicon/si.c        |    4 
+  trunk/src/statusicon/si_common.h |    2 
+  trunk/src/statusicon/si_ui.c     |  182 ++++++++++++++++++++++++++++-----------
+  3 files changed, 135 insertions(+), 53 deletions(-)
+
+
 2007-03-07 14:49:54 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1686]
   - same sanity check on rarely executed part.

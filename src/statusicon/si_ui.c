@@ -34,6 +34,9 @@
 #include <gtk/gtk.h>
 
 
+static void si_ui_statusicon_popup_timer_start ( GtkWidget * );
+static void si_ui_statusicon_popup_timer_stop ( GtkWidget * );
+
 
 /* this stuff required to make titlechange hook work properly */
 typedef struct
@@ -122,8 +125,7 @@ si_ui_statusicon_popup_show ( gpointer evbox )
     g_object_set_data( G_OBJECT(evbox) , "popup_active" , GINT_TO_POINTER(1) );
   }
 
-  g_object_set_data( G_OBJECT(evbox) , "timer_id" , GINT_TO_POINTER(0) );
-  g_object_set_data( G_OBJECT(evbox) , "timer_active" , GINT_TO_POINTER(0) );
+  si_ui_statusicon_popup_timer_stop( evbox );
   return FALSE;
 }
 
@@ -168,6 +170,7 @@ si_ui_statusicon_cb_hook_pbstart ( gpointer plentry_gp , gpointer evbox )
   if ( ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 ) &&
        ( plentry_gp != NULL ) )
   {
+g_print("hook change? 1\n");
     si_ui_statusicon_popup_hide( evbox );
     si_ui_statusicon_popup_timer_start( evbox );
   }
@@ -177,11 +180,14 @@ si_ui_statusicon_cb_hook_pbstart ( gpointer plentry_gp , gpointer evbox )
 static void
 si_ui_statusicon_cb_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
 {
+  /* NOTE: this is quite intricated, but it works nicely and it's still
+     much better than polling; wonder if it can be simplified with some
+     help from the core player */
   si_hook_tchange_prevs_t *prevs = prevs_gp;
+  PlaylistEntry *pl_entry = plentry_gp;
   if ( ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(prevs->evbox) , "popup_active" )) == 1 ) &&
        ( plentry_gp != NULL ) )
   {
-    PlaylistEntry *pl_entry = plentry_gp;
     if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
     {
       if ( ( pl_entry->filename != NULL ) &&
@@ -215,6 +221,11 @@ si_ui_statusicon_cb_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
         g_free(prevs->filename);
       prevs->filename = g_strdup(pl_entry->filename);
     }
+  }
+  else if ( ( prevs->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
+  {
+    g_free(prevs->title);
+    prevs->title = g_strdup(pl_entry->title);
   }
 }
 
