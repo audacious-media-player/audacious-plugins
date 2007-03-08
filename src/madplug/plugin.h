@@ -75,6 +75,7 @@ struct mad_info_t
     struct id3_file *id3file;
     struct xing xing;
     TitleInput *tuple;          /* audacious tuple data */
+    gchar *prev_title;           /* used to optimize set_info calls */
 
     /* replay parameters */
     gboolean has_replaygain;

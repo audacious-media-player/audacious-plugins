@@ -92,6 +92,7 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     info->mode = 0;
     info->title = 0;
     info->offset = 0;
+    info->prev_title = NULL;
 
     info->replaygain_album_str = 0;
     info->replaygain_track_str = 0;
@@ -485,9 +486,18 @@ void input_process_remote_metadata(struct mad_info_t *info)
         else
             tmp = g_strdup(g_basename(info->filename));
 
-        mad_plugin->set_info(tmp,
-                             -1, // indicate the stream is unseekable
-                             info->bitrate, info->freq, info->channels);
+        /* call set_info only if tmp is different from prev_tmp */
+        if ( ( ( info->prev_title != NULL ) && ( strcmp(info->prev_title,tmp) ) ) ||
+             ( info->prev_title == NULL ) )
+        {
+            mad_plugin->set_info(tmp,
+                                 -1, // indicate the stream is unseekable
+                                 info->bitrate, info->freq, info->channels);
+            if (info->prev_title)
+                g_free(info->prev_title);
+            info->prev_title = g_strdup(tmp);
+        }
+
         g_free(tmp);
     }
 }
@@ -609,6 +619,9 @@ gboolean input_term(struct mad_info_t * info)
         bmp_title_input_free(info->tuple);
         info->tuple = NULL;
     }
+
+    if (info->prev_title)
+        g_free(info->prev_title);
 
     /* set everything to zero in case it gets used again. */
     memset(info, 0, sizeof(struct mad_info_t));
