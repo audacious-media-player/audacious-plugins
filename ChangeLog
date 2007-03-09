@@ -1,3 +1,11 @@
+2007-03-08 17:24:04 +0000  Giacomo Lozito <james@develia.org>
+  revision [1692]
+  - madplug: do not call set_info repeatedly in input_process_remote_metadata, only call it when the built title string actually differs from the previous one
+  trunk/src/madplug/input.c  |   19 ++++++++++++++++---
+  trunk/src/madplug/plugin.h |    1 +
+  2 files changed, 17 insertions(+), 3 deletions(-)
+
+
 2007-03-08 12:20:23 +0000  Giacomo Lozito <james@develia.org>
   revision [1690]
   statusicon: improvements in title changes detection while the popup is being displayed
