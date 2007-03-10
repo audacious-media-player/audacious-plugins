@@ -1,3 +1,10 @@
+2007-03-09 20:42:48 +0000  Giacomo Lozito <james@develia.org>
+  revision [1694]
+  - amidi-plug: change version number to reflect the code differences between audacious version and stand-alone version
+  trunk/src/amidi-plug/i_common.h |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-03-08 17:24:04 +0000  Giacomo Lozito <james@develia.org>
   revision [1692]
   - madplug: do not call set_info repeatedly in input_process_remote_metadata, only call it when the built title string actually differs from the previous one

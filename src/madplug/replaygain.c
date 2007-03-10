@@ -254,9 +254,11 @@ void read_replaygain(struct mad_info_t *file_info)
     }
 #ifdef DEBUG
     if (res == 0) {             // got APE tags, show the result
+        gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);        
         g_message("RG album scale= %g, RG track scale = %g, in %s",
 		  file_info->replaygain_album_scale,
-		  file_info->replaygain_track_scale, file_info->filename);
+		  file_info->replaygain_track_scale, tmp);
+        g_free(tmp);
     }
 #endif
 

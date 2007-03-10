@@ -510,7 +510,9 @@ void input_process_remote_metadata(struct mad_info_t *info)
 gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 {
 #ifdef DEBUG
-    g_message("f: input_get_info: %s, fast_scan = %s", info->filename, fast_scan ? "TRUE" : "FALSE");
+    gchar *tmp = g_filename_to_utf8(info->filename, -1, NULL, NULL, NULL);    
+    g_message("f: input_get_info: %s, fast_scan = %s", tmp, fast_scan ? "TRUE" : "FALSE");
+    g_free(tmp);
 #endif                          /* DEBUG */
 
     input_alloc_tag(info);

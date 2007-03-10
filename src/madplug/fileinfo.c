@@ -570,7 +570,11 @@ void audmad_get_file_info(char *filename)
     char *utf_filename;
 
 #ifdef DEBUG
-    g_message("f: audmad_get_file_info: %s", filename);
+    {
+        gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+        g_message("f: audmad_get_file_info: %s", tmp);
+        g_free(tmp);
+    }
 #endif
     input_init(&info, filename);
 

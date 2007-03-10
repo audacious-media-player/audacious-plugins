@@ -244,7 +244,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     }
 
     if(vfs_fread(buf, 1, 4, fin) == 0) {
-        g_message("vfs_fread failed @1 %s", g_filename_to_utf8(filename, -1, NULL, NULL, NULL));
+        gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+        g_message("vfs_fread failed @1 %s", tmp);
+        g_free(tmp);
     }
 
     check = mp3_head_convert(buf);
@@ -257,7 +259,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     {
         vfs_fseek(fin, 4, SEEK_CUR);
         if(vfs_fread(buf, 1, 4, fin) == 0) {
-            g_message("vfs_fread failed @2 %s", g_filename_to_utf8(filename, -1, NULL, NULL, NULL));
+            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);            
+            g_message("vfs_fread failed @2 %s", tmp);
+            g_free(tmp);
         }
 
         if (memcmp(buf, "RMP3", 4) == 0)
@@ -267,7 +271,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     while (!mp3_head_check(check))
     {
         if((ret = vfs_fread(tmp, 1, 4096, fin)) == 0){
-            g_message("vfs_fread failed @3 %s", g_filename_to_utf8(filename, -1, NULL, NULL, NULL));
+            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+            g_message("vfs_fread failed @3 %s", tmp);
+            g_free(tmp);
         }
         for (i = 0; i < ret; i++)
         {
@@ -340,7 +346,11 @@ static void audmad_play_file(InputPlayback *playback)
     gchar *url = playback->filename;
 
 #ifdef DEBUG
-    g_message("playing %s", url);
+    {
+        gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
+        g_message("playing %s", tmp);
+        g_free(tmp);
+    }
 #endif                          /* DEBUG */
 
     if (input_init(&info, url) == FALSE) {
@@ -389,7 +399,9 @@ audmad_get_song_info(char *url, char **title, int *length)
 {
     struct mad_info_t myinfo;
 #ifdef DEBUG
-    g_message("f: audmad_get_song_info: %s", url);
+    gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
+    g_message("f: audmad_get_song_info: %s", tmp);
+    g_free(tmp);
 #endif                          /* DEBUG */
 
     if (input_init(&myinfo, url) == FALSE) {
