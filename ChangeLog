@@ -1,3 +1,14 @@
+2007-03-10 06:47:38 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1696]
+  - convert filename into utf8 in debug messages.
+  
+  trunk/src/madplug/fileinfo.c   |    6 +++++-
+  trunk/src/madplug/input.c      |    4 +++-
+  trunk/src/madplug/plugin.c     |   22 +++++++++++++++++-----
+  trunk/src/madplug/replaygain.c |    4 +++-
+  4 files changed, 28 insertions(+), 8 deletions(-)
+
+
 2007-03-09 20:42:48 +0000  Giacomo Lozito <james@develia.org>
   revision [1694]
   - amidi-plug: change version number to reflect the code differences between audacious version and stand-alone version

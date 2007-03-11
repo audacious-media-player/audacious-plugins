@@ -32,7 +32,7 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
   if ( name != NULL )
     *name = g_strdup( "fluidsynth" );
   if ( longname != NULL )
-    *longname = g_strdup( "FluidSynth Backend " VERSION );
+    *longname = g_strdup( "FluidSynth Backend " AMIDIPLUG_VERSION );
   if ( desc != NULL )
     *desc = g_strdup( _("This backend produces audio by sending MIDI events "
                         "to FluidSynth, a real-time software synthesizer based "
