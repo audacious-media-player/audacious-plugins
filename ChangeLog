@@ -1,3 +1,10 @@
+2007-03-11 13:31:32 +0000  Giacomo Lozito <james@develia.org>
+  revision [1698]
+  amidi-plug: changed VERSION to AMIDIPLUG_VERSION in fluidsynth backend; not that trivial, but this is how it's supposed to be
+  trunk/src/amidi-plug/backend-fluidsynth/b-fluidsynth.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-03-10 06:47:38 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1696]
   - convert filename into utf8 in debug messages.

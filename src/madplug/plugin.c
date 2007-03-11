@@ -54,6 +54,21 @@ static GtkWidget *error_dialog = 0;
 
 extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
 
+static gint mp3_bitrate_table[5][16] = {
+  { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, -1 },	/* MPEG1 L1 */
+  { 0, 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384, -1 },	/* MPEG1 L2 */
+  { 0, 32, 40, 48,  56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, -1 },	/* MPEG1 L3 */
+  { 0, 32, 48, 56,  64,  80,  96, 112, 128, 144, 160, 176, 192, 224, 256, -1 },	/* MPEG2(.5) L1 */
+  { 0,  8, 16, 24,  32,  40,  48,  56,  64,  80,  96, 112, 128, 144, 160, -1 } 	/* MPEG2(.5) L2,L3 */
+};
+
+static gint mp3_samplerate_table[4][4] = {
+  { 11025, 12000, 8000, -1 },	/* MPEG2.5 */
+  { -1, -1, -1, -1 },		/* Reserved */
+  { 22050, 24000, 16000, -1 },	/* MPEG2 */
+  { 44100, 48000, 32000, -1 }	/* MPEG1 */
+};
+
 /*
  * Function extname (filename)
  *
@@ -162,32 +177,77 @@ static void audmad_cleanup()
 {
 }
 
-static gboolean mp3_head_check(guint32 head)
+static gboolean mp3_head_check(guint32 head, gint *frameSize)
 {
-    /*
-     * First two bytes must be a sync header (11 bits all 1)
-     * http://www.mp3-tech.org/programmer/frame_header.html
+    gint version, layer, bitIndex, bitRate, sampleIndex, sampleRate, padding;
+
+    /* http://www.mp3-tech.org/programmer/frame_header.html
+     * Bits 21-31 must be set (frame sync)
      */
     if ((head & 0xffe00000) != 0xffe00000)
         return FALSE;
 
-    /* check if bits 18 and 19 are set */
-    if (!((head >> 17) & 3))
+    /* check if layer bits (17-18) are good */
+    layer = (head >> 17) & 0x3;
+    if (!layer)
+        return FALSE; /* 00 = reserved */
+    layer = 3 - layer;
+
+    /* check if bitrate index bits (12-15) are acceptable */
+    bitIndex = (head >> 12) & 0xf;
+
+    /* 1111 and 0000 are reserved values for all layers */
+    if (bitIndex == 0xf || bitIndex == 0)
         return FALSE;
 
-    /* check if bits 13 - 16 are all set */
-    if (((head >> 12) & 0xf) == 0xf)
+    /* check samplerate index bits (10-11) */
+    sampleIndex = (head >> 10) & 0x3;
+    if (sampleIndex == 0x3)
         return FALSE;
-
-    /* check if bits 13 - 16 are all not set */
-    if (!((head >> 12) & 0xf))
-        return FALSE;
-
-    /* check if bit 11 and 12 are both set */
-    if (((head >> 10) & 0x3) == 0x3)
-        return FALSE;
-
-    /* check if bits 17 - 20 are all set */
+    
+    /* check version bits (19-20) and get bitRate */
+    version = (head >> 19) & 0x03;
+    switch (version) {
+        case 0: /* 00 = MPEG Version 2.5 */
+        case 2: /* 10 = MPEG Version 2 */
+            if (layer == 1)
+                bitRate = mp3_bitrate_table[3][bitIndex];
+            else
+                bitRate = mp3_bitrate_table[4][bitIndex];
+            break;
+             
+        case 1: /* 01 = reserved */
+            return FALSE;
+        
+        case 3: /* 11 = MPEG Version 1 */
+            bitRate = mp3_bitrate_table[layer][bitIndex];
+            break;
+        
+        default:
+            return FALSE;
+    }
+    
+    /* check layer II restrictions vs. bitrate */
+    if (layer == 2) {
+        gint chanMode = (head >> 6) & 0x3;
+        
+        if (chanMode == 0x3) {
+            /* single channel with bitrate > 192 */
+            if (bitRate > 192)
+                return FALSE;
+        } else {
+            /* any other mode with bitrates 32-56 and 80 */
+            if (((bitRate >= 32 && bitRate <= 56) || bitRate == 80))
+                return FALSE;
+        }
+    }
+    
+    /* calculate approx. frame size */
+    padding = (head >> 9) & 1;
+    sampleRate = mp3_samplerate_table[version][sampleIndex];
+    *frameSize = (144 * bitRate * 1000) / (sampleRate + padding);
+        
+    /* check if bits 16 - 19 are all set (MPEG 1 Layer I, not protected?) */
     if (((head >> 19) & 1) == 1 &&
         ((head >> 17) & 3) == 3 && ((head >> 16) & 1) == 1)
         return FALSE;
@@ -219,10 +279,10 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 {
     guint32 check;
     gchar *ext = extname(filename);
-    gint cyc = 0;
+    gint cyc = 0, chkcount = 0, chksize = 4096;
     guchar buf[4];
     guchar tmp[4096];
-    gint ret, i;
+    gint ret, i, frameSize;
 
     info.remote = FALSE;
 
@@ -247,6 +307,7 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
         gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
         g_message("vfs_fread failed @1 %s", tmp);
         g_free(tmp);
+        return 0;
     }
 
     check = mp3_head_convert(buf);
@@ -262,29 +323,40 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
             gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);            
             g_message("vfs_fread failed @2 %s", tmp);
             g_free(tmp);
+            return 0;
         }
 
         if (memcmp(buf, "RMP3", 4) == 0)
             return 1;
     }
 
-    while (!mp3_head_check(check))
+    // check data for frame header
+    while (!mp3_head_check(check, &frameSize))
     {
-        if((ret = vfs_fread(tmp, 1, 4096, fin)) == 0){
+        if((ret = vfs_fread(tmp, 1, chksize, fin)) == 0){
             gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
             g_message("vfs_fread failed @3 %s", tmp);
             g_free(tmp);
+            return 0;
         }
         for (i = 0; i < ret; i++)
         {
             check <<= 8;
             check |= tmp[i];
 
-            if (mp3_head_check(check))
-                return 1;
+            if (mp3_head_check(check, &frameSize)) {
+                /* when the first matching frame header is found, we check for
+                 * another frame by seeking to the approximate start of the
+                 * next header ... also reduce the check size.
+                 */
+                if (++chkcount >= 3) return 1;
+                vfs_fseek(fin, frameSize-4, SEEK_CUR);
+                check = 0;
+                chksize = 8;
+            }
         }
 
-        if (++cyc > 1024)
+        if (++cyc > 32)
             return 0;
     }
 
