@@ -509,14 +509,14 @@ gpointer decode_loop(gpointer arg)
                 g_message("seeking: %d", info->seek);
 #endif
                 int new_position;
-                int seconds =
-                    mad_timer_count(info->duration, MAD_UNITS_SECONDS);
-                if (info->seek >= seconds)
-                    info->seek = seconds;
+                gulong milliseconds =
+                    mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS);
+                if (info->seek >= milliseconds)
+                    info->seek = milliseconds;
 
-                mad_timer_set(&info->pos, info->seek, 0, 0);
+                mad_timer_set(&info->pos, 0, info->seek, 1000); // in millisecond
                 new_position =
-                    ((double) info->seek / (double) seconds) * info->size;
+                    ((double) info->seek / (double) milliseconds) * info->size;
 
                 if(new_position < 0)
                     new_position = 0;
@@ -644,12 +644,8 @@ gpointer decode_loop(gpointer arg)
                       info->playback->output->buffer_playing());
 #endif
             g_get_current_time(&sleeptime);
-            sleeptime.tv_usec += 500000;
-            if(sleeptime.tv_usec >= 1000000) {
-                sleeptime.tv_sec += 1;
-                sleeptime.tv_usec -= 1000000;
-            }
-
+            g_time_val_add(&sleeptime, 500000);
+            
             g_mutex_lock(mad_mutex);
             g_cond_timed_wait(mad_cond, mad_mutex, &sleeptime);
             if (!info->playback->playing) {

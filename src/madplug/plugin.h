@@ -53,7 +53,7 @@ struct mad_info_t
     InputPlayback *playback;
 
     /* flags */
-    gint seek;      /**< seek time in seconds */
+    gulong seek;      /**< seek time in milliseconds */
 
     /* state */
     guint current_frame;/**< current mp3 frame */

@@ -460,13 +460,17 @@ static void audmad_pause(InputPlayback *playback, short paused)
     playback->output->pause(paused);
 }
 
-static void audmad_seek(InputPlayback *playback, int time)
+static void audmad_mseek(InputPlayback *playback, gulong millisecond)
 {
     g_mutex_lock(pb_mutex);
     info.playback = playback;
-    /* xmms gives us the desired seek time in seconds */
-    info.seek = time;
+    info.seek = millisecond;
     g_mutex_unlock(pb_mutex);
+}
+
+static void audmad_seek(InputPlayback *playback, gint time)
+{
+    audmad_mseek(playback, time * 1000);
 }
 
 /**
@@ -741,6 +745,7 @@ InputPlugin *get_iplugin_info(void)
     mad_plugin->get_song_tuple = audmad_get_song_tuple;
     mad_plugin->is_our_file_from_vfs = audmad_is_our_fd;
     mad_plugin->vfs_extensions = fmts;
+    mad_plugin->mseek = audmad_mseek;
 
     return mad_plugin;
 }

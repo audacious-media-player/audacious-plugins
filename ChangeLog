@@ -1,3 +1,10 @@
+2007-03-12 17:59:21 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1712]
+  - fork wma plugin
+  
+  0 files changed
+
+
 2007-03-12 16:12:26 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1708]
   - should check data != NULL before clear data->playing.
