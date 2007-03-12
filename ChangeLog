@@ -1,3 +1,21 @@
+2007-03-12 22:05:25 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1756]
+  - more stuff to kill
+  
+  trunk/src/ffmpeg/Makefile               |    8 
+  trunk/src/ffmpeg/libavformat/avidec.c   |  984 ----------------
+  trunk/src/ffmpeg/libavformat/avienc.c   |  580 ---------
+  trunk/src/ffmpeg/libavformat/aviobuf.c  |  131 ++
+  trunk/src/ffmpeg/libavformat/avs.c      |  227 ---
+  trunk/src/ffmpeg/libavformat/dv.c       |  451 -------
+  trunk/src/ffmpeg/libavformat/dv.h       |   37 
+  trunk/src/ffmpeg/libavformat/mov.c      | 1870 --------------------------------
+  trunk/src/ffmpeg/libavformat/movenc.c   | 1674 ----------------------------
+  trunk/src/ffmpeg/libavformat/rtpproto.c |  303 -----
+  trunk/src/ffmpeg/libavformat/voc.c      |  274 ----
+  11 files changed, 131 insertions(+), 6408 deletions(-)
+
+
 2007-03-12 21:49:42 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1754]
   - remove some more stuff

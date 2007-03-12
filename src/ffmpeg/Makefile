@@ -93,7 +93,6 @@ SOURCES = ffmpeg.c \
 	libavformat/grab.c \
 	libavformat/idcin.c \
 	libavformat/idroq.c \
-	libavformat/img.c \
 	libavformat/img2.c \
 	libavformat/ipmovie.c \
 	libavformat/isom.c \
@@ -125,13 +124,11 @@ SOURCES = ffmpeg.c \
 	libavformat/tiertexseq.c \
 	libavformat/tta.c \
 	libavformat/utils.c \
-	libavformat/v4l2.c \
 	libavformat/wav.c \
 	libavformat/wc3movie.c \
 	libavformat/westwood.c \
 	libavformat/wv.c \
 	libavformat/yuv.c \
-	libavformat/yuv4mpeg.c \
 	libavutil/adler32.c \
 	libavutil/crc.c \
 	libavutil/fifo.c \
@@ -148,6 +145,6 @@ SOURCES = ffmpeg.c \
 OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I. -I../.. -I./libavformat \
-	-I./libavcodec -I./libavutil -DHAVE_AV_CONFIG_H
+	-I./libavcodec -I./libavutil -DHAVE_AV_CONFIG_H -DCONFIG_DEMUXERS
 
 include ../../mk/objective.mk
