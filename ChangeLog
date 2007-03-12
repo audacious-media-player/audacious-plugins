@@ -1,3 +1,15 @@
+2007-03-12 22:43:38 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1764]
+  - works
+  
+  trunk/src/ffmpeg/Makefile              |    1 
+  trunk/src/ffmpeg/libavcodec/cabac.c    |  265 ---
+  trunk/src/ffmpeg/libavcodec/cabac.h    |  850 ----------
+  trunk/src/ffmpeg/libavcodec/dsputil.c  | 2796 +++++++++++++++++++++++++++++++--
+  trunk/src/ffmpeg/libavformat/aviobuf.c |    6 
+  5 files changed, 2700 insertions(+), 1218 deletions(-)
+
+
 2007-03-12 22:28:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1762]
   - remove more video codecs.
