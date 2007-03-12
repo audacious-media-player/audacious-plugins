@@ -1,3 +1,21 @@
+2007-03-12 21:49:42 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1754]
+  - remove some more stuff
+  
+  trunk/src/ffmpeg/Makefile                     |    8 
+  trunk/src/ffmpeg/libavformat/gxf.c            |  516 ----------------
+  trunk/src/ffmpeg/libavformat/gxf.h            |   34 -
+  trunk/src/ffmpeg/libavformat/gxfenc.c         |  819 --------------------------
+  trunk/src/ffmpeg/libavformat/ogg.c            |  283 --------
+  trunk/src/ffmpeg/libavformat/ogg2.c           |  697 ----------------------
+  trunk/src/ffmpeg/libavformat/ogg2.h           |   85 --
+  trunk/src/ffmpeg/libavformat/oggparseflac.c   |   82 --
+  trunk/src/ffmpeg/libavformat/oggparseogm.c    |  166 -----
+  trunk/src/ffmpeg/libavformat/oggparsetheora.c |  129 ----
+  trunk/src/ffmpeg/libavformat/oggparsevorbis.c |  205 ------
+  11 files changed, 3024 deletions(-)
+
+
 2007-03-12 21:43:32 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1752]
   - start removing demuxers for video and images

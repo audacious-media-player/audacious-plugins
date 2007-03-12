@@ -16,7 +16,6 @@ SOURCES = ffmpeg.c \
 	libavcodec/alac.c \
 	libavcodec/allcodecs.c \
 	libavcodec/audioconvert.c \
-	libavcodec/avs.c \
 	libavcodec/bitstream.c \
 	libavcodec/bitstream_filter.c \
 	libavcodec/cabac.c \
@@ -76,11 +75,8 @@ SOURCES = ffmpeg.c \
 	libavformat/asf.c \
 	libavformat/au.c \
 	libavformat/audio.c \
-	libavformat/avidec.c \
-	libavformat/avienc.c \
 	libavformat/avio.c \
 	libavformat/aviobuf.c \
-	libavformat/avs.c \
 	libavformat/barpainet.c \
 	libavformat/crc.c \
 	libavformat/cutils.c \
@@ -104,8 +100,6 @@ SOURCES = ffmpeg.c \
 	libavformat/matroska.c \
 	libavformat/mm.c \
 	libavformat/mmf.c \
-	libavformat/mov.c \
-	libavformat/movenc.c \
 	libavformat/mp3.c \
 	libavformat/mpeg.c \
 	libavformat/mpegts.c \
@@ -122,7 +116,6 @@ SOURCES = ffmpeg.c \
 	libavformat/raw.c \
 	libavformat/riff.c \
 	libavformat/rm.c \
-	libavformat/rtpproto.c \
 	libavformat/segafilm.c \
 	libavformat/sgi.c \
 	libavformat/sierravmd.c \
@@ -133,7 +126,6 @@ SOURCES = ffmpeg.c \
 	libavformat/tta.c \
 	libavformat/utils.c \
 	libavformat/v4l2.c \
-	libavformat/voc.c \
 	libavformat/wav.c \
 	libavformat/wc3movie.c \
 	libavformat/westwood.c \

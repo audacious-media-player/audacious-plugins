@@ -172,11 +172,38 @@ int get_buffer(ByteIOContext *s, unsigned char *buf, int size)
     return size1 - size;
 }
 
+int get_partial_buffer(ByteIOContext *s, unsigned char *buf, int size)
+{
+    int len;
+
+    if(size<0)
+        return -1;
+
+    len = s->buf_end - s->buf_ptr;
+    if (len == 0) {
+        fill_buffer(s);
+        len = s->buf_end - s->buf_ptr;
+    }
+    if (len > size)
+        len = size;
+    memcpy(buf, s->buf_ptr, len);
+    s->buf_ptr += len;
+    return len;
+}
+
 unsigned int get_le16(ByteIOContext *s)
 {
     unsigned int val;
     val = get_byte(s);
     val |= get_byte(s) << 8;
+    return val;
+}
+
+unsigned int get_le24(ByteIOContext *s)
+{
+    unsigned int val;
+    val = get_le16(s);
+    val |= get_byte(s) << 16;
     return val;
 }
 
@@ -202,6 +229,14 @@ unsigned int get_be16(ByteIOContext *s)
 {
     unsigned int val;
     val = get_byte(s) << 8;
+    val |= get_byte(s);
+    return val;
+}
+
+unsigned int get_be24(ByteIOContext *s)
+{
+    unsigned int val;
+    val = get_be16(s) << 8;
     val |= get_byte(s);
     return val;
 }
@@ -404,5 +439,101 @@ offset_t url_fsize(ByteIOContext *s)
     size = s->seek(s->opaque, -1, SEEK_END) + 1;
     s->seek(s->opaque, s->pos, SEEK_SET);
     return size;
+}
+
+static void flush_buffer(ByteIOContext *s)
+{
+    if (s->buf_ptr > s->buffer) {
+        if (s->write_packet){
+            s->write_packet(s->opaque, s->buffer, s->buf_ptr - s->buffer);
+        }
+        s->pos += s->buf_ptr - s->buffer;
+    }
+    s->buf_ptr = s->buffer;
+}
+
+void put_byte(ByteIOContext *s, int b)
+{
+    *(s->buf_ptr)++ = b;
+    if (s->buf_ptr >= s->buf_end)
+        flush_buffer(s);
+}
+
+void put_buffer(ByteIOContext *s, const unsigned char *buf, int size)
+{
+    int len;
+
+    while (size > 0) {
+        len = (s->buf_end - s->buf_ptr);
+        if (len > size)
+            len = size;
+        memcpy(s->buf_ptr, buf, len);
+        s->buf_ptr += len;
+
+        if (s->buf_ptr >= s->buf_end)
+            flush_buffer(s);
+
+        buf += len;
+        size -= len;
+    }
+}
+
+void put_be32(ByteIOContext *s, unsigned int val)
+{
+    put_byte(s, val >> 24);
+    put_byte(s, val >> 16);
+    put_byte(s, val >> 8);
+    put_byte(s, val);
+}
+
+void put_strz(ByteIOContext *s, const char *str)
+{
+    if (str)
+        put_buffer(s, (const unsigned char *) str, strlen(str) + 1);
+    else
+        put_byte(s, 0);
+}
+
+void put_le64(ByteIOContext *s, uint64_t val)
+{
+    put_le32(s, (uint32_t)(val & 0xffffffff));
+    put_le32(s, (uint32_t)(val >> 32));
+}
+
+void put_be64(ByteIOContext *s, uint64_t val)
+{
+    put_be32(s, (uint32_t)(val >> 32));
+    put_be32(s, (uint32_t)(val & 0xffffffff));
+}
+
+void put_le16(ByteIOContext *s, unsigned int val)
+{
+    put_byte(s, val);
+    put_byte(s, val >> 8);
+}
+
+void put_be16(ByteIOContext *s, unsigned int val)
+{
+    put_byte(s, val >> 8);
+    put_byte(s, val);
+}
+
+void put_le24(ByteIOContext *s, unsigned int val)
+{
+    put_le16(s, val & 0xffff);
+    put_byte(s, val >> 16);
+}
+
+void put_be24(ByteIOContext *s, unsigned int val)
+{
+    put_be16(s, val >> 8);
+    put_byte(s, val);
+}
+
+void put_tag(ByteIOContext *s, const char *tag)
+{
+    while (*tag) {
+        put_byte(s, *tag++);
+    }
 }
 
