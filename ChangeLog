@@ -1,3 +1,13 @@
+2007-03-12 18:03:24 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1714]
+  - make use of new millisecond seek API.
+  
+  trunk/src/madplug/decoder.c |   20 ++++++++------------
+  trunk/src/madplug/plugin.c  |   11 ++++++++---
+  trunk/src/madplug/plugin.h  |    2 +-
+  3 files changed, 17 insertions(+), 16 deletions(-)
+
+
 2007-03-12 17:59:21 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1712]
   - fork wma plugin
