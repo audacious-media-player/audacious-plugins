@@ -7,13 +7,13 @@ SOURCES = \
 4xm.c                     raw.c		\
 8bps.c                    resample.c	\
 resample2.c	\
-aasc.c                    roqvideo.c	\
+aasc.c          \
 rpza.c	\
 ac3enc.c                  huffyuv.c                 rtjpeg.c	\
 adpcm.c                   \
 adx.c                     imgconvert.c              shorten.c	\
 alac.c                    imgresample.c             simple_idct.c \
-allcodecs.c               smacker.c	\
+allcodecs.c               \
 smc.c	\
 apiexample.c              \
 asv1.c                    jfdctfst.c                sonic.c	\
@@ -29,11 +29,11 @@ cavsdsp.c                 mace.c                    tscc.c	\
 mdct.c                    tta.c	\
 cljr.c                    ulti.c	\
 cook.c                    utils.c	\
-cscd.c                    mmvideo.c                 vc1.c	\
-cyuv.c                    vc1dsp.c	\
-dct-test.c                vcr1.c	\
-dpcm.c                    vmdav.c	\
-dsicinav.c                vmnc.c	\
+cscd.c                    \
+cyuv.c                    \
+dct-test.c                \
+dpcm.c                    \
+dsicinav.c                \
 dsputil.c                 vorbis.c	\
 mpegaudio.c               vorbis_data.c \
 dv.c                      mpegaudiodec.c            vorbis_enc.c \

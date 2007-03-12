@@ -1,3 +1,36 @@
+2007-03-12 18:44:33 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1724]
+  - remove a lot of video codecs
+  
+  trunk/src/ffmpeg/libavcodec/Makefile         |   30 
+  trunk/src/ffmpeg/libavcodec/cinepak.c        |  453 --
+  trunk/src/ffmpeg/libavcodec/idcinvideo.c     |  272 -
+  trunk/src/ffmpeg/libavcodec/indeo2.c         |  221 -
+  trunk/src/ffmpeg/libavcodec/indeo2data.h     |  134 
+  trunk/src/ffmpeg/libavcodec/indeo3.c         | 1153 ------
+  trunk/src/ffmpeg/libavcodec/indeo3data.h     | 2335 -------------
+  trunk/src/ffmpeg/libavcodec/interplayvideo.c |  964 -----
+  trunk/src/ffmpeg/libavcodec/nuv.c            |  216 -
+  trunk/src/ffmpeg/libavcodec/rv10.c           |  803 ----
+  trunk/src/ffmpeg/libavcodec/snow.c           | 4682 ---------------------------
+  trunk/src/ffmpeg/libavcodec/vp3.c            | 2659 ---------------
+  trunk/src/ffmpeg/libavcodec/vp3data.h        | 3178 ------------------
+  trunk/src/ffmpeg/libavcodec/vp3dsp.c         |  225 -
+  trunk/src/ffmpeg/libavcodec/vp5.c            |  291 -
+  trunk/src/ffmpeg/libavcodec/vp56.c           |  665 ---
+  trunk/src/ffmpeg/libavcodec/vp56.h           |  250 -
+  trunk/src/ffmpeg/libavcodec/vp56data.c       |   67 
+  trunk/src/ffmpeg/libavcodec/vp56data.h       |  248 -
+  trunk/src/ffmpeg/libavcodec/vp5data.h        |  175 -
+  trunk/src/ffmpeg/libavcodec/vp6.c            |  514 --
+  trunk/src/ffmpeg/libavcodec/vp6data.h        |  293 -
+  trunk/src/ffmpeg/libavcodec/vqavideo.c       |  610 ---
+  trunk/src/ffmpeg/libavcodec/xan.c            |  492 --
+  trunk/src/ffmpeg/libavcodec/xl.c             |  140 
+  trunk/src/ffmpeg/libavcodec/xvmcvideo.c      |  318 -
+  26 files changed, 15 insertions(+), 21373 deletions(-)
+
+
 2007-03-12 18:38:51 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1722]
   - remove h261/h263/h264 stuff
