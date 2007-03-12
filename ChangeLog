@@ -1,3 +1,11 @@
+2007-03-11 17:09:52 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1700]
+  - implement stricter detection rules for MP3. patch by Matti Hamalainen (ccr).
+  
+  trunk/src/madplug/plugin.c |  118 ++++++++++++++++++++++++++++++++++++---------
+  1 file changed, 95 insertions(+), 23 deletions(-)
+
+
 2007-03-11 13:31:32 +0000  Giacomo Lozito <james@develia.org>
   revision [1698]
   amidi-plug: changed VERSION to AMIDIPLUG_VERSION in fluidsynth backend; not that trivial, but this is how it's supposed to be

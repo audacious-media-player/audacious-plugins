@@ -175,6 +175,13 @@ static void audmad_init()
 
 static void audmad_cleanup()
 {
+    g_free(audmad_config.pregain_db);
+    g_free(audmad_config.replaygain.default_db);
+    g_free(audmad_config.id3_format);
+
+    g_cond_free(mad_cond);
+    g_mutex_free(mad_mutex);
+    g_mutex_free(pb_mutex);
 }
 
 static gboolean mp3_head_check(guint32 head, gint *frameSize)
