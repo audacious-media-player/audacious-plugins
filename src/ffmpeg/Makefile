@@ -3,7 +3,7 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libffmpeg$(SHARED_SUFFIX)
 
-SUBDIRS = libavformat libavutil
+SUBDIRS = libavcodec libavformat libavutil
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 

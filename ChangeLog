@@ -1,3 +1,25 @@
+2007-03-12 21:02:32 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1740]
+  - remove more video codecs
+  
+  trunk/src/ffmpeg/Makefile               |   12 
+  trunk/src/ffmpeg/libavcodec/ac3enc.c    | 1557 ------------------
+  trunk/src/ffmpeg/libavcodec/dvbsub.c    |  445 -----
+  trunk/src/ffmpeg/libavcodec/dvbsubdec.c | 1633 -------------------
+  trunk/src/ffmpeg/libavcodec/dvdata.h    | 2724 --------------------------------
+  trunk/src/ffmpeg/libavcodec/dvdsub.c    |  477 -----
+  trunk/src/ffmpeg/libavcodec/dvdsubenc.c |  247 --
+  trunk/src/ffmpeg/libavcodec/faac.c      |  133 -
+  trunk/src/ffmpeg/libavcodec/flacenc.c   | 1383 ----------------
+  trunk/src/ffmpeg/libavcodec/flicvideo.c |  748 --------
+  trunk/src/ffmpeg/libavcodec/msrle.c     |  309 ---
+  trunk/src/ffmpeg/libavcodec/msvideo1.c  |  349 ----
+  trunk/src/ffmpeg/libavcodec/raw.c       |  206 --
+  trunk/src/ffmpeg/libavcodec/utils.c     |  118 +
+  trunk/src/ffmpeg/libavformat/Makefile   |    2 
+  15 files changed, 104 insertions(+), 10239 deletions(-)
+
+
 2007-03-12 20:58:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1738]
   - don't enforce stupid coding rules on us
