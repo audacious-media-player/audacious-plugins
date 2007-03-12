@@ -1,3 +1,28 @@
+2007-03-12 20:49:56 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1736]
+  - remove some more stuff
+  - build libavcodec directly into the module
+  
+  trunk/src/ffmpeg/Makefile               |   78 -
+  trunk/src/ffmpeg/ffmpeg.c               |   15 
+  trunk/src/ffmpeg/libavcodec/avcodec.h   |   14 
+  trunk/src/ffmpeg/libavcodec/bmp.c       |  253 ---
+  trunk/src/ffmpeg/libavcodec/dct-test.c  |  535 ------
+  trunk/src/ffmpeg/libavcodec/dtsdec.c    |  320 ----
+  trunk/src/ffmpeg/libavcodec/eval.c      |    8 
+  trunk/src/ffmpeg/libavcodec/fft-test.c  |  297 ---
+  trunk/src/ffmpeg/libavcodec/gifdec.c    |  500 ------
+  trunk/src/ffmpeg/libavcodec/mjpeg.c     | 2464 --------------------------------
+  trunk/src/ffmpeg/libavcodec/oggvorbis.c |  381 ----
+  trunk/src/ffmpeg/libavcodec/parser.c    |   10 
+  trunk/src/ffmpeg/libavcodec/png.c       |  965 ------------
+  trunk/src/ffmpeg/libavcodec/utils.c     |   83 -
+  trunk/src/ffmpeg/libavformat/utils.c    |    2 
+  trunk/src/ffmpeg/libavutil/avutil.h     |    1 
+  trunk/src/ffmpeg/libavutil/common.h     |    1 
+  17 files changed, 129 insertions(+), 5798 deletions(-)
+
+
 2007-03-12 20:14:40 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1734]
   - make this compile again

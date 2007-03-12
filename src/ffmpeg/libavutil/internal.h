@@ -187,20 +187,6 @@ if((y)<(x)){\
 }
 #endif
 
-/* avoid usage of various functions */
-#define malloc please_use_av_malloc
-#define free please_use_av_free
-#define realloc please_use_av_realloc
-#define time time_is_forbidden_due_to_security_issues
-#define rand rand_is_forbidden_due_to_state_trashing
-#define srand srand_is_forbidden_due_to_state_trashing
-#define sprintf sprintf_is_forbidden_due_to_security_issues_use_snprintf
-#define strcat strcat_is_forbidden_due_to_security_issues_use_pstrcat
-#if !(defined(LIBAVFORMAT_BUILD) || defined(_FRAMEHOOK_H))
-#define printf please_use_av_log
-#define fprintf please_use_av_log
-#endif
-
 #define CHECKED_ALLOCZ(p, size)\
 {\
     p= av_mallocz(size);\
