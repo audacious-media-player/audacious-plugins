@@ -1,3 +1,12 @@
+2007-03-12 18:31:14 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1718]
+  - make use of new millisecond seek API.
+  - watchdog_func has been implemented as a thread. this thread will wake up every 10msec and will check changes of track while playing.
+  
+  trunk/src/cue/cuesheet.c |  236 ++++++++++++++++++++++++++++++++++++-----------
+  1 file changed, 181 insertions(+), 55 deletions(-)
+
+
 2007-03-12 18:18:54 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1716]
   - add ffmpeg
