@@ -1,3 +1,11 @@
+2007-03-12 20:58:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1738]
+  - don't enforce stupid coding rules on us
+  
+  trunk/src/ffmpeg/libavutil/internal.h |   14 --------------
+  1 file changed, 14 deletions(-)
+
+
 2007-03-12 20:49:56 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1736]
   - remove some more stuff

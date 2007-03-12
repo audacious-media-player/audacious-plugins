@@ -27,7 +27,7 @@ isom.c              png.c               westwood.c	\
 dsicin.c            jpeg.c              pnm.c               wv.c	\
 matroska.c          psxstr.c            yuv.c	\
 mm.c                raw.c               yuv4mpeg.c	\
-dv.c                dvenc.c             mmf.c               riff.c
+mmf.c               riff.c
 
 CFLAGS+=	$(PICFLAGS) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE -c -I../../.. -I../libavcodec -I../libavformat -I../libavutil -I.. -DHAVE_AV_CONFIG_H
 

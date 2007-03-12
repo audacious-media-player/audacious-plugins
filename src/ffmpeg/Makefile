@@ -11,12 +11,10 @@ LIBADD = ./libavutil/libavutil.a ./libavformat/libavformat.a $(GTK_LIBS) $(GLIB_
 
 SOURCES = ffmpeg.c \
 	libavcodec/aasc.c \
-	libavcodec/ac3enc.c \
 	libavcodec/adpcm.c \
 	libavcodec/adx.c \
 	libavcodec/alac.c \
 	libavcodec/allcodecs.c \
-	libavcodec/apiexample.c \
 	libavcodec/audioconvert.c \
 	libavcodec/avs.c \
 	libavcodec/bitstream.c \
@@ -27,20 +25,13 @@ SOURCES = ffmpeg.c \
 	libavcodec/dpcm.c \
 	libavcodec/dsicinav.c \
 	libavcodec/dsputil.c \
-	libavcodec/dvbsub.c \
-	libavcodec/dvbsubdec.c \
-	libavcodec/dvdsub.c \
-	libavcodec/dvdsubenc.c \
 	libavcodec/eval.c \
-	libavcodec/faac.c \
 	libavcodec/faandct.c \
 	libavcodec/fdctref.c \
 	libavcodec/fft.c \
 	libavcodec/ffv1.c \
 	libavcodec/flac.c \
-	libavcodec/flacenc.c \
 	libavcodec/flashsv.c \
-	libavcodec/flicvideo.c \
 	libavcodec/fraps.c \
 	libavcodec/g726.c \
 	libavcodec/golomb.c \
@@ -52,8 +43,6 @@ SOURCES = ffmpeg.c \
 	libavcodec/mdct.c \
 	libavcodec/mpegaudio.c \
 	libavcodec/mpegaudiodec.c \
-	libavcodec/msrle.c \
-	libavcodec/msvideo1.c \
 	libavcodec/opt.c \
 	libavcodec/parser.c \
 	libavcodec/pcm.c \
@@ -63,7 +52,6 @@ SOURCES = ffmpeg.c \
 	libavcodec/ra144.c \
 	libavcodec/ra288.c \
 	libavcodec/rangecoder.c \
-	libavcodec/raw.c \
 	libavcodec/resample.c \
 	libavcodec/resample2.c \
 	libavcodec/rpza.c \

@@ -62,6 +62,109 @@ const uint8_t ff_reverse[256]={
 0x0F,0x8F,0x4F,0xCF,0x2F,0xAF,0x6F,0xEF,0x1F,0x9F,0x5F,0xDF,0x3F,0xBF,0x7F,0xFF,
 };
 
+int av_get_bits_per_sample(enum CodecID codec_id){
+    switch(codec_id){
+    case CODEC_ID_ADPCM_SBPRO_2:
+        return 2;
+    case CODEC_ID_ADPCM_SBPRO_3:
+        return 3;
+    case CODEC_ID_ADPCM_SBPRO_4:
+    case CODEC_ID_ADPCM_CT:
+        return 4;
+    case CODEC_ID_PCM_ALAW:
+    case CODEC_ID_PCM_MULAW:
+    case CODEC_ID_PCM_S8:
+    case CODEC_ID_PCM_U8:
+        return 8;
+    case CODEC_ID_PCM_S16BE:
+    case CODEC_ID_PCM_S16LE:
+    case CODEC_ID_PCM_U16BE:
+    case CODEC_ID_PCM_U16LE:
+        return 16;
+    case CODEC_ID_PCM_S24DAUD:
+    case CODEC_ID_PCM_S24BE:
+    case CODEC_ID_PCM_S24LE:
+    case CODEC_ID_PCM_U24BE:
+    case CODEC_ID_PCM_U24LE:
+        return 24;
+    case CODEC_ID_PCM_S32BE:
+    case CODEC_ID_PCM_S32LE:
+    case CODEC_ID_PCM_U32BE:
+    case CODEC_ID_PCM_U32LE:
+        return 32;
+    default:
+        return 0;
+    }
+}
+
+/**
+ * decode a frame.
+ * @param buf bitstream buffer, must be FF_INPUT_BUFFER_PADDING_SIZE larger then the actual read bytes
+ * because some optimized bitstream readers read 32 or 64 bit at once and could read over the end
+ * @param buf_size the size of the buffer in bytes
+ * @param got_picture_ptr zero if no frame could be decompressed, Otherwise, it is non zero
+ * @return -1 if error, otherwise return the number of
+ * bytes used.
+ */
+int avcodec_decode_video(AVCodecContext *avctx, AVFrame *picture,
+                         int *got_picture_ptr,
+                         uint8_t *buf, int buf_size)
+{
+    int ret;
+
+    *got_picture_ptr= 0;
+    if((avctx->coded_width||avctx->coded_height) && avcodec_check_dimensions(avctx,avctx->coded_width,avctx->coded_height))
+        return -1;
+    if((avctx->codec->capabilities & CODEC_CAP_DELAY) || buf_size){
+        ret = avctx->codec->decode(avctx, picture, got_picture_ptr,
+                                buf, buf_size);
+
+        emms_c(); //needed to avoid an emms_c() call before every return;
+
+        if (*got_picture_ptr)
+            avctx->frame_number++;
+    }else
+        ret= 0;
+
+    return ret;
+}
+
+/* decode an audio frame. return -1 if error, otherwise return the
+   *number of bytes used. If no frame could be decompressed,
+   *frame_size_ptr is zero. Otherwise, it is the decompressed frame
+   *size in BYTES. */
+int avcodec_decode_audio(AVCodecContext *avctx, int16_t *samples,
+                         int *frame_size_ptr,
+                         uint8_t *buf, int buf_size)
+{
+    int ret;
+
+    *frame_size_ptr= 0;
+    if((avctx->codec->capabilities & CODEC_CAP_DELAY) || buf_size){
+        ret = avctx->codec->decode(avctx, samples, frame_size_ptr,
+                                buf, buf_size);
+        avctx->frame_number++;
+    }else
+        ret= 0;
+    return ret;
+}
+
+/* decode a subtitle message. return -1 if error, otherwise return the
+   *number of bytes used. If no subtitle could be decompressed,
+   *got_sub_ptr is zero. Otherwise, the subtitle is stored in *sub. */
+int avcodec_decode_subtitle(AVCodecContext *avctx, AVSubtitle *sub,
+                            int *got_sub_ptr,
+                            const uint8_t *buf, int buf_size)
+{
+    int ret;
+
+    *got_sub_ptr = 0;
+    ret = avctx->codec->decode(avctx, sub, got_sub_ptr,
+                               (uint8_t *)buf, buf_size);
+    if (*got_sub_ptr)
+        avctx->frame_number++;
+    return ret;
+}
 
 #define INTERNAL_BUFFER_SIZE 32
 
@@ -220,21 +323,6 @@ int avcodec_encode_audio(AVCodecContext *avctx, uint8_t *buf, int buf_size,
     int ret;
 
     ret = avctx->codec->encode(avctx, buf, buf_size, (void *)samples);
-    avctx->frame_number++;
-    return ret;
-}
-
-/* decode an audio frame. return -1 if error, otherwise return the
-   *number of bytes used. If no frame could be decompressed,
-   *frame_size_ptr is zero. Otherwise, it is the decompressed frame
-   *size in BYTES. */
-int avcodec_decode_audio(AVCodecContext *avctx, int16_t *samples, 
-                         int *frame_size_ptr,
-                         uint8_t *buf, int buf_size)
-{
-    int ret;
-    ret = avctx->codec->decode(avctx, samples, frame_size_ptr, 
-                               buf, buf_size);
     avctx->frame_number++;
     return ret;
 }
