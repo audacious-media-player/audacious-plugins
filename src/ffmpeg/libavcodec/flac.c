@@ -135,7 +135,7 @@ static void allocate_buffers(FLACContext *s){
         s->decoded[i] = av_realloc(s->decoded[i], sizeof(int32_t)*s->max_blocksize);
     }
 
-    s->bitstream= av_fast_realloc(s->bitstream, &s->allocated_bitstream_size, s->max_framesize);
+    s->bitstream= av_realloc(s->bitstream, s->max_framesize);
 }
 
 static void metadata_streaminfo(FLACContext *s)
@@ -534,7 +534,7 @@ static int flac_decode_frame(AVCodecContext *avctx,
 
     if(s->max_framesize == 0){
         s->max_framesize= 65536; // should hopefully be enough for the first header
-        s->bitstream= av_fast_realloc(s->bitstream, &s->allocated_bitstream_size, s->max_framesize);
+        s->bitstream= av_realloc(s->bitstream, s->max_framesize);
     }
 
     if(1 && s->max_framesize){//FIXME truncated

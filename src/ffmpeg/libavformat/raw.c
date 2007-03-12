@@ -737,56 +737,6 @@ PCMDEF(mulaw, "pcm mu law format",
 PCMDEF(alaw, "pcm A law format",
        "al", CODEC_ID_PCM_ALAW)
 
-static int rawvideo_read_packet(AVFormatContext *s, AVPacket *pkt)
-{
-    int packet_size, ret, width, height;
-    AVStream *st = s->streams[0];
-
-    width = st->codec->width;
-    height = st->codec->height;
-
-    packet_size = avpicture_get_size(st->codec->pix_fmt, width, height);
-    if (packet_size < 0)
-        return -1;
-
-    ret= av_get_packet(&s->pb, pkt, packet_size);
-
-    pkt->stream_index = 0;
-    if (ret != packet_size) {
-        return AVERROR_IO;
-    } else {
-        return 0;
-    }
-}
-
-AVInputFormat rawvideo_demuxer = {
-    "rawvideo",
-    "raw video format",
-    0,
-    NULL,
-    raw_read_header,
-    rawvideo_read_packet,
-    raw_read_close,
-    .extensions = "yuv,cif,qcif",
-    .value = CODEC_ID_RAWVIDEO,
-};
-
-#ifdef CONFIG_MUXERS
-AVOutputFormat rawvideo_muxer = {
-    "rawvideo",
-    "raw video format",
-    NULL,
-    "yuv",
-    0,
-    CODEC_ID_NONE,
-    CODEC_ID_RAWVIDEO,
-    raw_write_header,
-    raw_write_packet,
-    raw_write_trailer,
-    .flags= AVFMT_NOTIMESTAMPS,
-};
-#endif //CONFIG_MUXERS
-
 #ifdef CONFIG_MUXERS
 static int null_write_packet(struct AVFormatContext *s, AVPacket *pkt)
 {

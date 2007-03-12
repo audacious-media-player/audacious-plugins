@@ -275,7 +275,7 @@ static int shorten_decode_frame(AVCodecContext *avctx,
     int16_t *samples = data;
     if(s->max_framesize == 0){
         s->max_framesize= 1024; // should hopefully be enough for the first header
-        s->bitstream= av_fast_realloc(s->bitstream, &s->allocated_bitstream_size, s->max_framesize);
+        s->bitstream= av_realloc(s->bitstream, s->max_framesize);
     }
 
     if(1 && s->max_framesize){//FIXME truncated

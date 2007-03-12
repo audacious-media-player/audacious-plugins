@@ -1,3 +1,14 @@
+2007-03-12 22:15:54 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1758]
+  - more video demuxing removed
+  
+  trunk/src/ffmpeg/Makefile               |    5 
+  trunk/src/ffmpeg/libavformat/img.c      |  400 -----------------------
+  trunk/src/ffmpeg/libavformat/v4l2.c     |  541 --------------------------------
+  trunk/src/ffmpeg/libavformat/yuv4mpeg.c |  408 ------------------------
+  4 files changed, 1 insertion(+), 1353 deletions(-)
+
+
 2007-03-12 22:05:25 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1756]
   - more stuff to kill

@@ -149,7 +149,7 @@ static int cin_read_frame_header(CinDemuxContext *cin, ByteIOContext *pb) {
     hdr->video_frame_size = get_le32(pb);
     hdr->audio_frame_size = get_le32(pb);
 
-    if (url_feof(pb) || url_ferror(pb))
+    if (url_feof(pb) /*|| url_ferror(pb) */)
         return AVERROR_IO;
 
     if (get_le32(pb) != 0xAA55AA55)

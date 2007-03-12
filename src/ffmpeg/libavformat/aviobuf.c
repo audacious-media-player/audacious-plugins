@@ -478,6 +478,14 @@ void put_buffer(ByteIOContext *s, const unsigned char *buf, int size)
     }
 }
 
+void put_le32(ByteIOContext *s, unsigned int val)
+{
+    put_byte(s, val);
+    put_byte(s, val >> 8);
+    put_byte(s, val >> 16);
+    put_byte(s, val >> 24);
+}
+
 void put_be32(ByteIOContext *s, unsigned int val)
 {
     put_byte(s, val >> 24);

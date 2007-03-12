@@ -1134,8 +1134,7 @@ int av_add_index_entry(AVStream *st,
     if((unsigned)st->nb_index_entries + 1 >= UINT_MAX / sizeof(AVIndexEntry))
         return -1;
 
-    entries = av_fast_realloc(st->index_entries,
-                              &st->index_entries_allocated_size,
+    entries = av_realloc(st->index_entries,
                               (st->nb_index_entries + 1) *
                               sizeof(AVIndexEntry));
     if(!entries)
@@ -2391,8 +2390,10 @@ int av_write_frame(AVFormatContext *s, AVPacket *pkt)
     truncate_ts(s->streams[pkt->stream_index], pkt);
 
     ret= s->oformat->write_packet(s, pkt);
+#if 0
     if(!ret)
         ret= url_ferror(&s->pb);
+#endif
     return ret;
 }
 
@@ -2521,8 +2522,10 @@ int av_interleaved_write_frame(AVFormatContext *s, AVPacket *pkt){
 
         if(ret<0)
             return ret;
+#if 0
         if(url_ferror(&s->pb))
             return url_ferror(&s->pb);
+#endif
     }
 }
 
@@ -2552,15 +2555,19 @@ int av_write_trailer(AVFormatContext *s)
 
         if(ret<0)
             goto fail;
+#if 0
         if(url_ferror(&s->pb))
             goto fail;
+#endif
     }
 
     if(s->oformat->write_trailer)
         ret = s->oformat->write_trailer(s);
 fail:
+#if 0
     if(ret == 0)
        ret=url_ferror(&s->pb);
+#endif
     for(i=0;i<s->nb_streams;i++)
         av_freep(&s->streams[i]->priv_data);
     av_freep(&s->priv_data);
