@@ -1,3 +1,28 @@
+2007-03-12 18:37:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1720]
+  - delete a lot of stuff
+  
+  trunk/src/ffmpeg/libavcodec/Makefile              |   39 
+  trunk/src/ffmpeg/libavcodec/a52dec.c              |  257 -
+  trunk/src/ffmpeg/libavcodec/ac3dec.c              |  184 -
+  trunk/src/ffmpeg/libavcodec/amr.c                 |  666 ----
+  trunk/src/ffmpeg/libavcodec/faad.c                |  332 --
+  trunk/src/ffmpeg/libavcodec/jpeg_ls.c             |  847 -----
+  trunk/src/ffmpeg/libavcodec/libgsm.c              |   97 
+  trunk/src/ffmpeg/libavcodec/mdec.c                |  270 -
+  trunk/src/ffmpeg/libavcodec/motion_est.c          | 2117 --------------
+  trunk/src/ffmpeg/libavcodec/motion_est_template.c | 1104 -------
+  trunk/src/ffmpeg/libavcodec/mp3lameaudio.c        |  221 -
+  trunk/src/ffmpeg/libavcodec/mpeg12.c              | 3316 ----------------------
+  trunk/src/ffmpeg/libavcodec/msmpeg4.c             | 1938 ------------
+  trunk/src/ffmpeg/libavcodec/wmv2.c                |  855 -----
+  trunk/src/ffmpeg/libavcodec/x264.c                |  295 -
+  trunk/src/ffmpeg/libavcodec/xvid_internal.h       |   32 
+  trunk/src/ffmpeg/libavcodec/xvid_rc.c             |  148 
+  trunk/src/ffmpeg/libavcodec/xvidff.c              |  768 -----
+  18 files changed, 19 insertions(+), 13467 deletions(-)
+
+
 2007-03-12 18:31:14 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1718]
   - make use of new millisecond seek API.

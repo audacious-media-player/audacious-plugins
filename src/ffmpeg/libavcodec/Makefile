@@ -4,11 +4,11 @@ include ../../../mk/init.mk
 OBJECTIVE_LIBS_NOINST=	libavcodec.a
 
 SOURCES = \
-4xm.c                     h261.c                    raw.c		\
-8bps.c                    h263.c                    resample.c	\
-h263dec.c                 resample2.c	\
-aasc.c                    h264.c                    roqvideo.c	\
-h264idct.c                rpza.c	\
+4xm.c                     raw.c		\
+8bps.c                    resample.c	\
+resample2.c	\
+aasc.c                    roqvideo.c	\
+rpza.c	\
 ac3enc.c                  huffyuv.c                 rtjpeg.c	\
 adpcm.c                   idcinvideo.c              rv10.c	\
 adx.c                     imgconvert.c              shorten.c	\
