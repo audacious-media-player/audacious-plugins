@@ -1,3 +1,16 @@
+2007-03-12 22:28:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1762]
+  - remove more video codecs.
+  
+  trunk/src/ffmpeg/Makefile            |    3 
+  trunk/src/ffmpeg/libavcodec/cscd.c   |  264 ---------
+  trunk/src/ffmpeg/libavcodec/lcl.c    |  928 -----------------------------------
+  trunk/src/ffmpeg/libavcodec/tscc.c   |  348 -------------
+  trunk/src/ffmpeg/libavcodec/utils.c  |    2 
+  trunk/src/ffmpeg/libavformat/utils.c |    3 
+  6 files changed, 1548 deletions(-)
+
+
 2007-03-12 22:23:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1760]
   - more symbol cleanups.

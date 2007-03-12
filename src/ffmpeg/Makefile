@@ -18,7 +18,6 @@ SOURCES = ffmpeg.c \
 	libavcodec/audioconvert.c \
 	libavcodec/bitstream.c \
 	libavcodec/bitstream_filter.c \
-	libavcodec/cabac.c \
 	libavcodec/cook.c \
 	libavcodec/dpcm.c \
 	libavcodec/dsicinav.c \

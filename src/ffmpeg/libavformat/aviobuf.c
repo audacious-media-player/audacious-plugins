@@ -452,6 +452,12 @@ static void flush_buffer(ByteIOContext *s)
     s->buf_ptr = s->buffer;
 }
 
+void put_flush_packet(ByteIOContext *s)
+{
+    flush_buffer(s);
+    s->must_flush = 0;
+}
+
 void put_byte(ByteIOContext *s, int b)
 {
     *(s->buf_ptr)++ = b;
