@@ -1,3 +1,40 @@
+2007-03-12 20:00:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1728]
+  - make the whole thing compile. runtime linking is another story.
+  
+  trunk/src/ffmpeg/Makefile                     |    8 
+  trunk/src/ffmpeg/ffmpeg.c                     |  478 +
+  trunk/src/ffmpeg/libavcodec/Makefile          |   16 
+  trunk/src/ffmpeg/libavcodec/mpegvideo.c       | 6881 --------------------------
+  trunk/src/ffmpeg/libavcodec/qpeg.c            |  324 -
+  trunk/src/ffmpeg/libavcodec/svq1.c            | 1431 -----
+  trunk/src/ffmpeg/libavcodec/svq1_cb.h         | 1580 -----
+  trunk/src/ffmpeg/libavcodec/svq1_vlc.h        |  281 -
+  trunk/src/ffmpeg/libavcodec/svq3.c            | 1014 ---
+  trunk/src/ffmpeg/libavcodec/tiertexseqv.c     |  232 
+  trunk/src/ffmpeg/libavcodec/truemotion1.c     |  923 ---
+  trunk/src/ffmpeg/libavcodec/truemotion1data.h |  829 ---
+  trunk/src/ffmpeg/libavcodec/truemotion2.c     |  893 ---
+  trunk/src/ffmpeg/libavcodec/ulti.c            |  428 -
+  trunk/src/ffmpeg/libavcodec/ulti_cb.h         | 4119 ---------------
+  trunk/src/ffmpeg/libavcodec/vc1dsp.c          |  453 -
+  trunk/src/ffmpeg/libavcodec/zmbv.c            |  692 --
+  trunk/src/ffmpeg/libavformat/Makefile         |   18 
+  trunk/src/ffmpeg/libavformat/avformat.h       |    4 
+  trunk/src/ffmpeg/libavformat/avisynth.c       |  222 
+  trunk/src/ffmpeg/libavformat/dc1394.c         |  193 
+  trunk/src/ffmpeg/libavformat/dv1394.c         |  240 
+  trunk/src/ffmpeg/libavformat/dv1394.h         |  357 -
+  trunk/src/ffmpeg/libavformat/file.c           |    1 
+  trunk/src/ffmpeg/libavformat/grab_bktr.c      |  330 -
+  trunk/src/ffmpeg/libavformat/rtp.c            |  876 ---
+  trunk/src/ffmpeg/libavformat/rtp.h            |  127 
+  trunk/src/ffmpeg/libavformat/tcp.c            |  232 
+  trunk/src/ffmpeg/libavformat/udp.c            |  504 -
+  trunk/src/ffmpeg/wma.c                        |  478 -
+  30 files changed, 499 insertions(+), 23665 deletions(-)
+
+
 2007-03-12 18:47:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1726]
   - remove more video stuff

@@ -4,30 +4,28 @@ include ../../../mk/init.mk
 OBJECTIVE_LIBS_NOINST=	libavcodec.a
 
 SOURCES = \
-4xm.c                     raw.c		\
-8bps.c                    resample.c	\
-resample2.c	\
+	raw.c		\
+	resample.c	\
+	resample2.c	\
 aasc.c          \
 rpza.c	\
-ac3enc.c                  huffyuv.c                 rtjpeg.c	\
+ac3enc.c                  \
 adpcm.c                   \
-adx.c                     imgconvert.c              shorten.c	\
-alac.c                    imgresample.c             simple_idct.c \
+adx.c                     shorten.c	\
+alac.c                    simple_idct.c \
 allcodecs.c               \
 smc.c	\
 apiexample.c              \
-asv1.c                    jfdctfst.c                sonic.c	\
-audioconvert.c            jfdctint.c                \
+sonic.c	\
+audioconvert.c            \
 avs.c                     \
-jrevdct.c                 targa.c	\
 bitstream.c               kmvc.c                    \
-bitstream_filter.c        lcl.c                     tiff.c	\
+bitstream_filter.c        lcl.c                     \
 bmp.c                     \
 cabac.c                   loco.c                    \
-cavs.c                    lzo.c                     truespeech.c	\
-cavsdsp.c                 mace.c                    tscc.c	\
+lzo.c                     truespeech.c	\
+mace.c                    tscc.c	\
 mdct.c                    tta.c	\
-cljr.c                    \
 cook.c                    utils.c	\
 cscd.c                    \
 cyuv.c                    \
