@@ -1,3 +1,11 @@
+2007-03-12 23:02:59 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1772]
+  - namespace changes
+  
+  trunk/src/ffmpeg/ffmpeg.c |  182 +++++++++++++++++++++++-----------------------
+  1 file changed, 91 insertions(+), 91 deletions(-)
+
+
 2007-03-12 23:02:16 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1770]
   - working WMA playback. thanks to chainsaw for providing a ton and a half of WMA files.

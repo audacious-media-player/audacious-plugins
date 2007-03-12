@@ -39,5 +39,7 @@ void av_register_all(void)
     avcodec_register_all();
 
     av_register_input_format(&asf_demuxer);
+    av_register_input_format(&shorten_demuxer);
+
     register_protocol(&file_protocol);
 }
