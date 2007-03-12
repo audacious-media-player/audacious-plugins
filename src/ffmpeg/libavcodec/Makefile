@@ -28,33 +28,31 @@ mace.c                    tscc.c	\
 mdct.c                    tta.c	\
 cook.c                    utils.c	\
 cscd.c                    \
-cyuv.c                    \
 dct-test.c                \
 dpcm.c                    \
 dsicinav.c                \
-dsputil.c                 vorbis.c	\
-mpegaudio.c               vorbis_data.c \
-dv.c                      mpegaudiodec.c            vorbis_enc.c \
+dsputil.c                 \
+mpegaudio.c               \
+mpegaudiodec.c            \
 dvbsub.c                  \
 dvbsubdec.c	\
 dvdsub.c                  msrle.c                   \
 dvdsubenc.c               msvideo1.c                \
-error_resilience.c        \
 eval.c                    oggvorbis.c               \
 faac.c                    opt.c                     \
 faandct.c                 parser.c                  wavpack.c	\
 fdctref.c                 pcm.c                     wmadec.c	\
 fft-test.c                png.c                     \
-fft.c                     pnm.c                     wnv1.c	\
+fft.c                     wnv1.c	\
 ffv1.c                    pthread.c                 ws-snd1.c	\
 flac.c                    qdm2.c                    \
-flacenc.c                 qdrw.c                    \
+flacenc.c                 \
 flashsv.c                 \
 flicvideo.c               qtrle.c                   \
 fraps.c                   ra144.c                   \
 g726.c                    ra288.c                   \
 gifdec.c                  rangecoder.c              \
-golomb.c                  ratecontrol.c
+	golomb.c
 
 CFLAGS+=	$(PICFLAGS) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE -c -I../../.. -I../libavformat -I../libavutil -I.. -DHAVE_AV_CONFIG_H
 

@@ -20,8 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "avcodec.h"
-#include "mpegvideo.h"
-#include "mpegaudio.h"
 
 AVCodecParser *av_first_parser = NULL;
 

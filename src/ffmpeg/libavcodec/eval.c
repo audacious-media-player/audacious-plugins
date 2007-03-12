@@ -29,7 +29,6 @@
  */
 
 #include "avcodec.h"
-#include "mpegvideo.h"
 
 #include <stdio.h>
 #include <stdlib.h>

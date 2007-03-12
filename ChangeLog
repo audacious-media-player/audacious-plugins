@@ -1,3 +1,32 @@
+2007-03-12 20:06:30 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1730]
+  - bork bork bork
+  
+  trunk/src/ffmpeg/libavcodec/4xm.c         |  759 ------
+  trunk/src/ffmpeg/libavcodec/8bps.c        |  236 -
+  trunk/src/ffmpeg/libavcodec/Makefile      |   24 
+  trunk/src/ffmpeg/libavcodec/asv1.c        |  655 -----
+  trunk/src/ffmpeg/libavcodec/cavs.c        | 1502 ------------
+  trunk/src/ffmpeg/libavcodec/cavsdsp.c     |  546 ----
+  trunk/src/ffmpeg/libavcodec/cljr.c        |  158 -
+  trunk/src/ffmpeg/libavcodec/cyuv.c        |  190 -
+  trunk/src/ffmpeg/libavcodec/dsputil.c     | 3545 ------------------------------
+  trunk/src/ffmpeg/libavcodec/dsputil.h     |  273 --
+  trunk/src/ffmpeg/libavcodec/dv.c          | 1265 ----------
+  trunk/src/ffmpeg/libavcodec/huffyuv.c     | 1290 ----------
+  trunk/src/ffmpeg/libavcodec/imgconvert.c  | 2735 -----------------------
+  trunk/src/ffmpeg/libavcodec/imgresample.c |  942 -------
+  trunk/src/ffmpeg/libavcodec/jfdctfst.c    |  338 --
+  trunk/src/ffmpeg/libavcodec/jfdctint.c    |  406 ---
+  trunk/src/ffmpeg/libavcodec/jrevdct.c     | 1159 ---------
+  trunk/src/ffmpeg/libavcodec/mpegvideo.h   |  943 -------
+  trunk/src/ffmpeg/libavcodec/rtjpeg.c      |  164 -
+  trunk/src/ffmpeg/libavcodec/targa.c       |  244 --
+  trunk/src/ffmpeg/libavcodec/tiff.c        |  432 ---
+  trunk/src/ffmpeg/libavcodec/utils.c       | 1206 ++--------
+  22 files changed, 412 insertions(+), 18600 deletions(-)
+
+
 2007-03-12 20:00:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1728]
   - make the whole thing compile. runtime linking is another story.

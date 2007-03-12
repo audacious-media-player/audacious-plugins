@@ -37,20 +37,6 @@ void *av_mallocz(unsigned int size)
 	return ptr;
 }
 
-/**
- * realloc which does nothing if the block is large enough
- */
-void *av_fast_realloc(void *ptr, int *size, unsigned int min_size)
-{
-	if(min_size < (unsigned int)*size) 
-        	return ptr;
-    
-    	*size= min_size + 10*1024;
-
-    	return realloc(ptr, *size);
-}
-
-
 /* allocation of static arrays - do not use for normal allocation */
 static unsigned int last_static = 0;
 static char*** array_static = NULL;
@@ -177,9 +163,6 @@ void avcodec_default_release_buffer(AVCodecContext *s, AVFrame *pic){
     }
 }
 
-enum PixelFormat avcodec_default_get_format(struct AVCodecContext *s, enum PixelFormat * fmt){
-    return fmt[0];
-}
 
 void avcodec_get_context_defaults(AVCodecContext *s){
     s->bit_rate= 800*1000;
@@ -198,8 +181,6 @@ void avcodec_get_context_defaults(AVCodecContext *s){
     s->error_concealment= 3;
     s->error_resilience= 1;
     s->workaround_bugs= FF_BUG_AUTODETECT;
-    s->frame_rate_base= 1;
-    s->frame_rate = 25;
     s->gop_size= 50;
     s->me_method= ME_EPZS;
     //s->get_buffer= avcodec_default_get_buffer;
@@ -561,75 +542,3 @@ int av_reduce(int *dst_nom, int *dst_den, int64_t nom, int64_t den, int64_t max)
     return exact;
 }
 #endif
-int64_t av_rescale(int64_t a, int b, int c){
-    uint64_t h, l;
-    assert(c > 0);
-    assert(b >=0);
-    
-    if(a<0) return -av_rescale(-a, b, c);
-    
-    h= a>>32;
-    if(h==0) return a*b/c;
-    
-    l= a&0xFFFFFFFF;
-    l *= b;
-    h *= b;
-
-    l += (h%c)<<32;
-
-    return ((h/c)<<32) + l/c;
-}
-
-/* av_log API */
-
-#ifdef AV_LOG_TRAP_PRINTF
-#undef stderr
-#undef fprintf
-#endif
-
-static int av_log_level = AV_LOG_DEBUG;
-
-static void av_log_default_callback(AVCodecContext* avctx, int level, const char* fmt, va_list vl)
-{
-    static int print_prefix=1;
-
-    if(level>av_log_level)
-	    return;
-    if(avctx && print_prefix)
-        fprintf(stderr, "[%s @ %p]", avctx->codec ? avctx->codec->name : "?", avctx);
-        
-    print_prefix= strstr(fmt, "\n") != NULL;
-        
-    vfprintf(stderr, fmt, vl);
-}
-
-static void (*av_log_callback)(AVCodecContext*, int, const char*, va_list) = av_log_default_callback;
-
-void av_log(AVCodecContext* avctx, int level, const char *fmt, ...)
-{
-    va_list vl;
-    va_start(vl, fmt);
-    av_vlog(avctx, level, fmt, vl);
-    va_end(vl);
-}
-
-void av_vlog(AVCodecContext* avctx, int level, const char *fmt, va_list vl)
-{
-    av_log_callback(avctx, level, fmt, vl);
-}
-
-int av_log_get_level(void)
-{
-    return av_log_level;
-}
-
-void av_log_set_level(int level)
-{
-    av_log_level = level;
-}
-
-void av_log_set_callback(void (*callback)(AVCodecContext*, int, const char*, va_list))
-{
-    av_log_callback = callback;
-}
-
