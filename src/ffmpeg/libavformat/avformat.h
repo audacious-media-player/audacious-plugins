@@ -99,7 +99,7 @@ static inline void av_free_packet(AVPacket *pkt)
    is assumed to be such as 0 <= num < den */
 typedef struct AVFrac {
     int64_t val, num, den;
-} AVFrac attribute_deprecated;
+} AVFrac;
 
 /*************************************************/
 /* input/output formats */
@@ -378,8 +378,8 @@ extern AVInputFormat *first_iformat;
 extern AVOutputFormat *first_oformat;
 
 /* still image support */
-struct AVInputImageContext attribute_deprecated;
-typedef struct AVInputImageContext AVInputImageContext attribute_deprecated;
+struct AVInputImageContext;
+typedef struct AVInputImageContext AVInputImageContext;
 
 typedef struct AVImageInfo {
     enum PixelFormat pix_fmt; /* requested pixel format */
@@ -387,7 +387,7 @@ typedef struct AVImageInfo {
     int height; /* requested height */
     int interleaved; /* image is interleaved (e.g. interleaved GIF) */
     AVPicture pict; /* returned allocated image */
-} AVImageInfo attribute_deprecated;
+} AVImageInfo;
 
 /* AVImageFormat.flags field constants */
 #define AVIMAGE_INTERLEAVED 0x0001 /* image format support interleaved output */
@@ -408,18 +408,18 @@ typedef struct AVImageFormat {
     int (*img_write)(ByteIOContext *, AVImageInfo *);
     int flags;
     struct AVImageFormat *next;
-} AVImageFormat attribute_deprecated;
+} AVImageFormat;
 
-void av_register_image_format(AVImageFormat *img_fmt) attribute_deprecated;
-AVImageFormat *av_probe_image_format(AVProbeData *pd) attribute_deprecated;
-AVImageFormat *guess_image_format(const char *filename) attribute_deprecated;
+void av_register_image_format(AVImageFormat *img_fmt);
+AVImageFormat *av_probe_image_format(AVProbeData *pd);
+AVImageFormat *guess_image_format(const char *filename);
 enum CodecID av_guess_image2_codec(const char *filename);
 int av_read_image(ByteIOContext *pb, const char *filename,
                   AVImageFormat *fmt,
-                  int (*alloc_cb)(void *, AVImageInfo *info), void *opaque) attribute_deprecated;
-int av_write_image(ByteIOContext *pb, AVImageFormat *fmt, AVImageInfo *img) attribute_deprecated;
+                  int (*alloc_cb)(void *, AVImageInfo *info), void *opaque);
+int av_write_image(ByteIOContext *pb, AVImageFormat *fmt, AVImageInfo *img);
 
-extern AVImageFormat *first_image_format attribute_deprecated;
+extern AVImageFormat *first_image_format;
 
 /* XXX: use automatic init with either ELF sections or C file parser */
 /* modules */

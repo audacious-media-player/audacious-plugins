@@ -1,3 +1,12 @@
+2007-03-12 21:03:42 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1742]
+  - make a dumb makefile for libavcodec so that it can be a make clean target.
+  
+  trunk/src/ffmpeg/Makefile            |    2 -
+  trunk/src/ffmpeg/libavcodec/Makefile |   60 -----------------------------------
+  2 files changed, 1 insertion(+), 61 deletions(-)
+
+
 2007-03-12 21:02:32 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1740]
   - remove more video codecs
