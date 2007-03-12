@@ -1,3 +1,19 @@
+2007-03-12 18:38:51 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1722]
+  - remove h261/h263/h264 stuff
+  
+  trunk/src/ffmpeg/libavcodec/Makefile   |   10 
+  trunk/src/ffmpeg/libavcodec/h261.c     | 1055 ----
+  trunk/src/ffmpeg/libavcodec/h261data.h |  157 
+  trunk/src/ffmpeg/libavcodec/h263.c     | 6291 -----------------------
+  trunk/src/ffmpeg/libavcodec/h263data.h |  308 -
+  trunk/src/ffmpeg/libavcodec/h263dec.c  |  913 ---
+  trunk/src/ffmpeg/libavcodec/h264.c     | 8655 ---------------------------------
+  trunk/src/ffmpeg/libavcodec/h264data.h | 1280 ----
+  trunk/src/ffmpeg/libavcodec/h264idct.c |  168 
+  9 files changed, 5 insertions(+), 18832 deletions(-)
+
+
 2007-03-12 18:37:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1720]
   - delete a lot of stuff
