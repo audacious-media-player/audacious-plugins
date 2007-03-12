@@ -415,7 +415,9 @@ static void free_cue_info(void)
 
 	for (; last_cue_track > 0; last_cue_track--) {
 		g_free(cue_tracks[last_cue_track-1].performer);
+		cue_tracks[last_cue_track-1].performer = NULL;
 		g_free(cue_tracks[last_cue_track-1].title);
+		cue_tracks[last_cue_track-1].title = NULL;
 	}
 }
 
