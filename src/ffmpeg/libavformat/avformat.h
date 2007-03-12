@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include <time.h>
+#include <stdio.h>  /* FILE */
+#include <string.h>
+
 #ifndef AVFORMAT_H
 #define AVFORMAT_H
 
@@ -37,7 +41,7 @@ extern "C" {
 #include <time.h>
 #include <stdio.h>  /* FILE */
 #include "avcodec.h"
-
+#include "common.h"
 #include "avio.h"
 
 /* packet functions */

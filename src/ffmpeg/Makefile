@@ -7,7 +7,7 @@ SUBDIRS = libavcodec libavformat libavutil
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = ./libavformat/libavformat.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 SOURCES = ffmpeg.c \
 	libavcodec/aasc.c \
@@ -67,6 +67,90 @@ SOURCES = ffmpeg.c \
 	libavcodec/wmadec.c \
 	libavcodec/wnv1.c \
 	libavcodec/ws-snd1.c \
+	libavformat/4xm.c \
+	libavformat/adtsenc.c \
+	libavformat/aiff.c \
+	libavformat/allformats.c \
+	libavformat/amr.c \
+	libavformat/asf-enc.c \
+	libavformat/asf.c \
+	libavformat/au.c \
+	libavformat/audio.c \
+	libavformat/avidec.c \
+	libavformat/avienc.c \
+	libavformat/avio.c \
+	libavformat/aviobuf.c \
+	libavformat/avs.c \
+	libavformat/barpainet.c \
+	libavformat/crc.c \
+	libavformat/cutils.c \
+	libavformat/daud.c \
+	libavformat/dsicin.c \
+	libavformat/electronicarts.c \
+	libavformat/ffm.c \
+	libavformat/file.c \
+	libavformat/flic.c \
+	libavformat/flvdec.c \
+	libavformat/flvenc.c \
+	libavformat/framehook.c \
+	libavformat/gif.c \
+	libavformat/gifdec.c \
+	libavformat/grab.c \
+	libavformat/gxf.c \
+	libavformat/gxfenc.c \
+	libavformat/idcin.c \
+	libavformat/idroq.c \
+	libavformat/img.c \
+	libavformat/img2.c \
+	libavformat/ipmovie.c \
+	libavformat/isom.c \
+	libavformat/jpeg.c \
+	libavformat/matroska.c \
+	libavformat/mm.c \
+	libavformat/mmf.c \
+	libavformat/mov.c \
+	libavformat/movenc.c \
+	libavformat/mp3.c \
+	libavformat/mpeg.c \
+	libavformat/mpegts.c \
+	libavformat/mpegtsenc.c \
+	libavformat/mpjpeg.c \
+	libavformat/mtv.c \
+	libavformat/mxf.c \
+	libavformat/nsvdec.c \
+	libavformat/nut.c \
+	libavformat/nuv.c \
+	libavformat/ogg.c \
+	libavformat/ogg2.c \
+	libavformat/oggparseflac.c \
+	libavformat/oggparseogm.c \
+	libavformat/oggparsetheora.c \
+	libavformat/oggparsevorbis.c \
+	libavformat/os_support.c \
+	libavformat/png.c \
+	libavformat/pnm.c \
+	libavformat/psxstr.c \
+	libavformat/raw.c \
+	libavformat/riff.c \
+	libavformat/rm.c \
+	libavformat/rtpproto.c \
+	libavformat/segafilm.c \
+	libavformat/sgi.c \
+	libavformat/sierravmd.c \
+	libavformat/smacker.c \
+	libavformat/sol.c \
+	libavformat/swf.c \
+	libavformat/tiertexseq.c \
+	libavformat/tta.c \
+	libavformat/utils.c \
+	libavformat/v4l2.c \
+	libavformat/voc.c \
+	libavformat/wav.c \
+	libavformat/wc3movie.c \
+	libavformat/westwood.c \
+	libavformat/wv.c \
+	libavformat/yuv.c \
+	libavformat/yuv4mpeg.c \
 	libavutil/adler32.c \
 	libavutil/crc.c \
 	libavutil/fifo.c \
@@ -78,12 +162,11 @@ SOURCES = ffmpeg.c \
 	libavutil/md5.c \
 	libavutil/mem.c \
 	libavutil/rational.c \
-	libavutil/softfloat.c \
-
+	libavutil/softfloat.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I. -I../.. -I./libavformat \
-	-I./libavcodec -I./libavutil -std=c99 -DHAVE_AV_CONFIG_H
+	-I./libavcodec -I./libavutil -DHAVE_AV_CONFIG_H
 
 include ../../mk/objective.mk
