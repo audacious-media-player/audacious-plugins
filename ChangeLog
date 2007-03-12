@@ -1,3 +1,11 @@
+2007-03-12 22:50:24 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1766]
+  - base wma support
+  
+  trunk/src/ffmpeg/libavformat/allformats.c |  470 ------------------------------
+  1 file changed, 470 deletions(-)
+
+
 2007-03-12 22:43:38 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1764]
   - works

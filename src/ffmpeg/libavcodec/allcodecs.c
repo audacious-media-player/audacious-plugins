@@ -40,27 +40,15 @@ void avcodec_register_all(void)
         return;
     inited = 1;
 
-#ifdef CONFIG_SHORTEN_DECODER
     register_avcodec(&shorten_decoder);
-#endif //CONFIG_SHORTEN_DECODER
-#ifdef CONFIG_ALAC_DECODER
     register_avcodec(&alac_decoder);
-#endif //CONFIG_ALAC_DECODER
-#ifdef CONFIG_WS_SND1_DECODER
     register_avcodec(&ws_snd1_decoder);
-#endif //CONFIG_WS_SND1_DECODER
-#ifdef CONFIG_COOK_DECODER
     register_avcodec(&cook_decoder);
-#endif //CONFIG_COOK_DECODER
-#ifdef CONFIG_TRUESPEECH_DECODER
     register_avcodec(&truespeech_decoder);
-#endif //CONFIG_TRUESPEECH_DECODER
-#ifdef CONFIG_TTA_DECODER
     register_avcodec(&tta_decoder);
-#endif //CONFIG_TTA_DECODER
-#ifdef CONFIG_WAVPACK_DECODER
     register_avcodec(&wavpack_decoder);
-#endif //CONFIG_WAVPACK_DECODER
+    register_avcodec(&wmav1_decoder);
+    register_avcodec(&wmav2_decoder);
 
     /* pcm codecs */
 #ifdef CONFIG_PCM_S32LE_DECODER
