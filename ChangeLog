@@ -1,3 +1,13 @@
+2007-03-12 20:14:40 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1734]
+  - make this compile again
+  
+  trunk/src/ffmpeg/libavcodec/dsputil.c |    2 
+  trunk/src/ffmpeg/libavcodec/dsputil.h |  273 +++++++--
+  trunk/src/ffmpeg/libavcodec/parser.c  | 1014 ----------------------------------
+  3 files changed, 254 insertions(+), 1035 deletions(-)
+
+
 2007-03-12 20:11:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1732]
   - remove more video stuff, remove vorbis

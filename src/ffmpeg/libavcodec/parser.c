@@ -48,14 +48,14 @@ AVCodecParserContext *av_parser_init(int codec_id)
     s->parser = parser;
     s->priv_data = av_mallocz(parser->priv_data_size);
     if (!s->priv_data) {
-        free(s);
+        av_free(s);
         return NULL;
     }
     if (parser->parser_init) {
         ret = parser->parser_init(s);
         if (ret != 0) {
-            free(s->priv_data);
-            free(s);
+            av_free(s->priv_data);
+            av_free(s);
             return NULL;
         }
     }
@@ -129,7 +129,7 @@ void av_parser_close(AVCodecParserContext *s)
     	if (s->parser->parser_close)
         	s->parser->parser_close(s);
 	
-    	free(s->priv_data);
-	free(s);
+    	av_free(s->priv_data);
+	av_free(s);
 }
 

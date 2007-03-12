@@ -40,8 +40,11 @@
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
 
+#include "config.h"
+
 #include "avcodec.h"
 #include "avformat.h"
+#include "avutil.h"
 
 #define ABOUT_TXT "Adapted for use in audacious by Tony Vroon (chainsaw@gentoo.org) from\n \
 the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC (mcmcc@mail.ru)\n \
@@ -363,12 +366,12 @@ static void wma_get_song_info(char *filename, char **title_real, int *len_real)
 
 static void wma_playbuff(InputPlayback *playback, int out_size)
 {
-    FifoBuffer f;
+    AVFifoBuffer f;
     int sst_buff;
     
-    fifo_init(&f, out_size*2);
-    fifo_write(&f, wma_outbuf, out_size, &f.wptr);
-    while(!fifo_read(&f, wma_s_outbuf, wma_st_buff, &f.rptr) && wma_decode)
+    av_fifo_init(&f, out_size*2);
+    av_fifo_write(&f, wma_outbuf, out_size);
+    while(!av_fifo_read(&f, wma_s_outbuf, wma_st_buff) && wma_decode)
     {
         sst_buff = wma_st_buff;
 	if(wma_pause) memset(wma_s_outbuf, 0, sst_buff);	
@@ -377,7 +380,7 @@ static void wma_playbuff(InputPlayback *playback, int out_size)
     			    c->channels, sst_buff, (short *)wma_s_outbuf, NULL);
 	memset(wma_s_outbuf, 0, sst_buff);
     }
-    fifo_free(&f);
+    av_fifo_free(&f);
     return;
 }
 
@@ -393,7 +396,7 @@ static void *wma_play_loop(void *arg)
 
 	if(wma_seekpos != -1)
 	{
-	    av_seek_frame(ic, wma_idx, wma_seekpos * 1000000LL);
+	    av_seek_frame(ic, wma_idx, wma_seekpos * 1000000LL, 0);
 	    playback->output->flush(wma_seekpos * 1000);
 	    wma_seekpos = -1;
 	}

@@ -47,6 +47,7 @@ extern "C" {
 #include "integer.h"
 #include "intfloat_readwrite.h"
 #include "log.h"
+#include "fifo.h"
 
 /**
  * Pixel format. Notes:

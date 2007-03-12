@@ -352,7 +352,7 @@ void avformat_get_context_defaults(AVFormatContext *s){
 
     s->av_class = &av_format_context_class;
 
-    av_opt_set_defaults(s);
+/*    av_opt_set_defaults(s); */
 }
 
 AVFormatContext *av_alloc_format_context(void)
