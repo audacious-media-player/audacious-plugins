@@ -20,7 +20,6 @@ SOURCES = ffmpeg.c \
 	libavcodec/bitstream_filter.c \
 	libavcodec/cabac.c \
 	libavcodec/cook.c \
-	libavcodec/cscd.c \
 	libavcodec/dpcm.c \
 	libavcodec/dsicinav.c \
 	libavcodec/dsputil.c \
@@ -35,7 +34,6 @@ SOURCES = ffmpeg.c \
 	libavcodec/g726.c \
 	libavcodec/golomb.c \
 	libavcodec/kmvc.c \
-	libavcodec/lcl.c \
 	libavcodec/loco.c \
 	libavcodec/lzo.c \
 	libavcodec/mace.c \
@@ -59,7 +57,6 @@ SOURCES = ffmpeg.c \
 	libavcodec/smc.c \
 	libavcodec/sonic.c \
 	libavcodec/truespeech.c \
-	libavcodec/tscc.c \
 	libavcodec/tta.c \
 	libavcodec/utils.c \
 	libavcodec/wavpack.c \

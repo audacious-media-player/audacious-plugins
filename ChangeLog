@@ -1,3 +1,17 @@
+2007-03-12 22:23:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1760]
+  - more symbol cleanups.
+  
+  trunk/src/ffmpeg/libavcodec/bitstream.c |    8 +----
+  trunk/src/ffmpeg/libavcodec/flac.c      |    4 +-
+  trunk/src/ffmpeg/libavcodec/shorten.c   |    2 -
+  trunk/src/ffmpeg/libavformat/aviobuf.c  |    8 +++++
+  trunk/src/ffmpeg/libavformat/dsicin.c   |    2 -
+  trunk/src/ffmpeg/libavformat/raw.c      |   50 --------------------------------
+  trunk/src/ffmpeg/libavformat/utils.c    |   11 +++++--
+  7 files changed, 23 insertions(+), 62 deletions(-)
+
+
 2007-03-12 22:15:54 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1758]
   - more video demuxing removed

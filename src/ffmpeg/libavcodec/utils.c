@@ -113,8 +113,6 @@ int avcodec_decode_video(AVCodecContext *avctx, AVFrame *picture,
     int ret;
 
     *got_picture_ptr= 0;
-    if((avctx->coded_width||avctx->coded_height) && avcodec_check_dimensions(avctx,avctx->coded_width,avctx->coded_height))
-        return -1;
     if((avctx->codec->capabilities & CODEC_CAP_DELAY) || buf_size){
         ret = avctx->codec->decode(avctx, picture, got_picture_ptr,
                                 buf, buf_size);
