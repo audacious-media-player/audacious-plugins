@@ -1,3 +1,11 @@
+2007-03-12 15:52:04 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1706]
+  - need to clear data->playing when stopped.
+  
+  trunk/src/cue/cuesheet.c |    2 ++
+  1 file changed, 2 insertions(+)
+
+
 2007-03-12 09:08:26 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1704]
   - performer and title of each track should be NULL after freed.

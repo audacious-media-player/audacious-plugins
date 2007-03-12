@@ -254,7 +254,8 @@ static void stop(InputPlayback * data)
 	if (real_ip != NULL)
 		real_ip->plugin->stop(real_ip);
 
-	data->playing = 0;
+	if (data != NULL)
+		data->playing = 0;
 
 	gtk_timeout_remove(timeout_tag);
 	free_cue_info();
