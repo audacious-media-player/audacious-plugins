@@ -17,17 +17,17 @@ allcodecs.c               \
 smc.c	\
 apiexample.c              \
 asv1.c                    jfdctfst.c                sonic.c	\
-audioconvert.c            jfdctint.c                svq1.c	\
+audioconvert.c            jfdctint.c                \
 avs.c                     \
 jrevdct.c                 targa.c	\
-bitstream.c               kmvc.c                    tiertexseqv.c \
+bitstream.c               kmvc.c                    \
 bitstream_filter.c        lcl.c                     tiff.c	\
-bmp.c                     truemotion1.c	\
-cabac.c                   loco.c                    truemotion2.c	\
+bmp.c                     \
+cabac.c                   loco.c                    \
 cavs.c                    lzo.c                     truespeech.c	\
 cavsdsp.c                 mace.c                    tscc.c	\
 mdct.c                    tta.c	\
-cljr.c                    ulti.c	\
+cljr.c                    \
 cook.c                    utils.c	\
 cscd.c                    \
 cyuv.c                    \
@@ -37,7 +37,7 @@ dsicinav.c                \
 dsputil.c                 vorbis.c	\
 mpegaudio.c               vorbis_data.c \
 dv.c                      mpegaudiodec.c            vorbis_enc.c \
-dvbsub.c                  mpegvideo.c   \
+dvbsub.c                  \
 dvbsubdec.c	\
 dvdsub.c                  msrle.c                   \
 dvdsubenc.c               msvideo1.c                \
@@ -51,11 +51,11 @@ fft.c                     pnm.c                     wnv1.c	\
 ffv1.c                    pthread.c                 ws-snd1.c	\
 flac.c                    qdm2.c                    \
 flacenc.c                 qdrw.c                    \
-flashsv.c                 qpeg.c                    \
+flashsv.c                 \
 flicvideo.c               qtrle.c                   \
 fraps.c                   ra144.c                   \
 g726.c                    ra288.c                   \
-gifdec.c                  rangecoder.c              zmbv.c	\
+gifdec.c                  rangecoder.c              \
 golomb.c                  ratecontrol.c
 
 CFLAGS+=	$(PICFLAGS) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE -c -I../../.. -I../libavformat -I../libavutil -I.. -DHAVE_AV_CONFIG_H

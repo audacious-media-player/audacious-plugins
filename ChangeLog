@@ -1,3 +1,18 @@
+2007-03-12 18:47:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1726]
+  - remove more video stuff
+  
+  trunk/src/ffmpeg/libavcodec/Makefile   |   14 
+  trunk/src/ffmpeg/libavcodec/mmvideo.c  |  206 -
+  trunk/src/ffmpeg/libavcodec/roqvideo.c |  474 ---
+  trunk/src/ffmpeg/libavcodec/smacker.c  |  723 -----
+  trunk/src/ffmpeg/libavcodec/vc1.c      | 4315 ---------------------------------
+  trunk/src/ffmpeg/libavcodec/vcr1.c     |  190 -
+  trunk/src/ffmpeg/libavcodec/vmdav.c    |  583 ----
+  trunk/src/ffmpeg/libavcodec/vmnc.c     |  525 ----
+  8 files changed, 7 insertions(+), 7023 deletions(-)
+
+
 2007-03-12 18:44:33 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1724]
   - remove a lot of video codecs

@@ -424,10 +424,6 @@ extern AVImageFormat *first_image_format attribute_deprecated;
 /* XXX: use automatic init with either ELF sections or C file parser */
 /* modules */
 
-#include "rtp.h"
-
-#include "rtsp.h"
-
 /* utils.c */
 void av_register_input_format(AVInputFormat *format);
 void av_register_output_format(AVOutputFormat *format);
