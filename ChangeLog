@@ -1,3 +1,438 @@
+2007-03-12 18:18:54 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1716]
+  - add ffmpeg
+  
+  trunk/src/ffmpeg/libavcodec/4xm.c                            |  759 
+  trunk/src/ffmpeg/libavcodec/8bps.c                           |  236 
+  trunk/src/ffmpeg/libavcodec/Makefile                         |   69 
+  trunk/src/ffmpeg/libavcodec/a52dec.c                         |  257 
+  trunk/src/ffmpeg/libavcodec/aasc.c                           |  176 
+  trunk/src/ffmpeg/libavcodec/ac3.h                            |   65 
+  trunk/src/ffmpeg/libavcodec/ac3dec.c                         |  184 
+  trunk/src/ffmpeg/libavcodec/ac3enc.c                         | 1557 +
+  trunk/src/ffmpeg/libavcodec/ac3tab.h                         |  205 
+  trunk/src/ffmpeg/libavcodec/adpcm.c                          | 1370 +
+  trunk/src/ffmpeg/libavcodec/adx.c                            |  412 
+  trunk/src/ffmpeg/libavcodec/alac.c                           |  856 +
+  trunk/src/ffmpeg/libavcodec/allcodecs.c                      |  867 +
+  trunk/src/ffmpeg/libavcodec/alpha/asm.h                      |  191 
+  trunk/src/ffmpeg/libavcodec/alpha/dsputil_alpha.c            |  362 
+  trunk/src/ffmpeg/libavcodec/alpha/dsputil_alpha_asm.S        |  285 
+  trunk/src/ffmpeg/libavcodec/alpha/motion_est_alpha.c         |  345 
+  trunk/src/ffmpeg/libavcodec/alpha/motion_est_mvi_asm.S       |  185 
+  trunk/src/ffmpeg/libavcodec/alpha/mpegvideo_alpha.c          |  147 
+  trunk/src/ffmpeg/libavcodec/alpha/regdef.h                   |   66 
+  trunk/src/ffmpeg/libavcodec/alpha/simple_idct_alpha.c        |  308 
+  trunk/src/ffmpeg/libavcodec/amr.c                            |  666 
+  trunk/src/ffmpeg/libavcodec/apiexample.c                     |  457 
+  trunk/src/ffmpeg/libavcodec/armv4l/dsputil_arm.c             |  262 
+  trunk/src/ffmpeg/libavcodec/armv4l/dsputil_arm_s.S           |  696 
+  trunk/src/ffmpeg/libavcodec/armv4l/dsputil_iwmmxt.c          |  188 
+  trunk/src/ffmpeg/libavcodec/armv4l/dsputil_iwmmxt_rnd.h      | 1114 +
+  trunk/src/ffmpeg/libavcodec/armv4l/jrevdct_arm.S             |  386 
+  trunk/src/ffmpeg/libavcodec/armv4l/mathops.h                 |   49 
+  trunk/src/ffmpeg/libavcodec/armv4l/mpegvideo_arm.c           |   33 
+  trunk/src/ffmpeg/libavcodec/armv4l/mpegvideo_iwmmxt.c        |  119 
+  trunk/src/ffmpeg/libavcodec/armv4l/simple_idct_arm.S         |  487 
+  trunk/src/ffmpeg/libavcodec/armv4l/simple_idct_armv5te.S     |  718 
+  trunk/src/ffmpeg/libavcodec/asv1.c                           |  655 
+  trunk/src/ffmpeg/libavcodec/audioconvert.c                   |   79 
+  trunk/src/ffmpeg/libavcodec/avcodec.h                        | 2691 +++
+  trunk/src/ffmpeg/libavcodec/avs.c                            |  160 
+  trunk/src/ffmpeg/libavcodec/beosthread.c                     |  182 
+  trunk/src/ffmpeg/libavcodec/bfin/dsputil_bfin.c              |   55 
+  trunk/src/ffmpeg/libavcodec/bitstream.c                      |  254 
+  trunk/src/ffmpeg/libavcodec/bitstream.h                      |  956 +
+  trunk/src/ffmpeg/libavcodec/bitstream_filter.c               |  143 
+  trunk/src/ffmpeg/libavcodec/bmp.c                            |  253 
+  trunk/src/ffmpeg/libavcodec/bytestream.h                     |   50 
+  trunk/src/ffmpeg/libavcodec/cabac.c                          |  265 
+  trunk/src/ffmpeg/libavcodec/cabac.h                          |  850 +
+  trunk/src/ffmpeg/libavcodec/cavs.c                           | 1502 +
+  trunk/src/ffmpeg/libavcodec/cavsdata.h                       |  641 
+  trunk/src/ffmpeg/libavcodec/cavsdsp.c                        |  546 
+  trunk/src/ffmpeg/libavcodec/cinepak.c                        |  453 
+  trunk/src/ffmpeg/libavcodec/cljr.c                           |  158 
+  trunk/src/ffmpeg/libavcodec/cook.c                           | 1312 +
+  trunk/src/ffmpeg/libavcodec/cookdata.h                       |  559 
+  trunk/src/ffmpeg/libavcodec/cscd.c                           |  264 
+  trunk/src/ffmpeg/libavcodec/cyuv.c                           |  190 
+  trunk/src/ffmpeg/libavcodec/dct-test.c                       |  535 
+  trunk/src/ffmpeg/libavcodec/dpcm.c                           |  335 
+  trunk/src/ffmpeg/libavcodec/dsicinav.c                       |  362 
+  trunk/src/ffmpeg/libavcodec/dsputil.c                        | 4233 +++++
+  trunk/src/ffmpeg/libavcodec/dsputil.h                        |  701 
+  trunk/src/ffmpeg/libavcodec/dtsdec.c                         |  320 
+  trunk/src/ffmpeg/libavcodec/dv.c                             | 1265 +
+  trunk/src/ffmpeg/libavcodec/dvbsub.c                         |  445 
+  trunk/src/ffmpeg/libavcodec/dvbsubdec.c                      | 1633 ++
+  trunk/src/ffmpeg/libavcodec/dvdata.h                         | 2724 +++
+  trunk/src/ffmpeg/libavcodec/dvdsub.c                         |  477 
+  trunk/src/ffmpeg/libavcodec/dvdsubenc.c                      |  247 
+  trunk/src/ffmpeg/libavcodec/error_resilience.c               | 1030 +
+  trunk/src/ffmpeg/libavcodec/eval.c                           |  312 
+  trunk/src/ffmpeg/libavcodec/eval.h                           |   42 
+  trunk/src/ffmpeg/libavcodec/faac.c                           |  133 
+  trunk/src/ffmpeg/libavcodec/faad.c                           |  332 
+  trunk/src/ffmpeg/libavcodec/faandct.c                        |  220 
+  trunk/src/ffmpeg/libavcodec/faandct.h                        |   33 
+  trunk/src/ffmpeg/libavcodec/fdctref.c                        |  158 
+  trunk/src/ffmpeg/libavcodec/fft-test.c                       |  297 
+  trunk/src/ffmpeg/libavcodec/fft.c                            |  262 
+  trunk/src/ffmpeg/libavcodec/ffv1.c                           | 1040 +
+  trunk/src/ffmpeg/libavcodec/flac.c                           |  743 
+  trunk/src/ffmpeg/libavcodec/flacenc.c                        | 1383 +
+  trunk/src/ffmpeg/libavcodec/flashsv.c                        |  276 
+  trunk/src/ffmpeg/libavcodec/flicvideo.c                      |  748 
+  trunk/src/ffmpeg/libavcodec/fraps.c                          |  250 
+  trunk/src/ffmpeg/libavcodec/g726.c                           |  430 
+  trunk/src/ffmpeg/libavcodec/gifdec.c                         |  500 
+  trunk/src/ffmpeg/libavcodec/golomb.c                         |  156 
+  trunk/src/ffmpeg/libavcodec/golomb.h                         |  479 
+  trunk/src/ffmpeg/libavcodec/h261.c                           | 1055 +
+  trunk/src/ffmpeg/libavcodec/h261data.h                       |  157 
+  trunk/src/ffmpeg/libavcodec/h263.c                           | 6291 +++++++
+  trunk/src/ffmpeg/libavcodec/h263data.h                       |  308 
+  trunk/src/ffmpeg/libavcodec/h263dec.c                        |  913 +
+  trunk/src/ffmpeg/libavcodec/h264.c                           | 8655 +++++++++++
+  trunk/src/ffmpeg/libavcodec/h264data.h                       | 1280 +
+  trunk/src/ffmpeg/libavcodec/h264idct.c                       |  168 
+  trunk/src/ffmpeg/libavcodec/huffyuv.c                        | 1290 +
+  trunk/src/ffmpeg/libavcodec/i386/cavsdsp_mmx.c               |  518 
+  trunk/src/ffmpeg/libavcodec/i386/cputest.c                   |  126 
+  trunk/src/ffmpeg/libavcodec/i386/dsputil_h264_template_mmx.c |  326 
+  trunk/src/ffmpeg/libavcodec/i386/dsputil_mmx.c               | 3532 ++++
+  trunk/src/ffmpeg/libavcodec/i386/dsputil_mmx_avg.h           |  870 +
+  trunk/src/ffmpeg/libavcodec/i386/dsputil_mmx_rnd.h           |  592 
+  trunk/src/ffmpeg/libavcodec/i386/fdct_mmx.c                  |  566 
+  trunk/src/ffmpeg/libavcodec/i386/fft_3dn.c                   |  125 
+  trunk/src/ffmpeg/libavcodec/i386/fft_3dn2.c                  |  210 
+  trunk/src/ffmpeg/libavcodec/i386/fft_sse.c                   |  247 
+  trunk/src/ffmpeg/libavcodec/i386/h264dsp_mmx.c               | 1524 +
+  trunk/src/ffmpeg/libavcodec/i386/idct_mmx.c                  |  597 
+  trunk/src/ffmpeg/libavcodec/i386/idct_mmx_xvid.c             |  535 
+  trunk/src/ffmpeg/libavcodec/i386/mathops.h                   |   41 
+  trunk/src/ffmpeg/libavcodec/i386/mmx.h                       |  283 
+  trunk/src/ffmpeg/libavcodec/i386/motion_est_mmx.c            |  408 
+  trunk/src/ffmpeg/libavcodec/i386/mpegvideo_mmx.c             |  726 
+  trunk/src/ffmpeg/libavcodec/i386/mpegvideo_mmx_template.c    |  348 
+  trunk/src/ffmpeg/libavcodec/i386/simple_idct_mmx.c           | 1294 +
+  trunk/src/ffmpeg/libavcodec/i386/snowdsp_mmx.c               |  921 +
+  trunk/src/ffmpeg/libavcodec/i386/vp3dsp_mmx.c                |  324 
+  trunk/src/ffmpeg/libavcodec/i386/vp3dsp_sse2.c               |  827 +
+  trunk/src/ffmpeg/libavcodec/idcinvideo.c                     |  272 
+  trunk/src/ffmpeg/libavcodec/imgconvert.c                     | 2735 +++
+  trunk/src/ffmpeg/libavcodec/imgconvert_template.h            |  859 +
+  trunk/src/ffmpeg/libavcodec/imgresample.c                    |  942 +
+  trunk/src/ffmpeg/libavcodec/indeo2.c                         |  221 
+  trunk/src/ffmpeg/libavcodec/indeo2data.h                     |  134 
+  trunk/src/ffmpeg/libavcodec/indeo3.c                         | 1153 +
+  trunk/src/ffmpeg/libavcodec/indeo3data.h                     | 2335 ++
+  trunk/src/ffmpeg/libavcodec/interplayvideo.c                 |  964 +
+  trunk/src/ffmpeg/libavcodec/jfdctfst.c                       |  338 
+  trunk/src/ffmpeg/libavcodec/jfdctint.c                       |  406 
+  trunk/src/ffmpeg/libavcodec/jpeg_ls.c                        |  847 +
+  trunk/src/ffmpeg/libavcodec/jrevdct.c                        | 1159 +
+  trunk/src/ffmpeg/libavcodec/kmvc.c                           |  417 
+  trunk/src/ffmpeg/libavcodec/lcl.c                            |  928 +
+  trunk/src/ffmpeg/libavcodec/libgsm.c                         |   97 
+  trunk/src/ffmpeg/libavcodec/loco.c                           |  287 
+  trunk/src/ffmpeg/libavcodec/lzo.c                            |  226 
+  trunk/src/ffmpeg/libavcodec/lzo.h                            |   35 
+  trunk/src/ffmpeg/libavcodec/mace.c                           |  456 
+  trunk/src/ffmpeg/libavcodec/mathops.h                        |   69 
+  trunk/src/ffmpeg/libavcodec/mdct.c                           |  177 
+  trunk/src/ffmpeg/libavcodec/mdec.c                           |  270 
+  trunk/src/ffmpeg/libavcodec/mjpeg.c                          | 2464 +++
+  trunk/src/ffmpeg/libavcodec/mlib/dsputil_mlib.c              |  464 
+  trunk/src/ffmpeg/libavcodec/mmvideo.c                        |  206 
+  trunk/src/ffmpeg/libavcodec/motion_est.c                     | 2117 ++
+  trunk/src/ffmpeg/libavcodec/motion_est_template.c            | 1104 +
+  trunk/src/ffmpeg/libavcodec/motion_test.c                    |  159 
+  trunk/src/ffmpeg/libavcodec/mp3lameaudio.c                   |  221 
+  trunk/src/ffmpeg/libavcodec/mpeg12.c                         | 3316 ++++
+  trunk/src/ffmpeg/libavcodec/mpeg12data.h                     |  469 
+  trunk/src/ffmpeg/libavcodec/mpeg4data.h                      |  423 
+  trunk/src/ffmpeg/libavcodec/mpegaudio.c                      |  801 +
+  trunk/src/ffmpeg/libavcodec/mpegaudio.h                      |  106 
+  trunk/src/ffmpeg/libavcodec/mpegaudiodec.c                   | 2848 +++
+  trunk/src/ffmpeg/libavcodec/mpegaudiodectab.h                |  795 +
+  trunk/src/ffmpeg/libavcodec/mpegaudiotab.h                   |  111 
+  trunk/src/ffmpeg/libavcodec/mpegvideo.c                      | 6881 ++++++++
+  trunk/src/ffmpeg/libavcodec/mpegvideo.h                      |  943 +
+  trunk/src/ffmpeg/libavcodec/msmpeg4.c                        | 1938 ++
+  trunk/src/ffmpeg/libavcodec/msmpeg4data.h                    | 2028 ++
+  trunk/src/ffmpeg/libavcodec/msrle.c                          |  309 
+  trunk/src/ffmpeg/libavcodec/msvideo1.c                       |  349 
+  trunk/src/ffmpeg/libavcodec/nuv.c                            |  216 
+  trunk/src/ffmpeg/libavcodec/oggvorbis.c                      |  381 
+  trunk/src/ffmpeg/libavcodec/opt.c                            |  381 
+  trunk/src/ffmpeg/libavcodec/opt.h                            |   83 
+  trunk/src/ffmpeg/libavcodec/os2thread.c                      |  150 
+  trunk/src/ffmpeg/libavcodec/parser.c                         | 1107 +
+  trunk/src/ffmpeg/libavcodec/pcm.c                            |  548 
+  trunk/src/ffmpeg/libavcodec/png.c                            |  965 +
+  trunk/src/ffmpeg/libavcodec/pnm.c                            |  598 
+  trunk/src/ffmpeg/libavcodec/ppc/dsputil_altivec.c            | 1591 ++
+  trunk/src/ffmpeg/libavcodec/ppc/dsputil_altivec.h            |  106 
+  trunk/src/ffmpeg/libavcodec/ppc/dsputil_ppc.c                |  324 
+  trunk/src/ffmpeg/libavcodec/ppc/dsputil_ppc.h                |  155 
+  trunk/src/ffmpeg/libavcodec/ppc/fdct_altivec.c               |  493 
+  trunk/src/ffmpeg/libavcodec/ppc/fft_altivec.c                |  170 
+  trunk/src/ffmpeg/libavcodec/ppc/float_altivec.c              |  194 
+  trunk/src/ffmpeg/libavcodec/ppc/gcc_fixes.h                  |  119 
+  trunk/src/ffmpeg/libavcodec/ppc/gmc_altivec.c                |  146 
+  trunk/src/ffmpeg/libavcodec/ppc/h264_altivec.c               |  438 
+  trunk/src/ffmpeg/libavcodec/ppc/h264_template_altivec.c      |  719 
+  trunk/src/ffmpeg/libavcodec/ppc/idct_altivec.c               |  237 
+  trunk/src/ffmpeg/libavcodec/ppc/mathops.h                    |   33 
+  trunk/src/ffmpeg/libavcodec/ppc/mpegvideo_altivec.c          |  603 
+  trunk/src/ffmpeg/libavcodec/ppc/mpegvideo_ppc.c              |   87 
+  trunk/src/ffmpeg/libavcodec/ppc/snow_altivec.c               |  788 +
+  trunk/src/ffmpeg/libavcodec/ppc/vc1dsp_altivec.c             |  338 
+  trunk/src/ffmpeg/libavcodec/ps2/dsputil_mmi.c                |  163 
+  trunk/src/ffmpeg/libavcodec/ps2/idct_mmi.c                   |  363 
+  trunk/src/ffmpeg/libavcodec/ps2/mmi.h                        |  172 
+  trunk/src/ffmpeg/libavcodec/ps2/mpegvideo_mmi.c              |   89 
+  trunk/src/ffmpeg/libavcodec/pthread.c                        |  170 
+  trunk/src/ffmpeg/libavcodec/qdm2.c                           | 2042 ++
+  trunk/src/ffmpeg/libavcodec/qdm2data.h                       |  530 
+  trunk/src/ffmpeg/libavcodec/qdrw.c                           |  160 
+  trunk/src/ffmpeg/libavcodec/qpeg.c                           |  324 
+  trunk/src/ffmpeg/libavcodec/qtrle.c                          |  630 
+  trunk/src/ffmpeg/libavcodec/ra144.c                          |  519 
+  trunk/src/ffmpeg/libavcodec/ra144.h                          | 2428 +++
+  trunk/src/ffmpeg/libavcodec/ra288.c                          |  258 
+  trunk/src/ffmpeg/libavcodec/ra288.h                          |  205 
+  trunk/src/ffmpeg/libavcodec/rangecoder.c                     |  181 
+  trunk/src/ffmpeg/libavcodec/rangecoder.h                     |  127 
+  trunk/src/ffmpeg/libavcodec/ratecontrol.c                    |  937 +
+  trunk/src/ffmpeg/libavcodec/ratecontrol.h                    |  100 
+  trunk/src/ffmpeg/libavcodec/raw.c                            |  206 
+  trunk/src/ffmpeg/libavcodec/resample.c                       |  249 
+  trunk/src/ffmpeg/libavcodec/resample2.c                      |  274 
+  trunk/src/ffmpeg/libavcodec/roqvideo.c                       |  474 
+  trunk/src/ffmpeg/libavcodec/rpza.c                           |  292 
+  trunk/src/ffmpeg/libavcodec/rtjpeg.c                         |  164 
+  trunk/src/ffmpeg/libavcodec/rtjpeg.h                         |   40 
+  trunk/src/ffmpeg/libavcodec/rv10.c                           |  803 +
+  trunk/src/ffmpeg/libavcodec/sh4/dsputil_align.c              |  430 
+  trunk/src/ffmpeg/libavcodec/sh4/dsputil_sh4.c                |  120 
+  trunk/src/ffmpeg/libavcodec/sh4/idct_sh4.c                   |  366 
+  trunk/src/ffmpeg/libavcodec/sh4/qpel.c                       | 1667 ++
+  trunk/src/ffmpeg/libavcodec/shorten.c                        |  532 
+  trunk/src/ffmpeg/libavcodec/simple_idct.c                    |  587 
+  trunk/src/ffmpeg/libavcodec/simple_idct.h                    |   38 
+  trunk/src/ffmpeg/libavcodec/smacker.c                        |  723 
+  trunk/src/ffmpeg/libavcodec/smc.c                            |  493 
+  trunk/src/ffmpeg/libavcodec/snow.c                           | 4682 +++++
+  trunk/src/ffmpeg/libavcodec/snow.h                           |  176 
+  trunk/src/ffmpeg/libavcodec/sonic.c                          |  981 +
+  trunk/src/ffmpeg/libavcodec/sp5x.h                           |  332 
+  trunk/src/ffmpeg/libavcodec/sparc/dsputil_vis.c              | 4090 +++++
+  trunk/src/ffmpeg/libavcodec/sparc/vis.h                      |  327 
+  trunk/src/ffmpeg/libavcodec/svq1.c                           | 1431 +
+  trunk/src/ffmpeg/libavcodec/svq1_cb.h                        | 1580 ++
+  trunk/src/ffmpeg/libavcodec/svq1_vlc.h                       |  281 
+  trunk/src/ffmpeg/libavcodec/svq3.c                           | 1014 +
+  trunk/src/ffmpeg/libavcodec/swscale.h                        |   66 
+  trunk/src/ffmpeg/libavcodec/targa.c                          |  244 
+  trunk/src/ffmpeg/libavcodec/tiertexseqv.c                    |  232 
+  trunk/src/ffmpeg/libavcodec/tiff.c                           |  432 
+  trunk/src/ffmpeg/libavcodec/truemotion1.c                    |  923 +
+  trunk/src/ffmpeg/libavcodec/truemotion1data.h                |  829 +
+  trunk/src/ffmpeg/libavcodec/truemotion2.c                    |  893 +
+  trunk/src/ffmpeg/libavcodec/truespeech.c                     |  381 
+  trunk/src/ffmpeg/libavcodec/truespeech_data.h                |  157 
+  trunk/src/ffmpeg/libavcodec/tscc.c                           |  348 
+  trunk/src/ffmpeg/libavcodec/tta.c                            |  446 
+  trunk/src/ffmpeg/libavcodec/ulti.c                           |  428 
+  trunk/src/ffmpeg/libavcodec/ulti_cb.h                        | 4119 +++++
+  trunk/src/ffmpeg/libavcodec/utils.c                          | 1327 +
+  trunk/src/ffmpeg/libavcodec/vc1.c                            | 4315 +++++
+  trunk/src/ffmpeg/libavcodec/vc1acdata.h                      |  585 
+  trunk/src/ffmpeg/libavcodec/vc1data.h                        |  652 
+  trunk/src/ffmpeg/libavcodec/vc1dsp.c                         |  453 
+  trunk/src/ffmpeg/libavcodec/vcr1.c                           |  190 
+  trunk/src/ffmpeg/libavcodec/vmdav.c                          |  583 
+  trunk/src/ffmpeg/libavcodec/vmnc.c                           |  525 
+  trunk/src/ffmpeg/libavcodec/vorbis.c                         | 1814 ++
+  trunk/src/ffmpeg/libavcodec/vorbis.h                         |   43 
+  trunk/src/ffmpeg/libavcodec/vorbis_data.c                    | 2155 ++
+  trunk/src/ffmpeg/libavcodec/vorbis_enc.c                     | 1087 +
+  trunk/src/ffmpeg/libavcodec/vorbis_enc_data.h                |  498 
+  trunk/src/ffmpeg/libavcodec/vp3.c                            | 2659 +++
+  trunk/src/ffmpeg/libavcodec/vp3data.h                        | 3178 ++++
+  trunk/src/ffmpeg/libavcodec/vp3dsp.c                         |  225 
+  trunk/src/ffmpeg/libavcodec/vp5.c                            |  291 
+  trunk/src/ffmpeg/libavcodec/vp56.c                           |  665 
+  trunk/src/ffmpeg/libavcodec/vp56.h                           |  250 
+  trunk/src/ffmpeg/libavcodec/vp56data.c                       |   67 
+  trunk/src/ffmpeg/libavcodec/vp56data.h                       |  248 
+  trunk/src/ffmpeg/libavcodec/vp5data.h                        |  175 
+  trunk/src/ffmpeg/libavcodec/vp6.c                            |  514 
+  trunk/src/ffmpeg/libavcodec/vp6data.h                        |  293 
+  trunk/src/ffmpeg/libavcodec/vqavideo.c                       |  610 
+  trunk/src/ffmpeg/libavcodec/w32thread.c                      |  136 
+  trunk/src/ffmpeg/libavcodec/wavpack.c                        |  556 
+  trunk/src/ffmpeg/libavcodec/wmadata.h                        | 1433 +
+  trunk/src/ffmpeg/libavcodec/wmadec.c                         | 1337 +
+  trunk/src/ffmpeg/libavcodec/wmv2.c                           |  855 +
+  trunk/src/ffmpeg/libavcodec/wnv1.c                           |  146 
+  trunk/src/ffmpeg/libavcodec/ws-snd1.c                        |  144 
+  trunk/src/ffmpeg/libavcodec/x264.c                           |  295 
+  trunk/src/ffmpeg/libavcodec/xan.c                            |  492 
+  trunk/src/ffmpeg/libavcodec/xl.c                             |  140 
+  trunk/src/ffmpeg/libavcodec/xvid_internal.h                  |   32 
+  trunk/src/ffmpeg/libavcodec/xvid_rc.c                        |  148 
+  trunk/src/ffmpeg/libavcodec/xvidff.c                         |  768 
+  trunk/src/ffmpeg/libavcodec/xvmcvideo.c                      |  318 
+  trunk/src/ffmpeg/libavcodec/zmbv.c                           |  692 
+  trunk/src/ffmpeg/libavformat/4xm.c                           |  331 
+  trunk/src/ffmpeg/libavformat/Makefile                        |   39 
+  trunk/src/ffmpeg/libavformat/adtsenc.c                       |  123 
+  trunk/src/ffmpeg/libavformat/aiff.c                          |  436 
+  trunk/src/ffmpeg/libavformat/allformats.c                    |  513 
+  trunk/src/ffmpeg/libavformat/allformats.h                    |  190 
+  trunk/src/ffmpeg/libavformat/amr.c                           |  201 
+  trunk/src/ffmpeg/libavformat/asf-enc.c                       |  866 +
+  trunk/src/ffmpeg/libavformat/asf.c                           |  953 +
+  trunk/src/ffmpeg/libavformat/asf.h                           |  285 
+  trunk/src/ffmpeg/libavformat/au.c                            |  209 
+  trunk/src/ffmpeg/libavformat/audio.c                         |  352 
+  trunk/src/ffmpeg/libavformat/avformat.h                      |  578 
+  trunk/src/ffmpeg/libavformat/avi.h                           |   39 
+  trunk/src/ffmpeg/libavformat/avidec.c                        |  984 +
+  trunk/src/ffmpeg/libavformat/avienc.c                        |  580 
+  trunk/src/ffmpeg/libavformat/avio.c                          |  192 
+  trunk/src/ffmpeg/libavformat/avio.h                          |  201 
+  trunk/src/ffmpeg/libavformat/aviobuf.c                       |  788 +
+  trunk/src/ffmpeg/libavformat/avisynth.c                      |  222 
+  trunk/src/ffmpeg/libavformat/avs.c                           |  227 
+  trunk/src/ffmpeg/libavformat/barpainet.c                     |   44 
+  trunk/src/ffmpeg/libavformat/barpainet.h                     |   45 
+  trunk/src/ffmpeg/libavformat/beosaudio.cpp                   |  465 
+  trunk/src/ffmpeg/libavformat/crc.c                           |   98 
+  trunk/src/ffmpeg/libavformat/cutils.c                        |  275 
+  trunk/src/ffmpeg/libavformat/daud.c                          |   58 
+  trunk/src/ffmpeg/libavformat/dc1394.c                        |  193 
+  trunk/src/ffmpeg/libavformat/dsicin.c                        |  224 
+  trunk/src/ffmpeg/libavformat/dv.c                            |  451 
+  trunk/src/ffmpeg/libavformat/dv.h                            |   37 
+  trunk/src/ffmpeg/libavformat/dv1394.c                        |  240 
+  trunk/src/ffmpeg/libavformat/dv1394.h                        |  357 
+  trunk/src/ffmpeg/libavformat/dvenc.c                         |  413 
+  trunk/src/ffmpeg/libavformat/electronicarts.c                |  291 
+  trunk/src/ffmpeg/libavformat/ffm.c                           |  792 +
+  trunk/src/ffmpeg/libavformat/file.c                          |   91 
+  trunk/src/ffmpeg/libavformat/flic.c                          |  221 
+  trunk/src/ffmpeg/libavformat/flvdec.c                        |  248 
+  trunk/src/ffmpeg/libavformat/flvenc.c                        |  284 
+  trunk/src/ffmpeg/libavformat/framehook.c                     |  121 
+  trunk/src/ffmpeg/libavformat/framehook.h                     |   50 
+  trunk/src/ffmpeg/libavformat/gif.c                           |  432 
+  trunk/src/ffmpeg/libavformat/gifdec.c                        |  644 
+  trunk/src/ffmpeg/libavformat/grab.c                          |  860 +
+  trunk/src/ffmpeg/libavformat/grab_bktr.c                     |  330 
+  trunk/src/ffmpeg/libavformat/gxf.c                           |  516 
+  trunk/src/ffmpeg/libavformat/gxf.h                           |   34 
+  trunk/src/ffmpeg/libavformat/gxfenc.c                        |  819 +
+  trunk/src/ffmpeg/libavformat/idcin.c                         |  301 
+  trunk/src/ffmpeg/libavformat/idroq.c                         |  291 
+  trunk/src/ffmpeg/libavformat/img.c                           |  400 
+  trunk/src/ffmpeg/libavformat/img2.c                          |  423 
+  trunk/src/ffmpeg/libavformat/ipmovie.c                       |  625 
+  trunk/src/ffmpeg/libavformat/isom.c                          |  131 
+  trunk/src/ffmpeg/libavformat/isom.h                          |   38 
+  trunk/src/ffmpeg/libavformat/jpeg.c                          |  240 
+  trunk/src/ffmpeg/libavformat/matroska.c                      | 2648 +++
+  trunk/src/ffmpeg/libavformat/mm.c                            |  212 
+  trunk/src/ffmpeg/libavformat/mmf.c                           |  331 
+  trunk/src/ffmpeg/libavformat/mov.c                           | 1870 ++
+  trunk/src/ffmpeg/libavformat/movenc.c                        | 1674 ++
+  trunk/src/ffmpeg/libavformat/mp3.c                           |  430 
+  trunk/src/ffmpeg/libavformat/mpeg.c                          | 1824 ++
+  trunk/src/ffmpeg/libavformat/mpegts.c                        | 1527 +
+  trunk/src/ffmpeg/libavformat/mpegts.h                        |   63 
+  trunk/src/ffmpeg/libavformat/mpegtsenc.c                     |  676 
+  trunk/src/ffmpeg/libavformat/mpjpeg.c                        |   67 
+  trunk/src/ffmpeg/libavformat/mtv.c                           |  186 
+  trunk/src/ffmpeg/libavformat/mxf.c                           | 1078 +
+  trunk/src/ffmpeg/libavformat/nsvdec.c                        |  756 
+  trunk/src/ffmpeg/libavformat/nut.c                           | 1457 +
+  trunk/src/ffmpeg/libavformat/nuv.c                           |  241 
+  trunk/src/ffmpeg/libavformat/ogg.c                           |  283 
+  trunk/src/ffmpeg/libavformat/ogg2.c                          |  697 
+  trunk/src/ffmpeg/libavformat/ogg2.h                          |   85 
+  trunk/src/ffmpeg/libavformat/oggparseflac.c                  |   82 
+  trunk/src/ffmpeg/libavformat/oggparseogm.c                   |  166 
+  trunk/src/ffmpeg/libavformat/oggparsetheora.c                |  129 
+  trunk/src/ffmpeg/libavformat/oggparsevorbis.c                |  205 
+  trunk/src/ffmpeg/libavformat/os_support.c                    |   69 
+  trunk/src/ffmpeg/libavformat/os_support.h                    |   53 
+  trunk/src/ffmpeg/libavformat/png.c                           |  889 +
+  trunk/src/ffmpeg/libavformat/pnm.c                           |  478 
+  trunk/src/ffmpeg/libavformat/psxstr.c                        |  364 
+  trunk/src/ffmpeg/libavformat/qtpalette.h                     |  295 
+  trunk/src/ffmpeg/libavformat/raw.c                           |  813 +
+  trunk/src/ffmpeg/libavformat/riff.c                          |  470 
+  trunk/src/ffmpeg/libavformat/riff.h                          |   51 
+  trunk/src/ffmpeg/libavformat/rm.c                            | 1146 +
+  trunk/src/ffmpeg/libavformat/rtp.c                           |  876 +
+  trunk/src/ffmpeg/libavformat/rtp.h                           |  127 
+  trunk/src/ffmpeg/libavformat/rtpproto.c                      |  303 
+  trunk/src/ffmpeg/libavformat/segafilm.c                      |  310 
+  trunk/src/ffmpeg/libavformat/sgi.c                           |  460 
+  trunk/src/ffmpeg/libavformat/sierravmd.c                     |  332 
+  trunk/src/ffmpeg/libavformat/smacker.c                       |  345 
+  trunk/src/ffmpeg/libavformat/sol.c                           |  160 
+  trunk/src/ffmpeg/libavformat/swf.c                           |  941 +
+  trunk/src/ffmpeg/libavformat/tcp.c                           |  232 
+  trunk/src/ffmpeg/libavformat/tiertexseq.c                    |  310 
+  trunk/src/ffmpeg/libavformat/tta.c                           |  152 
+  trunk/src/ffmpeg/libavformat/udp.c                           |  504 
+  trunk/src/ffmpeg/libavformat/utils.c                         | 3184 ++++
+  trunk/src/ffmpeg/libavformat/v4l2.c                          |  541 
+  trunk/src/ffmpeg/libavformat/voc.c                           |  274 
+  trunk/src/ffmpeg/libavformat/voc.h                           |   34 
+  trunk/src/ffmpeg/libavformat/wav.c                           |  253 
+  trunk/src/ffmpeg/libavformat/wc3movie.c                      |  394 
+  trunk/src/ffmpeg/libavformat/westwood.c                      |  383 
+  trunk/src/ffmpeg/libavformat/wv.c                            |  202 
+  trunk/src/ffmpeg/libavformat/yuv.c                           |  161 
+  trunk/src/ffmpeg/libavformat/yuv4mpeg.c                      |  408 
+  trunk/src/ffmpeg/libavutil/Makefile                          |   18 
+  trunk/src/ffmpeg/libavutil/adler32.c                         |   71 
+  trunk/src/ffmpeg/libavutil/adler32.h                         |   27 
+  trunk/src/ffmpeg/libavutil/avutil.h                          |  133 
+  trunk/src/ffmpeg/libavutil/bswap.h                           |  175 
+  trunk/src/ffmpeg/libavutil/common.h                          |  418 
+  trunk/src/ffmpeg/libavutil/crc.c                             |  104 
+  trunk/src/ffmpeg/libavutil/crc.h                             |   35 
+  trunk/src/ffmpeg/libavutil/fifo.c                            |  137 
+  trunk/src/ffmpeg/libavutil/fifo.h                            |   25 
+  trunk/src/ffmpeg/libavutil/integer.c                         |  222 
+  trunk/src/ffmpeg/libavutil/integer.h                         |   49 
+  trunk/src/ffmpeg/libavutil/internal.h                        |  237 
+  trunk/src/ffmpeg/libavutil/intfloat_readwrite.c              |   97 
+  trunk/src/ffmpeg/libavutil/intfloat_readwrite.h              |   39 
+  trunk/src/ffmpeg/libavutil/lls.c                             |  151 
+  trunk/src/ffmpeg/libavutil/lls.h                             |   45 
+  trunk/src/ffmpeg/libavutil/log.c                             |   82 
+  trunk/src/ffmpeg/libavutil/log.h                             |   62 
+  trunk/src/ffmpeg/libavutil/mathematics.c                     |  139 
+  trunk/src/ffmpeg/libavutil/mathematics.h                     |   51 
+  trunk/src/ffmpeg/libavutil/md5.c                             |  186 
+  trunk/src/ffmpeg/libavutil/md5.h                             |   34 
+  trunk/src/ffmpeg/libavutil/mem.c                             |  171 
+  trunk/src/ffmpeg/libavutil/rational.c                        |  111 
+  trunk/src/ffmpeg/libavutil/rational.h                        |   71 
+  trunk/src/ffmpeg/libavutil/softfloat.c                       |   72 
+  trunk/src/ffmpeg/libavutil/softfloat.h                       |  122 
+  trunk/src/ffmpeg/libavutil/x86_cpu.h                         |   60 
+  428 files changed, 264680 insertions(+)
+
+
 2007-03-12 18:03:24 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1714]
   - make use of new millisecond seek API.

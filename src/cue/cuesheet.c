@@ -15,6 +15,8 @@
 #include "config.h"
 #endif
 
+#define DEBUG 1
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -44,8 +46,18 @@ static void cue_pause(InputPlayback *data, short);
 static TitleInput *get_tuple(gchar *uri);
 static TitleInput *get_tuple_uri(gchar *uri);
 static void get_song_info(gchar *uri, gchar **title, gint *length);
+static void cue_init(void);
+static void cue_cleanup(void);
+static gpointer watchdog_func(gpointer data);
 
-static gint watchdog_func(gpointer data);
+GThread *watchdog_thread;
+static GMutex *cue_mutex;
+static GCond *cue_cond;
+static enum {
+    STOP,
+    RUN,
+    EXIT,
+} watchdog_state;
 
 static gchar *cue_file = NULL;
 static gchar *cue_title = NULL;
@@ -63,7 +75,6 @@ static struct {
 	gint index;
 } cue_tracks[MAX_CUE_TRACKS];
 
-static gint timeout_tag = 0;
 static gint finetune_seek = 0;
 
 static InputPlayback *real_ip = NULL;
@@ -73,7 +84,7 @@ InputPlugin cue_ip =
 	NULL,			/* handle */
 	NULL,			/* filename */
 	NULL,			/* description */
-	NULL,	       	/* init */
+	cue_init,	       	/* init */
 	NULL,	       	/* about */
 	NULL,	  	   	/* configure */
 	is_our_file,
@@ -86,7 +97,7 @@ InputPlugin cue_ip =
 	get_time,
 	NULL,
 	NULL,
-	NULL,		/* cleanup */
+	cue_cleanup,		/* cleanup */
 	NULL,
 	NULL,
 	NULL,
@@ -97,6 +108,34 @@ InputPlugin cue_ip =
 	get_tuple,
 	NULL
 };
+
+static void cue_init(void)
+{
+    cue_mutex = g_mutex_new();
+    cue_cond = g_cond_new();
+
+    /* create watchdog thread */
+    g_mutex_lock(cue_mutex);
+    watchdog_state = STOP;
+    g_mutex_unlock(cue_mutex);
+    watchdog_thread = g_thread_create(watchdog_func, NULL, TRUE, NULL);
+#ifdef DEBUG
+    g_print("watchdog_thread = %p\n", watchdog_thread);
+#endif
+}
+
+static void cue_cleanup(void)
+{
+    g_mutex_lock(cue_mutex);
+    watchdog_state = EXIT;
+    g_cond_signal(cue_cond);
+    g_mutex_unlock(cue_mutex);
+
+    g_thread_join(watchdog_thread);
+
+    g_cond_free(cue_cond);
+    g_mutex_free(cue_mutex);
+}
 
 static int is_our_file(gchar *filename)
 {
@@ -141,7 +180,7 @@ static gint get_time(InputPlayback *playback)
 
 static void play(InputPlayback *data)
 {
-        gchar *uri = data->filename;
+    gchar *uri = data->filename;
 	/* this isn't a cue:// uri? */
 	if (strncasecmp("cue://", uri, 6))
 	{
@@ -254,10 +293,14 @@ static void stop(InputPlayback * data)
 	if (real_ip != NULL)
 		real_ip->plugin->stop(real_ip);
 
-	if (data != NULL)
-		data->playing = 0;
+    if (data != NULL)
+        data->playing = 0;
 
-	gtk_timeout_remove(timeout_tag);
+    g_mutex_lock(cue_mutex);
+    watchdog_state = STOP;
+    g_cond_signal(cue_cond);
+    g_mutex_unlock(cue_mutex);
+
 	free_cue_info();
 
 	if (real_ip != NULL) {
@@ -295,32 +338,41 @@ static void set_info_override(gchar * unused, gint length, gint rate, gint freq,
 
 static void play_cue_uri(InputPlayback * data, gchar *uri)
 {
-        gchar *path2 = g_strdup(uri + 6);
-        gchar *_path = strchr(path2, '?');
+    gchar *path2 = g_strdup(uri + 6);
+    gchar *_path = strchr(path2, '?');
 	gint file_length = 0;
 	gint track = 0;
 	gchar *dummy = NULL;
 	InputPlugin *real_ip_plugin;
 
-        if (_path != NULL && *_path == '?')
-        {
-                *_path = '\0';
-                _path++;
-                track = atoi(_path);
-        }	
+#ifdef DEBUG
+    g_print("f: play_cue_uri\n");
+#endif
+    /* stop watchdog thread */
+    g_mutex_lock(cue_mutex);
+    watchdog_state = STOP;
+    g_cond_signal(cue_cond);
+    g_mutex_unlock(cue_mutex);
 
+    if (_path != NULL && *_path == '?')
+    {
+        *_path = '\0';
+        _path++;
+        track = atoi(_path);
+    }	
+	cur_cue_track = track;
 	cache_cue_file(path2);
 
-        if (cue_file == NULL)
-                return;
+    if (cue_file == NULL)
+        return;
 
 	real_ip_plugin = input_check_file(cue_file, FALSE);
 
 	if (real_ip_plugin != NULL)
 	{
-	        if (real_ip)
-	                g_free(real_ip);
-	        real_ip = g_new0(InputPlayback, 1);
+		if (real_ip)
+			g_free(real_ip);
+		real_ip = g_new0(InputPlayback, 1);
 		real_ip->plugin = real_ip_plugin;
 		real_ip->plugin->set_info = set_info_override;
 		real_ip->plugin->output = cue_ip.output;
@@ -331,7 +383,22 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip->data = data->data;
 
 		real_ip->plugin->play_file(real_ip);
-		real_ip->plugin->seek(real_ip, finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
+
+		if(real_ip->plugin->mseek) { // seek by millisecond
+#ifdef DEBUG
+			g_print("mseek\n");
+#endif
+			real_ip->plugin->mseek(real_ip, finetune_seek ? finetune_seek : cue_tracks[track].index);
+		}
+		else
+			real_ip->plugin->seek(real_ip, finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
+
+        /* kick watchdog thread */
+        g_mutex_lock(cue_mutex);
+        watchdog_state = RUN;
+        g_cond_signal(cue_cond);
+        g_mutex_unlock(cue_mutex);
+
 		// in some plugins, NULL as 2nd arg causes crash.
 		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
 		g_free(dummy);
@@ -340,9 +407,9 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 
 	finetune_seek = 0;
 
-	cur_cue_track = track;
-
-	timeout_tag = gtk_timeout_add(100, watchdog_func, data);
+#ifdef DEBUG
+    g_print("e: play_cue_uri\n");
+#endif
 }
 
 InputPlugin *get_iplugin_info(void)
@@ -368,41 +435,96 @@ InputPlugin *get_iplugin_info(void)
  *
  *     - nenolod
  */
-static gint watchdog_func(gpointer data)
+static gpointer watchdog_func(gpointer data)
 {
-	gint time = get_output_time();
-	gboolean dir = FALSE;
-	Playlist *playlist = playlist_get_active();
+    gint time = 0;
+    Playlist *playlist = NULL;
+    GTimeVal sleep_time, startup_time;
 
-	if (time == -1)
-		time = G_MAXINT;
+#ifdef DEBUG
+    g_print("f: watchdog\n");
+#endif
 
-	while (time < cue_tracks[cur_cue_track].index)
-	{
-		cur_cue_track--;
-		if (!(time < cue_tracks[cur_cue_track].index))
-			finetune_seek = time;
-		playlist_prev(playlist);
-		dir = TRUE;
-		time = get_output_time();
-		g_usleep(10000);
-	}
+    while(1) {
+#if 0
+#if DEBUG
+        g_print("time = %d cur = %d cidx = %d nidx = %d\n", time, cur_cue_track,
+                cue_tracks[cur_cue_track].index,
+                cue_tracks[cur_cue_track+1].index);
+#endif
+#endif
+        g_get_current_time(&sleep_time);
+        g_time_val_add(&sleep_time, 10000); // 10msec
 
-	while (dir == FALSE && cur_cue_track != last_cue_track && (time > cue_tracks[cur_cue_track + 1].index))
-	{
-		cur_cue_track++;
-		if (!(time > cue_tracks[cur_cue_track].index))
-			finetune_seek = time;
-		if(cfg.stopaftersong) {
-			stop(data);
-			return TRUE;
-		}
-		playlist_next(playlist);
-		time = get_output_time();
-		g_usleep(10000);
-	}
+        g_mutex_lock(cue_mutex);
+        switch(watchdog_state) {
+        case EXIT:
+#ifdef DEBUG
+            g_print("e: watchdog exit\n");
+#endif
+            g_mutex_unlock(cue_mutex); // stop() locks cue_mutex.
+            stop(real_ip); // need not to care about real_ip != NULL here.
+            g_thread_exit(NULL);
+            break;
+        case RUN:
+            if(!playlist)
+                playlist = playlist_get_active();
+            g_cond_timed_wait(cue_cond, cue_mutex, &sleep_time);
+            break;
+        case STOP:
+#ifdef DEBUG
+            g_print("watchdog deactivated\n");
+#endif
+            g_cond_wait(cue_cond, cue_mutex);
+            playlist = playlist_get_active();
+            break;
+        }
+        g_mutex_unlock(cue_mutex);
 
-	return TRUE;
+        time = get_output_time();
+
+        if(time == 0 || (real_ip && real_ip->playing == 0))
+            continue;
+
+        // prev track
+        if (time < cue_tracks[cur_cue_track].index)
+        {
+#ifdef DEBUG
+            g_print("i: watchdog prev\n");
+            g_print("time = %d cur = %d cidx = %d nidx = %d\n", time, cur_cue_track,
+                    cue_tracks[cur_cue_track].index,
+                    cue_tracks[cur_cue_track+1].index);
+#endif
+            cur_cue_track--;
+            if (time >= cue_tracks[cur_cue_track].index)
+                finetune_seek = time;
+            playlist_prev(playlist);
+        }
+
+        // next track
+        if (cur_cue_track != last_cue_track && (time > cue_tracks[cur_cue_track + 1].index))
+        {
+#ifdef DEBUG
+            g_print("i: watchdog next\n");
+            g_print("time = %d cur = %d cidx = %d nidx = %d\n", time, cur_cue_track,
+                    cue_tracks[cur_cue_track].index,
+                    cue_tracks[cur_cue_track+1].index);
+#endif
+            cur_cue_track++;
+            if (time <= cue_tracks[cur_cue_track].index)
+                finetune_seek = time;
+
+            if(cfg.stopaftersong)
+                stop(real_ip);
+            else 
+                playlist_next(playlist);
+        }
+    }
+
+#ifdef DEBUG
+    g_print("e: watchdog\n");    
+#endif
+    return NULL; // dummy.
 }
 
 /******************************************************** cuefile */
@@ -422,6 +544,10 @@ static void free_cue_info(void)
 		g_free(cue_tracks[last_cue_track-1].title);
 		cue_tracks[last_cue_track-1].title = NULL;
 	}
+#ifdef DEBUG
+	g_print("last_cue_track = %d\n", last_cue_track);
+#endif
+	last_cue_track = 0;
 }
 
 static void cache_cue_file(char *f)
