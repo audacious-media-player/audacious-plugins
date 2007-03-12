@@ -7,7 +7,7 @@ SUBDIRS = libavcodec libavformat libavutil
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-LIBADD = ./libavutil/libavutil.a ./libavformat/libavformat.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+LIBADD = ./libavformat/libavformat.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 SOURCES = ffmpeg.c \
 	libavcodec/aasc.c \
@@ -66,7 +66,20 @@ SOURCES = ffmpeg.c \
 	libavcodec/wavpack.c \
 	libavcodec/wmadec.c \
 	libavcodec/wnv1.c \
-	libavcodec/ws-snd1.c
+	libavcodec/ws-snd1.c \
+	libavutil/adler32.c \
+	libavutil/crc.c \
+	libavutil/fifo.c \
+	libavutil/integer.c \
+	libavutil/intfloat_readwrite.c \
+	libavutil/lls.c \
+	libavutil/log.c \
+	libavutil/mathematics.c \
+	libavutil/md5.c \
+	libavutil/mem.c \
+	libavutil/rational.c \
+	libavutil/softfloat.c \
+
 
 OBJECTS = ${SOURCES:.c=.o}
 

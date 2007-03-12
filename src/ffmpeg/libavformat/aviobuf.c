@@ -395,3 +395,14 @@ int url_fget_max_packet_size(ByteIOContext *s)
     return s->max_packet_size;
 }
 
+offset_t url_fsize(ByteIOContext *s)
+{
+    offset_t size;
+
+    if (!s->seek)
+        return -EPIPE;
+    size = s->seek(s->opaque, -1, SEEK_END) + 1;
+    s->seek(s->opaque, s->pos, SEEK_SET);
+    return size;
+}
+

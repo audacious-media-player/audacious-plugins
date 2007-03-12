@@ -1,3 +1,14 @@
+2007-03-12 21:12:00 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1746]
+  - merge VFS support from wma plugin.
+  
+  trunk/src/ffmpeg/libavformat/avformat.h |    7 
+  trunk/src/ffmpeg/libavformat/avio.c     |  107 ++----
+  trunk/src/ffmpeg/libavformat/avio.h     |   52 ---
+  trunk/src/ffmpeg/libavformat/aviobuf.c  |  553 ++++----------------------------
+  4 files changed, 150 insertions(+), 569 deletions(-)
+
+
 2007-03-12 21:04:53 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1744]
   - i don't want to hear about deprecation, thanks.
