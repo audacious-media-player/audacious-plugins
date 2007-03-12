@@ -1,3 +1,22 @@
+2007-03-12 20:11:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1732]
+  - remove more video stuff, remove vorbis
+  
+  trunk/src/ffmpeg/libavcodec/Makefile           |   14 
+  trunk/src/ffmpeg/libavcodec/error_resilience.c | 1030 -----------
+  trunk/src/ffmpeg/libavcodec/eval.c             |    1 
+  trunk/src/ffmpeg/libavcodec/parser.c           |    2 
+  trunk/src/ffmpeg/libavcodec/pnm.c              |  598 ------
+  trunk/src/ffmpeg/libavcodec/qdrw.c             |  160 -
+  trunk/src/ffmpeg/libavcodec/ratecontrol.c      |  937 ----------
+  trunk/src/ffmpeg/libavcodec/utils.c            |   91 -
+  trunk/src/ffmpeg/libavcodec/vorbis.c           | 1814 ---------------------
+  trunk/src/ffmpeg/libavcodec/vorbis.h           |   43 
+  trunk/src/ffmpeg/libavcodec/vorbis_data.c      | 2155 -------------------------
+  trunk/src/ffmpeg/libavcodec/vorbis_enc.c       | 1087 ------------
+  12 files changed, 6 insertions(+), 7926 deletions(-)
+
+
 2007-03-12 20:06:30 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1730]
   - bork bork bork
