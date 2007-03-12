@@ -93,7 +93,6 @@ SOURCES = ffmpeg.c \
 	libavformat/flvdec.c \
 	libavformat/flvenc.c \
 	libavformat/framehook.c \
-	libavformat/gif.c \
 	libavformat/gifdec.c \
 	libavformat/grab.c \
 	libavformat/gxf.c \
@@ -104,7 +103,6 @@ SOURCES = ffmpeg.c \
 	libavformat/img2.c \
 	libavformat/ipmovie.c \
 	libavformat/isom.c \
-	libavformat/jpeg.c \
 	libavformat/matroska.c \
 	libavformat/mm.c \
 	libavformat/mmf.c \
@@ -127,7 +125,6 @@ SOURCES = ffmpeg.c \
 	libavformat/oggparsetheora.c \
 	libavformat/oggparsevorbis.c \
 	libavformat/os_support.c \
-	libavformat/png.c \
 	libavformat/pnm.c \
 	libavformat/psxstr.c \
 	libavformat/raw.c \
