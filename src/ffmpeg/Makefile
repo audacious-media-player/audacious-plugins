@@ -95,8 +95,6 @@ SOURCES = ffmpeg.c \
 	libavformat/framehook.c \
 	libavformat/gifdec.c \
 	libavformat/grab.c \
-	libavformat/gxf.c \
-	libavformat/gxfenc.c \
 	libavformat/idcin.c \
 	libavformat/idroq.c \
 	libavformat/img.c \
@@ -118,12 +116,6 @@ SOURCES = ffmpeg.c \
 	libavformat/nsvdec.c \
 	libavformat/nut.c \
 	libavformat/nuv.c \
-	libavformat/ogg.c \
-	libavformat/ogg2.c \
-	libavformat/oggparseflac.c \
-	libavformat/oggparseogm.c \
-	libavformat/oggparsetheora.c \
-	libavformat/oggparsevorbis.c \
 	libavformat/os_support.c \
 	libavformat/pnm.c \
 	libavformat/psxstr.c \

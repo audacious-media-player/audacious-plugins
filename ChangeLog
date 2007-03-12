@@ -1,3 +1,15 @@
+2007-03-12 21:43:32 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1752]
+  - start removing demuxers for video and images
+  
+  trunk/src/ffmpeg/Makefile               |    3 
+  trunk/src/ffmpeg/libavcodec/allcodecs.c |  582 --------------------
+  trunk/src/ffmpeg/libavformat/gif.c      |  432 ---------------
+  trunk/src/ffmpeg/libavformat/jpeg.c     |  240 --------
+  trunk/src/ffmpeg/libavformat/png.c      |  889 --------------------------------
+  5 files changed, 2146 deletions(-)
+
+
 2007-03-12 21:37:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1750]
   - make this compile again
