@@ -206,7 +206,7 @@ static int wma_is_our_file(char *filename)
     if(av_open_input_file(&ic2, str_twenty_to_space(filename), NULL, 0, NULL) < 0) return 0;
 
     for(wma_idx2 = 0; wma_idx2 < ic2->nb_streams; wma_idx2++) {
-        c2 = &ic2->streams[wma_idx2]->codec;
+        c2 = ic2->streams[wma_idx2]->codec;
         if(c2->codec_type == CODEC_TYPE_AUDIO) break;
     }
 
@@ -230,7 +230,7 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
     if(av_open_input_vfsfile(&ic2, filename, fd, NULL, 0, NULL) < 0) return 0;
 
     for(wma_idx2 = 0; wma_idx2 < ic2->nb_streams; wma_idx2++) {
-        c2 = &ic2->streams[wma_idx2]->codec;
+        c2 = ic2->streams[wma_idx2]->codec;
         if(c2->codec_type == CODEC_TYPE_AUDIO) break;
     }
 
@@ -281,7 +281,7 @@ static TitleInput *wma_get_song_tuple(gchar * filename)
     AVFormatContext *in = NULL;
     gchar *filename_proxy = g_strdup(filename);
 
-    if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
+    if(av_open_input_file(&ic2, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
 	return NULL;
 
     tuple = bmp_title_input_new();
@@ -442,7 +442,7 @@ static void wma_play_file(InputPlayback *playback)
     if(av_open_input_file(&ic, str_twenty_to_space(filename), NULL, 0, NULL) < 0) return;
 
     for(wma_idx = 0; wma_idx < ic->nb_streams; wma_idx++) {
-        c = &ic->streams[wma_idx]->codec;
+        c = ic->streams[wma_idx]->codec;
         if(c->codec_type == CODEC_TYPE_AUDIO) break;
     }
 
@@ -451,7 +451,7 @@ static void wma_play_file(InputPlayback *playback)
     codec = avcodec_find_decoder(c->codec_id);
 
     if(!codec) return;
-	
+
     if(avcodec_open(c, codec) < 0) return;
 	    	    
     wsong_title = get_song_title(ic, filename);
