@@ -21,6 +21,9 @@
 #ifndef AVFORMAT_H
 #define AVFORMAT_H
 
+#include <audacious/util.h>
+#include <audacious/vfs.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -446,6 +449,10 @@ int av_open_input_stream(AVFormatContext **ic_ptr,
                          ByteIOContext *pb, const char *filename,
                          AVInputFormat *fmt, AVFormatParameters *ap);
 int av_open_input_file(AVFormatContext **ic_ptr, const char *filename,
+                       AVInputFormat *fmt,
+                       int buf_size,
+                       AVFormatParameters *ap);
+int av_open_input_vfsfile(AVFormatContext **ic_ptr, const char *fn, VFSFile *fd,
                        AVInputFormat *fmt,
                        int buf_size,
                        AVFormatParameters *ap);

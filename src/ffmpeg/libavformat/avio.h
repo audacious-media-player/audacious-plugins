@@ -1,25 +1,7 @@
-/*
- * unbuffered io for ffmpeg system
- * copyright (c) 2001 Fabrice Bellard
- *
- * This file is part of FFmpeg.
- *
- * FFmpeg is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * FFmpeg is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with FFmpeg; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
 #ifndef AVIO_H
 #define AVIO_H
+
+#include <audacious/vfs.h>
 
 /* output byte stream handling */
 
@@ -29,7 +11,7 @@ typedef int64_t offset_t;
 
 struct URLContext {
     struct URLProtocol *prot;
-    int flags;
+    int flags;        
     int is_streamed;  /* true if streamed (no seek possible), default = false */
     int max_packet_size;  /* if non zero, the stream is packetized with this max packet size */
     void *priv_data;
@@ -50,6 +32,7 @@ typedef struct URLPollEntry {
 
 typedef int URLInterruptCB(void);
 
+int url_vopen(URLContext **h, VFSFile *fd);
 int url_open(URLContext **h, const char *filename, int flags);
 int url_read(URLContext *h, unsigned char *buf, int size);
 int url_write(URLContext *h, unsigned char *buf, int size);
@@ -90,18 +73,14 @@ typedef struct {
     unsigned char *buf_ptr, *buf_end;
     void *opaque;
     int (*read_packet)(void *opaque, uint8_t *buf, int buf_size);
-    int (*write_packet)(void *opaque, uint8_t *buf, int buf_size);
-    offset_t (*seek)(void *opaque, offset_t offset, int whence);
+    void (*write_packet)(void *opaque, uint8_t *buf, int buf_size);
+    int (*seek)(void *opaque, offset_t offset, int whence);
     offset_t pos; /* position in the file of the current buffer */
     int must_flush; /* true if the next seek should flush */
     int eof_reached; /* true if eof reached */
     int write_flag;  /* true if open for writing */
     int is_streamed;
     int max_packet_size;
-    unsigned long checksum;
-    unsigned char *checksum_ptr;
-    unsigned long (*update_checksum)(unsigned long checksum, const uint8_t *buf, unsigned int size);
-    int error;         ///< contains the error code or 0 if no error happened
 } ByteIOContext;
 
 int init_put_byte(ByteIOContext *s,
@@ -110,8 +89,8 @@ int init_put_byte(ByteIOContext *s,
                   int write_flag,
                   void *opaque,
                   int (*read_packet)(void *opaque, uint8_t *buf, int buf_size),
-                  int (*write_packet)(void *opaque, uint8_t *buf, int buf_size),
-                  offset_t (*seek)(void *opaque, offset_t offset, int whence));
+                  void (*write_packet)(void *opaque, uint8_t *buf, int buf_size),
+                  int (*seek)(void *opaque, offset_t offset, int whence));
 
 void put_byte(ByteIOContext *s, int b);
 void put_buffer(ByteIOContext *s, const unsigned char *buf, int size);
@@ -119,20 +98,17 @@ void put_le64(ByteIOContext *s, uint64_t val);
 void put_be64(ByteIOContext *s, uint64_t val);
 void put_le32(ByteIOContext *s, unsigned int val);
 void put_be32(ByteIOContext *s, unsigned int val);
-void put_le24(ByteIOContext *s, unsigned int val);
-void put_be24(ByteIOContext *s, unsigned int val);
 void put_le16(ByteIOContext *s, unsigned int val);
 void put_be16(ByteIOContext *s, unsigned int val);
 void put_tag(ByteIOContext *s, const char *tag);
 
+void put_be64_double(ByteIOContext *s, double val);
 void put_strz(ByteIOContext *s, const char *buf);
 
 offset_t url_fseek(ByteIOContext *s, offset_t offset, int whence);
 void url_fskip(ByteIOContext *s, offset_t offset);
 offset_t url_ftell(ByteIOContext *s);
-offset_t url_fsize(ByteIOContext *s);
 int url_feof(ByteIOContext *s);
-int url_ferror(ByteIOContext *s);
 
 #define URL_EOF (-1)
 int url_fgetc(ByteIOContext *s);
@@ -146,16 +122,14 @@ char *url_fgets(ByteIOContext *s, char *buf, int buf_size);
 void put_flush_packet(ByteIOContext *s);
 
 int get_buffer(ByteIOContext *s, unsigned char *buf, int size);
-int get_partial_buffer(ByteIOContext *s, unsigned char *buf, int size);
 int get_byte(ByteIOContext *s);
-unsigned int get_le24(ByteIOContext *s);
 unsigned int get_le32(ByteIOContext *s);
 uint64_t get_le64(ByteIOContext *s);
 unsigned int get_le16(ByteIOContext *s);
 
+double get_be64_double(ByteIOContext *s);
 char *get_strz(ByteIOContext *s, char *buf, int maxlen);
 unsigned int get_be16(ByteIOContext *s);
-unsigned int get_be24(ByteIOContext *s);
 unsigned int get_be32(ByteIOContext *s);
 uint64_t get_be64(ByteIOContext *s);
 
@@ -164,6 +138,7 @@ static inline int url_is_streamed(ByteIOContext *s)
     return s->is_streamed;
 }
 
+int url_vfdopen(ByteIOContext *s, VFSFile *f);
 int url_fdopen(ByteIOContext *s, URLContext *h);
 int url_setbufsize(ByteIOContext *s, int buf_size);
 int url_fopen(ByteIOContext *s, const char *filename, int flags);
@@ -177,9 +152,6 @@ int url_close_buf(ByteIOContext *s);
 int url_open_dyn_buf(ByteIOContext *s);
 int url_open_dyn_packet_buf(ByteIOContext *s, int max_packet_size);
 int url_close_dyn_buf(ByteIOContext *s, uint8_t **pbuffer);
-
-unsigned long get_checksum(ByteIOContext *s);
-void init_checksum(ByteIOContext *s, unsigned long (*update_checksum)(unsigned long c, const uint8_t *p, unsigned int len), unsigned long checksum);
 
 /* file.c */
 extern URLProtocol file_protocol;
@@ -196,6 +168,8 @@ extern URLProtocol tcp_protocol;
 
 /* http.c */
 extern URLProtocol http_protocol;
+
+extern URLProtocol mms_protocol;
 
 #endif
 
