@@ -1,8 +1,11 @@
 /*
- *  Audacious WMA input plugin
- *  (C) 2005 Audacious development team
+ *  Audacious FFmpeg Plugin
+ *  (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  *
  *  Based on:
+ *  Audacious WMA input plugin
+ *  (C) 2005-2007 Tony Vroon
+ *
  *  xmms-wma - WMA player for BMP
  *  Copyright (C) 2004,2005 McMCC <mcmcc@mail.ru>
  *  bmp-wma - WMA player for BMP
@@ -116,7 +119,7 @@ InputPlugin ffmpeg_ip =
 InputPlugin *get_iplugin_info(void)
 {
     memset(description, 0, 64);
-    ffmpeg_ip.description = g_strdup_printf(_("WMA Player %s"), PACKAGE_VERSION);
+    ffmpeg_ip.description = g_strdup(_("FFmpeg Audio Plugin"));
     return &ffmpeg_ip;
 }
 

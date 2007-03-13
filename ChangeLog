@@ -1,3 +1,11 @@
+2007-03-13 01:07:46 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1784]
+  - remove some old wma leftovers
+  
+  trunk/src/ffmpeg/ffmpeg.c |   57 ----------------------------------------------
+  1 file changed, 1 insertion(+), 56 deletions(-)
+
+
 2007-03-13 00:37:02 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1782]
   - implement shorten support more correctly.
