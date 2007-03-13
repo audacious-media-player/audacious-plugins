@@ -1,3 +1,11 @@
+2007-03-13 00:14:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1776]
+  - fix crash
+  
+  trunk/src/ffmpeg/ffmpeg.c |    7 +++++--
+  1 file changed, 5 insertions(+), 2 deletions(-)
+
+
 2007-03-12 23:04:03 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1774]
   - shorten support
