@@ -94,7 +94,7 @@ static GtkWidget *dialog1, *button1, *label1;
 
 InputPlugin *get_iplugin_info(void);
 
-gchar *ffmpeg_fmts[] = { "wma", NULL };
+gchar *ffmpeg_fmts[] = { "wma", "shn", NULL };
 
 InputPlugin ffmpeg_ip =
 {
@@ -399,7 +399,7 @@ static void *ffmpeg_play_loop(void *arg)
 
 	if(ffmpeg_seekpos != -1)
 	{
-	    av_seek_frame(ic, ffmpeg_idx, ffmpeg_seekpos * 1000000LL, 0);
+	    av_seek_frame(ic, ffmpeg_idx, ffmpeg_seekpos * 1000000LL, AVSEEK_FLAG_BYTE);
 	    playback->output->flush(ffmpeg_seekpos * 1000);
 	    ffmpeg_seekpos = -1;
 	}

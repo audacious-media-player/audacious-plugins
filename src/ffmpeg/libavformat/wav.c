@@ -225,7 +225,6 @@ static int wav_read_seek(AVFormatContext *s,
     return pcm_read_seek(s, stream_index, timestamp, flags);
 }
 
-#ifdef CONFIG_WAV_DEMUXER
 AVInputFormat wav_demuxer = {
     "wav",
     "wav format",
@@ -236,18 +235,3 @@ AVInputFormat wav_demuxer = {
     wav_read_close,
     wav_read_seek,
 };
-#endif
-#ifdef CONFIG_WAV_MUXER
-AVOutputFormat wav_muxer = {
-    "wav",
-    "wav format",
-    "audio/x-wav",
-    "wav",
-    sizeof(WAVContext),
-    CODEC_ID_PCM_S16LE,
-    CODEC_ID_NONE,
-    wav_write_header,
-    wav_write_packet,
-    wav_write_trailer,
-};
-#endif

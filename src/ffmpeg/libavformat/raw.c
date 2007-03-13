@@ -227,6 +227,8 @@ static int shorten_read_header(AVFormatContext *s,
 {
     AVStream *st;
 
+    g_print("1@\n");
+
     st = av_new_stream(s, 0);
     if (!st)
         return AVERROR_NOMEM;
