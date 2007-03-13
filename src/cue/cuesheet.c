@@ -4,6 +4,9 @@
  * Copyright (C) 2006 William Pitcock <nenolod -at- nenolod.net>.
  *                    Jonathan Schleifer <js@h3c.de> (only small fixes)
  *
+ * Copyright (C) 2007 Yoshiki Yazawa <yaz@cc.rim.or.jp> (millisecond
+ * seek and multithreading)
+ *
  * This file was hacked out of of xmms-cueinfo,
  * Copyright (C) 2003  Oskar Liljeblad
  *
@@ -15,7 +18,7 @@
 #include "config.h"
 #endif
 
-#define DEBUG 1
+/* #define DEBUG 1 */
 
 #include <string.h>
 #include <stdlib.h>
@@ -58,6 +61,9 @@ static enum {
     RUN,
     EXIT,
 } watchdog_state;
+
+static InputPlayback *caller_ip = NULL;
+GThread *exec_thread;
 
 static gchar *cue_file = NULL;
 static gchar *cue_title = NULL;
@@ -128,8 +134,8 @@ static void cue_cleanup(void)
 {
     g_mutex_lock(cue_mutex);
     watchdog_state = EXIT;
-    g_cond_signal(cue_cond);
     g_mutex_unlock(cue_mutex);
+    g_cond_broadcast(cue_cond);
 
     g_thread_join(watchdog_thread);
 
@@ -181,6 +187,12 @@ static gint get_time(InputPlayback *playback)
 static void play(InputPlayback *data)
 {
     gchar *uri = data->filename;
+
+#ifdef DEBUG
+    g_print("play: playback = %p\n", data);
+#endif
+
+    caller_ip = data;
 	/* this isn't a cue:// uri? */
 	if (strncasecmp("cue://", uri, 6))
 	{
@@ -284,22 +296,31 @@ static void get_song_info(gchar *uri, gchar **title, gint *length)
 
 static void seek(InputPlayback * data, gint time)
 {
+#ifdef DEBUG
+    g_print("seek: playback = %p\n", data);
+#endif
+
 	if (real_ip != NULL)
 		real_ip->plugin->seek(real_ip, time);
 }
 
 static void stop(InputPlayback * data)
 {
+#ifdef DEBUG
+    g_print("f: stop: playback = %p\n", data);
+#endif
 	if (real_ip != NULL)
 		real_ip->plugin->stop(real_ip);
 
     if (data != NULL)
         data->playing = 0;
+    if (caller_ip != NULL)
+        caller_ip->playing = 0;
 
     g_mutex_lock(cue_mutex);
     watchdog_state = STOP;
-    g_cond_signal(cue_cond);
     g_mutex_unlock(cue_mutex);
+    g_cond_signal(cue_cond);
 
 	free_cue_info();
 
@@ -309,7 +330,53 @@ static void stop(InputPlayback * data)
 		g_free(real_ip);
 		real_ip = NULL;
 	}
+#ifdef DEBUG
+    g_print("e: stop\n");
+#endif
 }
+
+static gpointer do_stop(gpointer data)
+{
+    InputPlayback *playback = (InputPlayback *)data;
+#ifdef DEBUG
+    g_print("f: do_stop\n");
+#endif
+    ip_data.stop = TRUE;
+    playback_stop();
+    ip_data.stop = FALSE;
+
+    gdk_threads_enter();
+    mainwin_clear_song_info();
+    gdk_threads_leave();
+
+#ifdef DEBUG
+    g_print("e: do_stop\n");
+#endif
+    g_thread_exit(NULL);
+}
+
+static gpointer do_prev(gpointer data)
+{
+    Playlist *playlist = playlist_get_active();
+
+#ifdef DEBUG
+    g_print("do_prev\n");
+#endif
+    playlist_prev(playlist);
+    g_thread_exit(NULL);
+}
+
+static gpointer do_next(gpointer data)
+{
+    Playlist *playlist = playlist_get_active();
+
+#ifdef DEBUG
+    g_print("do_next\n");
+#endif
+    playlist_next(playlist);
+    g_thread_exit(NULL);
+}
+
 
 static void cue_pause(InputPlayback * data, short p)
 {
@@ -347,12 +414,14 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 
 #ifdef DEBUG
     g_print("f: play_cue_uri\n");
+    g_print("play_cue_uri: playback = %p\n", data);
 #endif
+
     /* stop watchdog thread */
     g_mutex_lock(cue_mutex);
     watchdog_state = STOP;
-    g_cond_signal(cue_cond);
     g_mutex_unlock(cue_mutex);
+    g_cond_signal(cue_cond);
 
     if (_path != NULL && *_path == '?')
     {
@@ -396,8 +465,9 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
         /* kick watchdog thread */
         g_mutex_lock(cue_mutex);
         watchdog_state = RUN;
-        g_cond_signal(cue_cond);
         g_mutex_unlock(cue_mutex);
+        g_cond_signal(cue_cond);
+        g_print("watchdog activated\n");
 
 		// in some plugins, NULL as 2nd arg causes crash.
 		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
@@ -446,11 +516,12 @@ static gpointer watchdog_func(gpointer data)
 #endif
 
     while(1) {
-#if 0
+#if 1
 #if DEBUG
-        g_print("time = %d cur = %d cidx = %d nidx = %d\n", time, cur_cue_track,
+        g_print("time = %d cur = %d cidx = %d nidx = %d last = %d\n",
+                time, cur_cue_track,
                 cue_tracks[cur_cue_track].index,
-                cue_tracks[cur_cue_track+1].index);
+                cue_tracks[cur_cue_track+1].index, last_cue_track);
 #endif
 #endif
         g_get_current_time(&sleep_time);
@@ -482,9 +553,18 @@ static gpointer watchdog_func(gpointer data)
         g_mutex_unlock(cue_mutex);
 
         time = get_output_time();
-
-        if(time == 0 || (real_ip && real_ip->playing == 0))
+        if(time == 0)
             continue;
+
+#ifdef DEBUG
+        if(real_ip) {
+            g_print("real_ip->playing = %d\n", real_ip->playing);
+            if(real_ip->playing == 0)
+                g_print("not playing\n");
+            if(!real_ip->output->buffer_playing())
+                g_print("not buffer_playing\n");
+        }
+#endif
 
         // prev track
         if (time < cue_tracks[cur_cue_track].index)
@@ -498,7 +578,7 @@ static gpointer watchdog_func(gpointer data)
             cur_cue_track--;
             if (time >= cue_tracks[cur_cue_track].index)
                 finetune_seek = time;
-            playlist_prev(playlist);
+            exec_thread = g_thread_create(do_prev, NULL, FALSE, NULL);
         }
 
         // next track
@@ -514,11 +594,22 @@ static gpointer watchdog_func(gpointer data)
             if (time <= cue_tracks[cur_cue_track].index)
                 finetune_seek = time;
 
-            if(cfg.stopaftersong)
-                stop(real_ip);
+            if(cfg.stopaftersong) {
+                exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
+            }
             else 
-                playlist_next(playlist);
+                exec_thread = g_thread_create(do_next, NULL, FALSE, NULL);
         }
+
+        // end of file
+        if (cur_cue_track + 1 == last_cue_track &&
+            cue_tracks[cur_cue_track + 1].index - time < 500) { // difference < 500ms
+#ifdef DEBUG
+            g_print("eof reached\n");
+#endif
+            exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
+        }
+
     }
 
 #ifdef DEBUG
