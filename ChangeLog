@@ -1,3 +1,10 @@
+2007-03-13 12:21:50 +0000  Daniel Bradshaw <nazca@atheme.org>
+  revision [1792]
+  - Adjust indenting cause the previous indenting was painful
+  trunk/src/smb/smb.c |  179 +++++++++++++++++++++++-----------------------------
+  1 file changed, 82 insertions(+), 97 deletions(-)
+
+
 2007-03-13 12:11:48 +0000  Daniel Bradshaw <nazca@atheme.org>
   revision [1790]
   - Prototype smb:// vfs transport.  Needs testing.

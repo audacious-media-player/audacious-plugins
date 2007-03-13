@@ -64,7 +64,7 @@ static offset_t file_seek(URLContext *h, offset_t pos, int whence)
     VFSFile *file;
     file = h->priv_data;
     result = vfs_fseek(file, pos, whence);
-    if (result == 0)
+    if (result >= 0)
 	result = vfs_ftell(file);
     else
         result = -1;
