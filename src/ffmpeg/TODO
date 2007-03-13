@@ -4,3 +4,4 @@ X: complete, x: needs testing, ?: to be discussed, i: in progress
 [X] synchronize wma sources with ffmpeg SVN
 [?] support for playing back the audio track from video files
 [i] remove video codecs, video demuxers
+[ ] seek does not work

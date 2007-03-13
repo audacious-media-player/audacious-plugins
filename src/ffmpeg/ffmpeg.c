@@ -347,7 +347,7 @@ static void *ffmpeg_play_loop(void *arg)
 
 	if(ffmpeg_seekpos != -1)
 	{
-	    av_seek_frame(ic, ffmpeg_idx, ffmpeg_seekpos * 1000000LL, AVSEEK_FLAG_BYTE);
+	    av_seek_frame(ic, ffmpeg_idx, ffmpeg_seekpos * AV_TIME_BASE, 0);
 	    playback->output->flush(ffmpeg_seekpos * 1000);
 	    ffmpeg_seekpos = -1;
 	}
