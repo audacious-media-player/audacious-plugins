@@ -1,3 +1,12 @@
+2007-03-13 12:11:48 +0000  Daniel Bradshaw <nazca@atheme.org>
+  revision [1790]
+  - Prototype smb:// vfs transport.  Needs testing.
+  trunk/src/smb/.depend  |  654 +++++++++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/smb/Makefile |   14 +
+  trunk/src/smb/smb.c    |  238 +++++++++++++++++
+  3 files changed, 906 insertions(+)
+
+
 2007-03-13 01:53:58 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1788]
   - seek is implemented as it should be, but appears to not work

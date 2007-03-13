@@ -32,6 +32,7 @@ static void smb_auth_fn(const char *srv,
                         char *un, int unlen,
                         char *pw, int pwlen)
 {
+  /* Does absolutely nothing :P */
 }
 
 typedef struct smb_file smb_file;
@@ -42,141 +43,125 @@ struct smb_file
 	long length;
 };
 
-VFSFile *
-smb_vfs_fopen_impl(const gchar * path,
-          const gchar * mode)
+VFSFile *smb_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
-    VFSFile *file;
-		smb_file *handle;
-		struct stat st;
+  VFSFile *file;
+  smb_file *handle;
+  struct stat st;
 
-    if (!path || !mode)
-	return NULL;
+  if (!path || !mode)
+    return NULL;
 
-		if (smbc_init(smb_auth_fn, 1) != 0)
-			return NULL;
+  if (smbc_init(smb_auth_fn, 1) != 0)
+    return NULL;
 		 
-    file = g_new0(VFSFile, 1);
-		handle = g_new0(smb_file, 1);
-		handle->fd = smbc_open(path, O_RDONLY, 0);
+  file = g_new0(VFSFile, 1);
+  handle = g_new0(smb_file, 1);
+  handle->fd = smbc_open(path, O_RDONLY, 0);
 		
-		if (file->handle < 0) {
-      g_free(file);
-      file = NULL;
-    } else {
-      smbc_stat(path,&st);
-		  handle->length = st.st_size;
-      file->handle = (void *)handle;
-		}
+  if (file->handle < 0) {
+    g_free(file);
+    file = NULL;
+  } else {
+    smbc_stat(path,&st);
+    handle->length = st.st_size;
+    file->handle = (void *)handle;
+  }
 		
-		return file;
+  return file;
 }
 
-gint
-smb_vfs_fclose_impl(VFSFile * file)
+gint smb_vfs_fclose_impl(VFSFile * file)
 {
-    gint ret = 0;
-    smb_file *handle;
+  gint ret = 0;
+  smb_file *handle;
 
-    if (file == NULL)
-        return -1;
-		
-    if (file->handle)
-    {
-			handle = (smb_file *)file->handle;
-      if (smbc_close(handle->fd) != 0)
-        ret = -1;
-			g_free(file->handle);
-    }
+  if (file == NULL)
+    return -1;
+	
+  if (file->handle)
+  {
+    handle = (smb_file *)file->handle;
+    if (smbc_close(handle->fd) != 0)
+      ret = -1;
+    g_free(file->handle);
+  }
 
-    return ret;
+  return ret;
 }
 
-size_t
-smb_vfs_fread_impl(gpointer ptr,
-          size_t size,
-          size_t nmemb,
-          VFSFile * file)
+size_t smb_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
-    smb_file *handle;
-    if (file == NULL)
-        return 0;
-		handle = (smb_file *)file->handle;
-    return smbc_read(handle->fd, ptr, size * nmemb);
+  smb_file *handle;
+  if (file == NULL)
+    return 0;
+  handle = (smb_file *)file->handle;
+  return smbc_read(handle->fd, ptr, size * nmemb);
 }
 
-size_t
-smb_vfs_fwrite_impl(gconstpointer ptr,
-           size_t size,
-           size_t nmemb,
-           VFSFile * file)
+size_t smb_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
   return 0;
 }
 
-gint
-smb_vfs_getc_impl(VFSFile *file)
+gint smb_vfs_getc_impl(VFSFile *file)
 {
-	smb_file *handle;
-	char temp[2];
-	handle = (smb_file *)file->handle;
-	smbc_read(handle->fd, &temp, 1);
+  smb_file *handle;
+  char temp[2];
+  handle = (smb_file *)file->handle;
+  smbc_read(handle->fd, &temp, 1);
   return (gint) temp[0];
 }
 
-gint
-smb_vfs_fseek_impl(VFSFile * file,
-          glong offset,
-          gint whence)
+gint smb_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
 {
-	smb_file *handle;
-	glong roffset = offset;
-	gint ret = 0;
+  smb_file *handle;
+  glong roffset = offset;
+  gint ret = 0;
   if (file == NULL)
-      return 0;
+     return 0;
 	
-	handle = (smb_file *)file->handle;
+  handle = (smb_file *)file->handle;
 	
-	if (whence == SEEK_END)
-	{
-		roffset = handle->length + offset;
-		if (roffset < 0)
-			roffset = 0;
-		
-		ret = smbc_lseek(handle->fd, roffset, SEEK_SET);
-		//printf("%ld -> %ld = %d\n",offset, roffset, ret);
-	}
-	else
-	{
-		if (roffset < 0)
-			roffset = 0;
-		ret = smbc_lseek(handle->fd, roffset, whence);
-		//printf("%ld %d = %d\n",roffset, whence, ret);
-		if (ret == 0) ret = handle->length;
-	}
+  if (whence == SEEK_END)
+  {
+    roffset = handle->length + offset;
+    if (roffset < 0)
+      roffset = 0;
+
+    ret = smbc_lseek(handle->fd, roffset, SEEK_SET);
+    //printf("%ld -> %ld = %d\n",offset, roffset, ret);
+  }
+  else
+  {
+    if (roffset < 0)
+      roffset = 0;
+    ret = smbc_lseek(handle->fd, roffset, whence);
+    //printf("%ld %d = %d\n",roffset, whence, ret);
+    if (ret == 0)
+      ret = handle->length;
+  }
 	
-	return ret;
+  return ret;
 }
 
-gint
-smb_vfs_ungetc_impl(gint c, VFSFile *file)
+gint smb_vfs_ungetc_impl(gint c, VFSFile *file)
 {
-	smb_vfs_fseek_impl(file, -1, SEEK_CUR);
+  smb_vfs_fseek_impl(file, -1, SEEK_CUR);
   return c;
 }
 
-void
-smb_vfs_rewind_impl(VFSFile * file)
+void smb_vfs_rewind_impl(VFSFile * file)
 {
-	smb_vfs_fseek_impl(file, 0, SEEK_SET);
+  smb_vfs_fseek_impl(file, 0, SEEK_SET);
 }
 
 glong
 smb_vfs_ftell_impl(VFSFile * file)
 {
-	smb_file *handle;
-	handle = (smb_file *)file->handle;
-	return smbc_lseek(handle->fd, 0, SEEK_CUR);
+  smb_file *handle;
+  handle = (smb_file *)file->handle;
+  return smbc_lseek(handle->fd, 0, SEEK_CUR);
 }
 
 gboolean
@@ -184,9 +169,9 @@ smb_vfs_feof_impl(VFSFile * file)
 {
   smb_file *handle;
   off_t at;
-	handle = (smb_file *)file->handle;
-	at = smbc_lseek(handle->fd, 0, SEEK_CUR);
-	//printf("%d %d %ld %ld\n",sizeof(int), sizeof(off_t), at, handle->length);
+  handle = (smb_file *)file->handle;
+  at = smbc_lseek(handle->fd, 0, SEEK_CUR);
+  //printf("%d %d %ld %ld\n",sizeof(int), sizeof(off_t), at, handle->length);
   return (gboolean) (at == handle->length) ? TRUE : FALSE;
 }
 
