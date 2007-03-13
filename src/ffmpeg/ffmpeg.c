@@ -46,21 +46,6 @@
 #include "avformat.h"
 #include "avutil.h"
 
-#define ABOUT_TXT "Adapted for use in audacious by Tony Vroon (chainsaw@gentoo.org) from\n \
-the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC (mcmcc@mail.ru)\n \
-and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox.ru>.\n \
-This plugin based on source code " LIBAVCODEC_IDENT "\nby Fabrice Bellard from \
-http://ffmpeg.sourceforge.net.\n\n \
-This program is free software; you can redistribute it and/or modify \n \
-it under the terms of the GNU General Public License as published by \n \
-the Free Software Foundation; either version 2 of the License, or \n \
-(at your option) any later version. \n\n \
-This program is distributed in the hope that it will be useful, \n \
-but WITHOUT ANY WARRANTY; without even the implied warranty of \n \
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \n \
-See the GNU General Public License for more details.\n"
-#define PLUGIN_NAME "Audacious-WMA"
-#define PLUGIN_VERSION "v.1.0.5"
 #define ST_BUFF 1024
 
 static int ffmpeg_decode = 0;
@@ -76,7 +61,6 @@ static AVFormatContext *ic2 = NULL;
 static uint8_t *ffmpeg_outbuf, *ffmpeg_s_outbuf;
 
 char description[64];
-static void ffmpeg_about(void);
 static void ffmpeg_init(void);
 static int ffmpeg_is_our_file(char *filename);
 static int ffmpeg_is_our_fd(char *filename, VFSFile *fd);
@@ -102,7 +86,7 @@ InputPlugin ffmpeg_ip =
     NULL,           	// Filled in by xmms
     description,    	// The description that is shown in the preferences box
     ffmpeg_init,           // Called when the plugin is loaded
-    ffmpeg_about,          // Show the about box
+    NULL,          // Show the about box
     NULL,  	    	// Show the configure box
     ffmpeg_is_our_file,    // Return 1 if the plugin can handle the file
     NULL,           	// Scan dir
@@ -151,45 +135,6 @@ static gchar *str_twenty_to_space(gchar * str)
     }
 
     return str;
-}
-
-static void ffmpeg_about(void) 
-{
-    char *title;
-    char *message;
-
-    if (dialog1) return;
-    
-    title = (char *)g_malloc(80);
-    message = (char *)g_malloc(1000);
-    memset(title, 0, 80);
-    memset(message, 0, 1000);
-
-    sprintf(title, _("About %s"), PLUGIN_NAME);
-    sprintf(message, "%s %s\n\n%s", PLUGIN_NAME, PLUGIN_VERSION, ABOUT_TXT);
-
-    dialog1 = gtk_dialog_new();
-    g_signal_connect(G_OBJECT(dialog1), "destroy",
-                        G_CALLBACK(gtk_widget_destroyed), &dialog1);
-    gtk_window_set_title(GTK_WINDOW(dialog1), title);
-    gtk_window_set_policy(GTK_WINDOW(dialog1), FALSE, FALSE, FALSE);
-    gtk_container_border_width(GTK_CONTAINER(dialog1), 5);
-    label1 = gtk_label_new(message);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog1)->vbox), label1, TRUE, TRUE, 0);
-    gtk_widget_show(label1);
-
-    button1 = gtk_button_new_with_label(_(" Close "));
-    g_signal_connect_swapped(G_OBJECT(button1), "clicked",
-	                        G_CALLBACK(gtk_widget_destroy),
-    	                        GTK_OBJECT(dialog1));
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog1)->action_area), button1,
-                     FALSE, FALSE, 0);
-
-    gtk_widget_show(button1);
-    gtk_widget_show(dialog1);
-    gtk_widget_grab_focus(button1);
-    g_free(title);
-    g_free(message);
 }
 
 static void ffmpeg_init(void)
