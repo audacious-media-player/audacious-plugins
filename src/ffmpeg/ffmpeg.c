@@ -238,6 +238,9 @@ static int ffmpeg_is_our_fd(char *filename, VFSFile *fd)
 
     codec2 = avcodec_find_decoder(c2->codec_id);
 
+    if(!codec2)
+	return 0;
+
     return 1;
 }
 
@@ -281,7 +284,7 @@ static TitleInput *ffmpeg_get_song_tuple(gchar * filename)
     AVFormatContext *in = NULL;
     gchar *filename_proxy = g_strdup(filename);
 
-    if(av_open_input_file(&ic2, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
+    if(av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
 	return NULL;
 
     tuple = bmp_title_input_new();
@@ -289,7 +292,7 @@ static TitleInput *ffmpeg_get_song_tuple(gchar * filename)
     tuple->file_name = g_path_get_basename(filename_proxy);
     tuple->file_path = g_path_get_dirname(filename_proxy);
     tuple->file_ext = extname(filename_proxy);
-	
+
     av_find_stream_info(in);
 
     if((in->title[0] != '\0') || (in->author[0] != '\0') || (in->album[0] != '\0') ||
