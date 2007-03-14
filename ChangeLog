@@ -1,3 +1,11 @@
+2007-03-14 15:58:24 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1812]
+  - couldn't disable statusicon.
+  
+  trunk/configure.ac |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-03-14 14:50:31 +0000  Giacomo Lozito <james@develia.org>
   revision [1810]
   statusicon: added a open-file item in the small right-click menu
