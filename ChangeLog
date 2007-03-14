@@ -1,3 +1,12 @@
+2007-03-14 14:50:31 +0000  Giacomo Lozito <james@develia.org>
+  revision [1810]
+  statusicon: added a open-file item in the small right-click menu
+  trunk/src/statusicon/si.c           |    4 ++++
+  trunk/src/statusicon/si_audacious.h |    1 +
+  trunk/src/statusicon/si_ui.c        |   12 +++++++++++-
+  3 files changed, 16 insertions(+), 1 deletion(-)
+
+
 2007-03-14 14:44:00 +0000  Giacomo Lozito <james@develia.org>
   revision [1808]
   statusicon 0.3: alternative right-click menu with simple playback control commands

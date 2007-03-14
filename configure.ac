@@ -349,7 +349,7 @@ if test "x$enable_statusicon" = "xyes"; then
     PKG_CHECK_MODULES(GDKX11,[gdk-x11-2.0 >= 2.6.0],,[have_statusicon="no"])
 else
     AC_MSG_RESULT([*** X11 Status Icon plugin disabled per user request ***])
-    have_statusicon="yes"
+    have_statusicon="no"
 fi
 
 if test "x$have_statusicon" = "xyes"; then
