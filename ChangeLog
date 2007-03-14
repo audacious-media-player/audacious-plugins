@@ -1,3 +1,13 @@
+2007-03-13 16:37:27 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1796]
+  - make "stop after current song" work.
+  - now cuesheet plugin handles the end of file nicely.
+  - improve reliability.
+  
+  trunk/src/cue/cuesheet.c |  119 +++++++++++++++++++++++++++++++++++++++++------
+  1 file changed, 105 insertions(+), 14 deletions(-)
+
+
 2007-03-13 13:17:24 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1794]
   - if (result >= 0) return the result of ftell, otherwise return -1.
