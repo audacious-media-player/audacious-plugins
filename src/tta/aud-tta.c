@@ -40,7 +40,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <glib.h>
-#include <pthread.h>
 #include <string.h>
 
 #include <audacious/util.h>
@@ -54,7 +53,7 @@
 
 #include <audacious/id3tag.h>
 
-
+/* #define DEBUG 1 */
 
 #define  PLUGIN_VERSION "1.2"
 #define  PROJECT_URL "<http://www.true-audio.com>"
@@ -79,6 +78,8 @@ static void file_info (char *filename);
 static void about ();
 static TitleInput *get_song_tuple(char *filename);
 static gchar *extname(const char *filename);
+static void mseek (InputPlayback *data, gulong millisecond);
+
 
 gchar *tta_fmts[] = { "tta", NULL };
 
@@ -113,6 +114,7 @@ InputPlugin tta_ip =
     NULL, // buffer
     NULL, // vfs
     tta_fmts,
+    mseek,
 };
 
 InputPlugin *
@@ -122,12 +124,15 @@ get_iplugin_info (void)
     return &tta_ip;
 }
 
-static pthread_t decode_thread;
+static GThread *decode_thread;
 static char sample_buffer[PCM_BUFFER_LENGTH * MAX_BSIZE * MAX_NCH];
 static tta_info info;		// currently playing file info
 static long seek_position = -1;
 static int  playing = FALSE;
 static int  read_samples = -1;
+
+static GMutex *play_mutex;
+static GCond *play_cond;
 
 static void
 tta_error (int error)
@@ -200,69 +205,85 @@ get_title (char *filename, tta_info *ttainfo)
 }
 
 static void *
-play_loop (void *arg)
+play_loop (gpointer arg)
 {
-    InputPlayback *playback = arg;
+    InputPlayback *playback = (InputPlayback *)arg;
     int  bufsize = PCM_BUFFER_LENGTH  * info.BSIZE * info.NCH;
+    GTimeVal sleep_time;
 
     ////////////////////////////////////////
     // decode PCM_BUFFER_LENGTH samples
     // into the current PCM buffer position
 
-    while (playing)
-    {
-	while ((read_samples = get_samples (sample_buffer)) > 0)
-	{
+    while (playing) {
+        while ((read_samples = get_samples (sample_buffer)) > 0) {
+            // wait for buffer becomes available
+            while ((playback->output->buffer_free () < bufsize) && seek_position == -1) {
+                g_get_current_time(&sleep_time);
+                g_time_val_add(&sleep_time, 10000);
+                g_mutex_lock(play_mutex);
+                g_cond_timed_wait(play_cond, play_mutex, &sleep_time);
+                g_mutex_unlock(play_mutex);
+                if (!playing)
+                    goto DONE;
+            }
 
-	    while ((playback->output->buffer_free () < bufsize)
-		   && seek_position == -1)
-	    {
-		if (!playing)
-		    goto DONE;
-		xmms_usleep (10000);
-	    }
-	    if (seek_position == -1)
-	    {
-		produce_audio(playback->output->written_time(),
-			      ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE),
-			      info.NCH,
-			      read_samples * info.NCH * info.BSIZE,
-			      sample_buffer,
-			      NULL);
-	    }
-	    else
-	    {
-		set_position (seek_position);
-		playback->output->flush (seek_position * SEEK_STEP);
-		seek_position = -1;
-	    }
-	}
-	playback->output->buffer_free ();
-	playback->output->buffer_free ();
-	xmms_usleep(10000);
+            if (seek_position == -1) {
+                produce_audio(playback->output->written_time(),
+                              ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE),
+                              info.NCH,
+                              read_samples * info.NCH * info.BSIZE,
+                              sample_buffer,
+                              NULL);
+            }
+            else {
+                set_position (seek_position / SEEK_STEP); //now seek_postion is in millisecond.
+                playback->output->flush (seek_position);
+                seek_position = -1;
+            }
+
+            // sleep for a while
+            g_get_current_time(&sleep_time);
+            g_time_val_add(&sleep_time, 10000);
+            g_mutex_lock(play_mutex);
+            g_cond_timed_wait(play_cond, play_mutex, &sleep_time);
+            g_mutex_unlock(play_mutex);
+            if (!playing)
+                goto DONE;
+        }
+
+        // process remaining data
+        playback->output->buffer_free ();
+        playback->output->buffer_free ();
+
+        while(playback->output->buffer_playing()) {
+            g_get_current_time(&sleep_time);
+            g_time_val_add(&sleep_time, 10000);
+            g_mutex_lock(play_mutex);
+            g_cond_timed_wait(play_cond, play_mutex, &sleep_time);
+            g_mutex_unlock(play_mutex);
+            if(!playing)
+                goto DONE;
+        }
     }
-  DONE:
 
-    ////////////////////////
-    // destroy memory pools
-    player_stop ();
-
-    ///////////////////////////////
-    // close currently playing file
-    close_tta_file (&info);
-
-    pthread_exit (NULL);
+DONE:
+    g_thread_exit(NULL);
 }
 
 static void
 init ()
 {
     memset (&info, 0, sizeof (tta_info));
+    play_mutex = g_mutex_new();
+    play_cond = g_cond_new();
 }
 
 static void
 cleanup ()
 {
+    g_cond_free(play_cond);
+    g_mutex_free(play_mutex);
 }
 
 static void
@@ -491,36 +512,41 @@ play_file (InputPlayback *playback)
     char *title;
     long datasize, origsize, bitrate;
 
+    g_mutex_lock(play_mutex);
     playing = FALSE;
+    g_mutex_unlock(play_mutex);
+    g_cond_signal(play_cond);
 
     ////////////////////////////////////////
     // open TTA file
     if (open_tta_file (filename, &info, 0) < 0)
     {
-	tta_error (info.STATE);
-	close_tta_file (&info);
-	return;
+        tta_error (info.STATE);
+        close_tta_file (&info);
+        return;
     }
 
     ////////////////////////////////////////
     // initialize TTA player
     if (player_init (&info) < 0)
     {
-	tta_error (info.STATE);
-	close_tta_file (&info);
-	return;
+        tta_error (info.STATE);
+        close_tta_file (&info);
+        return;
     }
 
 
     if (playback->output->open_audio ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE,
-				   info.SAMPLERATE, info.NCH) == 0)
+                                      info.SAMPLERATE, info.NCH) == 0)
     {
-	tta_error (OUTPUT_ERROR);
-	close_tta_file (&info);
-	return;
+        tta_error (OUTPUT_ERROR);
+        close_tta_file (&info);
+        return;
     }
     title = get_title (filename, &info);
+#ifdef DEBUG
     printf("title @1 = %s\n", title);
+#endif
     {
 	    TitleInput *tuple;
 
@@ -528,7 +554,9 @@ play_file (InputPlayback *playback)
 	    if(tuple->track_name) {
 		    g_free(title);
 		    title = g_strdup(tuple->track_name);
+#ifdef DEBUG
 		    printf("title @2 = %s\n", title);
+#endif
 	    }
 
 	    bmp_title_input_free(tuple);
@@ -538,18 +566,22 @@ play_file (InputPlayback *playback)
     origsize = info.DATALENGTH * info.BSIZE * info.NCH;
 
     bitrate  = (long) ((float) datasize / origsize *
-	        (info.SAMPLERATE * info.NCH * info.BPS));
+                       (info.SAMPLERATE * info.NCH * info.BPS));
 
     tta_ip.set_info (title, 1000 * info.LENGTH, bitrate, info.SAMPLERATE, info.NCH);
     
     if (title)
-	g_free (title);
+        g_free (title);
 
+    g_mutex_lock(play_mutex);
     playing = TRUE;
     seek_position = -1;
     read_samples = -1;
+    g_mutex_unlock(play_mutex);
+    g_cond_signal(play_cond);
 
-    pthread_create (&decode_thread, NULL, play_loop, playback);
+    decode_thread = g_thread_create(play_loop, (gpointer)playback, TRUE, NULL);
+    printf("decode_thread = %p\n", decode_thread);
 }
 
 static void
@@ -557,29 +589,43 @@ tta_pause (InputPlayback *playback, short paused)
 {
     playback->output->pause (paused);
 }
+
 static void
 stop (InputPlayback *playback)
 {
-    if (playing)
-    {
-	playing = FALSE;
-	pthread_join (decode_thread, NULL);
-	playback->output->close_audio ();
-	close_tta_file (&info);
-	read_samples = 0;
+    printf("tta: f: stop:\n");
+
+    g_mutex_lock(play_mutex);
+    playing = FALSE;
+    g_mutex_unlock(play_mutex);
+    g_cond_signal(play_cond);
+    printf("tta: i: stop: stop signaled\n");
+
+    if (decode_thread) {
+        g_thread_join(decode_thread);
+    }
+
+#ifdef DEBUG
+    printf("tta: stop: decode_thread joined\n");
+#endif
+    playback->output->close_audio ();
+    player_stop();
+    close_tta_file (&info);
+    read_samples = 0;
+}
+
+static void
+mseek (InputPlayback *data, gulong millisecond)
+{
+    if (playing) {
+        seek_position = millisecond;
     }
 }
 
 static void
 seek (InputPlayback *data, int time)
 {
-    if (playing)
-    {
-	seek_position = 1000 * time / SEEK_STEP;
-
-	while (seek_position != -1)
-	    xmms_usleep (10000);
-    }
+    mseek(data, 1000 * time);
 }
 
 static int
