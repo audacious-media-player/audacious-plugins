@@ -359,7 +359,7 @@ si_ui_statusicon_smallmenu_create ( void )
 {
   GtkWidget *si_smenu = gtk_menu_new();
   GtkWidget *si_smenu_prev_item, *si_smenu_play_item, *si_smenu_pause_item;
-  GtkWidget *si_smenu_stop_item, *si_smenu_next_item;
+  GtkWidget *si_smenu_stop_item, *si_smenu_next_item, *si_smenu_sep_item, *si_smenu_eject_item;
 
   si_smenu_prev_item = gtk_image_menu_item_new_from_stock(
                          GTK_STOCK_MEDIA_PREVIOUS , NULL );
@@ -396,6 +396,16 @@ si_ui_statusicon_smallmenu_create ( void )
                             GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_NEXT) );
   gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_next_item );
   gtk_widget_show(si_smenu_next_item);
+  si_smenu_sep_item = gtk_separator_menu_item_new();
+  gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_sep_item );
+  gtk_widget_show(si_smenu_sep_item);
+  si_smenu_eject_item = gtk_image_menu_item_new_from_stock(
+                          GTK_STOCK_OPEN , NULL );
+  g_signal_connect_swapped( si_smenu_eject_item , "activate" ,
+                            G_CALLBACK(si_audacious_playback_ctrl) ,
+                            GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_EJECT) );
+  gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_eject_item );
+  gtk_widget_show(si_smenu_eject_item);
 
   return si_smenu;
 }

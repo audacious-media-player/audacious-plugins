@@ -146,5 +146,9 @@ si_audacious_playback_ctrl ( gpointer ctrl_code_gp )
     case SI_AUDACIOUS_PLAYBACK_CTRL_NEXT:
       xmms_remote_playlist_next( si_gp.xmms_session );
       break;
+
+    case SI_AUDACIOUS_PLAYBACK_CTRL_EJECT:
+      xmms_remote_eject( si_gp.xmms_session );
+      break;
   }
 }

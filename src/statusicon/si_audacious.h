@@ -30,6 +30,7 @@
 #define SI_AUDACIOUS_PLAYBACK_CTRL_PAUSE	2
 #define SI_AUDACIOUS_PLAYBACK_CTRL_STOP	3
 #define SI_AUDACIOUS_PLAYBACK_CTRL_NEXT	4
+#define SI_AUDACIOUS_PLAYBACK_CTRL_EJECT	5
 
 void si_audacious_toggle_visibility ( void );
 void si_audacious_volume_change ( gint );

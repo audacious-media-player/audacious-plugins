@@ -1,3 +1,15 @@
+2007-03-14 14:44:00 +0000  Giacomo Lozito <james@develia.org>
+  revision [1808]
+  statusicon 0.3: alternative right-click menu with simple playback control commands
+  trunk/src/statusicon/Makefile       |    4 
+  trunk/src/statusicon/si.c           |   37 +++++++
+  trunk/src/statusicon/si.h           |    3 
+  trunk/src/statusicon/si_audacious.h |    7 +
+  trunk/src/statusicon/si_common.h    |    2 
+  trunk/src/statusicon/si_ui.c        |  173 +++++++++++++++++++++++++++++++++++-
+  6 files changed, 218 insertions(+), 8 deletions(-)
+
+
 2007-03-14 13:43:19 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1806]
   - add 1sec guard time after issue of playlist_prev/next.
