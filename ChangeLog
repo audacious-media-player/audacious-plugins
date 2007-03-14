@@ -1,3 +1,11 @@
+2007-03-14 13:07:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1804]
+  - remove unnecessary sleep code so that out_lame can encode at full speed.
+  
+  trunk/src/tta/aud-tta.c |   19 +++++++------------
+  1 file changed, 7 insertions(+), 12 deletions(-)
+
+
 2007-03-14 10:16:45 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1802]
   - add support for mseek.
