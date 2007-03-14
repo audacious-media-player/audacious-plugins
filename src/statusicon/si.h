@@ -27,6 +27,7 @@
 
 void si_init ( void );
 void si_cleanup ( void );
+void si_prefs ( void );
 void si_about ( void );
 
 GeneralPlugin si_gp =
@@ -37,7 +38,7 @@ GeneralPlugin si_gp =
     "Status Icon " SI_VERSION_PLUGIN,		/* description */
     si_init,					/* init */
     si_about,					/* about */
-    NULL,					/* configure */
+    si_prefs,					/* configure */
     si_cleanup					/* cleanup */
 };
 

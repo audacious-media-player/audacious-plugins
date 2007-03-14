@@ -1,3 +1,12 @@
+2007-03-14 13:43:19 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1806]
+  - add 1sec guard time after issue of playlist_prev/next.
+  - some tweeks on debug printouts.
+  
+  trunk/src/cue/cuesheet.c |   19 +++++++++++++------
+  1 file changed, 13 insertions(+), 6 deletions(-)
+
+
 2007-03-14 13:07:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1804]
   - remove unnecessary sleep code so that out_lame can encode at full speed.

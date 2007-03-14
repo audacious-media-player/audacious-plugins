@@ -25,8 +25,15 @@
 #include <glib.h>
 
 
+#define SI_AUDACIOUS_PLAYBACK_CTRL_PREV	0
+#define SI_AUDACIOUS_PLAYBACK_CTRL_PLAY	1
+#define SI_AUDACIOUS_PLAYBACK_CTRL_PAUSE	2
+#define SI_AUDACIOUS_PLAYBACK_CTRL_STOP	3
+#define SI_AUDACIOUS_PLAYBACK_CTRL_NEXT	4
+
 void si_audacious_toggle_visibility ( void );
 void si_audacious_volume_change ( gint );
+void si_audacious_playback_ctrl ( gpointer );
 
 
 #endif /* !_I_SI_AUDACIOUS_H */

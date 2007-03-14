@@ -30,6 +30,6 @@
 
 #include "../../config.h"
 
-#define SI_VERSION_PLUGIN "0.2"
+#define SI_VERSION_PLUGIN "0.3"
 
 #endif /* !_I_ED_COMMON_H */

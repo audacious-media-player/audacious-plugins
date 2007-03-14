@@ -21,6 +21,7 @@
 #include "si.h"
 #include "si_ui.h"
 #include "si_audacious.h"
+#include "si_cfg.h"
 #include "si_common.h"
 #include <audacious/beepctrl.h>
 
@@ -43,6 +44,7 @@ si_init ( void )
   g_type_init();
   g_log_set_handler( NULL , G_LOG_LEVEL_WARNING , g_log_default_handler , NULL );
   plugin_active = TRUE;
+  si_cfg_load();
   si_ui_statusicon_enable( TRUE );
   return;
 }
@@ -57,6 +59,13 @@ si_cleanup ( void )
     si_ui_statusicon_enable( FALSE );
   }
   return;
+}
+
+
+void
+si_prefs ( void )
+{
+  si_ui_prefs_show();
 }
 
 
@@ -110,4 +119,32 @@ si_audacious_volume_change ( gint value )
   xmms_remote_get_volume( si_gp.xmms_session , &vl , &vr );
   xmms_remote_set_volume( si_gp.xmms_session , 
     CLAMP(vl + value, 0, 100) , CLAMP(vr + value, 0, 100) );
+}
+
+void
+si_audacious_playback_ctrl ( gpointer ctrl_code_gp )
+{
+  gint ctrl_code = GPOINTER_TO_INT(ctrl_code_gp);
+  switch ( ctrl_code )
+  {
+    case SI_AUDACIOUS_PLAYBACK_CTRL_PREV:
+      xmms_remote_playlist_prev( si_gp.xmms_session );
+      break;
+
+    case SI_AUDACIOUS_PLAYBACK_CTRL_PLAY:
+      xmms_remote_play( si_gp.xmms_session );
+      break;
+
+    case SI_AUDACIOUS_PLAYBACK_CTRL_PAUSE:
+      xmms_remote_pause( si_gp.xmms_session );
+      break;
+
+    case SI_AUDACIOUS_PLAYBACK_CTRL_STOP:
+      xmms_remote_stop( si_gp.xmms_session );
+      break;
+
+    case SI_AUDACIOUS_PLAYBACK_CTRL_NEXT:
+      xmms_remote_playlist_next( si_gp.xmms_session );
+      break;
+  }
 }
