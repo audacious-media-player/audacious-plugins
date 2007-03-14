@@ -49,7 +49,7 @@
 #ifdef _WIN32
 	typedef unsigned __int64 uint64;
 #else
-	typedef unsigned long int uint64;
+	typedef unsigned long long uint64;
 #endif
 
 const unsigned int bit_mask[] = {
