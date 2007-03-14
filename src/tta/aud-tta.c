@@ -228,6 +228,9 @@ play_loop (gpointer arg)
                     goto DONE;
             }
 
+            if (!playing)
+                goto DONE;
+
             if (seek_position == -1) {
                 produce_audio(playback->output->written_time(),
                               ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE),
@@ -241,15 +244,6 @@ play_loop (gpointer arg)
                 playback->output->flush (seek_position);
                 seek_position = -1;
             }
-
-            // sleep for a while
-            g_get_current_time(&sleep_time);
-            g_time_val_add(&sleep_time, 10000);
-            g_mutex_lock(play_mutex);
-            g_cond_timed_wait(play_cond, play_mutex, &sleep_time);
-            g_mutex_unlock(play_mutex);
-            if (!playing)
-                goto DONE;
         }
 
         // process remaining data
@@ -581,7 +575,9 @@ play_file (InputPlayback *playback)
     g_cond_signal(play_cond);
 
     decode_thread = g_thread_create(play_loop, (gpointer)playback, TRUE, NULL);
+#ifdef DEBUG
     printf("decode_thread = %p\n", decode_thread);
+#endif
 }
 
 static void
@@ -593,14 +589,13 @@ tta_pause (InputPlayback *playback, short paused)
 static void
 stop (InputPlayback *playback)
 {
-    printf("tta: f: stop:\n");
-
     g_mutex_lock(play_mutex);
     playing = FALSE;
     g_mutex_unlock(play_mutex);
     g_cond_signal(play_cond);
+#ifdef DEBUG
     printf("tta: i: stop: stop signaled\n");
-
+#endif
     if (decode_thread) {
         g_thread_join(decode_thread);
     }
