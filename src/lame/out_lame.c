@@ -32,9 +32,8 @@
 #include <lame/lame.h>
 
 #define ENCBUFFER_SIZE 35000
-#define OUT_LAME_VER "0.2d6"
-#define DEBUG 1
-#undef DEBUG
+#define OUT_LAME_VER "0.2"
+/* #define DEBUG 1 */
 
 GtkWidget *configure_win = NULL, *path_vbox;
 GtkWidget *path_hbox, *path_label, *path_entry, *path_browse,
@@ -141,8 +140,8 @@ static void outlame_write(void *ptr, gint length);
 static void outlame_close(void);
 static void outlame_flush(gint time);
 static void outlame_pause(short p);
-static gint outlame_free(void);
-static gint outlame_playing(void);
+static gint outlame_buffer_free(void);
+static gint outlame_buffer_playing(void);
 static gint outlame_get_written_time(void);
 static gint outlame_get_output_time(void);
 static void outlame_configure(void);
@@ -167,8 +166,8 @@ OutputPlugin outlame_op = {
     outlame_close,
     outlame_flush,
     outlame_pause,
-    outlame_free,
-    outlame_playing,
+    outlame_buffer_free,
+    outlame_buffer_playing,
     outlame_get_output_time,
     outlame_get_written_time,
     NULL
@@ -303,7 +302,6 @@ static gint outlame_open(AFormat fmt, gint rate, gint nch)
     gint pos;
     int b_use_path_anyway = 0;
     gchar *tmpfilename = NULL;
-    gchar *tmp = NULL;
 
     /* store open paramators for reopen */
     oldfmt = fmt; oldrate = rate; oldnch = nch;
@@ -363,7 +361,6 @@ static gint outlame_open(AFormat fmt, gint rate, gint nch)
     printf("anyway = %d\n", b_use_path_anyway);
 #endif
 
-//    if (tuple && b_use_source_file_path == 1 && b_use_path_anyway == 0) {
     if (tuple && !b_use_path_anyway) {
         if (b_prepend_track_number && tuple->track_number) {
             filename = g_strdup_printf("%s/%.02d %s.mp3",
@@ -488,12 +485,12 @@ static void outlame_write(void *ptr, gint length)
 
     if (inch == 1) {
         encout =
-            lame_encode_buffer(gfp, ptr, ptr, length / 2, encbuffer,
+            lame_encode_buffer(gfp, (short *)ptr, (short *)ptr, length / 2, encbuffer,
                                ENCBUFFER_SIZE);
     }
     else {
         encout =
-            lame_encode_buffer_interleaved(gfp, ptr, length / 4, encbuffer,
+            lame_encode_buffer_interleaved(gfp, (short *)ptr, length / 4, encbuffer,
                                            ENCBUFFER_SIZE);
     }
     fwrite(encbuffer, 1, encout, output_file);
@@ -547,14 +544,17 @@ static void outlame_pause(short p)
 {
 }
 
-static gint outlame_free(void)
+static gint outlame_buffer_free(void)
 {
-    return 1000000;
+    return ENCBUFFER_SIZE - encout;
 }
 
-static gint outlame_playing(void)
+static gint outlame_buffer_playing(void)
 {
-    return 0;
+#ifdef DEBUG    
+    printf("lame: buffer_playing = %d\n", encout ? 1 : 0);
+#endif
+    return encout ? 1 : 0;
 }
 
 static gint outlame_get_written_time(void)
@@ -835,29 +835,6 @@ static void id3_only_version(GtkToggleButton * togglebutton,
     }
 
 }
-
-static void path_dirbrowser_cb(gchar * dir)
-{
-    gtk_entry_set_text(GTK_ENTRY(path_entry), dir);
-}
-
-#if 0
-static void path_browse_cb(GtkWidget * w, gpointer data)
-{
-    if (!path_dirbrowser) {
-        path_dirbrowser =
-            xmms_create_dir_browser
-            ("Select the directory where you want to store the output files:",
-             file_path, GTK_SELECTION_SINGLE, path_dirbrowser_cb);
-        gtk_signal_connect(GTK_OBJECT(path_dirbrowser), "destroy",
-                           GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-                           &path_dirbrowser);
-        gtk_window_set_transient_for(GTK_WINDOW(path_dirbrowser),
-                                     GTK_WINDOW(configure_win));
-        gtk_widget_show(path_dirbrowser);
-    }
-}
-#endif
 
 static void use_source_file_path_cb(GtkToggleButton * togglebutton,
                                     gpointer user_data)

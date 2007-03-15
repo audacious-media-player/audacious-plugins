@@ -1,3 +1,11 @@
+2007-03-14 15:59:50 +0000  Giacomo Lozito <james@develia.org>
+  revision [1814]
+  statusicon: add missing files
+  trunk/src/statusicon/si_cfg.c |   52 ++++++++++++++++++++++++++++++++++++++++++
+  trunk/src/statusicon/si_cfg.h |   41 +++++++++++++++++++++++++++++++++
+  2 files changed, 93 insertions(+)
+
+
 2007-03-14 15:58:24 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1812]
   - couldn't disable statusicon.
