@@ -452,6 +452,11 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		else
 			real_ip->plugin->seek(real_ip, finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
 
+		// in some plugins, NULL as 2nd arg causes crash.
+		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
+		g_free(dummy);
+		cue_tracks[last_cue_track].index = file_length;
+
         /* kick watchdog thread */
         g_usleep(TRANSITION_GUARD_TIME);
         g_mutex_lock(cue_mutex);
@@ -461,10 +466,6 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 #ifdef DEBUG
         g_print("watchdog activated\n");
 #endif
-		// in some plugins, NULL as 2nd arg causes crash.
-		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
-		g_free(dummy);
-		cue_tracks[last_cue_track].index = file_length;
 	}
 
 	finetune_seek = 0;
@@ -578,14 +579,14 @@ static gpointer watchdog_func(gpointer data)
             guint pos;
 #ifdef DEBUG
             g_print("i: watchdog next\n");
-            g_print("time = %d cur = %d cidx = %d nidx = %d last = %d\n", time, cur_cue_track,
+            g_print("time = %d cur = %d cidx = %d nidx = %d last = %d lidx = %d\n", time, cur_cue_track,
                     cue_tracks[cur_cue_track].index,
                     cue_tracks[cur_cue_track+1].index,
-                    last_cue_track);
+                    last_cue_track, cue_tracks[last_cue_track].index);
 #endif
             while(time > cue_tracks[cur_cue_track + 1].index) {
                 if(cur_cue_track + 1 == last_cue_track) {
-                    break;
+                    goto END_OF_CUE;
                 }
                 cur_cue_track++;
                 pos = cur_cue_track;
@@ -602,21 +603,29 @@ static gpointer watchdog_func(gpointer data)
             }
         }
 
+    END_OF_CUE:
         // end of file
         if (cur_cue_track + 1 == last_cue_track &&
-            cue_tracks[cur_cue_track + 1].index - time < 500) { // difference < 500ms
+            abs(cue_tracks[cur_cue_track + 1].index - time) < 500) { // difference < 500ms
             if(!real_ip->output->buffer_playing()) {
 #ifdef DEBUG
-            g_print("i: watchdog eof reached\n");
+                g_print("i: watchdog eof reached\n");
 #endif
-                exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
+                if(cfg.repeat) {
+                    guint pos = 0;
+#ifdef DEBUG
+                    g_print("i: watchdog repeat\n");
+#endif
+                    exec_thread = g_thread_create(do_setpos, &pos, FALSE, NULL);
+                }
+                else {
+                    exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
+                }
             }
         }
-
     }
-
 #ifdef DEBUG
-    g_print("e: watchdog\n");    
+    g_print("e: watchdog\n");
 #endif
     return NULL; // dummy.
 }
@@ -639,7 +648,7 @@ static void free_cue_info(void)
 		cue_tracks[last_cue_track-1].title = NULL;
 	}
 #ifdef DEBUG
-	g_print("last_cue_track = %d\n", last_cue_track);
+	g_print("free_cue_info: last_cue_track = %d\n", last_cue_track);
 #endif
 	last_cue_track = 0;
 }
@@ -659,7 +668,7 @@ static void cache_cue_file(char *f)
 		if (vfs_fgets(line, MAX_CUE_LINE_LENGTH+1, file) == NULL) {
 			vfs_fclose(file);
 			return;
-                }
+        }
 
 		for (p = 0; line[p] && isspace((int) line[p]); p++);
 		if (!line[p])

@@ -1,3 +1,13 @@
+2007-03-15 06:50:12 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1818]
+  - make use of playlist_set_position() instead of playlist_prev/next(). now cuesheet directly jumps to the objective track.
+  - now eof handling code checks output->buffer_playing().
+  - revise guard time logic and reduce the amount of time to 500msec.
+  
+  trunk/src/cue/cuesheet.c |   78 ++++++++++++++++++++++-------------------------
+  1 file changed, 37 insertions(+), 41 deletions(-)
+
+
 2007-03-15 06:34:56 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1816]
   - implement real buffer_free() and buffer_playing().
