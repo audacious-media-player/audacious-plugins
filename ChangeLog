@@ -1,3 +1,14 @@
+2007-03-15 06:34:56 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1816]
+  - implement real buffer_free() and buffer_playing().
+  - remove unused code.
+  - apply cast to (short *) in lame_encode_xx()
+  - change version number from 0.2d6 to 0.2.
+  
+  trunk/src/lame/out_lame.c |   53 +++++++++++++---------------------------------
+  1 file changed, 15 insertions(+), 38 deletions(-)
+
+
 2007-03-14 15:59:50 +0000  Giacomo Lozito <james@develia.org>
   revision [1814]
   statusicon: add missing files
