@@ -341,6 +341,7 @@ static void stop(InputPlayback * data)
 static gpointer do_stop(gpointer data)
 {
     InputPlayback *playback = (InputPlayback *)data;
+    Playlist *playlist = playlist_get_active();
 #ifdef DEBUG
     g_print("f: do_stop\n");
 #endif
@@ -348,9 +349,11 @@ static gpointer do_stop(gpointer data)
     playback_stop();
     ip_data.stop = FALSE;
 
+    PLAYLIST_LOCK(playlist->mutex);
     gdk_threads_enter();
     mainwin_clear_song_info();
     gdk_threads_leave();
+    PLAYLIST_UNLOCK(playlist->mutex);
 
 #ifdef DEBUG
     g_print("e: do_stop\n");
@@ -574,7 +577,7 @@ static gpointer watchdog_func(gpointer data)
         }
 
         // next track
-        if (time > cue_tracks[cur_cue_track + 1].index)
+        if (cur_cue_track + 1 < last_cue_track && time > cue_tracks[cur_cue_track + 1].index)
         {
             guint pos;
 #ifdef DEBUG
@@ -585,9 +588,6 @@ static gpointer watchdog_func(gpointer data)
                     last_cue_track, cue_tracks[last_cue_track].index);
 #endif
             while(time > cue_tracks[cur_cue_track + 1].index) {
-                if(cur_cue_track + 1 == last_cue_track) {
-                    goto END_OF_CUE;
-                }
                 cur_cue_track++;
                 pos = cur_cue_track;
                 if (time <= cue_tracks[cur_cue_track].index)
@@ -603,19 +603,16 @@ static gpointer watchdog_func(gpointer data)
             }
         }
 
-    END_OF_CUE:
-        // end of file
+        // last track
         if (cur_cue_track + 1 == last_cue_track &&
-            abs(cue_tracks[cur_cue_track + 1].index - time) < 500) { // difference < 500ms
+            (cue_tracks[last_cue_track].index - time < 500 ||
+             time > cue_tracks[last_cue_track].index) ){ // may not happen. for safety.
             if(!real_ip->output->buffer_playing()) {
 #ifdef DEBUG
                 g_print("i: watchdog eof reached\n");
 #endif
                 if(cfg.repeat) {
                     guint pos = 0;
-#ifdef DEBUG
-                    g_print("i: watchdog repeat\n");
-#endif
                     exec_thread = g_thread_create(do_setpos, &pos, FALSE, NULL);
                 }
                 else {
