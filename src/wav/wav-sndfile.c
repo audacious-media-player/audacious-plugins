@@ -51,7 +51,7 @@ static	SF_INFO sfinfo;
 
 static	int 	song_length;
 static	int 	bit_rate = 0;
-static	int 	seek_time = -1;
+static	glong 	seek_time = -1;
 
 static GThread *decode_thread;
 static GMutex *decode_start_mutex;
@@ -83,7 +83,13 @@ InputPlugin wav_ip = {
     NULL,
     get_song_info,
     NULL,
-    NULL
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    file_mseek,
 };
 
 int
@@ -152,12 +158,7 @@ play_loop (gpointer arg)
 		GTimeVal sleeptime;
 
 		g_get_current_time(&sleeptime);
-		sleeptime.tv_usec += 10000;
-		if (sleeptime.tv_usec >= 1000000)
-		{
-			sleeptime.tv_sec += 1;
-			sleeptime.tv_usec -= 1000000;
-		}
+		g_time_val_add(&sleeptime, 10000);
 
 		g_mutex_lock(decode_mutex);
 
@@ -166,8 +167,7 @@ play_loop (gpointer arg)
 
 		if (samples > 0 && playback->playing == TRUE)
 		{
-			while ((playback->output->buffer_free () < 
-				(samples * sizeof (short))) && 
+			while ((playback->output->buffer_free () < samples) &&
 				playback->playing == TRUE)
 			{
 				g_cond_timed_wait(decode_cond,
@@ -195,10 +195,11 @@ play_loop (gpointer arg)
 		}
 
 		/* Do seek if seek_time is valid. */
-		if (seek_time > 0)
+		if (seek_time >= 0)
 		{
-			sf_seek (sndfile, seek_time * sfinfo.samplerate, SEEK_SET);
-			playback->output->flush (seek_time * 1000);
+			sf_seek (sndfile, (sf_count_t)((gint64)seek_time * (gint64)sfinfo.samplerate / 1000L),
+                     SEEK_SET);
+			playback->output->flush (seek_time);
 			seek_time = -1;
    		}
 
@@ -292,15 +293,22 @@ play_stop (InputPlayback *playback)
 }
 
 static void
-file_seek (InputPlayback *playback, int time)
+file_mseek (InputPlayback *playback, gulong millisecond)
 {
 	if (! sfinfo.seekable)
 		return;
 
-	seek_time = time;
+	seek_time = (glong)millisecond;
 
 	while (seek_time != -1)
 		xmms_usleep (80000);
+}
+
+static void
+file_seek (InputPlayback *playback, int time)
+{
+    gulong millisecond = time * 1000;
+    file_mseek(playback, millisecond);
 }
 
 static void
