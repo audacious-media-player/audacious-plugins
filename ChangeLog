@@ -1,3 +1,12 @@
+2007-03-16 05:36:55 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1826]
+  - add mseek support to wav.c (without libsndfile version) too.
+  
+  trunk/src/wav/wav.c |   16 ++++++++++++----
+  trunk/src/wav/wav.h |    4 +++-
+  2 files changed, 15 insertions(+), 5 deletions(-)
+
+
 2007-03-16 05:09:36 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1824]
   - add mseek support.

@@ -368,9 +368,10 @@ int url_fopen(ByteIOContext *s, const char *filename, int flags)
 int url_vfdopen(ByteIOContext *s, VFSFile *fd)
 {
     URLContext *h;
+    VFSFile *nfd = vfs_dup(fd);
     int err;
 
-    err = url_vopen(&h, fd);
+    err = url_vopen(&h, nfd);
     if (err < 0)
         return err;
     err = url_fdopen(s, h);
