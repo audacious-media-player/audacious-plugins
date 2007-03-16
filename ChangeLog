@@ -1,3 +1,10 @@
+2007-03-16 20:05:14 +0000  Giacomo Lozito <james@develia.org>
+  revision [1828]
+  - ffmpeg: prevent it from crashing when probing remote sources
+  trunk/src/ffmpeg/libavformat/aviobuf.c |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2007-03-16 05:36:55 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1826]
   - add mseek support to wav.c (without libsndfile version) too.

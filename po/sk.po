@@ -1,0 +1,4026 @@
+# translation of audacious-plugins.po to Slovak
+# This file is distributed under the same license as the audacious-plugins package.
+# Copyright (C) 2007 Andrej Herceg <herceg.andrej@zoznam.sk>.
+# Andrej Herceg <herceg.andrej@zoznam.sk>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: audacious-plugins\n"
+"Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
+"POT-Creation-Date: 2007-02-11 03:19-0600\n"
+"PO-Revision-Date: 2007-03-14 02:18+0100\n"
+"Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language-Team: \n"
+
+#: src/CoreAudio/coreaudio.c:49
+msgid "CoreAudio Output Plugin"
+msgstr "Základný zvukový výstupný modul"
+
+#: src/OSS/configure.c:150
+#, c-format
+msgid "Default (%s)"
+msgstr "Štandardné (%s)"
+
+#: src/OSS/configure.c:168
+msgid "Default"
+msgstr "Štandardné"
+
+#: src/OSS/configure.c:200
+msgid "OSS Driver configuration"
+msgstr "Nastavenie ovládača OSS"
+
+#: src/OSS/configure.c:216 src/sun/configure.c:183 src/alsa/configure.c:285
+msgid "Audio device:"
+msgstr "Zvukové zariadenie:"
+
+#: src/OSS/configure.c:238 src/OSS/configure.c:279
+msgid "Use alternate device:"
+msgstr "Použiť iné zariadenie:"
+
+#: src/OSS/configure.c:259 src/sun/configure.c:220 src/alsa/configure.c:330
+msgid "Mixer device:"
+msgstr "Zariadenie mixéru:"
+
+#: src/OSS/configure.c:301 src/sun/configure.c:248
+msgid "Devices"
+msgstr "Zariadenia"
+
+#: src/OSS/configure.c:303 src/esd/configure.c:171 src/sun/configure.c:259
+#: src/arts/configure.c:62
+msgid "Buffering:"
+msgstr "Vyrovnávanie:"
+
+#: src/OSS/configure.c:316 src/esd/configure.c:184 src/sun/configure.c:272
+#: src/arts/configure.c:74
+msgid "Buffer size (ms):"
+msgstr "Veľkosť vyrovnávacej pamäte (ms):"
+
+#: src/OSS/configure.c:330 src/esd/configure.c:198 src/sun/configure.c:290
+msgid "Pre-buffer (percent):"
+msgstr "Dopredu načítať (v percentách):"
+
+#: src/OSS/configure.c:341 src/esd/configure.c:209 src/sun/configure.c:304
+#: src/arts/configure.c:84
+msgid "Buffering"
+msgstr "Vyrovnávanie"
+
+#: src/OSS/configure.c:342
+msgid "Mixer Settings:"
+msgstr "Nastavenia mixéru:"
+
+#: src/OSS/configure.c:348
+msgid "Volume controls Master not PCM"
+msgstr "Hlasitosť je ovládaná kanálom Master a nie PCM"
+
+#: src/OSS/configure.c:354 src/sun/configure.c:394
+msgid "Mixer"
+msgstr "Mixér"
+
+#: src/OSS/OSS.c:53
+msgid "OSS Output Plugin"
+msgstr "Výstupný modul OSS"
+
+#: src/OSS/about.c:39
+msgid "About OSS Driver"
+msgstr "O module OSS"
+
+#: src/OSS/about.c:40
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"OSS ovládač programu Audacious\n"
+"\n"
+"Tento program je voľné programové vybavenie; môžete ho šíriť a upravovať\n"
+"podľa ustanovení GNU GPL, vydávanej nadáciou Free Software Foundation;\n"
+"a to buď verzie 2 tejto licencie, alebo (podľa vášho uváženia) ktorejkoľvek\n"
+"neskoršej verzie.\n"
+"\n"
+"Tento program je rozširovaný v nádeji, že bude užitočný, ale BEZ\n"
+"AKEJKOĽVEK ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI,\n"
+"alebo VHODNOSTI PRE URČITÝ ÚČEL. Ďalšie podrobnosti hľadajte v GNU GPL.\n"
+"\n"
+"Kópiu GNU GPL by ste mali dostať spolu s týmto programom. Ak sa tak\n"
+"nestalo, požiadajte o ňu Free Software Foundation, Inc.,\n"
+"675 Mass Ave, Cambridge, MA 02139, USA."
+
+#: src/OSS/about.c:54 src/adplug/adplug-xmms.cc:161 src/alac/plugin.c:87
+#: src/audiocompress/audacious-glue.c:107 src/console/Audacious_Driver.cxx:473
+#: src/echo_plugin/gui.c:27 src/echo_plugin/gui.c:138 src/esd/about.c:49
+#: src/jack/jack.c:598 src/null/null.c:63 src/paranormal/plugin.c:290
+#: src/scrobbler/gtkstuff.c:24 src/stereo_plugin/stereo.c:59
+#: src/stereo_plugin/stereo.c:122 src/sun/configure.c:559 src/sun/about.c:38
+#: src/timidity/src/xmms-timidity.c:140 src/timidity/src/interface.c:224
+#: src/tonegen/tonegen.c:57 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:894
+#: src/wav/wav-sndfile.c:270 src/arts/configure.c:91
+#: src/flac112/configure.c:478 src/flac112/configure.c:510
+#: src/flac113/configure.c:478 src/flac113/configure.c:510
+#: src/statusicon/si_ui.c:349
+msgid "Ok"
+msgstr "OK"
+
+#: src/adplug/adplug-xmms.cc:152
+msgid "About "
+msgstr "O "
+
+#: src/adplug/adplug-xmms.cc:155
+msgid ""
+"\n"
+"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+"\n"
+"This plugin is released under the terms and conditions of the GNU LGPL.\n"
+"See http://www.gnu.org/licenses/lgpl.html for details.\n"
+"\n"
+"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et "
+"al.\n"
+"Linked AdPlug library version: "
+msgstr ""
+"\n"
+"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+"\n"
+"Modul je poskytovaný za podmienok licencie GNU LGPL.\n"
+"Pre podrobnosti navštívte http://www.gnu.org/licenses/lgpl.html\n"
+"\n"
+"Modul používa knižnicu AdPlug, copyright (C) Simon Peter a iný.\n"
+"Zostavené s AdPlug knižnicou verzie: "
+
+#: src/audiocompress/audacious-glue.c:100
+msgid "AudioCompress "
+msgstr "AudioKopresor"
+
+#: src/audiocompress/audacious-glue.c:101
+msgid ""
+"\n"
+"(c)2003 trikuare studios(http://trikuare.cx)\n"
+"Ported to Audacious by Tony Vroon (chainsaw@gentoo.org)\n"
+"\n"
+"Simple dynamic range compressor for transparently\n"
+"keeping the volume level more or less consistent"
+msgstr ""
+"\n"
+"(c)2003 trikuare studios(http://trikuare.cx)\n"
+"Pre Audacious upravil Tony Vroon (chainsaw@gentoo.org)\n"
+"\n"
+"Jednoduchý zhusťovač dynamického rozsahu udržujúci\n"
+"hlasitosť na viac-menej rovnakej úrovni"
+
+#: src/audiocompress/audacious-glue.c:106
+msgid "About AudioCompress"
+msgstr "O AudioKompresore"
+
+#: src/blur_scope/config.c:73
+msgid "Blur Scope: Color selection"
+msgstr "Blur Scope: Výber farby"
+
+#: src/blur_scope/config.c:83
+msgid "Options:"
+msgstr "Nastavenia:"
+
+#: src/blur_scope/blur_scope.c:57
+msgid "/Toggle Decorations"
+msgstr "/Prepnúť zobrazenie dekorácií"
+
+#: src/blur_scope/blur_scope.c:59
+msgid "/-"
+msgstr "/-"
+
+#: src/blur_scope/blur_scope.c:60
+msgid "/Close"
+msgstr "/Zatvoriť"
+
+#: src/blur_scope/blur_scope.c:194
+msgid "Blur scope"
+msgstr "Blur scope"
+
+#: src/cdaudio/configure.c:185 src/cdaudio/configure.c:199
+#: src/cdaudio/configure.c:525
+#, c-format
+msgid "Drive %d"
+msgstr "Mechanika %d"
+
+#: src/cdaudio/configure.c:245
+#, c-format
+msgid ""
+"Failed to open device %s\n"
+"Error: %s\n"
+"\n"
+msgstr ""
+"Zariadenie %s sa nepodarilo otvoriť\n"
+"Chyba: %s\n"
+"\n"
+
+#: src/cdaudio/configure.c:252
+msgid ""
+"Failed to read \"Table of Contents\"\n"
+"Maybe no disc in the drive?\n"
+"\n"
+msgstr ""
+"Nepodarilo sa načítať obsah disku\n"
+"Možno nie je disk v mechanike\n"
+"\n"
+
+#: src/cdaudio/configure.c:256
+#, c-format
+msgid ""
+"Device %s OK.\n"
+"Disc has %d tracks"
+msgstr ""
+"Zariadenie %s je v poriadku.\n"
+"Na disku je %d stôp"
+
+#: src/cdaudio/configure.c:265
+#, c-format
+msgid " (%d data tracks)"
+msgstr " (%d dátových stôp)"
+
+#: src/cdaudio/configure.c:266
+#, c-format
+msgid ""
+"\n"
+"Total length: %d:%d\n"
+msgstr ""
+"\n"
+"Celková dĺžka: %d:%d\n"
+
+#: src/cdaudio/configure.c:271
+msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
+msgstr "Disk neobsahuje žiadne zvukové stopy, preto nebolo otestované digitálne čítanie zvuku\n"
+
+#: src/cdaudio/configure.c:288
+msgid ""
+"Digital audio extraction test: OK\n"
+"\n"
+msgstr ""
+"Test digitálneho čítania zvuku: OK\n"
+"\n"
+
+#: src/cdaudio/configure.c:292
+#, c-format
+msgid ""
+"Digital audio extraction test failed: %s\n"
+"\n"
+msgstr ""
+"Test digitálneho čítania zvuku zlyhal: %s\n"
+"\n"
+
+#: src/cdaudio/configure.c:302
+#, c-format
+msgid ""
+"Failed to check directory %s\n"
+"Error: %s"
+msgstr ""
+"Adresár %s sa nepodarilo otestovať\n"
+"Chyba: %s"
+
+#: src/cdaudio/configure.c:308
+#, c-format
+msgid "Error: %s exist, but is not a directory"
+msgstr "Chyba: %s existuje, ale nie je to adresár"
+
+#: src/cdaudio/configure.c:311
+#, c-format
+msgid "Directory %s OK."
+msgstr "Adresár %s je v poriadku."
+
+#: src/cdaudio/configure.c:355
+msgid "Device:"
+msgstr "Zariadenie:"
+
+#: src/cdaudio/configure.c:363
+msgid "_Device:"
+msgstr "_Zariadenie:"
+
+#: src/cdaudio/configure.c:373
+msgid "Dir_ectory:"
+msgstr "Adr_esár:"
+
+#: src/cdaudio/configure.c:385
+msgid "Play mode:"
+msgstr "Spôsob prehrávania:"
+
+#: src/cdaudio/configure.c:391
+msgid "Analog"
+msgstr "Analógové"
+
+#: src/cdaudio/configure.c:399
+msgid "Digital audio extraction"
+msgstr "Digitálne"
+
+#: src/cdaudio/configure.c:409
+msgid "Volume control:"
+msgstr "Ovládanie hlasitosti:"
+
+#: src/cdaudio/configure.c:415
+msgid "No mixer"
+msgstr "Nepoužívať mixér"
+
+#: src/cdaudio/configure.c:421
+msgid "CDROM drive"
+msgstr "Mechanika CD-Rom"
+
+#: src/cdaudio/configure.c:427
+msgid "OSS mixer"
+msgstr "OSS mixér"
+
+#: src/cdaudio/configure.c:450
+msgid "Check drive..."
+msgstr "Skontrolovať mechaniku..."
+
+#: src/cdaudio/configure.c:456
+msgid "Remove drive"
+msgstr "Odstrániť mechaniku"
+
+#: src/cdaudio/configure.c:499
+msgid "CD Audio Player Configuration"
+msgstr "Nastavenie prehrávača Audio CD"
+
+#: src/cdaudio/configure.c:537
+msgid "Add drive"
+msgstr "Pridať mechaniku"
+
+#: src/cdaudio/configure.c:545
+msgid "Device"
+msgstr "Zariadenie"
+
+#: src/cdaudio/configure.c:555
+msgid "CDDB:"
+msgstr "CDDB:"
+
+#: src/cdaudio/configure.c:566
+msgid "Use CDDB"
+msgstr "Používať CDDB"
+
+#: src/cdaudio/configure.c:570
+msgid "Get server list"
+msgstr "Získať zoznam serverov"
+
+#: src/cdaudio/configure.c:573
+msgid "Show network window"
+msgstr "Zobraziť okno so sieťovým prenosom"
+
+#: src/cdaudio/configure.c:583
+msgid "CDDB server:"
+msgstr "CDDB server:"
+
+#: src/cdaudio/configure.c:598
+msgid "Track names:"
+msgstr "Názvy stôp:"
+
+#: src/cdaudio/configure.c:605 src/vorbis/configure.c:138
+#: src/flac112/configure.c:302 src/flac113/configure.c:302
+#: src/madplug/configure.c:217
+msgid "Override generic titles"
+msgstr "Používať vlastný formát názvu"
+
+#: src/cdaudio/configure.c:621
+msgid "Name format:"
+msgstr "Formát názvu:"
+
+#: src/cdaudio/configure.c:633
+msgid "CD Info"
+msgstr "Informácia o CD"
+
+#: src/cdaudio/cdaudio.c:186
+msgid "CD Audio Plugin"
+msgstr "Modul Audio CD"
+
+#: src/cdaudio/cdaudio.c:1058 src/cdaudio/cdaudio.c:1063
+#, c-format
+msgid "CD Audio Track %02u"
+msgstr "Audio CD stopa %02u"
+
+#: src/cdaudio/cdinfo.c:161 src/cdaudio/cdinfo.c:162 src/cdaudio/cdinfo.c:163
+msgid "(unknown)"
+msgstr "(neznáme)"
+
+#: src/console/Audacious_Driver.cxx:468
+msgid "About the Console Music Decoder"
+msgstr "O dekodéry konzolovej hudby"
+
+#: src/console/Audacious_Driver.cxx:469
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
+"        Shay Green <gblargg@gmail.com>"
+msgstr ""
+"Dekodér konzolovej hudby je založený na Game_Music_Emu 0.5.2.\n"
+"Podporované formáty: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Pre Audiacious upravili: William Pitcock <nenolod@nenolod.net>,\n"
+"        Shay Green <gblargg@gmail.com>"
+
+#: src/console/Audacious_Driver.cxx:518
+msgid "Game console audio module decoder"
+msgstr "Dekodér zvukových modulov herných konzol"
+
+#: src/console/Audacious_Config.cxx:127
+msgid "Console Music Decoder"
+msgstr "Dekodér konzolovej hudby"
+
+#: src/console/Audacious_Config.cxx:147 src/madplug/configure.c:170
+msgid "General"
+msgstr "Všeobecné"
+
+#: src/console/Audacious_Config.cxx:149
+msgid "Playback"
+msgstr "Prehrať"
+
+#: src/console/Audacious_Config.cxx:164
+msgid "Bass:"
+msgstr "Hĺbky:"
+
+#: src/console/Audacious_Config.cxx:168 src/console/Audacious_Config.cxx:179
+#: src/console/Audacious_Config.cxx:200
+msgid "secs"
+msgstr "sekúnd"
+
+#: src/console/Audacious_Config.cxx:175
+msgid "Treble:"
+msgstr "Výšky:"
+
+#: src/console/Audacious_Config.cxx:196
+msgid "Default song length:"
+msgstr "Štandardná dĺžka skladby:"
+
+#: src/console/Audacious_Config.cxx:202
+msgid "Resampling"
+msgstr "Prevzorkovanie"
+
+#: src/console/Audacious_Config.cxx:208
+msgid "Enable audio resampling"
+msgstr "Povoliť prevzorkovanie zvuku"
+
+#: src/console/Audacious_Config.cxx:223
+msgid "Resampling rate:"
+msgstr "Prevzorkovať na:"
+
+#: src/console/Audacious_Config.cxx:227
+msgid "Hz"
+msgstr "Hz"
+
+#: src/console/Audacious_Config.cxx:237
+msgid "NSF/NSFE"
+msgstr "NSF/NSFE"
+
+#: src/console/Audacious_Config.cxx:238
+msgid "Use optional NSFE playlist"
+msgstr "Použiť voliteľný NSFE zoznam skladieb"
+
+#: src/console/Audacious_Config.cxx:249
+msgid "SPC"
+msgstr "SPC"
+
+#: src/console/Audacious_Config.cxx:250
+msgid "Ignore length from SPC tags"
+msgstr "Ignorovať dĺžku z SPC značiak"
+
+#: src/console/Audacious_Config.cxx:270
+msgid ""
+"* Default song length *\n"
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+"* Štandardná dĺžka skladby *\n"
+"Štandardná dĺžka skladby, vyjadrená v sekundách, je použitá pri skladbách, ktoré neposkytujú informáciu o dĺžke (napr. skladby s opakovaním)."
+
+#: src/disk_writer/disk_writer.c:111
+#, c-format
+msgid "Disk Writer Plugin %s"
+msgstr "Výstupný modul Disk Writer %s"
+
+#: src/disk_writer/disk_writer.c:140 src/evdev-plug/ed_ui.c:318
+msgid "Error"
+msgstr "Chyba"
+
+#: src/disk_writer/disk_writer.c:141
+msgid ""
+"You cannot use the Disk Writer plugin\n"
+"when you're running in realtime mode."
+msgstr ""
+"Kým ste v režime reálneho času, nemôžete\n"
+"modul Disk Writer použiť."
+
+#: src/disk_writer/disk_writer.c:143 src/alsa/about.c:46
+#: src/alsa/configure.c:405
+msgid "OK"
+msgstr "OK"
+
+#: src/disk_writer/disk_writer.c:356
+msgid "Disk Writer Configuration"
+msgstr "Nastavenie Disk Writer"
+
+#: src/disk_writer/disk_writer.c:367
+msgid "Output file folder:"
+msgstr "Adresár s výstupnými súbormi:"
+
+#: src/disk_writer/disk_writer.c:377
+msgid "Don't strip file name extension"
+msgstr "Neodstraňovať príponu mena súboru"
+
+#: src/echo_plugin/echo.c:44
+#, c-format
+msgid "Echo Plugin %s"
+msgstr "Modul Ozvena %s"
+
+#: src/echo_plugin/gui.c:12
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin 1999.\n"
+"\n"
+"Surround echo by Carl van Schaik 1999"
+msgstr ""
+"Modul Ozvena\n"
+"Napísal Johan Levin, 1999\n"
+"\n"
+"Priestorové echo napísal Carl van Shaik, 1999"
+
+#: src/echo_plugin/gui.c:26
+msgid "About Echo Plugin"
+msgstr "O module Ozvena"
+
+#: src/echo_plugin/gui.c:77
+msgid "Configure Echo"
+msgstr "Nastaviť ozvenu"
+
+#: src/echo_plugin/gui.c:90
+msgid "Delay: (ms)"
+msgstr "Oneskorenie (ms):"
+
+#: src/echo_plugin/gui.c:95
+msgid "Feedback: (%)"
+msgstr "Spätná väzba (%):"
+
+#: src/echo_plugin/gui.c:100
+msgid "Volume: (%)"
+msgstr "Hlasitosť (%):"
+
+#: src/echo_plugin/gui.c:123
+msgid "Surround echo"
+msgstr "Priestorová ozvena"
+
+#: src/echo_plugin/gui.c:146 src/stereo_plugin/stereo.c:131
+#: src/sun/configure.c:567 src/timidity/src/interface.c:232
+#: src/alsa/configure.c:411 src/arts/configure.c:92
+#: src/flac112/configure.c:484 src/flac112/fileinfo.c:363
+#: src/flac113/configure.c:484 src/flac113/fileinfo.c:405
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: src/echo_plugin/gui.c:153 src/stereo_plugin/stereo.c:138
+msgid "Apply"
+msgstr "Použiť"
+
+#: src/esd/configure.c:102
+msgid "ESD Output Plugin configuration"
+msgstr "Nastavenie výstupného modulu ESD"
+
+#: src/esd/configure.c:114 src/esd/configure.c:144
+msgid "Host:"
+msgstr "Adresa:"
+
+#: src/esd/configure.c:125
+msgid "Use remote host"
+msgstr "Použiť vzdialený počítač"
+
+#: src/esd/configure.c:132
+msgid "Volume controls OSS mixer"
+msgstr "Hlasitosť je ovládaná mixérom OSS"
+
+#: src/esd/configure.c:153
+msgid "Port:"
+msgstr "Port:"
+
+#: src/esd/configure.c:169
+msgid "Server"
+msgstr "Server"
+
+#: src/esd/about.c:34
+msgid "About ESounD Plugin"
+msgstr "O module ESounD"
+
+#: src/esd/about.c:35
+msgid ""
+"Audacious ESounD Plugin\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Modul ESounD pre Audacious\n"
+"\n"
+"Tento program je voľne šíriteľný softvér. Môžete ho šíriť a modifikovať\n"
+"podľa ustanovení GNU GPL, vydávanej nadáciou Free Software Foundation\n"
+"a to buď verzie 2 tejto licencie, alebo (podľa vášho uváženia) ktorejkoľvek\n"
+"neskoršej verzie.\n"
+"\n"
+"Tento program je rozširovaný v nádeji, že bude užitočný, ale\n"
+"BEZ AKEJKOĽVEK ZÁRUKY. Neposkytujú sa ani odvodené záruky\n"
+"PREDAJNOSTI alebo VHODNOSTI PRE URČITÝ ÚČEL. Ďalšie podrobnosti\n"
+"hľadajte v GNU GPL.\n"
+"\n"
+"Kópiu GNU GPL ste mali dostať spolu s týmto programom. Ak sa tak\n"
+"nestalo, požiadajte o ňu Free Software Foundation, Inc.,\n"
+"675 Mass Ave, Cambridge, MA 02139, USA."
+
+#: src/esd/esd.c:49
+msgid "eSound Output Plugin"
+msgstr "Výstupný modul eSound"
+
+#: src/jack/jack.c:594
+msgid "About JACK Output Plugin 0.17"
+msgstr "O výstupnom module JACK 0.17"
+
+#: src/jack/jack.c:595
+msgid ""
+"XMMS jack Driver 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Audacious port by\n"
+"Giacomo Lozito from develia.org"
+msgstr ""
+"XMMS jack Driver 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Pre Audacious upravil\n"
+"Giacomo Lozito z develia.org"
+
+#: src/lirc/lirc.c:66
+msgid "LIRC Plugin"
+msgstr "Modul LIRC"
+
+#: src/lirc/lirc.c:84
+#, c-format
+msgid "%s: could not init LIRC support\n"
+msgstr "%s: LIRC podpora sa nedá inicializovať\n"
+
+#: src/lirc/lirc.c:92
+#, c-format
+msgid ""
+"%s: could not read LIRC config file\n"
+"%s: please read the documentation of LIRC\n"
+"%s: how to create a proper config file\n"
+msgstr ""
+"%s: konfiguračný súbor LIRC sa nedá prečítať,\n"
+"%s: prečítajte si, prosím, dokumentáciu k LIRC\n"
+"%s: ako správne vytvoriť konfiguračný súbor\n"
+
+#: src/lirc/lirc.c:338
+#, c-format
+msgid "%s: unknown command \"%s\"\n"
+msgstr "%s: neznámy príkaz \"%s\"\n"
+
+#: src/lirc/lirc.c:348
+#, c-format
+msgid "%s: disconnected from LIRC\n"
+msgstr "%s: odpojené od LIRC\n"
+
+#: src/lirc/about.c:65
+msgid "About LIRC Audacious Plugin"
+msgstr "O module LIRC pre Audacious"
+
+#: src/lirc/about.c:92
+msgid "LIRC Plugin "
+msgstr "Modul LIRC"
+
+#: src/lirc/about.c:94
+msgid ""
+"\n"
+"A simple plugin that lets you control\n"
+"Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"You can get LIRC information at:\n"
+"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+msgstr ""
+"\n"
+"Jednoduchý modul, ktorý vám umožní ovládať\n"
+"Audacious pomocou diaľkového ovládania LIRC\n"
+"\n"
+"Pre Audacious upravil Tony Vroon <chainsaw@gentoo.org>\n"
+"Originálny modul XMMS LIRC napísali:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Informácie o LIRC môžete získať na:\n"
+"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+
+#: src/lirc/about.c:116
+msgid "Close"
+msgstr "Zatvoriť"
+
+#: src/null/null.c:59
+msgid "About Null Output"
+msgstr "O slepom výstupnom module"
+
+#: src/null/null.c:60
+msgid "Null output plugin "
+msgstr "Slepý výstupný modul"
+
+#: src/null/null.c:61
+msgid ""
+" by Christian Birchinger <joker@netswarm.net>\n"
+" based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+msgstr ""
+" napísal Christian Birchinger <joker@netswarm.net>\n"
+" založené na module pre XMMS, autorom ktorého je Håvard Kvål <havardk@xmms.org>"
+
+#: src/scrobbler/configure.c:112
+msgid "<b>Services</b>"
+msgstr "<b>Služby</b>"
+
+#: src/scrobbler/configure.c:134 src/scrobbler/configure.c:174
+#: src/scrobbler/configure.c:214
+msgid "Username:"
+msgstr "Prístupové meno:"
+
+#: src/scrobbler/configure.c:140 src/scrobbler/configure.c:180
+#: src/scrobbler/configure.c:220
+msgid "Password:"
+msgstr "Heslo:"
+
+#: src/scrobbler/configure.c:158
+msgid "<b>Last.FM</b>"
+msgstr "<b>Last.FM</b>"
+
+#: src/scrobbler/configure.c:198
+msgid "<b>Gerpok</b>"
+msgstr "<b>Gerpok</b>"
+
+#: src/scrobbler/configure.c:238
+msgid "<b>Hatena</b>"
+msgstr "<b>Hatena</b>"
+
+#: src/scrobbler/gtkstuff.c:22
+msgid "About Scrobbler Plugin"
+msgstr "O module Scrobbler"
+
+#: src/scrobbler/plugin.c:597
+msgid "Scrobbler Plugin"
+msgstr "Modul Scrobbler"
+
+#: src/song_change/song_change.c:55
+#, c-format
+msgid "Song Change %s"
+msgstr "Zmena skladby %s"
+
+#: src/song_change/song_change.c:319
+msgid "Commands"
+msgstr "Príkazy"
+
+#: src/song_change/song_change.c:326
+msgid "Command to run when Audacious starts a new song."
+msgstr "Príkaz, ktorý sa vykoná keď Audacious začne prehrávať novú skladbu."
+
+#: src/song_change/song_change.c:335 src/song_change/song_change.c:357
+#: src/song_change/song_change.c:378
+msgid "Command:"
+msgstr "Príkaz:"
+
+#: src/song_change/song_change.c:349
+msgid "Command to run toward the end of a song."
+msgstr "Príkaz, ktorý sa vykoná na konci skladby."
+
+#: src/song_change/song_change.c:369
+msgid "Command to run when Audacious reaches the end of the playlist."
+msgstr "Príkaz, ktorý sa vykoná, keď Audacious dosiahne koniec zoznamu skladieb."
+
+#: src/song_change/song_change.c:390
+#, c-format
+msgid ""
+"You can use the following format strings which\n"
+"will be substituted before calling the command\n"
+"(not all are useful for the end-of-playlist command).\n"
+"\n"
+"%%F: Frequency (in hertz)\n"
+"%%c: Number of channels\n"
+"%%f: filename (full path)\n"
+"%%l: length (in milliseconds)\n"
+"%%n or %%s: Song name\n"
+"%%r: Rate (in bits per second)\n"
+"%%t: Playlist position (%%02d)\n"
+"%%p: Currently playing (1 or 0)"
+msgstr ""
+"Môžete použiť nasledujúce formátovacie reťazce,\n"
+"ktoré budú pri spustení príkazu nahradené (nie všetky\n"
+"sú užitočné pre príkaz spúšťaný na konci zoznamu skladieb).\n"
+"\n"
+"%%F: frekvencia (v hertzoch)\n"
+"%%c: počet kanálov\n"
+"%%f: meno súboru (celá cesta)\n"
+"%%l: dĺžka (v milisekundách)\n"
+"%%n alebo %%s: názov skladby\n"
+"%%r: dátový tok (v bitoch za sekundu)\n"
+"%%t: pozícia v zozname skladieb (%%02d)\n"
+"%%p: práve sa hrá (1 alebo 0)"
+
+#: src/song_change/song_change.c:415
+msgid ""
+"<span size='small'>Parameters passed to the shell should be encapsulated in "
+"quotes. Doing otherwise is a security risk.</span>"
+msgstr "<span size='small'>Parametre predávané shellu by mali byť uzatvorené v úvodzoviek. Nerešpektovanie tejto rady predstavuje bezpečnostné riziko.</span>"
+
+#: src/stereo_plugin/stereo.c:29
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin 1999."
+msgstr ""
+"Modul Extra stereo\n"
+"\n"
+"Napísal Johan Levin, 1999"
+
+#: src/stereo_plugin/stereo.c:38
+#, c-format
+msgid "Extra Stereo Plugin %s"
+msgstr "Modul Extra stereo %s"
+
+#: src/stereo_plugin/stereo.c:58
+msgid "About Extra Stereo Plugin"
+msgstr "O module Extra stereo"
+
+#: src/stereo_plugin/stereo.c:99
+msgid "Configure Extra Stereo"
+msgstr "Nastaviť Extra stereo"
+
+#: src/stereo_plugin/stereo.c:101
+msgid "Effect intensity:"
+msgstr "Sila efektu:"
+
+#: src/sun/configure.c:201
+msgid "Audio control device:"
+msgstr "Zariadenie na ovládanie zvuku:"
+
+#: src/sun/configure.c:350
+msgid "Volume controls device:"
+msgstr "Zariadenie na ovládanie hlasitosti:"
+
+#: src/sun/configure.c:363
+msgid "XMMS uses mixer exclusively."
+msgstr "XMMS používa výlučný prístup k mixéru"
+
+#: src/sun/configure.c:488 src/evdev-plug/ed_ui.c:655
+msgid "Status"
+msgstr "Stav"
+
+#: src/sun/configure.c:538
+msgid "Sun driver configuration"
+msgstr "Nastavenie ovládača pre Sun"
+
+#: src/sun/sun.c:56
+#, c-format
+msgid "BSD Sun Driver %s"
+msgstr "BSD ovládač pre Sun %s"
+
+#: src/sun/about.c:34
+msgid "About the Sun Driver"
+msgstr "O ovládači pre Sun"
+
+#: src/sun/about.c:35
+msgid ""
+"XMMS BSD Sun Driver\n"
+"\n"
+"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+"Maintainer: <vedge at csoft.org>.\n"
+msgstr ""
+"BSD ovládač pre Sun programu XMMS\n"
+"\n"
+"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+"Správca: <vedge at csoft.org>.\n"
+
+#: src/timidity/src/xmms-timidity.c:103
+#, c-format
+msgid "TiMidity Player %s"
+msgstr "Prehrávač TiMidity %s"
+
+#: src/timidity/src/xmms-timidity.c:138
+msgid ""
+"TiMidity Plugin\n"
+"http://libtimidity.sourceforge.net\n"
+"by Konstantin Korikov"
+msgstr ""
+"Modul TiMidity\n"
+"http://libtimidity.sourceforge.net\n"
+"napísal Konstantin Korikov"
+
+#: src/timidity/src/xmms-timidity.c:139
+#, c-format
+msgid "TiMidity Plugin %s"
+msgstr "Modul TiMidity %s"
+
+#: src/timidity/src/xmms-timidity.c:365
+msgid "Couldn't load MIDI file"
+msgstr "MIDI súbor sa nepodarilo načítať"
+
+#: src/timidity/src/interface.c:56
+msgid "TiMidity Configuration"
+msgstr "Nastavenia TiMidity"
+
+#: src/timidity/src/interface.c:76
+msgid "Sampling Rate"
+msgstr "Vzorkovacia frekvencia"
+
+#: src/timidity/src/interface.c:93
+msgid "11000 Hz"
+msgstr "10000 Hz"
+
+#: src/timidity/src/interface.c:101
+msgid "22000 Hz"
+msgstr "22000 Hz"
+
+#: src/timidity/src/interface.c:109
+msgid "44100 Hz"
+msgstr "44100 Hz"
+
+#: src/timidity/src/interface.c:117
+msgid "Sample Width"
+msgstr "Šírka vzorky"
+
+#: src/timidity/src/interface.c:134
+msgid "8 bit"
+msgstr "8 bitov"
+
+#: src/timidity/src/interface.c:142
+msgid "16 bit"
+msgstr "16 bitov"
+
+#: src/timidity/src/interface.c:150
+msgid "Channels"
+msgstr "Počet kanálov"
+
+#: src/timidity/src/interface.c:167
+msgid "Mono"
+msgstr "Mono"
+
+#: src/timidity/src/interface.c:175
+msgid "Stereo"
+msgstr "Stereo"
+
+#: src/timidity/src/interface.c:183
+msgid "TiMidity Configuration File"
+msgstr "Konfiguračný súbor TiMidity"
+
+#: src/tonegen/tonegen.c:51
+msgid "About Tone Generator"
+msgstr "O generátore tónov"
+
+#: src/tonegen/tonegen.c:53
+msgid ""
+"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+msgstr ""
+"Generátor tónov napísal Haavard Kvaalen <havardk@xmms.org>\n"
+"Upravil Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"Na jeho použitie zadajte URL: tone://frekvencia1;frekvencia2;frekvencia3;...\n"
+"napr. na prehranie tónov o frekvencii 2000Hz a 2005Hz zadajte tone://2000;2005"
+
+#: src/tonegen/tonegen.c:166
+msgid "Tone Generator: "
+msgstr "Generátor tónov:"
+
+#: src/tonegen/tonegen.c:268
+#, c-format
+msgid "Tone Generator %s"
+msgstr "Generátor tónov %s"
+
+#: src/tta/aud-tta.c:423 src/flac112/fileinfo.c:420 src/flac113/fileinfo.c:487
+#, c-format
+msgid "File Info - %s"
+msgstr "Informácie o súbore - %s"
+
+#: src/vorbis/configure.c:118
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr "Nastavenie modulu Ogg Vorbis"
+
+#: src/vorbis/configure.c:130
+msgid "Ogg Vorbis Tags:"
+msgstr "Značky Ogg Vorbis:"
+
+#: src/vorbis/configure.c:151 src/flac112/configure.c:311
+#: src/flac113/configure.c:311
+msgid "Title format:"
+msgstr "Formát názvu:"
+
+#: src/vorbis/configure.c:165 src/flac112/configure.c:328
+#: src/flac113/configure.c:328 src/madplug/configure.c:244
+msgid "Title"
+msgstr "Názov"
+
+#: src/vorbis/configure.c:169
+msgid "ReplayGain Settings:"
+msgstr "Nastavenia zosilnenia prehrávania:"
+
+#: src/vorbis/configure.c:177
+msgid "Enable Clipping Prevention"
+msgstr "Povoliť prevenciu orezania"
+
+#: src/vorbis/configure.c:182
+msgid "Enable ReplayGain"
+msgstr "Zapnúť zosilnenie pri prehrávaní"
+
+#: src/vorbis/configure.c:187
+msgid "ReplayGain Type:"
+msgstr "Typ zosilnenia:"
+
+#: src/vorbis/configure.c:198
+msgid "use Track Gain/Peak"
+msgstr "použiť zosilnenie podľa vrcholu v skladbe"
+
+#: src/vorbis/configure.c:208
+msgid "use Album Gain/Peak"
+msgstr "použiť zosilnenie podľa vrcholu na albume"
+
+#: src/vorbis/configure.c:220
+msgid "Enable 6dB Boost + Hard Limiting"
+msgstr "Povoliť 6dB zosilnenie a pevné obmedzenie"
+
+#: src/vorbis/configure.c:226 src/flac112/configure.c:337
+#: src/flac113/configure.c:337
+msgid "ReplayGain"
+msgstr "Zosilnenie prehrávanie"
+
+#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
+#: src/flac113/fileinfo.c:51
+msgid "Blues"
+msgstr "Blues"
+
+#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
+#: src/flac113/fileinfo.c:51
+msgid "Classic Rock"
+msgstr "Klasický rok"
+
+#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
+#: src/flac113/fileinfo.c:51
+msgid "Country"
+msgstr "Country"
+
+#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
+#: src/flac113/fileinfo.c:51
+msgid "Dance"
+msgstr "Tanečná hudba"
+
+#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
+#: src/flac113/fileinfo.c:52
+msgid "Disco"
+msgstr "Disko"
+
+#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
+#: src/flac113/fileinfo.c:52
+msgid "Funk"
+msgstr "Funk"
+
+#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
+#: src/flac113/fileinfo.c:52
+msgid "Grunge"
+msgstr "Grunge"
+
+#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
+#: src/flac113/fileinfo.c:52
+msgid "Hip-Hop"
+msgstr "Hip-Hop"
+
+#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
+#: src/flac113/fileinfo.c:53
+msgid "Jazz"
+msgstr "Jazz"
+
+#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
+#: src/flac113/fileinfo.c:53
+msgid "Metal"
+msgstr "Metal"
+
+#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
+#: src/flac113/fileinfo.c:53
+msgid "New Age"
+msgstr "New Age"
+
+#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
+#: src/flac113/fileinfo.c:53
+msgid "Oldies"
+msgstr "Oldies"
+
+#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
+#: src/flac113/fileinfo.c:54
+msgid "Other"
+msgstr "Iná"
+
+#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
+#: src/flac113/fileinfo.c:54
+msgid "Pop"
+msgstr "Pop"
+
+#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
+#: src/flac113/fileinfo.c:54
+msgid "R&B"
+msgstr "R&B"
+
+#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
+#: src/flac113/fileinfo.c:54
+msgid "Rap"
+msgstr "Rap"
+
+#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
+#: src/flac113/fileinfo.c:54
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
+#: src/flac113/fileinfo.c:55
+msgid "Rock"
+msgstr "Rock"
+
+#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
+#: src/flac113/fileinfo.c:55
+msgid "Techno"
+msgstr "Techno"
+
+#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
+#: src/flac113/fileinfo.c:55
+msgid "Industrial"
+msgstr "Industrial"
+
+#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
+#: src/flac113/fileinfo.c:55
+msgid "Alternative"
+msgstr "Alternatívna hudba"
+
+#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
+#: src/flac113/fileinfo.c:56
+msgid "Ska"
+msgstr "Ska"
+
+#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
+#: src/flac113/fileinfo.c:56
+msgid "Death Metal"
+msgstr "Death Metal"
+
+#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
+#: src/flac113/fileinfo.c:56
+msgid "Pranks"
+msgstr "Žarty"
+
+#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
+#: src/flac113/fileinfo.c:56
+msgid "Soundtrack"
+msgstr "Soundtrack"
+
+#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
+#: src/flac113/fileinfo.c:57
+msgid "Euro-Techno"
+msgstr "Euro-Techno"
+
+#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
+#: src/flac113/fileinfo.c:57
+msgid "Ambient"
+msgstr "Ambient"
+
+#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
+#: src/flac113/fileinfo.c:57
+msgid "Trip-Hop"
+msgstr "Trip-Hop"
+
+#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
+#: src/flac113/fileinfo.c:57
+msgid "Vocal"
+msgstr "Vokálna"
+
+#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
+#: src/flac113/fileinfo.c:58
+msgid "Jazz+Funk"
+msgstr "Jazz+Funk"
+
+#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
+#: src/flac113/fileinfo.c:58
+msgid "Fusion"
+msgstr "Fúzia"
+
+#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
+#: src/flac113/fileinfo.c:58
+msgid "Trance"
+msgstr "Trance"
+
+#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
+#: src/flac113/fileinfo.c:58
+msgid "Classical"
+msgstr "Klasika"
+
+#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
+#: src/flac113/fileinfo.c:59
+msgid "Instrumental"
+msgstr "Inštrumentálna"
+
+#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
+#: src/flac113/fileinfo.c:59
+msgid "Acid"
+msgstr "Acid"
+
+#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
+#: src/flac113/fileinfo.c:59
+msgid "House"
+msgstr "House"
+
+#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
+#: src/flac113/fileinfo.c:59
+msgid "Game"
+msgstr "Hra"
+
+#: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
+#: src/flac113/fileinfo.c:60
+msgid "Sound Clip"
+msgstr "Zvukový klip"
+
+#: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
+#: src/flac113/fileinfo.c:60
+msgid "Gospel"
+msgstr "Gospel"
+
+#: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
+#: src/flac113/fileinfo.c:60
+msgid "Noise"
+msgstr "Ruch"
+
+#: src/vorbis/fileinfo.c:92
+msgid "AlternRock"
+msgstr "Alternatívny rock"
+
+#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
+#: src/flac113/fileinfo.c:61
+msgid "Bass"
+msgstr "Bass"
+
+#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
+#: src/flac113/fileinfo.c:61
+msgid "Soul"
+msgstr "Soul"
+
+#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
+#: src/flac113/fileinfo.c:61
+msgid "Punk"
+msgstr "Punk"
+
+#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
+#: src/flac113/fileinfo.c:61
+msgid "Space"
+msgstr "Space"
+
+#: src/vorbis/fileinfo.c:94 src/flac112/fileinfo.c:59
+#: src/flac113/fileinfo.c:62
+msgid "Meditative"
+msgstr "Meditatívna"
+
+#: src/vorbis/fileinfo.c:94 src/flac112/fileinfo.c:59
+#: src/flac113/fileinfo.c:62
+msgid "Instrumental Pop"
+msgstr "Inštrumentálny pop"
+
+#: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
+#: src/flac113/fileinfo.c:63
+msgid "Instrumental Rock"
+msgstr "Inštrumentálny rock"
+
+#: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
+#: src/flac113/fileinfo.c:63
+msgid "Ethnic"
+msgstr "Etnická hudba"
+
+#: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
+#: src/flac113/fileinfo.c:63
+msgid "Gothic"
+msgstr "Gotická hudba"
+
+#: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
+#: src/flac113/fileinfo.c:64
+msgid "Darkwave"
+msgstr "Darkwave"
+
+#: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
+#: src/flac113/fileinfo.c:64
+msgid "Techno-Industrial"
+msgstr "Techno-Industrial"
+
+#: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
+#: src/flac113/fileinfo.c:64
+msgid "Electronic"
+msgstr "Elektronická"
+
+#: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
+#: src/flac113/fileinfo.c:65
+msgid "Pop-Folk"
+msgstr "Pop-Folk"
+
+#: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
+#: src/flac113/fileinfo.c:65
+msgid "Eurodance"
+msgstr "Eurodance"
+
+#: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
+#: src/flac113/fileinfo.c:65
+msgid "Dream"
+msgstr "Dream"
+
+#: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
+#: src/flac113/fileinfo.c:66
+msgid "Southern Rock"
+msgstr "Južanský rock"
+
+#: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
+#: src/flac113/fileinfo.c:66
+msgid "Comedy"
+msgstr "Komédia"
+
+#: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
+#: src/flac113/fileinfo.c:66
+msgid "Cult"
+msgstr "Cult"
+
+#: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
+#: src/flac113/fileinfo.c:67
+msgid "Gangsta Rap"
+msgstr "Gangsta Rap"
+
+#: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
+#: src/flac113/fileinfo.c:67
+msgid "Top 40"
+msgstr "Top 40"
+
+#: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
+#: src/flac113/fileinfo.c:67
+msgid "Christian Rap"
+msgstr "Kresťanský rap"
+
+#: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
+#: src/flac113/fileinfo.c:68
+msgid "Pop/Funk"
+msgstr "Pop/Funk"
+
+#: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
+#: src/flac113/fileinfo.c:68
+msgid "Jungle"
+msgstr "Jungle"
+
+#: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
+#: src/flac113/fileinfo.c:68
+msgid "Native American"
+msgstr "Indiánska hudba"
+
+#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
+#: src/flac113/fileinfo.c:69
+msgid "Cabaret"
+msgstr "Kabaret"
+
+#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
+#: src/flac113/fileinfo.c:69
+msgid "New Wave"
+msgstr "Nová vlna"
+
+#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
+#: src/flac113/fileinfo.c:69
+msgid "Psychedelic"
+msgstr "Psychedelická"
+
+#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
+#: src/flac113/fileinfo.c:69
+msgid "Rave"
+msgstr "Rave"
+
+#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
+#: src/flac113/fileinfo.c:70
+msgid "Showtunes"
+msgstr "Showtunes"
+
+#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
+#: src/flac113/fileinfo.c:70
+msgid "Trailer"
+msgstr "Upútavka"
+
+#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
+#: src/flac113/fileinfo.c:70
+msgid "Lo-Fi"
+msgstr "Lo-Fi"
+
+#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
+#: src/flac113/fileinfo.c:70
+msgid "Tribal"
+msgstr "Tribal"
+
+#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
+#: src/flac113/fileinfo.c:71
+msgid "Acid Punk"
+msgstr "Acid Punk"
+
+#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
+#: src/flac113/fileinfo.c:71
+msgid "Acid Jazz"
+msgstr "Acid Jazz"
+
+#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
+#: src/flac113/fileinfo.c:71
+msgid "Polka"
+msgstr "Polka"
+
+#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
+#: src/flac113/fileinfo.c:71
+msgid "Retro"
+msgstr "Retro"
+
+#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
+#: src/flac113/fileinfo.c:72
+msgid "Musical"
+msgstr "Muzikál"
+
+#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
+#: src/flac113/fileinfo.c:72
+msgid "Rock & Roll"
+msgstr "Rock'n'roll"
+
+#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
+#: src/flac113/fileinfo.c:72
+msgid "Hard Rock"
+msgstr "Hard Rock"
+
+#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
+#: src/flac113/fileinfo.c:72
+msgid "Folk"
+msgstr "Folk"
+
+#: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
+#: src/flac113/fileinfo.c:73
+msgid "Folk/Rock"
+msgstr "Folk/Rock"
+
+#: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
+#: src/flac113/fileinfo.c:73
+msgid "National Folk"
+msgstr "Národná ľudová"
+
+#: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
+#: src/flac113/fileinfo.c:73
+msgid "Swing"
+msgstr "Swing"
+
+#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
+#: src/flac113/fileinfo.c:74
+msgid "Fast-Fusion"
+msgstr "Fast-Fusion"
+
+#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
+#: src/flac113/fileinfo.c:74
+msgid "Bebob"
+msgstr "Bebob"
+
+#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
+#: src/flac113/fileinfo.c:74
+msgid "Latin"
+msgstr "Latinská"
+
+#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
+#: src/flac113/fileinfo.c:74
+msgid "Revival"
+msgstr "Revival"
+
+#: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
+#: src/flac113/fileinfo.c:75
+msgid "Celtic"
+msgstr "Keltská"
+
+#: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
+#: src/flac113/fileinfo.c:75
+msgid "Bluegrass"
+msgstr "Bluegrass"
+
+#: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
+#: src/flac113/fileinfo.c:75
+msgid "Avantgarde"
+msgstr "Avantgardná"
+
+#: src/vorbis/fileinfo.c:108 src/flac112/fileinfo.c:73
+#: src/flac113/fileinfo.c:76
+msgid "Gothic Rock"
+msgstr "Gotický rock"
+
+#: src/vorbis/fileinfo.c:108 src/flac112/fileinfo.c:73
+#: src/flac113/fileinfo.c:76
+msgid "Progressive Rock"
+msgstr "Progresívny rock"
+
+#: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
+#: src/flac113/fileinfo.c:77
+msgid "Psychedelic Rock"
+msgstr "Psychedelický rock"
+
+#: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
+#: src/flac113/fileinfo.c:77
+msgid "Symphonic Rock"
+msgstr "Symfonický rock"
+
+#: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
+#: src/flac113/fileinfo.c:77
+msgid "Slow Rock"
+msgstr "Slow Rock"
+
+#: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
+#: src/flac113/fileinfo.c:78
+msgid "Big Band"
+msgstr "Big Band"
+
+#: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
+#: src/flac113/fileinfo.c:78
+msgid "Chorus"
+msgstr "Chorus"
+
+#: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
+#: src/flac113/fileinfo.c:78
+msgid "Easy Listening"
+msgstr "Príjemné počúvanie"
+
+#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
+#: src/flac113/fileinfo.c:79
+msgid "Acoustic"
+msgstr "Akustická"
+
+#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
+#: src/flac113/fileinfo.c:79
+msgid "Humour"
+msgstr "Humor"
+
+#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
+#: src/flac113/fileinfo.c:79
+msgid "Speech"
+msgstr "Hovorené slovo"
+
+#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
+#: src/flac113/fileinfo.c:79
+msgid "Chanson"
+msgstr "Šansón"
+
+#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
+#: src/flac113/fileinfo.c:80
+msgid "Opera"
+msgstr "Opera"
+
+#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
+#: src/flac113/fileinfo.c:80
+msgid "Chamber Music"
+msgstr "Komorná hudba"
+
+#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
+#: src/flac113/fileinfo.c:80
+msgid "Sonata"
+msgstr "Sonáta"
+
+#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
+#: src/flac113/fileinfo.c:80
+msgid "Symphony"
+msgstr "Symfónia"
+
+#: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
+#: src/flac113/fileinfo.c:81
+msgid "Booty Bass"
+msgstr "Booty Bass"
+
+#: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
+#: src/flac113/fileinfo.c:81
+msgid "Primus"
+msgstr "Primus"
+
+#: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
+#: src/flac113/fileinfo.c:81
+msgid "Porn Groove"
+msgstr "Porn Groove"
+
+#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
+#: src/flac113/fileinfo.c:82
+msgid "Satire"
+msgstr "Satira"
+
+#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
+#: src/flac113/fileinfo.c:82
+msgid "Slow Jam"
+msgstr "Slow Jam"
+
+#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
+#: src/flac113/fileinfo.c:82
+msgid "Club"
+msgstr "Club"
+
+#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
+#: src/flac113/fileinfo.c:82
+msgid "Tango"
+msgstr "Tango"
+
+#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
+#: src/flac113/fileinfo.c:83
+msgid "Samba"
+msgstr "Samba"
+
+#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
+#: src/flac113/fileinfo.c:83
+msgid "Folklore"
+msgstr "Folklór"
+
+#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
+#: src/flac113/fileinfo.c:83
+msgid "Ballad"
+msgstr "Balada"
+
+#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
+#: src/flac113/fileinfo.c:83
+msgid "Power Ballad"
+msgstr "Rocková balada"
+
+#: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
+#: src/flac113/fileinfo.c:84
+msgid "Rhythmic Soul"
+msgstr "Rytmický soul"
+
+#: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
+#: src/flac113/fileinfo.c:84
+msgid "Freestyle"
+msgstr "Freestyle"
+
+#: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
+#: src/flac113/fileinfo.c:84
+msgid "Duet"
+msgstr "Duet"
+
+#: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
+#: src/flac113/fileinfo.c:85
+msgid "Punk Rock"
+msgstr "Punk Rock"
+
+#: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
+#: src/flac113/fileinfo.c:85
+msgid "Drum Solo"
+msgstr "Drum Solo"
+
+#: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
+#: src/flac113/fileinfo.c:85
+msgid "A Cappella"
+msgstr "A Cappella"
+
+#: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
+#: src/flac113/fileinfo.c:86
+msgid "Euro-House"
+msgstr "Euro-House"
+
+#: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
+#: src/flac113/fileinfo.c:86
+msgid "Dance Hall"
+msgstr "Dance Hall"
+
+#: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
+#: src/flac113/fileinfo.c:86
+msgid "Goa"
+msgstr "Goa"
+
+#: src/vorbis/fileinfo.c:119 src/flac112/fileinfo.c:84
+#: src/flac113/fileinfo.c:87
+msgid "Drum & Bass"
+msgstr "Drum & Bass"
+
+#: src/vorbis/fileinfo.c:119 src/flac112/fileinfo.c:84
+#: src/flac113/fileinfo.c:87
+msgid "Club-House"
+msgstr "Club-House"
+
+#: src/vorbis/fileinfo.c:119 src/flac112/fileinfo.c:84
+#: src/flac113/fileinfo.c:87
+msgid "Hardcore"
+msgstr "Hardcore"
+
+#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
+#: src/flac113/fileinfo.c:88
+msgid "Terror"
+msgstr "Terror"
+
+#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
+#: src/flac113/fileinfo.c:88
+msgid "Indie"
+msgstr "Indie"
+
+#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
+#: src/flac113/fileinfo.c:88
+msgid "BritPop"
+msgstr "BritPop"
+
+#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
+#: src/flac113/fileinfo.c:88
+msgid "Negerpunk"
+msgstr "Negerpunk"
+
+#: src/vorbis/fileinfo.c:121 src/flac112/fileinfo.c:86
+#: src/flac113/fileinfo.c:89
+msgid "Polsk Punk"
+msgstr "Polsk Punk"
+
+#: src/vorbis/fileinfo.c:121 src/flac112/fileinfo.c:86
+#: src/flac113/fileinfo.c:89
+msgid "Beat"
+msgstr "Beat"
+
+#: src/vorbis/fileinfo.c:121 src/flac112/fileinfo.c:86
+#: src/flac113/fileinfo.c:89
+msgid "Christian Gangsta Rap"
+msgstr "Kresťanský Gangsta Rap"
+
+#: src/vorbis/fileinfo.c:122 src/flac112/fileinfo.c:87
+#: src/flac113/fileinfo.c:90
+msgid "Heavy Metal"
+msgstr "Heavy Metal"
+
+#: src/vorbis/fileinfo.c:122 src/flac112/fileinfo.c:87
+#: src/flac113/fileinfo.c:90
+msgid "Black Metal"
+msgstr "Black Metal"
+
+#: src/vorbis/fileinfo.c:122 src/flac112/fileinfo.c:87
+#: src/flac113/fileinfo.c:90
+msgid "Crossover"
+msgstr "Crossover"
+
+#: src/vorbis/fileinfo.c:123 src/flac112/fileinfo.c:88
+#: src/flac113/fileinfo.c:91
+msgid "Contemporary Christian"
+msgstr "Moderná kresťanská"
+
+#: src/vorbis/fileinfo.c:123 src/flac112/fileinfo.c:88
+#: src/flac113/fileinfo.c:91
+msgid "Christian Rock"
+msgstr "Kresťanský rock"
+
+#: src/vorbis/fileinfo.c:124 src/flac112/fileinfo.c:89
+#: src/flac113/fileinfo.c:92
+msgid "Merengue"
+msgstr "Merengue"
+
+#: src/vorbis/fileinfo.c:124 src/flac112/fileinfo.c:89
+#: src/flac113/fileinfo.c:92
+msgid "Salsa"
+msgstr "Salsa"
+
+#: src/vorbis/fileinfo.c:124 src/flac112/fileinfo.c:89
+#: src/flac113/fileinfo.c:92
+msgid "Thrash Metal"
+msgstr "Thrash Metal"
+
+#: src/vorbis/fileinfo.c:125 src/flac112/fileinfo.c:90
+#: src/flac113/fileinfo.c:93
+msgid "Anime"
+msgstr "Anime"
+
+#: src/vorbis/fileinfo.c:125 src/flac112/fileinfo.c:90
+#: src/flac113/fileinfo.c:93
+msgid "JPop"
+msgstr "JPop"
+
+#: src/vorbis/fileinfo.c:125 src/flac112/fileinfo.c:90
+#: src/flac113/fileinfo.c:93
+msgid "Synthpop"
+msgstr "Synthpop"
+
+#: src/vorbis/fileinfo.c:210
+#, c-format
+msgid ""
+"An error occured:\n"
+"%s"
+msgstr ""
+"Nastala chyba:\n"
+"%s"
+
+#: src/vorbis/fileinfo.c:212
+msgid "Error!"
+msgstr "Chyba!"
+
+#: src/vorbis/fileinfo.c:244
+msgid "Failed to modify tag (open)"
+msgstr "Nepodarilo sa zmeniť značku (otvorenie)"
+
+#: src/vorbis/fileinfo.c:297
+msgid "Failed to modify tag (close)"
+msgstr "Nepodarilo sa zmeniť značku (uzatvorenie)"
+
+#: src/vorbis/fileinfo.c:324 src/vorbis/fileinfo.c:333
+msgid "Failed to modify tag"
+msgstr "Nepodarilo sa zmeniť značku"
+
+#: src/vorbis/fileinfo.c:562 src/amidi-plug/i_fileinfo.c:169
+msgid "Name:"
+msgstr "Meno:"
+
+#: src/vorbis/fileinfo.c:577
+msgid " Ogg Vorbis Tag "
+msgstr " Popis súboru Ogg Vorbis "
+
+#: src/vorbis/fileinfo.c:585 src/flac112/fileinfo.c:285
+#: src/flac113/fileinfo.c:327
+msgid "Title:"
+msgstr "Názov:"
+
+#: src/vorbis/fileinfo.c:596 src/flac112/fileinfo.c:292
+#: src/flac113/fileinfo.c:334
+msgid "Artist:"
+msgstr "Umelec:"
+
+#: src/vorbis/fileinfo.c:607 src/flac112/fileinfo.c:299
+#: src/flac113/fileinfo.c:341
+msgid "Album:"
+msgstr "Album:"
+
+#: src/vorbis/fileinfo.c:618 src/flac112/fileinfo.c:306
+#: src/flac113/fileinfo.c:348
+msgid "Comment:"
+msgstr "Komentár:"
+
+#: src/vorbis/fileinfo.c:629 src/flac112/fileinfo.c:313
+#: src/flac113/fileinfo.c:355
+msgid "Date:"
+msgstr "Dátum:"
+
+#: src/vorbis/fileinfo.c:641 src/flac112/fileinfo.c:321
+#: src/flac113/fileinfo.c:363
+msgid "Track number:"
+msgstr "Číslo stopy:"
+
+#: src/vorbis/fileinfo.c:653 src/flac112/fileinfo.c:329
+#: src/flac113/fileinfo.c:371
+msgid "Genre:"
+msgstr "Žáner:"
+
+#: src/vorbis/fileinfo.c:671
+msgid "Description:"
+msgstr "Popis:"
+
+#: src/vorbis/fileinfo.c:681
+msgid "Location:"
+msgstr "Umiestnenie:"
+
+#: src/vorbis/fileinfo.c:691
+msgid "Version:"
+msgstr "Verzia:"
+
+#: src/vorbis/fileinfo.c:702
+msgid "ISRC number:"
+msgstr "ISRC číslo:"
+
+#: src/vorbis/fileinfo.c:713
+msgid "Organization:"
+msgstr "Organizácia:"
+
+#: src/vorbis/fileinfo.c:723
+msgid "Copyright:"
+msgstr "Autorské práva:"
+
+#: src/vorbis/fileinfo.c:760
+msgid " Ogg Vorbis ReplayGain "
+msgstr " Zosilnenie Ogg Vorbis "
+
+#: src/vorbis/fileinfo.c:766
+msgid "Track gain:"
+msgstr "Zosilnenie skladby:"
+
+#: src/vorbis/fileinfo.c:776
+msgid "Track peak:"
+msgstr "Vrchol skladby:"
+
+#: src/vorbis/fileinfo.c:787
+msgid "Album gain:"
+msgstr "Zosilnenie albumu:"
+
+#: src/vorbis/fileinfo.c:797
+msgid "Album peak:"
+msgstr "Vrchol albumu:"
+
+#: src/vorbis/fileinfo.c:826
+msgid " Ogg Vorbis Info "
+msgstr " Informácie o súbore Ogg Vorbis "
+
+#: src/vorbis/fileinfo.c:841 src/vorbis/fileinfo.c:918
+msgid "Bit rate:"
+msgstr "Dátový tok:"
+
+#: src/vorbis/fileinfo.c:854 src/vorbis/fileinfo.c:921
+msgid "Sample rate:"
+msgstr "Vzorkovacia frekvencia:"
+
+#: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
+msgid "Channels:"
+msgstr "Počet kanálov:"
+
+#: src/vorbis/fileinfo.c:880 src/vorbis/fileinfo.c:927
+msgid "Length:"
+msgstr "Dĺžka:"
+
+#: src/vorbis/fileinfo.c:893 src/vorbis/fileinfo.c:930
+msgid "File size:"
+msgstr "Veľkosť súboru:"
+
+#: src/vorbis/fileinfo.c:919 src/vorbis/fileinfo.c:922
+#: src/vorbis/fileinfo.c:925 src/vorbis/fileinfo.c:928
+#: src/vorbis/fileinfo.c:931
+msgid "N/A"
+msgstr "neznáme"
+
+#: src/vorbis/fileinfo.c:961
+#, c-format
+msgid "%d KBit/s (nominal)"
+msgstr "%d kb/s (nominálny)"
+
+#: src/vorbis/fileinfo.c:962
+#, c-format
+msgid "%d Hz"
+msgstr "%d Hz"
+
+#: src/vorbis/fileinfo.c:963
+#, c-format
+msgid "%d"
+msgstr "%d"
+
+#: src/vorbis/fileinfo.c:965
+#, c-format
+msgid "%d:%.2d"
+msgstr "%d:%.2d"
+
+#: src/vorbis/fileinfo.c:967
+#, c-format
+msgid "%d Bytes"
+msgstr "%d bajtov"
+
+#: src/vorbis/fileinfo.c:1020
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/vorbis/vorbis.c:143
+msgid "Ogg Vorbis Audio Plugin"
+msgstr "Modul Ogg Vorbis Audio"
+
+#: src/vorbis/vorbis.c:876
+msgid "About Ogg Vorbis Audio Plugin"
+msgstr "O module Ogg Vorbis Audio"
+
+#: src/vorbis/vorbis.c:882
+msgid ""
+"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
+"\n"
+"Original code by\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Contributions from\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"\n"
+"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+msgstr ""
+"Modul Ogg Vorbis od Xiph.org Foundation\n"
+"\n"
+"Pôvodný kód napísal\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Prispeli\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"\n"
+"Navštívte stránky Xiph.org Foundation na http://www.xiph.org/\n"
+
+#: src/wav/wav-sndfile.c:253
+msgid "About sndfile WAV support"
+msgstr "O podpore sndfile WAV"
+
+#: src/wav/wav-sndfile.c:254
+msgid ""
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the xmms_sndfile plugin which is:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"This program is free software ; you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation ; either version 2 of the License, or \n"
+"(at your option) any later version. \n"
+" \n"
+"This program is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+"See the GNU General Public License for more details. \n"
+"\n"
+"You should have received a copy of the GNU General Public \n"
+"License along with this program ; if not, write to \n"
+"the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA"
+msgstr ""
+"Pre Audacious upravil Tony Vroon <chainsaw@gentoo.org>\n"
+"z pôvodného modulu pre xmms_sndfile:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Tento program je voľné programové vybavenie; môžete ho šíriť a upravovať\n"
+"podľa ustanovení GNU GPL, vydávanej nadáciou Free Software Foundation;\n"
+"a to buď verzie 2 tejto licencie, alebo (podľa vášho uváženia) ktorejkoľvek\n"
+"neskoršej verzie.\n"
+"\n"
+"Tento program je rozširovaný v nádeji, že bude užitočný, ale BEZ\n"
+"AKEJKOĽVEK ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI,\n"
+"alebo VHODNOSTI PRE URČITÝ ÚČEL. Ďalšie podrobnosti hľadajte v GNU GPL.\n"
+"\n"
+"Kópiu GNU GPL by ste mali dostať spolu s týmto programom. Ak sa tak\n"
+"nestalo, požiadajte o ňu Free Software Foundation, Inc.,\n"
+"675 Mass Ave, Cambridge, MA 02139, USA."
+
+#: src/wav/wav-sndfile.c:279
+msgid "sndfile WAV plugin"
+msgstr "Modul sndfile WAV"
+
+#: src/wav/wav.c:77
+msgid "WAV Audio Plugin"
+msgstr "Modul WAV Audio"
+
+#: src/wma/wma.c:132
+#, c-format
+msgid "WMA Player %s"
+msgstr "Prehrávač WMA %s"
+
+#: src/wma/wma.c:165
+#, c-format
+msgid "About %s"
+msgstr "O %s"
+
+#: src/wma/wma.c:178
+msgid " Close "
+msgstr " Zatvoriť "
+
+#: src/alsa/about.c:30
+msgid "About ALSA Driver"
+msgstr "O ovládači ALSA"
+
+#: src/alsa/about.c:31
+msgid ""
+"Audacious ALSA Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA.\n"
+"Author: Matthieu Sozeau (mattam@altern.org)"
+msgstr ""
+"ALSA ovládač pre Audacious\n"
+"\n"
+"Tento program je voľné programové vybavenie; môžete ho šíriť a upravovať\n"
+"podľa ustanovení GNU GPL, vydávanej nadáciou Free Software Foundation;\n"
+"a to buď verzie 2 tejto licencie, alebo (podľa vášho uváženia) ktorejkoľvek\n"
+"neskoršej verzie.\n"
+"\n"
+"Tento program je rozširovaný v nádeji, že bude užitočný, ale BEZ\n"
+"AKEJKOĽVEK ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI,\n"
+"alebo VHODNOSTI PRE URČITÝ ÚČEL. Ďalšie podrobnosti hľadajte v GNU GPL.\n"
+"\n"
+"Kópiu GNU GPL by ste mali dostať spolu s týmto programom. Ak sa tak\n"
+"nestalo, požiadajte o ňu Free Software Foundation, Inc.,\n"
+"675 Mass Ave, Cambridge, MA 02139, USA. "
+"Autor: Matthieu Sozeau (mattam@altern.org)"
+
+#: src/alsa/alsa.c:47
+#, c-format
+msgid "ALSA %s output plugin"
+msgstr "Výstupný modul ALSA %s"
+
+#: src/alsa/configure.c:150
+msgid "Unknown soundcard"
+msgstr "Neznáma zvuková karta"
+
+#: src/alsa/configure.c:205
+#, c-format
+msgid "Default PCM device (%s)"
+msgstr "Štandardné PCM zariadenie (%s)"
+
+#: src/alsa/configure.c:271
+msgid "ALSA Driver configuration"
+msgstr "Nastavenie ovládača ALSA"
+
+#: src/alsa/configure.c:299
+msgid "Mixer:"
+msgstr "Mixér:"
+
+#: src/alsa/configure.c:307
+msgid "Use software volume control"
+msgstr "Softvérové ovládanie hlasitosti"
+
+#: src/alsa/configure.c:317
+msgid "Mixer card:"
+msgstr "Karta s mixérom:"
+
+#: src/alsa/configure.c:350
+msgid "Device settings"
+msgstr "Nastavenia zariadenia"
+
+#: src/alsa/configure.c:356
+msgid "Soundcard:"
+msgstr "Zvuková karta:"
+
+#: src/alsa/configure.c:369
+msgid "Buffer time (ms):"
+msgstr "Veľkosť vyrovnávacej pamäte (ms):"
+
+#: src/alsa/configure.c:383
+msgid "Period time (ms):"
+msgstr "Perióda (ms):"
+
+#: src/alsa/configure.c:398 src/amidi-plug/i_configure-ap.c:287
+msgid "Advanced settings"
+msgstr "Pokročilé nastavenia"
+
+#: src/amidi-plug/amidi-plug.c:26
+#, c-format
+msgid "AMIDI-Plug %s (MIDI Player)"
+msgstr "AMIDI-Plug %s (Prehrávač MIDI)"
+
+#: src/amidi-plug/amidi-plug.c:380
+msgid "AMIDI-Plug - warning"
+msgstr "AMIDI-Plug - upozornenie"
+
+#: src/amidi-plug/amidi-plug.c:381
+msgid ""
+"No sequencer backend has been selected!\n"
+"Please configure AMIDI-Plug before playing."
+msgstr ""
+"Nebolo vybrané žiadne sekvencérové koncové zariadenie.\n"
+"Prosím, najskôr nastavte AMIDI-Plug."
+
+#: src/amidi-plug/backend-alsa/b-alsa.c:37
+msgid ""
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+"Toto koncové zariadenie posiela MIDI udalosti skupine užívateľom vybraných portov ALSA "
+"sekvencéru. Rozhranie ALSA sekvencéra je vysoko prispôsobivé. Môže poskytovať "
+"porty pre hardvérové syntetizátory zvukovej karty (napr. emu10k1), alebo "
+"syntetizátorom softvérovým, vonkajším zariadeniam atď.\n"
+"Toto koncové zariadenie nevytvára zvuk, MIDI udalosti sú spracovávané priamo "
+"zariadením/programom, ktoré sa ukrýva za ALSA portom. Napríklad MIDI udalosti "
+"poslané hardvérovému syntetizatoru budú prehrané priamo ním.\n"
+"Ovládač koncového zariadenia napísal Giacomo Lozito."
+
+#: src/amidi-plug/backend-dummy/b-dummy.c:37
+msgid ""
+"This backend does not produce audio at all. It is mostly useful for analysis "
+"and testing purposes, as it can log all MIDI events to standard output, "
+"standard error or file.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+"Toto koncové zariadenie nevytvára žiadny zvuk. Najviac je užitočné pri analýze a testovaní, "
+"pretože vie zaznamenať všetky MIDI udalosti na štandardný výstup, štandardný "
+"chybový výstup alebo do súboru.\n"
+"Ovládač koncového zariadenia napísal Giacomo Lozito."
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
+msgid ""
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen ouput plugin.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+"Toto koncové zariadenie vytvára zvuk posielaním MIDI udalostí do FluidSynth "
+"(softvérový syntetizátor pracujúci v reálnom čase založený na "
+"špecifikácii SoundFont2 www.fluidsynth.org).\n"
+"Vyprodukovaný zvuk môže byť upravený efektovými modulmi prehrávača "
+"a následne je spracovaný zvoleným výstupným modulom.\n"
+"Ovládač koncového zariadenia napísal Giacomo Lozito."
+
+#: src/amidi-plug/i_configure-alsa.c:221
+msgid "ALSA BACKEND CONFIGURATION"
+msgstr "KONFIGURÁCIA KONCOVÉHO ZARIADENIE PRE ALSA"
+
+#: src/amidi-plug/i_configure-alsa.c:326
+msgid "Port"
+msgstr "Port"
+
+#: src/amidi-plug/i_configure-alsa.c:328
+msgid "Client name"
+msgstr "Meno klienta"
+
+#: src/amidi-plug/i_configure-alsa.c:330
+msgid "Port name"
+msgstr "Meno portu"
+
+#: src/amidi-plug/i_configure-alsa.c:341
+msgid "ALSA output ports"
+msgstr "Výstupné porty ALSA"
+
+#: src/amidi-plug/i_configure-alsa.c:394
+msgid "Soundcard: "
+msgstr "Zvuková karta: "
+
+#: src/amidi-plug/i_configure-alsa.c:396
+msgid "Mixer control: "
+msgstr "Ovládanie mixéru: "
+
+#: src/amidi-plug/i_configure-alsa.c:408
+msgid "Mixer settings"
+msgstr "Nastavenia mixéru"
+
+#: src/amidi-plug/i_configure-alsa.c:421
+msgid ""
+"* Select ALSA output ports *\n"
+"MIDI events will be sent to the ports selected here. In example, if your "
+"audio card provides a hardware synth and you want to play MIDI with it, "
+"you'll probably want to select the wavetable synthesizer ports."
+msgstr ""
+"* Vyberte výstupné porty ALSA *\n"
+"MIDI udalosti budú zasielané tu vybraným portom. Napríklad, ak "
+"vaša zvuková karta poskytuje hardvérový syntetizátor a chcete "
+"ho použiť na prehrávanie, budete pravdepodobne potrebovať "
+"vybrať porty wavetable syntetizátora."
+
+#: src/amidi-plug/i_configure-alsa.c:426
+msgid ""
+"* Select ALSA mixer card *\n"
+"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+"ouput plugins from the player. During playback, the player volumeslider will "
+"manipulate the mixer control you select here. If you're using wavetable "
+"synthesizer ports, you'll probably want to select the Synth control here."
+msgstr ""
+"* Vyberte kartu mixéru ALSA *\n"
+"Ovládač koncového zariadenia ALSA posiela výstup priamo cez ALSA. Nepoužíva moduly "
+"efektov a výstupu prehrávača. Počas prehrávania bude ovládanie "
+"hlasitosti používať mixér, ktorý tu vyberiete. Ak používate porty wavetable "
+"syntetizátora, budete pravdepodobne chcieť použiť \"Ovládanie syntézy\"."
+
+#: src/amidi-plug/i_configure-alsa.c:433
+msgid ""
+"* Select ALSA mixer control *\n"
+"The ALSA backend outputs directly through ALSA, it doesn't use effect and "
+"ouput plugins from the player. During playback, the player volume slider "
+"will manipulate the mixer control you select here. If you're using wavetable "
+"synthesizer ports, you'll probably want to select the Synth control here."
+msgstr ""
+"* Vyberte ovládanie ALSA mixéru *\n"
+"Ovládač koncového zariadenia ALSA posiela výstup priamo cez ALSA. Nepoužíva moduly "
+"efektov a výstupu prehrávača. Počas prehrávania bude ovládanie "
+"hlasitosti používať mixér, ktorý tu vyberiete. Ak používate porty wavetable "
+"syntetizátora, budete pravdepodobne chcieť použiť \"Ovládanie syntézy\"."
+
+#: src/amidi-plug/i_configure-alsa.c:444
+msgid "ALSA Backend not loaded or not available"
+msgstr "Ovládač koncového zariadenia ALSA nie je načítaný, alebo nie je dostupný"
+
+#: src/amidi-plug/i_configure-ap.c:56
+msgid "AMIDI-Plug - backend information"
+msgstr "AMIDI-Plug - podrobnosti o koncovom zariadení"
+
+#: src/amidi-plug/i_configure-ap.c:194
+msgid "AMIDI-PLUG PREFERENCES"
+msgstr "NASTAVENIE AMIDI-PLUG"
+
+#: src/amidi-plug/i_configure-ap.c:221
+msgid "Backend selection"
+msgstr "Výber koncového zariadenia"
+
+#: src/amidi-plug/i_configure-ap.c:225
+msgid "Available backends"
+msgstr "Dostupné koncové zariadenia"
+
+#: src/amidi-plug/i_configure-ap.c:255
+msgid "Playback settings"
+msgstr "Nastavenie prehrávania"
+
+#: src/amidi-plug/i_configure-ap.c:260
+msgid "Transpose: "
+msgstr "Transponovať: "
+
+#: src/amidi-plug/i_configure-ap.c:269
+msgid "Drum shift: "
+msgstr "Posun bicích: "
+
+#: src/amidi-plug/i_configure-ap.c:291
+msgid "pre-calculate length of MIDI files in playlist"
+msgstr "dopredu vypočítať dĺžku MIDI súborov v zozname skladieb"
+
+#: src/amidi-plug/i_configure-ap.c:296
+msgid "extract comments from MIDI file (if available)"
+msgstr "extrahovať komentáre z MIDI súboru (ak existujú)"
+
+#: src/amidi-plug/i_configure-ap.c:301
+msgid "extract lyrics from MIDI file (if available)"
+msgstr "extrahovať slová z MIDI súboru (ak existuje)"
+
+#: src/amidi-plug/i_configure-ap.c:320
+msgid ""
+"* Backend selection *\n"
+"AMIDI-Plug works with backends, in a modular fashion; here you should select "
+"your backend; that is, the way MIDI events are going to be handled and "
+"played.\n"
+"If you have a hardware synthesizer on your audio card, and ALSA supports it, "
+"you'll want to use the ALSA backend. It can also be used with anything that "
+"provides an interface to the ALSA sequencer, including software synths or "
+"external devices.\n"
+"If you want to rely on a software synthesizer and/or want to pipe audio into "
+"effect and output plugins of the player you'll want to use the good "
+"FluidSynth backend.\n"
+"Press the info button to read specific information about each backend."
+msgstr ""
+"* Výber koncového zariadenia *\n"
+"AMIDI-Plug pracuje s koncovými zariadeniami modulárnym spôsobom. Tu by ste si mali "
+"vybrať ovládač, to znamená, spôsob akým budú MIDI udalosti spracovávané a prehrávané.\n"
+"Ak na vašej zvukovej karte máte hardvérový syntetizátor, a ALSA ho podporuje, "
+"je rozumné použiť ovládač ALSA. Môže byť tiež použitý s čímkoľvek, čo poskytuje "
+"rozhranie k sekvencéru ALSA, vrátane softvérového syntatizátora a externých zariadení.\n"
+"Ak sa budete chcieť spoľahnúť na softvérový syntetizátor a/alebo budete chcieť zvuk "
+"spracovať efektovým a výstupným modulom prehrávača, dobrou voľbou bude "
+"ovládač FluidSynth.\n"
+"Podrobnosti o jednotlivých ovládačoch získate po stlačení tlačítka \"Podrobnosti\"."
+
+#: src/amidi-plug/i_configure-ap.c:331
+msgid ""
+"* Transpose function *\n"
+"This option allows you to play the midi file transposed in a different key, "
+"by shifting of the desired number of semitones all its notes (excepting "
+"those on midi channel 10, reserved for percussions). Expecially useful if "
+"you wish to sing or play along with another instrument."
+msgstr ""
+"* Funkcia transpozície *\n"
+"Táto voľba umožňuje prehrať MIDI súbor transponovaný o zadaný počet poltónov "
+"(okrem stopy 10, ktorá je vyhradené pre bicie). Funkcia je užitočná, ak chcete "
+"spievať alebo hrať s iným nástrojom spolu so skladbou."
+
+#: src/amidi-plug/i_configure-ap.c:337
+msgid ""
+"* Drumshift function *\n"
+"This option allows you to shift notes on midi channel 10 (the standard "
+"percussions channel) of the desired number of semitones. This results in "
+"different drumset and percussions being used during midi playback, so if you "
+"wish to enhance (or reduce, or alter) percussion sounds, try to play with "
+"this value."
+msgstr ""
+"* Funkcia posunu bicích *\n"
+"Táto funkcia umožňuje posun tónov na 10. MIDI kanáli (štandardný kanál pre "
+"bicie) o zadaný počet poltónov. Výsledkom je použitie inej sady bicích počas "
+"prehrávania. Takže ak chcete vylepšiť (stlmiť či inak upraviť) zvuk bicích, "
+"pohrajte sa s touto hodnotou."
+
+#: src/amidi-plug/i_configure-ap.c:344
+msgid ""
+"* Pre-calculate MIDI length *\n"
+"If this option is enabled, AMIDI-Plug will calculate the MIDI file length as "
+"soon as the player requests it, instead of doing that only when the MIDI "
+"file is being played. In example, MIDI length will be calculated straight "
+"after adding MIDI files in a playlist. Disable this option if you want "
+"faster playlist loading (when a lot of MIDI files are added), enable it to "
+"display more information in the playlist straight after loading."
+msgstr ""
+"* Dopredu vypočítať dĺžku MIDI skladby *\n"
+"Ak je táto voľba povolená, AMIDI-Plug vypočíta dĺžku MIDI súboru okamžite, "
+"ako o ňu prehrávač požiada. Inak bude dĺžka skladby vypočítaná až "
+"pri prvom prehraní. Vypnutím tejto voľby sa zrýchli "
+"načítanie zoznamu skladieb (hlavne ak obsahuje veľa MIDI súborov). "
+"Túto funkciu zapnite ak potrebujete vidieť dĺžku skladieb okamžite po načítaní zoznamu."
+
+#: src/amidi-plug/i_configure-ap.c:353
+msgid ""
+"* Extract comments from MIDI files *\n"
+"Some MIDI files contain text comments (author, copyright, instrument notes, "
+"etc.). If this option is enabled, AMIDI-Plug will extract and display "
+"comments (if available) in the file information dialog."
+msgstr ""
+"* Načítať komentáre z MIDI súborov *\n"
+"Niektoré MIDI súbory obsahujú textové komentáre (autora, autorské práva, "
+"poznámky k nástrojom, atď.). Ak je táto voľba povolená, AMIDI-Plug tieto "
+"komentáre načíta (ak existujú) a zobrazí v okne s podrobnosťami o súbore."
+
+#: src/amidi-plug/i_configure-ap.c:358
+msgid ""
+"* Extract lyrics from MIDI files *\n"
+"Some MIDI files contain song lyrics. If this option is enabled, AMIDI-Plug "
+"will extract and display song lyrics (if available) in the file information "
+"dialog."
+msgstr ""
+"* Načítať slová z MIDI súborov *\n"
+"Niektoré MIDI súbory obsahujú text piesne. Ak je táto voľba povolená, "
+"AMIDI-Plug text načíta (ak existuje) a zobrazí ho v okne "
+"s podrobnosťami o súbore."
+
+#: src/amidi-plug/i_configure-dummy.c:137
+msgid "DUMMY BACKEND CONFIGURATION"
+msgstr "NASTAVENIA FALOŠNÉHO KONCOVÉHO ZARIADENIA"
+
+#: src/amidi-plug/i_configure-dummy.c:173
+msgid "MIDI logger settings"
+msgstr "Nastavenie protokolovania MIDI"
+
+#: src/amidi-plug/i_configure-dummy.c:181
+msgid "Do not log anything"
+msgstr "Nič neprotokolovať"
+
+#: src/amidi-plug/i_configure-dummy.c:185
+msgid "Log MIDI events to standard output"
+msgstr "MIDI udalosti vypisovať na štandardný výstup"
+
+#: src/amidi-plug/i_configure-dummy.c:189
+msgid "Log MIDI events to standard error"
+msgstr "MIDI udalosti vypisovať na štandardný chybový výstup"
+
+#: src/amidi-plug/i_configure-dummy.c:193
+msgid "Log MIDI events to file"
+msgstr "MIDI udalosti zapisovať do súboru"
+
+#: src/amidi-plug/i_configure-dummy.c:202
+msgid "Logfile settings"
+msgstr "Nastavenia súboru s protokolom"
+
+#: src/amidi-plug/i_configure-dummy.c:209
+msgid "Use a single file to log everything (rewrite)"
+msgstr "Všetko zapisovať do jedného súboru (prepísať)"
+
+#: src/amidi-plug/i_configure-dummy.c:213
+msgid "Use a single file to log everything (append)"
+msgstr "Všetko zapisovať do jedného súboru (pridať na koniec)"
+
+#: src/amidi-plug/i_configure-dummy.c:217
+msgid "Use a different logfile for each MIDI file"
+msgstr "Pre každý MIDI súbor použiť samostatný protokolovací súbor"
+
+#: src/amidi-plug/i_configure-dummy.c:223
+msgid "» Log dir:"
+msgstr "» Adresár s protokolmi:"
+
+#: src/amidi-plug/i_configure-dummy.c:229
+#: src/amidi-plug/i_configure-dummy.c:241
+msgid "browse"
+msgstr "prechádzať"
+
+#: src/amidi-plug/i_configure-dummy.c:235
+msgid "» Log file:"
+msgstr "» Protokolovací súbor:"
+
+#: src/amidi-plug/i_configure-dummy.c:267
+msgid "Playback speed"
+msgstr "Rýchlosť prehrávania"
+
+#: src/amidi-plug/i_configure-dummy.c:272
+msgid "Play at normal speed"
+msgstr "Prehrávať normálnou rýchlosťou"
+
+#: src/amidi-plug/i_configure-dummy.c:275
+msgid "Play as fast as possible"
+msgstr "Hrať tak rýchlo, ako je možné"
+
+#: src/amidi-plug/i_configure-dummy.c:329
+msgid "Dummy Backend not loaded or not available"
+msgstr "Ovládač falošného koncového zariadenia nie je načítaný, alebo nie je dostupný"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:83
+msgid "AMIDI-Plug - select SoundFont file"
+msgstr "AMIDI-Plug - vyberte SoundFont súbor"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:362
+msgid "FLUIDSYNTH BACKEND CONFIGURATION"
+msgstr "NASTAVENIE KONCOV0HO ZARIADENIA FLUIDSYNTH"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:416
+msgid "SoundFont settings"
+msgstr "Nastavenia SoundFont"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:448
+msgid "Filename"
+msgstr "Meno súboru"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:452
+msgid "Size (bytes)"
+msgstr "Veľkosť (v bajtoch)"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:501
+msgid "Load SF on player start"
+msgstr "Nahrať SoundFont pri spustení prehrávača"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:505
+msgid "Load SF on first midifile play"
+msgstr "Nahrať SoundFont pri prehrávaní prvého MIDI súboru"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:520
+msgid "Synthesizer settings"
+msgstr "Nastavenia syntetizátora"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:529
+msgid "gain"
+msgstr "zosilnenie"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:535
+#: src/amidi-plug/i_configure-fluidsynth.c:563
+#: src/amidi-plug/i_configure-fluidsynth.c:591
+#: src/amidi-plug/i_configure-fluidsynth.c:622
+msgid "use default"
+msgstr "použiť predvolené"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:538
+#: src/amidi-plug/i_configure-fluidsynth.c:566
+msgid "value:"
+msgstr "hodnota:"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:557
+msgid "poliphony"
+msgstr "viac-hlas"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:585
+msgid "reverb"
+msgstr "dozvuk"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:594
+#: src/amidi-plug/i_configure-fluidsynth.c:625
+msgid "yes"
+msgstr "áno"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:596
+#: src/amidi-plug/i_configure-fluidsynth.c:627
+msgid "no"
+msgstr "nie"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:616
+msgid "chorus"
+msgstr "zbor"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:647
+msgid "sample rate"
+msgstr "vzorkovacia frekvencia"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:662
+msgid "custom "
+msgstr "vlastné "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:705
+msgid "Buffer settings"
+msgstr "Nastavenie vyrovnávacej pamäte"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:714
+msgid "<span size=\"smaller\">def</span>"
+msgstr "<span size=\"smaller\">štd.</span>"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:723
+msgid "<span size=\"smaller\">handy buffer tuner</span>"
+msgstr "<span size=\"smaller\">ladič vyrovnávacej pamäte</span>"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:737
+msgid "<span size=\"smaller\">size</span>"
+msgstr "<span size=\"smaller\">veľkosť</span>"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:751
+msgid "<span size=\"smaller\">margin</span>"
+msgstr "hranica"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:765
+msgid "<span size=\"smaller\">increment</span>"
+msgstr "krok"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:807
+msgid ""
+"* Select SoundFont files *\n"
+"In order to play MIDI with FluidSynth, you need to specify at least one "
+"valid SoundFont file here (use absolute paths). The loading order is from "
+"the top (first) to the bottom (last)."
+msgstr ""
+"* Výber SoundFont súborov *\n"
+"Ak chcete prehrávať MIDI súbory pomocou FluidSynth, musíte zadať aspoň jeden "
+"SoundFont súbor (použite absolútne cesty). Poradie pri nahrávaní je zhora nadol."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:812
+msgid ""
+"* Load SoundFont on player start *\n"
+"Depending on your system speed, SoundFont loading in FluidSynth will require "
+"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
+"until it is changed or the backend is unloaded) that can be done at player "
+"start, or before the first MIDI file is played (the latter is a better "
+"choice if you don't use your player to listen MIDI files only)."
+msgstr ""
+"* Načítať SoundFont pri štarte prehrávača *\n"
+"V závislosti od rýchlosti vášho systému môže trvať načítanie súborov SoundFont "
+"do FluidSynth niekoľko sekúnd. Ide o jednorázovú úlohu (súbor ostane načítaný "
+"kým nebude nahradený iným, alebo kým nezakážete ovládač FluidSynth), ktorá môže "
+"byť vykonaná pri štarte prehrávača, alebo pred prehrávaním prvého MIDI súboru "
+"(druhá možnosť je výhodnejšia v prípade, ak prehrávač nepoužívate iba na prehrávanie MIDI súborov)."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:820
+msgid ""
+"* Load SoundFont on first midifile play *\n"
+"Depending on your system speed, SoundFont loading in FluidSynth will require "
+"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
+"until it is changed or the backend is unloaded) that can be done at player "
+"start, or before the first MIDI file is played (the latter is a better "
+"choice if you don't use your player to listen MIDI files only)."
+msgstr ""
+"* Načítať SoundFont pred prehrávaním prvého MIDI súboru *\n"
+"V závislosti od rýchlosti vášho systému môže trvať načítanie súborov SoundFont "
+"do FluidSynth niekoľko sekúnd. Ide o jednorázovú úlohu (súbor ostane načítaný "
+"kým nebude nahradený iným, alebo kým nezakážete ovládač FluidSynth), ktorá môže "
+"byť vykonaná pri štarte prehrávača, alebo pred prehrávaním prvého MIDI súboru "
+"(druhá možnosť je výhodnejšia v prípade, ak prehrávač nepoužívate iba na prehrávanie MIDI súborov)."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:828
+msgid ""
+"* Synthesizer gain *\n"
+"From FluidSynth docs: the gain is applied to the final or master output of "
+"the synthesizer; it is set to a low value by default to avoid the saturation "
+"of the output when random MIDI files are played."
+msgstr ""
+"* Zosilnenie syntetizátora *\n"
+"Z dokumentácie FluidSynth: zosilnenie je použité na konečný alebo hlavný "
+"výstup syntetizátora. Aby sa zabránilo skresleniu pri prehrávaní rôznorodých MIDI súborov "
+"je štandardne nastavené na nízku hodnotu."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:833
+msgid ""
+"* Synthesizer polyphony *\n"
+"From FluidSynth docs: the polyphony defines how many voices can be played in "
+"parallel; the number of voices is not necessarily equivalent to the number "
+"of notes played simultaneously; indeed, when a note is struck on a specific "
+"MIDI channel, the preset on that channel may create several voices, for "
+"example, one for the left audio channel and one for the right audio "
+"channels; the number of voices activated depends on the number of instrument "
+"zones that fall in the correspond to the velocity and key of the played note."
+msgstr ""
+"* Viac-hlas syntetizátora *\n"
+"Z dokumentácie FluidSynth: viac-hlas určuje, koľko sa môže naraz hrať hlasov. "
+"Počet hlasov nie je nutne zhodný s počtom súčasne hraných nôt. Keď je nota "
+"vyslaná na určitom MIDI kanáli, nastavenie kanála môže spôsobiť vytvorenie "
+"viacerých hlasov (napr. jeden pre ľavý zvukový kanál a jeden pre pravý). "
+"Počet aktivovaných hlasov závisí na počte nástrojových zón, ktoré zodpovedajú "
+"rýchlosti a kľúču hraných nôt."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:843
+#: src/amidi-plug/i_configure-fluidsynth.c:849
+msgid ""
+"* Synthesizer reverb *\n"
+"From FluidSynth docs: when set to \"yes\" the reverb effects module is "
+"activated; note that when the reverb module is active, the amount of signal "
+"sent to the reverb module depends on the \"reverb send\" generator defined "
+"in the SoundFont."
+msgstr ""
+"* Dozvuk syntetizátora *\n"
+"Z dokumentácie FluidSynth: ak je nastavené na \"áno\" je modul efektu dozvuku "
+"aktivovaný. Veľkosť signálu zasielaného do tohoto modulu závisí na generátore "
+"\"posielania dozvuku\", ktorý je definovaný v SoundFont."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:855
+#: src/amidi-plug/i_configure-fluidsynth.c:861
+msgid ""
+"* Synthesizer chorus *\n"
+"From FluidSynth docs: when set to \"yes\" the chorus effects module is "
+"activated; note that when the chorus module is active, the amount of signal "
+"sent to the chorus module depends on the \"chorus send\" generator defined "
+"in the SoundFont."
+msgstr ""
+"* Zbor syntetizátora *\n"
+"Z dokumentácie FluidSynth: ak je nastavené na \"áno\" je modul efektu zboru "
+"aktivovaný. Veľkosť signálu zasielaného do tohoto modulu závisí na generátore "
+"\"posielania zboru\", ktorý je definovaný v SoundFont."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:867
+#: src/amidi-plug/i_configure-fluidsynth.c:873
+#: src/amidi-plug/i_configure-fluidsynth.c:879
+#: src/amidi-plug/i_configure-fluidsynth.c:885
+msgid ""
+"* Synthesizer samplerate *\n"
+"The sample rate of the audio generated by the synthesizer. You can also "
+"specify a custom value in the interval 22050Hz-96000Hz.\n"
+"NOTE: the default buffer parameters are tuned for 44100Hz; changing the "
+"sample rate may require buffer params tuning to obtain good sound quality."
+msgstr ""
+"* Vzorkovacia frekvencia syntetizátora *\n"
+"Vzorkovacia frekvencia zvuku generovaného syntetizátorom. Môžete zadať "
+"vlastnú hodnotu z intervalu 22050Hz-96000Hz.\n"
+"Poznámka: štandardné parametre pre vyrovnávaciu pamäť sú nastavené pre "
+"frekvenciu 44100Hz. Dosiahnutie dobrej kvality zvuku bude možno vyžadovať "
+"úpravu týchto parametrov."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:891
+msgid ""
+"* FluidSynth backend buffer *\n"
+"This button resets the backend buffer parameters to default values."
+msgstr ""
+"* Vyrovnávacia pamäť koncového zariadenia FluidSynth *\n"
+"Toto tlačidlo obnoví štandardné hodnoty parametrov pre vyrovnávaciu pamäť koncového zariadenia FluidSynth."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:894
+msgid ""
+"* FluidSynth backend buffer *\n"
+"If you notice skips or slowness during song playback and your system is not "
+"performing any cpu-intensive task (except FluidSynth itself), you may want "
+"to adjust the buffer parameters. Try to move the \"handy buffer tuner\" some "
+"steps to the right until playback is fluid again."
+msgstr ""
+"* Vyrovnávacia pamäť koncového zariadenia FluidSynth *\n"
+"Ak zaznamenáte preskočenia alebo spomalenia počas prehrávania pesničky, a váš "
+"systém nevykonáva žiadnu úlohu náročnú na výkon procesoru (okrem FluidSynth "
+"samotného), budete pravdepodobne chcieť upraviť parametre vyrovnávacej pamäte. "
+"Vyskúšajte posunúť \"ladič vyrovnávacej pamäte\" niekoľko krokov vpravo až kým "
+"sa zvuk nestane opäť plynulým."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:900
+#: src/amidi-plug/i_configure-fluidsynth.c:911
+#: src/amidi-plug/i_configure-fluidsynth.c:922
+msgid ""
+"* FluidSynth backend buffer *\n"
+"It is a good idea to make buffer adjustments with the \"handy buffer tuner\" "
+"before resorting to manual editing of buffer parameters.\n"
+"However, if you want to fine-tune something and want to know what you're "
+"doing, you can understand how these parameters work by reading the backend "
+"code (b-fluidsynth.c). In short words, every amount of time (proportional to "
+"buffer_SIZE and sample rate), right before gathering samples, the buffer is "
+"resized as follows:\n"
+"buffer_SIZE + buffer_MARGIN + extramargin\n"
+"where extramargin is a value computed as number_of_seconds_of_playback / "
+"margin_INCREMENT ."
+msgstr ""
+"* Vyrovnávacia pamäť koncového zariadenia FluidSynth *\n"
+"Pred použitím ručného nastavenia parametrov vyrovnávacej pamäte je odporučené "
+"najskôr vyskúšať \"ladič vyrovnávacej pamäte\".\n"
+"Ak však chcete niečo doladiť a chcete vedieť, ako tieto parametre pracujú, "
+"prečítajte si zdrojové kódy tohoto koncového zariadenia (b-fluidsynth.c). "
+"Stručne povedané, po určitom čase (úmernom k buffer_SIZE a vzorkovacej frekvecii), "
+"tesne pred získaním vzoriek sa veľkosť vyrovnávacej pamäte zmení nasledovne:\n"
+"buffer_SIZE + buffer_MARGIN + extramargin\n"
+"kde extramargin je vypočitané ako čas_prehrávania_v_sekundách / margin_INCREMENT."
+
+#: src/amidi-plug/i_configure-fluidsynth.c:937
+msgid "FluidSynth Backend not loaded or not available"
+msgstr "Ovládač koncového zariadenia FluidSynth nie je načítaný, alebo nie je dostupný."
+
+#: src/amidi-plug/i_configure-timidity.c:39
+msgid "TIMIDITY BACKEND CONFIGURATION"
+msgstr "NASTAVENIE KONCOVÉHO ZARIADENIA TIMIDITY"
+
+#: src/amidi-plug/i_configure.c:75
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - vyberte súbor"
+
+#: src/amidi-plug/i_configure.c:122
+msgid "AMIDI-Plug - configuration"
+msgstr "AMIDI-Plug - nastavenie"
+
+#: src/amidi-plug/i_configure.c:241
+msgid "AMIDI-Plug message"
+msgstr "Správa AMIDI-Plug"
+
+#: src/amidi-plug/i_configure.c:242
+msgid "Please stop the player before changing AMIDI-Plug settings."
+msgstr "Pred zmenou nastavenia AMIDI-Plug zastavte prehrávač."
+
+#: src/amidi-plug/i_fileinfo.c:193
+msgid "<span size=\"smaller\"> MIDI Info </span>"
+msgstr "<span size=\"smaller\"> Podrobnosti o MIDI </span>"
+
+#: src/amidi-plug/i_fileinfo.c:205
+msgid "Format:"
+msgstr "Formát:"
+
+#: src/amidi-plug/i_fileinfo.c:208
+msgid "Length (msec):"
+msgstr "Dĺžka (ms):"
+
+#: src/amidi-plug/i_fileinfo.c:211
+msgid "Num of Tracks:"
+msgstr "Počet stôp:"
+
+#: src/amidi-plug/i_fileinfo.c:216
+msgid "variable"
+msgstr "premenlivé"
+
+#: src/amidi-plug/i_fileinfo.c:217
+msgid "BPM:"
+msgstr "BPM:"
+
+#: src/amidi-plug/i_fileinfo.c:223
+msgid "BPM (wavg):"
+msgstr "BPM (váž.):"
+
+#: src/amidi-plug/i_fileinfo.c:226
+msgid "Time Div:"
+msgstr "Čas. pomer:"
+
+#: src/amidi-plug/i_fileinfo.c:237
+msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
+msgstr "<span size=\"smaller\"> Komentáre a slová MIDI skladby </span>"
+
+#: src/amidi-plug/i_fileinfo.c:288
+msgid "* no comments available in this MIDI file *"
+msgstr "* v MIDI súbore sa nenachádzajú žiadne komentáre *"
+
+#: src/amidi-plug/i_fileinfo.c:301
+msgid "* no lyrics available in this MIDI file *"
+msgstr "* v MIDI súbore sa nenachádzajú žiadne texty skladby *"
+
+#: src/amidi-plug/i_fileinfo.c:346
+msgid "  (invalid UTF-8)"
+msgstr "  (neplatné UTF-8)"
+
+#: src/aosd/aosd_style.c:76
+msgid "Rectangle"
+msgstr "Obdĺžnik"
+
+#: src/aosd/aosd_style.c:80
+msgid "Rounded Rectangle"
+msgstr "Zaoblený obdĺžnik"
+
+#: src/aosd/aosd_style.c:84
+msgid "Concave Rectangle"
+msgstr "Konkávny obdĺžnik"
+
+#: src/aosd/aosd_style.c:88
+msgid "None"
+msgstr "Žiadne"
+
+#: src/aosd/aosd_trigger.c:60
+msgid "Playback Start"
+msgstr "Začiatok prehrávania"
+
+#: src/aosd/aosd_trigger.c:61
+msgid "Triggers OSD when a playlist entry is played."
+msgstr "OSD sa zobrazí pri zahájení prehrávania položky zo zoznamu skladieb."
+
+#: src/aosd/aosd_trigger.c:65
+msgid "Title Change"
+msgstr "Zmena názvu"
+
+#: src/aosd/aosd_trigger.c:66
+msgid ""
+"Trigger OSD when, during playback, the song title changes but the filename "
+"is the same. This is mostly useful to display title changes in internet "
+"streams."
+msgstr ""
+"OSD sa zobrazí počas prehrávania ak sa zmení názov, ale meno súboru "
+"ostane nezmenené. Vhodné je to hlavne na zobrazenie zmien názvov pri prehrávaní "
+"internetových prúdov."
+
+#: src/aosd/aosd_ui.c:166
+msgid "Placement"
+msgstr "Umiestnenie"
+
+#: src/aosd/aosd_ui.c:200
+msgid "Relative X offset:"
+msgstr "Relatívne odsadenie v smere osi X:"
+
+#: src/aosd/aosd_ui.c:209
+msgid "Relative Y offset:"
+msgstr "Relatívne odsadenie v smere osi Y:"
+
+#: src/aosd/aosd_ui.c:218
+msgid "Max OSD width:"
+msgstr "Maximálna šírka OSD:"
+
+#: src/aosd/aosd_ui.c:235
+msgid "Display OSD using:"
+msgstr "Zobraziť OSD na:"
+
+#: src/aosd/aosd_ui.c:237
+msgid "all monitors"
+msgstr "všetkých monitoroch"
+
+#: src/aosd/aosd_ui.c:240
+#, c-format
+msgid "monitor %i"
+msgstr "monitore %i"
+
+#: src/aosd/aosd_ui.c:293
+msgid "Timing (ms)"
+msgstr "Časovanie (ms)"
+
+#: src/aosd/aosd_ui.c:298
+msgid "Display:"
+msgstr "Zobrazenie:"
+
+#: src/aosd/aosd_ui.c:303
+msgid "Fade in:"
+msgstr "Rozsvietenie:"
+
+#: src/aosd/aosd_ui.c:308
+msgid "Fade out:"
+msgstr "Zhasnutie:"
+
+#: src/aosd/aosd_ui.c:380
+msgid "Fonts"
+msgstr "Fonty"
+
+#: src/aosd/aosd_ui.c:405
+msgid "Shadow"
+msgstr "Tieň"
+
+#: src/aosd/aosd_ui.c:449
+msgid "Select Skin File"
+msgstr "Vyberte súbor s motívom"
+
+#: src/aosd/aosd_ui.c:557
+msgid "Render Style"
+msgstr "Štýl zobrazenia"
+
+#: src/aosd/aosd_ui.c:573
+msgid "Colors"
+msgstr "Farby"
+
+#: src/aosd/aosd_ui.c:606
+msgid "Custom Skin"
+msgstr "Používateľský motív"
+
+#: src/aosd/aosd_ui.c:612
+msgid "Skin file:"
+msgstr "Súbor s motívom:"
+
+#: src/aosd/aosd_ui.c:615
+msgid "Browse"
+msgstr "Prechádzať"
+
+#: src/aosd/aosd_ui.c:717
+msgid "Enable trigger"
+msgstr "Povoliť spúšťač"
+
+#: src/aosd/aosd_ui.c:744
+msgid "Event"
+msgstr "Udalosť"
+
+#: src/aosd/aosd_ui.c:845
+msgid "Audacious OSD - configuration"
+msgstr "Nastavenia OSD pre Audacious"
+
+#: src/aosd/aosd_ui.c:866
+msgid "Test"
+msgstr "Vyskúšať"
+
+#: src/aosd/aosd_ui.c:881
+msgid "Position"
+msgstr "Umiestnenie"
+
+#: src/aosd/aosd_ui.c:886
+msgid "Animation"
+msgstr "Animácia"
+
+#: src/aosd/aosd_ui.c:891
+msgid "Text"
+msgstr "Text"
+
+#: src/aosd/aosd_ui.c:896
+msgid "Decoration"
+msgstr "Výzdoba"
+
+#: src/aosd/aosd_ui.c:901
+msgid "Trigger"
+msgstr "Spúšťač"
+
+#: src/aosd/aosd_ui.c:937
+msgid "Audacious OSD - about"
+msgstr "O module OSD pre Audacious"
+
+#: src/aosd/aosd_ui.c:968
+msgid ""
+"\n"
+"Audacious OSD "
+msgstr ""
+"\n"
+"OSD pre Audacious"
+
+#: src/aosd/aosd_ui.c:969
+msgid ""
+"\n"
+"http://www.develia.org/projects.php?p=aosd\n"
+"written by Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"On-Screen-Display is based on Ghosd library\n"
+"written by Evan Martin\n"
+"http://neugierig.org/software/ghosd/\n"
+"\n"
+msgstr ""
+"\n"
+"http://www.develia.org/projects.php?p=aosd\n"
+"Napísal Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"On-Screen-Display je založený na knižnici Ghosd,\n"
+"ktorú napísal Evan Martin\n"
+"http://neugierig.org/software/ghosd/\n"
+"\n"
+
+#: src/arts/configure.c:51
+msgid "aRts Driver configuration"
+msgstr "Nastavenia ovládača aRts"
+
+#: src/evdev-plug/ed.c:56
+msgid "Playback->Play"
+msgstr "Prehrávanie->Prehrať"
+
+#: src/evdev-plug/ed.c:57
+msgid "Playback->Stop"
+msgstr "Prehrávanie->Zastaviť"
+
+#: src/evdev-plug/ed.c:58
+msgid "Playback->Pause"
+msgstr "Prehrávanie->Pozastaviť"
+
+#: src/evdev-plug/ed.c:59
+msgid "Playback->Prev"
+msgstr "Prehrávanie->Predchádzajúca"
+
+#: src/evdev-plug/ed.c:60
+msgid "Playback->Next"
+msgstr "Prehrávanie->Ďalšia"
+
+#: src/evdev-plug/ed.c:61
+msgid "Playback->Eject"
+msgstr "Prehrávanie->Vysunúť"
+
+#: src/evdev-plug/ed.c:63
+msgid "Playlist->Repeat"
+msgstr "Zoznam skladieb->Opakovať"
+
+#: src/evdev-plug/ed.c:64
+msgid "Playlist->Shuffle"
+msgstr "Zoznam skladieb->Premiešať zoznam"
+
+#: src/evdev-plug/ed.c:66
+msgid "Volume->Up_5"
+msgstr "Hlasitosť->Zvýšiť o 5"
+
+#: src/evdev-plug/ed.c:67
+msgid "Volume->Down_5"
+msgstr "Hlasitosť->Znížiť o 5"
+
+#: src/evdev-plug/ed.c:68
+msgid "Volume->Up_10"
+msgstr "Hlasitosť->Zvýšiť o 10"
+
+#: src/evdev-plug/ed.c:69
+msgid "Volume->Down_10"
+msgstr "Hlasitosť->Znížiť o 10"
+
+#: src/evdev-plug/ed.c:70
+msgid "Volume->Mute"
+msgstr "Hlasitosť->Stlmiť"
+
+#: src/evdev-plug/ed.c:72
+msgid "Window->Main"
+msgstr "Okno->Hlavné"
+
+#: src/evdev-plug/ed.c:73
+msgid "Window->Playlist"
+msgstr "Okno->Zoznam skladieb"
+
+#: src/evdev-plug/ed.c:74
+msgid "Window->Equalizer"
+msgstr "Okno->Ekvalizér"
+
+#: src/evdev-plug/ed.c:75
+msgid "Window->JumpToFile"
+msgstr "Okno->Presun na súbor"
+
+#: src/evdev-plug/ed_internals.c:93
+#, c-format
+msgid ""
+"event-device-plugin: unable to open device file %s , skipping this device; "
+"check that the file exists and that you have read permission for it\n"
+msgstr ""
+"event-device-plugin: zariadenie %s sa nedá otvoriť, toto zariadenie sa vynechá; "
+"skontrolujte, či súbor zariadenia existuje a či máte právo ho čítať\n"
+
+#: src/evdev-plug/ed_internals.c:102
+#, c-format
+msgid ""
+"event-device-plugin: unable to create a io_channel for device file %s ,"
+"skipping this device\n"
+msgstr ""
+"event-device-plugin: vstupno-výstupný kanál pre zariadenie %s sa nedá vytvoriť, "
+"zariadenie bude vynechané\n"
+
+#: src/evdev-plug/ed_internals.c:339
+msgid ""
+"event-device-plugin: unable to open /proc/bus/input/devices , automatic "
+"detection of event devices won't work.\n"
+msgstr ""
+"event-device-plugin: súbor /proc/bus/input/devices sa nedá otvoriť, "
+"automatické detekcia udalostných zariadení nebude fungovať.\n"
+
+#: src/evdev-plug/ed_internals.c:348
+msgid ""
+"event-device-plugin: unable to open a io_channel for /proc/bus/input/"
+"devices , automatic detection of event devices won't work.\n"
+msgstr ""
+"event-device-plugin: vstupno-výstupný kanál pre /proc/bus/input/devices sa nedá otvoriť, "
+"automatické detekcia udalostných zariadení nebude fungovať.\n"
+
+#: src/evdev-plug/ed_internals.c:358
+msgid ""
+"event-device-plugin: an error occurred while reading /proc/bus/input/"
+"devices , automatic detection of event devices won't work.\n"
+msgstr ""
+"event-device-plugin: pri čítaní /proc/bus/input/devices nastala chyba, "
+"automatické detekcia udalostných zariadení nebude fungovať.\n"
+
+#: src/evdev-plug/ed_internals.c:421
+#, c-format
+msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
+msgstr ""
+"event-device-plugin: zariadenie %s nebolo nájdené v /dev/input; "
+"zariadenie bude vynechané.\n"
+
+#: src/evdev-plug/ed_internals.c:486 src/evdev-plug/ed_internals.c:580
+#, c-format
+msgid ""
+"event-device-plugin: unable to load config file %s , default settings will "
+"be used.\n"
+msgstr ""
+"event-device-plugin: konfiguračný súbor %s sa nedá načítať,"
+"budú použité štandardné nastavenia.\n"
+
+#: src/evdev-plug/ed_internals.c:532
+#, c-format
+msgid ""
+"event-device-plugin: incomplete information in config file for device \"%s"
+"\" , skipping.\n"
+msgstr ""
+"event-device-plugin: v konfiguračnom súbore sú neúplné informácie pre zariadenie %s, "
+"zariadenie bude vynechané\n"
+
+#: src/evdev-plug/ed_internals.c:601 src/evdev-plug/ed_internals.c:933
+#, c-format
+msgid ""
+"event-device-plugin: configuration, unable to get is_active value for device "
+"\"%s\", skipping it.\n"
+msgstr ""
+"event-device-plugin: konfigurácia: nedá sa získať hodnota is_active pre zariadenie %s, "
+"zariadenie bude vynechané\n"
+
+#: src/evdev-plug/ed_internals.c:837
+#, c-format
+msgid ""
+"event-device-plugin: unable to access local directory %s , settings will not "
+"be saved.\n"
+msgstr "event-device-plugin: prístup k lokálnemu adresáru %s bol odoprený, nastavenia nebudú uložené.\n"
+
+#: src/evdev-plug/ed_internals.c:887
+#, c-format
+msgid ""
+"event-device-plugin: configuration, unable to get filename value for device "
+"\"%s\", skipping it.\n"
+msgstr ""
+"event-device-plugin: konfigurácia: hodnotu filename pre zariadenie %s sa nepodarilo získať, "
+"zariadenie bude vynechané\n"
+
+#: src/evdev-plug/ed_internals.c:903
+#, c-format
+msgid ""
+"event-device-plugin: configuration, unable to get phys value for device \"%s"
+"\", skipping it.\n"
+msgstr ""
+"event-device-plugin: konfigurácia: hodnotu phys pre zariadenie %s sa nepodarilo získať, "
+"zariadenie bude vynechané\n"
+
+#: src/evdev-plug/ed_internals.c:919
+#, c-format
+msgid ""
+"event-device-plugin: configuration, unable to get is_custom value for device "
+"\"%s\", skipping it.\n"
+msgstr ""
+"event-device-plugin: konfigurácia: hodnotu is_custom pre zariadenie %s sa nepodarilo získať, "
+"zariadenie bude vynechané\n"
+
+#: src/evdev-plug/ed_internals.c:943
+#, c-format
+msgid ""
+"event-device-plugin: configuration, unexpected value for device \"%s\", "
+"skipping it.\n"
+msgstr ""
+"event-device-plugin: konfigurácia: neočakávaná hodnota pre zariadenie %s, "
+"zariadenie bude vynechané\n"
+
+#: src/evdev-plug/ed_ui.c:274 src/evdev-plug/ed_ui.c:410
+#: src/evdev-plug/ed_ui.c:862
+msgid "Information"
+msgstr "Podrobnosti"
+
+#: src/evdev-plug/ed_ui.c:275
+msgid ""
+"Cannot open bindings window for a not-detected device.\n"
+"Ensure that the device has been correctly plugged in."
+msgstr ""
+"Okno s prepojeniami pre nedetekované zariadenie sa nedá otvoriť.\n"
+"Uistite sa, že zariadenie je správne pripojené."
+
+#: src/evdev-plug/ed_ui.c:319
+msgid ""
+"Unable to open selected device.\n"
+"Please check read permissions on device file."
+msgstr ""
+"Zvolené zariadenie sa nedá otvoriť.\n"
+"Skontrolujte prosím, práva na čítanie tohoto zariadenia."
+
+#: src/evdev-plug/ed_ui.c:340
+msgid "EvDev-Plug - Add custom device"
+msgstr "EvDev-Plug - Pridať vlastné zariadenie"
+
+#: src/evdev-plug/ed_ui.c:352
+msgid ""
+"EvDev-Plug tries to automatically detect and update information about\n"
+"event devices available on the system.\n"
+"However, if auto-detect doesn't work for your system, or you have event\n"
+"devices in a non-standard location (currently they're only searched in\n"
+"/dev/input/ ), you may want to add a custom device, explicitly specifying\n"
+"name and device file."
+msgstr ""
+"EvDev-Plug sa pokúsi automaticky zistiť udalostné zariadenia dostupné v systéme\n"
+"a aktualizovať o nich informácie.\n"
+"Ak autodetekcia na vašom systéme nepracuje správne, alebo máte udalostné\n"
+"zariadenia v neštandardnom adresári (v súčastnosti je prehľadávaný iba adresár\n"
+"/dev/input), môžete pridať vlastné zariadenia."
+
+#: src/evdev-plug/ed_ui.c:360
+msgid "Device name:"
+msgstr "Meno zariadenia:"
+
+#: src/evdev-plug/ed_ui.c:364
+msgid "Device file:"
+msgstr "Meno súboru:"
+
+#: src/evdev-plug/ed_ui.c:411
+msgid ""
+"Please specify both name and filename.\n"
+"Filename must be specified with absolute path."
+msgstr ""
+"Prosím zadajte názov a meno súboru.\n"
+"Meno súboru musí byť uvedené s absolútnou cestou."
+
+#: src/evdev-plug/ed_ui.c:446
+msgid "Do you want to remove the existing configuration for selected device?\n"
+msgstr "Prajete si odstrániť existujúce nastavenia pre zvolené zariadenie?\n"
+
+#: src/evdev-plug/ed_ui.c:465
+msgid "Do you want to remove the selected custom device?\n"
+msgstr "Prajete si odstrániť zvolené zariadenie?\n"
+
+#: src/evdev-plug/ed_ui.c:612
+msgid "EvDev-Plug - Configuration"
+msgstr "EvDev-Plug - Nastavenia"
+
+#: src/evdev-plug/ed_ui.c:651
+msgid "Active"
+msgstr "Aktívne"
+
+#: src/evdev-plug/ed_ui.c:664
+msgid "Device Name"
+msgstr "Názov zariadenia"
+
+#: src/evdev-plug/ed_ui.c:668
+msgid "Device File"
+msgstr "Súbor zariadenia"
+
+#: src/evdev-plug/ed_ui.c:672
+msgid "Device Address"
+msgstr "Adresa zariadenia"
+
+#: src/evdev-plug/ed_ui.c:689
+msgid "_Bindings"
+msgstr "_Prepojenia"
+
+#: src/evdev-plug/ed_ui.c:826
+msgid ""
+"Press a key of your device to bind it;\n"
+"if no key is pressed in five seconds, this window\n"
+"will close without binding changes."
+msgstr ""
+"Na zariadení stlačte kláves, ktorí si želáte prepojiť."
+"Ak nebude stlačený žiadny kláves bude toto okno\n"
+"automaticky o päť sekúnd zatvorené."
+
+#: src/evdev-plug/ed_ui.c:863
+msgid ""
+"This input event has been already assigned.\n"
+"\n"
+"It's not possible to assign multiple actions to the same input event "
+"(although it's possible to assign the same action to multiple events)."
+msgstr ""
+"Táto vstupná udalosť už bola priradená.\n"
+"\n"
+"Nie je možné priradiť viac akcií rovnakej vstupnej udalosti "
+"(je ale možné priradiť jednu akciu viacerým vstupným udalostiam)."
+
+#: src/evdev-plug/ed_ui.c:1312
+msgid "EvDev-Plug - Bindings Configuration"
+msgstr "EvDev-Plug - Konfigurácia prepojení"
+
+#: src/evdev-plug/ed_ui.c:1352
+msgid "<b>Name: </b>"
+msgstr "<b>Názov: </b>"
+
+#: src/evdev-plug/ed_ui.c:1361
+msgid "<b>Filename: </b>"
+msgstr "<b>Meno súboru: </b>"
+
+#: src/evdev-plug/ed_ui.c:1370
+msgid "<b>Phys.Address: </b>"
+msgstr "<b>Fyzická adresa: </b>"
+
+#: src/evdev-plug/ed_ui.c:1448
+msgid "EvDev-Plug - about"
+msgstr "O module EvDev-Plug"
+
+#: src/evdev-plug/ed_ui.c:1479
+msgid ""
+"\n"
+"EvDev-Plug "
+msgstr ""
+"\n"
+"EvDev-Plug "
+
+#: src/evdev-plug/ed_ui.c:1480
+msgid ""
+"\n"
+"player remote control via event devices\n"
+"http://www.develia.org/projects.php?p=evdevplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+msgstr ""
+"\n"
+"diaľkové ovládanie prehrávača pomocou udalostných zariadení\n"
+"http://www.develia.org/projects.php?p=evdevplug\n"
+"\n"
+"napísal Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+
+#: src/flac112/charset.c:40 src/flac113/charset.c:40
+msgid "Arabic (IBM-864)"
+msgstr "arabčina (IBM-864)"
+
+#: src/flac112/charset.c:41 src/flac113/charset.c:41
+msgid "Arabic (ISO-8859-6)"
+msgstr "arabčina (ISO-8859-6)"
+
+#: src/flac112/charset.c:42 src/flac113/charset.c:42
+msgid "Arabic (Windows-1256)"
+msgstr "arabčina (Windows-1256)"
+
+#: src/flac112/charset.c:43 src/flac113/charset.c:43
+msgid "Baltic (ISO-8859-13)"
+msgstr "pobaltské jazyky (ISO-8859-13)"
+
+#: src/flac112/charset.c:44 src/flac113/charset.c:44
+msgid "Baltic (ISO-8859-4)"
+msgstr "pobaltské jazyky (ISO-8859-4)"
+
+#: src/flac112/charset.c:45 src/flac113/charset.c:45
+msgid "Baltic (Windows-1257)"
+msgstr "pobaltské jazyky (Windows-1257)"
+
+#: src/flac112/charset.c:46 src/flac113/charset.c:46
+msgid "Celtic (ISO-8859-14)"
+msgstr "keltské jazyky (ISO-8859-14)"
+
+#: src/flac112/charset.c:47 src/flac113/charset.c:47
+msgid "Central European (IBM-852)"
+msgstr "stredoeurópske jazyky (IBM-852)"
+
+#: src/flac112/charset.c:48 src/flac113/charset.c:48
+msgid "Central European (ISO-8859-2)"
+msgstr "stredoeurópske jazyky (ISO-8859-2)"
+
+#: src/flac112/charset.c:49 src/flac113/charset.c:49
+msgid "Central European (Windows-1250)"
+msgstr "stredoeurópske jazyky (Windows-1250)"
+
+#: src/flac112/charset.c:50 src/flac113/charset.c:50
+msgid "Chinese Simplified (GB18030)"
+msgstr "zjednodušená čínština (GB18030)"
+
+#: src/flac112/charset.c:51 src/flac113/charset.c:51
+msgid "Chinese Simplified (GB2312)"
+msgstr "zjednodušená čínština (GB2312)"
+
+#: src/flac112/charset.c:52 src/flac113/charset.c:52
+msgid "Chinese Traditional (Big5)"
+msgstr "tradičná čínština (Big5)"
+
+#: src/flac112/charset.c:53 src/flac113/charset.c:53
+msgid "Chinese Traditional (Big5-HKSCS)"
+msgstr "tradičná čínština (Big5-HKSCS)"
+
+#: src/flac112/charset.c:54 src/flac113/charset.c:54
+msgid "Cyrillic (IBM-855)"
+msgstr "cyrilika (IBM-855)"
+
+#: src/flac112/charset.c:55 src/flac113/charset.c:55
+msgid "Cyrillic (ISO-8859-5)"
+msgstr "cyrilika (ISO-8859-5)"
+
+#: src/flac112/charset.c:56 src/flac113/charset.c:56
+msgid "Cyrillic (ISO-IR-111)"
+msgstr "cyrilika (ISO-IR-111)"
+
+#: src/flac112/charset.c:57 src/flac113/charset.c:57
+msgid "Cyrillic (KOI8-R)"
+msgstr "cyrilika (KOI8-R)"
+
+#: src/flac112/charset.c:58 src/flac113/charset.c:58
+msgid "Cyrillic (Windows-1251)"
+msgstr "cyrilika (Windows-1251)"
+
+#: src/flac112/charset.c:59 src/flac113/charset.c:59
+msgid "Cyrillic/Russian (CP-866)"
+msgstr "ruská cyrilika (CP-866)"
+
+#: src/flac112/charset.c:60 src/flac113/charset.c:60
+msgid "Cyrillic/Ukrainian (KOI8-U)"
+msgstr "ukrajinská cyrilika (KOI8-U)"
+
+#: src/flac112/charset.c:61 src/flac113/charset.c:61
+msgid "English (US-ASCII)"
+msgstr "angličtina (US-ASCII)"
+
+#: src/flac112/charset.c:62 src/flac113/charset.c:62
+msgid "Greek (ISO-8859-7)"
+msgstr "gréčtina (ISO-8859-7)"
+
+#: src/flac112/charset.c:63 src/flac113/charset.c:63
+msgid "Greek (Windows-1253)"
+msgstr "gréčtina (Windows-1253)"
+
+#: src/flac112/charset.c:64 src/flac113/charset.c:64
+msgid "Hebrew (IBM-862)"
+msgstr "hebrejčina (IBM-862)"
+
+#: src/flac112/charset.c:65 src/flac113/charset.c:65
+msgid "Hebrew (Windows-1255)"
+msgstr "hebrejčina (Windows-1255)"
+
+#: src/flac112/charset.c:66 src/flac113/charset.c:66
+msgid "Japanese (EUC-JP)"
+msgstr "japončina (EUC-JP)"
+
+#: src/flac112/charset.c:67 src/flac113/charset.c:67
+msgid "Japanese (ISO-2022-JP)"
+msgstr "japončina (ISO-2022-JP)"
+
+#: src/flac112/charset.c:68 src/flac113/charset.c:68
+msgid "Japanese (Shift_JIS)"
+msgstr "japončina (Shift_JIS)"
+
+#: src/flac112/charset.c:69 src/flac113/charset.c:69
+msgid "Korean (EUC-KR)"
+msgstr "kórejčina (EUC-KR)"
+
+#: src/flac112/charset.c:70 src/flac113/charset.c:70
+msgid "Nordic (ISO-8859-10)"
+msgstr "severské jazyky (ISO-8859-10)"
+
+#: src/flac112/charset.c:71 src/flac113/charset.c:71
+msgid "South European (ISO-8859-3)"
+msgstr "juhoeurópske jazyky (ISO-8859-3)"
+
+#: src/flac112/charset.c:72 src/flac113/charset.c:72
+msgid "Thai (TIS-620)"
+msgstr "thajčina (TIS-620)"
+
+#: src/flac112/charset.c:73 src/flac113/charset.c:73
+msgid "Turkish (IBM-857)"
+msgstr "turčina (IBM-857)"
+
+#: src/flac112/charset.c:74 src/flac113/charset.c:74
+msgid "Turkish (ISO-8859-9)"
+msgstr "turčina (ISO-8859-9)"
+
+#: src/flac112/charset.c:75 src/flac113/charset.c:75
+msgid "Turkish (Windows-1254)"
+msgstr "turčina (Windows-1254)"
+
+#: src/flac112/charset.c:76 src/flac113/charset.c:76
+msgid "Unicode (UTF-7)"
+msgstr "unicode (UTF-7)"
+
+#: src/flac112/charset.c:77 src/flac113/charset.c:77
+msgid "Unicode (UTF-8)"
+msgstr "unicode (UTF-8)"
+
+#: src/flac112/charset.c:78 src/flac113/charset.c:78
+msgid "Unicode (UTF-16BE)"
+msgstr "unicode (UTF-16BE)"
+
+#: src/flac112/charset.c:79 src/flac113/charset.c:79
+msgid "Unicode (UTF-16LE)"
+msgstr "unicode (UTF-16LE)"
+
+#: src/flac112/charset.c:80 src/flac113/charset.c:80
+msgid "Unicode (UTF-32BE)"
+msgstr "unicode (UTF-32BE)"
+
+#: src/flac112/charset.c:81 src/flac113/charset.c:81
+msgid "Unicode (UTF-32LE)"
+msgstr "unicode (UTF-32LE)"
+
+#: src/flac112/charset.c:82 src/flac113/charset.c:82
+msgid "Vietnamese (VISCII)"
+msgstr "vietnamčina (VISCII)"
+
+#: src/flac112/charset.c:83 src/flac113/charset.c:83
+msgid "Vietnamese (Windows-1258)"
+msgstr "vietnamčina (Windows-1258)"
+
+#: src/flac112/charset.c:84 src/flac113/charset.c:84
+msgid "Visual Hebrew (ISO-8859-8)"
+msgstr "vizuálna hebrejčina (ISO-8859-8)"
+
+#: src/flac112/charset.c:85 src/flac113/charset.c:85
+msgid "Western (IBM-850)"
+msgstr "západné jazyky (IBM-850)"
+
+#: src/flac112/charset.c:86 src/flac113/charset.c:86
+msgid "Western (ISO-8859-1)"
+msgstr "západné jazyky (ISO-8859-1)"
+
+#: src/flac112/charset.c:87 src/flac113/charset.c:87
+msgid "Western (ISO-8859-15)"
+msgstr "západné jazyky (ISO-8859-15)"
+
+#: src/flac112/charset.c:88 src/flac113/charset.c:88
+msgid "Western (Windows-1252)"
+msgstr "západné jazyky (Windows-1252)"
+
+#: src/flac112/charset.c:94 src/flac113/charset.c:94
+msgid "Arabic (IBM-864-I)"
+msgstr "arabčina (IBM-864-I)"
+
+#: src/flac112/charset.c:95 src/flac113/charset.c:95
+msgid "Arabic (ISO-8859-6-E)"
+msgstr "arabčina (ISO-8859-6-E)"
+
+#: src/flac112/charset.c:96 src/flac113/charset.c:96
+msgid "Arabic (ISO-8859-6-I)"
+msgstr "arabčina (ISO-8859-6-I)"
+
+#: src/flac112/charset.c:97 src/flac113/charset.c:97
+msgid "Arabic (MacArabic)"
+msgstr "arabčina (MacArabic)"
+
+#: src/flac112/charset.c:98 src/flac113/charset.c:98
+msgid "Armenian (ARMSCII-8)"
+msgstr "arménčina (ARMSCII-8)"
+
+#: src/flac112/charset.c:99 src/flac113/charset.c:99
+msgid "Central European (MacCE)"
+msgstr "stredoeurópske jazyky (MacCE)"
+
+#: src/flac112/charset.c:100 src/flac113/charset.c:100
+msgid "Chinese Simplified (GBK)"
+msgstr "zjednodušená čínština (GBK)"
+
+#: src/flac112/charset.c:101 src/flac113/charset.c:101
+msgid "Chinese Simplified (HZ)"
+msgstr "zjednodušená čínština (HZ)"
+
+#: src/flac112/charset.c:102 src/flac113/charset.c:102
+msgid "Chinese Traditional (EUC-TW)"
+msgstr "tradičná čínština (EUC-TW)"
+
+#: src/flac112/charset.c:103 src/flac113/charset.c:103
+msgid "Croatian (MacCroatian)"
+msgstr "chorvátčina (MacCroatian)"
+
+#: src/flac112/charset.c:104 src/flac113/charset.c:104
+msgid "Cyrillic (MacCyrillic)"
+msgstr "cyrilika (MacCirillic)"
+
+#: src/flac112/charset.c:105 src/flac113/charset.c:105
+msgid "Cyrillic/Ukrainian (MacUkrainian)"
+msgstr "ukrajinská cyrilika (MacUkrainian)"
+
+#: src/flac112/charset.c:106 src/flac113/charset.c:106
+msgid "Farsi (MacFarsi)"
+msgstr "perzština (MacFarsi)"
+
+#: src/flac112/charset.c:107 src/flac113/charset.c:107
+msgid "Greek (MacGreek)"
+msgstr "gréčtina (MacGreek)"
+
+#: src/flac112/charset.c:108 src/flac113/charset.c:108
+msgid "Gujarati (MacGujarati)"
+msgstr "gujarčina (MacGujarati)"
+
+#: src/flac112/charset.c:109 src/flac113/charset.c:109
+msgid "Gurmukhi (MacGurmukhi)"
+msgstr "gurmukhi (MacGurmukhi)"
+
+#: src/flac112/charset.c:110 src/flac113/charset.c:110
+msgid "Hebrew (ISO-8859-8-E)"
+msgstr "hebrejčina (ISO-8859-8-E)"
+
+#: src/flac112/charset.c:111 src/flac113/charset.c:111
+msgid "Hebrew (ISO-8859-8-I)"
+msgstr "hebrejčina (ISO-8859-8-I)"
+
+#: src/flac112/charset.c:112 src/flac113/charset.c:112
+msgid "Hebrew (MacHebrew)"
+msgstr "hebrejčina (MacHebrew)"
+
+#: src/flac112/charset.c:113 src/flac113/charset.c:113
+msgid "Hindi (MacDevanagari)"
+msgstr "hindčina (MacDevanagari)"
+
+#: src/flac112/charset.c:114 src/flac113/charset.c:114
+msgid "Icelandic (MacIcelandic)"
+msgstr "islandčina (MacIcelandic)"
+
+#: src/flac112/charset.c:115 src/flac113/charset.c:115
+msgid "Korean (JOHAB)"
+msgstr "kórejčina (JOHAB)"
+
+#: src/flac112/charset.c:116 src/flac113/charset.c:116
+msgid "Korean (UHC)"
+msgstr "kórejčina (UHC)"
+
+#: src/flac112/charset.c:117 src/flac113/charset.c:117
+msgid "Romanian (MacRomanian)"
+msgstr "rumunčina (MacRomanian)"
+
+#: src/flac112/charset.c:118 src/flac113/charset.c:118
+msgid "Turkish (MacTurkish)"
+msgstr "turečtina (MacTurkish)"
+
+#: src/flac112/charset.c:119 src/flac113/charset.c:119
+msgid "User Defined"
+msgstr "užívateľom definované"
+
+#: src/flac112/charset.c:120 src/flac113/charset.c:120
+msgid "Vietnamese (TCVN)"
+msgstr "vietnamčina (TCVN)"
+
+#: src/flac112/charset.c:121 src/flac113/charset.c:121
+msgid "Vietnamese (VPS)"
+msgstr "vietnamčina (VPS)"
+
+#: src/flac112/charset.c:122 src/flac113/charset.c:122
+msgid "Western (MacRoman)"
+msgstr "západné jazyky (MacRoman)"
+
+#: src/flac112/configure.c:249 src/flac113/configure.c:249
+msgid "Flac Configuration"
+msgstr "Nastavenia Flac"
+
+#: src/flac112/configure.c:261 src/flac113/configure.c:261
+msgid "Tag Handling"
+msgstr "Správa značiek"
+
+#: src/flac112/configure.c:270 src/flac113/configure.c:270
+msgid "Convert Character Set"
+msgstr "Zmeniť znakovú sadu"
+
+#: src/flac112/configure.c:278 src/flac113/configure.c:278
+msgid "Convert character set from :"
+msgstr "Zmeniť znakovú sadu z:"
+
+#: src/flac112/configure.c:283 src/flac113/configure.c:283
+msgid "to :"
+msgstr "na:"
+
+#: src/flac112/configure.c:323 src/flac113/configure.c:323
+msgid "Disable bitrate update during playback (saves cpu usage)"
+msgstr "Počas prehrávania neobnovovať informácie o dátovom toku (znižuje zaťaženie procesoru)"
+
+#: src/flac112/configure.c:345 src/flac113/configure.c:345
+#: src/madplug/configure.c:175
+msgid "Enable ReplayGain processing"
+msgstr "Pri prehrávaní zapnúť zosilnenie"
+
+#: src/flac112/configure.c:350 src/flac113/configure.c:350
+msgid "Album mode"
+msgstr "Režim albumu"
+
+#: src/flac112/configure.c:357 src/flac113/configure.c:357
+msgid "Preamp:"
+msgstr "Predzosilnenie:"
+
+#: src/flac112/configure.c:364 src/flac113/configure.c:364
+msgid "0 dB"
+msgstr "0 dB"
+
+#: src/flac112/configure.c:368 src/flac113/configure.c:368
+#: src/madplug/configure.c:187
+msgid "6dB hard limiting"
+msgstr "6dB pevné obmedzenie"
+
+#: src/flac112/configure.c:377 src/flac113/configure.c:377
+msgid "Resolution"
+msgstr "Rozlíšenie"
+
+#: src/flac112/configure.c:385 src/flac113/configure.c:385
+msgid "Without ReplayGain"
+msgstr "Bez zosilnenia prehrávania"
+
+#: src/flac112/configure.c:393 src/flac113/configure.c:393
+msgid "Dither 24bps to 16bps"
+msgstr "Rozptýlením previesť 24 bitov na 16"
+
+#: src/flac112/configure.c:398 src/flac113/configure.c:398
+msgid "With ReplayGain"
+msgstr "So zosilneným prehrávaním"
+
+#: src/flac112/configure.c:406 src/flac113/configure.c:406
+msgid "Enable dithering"
+msgstr "Povoliť rozptýlenie"
+
+#: src/flac112/configure.c:415 src/flac113/configure.c:415
+msgid "Noise shaping"
+msgstr "Tvarovanie šumu"
+
+#: src/flac112/configure.c:423 src/flac113/configure.c:423
+msgid "none"
+msgstr "žiadne"
+
+#: src/flac112/configure.c:429 src/flac113/configure.c:429
+msgid "low"
+msgstr "nízke"
+
+#: src/flac112/configure.c:435 src/flac113/configure.c:435
+msgid "medium"
+msgstr "stredné"
+
+#: src/flac112/configure.c:441 src/flac113/configure.c:441
+msgid "high"
+msgstr "vysoké"
+
+#: src/flac112/configure.c:447 src/flac113/configure.c:447
+msgid "Dither to"
+msgstr "Rozptýlenie na"
+
+#: src/flac112/configure.c:455 src/flac113/configure.c:455
+msgid "16 bps"
+msgstr "16 bitov"
+
+#: src/flac112/configure.c:461 src/flac113/configure.c:461
+msgid "24 bps"
+msgstr "24 bitov"
+
+#: src/flac112/configure.c:469 src/flac113/configure.c:469
+msgid "Output"
+msgstr "Výstup"
+
+#: src/flac112/configure.c:501 src/flac113/configure.c:501
+msgid "About Flac Plugin"
+msgstr "O module Flac"
+
+#: src/flac112/configure.c:502 src/flac113/configure.c:502
+msgid ""
+"Flac Plugin by Josh Coalson\n"
+"contributions by\n"
+"......\n"
+"......\n"
+"and\n"
+"Daisuke Shimamura\n"
+"Visit http://flac.sourceforge.net/\n"
+"\n"
+"Audacious Team port"
+msgstr ""
+"Modul Flac napísal Josh Coalson\n"
+"prispeli\n"
+"......\n"
+"......\n"
+"a\n"
+"Daisuke Shimamura\n"
+"Navštívte http://flac.sourceforge.net/\n"
+"\n"
+"Audacious Team port"
+
+#: src/flac112/fileinfo.c:57 src/flac113/fileinfo.c:60
+msgid "Alt"
+msgstr "Alt"
+
+#: src/flac112/fileinfo.c:214 src/flac113/fileinfo.c:217
+#, c-format
+msgid "Samplerate: %d Hz"
+msgstr "Vzorkovacia frekvencia: %d Hz"
+
+#: src/flac112/fileinfo.c:215 src/flac113/fileinfo.c:218
+#, c-format
+msgid "Channels: %d"
+msgstr "Počet kanálov: %d"
+
+#: src/flac112/fileinfo.c:216 src/flac113/fileinfo.c:219
+#, c-format
+msgid "Bits/Sample: %d"
+msgstr "Bitov na vzorku: %d"
+
+#: src/flac112/fileinfo.c:218 src/flac113/fileinfo.c:221
+#, c-format
+msgid "Blocksize: %d"
+msgstr "Veľkosť bloku: %d"
+
+#: src/flac112/fileinfo.c:220 src/flac113/fileinfo.c:223
+#, c-format
+msgid ""
+"Blocksize: variable\n"
+"  min/max: %d/%d"
+msgstr ""
+"Veľkosť bloku: premenlivá\n"
+"  min/max: %d/%d"
+
+#: src/flac112/fileinfo.c:223 src/flac113/fileinfo.c:226
+#, c-format
+msgid ""
+"Samples: %llu\n"
+"Length: %d:%.2d"
+msgstr ""
+"Vzorkov: %llu\n"
+"Dĺžka: %d:%.2d"
+
+#: src/flac112/fileinfo.c:229 src/flac113/fileinfo.c:235
+#, c-format
+msgid "Filesize: %ld B"
+msgstr "Veľkosť súboru: %ld B"
+
+#: src/flac112/fileinfo.c:231 src/flac113/fileinfo.c:238
+#, c-format
+msgid ""
+"Avg. bitrate: %.1f kb/s\n"
+"Compression ratio: %.1f%%"
+msgstr ""
+"Priemerný dátový tok: %.1f kb/s\n"
+"Kompresný pomer: %.1f%%"
+
+#: src/flac112/fileinfo.c:266 src/flac113/fileinfo.c:308
+msgid "Filename:"
+msgstr "Meno súboru:"
+
+#: src/flac112/fileinfo.c:278 src/flac113/fileinfo.c:320
+msgid "Tag:"
+msgstr "Značka"
+
+#: src/flac112/fileinfo.c:352 src/flac113/fileinfo.c:394
+msgid "Save"
+msgstr "Uložiť"
+
+#: src/flac112/fileinfo.c:358 src/flac113/fileinfo.c:400
+msgid "Remove Tag"
+msgstr "Odstrániť značku"
+
+#: src/flac112/fileinfo.c:368 src/flac113/fileinfo.c:410
+msgid "FLAC Info:"
+msgstr "Podrobnosti o FLAC"
+
+#: src/flac112/plugin.c:170 src/flac113/plugin.c:161
+msgid "FLAC Audio Plugin"
+msgstr "Modul Flac Audio"
+
+#: src/flac113/fileinfo.c:233
+#, c-format
+msgid "Filesize: %lld B"
+msgstr "Veľkosť súboru: %lld B"
+
+#: src/flac113/fileinfo.c:268
+#, c-format
+msgid "ReplayGain Reference Loudness: %2.1f dB"
+msgstr "Referenčné zosilnenie: %2.1f dB"
+
+#: src/flac113/fileinfo.c:270
+#, c-format
+msgid "ReplayGain Track Gain: %+2.2f dB"
+msgstr "Zosilnenie stopy: %+2.2f dB"
+
+#: src/flac113/fileinfo.c:272
+#, c-format
+msgid "ReplayGain Album Gain: %+2.2f dB"
+msgstr "Zosilnenie albumu: %+2.2f dB"
+
+#: src/flac113/fileinfo.c:274
+#, c-format
+msgid "ReplayGain Track Peak: %1.8f"
+msgstr "Špička zosilnenia stopy: %1.8f"
+
+#: src/flac113/fileinfo.c:276
+#, c-format
+msgid "ReplayGain Album Peak: %1.8f"
+msgstr "Špička zosilnenia albumu: %1.8f"
+
+#: src/madplug/configure.c:136
+msgid "MPEG Audio Plugin Configuration"
+msgstr "Nastavenie modulu MPEG Audio"
+
+#: src/madplug/configure.c:149
+msgid "Enable fast play-length calculation"
+msgstr "Povoliť rýchly výpočet dĺžky hrania"
+
+#: src/madplug/configure.c:154
+msgid "Parse XING headers"
+msgstr "Spracovať XING hlavičky"
+
+#: src/madplug/configure.c:165
+msgid "Dither output when rounding to 16-bit"
+msgstr "Pri zaokrúhľovaní výstupu na 16 bitov výstup rozptýliť"
+
+#: src/madplug/configure.c:180
+msgid "Track mode"
+msgstr "Režim stopy"
+
+#: src/madplug/configure.c:192
+msgid "Default gain (dB):"
+msgstr "Štandardné zosilnenie (dB):"
+
+#: src/madplug/configure.c:203
+msgid "Preamp (dB):"
+msgstr "Predzosilnenie (dB):"
+
+#: src/madplug/configure.c:230
+msgid "ID3 format:"
+msgstr "Formát ID3:"
+
+#: src/madplug/fileinfo.c:569
+msgid " MPEG Info "
+msgstr " MPEG informácie "
+
+#: src/madplug/fileinfo.c:642
+msgid " ID3 Tag "
+msgstr " ID3 značka "
+
+#: src/madplug/plugin.c:638
+msgid "MPEG Audio Plugin"
+msgstr "Modul MPEG Audio"
+
+#: src/statusicon/gtktrayicon-x11.c:97
+msgid "Orientation"
+msgstr "Orientácia"
+
+#: src/statusicon/gtktrayicon-x11.c:98
+msgid "The orientation of the tray"
+msgstr "Orientácia oznamovacej oblasti"
+
+#: src/statusicon/si_ui.c:343
+msgid "About Status Icon Plugin"
+msgstr "O module Stavová ikona"
+
+#: src/statusicon/si_ui.c:345
+msgid ""
+"\n"
+"written by Giacomo Lozito < james@develia.org >\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager.\n"
+msgstr ""
+"\n"
+"napísal Giacomo Lozito < james@develia.org >\n"
+"\n"
+"Tento modul poskytuje stavovú ikonu umiestnenú\n"
+"v oznamovacej oblasti správcu okien.\n"
+
