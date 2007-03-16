@@ -65,6 +65,7 @@ InputPlugin wav_ip = {
     NULL,
     NULL,
     wav_fmts,
+    mseek,
 };
 
 WaveFile *wav_file = NULL;
@@ -296,10 +297,10 @@ play_loop(gpointer arg)
         else
             xmms_usleep(10000);
         if (wav_file->seek_to != -1) {
-            wav_file->position = wav_file->seek_to * rate;
+            wav_file->position = (unsigned long)((gint64)wav_file->seek_to * (gint64)rate / 1000L);
             vfs_fseek(wav_file->file,
                       wav_file->position + wav_file->data_offset, SEEK_SET);
-            playback->output->flush(wav_file->seek_to * 1000);
+            playback->output->flush(wav_file->seek_to);
             wav_file->seek_to = -1;
         }
 
@@ -447,14 +448,21 @@ wav_pause(InputPlayback * playback, gshort p)
 }
 
 static void
-seek(InputPlayback * data, gint time)
+mseek(InputPlayback * data, gulong millisecond)
 {
-    wav_file->seek_to = time;
+    wav_file->seek_to = millisecond;
 
     wav_file->eof = FALSE;
 
     while (wav_file->seek_to != -1)
         xmms_usleep(10000);
+}
+
+static void
+seek(InputPlayback * data, gint time)
+{
+    gulong millisecond = time * 1000;
+    mseek(data, millisecond);
 }
 
 static int

@@ -1,3 +1,14 @@
+2007-03-16 05:09:36 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1824]
+  - add mseek support.
+  - fix a major bug which consumes CPU time heavily.
+  
+  trunk/src/wav/Makefile      |    2 +-
+  trunk/src/wav/wav-sndfile.c |   38 +++++++++++++++++++++++---------------
+  trunk/src/wav/wav-sndfile.h |    2 +-
+  3 files changed, 25 insertions(+), 17 deletions(-)
+
+
 2007-03-15 15:04:47 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1822]
   - refine watchdog thread.

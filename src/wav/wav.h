@@ -48,7 +48,8 @@ typedef struct {
     short format_tag, channels, block_align, bits_per_sample, eof;
     long samples_per_sec, avg_bytes_per_sec;
     unsigned long position, length;
-    int seek_to, data_offset, going;
+    glong seek_to;
+    int data_offset, going;
     pid_t pid;
 } WaveFile;
 
@@ -60,5 +61,6 @@ static void seek(InputPlayback * data, int time);
 static void wav_pause(InputPlayback * data, short p);
 static int get_time(InputPlayback * data);
 static void get_song_info(char *filename, char **title, int *length);
+static void mseek(InputPlayback * data, gulong millisecond);
 
 #endif
