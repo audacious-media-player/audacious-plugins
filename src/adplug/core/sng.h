@@ -32,8 +32,8 @@ public:
 	CsngPlayer(Copl *newopl)
 		: CPlayer(newopl), data(0)
 	{ };
-	~CsngPlayer()
-	{ if(data) delete [] data; };
+
+	~CsngPlayer() { if(data) delete [] data; data = 0; };
 
 	bool load(VFSFile *fd, const CFileProvider &fp);
 	bool update();

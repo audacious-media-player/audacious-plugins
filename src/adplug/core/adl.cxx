@@ -2218,8 +2218,8 @@ CadlPlayer::CadlPlayer(Copl *newopl)
 }
 
 CadlPlayer::~CadlPlayer() {
-  delete [] _soundDataPtr;
-  delete _driver;
+  delete [] _soundDataPtr; _soundDataPtr = 0;
+  delete _driver; _driver = 0;
 }
 
 bool CadlPlayer::init() {

@@ -1,3 +1,12 @@
+2007-03-17 01:58:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1836]
+  - fix double delete[] possibility.
+  
+  trunk/src/adplug/core/u6m.cxx |    4 ++--
+  trunk/src/adplug/core/u6m.h   |    2 +-
+  2 files changed, 3 insertions(+), 3 deletions(-)
+
+
 2007-03-17 01:58:10 +0000  Giacomo Lozito <james@develia.org>
   revision [1834]
   - last commit wasn't obviously related wit changes here; revert stuff that is still being tested

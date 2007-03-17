@@ -89,7 +89,7 @@ bool Cu6mPlayer::load(VFSFile *fd, const CFileProvider &fp)
     }
 
     // deallocation section
-    delete[] compressed_song_data;
+    delete[] compressed_song_data; compressed_song_data = 0;
 
     rewind(0);
     return (true);
@@ -900,7 +900,7 @@ Cu6mPlayer::MyDict::MyDict(int max_size)
 
 Cu6mPlayer::MyDict::~MyDict()
 {
-  delete [] dictionary;
+  delete [] dictionary; dictionary = 0;
 }
 
 // re-initializes the dictionary

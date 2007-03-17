@@ -138,8 +138,10 @@ bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
   initspeed = *orgptr;
   // v5-8 files have an additional flag byte here
   if(ch.version == 1 || ch.version == 5)
-    delete [] org;
-  delete [] secdata;
+    {
+      delete [] org; org = 0;
+    }
+  delete [] secdata; secdata = 0;
 
   // blocks 1-4 or 1-8
   alength = len[1];
@@ -175,7 +177,7 @@ bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
       if(ch.numpats > 56)
 	sixdepak(secptr,orgptr,len[8]);
     }
-    delete [] secdata;
+    delete [] secdata; secdata = 0;
   } else {
     org = (unsigned char *)secdata;
     for(l=0;l<alength;l++) org[l] = f->readInt(1);
@@ -234,9 +236,13 @@ bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
   }
 
   if(ch.version == 1 || ch.version == 5)
-    delete [] org;
+    {
+      delete [] org; org = 0; 
+    }
   else
-    delete [] secdata;
+    {
+      delete [] secdata; secdata = 0;
+    }
   fp.close(f);
   rewind(0);
   return true;
@@ -444,6 +450,6 @@ unsigned short Ca2mLoader::sixdepak(unsigned short *source, unsigned char *dest,
 	wdbuf = source; obuf = dest;
 
 	decode();
-	delete [] buf;
+	if (buf) { delete [] buf; buf = 0; }
 	return output_size;
 }

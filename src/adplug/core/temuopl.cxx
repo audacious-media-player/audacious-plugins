@@ -59,7 +59,7 @@ void CTemuopl::update(short *buf, int samples)
     for(i=0;i<(stereo ? samples*2 : samples);i++)
       ((char *)buf)[i] = (tempbuf[i] >> 8) ^ 0x80;
 
-    delete [] tempbuf;
+    delete [] tempbuf; tempbuf = 0;
   }
 }
 

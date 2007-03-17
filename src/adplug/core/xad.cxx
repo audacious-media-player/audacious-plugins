@@ -31,8 +31,7 @@ CxadPlayer::CxadPlayer(Copl * newopl) : CPlayer(newopl)
 
 CxadPlayer::~CxadPlayer()
 {
-  if (tune)
-    delete [] tune;
+  if (tune) { delete [] tune; tune = 0; }
 }
 
 bool CxadPlayer::load(VFSFile *fd, const CFileProvider &fp)

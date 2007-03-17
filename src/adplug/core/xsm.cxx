@@ -30,7 +30,7 @@ CxsmPlayer::CxsmPlayer(Copl *newopl)
 
 CxsmPlayer::~CxsmPlayer()
 {
-  if(music) delete [] music;
+  if(music) { delete [] music; music = 0; }
 }
 
 bool CxsmPlayer::load(VFSFile *fd, const CFileProvider &fp)
