@@ -133,8 +133,6 @@ gint smb_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
       roffset = 0;
     ret = smbc_lseek(handle->fd, roffset, whence);
     //printf("%ld %d = %d\n",roffset, whence, ret);
-    if (ret == 0)
-      ret = handle->length;
   }
 	
   return ret;
