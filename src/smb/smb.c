@@ -197,7 +197,7 @@ static void init(void)
 	int err;
 
 	err = smbc_init(smb_auth_fn, 1);
-	if (err <= 0)
+	if (err < 0)
 	{
 		g_message("[smb] not starting samba support due to error code %d", err);
 		return;

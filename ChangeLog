@@ -1,3 +1,11 @@
+2007-03-17 07:07:05 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1842]
+  - make this work, i think.
+  
+  trunk/src/smb/smb.c |   57 ++++++++++++++++++++++++++++------------------------
+  1 file changed, 31 insertions(+), 26 deletions(-)
+
+
 2007-03-17 04:13:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1840]
   - in C++, using __null/NULL is improper. 0 should be used instead.
