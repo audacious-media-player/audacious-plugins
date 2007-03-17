@@ -1,3 +1,12 @@
+2007-03-16 20:41:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1830]
+  - add slovak translation. closes #854.
+  
+  trunk/po/LINGUAS |    1 
+  trunk/po/sk.po   | 4026 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 4027 insertions(+)
+
+
 2007-03-16 20:05:14 +0000  Giacomo Lozito <james@develia.org>
   revision [1828]
   - ffmpeg: prevent it from crashing when probing remote sources

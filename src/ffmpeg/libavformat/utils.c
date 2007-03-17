@@ -481,7 +481,7 @@ int av_open_input_file(AVFormatContext **ic_ptr, const char *filename,
             url_setbufsize(pb, buf_size);
         }
 
-        for(probe_size= PROBE_BUF_MIN; probe_size<=PROBE_BUF_MAX && !fmt; probe_size<<=1){
+        for(probe_size= PROBE_BUF_MAX; probe_size<=PROBE_BUF_MAX && !fmt; probe_size<<=1){
             /* read probe data */
             pd->buf= av_realloc(pd->buf, probe_size);
             pd->buf_size = get_buffer(pb, pd->buf, probe_size);
