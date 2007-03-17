@@ -1,3 +1,10 @@
+2007-03-17 07:30:46 +0000  Daniel Bradshaw <nazca@atheme.org>
+  revision [1846]
+  - These two lines probably shouldn't be in here as it is doubtful they do anything helpful
+  trunk/src/smb/smb.c |    2 --
+  1 file changed, 2 deletions(-)
+
+
 2007-03-17 07:25:24 +0000  Daniel Bradshaw <nazca@atheme.org>
   revision [1844]
   - Slight tweak ... smbc_init returns 0 on sucess, not fail

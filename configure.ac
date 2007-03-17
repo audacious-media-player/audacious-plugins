@@ -380,7 +380,7 @@ if test "x$enable_aosd" = "xyes"; then
     )
 else
     AC_MSG_RESULT([*** Audacious OSD plugin disabled per user request ***])
-    have_aosd="yes"
+    have_aosd="no"
 fi
 
 if test "x$have_aosd" = "xyes"; then
@@ -998,12 +998,12 @@ AC_ARG_ENABLE(mms,
 [have_mms=$enableval],
 [have_mms=yes])
 
-if test "x$ap_disable_paranormal" = "xyes"; then
-    have_mms=no
-    AC_MSG_RESULT([*** mms plugin disabled by request ***])
-else
+if test "x$have_mms" = "xyes"; then
     have_mms=yes
     PKG_CHECK_MODULES(MMS, [libmms >= 0.3], [CONTAINER_PLUGINS="$CONTAINER_PLUGINS mms" ], [have_mms="no"])
+else
+    have_mms=no
+    AC_MSG_RESULT([*** mms plugin disabled by request ***])
 fi
 
 dnl *** libparanormal checks
@@ -1013,15 +1013,15 @@ AC_ARG_ENABLE(paranormal,
 [have_paranormal=$enableval],
 [have_paranormal=yes])
 
-if test "x$ap_disable_paranormal" = "xyes"; then
-    have_paranormal=no
-    AC_MSG_RESULT([*** paranormal plugin disabled by request ***])
-else
+if test "x$have_paranormal" = "xyes"; then
     have_paranormal=yes
     AM_PATH_SDL(1.2.5, , [
 	AC_MSG_WARN([*** SDL is not installed. Paranormal will not be built. ***])
 	have_paranormal="no"
     ])
+else
+    have_paranormal=no
+    AC_MSG_RESULT([*** paranormal plugin disabled by request ***])
 fi
 
 AC_ARG_ENABLE(xspf,
