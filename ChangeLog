@@ -1,3 +1,17 @@
+2007-03-17 04:08:34 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1838]
+  - guard some potentially improper double delete [] usage
+  
+  trunk/src/adplug/core/a2m.cxx     |   18 ++++++++++++------
+  trunk/src/adplug/core/adl.cxx     |    4 ++--
+  trunk/src/adplug/core/sng.h       |    4 ++--
+  trunk/src/adplug/core/temuopl.cxx |    2 +-
+  trunk/src/adplug/core/u6m.cxx     |    4 ++--
+  trunk/src/adplug/core/xad.cxx     |    3 +--
+  trunk/src/adplug/core/xsm.cxx     |    2 +-
+  7 files changed, 21 insertions(+), 16 deletions(-)
+
+
 2007-03-17 01:58:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1836]
   - fix double delete[] possibility.

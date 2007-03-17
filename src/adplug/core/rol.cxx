@@ -84,10 +84,10 @@ CrolPlayer::CrolPlayer(Copl *newopl)
 //---------------------------------------------------------
 CrolPlayer::~CrolPlayer()
 {
-    if( rol_header != NULL )
+    if(rol_header)
     {
         delete rol_header;
-        rol_header=NULL;
+        rol_header = 0;
     }
 }
 //---------------------------------------------------------
@@ -107,7 +107,7 @@ bool CrolPlayer::load(VFSFile *fd, const CFileProvider &fp)
 	break;
     strcpy(fn+i+1,"standard.bnk");
     bnk_filename = fn;
-    delete [] fn;
+    delete [] fn; fn = 0;
     AdPlug_LogWrite("bnk_filename = \"%s\"\n",bnk_filename.c_str());
 
     rol_header = new SRolHeader;
