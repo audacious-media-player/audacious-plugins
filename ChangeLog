@@ -1,3 +1,12 @@
+2007-03-17 04:13:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1840]
+  - in C++, using __null/NULL is improper. 0 should be used instead.
+  - guard against double-deletes
+  
+  trunk/src/adplug/core/rol.cxx |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2007-03-17 04:08:34 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1838]
   - guard some potentially improper double delete [] usage

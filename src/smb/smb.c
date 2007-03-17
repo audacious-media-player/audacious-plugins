@@ -35,31 +35,26 @@ static void smb_auth_fn(const char *srv,
   /* Does absolutely nothing :P */
 }
 
-typedef struct smb_file smb_file;
-
-struct smb_file
-{
+typedef struct _SMBFile {
 	int fd;
 	long length;
-};
+} SMBFile;
 
+/* TODO: make writing work. */
 VFSFile *smb_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
   VFSFile *file;
-  smb_file *handle;
+  SMBFile *handle;
   struct stat st;
 
   if (!path || !mode)
     return NULL;
 
-  if (smbc_init(smb_auth_fn, 1) != 0)
-    return NULL;
-		 
   file = g_new0(VFSFile, 1);
-  handle = g_new0(smb_file, 1);
+  handle = g_new0(SMBFile, 1);
   handle->fd = smbc_open(path, O_RDONLY, 0);
 		
-  if (file->handle < 0) {
+  if (handle->fd < 0) {
     g_free(file);
     file = NULL;
   } else {
@@ -74,14 +69,14 @@ VFSFile *smb_vfs_fopen_impl(const gchar * path, const gchar * mode)
 gint smb_vfs_fclose_impl(VFSFile * file)
 {
   gint ret = 0;
-  smb_file *handle;
+  SMBFile *handle;
 
   if (file == NULL)
     return -1;
 	
   if (file->handle)
   {
-    handle = (smb_file *)file->handle;
+    handle = (SMBFile *)file->handle;
     if (smbc_close(handle->fd) != 0)
       ret = -1;
     g_free(file->handle);
@@ -92,10 +87,10 @@ gint smb_vfs_fclose_impl(VFSFile * file)
 
 size_t smb_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
-  smb_file *handle;
+  SMBFile *handle;
   if (file == NULL)
     return 0;
-  handle = (smb_file *)file->handle;
+  handle = (SMBFile *)file->handle;
   return smbc_read(handle->fd, ptr, size * nmemb);
 }
 
@@ -106,22 +101,22 @@ size_t smb_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile
 
 gint smb_vfs_getc_impl(VFSFile *file)
 {
-  smb_file *handle;
-  char temp[2];
-  handle = (smb_file *)file->handle;
+  SMBFile *handle;
+  char temp;
+  handle = (SMBFile *)file->handle;
   smbc_read(handle->fd, &temp, 1);
-  return (gint) temp[0];
+  return (gint) temp;
 }
 
 gint smb_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
 {
-  smb_file *handle;
+  SMBFile *handle;
   glong roffset = offset;
   gint ret = 0;
   if (file == NULL)
      return 0;
 	
-  handle = (smb_file *)file->handle;
+  handle = (SMBFile *)file->handle;
 	
   if (whence == SEEK_END)
   {
@@ -159,18 +154,19 @@ void smb_vfs_rewind_impl(VFSFile * file)
 glong
 smb_vfs_ftell_impl(VFSFile * file)
 {
-  smb_file *handle;
-  handle = (smb_file *)file->handle;
+  SMBFile *handle;
+  handle = (SMBFile *)file->handle;
   return smbc_lseek(handle->fd, 0, SEEK_CUR);
 }
 
 gboolean
 smb_vfs_feof_impl(VFSFile * file)
 {
-  smb_file *handle;
+  SMBFile *handle;
   off_t at;
-  handle = (smb_file *)file->handle;
-  at = smbc_lseek(handle->fd, 0, SEEK_CUR);
+
+  at = smb_vfs_ftell_impl(file);
+
   //printf("%d %d %ld %ld\n",sizeof(int), sizeof(off_t), at, handle->length);
   return (gboolean) (at == handle->length) ? TRUE : FALSE;
 }
@@ -198,6 +194,15 @@ VFSConstructor smb_const = {
 
 static void init(void)
 {
+	int err;
+
+	err = smbc_init(smb_auth_fn, 1);
+	if (err <= 0)
+	{
+		g_message("[smb] not starting samba support due to error code %d", err);
+		return;
+	}
+
 	vfs_register_transport(&smb_const);
 }
 
