@@ -1,3 +1,10 @@
+2007-03-17 01:58:10 +0000  Giacomo Lozito <james@develia.org>
+  revision [1834]
+  - last commit wasn't obviously related wit changes here; revert stuff that is still being tested
+  trunk/src/ffmpeg/libavformat/utils.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-03-17 01:47:24 +0000  Giacomo Lozito <james@develia.org>
   revision [1832]
   - prevent skin list overlap when it's first populated and user quickly switchs to other tabs in the prefswin

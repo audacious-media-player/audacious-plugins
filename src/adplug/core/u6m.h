@@ -39,7 +39,7 @@ class Cu6mPlayer: public CPlayer
 
 	~Cu6mPlayer()
     {
-        if(song_data) delete[] song_data;
+        if(song_data) { delete[] song_data; song_data = 0; }
     };
 
 	bool load(VFSFile *fd, const CFileProvider &fp);

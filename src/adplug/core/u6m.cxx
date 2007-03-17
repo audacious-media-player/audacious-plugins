@@ -83,8 +83,8 @@ bool Cu6mPlayer::load(VFSFile *fd, const CFileProvider &fp)
 	
     if (!lzw_decompress(source,destination))
     {
-        delete[] compressed_song_data;
-        delete[] song_data;
+        delete[] compressed_song_data; compressed_song_data = 0;
+        delete[] song_data; song_data = 0;
         return(false);
     }
 
