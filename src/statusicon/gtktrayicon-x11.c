@@ -76,7 +76,43 @@ static void gtk_tray_icon_update_manager_window    (GtkTrayIcon *icon,
 						    gboolean     dock_if_realized);
 static void gtk_tray_icon_manager_window_destroyed (GtkTrayIcon *icon);
 
-G_DEFINE_TYPE (GtkTrayIcon, gtk_tray_icon, GTK_TYPE_PLUG)
+static void     gtk_tray_icon_init       (GtkTrayIcon      *self);
+static void     gtk_tray_icon_class_init (GtkTrayIconClass *klass);
+static gpointer gtk_tray_icon_parent_class = NULL;
+static void     gtk_tray_icon_class_intern_init (gpointer klass)
+{
+  gtk_tray_icon_parent_class = g_type_class_peek_parent (klass);
+  gtk_tray_icon_class_init ((GtkTrayIconClass*) klass);
+}
+
+GType
+gtk_tray_icon_get_type (void)
+{
+  static GType g_define_type_id = 0;
+  g_define_type_id = g_type_from_name( "AudGtkTrayIcon" );
+  if (G_UNLIKELY (g_define_type_id == 0))
+    {
+      static const GTypeInfo g_define_type_info = {
+        sizeof (GtkTrayIconClass),
+        (GBaseInitFunc) NULL,
+        (GBaseFinalizeFunc) NULL,
+        (GClassInitFunc) gtk_tray_icon_class_intern_init,
+        (GClassFinalizeFunc) NULL,
+        NULL,   /* class_data */
+        sizeof (GtkTrayIcon),
+        0,      /* n_preallocs */
+        (GInstanceInitFunc) gtk_tray_icon_init,
+      };
+      g_define_type_id = g_type_register_static (GTK_TYPE_PLUG, "AudGtkTrayIcon", &g_define_type_info, 0);
+    }
+  else if ( gtk_tray_icon_parent_class == NULL )
+    {
+      gpointer klass = g_type_class_peek( g_define_type_id );
+      gtk_tray_icon_parent_class = g_type_class_peek_parent(klass);
+    }
+  return g_define_type_id; 
+}
+
 
 static void
 gtk_tray_icon_class_init (GtkTrayIconClass *class)
