@@ -291,6 +291,7 @@ ghosd_destroy(Ghosd* ghosd) {
   if (ghosd->background)
     XFreePixmap(ghosd->dpy, ghosd->background);
   XDestroyWindow(ghosd->dpy, ghosd->win);
+  XCloseDisplay(ghosd->dpy);
 }
 
 int

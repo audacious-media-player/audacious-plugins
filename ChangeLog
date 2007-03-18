@@ -1,3 +1,11 @@
+2007-03-17 07:58:49 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1848]
+  - clear up some configure bugs, pointed out by freebsd port patches
+  
+  trunk/configure.ac |   18 +++++++++---------
+  1 file changed, 9 insertions(+), 9 deletions(-)
+
+
 2007-03-17 07:30:46 +0000  Daniel Bradshaw <nazca@atheme.org>
   revision [1846]
   - These two lines probably shouldn't be in here as it is doubtful they do anything helpful

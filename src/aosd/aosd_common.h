@@ -30,6 +30,6 @@
 
 #include "../../config.h"
 
-#define AOSD_VERSION_PLUGIN "0.1beta2"
+#define AOSD_VERSION_PLUGIN "0.1beta3"
 
 #endif /* !_I_AOSD_COMMON_H */

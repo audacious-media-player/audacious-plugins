@@ -99,7 +99,9 @@ aosd_osd_data_free ( void )
 {
   if ( osd_data->fade_data.surface != NULL )
   {
-    cairo_surface_destroy( osd_data->fade_data.surface );
+    /* by using XCloseDisplay in ghosd_destroy, this free is not needed
+       anymore (doing it will result in double free and segfault)
+      cairo_surface_destroy( osd_data->fade_data.surface ); */
     osd_data->fade_data.surface = NULL;
   }
 
