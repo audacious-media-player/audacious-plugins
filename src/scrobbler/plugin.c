@@ -204,9 +204,9 @@ static void cleanup(void)
 	hatena_sc_cleaner();
 }
 
-static char ishttp(const char *a)
+static gboolean ishttp(const char *a)
 {
-	g_return_val_if_fail(a != NULL, NULL);
+	g_return_val_if_fail(a != NULL, FALSE);
 	return str_has_prefix_nocase(a, "http://");
 }
 

@@ -1,3 +1,10 @@
+2007-03-19 20:18:28 +0000  Giacomo Lozito <james@develia.org>
+  revision [1858]
+  alsa output plugin: use snd_pcm_wait in place of raw polls to handle device readyness; this allows to use alsa plugins such as jackplug; requires testing
+  trunk/src/alsa/audio.c |   23 +++--------------------
+  1 file changed, 3 insertions(+), 20 deletions(-)
+
+
 2007-03-19 20:15:52 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [1856]
   Goodbye ffmpeg, welcome back WMA.
