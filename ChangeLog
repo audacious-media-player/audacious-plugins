@@ -1,3 +1,46 @@
+2007-03-19 20:15:52 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [1856]
+  Goodbye ffmpeg, welcome back WMA.
+  trunk/configure.ac                   |   14 
+  trunk/src/wma/Makefile               |   18 
+  trunk/src/wma/libffwma/Makefile      |   23 
+  trunk/src/wma/libffwma/allcodecs.c   |   34 
+  trunk/src/wma/libffwma/allformats.c  |   30 
+  trunk/src/wma/libffwma/asf.c         | 1008 +++++++++++++++
+  trunk/src/wma/libffwma/asfheader.h   |  261 +++
+  trunk/src/wma/libffwma/avcodec.h     | 1806 +++++++++++++++++++++++++++
+  trunk/src/wma/libffwma/avformat.h    |  632 +++++++++
+  trunk/src/wma/libffwma/avi.h         |   43 
+  trunk/src/wma/libffwma/avio.c        |  184 ++
+  trunk/src/wma/libffwma/avio.h        |  175 ++
+  trunk/src/wma/libffwma/aviobuf.c     |  397 ++++++
+  trunk/src/wma/libffwma/bswap.h       |  173 ++
+  trunk/src/wma/libffwma/common.c      |  311 ++++
+  trunk/src/wma/libffwma/common.h      |  941 ++++++++++++++
+  trunk/src/wma/libffwma/cutils.c      |  239 +++
+  trunk/src/wma/libffwma/cutils.h      |   14 
+  trunk/src/wma/libffwma/dsputil.c     |  892 +++++++++++++
+  trunk/src/wma/libffwma/dsputil.h     |  512 +++++++
+  trunk/src/wma/libffwma/fft.c         |  441 ++++++
+  trunk/src/wma/libffwma/file.c        |   91 +
+  trunk/src/wma/libffwma/futils.c      | 2310 +++++++++++++++++++++++++++++++++++
+  trunk/src/wma/libffwma/mdct.c        |  175 ++
+  trunk/src/wma/libffwma/mem.c         |   78 +
+  trunk/src/wma/libffwma/os_support.c  |   44 
+  trunk/src/wma/libffwma/os_support.h  |   33 
+  trunk/src/wma/libffwma/parser.c      |  135 ++
+  trunk/src/wma/libffwma/simple_idct.c |  585 ++++++++
+  trunk/src/wma/libffwma/simple_idct.h |   36 
+  trunk/src/wma/libffwma/uri.c         |  858 +++++++++++++
+  trunk/src/wma/libffwma/uri.h         |   92 +
+  trunk/src/wma/libffwma/utils.c       |  635 +++++++++
+  trunk/src/wma/libffwma/utils.h       |    8 
+  trunk/src/wma/libffwma/wmadata.h     | 1412 +++++++++++++++++++++
+  trunk/src/wma/libffwma/wmadec.c      | 1337 ++++++++++++++++++++
+  trunk/src/wma/wma.c                  |  478 +++++++
+  37 files changed, 16448 insertions(+), 7 deletions(-)
+
+
 2007-03-19 03:24:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1854]
   - kill bad .depend file

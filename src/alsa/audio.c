@@ -824,15 +824,12 @@ static void alsa_write_out_thread_data(void)
 static void *alsa_loop(void *arg)
 {
 	int npfds = snd_pcm_poll_descriptors_count(alsa_pcm);
-	struct pollfd *pfds;
-	unsigned short *revents;
 
 	g_mutex_lock(alsa_mutex);
 
 	if (npfds <= 0)
 		goto _error;
-	pfds = alloca(sizeof(*pfds) * npfds);
-	revents = alloca(sizeof(*revents) * npfds);
+
 	while (going && alsa_pcm)
 	{
 		if (get_thread_buffer_filled() > prebuffer_size)
@@ -840,23 +837,9 @@ static void *alsa_loop(void *arg)
 		if (!paused && !prebuffer &&
 		    get_thread_buffer_filled() > hw_period_size_in)
 		{
-			snd_pcm_poll_descriptors(alsa_pcm, pfds, npfds);
-			if (poll(pfds, npfds, 10) > 0)
+			if (snd_pcm_wait(alsa_pcm, 10) > 0)
 			{
-				/*
-				 * need to check revents.  poll() with
-				 * dmix returns a postive value even
-				 * if no data is available
-				 */
-				int i;
-				snd_pcm_poll_descriptors_revents(alsa_pcm, pfds,
-								 npfds, revents);
-				for (i = 0; i < npfds; i++)
-					if (revents[i] & POLLOUT)
-					{
-						alsa_write_out_thread_data();
-						break;
-					}
+				alsa_write_out_thread_data();
 			}
 		}
 		else
