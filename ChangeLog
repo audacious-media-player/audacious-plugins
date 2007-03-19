@@ -1,3 +1,11 @@
+2007-03-19 03:24:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1854]
+  - kill bad .depend file
+  
+  trunk/src/smb/.depend |  654 --------------------------------------------------
+  1 file changed, 654 deletions(-)
+
+
 2007-03-18 23:21:10 +0000  Giacomo Lozito <james@develia.org>
   revision [1852]
   statusicon: do not behave strangely (or crash) when the plugin is loaded/unloaded multiple times

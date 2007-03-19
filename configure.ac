@@ -546,16 +546,16 @@ if test "$enable_musepack" = "yes"; then
         INPUT_PLUGINS="$INPUT_PLUGINS musepack"
 fi
 
-dnl *** FFmpeg
+dnl *** WMA
 
-AC_ARG_ENABLE(ffmpeg,
-    [  --disable-ffmpeg        disable ffmpeg plugin. (default=enabled)],
-    [enable_ffmpeg=$enableval],
-    [enable_ffmpeg=yes]
+AC_ARG_ENABLE(wma,
+    [  --disable-wma           disable wma plugin. (default=enabled)],
+    [enable_wma=$enableval],
+    [enable_wma=yes]
 )
 
-if test "$enable_ffmpeg" = "yes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS ffmpeg"
+if test "$enable_wma" = "yes"; then
+	INPUT_PLUGINS="$INPUT_PLUGINS wma"
 fi
 
 dnl *** jack output plugin
