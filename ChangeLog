@@ -1,3 +1,10 @@
+2007-03-18 23:21:10 +0000  Giacomo Lozito <james@develia.org>
+  revision [1852]
+  statusicon: do not behave strangely (or crash) when the plugin is loaded/unloaded multiple times
+  trunk/src/statusicon/gtktrayicon-x11.c |   38 ++++++++++++++++++++++++++++++++-
+  1 file changed, 37 insertions(+), 1 deletion(-)
+
+
 2007-03-18 18:13:45 +0000  Giacomo Lozito <james@develia.org>
   revision [1850]
   - aosd: beta3, fixes for handling X display open/close
