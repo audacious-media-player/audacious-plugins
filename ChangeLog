@@ -1,3 +1,17 @@
+2007-03-20 19:22:25 +0000  Michael Farber <01mf02@gmail.com>
+  revision [1862]
+  - Made port of XMMS plugin SndStretch
+  
+  
+  trunk/src/sndstretch/FB_logo.xpm              |  130 ++
+  trunk/src/sndstretch/Makefile                 |   15 
+  trunk/src/sndstretch/sndstretch.c             | 1298 ++++++++++++++++++++++++++
+  trunk/src/sndstretch/sndstretch.h             |  152 +++
+  trunk/src/sndstretch/sndstretch_xmms-logo.xpm |   46 
+  trunk/src/sndstretch/sndstretch_xmms.c        |  459 +++++++++
+  6 files changed, 2100 insertions(+)
+
+
 2007-03-19 23:49:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1860]
   - suppress a warning.

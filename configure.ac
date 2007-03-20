@@ -95,7 +95,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom vtx"
 OUTPUT_PLUGINS="disk_writer null"
-EFFECT_PLUGINS="audiocompress ladspa voice_removal stereo_plugin echo_plugin"
+EFFECT_PLUGINS="audiocompress ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls stdio"
@@ -1226,6 +1226,7 @@ echo "  LADSPA effects host (ladspa):           yes"
 echo "  Voice Removal:                          yes"
 echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
+echo "  SndStretch:                             yes"
 echo
 echo "  Visualization"
 echo "  -------------"
