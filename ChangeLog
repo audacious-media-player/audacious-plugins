@@ -1,3 +1,11 @@
+2007-03-19 23:49:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1860]
+  - suppress a warning.
+  
+  trunk/src/scrobbler/plugin.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-03-19 20:18:28 +0000  Giacomo Lozito <james@develia.org>
   revision [1858]
   alsa output plugin: use snd_pcm_wait in place of raw polls to handle device readyness; this allows to use alsa plugins such as jackplug; requires testing
