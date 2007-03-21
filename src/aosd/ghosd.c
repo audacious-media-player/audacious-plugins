@@ -72,7 +72,7 @@ ghosd_render(Ghosd *ghosd) {
 
   gc = XCreateGC(ghosd->dpy, pixmap, 0, NULL);
   if (ghosd->transparent) {
-    XCopyArea(ghosd->dpy, ghosd->background, pixmap, gc,
+    XCopyArea(ghosd->dpy, ghosd->background.pixmap, pixmap, gc,
               0, 0, ghosd->width, ghosd->height, 0, 0);
   } else {
     XFillRectangle(ghosd->dpy, pixmap, gc,
@@ -98,6 +98,7 @@ ghosd_render(Ghosd *ghosd) {
     cairo_t *cr = cairo_create(surf);
     ghosd->render.func(ghosd, cr, ghosd->render.data);
     cairo_destroy(cr);
+    cairo_surface_destroy(surf);
   }
 
   /* point window at its new backing pixmap. */
@@ -192,9 +193,13 @@ make_window(Display *dpy) {
 void
 ghosd_show(Ghosd *ghosd) {
   if (ghosd->transparent) {
-    if (ghosd->background)
-      XFreePixmap(ghosd->dpy, ghosd->background);
-    ghosd->background = take_snapshot(ghosd);
+    if (ghosd->background.set)
+    {
+      XFreePixmap(ghosd->dpy, ghosd->background.pixmap);
+      ghosd->background.set = 0;
+    }
+    ghosd->background.pixmap = take_snapshot(ghosd);
+    ghosd->background.set = 1;
   }
 
   ghosd_render(ghosd);
@@ -282,14 +287,18 @@ ghosd_new(void) {
   ghosd->win = win;
   ghosd->transparent = 1;
   ghosd->eventbutton.func = NULL;
+  ghosd->background.set = 0;
 
   return ghosd;
 }
 
 void
 ghosd_destroy(Ghosd* ghosd) {
-  if (ghosd->background)
-    XFreePixmap(ghosd->dpy, ghosd->background);
+  if (ghosd->background.set)
+  {
+    XFreePixmap(ghosd->dpy, ghosd->background.pixmap);
+    ghosd->background.set = 0;
+  }
   XDestroyWindow(ghosd->dpy, ghosd->win);
 }
 

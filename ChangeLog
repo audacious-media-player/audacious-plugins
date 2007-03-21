@@ -1,3 +1,10 @@
+2007-03-21 14:36:32 +0000  Giacomo Lozito <james@develia.org>
+  revision [1876]
+  alsa: small changes
+  trunk/src/alsa/audio.c |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2007-03-21 14:24:33 +0000  Giacomo Lozito <james@develia.org>
   revision [1874]
   aosd: use g_locale_to_utf8 for osd strings (needs testing)

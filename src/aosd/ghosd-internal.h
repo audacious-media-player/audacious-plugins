@@ -20,13 +20,18 @@ typedef struct {
   void *data;
 } EventButtonCallback;
 
+typedef struct {
+  Pixmap pixmap;
+  int set;
+} GhosdBackground;
+
 struct _Ghosd {
   Display *dpy;
   Window win;
   int transparent;
   int x, y, width, height;
-  
-  Pixmap background;
+
+  GhosdBackground background;
   RenderCallback render;
   EventButtonCallback eventbutton;
 };
