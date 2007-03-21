@@ -52,12 +52,12 @@ typedef struct
 si_hook_tchange_prevs_t;
 
 
-static GtkTrayIcon *
+static AudGtkTrayIcon *
 si_ui_statusicon_create ( void )
 {
-  GtkTrayIcon *si_applet = NULL;
+  AudGtkTrayIcon *si_applet = NULL;
 
-  si_applet = _gtk_tray_icon_new( "audacious" );
+  si_applet = _aud_gtk_tray_icon_new( "audacious" );
 
   gtk_widget_show( GTK_WIDGET(si_applet) );
 
@@ -329,7 +329,7 @@ si_ui_statusicon_cb_image_sizalloc ( GtkWidget * image , GtkAllocation * allocat
   static gint prev_size = 0;
   gint size = 0;
 
-  orientation = _gtk_tray_icon_get_orientation( GTK_TRAY_ICON(si_applet) );
+  orientation = _aud_gtk_tray_icon_get_orientation( AUD_GTK_TRAY_ICON(si_applet) );
   if ( orientation == GTK_ORIENTATION_HORIZONTAL )
     size = allocation->height;
   else
@@ -422,7 +422,7 @@ si_ui_statusicon_enable ( gboolean enable )
   {
     GtkWidget *si_image;
     GtkWidget *si_popup;
-    GtkTrayIcon *si_applet;
+    AudGtkTrayIcon *si_applet;
     GtkRequisition req;
     GtkAllocation allocation;
 
@@ -486,7 +486,7 @@ si_ui_statusicon_enable ( gboolean enable )
   {
     if ( si_evbox != NULL )
     {
-      GtkTrayIcon *si_applet = g_object_get_data( G_OBJECT(si_evbox) , "applet" );
+      AudGtkTrayIcon *si_applet = g_object_get_data( G_OBJECT(si_evbox) , "applet" );
       si_ui_statusicon_popup_timer_stop( si_evbox ); /* just in case the timer is active */
       gtk_widget_destroy( GTK_WIDGET(si_evbox) );
       gtk_widget_destroy( GTK_WIDGET(si_applet) );

@@ -47,7 +47,7 @@ enum {
   PROP_ORIENTATION
 };
 
-struct _GtkTrayIconPrivate
+struct _AudGtkTrayIconPrivate
 {
   guint stamp;
   
@@ -60,72 +60,72 @@ struct _GtkTrayIconPrivate
   GtkOrientation orientation;
 };
          
-static void gtk_tray_icon_get_property  (GObject     *object,
+static void aud_gtk_tray_icon_get_property  (GObject     *object,
 				 	 guint        prop_id,
 					 GValue      *value,
 					 GParamSpec  *pspec);
 
-static void     gtk_tray_icon_realize   (GtkWidget   *widget);
-static void     gtk_tray_icon_unrealize (GtkWidget   *widget);
-static gboolean gtk_tray_icon_delete    (GtkWidget   *widget,
+static void     aud_gtk_tray_icon_realize   (GtkWidget   *widget);
+static void     aud_gtk_tray_icon_unrealize (GtkWidget   *widget);
+static gboolean aud_gtk_tray_icon_delete    (GtkWidget   *widget,
 					 GdkEventAny *event);
-static gboolean gtk_tray_icon_expose    (GtkWidget      *widget, 
+static gboolean aud_gtk_tray_icon_expose    (GtkWidget      *widget, 
 					 GdkEventExpose *event);
 
-static void gtk_tray_icon_update_manager_window    (GtkTrayIcon *icon,
+static void aud_gtk_tray_icon_update_manager_window    (AudGtkTrayIcon *icon,
 						    gboolean     dock_if_realized);
-static void gtk_tray_icon_manager_window_destroyed (GtkTrayIcon *icon);
+static void aud_gtk_tray_icon_manager_window_destroyed (AudGtkTrayIcon *icon);
 
-static void     gtk_tray_icon_init       (GtkTrayIcon      *self);
-static void     gtk_tray_icon_class_init (GtkTrayIconClass *klass);
-static gpointer gtk_tray_icon_parent_class = NULL;
-static void     gtk_tray_icon_class_intern_init (gpointer klass)
+static void     aud_gtk_tray_icon_init       (AudGtkTrayIcon      *self);
+static void     aud_gtk_tray_icon_class_init (AudGtkTrayIconClass *klass);
+static gpointer aud_gtk_tray_icon_parent_class = NULL;
+static void     aud_gtk_tray_icon_class_intern_init (gpointer klass)
 {
-  gtk_tray_icon_parent_class = g_type_class_peek_parent (klass);
-  gtk_tray_icon_class_init ((GtkTrayIconClass*) klass);
+  aud_gtk_tray_icon_parent_class = g_type_class_peek_parent (klass);
+  aud_gtk_tray_icon_class_init ((AudGtkTrayIconClass*) klass);
 }
 
 GType
-gtk_tray_icon_get_type (void)
+aud_gtk_tray_icon_get_type (void)
 {
   static GType g_define_type_id = 0;
   g_define_type_id = g_type_from_name( "AudGtkTrayIcon" );
   if (G_UNLIKELY (g_define_type_id == 0))
     {
       static const GTypeInfo g_define_type_info = {
-        sizeof (GtkTrayIconClass),
+        sizeof (AudGtkTrayIconClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gtk_tray_icon_class_intern_init,
+        (GClassInitFunc) aud_gtk_tray_icon_class_intern_init,
         (GClassFinalizeFunc) NULL,
         NULL,   /* class_data */
-        sizeof (GtkTrayIcon),
+        sizeof (AudGtkTrayIcon),
         0,      /* n_preallocs */
-        (GInstanceInitFunc) gtk_tray_icon_init,
+        (GInstanceInitFunc) aud_gtk_tray_icon_init,
       };
       g_define_type_id = g_type_register_static (GTK_TYPE_PLUG, "AudGtkTrayIcon", &g_define_type_info, 0);
     }
-  else if ( gtk_tray_icon_parent_class == NULL )
+  else if ( aud_gtk_tray_icon_parent_class == NULL )
     {
       gpointer klass = g_type_class_peek( g_define_type_id );
-      gtk_tray_icon_parent_class = g_type_class_peek_parent(klass);
+      aud_gtk_tray_icon_parent_class = g_type_class_peek_parent(klass);
     }
   return g_define_type_id; 
 }
 
 
 static void
-gtk_tray_icon_class_init (GtkTrayIconClass *class)
+aud_gtk_tray_icon_class_init (AudGtkTrayIconClass *class)
 {
   GObjectClass *gobject_class = (GObjectClass *)class;
   GtkWidgetClass *widget_class = (GtkWidgetClass *)class;
 
-  gobject_class->get_property = gtk_tray_icon_get_property;
+  gobject_class->get_property = aud_gtk_tray_icon_get_property;
 
-  widget_class->realize   = gtk_tray_icon_realize;
-  widget_class->unrealize = gtk_tray_icon_unrealize;
-  widget_class->delete_event = gtk_tray_icon_delete;
-  widget_class->expose_event = gtk_tray_icon_expose;
+  widget_class->realize   = aud_gtk_tray_icon_realize;
+  widget_class->unrealize = aud_gtk_tray_icon_unrealize;
+  widget_class->delete_event = aud_gtk_tray_icon_delete;
+  widget_class->expose_event = aud_gtk_tray_icon_expose;
 
   g_object_class_install_property (gobject_class,
 				   PROP_ORIENTATION,
@@ -136,14 +136,14 @@ gtk_tray_icon_class_init (GtkTrayIconClass *class)
 						      GTK_ORIENTATION_HORIZONTAL,
 						      GTK_PARAM_READABLE));
 
-  g_type_class_add_private (class, sizeof (GtkTrayIconPrivate));
+  g_type_class_add_private (class, sizeof (AudGtkTrayIconPrivate));
 }
 
 static void
-gtk_tray_icon_init (GtkTrayIcon *icon)
+aud_gtk_tray_icon_init (AudGtkTrayIcon *icon)
 {
-  icon->priv = G_TYPE_INSTANCE_GET_PRIVATE (icon, GTK_TYPE_TRAY_ICON,
-					    GtkTrayIconPrivate);
+  icon->priv = G_TYPE_INSTANCE_GET_PRIVATE (icon, AUD_GTK_TYPE_TRAY_ICON,
+					    AudGtkTrayIconPrivate);
   
   icon->priv->stamp = 1;
   icon->priv->orientation = GTK_ORIENTATION_HORIZONTAL;
@@ -154,12 +154,12 @@ gtk_tray_icon_init (GtkTrayIcon *icon)
 }
 
 static void
-gtk_tray_icon_get_property (GObject    *object,
+aud_gtk_tray_icon_get_property (GObject    *object,
 			    guint       prop_id,
 			    GValue     *value,
 			    GParamSpec *pspec)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (object);
+  AudGtkTrayIcon *icon = AUD_GTK_TRAY_ICON (object);
 
   switch (prop_id)
     {
@@ -173,20 +173,20 @@ gtk_tray_icon_get_property (GObject    *object,
 }
 
 static gboolean
-gtk_tray_icon_expose (GtkWidget      *widget, 
+aud_gtk_tray_icon_expose (GtkWidget      *widget, 
 		      GdkEventExpose *event)
 {
   gdk_window_clear_area (widget->window, event->area.x, event->area.y,
 			 event->area.width, event->area.height);
 
-  if (GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->expose_event)  
-    return GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->expose_event (widget, event);
+  if (GTK_WIDGET_CLASS (aud_gtk_tray_icon_parent_class)->expose_event)  
+    return GTK_WIDGET_CLASS (aud_gtk_tray_icon_parent_class)->expose_event (widget, event);
 
   return FALSE;
 }
 
 static void
-gtk_tray_icon_get_orientation_property (GtkTrayIcon *icon)
+aud_gtk_tray_icon_get_orientation_property (AudGtkTrayIcon *icon)
 {
   Display *xdisplay;
   Atom type;
@@ -238,29 +238,29 @@ gtk_tray_icon_get_orientation_property (GtkTrayIcon *icon)
 }
 
 static GdkFilterReturn
-gtk_tray_icon_manager_filter (GdkXEvent *xevent, 
+aud_gtk_tray_icon_manager_filter (GdkXEvent *xevent, 
 			      GdkEvent  *event, 
 			      gpointer   user_data)
 {
-  GtkTrayIcon *icon = user_data;
+  AudGtkTrayIcon *icon = user_data;
   XEvent *xev = (XEvent *)xevent;
 
   if (xev->xany.type == ClientMessage &&
       xev->xclient.message_type == icon->priv->manager_atom &&
       xev->xclient.data.l[1] == icon->priv->selection_atom)
     {
-      gtk_tray_icon_update_manager_window (icon, TRUE);
+      aud_gtk_tray_icon_update_manager_window (icon, TRUE);
     }
   else if (xev->xany.window == icon->priv->manager_window)
     {
       if (xev->xany.type == PropertyNotify &&
 	  xev->xproperty.atom == icon->priv->orientation_atom)
 	{
-	  gtk_tray_icon_get_orientation_property (icon);
+	  aud_gtk_tray_icon_get_orientation_property (icon);
 	}
       if (xev->xany.type == DestroyNotify)
 	{
-	  gtk_tray_icon_manager_window_destroyed (icon);
+	  aud_gtk_tray_icon_manager_window_destroyed (icon);
 	}
     }
   
@@ -268,9 +268,9 @@ gtk_tray_icon_manager_filter (GdkXEvent *xevent,
 }
 
 static void
-gtk_tray_icon_unrealize (GtkWidget *widget)
+aud_gtk_tray_icon_unrealize (GtkWidget *widget)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (widget);
+  AudGtkTrayIcon *icon = AUD_GTK_TRAY_ICON (widget);
   GdkWindow *root_window;
 
   if (icon->priv->manager_window != None)
@@ -280,19 +280,19 @@ gtk_tray_icon_unrealize (GtkWidget *widget)
       gdkwin = gdk_window_lookup_for_display (gtk_widget_get_display (widget),
                                               icon->priv->manager_window);
       
-      gdk_window_remove_filter (gdkwin, gtk_tray_icon_manager_filter, icon);
+      gdk_window_remove_filter (gdkwin, aud_gtk_tray_icon_manager_filter, icon);
     }
 
   root_window = gdk_screen_get_root_window (gtk_widget_get_screen (widget));
 
-  gdk_window_remove_filter (root_window, gtk_tray_icon_manager_filter, icon);
+  gdk_window_remove_filter (root_window, aud_gtk_tray_icon_manager_filter, icon);
 
-  if (GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->unrealize)
-    (* GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->unrealize) (widget);
+  if (GTK_WIDGET_CLASS (aud_gtk_tray_icon_parent_class)->unrealize)
+    (* GTK_WIDGET_CLASS (aud_gtk_tray_icon_parent_class)->unrealize) (widget);
 }
 
 static void
-gtk_tray_icon_send_manager_message (GtkTrayIcon *icon,
+aud_gtk_tray_icon_send_manager_message (AudGtkTrayIcon *icon,
 				    long         message,
 				    Window       window,
 				    long         data1,
@@ -323,9 +323,9 @@ gtk_tray_icon_send_manager_message (GtkTrayIcon *icon,
 }
 
 static void
-gtk_tray_icon_send_dock_request (GtkTrayIcon *icon)
+aud_gtk_tray_icon_send_dock_request (AudGtkTrayIcon *icon)
 {
-  gtk_tray_icon_send_manager_message (icon,
+  aud_gtk_tray_icon_send_manager_message (icon,
 				      SYSTEM_TRAY_REQUEST_DOCK,
 				      icon->priv->manager_window,
 				      gtk_plug_get_id (GTK_PLUG (icon)),
@@ -333,7 +333,7 @@ gtk_tray_icon_send_dock_request (GtkTrayIcon *icon)
 }
 
 static void
-gtk_tray_icon_update_manager_window (GtkTrayIcon *icon,
+aud_gtk_tray_icon_update_manager_window (AudGtkTrayIcon *icon,
 				     gboolean     dock_if_realized)
 {
   Display *xdisplay;
@@ -362,17 +362,17 @@ gtk_tray_icon_update_manager_window (GtkTrayIcon *icon,
       gdkwin = gdk_window_lookup_for_display (gtk_widget_get_display (GTK_WIDGET (icon)),
 					      icon->priv->manager_window);
       
-      gdk_window_add_filter (gdkwin, gtk_tray_icon_manager_filter, icon);
+      gdk_window_add_filter (gdkwin, aud_gtk_tray_icon_manager_filter, icon);
 
       if (dock_if_realized && GTK_WIDGET_REALIZED (icon))
-	gtk_tray_icon_send_dock_request (icon);
+	aud_gtk_tray_icon_send_dock_request (icon);
 
-      gtk_tray_icon_get_orientation_property (icon);
+      aud_gtk_tray_icon_get_orientation_property (icon);
     }
 }
 
 static void
-gtk_tray_icon_manager_window_destroyed (GtkTrayIcon *icon)
+aud_gtk_tray_icon_manager_window_destroyed (AudGtkTrayIcon *icon)
 {
   GdkWindow *gdkwin;
   
@@ -381,18 +381,18 @@ gtk_tray_icon_manager_window_destroyed (GtkTrayIcon *icon)
   gdkwin = gdk_window_lookup_for_display (gtk_widget_get_display (GTK_WIDGET (icon)),
 					  icon->priv->manager_window);
       
-  gdk_window_remove_filter (gdkwin, gtk_tray_icon_manager_filter, icon);
+  gdk_window_remove_filter (gdkwin, aud_gtk_tray_icon_manager_filter, icon);
 
   icon->priv->manager_window = None;
 
-  gtk_tray_icon_update_manager_window (icon, TRUE);
+  aud_gtk_tray_icon_update_manager_window (icon, TRUE);
 }
 
 static gboolean 
-gtk_tray_icon_delete (GtkWidget   *widget,
+aud_gtk_tray_icon_delete (GtkWidget   *widget,
 		      GdkEventAny *event)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (widget);
+  AudGtkTrayIcon *icon = AUD_GTK_TRAY_ICON (widget);
   GdkWindow *gdkwin;
 
   if (icon->priv->manager_window != None)
@@ -400,28 +400,28 @@ gtk_tray_icon_delete (GtkWidget   *widget,
       gdkwin = gdk_window_lookup_for_display (gtk_widget_get_display (GTK_WIDGET (icon)),
 					      icon->priv->manager_window);
       
-      gdk_window_remove_filter (gdkwin, gtk_tray_icon_manager_filter, icon);
+      gdk_window_remove_filter (gdkwin, aud_gtk_tray_icon_manager_filter, icon);
       
       icon->priv->manager_window = None;
     }
 
-  gtk_tray_icon_update_manager_window (icon, TRUE);  
+  aud_gtk_tray_icon_update_manager_window (icon, TRUE);  
 
   return TRUE;
 }
 
 static void
-gtk_tray_icon_realize (GtkWidget *widget)
+aud_gtk_tray_icon_realize (GtkWidget *widget)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (widget);
+  AudGtkTrayIcon *icon = AUD_GTK_TRAY_ICON (widget);
   GdkScreen *screen;
   GdkDisplay *display;
   Display *xdisplay;
   char buffer[256];
   GdkWindow *root_window;
 
-  if (GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->realize)
-    GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->realize (widget);
+  if (GTK_WIDGET_CLASS (aud_gtk_tray_icon_parent_class)->realize)
+    GTK_WIDGET_CLASS (aud_gtk_tray_icon_parent_class)->realize (widget);
 
   screen = gtk_widget_get_screen (widget);
   display = gdk_screen_get_display (screen);
@@ -444,25 +444,25 @@ gtk_tray_icon_realize (GtkWidget *widget)
 					      "_NET_SYSTEM_TRAY_ORIENTATION",
 					      False);
 
-  gtk_tray_icon_update_manager_window (icon, FALSE);
-  gtk_tray_icon_send_dock_request (icon);
+  aud_gtk_tray_icon_update_manager_window (icon, FALSE);
+  aud_gtk_tray_icon_send_dock_request (icon);
 
   root_window = gdk_screen_get_root_window (screen);
   
   /* Add a root window filter so that we get changes on MANAGER */
   gdk_window_add_filter (root_window,
-			 gtk_tray_icon_manager_filter, icon);
+			 aud_gtk_tray_icon_manager_filter, icon);
 }
 
 guint
-_gtk_tray_icon_send_message (GtkTrayIcon *icon,
+_aud_gtk_tray_icon_send_message (AudGtkTrayIcon *icon,
 			     gint         timeout,
 			     const gchar *message,
 			     gint         len)
 {
   guint stamp;
   
-  g_return_val_if_fail (GTK_IS_TRAY_ICON (icon), 0);
+  g_return_val_if_fail (AUD_GTK_IS_TRAY_ICON (icon), 0);
   g_return_val_if_fail (timeout >= 0, 0);
   g_return_val_if_fail (message != NULL, 0);
 		     
@@ -475,7 +475,7 @@ _gtk_tray_icon_send_message (GtkTrayIcon *icon,
   stamp = icon->priv->stamp++;
   
   /* Get ready to send the message */
-  gtk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_BEGIN_MESSAGE,
+  aud_gtk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_BEGIN_MESSAGE,
 				      (Window)gtk_plug_get_id (GTK_PLUG (icon)),
 				      timeout, len, stamp);
 
@@ -518,41 +518,41 @@ _gtk_tray_icon_send_message (GtkTrayIcon *icon,
 }
 
 void
-_gtk_tray_icon_cancel_message (GtkTrayIcon *icon,
+_aud_gtk_tray_icon_cancel_message (AudGtkTrayIcon *icon,
 			       guint        id)
 {
-  g_return_if_fail (GTK_IS_TRAY_ICON (icon));
+  g_return_if_fail (AUD_GTK_IS_TRAY_ICON (icon));
   g_return_if_fail (id > 0);
   
-  gtk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_CANCEL_MESSAGE,
+  aud_gtk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_CANCEL_MESSAGE,
 				      (Window)gtk_plug_get_id (GTK_PLUG (icon)),
 				      id, 0, 0);
 }
 
-GtkTrayIcon *
-_gtk_tray_icon_new_for_screen (GdkScreen  *screen, 
+AudGtkTrayIcon *
+_aud_gtk_tray_icon_new_for_screen (GdkScreen  *screen, 
 			       const gchar *name)
 {
   g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
 
-  return g_object_new (GTK_TYPE_TRAY_ICON, 
+  return g_object_new (AUD_GTK_TYPE_TRAY_ICON, 
 		       "screen", screen, 
 		       "title", name, 
 		       NULL);
 }
 
-GtkTrayIcon*
-_gtk_tray_icon_new (const gchar *name)
+AudGtkTrayIcon *
+_aud_gtk_tray_icon_new (const gchar *name)
 {
-  return g_object_new (GTK_TYPE_TRAY_ICON, 
+  return g_object_new (AUD_GTK_TYPE_TRAY_ICON, 
 		       "title", name, 
 		       NULL);
 }
 
 GtkOrientation
-_gtk_tray_icon_get_orientation (GtkTrayIcon *icon)
+_aud_gtk_tray_icon_get_orientation (AudGtkTrayIcon *icon)
 {
-  g_return_val_if_fail (GTK_IS_TRAY_ICON (icon), GTK_ORIENTATION_HORIZONTAL);
+  g_return_val_if_fail (AUD_GTK_IS_TRAY_ICON (icon), GTK_ORIENTATION_HORIZONTAL);
 
   return icon->priv->orientation;
 }

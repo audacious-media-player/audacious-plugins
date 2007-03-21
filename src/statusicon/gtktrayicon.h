@@ -17,32 +17,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TRAY_ICON_H__
-#define __GTK_TRAY_ICON_H__
+#ifndef __AUD_GTK_TRAY_ICON_H__
+#define __AUD_GTK_TRAY_ICON_H__
 
 #include <gtk/gtkplug.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TRAY_ICON		(gtk_tray_icon_get_type ())
-#define GTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TRAY_ICON, GtkTrayIcon))
-#define GTK_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TRAY_ICON, GtkTrayIconClass))
-#define GTK_IS_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TRAY_ICON))
-#define GTK_IS_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TRAY_ICON))
-#define GTK_TRAY_ICON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TRAY_ICON, GtkTrayIconClass))
+#define AUD_GTK_TYPE_TRAY_ICON		(aud_gtk_tray_icon_get_type ())
+#define AUD_GTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), AUD_GTK_TYPE_TRAY_ICON, AudGtkTrayIcon))
+#define AUD_GTK_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), AUD_GTK_TYPE_TRAY_ICON, AudGtkTrayIconClass))
+#define AUD_GTK_IS_TRAY_ICON(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), AUD_GTK_TYPE_TRAY_ICON))
+#define AUD_GTK_IS_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), AUD_GTK_TYPE_TRAY_ICON))
+#define AUD_GTK_TRAY_ICON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), AUD_GTK_TYPE_TRAY_ICON, AudGtkTrayIconClass))
 	
-typedef struct _GtkTrayIcon	   GtkTrayIcon;
-typedef struct _GtkTrayIconPrivate GtkTrayIconPrivate;
-typedef struct _GtkTrayIconClass   GtkTrayIconClass;
+typedef struct _AudGtkTrayIcon	   AudGtkTrayIcon;
+typedef struct _AudGtkTrayIconPrivate  AudGtkTrayIconPrivate;
+typedef struct _AudGtkTrayIconClass    AudGtkTrayIconClass;
 
-struct _GtkTrayIcon
+struct _AudGtkTrayIcon
 {
   GtkPlug parent_instance;
 
-  GtkTrayIconPrivate *priv;
+  AudGtkTrayIconPrivate *priv;
 };
 
-struct _GtkTrayIconClass
+struct _AudGtkTrayIconClass
 {
   GtkPlugClass parent_class;
 
@@ -54,22 +54,22 @@ struct _GtkTrayIconClass
   void (*__gtk_reserved6);
 };
 
-GType          gtk_tray_icon_get_type         (void) G_GNUC_CONST;
+GType            aud_gtk_tray_icon_get_type         (void) G_GNUC_CONST;
 
-GtkTrayIcon   *_gtk_tray_icon_new_for_screen  (GdkScreen   *screen,
+AudGtkTrayIcon   *_aud_gtk_tray_icon_new_for_screen  (GdkScreen   *screen,
 					       const gchar *name);
 
-GtkTrayIcon   *_gtk_tray_icon_new             (const gchar *name);
+AudGtkTrayIcon   *_aud_gtk_tray_icon_new             (const gchar *name);
 
-guint          _gtk_tray_icon_send_message    (GtkTrayIcon *icon,
+guint          _aud_gtk_tray_icon_send_message    (AudGtkTrayIcon *icon,
 					       gint         timeout,
 					       const gchar *message,
 					       gint         len);
-void           _gtk_tray_icon_cancel_message  (GtkTrayIcon *icon,
+void           _aud_gtk_tray_icon_cancel_message  (AudGtkTrayIcon *icon,
 					       guint        id);
 
-GtkOrientation _gtk_tray_icon_get_orientation (GtkTrayIcon *icon);
+GtkOrientation _aud_gtk_tray_icon_get_orientation (AudGtkTrayIcon *icon);
 					    
 G_END_DECLS
 
-#endif /* __GTK_TRAY_ICON_H__ */
+#endif /* __AUD_GTK_TRAY_ICON_H__ */
