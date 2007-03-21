@@ -49,7 +49,6 @@
 #define TMP_BUF_LEN 128
 
 gchar *base = NULL;
-gboolean override_mtime = FALSE;
 
 // this function is taken from libxml2-2.6.27.
 static xmlChar *
@@ -86,7 +85,7 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 
 	tuple = bmp_title_input_new();
 
-	// staticlist hack
+	tuple->length = -1;
 	tuple->mtime = -1; // mark as uninitialized.
 
 	// creator, album, title, duration, trackNum, annotation, image, 
@@ -119,7 +118,6 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 		}
 		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, (xmlChar *)"annotation")){
 			tuple->comment = (gchar *)xmlNodeGetContent(nptr);
-			continue;
 		}
 		else if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, (xmlChar *)"album")){
 			tuple->album_name = (gchar *)xmlNodeGetContent(nptr);
@@ -176,14 +174,6 @@ add_file(xmlNode *track, const gchar *filename, gint pos)
 
 	}
 
-	if (tuple->length == 0) {
-		tuple->length = -1;
-	}
-
-	if(override_mtime) {
-		tuple->mtime = 0; //when mtime=0, scanning will be skipped.  --yaz
-	}
-
 	if(location){
 		tuple->file_name = g_path_get_basename(location);
 		tuple->file_path = g_path_get_dirname(location);
@@ -212,16 +202,20 @@ static void
 find_audoptions(xmlNode *tracklist, const gchar *filename, gint pos)
 {
 	xmlNode *nptr;
+	Playlist *playlist = playlist_get_active();
+
 	for(nptr = tracklist->children; nptr != NULL; nptr = nptr->next){
 		if(nptr->type == XML_ELEMENT_NODE && !xmlStrcmp(nptr->name, (xmlChar *)"options")){
 			xmlChar *opt = NULL;
 			
 			opt = xmlGetProp(nptr, (xmlChar *)"staticlist");
 			if(!strcasecmp((char *)opt, "true")){
-                override_mtime = TRUE;
+				playlist->attribute |= PLAYLIST_STATIC;
 			}
-            xmlFree(opt);
-            opt = NULL;
+			else
+				playlist->attribute ^= PLAYLIST_STATIC;
+			xmlFree(opt);
+			opt = NULL;
 		}
 	}
 }
@@ -281,7 +275,7 @@ playlist_save_xspf(const gchar *filename, gint pos)
 	xmlDocPtr doc;
 	xmlNodePtr rootnode, tmp, tracklist;
 	GList *node;
-        Playlist *playlist = playlist_get_active();
+	Playlist *playlist = playlist_get_active();
 
 	doc = xmlNewDoc((xmlChar *)"1.0");
 
@@ -296,6 +290,20 @@ playlist_save_xspf(const gchar *filename, gint pos)
 	tmp = xmlNewNode(NULL, (xmlChar *)"creator");
 	xmlAddChild(tmp, xmlNewText((xmlChar *)PACKAGE "-" VERSION));
 	xmlAddChild(rootnode, tmp);
+
+	// add staticlist marker
+	if(playlist->attribute & PLAYLIST_STATIC) {
+		xmlNodePtr extension, options;
+
+		extension = xmlNewNode(NULL, (xmlChar *)"extension");
+		xmlSetProp(extension, (xmlChar *)"application", (xmlChar *)"audacious");
+
+		options = xmlNewNode(NULL, (xmlChar *)"options");
+		xmlSetProp(options, (xmlChar *)"staticlist", (xmlChar *)"true");
+
+		xmlAddChild(extension, options);
+		xmlAddChild(rootnode, extension);
+	}
 
 	tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
 	xmlAddChild(rootnode, tracklist);
@@ -435,18 +443,18 @@ playlist_save_xspf(const gchar *filename, gint pos)
 				xmlAddChild(track, tmp);
 			}
 
-            // mtime: write mtime unconditionally for staticlist hack.
-//			if (entry->tuple->mtime) {
+			// mtime: write mtime unconditionally to support staticlist.
+			{
 				gchar *str;
 				str = g_malloc(TMP_BUF_LEN);
 				tmp = xmlNewNode(NULL, (xmlChar *)"meta");
 				xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"mtime");
 				sprintf(str, "%ld", (long) entry->tuple->mtime);
+
 				xmlAddChild(tmp, xmlNewText((xmlChar *)str));
 				xmlAddChild(track, tmp);
 				g_free(str);
-//			}
-
+			}
 		}
 		g_free(filename);
 		filename = NULL;

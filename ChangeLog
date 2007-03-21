@@ -1,3 +1,15 @@
+2007-03-21 01:55:57 +0000  Giacomo Lozito <james@develia.org>
+  revision [1866]
+  - aosd: use a single ghosd object for all of the osd showups; this will be a lot gentler to XLib and should definitely help with stability
+  trunk/src/aosd/aosd.c         |   11 ++++++----
+  trunk/src/aosd/aosd_osd.c     |   45 +++++++++++++++++++++++++++++-------------
+  trunk/src/aosd/aosd_osd.h     |    6 +++--
+  trunk/src/aosd/aosd_trigger.c |    6 ++---
+  trunk/src/aosd/aosd_ui.c      |   14 ++++++++++---
+  trunk/src/aosd/ghosd.c        |    1 
+  6 files changed, 57 insertions(+), 26 deletions(-)
+
+
 2007-03-20 21:01:54 +0000  Michael Farber <01mf02@gmail.com>
   revision [1864]
   - integrated SndStretch into build process
