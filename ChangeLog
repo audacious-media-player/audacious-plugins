@@ -1,3 +1,12 @@
+2007-03-20 21:01:54 +0000  Michael Farber <01mf02@gmail.com>
+  revision [1864]
+  - integrated SndStretch into build process
+  
+  
+  trunk/configure.ac |    3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+
 2007-03-20 19:22:25 +0000  Michael Farber <01mf02@gmail.com>
   revision [1862]
   - Made port of XMMS plugin SndStretch

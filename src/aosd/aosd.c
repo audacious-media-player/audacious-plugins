@@ -27,7 +27,7 @@
 
 
 aosd_cfg_t * global_config = NULL;
-static gboolean plugin_is_active = FALSE;
+gboolean plugin_is_active = FALSE;
 
 
 /* ***************** */
@@ -48,6 +48,8 @@ aosd_init ( void )
   global_config = aosd_cfg_new();
   aosd_cfg_load( global_config );
 
+  aosd_osd_init();
+
   aosd_trigger_start( &global_config->osd->trigger );
 
   return;
@@ -61,17 +63,18 @@ aosd_cleanup ( void )
   {
     aosd_trigger_stop( &global_config->osd->trigger );
 
-    aosd_shutdown();
+    aosd_osd_shutdown();
+    aosd_osd_cleanup();
 
     if ( global_config != NULL )
     {
       aosd_cfg_delete( global_config );
       global_config = NULL;
     }
-    
+
     plugin_is_active = FALSE;
   }
-  
+
   return;
 }
 

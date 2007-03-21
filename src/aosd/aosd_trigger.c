@@ -168,7 +168,7 @@ aosd_trigger_func_pb_start_cb ( gpointer plentry_gp , gpointer unused )
     {
       gchar *utf8_title_markup = g_markup_printf_escaped(
         "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
-      aosd_display( utf8_title_markup , global_config->osd , FALSE );
+      aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
       g_free( utf8_title_markup );
     }
     g_free( utf8_title );
@@ -235,7 +235,7 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
           {
             gchar *utf8_title_markup = g_markup_printf_escaped(
               "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
-            aosd_display( utf8_title_markup , global_config->osd , FALSE );
+            aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
             g_free( utf8_title_markup );
           }
           g_free( utf8_title );
@@ -290,7 +290,7 @@ aosd_trigger_func_vol_change_timeout ( gpointer bucket_gp )
   gchar *utf8_title_markup = g_markup_printf_escaped(
     "<span font_desc='%s'>Volume Change - L: %i , R: %i</span>" ,
     global_config->osd->text.fonts_name[0] , bucket->h_vol[0] , bucket->h_vol[1] );
-  aosd_display( utf8_title_markup , global_config->osd , FALSE );
+  aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
   g_free( utf8_title_markup );
   bucket->sid = 0; /* reset source id value */
   return FALSE;

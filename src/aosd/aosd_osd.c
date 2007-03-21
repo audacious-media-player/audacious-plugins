@@ -99,9 +99,7 @@ aosd_osd_data_free ( void )
 {
   if ( osd_data->fade_data.surface != NULL )
   {
-    /* by using XCloseDisplay in ghosd_destroy, this free is not needed
-       anymore (doing it will result in double free and segfault)
-      cairo_surface_destroy( osd_data->fade_data.surface ); */
+    cairo_surface_destroy( osd_data->fade_data.surface );
     osd_data->fade_data.surface = NULL;
   }
 
@@ -134,14 +132,12 @@ aosd_osd_data_free ( void )
 
 
 static void
-aosd_osd_hideanddestroy ( void )
+aosd_osd_hide ( void )
 {
   if ( osd != NULL )
   {
     ghosd_hide( osd );
     ghosd_main_iterations( osd );
-    ghosd_destroy( osd );
-    osd = NULL;
   }
   return;
 }
@@ -232,8 +228,6 @@ aosd_osd_create ( void )
   pango_layout_set_justify( osd_data->pango_layout , FALSE );
   pango_layout_set_width( osd_data->pango_layout , PANGO_SCALE * max_width );
   pango_layout_get_pixel_size( osd_data->pango_layout , &layout_width , &layout_height );
-
-  osd = ghosd_new();
 
   /* osd position */
   switch ( osd_data->cfg_osd->position.placement )
@@ -370,7 +364,7 @@ aosd_timer_func ( gpointer none )
 
     case AOSD_STATUS_DESTROY:
     {
-      aosd_osd_hideanddestroy();
+      aosd_osd_hide();
       aosd_osd_data_free();
 
       osd_status = AOSD_STATUS_HIDDEN; /* reset status */
@@ -384,7 +378,7 @@ aosd_timer_func ( gpointer none )
 
 
 gint
-aosd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
+aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
 {
   if ( osd_status == AOSD_STATUS_HIDDEN )
   {
@@ -398,7 +392,7 @@ aosd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_
   {
     g_source_remove( osd_source_id ); /* remove timer */
     osd_source_id = 0;
-    aosd_osd_hideanddestroy();
+    aosd_osd_hide();
     aosd_osd_data_free();
     osd_status = AOSD_STATUS_HIDDEN;
     /* now display new OSD */
@@ -413,15 +407,40 @@ aosd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_
 
 
 void
-aosd_shutdown ( void )
+aosd_osd_shutdown ( void )
 {
   if ( osd_status != AOSD_STATUS_HIDDEN ) /* osd is being displayed */
   {
     g_source_remove( osd_source_id ); /* remove timer */
     osd_source_id = 0;
-    aosd_osd_hideanddestroy();
+    aosd_osd_hide();
     aosd_osd_data_free();
     osd_status = AOSD_STATUS_HIDDEN;
+  }
+  return;
+}
+
+
+void
+aosd_osd_init ( void )
+{
+  if ( osd == NULL )
+  {
+    /* create Ghosd object */
+    osd = ghosd_new();
+  }
+  return;
+}
+
+
+void 
+aosd_osd_cleanup ( void )
+{
+  if ( osd != NULL )
+  {
+    /* destroy Ghosd object */
+    ghosd_destroy( osd );
+    osd = NULL;
   }
   return;
 }

@@ -30,6 +30,7 @@
 
 
 extern aosd_cfg_t * global_config;
+extern gboolean plugin_is_active;
 
 
 /*************************************************************/
@@ -771,7 +772,9 @@ aosd_cb_configure_test ( gpointer cfg_win )
 #endif
   markup_message = g_markup_printf_escaped(
     "<span font_desc='%s'>Audacious OSD</span>" , cfg->osd->text.fonts_name[0] );
-  aosd_display( markup_message , cfg->osd , TRUE );
+  if ( plugin_is_active != TRUE )
+    aosd_osd_init();
+  aosd_osd_display( markup_message , cfg->osd , TRUE );
   g_free( markup_message );
   aosd_cfg_delete( cfg );
   return;
@@ -783,7 +786,9 @@ aosd_cb_configure_cancel ( gpointer cfg_win )
 {
   GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_free( cb_list );
-  aosd_shutdown(); /* stop any displayed osd */
+  aosd_osd_shutdown(); /* stop any displayed osd */
+  if ( plugin_is_active != TRUE )
+    aosd_osd_cleanup();
   gtk_widget_destroy( GTK_WIDGET(cfg_win) );
   return;
 }
@@ -797,7 +802,10 @@ aosd_cb_configure_ok ( gpointer cfg_win )
   GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_run( cb_list , cfg );
   cfg->set = TRUE;
-  aosd_shutdown(); /* stop any displayed osd */
+  aosd_osd_shutdown(); /* stop any displayed osd */
+  if ( plugin_is_active != TRUE )
+    aosd_osd_cleanup();
+
   if ( global_config != NULL )
   {
     /* plugin is active */
