@@ -837,9 +837,14 @@ static void *alsa_loop(void *arg)
 		if (!paused && !prebuffer &&
 		    get_thread_buffer_filled() > hw_period_size_in)
 		{
-			if (snd_pcm_wait(alsa_pcm, 10) > 0)
+			int wr = snd_pcm_wait(alsa_pcm, 10);
+			if (wr > 0)
 			{
 				alsa_write_out_thread_data();
+			}
+			else if (wr < 0)
+			{
+				alsa_handle_error(wr);
 			}
 		}
 		else

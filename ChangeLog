@@ -1,3 +1,14 @@
+2007-03-21 09:32:49 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1868]
+  improve support for static playlist:
+  - make use of Playlist.attribute.
+  - now xspf plugin is capable of embedding static playlist marker. user can specify at "Save Playlist" dialog.
+  - all meaningful mtime value will be preserved even if a playlist file is handled as static playlist.
+  
+  trunk/src/xspf/xspf.c |   46 +++++++++++++++++++++++++++-------------------
+  1 file changed, 27 insertions(+), 19 deletions(-)
+
+
 2007-03-21 01:55:57 +0000  Giacomo Lozito <james@develia.org>
   revision [1866]
   - aosd: use a single ghosd object for all of the osd showups; this will be a lot gentler to XLib and should definitely help with stability
