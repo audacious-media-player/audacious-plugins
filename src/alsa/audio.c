@@ -824,6 +824,7 @@ static void alsa_write_out_thread_data(void)
 static void *alsa_loop(void *arg)
 {
 	int npfds = snd_pcm_poll_descriptors_count(alsa_pcm);
+	int wr = 0;
 
 	g_mutex_lock(alsa_mutex);
 
@@ -837,7 +838,7 @@ static void *alsa_loop(void *arg)
 		if (!paused && !prebuffer &&
 		    get_thread_buffer_filled() > hw_period_size_in)
 		{
-			int wr = snd_pcm_wait(alsa_pcm, 10);
+			wr = snd_pcm_wait(alsa_pcm, 10);
 			if (wr > 0)
 			{
 				alsa_write_out_thread_data();

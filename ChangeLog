@@ -1,3 +1,10 @@
+2007-03-21 14:24:33 +0000  Giacomo Lozito <james@develia.org>
+  revision [1874]
+  aosd: use g_locale_to_utf8 for osd strings (needs testing)
+  trunk/src/aosd/aosd_trigger.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-03-21 14:15:43 +0000  Giacomo Lozito <james@develia.org>
   revision [1872]
   - statusicon: use function/define names that do not collide with gtk >= 2.10 internals (paranoia)
