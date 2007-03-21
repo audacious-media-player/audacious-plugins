@@ -1,3 +1,12 @@
+2007-03-21 14:15:43 +0000  Giacomo Lozito <james@develia.org>
+  revision [1872]
+  - statusicon: use function/define names that do not collide with gtk >= 2.10 internals (paranoia)
+  trunk/src/statusicon/gtktrayicon-x11.c |  166 ++++++++++++++++-----------------
+  trunk/src/statusicon/gtktrayicon.h     |   42 ++++----
+  trunk/src/statusicon/si_ui.c           |   12 +-
+  3 files changed, 110 insertions(+), 110 deletions(-)
+
+
 2007-03-21 12:18:25 +0000  Giacomo Lozito <james@develia.org>
   revision [1870]
   - alsa: handle errors on snd_pcm_wait (xrun, supend)
