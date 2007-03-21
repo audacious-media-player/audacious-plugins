@@ -1,3 +1,11 @@
+2007-03-21 18:19:49 +0000  Giacomo Lozito <james@develia.org>
+  revision [1878]
+  - aosd: fixed ugly memleak in ghosd sources
+  trunk/src/aosd/ghosd-internal.h |    9 +++++++--
+  trunk/src/aosd/ghosd.c          |   21 +++++++++++++++------
+  2 files changed, 22 insertions(+), 8 deletions(-)
+
+
 2007-03-21 14:36:32 +0000  Giacomo Lozito <james@develia.org>
   revision [1876]
   alsa: small changes

@@ -163,7 +163,7 @@ aosd_trigger_func_pb_start_cb ( gpointer plentry_gp , gpointer unused )
       gint pos = playlist_get_position(active);
       title = playlist_get_songtitle(active, pos);
     }
-    gchar *utf8_title = g_locale_to_utf8( title , -1 , NULL , NULL , NULL );
+    gchar *utf8_title = str_to_utf8( title );
     if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
     {
       gchar *utf8_title_markup = g_markup_printf_escaped(
@@ -230,7 +230,7 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
         if ( ( pl_entry->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
         {
           /* string formatting is done here a.t.m. - TODO - improve this area */
-          gchar *utf8_title = g_locale_to_utf8( pl_entry->title , -1 , NULL , NULL , NULL );
+          gchar *utf8_title = str_to_utf8( pl_entry->title );
           if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
           {
             gchar *utf8_title_markup = g_markup_printf_escaped(
