@@ -1,3 +1,10 @@
+2007-03-21 21:14:06 +0000  Giacomo Lozito <james@develia.org>
+  revision [1880]
+  - aosd: use str_to_utf8 (I'll probably add an option to disable the utf8 conversion attempt as well)
+  trunk/src/aosd/aosd_trigger.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-03-21 18:19:49 +0000  Giacomo Lozito <james@develia.org>
   revision [1878]
   - aosd: fixed ugly memleak in ghosd sources
