@@ -1,3 +1,11 @@
+2007-03-23 05:19:41 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1884]
+  - initial support for writing relative path.
+  
+  trunk/src/xspf/xspf.c |  204 +++++++++++++++++++++++++++++++++++++++++++++-----
+  1 file changed, 184 insertions(+), 20 deletions(-)
+
+
 2007-03-23 05:17:15 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1882]
   justify indentation by gnu indent. current state is a mixture of some styles and very hard to maintain. the code is exactly same to previous revision. this is preparation for upcoming commit so that to make taking diff easier.

@@ -70,7 +70,6 @@ aosd_cfg_new ( void )
   aosd_cfg_osd_t *cfg_osd = aosd_cfg_osd_new();
   cfg->set = FALSE;
   cfg->osd = cfg_osd;
-  cfg->osd->trigger.active = g_array_new( FALSE , TRUE , sizeof(gint) );
   return cfg;
 }
 
@@ -82,7 +81,6 @@ aosd_cfg_delete ( aosd_cfg_t * cfg )
   {
     if ( cfg->osd != NULL )
       aosd_cfg_osd_delete( cfg->osd );
-    g_array_free( cfg->osd->trigger.active , TRUE );
     g_free( cfg );
   }
   return;
@@ -96,6 +94,7 @@ aosd_cfg_osd_new( void )
   cfg_osd->decoration.colors = g_array_sized_new( FALSE , TRUE , sizeof(aosd_color_t) ,
                                                   aosd_deco_style_get_max_numcol() );
   cfg_osd->decoration.skin_file = NULL; /* TODO paranoid, remove me when implemented */
+  cfg_osd->trigger.active = g_array_new( FALSE , TRUE , sizeof(gint) );
   return cfg_osd;
 }
 
@@ -118,6 +117,8 @@ aosd_cfg_osd_delete ( aosd_cfg_osd_t * cfg_osd )
     */
     if ( cfg_osd->decoration.colors != NULL )
       g_array_free( cfg_osd->decoration.colors , TRUE );
+    if ( cfg_osd->trigger.active != NULL )
+      g_array_free( cfg_osd->trigger.active , TRUE );
   }
   g_free( cfg_osd );
   return;
@@ -146,12 +147,18 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
     cfg_osd_copy->text.fonts_draw_shadow[i] = cfg_osd->text.fonts_draw_shadow[i];
     cfg_osd_copy->text.fonts_shadow_color[i] = cfg_osd->text.fonts_shadow_color[i];
   }
+  cfg_osd_copy->text.utf8conv_disable = cfg_osd->text.utf8conv_disable;
   cfg_osd_copy->decoration.code = cfg_osd->decoration.code;
   cfg_osd_copy->decoration.skin_file = g_strdup( cfg_osd->decoration.skin_file );
   for ( i = 0 ; i < cfg_osd->decoration.colors->len ; i++ )
   {
     aosd_color_t color = g_array_index( cfg_osd->decoration.colors , aosd_color_t , i );
     g_array_insert_val( cfg_osd_copy->decoration.colors , i , color );
+  }
+  for ( i = 0 ; i < cfg_osd->trigger.active->len ; i++ )
+  {
+    gint trigger_id = g_array_index( cfg_osd->trigger.active , gint , i );
+    g_array_insert_val( cfg_osd_copy->trigger.active , i , trigger_id );
   }
   return cfg_osd_copy;
 }
@@ -186,6 +193,7 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
       cfg->osd->text.fonts_shadow_color[i].red, cfg->osd->text.fonts_shadow_color[i].green,
       cfg->osd->text.fonts_shadow_color[i].blue, cfg->osd->text.fonts_shadow_color[i].alpha);
   }
+  g_print("  disable utf8 conversion: %i\n", cfg->osd->text.utf8conv_disable);
   g_print("\nDECORATION\n");
   g_print("  code: %i\n", cfg->osd->decoration.code);
   /*g_print("  custom skin file: %s\n", cfg->osd->decoration.skin_file);*/
@@ -277,6 +285,10 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     g_free( key_str );
     g_free( color_str );
   }
+
+  if ( !bmp_cfg_db_get_bool( cfgfile , "aosd" ,
+       "text_utf8conv_disable" , &(cfg->osd->text.utf8conv_disable) ) )
+    cfg->osd->text.utf8conv_disable = FALSE;
 
   /* decoration */
   if ( !bmp_cfg_db_get_int( cfgfile , "aosd" ,
@@ -411,6 +423,9 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
     g_free( key_str );
     g_free( color_str );
   }
+
+  bmp_cfg_db_set_bool( cfgfile , "aosd" ,
+    "text_utf8conv_disable" , cfg->osd->text.utf8conv_disable );
 
   /* decoration */
   bmp_cfg_db_set_int( cfgfile , "aosd" ,

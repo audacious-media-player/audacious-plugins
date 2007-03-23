@@ -132,6 +132,18 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 }
 
 
+/* HELPER FUNCTIONS */
+
+static gchar *
+aosd_trigger_utf8convert ( gchar * str )
+{
+  if ( global_config->osd->text.utf8conv_disable == FALSE )
+    return str_to_utf8( str );
+  else
+    return g_strdup( str );
+}
+
+
 /* TRIGGER FUNCTIONS */
 
 static void
@@ -163,7 +175,7 @@ aosd_trigger_func_pb_start_cb ( gpointer plentry_gp , gpointer unused )
       gint pos = playlist_get_position(active);
       title = playlist_get_songtitle(active, pos);
     }
-    gchar *utf8_title = str_to_utf8( title );
+    gchar *utf8_title = aosd_trigger_utf8convert( title );
     if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
     {
       gchar *utf8_title_markup = g_markup_printf_escaped(
@@ -230,7 +242,7 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
         if ( ( pl_entry->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
         {
           /* string formatting is done here a.t.m. - TODO - improve this area */
-          gchar *utf8_title = str_to_utf8( pl_entry->title );
+          gchar *utf8_title = aosd_trigger_utf8convert( pl_entry->title );
           if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
           {
             gchar *utf8_title_markup = g_markup_printf_escaped(

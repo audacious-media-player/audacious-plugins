@@ -68,6 +68,7 @@ typedef struct
   aosd_color_t fonts_color[AOSD_TEXT_FONTS_NUM];
   gboolean fonts_draw_shadow[AOSD_TEXT_FONTS_NUM];
   aosd_color_t fonts_shadow_color[AOSD_TEXT_FONTS_NUM];
+  gboolean utf8conv_disable;
 }
 aosd_cfg_osd_text_t;
 
@@ -94,7 +95,7 @@ typedef struct
 aosd_cfg_osd_position_t;
 
 
-/* config portion containing osd position information */
+/* config portion containing osd trigger information */
 typedef struct
 {
   GArray *active;

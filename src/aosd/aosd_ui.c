@@ -364,6 +364,15 @@ aosd_cb_configure_text_font_commit ( GtkWidget * fontbt , aosd_cfg_t * cfg )
 }
 
 
+static void
+aosd_cb_configure_text_inte_commit ( GtkWidget *utf8conv_togglebt , aosd_cfg_t * cfg )
+{
+  cfg->osd->text.utf8conv_disable = gtk_toggle_button_get_active(
+    GTK_TOGGLE_BUTTON(utf8conv_togglebt) );
+  return;
+}
+
+
 static GtkWidget *
 aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
 {
@@ -372,7 +381,7 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkWidget *tex_font_label[3], *tex_font_fontbt[3];
   GtkWidget *tex_font_colorbt[3], *tex_font_shadow_togglebt[3];
   GtkWidget *tex_font_shadow_colorbt[3];
-  GtkWidget *other_vbox;
+  GtkWidget *tex_inte_frame, *tex_inte_table, *tex_inte_utf8conv_togglebt;
   gint i = 0;
 
   tex_vbox = gtk_vbox_new( FALSE , 4 );
@@ -437,6 +446,21 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
   }
   gtk_container_add( GTK_CONTAINER(tex_font_frame) , tex_font_table );
   gtk_box_pack_start( GTK_BOX(tex_vbox) , tex_font_frame , FALSE , FALSE , 0 );
+
+  tex_inte_frame = gtk_frame_new( _("Internationalization") );
+  tex_inte_table = gtk_table_new( 1 , 1 , FALSE );
+  gtk_container_set_border_width( GTK_CONTAINER(tex_inte_table) , 6 );
+  gtk_table_set_row_spacings( GTK_TABLE(tex_inte_table) , 4 );
+  gtk_table_set_col_spacings( GTK_TABLE(tex_inte_table) , 4 );
+  tex_inte_utf8conv_togglebt = gtk_check_button_new_with_label(
+    _("Disable UTF-8 conversion of text (in aosd)") );
+  gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(tex_inte_utf8conv_togglebt) ,
+    cfg->osd->text.utf8conv_disable );
+  gtk_table_attach( GTK_TABLE(tex_inte_table) , tex_inte_utf8conv_togglebt ,
+    0 , 1 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
+  aosd_callback_list_add( cb_list , tex_inte_utf8conv_togglebt , aosd_cb_configure_text_inte_commit );
+  gtk_container_add( GTK_CONTAINER(tex_inte_frame) , tex_inte_table );
+  gtk_box_pack_start( GTK_BOX(tex_vbox) , tex_inte_frame , FALSE , FALSE , 0 );
 
   return tex_vbox;
 }
