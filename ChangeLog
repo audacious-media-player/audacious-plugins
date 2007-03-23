@@ -1,3 +1,11 @@
+2007-03-23 05:17:15 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1882]
+  justify indentation by gnu indent. current state is a mixture of some styles and very hard to maintain. the code is exactly same to previous revision. this is preparation for upcoming commit so that to make taking diff easier.
+  
+  trunk/src/xspf/xspf.c |  674 ++++++++++++++++++++++++--------------------------
+  1 file changed, 333 insertions(+), 341 deletions(-)
+
+
 2007-03-21 21:14:06 +0000  Giacomo Lozito <james@develia.org>
   revision [1880]
   - aosd: use str_to_utf8 (I'll probably add an option to disable the utf8 conversion attempt as well)
