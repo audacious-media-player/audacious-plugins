@@ -377,6 +377,19 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     return (info->frames != 0 || info->remote == TRUE);
 }
 
+// sanity check for audio open parameters
+static gboolean check_audio_param(struct mad_info_t *info)
+{
+    if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)
+        return FALSE;
+    if(info->freq < 0) // not sure about maximum frequency. --yaz
+        return FALSE;
+    if(info->channels < 1 || info->channels > 2)
+        return FALSE;
+
+    return TRUE;
+}
+
 gpointer decode_loop(gpointer arg)
 {
     unsigned char buffer[BUFFER_SIZE];
@@ -413,14 +426,10 @@ gpointer decode_loop(gpointer arg)
 #ifdef DEBUG
     g_message("decode: fmt = %d freq = %d channels = %d", info->fmt, info->freq, info->channels);
 #endif
-    // sanity check.
-    if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)
+
+    if(check_audio_param(info) == FALSE)
         return NULL;
-    if(info->freq < 0) // not sure about maximum frequency. --yaz
-        return NULL;
-    if(info->channels < 1 || info->channels > 2)
-        return NULL;
-    
+
     if (!info->playback->output->open_audio(info->fmt, info->freq, info->channels)) {
         g_mutex_lock(pb_mutex);
         info->playback->error = TRUE;
@@ -506,7 +515,7 @@ gpointer decode_loop(gpointer arg)
         while (info->playback->playing) {
             if (info->seek != -1 && info->size > 0) {
 #ifdef DEBUG
-                g_message("seeking: %d", info->seek);
+                g_message("seeking: %ld", info->seek);
 #endif
                 int new_position;
                 gulong milliseconds =
@@ -598,12 +607,7 @@ gpointer decode_loop(gpointer arg)
                 info->channels = MAD_NCHANNELS(&frame.header);
                 info->playback->output->close_audio();
 
-                // sanity check.
-                if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)
-                    return NULL;
-                if(info->freq < 0) // not sure about maximum frequency. --yaz
-                    return NULL;
-                if(info->channels < 1 || info->channels > 2)
+                if(check_audio_param(info) == FALSE)
                     return NULL;
 
                 if (!info->playback->output->open_audio(info->fmt, info->freq,
@@ -648,11 +652,11 @@ gpointer decode_loop(gpointer arg)
             
             g_mutex_lock(mad_mutex);
             g_cond_timed_wait(mad_cond, mad_mutex, &sleeptime);
+            g_mutex_unlock(mad_mutex);
             if (!info->playback->playing) {
-                g_mutex_unlock(mad_mutex);
                 break;
             }
-            g_mutex_unlock(mad_mutex);
+
         }
     }
 #ifdef DEBUG
