@@ -289,18 +289,20 @@ static TitleInput *wma_get_song_tuple(gchar * filename)
 	
     av_find_stream_info(in);
 
-    if((in->title[0] != '\0') || (in->author[0] != '\0') || (in->album[0] != '\0') ||
-       (in->comment[0] != '\0') || (in->genre[0] != '\0') || (in->year != 0) || (in->track != 0))
-    {	
-	tuple->performer = str_to_utf8(w_getstr(in->author));
-	tuple->album_name = str_to_utf8(w_getstr(in->album));
-	tuple->track_name = str_to_utf8(w_getstr(in->title));
-	tuple->year = in->year;
-	tuple->track_number = in->track;
-	tuple->genre = str_to_utf8(w_getstr(in->genre));
-	tuple->comment = str_to_utf8(w_getstr(in->comment));
-    }
-
+    if(strlen(in->title))
+        tuple->track_name = strdup(in->title);
+    if(strlen(in->author))
+        tuple->performer = strdup(in->author);
+    if(strlen(in->album))
+        tuple->album_name = strdup(in->album);
+    if(strlen(in->comment))
+        tuple->comment = strdup(in->comment);
+    if(strlen(in->genre))
+        tuple->genre = strdup(in->genre);
+    if(in->year > 0)
+       tuple->year = in->year;
+    if(in->track > 0)
+        tuple->track_number = in->track;
     if (in->duration)
         tuple->length = in->duration / 1000;
 
@@ -316,17 +318,21 @@ static gchar *get_song_title(AVFormatContext *in, gchar * filename)
 
     input = bmp_title_input_new();
     
-    if((in->title[0] != '\0') || (in->author[0] != '\0') || (in->album[0] != '\0') ||
-       (in->comment[0] != '\0') || (in->genre[0] != '\0') || (in->year != 0) || (in->track != 0))
-    {	
-	input->performer = w_getstr(in->author);
-	input->album_name = w_getstr(in->album);
-	input->track_name = w_getstr(in->title);
-	input->year = in->year;
-	input->track_number = in->track;
-	input->genre = w_getstr(in->genre);
-	input->comment = w_getstr(in->comment);
-    }
+    if(strlen(in->title))
+        input->track_name = strdup(in->title);
+    if(strlen(in->author))
+        input->performer = strdup(in->author);
+    if(strlen(in->album))
+        input->album_name = strdup(in->album);
+    if(strlen(in->comment))
+        input->comment = strdup(in->comment);
+    if(strlen(in->genre))
+        input->genre = strdup(in->genre);
+    if(in->year > 0)
+       input->year = in->year;
+    if(in->track > 0)
+        input->track_number = in->track;
+
     input->file_name = g_path_get_basename(filename);
     input->file_path = g_path_get_dirname(filename);
     input->file_ext = extname(filename);

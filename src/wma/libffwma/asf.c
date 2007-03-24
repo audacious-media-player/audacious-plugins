@@ -306,17 +306,21 @@ static void get_guid(ByteIOContext *s, GUID *g)
 
 static void get_str16_nolen(ByteIOContext *pb, int len, char *buf, int buf_size)
 {
-    int c;
-    char *q;
+    gchar *ucs, *uptr;
+    gchar *tmp;
+    int tmplen = len;
 
-    q = buf;
-    while (len > 0) {
-    	c = get_le16(pb);
-	if ((q - buf) < buf_size - 1)
-	*q++ = c;
-	len-=2;
-	}
-	   *q = '\0';
+    ucs = g_malloc0(len);
+    uptr = ucs;
+
+    while(tmplen > 0) {
+        *uptr++ = (gchar)get_byte(pb);
+        tmplen--;
+    }
+
+    tmp = g_convert(ucs, len, "UTF-8", "UCS-2LE", NULL, NULL, NULL);
+    g_strlcpy(buf, tmp, buf_size);
+    g_free(tmp);
 }
 
 static int asf_probe(AVProbeData *pd)

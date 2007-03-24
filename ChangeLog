@@ -1,3 +1,36 @@
+2007-03-24 16:08:58 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1888]
+  maintenance of build system:
+  - link for OBJECTIVE_LIBS had not occurred even if OBJECTIVE_LIBS_NOINST was re-linked. LIBDEP macro is introduced to indicate dependency.
+  - make rules such as $(AR) cq $@ $(OBJECTS) in individual Makefile have been removed. these linkage will be done through objective.mk.
+  - *.h has been removed from SOURCES. these files had been passed to linker as object files.
+  
+  trunk/mk/objective.mk                            |    6 +++---
+  trunk/src/aac/libfaad2/Makefile                  |    3 ---
+  trunk/src/aac/mp4ff/Makefile                     |    3 ---
+  trunk/src/aac/src/Makefile                       |    2 ++
+  trunk/src/adplug/Makefile                        |    2 ++
+  trunk/src/amidi-plug/Makefile                    |    2 ++
+  trunk/src/amidi-plug/backend-alsa/Makefile       |    2 ++
+  trunk/src/amidi-plug/backend-dummy/Makefile      |    2 ++
+  trunk/src/amidi-plug/backend-fluidsynth/Makefile |    2 ++
+  trunk/src/flac/Makefile                          |    2 ++
+  trunk/src/flac/libflac/Makefile                  |    3 ---
+  trunk/src/flac/plugin_common/Makefile            |    3 ---
+  trunk/src/modplug/Makefile                       |    2 ++
+  trunk/src/modplug/archive/Makefile               |    3 ---
+  trunk/src/modplug/gui/Makefile                   |    3 ---
+  trunk/src/paranormal/Makefile                    |    2 ++
+  trunk/src/paranormal/libcalc/Makefile            |    3 ---
+  trunk/src/rovascope/Makefile                     |    2 ++
+  trunk/src/rovascope/libcalc/Makefile             |    2 --
+  trunk/src/timidity/libtimidity/Makefile          |    4 ----
+  trunk/src/timidity/src/Makefile                  |    2 ++
+  trunk/src/wma/Makefile                           |    2 ++
+  trunk/src/wma/libffwma/Makefile                  |   15 +++++----------
+  23 files changed, 32 insertions(+), 40 deletions(-)
+
+
 2007-03-23 13:46:04 +0000  Giacomo Lozito <james@develia.org>
   revision [1886]
   - aosd: added an option to enable/disable utf8 text conversion done by the plugin
