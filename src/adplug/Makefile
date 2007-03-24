@@ -12,6 +12,8 @@ SOURCES = adplug-xmms.cc
 
 OBJECTS = ${SOURCES:.cc=.o}
 
+LIBDEP = ./core/libadplugcore.a
+
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BINIO_CFLAGS) \
 	-I../../intl -I../.. -I./core
 CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BINIO_CFLAGS) \

@@ -47,5 +47,7 @@ SOURCES = ${SOURCES.core} ${SOURCES.plugin}
 
 OBJECTS = ${SOURCES:.cxx=.o}
 
+LIBDEP = gui/libgui.a archive/libarchive.a
+
 include ../../mk/objective.mk
 

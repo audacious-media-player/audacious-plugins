@@ -32,6 +32,8 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
+LIBDEP = libflac/libaudflac.a plugin_common/libplugin_common.a
+
 # XXX: debian
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -I./libflac $(OGG_VORBIS_CFLAGS)
 

@@ -16,6 +16,3 @@ SOURCES = archive.cxx     \
 OBJECTS = ${SOURCES:.cxx=.o}
 
 include ../../../mk/objective.mk
-
-libarchive.a: $(OBJECTS)
-	$(AR) cq $@ $(OBJECTS)

@@ -15,5 +15,3 @@ CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) $(SDL_CFLAGS
 
 include ../../../mk/objective.mk
 
-libcalc.a: $(OBJECTS)
-	$(AR) cq $@ $(OBJECTS)

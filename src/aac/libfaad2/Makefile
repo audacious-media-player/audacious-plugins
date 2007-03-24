@@ -19,6 +19,3 @@ SOURCES = bits.c cfft.c decoder.c drc.c \
 OBJECTS = ${SOURCES:.c=.o}
 
 include ../../../mk/objective.mk
-
-libfaad.a: $(OBJECTS)
-	$(AR) cq $@ $(OBJECTS)

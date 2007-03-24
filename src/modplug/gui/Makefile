@@ -10,6 +10,3 @@ SOURCES = main.cxx support.cxx interface.cxx callbacks.cxx
 OBJECTS = ${SOURCES:.cxx=.o}
 
 include ../../../mk/objective.mk
-
-libgui.a: $(OBJECTS)
-	$(AR) cq $@ $(OBJECTS)

@@ -1,3 +1,13 @@
+2007-03-23 13:46:04 +0000  Giacomo Lozito <james@develia.org>
+  revision [1886]
+  - aosd: added an option to enable/disable utf8 text conversion done by the plugin
+  trunk/src/aosd/aosd_cfg.c     |   19 +++++++++++++++++--
+  trunk/src/aosd/aosd_cfg.h     |    3 ++-
+  trunk/src/aosd/aosd_trigger.c |   16 ++++++++++++++--
+  trunk/src/aosd/aosd_ui.c      |   26 +++++++++++++++++++++++++-
+  4 files changed, 58 insertions(+), 6 deletions(-)
+
+
 2007-03-23 05:19:41 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1884]
   - initial support for writing relative path.

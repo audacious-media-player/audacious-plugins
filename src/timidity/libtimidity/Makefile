@@ -8,7 +8,6 @@ SOURCES = \
 	instrum.c \
 	instrum_dls.c \
 	mix.c \
-	options.h \
 	output.c \
 	playmidi.c \
 	readmidi.c \
@@ -22,6 +21,3 @@ CFLAGS += $(PICFLAGS) -I../../..
 OBJECTS = ${SOURCES:.c=.o}
 
 include ../../../mk/objective.mk
-
-libtimidity.a: $(OBJECTS)
-	$(AR) cq $@ $(OBJECTS)

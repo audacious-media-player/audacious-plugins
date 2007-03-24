@@ -14,4 +14,6 @@ SOURCES = b-fluidsynth.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
+LIBDEP =  ../pcfg/libpcfg.a
+
 include ../../../mk/objective.mk

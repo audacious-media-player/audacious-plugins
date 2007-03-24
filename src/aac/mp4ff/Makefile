@@ -11,6 +11,3 @@ OBJECTS = ${SOURCES:.c=.o}
 CFLAGS += $(PICFLAGS) -DUSE_TAGGING=1 -fsigned-char -I../../..
 
 include ../../../mk/objective.mk
-
-libmp4ff.a: $(OBJECTS)
-	$(AR) cq $@ $(OBJECTS)

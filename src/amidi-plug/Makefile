@@ -22,6 +22,8 @@ SOURCES = amidi-plug.c i_vfslayer.c i_midi.c i_backend.c \
 
 OBJECTS = ${SOURCES:.c=.o}
 
+LIBDEP = ./pcfg/libpcfg.a
+
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GMODULE_CFLAGS) -DAMIDIPLUGBACKENDDIR=\"$(AMIDIPLUGBACKENDDIR)\" \
           -I../../intl -I../..
 

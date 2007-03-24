@@ -22,7 +22,4 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
-libplugin_common.a: $(OBJECTS)
-	$(AR) cq $@ $(OBJECTS)
-
 include ../../../mk/objective.mk

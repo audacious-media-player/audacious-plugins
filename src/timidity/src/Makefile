@@ -14,6 +14,8 @@ SOURCES = \
 
 OBJECTS = ${SOURCES:.c=.o}
 
+LIBDEP = ../libtimidity/libtimidity.a
+
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../.. -I../libtimidity
 
 include ../../../mk/objective.mk

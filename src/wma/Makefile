@@ -13,6 +13,8 @@ SOURCES = wma.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
+LIBDEP = ./libffwma/libffwma.a
+
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../.. -I./libffwma -std=c99
 
 include ../../mk/objective.mk
