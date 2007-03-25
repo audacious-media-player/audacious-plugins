@@ -1,3 +1,11 @@
+2007-03-25 00:31:14 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1894]
+  - fix validation of mpeg2 files, by ccr.
+  
+  trunk/src/madplug/plugin.c |   14 ++++++++++----
+  1 file changed, 10 insertions(+), 4 deletions(-)
+
+
 2007-03-24 16:44:44 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1892]
   - small cleanups.

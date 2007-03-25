@@ -571,7 +571,7 @@ void audmad_get_file_info(char *filename)
 
 #ifdef DEBUG
     {
-        gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+        gchar *tmp = str_to_utf8(filename);
         g_message("f: audmad_get_file_info: %s", tmp);
         g_free(tmp);
     }
@@ -588,7 +588,7 @@ void audmad_get_file_info(char *filename)
 
     input_get_info(&info, info.remote ? TRUE : audmad_config.fast_play_time_calc);
 
-    title = g_strdup_printf("File Info - %s", g_basename(filename));
+    title = g_strdup_printf("File Info - %s", g_basename(utf_filename));
     gtk_window_set_title(GTK_WINDOW(window), title);
     g_free(title);
 
@@ -706,7 +706,7 @@ void audmad_get_file_info(char *filename)
             string = id3_field_getstrings(field, 0);
             genre = mad_parse_genre(string);
 #ifdef DEBUG
-            {
+            if (genre) {
                 gchar *utf = (gchar *)id3_ucs4_utf8duplicate(genre);
                 g_print("genre = %s\n", utf);
                 g_print("genre num = %d\n", id3_genre_number(genre));
