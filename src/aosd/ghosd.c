@@ -204,7 +204,7 @@ ghosd_show(Ghosd *ghosd) {
 
   ghosd_render(ghosd);
 
-  XMapWindow(ghosd->dpy, ghosd->win);
+  XMapRaised(ghosd->dpy, ghosd->win);
 }
 
 void
