@@ -1,3 +1,11 @@
+2007-03-24 16:44:44 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1892]
+  - small cleanups.
+  
+  trunk/src/madplug/decoder.c |   36 ++++++++++++++++++++----------------
+  1 file changed, 20 insertions(+), 16 deletions(-)
+
+
 2007-03-24 16:29:41 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1890]
   - now wma can handle wide characters in metadata.

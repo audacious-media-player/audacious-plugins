@@ -198,7 +198,7 @@ static gboolean mp3_head_check(guint32 head, gint *frameSize)
     layer = (head >> 17) & 0x3;
     if (!layer)
         return FALSE; /* 00 = reserved */
-    layer = 3 - layer;
+    layer = 4 - layer;
 
     /* check if bitrate index bits (12-15) are acceptable */
     bitIndex = (head >> 12) & 0xf;
@@ -243,7 +243,10 @@ static gboolean mp3_head_check(guint32 head, gint *frameSize)
             if (bitRate > 192)
                 return FALSE;
         } else {
-            /* any other mode with bitrates 32-56 and 80 */
+            /* any other mode with bitrates 32-56 and 80.
+             * NOTICE! this check is not entirely correct, but I think
+             * it is sufficient in most cases.
+             */
             if (((bitRate >= 32 && bitRate <= 56) || bitRate == 80))
                 return FALSE;
         }
@@ -252,8 +255,11 @@ static gboolean mp3_head_check(guint32 head, gint *frameSize)
     /* calculate approx. frame size */
     padding = (head >> 9) & 1;
     sampleRate = mp3_samplerate_table[version][sampleIndex];
-    *frameSize = (144 * bitRate * 1000) / (sampleRate + padding);
-        
+    if (layer == 1)
+        *frameSize = ((12 * bitRate * 1000 / sampleRate) + padding) * 4; 
+    else
+        *frameSize = (144 * bitRate * 1000) / (sampleRate + padding);
+    
     /* check if bits 16 - 19 are all set (MPEG 1 Layer I, not protected?) */
     if (((head >> 19) & 1) == 1 &&
         ((head >> 17) & 3) == 3 && ((head >> 16) & 1) == 1)
