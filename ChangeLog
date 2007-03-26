@@ -1,3 +1,23 @@
+2007-03-26 08:19:26 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1900]
+  - add a starting point for xmms-rootvis port. giacomo will need to 
+  finish this up, as my XLib skills are not enough at this time.
+  
+  trunk/configure.ac                          |   24 +
+  trunk/mk/rules.mk.in                        |    2 
+  trunk/src/rootvis/Makefile                  |   22 +
+  trunk/src/rootvis/config.h                  |   57 +++
+  trunk/src/rootvis/config_backend.c          |  172 +++++++++
+  trunk/src/rootvis/config_definition.c       |  152 ++++++++
+  trunk/src/rootvis/config_frontend.c         |  210 ++++++++++++
+  trunk/src/rootvis/config_frontend.h         |   62 +++
+  trunk/src/rootvis/config_frontend_widgets.c |  486 ++++++++++++++++++++++++++++
+  trunk/src/rootvis/getroot.c                 |  400 +++++++++++++++++++++++
+  trunk/src/rootvis/rootvis.c                 |  456 ++++++++++++++++++++++++++
+  trunk/src/rootvis/rootvis.h                 |  103 +++++
+  12 files changed, 2146 insertions(+)
+
+
 2007-03-25 16:26:39 +0000  Giacomo Lozito <james@develia.org>
   revision [1898]
   - aosd: use XMapRaised in place of XMapWindow to ensure that the osd window is raised with some window managers
