@@ -1,3 +1,10 @@
+2007-03-25 16:26:39 +0000  Giacomo Lozito <james@develia.org>
+  revision [1898]
+  - aosd: use XMapRaised in place of XMapWindow to ensure that the osd window is raised with some window managers
+  trunk/src/aosd/ghosd.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-03-25 06:15:05 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1896]
   - non-utf string had been used for file name in window title of File Info window. patch by M.H.

@@ -387,6 +387,29 @@ if test "x$have_aosd" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"
 fi
 
+dnl *** Rootwindow vis plugin (imlib2 based)
+
+AC_ARG_ENABLE(rootvis,
+    [  --disable-rootvis       disable X11 RootWindow vis plugin (default=enabled)],
+    [enable_rootvis=$enableval],
+    [enable_rootvis="yes"]
+)
+
+if test "x$enable_rootvis" = "xyes"; then
+    have_rootvis="yes"
+    PKG_CHECK_MODULES(IMLIB2, [imlib2 >= 1.1.0],,
+        [have_rootvis="no"
+        AC_MSG_RESULT([*** imlib2 >= 1.1.0 is required for Audacious RootVis plugin ***])]
+    )
+else
+    AC_MSG_RESULT([*** RootVis plugin disabled per user request ***])
+    have_rootvis="no"
+fi
+
+if test "x$have_rootvis" = "xyes"; then
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rootvis"
+fi
+
 dnl *** AdPlug requirement (libbinio)
 
 AC_ARG_ENABLE(adplug,
@@ -1234,6 +1257,7 @@ echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
 echo "  ProjectM (GL milkdrop):                 $have_projectm"
+echo "  RootVis plugin:                         $have_rootvis"
 echo
 echo "  Transport"
 echo "  ---------"
