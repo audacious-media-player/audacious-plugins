@@ -79,26 +79,27 @@ BOOL CSoundFile::ReadPSM(LPCBYTE lpStream, DWORD dwMemLength)
 //-----------------------------------------------------------
 {
 	PSMCHUNK *pfh = (PSMCHUNK *)lpStream;
+	PSMCHUNK pfh_swap;
 	DWORD dwMemPos, dwSongPos;
 	DWORD smpnames[MAX_SAMPLES];
 	DWORD patptrs[MAX_PATTERNS];
 	BYTE samplemap[MAX_SAMPLES];
 	UINT nPatterns;
 
-	pfh->id = bswapLE32(pfh->id);
-	pfh->len = bswapLE32(pfh->len);
-	pfh->listid = bswapLE32(pfh->listid);
+	pfh_swap.id = bswapLE32(pfh->id);
+	pfh_swap.len = bswapLE32(pfh->len);
+	pfh_swap.listid = bswapLE32(pfh->listid);
 
 	// Chunk0: "PSM ",filesize,"FILE"
 	if (dwMemLength < 256) return FALSE;
-	if (pfh->id == PSM_ID_OLD)
+	if (pfh_swap.id == PSM_ID_OLD)
 	{
 	#ifdef PSM_LOG
 		Log("Old PSM format not supported\n");
 	#endif
 		return FALSE;
 	}
-	if ((pfh->id != PSM_ID_NEW) || (pfh->len+12 > dwMemLength) || (pfh->listid != IFFID_FILE)) return FALSE;
+	if ((pfh_swap.id != PSM_ID_NEW) || (pfh_swap.len+12 > dwMemLength) || (pfh_swap.listid != IFFID_FILE)) return FALSE;
 	m_nType = MOD_TYPE_PSM;
 	m_nChannels = 16;
 	m_nSamples = 0;
