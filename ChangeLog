@@ -1,3 +1,10 @@
+2007-03-30 08:52:06 +0000  Giacomo Lozito <james@develia.org>
+  revision [1906]
+  - flac: when bitrate update is disabled, always display VBR instead of a useless value
+  trunk/src/flac/plugin.c |   10 ++++++++--
+  1 file changed, 8 insertions(+), 2 deletions(-)
+
+
 2007-03-29 10:14:36 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [1904]
   Fix MOD title read by not permanently byteswapping the stream in the PSM loader. Patch by Joseph Jezak <josejx@gentoo.org>.
