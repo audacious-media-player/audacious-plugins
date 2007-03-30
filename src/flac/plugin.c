@@ -165,7 +165,10 @@ InputPlugin *get_iplugin_info()
 void set_track_info(const char* title, int length_in_msec)
 {
 	if (stream_data_.is_playing) {
-		flac_ip.set_info((char*) title, length_in_msec, stream_data_.sample_rate * stream_data_.channels * stream_data_.bits_per_sample, stream_data_.sample_rate, stream_data_.channels);
+	   if ( !flac_cfg.title.disable_bitrate_update )
+		   flac_ip.	set_info((char*) title, length_in_msec, stream_data_.sample_rate * stream_data_.channels * stream_data_.bits_per_sample, stream_data_.sample_rate, stream_data_.channels);
+		else
+		   flac_ip.	set_info((char*) title, length_in_msec, -1, stream_data_.sample_rate, stream_data_.channels);
 	}
 }
 
@@ -333,7 +336,10 @@ void FLAC_XMMS__play_file(InputPlayback *playback)
 	}
 
 	stream_data_.title = flac_format_song_title(filename);
-	flac_ip.set_info(stream_data_.title, stream_data_.length_in_msec, stream_data_.sample_rate * stream_data_.channels * stream_data_.bits_per_sample, stream_data_.sample_rate, stream_data_.channels);
+   if ( !flac_cfg.title.disable_bitrate_update )
+	   flac_ip.set_info(stream_data_.title, stream_data_.length_in_msec, stream_data_.sample_rate * stream_data_.channels * stream_data_.bits_per_sample, stream_data_.sample_rate, stream_data_.channels);
+	else
+	   flac_ip.set_info(stream_data_.title, stream_data_.length_in_msec, -1, stream_data_.sample_rate, stream_data_.channels);
 
 	stream_data_.seek_to_in_sec = -1;
 	stream_data_.play_thread_open = true;

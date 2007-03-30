@@ -1,3 +1,10 @@
+2007-03-29 10:14:36 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [1904]
+  Fix MOD title read by not permanently byteswapping the stream in the PSM loader. Patch by Joseph Jezak <josejx@gentoo.org>.
+  trunk/src/modplug/load_psm.cxx |   11 ++++++-----
+  1 file changed, 6 insertions(+), 5 deletions(-)
+
+
 2007-03-26 21:44:46 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1902]
   - now do_setpos() takes relative position as the argument and works even if cuesheets are included in large playlist. may close #869.
