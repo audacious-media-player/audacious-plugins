@@ -149,6 +149,7 @@ CPlayer *CAdPlug::factory(VFSFile *fd, Copl *opl, const CPlayers &pl,
 	    delete p;
       }
 
+#if 0
   // Try all players, one by one
   for(i = pl.begin(); i != pl.end(); i++) {
     AdPlug_LogWrite("Trying: %s\n", (*i)->filetype.c_str());
@@ -160,6 +161,7 @@ CPlayer *CAdPlug::factory(VFSFile *fd, Copl *opl, const CPlayers &pl,
       } else
 	delete p;
   }
+#endif
 
   // Unknown file
   AdPlug_LogWrite("End of list!\n");

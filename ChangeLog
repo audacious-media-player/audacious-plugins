@@ -1,3 +1,12 @@
+2007-03-30 13:37:26 +0000  Michael Farber <01mf02@gmail.com>
+  revision [1908]
+  - Added option to save output files to original file directory
+  
+  
+  trunk/src/disk_writer/disk_writer.c |  578 +++++++++++++++++++-----------------
+  1 file changed, 314 insertions(+), 264 deletions(-)
+
+
 2007-03-30 08:52:06 +0000  Giacomo Lozito <james@develia.org>
   revision [1906]
   - flac: when bitrate update is disabled, always display VBR instead of a useless value
