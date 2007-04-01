@@ -1,3 +1,20 @@
+2007-04-01 00:44:23 +0000  Giacomo Lozito <james@develia.org>
+  revision [1912]
+  - aosd: beta4, ghosd source was rewritten to support argb visual (x composite extension) as an option, this allows to have real transparency in the OSD
+  trunk/src/aosd/aosd.c           |    2 
+  trunk/src/aosd/aosd_cfg.c       |   10 ++
+  trunk/src/aosd/aosd_cfg.h       |   14 +++
+  trunk/src/aosd/aosd_common.h    |    2 
+  trunk/src/aosd/aosd_osd.c       |    9 +-
+  trunk/src/aosd/aosd_osd.h       |    2 
+  trunk/src/aosd/aosd_ui.c        |   72 +++++++++++++++-
+  trunk/src/aosd/ghosd-internal.h |    9 ++
+  trunk/src/aosd/ghosd-main.c     |    3 
+  trunk/src/aosd/ghosd.c          |  176 +++++++++++++++++++++++++++++++++-------
+  trunk/src/aosd/ghosd.h          |    4 
+  11 files changed, 261 insertions(+), 42 deletions(-)
+
+
 2007-03-31 13:40:00 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1910]
   - for security reasons, do not try all of the players (only check extension)

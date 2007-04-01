@@ -380,42 +380,56 @@ aosd_timer_func ( gpointer none )
 gint
 aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
 {
-  if ( osd_status == AOSD_STATUS_HIDDEN )
+  if ( osd != NULL )
   {
-    aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
-    aosd_osd_create();
-    osd_status = AOSD_STATUS_FADEIN;
-    osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
-                                        aosd_timer_func , NULL , NULL );
+    if ( osd_status == AOSD_STATUS_HIDDEN )
+    {
+      aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
+      aosd_osd_create();
+      osd_status = AOSD_STATUS_FADEIN;
+      osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
+                                          aosd_timer_func , NULL , NULL );
+    }
+    else
+    {
+      g_source_remove( osd_source_id ); /* remove timer */
+      osd_source_id = 0;
+      aosd_osd_hide();
+      aosd_osd_data_free();
+      osd_status = AOSD_STATUS_HIDDEN;
+      /* now display new OSD */
+      aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
+      aosd_osd_create();
+      osd_status = AOSD_STATUS_FADEIN;
+      osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
+                                          aosd_timer_func , NULL , NULL );
+    }
+    return 0;
   }
   else
   {
-    g_source_remove( osd_source_id ); /* remove timer */
-    osd_source_id = 0;
-    aosd_osd_hide();
-    aosd_osd_data_free();
-    osd_status = AOSD_STATUS_HIDDEN;
-    /* now display new OSD */
-    aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
-    aosd_osd_create();
-    osd_status = AOSD_STATUS_FADEIN;
-    osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
-                                        aosd_timer_func , NULL , NULL );
+    g_warning( "OSD display requested, but no osd object is loaded!\n" );
   }
-  return 0;
 }
 
 
 void
 aosd_osd_shutdown ( void )
 {
-  if (( osd != NULL ) && ( osd_status != AOSD_STATUS_HIDDEN )) /* osd is being displayed */
+  if ( osd != NULL )
   {
-    g_source_remove( osd_source_id ); /* remove timer */
-    osd_source_id = 0;
-    aosd_osd_hide();
-    aosd_osd_data_free();
-    osd_status = AOSD_STATUS_HIDDEN;
+    if ( osd_status != AOSD_STATUS_HIDDEN ) /* osd is being displayed */
+    {
+      g_source_remove( osd_source_id ); /* remove timer */
+      osd_source_id = 0;
+      aosd_osd_hide();
+      aosd_osd_data_free();
+      osd_status = AOSD_STATUS_HIDDEN;
+    }
+  }
+  else
+  {
+    g_warning( "OSD shutdown requested, but no osd object is loaded!\n" );
   }
   return;
 }
@@ -431,6 +445,9 @@ aosd_osd_init ( gint transparency_mode )
       osd = ghosd_new();
     else
       osd = ghosd_new_with_argbvisual();
+    
+    if ( osd == NULL )
+      g_warning( "Unable to load osd object; OSD will not work properly!\n" );
   }
   return;
 }

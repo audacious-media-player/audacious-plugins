@@ -384,6 +384,8 @@ ghosd_new_with_argbvisual(void) {
   screen_num = DefaultScreen(dpy);
   root_win = RootWindow(dpy, screen_num);
   visual = find_argb_visual(dpy, screen_num);
+  if (visual == NULL)
+    return NULL;
   colormap = XCreateColormap(dpy, root_win, visual, AllocNone);
 
   win = make_window(dpy, root_win, visual, colormap, use_argbvisual);
