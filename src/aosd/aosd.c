@@ -48,7 +48,7 @@ aosd_init ( void )
   global_config = aosd_cfg_new();
   aosd_cfg_load( global_config );
 
-  aosd_osd_init();
+  aosd_osd_init( global_config->osd->misc.transparency_mode );
 
   aosd_trigger_start( &global_config->osd->trigger );
 

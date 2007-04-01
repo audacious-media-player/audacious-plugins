@@ -3,6 +3,9 @@
  *
  * With further development by Giacomo Lozito <james@develia.org>
  * for the ghosd-based Audacious OSD
+ * - added real transparency with X Composite Extension
+ * - added mouse event handling on OSD window
+ * - added/changed some other stuff
  */
 
 #ifndef __GHOSD_H__
@@ -30,6 +33,7 @@ typedef void (*GhosdRenderFunc)(Ghosd *ghosd, cairo_t *cr, void *user_data);
 typedef void (*GhosdEventButtonCb)(Ghosd *ghosd, GhosdEventButton *event, void *user_data);
 
 Ghosd *ghosd_new(void);
+Ghosd *ghosd_new_with_argbvisual(void);
 void   ghosd_destroy(Ghosd* ghosd);
 
 #define GHOSD_COORD_CENTER INT_MAX

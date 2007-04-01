@@ -160,6 +160,7 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
     gint trigger_id = g_array_index( cfg_osd->trigger.active , gint , i );
     g_array_insert_val( cfg_osd_copy->trigger.active , i , trigger_id );
   }
+  cfg_osd_copy->misc.transparency_mode = cfg_osd->misc.transparency_mode;
   return cfg_osd_copy;
 }
 
@@ -351,6 +352,11 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     g_strfreev( trig_active_strv );
   }
 
+  /* miscellanous */
+  if ( !bmp_cfg_db_get_int( cfgfile , "aosd" ,
+       "transparency_mode" , &(cfg->osd->misc.transparency_mode) ) )
+    cfg->osd->misc.transparency_mode = AOSD_MISC_TRANSPARENCY_FAKE;
+
   bmp_cfg_db_close( cfgfile );
 
   /* the config object has been filled with information */
@@ -459,6 +465,10 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
     g_string_assign( string , "x" );
   bmp_cfg_db_set_string( cfgfile , "aosd" , "trigger_active" , string->str );
   g_string_free( string , TRUE );
+
+  /* miscellaneous */
+  bmp_cfg_db_set_int( cfgfile , "aosd" ,
+    "transparency_mode" , cfg->osd->misc.transparency_mode );
 
   bmp_cfg_db_close( cfgfile );
 

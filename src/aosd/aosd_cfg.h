@@ -27,6 +27,11 @@
 /* in this release only one user font is supported */
 #define AOSD_TEXT_FONTS_NUM 1
 
+/* transparency mode values */
+#define AOSD_MISC_TRANSPARENCY_FAKE 0
+#define AOSD_MISC_TRANSPARENCY_REAL 1
+
+
 enum
 {
   AOSD_POSITION_PLACEMENT_TOPLEFT = 1,
@@ -103,6 +108,14 @@ typedef struct
 aosd_cfg_osd_trigger_t;
 
 
+/* config portion containing osd miscellaneous information */
+typedef struct
+{
+  gint transparency_mode;
+}
+aosd_cfg_osd_misc_t;
+
+
 /* config portion containing all information */
 typedef struct
 {
@@ -111,6 +124,7 @@ typedef struct
   aosd_cfg_osd_text_t text;
   aosd_cfg_osd_decoration_t decoration;
   aosd_cfg_osd_trigger_t trigger;
+  aosd_cfg_osd_misc_t misc;
 }
 aosd_cfg_osd_t;
 

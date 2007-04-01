@@ -784,6 +784,59 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
 
 
 static void
+aosd_cb_configure_misc_transp_commit ( GtkWidget * mis_transp_vbox , aosd_cfg_t * cfg )
+{
+  GList *child_list = gtk_container_get_children( GTK_CONTAINER(mis_transp_vbox) );
+  while (child_list != NULL)
+  {
+    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(child_list->data) ) )
+    {
+      cfg->osd->misc.transparency_mode = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(child_list->data),"val"));
+      break;
+    }
+    child_list = g_list_next(child_list);
+  }
+  return;
+}
+
+
+static GtkWidget *
+aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
+{
+  GtkWidget *mis_vbox;
+  GtkWidget *mis_transp_frame, *mis_transp_vbox;
+  GtkWidget *mis_transp_fake_rbt, *mis_transp_real_rbt;
+
+  mis_vbox = gtk_vbox_new( FALSE , 0 );
+  gtk_container_set_border_width( GTK_CONTAINER(mis_vbox) , 6 );
+
+  mis_transp_vbox = gtk_vbox_new( FALSE , 0 );
+  mis_transp_frame = gtk_frame_new( _("Transparency") );
+  gtk_container_set_border_width( GTK_CONTAINER(mis_transp_vbox) , 6 );
+  gtk_container_add( GTK_CONTAINER(mis_transp_frame) , mis_transp_vbox );
+  gtk_box_pack_start( GTK_BOX(mis_vbox) , mis_transp_frame , FALSE , FALSE , 0 );
+
+  mis_transp_fake_rbt = gtk_radio_button_new_with_label( NULL ,
+                          _("Fake transparency") );
+  mis_transp_real_rbt = gtk_radio_button_new_with_label_from_widget( GTK_RADIO_BUTTON(mis_transp_fake_rbt) ,
+                          _("Real transparency (requires X Composite Ext.)") );
+  g_object_set_data( G_OBJECT(mis_transp_fake_rbt) , "val" ,
+                     GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_FAKE) );
+  g_object_set_data( G_OBJECT(mis_transp_real_rbt) , "val" ,
+                     GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_REAL) );
+  if ( cfg->osd->misc.transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
+  else
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_real_rbt) , TRUE );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_fake_rbt , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_real_rbt , TRUE , TRUE , 0 );
+  aosd_callback_list_add( cb_list , mis_transp_vbox , aosd_cb_configure_misc_transp_commit );
+
+  return mis_vbox;
+}
+
+
+static void
 aosd_cb_configure_test ( gpointer cfg_win )
 {
   gchar *markup_message = NULL;
@@ -796,8 +849,9 @@ aosd_cb_configure_test ( gpointer cfg_win )
 #endif
   markup_message = g_markup_printf_escaped(
     "<span font_desc='%s'>Audacious OSD</span>" , cfg->osd->text.fonts_name[0] );
-  if ( plugin_is_active != TRUE )
-    aosd_osd_init();
+  aosd_osd_shutdown(); /* stop any displayed osd */
+  aosd_osd_cleanup(); /* just in case it's active */
+  aosd_osd_init( cfg->osd->misc.transparency_mode );
   aosd_osd_display( markup_message , cfg->osd , TRUE );
   g_free( markup_message );
   aosd_cfg_delete( cfg );
@@ -811,8 +865,9 @@ aosd_cb_configure_cancel ( gpointer cfg_win )
   GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_free( cb_list );
   aosd_osd_shutdown(); /* stop any displayed osd */
-  if ( plugin_is_active != TRUE )
-    aosd_osd_cleanup();
+  aosd_osd_cleanup(); /* just in case it's active */
+  if ( plugin_is_active == TRUE )
+    aosd_osd_init( global_config->osd->misc.transparency_mode );
   gtk_widget_destroy( GTK_WIDGET(cfg_win) );
   return;
 }
@@ -827,8 +882,7 @@ aosd_cb_configure_ok ( gpointer cfg_win )
   aosd_callback_list_run( cb_list , cfg );
   cfg->set = TRUE;
   aosd_osd_shutdown(); /* stop any displayed osd */
-  if ( plugin_is_active != TRUE )
-    aosd_osd_cleanup();
+  aosd_osd_cleanup(); /* just in case it's active */
 
   if ( global_config != NULL )
   {
@@ -837,6 +891,7 @@ aosd_cb_configure_ok ( gpointer cfg_win )
     aosd_cfg_delete( global_config ); /* delete old global_config */
     global_config = cfg; /* put the new one */
     aosd_cfg_save( cfg ); /* save the new configuration on config file */
+    aosd_osd_init( cfg->osd->misc.transparency_mode ); /* restart osd */
     aosd_trigger_start( &cfg->osd->trigger ); /* restart triggers */
   }
   else
@@ -931,6 +986,11 @@ aosd_ui_configure ( aosd_cfg_t * cfg )
   cfg_trigger_widget = aosd_ui_configure_trigger( cfg , &cb_list );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_trigger_widget , gtk_label_new( _("Trigger") ) );
+
+  /* add MISC page */
+  cfg_trigger_widget = aosd_ui_configure_misc( cfg , &cb_list );
+  gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
+    cfg_trigger_widget , gtk_label_new( _("Misc") ) );
 
   g_object_set_data( G_OBJECT(cfg_win) , "cblist" , cb_list );
 

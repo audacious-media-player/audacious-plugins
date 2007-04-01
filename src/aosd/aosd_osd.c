@@ -409,7 +409,7 @@ aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean c
 void
 aosd_osd_shutdown ( void )
 {
-  if ( osd_status != AOSD_STATUS_HIDDEN ) /* osd is being displayed */
+  if (( osd != NULL ) && ( osd_status != AOSD_STATUS_HIDDEN )) /* osd is being displayed */
   {
     g_source_remove( osd_source_id ); /* remove timer */
     osd_source_id = 0;
@@ -422,12 +422,15 @@ aosd_osd_shutdown ( void )
 
 
 void
-aosd_osd_init ( void )
+aosd_osd_init ( gint transparency_mode )
 {
   if ( osd == NULL )
   {
     /* create Ghosd object */
-    osd = ghosd_new();
+    if ( transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
+      osd = ghosd_new();
+    else
+      osd = ghosd_new_with_argbvisual();
   }
   return;
 }

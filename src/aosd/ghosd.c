@@ -3,6 +3,9 @@
  *
  * With further development by Giacomo Lozito <james@develia.org>
  * for the ghosd-based Audacious OSD
+ * - added real transparency with X Composite Extension
+ * - added mouse event handling on OSD window
+ * - added/changed some other stuff
  */
 
 #include "config.h"
@@ -39,6 +42,39 @@ get_current_workspace(Ghosd *ghosd) {
   return 0;
 }
 
+Visual *
+find_argb_visual (Display *dpy, int scr)
+{
+  XVisualInfo	*xvi;
+  XVisualInfo	template;
+  int nvi, i;
+  XRenderPictFormat *format;
+  Visual *visual;
+
+  template.screen = scr;
+  template.depth = 32;
+  template.class = TrueColor;
+  xvi = XGetVisualInfo (dpy, 
+          VisualScreenMask | VisualDepthMask | VisualClassMask,
+          &template, &nvi);
+  if (xvi == NULL)
+    return NULL;
+
+  visual = NULL;
+  for (i = 0; i < nvi; i++)
+  {
+    format = XRenderFindVisualFormat (dpy, xvi[i].visual);
+    if (format->type == PictTypeDirect && format->direct.alphaMask)
+    {
+      visual = xvi[i].visual;
+      break;
+    }
+  }
+  XFree (xvi);
+  
+  return visual;
+}
+
 static Pixmap
 take_snapshot(Ghosd *ghosd) {
   Pixmap pixmap;
@@ -66,33 +102,48 @@ ghosd_render(Ghosd *ghosd) {
   Pixmap pixmap;
   GC gc;
 
-  /* make our own copy of the background pixmap as the initial surface. */
-  pixmap = XCreatePixmap(ghosd->dpy, ghosd->win, ghosd->width, ghosd->height,
-                         DefaultDepth(ghosd->dpy, DefaultScreen(ghosd->dpy)));
-
-  gc = XCreateGC(ghosd->dpy, pixmap, 0, NULL);
-  if (ghosd->transparent) {
-    XCopyArea(ghosd->dpy, ghosd->background.pixmap, pixmap, gc,
-              0, 0, ghosd->width, ghosd->height, 0, 0);
-  } else {
+  if (ghosd->composite)
+  {
+    pixmap = XCreatePixmap(ghosd->dpy, ghosd->win, ghosd->width, ghosd->height, 32);
+    gc = XCreateGC(ghosd->dpy, pixmap, 0, NULL);
     XFillRectangle(ghosd->dpy, pixmap, gc,
-                  0, 0, ghosd->width, ghosd->height);
+      0, 0, ghosd->width, ghosd->height);
+  }
+  else
+  {
+    pixmap = XCreatePixmap(ghosd->dpy, ghosd->win, ghosd->width, ghosd->height,
+      DefaultDepth(ghosd->dpy, DefaultScreen(ghosd->dpy)));
+    gc = XCreateGC(ghosd->dpy, pixmap, 0, NULL);
+    if (ghosd->transparent) {
+      /* make our own copy of the background pixmap as the initial surface. */
+      XCopyArea(ghosd->dpy, ghosd->background.pixmap, pixmap, gc,
+        0, 0, ghosd->width, ghosd->height, 0, 0);
+    } else {
+      XFillRectangle(ghosd->dpy, pixmap, gc,
+        0, 0, ghosd->width, ghosd->height);
+    }
   }
   XFreeGC(ghosd->dpy, gc);
 
   /* render with cairo. */
   if (ghosd->render.func) {
     /* create cairo surface using the pixmap. */
-    XRenderPictFormat *xrformat = 
-      XRenderFindVisualFormat(ghosd->dpy,
-                              DefaultVisual(ghosd->dpy,
-                                            DefaultScreen(ghosd->dpy)));
-    cairo_surface_t *surf =
-      cairo_xlib_surface_create_with_xrender_format(
-        ghosd->dpy, pixmap,
-        ScreenOfDisplay(ghosd->dpy, DefaultScreen(ghosd->dpy)),
-        xrformat,
-        ghosd->width, ghosd->height);
+    XRenderPictFormat *xrformat;
+    cairo_surface_t *surf;
+    if (ghosd->composite) {
+      xrformat = XRenderFindVisualFormat(ghosd->dpy, ghosd->visual);
+      surf = cairo_xlib_surface_create_with_xrender_format(
+               ghosd->dpy, pixmap,
+               ScreenOfDisplay(ghosd->dpy, ghosd->screen_num),
+               xrformat, ghosd->width, ghosd->height);
+    } else {
+      xrformat = XRenderFindVisualFormat(ghosd->dpy,
+                   DefaultVisual(ghosd->dpy, DefaultScreen(ghosd->dpy)));
+      surf = cairo_xlib_surface_create_with_xrender_format(
+               ghosd->dpy, pixmap,
+               ScreenOfDisplay(ghosd->dpy, DefaultScreen(ghosd->dpy)),
+               xrformat, ghosd->width, ghosd->height);
+    }
 
     /* draw some stuff. */
     cairo_t *cr = cairo_create(surf);
@@ -166,24 +217,33 @@ set_hints(Display *dpy, Window win) {
 }
 
 static Window
-make_window(Display *dpy) {
+make_window(Display *dpy, Window root_win, Visual *visual, Colormap colormap, Bool use_argbvisual) {
   Window win;
   XSetWindowAttributes att;
 
   att.backing_store = WhenMapped;
-  att.background_pixel = None;
+  att.background_pixel = 0x0;
   att.border_pixel = 0;
   att.background_pixmap = None;
   att.save_under = True;
   att.event_mask = ExposureMask | StructureNotifyMask | ButtonPressMask;
   att.override_redirect = True;
 
-  win = XCreateWindow(dpy, DefaultRootWindow(dpy),
-                      -1, -1, 1, 1, 0,
-                      CopyFromParent, InputOutput, CopyFromParent,
-                      CWBackingStore | CWBackPixel | CWBackPixmap |
+  if ( use_argbvisual )
+  {
+    att.colormap = colormap;
+    win = XCreateWindow(dpy, root_win,
+                      -1, -1, 1, 1, 0, 32, InputOutput, visual,
+                      CWBackingStore | CWBackPixel | CWBackPixmap | CWBorderPixel |
+                      CWColormap | CWEventMask | CWSaveUnder | CWOverrideRedirect,
+                      &att);
+  } else {
+    win = XCreateWindow(dpy, root_win,
+                      -1, -1, 1, 1, 0, CopyFromParent, InputOutput, CopyFromParent,
+                      CWBackingStore | CWBackPixel | CWBackPixmap | CWBorderPixel |
                       CWEventMask | CWSaveUnder | CWOverrideRedirect,
                       &att);
+  }
 
   set_hints(dpy, win);
 
@@ -192,7 +252,7 @@ make_window(Display *dpy) {
 
 void
 ghosd_show(Ghosd *ghosd) {
-  if (ghosd->transparent) {
+  if ((!ghosd->composite) && (ghosd->transparent)) {
     if (ghosd->background.set)
     {
       XFreePixmap(ghosd->dpy, ghosd->background.pixmap);
@@ -203,7 +263,6 @@ ghosd_show(Ghosd *ghosd) {
   }
 
   ghosd_render(ghosd);
-
   XMapRaised(ghosd->dpy, ghosd->win);
 }
 
@@ -272,20 +331,72 @@ Ghosd*
 ghosd_new(void) {
   Ghosd *ghosd;
   Display *dpy;
-  Window win;
+  Window win, root_win;
+  int screen_num;
+  Visual *visual;
+  Colormap colormap;
+  Bool use_argbvisual = False;
 
   dpy = XOpenDisplay(NULL);
   if (dpy == NULL) {
     fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
     return NULL;
   }
+  
+  screen_num = DefaultScreen(dpy);
+  root_win = RootWindow(dpy, screen_num);
+  visual = NULL; /* unused */
+  colormap = None; /* unused */
 
-  win = make_window(dpy);
+  win = make_window(dpy, root_win, visual, colormap, use_argbvisual);
   
   ghosd = calloc(1, sizeof(Ghosd));
   ghosd->dpy = dpy;
+  ghosd->visual = visual;
+  ghosd->colormap = colormap;
   ghosd->win = win;
+  ghosd->root_win = root_win;
+  ghosd->screen_num = screen_num;
   ghosd->transparent = 1;
+  ghosd->composite = 0;
+  ghosd->eventbutton.func = NULL;
+  ghosd->background.set = 0;
+
+  return ghosd;
+}
+
+Ghosd *
+ghosd_new_with_argbvisual(void) {
+  Ghosd *ghosd;
+  Display *dpy;
+  Window win, root_win;
+  int screen_num;
+  Visual *visual;
+  Colormap colormap;
+  Bool use_argbvisual = True;
+
+  dpy = XOpenDisplay(NULL);
+  if (dpy == NULL) {
+    fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
+    return NULL;
+  }
+  
+  screen_num = DefaultScreen(dpy);
+  root_win = RootWindow(dpy, screen_num);
+  visual = find_argb_visual(dpy, screen_num);
+  colormap = XCreateColormap(dpy, root_win, visual, AllocNone);
+
+  win = make_window(dpy, root_win, visual, colormap, use_argbvisual);
+  
+  ghosd = calloc(1, sizeof(Ghosd));
+  ghosd->dpy = dpy;
+  ghosd->visual = visual;
+  ghosd->colormap = colormap;
+  ghosd->win = win;
+  ghosd->root_win = root_win;
+  ghosd->screen_num = screen_num;
+  ghosd->transparent = 1;
+  ghosd->composite = 1;
   ghosd->eventbutton.func = NULL;
   ghosd->background.set = 0;
 
@@ -299,7 +410,12 @@ ghosd_destroy(Ghosd* ghosd) {
     XFreePixmap(ghosd->dpy, ghosd->background.pixmap);
     ghosd->background.set = 0;
   }
+  if (ghosd->composite)
+  {
+    XFreeColormap(ghosd->dpy, ghosd->colormap);
+  }
   XDestroyWindow(ghosd->dpy, ghosd->win);
+  XCloseDisplay(ghosd->dpy);
 }
 
 int

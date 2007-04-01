@@ -3,6 +3,9 @@
  *
  * With further development by Giacomo Lozito <james@develia.org>
  * for the ghosd-based Audacious OSD
+ * - added real transparency with X Composite Extension
+ * - added mouse event handling on OSD window
+ * - added/changed some other stuff
  */
 
 #include "config.h"

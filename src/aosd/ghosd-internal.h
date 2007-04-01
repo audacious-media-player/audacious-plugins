@@ -3,6 +3,9 @@
  *
  * With further development by Giacomo Lozito <james@develia.org>
  * for the ghosd-based Audacious OSD
+ * - added real transparency with X Composite Extension
+ * - added mouse event handling on OSD window
+ * - added/changed some other stuff
  */
 
 #include <X11/Xlib.h>
@@ -28,7 +31,13 @@ typedef struct {
 struct _Ghosd {
   Display *dpy;
   Window win;
+  Window root_win;
+  Visual *visual;
+  Colormap colormap;
+  int screen_num;
+  unsigned int depth;
   int transparent;
+  int composite;
   int x, y, width, height;
 
   GhosdBackground background;

@@ -28,7 +28,7 @@
 
 gint aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg );
 void aosd_osd_shutdown ( void );
-void aosd_osd_init ( void ); /* to be called before any OSD usage */
+void aosd_osd_init ( gint transparency_mode ); /* to be called before any OSD usage */
 void aosd_osd_cleanup ( void ); /* to be called when done with OSD usage */
 
 #endif /* !_I_AOSD_OSD_H */
