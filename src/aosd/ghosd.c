@@ -9,11 +9,16 @@
  */
 
 #include "config.h"
+#include "aosd_common.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <cairo/cairo-xlib-xrender.h>
 #include <X11/Xatom.h>
+
+#ifdef HAVE_XCOMPOSITE
+#include <X11/extensions/Xcomposite.h>
+#endif
 
 #include "ghosd.h"
 #include "ghosd-internal.h"
@@ -42,6 +47,7 @@ get_current_workspace(Ghosd *ghosd) {
   return 0;
 }
 
+#ifdef HAVE_XCOMPOSITE
 Visual *
 find_argb_visual (Display *dpy, int scr)
 {
@@ -74,6 +80,7 @@ find_argb_visual (Display *dpy, int scr)
   
   return visual;
 }
+#endif
 
 static Pixmap
 take_snapshot(Ghosd *ghosd) {
@@ -365,6 +372,7 @@ ghosd_new(void) {
   return ghosd;
 }
 
+#ifdef HAVE_XCOMPOSITE
 Ghosd *
 ghosd_new_with_argbvisual(void) {
   Ghosd *ghosd;
@@ -404,6 +412,30 @@ ghosd_new_with_argbvisual(void) {
 
   return ghosd;
 }
+
+int
+ghosd_check_composite(void)
+{
+  Display *dpy;
+  int have_composite = 0;
+  int composite_event_base = 0, composite_error_base = 0;
+  
+  dpy = XOpenDisplay(NULL);
+  if (dpy == NULL) {
+    fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
+    return 0;
+  }
+  
+  if (!XCompositeQueryExtension(dpy,
+        &composite_event_base, &composite_error_base))
+    have_composite = 0;
+  else
+    have_composite = 1;
+
+  XCloseDisplay(dpy);
+  return have_composite;
+}
+#endif
 
 void
 ghosd_destroy(Ghosd* ghosd) {

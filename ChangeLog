@@ -1,3 +1,11 @@
+2007-04-01 18:36:52 +0000  Giacomo Lozito <james@develia.org>
+  revision [1914]
+  aosd: added some more error checking
+  trunk/src/aosd/aosd_osd.c |   65 +++++++++++++++++++++++++++++-----------------
+  trunk/src/aosd/ghosd.c    |    2 +
+  2 files changed, 43 insertions(+), 24 deletions(-)
+
+
 2007-04-01 00:44:23 +0000  Giacomo Lozito <james@develia.org>
   revision [1912]
   - aosd: beta4, ghosd source was rewritten to support argb visual (x composite extension) as an option, this allows to have real transparency in the OSD

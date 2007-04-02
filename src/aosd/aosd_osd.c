@@ -444,7 +444,20 @@ aosd_osd_init ( gint transparency_mode )
     if ( transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
       osd = ghosd_new();
     else
-      osd = ghosd_new_with_argbvisual();
+#ifdef HAVE_XCOMPOSITE
+    {
+      /* check if the composite module is actually loaded */
+      if ( aosd_osd_check_composite() )
+        osd = ghosd_new_with_argbvisual(); /* ok */
+      else
+      {
+        g_warning( "X Composite module not loaded; falling back to fake transparency.\n");
+        osd = ghosd_new(); /* fall back to fake transparency */
+      }
+    }
+#else
+      osd = ghosd_new();
+#endif
     
     if ( osd == NULL )
       g_warning( "Unable to load osd object; OSD will not work properly!\n" );
@@ -464,3 +477,11 @@ aosd_osd_cleanup ( void )
   }
   return;
 }
+
+#ifdef HAVE_XCOMPOSITE
+int
+aosd_osd_check_composite ( void )
+{
+  return ghosd_check_composite();
+}
+#endif

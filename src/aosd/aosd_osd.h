@@ -31,4 +31,8 @@ void aosd_osd_shutdown ( void );
 void aosd_osd_init ( gint transparency_mode ); /* to be called before any OSD usage */
 void aosd_osd_cleanup ( void ); /* to be called when done with OSD usage */
 
+#ifdef HAVE_XCOMPOSITE
+int aosd_osd_check_composite ( void );
+#endif
+
 #endif /* !_I_AOSD_OSD_H */

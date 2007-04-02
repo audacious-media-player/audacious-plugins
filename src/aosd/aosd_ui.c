@@ -23,6 +23,7 @@
 #include "aosd_trigger.h"
 #include "aosd_cfg.h"
 #include "aosd_osd.h"
+#include "aosd_common.h"
 #include <audacious/i18n.h>
 #include <glib.h>
 #include <gdk/gdk.h>
@@ -824,10 +825,26 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
                      GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_FAKE) );
   g_object_set_data( G_OBJECT(mis_transp_real_rbt) , "val" ,
                      GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_REAL) );
-  if ( cfg->osd->misc.transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
+                     
+#ifdef HAVE_XCOMPOSITE
+  /* check if the composite extension is loaded */
+  if ( aosd_osd_check_composite() )
+  {
+    if ( cfg->osd->misc.transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
+    else
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_real_rbt) , TRUE );
+  }
   else
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_real_rbt) , TRUE );
+  {
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
+    gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
+  }
+#else
+  gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
+  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
+#endif
+
   gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_fake_rbt , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_real_rbt , TRUE , TRUE , 0 );
   aosd_callback_list_add( cb_list , mis_transp_vbox , aosd_cb_configure_misc_transp_commit );

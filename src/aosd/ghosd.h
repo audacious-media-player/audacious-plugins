@@ -16,6 +16,8 @@
 #include <limits.h>  /* INT_MAX */
 #include <sys/time.h>  /* timeval */
 
+#include "aosd_common.h"
+
 typedef struct _Ghosd Ghosd;
 
 /* minimal struct to handle button events */
@@ -33,8 +35,11 @@ typedef void (*GhosdRenderFunc)(Ghosd *ghosd, cairo_t *cr, void *user_data);
 typedef void (*GhosdEventButtonCb)(Ghosd *ghosd, GhosdEventButton *event, void *user_data);
 
 Ghosd *ghosd_new(void);
-Ghosd *ghosd_new_with_argbvisual(void);
 void   ghosd_destroy(Ghosd* ghosd);
+#ifdef HAVE_XCOMPOSITE
+Ghosd *ghosd_new_with_argbvisual(void);
+int ghosd_check_composite(void);
+#endif
 
 #define GHOSD_COORD_CENTER INT_MAX
 void ghosd_set_transparent(Ghosd *ghosd, int transparent);

@@ -359,9 +359,15 @@ fi
 dnl *** Audacious OSD plugin (pangocairo-based)
 
 AC_ARG_ENABLE(aosd,
-    [  --disable-aosd          disable X11 Audacious OSD plugin (default=enabled)],
+    [  --disable-aosd          disable Audacious OSD plugin (default=enabled)],
     [enable_aosd=$enableval],
     [enable_aosd="yes"]
+)
+
+AC_ARG_ENABLE(aosd_xcomp,
+    [  --disable-aosd-xcomp    disable Audacious OSD X Composite Support (default=enabled)],
+    [enable_aosd_xcomp=$enableval],
+    [enable_aosd_xcomp="yes"]
 )
 
 if test "x$enable_aosd" = "xyes"; then
@@ -378,6 +384,21 @@ if test "x$enable_aosd" = "xyes"; then
         [have_aosd="no"
         AC_MSG_RESULT([*** pangocairo >= 1.14.7 is required for Audacious OSD plugin ***])]
     )
+    PKG_CHECK_MODULES(XRENDER, xrender,,
+        [have_aosd="no"
+        AC_MSG_RESULT([*** X Render extension is required for Audacious OSD plugin ***])]
+    )
+    if test "x$enable_aosd_xcomp" = "xyes"; then
+        have_aosd_xcomp="yes"
+        PKG_CHECK_MODULES(XCOMPOSITE, xcomposite,
+            [AC_DEFINE([HAVE_XCOMPOSITE],[],[X Composite extension available])],
+            [have_aosd_xcomp="no"
+            AC_MSG_RESULT([*** X Composite extension not found, composite support for Audacious OSD will not be compiled ***])]
+        )
+    else
+        AC_MSG_RESULT([*** X Composite support for Audacious OSD plugin disabled per user request ***])
+        have_aosd_xcomp="no"
+    fi    
 else
     AC_MSG_RESULT([*** Audacious OSD plugin disabled per user request ***])
     have_aosd="no"
@@ -1238,6 +1259,7 @@ echo "  Alarm:                                  yes"
 echo "  Song Change:                            yes"
 echo "  Status Icon:                            $have_statusicon"
 echo "  Audacious OSD:                          $have_aosd"
+echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
