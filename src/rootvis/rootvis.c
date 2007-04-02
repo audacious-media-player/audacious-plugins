@@ -19,6 +19,8 @@ static void rootvis_playback_start(void);
 static void rootvis_playback_stop(void);
 static void rootvis_render_freq(gint16 freq_data[2][256]);
 
+static gboolean plugin_is_initted = FALSE;
+
 // Callback functions
 VisPlugin rootvis_vtable = {
 	0, // Handle, filled in by xmms
@@ -409,14 +411,19 @@ static void rootvis_init(void) {
 		fprintf(stderr, "Thread creation failed: %d\n", rc1);
 		error_exit("Thread creation failed");
 	}
+  plugin_is_initted = TRUE;
 }
 
 static void rootvis_cleanup(void) {
-	print_status("Cleanup... ");
-	threads.control = STOP;
-	pthread_join(threads.worker[0], NULL);
-	if (conf.stereo)	pthread_join(threads.worker[1], NULL);
-	print_status("Clean Exit");
+  if ( plugin_is_initted )
+  {
+	  print_status("Cleanup... ");
+	  threads.control = STOP;
+	  pthread_join(threads.worker[0], NULL);
+	  if (conf.stereo)	pthread_join(threads.worker[1], NULL);
+	  print_status("Clean Exit");
+    plugin_is_initted = FALSE;
+  }
 }
 
 static void rootvis_about(void)

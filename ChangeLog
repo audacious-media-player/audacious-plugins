@@ -1,3 +1,10 @@
+2007-04-02 17:35:45 +0000  Giacomo Lozito <james@develia.org>
+  revision [1918]
+  - aosd: added function to detect if a composite manager is active for a certain screen; this is not used for now, cause the _NET_WM_CM_Sn hint is pretty new; it will certainly prove useful at some time
+  trunk/src/aosd/ghosd.c |   27 ++++++++++++++++++++++++---
+  1 file changed, 24 insertions(+), 3 deletions(-)
+
+
 2007-04-02 11:03:06 +0000  Giacomo Lozito <james@develia.org>
   revision [1916]
   aosd: added compile option in configure for composite support; this way, if support is compiled in, we can safely check if the composite module is loaded
