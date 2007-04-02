@@ -48,8 +48,29 @@ get_current_workspace(Ghosd *ghosd) {
 }
 
 #ifdef HAVE_XCOMPOSITE
-Visual *
-find_argb_visual (Display *dpy, int scr)
+static Bool
+composite_find_manager(Display *dpy, int scr)
+{
+  Atom comp_manager_atom;
+  char comp_manager_hint[32];
+  Window win;
+  
+  snprintf(comp_manager_hint, 32, "_NET_WM_CM_S%d", scr);
+  comp_manager_atom = XInternAtom(dpy, comp_manager_hint, False);
+  win = XGetSelectionOwner(dpy, comp_manager_atom);
+  
+  if (win != None)
+  {
+    return True;
+  }
+  else
+  {
+    return False;
+  }
+}
+
+static Visual *
+composite_find_argb_visual(Display *dpy, int scr)
 {
   XVisualInfo	*xvi;
   XVisualInfo	template;
@@ -391,7 +412,7 @@ ghosd_new_with_argbvisual(void) {
   
   screen_num = DefaultScreen(dpy);
   root_win = RootWindow(dpy, screen_num);
-  visual = find_argb_visual(dpy, screen_num);
+  visual = composite_find_argb_visual(dpy, screen_num);
   if (visual == NULL)
     return NULL;
   colormap = XCreateColormap(dpy, root_win, visual, AllocNone);

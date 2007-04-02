@@ -1,3 +1,17 @@
+2007-04-02 11:03:06 +0000  Giacomo Lozito <james@develia.org>
+  revision [1916]
+  aosd: added compile option in configure for composite support; this way, if support is compiled in, we can safely check if the composite module is loaded
+  trunk/configure.ac        |   24 +++++++++++++++++++++++-
+  trunk/mk/rules.mk.in      |    4 ++++
+  trunk/src/aosd/Makefile   |    4 ++--
+  trunk/src/aosd/aosd_osd.c |   23 ++++++++++++++++++++++-
+  trunk/src/aosd/aosd_osd.h |    4 ++++
+  trunk/src/aosd/aosd_ui.c  |   23 ++++++++++++++++++++---
+  trunk/src/aosd/ghosd.c    |   32 ++++++++++++++++++++++++++++++++
+  trunk/src/aosd/ghosd.h    |    7 ++++++-
+  8 files changed, 113 insertions(+), 8 deletions(-)
+
+
 2007-04-01 18:36:52 +0000  Giacomo Lozito <james@develia.org>
   revision [1914]
   aosd: added some more error checking
