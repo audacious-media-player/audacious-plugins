@@ -1,3 +1,10 @@
+2007-04-02 20:54:59 +0000  Giacomo Lozito <james@develia.org>
+  revision [1920]
+  rootvis: do not call cleanup routines if the plugin was not initted
+  trunk/src/rootvis/rootvis.c |   17 ++++++++++++-----
+  1 file changed, 12 insertions(+), 5 deletions(-)
+
+
 2007-04-02 17:35:45 +0000  Giacomo Lozito <james@develia.org>
   revision [1918]
   - aosd: added function to detect if a composite manager is active for a certain screen; this is not used for now, cause the _NET_WM_CM_Sn hint is pretty new; it will certainly prove useful at some time

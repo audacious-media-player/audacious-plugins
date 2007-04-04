@@ -785,6 +785,38 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
 
 
 static void
+aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpointer status_hbox )
+{
+  GtkWidget *img = g_object_get_data( G_OBJECT(status_hbox) , "img" );
+  GtkWidget *label = g_object_get_data( G_OBJECT(status_hbox) , "label" );
+  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(real_rbt) ) )
+  {
+    if ( aosd_osd_check_composite_mgr() )
+    {
+      gtk_image_set_from_stock( GTK_IMAGE(img) , GTK_STOCK_YES , GTK_ICON_SIZE_MENU );
+      gtk_label_set_text( GTK_LABEL(label) , _("Composite manager detected") );
+      gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , TRUE );
+    }
+    else
+    {
+      gtk_image_set_from_stock( GTK_IMAGE(img) , GTK_STOCK_DIALOG_WARNING , GTK_ICON_SIZE_MENU );
+      gtk_label_set_text( GTK_LABEL(label) ,
+        _("Composite manager not detected;\nunless you know that you have one running, "
+          "please activate a composite manager otherwise the OSD won't work properly") );
+      gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , TRUE );
+    }
+  }
+  else
+  {
+    gtk_image_clear( GTK_IMAGE(img) );
+    gtk_label_set_text( GTK_LABEL(label) , _("Composite manager not required for fake transparency") );
+    gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , FALSE );
+  }
+  return;
+}
+
+
+static void
 aosd_cb_configure_misc_transp_commit ( GtkWidget * mis_transp_vbox , aosd_cfg_t * cfg )
 {
   GList *child_list = gtk_container_get_children( GTK_CONTAINER(mis_transp_vbox) );
@@ -807,6 +839,8 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkWidget *mis_vbox;
   GtkWidget *mis_transp_frame, *mis_transp_vbox;
   GtkWidget *mis_transp_fake_rbt, *mis_transp_real_rbt;
+  GtkWidget *mis_transp_status_frame, *mis_transp_status_hbox;
+  GtkWidget *mis_transp_status_img, *mis_transp_status_label;
 
   mis_vbox = gtk_vbox_new( FALSE , 0 );
   gtk_container_set_border_width( GTK_CONTAINER(mis_vbox) , 6 );
@@ -825,10 +859,31 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
                      GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_FAKE) );
   g_object_set_data( G_OBJECT(mis_transp_real_rbt) , "val" ,
                      GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_REAL) );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_fake_rbt , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_real_rbt , TRUE , TRUE , 0 );
+
+  mis_transp_status_hbox = gtk_hbox_new( FALSE , 4 );
+  mis_transp_status_frame = gtk_frame_new( NULL );
+  gtk_container_set_border_width( GTK_CONTAINER(mis_transp_status_hbox) , 3 );
+  gtk_container_add( GTK_CONTAINER(mis_transp_status_frame) , mis_transp_status_hbox );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_status_frame , TRUE , TRUE , 0 );
+  
+  mis_transp_status_img = gtk_image_new();
+  gtk_misc_set_alignment( GTK_MISC(mis_transp_status_img) , 0.5 , 0 );
+  mis_transp_status_label = gtk_label_new( "" );
+  gtk_misc_set_alignment( GTK_MISC(mis_transp_status_label) , 0 , 0.5 );
+  gtk_label_set_line_wrap( GTK_LABEL(mis_transp_status_label) , TRUE );
+  gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_img , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_label , TRUE , TRUE , 0 );
+  g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "img" , mis_transp_status_img );
+  g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "label" , mis_transp_status_label );
+  
+  g_signal_connect( G_OBJECT(mis_transp_real_rbt) , "toggled" ,
+    G_CALLBACK(aosd_cb_configure_misc_transp_real_clicked) , mis_transp_status_hbox );
                      
 #ifdef HAVE_XCOMPOSITE
   /* check if the composite extension is loaded */
-  if ( aosd_osd_check_composite() )
+  if ( aosd_osd_check_composite_ext() )
   {
     if ( cfg->osd->misc.transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
@@ -839,14 +894,20 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   {
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
     gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
+    gtk_image_set_from_stock( GTK_IMAGE(mis_transp_status_img) ,
+    GTK_STOCK_DIALOG_ERROR , GTK_ICON_SIZE_MENU );
+    gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not loaded") );
+    gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , FALSE );
   }
 #else
   gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
   gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
+  gtk_image_set_from_stock( GTK_IMAGE(mis_transp_status_img) ,
+    GTK_STOCK_DIALOG_ERROR , GTK_ICON_SIZE_MENU );
+  gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not available") );
+  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , FALSE );
 #endif
 
-  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_fake_rbt , TRUE , TRUE , 0 );
-  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_real_rbt , TRUE , TRUE , 0 );
   aosd_callback_list_add( cb_list , mis_transp_vbox , aosd_cb_configure_misc_transp_commit );
 
   return mis_vbox;

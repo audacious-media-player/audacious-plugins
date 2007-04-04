@@ -28,6 +28,7 @@
 #include <pango/pangocairo.h>
 #include <gdk/gdk.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 #include "ghosd.h"
 
@@ -447,7 +448,7 @@ aosd_osd_init ( gint transparency_mode )
 #ifdef HAVE_XCOMPOSITE
     {
       /* check if the composite module is actually loaded */
-      if ( aosd_osd_check_composite() )
+      if ( aosd_osd_check_composite_ext() )
         osd = ghosd_new_with_argbvisual(); /* ok */
       else
       {
@@ -480,8 +481,58 @@ aosd_osd_cleanup ( void )
 
 #ifdef HAVE_XCOMPOSITE
 int
-aosd_osd_check_composite ( void )
+aosd_osd_check_composite_ext ( void )
 {
-  return ghosd_check_composite();
+  return ghosd_check_composite_ext();
+}
+
+int
+aosd_osd_check_composite_mgr ( void )
+{
+  /* ghosd_check_composite_mgr() only checks for composite managers that
+     adhere to the Extended Window Manager hint specification ver.1.4 from
+     freedesktop ( where composite manager are identified with the hint
+     _NET_WM_CM_Sn ); unfortunately, non-standard comp.managers and older
+     ones (xcompmgr) do not use this hint; so let's also check if xcompmgr
+     is running before reporting a likely absence of running comp.managers */
+  int have_comp_mgr = ghosd_check_composite_mgr();
+  
+  if ( have_comp_mgr != 0 )
+  {
+    DEBUGMSG("running composite manager found\n");
+    return have_comp_mgr;
+  }
+  else
+  {
+    /* check if xcompmgr is running; assumes there's a working 'ps'
+       utility in the system; not the most elegant of the checking
+       systems, but this is more than enough for its purpose */
+    gchar *soutput = NULL, *serror = NULL;
+    gint exit_status;
+    
+    if ( g_spawn_command_line_sync( "ps -eo comm" ,
+           &soutput , &serror , &exit_status , NULL ) == TRUE )
+    {
+      if (( soutput != NULL ) && ( strstr( soutput , "\nxcompmgr\n" ) != NULL ))
+      {
+        DEBUGMSG("running xcompmgr found\n");
+        have_comp_mgr = 1;
+      }
+      else
+      {
+        DEBUGMSG("running xcompmgr not found\n");
+        have_comp_mgr = 0;
+      }
+    }
+    else
+    {
+      g_warning("command 'ps -eo comm' failed, unable to check if xcompgr is running\n");
+      have_comp_mgr = 0;
+    }
+    
+    g_free( soutput );
+    g_free( serror );
+    return have_comp_mgr;
+  }
 }
 #endif

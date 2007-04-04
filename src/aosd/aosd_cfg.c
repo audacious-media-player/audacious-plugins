@@ -203,7 +203,7 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
     aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
     g_print("  color %i: %i,%i,%i (alpha %i)\n", i, color.red, color.green, color.blue, color.alpha);
   }
-  g_print("\TRIGGER\n");
+  g_print("\nTRIGGER\n");
   for ( i = 0 ; i < cfg->osd->trigger.active->len ; i++ )
     g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , gint , i ) );
   if ( string->len > 1 )

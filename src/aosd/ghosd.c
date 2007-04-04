@@ -435,10 +435,10 @@ ghosd_new_with_argbvisual(void) {
 }
 
 int
-ghosd_check_composite(void)
+ghosd_check_composite_ext(void)
 {
   Display *dpy;
-  int have_composite = 0;
+  int have_composite_x = 0;
   int composite_event_base = 0, composite_error_base = 0;
   
   dpy = XOpenDisplay(NULL);
@@ -449,12 +449,33 @@ ghosd_check_composite(void)
   
   if (!XCompositeQueryExtension(dpy,
         &composite_event_base, &composite_error_base))
-    have_composite = 0;
+    have_composite_x = 0;
   else
-    have_composite = 1;
+    have_composite_x = 1;
 
   XCloseDisplay(dpy);
-  return have_composite;
+  return have_composite_x;
+}
+
+int
+ghosd_check_composite_mgr(void)
+{
+  Display *dpy;
+  int have_composite_m = 0;
+  
+  dpy = XOpenDisplay(NULL);
+  if (dpy == NULL) {
+    fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
+    return 0;
+  }
+  
+  if (!composite_find_manager(dpy, DefaultScreen(dpy)))
+    have_composite_m = 0;
+  else
+    have_composite_m = 1;
+  
+  XCloseDisplay(dpy);
+  return have_composite_m;
 }
 #endif
 
