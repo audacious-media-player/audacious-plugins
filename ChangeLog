@@ -1,3 +1,15 @@
+2007-04-04 17:52:15 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1924]
+  - patches from upstream TTA author. see http://boards.nenolod.net/viewtopic.php?t=375
+  
+  trunk/src/tta/aud-tta.c   |    7 +++----
+  trunk/src/tta/crc32.h     |    4 ++--
+  trunk/src/tta/ttadec.c    |    8 ++++----
+  trunk/src/tta/ttadec.h    |    8 +-------
+  trunk/src/tta/ttaid3tag.h |    3 +--
+  5 files changed, 11 insertions(+), 19 deletions(-)
+
+
 2007-04-04 14:48:53 +0000  Giacomo Lozito <james@develia.org>
   revision [1922]
   - aosd: added support to detect whether a composite manager is running (either standard with _NET_WM_CM_Sn or xcompmgr)

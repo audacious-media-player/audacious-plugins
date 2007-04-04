@@ -784,6 +784,7 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
 }
 
 
+#ifdef HAVE_XCOMPOSITE
 static void
 aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpointer status_hbox )
 {
@@ -808,12 +809,13 @@ aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpoint
   }
   else
   {
-    gtk_image_clear( GTK_IMAGE(img) );
+    gtk_image_set_from_stock( GTK_IMAGE(img) , GTK_STOCK_DIALOG_INFO , GTK_ICON_SIZE_MENU );
     gtk_label_set_text( GTK_LABEL(label) , _("Composite manager not required for fake transparency") );
     gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , FALSE );
   }
   return;
 }
+#endif
 
 
 static void
@@ -877,11 +879,11 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_label , TRUE , TRUE , 0 );
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "img" , mis_transp_status_img );
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "label" , mis_transp_status_label );
-  
-  g_signal_connect( G_OBJECT(mis_transp_real_rbt) , "toggled" ,
-    G_CALLBACK(aosd_cb_configure_misc_transp_real_clicked) , mis_transp_status_hbox );
                      
 #ifdef HAVE_XCOMPOSITE
+  g_signal_connect( G_OBJECT(mis_transp_real_rbt) , "toggled" ,
+    G_CALLBACK(aosd_cb_configure_misc_transp_real_clicked) , mis_transp_status_hbox );
+  
   /* check if the composite extension is loaded */
   if ( aosd_osd_check_composite_ext() )
   {
