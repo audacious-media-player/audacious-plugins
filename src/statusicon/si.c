@@ -84,17 +84,23 @@ si_about ( void )
 void
 si_audacious_toggle_visibility ( void )
 {
+  static gboolean mw_prevstatus = FALSE;
   static gboolean eq_prevstatus = FALSE;
   static gboolean pl_prevstatus = FALSE;
 
-  /* use the main window visibility status to toggle show/hide */
-  if ( xmms_remote_is_main_win( si_gp.xmms_session ) == TRUE )
+  /* use the window visibility status to toggle show/hide
+     (if at least one is visible, hide) */
+  if (( xmms_remote_is_main_win( si_gp.xmms_session ) == TRUE ) ||
+      ( xmms_remote_is_eq_win( si_gp.xmms_session ) == TRUE ) ||
+      ( xmms_remote_is_pl_win( si_gp.xmms_session ) == TRUE ))
   {
-    /* remember the visibility status of equalizer and playlist windows */
+    /* remember the visibility status of the player windows */
+    mw_prevstatus = xmms_remote_is_main_win( si_gp.xmms_session );
     eq_prevstatus = xmms_remote_is_eq_win( si_gp.xmms_session );
     pl_prevstatus = xmms_remote_is_pl_win( si_gp.xmms_session );
-    /* now hide all of the player windows */
-    xmms_remote_main_win_toggle( si_gp.xmms_session , FALSE );
+    /* now hide all of them */
+    if ( mw_prevstatus == TRUE )
+      xmms_remote_main_win_toggle( si_gp.xmms_session , FALSE );
     if ( eq_prevstatus == TRUE )
       xmms_remote_eq_win_toggle( si_gp.xmms_session , FALSE );
     if ( pl_prevstatus == TRUE )
@@ -102,9 +108,9 @@ si_audacious_toggle_visibility ( void )
   }
   else
   {
-    /* show the main player window again */
-    xmms_remote_main_win_toggle( si_gp.xmms_session , TRUE );
-    /* show the equalizer and playlist window if they were visible before */
+    /* show the windows that were visible before */
+    if ( mw_prevstatus == TRUE )
+      xmms_remote_main_win_toggle( si_gp.xmms_session , TRUE );
     if ( eq_prevstatus == TRUE )
       xmms_remote_eq_win_toggle( si_gp.xmms_session , TRUE );
     if ( pl_prevstatus == TRUE )
