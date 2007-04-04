@@ -46,12 +46,6 @@
 #define WAVE_FORMAT_PCM	1
 #endif
 
-#ifdef _WIN32
-	typedef unsigned __int64 uint64;
-#else
-	typedef unsigned long long uint64;
-#endif
-
 const unsigned int bit_mask[] = {
     0x00000000, 0x00000001, 0x00000003, 0x00000007,
     0x0000000f, 0x0000001f, 0x0000003f, 0x0000007f,
@@ -97,7 +91,7 @@ typedef unsigned char byte;
 	if (bsize > 2) *out++ = (byte)(*x >> 16); }
 #endif
 
-#define PREDICTOR1(x, k)	((long)((((uint64)x << k) - x) >> k))
+#define PREDICTOR1(x, k)	((int)((((__uint64_t)x << k) - x) >> k))
 #define DEC(x)			(((x)&1)?(++(x)>>1):(-(x)>>1))
 
 typedef struct {

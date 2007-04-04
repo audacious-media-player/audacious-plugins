@@ -58,7 +58,6 @@
 #define  PLUGIN_VERSION "1.2"
 #define  PROJECT_URL "<http://www.true-audio.com>"
 
-#pragma pack (1)
 #include "ttalib.h"
 
 #define OUTPUT_ERROR (MEMORY_ERROR+1)
@@ -127,7 +126,7 @@ get_iplugin_info (void)
 static GThread *decode_thread;
 static char sample_buffer[PCM_BUFFER_LENGTH * MAX_BSIZE * MAX_NCH];
 static tta_info info;		// currently playing file info
-static long seek_position = -1;
+static int seek_position = -1;
 static int  playing = FALSE;
 static int  read_samples = -1;
 
@@ -504,7 +503,7 @@ play_file (InputPlayback *playback)
 {
     char *filename = playback->filename;
     char *title;
-    long datasize, origsize, bitrate;
+    int datasize, origsize, bitrate;
 
     g_mutex_lock(play_mutex);
     playing = FALSE;
@@ -559,7 +558,7 @@ play_file (InputPlayback *playback)
     datasize = file_size(filename) - info.DATAPOS;
     origsize = info.DATALENGTH * info.BSIZE * info.NCH;
 
-    bitrate  = (long) ((float) datasize / origsize *
+    bitrate  = (int) ((float) datasize / origsize *
                        (info.SAMPLERATE * info.NCH * info.BPS));
 
     tta_ip.set_info (title, 1000 * info.LENGTH, bitrate, info.SAMPLERATE, info.NCH);

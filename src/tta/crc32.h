@@ -31,7 +31,7 @@
 #ifndef CRC32_H
 #define CRC32_H
 
-const unsigned int crc32_table[256] = {
+const __uint32_t crc32_table[256] = {
 	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba,
 	0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
 	0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988,
@@ -101,7 +101,7 @@ const unsigned int crc32_table[256] = {
 #define UPDATE_CRC32(x, crc) crc = \
 	(((crc>>8) & 0x00FFFFFF) ^ crc32_table[(crc^x) & 0xFF])
 
-static unsigned int 
+static __uint32_t
 crc32 (unsigned char *buffer, unsigned int len) {
 	unsigned int	i;
 	unsigned int	crc = 0xFFFFFFFF;

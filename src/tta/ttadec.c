@@ -32,8 +32,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "ttalib.h"
 #include "ttadec.h"
+#include "ttalib.h"
 #include "crc32.h"
 #include "filters.h"
 
@@ -58,9 +58,9 @@ static int maxvalue;	// output data max value
 static unsigned int *seek_table; // the playing position table
 static unsigned int st_state; //seek table status
 
-static unsigned int frame_crc32;
-static unsigned int bit_count;
-static unsigned int bit_cache;
+static __uint32_t frame_crc32;
+static __uint32_t bit_count;
+static __uint32_t bit_cache;
 static unsigned char *bitpos;
 static unsigned int bitrate;
 

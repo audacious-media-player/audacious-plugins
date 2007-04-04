@@ -92,7 +92,6 @@ typedef struct {
 	unsigned char  track[MAX_TRACK];
 	unsigned char  genre[MAX_GENRE];
 	unsigned char  id3has;
-	unsigned long  size;
+	__uint32_t     size;
 } id3v2_data;
-
 

@@ -1,3 +1,17 @@
+2007-04-04 14:48:53 +0000  Giacomo Lozito <james@develia.org>
+  revision [1922]
+  - aosd: added support to detect whether a composite manager is running (either standard with _NET_WM_CM_Sn or xcompmgr)
+  trunk/src/aosd/aosd.c        |    1 
+  trunk/src/aosd/aosd_cfg.c    |    2 -
+  trunk/src/aosd/aosd_common.h |    2 -
+  trunk/src/aosd/aosd_osd.c    |   57 ++++++++++++++++++++++++++++++++++--
+  trunk/src/aosd/aosd_osd.h    |    3 +
+  trunk/src/aosd/aosd_ui.c     |   67 +++++++++++++++++++++++++++++++++++++++++--
+  trunk/src/aosd/ghosd.c       |   31 ++++++++++++++++---
+  trunk/src/aosd/ghosd.h       |    3 +
+  8 files changed, 151 insertions(+), 15 deletions(-)
+
+
 2007-04-02 20:54:59 +0000  Giacomo Lozito <james@develia.org>
   revision [1920]
   rootvis: do not call cleanup routines if the plugin was not initted
