@@ -28,6 +28,8 @@
 
 static gboolean plugin_active = FALSE;
 
+extern si_cfg_t si_cfg;
+
 
 /* ***************** */
 /* plug-in functions */
@@ -57,6 +59,7 @@ si_cleanup ( void )
   {
     plugin_active = FALSE;
     si_ui_statusicon_enable( FALSE );
+    si_cfg_save(); /* required to save windows visibility status */
   }
   return;
 }
@@ -84,10 +87,6 @@ si_about ( void )
 void
 si_audacious_toggle_visibility ( void )
 {
-  static gboolean mw_prevstatus = FALSE;
-  static gboolean eq_prevstatus = FALSE;
-  static gboolean pl_prevstatus = FALSE;
-
   /* use the window visibility status to toggle show/hide
      (if at least one is visible, hide) */
   if (( xmms_remote_is_main_win( si_gp.xmms_session ) == TRUE ) ||
@@ -95,25 +94,25 @@ si_audacious_toggle_visibility ( void )
       ( xmms_remote_is_pl_win( si_gp.xmms_session ) == TRUE ))
   {
     /* remember the visibility status of the player windows */
-    mw_prevstatus = xmms_remote_is_main_win( si_gp.xmms_session );
-    eq_prevstatus = xmms_remote_is_eq_win( si_gp.xmms_session );
-    pl_prevstatus = xmms_remote_is_pl_win( si_gp.xmms_session );
+    si_cfg.mw_visib_prevstatus = xmms_remote_is_main_win( si_gp.xmms_session );
+    si_cfg.ew_visib_prevstatus = xmms_remote_is_eq_win( si_gp.xmms_session );
+    si_cfg.pw_visib_prevstatus = xmms_remote_is_pl_win( si_gp.xmms_session );
     /* now hide all of them */
-    if ( mw_prevstatus == TRUE )
+    if ( si_cfg.mw_visib_prevstatus == TRUE )
       xmms_remote_main_win_toggle( si_gp.xmms_session , FALSE );
-    if ( eq_prevstatus == TRUE )
+    if ( si_cfg.ew_visib_prevstatus == TRUE )
       xmms_remote_eq_win_toggle( si_gp.xmms_session , FALSE );
-    if ( pl_prevstatus == TRUE )
+    if ( si_cfg.pw_visib_prevstatus == TRUE )
       xmms_remote_pl_win_toggle( si_gp.xmms_session , FALSE );
   }
   else
   {
     /* show the windows that were visible before */
-    if ( mw_prevstatus == TRUE )
+    if ( si_cfg.mw_visib_prevstatus == TRUE )
       xmms_remote_main_win_toggle( si_gp.xmms_session , TRUE );
-    if ( eq_prevstatus == TRUE )
+    if ( si_cfg.ew_visib_prevstatus == TRUE )
       xmms_remote_eq_win_toggle( si_gp.xmms_session , TRUE );
-    if ( pl_prevstatus == TRUE )
+    if ( si_cfg.pw_visib_prevstatus == TRUE )
       xmms_remote_pl_win_toggle( si_gp.xmms_session , TRUE );
   }
 }

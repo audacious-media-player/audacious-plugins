@@ -1,3 +1,11 @@
+2007-04-04 18:49:12 +0000  Giacomo Lozito <james@develia.org>
+  revision [1946]
+  - statusicon: smarter show/hide on statusicon click (plugin will now correctly handle the situation where the player window is always hidden and the playlist window should be shown/hidden)
+  trunk/src/statusicon/si.c        |   22 ++++++++++++++--------
+  trunk/src/statusicon/si_common.h |    2 +-
+  2 files changed, 15 insertions(+), 9 deletions(-)
+
+
 2007-04-04 17:53:50 +0000  Giacomo Lozito <james@develia.org>
   revision [1926]
   - aosd: small changes

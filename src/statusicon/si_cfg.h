@@ -31,6 +31,9 @@
 typedef struct
 {
   gint rclick_menu;
+  gboolean mw_visib_prevstatus;
+  gboolean pw_visib_prevstatus;
+  gboolean ew_visib_prevstatus;
 }
 si_cfg_t;
 

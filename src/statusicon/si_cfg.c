@@ -33,6 +33,16 @@ si_cfg_load ( void )
   if ( !bmp_cfg_db_get_int( cfgfile , "statusicon" ,
        "rclick_menu" , &(si_cfg.rclick_menu) ) )
     si_cfg.rclick_menu = SI_CFG_RCLICK_MENU_AUD;
+    
+  if ( !bmp_cfg_db_get_bool( cfgfile , "statusicon" ,
+       "mw_visib_prevstatus" , &(si_cfg.mw_visib_prevstatus) ) )
+    si_cfg.mw_visib_prevstatus = FALSE;
+  if ( !bmp_cfg_db_get_bool( cfgfile , "statusicon" ,
+       "pw_visib_prevstatus" , &(si_cfg.pw_visib_prevstatus) ) )
+    si_cfg.pw_visib_prevstatus = FALSE;
+  if ( !bmp_cfg_db_get_bool( cfgfile , "statusicon" ,
+       "ew_visib_prevstatus" , &(si_cfg.ew_visib_prevstatus) ) )
+    si_cfg.ew_visib_prevstatus = FALSE;
 
   bmp_cfg_db_close( cfgfile );
   return;
@@ -46,6 +56,13 @@ si_cfg_save ( void )
 
   bmp_cfg_db_set_int( cfgfile , "statusicon" ,
     "rclick_menu" , si_cfg.rclick_menu );
+  
+  bmp_cfg_db_set_bool( cfgfile , "statusicon" ,
+    "mw_visib_prevstatus" , si_cfg.mw_visib_prevstatus );
+  bmp_cfg_db_set_bool( cfgfile , "statusicon" ,
+    "pw_visib_prevstatus" , si_cfg.pw_visib_prevstatus );
+  bmp_cfg_db_set_bool( cfgfile , "statusicon" ,
+    "ew_visib_prevstatus" , si_cfg.ew_visib_prevstatus );
 
   bmp_cfg_db_close( cfgfile );
   return;
