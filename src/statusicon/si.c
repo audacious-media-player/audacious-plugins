@@ -127,6 +127,26 @@ si_audacious_volume_change ( gint value )
 }
 
 void
+si_audacious_playback_skip ( gint numsong )
+{
+  gpointer ctrl_code_gp = NULL;
+  gint i = 0;
+  
+  if ( numsong >= 0 )
+  {
+    ctrl_code_gp = GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_NEXT);
+  }
+  else
+  { 
+    ctrl_code_gp = GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_PREV);
+    numsong *= -1;
+  }
+  
+  for ( i = 0 ; i < numsong ; i++ )
+    si_audacious_playback_ctrl( ctrl_code_gp );
+}
+
+void
 si_audacious_playback_ctrl ( gpointer ctrl_code_gp )
 {
   gint ctrl_code = GPOINTER_TO_INT(ctrl_code_gp);

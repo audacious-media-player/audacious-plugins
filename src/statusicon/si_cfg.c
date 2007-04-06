@@ -33,6 +33,10 @@ si_cfg_load ( void )
   if ( !bmp_cfg_db_get_int( cfgfile , "statusicon" ,
        "rclick_menu" , &(si_cfg.rclick_menu) ) )
     si_cfg.rclick_menu = SI_CFG_RCLICK_MENU_AUD;
+
+  if ( !bmp_cfg_db_get_int( cfgfile , "statusicon" ,
+       "scroll_action" , &(si_cfg.scroll_action) ) )
+    si_cfg.scroll_action = SI_CFG_SCROLL_ACTION_VOLUME;
     
   if ( !bmp_cfg_db_get_bool( cfgfile , "statusicon" ,
        "mw_visib_prevstatus" , &(si_cfg.mw_visib_prevstatus) ) )
@@ -56,6 +60,9 @@ si_cfg_save ( void )
 
   bmp_cfg_db_set_int( cfgfile , "statusicon" ,
     "rclick_menu" , si_cfg.rclick_menu );
+  
+  bmp_cfg_db_set_int( cfgfile , "statusicon" ,
+    "scroll_action" , si_cfg.scroll_action );
   
   bmp_cfg_db_set_bool( cfgfile , "statusicon" ,
     "mw_visib_prevstatus" , si_cfg.mw_visib_prevstatus );

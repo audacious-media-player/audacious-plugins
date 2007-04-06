@@ -102,11 +102,32 @@ si_ui_statusicon_cb_btscroll ( GtkWidget * evbox , GdkEventScroll * event )
   switch ( event->direction )
   {
     case GDK_SCROLL_UP:
-      si_audacious_volume_change( 5 );
+    {
+      switch ( si_cfg.scroll_action )
+      {
+        case SI_CFG_SCROLL_ACTION_VOLUME:
+          si_audacious_volume_change( 5 );
+          break;
+        case SI_CFG_SCROLL_ACTION_SKIP:
+          si_audacious_playback_skip( 1 );
+          break;
+      }
       break;
+    }
+    
     case GDK_SCROLL_DOWN:
-      si_audacious_volume_change( -5 );
+    {
+      switch ( si_cfg.scroll_action )
+      {
+        case SI_CFG_SCROLL_ACTION_VOLUME:
+          si_audacious_volume_change( -5 );
+          break;
+        case SI_CFG_SCROLL_ACTION_SKIP:
+          si_audacious_playback_skip( -1 );
+          break;
+      }
       break;
+    }
   }
 
   return FALSE;
@@ -538,16 +559,28 @@ si_ui_about_show ( void )
 void
 si_ui_prefs_cb_commit ( gpointer prefs_win )
 {
-  GSList *rcm_grp = g_object_get_data( G_OBJECT(prefs_win) , "rcm_grp" );
-  while ( rcm_grp != NULL )
+  GSList *list = g_object_get_data( G_OBJECT(prefs_win) , "rcm_grp" );
+  while ( list != NULL )
   {
-    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(rcm_grp->data) ) == TRUE )
+    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(list->data) ) == TRUE )
     {
-      si_cfg.rclick_menu = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(rcm_grp->data),"val"));
+      si_cfg.rclick_menu = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(list->data),"val"));
       break;
     }
-    rcm_grp = g_slist_next(rcm_grp);
+    list = g_slist_next(list);
   }
+  
+  list = g_object_get_data( G_OBJECT(prefs_win) , "msa_grp" );
+  while ( list != NULL )
+  {
+    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(list->data) ) == TRUE )
+    {
+      si_cfg.scroll_action = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(list->data),"val"));
+      break;
+    }
+    list = g_slist_next(list);
+  }
+  
   si_cfg_save();
   gtk_widget_destroy( GTK_WIDGET(prefs_win) );
 }
@@ -560,6 +593,8 @@ si_ui_prefs_show ( void )
   GtkWidget *prefs_vbox;
   GtkWidget *prefs_rclick_frame, *prefs_rclick_vbox;
   GtkWidget *prefs_rclick_audmenu_rbt, *prefs_rclick_smallmenu_rbt;
+  GtkWidget *prefs_scroll_frame, *prefs_scroll_vbox;
+  GtkWidget *prefs_scroll_vol_rbt, *prefs_scroll_skip_rbt;
   GtkWidget *prefs_bbar_bbox;
   GtkWidget *prefs_bbar_bt_ok, *prefs_bbar_bt_cancel;
   GdkGeometry prefs_win_hints;
@@ -606,6 +641,29 @@ si_ui_prefs_show ( void )
   gtk_box_pack_start( GTK_BOX(prefs_rclick_vbox) , prefs_rclick_audmenu_rbt , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(prefs_rclick_vbox) , prefs_rclick_smallmenu_rbt , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(prefs_vbox) , prefs_rclick_frame , TRUE , TRUE , 0 );
+  
+  prefs_scroll_frame = gtk_frame_new( _("Mouse Scroll Action") );
+  prefs_scroll_vbox = gtk_vbox_new( TRUE , 0 );
+  gtk_container_set_border_width( GTK_CONTAINER(prefs_scroll_vbox) , 6 );
+  gtk_container_add( GTK_CONTAINER(prefs_scroll_frame) , prefs_scroll_vbox );
+  prefs_scroll_vol_rbt = gtk_radio_button_new_with_label( NULL ,
+                               _("Change volume") );
+  g_object_set_data( G_OBJECT(prefs_scroll_vol_rbt) , "val" ,
+                     GINT_TO_POINTER(SI_CFG_SCROLL_ACTION_VOLUME) );
+  prefs_scroll_skip_rbt = gtk_radio_button_new_with_label_from_widget(
+                                 GTK_RADIO_BUTTON(prefs_scroll_vol_rbt) ,
+                                 _("Change playing song") );
+  g_object_set_data( G_OBJECT(prefs_scroll_skip_rbt) , "val" ,
+                     GINT_TO_POINTER(SI_CFG_SCROLL_ACTION_SKIP) );
+  g_object_set_data( G_OBJECT(prefs_win) , "msa_grp" ,
+                     gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_scroll_skip_rbt)) );
+  if ( si_cfg.scroll_action == SI_CFG_SCROLL_ACTION_VOLUME )
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(prefs_scroll_vol_rbt) , TRUE );
+  else
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(prefs_scroll_skip_rbt) , TRUE );
+  gtk_box_pack_start( GTK_BOX(prefs_scroll_vbox) , prefs_scroll_vol_rbt , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(prefs_scroll_vbox) , prefs_scroll_skip_rbt , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(prefs_vbox) , prefs_scroll_frame , TRUE , TRUE , 0 );
 
   /* horizontal separator and buttons */
   gtk_box_pack_start( GTK_BOX(prefs_vbox) , gtk_hseparator_new() , FALSE , FALSE , 4 );

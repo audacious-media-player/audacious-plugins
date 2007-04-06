@@ -28,9 +28,13 @@
 #define SI_CFG_RCLICK_MENU_AUD	0
 #define SI_CFG_RCLICK_MENU_SMALL	1
 
+#define SI_CFG_SCROLL_ACTION_VOLUME 0
+#define SI_CFG_SCROLL_ACTION_SKIP 1
+
 typedef struct
 {
   gint rclick_menu;
+  gint scroll_action;
   gboolean mw_visib_prevstatus;
   gboolean pw_visib_prevstatus;
   gboolean ew_visib_prevstatus;
