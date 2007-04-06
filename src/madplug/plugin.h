@@ -122,6 +122,7 @@ struct audmad_config_t
     gboolean title_override;
     gchar *id3_format;
     gboolean show_avg_vbr_bitrate;
+    gboolean force_reopen_audio;
 };
 
 // global variables

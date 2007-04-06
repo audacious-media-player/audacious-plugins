@@ -596,7 +596,7 @@ gpointer decode_loop(gpointer arg)
                 || info->channels !=
                 (guint) MAD_NCHANNELS(&frame.header)) {
 #ifdef DEBUG
-                g_message("re-opening audio due to change in audio type");
+                g_message("change in audio type detected");
                 g_message("old: frequency = %d, channels = %d", info->freq,
                           info->channels);
                 g_message("new: frequency = %d, channels = %d",
@@ -605,22 +605,28 @@ gpointer decode_loop(gpointer arg)
 #endif                          /* DEBUG */
                 info->freq = frame.header.samplerate;
                 info->channels = MAD_NCHANNELS(&frame.header);
-                info->playback->output->close_audio();
 
-                if(check_audio_param(info) == FALSE)
-                    return NULL;
-
-                if (!info->playback->output->open_audio(info->fmt, info->freq,
-                                                   info->channels)) {
-                    g_mutex_lock(pb_mutex);
-                    info->playback->error = TRUE;
-                    info->playback->eof = 1;
-                    g_mutex_unlock(pb_mutex);
-                    g_message("failed to re-open audio output: %s",
+                if(audmad_config.force_reopen_audio && check_audio_param(info)) {
+                    gint current_time = info->playback->output->output_time();
+#ifdef DEBUG
+                    g_message("re-opening audio due to change in audio type");
+#endif
+                    info->playback->output->close_audio();
+                    if (!info->playback->output->open_audio(info->fmt, info->freq,
+                                                            info->channels)) {
+                        g_mutex_lock(pb_mutex);
+                        info->playback->error = TRUE;
+                        info->playback->eof = 1;
+                        g_mutex_unlock(pb_mutex);
+                        g_message("failed to re-open audio output: %s",
                                   info->playback->output->description);
-                    return NULL;
+                        return NULL;
+                    }
+                    // restore time and advance 0.5sec
+                    info->seek = current_time + 500;
                 }
             }
+
             if (!info->playback->playing)
                 break;
             mad_synth_frame(&synth, &frame);

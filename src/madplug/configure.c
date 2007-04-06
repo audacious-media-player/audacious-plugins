@@ -27,7 +27,7 @@
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *vbox;
-static GtkWidget *fast_playback, *use_xing, *dither, *sjis, *show_avg;
+static GtkWidget *fast_playback, *use_xing, *dither, *sjis, *show_avg, *reopen;
 static GtkWidget *RG_enable, *RG_track_mode, *RG_default, *pregain,
     *hard_limit;
 static GtkWidget *title_id3_box, *title_tag_desc;
@@ -38,7 +38,7 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
     ConfigDb *db;
     const gchar *text = NULL;
 #ifdef DEBUG
-    g_message("saving\n");
+    g_message("saving");
 #endif
 
     audmad_config.fast_play_time_calc =
@@ -51,6 +51,8 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(sjis));
     audmad_config.show_avg_vbr_bitrate =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(show_avg));
+    audmad_config.force_reopen_audio = 
+        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(reopen));
 
     audmad_config.replaygain.enable =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(RG_enable));
@@ -100,6 +102,8 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
 
     bmp_cfg_db_set_bool(db, "MAD", "show_avg_vbr_bitrate",
                             audmad_config.show_avg_vbr_bitrate);
+    bmp_cfg_db_set_bool(db, "MAD", "force_reopen_audio",
+                            audmad_config.force_reopen_audio);
 
     bmp_cfg_db_close(db);
     gtk_widget_destroy(configure_win);
@@ -178,6 +182,11 @@ void audmad_configure(void)
     gtk_box_pack_start(GTK_BOX(vbox2), show_avg, TRUE, TRUE, 0);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(show_avg),
                                  audmad_config.show_avg_vbr_bitrate);
+
+    reopen = gtk_check_button_new_with_label(_("Force reopen audio when audio type changed"));
+    gtk_box_pack_start(GTK_BOX(vbox2), reopen, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(reopen),
+                                 audmad_config.force_reopen_audio);
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("General")));
 

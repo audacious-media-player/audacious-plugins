@@ -1,3 +1,12 @@
+2007-04-05 17:47:18 +0000  Giacomo Lozito <james@develia.org>
+  revision [1958]
+  - statusicon: memorize player windows visibility status between sessions
+  trunk/src/statusicon/si.c     |   25 ++++++++++++-------------
+  trunk/src/statusicon/si_cfg.c |   17 +++++++++++++++++
+  trunk/src/statusicon/si_cfg.h |    3 +++
+  3 files changed, 32 insertions(+), 13 deletions(-)
+
+
 2007-04-04 18:49:12 +0000  Giacomo Lozito <james@develia.org>
   revision [1946]
   - statusicon: smarter show/hide on statusicon click (plugin will now correctly handle the situation where the player window is always hidden and the playlist window should be shown/hidden)
