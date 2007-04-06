@@ -1,3 +1,10 @@
+2007-04-06 19:34:10 +0000  Giacomo Lozito <james@develia.org>
+  revision [1966]
+  - statusicon: invert skip direction in mouse wheel; much better this way
+  trunk/src/statusicon/si_ui.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-04-06 18:47:07 +0000  Giacomo Lozito <james@develia.org>
   revision [1964]
   - statusicon: add an option to use mouse wheel to change playing song instead of volume

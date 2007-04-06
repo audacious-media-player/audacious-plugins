@@ -608,7 +608,7 @@ si_ui_prefs_show ( void )
   prefs_win = gtk_window_new( GTK_WINDOW_TOPLEVEL );
   gtk_window_set_type_hint( GTK_WINDOW(prefs_win), GDK_WINDOW_TYPE_HINT_DIALOG );
   gtk_window_set_position( GTK_WINDOW(prefs_win), GTK_WIN_POS_CENTER );
-  gtk_window_set_title( GTK_WINDOW(prefs_win), _("Audacious OSD - Preferences") );
+  gtk_window_set_title( GTK_WINDOW(prefs_win), _("Status Icon Plugin - Preferences") );
   gtk_container_set_border_width( GTK_CONTAINER(prefs_win) , 10 );
   prefs_win_hints.min_width = 320;
   prefs_win_hints.min_height = -1;
