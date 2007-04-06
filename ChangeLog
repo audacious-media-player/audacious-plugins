@@ -1,3 +1,14 @@
+2007-04-06 18:47:07 +0000  Giacomo Lozito <james@develia.org>
+  revision [1964]
+  - statusicon: add an option to use mouse wheel to change playing song instead of volume
+  trunk/src/statusicon/si.c           |   20 ++++++++++
+  trunk/src/statusicon/si_audacious.h |    1 
+  trunk/src/statusicon/si_cfg.c       |    7 +++
+  trunk/src/statusicon/si_cfg.h       |    4 ++
+  trunk/src/statusicon/si_ui.c        |   72 ++++++++++++++++++++++++++++++++----
+  5 files changed, 97 insertions(+), 7 deletions(-)
+
+
 2007-04-06 17:30:17 +0000  Giacomo Lozito <james@develia.org>
   revision [1962]
   - aosd: updated ghosd license
