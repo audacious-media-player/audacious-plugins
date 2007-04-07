@@ -54,9 +54,7 @@ static	int 	bit_rate = 0;
 static	glong 	seek_time = -1;
 
 static GThread *decode_thread;
-static GMutex *decode_start_mutex;
 static GMutex *decode_mutex;
-static GCond *decode_start_cond;
 static GCond *decode_cond;
 
 InputPlugin wav_ip = {
@@ -76,7 +74,7 @@ InputPlugin wav_ip = {
     NULL,
     NULL,
     NULL,
-    NULL,
+    plugin_cleanup,
     NULL,
     NULL,
     NULL,
@@ -122,11 +120,15 @@ plugin_init (void)
 {
 	seek_time = -1;
 
-	decode_start_mutex = g_mutex_new();
 	decode_mutex = g_mutex_new();
-
-	decode_start_cond = g_cond_new();
 	decode_cond = g_cond_new();
+}
+
+static void
+plugin_cleanup (void)
+{
+	g_cond_free(decode_cond);
+	g_mutex_free(decode_mutex);
 }
 
 static int
@@ -157,36 +159,37 @@ play_loop (gpointer arg)
  	{
 		GTimeVal sleeptime;
 
-		g_get_current_time(&sleeptime);
-		g_time_val_add(&sleeptime, 10000);
-
-		g_mutex_lock(decode_mutex);
-
 		/* sf_read_short will return 0 for all reads at EOF. */
 		samples = sf_read_short (sndfile, buffer, BUFFER_SIZE);
 
-		if (samples > 0 && playback->playing == TRUE)
-		{
+		if (samples > 0 && playback->playing == TRUE) {
 			while ((playback->output->buffer_free () < samples) &&
-				playback->playing == TRUE)
-			{
-				g_cond_timed_wait(decode_cond,
-					decode_mutex, &sleeptime);
+                   playback->playing == TRUE) {
+                g_get_current_time(&sleeptime);
+                g_time_val_add(&sleeptime, 500000);
+                g_mutex_lock(decode_mutex);
+				g_cond_timed_wait(decode_cond, decode_mutex, &sleeptime);
+                g_mutex_unlock(decode_mutex);
 
 				if (playback->playing == FALSE)
-				{
-					g_mutex_unlock(decode_mutex);
 					break;	
-				}
 			}
 
 			produce_audio (playback->output->written_time (), FMT_S16_NE, sfinfo.channels, 
 				samples * sizeof (short), buffer, &playback->playing);
-
-			g_cond_signal(decode_start_cond);
 		}
-		else
-		{
+		else {
+            while(playback->output->buffer_playing()) {
+                g_get_current_time(&sleeptime);
+                g_time_val_add(&sleeptime, 500000);
+                g_mutex_lock(decode_mutex);
+                g_cond_timed_wait(decode_cond, decode_mutex, &sleeptime);
+                g_mutex_unlock(decode_mutex);
+
+                if(playback->playing == FALSE)
+                    break;
+            }
+
 			playback->eof = TRUE;
 			playback->playing = FALSE;
 
@@ -195,24 +198,15 @@ play_loop (gpointer arg)
 		}
 
 		/* Do seek if seek_time is valid. */
-		if (seek_time >= 0)
-		{
+		if (seek_time >= 0) {
 			sf_seek (sndfile, (sf_count_t)((gint64)seek_time * (gint64)sfinfo.samplerate / 1000L),
                      SEEK_SET);
 			playback->output->flush (seek_time);
 			seek_time = -1;
    		}
 
-		g_cond_timed_wait(decode_cond,
-			decode_mutex, &sleeptime);
-
 		if (playback->playing == FALSE)
-		{
-			g_mutex_unlock(decode_mutex);
 			break;	
-		}
-
-		g_mutex_unlock(decode_mutex);
 	}
 
 	sf_close (sndfile);
@@ -228,7 +222,7 @@ play_loop (gpointer arg)
 static void
 play_start (InputPlayback *playback)
 {
-        char *filename = playback->filename;
+	char *filename = playback->filename;
 	int pcmbitwidth;
 	gchar *song_title;
 
@@ -263,9 +257,6 @@ play_start (InputPlayback *playback)
 
 	decode_thread = g_thread_create ((GThreadFunc)play_loop, playback, TRUE, NULL);
 
-	g_mutex_lock(decode_start_mutex);
-	g_cond_wait(decode_start_cond, decode_start_mutex);
-	g_mutex_unlock(decode_start_mutex);
 }
 
 static void
@@ -320,7 +311,7 @@ get_song_info (char *filename, char **title, int *length)
 
 static void wav_about(void)
 {
-        static GtkWidget *box;
+	static GtkWidget *box;
 	if (!box)
 	{
         	box = xmms_show_message(
