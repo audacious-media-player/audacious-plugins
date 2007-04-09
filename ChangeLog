@@ -1,3 +1,11 @@
+2007-04-09 09:26:28 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1974]
+  - replace SSE2 detection macro.
+  
+  trunk/configure.ac |   33 ++++++++++++++++++---------------
+  1 file changed, 18 insertions(+), 15 deletions(-)
+
+
 2007-04-09 04:30:22 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1972]
   - replace random number generator in dithering code with SIMD-oriented Fast Mersenne Twister (SFMT). it reduces CPU load on SSE2 or AltiVec capable platform.

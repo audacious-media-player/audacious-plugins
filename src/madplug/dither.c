@@ -14,7 +14,7 @@
 #include "SFMT.h"
 #include "SFMT.c"
 
-long triangular_dither_noise(int nbits)
+int triangular_dither_noise(int nbits)
 {
     // parameter nbits : the peak-to-peak amplitude desired (in bits)
     //  use with nbits set to    2 + nber of bits to be trimmed.
@@ -23,9 +23,9 @@ long triangular_dither_noise(int nbits)
     // see The Theory of Dithered Quantization by Robert Alexander Wannamaker
     // for complete proof of why that's optimal
 
-    long v = (gen_rand32() / 2 - gen_rand32() / 2);   // in ]-2^31, 2^31[
+    int v = (gen_rand32() / 2 - gen_rand32() / 2);   // in ]-2^31, 2^31[
     //int signe = (v>0) ? 1 : -1;
-    long P = 1 << (32 - nbits); // the power of 2
+    int P = 1 << (32 - nbits); // the power of 2
     v /= P;
     // now v in ]-2^(nbits-1), 2^(nbits-1) [ 
 

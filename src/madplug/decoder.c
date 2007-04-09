@@ -34,7 +34,7 @@
 #define BUFFER_SIZE 16*1024
 #define N_AVERAGE_FRAMES 10
 
-extern long triangular_dither_noise(int nbits);
+extern int triangular_dither_noise(int nbits);
 
 /**
  * Scale PCM data
