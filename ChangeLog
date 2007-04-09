@@ -1,3 +1,11 @@
+2007-04-09 15:11:42 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [1980]
+  Spell internal & pseudorandom in a consistent way. Add missing altivec.h include in SFMT-alti.h; more work to be done as it still does not build.
+  trunk/src/madplug/SFMT-alti.c |   16 ++++++++--------
+  trunk/src/madplug/SFMT-alti.h |    1 +
+  2 files changed, 9 insertions(+), 8 deletions(-)
+
+
 2007-04-09 10:51:00 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1978]
   - make madplug ignore crc error. closes #884.

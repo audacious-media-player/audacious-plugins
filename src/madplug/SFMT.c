@@ -14,6 +14,7 @@
 #include <assert.h>
 #include "SFMT.h"
 #include "SFMT-params.h"
+#include "SFMT-params19937.h"
 
 #if defined(ALTIVEC)
   #include "SFMT-alti.h"
