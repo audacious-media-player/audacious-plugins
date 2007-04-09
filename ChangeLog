@@ -1,3 +1,11 @@
+2007-04-09 15:30:03 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1982]
+  - fix altivec implementation
+  
+  trunk/src/madplug/SFMT.c |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2007-04-09 15:11:42 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [1980]
   Spell internal & pseudorandom in a consistent way. Add missing altivec.h include in SFMT-alti.h; more work to be done as it still does not build.
