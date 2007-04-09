@@ -1,3 +1,11 @@
+2007-04-09 15:50:46 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1984]
+  - use C-style vectors instead of apple's stuff
+  
+  trunk/src/madplug/SFMT-alti.c |   10 +++++-----
+  1 file changed, 5 insertions(+), 5 deletions(-)
+
+
 2007-04-09 15:30:03 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1982]
   - fix altivec implementation
