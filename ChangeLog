@@ -1,3 +1,23 @@
+2007-04-09 04:30:22 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1972]
+  - replace random number generator in dithering code with SIMD-oriented Fast Mersenne Twister (SFMT). it reduces CPU load on SSE2 or AltiVec capable platform.
+  
+  trunk/configure.ac                   |   22 +
+  trunk/mk/rules.mk.in                 |    1 
+  trunk/src/madplug/Makefile           |    2 
+  trunk/src/madplug/SFMT-alti.c        |  126 +++++++
+  trunk/src/madplug/SFMT-alti.h        |   40 ++
+  trunk/src/madplug/SFMT-params.h      |   90 +++++
+  trunk/src/madplug/SFMT-params19937.h |   22 +
+  trunk/src/madplug/SFMT-sse2.c        |  113 ++++++
+  trunk/src/madplug/SFMT-sse2.h        |   36 ++
+  trunk/src/madplug/SFMT.c             |  589 +++++++++++++++++++++++++++++++++++
+  trunk/src/madplug/SFMT.h             |  121 +++++++
+  trunk/src/madplug/dither.c           |  104 ------
+  trunk/src/madplug/plugin.c           |    4 
+  13 files changed, 1175 insertions(+), 95 deletions(-)
+
+
 2007-04-07 18:06:36 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1970]
   - now wav plugin can handle remaining buffered data at the end of playing.

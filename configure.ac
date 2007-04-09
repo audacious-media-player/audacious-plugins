@@ -259,21 +259,24 @@ AC_SUBST(DCT64)
 
 dnl *** SSE2
 
-AC_LANG(C)
-AC_LANG_CONFTEST([AC_LANG_SOURCE([[#include <xmmintrin.h>
-int main(){
-#if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 2)
-return 0;
-#else
-#error no vector builtins
-#endif
-}]])])
-gcc -E -dD -msse2 -o - conftest.c
-if test $? = 0 ; then
-   AC_DEFINE(HAVE_SSE2, 1, [Define to 1 if your system has SSE2])
-   SIMD_CFLAGS=-msse2
-   AC_SUBST(SIMD_CFLAGS)
-fi
+AC_MSG_CHECKING(SSE2)
+ac_save_CFLAGS="$CFLAGS"
+CFLAGS="-msse2"
+AC_TRY_RUN([
+#include <emmintrin.h>
+int main()
+{
+  _mm_setzero_pd();
+  return 0;
+}
+],
+[AC_MSG_RESULT(SSE2 yes)
+AC_DEFINE(HAVE_SSE2, 1, [Define to 1 if your system has SSE2])
+SIMD_CFLAGS=-msse2],
+[AC_MSG_RESULT(SSE2 no)],
+)
+AC_SUBST(SIMD_CFLAGS)
+CFLAGS="$ac_save_CFLAGS"
 
 dnl *** MP3
 
