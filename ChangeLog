@@ -1,3 +1,15 @@
+2007-04-07 18:06:36 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1970]
+  - now wav plugin can handle remaining buffered data at the end of playing.
+  - reduce cpu usage significantly.
+  - add cleanup code.
+  - remove decode_start_mutex and decode_start_cond.
+  
+  trunk/src/wav/wav-sndfile.c |   69 +++++++++++++++++++-------------------------
+  trunk/src/wav/wav-sndfile.h |    1 
+  2 files changed, 31 insertions(+), 39 deletions(-)
+
+
 2007-04-06 19:38:11 +0000  Giacomo Lozito <james@develia.org>
   revision [1968]
   - statusicon: fix preferences window name

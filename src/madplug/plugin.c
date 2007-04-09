@@ -32,6 +32,7 @@
 #include <fcntl.h>
 #include <audacious/vfs.h>
 #include <sys/stat.h>
+#include "SFMT.h"
 
 /*
  * Global variables
@@ -174,6 +175,9 @@ static void audmad_init()
 
     if (!audmad_config.id3_format)
         audmad_config.id3_format = g_strdup("");
+
+    init_gen_rand(4357);
+
 }
 
 static void audmad_cleanup()
