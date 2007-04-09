@@ -473,19 +473,15 @@ static gpointer flac_play_loop(gpointer arg) {
         if (-1 != seek_to) {
             _DEBUG("Seek requested to %d seconds", seek_to);
 
-            if (FALSE == main_info->stream.has_seektable) {
-                _ERROR("Stream does not have a seektable, can not seek!");
+            seek_sample = seek_to * main_info->stream.samplerate;
+            _DEBUG("Seek requested to sample %d", seek_sample);
+            if (FALSE == FLAC__stream_decoder_seek_absolute(main_decoder, seek_sample)) {
+                _ERROR("Could not seek to sample %d!", seek_sample);
             } else {
-                seek_sample = seek_to * main_info->stream.samplerate;
-                _DEBUG("Seek requested to sample %d", seek_sample);
-                if (FALSE == FLAC__stream_decoder_seek_absolute(main_decoder, seek_sample)) {
-                    _ERROR("Could not seek to sample %d!", seek_sample);
-                } else {
-                    /*
-                     * Flush the buffers
-                     */
-                    flac_ip.output->flush(seek_to * 1000);
-                }
+                /*
+                 * Flush the buffers
+                 */
+                flac_ip.output->flush(seek_to * 1000);
             }
             seek_to = -1;
         }

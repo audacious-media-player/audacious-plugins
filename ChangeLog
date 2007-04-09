@@ -1,3 +1,27 @@
+2007-04-09 17:55:23 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1988]
+  - initial import of flacng from audacious-flacng-0.012
+  
+  trunk/configure.ac                           |   24 
+  trunk/mk/rules.mk.in                         |    5 
+  trunk/src/flacng/AUTHORS                     |   28 +
+  trunk/src/flacng/Makefile                    |   16 
+  trunk/src/flacng/README                      |  109 ++++
+  trunk/src/flacng/debug.h                     |   35 +
+  trunk/src/flacng/flac_compat112.h            |   35 +
+  trunk/src/flacng/flac_compat113.h            |    7 
+  trunk/src/flacng/flac_compat114.h            |    7 
+  trunk/src/flacng/flacng.h                    |   94 +++
+  trunk/src/flacng/plugin.c                    |  706 +++++++++++++++++++++++++++
+  trunk/src/flacng/plugin.h                    |   14 
+  trunk/src/flacng/seekable_stream_callbacks.c |  338 ++++++++++++
+  trunk/src/flacng/seekable_stream_callbacks.h |   35 +
+  trunk/src/flacng/tools.c                     |  478 ++++++++++++++++++
+  trunk/src/flacng/tools.h                     |   34 +
+  trunk/src/flacng/version.h                   |    6 
+  17 files changed, 1969 insertions(+), 2 deletions(-)
+
+
 2007-04-09 15:51:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1986]
   - use C-style vectors (part 2)

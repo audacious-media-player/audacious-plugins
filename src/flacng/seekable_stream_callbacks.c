@@ -115,7 +115,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
     _DEBUG("Using callback_info %s", info->name);
 
     if (-1 == (position = vfs_ftell(info->input_stream))) {
-        fprintf(stderr, "Could not tell current position!");
+        _ERROR("Could not tell current position!");
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
 
@@ -149,13 +149,34 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
 
     callback_info* info;
     size_t size;
+    glong position;
 
     _ENTER;
 
     info = (callback_info*) client_data;
     _DEBUG("Using callback_info %s", info->name);
 
-    *stream_length = 0;
+    if (-1 == (position = vfs_ftell(info->input_stream))) {
+        _ERROR("Could not tell current position!");
+        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+    }
+
+    if (-1 == vfs_fseek(info->input_stream, 0, SEEK_END)) {
+        _ERROR("Could not seek to end of stream.");
+        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+    }
+
+    if (-1 == (*stream_length = vfs_ftell(info->input_stream))) {
+        _ERROR("Could not tell position at end of stream!");
+        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+    }
+
+    if (-1 == vfs_fseek(info->input_stream, position, SEEK_SET)) {
+        _ERROR("Could not reset stream position. We're probably in trouble now.");
+        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+    }
+
+    _DEBUG("Stream length is %d bytes", *stream_length);
 
     _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }
