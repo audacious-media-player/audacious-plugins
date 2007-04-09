@@ -497,6 +497,29 @@ if test "$have_oggvorbis" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS vorbis"
 fi
 
+dnl *** FLACng (in progress replacement to XMMS-flac port)
+
+AC_ARG_ENABLE(flacng,
+    [  --disable-flacng        disable flac input plugin (default=enabled)],
+    [enable_flacng=$enableval],
+    [enable_flacng="yes"]
+)
+
+if test "$enable_flacng" = "yes"; then
+    PKG_CHECK_MODULES(FLAC, [flac >= 1.1.2],
+        [have_flacng=yes],
+        [AC_MSG_WARN([*** Cannot find libFLAC, FLACng will not be built ***])
+         have_flacng=no]
+    )
+else
+    AC_MSG_RESULT([*** FLACng plugin disabled per user request ***])
+    have_flacng=no
+fi
+
+if test "$have_flacng" = "yes"; then
+	INPUT_PLUGINS="$INPUT_PLUGINS flacng"
+fi
+
 dnl *** WavPack 4.31 support
 
 AC_ARG_ENABLE(wavpack,
@@ -1266,6 +1289,7 @@ echo "    + sndfile extensions:                 $enable_sndfile"
 echo "  Tone Generator:                         yes"
 echo "  Ogg Vorbis (vorbis):                    $have_oggvorbis"
 echo "  Free Lossless Audio Codec (flac):       $have_flac"
+echo "  Free Lossless Audio Codec (flacng):     $have_flacng"
 echo "  Commodore 64 audio (sid):               $have_sidplay"
 echo "  Game music (spc, nsf & gbs):            yes"
 echo "  PlayStation audio (sexypsf):            yes"

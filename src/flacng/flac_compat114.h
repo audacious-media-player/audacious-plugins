@@ -1,0 +1,7 @@
+#ifndef FLAC_COMPAT114_H
+#define FLAC_COMPAT114_H
+
+#if defined(FLAC_API_VERSION_CURRENT) && FLAC_API_VERSION_CURRENT == 8
+#endif
+
+#endif

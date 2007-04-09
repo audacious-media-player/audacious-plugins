@@ -1,3 +1,11 @@
+2007-04-09 15:51:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [1986]
+  - use C-style vectors (part 2)
+  
+  trunk/src/madplug/SFMT-params19937.h |    8 ++++----
+  1 file changed, 4 insertions(+), 4 deletions(-)
+
+
 2007-04-09 15:50:46 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1984]
   - use C-style vectors instead of apple's stuff
