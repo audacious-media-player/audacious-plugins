@@ -414,6 +414,7 @@ gpointer decode_loop(gpointer arg)
     /* init mad stuff */
     mad_frame_init(&frame);
     mad_stream_init(&stream);
+    mad_stream_options(&stream, MAD_OPTION_IGNORECRC);
     mad_synth_init(&synth);
 
     if(!info->playback){

@@ -1,3 +1,12 @@
+2007-04-09 10:21:02 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [1976]
+  -adjust size of variable in dither code.
+  
+  trunk/src/madplug/decoder.c |    2 +-
+  trunk/src/madplug/dither.c  |    6 +++---
+  2 files changed, 4 insertions(+), 4 deletions(-)
+
+
 2007-04-09 09:26:28 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [1974]
   - replace SSE2 detection macro.
