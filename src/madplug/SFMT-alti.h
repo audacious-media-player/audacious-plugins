@@ -14,6 +14,7 @@
  * see LICENSE.txt
  */
 
+#include <altivec.h>
 #ifndef SFMT_ALTI_H
 #define SFMT_ALTI_H
 

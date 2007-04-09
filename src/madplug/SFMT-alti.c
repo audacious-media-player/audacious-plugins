@@ -1,9 +1,9 @@
 /**
  * This function represents the recursion formula in AltiVec and BIG ENDIAN.
- * @param a a 128-bit part of the interal state array
- * @param b a 128-bit part of the interal state array
- * @param c a 128-bit part of the interal state array
- * @param d a 128-bit part of the interal state array
+ * @param a a 128-bit part of the internal state array
+ * @param b a 128-bit part of the internal state array
+ * @param c a 128-bit part of the internal state array
+ * @param d a 128-bit part of the internal state array
  * @return output
  */
 inline static vector unsigned int vec_recursion(vector unsigned int a,
@@ -39,7 +39,7 @@ inline static vector unsigned int vec_recursion(vector unsigned int a,
 }
 
 /**
- * This function fills the internal state array with psedorandom
+ * This function fills the internal state array with pseudorandom
  * integers.
  */
 inline static void gen_rand_all(void) {
@@ -63,11 +63,11 @@ inline static void gen_rand_all(void) {
 }
 
 /**
- * This function fills the user-specified array with psedorandom
+ * This function fills the user-specified array with pseudorandom
  * integers.
  *
  * @param array an 128-bit array to be filled by pseudorandom numbers.  
- * @param size number of 128-bit pesudorandom numbers to be generated.
+ * @param size number of 128-bit pseudorandom numbers to be generated.
  */
 inline static void gen_rand_array(w128_t array[], int size) {
     int i, j;
@@ -111,7 +111,7 @@ inline static void gen_rand_array(w128_t array[], int size) {
  * This function swaps high and low 32-bit of 64-bit integers in user
  * specified array.
  *
- * @param array an 128-bit array to be swaped.
+ * @param array an 128-bit array to be swapped.
  * @param size size of 128-bit array.
  */
 inline static void swap(w128_t array[], int size) {
