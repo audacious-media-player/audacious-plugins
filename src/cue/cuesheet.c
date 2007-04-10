@@ -623,7 +623,7 @@ static gpointer watchdog_func(gpointer data)
              time > cue_tracks[last_cue_track].index) ){ // may not happen. for safety.
             if(!real_ip->output->buffer_playing()) {
                 gint pos = playlist_get_position(playlist);
-                if (pos + 1 == playlist_get_length_nolock(playlist)) {
+                if (pos + 1 == playlist_get_length(playlist)) {
 #ifdef DEBUG
                     g_print("i: watchdog eof reached\n\n");
 #endif

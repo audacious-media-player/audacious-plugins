@@ -1,3 +1,13 @@
+2007-04-09 18:12:20 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [1990]
+  
+  - Implement seek support for files without a seektable
+  
+  trunk/src/flacng/plugin.c                    |   20 ++++++++------------
+  trunk/src/flacng/seekable_stream_callbacks.c |   25 +++++++++++++++++++++++--
+  2 files changed, 31 insertions(+), 14 deletions(-)
+
+
 2007-04-09 17:55:23 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1988]
   - initial import of flacng from audacious-flacng-0.012
