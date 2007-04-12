@@ -41,6 +41,7 @@
 #define DEBUG_ICY_WRAP 0
 #define DEBUG_ICY_VERBOSE 0
 #define DEBUG_METADATA_REPORT 0
+#define DEBUG_CURL 0
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -586,6 +587,9 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
 
   curl_easy_setopt(handle->curl, CURLOPT_FOLLOWLOCATION, 1);
+
+  if (DEBUG_CURL)
+    curl_easy_setopt(handle->curl, CURLOPT_VERBOSE, 1);
 
   {
     gboolean tmp = FALSE;
