@@ -1,7 +1,7 @@
 # Russian translation for Audacious-plugins.
-# Copyright (C) 2006 Alexandr Orlov <alxorlov@pochta.ru>
+# Copyright (C) 2006, 2007 Alexander Orlov <alxorlov@pochta.ru>
 # This file is distributed under the same license as the Audacious-plugins package.
-# Alexandr Orlov <alxorlov@pochta.ru>, 2006.
+# Alexander Orlov <alxorlov@pochta.ru>, 2007.
 #
 # За основу взят перевод Виталия Липатова для BMP.
 # Улучшения перевода приветствуются :)
@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-02-11 03:19-0600\n"
-"PO-Revision-Date: 2007-01-26 00:17+0300\n"
-"Last-Translator: Alexandr Orlov <alxorlov@pochta.ru>\n"
+"PO-Revision-Date: 2007-04-12 21:50+0300\n"
+"Last-Translator: Alexander Orlov <alxorlov@pochta.ru>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +88,7 @@ msgstr "Модуль вывода звука OSS"
 
 #: src/OSS/about.c:39
 msgid "About OSS Driver"
-msgstr "О модуле вывода звука OSS"
+msgstr "О драйвере OSS"
 
 #: src/OSS/about.c:40
 msgid ""
@@ -171,7 +171,7 @@ msgstr ""
 
 #: src/audiocompress/audacious-glue.c:100
 msgid "AudioCompress "
-msgstr ""
+msgstr "AudioCompress "
 
 #: src/audiocompress/audacious-glue.c:101
 msgid ""
@@ -207,7 +207,7 @@ msgstr "/Переключить отображение обрамления"
 
 #: src/blur_scope/blur_scope.c:59
 msgid "/-"
-msgstr ""
+msgstr "/-"
 
 #: src/blur_scope/blur_scope.c:60
 msgid "/Close"
@@ -371,7 +371,7 @@ msgstr "Устройство"
 
 #: src/cdaudio/configure.c:555
 msgid "CDDB:"
-msgstr ""
+msgstr "CDDB:"
 
 #: src/cdaudio/configure.c:566
 msgid "Use CDDB"
@@ -488,7 +488,7 @@ msgstr "Гц"
 
 #: src/console/Audacious_Config.cxx:237
 msgid "NSF/NSFE"
-msgstr ""
+msgstr "NSF/NSFE"
 
 #: src/console/Audacious_Config.cxx:238
 msgid "Use optional NSFE playlist"
@@ -496,7 +496,7 @@ msgstr "Использовать список воспроизведения NSF
 
 #: src/console/Audacious_Config.cxx:249
 msgid "SPC"
-msgstr ""
+msgstr "SPC"
 
 #: src/console/Audacious_Config.cxx:250
 msgid "Ignore length from SPC tags"
@@ -510,8 +510,8 @@ msgid ""
 msgstr ""
 "* Длительность песни по-умолчанию *\n"
 "Длительность песни по-умолчанию, заданная в секундах, используется для "
-"записей, у которых отсутствуют данные о длительности (например, "
-"повторяющиеся записи)."
+"записей, у которых отсутствуют данные о длительности (например, бесконечные "
+"дорожки)."
 
 #: src/disk_writer/disk_writer.c:111
 #, c-format
@@ -560,9 +560,9 @@ msgid ""
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
 "Модуль Эхо\n"
-"Johan Levin\n"
+"Автор Johan Levin, 1999.\n"
 "\n"
-"Объёмное эхо, автор Carl van Schaik 1999"
+"Объёмное эхо добавлено Carl van Schaik 1999"
 
 #: src/echo_plugin/gui.c:26
 msgid "About Echo Plugin"
@@ -790,15 +790,15 @@ msgstr "Пароль:"
 
 #: src/scrobbler/configure.c:158
 msgid "<b>Last.FM</b>"
-msgstr ""
+msgstr "<b>Last.FM</b>"
 
 #: src/scrobbler/configure.c:198
 msgid "<b>Gerpok</b>"
-msgstr ""
+msgstr "<b>Gerpok</b>"
 
 #: src/scrobbler/configure.c:238
 msgid "<b>Hatena</b>"
-msgstr ""
+msgstr "<b>Hatena</b>"
 
 #: src/scrobbler/gtkstuff.c:22
 msgid "About Scrobbler Plugin"
@@ -869,8 +869,7 @@ msgid ""
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 "<span size='small'>Параметры, передаваемые оболочке, должны быть заключены в "
-"кавычки.\n"
-"В противном случае возможны проблемы с безопастностью.</span>"
+"кавычки. В противном случае возможны проблемы с безопасностью.</span>"
 
 #: src/stereo_plugin/stereo.c:29
 msgid ""
@@ -926,7 +925,7 @@ msgstr "BSD Sun Драйвер %s"
 
 #: src/sun/about.c:34
 msgid "About the Sun Driver"
-msgstr "О модуле вывода Sun"
+msgstr "О драйвере Sun"
 
 #: src/sun/about.c:35
 msgid ""
@@ -966,7 +965,7 @@ msgstr "Невозможно загрузить MIDI файл"
 
 #: src/timidity/src/interface.c:56
 msgid "TiMidity Configuration"
-msgstr "Настройка модуля поддержки TiMidity"
+msgstr "Настройка модуля TiMidity"
 
 #: src/timidity/src/interface.c:76
 msgid "Sampling Rate"
@@ -1046,7 +1045,7 @@ msgstr "Инфрмация о файле - %s"
 
 #: src/vorbis/configure.c:118
 msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Изменение настроек модуля поддержки формата Ogg Vorbis"
+msgstr "Изменение настроек модуля Ogg Vorbis"
 
 #: src/vorbis/configure.c:130
 msgid "Ogg Vorbis Tags:"
@@ -1093,7 +1092,7 @@ msgstr "Включить усиление на 6dB + тяжелое ограни
 #: src/vorbis/configure.c:226 src/flac112/configure.c:337
 #: src/flac113/configure.c:337
 msgid "ReplayGain"
-msgstr ""
+msgstr "ReplayGain"
 
 #: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
 #: src/flac113/fileinfo.c:51
@@ -1577,7 +1576,7 @@ msgstr "Медленный рок"
 #: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
 #: src/flac113/fileinfo.c:78
 msgid "Big Band"
-msgstr "Большой бэнд"
+msgstr "Big Band"
 
 #: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
 #: src/flac113/fileinfo.c:78
@@ -1632,7 +1631,7 @@ msgstr "Симфония"
 #: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
 #: src/flac113/fileinfo.c:81
 msgid "Booty Bass"
-msgstr "Небрежный бас"
+msgstr "Booty Bass"
 
 #: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
 #: src/flac113/fileinfo.c:81
@@ -1717,7 +1716,7 @@ msgstr "А Капелла"
 #: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
 #: src/flac113/fileinfo.c:86
 msgid "Euro-House"
-msgstr "Евро-дом"
+msgstr "Euro-House"
 
 #: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
 #: src/flac113/fileinfo.c:86
@@ -1752,7 +1751,7 @@ msgstr "Террор"
 #: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
 #: src/flac113/fileinfo.c:88
 msgid "Indie"
-msgstr "Независимая музыка"
+msgstr "Indie"
 
 #: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
 #: src/flac113/fileinfo.c:88
@@ -1908,7 +1907,7 @@ msgstr "Описание:"
 
 #: src/vorbis/fileinfo.c:681
 msgid "Location:"
-msgstr "Местоположение:"
+msgstr "Расположение:"
 
 #: src/vorbis/fileinfo.c:691
 msgid "Version:"
@@ -1928,23 +1927,23 @@ msgstr "Авторское право:"
 
 #: src/vorbis/fileinfo.c:760
 msgid " Ogg Vorbis ReplayGain "
-msgstr ""
+msgstr " Ogg Vorbis ReplayGain "
 
 #: src/vorbis/fileinfo.c:766
 msgid "Track gain:"
-msgstr "Gain дорожки:"
+msgstr "Усиление дорожки:"
 
 #: src/vorbis/fileinfo.c:776
 msgid "Track peak:"
-msgstr "Peak дорожки:"
+msgstr "Пик дорожки:"
 
 #: src/vorbis/fileinfo.c:787
 msgid "Album gain:"
-msgstr "Gain альбома:"
+msgstr "Усиление альбома:"
 
 #: src/vorbis/fileinfo.c:797
 msgid "Album peak:"
-msgstr "Peak альбома:"
+msgstr "Пик альбома:"
 
 #: src/vorbis/fileinfo.c:826
 msgid " Ogg Vorbis Info "
@@ -1952,7 +1951,7 @@ msgstr " Информация Ogg Vorbis "
 
 #: src/vorbis/fileinfo.c:841 src/vorbis/fileinfo.c:918
 msgid "Bit rate:"
-msgstr "Битовая частота:"
+msgstr "Битрэйт:"
 
 #: src/vorbis/fileinfo.c:854 src/vorbis/fileinfo.c:921
 msgid "Sample rate:"
@@ -1979,7 +1978,7 @@ msgstr "Н/Д"
 #: src/vorbis/fileinfo.c:961
 #, c-format
 msgid "%d KBit/s (nominal)"
-msgstr "%d кБит/с (номинал)"
+msgstr "%d КБит/с (номинал)"
 
 #: src/vorbis/fileinfo.c:962
 #, c-format
@@ -1989,12 +1988,12 @@ msgstr "%d Гц"
 #: src/vorbis/fileinfo.c:963
 #, c-format
 msgid "%d"
-msgstr ""
+msgstr "%d"
 
 #: src/vorbis/fileinfo.c:965
 #, c-format
 msgid "%d:%.2d"
-msgstr ""
+msgstr "%d:%.2d"
 
 #: src/vorbis/fileinfo.c:967
 #, c-format
@@ -2004,7 +2003,7 @@ msgstr "%d байт"
 #: src/vorbis/fileinfo.c:1020
 #, c-format
 msgid "%s - Audacious"
-msgstr ""
+msgstr "%s - Audacious"
 
 #: src/vorbis/vorbis.c:143
 msgid "Ogg Vorbis Audio Plugin"
@@ -2012,7 +2011,7 @@ msgstr "Модуль поддержки Ogg Vorbis"
 
 #: src/vorbis/vorbis.c:876
 msgid "About Ogg Vorbis Audio Plugin"
-msgstr "О модуле поддержки формата Ogg Vorbis"
+msgstr "О модуле поддержки Ogg Vorbis"
 
 #: src/vorbis/vorbis.c:882
 msgid ""
@@ -2031,7 +2030,7 @@ msgid ""
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
-"Расширение \"Ogg Vorbis\" от фонда Xiph.org\n"
+"Модуль поддержки Ogg Vorbis от фонда Xiph.org\n"
 "\n"
 "Первоначальный код написан:\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
@@ -2088,14 +2087,15 @@ msgstr ""
 "РАБОТОСПОСОБНОСТИ или ПРИГОДНОСТИ ДЛЯ КАКОЙ-ЛИБО ЦЕЛИ. Пожалуйста,\n"
 "за подробностями обратитесь к Лицензии GNU.\n"
 "\n"
-"Вы должны были получить копию Лицензии GNU вместе с этой программой;\n"
-"если же нет, то напишите об этом по адресу: Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02111-1307,\n"
-"USA."
+"Вы должны были получить копию Лицензии GNU \n"
+"вместе с этой программой; если же нет, то напишите об этом \n"
+"по адресу: Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA 02111-1307, USA."
 
 #: src/wav/wav-sndfile.c:279
 msgid "sndfile WAV plugin"
-msgstr "модуль поддержки WAV"
+msgstr "модуль sndfile WAV"
 
 #: src/wav/wav.c:77
 msgid "WAV Audio Plugin"
@@ -2116,12 +2116,10 @@ msgid " Close "
 msgstr " Закрыть "
 
 #: src/alsa/about.c:30
-#, fuzzy
 msgid "About ALSA Driver"
-msgstr "О модуле вывода звука OSS"
+msgstr "О драйвере ALSA"
 
 #: src/alsa/about.c:31
-#, fuzzy
 msgid ""
 "Audacious ALSA Driver\n"
 "\n"
@@ -2141,7 +2139,7 @@ msgid ""
 "USA.\n"
 "Author: Matthieu Sozeau (mattam@altern.org)"
 msgstr ""
-"Драйвер OSS для Audacious\n"
+"Драйвер ALSA для Audacious\n"
 "\n"
 " Эта программа - бесплатное программное обеспечение; вы можете "
 "распространять и/или модифицировать ее\n"
@@ -2158,80 +2156,75 @@ msgstr ""
 "Вы должны были получить копию Лицензии GNU вместе с этой программой;\n"
 "если же нет, то напишите об этом по адресу: Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
+"USA.\n"
+"Автор: Matthieu Sozeau (mattam@altern.org)"
 
 #: src/alsa/alsa.c:47
-#, fuzzy, c-format
+#, c-format
 msgid "ALSA %s output plugin"
-msgstr "Модуль Ноль-вывод "
+msgstr "Модуль вывода звука ALSA %s"
 
 #: src/alsa/configure.c:150
 msgid "Unknown soundcard"
-msgstr ""
+msgstr "Неизвестная звуковая карта"
 
 #: src/alsa/configure.c:205
-#, fuzzy, c-format
+#, c-format
 msgid "Default PCM device (%s)"
-msgstr "По умолчанию (%s)"
+msgstr "Устройство PCM по-умолчанию (%s)"
 
 #: src/alsa/configure.c:271
-#, fuzzy
 msgid "ALSA Driver configuration"
-msgstr "Настройка драйвера OSS"
+msgstr "Настройка драйвера ALSA"
 
 #: src/alsa/configure.c:299
-#, fuzzy
 msgid "Mixer:"
-msgstr "Микшер"
+msgstr "Микшер:"
 
 #: src/alsa/configure.c:307
-#, fuzzy
 msgid "Use software volume control"
-msgstr "Регулятор громкости:"
+msgstr "Использовать программный регулятор громкости"
 
 #: src/alsa/configure.c:317
-#, fuzzy
 msgid "Mixer card:"
-msgstr "Устройство микшера:"
+msgstr "Карта микшера:"
 
 #: src/alsa/configure.c:350
-#, fuzzy
 msgid "Device settings"
-msgstr "Настройки микшера:"
+msgstr "Настройки устройства"
 
 #: src/alsa/configure.c:356
-#, fuzzy
 msgid "Soundcard:"
-msgstr "Звуковая дорожка"
+msgstr "Звуковая карта:"
 
 #: src/alsa/configure.c:369
-#, fuzzy
 msgid "Buffer time (ms):"
 msgstr "Размер буфера (мс):"
 
 #: src/alsa/configure.c:383
-#, fuzzy
 msgid "Period time (ms):"
-msgstr "Размер буфера (мс):"
+msgstr "Размер периода (мс):"
 
 #: src/alsa/configure.c:398 src/amidi-plug/i_configure-ap.c:287
 msgid "Advanced settings"
-msgstr ""
+msgstr "Дополнительные настройки"
 
 #: src/amidi-plug/amidi-plug.c:26
 #, c-format
 msgid "AMIDI-Plug %s (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug %s (MIDI проигрыватель)"
 
 #: src/amidi-plug/amidi-plug.c:380
 msgid "AMIDI-Plug - warning"
-msgstr ""
+msgstr "AMIDI-Plug - предупреждение"
 
 #: src/amidi-plug/amidi-plug.c:381
 msgid ""
 "No sequencer backend has been selected!\n"
 "Please configure AMIDI-Plug before playing."
 msgstr ""
+"Не выбран модуль секвенсера!\n"
+"Пожалуйста настройте AMIDI-Plug перед воспроизведением."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -2244,6 +2237,14 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Этот модуль отправляет события MIDI на группу выбранных пользователем портов "
+"секвенсера ALSA. Интерфейс секвенсера ALSA очень разносторонний, он может "
+"предоставлять порты для аппаратных синтезаторов (например, emu10k1) и для "
+"программных синтезаторов, для внешних устройств, и др.\n"
+"Этот модуль не производит звук, события MIDI от устройств/программ "
+"обрабатываются напрямую после портов ALSA; например, отправленные на "
+"аппаратный синтезатор события MIDI будут сразу воспроизведены.\n"
+"Этот внутренний модуль написан Giacomo Lozito."
 
 #: src/amidi-plug/backend-dummy/b-dummy.c:37
 msgid ""
@@ -2252,6 +2253,10 @@ msgid ""
 "standard error or file.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Этот внутренний модуль вообще не производит звук. Он удобен только для "
+"анализа и тестирования, он также может журналировать все события MIDI в "
+"стандартный вывод, стандартный вывод ошибок, или файл.\n"
+"Этот внутренний модуль написан Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
 msgid ""
@@ -2262,41 +2267,44 @@ msgid ""
 "by chosen ouput plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Этот внутренний модуль производит звук, отправляя события MIDI на "
+"FluidSynth, программный синтезатор реального времени, основанный на "
+"спецификациях SoundFont2 (www.fluidsynth.org).\n"
+"Полученный звук может быть изменен с помощью модулей эффектов и обработан "
+"выбранным модулем вывода.\n"
+"Этот внутренний модуль написан Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:221
 msgid "ALSA BACKEND CONFIGURATION"
-msgstr ""
+msgstr "НАСТРОЙКА ВНУТРЕННЕГО МОДУЛЯ ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:326
-#, fuzzy
 msgid "Port"
-msgstr "Порт:"
+msgstr "Порт"
 
 #: src/amidi-plug/i_configure-alsa.c:328
 msgid "Client name"
-msgstr ""
+msgstr "Название клиента"
 
 #: src/amidi-plug/i_configure-alsa.c:330
 msgid "Port name"
-msgstr ""
+msgstr "Название порта"
 
 #: src/amidi-plug/i_configure-alsa.c:341
 msgid "ALSA output ports"
-msgstr ""
+msgstr "Порты вывода ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:394
 msgid "Soundcard: "
-msgstr ""
+msgstr "Звуковая карта: "
 
 #: src/amidi-plug/i_configure-alsa.c:396
-#, fuzzy
 msgid "Mixer control: "
-msgstr "Регулятор громкости:"
+msgstr "Регулятор громкости: "
 
 #: src/amidi-plug/i_configure-alsa.c:408
-#, fuzzy
 msgid "Mixer settings"
-msgstr "Настройки микшера:"
+msgstr "Настройки микшера"
 
 #: src/amidi-plug/i_configure-alsa.c:421
 msgid ""
@@ -2305,6 +2313,10 @@ msgid ""
 "audio card provides a hardware synth and you want to play MIDI with it, "
 "you'll probably want to select the wavetable synthesizer ports."
 msgstr ""
+"* Выберите порты вывода ALSA *\n"
+"События MIDI будут отправлены в порты указанные здесь. Например, если у "
+"вашей звуковой карты есть аппаратный синтезатор, и вы хотите проигрывать "
+"MIDI с его помощью, то вам необходимо выбрать порты синтезатора."
 
 #: src/amidi-plug/i_configure-alsa.c:426
 msgid ""
@@ -2314,6 +2326,12 @@ msgid ""
 "manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
+"* Выберите микшерную карту ALSA *\n"
+"Внутренний модуль ALSA выводить звук напрямую через ALSA, он не использует "
+"модули эффектов и вывода из проигрывателя. Во время воспроизведения "
+"регулятор громкости проигрывателя будет управлять устройством, которое вы "
+"выберете здесь. Если вы используете порты синтезатора, вы вероятно захотите "
+"выбрать регулятор Synth."
 
 #: src/amidi-plug/i_configure-alsa.c:433
 msgid ""
@@ -2323,51 +2341,56 @@ msgid ""
 "will manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
+"* Выберите устройство микшера ALSA *\n"
+"Внутренний модуль ALSA выводить звук напрямую через ALSA, он не использует "
+"модули эффектов и вывода из проигрывателя. Во время воспроизведения "
+"регулятор громкости проигрывателя будет управлять устройством, которое вы "
+"выберете здесь. Если вы используете порты синтезатора, вы вероятно захотите "
+"выбрать регулятор Synth."
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "ALSA Backend not loaded or not available"
-msgstr ""
+msgstr "Внутренний модуль ALSA не загружен или недоступен"
 
 #: src/amidi-plug/i_configure-ap.c:56
 msgid "AMIDI-Plug - backend information"
-msgstr ""
+msgstr "AMIDI-Plug - информация о внутреннем модуле"
 
 #: src/amidi-plug/i_configure-ap.c:194
 msgid "AMIDI-PLUG PREFERENCES"
-msgstr ""
+msgstr "НАСТРОЙКИ AMIDI-PLUG"
 
 #: src/amidi-plug/i_configure-ap.c:221
 msgid "Backend selection"
-msgstr ""
+msgstr "Выбор внутреннего модуля"
 
 #: src/amidi-plug/i_configure-ap.c:225
 msgid "Available backends"
-msgstr ""
+msgstr "Доступные внутренние модули"
 
 #: src/amidi-plug/i_configure-ap.c:255
-#, fuzzy
 msgid "Playback settings"
-msgstr "Настройки ReplayGain:"
+msgstr "Настройки воспроизведения"
 
 #: src/amidi-plug/i_configure-ap.c:260
 msgid "Transpose: "
-msgstr ""
+msgstr "Транспонирование: "
 
 #: src/amidi-plug/i_configure-ap.c:269
 msgid "Drum shift: "
-msgstr ""
+msgstr "Смещение ударных: "
 
 #: src/amidi-plug/i_configure-ap.c:291
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "предвычилять длительность MIDI файлов в списке"
 
 #: src/amidi-plug/i_configure-ap.c:296
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "считывать коментарии из MIDI файлов (если доступны)"
 
 #: src/amidi-plug/i_configure-ap.c:301
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "считывать тексты из MIDI файлов (если доступны)"
 
 #: src/amidi-plug/i_configure-ap.c:320
 msgid ""
@@ -2384,6 +2407,17 @@ msgid ""
 "FluidSynth backend.\n"
 "Press the info button to read specific information about each backend."
 msgstr ""
+"* Выбор внутреннего модуля *\n"
+"AMIDI-Plug работает в модульном режиме; здесь вам необходимо выбрать "
+"внутренний модуль; тоесть способ, с помощью которого события MIDI будут "
+"обрабатываться и проигрываться.\n"
+"Если у вас есть аппаратный синтезатор на вашей звуковой карте, и ALSA его "
+"поддерживает, то лучше выбрать модуль ALSA. Он может также быть использован "
+"для всего что предоставляет интерфейс для секвенсера ALSA, включая "
+"программные синтезаторы или внешние устройства.\n"
+"Если вы хотите использовать программный синтезатор и/или хотите пропускать "
+"звук через модули эффектов и вывода то вам следует использовать хороший "
+"модуль FluidSynth."
 
 #: src/amidi-plug/i_configure-ap.c:331
 msgid ""
@@ -2393,6 +2427,11 @@ msgid ""
 "those on midi channel 10, reserved for percussions). Expecially useful if "
 "you wish to sing or play along with another instrument."
 msgstr ""
+"* Транспонирование *\n"
+"Этот параметр позволяет вам воспроизводить MIDI файл транспонировав его в "
+"другой ряд, смещая все его ноты (кроме 10 канала, который зарезервирован для "
+"ударных) на желаемое количество полутонов. Очень удобно, если вы хотите петь "
+"или играть вместе с другим инструментом."
 
 #: src/amidi-plug/i_configure-ap.c:337
 msgid ""
@@ -2403,6 +2442,12 @@ msgid ""
 "wish to enhance (or reduce, or alter) percussion sounds, try to play with "
 "this value."
 msgstr ""
+"* Смещение ударных *\n"
+"Этот параметр позволяет вам сместить ноты на 10 канале (стандартный канал "
+"для ударных) на желаемое количество полутонов. В результате во время "
+"воспроизведения будет использован другой ряд ударных, поэтому если вы хотите "
+"усилить (ослабить, или изменить) звуки ударных, попробуйте "
+"поэкспериментировать с этим значением."
 
 #: src/amidi-plug/i_configure-ap.c:344
 msgid ""
@@ -2414,6 +2459,14 @@ msgid ""
 "faster playlist loading (when a lot of MIDI files are added), enable it to "
 "display more information in the playlist straight after loading."
 msgstr ""
+"* Предвычислять длительность MIDI *\n"
+"Если этот параметр включен, AMIDI-Plug будет вычислять длительность MIDI "
+"файлов сразу при запросе проигрывателя, вместо того чтобы дожидаться когда "
+"этот файл будет проигран. Например, длительность MIDI будет вычислена сразу "
+"при добавлении MIDI файла в список. Отключите этот параметр, если вы хотите "
+"ускорить загрузку списка воспроизведения (когда добавлено много MIDI "
+"файлов), или включите его для показа большей информации в списке сразу после "
+"загрузки."
 
 #: src/amidi-plug/i_configure-ap.c:353
 msgid ""
@@ -2422,6 +2475,10 @@ msgid ""
 "etc.). If this option is enabled, AMIDI-Plug will extract and display "
 "comments (if available) in the file information dialog."
 msgstr ""
+"* Считывать комментарии из MIDI файлов *\n"
+"Некоторые MIDI файлы содержат текстовые комментарии (автор, авторское право, "
+"ноты, и др.). Если этот параметр включен, AMIDI-Plug будет считывать и "
+"показывать комментарии (если доступны) в информационном окне."
 
 #: src/amidi-plug/i_configure-ap.c:358
 msgid ""
@@ -2430,189 +2487,181 @@ msgid ""
 "will extract and display song lyrics (if available) in the file information "
 "dialog."
 msgstr ""
+"* Считывать тексты из MIDI файлов *\n"
+"Некоторые MIDI файлы содержат тексты песен. Если этот параметр включен, "
+"AMIDI-Plug будет считывать и показывать тексты песен (если доступны) в "
+"информационном окне."
 
 #: src/amidi-plug/i_configure-dummy.c:137
 msgid "DUMMY BACKEND CONFIGURATION"
-msgstr ""
+msgstr "НАСТРОЙКА ВНУТРЕННЕГО МОДУЛЯ ПУСТЫШКИ"
 
 #: src/amidi-plug/i_configure-dummy.c:173
-#, fuzzy
 msgid "MIDI logger settings"
-msgstr "Настройки микшера:"
+msgstr "Настройки журнала MIDI"
 
 #: src/amidi-plug/i_configure-dummy.c:181
 msgid "Do not log anything"
-msgstr ""
+msgstr "Не выводить ничего"
 
 #: src/amidi-plug/i_configure-dummy.c:185
 msgid "Log MIDI events to standard output"
-msgstr ""
+msgstr "Выводить события MIDI в стандартный вывод"
 
 #: src/amidi-plug/i_configure-dummy.c:189
 msgid "Log MIDI events to standard error"
-msgstr ""
+msgstr "Выводить события MIDI в стандартный вывод ошибок"
 
 #: src/amidi-plug/i_configure-dummy.c:193
 msgid "Log MIDI events to file"
-msgstr ""
+msgstr "Выводить события MIDI в файл"
 
 #: src/amidi-plug/i_configure-dummy.c:202
-#, fuzzy
 msgid "Logfile settings"
-msgstr "Настройки микшера:"
+msgstr "Настройки файла журнала"
 
 #: src/amidi-plug/i_configure-dummy.c:209
 msgid "Use a single file to log everything (rewrite)"
-msgstr ""
+msgstr "Использовать один файл для вывода (перезаписывать)"
 
 #: src/amidi-plug/i_configure-dummy.c:213
 msgid "Use a single file to log everything (append)"
-msgstr ""
+msgstr "Использовать один файл для вывода (добавлять)"
 
 #: src/amidi-plug/i_configure-dummy.c:217
 msgid "Use a different logfile for each MIDI file"
-msgstr ""
+msgstr "Использовать отдельный файл для каждого MIDI файла"
 
 #: src/amidi-plug/i_configure-dummy.c:223
 msgid "» Log dir:"
-msgstr ""
+msgstr "» Каталог журнала:"
 
 #: src/amidi-plug/i_configure-dummy.c:229
 #: src/amidi-plug/i_configure-dummy.c:241
 msgid "browse"
-msgstr ""
+msgstr "просмотр"
 
 #: src/amidi-plug/i_configure-dummy.c:235
 msgid "» Log file:"
-msgstr ""
+msgstr "» Файл журнала:"
 
 #: src/amidi-plug/i_configure-dummy.c:267
-#, fuzzy
 msgid "Playback speed"
-msgstr "Воспроизведение"
+msgstr "Скорость воспроизведения"
 
 #: src/amidi-plug/i_configure-dummy.c:272
 msgid "Play at normal speed"
-msgstr ""
+msgstr "Воспроизводить на нормальной скорости"
 
 #: src/amidi-plug/i_configure-dummy.c:275
 msgid "Play as fast as possible"
-msgstr ""
+msgstr "Воспроизводить на максимальной скорости"
 
 #: src/amidi-plug/i_configure-dummy.c:329
 msgid "Dummy Backend not loaded or not available"
-msgstr ""
+msgstr "Внутренний модуль пустышка не загружен или недоступен"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr ""
+msgstr "AMIDI-Plug - выбор SoundFont файла"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:362
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-msgstr ""
+msgstr "НАСТРОЙКА ВНУТРЕННЕГО МОДУЛЯ FLUIDSYNTH"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "SoundFont settings"
-msgstr ""
+msgstr "Настройки SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
-msgstr ""
+msgstr "Имя файла"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:452
 msgid "Size (bytes)"
-msgstr ""
+msgstr "Размер (байты)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:501
 msgid "Load SF on player start"
-msgstr ""
+msgstr "Загружать SF при запуске проигрывателя"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:505
 msgid "Load SF on first midifile play"
-msgstr ""
+msgstr "Загружать SF при воспроизведении первого MIDI файла"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:520
-#, fuzzy
 msgid "Synthesizer settings"
-msgstr "Настройки микшера:"
+msgstr "Настройки синтезатора"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:529
-#, fuzzy
 msgid "gain"
-msgstr "Латиноамериканская"
+msgstr "усиление"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:535
 #: src/amidi-plug/i_configure-fluidsynth.c:563
 #: src/amidi-plug/i_configure-fluidsynth.c:591
 #: src/amidi-plug/i_configure-fluidsynth.c:622
-#, fuzzy
 msgid "use default"
-msgstr "По умолчанию"
+msgstr "по умолчанию"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:538
 #: src/amidi-plug/i_configure-fluidsynth.c:566
 msgid "value:"
-msgstr ""
+msgstr "значение:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:557
 msgid "poliphony"
-msgstr ""
+msgstr "полифония"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:585
-#, fuzzy
 msgid "reverb"
-msgstr "Сервер"
+msgstr "реверберация"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:594
 #: src/amidi-plug/i_configure-fluidsynth.c:625
-#, fuzzy
 msgid "yes"
-msgstr "Да"
+msgstr "да"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:596
 #: src/amidi-plug/i_configure-fluidsynth.c:627
-#, fuzzy
 msgid "no"
-msgstr "Моно"
+msgstr "нет"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:616
-#, fuzzy
 msgid "chorus"
-msgstr "Хор"
+msgstr "хор"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:647
-#, fuzzy
 msgid "sample rate"
-msgstr "Частота:"
+msgstr "частота"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:662
 msgid "custom "
-msgstr ""
+msgstr "особый "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:705
-#, fuzzy
 msgid "Buffer settings"
-msgstr "Буферизация"
+msgstr "Настройки буфера"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:714
 msgid "<span size=\"smaller\">def</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">определение</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:723
 msgid "<span size=\"smaller\">handy buffer tuner</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">тонкая настройка буфера</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:737
 msgid "<span size=\"smaller\">size</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">размер</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:751
 msgid "<span size=\"smaller\">margin</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">поле</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:765
 msgid "<span size=\"smaller\">increment</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">увеличение</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:807
 msgid ""
@@ -2621,6 +2670,11 @@ msgid ""
 "valid SoundFont file here (use absolute paths). The loading order is from "
 "the top (first) to the bottom (last)."
 msgstr ""
+"* Выбор файлов SoundFont *\n"
+"Для того чтобы воспроизводить MIDI с помощью FluidSynth, вам необходимо "
+"указать здесь по крайней мере один рабочий SoundFont файл (используя "
+"абсолютные пути). Файлы загружаются с верху (с первого) в низ (до "
+"последнего)."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:812
 msgid ""
@@ -2631,6 +2685,13 @@ msgid ""
 "start, or before the first MIDI file is played (the latter is a better "
 "choice if you don't use your player to listen MIDI files only)."
 msgstr ""
+"* Загружать SoundFont при запуске проигрывателя *\n"
+"В зависимости от скорости вашей системы, загрузка SoundFont в FluidSynth "
+"может потребовать до нескольких секунд. Эта задача выполняется один раз "
+"(SoundFont остается загруженным пока не изменится, или будет выгружен) во "
+"время запуска проигрывателя, или перед воспроизведением MIDI файла "
+"(последнее удобнее если вы испольуете проигрыватель не только для MIDI "
+"файлов)."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:820
 msgid ""
@@ -2641,6 +2702,13 @@ msgid ""
 "start, or before the first MIDI file is played (the latter is a better "
 "choice if you don't use your player to listen MIDI files only)."
 msgstr ""
+"* Загружать SoundFont при воспроизведении первого MIDI файла *\n"
+"В зависимости от скорости вашей системы, загрузка SoundFont в FluidSynth "
+"может потребовать до нескольких секунд. Эта задача выполняется один раз "
+"(SoundFont остается загруженным пока не изменится, или будет выгружен) во "
+"время запуска проигрывателя, или перед воспроизведением MIDI файла "
+"(последнее удобнее если вы испольуете проигрыватель не только для MIDI "
+"файлов)."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:828
 msgid ""
@@ -2649,6 +2717,10 @@ msgid ""
 "the synthesizer; it is set to a low value by default to avoid the saturation "
 "of the output when random MIDI files are played."
 msgstr ""
+"* Усиление синтезатора *\n"
+"Из документации FluidSynth: усиление добавляется на конечном шаге на выходе "
+"из синтезатора, по-умолчанию оно установлено в низкое значение чтобы "
+"избежать искажений при воспроизведении разных MIDI файлов."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:833
 msgid ""
@@ -2661,6 +2733,12 @@ msgid ""
 "channels; the number of voices activated depends on the number of instrument "
 "zones that fall in the correspond to the velocity and key of the played note."
 msgstr ""
+"* Полифония синтезатора *\n"
+"Из документации FluidSynth: полифония определят, сколько голосов могут "
+"играть одновременно; количество голосов не обязательно соответствует "
+"количеству нот, воспроизводимых одновременно; на самом деле, когда нота "
+"стоит на каком-то канале MIDI, синтезатор для этого канала может создать "
+"несколько голосов, например, для левого аудио канала и для правого."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:843
 #: src/amidi-plug/i_configure-fluidsynth.c:849
@@ -2671,6 +2749,11 @@ msgid ""
 "sent to the reverb module depends on the \"reverb send\" generator defined "
 "in the SoundFont."
 msgstr ""
+"* Реверберация синтезатора *\n"
+"Из документации FluidSynth: когда установлено в \"да\", включается модуль "
+"реверберации; заметьте, что когда модуль реверберации включен, количество "
+"сигнала отправляемого на него зависит от параметра \"reverb send\" "
+"установленного в SoundFont."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:855
 #: src/amidi-plug/i_configure-fluidsynth.c:861
@@ -2681,6 +2764,11 @@ msgid ""
 "sent to the chorus module depends on the \"chorus send\" generator defined "
 "in the SoundFont."
 msgstr ""
+"* Хор синтезатора *\n"
+"Из документации FluidSynth: когда установлено в \"да\", включается модуль "
+"хора; заметьте, что когда модуль хора включен, количество сигнала "
+"отправляемого на него завивит от параметра \"chorus send\" установленного в "
+"SoundFont."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:867
 #: src/amidi-plug/i_configure-fluidsynth.c:873
@@ -2693,12 +2781,20 @@ msgid ""
 "NOTE: the default buffer parameters are tuned for 44100Hz; changing the "
 "sample rate may require buffer params tuning to obtain good sound quality."
 msgstr ""
+"* Частота синтезатора *\n"
+"Чатота звука, который генерирует синтезатор. Вы можете также указать особое "
+"значение в интервале 22050-96000 Гц.\n"
+"Замечание: параметры буфера по-умолчанию настроены на 44100 Гц; изменение "
+"частоты может потребовать настройку параметров буфера, для получения "
+"хорошего звука."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:891
 msgid ""
 "* FluidSynth backend buffer *\n"
 "This button resets the backend buffer parameters to default values."
 msgstr ""
+"* Буфер внутреннего модуля FluidSynth *\n"
+"Эта кнопка сбрасывает настройки буфера до значений по-умолчанию."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:894
 msgid ""
@@ -2708,6 +2804,12 @@ msgid ""
 "to adjust the buffer parameters. Try to move the \"handy buffer tuner\" some "
 "steps to the right until playback is fluid again."
 msgstr ""
+"* Буфер внутреннего модуля FluidSynth *\n"
+"Если вы замечаете пропуски или замедление во время воспроизведения "
+"композиции и ваша система не выполняет каких-либо интенсивных задач (кроме "
+"самого FluidSynth), то возможно вам следует подкорректировать параметры "
+"буфера. Попробуйте подвинуть ползунок \"тонкая настройка буфера\" на "
+"несколько пунктов вправо, до тех пор пока воспроизведение не станет гладким."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:900
 #: src/amidi-plug/i_configure-fluidsynth.c:911
@@ -2725,111 +2827,118 @@ msgid ""
 "where extramargin is a value computed as number_of_seconds_of_playback / "
 "margin_INCREMENT ."
 msgstr ""
+"* Буфер внутреннего модуля FluidSynth *\n"
+"Прежде чем вручную настраивать параметры буфера, попробуйте "
+"подкорректировать его с помощью ползунка \"тонка настройка буфера\".Тем не "
+"менее, если вы хотите хорошо настроить что-то и знаете, что делаете, вы "
+"можете понять как работают эти параметры посмотрев исходный код модуля (b-"
+"fluidsynth.c). Если коротко, то в каждый момент времени (пропорционально "
+"buffer_SIZE и частоте), прямо перед созданием очередной порции звука, у "
+"буфера меняется размер по следующему принципу:\n"
+"buffer_SIZE + buffer_MARGIN + extramargin\n"
+"где extramargin это число, вычисляемое как "
+"количество_секунд_воспроизведения / margin_INCREMENT ."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:937
 msgid "FluidSynth Backend not loaded or not available"
-msgstr ""
+msgstr "Внутренний модуль FluidSynth не загружен или недоступен"
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
-msgstr ""
+msgstr "НАСТРОЙКА ВНУТРЕННЕГО МОДУЛЯ TIMIDITY"
 
 #: src/amidi-plug/i_configure.c:75
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Plug - выбор файла"
 
 #: src/amidi-plug/i_configure.c:122
-#, fuzzy
 msgid "AMIDI-Plug - configuration"
-msgstr "Настройка модуля вывода звука ESD"
+msgstr "AMIDI-Plug - настройка"
 
 #: src/amidi-plug/i_configure.c:241
 msgid "AMIDI-Plug message"
-msgstr ""
+msgstr "AMIDI-Plug сообщение"
 
 #: src/amidi-plug/i_configure.c:242
 msgid "Please stop the player before changing AMIDI-Plug settings."
 msgstr ""
+"Пожалуйста остановите воспроизведение перед изменением настроек AMIDI-PLug"
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> Информация MIDI </span>"
 
 #: src/amidi-plug/i_fileinfo.c:205
-#, fuzzy
 msgid "Format:"
-msgstr "Формат ID3-тега:"
+msgstr "Формат:"
 
 #: src/amidi-plug/i_fileinfo.c:208
-#, fuzzy
 msgid "Length (msec):"
-msgstr "Длина:"
+msgstr "Длительность (мсек):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
-msgstr ""
+msgstr "Количество дорожек:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr ""
+msgstr "переменный"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
-msgstr ""
+msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr ""
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr ""
+msgstr "Time Div:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> Коментарии и тексты MIDI </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
-msgstr ""
+msgstr "* в этом MIDI файле нет коментариев *"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no lyrics available in this MIDI file *"
-msgstr ""
+msgstr "* в этом MIDI файле нет текстов *"
 
 #: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
-msgstr ""
+msgstr "  (недопустимая последовательность Юникод)"
 
 #: src/aosd/aosd_style.c:76
 msgid "Rectangle"
-msgstr ""
+msgstr "Прямоугольник"
 
 #: src/aosd/aosd_style.c:80
 msgid "Rounded Rectangle"
-msgstr ""
+msgstr "Скругленный прямоугольник"
 
 #: src/aosd/aosd_style.c:84
 msgid "Concave Rectangle"
-msgstr ""
+msgstr "Вогнутый прямоугольник"
 
 #: src/aosd/aosd_style.c:88
 msgid "None"
 msgstr "Нет"
 
 #: src/aosd/aosd_trigger.c:60
-#, fuzzy
 msgid "Playback Start"
-msgstr "Воспроизведение"
+msgstr "Начало воспроизведения"
 
 #: src/aosd/aosd_trigger.c:61
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
+msgstr "Показывает OSD, когда начинается проигрывание."
 
 #: src/aosd/aosd_trigger.c:65
-#, fuzzy
 msgid "Title Change"
-msgstr "Один канал"
+msgstr "Изменение названия"
 
 #: src/aosd/aosd_trigger.c:66
 msgid ""
@@ -2837,135 +2946,134 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
+"Показывает OSD, когда во время проигрывания название песни меняется, но имя "
+"файла остается тем же. Это полезно, для показа изменений названий у потоков "
+"из Интернет."
 
 #: src/aosd/aosd_ui.c:166
 msgid "Placement"
-msgstr ""
+msgstr "Расположение"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
-msgstr ""
+msgstr "Смещение по X:"
 
 #: src/aosd/aosd_ui.c:209
 msgid "Relative Y offset:"
-msgstr ""
+msgstr "Смещение по Y:"
 
 #: src/aosd/aosd_ui.c:218
 msgid "Max OSD width:"
-msgstr ""
+msgstr "Максимальная ширина OSD:"
 
 #: src/aosd/aosd_ui.c:235
 msgid "Display OSD using:"
-msgstr ""
+msgstr "Показывать OSD, используя:"
 
 #: src/aosd/aosd_ui.c:237
 msgid "all monitors"
-msgstr ""
+msgstr "все мониторы"
 
 #: src/aosd/aosd_ui.c:240
 #, c-format
 msgid "monitor %i"
-msgstr ""
+msgstr "монитор %i"
 
 #: src/aosd/aosd_ui.c:293
 msgid "Timing (ms)"
-msgstr ""
+msgstr "Время (мс)"
 
 #: src/aosd/aosd_ui.c:298
 msgid "Display:"
-msgstr ""
+msgstr "Показа:"
 
 #: src/aosd/aosd_ui.c:303
 msgid "Fade in:"
-msgstr ""
+msgstr "Усиления:"
 
 #: src/aosd/aosd_ui.c:308
 msgid "Fade out:"
-msgstr ""
+msgstr "Затухания:"
 
 #: src/aosd/aosd_ui.c:380
 msgid "Fonts"
-msgstr ""
+msgstr "Шрифты"
 
 #: src/aosd/aosd_ui.c:405
 msgid "Shadow"
-msgstr ""
+msgstr "Тень"
 
 #: src/aosd/aosd_ui.c:449
 msgid "Select Skin File"
-msgstr ""
+msgstr "Выберите файл темы"
 
 #: src/aosd/aosd_ui.c:557
 msgid "Render Style"
-msgstr ""
+msgstr "Стиль отображения"
 
 #: src/aosd/aosd_ui.c:573
-#, fuzzy
 msgid "Colors"
-msgstr "Закрыть"
+msgstr "Цвета"
 
 #: src/aosd/aosd_ui.c:606
 msgid "Custom Skin"
-msgstr ""
+msgstr "Особая тема"
 
 #: src/aosd/aosd_ui.c:612
 msgid "Skin file:"
-msgstr ""
+msgstr "Файл темы:"
 
 #: src/aosd/aosd_ui.c:615
 msgid "Browse"
-msgstr ""
+msgstr "Просмотреть"
 
 #: src/aosd/aosd_ui.c:717
 msgid "Enable trigger"
-msgstr ""
+msgstr "Включить событие"
 
 #: src/aosd/aosd_ui.c:744
 msgid "Event"
-msgstr ""
+msgstr "Событие"
 
 #: src/aosd/aosd_ui.c:845
-#, fuzzy
 msgid "Audacious OSD - configuration"
-msgstr "Настройка проигрывателя компакт дисков"
+msgstr "Настройка Audacious OSD"
 
 #: src/aosd/aosd_ui.c:866
 msgid "Test"
-msgstr ""
+msgstr "Проверка"
 
 #: src/aosd/aosd_ui.c:881
-#, fuzzy
 msgid "Position"
-msgstr "Описание:"
+msgstr "Положение"
 
 #: src/aosd/aosd_ui.c:886
-#, fuzzy
 msgid "Animation"
-msgstr "Организация:"
+msgstr "Анимация"
 
 #: src/aosd/aosd_ui.c:891
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #: src/aosd/aosd_ui.c:896
-#, fuzzy
 msgid "Decoration"
-msgstr "Описание:"
+msgstr "Стиль"
 
 #: src/aosd/aosd_ui.c:901
-#, fuzzy
 msgid "Trigger"
-msgstr "Анонс"
+msgstr "События"
 
 #: src/aosd/aosd_ui.c:937
 msgid "Audacious OSD - about"
-msgstr ""
+msgstr "О модуле Audacious OSD"
 
 #: src/aosd/aosd_ui.c:968
 msgid ""
 "\n"
 "Audacious OSD "
 msgstr ""
+"\n"
+"Audacious OSD "
 
 #: src/aosd/aosd_ui.c:969
 msgid ""
@@ -2979,85 +3087,87 @@ msgid ""
 "http://neugierig.org/software/ghosd/\n"
 "\n"
 msgstr ""
+"\n"
+"http://www.develia.org/projects.php?p=aosd\n"
+"создан Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"On-Screen-Display основан на библиотеке Ghosd\n"
+"написанной Evan Martin\n"
+"http://neugierig.org/software/ghosd/\n"
+"\n"
 
 #: src/arts/configure.c:51
-#, fuzzy
 msgid "aRts Driver configuration"
-msgstr "Настройка драйвера OSS"
+msgstr "Настройка драйвера aRts"
 
 #: src/evdev-plug/ed.c:56
-#, fuzzy
 msgid "Playback->Play"
-msgstr "Воспроизведение"
+msgstr "Воспроизведение->Играть"
 
 #: src/evdev-plug/ed.c:57
-#, fuzzy
 msgid "Playback->Stop"
-msgstr "Воспроизведение"
+msgstr "Воспроизведение->Стоп"
 
 #: src/evdev-plug/ed.c:58
-#, fuzzy
 msgid "Playback->Pause"
-msgstr "Воспроизведение"
+msgstr "Воспроизведение->Приостановить"
 
 #: src/evdev-plug/ed.c:59
-#, fuzzy
 msgid "Playback->Prev"
-msgstr "Воспроизведение"
+msgstr "Воспроизведение->Предыдущий"
 
 #: src/evdev-plug/ed.c:60
-#, fuzzy
 msgid "Playback->Next"
-msgstr "Воспроизведение"
+msgstr "Воспроизведение->Следующий"
 
 #: src/evdev-plug/ed.c:61
-#, fuzzy
 msgid "Playback->Eject"
-msgstr "Воспроизведение"
+msgstr "Воспроизведение->Извлечь"
 
 #: src/evdev-plug/ed.c:63
 msgid "Playlist->Repeat"
-msgstr ""
+msgstr "Список->Повторять"
 
 #: src/evdev-plug/ed.c:64
 msgid "Playlist->Shuffle"
-msgstr ""
+msgstr "Список->Случайно"
 
 #: src/evdev-plug/ed.c:66
 msgid "Volume->Up_5"
-msgstr ""
+msgstr "Громкость->Вверх_5"
 
 #: src/evdev-plug/ed.c:67
 msgid "Volume->Down_5"
-msgstr ""
+msgstr "Громкость->Вниз_5"
 
 #: src/evdev-plug/ed.c:68
 msgid "Volume->Up_10"
-msgstr ""
+msgstr "Громкость->Вверх_10"
 
 #: src/evdev-plug/ed.c:69
 msgid "Volume->Down_10"
-msgstr ""
+msgstr "Громкость->Вниз_10"
 
 #: src/evdev-plug/ed.c:70
 msgid "Volume->Mute"
-msgstr ""
+msgstr "Громкость->Тихо"
 
 #: src/evdev-plug/ed.c:72
 msgid "Window->Main"
-msgstr ""
+msgstr "Окно->Главное"
 
 #: src/evdev-plug/ed.c:73
 msgid "Window->Playlist"
-msgstr ""
+msgstr "Окно->Список"
 
 #: src/evdev-plug/ed.c:74
 msgid "Window->Equalizer"
-msgstr ""
+msgstr "Оксно->Еквалайзер"
 
 #: src/evdev-plug/ed.c:75
 msgid "Window->JumpToFile"
-msgstr ""
+msgstr "Окно->ПерейтиНаФайл"
 
 #: src/evdev-plug/ed_internals.c:93
 #, c-format
@@ -3065,6 +3175,9 @@ msgid ""
 "event-device-plugin: unable to open device file %s , skipping this device; "
 "check that the file exists and that you have read permission for it\n"
 msgstr ""
+"event-device-plugin: невозможно открыть файл устройства %s , пропуск "
+"устройства; проверьте, что файл существует и что у вас есть привелегии для "
+"его чтения\n"
 
 #: src/evdev-plug/ed_internals.c:102
 #, c-format
@@ -3072,29 +3185,38 @@ msgid ""
 "event-device-plugin: unable to create a io_channel for device file %s ,"
 "skipping this device\n"
 msgstr ""
+"event-device-plugin: невозможно создать io_channel для устройства %s ,"
+"пропуск устройства\n"
 
 #: src/evdev-plug/ed_internals.c:339
 msgid ""
 "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
 "detection of event devices won't work.\n"
 msgstr ""
+"event-device-plugin: невозможно открыть /proc/bus/input/devices , "
+"автоматическое распознавание устройств событий не будет работать.\n"
 
 #: src/evdev-plug/ed_internals.c:348
 msgid ""
 "event-device-plugin: unable to open a io_channel for /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
+"event-device-plugin: невозможно открыть io_channel для /proc/bus/input/"
+"devices, автоматическое распознавание устройств событий не будет работать.\n"
 
 #: src/evdev-plug/ed_internals.c:358
 msgid ""
 "event-device-plugin: an error occurred while reading /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
 msgstr ""
+"event-device-plugin: произошла ошибка при чтении /proc/bus/input/devices , "
+"автоматическое распознавание устройств событий не будет работать.\n"
 
 #: src/evdev-plug/ed_internals.c:421
 #, c-format
 msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
 msgstr ""
+"event-device-plugin: устройство %s не найдено в /dev/input , пропускаю.\n"
 
 #: src/evdev-plug/ed_internals.c:486 src/evdev-plug/ed_internals.c:580
 #, c-format
@@ -3102,6 +3224,8 @@ msgid ""
 "event-device-plugin: unable to load config file %s , default settings will "
 "be used.\n"
 msgstr ""
+"event-device-plugin: невозможно загрузить конфигурационный файл %s , будут "
+"использованы настройки по-умолчанию.\n"
 
 #: src/evdev-plug/ed_internals.c:532
 #, c-format
@@ -3109,6 +3233,8 @@ msgid ""
 "event-device-plugin: incomplete information in config file for device \"%s"
 "\" , skipping.\n"
 msgstr ""
+"event-device-plugin: неполная информация в конфигурационном файле для "
+"устройства \"%s\" , пропускаю.\n"
 
 #: src/evdev-plug/ed_internals.c:601 src/evdev-plug/ed_internals.c:933
 #, c-format
@@ -3116,6 +3242,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_active value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"event-device-plugin: настройка, невозможно получить значение is_active для "
+"устройства \"%s\", пропускаю.\n"
 
 #: src/evdev-plug/ed_internals.c:837
 #, c-format
@@ -3123,6 +3251,8 @@ msgid ""
 "event-device-plugin: unable to access local directory %s , settings will not "
 "be saved.\n"
 msgstr ""
+"event-device-plugin: невозможно получить доступ к локальному каталогу %s , "
+"настройки не будут сохранены.\n"
 
 #: src/evdev-plug/ed_internals.c:887
 #, c-format
@@ -3130,6 +3260,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get filename value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"event-device-plugin: настройка, невозможно получить имя файла для устройства "
+"\"%s\", пропускаю.\n"
 
 #: src/evdev-plug/ed_internals.c:903
 #, c-format
@@ -3137,6 +3269,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
 "\", skipping it.\n"
 msgstr ""
+"event-device-plugin: настройка, невозможно получить физическое значение для "
+"устройства \"%s\", пропускаю.\n"
 
 #: src/evdev-plug/ed_internals.c:919
 #, c-format
@@ -3144,6 +3278,8 @@ msgid ""
 "event-device-plugin: configuration, unable to get is_custom value for device "
 "\"%s\", skipping it.\n"
 msgstr ""
+"event-device-plugin: настройка, невозможно получить значение is_custom для "
+"устройства \"%s\", пропускаю.\n"
 
 #: src/evdev-plug/ed_internals.c:943
 #, c-format
@@ -3151,28 +3287,33 @@ msgid ""
 "event-device-plugin: configuration, unexpected value for device \"%s\", "
 "skipping it.\n"
 msgstr ""
+"event-device-plugin: настройка, неожиданное значение для устройства \"%s\", "
+"пропускаю.\n"
 
 #: src/evdev-plug/ed_ui.c:274 src/evdev-plug/ed_ui.c:410
 #: src/evdev-plug/ed_ui.c:862
-#, fuzzy
 msgid "Information"
-msgstr "Формат ID3-тега:"
+msgstr "Информация"
 
 #: src/evdev-plug/ed_ui.c:275
 msgid ""
 "Cannot open bindings window for a not-detected device.\n"
 "Ensure that the device has been correctly plugged in."
 msgstr ""
+"Невозможно открыть окно для неопознанного устройства.\n"
+"Убедитесь, что устройство правильно подключено."
 
 #: src/evdev-plug/ed_ui.c:319
 msgid ""
 "Unable to open selected device.\n"
 "Please check read permissions on device file."
 msgstr ""
+"Невозможно открыть выбранное устройство.\n"
+"Пожалуйста проверьте права доступа к файлу устройства."
 
 #: src/evdev-plug/ed_ui.c:340
 msgid "EvDev-Plug - Add custom device"
-msgstr ""
+msgstr "EvDev-Plug - Добавить особое устройство"
 
 #: src/evdev-plug/ed_ui.c:352
 msgid ""
@@ -3183,59 +3324,61 @@ msgid ""
 "/dev/input/ ), you may want to add a custom device, explicitly specifying\n"
 "name and device file."
 msgstr ""
+"EvDev-Plug пытается автоматически найти и обновлять информацию об\n"
+"устройствах событий, присутствующих в системе.\n"
+"Тем не менее, если автоопределение не работает в вашей системе, или\n"
+"ваши устройства находятся в нестандартных местах (сейчас они ищутся\n"
+"только в /dev/input/ ), вы можете добавить устройство вручную, указав\n"
+"название и файл устройства."
 
 #: src/evdev-plug/ed_ui.c:360
-#, fuzzy
 msgid "Device name:"
-msgstr "Устройство:"
+msgstr "Имя устройства:"
 
 #: src/evdev-plug/ed_ui.c:364
-#, fuzzy
 msgid "Device file:"
-msgstr "Устройство:"
+msgstr "Файл устройства:"
 
 #: src/evdev-plug/ed_ui.c:411
 msgid ""
 "Please specify both name and filename.\n"
 "Filename must be specified with absolute path."
 msgstr ""
+"Пожалуйста укажите название и имя файла.\n"
+"Имя файла должно быть указано с полным путем."
 
 #: src/evdev-plug/ed_ui.c:446
 msgid "Do you want to remove the existing configuration for selected device?\n"
 msgstr ""
+"Вы хотите удалить существующую конфигурацию для выбранного устройства?\n"
 
 #: src/evdev-plug/ed_ui.c:465
 msgid "Do you want to remove the selected custom device?\n"
-msgstr ""
+msgstr "Вы хотите удалить выбранное особое устройство?\n"
 
 #: src/evdev-plug/ed_ui.c:612
-#, fuzzy
 msgid "EvDev-Plug - Configuration"
-msgstr "Настройка модуля поддержки формата MPEG"
+msgstr "EvDev-Plug - Настройка"
 
 #: src/evdev-plug/ed_ui.c:651
-#, fuzzy
 msgid "Active"
-msgstr "Кислота"
+msgstr "Активное"
 
 #: src/evdev-plug/ed_ui.c:664
-#, fuzzy
 msgid "Device Name"
-msgstr "Устройство"
+msgstr "Название устройства"
 
 #: src/evdev-plug/ed_ui.c:668
-#, fuzzy
 msgid "Device File"
-msgstr "Устройство"
+msgstr "Файл устройства"
 
 #: src/evdev-plug/ed_ui.c:672
-#, fuzzy
 msgid "Device Address"
-msgstr "Устройства"
+msgstr "Адрес устройства"
 
 #: src/evdev-plug/ed_ui.c:689
 msgid "_Bindings"
-msgstr ""
+msgstr "_Привязки клавиш"
 
 #: src/evdev-plug/ed_ui.c:826
 msgid ""
@@ -3243,6 +3386,9 @@ msgid ""
 "if no key is pressed in five seconds, this window\n"
 "will close without binding changes."
 msgstr ""
+"Нажмите клавишу на вашем устройстве, чтобы привязать ее;\n"
+"если ни одна клавиша не будет нажата в течение пяти секунд,\n"
+"это окно закроется без изменения привязки."
 
 #: src/evdev-plug/ed_ui.c:863
 msgid ""
@@ -3251,33 +3397,38 @@ msgid ""
 "It's not possible to assign multiple actions to the same input event "
 "(although it's possible to assign the same action to multiple events)."
 msgstr ""
+"Это событие уже назначено.\n"
+"\n"
+"Невозможно назначить несколько действий на одно и тоже входное событие (так "
+"же как нельзя назначить одно действие на несколько событий)."
 
 #: src/evdev-plug/ed_ui.c:1312
-#, fuzzy
 msgid "EvDev-Plug - Bindings Configuration"
-msgstr "Настройка модуля поддержки формата MPEG"
+msgstr "EvDev-Plug - Настойка привязок клавиш"
 
 #: src/evdev-plug/ed_ui.c:1352
 msgid "<b>Name: </b>"
-msgstr ""
+msgstr "<b>Название: </b>"
 
 #: src/evdev-plug/ed_ui.c:1361
 msgid "<b>Filename: </b>"
-msgstr ""
+msgstr "<b>Имя файла: </b>"
 
 #: src/evdev-plug/ed_ui.c:1370
 msgid "<b>Phys.Address: </b>"
-msgstr ""
+msgstr "<b>Физ. Адрес: </b>"
 
 #: src/evdev-plug/ed_ui.c:1448
 msgid "EvDev-Plug - about"
-msgstr ""
+msgstr "EvDev-Plug - о модуле"
 
 #: src/evdev-plug/ed_ui.c:1479
 msgid ""
 "\n"
 "EvDev-Plug "
 msgstr ""
+"\n"
+"EvDev-Plug "
 
 #: src/evdev-plug/ed_ui.c:1480
 msgid ""
@@ -3289,437 +3440,433 @@ msgid ""
 "< james@develia.org >\n"
 "\n"
 msgstr ""
+"\n"
+"удалённое управление проигрывателем с помощью устройств событий\n"
+"http://www.develia.org/projects.php?p=evdevplug\n"
+"\n"
+"автор Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
 
 #: src/flac112/charset.c:40 src/flac113/charset.c:40
 msgid "Arabic (IBM-864)"
-msgstr ""
+msgstr "Арабская (IBM-864)"
 
 #: src/flac112/charset.c:41 src/flac113/charset.c:41
 msgid "Arabic (ISO-8859-6)"
-msgstr ""
+msgstr "Арабская (ISO-8859-6)"
 
 #: src/flac112/charset.c:42 src/flac113/charset.c:42
 msgid "Arabic (Windows-1256)"
-msgstr ""
+msgstr "Арабская (Windows-1256)"
 
 #: src/flac112/charset.c:43 src/flac113/charset.c:43
 msgid "Baltic (ISO-8859-13)"
-msgstr ""
+msgstr "Балтийская (ISO-8859-13)"
 
 #: src/flac112/charset.c:44 src/flac113/charset.c:44
 msgid "Baltic (ISO-8859-4)"
-msgstr ""
+msgstr "Балтийская (ISO-8859-4)"
 
 #: src/flac112/charset.c:45 src/flac113/charset.c:45
 msgid "Baltic (Windows-1257)"
-msgstr ""
+msgstr "Балтийская (Windows-1257)"
 
 #: src/flac112/charset.c:46 src/flac113/charset.c:46
 msgid "Celtic (ISO-8859-14)"
-msgstr ""
+msgstr "Кельтская (ISO-8859-14)"
 
 #: src/flac112/charset.c:47 src/flac113/charset.c:47
 msgid "Central European (IBM-852)"
-msgstr ""
+msgstr "Центральная Европа (IBM-852)"
 
 #: src/flac112/charset.c:48 src/flac113/charset.c:48
 msgid "Central European (ISO-8859-2)"
-msgstr ""
+msgstr "Центральная Европа (ISO-8859-2)"
 
 #: src/flac112/charset.c:49 src/flac113/charset.c:49
 msgid "Central European (Windows-1250)"
-msgstr ""
+msgstr "Центральная Европа (Windows-1250)"
 
 #: src/flac112/charset.c:50 src/flac113/charset.c:50
 msgid "Chinese Simplified (GB18030)"
-msgstr ""
+msgstr "Китайская упрощенная (GB18030)"
 
 #: src/flac112/charset.c:51 src/flac113/charset.c:51
 msgid "Chinese Simplified (GB2312)"
-msgstr ""
+msgstr "Китайская упрощенная (GB2312)"
 
 #: src/flac112/charset.c:52 src/flac113/charset.c:52
 msgid "Chinese Traditional (Big5)"
-msgstr ""
+msgstr "Китайская традиционная (Big5)"
 
 #: src/flac112/charset.c:53 src/flac113/charset.c:53
 msgid "Chinese Traditional (Big5-HKSCS)"
-msgstr ""
+msgstr "Китайская традиционная (Big5-HKSCS)"
 
 #: src/flac112/charset.c:54 src/flac113/charset.c:54
 msgid "Cyrillic (IBM-855)"
-msgstr ""
+msgstr "Кириллица (IBM-855)"
 
 #: src/flac112/charset.c:55 src/flac113/charset.c:55
 msgid "Cyrillic (ISO-8859-5)"
-msgstr ""
+msgstr "Кириллица (ISO-8859-5)"
 
 #: src/flac112/charset.c:56 src/flac113/charset.c:56
 msgid "Cyrillic (ISO-IR-111)"
-msgstr ""
+msgstr "Кириллица (ISO-IR-111)"
 
 #: src/flac112/charset.c:57 src/flac113/charset.c:57
 msgid "Cyrillic (KOI8-R)"
-msgstr ""
+msgstr "Кириллица (KOI8-R)"
 
 #: src/flac112/charset.c:58 src/flac113/charset.c:58
 msgid "Cyrillic (Windows-1251)"
-msgstr ""
+msgstr "Кириллица (Windows-1251)"
 
 #: src/flac112/charset.c:59 src/flac113/charset.c:59
 msgid "Cyrillic/Russian (CP-866)"
-msgstr ""
+msgstr "Кириллица/Россия (CP-866)"
 
 #: src/flac112/charset.c:60 src/flac113/charset.c:60
 msgid "Cyrillic/Ukrainian (KOI8-U)"
-msgstr ""
+msgstr "Кириллица/Украина (KOI8-U)"
 
 #: src/flac112/charset.c:61 src/flac113/charset.c:61
 msgid "English (US-ASCII)"
-msgstr ""
+msgstr "Английская (US-ASCII)"
 
 #: src/flac112/charset.c:62 src/flac113/charset.c:62
 msgid "Greek (ISO-8859-7)"
-msgstr ""
+msgstr "Греческая (ISO-8859-7)"
 
 #: src/flac112/charset.c:63 src/flac113/charset.c:63
 msgid "Greek (Windows-1253)"
-msgstr ""
+msgstr "Греческая (Windows-1253)"
 
 #: src/flac112/charset.c:64 src/flac113/charset.c:64
 msgid "Hebrew (IBM-862)"
-msgstr ""
+msgstr "Иврит (IBM-862)"
 
 #: src/flac112/charset.c:65 src/flac113/charset.c:65
 msgid "Hebrew (Windows-1255)"
-msgstr ""
+msgstr "Иврит (Windows-1255)"
 
 #: src/flac112/charset.c:66 src/flac113/charset.c:66
 msgid "Japanese (EUC-JP)"
-msgstr ""
+msgstr "Японская (EUC-JP)"
 
 #: src/flac112/charset.c:67 src/flac113/charset.c:67
 msgid "Japanese (ISO-2022-JP)"
-msgstr ""
+msgstr "Японская (ISO-2022-JP)"
 
 #: src/flac112/charset.c:68 src/flac113/charset.c:68
 msgid "Japanese (Shift_JIS)"
-msgstr ""
+msgstr "Японская (Shift_JIS)"
 
 #: src/flac112/charset.c:69 src/flac113/charset.c:69
 msgid "Korean (EUC-KR)"
-msgstr ""
+msgstr "Корейская (EUC-KR)"
 
 #: src/flac112/charset.c:70 src/flac113/charset.c:70
 msgid "Nordic (ISO-8859-10)"
-msgstr ""
+msgstr "Скандинавская (ISO-8859-10)"
 
 #: src/flac112/charset.c:71 src/flac113/charset.c:71
 msgid "South European (ISO-8859-3)"
-msgstr ""
+msgstr "Восточная Европа (ISO-8859-3)"
 
 #: src/flac112/charset.c:72 src/flac113/charset.c:72
 msgid "Thai (TIS-620)"
-msgstr ""
+msgstr "Тайская (TIS-620)"
 
 #: src/flac112/charset.c:73 src/flac113/charset.c:73
 msgid "Turkish (IBM-857)"
-msgstr ""
+msgstr "Турецкая (IBM-857)"
 
 #: src/flac112/charset.c:74 src/flac113/charset.c:74
 msgid "Turkish (ISO-8859-9)"
-msgstr ""
+msgstr "Турецкая (ISO-8859-9)"
 
 #: src/flac112/charset.c:75 src/flac113/charset.c:75
 msgid "Turkish (Windows-1254)"
-msgstr ""
+msgstr "Турецкая (Windows-1254)"
 
 #: src/flac112/charset.c:76 src/flac113/charset.c:76
 msgid "Unicode (UTF-7)"
-msgstr ""
+msgstr "Юникод (UTF-7)"
 
 #: src/flac112/charset.c:77 src/flac113/charset.c:77
 msgid "Unicode (UTF-8)"
-msgstr ""
+msgstr "Юникод (UTF-8)"
 
 #: src/flac112/charset.c:78 src/flac113/charset.c:78
 msgid "Unicode (UTF-16BE)"
-msgstr ""
+msgstr "Юникод (UTF-16BE)"
 
 #: src/flac112/charset.c:79 src/flac113/charset.c:79
 msgid "Unicode (UTF-16LE)"
-msgstr ""
+msgstr "Юникод (UTF-16LE)"
 
 #: src/flac112/charset.c:80 src/flac113/charset.c:80
 msgid "Unicode (UTF-32BE)"
-msgstr ""
+msgstr "Юникод (UTF-32BE)"
 
 #: src/flac112/charset.c:81 src/flac113/charset.c:81
 msgid "Unicode (UTF-32LE)"
-msgstr ""
+msgstr "Юникод (UTF-32LE)"
 
 #: src/flac112/charset.c:82 src/flac113/charset.c:82
 msgid "Vietnamese (VISCII)"
-msgstr ""
+msgstr "Вьетнамская (VISCII)"
 
 #: src/flac112/charset.c:83 src/flac113/charset.c:83
 msgid "Vietnamese (Windows-1258)"
-msgstr ""
+msgstr "Вьетнамская (Windows-1258)"
 
 #: src/flac112/charset.c:84 src/flac113/charset.c:84
 msgid "Visual Hebrew (ISO-8859-8)"
-msgstr ""
+msgstr "Иврит (ISO-8859-8)"
 
 #: src/flac112/charset.c:85 src/flac113/charset.c:85
 msgid "Western (IBM-850)"
-msgstr ""
+msgstr "Западная (IBM-850)"
 
 #: src/flac112/charset.c:86 src/flac113/charset.c:86
 msgid "Western (ISO-8859-1)"
-msgstr ""
+msgstr "Западная (ISO-8859-1)"
 
 #: src/flac112/charset.c:87 src/flac113/charset.c:87
 msgid "Western (ISO-8859-15)"
-msgstr ""
+msgstr "Западная (ISO-8859-15)"
 
 #: src/flac112/charset.c:88 src/flac113/charset.c:88
 msgid "Western (Windows-1252)"
-msgstr ""
+msgstr "Западная (Windows-1252)"
 
 #: src/flac112/charset.c:94 src/flac113/charset.c:94
 msgid "Arabic (IBM-864-I)"
-msgstr ""
+msgstr "Арабская (IBM-864-I)"
 
 #: src/flac112/charset.c:95 src/flac113/charset.c:95
 msgid "Arabic (ISO-8859-6-E)"
-msgstr ""
+msgstr "Арабская (ISO-8859-6-E)"
 
 #: src/flac112/charset.c:96 src/flac113/charset.c:96
 msgid "Arabic (ISO-8859-6-I)"
-msgstr ""
+msgstr "Арабская (ISO-8859-6-I)"
 
 #: src/flac112/charset.c:97 src/flac113/charset.c:97
 msgid "Arabic (MacArabic)"
-msgstr ""
+msgstr "Арабская (MacArabic)"
 
 #: src/flac112/charset.c:98 src/flac113/charset.c:98
 msgid "Armenian (ARMSCII-8)"
-msgstr ""
+msgstr "Армянская (ARMSCII-8)"
 
 #: src/flac112/charset.c:99 src/flac113/charset.c:99
 msgid "Central European (MacCE)"
-msgstr ""
+msgstr "Центральная Европа (MacCE)"
 
 #: src/flac112/charset.c:100 src/flac113/charset.c:100
 msgid "Chinese Simplified (GBK)"
-msgstr ""
+msgstr "Китайская упрощенная (GBK)"
 
 #: src/flac112/charset.c:101 src/flac113/charset.c:101
 msgid "Chinese Simplified (HZ)"
-msgstr ""
+msgstr "Китайская упрощенная (HZ)"
 
 #: src/flac112/charset.c:102 src/flac113/charset.c:102
 msgid "Chinese Traditional (EUC-TW)"
-msgstr ""
+msgstr "Китайская традиционная (EUC-TW)"
 
 #: src/flac112/charset.c:103 src/flac113/charset.c:103
 msgid "Croatian (MacCroatian)"
-msgstr ""
+msgstr "Хорватская (MacCroatian)"
 
 #: src/flac112/charset.c:104 src/flac113/charset.c:104
 msgid "Cyrillic (MacCyrillic)"
-msgstr ""
+msgstr "Кириллица (MacCyrillic)"
 
 #: src/flac112/charset.c:105 src/flac113/charset.c:105
 msgid "Cyrillic/Ukrainian (MacUkrainian)"
-msgstr ""
+msgstr "Кириллица/Украина (MacUkrainian)"
 
 #: src/flac112/charset.c:106 src/flac113/charset.c:106
 msgid "Farsi (MacFarsi)"
-msgstr ""
+msgstr "Фарси (MacFarsi)"
 
 #: src/flac112/charset.c:107 src/flac113/charset.c:107
 msgid "Greek (MacGreek)"
-msgstr ""
+msgstr "Греческая (MacGreek)"
 
 #: src/flac112/charset.c:108 src/flac113/charset.c:108
 msgid "Gujarati (MacGujarati)"
-msgstr ""
+msgstr "Гуджарати (MacGujarati)"
 
 #: src/flac112/charset.c:109 src/flac113/charset.c:109
 msgid "Gurmukhi (MacGurmukhi)"
-msgstr ""
+msgstr "Гурмуки (MacGurmukhi)"
 
 #: src/flac112/charset.c:110 src/flac113/charset.c:110
 msgid "Hebrew (ISO-8859-8-E)"
-msgstr ""
+msgstr "Иврит (ISO-8859-8-E)"
 
 #: src/flac112/charset.c:111 src/flac113/charset.c:111
 msgid "Hebrew (ISO-8859-8-I)"
-msgstr ""
+msgstr "Иврит (ISO-8859-8-I)"
 
 #: src/flac112/charset.c:112 src/flac113/charset.c:112
 msgid "Hebrew (MacHebrew)"
-msgstr ""
+msgstr "Иврит (MacHebrew)"
 
 #: src/flac112/charset.c:113 src/flac113/charset.c:113
 msgid "Hindi (MacDevanagari)"
-msgstr ""
+msgstr "Хинди (MacDevanagari)"
 
 #: src/flac112/charset.c:114 src/flac113/charset.c:114
 msgid "Icelandic (MacIcelandic)"
-msgstr ""
+msgstr "Исландская (MacIcelandic)"
 
 #: src/flac112/charset.c:115 src/flac113/charset.c:115
 msgid "Korean (JOHAB)"
-msgstr ""
+msgstr "Корейская (JOHAB)"
 
 #: src/flac112/charset.c:116 src/flac113/charset.c:116
 msgid "Korean (UHC)"
-msgstr ""
+msgstr "Корейская (UHC)"
 
 #: src/flac112/charset.c:117 src/flac113/charset.c:117
 msgid "Romanian (MacRomanian)"
-msgstr ""
+msgstr "Румынская (MacRomanian)"
 
 #: src/flac112/charset.c:118 src/flac113/charset.c:118
 msgid "Turkish (MacTurkish)"
-msgstr ""
+msgstr "Турецкая (MacTurkish)"
 
 #: src/flac112/charset.c:119 src/flac113/charset.c:119
 msgid "User Defined"
-msgstr ""
+msgstr "Определенная пользователем"
 
 #: src/flac112/charset.c:120 src/flac113/charset.c:120
 msgid "Vietnamese (TCVN)"
-msgstr ""
+msgstr "Вьетнамская (TCVN)"
 
 #: src/flac112/charset.c:121 src/flac113/charset.c:121
 msgid "Vietnamese (VPS)"
-msgstr ""
+msgstr "Вьетнамская (VPS)"
 
 #: src/flac112/charset.c:122 src/flac113/charset.c:122
 msgid "Western (MacRoman)"
-msgstr ""
+msgstr "Западная (MacRoman)"
 
 #: src/flac112/configure.c:249 src/flac113/configure.c:249
-#, fuzzy
 msgid "Flac Configuration"
-msgstr "Настройка модуля поддержки TiMidity"
+msgstr "Настройка Flac"
 
 #: src/flac112/configure.c:261 src/flac113/configure.c:261
 msgid "Tag Handling"
-msgstr ""
+msgstr "Обработка тэгов"
 
 #: src/flac112/configure.c:270 src/flac113/configure.c:270
 msgid "Convert Character Set"
-msgstr ""
+msgstr "Преобразование кодировки"
 
 #: src/flac112/configure.c:278 src/flac113/configure.c:278
 msgid "Convert character set from :"
-msgstr ""
+msgstr "Преобразовать кодировку из :"
 
 #: src/flac112/configure.c:283 src/flac113/configure.c:283
 msgid "to :"
-msgstr ""
+msgstr "в :"
 
 #: src/flac112/configure.c:323 src/flac113/configure.c:323
 msgid "Disable bitrate update during playback (saves cpu usage)"
 msgstr ""
+"Запретить обновление битрейта во время проигрывания (уменьшает загрузку "
+"процессора)"
 
 #: src/flac112/configure.c:345 src/flac113/configure.c:345
 #: src/madplug/configure.c:175
-#, fuzzy
 msgid "Enable ReplayGain processing"
 msgstr "Включить ReplayGain"
 
 #: src/flac112/configure.c:350 src/flac113/configure.c:350
-#, fuzzy
 msgid "Album mode"
-msgstr "Peak альбома:"
+msgstr "Альбомный режим"
 
 #: src/flac112/configure.c:357 src/flac113/configure.c:357
-#, fuzzy
 msgid "Preamp:"
-msgstr "Сон"
+msgstr "Предусиление:"
 
 #: src/flac112/configure.c:364 src/flac113/configure.c:364
 msgid "0 dB"
-msgstr ""
+msgstr "0 dB"
 
 #: src/flac112/configure.c:368 src/flac113/configure.c:368
 #: src/madplug/configure.c:187
-#, fuzzy
 msgid "6dB hard limiting"
-msgstr "Включить усиление на 6dB + тяжелое ограничение"
+msgstr "6dB тяжелое ограничение"
 
 #: src/flac112/configure.c:377 src/flac113/configure.c:377
-#, fuzzy
 msgid "Resolution"
-msgstr "Разрешение:"
+msgstr "Разрешение"
 
 #: src/flac112/configure.c:385 src/flac113/configure.c:385
-#, fuzzy
 msgid "Without ReplayGain"
-msgstr "Включить ReplayGain"
+msgstr "Выключить ReplayGain"
 
 #: src/flac112/configure.c:393 src/flac113/configure.c:393
 msgid "Dither 24bps to 16bps"
-msgstr ""
+msgstr "Преобразовать 24 бит/с в 16 бит/с"
 
 #: src/flac112/configure.c:398 src/flac113/configure.c:398
-#, fuzzy
 msgid "With ReplayGain"
 msgstr "Включить ReplayGain"
 
 #: src/flac112/configure.c:406 src/flac113/configure.c:406
-#, fuzzy
 msgid "Enable dithering"
 msgstr "Включить преобразование"
 
 #: src/flac112/configure.c:415 src/flac113/configure.c:415
-#, fuzzy
 msgid "Noise shaping"
-msgstr "Преобразование частоты"
+msgstr "Подавление шума"
 
 #: src/flac112/configure.c:423 src/flac113/configure.c:423
-#, fuzzy
 msgid "none"
-msgstr "Нет"
+msgstr "нет"
 
 #: src/flac112/configure.c:429 src/flac113/configure.c:429
 msgid "low"
-msgstr ""
+msgstr "низкое"
 
 #: src/flac112/configure.c:435 src/flac113/configure.c:435
 msgid "medium"
-msgstr ""
+msgstr "среднее"
 
 #: src/flac112/configure.c:441 src/flac113/configure.c:441
 msgid "high"
-msgstr ""
+msgstr "высокое"
 
 #: src/flac112/configure.c:447 src/flac113/configure.c:447
 msgid "Dither to"
-msgstr ""
+msgstr "Преобразовать к"
 
 #: src/flac112/configure.c:455 src/flac113/configure.c:455
-#, fuzzy
 msgid "16 bps"
-msgstr "16 бит"
+msgstr "16 бит/с"
 
 #: src/flac112/configure.c:461 src/flac113/configure.c:461
 msgid "24 bps"
-msgstr ""
+msgstr "24 бит/с"
 
 #: src/flac112/configure.c:469 src/flac113/configure.c:469
 msgid "Output"
-msgstr ""
+msgstr "Вывод"
 
 #: src/flac112/configure.c:501 src/flac113/configure.c:501
-#, fuzzy
 msgid "About Flac Plugin"
-msgstr "О модуле Эхо"
+msgstr "О модуле Flac"
 
 #: src/flac112/configure.c:502 src/flac113/configure.c:502
 msgid ""
@@ -3733,30 +3880,39 @@ msgid ""
 "\n"
 "Audacious Team port"
 msgstr ""
+"Модуль Flac от Josh Coalson\n"
+"в разработке участвовали:\n"
+"......\n"
+"......\n"
+"и\n"
+"Daisuke Shimamura\n"
+"Посетите http://flac.sourceforge.net/\n"
+"\n"
+"Audacious Team port"
 
 #: src/flac112/fileinfo.c:57 src/flac113/fileinfo.c:60
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #: src/flac112/fileinfo.c:214 src/flac113/fileinfo.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Samplerate: %d Hz"
-msgstr "Частота:"
+msgstr "Частота: %d Гц"
 
 #: src/flac112/fileinfo.c:215 src/flac113/fileinfo.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "Channels: %d"
-msgstr "Каналы:"
+msgstr "Каналы: %d"
 
 #: src/flac112/fileinfo.c:216 src/flac113/fileinfo.c:219
 #, c-format
 msgid "Bits/Sample: %d"
-msgstr ""
+msgstr "Бит/Сэмпл: %d"
 
 #: src/flac112/fileinfo.c:218 src/flac113/fileinfo.c:221
 #, c-format
 msgid "Blocksize: %d"
-msgstr ""
+msgstr "Блок: %d"
 
 #: src/flac112/fileinfo.c:220 src/flac113/fileinfo.c:223
 #, c-format
@@ -3764,20 +3920,22 @@ msgid ""
 "Blocksize: variable\n"
 "  min/max: %d/%d"
 msgstr ""
+"Блок: переменный\n"
+"  мин/макс: %d/%d"
 
 #: src/flac112/fileinfo.c:223 src/flac113/fileinfo.c:226
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Samples: %llu\n"
 "Length: %d:%.2d"
 msgstr ""
-"\n"
-"Общая длительность: %d:%d\n"
+"Сэмплов: %llu\n"
+"Длительность: %d:%.2d"
 
 #: src/flac112/fileinfo.c:229 src/flac113/fileinfo.c:235
-#, fuzzy, c-format
+#, c-format
 msgid "Filesize: %ld B"
-msgstr "Размер файла:"
+msgstr "Размер файла: %ld Байт"
 
 #: src/flac112/fileinfo.c:231 src/flac113/fileinfo.c:238
 #, c-format
@@ -3785,96 +3943,90 @@ msgid ""
 "Avg. bitrate: %.1f kb/s\n"
 "Compression ratio: %.1f%%"
 msgstr ""
+"Средний битрейт: %.1f КБ/с\n"
+"Степень сжатия: %.1f%%"
 
 #: src/flac112/fileinfo.c:266 src/flac113/fileinfo.c:308
-#, fuzzy
 msgid "Filename:"
-msgstr "Имя пользователя:"
+msgstr "Имя файла:"
 
 #: src/flac112/fileinfo.c:278 src/flac113/fileinfo.c:320
-#, fuzzy
 msgid "Tag:"
-msgstr "Танго"
+msgstr "Тэг:"
 
 #: src/flac112/fileinfo.c:352 src/flac113/fileinfo.c:394
-#, fuzzy
 msgid "Save"
-msgstr "Рэйв"
+msgstr "Сохранить"
 
 #: src/flac112/fileinfo.c:358 src/flac113/fileinfo.c:400
-#, fuzzy
 msgid "Remove Tag"
-msgstr "Удалить привод"
+msgstr "Удалить тэг"
 
 #: src/flac112/fileinfo.c:368 src/flac113/fileinfo.c:410
-#, fuzzy
 msgid "FLAC Info:"
-msgstr "Информация CD"
+msgstr "Информация FLAC:"
 
 #: src/flac112/plugin.c:170 src/flac113/plugin.c:161
-#, fuzzy
 msgid "FLAC Audio Plugin"
-msgstr "Модуль поддержки аудио компакт-дисков"
+msgstr "Модуль поддержки FLAC"
 
 #: src/flac113/fileinfo.c:233
-#, fuzzy, c-format
+#, c-format
 msgid "Filesize: %lld B"
-msgstr "Размер файла:"
+msgstr "Размер файла: %lld Б"
 
 #: src/flac113/fileinfo.c:268
 #, c-format
 msgid "ReplayGain Reference Loudness: %2.1f dB"
-msgstr ""
+msgstr "ReplayGain Рекомендуемая громкость: %2.1f дБ"
 
 #: src/flac113/fileinfo.c:270
 #, c-format
 msgid "ReplayGain Track Gain: %+2.2f dB"
-msgstr ""
+msgstr "ReplayGain Усиление дорожки: %+2.2f дБ"
 
 #: src/flac113/fileinfo.c:272
 #, c-format
 msgid "ReplayGain Album Gain: %+2.2f dB"
-msgstr ""
+msgstr "ReplayGain Усиление альбома: %+2.2f дБ"
 
 #: src/flac113/fileinfo.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "ReplayGain Track Peak: %1.8f"
-msgstr "Тип ReplayGain:"
+msgstr "ReplayGain Пик дорожки: %1.8f"
 
 #: src/flac113/fileinfo.c:276
 #, c-format
 msgid "ReplayGain Album Peak: %1.8f"
-msgstr ""
+msgstr "ReplaGain Пик альбома: %1.8f"
 
 #: src/madplug/configure.c:136
 msgid "MPEG Audio Plugin Configuration"
-msgstr "Настройка модуля поддержки формата MPEG"
+msgstr "Настройка модуля поддержки MPEG"
 
 #: src/madplug/configure.c:149
 msgid "Enable fast play-length calculation"
-msgstr ""
+msgstr "Включить быстрое определение длительности"
 
 #: src/madplug/configure.c:154
 msgid "Parse XING headers"
-msgstr ""
+msgstr "Обрабатывать заголовки XING"
 
 #: src/madplug/configure.c:165
 msgid "Dither output when rounding to 16-bit"
-msgstr ""
+msgstr "Размыть вывод при округлении до 16 бит"
 
 #: src/madplug/configure.c:180
-#, fuzzy
 msgid "Track mode"
-msgstr "Названия дорожек:"
+msgstr "Режим дорожки"
 
 #: src/madplug/configure.c:192
-#, fuzzy
 msgid "Default gain (dB):"
-msgstr "По умолчанию (%s)"
+msgstr "Усиление по-умолачнию (дБ):"
 
 #: src/madplug/configure.c:203
 msgid "Preamp (dB):"
-msgstr ""
+msgstr "Предусиление (дБ):"
 
 #: src/madplug/configure.c:230
 msgid "ID3 format:"
@@ -3893,18 +4045,16 @@ msgid "MPEG Audio Plugin"
 msgstr "Модуль поддержки MPEG"
 
 #: src/statusicon/gtktrayicon-x11.c:97
-#, fuzzy
 msgid "Orientation"
-msgstr "Организация:"
+msgstr "Положение"
 
 #: src/statusicon/gtktrayicon-x11.c:98
 msgid "The orientation of the tray"
-msgstr ""
+msgstr "Положение системного лотка"
 
 #: src/statusicon/si_ui.c:343
-#, fuzzy
 msgid "About Status Icon Plugin"
-msgstr "О модуле вывода звука ESounD"
+msgstr "О модуле Status Icon"
 
 #: src/statusicon/si_ui.c:345
 msgid ""
@@ -3914,109 +4064,8 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager.\n"
 msgstr ""
-
-#~ msgid "About MPEG Audio Plugin"
-#~ msgstr "О модуле поддержки формата MPEG"
-
-#~ msgid ""
-#~ "Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, "
-#~ "derived from:\n"
-#~ "mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
-#~ "Derived partially from mpg123 0.59s.mc3 as well.\n"
-#~ "Based on the original XMMS plugin."
-#~ msgstr ""
-#~ "Декодер формата MPEG для Audacious, William Pitcock <nenolod@nenolod."
-#~ "net>, основан на:\n"
-#~ "Декодер mpg123 от Michael Hipp <mh@mpg123.de>\n"
-#~ "Который в свою очередь основан на mpg123 0.59s.mc3 .\n"
-#~ "Первоначальный код взят из модуля XMMS."
-
-#~ msgid "Stereo (if available)"
-#~ msgstr "Стерео (если доступно)"
-
-#~ msgid "Down sample:"
-#~ msgstr "Частота:"
-
-#~ msgid "1:1 (44 kHz)"
-#~ msgstr "1:1 (44 кГц)"
-
-#~ msgid "1:2 (22 kHz)"
-#~ msgstr "1:2 (22 кГц)"
-
-#~ msgid "1:4 (11 kHz)"
-#~ msgstr "1:4 (11 кГц)"
-
-#~ msgid "Decoder"
-#~ msgstr "Декодер"
-
-#~ msgid "Buffer size (kb):"
-#~ msgstr "Размер буфера (Кб):"
-
-#~ msgid "Save stream to disk:"
-#~ msgstr "Сохранение потока на диск:"
-
-#~ msgid "Save stream to disk"
-#~ msgstr "Сохранять поток на диск:"
-
-#~ msgid "Path:"
-#~ msgstr "Путь:"
-
-#~ msgid "Pick a folder"
-#~ msgstr "Выберите каталог"
-
-#~ msgid "SHOUT/Icecast:"
-#~ msgstr "SHOUT/Icecast:"
-
-#~ msgid "Enable Icecast Metadata UDP Channel"
-#~ msgstr "Включить канал метаданных Icecast UDP"
-
-#~ msgid "Streaming"
-#~ msgstr "Потоки"
-
-#~ msgid "ID3 Tags:"
-#~ msgstr "ID3-теги:"
-
-#~ msgid "Disable ID3V2 tags"
-#~ msgstr "Не использовать тэги ID3V2"
-
-#~ msgid "Joint stereo"
-#~ msgstr "Объединённое стерео"
-
-#~ msgid "Dual channel"
-#~ msgstr "Два канала"
-
-#~ msgid "%d KBit/s"
-#~ msgstr "%d кБит/с"
-
-#~ msgid "%ld Hz"
-#~ msgstr "%ld Гц"
-
-#~ msgid "50/15 ms"
-#~ msgstr "50/15 мс"
-
-#~ msgid "No"
-#~ msgstr "Нет"
-
-#~ msgid "MPEG Level:"
-#~ msgstr "MPEG уровень:"
-
-#~ msgid "Mode:"
-#~ msgstr "Режим:"
-
-#~ msgid "Error Protection:"
-#~ msgstr "Защита от ошибок:"
-
-#~ msgid "Original:"
-#~ msgstr "Оригинальный:"
-
-#~ msgid "Emphasis:"
-#~ msgstr "Выразительный:"
-
-#~ msgid "Year:"
-#~ msgstr "Год:"
-
-#~ msgid "%s"
-#~ msgstr "%s"
-
-#~ msgid "%lu Bytes"
-#~ msgstr "%lu байт"
+"\n"
+"Автор Giacomo Lozito < james@develia.org >\n"
+"\n"
+"Этот модуль показывает значёк программы\n"
+"в системном лотке.\n"
