@@ -408,10 +408,10 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 	      if (handle->buffer[i] == '\r' &&
 		  handle->buffer[(i + 1) % handle->buffer_length] == '\n')
 		{
-		  gssize size = (handle->buffer_length + i - 
+		  gssize size_ = (handle->buffer_length + i - 
 				handle->hdr_index) % handle->buffer_length;
 		  handle->buffer[i] = '\0';
-		  got_header(handle, size);
+		  got_header(handle, size_);
 		  if (i == handle->hdr_index)
 		    {
 		      size_t leftover;
