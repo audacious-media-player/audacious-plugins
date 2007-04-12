@@ -32,7 +32,7 @@
 #define BUFFER_SIZE 256 * 1024
 #define REVERSE_SEEK_SIZE 2048
 
-#define DEBUG_CONNECTION 0
+#define DEBUG_CONNECTION 1
 #define DEBUG_OPEN_CLOSE 1
 #define DEBUG_SEEK 0
 #define DEBUG_READ 0
@@ -83,6 +83,8 @@ struct _CurlHandle {
   } proxy_info;
   
   gchar *local_ip;
+
+  GMutex *curl_mutex;
 };
 
 void curl_vfs_rewind_impl(VFSFile * file);
@@ -461,6 +463,14 @@ curl_manage_request(gpointer arg)
   if (DEBUG_CONNECTION)
     g_print("Connect %p\n", handle);
 
+  g_mutex_lock(handle->curl_mutex);
+
+  if (handle->curl == NULL)
+  {
+      g_mutex_unlock(handle->curl_mutex);
+      return NULL;
+  }
+
   if (handle->no_data)
     curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 1);
   else
@@ -478,6 +488,7 @@ curl_manage_request(gpointer arg)
   handle->icy_interval = 0;
 
   result = curl_easy_perform(handle->curl);
+
   if (result == CURLE_OK)
     update_length(handle);
   // We expect to get CURLE_WRITE_ERROR if we cancel.
@@ -489,10 +500,15 @@ curl_manage_request(gpointer arg)
     {
       g_print("Got curl error %d: %s\n", result, curl_easy_strerror(result));
       handle->failed = 1;
+      curl_easy_cleanup(handle->curl);
+      handle->curl = NULL;
     }
   if (DEBUG_CONNECTION)
     g_print("Done %p%s", handle, handle->cancel ? " (aborted)\n" : "\n");
   handle->cancel = 1;
+
+  g_mutex_unlock(handle->curl_mutex);
+
   return NULL;
 }
 
@@ -562,6 +578,7 @@ curl_vfs_fopen_impl(const gchar * path,
   handle->failed = 0;
   handle->no_data = 0;
   handle->stream_stack = NULL;
+  handle->curl_mutex = g_mutex_new();
 
   curl_easy_setopt(handle->curl, CURLOPT_URL, url);
   curl_easy_setopt(handle->curl, CURLOPT_WRITEFUNCTION, curl_writecb);
@@ -663,7 +680,12 @@ curl_vfs_fclose_impl(VFSFile * file)
 	g_free(handle->name);
       if (handle->stream_stack != NULL)
         g_slist_free(handle->stream_stack);
-      curl_easy_cleanup(handle->curl);
+
+      if (handle->curl != NULL)
+        curl_easy_cleanup(handle->curl);
+
+      if (handle->curl_mutex != NULL)
+        g_mutex_free(handle->curl_mutex);
 
       if (handle->local_ip != NULL)
         g_free(handle->local_ip);
