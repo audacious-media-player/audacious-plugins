@@ -1,3 +1,10 @@
+2007-04-12 17:51:15 +0000  Alexandr Orlov <alxorlov@pochta.ru>
+  revision [1998]
+  Update russian translation.
+  trunk/po/ru.po | 1103 +++++++++++++++++++++++++++++----------------------------
+  1 file changed, 576 insertions(+), 527 deletions(-)
+
+
 2007-04-12 17:47:23 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [1996]
   - fix warnings with -Wunsigned -Wextra

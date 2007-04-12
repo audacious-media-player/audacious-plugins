@@ -26,6 +26,7 @@
 
 #include <curl/curl.h>
 
+#include <stdlib.h>
 #include <string.h>
 
 #define BUFFER_SIZE 256 * 1024
@@ -83,6 +84,24 @@ struct _CurlHandle {
   
   gchar *local_ip;
 };
+
+void curl_vfs_rewind_impl(VFSFile * file);
+glong curl_vfs_ftell_impl(VFSFile * file);
+gboolean curl_vfs_feof_impl(VFSFile * file);
+gint curl_vfs_truncate_impl(VFSFile * file, glong size);
+gchar *curl_vfs_metadata_impl(VFSFile * file, const gchar * field);
+size_t curl_vfs_fwrite_impl(gconstpointer ptr, size_t size,
+		     size_t nmemb,
+		     VFSFile * file);
+size_t curl_vfs_fread_impl(gpointer ptr, size_t size,
+		     size_t nmemb,
+		     VFSFile * file);
+gint curl_vfs_fclose_impl(VFSFile * file);
+gint curl_vfs_getc_impl(VFSFile *stream);
+gint curl_vfs_ungetc_impl(gint c, VFSFile *stream);
+gint curl_vfs_fseek_impl(VFSFile * file, glong offset, gint whence);
+VFSFile *curl_vfs_fopen_impl(const gchar * path,
+		    const gchar * mode);
 
 VFSConstructor curl_const;
 
@@ -210,7 +229,7 @@ static void got_header(CurlHandle *handle, ssize_t size)
     {
       gchar *value = get_value(handle, size, ICY_METAINT);
       handle->icy_interval = atoi(value);
-      free(value);
+      g_free(value);
       if (DEBUG_HEADERS)
 	g_print("Metadata interval: %d\n", handle->icy_interval);
     }
@@ -272,7 +291,7 @@ static void got_inline_metadata(CurlHandle *handle)
   if (match_inline(handle, i, TITLE_INLINE))
     {
       if (handle->title)
-	free(handle->title);
+	g_free(handle->title);
       handle->title = get_inline_value(handle, i, TITLE_INLINE);
       if (DEBUG_ICY)
 	g_print("Title: '%s'\n", handle->title);
