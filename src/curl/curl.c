@@ -47,21 +47,21 @@ struct _CurlHandle {
   CURL *curl;
 
   gssize length; // the length of the file
-  gsize rd_abs; // the absolute position for reading from the stream
-  gsize wr_abs; // the absolute position where the input connection is
+  gssize rd_abs; // the absolute position for reading from the stream
+  gssize wr_abs; // the absolute position where the input connection is
 
-  gsize icy_left;
-  gsize icy_interval;
+  gssize icy_left;
+  gssize icy_interval;
   gint in_icy_meta; // 0=no, 1=before size, 2=in data
-  gsize meta_abs; // the absolute position where the metadata changes
+  gssize meta_abs; // the absolute position where the metadata changes
 
-  gsize buffer_length;
+  gssize buffer_length;
   gchar *buffer;
 
-  gsize rd_index;
-  gsize wr_index;
+  gssize rd_index;
+  gssize wr_index;
 
-  gsize hdr_index;
+  gssize hdr_index;
 
   GSList *stream_stack; // stack for stream functions (getc, ungetc)
 
@@ -98,11 +98,11 @@ VFSConstructor curl_const;
  *  3) open, read, seek 0, read (without restarting fetch)
  */
 
-static size_t buf_space(CurlHandle *handle)
+static ssize_t buf_space(CurlHandle *handle)
 {
-  size_t rd_edge = handle->rd_abs - REVERSE_SEEK_SIZE;
-  size_t buffer_limit;
-  size_t cont_limit;
+  ssize_t rd_edge = handle->rd_abs - REVERSE_SEEK_SIZE;
+  ssize_t buffer_limit;
+  ssize_t cont_limit;
   if (rd_edge < 0)
     rd_edge = 0;
   buffer_limit = handle->buffer_length - 
@@ -186,7 +186,7 @@ static gchar *get_value(CurlHandle *handle, size_t size, const char *header)
 		(handle->hdr_index + strlen(header)) % handle->buffer_length);
 }
 
-static void got_header(CurlHandle *handle, size_t size)
+static void got_header(CurlHandle *handle, ssize_t size)
 {
   if (DEBUG_HEADERS)
     g_print("Got header %d bytes\n", size);
@@ -381,7 +381,7 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 
       if (handle->header)
 	{
-	  gsize i = handle->hdr_index;
+	  gssize i = handle->hdr_index;
 	  while (1)
 	    {
 	      if ((i + 1) % handle->buffer_length == handle->wr_index)
@@ -389,7 +389,7 @@ static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
 	      if (handle->buffer[i] == '\r' &&
 		  handle->buffer[(i + 1) % handle->buffer_length] == '\n')
 		{
-		  gsize size = (handle->buffer_length + i - 
+		  gssize size = (handle->buffer_length + i - 
 				handle->hdr_index) % handle->buffer_length;
 		  handle->buffer[i] = '\0';
 		  got_header(handle, size);
@@ -672,7 +672,7 @@ curl_vfs_fread_impl(gpointer ptr,
 {
   CurlHandle *handle = file->handle;
   ssize_t sz = size * nmemb;
-  size_t ret = 0;
+  ssize_t ret = 0;
 
   if (sz < 0)
     return 0;
@@ -702,7 +702,7 @@ curl_vfs_fread_impl(gpointer ptr,
 
   while (ret < sz)
     {
-      size_t available;
+      ssize_t available;
       while (!(available = buf_available(handle)) && !handle->cancel)
 	{
 	  //g_print("Wait for data on %p\n", handle);
