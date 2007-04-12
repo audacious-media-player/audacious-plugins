@@ -93,7 +93,7 @@ gchar *curl_vfs_metadata_impl(VFSFile * file, const gchar * field);
 size_t curl_vfs_fwrite_impl(gconstpointer ptr, size_t size,
 		     size_t nmemb,
 		     VFSFile * file);
-size_t curl_vfs_fread_impl(unsigned char *ptr, size_t size,
+size_t curl_vfs_fread_impl(gpointer ptr_, size_t size,
 		     size_t nmemb,
 		     VFSFile * file);
 gint curl_vfs_fclose_impl(VFSFile * file);
@@ -684,11 +684,12 @@ curl_vfs_fclose_impl(VFSFile * file)
 }
 
 size_t
-curl_vfs_fread_impl(unsigned char *ptr,
+curl_vfs_fread_impl(gpointer ptr_,
 		    size_t size,
 		    size_t nmemb,
 		    VFSFile * file)
 {
+  unsigned char *ptr = ptr_;
   CurlHandle *handle = file->handle;
   ssize_t sz = size * nmemb;
   ssize_t ret = 0;
