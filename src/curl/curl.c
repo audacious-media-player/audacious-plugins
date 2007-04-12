@@ -41,7 +41,7 @@
 #define DEBUG_ICY_WRAP 0
 #define DEBUG_ICY_VERBOSE 0
 #define DEBUG_METADATA_REPORT 0
-#define DEBUG_CURL 0
+#define DEBUG_CURL 1
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -512,7 +512,7 @@ static void curl_req_xfer(CurlHandle *handle)
       handle->cancel = 1;
       return;
     }
-  if (!handle->thread && !handle->cancel)
+  if (!handle->thread)
     {
       handle->cancel = 0;
       handle->wr_index = 0;
