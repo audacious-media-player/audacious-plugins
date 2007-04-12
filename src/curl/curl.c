@@ -729,6 +729,8 @@ curl_vfs_fread_impl(gpointer ptr_,
 	  //g_print("Wait for data on %p\n", handle);
 	  g_usleep(10000);
 	}
+      if (handle->cancel)
+          return (ret / size);
       if (available > sz - ret)
 	available = sz - ret;
       memcpy(ptr + ret, handle->buffer + handle->rd_index, available);
