@@ -93,7 +93,7 @@ gchar *curl_vfs_metadata_impl(VFSFile * file, const gchar * field);
 size_t curl_vfs_fwrite_impl(gconstpointer ptr, size_t size,
 		     size_t nmemb,
 		     VFSFile * file);
-size_t curl_vfs_fread_impl(gpointer ptr, size_t size,
+size_t curl_vfs_fread_impl(unsigned char *ptr, size_t size,
 		     size_t nmemb,
 		     VFSFile * file);
 gint curl_vfs_fclose_impl(VFSFile * file);
@@ -299,7 +299,7 @@ static void got_inline_metadata(CurlHandle *handle)
   handle->meta_abs = handle->wr_abs;
 }
 
-static size_t curl_writecb(void *ptr, size_t size, size_t nmemb, void *stream)
+static size_t curl_writecb(unsigned char *ptr, size_t size, size_t nmemb, void *stream)
 {
   CurlHandle *handle = stream;
   gint sz = size * nmemb;
@@ -684,7 +684,7 @@ curl_vfs_fclose_impl(VFSFile * file)
 }
 
 size_t
-curl_vfs_fread_impl(gpointer ptr,
+curl_vfs_fread_impl(unsigned char *ptr,
 		    size_t size,
 		    size_t nmemb,
 		    VFSFile * file)
