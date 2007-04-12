@@ -201,7 +201,7 @@ static gboolean match_header(CurlHandle *handle, size_t size,
 static gchar *get_value(CurlHandle *handle, size_t size, const char *header)
 {
   // XXXX wrapped headers
-  return strdup(handle->buffer + 
+  return g_strdup(handle->buffer + 
 		(handle->hdr_index + strlen(header)) % handle->buffer_length);
 }
 
@@ -910,9 +910,9 @@ curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
   CurlHandle *handle = file->handle;
   if (!strcmp(field, "stream-name") && handle->name != NULL)
-    return strdup(handle->name);
+    return g_strdup(handle->name);
   if (!strcmp(field, "track-name") && handle->title != NULL)
-    return strdup(handle->title);
+    return g_strdup(handle->title);
   if (!strcmp(field, "content-length"))
     return g_strdup_printf("%ld", handle->length);
   return NULL;
