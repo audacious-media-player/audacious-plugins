@@ -511,7 +511,7 @@ static void curl_req_xfer(CurlHandle *handle)
       handle->cancel = 1;
       return;
     }
-  if (!handle->thread)
+  if (!handle->thread && !handle->cancel)
     {
       handle->cancel = 0;
       handle->wr_index = 0;

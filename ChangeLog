@@ -1,3 +1,11 @@
+2007-04-12 20:22:28 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2022]
+  - use a g_cond_wait() to ensure curl has started up before we try to read.
+  
+  trunk/src/curl/curl.c |   25 +++++++++++++++++++++++--
+  1 file changed, 23 insertions(+), 2 deletions(-)
+
+
 2007-04-12 19:57:45 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2020]
   - back out r2016,2018.
