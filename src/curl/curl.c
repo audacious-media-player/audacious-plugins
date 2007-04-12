@@ -83,6 +83,9 @@ struct _CurlHandle {
   } proxy_info;
   
   gchar *local_ip;
+
+  GMutex *curl_mutex;
+  GCond *curl_cond;
 };
 
 void curl_vfs_rewind_impl(VFSFile * file);
@@ -310,6 +313,8 @@ static size_t curl_writecb(unsigned char *ptr, size_t size, size_t nmemb, void *
   if (!handle->header)
     update_length(handle);
 
+  g_cond_signal(handle->curl_cond);
+
   while (ret < sz)
     {
       while (!(trans = buf_space(handle)) && !handle->cancel)
@@ -493,6 +498,9 @@ curl_manage_request(gpointer arg)
   if (DEBUG_CONNECTION)
     g_print("Done %p%s", handle, handle->cancel ? " (aborted)\n" : "\n");
   handle->cancel = 1;
+
+  g_cond_signal(handle->curl_cond);
+
   return NULL;
 }
 
@@ -513,6 +521,8 @@ static void curl_req_xfer(CurlHandle *handle)
 	g_print("Starting connection %p at %d\n", handle, handle->wr_abs);
       handle->thread = g_thread_create(curl_manage_request, handle, 
 				       TRUE, NULL);
+
+      g_cond_wait(handle->curl_cond, handle->curl_mutex);
     }
 }
 
@@ -562,6 +572,8 @@ curl_vfs_fopen_impl(const gchar * path,
   handle->failed = 0;
   handle->no_data = 0;
   handle->stream_stack = NULL;
+  handle->curl_mutex = g_mutex_new();
+  handle->curl_cond = g_cond_new();
 
   curl_easy_setopt(handle->curl, CURLOPT_URL, url);
   curl_easy_setopt(handle->curl, CURLOPT_WRITEFUNCTION, curl_writecb);
@@ -665,6 +677,9 @@ curl_vfs_fclose_impl(VFSFile * file)
         g_slist_free(handle->stream_stack);
       curl_easy_cleanup(handle->curl);
 
+      g_mutex_free(handle->curl_mutex);
+      g_cond_free(handle->curl_cond);
+
       if (handle->local_ip != NULL)
         g_free(handle->local_ip);
 
@@ -700,6 +715,8 @@ curl_vfs_fread_impl(gpointer ptr_,
 
 //  g_print("Reading %d*%d=%d from %p\n", size, nmemb, sz, handle);
 
+  memset(ptr, '\0', sz);
+
   /* check if there are ungetted chars that should be picked before the real fread */
   if ( handle->stream_stack != NULL )
   {
@@ -716,10 +733,14 @@ curl_vfs_fread_impl(gpointer ptr_,
 
   curl_req_xfer(handle);
 
+  if (handle->failed == 1)
+  {
+      g_print("failed!\n");
+      return 0;
+  }
+
   if (DEBUG_SEEK)
     check(handle);
-
-  memset(ptr, '\0', sz);
 
   while (ret < sz)
     {
