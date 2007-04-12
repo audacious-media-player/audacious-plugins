@@ -102,6 +102,7 @@ gint curl_vfs_ungetc_impl(gint c, VFSFile *stream);
 gint curl_vfs_fseek_impl(VFSFile * file, glong offset, gint whence);
 VFSFile *curl_vfs_fopen_impl(const gchar * path,
 		    const gchar * mode);
+LowlevelPlugin *get_lplugin_info(void);
 
 VFSConstructor curl_const;
 
