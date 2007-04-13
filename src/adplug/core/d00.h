@@ -1,6 +1,6 @@
 /*
  * AdPlug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -67,7 +67,7 @@ class Cd00Player: public CPlayer
 	struct {
 		unsigned short	*order,ordpos,pattpos,del,speed,rhcnt,key,freq,inst,spfx,ispfx,irhcnt;
 		signed short	transpose,slide,slideval,vibspeed;
-		unsigned char	seqend,vol,vibdepth,fxdel,modvol,cvol,levpuls,frameskip,nextnote,note,ilevpuls,trigger;
+		unsigned char	seqend,vol,vibdepth,fxdel,modvol,cvol,levpuls,frameskip,nextnote,note,ilevpuls,trigger,fxflag;
 	} channel[9];
 
 	struct Sinsts {

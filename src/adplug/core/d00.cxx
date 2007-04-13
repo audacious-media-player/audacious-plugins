@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -251,6 +251,7 @@ bool Cd00Player::update()
 	patt = (unsigned short *)((char *)filedata + LE_WORD(&seqptr[ord]));
 	break;
       }
+    channel[c].fxflag = 0;
     readseq:	// process sequence (pattern)
       if(!version)	// v0: always initialize rhcnt
 	channel[c].rhcnt = channel[c].irhcnt;
@@ -282,7 +283,10 @@ bool Cd00Player::update()
 	  break;
 	default:					// play note
 	  // restart fx
-	  channel[c].slideval = 0; channel[c].slide = 0; channel[c].vibdepth = 0;
+	  if(!(channel[c].fxflag & 1))
+	    channel[c].vibdepth = 0;
+	  if(!(channel[c].fxflag & 2))
+	    channel[c].slideval = channel[c].slide = 0;
 
 	  if(version) {	// note handling for v1 and above
 	    if(note > 0x80)	// locked note (no channel transpose)
@@ -350,6 +354,7 @@ bool Cd00Player::update()
 	  channel[c].vibspeed = fxop & 0xff;
 	  channel[c].vibdepth = fxop >> 8;
 	  channel[c].trigger = fxop >> 9;
+	  channel[c].fxflag |= 1;
 	  break;
 	case 8:		// v0: Duration
 	  if(!version)
@@ -381,9 +386,11 @@ bool Cd00Player::update()
 	  break;
 	case 0xd:	// Slide up
 	  channel[c].slide = fxop;
+	  channel[c].fxflag |= 2;
 	  break;
 	case 0xe:	// Slide down
 	  channel[c].slide = -fxop;
+	  channel[c].fxflag |= 2;
 	  break;
 	}
 	goto readseq;	// event is incomplete, note follows

@@ -1,3 +1,10 @@
+2007-04-13 12:23:27 +0000  Giacomo Lozito <james@develia.org>
+  revision [2034]
+  - curl: do NOT use signals with the new multi-thread layout, and take care of the url string value
+  trunk/src/curl/curl.c |   14 +++++++++-----
+  1 file changed, 9 insertions(+), 5 deletions(-)
+
+
 2007-04-12 22:03:53 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2032]
   - revert r2028.
