@@ -1,3 +1,21 @@
+2007-04-13 16:09:50 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2038]
+  Upstream commit "Vastly enhanced generic Protracker player and modified loaders accordingly.
+  Copl now supports a getchip() method. A2M loader enhanced for OPL3 features." manually applied by decoding the actual changes from an ocean of whitespace damage. It compiles, but do test it.
+  trunk/src/adplug/core/a2m.cxx      |  200 +++++++++++++++++-------------
+  trunk/src/adplug/core/a2m.h        |    7 -
+  trunk/src/adplug/core/amd.cxx      |    4 
+  trunk/src/adplug/core/fmc.cxx      |    4 
+  trunk/src/adplug/core/opl.h        |    7 -
+  trunk/src/adplug/core/player.cxx   |    2 
+  trunk/src/adplug/core/player.h     |    4 
+  trunk/src/adplug/core/protrack.cxx |  240 ++++++++++++++++++++++++++-----------
+  trunk/src/adplug/core/protrack.h   |  138 +++++++++++----------
+  trunk/src/adplug/core/rad.cxx      |    4 
+  trunk/src/adplug/core/sa2.cxx      |    6 
+  11 files changed, 383 insertions(+), 233 deletions(-)
+
+
 2007-04-13 15:07:32 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2036]
   D00 Vibrato and Slides fix by Dennis Lindroos (from upstream CVS).
