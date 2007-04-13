@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2003 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -155,9 +155,7 @@ bool Csa2Loader::load(VFSFile *fd, const CFileProvider &fp)
 	}
 
 	if(sat_type & HAS_ACTIVECHANNELS)
-	        activechan = f->readInt(2);		// active channels
-	else
-		activechan = 0xffff;
+	        activechan = f->readInt(2) << 16;	// active channels
 
         AdPlug_LogWrite("Csa2Loader::load(\"%s\"): sat_type = %x, nop = %d, "
 		 "length = %d, restartpos = %d, activechan = %x, bpm = %d\n",

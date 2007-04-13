@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2002 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,9 @@
  *
  * a2m.h - A2M Loader by Simon Peter <dn.tlp@gmx.net>
  */
+
+#ifndef H_ADPLUG_A2MLOADER
+#define H_ADPLUG_A2MLOADER
 
 #include "protrack.h"
 
@@ -78,3 +81,5 @@ private:
 		dad[ADPLUG_A2M_TWICEMAX+1], freq[ADPLUG_A2M_TWICEMAX+1], *wdbuf;
 	unsigned char *obuf, *buf;
 };
+#endif
+

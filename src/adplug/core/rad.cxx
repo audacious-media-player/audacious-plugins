@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2003 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -108,7 +108,7 @@ bool CradLoader::load(VFSFile *fd, const CFileProvider &fp)
 				tracks[i][j].note++;
 			tracks[i][j].command = convfx[tracks[i][j].command];
 		}
-	restartpos = 0; activechan = 0xffff; initspeed = radflags & 31;
+	restartpos = 0; initspeed = radflags & 31;
 	bpm = radflags & 64 ? 0 : 50; flags = Decimal;
 
 	rewind(0);

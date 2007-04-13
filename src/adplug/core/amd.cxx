@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -130,7 +130,7 @@ bool CamdLoader::load(VFSFile *fd, const CFileProvider &fp)
 	fp.close(f);
 
 	// convert to protracker replay data
-	bpm = 50; restartpos = 0; activechan = 0xffff; flags = Decimal;
+	bpm = 50; restartpos = 0; flags = Decimal;
 	for(i=0;i<26;i++) {	// convert instruments
 		buf = inst[i].data[0];
 		buf2 = inst[i].data[1];

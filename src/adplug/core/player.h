@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2004 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -77,7 +77,7 @@ protected:
 	CAdPlugDatabase	*db;	// AdPlug Database
 
 	static const unsigned short	note_table[12];	// standard adlib note table
-	static const unsigned char	op_table[9];	// the 9 operators as expected by the OPL2
+	static const unsigned char	op_table[9];	// the 9 operators as expected by the OPL
 };
 
 #endif

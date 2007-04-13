@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2002 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,11 @@
  * This loader detects and loads version 1, 4, 5 & 8 files.
  *
  * version 1-4 files:
- * Following commands are ignored:
- * FF1 - FF9, FAx - FEx
+ * Following commands are ignored: FF1 - FF9, FAx - FEx
  *
  * version 5-8 files:
  * Instrument panning is ignored. Flags byte is ignored.
- * Following commands are ignored:
- * Gxy, Hxy, Kxy - &xy
+ * Following commands are ignored: Gxy, Hxy, Kxy - &xy
  */
 
 #include "a2m.h"
@@ -63,15 +61,11 @@ CPlayer *Ca2mLoader::factory(Copl *newopl)
 bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
 {
   binistream *f = fp.open(fd); if(!f) return false;
-  struct {
-    char id[10];
-    unsigned long crc;
-    unsigned char version,numpats;
-  } ch;
+  char id[10];
   int i,j,k,t;
   unsigned int l;
-  unsigned char *org = 0, *orgptr;
-  unsigned long alength;
+  unsigned char *org, *orgptr, flags = 0, numpats, version;
+  unsigned long crc, alength;
   unsigned short len[9], *secdata, *secptr;
   const unsigned char convfx[16] = {0,1,2,23,24,3,5,4,6,9,17,13,11,19,7,14};
   const unsigned char convinf1[16] = {0,1,2,6,7,8,9,4,5,3,10,11,12,13,14,15};
@@ -80,29 +74,29 @@ bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
 				     255,255,255,255,255,255,255,255,14,255};
 
   // read header
-  f->readString(ch.id, 10); ch.crc = f->readInt(4);
-  ch.version = f->readInt(1); ch.numpats = f->readInt(1);
+  f->readString(id, 10); crc = f->readInt(4);
+  version = f->readInt(1); numpats = f->readInt(1);
 
   // file validation section
-  if(strncmp(ch.id,"_A2module_",10) || (ch.version != 1 && ch.version != 5 &&
-					ch.version != 4 && ch.version != 8)) {
+  if(strncmp(id,"_A2module_",10) || (version != 1 && version != 5 &&
+				     version != 4 && version != 8)) {
     fp.close(f);
     return false;
   }
 
   // load, depack & convert section
-  nop = ch.numpats; length = 128; restartpos = 0; activechan = 0xffff;
-  if(ch.version == 1 || ch.version == 4) {
+  nop = numpats; length = 128; restartpos = 0;
+  if(version < 5) {
     for(i=0;i<5;i++) len[i] = f->readInt(2);
     t = 9;
-  } else {
+  } else {	// version >= 5
     for(i=0;i<9;i++) len[i] = f->readInt(2);
     t = 18;
   }
 
   // block 0
   secdata = new unsigned short [len[0] / 2];
-  if(ch.version == 1 || ch.version == 5) {
+  if(version == 1 || version == 5) {
     for(i=0;i<len[0]/2;i++) secdata[i] = f->readInt(2);
     org = new unsigned char [MAXBUF]; orgptr = org;
     sixdepak(secdata,org,len[0]);
@@ -113,6 +107,7 @@ bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
   memcpy(songname,orgptr,43); orgptr += 43;
   memcpy(author,orgptr,43); orgptr += 43;
   memcpy(instname,orgptr,250*33); orgptr += 250*33;
+
   for(i=0;i<250;i++) {	// instruments
     inst[i].data[0] = *(orgptr+i*13+10);
     inst[i].data[1] = *(orgptr+i*13);
@@ -125,56 +120,60 @@ bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
     inst[i].data[8] = *(orgptr+i*13+9);
     inst[i].data[9] = *(orgptr+i*13+2);
     inst[i].data[10] = *(orgptr+i*13+3);
-    if(ch.version == 1 || ch.version == 4)
+    if(version < 5)
       inst[i].misc = *(orgptr+i*13+11);
-    else
-      inst[i].misc = 0;
+    else {    // version >= 5 -> OPL3 format
+      int pan = *(orgptr+i*13+11);
+
+      if(pan)
+      inst[i].data[0] |= (pan & 3) << 4;      // set pan
+      else
+      inst[i].data[0] |= 48;                  // enable both speakers
+    }
+
     inst[i].slide = *(orgptr+i*13+12);
   }
 
   orgptr += 250*13;
   memcpy(order,orgptr,128); orgptr += 128;
-  bpm = *orgptr; orgptr += 1;
-  initspeed = *orgptr;
-  // v5-8 files have an additional flag byte here
-  if(ch.version == 1 || ch.version == 5)
-    {
-      delete [] org; org = 0;
-    }
-  delete [] secdata; secdata = 0;
+  bpm = *orgptr; orgptr++;
+  initspeed = *orgptr; orgptr++;
+  if(version >= 5) flags = *orgptr;
+  if(version == 1 || version == 5) delete [] org;
+  delete [] secdata;
 
   // blocks 1-4 or 1-8
   alength = len[1];
-  for(i=0;i<(ch.version == 1 || ch.version == 4 ? ch.numpats/16 : ch.numpats/8);i++)
+  for(i = 0; i < (version < 5 ? numpats / 16 : numpats / 8); i++)
     alength += len[i+2];
 
   secdata = new unsigned short [alength / 2];
-  if(ch.version == 1 || ch.version == 5) {
+  if(version == 1 || version == 5) {
     for(l=0;l<alength/2;l++) secdata[l] = f->readInt(2);
-    org = new unsigned char [MAXBUF * (ch.numpats / (ch.version == 1 ? 16 : 8) + 1)];
+    org = new unsigned char [MAXBUF * (numpats / (version == 1 ? 16 : 8) + 1)];
     orgptr = org; secptr = secdata;
     orgptr += sixdepak(secptr,orgptr,len[1]); secptr += len[1] / 2;
-    if(ch.version == 1) {
-      if(ch.numpats > 16)
+    if(version == 1) {
+      if(numpats > 16)
 	orgptr += sixdepak(secptr,orgptr,len[2]); secptr += len[2] / 2;
-      if(ch.numpats > 32)
+      if(numpats > 32)
 	orgptr += sixdepak(secptr,orgptr,len[3]); secptr += len[3] / 2;
-      if(ch.numpats > 48)
+      if(numpats > 48)
 	sixdepak(secptr,orgptr,len[4]);
     } else {
-      if(ch.numpats > 8)
+      if(numpats > 8)
 	orgptr += sixdepak(secptr,orgptr,len[2]); secptr += len[2] / 2;
-      if(ch.numpats > 16)
+      if(numpats > 16)
 	orgptr += sixdepak(secptr,orgptr,len[3]); secptr += len[3] / 2;
-      if(ch.numpats > 24)
+      if(numpats > 24)
 	orgptr += sixdepak(secptr,orgptr,len[4]); secptr += len[4] / 2;
-      if(ch.numpats > 32)
+      if(numpats > 32)
 	orgptr += sixdepak(secptr,orgptr,len[5]); secptr += len[5] / 2;
-      if(ch.numpats > 40)
+      if(numpats > 40)
 	orgptr += sixdepak(secptr,orgptr,len[6]); secptr += len[6] / 2;
-      if(ch.numpats > 48)
+      if(numpats > 48)
 	orgptr += sixdepak(secptr,orgptr,len[7]); secptr += len[7] / 2;
-      if(ch.numpats > 56)
+      if(numpats > 56)
 	sixdepak(secptr,orgptr,len[8]);
     }
     delete [] secdata; secdata = 0;
@@ -183,69 +182,100 @@ bool Ca2mLoader::load(VFSFile *fd, const CFileProvider &fp)
     for(l=0;l<alength;l++) org[l] = f->readInt(1);
   }
 
-  for(i=0;i<64*9;i++)		// patterns
-    trackord[i/9][i%9] = i+1;
-
-  if(ch.version == 1 || ch.version == 4) {
-    for(i=0;i<ch.numpats;i++)
+  if(version < 5) {
+    for(i=0;i<numpats;i++)
       for(j=0;j<64;j++)
 	for(k=0;k<9;k++) {
-	  tracks[i*9+k][j].note = org[i*64*t*4+j*t*4+k*4] == 255 ? 127 : org[i*64*t*4+j*t*4+k*4];
-	  tracks[i*9+k][j].inst = org[i*64*t*4+j*t*4+k*4+1];
-	  tracks[i*9+k][j].command = convfx[org[i*64*t*4+j*t*4+k*4+2]];
-	  tracks[i*9+k][j].param2 = org[i*64*t*4+j*t*4+k*4+3] & 0x0f;
-	  if(tracks[i*9+k][j].command != 14)
-	    tracks[i*9+k][j].param1 = org[i*64*t*4+j*t*4+k*4+3] >> 4;
+        struct Tracks *track = &tracks[i * 9 + k][j];
+        unsigned char *o = &org[i*64*t*4+j*t*4+k*4];
+
+        track->note = o[0] == 255 ? 127 : o[0];
+        track->inst = o[1];
+        track->command = convfx[o[2]];
+        track->param2 = o[3] & 0x0f;
+        if(track->command != 14)
+          track->param1 = o[3] >> 4;
 	  else {
-	    tracks[i*9+k][j].param1 = convinf1[org[i*64*t*4+j*t*4+k*4+3] >> 4];
-	    if(tracks[i*9+k][j].param1 == 15 && !tracks[i*9+k][j].param2) {	// convert key-off
-	      tracks[i*9+k][j].command = 8;
-	      tracks[i*9+k][j].param1 = 0;
-	      tracks[i*9+k][j].param2 = 0;
+          track->param1 = convinf1[o[3] >> 4];
+          if(track->param1 == 15 && !track->param2) { // convert key-off
+            track->command = 8;
+            track->param1 = 0;
+            track->param2 = 0;
 	    }
 	  }
-	  if(tracks[i*9+k][j].command == 14) {
-	    switch(tracks[i*9+k][j].param1) {
+        if(track->command == 14) {
+          switch(track->param1) {
 	    case 2: // convert define waveform
-	      tracks[i*9+k][j].command = 25;
-	      tracks[i*9+k][j].param1 = tracks[i*9+k][j].param2;
-	      tracks[i*9+k][j].param2 = 0xf;
+              track->command = 25;
+              track->param1 = track->param2;
+              track->param2 = 0xf;
 	      break;
 	    case 8: // convert volume slide up
-	      tracks[i*9+k][j].command = 26;
-	      tracks[i*9+k][j].param1 = tracks[i*9+k][j].param2;
-	      tracks[i*9+k][j].param2 = 0;
+              track->command = 26;
+              track->param1 = track->param2;
+              track->param2 = 0;
 	      break;
 	    case 9: // convert volume slide down
-	      tracks[i*9+k][j].command = 26;
-	      tracks[i*9+k][j].param1 = 0;
+              track->command = 26;
+              track->param1 = 0;
 	      break;
 	    }
 	  }
 	}
-  } else {
-    for(i=0;i<ch.numpats;i++)
-      for(j=0;j<9;j++)
+  } else {    // version >= 5
+    realloc_patterns(64, 64, 18);
+
+    for(i=0;i<numpats;i++)
+      for(j=0;j<18;j++)
 	for(k=0;k<64;k++) {
-	  tracks[i*9+j][k].note = org[i*64*t*4+j*64*4+k*4] == 255 ? 127 : org[i*64*t*4+j*64*4+k*4];
-	  tracks[i*9+j][k].inst = org[i*64*t*4+j*64*4+k*4+1];
-	  tracks[i*9+j][k].command = newconvfx[org[i*64*t*4+j*64*4+k*4+2]];
-	  tracks[i*9+j][k].param1 = org[i*64*t*4+j*64*4+k*4+3] >> 4;
-	  tracks[i*9+j][k].param2 = org[i*64*t*4+j*64*4+k*4+3] & 0x0f;
+          struct Tracks *track = &tracks[i * 18 + j][k];
+          unsigned char *o = &org[i*64*t*4+j*64*4+k*4];
+
+          track->note = o[0] == 255 ? 127 : o[0];
+          track->inst = o[1];
+          track->command = newconvfx[o[2]];
+          track->param1 = o[3] >> 4;
+          track->param2 = o[3] & 0x0f;
+ 
+          // Convert '&' command
+          if(o[2] == 36)
+            switch(track->param1) {
+            case 0:     // pattern delay (frames)
+              track->command = 29;
+              track->param1 = 0;
+              // param2 already set correctly
+              break;
+ 
+            case 1:     // pattern delay (rows)
+              track->command = 14;
+              track->param1 = 8;
+              // param2 already set correctly
+              break;
+            }
 	}
   }
 
-  if(ch.version == 1 || ch.version == 5)
+  init_trackord();
+
+  if(version == 1 || version == 5)
     {
-      delete [] org; org = 0; 
+      delete [] org;
     }
   else
     {
-      delete [] secdata; secdata = 0;
+      delete [] secdata;
     }
-  fp.close(f);
-  rewind(0);
-  return true;
+
+    // Process flags
+    if(version >= 5) {
+      CmodPlayer::flags |= Opl3;                                // All versions >= 5 are OPL3
+      if(flags & 8) CmodPlayer::flags |= Tremolo;               // Tremolo depth
+      if(flags & 16) CmodPlayer::flags |= Vibrato;      // Vibrato depth
+    }
+ 
+    fp.close(f);
+    rewind(0);
+    return true;
 }
 
 float Ca2mLoader::getrefresh()

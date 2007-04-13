@@ -1,6 +1,6 @@
 /*
   Adplug - Replayer for many OPL2/OPL3 audio file formats.
-  Copyright (C) 1999 - 2003 Simon Peter <dn.tlp@gmx.net>, et al.
+  Copyright (C) 1999 - 2007 Simon Peter <dn.tlp@gmx.net>, et al.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -149,7 +149,7 @@ bool CfmcLoader::load(VFSFile *fd, const CFileProvider &fp)
 	}
 
 	// data for Protracker
-	activechan = (0xffff >> (16 - header.numchan)) << (16 - header.numchan);
+	activechan = (0xffffffff >> (32 - header.numchan)) << (32 - header.numchan);
 	nop = t / header.numchan;
 	restartpos = 0;
 
