@@ -48,6 +48,8 @@ typedef struct _CurlHandle CurlHandle;
 struct _CurlHandle {
   CURL *curl;
 
+  gchar *url; // URL string, must remain present until curl no longer needs it
+
   gssize length; // the length of the file
   gssize rd_abs; // the absolute position for reading from the stream
   gssize wr_abs; // the absolute position where the input connection is
@@ -548,17 +550,15 @@ VFSFile *
 curl_vfs_fopen_impl(const gchar * path,
 		    const gchar * mode)
 {
-  gchar *url;
   CurlHandle *handle;
   VFSFile *file;
   if (!path || !mode)
     return NULL;
 
-  url = g_strdup(path);
-
   file = g_new0(VFSFile, 1);
 
   handle = g_new0(CurlHandle, 1);
+  handle->url = g_strdup(path);
   handle->curl = curl_easy_init();
   handle->rd_index = 0;
   handle->wr_index = 0;
@@ -576,12 +576,13 @@ curl_vfs_fopen_impl(const gchar * path,
   handle->curl_mutex = g_mutex_new();
   handle->curl_cond = g_cond_new();
 
-  curl_easy_setopt(handle->curl, CURLOPT_URL, url);
+  curl_easy_setopt(handle->curl, CURLOPT_URL, handle->url);
   curl_easy_setopt(handle->curl, CURLOPT_WRITEFUNCTION, curl_writecb);
   curl_easy_setopt(handle->curl, CURLOPT_WRITEDATA, handle);
   curl_easy_setopt(handle->curl, CURLOPT_HEADERDATA, handle);
 
   curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 3);
+  curl_easy_setopt(handle->curl, CURLOPT_NOSIGNAL, 1);
 
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYHOST, 0);
@@ -652,7 +653,7 @@ curl_vfs_fopen_impl(const gchar * path,
   file->base = &curl_const;
 
   if (DEBUG_OPEN_CLOSE)
-    g_print("Open %s with curl => %p\n", url, handle);
+    g_print("Open %s with curl => %p\n", handle->url, handle);
 
   return file;
 }
@@ -697,6 +698,9 @@ curl_vfs_fclose_impl(VFSFile * file)
 	{
 	  vfs_fclose(handle->download);
 	}
+
+      if (handle->url != NULL)
+        g_free(handle->url);
 
       g_free(handle);
     }
