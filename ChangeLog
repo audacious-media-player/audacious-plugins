@@ -1,3 +1,12 @@
+2007-04-13 16:27:41 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2040]
+  Now in sync with AdPlug upstream, merging their commit: "Removed superfluous exit() call. This was detected as part of a GCC 4.3
+  compilation regression test. Thanks to Martin Michlmayr! Fixes Debian bug
+  #417078."
+  trunk/src/adplug/core/rix.cxx |    6 ++++--
+  1 file changed, 4 insertions(+), 2 deletions(-)
+
+
 2007-04-13 16:09:50 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2038]
   Upstream commit "Vastly enhanced generic Protracker player and modified loaders accordingly.
