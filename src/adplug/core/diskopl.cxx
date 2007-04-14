@@ -22,69 +22,82 @@
 #include "diskopl.h"
 
 //static const unsigned short note_table[12] = {363,385,408,432,458,485,514,544,577,611,647,686};
-const unsigned char CDiskopl::op_table[9] = {0x00, 0x01, 0x02, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12};
+const unsigned char
+CDiskopl::op_table[9] =
+  { 0x00, 0x01, 0x02, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12 };
 
-CDiskopl::CDiskopl(std::string filename)
-  : old_freq(0.0f), del(1), nowrite(false)
+CDiskopl::CDiskopl (std::string filename):old_freq (0.0f), del (1),
+nowrite (false)
 {
-  unsigned short clock = 0xffff;
+  unsigned short
+    clock = 0xffff;
 
   currType = TYPE_OPL3;
-  f = fopen(filename.c_str(),"wb");
-  fwrite("RAWADATA",8,1,f);
-  fwrite(&clock,sizeof(clock),1,f);
+  f = fopen (filename.c_str (), "wb");
+  fwrite ("RAWADATA", 8, 1, f);
+  fwrite (&clock, sizeof (clock), 1, f);
 }
 
-CDiskopl::~CDiskopl()
+CDiskopl::~CDiskopl ()
 {
-  fclose(f);
+  fclose (f);
 }
 
-void CDiskopl::update(CPlayer *p)
+void
+CDiskopl::update (CPlayer * p)
 {
-  unsigned short	clock;
-  unsigned int		wait;
+  unsigned short clock;
+  unsigned int wait;
 
-  if(p->getrefresh() != old_freq) {
-    old_freq = p->getrefresh();
-    del = wait = (unsigned int)(18.2f / old_freq);
-    clock = (unsigned short)(1192737/(old_freq*(wait+1)));
-    fputc(0,f); fputc(2,f);
-    fwrite(&clock,2,1,f);
+  if (p->getrefresh () != old_freq)
+  {
+    old_freq = p->getrefresh ();
+    del = wait = (unsigned int) (18.2f / old_freq);
+    clock = (unsigned short) (1192737 / (old_freq * (wait + 1)));
+    fputc (0, f);
+    fputc (2, f);
+    fwrite (&clock, 2, 1, f);
   }
-  if(!nowrite) {
-    fputc(del+1,f);
-    fputc(0,f);
-  }
-}
-
-void CDiskopl::setchip(int n)
-{
-  Copl::setchip(n);
-
-  if(!nowrite) {
-    fputc(currChip + 1, f);
-    fputc(2, f);
+  if (!nowrite)
+  {
+    fputc (del + 1, f);
+    fputc (0, f);
   }
 }
 
-void CDiskopl::write(int reg, int val)
+void
+CDiskopl::setchip (int n)
 {
-  if(!nowrite)
-    diskwrite(reg,val);
-}
+  Copl::setchip (n);
 
-void CDiskopl::init()
-{
-  for (int i=0;i<9;i++) {	// stop instruments
-    diskwrite(0xb0 + i,0);		// key off
-    diskwrite(0x80 + op_table[i],0xff);	// fastest release
+  if (!nowrite)
+  {
+    fputc (currChip + 1, f);
+    fputc (2, f);
   }
-  diskwrite(0xbd,0);	// clear misc. register
 }
 
-void CDiskopl::diskwrite(int reg, int val)
+void
+CDiskopl::write (int reg, int val)
 {
-  fputc(val,f);
-  fputc(reg,f);
+  if (!nowrite)
+    diskwrite (reg, val);
+}
+
+void
+CDiskopl::init ()
+{
+  for (int i = 0; i < 9; i++)
+  {                             // stop instruments
+    diskwrite (0xb0 + i, 0);    // key off
+    diskwrite (0x80 + op_table[i], 0xff);   // fastest release
+  }
+  diskwrite (0xbd, 0);          // clear misc. register
+}
+
+void
+CDiskopl::diskwrite (int reg, int val)
+{
+  fputc (val, f);
+  fputc (reg, f);
 }

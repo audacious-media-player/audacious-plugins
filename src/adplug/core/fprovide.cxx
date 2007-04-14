@@ -27,49 +27,60 @@
 
 /***** CFileProvider *****/
 
-bool CFileProvider::extension(const std::string &filename,
-			      const std::string &extension)
+bool
+CFileProvider::extension (const std::string & filename,
+                          const std::string & extension)
 {
-  const char *fname = filename.c_str(), *ext = extension.c_str();
+  const char *fname = filename.c_str (), *ext = extension.c_str ();
 
-  if(strlen(fname) < strlen(ext) ||
-     stricmp(fname + strlen(fname) - strlen(ext), ext))
+  if (strlen (fname) < strlen (ext) ||
+      stricmp (fname + strlen (fname) - strlen (ext), ext))
     return false;
   else
     return true;
 }
 
-unsigned long CFileProvider::filesize(binistream *f)
+unsigned long
+CFileProvider::filesize (binistream * f)
 {
-  unsigned long oldpos = f->pos(), size;
+  unsigned long oldpos = f->pos (), size;
 
-  f->seek(0, binio::End);
-  size = f->pos();
-  f->seek(oldpos, binio::Set);
+  f->seek (0, binio::End);
+  size = f->pos ();
+  f->seek (oldpos, binio::Set);
 
   return size;
 }
 
 /***** CProvider_Filesystem *****/
 
-binistream *CProvider_Filesystem::open(VFSFile *fd) const
+binistream *
+CProvider_Filesystem::open (VFSFile * fd) const const
 {
-  vfsistream *f = new vfsistream(fd);
+  vfsistream *f = new vfsistream (fd);
 
-  if(!f) return 0;
-  if(f->error()) { delete f; return 0; }
+  if (!f)
+    return 0;
+  if (f->error ())
+  {
+    delete f;
+    return 0;
+  }
 
   // Open all files as little endian with IEEE floats by default
-  f->setFlag(binio::BigEndian, false); f->setFlag(binio::FloatIEEE);
+  f->setFlag (binio::BigEndian, false);
+  f->setFlag (binio::FloatIEEE);
 
   return f;
 }
 
-void CProvider_Filesystem::close(binistream *f) const
+void
+CProvider_Filesystem::close (binistream * f) const const
 {
-  vfsistream *ff = (vfsistream *)f;
+  vfsistream *ff = (vfsistream *) f;
 
-  if(f) {
+  if (f)
+  {
     delete ff;
   }
 }

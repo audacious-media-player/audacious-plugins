@@ -1,3 +1,10 @@
+2007-04-14 15:48:41 +0000  Giacomo Lozito <james@develia.org>
+  revision [2048]
+  - changed directory for amidi-plug backends
+  trunk/configure.ac |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-04-13 16:27:41 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2040]
   Now in sync with AdPlug upstream, merging their commit: "Removed superfluous exit() call. This was detected as part of a GCC 4.3
