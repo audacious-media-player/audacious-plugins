@@ -1,3 +1,13 @@
+2007-04-15 05:08:50 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2058]
+  bug fix for #897
+  - make mp3 header parsing continue even if xing header is located first.
+  - if xing header does not provide enough information to calculate average bitrate, scan_file() now calculate it from frames.
+  
+  trunk/src/madplug/decoder.c |   15 ++++++++++++---
+  1 file changed, 12 insertions(+), 3 deletions(-)
+
+
 2007-04-15 01:09:55 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2056]
   A cast a day keeps the compiler warning at bay.
