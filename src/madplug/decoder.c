@@ -178,6 +178,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     struct mad_frame frame;     /* to read xing data */
     gboolean has_xing = FALSE;
     int bitrate_frames = 0;
+    guint xing_bitrate = 0;
 
     mad_stream_init(&stream);
     mad_header_init(&header);
@@ -299,11 +300,14 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                             info->duration.seconds = info->tuple->length / 1000;
                             info->duration.fraction = info->tuple->length % 1000;
                         }
-                        info->bitrate =
+                        xing_bitrate = 
                             8.0 * info->xing.bytes /
                             mad_timer_count(info->duration,
                                             MAD_UNITS_SECONDS);
-                        break;
+#ifdef DEBUG
+                        g_message("xing: bitrate = %d", xing_bitrate);
+#endif
+                        continue;
                     }
                 }
 
@@ -363,8 +367,12 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             break;
     }
 
-    if (info->vbr && !has_xing)
+    if (info->vbr && xing_bitrate == 0) {
         info->bitrate = info->bitrate / bitrate_frames;
+#ifdef DEBUG
+        g_message("info->bitrate = %d", info->bitrate);
+#endif
+    }
 
     mad_frame_finish(&frame);
     mad_header_finish(&header);
@@ -372,6 +380,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     xing_finish(&info->xing);
 
 #ifdef DEBUG
+    g_message("scan_file: info->frames = %d", info->frames);
     g_message("e: scan_file");
 #endif                          /* DEBUG */
     return (info->frames != 0 || info->remote == TRUE);

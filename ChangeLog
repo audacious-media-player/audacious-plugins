@@ -1,3 +1,11 @@
+2007-04-15 01:09:55 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2056]
+  A cast a day keeps the compiler warning at bay.
+  trunk/src/rootvis/config_frontend.c         |    8 ++++----
+  trunk/src/rootvis/config_frontend_widgets.c |    8 ++++----
+  2 files changed, 8 insertions(+), 8 deletions(-)
+
+
 2007-04-15 00:38:32 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2054]
   Hammer the WMA plugin into shape enough to bolt the following upstream commit on: "WMA decoder improvement, output closer to the dmo binary.
