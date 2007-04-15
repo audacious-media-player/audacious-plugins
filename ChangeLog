@@ -1,3 +1,10 @@
+2007-04-15 18:33:11 +0000  Giacomo Lozito <james@develia.org>
+  revision [2060]
+  - alsa: on volume changes, only use channel switches if the audio card supports separated ones
+  trunk/src/alsa/audio.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-04-15 05:08:50 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2058]
   bug fix for #897

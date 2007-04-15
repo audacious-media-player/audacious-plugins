@@ -36,12 +36,12 @@
 #define DEBUG_OPEN_CLOSE 1
 #define DEBUG_SEEK 0
 #define DEBUG_READ 0
-#define DEBUG_HEADERS 0
+#define DEBUG_HEADERS 1
 #define DEBUG_ICY 0
 #define DEBUG_ICY_WRAP 0
 #define DEBUG_ICY_VERBOSE 0
 #define DEBUG_METADATA_REPORT 0
-#define DEBUG_CURL 1
+#define DEBUG_CURL 0
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -201,7 +201,7 @@ static gboolean match_header(CurlHandle *handle, size_t size,
   if (strlen(header) > size)
     return FALSE;
   // XXXX wrapped headers
-  return !(strncmp(handle->buffer + handle->hdr_index,
+  return !(strncasecmp(handle->buffer + handle->hdr_index,
 		   header, strlen(header)));
 }
 
@@ -503,6 +503,7 @@ curl_manage_request(gpointer arg)
   handle->cancel = 1;
 
   g_cond_signal(handle->curl_cond);
+  handle->thread = NULL;
 
   return NULL;
 }
@@ -525,7 +526,9 @@ static void curl_req_xfer(CurlHandle *handle)
       handle->thread = g_thread_create(curl_manage_request, handle, 
 				       TRUE, NULL);
 
+      g_mutex_lock(handle->curl_mutex);
       g_cond_wait(handle->curl_cond, handle->curl_mutex);
+      g_mutex_unlock(handle->curl_mutex);
     }
 }
 
