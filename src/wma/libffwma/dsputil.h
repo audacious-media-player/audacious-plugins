@@ -60,16 +60,13 @@ extern const uint8_t ff_zigzag248_direct[64];
 extern uint32_t squareTbl[512];
 extern uint8_t cropTbl[256 + 2 * MAX_NEG_CROP];
 
-
-/* minimum alignment rules ;)
-if u notice errors in the align stuff, need more alignment for some asm code for some cpu
-or need to use a function with less aligned data then send a mail to the ffmpeg-dev list, ...
-
-!warning these alignments might not match reallity, (missing attribute((align)) stuff somewhere possible)
-i (michael) didnt check them, these are just the alignents which i think could be reached easily ...
-
-!future video codecs might need functions with less strict alignment
-*/
+#ifdef __GNUC__
+  #define DECLARE_ALIGNED_8(t,v)       t v __attribute__ ((aligned (8)))
+  #define DECLARE_ALIGNED_16(t,v)       t v __attribute__ ((aligned (16)))
+#else
+  #define DECLARE_ALIGNED_8(t,v)      __declspec(align(8)) t v
+  #define DECLARE_ALIGNED_16(t,v)      __declspec(align(16)) t v
+#endif
 
 /*
 void get_pixels_c(DCTELEM *block, const uint8_t *pixels, int line_size);

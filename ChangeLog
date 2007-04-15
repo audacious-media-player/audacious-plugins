@@ -1,3 +1,12 @@
+2007-04-14 23:09:21 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2052]
+  I said to indent it, not to break it, hmmkay?
+  trunk/src/adplug/core/fprovide.cxx |   47 -
+  trunk/src/adplug/core/players.cxx  |   82 +-
+  trunk/src/adplug/core/rol.cxx      | 1024 ++++++++++++++++---------------------
+  3 files changed, 523 insertions(+), 630 deletions(-)
+
+
 2007-04-14 22:23:50 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2050]
   Run indent -ts4 -nut -bli0 -cdw on this messy lot. Upstream is not consistent with whitespace anyway, no loss there.
