@@ -12,7 +12,7 @@ void frontend_set_signal(GtkWidget *widget, char* signal, void* func, int data)
 	gtk_signal_connect(GTK_OBJECT(widget),	signal,	GTK_SIGNAL_FUNC(func),	GINT_TO_POINTER(data));
 }
 
-GtkWidget *frontend_create_window(int type, const char *name)
+GtkWidget *frontend_create_window(int type, char *name)
 {
 	GtkWidget *window;
 
@@ -25,7 +25,7 @@ GtkWidget *frontend_create_window(int type, const char *name)
 				NULL);
 
 	print_status("setting title");
-	gtk_window_set_title(window, name);
+	gtk_window_set_title(GTK_WINDOW(window), name);
 	print_status("done");
 	gtk_widget_show(window);
 	return window;
@@ -148,8 +148,8 @@ GtkWidget *frontend_create_label(GtkWidget *container, char *text)
 	print_status(text);
 
 	label = gtk_label_new(text);
-	gtk_label_set_justify(label, GTK_JUSTIFY_CENTER);
-	gtk_label_set_line_wrap(label, TRUE);
+	gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
+	gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 	gtk_widget_show(label);
 
 	gtk_container_add(GTK_CONTAINER(container), label);

@@ -134,11 +134,11 @@ void signal_check_toggled(GtkWidget *togglebutton, gpointer data)
 void signal_stereo_toggled(GtkWidget *togglebutton, gpointer data)
 {
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(togglebutton))) {
-		gtk_label_set_text(widgets.stereo_status[0], "renders left channel");
-		gtk_label_set_text(widgets.stereo_status[1], "renders right channel");
+		gtk_label_set_text(GTK_LABEL(widgets.stereo_status[0]), "renders left channel");
+		gtk_label_set_text(GTK_LABEL(widgets.stereo_status[1]), "renders right channel");
 	} else {
-		gtk_label_set_text(widgets.stereo_status[0], "renders both channels");
-		gtk_label_set_text(widgets.stereo_status[1], "unused / inactive");
+		gtk_label_set_text(GTK_LABEL(widgets.stereo_status[0]), "renders both channels");
+		gtk_label_set_text(GTK_LABEL(widgets.stereo_status[1]), "unused / inactive");
 	}
 }
 
