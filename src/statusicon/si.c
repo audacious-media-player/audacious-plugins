@@ -122,8 +122,14 @@ si_audacious_volume_change ( gint value )
 {
   gint vl, vr;
   xmms_remote_get_volume( si_gp.xmms_session , &vl , &vr );
-  xmms_remote_set_volume( si_gp.xmms_session , 
+  xmms_remote_set_volume( si_gp.xmms_session ,
     CLAMP(vl + value, 0, 100) , CLAMP(vr + value, 0, 100) );
+}
+
+void
+si_audacious_quit ( void )
+{
+  xmms_remote_quit( si_gp.xmms_session );
 }
 
 void
@@ -131,17 +137,17 @@ si_audacious_playback_skip ( gint numsong )
 {
   gpointer ctrl_code_gp = NULL;
   gint i = 0;
-  
+
   if ( numsong >= 0 )
   {
     ctrl_code_gp = GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_NEXT);
   }
   else
-  { 
+  {
     ctrl_code_gp = GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_PREV);
     numsong *= -1;
   }
-  
+
   for ( i = 0 ; i < numsong ; i++ )
     si_audacious_playback_ctrl( ctrl_code_gp );
 }

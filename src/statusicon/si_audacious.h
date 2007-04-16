@@ -36,6 +36,7 @@ void si_audacious_toggle_visibility ( void );
 void si_audacious_volume_change ( gint );
 void si_audacious_playback_skip ( gint );
 void si_audacious_playback_ctrl ( gpointer );
+void si_audacious_quit ( void );
 
 
 #endif /* !_I_SI_AUDACIOUS_H */

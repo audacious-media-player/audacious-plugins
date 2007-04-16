@@ -1,3 +1,11 @@
+2007-04-15 19:23:05 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2062]
+  - merge some local changes which makes curl threading more reliable.
+  
+  trunk/src/curl/curl.c |    9 ++++++---
+  1 file changed, 6 insertions(+), 3 deletions(-)
+
+
 2007-04-15 18:33:11 +0000  Giacomo Lozito <james@develia.org>
   revision [2060]
   - alsa: on volume changes, only use channel switches if the audio card supports separated ones

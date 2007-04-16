@@ -38,8 +38,10 @@
 static void si_ui_statusicon_popup_timer_start ( GtkWidget * );
 static void si_ui_statusicon_popup_timer_stop ( GtkWidget * );
 static void si_ui_statusicon_smallmenu_show ( gint x, gint y, guint button, guint32 time , gpointer );
+static void si_ui_statusicon_smallmenu_recreate ( GtkWidget * );
 
 extern si_cfg_t si_cfg;
+static gboolean recreate_smallmenu = FALSE;
 
 
 /* this stuff required to make titlechange hook work properly */
@@ -80,7 +82,10 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
     {
       switch ( si_cfg.rclick_menu )
       {
-        case SI_CFG_RCLICK_MENU_SMALL:
+        case SI_CFG_RCLICK_MENU_SMALL1:
+        case SI_CFG_RCLICK_MENU_SMALL2:
+          if ( recreate_smallmenu == TRUE )
+            si_ui_statusicon_smallmenu_recreate( evbox );
           si_ui_statusicon_smallmenu_show( event->x_root , event->y_root , 3 , event->time , evbox );
           break;
         case SI_CFG_RCLICK_MENU_AUD:
@@ -381,7 +386,18 @@ si_ui_statusicon_smallmenu_create ( void )
   GtkWidget *si_smenu = gtk_menu_new();
   GtkWidget *si_smenu_prev_item, *si_smenu_play_item, *si_smenu_pause_item;
   GtkWidget *si_smenu_stop_item, *si_smenu_next_item, *si_smenu_sep_item, *si_smenu_eject_item;
+  GtkWidget *si_smenu_quit_item;
 
+  si_smenu_eject_item = gtk_image_menu_item_new_from_stock(
+                          GTK_STOCK_OPEN , NULL );
+  g_signal_connect_swapped( si_smenu_eject_item , "activate" ,
+                            G_CALLBACK(si_audacious_playback_ctrl) ,
+                            GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_EJECT) );
+  gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_eject_item );
+  gtk_widget_show(si_smenu_eject_item);
+  si_smenu_sep_item = gtk_separator_menu_item_new();
+  gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_sep_item );
+  gtk_widget_show(si_smenu_sep_item);
   si_smenu_prev_item = gtk_image_menu_item_new_from_stock(
                          GTK_STOCK_MEDIA_PREVIOUS , NULL );
   g_signal_connect_swapped( si_smenu_prev_item , "activate" ,
@@ -417,18 +433,33 @@ si_ui_statusicon_smallmenu_create ( void )
                             GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_NEXT) );
   gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_next_item );
   gtk_widget_show(si_smenu_next_item);
-  si_smenu_sep_item = gtk_separator_menu_item_new();
-  gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_sep_item );
-  gtk_widget_show(si_smenu_sep_item);
-  si_smenu_eject_item = gtk_image_menu_item_new_from_stock(
-                          GTK_STOCK_OPEN , NULL );
-  g_signal_connect_swapped( si_smenu_eject_item , "activate" ,
-                            G_CALLBACK(si_audacious_playback_ctrl) ,
-                            GINT_TO_POINTER(SI_AUDACIOUS_PLAYBACK_CTRL_EJECT) );
-  gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_eject_item );
-  gtk_widget_show(si_smenu_eject_item);
+
+  if ( si_cfg.rclick_menu == SI_CFG_RCLICK_MENU_SMALL2 )
+  {
+    si_smenu_sep_item = gtk_separator_menu_item_new();
+    gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_sep_item );
+    gtk_widget_show(si_smenu_sep_item);
+    si_smenu_quit_item = gtk_image_menu_item_new_from_stock(
+                           GTK_STOCK_QUIT , NULL );
+    g_signal_connect_swapped( si_smenu_quit_item , "activate" ,
+                              G_CALLBACK(si_audacious_quit) , NULL );
+    gtk_menu_shell_append( GTK_MENU_SHELL(si_smenu) , si_smenu_quit_item );
+    gtk_widget_show(si_smenu_quit_item);
+  }
 
   return si_smenu;
+}
+
+
+static void
+si_ui_statusicon_smallmenu_recreate ( GtkWidget * evbox )
+{
+  GtkWidget *smenu = g_object_get_data( G_OBJECT(evbox) , "smenu" );
+  gtk_widget_destroy( GTK_WIDGET(smenu) );
+  smenu = si_ui_statusicon_smallmenu_create();
+  g_object_set_data( G_OBJECT(evbox) , "smenu" , smenu );
+  recreate_smallmenu = FALSE;
+  return;
 }
 
 
@@ -436,13 +467,13 @@ void
 si_ui_statusicon_enable ( gboolean enable )
 {
   static GtkWidget *si_evbox = NULL;
-  static GtkWidget *si_smenu = NULL;
   static si_hook_tchange_prevs_t *si_hook_tchange_prevs = NULL;
 
   if (( enable == TRUE ) && ( si_evbox == NULL ))
   {
     GtkWidget *si_image;
     GtkWidget *si_popup;
+    GtkWidget *si_smenu;
     AudGtkTrayIcon *si_applet;
     GtkRequisition req;
     GtkAllocation allocation;
@@ -508,6 +539,7 @@ si_ui_statusicon_enable ( gboolean enable )
     if ( si_evbox != NULL )
     {
       AudGtkTrayIcon *si_applet = g_object_get_data( G_OBJECT(si_evbox) , "applet" );
+      GtkWidget *si_smenu = g_object_get_data( G_OBJECT(si_evbox) , "smenu" );
       si_ui_statusicon_popup_timer_stop( si_evbox ); /* just in case the timer is active */
       gtk_widget_destroy( GTK_WIDGET(si_evbox) );
       gtk_widget_destroy( GTK_WIDGET(si_applet) );
@@ -569,7 +601,7 @@ si_ui_prefs_cb_commit ( gpointer prefs_win )
     }
     list = g_slist_next(list);
   }
-  
+
   list = g_object_get_data( G_OBJECT(prefs_win) , "msa_grp" );
   while ( list != NULL )
   {
@@ -580,8 +612,13 @@ si_ui_prefs_cb_commit ( gpointer prefs_win )
     }
     list = g_slist_next(list);
   }
-  
+
   si_cfg_save();
+
+  /* request the recreation of status icon small-menu if necessary */
+  if ( si_cfg.rclick_menu != SI_CFG_RCLICK_MENU_AUD )
+    recreate_smallmenu = TRUE;
+
   gtk_widget_destroy( GTK_WIDGET(prefs_win) );
 }
 
@@ -592,7 +629,7 @@ si_ui_prefs_show ( void )
   static GtkWidget *prefs_win = NULL;
   GtkWidget *prefs_vbox;
   GtkWidget *prefs_rclick_frame, *prefs_rclick_vbox;
-  GtkWidget *prefs_rclick_audmenu_rbt, *prefs_rclick_smallmenu_rbt;
+  GtkWidget *prefs_rclick_audmenu_rbt, *prefs_rclick_smallmenu1_rbt, *prefs_rclick_smallmenu2_rbt;
   GtkWidget *prefs_scroll_frame, *prefs_scroll_vbox;
   GtkWidget *prefs_scroll_vol_rbt, *prefs_scroll_skip_rbt;
   GtkWidget *prefs_bbar_bbox;
@@ -627,21 +664,36 @@ si_ui_prefs_show ( void )
                                _("Audacious standard menu") );
   g_object_set_data( G_OBJECT(prefs_rclick_audmenu_rbt) , "val" ,
                      GINT_TO_POINTER(SI_CFG_RCLICK_MENU_AUD) );
-  prefs_rclick_smallmenu_rbt = gtk_radio_button_new_with_label_from_widget(
+  prefs_rclick_smallmenu1_rbt = gtk_radio_button_new_with_label_from_widget(
                                  GTK_RADIO_BUTTON(prefs_rclick_audmenu_rbt) ,
-                                 _("Small playback menu") );
-  g_object_set_data( G_OBJECT(prefs_rclick_smallmenu_rbt) , "val" ,
-                     GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL) );
+                                 _("Small playback menu #1") );
+  g_object_set_data( G_OBJECT(prefs_rclick_smallmenu1_rbt) , "val" ,
+                     GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL1) );
+  prefs_rclick_smallmenu2_rbt = gtk_radio_button_new_with_label_from_widget(
+                                 GTK_RADIO_BUTTON(prefs_rclick_audmenu_rbt) ,
+                                 _("Small playback menu #2") );
+  g_object_set_data( G_OBJECT(prefs_rclick_smallmenu2_rbt) , "val" ,
+                     GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL2) );
   g_object_set_data( G_OBJECT(prefs_win) , "rcm_grp" ,
-                     gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_rclick_smallmenu_rbt)) );
-  if ( si_cfg.rclick_menu == SI_CFG_RCLICK_MENU_AUD )
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(prefs_rclick_audmenu_rbt) , TRUE );
-  else
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(prefs_rclick_smallmenu_rbt) , TRUE );
+                     gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_rclick_smallmenu1_rbt)) );
+  switch ( si_cfg.rclick_menu )
+  {
+    case SI_CFG_RCLICK_MENU_SMALL1:
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(prefs_rclick_smallmenu1_rbt) , TRUE );
+      break;
+    case SI_CFG_RCLICK_MENU_SMALL2:
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(prefs_rclick_smallmenu2_rbt) , TRUE );
+      break;
+    case SI_CFG_RCLICK_MENU_AUD:
+    default:
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(prefs_rclick_audmenu_rbt) , TRUE );
+      break;
+  }
   gtk_box_pack_start( GTK_BOX(prefs_rclick_vbox) , prefs_rclick_audmenu_rbt , TRUE , TRUE , 0 );
-  gtk_box_pack_start( GTK_BOX(prefs_rclick_vbox) , prefs_rclick_smallmenu_rbt , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(prefs_rclick_vbox) , prefs_rclick_smallmenu1_rbt , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(prefs_rclick_vbox) , prefs_rclick_smallmenu2_rbt , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(prefs_vbox) , prefs_rclick_frame , TRUE , TRUE , 0 );
-  
+
   prefs_scroll_frame = gtk_frame_new( _("Mouse Scroll Action") );
   prefs_scroll_vbox = gtk_vbox_new( TRUE , 0 );
   gtk_container_set_border_width( GTK_CONTAINER(prefs_scroll_vbox) , 6 );
