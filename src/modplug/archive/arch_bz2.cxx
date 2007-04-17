@@ -40,7 +40,11 @@ arch_Bzip2::arch_Bzip2(const string& aFileName)
 		return;
 	}
 	
-	fscanf(f, "%u", &mSize); // this is the size.
+	if(fscanf(f, "%u", &mSize) != 1); // this is the size.
+	{
+		mSize = 0;
+		return;
+	}
 	
 	pclose(f);
 	
@@ -52,7 +56,7 @@ arch_Bzip2::arch_Bzip2(const string& aFileName)
 	}
 	
 	lCommand = "bzcat \'" + aFileName + '\'';  //decompress to stdout
-	popen(lCommand.c_str(), "r");
+	f = popen(lCommand.c_str(), "r");
 
 	if (f <= 0)
 	{
@@ -60,7 +64,11 @@ arch_Bzip2::arch_Bzip2(const string& aFileName)
 		return;
 	}
 
-	fread((char *)mMap, sizeof(char), mSize, f);
+	if(fread((char *)mMap, sizeof(char), mSize, f) != mSize)
+	{
+		mSize = 0;
+		return;
+	}
 
 	pclose(f);
 }

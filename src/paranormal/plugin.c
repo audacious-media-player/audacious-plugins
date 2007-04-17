@@ -21,6 +21,7 @@
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
+#include <audacious/util.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_thread.h>
 

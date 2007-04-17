@@ -795,8 +795,7 @@ gchar * i_configure_read_seq_ports_default( void )
     gchar buffer[100];
     while ( !feof( fp ) )
     {
-      fgets( buffer , 100 , fp );
-      if (( strlen( buffer ) > 11 ) && ( !strncasecmp( buffer , "addresses: " , 11 ) ))
+      if (fgets( buffer , 100 , fp ) && ( strlen( buffer ) > 11 ) && ( !strncasecmp( buffer , "addresses: " , 11 ) ))
       {
         /* change spaces between ports (65:0 65:1 65:2 ...)
            into commas (65:0,65:1,65:2,...) */

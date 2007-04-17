@@ -143,7 +143,7 @@ url_escape_1 (const char *s, unsigned char mask, int allow_passthrough)
       else
 	*p2++ = *p1++;
     }
-  g_return_if_fail (p2 - newstr == newlen);
+  g_return_val_if_fail (p2 - newstr == newlen, NULL);
   *p2 = '\0';
 
   return newstr;

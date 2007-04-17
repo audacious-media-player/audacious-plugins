@@ -45,7 +45,13 @@ arch_Rar::arch_Rar(const string& aFileName)
 
 	int num = 7;
 	while (num--) // ignore 7 lines.
-		fgets(lBuffer, 90, f);
+	{
+		if(!fgets(lBuffer, 90, f))
+		{
+			mSize = 0;
+			return;
+		}
+        }
 	
 	bool eof = false;
 	while(!eof)
@@ -112,7 +118,8 @@ arch_Rar::arch_Rar(const string& aFileName)
 		return;
 	}
 
-	fread((char *)mMap, sizeof(char), mSize, f);
+	if(fread((char *)mMap, sizeof(char), mSize, f) != mSize)
+		mSize = 0;
 	
 	pclose(f);
 }
@@ -145,7 +152,15 @@ bool arch_Rar::ContainsMod(const string& aFileName)
 
 	int num = 7;
 	while (num--)
-		fgets(lBuffer, 90, f); //ignore a line.
+	{
+		
+		if(!fgets(lBuffer, 90, f)) //ignore a line.
+		{
+			pclose(f);
+			return false;
+		}
+
+	}
 
 	bool eof = false;
 	while(!eof)

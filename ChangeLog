@@ -1,3 +1,14 @@
+2007-04-16 08:35:24 +0000  Giacomo Lozito <james@develia.org>
+  revision [2064]
+  - statusicon: added support for quit button in smallmenu; also, the field is being prepared for customizable smallmenu entries
+  trunk/src/statusicon/si.c           |   14 +++-
+  trunk/src/statusicon/si_audacious.h |    1 
+  trunk/src/statusicon/si_cfg.h       |    3 -
+  trunk/src/statusicon/si_common.h    |    2 
+  trunk/src/statusicon/si_ui.c        |  104 +++++++++++++++++++++++++++---------
+  5 files changed, 92 insertions(+), 32 deletions(-)
+
+
 2007-04-15 19:23:05 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2062]
   - merge some local changes which makes curl threading more reliable.

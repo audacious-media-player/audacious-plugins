@@ -37,9 +37,22 @@ arch_Gzip::arch_Gzip(const string& aFileName)
 	}
 	
 	char line[81];
-	fgets(line, 80, f);   // ignore a line.
-	fscanf(f, "%u", &mSize); // ignore first number.
-	fscanf(f, "%u", &mSize); // keep second number.
+	if(!fgets(line, 80, f)){   // ignore a line.
+		mSize = 0;
+		pclose(f);
+		return;
+	}
+	if(fscanf(f, "%u", &mSize) != 1){  // ignore first number.
+		mSize = 0;
+		pclose(f);
+		return;
+	}
+
+	if (fscanf(f, "%u", &mSize) != 1){; // keep second number.
+		mSize = 0;
+		pclose(f);
+		return;
+	}
 	
 	pclose(f);
 	
@@ -59,7 +72,8 @@ arch_Gzip::arch_Gzip(const string& aFileName)
 		return;
 	}
 
-	fread((char *)mMap, sizeof(char), mSize, f);
+	if(fread((char *)mMap, sizeof(char), mSize, f) != mSize)
+		mSize = 0;
 
 	pclose(f);
 	
@@ -93,11 +107,26 @@ bool arch_Gzip::ContainsMod(const string& aFileName)
 	}
 	
 	char line[300];
-	fgets(line, 80, f);   // ignore a line.
-	fscanf(f, "%i", &num); // ignore first number
-	fscanf(f, "%i", &num); // ignore second number
-	fscanf(f, "%f%%", &fnum); // ignore ratio
-	fgets(line, 300, f);   // read in correct line safely.
+	if(!fgets(line, 80, f)){   // ignore a line.
+		pclose(f);
+		return false;
+	}	
+	if(fscanf(f, "%i", &num) != 1){ // ignore first number
+		pclose(f);
+		return false;
+	}
+	if(fscanf(f, "%i", &num) != 1){ // ignore second number
+		pclose(f);
+		return false;
+	}
+	if(fscanf(f, "%f%%", &fnum) != 1){ // ignore ratio
+		pclose(f);
+		return false;
+	}
+	if(!fgets(line, 300, f)){   // read in correct line safely.
+		pclose(f);
+		return false;
+	}
 	if (strlen(line) > 1)
 		line[strlen(line)-1] = 0;
 	lName = line;

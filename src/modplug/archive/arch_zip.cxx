@@ -81,7 +81,8 @@ arch_Zip::arch_Zip(const string& aFileName)
 		return;
 	}
 
-	fread((char *)mMap, sizeof(char), mSize, f);
+	if(fread((char *)mMap, sizeof(char), mSize, f) != mSize)
+		mSize = 0;
 	
 	pclose(f);
 	

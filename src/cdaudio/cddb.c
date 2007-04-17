@@ -184,6 +184,7 @@ cddb_query(gchar * server, cdda_disc_toc_t * info,
     gchar buffer[256];
     gchar **response;
     gint i;
+    gint ret;
 
     if ((sock = cddb_http_open_connection(server, 80)) == 0)
         return FALSE;
@@ -203,7 +204,14 @@ cddb_query(gchar * server, cdda_disc_toc_t * info,
 	cddb_log(getstr);
 
     g_free(offsets);
-    write(sock, getstr, strlen(getstr));
+    ret = write(sock, getstr, strlen(getstr));
+
+    if(ret != strlen(getstr)){
+        g_free(getstr);
+        http_close_connection(sock);
+        return FALSE;
+    }
+
     g_free(getstr);
 
     if (http_read_first_line(sock, buffer, 256) < 0) {
@@ -258,7 +266,7 @@ cddb_query(gchar * server, cdda_disc_toc_t * info,
 static gint
 cddb_check_protocol_level(const gchar * server)
 {
-    gint level = 0, sock, n;
+    gint level = 0, sock, n, ret;
     gchar *str, buffer[256];
 
     if ((sock = cddb_http_open_connection(server, 80)) == 0)
@@ -269,7 +277,14 @@ cddb_check_protocol_level(const gchar * server)
         ("GET /~cddb/cddb.cgi?cmd=stat%s&proto=1 HTTP/1.0\r\n\r\n",
          cddb_generate_hello_string());
 
-    write(sock, str, strlen(str));
+    ret = write(sock, str, strlen(str));
+    if(ret != strlen(str)){
+        g_free(str);
+        http_close_connection(sock);
+        return 0;
+    }
+
+
     g_free(str);
 
     if ((n = http_read_first_line(sock, buffer, 256)) < 0 ||
@@ -308,6 +323,7 @@ cddb_read(gchar * server, cddb_disc_header_t * cddb_info, cdinfo_t * cdinfo)
     gchar *realstr, *temp;
     gint len, command;
     gint num, oldnum;
+    gint ret;
 
     if ((sock = cddb_http_open_connection(server, 80)) == 0)
         return FALSE;
@@ -322,7 +338,13 @@ cddb_read(gchar * server, cddb_disc_header_t * cddb_info, cdinfo_t * cdinfo)
          cddb_generate_hello_string(), cdda_cfg.cddb_protocol_level);
 	cddb_log(readstr);
 
-    write(sock, readstr, strlen(readstr));
+    ret = write(sock, readstr, strlen(readstr));
+    if(ret != strlen(readstr)){
+        g_free(readstr);
+        http_close_connection(sock);
+        return FALSE;
+    }
+
     g_free(readstr);
 
     if (http_read_first_line(sock, buffer, 256) < 0) {
@@ -443,6 +465,7 @@ cddb_get_server_list(const gchar * server, gint protocol_level)
     gchar buffer[256];
     gchar **message;
     GList *list = NULL;
+    gint ret;
 
     if ((sock = cddb_http_open_connection(server, 80)) == 0)
         return NULL;
@@ -455,7 +478,12 @@ cddb_get_server_list(const gchar * server, gint protocol_level)
          cddb_generate_hello_string(), protocol_level);
 	cddb_log(getstr);
 
-    write(sock, getstr, strlen(getstr));
+    ret = write(sock, getstr, strlen(getstr));
+    if(ret != strlen(getstr)){
+        g_free(getstr);
+        http_close_connection(sock);
+        return NULL;
+    }
     g_free(getstr);
 
     if (http_read_first_line(sock, buffer, 256) < 0) {

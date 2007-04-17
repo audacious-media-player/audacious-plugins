@@ -23,7 +23,7 @@ static void
 parse_actuator (xmlNodePtr cur, struct pn_actuator *a)
 {
   int i;
-  xmlChar *content;
+  char *content;
   struct pn_actuator *child;
 
   for (cur = cur->xmlChildrenNode; cur; cur = cur->next)
@@ -40,7 +40,7 @@ parse_actuator (xmlNodePtr cur, struct pn_actuator *a)
       if (a->options && a->options[i].desc)
 	{
 	  /* it is an option, so let's set it! */
-	  content = xmlNodeGetContent (cur);
+	  content = (char*)xmlNodeGetContent (cur);
 
 	  /* FIXME: warning? */
 	  if (! content)
@@ -114,11 +114,11 @@ parse_actuator (xmlNodePtr cur, struct pn_actuator *a)
 	    }
 
 	  /* gotta free content */
-	  xmlFree (content);
+	  xmlFree ((xmlChar*)content);
 	}
       /* See if we have a child actuator */
       else if (a->desc->flags & ACTUATOR_FLAG_CONTAINER
-	       && (child = create_actuator (cur->name)))
+	       && (child = create_actuator ((char*)cur->name)))
 	{
 	  container_add_actuator (a, child);
 	  parse_actuator (cur, child);
@@ -157,7 +157,7 @@ load_preset (const char *filename)
 
       /* if (...) { ... } else if (is_documentation [see top of file]) ... else */
       {
-	a = create_actuator (cur->name);
+	a = create_actuator ((char*)cur->name);
 
 	/* FIXME: warn? */
 	if (! a)

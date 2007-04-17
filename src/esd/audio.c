@@ -25,6 +25,7 @@
 #include <esd.h>
 
 #include <unistd.h>
+#include <audacious/util.h>
 
 #include "esdout.h"
 

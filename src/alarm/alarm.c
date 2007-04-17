@@ -849,7 +849,10 @@ static void *alarm_start_thread(void *args)
      if(cmd_on == TRUE)
      {
        DEBUG("Executing %s, cmd_on is true\n", cmdstr);
-       system(cmdstr);
+       if(system(cmdstr) == -1)
+       {
+        DEBUG("Executing %s failed\n",cmdstr);
+       }
      }
 
      DEBUG("strcmp playlist, playlist is [%s]\n", playlist);
