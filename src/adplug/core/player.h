@@ -67,6 +67,8 @@ public:
 	{ return 0; }
 	virtual unsigned int getsubsongs()	// returns number of subsongs
 	{ return 1; }
+	virtual unsigned int getsubsong()       // returns current subsong
+	{ return 0; }
 	virtual unsigned int getinstruments()	// returns number of instruments
 	{ return 0; }
 	virtual std::string getinstrument(unsigned int n)	// returns n-th instrument name

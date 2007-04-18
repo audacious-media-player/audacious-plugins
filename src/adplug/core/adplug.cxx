@@ -64,6 +64,7 @@
 #include "msc.h"
 #include "rix.h"
 #include "adl.h"
+#include "jbm.h"
 
 /***** Defines *****/
 
@@ -112,6 +113,7 @@ const CPlayerDesc
   CPlayerDesc (CmscPlayer::factory, "Adlib MSC Player", ".msc\0"),
   CPlayerDesc (CrixPlayer::factory, "Softstar RIX OPL Music", ".rix\0"),
   CPlayerDesc (CadlPlayer::factory, "Westwood ADL", ".adl\0"),
+  CPlayerDesc (CjbmPlayer::factory, "Johannes Bjerregaard", ".jbm\0"),
   CPlayerDesc ()
 };
 

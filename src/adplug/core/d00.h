@@ -89,7 +89,7 @@ class Cd00Player: public CPlayer
 		unsigned char duration,ptr;
 	} *levpuls;
 
-	unsigned char songend,version;
+	unsigned char songend,version,cursubsong;
 	char *datainfo;
 	unsigned short *seqptr;
 	d00header *header;

@@ -2807,17 +2807,22 @@ CadlPlayer::load (VFSFile * fd, const CFileProvider & fp)
 
   //    _soundFileLoaded = file;
 
-  for (int i = 0; i < 200; i++)
-    if (_trackEntries[i] != 0xff)
+  // find last subsong
+  for(int i = 199; i >= 0; i--)
+    if(_trackEntries[i] != 0xff) {
       numsubsongs = i + 1;
-
+      break;
+    }
   fp.close (f);
+  cursubsong = 2;
+  rewind();
   return true;
 }
 
 void
 CadlPlayer::rewind (int subsong)
 {
+  if(subsong == -1) subsong = cursubsong;
   opl->init ();
   opl->write (1, 32);
   playSoundEffect (subsong);

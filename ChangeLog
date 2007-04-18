@@ -1,3 +1,23 @@
+2007-04-17 21:45:19 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2066]
+  Warning fixes from SuSe.
+  trunk/src/alarm/alarm.c                    |    5 ++-
+  trunk/src/amidi-plug/backend-alsa/b-alsa.c |    3 -
+  trunk/src/amidi-plug/i_configure-alsa.c    |    3 +
+  trunk/src/cdaudio/cddb.c                   |   38 ++++++++++++++++++++---
+  trunk/src/esd/audio.c                      |    1 
+  trunk/src/modplug/archive/arch_bz2.cxx     |   14 ++++++--
+  trunk/src/modplug/archive/arch_gzip.cxx    |   47 +++++++++++++++++++++++------
+  trunk/src/modplug/archive/arch_rar.cxx     |   21 +++++++++++-
+  trunk/src/modplug/archive/arch_zip.cxx     |    3 +
+  trunk/src/modplug/sndfile.cxx              |    6 ++-
+  trunk/src/paranormal/plugin.c              |    1 
+  trunk/src/paranormal/presets.c             |   10 +++---
+  trunk/src/wma/libffwma/mem.c               |    3 +
+  trunk/src/xspf/urlencode.c                 |    2 -
+  14 files changed, 123 insertions(+), 34 deletions(-)
+
+
 2007-04-16 08:35:24 +0000  Giacomo Lozito <james@develia.org>
   revision [2064]
   - statusicon: added support for quit button in smallmenu; also, the field is being prepared for customizable smallmenu entries
