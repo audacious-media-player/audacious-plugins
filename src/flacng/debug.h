@@ -26,7 +26,7 @@
 
 #define _ERROR(...) _MESSAGE("ERROR", __VA_ARGS__)
 
-#ifdef DEBUG
+#ifdef FLACNG_DEBUG
 #define _DEBUG(...) _MESSAGE("DEBUG",  __VA_ARGS__)
 #else
 #define _DEBUG(...) {}
