@@ -148,35 +148,26 @@ FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data) {
 FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *stream_length, void *client_data) {
 
     callback_info* info;
-    size_t size;
-    glong position;
+    off_t size;
 
     _ENTER;
 
     info = (callback_info*) client_data;
     _DEBUG("Using callback_info %s", info->name);
 
-    if (-1 == (position = vfs_ftell(info->input_stream))) {
-        _ERROR("Could not tell current position!");
-        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+    if (-1 == (size = vfs_fsize(info->input_stream))) {
+        /*
+         * Could not get the stream size. This is not necessarily an
+         * error, maybe the stream has no fixed size (think streaming
+         * audio)
+         */
+        _DEBUG("Stream length unknown");
+        *stream_length = 0;
+        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_UNSUPPORTED;
     }
 
-    if (-1 == vfs_fseek(info->input_stream, 0, SEEK_END)) {
-        _ERROR("Could not seek to end of stream.");
-        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
-    }
-
-    if (-1 == (*stream_length = vfs_ftell(info->input_stream))) {
-        _ERROR("Could not tell position at end of stream!");
-        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
-    }
-
-    if (-1 == vfs_fseek(info->input_stream, position, SEEK_SET)) {
-        _ERROR("Could not reset stream position. We're probably in trouble now.");
-        _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
-    }
-
-    _DEBUG("Stream length is %d bytes", *stream_length);
+    _DEBUG("Stream length is %d bytes", size);
+    *stream_length = size;
 
     _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }
@@ -187,7 +178,6 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
 
     glong i;
     gshort j;
-    gint32 sample;
     callback_info* info;
 
     _ENTER;

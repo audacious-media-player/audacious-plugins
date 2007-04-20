@@ -1,3 +1,16 @@
+2007-04-20 13:50:15 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2070]
+  
+  - Implement vfs_fsize() for stdio
+  - Implement dummys for curl/mms/smb
+  
+  trunk/src/curl/curl.c   |    8 ++++++++
+  trunk/src/mms/mms.c     |    9 ++++++++-
+  trunk/src/smb/smb.c     |    9 ++++++++-
+  trunk/src/stdio/stdio.c |   23 +++++++++++++++++++++--
+  4 files changed, 45 insertions(+), 4 deletions(-)
+
+
 2007-04-18 14:38:58 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2068]
   Sync with upstream. Subsong improvements for ADL, new JBM player.
