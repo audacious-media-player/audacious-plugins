@@ -1,3 +1,12 @@
+2007-04-20 13:51:44 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2072]
+  
+  - Make flacng use vfs_fsize()
+  
+  trunk/src/flacng/seekable_stream_callbacks.c |   34 +++++++++------------------
+  1 file changed, 12 insertions(+), 22 deletions(-)
+
+
 2007-04-20 13:50:15 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2070]
   

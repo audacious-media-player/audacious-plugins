@@ -941,7 +941,35 @@ curl_vfs_truncate_impl(VFSFile * file, glong size)
 off_t
 curl_vfs_fsize_impl(VFSFile * file)
 {
-    return -1;
+  CurlHandle *handle = file->handle;
+
+  if (handle->length == -1)
+    {
+      if (!handle->thread)
+	{
+	  // We need a HEAD to find out the length
+	  handle->no_data = 1;
+	  if (DEBUG_CONNECTION)
+	    g_print("Request for head info\n");
+	  curl_manage_request(handle);
+	  if (DEBUG_CONNECTION)
+	    g_print("Completed\n");
+	  handle->no_data = 0;
+	}
+      else
+	{
+	  // Wait a bit?
+	}
+    }
+
+  if (handle->length <= 0)
+    {
+      if (DEBUG_SEEK)
+	g_print("Tried to get the length of a file with unknown length\n");
+      // don't know how long it is...
+      return -1;
+    }
+    return handle->length;
 }
 
 gchar *
