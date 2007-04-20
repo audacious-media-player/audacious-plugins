@@ -196,6 +196,12 @@ mms_vfs_truncate_impl(VFSFile * file, glong size)
     return -1;
 }
 
+off_t
+mms_vfs_fsize_impl(VFSFile * file)
+{
+    return -1;
+}
+
 VFSConstructor mms_const = {
 	"mms://",
 	mms_vfs_fopen_impl,
@@ -208,7 +214,8 @@ VFSConstructor mms_const = {
 	mms_vfs_rewind_impl,
 	mms_vfs_ftell_impl,
 	mms_vfs_feof_impl,
-	mms_vfs_truncate_impl
+	mms_vfs_truncate_impl,
+	mms_vfs_fsize_impl
 };
 
 static void init(void)

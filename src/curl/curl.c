@@ -938,6 +938,12 @@ curl_vfs_truncate_impl(VFSFile * file, glong size)
   return -1;
 }
 
+off_t
+curl_vfs_fsize_impl(VFSFile * file)
+{
+    return -1;
+}
+
 gchar *
 curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
@@ -964,6 +970,7 @@ VFSConstructor curl_const = {
   curl_vfs_ftell_impl,
   curl_vfs_feof_impl,
   curl_vfs_truncate_impl,
+  curl_vfs_fsize_impl,
   curl_vfs_metadata_impl
 };
 
@@ -980,6 +987,7 @@ VFSConstructor curl_https_const = {
   curl_vfs_ftell_impl,
   curl_vfs_feof_impl,
   curl_vfs_truncate_impl,
+  curl_vfs_fsize_impl,
   curl_vfs_metadata_impl
 };
 

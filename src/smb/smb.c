@@ -175,6 +175,12 @@ smb_vfs_truncate_impl(VFSFile * file, glong size)
   return -1;
 }
 
+off_t
+smb_vfs_fsize_impl(VFSFile * file)
+{
+    return -1;
+}
+
 VFSConstructor smb_const = {
 	"smb://",
 	smb_vfs_fopen_impl,
@@ -187,7 +193,8 @@ VFSConstructor smb_const = {
 	smb_vfs_rewind_impl,
 	smb_vfs_ftell_impl,
 	smb_vfs_feof_impl,
-	smb_vfs_truncate_impl
+	smb_vfs_truncate_impl,
+	smb_vfs_fsize_impl
 };
 
 static void init(void)

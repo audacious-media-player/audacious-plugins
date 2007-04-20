@@ -230,6 +230,23 @@ stdio_vfs_truncate_impl(VFSFile * file, glong size)
     return ftruncate(fileno(handle), size);
 }
 
+off_t
+stdio_vfs_fsize_impl(VFSFile * file)
+{
+    FILE *handle;
+    struct stat s;
+
+    if (file == NULL)
+        return -1;
+
+    handle = (FILE *) file->handle;
+
+    if (-1 == fstat(fileno(handle), &s))
+        return -1;
+
+    return s.st_size;
+}
+
 VFSConstructor file_const = {
 	"file://",
 	stdio_vfs_fopen_impl,
@@ -242,7 +259,8 @@ VFSConstructor file_const = {
 	stdio_vfs_rewind_impl,
 	stdio_vfs_ftell_impl,
 	stdio_vfs_feof_impl,
-	stdio_vfs_truncate_impl
+	stdio_vfs_truncate_impl,
+	stdio_vfs_fsize_impl
 };
 
 VFSConstructor default_const = {
@@ -257,7 +275,8 @@ VFSConstructor default_const = {
 	stdio_vfs_rewind_impl,
 	stdio_vfs_ftell_impl,
 	stdio_vfs_feof_impl,
-	stdio_vfs_truncate_impl
+	stdio_vfs_truncate_impl,
+	stdio_vfs_fsize_impl
 };
 
 static void init(void)

@@ -1,3 +1,18 @@
+2007-04-18 14:38:58 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2068]
+  Sync with upstream. Subsong improvements for ADL, new JBM player.
+  trunk/src/adplug/core/Makefile   |    5 
+  trunk/src/adplug/core/adl.cxx    |   11 +
+  trunk/src/adplug/core/adl.h      |   19 ++
+  trunk/src/adplug/core/adplug.cxx |    2 
+  trunk/src/adplug/core/d00.cxx    |    3 
+  trunk/src/adplug/core/d00.h      |    2 
+  trunk/src/adplug/core/jbm.cxx    |  294 +++++++++++++++++++++++++++++++++++++++
+  trunk/src/adplug/core/jbm.h      |   80 ++++++++++
+  trunk/src/adplug/core/player.h   |    2 
+  9 files changed, 410 insertions(+), 8 deletions(-)
+
+
 2007-04-17 21:45:19 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2066]
   Warning fixes from SuSe.
