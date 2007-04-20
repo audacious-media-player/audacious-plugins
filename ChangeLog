@@ -1,3 +1,12 @@
+2007-04-20 14:42:53 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2076]
+  
+  - Rename flacng debug flag to FLACNG_DEBUG
+  
+  trunk/src/flacng/debug.h |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-04-20 14:41:13 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2074]
   

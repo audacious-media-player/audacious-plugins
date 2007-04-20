@@ -11,6 +11,6 @@ SOURCES = plugin.c tools.c seekable_stream_callbacks.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -I./libflac $(FLAC_CFLAGS)
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -I./libflac $(FLAC_CFLAGS) -DFLACNG_DEBUG
 
 include ../../mk/objective.mk

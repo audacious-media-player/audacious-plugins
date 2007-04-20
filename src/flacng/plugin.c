@@ -67,7 +67,7 @@ callback_info* test_info;
 callback_info* main_info;
 gboolean plugin_initialized = FALSE;
 gint seek_to = -1;
-static GThread* thread;
+static GThread* thread = NULL;
 GMutex* flac_pl_mutex;
 
 /* === */
@@ -589,6 +589,16 @@ void flac_stop(InputPlayback* input) {
     _ENTER;
 
     input->playing = FALSE;
+
+    if (NULL != thread) {
+        /*
+         * Wait for the decoder thread to finish
+         */
+        _DEBUG("Waiting for decoder thread to die...");
+        g_thread_join(thread);
+        thread = NULL;
+        _DEBUG("Decoder thread has finished");
+    }
 
     _LEAVE;
 }
