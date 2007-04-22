@@ -178,7 +178,9 @@ smb_vfs_truncate_impl(VFSFile * file, glong size)
 off_t
 smb_vfs_fsize_impl(VFSFile * file)
 {
-    return -1;
+    SMBFile *handle = (SMBFile *)file->handle;
+
+    return handle->length;
 }
 
 VFSConstructor smb_const = {
