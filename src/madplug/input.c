@@ -117,9 +117,7 @@ gboolean input_init(struct mad_info_t * info, const char *url)
         return FALSE;
     }
     // obtain file size
-    vfs_fseek(info->infile, 0, SEEK_END);
-    info->size = vfs_ftell(info->infile);
-    vfs_fseek(info->infile, 0, SEEK_SET);
+    info->size = vfs_fsize(info->infile);
     info->remote = info->size == 0 ? TRUE : FALSE; //proxy connection may result in non-zero size.
     if(audmad_is_remote((gchar *)url))
         info->remote = TRUE;
