@@ -24,11 +24,23 @@
 #include <glib.h>
 
 
-//#define LASTFM_HS_URL "http://ws.audioscrobbler.com/radio/handshake.php"
-#define LASTFM_CURL_TIMEOUT 5
+#define LASTFM_HANDSHAKE_URL "http://ws.audioscrobbler.com/radio/handshake.php?version=1.1.1&platform=linux&username=%s&passwordmd5=%s&debug=0&language=jp"
+#define LASTFM_ADJUST_URL "http://ws.audioscrobbler.com/radio/adjust.php?session=%s&url=%s&debug=0"
+#define LASTFM_CURL_TIMEOUT 5 
 //#define DEBUG 1
-static gchar *lastfm_session_id = NULL, *lastfm_mp3_stream_url = NULL, *lastfm_station_name = NULL;
-CURL *curl = NULL;
+
+typedef struct {
+	VFSFile * proxy_fd;
+        gchar *lastfm_session_id;
+        gchar *lastfm_mp3_stream_url;
+        gchar *lastfm_station_name;
+        int login_count;
+} LastFM;
+
+LastFM *LastFMGlobalData;  
+    /*this keeps the login data in a global place
+    since we cannot login on every fopen call
+    if anyone has a better solution to this any help is welcome*/
 
 static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata)
 {
@@ -37,92 +49,53 @@ static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata
 	return size * nmemb;
 }
 
-static gboolean setup_curl()
-{
-	curl = curl_easy_init();
-	if (curl != NULL)
-	{
-		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
-		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Audacious");
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, lastfm_store_res);
-		curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-		curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, LASTFM_CURL_TIMEOUT);
-		return TRUE;
-	}
-	return FALSE;
-}
 
-static gchar *lastfm_login(CURL * curl)
+static gboolean lastfm_login()
 {
 	/*gets the session ID in lastfm_session_id and returns the URL to be played
-	   make a URI like this one and use curl to open it:
-
-	   http://ws.audioscrobbler.com/radio/handshake.php?
-	   version=1.1.1&platform=linux&username=<yourlastfmusername>&
-	   passwordmd5=<yourmd5sum>&debug=0&partner=
-
-	   then parse the returned data
+	  read http://gabistapler.de/blog/index.php?/archives/268-Play-last.fm-streams-without-the-player.html for more info
 	 */
-
+//      LastFM *LastFMData = g_new0(LastFM,1);
 	gint status, i;
-	gchar buf[4096], **split = NULL, *lastfm_media_url = NULL;
+	gchar buf[4096], **split = NULL;
 	GString *res = g_string_new(NULL);
 	ConfigDb *cfgfile = NULL;
 	char *username = NULL, *password = NULL;
-
+        CURL*curl;
 	if ((cfgfile = bmp_cfg_db_open()) != NULL)
 	{
 		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "username", &username);
 		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "password", &password);
-	}
+	//puts(username);
+        //puts(password);
+        
+        g_free(cfgfile);
+        }
+	
+        if (username != NULL && password != NULL){
 
-	if (username != NULL && password != NULL)
-		snprintf(buf, sizeof(buf), "http://ws.audioscrobbler.com/radio/handshake.php?version=1.1.1&platform=linux&username=%s&passwordmd5=%s&debug=0&language=jp", username, password);
+		snprintf(buf, sizeof(buf), LASTFM_HANDSHAKE_URL, username, password);
+        //        g_free(password);
+          //      g_free(username);
+                }
 	else
-		return NULL;
+		return FALSE;
 
+	puts("preparing curl");
+        curl=curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, "Audacious");
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, lastfm_store_res);
+	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, LASTFM_CURL_TIMEOUT);
 	curl_easy_setopt(curl, CURLOPT_URL, buf);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
 	status = curl_easy_perform(curl);
-	curl_easy_cleanup(curl);
+        curl_easy_cleanup(curl);
 
-	if (status == CURLE_OK)
-	{
-		split = g_strsplit(res->str, "\n", 7);
-
-		for (i = 0; split && split[i]; i++)
-		{
-			if (g_str_has_prefix(split[i], "session="))
-				lastfm_session_id = g_strndup(split[i] + 8, 32);
-			else if (g_str_has_prefix(split[i], "stream_url="))
-				lastfm_media_url = g_strdup(split[i] + 11);
-		}
-	}
-
-	g_strfreev(split);
-	g_string_erase(res, 0, -1);
-	return lastfm_media_url;
-}
-
-static gboolean lastfm_adjust(const gchar * url)
-{
-	gchar tmp[4096], **split = NULL;
-	gboolean ret = FALSE;
-	int status, i;
-
-	snprintf(tmp, sizeof(tmp), "http://ws.audioscrobbler.com/radio/adjust.php?session=%s&url=%s&debug=0", lastfm_session_id, url);
-	curl_easy_reset(curl);
-	setup_curl();
-	curl_easy_setopt(curl, CURLOPT_URL, tmp);
-
-	puts("am setat tmp, setez res");
-
-	GString *res = g_string_new(NULL);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
-	status = curl_easy_perform(curl);
-	curl_easy_cleanup(curl);
-
+	puts("curl is done");
+	puts(buf);
 	puts(res->str);
 	if (status == CURLE_OK)
 	{
@@ -130,69 +103,134 @@ static gboolean lastfm_adjust(const gchar * url)
 
 		for (i = 0; split && split[i]; i++)
 		{
-			if (g_str_has_prefix(split[i], "response=OK"))
-				ret = TRUE;
-			else if (g_str_has_prefix(split[i], "stationname="))
-				lastfm_station_name = g_strdup(split[i] + 12);
+			if (g_str_has_prefix(split[i], "session="))
+				LastFMGlobalData->lastfm_session_id = g_strndup(split[i] + 8, 32);
+			else if (g_str_has_prefix(split[i], "stream_url="))
+				LastFMGlobalData->lastfm_mp3_stream_url = g_strdup(split[i] + 11);
 		}
 	}
+        else 
+            return FALSE;
 
-	if (ret == TRUE)
-		puts("response=OK");
+   //     printf("URL: '%s'\n",LastFMGlobalData->lastfm_mp3_stream_url);
+   //     printf("session_id: '%s'\n",LastFMGlobalData->lastfm_session_id);
 
+	g_strfreev(split);
 	g_string_erase(res, 0, -1);
+	return  (gboolean)TRUE;
+}
+
+static gboolean lastfm_adjust(const gchar * url)
+{
+LastFM * LastFMData= g_new0(LastFM,1);
+
+	int status, i;
+	gchar tmp[4096], **split = NULL;
+	gboolean ret = FALSE;
+	GString *res = g_string_new(NULL);
+        CURL*curl;
+        if(LastFMGlobalData->lastfm_session_id==NULL)
+            return FALSE;
+	snprintf(tmp, sizeof(tmp), LASTFM_ADJUST_URL,LastFMGlobalData->lastfm_session_id, url);
+	puts("test1");
+
+
+        curl=curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, "Audacious");
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, lastfm_store_res);
+	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, LASTFM_CURL_TIMEOUT);
+        curl_easy_setopt(curl, CURLOPT_URL, tmp);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
+	status = curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+
+
+	puts ("Adjust received data:");
+	puts(res->str);
+
+	if (status == CURLE_OK)
+	{
+		split = g_strsplit(res->str, "\n", 3);
+
+		for (i = 0; split && split[i]; i++)
+		{
+			if (g_str_has_prefix(split[i], "response=OK"))
+				ret = TRUE;
+			if (g_str_has_prefix(split[i], "stationname="))
+				{LastFMGlobalData->lastfm_station_name = g_strdup(split[i] + 12);                 
+                                puts("StationnName:");
+                                puts( 	LastFMGlobalData->lastfm_station_name);        
+                                }
+		}
+	
+        g_strfreev(split);
+	}
+        g_string_erase(res, 0, -1);
 
 	return ret;
 }
 
-/* TODO: it may be a good idea to store last.fm auth data here instead of in
- *       the global scope. --nenolod
- */
-typedef struct {
-	VFSFile *proxy_fd;
-} LastFMFile;
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
 	VFSFile *file;
-	LastFMFile *handle;
+	LastFM *handle;
+       	file = g_new0(VFSFile, 1);
+	handle = g_new0(LastFM, 1);
 
-	if (!lastfm_adjust(path))
-		puts("Cannot tune to given channel");
-	else
-		puts("Adjust completed OK");
+	puts("Starting fopen");
 
-	file = g_new0(VFSFile, 1);
-	handle = g_new0(LastFMFile, 1);
+        while ((LastFMGlobalData->lastfm_mp3_stream_url==NULL)
+                &&(LastFMGlobalData->login_count<=3))
+        {        
+            printf("Login try count: %d\n",LastFMGlobalData->login_count++); 
+            lastfm_login();
+            if(LastFMGlobalData->lastfm_mp3_stream_url==NULL)
+                    sleep(5);
+                
+        }
+        handle->lastfm_mp3_stream_url=g_strdup(LastFMGlobalData->lastfm_mp3_stream_url);
+        handle->lastfm_session_id=g_strdup(LastFMGlobalData->lastfm_session_id);
+        handle->lastfm_station_name=g_strdup(LastFMGlobalData->lastfm_station_name);
+	
+        if (lastfm_adjust(path))
 
-	puts("Opening stream with vfs_fopen");
-	handle->proxy_fd = vfs_fopen(lastfm_mp3_stream_url, mode);
+		printf("Tuning completed OK\n");
+        else
+                puts("Cannot tune to given channel");
+
+        handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
 	file->handle = handle;
 
+       
+ puts("Returning from fopen");
 	return file;
 }
 
 gint lastfm_vfs_fclose_impl(VFSFile * file)
 {
 	gint ret = 0;
-	LastFMFile *handle;
 
-	if (file == NULL)
+    
+    if (file == NULL)
 		return -1;
 
-	handle = file->handle;
-
+	LastFM *handle = file->handle;
 	ret = vfs_fclose(handle->proxy_fd);
-	g_free(handle);
+
 
 	return ret;
 }
 
 size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
-	LastFMFile *handle = file->handle;
-	size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
 
+	LastFM *handle = file->handle;
+	size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
+//        g_free(handle);
 	return ret;
 }
 
@@ -203,14 +241,13 @@ size_t lastfm_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSF
 
 gint lastfm_vfs_getc_impl(VFSFile * stream)
 {
-	LastFMFile *handle = stream->handle;
-
+	LastFM *handle = stream->handle;
 	return vfs_getc(handle->proxy_fd);
 }
 
 gint lastfm_vfs_ungetc_impl(gint c, VFSFile * stream)
 {
-	LastFMFile *handle = stream->handle;
+	LastFM *handle = stream->handle;
 
 	return vfs_ungetc(c, handle->proxy_fd);
 }
@@ -227,14 +264,14 @@ void lastfm_vfs_rewind_impl(VFSFile * file)
 
 glong lastfm_vfs_ftell_impl(VFSFile * file)
 {
-	LastFMFile *handle = file->handle;
+	LastFM *handle = file->handle;
 
 	return vfs_ftell(handle->proxy_fd);
 }
 
 gboolean lastfm_vfs_feof_impl(VFSFile * file)
 {
-	LastFMFile *handle = file->handle;
+	LastFM *handle = file->handle;
 
 	return vfs_feof(handle->proxy_fd);
 }
@@ -251,8 +288,10 @@ off_t lastfm_vfs_fsize_impl(VFSFile * file)
 
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar *key)
 {
-	if (!strcasecmp(key, "stream-name"))
-		return g_strdup(lastfm_station_name);
+LastFM *handle = file->handle;
+
+if (!strcasecmp(key, "stream-name"))
+		return g_strdup(handle->lastfm_station_name);
 
 	return NULL;
 }
@@ -276,16 +315,13 @@ VFSConstructor lastfm_const = {
 
 static void init(void)
 {
-	setup_curl();
-	lastfm_mp3_stream_url = lastfm_login(curl);
-	puts(lastfm_mp3_stream_url);
-	puts(lastfm_session_id);
-
+	LastFMGlobalData = g_new0(LastFM, 1);
 	vfs_register_transport(&lastfm_const);
 }
 
 static void cleanup(void)
 {
+g_free(LastFMGlobalData);
 #if 0
 	vfs_unregister_transport(&default_const);
 	vfs_unregister_transport(&file_const);

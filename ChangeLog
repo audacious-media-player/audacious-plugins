@@ -1,3 +1,12 @@
+2007-04-22 12:29:46 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2088]
+  
+  - Make madplug use vfs_fsize()
+  
+  trunk/src/madplug/input.c |    4 +---
+  1 file changed, 1 insertion(+), 3 deletions(-)
+
+
 2007-04-22 11:31:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2086]
   - build the lastfm VFS plugin if the scrobbler plugin is going to be built.
