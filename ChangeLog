@@ -1,3 +1,15 @@
+2007-04-22 11:16:08 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2084]
+  Add lastfm:// transport, an abstract VFS class which derives from curl 
+  to provide lastfm radio support. Written by majeru with some cleanups 
+  by me. Most last.fm metadata support isn't yet implemented, however, and 
+  will need to be done by majeru. ;)
+  
+  trunk/src/lastfm/Makefile |   24 +++
+  trunk/src/lastfm/lastfm.c |  306 ++++++++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 330 insertions(+)
+
+
 2007-04-22 11:06:00 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2082]
   

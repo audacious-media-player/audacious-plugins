@@ -1090,6 +1090,7 @@ PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
 
 if test "x$scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
+	CONTAINER_PLUGINS="$CONTAINER_PLUGINS lastfm"
 fi
 
 AC_SUBST(CURL_CFLAGS)
