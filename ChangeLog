@@ -1,3 +1,10 @@
+2007-04-22 21:51:16 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2090]
+  New release by majeru.
+  trunk/src/lastfm/lastfm.c |  214 ++++++++++++++++++++++++++--------------------
+  1 file changed, 125 insertions(+), 89 deletions(-)
+
+
 2007-04-22 12:29:46 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2088]
   
