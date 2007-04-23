@@ -1,3 +1,11 @@
+2007-04-23 00:23:29 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2092]
+  - fix indentation
+  
+  trunk/src/lastfm/lastfm.c |  144 +++++++++++++++++++++++-----------------------
+  1 file changed, 73 insertions(+), 71 deletions(-)
+
+
 2007-04-22 21:51:16 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2090]
   New release by majeru.

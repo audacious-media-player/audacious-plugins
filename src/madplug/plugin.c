@@ -455,7 +455,11 @@ static void audmad_play_file(InputPlayback *playback)
 
     if (rtn == FALSE) {
         g_message("error reading input info");
-        return;
+        /*
+         * return; 
+         * commenting this return seems to be a hacky fix for the damn lastfm plugin playback 
+         * that used to work only for nenolod because of his fsck-ing lastfm subscription :p 
+        */
     }
     g_mutex_lock(pb_mutex);
     info.playback = playback;
