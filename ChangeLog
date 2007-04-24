@@ -1,3 +1,11 @@
+2007-04-23 23:24:55 +0000  Cristi Magherusan <majeru@atheme.org>
+  revision [2096]
+  got the metadata but couldnt make use of it yet
+  
+  trunk/src/lastfm/lastfm.c |  119 +++++++++++++++++++++++++++++++++++++++-------
+  1 file changed, 101 insertions(+), 18 deletions(-)
+
+
 2007-04-23 21:24:01 +0000  Cristi Magherusan <majeru@atheme.org>
   revision [2094]
   Fixed the embarassing situation i was in (writing a plugin and not being able to see/hear it work). 

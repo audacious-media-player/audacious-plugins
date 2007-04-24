@@ -36,18 +36,18 @@ typedef struct
 	gchar *lastfm_session_id;
 	gchar *lastfm_mp3_stream_url;
 	gchar *lastfm_station_name;
-        gchar *lastfm_artist;
-        gchar *lastfm_title;
-        gchar *lastfm_album;
-        gchar *lastfm_cover;
-        int lastfm_duration;
+	gchar *lastfm_artist;
+	gchar *lastfm_title;
+	gchar *lastfm_album;
+	gchar *lastfm_cover;
+	int lastfm_duration;
 	int login_count;
 } LastFM;
 
 LastFM *LastFMGlobalData;
        /*this keeps the login data in a global place
-       since we cannot login on every fopen call
-       if anyone has a better solution to this any help is welcome */
+          since we cannot login on every fopen call
+          if anyone has a better solution to this any help is welcome */
 
 static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata)
 {
@@ -60,7 +60,7 @@ static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata
 static gboolean lastfm_login()
 {
 	/*gets the session ID in lastfm_session_id and returns the URL to be played
-         * read http://gabistapler.de/blog/index.php?/archives/268-Play-last.fm-streams-without-the-player.html for more info
+	 * read http://gabistapler.de/blog/index.php?/archives/268-Play-last.fm-streams-without-the-player.html for more info
 	 */
 	gint status, i;
 	gchar buf[4096], **split = NULL;
@@ -83,7 +83,7 @@ static gboolean lastfm_login()
 	else
 		return FALSE;
 
-	puts("preparing curl");
+	g_print("preparing curl\n");
 	curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
 	curl_easy_setopt(curl, CURLOPT_USERAGENT, "Audacious");
@@ -96,9 +96,11 @@ static gboolean lastfm_login()
 	status = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 
-	puts("curl is done");
+	g_print("curl is done\n");
+#ifdef DEBUG
 	puts(buf);
 	puts(res->str);
+#endif
 	if (status == CURLE_OK)
 	{
 		split = g_strsplit(res->str, "\n", 7);
@@ -134,8 +136,61 @@ static gboolean lastfm_adjust(const gchar * url)
 	if (LastFMGlobalData->lastfm_session_id == NULL)
 		return FALSE;
 	snprintf(tmp, sizeof(tmp), LASTFM_ADJUST_URL, LastFMGlobalData->lastfm_session_id, url);
+#ifdef DEBUG
 	puts("test1");
+#endif
+	curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, "Audacious");
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, lastfm_store_res);
+	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, LASTFM_CURL_TIMEOUT);
+	curl_easy_setopt(curl, CURLOPT_URL, tmp);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
+	status = curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+#ifdef DEBUG
+	puts("Adjust received data:");
+	puts(res->str);
+#endif
+	if (status == CURLE_OK)
+	{
+		split = g_strsplit(res->str, "\n", 3);
 
+		for (i = 0; split && split[i]; i++)
+		{
+			if (g_str_has_prefix(split[i], "response=OK"))
+				ret = TRUE;
+			if (g_str_has_prefix(split[i], "stationname="))
+			{
+				LastFMGlobalData->lastfm_station_name = g_strdup(split[i] + 12);
+#ifdef DEBUG
+				puts("StationnName:");
+				puts(LastFMGlobalData->lastfm_station_name);
+#endif
+			}
+		}
+
+		g_strfreev(split);
+	}
+	g_string_erase(res, 0, -1);
+
+	return ret;
+}
+
+
+static gboolean lastfm_get_metadata(LastFM * handle)
+{
+
+	gint status, i;
+	gchar tmp[4096], **split = NULL;
+	gboolean ret = FALSE;
+	GString *res = g_string_new(NULL);
+	CURL *curl;
+	if (handle->lastfm_session_id == NULL)
+		return FALSE;
+	snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
 
 	curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
@@ -149,61 +204,10 @@ static gboolean lastfm_adjust(const gchar * url)
 	status = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
 
-
-	puts("Adjust received data:");
-	puts(res->str);
-
-	if (status == CURLE_OK)
-	{
-		split = g_strsplit(res->str, "\n", 3);
-
-		for (i = 0; split && split[i]; i++)
-		{
-			if (g_str_has_prefix(split[i], "response=OK"))
-				ret = TRUE;
-			if (g_str_has_prefix(split[i], "stationname="))
-			{
-				LastFMGlobalData->lastfm_station_name = g_strdup(split[i] + 12);
-				puts("StationnName:");
-				puts(LastFMGlobalData->lastfm_station_name);
-			}
-		}
-
-		g_strfreev(split);
-	}
-	g_string_erase(res, 0, -1);
-
-	return ret;
-}
-
-
-static gboolean lastfm_get_metadata( LastFM *handle)
-{
-    
-        gint status, i;
-	gchar tmp[4096], **split = NULL;
-	gboolean ret = FALSE;
-	GString *res = g_string_new(NULL);
-	CURL *curl;
-	if (handle->lastfm_session_id == NULL)
-		return FALSE;
-	snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
-
-        curl = curl_easy_init();
-	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
-	curl_easy_setopt(curl, CURLOPT_USERAGENT, "Audacious");
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, lastfm_store_res);
-	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, LASTFM_CURL_TIMEOUT);
-	curl_easy_setopt(curl, CURLOPT_URL, tmp);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
-	status = curl_easy_perform(curl);
-	curl_easy_cleanup(curl);
-
-
+#ifdef DEBUG
 	puts("Received metadata:");
 	puts(res->str);
+#endif
 
 	if (status == CURLE_OK)
 	{
@@ -212,20 +216,19 @@ static gboolean lastfm_get_metadata( LastFM *handle)
 		for (i = 0; split && split[i]; i++)
 		{
 			if (g_str_has_prefix(split[i], "artist="))
-                                handle->lastfm_artist=g_strdup(split[i] + 7);
-                        if (g_str_has_prefix(split[i], "title="))
-                                handle->lastfm_title=g_strdup(split[i] + 6);
-                        if (g_str_has_prefix(split[i], "album="))
-                                handle->lastfm_album=g_strdup(split[i] + 6);
-                        if (g_str_has_prefix(split[i], "albumcover_medium="))
-                                handle->lastfm_cover=g_strdup(split[i] + 18);
-                        if (g_str_has_prefix(split[i], "trackduration="))
-                                handle->lastfm_duration=atoi(g_strdup(split[i] + 14));
+				handle->lastfm_artist = g_strdup(split[i] + 7);
+			if (g_str_has_prefix(split[i], "title="))
+				handle->lastfm_title = g_strdup(split[i] + 6);
+			if (g_str_has_prefix(split[i], "album="))
+				handle->lastfm_album = g_strdup(split[i] + 6);
+			if (g_str_has_prefix(split[i], "albumcover_medium="))
+				handle->lastfm_cover = g_strdup(split[i] + 18);
+			if (g_str_has_prefix(split[i], "trackduration="))
+				handle->lastfm_duration = atoi(g_strdup(split[i] + 14));
 			if (g_str_has_prefix(split[i], "station="))
 			{
 				handle->lastfm_station_name = g_strdup(split[i] + 8);
-				puts("StationnName:");
-				puts(handle->lastfm_station_name);
+				printf("Station Name: %s\n", handle->lastfm_station_name);
 			}
 		}
 
@@ -236,52 +239,54 @@ static gboolean lastfm_get_metadata( LastFM *handle)
 	return TRUE;
 }
 
-
-
-
-
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
 	VFSFile *file;
 	LastFM *handle;
 	file = g_new0(VFSFile, 1);
 	handle = g_new0(LastFM, 1);
-
+#ifdef DEBUG
 	puts("Starting fopen");
-
+#endif
 	while ((LastFMGlobalData->lastfm_mp3_stream_url == NULL) && (LastFMGlobalData->login_count <= 3))
 	{
 		printf("Login try count: %d\n", LastFMGlobalData->login_count++);
 		lastfm_login();
 		if (LastFMGlobalData->lastfm_mp3_stream_url == NULL)
 			sleep(5);
-
 	}
 
-
+	if (LastFMGlobalData->lastfm_mp3_stream_url == NULL)
+		return NULL;
 
 	handle->lastfm_mp3_stream_url = g_strdup(LastFMGlobalData->lastfm_mp3_stream_url);
 	handle->lastfm_session_id = g_strdup(LastFMGlobalData->lastfm_session_id);
 	handle->lastfm_station_name = g_strdup(LastFMGlobalData->lastfm_station_name);
 
-        
-
 	if (lastfm_adjust(path))
-                {
-        		printf("Tuning completed OK, getting metadata\n");
-                        if(lastfm_get_metadata(handle))
-                                puts("Successfully fetched the metadata");
-                        else
-                                puts("Errors were encountered while fetching the metadata");
-                }
+	{
+		gint ret;
+		printf("Tuning completed OK, getting metadata\n");
+		ret = lastfm_get_metadata(handle);
+
+#ifdef DEBUG
+		if (ret)
+			puts("Successfully fetched the metadata");
+		else
+			puts("Errors were encountered while fetching the metadata");
+#endif
+	}
+#ifdef DEBUG
 	else
 		puts("Cannot tune to given channel");
+#endif
 
 	handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
 	file->handle = handle;
 
-
+#ifdef DEBUG
 	puts("Returning from fopen");
+#endif
 	return file;
 }
 
@@ -363,20 +368,26 @@ off_t lastfm_vfs_fsize_impl(VFSFile * file)
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
 	LastFM *handle = file->handle;
-        
-        puts("Interesting metadata:");
-            puts(handle->lastfm_station_name);
-            puts(handle->lastfm_artist);
-            puts(handle->lastfm_title);
-            printf("%d\n\n",handle->lastfm_duration);
 
+#ifdef DEBUG
+	puts("Interesting metadata:");
 
-        if (!strcmp(field, "stream-name")&& (handle->lastfm_station_name != NULL))
-	        return g_strdup(handle->lastfm_station_name);
-        if (!strcmp(field, "track-name") && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
-                return g_strdup_printf("%s - %s", handle->lastfm_artist, handle->lastfm_title);
-        if (!strcmp(field, "content-length"))
-                return g_strdup_printf("%ld", handle->lastfm_duration);
+	if (handle->lastfm_station_name != NULL)
+		puts(handle->lastfm_station_name);
+
+	if (handle->lastfm_artist != NULL)
+		puts(handle->lastfm_artist);
+
+	if (handle->lastfm_title != NULL)
+		puts(handle->lastfm_title);
+
+	printf("%d\n\n", handle->lastfm_duration);
+#endif
+
+	if (!strcmp(field, "stream-name") && (handle->lastfm_station_name != NULL))
+		return g_strdup(handle->lastfm_station_name);
+	if (!strcmp(field, "track-name") && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
+		return g_strdup_printf("%s - %s", handle->lastfm_artist, handle->lastfm_title);
 
 	return NULL;
 }
@@ -407,7 +418,7 @@ static void init(void)
 static void cleanup(void)
 {
 	g_free(LastFMGlobalData);
-#if 0
+#ifdef DEBUG
 	vfs_unregister_transport(&default_const);
 	vfs_unregister_transport(&file_const);
 #endif
