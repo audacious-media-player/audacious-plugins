@@ -586,7 +586,7 @@ void audmad_get_file_info(char *filename)
     utf_filename = str_to_utf8(filename);
     create_window();
 
-    input_get_info(&info, info.remote ? TRUE : audmad_config.fast_play_time_calc);
+    input_get_info(&info, info.remote ? TRUE : FALSE);
 
     title = g_strdup_printf("File Info - %s", g_basename(utf_filename));
     gtk_window_set_title(GTK_WINDOW(window), title);

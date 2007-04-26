@@ -179,8 +179,10 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     gboolean has_xing = FALSE;
     int bitrate_frames = 0;
     guint xing_bitrate = 0;
+    double accum_bitrate = 0.0;
 
     mad_stream_init(&stream);
+    mad_stream_options(&stream, 0); // check CRC
     mad_header_init(&header);
     mad_frame_init(&frame);
     xing_init(&info->xing);
@@ -210,7 +212,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
         if (len <= 0) {
 #ifdef DEBUG
-            g_message("scan_file: len <= 0! len = %d", len);
+            g_message("scan_file: len <= 0 len = %d", len);
 #endif
             break;
         }
@@ -256,7 +258,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 
 #ifdef DEBUG
 #ifdef DEBUG_INTENSIVELY
-            g_message("duration = %lu",
+            g_message("header bitrate = %ld", header.bitrate);
+            g_message("duration = %ul",
                       mad_timer_count(header.duration,
                                       MAD_UNITS_MILLISECONDS));
             g_message("size = %d", stream.next_frame - stream.this_frame);
@@ -285,11 +288,9 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #endif
                         goto no_xing;
                     }
-                    if (xing_parse
-                        (&info->xing, stream.anc_ptr,
-                         stream.anc_bitlen) == 0) {
+                    if (xing_parse(&info->xing, stream.anc_ptr, stream.anc_bitlen) == 0) {
 #ifdef DEBUG
-                        g_message("found xing header");
+                        g_message("xing header found ");
 #endif                          /* DEBUG */
                         has_xing = TRUE;
                         info->vbr = TRUE;   /* otherwise xing header would have been 'Info' */
@@ -300,24 +301,34 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                             info->duration.seconds = info->tuple->length / 1000;
                             info->duration.fraction = info->tuple->length % 1000;
                         }
+
+                        g_message("xing: bytes = %ld frames = %ld", info->xing.bytes, info->xing.frames);
+                        g_message("info->duration = %ld", info->duration.seconds);
+                        g_message("mad_timer_count = %ld", mad_timer_count(info->duration, MAD_UNITS_SECONDS));
                         xing_bitrate = 
                             8.0 * info->xing.bytes /
-                            mad_timer_count(info->duration,
-                                            MAD_UNITS_SECONDS);
+                            mad_timer_count(info->duration, MAD_UNITS_SECONDS);
 #ifdef DEBUG
-                        g_message("xing: bitrate = %d", xing_bitrate);
+                        g_message("xing bitrate = %d", xing_bitrate);
 #endif
                         continue;
                     }
-                }
+#ifdef DEBUG
+                    else {
+                        g_message("xing header parsing failed");
+                        continue;
+                    }
+                    
+#endif
+                } /* xing */
 
             }
             else {
-                /* perhaps we have a VRB file */
+                /* perhaps we have a VBR file */
                 if (info->bitrate != header.bitrate)
                     info->vbr = TRUE;
                 if (info->vbr) {
-                    info->bitrate += header.bitrate;
+                    accum_bitrate += (double)header.bitrate;
                     bitrate_frames++;
                 }
                 /* check for changin layer/samplerate/channels */
@@ -332,8 +343,9 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             if (fast && info->frames >= N_AVERAGE_FRAMES) {
                 float frame_size = ((double) data_used) / N_AVERAGE_FRAMES;
 #ifdef DEBUG
-                g_message("info->frames = %d info->size = %d tagsize = %d frame_size = %lf",
-                          info->frames, info->size, tagsize, frame_size);
+                g_message("bitrate = %ld samplerate = %d", header.bitrate, header.samplerate);
+                g_message("data_used = %d info->frames = %d info->size = %d tagsize = %d frame_size = %lf",
+                          data_used, info->frames, info->size, tagsize, frame_size);
 #endif
                 if(info->size != 0)
                     info->frames = (info->size - tagsize) / frame_size;
@@ -357,21 +369,20 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                           info->frames, info->freq, info->channels);
                 long millis = mad_timer_count(info->duration,
                                               MAD_UNITS_MILLISECONDS);
-                g_message("duration = %lu:%lu", millis / 1000 / 60,
-                          (millis / 1000) % 60);
+                g_message("duration = %ld:%02ld", millis / 1000 / 60, (millis / 1000) % 60);
 #endif                          /* DEBUG */
                 break;
             }
-        }
+        } /* while */
         if (stream.error != MAD_ERROR_BUFLEN)
             break;
     }
 
-    if (info->vbr && xing_bitrate == 0) {
-        info->bitrate = info->bitrate / bitrate_frames;
-#ifdef DEBUG
-        g_message("info->bitrate = %d", info->bitrate);
-#endif
+    if (info->vbr && xing_bitrate != 0) {
+        info->bitrate = xing_bitrate;
+    }
+    else if (info->vbr && xing_bitrate == 0 && bitrate_frames != 0) {
+        info->bitrate = accum_bitrate / bitrate_frames;
     }
 
     mad_frame_finish(&frame);
@@ -386,7 +397,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     return (info->frames != 0 || info->remote == TRUE);
 }
 
-// sanity check for audio open parameters
+/* sanity check for audio open parameters */
 static gboolean check_audio_param(struct mad_info_t *info)
 {
     if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)

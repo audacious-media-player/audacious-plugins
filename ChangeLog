@@ -1,3 +1,11 @@
+2007-04-24 09:53:37 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2098]
+  - disable all use of puts() unless -DDEBUG is defined.
+  
+  trunk/src/lastfm/lastfm.c |  135 ++++++++++++++++++++++++----------------------
+  1 file changed, 73 insertions(+), 62 deletions(-)
+
+
 2007-04-23 23:24:55 +0000  Cristi Magherusan <majeru@atheme.org>
   revision [2096]
   got the metadata but couldnt make use of it yet
