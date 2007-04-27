@@ -22,32 +22,13 @@
 
 #include <curl/curl.h>
 #include <glib.h>
+#include "lastfm.h"
 
-
-#define LASTFM_HANDSHAKE_URL "http://ws.audioscrobbler.com/radio/handshake.php?version=1.1.1&platform=linux&username=%s&passwordmd5=%s&debug=0&language=jp"
-#define LASTFM_ADJUST_URL "http://ws.audioscrobbler.com/radio/adjust.php?session=%s&url=%s&debug=0"
-#define LASTFM_METADATA_URL "http://ws.audioscrobbler.com/radio/np.php?session=%s&debug=0"
-#define LASTFM_CURL_TIMEOUT 10
-
-
-typedef struct
-{
-	VFSFile *proxy_fd;
-	gchar *lastfm_session_id;
-	gchar *lastfm_mp3_stream_url;
-	gchar *lastfm_station_name;
-	gchar *lastfm_artist;
-	gchar *lastfm_title;
-	gchar *lastfm_album;
-	gchar *lastfm_cover;
-	int lastfm_duration;
-	int login_count;
-} LastFM;
 
 LastFM *LastFMGlobalData;
-       /*this keeps the login data in a global place
-          since we cannot login on every fopen call
-          if anyone has a better solution to this any help is welcome */
+        /*this keeps the login data in a global place since 
+         * we cannot login on every fopen call* if anyone 
+         * has a better solution to this any hint is welcome */
 
 static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata)
 {
@@ -57,7 +38,7 @@ static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata
 }
 
 
-static gboolean lastfm_login()
+static gboolean lastfm_login(void)
 {
 	/*gets the session ID in lastfm_session_id and returns the URL to be played
 	 * read http://gabistapler.de/blog/index.php?/archives/268-Play-last.fm-streams-without-the-player.html for more info
@@ -126,7 +107,7 @@ static gboolean lastfm_login()
 
 static gboolean lastfm_adjust(const gchar * url)
 {
-	LastFM *LastFMData = g_new0(LastFM, 1);
+        //LastFM *LastFMData = g_new0(LastFM, 1);
 
 	int status, i;
 	gchar tmp[4096], **split = NULL;
@@ -185,7 +166,7 @@ static gboolean lastfm_get_metadata(LastFM * handle)
 
 	gint status, i;
 	gchar tmp[4096], **split = NULL;
-	gboolean ret = FALSE;
+//	gboolean ret = FALSE;
 	GString *res = g_string_new(NULL);
 	CURL *curl;
 	if (handle->lastfm_session_id == NULL)
@@ -224,7 +205,7 @@ static gboolean lastfm_get_metadata(LastFM * handle)
 			if (g_str_has_prefix(split[i], "albumcover_medium="))
 				handle->lastfm_cover = g_strdup(split[i] + 18);
 			if (g_str_has_prefix(split[i], "trackduration="))
-				handle->lastfm_duration = atoi(g_strdup(split[i] + 14));
+				handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14),NULL,10);
 			if (g_str_has_prefix(split[i], "station="))
 			{
 				handle->lastfm_station_name = g_strdup(split[i] + 8);
@@ -381,12 +362,12 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 	if (handle->lastfm_title != NULL)
 		puts(handle->lastfm_title);
 
-	printf("%d\n\n", handle->lastfm_duration);
+	printf("%ul\n\n", handle->lastfm_duration);
 #endif
 
-	if (!strcmp(field, "stream-name") && (handle->lastfm_station_name != NULL))
+	if (!g_ascii_strncasecmp(field, "stream-name",12) && (handle->lastfm_station_name != NULL))
 		return g_strdup(handle->lastfm_station_name);
-	if (!strcmp(field, "track-name") && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
+	if (!g_ascii_strncasecmp(field, "track-name",11) && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
 		return g_strdup_printf("%s - %s", handle->lastfm_artist, handle->lastfm_title);
 
 	return NULL;
@@ -418,10 +399,6 @@ static void init(void)
 static void cleanup(void)
 {
 	g_free(LastFMGlobalData);
-#ifdef DEBUG
-	vfs_unregister_transport(&default_const);
-	vfs_unregister_transport(&file_const);
-#endif
 }
 
 LowlevelPlugin llp_lastfm = {
