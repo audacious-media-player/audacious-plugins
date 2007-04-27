@@ -28,11 +28,12 @@
 #include <audacious/beepctrl.h>
 #include <audacious/configdb.h>
 #include <audacious/util.h>
+#include <audacious/vfs.h>
 
 #include <lame/lame.h>
 
 #define ENCBUFFER_SIZE 35000
-#define OUT_LAME_VER "0.2"
+#define OUT_LAME_VER "0.3"
 /* #define DEBUG 1 */
 
 GtkWidget *configure_win = NULL, *path_vbox;
@@ -77,12 +78,15 @@ GtkWidget *tags_id3_frame, *tags_id3_vbox, *tags_id3_hbox,
 
 GtkWidget *enc_quality_vbox, *hbox1, *hbox2;
 
-// will be used in flushing
-AFormat oldfmt;
-gint oldrate, oldnch;
+struct format_info { 
+    AFormat format;
+    int frequency;
+    int channels;
+};
+struct format_info input;
 
 static gchar *file_path = NULL;
-static FILE *output_file = NULL;
+static VFSFile *output_file = NULL;
 static guint64 written = 0;
 static guint64 olen = 0;
 static AFormat afmt;
@@ -190,7 +194,6 @@ void free_lameid3(lameid3_t *p)
     p->track_number = NULL;
 
 };
-
 
 OutputPlugin *get_oplugin_info(void)
 {
@@ -303,8 +306,10 @@ static gint outlame_open(AFormat fmt, gint rate, gint nch)
     int b_use_path_anyway = 0;
     gchar *tmpfilename = NULL;
 
-    /* store open paramators for reopen */
-    oldfmt = fmt; oldrate = rate; oldnch = nch;
+    /* store open paramators */
+    input.format = fmt;
+    input.frequency = rate;
+    input.channels = nch;
 
     /* So all the values will be reset to the ones saved */
     /* Easier than to implement a tmp variable for every value */
@@ -380,13 +385,13 @@ static gint outlame_open(AFormat fmt, gint rate, gint nch)
 #ifdef DEBUG
     printf("filename = %s\n", filename);
 #endif
-    output_file = fopen(filename, "w");
+    output_file = vfs_fopen(filename, "w");
     g_free(filename);
 
     if (!output_file)
         return 0;
 
-    if ((int) (gfp = lame_init()) == -1)
+    if ((gfp = lame_init()) == (void *)-1)
         return 0;
 
     srate = rate;
@@ -480,23 +485,102 @@ static gint outlame_open(AFormat fmt, gint rate, gint nch)
     return 1;
 }
 
+static void convert_buffer(gpointer buffer, gint length)
+{
+    gint i;
+
+    if (afmt == FMT_S8)
+    {
+        guint8 *ptr1 = buffer;
+        gint8 *ptr2 = buffer;
+
+        for (i = 0; i < length; i++)
+            *(ptr1++) = *(ptr2++) ^ 128;
+    }
+    if (afmt == FMT_S16_BE)
+    {
+        gint16 *ptr = buffer;
+
+        for (i = 0; i < length >> 1; i++, ptr++)
+            *ptr = GUINT16_SWAP_LE_BE(*ptr);
+    }
+    if (afmt == FMT_S16_NE)
+    {
+        gint16 *ptr = buffer;
+
+        for (i = 0; i < length >> 1; i++, ptr++)
+            *ptr = GINT16_TO_LE(*ptr);
+    }
+    if (afmt == FMT_U16_BE)
+    {
+        gint16 *ptr1 = buffer;
+        guint16 *ptr2 = buffer;
+
+        for (i = 0; i < length >> 1; i++, ptr2++)
+            *(ptr1++) = GINT16_TO_LE(GUINT16_FROM_BE(*ptr2) ^ 32768);
+    }
+    if (afmt == FMT_U16_LE)
+    {
+        gint16 *ptr1 = buffer;
+        guint16 *ptr2 = buffer;
+
+        for (i = 0; i < length >> 1; i++, ptr2++)
+            *(ptr1++) = GINT16_TO_LE(GUINT16_FROM_LE(*ptr2) ^ 32768);
+    }
+    if (afmt == FMT_U16_NE)
+    {
+        gint16 *ptr1 = buffer;
+        guint16 *ptr2 = buffer;
+
+        for (i = 0; i < length >> 1; i++, ptr2++)
+            *(ptr1++) = GINT16_TO_LE((*ptr2) ^ 32768);
+    }
+}
+
 static void outlame_write(void *ptr, gint length)
 {
+    AFormat new_format;
+    int new_frequency, new_channels;
+    EffectPlugin *ep;
+
+    new_format = input.format;
+    new_frequency = input.frequency;
+    new_channels = input.channels;
+
+    ep = get_current_effect_plugin();
+    if ( effects_enabled() && ep && ep->query_format ) { 
+        ep->query_format(&new_format,&new_frequency,&new_channels);
+    }
+
+    if ( effects_enabled() && ep && ep->mod_samples ) { 
+        length = ep->mod_samples(&ptr,length,
+                                 input.format,
+                                 input.frequency,
+                                 input.channels );
+    }
+
+    if (afmt == FMT_S8 || afmt == FMT_S16_BE ||
+        afmt == FMT_U16_LE || afmt == FMT_U16_BE || afmt == FMT_U16_NE)
+        convert_buffer(ptr, length);
+#ifdef WORDS_BIGENDIAN
+    if (afmt == FMT_S16_NE)
+        convert_buffer(ptr, length);
+#endif
 
     if (inch == 1) {
         encout =
-            lame_encode_buffer(gfp, (short *)ptr, (short *)ptr, length / 2, encbuffer,
+            lame_encode_buffer(gfp, ptr, ptr, length / 2, encbuffer,
                                ENCBUFFER_SIZE);
     }
     else {
         encout =
-            lame_encode_buffer_interleaved(gfp, (short *)ptr, length / 4, encbuffer,
+            lame_encode_buffer_interleaved(gfp, ptr, length / 4, encbuffer,
                                            ENCBUFFER_SIZE);
     }
-    fwrite(encbuffer, 1, encout, output_file);
+
+    vfs_fwrite(encbuffer, 1, encout, output_file);
     written += encout;
     olen += length;
-
 }
 
 static void outlame_close(void)
@@ -504,11 +588,11 @@ static void outlame_close(void)
     if (output_file) {
 
         encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
-        fwrite(encbuffer, 1, encout, output_file);
+        vfs_fwrite(encbuffer, 1, encout, output_file);
 
 //        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag?? 
 
-        fclose(output_file);
+        vfs_fclose(output_file);
         lame_close(gfp);
 
         free_lameid3(&lameid3);
@@ -533,7 +617,7 @@ static void outlame_flush(gint time)
         return;
     }
     outlame_close();
-    outlame_open(oldfmt, oldrate, oldnch);
+    outlame_open(input.format, input.frequency, input.channels);
 #ifdef DEBUG
     printf("flush %d\n", time);
 #endif
@@ -2105,7 +2189,7 @@ static void outlame_configure(void)
         vbr_quality_adj = gtk_adjustment_new(4, 0, 9, 1, 1, 1);
         vbr_quality_spin =
             gtk_spin_button_new(GTK_ADJUSTMENT(vbr_quality_adj), 8, 0);
-        gtk_widget_set_usize(vbr_quality_spin, 20, 20);
+        gtk_widget_set_usize(vbr_quality_spin, 20, -1);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox3), vbr_quality_spin,
                            TRUE, TRUE, 0);
         gtk_signal_connect(GTK_OBJECT(vbr_quality_adj), "value-changed",

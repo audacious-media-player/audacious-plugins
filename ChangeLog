@@ -1,3 +1,15 @@
+2007-04-26 09:06:12 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2100]
+  - fix overflow when calculates bitrate with non-fast scan on a huge sized file.
+  - make file info dialog always do non-fast scan. user can easily add TLEN tag of correct play time length to a VBR encoded file which does not go along with fast scan.
+  - tweak debug output.
+  
+  
+  trunk/src/madplug/decoder.c  |   57 +++++++++++++++++++++++++------------------
+  trunk/src/madplug/fileinfo.c |    2 -
+  2 files changed, 35 insertions(+), 24 deletions(-)
+
+
 2007-04-24 09:53:37 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2098]
   - disable all use of puts() unless -DDEBUG is defined.

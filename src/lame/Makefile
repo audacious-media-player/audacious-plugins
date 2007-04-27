@@ -10,6 +10,6 @@ SOURCES = out_lame.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -Wall
 
 include ../../mk/objective.mk
