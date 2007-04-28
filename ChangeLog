@@ -1,3 +1,13 @@
+2007-04-27 19:44:37 +0000  Cristi Magherusan <majeru@atheme.org>
+  revision [2104]
+  fixed all the warnings
+  
+  trunk/src/lastfm/Makefile |    1 
+  trunk/src/lastfm/lastfm.c |   45 +++++++++------------------------------
+  trunk/src/lastfm/lastfm.h |   53 ++++++++++++++++++++++++++++++++++++++++++++++
+  3 files changed, 65 insertions(+), 34 deletions(-)
+
+
 2007-04-27 09:29:33 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2102]
   - replace almost all of outlame_write() with standard code from disk_writer in hope of fixing endianness problem.

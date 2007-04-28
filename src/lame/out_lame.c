@@ -367,10 +367,10 @@ static gint outlame_open(AFormat fmt, gint rate, gint nch)
 #endif
 
     if (tuple && !b_use_path_anyway) {
-        if (b_prepend_track_number && tuple->track_number) {
+        if (b_prepend_track_number) {
             filename = g_strdup_printf("%s/%.02d %s.mp3",
                                        b_use_source_file_path ? tuple->file_path : file_path,
-                                       tuple->track_number, title);
+                                       tuple->track_number ? tuple->track_number : pos+1, title);
         }
         else {
             filename = g_strdup_printf("%s/%s.mp3",
@@ -2346,7 +2346,7 @@ static void outlame_configure(void)
                                          (use_source_file_path), TRUE);
 
         prepend_track_number =
-            gtk_check_button_new_with_label("Prepend track number to filename");
+            gtk_check_button_new_with_label("Prepend track number/playlist position to filename");
         gtk_box_pack_start(GTK_BOX(GTK_BOX(path_hbox)),
                            prepend_track_number, TRUE, TRUE, 5);
         gtk_signal_connect(GTK_OBJECT(prepend_track_number), "toggled",
