@@ -1,3 +1,13 @@
+2007-04-28 22:27:15 +0000  Michael Farber <01mf02@gmail.com>
+  revision [2106]
+  - Out-Lame can now prepend the playlist position to the filename if the 
+  track number can't be found
+  
+  
+  trunk/src/lame/out_lame.c |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2007-04-27 19:44:37 +0000  Cristi Magherusan <majeru@atheme.org>
   revision [2104]
   fixed all the warnings
