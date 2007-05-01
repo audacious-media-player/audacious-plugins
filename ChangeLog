@@ -1,3 +1,13 @@
+2007-05-01 03:24:34 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2110]
+  - rename titles of configure windows.
+  - change packing order of OK and Cancel button in MP3 configuration window. now these buttons use stock icons.
+  
+  trunk/src/filewriter/filewriter.c |    2 +-
+  trunk/src/filewriter/mp3.c        |   20 ++++++++++----------
+  2 files changed, 11 insertions(+), 11 deletions(-)
+
+
 2007-04-30 21:16:32 +0000  Michael Farber <01mf02@gmail.com>
   revision [2108]
   - We got a new plugin, captain!

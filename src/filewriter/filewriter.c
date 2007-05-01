@@ -28,9 +28,9 @@ static GtkWidget *path_hbox, *path_label, *path_dirbrowser;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
 
 static GtkWidget *fileext_hbox, *fileext_label, *fileext_combo, *plugin_button;
-enum fileext_t { WAV = 0, MP3, FILEEXT_MAX } ;
+enum fileext_t { WAV = 0, MP3, VORBIS, FILEEXT_MAX } ;
 static gint fileext = WAV;
-static gchar *fileext_str[] = { "wav", "mp3" } ;
+static gchar *fileext_str[] = { "wav", "mp3", "ogg" } ;
 static FileWriter plugin;
 
 static GtkWidget *saveplace_hbox, *saveplace;
@@ -102,6 +102,8 @@ static void set_plugin(void)
         plugin = wav_plugin;
     if (fileext == MP3)
         plugin = mp3_plugin;
+    if (fileext == VORBIS)
+        plugin = vorbis_plugin;
 }
 
 static void file_init(void)
@@ -485,12 +487,13 @@ static void file_configure(void)
         fileext_hbox = gtk_hbox_new(FALSE, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
 
-        fileext_label = gtk_label_new(_("Output file extension:"));
+        fileext_label = gtk_label_new(_("Output file format:"));
         gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_label, FALSE, FALSE, 0);
 
         fileext_combo = gtk_combo_box_new_text();
         gtk_combo_box_append_text(GTK_COMBO_BOX(fileext_combo), "WAV");
         gtk_combo_box_append_text(GTK_COMBO_BOX(fileext_combo), "MP3");
+        gtk_combo_box_append_text(GTK_COMBO_BOX(fileext_combo), "Vorbis");
         gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_combo, FALSE, FALSE, 0);
         gtk_combo_box_set_active(GTK_COMBO_BOX(fileext_combo), fileext);
         g_signal_connect(G_OBJECT(fileext_combo), "changed", G_CALLBACK(fileext_cb), NULL);
