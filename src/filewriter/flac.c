@@ -102,16 +102,16 @@ static void flac_write(gpointer data, gint length)
     {
         for (i = 0; i < (length / 2); i++)
         {
-            encbuffer[0][i] = tmpdata[i] / 32768.0;
-            encbuffer[1][i] = tmpdata[i] / 32768.0;
+            encbuffer[0][i] = tmpdata[i];
+            encbuffer[1][i] = tmpdata[i];
         }
     }
     else
     {
         for (i = 0; i < (length / 4); i++)
         {
-            encbuffer[0][i] = tmpdata[2 * i] / 32768.0;
-            encbuffer[1][i] = tmpdata[2 * i + 1] / 32768.0;
+            encbuffer[0][i] = tmpdata[2 * i];
+            encbuffer[1][i] = tmpdata[2 * i + 1];
         }
     }
 
