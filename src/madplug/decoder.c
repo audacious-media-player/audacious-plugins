@@ -191,6 +191,11 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     info->pos = mad_timer_zero;
     info->duration = mad_timer_zero; // should be cleared before loop, if we use it as break condition.
 
+    if(info->fileinfo_request == TRUE) {
+        info->tuple->length = -1;
+        info->fileinfo_request = FALSE;
+    }
+
 #ifdef DEBUG
     g_message("f: scan_file");
     g_message("scan_file frames = %d", info->frames);
@@ -294,9 +299,10 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #endif                          /* DEBUG */
                         has_xing = TRUE;
                         info->vbr = TRUE;   /* otherwise xing header would have been 'Info' */
-                        info->frames = info->xing.frames;
-                        if(info->tuple->length == -1)
-                            mad_timer_multiply(&info->duration, info->frames);
+                        if(info->tuple->length == -1) {
+                            info->duration = mad_timer_zero;
+                            mad_timer_multiply(&info->duration, info->xing.frames);
+                        }
                         else {
                             info->duration.seconds = info->tuple->length / 1000;
                             info->duration.fraction = info->tuple->length % 1000;
@@ -377,6 +383,9 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
         if (stream.error != MAD_ERROR_BUFLEN)
             break;
     }
+
+    if (info->xing.frames)
+        info->frames = info->xing.frames;
 
     if (info->vbr && xing_bitrate != 0) {
         info->bitrate = xing_bitrate;

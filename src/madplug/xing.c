@@ -32,6 +32,10 @@
 void xing_init(struct xing *xing)
 {
     xing->flags = 0;
+    xing->frames = 0;
+    xing->bytes = 0;
+    xing->toc[0] = '\0';
+    xing->scale = 0;
 }
 
 /*

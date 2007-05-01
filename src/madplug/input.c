@@ -122,6 +122,8 @@ gboolean input_init(struct mad_info_t * info, const char *url)
     if(audmad_is_remote((gchar *)url))
         info->remote = TRUE;
 
+    info->fileinfo_request = FALSE;
+
 #ifdef DEBUG
     g_message("i: info->size = %lu", (long unsigned int)info->size);
     g_message("e: input_init");

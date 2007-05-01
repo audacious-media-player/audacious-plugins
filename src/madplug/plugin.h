@@ -52,7 +52,7 @@ struct mad_info_t
     /* InputPlayback */
     InputPlayback *playback;
 
-    /* flags */
+    /* seek time */
     gulong seek;      /**< seek time in milliseconds */
 
     /* state */
@@ -98,7 +98,9 @@ struct mad_info_t
     VFSFile *infile;
     gint offset;
 
+    /* flags */
     gboolean remote;
+    gboolean fileinfo_request;
 
 };
 
