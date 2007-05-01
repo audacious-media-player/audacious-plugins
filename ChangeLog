@@ -1,3 +1,17 @@
+2007-05-01 14:03:49 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2120]
+  - remove support for hatena music as hatena ceased their musical profile service.
+  
+  trunk/src/scrobbler/Makefile    |    3 
+  trunk/src/scrobbler/configure.c |   66 --
+  trunk/src/scrobbler/gerpok.c    |    2 
+  trunk/src/scrobbler/hatena.c    |  909 ----------------------------------------
+  trunk/src/scrobbler/hatena.h    |   13 
+  trunk/src/scrobbler/plugin.c    |   49 --
+  trunk/src/scrobbler/scrobbler.c |    2 
+  7 files changed, 12 insertions(+), 1032 deletions(-)
+
+
 2007-05-01 05:03:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2118]
   - provide full metadata from the file's tuple when performing the transcode
