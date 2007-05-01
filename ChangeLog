@@ -1,3 +1,12 @@
+2007-05-01 04:57:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2116]
+  - add configure interface
+  - default to -q5 as recommended by Xiph and hydrogenaudio.com
+  
+  trunk/src/filewriter/vorbis.c |   89 +++++++++++++++++++++++++++++++++++++++++-
+  1 file changed, 87 insertions(+), 2 deletions(-)
+
+
 2007-05-01 04:19:47 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2114]
   - add check for cfg.stopaftersong at the end of cue.

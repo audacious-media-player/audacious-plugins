@@ -84,10 +84,28 @@ static gint vorbis_open(void)
 
     if (tuple)
     {
+        gchar *scratch;
+
         vorbis_comment_add_tag(&vc, "title", tuple->track_name);
         vorbis_comment_add_tag(&vc, "artist", tuple->performer);
         vorbis_comment_add_tag(&vc, "album", tuple->album_name);
         vorbis_comment_add_tag(&vc, "genre", tuple->genre);
+        vorbis_comment_add_tag(&vc, "date", tuple->date);
+        vorbis_comment_add_tag(&vc, "comment", tuple->comment);
+
+        if (tuple->track_number)
+        {
+            scratch = g_strdup_printf("%d", tuple->track_number);
+            vorbis_comment_add_tag(&vc, "tracknumber", scratch);
+            g_free(scratch);
+        }
+
+        if (tuple->year)
+        {
+            scratch = g_strdup_printf("%d", tuple->year);
+            vorbis_comment_add_tag(&vc, "year", scratch);
+            g_free(scratch);
+        }
     }
 
     if ((result = vorbis_encode_init_vbr(&vi, (long)input.channels, (long)input.frequency, v_base_quality)) != 0)
