@@ -24,6 +24,7 @@
 #include <stdlib.h>
 
 static void vorbis_init(void);
+static void vorbis_configure(void);
 static gint vorbis_open(void);
 static void vorbis_write(gpointer data, gint length);
 static void vorbis_close(void);
@@ -34,7 +35,7 @@ static gint vorbis_get_written_time(void);
 FileWriter vorbis_plugin =
 {
     vorbis_init,
-    NULL,
+    vorbis_configure,
     vorbis_open,
     vorbis_write,
     vorbis_close,
@@ -43,7 +44,7 @@ FileWriter vorbis_plugin =
     vorbis_get_written_time
 };
 
-static float v_base_quality = 0.3;
+static float v_base_quality = 0.5;
 
 static ogg_stream_state os;
 static ogg_page og;
@@ -200,4 +201,88 @@ static gint vorbis_get_written_time(void)
         return (gint) ((olen * 1000) / (input.frequency * 2 * input.channels));
 
     return 0;
+}
+
+/* configuration stuff */
+static GtkWidget *configure_win = NULL;
+static GtkWidget *quality_frame, *quality_vbox, *quality_hbox1, *quality_spin, *quality_label;
+static GtkObject *quality_adj;
+
+static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
+{
+    if (gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(quality_spin)))
+        v_base_quality = gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(quality_spin)) / 10;
+    else
+        v_base_quality = 0.0;
+}
+
+static void configure_ok_cb(gpointer data)
+{
+    ConfigDb *db = bmp_cfg_db_open();
+
+    bmp_cfg_db_set_float(db, "filewrite_vorbis", "base_quality", v_base_quality);
+
+    bmp_cfg_db_close(db);
+
+    gtk_widget_hide(configure_win);
+}
+
+static void vorbis_configure(void)
+{
+    GtkWidget *vbox, *bbox;
+    GtkWidget *button;
+
+    if (configure_win == NULL)
+    {
+        configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        g_signal_connect(G_OBJECT(configure_win), "destroy", G_CALLBACK(gtk_widget_destroyed), NULL);
+
+        gtk_window_set_title(GTK_WINDOW(configure_win), _("Vorbis Encoder Configuration"));
+        gtk_container_set_border_width(GTK_CONTAINER(configure_win), 5);
+
+        vbox = gtk_vbox_new(FALSE, 5);
+        gtk_container_add(GTK_CONTAINER(configure_win), vbox);
+
+        /* quality options */
+        quality_frame = gtk_frame_new(_("Quality"));
+        gtk_container_set_border_width(GTK_CONTAINER(quality_frame), 5);
+        gtk_box_pack_start(GTK_BOX(vbox), quality_frame, FALSE, FALSE, 2);
+
+        quality_vbox = gtk_vbox_new(FALSE, 5);
+        gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 10);
+        gtk_container_add(GTK_CONTAINER(quality_frame), quality_vbox);
+
+        /* quality option: vbr level */
+        quality_hbox1 = gtk_hbox_new(FALSE, 5);
+        gtk_container_set_border_width(GTK_CONTAINER(quality_hbox1), 10);
+        gtk_container_add(GTK_CONTAINER(quality_vbox), quality_hbox1);
+
+        quality_label = gtk_label_new(_("Quality level (0 - 10):"));
+        gtk_misc_set_alignment(GTK_MISC(quality_label), 0, 0.5);
+        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_label, TRUE, TRUE, 0);
+
+        quality_adj = gtk_adjustment_new(5, 0, 10, 0.1, 1, 1);
+        quality_spin = gtk_spin_button_new(GTK_ADJUSTMENT(quality_adj), 1, 2);
+        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, TRUE, TRUE, 0);
+        g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), NULL);
+
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), (v_base_quality * 10));
+
+        /* buttons */
+        bbox = gtk_hbutton_box_new();
+        gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
+        gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+        gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
+
+        button = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
+        g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_hide), GTK_OBJECT(configure_win));
+        gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
+
+        button = gtk_button_new_from_stock(GTK_STOCK_OK);
+        g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(configure_ok_cb), NULL);
+        gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
+        gtk_widget_grab_default(button);
+    }
+
+    gtk_widget_show_all(configure_win);
 }

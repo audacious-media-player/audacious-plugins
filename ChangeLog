@@ -1,3 +1,11 @@
+2007-05-01 04:19:47 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2114]
+  - add check for cfg.stopaftersong at the end of cue.
+  
+  trunk/src/cue/cuesheet.c |    3 +++
+  1 file changed, 3 insertions(+)
+
+
 2007-05-01 04:18:44 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2112]
   - add Vorbis output mode
