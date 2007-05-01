@@ -639,6 +639,9 @@ static gpointer watchdog_func(gpointer data)
                     }
                 }
                 else {
+                    if(cfg.stopaftersong) {
+                        exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
+                    }
 #ifdef DEBUG
                     g_print("i: watchdog end of cue, advance in playlist\n\n");
 #endif

@@ -1,3 +1,16 @@
+2007-05-01 04:18:44 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2112]
+  - add Vorbis output mode
+  - change "Output file extension" to "Output file format"
+  - link against -lvorbisenc, this will probably want to be adjusted before we make a release on a 1.4 branch
+  
+  trunk/src/filewriter/Makefile     |    4 
+  trunk/src/filewriter/filewriter.c |    9 +
+  trunk/src/filewriter/plugins.h    |    2 
+  trunk/src/filewriter/vorbis.c     |  203 ++++++++++++++++++++++++++++++++++++++
+  4 files changed, 212 insertions(+), 6 deletions(-)
+
+
 2007-05-01 03:24:34 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2110]
   - rename titles of configure windows.
