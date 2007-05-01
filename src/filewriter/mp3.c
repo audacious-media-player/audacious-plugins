@@ -665,7 +665,7 @@ static void mp3_configure(void)
                            GTK_SIGNAL_FUNC(gtk_widget_destroyed),
                            &configure_win);
         gtk_window_set_title(GTK_WINDOW(configure_win),
-                             "Out-Lame Configuration");
+                             "MP3 Configuration");
         gtk_window_set_position(GTK_WINDOW(configure_win),
                                 GTK_WIN_POS_MOUSE);
         gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, TRUE,
@@ -1965,7 +1965,15 @@ static void mp3_configure(void)
         gtk_button_box_set_spacing(GTK_BUTTON_BOX(configure_bbox), 5);
         gtk_box_pack_start(GTK_BOX(vbox), configure_bbox, FALSE, FALSE, 0);
 
-        configure_ok = gtk_button_new_with_label("Ok");
+        configure_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
+        gtk_signal_connect_object(GTK_OBJECT(configure_cancel), "clicked",
+                                  GTK_SIGNAL_FUNC(gtk_widget_destroy),
+                                  GTK_OBJECT(configure_win));
+        GTK_WIDGET_SET_FLAGS(configure_cancel, GTK_CAN_DEFAULT);
+        gtk_box_pack_start(GTK_BOX(configure_bbox), configure_cancel, TRUE,
+                           TRUE, 0);
+
+        configure_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
         gtk_signal_connect(GTK_OBJECT(configure_ok), "clicked",
                            GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
         GTK_WIDGET_SET_FLAGS(configure_ok, GTK_CAN_DEFAULT);
@@ -1973,14 +1981,6 @@ static void mp3_configure(void)
                            TRUE, 0);
         gtk_widget_show(configure_ok);
         gtk_widget_grab_default(configure_ok);
-
-        configure_cancel = gtk_button_new_with_label("Cancel");
-        gtk_signal_connect_object(GTK_OBJECT(configure_cancel), "clicked",
-                                  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-                                  GTK_OBJECT(configure_win));
-        GTK_WIDGET_SET_FLAGS(configure_cancel, GTK_CAN_DEFAULT);
-        gtk_box_pack_start(GTK_BOX(configure_bbox), configure_cancel, TRUE,
-                           TRUE, 0);
 
         /* Set States */
 

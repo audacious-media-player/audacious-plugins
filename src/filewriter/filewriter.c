@@ -473,7 +473,7 @@ static void file_configure(void)
                            &configure_win);
 
         gtk_window_set_title(GTK_WINDOW(configure_win),
-                             _("Disk Writer Configuration"));
+                             _("File Writer Configuration"));
         gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_MOUSE);
 
         gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);

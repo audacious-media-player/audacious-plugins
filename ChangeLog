@@ -1,3 +1,25 @@
+2007-04-30 21:16:32 +0000  Michael Farber <01mf02@gmail.com>
+  revision [2108]
+  - We got a new plugin, captain!
+  - FileWriter is the ultimate plugin for dumping audio to files. It 
+  should be the successor of Disk Writer and Out-Lame, as it supports the 
+  same output formats as those (WAVE and MP3). The main advantage of 
+  having only one file dumping plugin for many formats is that not every 
+  plugin has to think about file handling (where to write files to, how to 
+  call them etc.) that much anymore.
+  - FileWriter is also very extensible - adding new output formats should 
+  be very easy.
+  
+  
+  trunk/src/filewriter/Makefile     |   15 
+  trunk/src/filewriter/filewriter.c |  624 +++++++++++
+  trunk/src/filewriter/filewriter.h |   64 +
+  trunk/src/filewriter/mp3.c        | 1999 ++++++++++++++++++++++++++++++++++++++
+  trunk/src/filewriter/plugins.h    |   30 
+  trunk/src/filewriter/wav.c        |  118 ++
+  6 files changed, 2850 insertions(+)
+
+
 2007-04-28 22:27:15 +0000  Michael Farber <01mf02@gmail.com>
   revision [2106]
   - Out-Lame can now prepend the playlist position to the filename if the 
