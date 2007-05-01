@@ -158,11 +158,11 @@ static void flac_write(gpointer data, gint length)
 
     encbuffer = g_new0(FLAC__int32, length);
 
-    for (i=0; i < (length/2); i++) {
+    for (i=0; i < length; i++) {
         encbuffer[i] = tmpdata[i];
     }
 
-    FLAC__stream_encoder_process_interleaved(flac_encoder, encbuffer, (length/2));
+    FLAC__stream_encoder_process_interleaved(flac_encoder, encbuffer, length);
     olen += length;
 
     g_free(encbuffer);
