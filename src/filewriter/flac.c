@@ -91,7 +91,7 @@ static gint flac_open(void)
 
 static void flac_write(gpointer data, gint length)
 {
-#if 0
+#if 1
     FLAC__int32 *encbuffer[2];
     short int *tmpdata = data;
     int i;
@@ -121,10 +121,9 @@ static void flac_write(gpointer data, gint length)
 
     g_free(encbuffer[0]);
     g_free(encbuffer[1]);
-#endif
-
+#else
     FLAC__int32 *encbuffer;
-    gint16_t *tmpdata = data;
+    gint16 *tmpdata = data;
     int i;
 
     encbuffer = g_new0(FLAC__int32, length);
@@ -137,6 +136,7 @@ static void flac_write(gpointer data, gint length)
     olen += length;
 
     g_free(encbuffer);
+#endif
 }
 
 static void flac_close(void)

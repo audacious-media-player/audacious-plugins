@@ -1,3 +1,12 @@
+2007-05-01 15:30:24 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2126]
+  
+  - A simpler version of flac_write()
+  
+  trunk/src/filewriter/flac.c |   17 +++++++++++++++++
+  1 file changed, 17 insertions(+)
+
+
 2007-05-01 15:26:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2124]
   - remove the padding, flac starts working.
