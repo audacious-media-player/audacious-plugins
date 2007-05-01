@@ -20,7 +20,7 @@
  */
 
 #include "plugins.h"
-#include <FLAC/stream_encoder.h>
+#include <FLAC/all.h>
 #include <stdlib.h>
 
 static gint flac_open(void);
@@ -74,6 +74,17 @@ static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *enc
     return FLAC__STREAM_ENCODER_TELL_STATUS_OK;
 }
 
+#define INSERT_VORBIS_COMMENT(t, keyword) \
+        if (t) \
+        { \
+            gchar *scratch = g_strdup_printf(keyword, t); \
+            comment_entry.length = strlen(scratch); \
+            comment_entry.entry = (guchar *) scratch; \
+            FLAC__metadata_object_vorbiscomment_insert_comment(meta, \
+                meta->data.vorbis_comment.num_comments, comment_entry, TRUE); \
+            g_free(scratch); \
+        }
+
 static gint flac_open(void)
 {
     written = 0;
@@ -85,6 +96,25 @@ static gint flac_open(void)
     FLAC__stream_encoder_set_sample_rate(flac_encoder, input.frequency);
     FLAC__stream_encoder_init_stream(flac_encoder, flac_write_cb, flac_seek_cb, flac_tell_cb,
 				     NULL, output_file);
+
+    if (tuple)
+    {
+        FLAC__StreamMetadata *meta;
+        FLAC__StreamMetadata_VorbisComment_Entry comment_entry;
+
+        meta = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+
+        INSERT_VORBIS_COMMENT(tuple->track_name, "title=%s");
+        INSERT_VORBIS_COMMENT(tuple->performer, "artist=%s");
+        INSERT_VORBIS_COMMENT(tuple->album_name, "album=%s");
+        INSERT_VORBIS_COMMENT(tuple->genre, "genre=%s");
+        INSERT_VORBIS_COMMENT(tuple->comment, "comment=%s");
+        INSERT_VORBIS_COMMENT(tuple->date, "date=%s");
+        INSERT_VORBIS_COMMENT(tuple->year, "year=%d");
+        INSERT_VORBIS_COMMENT(tuple->track_number, "tracknumber=%d");
+
+        FLAC__stream_encoder_set_metadata(flac_encoder, &meta, 1);
+    }
 
     return 1;
 }
