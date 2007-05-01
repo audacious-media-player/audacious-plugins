@@ -1,3 +1,11 @@
+2007-05-01 05:03:19 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2118]
+  - provide full metadata from the file's tuple when performing the transcode
+  
+  trunk/src/filewriter/vorbis.c |   18 ++++++++++++++++++
+  1 file changed, 18 insertions(+)
+
+
 2007-05-01 04:57:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2116]
   - add configure interface

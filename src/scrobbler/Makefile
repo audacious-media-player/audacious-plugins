@@ -21,10 +21,9 @@ SOURCES = 			\
 	md5.c			\
 	scrobbler.c		\
 	gerpok.c		\
-	hatena.c		\
 	plugin.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../.. -Wall
 
 OBJECTS = ${SOURCES:.c=.o}
 

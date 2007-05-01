@@ -161,12 +161,14 @@ static item_t *q_put2(char *artist, char *title, char *len, char *time,
 	return item;
 }
 
+#if 0
 static item_t *q_peek(void)
 {
 	if (q_nitems == 0)
 		return NULL;
 	return q_queue;
 }
+#endif
 
 static item_t *q_peekall(int rewind)
 {

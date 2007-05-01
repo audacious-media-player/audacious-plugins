@@ -23,7 +23,7 @@
 
 #include "configure.h"
 
-GtkWidget *entry1, *entry2, *ge_entry1, *ge_entry2, *ha_entry1, *ha_entry2, *cfgdlg;
+GtkWidget *entry1, *entry2, *ge_entry1, *ge_entry2, *cfgdlg;
 
 static char *hexify(char *pass, int len)
 {
@@ -50,17 +50,14 @@ static void saveconfig(GtkWidget *wid __attribute__((unused)), gpointer data)
         const char *pwd = gtk_entry_get_text(GTK_ENTRY(entry2));
         const char *ge_uid = gtk_entry_get_text(GTK_ENTRY(ge_entry1));
         const char *ge_pwd = gtk_entry_get_text(GTK_ENTRY(ge_entry2));
-        const char *ha_uid = gtk_entry_get_text(GTK_ENTRY(ha_entry1));
-        const char *ha_pwd = gtk_entry_get_text(GTK_ENTRY(ha_entry2));
 
         if ((cfgfile = bmp_cfg_db_open()))
 	{
                 md5_state_t md5state;
-                unsigned char md5pword[16], ge_md5pword[16], ha_md5pword[16];
+                unsigned char md5pword[16], ge_md5pword[16];
 
                 bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (char *)uid);
                 bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (char *)ge_uid);
-                bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "ha_username", (char *)ha_uid);
 
                 if (pwd != NULL && pwd[0] != '\0')
 		{
@@ -78,15 +75,6 @@ static void saveconfig(GtkWidget *wid __attribute__((unused)), gpointer data)
                         md5_finish(&md5state, ge_md5pword);
                         bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password",
                                         hexify((char*)ge_md5pword, sizeof(ge_md5pword)));
-                }
-
-                if (ha_pwd != NULL && ha_pwd[0] != '\0')
-		{
-                        md5_init(&md5state);
-                        md5_append(&md5state, (unsigned const char *)ha_pwd, strlen(ha_pwd));
-                        md5_finish(&md5state, ha_md5pword);
-                        bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "ha_password",
-                                        hexify((char*)ha_md5pword, sizeof(ha_md5pword)));
                 }
 
                 bmp_cfg_db_close(cfgfile);
@@ -199,47 +187,6 @@ create_cfgdlg(void)
   gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
   gtk_notebook_append_page(GTK_NOTEBOOK(notebook1), GTK_WIDGET(align1), label1);
 
-
-  // hatena
-  align1 = gtk_alignment_new(0, 0, 0, 0);
-  gtk_widget_show (align1);
-  gtk_alignment_set_padding(GTK_ALIGNMENT(align1), 0, 0, 12, 0);
-
-  table1 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_show (table1);
-  gtk_container_add(GTK_CONTAINER(align1), table1);
-  gtk_table_set_row_spacings (GTK_TABLE(table1), 6);
-  gtk_table_set_col_spacings (GTK_TABLE(table1), 6);
-
-  label2 = gtk_label_new (_("Username:"));
-  gtk_widget_show (label2);
-  gtk_table_attach_defaults (GTK_TABLE (table1), label2, 0, 1, 2, 3);
-  gtk_label_set_justify (GTK_LABEL (label2), GTK_JUSTIFY_RIGHT);
-  gtk_misc_set_alignment (GTK_MISC (label2), 1, 0.5);
-
-  label3 = gtk_label_new (_("Password:"));
-  gtk_widget_show (label3);
-  gtk_table_attach (GTK_TABLE (table1), label3, 0, 1, 3, 4,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_label_set_justify (GTK_LABEL (label3), GTK_JUSTIFY_RIGHT);
-  gtk_misc_set_alignment (GTK_MISC (label3), 1, 0.5);
-
-  ha_entry1 = gtk_entry_new ();
-  gtk_widget_show (ha_entry1);
-  gtk_table_attach_defaults (GTK_TABLE (table1), ha_entry1, 1, 2, 2, 3);
-
-  ha_entry2 = gtk_entry_new ();
-  gtk_entry_set_visibility(GTK_ENTRY(ha_entry2), FALSE);
-  gtk_widget_show (ha_entry2);
-  gtk_table_attach_defaults (GTK_TABLE (table1), ha_entry2, 1, 2, 3, 4);
-  g_signal_connect(ha_entry2, "changed", (GCallback) saveconfig, NULL);
-
-  label1 = gtk_label_new (_("<b>Hatena</b>"));
-  gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
-  gtk_notebook_append_page(GTK_NOTEBOOK(notebook1), GTK_WIDGET(align1), label1);
-
-
   // common
   gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 6);
 
@@ -269,14 +216,7 @@ create_cfgdlg(void)
                         g_free(username);
 			username = NULL;
                 }
-		// hatena
-                bmp_cfg_db_get_string(db, "audioscrobbler", "ha_username",
-                        &username);
-                if (username) {
-                        gtk_entry_set_text(GTK_ENTRY(ha_entry1), username);
-                        g_free(username);
-			username = NULL;
-                }
+
                 bmp_cfg_db_close(db);
         }
 
