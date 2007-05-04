@@ -1,3 +1,16 @@
+2007-05-01 19:49:27 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2134]
+  - fix a bug which counts number of frames twice in handling xing header.
+  - now fileinfo dialog calculates play length even though TLEN tag exists so that it can overwrite wrong TLEN tag.
+  
+  trunk/src/madplug/decoder.c  |   15 ++++++++++++---
+  trunk/src/madplug/fileinfo.c |    1 +
+  trunk/src/madplug/input.c    |    2 ++
+  trunk/src/madplug/plugin.h   |    4 +++-
+  trunk/src/madplug/xing.c     |    4 ++++
+  5 files changed, 22 insertions(+), 4 deletions(-)
+
+
 2007-05-01 17:38:27 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2132]
   

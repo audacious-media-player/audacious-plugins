@@ -742,7 +742,9 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
             stream_skip(qtmovie->stream, chunk_len - 8); /* FIXME not 8 */
             break;
         default:
-            return 0;
+            stream_skip(qtmovie->stream, chunk_len - 8); /* FIXME not 8 */
+	    return 1;
+	    break;
         }
 
     }
