@@ -811,7 +811,7 @@ if test "$have_alsa" = "yes"; then
 fi
 
 
-dnl *** amidi-plug (note: to avoid checking twice ALSA, this should appear somewhere after the alsa ouput plugin check)
+dnl *** amidi-plug (note: to avoid checking twice ALSA, this should appear somewhere after the alsa output plugin check)
 
 AC_ARG_ENABLE(amidiplug,
     [  --disable-amidiplug     disable amidi-plug input plugin (default=check) ],
@@ -1152,7 +1152,7 @@ fi
 dnl *** ProjectM (GL Milkdrop port)
 
 AC_ARG_ENABLE(projectm,
-[  --disable-projectm          disable projectM vis plugin. (default=enabled)],
+[  --disable-projectm      disable projectM vis plugin. (default=enabled)],
 [have_projectm=$enableval],
 [have_projectm=yes])
 
@@ -1189,7 +1189,7 @@ fi
 dnl *** LAME
 
 AC_ARG_ENABLE(lame,
-    [  --disable-lame           disable lame encoder plugin (default=enabled) ],
+    [  --disable-lame          disable lame encoder plugin (default=enabled) ],
     [enable_lame=$enableval],
     [enable_lame=yes]
 )
@@ -1198,6 +1198,58 @@ if test "$enable_lame" = "yes"; then
    AC_CHECK_LIB(mp3lame -lm, lame_init,
    [OUTPUT_PLUGINS="$OUTPUT_PLUGINS lame"],
    [enable_lame="no"])
+fi
+
+dnl *** FileWriter
+
+AC_ARG_ENABLE(filewriter,
+    [  --disable-filewriter    disable FileWriter output plugin (default=enabled) ],
+    [enable_filewriter=$enableval],
+    [enable_filewriter=yes]
+)
+
+if test "$enable_filewriter" = "yes"; then
+	OUTPUT_PLUGINS="$OUTPUT_PLUGINS filewriter"
+fi
+
+
+AC_ARG_ENABLE(filewriter_mp3,
+    [  --disable-filewriter_mp3    disable FileWriter MP3 output part (default=enabled) ],
+    [enable_filewriter_mp3=$enableval],
+    [enable_filewriter_mp3=yes]
+)
+
+if test "$enable_filewriter_mp3" = "yes"; then
+   AC_CHECK_LIB(mp3lame -lm, lame_init, [have_lame=yes], [have_lame=no])
+   if test "$have_lame" = yes; then
+      AC_DEFINE(FILEWRITER_MP3, 1, [Define if Vorbis output part should be built])
+   fi
+fi
+
+
+AC_ARG_ENABLE(filewriter_vorbis,
+    [  --disable-filewriter_vorbis disable FileWriter Vorbis output part (default=enabled) ],
+    [enable_filewriter_vorbis=$enableval],
+    [enable_filewriter_vorbis=yes]
+)
+
+if test "$enable_filewriter_vorbis" = "yes"; then
+   PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.0 vorbisfile >= 1.0],
+   [AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built] )],
+   [enable_filewriter_vorbis="no"])
+fi
+
+
+AC_ARG_ENABLE(filewriter_flac,
+    [  --disable-filewriter_flac   disable FileWriter FLAC output part (default=enabled) ],
+    [enable_filewriter_flac=$enableval],
+    [enable_filewriter_flac=yes]
+)
+
+if test "$enable_filewriter_flac" = "yes"; then
+   PKG_CHECK_MODULES(FLAC, [flac >= 1.1.2],
+   [AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built] )],
+   [enable_filewriter_flac="no"])
 fi
 
 dnl *** End of all plugin checks ***
@@ -1287,6 +1339,10 @@ echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  Lame encoder (lame):                    $enable_lame"
+echo "  FileWriter:                             $enable_filewriter"
+echo "    -> FileWriter MP3 output part:        $enable_filewriter_mp3"
+echo "    -> FileWriter Vorbis output part:     $enable_filewriter_vorbis"
+echo "    -> FileWriter FLAC output part:       $enable_filewriter_flac"
 echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"

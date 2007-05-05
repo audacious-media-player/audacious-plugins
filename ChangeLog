@@ -1,3 +1,13 @@
+2007-05-05 12:03:57 +0000  Michael Farber <01mf02@gmail.com>
+  revision [2164]
+  - Prepared FileWriter for partial compilation
+  
+  
+  trunk/src/filewriter/filewriter.c |   44 ++++++++++++++++++++++++++++++++++++--
+  trunk/src/filewriter/plugins.h    |   11 ++++++++-
+  2 files changed, 52 insertions(+), 3 deletions(-)
+
+
 2007-05-05 11:20:17 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2162]
   
