@@ -25,6 +25,15 @@
 
 #include "filewriter.h"
 
-extern FileWriter wav_plugin, mp3_plugin, vorbis_plugin, flac_plugin;
+extern FileWriter wav_plugin;
+#ifdef FILEWRITER_MP3
+extern FileWriter mp3_plugin;
+#endif
+#ifdef FILEWRITER_VORBIS
+extern FileWriter vorbis_plugin;
+#endif
+#ifdef FILEWRITER_FLAC
+extern FileWriter flac_plugin;
+#endif
 
 #endif
