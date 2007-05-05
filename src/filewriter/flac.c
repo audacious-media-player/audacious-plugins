@@ -20,6 +20,9 @@
  */
 
 #include "plugins.h"
+
+#ifdef FILEWRITER_FLAC
+
 #include <FLAC/all.h>
 #include <stdlib.h>
 
@@ -192,3 +195,5 @@ static gint flac_get_written_time(void)
 
     return 0;
 }
+
+#endif

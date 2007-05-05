@@ -1,3 +1,12 @@
+2007-05-05 12:14:02 +0000  Michael Farber <01mf02@gmail.com>
+  revision [2166]
+  - configure.ac changes for FileWriter (are likely to have to be fixed)
+  
+  
+  trunk/configure.ac |   62 ++++++++++++++++++++++++++++++++++++++++++++++++++---
+  1 file changed, 59 insertions(+), 3 deletions(-)
+
+
 2007-05-05 12:03:57 +0000  Michael Farber <01mf02@gmail.com>
   revision [2164]
   - Prepared FileWriter for partial compilation
