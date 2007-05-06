@@ -1,3 +1,11 @@
+2007-05-05 19:11:33 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [2168]
+  ifdef filewriter/flac.c out completely if FILEWRITER_FLAC isn't defined
+  
+  trunk/src/filewriter/flac.c |    5 +++++
+  1 file changed, 5 insertions(+)
+
+
 2007-05-05 12:14:02 +0000  Michael Farber <01mf02@gmail.com>
   revision [2166]
   - configure.ac changes for FileWriter (are likely to have to be fixed)

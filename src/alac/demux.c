@@ -703,9 +703,7 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
 
         chunk_len = stream_read_uint32(qtmovie->stream);
         if (stream_eof(qtmovie->stream))
-        {
             return 0;
-        }
 
         if (chunk_len == 1)
             return 0;
@@ -721,9 +719,7 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
             if (read_chunk_moov(qtmovie, chunk_len) == 0)
 	        return 0; /* failed to read moov, can't do anything */
             if (found_mdat)
-            {
                 return set_saved_mdat(qtmovie);
-            }
             found_moov = 1;
             break;
             /* if we hit mdat before we've found moov, record the position
@@ -742,9 +738,7 @@ int qtmovie_read(stream_t *file, demux_res_t *demux_res)
             stream_skip(qtmovie->stream, chunk_len - 8); /* FIXME not 8 */
             break;
         default:
-            stream_skip(qtmovie->stream, chunk_len - 8); /* FIXME not 8 */
-	    return 1;
-	    break;
+	    return found_moov;
         }
 
     }
