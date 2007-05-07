@@ -221,10 +221,7 @@ static gint mp3_open(void)
 
         //        id3tag_write_v1(gfp);
         id3tag_add_v2(gfp);
-
-        bmp_title_input_free(tuple);
     }
-
 
     /* input stream description */
 

@@ -194,6 +194,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 {
     gchar *origfilename = NULL, *filename = NULL, *temp = NULL;
     gint pos;
+    gint rv;
 
     if (xmms_check_realtime_priority())
     {
@@ -270,7 +271,10 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     if (!output_file)
         return 0;
 
-    return plugin.open();
+    rv = plugin.open();
+    bmp_title_input_free(tuple);
+
+    return rv;
 }
 
 static void convert_buffer(gpointer buffer, gint length)
