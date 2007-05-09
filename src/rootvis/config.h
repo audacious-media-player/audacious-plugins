@@ -1,3 +1,6 @@
+#ifndef _RV_CONFIG_H
+#define _RV_CONFIG_H
+
 enum valtype {
 	BOOLN,
 	INT,
@@ -55,3 +58,5 @@ struct config_def {
 
 struct config_def Cmain;
 struct config_def Cchannel[2];
+
+#endif

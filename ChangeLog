@@ -1,3 +1,14 @@
+2007-05-07 05:53:19 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2172]
+  - move bmp_title_input_free() into file_open() to avoid memory leak.
+  - make vorbis.c check each tuple member has value.
+  
+  trunk/src/filewriter/filewriter.c |    6 +++++-
+  trunk/src/filewriter/mp3.c        |    3 ---
+  trunk/src/filewriter/vorbis.c     |   18 ++++++++++++------
+  3 files changed, 17 insertions(+), 10 deletions(-)
+
+
 2007-05-06 17:59:18 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2170]
   - fix itunes7 hack

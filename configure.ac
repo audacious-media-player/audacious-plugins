@@ -107,7 +107,7 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.2.99],
     [AC_MSG_ERROR([Cannot find Audacious, have you installed audacious yet?])]
 )
 
-dnl Check for GTK/GLib/GThread/Pango
+dnl Check for GTK/GLib/GThread/Pango/DBus
 
 PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.6.0 gthread-2.0],
     [ADD_PC_REQUIRES([glib-2.0 >= 2.6.0])],
@@ -123,6 +123,12 @@ PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [ADD_PC_REQUIRES([pango >= 1.8.0])],
     [AC_MSG_ERROR([Cannot find pango >= 1.8.0])]
 )
+
+PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
+    [ADD_PC_REQUIRES([dbus-1 >= 0.60 dbus-glib-1 >= 0.60])
+     AC_DEFINE(USE_DBUS, 1, [Define if D-Bus support enabled])],
+    [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60])]
+])
 
 dnl IPv6 support
 dnl ========================
@@ -1015,8 +1021,8 @@ fi
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
 
-CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS"
-CXXFLAGS="$CXXFLAGS $AUDACIOUS_CFLAGS"
+CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
+CXXFLAGS="$CXXFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
 
 AC_MSG_CHECKING(if __ELF__ is defined)
 AC_EGREP_CPP(yes,
