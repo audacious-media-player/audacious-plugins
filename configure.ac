@@ -94,7 +94,7 @@ AC_ARG_WITH(cdda-dir,
 dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom vtx"
-OUTPUT_PLUGINS="disk_writer null"
+OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
@@ -1192,20 +1192,6 @@ if test "$enable_tta" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS tta"
 fi
 
-dnl *** LAME
-
-AC_ARG_ENABLE(lame,
-    [  --disable-lame          disable lame encoder plugin (default=enabled) ],
-    [enable_lame=$enableval],
-    [enable_lame=yes]
-)
-
-if test "$enable_lame" = "yes"; then
-   AC_CHECK_LIB(mp3lame -lm, lame_init,
-   [OUTPUT_PLUGINS="$OUTPUT_PLUGINS lame"],
-   [enable_lame="no"])
-fi
-
 dnl *** FileWriter
 
 AC_ARG_ENABLE(filewriter,
@@ -1344,7 +1330,6 @@ echo "  Analog Realtime Synthesizer (arts):     $have_arts"
 echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
-echo "  Lame encoder (lame):                    $enable_lame"
 echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $enable_filewriter_mp3"
 echo "    -> FileWriter Vorbis output part:     $enable_filewriter_vorbis"

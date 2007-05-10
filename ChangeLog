@@ -1,3 +1,11 @@
+2007-05-10 19:13:22 +0000  Michael Farber <01mf02@gmail.com>
+  revision [2176]
+  - get rid of Disk-Writer and Out-Lame in favor of FileWriter finally
+  
+  
+  0 files changed
+
+
 2007-05-09 21:38:09 +0000  Ben Tucker <bnt@interchange.ubc.ca>
   revision [2174]
   Fixed rootvis' config to only declare stuff once; modified alarm.c to use dbus and made appropriate changes to the build system.
