@@ -75,10 +75,6 @@ static gboolean prependnumber = FALSE;
 
 static gchar *file_path = NULL;
 
-gint ctrlsocket_get_session_id(void);   /* FIXME */
-
-extern TitleInput *input_get_song_tuple(const gchar *filename);
-
 static void file_init(void);
 static void file_about(void);
 static gint file_open(AFormat fmt, gint rate, gint nch);
@@ -192,9 +188,10 @@ void file_about(void)
 
 static gint file_open(AFormat fmt, gint rate, gint nch)
 {
-    gchar *origfilename = NULL, *filename = NULL, *temp = NULL;
+    gchar *filename = NULL, *temp = NULL;
     gint pos;
     gint rv;
+    Playlist *playlist;
 
     if (xmms_check_realtime_priority())
     {
@@ -209,17 +206,19 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     input.frequency = rate;
     input.channels = nch;
 
-    pos = xmms_remote_get_playlist_pos(ctrlsocket_get_session_id());
+    playlist = playlist_get_active();
+    if(!playlist)
+        return 0;
 
-    origfilename = xmms_remote_get_playlist_file(ctrlsocket_get_session_id(),
-                                                 pos);
-
-    tuple = input_get_song_tuple(origfilename);
+    pos = playlist_get_position(playlist);
+    tuple = playlist_get_tuple(playlist, pos);
+    if(!tuple)
+        return 0;
 
     if (filenamefromtags)
     {
-        gchar *utf8 =
-            xmms_remote_get_playlist_title(ctrlsocket_get_session_id(), pos);
+        gchar *utf8 = xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
+
         g_strchomp(utf8); //chop trailing ^J --yaz
 
         filename = g_locale_from_utf8(utf8, -1, NULL, NULL, NULL);
@@ -229,7 +228,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     }
     if (filename == NULL)
     {
-        filename = g_path_get_basename(origfilename);
+        filename = g_strdup(tuple->file_name);
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
                 *temp = '\0';
@@ -253,11 +252,9 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     gchar *directory;
     if (save_original)
-        directory = g_path_get_dirname(origfilename);
+        directory = g_strdup(tuple->file_path);
     else
         directory = g_strdup(file_path);
-
-    g_free(origfilename);
 
     temp = g_strdup_printf("%s/%s.%s",
                            directory, filename, fileext_str[fileext]);
@@ -272,7 +269,6 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
         return 0;
 
     rv = plugin.open();
-    bmp_title_input_free(tuple);
 
     return rv;
 }

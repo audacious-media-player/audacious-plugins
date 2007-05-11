@@ -1,3 +1,12 @@
+2007-05-11 04:43:57 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2184]
+  - make this compile again and indent properly
+  
+  trunk/src/lastfm/lastfm.c |  149 +++++++++++++++++++++++-----------------------
+  trunk/src/lastfm/lastfm.h |    5 -
+  2 files changed, 78 insertions(+), 76 deletions(-)
+
+
 2007-05-11 00:48:34 +0000  Cristi Magherusan <majeru@atheme.org>
   revision [2182]
   added primitive metadata handling (just gets printed in the terminal)
