@@ -1,3 +1,27 @@
+2007-05-11 08:15:39 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2188]
+  import major update by Aleksander Djuric (the original author).
+  - major code cleanups
+  - fix for badly playlist names
+  - remove unnecessary functions
+  - remove no-longer-needed files
+  
+  trunk/src/tta/Makefile      |    2 
+  trunk/src/tta/Readme        |   35 -
+  trunk/src/tta/aud-support.h |   24 -
+  trunk/src/tta/aud-tta.c     | 1019 --------------------------------------------
+  trunk/src/tta/crc32.h       |  114 ----
+  trunk/src/tta/filters.h     |  110 ----
+  trunk/src/tta/id3.c         |   80 ---
+  trunk/src/tta/id3genre.h    |  155 ------
+  trunk/src/tta/libtta.c      |  861 +++++++++++++++++++++++++++++++++++++
+  trunk/src/tta/ttadec.c      |  230 ++++++---
+  trunk/src/tta/ttadec.h      |  128 ++++-
+  trunk/src/tta/ttaid3tag.h   |   97 ----
+  trunk/src/tta/ttalib.h      |   74 ++-
+  13 files changed, 1175 insertions(+), 1754 deletions(-)
+
+
 2007-05-11 05:27:38 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2186]
   - replace xmms_remote_*() with playlist functions.

@@ -26,9 +26,9 @@
 
 
 LastFM *LastFMGlobalData;
-	/*this keeps the login data in a global place since 
-	 * we cannot login on every fopen call* if anyone 
-	 * has a better solution to this any hint is welcome */
+/*this keeps the login data in a global place since 
+ * we cannot login on every fopen call* if anyone 
+ * has a better solution to this any hint is welcome */
 
 static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata)
 {
@@ -142,8 +142,7 @@ static gboolean lastfm_adjust(const gchar * url)
 
 	return ret;
 }
-
-gpointer lastfm_get_metadata(LastFM * handle)
+static void * lastfm_get_metadata(LastFM * handle)  
 {
 
 	gint status, i;
@@ -154,7 +153,8 @@ gpointer lastfm_get_metadata(LastFM * handle)
 		return NULL;
 	snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
 
-	for (;;)
+	gboolean opened_file=TRUE;
+	while (opened_file)
 	{
 		handle->lastfm_duration = 0;
 		handle->lastfm_progress = 0;
@@ -213,7 +213,6 @@ gpointer lastfm_get_metadata(LastFM * handle)
 		}
 		g_string_erase(res, 0, -1);
 
-
 		int sleep_time;
 		if (handle->lastfm_progress == 0)	//if i don't know track duration i'm polling for metadata every 10 seconds
 			sleep_time = 10;
@@ -224,12 +223,21 @@ gpointer lastfm_get_metadata(LastFM * handle)
 #endif
 
 		sleep(sleep_time);
+		if(handle->proxy_fd==NULL)
+			opened_file=FALSE;
 	}
-	return NULL;		//we'll never get here
+
+#ifdef DEBUG
+		g_print("Exiting a thread\n");
+#endif
+
+
+	return NULL;	
 }
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
+	static GThread * th;
 	VFSFile *file;
 	LastFM *handle;
 	file = g_new0(VFSFile, 1);
@@ -251,97 +259,108 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 	handle->lastfm_station_name = g_strdup(LastFMGlobalData->lastfm_station_name);
 
 	if (lastfm_adjust(path))
-		g_thread_create(lastfm_get_metadata, handle, FALSE, NULL);
-
+	{
+		if((th= g_thread_create(lastfm_get_metadata, handle, FALSE, NULL))==NULL)
+		{
 #ifdef DEBUG
-	else
-		g_print("Cannot tune to given channel\n");
-	g_print("The metadata thread has just been created\n");
+			g_print("Error creating metadata thread!!!\n");
+#endif
+			return NULL;
+		}
+		else
+#ifdef DEBUG
+			g_print("The metadata thread has just been created\n");
+#endif
+	}
+#ifdef DEBUG
+		else
+			g_print("Cannot tune to given channel\n");
 #endif
 
-	handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
-	file->handle = handle;
+		handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
+		file->handle = handle;
 
-	return file;
-}
+		return file;
+	}
 
-gint lastfm_vfs_fclose_impl(VFSFile * file)
-{
-	gint ret = 0;
+	gint lastfm_vfs_fclose_impl(VFSFile * file)
+	{
+		gint ret = 0;
 
 
-	if (file == NULL)
+		if (file == NULL)
+			return -1;
+
+		LastFM *handle = file->handle;
+		ret = vfs_fclose(handle->proxy_fd);
+		if(!ret)
+			handle->proxy_fd=NULL;
+
+		return ret;
+	}
+
+	size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+	{
+
+		LastFM *handle = file->handle;
+		size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
+		return ret;
+	}
+
+	size_t lastfm_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+	{
 		return -1;
+	}
 
-	LastFM *handle = file->handle;
-	ret = vfs_fclose(handle->proxy_fd);
+	gint lastfm_vfs_getc_impl(VFSFile * stream)
+	{
+		LastFM *handle = stream->handle;
+		return vfs_getc(handle->proxy_fd);
+	}
 
+	gint lastfm_vfs_ungetc_impl(gint c, VFSFile * stream)
+	{
+		LastFM *handle = stream->handle;
 
-	return ret;
-}
+		return vfs_ungetc(c, handle->proxy_fd);
+	}
 
-size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
-{
+	gint lastfm_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
+	{
+		return -1;
+	}
 
-	LastFM *handle = file->handle;
-	size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
-	return ret;
-}
+	void lastfm_vfs_rewind_impl(VFSFile * file)
+	{
+		return;
+	}
 
-size_t lastfm_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
-{
-	return -1;
-}
+	glong lastfm_vfs_ftell_impl(VFSFile * file)
+	{
+		LastFM *handle = file->handle;
 
-gint lastfm_vfs_getc_impl(VFSFile * stream)
-{
-	LastFM *handle = stream->handle;
-	return vfs_getc(handle->proxy_fd);
-}
+		return vfs_ftell(handle->proxy_fd);
+	}
 
-gint lastfm_vfs_ungetc_impl(gint c, VFSFile * stream)
-{
-	LastFM *handle = stream->handle;
+	gboolean lastfm_vfs_feof_impl(VFSFile * file)
+	{
+		LastFM *handle = file->handle;
 
-	return vfs_ungetc(c, handle->proxy_fd);
-}
+		return vfs_feof(handle->proxy_fd);
+	}
 
-gint lastfm_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
-{
-	return -1;
-}
+	gint lastfm_vfs_truncate_impl(VFSFile * file, glong size)
+	{
+		return -1;
+	}
 
-void lastfm_vfs_rewind_impl(VFSFile * file)
-{
-	return;
-}
+	off_t lastfm_vfs_fsize_impl(VFSFile * file)
+	{
+		return -1;
+	}
 
-glong lastfm_vfs_ftell_impl(VFSFile * file)
-{
-	LastFM *handle = file->handle;
-
-	return vfs_ftell(handle->proxy_fd);
-}
-
-gboolean lastfm_vfs_feof_impl(VFSFile * file)
-{
-	LastFM *handle = file->handle;
-
-	return vfs_feof(handle->proxy_fd);
-}
-
-gint lastfm_vfs_truncate_impl(VFSFile * file, glong size)
-{
-	return -1;
-}
-
-off_t lastfm_vfs_fsize_impl(VFSFile * file)
-{
-	return -1;
-}
-
-gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
-{
+	gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
+	{
 	LastFM *handle = file->handle;
 
 #ifdef DEBUG
@@ -356,13 +375,17 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 	if (handle->lastfm_title != NULL)
 		g_print("%s\n", handle->lastfm_title);
 
-	g_print("%ul\n\n", handle->lastfm_duration);
+	g_print("%u\n\n", handle->lastfm_duration);
 #endif
 
-	if (!g_ascii_strncasecmp(field, "stream-name", 12) && (handle->lastfm_station_name != NULL))
+	if (!g_ascii_strncasecmp(field, "stream-name", 11) && (handle->lastfm_station_name != NULL))
 		return g_strdup(handle->lastfm_station_name);
-	if (!g_ascii_strncasecmp(field, "track-name", 11) && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
+	if (!g_ascii_strncasecmp(field, "track-name", 10) && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
 		return g_strdup_printf("%s - %s", handle->lastfm_artist, handle->lastfm_title);
+	if (!g_ascii_strncasecmp(field, "content-length",14))
+		return g_strdup_printf("%d", handle->lastfm_duration);
+
+
 
 	return NULL;
 }
