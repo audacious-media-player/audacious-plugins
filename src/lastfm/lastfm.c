@@ -223,15 +223,16 @@ static void *lastfm_get_metadata(LastFM * handle)
 #endif
 
 		sleep(sleep_time);
+#if 0
 		if (handle->proxy_fd == NULL)
 			opened_file = FALSE;
+#endif
 	}
 
 #ifdef DEBUG
 	g_print("Exiting a thread\n");
 #endif
-
-
+	metadata_thread = NULL;
 	return NULL;
 }
 
@@ -381,10 +382,6 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 		return g_strdup(handle->lastfm_station_name);
 	if (!g_ascii_strncasecmp(field, "track-name", 10) && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
 		return g_strdup_printf("%s - %s", handle->lastfm_artist, handle->lastfm_title);
-	if (!g_ascii_strncasecmp(field, "content-length", 14))
-		return g_strdup_printf("%d", handle->lastfm_duration);
-
-
 
 	return NULL;
 }

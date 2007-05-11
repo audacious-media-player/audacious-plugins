@@ -1,3 +1,11 @@
+2007-05-11 16:32:54 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2194]
+  - make this work without controlsocket
+  
+  trunk/src/scrobbler/plugin.c |   18 ++++++++++--------
+  1 file changed, 10 insertions(+), 8 deletions(-)
+
+
 2007-05-11 16:18:02 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2192]
   - lets avoid spawning >1 threads for metadata
