@@ -24,7 +24,7 @@
 #include <glib.h>
 #include "lastfm.h"
 
-
+GThread *metadata_thread = NULL;
 LastFM *LastFMGlobalData;
 /*this keeps the login data in a global place since 
  * we cannot login on every fopen call* if anyone 
@@ -142,7 +142,7 @@ static gboolean lastfm_adjust(const gchar * url)
 
 	return ret;
 }
-static void * lastfm_get_metadata(LastFM * handle)  
+static void *lastfm_get_metadata(LastFM * handle)
 {
 
 	gint status, i;
@@ -153,7 +153,7 @@ static void * lastfm_get_metadata(LastFM * handle)
 		return NULL;
 	snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
 
-	gboolean opened_file=TRUE;
+	gboolean opened_file = TRUE;
 	while (opened_file)
 	{
 		handle->lastfm_duration = 0;
@@ -223,21 +223,20 @@ static void * lastfm_get_metadata(LastFM * handle)
 #endif
 
 		sleep(sleep_time);
-		if(handle->proxy_fd==NULL)
-			opened_file=FALSE;
+		if (handle->proxy_fd == NULL)
+			opened_file = FALSE;
 	}
 
 #ifdef DEBUG
-		g_print("Exiting a thread\n");
+	g_print("Exiting a thread\n");
 #endif
 
 
-	return NULL;	
+	return NULL;
 }
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
-	static GThread * th;
 	VFSFile *file;
 	LastFM *handle;
 	file = g_new0(VFSFile, 1);
@@ -258,9 +257,9 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 	handle->lastfm_session_id = g_strdup(LastFMGlobalData->lastfm_session_id);
 	handle->lastfm_station_name = g_strdup(LastFMGlobalData->lastfm_station_name);
 
-	if (lastfm_adjust(path))
+	if (lastfm_adjust(path) && metadata_thread == NULL)
 	{
-		if((th= g_thread_create(lastfm_get_metadata, handle, FALSE, NULL))==NULL)
+		if ((metadata_thread = g_thread_create(lastfm_get_metadata, handle, FALSE, NULL)) == NULL)
 		{
 #ifdef DEBUG
 			g_print("Error creating metadata thread!!!\n");
@@ -273,94 +272,94 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 #endif
 	}
 #ifdef DEBUG
-		else
-			g_print("Cannot tune to given channel\n");
+	else
+		g_print("Cannot tune to given channel\n");
 #endif
 
-		handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
-		file->handle = handle;
+	handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
+	file->handle = handle;
 
-		return file;
-	}
+	return file;
+}
 
-	gint lastfm_vfs_fclose_impl(VFSFile * file)
-	{
-		gint ret = 0;
+gint lastfm_vfs_fclose_impl(VFSFile * file)
+{
+	gint ret = 0;
 
 
-		if (file == NULL)
-			return -1;
-
-		LastFM *handle = file->handle;
-		ret = vfs_fclose(handle->proxy_fd);
-		if(!ret)
-			handle->proxy_fd=NULL;
-
-		return ret;
-	}
-
-	size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
-	{
-
-		LastFM *handle = file->handle;
-		size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
-		return ret;
-	}
-
-	size_t lastfm_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
-	{
+	if (file == NULL)
 		return -1;
-	}
 
-	gint lastfm_vfs_getc_impl(VFSFile * stream)
-	{
-		LastFM *handle = stream->handle;
-		return vfs_getc(handle->proxy_fd);
-	}
+	LastFM *handle = file->handle;
+	ret = vfs_fclose(handle->proxy_fd);
+	if (!ret)
+		handle->proxy_fd = NULL;
 
-	gint lastfm_vfs_ungetc_impl(gint c, VFSFile * stream)
-	{
-		LastFM *handle = stream->handle;
+	return ret;
+}
 
-		return vfs_ungetc(c, handle->proxy_fd);
-	}
+size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+{
 
-	gint lastfm_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
-	{
-		return -1;
-	}
+	LastFM *handle = file->handle;
+	size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
+	return ret;
+}
 
-	void lastfm_vfs_rewind_impl(VFSFile * file)
-	{
-		return;
-	}
+size_t lastfm_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+{
+	return -1;
+}
 
-	glong lastfm_vfs_ftell_impl(VFSFile * file)
-	{
-		LastFM *handle = file->handle;
+gint lastfm_vfs_getc_impl(VFSFile * stream)
+{
+	LastFM *handle = stream->handle;
+	return vfs_getc(handle->proxy_fd);
+}
 
-		return vfs_ftell(handle->proxy_fd);
-	}
+gint lastfm_vfs_ungetc_impl(gint c, VFSFile * stream)
+{
+	LastFM *handle = stream->handle;
 
-	gboolean lastfm_vfs_feof_impl(VFSFile * file)
-	{
-		LastFM *handle = file->handle;
+	return vfs_ungetc(c, handle->proxy_fd);
+}
 
-		return vfs_feof(handle->proxy_fd);
-	}
+gint lastfm_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
+{
+	return -1;
+}
 
-	gint lastfm_vfs_truncate_impl(VFSFile * file, glong size)
-	{
-		return -1;
-	}
+void lastfm_vfs_rewind_impl(VFSFile * file)
+{
+	return;
+}
 
-	off_t lastfm_vfs_fsize_impl(VFSFile * file)
-	{
-		return -1;
-	}
+glong lastfm_vfs_ftell_impl(VFSFile * file)
+{
+	LastFM *handle = file->handle;
 
-	gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
-	{
+	return vfs_ftell(handle->proxy_fd);
+}
+
+gboolean lastfm_vfs_feof_impl(VFSFile * file)
+{
+	LastFM *handle = file->handle;
+
+	return vfs_feof(handle->proxy_fd);
+}
+
+gint lastfm_vfs_truncate_impl(VFSFile * file, glong size)
+{
+	return -1;
+}
+
+off_t lastfm_vfs_fsize_impl(VFSFile * file)
+{
+	return -1;
+}
+
+gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
+{
 	LastFM *handle = file->handle;
 
 #ifdef DEBUG
@@ -382,7 +381,7 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 		return g_strdup(handle->lastfm_station_name);
 	if (!g_ascii_strncasecmp(field, "track-name", 10) && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
 		return g_strdup_printf("%s - %s", handle->lastfm_artist, handle->lastfm_title);
-	if (!g_ascii_strncasecmp(field, "content-length",14))
+	if (!g_ascii_strncasecmp(field, "content-length", 14))
 		return g_strdup_printf("%d", handle->lastfm_duration);
 
 

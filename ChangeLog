@@ -1,3 +1,12 @@
+2007-05-11 13:08:46 +0000  Cristi Magherusan <majeru@atheme.org>
+  revision [2190]
+  lastfn's metadata seems to wotk, but still it has some glitches
+  enjoy!
+  
+  trunk/src/lastfm/lastfm.c |  179 +++++++++++++++++++++++++---------------------
+  1 file changed, 101 insertions(+), 78 deletions(-)
+
+
 2007-05-11 08:15:39 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2188]
   import major update by Aleksander Djuric (the original author).
