@@ -1,3 +1,11 @@
+2007-05-10 23:41:13 +0000  Cristi Magherusan <majeru@atheme.org>
+  revision [2180]
+  a few cleanups
+  
+  trunk/src/lastfm/lastfm.c |  114 ++++++++++++++++------------------------------
+  1 file changed, 41 insertions(+), 73 deletions(-)
+
+
 2007-05-10 22:38:12 +0000  Cristi Magherusan <majeru@atheme.org>
   revision [2178]
   completed diskwriter and out_lame removal

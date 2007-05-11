@@ -133,11 +133,9 @@ static gboolean lastfm_adjust(const gchar * url)
 				LastFMGlobalData->lastfm_station_name = g_strdup(split[i] + 12);
 #ifdef DEBUG
 				g_print("StationnName:%s\n",LastFMGlobalData->lastfm_station_name);
-                                
 #endif
 			}
 		}
-
 		g_strfreev(split);
 	}
 	g_string_erase(res, 0, -1);
@@ -145,8 +143,7 @@ static gboolean lastfm_adjust(const gchar * url)
 	return ret;
 }
 
-
-static gboolean lastfm_get_metadata(LastFM * handle)
+gpointer lastfm_get_metadata(LastFM * handle)
 {
 
 	gint status, i;
@@ -154,15 +151,20 @@ static gboolean lastfm_get_metadata(LastFM * handle)
 	GString *res = g_string_new(NULL);
 	
 	if (handle->lastfm_session_id == NULL)
-		return FALSE;
-	snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
+		return NULL ;
+        snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
 
+        for(;;)
+        {
+        handle->lastfm_duration =0;
+        handle->lastfm_progress=0;
         status=get_data_from_url(tmp,res);
-
 #ifdef DEBUG
+        g_print("Getting Metadata\n");
+#endif
+#if 0
 	g_print("Received metadata:%s\n",res->str);
 #endif
-
 	if (status == CURLE_OK)
 	{
 		split = g_strsplit(res->str, "\n", 20);
@@ -170,19 +172,39 @@ static gboolean lastfm_get_metadata(LastFM * handle)
 		for (i = 0; split && split[i]; i++)
 		{
 			if (g_str_has_prefix(split[i], "artist="))
-				handle->lastfm_artist = g_strdup(split[i] + 7);
-			if (g_str_has_prefix(split[i], "title="))
-				handle->lastfm_title = g_strdup(split[i] + 6);
+                                {
+                                handle->lastfm_artist = g_strdup(split[i] + 7);
+#ifdef DEBUG
+                             g_print("Artist: %s\n", handle->lastfm_artist);
+#endif
+                                }
+			if (g_str_has_prefix(split[i], "track="))
+				{
+                                handle->lastfm_title = g_strdup(split[i] + 6);
+#ifdef DEBUG
+                                g_print("Title: %s\n", handle->lastfm_title);
+#endif
+                                }
+
 			if (g_str_has_prefix(split[i], "album="))
 				handle->lastfm_album = g_strdup(split[i] + 6);
 			if (g_str_has_prefix(split[i], "albumcover_medium="))
 				handle->lastfm_cover = g_strdup(split[i] + 18);
 			if (g_str_has_prefix(split[i], "trackduration="))
-				handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14),NULL,10);
-			if (g_str_has_prefix(split[i], "station="))
+			{	handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14),NULL,10);
+#ifdef DEBUG
+                        g_print("Duration:%d\n",handle->lastfm_duration );
+#endif
+                        }
+                        if (g_str_has_prefix(split[i], "trackprogress="))
+				handle->lastfm_progress = g_ascii_strtoull(g_strdup(split[i] + 14),NULL,10);
+
+                        if (g_str_has_prefix(split[i], "station="))
 			{
 				handle->lastfm_station_name = g_strdup(split[i] + 8);
-				g_print("Station Name: %s\n", handle->lastfm_station_name);
+#ifdef DEBUG
+                                g_print("Station Name: %s\n", handle->lastfm_station_name);
+#endif
 			}
 		}
 
@@ -190,7 +212,19 @@ static gboolean lastfm_get_metadata(LastFM * handle)
 	}
 	g_string_erase(res, 0, -1);
 
-	return TRUE;
+
+        int sleep_time;
+        if(handle->lastfm_progress==0)  //if i don't know track duration i'm polling for metadata every 10 seconds
+                sleep_time=10;
+        else 
+                sleep_time=handle->lastfm_duration - handle->lastfm_progress+3;
+#ifdef DEBUG
+        g_print("Sleeping for %d seconds\n",sleep_time);
+#endif
+
+sleep(sleep_time);
+}
+	return NULL; //we'll never get here
 }
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
@@ -216,23 +250,14 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 	handle->lastfm_station_name = g_strdup(LastFMGlobalData->lastfm_station_name);
 
 	if (lastfm_adjust(path))
-	{
-		gint ret;
-           	ret = lastfm_get_metadata(handle);
+           	g_thread_create(lastfm_get_metadata,handle, FALSE,NULL);
 
-#ifdef DEBUG
-		g_print("Tuning completed OK, getting metadata\n");
-		if (ret)
-			g_print("Successfully fetched the metadata\n");
-		else
-			g_print("Errors were encountered while fetching the metadata\n");
-#endif
-	}
 #ifdef DEBUG
 	else
 		g_print("Cannot tune to given channel\n");
+                g_print("The metadata thread has just been created\n");
 #endif
-
+	
 	handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
 	file->handle = handle;
 
