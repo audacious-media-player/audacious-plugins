@@ -13,6 +13,7 @@
 #include <audacious/configdb.h>
 #include <audacious/beepctrl.h>
 #include <audacious/strings.h>
+#include <audacious/main.h>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -196,6 +197,7 @@ static submit_t get_song_status(void)
 		playtime_i = 0, time_i = 0,
 		playtime_ofs = 0;
 	static char *file_c = NULL, *file_p = NULL; 
+	Playlist *playlist = playlist_get_active();
 
 	static enum playstatus {
 		ps_stop, ps_play, ps_pause
@@ -216,35 +218,35 @@ static submit_t get_song_status(void)
 	dosubmit.dosubmit = dosubmit.pos_c = dosubmit.len = dosubmit.gerpok = 0;
 
 	/* current music number */
-	pos_c = xmms_remote_get_playlist_pos(XS_CS);
+	pos_c = playlist_get_position(playlist);
 	/* current file name */
-	file_c = xmms_remote_get_playlist_file(XS_CS, pos_c);
+	file_c = playlist_get_filename(playlist, pos_c);
 
 	if ((file_c != NULL) && (ishttp(file_c)))
 		return dosubmit;
 
 	/* total number */
-	playlistlen_c = xmms_remote_get_playlist_length(XS_CS);
+	playlistlen_c = playlist_get_length(playlist);
 	/* current playtime */
-	playtime_c = xmms_remote_get_output_time(XS_CS); 
+	playtime_c = playback_get_time(); 
 	/* total length */
-	len = xmms_remote_get_playlist_time(XS_CS, pos_c); 
+	len = playlist_get_songtime(playlist, pos_c); 
 
 	/* current time (ms) */
 	gettimeofday(&timetmp, NULL);
 	time_c = timetmp.tv_sec * 1000 + timetmp.tv_usec / 1000; 
 
 	/* current status */
-	if( xmms_remote_is_paused(XS_CS) ) {
+	if( playback_get_paused(XS_CS) ) {
 		ps_c = ps_pause;
-	}else if( xmms_remote_is_playing(XS_CS) ) {
+	}else if( playback_get_playing(XS_CS) ) {
 		ps_c = ps_play;
 	}else{
 		ps_c = ps_stop;
 	}
 
 	/* repeat setting */
-	repeat = xmms_remote_is_repeat(XS_CS);
+	repeat = cfg.repeat;
 
 	if( ps_p == ps_stop && ps_c == ps_stop )        playstate = stopping;
 	else if( ps_p == ps_stop && ps_c == ps_play )   playstate = start;
