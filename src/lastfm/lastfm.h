@@ -15,7 +15,8 @@ typedef struct
 	gchar *lastfm_title;
 	gchar *lastfm_album;
 	gchar *lastfm_cover;
-	unsigned lastfm_duration;
+	unsigned int lastfm_duration;
+	unsigned int lastfm_progress;
 	int login_count;
 } LastFM;
 
@@ -45,7 +46,7 @@ gint lastfm_vfs_fclose_impl(VFSFile * file);
 
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field);
 
-static gboolean lastfm_get_metadata(LastFM * handle);
+static gpointer lastfm_get_metadata(LastFM * handle);
 
 static gboolean lastfm_login(void);
 
