@@ -356,7 +356,7 @@ gint lastfm_vfs_truncate_impl(VFSFile * file, glong size)
 
 off_t lastfm_vfs_fsize_impl(VFSFile * file)
 {
-	return -1;
+	return 0;
 }
 
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
