@@ -98,6 +98,5 @@ void
 aosd_about ( void )
 {
   aosd_ui_about();
-  aosd_osd_check_composite_mgr();
   return;
 }

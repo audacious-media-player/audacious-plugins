@@ -1,3 +1,11 @@
+2007-05-11 16:48:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2200]
+  - make metadata display in Audacious again.
+  
+  trunk/src/lastfm/lastfm.c |   13 ++++++-------
+  1 file changed, 6 insertions(+), 7 deletions(-)
+
+
 2007-05-11 16:41:34 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2198]
   - returning -1 is invalid here for fsize(). make metadata display in Audacious.
