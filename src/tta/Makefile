@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libtta.so
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-SOURCES = aud-tta.c id3.c ttadec.c
+SOURCES = libtta.c ttadec.c
 
 OBJECTS = ${SOURCES:.c=.o}
 

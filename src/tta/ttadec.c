@@ -1,11 +1,10 @@
 /*
  * ttadec.c
  *
- * Description:	 TTAv1 decoder library for HW players.
- * Developed by: Alexander Djourik <sasha@iszf.irk.ru>
- *               Pavel Zhilin <pzh@iszf.irk.ru>
+ * Description:	 TTAv1 decoder library
+ * Developed by: Alexander Djourik <ald@true-audio.com>
  *
- * Copyright (c) 1999-2004 Alexander Djourik. All rights reserved.
+ * Copyright (c) 1999-2007 Alexander Djourik. All rights reserved.
  *
  */
 
@@ -34,8 +33,6 @@
 
 #include "ttadec.h"
 #include "ttalib.h"
-#include "crc32.h"
-#include "filters.h"
 
 /******************* static variables and structures *******************/
 
@@ -64,19 +61,31 @@ static __uint32_t bit_cache;
 static unsigned char *bitpos;
 static unsigned int bitrate;
 
-void get_id3v1_tag (tta_info *ttainfo);
-int  get_id3v2_tag (tta_info *ttainfo);
+/************************* crc32 functions *****************************/
+
+#define UPDATE_CRC32(x, crc) crc = \
+	(((crc>>8) & 0x00FFFFFF) ^ crc32_table[(crc^x) & 0xFF])
+
+static __uint32_t
+crc32 (unsigned char *buffer, unsigned int len) {
+	unsigned int	i;
+	unsigned int	crc = 0xFFFFFFFF;
+
+	for (i = 0; i < len; i++) UPDATE_CRC32(buffer[i], crc);
+
+	return (crc ^ 0xFFFFFFFF);
+}
 
 /************************* bit operations ******************************/
 
 static void init_buffer_read() {
-    frame_crc32 = 0xFFFFFFFFUL;
-    bit_count = bit_cache = 0;
-    bitpos = iso_buffers_end;
+	frame_crc32 = 0xFFFFFFFFUL;
+	bit_count = bit_cache = 0;
+	bitpos = iso_buffers_end;
 }
 
 __inline void get_binary(unsigned int *value, unsigned int bits) {
-    while (bit_count < bits) {
+	while (bit_count < bits) {
 		if (bitpos == iso_buffers_end) {
 			int res = fread(isobuffers, 1,
 				ISO_BUFFERS_SIZE, ttainfo->HANDLE);
@@ -91,18 +100,18 @@ __inline void get_binary(unsigned int *value, unsigned int bits) {
 		bit_cache |= *bitpos << bit_count;
 		bit_count += 8;
 		bitpos++;
-    }
+	}
 
-    *value = bit_cache & bit_mask[bits];
-    bit_cache >>= bits;
-    bit_count -= bits;
-    bit_cache &= bit_mask[bit_count];
+	*value = bit_cache & bit_mask[bits];
+	bit_cache >>= bits;
+	bit_count -= bits;
+	bit_cache &= bit_mask[bit_count];
 }
 
 __inline void get_unary(unsigned int *value) {
-    *value = 0;
+	*value = 0;
 
-    while (!(bit_cache ^ bit_mask[bit_count])) {
+	while (!(bit_cache ^ bit_mask[bit_count])) {
 		if (bitpos == iso_buffers_end) {
 			int res = fread(isobuffers, 1,
 				ISO_BUFFERS_SIZE, ttainfo->HANDLE);
@@ -117,24 +126,24 @@ __inline void get_unary(unsigned int *value) {
 		bit_cache = *bitpos++;
 		UPDATE_CRC32(bit_cache, frame_crc32);
 		bit_count = 8;
-    }
+	}
 
-    while (bit_cache & 1) {
+	while (bit_cache & 1) {
 		(*value)++;
 		bit_cache >>= 1;
 		bit_count--;
-    }
+	}
 
-    bit_cache >>= 1;
-    bit_count--;
+	bit_cache >>= 1;
+	bit_count--;
 }
 
 static int done_buffer_read() {
-    unsigned int crc32, rbytes, res;
-    frame_crc32 ^= 0xFFFFFFFFUL;
+	unsigned int crc32, rbytes, res;
+	frame_crc32 ^= 0xFFFFFFFFUL;
 
-    rbytes = iso_buffers_end - bitpos;
-    if (rbytes < sizeof(int)) {
+	rbytes = iso_buffers_end - bitpos;
+	if (rbytes < sizeof(int)) {
 		memcpy(isobuffers, bitpos, 4);
 		res = fread(isobuffers + rbytes, 1,
 			ISO_BUFFERS_SIZE - rbytes, ttainfo->HANDLE);
@@ -143,29 +152,106 @@ static int done_buffer_read() {
 			return 0;
 		}
 		bitpos = isobuffers;
-    }
+	}
 
-    memcpy(&crc32, bitpos, 4);
-    crc32 = ENDSWAP_INT32(crc32);
-    bitpos += sizeof(int);
-    res = (crc32 != frame_crc32);
+	memcpy(&crc32, bitpos, 4);
+	crc32 = ENDSWAP_INT32(crc32);
+	bitpos += sizeof(int);
+	res = (crc32 != frame_crc32);
 
-    bit_cache = bit_count = 0;
-    frame_crc32 = 0xFFFFFFFFUL;
+	bit_cache = bit_count = 0;
+	frame_crc32 = 0xFFFFFFFFUL;
 
-    // calculate dynamic bitrate
-    if (data_pos < fframes) {
+	// calculate dynamic bitrate
+	if (data_pos < fframes) {
 		rbytes = seek_table[data_pos] -
 			seek_table[data_pos - 1];
 		bitrate = (rbytes << 3) / 1070;
-    }
+	}
 
-    return res;
+	return res;
+}
+
+/************************** filter functions ****************************/
+
+///////// Filter Settings //////////
+static int flt_set[3] = {10, 9, 10};
+
+__inline void
+memshl (register int *pA, register int *pB) {
+	*pA++ = *pB++;
+	*pA++ = *pB++;
+	*pA++ = *pB++;
+	*pA++ = *pB++;
+	*pA++ = *pB++;
+	*pA++ = *pB++;
+	*pA++ = *pB++;
+	*pA   = *pB;
+}
+
+__inline void
+hybrid_filter (fltst *fs, int *in) {
+	register int *pA = fs->dl;
+	register int *pB = fs->qm;
+	register int *pM = fs->dx;
+	register int sum = fs->round;
+
+	if (!fs->error) {
+		sum += *pA++ * *pB, pB++;
+		sum += *pA++ * *pB, pB++;
+		sum += *pA++ * *pB, pB++;
+		sum += *pA++ * *pB, pB++;
+		sum += *pA++ * *pB, pB++;
+		sum += *pA++ * *pB, pB++;
+		sum += *pA++ * *pB, pB++;
+		sum += *pA++ * *pB, pB++; pM += 8;
+	} else if (fs->error < 0) {
+		sum += *pA++ * (*pB -= *pM++), pB++;
+		sum += *pA++ * (*pB -= *pM++), pB++;
+		sum += *pA++ * (*pB -= *pM++), pB++;
+		sum += *pA++ * (*pB -= *pM++), pB++;
+		sum += *pA++ * (*pB -= *pM++), pB++;
+		sum += *pA++ * (*pB -= *pM++), pB++;
+		sum += *pA++ * (*pB -= *pM++), pB++;
+		sum += *pA++ * (*pB -= *pM++), pB++;
+	} else {
+		sum += *pA++ * (*pB += *pM++), pB++;
+		sum += *pA++ * (*pB += *pM++), pB++;
+		sum += *pA++ * (*pB += *pM++), pB++;
+		sum += *pA++ * (*pB += *pM++), pB++;
+		sum += *pA++ * (*pB += *pM++), pB++;
+		sum += *pA++ * (*pB += *pM++), pB++;
+		sum += *pA++ * (*pB += *pM++), pB++;
+		sum += *pA++ * (*pB += *pM++), pB++;
+	}
+
+	*(pM-0) = ((*(pA-1) >> 30) | 1) << 2;
+	*(pM-1) = ((*(pA-2) >> 30) | 1) << 1;
+	*(pM-2) = ((*(pA-3) >> 30) | 1) << 1;
+	*(pM-3) = ((*(pA-4) >> 30) | 1);
+
+	fs->error = *in;
+	*in += (sum >> fs->shift);
+	*pA = *in;
+
+	*(pA-1) = *(pA-0) - *(pA-1);
+	*(pA-2) = *(pA-1) - *(pA-2);
+	*(pA-3) = *(pA-2) - *(pA-3);
+
+	memshl (fs->dl, fs->dl + 1);
+	memshl (fs->dx, fs->dx + 1);
+}
+
+void
+filter_init (fltst *fs, int shift) {
+	memset (fs, 0, sizeof(fltst));
+	fs->shift = shift;
+	fs->round = 1 << (shift - 1);
 }
 
 /************************* decoder functions ****************************/
 
-static int skip_id3v2_header (FILE *infile) {
+int id3v2_header_length (tta_info *ttainfo) {
 	struct {
 		unsigned char	id[3];
 		unsigned short	version;
@@ -174,28 +260,20 @@ static int skip_id3v2_header (FILE *infile) {
 	} __ATTRIBUTE_PACKED__ id3v2;
 	unsigned int len = 0;
 
-	// read ID3V2 header
-	if (fread (&id3v2, sizeof(id3v2), 1, infile) == 0) {
-		fclose (infile);
-		ttainfo->STATE = READ_ERROR;
-		return -1;
+	if (!fread(&id3v2, sizeof(id3v2), 1, ttainfo->HANDLE) || 
+	    memcmp(id3v2.id, "ID3", 3) ||
+	    id3v2.size[0] & 0x80)
+	{
+		fseek (ttainfo->HANDLE, 0, SEEK_SET);
+		return 0;
 	}
 
-	// skip ID3V2 header
-	if (!memcmp (id3v2.id, "ID3", 3)) {
-		if (id3v2.size[0] & 0x80) {
-			fclose (infile);
-			ttainfo->STATE = FILE_ERROR;
-			return FILE_ERROR;
-		}
-		len = (id3v2.size[0] & 0x7f);
-		len = (len << 7) | (id3v2.size[1] & 0x7f);
-		len = (len << 7) | (id3v2.size[2] & 0x7f);
-		len = (len << 7) | (id3v2.size[3] & 0x7f);
-		len += 10;
-		if (id3v2.flags & (1 << 4)) len += 10;
-		fseek (infile, len, SEEK_SET);
-	} else fseek (infile, 0, SEEK_SET);
+	len = (id3v2.size[0] & 0x7f);
+	len = (len << 7) | (id3v2.size[1] & 0x7f);
+	len = (len << 7) | (id3v2.size[2] & 0x7f);
+	len = (len << 7) | (id3v2.size[3] & 0x7f);
+	len += 10;
+	if (id3v2.flags & (1 << 4)) len += 10;
 
 	return len;
 }
@@ -208,22 +286,15 @@ int open_tta_file (const char *filename, tta_info *info, unsigned int data_offse
 	// clear the memory
 	memset (info, 0, sizeof(tta_info));
 
-//	printf("0: open_tta_file\n");
 	info->HANDLE = infile = fopen(filename, "rb");
 	if (!infile) return OPEN_ERROR;
 
-//	printf("1: data_offset %ld\n", data_offset);
 	// read id3v2 header
-	if (!data_offset) {
-//		data_offset = skip_id3v2_header(infile);
-//		data_offset = get_id3v2_tag(info);
-		data_offset = skip_v2_header(info);
-//		printf("2: data_offset %ld\n", data_offset);
-//		get_id3v1_tag (info);
-		if (data_offset < 0) return -1;
-	} else fseek (infile, data_offset, SEEK_SET);
+//	if (!data_offset)
+//		data_offset = id3v2_header_length(info);
 
-	get_id3_tags (filename, info);
+	data_offset = get_id3_tags (filename, info);
+	fseek (infile, data_offset, SEEK_SET);
 
 	// read TTA header
 	if (fread (&ttahdr, 1, sizeof (ttahdr), infile) == 0) {
@@ -289,21 +360,21 @@ int open_tta_file (const char *filename, tta_info *info, unsigned int data_offse
 }
 
 static void rice_init(adapt *rice, unsigned int k0, unsigned int k1) {
-    rice->k0 = k0;
-    rice->k1 = k1;
-    rice->sum0 = shift_16[k0];
-    rice->sum1 = shift_16[k1];
+	rice->k0 = k0;
+	rice->k1 = k1;
+	rice->sum0 = shift_16[k0];
+	rice->sum1 = shift_16[k1];
 }
 
 static void decoder_init(decoder *tta, int nch, int byte_size) {
-    int shift = flt_set[byte_size - 1];
-    int i;
+	int shift = flt_set[byte_size - 1];
+	int i;
 
-    for (i = 0; i < nch; i++) {
+	for (i = 0; i < nch; i++) {
 		filter_init(&tta[i].fst, shift);
 		rice_init(&tta[i].rice, 10, 10);
 		tta[i].last = 0;
-    }
+	}
 }
 
 static void seek_table_init (unsigned int *seek_table,
@@ -503,4 +574,3 @@ int get_samples (byte *buffer) {
 }
 
 /* end */
-

@@ -2,10 +2,9 @@
  * ttalib.h
  *
  * Description:	 TTAv1 player library prototypes
- * Developed by: Alexander Djourik <sasha@iszf.irk.ru>
- *               Pavel Zhilin <pzh@iszf.irk.ru>
+ * Developed by: Alexander Djourik <ald@true-audio.com>
  *
- * Copyright (c) 1999-2004 Alexander Djourik. All rights reserved.
+ * Copyright (c) 1999-2007 Alexander Djourik. All rights reserved.
  *
  */
 
@@ -31,9 +30,18 @@
 #ifndef TTALIB_H_
 #define TTALIB_H_
 
-#include "ttaid3tag.h"
+#include <audacious/vfs.h>
 
-//#define _BIG_ENDIAN
+// audacious support
+#define FILE	VFSFile
+#define fopen	vfs_fopen
+#define fclose	vfs_fclose
+#define fwrite	vfs_fwrite
+#define fread	vfs_fread
+#define frewind vfs_frewind
+#define ftell	vfs_ftell
+#define fseek	vfs_fseek
+
 #define MAX_BPS         24	// Max supported Bit resolution
 #define MAX_NCH         8	// Max supported number of channels
 
@@ -54,20 +62,36 @@
 #define ISO_BUFFERS_SIZE	(ISO_BUFFER_LENGTH*ISO_NBUFFERS)
 #define PCM_BUFFER_LENGTH	(4608)
 
+#define MAX_LINE 4096
+#define MAX_YEAR 5
+#define MAX_TRACK 3
+#define MAX_GENRE 256
+
 typedef struct {
-	FILE            *HANDLE;	// file handle
-	unsigned short  NCH;		// number of channels
-	unsigned short  BPS;		// bits per sample
-	unsigned short  BSIZE;		// byte size
-	unsigned short  FORMAT;		// audio format
-	unsigned int   SAMPLERATE;	// samplerate (sps)
-	unsigned int   DATALENGTH;	// data length in samples
-	unsigned int   FRAMELEN;	// frame length
-	unsigned int   LENGTH;		// playback time (sec)
-	unsigned int   STATE;		// return code
-	unsigned int   DATAPOS;	// size of ID3v2 header
-	id3v1_data	id3v1;
-	id3v2_data	id3v2;
+	unsigned char  name[MAX_LINE];
+	unsigned char  title[MAX_LINE];
+	unsigned char  artist[MAX_LINE];
+	unsigned char  album[MAX_LINE];
+	unsigned char  comment[MAX_LINE];
+	unsigned char  year[MAX_YEAR];
+	unsigned char  track[MAX_TRACK];
+	unsigned char  genre[MAX_GENRE];
+	unsigned char  id3has;
+} id3_info;
+
+typedef struct {
+	FILE		*HANDLE;	// file handle
+	unsigned short	NCH;		// number of channels
+	unsigned short	BPS;		// bits per sample
+	unsigned short	BSIZE;		// byte size
+	unsigned short	FORMAT;		// audio format
+	unsigned int	SAMPLERATE;	// samplerate (sps)
+	unsigned int	DATALENGTH;	// data length in samples
+	unsigned int	FRAMELEN;	// frame length
+	unsigned int	LENGTH;		// playback time (sec)
+	unsigned int	STATE;		// return code
+	unsigned int	DATAPOS;	// size of ID3v2 header
+	id3_info	ID3;
 } tta_info;
 
 /*********************** Library functions *************************/
@@ -89,7 +113,7 @@ static void tta_error (int error) {
 }
 #endif /* LIBTEST */
 
-int    open_tta_file (		// FUNCTION: opens TTA file
+int open_tta_file (		// FUNCTION: opens TTA file
         const char *filename,	// file to open
         tta_info *info,		// file info structure
         unsigned int offset);	// ID3v2 header size
@@ -101,10 +125,10 @@ int    open_tta_file (		// FUNCTION: opens TTA file
  *
  */
 
-void    close_tta_file (	// FUNCTION: closes currently playing file
+void close_tta_file (		// FUNCTION: closes currently playing file
         tta_info *info);	// file info structure
 
-int    set_position (		// FUNCTION: sets playback position
+int set_position (		// FUNCTION: sets playback position
         unsigned int pos);	// seek position = seek_time_ms / SEEK_STEP
 /*
  * RETURN VALUE
@@ -114,7 +138,7 @@ int    set_position (		// FUNCTION: sets playback position
  *
  */
 
-int    player_init (		// FUNCTION: initializes TTA player
+int player_init (		// FUNCTION: initializes TTA player
         tta_info *info);	// file info structure
 /*
  * RETURN VALUE
@@ -124,9 +148,9 @@ int    player_init (		// FUNCTION: initializes TTA player
  *
  */
 
-void    player_stop (void);	// FUNCTION: destroys memory pools
+void player_stop (void);	// FUNCTION: destroys memory pools
 
-int    get_samples (		// FUNCTION: decode PCM_BUFFER_LENGTH samples
+int get_samples (		// FUNCTION: decode PCM_BUFFER_LENGTH samples
         unsigned char *buffer);	// into the current PCM buffer position
 /*
  * RETURN VALUE
@@ -136,7 +160,7 @@ int    get_samples (		// FUNCTION: decode PCM_BUFFER_LENGTH samples
  *
  */
 
-int	get_bitrate (void);	// RETURN VALUE: TTA dynamic bitrate
+int get_bitrate (void);		// RETURN VALUE: TTA dynamic bitrate
 
 #endif /* TTALIB_H_ */
 
