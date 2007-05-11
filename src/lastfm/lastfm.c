@@ -173,6 +173,7 @@ static void *lastfm_get_metadata(LastFM * handle)
 			{
 				if (g_str_has_prefix(split[i], "artist="))
 				{
+					if (handle->lastfm_artist) g_free(handle->lastfm_artist);
 					handle->lastfm_artist = g_strdup(split[i] + 7);
 #ifdef DEBUG
 					g_print("Artist: %s\n", handle->lastfm_artist);
@@ -180,6 +181,7 @@ static void *lastfm_get_metadata(LastFM * handle)
 				}
 				if (g_str_has_prefix(split[i], "track="))
 				{
+					if (handle->lastfm_title) g_free(handle->lastfm_title);
 					handle->lastfm_title = g_strdup(split[i] + 6);
 #ifdef DEBUG
 					g_print("Title: %s\n", handle->lastfm_title);
@@ -223,10 +225,8 @@ static void *lastfm_get_metadata(LastFM * handle)
 #endif
 
 		sleep(sleep_time);
-#if 0
 		if (handle->proxy_fd == NULL)
 			opened_file = FALSE;
-#endif
 	}
 
 #ifdef DEBUG
@@ -238,6 +238,7 @@ static void *lastfm_get_metadata(LastFM * handle)
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
+	static GThread *th;
 	VFSFile *file;
 	LastFM *handle;
 	file = g_new0(VFSFile, 1);
@@ -258,9 +259,9 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 	handle->lastfm_session_id = g_strdup(LastFMGlobalData->lastfm_session_id);
 	handle->lastfm_station_name = g_strdup(LastFMGlobalData->lastfm_station_name);
 
-	if (lastfm_adjust(path) && metadata_thread == NULL)
+	if (lastfm_adjust(path))
 	{
-		if ((metadata_thread = g_thread_create(lastfm_get_metadata, handle, FALSE, NULL)) == NULL)
+		if ((th = g_thread_create(lastfm_get_metadata, handle, FALSE, NULL)) == NULL)
 		{
 #ifdef DEBUG
 			g_print("Error creating metadata thread!!!\n");
@@ -287,7 +288,6 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
 {
 	gint ret = 0;
 
-
 	if (file == NULL)
 		return -1;
 
@@ -301,7 +301,6 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
 
 size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
-
 	LastFM *handle = file->handle;
 	size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
 	return ret;
@@ -364,7 +363,7 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 	LastFM *handle = file->handle;
 
 #ifdef DEBUG
-	g_print("Interesting metadata:\n");
+	g_print("Interesting metadata (want: %s):\n", field);
 
 	if (handle->lastfm_station_name != NULL)
 		g_print("%s\n", handle->lastfm_station_name);
