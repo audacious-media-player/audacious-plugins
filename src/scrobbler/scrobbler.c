@@ -577,12 +577,19 @@ static int sc_generateentry(GString *submission)
 	item_t *item;
 
 	i = 0;
-#ifdef ALLOW_MULTIPLE
+
 	q_peekall(1);
-	while ((item = q_peekall(0)) && i < 10) {
-#else
-		item = q_peek();
-#endif
+
+	while ((item = q_peekall(0)) && i < 10)
+	{
+		/*
+		 * don't submit queued tracks which don't yet meet audioscrobbler
+		 * requirements...
+		 */
+		if ((time(NULL) - atoi(item->utctime)) < (atoi(item->len) / 2) &&
+		    (time(NULL) - atoi(item->utctime)) < 240)
+			continue;
+
 		if (!item)
 			return i;
 
