@@ -41,8 +41,8 @@
 #include <glib.h>
 #include <audacious/i18n.h>
 
-#include "audacious/plugin.h"
-#include "audacious/beepctrl.h"
+#include <audacious/plugin.h>
+#include <audacious/auddrct.h>
 
 #include <lirc/lirc_client.h>
 
@@ -124,25 +124,22 @@ void lirc_input_callback(gpointer data,gint source,
 		{
 			if(strcasecmp("PLAY",c)==0)
 			{
-				xmms_remote_play(lirc_plugin.xmms_session);
+				audacious_drct_play();
 			}
 			else if(strcasecmp("STOP",c)==0)
 			{
-				xmms_remote_stop(lirc_plugin.xmms_session);
+				audacious_drct_stop();
 			}
 			else if(strcasecmp("PAUSE",c)==0)
 			{
-				xmms_remote_pause(lirc_plugin.xmms_session);
+				audacious_drct_pause();
 			}
 			else if(strcasecmp("PLAYPAUSE",c) == 0)
 			{
-				if(xmms_remote_is_playing(lirc_plugin.
-							  xmms_session))
-					xmms_remote_pause
-						(lirc_plugin.xmms_session);
+				if(audacious_drct_get_playing())
+					audacious_drct_pause();
 				else
-					xmms_remote_play
-						(lirc_plugin.xmms_session);
+					audacious_drct_play();
 			}
 			else if(strncasecmp("NEXT",c,4)==0)
 			{
@@ -153,8 +150,7 @@ void lirc_input_callback(gpointer data,gint source,
 				if(n<=0) n=1;
 				for(;n>0;n--)
 				{
-					xmms_remote_playlist_next
-						(lirc_plugin.xmms_session);
+					audacious_drct_pl_next();
 				}
 			}
 			else if(strncasecmp("PREV",c,4)==0)
@@ -166,17 +162,16 @@ void lirc_input_callback(gpointer data,gint source,
 				if(n<=0) n=1;
 				for(;n>0;n--)
 				{
-					xmms_remote_playlist_prev
-						(lirc_plugin.xmms_session);
+					audacious_drct_pl_prev();
 				}
 			}
 			else if(strcasecmp("SHUFFLE",c)==0)
 			{
-				xmms_remote_toggle_shuffle(lirc_plugin.xmms_session);
+				audacious_drct_pl_shuffle_toggle();
 			}
 			else if(strcasecmp("REPEAT",c)==0)
 			{
-				xmms_remote_toggle_repeat(lirc_plugin.xmms_session);
+				audacious_drct_pl_repeat_toggle();
 			}
 			else if(strncasecmp("FWD",c,3)==0)
 			{
@@ -185,18 +180,12 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr)*1000;
 				
 				if(n<=0) n=5000;
-				output_time=xmms_remote_get_output_time
-					(lirc_plugin.xmms_session);
-				playlist_pos=xmms_remote_get_playlist_pos
-					(lirc_plugin.xmms_session);
-				playlist_time=xmms_remote_get_playlist_time
-					(lirc_plugin.xmms_session,
-					 playlist_pos);
+				output_time=audacious_drct_get_time();
+				playlist_pos=audacious_drct_pl_get_pos();
+				playlist_time=audacious_drct_pl_get_time(playlist_pos);
 				if(playlist_time-output_time<n)
 					output_time=playlist_time-n;
-				xmms_remote_jump_to_time
-					(lirc_plugin.xmms_session,
-					 output_time+n);
+				audacious_drct_seek(output_time+n);
 			}
 			else if(strncasecmp("BWD",c,3)==0)
 			{
@@ -205,13 +194,10 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr)*1000;
 
 				if(n<=0) n=5000;
-				output_time=xmms_remote_get_output_time
-					(lirc_plugin.xmms_session);
+				output_time=audacious_drct_get_time();
 				if(output_time<n)
 					output_time=n;
-				xmms_remote_jump_to_time
-					(lirc_plugin.xmms_session,
-					 output_time-n);
+				audacious_drct_seek(output_time-n);
 			}
 			else if(strncasecmp("VOL_UP",c,6)==0)
 			{
@@ -220,11 +206,9 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr);
                                 if(n<=0) n=5;
 
-				v = xmms_remote_get_main_volume
-					(lirc_plugin.xmms_session);
+				audacious_drct_get_volume_main(&v);
 				if(v > (100-n)) v=100-n;
-				xmms_remote_set_main_volume
-					(lirc_plugin.xmms_session,v+n);
+				audacious_drct_set_volume_main(v+n);
 			}
 			else if(strncasecmp("VOL_DOWN",c,8)==0)
 			{                                
@@ -233,15 +217,13 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr);
                                 if(n<=0) n=5;
 
-				v = xmms_remote_get_main_volume
-					(lirc_plugin.xmms_session);
+				audacious_drct_get_volume_main(&v);
 				if(v<n) v=n;
-				xmms_remote_set_main_volume
-					(lirc_plugin.xmms_session,v-n);
+				audacious_drct_set_volume_main(v-n);
 			}
 			else if(strcasecmp("QUIT",c)==0)
 			{
-				xmms_remote_quit(lirc_plugin.xmms_session);
+				audacious_drct_quit();
 			}
 			else if(strcasecmp("MUTE",c)==0)
  			{
@@ -250,17 +232,13 @@ void lirc_input_callback(gpointer data,gint source,
  					mute=1;
  					/* store the master volume so
                                            we can restore it on unmute. */
- 					mute_vol = xmms_remote_get_main_volume
-						(lirc_plugin.xmms_session);
- 					xmms_remote_set_main_volume
-						(lirc_plugin.xmms_session, 0);
+					audacious_drct_get_volume_main(&mute_vol);
+ 					audacious_drct_set_volume_main(0);
  				}
  				else
  				{
  					mute=0;
- 					xmms_remote_set_main_volume
-						(lirc_plugin.xmms_session,
-						 mute_vol);
+ 					audacious_drct_set_volume_main(mute_vol);
  				}
 			}
 			else if(strncasecmp("BAL_LEFT",c,8)==0)
@@ -270,12 +248,10 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr);
 				if(n<=0) n=5;
 				
-				balance=xmms_remote_get_balance
-					(lirc_plugin.xmms_session);
+				audacious_drct_get_volume_balance(&balance);
 				balance-=n;
 				if(balance<-100) balance=-100;
-				xmms_remote_set_balance
-					(lirc_plugin.xmms_session,balance);
+				audacious_drct_set_volume_balance(balance);
 			}
 			else if(strncasecmp("BAL_RIGHT",c,9)==0)
 			{
@@ -284,54 +260,43 @@ void lirc_input_callback(gpointer data,gint source,
 				n=atoi(ptr);
 				if(n<=0) n=5;
 
-				balance=xmms_remote_get_balance
-					(lirc_plugin.xmms_session);
+				audacious_drct_get_volume_balance(&balance);
 				balance+=n;
 				if(balance>100) balance=100;
-				xmms_remote_set_balance
-					(lirc_plugin.xmms_session,balance);
+				audacious_drct_set_volume_balance(balance);
 			}
 			else if(strcasecmp("BAL_CENTER",c)==0)
 			{
 				balance=0;
-				xmms_remote_set_balance
-					(lirc_plugin.xmms_session,balance);
+				audacious_drct_set_volume_balance(balance);
 			}
 			else if(strcasecmp("LIST",c)==0)
 			{
-				show_pl=xmms_remote_is_pl_win
-					(lirc_plugin.xmms_session);
+				show_pl=audacious_drct_pl_win_is_visible();
 				show_pl=(show_pl) ? 0:1;
-				xmms_remote_pl_win_toggle
-					(lirc_plugin.xmms_session,show_pl);
+				audacious_drct_pl_win_toggle(show_pl);
  			}
 			else if(strcasecmp("PLAYLIST_CLEAR",c)==0)
 			{
 				gboolean pl_visible;
 
-				pl_visible=xmms_remote_is_pl_win
-					(lirc_plugin.xmms_session);
-				xmms_remote_stop(lirc_plugin.xmms_session);
-				xmms_remote_playlist_clear
-					(lirc_plugin.xmms_session);
+				pl_visible=audacious_drct_pl_win_is_visible();
+				audacious_drct_stop();
+				audacious_drct_pl_clear();
 				/* This is to refresh window content */
-				xmms_remote_pl_win_toggle
-					(lirc_plugin.xmms_session,pl_visible);
+				audacious_drct_pl_win_toggle(pl_visible);
 			}
 			else if(strncasecmp("PLAYLIST_ADD ",c,13)==0)
 			{
 				gboolean pl_visible;
 				GList list;
 
-				pl_visible=xmms_remote_is_pl_win
-					(lirc_plugin.xmms_session);
+				pl_visible=audacious_drct_pl_win_is_visible();
 				list.prev=list.next=NULL;
 				list.data=c+13;
-				xmms_remote_playlist_add
-					(lirc_plugin.xmms_session,&list);
+				audacious_drct_pl_add(&list);
 				/* This is to refresh window content */
-				xmms_remote_pl_win_toggle
-					(lirc_plugin.xmms_session,pl_visible);
+				audacious_drct_pl_win_toggle(pl_visible);
                         }
 			else
 			{

@@ -1,3 +1,11 @@
+2007-05-12 11:29:22 +0000  Cristi Magherusan <majeru@atheme.org>
+  revision [2230]
+  fixed player crash when trying to get file info
+  
+  trunk/src/madplug/plugin.c |    4 +++-
+  1 file changed, 3 insertions(+), 1 deletion(-)
+
+
 2007-05-12 07:56:32 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2228]
   - fix memory-leak for protocol 1.2 code
