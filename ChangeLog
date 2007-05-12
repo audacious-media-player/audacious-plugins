@@ -1,3 +1,10 @@
+2007-05-12 12:21:09 +0000  Giacomo Lozito <james@develia.org>
+  revision [2232]
+  - lirc: works again with auddrct
+  trunk/src/lirc/lirc.c |  115 +++++++++++++++++---------------------------------
+  1 file changed, 40 insertions(+), 75 deletions(-)
+
+
 2007-05-12 11:29:22 +0000  Cristi Magherusan <majeru@atheme.org>
   revision [2230]
   fixed player crash when trying to get file info

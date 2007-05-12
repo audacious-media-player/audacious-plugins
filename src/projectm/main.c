@@ -40,7 +40,7 @@ www.gamedev.net/reference/programming/features/beatdetection/
 #include <SDL/SDL_thread.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <audacious/beepctrl.h>
+#include <audacious/auddrct.h>
 #include <math.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -140,11 +140,10 @@ int get_xmms_title(void) {
 	}
 #endif
 
-	pos = xmms_remote_get_playlist_pos(projectM_vtable.xmms_session);
+	pos = audacious_drct_pl_get_pos();
 	/* Only check every 1 second for title change, otherwise check pos */
 	if(check_title || pos != last_pos) {
-		title = xmms_remote_get_playlist_title(
-				projectM_vtable.xmms_session, pos);
+		title = audacious_drct_pl_get_title(pos);
 		if(title && (!last_title || strcmp(last_title,title))) {
 			globalPM->title = title;
 			globalPM->drawtitle = 1;

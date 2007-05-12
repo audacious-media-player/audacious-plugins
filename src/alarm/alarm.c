@@ -39,8 +39,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <audacious/plugin.h>
-// #include <audacious/beepctrl.h>
-#include <audacious/audctrl.h>
+#include <audacious/auddrct.h>
 #include <audacious/configdb.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
@@ -647,7 +646,7 @@ void alarm_current_volume(GtkButton *button, gpointer data)
 
    DEBUG("on_current_button_clicked\n");
 
-   vol = audacious_remote_get_main_volume(alarm_plugin.dbus_proxy);
+   audacious_drct_get_volume_main(&vol);
 
    adj = gtk_range_get_adjustment(alarm_conf.volume);
    gtk_adjustment_set_value(adj, (gfloat)vol);
@@ -693,7 +692,7 @@ static inline pthread_t alarm_thread_create(void *(*start_routine)(void *), void
 static void *alarm_fade(void *arg)
 {
    fader *vols = (fader *)arg;
-   guint i;
+   guint i, v;
    gint inc, diff, adiff;
 
    /* lock */
@@ -717,19 +716,19 @@ static void *alarm_fade(void *arg)
    else
      inc = 1;
    
-   audacious_remote_set_main_volume(alarm_plugin.dbus_proxy, (gint)vols->start);
+   audacious_drct_set_volume_main((gint)vols->start);
    //for(i=0;i<(vols->end - vols->start);i++)
    for(i=0;i<adiff;i++)
    {
      //threadsleep((gfloat)fading / (vols->end - vols->start));
      threadsleep((gfloat)fading / (gfloat)adiff);
-     audacious_remote_set_main_volume(alarm_plugin.dbus_proxy, 
-         (gint)(audacious_remote_get_main_volume(alarm_plugin.dbus_proxy) + inc));
+     audacious_drct_get_volume_main(&v);
+     audacious_drct_set_volume_main((gint)(v + inc));
    }
    /* Setting the volume to the end volume sort of defeats the point if having
     * the code in there to allow other apps to control volume too :)
     */
-   //audacious_remote_set_main_volume(alarm_plugin.dbus_proxy, (gint)vols->end);
+   //audacious_drct_set_volume_main((gint)vols->end);
 
    /* and */
    pthread_mutex_unlock(&fader_lock);
@@ -757,7 +756,7 @@ static void *alarm_stop_thread( void *args )
    if (dialog_visible(alarm_dialog))
      gtk_widget_destroy(alarm_dialog);
 
-   currvol = audacious_remote_get_main_volume(alarm_plugin.dbus_proxy),
+   audacious_drct_get_volume_main(&currvol),
 
    /* fade back to zero */
    fade_vols.start = currvol;
@@ -767,13 +766,13 @@ static void *alarm_stop_thread( void *args )
    f_tid = alarm_thread_create(alarm_fade, &fade_vols, 0);
 
    pthread_join(f_tid, NULL);
-   audacious_remote_stop(alarm_plugin.dbus_proxy);
+   audacious_drct_stop();
 
    /* might as well set the volume to something higher than zero so we
     * dont confuse the poor people who just woke up and cant work out why
     * theres no music playing when they press the little play button :)
     */
-   audacious_remote_set_main_volume(alarm_plugin.dbus_proxy, currvol);
+   audacious_drct_set_volume_main(currvol);
 
    DEBUG("alarm_stop done\n");
    return(NULL);
@@ -860,29 +859,13 @@ static void *alarm_start_thread(void *args)
      if(strcmp(playlist, ""))
      {
        DEBUG("playlist is not blank, aparently\n");
-       /* Is this a url? */
-       /* Thanks Thomer */
-       if(!strncmp(playlist, "http://", 7) || !strncmp(playlist, "https://", 8))
-       {
-         /* Yes */
-         DEBUG("This looks like a URL to me...\n");
-         /* If I just add the url and it turns out to be a playlist then xmms
-          * will sort that out.. It should also work for radio streams, I guess
-          */
-         audacious_remote_playlist_clear(alarm_plugin.dbus_proxy);
-         audacious_remote_playlist_add_url_string(alarm_plugin.dbus_proxy, playlist);
-       }
-       else
-       {
-         /* No, its probably a local file */
-         /* Does that mean we want to go through it and add files to the list
-          * properly, or just use this semi-hack to let xmms do the playlist
-          * parsing?
-          */
-         audacious_remote_playlist_clear(alarm_plugin.dbus_proxy);
-         audacious_remote_playlist(alarm_plugin.dbus_proxy, 
-             &playlist, 1, TRUE);
-       }
+       GList list;
+
+       list.prev = list.next = NULL;
+       list.data = playlist;
+
+       audacious_drct_pl_clear();
+       audacious_drct_pl_add(&list);
      }
 
      if(fading)
@@ -890,11 +873,11 @@ static void *alarm_start_thread(void *args)
        fader fade_vols;
        
        DEBUG("Fading is true\n");
-       audacious_remote_set_main_volume(alarm_plugin.dbus_proxy, quietvol);
+       audacious_drct_set_volume_main(quietvol);
 
        /* start playing */
        play_start = time(NULL);
-       audacious_remote_play(alarm_plugin.dbus_proxy);
+       audacious_drct_play();
 
        /* fade volume */
        fade_vols.start = quietvol;
@@ -908,11 +891,11 @@ static void *alarm_start_thread(void *args)
        /* no fading */
 
        /* set volume */
-       audacious_remote_set_main_volume(alarm_plugin.dbus_proxy, volume);
+       audacious_drct_set_volume_main(volume);
 
        /* start playing */
        play_start = time(NULL);
-       audacious_remote_play(alarm_plugin.dbus_proxy);
+       audacious_drct_play();
      }
 
      if(alarm_conf.reminder_on == TRUE)
