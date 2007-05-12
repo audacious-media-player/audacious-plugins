@@ -288,7 +288,9 @@ static int mp3_head_convert(const guchar * hbuf)
 
 gboolean audmad_is_remote(gchar *url)
 {
-    if (!strncasecmp("http://", url, 7) || !strncasecmp("https://", url, 8))
+    if (!strncasecmp("http://", url, 7) 
+        || !strncasecmp("https://", url, 8)
+        || !strncasecmp("lastfm://", url, 9)) 
         return TRUE;
     else
         return FALSE;

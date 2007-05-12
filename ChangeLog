@@ -1,3 +1,13 @@
+2007-05-12 07:56:32 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2228]
+  - fix memory-leak for protocol 1.2 code
+  - disable accidental enabling of debugging code
+  
+  trunk/src/scrobbler/scrobbler.c |    4 ++--
+  trunk/src/scrobbler/settings.h  |    6 +++---
+  2 files changed, 5 insertions(+), 5 deletions(-)
+
+
 2007-05-12 07:37:48 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2226]
   - protocol 1.2: use interval 1
