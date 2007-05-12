@@ -1,3 +1,12 @@
+2007-05-12 07:37:48 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2226]
+  - protocol 1.2: use interval 1
+  
+  trunk/src/scrobbler/scrobbler.c |    2 +-
+  trunk/src/scrobbler/settings.h  |    6 +++---
+  2 files changed, 4 insertions(+), 4 deletions(-)
+
+
 2007-05-12 07:30:49 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2224]
   - enforce audioscrobbler rules on queued tracks

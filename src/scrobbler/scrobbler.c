@@ -407,7 +407,6 @@ static int sc_handshake(void)
 			SCROBBLER_HS_URL, SCROBBLER_VERSION,
 			SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, time(NULL),
 			auth_tmp);
-	printf("--> %s\n", buf);
 	g_free(auth_tmp);
 
 	curl = curl_easy_init();
@@ -646,8 +645,9 @@ static int sc_submit_np(TitleInput *tuple)
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
 
 	status = curl_easy_perform(curl);
-
 	curl_easy_cleanup(curl);
+
+	g_free(entry);
 
 	if (status) {
 		pdebug(sc_curl_errbuf, DEBUG);
