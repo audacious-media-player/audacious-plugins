@@ -284,7 +284,7 @@ static gint amidiplug_get_time( InputPlayback *playback )
     {
       pthread_mutex_unlock( &amidiplug_playing_mutex );
       DEBUGMSG( "GETTIME on halted song (an error occurred?), returning -1 and stopping the player\n" );
-      xmms_remote_stop(0);
+      audacious_drct_stop();
       return -1;
     }
   }
@@ -311,7 +311,7 @@ static gint amidiplug_get_time( InputPlayback *playback )
     {
       pthread_mutex_unlock( &amidiplug_playing_mutex );
       DEBUGMSG( "GETTIME on halted song (an error occurred?), returning -1 and stopping the player\n" , time );
-      xmms_remote_stop(0);
+      audacious_drct_stop();
       return -1;
     }
   }

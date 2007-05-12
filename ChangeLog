@@ -1,3 +1,10 @@
+2007-05-11 22:45:20 +0000  Giacomo Lozito <james@develia.org>
+  revision [2202]
+  - aosd: remove aosd_osd_check_composite_mgr from where it was not supposed to be
+  trunk/src/aosd/aosd.c |    1 -
+  1 file changed, 1 deletion(-)
+
+
 2007-05-11 16:48:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2200]
   - make metadata display in Audacious again.

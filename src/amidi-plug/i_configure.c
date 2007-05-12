@@ -28,7 +28,7 @@
 #include "i_configure-fluidsynth.h"
 #include "i_configure-dummy.h"
 #include "i_utils.h"
-#include <audacious/beepctrl.h>
+#include <audacious/auddrct.h>
 #include <audacious/util.h>
 
 
@@ -227,7 +227,7 @@ void i_configure_ev_bapply( GtkWidget * button_apply , gpointer configwin )
 
 void i_configure_ev_bokcheck( GtkWidget * button_ok , gpointer configwin )
 {
-  if ( xmms_remote_is_playing(0) || xmms_remote_is_paused(0) )
+  if ( audacious_drct_get_playing() || audacious_drct_get_paused() )
   {
     /* we can't change settings while a song is being played */
     static GtkWidget * configwin_warnmsg = NULL;
