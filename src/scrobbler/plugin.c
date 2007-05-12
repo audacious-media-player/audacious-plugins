@@ -11,7 +11,7 @@
 #include <audacious/ui_preferences.h>
 #include <audacious/playlist.h>
 #include <audacious/configdb.h>
-#include <audacious/beepctrl.h>
+#include <audacious/auddrct.h>
 #include <audacious/strings.h>
 #include <audacious/main.h>
 
@@ -30,7 +30,6 @@
 #include "fmt.h"
 #include "configure.h"
 
-#define XS_CS xmms_scrobbler.xmms_session
 #define XS_SLEEP 1
 #define HS_SLEEP 10
 
@@ -217,6 +216,10 @@ static submit_t get_song_status(void)
 	/* clear dosubmit */
 	dosubmit.dosubmit = dosubmit.pos_c = dosubmit.len = dosubmit.gerpok = 0;
 
+	/* make sure playlist != NULL */
+	if (!playlist)
+		return dosubmit;
+
 	/* current music number */
 	pos_c = playlist_get_position(playlist);
 	/* current file name */
@@ -228,7 +231,7 @@ static submit_t get_song_status(void)
 	/* total number */
 	playlistlen_c = playlist_get_length(playlist);
 	/* current playtime */
-	playtime_c = playback_get_time(); 
+	playtime_c = audacious_drct_get_time(); 
 	/* total length */
 	len = playlist_get_songtime(playlist, pos_c); 
 
@@ -237,9 +240,9 @@ static submit_t get_song_status(void)
 	time_c = timetmp.tv_sec * 1000 + timetmp.tv_usec / 1000; 
 
 	/* current status */
-	if( playback_get_paused(XS_CS) ) {
+	if( audacious_drct_get_paused() ) {
 		ps_c = ps_pause;
-	}else if( playback_get_playing(XS_CS) ) {
+	}else if( audacious_drct_get_playing() ) {
 		ps_c = ps_play;
 	}else{
 		ps_c = ps_stop;

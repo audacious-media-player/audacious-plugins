@@ -1,3 +1,11 @@
+2007-05-12 03:39:37 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2212]
+  - migrate to audacious_drct API.
+  
+  trunk/src/song_change/song_change.c |   22 +++++++++++-----------
+  1 file changed, 11 insertions(+), 11 deletions(-)
+
+
 2007-05-12 01:35:51 +0000  Giacomo Lozito <james@develia.org>
   revision [2210]
   - evdev-plug: works again with auddrct
