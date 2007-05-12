@@ -25,7 +25,7 @@
 #include "ed_ui.h"
 #include "ed_common.h"
 #include <audacious/i18n.h>
-#include <audacious/beepctrl.h>
+#include <audacious/auddrct.h>
 
 
 GList *ed_device_listening_list = NULL;
@@ -144,84 +144,84 @@ ed_action_call ( gint code , gpointer param )
 void
 ed_action_pb_play ( gpointer param )
 {
-  xmms_remote_play( ed_gp.xmms_session );
+  audacious_drct_play();
 }
 
 void
 ed_action_pb_stop ( gpointer param )
 {
-  xmms_remote_stop( ed_gp.xmms_session );
+  audacious_drct_stop();
 }
 
 void
 ed_action_pb_pause ( gpointer param )
 {
-  if (xmms_remote_is_playing( ed_gp.xmms_session ) || xmms_remote_is_paused( ed_gp.xmms_session ))
-    xmms_remote_pause( ed_gp.xmms_session );
+  if (audacious_drct_get_playing() || audacious_drct_get_paused())
+    audacious_drct_pause();
   else
-    xmms_remote_play( ed_gp.xmms_session );
+    audacious_drct_play();
 }
 
 void
 ed_action_pb_prev ( gpointer param )
 {
-  xmms_remote_playlist_prev( ed_gp.xmms_session );
+  audacious_drct_pl_prev();
 }
 
 void
 ed_action_pb_next ( gpointer param )
 {
-  xmms_remote_playlist_next( ed_gp.xmms_session );
+  audacious_drct_pl_next();
 }
 
 void
 ed_action_pb_eject ( gpointer param )
 {
-  xmms_remote_eject( ed_gp.xmms_session );
+  audacious_drct_eject();
 }
 
 void
 ed_action_pl_repeat ( gpointer param )
 {
-  xmms_remote_toggle_repeat( ed_gp.xmms_session );
+  audacious_drct_pl_repeat_toggle();
 }
 
 void
 ed_action_pl_shuffle ( gpointer param )
 {
-  xmms_remote_toggle_shuffle( ed_gp.xmms_session );
+  audacious_drct_pl_shuffle_toggle();
 }
 
 void
 ed_action_vol_up5 ( gpointer param )
 {
   gint vl, vr;
-  xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr );
-  xmms_remote_set_volume( ed_gp.xmms_session , CLAMP(vl + 5, 0, 100) , CLAMP(vr + 5, 0, 100) );
+  audacious_drct_get_volume( &vl , &vr );
+  audacious_drct_set_volume( CLAMP(vl + 5, 0, 100) , CLAMP(vr + 5, 0, 100) );
 }
 
 void
 ed_action_vol_down5 ( gpointer param )
 {
   gint vl, vr;
-  xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr );
-  xmms_remote_set_volume( ed_gp.xmms_session , CLAMP(vl - 5, 0, 100) , CLAMP(vr - 5, 0, 100) );
+  audacious_drct_get_volume( &vl , &vr );
+  audacious_drct_set_volume( CLAMP(vl - 5, 0, 100) , CLAMP(vr - 5, 0, 100) );
 }
 
 void
 ed_action_vol_up10 ( gpointer param )
 {
   gint vl, vr;
-  xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr );
-  xmms_remote_set_volume( ed_gp.xmms_session , CLAMP(vl + 10, 0, 100) , CLAMP(vr + 10, 0, 100) );
+  audacious_drct_get_volume( &vl , &vr );
+  audacious_drct_set_volume( CLAMP(vl + 10, 0, 100) , CLAMP(vr + 10, 0, 100) );
 }
 
 void
 ed_action_vol_down10 ( gpointer param )
 {
   gint vl, vr;
-  xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr );
-  xmms_remote_set_volume( ed_gp.xmms_session , CLAMP(vl - 10, 0, 100) , CLAMP(vr - 10, 0, 100) );
+  audacious_drct_get_volume( &vl , &vr );
+  audacious_drct_set_volume( CLAMP(vl - 10, 0, 100) , CLAMP(vr - 10, 0, 100) );
 }
 
 void
@@ -232,26 +232,26 @@ ed_action_vol_mute ( gpointer param )
 
   if ( vl == -1 ) /* no previous memory of volume before mute action */
   {
-    xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr ); /* memorize volume before mute */
-    xmms_remote_set_volume( ed_gp.xmms_session , 0 , 0 ); /* mute */
+    audacious_drct_get_volume( &vl , &vr ); /* memorize volume before mute */
+    audacious_drct_set_volume( 0 , 0 ); /* mute */
   }
   else /* memorized volume values exist */
   {
     gint vl_now = 0;
     gint vr_now = 0;
 
-    xmms_remote_get_volume( ed_gp.xmms_session , &vl_now , &vr_now );
+    audacious_drct_get_volume( &vl_now , &vr_now );
     if (( vl_now == 0 ) && ( vr_now == 0 ))
     {
       /* the volume is still muted, restore the old values */
-      xmms_remote_set_volume( ed_gp.xmms_session , vl , vr );
+      audacious_drct_set_volume( vl , vr );
       vl = -1; vr = -1; /* reset these for next use */
     }
     else
     {
       /* the volume has been raised with other commands, act as if there wasn't a previous memory */
-      xmms_remote_get_volume( ed_gp.xmms_session , &vl , &vr ); /* memorize volume before mute */
-      xmms_remote_set_volume( ed_gp.xmms_session , 0 , 0 ); /* mute */
+      audacious_drct_get_volume( &vl , &vr ); /* memorize volume before mute */
+      audacious_drct_set_volume( 0 , 0 ); /* mute */
     }
   }
 }
@@ -259,26 +259,23 @@ ed_action_vol_mute ( gpointer param )
 void
 ed_action_win_main ( gpointer param )
 {
-  xmms_remote_main_win_toggle( ed_gp.xmms_session ,
-    !xmms_remote_is_main_win ( ed_gp.xmms_session ) );
+  audacious_drct_main_win_toggle( !audacious_drct_main_win_is_visible() );
 }
 
 void
 ed_action_win_playlist ( gpointer param )
 {
-  xmms_remote_pl_win_toggle( ed_gp.xmms_session ,
-    !xmms_remote_is_pl_win ( ed_gp.xmms_session ) );
+  audacious_drct_pl_win_toggle( !audacious_drct_pl_win_is_visible () );
 }
 
 void
 ed_action_win_equalizer ( gpointer param )
 {
-  xmms_remote_eq_win_toggle( ed_gp.xmms_session ,
-    !xmms_remote_is_eq_win ( ed_gp.xmms_session ) );
+  audacious_drct_eq_win_toggle( !audacious_drct_eq_win_is_visible () );
 }
 
 void
 ed_action_win_jtf ( gpointer param )
 {
-  xmms_remote_show_jtf_box( ed_gp.xmms_session );
+  audacious_drct_jtf_show();
 }

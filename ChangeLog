@@ -1,3 +1,11 @@
+2007-05-12 01:14:07 +0000  Giacomo Lozito <james@develia.org>
+  revision [2208]
+  - statusicon: works again with auddrct
+  trunk/src/statusicon/si.c        |   46 +++++++++++++++++++--------------------
+  trunk/src/statusicon/si_common.h |    2 -
+  2 files changed, 24 insertions(+), 24 deletions(-)
+
+
 2007-05-12 00:16:13 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2206]
   - fix pulse_audio output sink. reported by Chainsaw.
