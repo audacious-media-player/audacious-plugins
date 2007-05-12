@@ -970,7 +970,7 @@ void sc_init(char *uname, char *pwd)
 	sc_hs_status = sc_hs_timeout = sc_hs_errors = sc_submit_timeout =
 		sc_srv_res_size = sc_giveup = sc_major_error_present =
 		sc_bad_users = sc_sb_errors = 0;
-	sc_submit_interval = 100;
+	sc_submit_interval = 1;
 
 	sc_submit_url = sc_username = sc_password = sc_srv_res =
 		sc_challenge_hash = sc_major_error = NULL;

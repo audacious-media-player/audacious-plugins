@@ -1,3 +1,11 @@
+2007-05-12 07:30:49 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2224]
+  - enforce audioscrobbler rules on queued tracks
+  
+  trunk/src/scrobbler/scrobbler.c |   17 ++++++++++++-----
+  1 file changed, 12 insertions(+), 5 deletions(-)
+
+
 2007-05-12 07:21:55 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2222]
   - NP pings apparently do not affect musical profile, so queue tracks for submission
