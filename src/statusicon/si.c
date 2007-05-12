@@ -23,7 +23,8 @@
 #include "si_audacious.h"
 #include "si_cfg.h"
 #include "si_common.h"
-#include <audacious/beepctrl.h>
+#include <audacious/auddrct.h>
+#include <audacious/playlist.h>
 
 
 static gboolean plugin_active = FALSE;
@@ -89,31 +90,31 @@ si_audacious_toggle_visibility ( void )
 {
   /* use the window visibility status to toggle show/hide
      (if at least one is visible, hide) */
-  if (( xmms_remote_is_main_win( si_gp.xmms_session ) == TRUE ) ||
-      ( xmms_remote_is_eq_win( si_gp.xmms_session ) == TRUE ) ||
-      ( xmms_remote_is_pl_win( si_gp.xmms_session ) == TRUE ))
+  if (( audacious_drct_main_win_is_visible() == TRUE ) ||
+      ( audacious_drct_eq_win_is_visible() == TRUE ) ||
+      ( audacious_drct_pl_win_is_visible() == TRUE ))
   {
     /* remember the visibility status of the player windows */
-    si_cfg.mw_visib_prevstatus = xmms_remote_is_main_win( si_gp.xmms_session );
-    si_cfg.ew_visib_prevstatus = xmms_remote_is_eq_win( si_gp.xmms_session );
-    si_cfg.pw_visib_prevstatus = xmms_remote_is_pl_win( si_gp.xmms_session );
+    si_cfg.mw_visib_prevstatus = audacious_drct_main_win_is_visible();
+    si_cfg.ew_visib_prevstatus = audacious_drct_eq_win_is_visible();
+    si_cfg.pw_visib_prevstatus = audacious_drct_pl_win_is_visible();
     /* now hide all of them */
     if ( si_cfg.mw_visib_prevstatus == TRUE )
-      xmms_remote_main_win_toggle( si_gp.xmms_session , FALSE );
+      audacious_drct_main_win_toggle( FALSE );
     if ( si_cfg.ew_visib_prevstatus == TRUE )
-      xmms_remote_eq_win_toggle( si_gp.xmms_session , FALSE );
+      audacious_drct_eq_win_toggle( FALSE );
     if ( si_cfg.pw_visib_prevstatus == TRUE )
-      xmms_remote_pl_win_toggle( si_gp.xmms_session , FALSE );
+      audacious_drct_pl_win_toggle( FALSE );
   }
   else
   {
     /* show the windows that were visible before */
     if ( si_cfg.mw_visib_prevstatus == TRUE )
-      xmms_remote_main_win_toggle( si_gp.xmms_session , TRUE );
+      audacious_drct_main_win_toggle( TRUE );
     if ( si_cfg.ew_visib_prevstatus == TRUE )
-      xmms_remote_eq_win_toggle( si_gp.xmms_session , TRUE );
+      audacious_drct_eq_win_toggle( TRUE );
     if ( si_cfg.pw_visib_prevstatus == TRUE )
-      xmms_remote_pl_win_toggle( si_gp.xmms_session , TRUE );
+      audacious_drct_pl_win_toggle( TRUE );
   }
 }
 
@@ -121,15 +122,14 @@ void
 si_audacious_volume_change ( gint value )
 {
   gint vl, vr;
-  xmms_remote_get_volume( si_gp.xmms_session , &vl , &vr );
-  xmms_remote_set_volume( si_gp.xmms_session ,
-    CLAMP(vl + value, 0, 100) , CLAMP(vr + value, 0, 100) );
+  audacious_drct_get_volume( &vl , &vr );
+  audacious_drct_set_volume( CLAMP(vl + value, 0, 100) , CLAMP(vr + value, 0, 100) );
 }
 
 void
 si_audacious_quit ( void )
 {
-  xmms_remote_quit( si_gp.xmms_session );
+  audacious_drct_quit();
 }
 
 void
@@ -159,27 +159,27 @@ si_audacious_playback_ctrl ( gpointer ctrl_code_gp )
   switch ( ctrl_code )
   {
     case SI_AUDACIOUS_PLAYBACK_CTRL_PREV:
-      xmms_remote_playlist_prev( si_gp.xmms_session );
+      audacious_drct_pl_prev();
       break;
 
     case SI_AUDACIOUS_PLAYBACK_CTRL_PLAY:
-      xmms_remote_play( si_gp.xmms_session );
+      audacious_drct_play();
       break;
 
     case SI_AUDACIOUS_PLAYBACK_CTRL_PAUSE:
-      xmms_remote_pause( si_gp.xmms_session );
+      audacious_drct_pause();
       break;
 
     case SI_AUDACIOUS_PLAYBACK_CTRL_STOP:
-      xmms_remote_stop( si_gp.xmms_session );
+      audacious_drct_stop();
       break;
 
     case SI_AUDACIOUS_PLAYBACK_CTRL_NEXT:
-      xmms_remote_playlist_next( si_gp.xmms_session );
+      audacious_drct_pl_next();
       break;
 
     case SI_AUDACIOUS_PLAYBACK_CTRL_EJECT:
-      xmms_remote_eject( si_gp.xmms_session );
+      mainwin_eject_pushed();
       break;
   }
 }
