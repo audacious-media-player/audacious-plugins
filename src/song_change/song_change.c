@@ -18,7 +18,7 @@
 #include "audacious/plugin.h"
 #include "audacious/ui_preferences.h"
 #include "audacious/configdb.h"
-#include "audacious/beepctrl.h"
+#include "audacious/auddrct.h"
 #include "audacious/formatter.h"
 #include <audacious/i18n.h>
 #include <audacious/hook.h>
@@ -136,7 +136,7 @@ do_command(char *cmd, const char *current_file, int pos)
 	if (cmd && strlen(cmd) > 0)
 	{
 		formatter = formatter_new();
-		str = xmms_remote_get_playlist_title(sc_gp.xmms_session, pos);
+		str = audacious_drct_pl_get_title(pos);
 		if (str)
 		{
 			temp = escape_shell_chars(str);
@@ -161,7 +161,7 @@ do_command(char *cmd, const char *current_file, int pos)
 			formatter_associate(formatter, 'f', "");
 		sprintf(numbuf, "%02d", pos + 1);
 		formatter_associate(formatter, 't', numbuf);
-		length = xmms_remote_get_playlist_time(sc_gp.xmms_session, pos);
+		length = audacious_drct_pl_get_time(pos);
 		if (length != -1)
 		{
 			sprintf(numbuf, "%d", length);
@@ -169,14 +169,14 @@ do_command(char *cmd, const char *current_file, int pos)
 		}
 		else
 			formatter_associate(formatter, 'l', "0");
-		xmms_remote_get_info(sc_gp.xmms_session, &rate, &freq, &nch);
+		audacious_drct_get_info(&rate, &freq, &nch);
 		sprintf(numbuf, "%d", rate);
 		formatter_associate(formatter, 'r', numbuf);
 		sprintf(numbuf, "%d", freq);
 		formatter_associate(formatter, 'F', numbuf);
 		sprintf(numbuf, "%d", nch);
 		formatter_associate(formatter, 'c', numbuf);
-		playing = xmms_remote_is_playing(sc_gp.xmms_session);
+		playing = audacious_drct_get_playing();
 		sprintf(numbuf, "%d", playing);
 		formatter_associate(formatter, 'p', numbuf);
 		shstring = formatter_format(formatter, cmd);
@@ -446,8 +446,8 @@ songchange_playback_begin(gpointer unused, gpointer unused2)
 	int pos;
 	char *current_file;
 
-	pos = xmms_remote_get_playlist_pos(sc_gp.xmms_session);
-	current_file = xmms_remote_get_playlist_file(sc_gp.xmms_session, pos);
+	pos = audacious_drct_pl_get_pos();
+	current_file = audacious_drct_pl_get_file(pos);
 
 	do_command(cmd_line, current_file, pos);
 
@@ -460,8 +460,8 @@ songchange_playback_end(gpointer unused, gpointer unused2)
 	int pos;
 	char *current_file;
 
-	pos = xmms_remote_get_playlist_pos(sc_gp.xmms_session);
-	current_file = xmms_remote_get_playlist_file(sc_gp.xmms_session, pos);
+	pos = audacious_drct_pl_get_pos();
+	current_file = audacious_drct_pl_get_file(pos);
 
 	do_command(cmd_line_after, current_file, pos);
 
@@ -474,8 +474,8 @@ songchange_playlist_eof(gpointer unused, gpointer unused2)
 	int pos;
 	char *current_file;
 
-	pos = xmms_remote_get_playlist_pos(sc_gp.xmms_session);
-	current_file = xmms_remote_get_playlist_file(sc_gp.xmms_session, pos);
+	pos = audacious_drct_pl_get_pos();
+	current_file = audacious_drct_pl_get_file(pos);
 
 	do_command(cmd_line_end, current_file, pos);
 

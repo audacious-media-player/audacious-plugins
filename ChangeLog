@@ -1,3 +1,11 @@
+2007-05-12 01:35:51 +0000  Giacomo Lozito <james@develia.org>
+  revision [2210]
+  - evdev-plug: works again with auddrct
+  trunk/src/evdev-plug/ed.c        |   61 ++++++++++++++++++---------------------
+  trunk/src/evdev-plug/ed_common.h |    2 -
+  2 files changed, 30 insertions(+), 33 deletions(-)
+
+
 2007-05-12 01:14:07 +0000  Giacomo Lozito <james@develia.org>
   revision [2208]
   - statusicon: works again with auddrct
