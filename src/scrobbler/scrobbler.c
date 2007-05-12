@@ -976,13 +976,16 @@ void sc_init(char *uname, char *pwd)
 void sc_addentry(GMutex *mutex, TitleInput *tuple, int len)
 {
 	g_mutex_lock(mutex);
-	if (sc_submit_np(tuple))
-		q_put(tuple, len);
+
+	sc_submit_np(tuple);
+	q_put(tuple, len);
+
 	/*
 	 * This will help make sure the queue will be saved on a nasty
 	 * segfault...
 	 */
 	dump_queue();
+
 	g_mutex_unlock(mutex);
 }
 

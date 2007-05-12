@@ -1,3 +1,11 @@
+2007-05-12 07:19:43 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2220]
+  - fully update to AudioScrobbler 1.2 protocol
+  
+  trunk/src/scrobbler/scrobbler.c |  185 +++++++++++++++++++++++++---------------
+  1 file changed, 118 insertions(+), 67 deletions(-)
+
+
 2007-05-12 05:52:07 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2218]
   - some more work here
