@@ -1,3 +1,13 @@
+2007-05-12 00:01:10 +0000  Giacomo Lozito <james@develia.org>
+  revision [2204]
+  - amidi-plug works again (uses auddrct.h in place of the deprecated beepctrl.h)
+  trunk/src/amidi-plug/amidi-plug.c  |    4 ++--
+  trunk/src/amidi-plug/amidi-plug.h  |    2 +-
+  trunk/src/amidi-plug/i_common.h    |    2 +-
+  trunk/src/amidi-plug/i_configure.c |    4 ++--
+  4 files changed, 6 insertions(+), 6 deletions(-)
+
+
 2007-05-11 22:45:20 +0000  Giacomo Lozito <james@develia.org>
   revision [2202]
   - aosd: remove aosd_osd_check_composite_mgr from where it was not supposed to be

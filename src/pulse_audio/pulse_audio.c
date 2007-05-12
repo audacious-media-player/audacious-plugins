@@ -29,9 +29,9 @@
 #include <limits.h>
 
 #include <gtk/gtk.h>
-#include "audacious/plugin.h"
-#include "audacious/beepctrl.h"
-#include "audacious/util.h"
+#include <audacious/plugin.h>
+#include <audacious/playlist.h>
+#include <audacious/util.h>
 
 #include <pulse/pulseaudio.h>
 
@@ -73,10 +73,10 @@ static const char* get_song_name(void) {
     static char t[256];
     gint session, pos;
     char *str, *u;
+    Playlist *playlist = playlist_get_active();
 
-    session = ctrlsocket_get_session_id();
-    pos = xmms_remote_get_playlist_pos(session);
-    if (!(str = xmms_remote_get_playlist_title(session, pos)))
+    pos = playlist_get_position(playlist);
+    if (!(str = playlist_get_title(playlist, pos)))
         return "Playback Stream";
 
     snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));
