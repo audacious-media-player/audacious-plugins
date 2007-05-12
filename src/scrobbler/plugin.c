@@ -11,7 +11,7 @@
 #include <audacious/ui_preferences.h>
 #include <audacious/playlist.h>
 #include <audacious/configdb.h>
-#include <audacious/auddrct.h>
+#include <audacious/beepctrl.h>
 #include <audacious/strings.h>
 #include <audacious/main.h>
 
@@ -30,6 +30,7 @@
 #include "fmt.h"
 #include "configure.h"
 
+#define XS_CS xmms_scrobbler.xmms_session
 #define XS_SLEEP 1
 #define HS_SLEEP 10
 
@@ -44,6 +45,7 @@ static void *xs_thread(void *);
 static void *hs_thread(void *);
 static int sc_going, ge_going;
 static GtkWidget *cfgdlg;
+static gboolean submit;
 
 static GMutex *m_scrobbler;
 static GThread *pt_scrobbler;
@@ -63,6 +65,33 @@ static GeneralPlugin xmms_scrobbler =
 	NULL,
 	cleanup
 };
+
+static gboolean ishttp(const char *a)
+{
+	g_return_val_if_fail(a != NULL, FALSE);
+	return str_has_prefix_nocase(a, "http://") || str_has_prefix_nocase(a, "https://");
+}
+
+static void hook_playback_begin(PlaylistEntry *entry)
+{
+	g_return_if_fail(entry != NULL);
+
+	if (entry->length < 30)
+	{
+		pdebug(" *** not submitting due to entry->length < 30", DEBUG);
+		return;
+	}
+
+	if (ishttp(entry->filename))
+	{
+		pdebug(" *** not submitting due to HTTP source", DEBUG);
+		return;
+	}
+
+	/* wake up the scrobbler thread to submit or queue */
+	submit = TRUE;
+	g_cond_signal(xs_cond);
+}
 
 static void init(void)
 {
@@ -143,8 +172,8 @@ static void init(void)
 
 static void cleanup(void)
 {
-    g_free (xmms_scrobbler.description);
-    xmms_scrobbler.description = NULL;
+        g_free (xmms_scrobbler.description);
+        xmms_scrobbler.description = NULL;
 
         prefswin_page_destroy(cfgdlg);
 
@@ -179,253 +208,14 @@ static void cleanup(void)
 	gerpok_sc_cleaner();
 }
 
-static gboolean ishttp(const char *a)
-{
-	g_return_val_if_fail(a != NULL, FALSE);
-	return str_has_prefix_nocase(a, "http://");
-}
-
-/* Following code thanks to nosuke 
- *
- * It should probably be cleaned up
- */
-static submit_t get_song_status(void)
-{
-	static int pos_c, playlistlen_c, playtime_c, time_c,
-		pos_p = 0, playlistlen_p = 0, playtime_p = 0,
-		playtime_i = 0, time_i = 0,
-		playtime_ofs = 0;
-	static char *file_c = NULL, *file_p = NULL; 
-	Playlist *playlist = playlist_get_active();
-
-	static enum playstatus {
-		ps_stop, ps_play, ps_pause
-	} ps_c, ps_p = ps_stop;
-
-	static int submitted = 0, changed, seeked, repeat,
-		filechanged, rewind, len = 0;
-
-	static enum state {
-		start, stop, pause, restart, playing, pausing, stopping
-	} playstate;
-
-	submit_t dosubmit;
-
-	struct timeval timetmp;
-
-	/* clear dosubmit */
-	dosubmit.dosubmit = dosubmit.pos_c = dosubmit.len = dosubmit.gerpok = 0;
-
-	/* make sure playlist != NULL */
-	if (!playlist)
-		return dosubmit;
-
-	/* current music number */
-	pos_c = playlist_get_position(playlist);
-	/* current file name */
-	file_c = playlist_get_filename(playlist, pos_c);
-
-	if ((file_c != NULL) && (ishttp(file_c)))
-		return dosubmit;
-
-	/* total number */
-	playlistlen_c = playlist_get_length(playlist);
-	/* current playtime */
-	playtime_c = audacious_drct_get_time(); 
-	/* total length */
-	len = playlist_get_songtime(playlist, pos_c); 
-
-	/* current time (ms) */
-	gettimeofday(&timetmp, NULL);
-	time_c = timetmp.tv_sec * 1000 + timetmp.tv_usec / 1000; 
-
-	/* current status */
-	if( audacious_drct_get_paused() ) {
-		ps_c = ps_pause;
-	}else if( audacious_drct_get_playing() ) {
-		ps_c = ps_play;
-	}else{
-		ps_c = ps_stop;
-	}
-
-	/* repeat setting */
-	repeat = cfg.repeat;
-
-	if( ps_p == ps_stop && ps_c == ps_stop )        playstate = stopping;
-	else if( ps_p == ps_stop && ps_c == ps_play )   playstate = start;
-	/* else if( ps_p == ps_stop && ps_c == ps_pause ) ; */
-	else if( ps_p == ps_play && ps_c == ps_play )   playstate = playing;
-	else if( ps_p == ps_play && ps_c == ps_stop )   playstate = stop;
-	else if( ps_p == ps_play && ps_c == ps_pause )  playstate = pause;
-	else if( ps_p == ps_pause && ps_c == ps_pause ) playstate = pausing;
-	else if( ps_p == ps_pause && ps_c == ps_play )  playstate = restart;
-	else if( ps_p == ps_pause && ps_c == ps_stop )  playstate = stop;
-	else playstate = stopping;
-
-	/* filename has changed */
-	if( !(file_p == NULL && file_c == NULL) &&
-	    ((file_p == NULL && file_c != NULL) ||
-		 (file_p != NULL && file_c == NULL) ||
-		 (file_p != NULL && file_c != NULL && strcmp(file_c, file_p))) ){
-		filechanged = 1;
-		pdebug("*** filechange ***", SUB_DEBUG);
-	}else{
-		filechanged = 0;
-	}
-	if( file_c == NULL ){ len = 0; }
-
-	/* whole rewind has occurred (maybe) */
-	if( len != 0 && len - (playtime_p - playtime_c) < 3000 ){
-		rewind = 1;
-		pdebug("*** rewind ***", SUB_DEBUG);
-	}else{
-		rewind = 0;
-	}
-
-
-	changed = 0;
-	seeked = 0;
-
-	switch( playstate ){
-	case start:
-	  pdebug("*** START ***", SUB_DEBUG);
-	  dosubmit.gerpok = 1;
-          dosubmit.len = len;
-	  break;
-	case stop:
-	  pdebug("*** STOP ***", SUB_DEBUG);
-	  len = 0;
-	  break;
-	case pause: 
-	  pdebug("*** PAUSE ***", SUB_DEBUG);
-	  playtime_ofs += playtime_c - playtime_i; /* save playtime */
-	  break;
-	case restart: 
-	  pdebug("*** RESTART ***", SUB_DEBUG);
-	  playtime_i  = playtime_c; /* restore playtime */
-	  break;
-	case playing:
-	  if( (playtime_c < playtime_p) || /* back */
-		  ( (playtime_c - playtime_i) - (time_c - time_i) > 3000 )
-	          /* forward */
-		  ) { 
-		seeked = 1;
-	  }
-
-	  if( filechanged || /* filename has changed */
-		  ( !filechanged && /* filename has not changed... */
-			/* (( rewind && (repeat && (!advance ||
-	                   (pos_c == 0 && playlistlen_c == 1 )))) || */
-			/* looping with only one file */
-			(( pos_c == 0 && playlistlen_c == 1 && repeat
-				&& rewind ) || 
-			 /* looping? */
-			 ( pos_p == pos_c && rewind ) ||
-			 
-			 ( pos_p != pos_c && seeked ) ||
-			 /* skip from current music to next music, 
-			    which has the same filename as previous one */
-			 ( pos_p < pos_c && playtime_c < playtime_p ) || 
-			 /* current song has removed from playlist 
-			    but the next (following) song has the same
-	                    filename */
-			 ( playlistlen_p > playlistlen_c
-				&& playtime_c < playtime_p )))){
-		pdebug("*** CHANGE ***",SUB_DEBUG);
-		pdebug(fmt_vastr(" filechanged = %d",filechanged),SUB_DEBUG);
-		pdebug(fmt_vastr(" pos_c = %d",pos_c),SUB_DEBUG);
-		pdebug(fmt_vastr(" pos_p = %d",pos_p),SUB_DEBUG);
-		pdebug(fmt_vastr(" rewind = %d", rewind),SUB_DEBUG);
-		pdebug(fmt_vastr(" seeked = %d", seeked),SUB_DEBUG);
-		pdebug(fmt_vastr(" playtime_c = %d", playtime_c),SUB_DEBUG);
-		pdebug(fmt_vastr(" playtime_p = %d", playtime_p),SUB_DEBUG);
-		pdebug(fmt_vastr(" playlistlen_c = %d", playlistlen_p),
-			SUB_DEBUG);
-		pdebug(fmt_vastr(" playlistlen_p = %d", playlistlen_p),
-			SUB_DEBUG);
-		changed = 1;
-		seeked = 0;
-
-		if (file_p != NULL)
-		{
-			g_free(file_p);
-			file_p = NULL;
-		}
-	  }else if( seeked ) { 
-		seeked = 1;
-		pdebug("*** SEEK ***", SUB_DEBUG);
-	  }
-
-	  break;
-	case pausing: 
-	  if(playtime_c != playtime_p){
-		pdebug("*** SEEK ***", SUB_DEBUG);
-		seeked = 1;
-	  }
-	  break;
-	case stopping:
-	  len = 0;
-	  break;
-	default:
-	  pdebug("*** unknown state tranfer!!! ***", SUB_DEBUG);
-	  break;
-	}
-
-	
-	if( playstate == start || changed || (seeked && !submitted) ){
-	  /* reset counter */
-	  pdebug(" <<< reset counter >>>", SUB_DEBUG);
-
-	  submitted = 0;
-	  playtime_ofs = 0;
-	  playtime_i = playtime_c;
-	  time_i = time_c;
-
-	}else{
-	  /* check playtime for submitting */
-	  if( !submitted ){
-		if( len > 30 * 1000 &&
-			/* len < 30 *60 * 1000 &&  // crazy rule!!! */
-			( 
-			 (playtime_ofs + playtime_c - playtime_i > len / 2) ||
-			 (playtime_ofs + playtime_c - playtime_i > 240 * 1000) 
-			 /* (playtime_c - playtime_i > 10 * 1000)// for debug */
-			 )){
-		  pdebug("*** submitting requirements are satisfied.",
-			SUB_DEBUG);
-		  pdebug(fmt_vastr("    len = %d, playtime = %d",
-			len / 1000, (playtime_c - playtime_i)/1000 ),
-			SUB_DEBUG);
-		  submitted = 1;
-		  dosubmit.dosubmit = 1;
-	          dosubmit.pos_c = pos_c;
-	          dosubmit.len = len;
-		}
-	  }
-	}
-
-	if (playstate != start)
-		dosubmit.gerpok = 0;
-
-	g_free(file_p);
-
-	/* keep current value for next iteration */
-	ps_p = ps_c;
-	file_p = file_c;
-	playtime_p = playtime_c;
-	pos_p = pos_c;
-	playlistlen_p = playlistlen_c;
-
-	return dosubmit;
-}
-
 static void *xs_thread(void *data __attribute__((unused)))
 {
 	int run = 1;
-	submit_t dosubmit;
-	GTimeVal sleeptime;
 
 	while (run) {
+		TitleInput *tuple;
+		GTimeVal sleeptime;
+
 		/* Error catching */
 		if(sc_catch_error())
 		{
@@ -439,15 +229,14 @@ static void *xs_thread(void *data __attribute__((unused)))
 			gerpok_sc_clear_error();
 		}
 
-		/* Check for ability to submit */
-		dosubmit = get_song_status();
-
-		if(dosubmit.gerpok) {
-			TitleInput *tuple;
+		if (submit)
+		{
+			Playlist *playlist;
 
 			pdebug("Submitting song.", DEBUG);
 
-			tuple = playlist_get_tuple(playlist_get_active(), dosubmit.pos_c);
+			playlist = playlist_get_active();
+			tuple = playlist_get_tuple(playlist, playlist_get_position(playlist));
 
 			if (tuple == NULL)
 				continue;
@@ -460,47 +249,25 @@ static void *xs_thread(void *data __attribute__((unused)))
 				pdebug(fmt_vastr(
 					"submitting artist: %s, title: %s",
 					tuple->performer, tuple->track_name), DEBUG);
-				gerpok_sc_addentry(m_scrobbler, tuple,
-					dosubmit.len/1000);
-			}
-			else
-				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);			
-		}
-
-		if(dosubmit.dosubmit) {
-			TitleInput *tuple;
-
-			pdebug("Submitting song.", DEBUG);
-
-			tuple = playlist_get_tuple(playlist_get_active(), dosubmit.pos_c);
-
-			if (tuple == NULL)
-				continue;
-
-			if (ishttp(tuple->file_name))
-				continue;
-
-			if(tuple->performer != NULL && tuple->track_name != NULL)
-			{
-				pdebug(fmt_vastr(
-					"submitting artist: %s, title: %s",
-					tuple->performer, tuple->track_name), DEBUG);
-				sc_addentry(m_scrobbler, tuple,
-					dosubmit.len/1000);
+				sc_addentry(m_scrobbler, tuple, tuple->length / 1000);
+				gerpok_sc_addentry(m_scrobbler, tuple, tuple->length / 1000);
 			}
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
+
+			submit = FALSE;
 		}
+
 		g_get_current_time(&sleeptime);
 		sleeptime.tv_sec += XS_SLEEP;
-
-		g_mutex_lock(m_scrobbler);
-		run = (sc_going != 0 || ge_going != 0);
-		g_mutex_unlock(m_scrobbler);
 
 		g_mutex_lock(xs_mutex);
 		g_cond_timed_wait(xs_cond, xs_mutex, &sleeptime);
 		g_mutex_unlock(xs_mutex);
+
+		g_mutex_lock(m_scrobbler);
+		run = (sc_going != 0 || ge_going != 0);
+		g_mutex_unlock(m_scrobbler);
 	}
 	pdebug("scrobbler thread: exiting", DEBUG);
 	g_thread_exit(NULL);

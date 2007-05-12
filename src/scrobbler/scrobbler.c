@@ -19,7 +19,7 @@
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800
 #define SCROBBLER_SB_WAIT 10
-#define SCROBBLER_VERSION "1.1"
+#define SCROBBLER_VERSION "1.2"
 #define SCROBBLER_IMPLEMENTATION "0.1"		/* This is the implementation, not the player version. */
 #define SCROBBLER_SB_MAXLEN 1024
 #define CACHE_SIZE 1024
@@ -644,10 +644,8 @@ static int sc_submitentry(gchar *entry)
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
 
-	/*
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
-	*/
 
 	status = curl_easy_perform(curl);
 
