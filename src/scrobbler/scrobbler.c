@@ -37,11 +37,13 @@ static int	sc_hs_status,
 		sc_giveup,
 		sc_major_error_present;
 
-static char 	*sc_submit_url,
+static char 	*sc_submit_url,	/* queue */
+		*sc_np_url,	/* np */
+		*sc_session_id,
 		*sc_username = NULL,
 		*sc_password = NULL,
 		*sc_challenge_hash,
-		sc_response_hash[33],
+		sc_response_hash[65535],
 		*sc_srv_res,
 		sc_curl_errbuf[CURL_ERROR_SIZE],
 		*sc_major_error;
@@ -62,7 +64,8 @@ typedef struct {
 		*title,
 		*mb,
 		*album,
-		*utctime,
+		utctime[16],
+		track[16],
 		len[16];
 	int numtries;
 	void *next;
@@ -78,13 +81,12 @@ static void q_item_free(item_t *item)
 		return;
 	curl_free(item->artist);
 	curl_free(item->title);
-	curl_free(item->utctime);
 	curl_free(item->mb);
 	curl_free(item->album);
 	free(item);
 }
 
-static void q_put(TitleInput *tuple, int len)
+static item_t *q_put(TitleInput *tuple, int len)
 {
 	item_t *item;
 
@@ -92,8 +94,9 @@ static void q_put(TitleInput *tuple, int len)
 
 	item->artist = fmt_escape(tuple->performer);
 	item->title = fmt_escape(tuple->track_name);
-	item->utctime = fmt_escape(fmt_timestr(time(NULL), 1));
+	snprintf(item->utctime, sizeof(item->utctime), "%ld", time(NULL));
 	snprintf(item->len, sizeof(item->len), "%d", len);
+	snprintf(item->track, sizeof(item->track), "%d", tuple->track_number);
 
 #ifdef NOTYET
 	if(tuple->mb == NULL)
@@ -118,42 +121,6 @@ static void q_put(TitleInput *tuple, int len)
 	else
 	{
         	q_queue_last->next = item;
-		q_queue_last = item;
-	}
-}
-
-static item_t *q_put2(char *artist, char *title, char *len, char *time,
-		char *album, char *mb)
-{
-	char *temp = NULL;
-	item_t *item;
-
-	item = calloc(1, sizeof(item_t));
-	temp = fmt_unescape(artist);
-	item->artist = fmt_escape(temp);
-	curl_free(temp);
-	temp = fmt_unescape(title);
-	item->title = fmt_escape(temp);
-	curl_free(temp);
-	memcpy(item->len, len, sizeof(len));
-	temp = fmt_unescape(time);
-	item->utctime = fmt_escape(temp);
-	curl_free(temp);
-	temp = fmt_unescape(album);
-	item->album = fmt_escape(temp);
-	curl_free(temp);
-	temp = fmt_unescape(mb);
-	item->mb = fmt_escape(temp);
-	curl_free(temp);
-
-	q_nitems++;
-
-	item->next = NULL;
-	if(q_queue_last == NULL)
-		q_queue = q_queue_last = item;
-	else
-	{
-		q_queue_last->next = item;
 		q_queue_last = item;
 	}
 
@@ -285,16 +252,21 @@ static int sc_parse_hs_res(void)
 	}
 	*(sc_srv_res + sc_srv_res_size) = 0;
 
+	if (!strncmp(sc_srv_res, "OK\n", 3)) {
+		gchar *scratch = g_strdup(sc_srv_res);
+		gchar **split = g_strsplit(scratch, "\n", 5);
+
+		g_free(scratch);
+
+		sc_session_id = g_strdup(split[1]);
+		sc_np_url = g_strdup(split[2]);
+		sc_submit_url = g_strdup(split[3]);
+
+		g_strfreev(split);
+		return 0;
+	}
 	if (!strncmp(sc_srv_res, "FAILED ", 7)) {
 		interval = strstr(sc_srv_res, "INTERVAL");
-		if(!interval) {
-			pdebug("missing INTERVAL", DEBUG);
-		}
-		else
-		{
-			*(interval - 1) = 0;
-			sc_submit_interval = strtol(interval + 8, NULL, 10);
-		}
 
 		/* Throwing a major error, just in case */
 		/* sc_throw_error(fmt_vastr("%s", sc_srv_res));
@@ -363,7 +335,7 @@ static int sc_parse_hs_res(void)
 
 		return 0;
 	}
-	if(!strncmp(sc_srv_res, "BADUSER", 7)) {
+	if(!strncmp(sc_srv_res, "BADAUTH", 7)) {
 		/* Throwing major error. */
 		sc_throw_error("Incorrect username/password.\n"
 				"Please fix in configuration.");
@@ -387,6 +359,18 @@ static int sc_parse_hs_res(void)
 	return -1;
 }
 
+static unsigned char *md5_string(char *pass, int len)
+{
+	md5_state_t md5state;
+	static unsigned char md5pword[16];
+		
+	md5_init(&md5state);
+	md5_append(&md5state, (unsigned const char *)pass, len);
+	md5_finish(&md5state, md5pword);
+
+	return md5pword;
+}
+
 static void hexify(char *pass, int len)
 {
 	char *bp = sc_response_hash;
@@ -407,12 +391,24 @@ static void hexify(char *pass, int len)
 static int sc_handshake(void)
 {
 	int status;
-	char buf[4096];
+	char buf[65535];
 	CURL *curl;
+	time_t ts = time(NULL);
+	char *auth_tmp;
+	char *auth;
 
-	snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s",
+	auth_tmp = g_strdup_printf("%s%ld", sc_password, ts);
+	auth = md5_string(auth_tmp, strlen(auth_tmp));
+	g_free(auth_tmp);
+	hexify(auth, strlen(auth));
+	auth_tmp = g_strdup(sc_response_hash);
+
+	snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s&t=%ld&a=%s",
 			SCROBBLER_HS_URL, SCROBBLER_VERSION,
-			SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username);
+			SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, time(NULL),
+			auth_tmp);
+	printf("--> %s\n", buf);
+	g_free(auth_tmp);
 
 	curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
@@ -596,6 +592,9 @@ static int sc_generateentry(GString *submission)
                 g_string_append(submission,sc_itemtag('i',i,I_TIME(item)));
                 g_string_append(submission,sc_itemtag('m',i,I_MB(item)));
                 g_string_append(submission,sc_itemtag('b',i,I_ALBUM(item)));
+                g_string_append(submission,sc_itemtag('o',i,"P"));
+                g_string_append(submission,sc_itemtag('n',i,item->track));
+                g_string_append(submission,sc_itemtag('r',i,""));
 
 		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
 				i, I_ARTIST(item),
@@ -610,6 +609,55 @@ static int sc_generateentry(GString *submission)
 #endif
 
 	return i;
+}
+
+static int sc_submit_np(TitleInput *tuple)
+{
+	CURL *curl;
+	/* struct HttpPost *post = NULL , *last = NULL; */
+	int status;
+	gchar *entry;
+
+	curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+	curl_easy_setopt(curl, CURLOPT_URL, sc_np_url);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
+			sc_store_res);
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, USER_AGENT);
+	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+	/*cfa(&post, &last, "debug", "failed");*/
+
+	entry = g_strdup_printf("s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
+		tuple->performer, tuple->track_name, tuple->album_name ? tuple->album_name : "",
+		tuple->length / 1000, tuple->track_number);
+
+	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *) entry);
+	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
+	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
+
+	status = curl_easy_perform(curl);
+
+	curl_easy_cleanup(curl);
+
+	if (status) {
+		pdebug(sc_curl_errbuf, DEBUG);
+		sc_sb_errors++;
+		sc_free_res();
+		return -1;
+	}
+
+	if (sc_parse_sb_res()) {
+		sc_sb_errors++;
+		sc_free_res();
+		pdebug(fmt_vastr("Retrying in %d secs, %d elements in queue",
+					sc_submit_interval, q_len()), DEBUG);
+		return -1;
+	}
+	sc_free_res();
+	return 0;
 }
 
 static int sc_submitentry(gchar *entry)
@@ -628,14 +676,9 @@ static int sc_submitentry(gchar *entry)
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 	/*cfa(&post, &last, "debug", "failed");*/
 
-	/*pdebug(fmt_vastr("Username: %s", sc_username), DEBUG);*/
-        submission = g_string_new("u=");
-        g_string_append(submission,(gchar *)sc_username);
-
 	/*pdebug(fmt_vastr("Response Hash: %s", sc_response_hash), DEBUG);*/
-        g_string_append(submission,"&s=");
-        g_string_append(submission,(gchar *)sc_response_hash);
-
+        submission = g_string_new("s=");
+        g_string_append(submission, (gchar *)sc_session_id);
 	g_string_append(submission, entry);
 
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *)submission->str);
@@ -643,15 +686,11 @@ static int sc_submitentry(gchar *entry)
 	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, sc_curl_errbuf);
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, SC_CURL_TIMEOUT);
-
-	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, SCROBBLER_SB_WAIT);
 
 	status = curl_easy_perform(curl);
 
 	curl_easy_cleanup(curl);
-
-        g_string_free(submission,TRUE);
 
 	if (status) {
 		pdebug(sc_curl_errbuf, DEBUG);
@@ -793,7 +832,18 @@ static void read_cache(void)
 		/* Why is our save printing out CR/LF? */
 		ptr1 = ptr2 + 1;
 
-		item = q_put2(artist, title, len, time, album, mb);
+		{
+			TitleInput *tuple = bmp_title_input_new();
+
+			tuple->performer = g_strdup(artist);
+			tuple->track_name = g_strdup(title);
+			tuple->album_name = g_strdup(album);
+
+			item = q_put(tuple, atoi(len));
+
+			bmp_title_input_free(tuple);
+		}
+
 		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
 				i, I_ARTIST(item),
 				i, I_TITLE(item),
@@ -926,7 +976,8 @@ void sc_init(char *uname, char *pwd)
 void sc_addentry(GMutex *mutex, TitleInput *tuple, int len)
 {
 	g_mutex_lock(mutex);
-	q_put(tuple, len);
+	if (sc_submit_np(tuple))
+		q_put(tuple, len);
 	/*
 	 * This will help make sure the queue will be saved on a nasty
 	 * segfault...
