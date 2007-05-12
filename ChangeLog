@@ -1,3 +1,12 @@
+2007-05-12 05:49:11 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2216]
+  - first attempt at implementing AudioScrobbler 1.2 protocol
+  
+  trunk/src/scrobbler/plugin.c    |  331 +++++-----------------------------------
+  trunk/src/scrobbler/scrobbler.c |    4 
+  2 files changed, 50 insertions(+), 285 deletions(-)
+
+
 2007-05-12 03:59:58 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2214]
   - make scrobbler work again.

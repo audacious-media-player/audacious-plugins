@@ -11,7 +11,7 @@
 #include <audacious/ui_preferences.h>
 #include <audacious/playlist.h>
 #include <audacious/configdb.h>
-#include <audacious/beepctrl.h>
+#include <audacious/hook.h>
 #include <audacious/strings.h>
 #include <audacious/main.h>
 
@@ -72,8 +72,10 @@ static gboolean ishttp(const char *a)
 	return str_has_prefix_nocase(a, "http://") || str_has_prefix_nocase(a, "https://");
 }
 
-static void hook_playback_begin(PlaylistEntry *entry)
+static void hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
+	PlaylistEntry *entry = (PlaylistEntry *) hook_data;
+
 	g_return_if_fail(entry != NULL);
 
 	if (entry->length < 30)
@@ -167,6 +169,8 @@ static void init(void)
 		return;
 	}
 
+	hook_associate("playback begin", hook_playback_begin, NULL);
+
 	pdebug("plugin started", DEBUG);
 }
 
@@ -206,6 +210,8 @@ static void cleanup(void)
 
 	sc_cleaner();
 	gerpok_sc_cleaner();
+
+	hook_dissociate("playback begin", hook_playback_begin);
 }
 
 static void *xs_thread(void *data __attribute__((unused)))
