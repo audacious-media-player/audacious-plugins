@@ -1,3 +1,12 @@
+2007-05-12 22:03:26 +0000  Ben Tucker <bnt@interchange.ubc.ca>
+  revision [2234]
+  Changed alarm and projectm plugins so they use auddrct now.
+  
+  trunk/src/alarm/alarm.c   |   59 ++++++++++++++++------------------------------
+  trunk/src/projectm/main.c |    7 ++---
+  2 files changed, 24 insertions(+), 42 deletions(-)
+
+
 2007-05-12 12:21:09 +0000  Giacomo Lozito <james@develia.org>
   revision [2232]
   - lirc: works again with auddrct

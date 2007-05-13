@@ -24,7 +24,8 @@
 #include <glib.h>
 #include "lastfm.h"
 
-GThread *metadata_thread = NULL;
+#define DEBUG 0
+
 LastFM *LastFMGlobalData;
 /*this keeps the login data in a global place since 
  * we cannot login on every fopen call* if anyone 
@@ -35,6 +36,13 @@ static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata
 	GString *data = (GString *) udata;
 	g_string_append_len(data, ptr, nmemb);
 	return size * nmemb;
+}
+
+int max(int a,int b)
+{
+        if(a>b) 
+                return a;
+        return b;
 }
 
 gint get_data_from_url(gchar buf[4096], GString * res)
@@ -142,109 +150,140 @@ static gboolean lastfm_adjust(const gchar * url)
 
 	return ret;
 }
+
+
+static void parse_metadata(LastFM * handle,GString * res)
+{
+        gchar **split = g_strsplit(res->str, "\n", 20);
+        int i;
+        for (i = 0; split && split[i]; i++)
+        {
+                if (g_str_has_prefix(split[i], "artist="))
+                {
+                        if (handle->lastfm_artist) g_free(handle->lastfm_artist);
+                        handle->lastfm_artist = g_strdup(split[i] + 7);
+#ifdef DEBUG
+                        g_print("Artist: %s\n", handle->lastfm_artist);
+#endif
+                }
+                if (g_str_has_prefix(split[i], "track="))
+                {
+                        if (handle->lastfm_title) g_free(handle->lastfm_title);
+                        handle->lastfm_title = g_strdup(split[i] + 6);
+#ifdef DEBUG
+                        g_print("Title: %s\n", handle->lastfm_title);
+#endif
+                }
+
+                if (g_str_has_prefix(split[i], "album="))
+                        handle->lastfm_album = g_strdup(split[i] + 6);
+                if (g_str_has_prefix(split[i], "albumcover_medium="))
+                        handle->lastfm_cover = g_strdup(split[i] + 18);
+                if (g_str_has_prefix(split[i], "trackduration="))
+                {
+                        handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
+#ifdef DEBUG
+                        g_print("Duration:%d\n", handle->lastfm_duration);
+#endif
+                }
+                if (g_str_has_prefix(split[i], "trackprogress="))
+                        handle->lastfm_progress = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
+
+                if (g_str_has_prefix(split[i], "station="))
+                {
+                        handle->lastfm_station_name = g_strdup(split[i] + 8);
+#ifdef DEBUG
+                        g_print("Station Name: %s\n", handle->lastfm_station_name);
+#endif
+                }
+        }
+
+        g_strfreev(split);
+return;
+}
+
+
 static void *lastfm_get_metadata(LastFM * handle)
 {
+        int err=0,delay=-2;
 
-	gint status, i;
-	gchar tmp[4096], **split = NULL;
-	GString *res = g_string_new(NULL);
+        int sleep_duration,count=0;
+        gint status;
+        gchar tmp[4096];
+        GString *res = g_string_new(NULL);
+        gboolean track_end=FALSE;
+        
+        if (handle->lastfm_session_id == NULL)
+                return NULL;
+        snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
 
-	if (handle->lastfm_session_id == NULL)
-		return NULL;
-	snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);
-
-	gboolean opened_file = TRUE;
-	while (opened_file)
-	{
-		handle->lastfm_duration = 0;
-		handle->lastfm_progress = 0;
-		status = get_data_from_url(tmp, res);
-#ifdef DEBUG
-		g_print("Getting Metadata\n");
-#endif
+        while ( (handle!= NULL) && (handle->metadata_thread == g_thread_self ()) && (err<5))
+                //exit after 5 failed retries or after metadata_thread changes
+        {       
+                count++;
+                if (count==sleep_duration)
+                {
+                        handle->lastfm_duration = 0;
+                        handle->lastfm_progress = 0;
+                        status = get_data_from_url(tmp, res);
 #if 0
-		g_print("Received metadata:%s\n", res->str);
+                        g_print("Received metadata:%s\n", res->str);
 #endif
-		if (status == CURLE_OK)
-		{
-			split = g_strsplit(res->str, "\n", 20);
-
-			for (i = 0; split && split[i]; i++)
-			{
-				if (g_str_has_prefix(split[i], "artist="))
-				{
-					if (handle->lastfm_artist) g_free(handle->lastfm_artist);
-					handle->lastfm_artist = g_strdup(split[i] + 7);
+                        if (status == CURLE_OK)
+                        {
 #ifdef DEBUG
-					g_print("Artist: %s\n", handle->lastfm_artist);
+                                g_print("Got Metadata\n");
 #endif
-				}
-				if (g_str_has_prefix(split[i], "track="))
-				{
-					if (handle->lastfm_title) g_free(handle->lastfm_title);
-					handle->lastfm_title = g_strdup(split[i] + 6);
-#ifdef DEBUG
-					g_print("Title: %s\n", handle->lastfm_title);
-#endif
-				}
+                                parse_metadata( handle,res);
+                        }
+                        g_string_erase(res, 0, -1);
 
-				if (g_str_has_prefix(split[i], "album="))
-					handle->lastfm_album = g_strdup(split[i] + 6);
-				if (g_str_has_prefix(split[i], "albumcover_medium="))
-					handle->lastfm_cover = g_strdup(split[i] + 18);
-				if (g_str_has_prefix(split[i], "trackduration="))
-				{
-					handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
-#ifdef DEBUG
-					g_print("Duration:%d\n", handle->lastfm_duration);
-#endif
-				}
-				if (g_str_has_prefix(split[i], "trackprogress="))
-					handle->lastfm_progress = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
 
-				if (g_str_has_prefix(split[i], "station="))
-				{
-					handle->lastfm_station_name = g_strdup(split[i] + 8);
-#ifdef DEBUG
-					g_print("Station Name: %s\n", handle->lastfm_station_name);
-#endif
-				}
-			}
+                        if ((!track_end) && (handle->lastfm_duration >0))
+                        {       //refresh metadata 2 sec before track's end and 2 sec after the next track starts
+                                sleep_duration = handle->lastfm_duration - handle->lastfm_progress  - delay -4;
+                                track_end=TRUE;
+                                err=delay=count=0;
+                        }
+                        else
+                        {
+                                err++;
+                                track_end=FALSE;
+                                sleep_duration=4;
+                                count=0;
+                        }       
 
-			g_strfreev(split);
-		}
-		g_string_erase(res, 0, -1);
-
-		int sleep_time;
-		if (handle->lastfm_progress == 0)	//if i don't know track duration i'm polling for metadata every 10 seconds
-			sleep_time = 10;
-		else
-			sleep_time = handle->lastfm_duration - handle->lastfm_progress + 3;
-#ifdef DEBUG
-		g_print("Sleeping for %d seconds\n", sleep_time);
-#endif
-
-		sleep(sleep_time);
-		if (handle->proxy_fd == NULL)
-			opened_file = FALSE;
-	}
+                        if(handle->lastfm_duration ==0)  //polling every 2 seconds until I get first data
+                        {
+                        sleep_duration=2;
+                        count=0;
+                        delay+=2;               //time until I get first data 
+                                                //starts from -2 to have uniform handling for in first iteration
+                                                //when calculating sleep_time
+                        }
 
 #ifdef DEBUG
-	g_print("Exiting a thread\n");
+		g_print("Sleeping for %d seconds\n", sleep_duration);
 #endif
-	metadata_thread = NULL;
+	        }
+                sleep(1);
+        }
+
+#ifdef DEBUG
+	g_print("Exiting thread, ID = %d\n",(int)g_thread_self());
+#endif
+        handle->metadata_thread = NULL;
 	return NULL;
 }
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
-	static GThread *th;
+//	static GThread *th;
 	VFSFile *file;
 	LastFM *handle;
 	file = g_new0(VFSFile, 1);
 	handle = g_new0(LastFM, 1);
-
-	while ((LastFMGlobalData->lastfm_mp3_stream_url == NULL) && (LastFMGlobalData->login_count <= 3))
+        while ((LastFMGlobalData->lastfm_mp3_stream_url == NULL) && (LastFMGlobalData->login_count <= 3))
 	{
 		printf("Login try count: %d\n", LastFMGlobalData->login_count++);
 		lastfm_login();
@@ -255,30 +294,41 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 	if (LastFMGlobalData->lastfm_mp3_stream_url == NULL)
 		return NULL;
 
+
+	if (LastFMGlobalData->lastfm_station_name==NULL)
+                {
+                        if(lastfm_adjust(path))
+                        {	                                
+#ifdef DEBUG
+        		g_print("Tuning was successfully completed into the channel\n");
+#endif
+		        }
+                        else
+                        {
+#ifdef DEBUG            
+        		g_print("Cannot tune to given channel\n");
+#endif
+                        }
+                }
+        
+        if ((handle->metadata_thread = g_thread_create(lastfm_get_metadata, handle, FALSE, NULL)) == NULL)
+		            {
+#ifdef DEBUG
+			            g_print("Error creating metadata thread!!!\n");
+#endif
+			             return NULL;
+		            }
+		        else
+                            {
+#ifdef DEBUG
+			            g_print("A metadata thread has just been created, ID = %d \n",(int)handle->metadata_thread);
+#endif
+                            }
+
 	handle->lastfm_mp3_stream_url = g_strdup(LastFMGlobalData->lastfm_mp3_stream_url);
 	handle->lastfm_session_id = g_strdup(LastFMGlobalData->lastfm_session_id);
 	handle->lastfm_station_name = g_strdup(LastFMGlobalData->lastfm_station_name);
-
-	if (lastfm_adjust(path))
-	{
-		if ((th = g_thread_create(lastfm_get_metadata, handle, FALSE, NULL)) == NULL)
-		{
-#ifdef DEBUG
-			g_print("Error creating metadata thread!!!\n");
-#endif
-			return NULL;
-		}
-		else
-#ifdef DEBUG
-			g_print("The metadata thread has just been created\n");
-#endif
-	}
-#ifdef DEBUG
-	else
-		g_print("Cannot tune to given channel\n");
-#endif
-
-	handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
+        handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
 	file->handle = handle;
 
 	return file;
@@ -290,13 +340,16 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
 
 	if (file == NULL)
 		return -1;
-
-	LastFM *handle = file->handle;
+        LastFM *handle = file->handle;
 	ret = vfs_fclose(handle->proxy_fd);
 	if (!ret)
-		handle->proxy_fd = NULL;
-
-	return ret;
+		{
+                        handle->proxy_fd = NULL;
+                        handle->metadata_thread=NULL;
+                }
+        g_free(handle);
+        handle=NULL;
+  	return ret;
 }
 
 size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
@@ -362,14 +415,15 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
 	LastFM *handle = file->handle;
 
-#ifdef DEBUG
-	g_print("Interesting metadata (want: %s):\n", field);
+#if 0
+        g_print("Interesting metadata (want: %s):\n", field);
 
 	if (handle->lastfm_station_name != NULL)
 		g_print("%s\n", handle->lastfm_station_name);
 
 	if (handle->lastfm_artist != NULL)
 		g_print("%s\n", handle->lastfm_artist);
+
 
 	if (handle->lastfm_title != NULL)
 		g_print("%s\n", handle->lastfm_title);
@@ -403,7 +457,7 @@ VFSConstructor lastfm_const = {
 };
 
 static void init(void)
-{
+{       
 	LastFMGlobalData = g_new0(LastFM, 1);
 	vfs_register_transport(&lastfm_const);
 }

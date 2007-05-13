@@ -3,7 +3,7 @@
 #define LASTFM_METADATA_URL "http://ws.audioscrobbler.com/radio/np.php?session=%s&debug=0"
 
 #define LASTFM_CURL_TIMEOUT 10
-#define DEBUG 1
+
 
 typedef struct
 {
@@ -17,6 +17,7 @@ typedef struct
 	gchar *lastfm_cover;
 	unsigned int lastfm_duration;
 	unsigned int lastfm_progress;
+        GThread *metadata_thread;
 	int login_count;
 } LastFM;
 
@@ -45,6 +46,8 @@ off_t lastfm_vfs_fsize_impl(VFSFile * file);
 gint lastfm_vfs_fclose_impl(VFSFile * file);
 
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field);
+
+static void parse_metadata(LastFM * handle,GString * res);
 
 static gpointer lastfm_get_metadata(LastFM * handle);
 
