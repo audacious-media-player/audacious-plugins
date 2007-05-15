@@ -1,3 +1,12 @@
+2007-05-15 20:38:05 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2240]
+  
+  - Require FLAC >= 1.1.3 for flacng for the time being
+  
+  trunk/configure.ac |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-05-15 20:18:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2238]
   - upstream updates regarding handling of SPC700 instructions and runtime 

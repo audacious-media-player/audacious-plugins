@@ -619,8 +619,9 @@ fi
 
 dnl *** flac
 AC_ARG_ENABLE( flac,
-[  --disable-flac          disable flac input plugin (default=enabled)],,
-                enable_flac="yes")
+[  --enable-flac          enable flac input plugin (default=disabled)],
+[enable_flac=$enableval],
+[enable_flac="no"])
 
 if test "x$enable_flac" = xyes; then
 	if test "x$have_oggvorbis" = xyes; then
