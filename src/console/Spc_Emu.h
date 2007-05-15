@@ -31,7 +31,7 @@ public:
 		byte date [11];
 		byte len_secs [3];
 		byte fade_msec [4];
-		char author [32];
+		char author [32]; // sometimes first char should be skipped (see official SPC spec)
 		byte mute_mask;
 		byte emulator;
 		byte unused2 [46];

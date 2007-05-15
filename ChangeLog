@@ -1,3 +1,12 @@
+2007-05-13 00:06:13 +0000  Cristi Magherusan <majeru@atheme.org>
+  revision [2236]
+  smarter polling and lots of other changes
+  
+  trunk/src/lastfm/lastfm.c |  250 +++++++++++++++++++++++++++-------------------
+  trunk/src/lastfm/lastfm.h |    5 
+  2 files changed, 156 insertions(+), 99 deletions(-)
+
+
 2007-05-12 22:03:26 +0000  Ben Tucker <bnt@interchange.ubc.ca>
   revision [2234]
   Changed alarm and projectm plugins so they use auddrct now.

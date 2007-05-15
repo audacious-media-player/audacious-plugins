@@ -216,7 +216,7 @@ struct Spc_File : Gme_Info_
 	blargg_err_t load_( Data_Reader& in )
 	{
 		long file_size = in.remain();
-		if ( file_size < Snes_Spc::spc_file_size )
+		if ( file_size < Snes_Spc::spc_min_file_size )
 			return gme_wrong_file_type;
 		RETURN_ERR( in.read( &header, Spc_Emu::header_size ) );
 		RETURN_ERR( check_spc_header( header.tag ) );
@@ -247,7 +247,8 @@ gme_type_t_ const gme_spc_type [1] = { "Super Nintendo", 1, &new_spc_emu, &new_s
 
 blargg_err_t Spc_Emu::set_sample_rate_( long sample_rate )
 {
-	apu.set_gain( gain() );
+	RETURN_ERR( apu.init() );
+	apu.set_gain( (int) (gain() * Snes_Spc::gain_unit) );
 	if ( sample_rate != native_sample_rate )
 	{
 		RETURN_ERR( resampler.buffer_size( native_sample_rate / 20 * 2 ) );
@@ -268,14 +269,14 @@ blargg_err_t Spc_Emu::load_mem_( byte const* in, long size )
 	file_data = in;
 	file_size = size;
 	set_voice_count( Snes_Spc::voice_count );
-	if ( size < Snes_Spc::spc_file_size )
+	if ( size < Snes_Spc::spc_min_file_size )
 		return gme_wrong_file_type;
 	return check_spc_header( in );
 }
 
 // Emulation
 
-void Spc_Emu::set_tempo_( double t ) { apu.set_tempo( t ); }
+void Spc_Emu::set_tempo_( double t ) { apu.set_tempo( (int) (t * Snes_Spc::tempo_unit) ); }
 
 blargg_err_t Spc_Emu::start_track_( int track )
 {
@@ -293,6 +294,9 @@ blargg_err_t Spc_Emu::skip_( long count )
 		count = long (count * resampler.ratio()) & ~1;
 		count -= resampler.skip_input( count );
 	}
+	
+	// TODO: shouldn't skip be adjusted for the 64 samples read afterwards?
+	
 	if ( count > 0 )
 		RETURN_ERR( apu.skip( count ) );
 	
