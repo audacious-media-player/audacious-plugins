@@ -1,3 +1,19 @@
+2007-05-15 20:18:35 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2238]
+  - upstream updates regarding handling of SPC700 instructions and runtime 
+    length issues.
+  
+  trunk/src/console/Snes_Spc.cxx |  669 +++++++------------
+  trunk/src/console/Snes_Spc.h   |  323 ++++++---
+  trunk/src/console/Spc_Cpu.cxx  | 1436 +++++++++++++----------------------------
+  trunk/src/console/Spc_Cpu.h    | 1251 ++++++++++++++++++++++++++++++++++-
+  trunk/src/console/Spc_Dsp.cxx  | 1154 +++++++++++++++++---------------
+  trunk/src/console/Spc_Dsp.h    |  306 +++++---
+  trunk/src/console/Spc_Emu.cxx  |   12 
+  trunk/src/console/Spc_Emu.h    |    2 
+  8 files changed, 2990 insertions(+), 2163 deletions(-)
+
+
 2007-05-13 00:06:13 +0000  Cristi Magherusan <majeru@atheme.org>
   revision [2236]
   smarter polling and lots of other changes
