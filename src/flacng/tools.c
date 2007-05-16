@@ -281,7 +281,7 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
      * Open the file
      */
     if (NULL == (info->input_stream = vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading!");
+        _ERROR("Could not open file for reading! (%s)", filename);
         _LEAVE FALSE;
     }
 

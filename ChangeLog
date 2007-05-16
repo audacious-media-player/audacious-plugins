@@ -1,3 +1,12 @@
+2007-05-15 20:45:38 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2242]
+  
+  - Disable building the old flac plugin by default
+  
+  trunk/configure.ac |    5 +++--
+  1 file changed, 3 insertions(+), 2 deletions(-)
+
+
 2007-05-15 20:38:05 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2240]
   
