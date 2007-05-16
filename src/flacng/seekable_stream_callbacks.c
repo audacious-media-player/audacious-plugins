@@ -231,9 +231,17 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
 
 void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data) {
 
+    callback_info* info = (callback_info*) client_data;
+
     _ENTER;
 
-    _ERROR("FLAC decoder error callback was called: %d", status);
+    _DEBUG("Using callback_info %s", info->name);
+
+    if (!info->testing) {
+        _ERROR("FLAC decoder error callback was called: %d", status);
+    } else {
+        _DEBUG("FLAC decoder error callback was called: %d", status);
+    }
 
     _LEAVE;
 

@@ -94,6 +94,7 @@ void reset_info(callback_info* info) {
     info->buffer_used = 0;
     info->write_pointer = info->output_buffer;
     info->read_max = -1;
+    info->testing = FALSE;
 
     /*
      * Clear the stream and frame information
@@ -278,6 +279,12 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
     info->read_max = 8192;
 
     /*
+     * We are not sure if this is an actual flac file, so do not
+     * complain too much about errors in the stream
+     */
+    info->testing = TRUE;
+
+    /*
      * Open the file
      */
     if (NULL == (info->input_stream = vfs_fopen(filename, "rb"))) {
@@ -300,6 +307,7 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
      */
 
     info->read_max = -1;
+    info->testing = FALSE;
 
     _LEAVE TRUE;
 }

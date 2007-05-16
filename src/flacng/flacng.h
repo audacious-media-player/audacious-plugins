@@ -88,6 +88,7 @@ typedef struct callback_info {
     gboolean metadata_changed;
     struct frame_info frame;
     glong read_max;
+    gboolean testing;
     gchar* name;
 } callback_info;
 
