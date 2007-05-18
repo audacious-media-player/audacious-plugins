@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <assert.h>
 #include <ctype.h>
+#include <inttypes.h>
 
 #include "ayemu.h"
 
@@ -48,7 +49,7 @@ static int read_word16(VFSFile *fp, int *p)
 /* read 32-bit integer from file.
  *  Returns 1 if error occurs 
  */
-static int read_word32(VFSFile *fp, int *p)
+static int read_word32(VFSFile *fp, int32_t *p)
 {
   int c;
 
@@ -104,6 +105,7 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
 {
   char buf[2];
   int error = 0;
+  int32_t int_regdata_size;
 
   vtx->regdata = NULL;
 
@@ -135,7 +137,11 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
   if (!error) error = read_word32(vtx->fp, &vtx->hdr.chipFreq);
   if (!error) error = read_byte(vtx->fp, &vtx->hdr.playerFreq);
   if (!error) error = read_word16(vtx->fp, &vtx->hdr.year);
-  if (!error) error = read_word32(vtx->fp, &vtx->hdr.regdata_size);
+  if (!error) {
+	error = read_word32(vtx->fp, &int_regdata_size);
+	vtx->hdr.regdata_size = (size_t) int_regdata_size;
+  }
+
   if (!error) error = read_NTstring(vtx->fp, vtx->hdr.title);
   if (!error) error = read_NTstring(vtx->fp, vtx->hdr.author);
   if (!error) error = read_NTstring(vtx->fp, vtx->hdr.from);

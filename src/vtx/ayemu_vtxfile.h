@@ -2,6 +2,7 @@
 #define _AYEMU_vtxfile_h
 
 #include <glib.h>
+#include <inttypes.h>
 #include <audacious/vfs.h>
 #include "ayemu_8912.h"
 
@@ -27,7 +28,7 @@ struct VTXFileHeader
   ayemu_chip_t chiptype;    /**< Type of sound chip */
   int      stereo;	    /**< Type of stereo: 0-ABC, 1-BCA... (see VTX format description) */
   int      loop;	    /**< song loop */
-  int      chipFreq;	    /**< AY chip freq (1773400 for ZX) */
+  int32_t    chipFreq;	    /**< AY chip freq (1773400 for ZX) */
   int      playerFreq;	    /**< 50 Hz for ZX, 60 Hz for yamaha */
   int      year;            /**< year song composed */
   NTstring title;		/**< song title  */

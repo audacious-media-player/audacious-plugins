@@ -6,6 +6,7 @@
 #define _AYEMU_ay8912_h
 
 #include <stddef.h>
+#include <inttypes.h>
 
 BEGIN_C_DECLS
 
@@ -85,7 +86,7 @@ typedef struct
   /* emulator settings */
   int table[32];		/**< table of volumes for chip */
   ayemu_chip_t type;		/**< general chip type (\b AYEMU_AY or \b AYEMU_YM) */
-  int ChipFreq;			/**< chip emulator frequency */
+  int32_t ChipFreq;			/**< chip emulator frequency */
   int eq[6];			/**< volumes for channels.
 				   Array contains 6 elements: 
 				   A left, A right, B left, B right, C left and C right;

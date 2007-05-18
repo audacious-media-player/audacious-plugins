@@ -1,5 +1,6 @@
 /* AY/YM emulator implementation. */
 
+#include <inttypes.h>
 #include "ayemu.h"
 
 #define debuglog stderr;
@@ -211,7 +212,7 @@ if (!check_magic(ay))
 
 
 /** Set chip frequency. */
-void ayemu_set_chip_freq(ayemu_ay_t *ay, int chipfreq)
+void ayemu_set_chip_freq(ayemu_ay_t *ay, int32_t chipfreq)
 {
   if (!check_magic(ay)) return;
 
@@ -378,9 +379,8 @@ static void prepare_generation(ayemu_ay_t *ay)
     }
   }
 
-  /* динамическая настройка глобального коэффициента усиления
-     подразумевается, что в vols [x][31] лежит самая большая громкость
-     TODO: Сделать проверку на это ;-)
+  /* О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
+     О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫vols [x][31] О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫     TODO: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫;-)
   */
   max_l = ay->vols[0][31] + ay->vols[2][31] + ay->vols[3][31];
   max_r = ay->vols[1][31] + ay->vols[3][31] + ay->vols[5][31];
