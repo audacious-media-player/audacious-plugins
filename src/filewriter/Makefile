@@ -5,7 +5,7 @@ OBJECTIVE_LIBS = libfilewriter$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) -lmp3lame -lvorbisenc -lFLAC
+LIBADD = $(GTK_LIBS) ${FILEWRITER_LIBS}
 SOURCES = filewriter.c wav.c mp3.c vorbis.c flac.c
 
 OBJECTS = ${SOURCES:.c=.o}

@@ -1208,42 +1208,55 @@ fi
 
 AC_ARG_ENABLE(filewriter_mp3,
     [  --disable-filewriter_mp3    disable FileWriter MP3 output part (default=enabled) ],
-    [enable_filewriter_mp3=$enableval],
-    [enable_filewriter_mp3=yes]
+    [enable_filewriter_mp3=$enableval], [enable_filewriter_mp3=yes]
 )
 
 if test "$enable_filewriter_mp3" = "yes"; then
    AC_CHECK_LIB(mp3lame -lm, lame_init, [have_lame=yes], [have_lame=no])
    if test "$have_lame" = yes; then
       AC_DEFINE(FILEWRITER_MP3, 1, [Define if Vorbis output part should be built])
+	  FILEWRITER_LIBS+=" -lmp3lame"
    fi
 fi
 
 
 AC_ARG_ENABLE(filewriter_vorbis,
     [  --disable-filewriter_vorbis disable FileWriter Vorbis output part (default=enabled) ],
-    [enable_filewriter_vorbis=$enableval],
-    [enable_filewriter_vorbis=yes]
+    [enable_filewriter_vorbis=$enableval], [enable_filewriter_vorbis=yes]
 )
 
 if test "$enable_filewriter_vorbis" = "yes"; then
    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.0 vorbisfile >= 1.0],
-   [AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built] )],
-   [enable_filewriter_vorbis="no"])
+   [have_vorbisenc=yes], [have_vorbisenc=no])
+   if test "$have_vorbisenc" = yes; then
+      AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
+      FILEWRITER_LIBS+=" -lvorbisenc"
+   fi
 fi
 
 
 AC_ARG_ENABLE(filewriter_flac,
     [  --disable-filewriter_flac   disable FileWriter FLAC output part (default=enabled) ],
-    [enable_filewriter_flac=$enableval],
-    [enable_filewriter_flac=yes]
+    [enable_filewriter_flac=$enableval], [enable_filewriter_flac=yes]
 )
 
 if test "$enable_filewriter_flac" = "yes"; then
    PKG_CHECK_MODULES(FLAC, [flac >= 1.1.2],
-   [AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built] )],
-   [enable_filewriter_flac="no"])
+      [have_writer_flac=yes], [have_writer_flac=no]
+   )
+   if test "$have_writer_flac" = yes; then
+      AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
+	  FILEWRITER_LIBS+=" -lFLAC"
+   fi
 fi
+
+if test "$enable_filewriter" != yes; then
+   have_lame=no
+   have_vorbisenc=no
+   have_writer_flac=no
+   FILEWRITER_LIBS=""
+fi
+AC_SUBST(FILEWRITER_LIBS)
 
 dnl *** End of all plugin checks ***
 
@@ -1332,9 +1345,9 @@ echo "  BSD/SUN audio output (sun):             $have_sun"
 echo "  PulseAudio sound server (pulse_audio):  $have_pulse"
 echo "  Mac OS X sound support (CoreAudio):     $have_coreaudio"
 echo "  FileWriter:                             $enable_filewriter"
-echo "    -> FileWriter MP3 output part:        $enable_filewriter_mp3"
-echo "    -> FileWriter Vorbis output part:     $enable_filewriter_vorbis"
-echo "    -> FileWriter FLAC output part:       $enable_filewriter_flac"
+echo "    -> FileWriter MP3 output part:        $have_lame"
+echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
+echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
