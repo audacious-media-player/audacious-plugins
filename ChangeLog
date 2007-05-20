@@ -1,3 +1,35 @@
+2007-05-20 19:05:48 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2254]
+  - get rid of all warnings gcc 4.2.0 emits with my build configuration.
+  - fix for minor bugs.
+  
+  trunk/src/aac/libfaad2/common.h             |    4 ++--
+  trunk/src/adplug/adplug-xmms.cc             |   12 ++++++------
+  trunk/src/adplug/core/mid.cxx               |    2 +-
+  trunk/src/adplug/core/mid.h                 |    2 +-
+  trunk/src/console/Audacious_Driver.cxx      |    4 ++--
+  trunk/src/filewriter/flac.c                 |    2 +-
+  trunk/src/filewriter/mp3.c                  |    8 ++++----
+  trunk/src/flacng/Makefile                   |    2 +-
+  trunk/src/flacng/plugin.c                   |    2 --
+  trunk/src/flacng/tools.c                    |    3 +++
+  trunk/src/lastfm/Makefile                   |    2 +-
+  trunk/src/lastfm/lastfm.c                   |    5 +++--
+  trunk/src/lastfm/lastfm.h                   |    2 +-
+  trunk/src/modplug/fastmix.cxx               |    7 +++++--
+  trunk/src/modplug/gui/support.cxx           |    4 ++--
+  trunk/src/modplug/plugin.cxx                |    6 +++---
+  trunk/src/musepack/libmpc.cxx               |   14 +++++++-------
+  trunk/src/musepack/libmpc.h                 |    6 +++---
+  trunk/src/rootvis/config_frontend_widgets.c |    2 +-
+  trunk/src/scrobbler/scrobbler.c             |    2 +-
+  trunk/src/wavpack/libwavpack.cxx            |    4 ++--
+  trunk/src/wavpack/tags.cxx                  |    2 +-
+  trunk/src/wavpack/ui.cxx                    |    2 +-
+  trunk/src/wma/Makefile                      |    2 +-
+  24 files changed, 53 insertions(+), 48 deletions(-)
+
+
 2007-05-18 17:42:29 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
   revision [2252]
   I will murder someone if I have to fix the buildsystem again.

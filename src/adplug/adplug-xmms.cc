@@ -1039,19 +1039,19 @@ adplug_init (void)
   // Read file type exclusion list
   dbg_printf ("exclusion, ");
   {
-    gchar *cfgstr = NULL, *exclude;
+    gchar *cfgstr = NULL, *exclude = NULL;
     gboolean cfgread;
 
     cfgread = bmp_cfg_db_get_string (db, CFG_VERSION, "Exclude", &cfgstr);
-    exclude = (char *) malloc (strlen (cfgstr) + 2);
-    strcpy (exclude, cfgstr);
-    exclude[strlen (exclude) + 1] = '\0';
-    if (cfgread)
-      free (cfgstr);
-    g_strdelimit (exclude, ":", '\0');
-    for (gchar * p = exclude; *p; p += strlen (p) + 1)
-      cfg.players.remove (cfg.players.lookup_filetype (p));
-    free (exclude);
+    if (cfgread) {
+        exclude = (char *) malloc (strlen (cfgstr) + 2);
+        strcpy (exclude, cfgstr);
+        exclude[strlen (exclude) + 1] = '\0';
+        g_strdelimit (exclude, ":", '\0');
+        for (gchar * p = exclude; *p; p += strlen (p) + 1)
+            cfg.players.remove (cfg.players.lookup_filetype (p));
+        free (exclude); free (cfgstr);
+    }
   }
   bmp_cfg_db_close (db);
 
