@@ -203,7 +203,7 @@ return;
 }
 
 
-static void *lastfm_get_metadata(LastFM * handle)
+static gpointer lastfm_get_metadata(gpointer arg)
 {
         int err=0,delay=-2;
 
@@ -212,7 +212,8 @@ static void *lastfm_get_metadata(LastFM * handle)
         gchar tmp[4096];
         GString *res = g_string_new(NULL);
         gboolean track_end=FALSE;
-        
+        LastFM *handle = (LastFM *)arg;
+
         if (handle->lastfm_session_id == NULL)
                 return NULL;
         snprintf(tmp, sizeof(tmp), LASTFM_METADATA_URL, handle->lastfm_session_id);

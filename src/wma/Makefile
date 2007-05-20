@@ -15,6 +15,6 @@ OBJECTS = ${SOURCES:.c=.o}
 
 LIBDEP = ./libffwma/libffwma.a
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../.. -I./libffwma -std=c99
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../.. -I./libffwma -std=c99 -fgnu89-inline
 
 include ../../mk/objective.mk

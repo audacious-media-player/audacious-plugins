@@ -49,7 +49,7 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field);
 
 static void parse_metadata(LastFM * handle,GString * res);
 
-static gpointer lastfm_get_metadata(LastFM * handle);
+static gpointer lastfm_get_metadata(gpointer arg);
 
 static gboolean lastfm_login(void);
 

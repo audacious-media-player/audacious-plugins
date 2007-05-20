@@ -47,7 +47,7 @@ lookup_widget                          (GtkWidget       *widget,
 }
 
 /* This is a dummy pixmap we use when a pixmap can't be found. */
-static char *dummy_pixmap_xpm[] = {
+static const char *dummy_pixmap_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "1 1 1 1",
 "  c None",
@@ -66,7 +66,7 @@ create_dummy_pixmap                    (GtkWidget       *widget)
 
   colormap = gtk_widget_get_colormap (widget);
   gdkpixmap = gdk_pixmap_colormap_create_from_xpm_d (NULL, colormap, &mask,
-                                                     NULL, dummy_pixmap_xpm);
+                                                     NULL, (gchar **)dummy_pixmap_xpm);
   if (gdkpixmap == NULL)
     g_error ("Couldn't create replacement pixmap.");
   pixmap = gtk_pixmap_new (gdkpixmap, mask);

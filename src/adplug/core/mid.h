@@ -96,7 +96,7 @@ public:
 
  private:
   bool load_sierra_ins(const std::string &fname, const CFileProvider &fp);
-  void midiprintf(char *format, ...);
+  void midiprintf(const char *format, ...);
   unsigned char datalook(long pos);
   unsigned long getnexti(unsigned long num);
   unsigned long getnext(unsigned long num);

@@ -353,7 +353,7 @@ DeleteTag(char *filename)
 
 // Returns bytes used in APE-Tag for this value
 int
-addValue(TagItem * item, char *key, char *value)
+addValue(TagItem * item, const char *key, char *value)
 {
     item->keylen = strlen(key);
     item->valuelen = strlen(value);

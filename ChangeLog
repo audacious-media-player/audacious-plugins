@@ -1,3 +1,12 @@
+2007-05-18 17:42:29 +0000  Kiyoshi Aman <kiyoshi.aman@gmail.com>
+  revision [2252]
+  I will murder someone if I have to fix the buildsystem again.
+  trunk/configure.ac            |   39 ++++++++++++++++++++++++++-------------
+  trunk/mk/rules.mk.in          |    2 +-
+  trunk/src/filewriter/Makefile |    2 +-
+  3 files changed, 28 insertions(+), 15 deletions(-)
+
+
 2007-05-18 10:41:05 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2250]
   Use proper integer types in the code, patch by Pavel Vymetalek <pvymetalek@seznam.cz>.

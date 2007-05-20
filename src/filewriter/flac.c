@@ -149,7 +149,7 @@ static void flac_write(gpointer data, gint length)
         }
     }
 
-    FLAC__stream_encoder_process(flac_encoder, encbuffer, length / (input.channels * 2));
+    FLAC__stream_encoder_process(flac_encoder, (const FLAC__int32 **)encbuffer, length / (input.channels * 2));
     olen += length;
 
     g_free(encbuffer[0]);

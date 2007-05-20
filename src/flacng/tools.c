@@ -245,6 +245,9 @@ gchar* StreamDecoderState(FLAC__StreamDecoderState state) {
             _LEAVE "FLAC__STREAM_DECODER_UNINITIALIZED";
             break;
 
+        default:
+            break;
+
     }
 
     _LEAVE "";

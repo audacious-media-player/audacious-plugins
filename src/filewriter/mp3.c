@@ -459,12 +459,12 @@ static void toggle_vbr(GtkToggleButton * togglebutton, gpointer user_data)
 static void vbr_abr_toggle(GtkToggleButton * togglebutton,
                            gpointer user_data)
 {
-    if (user_data == "VBR") {
+    if (!strcmp(user_data, "VBR")) {
         gtk_widget_set_sensitive(abr_frame, FALSE);
         gtk_widget_set_sensitive(vbr_frame, TRUE);
         vbr_type = 0;
     }
-    else if (user_data == "ABR") {
+    else if (!strcmp(user_data, "ABR")) {
         gtk_widget_set_sensitive(abr_frame, TRUE);
         gtk_widget_set_sensitive(vbr_frame, FALSE);
         vbr_type = 1;
@@ -571,7 +571,7 @@ static void force_v2_toggle(GtkToggleButton * togglebutton,
 static void id3_only_version(GtkToggleButton * togglebutton,
                              gpointer user_data)
 {
-    if (user_data == "v1" && inside != 1) {
+    if (!strcmp(user_data, "v1") && inside != 1) {
         if (gtk_toggle_button_get_active
             (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == TRUE);
         {
@@ -585,7 +585,7 @@ static void id3_only_version(GtkToggleButton * togglebutton,
             inside = 0;
         }
     }
-    else if (user_data == "v2" && inside != 1) {
+    else if (!strcmp(user_data, "v2") && inside != 1) {
         if (gtk_toggle_button_get_active
             (GTK_TOGGLE_BUTTON(tags_only_v2_toggle)) == TRUE);
         {

@@ -407,11 +407,11 @@ adplug_config (void)
                                             "Format selection"), 0, 1, 0, 1);
     // Add scrollable list
     {
-      gchar *rowstr[] = { "Format", "Extension" };
+      const gchar *rowstr[] = { "Format", "Extension" };
       GtkEventBox *eventbox = GTK_EVENT_BOX (gtk_event_box_new ());
       GtkScrolledWindow *formatswnd =
         GTK_SCROLLED_WINDOW (gtk_scrolled_window_new (NULL, NULL));
-      GtkCList *fl = GTK_CLIST (gtk_clist_new_with_titles (2, rowstr));
+      GtkCList *fl = GTK_CLIST (gtk_clist_new_with_titles (2, (gchar **)rowstr));
       CPlayers::const_iterator i;
       unsigned int j;
       gtk_clist_set_selection_mode (fl, GTK_SELECTION_MULTIPLE);
@@ -599,8 +599,8 @@ adplug_info_box (char *filename)
     gchar tmpstr[10];
 
     {
-      gchar *rowstr[] = { "#", "Instrument name" };
-      instnames = GTK_CLIST (gtk_clist_new_with_titles (2, rowstr));
+      const gchar *rowstr[] = { "#", "Instrument name" };
+      instnames = GTK_CLIST (gtk_clist_new_with_titles (2, (gchar **)rowstr));
     }
     gtk_clist_set_column_justification (instnames, 0, GTK_JUSTIFY_RIGHT);
 
@@ -1039,7 +1039,7 @@ adplug_init (void)
   // Read file type exclusion list
   dbg_printf ("exclusion, ");
   {
-    gchar *cfgstr = "", *exclude;
+    gchar *cfgstr = NULL, *exclude;
     gboolean cfgread;
 
     cfgread = bmp_cfg_db_get_string (db, CFG_VERSION, "Exclude", &cfgstr);
@@ -1122,7 +1122,7 @@ adplug_quit (void)
 InputPlugin adplug_ip = {
   NULL,                         // handle (filled by XMMS)
   NULL,                         // filename (filled by XMMS)
-  ADPLUG_NAME,                  // plugin description
+  (gchar *)ADPLUG_NAME,                  // plugin description
   adplug_init,                  // plugin functions...
   adplug_about,
   adplug_config,

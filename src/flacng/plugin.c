@@ -341,7 +341,6 @@ static gpointer flac_play_loop(gpointer arg) {
      * Must be entered with flac_pl_mutex held!
      */
 
-    gint ofree;
     gint32* read_pointer;
     gint elements_left;
     gint seek_sample;
@@ -673,7 +672,6 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
 
 TitleInput *flac_get_song_tuple(gchar* filename) {
 
-    gint l;
     TitleInput *tuple;
 
     _ENTER;

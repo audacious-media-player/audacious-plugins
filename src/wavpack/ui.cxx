@@ -59,7 +59,7 @@ wv_about_box()
 }
 
 static void
-label_set_text(GtkWidget * label, char *str, ...)
+label_set_text(GtkWidget * label, const char *str, ...)
 {
     va_list args;
     gchar *tempstr;

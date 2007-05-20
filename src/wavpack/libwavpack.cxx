@@ -57,7 +57,7 @@ extern gboolean replaygainEnabled;
 extern gboolean albumReplaygainEnabled;
 extern gboolean openedAudio;
 
-gchar *wv_fmts[] = { "wv", NULL };
+const gchar *wv_fmts[] = { "wv", NULL };
 
 InputPlugin mod = {
     NULL,                       //handle
@@ -88,7 +88,7 @@ InputPlugin mod = {
     NULL,
     NULL,
     wv_is_our_fd,
-    wv_fmts,
+    (gchar **)wv_fmts,
 };
 
 int32_t read_bytes (void *id, void *data, int32_t bcount)

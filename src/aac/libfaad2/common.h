@@ -362,8 +362,6 @@ char *strchr(), *strrchr();
 
   #else
 
-#include <math.h>
-
 #ifdef HAVE_LRINTF
 #  define HAS_LRINTF
 #  define _ISOC9X_SOURCE 1
@@ -371,6 +369,8 @@ char *strchr(), *strrchr();
 #  define __USE_ISOC9X   1
 #  define __USE_ISOC99   1
 #endif
+
+#include <math.h>
 
 #ifdef HAVE_SINF
 #  define sin sinf

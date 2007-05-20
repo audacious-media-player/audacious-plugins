@@ -365,7 +365,7 @@ GtkWidget *frontend_create_channel(int channel)
 
 	print_status("debug 2");
 
-	window = frontend_create_window(GTK_WINDOW_TOPLEVEL, &name);
+	window = frontend_create_window(GTK_WINDOW_TOPLEVEL, name);
 
 	print_status("done.");
 

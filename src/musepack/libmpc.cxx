@@ -8,7 +8,7 @@ using TagLib::Tag;
 using TagLib::String;
 using TagLib::APE::ItemListMap;
 
-gchar *mpc_fmts[] = { "mpc", NULL };
+const gchar *mpc_fmts[] = { "mpc", NULL };
 
 InputPlugin MpcPlugin = {
     NULL,           //File Handle               FILE* handle
@@ -39,7 +39,7 @@ InputPlugin MpcPlugin = {
     NULL,
     NULL,
     mpcIsOurFD,
-    mpc_fmts
+    (gchar **)mpc_fmts
 };
 
 extern "C"
@@ -146,8 +146,8 @@ static void mpcAboutBox()
     else
     {
         char* titleText      = g_strdup_printf("Musepack Decoder Plugin 1.2");
-        char* contentText = "Plugin code by\nBenoit Amiaux\nMartin Spuler\nKuniklo\n\nGet latest version at http://musepack.net\n";
-        char* buttonText  = "Nevermind";
+        const char* contentText = "Plugin code by\nBenoit Amiaux\nMartin Spuler\nKuniklo\n\nGet latest version at http://musepack.net\n";
+        const char* buttonText  = "Nevermind";
         aboutBox = xmms_show_message(titleText, contentText, buttonText, FALSE, NULL, NULL);
         widgets.aboutBox = aboutBox;
         g_signal_connect(G_OBJECT(aboutBox), "destroy", G_CALLBACK(gtk_widget_destroyed), &widgets.aboutBox);
@@ -634,7 +634,7 @@ static void mpcFileInfoBox(char* p_Filename)
     }
 }
 
-static void mpcGtkPrintLabel(GtkWidget* widget, char* format,...)
+static void mpcGtkPrintLabel(GtkWidget* widget, const char* format,...)
 {
     va_list args;
 
@@ -646,7 +646,7 @@ static void mpcGtkPrintLabel(GtkWidget* widget, char* format,...)
     free(temp);
 }
 
-static GtkWidget* mpcGtkTagLabel(char* p_Text, int a, int b, int c, int d, GtkWidget* p_Box)
+static GtkWidget* mpcGtkTagLabel(const char* p_Text, int a, int b, int c, int d, GtkWidget* p_Box)
 {
     GtkWidget* label = gtk_label_new(p_Text);
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
@@ -676,7 +676,7 @@ static GtkWidget* mpcGtkLabel(GtkWidget* p_Box)
     return label;
 }
 
-static GtkWidget* mpcGtkButton(char* p_Text, GtkWidget* p_Box)
+static GtkWidget* mpcGtkButton(const char* p_Text, GtkWidget* p_Box)
 {
     GtkWidget* button = gtk_button_new_with_label(p_Text);
     GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);

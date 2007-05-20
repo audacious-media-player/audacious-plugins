@@ -83,7 +83,7 @@
 #define midiprintf printf
 #else
 void
-CmidPlayer::midiprintf (char *format, ...)
+CmidPlayer::midiprintf (const char *format, ...)
 {
 }
 #endif

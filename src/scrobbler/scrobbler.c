@@ -398,7 +398,7 @@ static int sc_handshake(void)
 	char *auth;
 
 	auth_tmp = g_strdup_printf("%s%ld", sc_password, ts);
-	auth = md5_string(auth_tmp, strlen(auth_tmp));
+	auth = (char *)md5_string(auth_tmp, strlen(auth_tmp));
 	g_free(auth_tmp);
 	hexify(auth, strlen(auth));
 	auth_tmp = g_strdup(sc_response_hash);
