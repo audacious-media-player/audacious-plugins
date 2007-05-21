@@ -1,3 +1,11 @@
+2007-05-21 15:34:05 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2260]
+  - suppress warnings.
+  
+  trunk/src/lastfm/lastfm.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-05-21 04:52:04 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2258]
   - add a check for gcc version. now -fgnu89-inline is added only if gcc is 4.2.0 or more.
