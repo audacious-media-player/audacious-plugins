@@ -1,3 +1,11 @@
+2007-05-21 22:28:07 +0000  
+  revision [2262]
+  Added cdaudio-ng
+  trunk/src/cdaudio-ng/Makefile     |   13 +
+  trunk/src/cdaudio-ng/cdaudio-ng.c |  410 ++++++++++++++++++++++++++++++++++++++
+  2 files changed, 423 insertions(+)
+
+
 2007-05-21 15:34:05 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2260]
   - suppress warnings.

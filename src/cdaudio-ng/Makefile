@@ -1,13 +1,15 @@
+include ../../mk/rules.mk
+include ../../mk/init.mk
 
-all : libcdaudio-ng.so
+OBJECTIVE_LIBS = libcdaudio-ng$(SHARED_SUFFIX)
 
-libcdaudio-ng.so :
-	gcc -shared -fPIC -o libcdaudio-ng.so cdaudio-ng.c \
-		$(shell pkg-config --libs --cflags libcdio) \
-		$(shell pkg-config --libs --cflags libcdio_paranoia) \
-		$(shell pkg-config --libs --cflags libcdio_cdda) \
-		$(shell pkg-config --libs --cflags glib-2.0) \
-		$(shell pkg-config --libs --cflags gtk+-2.0)
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CDIO_LIBS)
+LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-clean :
-	rm *.so
+SOURCES = cdaudio-ng.so 
+
+OBJECTS = ${SOURCES:.c=.o}
+
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CDIO_LIBS) -I../../intl -I../.. -I../..
+
+include ../../mk/objective.mk
