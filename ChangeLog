@@ -1,3 +1,11 @@
+2007-05-21 23:08:45 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2264]
+  This Makefile upsets it less. Needs LIBCDIO detection in configure.ac though.
+  trunk/src/cdaudio-ng/Makefile       |   22 ++++++++++++----------
+  trunk/src/cdaudio-ng/Makefile.WRONG |   13 +++++++++++++
+  2 files changed, 25 insertions(+), 10 deletions(-)
+
+
 2007-05-21 22:28:07 +0000  
   revision [2262]
   Added cdaudio-ng
