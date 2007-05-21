@@ -1,3 +1,14 @@
+2007-05-21 04:52:04 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2258]
+  - add a check for gcc version. now -fgnu89-inline is added only if gcc is 4.2.0 or more.
+  
+  trunk/configure.ac        |   36 ++++++++++++++++++++++++++++++++++++
+  trunk/mk/rules.mk.in      |    1 +
+  trunk/src/lastfm/Makefile |    2 +-
+  trunk/src/wma/Makefile    |    2 +-
+  4 files changed, 39 insertions(+), 2 deletions(-)
+
+
 2007-05-20 21:12:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2256]
   - fix crash if Exclude does not exist.

@@ -271,7 +271,7 @@ static gpointer lastfm_get_metadata(gpointer arg)
         }
 
 #ifdef DEBUG
-	g_print("Exiting thread, ID = %d\n",(int)g_thread_self());
+        g_print("Exiting thread, ID = %p\n", (void *)g_thread_self());
 #endif
         handle->metadata_thread = NULL;
 	return NULL;
@@ -322,7 +322,7 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
 		        else
                             {
 #ifdef DEBUG
-			            g_print("A metadata thread has just been created, ID = %d \n",(int)handle->metadata_thread);
+                                g_print("A metadata thread has just been created, ID = %p \n", (void *)handle->metadata_thread);
 #endif
                             }
 
