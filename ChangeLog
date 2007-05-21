@@ -1,3 +1,10 @@
+2007-05-21 23:18:14 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2266]
+  .so != .c and lack of sleep is not an excuse.
+  trunk/src/cdaudio-ng/Makefile |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-05-21 23:08:45 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2264]
   This Makefile upsets it less. Needs LIBCDIO detection in configure.ac though.

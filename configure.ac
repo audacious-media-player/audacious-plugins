@@ -1053,6 +1053,8 @@ then
     esac
 fi
 
+dnl CD-Audio New Generation
+PKG_CHECK_MODULES(CDIO, [libcdio >= 0.78.2])
 
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
