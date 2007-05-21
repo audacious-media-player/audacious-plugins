@@ -1,3 +1,11 @@
+2007-05-21 23:32:42 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2268]
+  dnl CD-Audio New Generation; you need to add cdaudio-ng to INPUT_PLUGINS if CDIO_LIBS is set. Or something like that. Good luck.
+  trunk/configure.ac            |    2 ++
+  trunk/src/modplug/modplug.cxx |    4 ++--
+  2 files changed, 4 insertions(+), 2 deletions(-)
+
+
 2007-05-21 23:18:14 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2266]
   .so != .c and lack of sleep is not an excuse.
