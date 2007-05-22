@@ -1,3 +1,10 @@
+2007-05-22 08:56:51 +0000  Giacomo Lozito <james@develia.org>
+  revision [2272]
+  - statusicon: strenghten checks before last strcmp in si_ui_statusicon_cb_hook_tchange
+  trunk/src/statusicon/si_ui.c |    4 +++-
+  1 file changed, 3 insertions(+), 1 deletion(-)
+
+
 2007-05-21 23:34:55 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2270]
   Isn't that cute. But it's WRONG
