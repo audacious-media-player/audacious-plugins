@@ -261,7 +261,9 @@ si_ui_statusicon_cb_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
       prevs->filename = g_strdup(pl_entry->filename);
     }
   }
-  else if ( ( prevs->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
+  else if ( ( prevs->title != NULL ) &&
+            ( pl_entry->title != NULL ) &&
+            ( strcmp(pl_entry->title,prevs->title) ) )
   {
     g_free(prevs->title);
     prevs->title = g_strdup(pl_entry->title);
