@@ -1,3 +1,10 @@
+2007-05-22 09:28:58 +0000  Giacomo Lozito <james@develia.org>
+  revision [2274]
+  - statusicon: partial rewrite of si_ui_statusicon_cb_hook_tchange , nicer this way
+  trunk/src/statusicon/si_ui.c |   25 ++++++++++---------------
+  1 file changed, 10 insertions(+), 15 deletions(-)
+
+
 2007-05-22 08:56:51 +0000  Giacomo Lozito <james@develia.org>
   revision [2272]
   - statusicon: strenghten checks before last strcmp in si_ui_statusicon_cb_hook_tchange

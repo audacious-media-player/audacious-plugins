@@ -771,14 +771,24 @@ cfg_bindbox_assign_binding_input_func ( GIOChannel * iochan ,
         }
         else
         {
-          /* the trigger-dialog window is open; record input and
-             store it in a container managed by the trigger-dialog itself */
-          ed_inputevent_t *dinputev = g_malloc(sizeof(ed_inputevent_t*));
-          dinputev->type = inputev.type;
-          dinputev->code = inputev.code;
-          dinputev->value = inputev.value;
-          g_object_set_data( G_OBJECT(trigger_dlg) , "trigger-data" , dinputev );
-          gtk_dialog_response( GTK_DIALOG(trigger_dlg) , GTK_RESPONSE_OK );
+          /* currently, only care about events of type 'key' and 'absolute'
+             TODO: should we handle some other event type as well? */
+          switch ( inputev.type )
+          {
+            case EV_KEY:
+            case EV_ABS:
+            {
+              /* the trigger-dialog window is open; record input and
+               store it in a container managed by the trigger-dialog itself */
+              ed_inputevent_t *dinputev = g_malloc(sizeof(ed_inputevent_t*));
+              dinputev->type = inputev.type;
+              dinputev->code = inputev.code;
+              dinputev->value = inputev.value;
+              g_object_set_data( G_OBJECT(trigger_dlg) , "trigger-data" , dinputev );
+              gtk_dialog_response( GTK_DIALOG(trigger_dlg) , GTK_RESPONSE_OK );
+              break;
+            }
+          }
         }
       }
     }
