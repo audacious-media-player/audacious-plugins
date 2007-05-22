@@ -1,3 +1,11 @@
+2007-05-22 12:24:09 +0000  Giacomo Lozito <james@develia.org>
+  revision [2276]
+  - evdev-plug 0.2: do not intercept all event types, currently only pick types KEY and ABSOLUTE; there could be other event types that are worth intercepting, feedback needed about this
+  trunk/src/evdev-plug/ed_common.h |    2 +-
+  trunk/src/evdev-plug/ed_ui.c     |   26 ++++++++++++++++++--------
+  2 files changed, 19 insertions(+), 9 deletions(-)
+
+
 2007-05-22 09:28:58 +0000  Giacomo Lozito <james@develia.org>
   revision [2274]
   - statusicon: partial rewrite of si_ui_statusicon_cb_hook_tchange , nicer this way
