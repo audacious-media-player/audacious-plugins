@@ -1054,7 +1054,24 @@ then
 fi
 
 dnl CD-Audio New Generation
-PKG_CHECK_MODULES(CDIO, [libcdio >= 0.78.2])
+
+AC_ARG_ENABLE(cdaudio-ng,
+    [  --enable-cdaudio_ng     enable cdaudio-ng input plugin (default=disabled) ],
+    [enable_cdaudio_ng=$enableval],
+    [enable_cdaudio_ng=no]
+)
+
+if test "$enable_cdaudio_ng" = "yes"; then
+   PKG_CHECK_MODULES(CDIO, [libcdio >= 0.78.2],
+   [INPUT_PLUGINS="$INPUT_PLUGINS cdaudnio-ng"
+   CDIO_LIBS=`pkg-config --libs libcdio`
+   CDIO_CFLAGS=`pkg-config --cflags libcdio`
+   AC_SUBST(CDIO_LIBS)
+   AC_SUBST(CDIO_CFLAGS)],
+   [AC_MSG_WARN([*** Cannot find libcdio 0.78.2 or newer, cdaudio-ng will not be built ***])]
+)
+fi
+
 
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
@@ -1400,6 +1417,7 @@ echo "    -> FluidSynth backend:                $enable_amidiplug_fluidsynth"
 echo "    -> dummy backend:                     $enable_amidiplug_dummy"
 echo "  MIDI to WAVE converter (timidity):      $enable_timidity"
 echo "  CD Digital Audio (cdda):                yes"
+echo "  New CD Digital Audio (cdaudio-ng):      $enable_cdaudio_ng"
 echo "  Microsoft WAV (wav):                    yes"
 echo "    + sndfile extensions:                 $enable_sndfile"
 echo "  Tone Generator:                         yes"

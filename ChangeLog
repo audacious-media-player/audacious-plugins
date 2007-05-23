@@ -1,3 +1,11 @@
+2007-05-23 10:48:56 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2280]
+  - add support for reading id3v2 TXXX replaygain tag. patch by Eugene Zagidullin.
+  
+  trunk/src/madplug/replaygain.c |   75 +++++++++++++++++++++++++++++++++++++++++
+  1 file changed, 75 insertions(+)
+
+
 2007-05-22 15:26:53 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2278]
   - FILEWRITER_LIBS had been left blank if bash 3.0 was used for configure, since this version doesn't accept '+='.
