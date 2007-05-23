@@ -194,6 +194,66 @@ static int find_offset(VFSFile * fp)
     return last_match + 1 - 8 + sizeof(struct APETagFooterStruct) - N;
 }
 
+/* Eugene Zagidullin:
+ * Read ReplayGain info from foobar2000-style id3v2 frames */
+
+static int ReadId3v2TXXX(struct mad_info_t *file_info)
+{
+	int i;
+	char *key;
+	char *value;
+	struct id3_frame *frame;
+
+#ifdef DEBUG
+	g_message("f: ReadId3v2TXXX");
+#endif
+	/* tag must be read before! */
+	if (! file_info->tag ) {
+#ifdef DEBUG
+		g_message("id3v2 not found");
+#endif
+		return 0;
+	}
+
+	/* Partially based on code from MPD (http://www.musicpd.org/) */
+	for (i = 0; (frame = id3_tag_findframe(file_info->tag, "TXXX", i)); i++) {
+		if (frame->nfields < 3)
+			continue;
+
+		key = (char *)
+		    id3_ucs4_latin1duplicate(id3_field_getstring
+					     (&frame->fields[1]));
+		value = (char *)
+		    id3_ucs4_latin1duplicate(id3_field_getstring
+					     (&frame->fields[2]));
+
+		if (strcasecmp(key, "replaygain_track_gain") == 0) {
+			file_info->replaygain_track_scale = strgain2double(value, strlen(value));
+			file_info->replaygain_track_str = g_strdup(value);
+		} else if (strcasecmp(key, "replaygain_album_gain") == 0) {
+			file_info->replaygain_album_scale = strgain2double(value, strlen(value));
+			file_info->replaygain_album_str = g_strdup(value);
+		} else if (strcasecmp(key, "replaygain_track_peak") == 0) {
+			file_info->replaygain_track_peak = g_strtod(value, NULL);
+			file_info->replaygain_track_peak_str = g_strdup(value);
+		} else if (strcasecmp(key, "replaygain_album_peak") == 0) {
+			file_info->replaygain_album_peak = g_strtod(value, NULL);
+			file_info->replaygain_album_peak_str = g_strdup(value);
+		}
+
+		free(key);
+		free(value);
+	}
+
+	if (file_info->replaygain_track_scale != -1 || file_info->replaygain_album_scale != -1)
+	{
+		file_info->has_replaygain = TRUE;
+		return 1;
+	}
+
+	return 0;
+}
+
 void read_replaygain(struct mad_info_t *file_info)
 {
     VFSFile *fp;
@@ -209,6 +269,21 @@ void read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_undo = -77;
     file_info->mp3gain_minmax = -77;
 
+    if (ReadId3v2TXXX(file_info)) {
+#ifdef DEBUG
+        g_message("found ReplayGain info in id3v2 tag");
+
+	gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);
+        g_message("RG album scale= %g, RG track scale = %g, in %s",
+		  file_info->replaygain_album_scale,
+		  file_info->replaygain_track_scale, tmp);
+        g_free(tmp);
+#endif
+	return;
+    }
+
+
+    /* APEv2 stuff */
     if (file_info->infile) {
         fp = vfs_dup(file_info->infile);
         curpos = vfs_ftell(fp);

@@ -1,3 +1,11 @@
+2007-05-22 15:26:53 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2278]
+  - FILEWRITER_LIBS had been left blank if bash 3.0 was used for configure, since this version doesn't accept '+='.
+  
+  trunk/configure.ac |    6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
+
+
 2007-05-22 12:24:09 +0000  Giacomo Lozito <james@develia.org>
   revision [2276]
   - evdev-plug 0.2: do not intercept all event types, currently only pick types KEY and ABSOLUTE; there could be other event types that are worth intercepting, feedback needed about this
