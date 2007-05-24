@@ -1,6 +1,6 @@
 /*
  *  Audacious WMA input plugin
- *  (C) 2005 Audacious development team
+ *  (C) 2005, 2006, 2007 Audacious development team
  *
  *  Based on:
  *  xmms-wma - WMA player for BMP
@@ -88,50 +88,29 @@ static char *wsong_title;
 static int wsong_time;
 
 static GtkWidget *dialog1, *button1, *label1;
-
-InputPlugin *get_iplugin_info(void);
-
-gchar *wma_fmts[] = { "wma", NULL };
+static gchar *fmts[] = { "wma", NULL };
 
 InputPlugin wma_ip =
 {
-    NULL,           	// Filled in by xmms
-    NULL,           	// Filled in by xmms
-    description,    	// The description that is shown in the preferences box
-    wma_init,           // Called when the plugin is loaded
-    wma_about,          // Show the about box
-    NULL,  	    	// Show the configure box
-    wma_is_our_file,    // Return 1 if the plugin can handle the file
-    NULL,           	// Scan dir
-    wma_play_file,      // Play file
-    wma_stop,           // Stop
-    wma_do_pause,       // Pause
-    wma_seek,           // Seek
-    NULL,               // Set the equalizer, most plugins won't be able to do this
-    wma_get_time,       // Get the time, usually returns the output plugins output time
-    NULL,           	// Get volume
-    NULL,           	// Set volume
-    NULL,           	// OBSOLETE!
-    NULL,           	// OBSOLETE!
-    NULL,           	// Send data to the visualization plugins
-    NULL,           	// Fill in the stuff that is shown in the player window
-    NULL,           	// Show some text in the song title box. Filled in by xmms
-    wma_get_song_info,  // Function to grab the title string
-    NULL,               // Bring up an info window for the filename passed in
-    NULL,           	// Handle to the current output plugin. Filled in by xmms
-    wma_get_song_tuple, // Tuple builder
-    NULL,
-    NULL,
-    wma_is_our_fd,	// vfs
-    wma_fmts
+    .description = "Windows Media Audio (WMA) Plugin",
+    .init = wma_init,
+    .about = wma_about,
+    .is_our_file = wma_is_our_file,
+    .play_file = wma_play_file,
+    .stop = wma_stop,
+    .pause = wma_do_pause,
+    .seek = wma_seek,
+    .get_song_info = wma_get_song_info,
+    .get_song_tuple = wma_get_song_tuple,
+    .is_our_file_from_vfs = wma_is_our_fd,
+    .vfs_extensions = fmts,
 };
 
-InputPlugin *get_iplugin_info(void)
-{
-    memset(description, 0, 64);
-    wma_ip.description = g_strdup_printf(_("WMA Player %s"), PACKAGE_VERSION);
-    return &wma_ip;
-}
+InputPlugin *wma_iplist[] = { &wma_ip, NULL };
+
+DECLARE_PLUGIN(wma, NULL, NULL, wma_iplist, NULL, NULL, NULL, NULL);
+
+InputPlugin *wma_plugin = &wma_ip;
 
 static gchar *str_twenty_to_space(gchar * str)
 {
@@ -464,7 +443,7 @@ static void wma_play_file(InputPlayback *playback)
 
     wma_st_buff  = ST_BUFF;
 	
-    wma_ip.set_info(wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
+    wma_plugin->set_info(wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
 
     /* av_malloc() will wrap posix_memalign() if necessary -nenolod */
     wma_s_outbuf = av_malloc(wma_st_buff);
