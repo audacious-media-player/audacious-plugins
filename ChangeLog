@@ -1,3 +1,11 @@
+2007-05-24 19:19:58 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2304]
+  - update libconsole to plugin API v2
+  
+  trunk/src/console/Audacious_Driver.cxx |   14 ++++++++------
+  1 file changed, 8 insertions(+), 6 deletions(-)
+
+
 2007-05-24 19:16:55 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2302]
   - update paranormal visualizer to plugin API v2

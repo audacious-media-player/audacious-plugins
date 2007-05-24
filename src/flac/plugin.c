@@ -107,7 +107,7 @@ InputPlugin flac_ip =
 {
 	NULL,
 	NULL,
-	NULL,
+	"FLAC Audio Plugin",
 	FLAC_XMMS__init,
 	FLAC_XMMS__aboutbox,
 	FLAC_XMMS__configure,
@@ -136,6 +136,10 @@ InputPlugin flac_ip =
 	flac_fmts,
 };
 
+InputPlugin *flac_iplist[] = { &flac_ip, NULL };
+
+DECLARE_PLUGIN(flac, NULL, NULL, flac_iplist, NULL, NULL, NULL, NULL);
+
 #define SAMPLES_PER_WRITE 512
 #define SAMPLE_BUFFER_SIZE ((FLAC__MAX_BLOCK_SIZE + SAMPLES_PER_WRITE) * FLAC_PLUGIN__MAX_SUPPORTED_CHANNELS * (24/8))
 static FLAC__byte sample_buffer_[SAMPLE_BUFFER_SIZE];
@@ -151,16 +155,6 @@ static FLAC__bool is_big_endian_host_;
 /* 500ms * 50 = 25s should be enough */
 #define BITRATE_HIST_SIZE 50
 static unsigned bitrate_history_[BITRATE_HIST_SIZE];
-
-#ifdef SUPPORT_ATTRIBUTE_VISIBILITY
-InputPlugin *get_iplugin_info() __attribute__((visibility("default")));
-#endif
-
-InputPlugin *get_iplugin_info()
-{
-	flac_ip.description = g_strdup_printf(_("FLAC Audio Plugin"));
-	return &flac_ip;
-}
 
 void set_track_info(const char* title, int length_in_msec)
 {
