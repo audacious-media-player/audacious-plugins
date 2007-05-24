@@ -1,3 +1,11 @@
+2007-05-24 19:02:58 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2294]
+  - update wav plugin to plugin API v2
+  
+  trunk/src/wav/wav.c |   11 ++++-------
+  1 file changed, 4 insertions(+), 7 deletions(-)
+
+
 2007-05-24 10:35:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2292]
   - port to plugin2 API

@@ -38,7 +38,6 @@
  * Global variables
  */
 struct audmad_config_t audmad_config;   /**< global configuration */
-InputPlugin *mad_plugin = NULL;
 GMutex *mad_mutex;
 GMutex *pb_mutex;
 GCond *mad_cond;
@@ -743,28 +742,27 @@ static TitleInput *audmad_get_song_tuple(char *filename)
 
 static gchar *fmts[] = { "mp3", "mp2", "mpg", NULL };
 
-InputPlugin *get_iplugin_info(void)
-{
-    if (mad_plugin != NULL)
-        return mad_plugin;
+InputPlugin mad_ip = {
+    .description = "MPEG Audio Plugin",
+    .init = audmad_init,
+    .about = audmad_about,
+    .configure = audmad_configure,
+    .is_our_file = audmad_is_our_file,
+    .play_file = audmad_play_file,
+    .stop = audmad_stop,
+    .pause = audmad_pause,
+    .seek = audmad_seek,
+    .cleanup = audmad_cleanup,
+    .get_song_info = audmad_get_song_info,
+    .file_info_box = audmad_get_file_info,
+    .get_song_tuple = audmad_get_song_tuple,
+    .is_our_file_from_vfs = audmad_is_our_fd,
+    .vfs_extensions = fmts,
+    .mseek = audmad_mseek
+};
 
-    mad_plugin = g_new0(InputPlugin, 1);
-    mad_plugin->description = g_strdup(_("MPEG Audio Plugin"));
-    mad_plugin->init = audmad_init;
-    mad_plugin->about = audmad_about;
-    mad_plugin->configure = audmad_configure;
-    mad_plugin->is_our_file = audmad_is_our_file;
-    mad_plugin->play_file = audmad_play_file;
-    mad_plugin->stop = audmad_stop;
-    mad_plugin->pause = audmad_pause;
-    mad_plugin->seek = audmad_seek;
-    mad_plugin->cleanup = audmad_cleanup;
-    mad_plugin->get_song_info = audmad_get_song_info;
-    mad_plugin->file_info_box = audmad_get_file_info;
-    mad_plugin->get_song_tuple = audmad_get_song_tuple;
-    mad_plugin->is_our_file_from_vfs = audmad_is_our_fd;
-    mad_plugin->vfs_extensions = fmts;
-    mad_plugin->mseek = audmad_mseek;
+InputPlugin *madplug_iplist[] = { &mad_ip, NULL };
 
-    return mad_plugin;
-}
+DECLARE_PLUGIN(madplug, NULL, NULL, madplug_iplist, NULL, NULL, NULL, NULL);
+
+InputPlugin *mad_plugin = &mad_ip;
