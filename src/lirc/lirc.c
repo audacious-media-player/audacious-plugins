@@ -53,7 +53,6 @@ const char *plugin_name="LIRC Plugin";
 GeneralPlugin lirc_plugin = {
 	NULL,
 	NULL,
-	-1,
 	NULL,
 	init,
 	about,

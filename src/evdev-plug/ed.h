@@ -34,7 +34,6 @@ GeneralPlugin ed_gp =
 {
     NULL,					/* handle */
     NULL,					/* filename */
-    -1,						/* session */
     "EvDev-Plug " ED_VERSION_PLUGIN,		/* description */
     ed_init,					/* init */
     ed_about,					/* about */

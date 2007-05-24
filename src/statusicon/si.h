@@ -34,7 +34,6 @@ GeneralPlugin si_gp =
 {
     NULL,					/* handle */
     NULL,					/* filename */
-    -1,						/* session */
     "Status Icon " SI_VERSION_PLUGIN,		/* description */
     si_init,					/* init */
     si_about,					/* about */

@@ -1,3 +1,19 @@
+2007-05-24 05:40:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2284]
+  - get rid of warnings.
+  
+  trunk/src/rovascope/Makefile     |    2 +-
+  trunk/src/rovascope/actuators.h  |    1 +
+  trunk/src/rovascope/cmaps.c      |    2 +-
+  trunk/src/rovascope/general.c    |    1 -
+  trunk/src/rovascope/paranormal.c |    1 +
+  trunk/src/rovascope/paranormal.h |    3 +++
+  trunk/src/rovascope/plugin.c     |    4 ++++
+  trunk/src/rovascope/wave.c       |    2 --
+  trunk/src/rovascope/xform.c      |    5 -----
+  9 files changed, 11 insertions(+), 10 deletions(-)
+
+
 2007-05-23 13:08:35 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2282]
   - make build of cdaudio-ng configurable.

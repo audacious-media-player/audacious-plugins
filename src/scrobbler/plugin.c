@@ -58,7 +58,6 @@ static GeneralPlugin xmms_scrobbler =
 {
 	NULL,
 	NULL,
-	-1,
 	NULL,
 	init,
 	about_show,

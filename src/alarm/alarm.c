@@ -1001,9 +1001,8 @@ static void alarm_cleanup()
  */
 static GeneralPlugin alarm_plugin =
 {
-   NULL,
      NULL,
-     -1,
+     NULL,
      "Alarm "VERSION,
      alarm_init,
      alarm_about,

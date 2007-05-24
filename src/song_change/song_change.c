@@ -42,7 +42,6 @@ GeneralPlugin sc_gp =
 {
 	NULL,			/* handle */
 	NULL,			/* filename */
-	-1,			/* xmms_session */
 	NULL,			/* Description */
 	init,
 	NULL,

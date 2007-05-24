@@ -37,7 +37,6 @@ GeneralPlugin aosd_gp =
 {
     NULL,						/* handle */
     NULL,						/* filename */
-    -1,						/* session */
     "Audacious OSD " AOSD_VERSION_PLUGIN,	/* description */
     aosd_init,					/* init */
     aosd_about,					/* about */
