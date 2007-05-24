@@ -98,7 +98,7 @@ gchar *vorbis_fmts[] = { "ogg", "ogm", NULL };
 InputPlugin vorbis_ip = {
     NULL,
     NULL,
-    NULL,                       /* description */
+    "Ogg Vorbis Audio Plugin",  /* description */
     vorbis_init,                /* init */
     vorbis_aboutbox,            /* aboutbox */
     vorbis_configure,           /* configure */
@@ -127,6 +127,10 @@ InputPlugin vorbis_ip = {
     vorbis_fmts,
 };
 
+InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
+
+DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL);
+
 static OggVorbis_File vf;
 
 static GThread *thread;
@@ -137,13 +141,6 @@ static int samplerate, channels;
 GMutex *vf_mutex;
 
 gchar **vorbis_tag_encoding_list = NULL;
-
-InputPlugin *
-get_iplugin_info(void)
-{
-    vorbis_ip.description = g_strdup_printf(_("Ogg Vorbis Audio Plugin"));
-    return &vorbis_ip;
-}
 
 static int
 vorbis_check_file(char *filename)
