@@ -38,7 +38,7 @@ gchar *wav_fmts[] = { "wav", "raw", "pcm", NULL };
 InputPlugin wav_ip = {
     NULL,
     NULL,
-    NULL,                       /* Description */
+    "WAV Audio Plugin",                       /* Description */
     wav_init,
     NULL,
     NULL,
@@ -72,12 +72,9 @@ WaveFile *wav_file = NULL;
 static GThread *decode_thread;
 static gboolean audio_error = FALSE;
 
-InputPlugin *
-get_iplugin_info(void)
-{
-    wav_ip.description = g_strdup_printf(_("WAV Audio Plugin"));
-    return &wav_ip;
-}
+InputPlugin *wav_iplist[] = { &wav_ip, NULL };
+
+DECLARE_PLUGIN(wav, NULL, NULL, wav_iplist, NULL, NULL, NULL, NULL);
 
 static void
 wav_init(void)

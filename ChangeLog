@@ -1,3 +1,11 @@
+2007-05-24 10:35:01 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2292]
+  - port to plugin2 API
+  
+  trunk/src/wav/wav-sndfile.c |   12 +++++++++---
+  1 file changed, 9 insertions(+), 3 deletions(-)
+
+
 2007-05-24 09:12:43 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2290]
   - bump version of plugins and version requirements per plugin api v2
