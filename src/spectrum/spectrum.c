@@ -62,7 +62,6 @@ static void fsanalyzer_render_freq(gint16 data[2][256]);
 VisPlugin fsanalyzer_vp = {
 	NULL,
 	NULL,
-	0,
 	"Spectrum Analyzer " VERSION,
 	0,
 	1,		

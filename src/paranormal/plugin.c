@@ -62,7 +62,6 @@ static VisPlugin pn_vp =
 {
   NULL,
   NULL,
-  0,
   "Paranormal Visualization Studio " VERSION,
   2,
   2,

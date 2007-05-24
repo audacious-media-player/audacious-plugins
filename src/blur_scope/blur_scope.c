@@ -68,7 +68,6 @@ static const int blurscope_menu_entries_num =
 VisPlugin bscope_vp = {
     NULL,
     NULL,
-    0,                          /* XMMS Session ID, filled in by XMMS */
     NULL,                       /* description */
     1,                          /* Number of PCM channels wanted */
     0,                          /* Number of freq channels wanted */

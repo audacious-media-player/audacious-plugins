@@ -1,3 +1,17 @@
+2007-05-24 09:07:53 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2286]
+  - remove xmms_session value from GeneralPlugin structs per plugin api v2
+  
+  trunk/src/alarm/alarm.c             |    3 +--
+  trunk/src/aosd/aosd.h               |    1 -
+  trunk/src/evdev-plug/ed.h           |    1 -
+  trunk/src/lirc/lirc.c               |    1 -
+  trunk/src/scrobbler/plugin.c        |    1 -
+  trunk/src/song_change/song_change.c |    1 -
+  trunk/src/statusicon/si.h           |    1 -
+  7 files changed, 1 insertion(+), 8 deletions(-)
+
+
 2007-05-24 05:40:57 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2284]
   - get rid of warnings.

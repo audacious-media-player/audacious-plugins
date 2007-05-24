@@ -26,7 +26,6 @@ VisPlugin rootvis_vtable = {
 	0, // Handle, filled in by xmms
 	0, // Filename, filled in by xmms
 
-	0,                     // Session ID
 	"Root Spectrum Analyzer 0.0.8",  // description
 
 	0, // # of PCM channels for render_pcm()

@@ -62,7 +62,6 @@ static VisPlugin pn_vp =
 {
   NULL,
   NULL,
-  0,
   "Rovascope " VERSION,
   2,
   2,

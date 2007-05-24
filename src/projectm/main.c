@@ -75,7 +75,6 @@ void read_config();
 VisPlugin projectM_vtable = {
   NULL, // Handle, filled in by xmms
   NULL, // Filename, filled in by xmms
-  0,                     // Session ID
   "projectM v0.99",       // description
   2, // # of PCM channels for render_pcm()
   0, // # of freq channels wanted for render_freq()
