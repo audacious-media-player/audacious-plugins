@@ -72,8 +72,6 @@ InputPlugin *mp4_iplist[] = { &mp4_ip, NULL };
 
 DECLARE_PLUGIN(mp4, NULL, NULL, mp4_iplist, NULL, NULL, NULL, NULL);
 
-InputPlugin *mp4_plugin = &mp4_ip;
-
 typedef struct  _mp4cfg
 {
 #define FILE_UNKNOWN    0
@@ -560,7 +558,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     playback->output->open_audio(FMT_S16_NE, samplerate, channels);
     playback->output->flush(0);
 
-    mp4_plugin->set_info(xmmstitle, msDuration, 
+    mp4_ip.set_info(xmmstitle, msDuration, 
             mp4ff_get_avg_bitrate( mp4file, mp4track ), 
             samplerate,channels);
 
@@ -738,7 +736,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         g_thread_exit(NULL);
     }
 
-    mp4_plugin->set_info(xmmstitle, -1, -1, samplerate, channels);
+    mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
     playback->output->flush(0);
 
     while(buffer_playing && buffervalid > 0 && streambuffer != NULL)
@@ -776,7 +774,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 
                     ostmp = stemp;
 
-                    mp4_plugin->set_info(xmmstitle, -1, -1, samplerate, channels);
+                    mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
                 }
             }
 

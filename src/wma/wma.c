@@ -110,8 +110,6 @@ InputPlugin *wma_iplist[] = { &wma_ip, NULL };
 
 DECLARE_PLUGIN(wma, NULL, NULL, wma_iplist, NULL, NULL, NULL, NULL);
 
-InputPlugin *wma_plugin = &wma_ip;
-
 static gchar *str_twenty_to_space(gchar * str)
 {
     gchar *match, *match_end;
@@ -443,7 +441,7 @@ static void wma_play_file(InputPlayback *playback)
 
     wma_st_buff  = ST_BUFF;
 	
-    wma_plugin->set_info(wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
+    wma_ip.set_info(wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
 
     /* av_malloc() will wrap posix_memalign() if necessary -nenolod */
     wma_s_outbuf = av_malloc(wma_st_buff);

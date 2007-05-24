@@ -1,3 +1,10 @@
+2007-05-24 22:46:25 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2314]
+  Port to plugin API v2.
+  trunk/src/alac/plugin.c |   66 +++++++++++++++---------------------------------
+  1 file changed, 21 insertions(+), 45 deletions(-)
+
+
 2007-05-24 22:21:11 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2312]
   Port to plugin API v2.
