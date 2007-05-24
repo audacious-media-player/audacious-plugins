@@ -6,6 +6,7 @@
 
 #include <glib.h>
 #include <SDL.h>
+#include <string.h>
 
 /* Helper macros for actuator functions */
 #define PN_ACTUATOR_INIT_FUNC(f) ((void (*) (gpointer *data))f)

@@ -1,3 +1,13 @@
+2007-05-23 13:08:35 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2282]
+  - make build of cdaudio-ng configurable.
+  
+  trunk/configure.ac            |   20 +++++++++++++++++++-
+  trunk/mk/rules.mk.in          |    2 ++
+  trunk/src/cdaudio-ng/Makefile |    2 +-
+  3 files changed, 22 insertions(+), 2 deletions(-)
+
+
 2007-05-23 10:48:56 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2280]
   - add support for reading id3v2 TXXX replaygain tag. patch by Eugene Zagidullin.

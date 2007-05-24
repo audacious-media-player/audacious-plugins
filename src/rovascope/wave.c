@@ -2,8 +2,6 @@
 # include <config.h>
 #endif
 
-#include <math.h>
-
 #include "paranormal.h"
 #include "actuators.h"
 #include "pn_utils.h"

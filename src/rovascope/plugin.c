@@ -15,12 +15,14 @@
 #include <math.h>
 #include <setjmp.h>
 #include <unistd.h>
+#include <sched.h>
 
 #include <glib.h>
 #include <audacious/i18n.h>
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
+#include <audacious/util.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_thread.h>
 
@@ -250,6 +252,7 @@ pn_xmms_cleanup (void)
     }
 }
 
+#if 0
 static void
 about_close_clicked(GtkWidget *w, GtkWidget **window)
 {
@@ -262,6 +265,7 @@ about_closed(GtkWidget *w, GdkEvent *e, GtkWidget **window)
 {
 	about_close_clicked(w,window);
 }
+#endif
 
 static void
 pn_xmms_about (void)

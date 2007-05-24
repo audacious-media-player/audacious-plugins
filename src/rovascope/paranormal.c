@@ -17,6 +17,7 @@
 
 #include "paranormal.h"
 #include "actuators.h"
+#include "containers.h"
 
 /* SDL stuffs */
 SDL_Surface *screen;
