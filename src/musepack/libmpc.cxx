@@ -13,7 +13,7 @@ const gchar *mpc_fmts[] = { "mpc", NULL };
 InputPlugin MpcPlugin = {
     NULL,           //File Handle               FILE* handle
     NULL,           //Filename                  char* filename
-    NULL,           //Name of Plugin            char* filename
+    "Musepack Audio Plugin",
     mpcOpenPlugin,  //Open Plugin               [CALLBACK]
     mpcAboutBox,    //Show About box            [CALLBACK]
     mpcConfigBox,   //Show Configure box        [CALLBACK]
@@ -42,12 +42,9 @@ InputPlugin MpcPlugin = {
     (gchar **)mpc_fmts
 };
 
-extern "C"
-InputPlugin* get_iplugin_info()
-{
-    MpcPlugin.description = g_strdup_printf("Musepack Audio Plugin");
-    return &MpcPlugin;
-}
+InputPlugin *mpc_iplist[] = { &MpcPlugin, NULL };
+
+DECLARE_PLUGIN(musepack, NULL, NULL, mpc_iplist, NULL, NULL, NULL, NULL);
 
 static PluginConfig pluginConfig = {0};
 static Widgets      widgets      = {0};
