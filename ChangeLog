@@ -1,3 +1,11 @@
+2007-05-24 19:16:55 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2302]
+  - update paranormal visualizer to plugin API v2
+  
+  trunk/src/paranormal/plugin.c |   10 ++++------
+  1 file changed, 4 insertions(+), 6 deletions(-)
+
+
 2007-05-24 19:15:22 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2300]
   - update OSS plugin to plugin API v2
