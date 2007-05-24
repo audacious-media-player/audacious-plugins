@@ -54,11 +54,11 @@ static GThread *pt_handshake;
 static GMutex *hs_mutex, *xs_mutex;
 static GCond *hs_cond, *xs_cond;
 
-static GeneralPlugin xmms_scrobbler =
+static GeneralPlugin scrobbler_gp =
 {
 	NULL,
 	NULL,
-	NULL,
+	"Scrobbler Plugin",
 	init,
 	about_show,
 	NULL,
@@ -175,9 +175,6 @@ static void init(void)
 
 static void cleanup(void)
 {
-        g_free (xmms_scrobbler.description);
-        xmms_scrobbler.description = NULL;
-
         prefswin_page_destroy(cfgdlg);
 
 	if (!sc_going && !ge_going)
@@ -322,8 +319,6 @@ static void *hs_thread(void *data __attribute__((unused)))
 	return NULL;
 }
 
-GeneralPlugin *get_gplugin_info(void)
-{
-	xmms_scrobbler.description = g_strdup_printf(_("Scrobbler Plugin"));
-	return &xmms_scrobbler;
-}
+GeneralPlugin *scrobbler_gplist[] = { &scrobbler_gp, NULL };
+
+DECLARE_PLUGIN(scrobbler, NULL, NULL, NULL, NULL, NULL, scrobbler_gplist, NULL);
