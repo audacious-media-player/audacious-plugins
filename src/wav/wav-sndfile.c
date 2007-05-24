@@ -338,10 +338,16 @@ static void wav_about(void)
 	}
 }
 
-
-InputPlugin *get_iplugin_info(void)
+void init(void)
 {
         wav_ip.description = g_strdup_printf(_("sndfile WAV plugin"));
-        return &wav_ip;
 }
 
+void fini(void)
+{
+	g_free(wav_ip.description);
+}
+
+InputPlugin *wav_iplist[] = { &wav_ip, NULL };
+
+DECLARE_PLUGIN(wav-sndfile, init, fini, wav_iplist, NULL, NULL, NULL, NULL)
