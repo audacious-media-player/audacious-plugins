@@ -1,3 +1,11 @@
+2007-05-24 19:22:58 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2306]
+  - update FLAC plugin to plugin API v2
+  
+  trunk/src/flac/plugin.c |   16 +++++-----------
+  1 file changed, 5 insertions(+), 11 deletions(-)
+
+
 2007-05-24 19:19:58 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2304]
   - update libconsole to plugin API v2
