@@ -1,5 +1,4 @@
-
-/*      xmms - esound outputmkdir  plugin
+/*    xmms - esound output plugin
  *    Copyright (C) 1999      Galex Yen
  *      
  *      this program is free software
@@ -24,7 +23,7 @@
 OutputPlugin esd_op = {
     NULL,
     NULL,
-    NULL,                       /* Description */
+    "ESD Output Plugin",
     esdout_init,
     NULL,
     esdout_about,
@@ -43,9 +42,6 @@ OutputPlugin esd_op = {
     esdout_tell
 };
 
-OutputPlugin *
-get_oplugin_info(void)
-{
-    esd_op.description = g_strdup_printf(_("eSound Output Plugin"));
-    return &esd_op;
-}
+OutputPlugin *esd_oplist[] = { &esd_op, NULL };
+
+DECLARE_PLUGIN(esd, NULL, NULL, NULL, esd_oplist, NULL, NULL, NULL);

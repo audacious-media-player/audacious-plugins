@@ -1,3 +1,11 @@
+2007-05-24 23:07:16 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2318]
+  - filewriter: transition to plugin API v2
+  
+  trunk/src/filewriter/filewriter.c |   10 ++++------
+  1 file changed, 4 insertions(+), 6 deletions(-)
+
+
 2007-05-24 22:53:40 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2316]
   - conversion to yaz's style was not needed, just API v2 ;p
