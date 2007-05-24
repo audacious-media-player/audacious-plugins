@@ -1,3 +1,13 @@
+2007-05-24 22:53:40 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2316]
+  - conversion to yaz's style was not needed, just API v2 ;p
+  
+  trunk/src/aac/src/libmp4.c |    8 +++-----
+  trunk/src/alac/plugin.c    |    4 +---
+  trunk/src/wma/wma.c        |    4 +---
+  3 files changed, 5 insertions(+), 11 deletions(-)
+
+
 2007-05-24 22:46:25 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2314]
   Port to plugin API v2.

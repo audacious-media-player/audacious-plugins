@@ -92,7 +92,7 @@ OutputPlugin file_op =
 {
     NULL,
     NULL,
-    NULL,
+    "FileWriter Plugin",
     file_init,
     NULL,
     file_about,
@@ -111,11 +111,9 @@ OutputPlugin file_op =
     NULL
 };
 
-OutputPlugin *get_oplugin_info(void)
-{
-    file_op.description = g_strdup_printf("FileWriter %s", VERSION);
-    return &file_op;
-}
+OutputPlugin *file_oplist[] = { &file_op, NULL };
+
+DECLARE_PLUGIN(filewriter, NULL, NULL, file_oplist, NULL, NULL, NULL, NULL);
 
 static void set_plugin(void)
 {
