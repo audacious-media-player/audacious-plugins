@@ -1,3 +1,16 @@
+2007-05-24 09:11:23 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2288]
+  - remove xmms_session values per plugin api v2
+  
+  trunk/src/blur_scope/blur_scope.c |    1 -
+  trunk/src/paranormal/plugin.c     |    1 -
+  trunk/src/projectm/main.c         |    1 -
+  trunk/src/rootvis/rootvis.c       |    1 -
+  trunk/src/rovascope/plugin.c      |    1 -
+  trunk/src/spectrum/spectrum.c     |    1 -
+  6 files changed, 6 deletions(-)
+
+
 2007-05-24 09:07:53 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2286]
   - remove xmms_session value from GeneralPlugin structs per plugin api v2
