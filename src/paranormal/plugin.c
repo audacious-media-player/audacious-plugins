@@ -62,7 +62,7 @@ static VisPlugin pn_vp =
 {
   NULL,
   NULL,
-  "Paranormal Visualization Studio " VERSION,
+  "Paranormal Visualization Studio",
   2,
   2,
   pn_xmms_init,
@@ -76,11 +76,9 @@ static VisPlugin pn_vp =
   pn_xmms_render_freq
 };
 
-VisPlugin *
-get_vplugin_info (void)
-{
-  return &pn_vp;
-}
+VisPlugin *pn_vplist[] = { &pn_vp, NULL };
+
+DECLARE_PLUGIN(paranormal, NULL, NULL, NULL, NULL, NULL, NULL, pn_vplist);
 
 static void
 load_pn_rc (void)
