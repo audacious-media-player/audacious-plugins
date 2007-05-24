@@ -1,3 +1,11 @@
+2007-05-24 23:32:36 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2326]
+  - wavpack: transition to plugin API v2
+  
+  trunk/src/wavpack/libwavpack.cxx |   10 +++-------
+  1 file changed, 3 insertions(+), 7 deletions(-)
+
+
 2007-05-24 23:30:56 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2324]
   - musepack: transition to plugin API v2

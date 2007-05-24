@@ -84,7 +84,7 @@ InputPlugin gModPlug =
 {
 	NULL,
 	NULL,
-	(gchar *)"ModPlug Player",
+	(gchar *)"ModPlug Audio Plugin",
 	Init,
 	ShowAboutBox,
 	ShowConfigureBox,
@@ -113,10 +113,6 @@ InputPlugin gModPlug =
 	(gchar **)fmts,
 };
 
-extern "C"
-{
-	InputPlugin* get_iplugin_info (void)
-	{
-		return &gModPlug;
-	}
-}
+InputPlugin *modplug_iplist[] = { &gModPlug, NULL };
+
+DECLARE_PLUGIN(modplug, NULL, NULL, modplug_iplist, NULL, NULL, NULL, NULL);
