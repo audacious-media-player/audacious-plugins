@@ -44,7 +44,7 @@ static void        mp4_get_song_title_len(char *filename, char **, int *);
 static TitleInput* mp4_get_song_tuple(char *);
 static int         mp4_is_our_fd(char *, VFSFile *);
 
-gchar *mp4_fmts[] = { "m4a", "mp4", "aac", NULL };
+static gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
 
 static void *   mp4_decode(void *);
 static gchar *  mp4_get_song_title(char *filename);
@@ -53,36 +53,26 @@ gboolean        buffer_playing;
 
 InputPlugin mp4_ip =
 {
-    NULL,  // handle
-    NULL,  // filename
-    "MP4 Audio Plugin",
-    mp4_init,
-    mp4_about,
-    NULL,  // configuration
-    mp4_is_our_file,
-    NULL,  //scandir
-    mp4_play,
-    mp4_stop,
-    mp4_pause,
-    mp4_seek,
-    NULL,  // set equalizer
-    mp4_get_time,
-    NULL,  // get volume
-    NULL,
-    mp4_cleanup,
-    NULL,  // obsolete
-    NULL,  // send visualisation data
-    NULL,  // set player window info
-    NULL,  // set song title text
-    mp4_get_song_title_len,  // get song title text
-    NULL,  // info box
-    NULL,  // to output plugin
-    mp4_get_song_tuple,
-    NULL,
-    NULL,
-    mp4_is_our_fd,
-    mp4_fmts,
+    .description = "MP4 Audio Plugin",
+    .init = mp4_init,
+    .about = mp4_about,
+    .is_our_file = mp4_is_our_file,
+    .play_file = mp4_play,
+    .stop = mp4_stop,
+    .pause = mp4_pause,
+    .seek = mp4_seek,
+    .cleanup = mp4_cleanup,
+    .get_song_info = mp4_get_song_title_len,
+    .get_song_tuple = mp4_get_song_tuple,
+    .is_our_file_from_vfs = mp4_is_our_fd,
+    .vfs_extensions = fmts,
 };
+
+InputPlugin *mp4_iplist[] = { &mp4_ip, NULL };
+
+DECLARE_PLUGIN(mp4, NULL, NULL, mp4_iplist, NULL, NULL, NULL, NULL);
+
+InputPlugin *mp4_plugin = &mp4_ip;
 
 typedef struct  _mp4cfg
 {
@@ -125,11 +115,6 @@ extname(const char *filename)
         ++ext;
 
     return ext;
-}
-
-InputPlugin *get_iplugin_info(void)
-{
-    return(&mp4_ip);
 }
 
 static void mp4_init(void)
@@ -575,7 +560,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     playback->output->open_audio(FMT_S16_NE, samplerate, channels);
     playback->output->flush(0);
 
-    mp4_ip.set_info(xmmstitle, msDuration, 
+    mp4_plugin->set_info(xmmstitle, msDuration, 
             mp4ff_get_avg_bitrate( mp4file, mp4track ), 
             samplerate,channels);
 
@@ -753,7 +738,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         g_thread_exit(NULL);
     }
 
-    mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
+    mp4_plugin->set_info(xmmstitle, -1, -1, samplerate, channels);
     playback->output->flush(0);
 
     while(buffer_playing && buffervalid > 0 && streambuffer != NULL)
@@ -791,7 +776,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 
                     ostmp = stemp;
 
-                    mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
+                    mp4_plugin->set_info(xmmstitle, -1, -1, samplerate, channels);
                 }
             }
 
