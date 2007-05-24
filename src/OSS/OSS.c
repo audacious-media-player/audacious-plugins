@@ -28,7 +28,7 @@
 OutputPlugin oss_op = {
     NULL,
     NULL,
-    NULL,                       /* Description */
+    "OSS Output Plugin",                       /* Description */
     oss_init,
     oss_cleanup,
     oss_about,
@@ -47,13 +47,9 @@ OutputPlugin oss_op = {
     oss_tell
 };
 
-OutputPlugin *
-get_oplugin_info(void)
-{
-    oss_op.description = g_strdup_printf(_("OSS Output Plugin"));
-    return &oss_op;
-}
+OutputPlugin *oss_oplist[] = { &oss_op, NULL };
 
+DECLARE_PLUGIN(OSS, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL);
 
 void oss_cleanup(void)
 {
