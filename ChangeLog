@@ -1,3 +1,10 @@
+2007-05-24 22:21:11 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2312]
+  Port to plugin API v2.
+  trunk/src/aac/src/libmp4.c |   61 ++++++++++++++++-----------------------------
+  1 file changed, 23 insertions(+), 38 deletions(-)
+
+
 2007-05-24 21:54:58 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2310]
   Port to plugin API v2.

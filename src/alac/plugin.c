@@ -91,11 +91,6 @@ static void alac_about(void)
 			 &aboutbox);
 }
 
-static void alac_init(void)
-{
-	/* empty */
-}
-
 gboolean is_our_fd(char *filename, VFSFile* input_file)
 {
     demux_res_t demux_res;
@@ -213,40 +208,6 @@ static gint get_time(InputPlayback *data)
 	return -1;
 }
 
-gchar *alac_fmts[] = { "m4a", "alac", NULL };
-
-InputPlugin alac_ip = {
-    NULL,
-    NULL,
-    "Apple Lossless Plugin",                       /* Description */  
-    alac_init,
-    alac_about,
-    NULL,
-    NULL,
-    NULL,
-    play_file,
-    stop,
-    do_pause,
-    seek,
-    NULL,
-    get_time,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,                       /* file_info_box */
-    NULL,
-    build_tuple,
-    NULL,
-    NULL,
-    is_our_fd,
-    alac_fmts
-};
-
 static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,
                            uint32_t *sample_duration,
                            uint32_t *sample_byte_size)
@@ -336,6 +297,26 @@ void GetBuffer(demux_res_t *demux_res)
     free(pDestBuffer);
 }
 
+static gchar *fmts[] = { "m4a", "alac", NULL };
+
+InputPlugin alac_ip = {
+    .description = "Apple Lossless Plugin",
+    .about = alac_about,
+    .play_file = play_file,
+    .stop = stop,
+    .pause = do_pause,
+    .seek = seek,
+    .get_song_tuple = build_tuple,
+    .is_our_file_from_vfs = is_our_fd,
+    .vfs_extensions = fmts,
+};
+
+InputPlugin *alac_iplist[] = { &alac_ip, NULL };
+
+DECLARE_PLUGIN(alac, NULL, NULL, alac_iplist, NULL, NULL, NULL, NULL);
+
+InputPlugin *alac_plugin = &alac_ip;
+
 gpointer decode_thread(void *args)
 {
     demux_res_t demux_res;
@@ -377,7 +358,7 @@ gpointer decode_thread(void *args)
 	(float)(demux_res.sample_rate / 251));
 
     playback->output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
-    alac_ip.set_info(title, duration, -1, demux_res.sample_rate, demux_res.num_channels);
+    alac_plugin->set_info(title, duration, -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
     GetBuffer(&demux_res);
@@ -392,9 +373,4 @@ gpointer decode_thread(void *args)
     playback->output->close_audio();
 
     return NULL;
-}
-
-InputPlugin *get_iplugin_info(void)
-{
-    return &alac_ip;
 }
