@@ -90,7 +90,7 @@ InputPlugin cue_ip =
 {
 	NULL,			/* handle */
 	NULL,			/* filename */
-	NULL,			/* description */
+	"Cuesheet Plugin",	/* description */
 	cue_init,	       	/* init */
 	NULL,	       	/* about */
 	NULL,	  	   	/* configure */
@@ -115,6 +115,10 @@ InputPlugin cue_ip =
 	get_tuple,
 	NULL
 };
+
+InputPlugin *cue_iplist[] = { &cue_ip, NULL };
+
+DECLARE_PLUGIN(cue, NULL, NULL, cue_iplist, NULL, NULL, NULL, NULL);
 
 static void cue_init(void)
 {
@@ -488,12 +492,6 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 #ifdef DEBUG
     g_print("e: play_cue_uri\n");
 #endif
-}
-
-InputPlugin *get_iplugin_info(void)
-{
-	cue_ip.description = g_strdup_printf("Cuesheet Container Plugin");
-	return &cue_ip;
 }
 
 /******************************************************* watchdog */
