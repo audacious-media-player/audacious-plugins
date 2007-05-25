@@ -88,7 +88,7 @@ InputPlugin tta_ip =
 {
 	NULL,
 	NULL,
-	NULL,
+	"True Audio Plugin",
 	init,
 	about,
 	NULL,
@@ -117,12 +117,9 @@ InputPlugin tta_ip =
 	tta_fmts,
 };
 
-InputPlugin *
-get_iplugin_info (void)
-{
-	tta_ip.description = g_strdup_printf ("True Audio Plugin %s", PLUGIN_VERSION);
-	return &tta_ip;
-}
+InputPlugin *tta_iplist[] = { &tta_ip, NULL };
+
+DECLARE_PLUGIN(tta, NULL, NULL, tta_iplist, NULL, NULL, NULL, NULL);
 
 size_t
 file_size (char *filename)
