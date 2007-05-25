@@ -1064,8 +1064,8 @@ AC_ARG_ENABLE(cdaudio-ng,
 if test "$enable_cdaudio_ng" = "yes"; then
    PKG_CHECK_MODULES(CDIO, [libcdio >= 0.78.2],
    [INPUT_PLUGINS="$INPUT_PLUGINS cdaudio-ng"
-   CDIO_LIBS=`pkg-config --libs libcdio`
-   CDIO_CFLAGS=`pkg-config --cflags libcdio`
+   CDIO_LIBS=`pkg-config --libs libcdio_cdda`
+   CDIO_CFLAGS=`pkg-config --cflags libcdio_cdda`
    AC_SUBST(CDIO_LIBS)
    AC_SUBST(CDIO_CFLAGS)],
    [AC_MSG_WARN([*** Cannot find libcdio 0.78.2 or newer, cdaudio-ng will not be built ***])]

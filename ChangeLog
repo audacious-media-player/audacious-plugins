@@ -1,3 +1,11 @@
+2007-05-25 03:06:47 +0000  Stephen Sokolow <deitarion@gmail.com>
+  revision [2330]
+  Fixed a typo in the cdaudio-ng portion of configure.ac as discovered by Crazy_Hopper.
+  
+  trunk/configure.ac |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-05-24 23:34:36 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2328]
   - modplug: transition to plugin API v2
