@@ -86,7 +86,7 @@ InputPlugin amidiplug_ip =
 {
   NULL,					/* handle */
   NULL,					/* filename */
-  "AMIDI-Plug" AMIDIPLUG_VERSION " (MIDI Player)", /* description */
+  "AMIDI-Plug " AMIDIPLUG_VERSION " (MIDI Player)", /* description */
   amidiplug_init,			/* init */
   amidiplug_aboutbox,			/* aboutbox */
   amidiplug_configure,			/* configure */
