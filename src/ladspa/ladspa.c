@@ -37,7 +37,7 @@
 #define PATH_MAX 4096
 #endif
 
-#define PLUGIN_NAME "LADSPA host " PACKAGE_VERSION
+#define PLUGIN_NAME "LADSPA host"
 
 #define MAX_SAMPLES 8192
 #define MAX_KNOBS 64
@@ -126,10 +126,9 @@ static EffectPlugin xmms_plugin = {
   NULL
 };
 
-EffectPlugin *get_eplugin_info (void)
-{
-  return &xmms_plugin;
-}
+EffectPlugin *ladspa_eplist[] = { &ladspa_ep, NULL };
+
+DECLARE_PLUGIN(ladspa, NULL, NULL, NULL, NULL, ladspa_eplist, NULL, NULL);
 
 static void start (void)
 {
