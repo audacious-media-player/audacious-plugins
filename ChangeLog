@@ -1,3 +1,11 @@
+2007-05-25 06:06:58 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2334]
+  - alsa: commit to plugin API v2
+  
+  trunk/src/alsa/alsa.c |    9 +++------
+  1 file changed, 3 insertions(+), 6 deletions(-)
+
+
 2007-05-25 03:30:08 +0000  Stephen Sokolow <deitarion@gmail.com>
   revision [2332]
   Switch pkg-config for cdaudio-ng from libcdio to libcdio_cdda (At the request of Crazy_Hopper)

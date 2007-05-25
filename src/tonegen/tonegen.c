@@ -239,7 +239,7 @@ static InputPlugin tone_ip =
 {
 	NULL,
 	NULL,
-	NULL, /* Description */
+	"Tone Generator", /* Description */
 	NULL,
 	tone_about,
 	NULL,
@@ -263,8 +263,6 @@ static InputPlugin tone_ip =
 	NULL
 };
 
-InputPlugin *get_iplugin_info(void)
-{
-	tone_ip.description = g_strdup_printf(_("Tone Generator %s"), PACKAGE_VERSION);
-	return &tone_ip;
-}
+InputPlugin *tonegen_iplist[] = { &tone_ip, NULL };
+
+DECLARE_PLUGIN(tonegen, NULL, NULL, tonegen_iplist, NULL, NULL, NULL, NULL);
