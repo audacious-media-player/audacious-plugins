@@ -26,18 +26,15 @@
 #include <audacious/i18n.h>
 
 
+GeneralPlugin *aosd_gplist[] = { &aosd_gp, NULL };
+DECLARE_PLUGIN(aosd, NULL, NULL, NULL, NULL, NULL, aosd_gplist, NULL);
+
 aosd_cfg_t * global_config = NULL;
 gboolean plugin_is_active = FALSE;
 
 
 /* ***************** */
 /* plug-in functions */
-
-GeneralPlugin *get_gplugin_info()
-{
-   return &aosd_gp;
-}
-
 
 void
 aosd_init ( void )
