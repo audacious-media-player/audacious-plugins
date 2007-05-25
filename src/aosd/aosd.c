@@ -22,7 +22,6 @@
 #include "aosd_osd.h"
 #include "aosd_cfg.h"
 #include "aosd_trigger.h"
-#include <audacious/input.h>
 #include <audacious/i18n.h>
 
 
