@@ -27,6 +27,9 @@
 #include <audacious/playlist.h>
 
 
+GeneralPlugin *statusicon_gplist[] = { &si_gp, NULL };
+DECLARE_PLUGIN(statusicon, NULL, NULL, NULL, NULL, NULL, statusicon_gplist, NULL);
+
 static gboolean plugin_active = FALSE;
 
 extern si_cfg_t si_cfg;
@@ -34,12 +37,6 @@ extern si_cfg_t si_cfg;
 
 /* ***************** */
 /* plug-in functions */
-
-GeneralPlugin *get_gplugin_info()
-{
-   return &si_gp;
-}
-
 
 void
 si_init ( void )

@@ -1,3 +1,10 @@
+2007-05-25 09:37:51 +0000  Giacomo Lozito <james@develia.org>
+  revision [2396]
+  - aosd: remove unused input.h inclusion
+  trunk/src/aosd/aosd.c |    1 -
+  1 file changed, 1 deletion(-)
+
+
 2007-05-25 09:35:33 +0000  Giacomo Lozito <james@develia.org>
   revision [2394]
   - aosd: converted to v2 plugin system
