@@ -18,7 +18,7 @@ EffectPlugin stereo_ep =
 {
 	NULL,
 	NULL,
-	NULL, /* Description */
+	"Extra Stereo Plugin", /* Description */
 	init,
 	NULL,
 	about,
@@ -32,12 +32,9 @@ static const char *about_text = N_("Extra Stereo Plugin\n\n"
 static GtkWidget *conf_dialog = NULL;
 static gdouble value;
 
-EffectPlugin *get_eplugin_info(void)
-{
-	stereo_ep.description =
-		g_strdup_printf(_("Extra Stereo Plugin %s"), VERSION);
-	return &stereo_ep;
-}
+EffectPlugin *stereo_eplist[] = { &stereo_ep, NULL };
+
+DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL);
 
 static void init(void)
 {
