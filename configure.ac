@@ -1063,7 +1063,7 @@ AC_ARG_ENABLE(cdaudio-ng,
 
 if test "$enable_cdaudio_ng" = "yes"; then
    PKG_CHECK_MODULES(CDIO, [libcdio >= 0.78.2],
-   [INPUT_PLUGINS="$INPUT_PLUGINS cdaudnio-ng"
+   [INPUT_PLUGINS="$INPUT_PLUGINS cdaudio-ng"
    CDIO_LIBS=`pkg-config --libs libcdio`
    CDIO_CFLAGS=`pkg-config --cflags libcdio`
    AC_SUBST(CDIO_LIBS)

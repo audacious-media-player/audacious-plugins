@@ -1,3 +1,11 @@
+2007-05-24 23:34:36 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2328]
+  - modplug: transition to plugin API v2
+  
+  trunk/src/modplug/plugin.cxx |   12 ++++--------
+  1 file changed, 4 insertions(+), 8 deletions(-)
+
+
 2007-05-24 23:32:36 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2326]
   - wavpack: transition to plugin API v2
