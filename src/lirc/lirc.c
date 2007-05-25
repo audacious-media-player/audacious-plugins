@@ -53,18 +53,15 @@ const char *plugin_name="LIRC Plugin";
 GeneralPlugin lirc_plugin = {
 	NULL,
 	NULL,
-	NULL,
+	"LIRC Plugin",
 	init,
 	about,
 	NULL,
 	cleanup,
 };
 
-GeneralPlugin *get_gplugin_info(void)
-{
-        lirc_plugin.description = g_strdup_printf(_("LIRC Plugin")); 
-        return(&lirc_plugin);
-}
+GeneralPlugin *lirc_gplist[] = { &lirc_plugin, NULL };
+DECLARE_PLUGIN(lirc, NULL, NULL, NULL, NULL, NULL, lirc_gplist, NULL);
 
 int lirc_fd=-1;
 struct lirc_config *config=NULL;
