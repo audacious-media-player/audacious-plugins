@@ -34,7 +34,7 @@ OutputPlugin arts_op =
 {
 	NULL,
 	NULL,
-	"aRts Output Plugin 0.7.1",
+	"aRts Output Plugin",
 	artsxmms_init,
 	NULL,
 	about,
@@ -53,7 +53,6 @@ OutputPlugin arts_op =
 	artsxmms_tell_audio
 };
 
-OutputPlugin *get_oplugin_info(void)
-{
-	return &arts_op;
-}
+OutputPlugin *arts_oplist[] = { &arts_op, NULL };
+
+DECLARE_PLUGIN(arts, NULL, NULL, NULL, arts_oplist, NULL, NULL, NULL);
