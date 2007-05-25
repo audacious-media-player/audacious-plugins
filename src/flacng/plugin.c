@@ -61,6 +61,10 @@ InputPlugin flac_ip = {
     flac_fmts			// vector of fileextensions allowed by the plugin
 };
 
+InputPlugin *flac_iplist[] = { &flac_ip, NULL };
+
+DECLARE_PLUGIN(flacng, NULL, NULL, flac_iplist, NULL, NULL, NULL, NULL);
+
 FLAC__StreamDecoder* test_decoder;
 FLAC__StreamDecoder* main_decoder;
 callback_info* test_info;
@@ -71,17 +75,6 @@ static GThread* thread = NULL;
 GMutex* flac_pl_mutex;
 
 /* === */
-
-InputPlugin* get_iplugin_info(void) {
-
-    _ENTER;
-
-    _DEBUG("%s (%s)", flac_ip.description, _VERSION);
-
-    _LEAVE &flac_ip;
-}
-
-/* --- */
 
 void flac_init(void) {
 
