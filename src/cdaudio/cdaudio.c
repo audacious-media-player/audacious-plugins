@@ -150,6 +150,10 @@ InputPlugin cdda_ip = {
     get_song_tuple
 };
 
+InputPlugin *cdda_iplist[] = { &cdda_ip, NULL };
+
+DECLARE_PLUGIN(cdda, NULL, NULL, cdda_iplist, NULL, NULL, NULL, NULL);
+
 CDDAConfig cdda_cfg;
 
 static struct {
@@ -179,15 +183,6 @@ static GList *timeout_list;
 
 /* Time to delay stop command in 1/10 second */
 #define STOP_DELAY 20
-
-InputPlugin *
-get_iplugin_info(void)
-{
-    cdda_ip.description = g_strdup_printf(_("CD Audio Plugin"));
-    return &cdda_ip;
-}
-
-
 
 #ifdef BEEP_CDROM_SOLARIS
 /*
