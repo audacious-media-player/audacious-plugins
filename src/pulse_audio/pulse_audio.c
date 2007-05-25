@@ -702,8 +702,7 @@ static void pulse_about(void) {
             &dialog);
 }
 
-OutputPlugin *get_oplugin_info(void) {
-    static OutputPlugin pulse_plugin = {
+static OutputPlugin pulse_op = {
         NULL,
         NULL,
         "PulseAudio Output Plugin",
@@ -723,7 +722,8 @@ OutputPlugin *get_oplugin_info(void) {
         pulse_get_output_time,              
         pulse_get_written_time,
 	NULL,             
-    };
+};
 
-    return &pulse_plugin;
-}
+OutputPlugin *pulse_oplist[] = { &pulse_op, NULL };
+
+DECLARE_PLUGIN(pulse, NULL, NULL, NULL, pulse_oplist, NULL, NULL, NULL);
