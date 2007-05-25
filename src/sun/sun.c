@@ -31,7 +31,7 @@ OutputPlugin sun_op =
 {
 	NULL,
 	NULL,
-	NULL,			/* Description */
+	"BSD/Sun Output Plugin",	/* Description */
 	sun_init,
 	sun_cleanup,
 	sun_about,
@@ -50,13 +50,9 @@ OutputPlugin sun_op =
 	NULL
 };
 
+OutputPlugin *sun_oplist[] = { &sun_op, NULL };
 
-OutputPlugin * get_oplugin_info(void)
-{
-	sun_op.description = g_strdup_printf(_("BSD Sun Driver %s"),
-					     SUN_VERSION);
-	return (&sun_op);
-}
+DECLARE_PLUGIN(sun, NULL, NULL, NULL, sun_oplist, NULL, NULL, NULL);
 
 void sun_init(void)
 {
