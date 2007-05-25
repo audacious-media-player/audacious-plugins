@@ -1,3 +1,12 @@
+2007-05-25 06:30:47 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2360]
+  - amidi-plug: convert to plugin API v2
+  
+  trunk/src/amidi-plug/amidi-plug.c |    8 ++------
+  trunk/src/amidi-plug/amidi-plug.h |    2 +-
+  2 files changed, 3 insertions(+), 7 deletions(-)
+
+
 2007-05-25 06:25:59 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2358]
   - adplug: convert to plugin API v2

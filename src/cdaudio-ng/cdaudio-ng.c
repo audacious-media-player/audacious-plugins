@@ -79,7 +79,7 @@ static unsigned long	calculate_cddb_discid();
 static InputPlugin inputplugin = {
 	NULL,
 	NULL,
-	NULL,
+	"Zither's CD Audio Plugin",
 	cdaudio_init,
 	cdaudio_about,
 	cdaudio_configure,
@@ -104,13 +104,9 @@ static InputPlugin inputplugin = {
 	cdaudio_get_song_tuple
 };
 
+InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };
 
-InputPlugin *get_iplugin_info(void)
-{
-	inputplugin.description = g_strdup_printf("Zither's CD Audio Plugin");
-	return &inputplugin;
-}
-
+DECLARE_PLUGIN(cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL);
 
 void cdaudio_init()
 {
