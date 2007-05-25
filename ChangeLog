@@ -1,3 +1,10 @@
+2007-05-25 09:07:04 +0000  Giacomo Lozito <james@develia.org>
+  revision [2390]
+  - amidi-plug: remove g_free(description) in cleanup function to avoid crash on quit
+  trunk/src/amidi-plug/amidi-plug.c |    1 -
+  1 file changed, 1 deletion(-)
+
+
 2007-05-25 08:55:15 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2388]
   - remove g_free(description) in cleanup functions to avoid crash on quit.
