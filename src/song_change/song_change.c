@@ -42,18 +42,15 @@ GeneralPlugin sc_gp =
 {
 	NULL,			/* handle */
 	NULL,			/* filename */
-	NULL,			/* Description */
+	"Song Change " PACKAGE_VERSION,			/* Description */
 	init,
 	NULL,
 	NULL,
 	cleanup,
 };
 
-GeneralPlugin *get_gplugin_info(void)
-{
-	sc_gp.description = g_strdup_printf(_("Song Change %s"), PACKAGE_VERSION);
-	return &sc_gp;
-}
+GeneralPlugin *songchange_gplist[] = { &sc_gp, NULL };
+DECLARE_PLUGIN(songchange, NULL, NULL, NULL, NULL, NULL, songchange_gplist, NULL);
 
 static void bury_child(int signal)
 {

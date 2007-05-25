@@ -1,3 +1,10 @@
+2007-05-25 09:43:45 +0000  Giacomo Lozito <james@develia.org>
+  revision [2402]
+  - lirc: converted to v2 plugin system
+  trunk/src/lirc/lirc.c |    9 +++------
+  1 file changed, 3 insertions(+), 6 deletions(-)
+
+
 2007-05-25 09:41:52 +0000  Giacomo Lozito <james@develia.org>
   revision [2400]
   - evdev-plug: converted to v2 plugin system
