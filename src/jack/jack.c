@@ -632,8 +632,6 @@ OutputPlugin jack_op =
 	jack_tell_audio
 };
 
+OutputPlugin *jack_oplist[] = { &jack_op, NULL };
 
-OutputPlugin *get_oplugin_info(void)
-{
-	return &jack_op;
-}
+DECLARE_PLUGIN(jack, NULL, NULL, NULL, jack_oplist, NULL, NULL, NULL);
