@@ -115,7 +115,7 @@ static struct {
 
 static GtkWidget *config_window = NULL, *run_clist = NULL;
 
-static EffectPlugin xmms_plugin = {
+static EffectPlugin ladspa_ep = {
   NULL, NULL,
   PLUGIN_NAME,
   start,
