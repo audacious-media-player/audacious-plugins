@@ -265,7 +265,7 @@ static InputPlugin metronom_ip =
 {
 	NULL,
 	NULL,
-	"Tact Generator " VERSION,
+	"Tact Generator",
 	NULL,
 	metronom_about,
 	NULL,
@@ -293,7 +293,6 @@ static InputPlugin metronom_ip =
 	NULL,
 };
 
-InputPlugin *get_iplugin_info(void)
-{
-	return &metronom_ip;
-}
+InputPlugin *metronom_iplist[] = { &metronom_ip, NULL };
+
+DECLARE_PLUGIN(metronom, NULL, NULL, metronom_iplist, NULL, NULL, NULL, NULL);
