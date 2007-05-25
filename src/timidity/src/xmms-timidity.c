@@ -427,9 +427,6 @@ int xmmstimid_get_time(InputPlayback * playback) {
 }
 
 void xmmstimid_cleanup(void) {
-	g_free(xmmstimid_ip.description);
-	xmmstimid_ip.description = NULL;
-
 	if (xmmstimid_cfg.config_file) {
 		free(xmmstimid_cfg.config_file);
 		xmmstimid_cfg.config_file = NULL;

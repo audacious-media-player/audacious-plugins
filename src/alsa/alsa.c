@@ -48,9 +48,6 @@ DECLARE_PLUGIN(alsa, NULL, NULL, NULL, alsa_oplist, NULL, NULL, NULL)
 
 void alsa_cleanup(void)
 {
-	g_free(alsa_op.description);
-	alsa_op.description = NULL;
-
 	if (alsa_cfg.pcm_device) {
 		free(alsa_cfg.pcm_device);
 		alsa_cfg.pcm_device = NULL;

@@ -53,9 +53,6 @@ DECLARE_PLUGIN(OSS, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL);
 
 void oss_cleanup(void)
 {
-    g_free(oss_op.description);
-    oss_op.description = NULL;
-
     if (oss_cfg.alt_audio_device) {
         free(oss_cfg.alt_audio_device);
         oss_cfg.alt_audio_device = NULL;

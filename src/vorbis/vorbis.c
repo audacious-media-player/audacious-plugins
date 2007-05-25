@@ -959,9 +959,6 @@ vorbis_init(void)
 static void
 vorbis_cleanup(void)
 {
-    g_free(vorbis_ip.description);
-    vorbis_ip.description = NULL;
-
     if (vorbis_cfg.save_http_path) {
         free(vorbis_cfg.save_http_path);
         vorbis_cfg.save_http_path = NULL;
