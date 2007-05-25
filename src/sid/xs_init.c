@@ -58,12 +58,6 @@ InputPlugin xs_plugin_ip = {
 	xs_sid_fmts		/* File ext assist */
 };
 
+InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };
 
-
-/*
- * Return plugin information
- */
-InputPlugin *get_iplugin_info(void)
-{
-	return &xs_plugin_ip;
-}
+DECLARE_PLUGIN(sid, NULL, NULL, sid_iplist, NULL, NULL, NULL, NULL);
