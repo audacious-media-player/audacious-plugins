@@ -45,13 +45,6 @@ static int paused;
 static GThread *dethread;
 static PSFINFO *PSFInfo=NULL;
 
-
-InputPlugin *get_iplugin_info(void)
-      {
-         sexypsf_ip.description = "PSF Module Decoder";
-         return &sexypsf_ip;
-      }
-
 static int is_our_fd(gchar *filename, VFSFile *file) {
 	gchar magic[4], *tmps;
 	// Filter out psflib [we use them, but we can't play them]
@@ -264,7 +257,7 @@ InputPlugin sexypsf_ip =
 {
 	NULL,
 	NULL,
-	"Plays PSF1 files.",
+	"PSF Audio Plugin",
 	NULL,
 	NULL,
 	NULL,
@@ -292,3 +285,7 @@ InputPlugin sexypsf_ip =
 	is_our_fd,
 	sexypsf_fmts,
 };
+
+InputPlugin *sexypsf_iplist[] = { &sexypsf_ip, NULL };
+
+DECLARE_PLUGIN(sexypsf, NULL, NULL, sexypsf_iplist, NULL, NULL, NULL, NULL);
