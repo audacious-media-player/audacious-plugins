@@ -43,9 +43,9 @@ static EffectPlugin xmms_plugin = {
 	NULL
 };
 
-EffectPlugin *get_eplugin_info (void) {
-	return &xmms_plugin;
-}
+EffectPlugin *voice_eplist[] = { &xmms_plugin, NULL };
+
+DECLARE_PLUGIN(voice_removal, NULL, NULL, NULL, NULL, voice_eplist, NULL, NULL);
 
 static int apply_effect (gpointer *d, gint length, AFormat afmt,
 			gint srate, gint nch) {

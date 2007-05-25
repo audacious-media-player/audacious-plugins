@@ -1,3 +1,11 @@
+2007-05-25 06:47:20 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2382]
+  - stereo: convert to plugin API v2
+  
+  trunk/src/stereo_plugin/stereo.c |   11 ++++-------
+  1 file changed, 4 insertions(+), 7 deletions(-)
+
+
 2007-05-25 06:46:18 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2380]
   - ladspa: convert to plugin API v2
