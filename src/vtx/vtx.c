@@ -292,7 +292,7 @@ vtx_get_song_info (char *filename, char **title, int *length)
 InputPlugin vtx_ip = {
 	NULL,			/* FILLED BY XMMS */
 	NULL,			/* FILLED BY XMMS */
-	"VTX Plugin",		/* Plugin description */
+	"VTX Audio Plugin",		/* Plugin description */
 	NULL,			/* Initialization */
 	vtx_about,		/* Show aboutbox */
 	vtx_config,		/* Show/edit configuration */
@@ -320,11 +320,6 @@ InputPlugin vtx_ip = {
 	vtx_fmts		/* ext assist */
 };
 
-/* called from xmms for plug */
-InputPlugin *
-get_iplugin_info (void)
-{
-  vtx_ip.description = g_strdup (_("VTX Plugin"));
-  return &vtx_ip;
-}
+InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };
 
+DECLARE_PLUGIN(vtx, NULL, NULL, vtx_iplist, NULL, NULL, NULL, NULL);
