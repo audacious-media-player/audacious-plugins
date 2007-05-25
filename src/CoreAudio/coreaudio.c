@@ -23,29 +23,27 @@
 #include <audacious/i18n.h>
 
 OutputPlugin osx_op =
-	{
-		NULL,
-		NULL,
-		NULL, /* Description */
-		osx_init,
-		NULL,
-		osx_about,
-		osx_configure,
-		osx_get_volume,
-		osx_set_volume,
-		osx_open,
-		osx_write,
-		osx_close,
-		osx_flush,
-		osx_pause,
-		osx_free,
-		osx_playing,
-		osx_get_output_time,
-		osx_get_written_time,
-	};
-
-OutputPlugin *get_oplugin_info(void)
 {
-	osx_op.description = g_strdup(_("CoreAudio Output Plugin"));
-	return &osx_op;
-}
+	NULL,
+	NULL,
+	"CoreAudio Output Plugin", /* Description */
+	osx_init,
+	NULL,
+	osx_about,
+	osx_configure,
+	osx_get_volume,
+	osx_set_volume,
+	osx_open,
+	osx_write,
+	osx_close,
+	osx_flush,
+	osx_pause,
+	osx_free,
+	osx_playing,
+	osx_get_output_time,
+	osx_get_written_time,
+};
+
+OutputPlugin *coreaudio_oplist[] = { &osx_op, NULL };
+
+DECLARE_PLUGIN(coreaudio, NULL, NULL, NULL, coreaudio_oplist, NULL, NULL, NULL);
