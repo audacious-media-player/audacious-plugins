@@ -1,3 +1,11 @@
+2007-05-25 06:34:49 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2364]
+  - sun: convert to plugin API v2
+  
+  trunk/src/sun/sun.c |   10 +++-------
+  1 file changed, 3 insertions(+), 7 deletions(-)
+
+
 2007-05-25 06:33:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2362]
   - cdaudio-ng (aka Zither's CD Audio Plugin): convert to plugin API v2

@@ -233,7 +233,7 @@ OutputPlugin null_op =
 {
 	NULL,
 	NULL,
-	"Null output " VERSION,
+	"Null Output Plugin",
 	null_init,
 	NULL,			/* cleanup */ 
 	null_about,
@@ -252,7 +252,6 @@ OutputPlugin null_op =
 	NULL			/* tell */
 };
 
-OutputPlugin *get_oplugin_info(void)
-{
-	return &null_op;
-}
+OutputPlugin *null_oplist[] = { &null_op, NULL };
+
+DECLARE_PLUGIN(null, NULL, NULL, NULL, null_oplist, NULL, NULL, NULL);
