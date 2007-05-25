@@ -28,6 +28,9 @@
 #include <audacious/auddrct.h>
 
 
+GeneralPlugin *evdevplug_gplist[] = { &ed_gp, NULL };
+DECLARE_PLUGIN(evdev-plug, NULL, NULL, NULL, NULL, NULL, evdevplug_gplist, NULL);
+
 GList *ed_device_listening_list = NULL;
 gboolean plugin_is_active = FALSE;
 
@@ -79,12 +82,6 @@ ed_action_t player_actions[] =
 
 /* ***************** */
 /* plug-in functions */
-
-GeneralPlugin *get_gplugin_info()
-{
-   return &ed_gp;
-}
-
 
 void
 ed_init ( void )
