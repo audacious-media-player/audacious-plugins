@@ -20,13 +20,9 @@
 
 #include "amidi-plug.h"
 
+InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
-InputPlugin *get_iplugin_info(void)
-{
-  amidiplug_ip.description = g_strdup_printf(N_("AMIDI-Plug %s (MIDI Player)"), AMIDIPLUG_VERSION);
-  return &amidiplug_ip;
-}
-
+DECLARE_PLUGIN(amidi-plug, NULL, NULL, amidiplug_iplist, NULL, NULL, NULL, NULL);
 
 static gboolean amidiplug_detect_by_content( gchar * filename , VFSFile * fp )
 {
