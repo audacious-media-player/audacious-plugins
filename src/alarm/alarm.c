@@ -652,11 +652,6 @@ void alarm_current_volume(GtkButton *button, gpointer data)
    gtk_adjustment_set_value(adj, (gfloat)vol);
 }
 
-GeneralPlugin *get_gplugin_info()
-{
-   return &alarm_plugin;
-}
-
 /*
  * a thread safe sleeping function -
  * and it even works in solaris (I think)
@@ -1009,6 +1004,9 @@ static GeneralPlugin alarm_plugin =
      alarm_configure,
      alarm_cleanup,
 };
+
+GeneralPlugin *alarm_gplist[] = { &alarm_plugin, NULL };
+DECLARE_PLUGIN(alarm, NULL, NULL, NULL, NULL, NULL, alarm_gplist, NULL);
 
 /*
  * vi:ai:expandtab:ts=2 sts=2 shiftwidth=2:nowrap:

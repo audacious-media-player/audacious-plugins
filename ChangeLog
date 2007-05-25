@@ -1,3 +1,10 @@
+2007-05-25 09:45:58 +0000  Giacomo Lozito <james@develia.org>
+  revision [2404]
+  - songchange: converted to v2 plugin system
+  trunk/src/song_change/song_change.c |    9 +++------
+  1 file changed, 3 insertions(+), 6 deletions(-)
+
+
 2007-05-25 09:43:45 +0000  Giacomo Lozito <james@develia.org>
   revision [2402]
   - lirc: converted to v2 plugin system
