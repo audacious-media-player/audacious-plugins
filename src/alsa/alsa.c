@@ -23,7 +23,7 @@ OutputPlugin alsa_op =
 {
 	NULL,
 	NULL,
-	NULL,
+	"ALSA Output Plugin",
 	alsa_init,
 	alsa_cleanup,
 	alsa_about,
@@ -42,12 +42,9 @@ OutputPlugin alsa_op =
 	alsa_tell
 };
 
-OutputPlugin *get_oplugin_info(void)
-{
-	alsa_op.description = g_strdup_printf(_("ALSA %s output plugin"), VERSION);
-	return &alsa_op;
-}
+OutputPlugin *alsa_oplist[] = { &alsa_op, NULL };
 
+DECLARE_PLUGIN(alsa, NULL, NULL, NULL, alsa_oplist, NULL, NULL, NULL)
 
 void alsa_cleanup(void)
 {

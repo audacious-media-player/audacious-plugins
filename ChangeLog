@@ -1,3 +1,12 @@
+2007-05-25 03:30:08 +0000  Stephen Sokolow <deitarion@gmail.com>
+  revision [2332]
+  Switch pkg-config for cdaudio-ng from libcdio to libcdio_cdda (At the request of Crazy_Hopper)
+  The change makes sense, and a quick manual call to pkg-config looks good, but blame him if something goes wrong. 
+  
+  trunk/configure.ac |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-05-25 03:06:47 +0000  Stephen Sokolow <deitarion@gmail.com>
   revision [2330]
   Fixed a typo in the cdaudio-ng portion of configure.ac as discovered by Crazy_Hopper.
