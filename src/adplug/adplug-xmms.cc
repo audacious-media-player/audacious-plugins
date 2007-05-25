@@ -1151,8 +1151,6 @@ InputPlugin adplug_ip = {
   NULL,
 };
 
-extern "C" InputPlugin *
-get_iplugin_info (void)
-{
-  return &adplug_ip;
-}
+InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };
+
+DECLARE_PLUGIN(adplug, NULL, NULL, adplug_iplist, NULL, NULL, NULL, NULL);
