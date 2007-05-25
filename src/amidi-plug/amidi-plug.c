@@ -101,7 +101,6 @@ static void amidiplug_init( void )
 static void amidiplug_cleanup( void )
 {
   i_backend_unload(); /* unload currently loaded backend */
-  g_free( amidiplug_ip.description );
 }
 
 

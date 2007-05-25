@@ -1,3 +1,14 @@
+2007-05-25 08:55:15 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2388]
+  - remove g_free(description) in cleanup functions to avoid crash on quit.
+  
+  trunk/src/OSS/OSS.c                    |    3 ---
+  trunk/src/alsa/alsa.c                  |    3 ---
+  trunk/src/timidity/src/xmms-timidity.c |    3 ---
+  trunk/src/vorbis/vorbis.c              |    3 ---
+  4 files changed, 12 deletions(-)
+
+
 2007-05-25 07:42:15 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2386]
   - build fix.
