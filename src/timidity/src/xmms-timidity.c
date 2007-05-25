@@ -39,7 +39,7 @@
 InputPlugin xmmstimid_ip = {
 	NULL,
 	NULL,
-	NULL,
+	"TiMiDIty Audio Plugin",
 	xmmstimid_init,
 	xmmstimid_about,
 	xmmstimid_configure,
@@ -66,6 +66,10 @@ InputPlugin xmmstimid_ip = {
 	NULL,
 	xmmstimid_is_our_fd,
 };
+
+InputPlugin *timidity_iplist[] = { &xmmstimid_ip, NULL };
+
+DECLARE_PLUGIN(timidity, NULL, NULL, timidity_iplist, NULL, NULL, NULL, NULL);
 
 static struct {
 	gchar *config_file;
@@ -97,12 +101,6 @@ static GtkToggleButton
 static GtkToggleButton
 	*xmmstimid_conf_channels_1,
 	*xmmstimid_conf_channels_2;
-
-InputPlugin *get_iplugin_info(void) {
-	xmmstimid_ip.description = g_strdup_printf(
-			_("TiMidity Player %s"), PACKAGE_VERSION);
-	return &xmmstimid_ip;
-}
 
 void xmmstimid_init(void) {
 	ConfigDb *db;
