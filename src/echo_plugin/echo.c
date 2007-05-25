@@ -25,7 +25,7 @@ EffectPlugin echo_ep =
 {
 	NULL,
 	NULL,
-	NULL, /* Description */
+	"Echo Plugin", /* Description */
 	init,
 	cleanup,
 	echo_about,
@@ -39,11 +39,9 @@ gint echo_delay = 500, echo_feedback = 50, echo_volume = 50;
 gboolean echo_surround_enable = FALSE;
 static int w_ofs;
 
-EffectPlugin *get_eplugin_info(void)
-{
-	echo_ep.description = g_strdup_printf(_("Echo Plugin %s"), VERSION);
-	return &echo_ep;
-}
+EffectPlugin *echo_eplist[] = { &echo_ep, NULL };
+
+DECLARE_PLUGIN(echo, NULL, NULL, NULL, NULL, echo_eplist, NULL, NULL);
 
 static void init(void)
 {
