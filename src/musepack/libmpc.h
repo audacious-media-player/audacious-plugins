@@ -95,8 +95,6 @@ typedef struct MpcInfo
     unsigned year;
 };
 
-extern "C" InputPlugin * get_iplugin_info(void);
-
 static void       mpcOpenPlugin();
 static void       mpcAboutBox();
 static void       mpcConfigBox();

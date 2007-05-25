@@ -30,7 +30,6 @@ extern "C" {
 
 #define BUFFER_SIZE 256 // read buffer size, in samples
 
-extern "C" InputPlugin * get_iplugin_info(void);
 static void wv_load_config();
 static int wv_is_our_fd(gchar *filename, VFSFile *file);
 static void wv_play(InputPlayback *);
