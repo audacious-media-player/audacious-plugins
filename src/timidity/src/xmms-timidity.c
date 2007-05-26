@@ -39,7 +39,7 @@
 InputPlugin xmmstimid_ip = {
 	NULL,
 	NULL,
-	"TiMiDIty Audio Plugin",
+	"TiMidity Audio Plugin",
 	xmmstimid_init,
 	xmmstimid_about,
 	xmmstimid_configure,

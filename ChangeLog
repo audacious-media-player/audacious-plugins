@@ -1,3 +1,10 @@
+2007-05-25 09:50:20 +0000  Giacomo Lozito <james@develia.org>
+  revision [2408]
+  - amidi-plug: small changes
+  trunk/src/amidi-plug/amidi-plug.h |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-05-25 09:47:52 +0000  Giacomo Lozito <james@develia.org>
   revision [2406]
   - alarm: converted to v2 plugin system
