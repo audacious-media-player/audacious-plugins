@@ -291,7 +291,6 @@ DecodeThread(void *a)
     WavpackDecoder d(&mod);
 
     if (!d.attach_to_play(filename)) {
-        printf("wavpack: Error opening file: \"%s\"\n", filename);
         killDecodeThread = true;
         return end_thread();
     }
@@ -299,13 +298,13 @@ DecodeThread(void *a)
     DBG("reading %s at %d rate with %d channels\n", filename, d.sample_rate, d.num_channels);
 
     if (!d.open_audio()) {
-        DBG("error opening xmms audio channel\n");
+        DBG("error opening audio channel\n");
         killDecodeThread = true;
         AudioError = true;
         openedAudio = false;
     }
     else {
-        DBG("opened xmms audio channel\n");
+        DBG("opened audio channel\n");
         openedAudio = true;
     }
     unsigned status;
