@@ -1,3 +1,10 @@
+2007-05-26 16:38:16 +0000  
+  revision [2414]
+  Removed Makefile.WRONG
+  trunk/src/cdaudio-ng/Makefile.WRONG |   13 -------------
+  1 file changed, 13 deletions(-)
+
+
 2007-05-26 16:21:13 +0000  
   revision [2412]
   Implemented DAE feature (enabled by default)
