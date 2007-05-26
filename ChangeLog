@@ -1,3 +1,10 @@
+2007-05-26 21:44:32 +0000  
+  revision [2416]
+  Added a lot of useful debug output
+  trunk/src/cdaudio-ng/cdaudio-ng.c |   93 +++++++++++++++++++++++++++++++-------
+  1 file changed, 78 insertions(+), 15 deletions(-)
+
+
 2007-05-26 16:38:16 +0000  
   revision [2414]
   Removed Makefile.WRONG

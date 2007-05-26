@@ -125,7 +125,7 @@ void cdda_fileinfo(char *filename);
 InputPlugin cdda_ip = {
     NULL,
     NULL,
-    NULL,                       /* Description */
+    "CD Audio Plugin",                       /* Description */
     cdda_init,
     NULL,                       /* about */
     cdda_configure,
