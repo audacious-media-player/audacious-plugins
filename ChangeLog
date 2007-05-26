@@ -1,3 +1,10 @@
+2007-05-26 16:21:13 +0000  
+  revision [2412]
+  Implemented DAE feature (enabled by default)
+  trunk/src/cdaudio-ng/cdaudio-ng.c |  402 +++++++++++++++++++++++++++++---------
+  1 file changed, 316 insertions(+), 86 deletions(-)
+
+
 2007-05-26 15:49:57 +0000  Michael Farber <01mf02@gmail.com>
   revision [2410]
   - Fix a little spelling error (It's not TiMiDIty just like it's not 
