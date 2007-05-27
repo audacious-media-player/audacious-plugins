@@ -436,6 +436,7 @@ void jack_write(gpointer ptr, gint length)
 
   TRACE("starting length of %d\n", length);
 
+#if 0
   /* copy the current values into temporary values */
   new_format = input.format;
   new_frequency = input.frequency;
@@ -491,6 +492,7 @@ void jack_write(gpointer ptr, gint length)
   }
 
   TRACE("length = %d\n", length);
+#endif
   /* loop until we have written all the data out to the jack device */
   /* this is due to xmms' audio driver api */
   char *buf = (char*)ptr;
