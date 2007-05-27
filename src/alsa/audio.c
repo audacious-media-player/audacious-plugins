@@ -705,6 +705,7 @@ static void alsa_do_write(gpointer data, int length)
 	if (paused)
 		return;
 
+#if 0
 	new_freq = inputf->rate;
 	new_chn = inputf->channels;
 	f = inputf->xmms_format;
@@ -732,6 +733,7 @@ static void alsa_do_write(gpointer data, int length)
 					 inputf->xmms_format,
 					 inputf->rate,
 					 inputf->channels);
+#endif
 
 	if (alsa_convert_func != NULL)
 		length = alsa_convert_func(convertb, &data, length);
