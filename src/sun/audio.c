@@ -309,6 +309,7 @@ static inline ssize_t write_all(int fd, const void *buf, size_t count)
 
 static inline void sun_write_audio(gpointer data, int length)
 {
+#if 0
 	AFormat new_format;
 	EffectPlugin *ep;
 	int new_frequency, new_channels;
@@ -336,6 +337,7 @@ static inline void sun_write_audio(gpointer data, int length)
 		length = ep->mod_samples(&data, length, input.format.xmms,
 					 input.frequency, input.channels);
 	}
+#endif
 
 	if (sun_convert != NULL)
 		length = sun_convert(&data, length);
