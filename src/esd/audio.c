@@ -273,6 +273,7 @@ esdout_free(void)
 static void
 esdout_write_audio(gpointer data, gint length)
 {
+#if 0
     AFormat new_format;
     gint new_frequency, new_channels;
     EffectPlugin *ep;
@@ -300,6 +301,7 @@ esdout_write_audio(gpointer data, gint length)
         length =
             ep->mod_samples(&data, length, input_format, input_frequency,
                             input_channels);
+#endif
     while (length > 0) {
         int num_written;
         if (esd_translate)

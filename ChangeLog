@@ -1,3 +1,10 @@
+2007-05-27 21:29:45 +0000  Ralf Ertzinger <ralf@skytale.net>
+  revision [2438]
+  Move effect plugin handling out of the output plugins
+  trunk/src/null/null.c |    2 ++
+  1 file changed, 2 insertions(+)
+
+
 2007-05-27 21:28:52 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2436]
   Move effect plugin handling out of the output plugins
