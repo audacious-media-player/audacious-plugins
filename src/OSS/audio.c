@@ -274,6 +274,7 @@ oss_write_audio(gpointer data, int length)
 {
 
     audio_buf_info abuf_info;
+#if 0
     AFormat new_format;
     int new_frequency, new_channels;
     EffectPlugin *ep;
@@ -301,6 +302,7 @@ oss_write_audio(gpointer data, int length)
         length = ep->mod_samples(&data, length,
                                  input.format.xmms,
                                  input.frequency, input.channels);
+#endif
     if (realtime && !ioctl(fd, SNDCTL_DSP_GETOSPACE, &abuf_info)) {
         while (abuf_info.bytes < length) {
             xmms_usleep(10000);
