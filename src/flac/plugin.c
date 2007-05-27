@@ -379,9 +379,6 @@ int FLAC_XMMS__get_time(InputPlayback *playback)
 
 void FLAC_XMMS__cleanup()
 {
-    g_free(flac_ip.description);
-    flac_ip.description = NULL;
-
     if (flac_cfg.title.tag_format) {
         g_free(flac_cfg.title.tag_format);
         flac_cfg.title.tag_format = NULL;
