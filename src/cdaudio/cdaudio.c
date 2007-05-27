@@ -764,9 +764,6 @@ cleanup(void)
     GList *node;
     struct driveinfo *drive;
 
-    g_free(cdda_ip.description);
-    cdda_ip.description = NULL;
-
     if (cdda_cfg.drives) {
         for (node = g_list_first(cdda_cfg.drives); node; node = node->next) {
             drive = (struct driveinfo *)node->data;

@@ -1,3 +1,11 @@
+2007-05-27 03:36:05 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2424]
+  - remove g_free(description) in cleanup functions to avoid crash on quit.
+  
+  trunk/src/flac/plugin.c |    3 ---
+  1 file changed, 3 deletions(-)
+
+
 2007-05-26 23:14:16 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2422]
   - clean up some debugging stuff
