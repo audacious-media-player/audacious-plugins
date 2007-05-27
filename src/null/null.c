@@ -151,10 +151,12 @@ static void null_write(void *ptr, int length)
 		started = TRUE;
 	}
 
+#if 0
 	if ((ep = get_current_effect_plugin()) != NULL &&
 	    effects_enabled() && ep->mod_samples)
 		ep->mod_samples(&ptr, length, input_format.format,
 				input_format.frequency, input_format.channels);
+#endif
 	
 	written += length;
 }
