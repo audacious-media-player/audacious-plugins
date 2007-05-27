@@ -276,6 +276,7 @@ int artsxmms_free(void)
 
 void artsxmms_write(gpointer ptr, int length)
 {
+#if 0
 	AFormat new_format;
 	int new_frequency, new_channels;
 	EffectPlugin *ep;
@@ -315,6 +316,7 @@ void artsxmms_write(gpointer ptr, int length)
 		length = ep->mod_samples(&ptr, length, input_params.format,
 					 input_params.frequency,
 					 input_params.channels);
+#endif
 
 	if (arts_convert_func)
 		arts_convert_func(ptr, length);
