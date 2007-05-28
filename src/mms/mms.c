@@ -230,16 +230,4 @@ static void cleanup(void)
 #endif
 }
 
-LowlevelPlugin llp_mms = {
-	NULL,
-	NULL,
-	"mms:// URI Transport",
-	init,
-	cleanup,
-};
-
-LowlevelPlugin *get_lplugin_info(void)
-{
-        return &llp_mms;
-}
-
+DECLARE_PLUGIN(mms, init, cleanup, NULL, NULL, NULL, NULL, NULL);
