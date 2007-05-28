@@ -468,15 +468,4 @@ static void cleanup(void)
 	g_free(LastFMGlobalData);
 }
 
-LowlevelPlugin llp_lastfm = {
-	NULL,
-	NULL,
-	"lastfm:// URI Transport",
-	init,
-	cleanup,
-};
-
-LowlevelPlugin *get_lplugin_info(void)
-{
-	return &llp_lastfm;
-}
+DECLARE_PLUGIN(lastfm, init, cleanup, NULL, NULL, NULL, NULL, NULL);
