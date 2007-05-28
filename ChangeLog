@@ -1,3 +1,11 @@
+2007-05-28 09:59:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2448]
+  - blur_scope: convert to plugin2 architecture.
+  
+  trunk/src/blur_scope/blur_scope.c |   13 ++++---------
+  1 file changed, 4 insertions(+), 9 deletions(-)
+
+
 2007-05-28 09:57:42 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2446]
   - rovascope: convert to plugin2 architecture.

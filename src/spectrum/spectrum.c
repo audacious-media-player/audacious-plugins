@@ -62,7 +62,7 @@ static void fsanalyzer_render_freq(gint16 data[2][256]);
 VisPlugin fsanalyzer_vp = {
 	NULL,
 	NULL,
-	"Spectrum Analyzer " VERSION,
+	"Spectrum Analyzer",
 	0,
 	1,		
 	fsanalyzer_init, /* init */
@@ -76,9 +76,9 @@ VisPlugin fsanalyzer_vp = {
 	fsanalyzer_render_freq  /* render_freq */
 };
 
-VisPlugin *get_vplugin_info(void) {
-	return &fsanalyzer_vp;
-}
+VisPlugin *spectrum_vplist[] = { &fsanalyzer_vp, NULL };
+
+DECLARE_PLUGIN(spectrum, NULL, NULL, NULL, NULL, NULL, NULL, spectrum_vplist);
 
 static void fsanalyzer_destroy_cb(GtkWidget *w,gpointer data) {
 	fsanalyzer_vp.disable_plugin(&fsanalyzer_vp);
