@@ -1,3 +1,11 @@
+2007-05-28 09:56:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2444]
+  - projectm: convert to plugin2 architecture. now SVN users have milkdrop back.
+  
+  trunk/src/projectm/main.c |    8 +++-----
+  1 file changed, 3 insertions(+), 5 deletions(-)
+
+
 2007-05-28 00:11:58 +0000  Giacomo Lozito <james@develia.org>
   revision [2442]
   - added options in configure.ac to disable sse2 and altivec support (madplug) even if available on the system

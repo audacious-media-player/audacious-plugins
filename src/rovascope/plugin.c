@@ -76,11 +76,9 @@ static VisPlugin pn_vp =
   pn_xmms_render_freq
 };
 
-VisPlugin *
-get_vplugin_info (void)
-{
-  return &pn_vp;
-}
+VisPlugin *rovascope_vplist[] = { &pn_vp, NULL };
+
+DECLARE_PLUGIN(rovascope, NULL, NULL, NULL, NULL, NULL, NULL, rovascope_vplist);
 
 static void
 load_pn_rc (void)
