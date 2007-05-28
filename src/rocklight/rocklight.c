@@ -126,6 +126,6 @@ static VisPlugin rocklight_vp = {
 	.render_freq = rocklight_render_freq
 };
 
-VisPlugin *get_vplugin_info(void) {
-	return &rocklight_vp;
-}
+VisPlugin *rocklight_vplist[] = { &rocklight_vp, NULL };
+
+DECLARE_PLUGIN(rocklight, NULL, NULL, NULL, NULL, NULL, NULL, rocklight_vplist);
