@@ -68,7 +68,7 @@ static const int blurscope_menu_entries_num =
 VisPlugin bscope_vp = {
     NULL,
     NULL,
-    NULL,                       /* description */
+    "Blur Scope",                       /* description */
     1,                          /* Number of PCM channels wanted */
     0,                          /* Number of freq channels wanted */
     bscope_init,                /* init */
@@ -82,12 +82,9 @@ VisPlugin bscope_vp = {
     NULL                        /* render_freq */
 };
 
-VisPlugin *
-get_vplugin_info(void)
-{
-    bscope_vp.description = g_strdup("Blur Scope");
-    return &bscope_vp;
-}
+VisPlugin *bscope_vplist[] = { &bscope_vp, NULL };
+
+DECLARE_PLUGIN(bscope, NULL, NULL, NULL, NULL, NULL, NULL, bscope_vplist);
 
 #define WIDTH 256
 #define HEIGHT 128
@@ -225,8 +222,6 @@ bscope_init(void)
 static void
 bscope_cleanup(void)
 {
-    g_free(bscope_vp.description);
-    bscope_vp.description = NULL;
     if (window)
         gtk_widget_destroy(window);
     if (bg_pixmap) {

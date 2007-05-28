@@ -1,3 +1,11 @@
+2007-05-28 09:57:42 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2446]
+  - rovascope: convert to plugin2 architecture.
+  
+  trunk/src/rovascope/plugin.c |    8 +++-----
+  1 file changed, 3 insertions(+), 5 deletions(-)
+
+
 2007-05-28 09:56:10 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2444]
   - projectm: convert to plugin2 architecture. now SVN users have milkdrop back.
