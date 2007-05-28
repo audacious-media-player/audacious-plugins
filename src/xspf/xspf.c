@@ -639,15 +639,4 @@ static void cleanup(void)
     playlist_container_unregister(&plc_xspf);
 }
 
-LowlevelPlugin llp_xspf = {
-    NULL,
-    NULL,
-    "XSPF Playlist Format",
-    init,
-    cleanup,
-};
-
-LowlevelPlugin *get_lplugin_info(void)
-{
-    return &llp_xspf;
-}
+DECLARE_PLUGIN(xspf, init, cleanup, NULL, NULL, NULL, NULL, NULL);

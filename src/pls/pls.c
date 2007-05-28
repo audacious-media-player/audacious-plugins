@@ -133,15 +133,4 @@ static void cleanup(void)
     playlist_container_unregister(&plc_pls);
 }
 
-LowlevelPlugin llp_pls = {
-        NULL,
-        NULL,
-        "Winamp .pls Playlist Format",
-        init,
-        cleanup,
-};
-
-LowlevelPlugin *get_lplugin_info(void)
-{
-    return &llp_pls;
-}
+DECLARE_PLUGIN(pls, init, cleanup, NULL, NULL, NULL, NULL, NULL);

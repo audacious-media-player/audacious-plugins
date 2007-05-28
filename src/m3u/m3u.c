@@ -204,15 +204,4 @@ static void cleanup(void)
 	playlist_container_unregister(&plc_m3u);
 }
 
-LowlevelPlugin llp_m3u = {
-	NULL,
-	NULL,
-	"M3U Playlist Format",
-	init,
-	cleanup,
-};
-
-LowlevelPlugin *get_lplugin_info(void)
-{
-	return &llp_m3u;
-}
+DECLARE_PLUGIN(m3u, init, cleanup, NULL, NULL, NULL, NULL, NULL);
