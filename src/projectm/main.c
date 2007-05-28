@@ -89,11 +89,9 @@ VisPlugin projectM_vtable = {
   projectM_render_freq     // Render the freq data, must return quickly
 };
 
-// XMMS entry point
-VisPlugin *get_vplugin_info(void)
-{
-  return &projectM_vtable;
-}
+VisPlugin *projectM_vplist[] = { &projectM_vtable, NULL };
+
+DECLARE_PLUGIN(projectm, NULL, NULL, NULL, NULL, NULL, NULL, projectM_vplist);
 
 // Our worker thread
 SDL_Thread *worker_thread;

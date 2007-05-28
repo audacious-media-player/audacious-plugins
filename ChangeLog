@@ -1,3 +1,10 @@
+2007-05-28 00:11:58 +0000  Giacomo Lozito <james@develia.org>
+  revision [2442]
+  - added options in configure.ac to disable sse2 and altivec support (madplug) even if available on the system
+  trunk/configure.ac |   62 ++++++++++++++++++++++++++++++++---------------------
+  1 file changed, 38 insertions(+), 24 deletions(-)
+
+
 2007-05-27 21:30:06 +0000  Ralf Ertzinger <ralf@skytale.net>
   revision [2440]
   Move effect plugin handling out of the output plugins
