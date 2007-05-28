@@ -35,17 +35,16 @@ VisPlugin rootvis_vtable = {
 	rootvis_cleanup,        // Called when plugin is disabled
 	NULL,//rootvis_about,          // Show the about box
 	rootvis_configure,      // Show the configure box
-	0,                     // Called to disable plugin, filled in by xmms
+	NULL,                     // Called to disable plugin, filled in by xmms
 	rootvis_playback_start, // Called when playback starts
 	rootvis_playback_stop,  // Called when playback stops
-	0,                     // Render the PCM data, must return quickly
+	NULL,                     // Render the PCM data, must return quickly
 	rootvis_render_freq     // Render the freq data, must return quickly
 };
 
-// XMMS entry point
-VisPlugin *get_vplugin_info(void) {
-	return &rootvis_vtable;
-}
+VisPlugin *rootvis_vplist[] = { &rootvis_vtable, NULL };
+
+DECLARE_PLUGIN(rootvis, NULL, NULL, NULL, NULL, NULL, NULL, rootvis_vplist);
 
 // X related
 struct rootvis_x {
