@@ -293,16 +293,4 @@ static void cleanup(void)
 #endif
 }
 
-LowlevelPlugin llp_stdio = {
-	NULL,
-	NULL,
-	"file:// URI Transport",
-	init,
-	cleanup,
-};
-
-LowlevelPlugin *get_lplugin_info(void)
-{
-        return &llp_stdio;
-}
-
+DECLARE_PLUGIN(stdio, init, cleanup, NULL, NULL, NULL, NULL, NULL);
