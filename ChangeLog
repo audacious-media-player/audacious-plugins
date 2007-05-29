@@ -1,3 +1,11 @@
+2007-05-29 06:16:25 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2464]
+  - expose lastfm internal data over mowgli's global storage subsystem so that plugins can manipulate lastfm listening indirectly
+  
+  trunk/src/lastfm/lastfm.c |    5 +++++
+  1 file changed, 5 insertions(+)
+
+
 2007-05-28 10:15:02 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2462]
   - mms: convert to plugin2 architecture

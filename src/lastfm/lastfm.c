@@ -38,13 +38,6 @@ static size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata
 	return size * nmemb;
 }
 
-int max(int a,int b)
-{
-        if(a>b) 
-                return a;
-        return b;
-}
-
 gint get_data_from_url(gchar buf[4096], GString * res)
 {
 	CURL *curl = curl_easy_init();
@@ -109,12 +102,13 @@ static gboolean lastfm_login(void)
 
 	g_strfreev(split);
 	g_string_erase(res, 0, -1);
-	return (gboolean) TRUE;
 
 	if (mowgli_global_storage_get("lastfm_session_id"))
 		mowgli_global_storage_free("lastfm_session_id");
 
 	mowgli_global_storage_put("lastfm_session_id", LastFMGlobalData->lastfm_session_id);
+
+	return (gboolean) TRUE;
 }
 
 static gboolean lastfm_adjust(const gchar * url)
