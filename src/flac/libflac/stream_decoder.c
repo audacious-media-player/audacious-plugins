@@ -723,6 +723,8 @@ FLAC_API FLAC__bool FLAC__stream_decoder_finish(FLAC__StreamDecoder *decoder)
 #ifndef USE_VFS
 		if(decoder->private_->file != stdin)
 			fclose(decoder->private_->file);
+#else
+		vfs_fclose(decoder->private_->file);
 #endif
 		decoder->private_->file = 0;
 	}
