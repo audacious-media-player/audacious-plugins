@@ -451,7 +451,7 @@ is_our_file (char *filename)
 {
 	gchar *ext = strrchr(filename, '.');
 
-	if (!strncasecmp(ext, ".tta", 4))
+	if (ext && !strncasecmp(ext, ".tta", 4))
 	    return TRUE;
 
 	return FALSE;
