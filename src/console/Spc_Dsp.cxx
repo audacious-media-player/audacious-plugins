@@ -589,8 +589,8 @@ skip_brr:
 		// Echo out
 		if ( !(REG(flg) & 0x20) )
 		{
-			int l = (echo_out_l >> 7) + ((echo_in_l * (int8_t) REG(efb)) >> 14);
-			int r = (echo_out_r >> 7) + ((echo_in_r * (int8_t) REG(efb)) >> 14);
+			int l = (echo_out_l >> 7) + ((echo_in_l * (int8_t) REG(efb)) >> 16);
+			int r = (echo_out_r >> 7) + ((echo_in_r * (int8_t) REG(efb)) >> 16);
 			
 			// just to help pass more validation tests
 			#if SPC_MORE_ACCURACY
