@@ -1,3 +1,14 @@
+2007-05-30 04:57:06 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2472]
+  Fix handling of SPC efb register when echo instruction has been 
+  called. Shift right of 14 is too high of a modifier and does not match 
+  the response of the FIR filter in the SPC700. Shift right of 16 delivers 
+  a more accurate result.
+  
+  trunk/src/console/Spc_Dsp.cxx |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-05-29 10:58:22 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2470]
   - fix for crash when file extension is not available.

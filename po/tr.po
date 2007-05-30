@@ -1,15 +1,16 @@
-# translation of audacious-plugins-tr.po to
-# translation of audacious-plugins.po to
-# Copyright (C) YEAR Translator <translator@invalid>
-# This file is distributed under the same license as the PACKAGE package.
+# translation of audacious-plugins
+# Copyright (C) 2007
+# Murat Şenel <muratasenel@gmail.com>
+# Hakan DARAMA <hakandarama@gmail.com>
+# Serdar Soytetir <tulliana@gmail.com>
+# This file is distributed under the same license as the audacious-plugins package.
 #
-# Murat Şenel <muratasenel@gmail.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins-tr\n"
+"Project-Id-Version: aaudacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-02-11 03:19-0600\n"
-"PO-Revision-Date: 2007-02-02 22:58+0200\n"
+"PO-Revision-Date: 2007-05-23 00:00+0300\n"
 "Last-Translator: Murat Şenel <muratasenel@gmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,16 +20,16 @@ msgstr ""
 
 #: src/CoreAudio/coreaudio.c:49
 msgid "CoreAudio Output Plugin"
-msgstr "CoreAudio Output Eklentisi"
+msgstr "CoreAudio Çıkış Eklentisi"
 
 #: src/OSS/configure.c:150
 #, c-format
 msgid "Default (%s)"
-msgstr "Varsayılan %s"
+msgstr "Varsayılan (%s)"
 
 #: src/OSS/configure.c:168
 msgid "Default"
-msgstr "Vasyılan"
+msgstr "Varsayılan"
 
 #: src/OSS/configure.c:200
 msgid "OSS Driver configuration"
@@ -44,7 +45,7 @@ msgstr "Farklı aygıt kullan:"
 
 #: src/OSS/configure.c:259 src/sun/configure.c:220 src/alsa/configure.c:330
 msgid "Mixer device:"
-msgstr "Karıştırıcı aygıt"
+msgstr "Karıştırıcı aygıt:"
 
 #: src/OSS/configure.c:301 src/sun/configure.c:248
 msgid "Devices"
@@ -53,7 +54,7 @@ msgstr "Aygıtlar"
 #: src/OSS/configure.c:303 src/esd/configure.c:171 src/sun/configure.c:259
 #: src/arts/configure.c:62
 msgid "Buffering:"
-msgstr "Tamponlanan:"
+msgstr "Tamponlama:"
 
 #: src/OSS/configure.c:316 src/esd/configure.c:184 src/sun/configure.c:272
 #: src/arts/configure.c:74
@@ -67,7 +68,7 @@ msgstr "Ön tampon (yüzde):"
 #: src/OSS/configure.c:341 src/esd/configure.c:209 src/sun/configure.c:304
 #: src/arts/configure.c:84
 msgid "Buffering"
-msgstr "Tamponlanıyor"
+msgstr "Tamponlama"
 
 #: src/OSS/configure.c:342
 msgid "Mixer Settings:"
@@ -75,7 +76,7 @@ msgstr "Karıştırıcı Ayarları:"
 
 #: src/OSS/configure.c:348
 msgid "Volume controls Master not PCM"
-msgstr "Ses Master'ı değil, PCM'yi kontrol ediyor"
+msgstr "Ses ayarı PCM değil, ana kanalı ayarlasın"
 
 #: src/OSS/configure.c:354 src/sun/configure.c:394
 msgid "Mixer"
@@ -83,7 +84,7 @@ msgstr "Karıştırıcı"
 
 #: src/OSS/OSS.c:53
 msgid "OSS Output Plugin"
-msgstr "OSS Output Eklentisi"
+msgstr "OSS Çıkışı Eklentisi"
 
 #: src/OSS/about.c:39
 msgid "About OSS Driver"
@@ -108,20 +109,18 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Audacious OSS Driver\n"
+"Audacius OSS Sürücüsü\n"
 "\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
+"Bu bir özgür yazılımdır. Sizde bu programı GNU/GPL Genel Kamu Lisansı altında\n"
+"değiştirebilir veya düzenleyebilirsiniz. Genel Kamu Lisansı Özgür Yazılım Vakfı\n"
+"tarafından hazırlanmaktadır.\n"
 "\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
+"Bu program kullanışlı olacağı umut edilerek tasarlanmış olup, çalışması\n"
+"konusunda bir garanti verilmemektedir. Garanti içeriği, çalışma şartları ve \n"
+"sağlanan destek konusunda GNU/GPL Genel Kamu Lisansını inceleyebilirsiniz.\n"
 "\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
+"Bu programla birlikte GNU/GPL Genel Kamu Lisansının da bir kopyasını\n"
+"elde etmiş olursunuz. İstediğiniz bir değişiklik için aşağıdaki adrese yazın.\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
@@ -157,14 +156,13 @@ msgid ""
 "Linked AdPlug library version: "
 msgstr ""
 "\n"
-"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+"Tüm Hakkı Saklıdır (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
 "\n"
-"This plugin is released under the terms and conditions of the GNU LGPL.\n"
-"See http://www.gnu.org/licenses/lgpl.html for details.\n"
+"Bu eklenti GNU/GPL Lisansı altında dağıtılmaktadır.\n"
+"Daha fazla bilgi için http://www.gnu.org/licenses/lgpl.html adresine bakınız.\n"
 "\n"
-"This plugin uses the AdPlug library, which is copyright (C) Simon Peter, et "
-"al.\n"
-"Linked AdPlug library version: "
+"Bu eklenti tüm hakları (C) Simon Peter'a ait olan AdPlug kütüphanesini kullanmaktadır.\n"
+"AdPlug Eklentisinin Sürüm Numarası: "
 
 #: src/audiocompress/audacious-glue.c:100
 msgid "AudioCompress "
@@ -181,10 +179,10 @@ msgid ""
 msgstr ""
 "\n"
 "(c)2003 trikuare studios(http://trikuare.cx)\n"
-"Audacious'a Tony Vroon (chainsaw@gentoo.org) tarafından aktarıldı\n"
+"Audacious'a uyarlayan Tony Vroon (chainsaw@gentoo.org)\n"
 "\n"
-"Simple dynamic range compressor for transparently\n"
-"keeping the volume level more or less consistent"
+"Temiz sıkıştırma için kullanabileceğiniz\n"
+"ses seviyesini normal değerlerde tutan bir işleyici"
 
 #: src/audiocompress/audacious-glue.c:106
 msgid "About AudioCompress"
@@ -192,7 +190,7 @@ msgstr "AudioCompress Hakkında"
 
 #: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
-msgstr "Bulanıklık Kapsam: Renk seçimi"
+msgstr "Bulanık alan: Renk seçimi"
 
 #: src/blur_scope/config.c:83
 msgid "Options:"
@@ -200,7 +198,7 @@ msgstr "Seçenekler:"
 
 #: src/blur_scope/blur_scope.c:57
 msgid "/Toggle Decorations"
-msgstr "/Değiştirme Dekorasyonu"
+msgstr "/Geçiş Dekorasyonları"
 
 #: src/blur_scope/blur_scope.c:59
 msgid "/-"
@@ -212,7 +210,7 @@ msgstr "/Kapat"
 
 #: src/blur_scope/blur_scope.c:194
 msgid "Blur scope"
-msgstr "Bulanıklık kapsamı"
+msgstr "Bulanık Alan"
 
 #: src/cdaudio/configure.c:185 src/cdaudio/configure.c:199
 #: src/cdaudio/configure.c:525
@@ -247,7 +245,7 @@ msgid ""
 "Device %s OK.\n"
 "Disc has %d tracks"
 msgstr ""
-"%s ayıtı tamam.\n"
+"%s aygıtı tamam.\n"
 "Disk üzerinde %d adet parça var"
 
 #: src/cdaudio/configure.c:265
@@ -266,15 +264,14 @@ msgstr ""
 
 #: src/cdaudio/configure.c:271
 msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
-msgstr ""
-"Disk üzerinde ses dosyası olmadığı için sayısal ses çıkarma test edilemedi\n"
+msgstr "Disk üzerinde ses dosyası olmadığı için sayısal ses elde etme test edilemedi\n"
 
 #: src/cdaudio/configure.c:288
 msgid ""
 "Digital audio extraction test: OK\n"
 "\n"
 msgstr ""
-"Sayısal ses çıkarma testi: OK\n"
+"Sayısal ses elde etme testi: Tamam\n"
 "\n"
 
 #: src/cdaudio/configure.c:292
@@ -283,7 +280,7 @@ msgid ""
 "Digital audio extraction test failed: %s\n"
 "\n"
 msgstr ""
-"Sayısal ses çıkartma testi başarısızlığa uğradı: %s\n"
+"Sayısal ses elde etme testi başarısızlığa uğradı: %s\n"
 "\n"
 
 #: src/cdaudio/configure.c:302
@@ -298,7 +295,7 @@ msgstr ""
 #: src/cdaudio/configure.c:308
 #, c-format
 msgid "Error: %s exist, but is not a directory"
-msgstr "Hata: %s var, fakat bir dizin değil"
+msgstr "Hata: %s bulundu, fakat bir dizin değil"
 
 #: src/cdaudio/configure.c:311
 #, c-format
@@ -327,11 +324,11 @@ msgstr "Analog"
 
 #: src/cdaudio/configure.c:399
 msgid "Digital audio extraction"
-msgstr "Sayısal ses çıkarma"
+msgstr "Sayısal ses elde etme"
 
 #: src/cdaudio/configure.c:409
 msgid "Volume control:"
-msgstr "Ses kontrolü"
+msgstr "Ses kontrolü:"
 
 #: src/cdaudio/configure.c:415
 msgid "No mixer"
@@ -535,7 +532,7 @@ msgstr "Disk Yazıcı Ayarları"
 
 #: src/disk_writer/disk_writer.c:367
 msgid "Output file folder:"
-msgstr "Çıktı dosya klasörü"
+msgstr "Çıktı dosya klasörü:"
 
 #: src/disk_writer/disk_writer.c:377
 msgid "Don't strip file name extension"
@@ -544,7 +541,7 @@ msgstr "Dosya ismi uzantılarını daraltma"
 #: src/echo_plugin/echo.c:44
 #, c-format
 msgid "Echo Plugin %s"
-msgstr "Echo Eklentisi %s"
+msgstr "Yankı (Eko) Eklentisi %s"
 
 #: src/echo_plugin/gui.c:12
 msgid ""
@@ -553,18 +550,18 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
-"Echo Eklentisi\n"
+"Yankı (Eko) Eklentisi\n"
 "Johan Levin 1999.\n"
 "\n"
-"Surround echo - Carl van Schaik 1999"
+"Surround Eko - Carl van Schaik 1999"
 
 #: src/echo_plugin/gui.c:26
 msgid "About Echo Plugin"
-msgstr "Echo Eklentisi Hakkında"
+msgstr "Yankı (Eko) Eklentisi Hakkında"
 
 #: src/echo_plugin/gui.c:77
 msgid "Configure Echo"
-msgstr "Echo Eklentisini Yapılandır"
+msgstr "Yankı (Eko) Eklentisini Yapılandır"
 
 #: src/echo_plugin/gui.c:90
 msgid "Delay: (ms)"
@@ -580,7 +577,7 @@ msgstr "Ses: (%)"
 
 #: src/echo_plugin/gui.c:123
 msgid "Surround echo"
-msgstr "Surround echo"
+msgstr "Çevresel Yankı"
 
 #: src/echo_plugin/gui.c:146 src/stereo_plugin/stereo.c:131
 #: src/sun/configure.c:567 src/timidity/src/interface.c:232
@@ -596,7 +593,7 @@ msgstr "Uygula"
 
 #: src/esd/configure.c:102
 msgid "ESD Output Plugin configuration"
-msgstr "ESD Output Eklentisi yapılandırması"
+msgstr "ESD Çıkış Eklentisi yapılandırması"
 
 #: src/esd/configure.c:114 src/esd/configure.c:144
 msgid "Host:"
@@ -641,30 +638,28 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Audacious ESounD Eklentisi\n"
+"Audacius ESounD Eklentisi\n"
 "\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
+"Bu bir özgür yazılımdır. Sizde bu programı GNU/GPL Genel Kamu Lisansı altında\n"
+"değiştirebilir veya düzenleyebilirsiniz. Genel Kamu Lisansı Özgür Yazılım Vakfı\n"
+"tarafından hazırlanmaktadır.\n"
 "\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
+"Bu program kullanışlı olacağı umut edilerek tasarlanmış olup, çalışması\n"
+"konusunda bir garanti verilmemektedir. Garanti içeriği, çalışma şartları ve \n"
+"sağlanan destek konusunda GNU/GPL Genel Kamu Lisansını inceleyebilirsiniz.\n"
 "\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
+"Bu programla birlikte GNU/GPL Genel Kamu Lisansının da bir kopyasını\n"
+"elde etmiş olursunuz. İstediğiniz bir değişiklik için aşağıdaki adrese yazın.\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
 #: src/esd/esd.c:49
 msgid "eSound Output Plugin"
-msgstr "eSound Output Eklentisi"
+msgstr "eSound Çıkış Eklentisi"
 
 #: src/jack/jack.c:594
 msgid "About JACK Output Plugin 0.17"
-msgstr "JACK Output Eklentisi 0.17 Hakkında"
+msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
 
 #: src/jack/jack.c:595
 msgid ""
@@ -752,11 +747,11 @@ msgstr "Kapat"
 
 #: src/null/null.c:59
 msgid "About Null Output"
-msgstr "Null Output Hakkında"
+msgstr "Null Çıkışı Hakkında"
 
 #: src/null/null.c:60
 msgid "Null output plugin "
-msgstr "Null Output eklentisi"
+msgstr "Null Çıkış eklentisi"
 
 #: src/null/null.c:61
 msgid ""
@@ -896,7 +891,7 @@ msgstr "Ses kontrol aygıtı:"
 
 #: src/sun/configure.c:350
 msgid "Volume controls device:"
-msgstr "Ses kontrolleri aygıtı"
+msgstr "Ses kontrolleri aygıtı:"
 
 #: src/sun/configure.c:363
 msgid "XMMS uses mixer exclusively."
@@ -934,7 +929,7 @@ msgstr ""
 #: src/timidity/src/xmms-timidity.c:103
 #, c-format
 msgid "TiMidity Player %s"
-msgstr "TiMidity Oynatıcısı %s"
+msgstr "TiMidity Midi Oynatıcısı %s"
 
 #: src/timidity/src/xmms-timidity.c:138
 msgid ""
@@ -1023,12 +1018,12 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:166
 msgid "Tone Generator: "
-msgstr "Tone Oluşturucu:"
+msgstr "Ton Oluşturucu: "
 
 #: src/tonegen/tonegen.c:268
 #, c-format
 msgid "Tone Generator %s"
-msgstr "Tone Oluşturucu %s"
+msgstr "Ton Oluşturucu %s"
 
 #: src/tta/aud-tta.c:423 src/flac112/fileinfo.c:420 src/flac113/fileinfo.c:487
 #, c-format
@@ -1059,7 +1054,7 @@ msgstr "ReplayGain Ayarları:"
 
 #: src/vorbis/configure.c:177
 msgid "Enable Clipping Prevention"
-msgstr "Klipleme Korumasını Etkinleştir"
+msgstr " Çatlama Korumasını Etkinleştir"
 
 #: src/vorbis/configure.c:182
 msgid "Enable ReplayGain"
@@ -1079,7 +1074,7 @@ msgstr "Albümde Gain/Peak kullan"
 
 #: src/vorbis/configure.c:220
 msgid "Enable 6dB Boost + Hard Limiting"
-msgstr "6dB Boost + Hard Limiting Etkinleştir"
+msgstr "6dB artırma (kompresör) + sınırlayıcı (limitır) Aktif"
 
 #: src/vorbis/configure.c:226 src/flac112/configure.c:337
 #: src/flac113/configure.c:337
@@ -1313,7 +1308,7 @@ msgstr "Uzay"
 #: src/vorbis/fileinfo.c:94 src/flac112/fileinfo.c:59
 #: src/flac113/fileinfo.c:62
 msgid "Meditative"
-msgstr "Düşünceli"
+msgstr "Meditasyon"
 
 #: src/vorbis/fileinfo.c:94 src/flac112/fileinfo.c:59
 #: src/flac113/fileinfo.c:62
@@ -1378,7 +1373,7 @@ msgstr "Komedi"
 #: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
 #: src/flac113/fileinfo.c:66
 msgid "Cult"
-msgstr "Cult"
+msgstr "Kült"
 
 #: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
 #: src/flac113/fileinfo.c:67
@@ -1408,7 +1403,7 @@ msgstr "Jungle"
 #: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
 #: src/flac113/fileinfo.c:68
 msgid "Native American"
-msgstr "Native American"
+msgstr "Amerikan Folk"
 
 #: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
 #: src/flac113/fileinfo.c:69
@@ -1528,7 +1523,7 @@ msgstr "Revival"
 #: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
 #: src/flac113/fileinfo.c:75
 msgid "Celtic"
-msgstr "Celtic"
+msgstr "Kelt"
 
 #: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
 #: src/flac113/fileinfo.c:75
@@ -1578,7 +1573,7 @@ msgstr "Chorus"
 #: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
 #: src/flac113/fileinfo.c:78
 msgid "Easy Listening"
-msgstr "Easy Listening"
+msgstr "Rahatlatıcı Tür"
 
 #: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
 #: src/flac113/fileinfo.c:79
@@ -1623,7 +1618,7 @@ msgstr "Senfoni"
 #: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
 #: src/flac113/fileinfo.c:81
 msgid "Booty Bass"
-msgstr "Booty Bass"
+msgstr "Yoğun Bas"
 
 #: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
 #: src/flac113/fileinfo.c:81
@@ -1923,7 +1918,7 @@ msgstr " Ogg Vorbis ReplayGain "
 
 #: src/vorbis/fileinfo.c:766
 msgid "Track gain:"
-msgstr "Parça gain:"
+msgstr "Parça ses yüksekliği:"
 
 #: src/vorbis/fileinfo.c:776
 msgid "Track peak:"
@@ -1931,7 +1926,7 @@ msgstr "Parça doruğu:"
 
 #: src/vorbis/fileinfo.c:787
 msgid "Album gain:"
-msgstr "Albüm gain:"
+msgstr "Albüm ses yüksekliği:"
 
 #: src/vorbis/fileinfo.c:797
 msgid "Album peak:"
@@ -2021,7 +2016,21 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
-msgstr "Xiph.org Kurumu tarafından hazırlanan Ogg Vorbis Eklentisi\n"
+msgstr ""
+"Xiph.org Kurumu tarafından hazırlanan Ogg Vorbis Eklentisi\n"
+"\n"
+"Orjinal Kod\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Dağıtıma Hazırlayanlar\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"\n"
+"Xiph.org Vakfını buradan ziyaret edebilirsiniz http://www.xiph.org/\n"
 
 #: src/wav/wav-sndfile.c:253
 msgid "About sndfile WAV support"
@@ -2049,6 +2058,22 @@ msgid ""
 "51 Franklin Street, Fifth Floor, \n"
 "Boston, MA  02110-1301  USA"
 msgstr ""
+"Audacius'a uyarlayan Tony Vroon <chainsaw@gentoo.org>\n"
+"Xmms_sndfile eklentisi yazarı:.\n"
+"Tüm Hakkı Saklıdır (C)2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Bu bir özgür yazılımdır. Sizde bu programı GNU/GPL Genel Kamu Lisansı altında\n"
+"değiştirebilir veya düzenleyebilirsiniz. Genel Kamu Lisansı Özgür Yazılım Vakfı\n"
+"tarafından hazırlanmaktadır.\n"
+"\n"
+"Bu program kullanışlı olacağı umut edilerek tasarlanmış olup, çalışması\n"
+"konusunda bir garanti verilmemektedir. Garanti içeriği, çalışma şartları ve \n"
+"sağlanan destek konusunda GNU/GPL Genel Kamu Lisansını inceleyebilirsiniz.\n"
+"\n"
+"Bu programla birlikte GNU/GPL Genel Kamu Lisansının da bir kopyasını\n"
+"elde etmiş olursunuz. İstediğiniz bir değişiklik için aşağıdaki adrese yazın.\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
 
 #: src/wav/wav-sndfile.c:279
 msgid "sndfile WAV plugin"
@@ -2073,12 +2098,10 @@ msgid " Close "
 msgstr " Kapat "
 
 #: src/alsa/about.c:30
-#, fuzzy
 msgid "About ALSA Driver"
-msgstr "OSS Sürücüsü Hakkında"
+msgstr "ALSA Sürücüsü Hakkında"
 
 #: src/alsa/about.c:31
-#, fuzzy
 msgid ""
 "Audacious ALSA Driver\n"
 "\n"
@@ -2098,95 +2121,88 @@ msgid ""
 "USA.\n"
 "Author: Matthieu Sozeau (mattam@altern.org)"
 msgstr ""
-"Audacious OSS Driver\n"
+"Audacious Alsa Driver\n"
 "\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
+"Bu bir özgür yazılımdır. Sizde bu programı GNU/GPL Genel Kamu Lisansı altında\n"
+"değiştirebilir veya düzenleyebilirsiniz. Genel Kamu Lisansı Özgür Yazılım Vakfı\n"
+"tarafından hazırlanmaktadır.\n"
 "\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
+"Bu program kullanışlı olacağı umut edilerek tasarlanmış olup, çalışması\n"
+"konusunda bir garanti verilmemektedir. Garanti içeriği, çalışma şartları ve \n"
+"sağlanan destek konusunda GNU/GPL Genel Kamu Lisansını inceleyebilirsiniz.\n"
 "\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
+"Bu programla birlikte GNU/GPL Genel Kamu Lisansının da bir kopyasını\n"
+"elde etmiş olursunuz. İstediğiniz bir değişiklik için aşağıdaki adrese yazın.\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
+"USA.\n "
+"Yazan: Matthieu Sozeau (mattam@altern.org)"
 
 #: src/alsa/alsa.c:47
-#, fuzzy, c-format
+#, c-format
 msgid "ALSA %s output plugin"
-msgstr "Null Output eklentisi"
+msgstr "ALSA %s Çıkış eklentisi"
 
 #: src/alsa/configure.c:150
 msgid "Unknown soundcard"
-msgstr ""
+msgstr "Bilinmeyen ses kartı"
 
 #: src/alsa/configure.c:205
-#, fuzzy, c-format
+#, c-format
 msgid "Default PCM device (%s)"
-msgstr "Varsayılan %s"
+msgstr "Varsayılan PCM aygıtı (%s)"
 
 #: src/alsa/configure.c:271
-#, fuzzy
 msgid "ALSA Driver configuration"
-msgstr "OSS Sürücüsü ayarları"
+msgstr "ALSA Sürücüsü ayarları"
 
 #: src/alsa/configure.c:299
-#, fuzzy
 msgid "Mixer:"
-msgstr "Karıştırıcı"
+msgstr "Karıştırıcı:"
 
 #: src/alsa/configure.c:307
-#, fuzzy
 msgid "Use software volume control"
-msgstr "Ses kontrolü"
+msgstr "Yazılımsal ses kontrolü kullan"
 
 #: src/alsa/configure.c:317
-#, fuzzy
 msgid "Mixer card:"
-msgstr "Karıştırıcı aygıt"
+msgstr "Karıştırıcı kart:"
 
 #: src/alsa/configure.c:350
-#, fuzzy
 msgid "Device settings"
-msgstr "Karıştırıcı Ayarları:"
+msgstr "Karıştırıcı ayarları"
 
 #: src/alsa/configure.c:356
-#, fuzzy
 msgid "Soundcard:"
-msgstr "Soundtrack"
+msgstr "Ses kartı:"
 
 #: src/alsa/configure.c:369
-#, fuzzy
 msgid "Buffer time (ms):"
-msgstr "Tampon boyutu (ms):"
+msgstr "Tampon zamanı (ms):"
 
 #: src/alsa/configure.c:383
-#, fuzzy
 msgid "Period time (ms):"
-msgstr "Tampon boyutu (ms):"
+msgstr "Periyot zamanı (ms):"
 
 #: src/alsa/configure.c:398 src/amidi-plug/i_configure-ap.c:287
 msgid "Advanced settings"
-msgstr ""
+msgstr "Gelişmiş ayarlar"
 
 #: src/amidi-plug/amidi-plug.c:26
 #, c-format
 msgid "AMIDI-Plug %s (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug %s (Midi çalar)"
 
 #: src/amidi-plug/amidi-plug.c:380
 msgid "AMIDI-Plug - warning"
-msgstr ""
+msgstr "AMIDI-Plug - uyarı"
 
 #: src/amidi-plug/amidi-plug.c:381
 msgid ""
 "No sequencer backend has been selected!\n"
 "Please configure AMIDI-Plug before playing."
 msgstr ""
+"Ardışımlayıcı seçilmedi \n "
+"Lütfen çalmadan önceAMIDI-Plug'ı ayarlayınız."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -2199,6 +2215,14 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Bu eklenti istenilen ALSA portunu kullanarak MIDI leri sıralamaya yarar."
+"ALSA sıralama arayüzü istikrarlı çalışır ve ses kartlarının sağladığı"
+"(bkz. emu10k1) donanımsal ve yazılımsal sentezleyicileri kullanabilir.\n"
+"Bu eklenti MIDI dosyalarını işlemez, MIDI eklentilerini direkt olarak"
+"ALSA sürücülerinden veya programlardan almak için kullanılır."
+"Örneğin hazırda bulunan bir MIDI sesini donanımsal olarak elde etmek"
+"için kullanılır.\n"
+"Eklentiyi yazan Giacomo Lozito"
 
 #: src/amidi-plug/backend-dummy/b-dummy.c:37
 msgid ""
@@ -2207,6 +2231,9 @@ msgid ""
 "standard error or file.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Bu eklenti sesi işlemez, yapılan işlemleri test etmek için kullanılır."
+"MIDI'lere ait olayları standart çıkışa verir yada hata olarak yazar.\n"
+"Eklentiyi yazan Giacomo Lozito"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
 msgid ""
@@ -2214,44 +2241,46 @@ msgid ""
 "time software synthesizer based on the SoundFont2 specification (www."
 "fluidsynth.org).\n"
 "Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen ouput plugin.\n"
+"by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Bu eklenti gerçek zamanlı ses işleme platformu olan SoundFont2 (www."
+"fluidsynth.org)\n"
+"standardını kullanarak MIDI leri işlemektedir."
+"İstenilen çıkış seçilerek sesi işlemeye yarar."
+"Eklentiyi yazan Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:221
 msgid "ALSA BACKEND CONFIGURATION"
-msgstr ""
+msgstr "ALSA BACKEND AYARLARI"
 
 #: src/amidi-plug/i_configure-alsa.c:326
-#, fuzzy
 msgid "Port"
-msgstr "Port:"
+msgstr "Port"
 
 #: src/amidi-plug/i_configure-alsa.c:328
 msgid "Client name"
-msgstr ""
+msgstr "İstemci adı"
 
 #: src/amidi-plug/i_configure-alsa.c:330
 msgid "Port name"
-msgstr ""
+msgstr "Port adı"
 
 #: src/amidi-plug/i_configure-alsa.c:341
 msgid "ALSA output ports"
-msgstr ""
+msgstr "ALSA çıkış portları"
 
 #: src/amidi-plug/i_configure-alsa.c:394
 msgid "Soundcard: "
-msgstr ""
+msgstr "Ses kartı:"
 
 #: src/amidi-plug/i_configure-alsa.c:396
-#, fuzzy
 msgid "Mixer control: "
-msgstr "Ses kontrolü"
+msgstr "Karıştırıcı kontrolü:"
 
 #: src/amidi-plug/i_configure-alsa.c:408
-#, fuzzy
 msgid "Mixer settings"
-msgstr "Karıştırıcı Ayarları:"
+msgstr "Karıştırıcı ayarları"
 
 #: src/amidi-plug/i_configure-alsa.c:421
 msgid ""
@@ -2260,6 +2289,9 @@ msgid ""
 "audio card provides a hardware synth and you want to play MIDI with it, "
 "you'll probably want to select the wavetable synthesizer ports."
 msgstr ""
+"* ALSA çıkış portlarını seçin *\n"
+"Midi olayları burada seçtiğiniz portlara gönderilecekler. Örneğin, eğer ses kartınız donanımsal bir ses işleme aleti istiyorsa ve siz bununla midi çalmak istiyorsanız, "
+"sizden büyük ihtimalle ses tablosundan sintizayzır portlarını isteyecek."
 
 #: src/amidi-plug/i_configure-alsa.c:426
 msgid ""
@@ -2269,6 +2301,11 @@ msgid ""
 "manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
+"* ALSA karıştırıcı kartı seç *\n"
+"ALSA çıkış eklentileri direkt ALSA kullanarak çalışır, oynatıcılardan"
+"gelen çıkış eklentilerini kullanamaz. Yürütme yaparken, oynatıcı ses seviyesini"
+"işleyen karıştırıcı kontrolünü buradan seçebilirsiniz. Eğer ses tablosu"
+"sentezleme portlarını kullanıyorsanız, buradan sentez seçimini yapabilirsiniz."
 
 #: src/amidi-plug/i_configure-alsa.c:433
 msgid ""
@@ -2278,51 +2315,55 @@ msgid ""
 "will manipulate the mixer control you select here. If you're using wavetable "
 "synthesizer ports, you'll probably want to select the Synth control here."
 msgstr ""
+"* ALSA karıştırıcı kontrolünü seç *\n"
+"ALSA çıkış eklentileri direkt ALSA kullanarak çalışır, oynatıcılardan"
+"gelen çıkış eklentilerini kullanamaz. Yürütme yaparken, oynatıcı ses seviyesini"
+"işleyen karıştırıcı kontrolünü buradan seçebilirsiniz. Eğer ses tablosu"
+"sentezleme portlarını kullanıyorsanız, buradan sentez seçimini yapabilirsiniz."
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "ALSA Backend not loaded or not available"
-msgstr ""
+msgstr "ALSA Backend yüklü değil veya bulunamadı."
 
 #: src/amidi-plug/i_configure-ap.c:56
 msgid "AMIDI-Plug - backend information"
-msgstr ""
+msgstr "AMIDI-Plug - backend bilgisi"
 
 #: src/amidi-plug/i_configure-ap.c:194
 msgid "AMIDI-PLUG PREFERENCES"
-msgstr ""
+msgstr "AMIDI-PLUG AYARLARI"
 
 #: src/amidi-plug/i_configure-ap.c:221
 msgid "Backend selection"
-msgstr ""
+msgstr "Backend bölümü"
 
 #: src/amidi-plug/i_configure-ap.c:225
 msgid "Available backends"
-msgstr ""
+msgstr "Mevcut backendler"
 
 #: src/amidi-plug/i_configure-ap.c:255
-#, fuzzy
 msgid "Playback settings"
-msgstr "ReplayGain Ayarları:"
+msgstr "Oynatma Ayarları"
 
 #: src/amidi-plug/i_configure-ap.c:260
 msgid "Transpose: "
-msgstr ""
+msgstr "Transpoze:"
 
 #: src/amidi-plug/i_configure-ap.c:269
 msgid "Drum shift: "
-msgstr ""
+msgstr "Davul tonlaması:"
 
 #: src/amidi-plug/i_configure-ap.c:291
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "Oynatma listesindeki MIDI dosyalarının uzunluklarının ön hesaplaması"
 
 #: src/amidi-plug/i_configure-ap.c:296
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI dosyalarından yorumları aktar (eğer varsa)"
 
 #: src/amidi-plug/i_configure-ap.c:301
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI dosyalarından sözleri aktar (eğer varsa)"
 
 #: src/amidi-plug/i_configure-ap.c:320
 msgid ""
@@ -2339,6 +2380,15 @@ msgid ""
 "FluidSynth backend.\n"
 "Press the info button to read specific information about each backend."
 msgstr ""
+"* Backend Seçimi *\n"
+"AMIDI-Plug 'ın çalışması için bir ses sunucusuna ihtiyacınız vardır ve ses sunucunuzu "
+"seçtikten sonra MIDI olaylarını ele alabilir ve çalabilirsiniz.\n"
+"Eğer ses kartınızda donanımsal ses işleme özelliği var ise ve ALSA bunu destekliyorsa "
+"ALSA ses sunucusunu kullanmak isteyebilirsiniz. ALSA ses sunucusu desteklediği "
+"tüm donanımsal ve yazılımsal araçları, onun arayüzünden kullanabilirsiniz.\n"
+"Eğer yazılımsal ses işleme kullanmak ve/veya efektinize ses enjekte etmek ve oynatıcınızın "
+"çıkış eklentisini eklemek isterseniz, FluidSynth sunucusunu kullanabilirsiniz. \n"
+"Daha detaylı bilgi için her bir sunucunun dökümanlarına göz atın."
 
 #: src/amidi-plug/i_configure-ap.c:331
 msgid ""
@@ -2348,6 +2398,10 @@ msgid ""
 "those on midi channel 10, reserved for percussions). Expecially useful if "
 "you wish to sing or play along with another instrument."
 msgstr ""
+"* Transpoze fonksiyonu *\n"
+"Bu özellik midi dosyasının başka bir tonda çalınmasını sağlar."
+"Bu ayarda her bir numara bir yarım tonu temsil eder. Tüm notalar "
+"belirlenen tona aktarılır." "(10. kanal vurmalı çalgılara ayrılmıştır.)"
 
 #: src/amidi-plug/i_configure-ap.c:337
 msgid ""
@@ -2358,6 +2412,10 @@ msgid ""
 "wish to enhance (or reduce, or alter) percussion sounds, try to play with "
 "this value."
 msgstr ""
+"* Davul tonlama fonksiyonu *\n"
+"Bu özellik 10. kanal üzerindeki notaları (vurmalı çalgılar kanalı) yarımşar"
+" ses olarak ayarlamanızı sağlar. Bu özelliği kullanarak farklı davul setleriyle"
+" farklı sesler elde edip çaldırabilirsiniz."
 
 #: src/amidi-plug/i_configure-ap.c:344
 msgid ""
@@ -2369,6 +2427,11 @@ msgid ""
 "faster playlist loading (when a lot of MIDI files are added), enable it to "
 "display more information in the playlist straight after loading."
 msgstr ""
+"MIDI uzunluklarını hesapla"
+"Eğer bu seçeneği işaretlerseniz, AMIDI-Plug çalma listesinde olan MIDI lerin "
+"uzunluklarını hesaplayacakdır aksi takdirde sadece çalma/oynatma esnasında "
+"hesaplama yapılır. Eğer çalma listesinin daha hızlı yüklenmesini istiyorsanız"
+"bu özelliği devre dışı bırakın."
 
 #: src/amidi-plug/i_configure-ap.c:353
 msgid ""
@@ -2388,186 +2451,174 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-dummy.c:137
 msgid "DUMMY BACKEND CONFIGURATION"
-msgstr ""
+msgstr "ÖRNEK SUNUCU CONFİGÜRASYONU"
 
 #: src/amidi-plug/i_configure-dummy.c:173
-#, fuzzy
 msgid "MIDI logger settings"
-msgstr "Karıştırıcı Ayarları:"
+msgstr "MIDI günlüğü ayarları"
 
 #: src/amidi-plug/i_configure-dummy.c:181
 msgid "Do not log anything"
-msgstr ""
+msgstr "Hiçbirşeyin günlüğünü tutma"
 
 #: src/amidi-plug/i_configure-dummy.c:185
 msgid "Log MIDI events to standard output"
-msgstr ""
+msgstr "MIDI olaylarını standart çıktıya günlükle"
 
 #: src/amidi-plug/i_configure-dummy.c:189
 msgid "Log MIDI events to standard error"
-msgstr ""
+msgstr "MIDI olaylarını standart hataya günlükle"
 
 #: src/amidi-plug/i_configure-dummy.c:193
 msgid "Log MIDI events to file"
-msgstr ""
+msgstr "MIDI olaylarını dosyaya günlükle"
 
 #: src/amidi-plug/i_configure-dummy.c:202
-#, fuzzy
 msgid "Logfile settings"
-msgstr "Karıştırıcı Ayarları:"
+msgstr "Günlük dosyası Ayarları:"
 
 #: src/amidi-plug/i_configure-dummy.c:209
 msgid "Use a single file to log everything (rewrite)"
-msgstr ""
+msgstr "Her zaman tek günlük dosyası kullan (üzerine yaz)"
 
 #: src/amidi-plug/i_configure-dummy.c:213
 msgid "Use a single file to log everything (append)"
-msgstr ""
+msgstr "Her zaman bir tek günlük dosyası kullan (üzerine ekle)"
 
 #: src/amidi-plug/i_configure-dummy.c:217
 msgid "Use a different logfile for each MIDI file"
-msgstr ""
+msgstr "Her MIDI dosyası için ayrı günlük dosyası kullan"
 
 #: src/amidi-plug/i_configure-dummy.c:223
 msgid "» Log dir:"
-msgstr ""
+msgstr "» Günlük dosyasının yeri:"
 
 #: src/amidi-plug/i_configure-dummy.c:229
 #: src/amidi-plug/i_configure-dummy.c:241
 msgid "browse"
-msgstr ""
+msgstr "göz at"
 
 #: src/amidi-plug/i_configure-dummy.c:235
 msgid "» Log file:"
-msgstr ""
+msgstr "» Günlük dosyası:"
 
 #: src/amidi-plug/i_configure-dummy.c:267
-#, fuzzy
 msgid "Playback speed"
-msgstr "Çal"
+msgstr "Çalma hızı"
 
 #: src/amidi-plug/i_configure-dummy.c:272
 msgid "Play at normal speed"
-msgstr ""
+msgstr "Normal hızda çal"
 
 #: src/amidi-plug/i_configure-dummy.c:275
 msgid "Play as fast as possible"
-msgstr ""
+msgstr "Hızlı çalmaya izin ver"
 
 #: src/amidi-plug/i_configure-dummy.c:329
 msgid "Dummy Backend not loaded or not available"
-msgstr ""
+msgstr "Dummy Backend yüklü değil veya bulunamadı"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr ""
+msgstr "AMIDI-Plug - SoundFont dosyası seç"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:362
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-msgstr ""
+msgstr "FLUIDSYNTH BACKEND AYARLARI"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "SoundFont settings"
-msgstr ""
+msgstr "SoundFont ayarları"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
-msgstr ""
+msgstr "Dosya adı"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:452
 msgid "Size (bytes)"
-msgstr ""
+msgstr "Boyut (bayt)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:501
 msgid "Load SF on player start"
-msgstr ""
+msgstr "Çalıcı başladığında SF'u yükle"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:505
 msgid "Load SF on first midifile play"
-msgstr ""
+msgstr "İlk midi dosyasını çaldığında SF'u yükle"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:520
-#, fuzzy
 msgid "Synthesizer settings"
-msgstr "Karıştırıcı Ayarları:"
+msgstr "Sintizayzır Ayarları:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:529
-#, fuzzy
 msgid "gain"
-msgstr "Latin"
+msgstr "Giriş yüksekliği"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:535
 #: src/amidi-plug/i_configure-fluidsynth.c:563
 #: src/amidi-plug/i_configure-fluidsynth.c:591
 #: src/amidi-plug/i_configure-fluidsynth.c:622
-#, fuzzy
 msgid "use default"
-msgstr "Vasyılan"
+msgstr "Vasyılanı kullan"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:538
 #: src/amidi-plug/i_configure-fluidsynth.c:566
 msgid "value:"
-msgstr ""
+msgstr "Değer:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:557
 msgid "poliphony"
-msgstr ""
+msgstr "Çokseslilik"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:585
-#, fuzzy
 msgid "reverb"
-msgstr "Sunucu"
+msgstr "Derinlik"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:594
 #: src/amidi-plug/i_configure-fluidsynth.c:625
-#, fuzzy
 msgid "yes"
-msgstr "Evet"
+msgstr "evet"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:596
 #: src/amidi-plug/i_configure-fluidsynth.c:627
-#, fuzzy
 msgid "no"
-msgstr "Mono"
+msgstr "Hayır"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:616
-#, fuzzy
 msgid "chorus"
 msgstr "Chorus"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:647
-#, fuzzy
 msgid "sample rate"
-msgstr "Örnekleme oranı:"
+msgstr "örnekleme oranı"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:662
 msgid "custom "
-msgstr ""
+msgstr "custom"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:705
-#, fuzzy
 msgid "Buffer settings"
-msgstr "Tamponlanıyor"
+msgstr "Tampon ayarları"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:714
 msgid "<span size=\"smaller\">def</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">varsayılan</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:723
 msgid "<span size=\"smaller\">handy buffer tuner</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">arabellek ayarlayıcı</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:737
 msgid "<span size=\"smaller\">size</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">boyut</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:751
 msgid "<span size=\"smaller\">margin</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">mesafe</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:765
 msgid "<span size=\"smaller\">increment</span>"
-msgstr ""
+msgstr "<span size=\"smaller\">artış miktarı</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:807
 msgid ""
@@ -2576,6 +2627,9 @@ msgid ""
 "valid SoundFont file here (use absolute paths). The loading order is from "
 "the top (first) to the bottom (last)."
 msgstr ""
+"* SoundFont dosyası seç *\n"
+"FluidSynth ile MIDI çalmak için geçerli SoundFont dosyasını seçmelisiniz."
+"(tam yolu kullanın). Yükleme seçeneklerini yukarıdan, aşağıya doğru görebilirsiniz."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:812
 msgid ""
@@ -2596,6 +2650,12 @@ msgid ""
 "start, or before the first MIDI file is played (the latter is a better "
 "choice if you don't use your player to listen MIDI files only)."
 msgstr ""
+"*İlk MIDI dosyasını çaldığında SF'u yükle *\n"
+"Depending on your system speed, SoundFont loading in FluidSynth will require "
+"up to a few seconds. This is a one-time task (the soundfont will stay loaded "
+"until it is changed or the backend is unloaded) that can be done at player "
+"start, or before the first MIDI file is played (the latter is a better "
+"choice if you don't use your player to listen MIDI files only)."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:828
 msgid ""
@@ -2687,104 +2747,99 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
-msgstr ""
+msgstr "TIMIDITY BACKEND AYARLARI"
 
 #: src/amidi-plug/i_configure.c:75
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Plug - Dosya seç"
 
 #: src/amidi-plug/i_configure.c:122
-#, fuzzy
 msgid "AMIDI-Plug - configuration"
-msgstr "ESD Output Eklentisi yapılandırması"
+msgstr "AMIDI-Plug - Yapılandırması"
 
 #: src/amidi-plug/i_configure.c:241
 msgid "AMIDI-Plug message"
-msgstr ""
+msgstr "AMIDI-Plug mesaj"
 
 #: src/amidi-plug/i_configure.c:242
 msgid "Please stop the player before changing AMIDI-Plug settings."
-msgstr ""
+msgstr "Lütfen AMIDI-Plug ayarlarını değiştirmeden önce oynatıcıyı durdurun."
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI İçeriği </span>"
 
 #: src/amidi-plug/i_fileinfo.c:205
-#, fuzzy
 msgid "Format:"
-msgstr "ID3 biçimi:"
+msgstr "Biçim:"
 
 #: src/amidi-plug/i_fileinfo.c:208
-#, fuzzy
 msgid "Length (msec):"
-msgstr "Uzunluk:"
+msgstr "Uzunluk (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
-msgstr ""
+msgstr "Parça numarası:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr ""
+msgstr "Değişken"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
-msgstr ""
+msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr ""
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr ""
+msgstr "Zaman Böl:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI içeriği ve sözleri </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
-msgstr ""
+msgstr "* Bu midi dosyasıyla ilgili yorum bulunamadı *"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no lyrics available in this MIDI file *"
-msgstr ""
+msgstr "* Bu midi dosyasıyla ilgili şarkı sözü bulunamadı *"
 
 #: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
-msgstr ""
+msgstr "(Geçersiz UTF-8)"
 
 #: src/aosd/aosd_style.c:76
 msgid "Rectangle"
-msgstr ""
+msgstr "Dikdörtgen"
 
 #: src/aosd/aosd_style.c:80
 msgid "Rounded Rectangle"
-msgstr ""
+msgstr "Yuvarlak Köşeli Dikdörtgen"
 
 #: src/aosd/aosd_style.c:84
 msgid "Concave Rectangle"
-msgstr ""
+msgstr "Konkav Dikdörtgen"
 
 #: src/aosd/aosd_style.c:88
 msgid "None"
 msgstr "Hiçbiri"
 
 #: src/aosd/aosd_trigger.c:60
-#, fuzzy
 msgid "Playback Start"
 msgstr "Çal"
 
 #: src/aosd/aosd_trigger.c:61
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
+msgstr "Playlist yüklendiğinde görsel öğeyi oynat"
 
 #: src/aosd/aosd_trigger.c:65
-#, fuzzy
 msgid "Title Change"
-msgstr "Tek kanal"
+msgstr "Başlık Değiştirme"
 
 #: src/aosd/aosd_trigger.c:66
 msgid ""
@@ -2792,136 +2847,133 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
+"Şarkı başladığında görünen şarkı başlığı değişir, fakat dosya adı aynı"
+"kalır. İnternet den inen akıcı dosyaları çalarken kullanışlı oluyor. "
 
 #: src/aosd/aosd_ui.c:166
 msgid "Placement"
-msgstr ""
+msgstr "Yerleştir"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
-msgstr ""
+msgstr "Değişken X değeri"
 
 #: src/aosd/aosd_ui.c:209
 msgid "Relative Y offset:"
-msgstr ""
+msgstr "Değişken Y değeri"
 
 #: src/aosd/aosd_ui.c:218
 msgid "Max OSD width:"
-msgstr ""
+msgstr "Maksimum Gösterge Yüksekliği:"
 
 #: src/aosd/aosd_ui.c:235
 msgid "Display OSD using:"
-msgstr ""
+msgstr "Göstergeyi kullanırken göster:"
 
 #: src/aosd/aosd_ui.c:237
 msgid "all monitors"
-msgstr ""
+msgstr "tüm monitörler"
 
 #: src/aosd/aosd_ui.c:240
 #, c-format
 msgid "monitor %i"
-msgstr ""
+msgstr "Monitör %i"
 
 #: src/aosd/aosd_ui.c:293
 msgid "Timing (ms)"
-msgstr ""
+msgstr "Zaman (ms)"
 
 #: src/aosd/aosd_ui.c:298
 msgid "Display:"
-msgstr ""
+msgstr "Göster:"
 
 #: src/aosd/aosd_ui.c:303
 msgid "Fade in:"
-msgstr ""
+msgstr "Geciktirme:"
 
 #: src/aosd/aosd_ui.c:308
 msgid "Fade out:"
-msgstr ""
+msgstr "Hızlandırma:"
 
 #: src/aosd/aosd_ui.c:380
 msgid "Fonts"
-msgstr ""
+msgstr "Fontlar"
 
 #: src/aosd/aosd_ui.c:405
 msgid "Shadow"
-msgstr ""
+msgstr "Gölge"
 
 #: src/aosd/aosd_ui.c:449
 msgid "Select Skin File"
-msgstr ""
+msgstr "Arayüz dosyası seçin"
 
 #: src/aosd/aosd_ui.c:557
 msgid "Render Style"
-msgstr ""
+msgstr "İşleme Stili"
 
 #: src/aosd/aosd_ui.c:573
-#, fuzzy
 msgid "Colors"
-msgstr "Kapat"
+msgstr "Renkler"
 
 #: src/aosd/aosd_ui.c:606
 msgid "Custom Skin"
-msgstr ""
+msgstr "Geçerli Arayüz"
 
 #: src/aosd/aosd_ui.c:612
 msgid "Skin file:"
-msgstr ""
+msgstr "Arayüz Dosyası:"
 
 #: src/aosd/aosd_ui.c:615
 msgid "Browse"
-msgstr ""
+msgstr "Araştır"
 
 #: src/aosd/aosd_ui.c:717
 msgid "Enable trigger"
-msgstr ""
+msgstr "Tetikleyici Aktif"
 
 #: src/aosd/aosd_ui.c:744
 msgid "Event"
-msgstr ""
+msgstr "Olay"
 
 #: src/aosd/aosd_ui.c:845
-#, fuzzy
 msgid "Audacious OSD - configuration"
-msgstr "CD Ses Çalıcısı Ayarları"
+msgstr "Audacious OSD - yapılandırması"
 
 #: src/aosd/aosd_ui.c:866
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: src/aosd/aosd_ui.c:881
-#, fuzzy
 msgid "Position"
-msgstr "Açıklama:"
+msgstr "Konum"
 
 #: src/aosd/aosd_ui.c:886
-#, fuzzy
 msgid "Animation"
-msgstr "Kurum:"
+msgstr "Animasyon"
 
 #: src/aosd/aosd_ui.c:891
 msgid "Text"
-msgstr ""
+msgstr "Yazı"
 
 #: src/aosd/aosd_ui.c:896
-#, fuzzy
 msgid "Decoration"
-msgstr "Açıklama:"
+msgstr "Dekorasyon"
 
 #: src/aosd/aosd_ui.c:901
-#, fuzzy
 msgid "Trigger"
-msgstr "Trailer"
+msgstr "Başlat"
 
 #: src/aosd/aosd_ui.c:937
 msgid "Audacious OSD - about"
-msgstr ""
+msgstr "Audacius OSD - Hakkında"
 
 #: src/aosd/aosd_ui.c:968
-#, fuzzy
 msgid ""
 "\n"
 "Audacious OSD "
-msgstr "%s - Audacious"
+msgstr ""
+"\n"
+"Audacious OSD "
 
 #: src/aosd/aosd_ui.c:969
 msgid ""
@@ -2935,85 +2987,88 @@ msgid ""
 "http://neugierig.org/software/ghosd/\n"
 "\n"
 msgstr ""
+"\n"
+"http://www.develia.org/projects.php?p=aosd\n"
+"Programı Hazırlayan Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"Gösterge ekranı (OSD) Ghosd kütüphanesi kullanılarak yapılmıştır\n"
+"http://neugierig.org/software/ghosd/\n"
+"\n"
+"Ghosd kütüphanesini hazırlayan Evan Martin\n"
+"\n"
 
 #: src/arts/configure.c:51
-#, fuzzy
 msgid "aRts Driver configuration"
-msgstr "OSS Sürücüsü ayarları"
+msgstr "aRTS Ses Sürücüsü ayarları"
 
 #: src/evdev-plug/ed.c:56
-#, fuzzy
 msgid "Playback->Play"
 msgstr "Çal"
 
 #: src/evdev-plug/ed.c:57
-#, fuzzy
 msgid "Playback->Stop"
-msgstr "Çal"
+msgstr "Dur"
 
 #: src/evdev-plug/ed.c:58
-#, fuzzy
 msgid "Playback->Pause"
-msgstr "Çal"
+msgstr "Durakla"
 
 #: src/evdev-plug/ed.c:59
-#, fuzzy
 msgid "Playback->Prev"
-msgstr "Çal"
+msgstr "Geri Sar"
 
 #: src/evdev-plug/ed.c:60
-#, fuzzy
 msgid "Playback->Next"
-msgstr "Çal"
+msgstr "Playback->İleri"
 
 #: src/evdev-plug/ed.c:61
-#, fuzzy
 msgid "Playback->Eject"
-msgstr "Çal"
+msgstr "Playback->Çıkart"
 
 #: src/evdev-plug/ed.c:63
 msgid "Playlist->Repeat"
-msgstr ""
+msgstr "Tekrarla"
 
 #: src/evdev-plug/ed.c:64
 msgid "Playlist->Shuffle"
-msgstr ""
+msgstr "Rastgele"
 
 #: src/evdev-plug/ed.c:66
 msgid "Volume->Up_5"
-msgstr ""
+msgstr "Sesi 5 Birim Artır"
 
 #: src/evdev-plug/ed.c:67
 msgid "Volume->Down_5"
-msgstr ""
+msgstr "Sesi 5 Birim Azalt"
 
 #: src/evdev-plug/ed.c:68
 msgid "Volume->Up_10"
-msgstr ""
+msgstr "Sesi 10 Birim Artır"
 
 #: src/evdev-plug/ed.c:69
 msgid "Volume->Down_10"
-msgstr ""
+msgstr "Sesi 10 Birim Azalt"
 
 #: src/evdev-plug/ed.c:70
 msgid "Volume->Mute"
-msgstr ""
+msgstr "Sessiz"
 
 #: src/evdev-plug/ed.c:72
 msgid "Window->Main"
-msgstr ""
+msgstr "Ana Ekran"
 
 #: src/evdev-plug/ed.c:73
 msgid "Window->Playlist"
-msgstr ""
+msgstr "Çalma Listesi"
 
 #: src/evdev-plug/ed.c:74
 msgid "Window->Equalizer"
-msgstr ""
+msgstr "Ekolayzır"
 
 #: src/evdev-plug/ed.c:75
 msgid "Window->JumpToFile"
-msgstr ""
+msgstr "Dosya Çal"
 
 #: src/evdev-plug/ed_internals.c:93
 #, c-format
@@ -3021,6 +3076,9 @@ msgid ""
 "event-device-plugin: unable to open device file %s , skipping this device; "
 "check that the file exists and that you have read permission for it\n"
 msgstr ""
+"event-device-plugin: %s diye belirtilen dosya açılamıyor.\n"
+"Cihaz durduruldu. Dosya yolunun, adının doğruluğunu\n"
+"ve erişim haklarınızı kontrol edin.\n"
 
 #: src/evdev-plug/ed_internals.c:102
 #, c-format
@@ -3028,12 +3086,16 @@ msgid ""
 "event-device-plugin: unable to create a io_channel for device file %s ,"
 "skipping this device\n"
 msgstr ""
+"event-device-plugin: %s aygıt dosyası okunurken giriş-çıkış hatası\n"
+"meydana geldi. Aygıt okuma işlemi durduruldu.\n"
 
 #: src/evdev-plug/ed_internals.c:339
 msgid ""
 "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
 "detection of event devices won't work.\n"
 msgstr ""
+"event-device-plugin: /proc/bus/input/devices açılamıyor.\n"
+"Otomatik başlatma yapılamıyor.\n"
 
 #: src/evdev-plug/ed_internals.c:348
 msgid ""
@@ -3110,9 +3172,8 @@ msgstr ""
 
 #: src/evdev-plug/ed_ui.c:274 src/evdev-plug/ed_ui.c:410
 #: src/evdev-plug/ed_ui.c:862
-#, fuzzy
 msgid "Information"
-msgstr "ID3 biçimi:"
+msgstr "Bilgi"
 
 #: src/evdev-plug/ed_ui.c:275
 msgid ""
@@ -3141,14 +3202,12 @@ msgid ""
 msgstr ""
 
 #: src/evdev-plug/ed_ui.c:360
-#, fuzzy
 msgid "Device name:"
-msgstr "Aygıt:"
+msgstr "Aygıt ismi:"
 
 #: src/evdev-plug/ed_ui.c:364
-#, fuzzy
 msgid "Device file:"
-msgstr "Aygıt:"
+msgstr "Aygıt dosyası:"
 
 #: src/evdev-plug/ed_ui.c:411
 msgid ""
@@ -3165,29 +3224,24 @@ msgid "Do you want to remove the selected custom device?\n"
 msgstr ""
 
 #: src/evdev-plug/ed_ui.c:612
-#, fuzzy
 msgid "EvDev-Plug - Configuration"
-msgstr "MPEG Ses Eklentisi Yapılandırması"
+msgstr "EvDev-Plug - Yapılandırması"
 
 #: src/evdev-plug/ed_ui.c:651
-#, fuzzy
 msgid "Active"
-msgstr "Asit"
+msgstr "Etkin"
 
 #: src/evdev-plug/ed_ui.c:664
-#, fuzzy
 msgid "Device Name"
-msgstr "Aygıt"
+msgstr "Aygıt İsmi"
 
 #: src/evdev-plug/ed_ui.c:668
-#, fuzzy
 msgid "Device File"
-msgstr "Aygıt"
+msgstr "Aygıt Dosyası"
 
 #: src/evdev-plug/ed_ui.c:672
-#, fuzzy
 msgid "Device Address"
-msgstr "Aygıtlar"
+msgstr "Aygıt Adresi"
 
 #: src/evdev-plug/ed_ui.c:689
 msgid "_Bindings"
@@ -3209,19 +3263,16 @@ msgid ""
 msgstr ""
 
 #: src/evdev-plug/ed_ui.c:1312
-#, fuzzy
 msgid "EvDev-Plug - Bindings Configuration"
-msgstr "MPEG Ses Eklentisi Yapılandırması"
+msgstr "EvDev-Plug - Bağlayıcı Yapılandırması"
 
 #: src/evdev-plug/ed_ui.c:1352
-#, fuzzy
 msgid "<b>Name: </b>"
-msgstr "<b>Hatena</b>"
+msgstr "<b>İsim: </b>"
 
 #: src/evdev-plug/ed_ui.c:1361
-#, fuzzy
 msgid "<b>Filename: </b>"
-msgstr "<b>Hatena</b>"
+msgstr "<b>Dosya ismi: </b>"
 
 #: src/evdev-plug/ed_ui.c:1370
 msgid "<b>Phys.Address: </b>"
@@ -3250,434 +3301,421 @@ msgstr ""
 
 #: src/flac112/charset.c:40 src/flac113/charset.c:40
 msgid "Arabic (IBM-864)"
-msgstr ""
+msgstr "Arapça (IBM-864)"
 
 #: src/flac112/charset.c:41 src/flac113/charset.c:41
 msgid "Arabic (ISO-8859-6)"
-msgstr ""
+msgstr "Arapça (ISO-8859-6)"
 
 #: src/flac112/charset.c:42 src/flac113/charset.c:42
 msgid "Arabic (Windows-1256)"
-msgstr ""
+msgstr "Arapça (Windows-1256)"
 
 #: src/flac112/charset.c:43 src/flac113/charset.c:43
 msgid "Baltic (ISO-8859-13)"
-msgstr ""
+msgstr "Baltık (ISO-8859-13)"
 
 #: src/flac112/charset.c:44 src/flac113/charset.c:44
 msgid "Baltic (ISO-8859-4)"
-msgstr ""
+msgstr "Baltık (ISO-8859-4)"
 
 #: src/flac112/charset.c:45 src/flac113/charset.c:45
 msgid "Baltic (Windows-1257)"
-msgstr ""
+msgstr "Baltık (Windows-1257)"
 
 #: src/flac112/charset.c:46 src/flac113/charset.c:46
 msgid "Celtic (ISO-8859-14)"
-msgstr ""
+msgstr "Celtic (ISO-8859-14)"
 
 #: src/flac112/charset.c:47 src/flac113/charset.c:47
 msgid "Central European (IBM-852)"
-msgstr ""
+msgstr "Central European (IBM-852)"
 
 #: src/flac112/charset.c:48 src/flac113/charset.c:48
 msgid "Central European (ISO-8859-2)"
-msgstr ""
+msgstr "Central European (ISO-8859-2)"
 
 #: src/flac112/charset.c:49 src/flac113/charset.c:49
 msgid "Central European (Windows-1250)"
-msgstr ""
+msgstr "Central European (Windows-1250)"
 
 #: src/flac112/charset.c:50 src/flac113/charset.c:50
 msgid "Chinese Simplified (GB18030)"
-msgstr ""
+msgstr "Chinese Simplified (GB18030)"
 
 #: src/flac112/charset.c:51 src/flac113/charset.c:51
 msgid "Chinese Simplified (GB2312)"
-msgstr ""
+msgstr "Chinese Simplified (GB2312)"
 
 #: src/flac112/charset.c:52 src/flac113/charset.c:52
 msgid "Chinese Traditional (Big5)"
-msgstr ""
+msgstr "Chinese Traditional (Big5)"
 
 #: src/flac112/charset.c:53 src/flac113/charset.c:53
 msgid "Chinese Traditional (Big5-HKSCS)"
-msgstr ""
+msgstr "Chinese Traditional (Big5-HKSCS)"
 
 #: src/flac112/charset.c:54 src/flac113/charset.c:54
 msgid "Cyrillic (IBM-855)"
-msgstr ""
+msgstr "Cyrillic (IBM-855)"
 
 #: src/flac112/charset.c:55 src/flac113/charset.c:55
 msgid "Cyrillic (ISO-8859-5)"
-msgstr ""
+msgstr "Cyrillic (ISO-8859-5)"
 
 #: src/flac112/charset.c:56 src/flac113/charset.c:56
 msgid "Cyrillic (ISO-IR-111)"
-msgstr ""
+msgstr "Cyrillic (ISO-IR-111)"
 
 #: src/flac112/charset.c:57 src/flac113/charset.c:57
 msgid "Cyrillic (KOI8-R)"
-msgstr ""
+msgstr "Cyrillic (KOI8-R)"
 
 #: src/flac112/charset.c:58 src/flac113/charset.c:58
 msgid "Cyrillic (Windows-1251)"
-msgstr ""
+msgstr "Cyrillic (Windows-1251)"
 
 #: src/flac112/charset.c:59 src/flac113/charset.c:59
 msgid "Cyrillic/Russian (CP-866)"
-msgstr ""
+msgstr "Cyrillic/Russian (CP-866)"
 
 #: src/flac112/charset.c:60 src/flac113/charset.c:60
 msgid "Cyrillic/Ukrainian (KOI8-U)"
-msgstr ""
+msgstr "Cyrillic/Ukrainian (KOI8-U)"
 
 #: src/flac112/charset.c:61 src/flac113/charset.c:61
 msgid "English (US-ASCII)"
-msgstr ""
+msgstr "English (US-ASCII)"
 
 #: src/flac112/charset.c:62 src/flac113/charset.c:62
 msgid "Greek (ISO-8859-7)"
-msgstr ""
+msgstr "Greek (ISO-8859-7)"
 
 #: src/flac112/charset.c:63 src/flac113/charset.c:63
 msgid "Greek (Windows-1253)"
-msgstr ""
+msgstr "Greek (Windows-1253)"
 
 #: src/flac112/charset.c:64 src/flac113/charset.c:64
 msgid "Hebrew (IBM-862)"
-msgstr ""
+msgstr "Hebrew (IBM-862)"
 
 #: src/flac112/charset.c:65 src/flac113/charset.c:65
 msgid "Hebrew (Windows-1255)"
-msgstr ""
+msgstr "Hebrew (Windows-1255)"
 
 #: src/flac112/charset.c:66 src/flac113/charset.c:66
 msgid "Japanese (EUC-JP)"
-msgstr ""
+msgstr "Japanese (EUC-JP)"
 
 #: src/flac112/charset.c:67 src/flac113/charset.c:67
 msgid "Japanese (ISO-2022-JP)"
-msgstr ""
+msgstr "Japanese (ISO-2022-JP)"
 
 #: src/flac112/charset.c:68 src/flac113/charset.c:68
 msgid "Japanese (Shift_JIS)"
-msgstr ""
+msgstr "Japanese (Shift_JIS)"
 
 #: src/flac112/charset.c:69 src/flac113/charset.c:69
 msgid "Korean (EUC-KR)"
-msgstr ""
+msgstr "Korean (EUC-KR)"
 
 #: src/flac112/charset.c:70 src/flac113/charset.c:70
 msgid "Nordic (ISO-8859-10)"
-msgstr ""
+msgstr "Nordic (ISO-8859-10)"
 
 #: src/flac112/charset.c:71 src/flac113/charset.c:71
 msgid "South European (ISO-8859-3)"
-msgstr ""
+msgstr "South European (ISO-8859-3)"
 
 #: src/flac112/charset.c:72 src/flac113/charset.c:72
 msgid "Thai (TIS-620)"
-msgstr ""
+msgstr "Thai (TIS-620)"
 
 #: src/flac112/charset.c:73 src/flac113/charset.c:73
 msgid "Turkish (IBM-857)"
-msgstr ""
+msgstr "Türkçe (IBM-857)"
 
 #: src/flac112/charset.c:74 src/flac113/charset.c:74
 msgid "Turkish (ISO-8859-9)"
-msgstr ""
+msgstr "Türkçe (ISO-8859-9)"
 
 #: src/flac112/charset.c:75 src/flac113/charset.c:75
 msgid "Turkish (Windows-1254)"
-msgstr ""
+msgstr "Türkçe (Windows-1254)"
 
 #: src/flac112/charset.c:76 src/flac113/charset.c:76
 msgid "Unicode (UTF-7)"
-msgstr ""
+msgstr "Unicode (UTF-7)"
 
 #: src/flac112/charset.c:77 src/flac113/charset.c:77
 msgid "Unicode (UTF-8)"
-msgstr ""
+msgstr "Unicode (UTF-8)"
 
 #: src/flac112/charset.c:78 src/flac113/charset.c:78
 msgid "Unicode (UTF-16BE)"
-msgstr ""
+msgstr "Unicode (UTF-16BE)"
 
 #: src/flac112/charset.c:79 src/flac113/charset.c:79
 msgid "Unicode (UTF-16LE)"
-msgstr ""
+msgstr "Unicode (UTF-16LE)"
 
 #: src/flac112/charset.c:80 src/flac113/charset.c:80
 msgid "Unicode (UTF-32BE)"
-msgstr ""
+msgstr "Unicode (UTF-32BE)"
 
 #: src/flac112/charset.c:81 src/flac113/charset.c:81
 msgid "Unicode (UTF-32LE)"
-msgstr ""
+msgstr "Unicode (UTF-32LE)"
 
 #: src/flac112/charset.c:82 src/flac113/charset.c:82
 msgid "Vietnamese (VISCII)"
-msgstr ""
+msgstr "Vietnamese (VISCII)"
 
 #: src/flac112/charset.c:83 src/flac113/charset.c:83
 msgid "Vietnamese (Windows-1258)"
-msgstr ""
+msgstr "Vietnamese (Windows-1258)"
 
 #: src/flac112/charset.c:84 src/flac113/charset.c:84
 msgid "Visual Hebrew (ISO-8859-8)"
-msgstr ""
+msgstr "Visual Hebrew (ISO-8859-8)"
 
 #: src/flac112/charset.c:85 src/flac113/charset.c:85
 msgid "Western (IBM-850)"
-msgstr ""
+msgstr "Western (IBM-850)"
 
 #: src/flac112/charset.c:86 src/flac113/charset.c:86
 msgid "Western (ISO-8859-1)"
-msgstr ""
+msgstr "Western (ISO-8859-1)"
 
 #: src/flac112/charset.c:87 src/flac113/charset.c:87
 msgid "Western (ISO-8859-15)"
-msgstr ""
+msgstr "Western (ISO-8859-15)"
 
 #: src/flac112/charset.c:88 src/flac113/charset.c:88
 msgid "Western (Windows-1252)"
-msgstr ""
+msgstr "Western (Windows-1252)"
 
 #: src/flac112/charset.c:94 src/flac113/charset.c:94
 msgid "Arabic (IBM-864-I)"
-msgstr ""
+msgstr "Arabic (IBM-864-I)"
 
 #: src/flac112/charset.c:95 src/flac113/charset.c:95
 msgid "Arabic (ISO-8859-6-E)"
-msgstr ""
+msgstr "Arabic (ISO-8859-6-E)"
 
 #: src/flac112/charset.c:96 src/flac113/charset.c:96
 msgid "Arabic (ISO-8859-6-I)"
-msgstr ""
+msgstr "Arabic (ISO-8859-6-I)"
 
 #: src/flac112/charset.c:97 src/flac113/charset.c:97
 msgid "Arabic (MacArabic)"
-msgstr ""
+msgstr "Arabic (MacArabic)"
 
 #: src/flac112/charset.c:98 src/flac113/charset.c:98
 msgid "Armenian (ARMSCII-8)"
-msgstr ""
+msgstr "Armenian (ARMSCII-8)"
 
 #: src/flac112/charset.c:99 src/flac113/charset.c:99
 msgid "Central European (MacCE)"
-msgstr ""
+msgstr "Central European (MacCE)"
 
 #: src/flac112/charset.c:100 src/flac113/charset.c:100
 msgid "Chinese Simplified (GBK)"
-msgstr ""
+msgstr "Chinese Simplified (GBK)"
 
 #: src/flac112/charset.c:101 src/flac113/charset.c:101
 msgid "Chinese Simplified (HZ)"
-msgstr ""
+msgstr "Chinese Simplified (HZ)"
 
 #: src/flac112/charset.c:102 src/flac113/charset.c:102
 msgid "Chinese Traditional (EUC-TW)"
-msgstr ""
+msgstr "Chinese Traditional (EUC-TW)"
 
 #: src/flac112/charset.c:103 src/flac113/charset.c:103
 msgid "Croatian (MacCroatian)"
-msgstr ""
+msgstr "Croatian (MacCroatian)"
 
 #: src/flac112/charset.c:104 src/flac113/charset.c:104
 msgid "Cyrillic (MacCyrillic)"
-msgstr ""
+msgstr "Cyrillic (MacCyrillic)"
 
 #: src/flac112/charset.c:105 src/flac113/charset.c:105
 msgid "Cyrillic/Ukrainian (MacUkrainian)"
-msgstr ""
+msgstr "Cyrillic/Ukrainian (MacUkrainian)"
 
 #: src/flac112/charset.c:106 src/flac113/charset.c:106
 msgid "Farsi (MacFarsi)"
-msgstr ""
+msgstr "Farsça (MacFarsi)"
 
 #: src/flac112/charset.c:107 src/flac113/charset.c:107
 msgid "Greek (MacGreek)"
-msgstr ""
+msgstr "Greek (MacGreek)"
 
 #: src/flac112/charset.c:108 src/flac113/charset.c:108
 msgid "Gujarati (MacGujarati)"
-msgstr ""
+msgstr "Gujarati-Hint (MacGujarati)"
 
 #: src/flac112/charset.c:109 src/flac113/charset.c:109
 msgid "Gurmukhi (MacGurmukhi)"
-msgstr ""
+msgstr "Gurmukhi-Hint (MacGurmukhi)"
 
 #: src/flac112/charset.c:110 src/flac113/charset.c:110
 msgid "Hebrew (ISO-8859-8-E)"
-msgstr ""
+msgstr "Hebrew (ISO-8859-8-E)"
 
 #: src/flac112/charset.c:111 src/flac113/charset.c:111
 msgid "Hebrew (ISO-8859-8-I)"
-msgstr ""
+msgstr "Hebrew (ISO-8859-8-I)"
 
 #: src/flac112/charset.c:112 src/flac113/charset.c:112
 msgid "Hebrew (MacHebrew)"
-msgstr ""
+msgstr "Hebrew (MacHebrew)"
 
 #: src/flac112/charset.c:113 src/flac113/charset.c:113
 msgid "Hindi (MacDevanagari)"
-msgstr ""
+msgstr "Hintçe (MacDevanagari)"
 
 #: src/flac112/charset.c:114 src/flac113/charset.c:114
 msgid "Icelandic (MacIcelandic)"
-msgstr ""
+msgstr "Icelandic (MacIcelandic)"
 
 #: src/flac112/charset.c:115 src/flac113/charset.c:115
 msgid "Korean (JOHAB)"
-msgstr ""
+msgstr "Kore (JOHAB)"
 
 #: src/flac112/charset.c:116 src/flac113/charset.c:116
 msgid "Korean (UHC)"
-msgstr ""
+msgstr "Kore (UHC)"
 
 #: src/flac112/charset.c:117 src/flac113/charset.c:117
 msgid "Romanian (MacRomanian)"
-msgstr ""
+msgstr "Romence (MacRomanian)"
 
 #: src/flac112/charset.c:118 src/flac113/charset.c:118
 msgid "Turkish (MacTurkish)"
-msgstr ""
+msgstr "Türkçe (MacTurkish)"
 
 #: src/flac112/charset.c:119 src/flac113/charset.c:119
 msgid "User Defined"
-msgstr ""
+msgstr "Kullanıcı Tanımlı"
 
 #: src/flac112/charset.c:120 src/flac113/charset.c:120
 msgid "Vietnamese (TCVN)"
-msgstr ""
+msgstr "Vietnam (TCVN)"
 
 #: src/flac112/charset.c:121 src/flac113/charset.c:121
 msgid "Vietnamese (VPS)"
-msgstr ""
+msgstr "Vietnam Yerel (VPS)"
 
 #: src/flac112/charset.c:122 src/flac113/charset.c:122
 msgid "Western (MacRoman)"
-msgstr ""
+msgstr "Western (MacRoman)"
 
 #: src/flac112/configure.c:249 src/flac113/configure.c:249
-#, fuzzy
 msgid "Flac Configuration"
-msgstr "TiMidity Yapılandırması"
+msgstr "Flac Yapılandırması"
 
 #: src/flac112/configure.c:261 src/flac113/configure.c:261
 msgid "Tag Handling"
-msgstr ""
+msgstr "Etiket Düzenleme"
 
 #: src/flac112/configure.c:270 src/flac113/configure.c:270
 msgid "Convert Character Set"
-msgstr ""
+msgstr "Karakter Setini Çevir"
 
 #: src/flac112/configure.c:278 src/flac113/configure.c:278
 msgid "Convert character set from :"
-msgstr ""
+msgstr "Karakter seti çeviri başlangıcı:"
 
 #: src/flac112/configure.c:283 src/flac113/configure.c:283
 msgid "to :"
-msgstr ""
+msgstr "sonu:"
 
 #: src/flac112/configure.c:323 src/flac113/configure.c:323
 msgid "Disable bitrate update during playback (saves cpu usage)"
-msgstr ""
+msgstr "Çalarken ses kalitesini güncellemeyi devre dışı bırak (işlemci gücünü azaltır.)"
 
 #: src/flac112/configure.c:345 src/flac113/configure.c:345
 #: src/madplug/configure.c:175
-#, fuzzy
 msgid "Enable ReplayGain processing"
-msgstr "ReplayGain Etkinleştir"
+msgstr "ReplayGain İşlemesini Etkinleştir"
 
 #: src/flac112/configure.c:350 src/flac113/configure.c:350
-#, fuzzy
 msgid "Album mode"
-msgstr "Albüm doruğu:"
+msgstr "Albüm modu"
 
 #: src/flac112/configure.c:357 src/flac113/configure.c:357
-#, fuzzy
 msgid "Preamp:"
-msgstr "Rüya"
+msgstr "Ön anfi:"
 
 #: src/flac112/configure.c:364 src/flac113/configure.c:364
 msgid "0 dB"
-msgstr ""
+msgstr "0 dB"
 
 #: src/flac112/configure.c:368 src/flac113/configure.c:368
 #: src/madplug/configure.c:187
-#, fuzzy
 msgid "6dB hard limiting"
-msgstr "6dB Boost + Hard Limiting Etkinleştir"
+msgstr "6dB hard sınırlaması"
 
 #: src/flac112/configure.c:377 src/flac113/configure.c:377
-#, fuzzy
 msgid "Resolution"
-msgstr "Çözünürlük:"
+msgstr "Çözünürlük"
 
 #: src/flac112/configure.c:385 src/flac113/configure.c:385
-#, fuzzy
 msgid "Without ReplayGain"
-msgstr "ReplayGain"
+msgstr "ReplayGain olmadan"
 
 #: src/flac112/configure.c:393 src/flac113/configure.c:393
 msgid "Dither 24bps to 16bps"
-msgstr ""
+msgstr "24 bitden 16 bit'e çevir"
 
 #: src/flac112/configure.c:398 src/flac113/configure.c:398
-#, fuzzy
 msgid "With ReplayGain"
-msgstr "ReplayGain"
+msgstr "ReplayGain ile"
 
 #: src/flac112/configure.c:406 src/flac113/configure.c:406
-#, fuzzy
 msgid "Enable dithering"
-msgstr "Ses örneklemesini etkinleştir"
+msgstr "Ses titremesini etkinleştir"
 
 #: src/flac112/configure.c:415 src/flac113/configure.c:415
-#, fuzzy
 msgid "Noise shaping"
-msgstr "Yeniden örnekleme"
+msgstr "Gürültü biçimlendrme"
 
 #: src/flac112/configure.c:423 src/flac113/configure.c:423
-#, fuzzy
 msgid "none"
-msgstr "Hiçbiri"
+msgstr "hiçbiri"
 
 #: src/flac112/configure.c:429 src/flac113/configure.c:429
 msgid "low"
-msgstr ""
+msgstr "Düşük"
 
 #: src/flac112/configure.c:435 src/flac113/configure.c:435
 msgid "medium"
-msgstr ""
+msgstr "Normal"
 
 #: src/flac112/configure.c:441 src/flac113/configure.c:441
-msgid "high"
-msgstr ""
+msgid "High"
+msgstr "Yüksek"
 
 #: src/flac112/configure.c:447 src/flac113/configure.c:447
 msgid "Dither to"
-msgstr ""
+msgstr "Düşür"
 
 #: src/flac112/configure.c:455 src/flac113/configure.c:455
-#, fuzzy
 msgid "16 bps"
-msgstr "16 bit"
+msgstr "16 bps"
 
 #: src/flac112/configure.c:461 src/flac113/configure.c:461
 msgid "24 bps"
-msgstr ""
+msgstr "24 bit"
 
 #: src/flac112/configure.c:469 src/flac113/configure.c:469
 msgid "Output"
-msgstr ""
+msgstr "Çıkış"
 
 #: src/flac112/configure.c:501 src/flac113/configure.c:501
-#, fuzzy
 msgid "About Flac Plugin"
-msgstr "Echo Eklentisi Hakkında"
+msgstr "Flac Eklentisi Hakkında"
 
 #: src/flac112/configure.c:502 src/flac113/configure.c:502
 msgid ""
@@ -3691,30 +3729,36 @@ msgid ""
 "\n"
 "Audacious Team port"
 msgstr ""
+"Flac eklentisini yazan Josh Coalson\n"
+"dağıtıma hazırlayanlar\n"
+"Daisuke Shimamura\n"
+"Ziyaret edin http://flac.sourceforge.net/\n"
+"\n"
+"Audacious Team port"
 
 #: src/flac112/fileinfo.c:57 src/flac113/fileinfo.c:60
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #: src/flac112/fileinfo.c:214 src/flac113/fileinfo.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Samplerate: %d Hz"
-msgstr "Örnekleme oranı:"
+msgstr "Örnekleme oranı: %d Hz"
 
 #: src/flac112/fileinfo.c:215 src/flac113/fileinfo.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "Channels: %d"
-msgstr "Kanallar:"
+msgstr "Kanallar: %d"
 
 #: src/flac112/fileinfo.c:216 src/flac113/fileinfo.c:219
 #, c-format
 msgid "Bits/Sample: %d"
-msgstr ""
+msgstr "Bit/Örnekleme: %d"
 
 #: src/flac112/fileinfo.c:218 src/flac113/fileinfo.c:221
 #, c-format
 msgid "Blocksize: %d"
-msgstr ""
+msgstr "Paket boyu: %d"
 
 #: src/flac112/fileinfo.c:220 src/flac113/fileinfo.c:223
 #, c-format
@@ -3722,20 +3766,22 @@ msgid ""
 "Blocksize: variable\n"
 "  min/max: %d/%d"
 msgstr ""
+"Paket boyu: değer\n"
+"  min/max: %d/%d"
 
 #: src/flac112/fileinfo.c:223 src/flac113/fileinfo.c:226
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Samples: %llu\n"
 "Length: %d:%.2d"
 msgstr ""
-"\n"
-"Toplam uzunluk: %d:%d\n"
+"Örnekler: %llu\n"
+"Uzunluk: %d:%.2d"
 
 #: src/flac112/fileinfo.c:229 src/flac113/fileinfo.c:235
-#, fuzzy, c-format
+#, c-format
 msgid "Filesize: %ld B"
-msgstr "Dosya boytu:"
+msgstr "Dosya boyutu: %ld B"
 
 #: src/flac112/fileinfo.c:231 src/flac113/fileinfo.c:238
 #, c-format
@@ -3743,66 +3789,62 @@ msgid ""
 "Avg. bitrate: %.1f kb/s\n"
 "Compression ratio: %.1f%%"
 msgstr ""
+"Avg. bitrate: %.1f kb/s\n"
+"Sıkıştırma Oranı: %.1f%%"
 
 #: src/flac112/fileinfo.c:266 src/flac113/fileinfo.c:308
-#, fuzzy
 msgid "Filename:"
-msgstr "Kullanıcı adı:"
+msgstr "Dosya adı:"
 
 #: src/flac112/fileinfo.c:278 src/flac113/fileinfo.c:320
-#, fuzzy
 msgid "Tag:"
-msgstr "Tango"
+msgstr "Etiket:"
 
 #: src/flac112/fileinfo.c:352 src/flac113/fileinfo.c:394
-#, fuzzy
 msgid "Save"
-msgstr "Rave"
+msgstr "Kaydet"
 
 #: src/flac112/fileinfo.c:358 src/flac113/fileinfo.c:400
-#, fuzzy
 msgid "Remove Tag"
-msgstr "Sürücüyü kaldır"
+msgstr "Etiketi kaldır"
 
 #: src/flac112/fileinfo.c:368 src/flac113/fileinfo.c:410
-#, fuzzy
 msgid "FLAC Info:"
-msgstr "CD Bilgisi"
+msgstr "FLAC Bilgisi:"
 
 #: src/flac112/plugin.c:170 src/flac113/plugin.c:161
-#, fuzzy
 msgid "FLAC Audio Plugin"
-msgstr "CD Ses Eklentisi"
+msgstr "FLAC Ses Eklentisi"
 
 #: src/flac113/fileinfo.c:233
-#, fuzzy, c-format
+#, c-format
 msgid "Filesize: %lld B"
-msgstr "Dosya boytu:"
+msgstr "Dosya boyutu: %lld B"
 
 #: src/flac113/fileinfo.c:268
 #, c-format
 msgid "ReplayGain Reference Loudness: %2.1f dB"
-msgstr ""
+msgstr "Referans alınacak gürültü yüksekliği: %2.1f dB"
 
 #: src/flac113/fileinfo.c:270
 #, c-format
 msgid "ReplayGain Track Gain: %+2.2f dB"
-msgstr ""
+msgstr "Parçanın desibel olarak ortalamasını yükselt: %+2.2f dB"
 
 #: src/flac113/fileinfo.c:272
 #, c-format
 msgid "ReplayGain Album Gain: %+2.2f dB"
-msgstr ""
+msgstr "Tüm albümün desibel olarak ortalamasını yükselt: %+2.2f dB"
 
 #: src/flac113/fileinfo.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "ReplayGain Track Peak: %1.8f"
-msgstr "ReplayGain Türü:"
+msgstr "Parçanın desibelini tabanı bozmadan yükselt: %1.8f"
 
 #: src/flac113/fileinfo.c:276
 #, c-format
 msgid "ReplayGain Album Peak: %1.8f"
-msgstr ""
+msgstr "Albümün desibelini tabanı bozmadan yükselt: %1.8f "
 
 #: src/madplug/configure.c:136
 msgid "MPEG Audio Plugin Configuration"
@@ -3810,29 +3852,27 @@ msgstr "MPEG Ses Eklentisi Yapılandırması"
 
 #: src/madplug/configure.c:149
 msgid "Enable fast play-length calculation"
-msgstr ""
+msgstr "Hızlı parça uzunluğu hesaplamayı etkinleştir"
 
 #: src/madplug/configure.c:154
 msgid "Parse XING headers"
-msgstr ""
+msgstr "XING başlıklarını işle"
 
 #: src/madplug/configure.c:165
 msgid "Dither output when rounding to 16-bit"
-msgstr ""
+msgstr "16 bite çevirirken kararlaştır"
 
 #: src/madplug/configure.c:180
-#, fuzzy
 msgid "Track mode"
-msgstr "Parça isimleri:"
+msgstr "Çalma modu"
 
 #: src/madplug/configure.c:192
-#, fuzzy
 msgid "Default gain (dB):"
-msgstr "Varsayılan %s"
+msgstr "Varsayılan artış miktarı (dB):"
 
 #: src/madplug/configure.c:203
 msgid "Preamp (dB):"
-msgstr ""
+msgstr "Ön anfi (dB)"
 
 #: src/madplug/configure.c:230
 msgid "ID3 format:"
@@ -3851,18 +3891,16 @@ msgid "MPEG Audio Plugin"
 msgstr "MPEG Ses Eklentisi"
 
 #: src/statusicon/gtktrayicon-x11.c:97
-#, fuzzy
 msgid "Orientation"
-msgstr "Kurum:"
+msgstr "Uyum"
 
 #: src/statusicon/gtktrayicon-x11.c:98
 msgid "The orientation of the tray"
-msgstr ""
+msgstr "Sistem ikonu canlandırması"
 
 #: src/statusicon/si_ui.c:343
-#, fuzzy
 msgid "About Status Icon Plugin"
-msgstr "ESounD Eklentisi Hakkında"
+msgstr "Durum Simgesi Eklentisi Hakkında"
 
 #: src/statusicon/si_ui.c:345
 msgid ""
@@ -3872,99 +3910,9 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager.\n"
 msgstr ""
+"\n"
+"Yazan Giacomo Lozito < james@develia.org >\n"
+"\n"
+"Bu eklenti durum ikonunun sistem araç cubuğunda"
+"görüntülenmesini sağlar.\n"
 
-#~ msgid "About MPEG Audio Plugin"
-#~ msgstr "MPEG Ses Eklentisi Hakkında"
-
-#~ msgid "Stereo (if available)"
-#~ msgstr "Stereo (varsa)"
-
-#~ msgid "Down sample:"
-#~ msgstr "Alt örnek:"
-
-#~ msgid "1:1 (44 kHz)"
-#~ msgstr "1:1 (44 kHz)"
-
-#~ msgid "1:2 (22 kHz)"
-#~ msgstr "1:2 (22 kHz)"
-
-#~ msgid "1:4 (11 kHz)"
-#~ msgstr "1:4 (11 kHz)"
-
-#~ msgid "Decoder"
-#~ msgstr "Çözücü"
-
-#~ msgid "Buffer size (kb):"
-#~ msgstr "Tampon boyutu (kb):"
-
-#~ msgid "Save stream to disk:"
-#~ msgstr "Akışı diske kaydet:"
-
-#~ msgid "Save stream to disk"
-#~ msgstr "Akışı diske kaydet"
-
-#~ msgid "Path:"
-#~ msgstr "Yol:"
-
-#~ msgid "Pick a folder"
-#~ msgstr "Bir klasör seçin"
-
-#~ msgid "SHOUT/Icecast:"
-#~ msgstr "SHOUT/Icecast:"
-
-#~ msgid "Enable Icecast Metadata UDP Channel"
-#~ msgstr "Icecast Metadata UDP Kanalını etkinleştirin"
-
-#~ msgid "Streaming"
-#~ msgstr "Duraksız İşlem"
-
-#~ msgid "ID3 Tags:"
-#~ msgstr "ID3 Etiketleri:"
-
-#~ msgid "Disable ID3V2 tags"
-#~ msgstr "ID3V2 etiketlerini kapat"
-
-#~ msgid "Joint stereo"
-#~ msgstr "Birleşik Stereo"
-
-#~ msgid "Dual channel"
-#~ msgstr "Çift kanal"
-
-#~ msgid "%d KBit/s"
-#~ msgstr "%d KBit/s"
-
-#~ msgid "%ld Hz"
-#~ msgstr "%ld Hz"
-
-#~ msgid "50/15 ms"
-#~ msgstr "50/15 ms"
-
-#~ msgid "CCIT J.17"
-#~ msgstr "CCIT J.17"
-
-#~ msgid "No"
-#~ msgstr "Hayır"
-
-#~ msgid "MPEG Level:"
-#~ msgstr "MPEG Seviyesi:"
-
-#~ msgid "Mode:"
-#~ msgstr "Kip:"
-
-#~ msgid "Error Protection:"
-#~ msgstr "Hata Koruması:"
-
-#~ msgid "Original:"
-#~ msgstr "Orjinal:"
-
-#~ msgid "Emphasis:"
-#~ msgstr "Vurgu:"
-
-#~ msgid "Year:"
-#~ msgstr "Yıl:"
-
-#~ msgid "%s"
-#~ msgstr "%s"
-
-#~ msgid "%lu Bytes"
-#~ msgstr "%lu Byte"
