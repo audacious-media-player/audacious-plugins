@@ -31,6 +31,7 @@
 
 #define BUFFER_SIZE 256 * 1024
 #define REVERSE_SEEK_SIZE 2048
+#define DEFAULT_CONNECT_TIMEOUT 3
 
 #define DEBUG_CONNECTION 0
 #define DEBUG_OPEN_CLOSE 1
@@ -42,6 +43,13 @@
 #define DEBUG_ICY_VERBOSE 0
 #define DEBUG_METADATA_REPORT 0
 #define DEBUG_CURL 0
+#define DEBUG_SETTINGS 1
+
+#if DEBUG_SETTINGS>0
+#define DEBUG_SETTINGS_MSG(...) g_print(__VA_ARGS__);
+#else
+#define DEBUG_SETTINGS_MSG(...)
+#endif
 
 typedef struct _CurlHandle CurlHandle;
 
@@ -90,6 +98,12 @@ struct _CurlHandle {
   GMutex *curl_mutex;
   GCond *curl_cond;
 };
+
+typedef struct {
+  gint connect_timeout;
+} CurlOptions;
+
+CurlOptions curl_options;
 
 void curl_vfs_rewind_impl(VFSFile * file);
 glong curl_vfs_ftell_impl(VFSFile * file);
@@ -583,7 +597,10 @@ curl_vfs_fopen_impl(const gchar * path,
   curl_easy_setopt(handle->curl, CURLOPT_WRITEDATA, handle);
   curl_easy_setopt(handle->curl, CURLOPT_HEADERDATA, handle);
 
-  curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, 3);
+  if ( curl_options.connect_timeout > 0 )
+    curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, curl_options.connect_timeout);
+  else
+    curl_easy_setopt(handle->curl, CURLOPT_CONNECTTIMEOUT, DEFAULT_CONNECT_TIMEOUT);
   curl_easy_setopt(handle->curl, CURLOPT_NOSIGNAL, 1);
 
   curl_easy_setopt(handle->curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -1018,14 +1035,47 @@ VFSConstructor curl_https_const = {
   curl_vfs_metadata_impl
 };
 
+static void curl_load_settings(void)
+{
+  ConfigDb *cfgfile = bmp_cfg_db_open();
+  DEBUG_SETTINGS_MSG("curl - load settings called\n");
+  
+  if ( ( !bmp_cfg_db_get_int( cfgfile , "curl" ,
+         "connect_timeout" , &(curl_options.connect_timeout) ) ) ||
+       ( curl_options.connect_timeout < 1 ) )
+  {
+    curl_options.connect_timeout = -1; /* -1 means "use default value" */
+    DEBUG_SETTINGS_MSG("curl - connect_timeout set to default value (%i)\n", DEFAULT_CONNECT_TIMEOUT);
+  }
+  DEBUG_SETTINGS_MSG("curl - connect_timeout value set (%i)\n", curl_options.connect_timeout);
+  
+  bmp_cfg_db_close( cfgfile );
+  return;
+}
+
+static void curl_save_settings(void)
+{
+  ConfigDb *cfgfile = bmp_cfg_db_open();
+  DEBUG_SETTINGS_MSG("curl - save settings called\n");
+  
+  bmp_cfg_db_set_int( cfgfile , "curl" ,
+    "connect_timeout" , curl_options.connect_timeout );
+  DEBUG_SETTINGS_MSG("curl - connect_timeout value saved (%i)\n", curl_options.connect_timeout);
+  
+  bmp_cfg_db_close( cfgfile );
+  return;
+}
+
 static void init(void)
 {
+  curl_load_settings();
   vfs_register_transport(&curl_const);
   vfs_register_transport(&curl_https_const);
 }
 
 static void cleanup(void)
 {
+  curl_save_settings();
 #if 0
   vfs_unregister_transport(&curl_const);
   vfs_unregister_transport(&curl_https_const);
