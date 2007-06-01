@@ -546,6 +546,7 @@ int av_seek_frame(AVFormatContext *s, int stream_index, int64_t timestamp);
 int av_read_play(AVFormatContext *s);
 int av_read_pause(AVFormatContext *s);
 void av_close_input_file(AVFormatContext *s);
+void av_close_input_vfsfile(AVFormatContext *s);
 AVStream *av_new_stream(AVFormatContext *s, int id);
 void av_set_pts_info(AVFormatContext *s, int pts_wrap_bits,
                      int pts_num, int pts_den);

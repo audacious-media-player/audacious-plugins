@@ -1553,6 +1553,37 @@ void av_close_input_file(AVFormatContext *s)
 }
 
 /**
+ * Close a media file (but not its codecs)
+ * Does not close the VFS handle.
+ *
+ * @param s media file handle
+ */
+void av_close_input_vfsfile(AVFormatContext *s)
+{
+    int i, must_open_file;
+    AVStream *st;
+
+    /* free previous packet */
+    if (s->cur_st && s->cur_st->parser)
+        av_free_packet(&s->cur_pkt); 
+
+    if (s->iformat->read_close)
+        s->iformat->read_close(s);
+    for(i=0;i<s->nb_streams;i++) {
+        /* free all data in a stream component */
+        st = s->streams[i];
+        if (st->parser) {
+            av_parser_close(st->parser);
+        }
+        free(st->index_entries);
+        free(st);
+    }
+    flush_packet_queue(s);
+    av_freep(&s->priv_data);
+    free(s);
+}
+
+/**
  * Add a new stream to a media file. Can only be called in the
  * read_header function. If the flag AVFMTCTX_NOHEADER is in the
  * format context, then new streams can be added in read_packet too.

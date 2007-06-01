@@ -212,6 +212,12 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
 
     codec2 = avcodec_find_decoder(c2->codec_id);
 
+    if (!codec2) {
+        av_close_input_vfsfile(ic2);
+        return 0;
+    }
+
+    av_close_input_vfsfile(ic2);
     return 1;
 }
 
