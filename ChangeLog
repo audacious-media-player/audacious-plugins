@@ -1,3 +1,11 @@
+2007-06-01 22:48:43 +0000  Jonathan Schleifer <js@h3c.de>
+  revision [2480]
+  Same as r4658 in Audacious.
+  
+  trunk/mk/objective.mk |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-06-01 00:13:04 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2478]
   - avoid a memory leak with FD probing
