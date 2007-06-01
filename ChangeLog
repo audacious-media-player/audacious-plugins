@@ -1,3 +1,13 @@
+2007-06-01 00:13:04 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2478]
+  - avoid a memory leak with FD probing
+  
+  trunk/src/wma/libffwma/avformat.h |    1 +
+  trunk/src/wma/libffwma/futils.c   |   31 +++++++++++++++++++++++++++++++
+  trunk/src/wma/wma.c               |    6 ++++++
+  3 files changed, 38 insertions(+)
+
+
 2007-05-31 17:33:46 +0000  Giacomo Lozito <james@develia.org>
   revision [2476]
   - curl: allow user to customize connect timeout value using a connect_timeout entry in config file
