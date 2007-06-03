@@ -383,7 +383,7 @@ WriteAPE2Tag(char *filename, ape_tag * Tag)
     if (fp == NULL) {
         char text[256];
 
-        sprintf(text, "File \"%s\" not found or is read protected!\n",
+        snprintf(text, 256, "File \"%s\" not found or is read protected!\n",
                 filename);
         xmms_show_message("File-Error", (gchar *) text, "Ok", FALSE, NULL,
                           NULL);
