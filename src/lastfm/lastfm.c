@@ -20,6 +20,7 @@
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
 
+#include <libmowgli/mowgli_global_storage.h>
 #include <curl/curl.h>
 #include <glib.h>
 #include "lastfm.h"

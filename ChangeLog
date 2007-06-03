@@ -1,3 +1,11 @@
+2007-06-03 18:20:23 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2486]
+  - add a check for file existence to fileinfo dialog. closes #941.
+  
+  trunk/src/madplug/fileinfo.c |    5 +++++
+  1 file changed, 5 insertions(+)
+
+
 2007-06-03 14:16:44 +0000  Jonathan Schleifer <js@h3c.de>
   revision [2484]
   Replace sprintf with snprintf.
