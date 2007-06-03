@@ -576,6 +576,11 @@ void audmad_get_file_info(char *filename)
         g_free(tmp);
     }
 #endif
+
+    if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
+        return;
+    }
+
     input_init(&info, filename);
 
     if(audmad_is_remote(filename)) {
