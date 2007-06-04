@@ -1,3 +1,10 @@
+2007-06-03 23:54:43 +0000  Tony Vroon <chainsaw@gentoo.org>
+  revision [2488]
+  Implicit declarations are bad, hmmkay?
+  trunk/src/lastfm/lastfm.c |    1 +
+  1 file changed, 1 insertion(+)
+
+
 2007-06-03 18:20:23 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2486]
   - add a check for file existence to fileinfo dialog. closes #941.

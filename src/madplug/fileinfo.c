@@ -643,8 +643,10 @@ void audmad_get_file_info(char *filename)
         gtk_label_set_text(GTK_LABEL(mpeg_frames), "");
     }
     gtk_label_set_text(GTK_LABEL(mpeg_flags), mode_str[info.mode]);
-    snprintf(message, 127, "%ld  seconds",
-             mad_timer_count(info.duration, MAD_UNITS_SECONDS));
+    {
+        guint sec = mad_timer_count(info.duration, MAD_UNITS_SECONDS);
+        snprintf(message, 127, "%d:%02d (%d seconds)", sec /60 ,sec % 60, sec);
+    }
     gtk_label_set_text(GTK_LABEL(mpeg_duration), message);
 
     if (info.replaygain_album_str != NULL) {

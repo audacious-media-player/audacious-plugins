@@ -177,8 +177,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     unsigned char buffer[BUFFER_SIZE];
     struct mad_frame frame;     /* to read xing data */
     gboolean has_xing = FALSE;
-    int bitrate_frames = 0;
-    guint xing_bitrate = 0;
+    guint bitrate_frames = 0;
+    double xing_bitrate = 0.0;
     double accum_bitrate = 0.0;
 
     mad_stream_init(&stream);
@@ -299,29 +299,26 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #endif                          /* DEBUG */
                         has_xing = TRUE;
                         info->vbr = TRUE;   /* otherwise xing header would have been 'Info' */
-                        if(info->tuple->length == -1) {
-                            info->duration = mad_timer_zero;
-                            mad_timer_multiply(&info->duration, info->xing.frames);
-                        }
-                        else {
-                            info->duration.seconds = info->tuple->length / 1000;
-                            info->duration.fraction = info->tuple->length % 1000;
-                        }
 
-                        g_message("xing: bytes = %ld frames = %ld", info->xing.bytes, info->xing.frames);
-                        g_message("info->duration = %ld", info->duration.seconds);
-                        g_message("mad_timer_count = %ld", mad_timer_count(info->duration, MAD_UNITS_SECONDS));
-                        xing_bitrate = 
-                            8.0 * info->xing.bytes /
-                            mad_timer_count(info->duration, MAD_UNITS_SECONDS);
 #ifdef DEBUG
-                        g_message("xing bitrate = %d", xing_bitrate);
+                        g_message("xing: bytes = %ld frames = %ld", info->xing.bytes, info->xing.frames);
 #endif
+                        /* we have enough info to calculate bitrate and duration */
+                        if(info->xing.bytes && info->xing.frames) {
+                            xing_bitrate = 8 * (double)info->xing.bytes * 38 / (double)info->xing.frames; //38fps in MPEG1.
+#ifdef DEBUG
+                            {
+                                gint tmp = (gint)(info->xing.bytes * 8 / xing_bitrate);
+                                g_message("xing: bitrate = %4.1f kbps", xing_bitrate / 1000);
+                                g_message("xing: duration = %d:%02d", tmp / 60, tmp % 60);
+                            }
+#endif
+                        }
                         continue;
                     }
 #ifdef DEBUG
                     else {
-                        g_message("xing header parsing failed");
+                        g_message("no usable xing header");
                         continue;
                     }
                     
@@ -359,9 +356,17 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 g_message("info->frames = %d", info->frames);
 #endif
                 if(info->tuple->length == -1) {
-                    info->duration.seconds /= N_AVERAGE_FRAMES;
-                    info->duration.fraction /= N_AVERAGE_FRAMES;
-                    mad_timer_multiply(&info->duration, info->frames);
+                    if(xing_bitrate > 0.0) {
+                        /* calc duration with xing info */
+                        double tmp = 8 * (double)info->xing.bytes * 1000 / xing_bitrate;
+                        info->duration.seconds = (guint)(tmp / 1000);
+                        info->duration.fraction = (guint)(tmp - info->duration.seconds * 1000);
+                    }
+                    else {
+                        info->duration.seconds /= N_AVERAGE_FRAMES;
+                        info->duration.fraction /= N_AVERAGE_FRAMES;
+                        mad_timer_multiply(&info->duration, info->frames);
+                    }
                 }
                 else {
                     info->duration.seconds = info->tuple->length / 1000;
@@ -388,7 +393,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
         info->frames = info->xing.frames;
 
     if (info->vbr && xing_bitrate != 0) {
-        info->bitrate = xing_bitrate;
+        info->bitrate = (guint)xing_bitrate;
     }
     else if (info->vbr && xing_bitrate == 0 && bitrate_frames != 0) {
         info->bitrate = accum_bitrate / bitrate_frames;
