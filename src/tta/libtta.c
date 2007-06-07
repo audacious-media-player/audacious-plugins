@@ -178,12 +178,7 @@ tta_error (int error)
 static gchar *
 get_song_title(TitleInput *tuple)
 {
-	gchar *title = xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
-	if(!title || !strcmp(title, "")) {
-		g_free(title);
-		title = g_strdup(tuple->file_name);
-	}
-	return title;
+	return xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
 }
 
 static void
@@ -581,13 +576,26 @@ get_song_tuple(char *filename)
 			tuple->length = ttainfo->LENGTH * 1000;
 
 			if (ttainfo->ID3.id3has) {
-				if(ttainfo->ID3.artist) tuple->performer = g_strdup(ttainfo->ID3.artist);
-				if(ttainfo->ID3.album) tuple->album_name = g_strdup(ttainfo->ID3.album);
-				if(ttainfo->ID3.title) tuple->track_name = g_strdup(ttainfo->ID3.title);
-				if(ttainfo->ID3.year) tuple->year = atoi(ttainfo->ID3.year);
-				if(ttainfo->ID3.track) tuple->track_number = atoi(ttainfo->ID3.track);
-				if(ttainfo->ID3.genre) tuple->genre = g_strdup(ttainfo->ID3.genre);
-				if(ttainfo->ID3.comment) tuple->comment = g_strdup(ttainfo->ID3.comment);
+				if(ttainfo->ID3.artist && strlen(ttainfo->ID3.artist))
+					tuple->performer = g_strdup(ttainfo->ID3.artist);
+
+				if(ttainfo->ID3.album && strlen(ttainfo->ID3.album))
+					tuple->album_name = g_strdup(ttainfo->ID3.album);
+
+				if(ttainfo->ID3.title && strlen(ttainfo->ID3.title))
+					tuple->track_name = g_strdup(ttainfo->ID3.title);
+
+				if(ttainfo->ID3.year && strlen(ttainfo->ID3.year))
+					tuple->year = atoi(ttainfo->ID3.year);
+
+				if(ttainfo->ID3.track && strlen(ttainfo->ID3.track))
+					tuple->track_number = atoi(ttainfo->ID3.track);
+
+				if(ttainfo->ID3.genre && strlen(ttainfo->ID3.genre))
+					tuple->genre = g_strdup(ttainfo->ID3.genre);
+
+				if(ttainfo->ID3.comment && strlen(ttainfo->ID3.comment))
+					tuple->comment = g_strdup(ttainfo->ID3.comment);
 			}
 			close_tta_file (ttainfo);
 		}

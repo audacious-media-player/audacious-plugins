@@ -1,3 +1,12 @@
+2007-06-07 05:34:54 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2496]
+  - add playback->playing code.
+  - if tta file doesn't have metadata, file name will be used as the title.
+  
+  trunk/src/tta/libtta.c |   13 ++++++++++---
+  1 file changed, 10 insertions(+), 3 deletions(-)
+
+
 2007-06-07 04:44:52 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2494]
   - make wma plugin work again.
