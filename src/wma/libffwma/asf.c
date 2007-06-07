@@ -310,6 +310,8 @@ static void get_str16_nolen(ByteIOContext *pb, int len, char *buf, int buf_size)
     gchar *tmp;
     int tmplen = len;
 
+    g_return_if_fail(len > 0);
+
     ucs = g_malloc0(len);
     uptr = ucs;
 

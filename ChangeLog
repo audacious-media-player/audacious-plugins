@@ -1,3 +1,11 @@
+2007-06-07 07:21:13 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2502]
+  - ditto. this is necessary too.
+  
+  trunk/src/wma/wma.c |    5 +++--
+  1 file changed, 3 insertions(+), 2 deletions(-)
+
+
 2007-06-07 07:05:17 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2500]
   - add playback->playing = 0 where buffer_playing = FALSE is done. without this, playback_get_time() would be confused and playback wouldn't advance in playlist.
