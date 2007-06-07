@@ -455,12 +455,14 @@ static void wma_play_file(InputPlayback *playback)
 
     wma_seekpos = -1;
     wma_decode = 1;
+    playback->playing = 1; //XXX should acquire lock?
     wma_decode_thread = g_thread_create((GThreadFunc)wma_play_loop, playback, TRUE, NULL);
 }
 
 static void wma_stop(InputPlayback *playback) 
 {
     wma_decode = 0;
+    playback->playing = 0; //XXX should acquire lock?
     if(wma_pause) wma_do_pause(playback, 0);
     g_thread_join(wma_decode_thread);
     playback->output->close_audio();

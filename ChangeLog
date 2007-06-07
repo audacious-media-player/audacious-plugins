@@ -1,3 +1,11 @@
+2007-06-07 04:35:26 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2492]
+  - make aac plugin work again.
+  
+  trunk/src/aac/src/libmp4.c |    2 ++
+  1 file changed, 2 insertions(+)
+
+
 2007-06-04 14:46:52 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2490]
   - revise bitrate calculation with xing header. if number of bytes and number of frames are available in xing header, fast play time calculation yields almost appropriate duration upon a vbr file.
