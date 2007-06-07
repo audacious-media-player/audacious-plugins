@@ -125,6 +125,7 @@ static void mp4_init(void)
 static void mp4_play(InputPlayback *playback)
 {
     buffer_playing = TRUE;
+    playback->playing = 1; //XXX should acquire lock?
     decodeThread = g_thread_create((GThreadFunc)mp4_decode, playback, TRUE, NULL);
 }
 
@@ -133,6 +134,7 @@ static void mp4_stop(InputPlayback *playback)
     if (buffer_playing)
     {
         buffer_playing = FALSE;
+        playback->playing = 0; //XXX should acquire lock?
         g_thread_join(decodeThread);
         playback->output->close_audio();
     }

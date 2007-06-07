@@ -1,3 +1,13 @@
+2007-06-04 14:46:52 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2490]
+  - revise bitrate calculation with xing header. if number of bytes and number of frames are available in xing header, fast play time calculation yields almost appropriate duration upon a vbr file.
+  - now fileinfo dialog shows duration in MM:SS format.
+  
+  trunk/src/madplug/decoder.c  |   47 +++++++++++++++++++++++--------------------
+  trunk/src/madplug/fileinfo.c |    6 +++--
+  2 files changed, 30 insertions(+), 23 deletions(-)
+
+
 2007-06-03 23:54:43 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2488]
   Implicit declarations are bad, hmmkay?
