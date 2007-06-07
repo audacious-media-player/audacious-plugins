@@ -66,6 +66,7 @@ InputPlugin mp4_ip =
     .get_song_tuple = mp4_get_song_tuple,
     .is_our_file_from_vfs = mp4_is_our_fd,
     .vfs_extensions = fmts,
+//    .get_time = mp4_get_time,
 };
 
 InputPlugin *mp4_iplist[] = { &mp4_ip, NULL };
@@ -594,6 +595,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
 
             g_static_mutex_lock(&mutex);
             buffer_playing = FALSE;
+            playback->playing = 0;
             g_static_mutex_unlock(&mutex);
             g_thread_exit(NULL);
 
@@ -640,7 +642,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         }
         if (buffer_playing == FALSE)
         {
-                playback->output->close_audio();
+            playback->output->close_audio();
             return FALSE;
         }
         produce_audio(playback->output->written_time(),
@@ -678,6 +680,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         g_print("AAC: Open Decoder Error\n");
         vfs_fclose(file);
         buffer_playing = FALSE;
+        playback->playing = 0;
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
@@ -685,6 +688,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         g_print("AAC: Error reading file\n");
         vfs_fclose(file);
         buffer_playing = FALSE;
+        playback->playing = 0;
         faacDecClose(decoder);
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
@@ -734,6 +738,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         playback->output->close_audio();
         g_free(xmmstitle);
         buffer_playing = FALSE;
+        playback->playing = 0;
         g_static_mutex_unlock(&mutex);
         g_thread_exit(NULL);
     }
@@ -820,12 +825,14 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     playback->output->buffer_free();
     playback->output->close_audio();
     buffer_playing = FALSE;
+    playback->playing = 0;
     faacDecClose(decoder);
     g_free(xmmstitle);
     vfs_fclose(file);
     seekPosition = -1;
 
     buffer_playing = FALSE;
+    playback->playing = 0;
     g_static_mutex_unlock(&mutex);
     g_thread_exit(NULL);
 }
