@@ -178,7 +178,12 @@ tta_error (int error)
 static gchar *
 get_song_title(TitleInput *tuple)
 {
-	return xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
+	gchar *title = xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
+	if(!title || !strcmp(title, "")) {
+		g_free(title);
+		title = g_strdup(tuple->file_name);
+	}
+	return title;
 }
 
 static void
@@ -186,8 +191,8 @@ get_song_info (char *filename, char **title, int *length)
 {
 	TitleInput *tuple;
 
-    	*length = -1;
-    	*title = NULL;
+	*length = -1;
+	*title = NULL;
 
 	if ((tuple = get_song_tuple(filename)) != NULL) {
     	    *length = tuple->length;
@@ -509,6 +514,7 @@ play_file (InputPlayback *playback)
 	    g_free (title);
 
 	playing = TRUE;
+	playback->playing = 1;
 	seek_position = -1;
 	read_samples = -1;
 
@@ -527,6 +533,7 @@ stop (InputPlayback *playback)
 	if (playing)
 	{
 	    playing = FALSE;
+	    playback->playing = 0;
 	    pthread_join (decode_thread, NULL);
 	    playback->output->close_audio ();
 	    close_tta_file (&info);
