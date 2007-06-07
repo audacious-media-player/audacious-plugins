@@ -780,7 +780,7 @@ cfg_bindbox_assign_binding_input_func ( GIOChannel * iochan ,
             {
               /* the trigger-dialog window is open; record input and
                store it in a container managed by the trigger-dialog itself */
-              ed_inputevent_t *dinputev = g_malloc(sizeof(ed_inputevent_t*));
+              ed_inputevent_t *dinputev = g_malloc(sizeof(ed_inputevent_t));
               dinputev->type = inputev.type;
               dinputev->code = inputev.code;
               dinputev->value = inputev.value;

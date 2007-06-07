@@ -1,3 +1,11 @@
+2007-06-07 13:34:42 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2504]
+  - add check for string length before call g_convert(). it may close #962.
+  
+  trunk/src/wma/libffwma/asf.c |    2 ++
+  1 file changed, 2 insertions(+)
+
+
 2007-06-07 07:21:13 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2502]
   - ditto. this is necessary too.
