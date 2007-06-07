@@ -1,3 +1,11 @@
+2007-06-07 07:05:17 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2500]
+  - add playback->playing = 0 where buffer_playing = FALSE is done. without this, playback_get_time() would be confused and playback wouldn't advance in playlist.
+  
+  trunk/src/aac/src/libmp4.c |    9 ++++++++-
+  1 file changed, 8 insertions(+), 1 deletion(-)
+
+
 2007-06-07 05:58:18 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2498]
   - handle metadata in better way.
