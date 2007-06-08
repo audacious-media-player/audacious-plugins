@@ -1,3 +1,11 @@
+2007-06-08 15:51:30 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2542]
+  - remove unneeded externs
+  
+  trunk/src/paranormal/drawing.c |    2 --
+  1 file changed, 2 deletions(-)
+
+
 2007-06-08 14:33:14 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
   revision [2540]
   - move transport plugins into Transport subdirectory.

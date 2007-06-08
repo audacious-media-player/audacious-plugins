@@ -27,6 +27,9 @@
 
 #include "dict.h"
 
+static int global_dict_initialized = 0;
+static symbol_dict_t global_dict;
+
 static void more_variables (symbol_dict_t *dict) {
   var_t *new_var;
 
@@ -40,15 +43,44 @@ static void more_variables (symbol_dict_t *dict) {
   dict->variables = new_var;
 }
 
+static int dict_define_variable (symbol_dict_t *dict, const char *name) {
+  var_t *var;
+
+  if (dict->v_count >= dict->v_space)
+    more_variables (dict);
+
+  var = &dict->variables[dict->v_count];
+
+  var->value = 0.0;
+  var->name = g_strdup (name);
+
+  return dict->v_count++;
+}
+
 symbol_dict_t *dict_new (void) {
   symbol_dict_t *dict;
-  
-  dict = (symbol_dict_t *) g_malloc (sizeof(symbol_dict_t));
+
+  if (global_dict_initialized != 1) {
+    int i;
+
+    global_dict.v_count = 0;
+    global_dict.v_space = V_SPACE_INIT;
+    global_dict.variables = (var_t *) g_new(var_t, dict->v_space);
+    global_dict_initialized = 1;
+
+    for (i = 0; i < 100; i++) {
+      gchar tmpbuf[40];
+      snprintf(tmpbuf, 40, "global_reg%d", i);
+      dict_define_variable(&global_dict, tmpbuf);
+    }
+  }
+
+  dict = g_new(symbol_dict_t, 1);
 
   /* Allocate space for variables. */
   dict->v_count = 0;
   dict->v_space = V_SPACE_INIT;
-  dict->variables = (var_t *)g_malloc (dict->v_space * sizeof(var_t));
+  dict->variables = (var_t *) g_new (var_t, dict->v_space);
   
   return dict;
 }
@@ -67,22 +99,13 @@ void dict_free (symbol_dict_t *dict) {
   g_free (dict);
 }
 
-static int dict_define_variable (symbol_dict_t *dict, const char *name) {
-  var_t *var;
-
-  if (dict->v_count >= dict->v_space)
-    more_variables (dict);
-
-  var = &dict->variables[dict->v_count];
-
-  var->value = 0.0;
-  var->name = g_strdup (name);
-
-  return dict->v_count++;
-}
-
 int dict_lookup (symbol_dict_t *dict, const char *name) {
   int i;
+
+  for (i = 0; i < global_dict.v_count; i++) {
+    if (strcmp (global_dict.variables[i].name, name) == 0)
+      return -i;
+  }
 
   for (i = 0; i < dict->v_count; i++) {
     if (strcmp (dict->variables[i].name, name) == 0)
@@ -95,5 +118,12 @@ int dict_lookup (symbol_dict_t *dict, const char *name) {
 
 double *dict_variable (symbol_dict_t *dict, const char *var_name) {
   int id = dict_lookup (dict, var_name);
+
+  /* global variables are presented as negative offset. negating
+   * a negative number results in a positive offset. --nenolod
+   */
+  if (id < 0)
+    return &global_dict.variables[-id].value;
+
   return &dict->variables[id].value;
 }

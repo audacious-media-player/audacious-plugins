@@ -73,6 +73,10 @@ static double f_div (ex_stack *stack) {
   return (y == 0) ? 0 : (x / y);
 }
 
+static double f_rand (ex_stack *stack) {
+  return rand() % pop (stack);
+}
+
 /* */
 
 static const func_t init[] = {
@@ -85,6 +89,7 @@ static const func_t init[] = {
   { "log", f_log },
   { "if", f_if },
   { "div", f_div }
+  { "rand", f_rand }
 };
 
 int function_lookup (const char *name) {
