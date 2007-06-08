@@ -4,8 +4,6 @@
 #include "actuators.h"
 #include "pn_utils.h"
 
-extern SDL_Surface *screen;
-
 void
 pn_draw_dot (guint x, guint y, guchar value)
 {

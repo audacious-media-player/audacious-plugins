@@ -1,3 +1,17 @@
+2007-06-08 14:33:14 +0000  Yoshiki Yazawa <yaz@cc.rim.or.jp>
+  revision [2540]
+  - move transport plugins into Transport subdirectory.
+  
+  trunk/configure.ac        |   20 ++++++++++++++++----
+  trunk/mk/rules.mk.in      |    2 ++
+  trunk/src/Makefile        |    3 ++-
+  trunk/src/curl/Makefile   |    2 +-
+  trunk/src/lastfm/Makefile |    2 +-
+  trunk/src/mms/Makefile    |    3 +--
+  trunk/src/stdio/Makefile  |    3 +--
+  7 files changed, 24 insertions(+), 11 deletions(-)
+
+
 2007-06-08 13:27:15 +0000  Tomasz Mon <desowin@atheme.org>
   revision [2538]
   - fix scrobble from queue
