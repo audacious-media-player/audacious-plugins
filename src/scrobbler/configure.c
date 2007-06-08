@@ -59,7 +59,7 @@ static void saveconfig(GtkWidget *wid __attribute__((unused)), gpointer data)
                 bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (char *)uid);
                 bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (char *)ge_uid);
 
-                if (pwd != NULL && pwd[0] != '\0')
+                if (pwd != NULL && pwd[0] != '\0' && strlen(pwd))
 		{
                         md5_init(&md5state);
                         md5_append(&md5state, (unsigned const char *)pwd, strlen(pwd));
@@ -68,7 +68,7 @@ static void saveconfig(GtkWidget *wid __attribute__((unused)), gpointer data)
                                         hexify((char*)md5pword, sizeof(md5pword)));
                 }
 
-                if (ge_pwd != NULL && ge_pwd[0] != '\0')
+                if (ge_pwd != NULL && ge_pwd[0] != '\0' && strlen(ge_pwd))
 		{
                         md5_init(&md5state);
                         md5_append(&md5state, (unsigned const char *)ge_pwd, strlen(ge_pwd));
