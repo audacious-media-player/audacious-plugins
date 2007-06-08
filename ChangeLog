@@ -1,3 +1,12 @@
+2007-06-08 18:19:25 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2548]
+  - add general_evaluate which can run arbitrary VM code
+  
+  trunk/src/paranormal/builtins.c |    2 
+  trunk/src/paranormal/general.c  |   83 ++++++++++++++++++++++++++++++++++++++++
+  2 files changed, 85 insertions(+)
+
+
 2007-06-08 17:58:23 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2546]
   - i forgot to commit something here

@@ -65,7 +65,7 @@ symbol_dict_t *dict_new (void) {
 
     global_dict.v_count = 0;
     global_dict.v_space = V_SPACE_INIT;
-    global_dict.variables = (var_t *) g_new(var_t, dict->v_space);
+    global_dict.variables = (var_t *) g_new(var_t, global_dict.v_space);
     global_dict_initialized = 1;
 
     for (i = 0; i < 100; i++) {
