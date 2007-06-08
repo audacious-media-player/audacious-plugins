@@ -1,3 +1,11 @@
+2007-06-08 17:58:23 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2546]
+  - i forgot to commit something here
+  
+  trunk/src/paranormal/libcalc/function.c |    4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+
+
 2007-06-08 17:56:12 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2544]
   - libcalc (paranormal virtual evaluation machine): add rand() instruction, global registers (global_reg0-reg99).

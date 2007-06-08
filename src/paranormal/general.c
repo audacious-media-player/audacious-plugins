@@ -7,6 +7,7 @@
 #include "paranormal.h"
 #include "actuators.h"
 #include "pn_utils.h"
+#include "libcalc/calc.h"
 
 /* **************** general_fade **************** */
 static struct pn_actuator_option_desc general_fade_opts[] =
@@ -309,3 +310,85 @@ struct pn_actuator_desc builtin_general_flip =
   0, general_flip_opts,
   NULL, NULL, general_flip_exec
 };
+
+/* ***************** general_evaluate ***************** */
+
+static struct pn_actuator_option_desc general_evaluate_opts[] =
+{
+  { "init_script", "Script to run on start.", OPT_TYPE_STRING, {sval: "global_reg0 = 27;"} },
+  { "frame_script", "Script to run.", OPT_TYPE_STRING, {sval: "global_reg0 = global_reg0 + 1;"} },
+  { NULL }
+};
+
+struct pn_evaluate_ctx
+{
+  expression_t *expr_on_init, *expr_on_frame;
+  symbol_dict_t *dict;
+  gboolean reset;
+};
+
+static void
+general_evaluate_init(gpointer *data)
+{
+  *data = g_new0(struct pn_evaluate_ctx, 1);
+
+  ((struct pn_evaluate_ctx *)*data)->reset = TRUE;
+}
+
+static void
+general_evaluate_cleanup(gpointer op_data)
+{
+  struct pn_evaluate_ctx *data = (struct pn_evaluate_ctx *) op_data;
+
+  g_return_if_fail(data != NULL);
+
+  if (data->expr_on_init)
+    expr_free(data->expr_on_init);
+
+  if (data->expr_on_frame)
+    expr_free(data->expr_on_frame);
+
+  if (data->dict)
+    dict_free(data->dict);
+
+  if (data)
+    g_free(data);
+}
+
+static void
+general_evaluate_exec(const struct pn_actuator_option *opts,
+                      gpointer op_data)
+{
+  struct pn_evaluate_ctx *data = (struct pn_evaluate_ctx *) op_data;
+
+  if (data->reset)
+    {
+       if (data->dict)
+         dict_free(data->dict);
+
+       data->dict = dict_new();
+
+       if (opts[0].val.sval != NULL);
+         data->expr_on_init = expr_compile_string(opts[0].val.sval, data->dict);
+
+       if (opts[1].val.sval != NULL);
+         data->expr_on_frame = expr_compile_string(opts[1].val.sval, data->dict);
+
+       if (data->expr_on_init != NULL)
+         expr_execute(data->expr_on_init, data->dict);
+
+       data->reset = FALSE;
+    }
+
+  if (data->expr_on_frame != NULL)
+    expr_execute(data->expr_on_frame, data->dict);
+}
+
+struct pn_actuator_desc builtin_general_evaluate =
+{
+  "general_evaluate", "Evalulate VM Code",
+  "Evaluates arbitrary VM code. Does not draw anything.",
+  0, general_evaluate_opts,
+  general_evaluate_init, general_evaluate_cleanup, general_evaluate_exec
+};
+
