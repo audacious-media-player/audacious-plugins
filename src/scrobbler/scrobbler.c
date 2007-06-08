@@ -75,6 +75,44 @@ static item_t *q_queue = NULL;
 static item_t *q_queue_last = NULL;
 static int q_nitems;
 
+gchar *
+xmms_urldecode_plain(const gchar * encoded_path)
+{
+    const gchar *cur, *ext;
+    gchar *path, *tmp;
+    gint realchar;
+
+    if (!encoded_path)
+        return NULL;
+
+    cur = encoded_path;
+    if (*cur == '/')
+        while (cur[1] == '/')
+            cur++;
+
+    tmp = g_malloc0(strlen(cur) + 1);
+
+    while ((ext = strchr(cur, '%')) != NULL) {
+        strncat(tmp, cur, ext - cur);
+        ext++;
+        cur = ext + 2;
+        if (!sscanf(ext, "%2x", &realchar)) {
+            /*
+             * Assume it is a literal '%'.  Several file
+             * managers send unencoded file: urls on on
+             * drag and drop.
+             */
+            realchar = '%';
+            cur -= 2;
+        }
+        tmp[strlen(tmp)] = realchar;
+    }
+
+    path = g_strconcat(tmp, cur, NULL);
+    g_free(tmp);
+    return path;
+}
+
 static void q_item_free(item_t *item)
 {
 	if (item == NULL)
@@ -842,9 +880,9 @@ static void read_cache(void)
 		{
 			TitleInput *tuple = bmp_title_input_new();
 
-			tuple->performer = g_strdup(artist);
-			tuple->track_name = g_strdup(title);
-			tuple->album_name = g_strdup(album);
+			tuple->performer = g_strdup(xmms_urldecode_plain(artist));
+			tuple->track_name = g_strdup(xmms_urldecode_plain(title));
+			tuple->album_name = g_strdup(xmms_urldecode_plain(album));
 
 			item = q_put(tuple, atoi(len));
 
