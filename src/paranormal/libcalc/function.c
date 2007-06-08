@@ -74,7 +74,7 @@ static double f_div (ex_stack *stack) {
 }
 
 static double f_rand (ex_stack *stack) {
-  return rand() % (int) pop(stack);
+  return g_random_double_range((double) pop(stack), (double) pop(stack));
 }
 
 /* */
