@@ -3,8 +3,7 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libstdio$(SHARED_SUFFIX)
 
-# XXX
-LIBDIR = $(plugindir)/$(CONTAINER_PLUGIN_DIR)
+LIBDIR = $(plugindir)/$(TRANSPORT_PLUGIN_DIR)
 
 SOURCES = stdio.c
 

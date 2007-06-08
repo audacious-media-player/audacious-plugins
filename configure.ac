@@ -133,7 +133,8 @@ OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
-CONTAINER_PLUGINS="m3u pls stdio"
+CONTAINER_PLUGINS="m3u pls"
+TRANSPORT_PLUGINS="stdio"
 
 dnl Check for Audacious
 
@@ -164,6 +165,11 @@ PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
      AC_DEFINE(USE_DBUS, 1, [Define if D-Bus support enabled])],
     [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60])]
 ])
+
+PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.2.0],
+    [ADD_PC_REQUIRES([libmowgli >= 0.2.0])],
+    [AC_MSG_ERROR([Cannot find libmowgli >= 0.2.0])]
+)
 
 dnl IPv6 support
 dnl ========================
@@ -1157,15 +1163,17 @@ dnl check_hex must be UPPERCASE if any hex letters are present
 check_hex="070907"
 
 have_curl="no"
+have_lastfm="no"
 PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
 [
-	CONTAINER_PLUGINS="$CONTAINER_PLUGINS curl"
+	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS curl"
 	have_curl="yes"
 ], [scrobbler="no"])
 
 if test "x$scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
-	CONTAINER_PLUGINS="$CONTAINER_PLUGINS lastfm"
+	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
+	have_lastfm="yes"
 fi
 
 AC_SUBST(CURL_CFLAGS)
@@ -1182,7 +1190,7 @@ AC_ARG_ENABLE(mms,
 
 if test "x$have_mms" = "xyes"; then
     have_mms=yes
-    PKG_CHECK_MODULES(MMS, [libmms >= 0.3], [CONTAINER_PLUGINS="$CONTAINER_PLUGINS mms" ], [have_mms="no"])
+    PKG_CHECK_MODULES(MMS, [libmms >= 0.3], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS mms" ], [have_mms="no"])
 else
     have_mms=no
     AC_MSG_RESULT([*** mms plugin disabled by request ***])
@@ -1347,6 +1355,7 @@ EFFECT_PLUGIN_DIR=Effect
 GENERAL_PLUGIN_DIR=General
 VISUALIZATION_PLUGIN_DIR=Visualization
 CONTAINER_PLUGIN_DIR=Container
+TRANSPORT_PLUGIN_DIR=Transport
 
 AC_SUBST(INPUT_PLUGIN_DIR)
 AC_SUBST(OUTPUT_PLUGIN_DIR)
@@ -1354,6 +1363,7 @@ AC_SUBST(EFFECT_PLUGIN_DIR)
 AC_SUBST(GENERAL_PLUGIN_DIR)
 AC_SUBST(VISUALIZATION_PLUGIN_DIR)
 AC_SUBST(CONTAINER_PLUGIN_DIR)
+AC_SUBST(TRANSPORT_PLUGIN_DIR)
 AC_SUBST(pluginsubs)
 
 dnl XXX Work around some autoconf bugs.
@@ -1388,6 +1398,7 @@ AC_SUBST(INPUT_PLUGINS)
 AC_SUBST(OUTPUT_PLUGINS)
 AC_SUBST(VISUALIZATION_PLUGINS)
 AC_SUBST(CONTAINER_PLUGINS)
+AC_SUBST(TRANSPORT_PLUGINS)
 AC_SUBST(GCC42_CFLAGS)
 
 AC_CONFIG_FILES([
@@ -1481,6 +1492,7 @@ echo "  ---------"
 echo "  stdio transport:                        yes"
 echo "  curl-based http/https:                  $have_curl"
 echo "  libmms-based mms:                       $have_mms"
+echo "  lastfm transport:                       $have_lastfm"
 echo
 echo "  Container"
 echo "  ---------"

@@ -1,3 +1,10 @@
+2007-06-08 13:27:15 +0000  Tomasz Mon <desowin@atheme.org>
+  revision [2538]
+  - fix scrobble from queue
+  trunk/src/scrobbler/scrobbler.c |   44 +++++++++++++++++++++++++++++++++++++---
+  1 file changed, 41 insertions(+), 3 deletions(-)
+
+
 2007-06-08 11:37:56 +0000  Tomasz Mon <desowin@atheme.org>
   revision [2536]
   - keep old passwords if user doesn't change them in configuration
