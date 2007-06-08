@@ -74,7 +74,7 @@ static double f_div (ex_stack *stack) {
 }
 
 static double f_rand (ex_stack *stack) {
-  return rand() % pop (stack);
+  return rand() % (int) pop(stack);
 }
 
 /* */
@@ -88,7 +88,7 @@ static const func_t init[] = {
   { "atan", f_atan },
   { "log", f_log },
   { "if", f_if },
-  { "div", f_div }
+  { "div", f_div },
   { "rand", f_rand }
 };
 

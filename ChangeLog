@@ -1,3 +1,12 @@
+2007-06-08 17:56:12 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2544]
+  - libcalc (paranormal virtual evaluation machine): add rand() instruction, global registers (global_reg0-reg99).
+  
+  trunk/src/paranormal/libcalc/dict.c     |   64 +++++++++++++++++++++++---------
+  trunk/src/paranormal/libcalc/function.c |    5 ++
+  2 files changed, 52 insertions(+), 17 deletions(-)
+
+
 2007-06-08 15:51:30 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2542]
   - remove unneeded externs
