@@ -35,8 +35,7 @@ static void more_variables (symbol_dict_t *dict) {
 
   dict->v_space += V_SPACE_INCR;
 
-  new_var = (var_t *)g_malloc (dict->v_space * sizeof(var_t));
-
+  new_var = g_new(var_t, dict->v_space + 1);
   memcpy (new_var, dict->variables, dict->v_count * sizeof(var_t));
   g_free (dict->variables);
 
@@ -65,7 +64,7 @@ symbol_dict_t *dict_new (void) {
 
     global_dict.v_count = 0;
     global_dict.v_space = V_SPACE_INIT;
-    global_dict.variables = (var_t *) g_new(var_t, global_dict.v_space);
+    global_dict.variables = (var_t *) g_new(var_t, global_dict.v_space + 1);
     global_dict_initialized = 1;
 
     for (i = 0; i < 100; i++) {
@@ -80,7 +79,7 @@ symbol_dict_t *dict_new (void) {
   /* Allocate space for variables. */
   dict->v_count = 0;
   dict->v_space = V_SPACE_INIT;
-  dict->variables = (var_t *) g_new (var_t, dict->v_space);
+  dict->variables = (var_t *) g_new (var_t, dict->v_space + 1);
   
   return dict;
 }

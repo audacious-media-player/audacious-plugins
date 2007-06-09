@@ -1,3 +1,11 @@
+2007-06-09 13:10:17 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2554]
+  - fix invalid write of size 4 (actuators.c:56)
+  
+  trunk/src/paranormal/actuators.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-06-08 22:02:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2552]
   - use g_random_double_ranged()
