@@ -1,3 +1,11 @@
+2007-06-08 22:02:31 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
+  revision [2552]
+  - use g_random_double_ranged()
+  
+  trunk/src/paranormal/libcalc/function.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+
 2007-06-08 21:24:30 +0000  William Pitcock <nenolod@sacredspiral.co.uk>
   revision [2550]
   - possible crash fixes wrt global regs

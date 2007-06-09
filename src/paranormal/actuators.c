@@ -27,7 +27,7 @@ copy_actuator (const struct pn_actuator *a)
       /* count the options */
       for (i=0; actuator->desc->option_descs[i].name; i++);
 
-      actuator->options = g_new (struct pn_actuator_option, i);
+      actuator->options = g_new (struct pn_actuator_option, i + 1);
       for (i=0; actuator->desc->option_descs[i].name; i++)
 	{
 	  actuator->options[i].desc = &actuator->desc->option_descs[i];
