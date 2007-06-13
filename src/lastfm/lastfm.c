@@ -468,4 +468,4 @@ static void cleanup(void)
 	g_free(LastFMGlobalData);
 }
 
-DECLARE_PLUGIN(lastfm, init, cleanup, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(lastfm, init, cleanup, NULL, NULL, NULL, NULL, NULL)
