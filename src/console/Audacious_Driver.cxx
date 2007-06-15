@@ -266,8 +266,9 @@ static void* play_loop_track( gpointer arg )
 {
         InputPlayback *playback = (InputPlayback *) arg;
 	g_static_mutex_lock( &playback_mutex );
-	
-	while ( console_ip_is_going && !emu->track_ended() )
+
+	int end_delay = 0;	
+	while ( console_ip_is_going )
 	{
 		// handle pending seek
 		long s = pending_seek;
@@ -282,8 +283,23 @@ static void* play_loop_track( gpointer arg )
 		// TODO: see if larger buffer helps efficiency
 		int const buf_size = 1024;
 		Music_Emu::sample_t buf [buf_size];
-		emu->play( buf_size, buf );
-		
+		if ( end_delay )
+		{
+			// TODO: remove delay once host doesn't cut the end of track off
+			if ( !--end_delay )
+				console_ip_is_going = false;
+			memset( buf, 0, sizeof buf );
+
+		}
+		else
+		{
+			emu->play( buf_size, buf );
+			if ( emu->track_ended() )
+			{
+				double const seconds = 3;
+				end_delay = emu->sample_rate() * (int) (seconds * 2) / buf_size;
+			}
+		}
 		produce_audio( playback->output->written_time(), 
 			FMT_S16_NE, 1, sizeof buf, buf, 
 			&console_ip_is_going );
