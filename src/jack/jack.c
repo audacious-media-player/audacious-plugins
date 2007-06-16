@@ -429,10 +429,12 @@ gint jack_open(AFormat fmt, gint sample_rate, gint num_channels)
 void jack_write(gpointer ptr, gint length)
 {
   long written;
+#if 0
   EffectPlugin *ep;
   AFormat new_format;
   int new_frequency, new_channels;
   long positionMS;
+#endif
 
   TRACE("starting length of %d\n", length);
 
