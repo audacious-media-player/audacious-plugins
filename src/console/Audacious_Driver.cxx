@@ -500,7 +500,7 @@ InputPlugin console_ip =
 {
 	NULL,
 	NULL,
-	"Game console audio module decoder",
+	(gchar *)"Game console audio module decoder",
 	console_init,
 	console_aboutbox,
 	console_cfg_ui,

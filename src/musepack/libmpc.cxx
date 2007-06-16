@@ -13,7 +13,7 @@ const gchar *mpc_fmts[] = { "mpc", NULL };
 InputPlugin MpcPlugin = {
     NULL,           //File Handle               FILE* handle
     NULL,           //Filename                  char* filename
-    "Musepack Audio Plugin",
+    (gchar *)"Musepack Audio Plugin",
     mpcOpenPlugin,  //Open Plugin               [CALLBACK]
     mpcAboutBox,    //Show About box            [CALLBACK]
     mpcConfigBox,   //Show Configure box        [CALLBACK]

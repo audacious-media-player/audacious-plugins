@@ -61,7 +61,7 @@ const gchar *wv_fmts[] = { "wv", NULL };
 InputPlugin mod = {
     NULL,                       //handle
     NULL,                       //filename
-    "WavPack Audio Plugin",
+    (gchar *)"WavPack Audio Plugin",
     wv_load_config,
     wv_about_box,
     wv_configure,

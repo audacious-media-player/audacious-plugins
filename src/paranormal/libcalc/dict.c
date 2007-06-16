@@ -69,7 +69,7 @@ symbol_dict_t *dict_new (void) {
 
     for (i = 0; i < 100; i++) {
       gchar tmpbuf[40];
-      snprintf(tmpbuf, 40, "global_reg%d", i);
+      g_snprintf(tmpbuf, 40, "global_reg%d", i);
       dict_define_variable(&global_dict, tmpbuf);
     }
   }
