@@ -29,7 +29,7 @@
 
 /* === */
 
-FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], unsigned *bytes, void *client_data) {
+FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data) {
 
     callback_info* info;
     gint to_read;
@@ -95,7 +95,7 @@ FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, 
     _DEBUG("Seeking to %lld", absolute_byte_offset);
 
     if (0 != vfs_fseek(info->input_stream, absolute_byte_offset, SEEK_SET)) {
-        _ERROR("Could not seek to %lld!", absolute_byte_offset);
+        _ERROR("Could not seek to %lld!", (long long)absolute_byte_offset);
         _LEAVE FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
     }
 
