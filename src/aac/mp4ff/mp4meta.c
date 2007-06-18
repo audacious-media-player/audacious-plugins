@@ -294,7 +294,7 @@ int32_t mp4ff_parse_tag(mp4ff_t *f, const uint8_t parent_atom_type, const int32_
 		if (!done)
 		{
 			if (name == NULL) mp4ff_set_metadata_name(f, parent_atom_type, &name);
-			if (name) mp4ff_tag_add_field_len(&(f->tags), name, data, datalen);
+			if (name) mp4ff_tag_add_field_len(&(f->tags), (char *)name, (char *)data, datalen);
 		}
 
 		free(data);

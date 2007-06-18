@@ -12,6 +12,7 @@
 #include <audacious/titlestring.h>
 #include <audacious/vfs.h>
 #include <audacious/i18n.h>
+#include <audacious/strings.h>
 
 #define MP4_VERSION VERSION
 
@@ -38,7 +39,6 @@ static void        mp4_play(InputPlayback *);
 static void        mp4_stop(InputPlayback *);
 static void        mp4_pause(InputPlayback *, short);
 static void        mp4_seek(InputPlayback *, int);
-static int         mp4_get_time(InputPlayback *);
 static void        mp4_cleanup(void);
 static void        mp4_get_song_title_len(char *filename, char **, int *);
 static TitleInput* mp4_get_song_tuple(char *);
@@ -48,7 +48,6 @@ static gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
 
 static void *   mp4_decode(void *);
 static gchar *  mp4_get_song_title(char *filename);
-static void     audmp4_file_info_box(gchar *);
 gboolean        buffer_playing;
 
 InputPlugin mp4_ip =
@@ -66,7 +65,6 @@ InputPlugin mp4_ip =
     .get_song_tuple = mp4_get_song_tuple,
     .is_our_file_from_vfs = mp4_is_our_fd,
     .vfs_extensions = fmts,
-//    .get_time = mp4_get_time,
 };
 
 InputPlugin *mp4_iplist[] = { &mp4_ip, NULL };
@@ -317,14 +315,6 @@ static void mp4_seek(InputPlayback *data, int time)
         xmms_usleep(10000);
 }
 
-static int mp4_get_time(InputPlayback *playback)
-{
-    if(!buffer_playing)
-        return (-1);
-    else
-        return (playback->output->output_time());
-}
-
 static void mp4_cleanup(void)
 {
 }
@@ -374,8 +364,8 @@ static TitleInput *mp4_get_song_tuple(char *fn)
         gint mp4track= getAACTrack(mp4file);
         gint numSamples = mp4ff_num_samples(mp4file, mp4track);
         guint framesize = 1024;
-        gulong samplerate;
-        guchar channels;
+        guint samplerate = 0;
+        guchar channels = 0;
         gint msDuration;
         mp4AudioSpecificConfig mp4ASC;
         gchar *tmpval;
@@ -513,10 +503,10 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     mp4AudioSpecificConfig mp4ASC;
     guchar      *buffer = NULL;
     guint       bufferSize = 0;
-    gulong      samplerate;
-    guchar      channels;
+    guint       samplerate = 0;
+    guchar      channels = 0;
     gulong      msDuration;
-    gulong      numSamples;
+    guint       numSamples;
     gulong      sampleID = 1;
     guint       framesize = 1024;
 
@@ -664,14 +654,11 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     guchar      streambuffer[BUFFER_SIZE];
     gulong      bufferconsumed = 0;
     gulong      samplerate = 0;
-    guchar      channels;
+    guchar      channels = 0;
     gulong      buffervalid = 0;
-    TitleInput* input;
     gchar       *ttemp = NULL, *stemp = NULL;
     gchar       *temp = g_strdup(filename);
-    gchar       *ext  = strrchr(temp, '.');
     gchar       *xmmstitle = NULL;
-    faacDecConfigurationPtr config;
     gboolean    remote = str_has_prefix_nocase(filename, "http:") ||
 			 str_has_prefix_nocase(filename, "https:");
 

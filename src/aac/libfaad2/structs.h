@@ -312,7 +312,7 @@ typedef struct mp4AudioSpecificConfig
     /* Audio Specific Info */
     /*uint8_t*/ unsigned char objectTypeIndex;
     /*uint8_t*/ unsigned char samplingFrequencyIndex;
-    /*uint32_t*/ unsigned long samplingFrequency;
+    /*uint32_t*/ unsigned int samplingFrequency;
     /*uint8_t*/ unsigned char channelsConfiguration;
 
     /* GA Specific Info */
@@ -333,7 +333,7 @@ typedef struct mp4AudioSpecificConfig
 typedef struct NeAACDecConfiguration
 {
     /*uint8_t*/ unsigned char defObjectType;
-    /*uint32_t*/ unsigned long defSampleRate;
+    /*uint32_t*/ unsigned int defSampleRate;
     /*uint8_t*/ unsigned char outputFormat;
     /*uint8_t*/ unsigned char downMatrix;
     /*uint8_t*/ unsigned char useOldADTSFormat;
@@ -342,11 +342,11 @@ typedef struct NeAACDecConfiguration
 
 typedef struct NeAACDecFrameInfo
 {
-    /*uint32_t*/ unsigned long bytesconsumed;
+    /*uint32_t*/ unsigned int bytesconsumed;
     /*uint32_t*/ unsigned long samples;
     /*uint8_t*/ unsigned char channels;
     /*uint8_t*/ unsigned char error;
-    /*uint32_t*/ unsigned long samplerate;
+    /*uint32_t*/ unsigned int samplerate;
 
     /* SBR: 0: off, 1: on; normal, 2: on; downsampled */
     /*uint8_t*/ unsigned char sbr;

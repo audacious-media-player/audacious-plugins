@@ -16,6 +16,6 @@ OBJECTS = ${SOURCES:.c=.o}
 
 LIBDEP = ../libfaad2/libfaad.a ../mp4ff/libmp4ff.a
 
-CFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../.. -I../include -I../libfaad -I../mp4ff
+CFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../.. -I../include -I../libfaad -I../mp4ff -Wall
 
 include ../../../mk/objective.mk

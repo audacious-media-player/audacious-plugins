@@ -215,7 +215,7 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hDecoder,
 /* Init the library using a DecoderSpecificInfo */
 signed char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hDecoder, unsigned char *pBuffer,
                                unsigned long SizeOfDecoderSpecificInfo,
-                               unsigned long *samplerate, unsigned char *channels);
+                               unsigned int *samplerate, unsigned char *channels);
 
 /* Init the library for DRM */
 signed char NEAACDECAPI NeAACDecInitDRM(NeAACDecHandle *hDecoder, unsigned long samplerate,
