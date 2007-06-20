@@ -6,7 +6,7 @@ OBJECTIVE_LIBS = libcdaudio-ng$(SHARED_SUFFIX)
 LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CDIO_LIBS)
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-SOURCES = cdaudio-ng.c
+SOURCES = cdaudio-ng.c configure.c
 
 OBJECTS = ${SOURCES:.c=.o}
 

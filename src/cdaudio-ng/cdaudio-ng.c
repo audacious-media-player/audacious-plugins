@@ -1,13 +1,14 @@
 
 /*
 	todo: 
-		- move stuff into cdaudio-ng.h
 		- vis_pcm...?!
 		- limit cd read speed
 		- cddb
-		- dialogs
+		- fileinfo dialog
+		- about dialog
 		- remove //'s & todo's
 		- additional comments
+		- surpress debug output
 */
 
 #include <string.h>
@@ -32,31 +33,8 @@
 #include <audacious/util.h>
 #include <audacious/output.h>
 
-#define DEF_STRING_LEN	256
-#define CDDA_DEFAULT	"cdda://default"
-#define CDDA_DAE_FRAMES	8
-
-
-typedef struct {
-
-	char				performer[DEF_STRING_LEN];
-	char				name[DEF_STRING_LEN];
-	char				genre[DEF_STRING_LEN];
-	lsn_t				startlsn;
-	lsn_t				endlsn;
-
-} trackinfo_t;
-
-typedef struct {
-
-	lsn_t				startlsn;
-	lsn_t				endlsn;
-	lsn_t				currlsn;
-	lsn_t				seektime;	/* in miliseconds */
-	InputPlayback		*pplayback;
-	GThread				*thread;
-
-} dae_params_t;
+#include "cdaudio-ng.h"
+#include "configure.h"
 
 
 static int				firsttrackno = -1;
@@ -65,10 +43,13 @@ static CdIo_t			*pcdio = NULL;
 static trackinfo_t		*trackinfo = NULL;
 static char				album_name[DEF_STRING_LEN];
 static gboolean			use_dae = TRUE;
+static gboolean			use_cdtext = TRUE;
+static gboolean			use_cddb = TRUE;
+static char				device[DEF_STRING_LEN];
+static int				limitspeed = 1;
 static gboolean			is_paused = FALSE;
 static int				playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
-
 
 static void				cdaudio_init();
 static void				cdaudio_about();
@@ -91,6 +72,7 @@ static void				*dae_playing_thread_core(dae_params_t *pdae_params);
 static int				calculate_track_length(int startlsn, int endlsn);
 static int				find_trackno_from_filename(char *filename);
 static void				cleanup_on_error();
+
 
 /*
 static int				calculate_digit_sum(int n);
@@ -140,6 +122,29 @@ void cdaudio_init()
 		cleanup_on_error();
 		return;
 	}
+
+	ConfigDb *db = bmp_cfg_db_open();
+	gchar *string = NULL;
+
+	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_dae", &use_dae))
+		use_dae = TRUE;
+	if (!bmp_cfg_db_get_int(db, "CDDA", "limitspeed", &limitspeed))
+		limitspeed = 1;
+	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cdtext", &use_cdtext))
+		use_cdtext = TRUE;
+	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cddb", &use_cddb))
+		use_cddb = TRUE;
+	if (!bmp_cfg_db_get_string(db, "CDDA", "device", &string))
+		strcpy(device, "");
+	else
+		strcpy(device, string);
+
+	bmp_cfg_db_close(db);
+
+	printf("cdaudio-ng: configuration: use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, device = \"%s\"\n", use_dae, limitspeed, use_cdtext, use_cddb, device);
+
+	configure_set_variables(&use_dae, &limitspeed, &use_cdtext, &use_cddb, device);
+	configure_create_gui();
 }
 
 void cdaudio_about()
@@ -150,6 +155,8 @@ void cdaudio_about()
 void cdaudio_configure()
 {
 	printf("cdaudio-ng: cdaudio_configure()\n");
+
+	configure_show_gui();
 }
 
 gint cdaudio_is_our_file(gchar *filename)
@@ -195,23 +202,27 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		return NULL;
 	}
 
-		/* find the first available, audio capable, cd drive  */
-	char **ppcd_drives = cdio_get_devices_with_cap(NULL, CDIO_FS_AUDIO, false);
-	if (ppcd_drives != NULL) { /* we have at least one audio capable cd drive */
-		pcdio = cdio_open(*ppcd_drives, DRIVER_UNKNOWN);
-		if (pcdio == NULL) {
-			fprintf(stderr, "cdaudio-ng: failed to open cd\n");
+		/* find an available, audio capable, cd drive  */
+	if (device != NULL && strlen(device) > 0)
+		pcdio = cdio_open(device, DRIVER_UNKNOWN);
+	else {
+		char **ppcd_drives = cdio_get_devices_with_cap(NULL, CDIO_FS_AUDIO, false);
+		if (ppcd_drives != NULL) { /* we have at least one audio capable cd drive */
+			pcdio = cdio_open(*ppcd_drives, DRIVER_UNKNOWN);
+			if (pcdio == NULL) {
+				fprintf(stderr, "cdaudio-ng: failed to open cd\n");
+				cleanup_on_error();
+				return NULL;
+			}
+		}
+		else {
+			fprintf(stderr, "cdaudio-ng: unable find or access a cdda capable drive\n");
 			cleanup_on_error();
 			return NULL;
 		}
+		printf("cdaudio-ng: found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
+		cdio_free_device_list(ppcd_drives);
 	}
-	else {
-		fprintf(stderr, "cdaudio-ng: unable find or access a cdda capable drive\n");
-		cleanup_on_error();
-		return NULL;
-	}
-	printf("cdaudio-ng: found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
-	cdio_free_device_list(ppcd_drives);
 
 		/* get track information */
 	cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio(pcdio, 1, NULL);	// todo : check return / NULL
@@ -232,7 +243,9 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	int trackno;
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 		list = g_list_append(list, g_strdup_printf("track%02u.cda", trackno));	
-		cdtext_t *pcdtext = cdio_get_cdtext(pcdrom_drive->p_cdio, trackno);
+		cdtext_t *pcdtext = NULL;
+		if (use_cdtext)
+			pcdtext = cdio_get_cdtext(pcdrom_drive->p_cdio, trackno);
 
 		if (pcdtext != NULL) {
 			strcpy(trackinfo[trackno].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "");
@@ -244,6 +257,8 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			strcpy(trackinfo[trackno].name, "");
 			strcpy(trackinfo[trackno].genre, "");
 		}
+		
+		// todo: implement cddb
 		
 		if (strlen(trackinfo[trackno].name) == 0)
 			sprintf(trackinfo[trackno].name, "CD Audio Track %02u", trackno);
@@ -502,6 +517,16 @@ void cdaudio_cleanup()
 		trackinfo = NULL;
 	}
 	playing_track = -1;
+	
+	// todo: destroy the gui
+
+	ConfigDb *db = bmp_cfg_db_open();
+	bmp_cfg_db_set_bool(db, "CDDA", "use_dae", use_dae);
+	bmp_cfg_db_set_int(db, "CDDA", "limitspeed", limitspeed);
+	bmp_cfg_db_set_bool(db, "CDDA", "use_cdtext", use_cdtext);
+	bmp_cfg_db_set_bool(db, "CDDA", "use_cddb", use_cddb);
+	bmp_cfg_db_set_string(db, "CDDA", "device", device);
+	bmp_cfg_db_close(db);
 }
 
 void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
