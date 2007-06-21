@@ -240,15 +240,15 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		cdio_free_device_list(ppcd_drives);
 	}
 
-	cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio(pcdio, 1, NULL);	// todo : check return / NULL
 		/* limit read speed */
 	if (limitspeed > 0) {
 		if (debug)
 			printf("cdaudio-ng: setting drive speed limit to %dx\n", limitspeed);
-		if (!cdio_cddap_speed_set(pcdrom_drive, limitspeed))
+		if (cdio_set_speed(pcdio, limitspeed) != DRIVER_OP_SUCCESS)
 			fprintf(stderr, "cdaudio-ng: failed to set drive speed to %dx\n", limitspeed);
 	}
 		/* get track information */
+	cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio(pcdio, 1, NULL);	// todo : check return / NULL
 	firsttrackno = cdio_get_first_track_num(pcdrom_drive->p_cdio);
 	lasttrackno = cdio_get_last_track_num(pcdrom_drive->p_cdio);
 	if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK) {
