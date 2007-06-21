@@ -145,7 +145,6 @@ TitleInput *build_tuple(char *filename)
     demux_res_t demux_res;
     VFSFile *input_file;
     stream_t *input_stream;
-    TitleInput *ti;
 
     input_file = vfs_fopen(filename, "rb");
     input_stream = stream_create_file(input_file, 1);
@@ -163,7 +162,7 @@ TitleInput *build_tuple(char *filename)
     if (!qtmovie_read(input_stream, &demux_res))
     {
         stream_destroy(input_stream);
-	vfs_fclose(input_file);
+        vfs_fclose(input_file);
         return NULL;
     }
 
@@ -198,14 +197,6 @@ static void do_pause(InputPlayback *data, short paused)
 static void seek(InputPlayback * data, gint time)
 {
     seek_to = time;
-}
-
-static gint get_time(InputPlayback *data)
-{
-    if (going)
-	return get_output_time();
-    else
-	return -1;
 }
 
 static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,
@@ -318,9 +309,7 @@ DECLARE_PLUGIN(alac, NULL, NULL, alac_iplist, NULL, NULL, NULL, NULL);
 gpointer decode_thread(void *args)
 {
     demux_res_t demux_res;
-    unsigned int output_size, i;
     gulong duration = 0;	/* samples added up */
-    gint framesize;
     VFSFile *input_file;
     stream_t *input_stream;
     TitleInput *ti;

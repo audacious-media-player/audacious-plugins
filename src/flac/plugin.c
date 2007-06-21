@@ -145,7 +145,7 @@ DECLARE_PLUGIN(flac, NULL, NULL, flac_iplist, NULL, NULL, NULL, NULL);
 static FLAC__byte sample_buffer_[SAMPLE_BUFFER_SIZE];
 static unsigned sample_buffer_first_, sample_buffer_last_;
 
-static FLAC__StreamDecoder *decoder_ = 0, *decoder2 = 0;
+static FLAC__StreamDecoder *decoder_ = 0;
 static stream_data_struct stream_data_;
 static GThread *decode_thread_;
 static FLAC__bool audio_error_ = false;
@@ -166,6 +166,7 @@ void set_track_info(const char* title, int length_in_msec)
 	}
 }
 
+#if 0
 static gchar* homedir()
 {
 	gchar *result;
@@ -183,12 +184,12 @@ static gchar* homedir()
 	}
 	return result;
 }
+#endif
 
 void FLAC_XMMS__init()
 {
 	ConfigDb *db;
 	FLAC__uint32 test = 1;
-	gchar *tmp = NULL;
 
 	is_big_endian_host_ = (*((FLAC__byte*)(&test)))? false : true;
 

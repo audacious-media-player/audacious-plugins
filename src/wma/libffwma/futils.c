@@ -1560,7 +1560,7 @@ void av_close_input_file(AVFormatContext *s)
  */
 void av_close_input_vfsfile(AVFormatContext *s)
 {
-    int i, must_open_file;
+    int i;
     AVStream *st;
 
     /* free previous packet */

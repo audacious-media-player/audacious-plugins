@@ -1306,7 +1306,7 @@ if test "$enable_filewriter_vorbis" = "yes"; then
    [have_vorbisenc=yes], [have_vorbisenc=no])
    if test "$have_vorbisenc" = yes; then
       AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
-      FILEWRITER_LIBS="$FILEWRITER_LIBS  -lvorbisenc"
+      FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs vorbisenc`"
    fi
 fi
 
@@ -1322,7 +1322,7 @@ if test "$enable_filewriter_flac" = "yes"; then
    )
    if test "$have_writer_flac" = yes; then
       AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
-	  FILEWRITER_LIBS="$FILEWRITER_LIBS  -lFLAC"
+	  FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs flac`"
    fi
 fi
 

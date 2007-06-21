@@ -530,7 +530,8 @@ int get_samples (byte *buffer) {
 			rice->k0++;
 		}
 
-		value = DEC(value);
+        // DEC is not defined??
+//		value = DEC(value);
 
 		// decompress stage 1: adaptive hybrid filter
 		hybrid_filter(fst, &value);

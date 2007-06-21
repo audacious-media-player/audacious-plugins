@@ -19,14 +19,13 @@
  */
 
 #include "cdinfo.h"
+#include "cdaudio.h"
 
 #include <glib.h>
 #include <audacious/i18n.h>
-#include <glib/gprintf.h>
-
 #include <audacious/rcfile.h>
 
-#include "cdaudio.h"
+#include <stdlib.h>
 
 
 /*

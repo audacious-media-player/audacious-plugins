@@ -175,8 +175,8 @@ static void check(CurlHandle *handle)
   if (!((handle->wr_abs - handle->wr_index) % handle->buffer_length ==
 	(handle->rd_abs - handle->rd_index) % handle->buffer_length))
     printf("%p Not aligned! wr %d rd %d\n", handle,
-	   (handle->wr_abs - handle->wr_index) % handle->buffer_length,
-	   (handle->rd_abs - handle->rd_index) % handle->buffer_length);
+           (int)((handle->wr_abs - handle->wr_index) % handle->buffer_length),
+           (int)((handle->rd_abs - handle->rd_index) % handle->buffer_length));
 }
 
 static void update_length(CurlHandle *handle)
@@ -228,7 +228,7 @@ static gchar *get_value(CurlHandle *handle, size_t size, const char *header)
 static void got_header(CurlHandle *handle, ssize_t size)
 {
   if (DEBUG_HEADERS)
-    g_print("Got header %d bytes\n", size);
+    g_print("Got header %d bytes\n", (int)size);
   if (match_header(handle, size, ICY_NAME))
     {
       handle->name = get_value(handle, size, ICY_NAME);
@@ -251,7 +251,7 @@ static void got_header(CurlHandle *handle, ssize_t size)
       handle->icy_interval = atoi(value);
       g_free(value);
       if (DEBUG_HEADERS)
-	g_print("Metadata interval: %d\n", handle->icy_interval);
+        g_print("Metadata interval: %d\n", (int)handle->icy_interval);
     }
 }
 
@@ -263,7 +263,7 @@ static gboolean match_inline(CurlHandle *handle, size_t posn,
   size_t len = strlen(name);
   size_t i;
   if (DEBUG_ICY_WRAP)
-    g_print("Posn=%d\n", posn);
+    g_print("Posn=%d\n", (int)posn);
   if (DEBUG_ICY_WRAP && posn + len > handle->buffer_length)
     g_print("Wrapped inline key\n");
   if (((handle->wr_index - posn + handle->buffer_length) %
@@ -358,7 +358,7 @@ static size_t curl_writecb(unsigned char *ptr, size_t size, size_t nmemb, void *
 	      if (handle->icy_interval && !handle->icy_left)
 		{
 		  if (DEBUG_ICY)
-		    g_print("Metadata inline after %d\n", handle->wr_abs);
+        g_print("Metadata inline after %d\n", (int)handle->wr_abs);
 		  handle->in_icy_meta = 1;
 		  handle->icy_left = 1;
 		}
@@ -370,7 +370,7 @@ static size_t curl_writecb(unsigned char *ptr, size_t size, size_t nmemb, void *
 	      handle->icy_left = 
 		((unsigned char)(handle->buffer[handle->wr_index])) * 16;
 	      if (DEBUG_ICY)
-		g_print("Metadata of size %d\n", handle->icy_left);
+          g_print("Metadata of size %d\n", (int)handle->icy_left);
 	      if (handle->icy_left)
 		{
 		  handle->in_icy_meta = 2;
@@ -461,7 +461,7 @@ static size_t curl_writecb(unsigned char *ptr, size_t size, size_t nmemb, void *
 			    (handle->wr_index - handle->hdr_index + handle->buffer_length) % handle->buffer_length;
 			}
 		      if (DEBUG_ICY)
-			g_print("Left %d\n", handle->icy_left);
+            g_print("Left %d\n", (int)handle->icy_left);
 		      handle->in_icy_meta = 0;
 		      break;
 		    }
@@ -487,7 +487,7 @@ curl_manage_request(gpointer arg)
   else
     {
       if (DEBUG_CONNECTION)
-	g_print("Start from %d\n", handle->wr_abs);
+        g_print("Start from %d\n", (int)handle->wr_abs);
       curl_easy_setopt(handle->curl, CURLOPT_RESUME_FROM, handle->wr_abs);
 
       curl_easy_setopt(handle->curl, CURLOPT_NOBODY, 0);
@@ -535,7 +535,7 @@ static void curl_req_xfer(CurlHandle *handle)
       handle->rd_index = 0;
       handle->wr_abs = handle->rd_abs;
       if (DEBUG_CONNECTION)
-	g_print("Starting connection %p at %d\n", handle, handle->wr_abs);
+        g_print("Starting connection %p at %d\n", handle, (int)handle->wr_abs);
       handle->thread = g_thread_create(curl_manage_request, handle, 
 				       TRUE, NULL);
 
@@ -863,7 +863,7 @@ curl_vfs_fseek_impl(VFSFile * file,
     handle->stream_stack = NULL;
   }
   if (DEBUG_SEEK)
-    g_print("Seek %p to %d %d\n", handle, offset, whence);
+    g_print("Seek %p to %d %d\n", handle, (int)offset, whence);
   if (whence == SEEK_END && handle->length == -1)
     {
       if (!handle->thread)
@@ -924,7 +924,7 @@ curl_vfs_fseek_impl(VFSFile * file,
     }
 
   if (DEBUG_SEEK)
-    g_print("Seeked %p from %d to %d\n", handle, posn, handle->rd_abs);
+    g_print("Seeked %p from %d to %d\n", handle, (int)posn, (int)handle->rd_abs);
   return 0;
 }
 

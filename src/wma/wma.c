@@ -81,7 +81,6 @@ static void wma_play_file(InputPlayback *data);
 static void wma_stop(InputPlayback *data);
 static void wma_seek(InputPlayback *data, int time);
 static void wma_do_pause(InputPlayback *data, short p);
-static int wma_get_time(InputPlayback *data);
 static void wma_get_song_info(char *filename, char **title, int *length);
 static TitleInput *wma_get_song_tuple(char *filename);
 static char *wsong_title;
@@ -235,24 +234,11 @@ static void wma_seek(InputPlayback *playback, int time)
     if(wma_pause) playback->output->pause(1);
 }
 
-static int wma_get_time(InputPlayback *playback)
-{
-    playback->output->buffer_free();
-    if(wma_decode) return playback->output->output_time();
-    return -1;
-}
-
 static gchar *extname(const char *filename)
 {
     gchar *ext = strrchr(filename, '.');
     if(ext != NULL) ++ext;
     return ext;
-}
-
-static char* w_getstr(char* str)
-{
-    if(str && strlen(str) > 0) return g_strdup(str);
-    return NULL;
 }
 
 static TitleInput *wma_get_song_tuple(gchar * filename)

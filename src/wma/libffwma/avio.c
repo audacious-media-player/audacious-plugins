@@ -38,8 +38,6 @@ int url_vopen(URLContext **puc, VFSFile *fd)
 {
     URLContext *uc;
     URLProtocol *up;
-    const char *p;
-    char proto_str[128], *q;
     int err = 0;
 
     up = first_protocol;
@@ -70,8 +68,6 @@ int url_open(URLContext **puc, const char *filename, int flags)
 {
     URLContext *uc;
     URLProtocol *up;
-    const char *p;
-    char proto_str[128], *q;
     int err;
 
     up = first_protocol;

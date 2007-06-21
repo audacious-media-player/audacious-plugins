@@ -147,7 +147,6 @@ vorbis_check_file(char *filename)
 {
     VFSFile *stream;
     OggVorbis_File vfile;       /* avoid thread interaction */
-    char *ext;
     gint result;
     VFSVorbisFile *fd;
 
@@ -230,7 +229,6 @@ static int
 vorbis_check_fd(char *filename, VFSFile *stream)
 {
     OggVorbis_File vfile;       /* avoid thread interaction */
-    char *ext;
     gint result;
     VFSVorbisFile *fd;
 

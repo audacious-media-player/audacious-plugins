@@ -162,5 +162,7 @@ int get_samples (		// FUNCTION: decode PCM_BUFFER_LENGTH samples
 
 int get_bitrate (void);		// RETURN VALUE: TTA dynamic bitrate
 
+int get_id3_tags (const char *filename, tta_info *ttainfo);
+
 #endif /* TTALIB_H_ */
 

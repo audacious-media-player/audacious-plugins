@@ -33,6 +33,8 @@ int sysled_set(int fd, int state) {
 int sysled_get(int fd) {
 	char buf[256];
 	int ret = read(fd, &buf, sizeof(buf));
+    if(!ret)
+        return 0; //dummy
 
 	return (strtol(buf, NULL, 10) == 255);
 }

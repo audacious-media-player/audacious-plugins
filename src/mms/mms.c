@@ -139,7 +139,7 @@ mms_vfs_getc_impl(VFSFile *stream)
     }
     else
     {
-        mms_read(NULL, handle->mms, &c, 1);
+        mms_read(NULL, handle->mms, (char *)&c, 1);
         return c;
     }
 

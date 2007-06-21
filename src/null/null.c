@@ -144,7 +144,9 @@ static int null_open(AFormat fmt, int rate, int nch)
 
 static void null_write(void *ptr, int length)
 {
+#if 0
 	EffectPlugin *ep;
+#endif
 	if (timer && !started)
 	{
 		g_timer_start(timer);

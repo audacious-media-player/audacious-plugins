@@ -209,7 +209,7 @@ play_loop (void *arg)
 
 	while (playing)
 	{
-	    while ((read_samples = get_samples (sample_buffer)) > 0)
+	    while ((read_samples = get_samples ((unsigned char *)sample_buffer)) > 0)
 	    {
 
 		while ((playback->output->buffer_free () < bufsize)
@@ -433,13 +433,13 @@ file_info (char *filename)
 
 	if (open_tta_file (filename, &ttainfo, 0) >= 0)
 	{
-	    gtk_entry_set_text(GTK_ENTRY(title_entry), ttainfo.ID3.title);
-	    gtk_entry_set_text(GTK_ENTRY(artist_entry), ttainfo.ID3.artist);
-	    gtk_entry_set_text(GTK_ENTRY(album_entry), ttainfo.ID3.album);
-	    gtk_entry_set_text(GTK_ENTRY(year_entry), ttainfo.ID3.year);
-	    gtk_entry_set_text(GTK_ENTRY(tracknum_entry), ttainfo.ID3.track);
-	    gtk_entry_set_text(GTK_ENTRY(comment_entry), ttainfo.ID3.comment);
-	    gtk_entry_set_text(GTK_ENTRY(genre_entry), ttainfo.ID3.genre);
+	    gtk_entry_set_text(GTK_ENTRY(title_entry), (gchar *)ttainfo.ID3.title);
+	    gtk_entry_set_text(GTK_ENTRY(artist_entry), (gchar *)ttainfo.ID3.artist);
+	    gtk_entry_set_text(GTK_ENTRY(album_entry), (gchar *)ttainfo.ID3.album);
+	    gtk_entry_set_text(GTK_ENTRY(year_entry), (gchar *)ttainfo.ID3.year);
+	    gtk_entry_set_text(GTK_ENTRY(tracknum_entry), (gchar *)ttainfo.ID3.track);
+	    gtk_entry_set_text(GTK_ENTRY(comment_entry), (gchar *)ttainfo.ID3.comment);
+	    gtk_entry_set_text(GTK_ENTRY(genre_entry), (gchar *)ttainfo.ID3.genre);
 	}
 	close_tta_file (&ttainfo);
 
@@ -576,26 +576,26 @@ get_song_tuple(char *filename)
 			tuple->length = ttainfo->LENGTH * 1000;
 
 			if (ttainfo->ID3.id3has) {
-				if(ttainfo->ID3.artist && strlen(ttainfo->ID3.artist))
-					tuple->performer = g_strdup(ttainfo->ID3.artist);
+				if(ttainfo->ID3.artist && strlen((char *)ttainfo->ID3.artist))
+					tuple->performer = g_strdup((gchar *)ttainfo->ID3.artist);
 
-				if(ttainfo->ID3.album && strlen(ttainfo->ID3.album))
-					tuple->album_name = g_strdup(ttainfo->ID3.album);
+				if(ttainfo->ID3.album && strlen((char *)ttainfo->ID3.album))
+					tuple->album_name = g_strdup((gchar *)ttainfo->ID3.album);
 
-				if(ttainfo->ID3.title && strlen(ttainfo->ID3.title))
-					tuple->track_name = g_strdup(ttainfo->ID3.title);
+				if(ttainfo->ID3.title && strlen((char *)ttainfo->ID3.title))
+					tuple->track_name = g_strdup((gchar *)ttainfo->ID3.title);
 
-				if(ttainfo->ID3.year && strlen(ttainfo->ID3.year))
-					tuple->year = atoi(ttainfo->ID3.year);
+				if(ttainfo->ID3.year && strlen((char *)ttainfo->ID3.year))
+					tuple->year = atoi((char *)ttainfo->ID3.year);
 
-				if(ttainfo->ID3.track && strlen(ttainfo->ID3.track))
-					tuple->track_number = atoi(ttainfo->ID3.track);
+				if(ttainfo->ID3.track && strlen((char *)ttainfo->ID3.track))
+					tuple->track_number = atoi((char *)ttainfo->ID3.track);
 
-				if(ttainfo->ID3.genre && strlen(ttainfo->ID3.genre))
-					tuple->genre = g_strdup(ttainfo->ID3.genre);
+				if(ttainfo->ID3.genre && strlen((char *)ttainfo->ID3.genre))
+					tuple->genre = g_strdup((gchar *)ttainfo->ID3.genre);
 
-				if(ttainfo->ID3.comment && strlen(ttainfo->ID3.comment))
-					tuple->comment = g_strdup(ttainfo->ID3.comment);
+				if(ttainfo->ID3.comment && strlen((char *)ttainfo->ID3.comment))
+					tuple->comment = g_strdup((gchar *)ttainfo->ID3.comment);
 			}
 			close_tta_file (ttainfo);
 		}
@@ -758,7 +758,7 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
     if (!frame)
         return NULL;
 
-    if (frame_name == ID3_FRAME_COMMENT)
+    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
         field = id3_frame_field(frame, 3);
     else
         field = id3_frame_field(frame, 1);
@@ -766,7 +766,7 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
     if (!field)
         return NULL;
 
-    if (frame_name == ID3_FRAME_COMMENT)
+    if (!strcmp(frame_name, ID3_FRAME_COMMENT))
         string_const = id3_field_getfullstring(field);
     else
         string_const = id3_field_getstrings(field, 0);
@@ -776,7 +776,7 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
 
     string = tta_ucs4dup((id3_ucs4_t *)string_const);
 
-    if (frame_name == ID3_FRAME_GENRE) {
+    if (!strcmp(frame_name, ID3_FRAME_GENRE)) {
         id3_ucs4_t *string2 = NULL;
         string2 = tta_parse_genre(string);
         g_free((void *)string);
@@ -796,10 +796,10 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
 #ifdef DEBUG
         g_message("aud-tta: flagutf!\n");
 #endif
-        rtn = id3_ucs4_utf8duplicate(string);
+        rtn = (gchar *)id3_ucs4_utf8duplicate(string);
     }
     else {
-        rtn = id3_ucs4_latin1duplicate(string);
+        rtn = (gchar *)id3_ucs4_latin1duplicate(string);
         rtn2 = str_to_utf8(rtn);
         free(rtn);
         rtn = rtn2;
@@ -830,38 +830,38 @@ int get_id3_tags (const char *filename, tta_info *ttainfo) {
 			id3v2_size = tag->paddedsize;
 
 			str = tta_input_id3_get_string (tag, ID3_FRAME_ARTIST);
-			if(str) strncpy(ttainfo->ID3.artist, str, MAX_LINE);
+			if(str) strncpy((char *)ttainfo->ID3.artist, str, MAX_LINE);
 			free(str);
 			str = NULL;
 
 			str = tta_input_id3_get_string (tag, ID3_FRAME_ALBUM);
-			if(str) strncpy(ttainfo->ID3.album, str, MAX_LINE);
+			if(str) strncpy((char *)ttainfo->ID3.album, str, MAX_LINE);
 			free(str);
 			str = NULL;
 
 			str = tta_input_id3_get_string (tag, ID3_FRAME_TITLE);
-			if(str) strncpy(ttainfo->ID3.title, str, MAX_LINE);
+			if(str) strncpy((char *)ttainfo->ID3.title, str, MAX_LINE);
 			free(str);
 			str = NULL;
 
 			str = tta_input_id3_get_string (tag, ID3_FRAME_YEAR);
 			if(!str) str = tta_input_id3_get_string (tag, "TYER");
-			if(str) strncpy(ttainfo->ID3.year, str, MAX_YEAR);
+			if(str) strncpy((char *)ttainfo->ID3.year, str, MAX_YEAR);
 			free(str);
 			str = NULL;
 
 			str = tta_input_id3_get_string (tag, ID3_FRAME_TRACK);
-			if(str) strncpy(ttainfo->ID3.track, str, MAX_TRACK);
+			if(str) strncpy((char *)ttainfo->ID3.track, str, MAX_TRACK);
 			free(str);
 			str = NULL;
 
 			str = tta_input_id3_get_string (tag, ID3_FRAME_GENRE);
-			if(str) strncpy(ttainfo->ID3.genre, str, MAX_GENRE);
+			if(str) strncpy((char *)ttainfo->ID3.genre, str, MAX_GENRE);
 			free(str);
 			str = NULL;
 
 			str = tta_input_id3_get_string (tag, ID3_FRAME_COMMENT);
-			if(str) strncpy(ttainfo->ID3.comment, str, MAX_LINE);
+			if(str) strncpy((char *)ttainfo->ID3.comment, str, MAX_LINE);
 			free(str);
 			str = NULL;
 		}
