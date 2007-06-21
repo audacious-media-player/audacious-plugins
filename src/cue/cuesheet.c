@@ -259,9 +259,15 @@ static TitleInput *get_tuple_uri(gchar *uri)
 
 	out = bmp_title_input_new();
 
-	out->file_path = g_strdup(phys_tuple->file_path);	
-	out->file_name = g_strdup(phys_tuple->file_name);
-	out->file_ext = g_strdup(phys_tuple->file_ext);
+    if(!phys_tuple)
+        return out;
+
+    if(phys_tuple->file_path)
+        out->file_path = g_strdup(phys_tuple->file_path);
+    if(phys_tuple->file_name)
+        out->file_name = g_strdup(phys_tuple->file_name);
+    if(phys_tuple->file_ext)
+        out->file_ext = g_strdup(phys_tuple->file_ext);
 	out->length = phys_tuple->length;
 
 	bmp_title_input_free(phys_tuple);
@@ -441,7 +447,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 	cur_cue_track = track;
 	cache_cue_file(path2);
 
-    if (cue_file == NULL)
+    if (cue_file == NULL || !g_file_test(cue_file, G_FILE_TEST_EXISTS))
         return;
 
 	real_ip_plugin = input_check_file(cue_file, FALSE);
