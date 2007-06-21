@@ -8,7 +8,7 @@
 		- about dialog
 		- remove //'s & todo's
 		- additional comments
-		- surpress debug output
+		- stop playback when configure
 */
 
 #include <string.h>
@@ -50,6 +50,7 @@ static int				limitspeed = 1;
 static gboolean			is_paused = FALSE;
 static int				playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
+static gboolean			debug = FALSE;
 
 static void				cdaudio_init();
 static void				cdaudio_about();
@@ -115,7 +116,8 @@ DECLARE_PLUGIN(cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL);
 
 void cdaudio_init()
 {
-	printf("cdaudio-ng: cdaudio_init()\n");
+	if (debug)
+		printf("cdaudio-ng: cdaudio_init()\n");
 
 	if (!cdio_init()) {
 		fprintf(stderr, "cdaudio-ng: failed to initialize cdio subsystem\n");
@@ -138,67 +140,80 @@ void cdaudio_init()
 		strcpy(device, "");
 	else
 		strcpy(device, string);
+	if (!bmp_cfg_db_get_bool(db, "CDDA", "debug", &debug))
+		debug = FALSE;
 
 	bmp_cfg_db_close(db);
 
-	printf("cdaudio-ng: configuration: use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, device = \"%s\"\n", use_dae, limitspeed, use_cdtext, use_cddb, device);
+	if (debug)
+		printf("cdaudio-ng: configuration: use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, device = \"%s\", debug = %d\n", use_dae, limitspeed, use_cdtext, use_cddb, device, debug);
 
-	configure_set_variables(&use_dae, &limitspeed, &use_cdtext, &use_cddb, device);
+	configure_set_variables(&use_dae, &limitspeed, &use_cdtext, &use_cddb, device, &debug);
 	configure_create_gui();
 }
 
 void cdaudio_about()
 {
-	printf("cdaudio-ng: cdaudio_about()\n");
+	if (debug)
+		printf("cdaudio-ng: cdaudio_about()\n");
 }
 
 void cdaudio_configure()
 {
-	printf("cdaudio-ng: cdaudio_configure()\n");
+	if (debug)
+		printf("cdaudio-ng: cdaudio_configure()\n");
 
 	configure_show_gui();
 }
 
 gint cdaudio_is_our_file(gchar *filename)
 {
-	printf("cdaudio-ng: cdaudio_is_our_file(\"%s\")\n", filename);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_is_our_file(\"%s\")\n", filename);
 
 	if ((filename != NULL) && strlen(filename) > 4 && (!strcasecmp(filename + strlen(filename) - 4, ".cda"))) {
 			/* no CD information yet */
 		if (pcdio == NULL) {
-			printf("cdaudio-ng: no cd information, scanning\n");
+			if (debug)
+				printf("cdaudio-ng: no cd information, scanning\n");
 			cdaudio_scan_dir(CDDA_DEFAULT);
 		}
 
 			/* reload the cd information if the media has changed */
 		if (cdio_get_media_changed(pcdio)) {
-			printf("cdaudio-ng: cd changed, rescanning\n");
+			if (debug)
+				printf("cdaudio-ng: cd changed, rescanning\n");
 			cdaudio_scan_dir(CDDA_DEFAULT);
 		}
 
 			/* check if the requested track actually exists on the current audio cd */
 		int trackno = find_trackno_from_filename(filename);
 		if (trackno < firsttrackno || trackno > lasttrackno) {
-			printf("cdaudio-ng: \"%s\" is not our file\n", filename);
+			if (debug)
+				printf("cdaudio-ng: \"%s\" is not our file\n", filename);
 			return FALSE;
 		}
 
-		printf("cdaudio-ng: \"%s\" is our file\n", filename);
+		if (debug)
+			printf("cdaudio-ng: \"%s\" is our file\n", filename);
 		return TRUE;
 	}
 	else {
-		printf("cdaudio-ng: \"%s\" is not our file\n", filename);
+		if (debug)
+			printf("cdaudio-ng: \"%s\" is not our file\n", filename);
 		return FALSE;
 	}
 }
 
 GList *cdaudio_scan_dir(gchar *dirname)
 {
-	printf("cdaudio-ng: cdaudio_scan_dir(\"%s\")\n", dirname);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_scan_dir(\"%s\")\n", dirname);
 
 		/* if the given dirname does not belong to us, we return NULL */
 	if (strstr(dirname, CDDA_DEFAULT) == NULL) {
-		printf("cdaudio-ng: \"%s\" directory does not belong to us\n", dirname);
+		if (debug)
+			printf("cdaudio-ng: \"%s\" directory does not belong to us\n", dirname);
 		return NULL;
 	}
 
@@ -220,12 +235,20 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			cleanup_on_error();
 			return NULL;
 		}
-		printf("cdaudio-ng: found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
+		if (debug)
+			printf("cdaudio-ng: found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
 		cdio_free_device_list(ppcd_drives);
 	}
 
-		/* get track information */
 	cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio(pcdio, 1, NULL);	// todo : check return / NULL
+		/* limit read speed */
+	if (limitspeed > 0) {
+		if (debug)
+			printf("cdaudio-ng: setting drive speed limit to %dx\n", limitspeed);
+		if (!cdio_cddap_speed_set(pcdrom_drive, limitspeed))
+			fprintf(stderr, "cdaudio-ng: failed to set drive speed to %dx\n", limitspeed);
+	}
+		/* get track information */
 	firsttrackno = cdio_get_first_track_num(pcdrom_drive->p_cdio);
 	lasttrackno = cdio_get_last_track_num(pcdrom_drive->p_cdio);
 	if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK) {
@@ -233,7 +256,8 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		cleanup_on_error();
 		return NULL;
 	}
-	printf("cdaudio-ng: first track is %d and last track is %d\n", firsttrackno, lasttrackno);
+	if (debug)
+		printf("cdaudio-ng: first track is %d and last track is %d\n", firsttrackno, lasttrackno);
 
 		/* add track "file" names to the list */
 	GList *list = NULL;
@@ -273,8 +297,10 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			return NULL;
 		}
 
-		printf("cdaudio-ng: track %d has : performer = \"%s\", name = \"%s\", genre = \"%s\", startlsn = %d, endlsn = %d\n", 
-			   trackno, trackinfo[trackno].performer, trackinfo[trackno].name, trackinfo[trackno].genre, trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
+		if (debug)
+			printf("cdaudio-ng: track %d has : performer = \"%s\", name = \"%s\", genre = \"%s\", startlsn = %d, endlsn = %d\n", 
+				trackno, trackinfo[trackno].performer, trackinfo[trackno].name, trackinfo[trackno].genre, trackinfo[trackno].startlsn, trackinfo
+				[trackno].endlsn);
 	}
 
 	return list;
@@ -282,15 +308,18 @@ GList *cdaudio_scan_dir(gchar *dirname)
 
 void cdaudio_play_file(InputPlayback *pinputplayback)
 {
-	printf("cdaudio-ng: cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
 
 	if (trackinfo == NULL) {
-		printf("cdaudio-ng: no cd information, scanning\n");
+		if (debug)
+			printf("cdaudio-ng: no cd information, scanning\n");
 		cdaudio_scan_dir(CDDA_DEFAULT);
 	}
 
 	if (cdio_get_media_changed(pcdio)) {
-		printf("cdaudio-ng: cd changed, rescanning\n");
+		if (debug)
+			printf("cdaudio-ng: cd changed, rescanning\n");
 		cdaudio_scan_dir(CDDA_DEFAULT);
 	}
 
@@ -306,7 +335,8 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	is_paused = FALSE;
 
 	if (use_dae) {
-		printf("cdaudio-ng: using digital audio extraction\n");
+		if (debug)
+			printf("cdaudio-ng: using digital audio extraction\n");
 
 		if (pdae_params != NULL) {
 			fprintf(stderr, "cdaudio-ng: dae playback seems to be already started\n");
@@ -319,7 +349,8 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 			return;
 		}
 
-		printf("cdaudio-ng: starting dae thread...\n");
+		if (debug)
+			printf("cdaudio-ng: starting dae thread...\n");
 		pdae_params = (dae_params_t *) malloc(sizeof(dae_params_t));
 		pdae_params->startlsn = trackinfo[trackno].startlsn;
 		pdae_params->endlsn = trackinfo[trackno].endlsn;
@@ -329,7 +360,8 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 		pdae_params->thread = g_thread_create((GThreadFunc) dae_playing_thread_core, pdae_params, TRUE, NULL);
 	}
 	else {
-		printf("cdaudio-ng: not using digital audio extraction\n");
+		if (debug)
+			printf("cdaudio-ng: not using digital audio extraction\n");
 
 		msf_t startmsf, endmsf;
 		cdio_lsn_to_msf(trackinfo[trackno].startlsn, &startmsf);
@@ -356,7 +388,8 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 
 void cdaudio_stop(InputPlayback *pinputplayback)
 {
-	printf("cdaudio-ng: cdaudio_stop(\"%s\")\n", pinputplayback->filename);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_stop(\"%s\")\n", pinputplayback->filename);
 
 	pinputplayback->playing = FALSE;
 	playing_track = -1;
@@ -380,7 +413,8 @@ void cdaudio_stop(InputPlayback *pinputplayback)
 
 void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
 {
-	printf("cdaudio-ng: cdaudio_pause(\"%s\", %d)\n", pinputplayback->filename, paused);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_pause(\"%s\", %d)\n", pinputplayback->filename, paused);
 
 	if (!is_paused) {
 		is_paused = TRUE;
@@ -404,7 +438,8 @@ void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
 
 void cdaudio_seek(InputPlayback *pinputplayback, gint time)
 {
-	printf("cdaudio-ng: cdaudio_seek(\"%s\", %d)\n", pinputplayback->filename, time);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_seek(\"%s\", %d)\n", pinputplayback->filename, time);
 
 	if (playing_track == -1)
 		return;
@@ -485,7 +520,8 @@ gint cdaudio_get_volume(gint *l, gint *r)
 
 gint cdaudio_set_volume(gint l, gint r)
 {
-	printf("cdaudio-ng: cdaudio_set_volume(%d, %d)\n", l, r);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_set_volume(%d, %d)\n", l, r);
 
 	if (use_dae) {
 		return FALSE;
@@ -504,7 +540,8 @@ gint cdaudio_set_volume(gint l, gint r)
 
 void cdaudio_cleanup()
 {
-	printf("cdaudio-ng: cdaudio_cleanup()\n");
+	if (debug)
+		printf("cdaudio-ng: cdaudio_cleanup()\n");
 
 	if (pcdio!= NULL) {
 		if (playing_track != -1 && !use_dae)
@@ -526,12 +563,14 @@ void cdaudio_cleanup()
 	bmp_cfg_db_set_bool(db, "CDDA", "use_cdtext", use_cdtext);
 	bmp_cfg_db_set_bool(db, "CDDA", "use_cddb", use_cddb);
 	bmp_cfg_db_set_string(db, "CDDA", "device", device);
+	bmp_cfg_db_set_bool(db, "CDDA", "debug", debug);
 	bmp_cfg_db_close(db);
 }
 
 void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 {
-	printf("cdaudio-ng: cdaudio_get_song_info(\"%s\")\n", filename);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_get_song_info(\"%s\")\n", filename);
 
 	int trackno = find_trackno_from_filename(filename);
 	char *thetitle = (char *) malloc(DEF_STRING_LEN);
@@ -550,12 +589,14 @@ void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 
 void cdaudio_file_info_box(gchar *filename)
 {
-	printf("cdaudio-ng: cdaudio_file_info_box(\"%s\")\n", filename);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_file_info_box(\"%s\")\n", filename);
 }
 
 TitleInput *cdaudio_get_song_tuple(gchar *filename)
 {
-	printf("cdaudio-ng: cdaudio_get_song_tuple(\"%s\")\n", filename);
+	if (debug)
+		printf("cdaudio-ng: cdaudio_get_song_tuple(\"%s\")\n", filename);
 
 	TitleInput *tuple = bmp_title_input_new();
 
@@ -620,7 +661,8 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 {
 	unsigned char *buffer = (unsigned char *) malloc(CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
 
-	printf("cdaudio-ng: dae thread started\n");
+	if (debug)
+		printf("cdaudio-ng: dae thread started\n");
 	cdio_lseek(pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 
 	gboolean output_paused = FALSE;
@@ -629,7 +671,8 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 			/* handle pause status */
 		if (is_paused) {
 			if (!output_paused) {
-				printf("cdaudio-ng: playback was not paused, pausing\n");
+				if (debug)
+					printf("cdaudio-ng: playback was not paused, pausing\n");
 				pdae_params->pplayback->output->pause(TRUE);
 				output_paused = TRUE;
 			}
@@ -638,7 +681,8 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 		}
 		else {
 			if (output_paused) {
-				printf("cdaudio-ng: playback was paused, resuming\n");
+				if (debug)
+					printf("cdaudio-ng: playback was paused, resuming\n");
 				pdae_params->pplayback->output->pause(FALSE);
 				output_paused = FALSE;
 			}
@@ -646,7 +690,8 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 
 			/* check if we have to seek */
 		if (pdae_params->seektime != -1) {
-			printf("cdaudio-ng: requested seek to %d ms\n", pdae_params->seektime);
+			if (debug)
+				printf("cdaudio-ng: requested seek to %d ms\n", pdae_params->seektime);
 			int newlsn = pdae_params->startlsn + pdae_params->seektime * 75 / 1000;
 			cdio_lseek(pcdio, newlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 			pdae_params->pplayback->output->flush(pdae_params->seektime);
@@ -681,7 +726,8 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 		}
 		pdae_params->currlsn += lsncount;
 	}
-	printf("cdaudio-ng: dae thread ended\n");
+	if (debug)
+		printf("cdaudio-ng: dae thread ended\n");
 
 	pdae_params->pplayback->playing = FALSE;
 	playing_track = -1;
@@ -722,3 +768,4 @@ void cleanup_on_error()
 	}
 	playing_track = -1;
 }
+

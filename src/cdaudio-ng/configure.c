@@ -24,12 +24,14 @@ static GtkWidget		*usedevicecheckbutton;
 static GtkWidget		*buttonbox;
 static GtkWidget		*limitspinbutton;
 static GtkWidget		*deviceentry;
+static GtkWidget		*debugcheckbutton;
 
 static gboolean			*usedae;
 static int				*limitspeed;
 static gboolean			*usecdtext;
 static gboolean			*usecddb;
 static char				*device;
+static gboolean			*debug;
 
 static gboolean			delete_window(GtkWidget *widget, GdkEvent *event, gpointer data);
 static void				button_clicked(GtkWidget *widget, gpointer data);
@@ -38,13 +40,14 @@ static void				values_to_gui();
 static void				gui_to_values();
 
 
-void configure_set_variables(gboolean *_usedae, int *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, char *_device)
+void configure_set_variables(gboolean *_usedae, int *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, char *_device, gboolean *_debug)
 {
 	usedae = _usedae;
 	limitspeed = _limitspeed;
 	usecdtext = _usecdtext;
 	usecddb = _usecddb;
 	device = _device;
+	debug = _debug;
 }
 
 void configure_create_gui()
@@ -58,7 +61,6 @@ void configure_create_gui()
 
 	maintable = gtk_table_new(4, 2, TRUE);
 	gtk_container_add(GTK_CONTAINER(configwindow), maintable);
-
 
 	daeframe = gtk_frame_new("Digital audio extraction");
 	gtk_table_attach_defaults(GTK_TABLE(maintable), daeframe, 0, 2, 0, 1);
@@ -98,9 +100,13 @@ void configure_create_gui()
 	usedevicecheckbutton = gtk_check_button_new_with_label("Override default device: ");
 	g_signal_connect(G_OBJECT(usedevicecheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(misctable), usedevicecheckbutton, 0, 1, 0, 1);
-	
+
 	deviceentry = gtk_entry_new();
 	gtk_table_attach_defaults(GTK_TABLE(misctable), deviceentry, 1, 2, 0, 1);
+
+	debugcheckbutton = gtk_check_button_new_with_label("Print debug information");
+	g_signal_connect(G_OBJECT(debugcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
+	gtk_table_attach_defaults(GTK_TABLE(misctable), debugcheckbutton, 0, 1, 1, 2);
 
 
 	buttonbox = gtk_hbutton_box_new();
@@ -124,6 +130,7 @@ void configure_create_gui()
 	gtk_widget_show(usecddbcheckbutton);
 	gtk_widget_show(usedevicecheckbutton);
 	gtk_widget_show(deviceentry);
+	gtk_widget_show(debugcheckbutton);
 
 	gtk_widget_show(daetable);
 	gtk_widget_show(daeframe);
@@ -188,6 +195,8 @@ void values_to_gui()
 
 	gtk_widget_set_sensitive(deviceentry, strlen(device) > 0);
 	gtk_entry_set_text(GTK_ENTRY(deviceentry), device);
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(debugcheckbutton), *debug);
 }
 
 void gui_to_values()
@@ -203,4 +212,5 @@ void gui_to_values()
 		strcpy(device, gtk_entry_get_text(GTK_ENTRY(deviceentry)));
 	else
 		strcpy(device, "");
+	*debug = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debugcheckbutton));
 }
