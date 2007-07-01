@@ -5,6 +5,13 @@
 #define LASTFM_CURL_TIMEOUT 10
 
 
+#define LASTFM_LOGIN_OK                 0
+#define LASTFM_LOGIN_ERROR              1
+#define LASTFM_MISSING_LOGIN_DATA       2
+#define LASTFM_SESSION_MISSING          4
+#define LASTFM_ADJUST_OK                0
+
+
 typedef struct
 {
 	VFSFile *proxy_fd;
