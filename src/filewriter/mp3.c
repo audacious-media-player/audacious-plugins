@@ -22,6 +22,8 @@
 
 #include "plugins.h"
 
+#ifdef FILEWRITER_MP3
+
 #include <lame/lame.h>
 #define ENCBUFFER_SIZE 35000
 
@@ -1994,3 +1996,5 @@ static void mp3_configure(void)
 
     }
 }
+
+#endif
