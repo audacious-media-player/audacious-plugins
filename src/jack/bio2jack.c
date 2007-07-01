@@ -370,7 +370,7 @@ DEBUGSTATE(enum status_enum state)
 }
 
 
-#define SAMPLE_MAX_16BIT  32767.0f
+#define SAMPLE_MAX_16BIT  32768.0f
 #define SAMPLE_MAX_8BIT   255.0f
 
 /* floating point volume routine */
