@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 
 #include "audacious/output.h"
 #include "audacious/plugin.h"
@@ -27,263 +27,251 @@
 #include <unistd.h>
 #include "driver.h"
 
-#define CMD_SEEK	0x80000000
-#define CMD_STOP	0x40000000
+#define CMD_SEEK    0x80000000
+#define CMD_STOP    0x40000000
 
-#define uint32 u32
-#define int16 short
-
-static volatile uint32 command;
+static volatile int seek_time = 0;
+static volatile int stop = 0;
 static volatile int playing=0;
 static volatile int nextsong=0;
 
 extern InputPlugin sexypsf_ip;
-static char *fnsave=NULL;
+static char *fnsave = NULL;
 
 static gchar *get_title_psf(gchar *fn);
-static int paused;
+static short paused;
 static GThread *dethread;
-static PSFINFO *PSFInfo=NULL;
-
-static int is_our_fd(gchar *filename, VFSFile *file) {
-	gchar magic[4], *tmps;
-	// Filter out psflib [we use them, but we can't play them]
-	static const gchar *teststr = "psflib";
-	if (strlen(teststr) < strlen(filename)) {
-		tmps = filename + strlen(filename);
-		tmps -= strlen(teststr);
-		if (!strcasecmp(tmps, teststr))
-			return 0;
-	}
-	vfs_fread(magic,1,4,file);
-	//Only allow PSF1 for now.
-	if (!memcmp(magic,"PSF\x01",4))
-		return 1;
-	return 0;
-}
-
-static void SI(gchar *filename)
-{
-	gchar *name = get_title_psf(filename);
-	sexypsf_ip.set_info(name,PSFInfo->length,44100*2*2*8,44100,2);
-	g_free(name);
-}
-
+static PSFINFO *PSFInfo = NULL;
 static InputPlayback *playback;
 
-void sexypsf_update(unsigned char *Buffer, long count)
-{
-	int mask = ~((((16 / 8) * 2)) - 1);
+static int is_our_fd(gchar *filename, VFSFile *file) {
+    gchar magic[4];
+    vfs_fread(magic, 1, 4, file);
 
-	while(count>0)
-	{
-		int t=playback->output->buffer_free() & mask;
-		if(t>count)		
-			produce_audio(playback->output->written_time(), FMT_S16_NE, 2, count, Buffer, NULL);
-		else
-		{
-			if(t)
-				produce_audio(playback->output->written_time(), FMT_S16_NE, 2, t, Buffer, NULL);
-			g_usleep((count-t)*1000*5/441/2);
-		}
-		count-=t;
-		Buffer+=t;
-	}
-	if(command&CMD_SEEK)
-	{
-		int t=(command&~(CMD_SEEK|CMD_STOP))*1000;
-
-		if(sexypsf_seek(t))
-			playback->output->flush(t);
-		else	// Negative time!  Must make a C time machine.
-		{
-			sexypsf_stop();
-			return;
-		}
-		command&=~CMD_SEEK;
-	}
-	if(command&CMD_STOP)
-		sexypsf_stop();
+    // only allow PSF1 for now
+    if (!memcmp(magic, "PSF\x01", 4))
+        return 1;
+    return 0;
 }
 
-static void *sexypsf_playloop(void *arg)
+
+void sexypsf_update(unsigned char *buffer, long count)
+{
+    const int mask = ~((((16 / 8) * 2)) - 1);
+
+    while (count > 0)
+    {
+        int t = playback->output->buffer_free() & mask;
+        if (t > count)     
+            produce_audio(playback->output->written_time(), FMT_S16_NE, 2, count, buffer, NULL);
+        else
+        {
+            if (t)
+                produce_audio(playback->output->written_time(), FMT_S16_NE, 2, t, buffer, NULL);
+            g_usleep((count-t)*1000*5/441/2);
+        }
+        count -= t;
+        buffer += t;
+    }
+    if (seek_time)
+    {
+        if(sexypsf_seek(seek_time))
+            playback->output->flush(seek_time);
+        // negative time - must make a C time machine
+        else
+        {
+            sexypsf_stop();
+            return;
+        }
+        seek_time = 0;
+    }
+    if (stop)
+        sexypsf_stop();
+}
+
+static gpointer sexypsf_playloop(gpointer arg)
 {
 dofunky:
 
-	sexypsf_execute();
+    sexypsf_execute();
 
-	/* We have reached the end of the song. Now what... */
-	playback->output->buffer_free();
-	playback->output->buffer_free();
+    /* we have reached the end of the song */
 
-	while(!(command&CMD_STOP)) 
-	{
-		if(command&CMD_SEEK)
-			{
-			int t=(command&~(CMD_SEEK|CMD_STOP))*1000;
-			playback->output->flush(t);
-			if(!(PSFInfo=sexypsf_load(fnsave)))
-				break;
-			sexypsf_seek(t); 
-			command&=~CMD_SEEK;
-			goto dofunky;
-			}
-		if(!playback->output->buffer_playing()) break;
-			usleep(2000);
-	}
-	playback->output->close_audio();
-	if(!(command&CMD_STOP)) nextsong=1;
-	g_thread_exit(NULL);
-	return(NULL);
+    playback->output->buffer_free();
+    playback->output->buffer_free();
+
+    while (!(stop)) 
+    {
+        if (seek_time)
+        {
+            playback->output->flush(seek_time);
+            if(!(PSFInfo=sexypsf_load(fnsave)))
+                break;
+            sexypsf_seek(seek_time); 
+            seek_time = 0;
+            goto dofunky;
+        }
+        if (!playback->output->buffer_playing()) break;
+        usleep(2000);
+    }
+    playback->output->close_audio();
+    if(!(stop)) nextsong=1;
+    g_thread_exit(NULL);
+    return NULL;
 }
 
 static void sexypsf_xmms_play(InputPlayback *data)
 {
-        char *fn = data->filename;
-	if(playing)
-		return;
-	playback = data;
-	nextsong=0;
-	paused = 0;
-	if(!playback->output->open_audio(FMT_S16_NE, 44100, 2))
-	{
-		puts("Error opening audio.");
-		return;
-	}
-	fnsave=malloc(strlen(fn)+1);
-	strcpy(fnsave,fn);
-	if(!(PSFInfo=sexypsf_load(fn)))
-	{
-		playback->output->close_audio();
-		nextsong=1;
-	}
- 	else
-	{
-		command=0;
-		SI(fn);
-		playing=1;
-		dethread = g_thread_create((GThreadFunc)sexypsf_playloop,NULL,TRUE,NULL);
-	}
+    char *fn = data->filename;
+    if(playing)
+        return;
+    playback = data;
+    nextsong=0;
+    paused = 0;
+    if(!playback->output->open_audio(FMT_S16_NE, 44100, 2))
+    {
+        puts("Error opening audio.");
+        return;
+    }
+    fnsave=malloc(strlen(fn)+1);
+    strcpy(fnsave,fn);
+    if(!(PSFInfo=sexypsf_load(fn)))
+    {
+        playback->output->close_audio();
+        nextsong=1;
+    }
+    else
+    {
+        stop = seek_time = 0;
+
+        gchar *name = get_title_psf(fn);
+        sexypsf_ip.set_info(name,PSFInfo->length,44100*2*2*8,44100,2);
+        g_free(name);
+
+        playing=1;
+        dethread = g_thread_create((GThreadFunc)sexypsf_playloop,NULL,TRUE,NULL);
+    }
 }
 
 static void sexypsf_xmms_stop(InputPlayback * playback)
 {
-	if(!playing) return;
+    if(!playing) return;
 
-	if(paused)
-		playback->output->pause(0);
-	paused = 0;
+    if(paused)
+        playback->output->pause(0);
+    paused = 0;
 
-	command=CMD_STOP;
-	g_thread_join(dethread);
-	playing = 0;
+    stop = TRUE;
+    g_thread_join(dethread);
+    playing = 0;
 
-	if(fnsave)
-	{
-		free(fnsave);
-		fnsave=NULL;
-	} 
-	sexypsf_freepsfinfo(PSFInfo);
-	PSFInfo=NULL;
+    if(fnsave)
+    {
+        free(fnsave);
+        fnsave=NULL;
+    } 
+    sexypsf_freepsfinfo(PSFInfo);
+    PSFInfo=NULL;
 }
 
 static void sexypsf_xmms_pause(InputPlayback * playback, short p)
 {
-	if(!playing) return;
-	playback->output->pause(p);
-	paused = p;
+    if(!playing) return;
+    playback->output->pause(p);
+    paused = p;
 }
 
 static void sexypsf_xmms_seek(InputPlayback * data, int time)
 {
-	if(!playing) return;
-	command=CMD_SEEK|time;
+    if(!playing) return;
+    seek_time = time * 1000;
 }
 
 static int sexypsf_xmms_gettime(InputPlayback *playback)
 {
-	if(nextsong)
-		return(-1);
-	if(!playing) return(0);
-		return playback->output->output_time();
+    if(nextsong)
+        return(-1);
+    if(!playing) return(0);
+    return playback->output->output_time();
 }
 
 static void sexypsf_xmms_getsonginfo(char *fn, char **title, int *length)
 {
-	PSFINFO *tmp;
+    PSFINFO *tmp;
 
-	if((tmp=sexypsf_getpsfinfo(fn))) {
-		*length = tmp->length;
-		*title = get_title_psf(fn);
-		sexypsf_freepsfinfo(tmp);
-	}
+    if((tmp=sexypsf_getpsfinfo(fn))) {
+        *length = tmp->length;
+        *title = get_title_psf(fn);
+        sexypsf_freepsfinfo(tmp);
+    }
 }
 
 static TitleInput *get_tuple_psf(gchar *fn) {
-	TitleInput *tuple = NULL;
-	PSFINFO *tmp = sexypsf_getpsfinfo(fn);
+    TitleInput *tuple = NULL;
+    PSFINFO *tmp = sexypsf_getpsfinfo(fn);
 
-	if (tmp->length) {
-		tuple = bmp_title_input_new();
-		tuple->length = tmp->length;
-		tuple->performer = g_strdup(tmp->artist);
-		tuple->album_name = g_strdup(tmp->game);
-		tuple->track_name = g_strdup(tmp->title);
-		tuple->file_name = g_path_get_basename(fn);
-		tuple->file_path = g_path_get_dirname(fn);
-	}
+    if (tmp->length) {
+        tuple = bmp_title_input_new();
+        tuple->length = tmp->length;
+        tuple->performer = g_strdup(tmp->artist);
+        tuple->album_name = g_strdup(tmp->game);
+        tuple->track_name = g_strdup(tmp->title);
+        tuple->file_name = g_path_get_basename(fn);
+        tuple->file_path = g_path_get_dirname(fn);
+        sexypsf_freepsfinfo(tmp);
+    }
 
-	return tuple;
-}	
+    return tuple;
+}   
 
 static gchar *get_title_psf(gchar *fn) {
-	gchar *title;
-	TitleInput *tinput = get_tuple_psf(fn);
+    gchar *title;
+    TitleInput *tinput = get_tuple_psf(fn);
 
-	if (tinput != NULL) {
-		title = xmms_get_titlestring(xmms_get_gentitle_format(),
-				tinput);
-		bmp_title_input_free(tinput);
-	}
-	else
-		title = g_path_get_basename(fn);
-	
-	return title;
+    if (tinput != NULL) {
+        title = xmms_get_titlestring(xmms_get_gentitle_format(),
+                                     tinput);
+        bmp_title_input_free(tinput);
+    }
+    else
+        title = g_path_get_basename(fn);
+
+    return title;
 }
 
 gchar *sexypsf_fmts[] = { "psf", "minipsf", NULL };
 
 InputPlugin sexypsf_ip =
 {
-	NULL,
-	NULL,
-	"PSF Audio Plugin",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	sexypsf_xmms_play,
-	sexypsf_xmms_stop,
-	sexypsf_xmms_pause,
-	sexypsf_xmms_seek,
-	NULL,
-	sexypsf_xmms_gettime,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	sexypsf_xmms_getsonginfo,
-	NULL,
-	NULL,
-	get_tuple_psf,
-	NULL,
-	NULL,
-	is_our_fd,
-	sexypsf_fmts,
+    NULL,
+    NULL,
+    "PSF Audio Plugin",
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    sexypsf_xmms_play,
+    sexypsf_xmms_stop,
+    sexypsf_xmms_pause,
+    sexypsf_xmms_seek,
+    NULL,
+    sexypsf_xmms_gettime,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    sexypsf_xmms_getsonginfo,
+    NULL,
+    NULL,
+    get_tuple_psf,
+    NULL,
+    NULL,
+    is_our_fd,
+    sexypsf_fmts,
 };
 
 InputPlugin *sexypsf_iplist[] = { &sexypsf_ip, NULL };
