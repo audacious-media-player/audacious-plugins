@@ -27,9 +27,6 @@
 #include <unistd.h>
 #include "driver.h"
 
-#define CMD_SEEK    0x80000000
-#define CMD_STOP    0x40000000
-
 static volatile int seek_time = 0;
 static volatile int stop = 0;
 static volatile int playing=0;
