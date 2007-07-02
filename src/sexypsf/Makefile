@@ -18,7 +18,7 @@ SOURCES = \
 	PsxInterpreter.c \
 	PsxHLE.c \
 	spu/spu.c \
-	xmms.c
+	plugin.c
 
 LIBADD = -lz
 

@@ -27,19 +27,21 @@
 #include <unistd.h>
 #include "driver.h"
 
-static volatile int seek_time = 0;
-static volatile int stop = 0;
-static volatile int playing=0;
-static volatile int nextsong=0;
+static volatile int seek = 0;
+static volatile gboolean playing = FALSE;
+static volatile gboolean paused = FALSE;
+static volatile gboolean stop = FALSE;
+static volatile gboolean nextsong = FALSE;
 
 extern InputPlugin sexypsf_ip;
-static char *fnsave = NULL;
+static gboolean audio_error = FALSE;
+
+static PSFINFO *PSFInfo = NULL;
+static gchar *fnsave = NULL;
+static GThread *dethread = NULL;
+static InputPlayback *playback = NULL;
 
 static gchar *get_title_psf(gchar *fn);
-static short paused;
-static GThread *dethread;
-static PSFINFO *PSFInfo = NULL;
-static InputPlayback *playback;
 
 static int is_our_fd(gchar *filename, VFSFile *file) {
     gchar magic[4];
@@ -70,17 +72,18 @@ void sexypsf_update(unsigned char *buffer, long count)
         count -= t;
         buffer += t;
     }
-    if (seek_time)
+    if (seek)
     {
-        if(sexypsf_seek(seek_time))
-            playback->output->flush(seek_time);
-        // negative time - must make a C time machine
-        else
+        if(sexypsf_seek(seek))
+		{
+            playback->output->flush(seek);
+			seek = 0;
+		}
+        else  // negative time - must make a C time machine
         {
             sexypsf_stop();
             return;
         }
-        seek_time = 0;
     }
     if (stop)
         sexypsf_stop();
@@ -88,107 +91,115 @@ void sexypsf_update(unsigned char *buffer, long count)
 
 static gpointer sexypsf_playloop(gpointer arg)
 {
-dofunky:
-
-    sexypsf_execute();
-
-    /* we have reached the end of the song */
-
-    playback->output->buffer_free();
-    playback->output->buffer_free();
-
-    while (!(stop)) 
+    while (TRUE)
     {
-        if (seek_time)
-        {
-            playback->output->flush(seek_time);
-            if(!(PSFInfo=sexypsf_load(fnsave)))
-                break;
-            sexypsf_seek(seek_time); 
-            seek_time = 0;
-            goto dofunky;
-        }
-        if (!playback->output->buffer_playing()) break;
-        usleep(2000);
+        sexypsf_execute();
+
+        /* we have reached the end of the song or a command was issued */
+
+        playback->output->buffer_free();
+        playback->output->buffer_free();
+
+        if (stop)
+            break;
+
+		if (seek)
+		{
+			playback->output->flush(seek);
+			if(!(PSFInfo = sexypsf_load(fnsave)))
+				break;
+			sexypsf_seek(seek); 
+			seek = 0;
+			continue;
+		}
+
+		break;
     }
+
     playback->output->close_audio();
-    if(!(stop)) nextsong=1;
+    if (!(stop)) nextsong = TRUE;
     g_thread_exit(NULL);
     return NULL;
 }
 
 static void sexypsf_xmms_play(InputPlayback *data)
 {
-    char *fn = data->filename;
-    if(playing)
+    if (playing)
         return;
+
     playback = data;
-    nextsong=0;
-    paused = 0;
-    if(!playback->output->open_audio(FMT_S16_NE, 44100, 2))
+    nextsong = FALSE;
+    paused = FALSE;
+
+    if (!playback->output->open_audio(FMT_S16_NE, 44100, 2))
     {
-        puts("Error opening audio.");
+        audio_error = TRUE;
         return;
     }
-    fnsave=malloc(strlen(fn)+1);
-    strcpy(fnsave,fn);
-    if(!(PSFInfo=sexypsf_load(fn)))
+
+    fnsave = malloc(strlen(data->filename)+1);
+    strcpy(fnsave, data->filename);
+    if(!(PSFInfo=sexypsf_load(data->filename)))
     {
         playback->output->close_audio();
-        nextsong=1;
+        nextsong = 1;
     }
     else
     {
-        stop = seek_time = 0;
+        stop = seek = 0;
 
-        gchar *name = get_title_psf(fn);
-        sexypsf_ip.set_info(name,PSFInfo->length,44100*2*2*8,44100,2);
+        gchar *name = get_title_psf(data->filename);
+        sexypsf_ip.set_info(name, PSFInfo->length, 44100*2*2*8, 44100, 2);
         g_free(name);
 
-        playing=1;
-        dethread = g_thread_create((GThreadFunc)sexypsf_playloop,NULL,TRUE,NULL);
+        playing = 1;
+        dethread = g_thread_create((GThreadFunc)sexypsf_playloop,
+                                   NULL, TRUE, NULL);
     }
 }
 
 static void sexypsf_xmms_stop(InputPlayback * playback)
 {
-    if(!playing) return;
+    if (!playing) return;
 
-    if(paused)
+    if (paused)
         playback->output->pause(0);
-    paused = 0;
+    paused = FALSE;
 
     stop = TRUE;
     g_thread_join(dethread);
-    playing = 0;
+    playing = FALSE;
 
-    if(fnsave)
+    if (fnsave)
     {
         free(fnsave);
-        fnsave=NULL;
+        fnsave = NULL;
     } 
     sexypsf_freepsfinfo(PSFInfo);
-    PSFInfo=NULL;
+    PSFInfo = NULL;
 }
 
-static void sexypsf_xmms_pause(InputPlayback * playback, short p)
+static void sexypsf_xmms_pause(InputPlayback *playback, short p)
 {
-    if(!playing) return;
+    if (!playing) return;
     playback->output->pause(p);
     paused = p;
 }
 
 static void sexypsf_xmms_seek(InputPlayback * data, int time)
 {
-    if(!playing) return;
-    seek_time = time * 1000;
+    if (!playing) return;
+    seek = time * 1000;
 }
 
 static int sexypsf_xmms_gettime(InputPlayback *playback)
 {
-    if(nextsong)
-        return(-1);
-    if(!playing) return(0);
+    if (audio_error)
+        return -2;
+    if (nextsong)
+        return -1;
+    if (!playing)
+        return 0;
     return playback->output->output_time();
 }
 
@@ -196,7 +207,7 @@ static void sexypsf_xmms_getsonginfo(char *fn, char **title, int *length)
 {
     PSFINFO *tmp;
 
-    if((tmp=sexypsf_getpsfinfo(fn))) {
+    if((tmp = sexypsf_getpsfinfo(fn))) {
         *length = tmp->length;
         *title = get_title_psf(fn);
         sexypsf_freepsfinfo(tmp);
@@ -222,7 +233,7 @@ static TitleInput *get_tuple_psf(gchar *fn) {
 }   
 
 static gchar *get_title_psf(gchar *fn) {
-    gchar *title;
+    gchar *title = NULL;
     TitleInput *tinput = get_tuple_psf(fn);
 
     if (tinput != NULL) {
