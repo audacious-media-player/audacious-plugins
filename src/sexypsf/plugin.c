@@ -75,10 +75,10 @@ void sexypsf_update(unsigned char *buffer, long count)
     if (seek)
     {
         if(sexypsf_seek(seek))
-		{
+        {
             playback->output->flush(seek);
-			seek = 0;
-		}
+            seek = 0;
+        }
         else  // negative time - must make a C time machine
         {
             sexypsf_stop();
@@ -103,17 +103,18 @@ static gpointer sexypsf_playloop(gpointer arg)
         if (stop)
             break;
 
-		if (seek)
-		{
-			playback->output->flush(seek);
-			if(!(PSFInfo = sexypsf_load(fnsave)))
-				break;
-			sexypsf_seek(seek); 
-			seek = 0;
-			continue;
-		}
+        if (seek)
+        {
+            playback->output->flush(seek);
+            if(!(PSFInfo = sexypsf_load(fnsave)))
+                break;
+            sexypsf_seek(seek); 
+            seek = 0;
+            continue;
+        }
 
-		break;
+        sleep(2);
+        break;
     }
 
     playback->output->close_audio();
