@@ -62,11 +62,13 @@ void sexypsf_update(unsigned char *buffer, long count)
     {
         int t = playback->output->buffer_free() & mask;
         if (t > count)     
-            produce_audio(playback->output->written_time(), FMT_S16_NE, 2, count, buffer, NULL);
+            produce_audio(playback->output->written_time(),
+                          FMT_S16_NE, 2, count, buffer, NULL);
         else
         {
             if (t)
-                produce_audio(playback->output->written_time(), FMT_S16_NE, 2, t, buffer, NULL);
+                produce_audio(playback->output->written_time(),
+                              FMT_S16_NE, 2, t, buffer, NULL);
             g_usleep((count-t)*1000*5/441/2);
         }
         count -= t;
@@ -113,7 +115,8 @@ static gpointer sexypsf_playloop(gpointer arg)
             continue;
         }
 
-        sleep(2);
+        // timeout at the end of a file
+        sleep(4);
         break;
     }
 
@@ -201,6 +204,7 @@ static int sexypsf_xmms_gettime(InputPlayback *playback)
         return -1;
     if (!playing)
         return 0;
+
     return playback->output->output_time();
 }
 
