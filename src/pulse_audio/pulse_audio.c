@@ -76,7 +76,7 @@ static const char* get_song_name(void) {
     Playlist *playlist = playlist_get_active();
 
     pos = playlist_get_position(playlist);
-    if (!(str = playlist_get_title(playlist, pos)))
+    if (!(str = playlist_get_songtitle(playlist, pos)))
         return "Playback Stream";
 
     snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));
