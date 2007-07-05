@@ -264,22 +264,6 @@ VFSConstructor file_const = {
 	stdio_vfs_fsize_impl
 };
 
-VFSConstructor default_const = {
-	"/",
-	stdio_vfs_fopen_impl,
-	stdio_vfs_fclose_impl,
-	stdio_vfs_fread_impl,
-	stdio_vfs_fwrite_impl,
-	stdio_vfs_getc_impl,
-	stdio_vfs_ungetc_impl,
-	stdio_vfs_fseek_impl,
-	stdio_vfs_rewind_impl,
-	stdio_vfs_ftell_impl,
-	stdio_vfs_feof_impl,
-	stdio_vfs_truncate_impl,
-	stdio_vfs_fsize_impl
-};
-
 static void init(void)
 {
 	vfs_register_transport(&default_const);
