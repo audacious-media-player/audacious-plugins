@@ -119,12 +119,8 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
                 tmp = g_strdup(str);
             }
 
-            if(strstr(tmp, "file://")) {
-                location = g_strdup_printf("%s%s", base ? base : "", tmp + 7);
-            }
-            else {
-                location = g_strdup_printf("%s%s", base ? base : "", tmp);
-            }
+            location = g_strdup_printf("%s%s", base ? base : "", tmp);
+
             xmlFree(str);
             g_free(tmp);
         }
@@ -270,11 +266,6 @@ static void playlist_load_xspf(const gchar *filename, gint pos)
             {
                 gchar *tmp = xmlURIUnescapeString(base, -1, NULL);
                 if(tmp) {
-                    if(strstr(tmp, "file://")) {
-                        gchar *tmp2 = g_strdup(tmp + 7);
-                        g_free(tmp);
-                        tmp = tmp2;
-                    }
                     g_free(base);
                     base = tmp;
                 }
