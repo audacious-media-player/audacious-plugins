@@ -76,7 +76,7 @@ static const char* get_song_name(void) {
     Playlist *playlist = playlist_get_active();
 
     pos = playlist_get_position(playlist);
-    if (!(str = playlist_get_title(playlist, pos)))
+    if (!(str = playlist_get_songtitle(playlist, pos)))
         return "Playback Stream";
 
     snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));
@@ -559,7 +559,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
 
     pa_threaded_mainloop_lock(mainloop);
     
-    if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "XMMS"))) {
+    if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "Audacious"))) {
         g_warning("Failed to allocate context");
         goto unlock_and_fail;
     }
@@ -674,8 +674,8 @@ static void pulse_about(void) {
         return;
     
     dialog = xmms_show_message(
-            "About XMMS PulseAudio Output Plugin",
-            "XMMS PulseAudio Output Plugin\n\n "
+            "About Audacious PulseAudio Output Plugin",
+            "Audacious PulseAudio Output Plugin\n\n "
             "This program is free software; you can redistribute it and/or modify\n"
             "it under the terms of the GNU General Public License as published by\n"
             "the Free Software Foundation; either version 2 of the License, or\n"
