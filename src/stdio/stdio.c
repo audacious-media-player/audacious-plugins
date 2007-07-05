@@ -266,14 +266,12 @@ VFSConstructor file_const = {
 
 static void init(void)
 {
-	vfs_register_transport(&default_const);
 	vfs_register_transport(&file_const);
 }
 
 static void cleanup(void)
 {
 #if 0
-	vfs_unregister_transport(&default_const);
 	vfs_unregister_transport(&file_const);
 #endif
 }
