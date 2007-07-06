@@ -22,6 +22,7 @@
 #include "audacious/formatter.h"
 #include <audacious/i18n.h>
 #include <audacious/hook.h>
+#include <audacious/playlist.h>
 
 static void init(void);
 static void cleanup(void);
@@ -29,13 +30,23 @@ static GtkWidget *configure(void);
 static void songchange_playback_begin(gpointer unused, gpointer unused2);
 static void songchange_playback_end(gpointer unused, gpointer unused2);
 static void songchange_playlist_eof(gpointer unused, gpointer unused2);
+static void songchange_playback_ttc(gpointer, gpointer);
+
+typedef struct
+{
+  gchar *title;
+  gchar *filename;
+}
+songchange_playback_ttc_prevs_t;
+static songchange_playback_ttc_prevs_t *ttc_prevs = NULL;
 
 static char *cmd_line = NULL;
 static char *cmd_line_after = NULL;
 static char *cmd_line_end = NULL;
+static char *cmd_line_ttc = NULL;
 
 static GtkWidget *configure_vbox = NULL;
-static GtkWidget *cmd_entry, *cmd_after_entry, *cmd_end_entry;
+static GtkWidget *cmd_entry, *cmd_after_entry, *cmd_end_entry, *cmd_ttc_entry;
 static GtkWidget *cmd_warn_label, *cmd_warn_img;
 
 GeneralPlugin sc_gp =
@@ -191,14 +202,15 @@ static void read_config(void)
 {
 	ConfigDb *db;
 
-	cmd_line = g_strdup("");
-	cmd_line_after = g_strdup("");
-	cmd_line_end = g_strdup("");
-
 	db = bmp_cfg_db_open();
-	bmp_cfg_db_get_string(db, "song_change", "cmd_line", &cmd_line);
-	bmp_cfg_db_get_string(db, "song_change", "cmd_line_after", &cmd_line_after);
-	bmp_cfg_db_get_string(db, "song_change", "cmd_line_end", &cmd_line_end);
+	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line", &cmd_line) )
+		cmd_line = g_strdup("");
+	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line_after", &cmd_line_after) )
+		cmd_line_after = g_strdup("");
+	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line_end", &cmd_line_end) )
+		cmd_line_end = g_strdup("");
+	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line_ttc", &cmd_line_ttc) )
+		cmd_line_ttc = g_strdup("");
 	bmp_cfg_db_close(db);
 }
 
@@ -207,13 +219,24 @@ static void cleanup(void)
 	hook_dissociate("playback begin", songchange_playback_begin);
 	hook_dissociate("playback end", songchange_playback_end);
 	hook_dissociate("playlist end reached", songchange_playlist_eof);
+      hook_dissociate( "playlist set info" , songchange_playback_ttc);
+
+	if ( ttc_prevs != NULL )
+	{
+		if ( ttc_prevs->title != NULL ) g_free( ttc_prevs->title );
+		if ( ttc_prevs->filename != NULL ) g_free( ttc_prevs->filename );
+		g_free( ttc_prevs );
+		ttc_prevs = NULL;
+	}
 
 	g_free(cmd_line);
 	g_free(cmd_line_after);
 	g_free(cmd_line_end);
+	g_free(cmd_line_ttc);
 	cmd_line = NULL;
 	cmd_line_after = NULL;
 	cmd_line_end = NULL;
+	cmd_line_ttc = NULL;
 	signal(SIGCHLD, SIG_DFL);
 
 	prefswin_page_destroy(configure_vbox);
@@ -222,16 +245,18 @@ static void cleanup(void)
 static void save_and_close(GtkWidget *w, gpointer data)
 {
 	ConfigDb *db;
-	char *cmd, *cmd_after, *cmd_end;
+	char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
 
 	cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_entry)));
 	cmd_after = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_after_entry)));
 	cmd_end = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_end_entry)));
+	cmd_ttc = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_ttc_entry)));
 
 	db = bmp_cfg_db_open();
 	bmp_cfg_db_set_string(db, "song_change", "cmd_line", cmd);
 	bmp_cfg_db_set_string(db, "song_change", "cmd_line_after", cmd_after);
 	bmp_cfg_db_set_string(db, "song_change", "cmd_line_end", cmd_end);
+	bmp_cfg_db_set_string(db, "song_change", "cmd_line_ttc", cmd_ttc);
 	bmp_cfg_db_close(db);
 
 	if (cmd_line != NULL)
@@ -249,9 +274,15 @@ static void save_and_close(GtkWidget *w, gpointer data)
 
 	cmd_line_end = g_strdup(cmd_end);
 
+	if (cmd_line_ttc != NULL)
+		g_free(cmd_line_ttc);
+
+	cmd_line_ttc = g_strdup(cmd_ttc);
+
 	g_free(cmd);
 	g_free(cmd_after);
 	g_free(cmd_end);
+	g_free(cmd_ttc);
 }
 
 static int check_command(char *command)
@@ -272,14 +303,15 @@ static int check_command(char *command)
 
 static void configure_ok_cb(GtkWidget *w, gpointer data)
 {
-	char *cmd, *cmd_after, *cmd_end;
+	char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
 
 	cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_entry)));
 	cmd_after = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_after_entry)));
 	cmd_end = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_end_entry)));
+	cmd_ttc = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_ttc_entry)));
 
-	if (check_command(cmd) < 0 || check_command(cmd_after) < 0
-	                           || check_command(cmd_end) < 0)
+	if (check_command(cmd) < 0 || check_command(cmd_after) < 0 ||
+	    check_command(cmd_end) < 0 || check_command(cmd_ttc) < 0)
 	{
 		gtk_widget_show(cmd_warn_img);
 		gtk_widget_show(cmd_warn_label);
@@ -294,18 +326,20 @@ static void configure_ok_cb(GtkWidget *w, gpointer data)
 	g_free(cmd);
 	g_free(cmd_after);
 	g_free(cmd_end);
+	g_free(cmd_ttc);
 }
 
 
 static GtkWidget *configure(void)
 {
-	GtkWidget *sep1, *sep2, *sep3;
+	GtkWidget *sep1, *sep2, *sep3, *sep4;
 	GtkWidget *cmd_hbox, *cmd_label;
 	GtkWidget *cmd_after_hbox, *cmd_after_label;
 	GtkWidget *cmd_end_hbox, *cmd_end_label;
 	GtkWidget *cmd_desc, *cmd_after_desc, *cmd_end_desc, *f_desc;
+      GtkWidget *cmd_ttc_hbox, *cmd_ttc_label, *cmd_ttc_desc;
 	GtkWidget *song_frame, *song_vbox;
-        GtkWidget *bbox_hbox;
+	GtkWidget *bbox_hbox;
 	char *temp;
 	
 	read_config();
@@ -382,6 +416,27 @@ static GtkWidget *configure(void)
 	sep3 = gtk_hseparator_new();
 	gtk_box_pack_start(GTK_BOX(song_vbox), sep3, TRUE, TRUE, 0);
 
+	cmd_ttc_desc = gtk_label_new(_(
+		"Command to run when title changes for a song "
+		"(i.e. network streams titles)."));
+	gtk_label_set_justify(GTK_LABEL(cmd_ttc_desc), GTK_JUSTIFY_LEFT);
+	gtk_misc_set_alignment(GTK_MISC(cmd_ttc_desc), 0, 0.5);
+	gtk_box_pack_start(GTK_BOX(song_vbox), cmd_ttc_desc, FALSE, FALSE, 0);
+
+	cmd_ttc_hbox = gtk_hbox_new(FALSE, 6);
+	gtk_box_pack_start(GTK_BOX(song_vbox), cmd_ttc_hbox, FALSE, FALSE, 0);
+
+	cmd_ttc_label = gtk_label_new(_("Command:"));
+	gtk_box_pack_start(GTK_BOX(cmd_ttc_hbox), cmd_ttc_label, FALSE, FALSE, 0);
+
+	cmd_ttc_entry = gtk_entry_new();
+	if (cmd_line_ttc)
+		gtk_entry_set_text(GTK_ENTRY(cmd_ttc_entry), cmd_line_ttc);
+	gtk_widget_set_usize(cmd_ttc_entry, 200, -1);
+	gtk_box_pack_start(GTK_BOX(cmd_ttc_hbox), cmd_ttc_entry, TRUE, TRUE, 0);
+	sep4 = gtk_hseparator_new();
+	gtk_box_pack_start(GTK_BOX(song_vbox), sep4, TRUE, TRUE, 0);
+
 	temp = g_strdup_printf(
 		_("You can use the following format strings which\n"
 		  "will be substituted before calling the command\n"
@@ -416,6 +471,7 @@ static GtkWidget *configure(void)
 	g_signal_connect(GTK_OBJECT(cmd_entry), "changed", GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
 	g_signal_connect(GTK_OBJECT(cmd_after_entry), "changed", GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
 	g_signal_connect(GTK_OBJECT(cmd_end_entry), "changed", GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
+	g_signal_connect(GTK_OBJECT(cmd_ttc_entry), "changed", GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
 
 	gtk_widget_show_all(configure_vbox);
 
@@ -432,6 +488,11 @@ static void init(void)
 	hook_associate("playback begin", songchange_playback_begin, NULL);
 	hook_associate("playback end", songchange_playback_end, NULL);
 	hook_associate("playlist end reached", songchange_playlist_eof, NULL);
+
+	ttc_prevs = g_malloc0(sizeof(songchange_playback_ttc_prevs_t));
+	ttc_prevs->title = NULL;
+	ttc_prevs->filename = NULL;
+	hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
 
 	configure_ok_cb(NULL, NULL);
 }
@@ -462,6 +523,52 @@ songchange_playback_end(gpointer unused, gpointer unused2)
 	do_command(cmd_line_after, current_file, pos);
 
 	g_free(current_file);
+}
+
+static void
+songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
+{
+  if ( ( ip_data.playing ) && ( strcmp(cmd_line_ttc,"") ) )
+  {
+    songchange_playback_ttc_prevs_t *prevs = prevs_gp;
+    PlaylistEntry *pl_entry = plentry_gp;
+
+    /* same filename but title changed, useful to detect http stream song changes */
+
+    if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
+    {
+      if ( ( pl_entry->filename != NULL ) && ( !strcmp(pl_entry->filename,prevs->filename) ) )
+      {
+        if ( ( pl_entry->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
+        {
+          int pos = audacious_drct_pl_get_pos();
+          char *current_file = audacious_drct_pl_get_file(pos);
+          do_command(cmd_line_ttc, current_file, pos);
+          g_free(current_file);
+          g_free(prevs->title);
+          prevs->title = g_strdup(pl_entry->title);
+        }
+      }
+      else
+      {
+        g_free(prevs->filename);
+        prevs->filename = g_strdup(pl_entry->filename);
+        /* if filename changes, reset title as well */
+        if ( prevs->title != NULL )
+          g_free(prevs->title);
+        prevs->title = g_strdup(pl_entry->title);
+      }
+    }
+    else
+    {
+      if ( prevs->title != NULL )
+        g_free(prevs->title);
+      prevs->title = g_strdup(pl_entry->title);
+      if ( prevs->filename != NULL )
+        g_free(prevs->filename);
+      prevs->filename = g_strdup(pl_entry->filename);
+    }
+  }
 }
 
 static void
