@@ -847,9 +847,9 @@ AC_SUBST(OSS_LIBS)
 dnl *** OSS4 output
 
 AC_ARG_ENABLE(oss4,
-    [  --disable-oss4          disable the OSS4 output plugin (default=enabled)],
+    [  --enable-oss4           enable the OSS4 output plugin (default=disabled)],
     [enable_oss4=$enableval],
-    [enable_oss4=yes]
+    [enable_oss4=no]
 )
 
 have_oss4=no
@@ -1487,6 +1487,7 @@ echo
 echo "  Output Plugins"
 echo "  --------------"
 echo "  Open Sound System (oss):                $have_oss"
+echo "  Open Sound System v4 (oss4):            $have_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  Enlightenment Sound Daemon (esd):       $have_esd"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
