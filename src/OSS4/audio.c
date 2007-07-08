@@ -746,10 +746,11 @@ void oss_get_volume(int *l, int *r)
 
 void
 oss_set_volume(int l, int r)
-{
-    int v;
+{   
+    if(l!=r)
+        l=r=((l>r) ? l : r);
     long cmd=SNDCTL_DSP_SETPLAYVOL;   
-    v = (r << 8) | l;
+    int v = (r << 8) | l;
     ioctl(fd, cmd, &v);
 }
 
