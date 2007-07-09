@@ -45,6 +45,7 @@
 #include <libmowgli/mowgli_global_storage.h>
 #include <curl/curl.h>
 #include <glib.h>
+#include <string.h>
 #include "lastfm.h"
 
 #define DEBUG 1
@@ -155,7 +156,7 @@ static gchar* parse(gchar* input_string,gchar* token)
 	if (!g_str_has_prefix(input_string, token))
 		return NULL;
 
-        return g_strdup(g_utf8_strchr(input_string, -1, '=') + 1);
+        return g_strdup(strchr(input_string, '=') + 1);
 }
 
 gint lastfm_adjust(const gchar * uri)  /*tunes into a channel*/
@@ -226,11 +227,21 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
 
         for (i = 0; split && split[i]; i++)
         {
-                handle->lastfm_artist = parse(split[i],"artist=");
-                handle->lastfm_title  = parse(split[i],"track=" );
-                handle->lastfm_album  = parse(split[i],"album=" );
-                handle->lastfm_cover  = parse(split[i],"albumcover_medium=");
-                handle->lastfm_station_name = parse(split[i],"station=");
+		if (g_str_has_prefix(split[i], "artist="))
+	                handle->lastfm_artist = parse(split[i],"artist=");
+
+		if (g_str_has_prefix(split[i], "track="))
+	                handle->lastfm_title  = parse(split[i],"track=");
+
+		if (g_str_has_prefix(split[i], "album="))
+	                handle->lastfm_album  = parse(split[i],"album=" );
+
+		if (g_str_has_prefix(split[i], "albumcover_medium="))
+	                handle->lastfm_cover  = parse(split[i],"albumcover_medium=");
+
+		if (g_str_has_prefix(split[i], "station="))
+	                handle->lastfm_station_name = parse(split[i],"station=");
+
                 if (g_str_has_prefix(split[i], "trackduration="))
                         handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
                 if (g_str_has_prefix(split[i], "trackprogress="))
@@ -440,6 +451,9 @@ off_t lastfm_vfs_fsize_impl(VFSFile * file)
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
         LastFM *handle = file->handle;
+
+	g_print("artist: %s track: %s station: %s\n",
+		handle->lastfm_artist, handle->lastfm_title, handle->lastfm_station_name);
 
         if (!g_ascii_strncasecmp(field, "stream-name", 11) && (handle->lastfm_station_name != NULL))
                 return g_strdup(handle->lastfm_station_name);
