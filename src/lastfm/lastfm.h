@@ -9,9 +9,10 @@
 #define LASTFM_LOGIN_ERROR              1
 #define LASTFM_MISSING_LOGIN_DATA       2
 #define LASTFM_SESSION_MISSING          4
-#define LASTFM_ADJUST_OK                0
-
-
+#define LASTFM_ADJUST_OK                8
+#define LASTFM_ADJUST_FAILED           16
+#define METADATA_FETCH_FAILED          64
+#define METADATA_FETCH_SUCCEEDED      128
 typedef struct
 {
 	VFSFile *proxy_fd;
@@ -24,9 +25,10 @@ typedef struct
 	gchar *lastfm_cover;
 	unsigned int lastfm_duration;
 	unsigned int lastfm_progress;
-        GThread *metadata_thread;
-	int login_count;
 } LastFM;
+
+GThread* metadata_thread=NULL;
+gint thread_count=0;
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode);
 
@@ -54,9 +56,9 @@ gint lastfm_vfs_fclose_impl(VFSFile * file);
 
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field);
 
-static void parse_metadata(LastFM * handle,GString * res);
+gboolean parse_metadata(LastFM * handle,GString * res);
 
-static gpointer lastfm_get_metadata(gpointer arg);
+static gpointer lastfm_metadata_thread_func(gpointer arg);
 
 static gboolean lastfm_login(void);
 
