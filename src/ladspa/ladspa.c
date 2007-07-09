@@ -79,7 +79,7 @@ static plugin_instance * load (char *filename, long int num);
 static void reboot_plugins (void);
 static void boot_plugin (plugin_instance *instance);
 static void port_assign(plugin_instance *instance);
-static void shutdown (plugin_instance *instance);
+static void ladspa_shutdown (plugin_instance *instance);
 static void unload (plugin_instance *instance);
 
 static GtkWidget * make_plugin_clist(void);
@@ -245,7 +245,7 @@ static void unload (plugin_instance * instance)
     gtk_timeout_remove(instance->timeout);
   }
 
-  shutdown(instance);
+  ladspa_shutdown(instance);
 
   if (instance->library) {
     dlclose(instance->library);
@@ -283,7 +283,7 @@ static void stop (void)
     }
     bmp_cfg_db_set_int(db, section, "ports", ports);
     g_free(section);
-    shutdown (instance);
+    ladspa_shutdown (instance);
   }
   G_UNLOCK (running_plugins);
 
@@ -291,7 +291,7 @@ static void stop (void)
   bmp_cfg_db_close(db);
 }
 
-static void shutdown (plugin_instance *instance)
+static void ladspa_shutdown (plugin_instance *instance)
 {
   const LADSPA_Descriptor * descriptor= instance->descriptor;
 
@@ -315,7 +315,7 @@ static void boot_plugin (plugin_instance *instance)
 {
   const LADSPA_Descriptor * descriptor = instance->descriptor;
 
-  shutdown(instance);
+  ladspa_shutdown(instance);
   instance->handle = descriptor->instantiate(descriptor, state.srate);
   if (state.nch > 1 && !instance->stereo) {
     /* Create an additional instance */
