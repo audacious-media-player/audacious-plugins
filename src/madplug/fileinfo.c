@@ -558,7 +558,7 @@ static void id3_frame_to_entry(char *framename, GtkEntry * entry)
 }
 #endif                          /* !NOGUI */
 
-void audmad_get_file_info(char *filename)
+void audmad_get_file_info(char *fileurl)
 {
 #ifndef NOGUI
     gchar *title;
@@ -567,28 +567,32 @@ void audmad_get_file_info(char *filename)
     static char const *const mode_str[4] = {
         ("single channel"), ("dual channel"), "joint stereo", "stereo"
     };
-    char *utf_filename;
+    gchar *tmp, *utf_filename;
 
 #ifdef DEBUG
     {
-        gchar *tmp = str_to_utf8(filename);
+        tmp = str_to_utf8(fileurl);
         g_message("f: audmad_get_file_info: %s", tmp);
         g_free(tmp);
+        tmp = NULL;
     }
 #endif
 
-    if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
+    if(!vfs_file_test(fileurl, G_FILE_TEST_EXISTS)) {
         return;
     }
 
-    input_init(&info, filename);
+    input_init(&info, fileurl);
 
-    if(audmad_is_remote(filename)) {
+    if(audmad_is_remote(fileurl)) {
         info.remote = TRUE;
         return; //file info dialog for remote streaming doesn't make sense.
     }
 
-    utf_filename = str_to_utf8(filename);
+    tmp = g_filename_from_uri(fileurl, NULL, NULL);
+    utf_filename = str_to_utf8(tmp);
+    g_free(tmp);
+    tmp = NULL;
     create_window();
 
     info.fileinfo_request = TRUE;
