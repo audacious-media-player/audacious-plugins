@@ -47,7 +47,7 @@
 #include <glib.h>
 #include "lastfm.h"
 
-#define DEBUG 0  
+#define DEBUG 1
 /*Caution!!! setting DEBUG to 1 is very likely to crash the player because the g_print-ed values
 aren't checked of being !=NULL
 */
@@ -105,11 +105,12 @@ gchar* lastfm_get_login_uri()  /* reads the audioscrobbler login data from the c
         }
 }
 
-        void lastfm_store(gchar *var_name,gchar* var){  /*mowgli storage wrapper*/
-                if (mowgli_global_storage_get(var_name))
-                        mowgli_global_storage_free(var_name);
-                mowgli_global_storage_put(var_name,var);
-        }
+void lastfm_store(gchar *var_name,gchar* var){  /*mowgli storage wrapper*/
+        if (mowgli_global_storage_get(var_name))
+                mowgli_global_storage_free(var_name);
+
+        mowgli_global_storage_put(var_name,var);
+}
 
 int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores them*/
 {
@@ -132,7 +133,7 @@ int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores 
 #endif
         if (status == CURLE_OK)
         {
-                split = g_strsplit(res->str, "\n", 7);
+                split = g_strsplit(res->str, "\n", 20);
                 for (i = 0; split && split[i]; i++)
                 {
                         if (g_str_has_prefix(split[i], "session="))
@@ -147,6 +148,14 @@ int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores 
         g_string_erase(res, 0, -1);
         g_free(login_uri);
         return ret;
+}
+
+static gchar* parse(gchar* input_string,gchar* token)
+{
+	if (!g_str_has_prefix(input_string, token))
+		return NULL;
+
+        return g_strdup(g_utf8_strchr(input_string, -1, '=') + 1);
 }
 
 gint lastfm_adjust(const gchar * uri)  /*tunes into a channel*/
@@ -174,23 +183,18 @@ gint lastfm_adjust(const gchar * uri)  /*tunes into a channel*/
 #endif
         if (status == CURLE_OK)
         {
-                split = g_strsplit(res->str, "\n", 3);
+                split = g_strsplit(res->str, "\n", 20);
                 for (i = 0; split && split[i]; i++)
                 {
                         if (g_str_has_prefix(split[i], "response=OK"))
                                 ret = LASTFM_ADJUST_OK;
                         if (g_str_has_prefix(split[i], "url="))
-                                lastfm_store("lastfm_tuned_to_url", g_strdup(split[i] + 4));
+                                lastfm_store("lastfm_tuned_to_url", parse(split[i], "url="));
                 }
         }
         g_string_erase(res, 0, -1);
         g_strfreev(split);
         return ret;
-}
-
-gchar* parse(gchar* input_string,gchar* token)
-{
-        return g_strdup(g_strstr_len(input_string,20,"=")+1);
 }
 
 gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
@@ -204,24 +208,30 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
                 return FALSE;
         handle->lastfm_duration=0;
         handle->lastfm_progress=0;
-        g_free(handle->lastfm_artist);
-        g_free(handle->lastfm_title);
-        g_free(handle->lastfm_album);
-        g_free(handle->lastfm_cover);
-        g_free(handle->lastfm_station_name);
+
+	if (handle->lastfm_artist)
+	        g_free(handle->lastfm_artist);
+
+	if (handle->lastfm_title)
+	        g_free(handle->lastfm_title);
+
+	if (handle->lastfm_album)
+	        g_free(handle->lastfm_album);
+
+	if (handle->lastfm_cover)
+	        g_free(handle->lastfm_cover);
+
+	if (handle->lastfm_station_name)
+	        g_free(handle->lastfm_station_name);
+
         for (i = 0; split && split[i]; i++)
         {
-                if(g_str_has_prefix(split[i],"artist="))
-                        handle->lastfm_artist = parse(split[i],"artist=");
-                if(g_str_has_prefix(split[i],"track=" ))  
-                        handle->lastfm_title  = parse(split[i],"track=" );
-                if(g_str_has_prefix(split[i],"album=" )) 
-                        handle->lastfm_album  = parse(split[i],"album=" );
-                if(g_str_has_prefix(split[i],"albumcover_medium="))  
-                        handle->lastfm_cover  = parse(split[i],"albumcover_medium=");
-                if(g_str_has_prefix(split[i],"station="))  
-                        handle->lastfm_station_name = parse(split[i],"station=");
-                if(g_str_has_prefix(split[i], "trackduration="))
+                handle->lastfm_artist = parse(split[i],"artist=");
+                handle->lastfm_title  = parse(split[i],"track=" );
+                handle->lastfm_album  = parse(split[i],"album=" );
+                handle->lastfm_cover  = parse(split[i],"albumcover_medium=");
+                handle->lastfm_station_name = parse(split[i],"station=");
+                if (g_str_has_prefix(split[i], "trackduration="))
                         handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
                 if (g_str_has_prefix(split[i], "trackprogress="))
                         handle->lastfm_progress = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
