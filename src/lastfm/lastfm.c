@@ -452,9 +452,6 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
         LastFM *handle = file->handle;
 
-	g_print("artist: %s track: %s station: %s\n",
-		handle->lastfm_artist, handle->lastfm_title, handle->lastfm_station_name);
-
         if (!g_ascii_strncasecmp(field, "stream-name", 11) && (handle->lastfm_station_name != NULL))
                 return g_strdup(handle->lastfm_station_name);
         if (!g_ascii_strncasecmp(field, "track-name", 10) && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
