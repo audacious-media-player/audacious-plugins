@@ -456,6 +456,8 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
                 return g_strdup_printf("last.fm radio: %s", handle->lastfm_station_name);
         if (!g_ascii_strncasecmp(field, "track-name", 10) && (handle->lastfm_title != NULL) && (handle->lastfm_artist != NULL))
                 return g_strdup_printf("%s - %s", handle->lastfm_artist, handle->lastfm_title);
+	if (!g_ascii_strncasecmp(field, "content-type", 12))
+		return g_strdup("audio/mpeg");
 
         return NULL;
 }
