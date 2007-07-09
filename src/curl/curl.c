@@ -998,6 +998,14 @@ curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
     return g_strdup(handle->title);
   if (!strcmp(field, "content-length"))
     return g_strdup_printf("%ld", handle->length);
+  if (!strcmp(field, "content-type"))
+    {
+      char *out = NULL;
+      curl_easy_getinfo(handle->curl, CURLINFO_CONTENT_TYPE, &out);
+
+      if (out)
+        return g_strdup(out);
+    }
   return NULL;
 }
 
