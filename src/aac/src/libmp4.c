@@ -846,7 +846,12 @@ static void *mp4_decode( void *args )
 
     ret = parse_aac_stream(mp4fh);
 
-    vfs_fseek(mp4fh, 0, SEEK_SET);
+    if( ret == TRUE )
+        vfs_fseek(mp4fh, 0, SEEK_SET);
+    else {
+        vfs_fclose(mp4fh);
+        mp4fh = vfs_fopen(filename, "rb");
+    }
 
     mp4cb->read = mp4_read_callback;
     mp4cb->seek = mp4_seek_callback;
