@@ -380,12 +380,14 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
 
         if (file == NULL)
                 return -1;
-        LastFM *handle = file->handle;
-        ret = vfs_fclose(handle->proxy_fd);
-        if (!ret)
+        if (file->handle) {
+            LastFM *handle = file->handle;
+            ret = vfs_fclose(handle->proxy_fd);
+            if (!ret)
                 handle->proxy_fd = NULL;
-        g_free(handle);
-        handle=NULL;
+            g_free(handle);
+            file->handle = NULL;
+        }
         return ret;
 }
 

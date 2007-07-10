@@ -86,6 +86,7 @@ mms_vfs_fclose_impl(VFSFile * file)
 
         mms_close(handle->mms);
         g_free(handle);
+        file->handle = NULL;
     }
 
     return ret;

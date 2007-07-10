@@ -111,6 +111,7 @@ stdio_vfs_fclose_impl(VFSFile * file)
 
         if (fclose(handle) != 0)
             ret = -1;
+        file->handle = NULL;
     }
 
     return ret;

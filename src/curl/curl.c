@@ -722,6 +722,7 @@ curl_vfs_fclose_impl(VFSFile * file)
         g_free(handle->url);
 
       g_free(handle);
+      file->handle = NULL;
     }
   return ret;
 }
