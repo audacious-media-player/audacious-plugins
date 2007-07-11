@@ -169,7 +169,7 @@ if test "x$enable_dbus" == "xyes"; then
 	     AC_DEFINE(USE_DBUS, 1, [Define if D-Bus support enabled])],
 	    [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60])]
 	])
-efi
+fi
 
 PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.2.0],
     [ADD_PC_REQUIRES([libmowgli >= 0.2.0])],
