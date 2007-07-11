@@ -160,11 +160,16 @@ PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [AC_MSG_ERROR([Cannot find pango >= 1.8.0])]
 )
 
-PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
-    [ADD_PC_REQUIRES([dbus-1 >= 0.60 dbus-glib-1 >= 0.60])
-     AC_DEFINE(USE_DBUS, 1, [Define if D-Bus support enabled])],
-    [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60])]
-])
+AC_ARG_ENABLE(dbus,
+	[  --enable-dbus		  enable DBus support (default=yes)],
+			enable_dbus=$enableval, enable_dbus=yes)
+if test "x$enable_dbus" == "xyes"; then
+	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
+	    [ADD_PC_REQUIRES([dbus-1 >= 0.60 dbus-glib-1 >= 0.60])
+	     AC_DEFINE(USE_DBUS, 1, [Define if D-Bus support enabled])],
+	    [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60])]
+	])
+fi
 
 PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.2.0],
     [ADD_PC_REQUIRES([libmowgli >= 0.2.0])],
@@ -212,7 +217,7 @@ case "$target" in
 		PICFLAGS="-fPIC -DPIC"
 		PICLDFLAGS="-fPIC -DPIC -shared"
 		LIBLDFLAGS="-fPIC -DPIC -shared"
-		AUDLDFLAGS="-Wl,-export-dynamic -Wl,-rpath=\${libdir}"
+		AUDLDFLAGS="-Wl,-export-dynamic -Wl,-rpath=\${libdir},-rpath=\${plugindir}"
 		SHARED_SUFFIX=".so"
 		;;
 esac

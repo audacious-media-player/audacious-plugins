@@ -447,7 +447,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 	cur_cue_track = track;
 	cache_cue_file(path2);
 
-    if (cue_file == NULL || !g_file_test(cue_file, G_FILE_TEST_EXISTS))
+    if (cue_file == NULL || !vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
         return;
 
 	real_ip_plugin = input_check_file(cue_file, FALSE);

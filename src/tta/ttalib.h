@@ -80,7 +80,7 @@ typedef struct {
 } id3_info;
 
 typedef struct {
-	FILE		*HANDLE;	// file handle
+	VFSFile		*HANDLE;	// file handle
 	unsigned short	NCH;		// number of channels
 	unsigned short	BPS;		// bits per sample
 	unsigned short	BSIZE;		// byte size
