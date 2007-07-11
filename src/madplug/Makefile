@@ -19,8 +19,6 @@ OBJECTS = ${SOURCES:.c=.o}
 
 CFLAGS   += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(SIMD_CFLAGS) -I../../intl -I../.. -Wall
 
-LDFLAGS += -Wl,-rpath=$(plugindir)
-
-LIBADD = -L$(plugindir) -laudid3tag -lmad $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+LIBADD = -L/opt/local/lib -L$(plugindir) -laudid3tag -lmad $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 include ../../mk/objective.mk

@@ -35,7 +35,11 @@
 
 #include "private/memory.h"
 #include "FLAC/assert.h"
-#include <malloc.h>
+#include <stdlib.h>
+
+#ifdef __DARWIN
+# undef FLAC__ALIGN_MALLOC_DATA
+#endif
 
 void *FLAC__memory_alloc_aligned(size_t bytes, void **aligned_address)
 {
@@ -43,25 +47,9 @@ void *FLAC__memory_alloc_aligned(size_t bytes, void **aligned_address)
 
 	FLAC__ASSERT(0 != aligned_address);
 
-#ifdef FLAC__ALIGN_MALLOC_DATA
-	/* align on 32-byte (256-bit) boundary */
-#if 0
-	x = malloc(bytes+31);
-	/* there's got to be a better way to do this right for all archs */
-	if(sizeof(void*) == sizeof(unsigned))
-		*aligned_address = (void*)(((unsigned)x + 31) & -32);
-	else if(sizeof(void*) == sizeof(FLAC__uint64))
-		*aligned_address = (void*)(((FLAC__uint64)x + 31) & (FLAC__uint64)(-((FLAC__int64)32)));
-	else
-		return 0;
-#endif
-	x = memalign(32, bytes);
-	*aligned_address = x;
-
-#else
 	x = malloc(bytes);
 	*aligned_address = x;
-#endif
+
 	return x;
 }
 
