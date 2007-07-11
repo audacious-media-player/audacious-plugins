@@ -11,7 +11,7 @@ LIBADD += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CURL_LIBS)
 
 SOURCES = lastfm.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../.. -ggdb -g3
 
 CFLAGS += -Wall  -pedantic -std=c99 $(GCC42_CFLAGS)
 #CFLAGS += -Wpointer-arith -Wimplicit -Wnested-externs -Wcast-align \
