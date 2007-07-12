@@ -36,7 +36,7 @@ extern void close_mixer_device();
 
 #define NFRAGS		32
 
-static gint fd = 0;
+static gint fd = 0,temp_vol=0x6464;
 static char *buffer;
 static gboolean going, prebuffer, paused, unpause, do_pause, remove_prebuffer;
 static gint device_buffer_used, buffer_size, prebuffer_size, blk_size;
@@ -739,7 +739,8 @@ void oss_get_volume(int *l, int *r)
 {
     int v;
     long cmd=SNDCTL_DSP_GETPLAYVOL;
-    ioctl(fd, cmd, &v);
+    if(ioctl(fd, cmd, &v) == -1)
+        v=temp_vol;
     *r = (v & 0xFF00) >> 8;
     *l = (v & 0x00FF);
 }
@@ -747,11 +748,9 @@ void oss_get_volume(int *l, int *r)
 void
 oss_set_volume(int l, int r)
 {   
-    if(l!=r)
-        l=r=((l>r) ? l : r);
     long cmd=SNDCTL_DSP_SETPLAYVOL;   
-    int v = (r << 8) | l;
-    ioctl(fd, cmd, &v);
+    temp_vol = (r << 8) | l;
+    ioctl(fd, cmd, &temp_vol);
 }
 
 void
