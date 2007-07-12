@@ -50,7 +50,7 @@ typedef struct {
 } OSSConfig;
 
 extern OSSConfig oss_cfg;
-
+int vol;
 void oss_init(void);
 void oss_cleanup(void);
 void oss_about(void);

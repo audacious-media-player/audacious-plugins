@@ -43,6 +43,7 @@ oss_init(void)
     oss_cfg.use_master = 0;
 
     if ((db = bmp_cfg_db_open())) {
+        bmp_cfg_db_get_int(db, "OSS", "saved_volume", &vol);
         bmp_cfg_db_get_int(db, "OSS", "audio_device", &oss_cfg.audio_device);
         bmp_cfg_db_get_int(db, "OSS", "mixer_device", &oss_cfg.mixer_device);
         bmp_cfg_db_get_int(db, "OSS", "buffer_size", &oss_cfg.buffer_size);

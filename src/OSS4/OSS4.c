@@ -24,6 +24,7 @@
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <stdlib.h>
+#include <audacious/configdb.h>
 
 OutputPlugin oss_op = {
     NULL,
@@ -53,6 +54,11 @@ DECLARE_PLUGIN(OSS4, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL);
 
 void oss_cleanup(void)
 {
+    ConfigDb *db;
+    db = bmp_cfg_db_open();
+    bmp_cfg_db_set_int(db, "OSS", "saved_volume", vol);
+    bmp_cfg_db_close(db);
+
     if (oss_cfg.alt_audio_device) {
         free(oss_cfg.alt_audio_device);
         oss_cfg.alt_audio_device = NULL;
@@ -61,5 +67,5 @@ void oss_cleanup(void)
     if (oss_cfg.alt_mixer_device) {
         free(oss_cfg.alt_mixer_device);
         oss_cfg.alt_mixer_device = NULL;
-    }
+    }    
 }
