@@ -142,7 +142,8 @@ void flac_init(void) {
             metadata_callback,
             error_callback,
             test_info))) {
-        _ERROR("Could not initialize test FLAC decoder: %s(%d)", StreamDecoderInitState(ret), ret);
+        _ERROR("Could not initialize test FLAC decoder: %s(%d)",
+                FLAC__StreamDecoderInitStatusString[ret], ret);
         _LEAVE;
      }
 
@@ -157,7 +158,8 @@ void flac_init(void) {
             metadata_callback,
             error_callback,
             main_info))) {
-        _ERROR("Could not initialize main FLAC decoder: %s(%d)", StreamDecoderInitState(ret), ret);
+        _ERROR("Could not initialize main FLAC decoder: %s(%d)",
+                FLAC__StreamDecoderInitStatusString[ret], ret);
         _LEAVE;
      }
 

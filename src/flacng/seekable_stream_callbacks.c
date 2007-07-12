@@ -47,7 +47,7 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
 
     if (0 <= info->read_max) {
         to_read = MIN(*bytes, info->read_max);
-        _DEBUG("Reading restricted to %d bytes", info->read_max);
+        _DEBUG("Reading restricted to %ld bytes", info->read_max);
     } else {
         to_read = *bytes;
     }
@@ -119,7 +119,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
 
-    _DEBUG("Current position: %d", position);
+    _DEBUG("Current position: %ld", position);
 
     *absolute_byte_offset = position;
 
@@ -166,7 +166,7 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
         _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_UNSUPPORTED;
     }
 
-    _DEBUG("Stream length is %d bytes", size);
+    _DEBUG("Stream length is %ld bytes", size);
     *stream_length = size;
 
     _LEAVE FLAC__STREAM_DECODER_LENGTH_STATUS_OK;

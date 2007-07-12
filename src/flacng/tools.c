@@ -172,89 +172,6 @@ void reset_info(callback_info* info) {
 
 /* --- */
 
-gchar* StreamDecoderInitState(FLAC__StreamDecoderInitStatus state) {
-
-    _ENTER;
-
-    switch(state) {
-        case FLAC__STREAM_DECODER_INIT_STATUS_OK:
-            _LEAVE "FLAC__STREAM_DECODER_INIT_STATUS_OK";
-            break;
-
-        case FLAC__STREAM_DECODER_INIT_STATUS_UNSUPPORTED_CONTAINER:
-            _LEAVE "FLAC__STREAM_DECODER_INIT_STATUS_UNSUPPORTED_CONTAINER";
-            break;
-
-        case FLAC__STREAM_DECODER_INIT_STATUS_INVALID_CALLBACKS:
-            _LEAVE "FLAC__STREAM_DECODER_INIT_STATUS_INVALID_CALLBACKS";
-            break;
-
-        case FLAC__STREAM_DECODER_INIT_STATUS_MEMORY_ALLOCATION_ERROR:
-            _LEAVE "FLAC__STREAM_DECODER_INIT_STATUS_MEMORY_ALLOCATION_ERROR";
-            break;
-
-        case FLAC__STREAM_DECODER_INIT_STATUS_ERROR_OPENING_FILE:
-            _LEAVE "FLAC__STREAM_DECODER_INIT_STATUS_ERROR_OPENING_FILE";
-            break;
-
-        case FLAC__STREAM_DECODER_INIT_STATUS_ALREADY_INITIALIZED:
-            _LEAVE "FLAC__STREAM_DECODER_INIT_STATUS_ALREADY_INITIALIZED";
-            break;
-    }
-
-    _LEAVE "Unknown state";
-}
-
-/* --- */
-
-gchar* StreamDecoderState(FLAC__StreamDecoderState state) {
-
-    _ENTER;
-
-    switch(state) {
-
-        case FLAC__STREAM_DECODER_SEARCH_FOR_METADATA:
-            _LEAVE "FLAC__STREAM_DECODER_SEARCH_FOR_METADATA";
-            break;
-
-        case FLAC__STREAM_DECODER_READ_METADATA:
-            _LEAVE "FLAC__STREAM_DECODER_READ_METADATA";
-            break;
-
-        case FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC:
-            _LEAVE "FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC";
-            break;
-
-        case FLAC__STREAM_DECODER_READ_FRAME:
-            _LEAVE "FLAC__STREAM_DECODER_READ_FRAME";
-            break;
-
-        case FLAC__STREAM_DECODER_END_OF_STREAM:
-            _LEAVE "FLAC__STREAM_DECODER_END_OF_STREAM";
-            break;
-
-        case FLAC__STREAM_DECODER_ABORTED:
-            _LEAVE "FLAC__STREAM_DECODER_ABORTED";
-            break;
-
-        case FLAC__STREAM_DECODER_MEMORY_ALLOCATION_ERROR:
-            _LEAVE "FLAC__STREAM_DECODER_MEMORY_ALLOCATION_ERROR";
-            break;
-
-        case FLAC__STREAM_DECODER_UNINITIALIZED:
-            _LEAVE "FLAC__STREAM_DECODER_UNINITIALIZED";
-            break;
-
-        default:
-            break;
-
-    }
-
-    _LEAVE "";
-}
-
-/* --- */
-
 gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_info* info) {
 
     FLAC__StreamDecoderState ret;
@@ -300,7 +217,8 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
      */
     if (false == FLAC__stream_decoder_process_until_end_of_metadata(decoder)) {
         ret = FLAC__stream_decoder_get_state(decoder);
-        _DEBUG("Could not read the metadata: %s(%d)!", StreamDecoderState(ret), ret);
+        _DEBUG("Could not read the metadata: %s(%d)!",
+                FLAC__StreamDecoderStateString[ret], ret);
         reset_info(info);
         _LEAVE FALSE;
     }

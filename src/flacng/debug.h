@@ -19,6 +19,8 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include <stdio.h>
+
 #define _ENTER _DEBUG("enter")
 #define _LEAVE _DEBUG("leave"); return
 #define _MESSAGE(tag, string, ...) do { fprintf(stderr, "%s: libflacng.so: %s:%d (%s): " string "\n", \
