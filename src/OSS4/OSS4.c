@@ -63,9 +63,5 @@ void oss_cleanup(void)
         free(oss_cfg.alt_audio_device);
         oss_cfg.alt_audio_device = NULL;
     }
-
-    if (oss_cfg.alt_mixer_device) {
-        free(oss_cfg.alt_mixer_device);
-        oss_cfg.alt_mixer_device = NULL;
-    }    
+   
 }

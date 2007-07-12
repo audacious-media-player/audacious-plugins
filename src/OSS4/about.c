@@ -39,8 +39,10 @@ oss_about(void)
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message(_("About OSS Driver"),
-                               _("Audacious OSS4 Driver\n\n "
+    dialog = xmms_show_message(_("About OSSv4 Driver"),
+                               _("Audacious OSSv4 Driver\n\n"
+                                 "Based on the OSSv3 Output plugin,\n" 
+                                 "Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n\n"
                                  "This program is free software; you can redistribute it and/or modify\n"
                                  "it under the terms of the GNU General Public License as published by\n"
                                  "the Free Software Foundation; either version 2 of the License, or\n"

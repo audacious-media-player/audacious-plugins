@@ -41,12 +41,11 @@ extern OutputPlugin op;
 
 typedef struct {
     gint audio_device;
-    gint mixer_device;
     gint buffer_size;
     gint prebuffer;
-    gboolean use_master,use_vmix;
-    gboolean use_alt_audio_device, use_alt_mixer_device;
-    gchar *alt_audio_device, *alt_mixer_device;
+    gboolean save_volume;
+    gboolean use_alt_audio_device;
+    gchar *alt_audio_device;
 } OSSConfig;
 
 extern OSSConfig oss_cfg;
