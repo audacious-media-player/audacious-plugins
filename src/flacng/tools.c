@@ -172,15 +172,13 @@ void reset_info(callback_info* info) {
 
 /* --- */
 
-gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_info* info) {
+gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info) {
 
     FLAC__StreamDecoderState ret;
 
     _ENTER;
 
     _DEBUG("Using callback_info %s", info->name);
-
-    _DEBUG("Opening file %s", filename);
 
     /*
      * Reset the decoder
@@ -191,6 +189,8 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
     }
 
     reset_info(info);
+
+    info->input_stream = fd;
 
     /*
      * Just scan the first 8k for the start of metadata
@@ -205,20 +205,14 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
     info->testing = TRUE;
 
     /*
-     * Open the file
-     */
-    if (NULL == (info->input_stream = vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
-        _LEAVE FALSE;
-    }
-
-    /*
      * Try to decode the metadata
      */
     if (false == FLAC__stream_decoder_process_until_end_of_metadata(decoder)) {
         ret = FLAC__stream_decoder_get_state(decoder);
         _DEBUG("Could not read the metadata: %s(%d)!",
                 FLAC__StreamDecoderStateString[ret], ret);
+        /* Do not close the filehandle, it was passed to us */
+        info->input_stream = NULL;
         reset_info(info);
         _LEAVE FALSE;
     }
