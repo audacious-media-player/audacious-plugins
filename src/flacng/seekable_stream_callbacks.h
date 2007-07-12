@@ -19,9 +19,7 @@
 #ifndef CALLBACKS_H
 #define CALLBACKS_H
 
-#include "flac_compat112.h"
-#include "flac_compat113.h"
-#include "flac_compat114.h"
+#include "flac_compat.h"
 
 FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);
 FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 absolute_byte_offset, void *client_data);
