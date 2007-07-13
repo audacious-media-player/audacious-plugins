@@ -86,7 +86,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
     gboolean is_extm3u = FALSE;
     Playlist *playlist = playlist_get_active();
 
-    if ((file = vfs_fopen(filename, "rb")) == NULL)
+    if ((file = vfs_fopen(g_filename_to_uri(filename, NULL, NULL), "rb")) == NULL)
         return;
 
     line = g_malloc(line_len);
