@@ -29,6 +29,6 @@ void reset_info(callback_info* info);
 gchar* get_title(const gchar* filename, callback_info* info);
 TitleInput *get_tuple(const gchar *filename, callback_info* info);
 void add_comment(callback_info* info, gchar* key, gchar* value);
-gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_info* info);
+gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info);
 
 #endif
