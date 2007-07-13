@@ -233,6 +233,9 @@ play_start (InputPlayback *playback)
 	int pcmbitwidth;
 	gchar *song_title;
 
+	if (filename == NULL)
+		return;
+
 	if (sndfile)
 		return;
 
@@ -313,6 +316,8 @@ static void
 get_song_info (char *fileuri, char **title, int *length)
 {
 	gchar *filename = g_filename_from_uri(fileuri, NULL, NULL);
+	if (filename == NULL)
+		return;
 	(*length) = get_song_length(filename);
 	(*title) = get_title(filename);
 	g_free(filename);
