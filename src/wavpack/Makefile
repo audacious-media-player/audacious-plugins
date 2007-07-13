@@ -1,7 +1,7 @@
 include ../../mk/rules.mk
 include ../../mk/init.mk
 
-OBJECTIVE_LIBS = libwavpack$(SHARED_SUFFIX)
+OBJECTIVE_LIBS = libwavpackplugin$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
