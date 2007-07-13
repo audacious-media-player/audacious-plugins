@@ -138,6 +138,16 @@ FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data) {
     info = (callback_info*) client_data;
     _DEBUG("Using callback_info %s", info->name);
 
+    /*
+     * If we are testing a stream and use restricted reading,
+     * return EOF if we have exhausted our alotted reading
+     * quota
+     */
+    if (0 == info->read_max) {
+        _DEBUG("read_max exhausted, faking EOF");
+        return TRUE;
+    }
+
     eof = vfs_feof(info->input_stream);
 
     _LEAVE eof;
