@@ -29,7 +29,7 @@ typedef struct
 
 GThread* metadata_thread=NULL;
 gint thread_count=0;
-static GMutex * mutex = NULL;
+static GMutex * metadata_mutex = NULL;
 
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode);
 

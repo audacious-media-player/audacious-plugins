@@ -54,7 +54,7 @@ VFSFile *open_file(char *name)
   /* First try the given name */
 
   DEBUG_MSG("Trying to open %s\n", name);
-  if ((fp = vfs_fopen(name, OPEN_MODE)))
+  if ((fp = vfs_fopen(g_filename_to_uri(name, NULL, NULL), OPEN_MODE)))
     return fp;
 
   if (name[0] != PATH_SEP)
@@ -78,7 +78,7 @@ VFSFile *open_file(char *name)
 	  }
 	strcat(current_filename, name);
 	DEBUG_MSG("Trying to open %s\n", current_filename);
-	if ((fp = vfs_fopen(current_filename, OPEN_MODE)))
+	if ((fp = vfs_fopen(g_filename_to_uri(current_filename, NULL, NULL), OPEN_MODE)))
 	  return fp;
 	plp = plp->next;
       }

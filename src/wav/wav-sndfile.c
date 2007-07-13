@@ -132,18 +132,22 @@ plugin_cleanup (void)
 }
 
 static int
-is_our_file (char *filename)
+is_our_file (char *fileuri)
 {
 	SNDFILE	*tmp_sndfile;
 	SF_INFO tmp_sfinfo;
+	gchar *filename = g_filename_from_uri(fileuri, NULL, NULL);
 
 	/* Have to open the file to see if libsndfile can handle it. */
-	if (! (tmp_sndfile = sf_open (filename, SFM_READ, &tmp_sfinfo)))
+	if (! (tmp_sndfile = sf_open (filename, SFM_READ, &tmp_sfinfo))) {
+		g_free(filename);
 		return FALSE;
+    }
 
 	/* It can so close file and return TRUE. */
 	sf_close (tmp_sndfile);
 	tmp_sndfile = NULL;
+	g_free(filename);
 
 	return TRUE;
 }
@@ -222,7 +226,7 @@ play_loop (gpointer arg)
 static void
 play_start (InputPlayback *playback)
 {
-	char *filename = playback->filename;
+	gchar *filename = g_filename_from_uri(playback->filename, NULL, NULL);
 	int pcmbitwidth;
 	gchar *song_title;
 
@@ -303,10 +307,12 @@ file_seek (InputPlayback *playback, int time)
 }
 
 static void
-get_song_info (char *filename, char **title, int *length)
+get_song_info (char *fileuri, char **title, int *length)
 {
+	gchar *filename = g_filename_from_uri(fileuri, NULL, NULL);
 	(*length) = get_song_length(filename);
 	(*title) = get_title(filename);
+	g_free(filename);
 }
 
 static void wav_about(void)

@@ -460,7 +460,7 @@ is_our_file (char *filename)
 static void
 play_file (InputPlayback *playback)
 {
-	char *filename = playback->filename;
+	gchar *filename = playback->filename;
 	char *title;
 	int datasize, origsize, bitrate;
 	TitleInput *tuple = NULL;
@@ -469,7 +469,7 @@ play_file (InputPlayback *playback)
 
 	////////////////////////////////////////
 	// open TTA file
-	if (open_tta_file (filename, &info, 0) < 0)
+	if (open_tta_file (filename, &info, 0) > 0)
 	{
 	    tta_error (info.STATE);
 	    close_tta_file (&info);

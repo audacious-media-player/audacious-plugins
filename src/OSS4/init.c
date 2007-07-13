@@ -35,27 +35,26 @@ oss_init(void)
     memset(&oss_cfg, 0, sizeof(OSSConfig));
 
     oss_cfg.audio_device = 0;
-    oss_cfg.mixer_device = 0;
     oss_cfg.buffer_size = 3000;
     oss_cfg.prebuffer = 25;
     oss_cfg.use_alt_audio_device = FALSE;
     oss_cfg.alt_audio_device = NULL;
-    oss_cfg.use_master = 0;
 
     if ((db = bmp_cfg_db_open())) {
         bmp_cfg_db_get_int(db, "OSS", "audio_device", &oss_cfg.audio_device);
-        bmp_cfg_db_get_int(db, "OSS", "mixer_device", &oss_cfg.mixer_device);
         bmp_cfg_db_get_int(db, "OSS", "buffer_size", &oss_cfg.buffer_size);
         bmp_cfg_db_get_int(db, "OSS", "prebuffer", &oss_cfg.prebuffer);
-        bmp_cfg_db_get_bool(db, "OSS", "use_master", &oss_cfg.use_master);
+        bmp_cfg_db_get_bool(db, "OSS", "save_volume", &oss_cfg.save_volume);
         bmp_cfg_db_get_bool(db, "OSS", "use_alt_audio_device",
                             &oss_cfg.use_alt_audio_device);
         bmp_cfg_db_get_string(db, "OSS", "alt_audio_device",
                               &oss_cfg.alt_audio_device);
-        bmp_cfg_db_get_bool(db, "OSS", "use_alt_mixer_device",
-                            &oss_cfg.use_alt_mixer_device);
-        bmp_cfg_db_get_string(db, "OSS", "alt_mixer_device",
-                              &oss_cfg.alt_mixer_device);
+        bmp_cfg_db_get_int(db, "OSS", "saved_volume", &vol);
         bmp_cfg_db_close(db);
     }
+        //volume gets saved anyway, but is ignored unless "saved_volume" is true
+        if(!oss_cfg.save_volume)
+            vol=0x6464;  //maximum
+           
+
 }

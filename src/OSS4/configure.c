@@ -32,10 +32,9 @@
 
 
 static GtkWidget *configure_win = NULL;
-static GtkWidget *mixer_usemaster_check, *buffer_size_spin, *buffer_pre_spin;
+static GtkWidget *mixer_save_check,*buffer_size_spin, *buffer_pre_spin;
 static GtkWidget *adevice_use_alt_check, *audio_alt_device_entry;
-static GtkWidget *mdevice_use_alt_check, *mixer_alt_device_entry;
-static gint audio_device, mixer_device;
+static gint audio_device;
 
 static void
 configure_win_ok_cb(GtkWidget * w, gpointer data)
@@ -43,52 +42,37 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
     ConfigDb *db;
 
     oss_cfg.audio_device = audio_device;
-    oss_cfg.mixer_device = mixer_device;
     oss_cfg.buffer_size =
         gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffer_size_spin));
     oss_cfg.prebuffer =
         gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffer_pre_spin));
-    oss_cfg.use_master =
+    oss_cfg.save_volume =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                     (mixer_usemaster_check));
+                                     (mixer_save_check));
+
     oss_cfg.use_alt_audio_device =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
                                      (adevice_use_alt_check));
-    oss_cfg.use_alt_mixer_device =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                     (mdevice_use_alt_check));
     g_free(oss_cfg.alt_audio_device);
     oss_cfg.alt_audio_device =
         gtk_editable_get_chars(GTK_EDITABLE(audio_alt_device_entry), 0, -1);
     g_strstrip(oss_cfg.alt_audio_device);
-    g_free(oss_cfg.alt_mixer_device);
-    oss_cfg.alt_mixer_device =
-        gtk_editable_get_chars(GTK_EDITABLE(mixer_alt_device_entry), 0, -1);
-    g_strstrip(oss_cfg.alt_mixer_device);
-
+    
     if (oss_cfg.use_alt_audio_device)
         /* do a minimum of sanity checking */
         if (oss_cfg.alt_audio_device[0] != '/')
             oss_cfg.use_alt_audio_device = FALSE;
-    if (oss_cfg.use_alt_mixer_device)
-        if (oss_cfg.alt_mixer_device[0] != '/')
-            oss_cfg.use_alt_mixer_device = FALSE;
-
+    
     db = bmp_cfg_db_open();
 
     bmp_cfg_db_set_int(db, "OSS", "audio_device", oss_cfg.audio_device);
-    bmp_cfg_db_set_int(db, "OSS", "mixer_device", oss_cfg.mixer_device);
     bmp_cfg_db_set_int(db, "OSS", "buffer_size", oss_cfg.buffer_size);
     bmp_cfg_db_set_int(db, "OSS", "prebuffer", oss_cfg.prebuffer);
-    bmp_cfg_db_set_bool(db, "OSS", "use_master", oss_cfg.use_master);
+    bmp_cfg_db_set_bool(db, "OSS", "save_volume", oss_cfg.save_volume);
     bmp_cfg_db_set_bool(db, "OSS", "use_alt_audio_device",
                         oss_cfg.use_alt_audio_device);
     bmp_cfg_db_set_string(db, "OSS", "alt_audio_device",
                           oss_cfg.alt_audio_device);
-    bmp_cfg_db_set_bool(db, "OSS", "use_alt_mixer_device",
-                        oss_cfg.use_alt_mixer_device);
-    bmp_cfg_db_set_string(db, "OSS", "alt_mixer_device",
-                          oss_cfg.alt_mixer_device);
     bmp_cfg_db_close(db);
 }
 
@@ -99,25 +83,11 @@ configure_win_audio_dev_cb(GtkWidget * widget, gint device)
 }
 
 static void
-configure_win_mixer_dev_cb(GtkWidget * widget, gint device)
-{
-    mixer_device = device;
-}
-
-static void
 audio_device_toggled(GtkToggleButton * widget, gpointer data)
 {
     gboolean use_alt_audio_device = gtk_toggle_button_get_active(widget);
     gtk_widget_set_sensitive(GTK_WIDGET(data), !use_alt_audio_device);
     gtk_widget_set_sensitive(audio_alt_device_entry, use_alt_audio_device);
-}
-
-static void
-mixer_device_toggled(GtkToggleButton * widget, gpointer data)
-{
-    gboolean use_alt_device = gtk_toggle_button_get_active(widget);
-    gtk_widget_set_sensitive(GTK_WIDGET(data), !use_alt_device);
-    gtk_widget_set_sensitive(mixer_alt_device_entry, use_alt_device);
 }
 
 static void
@@ -184,7 +154,7 @@ oss_configure(void)
     GtkWidget *buffer_size_box, *buffer_size_label;
     GtkObject *buffer_size_adj, *buffer_pre_adj;
     GtkWidget *buffer_pre_box, *buffer_pre_label;
-    GtkWidget *audio_alt_box, *mixer_alt_box;
+    GtkWidget *audio_alt_box;
     GtkWidget *bbox, *ok, *cancel;
     GtkWidget *mixer_table, *mixer_frame;
 
@@ -255,48 +225,7 @@ oss_configure(void)
         gtk_widget_set_sensitive(adevice, FALSE);
     else
         gtk_widget_set_sensitive(audio_alt_device_entry, FALSE);
-
-    mdevice_frame = gtk_frame_new(_("Mixer device:"));
-    gtk_box_pack_start(GTK_BOX(dev_vbox), mdevice_frame, FALSE, FALSE, 0);
-
-    mdevice_box = gtk_vbox_new(FALSE, 0);
-    gtk_container_set_border_width(GTK_CONTAINER(mdevice_box), 5);
-    gtk_container_add(GTK_CONTAINER(mdevice_frame), mdevice_box);
-
-    mdevice = gtk_option_menu_new();
-    gtk_box_pack_start(GTK_BOX(mdevice_box), mdevice, TRUE, TRUE, 0);
-#if defined(HAVE_NEWPCM)
-    scan_devices("Installed devices:", mdevice, configure_win_mixer_dev_cb);
-#else
-    scan_devices("Mixers:", mdevice, G_CALLBACK(configure_win_mixer_dev_cb));
-#endif
-    mixer_device = oss_cfg.mixer_device;
-    gtk_option_menu_set_history(GTK_OPTION_MENU(mdevice),
-                                oss_cfg.mixer_device);
-    mixer_alt_box = gtk_hbox_new(FALSE, 0);
-    gtk_box_pack_start_defaults(GTK_BOX(mdevice_box), mixer_alt_box);
-    mdevice_use_alt_check =
-        gtk_check_button_new_with_label(_("Use alternate device:"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(mdevice_use_alt_check),
-                                 oss_cfg.use_alt_mixer_device);
-    g_signal_connect(G_OBJECT(mdevice_use_alt_check), "toggled",
-                     G_CALLBACK(mixer_device_toggled), mdevice);
-    gtk_box_pack_start(GTK_BOX(mixer_alt_box), mdevice_use_alt_check,
-                       FALSE, FALSE, 0);
-    mixer_alt_device_entry = gtk_entry_new();
-    if (oss_cfg.alt_mixer_device != NULL)
-        gtk_entry_set_text(GTK_ENTRY(mixer_alt_device_entry),
-                           oss_cfg.alt_mixer_device);
-    else
-        gtk_entry_set_text(GTK_ENTRY(mixer_alt_device_entry), DEV_MIXER);
-    gtk_box_pack_start_defaults(GTK_BOX(mixer_alt_box),
-                                mixer_alt_device_entry);
-
-    if (oss_cfg.use_alt_mixer_device)
-        gtk_widget_set_sensitive(mdevice, FALSE);
-    else
-        gtk_widget_set_sensitive(mixer_alt_device_entry, FALSE);
-
+   
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dev_vbox,
                              gtk_label_new(_("Devices")));
 
@@ -339,17 +268,18 @@ oss_configure(void)
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), buffer_frame,
                              gtk_label_new(_("Buffering")));
+    
     mixer_frame = gtk_frame_new(_("Mixer Settings:"));
     gtk_container_set_border_width(GTK_CONTAINER(mixer_frame), 5);
-    mixer_table = gtk_table_new(3, 2, TRUE);
+    mixer_table = gtk_table_new(1, 1, TRUE);
     gtk_container_add(GTK_CONTAINER(mixer_frame), mixer_table);
     gtk_container_set_border_width(GTK_CONTAINER(mixer_table), 5);
-    mixer_usemaster_check =
-        gtk_check_button_new_with_label(_("Volume controls Master not PCM"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(mixer_usemaster_check),
-                                 oss_cfg.use_master);
+    mixer_save_check =
+        gtk_check_button_new_with_label(_("Save VMIX volume between sessions"));
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(mixer_save_check),
+                                 oss_cfg.save_volume);
     gtk_table_attach_defaults(GTK_TABLE(mixer_table),
-                              mixer_usemaster_check, 0, 1, 0, 1);
+                              mixer_save_check, 0, 1, 0, 1);
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), mixer_frame,
                              gtk_label_new(_("Mixer")));
 

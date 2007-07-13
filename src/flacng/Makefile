@@ -7,7 +7,7 @@ LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(FLAC_LIBS)
 
-SOURCES = plugin.c tools.c seekable_stream_callbacks.c
+SOURCES = plugin.c tools.c seekable_stream_callbacks.c flac_compat112.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
