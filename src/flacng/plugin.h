@@ -4,6 +4,7 @@
 void flac_init(void);
 void flac_aboutbox(void);
 gboolean flac_is_our_file(gchar* filename);
+gboolean flac_is_our_fd(gchar* filename, VFSFile* fd);
 void flac_play_file (InputPlayback* input);
 void flac_stop(InputPlayback* input);
 void flac_pause(InputPlayback* input, gshort p);
