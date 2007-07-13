@@ -572,8 +572,8 @@ void flac_play_file (InputPlayback* input) {
     /*
      * Open the file
      */
-    if (NULL == (fd = vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
+    if (NULL == (fd = vfs_fopen(input->filename, "rb"))) {
+        _ERROR("Could not open file for reading! (%s)", input->filename);
         _LEAVE;
     }
 
@@ -666,13 +666,24 @@ void flac_seek(InputPlayback* input, gint time) {
 void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
 
     gint l;
+    VFSFile* fd;
 
     _ENTER;
 
-    if (FALSE == read_metadata(filename, test_decoder, test_info)) {
+    _DEBUG("Testing file: %s", filename);
+    /*
+     * Open the file
+     */
+    if (NULL == (fd = vfs_fopen(filename, "rb"))) {
+        _ERROR("Could not open file for reading! (%s)", filename);
+        _LEAVE;
+    }
+
+    if (FALSE == read_metadata(fd, test_decoder, test_info)) {
         _ERROR("Could not read file info!");
         *length = -1;
         *title = g_strdup("");
+        vfs_fclose(fd);
         _LEAVE;
     }
 
@@ -699,12 +710,23 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
 
 TitleInput *flac_get_song_tuple(gchar* filename) {
 
+    VFSFile *fd;
     TitleInput *tuple;
 
     _ENTER;
 
-    if (FALSE == read_metadata(filename, test_decoder, test_info)) {
+    _DEBUG("Testing file: %s", filename);
+    /*
+     * Open the file
+     */
+    if (NULL == (fd = vfs_fopen(filename, "rb"))) {
+        _ERROR("Could not open file for reading! (%s)", filename);
+        _LEAVE NULL;
+    }
+
+    if (FALSE == read_metadata(fd, test_decoder, test_info)) {
         _ERROR("Could not read metadata tuple for file <%s>", filename);
+        vfs_fclose(fd);
         _LEAVE NULL;
     }
 
