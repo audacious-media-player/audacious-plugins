@@ -157,12 +157,15 @@ playlist_save_m3u(const gchar *filename, gint pos)
     VFSFile *file;
     Playlist *playlist = playlist_get_active();
     gchar *fn;
+    gchar *fileuri = NULL;
 
     g_return_if_fail(filename != NULL);
     g_return_if_fail(playlist != NULL);
 
-    file = vfs_fopen(filename, "wb");
-
+    fileuri = g_filename_to_uri(filename, NULL, NULL);
+    g_return_if_fail(fileuri != NULL);
+    file = vfs_fopen(fileuri, "wb");
+    g_free(fileuri); fileuri = NULL;
     g_return_if_fail(file != NULL);
 
     if (cfg.use_pl_metadata)
