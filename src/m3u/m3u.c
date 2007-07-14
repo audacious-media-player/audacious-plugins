@@ -162,8 +162,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
     g_return_if_fail(playlist != NULL);
 
     fn = g_filename_to_uri(filename, NULL, NULL);
-    g_return_if_fail(fn != NULL);
-    file = vfs_fopen(fn, "wb");
+    file = vfs_fopen(fn ? fn : filename, "wb");
     g_free(fn); fn = NULL;
     g_return_if_fail(file != NULL);
 
