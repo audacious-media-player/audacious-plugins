@@ -156,16 +156,15 @@ playlist_save_m3u(const gchar *filename, gint pos)
     gchar *outstr = NULL;
     VFSFile *file;
     Playlist *playlist = playlist_get_active();
-    gchar *fn;
-    gchar *fileuri = NULL;
+    gchar *fn = NULL;
 
     g_return_if_fail(filename != NULL);
     g_return_if_fail(playlist != NULL);
 
-    fileuri = g_filename_to_uri(filename, NULL, NULL);
-    g_return_if_fail(fileuri != NULL);
-    file = vfs_fopen(fileuri, "wb");
-    g_free(fileuri); fileuri = NULL;
+    fn = g_filename_to_uri(filename, NULL, NULL);
+    g_return_if_fail(fn != NULL);
+    file = vfs_fopen(fn, "wb");
+    g_free(fn); fn = NULL;
     g_return_if_fail(file != NULL);
 
     if (cfg.use_pl_metadata)
@@ -197,8 +196,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
         fn = g_filename_from_uri(entry->filename, NULL, NULL);
         vfs_fprintf(file, "%s\n", fn ? fn : entry->filename);
 
-        if (fn)
-            g_free(fn);
+        g_free(fn); fn = NULL;
     }
 
     PLAYLIST_UNLOCK(playlist->mutex);
