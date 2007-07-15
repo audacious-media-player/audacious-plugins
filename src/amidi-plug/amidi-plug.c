@@ -338,7 +338,10 @@ static gint amidiplug_set_volume( gint  l , gint  r )
 static void amidiplug_get_song_info( gchar * filename_uri , gchar ** title , gint * length )
 {
   /* song title, get it from the filename */
+  gchar * filename = g_filename_from_uri( filename_uri , NULL , NULL );
+  if ( !filename ) filename = g_strdup( filename_uri );
   *title = G_PATH_GET_BASENAME(filename_uri);
+  g_free( filename );
 
   /* sure, it's possible to calculate the length of a MIDI file anytime,
      but the file must be entirely parsed to calculate it; this could
@@ -366,10 +369,9 @@ static void amidiplug_get_song_info( gchar * filename_uri , gchar ** title , gin
 static void amidiplug_play( InputPlayback * playback )
 {
   gchar * filename_uri = playback->filename;
+  gchar * filename = NULL;
   gint port_count = 0;
   gint au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
-
-g_print("PLAY %s\n", filename_uri );
 
   if ( backend.gmodule == NULL )
   {
@@ -463,11 +465,15 @@ g_print("PLAY %s\n", filename_uri );
       i_midi_setget_length( &midifile );
       DEBUGMSG( "PLAY requested, song length calculated: %i msec\n" , (gint)(midifile.length / 1000) );
 
+
       /* our length is in microseconds, but the player wants milliseconds */
-      amidiplug_ip.set_info( G_PATH_GET_BASENAME(filename_uri) ,
+      filename = g_filename_from_uri( filename_uri , NULL , NULL );
+      if ( !filename ) filename = g_strdup( filename_uri );
+      amidiplug_ip.set_info( G_PATH_GET_BASENAME(filename) ,
                              (gint)(midifile.length / 1000) ,
                              au_bitdepth * au_samplerate * au_channels / 8 ,
                              au_samplerate , au_channels );
+      g_free( filename );
 
       /* play play play! */
       DEBUGMSG( "PLAY requested, starting play thread\n" );
