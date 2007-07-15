@@ -388,7 +388,9 @@ static gpointer do_setpos(gpointer data)
 #ifdef DEBUG
     g_print("do_setpos: pos = %d\n\n", pos);
 #endif
+    gdk_threads_enter();
     playlist_set_position(playlist, (guint)pos);
+    gdk_threads_leave();
     g_thread_exit(NULL);
     return NULL; //dummy
 }

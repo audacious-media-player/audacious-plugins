@@ -112,13 +112,16 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
             gchar *str = (gchar *)xmlNodeGetContent(nptr);
             gchar *tmp;
 
+#if 0
             if(!is_remote(str)) {   /* local file */
                 tmp = (gchar *)xmlURIUnescapeString(str, -1, NULL);
             }
             else {              /* streaming */
                 tmp = g_strdup(str);
             }
-
+#else
+            tmp = g_strdup(str); // XXX
+#endif
             location = g_strdup_printf("%s%s", base ? base : "", tmp);
 
             xmlFree(str);

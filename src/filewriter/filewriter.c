@@ -254,7 +254,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     else
         directory = g_strdup(file_path);
 
-    temp = g_strdup_printf("%s/%s.%s",
+    temp = g_strdup_printf("file://%s/%s.%s",
                            directory, filename, fileext_str[fileext]);
     g_free(directory);
     g_free(filename);
