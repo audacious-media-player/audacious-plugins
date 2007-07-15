@@ -24,7 +24,7 @@ InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
 DECLARE_PLUGIN(amidi-plug, NULL, NULL, amidiplug_iplist, NULL, NULL, NULL, NULL);
 
-static gboolean amidiplug_detect_by_content( gchar * filename , VFSFile * fp )
+static gboolean amidiplug_detect_by_content( gchar * filename_uri , VFSFile * fp )
 {
   gchar magic_bytes[4];
   gint res = 0;
@@ -37,7 +37,7 @@ static gboolean amidiplug_detect_by_content( gchar * filename , VFSFile * fp )
 
   if ( !strncmp( magic_bytes , "MThd" , 4 ) )
   {
-    DEBUGMSG( "MIDI found, %s is a standard midi file\n" , filename );
+    DEBUGMSG( "MIDI found, %s is a standard midi file\n" , filename_uri );
     return TRUE;
   }
 
@@ -53,7 +53,7 @@ static gboolean amidiplug_detect_by_content( gchar * filename , VFSFile * fp )
 
     if ( !strncmp( magic_bytes , "RMID" , 4 ) )
     {
-      DEBUGMSG( "MIDI found, %s is a riff midi file\n" , filename );
+      DEBUGMSG( "MIDI found, %s is a riff midi file\n" , filename_uri );
       return TRUE;
     }
   }
@@ -62,26 +62,26 @@ static gboolean amidiplug_detect_by_content( gchar * filename , VFSFile * fp )
 }
 
 
-static gint amidiplug_is_our_file( gchar * filename )
+static gint amidiplug_is_our_file( gchar * filename_uri )
 {
   VFSFile * fp;
   gboolean result = FALSE;
 
-  fp = VFS_FOPEN( filename , "rb" );
+  fp = VFS_FOPEN( filename_uri , "rb" );
 
   if ( fp == NULL )
     return FALSE;
 
-  result = amidiplug_detect_by_content( filename , fp );
+  result = amidiplug_detect_by_content( filename_uri , fp );
   VFS_FCLOSE( fp );
 
   return result;
 }
 
 
-static gint amidiplug_is_our_file_from_vfs( gchar *filename , VFSFile *fp )
+static gint amidiplug_is_our_file_from_vfs( gchar *filename_uri , VFSFile *fp )
 {
-  return amidiplug_detect_by_content( filename , fp );
+  return amidiplug_detect_by_content( filename_uri , fp );
 }
 
 
@@ -118,9 +118,9 @@ static void amidiplug_aboutbox( void )
 }
 
 
-static void amidiplug_file_info_box( gchar * filename )
+static void amidiplug_file_info_box( gchar * filename_uri )
 {
-  i_fileinfo_gui( filename );
+  i_fileinfo_gui( filename_uri );
 }
 
 
@@ -335,10 +335,10 @@ static gint amidiplug_set_volume( gint  l , gint  r )
 }
 
 
-static void amidiplug_get_song_info( gchar * filename , gchar ** title , gint * length )
+static void amidiplug_get_song_info( gchar * filename_uri , gchar ** title , gint * length )
 {
   /* song title, get it from the filename */
-  *title = G_PATH_GET_BASENAME(filename);
+  *title = G_PATH_GET_BASENAME(filename_uri);
 
   /* sure, it's possible to calculate the length of a MIDI file anytime,
      but the file must be entirely parsed to calculate it; this could
@@ -349,7 +349,7 @@ static void amidiplug_get_song_info( gchar * filename , gchar ** title , gint * 
        will return 0 if a problem occurs and the length can't be calculated */
     midifile_t mf;
 
-    if ( i_midi_parse_from_filename( filename , &mf ) )
+    if ( i_midi_parse_from_filename( filename_uri , &mf ) )
       *length = (gint)(mf.length / 1000);
     else
       *length = -1;
@@ -363,11 +363,13 @@ static void amidiplug_get_song_info( gchar * filename , gchar ** title , gint * 
 }
 
 
-static void amidiplug_play( InputPlayback * playback)
+static void amidiplug_play( InputPlayback * playback )
 {
-  gchar * filename = playback->filename;
+  gchar * filename_uri = playback->filename;
   gint port_count = 0;
   gint au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
+
+g_print("PLAY %s\n", filename_uri );
 
   if ( backend.gmodule == NULL )
   {
@@ -403,15 +405,15 @@ static void amidiplug_play( InputPlayback * playback)
     return;
   }
 
-  DEBUGMSG( "PLAY requested, opening file: %s\n" , filename );
-  midifile.file_pointer = VFS_FOPEN( filename , "rb" );
+  DEBUGMSG( "PLAY requested, opening file: %s\n" , filename_uri );
+  midifile.file_pointer = VFS_FOPEN( filename_uri , "rb" );
   if (!midifile.file_pointer)
   {
-    g_warning( "Cannot open %s\n" , filename );
+    g_warning( "Cannot open %s\n" , filename_uri );
     amidiplug_playing_status = AMIDIPLUG_ERR;
     return;
   }
-  midifile.file_name = filename;
+  midifile.file_name = filename_uri;
 
   switch( i_midi_file_read_id( &midifile ) )
   {
@@ -420,7 +422,7 @@ static void amidiplug_play( InputPlayback * playback)
       DEBUGMSG( "PLAY requested, RIFF chunk found, processing...\n" );
       /* read riff chunk */
       if ( !i_midi_file_parse_riff( &midifile ) )
-        WARNANDBREAKANDPLAYERR( "%s: invalid file format (riff parser)\n" , filename );
+        WARNANDBREAKANDPLAYERR( "%s: invalid file format (riff parser)\n" , filename_uri );
 
       /* if that was read correctly, go ahead and read smf data */
     }
@@ -429,32 +431,32 @@ static void amidiplug_play( InputPlayback * playback)
     {
       DEBUGMSG( "PLAY requested, MThd chunk found, processing...\n" );
       if ( !i_midi_file_parse_smf( &midifile , port_count ) )
-        WARNANDBREAKANDPLAYERR( "%s: invalid file format (smf parser)\n" , filename );
+        WARNANDBREAKANDPLAYERR( "%s: invalid file format (smf parser)\n" , filename_uri );
 
       if ( midifile.time_division < 1 )
-        WARNANDBREAKANDPLAYERR( "%s: invalid time division (%i)\n" , filename , midifile.time_division );
+        WARNANDBREAKANDPLAYERR( "%s: invalid time division (%i)\n" , filename_uri , midifile.time_division );
 
       DEBUGMSG( "PLAY requested, setting ppq and tempo...\n" );
       /* fill midifile.ppq and midifile.tempo using time_division */
       if ( !i_midi_setget_tempo( &midifile ) )
-        WARNANDBREAKANDPLAYERR( "%s: invalid values while setting ppq and tempo\n" , filename );
+        WARNANDBREAKANDPLAYERR( "%s: invalid values while setting ppq and tempo\n" , filename_uri );
 
       DEBUGMSG( "PLAY requested, sequencer start\n" );
       /* sequencer start */
-      if ( !backend.seq_start( filename ) )
-        WARNANDBREAKANDPLAYERR( "%s: problem with seq_start, play aborted\n" , filename );
+      if ( !backend.seq_start( filename_uri ) )
+        WARNANDBREAKANDPLAYERR( "%s: problem with seq_start, play aborted\n" , filename_uri );
 
       DEBUGMSG( "PLAY requested, sequencer on\n" );
       /* sequencer on */
       if ( !backend.seq_on() )
-        WARNANDBREAKANDPLAYERR( "%s: problem with seq_on, play aborted\n" , filename );
+        WARNANDBREAKANDPLAYERR( "%s: problem with seq_on, play aborted\n" , filename_uri );
 
       DEBUGMSG( "PLAY requested, setting sequencer queue tempo...\n" );
       /* set sequencer queue tempo using ppq and tempo (call only after i_midi_setget_tempo) */
       if ( !backend.seq_queue_tempo( midifile.current_tempo , midifile.ppq ) )
       {
         backend.seq_off(); /* kill the sequencer */
-        WARNANDBREAKANDPLAYERR( "%s: ALSA queue problem, play aborted\n" , filename );
+        WARNANDBREAKANDPLAYERR( "%s: ALSA queue problem, play aborted\n" , filename_uri );
       }
 
       /* fill midifile.length, keeping in count tempo-changes */
@@ -462,7 +464,7 @@ static void amidiplug_play( InputPlayback * playback)
       DEBUGMSG( "PLAY requested, song length calculated: %i msec\n" , (gint)(midifile.length / 1000) );
 
       /* our length is in microseconds, but the player wants milliseconds */
-      amidiplug_ip.set_info( G_PATH_GET_BASENAME(filename) ,
+      amidiplug_ip.set_info( G_PATH_GET_BASENAME(filename_uri) ,
                              (gint)(midifile.length / 1000) ,
                              au_bitdepth * au_samplerate * au_channels / 8 ,
                              au_samplerate , au_channels );
@@ -477,7 +479,7 @@ static void amidiplug_play( InputPlayback * playback)
     default:
     {
       amidiplug_playing_status = AMIDIPLUG_ERR;
-      g_warning( "%s is not a Standard MIDI File\n" , filename );
+      g_warning( "%s is not a Standard MIDI File\n" , filename_uri );
       break;
     }
   }
