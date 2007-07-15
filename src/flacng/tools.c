@@ -64,7 +64,7 @@ callback_info* init_callback_info(gchar* name) {
     info->replaygain.track_peak = NULL;
     info->replaygain.album_gain = NULL;
     info->replaygain.album_peak = NULL;
-    reset_info(info);
+    reset_info(info, FALSE);
 
     _DEBUG("Playback buffer allocated for %d samples, %d bytes", BUFFER_SIZE_SAMP, BUFFER_SIZE_BYTE);
 
@@ -73,16 +73,17 @@ callback_info* init_callback_info(gchar* name) {
 
 /* --- */
 
-void reset_info(callback_info* info) {
+void reset_info(callback_info* info, gboolean close_fd) {
 
     _ENTER;
 
     _DEBUG("Using callback_info %s", info->name);
 
-    if (NULL != info->input_stream) {
+    if (close_fd && (NULL != info->input_stream)) {
+        _DEBUG("Closing fd");
         vfs_fclose(info->input_stream);
-        info->input_stream = NULL;
     }
+    info->input_stream = NULL;
 
     // memset(info->output_buffer, 0, BUFFER_SIZE * sizeof(int16_t));
     info->stream.samplerate = 0;
@@ -180,6 +181,10 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
 
     _DEBUG("Using callback_info %s", info->name);
 
+    reset_info(info, FALSE);
+
+    info->input_stream = fd;
+
     /*
      * Reset the decoder
      */
@@ -187,10 +192,6 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
         _ERROR("Could not reset the decoder!");
         _LEAVE FALSE;
     }
-
-    reset_info(info);
-
-    info->input_stream = fd;
 
     /*
      * Just scan the first 8k for the start of metadata
@@ -212,8 +213,7 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
         _DEBUG("Could not read the metadata: %s(%d)!",
                 FLAC__StreamDecoderStateString[ret], ret);
         /* Do not close the filehandle, it was passed to us */
-        info->input_stream = NULL;
-        reset_info(info);
+        reset_info(info, FALSE);
         _LEAVE FALSE;
     }
 

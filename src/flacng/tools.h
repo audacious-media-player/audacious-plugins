@@ -25,7 +25,7 @@
 #include "flac_compat.h"
 
 callback_info* init_callback_info(gchar* name);
-void reset_info(callback_info* info);
+void reset_info(callback_info* info, gboolean close_fd);
 gchar* get_title(const gchar* filename, callback_info* info);
 TitleInput *get_tuple(const gchar *filename, callback_info* info);
 void add_comment(callback_info* info, gchar* key, gchar* value);

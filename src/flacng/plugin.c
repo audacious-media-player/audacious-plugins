@@ -184,7 +184,7 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
         _LEAVE FALSE;
     }
 
-    _DEBUG("Testing file: %s", filename);
+    _DEBUG("Testing fd for file: %s", filename);
 
     if (FALSE == read_metadata(fd, test_decoder, test_info)) {
         _DEBUG("File not handled by this plugin!");
@@ -203,10 +203,7 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
      * If we get here, the file is supported by FLAC.
      * The stream characteristics have been filled in by
      * the metadata callback.
-     * Do not close the stream, though.
      */
-     test_info->input_stream = NULL;
-
 
     _DEBUG("Stream encoded at %d Hz, %d bps, %d channels",
         test_info->stream.samplerate,
@@ -233,7 +230,7 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
 
     _DEBUG("Accepting file %s", filename);
 
-    reset_info(test_info);
+    reset_info(test_info, FALSE);
 
     _LEAVE TRUE;
 }
@@ -683,7 +680,7 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
         _ERROR("Could not read file info!");
         *length = -1;
         *title = g_strdup("");
-        vfs_fclose(fd);
+        reset_info(test_info, TRUE);
         _LEAVE;
     }
 
@@ -701,7 +698,7 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
     *length = l;
     *title = get_title(filename, test_info);
 
-    reset_info(test_info);
+    reset_info(test_info, TRUE);
 
     _LEAVE;
 }
@@ -726,13 +723,13 @@ TitleInput *flac_get_song_tuple(gchar* filename) {
 
     if (FALSE == read_metadata(fd, test_decoder, test_info)) {
         _ERROR("Could not read metadata tuple for file <%s>", filename);
-        vfs_fclose(fd);
+        reset_info(test_info, TRUE);
         _LEAVE NULL;
     }
 
     tuple = get_tuple(filename, test_info);
 
-    reset_info(test_info);
+    reset_info(test_info, TRUE);
 
     _LEAVE tuple;
 }
