@@ -601,6 +601,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
 {
     TitleInput *tuple = NULL;
     gchar *string = NULL;
+    gchar *realfn = NULL;
 
     struct id3_file *id3file = NULL;
     struct id3_tag *tag = NULL;
@@ -635,9 +636,12 @@ static TitleInput *audmad_get_song_tuple(char *filename)
             g_message("audmad_get_song_tuple: track_name = %s", tuple->track_name);
             g_message("audmad_get_song_tuple: stream_name = %s", tuple->album_name);
 #endif
-            tuple->file_name = g_path_get_basename(filename);
-            tuple->file_path = g_path_get_dirname(filename);
-            tuple->file_ext = extname(filename);
+            realfn = g_filename_from_uri(filename, NULL, NULL);
+            tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
+            tuple->file_path = g_path_get_dirname(realfn ? realfn : filename);
+            tuple->file_ext = extname(realfn ? realfn : filename);
+            g_free(realfn); realfn = NULL;
+
             tuple->length = -1;
             tuple->mtime = 0; // this indicates streaming
 #ifdef DEBUG
@@ -676,10 +680,11 @@ static TitleInput *audmad_get_song_tuple(char *filename)
                 g_free(string);
                 string = NULL;
             }
-
-            tuple->file_name = g_path_get_basename(filename);
-            tuple->file_path = g_path_get_dirname(filename);
-            tuple->file_ext = extname(filename);
+            realfn = g_filename_from_uri(filename, NULL, NULL);
+            tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
+            tuple->file_path = g_path_get_dirname(realfn ? realfn : filename);
+            tuple->file_ext = extname(realfn ? realfn : filename);
+            g_free(realfn); realfn = NULL;
 
             // length
             tuple->length = -1;
@@ -720,9 +725,11 @@ static TitleInput *audmad_get_song_tuple(char *filename)
         id3_file_close(id3file);
     }
     else { // no id3tag
-        tuple->file_name = g_path_get_basename(filename);
-        tuple->file_path = g_path_get_dirname(filename);
-        tuple->file_ext = extname(filename);
+        realfn = g_filename_from_uri(filename, NULL, NULL);
+        tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
+        tuple->file_path = g_path_get_dirname(realfn ? realfn : filename);
+        tuple->file_ext = extname(realfn ? realfn : filename);
+        g_free(realfn); realfn = NULL;
         // length
         {
             char *dummy = NULL;

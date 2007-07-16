@@ -352,6 +352,7 @@ static void input_alloc_tag(struct mad_info_t *info)
 static void input_read_tag(struct mad_info_t *info)
 {
     gchar *string = NULL;
+    gchar *realfn = NULL;
     TitleInput *title_input;
     glong curpos = 0;
 
@@ -425,9 +426,11 @@ static void input_read_tag(struct mad_info_t *info)
         g_free(string);
         string = NULL;
     }
-
-    title_input->file_name = g_strdup(g_basename(info->filename));
-    title_input->file_path = g_path_get_dirname(info->filename);
+    
+    realfn = g_filename_from_uri(info->filename, NULL, NULL);
+    title_input->file_name = g_strdup(g_basename(realfn ? realfn : info->filename));
+    title_input->file_path = g_path_get_dirname(realfn ? realfn : info->filename);
+    g_free(realfn); realfn = NULL;
     if ((string = strrchr(title_input->file_name, '.'))) {
         title_input->file_ext = string + 1;
         *string = '\0';         // make filename end at dot.
