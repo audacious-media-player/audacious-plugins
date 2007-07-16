@@ -1063,6 +1063,14 @@ vorbis_file_info_box(gchar * filename)
                              save_button);
     g_signal_connect_swapped(GTK_COMBO(genre_combo)->entry, "changed",
                              G_CALLBACK(change_buttons), save_button);
+    g_signal_connect_swapped(rg_track_entry, "changed", change_buttons,
+                             save_button);
+    g_signal_connect_swapped(rg_track_peak_entry, "changed", change_buttons,
+                             save_button);
+    g_signal_connect_swapped(rg_album_entry, "changed", change_buttons,
+                             save_button);
+    g_signal_connect_swapped(rg_album_peak_entry, "changed", change_buttons,
+                             save_button);
 
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_widget_show_all(window);
