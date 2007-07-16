@@ -351,31 +351,25 @@ static void stop(InputPlayback * data)
 extern void playback_stop(void);
 extern void mainwin_clear_song_info(void);
 
-static gpointer do_stop(gpointer data)
+static gboolean do_stop(gpointer data)
 {
-//    InputPlayback *playback = (InputPlayback *)data;
-    Playlist *playlist = playlist_get_active();
 #ifdef DEBUG
     g_print("f: do_stop\n");
 #endif
+
     ip_data.stop = TRUE;
     playback_stop();
     ip_data.stop = FALSE;
 
-    PLAYLIST_LOCK(playlist->mutex);
-    gdk_threads_enter();
     mainwin_clear_song_info();
-    gdk_threads_leave();
-    PLAYLIST_UNLOCK(playlist->mutex);
 
 #ifdef DEBUG
     g_print("e: do_stop\n");
 #endif
-    g_thread_exit(NULL);
-    return NULL; //dummy
+    return FALSE; //one-shot
 }
 
-static gpointer do_setpos(gpointer data)
+static gboolean do_setpos(gpointer data)
 {
     Playlist *playlist = playlist_get_active();
     gint pos = playlist_get_position_nolock(playlist);
@@ -388,9 +382,16 @@ static gpointer do_setpos(gpointer data)
 #ifdef DEBUG
     g_print("do_setpos: pos = %d\n\n", pos);
 #endif
+    /* being done from the main loop thread, does not require locks */
     playlist_set_position(playlist, (guint)pos);
-    g_thread_exit(NULL);
-    return NULL; //dummy
+
+    /* kick watchdog */
+    g_mutex_lock(cue_mutex);
+    watchdog_state = RUN;
+    g_mutex_unlock(cue_mutex);
+    g_cond_signal(cue_cond);
+
+    return FALSE; //one-shot
 }
 
 static void cue_pause(InputPlayback * data, short p)
@@ -545,7 +546,7 @@ static gpointer watchdog_func(gpointer data)
 #ifdef DEBUG
             g_print("e: watchdog exit\n");
 #endif
-            g_mutex_unlock(cue_mutex); // stop() locks cue_mutex.
+            g_mutex_unlock(cue_mutex); // stop() will lock cue_mutex.
             stop(real_ip); // need not to care about real_ip != NULL here.
             g_thread_exit(NULL);
             break;
@@ -574,7 +575,7 @@ static gpointer watchdog_func(gpointer data)
         // prev track
         if (time < cue_tracks[cur_cue_track].index)
         {
-            gint incr;
+            static gint incr = 0;
             gint oldpos = cur_cue_track;
 #ifdef DEBUG
             g_print("i: watchdog prev\n");
@@ -589,14 +590,18 @@ static gpointer watchdog_func(gpointer data)
                     finetune_seek = time;
             }
 
-            exec_thread = g_thread_create(do_setpos, &incr, FALSE, NULL);
-            g_usleep(TRANSITION_GUARD_TIME);
+            g_mutex_lock(cue_mutex);
+            watchdog_state = STOP;
+            g_mutex_unlock(cue_mutex);
+
+            g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
+            continue;
         }
 
         // next track
         if (cur_cue_track + 1 < last_cue_track && time > cue_tracks[cur_cue_track + 1].index)
         {
-            gint incr;
+            static gint incr = 0;
             gint oldpos = cur_cue_track;
 #ifdef DEBUG
             g_print("i: watchdog next\n");
@@ -612,12 +617,17 @@ static gpointer watchdog_func(gpointer data)
                     finetune_seek = time;
             }
 
+            g_mutex_lock(cue_mutex);
+            watchdog_state = STOP;
+            g_mutex_unlock(cue_mutex);
+
             if(cfg.stopaftersong) {
-                exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
+                g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
+                continue;
             }
             else {
-                exec_thread = g_thread_create(do_setpos, &incr, FALSE, NULL);
-                g_usleep(TRANSITION_GUARD_TIME);
+                g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
+                continue;
             }
         }
 
@@ -631,27 +641,32 @@ static gpointer watchdog_func(gpointer data)
 #ifdef DEBUG
                     g_print("i: watchdog eof reached\n\n");
 #endif
-                
+                    g_mutex_lock(cue_mutex);
+                    watchdog_state = STOP;
+                    g_mutex_unlock(cue_mutex);
+
                     if(cfg.repeat) {
-                        gint incr = -pos;
-                        exec_thread = g_thread_create(do_setpos, &incr, FALSE, NULL);
-                        g_usleep(TRANSITION_GUARD_TIME);
+                        static gint incr = 0;
+                        incr = -pos;
+                        g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
+                        continue;
                     }
                     else {
-                        exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
-                        g_usleep(TRANSITION_GUARD_TIME);
+                        g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
+                        continue;
                     }
                 }
                 else {
                     if(cfg.stopaftersong) {
-                        exec_thread = g_thread_create(do_stop, (void *)real_ip, FALSE, NULL);
+                        g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
+                        continue;
                     }
 #ifdef DEBUG
                     g_print("i: watchdog end of cue, advance in playlist\n\n");
 #endif
-                    gint incr = 1;
-                    exec_thread = g_thread_create(do_setpos, &incr, FALSE, NULL);
-                    g_usleep(TRANSITION_GUARD_TIME);
+                    static gint incr = 1;
+                    g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
+                    continue;
                 }
             }
         }

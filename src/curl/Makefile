@@ -3,7 +3,7 @@ include ../../mk/init.mk
 
 SUBDIRS = 
 
-OBJECTIVE_LIBS = libcurl$(SHARED_SUFFIX)
+OBJECTIVE_LIBS = libcurlsrc$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(TRANSPORT_PLUGIN_DIR)
 

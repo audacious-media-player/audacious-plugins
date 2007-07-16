@@ -191,7 +191,7 @@ static gint flac_playing(void)
 static gint flac_get_written_time(void)
 {
     if (input.frequency && input.channels)
-        return (gint) ((olen * 1000) / (input.frequency * 2 * input.channels));
+        return (gint) ((olen * 1000) / (input.frequency * 2 * input.channels) + offset);
 
     return 0;
 }

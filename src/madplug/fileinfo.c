@@ -590,6 +590,16 @@ void audmad_get_file_info(char *fileurl)
     }
 
     tmp = g_filename_from_uri(fileurl, NULL, NULL);
+    if (tmp == NULL)
+    {
+#ifdef DEBUG
+        tmp = str_to_utf8(fileurl);
+        g_message("f: audmad_get_file_info: %s , g_filename_from_uri failed", tmp);
+        g_free(tmp);
+        tmp = NULL;
+#endif
+        return;
+    }
     utf_filename = str_to_utf8(tmp);
     g_free(tmp);
     tmp = NULL;

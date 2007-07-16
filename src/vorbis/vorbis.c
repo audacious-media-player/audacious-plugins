@@ -751,12 +751,14 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename, gboolean 
 {
     TitleInput *tuple = NULL;
     vorbis_comment *comment;
-
+    gchar *realfn = NULL;
     tuple = bmp_title_input_new();
 
-    tuple->file_name = g_path_get_basename(filename);
-    tuple->file_ext = get_extension(filename);
-    tuple->file_path = g_path_get_dirname(filename);
+    realfn = g_filename_from_uri(filename, NULL, NULL);
+    tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
+    tuple->file_ext = get_extension(realfn ? realfn : filename);
+    tuple->file_path = g_path_get_dirname(realfn ? realfn : filename);
+    g_free(realfn); realfn = NULL;
 
     /* Retrieve the length */
     if (is_stream == FALSE)

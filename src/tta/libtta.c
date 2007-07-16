@@ -235,11 +235,17 @@ play_loop (void *arg)
 		    playback->output->flush (seek_position * SEEK_STEP);
 		    seek_position = -1;
 		}
+		if(!playing)
+			goto DONE;
 	    }
 
 	    playback->output->buffer_free ();
 	    playback->output->buffer_free ();
-	    xmms_usleep(10000);
+	    while (playback->output->buffer_playing()) {
+		    xmms_usleep(10000);
+		    if(!playing)
+			    goto DONE;
+	    }
 	}
 
 DONE:

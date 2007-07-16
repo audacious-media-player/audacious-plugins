@@ -1,7 +1,7 @@
 include ../../mk/rules.mk
 include ../../mk/init.mk
 
-OBJECTIVE_LIBS = libvorbis$(SHARED_SUFFIX)
+OBJECTIVE_LIBS = libvorbisplugin$(SHARED_SUFFIX)
 
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
