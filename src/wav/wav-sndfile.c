@@ -95,9 +95,15 @@ get_song_length (char *filename)
 {
 	SNDFILE	*tmp_sndfile;
 	SF_INFO tmp_sfinfo;
+	gchar *realfn = NULL;
 
-	if (! (tmp_sndfile = sf_open (filename, SFM_READ, &tmp_sfinfo)))
+	realfn = g_filename_from_uri(filename, NULL, NULL);
+	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
+	g_free(realfn); realfn = NULL;
+
+	if (!tmp_sndfile) {
 		return 0;
+	}
 
 	sf_close (tmp_sndfile);
 	tmp_sndfile = NULL;
@@ -111,7 +117,11 @@ get_song_length (char *filename)
 static gchar *get_title(char *filename)
 {
 	gchar *title;
-	title = g_path_get_basename(filename);
+	gchar *realfn = NULL;
+
+	realfn = g_filename_from_uri(filename, NULL, NULL);
+	title = g_path_get_basename(realfn ? realfn : filename);
+	g_free(realfn); realfn = NULL;
 	return title;
 }
 
@@ -132,25 +142,25 @@ plugin_cleanup (void)
 }
 
 static int
-is_our_file (char *fileuri)
+is_our_file (char *filename)
 {
 	SNDFILE	*tmp_sndfile;
 	SF_INFO tmp_sfinfo;
-	gchar *filename = g_filename_from_uri(fileuri, NULL, NULL);
+	gchar *realfn = NULL; 
 
-	if (filename == NULL)
-		return FALSE;
+	realfn = g_filename_from_uri(filename, NULL, NULL);
 
 	/* Have to open the file to see if libsndfile can handle it. */
-	if (! (tmp_sndfile = sf_open (filename, SFM_READ, &tmp_sfinfo))) {
-		g_free(filename);
+	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
+	g_free(realfn); realfn = NULL;
+
+	if (!tmp_sndfile) {
 		return FALSE;
 	}
 
 	/* It can so close file and return TRUE. */
 	sf_close (tmp_sndfile);
 	tmp_sndfile = NULL;
-	g_free(filename);
 
 	return TRUE;
 }
@@ -229,21 +239,21 @@ play_loop (gpointer arg)
 static void
 play_start (InputPlayback *playback)
 {
-	gchar *filename = g_filename_from_uri(playback->filename, NULL, NULL);
+	gchar *realfn = NULL;
 	int pcmbitwidth;
 	gchar *song_title;
 
-	if (filename == NULL)
-		return;
-
-	if (sndfile)
+	if (sndfile) /* already opened */
 		return;
 
 	pcmbitwidth = 32;
+	song_title = get_title(playback->filename);
 
-	song_title = get_title(filename);
+	realfn = g_filename_from_uri(playback->filename, NULL, NULL);
+	sndfile = sf_open (realfn ? realfn : playback->filename, SFM_READ, &sfinfo);
+	g_free(realfn); realfn = NULL;
 
-	if (! (sndfile = sf_open (filename, SFM_READ, &sfinfo)))
+	if (!sndfile)
 		return;
 
 	bit_rate = sfinfo.samplerate * pcmbitwidth;
@@ -313,14 +323,10 @@ file_seek (InputPlayback *playback, int time)
 }
 
 static void
-get_song_info (char *fileuri, char **title, int *length)
+get_song_info (char *filename, char **title, int *length)
 {
-	gchar *filename = g_filename_from_uri(fileuri, NULL, NULL);
-	if (filename == NULL)
-		return;
 	(*length) = get_song_length(filename);
 	(*title) = get_title(filename);
-	g_free(filename);
 }
 
 static void wav_about(void)
