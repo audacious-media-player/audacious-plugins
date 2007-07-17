@@ -2,13 +2,12 @@
 /*
 	todo: 
 		- vis_pcm...?!
-		- limit cd read speed
-		- cddb
 		- fileinfo dialog
 		- about dialog
 		- remove //'s & todo's
 		- additional comments
 		- stop playback when configure
+		- configuration for cddb (server, port)
 */
 
 #include <string.h>
@@ -24,6 +23,7 @@
 #include <cdio/audio.h>
 #include <cdio/sector.h>
 #include <cdio/cd_types.h>
+#include <cddb/cddb.h>
 
 #include <glib.h>
 
@@ -41,7 +41,7 @@ static int				firsttrackno = -1;
 static int				lasttrackno = -1;
 static CdIo_t			*pcdio = NULL;
 static trackinfo_t		*trackinfo = NULL;
-static char				album_name[DEF_STRING_LEN];
+
 static gboolean			use_dae = TRUE;
 static gboolean			use_cdtext = TRUE;
 static gboolean			use_cddb = TRUE;
@@ -74,11 +74,9 @@ static int				calculate_track_length(int startlsn, int endlsn);
 static int				find_trackno_from_filename(char *filename);
 static void				cleanup_on_error();
 
-
-/*
 static int				calculate_digit_sum(int n);
 static unsigned long	calculate_cddb_discid();
-*/
+
 
 
 static InputPlugin inputplugin = {
@@ -124,7 +122,9 @@ void cdaudio_init()
 		cleanup_on_error();
 		return;
 	}
-
+	
+	libcddb_init();
+	
 	ConfigDb *db = bmp_cfg_db_open();
 	gchar *string = NULL;
 
@@ -218,8 +218,13 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	}
 
 		/* find an available, audio capable, cd drive  */
-	if (device != NULL && strlen(device) > 0)
+	if (device != NULL && strlen(device) > 0) {
 		pcdio = cdio_open(device, DRIVER_UNKNOWN);
+		if (pcdio == NULL) {
+			fprintf(stderr, "cdaudio-ng: failed to open cd device \"%s\"\n", device);
+			return NULL;
+		}
+	}
 	else {
 		char **ppcd_drives = cdio_get_devices_with_cap(NULL, CDIO_FS_AUDIO, false);
 		if (ppcd_drives != NULL) { /* we have at least one audio capable cd drive */
@@ -241,67 +246,164 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	}
 
 		/* limit read speed */
-	if (limitspeed > 0) {
+	if (limitspeed > 0 && !use_dae) {
 		if (debug)
 			printf("cdaudio-ng: setting drive speed limit to %dx\n", limitspeed);
 		if (cdio_set_speed(pcdio, limitspeed) != DRIVER_OP_SUCCESS)
 			fprintf(stderr, "cdaudio-ng: failed to set drive speed to %dx\n", limitspeed);
 	}
-		/* get track information */
+
+		/* get general track initialization */
 	cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio(pcdio, 1, NULL);	// todo : check return / NULL
 	firsttrackno = cdio_get_first_track_num(pcdrom_drive->p_cdio);
 	lasttrackno = cdio_get_last_track_num(pcdrom_drive->p_cdio);
 	if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK) {
-		fprintf(stderr, "cdaudio-ng: failed to retrieve first/last track number");
+		fprintf(stderr, "cdaudio-ng: failed to retrieve first/last track number\n");
 		cleanup_on_error();
 		return NULL;
 	}
 	if (debug)
 		printf("cdaudio-ng: first track is %d and last track is %d\n", firsttrackno, lasttrackno);
 
-		/* add track "file" names to the list */
-	GList *list = NULL;
 	if (trackinfo != NULL) /* if a previously allocated track information exists, we free it */
 		free(trackinfo);
 	trackinfo = (trackinfo_t *) malloc(sizeof(trackinfo_t) * (lasttrackno + 1));
 	int trackno;
+
+	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
+		trackinfo[trackno].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, trackno);
+		trackinfo[trackno].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, trackno);
+
+		if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN || trackinfo[trackno].endlsn == CDIO_INVALID_LSN) {
+			fprintf(stderr, "cdaudio-ng: failed to retrieve stard/end lsn for track %d\n", trackno);
+			cleanup_on_error();
+			return NULL;
+		}
+	}
+
+		/* initialize de cddb subsystem */
+	cddb_conn_t *pcddb_conn = NULL;
+	cddb_disc_t *pcddb_disc = NULL;
+	cddb_track_t *pcddb_track = NULL;
+
+	if (use_cddb) {
+		pcddb_conn = cddb_new();
+		if (pcddb_conn == NULL)
+			fprintf(stderr, "cdaudio-ng: failed to create the cddb connection\n");
+		else {
+			if (debug)
+				printf("cdaudio-ng: getting cddb info\n");
+
+			// todo: change the default cddb settings
+
+			pcddb_disc = cddb_disc_new();
+			for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
+				pcddb_track = cddb_track_new();
+				cddb_track_set_frame_offset(pcddb_track, trackinfo[trackno].startlsn);
+				cddb_disc_add_track(pcddb_disc, pcddb_track);
+			}
+
+			msf_t startmsf, endmsf;
+			cdio_get_track_msf(pcdio, 1, &startmsf);
+			cdio_get_track_msf(pcdio, CDIO_CDROM_LEADOUT_TRACK, &endmsf);
+			cddb_disc_set_length(pcddb_disc, cdio_audio_get_msf_seconds(&endmsf) - cdio_audio_get_msf_seconds(&startmsf));
+
+			int matches;
+			if ((matches = cddb_query(pcddb_conn, pcddb_disc)) == -1) {
+				fprintf(stderr, "cdaudio-ng: failed to query the cddb server: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
+				cddb_disc_destroy(pcddb_disc);
+				pcddb_disc = NULL;
+			}
+			else {
+				if (debug)
+					printf("cdaudio-ng: discid = %X, category = \"%s\"\n", cddb_disc_get_discid(pcddb_disc), cddb_disc_get_category_str(pcddb_disc));
+	
+				cddb_read(pcddb_conn, pcddb_disc);
+				if (cddb_errno(pcddb_conn) != CDDB_ERR_OK) {
+					fprintf(stderr, "cdaudio-ng: failed to read the cddb info: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
+					cddb_disc_destroy(pcddb_disc);
+					pcddb_disc = NULL;
+				}
+				else {
+					if (debug)
+						printf("cdaudio-ng: we have got the cddb info\n");
+	
+					strcpy(trackinfo[0].performer, cddb_disc_get_artist(pcddb_disc));
+					strcpy(trackinfo[0].name, cddb_disc_get_title(pcddb_disc));
+					strcpy(trackinfo[0].genre, cddb_disc_get_genre(pcddb_disc));
+				}
+			}
+		}
+	}
+
+		/* adding trackinfo[0] information (the disc) */
+	if (use_cdtext) {
+		if (debug)
+			printf("cdaudio-ng: getting cd-text information for disc\n");
+		cdtext_t *pcdtext = cdio_get_cdtext(pcdrom_drive->p_cdio, 0);
+		if (pcdtext == NULL || pcdtext->field[CDTEXT_TITLE] == NULL) {
+			if (debug)
+				printf("cdaudio-ng: no cd-text available for disc\n");
+		}
+		else {
+			strcpy(trackinfo[0].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "");
+			strcpy(trackinfo[0].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "");
+			strcpy(trackinfo[0].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "");
+		}
+	}
+
+		/* add track "file" names to the list */
+	GList *list = NULL;
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 		list = g_list_append(list, g_strdup_printf("track%02u.cda", trackno));	
 		cdtext_t *pcdtext = NULL;
-		if (use_cdtext)
+		if (use_cdtext) {
+			if (debug)
+				printf("cdaudio-ng: getting cd-text information for track %d\n", trackno);
 			pcdtext = cdio_get_cdtext(pcdrom_drive->p_cdio, trackno);
+			if (pcdtext == NULL || pcdtext->field[CDTEXT_PERFORMER] == NULL) {
+				if (debug)
+					printf("cdaudio-ng: no cd-text available for track %d\n", trackno);
+				pcdtext = NULL;
+			}
+		}
 
 		if (pcdtext != NULL) {
 			strcpy(trackinfo[trackno].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "");
 			strcpy(trackinfo[trackno].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "");
 			strcpy(trackinfo[trackno].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "");
 		}
-		else {
-			strcpy(trackinfo[trackno].performer, "");
-			strcpy(trackinfo[trackno].name, "");
-			strcpy(trackinfo[trackno].genre, "");
-		}
-		
-		// todo: implement cddb
-		
+		else
+			if (pcddb_disc != NULL) {
+				cddb_track_t *pcddb_track = cddb_disc_get_track(pcddb_disc, trackno - 1);
+				strcpy(trackinfo[trackno].performer, cddb_track_get_artist(pcddb_track));
+				strcpy(trackinfo[trackno].name, cddb_track_get_title(pcddb_track));
+				strcpy(trackinfo[trackno].genre, cddb_disc_get_genre(pcddb_disc));
+			}
+			else {
+				strcpy(trackinfo[trackno].performer, "");
+				strcpy(trackinfo[trackno].name, "");
+				strcpy(trackinfo[trackno].genre, "");
+			}
+
 		if (strlen(trackinfo[trackno].name) == 0)
 			sprintf(trackinfo[trackno].name, "CD Audio Track %02u", trackno);
 
-		trackinfo[trackno].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, trackno);
-		trackinfo[trackno].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, trackno);
-		
-		if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN || trackinfo[trackno].endlsn == CDIO_INVALID_LSN) {
-			fprintf(stderr, "cdaudio-ng: failed to retrieve stard/end lsn for track %d\n", trackno);
-			g_list_free(list);
-			cleanup_on_error();
-			return NULL;
-		}
-
-		if (debug)
-			printf("cdaudio-ng: track %d has : performer = \"%s\", name = \"%s\", genre = \"%s\", startlsn = %d, endlsn = %d\n", 
-				trackno, trackinfo[trackno].performer, trackinfo[trackno].name, trackinfo[trackno].genre, trackinfo[trackno].startlsn, trackinfo
-				[trackno].endlsn);
 	}
+
+	if (debug) {
+		printf("cdaudio-ng: disc has : performer = \"%s\", name = \"%s\", genre = \"%s\"\n", 
+			   trackinfo[0].performer, trackinfo[0].name, trackinfo[0].genre);
+		for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
+			printf("cdaudio-ng: track %d has : performer = \"%s\", name = \"%s\", genre = \"%s\", startlsn = %d, endlsn = %d\n", 
+				trackno, trackinfo[trackno].performer, trackinfo[trackno].name, trackinfo[trackno].genre, trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
+		}
+	}
+
+	if (pcddb_disc != NULL)
+		cddb_disc_destroy(pcddb_disc);
+	if (pcddb_conn != NULL)
+		cddb_destroy(pcddb_conn);
 
 	return list;
 }
@@ -543,6 +645,8 @@ void cdaudio_cleanup()
 	if (debug)
 		printf("cdaudio-ng: cdaudio_cleanup()\n");
 
+	libcddb_shutdown();
+
 	if (pcdio!= NULL) {
 		if (playing_track != -1 && !use_dae)
 			cdio_audio_stop(pcdio);
@@ -554,7 +658,7 @@ void cdaudio_cleanup()
 		trackinfo = NULL;
 	}
 	playing_track = -1;
-	
+
 	// todo: destroy the gui
 
 	ConfigDb *db = bmp_cfg_db_open();
@@ -606,7 +710,7 @@ TitleInput *cdaudio_get_song_tuple(gchar *filename)
 		return NULL;
 
 	tuple->performer = strlen(trackinfo[trackno].performer) > 0 ? g_strdup(trackinfo[trackno].performer) : NULL;
-	tuple->album_name = strlen(album_name) > 0 ? g_strdup(album_name) : NULL;
+	tuple->album_name = strlen(trackinfo[0].name) > 0 ? g_strdup(trackinfo[0].name) : NULL;
 	tuple->track_name = strlen(trackinfo[trackno].name) > 0 ? g_strdup(trackinfo[trackno].name) : NULL;
 	tuple->track_number = trackno;
 	tuple->file_name = g_strdup(basename(filename));
@@ -622,7 +726,7 @@ TitleInput *cdaudio_get_song_tuple(gchar *filename)
 
 	/* auxiliar functions */
 
-/*
+
 static int calculate_digit_sum(int n)
 {
 	int ret = 0;
@@ -634,9 +738,9 @@ static int calculate_digit_sum(int n)
 			return ret;
 	}
 }
-*/
 
-/*
+
+
 static unsigned long calculate_cddb_discid()
 {
 	int trackno, t, n = 0;
@@ -644,18 +748,18 @@ static unsigned long calculate_cddb_discid()
 	msf_t msf;
 	
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
-		cdio_get_track_msf(pcdrom_drive->p_cdio, trackno, &msf);
+		cdio_get_track_msf(pcdio, trackno, &msf);
 		n += calculate_digit_sum(cdio_audio_get_msf_seconds(&msf));
 	}
 	
-	cdio_get_track_msf(pcdrom_drive->p_cdio, 1, &startmsf);
-	cdio_get_track_msf(pcdrom_drive->p_cdio, CDIO_CDROM_LEADOUT_TRACK, &msf);
+	cdio_get_track_msf(pcdio, 1, &startmsf);
+	cdio_get_track_msf(pcdio, CDIO_CDROM_LEADOUT_TRACK, &msf);
 	
 	t = cdio_audio_get_msf_seconds(&msf) - cdio_audio_get_msf_seconds(&startmsf);
 	
 	return ((n % 0xFF) << 24 | t << 8 | (lasttrackno - firsttrackno + 1));
 }
-*/
+
 
 void *dae_playing_thread_core(dae_params_t *pdae_params)
 {
