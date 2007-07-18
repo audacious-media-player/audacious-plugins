@@ -28,8 +28,8 @@
 #include <strings.h>
 #include <glib.h>
 
-#define _(String) (String)
-#define N_(String) String
+#include <audacious/i18n.h>
+
 #define textdomain(Domain)
 #define bindtextdomain(Package, Directory)
 
