@@ -255,7 +255,7 @@ on_load_default_values_clicked(GtkWidget * wg, CompressorPrefs * prefs)
 
 	look = lookup_widget(prefs->dialog, "anticlip");
 	gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(look), FALSE);
-	
+
 	look = lookup_widget(prefs->dialog, "target");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(look),(gfloat)TARGET);
 
@@ -289,8 +289,8 @@ void showPrefs(CompressorPrefs * prefs)
 
 	GtkWidget *look;
 
-	/* Set values */ 
-	
+	/* Set values */
+
 	look = lookup_widget(prefs->dialog, "anticlip");
 	gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(look),
 				     prefs->anticlip);
@@ -321,18 +321,18 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	/* Preferences dialog */
 
 	gchar *clip_tip =
-		"If checked, when the sound peaks the volume will be "
+		_("If checked, when the sound peaks the volume will be "
 		"cut instantly; otherwise, it will ramp down just in time "
-		"for the peak (but some minor clipping may still occur).";
+		"for the peak (but some minor clipping may still occur).");
 	gchar *gainmax_tip =
-		"The maximum amount to amplify the audio by";
+		_("The maximum amount to amplify the audio by");
 	gchar *gainsmooth_tip =
-		"Defines how smoothly the volume will ramp up";
+		_("Defines how smoothly the volume will ramp up");
 	gchar *target_tip =
-		"The target audio level for ramping up. Lowering the "
+		_("The target audio level for ramping up. Lowering the "
 		"value gives a bit more dynamic range for peaks, but "
-		"will make the overall sound quieter.";
-	gchar *hist_text = "How long of a window to maintain";
+		"will make the overall sound quieter.");
+	gchar *hist_text = _("How long of a window to maintain");
 
 	GtkWidget *preferences;
 	GtkWidget *vbox2;
@@ -373,7 +373,7 @@ create_prefs_dialog(CompressorPrefs * prefs)
 			     preferences);
 	gtk_container_set_border_width(GTK_CONTAINER(preferences), 10);
 	gtk_window_set_title(GTK_WINDOW(preferences),
-			      "AudioCompress preferences");
+			      _("AudioCompress preferences"));
 	gtk_window_set_policy(GTK_WINDOW(preferences), TRUE, TRUE, FALSE);
 	gtk_window_set_wmclass(GTK_WINDOW(preferences), "prefs", "xmms");
 
@@ -390,12 +390,12 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_container_add(GTK_CONTAINER(notebook1), vbox5);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox5), 5);
 
-	frame1 = gtk_frame_new(" Quality Options ");
+	frame1 = gtk_frame_new(_(" Quality Options "));
 	gtk_widget_show(frame1);
 	gtk_box_pack_start(GTK_BOX(vbox5), frame1, FALSE, FALSE, 0);
 
 	clipping = gtk_check_button_new_with_label
-		(" Aggressively prevent clipping");
+		(_(" Aggressively prevent clipping"));
 	gtk_widget_ref(clipping);
 	g_object_set_data_full(G_OBJECT(preferences), "anticlip",
 				  clipping,
@@ -407,7 +407,7 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_container_set_border_width(GTK_CONTAINER(clipping), 5);
 	gtk_tooltips_set_tip(tooltips, clipping, clip_tip, NULL);
 
-	frame2 = gtk_frame_new(" Target & gain");
+	frame2 = gtk_frame_new(_(" Target & gain"));
 	gtk_widget_show(frame2);
 	gtk_box_pack_start(GTK_BOX(vbox5), frame2, TRUE, TRUE, 0);
 
@@ -418,7 +418,7 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_table_set_row_spacings(GTK_TABLE(table1), 5);
 	gtk_table_set_col_spacings(GTK_TABLE(table1), 5);
 
-	label5 = gtk_label_new("Target audio level:");
+	label5 = gtk_label_new(_("Target audio level:"));
 	gtk_widget_show(label5);
 	gtk_table_attach(GTK_TABLE(table1), label5, 0, 1, 0, 1,
 			 (GtkAttachOptions)(GTK_FILL),
@@ -426,7 +426,7 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_label_set_justify(GTK_LABEL(label5), GTK_JUSTIFY_RIGHT);
 	gtk_misc_set_alignment(GTK_MISC(label5), 0, 0.5);
 
-	label6 = gtk_label_new("Maximum gain:");
+	label6 = gtk_label_new(_("Maximum gain:"));
 	gtk_widget_show(label6);
 	gtk_table_attach(GTK_TABLE(table1), label6, 0, 1, 1, 2,
 			 (GtkAttachOptions)(GTK_FILL),
@@ -434,7 +434,7 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_label_set_justify(GTK_LABEL(label6), GTK_JUSTIFY_LEFT);
 	gtk_misc_set_alignment(GTK_MISC(label6), 0, 0.5);
 
-	label7 = gtk_label_new("Gain smooth:");
+	label7 = gtk_label_new(_("Gain smooth:"));
 	gtk_widget_show(label7);
 	gtk_table_attach(GTK_TABLE(table1), label7, 0, 1, 2, 3,
 			 (GtkAttachOptions)(GTK_FILL),
@@ -486,7 +486,7 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_tooltips_set_tip(tooltips, target_sp, target_tip, NULL);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(target_sp), TRUE);
 
-	frame3 = gtk_frame_new(" History ");
+	frame3 = gtk_frame_new(_(" History "));
 	gtk_widget_show(frame3);
 	gtk_box_pack_start(GTK_BOX(vbox5), frame3, TRUE, TRUE, 0);
 
@@ -518,9 +518,9 @@ create_prefs_dialog(CompressorPrefs * prefs)
 			 (GtkAttachOptions)(0), 0, 0);
 
 	gtk_tooltips_set_tip(tooltips, buckets_sp,
-			     "How long of a history to maintain.  "
+			     _("How long of a history to maintain.  "
 			     "A higher number will make the volume changes "
-			     "less responsive.",
+			     "less responsive."),
 			      NULL);
 
 	hbuttonbox7 = gtk_hbutton_box_new();
@@ -529,12 +529,12 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(hbuttonbox7),
 				   GTK_BUTTONBOX_END);
 
-	button8 = gtk_button_new_with_label("Load default values");
+	button8 = gtk_button_new_with_label(_("Load default values"));
 	gtk_widget_show(button8);
 	gtk_container_add(GTK_CONTAINER(hbuttonbox7), button8);
 	GTK_WIDGET_SET_FLAGS(button8, GTK_CAN_DEFAULT);
 
-	label4 = gtk_label_new("Audio values");
+	label4 = gtk_label_new(_("Audio values"));
 	gtk_widget_show(label4);
 	gtk_notebook_set_tab_label(GTK_NOTEBOOK(notebook1),
 				    gtk_notebook_get_nth_page(GTK_NOTEBOOK
@@ -553,17 +553,17 @@ create_prefs_dialog(CompressorPrefs * prefs)
 	gtk_button_box_set_child_ipadding(GTK_BUTTON_BOX(hbuttonbox2), 0,
 					   0);
 
-	button3 = gtk_button_new_with_label("Ok");
+	button3 = gtk_button_new_with_label(_("Ok"));
 	gtk_widget_show(button3);
 	gtk_container_add(GTK_CONTAINER(hbuttonbox2), button3);
 	GTK_WIDGET_SET_FLAGS(button3, GTK_CAN_DEFAULT);
 
-	button4 = gtk_button_new_with_label("Cancel");
+	button4 = gtk_button_new_with_label(_("Cancel"));
 	gtk_widget_show(button4);
 	gtk_container_add(GTK_CONTAINER(hbuttonbox2), button4);
 	GTK_WIDGET_SET_FLAGS(button4, GTK_CAN_DEFAULT);
 
-	button7 = gtk_button_new_with_label("Apply");
+	button7 = gtk_button_new_with_label(_("Apply"));
 	gtk_widget_show(button7);
 	gtk_container_add(GTK_CONTAINER(hbuttonbox2), button7);
 	GTK_WIDGET_SET_FLAGS(button7, GTK_CAN_DEFAULT);
