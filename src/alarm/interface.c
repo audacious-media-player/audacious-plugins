@@ -18,6 +18,8 @@
 #include "interface.h"
 #include "support.h"
 
+#include <audacious/i18n.h>
+
 GtkWidget*
 create_about_dialog (void)
 {
@@ -31,7 +33,7 @@ create_about_dialog (void)
   about_dialog = gtk_dialog_new ();
   gtk_widget_set_name (about_dialog, "about_dialog");
   gtk_object_set_data (GTK_OBJECT (about_dialog), "about_dialog", about_dialog);
-  gtk_window_set_title (GTK_WINDOW (about_dialog), "About XMMS Alarm");
+  gtk_window_set_title (GTK_WINDOW (about_dialog), _("About XMMS Alarm"));
 /*
  * GTK2 hack
  * GTK_WINDOW (about_dialog)->type = GTK_WINDOW_DIALOG;
@@ -44,7 +46,7 @@ create_about_dialog (void)
   gtk_object_set_data (GTK_OBJECT (about_dialog), "dialog_vbox2", dialog_vbox2);
   gtk_widget_show (dialog_vbox2);
 
-  frame6 = gtk_frame_new ("XMMS Alarm");
+  frame6 = gtk_frame_new (_("XMMS Alarm"));
   gtk_widget_set_name (frame6, "frame6");
   gtk_widget_ref (frame6);
   gtk_object_set_data_full (GTK_OBJECT (about_dialog), "frame6", frame6,
@@ -53,7 +55,7 @@ create_about_dialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox2), frame6, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame6), 10);
 
-  label18 = gtk_label_new ("An XMMS plugin which can be used\nto start playing at a certain time.\n\nSend all complaints to:\nAdam Feakin <adamf@snika.uklinux.net>\nDaniel Stodden <stodden@in.tum.de>\n\nhttp://www.snika.uklinux.net/xmms-alarm/");
+  label18 = gtk_label_new (_("An XMMS plugin which can be used\nto start playing at a certain time.\n\nSend all complaints to:\nAdam Feakin <adamf@snika.uklinux.net>\nDaniel Stodden <stodden@in.tum.de>\n\nhttp://www.snika.uklinux.net/xmms-alarm/"));
   gtk_widget_set_name (label18, "label18");
   gtk_widget_ref (label18);
   gtk_object_set_data_full (GTK_OBJECT (about_dialog), "label18", label18,
@@ -68,7 +70,7 @@ create_about_dialog (void)
   gtk_widget_show (dialog_action_area2);
   gtk_container_set_border_width (GTK_CONTAINER (dialog_action_area2), 10);
 
-  close = gtk_button_new_with_label ("Close");
+  close = gtk_button_new_with_label (_("Close"));
   gtk_widget_set_name (close, "close");
   gtk_widget_ref (close);
   gtk_object_set_data_full (GTK_OBJECT (about_dialog), "close", close,
@@ -98,7 +100,7 @@ create_alarm_dialog (void)
   alarm_dialog = gtk_dialog_new ();
   gtk_widget_set_name (alarm_dialog, "alarm_dialog");
   gtk_object_set_data (GTK_OBJECT (alarm_dialog), "alarm_dialog", alarm_dialog);
-  gtk_window_set_title (GTK_WINDOW (alarm_dialog), "Alarm");
+  gtk_window_set_title (GTK_WINDOW (alarm_dialog), _("Alarm"));
   gtk_window_set_policy (GTK_WINDOW (alarm_dialog), FALSE, FALSE, FALSE);
 
   dialog_vbox3 = GTK_DIALOG (alarm_dialog)->vbox;
@@ -106,7 +108,7 @@ create_alarm_dialog (void)
   gtk_object_set_data (GTK_OBJECT (alarm_dialog), "dialog_vbox3", dialog_vbox3);
   gtk_widget_show (dialog_vbox3);
 
-  label19 = gtk_label_new ("This is your wakeup call.");
+  label19 = gtk_label_new (_("This is your wakeup call."));
   gtk_widget_set_name (label19, "label19");
   gtk_widget_ref (label19);
   gtk_object_set_data_full (GTK_OBJECT (alarm_dialog), "label19", label19,
@@ -121,7 +123,7 @@ create_alarm_dialog (void)
   gtk_widget_show (dialog_action_area3);
   gtk_container_set_border_width (GTK_CONTAINER (dialog_action_area3), 10);
 
-  button9 = gtk_button_new_with_label ("OK");
+  button9 = gtk_button_new_with_label (_("OK"));
   gtk_widget_set_name (button9, "button9");
   gtk_widget_ref (button9);
   gtk_object_set_data_full (GTK_OBJECT (alarm_dialog), "button9", button9,
@@ -149,7 +151,7 @@ create_playlist_fileselection (void)
   GtkWidget *ok_button1;
   GtkWidget *cancel_button1;
 
-  playlist_fileselection = gtk_file_selection_new ("Select Playlist");
+  playlist_fileselection = gtk_file_selection_new (_("Select Playlist"));
   gtk_widget_set_name (playlist_fileselection, "playlist_fileselection");
   gtk_object_set_data (GTK_OBJECT (playlist_fileselection), "playlist_fileselection", playlist_fileselection);
   gtk_container_set_border_width (GTK_CONTAINER (playlist_fileselection), 10);
@@ -193,7 +195,7 @@ create_warning_dialog (void)
   warning_dialog = gtk_dialog_new ();
   gtk_widget_set_name (warning_dialog, "warning_dialog");
   gtk_object_set_data (GTK_OBJECT (warning_dialog), "warning_dialog", warning_dialog);
-  gtk_window_set_title (GTK_WINDOW (warning_dialog), "Sorry");
+  gtk_window_set_title (GTK_WINDOW (warning_dialog), _("Sorry"));
   gtk_window_set_policy (GTK_WINDOW (warning_dialog), FALSE, FALSE, FALSE);
 
   dialog_vbox4 = GTK_DIALOG (warning_dialog)->vbox;
@@ -201,7 +203,7 @@ create_warning_dialog (void)
   gtk_object_set_data (GTK_OBJECT (warning_dialog), "dialog_vbox4", dialog_vbox4);
   gtk_widget_show (dialog_vbox4);
 
-  frame9 = gtk_frame_new ("Warning");
+  frame9 = gtk_frame_new (_("Warning"));
   gtk_widget_set_name (frame9, "frame9");
   gtk_widget_ref (frame9);
   gtk_object_set_data_full (GTK_OBJECT (warning_dialog), "frame9", frame9,
@@ -210,7 +212,7 @@ create_warning_dialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox4), frame9, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame9), 10);
 
-  label70 = gtk_label_new ("For safety reasons the \"quiet\" time must be at least 65 seconds longer than the fading time, it must also be more than 10 seconds.  This basically means that there is a bug in the code and until I find a way of really fixing it this message will appear :)\n\nYour fading settings have NOT been saved\n\n--\nAdam");
+  label70 = gtk_label_new (_("For safety reasons the \"quiet\" time must be at least 65 seconds longer than the fading time, it must also be more than 10 seconds.  This basically means that there is a bug in the code and until I find a way of really fixing it this message will appear :)\n\nYour fading settings have NOT been saved\n\n--\nAdam"));
   gtk_widget_set_name (label70, "label70");
   gtk_widget_ref (label70);
   gtk_object_set_data_full (GTK_OBJECT (warning_dialog), "label70", label70,
@@ -226,7 +228,7 @@ create_warning_dialog (void)
   gtk_widget_show (dialog_action_area4);
   gtk_container_set_border_width (GTK_CONTAINER (dialog_action_area4), 10);
 
-  button10 = gtk_button_new_with_label ("Oh Well");
+  button10 = gtk_button_new_with_label (_("Oh Well"));
   gtk_widget_set_name (button10, "button10");
   gtk_widget_ref (button10);
   gtk_object_set_data_full (GTK_OBJECT (warning_dialog), "button10", button10,
@@ -385,7 +387,7 @@ create_config_dialog (void)
   config_dialog = gtk_dialog_new ();
   gtk_widget_set_name (config_dialog, "config_dialog");
   gtk_object_set_data (GTK_OBJECT (config_dialog), "config_dialog", config_dialog);
-  gtk_window_set_title (GTK_WINDOW (config_dialog), "Alarm Settings");
+  gtk_window_set_title (GTK_WINDOW (config_dialog), _("Alarm Settings"));
   gtk_window_set_policy (GTK_WINDOW (config_dialog), FALSE, FALSE, FALSE);
 
   dialog_vbox5 = GTK_DIALOG (config_dialog)->vbox;
@@ -401,7 +403,7 @@ create_config_dialog (void)
   gtk_widget_show (notebook1);
   gtk_box_pack_start (GTK_BOX (dialog_vbox5), notebook1, TRUE, TRUE, 0);
 
-  frame10 = gtk_frame_new ("Time");
+  frame10 = gtk_frame_new (_("Time"));
   gtk_widget_set_name (frame10, "frame10");
   gtk_widget_ref (frame10);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame10", frame10,
@@ -442,7 +444,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_h_spin), TRUE);
   gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_h_spin), GTK_UPDATE_IF_VALID);
 
-  label75 = gtk_label_new ("hours");
+  label75 = gtk_label_new (_("hours"));
   gtk_widget_set_name (label75, "label75");
   gtk_widget_ref (label75);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label75", label75,
@@ -472,7 +474,7 @@ create_config_dialog (void)
   gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_h_spin), GTK_UPDATE_IF_VALID);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_h_spin), TRUE);
 
-  label76 = gtk_label_new (":");
+  label76 = gtk_label_new (_(":"));
   gtk_widget_set_name (label76, "label76");
   gtk_widget_ref (label76);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label76", label76,
@@ -503,7 +505,7 @@ create_config_dialog (void)
   gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_m_spin), GTK_UPDATE_IF_VALID);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_m_spin), TRUE);
 
-  label77 = gtk_label_new ("h");
+  label77 = gtk_label_new (_("h"));
   gtk_widget_set_name (label77, "label77");
   gtk_widget_ref (label77);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label77", label77,
@@ -551,7 +553,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  label79 = gtk_label_new ("Quiet after:");
+  label79 = gtk_label_new (_("Quiet after:"));
   gtk_widget_set_name (label79, "label79");
   gtk_widget_ref (label79);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label79", label79,
@@ -561,7 +563,7 @@ create_config_dialog (void)
   gtk_label_set_justify (GTK_LABEL (label79), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (label79), 0, 0.5);
 
-  label80 = gtk_label_new ("Alarm at (default):");
+  label80 = gtk_label_new (_("Alarm at (default):"));
   gtk_widget_set_name (label80, "label80");
   gtk_widget_ref (label80);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label80", label80,
@@ -573,7 +575,7 @@ create_config_dialog (void)
   gtk_label_set_justify (GTK_LABEL (label80), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (label80), 0, 0.5);
 
-  label71 = gtk_label_new ("Time");
+  label71 = gtk_label_new (_("Time"));
   gtk_widget_set_name (label71, "label71");
   gtk_widget_ref (label71);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label71", label71,
@@ -581,7 +583,7 @@ create_config_dialog (void)
   gtk_widget_show (label71);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label71);
 
-  frame15 = gtk_frame_new ("Choose the days for the alarm to come on");
+  frame15 = gtk_frame_new (_("Choose the days for the alarm to come on"));
   gtk_widget_set_name (frame15, "frame15");
   gtk_widget_ref (frame15);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame15", frame15,
@@ -609,7 +611,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  mon_def = gtk_check_button_new_with_label ("Default");
+  mon_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (mon_def, "mon_def");
   gtk_widget_ref (mon_def);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "mon_def", mon_def,
@@ -628,7 +630,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox31), mon_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (mon_h), TRUE);
 
-  label89 = gtk_label_new (":");
+  label89 = gtk_label_new (_(":"));
   gtk_widget_set_name (label89, "label89");
   gtk_widget_ref (label89);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label89", label89,
@@ -657,7 +659,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  tue_def = gtk_check_button_new_with_label ("Default");
+  tue_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (tue_def, "tue_def");
   gtk_widget_ref (tue_def);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "tue_def", tue_def,
@@ -676,7 +678,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox32), tue_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (tue_h), TRUE);
 
-  label90 = gtk_label_new (":");
+  label90 = gtk_label_new (_(":"));
   gtk_widget_set_name (label90, "label90");
   gtk_widget_ref (label90);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label90", label90,
@@ -705,7 +707,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  wed_def = gtk_check_button_new_with_label ("Default");
+  wed_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (wed_def, "wed_def");
   gtk_widget_ref (wed_def);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "wed_def", wed_def,
@@ -724,7 +726,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox33), wed_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (wed_h), TRUE);
 
-  label91 = gtk_label_new (":");
+  label91 = gtk_label_new (_(":"));
   gtk_widget_set_name (label91, "label91");
   gtk_widget_ref (label91);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label91", label91,
@@ -753,7 +755,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  thu_def = gtk_check_button_new_with_label ("Default");
+  thu_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (thu_def, "thu_def");
   gtk_widget_ref (thu_def);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "thu_def", thu_def,
@@ -772,7 +774,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox34), thu_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (thu_h), TRUE);
 
-  label92 = gtk_label_new (":");
+  label92 = gtk_label_new (_(":"));
   gtk_widget_set_name (label92, "label92");
   gtk_widget_ref (label92);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label92", label92,
@@ -801,7 +803,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  fri_def = gtk_check_button_new_with_label ("Default");
+  fri_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (fri_def, "fri_def");
   gtk_widget_ref (fri_def);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "fri_def", fri_def,
@@ -820,7 +822,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox35), fri_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fri_h), TRUE);
 
-  label93 = gtk_label_new (":");
+  label93 = gtk_label_new (_(":"));
   gtk_widget_set_name (label93, "label93");
   gtk_widget_ref (label93);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label93", label93,
@@ -849,7 +851,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  sat_def = gtk_check_button_new_with_label ("Default");
+  sat_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (sat_def, "sat_def");
   gtk_widget_ref (sat_def);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "sat_def", sat_def,
@@ -868,7 +870,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox36), sat_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (sat_h), TRUE);
 
-  label94 = gtk_label_new (":");
+  label94 = gtk_label_new (_(":"));
   gtk_widget_set_name (label94, "label94");
   gtk_widget_ref (label94);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label94", label94,
@@ -897,7 +899,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  sun_def = gtk_check_button_new_with_label ("Default");
+  sun_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (sun_def, "sun_def");
   gtk_widget_ref (sun_def);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "sun_def", sun_def,
@@ -916,7 +918,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox37), sun_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (sun_h), TRUE);
 
-  label95 = gtk_label_new (":");
+  label95 = gtk_label_new (_(":"));
   gtk_widget_set_name (label95, "label95");
   gtk_widget_ref (label95);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label95", label95,
@@ -935,7 +937,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (sun_m), TRUE);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (sun_m), TRUE);
 
-  label87 = gtk_label_new ("Day");
+  label87 = gtk_label_new (_("Day"));
   gtk_widget_set_name (label87, "label87");
   gtk_widget_ref (label87);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label87", label87,
@@ -945,7 +947,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 
-  label88 = gtk_label_new ("Time");
+  label88 = gtk_label_new (_("Time"));
   gtk_widget_set_name (label88, "label88");
   gtk_widget_ref (label88);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label88", label88,
@@ -955,7 +957,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 
-  tue_cb = gtk_check_button_new_with_label ("Tuesday");
+  tue_cb = gtk_check_button_new_with_label (_("Tuesday"));
   gtk_widget_set_name (tue_cb, "tue_cb");
   gtk_widget_ref (tue_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "tue_cb", tue_cb,
@@ -966,7 +968,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tue_cb), TRUE);
 
-  wed_cb = gtk_check_button_new_with_label ("Wednesday");
+  wed_cb = gtk_check_button_new_with_label (_("Wednesday"));
   gtk_widget_set_name (wed_cb, "wed_cb");
   gtk_widget_ref (wed_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "wed_cb", wed_cb,
@@ -977,7 +979,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wed_cb), TRUE);
 
-  thu_cb = gtk_check_button_new_with_label ("Thursday");
+  thu_cb = gtk_check_button_new_with_label (_("Thursday"));
   gtk_widget_set_name (thu_cb, "thu_cb");
   gtk_widget_ref (thu_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "thu_cb", thu_cb,
@@ -988,7 +990,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (thu_cb), TRUE);
 
-  fri_cb = gtk_check_button_new_with_label ("Friday");
+  fri_cb = gtk_check_button_new_with_label (_("Friday"));
   gtk_widget_set_name (fri_cb, "fri_cb");
   gtk_widget_ref (fri_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "fri_cb", fri_cb,
@@ -999,7 +1001,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fri_cb), TRUE);
 
-  sat_cb = gtk_check_button_new_with_label ("Saturday");
+  sat_cb = gtk_check_button_new_with_label (_("Saturday"));
   gtk_widget_set_name (sat_cb, "sat_cb");
   gtk_widget_ref (sat_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "sat_cb", sat_cb,
@@ -1010,7 +1012,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sat_cb), TRUE);
 
-  sun_cb = gtk_check_button_new_with_label ("Sunday");
+  sun_cb = gtk_check_button_new_with_label (_("Sunday"));
   gtk_widget_set_name (sun_cb, "sun_cb");
   gtk_widget_ref (sun_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "sun_cb", sun_cb,
@@ -1020,7 +1022,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
 
-  mon_cb = gtk_check_button_new_with_label ("Monday");
+  mon_cb = gtk_check_button_new_with_label (_("Monday"));
   gtk_widget_set_name (mon_cb, "mon_cb");
   gtk_widget_ref (mon_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "mon_cb", mon_cb,
@@ -1031,7 +1033,7 @@ create_config_dialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mon_cb), TRUE);
 
-  label72 = gtk_label_new ("Days");
+  label72 = gtk_label_new (_("Days"));
   gtk_widget_set_name (label72, "label72");
   gtk_widget_ref (label72);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label72", label72,
@@ -1047,7 +1049,7 @@ create_config_dialog (void)
   gtk_widget_show (vbox8);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox8);
 
-  frame11 = gtk_frame_new ("Fading");
+  frame11 = gtk_frame_new (_("Fading"));
   gtk_widget_set_name (frame11, "frame11");
   gtk_widget_ref (frame11);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame11", frame11,
@@ -1084,7 +1086,7 @@ create_config_dialog (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fading_spin), TRUE);
   gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (fading_spin), GTK_UPDATE_IF_VALID);
 
-  label81 = gtk_label_new ("seconds");
+  label81 = gtk_label_new (_("seconds"));
   gtk_widget_set_name (label81, "label81");
   gtk_widget_ref (label81);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label81", label81,
@@ -1092,7 +1094,7 @@ create_config_dialog (void)
   gtk_widget_show (label81);
   gtk_box_pack_start (GTK_BOX (hbox25), label81, FALSE, TRUE, 0);
 
-  frame12 = gtk_frame_new ("Volume");
+  frame12 = gtk_frame_new (_("Volume"));
   gtk_widget_set_name (frame12, "frame12");
   gtk_widget_ref (frame12);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame12", frame12,
@@ -1118,16 +1120,16 @@ create_config_dialog (void)
   gtk_widget_show (alignment11);
   gtk_box_pack_end (GTK_BOX (vbox9), alignment11, FALSE, FALSE, 0);
 
-  current_button = gtk_button_new_with_label ("Current");
+  current_button = gtk_button_new_with_label (_("Current"));
   gtk_widget_set_name (current_button, "current_button");
   gtk_widget_ref (current_button);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "current_button", current_button,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (current_button);
   gtk_container_add (GTK_CONTAINER (alignment11), current_button);
-  gtk_tooltips_set_tip (tooltips, current_button, "reset to current output volume", NULL);
+  gtk_tooltips_set_tip (tooltips, current_button, _("reset to current output volume"), NULL);
 
-  label82 = gtk_label_new ("Start at");
+  label82 = gtk_label_new (_("Start at"));
   gtk_widget_set_name (label82, "label82");
   gtk_widget_ref (label82);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label82", label82,
@@ -1171,7 +1173,7 @@ create_config_dialog (void)
   gtk_widget_show (hseparator2);
   gtk_box_pack_start (GTK_BOX (vbox9), hseparator2, TRUE, TRUE, 0);
 
-  label84 = gtk_label_new ("Final");
+  label84 = gtk_label_new (_("Final"));
   gtk_widget_set_name (label84, "label84");
   gtk_widget_ref (label84);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label84", label84,
@@ -1208,7 +1210,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox27), label85, FALSE, TRUE, 0);
   gtk_label_set_justify (GTK_LABEL (label85), GTK_JUSTIFY_FILL);
 
-  label73 = gtk_label_new ("Volume");
+  label73 = gtk_label_new (_("Volume"));
   gtk_widget_set_name (label73, "label73");
   gtk_widget_ref (label73);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label73", label73,
@@ -1224,7 +1226,7 @@ create_config_dialog (void)
   gtk_widget_show (vbox10);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox10);
 
-  frame13 = gtk_frame_new ("Additional Command");
+  frame13 = gtk_frame_new (_("Additional Command"));
   gtk_widget_set_name (frame13, "frame13");
   gtk_widget_ref (frame13);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame13", frame13,
@@ -1250,7 +1252,7 @@ create_config_dialog (void)
   gtk_widget_show (cmd_entry);
   gtk_box_pack_start (GTK_BOX (hbox28), cmd_entry, TRUE, TRUE, 0);
 
-  cmd_checkb = gtk_check_button_new_with_label ("enable");
+  cmd_checkb = gtk_check_button_new_with_label (_("enable"));
   gtk_widget_set_name (cmd_checkb, "cmd_checkb");
   gtk_widget_ref (cmd_checkb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "cmd_checkb", cmd_checkb,
@@ -1258,7 +1260,7 @@ create_config_dialog (void)
   gtk_widget_show (cmd_checkb);
   gtk_box_pack_start (GTK_BOX (hbox28), cmd_checkb, FALSE, FALSE, 0);
 
-  frame14 = gtk_frame_new ("Playlist (optional)");
+  frame14 = gtk_frame_new (_("Playlist (optional)"));
   gtk_widget_set_name (frame14, "frame14");
   gtk_widget_ref (frame14);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame14", frame14,
@@ -1284,7 +1286,7 @@ create_config_dialog (void)
   gtk_widget_show (playlist);
   gtk_box_pack_start (GTK_BOX (hbox29), playlist, TRUE, TRUE, 0);
 
-  playlist_browse_button = gtk_button_new_with_label ("Browse...");
+  playlist_browse_button = gtk_button_new_with_label (_("Browse..."));
   gtk_widget_set_name (playlist_browse_button, "playlist_browse_button");
   gtk_widget_ref (playlist_browse_button);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "playlist_browse_button", playlist_browse_button,
@@ -1292,7 +1294,7 @@ create_config_dialog (void)
   gtk_widget_show (playlist_browse_button);
   gtk_box_pack_start (GTK_BOX (hbox29), playlist_browse_button, FALSE, FALSE, 0);
 
-  frame18 = gtk_frame_new ("Reminder");
+  frame18 = gtk_frame_new (_("Reminder"));
   gtk_widget_set_name (frame18, "frame18");
   gtk_widget_ref (frame18);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame18", frame18,
@@ -1309,7 +1311,7 @@ create_config_dialog (void)
   gtk_widget_show (hbox38);
   gtk_container_add (GTK_CONTAINER (frame18), hbox38);
 
-  reminder_cb = gtk_check_button_new_with_label ("Use reminder");
+  reminder_cb = gtk_check_button_new_with_label (_("Use reminder"));
   gtk_widget_set_name (reminder_cb, "reminder_cb");
   gtk_widget_ref (reminder_cb);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "reminder_cb", reminder_cb,
@@ -1325,7 +1327,7 @@ create_config_dialog (void)
   gtk_widget_show (reminder_text);
   gtk_box_pack_start (GTK_BOX (hbox38), reminder_text, TRUE, TRUE, 5);
 
-  label74 = gtk_label_new ("Options");
+  label74 = gtk_label_new (_("Options"));
   gtk_widget_set_name (label74, "label74");
   gtk_widget_ref (label74);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label74", label74,
@@ -1333,7 +1335,7 @@ create_config_dialog (void)
   gtk_widget_show (label74);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 3), label74);
 
-  frame16 = gtk_frame_new ("What do these options mean?");
+  frame16 = gtk_frame_new (_("What do these options mean?"));
   gtk_widget_set_name (frame16, "frame16");
   gtk_widget_ref (frame16);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "frame16", frame16,
@@ -1361,9 +1363,9 @@ create_config_dialog (void)
   gtk_widget_show (text1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow1), text1);
   gtk_text_buffer_insert (text1buffer, &iter,
-                   "Time\n  Alarm at: \n    The time for the alarm to come on.\n\n  Quiet After: \n    Stop alarm after this amount of time.\n       (if the wakeup dialog is not closed)\n\n\nDays\n  Day:\n    Select the days for the alarm to activate.\n\n  Time:\n    Choose the time for the alarm on each day,\n    or select the toggle button to use the default\n    time.\n\n\nVolume\n  Fading: \n    Fade the volume up to the chosen volume \n    for this amount of time.\n\n  Start at: \n    Start fading from this volume.\n\n  Final: \n    The volume to stop fading at.  If the fading\n    time is 0 then set volume to this and start\n    playing.\n\n\nOptions:\n  Additional Command:\n    Run this command at the alarm time.\n\n  Playlist: \n    Load this playlist for playing songs from \n    (must have .m3u extension).  If no playlist\n    is given then the songs which are currently\n    in the list will be used.\n    The URL of an mp3/ogg stream can also be\n    entered here, but loading of playlists from\n    URLs is not currently supported by xmms.\n\n  Reminder:\n    Display a reminder when the alarm goes off,\n    type the reminder in the box and turn on the\n    toggle button if you want it to be shown.", 1143);
+                   _("\nTime\n  Alarm at: \n    The time for the alarm to come on.\n\n  Quiet After: \n    Stop alarm after this amount of time.\n       (if the wakeup dialog is not closed)\n\n\nDays\n  Day:\n    Select the days for the alarm to activate.\n\n  Time:\n    Choose the time for the alarm on each day,\n    or select the toggle button to use the default\n    time.\n\n\nVolume\n  Fading: \n    Fade the volume up to the chosen volume \n    for this amount of time.\n\n  Start at: \n    Start fading from this volume.\n\n  Final: \n    The volume to stop fading at.  If the fading\n    time is 0 then set volume to this and start\n    playing.\n\n\nOptions:\n  Additional Command:\n    Run this command at the alarm time.\n\n  Playlist: \n    Load this playlist for playing songs from \n    (must have .m3u extension).  If no playlist\n    is given then the songs which are currently\n    in the list will be used.\n    The URL of an mp3/ogg stream can also be\n    entered here, but loading of playlists from\n    URLs is not currently supported by xmms.\n\n  Reminder:\n    Display a reminder when the alarm goes off,\n    type the reminder in the box and turn on the\n    toggle button if you want it to be shown.\n"), -1);
 
-  label86 = gtk_label_new ("Help");
+  label86 = gtk_label_new (_("Help"));
   gtk_widget_set_name (label86, "label86");
   gtk_widget_ref (label86);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label86", label86,
@@ -1386,7 +1388,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_action_area5), hbox20, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox20), 10);
 
-  ok_button = gtk_button_new_with_label ("OK");
+  ok_button = gtk_button_new_with_label (_("OK"));
   gtk_widget_set_name (ok_button, "ok_button");
   gtk_widget_ref (ok_button);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "ok_button", ok_button,
@@ -1395,7 +1397,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox20), ok_button, FALSE, TRUE, 0);
   GTK_WIDGET_SET_FLAGS (ok_button, GTK_CAN_DEFAULT);
 
-  cancel_button = gtk_button_new_with_label ("Cancel");
+  cancel_button = gtk_button_new_with_label (_("Cancel"));
   gtk_widget_set_name (cancel_button, "cancel_button");
   gtk_widget_ref (cancel_button);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "cancel_button", cancel_button,
@@ -1457,7 +1459,7 @@ create_reminder_dialog (gchar *reminder_msg)
   reminder_dialog = gtk_dialog_new ();
   gtk_widget_set_name (reminder_dialog, "reminder_dialog");
   gtk_object_set_data (GTK_OBJECT (reminder_dialog), "reminder_dialog", reminder_dialog);
-  gtk_window_set_title (GTK_WINDOW (reminder_dialog), "Reminder");
+  gtk_window_set_title (GTK_WINDOW (reminder_dialog), _("Reminder"));
   gtk_window_set_policy (GTK_WINDOW (reminder_dialog), TRUE, TRUE, FALSE);
 
   dialog_vbox6 = GTK_DIALOG (reminder_dialog)->vbox;
