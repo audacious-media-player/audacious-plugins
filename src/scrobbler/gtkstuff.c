@@ -17,10 +17,10 @@ void about_show(void)
 	if (aboutbox)
 		return;
 
-	tmp = g_strdup_printf("Audacious AudioScrobbler Plugin\n\n"
-				"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n");
+	tmp = g_strdup_printf(_("Audacious AudioScrobbler Plugin\n\n"
+				"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"));
 	aboutbox = xmms_show_message(_("About Scrobbler Plugin"),
-			_(tmp),
+			tmp,
 			_("Ok"), FALSE, NULL, NULL);
 
 	g_free(tmp);
@@ -32,14 +32,14 @@ void errorbox_show(char *errortxt)
 {
 	gchar *tmp;
 
-	tmp = g_strdup_printf("There has been an error"
+	tmp = g_strdup_printf(_("There has been an error"
 			" that may require your attention.\n\n"
 			"Contents of server error:\n\n"
-			"%s\n",
+			"%s\n"),
 			errortxt);
 
-	xmms_show_message("Scrobbler Error",
+	xmms_show_message(_("Scrobbler Error"),
 			tmp,
-			"OK", FALSE, NULL, NULL);
+			_("OK"), FALSE, NULL, NULL);
 	g_free(tmp);
 }
