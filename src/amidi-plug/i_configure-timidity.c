@@ -61,7 +61,7 @@ void i_configure_gui_tab_timi( GtkWidget * timi_page_alignment ,
   {
     /* display "not available" information */
     GtkWidget * info_label;
-    info_label = gtk_label_new( "TiMidity Backend not loaded or not available" );
+    info_label = gtk_label_new( _("TiMidity Backend not loaded or not available") );
     gtk_box_pack_start( GTK_BOX(timi_page_vbox) , info_label , FALSE , FALSE , 2 );
   }
 
@@ -80,7 +80,7 @@ void i_configure_gui_tablabel_timi( GtkWidget * timi_page_alignment ,
   pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const gchar **)backend_timidity_icon_xpm );
   pagelabel_image = gtk_image_new_from_pixbuf( pagelabel_image_pix ); g_object_unref( pagelabel_image_pix );
   pagelabel_label = gtk_label_new( "" );
-  gtk_label_set_markup( GTK_LABEL(pagelabel_label) , "<span size=\"smaller\">TiMidity\nbackend</span>" );
+  gtk_label_set_markup( GTK_LABEL(pagelabel_label) , _("<span size=\"smaller\">TiMidity\nbackend</span>") );
   gtk_label_set_justify( GTK_LABEL(pagelabel_label) , GTK_JUSTIFY_CENTER );
   gtk_box_pack_start( GTK_BOX(pagelabel_vbox) , pagelabel_image , FALSE , FALSE , 1 );
   gtk_box_pack_start( GTK_BOX(pagelabel_vbox) , pagelabel_label , FALSE , FALSE , 1 );

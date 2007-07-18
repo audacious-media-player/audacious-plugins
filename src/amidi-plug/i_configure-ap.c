@@ -372,7 +372,7 @@ void i_configure_gui_tablabel_ap( GtkWidget * ap_page_alignment ,
   pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const gchar **)amidi_plug_icon_xpm );
   pagelabel_image = gtk_image_new_from_pixbuf( pagelabel_image_pix ); g_object_unref( pagelabel_image_pix );
   pagelabel_label = gtk_label_new( "" );
-  gtk_label_set_markup( GTK_LABEL(pagelabel_label) , "<span size=\"smaller\">AMIDI\nPlug</span>" );
+  gtk_label_set_markup( GTK_LABEL(pagelabel_label) , _("<span size=\"smaller\">AMIDI\nPlug</span>") );
   gtk_label_set_justify( GTK_LABEL(pagelabel_label) , GTK_JUSTIFY_CENTER );
   gtk_box_pack_start( GTK_BOX(pagelabel_vbox) , pagelabel_image , FALSE , FALSE , 1 );
   gtk_box_pack_start( GTK_BOX(pagelabel_vbox) , pagelabel_label , FALSE , FALSE , 1 );
