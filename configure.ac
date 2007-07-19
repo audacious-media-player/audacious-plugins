@@ -1316,6 +1316,10 @@ AC_ARG_ENABLE(projectm,
 
 if test "$have_projectm" = "yes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM, libprojectM >= 0.0.0, [have_projectm="yes"], [have_projectm="no"])
+	AM_PATH_SDL(1.2.5, , [
+		AC_MSG_WARN([*** SDL is not installed. projectM will not be built. ***])
+		have_projectm="no"
+	])
 	if test x$libprjM = xno; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
