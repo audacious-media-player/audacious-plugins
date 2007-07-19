@@ -51,7 +51,7 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(sjis));
     audmad_config.show_avg_vbr_bitrate =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(show_avg));
-    audmad_config.force_reopen_audio = 
+    audmad_config.force_reopen_audio =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(reopen));
 
     audmad_config.replaygain.enable =
@@ -174,7 +174,7 @@ void audmad_configure(void)
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_xing),
                                  audmad_config.use_xing);
 
-    sjis = gtk_check_button_new_with_label("Use SJIS to write ID3 tags instead of UTF-8");
+    sjis = gtk_check_button_new_with_label(_("Use SJIS to write ID3 tags instead of UTF-8"));
     gtk_box_pack_start(GTK_BOX(vbox2), sjis, TRUE, TRUE, 0);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sjis), audmad_config.sjis);
 
@@ -230,7 +230,7 @@ void audmad_configure(void)
     gtk_box_pack_start(GTK_BOX(pregain_hbox), label, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(pregain_hbox), pregain, FALSE, TRUE, 0);
 
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new("ReplayGain"));
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("ReplayGain")));
 
     vbox2 = gtk_vbox_new(FALSE, 5);
 

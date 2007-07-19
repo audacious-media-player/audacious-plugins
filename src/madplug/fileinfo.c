@@ -99,7 +99,7 @@ update_id3_frame(struct id3_tag *tag, const char *frame_name,
     field = id3_frame_field(frame, 0);
     id3_field_settextencoding(field, audmad_config.sjis ? ID3_FIELD_TEXTENCODING_ISO_8859_1 :
 			      ID3_FIELD_TEXTENCODING_UTF_8);
-        
+
     // setup genre code
     if (!strcmp(frame_name, ID3_FRAME_GENRE)) {
         char *tmp;
@@ -116,7 +116,7 @@ update_id3_frame(struct id3_tag *tag, const char *frame_name,
             tmp = g_strdup_printf("%d", index);
             ucs4 = id3_latin1_ucs4duplicate((unsigned char *) tmp);
         }
-        
+
     }
 
     // write string
@@ -154,7 +154,7 @@ static void save_cb(GtkWidget * w, gpointer data)
     /* read tag from file */
     id3file = id3_file_open(info.filename, ID3_FILE_MODE_READWRITE);
     if (!id3file) {
-        xmms_show_message("File Info", "Couldn't open file!", "Ok",
+        xmms_show_message(_("File Info"), _("Couldn't open file!"), _("Ok"),
                           FALSE, NULL, NULL);
         return;
     }
@@ -176,7 +176,7 @@ static void save_cb(GtkWidget * w, gpointer data)
 
     text = gtk_editable_get_chars(GTK_EDITABLE(title_entry), 0, -1);
     text2 = g_convert(text, strlen(text), encoding, "UTF-8", NULL, NULL, NULL);
-    
+
     update_id3_frame(id3tag, ID3_FRAME_TITLE, text2);
     free(text);
     free(text2);
@@ -232,7 +232,7 @@ static void save_cb(GtkWidget * w, gpointer data)
     printf("about to write id3tag\n");
 #endif
     if (id3_file_update(id3file) != 0) {
-        xmms_show_message("File Info", "Couldn't write tag!", "Ok", FALSE,
+        xmms_show_message(_("File Info"), _("Couldn't write tag!"), _("Ok"), FALSE,
                           NULL, NULL);
     }
     id3_file_close(id3file);
@@ -309,7 +309,7 @@ void create_window()
     gtk_box_pack_start(GTK_BOX(filename_hbox), pixmapwid, FALSE, FALSE,
                        0);
 
-    label = gtk_label_new("<b>Name:</b>");
+    label = gtk_label_new(_("<b>Name:</b>"));
     gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
     gtk_box_pack_start(GTK_BOX(filename_hbox), label, FALSE, TRUE, 0);
     filename_entry = gtk_entry_new();
@@ -404,7 +404,7 @@ void create_window()
     gtk_container_set_border_width(GTK_CONTAINER(table), 5);
     gtk_container_add(GTK_CONTAINER(id3_frame), table);
 
-    label = gtk_label_new("Title:");
+    label = gtk_label_new(_("Title:"));
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1, GTK_FILL,
                      GTK_FILL, 5, 5);
@@ -414,7 +414,7 @@ void create_window()
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK,
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-    label = gtk_label_new("Artist:");
+    label = gtk_label_new(_("Artist:"));
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2, GTK_FILL,
                      GTK_FILL, 5, 5);
@@ -424,7 +424,7 @@ void create_window()
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK,
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-    label = gtk_label_new("Album:");
+    label = gtk_label_new(_("Album:"));
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3, GTK_FILL,
                      GTK_FILL, 5, 5);
@@ -434,7 +434,7 @@ void create_window()
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK,
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-    label = gtk_label_new("Comment:");
+    label = gtk_label_new(_("Comment:"));
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4, GTK_FILL,
                      GTK_FILL, 5, 5);
@@ -444,7 +444,7 @@ void create_window()
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK,
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-    label = gtk_label_new("Year:");
+    label = gtk_label_new(_("Year:"));
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5, GTK_FILL,
                      GTK_FILL, 5, 5);
@@ -455,7 +455,7 @@ void create_window()
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK,
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-    label = gtk_label_new("Track number:");
+    label = gtk_label_new(_("Track number:"));
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
     gtk_table_attach(GTK_TABLE(table), label, 2, 3, 4, 5, GTK_FILL,
                      GTK_FILL, 5, 5);
@@ -466,7 +466,7 @@ void create_window()
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK,
                      GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-    label = gtk_label_new("Genre:");
+    label = gtk_label_new(_("Genre:"));
     gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6, GTK_FILL,
                      GTK_FILL, 5, 5);
@@ -479,7 +479,7 @@ void create_window()
         const id3_ucs4_t *ucs4 = id3_genre_index(i);
 
         //add "Unknown" to the first. we must shift index.
-        genre_list = g_list_append(genre_list, "Unknown");
+        genre_list = g_list_append(genre_list, _("Unknown"));
 
         while (ucs4) {
             genre_list =
@@ -520,7 +520,7 @@ void create_window()
                              G_CALLBACK(change_buttons), save);
     g_signal_connect_swapped(G_OBJECT(tracknum_entry), "changed",
                              G_CALLBACK(change_buttons), save);
-        
+
     g_signal_connect_swapped(G_OBJECT(GTK_COMBO(genre_combo)->entry), "changed",
                                  G_CALLBACK(change_buttons), save);
 
@@ -608,7 +608,7 @@ void audmad_get_file_info(char *fileurl)
     info.fileinfo_request = TRUE;
     input_get_info(&info, info.remote ? TRUE : FALSE);
 
-    title = g_strdup_printf("File Info - %s", g_basename(utf_filename));
+    title = g_strdup_printf(_("File Info - %s"), g_basename(utf_filename));
     gtk_window_set_title(GTK_WINDOW(window), title);
     g_free(title);
 
@@ -638,19 +638,19 @@ void audmad_get_file_info(char *fileurl)
 
     id3_frame_to_entry(ID3_FRAME_TRACK, GTK_ENTRY(tracknum_entry));
     id3_frame_to_entry(ID3_FRAME_COMMENT, GTK_ENTRY(comment_entry));
-    snprintf(message, 127, "Layer %s", layer_str[info.mpeg_layer - 1]);
+    snprintf(message, 127, _("Layer %s"), layer_str[info.mpeg_layer - 1]);
     gtk_label_set_text(GTK_LABEL(mpeg_level), message);
     if (info.vbr) {
-        snprintf(message, 127, "VBR (avg. %d kbps)", info.bitrate / 1000);
+        snprintf(message, 127, _("VBR (avg. %d kbps)"), info.bitrate / 1000);
     }
     else {
         snprintf(message, 127, "%d kbps", info.bitrate / 1000);
     }
     gtk_label_set_text(GTK_LABEL(mpeg_bitrate), message);
-    snprintf(message, 127, "%d Hz", info.freq);
+    snprintf(message, 127, _("%d Hz"), info.freq);
     gtk_label_set_text(GTK_LABEL(mpeg_samplerate), message);
     if (info.frames != -1) {
-        snprintf(message, 127, "%d frames", info.frames);
+        snprintf(message, 127, _("%d frames"), info.frames);
         gtk_label_set_text(GTK_LABEL(mpeg_frames), message);
     }
     else {
@@ -659,12 +659,12 @@ void audmad_get_file_info(char *fileurl)
     gtk_label_set_text(GTK_LABEL(mpeg_flags), mode_str[info.mode]);
     {
         guint sec = mad_timer_count(info.duration, MAD_UNITS_SECONDS);
-        snprintf(message, 127, "%d:%02d (%d seconds)", sec /60 ,sec % 60, sec);
+        snprintf(message, 127, _("%d:%02d (%d seconds)"), sec /60 ,sec % 60, sec);
     }
     gtk_label_set_text(GTK_LABEL(mpeg_duration), message);
 
     if (info.replaygain_album_str != NULL) {
-        snprintf(message, 127, "RG_album=%4s (x%4.2f)",
+        snprintf(message, 127, _("RG_album=%4s (x%4.2f)"),
                  info.replaygain_album_str, info.replaygain_album_scale);
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain), message);
     }
@@ -672,7 +672,7 @@ void audmad_get_file_info(char *fileurl)
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain), "");
 
     if (info.replaygain_track_str != NULL) {
-        snprintf(message, 127, "RG_track=%4s (x%4.2f)",
+        snprintf(message, 127, _("RG_track=%4s (x%4.2f)"),
                  info.replaygain_track_str, info.replaygain_track_scale);
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain2), message);
     }
@@ -680,7 +680,7 @@ void audmad_get_file_info(char *fileurl)
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain2), "");
 
     if (info.replaygain_album_peak_str != NULL) {
-        snprintf(message, 127, "Peak album=%4s (%+5.3fdBFS)",
+        snprintf(message, 127, _("Peak album=%4s (%+5.3fdBFS)"),
                  info.replaygain_album_peak_str,
                  20 * log10(info.replaygain_album_peak));
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain3), message);
@@ -689,7 +689,7 @@ void audmad_get_file_info(char *fileurl)
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain3), "");
 
     if (info.replaygain_track_peak_str != NULL) {
-        snprintf(message, 127, "Peak track=%4s (%+5.3fdBFS)",
+        snprintf(message, 127, _("Peak track=%4s (%+5.3fdBFS)"),
                  info.replaygain_track_peak_str,
                  20 * log10(info.replaygain_track_peak));
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain4), message);
@@ -698,7 +698,7 @@ void audmad_get_file_info(char *fileurl)
         gtk_label_set_text(GTK_LABEL(mpeg_replaygain3), "");
 
     if (info.mp3gain_undo_str != NULL) {
-        snprintf(message, 127, "mp3gain undo=%4s (%+5.3fdB)",
+        snprintf(message, 127, _("mp3gain undo=%4s (%+5.3fdB)"),
                  info.mp3gain_undo_str, info.mp3gain_undo);
         gtk_label_set_text(GTK_LABEL(mp3gain1), message);
     }
@@ -706,7 +706,7 @@ void audmad_get_file_info(char *fileurl)
         gtk_label_set_text(GTK_LABEL(mp3gain1), "");
 
     if (info.mp3gain_minmax_str != NULL) {
-        snprintf(message, 127, "mp3gain minmax=%4s (max-min=%+6.3fdB)",
+        snprintf(message, 127, _("mp3gain minmax=%4s (max-min=%+6.3fdB)"),
                  info.mp3gain_minmax_str, info.mp3gain_minmax);
         gtk_label_set_text(GTK_LABEL(mp3gain2), message);
     }

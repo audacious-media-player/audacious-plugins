@@ -113,7 +113,7 @@ create_Config (void)
 
   Config = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_object_set_data (GTK_OBJECT (Config), "Config", Config);
-  gtk_widget_set_usize (Config, 350, -2);
+  gtk_widget_set_usize (Config, -1, -1);
   gtk_window_set_title (GTK_WINDOW (Config), _("ModPlug Configuration"));
   gtk_window_set_policy (GTK_WINDOW (Config), FALSE, FALSE, FALSE);
 
@@ -789,7 +789,7 @@ create_Info (void)
 
   Info = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_object_set_data (GTK_OBJECT (Info), "Info", Info);
-  gtk_widget_set_usize (Info, 290, 264);
+  gtk_widget_set_usize (Info, -1, 264);
   gtk_window_set_title (GTK_WINDOW (Info), _("MOD Info"));
 
   vbox14 = gtk_vbox_new (FALSE, 0);

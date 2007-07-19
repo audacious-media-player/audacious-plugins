@@ -29,6 +29,7 @@
 
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
+#include <audacious/i18n.h>
 
 #include "../../config.h"
 #include "ladspa.h"
@@ -217,7 +218,7 @@ static plugin_instance * load (char *filename, long int num)
   plugin_instance *instance;
 
   instance = g_new0(plugin_instance, 1);
-  
+
   instance->filename = filename;
   instance->library = dlopen(filename, RTLD_NOW);
   if (instance->library == NULL) {
@@ -442,7 +443,7 @@ static void port_assign(plugin_instance * instance) {
         if (instance->handle2)
           plugin->connect_port(instance->handle2, port, trash);
       }
-      
+
     } else if (LADSPA_IS_PORT_AUDIO(plugin->PortDescriptors[port])) {
 
       if (LADSPA_IS_PORT_INPUT(plugin->PortDescriptors[port])) {
@@ -490,7 +491,7 @@ static void find_plugins(char *path_entry)
   struct dirent *dirent;
   long int k;
   unsigned long int port, input, output;
-  
+
   dir= opendir(path_entry);
   if (dir == NULL) return;
 
@@ -720,7 +721,7 @@ static void draw_plugin(plugin_instance *instance)
   }
 
   if (no_ui) {
-    widget = gtk_label_new("This LADSPA plugin has no user controls");
+    widget = gtk_label_new(_("This LADSPA plugin has no user controls"));
     gtk_container_add(GTK_CONTAINER(vbox), widget);
   }
 
@@ -765,7 +766,7 @@ static void reorder_instance(GtkCList *clist, gint from, gint to,
 
 static void make_run_clist(void)
 {
-  char * titles[1] = { "Name" };
+  char * titles[1] = { _("Name") };
   GSList *list;
 
   run_clist = gtk_clist_new_with_titles(1, titles);
@@ -851,10 +852,10 @@ static GtkWidget * make_plugin_clist(void)
   GSList *list;
   GtkWidget *clist;
   char number[14];
-  char * titles[2] = { "UID", "Name" };
+  char * titles[2] = { _("UID"), _("Name") };
   char * line[2];
   gint row;
-  
+
   find_all_plugins();
 
   clist = gtk_clist_new_with_titles(2, titles);
@@ -926,7 +927,7 @@ static void configure(void)
   vbox= gtk_vbox_new(FALSE, 0);
   hbox= gtk_hbox_new(TRUE, 0);
 
-  frame= gtk_frame_new("Installed plugins");
+  frame= gtk_frame_new(_("Installed plugins"));
   widget = gtk_scrolled_window_new(NULL, NULL);
   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(widget),
                                  GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
@@ -935,7 +936,7 @@ static void configure(void)
   gtk_container_add(GTK_CONTAINER(hbox), frame);
 
 
-  frame= gtk_frame_new("Running plugins");
+  frame= gtk_frame_new(_("Running plugins"));
   widget = gtk_scrolled_window_new(NULL, NULL);
   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(widget),
                                  GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
@@ -950,15 +951,15 @@ static void configure(void)
   /* Buttons */
   bbox = gtk_hbutton_box_new();
   gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_SPREAD);
-  widget = gtk_button_new_with_label("Add");
+  widget = gtk_button_new_with_label(_("Add"));
   g_signal_connect(G_OBJECT(widget), "clicked",
                      G_CALLBACK(add_plugin_clicked), NULL);
   gtk_box_pack_end_defaults(GTK_BOX(bbox), widget);
-  widget = gtk_button_new_with_label("Remove");
+  widget = gtk_button_new_with_label(_("Remove"));
   g_signal_connect(G_OBJECT(widget), "clicked",
                      G_CALLBACK(remove_plugin_clicked), NULL);
   gtk_box_pack_end_defaults(GTK_BOX(bbox), widget);
-  widget = gtk_button_new_with_label("Configure");
+  widget = gtk_button_new_with_label(_("Configure"));
   g_signal_connect(G_OBJECT(widget), "clicked",
                      G_CALLBACK(configure_plugin_clicked), NULL);
   gtk_box_pack_end_defaults(GTK_BOX(bbox), widget);
@@ -967,7 +968,7 @@ static void configure(void)
 
   gtk_container_add(GTK_CONTAINER(config_window), vbox);
 
-  gtk_window_set_title(GTK_WINDOW(config_window), "LADSPA Plugin Catalog");
+  gtk_window_set_title(GTK_WINDOW(config_window), _("LADSPA Plugin Catalog"));
   gtk_widget_set_usize(config_window, 380, 400);
   g_signal_connect (G_OBJECT (config_window), "delete_event",
                       G_CALLBACK (gtk_widget_hide_on_delete), NULL);

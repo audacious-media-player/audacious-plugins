@@ -89,7 +89,7 @@ static gchar *extname(const char *filename)
 
 void audmad_config_compute(struct audmad_config_t *config)
 {
-    /* set some config parameters by parsing text fields 
+    /* set some config parameters by parsing text fields
        (RG default gain, etc..)
      */
     const gchar *text;
@@ -218,7 +218,7 @@ static gboolean mp3_head_check(guint32 head, gint *frameSize)
     sampleIndex = (head >> 10) & 0x3;
     if (sampleIndex == 0x3)
         return FALSE;
-    
+
     /* check version bits (19-20) and get bitRate */
     version = (head >> 19) & 0x03;
     switch (version) {
@@ -229,22 +229,22 @@ static gboolean mp3_head_check(guint32 head, gint *frameSize)
             else
                 bitRate = mp3_bitrate_table[4][bitIndex];
             break;
-             
+
         case 1: /* 01 = reserved */
             return FALSE;
-        
+
         case 3: /* 11 = MPEG Version 1 */
             bitRate = mp3_bitrate_table[layer][bitIndex];
             break;
-        
+
         default:
             return FALSE;
     }
-    
+
     /* check layer II restrictions vs. bitrate */
     if (layer == 2) {
         gint chanMode = (head >> 6) & 0x3;
-        
+
         if (chanMode == 0x3) {
             /* single channel with bitrate > 192 */
             if (bitRate > 192)
@@ -258,15 +258,15 @@ static gboolean mp3_head_check(guint32 head, gint *frameSize)
                 return FALSE;
         }
     }
-    
+
     /* calculate approx. frame size */
     padding = (head >> 9) & 1;
     sampleRate = mp3_samplerate_table[version][sampleIndex];
     if (layer == 1)
-        *frameSize = ((12 * bitRate * 1000 / sampleRate) + padding) * 4; 
+        *frameSize = ((12 * bitRate * 1000 / sampleRate) + padding) * 4;
     else
         *frameSize = (144 * bitRate * 1000) / (sampleRate + padding);
-    
+
     /* check if bits 16 - 19 are all set (MPEG 1 Layer I, not protected?) */
     if (((head >> 19) & 1) == 1 &&
         ((head >> 17) & 3) == 3 && ((head >> 16) & 1) == 1)
@@ -288,9 +288,9 @@ static int mp3_head_convert(const guchar * hbuf)
 
 gboolean audmad_is_remote(gchar *url)
 {
-    if (!strncasecmp("http://", url, 7) 
+    if (!strncasecmp("http://", url, 7)
         || !strncasecmp("https://", url, 8)
-        || !strncasecmp("lastfm://", url, 9)) 
+        || !strncasecmp("lastfm://", url, 9))
         return TRUE;
     else
         return FALSE;
@@ -313,7 +313,7 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
-    if ((ext != NULL) && 
+    if ((ext != NULL) &&
         (!strcasecmp("flac", ext) || !strcasecmp("mpc", ext) ||
          !strcasecmp("tta", ext)  || !strcasecmp("ogg", ext) ||
          !strcasecmp("wma", ext) )
@@ -342,7 +342,7 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     {
         vfs_fseek(fin, 4, SEEK_CUR);
         if(vfs_fread(buf, 1, 4, fin) == 0) {
-            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);            
+            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
             g_message("vfs_fread failed @2 %s", tmp);
             g_free(tmp);
             return 0;
@@ -458,9 +458,9 @@ static void audmad_play_file(InputPlayback *playback)
     if (rtn == FALSE) {
         g_message("error reading input info");
         /*
-         * return; 
-         * commenting this return seems to be a hacky fix for the damn lastfm plugin playback 
-         * that used to work only for nenolod because of his fsck-ing lastfm subscription :p 
+         * return;
+         * commenting this return seems to be a hacky fix for the damn lastfm plugin playback
+         * that used to work only for nenolod because of his fsck-ing lastfm subscription :p
         */
     }
     g_mutex_lock(pb_mutex);
@@ -542,7 +542,7 @@ static void audmad_about()
         return;
 
     scratch = g_strdup_printf(
-	"Audacious MPEG Audio Plugin\n"
+	_("Audacious MPEG Audio Plugin\n"
 	"\n"
 	"Compiled against libMAD version: %d.%d.%d%s\n"
 	"\n"
@@ -554,13 +554,13 @@ static void audmad_about()
 	"    Sam Clegg\n"
 	"\n"
 	"ReplayGain support by:\n"
-	"    Samuel Krempp",
+	"    Samuel Krempp"),
 	MAD_VERSION_MAJOR, MAD_VERSION_MINOR, MAD_VERSION_PATCH,
 	MAD_VERSION_EXTRA);
 
-    aboutbox = xmms_show_message("About MPEG Audio Plugin",
+    aboutbox = xmms_show_message(_("About MPEG Audio Plugin"),
                                  scratch,
-                                 "Ok", FALSE, NULL, NULL);
+                                 _("Ok"), FALSE, NULL, NULL);
 
     g_free(scratch);
 
@@ -583,7 +583,7 @@ void audmad_error(char *error, ...)
         va_end(args);
         GDK_THREADS_ENTER();
         error_dialog =
-            xmms_show_message("Error", string, "Ok", FALSE, 0, 0);
+            xmms_show_message(_("Error"), string, _("Ok"), FALSE, 0, 0);
         gtk_signal_connect(GTK_OBJECT(error_dialog), "destroy",
                            GTK_SIGNAL_FUNC(gtk_widget_destroyed),
                            &error_dialog);
@@ -693,7 +693,7 @@ static TitleInput *audmad_get_song_tuple(char *filename)
                 tuple->length = atoi(string);
 #ifdef DEBUG
                 g_message("get_song_tuple: TLEN = %d", tuple->length);
-#endif	
+#endif
                 g_free(string);
                 string = NULL;
             }
