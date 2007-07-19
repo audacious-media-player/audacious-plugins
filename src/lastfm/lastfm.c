@@ -382,7 +382,7 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
                 count++;
 
         }
-        while (g_thread_self()==metadata_thread && err<10);
+        while (g_thread_self()==metadata_thread && err<10 && handle != NULL);
 
 #if DEBUG
         g_print("Exiting thread, ID = %p\n", (void *)g_thread_self());
