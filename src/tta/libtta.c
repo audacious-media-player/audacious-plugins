@@ -300,6 +300,7 @@ file_info (char *filename)
 	tta_info ttainfo;
 	char *title;
 	gchar *utf_filename = NULL;
+	gchar *realfn = NULL;
 
 	if (!window) {
 	    GtkWidget *vbox, *hbox, *left_vbox, *table;
@@ -422,8 +423,9 @@ file_info (char *filename)
 
 	    gtk_widget_show_all (window);
 	}
-    
-	utf_filename = str_to_utf8(filename);
+	realfn = g_filename_from_uri(filename, NULL, NULL);
+	utf_filename = str_to_utf8(realfn ? realfn : filename);
+	g_free(realfn); realfn = NULL;
 	title = g_strdup_printf(_("File Info - %s"), g_basename(utf_filename));
 	gtk_window_set_title(GTK_WINDOW(window), title);
 	g_free(title);
@@ -467,7 +469,7 @@ static void
 play_file (InputPlayback *playback)
 {
 	gchar *filename = playback->filename;
-	char *title;
+	char *title = NULL;
 	int datasize, origsize, bitrate;
 	TitleInput *tuple = NULL;
 
@@ -569,6 +571,7 @@ get_song_tuple(char *filename)
 	TitleInput *tuple = NULL;
 	tta_info *ttainfo;
 	VFSFile *file;
+	gchar *realfn = NULL;
 
 	ttainfo = g_malloc0(sizeof(tta_info));
 
@@ -576,10 +579,12 @@ get_song_tuple(char *filename)
 		if(open_tta_file(filename, ttainfo, 0) >= 0) {
 			tuple = bmp_title_input_new();
 
-			tuple->file_name = g_path_get_basename(filename);
-			tuple->file_path = g_path_get_dirname(filename);
-			tuple->file_ext = extname(filename);
+			realfn = g_filename_from_uri(filename, NULL, NULL);
+			tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
+			tuple->file_path = g_path_get_dirname(realfn ? realfn : filename);
+			tuple->file_ext = extname(realfn ? realfn : filename);
 			tuple->length = ttainfo->LENGTH * 1000;
+			g_free(realfn); realfn = NULL;
 
 			if (ttainfo->ID3.id3has) {
 				if(ttainfo->ID3.artist && strlen((char *)ttainfo->ID3.artist))
@@ -822,11 +827,14 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
 int get_id3_tags (const char *filename, tta_info *ttainfo) {
 	int id3v2_size = 0;
 	gchar *str = NULL;
+	gchar *realfn = NULL;
 
 	struct id3_file *id3file = NULL;
 	struct id3_tag  *tag = NULL;
 
-	id3file = id3_file_open (filename, ID3_FILE_MODE_READONLY);
+	realfn = g_filename_from_uri(filename, NULL, NULL);
+	id3file = id3_file_open (realfn ? realfn : filename, ID3_FILE_MODE_READONLY);
+	g_free(realfn); realfn = NULL;
 
 	if (id3file) {
 		tag = id3_file_tag (id3file);
