@@ -1064,15 +1064,10 @@ adplug_init (void)
 
     if (homedir)
     {
-      char *userdb =
-        (char *) malloc (strlen (homedir) + strlen (ADPLUG_CONFDIR) +
-                         strlen (ADPLUGDB_FILE) + 3);
-      strcpy (userdb, homedir);
-      strcat (userdb, "/" ADPLUG_CONFDIR "/");
-      strcat (userdb, ADPLUGDB_FILE);
+      std::string userdb;
+      userdb = "file://" + std::string(g_get_home_dir()) + "/" ADPLUG_CONFDIR "/" + ADPLUGDB_FILE;
       plr.db->load (userdb);    // load user's database
-      dbg_printf (" (userdb=\"%s\")", userdb);
-      free (userdb);
+      dbg_printf (" (userdb=\"%s\")", userdb.c_str());
     }
   }
   CAdPlug::set_database (plr.db);
