@@ -650,13 +650,13 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     gtk_container_set_border_width( GTK_CONTAINER(synth_samplerate_vbox), 6 );
     gtk_container_add( GTK_CONTAINER(synth_samplerate_frame) , synth_samplerate_vbox );
     gtk_box_pack_start( GTK_BOX(synth_rightcol_vbox) , synth_samplerate_frame , FALSE , FALSE , 0 );
-    synth_samplerate_option[0] = gtk_radio_button_new_with_label( NULL , "22050 Hz " );
+    synth_samplerate_option[0] = gtk_radio_button_new_with_label( NULL , _("22050 Hz ") );
     g_object_set_data( G_OBJECT(synth_samplerate_option[0]) , "val" , GINT_TO_POINTER(22050) );
     synth_samplerate_option[1] = gtk_radio_button_new_with_label_from_widget(
-                                   GTK_RADIO_BUTTON(synth_samplerate_option[0]) , "44100 Hz " );
+                                   GTK_RADIO_BUTTON(synth_samplerate_option[0]) , _("44100 Hz ") );
     g_object_set_data( G_OBJECT(synth_samplerate_option[1]) , "val" , GINT_TO_POINTER(44100) );
     synth_samplerate_option[2] = gtk_radio_button_new_with_label_from_widget(
-                                   GTK_RADIO_BUTTON(synth_samplerate_option[0]) , "96000 Hz " );
+                                   GTK_RADIO_BUTTON(synth_samplerate_option[0]) , _("96000 Hz ") );
     g_object_set_data( G_OBJECT(synth_samplerate_option[2]) , "val" , GINT_TO_POINTER(96000) );
     synth_samplerate_option[3] = gtk_radio_button_new_with_label_from_widget(
                                    GTK_RADIO_BUTTON(synth_samplerate_option[0]) , _("custom ") );
@@ -668,7 +668,7 @@ void i_configure_gui_tab_fsyn( GtkWidget * fsyn_page_alignment ,
     g_object_set_data( G_OBJECT(synth_samplerate_option[3]) , "customentry" , synth_samplerate_optionentry );
     g_signal_connect( G_OBJECT(synth_samplerate_option[3]) , "toggled" ,
                       G_CALLBACK(i_configure_ev_sysamplerate_togglecustom) , synth_samplerate_optionentry );
-    synth_samplerate_optionlabel = gtk_label_new( "Hz " );
+    synth_samplerate_optionlabel = gtk_label_new( _("Hz ") );
     gtk_box_pack_start( GTK_BOX(synth_samplerate_optionhbox) , synth_samplerate_optionentry , TRUE , TRUE , 0 );
     gtk_box_pack_start( GTK_BOX(synth_samplerate_optionhbox) , synth_samplerate_optionlabel , FALSE , FALSE , 0 );
     switch ( fsyncfg->fsyn_synth_samplerate )

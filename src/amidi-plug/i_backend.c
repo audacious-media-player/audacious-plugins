@@ -51,7 +51,7 @@ GSList * i_backend_list_lookup( void )
         /* seems to be a backend for amidi-plug , try to load it */
         module = g_module_open( module_pathfilename , G_MODULE_BIND_LOCAL );
         if ( module == NULL )
-          g_warning( _("Error loading module %s - %s\n") , module_pathfilename , g_module_error() );
+          g_warning( "Error loading module %s - %s\n" , module_pathfilename , g_module_error() );
         else
         {
           /* try to get the module name */
@@ -62,14 +62,14 @@ GSList * i_backend_list_lookup( void )
             /* name and desc dinamically allocated */
             getapmoduleinfo( &mn->name , &mn->longname , &mn->desc , &mn->ppos );
             mn->filename = g_strdup(module_pathfilename); /* dinamically allocated */
-            DEBUGMSG( _("Backend found and added in list, filename: %s and lname: %s\n") ,
+            DEBUGMSG( "Backend found and added in list, filename: %s and lname: %s\n" ,
                       mn->filename, mn->longname );
             backend_list = g_slist_append( backend_list , mn );
           }
           else
           {
             /* module name not found, this is not a backend for amidi-plug */
-            g_warning( _("File %s is not a backend for amidi-plug!\n") , module_pathfilename );
+            g_warning( "File %s is not a backend for amidi-plug!\n" , module_pathfilename );
           }
           g_module_close( module );
         }
@@ -79,7 +79,7 @@ GSList * i_backend_list_lookup( void )
     g_dir_close( backend_directory );
   }
   else
-    g_warning( _("Unable to open the backend directory %s\n") , AMIDIPLUGBACKENDDIR );
+    g_warning( "Unable to open the backend directory %s\n" , AMIDIPLUGBACKENDDIR );
 
   return backend_list;
 }
@@ -104,7 +104,7 @@ void i_backend_list_free( GSList * backend_list )
 gint i_backend_load( gchar * module_name )
 {
   gchar * module_pathfilename = g_strjoin( "" , AMIDIPLUGBACKENDDIR , "/ap-" , module_name , ".so" , NULL );
-  DEBUGMSG( _("loading backend '%s'\n") , module_pathfilename );
+  DEBUGMSG( "loading backend '%s'\n" , module_pathfilename );
   backend.gmodule = g_module_open( module_pathfilename , 0 );
 
   if ( backend.gmodule != NULL )
@@ -140,7 +140,7 @@ gint i_backend_load( gchar * module_name )
     g_module_symbol( backend.gmodule , "audio_check_autonomous" , (gpointer*)&checkautonomousaudio );
     getapmoduleinfo( &backend.name , NULL , NULL , NULL );
     backend.autonomous_audio = checkautonomousaudio();
-    DEBUGMSG( _("backend %s (name '%s') successfully loaded\n") , module_pathfilename , backend.name );
+    DEBUGMSG( "backend %s (name '%s') successfully loaded\n" , module_pathfilename , backend.name );
     backend.init( i_configure_cfg_get_file );
     g_free( module_pathfilename );
     return 1;
@@ -148,7 +148,7 @@ gint i_backend_load( gchar * module_name )
   else
   {
     backend.name = NULL;
-    g_warning( _("unable to load backend '%s'\n") , module_pathfilename );
+    g_warning( "unable to load backend '%s'\n" , module_pathfilename );
     g_free( module_pathfilename );
     return 0;
   }
@@ -159,17 +159,17 @@ gint i_backend_unload( void )
 {
   if ( backend.gmodule != NULL )
   {
-    DEBUGMSG( _("unloading backend '%s'\n") , backend.name );
+    DEBUGMSG( "unloading backend '%s'\n" , backend.name );
     backend.cleanup();
     g_module_close( backend.gmodule );
-    DEBUGMSG( _("backend '%s' unloaded\n") , backend.name );
+    DEBUGMSG( "backend '%s' unloaded\n" , backend.name );
     g_free( backend.name );
     backend.gmodule = NULL;
     return 1;
   }
   else
   {
-    g_warning( _("attempting to unload backend, but no backend is loaded\n") );
+    g_warning( "attempting to unload backend, but no backend is loaded\n" );
     return 0;
   }
 }

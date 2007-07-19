@@ -83,7 +83,7 @@ void i_configure_ev_browse_for_entry( GtkWidget * target_entry )
     {
       gchar *filename = gtk_file_chooser_get_filename( GTK_FILE_CHOOSER(browse_dialog) );
       gtk_entry_set_text( GTK_ENTRY(target_entry) , filename );
-      DEBUGMSG( _("selected file: %s\n") , filename );
+      DEBUGMSG( "selected file: %s\n" , filename );
       g_free( filename );
     }
     gtk_widget_destroy( browse_dialog );
@@ -109,7 +109,7 @@ void i_configure_gui( void )
 
   if ( configwin != NULL )
   {
-    DEBUGMSG( _("config window is already open!\n") );
+    DEBUGMSG( "config window is already open!\n" );
     return;
   }
 
@@ -255,15 +255,15 @@ void i_configure_ev_bokcheck( GtkWidget * button_ok , gpointer configwin )
 
 void i_configure_ev_bok( GtkWidget * button_ok , gpointer configwin )
 {
-  DEBUGMSG( _("saving configuration...\n") );
+  DEBUGMSG( "saving configuration...\n" );
   i_configure_cfg_ap_save(); /* save amidiplug settings */
   i_configure_cfg_backend_save(); /* save backend settings */
-  DEBUGMSG( _("configuration saved\n") );
+  DEBUGMSG( "configuration saved\n" );
 
   /* check if a different backend has been selected */
   if (( backend.name == NULL ) || ( strcmp( amidiplug_cfg_ap.ap_seq_backend , backend.name ) ))
   {
-    DEBUGMSG( _("a new backend has been selected, unloading previous and loading the new one\n") );
+    DEBUGMSG( "a new backend has been selected, unloading previous and loading the new one\n" );
     i_backend_unload(); /* unload previous backend */
     i_backend_load( amidiplug_cfg_ap.ap_seq_backend ); /* load new backend */
   }
@@ -271,7 +271,7 @@ void i_configure_ev_bok( GtkWidget * button_ok , gpointer configwin )
   {
     if ( backend.gmodule != NULL )
     {
-      DEBUGMSG( _("the selected backend is already loaded, so just perform backend cleanup and reinit\n") );
+      DEBUGMSG( "the selected backend is already loaded, so just perform backend cleanup and reinit\n" );
       backend.cleanup();
       backend.init( i_configure_cfg_get_file );
     }

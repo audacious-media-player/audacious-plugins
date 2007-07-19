@@ -360,15 +360,15 @@ void i_soundfont_load( void )
     while ( sffiles[i] != NULL )
     {
       gint sf_id = 0;
-      DEBUGMSG( _("loading soundfont %s\n") , sffiles[i] );
+      DEBUGMSG( "loading soundfont %s\n" , sffiles[i] );
       sf_id = fluid_synth_sfload( sc.synth , sffiles[i] , 0 );
       if ( sf_id == -1 )
       {
-        g_warning( _("unable to load SoundFont file %s\n") , sffiles[i] );
+        g_warning( "unable to load SoundFont file %s\n" , sffiles[i] );
       }
       else
       {
-        DEBUGMSG( _("soundfont %s successfully loaded\n") , sffiles[i] );
+        DEBUGMSG( "soundfont %s successfully loaded\n" , sffiles[i] );
         g_array_append_val( sc.soundfont_ids , sf_id );
       }
       i++;
@@ -377,7 +377,7 @@ void i_soundfont_load( void )
   }
   else
   {
-    g_warning( _("FluidSynth backend was selected, but no SoundFont has been specified\n") );
+    g_warning( "FluidSynth backend was selected, but no SoundFont has been specified\n" );
   }
 }
 

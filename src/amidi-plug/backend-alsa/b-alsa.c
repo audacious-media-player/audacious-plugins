@@ -164,7 +164,7 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 
   if ( snd_seq_set_queue_tempo( sc.seq , sc.queue , sc.queue_tempo ) < 0 )
   {
-    g_warning( _("Cannot set queue tempo (%u/%i)\n"),
+    g_warning( "Cannot set queue tempo (%u/%i)\n",
                snd_seq_queue_tempo_get_tempo(sc.queue_tempo),
                snd_seq_queue_tempo_get_ppq(sc.queue_tempo) );
     return 0;
@@ -373,14 +373,14 @@ gint audio_volume_get( gint * left_volume , gint * right_volume )
         snd_mixer_selem_get_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT , &lc );
         /* convert the range to 0-100 (for the case that pv_range is not 0-100 already) */
         *left_volume = (gint)(((lc - pv_min) * 100) / pv_range);
-        DEBUGMSG( _("GET VOLUME requested, get left channel (%i)\n") , *left_volume );
+        DEBUGMSG( "GET VOLUME requested, get left channel (%i)\n" , *left_volume );
       }
       if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT ) )
       {
         snd_mixer_selem_get_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT , &rc );
         /* convert the range to 0-100 (for the case that pv_range is not 0-100 already) */
         *right_volume = (gint)(((rc - pv_min) * 100) / pv_range);
-        DEBUGMSG( _("GET VOLUME requested, get right channel (%i)\n") , *right_volume );
+        DEBUGMSG( "GET VOLUME requested, get right channel (%i)\n" , *right_volume );
       }
     }
   }
@@ -418,13 +418,13 @@ gint audio_volume_set( gint left_volume , gint right_volume )
     {
       if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT ) )
       {
-        DEBUGMSG( _("SET VOLUME requested, setting left channel to %i%%\n") , left_volume );
+        DEBUGMSG( "SET VOLUME requested, setting left channel to %i%%\n" , left_volume );
         snd_mixer_selem_set_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_LEFT ,
                                              (gint)((gdouble)(0.01 * (gdouble)(left_volume * pv_range)) + pv_min) );
       }
       if ( snd_mixer_selem_has_playback_channel( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT ) )
       {
-        DEBUGMSG( _("SET VOLUME requested, setting right channel to %i%%\n") , right_volume );
+        DEBUGMSG( "SET VOLUME requested, setting right channel to %i%%\n" , right_volume );
         snd_mixer_selem_set_playback_volume( mixer_elem , SND_MIXER_SCHN_FRONT_RIGHT ,
                                              (gint)((gdouble)(0.01 * (gdouble)(right_volume * pv_range)) + pv_min) );
       }
@@ -803,7 +803,7 @@ gchar * i_configure_read_seq_ports_default( void )
         /* remove lf and cr from the end of the string */
         g_strdelimit( &buffer[11] , "\r\n" , '\0' );
         /* ready to go */
-        DEBUGMSG( _("init, default values for seq ports detected: %s\n") , &buffer[11] );
+        DEBUGMSG( "init, default values for seq ports detected: %s\n" , &buffer[11] );
         fclose( fp );
         return g_strdup( &buffer[11] );
       }
