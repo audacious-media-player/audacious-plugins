@@ -164,8 +164,8 @@ void file_about(void)
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message("About FileWriter-Plugin",
-                               "FileWriter-Plugin\n\n"
+    dialog = xmms_show_message(_("About FileWriter-Plugin"),
+                               _("FileWriter-Plugin\n\n"
                                "This program is free software; you can redistribute it and/or modify\n"
                                "it under the terms of the GNU General Public License as published by\n"
                                "the Free Software Foundation; either version 2 of the License, or\n"
@@ -179,7 +179,7 @@ void file_about(void)
                                "You should have received a copy of the GNU General Public License\n"
                                "along with this program; if not, write to the Free Software\n"
                                "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
-                               "USA.", "Ok", FALSE, NULL, NULL);
+                               "USA."), _("Ok"), FALSE, NULL, NULL);
     gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
                        GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
 }
@@ -334,11 +334,11 @@ static void file_write(void *ptr, gint length)
     new_channels = input.channels;
 
     ep = get_current_effect_plugin();
-    if ( effects_enabled() && ep && ep->query_format ) { 
+    if ( effects_enabled() && ep && ep->query_format ) {
         ep->query_format(&new_format,&new_frequency,&new_channels);
     }
 
-    if ( effects_enabled() && ep && ep->mod_samples ) { 
+    if ( effects_enabled() && ep && ep->mod_samples ) {
         length = ep->mod_samples(&ptr,length,
                                  input.format,
                                  input.frequency,
@@ -575,7 +575,7 @@ static void file_configure(void)
         gtk_box_pack_start(GTK_BOX(path_hbox), path_label, FALSE, FALSE, 0);
 
         path_dirbrowser =
-            gtk_file_chooser_button_new ("Pick a folder",
+            gtk_file_chooser_button_new (_("Pick a folder"),
                                          GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
         gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(path_dirbrowser),
                                             file_path);
@@ -618,7 +618,7 @@ static void file_configure(void)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
         gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
         use_suffix_tooltips = gtk_tooltips_new();
-        gtk_tooltips_set_tip(use_suffix_tooltips, use_suffix_toggle, "If enabled, the extension from the original filename will not be stripped before adding the .wav extension to the end.", NULL);
+        gtk_tooltips_set_tip(use_suffix_tooltips, use_suffix_toggle, _("If enabled, the extension from the original filename will not be stripped before adding the .wav extension to the end."), NULL);
         gtk_tooltips_enable(use_suffix_tooltips);
 
         if (filenamefromtags)

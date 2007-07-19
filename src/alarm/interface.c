@@ -1157,7 +1157,7 @@ create_config_dialog (void)
   gtk_scale_set_value_pos (GTK_SCALE (quiet_vol_scale), GTK_POS_RIGHT);
   gtk_scale_set_digits (GTK_SCALE (quiet_vol_scale), 0);
 
-  label83 = gtk_label_new ("%");
+  label83 = gtk_label_new (_("%"));
   gtk_widget_set_name (label83, "label83");
   gtk_widget_ref (label83);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label83", label83,
@@ -1201,7 +1201,7 @@ create_config_dialog (void)
   gtk_scale_set_value_pos (GTK_SCALE (vol_scale), GTK_POS_RIGHT);
   gtk_scale_set_digits (GTK_SCALE (vol_scale), 0);
 
-  label85 = gtk_label_new ("%");
+  label85 = gtk_label_new (_("%"));
   gtk_widget_set_name (label85, "label85");
   gtk_widget_ref (label85);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label85", label85,
@@ -1467,7 +1467,7 @@ create_reminder_dialog (gchar *reminder_msg)
   gtk_object_set_data (GTK_OBJECT (reminder_dialog), "dialog_vbox6", dialog_vbox6);
   gtk_widget_show (dialog_vbox6);
 
-  frame19 = gtk_frame_new ("Your reminder for today is..");
+  frame19 = gtk_frame_new (_("Your reminder for today is.."));
   gtk_widget_set_name (frame19, "frame19");
   gtk_widget_ref (frame19);
   gtk_object_set_data_full (GTK_OBJECT (reminder_dialog), "frame19", frame19,
@@ -1492,7 +1492,7 @@ create_reminder_dialog (gchar *reminder_msg)
   gtk_widget_show (dialog_action_area6);
   gtk_container_set_border_width (GTK_CONTAINER (dialog_action_area6), 10);
 
-  button11 = gtk_button_new_with_label ("Thankyou");
+  button11 = gtk_button_new_with_label (_("Thankyou"));
   gtk_widget_set_name (button11, "button11");
   gtk_widget_ref (button11);
   gtk_object_set_data_full (GTK_OBJECT (reminder_dialog), "button11", button11,
