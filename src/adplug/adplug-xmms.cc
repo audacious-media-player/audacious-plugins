@@ -256,7 +256,7 @@ adplug_config (void)
   GtkTooltips *tooltips = gtk_tooltips_new ();
   GPtrArray *rblist = g_ptr_array_new ();
 
-  gtk_window_set_title (GTK_WINDOW (config_dlg), "AdPlug :: Configuration");
+  gtk_window_set_title (GTK_WINDOW (config_dlg), _("AdPlug :: Configuration"));
   gtk_window_set_policy (GTK_WINDOW (config_dlg), FALSE, FALSE, TRUE);  // Window is auto sized
   gtk_window_set_modal (GTK_WINDOW (config_dlg), TRUE);
   gtk_container_add (GTK_CONTAINER (config_dlg->vbox), GTK_WIDGET (notebook));
@@ -265,7 +265,7 @@ adplug_config (void)
   {
     GtkWidget *button;
 
-    button = gtk_button_new_with_label ("Ok");
+    button = gtk_button_new_with_label (_("Ok"));
     g_signal_connect (G_OBJECT (button), "clicked",
                       G_CALLBACK (close_config_box_ok), (gpointer) rblist);
     g_signal_connect_data (G_OBJECT (button), "clicked",
@@ -275,7 +275,7 @@ adplug_config (void)
                                             G_CONNECT_SWAPPED));
     gtk_container_add (GTK_CONTAINER (config_dlg->action_area), button);
 
-    button = gtk_button_new_with_label ("Cancel");
+    button = gtk_button_new_with_label (_("Cancel"));
     g_signal_connect (G_OBJECT (button), "clicked",
                       G_CALLBACK (close_config_box_cancel),
                       (gpointer) rblist);
@@ -291,7 +291,7 @@ adplug_config (void)
   gtk_table_set_row_spacings (table, 5);
   gtk_table_set_col_spacings (table, 5);
   gtk_notebook_append_page (notebook, GTK_WIDGET (table),
-                            print_left ("General"));
+                            print_left (_("General")));
 
   // Add "Sound quality" section
   {
@@ -303,19 +303,19 @@ adplug_config (void)
     gtk_table_set_col_spacings (sqt, 5);
     gtk_table_attach_defaults (table,
                                make_framed (GTK_WIDGET (sqt),
-                                            "Sound quality"), 0, 1, 0, 1);
+                                            _("Sound quality")), 0, 1, 0, 1);
 
     // Add "Resolution" section
     fvb = GTK_VBOX (gtk_vbox_new (TRUE, 0));
     gtk_table_attach_defaults (sqt,
-                               make_framed (GTK_WIDGET (fvb), "Resolution"),
+                               make_framed (GTK_WIDGET (fvb), _("Resolution")),
                                0, 1, 0, 1);
-    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, "8bit"));
+    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, _("8bit")));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), !cfg.bit16);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, "16bit"));
+                        (rb, _("16bit")));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), cfg.bit16);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
@@ -323,49 +323,49 @@ adplug_config (void)
     // Add "Channels" section
     fvb = GTK_VBOX (gtk_vbox_new (TRUE, 0));
     gtk_table_attach_defaults (sqt,
-                               make_framed (GTK_WIDGET (fvb), "Channels"), 0,
+                               make_framed (GTK_WIDGET (fvb), _("Channels")), 0,
                                1, 1, 2);
-    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, "Mono"));
+    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, _("Mono")));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), !cfg.stereo);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, "Stereo"));
+                        (rb, _("Stereo")));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), cfg.stereo);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     gtk_tooltips_set_tip (tooltips, GTK_WIDGET (rb),
-                          "Setting stereo is not recommended, unless you need to. "
+                          _("Setting stereo is not recommended, unless you need to. "
                           "This won't add any stereo effects to the sound - OPL2 "
-                          "is just mono - but eats up more CPU power!", NULL);
+                          "is just mono - but eats up more CPU power!"), NULL);
     g_ptr_array_add (rblist, (gpointer) rb);
 
     // Add "Frequency" section
     fvb = GTK_VBOX (gtk_vbox_new (TRUE, 0));
     gtk_table_attach_defaults (sqt,
-                               make_framed (GTK_WIDGET (fvb), "Frequency"), 1,
+                               make_framed (GTK_WIDGET (fvb), _("Frequency")), 1,
                                2, 0, 2);
-    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, "11025"));
+    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, _("11025")));
     if (cfg.freq == 11025)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, "22050"));
+                        (rb, _("22050")));
     if (cfg.freq == 22050)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, "44100"));
+                        (rb, _("44100")));
     if (cfg.freq == 44100)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, "48000"));
+                        (rb, _("48000")));
     if (cfg.freq == 48000)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
@@ -378,18 +378,18 @@ adplug_config (void)
     GtkCheckButton *cb;
 
     gtk_table_attach_defaults (table,
-                               make_framed (GTK_WIDGET (vb), "Playback"), 1,
+                               make_framed (GTK_WIDGET (vb), _("Playback")), 1,
                                2, 0, 1);
 
     cb =
-      GTK_CHECK_BUTTON (gtk_check_button_new_with_label ("Detect songend"));
+      GTK_CHECK_BUTTON (gtk_check_button_new_with_label (_("Detect songend")));
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (cb), !cfg.endless);
     gtk_container_add (GTK_CONTAINER (vb), GTK_WIDGET (cb));
     gtk_tooltips_set_tip (tooltips, GTK_WIDGET (cb),
-                          "If enabled, XMMS will detect a song's ending, stop "
+                          _("If enabled, XMMS will detect a song's ending, stop "
                           "it and advance in the playlist. If disabled, XMMS "
                           "won't take notice of a song's ending and loop it all "
-                          "over again and again.", NULL);
+                          "over again and again."), NULL);
     g_ptr_array_add (rblist, (gpointer) cb);
   }
 
@@ -397,17 +397,17 @@ adplug_config (void)
 
   table = GTK_TABLE (gtk_table_new (1, 1, TRUE));
   gtk_notebook_append_page (notebook, GTK_WIDGET (table),
-                            print_left ("Formats"));
+                            print_left (_("Formats")));
 
   // Add "Format selection" section
   {
     GtkHBox *vb = GTK_HBOX (gtk_hbox_new (FALSE, 0));
     gtk_table_attach_defaults (table,
                                make_framed (GTK_WIDGET (vb),
-                                            "Format selection"), 0, 1, 0, 1);
+                                            _("Format selection")), 0, 1, 0, 1);
     // Add scrollable list
     {
-      const gchar *rowstr[] = { "Format", "Extension" };
+      const gchar *rowstr[] = { _("Format"), _("Extension") };
       GtkEventBox *eventbox = GTK_EVENT_BOX (gtk_event_box_new ());
       GtkScrolledWindow *formatswnd =
         GTK_SCROLLED_WINDOW (gtk_scrolled_window_new (NULL, NULL));
@@ -447,10 +447,10 @@ adplug_config (void)
       gtk_container_add (GTK_CONTAINER (eventbox), GTK_WIDGET (formatswnd));
       gtk_container_add (GTK_CONTAINER (vb), GTK_WIDGET (eventbox));
       gtk_tooltips_set_tip (tooltips, GTK_WIDGET (eventbox),
-                            "Selected file types will be recognized and played "
+                            _("Selected file types will be recognized and played "
                             "back by this plugin. Deselected types will be "
                             "ignored to make room for other plugins to play "
-                            "these files.", NULL);
+                            "these files."), NULL);
       g_ptr_array_add (rblist, pl);
     }
   }
@@ -526,14 +526,14 @@ adplug_info_box (char *filename)
   std::ostringstream infotext;
   unsigned int i;
   GtkDialog *infobox = GTK_DIALOG (gtk_dialog_new ());
-  GtkButton *okay_button = GTK_BUTTON (gtk_button_new_with_label ("Ok"));
+  GtkButton *okay_button = GTK_BUTTON (gtk_button_new_with_label (_("Ok")));
 
   GtkVBox *box = GTK_VBOX (gtk_vbox_new (TRUE, 2));
   GtkHBox *hbox = GTK_HBOX (gtk_hbox_new (TRUE, 2));
   GtkHBox *hbox2 = GTK_HBOX (gtk_hbox_new (TRUE, 2));
 
   // Build file info box
-  gtk_window_set_title (GTK_WINDOW (infobox), "AdPlug :: File Info");
+  gtk_window_set_title (GTK_WINDOW (infobox), _("AdPlug :: File Info"));
   gtk_window_set_policy (GTK_WINDOW (infobox), FALSE, FALSE, TRUE); // Window is auto sized
 
   gtk_container_add (GTK_CONTAINER (infobox->vbox), GTK_WIDGET (box));
@@ -555,25 +555,25 @@ adplug_info_box (char *filename)
 //            GTK_SIDE_TOP, GTK_ANCHOR_CENTER, GTK_FILL_X);
   gtk_box_pack_end (GTK_BOX (box), GTK_WIDGET (hbox2), TRUE, TRUE, 2);
   gtk_box_pack_end (GTK_BOX (box),
-                    make_framed (print_left (filename), "Filename"), TRUE,
+                    make_framed (print_left (filename), _("Filename")), TRUE,
                     TRUE, 2);
 
   // Add "Song info" section
-  infotext << "Title: " << p->gettitle () << std::endl <<
-    "Author: " << p->getauthor () << std::endl <<
-    "File Type: " << p->gettype () << std::endl <<
-    "Subsongs: " << p->getsubsongs () << std::endl <<
-    "Instruments: " << p->getinstruments ();
+  infotext << _("Title: ") << p->gettitle () << std::endl <<
+    _("Author: ") << p->getauthor () << std::endl <<
+    _("File Type: ") << p->gettype () << std::endl <<
+    _("Subsongs: ") << p->getsubsongs () << std::endl <<
+    _("Instruments: ") << p->getinstruments ();
   if (plr.p == p)
     infotext << std::ends;
   else
   {
-    infotext << std::endl << "Orders: " << p->getorders () << std::endl <<
-      "Patterns: " << p->getpatterns () << std::ends;
+    infotext << std::endl << _("Orders: ") << p->getorders () << std::endl <<
+      _("Patterns: ") << p->getpatterns () << std::ends;
   }
   gtk_container_add (GTK_CONTAINER (hbox),
                      make_framed (print_left (infotext.str ().c_str ()),
-                                  "Song"));
+                                  _("Song")));
 
   // Add "Playback info" section if currently playing
   if (plr.p == p)
@@ -582,7 +582,7 @@ adplug_info_box (char *filename)
     gtk_label_set_justify (plr.infobox, GTK_JUSTIFY_LEFT);
     gtk_misc_set_padding (GTK_MISC (plr.infobox), 2, 2);
     gtk_container_add (GTK_CONTAINER (hbox),
-                       make_framed (GTK_WIDGET (plr.infobox), "Playback"));
+                       make_framed (GTK_WIDGET (plr.infobox), _("Playback")));
   }
 
 // Former packer layout, for future reproduction
@@ -599,7 +599,7 @@ adplug_info_box (char *filename)
     gchar tmpstr[10];
 
     {
-      const gchar *rowstr[] = { "#", "Instrument name" };
+      const gchar *rowstr[] = { _("#"), _("Instrument name") };
       instnames = GTK_CLIST (gtk_clist_new_with_titles (2, (gchar **)rowstr));
     }
     gtk_clist_set_column_justification (instnames, 0, GTK_JUSTIFY_RIGHT);
@@ -641,7 +641,7 @@ adplug_info_box (char *filename)
 //    gtk_packer_add(packer, make_framed(GTK_WIDGET(msgwnd), "Song message"),
 //         GTK_SIDE_TOP, GTK_ANCHOR_CENTER, GTK_FILL_X, 2, 0, 0, 200, 50);
     gtk_box_pack_end (GTK_BOX (hbox2),
-                      make_framed (GTK_WIDGET (msgwnd), "Song message"), TRUE,
+                      make_framed (GTK_WIDGET (msgwnd), _("Song message")), TRUE,
                       TRUE, 2);
   }
 
@@ -663,7 +663,7 @@ adplug_info_box (char *filename)
 //   gtk_packer_add_defaults(packer, make_framed(GTK_WIDGET(slider), "Subsong selection"),
 //              GTK_SIDE_TOP, GTK_ANCHOR_CENTER, GTK_FILL_X);
     gtk_box_pack_end (GTK_BOX (hbox2),
-                      make_framed (GTK_WIDGET (slider), "Subsong selection"),
+                      make_framed (GTK_WIDGET (slider), _("Subsong selection")),
                       TRUE, TRUE, 2);
   }
 
@@ -685,13 +685,13 @@ update_infobox (void)
   std::ostringstream infotext;
 
   // Recreate info string
-  infotext << "Order: " << plr.p->getorder () << " / " << plr.p->
-    getorders () << std::endl << "Pattern: " << plr.p->
-    getpattern () << " / " << plr.p->
-    getpatterns () << std::endl << "Row: " << plr.p->
-    getrow () << std::endl << "Speed: " << plr.p->
-    getspeed () << std::endl << "Timer: " << plr.p->
-    getrefresh () << "Hz" << std::ends;
+  infotext << _("Order: ") << plr.p->getorder () << _(" / ") << plr.p->
+    getorders () << std::endl << _("Pattern: ") << plr.p->
+    getpattern () << _(" / ") << plr.p->
+    getpatterns () << std::endl << _("Row: ") << plr.p->
+    getrow () << std::endl << _("Speed: ") << plr.p->
+    getspeed () << std::endl << _("Timer: ") << plr.p->
+    getrefresh () << _("Hz") << std::ends;
 
   GDK_THREADS_ENTER ();
   gtk_label_set_text (plr.infobox, infotext.str ().c_str ());

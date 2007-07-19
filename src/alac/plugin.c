@@ -71,19 +71,19 @@ extname(const char *filename)
     if (ext != NULL)
         ++ext;
 
-    return ext;  
+    return ext;
 }
 
 static void alac_about(void)
 {
 	static GtkWidget *aboutbox;
-    
+
 	if(aboutbox != NULL)
 		return;
 
-	aboutbox = xmms_show_message("About Apple Lossless Audio Plugin",
-				     "Copyright (c) 2006 Audacious team\n"
-				     "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>",
+	aboutbox = xmms_show_message(_("About Apple Lossless Audio Plugin"),
+				     _("Copyright (c) 2006 Audacious team\n"
+				     "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"),
 				     _("Ok"), FALSE, NULL, NULL);
 
 	g_signal_connect(G_OBJECT(aboutbox), "destroy",
@@ -102,7 +102,7 @@ gboolean is_our_fd(char *filename, VFSFile* input_file)
 
     if (!input_stream)
         return FALSE;
-        
+
     /* if qtmovie_read returns successfully, the stream is up to
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
@@ -156,7 +156,7 @@ TitleInput *build_tuple(char *filename)
 	vfs_fclose(input_file);
         return NULL;
     }
-        
+
     /* if qtmovie_read returns successfully, the stream is up to
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))

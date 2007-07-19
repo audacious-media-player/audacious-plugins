@@ -32,7 +32,7 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
   if ( name != NULL )
     *name = g_strdup( "dummy" );
   if ( longname != NULL )
-    *longname = g_strdup( "Dummy Backend " AMIDIPLUG_VERSION );
+    *longname = g_strjoin( "", _("Dummy Backend "), AMIDIPLUG_VERSION, NULL );
   if ( desc != NULL )
     *desc = g_strdup( _("This backend does not produce audio at all. It is mostly "
                         "useful for analysis and testing purposes, as it can log "
@@ -292,7 +292,7 @@ gint sequencer_output_shut( guint max_tick , gint skip_offset )
 /* unimplemented (useless for dummy backend) */
 gint audio_volume_get( gint * left_volume , gint * right_volume )
 {
-  return 0; 
+  return 0;
 }
 gint audio_volume_set( gint left_volume , gint right_volume )
 {

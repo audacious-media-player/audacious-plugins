@@ -64,7 +64,7 @@ callback_info* init_callback_info(gchar* name) {
     info->replaygain.track_peak = NULL;
     info->replaygain.album_gain = NULL;
     info->replaygain.album_peak = NULL;
-    reset_info(info);
+    reset_info(info, FALSE);
 
     _DEBUG("Playback buffer allocated for %d samples, %d bytes", BUFFER_SIZE_SAMP, BUFFER_SIZE_BYTE);
 
@@ -73,16 +73,17 @@ callback_info* init_callback_info(gchar* name) {
 
 /* --- */
 
-void reset_info(callback_info* info) {
+void reset_info(callback_info* info, gboolean close_fd) {
 
     _ENTER;
 
     _DEBUG("Using callback_info %s", info->name);
 
-    if (NULL != info->input_stream) {
+    if (close_fd && (NULL != info->input_stream)) {
+        _DEBUG("Closing fd");
         vfs_fclose(info->input_stream);
-        info->input_stream = NULL;
     }
+    info->input_stream = NULL;
 
     // memset(info->output_buffer, 0, BUFFER_SIZE * sizeof(int16_t));
     info->stream.samplerate = 0;
@@ -172,7 +173,7 @@ void reset_info(callback_info* info) {
 
 /* --- */
 
-gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_info* info) {
+gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info) {
 
     FLAC__StreamDecoderState ret;
 
@@ -180,7 +181,9 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
 
     _DEBUG("Using callback_info %s", info->name);
 
-    _DEBUG("Opening file %s", filename);
+    reset_info(info, FALSE);
+
+    info->input_stream = fd;
 
     /*
      * Reset the decoder
@@ -189,8 +192,6 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
         _ERROR("Could not reset the decoder!");
         _LEAVE FALSE;
     }
-
-    reset_info(info);
 
     /*
      * Just scan the first 8k for the start of metadata
@@ -205,21 +206,14 @@ gboolean read_metadata(gchar* filename, FLAC__StreamDecoder* decoder, callback_i
     info->testing = TRUE;
 
     /*
-     * Open the file
-     */
-    if (NULL == (info->input_stream = vfs_fopen(filename, "rb"))) {
-        _ERROR("Could not open file for reading! (%s)", filename);
-        _LEAVE FALSE;
-    }
-
-    /*
      * Try to decode the metadata
      */
     if (false == FLAC__stream_decoder_process_until_end_of_metadata(decoder)) {
         ret = FLAC__stream_decoder_get_state(decoder);
         _DEBUG("Could not read the metadata: %s(%d)!",
                 FLAC__StreamDecoderStateString[ret], ret);
-        reset_info(info);
+        /* Do not close the filehandle, it was passed to us */
+        reset_info(info, FALSE);
         _LEAVE FALSE;
     }
 

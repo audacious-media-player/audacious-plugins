@@ -116,7 +116,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 
     if (-1 == (position = vfs_ftell(info->input_stream))) {
         _ERROR("Could not tell current position!");
-        return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
+        _LEAVE FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
 
     _DEBUG("Current position: %ld", position);
@@ -137,6 +137,16 @@ FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data) {
 
     info = (callback_info*) client_data;
     _DEBUG("Using callback_info %s", info->name);
+
+    /*
+     * If we are testing a stream and use restricted reading,
+     * return EOF if we have exhausted our alotted reading
+     * quota
+     */
+    if (0 == info->read_max) {
+        _DEBUG("read_max exhausted, faking EOF");
+        _LEAVE TRUE;
+    }
 
     eof = vfs_feof(info->input_stream);
 

@@ -39,7 +39,7 @@ void i_about_gui( void )
 
   aboutwin = gtk_window_new( GTK_WINDOW_TOPLEVEL );
   gtk_window_set_type_hint( GTK_WINDOW(aboutwin), GDK_WINDOW_TYPE_HINT_DIALOG );
-  gtk_window_set_title( GTK_WINDOW(aboutwin), "AMIDI-Plug - about" );
+  gtk_window_set_title( GTK_WINDOW(aboutwin), _("AMIDI-Plug - about") );
   gtk_window_set_resizable( GTK_WINDOW(aboutwin) , FALSE );
   gtk_container_set_border_width( GTK_CONTAINER(aboutwin), 10 );
   g_signal_connect( G_OBJECT(aboutwin) , "destroy" , G_CALLBACK(gtk_widget_destroyed) , &aboutwin );
@@ -130,7 +130,7 @@ gpointer i_message_gui( gchar * title , gchar * message ,
 
   gtk_window_set_title( GTK_WINDOW(win) , title );
   g_signal_connect_swapped( G_OBJECT(win) , "response" , G_CALLBACK(gtk_widget_destroy) , win );
- 
+
   if ( show_win == TRUE )
     gtk_widget_show_all( win );
 

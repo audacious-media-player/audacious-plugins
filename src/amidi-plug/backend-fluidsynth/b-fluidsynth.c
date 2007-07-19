@@ -32,7 +32,7 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
   if ( name != NULL )
     *name = g_strdup( "fluidsynth" );
   if ( longname != NULL )
-    *longname = g_strdup( "FluidSynth Backend " AMIDIPLUG_VERSION );
+    *longname = g_strjoin( "", _("FluidSynth Backend "), AMIDIPLUG_VERSION, NULL );
   if ( desc != NULL )
     *desc = g_strdup( _("This backend produces audio by sending MIDI events "
                         "to FluidSynth, a real-time software synthesizer based "
@@ -277,7 +277,7 @@ gint sequencer_event_other( midievent_t * event )
 gint sequencer_output( gpointer * buffer , gint * len )
 {
   gdouble current_time = g_timer_elapsed( sc.timer_sample , NULL );
-  if (( current_time > 0.000500 ) && 
+  if (( current_time > 0.000500 ) &&
       ( (current_time - sc.last_sample_time) * 1000000 >=
         ((gdouble)amidiplug_cfg_fsyn.fsyn_buffer_size * 1000000 / sc.sample_rate) ))
   {
@@ -311,7 +311,7 @@ gint sequencer_output_shut( guint max_tick , gint skip_offset )
    output plugin mixer controls and is not handled by input plugins */
 gint audio_volume_get( gint * left_volume , gint * right_volume )
 {
-  return 0; 
+  return 0;
 }
 gint audio_volume_set( gint left_volume , gint right_volume )
 {
@@ -360,15 +360,15 @@ void i_soundfont_load( void )
     while ( sffiles[i] != NULL )
     {
       gint sf_id = 0;
-      DEBUGMSG( "loading soundfont %s\n" , sffiles[i] );
+      DEBUGMSG( _("loading soundfont %s\n") , sffiles[i] );
       sf_id = fluid_synth_sfload( sc.synth , sffiles[i] , 0 );
       if ( sf_id == -1 )
       {
-        g_warning( "unable to load SoundFont file %s\n" , sffiles[i] );
+        g_warning( _("unable to load SoundFont file %s\n") , sffiles[i] );
       }
       else
       {
-        DEBUGMSG( "soundfont %s successfully loaded\n" , sffiles[i] );
+        DEBUGMSG( _("soundfont %s successfully loaded\n") , sffiles[i] );
         g_array_append_val( sc.soundfont_ids , sf_id );
       }
       i++;
@@ -377,7 +377,7 @@ void i_soundfont_load( void )
   }
   else
   {
-    g_warning( "FluidSynth backend was selected, but no SoundFont has been specified\n" );
+    g_warning( _("FluidSynth backend was selected, but no SoundFont has been specified\n") );
   }
 }
 

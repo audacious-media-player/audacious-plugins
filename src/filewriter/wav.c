@@ -113,6 +113,6 @@ static gint wav_playing(void)
 static gint wav_get_written_time(void)
 {
     if (header.byte_p_sec != 0)
-        return (gint) ((written * 1000) / header.byte_p_sec);
+        return (gint) ((written * 1000) / header.byte_p_sec + offset);
     return 0;
 }

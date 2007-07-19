@@ -1014,8 +1014,12 @@ vorbis_file_info_box(gchar * filename)
     gtk_entry_set_text(GTK_ENTRY(location_entry),
                        get_comment(comment, "location"));
 #endif
-                       
-    filename_utf8 = filename_to_utf8(vte.filename);
+    {
+        gchar *realfn = NULL;
+        realfn = g_filename_from_uri(vte.filename, NULL, NULL);
+        filename_utf8 = filename_to_utf8(realfn ? realfn : vte.filename);
+        g_free(realfn); realfn = NULL;
+    }
 
     title = g_strdup_printf(_("%s - Audacious"), g_basename(filename_utf8));
     gtk_window_set_title(GTK_WINDOW(window), title);
@@ -1063,6 +1067,14 @@ vorbis_file_info_box(gchar * filename)
                              save_button);
     g_signal_connect_swapped(GTK_COMBO(genre_combo)->entry, "changed",
                              G_CALLBACK(change_buttons), save_button);
+    g_signal_connect_swapped(rg_track_entry, "changed", change_buttons,
+                             save_button);
+    g_signal_connect_swapped(rg_track_peak_entry, "changed", change_buttons,
+                             save_button);
+    g_signal_connect_swapped(rg_album_entry, "changed", change_buttons,
+                             save_button);
+    g_signal_connect_swapped(rg_album_peak_entry, "changed", change_buttons,
+                             save_button);
 
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_widget_show_all(window);

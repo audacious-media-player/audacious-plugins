@@ -106,7 +106,7 @@ void i_fileinfo_text_fill( midifile_t * mf , GtkTextBuffer * text_tb, GtkTextBuf
 }
 
 
-void i_fileinfo_gui( gchar * filename )
+void i_fileinfo_gui( gchar * filename_uri )
 {
   static GtkWidget *fileinfowin = NULL;
   GtkWidget *fileinfowin_vbox, *fileinfowin_columns_hbox;
@@ -121,7 +121,7 @@ void i_fileinfo_gui( gchar * filename )
   PangoAttrList *pangoattrlist;
   PangoAttribute *pangoattr;
   GString *value_gstring;
-  gchar *title , *filename_utf8;
+  gchar *title , *filename, *filename_utf8;
   gint bpm = 0, wavg_bpm = 0;
   midifile_t *mf;
 
@@ -131,7 +131,7 @@ void i_fileinfo_gui( gchar * filename )
   mf = g_malloc(sizeof(midifile_t));
 
   /****************** midifile parser ******************/
-  if ( !i_midi_parse_from_filename( filename , mf ) )
+  if ( !i_midi_parse_from_filename( filename_uri , mf ) )
     return;
   /* midifile is filled with information at this point,
      bpm information is needed too */
@@ -333,6 +333,9 @@ void i_fileinfo_gui( gchar * filename )
 
 
   /* utf8-ize filename and set window title */
+  filename = g_filename_from_uri( filename_uri , NULL , NULL );
+  if ( !filename )
+    filename = g_strdup( filename_uri );
   filename_utf8 = g_strdup(g_filename_to_utf8( filename , -1 , NULL , NULL , NULL ));
   if ( !filename_utf8 )
   {
@@ -353,6 +356,7 @@ void i_fileinfo_gui( gchar * filename )
   gtk_entry_set_text( GTK_ENTRY(title_name_v_entry) , filename_utf8 );
   gtk_editable_set_position( GTK_EDITABLE(title_name_v_entry) , -1 );
   g_free(filename_utf8);
+  g_free(filename);
 
   gtk_widget_grab_focus( GTK_WIDGET(footer_bclose) );
   gtk_widget_show_all( fileinfowin );
