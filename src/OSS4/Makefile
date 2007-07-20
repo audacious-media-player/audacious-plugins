@@ -1,7 +1,7 @@
 include ../../mk/rules.mk
 include ../../mk/init.mk
 
-OBJECTIVE_LIBS = libOSSlib$(SHARED_SUFFIX)
+OBJECTIVE_LIBS = libOSS4$(SHARED_SUFFIX)
 
 noinst_HEADERS = OSS4.h soundcard.h
 
