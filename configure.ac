@@ -588,8 +588,7 @@ AC_ARG_ENABLE(flacng,
 )
 
 if test "$enable_flacng" = "yes"; then
-    PKG_CHECK_MODULES(FLAC, [flac >= 1.1.3],
-        [have_flacng=yes],
+    AM_PATH_LIBFLAC([have_flacng=yes], 
         [AC_MSG_WARN([*** Cannot find libFLAC, FLACng will not be built ***])
          have_flacng=no]
     )
