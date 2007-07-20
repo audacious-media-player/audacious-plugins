@@ -676,25 +676,6 @@ else
     have_modplug="no"
 fi
 
-dnl *** flac
-AC_ARG_ENABLE( flac,
-[  --enable-flac          enable flac input plugin (default=disabled)],
-[enable_flac=$enableval],
-[enable_flac="no"])
-
-if test "x$enable_flac" = xyes; then
-	if test "x$have_oggvorbis" = xyes; then
-	        INPUT_PLUGINS="$INPUT_PLUGINS flac"
-        	have_flac=yes
-	else
-		AC_MSG_RESULT([*** flac plugin couldn't be enabled due to missing dependencies ***])
-		have_flac=no
-	fi
-else
-        AC_MSG_RESULT([*** flac plugin disabled per user request ***])
-        have_flac=no
-fi
-
 dnl *** Musepack
 
 AC_ARG_ENABLE(musepack,
@@ -1526,7 +1507,6 @@ echo "  Microsoft WAV (wav):                    yes"
 echo "    + sndfile extensions:                 $enable_sndfile"
 echo "  Tone Generator:                         yes"
 echo "  Ogg Vorbis (vorbis):                    $have_oggvorbis"
-echo "  Free Lossless Audio Codec (flac):       $have_flac"
 echo "  Free Lossless Audio Codec (flacng):     $have_flacng"
 echo "  Commodore 64 audio (sid):               $have_sidplay"
 echo "  Game music (spc, nsf & gbs):            yes"
