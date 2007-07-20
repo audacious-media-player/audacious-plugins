@@ -10,6 +10,8 @@ extern "C"
 #include "audacious/configdb.h"
 #include "audacious/titlestring.h"
 #include "audacious/vfs.h"
+#include <audacious/i18n.h>
+#include "../../config.h"
 }
 
 //stdlib headers

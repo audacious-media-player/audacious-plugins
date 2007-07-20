@@ -105,7 +105,7 @@ static guint32 mp4_seek_callback(void *data, guint64 pos)
 
 static gchar *
 extname(const char *filename)
-{   
+{
     gchar *ext = strrchr(filename, '.');
 
     if (ext != NULL)
@@ -218,7 +218,7 @@ static int aac_probe(unsigned char *buffer, int len)
       break;
     }
 #ifdef DEBUG
-    g_print("AUDIO PAYLOAD: %x %x %x %x\n", 
+    g_print("AUDIO PAYLOAD: %x %x %x %x\n",
 	buffer[i], buffer[i+1], buffer[i+2], buffer[i+3]);
 #endif
     i++;
@@ -293,14 +293,21 @@ static int mp4_is_our_fd(char *filename, VFSFile* file)
 static void mp4_about(void)
 {
     static GtkWidget *aboutbox = NULL;
-    aboutbox = xmms_show_message("About MP4 AAC player plugin",
-                   "Using libfaad2-" FAAD2_VERSION " for decoding.\n"
-		   "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-                   "Copyright (c) 2005-2006 Audacious team",
-                   "Ok", FALSE, NULL, NULL);
+    gchar *about_text;
+
+    about_text = g_strjoin ("", _("Using libfaad2-"), FAAD2_VERSION,
+				_(" for decoding.\n"
+				  "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+				  "Copyright (c) 2005-2006 Audacious team"), NULL);
+
+    aboutbox = xmms_show_message(_("About MP4 AAC player plugin"),
+				 about_text,
+				 _("Ok"), FALSE, NULL, NULL);
+
+    g_free(about_text);
+
     g_signal_connect(G_OBJECT(aboutbox), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed),
-                     &aboutbox);
+                     G_CALLBACK(gtk_widget_destroyed), &aboutbox);
 }
 
 static void mp4_pause(InputPlayback *playback, short flag)
@@ -355,7 +362,7 @@ static TitleInput *mp4_get_song_tuple(char *fn)
 
     mp4cb->read = mp4_read_callback;
     mp4cb->seek = mp4_seek_callback;
-    mp4cb->user_data = mp4fh;   
+    mp4cb->user_data = mp4fh;
 
     if (!(mp4file = mp4ff_open_read(mp4cb))) {
         g_free(mp4cb);
@@ -383,7 +390,7 @@ static TitleInput *mp4_get_song_tuple(char *fn)
             faacDecClose(decoder);
             return FALSE;
         }
-        if ( faacDecInit2(decoder, buffer, bufferSize, 
+        if ( faacDecInit2(decoder, buffer, bufferSize,
                   &samplerate, &channels) < 0 ) {
             faacDecClose(decoder);
 
@@ -395,7 +402,7 @@ static TitleInput *mp4_get_song_tuple(char *fn)
             if (mp4ASC.frameLengthFlag == 1) framesize = 960;
             if (mp4ASC.sbr_present_flag == 1) framesize *= 2;
         }
-            
+
         g_free(buffer);
 
         faacDecClose(decoder);
@@ -444,7 +451,7 @@ static gchar   *mp4_get_song_title(char *filename)
     mp4fh = vfs_fopen(filename, "rb");
     mp4cb->read = mp4_read_callback;
     mp4cb->seek = mp4_seek_callback;
-    mp4cb->user_data = mp4fh;   
+    mp4cb->user_data = mp4fh;
 
     if (!(mp4file = mp4ff_open_read(mp4cb))) {
         g_free(mp4cb);
@@ -527,7 +534,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         faacDecClose(decoder);
         return FALSE;
     }
-    if ( faacDecInit2(decoder, buffer, bufferSize, 
+    if ( faacDecInit2(decoder, buffer, bufferSize,
               &samplerate, &channels) < 0 ) {
         faacDecClose(decoder);
 
@@ -539,7 +546,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         if (mp4ASC.frameLengthFlag == 1) framesize = 960;
         if (mp4ASC.sbr_present_flag == 1) framesize *= 2;
     }
-        
+
     g_free(buffer);
     if( !channels ) {
         faacDecClose(decoder);
@@ -551,13 +558,13 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     playback->output->open_audio(FMT_S16_NE, samplerate, channels);
     playback->output->flush(0);
 
-    mp4_ip.set_info(xmmstitle, msDuration, 
-            mp4ff_get_avg_bitrate( mp4file, mp4track ), 
+    mp4_ip.set_info(xmmstitle, msDuration,
+            mp4ff_get_avg_bitrate( mp4file, mp4track ),
             samplerate,channels);
 
     while ( buffer_playing ) {
         void*           sampleBuffer;
-        faacDecFrameInfo    frameInfo;    
+        faacDecFrameInfo    frameInfo;
         gint            rc;
 
         /* Seek if seek position has changed */
@@ -591,7 +598,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
 
             return FALSE;
         }
-        rc= mp4ff_read_sample(mp4file, mp4track, 
+        rc= mp4ff_read_sample(mp4file, mp4track,
                   sampleID++, &buffer, &bufferSize);
 
         /*g_print(":: %d/%d\n", sampleID-1, numSamples);*/
@@ -611,9 +618,9 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
 
 /*          g_print(" :: %d/%d\n", bufferSize, BUFFER_SIZE); */
 
-        sampleBuffer= faacDecDecode(decoder, 
-                        &frameInfo, 
-                        buffer, 
+        sampleBuffer= faacDecDecode(decoder,
+                        &frameInfo,
+                        buffer,
                         bufferSize);
 
         /* If there was an error decoding, we're done. */
@@ -684,7 +691,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         gint size = 0;
 
         vfs_fseek(file, 0, SEEK_SET);
-        size = (streambuffer[6]<<21) | (streambuffer[7]<<14) | 
+        size = (streambuffer[6]<<21) | (streambuffer[7]<<14) |
 		(streambuffer[8]<<7) | streambuffer[9];
         size+=10;
         vfs_fread(streambuffer, 1, size, file);
@@ -858,7 +865,7 @@ static void *mp4_decode( void *args )
     mp4cb->user_data = mp4fh;
 
     mp4file= mp4ff_open_read(mp4cb);
-  
+
     if( ret == TRUE ) {
         g_free(mp4cb);
         my_decode_aac( playback, filename, mp4fh );

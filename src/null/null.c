@@ -2,7 +2,7 @@
  *  Copyright 2006 Christian Birchinger <joker@netswarm.net>
  *
  *  Based on the XMMS plugin:
- *  Copyright 2000 H�vard Kv�len <havardk@sol.no>
+ *  Copyright 2000 H�vard Kv�len <havardk@sol.no>
  *
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -53,14 +53,20 @@ static void null_init(void)
 static void null_about(void)
 {
 	static GtkWidget *about;
+	gchar *about_text;
 
 	if (about)
 		return;
+
+	about_text = g_strjoin("", _("Null output plugin "), VERSION,
+			           _(" by Christian Birchinger <joker@netswarm.net>\n"
+			             "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"), NULL);
+
 	about = xmms_show_message(_("About Null Output"),
-				  _("Null output plugin " VERSION
-				  " by Christian Birchinger <joker@netswarm.net>\n"
-				  " based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"),
+				  about_text,
 				  _("Ok"), FALSE, NULL, NULL);
+
+	g_free(about_text);
 
 	g_signal_connect(G_OBJECT(about), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &about);
@@ -84,9 +90,9 @@ static void null_configure(void)
 
 	if (configurewin)
 		return;
-	
+
 	configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(configurewin), "Null output preferences");
+	gtk_window_set_title(GTK_WINDOW(configurewin), _("Null output preferences"));
 	gtk_window_set_policy(GTK_WINDOW(configurewin), FALSE, FALSE, FALSE);
 	gtk_container_set_border_width(GTK_CONTAINER(configurewin), 10);
 	gtk_signal_connect(GTK_OBJECT(configurewin), "destroy",
@@ -95,15 +101,15 @@ static void null_configure(void)
 	vbox = gtk_vbox_new(FALSE, 10);
 	gtk_container_add(GTK_CONTAINER(configurewin), vbox);
 
-	rt_btn = gtk_check_button_new_with_label("Run in real time");
+	rt_btn = gtk_check_button_new_with_label(_("Run in real time"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rt_btn), real_time);
 	gtk_box_pack_start(GTK_BOX(vbox), rt_btn, FALSE, FALSE, 0);
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
-	ok_button = gtk_button_new_with_label("Ok");
-	cancel_button = gtk_button_new_with_label("Cancel");
+	ok_button = gtk_button_new_with_label(_("Ok"));
+	cancel_button = gtk_button_new_with_label(_("Cancel"));
 	GTK_WIDGET_SET_FLAGS(ok_button, GTK_CAN_DEFAULT);
 	GTK_WIDGET_SET_FLAGS(cancel_button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(ok_button);
@@ -159,7 +165,7 @@ static void null_write(void *ptr, int length)
 		ep->mod_samples(&ptr, length, input_format.format,
 				input_format.frequency, input_format.channels);
 #endif
-	
+
 	written += length;
 }
 
@@ -183,7 +189,7 @@ static void null_pause(short p)
 	paused = p;
 	if (!timer)
 		return;
-	
+
 	if (paused)
 		g_timer_stop(timer);
 	else
@@ -212,7 +218,7 @@ static int null_playing(void)
 {
 	if (!timer)
 		return FALSE;
-	
+
 	if ((gdouble)(written * 1000) / bps > ELAPSED_TIME)
 		return TRUE;
 	return FALSE;
@@ -229,7 +235,7 @@ static int null_get_output_time(void)
 {
 	if (!timer)
 		return null_get_written_time();
-	
+
 	return ELAPSED_TIME;
 }
 
@@ -239,7 +245,7 @@ OutputPlugin null_op =
 	NULL,
 	"Null Output Plugin",
 	null_init,
-	NULL,			/* cleanup */ 
+	NULL,			/* cleanup */
 	null_about,
 	null_configure,
 	NULL,			/* Get volume */
