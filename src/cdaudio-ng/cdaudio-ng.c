@@ -1,13 +1,8 @@
 
 /*
 	todo: 
-		- vis_pcm...?!
 		- fileinfo dialog
 		- about dialog
-		- remove //'s & todo's
-		- additional comments
-		- stop playback when configure
-		- configuration for cddb (server, port)
 */
 
 #include <string.h>
@@ -30,6 +25,7 @@
 #include <audacious/i18n.h>
 #include <audacious/configdb.h>
 #include <audacious/plugin.h>
+//#include <audacious/playback.h>	// todo: this should be available soon (by 1.4)
 #include <audacious/util.h>
 #include <audacious/output.h>
 
@@ -51,6 +47,8 @@ static gboolean			is_paused = FALSE;
 static int				playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
 static gboolean			debug = FALSE;
+static char				cddb_server[DEF_STRING_LEN];
+static int				cddb_port;
 
 static void				cdaudio_init();
 static void				cdaudio_about();
@@ -74,17 +72,13 @@ static int				calculate_track_length(int startlsn, int endlsn);
 static int				find_trackno_from_filename(char *filename);
 static void				cleanup_on_error();
 
-static int				calculate_digit_sum(int n);
-static unsigned long	calculate_cddb_discid();
-
-
 
 static InputPlugin inputplugin = {
 	NULL,
 	NULL,
 	"CD Audio Plugin NG",
 	cdaudio_init,
-	cdaudio_about,
+	NULL /*cdaudio_about*/,	// todo: implement an about dialog
 	cdaudio_configure,
 	cdaudio_is_our_file,
 	cdaudio_scan_dir,
@@ -102,7 +96,7 @@ static InputPlugin inputplugin = {
 	NULL,
 	NULL,
 	cdaudio_get_song_info,
-	cdaudio_file_info_box,
+	NULL /*cdaudio_file_info_box*/,	// todo: implement a file info dialog
 	NULL,
 	cdaudio_get_song_tuple
 };
@@ -136,6 +130,12 @@ void cdaudio_init()
 		use_cdtext = TRUE;
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cddb", &use_cddb))
 		use_cddb = TRUE;
+	if (!bmp_cfg_db_get_string(db, "CDDA", "cddbserver", &string))
+		strcpy(cddb_server, "");
+	else
+		strcpy(cddb_server, string);
+	if (!bmp_cfg_db_get_int(db, "CDDA", "cddbport", &cddb_port))
+		cddb_port = 1;
 	if (!bmp_cfg_db_get_string(db, "CDDA", "device", &string))
 		strcpy(device, "");
 	else
@@ -146,9 +146,9 @@ void cdaudio_init()
 	bmp_cfg_db_close(db);
 
 	if (debug)
-		printf("cdaudio-ng: configuration: use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, device = \"%s\", debug = %d\n", use_dae, limitspeed, use_cdtext, use_cddb, device, debug);
+		printf("cdaudio-ng: configuration: use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n", use_dae, limitspeed, use_cdtext, use_cddb, cddb_server, cddb_port, device, debug);
 
-	configure_set_variables(&use_dae, &limitspeed, &use_cdtext, &use_cddb, device, &debug);
+	configure_set_variables(&use_dae, &limitspeed, &use_cdtext, &use_cddb, device, &debug, cddb_server, &cddb_port);
 	configure_create_gui();
 }
 
@@ -162,6 +162,10 @@ void cdaudio_configure()
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_configure()\n");
+
+		/* if playback is started, we stop it */
+	if (playing_track != -1)
+		playback_stop();
 
 	configure_show_gui();
 }
@@ -270,9 +274,17 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	trackinfo = (trackinfo_t *) malloc(sizeof(trackinfo_t) * (lasttrackno + 1));
 	int trackno;
 
+	trackinfo[0].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, trackno);
+	trackinfo[0].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, CDIO_CDROM_LEADOUT_TRACK);
+	strcpy(trackinfo[0].performer, "");
+	strcpy(trackinfo[0].name, "");
+	strcpy(trackinfo[0].genre, "");
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 		trackinfo[trackno].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, trackno);
 		trackinfo[trackno].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, trackno);
+		strcpy(trackinfo[trackno].performer, "");
+		strcpy(trackinfo[trackno].name, "");
+		strcpy(trackinfo[trackno].genre, "");
 
 		if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN || trackinfo[trackno].endlsn == CDIO_INVALID_LSN) {
 			fprintf(stderr, "cdaudio-ng: failed to retrieve stard/end lsn for track %d\n", trackno);
@@ -294,7 +306,8 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			if (debug)
 				printf("cdaudio-ng: getting cddb info\n");
 
-			// todo: change the default cddb settings
+			cddb_set_server_name(pcddb_conn, cddb_server);
+			cddb_set_server_port(pcddb_conn, cddb_port);
 
 			pcddb_disc = cddb_disc_new();
 			for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
@@ -491,9 +504,10 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 void cdaudio_stop(InputPlayback *pinputplayback)
 {
 	if (debug)
-		printf("cdaudio-ng: cdaudio_stop(\"%s\")\n", pinputplayback->filename);
+		printf("cdaudio-ng: cdaudio_stop(\"%s\")\n", pinputplayback != NULL ? pinputplayback->filename : "N/A");
 
-	pinputplayback->playing = FALSE;
+	if (pinputplayback != NULL)
+		pinputplayback->playing = FALSE;
 	playing_track = -1;
 	is_paused = FALSE;
 
@@ -666,6 +680,8 @@ void cdaudio_cleanup()
 	bmp_cfg_db_set_int(db, "CDDA", "limitspeed", limitspeed);
 	bmp_cfg_db_set_bool(db, "CDDA", "use_cdtext", use_cdtext);
 	bmp_cfg_db_set_bool(db, "CDDA", "use_cddb", use_cddb);
+	bmp_cfg_db_set_string(db, "CDDA", "cddbserver", cddb_server);
+	bmp_cfg_db_set_int(db, "CDDA", "cddbport", cddb_port);
 	bmp_cfg_db_set_string(db, "CDDA", "device", device);
 	bmp_cfg_db_set_bool(db, "CDDA", "debug", debug);
 	bmp_cfg_db_close(db);
@@ -725,41 +741,6 @@ TitleInput *cdaudio_get_song_tuple(gchar *filename)
 
 
 	/* auxiliar functions */
-
-
-static int calculate_digit_sum(int n)
-{
-	int ret = 0;
-
-	while (1) {
-		ret += n % 10;
-		n    = n / 10;
-		if (n == 0)
-			return ret;
-	}
-}
-
-
-
-static unsigned long calculate_cddb_discid()
-{
-	int trackno, t, n = 0;
-	msf_t startmsf;
-	msf_t msf;
-	
-	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
-		cdio_get_track_msf(pcdio, trackno, &msf);
-		n += calculate_digit_sum(cdio_audio_get_msf_seconds(&msf));
-	}
-	
-	cdio_get_track_msf(pcdio, 1, &startmsf);
-	cdio_get_track_msf(pcdio, CDIO_CDROM_LEADOUT_TRACK, &msf);
-	
-	t = cdio_audio_get_msf_seconds(&msf) - cdio_audio_get_msf_seconds(&startmsf);
-	
-	return ((n % 0xFF) << 24 | t << 8 | (lasttrackno - firsttrackno + 1));
-}
-
 
 void *dae_playing_thread_core(dae_params_t *pdae_params)
 {

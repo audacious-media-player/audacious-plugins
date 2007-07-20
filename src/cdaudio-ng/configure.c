@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
 
@@ -20,6 +21,10 @@ static GtkWidget		*usedaecheckbutton;
 static GtkWidget		*limitcheckbutton;
 static GtkWidget		*usecdtextcheckbutton;
 static GtkWidget		*usecddbcheckbutton;
+static GtkWidget		*cddbserverlabel;
+static GtkWidget		*cddbportlabel;
+static GtkWidget		*cddbserverentry;
+static GtkWidget		*cddbportentry;
 static GtkWidget		*usedevicecheckbutton;
 static GtkWidget		*buttonbox;
 static GtkWidget		*limitspinbutton;
@@ -32,6 +37,8 @@ static gboolean			*usecdtext;
 static gboolean			*usecddb;
 static char				*device;
 static gboolean			*debug;
+static char				*cddbserver;
+static int				*cddbport;
 
 static gboolean			delete_window(GtkWidget *widget, GdkEvent *event, gpointer data);
 static void				button_clicked(GtkWidget *widget, gpointer data);
@@ -40,7 +47,7 @@ static void				values_to_gui();
 static void				gui_to_values();
 
 
-void configure_set_variables(gboolean *_usedae, int *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, char *_device, gboolean *_debug)
+void configure_set_variables(gboolean *_usedae, int *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, char *_device, gboolean *_debug, char *_cddbserver, int *_cddbport)
 {
 	usedae = _usedae;
 	limitspeed = _limitspeed;
@@ -48,6 +55,8 @@ void configure_set_variables(gboolean *_usedae, int *_limitspeed, gboolean *_use
 	usecddb = _usecddb;
 	device = _device;
 	debug = _debug;
+	cddbserver = _cddbserver;
+	cddbport = _cddbport;
 }
 
 void configure_create_gui()
@@ -60,6 +69,7 @@ void configure_create_gui()
 	g_signal_connect(G_OBJECT(configwindow), "delete_event", G_CALLBACK(delete_window), NULL);
 
 	maintable = gtk_table_new(4, 2, TRUE);
+	gtk_table_set_homogeneous(GTK_TABLE(maintable), FALSE);
 	gtk_container_add(GTK_CONTAINER(configwindow), maintable);
 
 	daeframe = gtk_frame_new("Digital audio extraction");
@@ -96,6 +106,19 @@ void configure_create_gui()
 	usecddbcheckbutton = gtk_check_button_new_with_label("Use CDDB if available");
 	g_signal_connect(G_OBJECT(usecddbcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), usecddbcheckbutton, 0, 2, 1, 2);
+	
+	cddbserverlabel = gtk_label_new("Server: ");
+	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbserverlabel, 0, 1, 2, 3);
+	
+	cddbportlabel = gtk_label_new("Port: ");
+	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbportlabel, 0, 1, 3, 4);
+	
+	cddbserverentry = gtk_entry_new();
+	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbserverentry, 1, 2, 2, 3);
+	
+	cddbportentry = gtk_entry_new();
+	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbportentry, 1, 2, 3, 4);
+
 
 	usedevicecheckbutton = gtk_check_button_new_with_label("Override default device: ");
 	g_signal_connect(G_OBJECT(usedevicecheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
@@ -128,6 +151,10 @@ void configure_create_gui()
 	gtk_widget_show(limitspinbutton);
 	gtk_widget_show(usecdtextcheckbutton);
 	gtk_widget_show(usecddbcheckbutton);
+	gtk_widget_show(cddbserverentry);
+	gtk_widget_show(cddbportentry);
+	gtk_widget_show(cddbserverlabel);
+	gtk_widget_show(cddbportlabel);
 	gtk_widget_show(usedevicecheckbutton);
 	gtk_widget_show(deviceentry);
 	gtk_widget_show(debugcheckbutton);
@@ -175,6 +202,9 @@ void checkbutton_toggled(GtkWidget *widget, gpointer data)
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)) && 
 		GTK_WIDGET_IS_SENSITIVE(limitcheckbutton));
 
+	gtk_widget_set_sensitive(cddbserverentry, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
+	gtk_widget_set_sensitive(cddbportentry, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
+
 	gtk_widget_set_sensitive(deviceentry, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)));
 }
 
@@ -190,6 +220,13 @@ void values_to_gui()
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton), *usecdtext);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton), *usecddb);
+
+	char portstr[10];
+	sprintf(portstr, "%d", *cddbport);
+	gtk_entry_set_text(GTK_ENTRY(cddbserverentry), cddbserver);
+	gtk_entry_set_text(GTK_ENTRY(cddbportentry), portstr);
+	gtk_widget_set_sensitive(cddbserverentry, *usecddb);
+	gtk_widget_set_sensitive(cddbportentry, *usecddb);
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton), strlen(device) > 0);
 
@@ -208,6 +245,8 @@ void gui_to_values()
 		*limitspeed = 0;
 	*usecdtext = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton));
 	*usecddb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton));
+	strcpy(cddbserver, gtk_entry_get_text(GTK_ENTRY(cddbserverentry)));
+	*cddbport = strtol(gtk_entry_get_text(GTK_ENTRY(cddbportentry)), NULL, 10);
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)))
 		strcpy(device, gtk_entry_get_text(GTK_ENTRY(deviceentry)));
 	else
