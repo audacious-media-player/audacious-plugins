@@ -69,7 +69,7 @@ extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
 /**
  * init the mad_info_t struct.
  */
-gboolean input_init(struct mad_info_t * info, const char *url)
+gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 {
 #ifdef DEBUG
     g_message("f: input_init");
@@ -112,10 +112,19 @@ gboolean input_init(struct mad_info_t * info, const char *url)
 
     info->filename = g_strdup(url);
 
-    info->infile = vfs_fopen(info->filename, "rb");
-    if (info->infile == NULL) {
-        return FALSE;
+    if(!fd){
+        info->infile = vfs_fopen(info->filename, "rb");
+        if (info->infile == NULL) {
+            return FALSE;
+        }
     }
+    else{
+#ifdef DEBUG
+        printf("input_init: vfs_dup\n");
+#endif
+        info->infile = vfs_dup(fd);
+    }
+
     // obtain file size
     info->size = vfs_fsize(info->infile);
     info->remote = info->size == 0 ? TRUE : FALSE; //proxy connection may result in non-zero size.
@@ -370,8 +379,9 @@ static void input_read_tag(struct mad_info_t *info)
         curpos = vfs_ftell(info->infile);
         info->id3file = id3_file_vfsopen(info->infile, ID3_FILE_MODE_READONLY);
     }
-    else
+    else {
         info->id3file = id3_file_open(info->filename, ID3_FILE_MODE_READONLY);
+    }
 
     if (!info->id3file) {
 #ifdef DEBUG
@@ -486,8 +496,14 @@ void input_process_remote_metadata(struct mad_info_t *info)
             tmp = g_strdup_printf("%s (%s)", info->tuple->track_name, info->tuple->album_name);
         else if (info->tuple->album_name)
             tmp = g_strdup(info->tuple->album_name);
-        else
-            tmp = g_strdup(g_basename(info->filename));
+        else {
+            gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
+            gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
+            tmp = str_to_utf8(tmp2);
+            g_free(tmp2); tmp2 = NULL;
+            g_free(realfn); realfn = NULL;
+//            tmp = g_strdup(g_basename(info->filename)); //XXX maybe ok. --yaz
+        }
 
         /* call set_info only if tmp is different from prev_tmp */
         if ( ( ( info->prev_title != NULL ) && ( strcmp(info->prev_title,tmp) ) ) ||
@@ -539,11 +555,11 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 
     /* use the filename for the title as a last resort */
     if (!info->title) {
-        char *pos = strrchr(info->filename, DIR_SEPARATOR);
+        char *pos = strrchr(info->filename, DIR_SEPARATOR); //XXX info->filename is uri. --yaz
         if (pos)
             info->title = g_strdup(pos + 1);
         else
-            info->title = g_strdup(info->filename);
+            info->title = g_strdup(info->filename); //XXX info->filename is uri. --yaz
     }
 
 #ifdef DEBUG
