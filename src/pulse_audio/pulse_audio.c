@@ -1,16 +1,16 @@
 /***
   This file is part of xmms-pulse.
- 
+
   xmms-pulse is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
- 
+
   xmms-pulse is distributed in the hope that it will be useful, but
   WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
   General Public License for more details.
- 
+
   You should have received a copy of the GNU General Public License
   along with xmms-pulse; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
@@ -32,6 +32,7 @@
 #include <audacious/plugin.h>
 #include <audacious/playlist.h>
 #include <audacious/util.h>
+#include <audacious/i18n.h>
 
 #include <pulse/pulseaudio.h>
 
@@ -81,7 +82,7 @@ static const char* get_song_name(void) {
 
     snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));
     pa_xfree(u);
-    
+
     return t;
 }
 
@@ -97,7 +98,7 @@ static void info_cb(struct pa_context *c, const struct pa_sink_input_info *i, in
 
 static void subscribe_cb(struct pa_context *c, enum pa_subscription_event_type t, uint32_t index, void *userdata) {
     pa_operation *o;
-    
+
     assert(c);
 
     if (!stream ||
@@ -110,7 +111,7 @@ static void subscribe_cb(struct pa_context *c, enum pa_subscription_event_type t
         g_warning("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(c)));
         return;
     }
-    
+
     pa_operation_unref(o);
 }
 
@@ -154,7 +155,7 @@ static void stream_success_cb(pa_stream *s, int success, void *userdata) {
 
     if (userdata)
         *(int*) userdata = success;
-    
+
     pa_threaded_mainloop_signal(mainloop, 0);
 }
 
@@ -163,7 +164,7 @@ static void context_success_cb(pa_context *c, int success, void *userdata) {
 
     if (userdata)
         *(int*) userdata = success;
-    
+
     pa_threaded_mainloop_signal(mainloop, 0);
 }
 
@@ -188,7 +189,7 @@ static void pulse_get_volume(int *l, int *r) {
     if (connected) {
         pa_threaded_mainloop_lock(mainloop);
         CHECK_DEAD_GOTO(fail, 1);
-        
+
         v = volume;
         b = volume_valid;
 
@@ -198,7 +199,7 @@ static void pulse_get_volume(int *l, int *r) {
         v = volume;
         b = volume_valid;
     }
-    
+
     if (b) {
         if (v.channels == 2) {
             *l = (int) ((v.values[0]*100)/PA_VOLUME_NORM);
@@ -210,8 +211,8 @@ static void pulse_get_volume(int *l, int *r) {
 
 static void volume_time_cb(pa_mainloop_api *api, pa_time_event *e, const struct timeval *tv, void *userdata) {
     pa_operation *o;
-    
-    if (!(o = pa_context_set_sink_input_volume(context, pa_stream_get_index(stream), &volume, NULL, NULL))) 
+
+    if (!(o = pa_context_set_sink_input_volume(context, pa_stream_get_index(stream), &volume, NULL, NULL)))
         g_warning("pa_context_set_sink_input_volume() failed: %s", pa_strerror(pa_context_errno(context)));
     else
         pa_operation_unref(o);
@@ -264,7 +265,7 @@ static void pulse_pause(short b) {
         g_warning("pa_stream_cork() failed: %s", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
-    
+
     while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
         CHECK_DEAD_GOTO(fail, 1);
         pa_threaded_mainloop_wait(mainloop);
@@ -272,12 +273,12 @@ static void pulse_pause(short b) {
 
     if (!success)
         g_warning("pa_stream_cork() failed: %s", pa_strerror(pa_context_errno(context)));
-    
+
 fail:
 
     if (o)
         pa_operation_unref(o);
-    
+
     pa_threaded_mainloop_unlock(mainloop);
 }
 
@@ -300,25 +301,25 @@ static int pulse_free(void) {
      * between this means we should trigger the playback */
     if (do_trigger) {
         int success = 0;
-        
+
         if (!(o = pa_stream_trigger(stream, stream_success_cb, &success))) {
             g_warning("pa_stream_trigger() failed: %s", pa_strerror(pa_context_errno(context)));
             goto fail;
         }
-        
+
         while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
             CHECK_DEAD_GOTO(fail, 1);
             pa_threaded_mainloop_wait(mainloop);
         }
-        
+
         if (!success)
             g_warning("pa_stream_trigger() failed: %s", pa_strerror(pa_context_errno(context)));
     }
-    
+
 fail:
     if (o)
         pa_operation_unref(o);
-    
+
     pa_threaded_mainloop_unlock(mainloop);
 
     do_trigger = !!l;
@@ -327,12 +328,12 @@ fail:
 
 static int pulse_get_written_time(void) {
     int r = 0;
-    
+
     CHECK_CONNECTED(0);
 
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
-    
+
     r = (int) (((double) written*1000) / pa_bytes_per_second(pa_stream_get_sample_spec(stream)));
 
 fail:
@@ -344,14 +345,14 @@ fail:
 static int pulse_get_output_time(void) {
     int r = 0;
     pa_usec_t t;
-    
+
     CHECK_CONNECTED(0);
 
     pa_threaded_mainloop_lock(mainloop);
 
     for (;;) {
         CHECK_DEAD_GOTO(fail, 1);
-        
+
         if (pa_stream_get_time(stream, &t) >= 0)
             break;
 
@@ -368,13 +369,13 @@ static int pulse_get_output_time(void) {
     if (just_flushed) {
         time_offset_msec -= r;
         just_flushed = 0;
-    } 
+    }
 
     r += time_offset_msec;
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
-    
+
     return r;
 }
 
@@ -383,7 +384,7 @@ static int pulse_playing(void) {
     const pa_timing_info *i;
 
     CHECK_CONNECTED(0);
-    
+
     pa_threaded_mainloop_lock(mainloop);
 
     for (;;) {
@@ -391,7 +392,7 @@ static int pulse_playing(void) {
 
         if ((i = pa_stream_get_timing_info(stream)))
             break;
-        
+
         if (pa_context_errno(context) != PA_ERR_NODATA) {
             g_warning("pa_stream_get_timing_info() failed: %s", pa_strerror(pa_context_errno(context)));
             goto fail;
@@ -421,7 +422,7 @@ static void pulse_flush(int time) {
         g_warning("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
-    
+
     while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
         CHECK_DEAD_GOTO(fail, 1);
         pa_threaded_mainloop_wait(mainloop);
@@ -429,15 +430,15 @@ static void pulse_flush(int time) {
 
     if (!success)
         g_warning("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
-    
+
     written = (uint64_t) (((double) time * pa_bytes_per_second(pa_stream_get_sample_spec(stream))) / 1000);
     just_flushed = 1;
     time_offset_msec = time;
-    
+
 fail:
     if (o)
         pa_operation_unref(o);
-    
+
     pa_threaded_mainloop_unlock(mainloop);
 }
 
@@ -452,12 +453,12 @@ static void pulse_write(void* ptr, int length) {
         g_warning("pa_stream_write() failed: %s", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
-    
+
     do_trigger = 0;
     written += length;
 
 fail:
-    
+
     pa_threaded_mainloop_unlock(mainloop);
 }
 
@@ -474,7 +475,7 @@ static void drain(void) {
         g_warning("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
-    
+
     while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
         CHECK_DEAD_GOTO(fail, 1);
         pa_threaded_mainloop_wait(mainloop);
@@ -482,11 +483,11 @@ static void drain(void) {
 
     if (!success)
         g_warning("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
-    
+
 fail:
     if (o)
         pa_operation_unref(o);
-    
+
     pa_threaded_mainloop_unlock(mainloop);
 }
 
@@ -510,7 +511,7 @@ static void pulse_close(void) {
         pa_context_unref(context);
         context = NULL;
     }
-    
+
     if (mainloop) {
         pa_threaded_mainloop_free(mainloop);
         mainloop = NULL;
@@ -528,7 +529,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     g_assert(!context);
     g_assert(!stream);
     g_assert(!connected);
-    
+
     if (fmt == FMT_U8)
         ss.format = PA_SAMPLE_U8;
     else if (fmt == FMT_S16_LE)
@@ -558,7 +559,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     }
 
     pa_threaded_mainloop_lock(mainloop);
-    
+
     if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "Audacious"))) {
         g_warning("Failed to allocate context");
         goto unlock_and_fail;
@@ -612,7 +613,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         g_warning("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
-    
+
     success = 0;
     while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
         CHECK_DEAD_GOTO(fail, 1);
@@ -631,7 +632,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         g_warning("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
-    
+
     while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
         CHECK_DEAD_GOTO(fail, 1);
         pa_threaded_mainloop_wait(mainloop);
@@ -648,34 +649,34 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     just_flushed = 0;
     connected = 1;
     volume_time_event = NULL;
-    
+
     pa_threaded_mainloop_unlock(mainloop);
-    
+
     return TRUE;
 
 unlock_and_fail:
 
     if (o)
         pa_operation_unref(o);
-    
+
     pa_threaded_mainloop_unlock(mainloop);
-    
+
 fail:
 
     pulse_close();
-    
+
     return FALSE;
 }
 
 static void pulse_about(void) {
     static GtkWidget *dialog;
-    
+
     if (dialog != NULL)
         return;
-    
+
     dialog = xmms_show_message(
-            "About Audacious PulseAudio Output Plugin",
-            "Audacious PulseAudio Output Plugin\n\n "
+            _("About Audacious PulseAudio Output Plugin"),
+            _("Audacious PulseAudio Output Plugin\n\n "
             "This program is free software; you can redistribute it and/or modify\n"
             "it under the terms of the GNU General Public License as published by\n"
             "the Free Software Foundation; either version 2 of the License, or\n"
@@ -689,12 +690,12 @@ static void pulse_about(void) {
             "You should have received a copy of the GNU General Public License\n"
             "along with this program; if not, write to the Free Software\n"
             "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-            "USA.",
-            "OK",
+            "USA."),
+            _("OK"),
             FALSE,
             NULL,
             NULL);
-    
+
     gtk_signal_connect(
             GTK_OBJECT(dialog),
             "destroy",
@@ -707,21 +708,21 @@ static OutputPlugin pulse_op = {
         NULL,
         "PulseAudio Output Plugin",
         NULL,
-	NULL,                        
+	NULL,
         pulse_about,
         NULL,
         pulse_get_volume,
         pulse_set_volume,
-        pulse_open,                         
-        pulse_write,                        
-        pulse_close,                        
-        pulse_flush,                        
-        pulse_pause,                        
-        pulse_free,                         
-        pulse_playing,                      
-        pulse_get_output_time,              
+        pulse_open,
+        pulse_write,
+        pulse_close,
+        pulse_flush,
+        pulse_pause,
+        pulse_free,
+        pulse_playing,
+        pulse_get_output_time,
         pulse_get_written_time,
-	NULL,             
+	NULL,
 };
 
 OutputPlugin *pulse_oplist[] = { &pulse_op, NULL };

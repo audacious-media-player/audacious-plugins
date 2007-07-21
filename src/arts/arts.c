@@ -15,15 +15,15 @@
 static void about(void)
 {
 	static GtkWidget *dialog;
-	
+
 	if (dialog)
 		return;
 
-	dialog = xmms_show_message("About aRts Output",
-				   "aRts output plugin by "
+	dialog = xmms_show_message(_("About aRts Output"),
+				   _("aRts output plugin by "
 				   "H\303\245vard Kv\303\245len <havardk@xmms.org>\n"
-				   "Audacious port by Giacomo Lozito from develia.org",
-				   "Ok", FALSE, NULL, NULL);
+				   "Audacious port by Giacomo Lozito from develia.org"),
+				   _("Ok"), FALSE, NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
 			   &dialog);

@@ -413,7 +413,7 @@ static gpointer flac_play_loop(gpointer arg) {
                     main_info->stream.samplerate, stream_info.samplerate);
                 break;
             }
-            
+
             if (stream_info.channels != main_info->stream.channels) {
                 _ERROR("Number of channels changed midstream (now: %d, was: %d). This is not supported yet.",
                     main_info->stream.channels, stream_info.channels);
@@ -508,7 +508,7 @@ static gpointer flac_play_loop(gpointer arg) {
             /*
              * Yes. Drain the output buffer and stop playing.
              */
-            
+
             _DEBUG("End of stream reached, draining output buffer");
 
             while((-1 == seek_to) && flac_ip.output->buffer_playing() && playback->playing == TRUE) {
@@ -540,7 +540,7 @@ static gpointer flac_play_loop(gpointer arg) {
      * Release the play loop mutex
      */
     g_mutex_unlock(flac_pl_mutex);
-    
+
     g_thread_exit(NULL);
 
     _LEAVE NULL;
@@ -739,18 +739,22 @@ TitleInput *flac_get_song_tuple(gchar* filename) {
 void flac_aboutbox(void) {
 
     static GtkWidget* about_window;
+    gchar *about_text;
 
     if (about_window) {
         gdk_window_raise(about_window->window);
     }
 
+    about_text = g_strjoin("", _("FLAC Audio Plugin "), _VERSION,
+			       _("\n\nOriginal code by\n"
+                               "Ralf Ertzinger <ralf@skytale.net>\n"
+                               "\n"
+                               "http://www.skytale.net/projects/bmp-flac2/"), NULL);
+
     about_window = xmms_show_message(_("About FLAC Audio Plugin"),
-                                     ("FLAC Audio Plugin (" _VERSION ")\n\n"
-                                      "Original code by\n"
-                                      "Ralf Ertzinger <ralf@skytale.net>\n"
-                                      "\n"
-                                      "http://www.skytale.net/projects/bmp-flac2/"),
+                                     about_text,
                                      _("OK"), FALSE, NULL, NULL);
+
     g_signal_connect(G_OBJECT(about_window), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &about_window);
 }

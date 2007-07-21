@@ -22,6 +22,8 @@
 #include <glib.h>
 #include <audacious/plugin.h>
 #include <audacious/vfs.h>
+#include <audacious/i18n.h>
+# include "config.h"
 
 #define OUTPUT_BLOCK_SIZE (8192u)
 #define MAX_SUPPORTED_CHANNELS (2u)
