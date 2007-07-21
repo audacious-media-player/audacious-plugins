@@ -66,10 +66,9 @@ static void null_about(void)
 				  about_text,
 				  _("Ok"), FALSE, NULL, NULL);
 
-	g_free(about_text);
-
 	g_signal_connect(G_OBJECT(about), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &about);
+	g_free(about_text);
 }
 
 static void null_configure_ok_cb(GtkButton *w, gpointer data)
