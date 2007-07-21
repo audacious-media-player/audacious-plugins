@@ -755,7 +755,7 @@ void flac_aboutbox(void) {
                                      about_text,
                                      _("OK"), FALSE, NULL, NULL);
 
-    g_free(about_text);
     g_signal_connect(G_OBJECT(about_window), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &about_window);
+    g_free(about_text);
 }

@@ -304,10 +304,9 @@ static void mp4_about(void)
 				 about_text,
 				 _("Ok"), FALSE, NULL, NULL);
 
-    g_free(about_text);
-
     g_signal_connect(G_OBJECT(aboutbox), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &aboutbox);
+    g_free(about_text);
 }
 
 static void mp4_pause(InputPlayback *playback, short flag)
