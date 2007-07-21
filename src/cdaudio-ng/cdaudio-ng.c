@@ -1,7 +1,6 @@
 
 /*
 	todo: 
-		- fileinfo dialog
 		- about dialog
 */
 
@@ -49,6 +48,7 @@ static dae_params_t		*pdae_params = NULL;
 static gboolean			debug = FALSE;
 static char				cddb_server[DEF_STRING_LEN];
 static int				cddb_port;
+static InputPlayback	*pglobalinputplayback = NULL;
 
 static void				cdaudio_init();
 static void				cdaudio_about();
@@ -64,7 +64,6 @@ static gint				cdaudio_get_volume(gint *l, gint *r);
 static gint				cdaudio_set_volume(gint l, gint r);
 static void				cdaudio_cleanup();
 static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
-static void				cdaudio_file_info_box(gchar *filename);
 static TitleInput		*cdaudio_get_song_tuple(gchar *filename);
 
 static void				*dae_playing_thread_core(dae_params_t *pdae_params);
@@ -96,7 +95,7 @@ static InputPlugin inputplugin = {
 	NULL,
 	NULL,
 	cdaudio_get_song_info,
-	NULL /*cdaudio_file_info_box*/,	// todo: implement a file info dialog
+	NULL,
 	NULL,
 	cdaudio_get_song_tuple
 };
@@ -184,10 +183,16 @@ gint cdaudio_is_our_file(gchar *filename)
 		}
 
 			/* reload the cd information if the media has changed */
-		if (cdio_get_media_changed(pcdio)) {
+		if (cdio_get_media_changed(pcdio) && pcdio != NULL) {
 			if (debug)
 				printf("cdaudio-ng: cd changed, rescanning\n");
 			cdaudio_scan_dir(CDDA_DEFAULT);
+		}
+		
+		if (pcdio == NULL) {
+			if (debug)
+				printf("cdaudio-ng: \"%s\" is not our file\n", filename);
+			return FALSE;
 		}
 
 			/* check if the requested track actually exists on the current audio cd */
@@ -231,21 +236,22 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	}
 	else {
 		char **ppcd_drives = cdio_get_devices_with_cap(NULL, CDIO_FS_AUDIO, false);
-		if (ppcd_drives != NULL) { /* we have at least one audio capable cd drive */
+		pcdio = NULL;
+		if (ppcd_drives != NULL && *ppcd_drives != NULL) { /* we have at least one audio capable cd drive */
 			pcdio = cdio_open(*ppcd_drives, DRIVER_UNKNOWN);
 			if (pcdio == NULL) {
 				fprintf(stderr, "cdaudio-ng: failed to open cd\n");
 				cleanup_on_error();
 				return NULL;
 			}
+			if (debug)
+				printf("cdaudio-ng: found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
 		}
 		else {
 			fprintf(stderr, "cdaudio-ng: unable find or access a cdda capable drive\n");
 			cleanup_on_error();
 			return NULL;
 		}
-		if (debug)
-			printf("cdaudio-ng: found cd drive \"%s\" with audio capable media\n", *ppcd_drives);
 		cdio_free_device_list(ppcd_drives);
 	}
 
@@ -425,6 +431,8 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
+	
+	pglobalinputplayback = pinputplayback;
 
 	if (trackinfo == NULL) {
 		if (debug)
@@ -505,6 +513,11 @@ void cdaudio_stop(InputPlayback *pinputplayback)
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_stop(\"%s\")\n", pinputplayback != NULL ? pinputplayback->filename : "N/A");
+	
+	pglobalinputplayback = NULL;
+	
+	if (playing_track == -1)
+		return;
 
 	if (pinputplayback != NULL)
 		pinputplayback->playing = FALSE;
@@ -521,7 +534,6 @@ void cdaudio_stop(InputPlayback *pinputplayback)
 	else {
 		if (cdio_audio_stop(pcdio) != DRIVER_OP_SUCCESS) {
 			fprintf(stderr, "cdaudio-ng: failed to stop analog cd\n");
-			cleanup_on_error();
 			return;
 		}
 	}
@@ -591,21 +603,22 @@ gint cdaudio_get_time(InputPlayback *pinputplayback)
 		if (cdio_audio_read_subchannel(pcdio, &subchannel) != DRIVER_OP_SUCCESS) {
 			fprintf(stderr, "cdaudio-ng: failed to read analog cd subchannel\n");
 			cleanup_on_error();
-			return -1;
+			return 0;
 		}
 		int currlsn = cdio_msf_to_lsn(&subchannel.abs_addr);
 
 			/* check to see if we have reached the end of the song */
-		if (currlsn == trackinfo[playing_track].endlsn) {
-			cdaudio_stop(pinputplayback);
+		if (currlsn == trackinfo[playing_track].endlsn)
 			return -1;
-		}
 
 		return calculate_track_length(trackinfo[playing_track].startlsn, currlsn);
 	}
 	else {
 		if (pdae_params != NULL)
-			return pinputplayback->output->output_time();
+			if (pdae_params->pplayback->playing)
+				return pinputplayback->output->output_time();
+			else
+				return -1;
 		else
 			return -1;
 	}
@@ -707,12 +720,6 @@ void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 	*length = calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
 }
 
-void cdaudio_file_info_box(gchar *filename)
-{
-	if (debug)
-		printf("cdaudio-ng: cdaudio_file_info_box(\"%s\")\n", filename);
-}
-
 TitleInput *cdaudio_get_song_tuple(gchar *filename)
 {
 	if (debug)
@@ -751,6 +758,7 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 	cdio_lseek(pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 
 	gboolean output_paused = FALSE;
+	int read_error_counter = 0;
 
 	while (pdae_params->pplayback->playing) {
 			/* handle pause status */
@@ -792,8 +800,14 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 
 		if (cdio_read_audio_sectors(pcdio, buffer, pdae_params->currlsn, lsncount) != DRIVER_OP_SUCCESS) {
 			fprintf(stderr, "cdaudio-ng: failed to read audio sector\n");
-			/* ok, that's it, we go on */
+			read_error_counter++;
+			if (read_error_counter >= 2) {
+				fprintf(stderr, "cdaudio-ng: this cd can no longer be played, stopping\n");
+				break;
+			}
 		}
+		else
+			read_error_counter = 0;
 
 		int remainingbytes = lsncount * CDIO_CD_FRAMESIZE_RAW;
 		unsigned char *bytebuff = buffer;
@@ -815,7 +829,7 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 		printf("cdaudio-ng: dae thread ended\n");
 
 	pdae_params->pplayback->playing = FALSE;
-	playing_track = -1;
+	pdae_params->pplayback->output->close_audio();
 	is_paused = FALSE;
 
 	pdae_params->pplayback->output->close_audio();
@@ -843,14 +857,14 @@ int find_trackno_from_filename(char *filename)
 
 void cleanup_on_error()
 {
-	if (pcdio != NULL) {
-		if (playing_track != -1 && !use_dae)
-			cdio_audio_stop(pcdio);
+	if (playing_track != -1) {
+		playing_track = -1;
+		playback_stop();
 	}
+
 	if (trackinfo != NULL) {
 		free(trackinfo);
 		trackinfo = NULL;
 	}
-	playing_track = -1;
 }
 
