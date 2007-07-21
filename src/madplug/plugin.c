@@ -447,7 +447,7 @@ static void audmad_play_file(InputPlayback *playback)
     }
 #endif                          /* DEBUG */
 
-    if (input_init(&info, url) == FALSE) {
+    if (input_init(&info, url, NULL) == FALSE) {
         g_message("error initialising input");
         return;
     }
@@ -506,7 +506,7 @@ audmad_get_song_info(char *url, char **title, int *length)
     g_free(tmp);
 #endif                          /* DEBUG */
 
-    if (input_init(&myinfo, url) == FALSE) {
+    if (input_init(&myinfo, url, NULL) == FALSE) {
 #ifdef DEBUG
         g_message("error initialising input");
 #endif
@@ -525,6 +525,38 @@ audmad_get_song_info(char *url, char **title, int *length)
     }
     else {
         *title = strdup(url);
+        *length = -1;
+    }
+    input_term(&myinfo);
+#ifdef DEBUG
+    g_message("e: audmad_get_song_info");
+#endif                          /* DEBUG */
+}
+
+static void
+audmad_get_song_length(char *url, int *length, VFSFile *fd)
+{
+    struct mad_info_t myinfo;
+#ifdef DEBUG
+    gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
+    g_message("f: audmad_get_song_length: %s", tmp);
+    g_free(tmp);
+#endif                          /* DEBUG */
+
+    if (input_init(&myinfo, url, fd ? fd : NULL) == FALSE) {
+#ifdef DEBUG
+        g_message("error initialising input");
+#endif
+        return;
+    }
+
+    if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
+        if(myinfo.tuple->length == -1)
+            *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
+        else
+            *length = myinfo.tuple->length;
+    }
+    else {
         *length = -1;
     }
     input_term(&myinfo);
@@ -617,21 +649,24 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         if(fd || (info.playback && info.playback->playing)) {
             gchar *tmp = NULL;
             tuple = bmp_title_input_new();
+
 #ifdef DEBUG
-            g_message("info.playback->playing = %d",info.playback->playing);
+            if(info.playback)
+                g_message("info.playback->playing = %d",info.playback->playing);
 #endif
-            tmp = vfs_get_metadata(info.infile, "track-name");
+            tmp = vfs_get_metadata(info.infile ? info.infile : fd, "track-name");
             if(tmp){
                 tuple->track_name = str_to_utf8(tmp);
                 g_free(tmp);
                 tmp = NULL;
             }
-            tmp = vfs_get_metadata(info.infile, "stream-name");
+            tmp = vfs_get_metadata(info.infile ? info.infile : fd, "stream-name");
             if(tmp){
                 tuple->album_name = str_to_utf8(tmp);
                 g_free(tmp);
                 tmp = NULL;
             }
+
 #ifdef DEBUG
             g_message("audmad_get_song_tuple: track_name = %s", tuple->track_name);
             g_message("audmad_get_song_tuple: stream_name = %s", tuple->album_name);
@@ -653,7 +688,7 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         g_message("get_song_tuple: remote: NULL");
 #endif
         return NULL;
-    }
+    } /* info.remote  */
 
     tuple = bmp_title_input_new();
 
@@ -704,7 +739,7 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             else {
                 char *dummy = NULL;
                 int length = 0;
-                audmad_get_song_info(filename, &dummy, &length);
+                audmad_get_song_length(filename, &length, fd ? fd : NULL);
                 tuple->length = length;
                 g_free(dummy);
             }
@@ -739,7 +774,7 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             char *dummy = NULL;
             int length = 0;
             if(tuple->length == -1) {
-                audmad_get_song_info(filename, &dummy, &length);
+                audmad_get_song_length(filename, &length, fd ? fd : NULL);
                 tuple->length = length;
             }
             g_free(dummy);

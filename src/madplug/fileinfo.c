@@ -601,7 +601,7 @@ void audmad_get_file_info(char *fileurl)
         return;
     }
 
-    input_init(&info, fileurl);
+    input_init(&info, fileurl, NULL);
 
     if(audmad_is_remote(fileurl)) {
         info.remote = TRUE;
@@ -627,7 +627,9 @@ void audmad_get_file_info(char *fileurl)
     info.fileinfo_request = TRUE;
     input_get_info(&info, info.remote ? TRUE : FALSE);
 
-    title = g_strdup_printf(_("File Info - %s"), g_basename(utf_filename));
+    tmp = g_path_get_basename(utf_filename);
+    title = g_strdup_printf(_("File Info - %s"), tmp);
+    g_free(tmp); tmp = NULL;
     gtk_window_set_title(GTK_WINDOW(window), title);
     g_free(title);
 

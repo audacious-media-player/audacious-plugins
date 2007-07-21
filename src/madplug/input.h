@@ -23,7 +23,7 @@
 #define INPUT_H
 
 #include "plugin.h"
-gboolean input_init(struct mad_info_t *songinfo, const gchar * url);
+gboolean input_init(struct mad_info_t *songinfo, const gchar * url, VFSFile *fd);
 gboolean input_term(struct mad_info_t *songinfo);
 gboolean input_get_info(struct mad_info_t *songinfo, gboolean fast_scan);
 gint input_get_data(struct mad_info_t *songinfo, guchar * buffer,
