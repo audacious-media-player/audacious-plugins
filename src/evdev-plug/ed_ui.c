@@ -1445,6 +1445,7 @@ ed_ui_about_show( void )
   GtkWidget *bbar_bbox, *bbar_bt_ok;
   GtkTextBuffer *info_tb;
   GdkGeometry abount_win_hints;
+  gchar *info_tb_content = NULL;
 
   if ( about_win != NULL )
   {
@@ -1485,12 +1486,13 @@ ed_ui_about_show( void )
   gtk_text_view_set_justification( GTK_TEXT_VIEW(info_tv) , GTK_JUSTIFY_LEFT );
   gtk_text_view_set_left_margin( GTK_TEXT_VIEW(info_tv) , 10 );
 
-  gtk_text_buffer_set_text( info_tb ,
-                            _("\nEvDev-Plug " ED_VERSION_PLUGIN
-                              "\nplayer remote control via event devices\n"
-                              "http://www.develia.org/projects.php?p=evdevplug\n\n"
-                              "written by Giacomo Lozito\n"
-                              "< james@develia.org >\n\n") , -1 );
+  info_tb_content = g_strjoin( NULL , "\nEvDev-Plug " , ED_VERSION_PLUGIN ,
+                               _("\nplayer remote control via event devices\n"
+                                 "http://www.develia.org/projects.php?p=audacious#evdevplug\n\n"
+                                 "written by Giacomo Lozito\n") ,
+                              "< james@develia.org >\n\n" , NULL );
+  gtk_text_buffer_set_text( info_tb , info_tb_content , -1 );
+  g_free( info_tb_content );
 
   info_tv_sw = gtk_scrolled_window_new( NULL , NULL );
   gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(info_tv_sw) ,

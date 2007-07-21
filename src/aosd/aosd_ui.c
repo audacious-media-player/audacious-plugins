@@ -1096,6 +1096,7 @@ aosd_ui_about ( void )
   GtkWidget *bbar_bbox, *bbar_bt_ok;
   GtkTextBuffer *info_tb;
   GdkGeometry abount_win_hints;
+  gchar *info_tb_content = NULL;
 
   if ( about_win != NULL )
   {
@@ -1136,14 +1137,15 @@ aosd_ui_about ( void )
   gtk_text_view_set_justification( GTK_TEXT_VIEW(info_tv) , GTK_JUSTIFY_LEFT );
   gtk_text_view_set_left_margin( GTK_TEXT_VIEW(info_tv) , 10 );
 
-  gtk_text_buffer_set_text( info_tb ,
-                            _("\nAudacious OSD " AOSD_VERSION_PLUGIN
-                              "\nhttp://www.develia.org/projects.php?p=aosd\n"
-                              "written by Giacomo Lozito\n"
-                              "< james@develia.org >\n\n"
-                              "On-Screen-Display is based on Ghosd library\n"
-                              "written by Evan Martin\n"
-                              "http://neugierig.org/software/ghosd/\n\n") , -1 );
+  info_tb_content = g_strjoin( NULL , "\nAudacious OSD " , AOSD_VERSION_PLUGIN ,
+                               _("\nhttp://www.develia.org/projects.php?p=audacious#aosd\n"
+                                 "written by Giacomo Lozito\n") ,
+                               "< james@develia.org >\n\n" ,
+                               _("On-Screen-Display is based on Ghosd library\n"
+                                 "written by Evan Martin\n"
+                                 "http://neugierig.org/software/ghosd/\n\n") , NULL );
+  gtk_text_buffer_set_text( info_tb , info_tb_content , -1 );
+  g_free( info_tb_content );
 
   info_tv_sw = gtk_scrolled_window_new( NULL , NULL );
   gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(info_tv_sw) ,

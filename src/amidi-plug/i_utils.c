@@ -33,6 +33,7 @@ void i_about_gui( void )
   GtkWidget *hseparator , *hbuttonbox , *button_ok;
   GtkTextBuffer *info_textbuffer;
   GdkPixbuf *logo_pixbuf;
+  gchar *info_textbuffer_content = NULL;
 
   if ( aboutwin != NULL )
     return;
@@ -64,22 +65,22 @@ void i_about_gui( void )
   gtk_text_view_set_justification( GTK_TEXT_VIEW(info_textview) , GTK_JUSTIFY_LEFT );
   gtk_text_view_set_left_margin( GTK_TEXT_VIEW(info_textview) , 10 );
 
-  gtk_text_buffer_set_text( info_textbuffer ,
-                            "\nAMIDI-Plug " AMIDIPLUG_VERSION
-                            "\nmodular MIDI music player\n"
-                            "http://www.develia.org/projects.php?p=amidiplug\n\n"
-                            "written by Giacomo Lozito\n"
-                            "< james@develia.org >\n\n\n"
-                            "special thanks to...\n\n"
-                            "Clemens Ladisch and Jaroslav Kysela\n"
-                            "for their cool programs aplaymidi and amixer; those\n"
-                            "were really useful, along with alsa-lib docs, in order\n"
-                            "to learn more about the ALSA API\n\n"
-                            "Alfredo Spadafina\n"
-                            "for the nice midi keyboard logo\n\n"
-                            "Tony Vroon\n"
-                            "for the good help with alpha testing\n\n"
-                            , -1 );
+  info_textbuffer_content = g_strjoin( NULL , "\nAMIDI-Plug " , AMIDIPLUG_VERSION ,
+                                       _("\nmodular MIDI music player\n"
+                                         "http://www.develia.org/projects.php?p=amidiplug\n\n"
+                                         "written by Giacomo Lozito\n") ,
+                                       "< james@develia.org >\n\n\n" ,
+                                       _("special thanks to...\n\n"
+                                         "Clemens Ladisch and Jaroslav Kysela\n"
+                                         "for their cool programs aplaymidi and amixer; those\n"
+                                         "were really useful, along with alsa-lib docs, in order\n"
+                                         "to learn more about the ALSA API\n\n"
+                                         "Alfredo Spadafina\n"
+                                         "for the nice midi keyboard logo\n\n"
+                                         "Tony Vroon\n"
+                                         "for the good help with alpha testing\n\n") , NULL );
+  gtk_text_buffer_set_text( info_textbuffer , info_textbuffer_content , -1 );
+  g_free( info_textbuffer_content );
 
   info_scrolledwin = gtk_scrolled_window_new( NULL , NULL );
   gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW(info_scrolledwin) ,
