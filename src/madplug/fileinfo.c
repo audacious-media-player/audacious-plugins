@@ -29,6 +29,7 @@
 #include <math.h>
 #include <audacious/util.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 
 /* yaz */
 #include <langinfo.h>
@@ -277,6 +278,21 @@ change_buttons(GtkWidget * object)
     gtk_widget_set_sensitive(GTK_WIDGET(object), TRUE);
 }
 
+#ifndef NOGUI
+static gboolean
+on_fileinfo_window_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
+	g_return_val_if_fail(GTK_IS_WIDGET (widget), FALSE);
+
+	if (event->keyval == GDK_Escape)
+	{      
+		gtk_widget_hide(widget);
+	}
+
+	return FALSE;
+}
+#endif
+
 void create_window()
 {
     GtkWidget *vbox, *hbox, *left_vbox, *table;
@@ -293,6 +309,8 @@ void create_window()
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     g_signal_connect(G_OBJECT(window), "destroy",
                        G_CALLBACK(close_window), &window);
+    g_signal_connect(G_OBJECT(window), "key-press-event",
+                       G_CALLBACK(on_fileinfo_window_key_press), &window);
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
     vbox = gtk_vbox_new(FALSE, 10);
@@ -540,6 +558,7 @@ void create_window()
                              G_OBJECT(window));
     GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
     gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
+    gtk_window_set_focus(GTK_WINDOW(window), cancel);
 
     gtk_widget_show_all(window);
 }
