@@ -761,6 +761,8 @@ static TitleInput *audmad_probe_for_tuple(char *filename, VFSFile *fd)
     if (!audmad_is_our_fd(filename, fd))
         return NULL;
 
+    vfs_rewind(fd);
+
     return __audmad_get_song_tuple(filename, fd);
 }
 
