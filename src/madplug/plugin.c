@@ -614,7 +614,7 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 #endif
 
     if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
-        if(info.playback && info.playback->playing) {
+        if(fd || (info.playback && info.playback->playing)) {
             gchar *tmp = NULL;
             tuple = bmp_title_input_new();
 #ifdef DEBUG
@@ -760,6 +760,8 @@ static TitleInput *audmad_probe_for_tuple(char *filename, VFSFile *fd)
 {
     if (!audmad_is_our_fd(filename, fd))
         return NULL;
+
+    vfs_rewind(fd);
 
     return __audmad_get_song_tuple(filename, fd);
 }

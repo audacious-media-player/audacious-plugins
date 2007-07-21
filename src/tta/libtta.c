@@ -287,9 +287,9 @@ about ()
 				     about_text,
 				     _("Ok"), FALSE, NULL, NULL);
 
-	g_free(about_text);
 	gtk_signal_connect(GTK_OBJECT(aboutbox), "destroy",
-    	    G_CALLBACK(gtk_widget_destroyed), &aboutbox);
+			   G_CALLBACK(gtk_widget_destroyed), &aboutbox);
+	g_free(about_text);
 }
 
 static GtkWidget *window = NULL;
