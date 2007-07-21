@@ -597,7 +597,7 @@ extern void audmad_configure();
 
 
 // tuple stuff
-static TitleInput *audmad_get_song_tuple(char *filename)
+static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 {
     TitleInput *tuple = NULL;
     gchar *string = NULL;
@@ -657,7 +657,11 @@ static TitleInput *audmad_get_song_tuple(char *filename)
 
     tuple = bmp_title_input_new();
 
-    id3file = id3_file_open(filename, ID3_FILE_MODE_READONLY);
+    if (!fd)
+        id3file = id3_file_open(filename, ID3_FILE_MODE_READONLY);
+    else
+        id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READONLY);
+
     if (id3file) {
 
         tag = id3_file_tag(id3file);
@@ -747,6 +751,18 @@ static TitleInput *audmad_get_song_tuple(char *filename)
     return tuple;
 }
 
+static TitleInput *audmad_get_song_tuple(char *filename)
+{
+    return __audmad_get_song_tuple(filename, NULL);
+}
+
+static TitleInput *audmad_probe_for_tuple(char *filename, VFSFile *fd)
+{
+    if (!audmad_is_our_fd(filename, fd))
+        return NULL;
+
+    return __audmad_get_song_tuple(filename, fd);
+}
 
 static gchar *fmts[] = { "mp3", "mp2", "mpg", NULL };
 
@@ -766,7 +782,8 @@ InputPlugin mad_ip = {
     .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
     .vfs_extensions = fmts,
-    .mseek = audmad_mseek
+    .mseek = audmad_mseek,
+    .probe_for_tuple = audmad_probe_for_tuple
 };
 
 InputPlugin *madplug_iplist[] = { &mad_ip, NULL };
