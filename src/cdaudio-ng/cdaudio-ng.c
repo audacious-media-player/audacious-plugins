@@ -608,16 +608,17 @@ gint cdaudio_get_time(InputPlayback *pinputplayback)
 		int currlsn = cdio_msf_to_lsn(&subchannel.abs_addr);
 
 			/* check to see if we have reached the end of the song */
-		if (currlsn == trackinfo[playing_track].endlsn) {
-			//cdaudio_stop(pinputplayback);
+		if (currlsn == trackinfo[playing_track].endlsn)
 			return -1;
-		}
 
 		return calculate_track_length(trackinfo[playing_track].startlsn, currlsn);
 	}
 	else {
 		if (pdae_params != NULL)
-			return pinputplayback->output->output_time();
+			if (pdae_params->pplayback->playing)
+				return pinputplayback->output->output_time();
+			else
+				return -1;
 		else
 			return -1;
 	}
@@ -828,7 +829,7 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 		printf("cdaudio-ng: dae thread ended\n");
 
 	pdae_params->pplayback->playing = FALSE;
-	playing_track = -1;
+	pdae_params->pplayback->output->close_audio();
 	is_paused = FALSE;
 
 	pdae_params->pplayback->output->close_audio();
@@ -858,13 +859,7 @@ void cleanup_on_error()
 {
 	if (playing_track != -1) {
 		playing_track = -1;
-		//playback_stop();
-		if (pglobalinputplayback != NULL) {
-			pglobalinputplayback->error = 1;
-			playback_stop();
-		}
-		if (pcdio != NULL && !use_dae)
-			cdio_audio_stop(pcdio);
+		playback_stop();
 	}
 
 	if (trackinfo != NULL) {
