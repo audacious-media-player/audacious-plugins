@@ -65,12 +65,12 @@ void i_about_gui( void )
   gtk_text_view_set_justification( GTK_TEXT_VIEW(info_textview) , GTK_JUSTIFY_LEFT );
   gtk_text_view_set_left_margin( GTK_TEXT_VIEW(info_textview) , 10 );
 
-  info_textbuffer_content = g_strjoin( NULL , "\nAMIDI-Plug " , AMIDIPLUG_VERSION ,
+  info_textbuffer_content = g_strjoin( NULL , _("\nAMIDI-Plug ") , AMIDIPLUG_VERSION ,
                                        _("\nmodular MIDI music player\n"
                                          "http://www.develia.org/projects.php?p=amidiplug\n\n"
-                                         "written by Giacomo Lozito\n") ,
-                                       "< james@develia.org >\n\n\n" ,
-                                       _("special thanks to...\n\n"
+                                         "written by Giacomo Lozito\n"
+                                         "< james@develia.org >\n\n\n"
+                                         "special thanks to...\n\n"
                                          "Clemens Ladisch and Jaroslav Kysela\n"
                                          "for their cool programs aplaymidi and amixer; those\n"
                                          "were really useful, along with alsa-lib docs, in order\n"

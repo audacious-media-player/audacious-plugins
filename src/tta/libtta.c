@@ -84,7 +84,7 @@ static int read_samples = -1;
 
 gchar *tta_fmts[] = { "tta", NULL };
 
-InputPlugin tta_ip = 
+InputPlugin tta_ip =
 {
 	NULL,
 	NULL,
@@ -108,7 +108,7 @@ InputPlugin tta_ip =
 	NULL,
 	NULL,
 	get_song_info,
-	file_info,	
+	file_info,
 	NULL,
 	get_song_tuple, // get_song_tuple
 	NULL, // set_song_tuple
@@ -131,7 +131,7 @@ file_size (char *filename)
 	{
 	    vfs_fseek (f, 0, SEEK_END);
 	    size = vfs_ftell (f);
-	    vfs_fclose (f); 
+	    vfs_fclose (f);
 	}
 	return size;
 }
@@ -146,30 +146,30 @@ tta_error (int error)
 	switch (error)
 	{
         case OPEN_ERROR:
-	    message = "Can't open file\n";
+	    message = _("Can't open file\n");
 	    break;
         case FORMAT_ERROR:
-	    message = "Not supported file format\n";
+	    message = _("Not supported file format\n");
 	    break;
         case FILE_ERROR:
-	    message = "File is corrupted\n";
+	    message = _("File is corrupted\n");
 	    break;
         case READ_ERROR:
-	    message = "Can't read from file\n";
+	    message = _("Can't read from file\n");
 	    break;
         case MEMORY_ERROR:
-	    message = "Insufficient memory available\n";
+	    message = _("Insufficient memory available\n");
 	    break;
         case OUTPUT_ERROR:
-	    message = "Output plugin error\n";
+	    message = _("Output plugin error\n");
 	    break;
 	default:
-	    message = "Unknown error\n";
+	    message = _("Unknown error\n");
 	    break;
 	}
 
-	xmms_show_message ("TTA Decoder Error", message,
-	    "Ok", FALSE, NULL, NULL);
+	xmms_show_message (_("TTA Decoder Error"), message,
+	    _("Ok"), FALSE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(errorbox), "destroy",
     	    G_CALLBACK(gtk_widget_destroyed), &errorbox);
@@ -275,14 +275,19 @@ static void
 about ()
 {
 	static GtkWidget *aboutbox;
+        gchar *about_text;
+
 	if (aboutbox != NULL) return;
 
-	aboutbox = xmms_show_message(
-	    "About True Audio Plugin",
-	    "TTA input plugin" PLUGIN_VERSION "for BMP\n"
-	    "Copyright (c) 2004 True Audio Software\n"
-	    PROJECT_URL, "Ok", FALSE, NULL, NULL);
+	about_text = g_strjoin("", _("TTA input plugin "), PLUGIN_VERSION,
+				   _(" for BMP\n"
+		        	   "Copyright (c) 2004 True Audio Software\n"), PROJECT_URL, NULL);
 
+	aboutbox = xmms_show_message(_("About True Audio Plugin"),
+				     about_text,
+				     _("Ok"), FALSE, NULL, NULL);
+
+	g_free(about_text);
 	gtk_signal_connect(GTK_OBJECT(aboutbox), "destroy",
     	    G_CALLBACK(gtk_widget_destroyed), &aboutbox);
 }
@@ -311,13 +316,13 @@ file_info (char *filename)
 	    gtk_signal_connect(GTK_OBJECT(window), "destroy",
 		G_CALLBACK(gtk_widget_destroyed), &window);
 	    gtk_container_set_border_width(GTK_CONTAINER(window), 10);
-    
+
 	    vbox = gtk_vbox_new(FALSE, 10);
 	    gtk_container_add(GTK_CONTAINER(window), vbox);
 
 	    filename_hbox = gtk_hbox_new(FALSE, 5);
 	    gtk_box_pack_start(GTK_BOX(vbox), filename_hbox, FALSE, TRUE, 0);
-	    label = gtk_label_new("Filename:");
+	    label = gtk_label_new(_("Filename:"));
 	    gtk_box_pack_start(GTK_BOX(filename_hbox), label, FALSE, TRUE, 0);
 
 	    filename_entry = gtk_entry_new_with_max_length(1024);
@@ -329,14 +334,14 @@ file_info (char *filename)
 	    left_vbox = gtk_vbox_new(FALSE, 10);
 	    gtk_box_pack_start(GTK_BOX(hbox), left_vbox, FALSE, FALSE, 0);
 
-	    info_frame = gtk_frame_new("ID3 Tag:");
+	    info_frame = gtk_frame_new(_("ID3 Tag:"));
 	    gtk_box_pack_start(GTK_BOX(left_vbox), info_frame, FALSE, FALSE, 0);
 
 	    table = gtk_table_new(5, 5, FALSE);
 	    gtk_container_set_border_width(GTK_CONTAINER(table), 5);
 	    gtk_container_add(GTK_CONTAINER(info_frame), table);
 
-	    label = gtk_label_new("Title:");
+	    label = gtk_label_new(_("Title:"));
 	    gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 	    gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1, GTK_FILL, GTK_FILL, 5, 5);
 
@@ -346,7 +351,7 @@ file_info (char *filename)
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK,
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-	    label = gtk_label_new("Artist:");
+	    label = gtk_label_new(_("Artist:"));
 	    gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 	    gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2,
 		GTK_FILL, GTK_FILL, 5, 5);
@@ -357,7 +362,7 @@ file_info (char *filename)
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK,
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-	    label = gtk_label_new("Album:");
+	    label = gtk_label_new(_("Album:"));
 	    gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 	    gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
 		GTK_FILL, GTK_FILL, 5, 5);
@@ -368,7 +373,7 @@ file_info (char *filename)
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK,
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-	    label = gtk_label_new("Comment:");
+	    label = gtk_label_new(_("Comment:"));
 	    gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 	    gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4,
 		GTK_FILL, GTK_FILL, 5, 5);
@@ -379,7 +384,7 @@ file_info (char *filename)
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK,
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-	    label = gtk_label_new("Year:");
+	    label = gtk_label_new(_("Year:"));
 	    gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 	    gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
 		GTK_FILL, GTK_FILL, 5, 5);
@@ -391,7 +396,7 @@ file_info (char *filename)
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK,
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
- 	    label = gtk_label_new("Track number:");
+ 	    label = gtk_label_new(_("Track number:"));
 	    gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 	    gtk_table_attach(GTK_TABLE(table), label, 2, 3, 4, 5,
 		GTK_FILL, GTK_FILL, 5, 5);
@@ -403,7 +408,7 @@ file_info (char *filename)
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK,
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-	    label = gtk_label_new("Genre:");
+	    label = gtk_label_new(_("Genre:"));
 	    gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 	    gtk_table_attach(GTK_TABLE(table), label, 0, 1, 5, 6,
 		GTK_FILL, GTK_FILL, 5, 5);
@@ -415,7 +420,7 @@ file_info (char *filename)
         	GTK_FILL | GTK_EXPAND | GTK_SHRINK,
 		GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 
-	    button_ok = gtk_button_new_with_label("Ok");
+	    button_ok = gtk_button_new_with_label(_("Ok"));
 	    gtk_signal_connect_object(GTK_OBJECT(button_ok), "clicked",
 		G_CALLBACK(gtk_widget_destroy), G_OBJECT(window));
 	    GTK_WIDGET_SET_FLAGS(button_ok, GTK_CAN_DEFAULT);
@@ -429,7 +434,7 @@ file_info (char *filename)
 	title = g_strdup_printf(_("File Info - %s"), g_basename(utf_filename));
 	gtk_window_set_title(GTK_WINDOW(window), title);
 	g_free(title);
-    
+
 	gtk_entry_set_text(GTK_ENTRY(filename_entry), utf_filename);
 	gtk_editable_set_position(GTK_EDITABLE(filename_entry), -1);
 
@@ -512,7 +517,7 @@ play_file (InputPlayback *playback)
 	        (info.SAMPLERATE * info.NCH * info.BPS));
 
 	tta_ip.set_info (title, 1000 * info.LENGTH, bitrate, info.SAMPLERATE, info.NCH);
-    
+
 	if (title)
 	    g_free (title);
 
@@ -819,7 +824,7 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
     string = NULL;
 #ifdef DEBUG
     g_print("string = %s\n", rtn);
-#endif    
+#endif
 
     return rtn;
 }
