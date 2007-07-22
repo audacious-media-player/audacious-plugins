@@ -587,7 +587,7 @@ void audmad_get_file_info(char *fileurl)
         ("single channel"), ("dual channel"), "joint stereo", "stereo"
     };
     gchar *tmp, *utf_filename;
-
+    gchar *realfn = NULL;
 #ifdef DEBUG
     {
         tmp = str_to_utf8(fileurl);
@@ -597,7 +597,7 @@ void audmad_get_file_info(char *fileurl)
     }
 #endif
 
-    if(!vfs_file_test(fileurl, G_FILE_TEST_EXISTS)) {
+    if(!vfs_is_remote(fileurl) && !vfs_file_test(fileurl, G_FILE_TEST_EXISTS)) {
         return;
     }
 
@@ -605,23 +605,13 @@ void audmad_get_file_info(char *fileurl)
 
     if(audmad_is_remote(fileurl)) {
         info.remote = TRUE;
-        return; //file info dialog for remote streaming doesn't make sense.
+        if(vfs_is_streaming(info.infile))
+           return; //file info dialog for remote streaming doesn't make sense.
     }
 
-    tmp = g_filename_from_uri(fileurl, NULL, NULL);
-    if (tmp == NULL)
-    {
-#ifdef DEBUG
-        tmp = str_to_utf8(fileurl);
-        g_message("f: audmad_get_file_info: %s , g_filename_from_uri failed", tmp);
-        g_free(tmp);
-        tmp = NULL;
-#endif
-        return;
-    }
-    utf_filename = str_to_utf8(tmp);
-    g_free(tmp);
-    tmp = NULL;
+    realfn = g_filename_from_uri(fileurl, NULL, NULL);
+    utf_filename = str_to_utf8(realfn ? realfn : fileurl);
+    g_free(realfn); realfn = NULL;
     create_window();
 
     info.fileinfo_request = TRUE;
