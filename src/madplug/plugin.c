@@ -288,12 +288,8 @@ static int mp3_head_convert(const guchar * hbuf)
 
 gboolean audmad_is_remote(gchar *url)
 {
-    if (!strncasecmp("http://", url, 7)
-        || !strncasecmp("https://", url, 8)
-        || !strncasecmp("lastfm://", url, 9))
-        return TRUE;
-    else
-        return FALSE;
+    gboolean rv = vfs_is_remote(url);
+    return rv;
 }
 
 // audacious vfs fast version
@@ -638,6 +634,8 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
     struct id3_file *id3file = NULL;
     struct id3_tag *tag = NULL;
 
+    gboolean local_fd = FALSE;
+
 #ifdef DEBUG
     string = str_to_utf8(filename);
     g_message("f: mad: audmad_get_song_tuple: %s", string);
@@ -646,7 +644,7 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 #endif
 
     if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
-        if(fd || (info.playback && info.playback->playing)) {
+        if((fd && vfs_is_streaming(fd)) || (info.playback && info.playback->playing)) {
             gchar *tmp = NULL;
             tuple = bmp_title_input_new();
 
@@ -692,10 +690,15 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 
     tuple = bmp_title_input_new();
 
-    if (!fd)
-        id3file = id3_file_open(filename, ID3_FILE_MODE_READONLY);
-    else
-        id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READONLY);
+    // if !fd, pre-open the file with vfs_fopen() and reuse fd.
+    if(!fd) {
+        fd = vfs_fopen(filename, "rb");
+        if(!fd)
+            return NULL;
+        local_fd = TRUE;
+    }
+
+    id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READONLY);
 
     if (id3file) {
 
@@ -739,7 +742,7 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             else {
                 char *dummy = NULL;
                 int length = 0;
-                audmad_get_song_length(filename, &length, fd ? fd : NULL);
+                audmad_get_song_length(filename, &length, fd);
                 tuple->length = length;
                 g_free(dummy);
             }
@@ -762,7 +765,7 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 
         }
         id3_file_close(id3file);
-    }
+    } // id3file
     else { // no id3tag
         realfn = g_filename_from_uri(filename, NULL, NULL);
         tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
@@ -774,12 +777,16 @@ static TitleInput *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             char *dummy = NULL;
             int length = 0;
             if(tuple->length == -1) {
-                audmad_get_song_length(filename, &length, fd ? fd : NULL);
+                audmad_get_song_length(filename, &length, fd);
                 tuple->length = length;
             }
             g_free(dummy);
         }
     }
+
+    if(local_fd)
+        vfs_fclose(fd);
+
 #ifdef DEBUG
     g_message("e: mad: audmad_get_song_tuple");
 #endif
