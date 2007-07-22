@@ -1143,7 +1143,8 @@ if test "$enable_cdaudio_ng" = "yes"; then
    CDIO_CFLAGS=`pkg-config --cflags libcdio_cdda`
    AC_SUBST(CDIO_LIBS)
    AC_SUBST(CDIO_CFLAGS)],
-   [AC_MSG_WARN([*** Cannot find libcdio 0.78.2 or newer, cdaudio-ng will not be built ***])]
+   [AC_MSG_WARN([*** Cannot find libcdio 0.78.2 or newer, cdaudio-ng will not be built ***])
+   enable_cdaudio_ng=no]
 )
 fi
 
