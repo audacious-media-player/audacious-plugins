@@ -3,13 +3,13 @@ include ../../mk/init.mk
 
 OBJECTIVE_LIBS = libcdaudio-ng$(SHARED_SUFFIX)
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CDIO_LIBS)
+LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CDIO_LIBS) $(CDDB_LIBS)
 LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 SOURCES = cdaudio-ng.c configure.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CDIO_CFLAGS) -I../../intl -I../..
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CDIO_CFLAGS) $(CDDB_CFLAGS) -I../../intl -I../..
 
 include ../../mk/objective.mk
