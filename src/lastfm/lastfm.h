@@ -15,17 +15,18 @@
 #define METADATA_FETCH_SUCCEEDED      128
 typedef struct
 {
-	VFSFile *proxy_fd;
-	gchar *lastfm_session_id;
-	gchar *lastfm_mp3_stream_url;
-	gchar *lastfm_station_name;
-	gchar *lastfm_artist;
-	gchar *lastfm_title;
-	gchar *lastfm_album;
-	gchar *lastfm_cover;
-	unsigned int lastfm_duration;
-	unsigned int lastfm_progress;
+        VFSFile *proxy_fd;
+        gchar *lastfm_session_id;
+        gchar *lastfm_mp3_stream_url;
+        gchar *lastfm_station_name;
+        gchar *lastfm_artist;
+        gchar *lastfm_title;
+        gchar *lastfm_album;
+        gchar *lastfm_cover;
+        unsigned int lastfm_duration;
+        unsigned int lastfm_progress;
 } LastFM;
+GTimeVal *t0,*t1;
 
 GThread* metadata_thread=NULL;
 gint thread_count=0;

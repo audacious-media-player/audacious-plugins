@@ -1,5 +1,5 @@
 /* Audacious lastfm transport plugin
- * Copyright (c) 2007 Cristi Magherusan <majeru@gentoo.ro>
+ * Copyright (c) 2007 Cristi Măgherușan <majeru@gentoo.ro>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -97,7 +97,7 @@ gchar* lastfm_get_login_uri()  /* reads the audioscrobbler login data from the c
         else 
         {
 #if DEBUG
-                g_print("Couldn't find the login data. Use the scrobbler plugin to set it up.\n");
+                g_print("LASTFM: (get_login_uri) Couldn't find the login data. Use the scrobbler plugin to set it up.\n");
 #endif
                 return NULL;
         }
@@ -111,8 +111,8 @@ void lastfm_store(gchar *var_name,gchar* var)  /*mowgli storage wrapper, for sto
         mowgli_global_storage_put(var_name,var);
 }
 
-int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores them*/
-        //it is called just on the first fopen, since it doesnt change (hopefully!!!)
+int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores them.
+                          It's called just on the first fopen, since it doesnt change (hopefully!!!)*/
 {
         gint    status, i,
                 ret=LASTFM_LOGIN_OK; /*suppose everything goes fine*/
@@ -125,8 +125,8 @@ int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores 
         res = g_string_new(NULL);
         status = lastfm_get_data_from_uri(login_uri, res);
 #if DEBUG
-        g_print("Opened login URI: '%s'\n", login_uri);
-        g_print("Got following data: '%s'\n", res->str);
+        g_print("LASTFM: (login) Opened login URI: '%s'\n", login_uri);
+        g_print("LASTFM: (login) Got following data: '%s'\n", res->str);
 #endif
         if (status == CURLE_OK)
         {
@@ -167,7 +167,7 @@ gint lastfm_adjust(LastFM * handle,const gchar * uri)  /*tunes into a channel*/
         if (!session_id)
         {
 #if DEBUG
-                g_print("Adjust failed! Session ID not set.\n");
+                g_print("LASTFM: (adjust) Adjust failed! Session ID not set.\n");
 #endif
                 return LASTFM_SESSION_MISSING;
         }
@@ -183,6 +183,9 @@ gint lastfm_adjust(LastFM * handle,const gchar * uri)  /*tunes into a channel*/
                         if (g_str_has_prefix(split[i], "response=OK"))
                                 ret = LASTFM_ADJUST_OK;
                 }
+#if DEBUG
+                g_print("LASTFM: (adjust) Adjust to '%s' has completed successfully.\n",uri);
+#endif
         }
         g_string_erase(res, 0, -1);
         g_strfreev(split);
@@ -228,6 +231,17 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
         }
         for (i = 0; split && split[i]; i++)
         {
+
+                if (g_str_has_prefix(split[i], "streaming=false"))
+                {
+                        g_strfreev(split);
+                        g_string_erase(metadata_strings, 0, -1);
+#if DEBUG
+                        g_print("LASTFM: (parse) Metadata is not available");
+#endif
+                        return FALSE;
+                }
+
                 if (g_str_has_prefix(split[i], "artist="))
                         handle->lastfm_artist = parse(split[i],"artist=");
 
@@ -247,11 +261,14 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
                         handle->lastfm_duration = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
                 if (g_str_has_prefix(split[i], "trackprogress="))
                         handle->lastfm_progress = g_ascii_strtoull(g_strdup(split[i] + 14), NULL, 10);
+
         }
 #if DEBUG
-        g_print("\nDuration:%d\n", handle->lastfm_duration);
         if(handle->lastfm_station_name!=NULL)
-                g_print("Station Name: %s\n", handle->lastfm_station_name);
+        {
+                g_print("nLASTFM: (parse) Duration:%d\n", handle->lastfm_duration);
+                g_print("LASTFM: (parse) Station Name: %s\n", handle->lastfm_station_name);
+        }
 #endif
         g_strfreev(split);
         g_string_erase(metadata_strings, 0, -1);
@@ -262,6 +279,8 @@ int fetch_metadata(LastFM * handle)
 {
         gchar *uri=NULL;
         gint status,res=METADATA_FETCH_FAILED;
+        if(!handle)
+                return res;
         handle->lastfm_session_id=mowgli_global_storage_get("lastfm_session_id");
         if (handle->lastfm_session_id == NULL)
                 return res;  
@@ -271,13 +290,13 @@ int fetch_metadata(LastFM * handle)
         if (status == CURLE_OK)
         {
 #if DEBUG
-                g_print("\n----Received metadata:----\n%s----END----", fetched_metadata->str);
+                g_print("LASTFM: (fetch) ----Received metadata:----\n%s\n----END----\n", fetched_metadata->str);
 #endif
                 if(parse_metadata( handle,fetched_metadata))
                 {
                         res=METADATA_FETCH_SUCCEEDED;
 #if DEBUG
-                        g_print("metadata was parsed ok\n");
+                        g_print("LASTFM: (fetch) metadata was parsed ok\n");
 #endif
                 }
 
@@ -292,24 +311,27 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
                 count=1,
                 status=0,
                 err=0;
-        GTimeVal *t0,*t1;
-        t0=g_new0(GTimeVal,1);
-        t1=g_new0(GTimeVal,1);
         gboolean track_end_expected=FALSE,track_beginning=TRUE;
-        //  gchar* previous_track_title=NULL;
         LastFM *handle = (LastFM *)arg;
-        // metadata is fetched 1 second after the stream is opened, 
-        // and again after 2 seconds.
-        // if metadata was fetched ok i'm waiting for 
-        // track_length - fetch_duration - 10 seconds
-        // then start polling for new metadata each 2 seconds, until
-        // the track gets changed from the previous iteration
+        /* metadata is fetched 1 second after the stream is opened, 
+         * and again after 2 seconds.
+         * if metadata was fetched ok i'm waiting for 
+         * track_length - fetch_duration - 10 seconds
+         * then start polling for new metadata each 2 seconds, until
+         * the track gets changed from the previous iteration
+         */
         do
         {
                 if(count%sleep_duration==0)
                 {    
-                        g_get_current_time (t0);
+                        if(t0->tv_usec==-1)
+                                g_get_current_time (t0);
                         g_mutex_lock(metadata_mutex);
+                        if(handle==NULL)
+                                break;
+#if DEBUG
+                        g_print("LASTFM: (thread) Fetching metadata:\n");
+#endif
                         status=fetch_metadata(handle);
                         g_mutex_unlock(metadata_mutex);
                         g_get_current_time (t1);
@@ -318,41 +340,45 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
                                 if(!track_end_expected)
                                 {
                                         if(track_beginning)
-                                        {       //first try after track has changed
+                                        {       /*first try after track has changed*/
 #if DEBUG
-                                                g_print("retrying in 2 seconds\n");
+                                                g_print("LASTFM: (thread) retrying in 2 seconds\n");
 #endif
                                                 track_beginning=FALSE;
                                                 sleep_duration=2;
                                         }
                                         else 
                                         {
-                                                sleep_duration=handle->lastfm_duration-(t1->tv_sec - t0->tv_sec)-10;
+                                                if(g_str_has_prefix(handle->lastfm_station_name, "Previewing 30-second clips"))
+                                                        handle->lastfm_duration=30;
+                                                sleep_duration=handle->lastfm_duration-(t1->tv_sec - t0->tv_sec)-6;
                                                 previous_track_duration=handle->lastfm_duration;
                                                 count=err=0;
                                                 track_end_expected=TRUE; /*then the track_end will follow*/
                                                 track_beginning=TRUE;
+                                                t0->tv_usec=-1;
 #if DEBUG
-                                                g_print("second fetch after new track started, the next will follow in %d sec\n",sleep_duration);
+                                                g_print("LASTFM: (thread) second fetch after new track started, the next will follow in %d sec\n",sleep_duration);
 #endif
                                         }
 
                                 }
                                 else
                                 {       
-                                        //if the track hasnt yet changed (two tracks are considered identical if they 
-                                        //have the same length or the same title)
+                                        /*if the track hasnt yet changed (two tracks are considered identical if they 
+                                         * have the same length or the same title)
+                                         */
                                         if(handle->lastfm_duration == previous_track_duration)
                                         {      
 #if DEBUG                                        
-                                                g_print("it is the same track as before, waiting for new track to start\n");
+                                                g_print("LASTFM: (thread) it is the same track as before, waiting for new track to start\n");
 #endif
                                                 sleep_duration=2;
                                         }
                                         else
                                         {
 #if DEBUG
-                                                g_print("the track has changed\n");
+                                                g_print("LASTFM: (thread) the track has changed\n");
 #endif
                                                 track_end_expected=FALSE;
                                                 sleep_duration=2;
@@ -364,17 +390,21 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
                                         }
                                 }
 #if DEBUG
-                                g_print("Current thread, ID = %p\n", (void *)g_thread_self());
+                                g_print("LASTFM: (thread) Current thread, ID = %p\n", (void *)g_thread_self());
 #endif
                         }
                         else 
                         {
                                 err++;
-                                sleep_duration=2;
+                                sleep_duration<<=1;
                         }
 #if DEBUG
-                        g_print("Thread_count: %d\n",thread_count);
-                        g_print("Sleeping for %d seconds, track length = %d sec\n",sleep_duration, handle->lastfm_duration);
+                        g_print("LASTFM: (thread) Thread_count: %d\n",thread_count);
+                        g_print("LASTFM: (thread) sleepping for %d seconds. ",err? sleep_duration/2 :sleep_duration);
+
+
+                        if((handle!= NULL))
+                                g_print("Track length = %d sec\n",handle->lastfm_duration);
 #endif
 
                 }
@@ -382,10 +412,10 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
                 count++;
 
         }
-        while (g_thread_self()==metadata_thread && err<10 && handle != NULL);
+        while ((g_thread_self()==metadata_thread )&& (err<7) && (handle != NULL));
 
 #if DEBUG
-        g_print("Exiting thread, ID = %p\n", (void *)g_thread_self());
+        g_print("LASTFM: (thread) Exiting thread, ID = %p\n", (void *)g_thread_self());
 #endif
         thread_count--;
         return NULL;
@@ -404,27 +434,30 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
         handle->lastfm_station_name=NULL;
         int login_count = 0;
 
-        if(!mowgli_global_storage_get("lastfm_session_id")) //login only if really needed
+        if(!mowgli_global_storage_get("lastfm_session_id")) /*login only if really needed*/
         {
                 while((login_count++ <= 3)&&(lastfm_login()!= LASTFM_LOGIN_OK))
                         sleep(5);
                 if(login_count>3)
+                {
+                        g_free(handle);
+                        g_free(file);
                         return NULL;
+                }
         }
-        //the following data is completed during login, which happens just once
-        //maybe making it happen on each time vfs_fopen would make it eliminate the issue 
-        //that occurs when having more opened tracks (random play of anyone of them)
-        handle->lastfm_session_id = mowgli_global_storage_get("lastfm_session_id");
         handle->lastfm_mp3_stream_url = mowgli_global_storage_get("lastfm_stream_uri");
-        if(!lastfm_adjust(handle,path)==LASTFM_ADJUST_OK)
-                return NULL;
+        handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
+
+        handle->lastfm_session_id = mowgli_global_storage_get("lastfm_session_id");
+        lastfm_adjust(handle,path);
+        file->handle = handle;
+        g_get_current_time(t0);
         metadata_thread = g_thread_create(lastfm_metadata_thread_func, handle, FALSE, NULL);
         thread_count++;
+        fetch_metadata(handle);
 #if DEBUG
-        g_print("Thread_count: %d\n",thread_count);
+        g_print("LASTFM: (fopen) Thread_count: %d\n",thread_count);
 #endif
-        handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
-        file->handle = handle;
         return file;
 }
 
@@ -435,12 +468,14 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
         if (file == NULL)
                 return -1;
         if (file->handle) {
+                g_mutex_lock(metadata_mutex);
                 LastFM *handle = file->handle;
                 ret = vfs_fclose(handle->proxy_fd);
                 if (!ret)
                         handle->proxy_fd = NULL;
                 g_free(handle);
                 file->handle = NULL;
+                g_mutex_unlock(metadata_mutex);
         }
         return ret;
 }
@@ -540,6 +575,9 @@ static void init(void)
         vfs_register_transport(&lastfm_const);
         if (!metadata_mutex)
                 metadata_mutex = g_mutex_new ();
+        t0=g_new0(GTimeVal,1);
+        t1=g_new0(GTimeVal,1);
+
 
 }
 
@@ -549,7 +587,7 @@ static void cleanup(void)
         mowgli_global_storage_free("lastfm_session_id");
         mowgli_global_storage_free("lastfm_stream_uri");
 #if DEBUG
-        g_print ("Cleanup finished\n");
+        g_print("LASTFM: (cleanup) Cleanup finished\n");
 #endif
 }
 
