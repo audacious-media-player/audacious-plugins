@@ -66,6 +66,7 @@ static void				cdaudio_cleanup();
 static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
 static TitleInput		*cdaudio_get_song_tuple(gchar *filename);
 
+static TitleInput		*create_tuple_from_trackinfo(char *filename);
 static void				*dae_playing_thread_core(dae_params_t *pdae_params);
 static int				calculate_track_length(int startlsn, int endlsn);
 static int				find_trackno_from_filename(char *filename);
@@ -499,17 +500,10 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 		}
 	}
 
-	char title[DEF_STRING_LEN];
-
-	if (strlen(trackinfo[trackno].performer) > 0) {
-		strcpy(title, trackinfo[trackno].performer);
-		strcat(title, " - ");
-	}
-	else
-		strcpy(title, "");
-	strcat(title, trackinfo[trackno].name);
+	char *title = xmms_get_titlestring(xmms_get_gentitle_format(), create_tuple_from_trackinfo(pinputplayback->filename));
 
 	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 128000, 44100, 2);
+	free(title);
 }
 
 void cdaudio_stop(InputPlayback *pinputplayback)
@@ -709,17 +703,8 @@ void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 		printf("cdaudio-ng: cdaudio_get_song_info(\"%s\")\n", filename);
 
 	int trackno = find_trackno_from_filename(filename);
-	char *thetitle = (char *) malloc(DEF_STRING_LEN);
 
-	if (strlen(trackinfo[trackno].performer) > 0) {
-		strcpy(thetitle, trackinfo[trackno].performer);
-		strcat(thetitle, " - ");
-	}
-	else
-		strcpy(thetitle, "");
-	strcat(thetitle, trackinfo[trackno].name);
-
-	*title = thetitle;
+	*title = xmms_get_titlestring(xmms_get_gentitle_format(), create_tuple_from_trackinfo(filename));
 	*length = calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
 }
 
@@ -728,10 +713,17 @@ TitleInput *cdaudio_get_song_tuple(gchar *filename)
 	if (debug)
 		printf("cdaudio-ng: cdaudio_get_song_tuple(\"%s\")\n", filename);
 
-	TitleInput *tuple = bmp_title_input_new();
+	return create_tuple_from_trackinfo(filename);
+}
 
-		/* return information about the requested track */
+
+	/* auxiliar functions */
+
+TitleInput *create_tuple_from_trackinfo(char *filename)
+{
+	TitleInput *tuple = bmp_title_input_new();
 	int trackno = find_trackno_from_filename(filename);
+
 	if (trackno < firsttrackno || trackno > lasttrackno)
 		return NULL;
 
@@ -748,9 +740,6 @@ TitleInput *cdaudio_get_song_tuple(gchar *filename)
 
 	return tuple;
 }
-
-
-	/* auxiliar functions */
 
 void *dae_playing_thread_core(dae_params_t *pdae_params)
 {
