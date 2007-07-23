@@ -3,9 +3,11 @@
 #define CDAUDIO_NG_H
 
 
-#define DEF_STRING_LEN		256
-#define CDDA_DEFAULT		"cdda://default"
-#define CDDA_DAE_FRAMES		8
+#define DEF_STRING_LEN				256
+#define CDDA_DEFAULT				"cdda://default"
+#define CDDA_DAE_FRAMES				8
+#define CDDA_DEFAULT_CDDB_SERVER	"freedb.org"
+#define CDDA_DEFAULT_CDDB_PORT		888
 
 
 typedef struct {

@@ -132,11 +132,11 @@ void cdaudio_init()
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cddb", &use_cddb))
 		use_cddb = TRUE;
 	if (!bmp_cfg_db_get_string(db, "CDDA", "cddbserver", &string))
-		strcpy(cddb_server, "");
+		strcpy(cddb_server, CDDA_DEFAULT_CDDB_SERVER);
 	else
 		strcpy(cddb_server, string);
 	if (!bmp_cfg_db_get_int(db, "CDDA", "cddbport", &cddb_port))
-		cddb_port = 1;
+		cddb_port = CDDA_DEFAULT_CDDB_PORT;
 	if (!bmp_cfg_db_get_string(db, "CDDA", "device", &string))
 		strcpy(device, "");
 	else
@@ -283,7 +283,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	trackinfo = (trackinfo_t *) malloc(sizeof(trackinfo_t) * (lasttrackno + 1));
 	int trackno;
 
-	trackinfo[0].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, trackno);
+	trackinfo[0].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, 0);
 	trackinfo[0].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, CDIO_CDROM_LEADOUT_TRACK);
 	strcpy(trackinfo[0].performer, "");
 	strcpy(trackinfo[0].name, "");
