@@ -179,7 +179,8 @@ static void play_file(InputPlayback *data)
     char *filename = data->filename;
     going = 1;
     playback = data;
-    playback_thread = g_thread_create(decode_thread, filename, TRUE, NULL);
+    playback_thread = g_thread_self();
+    decode_thread(filename);
 }
 
 static void stop(InputPlayback * data)
