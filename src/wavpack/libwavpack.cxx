@@ -349,7 +349,8 @@ wv_play(InputPlayback *data)
     isSeek = -1;
     killDecodeThread = false;
     AudioError = false;
-    thread_handle = g_thread_create(DecodeThread, (void *) data->filename, TRUE, NULL);
+    thread_handle = g_thread_self();
+    DecodeThread((void *) data->filename);
     return;
 }
 
