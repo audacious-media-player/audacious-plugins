@@ -711,6 +711,5 @@ gpointer decode_loop(gpointer arg)
     g_mutex_lock(mad_mutex);
     info->playback->playing = 0;
     g_mutex_unlock(mad_mutex);
-    g_thread_exit(0);
     return NULL; /* dummy */
 }

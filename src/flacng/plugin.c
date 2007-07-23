@@ -541,8 +541,6 @@ static gpointer flac_play_loop(gpointer arg) {
      */
     g_mutex_unlock(flac_pl_mutex);
 
-    g_thread_exit(NULL);
-
     _LEAVE NULL;
 }
 
