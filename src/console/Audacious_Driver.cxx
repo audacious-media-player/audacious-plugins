@@ -310,8 +310,6 @@ static void* play_loop_track( gpointer arg )
 	playback->output->close_audio();
 	console_ip_is_going = 0;
 	g_static_mutex_unlock( &playback_mutex );
-	// TODO: should decode_thread be cleared here?
-	g_thread_exit( NULL );
 	return NULL;
 }
 
@@ -396,7 +394,8 @@ static void play_file( InputPlayback *playback )
 	
 	pending_seek = -1;
 	console_ip_is_going = 1;
-	decode_thread = g_thread_create( play_loop_track, playback, TRUE, NULL );
+	decode_thread = g_thread_self();
+        play_loop_track( playback );
 }
 
 static void seek( InputPlayback * data, gint time )
