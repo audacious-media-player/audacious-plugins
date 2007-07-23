@@ -17,7 +17,7 @@ static GtkWidget		*miscframe;
 static GtkWidget		*daetable;
 static GtkWidget		*titleinfotable;
 static GtkWidget		*misctable;
-static GtkWidget		*usedaecheckbutton;
+/*static GtkWidget		*usedaecheckbutton;*/
 static GtkWidget		*limitcheckbutton;
 static GtkWidget		*usecdtextcheckbutton;
 static GtkWidget		*usecddbcheckbutton;
@@ -31,7 +31,7 @@ static GtkWidget		*limitspinbutton;
 static GtkWidget		*deviceentry;
 static GtkWidget		*debugcheckbutton;
 
-static gboolean			*usedae;
+/*static gboolean			*usedae;*/
 static int				*limitspeed;
 static gboolean			*usecdtext;
 static gboolean			*usecddb;
@@ -47,9 +47,9 @@ static void				values_to_gui();
 static void				gui_to_values();
 
 
-void configure_set_variables(gboolean *_usedae, int *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, char *_device, gboolean *_debug, char *_cddbserver, int *_cddbport)
+void configure_set_variables(/*gboolean *_usedae, */int *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, char *_device, gboolean *_debug, char *_cddbserver, int *_cddbport)
 {
-	usedae = _usedae;
+	/*usedae = _usedae;*/
 	limitspeed = _limitspeed;
 	usecdtext = _usecdtext;
 	usecddb = _usecddb;
@@ -74,7 +74,7 @@ void configure_create_gui()
 
 	daeframe = gtk_frame_new("Digital audio extraction");
 	gtk_table_attach_defaults(GTK_TABLE(maintable), daeframe, 0, 2, 0, 1);
-	daetable = gtk_table_new(2, 2, TRUE);
+	daetable = gtk_table_new(1, 2, TRUE);
 	gtk_container_add(GTK_CONTAINER(daeframe), daetable);
 
 	titleinfoframe = gtk_frame_new("Title information");
@@ -88,16 +88,18 @@ void configure_create_gui()
 	gtk_container_add(GTK_CONTAINER(miscframe), misctable);
 
 
+	/*
 	usedaecheckbutton = gtk_check_button_new_with_label("Use digital audio extraction");
 	g_signal_connect(G_OBJECT(usedaecheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(daetable), usedaecheckbutton, 0, 2, 0, 1);
+	*/
 
 	limitcheckbutton = gtk_check_button_new_with_label("Limit read speed to: ");
 	g_signal_connect(G_OBJECT(limitcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
-	gtk_table_attach_defaults(GTK_TABLE(daetable), limitcheckbutton, 0, 1, 1, 2);
+	gtk_table_attach_defaults(GTK_TABLE(daetable), limitcheckbutton, 0, 1, 0, 1);
 
 	limitspinbutton = gtk_spin_button_new_with_range(1.0, 24.0, 1.0);
-	gtk_table_attach_defaults(GTK_TABLE(daetable), limitspinbutton, 1, 2, 1, 2);
+	gtk_table_attach_defaults(GTK_TABLE(daetable), limitspinbutton, 1, 2, 0, 1);
 
 	usecdtextcheckbutton = gtk_check_button_new_with_label("Use cd-text if available");
 	g_signal_connect(G_OBJECT(usecdtextcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
@@ -146,7 +148,7 @@ void configure_create_gui()
 	gtk_container_add(GTK_CONTAINER(buttonbox), cancelbutton);
 
 
-	gtk_widget_show(usedaecheckbutton);
+	/*gtk_widget_show(usedaecheckbutton);*/
 	gtk_widget_show(limitcheckbutton);
 	gtk_widget_show(limitspinbutton);
 	gtk_widget_show(usecdtextcheckbutton);
@@ -195,7 +197,7 @@ void button_clicked(GtkWidget *widget, gpointer data)
 
 void checkbutton_toggled(GtkWidget *widget, gpointer data)
 {
-	gtk_widget_set_sensitive(limitcheckbutton, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)));
+	/*gtk_widget_set_sensitive(limitcheckbutton, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)));*/
 
 	gtk_widget_set_sensitive(
 		limitspinbutton, 
@@ -210,12 +212,12 @@ void checkbutton_toggled(GtkWidget *widget, gpointer data)
 
 void values_to_gui()
 {
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedaecheckbutton), *usedae);
+	/*gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedaecheckbutton), *usedae);*/
 
-	gtk_widget_set_sensitive(limitcheckbutton, *usedae);
+	/*gtk_widget_set_sensitive(limitcheckbutton, *usedae);*/
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(limitcheckbutton), *limitspeed > 0);
 
-	gtk_widget_set_sensitive(limitspinbutton, *usedae && *limitspeed > 0);
+	/*gtk_widget_set_sensitive(limitspinbutton, *usedae && *limitspeed > 0);*/
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(limitspinbutton), *limitspeed);
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton), *usecdtext);
@@ -238,7 +240,7 @@ void values_to_gui()
 
 void gui_to_values()
 {
-	*usedae = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton));
+	/*usedae = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton));*/
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)))
 		*limitspeed = gtk_spin_button_get_value(GTK_SPIN_BUTTON(limitspinbutton));
 	else

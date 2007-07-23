@@ -121,8 +121,10 @@ void cdaudio_init()
 	ConfigDb *db = bmp_cfg_db_open();
 	gchar *string = NULL;
 
+	/*
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_dae", &use_dae))
 		use_dae = TRUE;
+	*/
 	if (!bmp_cfg_db_get_int(db, "CDDA", "limitspeed", &limitspeed))
 		limitspeed = 1;
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cdtext", &use_cdtext))
@@ -145,9 +147,9 @@ void cdaudio_init()
 	bmp_cfg_db_close(db);
 
 	if (debug)
-		printf("cdaudio-ng: configuration: use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n", use_dae, limitspeed, use_cdtext, use_cddb, cddb_server, cddb_port, device, debug);
+		printf("cdaudio-ng: configuration: "/*use_dae = %d, */"limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n", /*use_dae, */limitspeed, use_cdtext, use_cddb, cddb_server, cddb_port, device, debug);
 
-	configure_set_variables(&use_dae, &limitspeed, &use_cdtext, &use_cddb, device, &debug, cddb_server, &cddb_port);
+	configure_set_variables(/*&use_dae, */&limitspeed, &use_cdtext, &use_cddb, device, &debug, cddb_server, &cddb_port);
 	configure_create_gui();
 }
 
@@ -162,9 +164,10 @@ void cdaudio_configure()
 	if (debug)
 		printf("cdaudio-ng: cdaudio_configure()\n");
 
-		/* if playback is started, we stop it */
+	/*
 	if (playing_track != -1)
 		playback_stop();
+	*/
 
 	configure_show_gui();
 }
@@ -256,7 +259,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	}
 
 		/* limit read speed */
-	if (limitspeed > 0 && !use_dae) {
+	if (limitspeed > 0 && use_dae) {
 		if (debug)
 			printf("cdaudio-ng: setting drive speed limit to %dx\n", limitspeed);
 		if (cdio_set_speed(pcdio, limitspeed) != DRIVER_OP_SUCCESS)
@@ -689,7 +692,7 @@ void cdaudio_cleanup()
 	// todo: destroy the gui
 
 	ConfigDb *db = bmp_cfg_db_open();
-	bmp_cfg_db_set_bool(db, "CDDA", "use_dae", use_dae);
+	/*bmp_cfg_db_set_bool(db, "CDDA", "use_dae", use_dae);*/
 	bmp_cfg_db_set_int(db, "CDDA", "limitspeed", limitspeed);
 	bmp_cfg_db_set_bool(db, "CDDA", "use_cdtext", use_cdtext);
 	bmp_cfg_db_set_bool(db, "CDDA", "use_cddb", use_cddb);
