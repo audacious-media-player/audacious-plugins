@@ -67,7 +67,7 @@ static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *lengt
 static TitleInput		*cdaudio_get_song_tuple(gchar *filename);
 
 static TitleInput		*create_tuple_from_trackinfo(char *filename);
-static void				*dae_playing_thread_core(dae_params_t *pdae_params);
+static void				dae_play_loop(dae_params_t *pdae_params);
 static int				calculate_track_length(int startlsn, int endlsn);
 static int				find_trackno_from_filename(char *filename);
 static void				cleanup_on_error();
@@ -476,15 +476,18 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 			return;
 		}
 
+		/*
 		if (debug)
 			printf("cdaudio-ng: starting dae thread...\n");
+		*/
 		pdae_params = (dae_params_t *) malloc(sizeof(dae_params_t));
 		pdae_params->startlsn = trackinfo[trackno].startlsn;
 		pdae_params->endlsn = trackinfo[trackno].endlsn;
 		pdae_params->pplayback = pinputplayback;
 		pdae_params->seektime = -1;
 		pdae_params->currlsn = trackinfo[trackno].startlsn;
-		pdae_params->thread = g_thread_create((GThreadFunc) dae_playing_thread_core, pdae_params, TRUE, NULL);
+		pdae_params->thread = g_thread_self();
+		dae_play_loop(pdae_params);
 	}
 	else {
 		if (debug)
@@ -741,12 +744,12 @@ TitleInput *create_tuple_from_trackinfo(char *filename)
 	return tuple;
 }
 
-void *dae_playing_thread_core(dae_params_t *pdae_params)
+void dae_play_loop(dae_params_t *pdae_params)
 {
 	unsigned char *buffer = (unsigned char *) malloc(CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
 
 	if (debug)
-		printf("cdaudio-ng: dae thread started\n");
+		printf("cdaudio-ng: dae started\n");
 	cdio_lseek(pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 
 	gboolean output_paused = FALSE;
@@ -818,7 +821,7 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 		pdae_params->currlsn += lsncount;
 	}
 	if (debug)
-		printf("cdaudio-ng: dae thread ended\n");
+		printf("cdaudio-ng: dae ended\n");
 
 	pdae_params->pplayback->playing = FALSE;
 	pdae_params->pplayback->output->close_audio();
@@ -826,9 +829,6 @@ void *dae_playing_thread_core(dae_params_t *pdae_params)
 
 	pdae_params->pplayback->output->close_audio();
 	free(buffer);
-
-	g_thread_exit(NULL);
-	return NULL;
 }
 
 int calculate_track_length(int startlsn, int endlsn)
