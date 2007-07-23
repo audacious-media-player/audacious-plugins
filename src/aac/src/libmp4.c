@@ -125,7 +125,8 @@ static void mp4_play(InputPlayback *playback)
 {
     buffer_playing = TRUE;
     playback->playing = 1; //XXX should acquire lock?
-    decodeThread = g_thread_create((GThreadFunc)mp4_decode, playback, TRUE, NULL);
+    mp4_decode(playback);
+    decodeThread = g_thread_self();
 }
 
 static void mp4_stop(InputPlayback *playback)
@@ -593,8 +594,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             buffer_playing = FALSE;
             playback->playing = 0;
             g_static_mutex_unlock(&mutex);
-            g_thread_exit(NULL);
-
             return FALSE;
         }
         rc= mp4ff_read_sample(mp4file, mp4track,
@@ -675,7 +674,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         buffer_playing = FALSE;
         playback->playing = 0;
         g_static_mutex_unlock(&mutex);
-        g_thread_exit(NULL);
+        return;
     }
     if((buffervalid = vfs_fread(streambuffer, 1, BUFFER_SIZE, file))==0){
         g_print("AAC: Error reading file\n");
@@ -684,7 +683,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         playback->playing = 0;
         faacDecClose(decoder);
         g_static_mutex_unlock(&mutex);
-        g_thread_exit(NULL);
+        return;
     }
     if(!strncmp((char*)streambuffer, "ID3", 3)){
         gint size = 0;
@@ -733,7 +732,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         buffer_playing = FALSE;
         playback->playing = 0;
         g_static_mutex_unlock(&mutex);
-        g_thread_exit(NULL);
+        return;
     }
 
     mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
@@ -827,7 +826,6 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     buffer_playing = FALSE;
     playback->playing = 0;
     g_static_mutex_unlock(&mutex);
-    g_thread_exit(NULL);
 }
 
 static void *mp4_decode( void *args )
@@ -848,7 +846,7 @@ static void *mp4_decode( void *args )
     g_static_mutex_unlock(&mutex);
 
     if (mp4fh == NULL)
-        g_thread_exit(NULL);
+        return NULL;
 
     ret = parse_aac_stream(mp4fh);
 
