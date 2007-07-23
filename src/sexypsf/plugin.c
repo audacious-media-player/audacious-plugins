@@ -53,7 +53,6 @@ static int is_our_fd(gchar *filename, VFSFile *file) {
     return 0;
 }
 
-
 void sexypsf_update(unsigned char *buffer, long count)
 {
     const int mask = ~((((16 / 8) * 2)) - 1);
@@ -157,8 +156,8 @@ static void sexypsf_xmms_play(InputPlayback *data)
         g_free(name);
 
         playing = 1;
-        dethread = g_thread_create((GThreadFunc)sexypsf_playloop,
-                                   NULL, TRUE, NULL);
+        dethread = g_thread_self();
+        sexypsf_playloop(NULL);
     }
 }
 
