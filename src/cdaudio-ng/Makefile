@@ -10,6 +10,6 @@ SOURCES = cdaudio-ng.c configure.c
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CDIO_CFLAGS) $(CDDB_CFLAGS) -I../../intl -I../.. -Wall -g3 -ggdb
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CDIO_CFLAGS) $(CDDB_CFLAGS) -I../../intl -I../..
 
 include ../../mk/objective.mk
