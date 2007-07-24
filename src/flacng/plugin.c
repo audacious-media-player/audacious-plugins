@@ -541,8 +541,6 @@ static gpointer flac_play_loop(gpointer arg) {
      */
     g_mutex_unlock(flac_pl_mutex);
 
-    g_thread_exit(NULL);
-
     _LEAVE NULL;
 }
 
@@ -600,7 +598,8 @@ void flac_play_file (InputPlayback* input) {
 
     flac_ip.set_info(get_title(input->filename, main_info), l, -1, main_info->stream.samplerate, main_info->stream.channels);
 
-    thread = g_thread_create(flac_play_loop, input, TRUE, NULL);
+    thread = g_thread_self();
+    flac_play_loop(input);
 
     _LEAVE;
 }

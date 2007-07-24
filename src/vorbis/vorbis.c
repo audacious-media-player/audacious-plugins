@@ -583,7 +583,8 @@ vorbis_play(InputPlayback *playback)
     playback->eof = 0;
     playback->error = FALSE;
 
-    thread = g_thread_create(vorbis_play_loop, playback, TRUE, NULL);
+    thread = g_thread_self();
+    vorbis_play_loop(playback);
 }
 
 static void

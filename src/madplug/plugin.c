@@ -464,7 +464,8 @@ static void audmad_play_file(InputPlayback *playback)
     info.playback->playing = 1;
     g_mutex_unlock(pb_mutex);
 
-    decode_thread = g_thread_create(decode_loop, (void *) &info, TRUE, NULL);
+    decode_thread = g_thread_self();
+    decode_loop(&info);
 }
 
 static void audmad_pause(InputPlayback *playback, short paused)

@@ -150,7 +150,6 @@ static void* play_loop(void *arg)
 	/* Make sure the output plugin stops prebuffering */
 	playback->output->buffer_free();
 	playback->output->buffer_free();
-	g_thread_exit(NULL);
 }
 
 static void metronom_play(InputPlayback *playback)
@@ -199,7 +198,8 @@ static void metronom_play(InputPlayback *playback)
 	metronom_ip.set_info(name, -1, 16 * 44100, 44100, 1);
 	g_free(name);
 	playback->data = pmetronom;
-	play_thread = g_thread_create((GThreadFunc)play_loop, playback, TRUE, NULL);
+	play_thread = g_thread_self();
+	play_loop(playback);
 }
 
 static void metronom_stop(InputPlayback *playback)

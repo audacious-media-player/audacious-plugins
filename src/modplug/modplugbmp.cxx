@@ -221,12 +221,6 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	return false;
 }
 
-void* ModplugXMMS::PlayThread(void* arg)
-{
-	((ModplugXMMS*)arg)->PlayLoop();
-	return NULL;
-}
-
 void ModplugXMMS::PlayLoop()
 {
 	uint32 lLength;
@@ -316,8 +310,6 @@ void ModplugXMMS::PlayLoop()
 
 	mPaused = false;
 	mStopped = true;
-
-	g_thread_exit(NULL);
 }
 
 void ModplugXMMS::PlayFile(const string& aFilename)
@@ -453,12 +445,8 @@ void ModplugXMMS::PlayFile(const string& aFilename)
 		mModProps.mChannels
 	);
 
-	mDecodeThread = g_thread_create(
-		(GThreadFunc)PlayThread,
-		this,
-		TRUE,
-		NULL
-	);
+	mDecodeThread = g_thread_self();
+	this->PlayLoop();
 }
 
 void ModplugXMMS::Stop(void)
