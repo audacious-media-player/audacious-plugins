@@ -229,11 +229,10 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
                         handle->lastfm_title  = parse(split[i],"track=");
 
                 if (g_str_has_prefix(split[i], "album="))
-                        handle->lastfm_album  = parse(split[i],"album=" );
+                        lastfm_store("lastfm_album", parse(split[i],"album=" ));
 
                 if (g_str_has_prefix(split[i], "albumcover_medium="))
-                        lastfm_store("lastfm_cover", parse(split[i],"albumcover_medium="));
-                                
+                        lastfm_store("lastfm_cover", parse(split[i],"albumcover_medium=")); 
                         
                 if (g_str_has_prefix(split[i], "station="))
                         handle->lastfm_station_name = parse(split[i],"station=");
