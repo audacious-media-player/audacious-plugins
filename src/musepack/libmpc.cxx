@@ -304,7 +304,8 @@ static void mpcPlay(InputPlayback *data)
     mpcDecoder.isAlive  = true;
     mpcDecoder.isOutput = false;
     mpcDecoder.isPause  = false;
-    threadHandle = g_thread_create(GThreadFunc(decodeStream), (void *) g_strdup(data->filename), TRUE, NULL);
+    threadHandle = g_thread_self();
+    decodeStream((void *) g_strdup(data->filename));
 }
 
 static void mpcStop(InputPlayback *data)
@@ -763,7 +764,6 @@ static void* endThread(char* p_FileName, VFSFile * p_FileHandle, bool release)
         free(track.display);
         track.display = NULL;
     }
-    g_thread_exit(NULL);
     return 0;
 }
 
