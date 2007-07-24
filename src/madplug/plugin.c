@@ -55,18 +55,18 @@ static GtkWidget *error_dialog = 0;
 extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
 
 static gint mp3_bitrate_table[5][16] = {
-  { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, -1 },	/* MPEG1 L1 */
-  { 0, 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384, -1 },	/* MPEG1 L2 */
-  { 0, 32, 40, 48,  56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, -1 },	/* MPEG1 L3 */
-  { 0, 32, 48, 56,  64,  80,  96, 112, 128, 144, 160, 176, 192, 224, 256, -1 },	/* MPEG2(.5) L1 */
-  { 0,  8, 16, 24,  32,  40,  48,  56,  64,  80,  96, 112, 128, 144, 160, -1 } 	/* MPEG2(.5) L2,L3 */
+  { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, -1 }, /* MPEG1 L1 */
+  { 0, 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384, -1 }, /* MPEG1 L2 */
+  { 0, 32, 40, 48,  56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, -1 }, /* MPEG1 L3 */
+  { 0, 32, 48, 56,  64,  80,  96, 112, 128, 144, 160, 176, 192, 224, 256, -1 }, /* MPEG2(.5) L1 */
+  { 0,  8, 16, 24,  32,  40,  48,  56,  64,  80,  96, 112, 128, 144, 160, -1 }  /* MPEG2(.5) L2,L3 */
 };
 
 static gint mp3_samplerate_table[4][4] = {
-  { 11025, 12000, 8000, -1 },	/* MPEG2.5 */
-  { -1, -1, -1, -1 },		/* Reserved */
-  { 22050, 24000, 16000, -1 },	/* MPEG2 */
-  { 44100, 48000, 32000, -1 }	/* MPEG1 */
+  { 11025, 12000, 8000, -1 },   /* MPEG2.5 */
+  { -1, -1, -1, -1 },           /* Reserved */
+  { 22050, 24000, 16000, -1 },  /* MPEG2 */
+  { 44100, 48000, 32000, -1 }   /* MPEG1 */
 };
 
 /*
@@ -185,6 +185,10 @@ static void audmad_cleanup()
     g_free(audmad_config.pregain_db);
     g_free(audmad_config.replaygain.default_db);
     g_free(audmad_config.id3_format);
+
+    audmad_config.pregain_db = NULL;
+    audmad_config.replaygain.default_db = NULL;
+    audmad_config.id3_format = NULL;
 
     g_cond_free(mad_cond);
     g_mutex_free(mad_mutex);
@@ -570,21 +574,21 @@ static void audmad_about()
         return;
 
     scratch = g_strdup_printf(
-	_("Audacious MPEG Audio Plugin\n"
-	"\n"
-	"Compiled against libMAD version: %d.%d.%d%s\n"
-	"\n"
-	"Written by:\n"
-	"    William Pitcock <nenolod@sacredspiral.co.uk>\n"
-	"    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
-	"\n"
-	"Portions derived from XMMS-MAD by:\n"
-	"    Sam Clegg\n"
-	"\n"
-	"ReplayGain support by:\n"
-	"    Samuel Krempp"),
-	MAD_VERSION_MAJOR, MAD_VERSION_MINOR, MAD_VERSION_PATCH,
-	MAD_VERSION_EXTRA);
+    _("Audacious MPEG Audio Plugin\n"
+    "\n"
+    "Compiled against libMAD version: %d.%d.%d%s\n"
+    "\n"
+    "Written by:\n"
+    "    William Pitcock <nenolod@sacredspiral.co.uk>\n"
+    "    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
+    "\n"
+    "Portions derived from XMMS-MAD by:\n"
+    "    Sam Clegg\n"
+    "\n"
+    "ReplayGain support by:\n"
+    "    Samuel Krempp"),
+    MAD_VERSION_MAJOR, MAD_VERSION_MINOR, MAD_VERSION_PATCH,
+    MAD_VERSION_EXTRA);
 
     aboutbox = xmms_show_message(_("About MPEG Audio Plugin"),
                                  scratch,
