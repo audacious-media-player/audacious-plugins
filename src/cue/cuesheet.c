@@ -501,7 +501,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip->data = data->data;
 
 		real_play_thread = g_thread_create((GThreadFunc)(real_ip->plugin->play_file), (gpointer)real_ip, TRUE, NULL);
-		g_usleep(TRANSITION_GUARD_TIME); // XXX wait until real plugin finishes initialization.
+		g_usleep(10000); // wait for 10msec while real input plugin is initializing.
 
 		if(real_ip->plugin->mseek) {
 			real_ip->plugin->mseek(real_ip, finetune_seek ? finetune_seek : cue_tracks[track].index);
@@ -604,6 +604,11 @@ static gpointer watchdog_func(gpointer data)
             continue;
 
         time = get_output_time();
+#if 0
+#ifdef DEBUG
+        printf("t = %d\n", time);
+#endif
+#endif
         if(time == 0)
             continue;
 
