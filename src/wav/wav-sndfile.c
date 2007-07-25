@@ -275,8 +275,8 @@ play_start (InputPlayback *playback)
 
 	playback->playing = TRUE;
 
-	decode_thread = g_thread_create ((GThreadFunc)play_loop, playback, TRUE, NULL);
-
+	decode_thread = g_thread_self();
+        play_loop(playback);
 }
 
 static void
