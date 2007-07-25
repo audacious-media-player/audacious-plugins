@@ -425,7 +425,7 @@ vorbis_play_loop(gpointer arg)
     double time;
     long timercount = 0;
     vorbis_info *vi;
-    long br;
+    gint br;
     VFSVorbisFile *fd = NULL;
 
     int last_section = -1;
@@ -477,12 +477,14 @@ vorbis_play_loop(gpointer arg)
         goto play_cleanup;
     }
 
-    samplerate = vi->rate;
-    channels = vi->channels;
-
     title = vorbis_generate_title(&vf, filename);
     use_rg = vorbis_update_replaygain(&rg_scale);
-    br = vi->bitrate_nominal / 1000;
+
+    vi = ov_info(&vf, -1);
+
+    samplerate = vi->rate;
+    channels = vi->channels;
+    br = vi->bitrate_nominal;
 
     g_mutex_unlock(vf_mutex);
 
