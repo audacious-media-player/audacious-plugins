@@ -55,6 +55,9 @@ static void cue_cleanup(void);
 static gpointer watchdog_func(gpointer data);
 
 GThread *watchdog_thread;
+GThread *play_thread;
+GThread *real_play_thread;
+
 static GMutex *cue_mutex;
 static GCond *cue_cond;
 static enum {
@@ -63,8 +66,10 @@ static enum {
     EXIT,
 } watchdog_state;
 
+static GMutex *cue_block_mutex;
+static GCond *cue_block_cond;
+
 static InputPlayback *caller_ip = NULL;
-GThread *exec_thread;
 
 static gchar *cue_file = NULL;
 static gchar *cue_title = NULL;
@@ -124,6 +129,8 @@ static void cue_init(void)
 {
     cue_mutex = g_mutex_new();
     cue_cond = g_cond_new();
+    cue_block_mutex = g_mutex_new();
+    cue_block_cond = g_cond_new();
 
     /* create watchdog thread */
     g_mutex_lock(cue_mutex);
@@ -146,6 +153,8 @@ static void cue_cleanup(void)
 
     g_cond_free(cue_cond);
     g_mutex_free(cue_mutex);
+    g_cond_free(cue_block_cond);
+    g_mutex_free(cue_block_mutex);
 }
 
 static int is_our_file(gchar *filename)
@@ -206,7 +215,7 @@ static void play(InputPlayback *data)
 		g_free(tmp);
 		return;
 	}
-
+	play_thread = g_thread_self();
 	play_cue_uri(data, uri);
 }
 
@@ -232,7 +241,9 @@ static TitleInput *get_tuple_uri(gchar *uri)
     gchar *_path = strchr(path2, '?');
     gint track = 0;
 
+	ProbeResult *pr;
 	InputPlugin *dec;
+
 	TitleInput *phys_tuple, *out;
 
         if (_path != NULL && *_path == '?')
@@ -246,9 +257,11 @@ static TitleInput *get_tuple_uri(gchar *uri)
 
 	if (cue_file == NULL)
 		return NULL;
-
-	dec = input_check_file(cue_file, FALSE);
-
+    
+	pr = input_check_file(cue_file, FALSE);
+	if (pr == NULL)
+		return NULL;
+	dec = pr->ip;
 	if (dec == NULL)
 		return NULL;
 
@@ -319,35 +332,48 @@ static void stop(InputPlayback * data)
 #ifdef DEBUG
     g_print("f: stop: playback = %p\n", data);
 #endif
-	if (real_ip != NULL)
-		real_ip->plugin->stop(real_ip);
+
+    if(play_thread) {
+        if(real_play_thread) {
+            g_cond_signal(cue_block_cond); /* kick play_cue_uri */
+
+            if (real_ip != NULL)
+                real_ip->plugin->stop(real_ip);
 #ifdef DEBUG
-    g_print("i: stop(real_ip) finished\n");
+            g_print("i: stop(real_ip) finished\n");
 #endif
-    if (data != NULL)
-        data->playing = 0;
-    if (caller_ip != NULL)
-        caller_ip->playing = 0;
+            if (data != NULL)
+                data->playing = 0;
+            if (caller_ip != NULL)
+                caller_ip->playing = 0;
 
-    g_mutex_lock(cue_mutex);
-    watchdog_state = STOP;
-    g_mutex_unlock(cue_mutex);
-    g_cond_signal(cue_cond);
+            g_mutex_lock(cue_mutex);
+            watchdog_state = STOP;
+            g_mutex_unlock(cue_mutex);
+            g_cond_signal(cue_cond);
 
-	free_cue_info();
+            free_cue_info();
 
-	if (real_ip != NULL) {
-		real_ip->plugin->set_info = cue_ip.set_info;
-		real_ip->plugin->output = NULL;
-		g_free(real_ip);
-		real_ip = NULL;
-	}
+            if (real_ip != NULL) {
+                real_ip->plugin->set_info = cue_ip.set_info;
+                real_ip->plugin->output = NULL;
+                g_free(real_ip);
+                real_ip = NULL;
+            }
+        } /* real_play_thread */
+
+        g_thread_join(play_thread);
+        play_thread = NULL;
+
+    } /*play_thread*/
+
+
 #ifdef DEBUG
     g_print("e: stop\n");
 #endif
 }
 
-// not publicly available functions.
+/* not publicly available functions. */
 extern void playback_stop(void);
 extern void mainwin_clear_song_info(void);
 
@@ -426,6 +452,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 	gint file_length = 0;
 	gint track = 0;
 	gchar *dummy = NULL;
+	ProbeResult *pr;
 	InputPlugin *real_ip_plugin;
 
 #ifdef DEBUG
@@ -451,7 +478,11 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
     if (cue_file == NULL || !vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
         return;
 
-	real_ip_plugin = input_check_file(cue_file, FALSE);
+	pr = input_check_file(cue_file, FALSE);
+	if (pr == NULL)
+		return;
+
+	real_ip_plugin = pr->ip;
 
 	if (real_ip_plugin != NULL)
 	{
@@ -467,18 +498,16 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip->output = data->output;
 		real_ip->data = data->data;
 
-		real_ip->plugin->play_file(real_ip);
+		real_play_thread = g_thread_create((GThreadFunc)(real_ip->plugin->play_file), (gpointer)real_ip, TRUE, NULL);
+		g_usleep(TRANSITION_GUARD_TIME); // XXX wait until real plugin finishes initialization.
 
-		if(real_ip->plugin->mseek) { // seek by millisecond
-#ifdef DEBUG
-			g_print("mseek\n");
-#endif
+		if(real_ip->plugin->mseek) {
 			real_ip->plugin->mseek(real_ip, finetune_seek ? finetune_seek : cue_tracks[track].index);
 		}
 		else
 			real_ip->plugin->seek(real_ip, finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
 
-		// in some plugins, NULL as 2nd arg causes crash.
+		/* in some plugins, NULL as 2nd arg causes crash. */
 		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
 		g_free(dummy);
 		cue_tracks[last_cue_track].index = file_length;
@@ -492,9 +521,13 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 #ifdef DEBUG
         g_print("watchdog activated\n");
 #endif
+        finetune_seek = 0;
+        if(real_play_thread) {
+            g_mutex_lock(cue_block_mutex);
+            g_cond_wait(cue_block_cond, cue_block_mutex); // block until stop() is called.
+            g_mutex_unlock(cue_block_mutex);            
+        }
 	}
-
-	finetune_seek = 0;
 
 #ifdef DEBUG
     g_print("e: play_cue_uri\n");
@@ -759,7 +792,9 @@ static void cache_cue_file(char *f)
 		else if (strcasecmp(line+p, "FILE") == 0) {
 			gchar *tmp = g_path_get_dirname(f);
 			fix_cue_argument(line+q);
-			cue_file = g_strdup_printf("%s/%s", tmp, line+q);	/* XXX: yaz might need to UTF validate this?? -nenolod */ /* as far as I know, all FILEs are in plain ASCII - yaz */
+			cue_file = g_strdup_printf("%s/%s", tmp, line+q);
+			/* XXX: yaz might need to UTF validate this?? -nenolod */
+			/* as far as I know, all FILEs are in plain ASCII -yaz */
 			g_free(tmp);
 		}
 		else if (strcasecmp(line+p, "TITLE") == 0) {
