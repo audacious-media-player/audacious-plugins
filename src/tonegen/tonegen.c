@@ -163,7 +163,7 @@ static char* tone_title(char *filename)
 	if (freqs == NULL)
 		return NULL;
 
-	title = g_strdup_printf("%s %.1f Hz", _("Tone Generator: "),
+	title = g_strdup_printf(_("%s %.1f Hz"), _("Tone Generator: "),
 				g_array_index(freqs, double, 0));
 	for (i = 1; i < freqs->len; i++)
 	{
@@ -177,7 +177,7 @@ static char* tone_title(char *filename)
 
 	return title;
 }
-	
+
 
 static void tone_play(InputPlayback *playback)
 {
@@ -235,7 +235,7 @@ static void tone_song_info(char *filename, char **title, int *length)
 	*title = tone_title(filename);
 }
 
-static InputPlugin tone_ip = 
+static InputPlugin tone_ip =
 {
 	NULL,
 	NULL,

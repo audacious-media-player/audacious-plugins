@@ -24,8 +24,10 @@
 #include "sndstretch_xmms-logo.xpm"
 #include "FB_logo.xpm"
 
+#include "config.h"
 #include "audacious/configdb.h"
 #include "audacious/plugin.h"
+#include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <math.h>
 #include <stdlib.h>
@@ -83,7 +85,7 @@ static struct {
 
 static const char sndstretch_title_text[] = "SndStretch xmms - " SNDSTRETCH_VERSION_STRING;
 
-static const gchar sndstretch_about_text[] = 
+static const gchar sndstretch_about_text[] =
 	"Copyright (C) 2001 Florian Berger\n<harpin_floh@yahoo.de>\n"
 	"Ported to Audacious by Michael Färber\n"
 	"http://www.geocities.com/harpin_floh/home.html";
@@ -123,7 +125,7 @@ void sndstretch_about(void)
 {
 	GtkWidget * vbox, * scrolltext, * button;
 	GtkWidget * titlelabel, * copylabel;
-	GtkWidget * text; 
+	GtkWidget * text;
 	GtkTextBuffer * textbuffer;
 	GtkTextIter iter;
 
@@ -158,7 +160,7 @@ void sndstretch_about(void)
 
 	gtk_signal_connect(GTK_OBJECT(sndstretch_about_dialog), "destroy",
 					   GTK_SIGNAL_FUNC(sndstretch_about_destroy_cb), NULL);
-	gtk_window_set_title(GTK_WINDOW(sndstretch_about_dialog), "About SndStretch");
+	gtk_window_set_title(GTK_WINDOW(sndstretch_about_dialog), _("About SndStretch"));
 
 
 	/* labels */
@@ -318,8 +320,8 @@ void sndstretch_config(void)
 	SS.scale_adj = gtk_adjustment_new( 100.0*log(SS.scale)/log(2.0),
 									   -100, 100+10, 2, 10, 10);
 
-	volume_toggle  = gtk_check_button_new_with_label("Volume corr.");
-	overlap_toggle = gtk_check_button_new_with_label("Short Overlap");
+	volume_toggle  = gtk_check_button_new_with_label(_("Volume corr."));
+	overlap_toggle = gtk_check_button_new_with_label(_("Short Overlap"));
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(volume_toggle), SS.volume_corr );
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(overlap_toggle), SS.short_overlap );
 
@@ -373,10 +375,10 @@ void sndstretch_config(void)
 	gtk_box_pack_start(GTK_BOX(opt_hbox), volume_toggle, FALSE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(opt_hbox), overlap_toggle,TRUE, TRUE, 5);
 
-	speed_frame   = gtk_frame_new("Speed");
-	pitch_frame   = gtk_frame_new("Pitch");
-	scale_frame   = gtk_frame_new("Scale");
-	opt_frame     = gtk_frame_new("Options");
+	speed_frame   = gtk_frame_new(_("Speed"));
+	pitch_frame   = gtk_frame_new(_("Pitch"));
+	scale_frame   = gtk_frame_new(_("Scale"));
+	opt_frame     = gtk_frame_new(_("Options"));
 	gtk_container_add(GTK_CONTAINER(speed_frame), speed_hbox);
 	gtk_container_add(GTK_CONTAINER(pitch_frame), pitch_hbox);
 	gtk_container_add(GTK_CONTAINER(scale_frame), scale_hbox);
@@ -395,10 +397,10 @@ void sndstretch_config(void)
 
 	gtk_signal_connect(GTK_OBJECT(sndstretch_config_dialog), "destroy",
 					   GTK_SIGNAL_FUNC(sndstretch_config_destroy_cb), NULL);
-	gtk_window_set_title(GTK_WINDOW(sndstretch_config_dialog), "SndStretch - Configuration");
+	gtk_window_set_title(GTK_WINDOW(sndstretch_config_dialog), _("SndStretch - Configuration"));
 	gtk_container_add(GTK_CONTAINER(sndstretch_config_dialog), vbox);
 
-	gtk_widget_set_usize(sndstretch_config_dialog, 275, -1);
+	gtk_widget_set_usize(sndstretch_config_dialog, -1, -1);
 	gtk_widget_show_all(sndstretch_config_dialog);
 }
 

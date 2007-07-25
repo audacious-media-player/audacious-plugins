@@ -25,6 +25,8 @@
 #include "jack.h"
 
 #include "audacious/configdb.h"
+#include <audacious/i18n.h>
+# include "config.h"
 
 #include <gtk/gtk.h>
 
@@ -64,21 +66,21 @@ static void get_port_connection_modes(GtkCombo *combo)
     GtkWidget *item;
     char *descr;
 
-    descr = g_strdup("Connect to all available jack ports");
+    descr = g_strdup(_("Connect to all available jack ports"));
     item = gtk_list_item_new_with_label(descr);
     gtk_widget_show(item);
     g_free(descr);
     gtk_combo_set_item_string(combo, GTK_ITEM(item), "CONNECT_ALL");
     gtk_container_add(GTK_CONTAINER(combo->list), item);
 
-    descr = g_strdup("Connect only the output ports");
+    descr = g_strdup(_("Connect only the output ports"));
     item = gtk_list_item_new_with_label(descr);
     gtk_widget_show(item);
     g_free(descr);
     gtk_combo_set_item_string(combo, GTK_ITEM(item), "CONNECT_OUTPUT");
     gtk_container_add(GTK_CONTAINER(combo->list), item);
 
-    descr = g_strdup("Connect to no ports");
+    descr = g_strdup(_("Connect to no ports"));
     item = gtk_list_item_new_with_label(descr);
     gtk_widget_show(item);
     g_free(descr);
@@ -89,11 +91,11 @@ static void get_port_connection_modes(GtkCombo *combo)
 void jack_configure(void)
 {
 	if (!configure_win)
-	{	
+	{
 		configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		gtk_window_set_type_hint ( GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
 		gtk_signal_connect(GTK_OBJECT(configure_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &configure_win);
-		gtk_window_set_title(GTK_WINDOW(configure_win), ("jack Plugin configuration"));
+		gtk_window_set_title(GTK_WINDOW(configure_win), _("jack Plugin configuration"));
 		gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, FALSE, FALSE);
 		gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_MOUSE);
 		gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
@@ -102,7 +104,7 @@ void jack_configure(void)
     gtk_container_add(GTK_CONTAINER(configure_win), vbox);
 
     /* add a frame for other xmms-jack options */
-    option_frame = gtk_frame_new("Options:");
+    option_frame = gtk_frame_new(_("Options:"));
     gtk_box_pack_start(GTK_BOX(vbox), option_frame, FALSE, FALSE, 0);
 
     /* add a hbox that will contain a label for a dropdown and the dropdown itself */
@@ -111,7 +113,7 @@ void jack_configure(void)
     gtk_container_add(GTK_CONTAINER(option_frame), port_connection_mode_box);
 
     /* add the label */
-    gtk_box_pack_start(GTK_BOX(port_connection_mode_box), gtk_label_new("Connection mode:"),
+    gtk_box_pack_start(GTK_BOX(port_connection_mode_box), gtk_label_new(_("Connection mode:")),
                        FALSE, FALSE, 0);
 
     /* add the dropdown */
@@ -123,7 +125,7 @@ void jack_configure(void)
                        TRUE, TRUE, 0);
 
     /* create a check_button for debug output */
-    GTK_isTraceEnabled = gtk_check_button_new_with_label("Enable debug printing");
+    GTK_isTraceEnabled = gtk_check_button_new_with_label(_("Enable debug printing"));
     gtk_box_pack_start(GTK_BOX(vbox), GTK_isTraceEnabled, FALSE, FALSE, 0);
     gtk_widget_show(GTK_isTraceEnabled);
 
@@ -135,14 +137,14 @@ void jack_configure(void)
     bbox = gtk_hbox_new(FALSE, 10);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-		ok = gtk_button_new_with_label(("Ok"));
+		ok = gtk_button_new_with_label(_("Ok"));
 		gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(configure_win_ok_cb), NULL);
 		GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
 		gtk_widget_show(ok);
 		gtk_widget_grab_default(ok);
 
-		cancel = gtk_button_new_with_label(("Cancel"));
+		cancel = gtk_button_new_with_label(_("Cancel"));
 		gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(configure_win));
 		GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);

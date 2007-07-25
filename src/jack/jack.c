@@ -99,9 +99,9 @@ void jack_cleanup(void)
 void jack_sample_rate_error(void)
 {
 	dialog = gtk_dialog_new();
-	gtk_window_set_title(GTK_WINDOW(dialog), ("Sample rate mismatch"));
+	gtk_window_set_title(GTK_WINDOW(dialog), _("Sample rate mismatch"));
 	gtk_container_border_width(GTK_CONTAINER(dialog), 5);
-	label = gtk_label_new((
+	label = gtk_label_new(_(
 		"Xmms is asking for a sample rate that differs from\n "
 		"that of the jack server.  Xmms 1.2.8 or later\n"
 		"contains resampling routines that xmms-jack will\n"
@@ -115,7 +115,7 @@ void jack_sample_rate_error(void)
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 0);
 	gtk_widget_show(label);
 
-	button = gtk_button_new_with_label((" Close "));
+	button = gtk_button_new_with_label(_(" Close "));
 	gtk_signal_connect_object(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(dialog));
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), button, FALSE, FALSE, 0);
 	gtk_widget_show(button);
@@ -142,7 +142,7 @@ gint jack_get_written_time(void)
 gint jack_get_output_time(void)
 {
   gint return_val;
-  
+
   /* don't try to get any values if the device is still closed */
   if(JACK_GetState(driver) == CLOSED)
     return_val = 0;
@@ -182,7 +182,7 @@ void jack_set_port_connection_mode()
 {
   /* setup the port connection mode that determines how bio2jack will connect ports */
   enum JACK_PORT_CONNECTION_MODE mode;
-  
+
   if(strcmp(jack_cfg.port_connection_mode, "CONNECT_ALL") == 0)
       mode = CONNECT_ALL;
   else if(strcmp(jack_cfg.port_connection_mode, "CONNECT_OUTPUT") == 0)
@@ -460,12 +460,12 @@ void jack_write(gpointer ptr, gint length)
     TRACE("format changed, storing new values and opening/closing jack\n");
     TRACE("effect.format == %d, new_format == %d, effect.frequency == %ld, new_frequency == %d, effect.channels == %d, new_channels = %d\n",
 	  effect.format, new_format, effect.frequency, new_frequency, effect.channels, new_channels);
- 
+
     positionMS = JACK_GetPosition(driver, MILLISECONDS, PLAYED);
 
     jack_close();
     jack_open(new_format, new_frequency, new_channels);
- 
+
     /* restore the position after the open and close */
     JACK_SetState(driver, PAUSED);
     JACK_SetPosition(driver, MILLISECONDS, positionMS);
@@ -591,7 +591,7 @@ void jack_get_volume(int *l, int *r)
 void jack_about(void)
 {
 	static GtkWidget *aboutbox = NULL;
-	
+
 	if ( aboutbox == NULL )
 	{
 		aboutbox = xmms_show_message(

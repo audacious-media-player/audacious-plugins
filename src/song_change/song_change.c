@@ -341,7 +341,7 @@ static GtkWidget *configure(void)
 	GtkWidget *song_frame, *song_vbox;
 	GtkWidget *bbox_hbox;
 	char *temp;
-	
+
 	read_config();
 
 	configure_vbox = gtk_vbox_new(FALSE, 12);
@@ -351,13 +351,13 @@ static GtkWidget *configure(void)
 	song_vbox = gtk_vbox_new(FALSE, 12);
 	gtk_container_set_border_width(GTK_CONTAINER(song_vbox), 6);
 	gtk_container_add(GTK_CONTAINER(song_frame), song_vbox);
-	
+
 	cmd_desc = gtk_label_new(_(
 		   "Command to run when Audacious starts a new song."));
 	gtk_label_set_justify(GTK_LABEL(cmd_desc), GTK_JUSTIFY_LEFT);
 	gtk_misc_set_alignment(GTK_MISC(cmd_desc), 0, 0.5);
 	gtk_box_pack_start(GTK_BOX(song_vbox), cmd_desc, FALSE, FALSE, 0);
-	gtk_label_set_line_wrap(GTK_LABEL(cmd_desc), TRUE);
+	gtk_label_set_line_wrap(GTK_LABEL(cmd_desc), FALSE);
 
 	cmd_hbox = gtk_hbox_new(FALSE, 6);
 	gtk_box_pack_start(GTK_BOX(song_vbox), cmd_hbox, FALSE, FALSE, 0);
