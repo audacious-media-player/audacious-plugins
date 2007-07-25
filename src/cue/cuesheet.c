@@ -54,9 +54,9 @@ static void cue_init(void);
 static void cue_cleanup(void);
 static gpointer watchdog_func(gpointer data);
 
-GThread *watchdog_thread;
-GThread *play_thread;
-GThread *real_play_thread;
+static GThread *watchdog_thread = NULL;
+static GThread *play_thread = NULL;
+static GThread *real_play_thread = NULL;
 
 static GMutex *cue_mutex;
 static GCond *cue_cond;
@@ -342,6 +342,8 @@ static void stop(InputPlayback * data)
 #ifdef DEBUG
             g_print("i: stop(real_ip) finished\n");
 #endif
+            real_play_thread = NULL;
+
             if (data != NULL)
                 data->playing = 0;
             if (caller_ip != NULL)
