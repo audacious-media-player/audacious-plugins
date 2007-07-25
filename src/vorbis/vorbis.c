@@ -557,6 +557,7 @@ vorbis_play_loop(gpointer arg)
     ov_clear(&vf);
     g_mutex_unlock(vf_mutex);
     vorbis_is_streaming = 0;
+    playback->playing = 0;
     return NULL;
 }
 
