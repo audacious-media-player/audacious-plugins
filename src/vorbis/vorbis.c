@@ -482,7 +482,7 @@ vorbis_play_loop(gpointer arg)
 
     title = vorbis_generate_title(&vf, filename);
     use_rg = vorbis_update_replaygain(&rg_scale);
-    br = ov_bitrate(&vf, -1);
+    br = vi->bitrate_nominal / 1000;
 
     g_mutex_unlock(vf_mutex);
 
@@ -532,29 +532,12 @@ vorbis_play_loop(gpointer arg)
             else
                 time = ov_time_total(&vf, -1) * 1000;
 
-	    br = ov_bitrate(&vf, current_section);
-
             g_mutex_unlock(vf_mutex);
 
             vorbis_ip.set_info(title, time, br, samplerate, channels);
             timercount = playback->output->output_time();
 
             last_section = current_section;
-        }
-
-        if (!(vi->bitrate_upper == vi->bitrate_lower && vi->bitrate_upper == vi->bitrate_nominal)
-            && (playback->output->output_time() > timercount + 1000
-                || playback->output->output_time() < timercount)) {
-            /*
-             * simple hack to avoid updating too
-             * often
-             */
-            g_mutex_lock(vf_mutex);
-            br = ov_bitrate_instant(&vf);
-            g_mutex_unlock(vf_mutex);
-            if (br > 0)
-                vorbis_ip.set_info(title, time, br, samplerate, channels);
-            timercount = playback->output->output_time();
         }
     }
     if (!playback->error)
