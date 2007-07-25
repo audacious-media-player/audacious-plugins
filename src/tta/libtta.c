@@ -39,7 +39,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <glib.h>
-#include <pthread.h>
 #include <string.h>
 
 #include <audacious/util.h>
@@ -67,19 +66,18 @@ static int  is_our_file (char *filename);
 static void play_file (InputPlayback *playback);
 static void tta_pause (InputPlayback *playback, short paused);
 static void stop (InputPlayback *playback);
-static void seek (InputPlayback *playback, int time);
-static int  get_time (InputPlayback *playback);
+static void mseek (InputPlayback *playback, gulong millisec);
+static void seek (InputPlayback *playback, int sec);
 static void get_song_info (char *filename, char **title, int *length);
 static void file_info (char *filename);
 static void about ();
 static TitleInput *get_song_tuple(char *filename);
 static gchar *extname(const char *filename);
 
-static pthread_t decode_thread;
+static GThread *decode_thread = NULL;
 static char sample_buffer[PCM_BUFFER_LENGTH * MAX_BSIZE * MAX_NCH];
 static tta_info info;		// currently playing file info
 static int seek_position = -1;
-static int playing = FALSE;
 static int read_samples = -1;
 
 gchar *tta_fmts[] = { "tta", NULL };
@@ -99,7 +97,7 @@ InputPlugin tta_ip =
 	tta_pause,
 	seek,
 	NULL,
-	get_time,
+	NULL,
 	NULL,
 	NULL,
 	cleanup,
@@ -115,6 +113,7 @@ InputPlugin tta_ip =
 	NULL, // buffer
 	NULL, // vfs
 	tta_fmts,
+	mseek,
 };
 
 InputPlugin *tta_iplist[] = { &tta_ip, NULL };
@@ -198,52 +197,50 @@ get_song_info (char *filename, char **title, int *length)
 }
 
 static void *
-play_loop (void *arg)
+play_loop (InputPlayback *playback)
 {
-	InputPlayback *playback = arg;
 	int  bufsize = PCM_BUFFER_LENGTH  * info.BSIZE * info.NCH;
 
 	////////////////////////////////////////
 	// decode PCM_BUFFER_LENGTH samples
 	// into the current PCM buffer position
 
-	while (playing)
+	while (playback->playing)
 	{
 	    while ((read_samples = get_samples ((unsigned char *)sample_buffer)) > 0)
 	    {
 
-		while ((playback->output->buffer_free () < bufsize)
-		    && seek_position == -1)
-		{
-		    if (!playing)
-			goto DONE;
-		    xmms_usleep (10000);
-		}
-
-		if (seek_position == -1)
-		{
-		    produce_audio(playback->output->written_time(),
-			      ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE),
-			      info.NCH,
-			      read_samples * info.NCH * info.BSIZE,
-			      sample_buffer,
-			      NULL);
-		}
-		else
-		{
-		    set_position (seek_position);
-		    playback->output->flush (seek_position * SEEK_STEP);
-		    seek_position = -1;
-		}
-		if(!playing)
-			goto DONE;
+            while ((playback->output->buffer_free () < bufsize)
+                   && seek_position == -1)
+            {
+                if (!playback->playing)
+                    goto DONE;
+                xmms_usleep (10000);
+            }
+            if (seek_position == -1)
+            {
+                produce_audio(playback->output->written_time(),
+                              ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE),
+                              info.NCH,
+                              read_samples * info.NCH * info.BSIZE,
+                              sample_buffer,
+                              &playback->playing);
+            }
+            else
+            {
+                set_position (seek_position);
+                playback->output->flush (seek_position * SEEK_STEP);
+                seek_position = -1;
+            }
+            if(!playback->playing)
+                goto DONE;
 	    }
 
 	    playback->output->buffer_free ();
 	    playback->output->buffer_free ();
 	    while (playback->output->buffer_playing()) {
 		    xmms_usleep(10000);
-		    if(!playing)
+		    if(!playback->playing)
 			    goto DONE;
 	    }
 	}
@@ -257,7 +254,7 @@ DONE:
 	// close currently playing file
 	close_tta_file (&info);
 
-	pthread_exit (NULL);
+	return NULL;
 }
 
 static void
@@ -478,8 +475,6 @@ play_file (InputPlayback *playback)
 	int datasize, origsize, bitrate;
 	TitleInput *tuple = NULL;
 
-	playing = FALSE;
-
 	////////////////////////////////////////
 	// open TTA file
 	if (open_tta_file (filename, &info, 0) > 0)
@@ -521,12 +516,12 @@ play_file (InputPlayback *playback)
 	if (title)
 	    g_free (title);
 
-	playing = TRUE;
 	playback->playing = 1;
 	seek_position = -1;
 	read_samples = -1;
 
-	pthread_create (&decode_thread, NULL, play_loop, playback);
+	decode_thread = g_thread_self();
+	play_loop(playback);
 }
 
 static void
@@ -538,36 +533,34 @@ tta_pause (InputPlayback *playback, short paused)
 static void
 stop (InputPlayback *playback)
 {
-	if (playing)
+	if (playback->playing)
 	{
-	    playing = FALSE;
 	    playback->playing = 0;
-	    pthread_join (decode_thread, NULL);
+	    g_thread_join(decode_thread);
+	    decode_thread = NULL;
 	    playback->output->close_audio ();
 	    close_tta_file (&info);
-	    read_samples = 0;
+	    read_samples = -1;
 	}
 }
 
 static void
-seek (InputPlayback *data, int time)
+mseek (InputPlayback *data, gulong millisec)
 {
-	if (playing)
+	if (data->playing)
 	{
-	    seek_position = 1000 * time / SEEK_STEP;
+	    seek_position = (int)(millisec / SEEK_STEP);
 
 	    while (seek_position != -1)
 		xmms_usleep (10000);
 	}
 }
 
-static int
-get_time (InputPlayback *playback)
+static void
+seek (InputPlayback *data, int sec)
 {
-	if (playing && (read_samples || playback->output->buffer_playing()))
-    	    return playback->output->output_time();
-
-	return -1;
+    gulong millisec = 1000 * sec;
+    mseek(data, millisec);
 }
 
 static TitleInput *
