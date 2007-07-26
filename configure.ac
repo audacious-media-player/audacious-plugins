@@ -110,22 +110,6 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
     [Path to OSS mixer, default is /dev/mixer.]
 )
 
-AC_ARG_WITH(cdda-device,
-    [  --with-cdda-device=path        Path to default cdaudio device.],
-    [AC_DEFINE_UNQUOTED(CDDA_DEVICE, "$withval",
-         [Path to default cdaudio device.]
-     )
-    ]
-)
-
-AC_ARG_WITH(cdda-dir,
-    [  --with-cdda-dir=path           Path to default cdaudio directory.],
-    [AC_DEFINE_UNQUOTED(CDDA_DIRECTORY, "$withval",
-         [Path to default cdaudio directory.]
-     )
-    ]
-)
-
 dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom vtx"
@@ -1107,33 +1091,12 @@ AC_CHECK_DECL([lrintf],[AC_DEFINE(HAVE_LRINTF,1)],[AC_CHECK_FUNCS([lrintf])],[
 AC_CHECK_FUNCS([mkdtemp getmntinfo statvfs strtoul])
 
 
-if test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes"
-then
-    INPUT_PLUGINS="cdaudio $INPUT_PLUGINS"
-    case "$host" in
-        *-*-sunos* | *-*-solaris* | *-*-linux*)
-            AC_DEFINE(BEEP_CDROM_SOLARIS,, [Define if cdrom access is in Solaris style])
-        ;;
-        *-*-freebsd*)
-            AC_DEFINE(BEEP_CDROM_BSD,, [Define if cdrom access is in BSD style])
-        ;;
-        *-*-netbsd* | *-*-openbsd* | *-*-mirbsd*)
-            AC_DEFINE(BEEP_CDROM_BSD,, [Define if cdrom access is in BSD style])
-            AC_DEFINE(BEEP_CDROM_BSD_NETBSD,, [Define if cdrom access uses NetBSD variant])
-        ;;
-        *-*darwin*)
-            AC_DEFINE(BEEP_CDROM_BSD,, [Define if cdrom access is in BSD style])
-            AC_DEFINE(BEEP_CDROM_BSD_DARWIN,, [Define if cdrom access uses Darwin variant])
-        ;;
-    esac
-fi
-
 dnl CD-Audio New Generation
 
-AC_ARG_ENABLE(cdaudio-ng,
-    [  --enable-cdaudio_ng     enable cdaudio-ng input plugin (default=disabled) ],
+AC_ARG_ENABLE(cdaudio,
+    [  --enable-cdaudio     enable cdaudio-ng input plugin (default=enabled) ],
     [enable_cdaudio_ng=$enableval],
-    [enable_cdaudio_ng=no]
+    [enable_cdaudio_ng=yes]
 )
 
 if test "$enable_cdaudio_ng" = "yes"; then
@@ -1512,8 +1475,7 @@ echo "    -> ALSA backend:                      $enable_amidiplug_alsa"
 echo "    -> FluidSynth backend:                $enable_amidiplug_fluidsynth"
 echo "    -> dummy backend:                     $enable_amidiplug_dummy"
 echo "  MIDI to WAVE converter (timidity):      $enable_timidity"
-echo "  CD Digital Audio (cdda):                yes"
-echo "  New CD Digital Audio (cdaudio-ng):      $enable_cdaudio_ng"
+echo "  CD Digital Audio (cdaudio_ng):          $enable_cdaudio_ng"
 echo "  Microsoft WAV (wav):                    yes"
 echo "    + sndfile extensions:                 $enable_sndfile"
 echo "  Tone Generator:                         yes"
