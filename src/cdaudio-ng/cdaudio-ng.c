@@ -78,7 +78,7 @@ static InputPlugin inputplugin = {
 	NULL,
 	"CD Audio Plugin NG",
 	cdaudio_init,
-	NULL /*cdaudio_about*/,	// todo: implement an about dialog
+	cdaudio_about,
 	cdaudio_configure,
 	cdaudio_is_our_file,
 	cdaudio_scan_dir,
@@ -158,6 +158,22 @@ void cdaudio_about()
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_about()\n");
+    
+	static GtkWidget* about_window = NULL;
+    
+    if (about_window) {
+        gdk_window_raise(about_window->window);
+    }
+    
+    char about_text[1000];
+	sprintf(about_text, "CD Audio Plugin NG\nCopyright (c) 2007, by Calin Crisan <ccrisan@gmail.com>\n\tand The Audacious Team.\n\n"
+						"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+ 						"This was a Google Summer of Code 2007 project.");
+
+    about_window = xmms_show_message("About CD Audio Plugin NG", about_text, "OK", FALSE, NULL, NULL);
+
+    g_signal_connect(G_OBJECT(about_window), "destroy",
+                     G_CALLBACK(gtk_widget_destroyed), &about_window);
 }
 
 void cdaudio_configure()

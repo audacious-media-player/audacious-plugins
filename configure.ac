@@ -1094,7 +1094,7 @@ AC_CHECK_FUNCS([mkdtemp getmntinfo statvfs strtoul])
 dnl CD-Audio New Generation
 
 AC_ARG_ENABLE(cdaudio,
-    [  --enable-cdaudio     enable cdaudio-ng input plugin (default=enabled) ],
+    [  --disable-cdaudio       disable cdaudio-ng input plugin (default=enabled) ],
     [enable_cdaudio_ng=$enableval],
     [enable_cdaudio_ng=yes]
 )
