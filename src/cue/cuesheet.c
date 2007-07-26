@@ -35,7 +35,6 @@
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000
-#define TRANSITION_GUARD_TIME 500000
 
 static void cache_cue_file(gchar *f);
 static void free_cue_info(void);
@@ -80,6 +79,8 @@ static gchar *cue_track = NULL;
 
 static gint last_cue_track = 0;
 static gint cur_cue_track = 0;
+static gint target_time = 0;
+static GMutex *cue_target_time_mutex;
 
 static struct {
 	gchar *title;
@@ -131,6 +132,7 @@ static void cue_init(void)
     cue_cond = g_cond_new();
     cue_block_mutex = g_mutex_new();
     cue_block_cond = g_cond_new();
+    cue_target_time_mutex = g_mutex_new();
 
     /* create watchdog thread */
     g_mutex_lock(cue_mutex);
@@ -155,6 +157,7 @@ static void cue_cleanup(void)
     g_mutex_free(cue_mutex);
     g_cond_free(cue_block_cond);
     g_mutex_free(cue_block_mutex);
+    g_mutex_free(cue_target_time_mutex);
 }
 
 static int is_our_file(gchar *filename)
@@ -319,12 +322,18 @@ static void get_song_info(gchar *uri, gchar **title, gint *length)
 
 static void seek(InputPlayback * data, gint time)
 {
+    g_mutex_lock(cue_target_time_mutex);
+    target_time = time * 1000;
+    g_mutex_unlock(cue_target_time_mutex);
+
 #ifdef DEBUG
     g_print("seek: playback = %p\n", data);
+    g_print("cue: seek: target_time = %d\n", target_time);
 #endif
 
-	if (real_ip != NULL)
+	if (real_ip != NULL) {
 		real_ip->plugin->seek(real_ip, time);
+    }
 }
 
 static void stop(InputPlayback * data)
@@ -410,14 +419,12 @@ static gboolean do_setpos(gpointer data)
 #ifdef DEBUG
     g_print("do_setpos: pos = %d\n\n", pos);
 #endif
+
+    if (!playlist)
+        return FALSE;
+
     /* being done from the main loop thread, does not require locks */
     playlist_set_position(playlist, (guint)pos);
-
-    /* kick watchdog */
-    g_mutex_lock(cue_mutex);
-    watchdog_state = RUN;
-    g_mutex_unlock(cue_mutex);
-    g_cond_signal(cue_cond);
 
     return FALSE; //one-shot
 }
@@ -501,21 +508,29 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip->data = data->data;
 
 		real_play_thread = g_thread_create((GThreadFunc)(real_ip->plugin->play_file), (gpointer)real_ip, TRUE, NULL);
-		g_usleep(10000); // wait for 10msec while real input plugin is initializing.
+		g_usleep(50000); // wait for 50msec while real input plugin is initializing.
 
 		if(real_ip->plugin->mseek) {
+#ifdef DEBUG
+            g_print("mseek\n");
+#endif
 			real_ip->plugin->mseek(real_ip, finetune_seek ? finetune_seek : cue_tracks[track].index);
 		}
 		else
 			real_ip->plugin->seek(real_ip, finetune_seek ? finetune_seek / 1000 : cue_tracks[track].index / 1000 + 1);
 
+        g_mutex_lock(cue_target_time_mutex);
+        target_time = finetune_seek ? finetune_seek : cue_tracks[track].index;
+        g_mutex_unlock(cue_target_time_mutex);
+#ifdef DEBUG
+        g_print("cue: play_cue_uri: target_time = %d\n", target_time);
+#endif
 		/* in some plugins, NULL as 2nd arg causes crash. */
 		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
 		g_free(dummy);
 		cue_tracks[last_cue_track].index = file_length;
 
         /* kick watchdog thread */
-        g_usleep(TRANSITION_GUARD_TIME);
         g_mutex_lock(cue_mutex);
         watchdog_state = RUN;
         g_mutex_unlock(cue_mutex);
@@ -573,7 +588,7 @@ static gpointer watchdog_func(gpointer data)
 #endif
 #endif
         g_get_current_time(&sleep_time);
-        g_time_val_add(&sleep_time, 10000); // 10msec
+        g_time_val_add(&sleep_time, 10000); // interval is 10msec.
 
         g_mutex_lock(cue_mutex);
         switch(watchdog_state) {
@@ -606,10 +621,10 @@ static gpointer watchdog_func(gpointer data)
         time = get_output_time();
 #if 0
 #ifdef DEBUG
-        printf("t = %d\n", time);
+        g_print("time = %d target_time = %d\n", time, target_time);
 #endif
 #endif
-        if(time == 0)
+        if(time == 0 || time <= target_time)
             continue;
 
         // prev track
@@ -628,12 +643,19 @@ static gpointer watchdog_func(gpointer data)
                 incr = cur_cue_track - oldpos; // relative position
                 if (time >= cue_tracks[cur_cue_track].index)
                     finetune_seek = time;
+#ifdef DEBUG
+                g_print("cue: prev_track: time = %d cue_tracks[cur_cue_track].index = %d\n",
+                       time, cue_tracks[cur_cue_track].index);
+                g_print("cue: prev_track: finetune_seek = %d\n", finetune_seek);
+#endif
             }
 
-            g_mutex_lock(cue_mutex);
-            watchdog_state = STOP;
-            g_mutex_unlock(cue_mutex);
-
+            g_mutex_lock(cue_target_time_mutex);
+            target_time = finetune_seek ? finetune_seek : cue_tracks[cur_cue_track].index;
+            g_mutex_unlock(cue_target_time_mutex);
+#ifdef DEBUG
+            g_print("cue: prev_track: target_time = %d\n", target_time);
+#endif
             g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
             continue;
         }
@@ -653,14 +675,21 @@ static gpointer watchdog_func(gpointer data)
             while(time > cue_tracks[cur_cue_track + 1].index) {
                 cur_cue_track++;
                 incr = cur_cue_track - oldpos; // relative position
-                if (time <= cue_tracks[cur_cue_track].index)
+                if (time >= cue_tracks[cur_cue_track].index)
                     finetune_seek = time;
+#ifdef DEBUG
+                g_print("cue: next_track: time = %d cue_tracks[cur_cue_track].index = %d\n",
+                       time, cue_tracks[cur_cue_track].index);
+                g_print("cue: next_track: finetune_seek = %d\n", finetune_seek);
+#endif
             }
 
-            g_mutex_lock(cue_mutex);
-            watchdog_state = STOP;
-            g_mutex_unlock(cue_mutex);
-
+            g_mutex_lock(cue_target_time_mutex);
+            target_time = finetune_seek ? finetune_seek : cue_tracks[cur_cue_track].index;
+            g_mutex_unlock(cue_target_time_mutex);
+#ifdef DEBUG
+            g_print("cue: next_track: target_time = %d\n", target_time);
+#endif
             if(cfg.stopaftersong) {
                 g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
                 continue;
@@ -681,10 +710,6 @@ static gpointer watchdog_func(gpointer data)
 #ifdef DEBUG
                     g_print("i: watchdog eof reached\n\n");
 #endif
-                    g_mutex_lock(cue_mutex);
-                    watchdog_state = STOP;
-                    g_mutex_unlock(cue_mutex);
-
                     if(cfg.repeat) {
                         static gint incr = 0;
                         incr = -pos;
