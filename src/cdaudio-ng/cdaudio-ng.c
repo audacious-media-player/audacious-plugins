@@ -1,6 +1,6 @@
 
 /*
-	todo: 
+	todo:
 		- about dialog
 */
 
@@ -27,6 +27,7 @@
 //#include <audacious/playback.h>	// todo: this should be available soon (by 1.4)
 #include <audacious/util.h>
 #include <audacious/output.h>
+#include "config.h"
 
 #include "cdaudio-ng.h"
 #include "configure.h"
@@ -116,9 +117,9 @@ void cdaudio_init()
 		cleanup_on_error();
 		return;
 	}
-	
+
 	libcddb_init();
-	
+
 	ConfigDb *db = bmp_cfg_db_open();
 	gchar *string = NULL;
 
@@ -158,20 +159,20 @@ void cdaudio_about()
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_about()\n");
-    
+
 	static GtkWidget* about_window = NULL;
-    
+
     if (about_window) {
         gdk_window_raise(about_window->window);
     }
-    
+
     char about_text[1000];
-	sprintf(about_text, "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
+	sprintf(about_text, _("Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
 						"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
 						"Also thank you Tony Vroon for mentoring & guiding me.\n\n"
- 						"This was a Google Summer of Code 2007 project.");
+ 						"This was a Google Summer of Code 2007 project."));
 
-    about_window = xmms_show_message("About CD Audio Plugin NG", about_text, "OK", FALSE, NULL, NULL);
+    about_window = xmms_show_message(_("About CD Audio Plugin NG"), about_text, _("OK"), FALSE, NULL, NULL);
 
     g_signal_connect(G_OBJECT(about_window), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &about_window);
@@ -209,7 +210,7 @@ gint cdaudio_is_our_file(gchar *filename)
 				printf("cdaudio-ng: cd changed, rescanning\n");
 			cdaudio_scan_dir(CDDA_DEFAULT);
 		}
-		
+
 		if (pcdio == NULL) {
 			if (debug)
 				printf("cdaudio-ng: \"%s\" is not our file\n", filename);
@@ -357,7 +358,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			else {
 				if (debug)
 					printf("cdaudio-ng: discid = %X, category = \"%s\"\n", cddb_disc_get_discid(pcddb_disc), cddb_disc_get_category_str(pcddb_disc));
-	
+
 				cddb_read(pcddb_conn, pcddb_disc);
 				if (cddb_errno(pcddb_conn) != CDDB_ERR_OK) {
 					fprintf(stderr, "cdaudio-ng: failed to read the cddb info: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
@@ -367,7 +368,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 				else {
 					if (debug)
 						printf("cdaudio-ng: we have got the cddb info\n");
-	
+
 					strcpy(trackinfo[0].performer, cddb_disc_get_artist(pcddb_disc));
 					strcpy(trackinfo[0].name, cddb_disc_get_title(pcddb_disc));
 					strcpy(trackinfo[0].genre, cddb_disc_get_genre(pcddb_disc));
@@ -395,7 +396,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		/* add track "file" names to the list */
 	GList *list = NULL;
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
-		list = g_list_append(list, g_strdup_printf("track%02u.cda", trackno));	
+		list = g_list_append(list, g_strdup_printf("track%02u.cda", trackno));
 		cdtext_t *pcdtext = NULL;
 		if (use_cdtext) {
 			if (debug)
@@ -432,10 +433,10 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	}
 
 	if (debug) {
-		printf("cdaudio-ng: disc has : performer = \"%s\", name = \"%s\", genre = \"%s\"\n", 
+		printf("cdaudio-ng: disc has : performer = \"%s\", name = \"%s\", genre = \"%s\"\n",
 			   trackinfo[0].performer, trackinfo[0].name, trackinfo[0].genre);
 		for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
-			printf("cdaudio-ng: track %d has : performer = \"%s\", name = \"%s\", genre = \"%s\", startlsn = %d, endlsn = %d\n", 
+			printf("cdaudio-ng: track %d has : performer = \"%s\", name = \"%s\", genre = \"%s\", startlsn = %d, endlsn = %d\n",
 				trackno, trackinfo[trackno].performer, trackinfo[trackno].name, trackinfo[trackno].genre, trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
 		}
 	}
@@ -452,7 +453,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
-	
+
 	pglobalinputplayback = pinputplayback;
 
 	if (trackinfo == NULL) {
@@ -530,9 +531,9 @@ void cdaudio_stop(InputPlayback *pinputplayback)
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_stop(\"%s\")\n", pinputplayback != NULL ? pinputplayback->filename : "N/A");
-	
+
 	pglobalinputplayback = NULL;
-	
+
 	if (playing_track == -1)
 		return;
 
@@ -599,7 +600,7 @@ void cdaudio_seek(InputPlayback *pinputplayback, gint time)
 		msf_t startmsf, endmsf;
 		cdio_lsn_to_msf(newstartlsn, &startmsf);
 		cdio_lsn_to_msf(trackinfo[playing_track].endlsn, &endmsf);
-	
+
 		if (cdio_audio_play_msf(pcdio, &startmsf, &endmsf) != DRIVER_OP_SUCCESS) {
 			fprintf(stderr, "cdaudio-ng: failed to play analog cd\n");
 			cleanup_on_error();
@@ -659,7 +660,7 @@ gint cdaudio_get_volume(gint *l, gint *r)
 		}
 		*l = volume.level[0];
 		*r = volume.level[1];
-	
+
 		return TRUE;
 	}
 }
@@ -679,7 +680,7 @@ gint cdaudio_set_volume(gint l, gint r)
 			cleanup_on_error();
 			return FALSE;
 		}
-	
+
 		return TRUE;
 	}
 }

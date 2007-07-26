@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
+#include <audacious/i18n.h>
+#include "config.h"
 
 #include "configure.h"
 
@@ -62,7 +64,7 @@ void configure_set_variables(/*gboolean *_usedae, */int *_limitspeed, gboolean *
 void configure_create_gui()
 {
 	configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(configwindow), "CD Audio Plugin Configuration");
+	gtk_window_set_title(GTK_WINDOW(configwindow), _("CD Audio Plugin Configuration"));
 	gtk_window_set_resizable(GTK_WINDOW(configwindow), FALSE);
 	gtk_window_set_position(GTK_WINDOW(configwindow), GTK_WIN_POS_CENTER_ALWAYS);
 	gtk_container_set_border_width(GTK_CONTAINER(configwindow), 10);
@@ -72,64 +74,64 @@ void configure_create_gui()
 	gtk_table_set_homogeneous(GTK_TABLE(maintable), FALSE);
 	gtk_container_add(GTK_CONTAINER(configwindow), maintable);
 
-	daeframe = gtk_frame_new("Digital audio extraction");
+	daeframe = gtk_frame_new(_("Digital audio extraction"));
 	gtk_table_attach_defaults(GTK_TABLE(maintable), daeframe, 0, 2, 0, 1);
 	daetable = gtk_table_new(1, 2, TRUE);
 	gtk_container_add(GTK_CONTAINER(daeframe), daetable);
 
-	titleinfoframe = gtk_frame_new("Title information");
+	titleinfoframe = gtk_frame_new(_("Title information"));
 	gtk_table_attach_defaults(GTK_TABLE(maintable), titleinfoframe, 0, 2, 1, 2);
 	titleinfotable = gtk_table_new(2, 2, TRUE);
 	gtk_container_add(GTK_CONTAINER(titleinfoframe), titleinfotable);
 
-	miscframe = gtk_frame_new("Misc");
+	miscframe = gtk_frame_new(_("Misc"));
 	gtk_table_attach_defaults(GTK_TABLE(maintable), miscframe, 0, 2, 2, 3);
 	misctable = gtk_table_new(2, 2, TRUE);
 	gtk_container_add(GTK_CONTAINER(miscframe), misctable);
 
 
 	/*
-	usedaecheckbutton = gtk_check_button_new_with_label("Use digital audio extraction");
+	usedaecheckbutton = gtk_check_button_new_with_label(_("Use digital audio extraction"));
 	g_signal_connect(G_OBJECT(usedaecheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(daetable), usedaecheckbutton, 0, 2, 0, 1);
 	*/
 
-	limitcheckbutton = gtk_check_button_new_with_label("Limit read speed to: ");
+	limitcheckbutton = gtk_check_button_new_with_label(_("Limit read speed to: "));
 	g_signal_connect(G_OBJECT(limitcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(daetable), limitcheckbutton, 0, 1, 0, 1);
 
 	limitspinbutton = gtk_spin_button_new_with_range(1.0, 24.0, 1.0);
 	gtk_table_attach_defaults(GTK_TABLE(daetable), limitspinbutton, 1, 2, 0, 1);
 
-	usecdtextcheckbutton = gtk_check_button_new_with_label("Use cd-text if available");
+	usecdtextcheckbutton = gtk_check_button_new_with_label(_("Use cd-text if available"));
 	g_signal_connect(G_OBJECT(usecdtextcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), usecdtextcheckbutton, 0, 2, 0, 1);
 
-	usecddbcheckbutton = gtk_check_button_new_with_label("Use CDDB if available");
+	usecddbcheckbutton = gtk_check_button_new_with_label(_("Use CDDB if available"));
 	g_signal_connect(G_OBJECT(usecddbcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), usecddbcheckbutton, 0, 2, 1, 2);
-	
-	cddbserverlabel = gtk_label_new("Server: ");
+
+	cddbserverlabel = gtk_label_new(_("Server: "));
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbserverlabel, 0, 1, 2, 3);
-	
-	cddbportlabel = gtk_label_new("Port: ");
+
+	cddbportlabel = gtk_label_new(_("Port: "));
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbportlabel, 0, 1, 3, 4);
-	
+
 	cddbserverentry = gtk_entry_new();
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbserverentry, 1, 2, 2, 3);
-	
+
 	cddbportentry = gtk_entry_new();
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbportentry, 1, 2, 3, 4);
 
 
-	usedevicecheckbutton = gtk_check_button_new_with_label("Override default device: ");
+	usedevicecheckbutton = gtk_check_button_new_with_label(_("Override default device: "));
 	g_signal_connect(G_OBJECT(usedevicecheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(misctable), usedevicecheckbutton, 0, 1, 0, 1);
 
 	deviceentry = gtk_entry_new();
 	gtk_table_attach_defaults(GTK_TABLE(misctable), deviceentry, 1, 2, 0, 1);
 
-	debugcheckbutton = gtk_check_button_new_with_label("Print debug information");
+	debugcheckbutton = gtk_check_button_new_with_label(_("Print debug information"));
 	g_signal_connect(G_OBJECT(debugcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
 	gtk_table_attach_defaults(GTK_TABLE(misctable), debugcheckbutton, 0, 1, 1, 2);
 
@@ -139,11 +141,11 @@ void configure_create_gui()
 	gtk_hbutton_box_set_spacing_default(10);
 	gtk_table_attach_defaults(GTK_TABLE(maintable), buttonbox, 0, 2, 3, 4);
 
-	okbutton = gtk_button_new_with_label("Ok");
+	okbutton = gtk_button_new_with_label(_("Ok"));
 	g_signal_connect(G_OBJECT(okbutton), "clicked", G_CALLBACK(button_clicked), NULL);
 	gtk_container_add(GTK_CONTAINER(buttonbox), okbutton);
 
-	cancelbutton = gtk_button_new_with_label("Cancel");
+	cancelbutton = gtk_button_new_with_label(_("Cancel"));
 	g_signal_connect(G_OBJECT(cancelbutton), "clicked", G_CALLBACK(button_clicked), NULL);
 	gtk_container_add(GTK_CONTAINER(buttonbox), cancelbutton);
 
@@ -200,8 +202,8 @@ void checkbutton_toggled(GtkWidget *widget, gpointer data)
 	/*gtk_widget_set_sensitive(limitcheckbutton, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)));*/
 
 	gtk_widget_set_sensitive(
-		limitspinbutton, 
-		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)) && 
+		limitspinbutton,
+		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)) &&
 		GTK_WIDGET_IS_SENSITIVE(limitcheckbutton));
 
 	gtk_widget_set_sensitive(cddbserverentry, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));

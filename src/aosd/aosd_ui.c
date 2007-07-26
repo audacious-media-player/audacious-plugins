@@ -230,7 +230,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   aosd_callback_list_add( cb_list , pos_offset_table , aosd_cb_configure_position_offset_commit );
   aosd_callback_list_add( cb_list , pos_offset_table , aosd_cb_configure_position_maxsize_commit );
 
-  pos_multimon_frame = gtk_frame_new( "Multi-Monitor options" );
+  pos_multimon_frame = gtk_frame_new( _("Multi-Monitor options") );
   pos_multimon_hbox = gtk_hbox_new( FALSE , 4 );
   gtk_container_set_border_width( GTK_CONTAINER(pos_multimon_hbox) , 6 );
   gtk_container_add( GTK_CONTAINER(pos_multimon_frame), pos_multimon_hbox );
@@ -396,7 +396,7 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
     GdkColor gcolor = { 0 , 0 , 0 , 0 };
-    gchar *label_str = g_strdup_printf( "Font %i:" , i+1 );
+    gchar *label_str = g_strdup_printf( _("Font %i:") , i+1 );
     tex_font_label[i] = gtk_label_new( label_str );
     g_free( label_str );
     tex_font_fontbt[i] = gtk_font_button_new();
@@ -566,7 +566,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
       colors_max_num = colors_num;
     gtk_list_store_append( dec_rstyle_store , &iter );
     gtk_list_store_set( dec_rstyle_store , &iter ,
-      0 , aosd_deco_style_get_desc( deco_code_array[i] ) ,
+      0 , _(aosd_deco_style_get_desc( deco_code_array[i] )) ,
       1 , deco_code_array[i] , 2 , colors_num , -1 );
     if ( deco_code_array[i] == cfg->osd->decoration.code )
       iter_sel = iter;
@@ -609,7 +609,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
     GdkColor gcolor = { 0 , 0 , 0 , 0 };
     gchar *label_str = NULL;
     hbox = gtk_hbox_new( FALSE , 4 );
-    label_str = g_strdup_printf( "Color %i:" , i+1 );
+    label_str = g_strdup_printf( _("Color %i:") , i+1 );
     label = gtk_label_new( label_str );
     g_free( label_str );
     colorbt = gtk_color_button_new();
@@ -733,11 +733,11 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
     GtkWidget *frame, *vbox, *label, *checkbt;
     gtk_list_store_append( tri_event_store , &iter );
     gtk_list_store_set( tri_event_store , &iter ,
-      0 , aosd_trigger_get_name( trigger_code_array[i] ) ,
+      0 , _(aosd_trigger_get_name( trigger_code_array[i] )) ,
       1 , trigger_code_array[i] , 2 , i , -1 );
     vbox = gtk_vbox_new( FALSE , 0 );
     gtk_container_set_border_width( GTK_CONTAINER(vbox) , 6 );
-    label = gtk_label_new( aosd_trigger_get_desc( trigger_code_array[i] ) );
+    label = gtk_label_new( _(aosd_trigger_get_desc( trigger_code_array[i] )) );
     gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
     gtk_misc_set_alignment( GTK_MISC(label) , 0.0 , 0.0 );
     checkbt = gtk_check_button_new_with_label( _("Enable trigger") );
@@ -869,7 +869,7 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_container_set_border_width( GTK_CONTAINER(mis_transp_status_hbox) , 3 );
   gtk_container_add( GTK_CONTAINER(mis_transp_status_frame) , mis_transp_status_hbox );
   gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_status_frame , TRUE , TRUE , 0 );
-  
+
   mis_transp_status_img = gtk_image_new();
   gtk_misc_set_alignment( GTK_MISC(mis_transp_status_img) , 0.5 , 0 );
   mis_transp_status_label = gtk_label_new( "" );
@@ -879,11 +879,11 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_label , TRUE , TRUE , 0 );
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "img" , mis_transp_status_img );
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "label" , mis_transp_status_label );
-                     
+
 #ifdef HAVE_XCOMPOSITE
   g_signal_connect( G_OBJECT(mis_transp_real_rbt) , "toggled" ,
     G_CALLBACK(aosd_cb_configure_misc_transp_real_clicked) , mis_transp_status_hbox );
-  
+
   /* check if the composite extension is loaded */
   if ( aosd_osd_check_composite_ext() )
   {
@@ -928,7 +928,7 @@ aosd_cb_configure_test ( gpointer cfg_win )
   aosd_cfg_debug( cfg );
 #endif
   markup_message = g_markup_printf_escaped(
-    "<span font_desc='%s'>Audacious OSD</span>" , cfg->osd->text.fonts_name[0] );
+    _("<span font_desc='%s'>Audacious OSD</span>") , cfg->osd->text.fonts_name[0] );
   aosd_osd_shutdown(); /* stop any displayed osd */
   aosd_osd_cleanup(); /* just in case it's active */
   aosd_osd_init( cfg->osd->misc.transparency_mode );
@@ -1137,11 +1137,11 @@ aosd_ui_about ( void )
   gtk_text_view_set_justification( GTK_TEXT_VIEW(info_tv) , GTK_JUSTIFY_LEFT );
   gtk_text_view_set_left_margin( GTK_TEXT_VIEW(info_tv) , 10 );
 
-  info_tb_content = g_strjoin( NULL , "\nAudacious OSD " , AOSD_VERSION_PLUGIN ,
+  info_tb_content = g_strjoin( NULL , _("\nAudacious OSD ") , AOSD_VERSION_PLUGIN ,
                                _("\nhttp://www.develia.org/projects.php?p=audacious#aosd\n"
-                                 "written by Giacomo Lozito\n") ,
-                               "< james@develia.org >\n\n" ,
-                               _("On-Screen-Display is based on Ghosd library\n"
+                                 "written by Giacomo Lozito\n"
+                                 "< james@develia.org >\n\n"
+                                 "On-Screen-Display is based on Ghosd library\n"
                                  "written by Evan Martin\n"
                                  "http://neugierig.org/software/ghosd/\n\n") , NULL );
   gtk_text_buffer_set_text( info_tb , info_tb_content , -1 );
