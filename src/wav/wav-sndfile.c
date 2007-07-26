@@ -232,7 +232,6 @@ play_loop (gpointer arg)
 
 	playback->output->close_audio();
 
-	g_thread_exit (NULL);
 	return NULL;
 }
 
