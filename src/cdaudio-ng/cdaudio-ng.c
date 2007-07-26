@@ -166,8 +166,9 @@ void cdaudio_about()
     }
     
     char about_text[1000];
-	sprintf(about_text, "CD Audio Plugin NG\nCopyright (c) 2007, by Calin Crisan <ccrisan@gmail.com>\n\tand The Audacious Team.\n\n"
+	sprintf(about_text, "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
 						"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+						"Also thank you Tony Vroon for mentoring & guiding me.\n\n"
  						"This was a Google Summer of Code 2007 project.");
 
     about_window = xmms_show_message("About CD Audio Plugin NG", about_text, "OK", FALSE, NULL, NULL);
