@@ -45,11 +45,11 @@ extern InputPlugin wav_ip;
 
 typedef struct {
     VFSFile *file;
-    short format_tag, channels, block_align, bits_per_sample, eof;
+    short format_tag, channels, block_align, bits_per_sample;
     long samples_per_sec, avg_bytes_per_sec;
     unsigned long position, length;
     glong seek_to;
-    int data_offset, going;
+    int data_offset;
     pid_t pid;
 } WaveFile;
 

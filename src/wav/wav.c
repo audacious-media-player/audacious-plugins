@@ -261,38 +261,37 @@ play_loop(gpointer arg)
     rate =
         wav_file->samples_per_sec * wav_file->channels *
         (wav_file->bits_per_sample / 8);
-    while (wav_file->going) {
-        if (!wav_file->eof) {
+    while (playback->playing) {
+        if (!playback->eof) {
             bytes = blk_size;
             if (wav_file->length - wav_file->position < bytes)
                 bytes = wav_file->length - wav_file->position;
             if (bytes > 0) {
                 actual_read = vfs_fread(data, 1, bytes, wav_file->file);
 
-                if (actual_read == 0) {
-                    wav_file->eof = 1;
-                    playback->output->buffer_free();
-                    playback->output->buffer_free();
-                }
+                if (actual_read == 0)
+                    playback->eof = TRUE;
                 else {
                     if (wav_file->seek_to == -1)
                         produce_audio(playback->output->written_time(),
                                       (wav_file->bits_per_sample ==
                                        16) ? FMT_S16_LE : FMT_U8,
                                       wav_file->channels, bytes, data,
-                                      &wav_file->going);
+                                      &playback->playing);
                     wav_file->position += actual_read;
                 }
             }
-            else {
-                wav_file->eof = TRUE;
-                playback->output->buffer_free();
-                playback->output->buffer_free();
-                xmms_usleep(10000);
-            }
+            else
+                playback->eof = TRUE;
         }
-        else
-            xmms_usleep(10000);
+        else {
+            playback->output->buffer_free ();
+            playback->output->buffer_free ();
+            while (playback->output->buffer_playing())
+                g_usleep(10000);                  
+            playback->playing = 0;
+        }
+
         if (wav_file->seek_to != -1) {
             wav_file->position = (unsigned long)((gint64)wav_file->seek_to * (gint64)rate / 1000L);
             vfs_fseek(wav_file->file,
@@ -400,7 +399,7 @@ play_file(InputPlayback * playback)
         wav_file->length = len;
 
         wav_file->position = 0;
-        wav_file->going = 1;
+        playback->playing = 1;
 
         if (playback->output->
             open_audio((wav_file->bits_per_sample ==
@@ -428,8 +427,8 @@ play_file(InputPlayback * playback)
 static void
 stop(InputPlayback * playback)
 {
-    if (wav_file && wav_file->going) {
-        wav_file->going = 0;
+    if (wav_file && playback->playing) {
+        playback->playing = 0;
         g_thread_join(decode_thread);
         playback->output->close_audio();
         g_free(wav_file);
@@ -444,11 +443,11 @@ wav_pause(InputPlayback * playback, gshort p)
 }
 
 static void
-mseek(InputPlayback * data, gulong millisecond)
+mseek(InputPlayback * playback, gulong millisecond)
 {
     wav_file->seek_to = millisecond;
 
-    wav_file->eof = FALSE;
+    playback->eof = FALSE;
 
     while (wav_file->seek_to != -1)
         xmms_usleep(10000);
@@ -468,8 +467,8 @@ get_time(InputPlayback *playback)
         return -2;
     if (!wav_file)
         return -1;
-    if (!wav_file->going
-        || (wav_file->eof && !playback->output->buffer_playing()))
+    if (!playback->playing
+        || (playback->eof && !playback->output->buffer_playing()))
         return -1;
     else {
         return playback->output->output_time();
