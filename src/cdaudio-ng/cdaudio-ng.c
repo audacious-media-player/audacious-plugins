@@ -19,7 +19,6 @@
 #include <audacious/i18n.h>
 #include <audacious/configdb.h>
 #include <audacious/plugin.h>
-//#include <audacious/playback.h>	// todo: this should be available soon (by 1.4)
 #include <audacious/util.h>
 #include <audacious/output.h>
 #include "config.h"
@@ -203,7 +202,8 @@ gint cdaudio_is_our_file(gchar *filename)
 		if (cdio_get_media_changed(pcdio) && pcdio != NULL) {
 			if (debug)
 				printf("cdaudio-ng: cd changed, rescanning\n");
-			cdaudio_scan_dir(CDDA_DEFAULT);
+			if (cdaudio_scan_dir(CDDA_DEFAULT) == NULL)
+				pcdio = NULL;
 		}
 
 		if (pcdio == NULL) {
@@ -269,7 +269,8 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			cleanup_on_error();
 			return NULL;
 		}
-		cdio_free_device_list(ppcd_drives);
+		if (ppcd_drives != NULL && *ppcd_drives != NULL)
+			cdio_free_device_list(ppcd_drives);
 	}
 
 		/* limit read speed */
@@ -461,6 +462,13 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 		if (debug)
 			printf("cdaudio-ng: cd changed, rescanning\n");
 		cdaudio_scan_dir(CDDA_DEFAULT);
+	}
+
+	if (trackinfo == NULL) {
+		if (debug)
+			printf("cdaudio-ng: no cd information can be retrieved, aborting\n");
+		pinputplayback->playing = FALSE;
+		return;
 	}
 
 	int trackno = find_trackno_from_filename(pinputplayback->filename);
@@ -737,6 +745,9 @@ TitleInput *cdaudio_get_song_tuple(gchar *filename)
 
 TitleInput *create_tuple_from_trackinfo(char *filename)
 {
+	if (trackinfo == NULL)
+		return NULL;
+
 	TitleInput *tuple = bmp_title_input_new();
 	int trackno = find_trackno_from_filename(filename);
 
@@ -869,7 +880,6 @@ void cleanup_on_error()
 {
 	if (playing_track != -1) {
 		playing_track = -1;
-		playback_stop();
 	}
 
 	if (trackinfo != NULL) {
