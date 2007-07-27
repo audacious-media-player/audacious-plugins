@@ -131,7 +131,7 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
 
     menu = gtk_menu_new();
 
-    if ((file = vfs_fopen("/dev/sndstat", "r"))) {
+    if ((file = vfs_fopen("file:///dev/sndstat", "r"))) {
         while (vfs_fgets(buffer, 255, file)) {
             if (found && buffer[0] == '\n')
                 break;
