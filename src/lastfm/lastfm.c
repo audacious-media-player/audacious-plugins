@@ -47,6 +47,7 @@
 #include <glib.h>
 #include <string.h>
 #include "lastfm.h"
+#include <glib/gi18n.h>
 
 #define DEBUG 1
 
@@ -57,8 +58,12 @@ size_t lastfm_store_res(void *ptr, size_t size, size_t nmemb, void *udata)
         return size * nmemb;
 }
 
-gint lastfm_get_data_from_uri(gchar *url, GString * result)
+
+gchar** lastfm_get_data_from_uri(gchar *url)
 {
+        gchar**result=NULL;
+        GString* res=g_string_new(NULL);
+        gint i=0;
         CURL *curl = curl_easy_init();
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "Audacious");
@@ -67,10 +72,38 @@ gint lastfm_get_data_from_uri(gchar *url, GString * result)
         curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, LASTFM_CURL_TIMEOUT);
         curl_easy_setopt(curl, CURLOPT_URL, url);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, result);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
         gint status = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
-        return status;
+        g_print(res->str);
+        if((status==CURLE_OK) && res && res->str)
+                result = g_strsplit(res->str, "\n", 20);
+        g_string_erase(res, 0, -1);
+#if DEBUG
+        g_print("Opened URL: '%s'\n",url);
+        g_print("LASTFM: (get_uri) received data ---------------\n");
+        for (i = 0; result && result[i]; i++)
+                g_print("%s\n",result[i]);
+        g_print("LASTFM: (get_uri) data ended    ---------------\n");
+#endif
+        return result;
+}
+
+
+static void show_login_error_dialog(void)
+{
+        const gchar *markup =
+                N_("<b><big>Couldn't initialize the last.fm radio plugin.</big></b>\n\n"
+                                "Check if your Scrobbler's plugin login data is set up properly.");
+
+        GtkWidget *dialog =
+                gtk_message_dialog_new_with_markup(NULL,
+                                GTK_DIALOG_DESTROY_WITH_PARENT,
+                                GTK_MESSAGE_ERROR,
+                                GTK_BUTTONS_OK,
+                                _(markup));
+        gtk_dialog_run(GTK_DIALOG(dialog));
+        gtk_widget_destroy(dialog);
 }
 
 gchar* lastfm_get_login_uri()  /* reads the audioscrobbler login data from the config */
@@ -99,6 +132,7 @@ gchar* lastfm_get_login_uri()  /* reads the audioscrobbler login data from the c
 #if DEBUG
                 g_print("LASTFM: (get_login_uri) Couldn't find the login data. Use the scrobbler plugin to set it up.\n");
 #endif
+                show_login_error_dialog();
                 return NULL;
         }
 }
@@ -114,23 +148,17 @@ void lastfm_store(gchar * var_name, gchar * var)  /*mowgli storage wrapper, for 
 int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores them.
                           It's called just on the first fopen, since it doesnt change (hopefully!!!)*/
 {
-        gint    status, i,
+        gint    i,
                 ret=LASTFM_LOGIN_OK; /*suppose everything goes fine*/
-        gchar   *login_uri=NULL,
-                **split = NULL;
-        GString *res;
-        login_uri=lastfm_get_login_uri();
-        if(login_uri==NULL)
+        gchar   **split = NULL;
+        if(login_url!=NULL)
+                g_free(login_url);
+        login_url=lastfm_get_login_uri();
+        if(login_url==NULL)
                 return LASTFM_MISSING_LOGIN_DATA;
-        res = g_string_new(NULL);
-        status = lastfm_get_data_from_uri(login_uri, res);
-#if DEBUG
-        g_print("LASTFM: (login) Opened login URI: '%s'\n", login_uri);
-        g_print("LASTFM: (login) Got following data: '%s'\n", res->str);
-#endif
-        if (status == CURLE_OK)
+        split = lastfm_get_data_from_uri(login_url);
+        if (split)
         {
-                split = g_strsplit(res->str, "\n", 20);
                 for (i = 0; split && split[i]; i++)
                 {
                         if (g_str_has_prefix(split[i], "session="))
@@ -138,13 +166,13 @@ int lastfm_login(void)  /*gets the session ID and the mp3 stream URL and stores 
                         else if (g_str_has_prefix(split[i], "stream_url="))
                                 lastfm_store("lastfm_stream_uri" ,g_strdup(split[i] + 11));
                 }
+                ret = LASTFM_LOGIN_OK;
         }
         else
                 ret = LASTFM_LOGIN_ERROR;
         g_strfreev(split);
-        g_string_erase(res, 0, -1);
-        g_free(login_uri);
-        login_uri=NULL;
+        g_free(login_url);
+        login_url=NULL;
         return ret;
 }
 
@@ -160,7 +188,6 @@ static gpointer lastfm_adjust(gpointer uri)  /*tunes into a channel*/
 {
         gchar *fetch_url=NULL,
               *session_id = g_strdup(mowgli_global_storage_get("lastfm_session_id"));
-        GString *res=NULL;        
         if (!session_id)
         {
 #if DEBUG
@@ -169,23 +196,26 @@ static gpointer lastfm_adjust(gpointer uri)  /*tunes into a channel*/
                 return NULL ;
         }
         fetch_url=g_strdup_printf(LASTFM_ADJUST_URL, session_id, (char*)uri);
-        res= g_string_new(NULL);
-        lastfm_get_data_from_uri(fetch_url, res);      /*the output doesn't matter*/
-        g_string_erase(res, 0, -1);
-        g_free(session_id);
+        gchar** tmp = lastfm_get_data_from_uri(fetch_url);      /*the output doesn't matter*/
+        g_strfreev(tmp);
         g_free(fetch_url);
+        g_free(session_id);
         return NULL ;
 }
 
-gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
+gboolean parse_metadata(LastFM * handle,gchar ** split)
 {
         int i;
 
-        if(metadata_strings == NULL)
+        if(split == NULL)
                 return FALSE;
-        gchar **split = g_strsplit(metadata_strings->str, "\n", 20);
         if(g_str_has_prefix(split[0],"streaming=false"))
+        {
+#if DEBUG
+                g_print("LASTFM: (parse) Metadata is not available\n");
+#endif
                 return FALSE;
+        }
         handle->lastfm_duration=0;
         handle->lastfm_progress=0;
 
@@ -211,17 +241,6 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
         }
         for (i = 0; split && split[i]; i++)
         {
-
-                if (g_str_has_prefix(split[i], "streaming=false"))
-                {
-                        g_strfreev(split);
-                        g_string_erase(metadata_strings, 0, -1);
-#if DEBUG
-                        g_print("LASTFM: (parse) Metadata is not available");
-#endif
-                        return FALSE;
-                }
-
                 if (g_str_has_prefix(split[i], "artist="))
                         handle->lastfm_artist = parse(split[i],"artist=");
 
@@ -233,7 +252,7 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
 
                 if (g_str_has_prefix(split[i], "albumcover_medium="))
                         lastfm_store("lastfm_cover", parse(split[i],"albumcover_medium=")); 
-                        
+
                 if (g_str_has_prefix(split[i], "station="))
                         handle->lastfm_station_name = parse(split[i],"station=");
 
@@ -250,30 +269,29 @@ gboolean parse_metadata(LastFM * handle,GString * metadata_strings)
                 g_print("LASTFM: (parse) Station Name: %s\n", handle->lastfm_station_name);
         }
 #endif
-        g_strfreev(split);
-        g_string_erase(metadata_strings, 0, -1);
         return TRUE;
 }
 
 int fetch_metadata(LastFM * handle)
 {
+g_print("LASTFM: (fetch) starting to fetch\n");
         gchar *uri=NULL;
-        gint status,res=METADATA_FETCH_FAILED;
-        if(!handle)
-                return res;
-        handle->lastfm_session_id=g_strdup(mowgli_global_storage_get("lastfm_session_id"));
+        gint res=METADATA_FETCH_FAILED;
+        if(handle->lastfm_session_id == NULL)
+                handle->lastfm_session_id=g_strdup(mowgli_global_storage_get("lastfm_session_id"));
+        g_print("session %s\n",handle->lastfm_session_id);
         if (handle->lastfm_session_id == NULL)
-                return res;  
+                return res;
         uri=g_strdup_printf(LASTFM_METADATA_URL, handle->lastfm_session_id);
-        GString *fetched_metadata = g_string_new(NULL);
-        status = lastfm_get_data_from_uri(uri, fetched_metadata);
-        if (status == CURLE_OK)
+        g_print("uri %s\n",uri);
+        gchar**fetched_metadata =NULL;
+        fetched_metadata = lastfm_get_data_from_uri(uri);
+
+        if(fetched_metadata != NULL)
         {
-#if DEBUG
-                g_print("LASTFM: (fetch) ----Received metadata:----\n%s\n----END----\n", fetched_metadata->str);
-#endif
                 if(parse_metadata( handle,fetched_metadata))
                 {
+                        g_strfreev(fetched_metadata);
                         res=METADATA_FETCH_SUCCEEDED;
 #if DEBUG
                         g_print("LASTFM: (fetch) metadata was parsed ok\n");
@@ -294,7 +312,7 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
         gboolean track_end_expected=FALSE,track_beginning=TRUE;
         LastFM *handle = (LastFM *)arg;
         /*get it right after opened the stream, so it doesnt need the mutex */
-         fetch_metadata(handle); 
+        fetch_metadata(handle); 
 
         /* metadata is fetched 1 second after the stream is opened, 
          * and again after 2 seconds.
@@ -309,7 +327,13 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
                 {    
                         g_mutex_lock(metadata_mutex);
                         if(handle==NULL)
-                                break;
+                        {
+#if DEBUG
+                                g_print("LASTFM: (thread) Exiting thread, ID = %p, thread's handle got freed\n", (void *)g_thread_self());
+#endif
+                                thread_count--;
+                                return NULL;       
+                        }
                         if(t0->tv_usec==-1)
                                 g_get_current_time (t0);
 #if DEBUG
@@ -408,7 +432,7 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
         handle->lastfm_album=NULL;
         handle->lastfm_session_id=NULL;
         handle->lastfm_mp3_stream_url=NULL;
-        handle->lastfm_station_name=g_strdup(path);
+        handle->lastfm_station_name=g_strdup("Couldn't fetch metadata");
         int login_count = 0;
         gchar * temp_path=g_strdup(path);
         if(!mowgli_global_storage_get("lastfm_session_id")) /*login only if really needed*/
@@ -442,13 +466,15 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
 
         if (file == NULL)
                 return -1;
-        if (file->handle) {
+        if (file->handle) 
+        {
                 g_mutex_lock(metadata_mutex);
                 LastFM *handle = file->handle;
                 ret = vfs_fclose(handle->proxy_fd);
                 if (!ret)
                         handle->proxy_fd = NULL;
-                g_free(file->handle);
+                g_free(handle);
+                handle=NULL;
                 file->handle = NULL;
                 g_mutex_unlock(metadata_mutex);
         }
@@ -555,12 +581,12 @@ static void init(void)
                 metadata_mutex = g_mutex_new ();
         t0=g_new0(GTimeVal,1);
         t1=g_new0(GTimeVal,1);
+        lastfm_store("lastfm_loaded","TRUE");
 }
 
 static void cleanup(void)
 {
         g_mutex_free(metadata_mutex);
-        mowgli_global_storage_free("lastfm_session_id");
         mowgli_global_storage_free("lastfm_stream_uri");
 #if DEBUG
         g_print("LASTFM: (cleanup) Cleanup finished\n");

@@ -31,7 +31,7 @@ GTimeVal *t0,*t1;
 GThread* metadata_thread=NULL;
 gint thread_count=0;
 static GMutex * metadata_mutex = NULL;
-
+static gchar * login_url=NULL;
 VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode);
 
 size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file);
@@ -58,7 +58,7 @@ gint lastfm_vfs_fclose_impl(VFSFile * file);
 
 gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field);
 
-gboolean parse_metadata(LastFM * handle,GString * res);
+gboolean parse_metadata(LastFM * handle,gchar **res);
 
 static gpointer lastfm_metadata_thread_func(gpointer arg);
 
