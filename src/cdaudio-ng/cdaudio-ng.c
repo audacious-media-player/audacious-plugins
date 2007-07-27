@@ -1,9 +1,4 @@
 
-/*
-	todo:
-		- about dialog
-*/
-
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -479,6 +474,11 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	playing_track = trackno;
 	is_paused = FALSE;
 
+	char *title = xmms_get_titlestring(xmms_get_gentitle_format(), create_tuple_from_trackinfo(pinputplayback->filename));
+
+	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 128000, 44100, 2);
+	free(title);
+
 	if (use_dae) {
 		if (debug)
 			printf("cdaudio-ng: using digital audio extraction\n");
@@ -520,11 +520,6 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 			return;
 		}
 	}
-
-	char *title = xmms_get_titlestring(xmms_get_gentitle_format(), create_tuple_from_trackinfo(pinputplayback->filename));
-
-	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 128000, 44100, 2);
-	free(title);
 }
 
 void cdaudio_stop(InputPlayback *pinputplayback)
@@ -773,6 +768,8 @@ void dae_play_loop(dae_params_t *pdae_params)
 	gboolean output_paused = FALSE;
 	int read_error_counter = 0;
 
+	//pdae_params->endlsn += 75 * 3;
+
 	while (pdae_params->pplayback->playing) {
 			/* handle pause status */
 		if (is_paused) {
@@ -808,13 +805,16 @@ void dae_play_loop(dae_params_t *pdae_params)
 			/* compute the actual number of sectors to read */
 		int lsncount = CDDA_DAE_FRAMES <= (pdae_params->endlsn - pdae_params->currlsn + 1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn - pdae_params->currlsn + 1);
 			/* check too see if we have reached the end of the song */
-		if (lsncount <= 0)
+		if (lsncount <= 0) {
+			sleep(3);
 			break;
+		}
 
 		if (cdio_read_audio_sectors(pcdio, buffer, pdae_params->currlsn, lsncount) != DRIVER_OP_SUCCESS) {
 			fprintf(stderr, "cdaudio-ng: failed to read audio sector\n");
 			read_error_counter++;
 			if (read_error_counter >= 2) {
+				read_error_counter = 0;
 				fprintf(stderr, "cdaudio-ng: this cd can no longer be played, stopping\n");
 				break;
 			}
