@@ -124,15 +124,15 @@ static void
 scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
 {
     GtkWidget *menu, *item;
-    VFSFile *file;
+    FILE *file;
     gchar buffer[256], *temp, *tmp2;
     gboolean found = FALSE;
     gint index = 0;
 
     menu = gtk_menu_new();
 
-    if ((file = vfs_fopen("file:///dev/sndstat", "r"))) {
-        while (vfs_fgets(buffer, 255, file)) {
+    if ((file = fopen("/dev/sndstat", "r"))) {
+        while (fgets(buffer, 255, file)) {
             if (found && buffer[0] == '\n')
                 break;
             if (buffer[strlen(buffer) - 1] == '\n')
@@ -162,7 +162,7 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
                 found = 1;
 
         }
-        vfs_fclose(file);
+        fclose(file);
     }
     else {
         item = gtk_menu_item_new_with_label(_("Default"));
