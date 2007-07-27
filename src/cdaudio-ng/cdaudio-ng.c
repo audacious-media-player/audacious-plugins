@@ -476,7 +476,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 
 	char *title = xmms_get_titlestring(xmms_get_gentitle_format(), create_tuple_from_trackinfo(pinputplayback->filename));
 
-	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 128000, 44100, 2);
+	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
 	free(title);
 
 	if (use_dae) {
