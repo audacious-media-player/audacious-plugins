@@ -364,8 +364,8 @@ static void *wma_play_loop(void *arg)
     AVPacket pkt;
     
     g_static_mutex_lock(&wma_mutex);
-    while(wma_decode){
-
+    while(playback->playing)
+    {
 	if(wma_seekpos != -1)
 	{
 	    av_seek_frame(ic, wma_idx, wma_seekpos * 1000000LL);
@@ -394,8 +394,7 @@ static void *wma_play_loop(void *arg)
             if(pkt.data) av_free_packet(&pkt);
         }
     }
-    while(wma_decode && playback->output->buffer_playing()) xmms_usleep(30000);
-    wma_decode = 0;
+    while(playback->playing && playback->output->buffer_playing()) xmms_usleep(30000);
     playback->playing = 0;
     if(wma_s_outbuf) g_free(wma_s_outbuf);
     if(wma_outbuf) g_free(wma_outbuf);
@@ -403,7 +402,6 @@ static void *wma_play_loop(void *arg)
     if(c) avcodec_close(c);
     if(ic) av_close_input_file(ic);
     g_static_mutex_unlock(&wma_mutex);
-    g_thread_exit(NULL);
     return(NULL);
 }
 
@@ -412,7 +410,7 @@ static void wma_play_file(InputPlayback *playback)
     char *filename = playback->filename;
     AVCodec *codec;
     
-    if(av_open_input_file(&ic, str_twenty_to_space(filename), NULL, 0, NULL) < 0) return;
+    if(av_open_input_file(&ic, filename, NULL, 0, NULL) < 0) return;
 
     for(wma_idx = 0; wma_idx < ic->nb_streams; wma_idx++) {
         c = &ic->streams[wma_idx]->codec;
@@ -443,7 +441,8 @@ static void wma_play_file(InputPlayback *playback)
     wma_seekpos = -1;
     wma_decode = 1;
     playback->playing = 1;
-    wma_decode_thread = g_thread_create((GThreadFunc)wma_play_loop, playback, TRUE, NULL);
+    wma_decode_thread = g_thread_self();
+    wma_play_loop(playback);
 }
 
 static void wma_stop(InputPlayback *playback) 
