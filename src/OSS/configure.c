@@ -131,7 +131,9 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
 
     menu = gtk_menu_new();
 
-    if ((file = fopen("/dev/sndstat", "r"))) {
+    if ((file = fopen("/dev/sndstat",             "r")) ||    
+        (file = fopen("/proc/asound/sndstat",     "r")) ||    
+        (file = fopen("/proc/asound/oss/sndstat", "r")))  {   
         while (fgets(buffer, 255, file)) {
             if (found && buffer[0] == '\n')
                 break;
