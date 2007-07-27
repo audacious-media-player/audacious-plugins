@@ -1,3 +1,6 @@
+#ifndef SFMT_PARAMS_H
+#define SFMT_PARAMS_H
+
 #if !defined(MEXP)
 #ifdef __GNUC__
   #warning "MEXP is not defined. I assume MEXP is 19937."
@@ -79,6 +82,8 @@
   #include "SFMT-params86243.h"
 #elif MEXP == 132049
   #include "SFMT-params132049.h"
+#elif MEXP == 216091
+  #include "SFMT-params216091.h"
 #else
 #ifdef __GNUC__
   #error "MEXP is not valid."
@@ -88,3 +93,5 @@
 #endif
 
 #endif
+
+#endif /* SFMT_PARAMS_H */

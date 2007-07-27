@@ -14,21 +14,51 @@
 #include <assert.h>
 #include "SFMT.h"
 #include "SFMT-params.h"
-#include "SFMT-params19937.h"
 
-#if defined(ALTIVEC)
-  #include "SFMT-alti.h"
-#elif defined(SSE2)
-  #include "SFMT-sse2.h"
+#if defined(__BIG_ENDIAN__) && !defined(__amd64) && !defined(BIG_ENDIAN64)
+#define BIG_ENDIAN64 1
+#endif
+#if defined(HAVE_ALTIVEC) && !defined(BIG_ENDIAN64)
+#define BIG_ENDIAN64 1
+#endif
+#if defined(ONLY64) && !defined(BIG_ENDIAN64)
+  #if defined(__GNUC__)
+    #error "-DONLY64 must be specified with -DBIG_ENDIAN64"
+  #endif
+#undef ONLY64
+#endif
+/*------------------------------------------------------
+  128-bit SIMD data type for Altivec, SSE2 or standard C
+  ------------------------------------------------------*/
+#if defined(HAVE_ALTIVEC)
+  #if !defined(__APPLE__)
+    #include <altivec.h>
+  #endif
+/** 128-bit data structure */
+union W128_T {
+    vector unsigned int s;
+    uint32_t u[4];
+};
+/** 128-bit data type */
+typedef union W128_T w128_t;
+
+#elif defined(HAVE_SSE2)
+  #include <emmintrin.h>
+
+/** 128-bit data structure */
+union W128_T {
+    __m128i si;
+    uint32_t u[4];
+};
+/** 128-bit data type */
+typedef union W128_T w128_t;
+
 #else
-/*------------------------------------------
-  128-bit SIMD like data type for standard C
-  ------------------------------------------*/
+
 /** 128-bit data structure */
 struct W128_T {
     uint32_t u[4];
 };
-
 /** 128-bit data type */
 typedef struct W128_T w128_t;
 
@@ -61,18 +91,18 @@ inline static int idxof(int i);
 inline static void rshift128(w128_t *out,  w128_t const *in, int shift);
 inline static void lshift128(w128_t *out,  w128_t const *in, int shift);
 inline static void gen_rand_all(void);
-inline static void gen_rand_array(w128_t array[], int size);
+inline static void gen_rand_array(w128_t *array, int size);
 inline static uint32_t func1(uint32_t x);
 inline static uint32_t func2(uint32_t x);
 static void period_certification(void);
 #if defined(BIG_ENDIAN64) && !defined(ONLY64)
-inline static void swap(w128_t array[], int size);
+inline static void swap(w128_t *array, int size);
 #endif
 
-#if defined(ALTIVEC)
-  #include "SFMT-alti.c"
-#elif defined(SSE2)
-  #include "SFMT-sse2.c"
+#if defined(HAVE_ALTIVEC)
+  #include "SFMT-alti.h"
+#elif defined(HAVE_SSE2)
+  #include "SFMT-sse2.h"
 #endif
 
 /**
@@ -211,7 +241,7 @@ inline static void do_recursion(w128_t *r, w128_t *a, w128_t *b, w128_t *c,
 }
 #endif
 
-#if (!defined(ALTIVEC)) && (!defined(SSE2))
+#if (!defined(HAVE_ALTIVEC)) && (!defined(HAVE_SSE2))
 /**
  * This function fills the internal state array with pseudorandom
  * integers.
@@ -241,7 +271,7 @@ inline static void gen_rand_all(void) {
  * @param array an 128-bit array to be filled by pseudorandom numbers.  
  * @param size number of 128-bit pseudorandom numbers to be generated.
  */
-inline static void gen_rand_array(w128_t array[], int size) {
+inline static void gen_rand_array(w128_t *array, int size) {
     int i, j;
     w128_t *r1, *r2;
 
@@ -274,8 +304,8 @@ inline static void gen_rand_array(w128_t array[], int size) {
 }
 #endif
 
-#if defined(BIG_ENDIAN64) && !defined(ONLY64) && !defined(ALTIVEC)
-inline static void swap(w128_t array[], int size) {
+#if defined(BIG_ENDIAN64) && !defined(ONLY64) && !defined(HAVE_ALTIVEC)
+inline static void swap(w128_t *array, int size) {
     int i;
     uint32_t x, y;
 
@@ -317,13 +347,11 @@ static void period_certification(void) {
     int i, j;
     uint32_t work;
 
-    for (i = 0; i < 4; i++) {
-	work = psfmt32[idxof(i)] & parity[i];
-	for (j = 0; j < 32; j++) {
-	    inner ^= work & 1;
-	    work = work >> 1;
-	}
-    }
+    for (i = 0; i < 4; i++)
+	inner ^= psfmt32[idxof(i)] & parity[i];
+    for (i = 16; i > 0; i >>= 1)
+	inner ^= inner >> i;
+    inner &= 1;
     /* check OK */
     if (inner == 1) {
 	return;
@@ -349,7 +377,7 @@ static void period_certification(void) {
  * The string shows the word size, the Mersenne exponent,
  * and all parameters of this generator.
  */
-char *get_idstring(void) {
+const char *get_idstring(void) {
     return IDSTR;
 }
 
@@ -377,7 +405,7 @@ int get_min_array_size64(void) {
  * init_gen_rand or init_by_array must be called before this function.
  * @return 32-bit pseudorandom number
  */
-inline uint32_t gen_rand32(void) {
+uint32_t gen_rand32(void) {
     uint32_t r;
 
     assert(initialized);
@@ -396,7 +424,7 @@ inline uint32_t gen_rand32(void) {
  * unless an initialization is again executed. 
  * @return 64-bit pseudorandom number
  */
-inline uint64_t gen_rand64(void) {
+uint64_t gen_rand64(void) {
 #if defined(BIG_ENDIAN64) && !defined(ONLY64)
     uint32_t r1, r2;
 #else
@@ -448,7 +476,7 @@ inline uint64_t gen_rand64(void) {
  * memory. Mac OSX doesn't have these functions, but \b malloc of OSX
  * returns the pointer to the aligned memory block.
  */
-inline void fill_array32(uint32_t array[], int size) {
+void fill_array32(uint32_t *array, int size) {
     assert(initialized);
     assert(idx == N32);
     assert(size % 4 == 0);
@@ -484,7 +512,7 @@ inline void fill_array32(uint32_t array[], int size) {
  * memory. Mac OSX doesn't have these functions, but \b malloc of OSX
  * returns the pointer to the aligned memory block.
  */
-inline void fill_array64(uint64_t array[], int size) {
+void fill_array64(uint64_t *array, int size) {
     assert(initialized);
     assert(idx == N32);
     assert(size % 2 == 0);
@@ -524,7 +552,7 @@ void init_gen_rand(uint32_t seed) {
  * @param init_key the array of 32-bit integers, used as a seed.
  * @param key_length the length of init_key.
  */
-void init_by_array(uint32_t init_key[], int key_length) {
+void init_by_array(uint32_t *init_key, int key_length) {
     int i, j, count;
     uint32_t r;
     int lag;
@@ -554,7 +582,7 @@ void init_by_array(uint32_t init_key[], int key_length) {
     r += key_length;
     psfmt32[idxof(mid + lag)] += r;
     psfmt32[idxof(0)] = r;
-    i = 1;
+
     count--;
     for (i = 1, j = 0; (j < count) && (j < key_length); j++) {
 	r = func1(psfmt32[idxof(i)] ^ psfmt32[idxof((i + mid) % N32)] 

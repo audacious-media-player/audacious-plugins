@@ -35,10 +35,10 @@
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
   #include <inttypes.h>
-#elif defined(_MSC_VER)
+#elif defined(_MSC_VER) || defined(__BORLANDC__)
   typedef unsigned int uint32_t;
-  typedef unsigned long long uint64_t;
-  #define inline
+  typedef unsigned __int64 uint64_t;
+  #define inline __inline
 #else
   #include <inttypes.h>
   #if defined(__GNUC__)
@@ -47,7 +47,7 @@
 #endif
 
 #ifndef PRIu64
-  #if defined(_MSC_VER)
+  #if defined(_MSC_VER) || defined(__BORLANDC__)
     #define PRIu64 "I64u"
     #define PRIx64 "I64x"
   #else
@@ -56,13 +56,17 @@
   #endif
 #endif
 
-inline uint32_t gen_rand32(void);
-inline uint64_t gen_rand64(void);
-inline void fill_array32(uint32_t array[], int size);
-inline void fill_array64(uint64_t array[], int size);
+#if defined(__GNUC__)
+#define ALWAYSINLINE __attribute__((always_inline))
+#endif
+
+uint32_t gen_rand32(void);
+uint64_t gen_rand64(void);
+void fill_array32(uint32_t *array, int size);
+void fill_array64(uint64_t *array, int size);
 void init_gen_rand(uint32_t seed);
-void init_by_array(uint32_t init_key[], int key_length);
-char *get_idstring(void);
+void init_by_array(uint32_t *init_key, int key_length);
+const char *get_idstring(void);
 int get_min_array_size32(void);
 int get_min_array_size64(void);
 
