@@ -75,7 +75,7 @@ gchar** lastfm_get_data_from_uri(gchar *url)
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, res);
         gint status = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
-        g_print(res->str);
+        /* g_print(res->str);*/
         if((status==CURLE_OK) && res && res->str)
                 result = g_strsplit(res->str, "\n", 20);
         g_string_erase(res, 0, -1);
@@ -274,19 +274,20 @@ gboolean parse_metadata(LastFM * handle,gchar ** split)
 
 int fetch_metadata(LastFM * handle)
 {
-g_print("LASTFM: (fetch) starting to fetch\n");
+#if DEBUG
+        g_print("LASTFM: (fetch) starting to fetch\n");
+#endif
         gchar *uri=NULL;
         gint res=METADATA_FETCH_FAILED;
-        if(handle->lastfm_session_id == NULL)
-                handle->lastfm_session_id=g_strdup(mowgli_global_storage_get("lastfm_session_id"));
-        g_print("session %s\n",handle->lastfm_session_id);
+        if(handle==NULL)
+                return res;
+
+        handle->lastfm_session_id=mowgli_global_storage_get("lastfm_session_id");
         if (handle->lastfm_session_id == NULL)
                 return res;
         uri=g_strdup_printf(LASTFM_METADATA_URL, handle->lastfm_session_id);
-        g_print("uri %s\n",uri);
         gchar**fetched_metadata =NULL;
         fetched_metadata = lastfm_get_data_from_uri(uri);
-
         if(fetched_metadata != NULL)
         {
                 if(parse_metadata( handle,fetched_metadata))
