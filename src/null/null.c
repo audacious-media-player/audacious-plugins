@@ -263,4 +263,4 @@ OutputPlugin null_op =
 
 OutputPlugin *null_oplist[] = { &null_op, NULL };
 
-DECLARE_PLUGIN(null, NULL, NULL, NULL, null_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(null, NULL, NULL, NULL, null_oplist, NULL, NULL, NULL, NULL);

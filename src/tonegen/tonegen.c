@@ -265,4 +265,4 @@ static InputPlugin tone_ip =
 
 InputPlugin *tonegen_iplist[] = { &tone_ip, NULL };
 
-DECLARE_PLUGIN(tonegen, NULL, NULL, tonegen_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(tonegen, NULL, NULL, tonegen_iplist, NULL, NULL, NULL, NULL, NULL);

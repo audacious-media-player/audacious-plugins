@@ -113,7 +113,7 @@ OutputPlugin file_op =
 
 OutputPlugin *file_oplist[] = { &file_op, NULL };
 
-DECLARE_PLUGIN(filewriter, NULL, NULL, NULL, file_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(filewriter, NULL, NULL, NULL, file_oplist, NULL, NULL, NULL, NULL);
 
 static void set_plugin(void)
 {

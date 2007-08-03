@@ -50,7 +50,7 @@ OutputPlugin oss_op = {
 
 OutputPlugin *oss_oplist[] = { &oss_op, NULL };
 
-DECLARE_PLUGIN(OSS4, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(OSS4, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL, NULL);
 
 void oss_cleanup(void)
 {

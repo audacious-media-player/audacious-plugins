@@ -115,4 +115,4 @@ InputPlugin gModPlug =
 
 InputPlugin *modplug_iplist[] = { &gModPlug, NULL };
 
-DECLARE_PLUGIN(modplug, NULL, NULL, modplug_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(modplug, NULL, NULL, modplug_iplist, NULL, NULL, NULL, NULL,NULL);

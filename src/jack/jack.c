@@ -638,4 +638,4 @@ OutputPlugin jack_op =
 
 OutputPlugin *jack_oplist[] = { &jack_op, NULL };
 
-DECLARE_PLUGIN(jack, NULL, NULL, NULL, jack_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(jack, NULL, NULL, NULL, jack_oplist, NULL, NULL, NULL, NULL);

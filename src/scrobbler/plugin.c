@@ -321,4 +321,4 @@ static void *hs_thread(void *data __attribute__((unused)))
 
 GeneralPlugin *scrobbler_gplist[] = { &scrobbler_gp, NULL };
 
-DECLARE_PLUGIN(scrobbler, NULL, NULL, NULL, NULL, NULL, scrobbler_gplist, NULL);
+DECLARE_PLUGIN(scrobbler, NULL, NULL, NULL, NULL, NULL, scrobbler_gplist, NULL, NULL);

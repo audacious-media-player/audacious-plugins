@@ -52,7 +52,7 @@ OutputPlugin sun_op =
 
 OutputPlugin *sun_oplist[] = { &sun_op, NULL };
 
-DECLARE_PLUGIN(sun, NULL, NULL, NULL, sun_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(sun, NULL, NULL, NULL, sun_oplist, NULL, NULL, NULL, NULL);
 
 void sun_init(void)
 {

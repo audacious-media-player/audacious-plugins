@@ -84,7 +84,7 @@ VisPlugin bscope_vp = {
 
 VisPlugin *bscope_vplist[] = { &bscope_vp, NULL };
 
-DECLARE_PLUGIN(bscope, NULL, NULL, NULL, NULL, NULL, NULL, bscope_vplist);
+DECLARE_PLUGIN(bscope, NULL, NULL, NULL, NULL, NULL, NULL, bscope_vplist,NULL);
 
 #define WIDTH 256
 #define HEIGHT 128

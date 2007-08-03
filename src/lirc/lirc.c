@@ -61,7 +61,7 @@ GeneralPlugin lirc_plugin = {
 };
 
 GeneralPlugin *lirc_gplist[] = { &lirc_plugin, NULL };
-DECLARE_PLUGIN(lirc, NULL, NULL, NULL, NULL, NULL, lirc_gplist, NULL);
+DECLARE_PLUGIN(lirc, NULL, NULL, NULL, NULL, NULL, lirc_gplist, NULL, NULL);
 
 int lirc_fd=-1;
 struct lirc_config *config=NULL;

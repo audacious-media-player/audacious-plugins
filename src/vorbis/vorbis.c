@@ -129,7 +129,7 @@ InputPlugin vorbis_ip = {
 
 InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
 
-DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL, NULL);
 
 static OggVorbis_File vf;
 

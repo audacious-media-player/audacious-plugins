@@ -61,7 +61,7 @@ GeneralPlugin sc_gp =
 };
 
 GeneralPlugin *songchange_gplist[] = { &sc_gp, NULL };
-DECLARE_PLUGIN(songchange, NULL, NULL, NULL, NULL, NULL, songchange_gplist, NULL);
+DECLARE_PLUGIN(songchange, NULL, NULL, NULL, NULL, NULL, songchange_gplist, NULL, NULL);
 
 static void bury_child(int signal)
 {

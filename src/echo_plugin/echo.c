@@ -41,7 +41,7 @@ static int w_ofs;
 
 EffectPlugin *echo_eplist[] = { &echo_ep, NULL };
 
-DECLARE_PLUGIN(echo, NULL, NULL, NULL, NULL, echo_eplist, NULL, NULL);
+DECLARE_PLUGIN(echo, NULL, NULL, NULL, NULL, echo_eplist, NULL, NULL, NULL);
 
 static void init(void)
 {

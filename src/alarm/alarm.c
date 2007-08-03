@@ -1006,7 +1006,7 @@ static GeneralPlugin alarm_plugin =
 };
 
 GeneralPlugin *alarm_gplist[] = { &alarm_plugin, NULL };
-DECLARE_PLUGIN(alarm, NULL, NULL, NULL, NULL, NULL, alarm_gplist, NULL);
+DECLARE_PLUGIN(alarm, NULL, NULL, NULL, NULL, NULL, alarm_gplist, NULL, NULL);
 
 /*
  * vi:ai:expandtab:ts=2 sts=2 shiftwidth=2:nowrap:

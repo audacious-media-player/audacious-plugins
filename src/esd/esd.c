@@ -44,4 +44,4 @@ OutputPlugin esd_op = {
 
 OutputPlugin *esd_oplist[] = { &esd_op, NULL };
 
-DECLARE_PLUGIN(esd, NULL, NULL, NULL, esd_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(esd, NULL, NULL, NULL, esd_oplist, NULL, NULL, NULL, NULL);

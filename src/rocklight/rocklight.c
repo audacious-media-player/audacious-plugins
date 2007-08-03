@@ -128,4 +128,4 @@ static VisPlugin rocklight_vp = {
 
 VisPlugin *rocklight_vplist[] = { &rocklight_vp, NULL };
 
-DECLARE_PLUGIN(rocklight, NULL, NULL, NULL, NULL, NULL, NULL, rocklight_vplist);
+DECLARE_PLUGIN(rocklight, NULL, NULL, NULL, NULL, NULL, NULL, rocklight_vplist,NULL);

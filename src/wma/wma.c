@@ -107,7 +107,7 @@ InputPlugin wma_ip =
 
 InputPlugin *wma_iplist[] = { &wma_ip, NULL };
 
-DECLARE_PLUGIN(wma, NULL, NULL, wma_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(wma, NULL, NULL, wma_iplist, NULL, NULL, NULL, NULL, NULL);
 
 static gchar *str_twenty_to_space(gchar * str)
 {

@@ -80,7 +80,7 @@ InputPlugin shn_ip =
 
 InputPlugin *shn_iplist[] = { &shn_ip, NULL };
 
-DECLARE_PLUGIN(shnplug, NULL, NULL, shn_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(shnplug, NULL, NULL, shn_iplist, NULL, NULL, NULL, NULL, NULL);
 
 shn_file *shnfile;
 shn_config shn_cfg;

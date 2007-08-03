@@ -22,7 +22,7 @@
 
 InputPlugin *amidiplug_iplist[] = { &amidiplug_ip, NULL };
 
-DECLARE_PLUGIN(amidi-plug, NULL, NULL, amidiplug_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(amidi-plug, NULL, NULL, amidiplug_iplist, NULL, NULL, NULL, NULL, NULL);
 
 static gboolean amidiplug_detect_by_content( gchar * filename_uri , VFSFile * fp )
 {

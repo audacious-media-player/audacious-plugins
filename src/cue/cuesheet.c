@@ -124,7 +124,7 @@ InputPlugin cue_ip =
 
 InputPlugin *cue_iplist[] = { &cue_ip, NULL };
 
-DECLARE_PLUGIN(cue, NULL, NULL, cue_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(cue, NULL, NULL, cue_iplist, NULL, NULL, NULL, NULL, NULL);
 
 static void cue_init(void)
 {

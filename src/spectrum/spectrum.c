@@ -79,7 +79,7 @@ VisPlugin fsanalyzer_vp = {
 
 VisPlugin *spectrum_vplist[] = { &fsanalyzer_vp, NULL };
 
-DECLARE_PLUGIN(spectrum, NULL, NULL, NULL, NULL, NULL, NULL, spectrum_vplist);
+DECLARE_PLUGIN(spectrum, NULL, NULL, NULL, NULL, NULL, NULL, spectrum_vplist,NULL);
 
 static void fsanalyzer_destroy_cb(GtkWidget *w,gpointer data) {
 	fsanalyzer_vp.disable_plugin(&fsanalyzer_vp);

@@ -98,7 +98,7 @@ static InputPlugin inputplugin = {
 
 InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };
 
-DECLARE_PLUGIN(cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL, NULL);
 
 
 void cdaudio_init()

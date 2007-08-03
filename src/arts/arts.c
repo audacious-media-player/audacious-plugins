@@ -55,4 +55,4 @@ OutputPlugin arts_op =
 
 OutputPlugin *arts_oplist[] = { &arts_op, NULL };
 
-DECLARE_PLUGIN(arts, NULL, NULL, NULL, arts_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(arts, NULL, NULL, NULL, arts_oplist, NULL, NULL, NULL, NULL);

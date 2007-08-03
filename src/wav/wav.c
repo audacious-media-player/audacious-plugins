@@ -74,7 +74,7 @@ static gboolean audio_error = FALSE;
 
 InputPlugin *wav_iplist[] = { &wav_ip, NULL };
 
-DECLARE_PLUGIN(wav, NULL, NULL, wav_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(wav, NULL, NULL, wav_iplist, NULL, NULL, NULL, NULL, NULL);
 
 static void
 wav_init(void)

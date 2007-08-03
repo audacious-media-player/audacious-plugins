@@ -69,7 +69,7 @@ InputPlugin mp4_ip =
 
 InputPlugin *mp4_iplist[] = { &mp4_ip, NULL };
 
-DECLARE_PLUGIN(mp4, NULL, NULL, mp4_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(mp4, NULL, NULL, mp4_iplist, NULL, NULL, NULL, NULL, NULL);
 
 typedef struct  _mp4cfg
 {

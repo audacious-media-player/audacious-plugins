@@ -28,7 +28,7 @@
 
 
 GeneralPlugin *statusicon_gplist[] = { &si_gp, NULL };
-DECLARE_PLUGIN(statusicon, NULL, NULL, NULL, NULL, NULL, statusicon_gplist, NULL);
+DECLARE_PLUGIN(statusicon, NULL, NULL, NULL, NULL, NULL, statusicon_gplist, NULL, NULL);
 
 static gboolean plugin_active = FALSE;
 

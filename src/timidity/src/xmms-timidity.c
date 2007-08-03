@@ -69,7 +69,7 @@ InputPlugin xmmstimid_ip = {
 
 InputPlugin *timidity_iplist[] = { &xmmstimid_ip, NULL };
 
-DECLARE_PLUGIN(timidity, NULL, NULL, timidity_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(timidity, NULL, NULL, timidity_iplist, NULL, NULL, NULL, NULL, NULL);
 
 static struct {
 	gchar *config_file;

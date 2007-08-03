@@ -249,7 +249,7 @@ public:
 
 InputPlugin *wv_iplist[] = { &mod, NULL };
 
-DECLARE_PLUGIN(wavpack, NULL, NULL, wv_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(wavpack, NULL, NULL, wv_iplist, NULL, NULL, NULL, NULL,NULL);
 
 static int
 wv_is_our_fd(gchar *filename, VFSFile *file)

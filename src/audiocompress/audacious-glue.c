@@ -57,7 +57,7 @@ static EffectPlugin xmms_plugin = {
 
 EffectPlugin *audiocompress_eplist[] = { &xmms_plugin, NULL };
 
-DECLARE_PLUGIN(audiocompress, NULL, NULL, NULL, NULL, audiocompress_eplist, NULL, NULL);
+DECLARE_PLUGIN(audiocompress, NULL, NULL, NULL, NULL, audiocompress_eplist, NULL, NULL, NULL);
 
 void myInit(void)
 {

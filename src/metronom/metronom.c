@@ -296,4 +296,4 @@ static InputPlugin metronom_ip =
 
 InputPlugin *metronom_iplist[] = { &metronom_ip, NULL };
 
-DECLARE_PLUGIN(metronom, NULL, NULL, metronom_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(metronom, NULL, NULL, metronom_iplist, NULL, NULL, NULL, NULL, NULL);

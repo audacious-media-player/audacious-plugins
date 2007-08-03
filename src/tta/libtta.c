@@ -118,7 +118,7 @@ InputPlugin tta_ip =
 
 InputPlugin *tta_iplist[] = { &tta_ip, NULL };
 
-DECLARE_PLUGIN(tta, NULL, NULL, tta_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(tta, NULL, NULL, tta_iplist, NULL, NULL, NULL, NULL, NULL);
 
 size_t
 file_size (char *filename)

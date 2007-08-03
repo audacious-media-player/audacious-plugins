@@ -129,7 +129,7 @@ static EffectPlugin ladspa_ep = {
 
 EffectPlugin *ladspa_eplist[] = { &ladspa_ep, NULL };
 
-DECLARE_PLUGIN(ladspa, NULL, NULL, NULL, NULL, ladspa_eplist, NULL, NULL);
+DECLARE_PLUGIN(ladspa, NULL, NULL, NULL, NULL, ladspa_eplist, NULL, NULL, NULL);
 
 static void start (void)
 {

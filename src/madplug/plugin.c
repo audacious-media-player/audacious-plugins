@@ -837,6 +837,6 @@ InputPlugin mad_ip = {
 
 InputPlugin *madplug_iplist[] = { &mad_ip, NULL };
 
-DECLARE_PLUGIN(madplug, NULL, NULL, madplug_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(madplug, NULL, NULL, madplug_iplist, NULL, NULL, NULL, NULL, NULL);
 
 InputPlugin *mad_plugin = &mad_ip;

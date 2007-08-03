@@ -44,7 +44,7 @@ InputPlugin MpcPlugin = {
 
 InputPlugin *mpc_iplist[] = { &MpcPlugin, NULL };
 
-DECLARE_PLUGIN(musepack, NULL, NULL, mpc_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(musepack, NULL, NULL, mpc_iplist, NULL, NULL, NULL, NULL,NULL);
 
 static PluginConfig pluginConfig = {0};
 static Widgets      widgets      = {0};

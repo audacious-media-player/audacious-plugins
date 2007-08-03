@@ -1091,4 +1091,4 @@ static void cleanup(void)
 #endif
 }
 
-DECLARE_PLUGIN(curl, init, cleanup, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(curl, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);

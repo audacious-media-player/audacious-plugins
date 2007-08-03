@@ -594,4 +594,4 @@ static void cleanup(void)
 #endif
 }
 
-DECLARE_PLUGIN(lastfm, init, cleanup, NULL, NULL, NULL, NULL, NULL)
+DECLARE_PLUGIN(lastfm, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)

@@ -78,7 +78,7 @@ static VisPlugin pn_vp =
 
 VisPlugin *pn_vplist[] = { &pn_vp, NULL };
 
-DECLARE_PLUGIN(paranormal, NULL, NULL, NULL, NULL, NULL, NULL, pn_vplist);
+DECLARE_PLUGIN(paranormal, NULL, NULL, NULL, NULL, NULL, NULL, pn_vplist,NULL);
 
 static void
 load_pn_rc (void)

@@ -532,6 +532,6 @@ InputPlugin *console_iplist[] = { &console_ip, NULL };
 
 extern "C" {
 
-DECLARE_PLUGIN(console, NULL, NULL, console_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(console, NULL, NULL, console_iplist, NULL, NULL, NULL, NULL,NULL);
 
 };

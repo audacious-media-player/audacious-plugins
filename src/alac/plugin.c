@@ -305,7 +305,7 @@ InputPlugin alac_ip = {
 
 InputPlugin *alac_iplist[] = { &alac_ip, NULL };
 
-DECLARE_PLUGIN(alac, NULL, NULL, alac_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(alac, NULL, NULL, alac_iplist, NULL, NULL, NULL, NULL, NULL);
 
 gpointer decode_thread(void *args)
 {

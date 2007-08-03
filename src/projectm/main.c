@@ -91,7 +91,7 @@ VisPlugin projectM_vtable = {
 
 VisPlugin *projectM_vplist[] = { &projectM_vtable, NULL };
 
-DECLARE_PLUGIN(projectm, NULL, NULL, NULL, NULL, NULL, NULL, projectM_vplist);
+DECLARE_PLUGIN(projectm, NULL, NULL, NULL, NULL, NULL, NULL, projectM_vplist,NULL);
 
 // Our worker thread
 SDL_Thread *worker_thread;

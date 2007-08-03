@@ -369,4 +369,4 @@ void fini(void)
 
 InputPlugin *wav_iplist[] = { &wav_ip, NULL };
 
-DECLARE_PLUGIN(wav-sndfile, init, fini, wav_iplist, NULL, NULL, NULL, NULL)
+DECLARE_PLUGIN(wav-sndfile, init, fini, wav_iplist, NULL, NULL, NULL, NULL, NULL)

@@ -639,4 +639,4 @@ static void cleanup(void)
     playlist_container_unregister(&plc_xspf);
 }
 
-DECLARE_PLUGIN(xspf, init, cleanup, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(xspf, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);

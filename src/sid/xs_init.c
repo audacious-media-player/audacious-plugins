@@ -60,4 +60,4 @@ InputPlugin xs_plugin_ip = {
 
 InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };
 
-DECLARE_PLUGIN(sid, NULL, NULL, sid_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(sid, NULL, NULL, sid_iplist, NULL, NULL, NULL, NULL, NULL);

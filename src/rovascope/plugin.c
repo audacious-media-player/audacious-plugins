@@ -78,7 +78,7 @@ static VisPlugin pn_vp =
 
 VisPlugin *rovascope_vplist[] = { &pn_vp, NULL };
 
-DECLARE_PLUGIN(rovascope, NULL, NULL, NULL, NULL, NULL, NULL, rovascope_vplist);
+DECLARE_PLUGIN(rovascope, NULL, NULL, NULL, NULL, NULL, NULL, rovascope_vplist,NULL);
 
 static void
 load_pn_rc (void)

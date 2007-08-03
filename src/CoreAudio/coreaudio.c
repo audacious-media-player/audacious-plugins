@@ -46,4 +46,4 @@ OutputPlugin osx_op =
 
 OutputPlugin *coreaudio_oplist[] = { &osx_op, NULL };
 
-DECLARE_PLUGIN(coreaudio, NULL, NULL, NULL, coreaudio_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(coreaudio, NULL, NULL, NULL, coreaudio_oplist, NULL, NULL, NULL, NULL);

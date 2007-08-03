@@ -34,7 +34,7 @@ static gdouble value;
 
 EffectPlugin *stereo_eplist[] = { &stereo_ep, NULL };
 
-DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL);
+DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL, NULL);
 
 static void init(void)
 {

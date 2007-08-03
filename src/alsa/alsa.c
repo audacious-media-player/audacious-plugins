@@ -44,7 +44,7 @@ OutputPlugin alsa_op =
 
 OutputPlugin *alsa_oplist[] = { &alsa_op, NULL };
 
-DECLARE_PLUGIN(alsa, NULL, NULL, NULL, alsa_oplist, NULL, NULL, NULL)
+DECLARE_PLUGIN(alsa, NULL, NULL, NULL, alsa_oplist, NULL, NULL, NULL, NULL)
 
 void alsa_cleanup(void)
 {

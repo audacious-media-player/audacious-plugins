@@ -57,7 +57,7 @@ EffectPlugin sndstretch_ep = {
 
 EffectPlugin *sndstretch_eplist[] = { &sndstretch_ep, NULL };
 
-DECLARE_PLUGIN(sndstretch, NULL, NULL, NULL, NULL, sndstretch_eplist, NULL, NULL);
+DECLARE_PLUGIN(sndstretch, NULL, NULL, NULL, NULL, sndstretch_eplist, NULL, NULL, NULL);
 
 static struct {
 	int handle;    // file handle

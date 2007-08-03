@@ -1148,4 +1148,4 @@ InputPlugin adplug_ip = {
 
 InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };
 
-DECLARE_PLUGIN(adplug, NULL, NULL, adplug_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(adplug, NULL, NULL, adplug_iplist, NULL, NULL, NULL, NULL,NULL);

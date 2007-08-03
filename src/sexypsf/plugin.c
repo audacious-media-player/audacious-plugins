@@ -288,4 +288,4 @@ InputPlugin sexypsf_ip =
 
 InputPlugin *sexypsf_iplist[] = { &sexypsf_ip, NULL };
 
-DECLARE_PLUGIN(sexypsf, NULL, NULL, sexypsf_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(sexypsf, NULL, NULL, sexypsf_iplist, NULL, NULL, NULL, NULL, NULL);

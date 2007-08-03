@@ -63,7 +63,7 @@ InputPlugin flac_ip = {
 
 InputPlugin *flac_iplist[] = { &flac_ip, NULL };
 
-DECLARE_PLUGIN(flacng, NULL, NULL, flac_iplist, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(flacng, NULL, NULL, flac_iplist, NULL, NULL, NULL, NULL, NULL);
 
 FLAC__StreamDecoder* test_decoder;
 FLAC__StreamDecoder* main_decoder;

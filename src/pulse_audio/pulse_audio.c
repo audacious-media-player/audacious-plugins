@@ -727,4 +727,4 @@ static OutputPlugin pulse_op = {
 
 OutputPlugin *pulse_oplist[] = { &pulse_op, NULL };
 
-DECLARE_PLUGIN(pulse, NULL, NULL, NULL, pulse_oplist, NULL, NULL, NULL);
+DECLARE_PLUGIN(pulse, NULL, NULL, NULL, pulse_oplist, NULL, NULL, NULL, NULL);

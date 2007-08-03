@@ -29,7 +29,7 @@
 
 
 GeneralPlugin *evdevplug_gplist[] = { &ed_gp, NULL };
-DECLARE_PLUGIN(evdev-plug, NULL, NULL, NULL, NULL, NULL, evdevplug_gplist, NULL);
+DECLARE_PLUGIN(evdev-plug, NULL, NULL, NULL, NULL, NULL, evdevplug_gplist, NULL, NULL);
 
 GList *ed_device_listening_list = NULL;
 gboolean plugin_is_active = FALSE;
