@@ -72,7 +72,6 @@ callback_info* main_info;
 gboolean plugin_initialized = FALSE;
 gint seek_to = -1;
 static GThread* thread = NULL;
-GMutex* flac_pl_mutex;
 
 /* === */
 
@@ -162,11 +161,6 @@ void flac_init(void) {
                 FLAC__StreamDecoderInitStatusString[ret], ret);
         _LEAVE;
      }
-
-     /*
-      * Initialize the play loop mutex
-      */
-     flac_pl_mutex = g_mutex_new();
 
      _DEBUG("plugin initialized OK!");
      plugin_initialized = TRUE;
@@ -352,8 +346,6 @@ static gpointer flac_play_loop(gpointer arg) {
      * The main play loop.
      * Decode a frame, push the decoded data to the output plugin
      * chunkwise. Repeat until finished.
-     *
-     * Must be entered with flac_pl_mutex held!
      */
 
     gint32* read_pointer;
@@ -370,7 +362,6 @@ static gpointer flac_play_loop(gpointer arg) {
     if (NULL == (play_buffer = malloc(BUFFER_SIZE_BYTE))) {
         _ERROR("Could not allocate conversion buffer");
         playback->playing = FALSE;
-        g_mutex_unlock(flac_pl_mutex);
         _LEAVE NULL;
     }
 
@@ -383,7 +374,6 @@ static gpointer flac_play_loop(gpointer arg) {
         main_info->stream.channels)) {
         playback->playing = FALSE;
         _ERROR("Could not open output plugin!");
-        g_mutex_unlock(flac_pl_mutex);
         _LEAVE NULL;
     }
 
@@ -536,11 +526,6 @@ static gpointer flac_play_loop(gpointer arg) {
         _ERROR("Could not flush decoder state!");
     }
 
-    /*
-     * Release the play loop mutex
-     */
-    g_mutex_unlock(flac_pl_mutex);
-
     _LEAVE NULL;
 }
 
@@ -557,12 +542,6 @@ void flac_play_file (InputPlayback* input) {
         _ERROR("plugin not initialized!");
         _LEAVE;
     }
-
-    /*
-     * This will end a currently running decoder thread
-     */
-    input->playing = FALSE;
-    xmms_usleep(20000);
 
     /*
      * Open the file
@@ -586,13 +565,6 @@ void flac_play_file (InputPlayback* input) {
     } else {
         l = (main_info->stream.samples / main_info->stream.samplerate) * 1000;
     }
-
-    /*
-     * Grab the play loop mutex
-     */
-    _DEBUG("Waiting for play loop mutex...");
-    g_mutex_lock(flac_pl_mutex);
-    _DEBUG("Got play loop mutex");
 
     input->playing = TRUE;
 
