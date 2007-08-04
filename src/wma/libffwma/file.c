@@ -30,8 +30,6 @@ static int file_open(URLContext *h, const char *filename, int flags)
 {
     VFSFile *file;
 
-    strstart(filename, "file:", &filename);
-
     if (flags & URL_WRONLY) {
 	file = vfs_fopen(filename, "wb");
     } else {
