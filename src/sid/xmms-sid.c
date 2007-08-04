@@ -536,7 +536,6 @@ xs_err_exit:
 
 	/* Exit the playing thread */
 	XSDEBUG("exiting thread, bye.\n");
-	XS_THREAD_EXIT(NULL);
 }
 
 
@@ -572,19 +571,10 @@ void xs_play_file(InputPlayback *pb)
 	xs_status.currSong = xs_status.tuneInfo->startTune;
 
 	/* Start the playing thread! */
-	xs_decode_thread = g_thread_create((GThreadFunc) xs_playthread, pb, TRUE, NULL);
-	if (xs_decode_thread == NULL) {
-		xs_error(_("Couldn't create playing thread!\n"));
-		xs_tuneinfo_free(xs_status.tuneInfo);
-		xs_status.tuneInfo = NULL;
-		xs_status.sidPlayer->plrDeleteSID(&xs_status);
-	}
+	xs_decode_thread = g_thread_self();
+	xs_playthread(pb);
 
-	/* Okay, here the playing thread has started up and we
-	 * return from here to XMMS. Rest is up to XMMS's GUI
-	 * and playing thread.
-	 */
-	XSDEBUG("systems should be up?\n");
+	XSDEBUG("playback is done\n");
 }
 
 
