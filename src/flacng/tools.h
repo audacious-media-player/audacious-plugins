@@ -24,6 +24,20 @@
 #include "flacng.h"
 #include "flac_compat.h"
 
+#define INFO_LOCK(__info) \
+    do {
+        _DEBUG("Trying to lock info %s", (__info)->name); \
+        g_mutex_lock((__info)->mutex); \
+        _DEBUG("Locked info %s", (__info)->name); \
+    } while(0)
+
+#define INFO_UNLOCK(__info) \
+    do {
+        _DEBUG("Unlocking info %s", (__info)->name); \
+        g_mutex_unlock((__info)->mutex); \
+        _DEBUG("Unlocked info %s", (__info)->name); \
+    } while(0)
+
 callback_info* init_callback_info(gchar* name);
 void reset_info(callback_info* info, gboolean close_fd);
 gchar* get_title(const gchar* filename, callback_info* info);
