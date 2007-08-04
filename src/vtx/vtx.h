@@ -13,6 +13,7 @@
 
 #include "audacious/plugin.h"
 
+void vtx_init(void);
 void vtx_about(void);
 void vtx_config(void);
 void vtx_file_info(char *filename);

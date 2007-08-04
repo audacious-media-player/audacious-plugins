@@ -22,6 +22,7 @@
 #include <audacious/output.h>
 #include <audacious/util.h>
 #include <audacious/titlestring.h>
+#include <audacious/configdb.h>
 #include <audacious/vfs.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
@@ -55,6 +56,19 @@ ayemu_ay_t ay;
 ayemu_vtx_t vtx;
 
 static gchar *vtx_fmts[] = { "vtx", NULL };
+
+void
+vtx_init(void)
+{
+        ConfigDb *db;
+        db = bmp_cfg_db_open();
+
+        bmp_cfg_db_get_int(db, NULL, "src_rate", &freq);
+        if (freq < 4000 || freq > 192000)
+                freq = 44100;
+
+        bmp_cfg_db_close(db);
+}
 
 int
 vtx_is_our_fd (char *filename, VFSFile *fp)
@@ -293,8 +307,8 @@ vtx_get_song_info (char *filename, char **title, int *length)
 InputPlugin vtx_ip = {
 	NULL,			/* FILLED BY XMMS */
 	NULL,			/* FILLED BY XMMS */
-	"VTX Audio Plugin",		/* Plugin description */
-	NULL,			/* Initialization */
+	"VTX Audio Plugin",	/* Plugin description */
+	vtx_init,		/* Initialization */
 	vtx_about,		/* Show aboutbox */
 	vtx_config,		/* Show/edit configuration */
 	vtx_is_our_file,	/* Check file, return 1 if the plugin can handle this file */
@@ -323,4 +337,4 @@ InputPlugin vtx_ip = {
 
 InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };
 
-DECLARE_PLUGIN(vtx, NULL, NULL, vtx_iplist, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(vtx, NULL, NULL, vtx_iplist, NULL, NULL, NULL, NULL);
