@@ -23,16 +23,17 @@
 #include <FLAC/all.h>
 #include "flacng.h"
 #include "flac_compat.h"
+#include "debug.h"
 
 #define INFO_LOCK(__info) \
-    do {
+    do { \
         _DEBUG("Trying to lock info %s", (__info)->name); \
         g_mutex_lock((__info)->mutex); \
         _DEBUG("Locked info %s", (__info)->name); \
     } while(0)
 
 #define INFO_UNLOCK(__info) \
-    do {
+    do { \
         _DEBUG("Unlocking info %s", (__info)->name); \
         g_mutex_unlock((__info)->mutex); \
         _DEBUG("Unlocked info %s", (__info)->name); \
