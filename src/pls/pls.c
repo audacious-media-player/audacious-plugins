@@ -66,24 +66,31 @@ playlist_load_pls(const gchar * filename, gint pos)
         g_snprintf(line_key, sizeof(line_key), "File%d", i);
         if ((line = read_ini_string(inifile, "playlist", line_key)))
         {
+            gchar *uri = g_filename_to_uri(line, NULL, NULL);
+
+            if (uri)
+                g_free(line);
+            else
+                uri = line;
+
             if (cfg.use_pl_metadata)
             {
                 g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 
                 if ((title = read_ini_string(inifile, "playlist", title_key)))
-                    playlist_load_ins_file(playlist, line, filename, pos, title, -1);
+                    playlist_load_ins_file(playlist, uri, filename, pos, title, -1);
                 else
-                    playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
+                    playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
             }
             else
-                playlist_load_ins_file(playlist, line, filename, pos, NULL, -1);
+                playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
 
-                added_count++;
+            added_count++;
 
-                if (pos >= 0)
-                    pos++;
+            if (pos >= 0)
+                pos++;
 
-                g_free(line);
+            g_free(uri);
         }
     }
 
@@ -107,9 +114,17 @@ playlist_save_pls(const gchar *filename, gint pos)
 
     for (node = playlist->entries; node; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
+        gchar *fn;
+
+        if (vfs_is_remote(entry->filename))
+            fn = g_strdup(entry->filename);
+        else
+            fn = g_filename_from_uri(entry->filename, NULL, NULL);
 
         vfs_fprintf(file, "File%d=%s\n", g_list_position(playlist->entries, node) + 1,
-                    entry->filename);
+                    fn);
+
+        g_free(fn);
     }
 
     PLAYLIST_UNLOCK(playlist->mutex);
