@@ -169,6 +169,9 @@ play_loop (gpointer args)
 	{
 	  playback->output->buffer_free ();
 	  playback->output->buffer_free ();
+	  while (playback->output->buffer_playing())
+	    g_usleep(10000);
+	  playback->playing = 0;
 	}
     
       /* jump to time in seek_to (in seconds) */
@@ -179,10 +182,7 @@ play_loop (gpointer args)
 	  seek_to = -1;
 	}
     }
-
-  /* close sound and release vtx file must be done in vtx_stop() */
-  g_thread_exit (NULL);
-
+  ayemu_vtx_free (&vtx);
   return NULL;
 }
 
@@ -229,7 +229,8 @@ void vtx_play_file (InputPlayback *playback)
       bmp_title_input_free(ti);
 
       playback->playing = TRUE;
-      play_thread = g_thread_create (play_loop, playback, TRUE, NULL);
+      play_thread = g_thread_self();
+      play_loop(playback);
     }
 }
 
