@@ -66,6 +66,8 @@ callback_info* init_callback_info(gchar* name) {
     info->replaygain.album_peak = NULL;
     reset_info(info, FALSE);
 
+    info->mutex = g_mutex_new();
+
     _DEBUG("Playback buffer allocated for %d samples, %d bytes", BUFFER_SIZE_SAMP, BUFFER_SIZE_BYTE);
 
     _LEAVE info;
