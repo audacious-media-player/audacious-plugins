@@ -84,8 +84,6 @@ static GThread *xmmstimid_decode_thread;
 static gboolean xmmstimid_audio_error = FALSE;
 static MidSongOptions xmmstimid_opts;
 static MidSong *xmmstimid_song;
-static gboolean xmmstimid_going;
-static gboolean xmmstimid_eof;
 static gint xmmstimid_seek_to;
 
 static GtkWidget *xmmstimid_conf_wnd = NULL, *xmmstimid_about_wnd = NULL;
@@ -273,19 +271,26 @@ static void *xmmstimid_play_loop(void *arg) {
 			xmmstimid_opts.buffer_size;
 
 	buffer = g_malloc(buffer_size);
-	if (buffer == NULL) g_thread_exit(NULL);
+	if (buffer == NULL) return(NULL);
 
 	fmt = (xmmstimid_opts.format == MID_AUDIO_S16LSB) ? FMT_S16_LE : FMT_S8;
 
-	while (xmmstimid_going) {
+	while (playback->playing) {
 		bytes_read = mid_song_read_wave(xmmstimid_song,
 				buffer, buffer_size);
 
 		if (bytes_read != 0)
 			produce_audio(mid_song_get_time(xmmstimid_song),
 					fmt, xmmstimid_opts.channels,
-					bytes_read, buffer, &xmmstimid_going);
-		else xmmstimid_eof = TRUE;
+					bytes_read, buffer, &playback->playing);
+		else {
+		        playback->eof = TRUE;
+		        playback->output->buffer_free ();
+		        playback->output->buffer_free ();
+		        while (playback->output->buffer_playing())
+		                g_usleep(10000);
+			playback->playing = FALSE;
+		}
 
 		if (xmmstimid_seek_to != -1) {
 			mid_song_seek(xmmstimid_song, xmmstimid_seek_to * 1000);
@@ -296,7 +301,6 @@ static void *xmmstimid_play_loop(void *arg) {
 	}
 
 	g_free(buffer);
-	g_thread_exit(NULL);
 	return(NULL);
 }
 
@@ -381,20 +385,17 @@ void xmmstimid_play_file(InputPlayback * playback) {
 	g_free(title);
 
 	mid_song_start(xmmstimid_song);
-	xmmstimid_going = TRUE;
-	xmmstimid_eof = FALSE;
+	playback->playing = TRUE;
+	playback->eof = FALSE;
 	xmmstimid_seek_to = -1;
 
-	xmmstimid_decode_thread = g_thread_create((GThreadFunc)xmmstimid_play_loop, playback, TRUE, NULL);
-	if (xmmstimid_decode_thread == NULL) {
-		mid_song_free(xmmstimid_song);
-		xmmstimid_stop(playback);
-	}
+	xmmstimid_decode_thread = g_thread_self();
+	xmmstimid_play_loop(playback);
 }
 
 void xmmstimid_stop(InputPlayback * playback) {
-	if (xmmstimid_song != NULL && xmmstimid_going) {
-		xmmstimid_going = FALSE;
+	if (xmmstimid_song != NULL && playback->playing) {
+		playback->playing = FALSE;
 		g_thread_join(xmmstimid_decode_thread);
 		playback->output->close_audio();
 		mid_song_free(xmmstimid_song);
@@ -408,7 +409,7 @@ void xmmstimid_pause(InputPlayback * playback, short p) {
 
 void xmmstimid_seek(InputPlayback * playback, int time) {
 	xmmstimid_seek_to = time;
-	xmmstimid_eof = FALSE;
+	playback->eof = FALSE;
 
 	while (xmmstimid_seek_to != -1)
 		xmms_usleep(10000);
@@ -419,7 +420,7 @@ int xmmstimid_get_time(InputPlayback * playback) {
 		return -2;
 	if (xmmstimid_song == NULL)
 		return -1;
-	if (!xmmstimid_going || (xmmstimid_eof &&
+	if (!playback->playing || (playback->eof &&
 				playback->output->buffer_playing()))
 		return -1;
 
