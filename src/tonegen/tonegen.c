@@ -121,7 +121,6 @@ static void* play_loop(void *arg)
 	playback->output->buffer_free();
 	playback->output->buffer_free();
 
-	g_thread_exit(NULL);
 	return(NULL);
 }
 
@@ -202,7 +201,8 @@ static void tone_play(InputPlayback *playback)
 	tone_ip.set_info(name, -1, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
 	g_free(name);
 	playback->data = frequencies;
-	play_thread = g_thread_create((GThreadFunc)play_loop, playback, TRUE, NULL);
+	play_thread = g_thread_self();
+	play_loop(playback);
 }
 
 static void tone_stop(InputPlayback *playback)

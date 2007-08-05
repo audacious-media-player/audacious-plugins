@@ -724,7 +724,7 @@ play_loop (void *data)
   if (!fd)
   {
     plr.playing = false;
-    g_thread_exit (NULL);
+    return (NULL);
   }
 
   // Try to load module
@@ -734,7 +734,7 @@ play_loop (void *data)
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
     plr.playing = false;
-    g_thread_exit (NULL);
+    return (NULL);
   }
 
   // Cache song length
@@ -851,7 +851,6 @@ play_loop (void *data)
   plr.playing = false;          // important! XMMS won't get a self-ended song without it.
   dbg_printf (".\n");
   vfs_fclose (fd);
-  g_thread_exit (NULL);
   return (NULL);
 }
 
@@ -987,9 +986,10 @@ adplug_play (InputPlayback * data)
   plr.time_ms = 0.0f;
   plr.seek = -1;
 
-  // start player thread
-  dbg_printf ("create");
-  plr.play_thread = g_thread_create (play_loop, playback, TRUE, NULL);
+  // start player func
+  dbg_printf ("play");
+  plr.play_thread =  g_thread_self();
+  play_loop(playback);
   dbg_printf (".\n");
 }
 
