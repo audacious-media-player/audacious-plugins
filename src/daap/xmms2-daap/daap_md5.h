@@ -1,6 +1,9 @@
-/*
- *  A FLAC decoder plugin for the Audacious Media Player
- *  Copyright (C) 2005 Ralf Ertzinger
+/** @file daap_md5.h
+ *
+ *  Header for DAAP (iTunes Music Sharing) hashing, connection
+ *  Slightly modified for use in XMMS2
+ *
+ *  Copyright (C) 2004,2005 Charles Schmidt <cschmidt2@emich.edu>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,20 +18,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
  */
-#ifndef _TOOLS_H
-#define _TOOLS_H
+
+#ifndef DAAP_MD5_H
+#define DAAP_MD5_H
 
 #include <glib.h>
-#include <FLAC/all.h>
-#include "flacng.h"
-#include "flac_compat.h"
 
-callback_info* init_callback_info(gchar* name);
-void reset_info(callback_info* info, gboolean close_fd);
-gchar* get_title(const gchar* filename, callback_info* info);
-TitleInput *get_tuple(const gchar *filename, callback_info* info);
-void add_comment(callback_info* info, gchar* key, gchar* value);
-gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info);
+void
+daap_hash_generate (short version_major,
+                    const guchar *url,
+                    guchar hash_select,
+                    guchar *out,
+                    gint request_id);
 
 #endif
+
