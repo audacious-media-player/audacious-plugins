@@ -31,6 +31,7 @@ static	void 	play_start (InputPlayback *playback);
 static	void 	play_stop (InputPlayback *playback);
 static	void 	file_seek (InputPlayback *playback, int time);
 static	void 	get_song_info (char *filename, char **title, int *length);
+static	TitleInput* get_song_tuple (gchar *filename);
 static  void    wav_about (void);
 static	void	play_pause (InputPlayback *playback, gshort p);
 static  void file_mseek (InputPlayback *playback, gulong millisecond);

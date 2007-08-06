@@ -82,7 +82,7 @@ InputPlugin wav_ip = {
     get_song_info,
     NULL,
     NULL,
-    NULL,
+    get_song_tuple,
     NULL,
     NULL,
     NULL,
@@ -326,6 +326,16 @@ get_song_info (char *filename, char **title, int *length)
 {
 	(*length) = get_song_length(filename);
 	(*title) = get_title(filename);
+}
+
+static TitleInput*
+get_song_tuple (gchar *filename)
+{
+	TitleInput *tuple = bmp_title_input_new();
+	tuple->file_name = g_strdup(basename(filename));
+	tuple->length = get_song_length(filename);
+	tuple->track_name = get_title(filename);
+	return tuple;
 }
 
 static void wav_about(void)
