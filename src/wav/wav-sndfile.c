@@ -331,10 +331,15 @@ get_song_info (char *filename, char **title, int *length)
 static TitleInput*
 get_song_tuple (gchar *filename)
 {
+	gchar *realfn = NULL; 
 	TitleInput *tuple = bmp_title_input_new();
-	tuple->file_name = g_strdup(basename(filename));
+
+        realfn = g_filename_from_uri(filename, NULL, NULL);
+        tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
+        tuple->file_path = g_path_get_dirname(realfn ? realfn : filename); 
 	tuple->length = get_song_length(filename);
-	tuple->track_name = get_title(filename);
+        g_free(realfn); realfn = NULL;
+
 	return tuple;
 }
 
