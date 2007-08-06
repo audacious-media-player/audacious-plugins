@@ -178,6 +178,12 @@ gint sequencer_queue_start( void )
 }
 
 
+gint sequencer_queue_stop( void )
+{
+  return 1;
+}
+
+
 gint sequencer_event_init( void )
 {
   /* common settings for all our events */
@@ -272,6 +278,12 @@ gint sequencer_event_tempo( midievent_t * event )
 
 
 gint sequencer_event_other( midievent_t * event )
+{
+  return 1;
+}
+
+
+gint sequencer_event_allnoteoff( gint unused )
 {
   return 1;
 }

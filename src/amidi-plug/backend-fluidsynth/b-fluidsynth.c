@@ -163,8 +163,17 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 
 gint sequencer_queue_start( void )
 {
+  sc.last_sample_time = 0;
   g_timer_start( sc.timer_seq ); /* reset the sequencer timer */
   g_timer_start( sc.timer_sample ); /* reset the sampler timer */
+  return 1;
+}
+
+
+gint sequencer_queue_stop( void )
+{
+  g_timer_stop( sc.timer_seq );
+  g_timer_stop( sc.timer_sample );
   return 1;
 }
 
@@ -270,6 +279,17 @@ gint sequencer_event_other( midievent_t * event )
 {
   /* unhandled */
   i_sleep( event->tick_real );
+  return 1;
+}
+
+
+gint sequencer_event_allnoteoff( gint unused )
+{
+  gint c = 0;
+  for ( c = 0 ; c < 16 ; c++ )
+  {
+    fluid_synth_all_notes_off( sc.synth , c );
+  }
   return 1;
 }
 

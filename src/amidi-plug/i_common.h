@@ -30,6 +30,8 @@
 
 #include <audacious/i18n.h>
 
+#define DEBUG 1
+
 #define textdomain(Domain)
 #define bindtextdomain(Package, Directory)
 
@@ -43,7 +45,7 @@
 #endif /* DEBUG */
 
 
-#define AMIDIPLUG_VERSION "0.7p1"
+#define AMIDIPLUG_VERSION "0.8b1"
 #define PLAYER_NAME "Audacious"
 #define PLAYER_LOCALRCDIR ".audacious"
 #define G_PATH_GET_BASENAME(x) g_path_get_basename(x)

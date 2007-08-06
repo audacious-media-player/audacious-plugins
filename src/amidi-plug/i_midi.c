@@ -509,6 +509,7 @@ void i_midi_init( midifile_t * mf )
   mf->ppq = 0;
   mf->current_tempo = 0;
   mf->playing_tick = 0;
+  mf->seeking_tick = -1;
   mf->avg_microsec_per_tick = 0;
   mf->length = 0;
   mf->skip_offset = 0;

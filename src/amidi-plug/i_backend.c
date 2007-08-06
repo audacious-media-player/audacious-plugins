@@ -122,9 +122,11 @@ gint i_backend_load( gchar * module_name )
     g_module_symbol( backend.gmodule , "sequencer_off" , (gpointer *)&backend.seq_off );
     g_module_symbol( backend.gmodule , "sequencer_queue_tempo" , (gpointer *)&backend.seq_queue_tempo );
     g_module_symbol( backend.gmodule , "sequencer_queue_start" , (gpointer *)&backend.seq_queue_start );
+    g_module_symbol( backend.gmodule , "sequencer_queue_stop" , (gpointer *)&backend.seq_queue_stop );
     g_module_symbol( backend.gmodule , "sequencer_event_init" , (gpointer *)&backend.seq_event_init );
     g_module_symbol( backend.gmodule , "sequencer_event_noteon" , (gpointer *)&backend.seq_event_noteon );
     g_module_symbol( backend.gmodule , "sequencer_event_noteoff" , (gpointer *)&backend.seq_event_noteoff );
+    g_module_symbol( backend.gmodule , "sequencer_event_allnoteoff" , (gpointer *)&backend.seq_event_allnoteoff );
     g_module_symbol( backend.gmodule , "sequencer_event_keypress" , (gpointer *)&backend.seq_event_keypress );
     g_module_symbol( backend.gmodule , "sequencer_event_controller" , (gpointer *)&backend.seq_event_controller );
     g_module_symbol( backend.gmodule , "sequencer_event_pgmchange" , (gpointer *)&backend.seq_event_pgmchange );

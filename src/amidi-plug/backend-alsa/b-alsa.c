@@ -179,6 +179,12 @@ gint sequencer_queue_start( void )
 }
 
 
+gint sequencer_queue_stop( void )
+{
+  return snd_seq_stop_queue( sc.seq , sc.queue , NULL );
+}
+
+
 gint sequencer_event_init( void )
 {
   /* common settings for all our events */
@@ -287,6 +293,31 @@ gint sequencer_event_tempo( midievent_t * event )
 gint sequencer_event_other( midievent_t * event )
 {
   /* unhandled */
+  return 1;
+}
+
+
+gint sequencer_event_allnoteoff( gint unused )
+{
+  gint i = 0 , c = 0;
+  /* send "ALL SOUNDS OFF" to all channels on all ports */
+  sc.ev.type = SND_SEQ_EVENT_CONTROLLER;
+  sc.ev.time.tick = 0;
+  snd_seq_ev_set_fixed(&sc.ev);
+  sc.ev.data.control.param = MIDI_CTL_ALL_SOUNDS_OFF;
+  sc.ev.data.control.value = 0;
+  for ( i = 0 ; i < sc.dest_port_num ; i++ )
+  {
+    sc.ev.queue = sc.queue;
+    sc.ev.dest = sc.dest_port[i];
+
+    for ( c = 0 ; c < 16 ; c++ )
+    {
+      sc.ev.data.control.channel = c;
+      snd_seq_event_output(sc.seq, &sc.ev);
+      snd_seq_drain_output(sc.seq);
+    }
+  }
   return 1;
 }
 

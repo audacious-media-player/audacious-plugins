@@ -54,9 +54,11 @@ typedef struct
   gint (*seq_off)( void );
   gint (*seq_queue_tempo)( gint , gint );
   gint (*seq_queue_start)( void );
+  gint (*seq_queue_stop)( void );
   gint (*seq_event_init)( void );
   gint (*seq_event_noteon)( midievent_t * );
   gint (*seq_event_noteoff)( midievent_t * );
+  gint (*seq_event_allnoteoff)( gint );
   gint (*seq_event_keypress)( midievent_t * );
   gint (*seq_event_controller)( midievent_t * );
   gint (*seq_event_pgmchange)( midievent_t * );

@@ -251,6 +251,7 @@ typedef struct
   gint current_tempo;
 
   gint playing_tick;
+  gint seeking_tick;
   gint avg_microsec_per_tick;
   gint length;
 

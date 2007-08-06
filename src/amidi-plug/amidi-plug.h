@@ -24,7 +24,8 @@
 #define AMIDIPLUG_STOP	0
 #define AMIDIPLUG_PLAY	1
 #define AMIDIPLUG_PAUSE	2
-#define AMIDIPLUG_ERR	3
+#define AMIDIPLUG_SEEK  3
+#define AMIDIPLUG_ERR	4
 
 #include "i_common.h"
 #include <audacious/plugin.h>
@@ -39,11 +40,12 @@
 #include "i_utils.h"
 
 
-static pthread_t amidiplug_play_thread;
-static pthread_t amidiplug_audio_thread;
-static pthread_mutex_t amidiplug_gettime_mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t amidiplug_playing_mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t amidiplug_playing_cond = PTHREAD_COND_INITIALIZER;
+static GThread * amidiplug_play_thread = NULL;
+static GThread * amidiplug_audio_thread = NULL;
+static GMutex * amidiplug_gettime_mutex = NULL;
+static GMutex * amidiplug_playing_mutex = NULL;
+static GCond * amidiplug_pause_cond = NULL;
+static GCond * amidiplug_seekonpause_cond = NULL;
 
 gint amidiplug_playing_status = AMIDIPLUG_STOP;
 
@@ -63,8 +65,8 @@ amidiplug_cfg_ap_t amidiplug_cfg_ap =
 
 gchar *amidiplug_vfs_extensions[] = { "mid" , "midi" , "rmi" , "rmid" , NULL };
 
-void * amidiplug_play_loop( void * );
-void * amidiplug_audio_loop( void * );
+gpointer amidiplug_play_loop( gpointer );
+gpointer amidiplug_audio_loop( gpointer );
 void amidiplug_skipto( gint );
 static void amidiplug_init( void );
 static void amidiplug_cleanup( void );
