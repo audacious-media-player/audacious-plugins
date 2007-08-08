@@ -121,7 +121,7 @@ daap_open_connection (gchar *host, gint port)
         FD_SET (sockfd, &fds);
 
 		sret = select (sockfd + 1, NULL, &fds, NULL, &tmout);
-		if (sret == 0 || sret == SOCKET_ERROR) {
+		if (sret <= 0 ) {
 			g_io_channel_unref (sock_chan);
 			return NULL;
 		}

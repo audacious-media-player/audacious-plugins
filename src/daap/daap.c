@@ -20,30 +20,115 @@
 
 #include <audacious/vfs.h>
 #include <audacious/plugin.h>
+#include <audacious/discovery.h>
 /*
 #include <audacious/configdb.h>
 #include <libmowgli/mowgli.h>
 #include <curl/curl.h>
 */
 #include <glib.h>
-#include <daap/client.h>
+#include "xmms2-daap/daap_mdns_browse.h"
+#include "xmms2-daap/daap_cmd.h"
+
+gboolean daap_initialized=FALSE;
+
+GMutex * mutex_init = NULL; 
+
+GMutex * mutex_discovery = NULL; 
+
+GList * daap_servers = NULL;
+
+guint request_id=0;
+
+GList * daap_get_server_playlist(gchar * host, gint port  )
+{
+return NULL;
+
+}
 
 
+GList * daap_discovery_get_devices_impl(void)
+{   
+    discovery_device_t * current_device=NULL;
+    GList * returned_devices=NULL;
+    GSList * daap_found_devices=NULL,
+          * current_server=NULL;
+
+    if(mutex_discovery==NULL)
+        return NULL;
+
+    g_mutex_lock(mutex_discovery);
+    g_print ("caut\n");
+    daap_found_devices  = daap_mdns_get_server_list ();
+    current_server=daap_found_devices;
+    g_print ("entering for\n");
+    for (; current_server; current_server = g_slist_next (current_server)) 
+    {
+     g_print ("in for\n");
+
+        current_device = g_new0(discovery_device_t,1);
+        daap_mdns_server_t *serv=current_server->data;
+        current_device->device_name = 
+            g_strdup_printf("%s(%s)",
+                    serv->server_name,
+                    serv->mdns_hostname
+                    );
+
+        current_device->device_address = 
+            g_strdup_printf(
+                    "%s:%d",
+                    serv->address,
+                    serv->port
+                    );
+        current_device->device_playlist=
+            daap_get_server_playlist(
+                    serv->mdns_hostname,
+                    serv->port
+                    );
+        returned_devices = g_list_prepend(returned_devices,current_device); 
+#if 1
+        g_print("DAAP: Found device %s at address %s\n", current_device->device_name ,current_device->device_address );
+#endif
+    }
+    g_print("am iesit\n");
+    g_slist_free(daap_found_devices);
+    g_mutex_unlock(mutex_discovery);
+    return g_list_reverse(returned_devices);
+}
 
 
-
-
-DAAP_SClientHost *libopendaap_host;
 
 
 VFSFile * daap_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
-    VFSFile *file;
+    VFSFile *file=NULL;
+    if(!mutex_init)
+        return NULL;
+
+    g_mutex_lock(mutex_init); /* locking for init */
+    if(!daap_initialized)
+    {
+        if( !daap_mdns_initialize ())
+        {
+#ifdef DEBUG    /*this isn't a fatal error, we can try again later*/
+            g_print("Error while initializing DAAP !!!\n");
+#endif          
+            g_mutex_unlock(mutex_init);
+            return NULL;
+        }
+        else
+            daap_initialized=TRUE;
+
+    
+    if(daap_initialized)
+        daap_discovery_get_devices_impl();
+    }
+    g_mutex_unlock(mutex_init);  /*init ended*/
+
     file = g_new0(VFSFile, 1);
-    /* connectiong daap*/
+//    GList * l = 
 
-
-    return file;
+        return file;
 }
 
 gint daap_vfs_fclose_impl(VFSFile * file)
@@ -120,10 +205,15 @@ VFSConstructor daap_const = {
 };
 
 static void init(void)
-{       
+{   
+    mutex_init = g_mutex_new();        
+    mutex_discovery = g_mutex_new();        
     vfs_register_transport(&daap_const);
 }
 static void cleanup(void)
 {
+    g_mutex_free (mutex_init);
+    g_mutex_free (mutex_discovery);
+    daap_mdns_destroy ();
 }
 DECLARE_PLUGIN(daap, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL)

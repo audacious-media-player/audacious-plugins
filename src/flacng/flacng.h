@@ -79,7 +79,6 @@ struct stream_replaygain {
 
 
 typedef struct callback_info {
-    GMutex* mutex;
     gint32* output_buffer;
     gint32* write_pointer;
     guint buffer_free;

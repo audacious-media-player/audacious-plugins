@@ -180,11 +180,8 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
 
     _DEBUG("Testing fd for file: %s", filename);
 
-    INFO_LOCK(test_info);
-
     if (FALSE == read_metadata(fd, test_decoder, test_info)) {
         _DEBUG("File not handled by this plugin!");
-        INFO_UNLOCK(test_info);
         _LEAVE FALSE;
     }
 
@@ -193,7 +190,6 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
      */
     if (FALSE == test_info->metadata_changed) {
         _DEBUG("No metadata found in stream");
-        INFO_UNLOCK(test_info);
         _LEAVE FALSE;
     }
 
@@ -211,7 +207,6 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
     if (MAX_SUPPORTED_CHANNELS < test_info->stream.channels) {
         _ERROR("This number of channels (%d) is currently not supported, stream not handled by this plugin",
             test_info->stream.channels);
-        INFO_UNLOCK(test_info);
         _LEAVE FALSE;
     }
 
@@ -220,7 +215,6 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
         (8 != test_info->stream.bits_per_sample)) {
         _ERROR("This number of bits (%d) is currently not supported, stream not handled by this plugin",
             test_info->stream.bits_per_sample);
-        INFO_UNLOCK(test_info);
         _LEAVE FALSE;
     }
 
@@ -231,7 +225,6 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
     _DEBUG("Accepting file %s", filename);
 
     reset_info(test_info, FALSE);
-    INFO_UNLOCK(test_info);
 
     _LEAVE TRUE;
 }
@@ -654,14 +647,11 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
         _LEAVE;
     }
 
-    INFO_LOCK(test_info);
-
     if (FALSE == read_metadata(fd, test_decoder, test_info)) {
         _ERROR("Could not read file info!");
         *length = -1;
         *title = g_strdup("");
         reset_info(test_info, TRUE);
-        INFO_UNLOCK(test_info);
         _LEAVE;
     }
 
@@ -680,7 +670,6 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
     *title = get_title(filename, test_info);
 
     reset_info(test_info, TRUE);
-    INFO_UNLOCK(test_info);
 
     _LEAVE;
 }
@@ -703,19 +692,15 @@ TitleInput *flac_get_song_tuple(gchar* filename) {
         _LEAVE NULL;
     }
 
-    INFO_LOCK(test_info);
-
     if (FALSE == read_metadata(fd, test_decoder, test_info)) {
         _ERROR("Could not read metadata tuple for file <%s>", filename);
         reset_info(test_info, TRUE);
-        INFO_UNLOCK(test_info);
         _LEAVE NULL;
     }
 
     tuple = get_tuple(filename, test_info);
 
     reset_info(test_info, TRUE);
-    INFO_UNLOCK(test_info);
 
     _LEAVE tuple;
 }
