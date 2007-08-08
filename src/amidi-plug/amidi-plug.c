@@ -365,9 +365,11 @@ static void amidiplug_play( InputPlayback * playback )
   if ( backend.gmodule == NULL )
   {
     g_warning( "No sequencer backend selected\n" );
+    /* not usable, cause now amidiplug_play is in a different thread
     i_message_gui( _("AMIDI-Plug - warning") ,
                    _("No sequencer backend has been selected!\nPlease configure AMIDI-Plug before playing.") ,
                    AMIDIPLUG_MESSAGE_WARN , NULL , TRUE );
+    */
     amidiplug_playing_status = AMIDIPLUG_ERR;
     return;
   }
