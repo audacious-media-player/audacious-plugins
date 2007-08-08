@@ -27,8 +27,8 @@
 #include <curl/curl.h>
 */
 #include <glib.h>
-#include "daap_mdns_browse.h"
-#include "daap_cmd.h"
+#include "xmms2-daap/daap_mdns_browse.h"
+#include "xmms2-daap/daap_cmd.h"
 
 gboolean daap_initialized=FALSE;
 
@@ -58,11 +58,14 @@ GList * daap_discovery_get_devices_impl(void)
         return NULL;
 
     g_mutex_lock(mutex_discovery);
-
+    g_print ("caut\n");
     daap_found_devices  = daap_mdns_get_server_list ();
     current_server=daap_found_devices;
-    for (current_server = daap_found_devices; current_server; current_server = g_slist_next (current_server)) 
+    g_print ("entering for\n");
+    for (; current_server; current_server = g_slist_next (current_server)) 
     {
+     g_print ("in for\n");
+
         current_device = g_new0(discovery_device_t,1);
         daap_mdns_server_t *serv=current_server->data;
         current_device->device_name = 
@@ -83,10 +86,11 @@ GList * daap_discovery_get_devices_impl(void)
                     serv->port
                     );
         returned_devices = g_list_prepend(returned_devices,current_device); 
-#if DEBUG
+#if 1
         g_print("DAAP: Found device %s at address %s\n", current_device->device_name ,current_device->device_address );
 #endif
     }
+    g_print("am iesit\n");
     g_slist_free(daap_found_devices);
     g_mutex_unlock(mutex_discovery);
     return g_list_reverse(returned_devices);
@@ -115,9 +119,10 @@ VFSFile * daap_vfs_fopen_impl(const gchar * path, const gchar * mode)
         else
             daap_initialized=TRUE;
 
-    }
+    
     if(daap_initialized)
         daap_discovery_get_devices_impl();
+    }
     g_mutex_unlock(mutex_init);  /*init ended*/
 
     file = g_new0(VFSFile, 1);

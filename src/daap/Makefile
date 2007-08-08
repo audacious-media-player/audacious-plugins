@@ -7,7 +7,15 @@ SUBDIRS = xmms2-daap
 
 LIBDIR = $(plugindir)/$(TRANSPORT_PLUGIN_DIR)
 
-LIBADD += ./xmms2-daap/xmms2-daap.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) 
+#For the moment i'm hardcoding it but it will be configurable
+#MDNS_LIBS=-ldns_sd
+MDNS_LIBS=-lavahi-glib -lavahi-common -lavahi-client
+#MDNS_LIBS= 
+
+
+
+
+LIBADD += ./xmms2-daap/xmms2-daap.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(MDNS_LIBS)
 
 SOURCES = daap.c
 
