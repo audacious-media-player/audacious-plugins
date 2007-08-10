@@ -117,6 +117,7 @@ static void mp4_play(InputPlayback *playback)
     buffer_playing = TRUE;
     playback->playing = 1; //XXX should acquire lock?
     decodeThread = g_thread_self();
+    playback->set_pb_ready(playback);
     mp4_decode(playback);
 }
 

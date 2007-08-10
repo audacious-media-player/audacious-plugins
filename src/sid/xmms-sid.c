@@ -572,6 +572,7 @@ void xs_play_file(InputPlayback *pb)
 
 	/* Start the playing thread! */
 	xs_decode_thread = g_thread_self();
+	pb->set_pb_ready(pb);
 	xs_playthread(pb);
 
 	XSDEBUG("playback is done\n");

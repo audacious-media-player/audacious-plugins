@@ -139,22 +139,7 @@ static void amidiplug_file_info_box( gchar * filename_uri )
 
 static void amidiplug_stop( InputPlayback * playback )
 {
-  gboolean is_error = FALSE;
   DEBUGMSG( "STOP request at tick: %i\n" , midifile.playing_tick );
-
-  g_mutex_lock( amidiplug_playing_mutex );
-  if ( amidiplug_playing_status == AMIDIPLUG_ERR )
-    is_error = TRUE;
-  g_mutex_unlock( amidiplug_playing_mutex );
-  
-  if ( !is_error )
-  {
-    /* if stop wasn't called due to error condition,
-       wait until the play thread reach a 'safe state'
-       (that is, when amidiplug_play_thread exists) */
-    while ( !amidiplug_play_thread )
-      g_usleep( 20000 );
-  }
 
   g_mutex_lock( amidiplug_playing_mutex );
   amidiplug_playing_status = AMIDIPLUG_STOP;
@@ -476,6 +461,7 @@ static void amidiplug_play( InputPlayback * playback )
       amidiplug_playing_status = AMIDIPLUG_PLAY;
       g_mutex_unlock( amidiplug_playing_mutex );
       amidiplug_play_thread = g_thread_self();
+      playback->set_pb_ready(playback);
       amidiplug_play_loop(playback);
       break;
     }

@@ -571,6 +571,7 @@ vorbis_play(InputPlayback *playback)
     playback->error = FALSE;
 
     thread = g_thread_self();
+    playback->set_pb_ready(playback);
     vorbis_play_loop(playback);
 }
 

@@ -88,7 +88,7 @@ public:
 
 	void CloseConfigureBox();
 
-	void PlayFile(const string& aFilename);// Play the file.
+	void PlayFile(const string& aFilename, InputPlayback *data);// Play the file.
 	void Stop();                       // Stop playing.
 	void Pause(bool aPaused);              // Pause or unpause.
 

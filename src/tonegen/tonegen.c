@@ -202,6 +202,7 @@ static void tone_play(InputPlayback *playback)
 	g_free(name);
 	playback->data = frequencies;
 	play_thread = g_thread_self();
+	playback->set_pb_ready(playback);
 	play_loop(playback);
 }
 

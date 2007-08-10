@@ -312,7 +312,7 @@ void ModplugXMMS::PlayLoop()
 	mStopped = true;
 }
 
-void ModplugXMMS::PlayFile(const string& aFilename)
+void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 {
 	mStopped = true;
 	mPaused = false;
@@ -446,6 +446,7 @@ void ModplugXMMS::PlayFile(const string& aFilename)
 	);
 
 	mDecodeThread = g_thread_self();
+	ipb->set_pb_ready(ipb);
 	this->PlayLoop();
 }
 

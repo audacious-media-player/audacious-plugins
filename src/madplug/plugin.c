@@ -469,6 +469,7 @@ static void audmad_play_file(InputPlayback *playback)
     g_mutex_unlock(pb_mutex);
 
     decode_thread = g_thread_self();
+    playback->set_pb_ready(playback);
     decode_loop(&info);
 }
 

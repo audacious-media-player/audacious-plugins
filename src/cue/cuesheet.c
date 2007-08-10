@@ -218,6 +218,7 @@ static void play(InputPlayback *data)
 		return;
 	}
 	play_thread = g_thread_self();
+	data->set_pb_ready(data);
 	play_cue_uri(data, uri);
 }
 
