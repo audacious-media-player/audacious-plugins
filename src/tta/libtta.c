@@ -43,7 +43,7 @@
 
 #include <audacious/util.h>
 #include <audacious/plugin.h>
-#include <audacious/titlestring.h>
+#include <audacious/main.h>
 #include <audacious/vfs.h>
 #include <audacious/output.h>
 #include <audacious/strings.h>
@@ -71,7 +71,7 @@ static void seek (InputPlayback *playback, int sec);
 static void get_song_info (char *filename, char **title, int *length);
 static void file_info (char *filename);
 static void about ();
-static TitleInput *get_song_tuple(char *filename);
+static Tuple *get_song_tuple(char *filename);
 static gchar *extname(const char *filename);
 
 static GThread *decode_thread = NULL;
@@ -175,25 +175,25 @@ tta_error (int error)
 }
 
 static gchar *
-get_song_title(TitleInput *tuple)
+get_song_title(Tuple *tuple)
 {
-	return xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
+	return tuple_formatter_process_string(tuple, cfg.gentitle_format);
 }
 
 static void
 get_song_info (char *filename, char **title, int *length)
 {
-	TitleInput *tuple;
+	Tuple *tuple;
 
 	*length = -1;
 	*title = NULL;
 
 	if ((tuple = get_song_tuple(filename)) != NULL) {
-    	    *length = tuple->length;
+    	    *length = tuple_get_int(tuple, "length");
     	    *title = get_song_title(tuple);
 	}
 
-	bmp_title_input_free(tuple);
+	mowgli_object_unref(tuple);
 }
 
 static void *
@@ -473,7 +473,7 @@ play_file (InputPlayback *playback)
 	gchar *filename = playback->filename;
 	char *title = NULL;
 	int datasize, origsize, bitrate;
-	TitleInput *tuple = NULL;
+	Tuple *tuple = NULL;
 
 	////////////////////////////////////////
 	// open TTA file
@@ -503,7 +503,7 @@ play_file (InputPlayback *playback)
 
 	tuple = get_song_tuple(filename);
 	title = get_song_title(tuple);
-	bmp_title_input_free(tuple);
+	mowgli_object_unref(tuple);
 
 	datasize = file_size(filename) - info.DATAPOS;
 	origsize = info.DATALENGTH * info.BSIZE * info.NCH;
@@ -563,10 +563,10 @@ seek (InputPlayback *data, int sec)
     mseek(data, millisec);
 }
 
-static TitleInput *
+static Tuple *
 get_song_tuple(char *filename)
 {
-	TitleInput *tuple = NULL;
+	Tuple *tuple = NULL;
 	tta_info *ttainfo;
 	VFSFile *file;
 	gchar *realfn = NULL;
@@ -575,36 +575,32 @@ get_song_tuple(char *filename)
 
 	if((file = vfs_fopen(filename, "rb")) != NULL) {
 		if(open_tta_file(filename, ttainfo, 0) >= 0) {
-			tuple = bmp_title_input_new();
+			tuple = tuple_new_from_filename(filename);
 
-			realfn = g_filename_from_uri(filename, NULL, NULL);
-			tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
-			tuple->file_path = g_path_get_dirname(realfn ? realfn : filename);
-			tuple->file_ext = extname(realfn ? realfn : filename);
-			tuple->length = ttainfo->LENGTH * 1000;
-			g_free(realfn); realfn = NULL;
+			tuple_associate_string(tuple, "codec", "True Audio (TTA)");
+			tuple_associate_string(tuple, "quality", "lossless");
 
 			if (ttainfo->ID3.id3has) {
-				if(ttainfo->ID3.artist && strlen((char *)ttainfo->ID3.artist))
-					tuple->performer = g_strdup((gchar *)ttainfo->ID3.artist);
+				if (ttainfo->ID3.artist)
+					tuple_associate_string(tuple, "artist", (gchar *) ttainfo->ID3.artist);
 
-				if(ttainfo->ID3.album && strlen((char *)ttainfo->ID3.album))
-					tuple->album_name = g_strdup((gchar *)ttainfo->ID3.album);
+				if (ttainfo->ID3.album)
+					tuple_associate_string(tuple, "album", (gchar *) ttainfo->ID3.album);
 
-				if(ttainfo->ID3.title && strlen((char *)ttainfo->ID3.title))
-					tuple->track_name = g_strdup((gchar *)ttainfo->ID3.title);
+				if (ttainfo->ID3.title)
+					tuple_associate_string(tuple, "title", (gchar *) ttainfo->ID3.title);
 
-				if(ttainfo->ID3.year && strlen((char *)ttainfo->ID3.year))
-					tuple->year = atoi((char *)ttainfo->ID3.year);
+				if (ttainfo->ID3.year)
+					tuple_associate_int(tuple, "year", atoi((char *)ttainfo->ID3.year));
 
-				if(ttainfo->ID3.track && strlen((char *)ttainfo->ID3.track))
-					tuple->track_number = atoi((char *)ttainfo->ID3.track);
+				if(ttainfo->ID3.track)
+					tuple_associate_int(tuple, "track-number", atoi((char *)ttainfo->ID3.track));
 
-				if(ttainfo->ID3.genre && strlen((char *)ttainfo->ID3.genre))
-					tuple->genre = g_strdup((gchar *)ttainfo->ID3.genre);
+				if(ttainfo->ID3.genre)
+					tuple_associate_string(tuple, "genre", (gchar *) ttainfo->ID3.genre);
 
-				if(ttainfo->ID3.comment && strlen((char *)ttainfo->ID3.comment))
-					tuple->comment = g_strdup((gchar *)ttainfo->ID3.comment);
+				if(ttainfo->ID3.comment)
+					tuple_associate_string(tuple, "comment", (gchar *) ttainfo->ID3.comment);
 			}
 			close_tta_file (ttainfo);
 		}
