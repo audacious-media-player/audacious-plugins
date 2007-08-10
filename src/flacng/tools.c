@@ -231,48 +231,36 @@ gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info*
 
 /* --- */
 
-static const gchar* get_extension(const gchar* filename) {
+Tuple* get_tuple(const gchar* filename, callback_info* info) {
 
-    _ENTER;
-
-    const gchar *ext = strrchr(filename, '.');
-    _LEAVE ext ? ext + 1 : NULL;
-}
-
-/* --- */
-
-TitleInput* get_tuple(const gchar* filename, callback_info* info) {
-
-    TitleInput *out;
+    Tuple *out;
 
     _ENTER;
 
     _DEBUG("Using callback_info %s", info->name);
 
-    out = bmp_title_input_new();
+    out = tuple_new_from_filename(filename);
 
-    out->file_name = g_path_get_basename(filename);
-    out->file_ext = get_extension(filename);
-    out->file_path = g_path_get_dirname(filename);
+    tuple_associate_string(out, "artist", info->comment.artist);
+    tuple_associate_string(out, "title", info->comment.title);
+    tuple_associate_string(out, "album", info->comment.album);
+    tuple_associate_string(out, "genre", info->comment.genre);
 
-    out->performer = g_strdup(info->comment.artist);
-    out->track_name = g_strdup(info->comment.title);
-    out->album_name = g_strdup(info->comment.album);
-    out->genre = g_strdup(info->comment.genre);
     if (info->comment.tracknumber != NULL)
-        out->track_number = atoi(info->comment.tracknumber);
+        tuple_associate_int(out, "track-number", atoi(info->comment.tracknumber));
+
     if (info->comment.date != NULL)
-        out->year = atoi(info->comment.date);
+        tuple_associate_int(out, "year", atoi(info->comment.date));
 
     /*
      * Calculate the stream length (milliseconds)
      */
     if (0 == info->stream.samplerate) {
         _ERROR("Invalid sample rate for stream!");
-        out->length = -1;
+        tuple_associate_int(out, "length", -1);
     } else {
-        out->length = (info->stream.samples / info->stream.samplerate) * 1000;
-        _DEBUG("Stream length: %d seconds", out->length / 1000);
+        tuple_associate_int(out, "length", (info->stream.samples / info->stream.samplerate) * 1000);
+        _DEBUG("Stream length: %d seconds", tuple_get_int(out, "length"));
     }
 
     _DEBUG("Tuple created: [%p]", out);
@@ -284,7 +272,7 @@ TitleInput* get_tuple(const gchar* filename, callback_info* info) {
 
 gchar* get_title(const gchar* filename, callback_info* info) {
 
-    TitleInput *input;
+    Tuple *input;
     gchar *title;
 
     _ENTER;
@@ -293,10 +281,9 @@ gchar* get_title(const gchar* filename, callback_info* info) {
 
     input = get_tuple(filename, info);
 
-    if (!(title = xmms_get_titlestring(xmms_get_gentitle_format(), input)))
-        title = g_strdup(input->file_name);
+    title = tuple_formatter_process_string(input, cfg.gentitle_format);
 
-    bmp_title_input_free(input);
+    mowgli_object_unref(input);
 
     _DEBUG("Title created: <%s>", title);
 

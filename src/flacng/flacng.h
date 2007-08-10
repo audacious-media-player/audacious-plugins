@@ -21,6 +21,7 @@
 
 #include <glib.h>
 #include <audacious/plugin.h>
+#include <audacious/main.h>
 #include <audacious/vfs.h>
 #include <audacious/i18n.h>
 # include "config.h"

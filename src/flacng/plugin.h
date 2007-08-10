@@ -10,6 +10,6 @@ void flac_stop(InputPlayback* input);
 void flac_pause(InputPlayback* input, gshort p);
 void flac_seek(InputPlayback* input, gint time);
 void flac_get_song_info(gchar* filename, gchar** title, gint* length);
-TitleInput *flac_get_song_tuple(gchar* filename);
+Tuple *flac_get_song_tuple(gchar* filename);
 
 #endif

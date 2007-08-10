@@ -687,10 +687,10 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
 
 /* --- */
 
-TitleInput *flac_get_song_tuple(gchar* filename) {
+Tuple *flac_get_song_tuple(gchar* filename) {
 
     VFSFile *fd;
-    TitleInput *tuple;
+    Tuple *tuple;
 
     _ENTER;
 
