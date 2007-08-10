@@ -7,7 +7,7 @@
 #define CDDA_DEFAULT				"cdda://default"
 #define CDDA_DAE_FRAMES				8
 #define CDDA_DEFAULT_CDDB_SERVER	"freedb.org"
-#define CDDA_DEFAULT_CDDB_PORT		888
+#define CDDA_DEFAULT_CDDB_PORT		8880
 
 
 typedef struct {
