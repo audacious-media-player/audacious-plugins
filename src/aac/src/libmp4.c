@@ -6,13 +6,15 @@
 #include "mp4ff.h"
 #include "tagging.h"
 
-#include <audacious/plugin.h>
-#include <audacious/output.h>
-#include <audacious/util.h>
-#include <audacious/titlestring.h>
-#include <audacious/vfs.h>
-#include <audacious/i18n.h>
-#include <audacious/strings.h>
+#include "audacious/plugin.h"
+#include "audacious/output.h"
+#include "audacious/util.h"
+#include "audacious/vfs.h"
+#include "audacious/i18n.h"
+#include "audacious/strings.h"
+#include "audacious/main.h"
+#include "audacious/tuple.h"
+#include "audacious/tuple_formatter.h"
 
 #define MP4_VERSION VERSION
 
@@ -41,7 +43,7 @@ static void        mp4_pause(InputPlayback *, short);
 static void        mp4_seek(InputPlayback *, int);
 static void        mp4_cleanup(void);
 static void        mp4_get_song_title_len(char *filename, char **, int *);
-static TitleInput* mp4_get_song_tuple(char *);
+static Tuple*      mp4_get_song_tuple(char *);
 static int         mp4_is_our_fd(char *, VFSFile *);
 
 static gchar *fmts[] = { "m4a", "mp4", "aac", NULL };
@@ -326,13 +328,13 @@ static void mp4_cleanup(void)
 {
 }
 
-static TitleInput *mp4_get_song_tuple(char *fn)
+static Tuple *mp4_get_song_tuple(char *fn)
 {
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
     VFSFile *mp4fh;
     mp4ff_t *mp4file;
-    TitleInput *input = NULL;
-    gchar *filename = g_strdup(fn);
+    Tuple *ti = tuple_new();
+    gchar *scratch;
     gboolean remote = str_has_prefix_nocase(filename, "http:") ||
 	              str_has_prefix_nocase(filename, "https:");
 
@@ -343,19 +345,22 @@ static TitleInput *mp4_get_song_tuple(char *fn)
     {
         g_free(mp4cb);
 
-        input = bmp_title_input_new();
+        tuple_associate_string(ti, "title", vfs_get_metadata(mp4fh, "track-name"));
+        tuple_associate_string(ti, "album", vfs_get_metadata(mp4fh, "stream-name"));
 
-        input->track_name = vfs_get_metadata(mp4fh, "track-name");
-        input->album_name = vfs_get_metadata(mp4fh, "stream-name");
+        scratch = g_path_get_basename(fn);
+        tuple_associate_string(ti, "file-name", scratch);
+        g_free(scratch);
 
-        input->file_name = g_path_get_basename(filename);
-        input->file_path = g_path_get_dirname(filename);
-        input->file_ext = extname(filename);
+        scratch = g_path_get_dirname(fn);
+        tuple_associate_string(ti, "file-path", scratch);
+        g_free(scratch);
 
-        input->mtime = 0;
-        input->length = -1;
+        tuple_associate_string(ti, "file-ext", extname(fn));
+        tuple_associate_string(ti, "codec", "Advanced Audio Coding (AAC)");
+        tuple_associate_string(ti, "quality", "lossy");
 
-        return input;
+        return ti;
     }
 
     vfs_rewind(mp4fh);
@@ -409,13 +414,23 @@ static TitleInput *mp4_get_song_tuple(char *fn)
 
         msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
 
-        input = bmp_title_input_new();
+        mp4ff_meta_get_title(mp4file, scratch);
+        tuple_associate_string(ti, "title", scratch);
+	g_free(scratch);
 
-        mp4ff_meta_get_title(mp4file, &input->track_name);
-        mp4ff_meta_get_album(mp4file, &input->album_name);
-        mp4ff_meta_get_artist(mp4file, &input->performer);
+        mp4ff_meta_get_album(mp4file, scratch);
+        tuple_associate_string(ti, "title", scratch);
+	g_free(scratch);
+
+        mp4ff_meta_get_artist(mp4file, scratch);
+        tuple_associate_string(ti, "artist", scratch);
+	g_free(scratch);
+
+        mp4ff_meta_get_genre(mp4file, scratch);
+        tuple_associate_string(ti, "genre", scratch);
+	g_free(scratch);
+
         mp4ff_meta_get_date(mp4file, &tmpval);
-        mp4ff_meta_get_genre(mp4file, &input->genre);
 
         if (tmpval)
         {
@@ -423,16 +438,23 @@ static TitleInput *mp4_get_song_tuple(char *fn)
             free(tmpval);
         }
 
-        input->file_name = g_path_get_basename(filename);
-        input->file_path = g_path_get_dirname(filename);
-        input->file_ext = extname(filename);
-        input->length = msDuration;
+        scratch = g_path_get_basename(fn);
+        tuple_associate_string(ti, "file-name", scratch);
+        g_free(scratch);
+
+        scratch = g_path_get_dirname(fn);
+        tuple_associate_string(ti, "file-path", scratch);
+        g_free(scratch);
+
+        tuple_associate_string(ti, "file-ext", extname(fn));
+        tuple_associate_string(ti, "codec", "Advanced Audio Coding (AAC)");
+        tuple_associate_string(ti, "quality", "lossy");
 
         free (mp4cb);
         vfs_fclose(mp4fh);
     }
 
-    return input;
+    return ti;
 }
 
 static void mp4_get_song_title_len(char *filename, char **title, int *len)
