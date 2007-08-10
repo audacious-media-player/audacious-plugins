@@ -229,7 +229,7 @@ get_title(const gchar * filename)
     if (*title == '\0')
     {
         g_free(title);
-        title = g_strdup(input->file_name);
+        title = g_strdup(tuple_get_string(tuple, "file-name"));
     }
 
     mowgli_object_unref(tuple);
