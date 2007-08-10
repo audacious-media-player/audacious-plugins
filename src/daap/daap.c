@@ -62,6 +62,11 @@ GList * daap_discovery_get_devices_impl(void)
     daap_found_devices  = daap_mdns_get_server_list ();
     current_server=daap_found_devices;
     g_print ("entering for\n");
+    if(current_server!=NULL)
+        g_print("!=NULL\n");
+    else 
+        g_print("==NULL\n");
+        
     for (; current_server; current_server = g_slist_next (current_server)) 
     {
      g_print ("in for\n");
@@ -110,18 +115,25 @@ VFSFile * daap_vfs_fopen_impl(const gchar * path, const gchar * mode)
     {
         if( !daap_mdns_initialize ())
         {
-#ifdef DEBUG    /*this isn't a fatal error, we can try again later*/
+#if 1    /*this isn't a fatal error, we can try again later*/
             g_print("Error while initializing DAAP !!!\n");
 #endif          
             g_mutex_unlock(mutex_init);
             return NULL;
         }
         else
+        {
+#if 1   
+            g_print("DAAP was initialized succesfully\n");
+#endif  
             daap_initialized=TRUE;
-
+        }
     
     if(daap_initialized)
+    {
+        sleep(1);
         daap_discovery_get_devices_impl();
+    }
     }
     g_mutex_unlock(mutex_init);  /*init ended*/
 
