@@ -333,8 +333,7 @@ static Tuple *mp4_get_song_tuple(char *fn)
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
     VFSFile *mp4fh;
     mp4ff_t *mp4file;
-    Tuple *ti = tuple_new();
-    gchar *scratch;
+    Tuple *ti = tuple_new_from_filename(fn);
     gboolean remote = str_has_prefix_nocase(filename, "http:") ||
 	              str_has_prefix_nocase(filename, "https:");
 
@@ -348,15 +347,6 @@ static Tuple *mp4_get_song_tuple(char *fn)
         tuple_associate_string(ti, "title", vfs_get_metadata(mp4fh, "track-name"));
         tuple_associate_string(ti, "album", vfs_get_metadata(mp4fh, "stream-name"));
 
-        scratch = g_path_get_basename(fn);
-        tuple_associate_string(ti, "file-name", scratch);
-        g_free(scratch);
-
-        scratch = g_path_get_dirname(fn);
-        tuple_associate_string(ti, "file-path", scratch);
-        g_free(scratch);
-
-        tuple_associate_string(ti, "file-ext", extname(fn));
         tuple_associate_string(ti, "codec", "Advanced Audio Coding (AAC)");
         tuple_associate_string(ti, "quality", "lossy");
 
@@ -414,39 +404,41 @@ static Tuple *mp4_get_song_tuple(char *fn)
 
         msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
 
-        mp4ff_meta_get_title(mp4file, scratch);
-        tuple_associate_string(ti, "title", scratch);
-	g_free(scratch);
-
-        mp4ff_meta_get_album(mp4file, scratch);
-        tuple_associate_string(ti, "title", scratch);
-	g_free(scratch);
-
-        mp4ff_meta_get_artist(mp4file, scratch);
-        tuple_associate_string(ti, "artist", scratch);
-	g_free(scratch);
-
-        mp4ff_meta_get_genre(mp4file, scratch);
-        tuple_associate_string(ti, "genre", scratch);
-	g_free(scratch);
-
-        mp4ff_meta_get_date(mp4file, &tmpval);
-
+        mp4ff_meta_get_title(mp4file, &tmpval);
         if (tmpval)
         {
-            input->year = atoi(tmpval);
+            tuple_associate_string(ti, "title", tmpval);
             free(tmpval);
         }
 
-        scratch = g_path_get_basename(fn);
-        tuple_associate_string(ti, "file-name", scratch);
-        g_free(scratch);
+        mp4ff_meta_get_album(mp4file, &tmpval);
+        if (tmpval)
+        {
+            tuple_associate_string(ti, "title", tmpval);
+            free(tmpval);
+        }
 
-        scratch = g_path_get_dirname(fn);
-        tuple_associate_string(ti, "file-path", scratch);
-        g_free(scratch);
+        mp4ff_meta_get_artist(mp4file, &tmpval);
+        if (tmpval)
+        {
+            tuple_associate_string(ti, "artist", tmpval);
+            free(tmpval);
+        }
 
-        tuple_associate_string(ti, "file-ext", extname(fn));
+        mp4ff_meta_get_genre(mp4file, &tmpval);
+        if (tmpval)
+        {
+            tuple_associate_string(ti, "genre", tmpval);
+            free(tmpval);
+        }
+
+        mp4ff_meta_get_date(mp4file, &tmpval);
+        if (tmpval)
+        {
+            tuple_associate_int(ti, "year", atoi(tmpval));
+            free(tmpval);
+        }
+
         tuple_associate_string(ti, "codec", "Advanced Audio Coding (AAC)");
         tuple_associate_string(ti, "quality", "lossy");
 

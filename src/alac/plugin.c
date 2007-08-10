@@ -119,8 +119,7 @@ gboolean is_our_fd(char *filename, VFSFile* input_file)
 
 Tuple *build_tuple_from_demux(demux_res_t *demux_res, char *path)
 {
-    Tuple *ti = tuple_new();
-    gchar *scratch;
+    Tuple *ti = tuple_new_from_filename(path);
 
     if (demux_res->tuple.art != NULL)
         tuple_associate_string(ti, "artist", demux_res->tuple.art);
@@ -135,15 +134,6 @@ Tuple *build_tuple_from_demux(demux_res_t *demux_res, char *path)
     if (demux_res->tuple.day != NULL)
         tuple_associate_int(ti, "year", atoi(demux_res->tuple.day));
 
-    scratch = g_path_get_basename(path);
-    tuple_associate_string(ti, "file-name", scratch);
-    g_free(scratch);
-
-    scratch = g_path_get_dirname(path);
-    tuple_associate_string(ti, "file-path", scratch);
-    g_free(scratch);
-
-    tuple_associate_string(ti, "file-ext", extname(path));
     tuple_associate_string(ti, "codec", "Apple Lossless (ALAC)");
     tuple_associate_string(ti, "quality", "lossless");
 
