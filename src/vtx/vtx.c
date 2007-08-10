@@ -95,22 +95,12 @@ vtx_is_our_file (char *filename)
 Tuple *
 vtx_get_song_tuple_from_vtx(const gchar *filename, ayemu_vtx_t *in)
 {
-  Tuple *out = tuple_new();
+  Tuple *out = tuple_new_from_filename(filename);
   gchar *string;
-  gchar *scratch;
 
   tuple_associate_string(out, "artist", in->hdr.author);
   tuple_associate_string(out, "title", in->hdr.title);
 
-  scratch = g_path_get_basename(filename);
-  tuple_associate_string(out, "file-name", scratch);
-  g_free(scratch);
- 
-  scratch = g_path_get_dirname(filename);
-  tuple_associate_string(out, "file-path", scratch);
-  g_free(scratch);
-
-  tuple_associate_string(out, "file-ext", strrchr(filename, '.') + 1);
   tuple_associate_int(out, "length", in->hdr.regdata_size / 14 * 1000 / 50);
 
   tuple_associate_string(out, "genre", (in->hdr.chiptype == AYEMU_AY)? "AY chiptunes" : "YM chiptunes");

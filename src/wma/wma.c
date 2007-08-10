@@ -245,22 +245,12 @@ static gchar *extname(const char *filename)
 
 static Tuple *wma_get_song_tuple(gchar * filename)
 {
-    Tuple *ti = tuple_new();
+    Tuple *ti = tuple_new_from_filename(filename);
     AVFormatContext *in = NULL;
-    gchar *scratch;
 
     if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
 	return NULL;
 
-    scratch = g_path_get_basename(filename);
-    tuple_associate_string(ti, "file-name", scratch);
-    g_free(scratch);
-
-    scratch = g_path_get_dirname(filename);
-    tuple_associate_string(ti, "file-path", scratch);
-    g_free(scratch);
-
-    tuple_associate_string(ti, "file-ext", extname(filename));
     tuple_associate_string(ti, "codec", "Windows Media Audio (WMA)");
     tuple_associate_string(ti, "quality", "lossy");
 
@@ -285,7 +275,7 @@ static Tuple *wma_get_song_tuple(gchar * filename)
 
     av_close_input_file(in);
 
-    return tuple;
+    return ti;
 }
 
 static gchar *get_song_title(AVFormatContext *in, gchar * filename)

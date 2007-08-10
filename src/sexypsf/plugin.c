@@ -225,9 +225,7 @@ static Tuple *get_tuple_psf(gchar *fn) {
     PSFINFO *tmp = sexypsf_getpsfinfo(fn);
 
     if (tmp->length) {
-        gchar *scratch;
-
-        tuple = tuple_new();
+        tuple = tuple_new_from_filename(fn);
 	tuple_associate_int(tuple, "length", tmp->length);
 	tuple_associate_string(tuple, "artist", tmp->artist);
 	tuple_associate_string(tuple, "album", tmp->game);
@@ -240,14 +238,6 @@ static Tuple *get_tuple_psf(gchar *fn) {
         tuple_associate_string(tuple, "console", "PlayStation");
         tuple_associate_string(tuple, "dumper", tmp->psfby);
         tuple_associate_string(tuple, "comment", tmp->comment);
-
-        scratch = g_path_get_basename(fn);
-        tuple_associate_string(tuple, "file-name", scratch);
-        g_free(scratch);
-
-        scratch = g_path_get_dirname(fn);
-        tuple_associate_string(tuple, "file-path", scratch);
-        g_free(scratch);
 
         sexypsf_freepsfinfo(tmp);
     }
