@@ -388,7 +388,7 @@ tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
     tuple_associate_string(ti, "comment", tag.comment);
     tuple_associate_string(ti, "date", tag.year);
     tuple_associate_string(ti, "quality", WavpackPluginGetQualityString(ctx).c_str());
-    tuple_associate_string(ti, "codec", tag.year);
+    tuple_associate_string(ti, "codec", "WavPack");
 
     tuple_associate_int(ti, "track-number", atoi(tag.track));
     tuple_associate_int(ti, "year", atoi(tag.year));
