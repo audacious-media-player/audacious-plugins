@@ -10,7 +10,6 @@
 #include <string.h>
 
 #include "audacious/configdb.h"
-#include "audacious/titlestring.h"
 #include "audacious/util.h"
 #include "audacious/plugin.h"
 #include <audacious/i18n.h>
@@ -156,10 +155,6 @@ vorbis_configure(void)
     gtk_entry_set_text(GTK_ENTRY(title_tag_entry), vorbis_cfg.tag_format);
     gtk_box_pack_start(GTK_BOX(title_tag_box), title_tag_entry, TRUE, TRUE,
                        0);
-
-    title_desc = xmms_titlestring_descriptions("pafFetndgc", 2);
-    gtk_widget_set_sensitive(title_desc, vorbis_cfg.tag_override);
-    gtk_box_pack_start(GTK_BOX(title_tag_vbox), title_desc, FALSE, FALSE, 0);
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), title_frame,
                              gtk_label_new(_("Title")));
