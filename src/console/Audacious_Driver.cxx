@@ -13,9 +13,11 @@
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
-#include "audacious/util.h"
-#include "audacious/titlestring.h"
 extern "C" {
+#include "audacious/main.h"
+#include "audacious/tuple.h"
+#include "audacious/tuple_formatter.h"
+#include "audacious/util.h"
 #include "audacious/output.h"
 #include "audacious/playlist.h"
 }
@@ -200,21 +202,29 @@ static inline gchar *selective_strdup(const gchar *in)
 	return g_strdup(in);
 }
 
-static TitleInput* get_track_ti( const char* path, track_info_t const& info, int track )
+static Tuple* get_track_ti( const char* path, track_info_t const& info, int track )
 {
-	TitleInput* ti = bmp_title_input_new();
+	Tuple* ti = tuple_new();
 	if ( ti )
 	{
-		ti->file_name  = g_path_get_basename( path );
-		ti->file_path  = g_path_get_dirname ( path );
-		ti->performer  = selective_strdup( info.author );
-		ti->album_name = selective_strdup( info.game );
-		ti->track_name = selective_strdup( info.song ? info.song : ti->file_name );
+		tuple_associate_string(ti, "file-name", g_path_get_basename(path));
+		tuple_associate_string(ti, "file-path", g_path_get_dirname(path));
+		tuple_associate_string(ti, "artist", info.author);
+		tuple_associate_string(ti, "album", info.game);
+		tuple_associate_string(ti, "game", info.game);
+		tuple_associate_string(ti, "title", info.song ? info.song : g_path_get_basename(path));
 		if ( info.track_count > 1 )
-			ti->track_number = track + 1;
-		ti->comment    = selective_strdup( info.copyright );
-		ti->genre      = g_strconcat( "Console: ", info.system, NULL );
-		
+		{
+			tuple_associate_int(ti, "track-number", track + 1);
+			tuple_associate_int(ti, "subsong", track);
+		}
+		tuple_associate_string(ti, "copyright", info.copyright);
+		tuple_associate_string(ti, "console", info.system);
+		tuple_associate_string(ti, "codec", info.system);
+		tuple_associate_string(ti, "quality", "sequenced");
+		tuple_associate_string(ti, "dumper", info.dumper);
+		tuple_associate_string(ti, "comment", info.comment);
+
 		int length = info.length;
 		if ( length <= 0 )
 			length = info.intro_length + 2 * info.loop_length;
@@ -222,24 +232,24 @@ static TitleInput* get_track_ti( const char* path, track_info_t const& info, int
 			length = audcfg.loop_length * 1000;
 		else if ( length >= fade_threshold )
 			length += fade_length;
-		ti->length = length;
+		tuple_associate_int(ti, "length", length);
 	}
 	return ti;
 }
 
-static char* format_and_free_ti( TitleInput* ti, int* length )
+static char* format_and_free_ti( Tuple* ti, int* length )
 {
-	char* result = xmms_get_titlestring( xmms_get_gentitle_format(), ti );
+	char* result = tuple_formatter_process_string(ti, cfg.gentitle_format);
 	if ( result )
-		*length = ti->length;
-	bmp_title_input_free( ti );
-	
+		*length = tuple_get_int(ti, "length");
+	mowgli_object_unref((void *) ti);
+
 	return result;
 }
 
-static TitleInput *get_song_tuple( gchar *path )
+static Tuple *get_song_tuple( gchar *path )
 {
-	TitleInput* result = 0;
+	Tuple* result = 0;
 	File_Handler fh( path );
 	if ( !fh.load( gme_info_only ) )
 	{
@@ -255,7 +265,7 @@ static void get_song_info( char* path, char** title, int* length )
 	*length = -1;
 	*title = NULL;
 	
-	TitleInput* ti = get_song_tuple( path );
+	Tuple* ti = get_song_tuple( path );
 	if ( ti )
 		*title = format_and_free_ti( ti, length );
 }
@@ -362,7 +372,7 @@ static void play_file( InputPlayback *playback )
 	{
 		if ( fh.type == gme_spc_type && audcfg.ignore_spc_length )
 			info.length = -1;
-		TitleInput* ti = get_track_ti( fh.path, info, fh.track );
+		Tuple* ti = get_track_ti( fh.path, info, fh.track );
 		if ( ti )
 		{
 			char* title = format_and_free_ti( ti, &length );
