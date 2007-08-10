@@ -12,7 +12,7 @@
 #include "settings.h"
 #include <glib.h>
 
-#include <audacious/titlestring.h>
+#include <audacious/tuple.h>
 #include <audacious/util.h>
 
 #define SCROBBLER_HS_URL "http://post.audioscrobbler.com"
@@ -124,17 +124,18 @@ static void q_item_free(item_t *item)
 	free(item);
 }
 
-static item_t *q_put(TitleInput *tuple, int len)
+static item_t *q_put(Tuple *tuple, int len)
 {
 	item_t *item;
+	const gchar *album;
 
 	item = malloc(sizeof(item_t));
 
-	item->artist = fmt_escape(tuple->performer);
-	item->title = fmt_escape(tuple->track_name);
+	item->artist = fmt_escape(tuple_get_string(tuple, "artist"));
+	item->title = fmt_escape(tuple_get_string(tuple, "title"));
 	snprintf(item->utctime, sizeof(item->utctime), "%ld", time(NULL));
 	snprintf(item->len, sizeof(item->len), "%d", len);
-	snprintf(item->track, sizeof(item->track), "%d", tuple->track_number);
+	snprintf(item->track, sizeof(item->track), "%d", tuple_get_int(tuple, "track-number"));
 
 #ifdef NOTYET
 	if(tuple->mb == NULL)
@@ -145,10 +146,10 @@ static item_t *q_put(TitleInput *tuple, int len)
 		item->mb = fmt_escape((char*)tuple->mb);
 #endif
 
-	if(tuple->album_name == NULL)
+	if((album = tuple_get_string(tuple, "album")))
 		item->album = fmt_escape("");
 	else
-		item->album = fmt_escape((char*)tuple->album_name);
+		item->album = fmt_escape((char*) album);
 
 	q_nitems++;
 
@@ -655,7 +656,7 @@ static int sc_generateentry(GString *submission)
 	return i;
 }
 
-static int sc_submit_np(TitleInput *tuple)
+static int sc_submit_np(Tuple *tuple)
 {
 	CURL *curl;
 	/* struct HttpPost *post = NULL , *last = NULL; */
@@ -672,8 +673,10 @@ static int sc_submit_np(TitleInput *tuple)
 	/*cfa(&post, &last, "debug", "failed");*/
 
 	entry = g_strdup_printf("s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
-		tuple->performer, tuple->track_name, tuple->album_name ? tuple->album_name : "",
-		tuple->length / 1000, tuple->track_number);
+		tuple_get_string(tuple, "artist"),
+		tuple_get_string(tuple, "title"),
+		tuple_get_string(tuple, "album") ? tuple_get_string(tuple, "album") : "",
+		tuple_get_int(tuple, "length") / 1000, tuple_get_int(tuple, "track-number"));
 
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *) entry);
 	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
@@ -878,15 +881,15 @@ static void read_cache(void)
 		ptr1 = ptr2 + 1;
 
 		{
-			TitleInput *tuple = bmp_title_input_new();
+			Tuple *tuple = tuple_new();
 
-			tuple->performer = g_strdup(xmms_urldecode_plain(artist));
-			tuple->track_name = g_strdup(xmms_urldecode_plain(title));
-			tuple->album_name = g_strdup(xmms_urldecode_plain(album));
+			tuple_associate_string(tuple, "artist", xmms_urldecode_plain(artist));
+			tuple_associate_string(tuple, "title", xmms_urldecode_plain(title));
+			tuple_associate_string(tuple, "album", xmms_urldecode_plain(album));
 
 			item = q_put(tuple, atoi(len));
 
-			bmp_title_input_free(tuple);
+			mowgli_object_unref(tuple);
 		}
 
 		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
@@ -1018,7 +1021,7 @@ void sc_init(char *uname, char *pwd)
 	pdebug("scrobbler starting up", DEBUG);
 }
 
-void sc_addentry(GMutex *mutex, TitleInput *tuple, int len)
+void sc_addentry(GMutex *mutex, Tuple *tuple, int len)
 {
 	g_mutex_lock(mutex);
 

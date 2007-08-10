@@ -215,7 +215,7 @@ static void *xs_thread(void *data __attribute__((unused)))
 	int run = 1;
 
 	while (run) {
-		TitleInput *tuple;
+		Tuple *tuple;
 		GTimeVal sleeptime;
 
 		/* Error catching */
@@ -243,16 +243,16 @@ static void *xs_thread(void *data __attribute__((unused)))
 			if (tuple == NULL)
 				continue;
 
-			if (ishttp(tuple->file_name))
+			if (ishttp(tuple_get_string(tuple, "file-name")))
 				continue;
 
-			if(tuple->performer != NULL && tuple->track_name != NULL)
+			if(tuple_get_string(tuple, "artist") != NULL && tuple_get_string(tuple, "title") != NULL)
 			{
 				pdebug(fmt_vastr(
 					"submitting artist: %s, title: %s",
-					tuple->performer, tuple->track_name), DEBUG);
-				sc_addentry(m_scrobbler, tuple, tuple->length / 1000);
-				gerpok_sc_addentry(m_scrobbler, tuple, tuple->length / 1000);
+					tuple_get_string(tuple, "artist"), tuple_get_string(tuple, "title")), DEBUG);
+				sc_addentry(m_scrobbler, tuple, tuple_get_int(tuple, "length") / 1000);
+				gerpok_sc_addentry(m_scrobbler, tuple, tuple_get_int(tuple, "length") / 1000);
 			}
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);

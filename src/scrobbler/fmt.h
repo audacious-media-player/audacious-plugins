@@ -4,7 +4,7 @@
 
 #include <time.h>
 
-char *fmt_escape(char *);
+char *fmt_escape(const char *);
 char *fmt_unescape(char *);
 char *fmt_timestr(time_t, int);
 char *fmt_vastr(char *, ...);

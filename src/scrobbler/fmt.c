@@ -7,7 +7,7 @@
 #include "fmt.h"
 #include <curl/curl.h>
 
-char *fmt_escape(char *str)
+char *fmt_escape(const char *str)
 {
 	return curl_escape(str, 0);
 }

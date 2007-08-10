@@ -13,7 +13,7 @@
 #include "config.h"
 #include <glib.h>
 
-#include <audacious/titlestring.h>
+#include <audacious/tuple.h>
 #include <audacious/util.h>
 
 #define SCROBBLER_HS_URL "http://post.gerpok.com"
@@ -85,14 +85,15 @@ static void q_item_free(item_t *item)
 	free(item);
 }
 
-static void q_put(TitleInput *tuple, int len)
+static void q_put(Tuple *tuple, int len)
 {
 	item_t *item;
+	const gchar *album;
 
 	item = malloc(sizeof(item_t));
 
-	item->artist = fmt_escape(tuple->performer);
-	item->title = fmt_escape(tuple->track_name);
+	item->artist = fmt_escape(tuple_get_string(tuple, "artist"));
+	item->title = fmt_escape(tuple_get_string(tuple, "title"));
 	item->utctime = fmt_escape(fmt_timestr(time(NULL), 1));
 	snprintf(item->len, sizeof(item->len), "%d", len);
 
@@ -105,10 +106,10 @@ static void q_put(TitleInput *tuple, int len)
 		item->mb = fmt_escape((char*)tuple->mb);
 #endif
 
-	if(tuple->album_name == NULL)
+	if((album = tuple_get_string(tuple, "album")))
 		item->album = fmt_escape("");
 	else
-		item->album = fmt_escape((char*)tuple->album_name);
+		item->album = fmt_escape((char*) album);
 
 	q_nitems++;
 
@@ -926,7 +927,7 @@ void gerpok_sc_init(char *uname, char *pwd)
 	pdebug("scrobbler starting up", DEBUG);
 }
 
-void gerpok_sc_addentry(GMutex *mutex, TitleInput *tuple, int len)
+void gerpok_sc_addentry(GMutex *mutex, Tuple *tuple, int len)
 {
 	g_mutex_lock(mutex);
 	q_put(tuple, len);
