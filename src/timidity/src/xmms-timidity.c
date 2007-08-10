@@ -23,7 +23,7 @@
 
 #include "audacious/util.h"
 #include "audacious/configdb.h"
-#include "audacious/titlestring.h"
+#include "audacious/main.h"
 #include "audacious/vfs.h"
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -305,31 +305,16 @@ static void *xmmstimid_play_loop(void *arg) {
 }
 
 static gchar *xmmstimid_get_title(gchar *filename) {
-	TitleInput *input;
-	gchar *temp, *ext, *title, *path, *temp2;
+	Tuple *input;
+	gchar *title;
 
-	input = bmp_title_input_new();
+	input = tuple_new_from_filename(filename);
 
-	path = g_strdup(filename);
-	temp = g_strdup(filename);
-	ext = strrchr(temp, '.');
-	if (ext)
-		*ext = '\0';
-	temp2 = strrchr(path, '/');
-	if (temp2)
-		*temp2 = '\0';
+	title = tuple_formatter_process_string(input, cfg.gentitle_format);
+	if (title == NULL || *title == '\0')
+		title = g_strdup(tuple_get_string(input, "file-name"));
 
-	input->file_name = g_path_get_basename(filename);
-	input->file_ext = ext ? ext+1 : NULL;
-	input->file_path = g_strdup_printf("%s/", path);
-
-	title = xmms_get_titlestring(xmms_get_gentitle_format(), input);
-	if (title == NULL)
-		title = g_strdup(input->file_name);
-
-	g_free(temp);
-	g_free(path);
-	g_free(input);
+	mowgli_object_unref(input);
 
 	return title;
 }
