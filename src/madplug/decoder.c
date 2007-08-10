@@ -192,7 +192,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     info->duration = mad_timer_zero; // should be cleared before loop, if we use it as break condition.
 
     if(info->fileinfo_request == TRUE) {
-        info->tuple->length = -1;
+        tuple_associate_int(info->tuple, "length", -1);
         info->fileinfo_request = FALSE;
     }
 
@@ -270,11 +270,13 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             g_message("size = %d", stream.next_frame - stream.this_frame);
 #endif
 #endif
-            if(info->tuple->length == -1)
+            if(tuple_get_int(info->tuple, "length") == -1)
                 mad_timer_add(&info->duration, header.duration);
             else {
-                info->duration.seconds = info->tuple->length / 1000;
-                info->duration.fraction = info->tuple->length % 1000;
+                gint length = tuple_get_int(info->tuple, "length");
+
+                info->duration.seconds = length / 1000;
+                info->duration.fraction = length % 1000;
             }
             data_used += stream.next_frame - stream.this_frame;
             if (info->frames == 1) {
@@ -355,7 +357,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #ifdef DEBUG
                 g_message("info->frames = %d", info->frames);
 #endif
-                if(info->tuple->length == -1) {
+                if(tuple_get_int(info->tuple, "length") == -1) {
                     if(xing_bitrate > 0.0) {
                         /* calc duration with xing info */
                         double tmp = 8 * (double)info->xing.bytes * 1000 / xing_bitrate;
@@ -369,8 +371,10 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                     }
                 }
                 else {
-                    info->duration.seconds = info->tuple->length / 1000;
-                    info->duration.fraction = info->tuple->length % 1000;
+                    gint length = tuple_get_int(info->tuple, "length");
+
+                    info->duration.seconds = length / 1000;
+                    info->duration.fraction = length % 1000;
                 }
 #ifdef DEBUG
                 g_message("using fast playtime calculation");
@@ -478,9 +482,9 @@ gpointer decode_loop(gpointer arg)
     /* set mainwin title */
     if (info->title)
         g_free(info->title);
-    info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
-                                       audmad_config.id3_format : xmms_get_gentitle_format(), info->tuple);
-    
+    info->title = tuple_formatter_process_string(info->tuple, audmad_config.title_override == TRUE ?
+                                       audmad_config.id3_format : cfg.gentitle_format);
+
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
         mad_plugin->set_info(info->title,
                              (tlen == 0 || info->size <= 0) ? -1 : tlen,
@@ -704,7 +708,7 @@ gpointer decode_loop(gpointer arg)
     g_message("e: decode");
 #endif                          /* DEBUG */
 
-    bmp_title_input_free(info->tuple);
+    mowgli_object_unref(info->tuple);
     info->tuple = NULL;
 
     info->playback->output->close_audio();

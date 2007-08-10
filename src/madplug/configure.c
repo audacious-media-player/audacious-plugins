@@ -257,10 +257,6 @@ void audmad_configure(void)
     gtk_box_pack_start(GTK_BOX(title_id3_box), title_id3_entry, TRUE, TRUE,
                        0);
 
-    title_tag_desc = xmms_titlestring_descriptions("pafFetnygc", 2);
-    gtk_widget_set_sensitive(title_tag_desc, audmad_config.title_override);
-    gtk_box_pack_start(GTK_BOX(vbox2), title_tag_desc, FALSE,
-                       FALSE, 0);
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2,
                              gtk_label_new(_("Title")));
 

@@ -280,7 +280,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
     return ret;
 }
 
-gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
+gchar *input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
 {
     gchar *rtn0 = NULL, *rtn = NULL;
     const id3_ucs4_t *string_const = NULL;
@@ -341,15 +341,24 @@ gchar *input_id3_get_string(struct id3_tag * tag, char *frame_name)
     return rtn;
 }
 
+static void input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gchar *frame, const gchar *tuple_name)
+{
+    gchar *scratch = input_id3_get_string(tag, frame);
+
+    tuple_associate_string(tuple, tuple_name, scratch);
+    tuple_associate_string(tuple, frame, scratch);
+
+    g_free(scratch);
+}
 
 static void input_alloc_tag(struct mad_info_t *info)
 {
-    TitleInput *title_input;
+    Tuple *title_input;
 
     if (info->tuple == NULL) {
-        title_input = bmp_title_input_new();
+        title_input = tuple_new();
         info->tuple = title_input;
-        info->tuple->length = -1; //will be refferd in decoder.c
+        tuple_associate_int(info->tuple, "length", -1);
     }
     else
         title_input = info->tuple;
@@ -362,14 +371,14 @@ static void input_read_tag(struct mad_info_t *info)
 {
     gchar *string = NULL;
     gchar *realfn = NULL;
-    TitleInput *title_input;
+    Tuple *title_input;
     glong curpos = 0;
 
 #ifdef DEBUG
     g_message("f: input_read_tag");
 #endif
     if (info->tuple == NULL) {
-        title_input = bmp_title_input_new();
+        title_input = tuple_new();
         info->tuple = title_input;
     }
     else
@@ -398,21 +407,19 @@ static void input_read_tag(struct mad_info_t *info)
         return;
     }
 
-    title_input->performer =
-        input_id3_get_string(info->tag, ID3_FRAME_ARTIST);
-    title_input->track_name =
-        input_id3_get_string(info->tag, ID3_FRAME_TITLE);
-    title_input->album_name =
-        input_id3_get_string(info->tag, ID3_FRAME_ALBUM);
-    title_input->genre = input_id3_get_string(info->tag, ID3_FRAME_GENRE);
-    title_input->comment =
-        input_id3_get_string(info->tag, ID3_FRAME_COMMENT);
+    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_ARTIST, "artist");
+    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_TITLE, "title");
+    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_ALBUM, "album");
+    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_GENRE, "genre");
+    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_COMMENT, "comment");
+
     string = input_id3_get_string(info->tag, ID3_FRAME_TRACK);
     if (string) {
-        title_input->track_number = atoi(string);
+        tuple_associate_int(title_input, "track-number", atoi(string));
         g_free(string);
         string = NULL;
     }
+
     // year
     string = NULL;
     string = input_id3_get_string(info->tag, ID3_FRAME_YEAR);   //TDRC
@@ -420,34 +427,44 @@ static void input_read_tag(struct mad_info_t *info)
         string = input_id3_get_string(info->tag, "TYER");
 
     if (string) {
-        title_input->year = atoi(string);
+        tuple_associate_int(title_input, "year", atoi(string));
         g_free(string);
         string = NULL;
     }
 
     // length
-    title_input->length = -1;
     string = input_id3_get_string(info->tag, "TLEN");
     if (string) {
-        title_input->length = atoi(string);
+        tuple_associate_int(title_input, "length", atoi(string));
 #ifdef DEBUG
-        g_message("input_read_tag: TLEN = %d", title_input->length);
+        g_message("input_read_tag: TLEN = %d", atoi(string));
 #endif	
         g_free(string);
         string = NULL;
     }
     
     realfn = g_filename_from_uri(info->filename, NULL, NULL);
-    title_input->file_name = g_strdup(g_basename(realfn ? realfn : info->filename));
-    title_input->file_path = g_path_get_dirname(realfn ? realfn : info->filename);
-    g_free(realfn); realfn = NULL;
-    if ((string = strrchr(title_input->file_name, '.'))) {
-        title_input->file_ext = string + 1;
+    
+    string = g_strdup(g_basename(realfn ? realfn : info->filename));
+    tuple_associate_string(title_input, "file-name", string);
+    g_free(string);
+
+    string = g_path_get_dirname(realfn ? realfn : info->filename);
+    tuple_associate_string(title_input, "file-path", string);
+    g_free(string);
+
+    if ((string = strrchr(realfn ? realfn : info->filename, '.'))) {
         *string = '\0';         // make filename end at dot.
+        tuple_associate_string(title_input, "file-ext", string + 1);
     }
 
-    info->title = xmms_get_titlestring(audmad_config.title_override == TRUE ?
-        audmad_config.id3_format : xmms_get_gentitle_format(), title_input);
+    g_free(realfn); realfn = NULL;
+
+    tuple_associate_string(title_input, "codec", "MPEG Audio (MP3)");
+    tuple_associate_string(title_input, "quality", "lossy");
+
+    info->title = tuple_formatter_process_string(title_input, audmad_config.title_override == TRUE ?
+        audmad_config.id3_format : cfg.gentitle_format);
 
     // for connection via proxy, we have to stop transfer once. I can't explain the reason.
     if (info->infile != NULL) {
@@ -458,11 +475,12 @@ static void input_read_tag(struct mad_info_t *info)
 #ifdef DEBUG
     g_message("e: input_read_tag");
 #endif
-
 }
 
 void input_process_remote_metadata(struct mad_info_t *info)
 {
+    gboolean metadata = FALSE;
+
     if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) <= 0){
         gchar *tmp = NULL;
 #ifdef DEBUG
@@ -470,32 +488,41 @@ void input_process_remote_metadata(struct mad_info_t *info)
         g_message("process_remote_meta");
 #endif
 #endif
+
         g_free(info->title);
         info->title = NULL;
-        g_free(info->tuple->track_name);
-        info->tuple->track_name = NULL;
-        g_free(info->tuple->album_name);
-        info->tuple->album_name = NULL;
+        tuple_disassociate(info->tuple, "title");
+        tuple_disassociate(info->tuple, "album");
 
         tmp = vfs_get_metadata(info->infile, "track-name");
         if(tmp){
-            info->tuple->track_name = str_to_utf8(tmp);
-            info->title = g_strdup(info->tuple->track_name);
+            metadata = TRUE;
+            gchar *scratch;
+
+            scratch = str_to_utf8(tmp);
+            tuple_associate_string(info->tuple, "title", scratch);
+            g_free(scratch);
+
             g_free(tmp);
             tmp = NULL;
         }
 
         tmp = vfs_get_metadata(info->infile, "stream-name");
         if(tmp){
-            info->tuple->album_name = str_to_utf8(tmp);
+            metadata = TRUE;
+            gchar *scratch;
+
+            scratch = str_to_utf8(tmp);
+            tuple_associate_string(info->tuple, "album", scratch);
+            tuple_associate_string(info->tuple, "stream", scratch);
+            g_free(scratch);
+
             g_free(tmp);
             tmp = NULL;
         }
 
-        if (info->tuple->track_name && info->tuple->album_name)
-            tmp = g_strdup_printf("%s (%s)", info->tuple->track_name, info->tuple->album_name);
-        else if (info->tuple->album_name)
-            tmp = g_strdup(info->tuple->album_name);
+        if (metadata)
+            tmp = tuple_formatter_process_string(info->tuple, "${?title:${title}}${?stream: (${stream})");
         else {
             gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
             gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
@@ -637,7 +664,7 @@ gboolean input_term(struct mad_info_t * info)
         g_free(info->mp3gain_minmax_str);
 
     if (info->tuple) {
-        bmp_title_input_free(info->tuple);
+        mowgli_object_unref(info->tuple);
         info->tuple = NULL;
     }
 

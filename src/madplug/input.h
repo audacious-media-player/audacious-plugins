@@ -28,6 +28,6 @@ gboolean input_term(struct mad_info_t *songinfo);
 gboolean input_get_info(struct mad_info_t *songinfo, gboolean fast_scan);
 gint input_get_data(struct mad_info_t *songinfo, guchar * buffer,
                     gint buffer_size);
-gchar *input_id3_get_string(struct id3_tag *tag, char *frame_name);
+gchar *input_id3_get_string(struct id3_tag *tag, const gchar *frame_name);
 
 #endif                          /* ! INPUT_H */

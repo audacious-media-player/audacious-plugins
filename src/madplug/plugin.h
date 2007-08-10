@@ -37,7 +37,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <audacious/plugin.h>
-#include <audacious/titlestring.h>
+#include <audacious/main.h>
 #include <audacious/util.h>
 #include <audacious/strings.h>
 #include <audacious/vfs.h>
@@ -74,7 +74,7 @@ struct mad_info_t
     struct id3_tag *tag;
     struct id3_file *id3file;
     struct xing xing;
-    TitleInput *tuple;          /* audacious tuple data */
+    Tuple *tuple;          /* audacious tuple data */
     gchar *prev_title;           /* used to optimize set_info calls */
 
     /* replay parameters */
