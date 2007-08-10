@@ -241,7 +241,7 @@ void vtx_play_file (InputPlayback *playback)
 
       g_free (buf);
 
-      bmp_title_input_free(ti);
+      mowgli_object_unref(ti);
 
       playback->playing = TRUE;
       play_thread = g_thread_self();
