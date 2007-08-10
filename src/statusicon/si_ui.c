@@ -25,7 +25,7 @@
 #include "gtktrayicon.h"
 #include "si.xpm"
 #include <audacious/playlist.h>
-#include <audacious/titlestring.h>
+#include <audacious/main.h>
 #include <audacious/ui_fileinfopopup.h>
 #include <audacious/util.h>
 #include <audacious/i18n.h>
@@ -144,13 +144,13 @@ si_ui_statusicon_popup_show ( gpointer evbox )
 {
   if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "timer_active" )) == 1 )
   {
-    TitleInput *tuple;
+    Tuple *tuple;
     Playlist *pl_active = playlist_get_active();
     gint pos = playlist_get_position(pl_active);
     GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
 
     tuple = playlist_get_tuple( pl_active , pos );
-    if ( ( tuple == NULL ) || ( tuple->length < 1 ) )
+    if ( ( tuple == NULL ) || ( tuple_get_int(tuple, "length") < 1 ) )
     {
       gchar *title = playlist_get_songtitle( pl_active , pos );
       audacious_fileinfopopup_show_from_title( popup , title );
