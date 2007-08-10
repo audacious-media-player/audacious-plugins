@@ -105,17 +105,6 @@ static guint32 mp4_seek_callback(void *data, guint64 pos)
     return vfs_fseek((VFSFile *) data, pos, SEEK_SET);
 }
 
-static gchar *
-extname(const char *filename)
-{
-    gchar *ext = strrchr(filename, '.');
-
-    if (ext != NULL)
-        ++ext;
-
-    return ext;
-}
-
 static void mp4_init(void)
 {
     mp4cfg.file_type = FILE_UNKNOWN;
@@ -328,16 +317,11 @@ static void mp4_cleanup(void)
 {
 }
 
-static Tuple *mp4_get_song_tuple(char *fn)
+static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
 {
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
-    VFSFile *mp4fh;
     mp4ff_t *mp4file;
-    Tuple *ti = tuple_new_from_filename(fn);
-    gboolean remote = str_has_prefix_nocase(filename, "http:") ||
-	              str_has_prefix_nocase(filename, "https:");
-
-    mp4fh = remote ? vfs_buffered_file_new_from_uri(filename) : vfs_fopen(filename, "rb");
+    Tuple *ti = tuple_new_from_filename(filename);
 
     /* check if this file is an ADTS stream, if so return a blank tuple */
     if (parse_aac_stream(mp4fh))
@@ -350,6 +334,7 @@ static Tuple *mp4_get_song_tuple(char *fn)
         tuple_associate_string(ti, "codec", "Advanced Audio Coding (AAC)");
         tuple_associate_string(ti, "quality", "lossy");
 
+        vfs_fclose(mp4fh);
         return ti;
     }
 
@@ -449,6 +434,20 @@ static Tuple *mp4_get_song_tuple(char *fn)
     return ti;
 }
 
+static Tuple *mp4_get_song_tuple(char *filename)
+{
+    Tuple *tuple;
+    VFSFile *mp4fh;
+    gboolean remote = str_has_prefix_nocase(filename, "http:") ||
+	              str_has_prefix_nocase(filename, "https:");
+
+    mp4fh = remote ? vfs_buffered_file_new_from_uri(filename) : vfs_fopen(filename, "rb");
+
+    tuple = mp4_get_song_tuple_base(filename, mp4fh);
+
+    return tuple;
+}
+
 static void mp4_get_song_title_len(char *filename, char **title, int *len)
 {
     (*title) = mp4_get_song_title(filename);
@@ -457,61 +456,12 @@ static void mp4_get_song_title_len(char *filename, char **title, int *len)
 
 static gchar   *mp4_get_song_title(char *filename)
 {
-    mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
-    VFSFile *mp4fh;
-    mp4ff_t *mp4file;
-    gchar *title = NULL;
+    gchar *title;
+    Tuple *tuple = mp4_get_song_tuple(filename);
 
-    mp4fh = vfs_fopen(filename, "rb");
-    mp4cb->read = mp4_read_callback;
-    mp4cb->seek = mp4_seek_callback;
-    mp4cb->user_data = mp4fh;
+    title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
 
-    if (!(mp4file = mp4ff_open_read(mp4cb))) {
-        g_free(mp4cb);
-        vfs_fclose(mp4fh);
-    } else {
-        TitleInput *input;
-        gchar *tmpval;
-
-        input = bmp_title_input_new();
-
-        mp4ff_meta_get_title(mp4file, &input->track_name);
-        mp4ff_meta_get_album(mp4file, &input->album_name);
-        mp4ff_meta_get_artist(mp4file, &input->performer);
-        mp4ff_meta_get_date(mp4file, &tmpval);
-        mp4ff_meta_get_genre(mp4file, &input->genre);
-
-        if (tmpval)
-        {
-            input->year = atoi(tmpval);
-            free(tmpval);
-        }
-
-        input->file_name = g_path_get_basename(filename);
-        input->file_path = g_path_get_dirname(filename);
-        input->file_ext = extname(filename);
-
-        title = xmms_get_titlestring(xmms_get_gentitle_format(), input);
-
-        free (input->track_name);
-        free (input->album_name);
-        free (input->performer);
-        free (input->genre);
-        free (input->file_name);
-        free (input->file_path);
-        free (input);
-
-        free (mp4cb);
-        vfs_fclose(mp4fh);
-    }
-
-    if (!title)
-    {
-        title = g_path_get_basename(filename);
-        if (extname(title))
-            *(extname(title) - 1) = '\0';
-    }
+    mowgli_object_unref(tuple);
 
     return title;
 }

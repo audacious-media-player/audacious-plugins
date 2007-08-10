@@ -10,7 +10,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "audacious/plugin.h"
-#include "audacious/titlestring.h"
 #include "audacious/util.h"
 
 const char *mp4AudioNames[]=
