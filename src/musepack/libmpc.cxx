@@ -305,6 +305,7 @@ static void mpcPlay(InputPlayback *data)
     mpcDecoder.isOutput = false;
     mpcDecoder.isPause  = false;
     threadHandle = g_thread_self();
+    data->set_pb_ready(data);
     decodeStream((void *) g_strdup(data->filename));
 }
 

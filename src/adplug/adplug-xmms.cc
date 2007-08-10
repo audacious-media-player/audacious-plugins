@@ -989,6 +989,7 @@ adplug_play (InputPlayback * data)
   // start player func
   dbg_printf ("play");
   plr.play_thread =  g_thread_self();
+  playback->set_pb_ready(playback);
   play_loop(playback);
   dbg_printf (".\n");
 }

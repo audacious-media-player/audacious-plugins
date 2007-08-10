@@ -180,6 +180,7 @@ static void play_file(InputPlayback *data)
     going = 1;
     playback = data;
     playback_thread = g_thread_self();
+    playback->set_pb_ready(playback);
     decode_thread(filename);
 }
 

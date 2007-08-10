@@ -433,6 +433,7 @@ static void wma_play_file(InputPlayback *playback)
     wma_decode = 1;
     playback->playing = 1;
     wma_decode_thread = g_thread_self();
+    playback->set_pb_ready(playback);
     wma_play_loop(playback);
 }
 

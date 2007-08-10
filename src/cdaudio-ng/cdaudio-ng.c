@@ -513,6 +513,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 		pdae_params->seektime = -1;
 		pdae_params->currlsn = trackinfo[trackno].startlsn;
 		pdae_params->thread = g_thread_self();
+		pinputplayback->set_pb_ready(pinputplayback);
 		dae_play_loop(pdae_params);
 	}
 	else {

@@ -245,6 +245,7 @@ void vtx_play_file (InputPlayback *playback)
 
       playback->playing = TRUE;
       play_thread = g_thread_self();
+      playback->set_pb_ready(playback);
       play_loop(playback);
     }
 }

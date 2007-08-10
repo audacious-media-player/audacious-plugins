@@ -405,6 +405,7 @@ static void play_file( InputPlayback *playback )
 	pending_seek = -1;
 	console_ip_is_going = 1;
 	decode_thread = g_thread_self();
+	playback->set_pb_ready(playback);
         play_loop_track( playback );
 }
 

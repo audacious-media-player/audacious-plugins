@@ -159,6 +159,7 @@ static void sexypsf_xmms_play(InputPlayback *data)
 
         playing = 1;
         dethread = g_thread_self();
+        data->set_pb_ready(data);
         sexypsf_playloop(NULL);
     }
 }

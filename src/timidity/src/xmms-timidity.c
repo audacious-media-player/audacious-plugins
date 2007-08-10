@@ -375,6 +375,7 @@ void xmmstimid_play_file(InputPlayback * playback) {
 	xmmstimid_seek_to = -1;
 
 	xmmstimid_decode_thread = g_thread_self();
+	playback->set_pb_ready(playback);
 	xmmstimid_play_loop(playback);
 }
 

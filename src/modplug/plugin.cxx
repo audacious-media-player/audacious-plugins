@@ -27,7 +27,7 @@ static void PlayFile(InputPlayback *data)
 {
         char* aFilename = data->filename;
 	gModplugXMMS.SetOutputPlugin(*data->output);
-	gModplugXMMS.PlayFile(aFilename);
+	gModplugXMMS.PlayFile(aFilename, data);
 }
 
 static void Stop(InputPlayback *data)
