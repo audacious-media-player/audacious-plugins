@@ -1237,9 +1237,12 @@ if test "x$have_mtp_up" = "xyes"; then
     have_mtp_up=yes
     PKG_CHECK_MODULES(MTP, [libmtp >= 0.1.0], [GENERAL_PLUGINS="$GENERAL_PLUGINS mtp_up" ], [have_mtp_up="no"])
     MTP_LIBS=`pkg-config --libs libmtp`
+    MTP_CFLAGS=`pkg-config --cflags libmtp`
 else
     have_mtp_up=no
 fi
+AC_SUBST(MTP_LIBS)
+AC_SUBST(MTP_CFLAGS)
 
 dnl *** libparanormal checks
 
