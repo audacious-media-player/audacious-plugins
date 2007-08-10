@@ -1225,6 +1225,22 @@ else
     AC_MSG_RESULT([*** mms plugin disabled by request ***])
 fi
 
+
+dnl *** MTP Upload
+
+AC_ARG_ENABLE(mtp_up,
+[  --enable-mtp_up           enable mtp upload support. (default=disabled)],
+[have_mtp_up=$enableval],
+[have_mtp_up=no])
+
+if test "x$have_mtp_up" = "xyes"; then
+    have_mtp_up=yes
+    PKG_CHECK_MODULES(MTP, [libmtp >= 0.1.0], [GENERAL_PLUGINS="$GENERAL_PLUGINS mtp_up" ], [have_mtp_up="no"])
+    MTP_LIBS=`pkg-config --libs libmtp`
+else
+    have_mtp_up=no
+fi
+
 dnl *** libparanormal checks
 
 AC_ARG_ENABLE(paranormal,
@@ -1501,6 +1517,7 @@ echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
+echo "  Upload to MTP device:                   $have_mtp_up"
 echo
 echo "  Effect"
 echo "  ------"
