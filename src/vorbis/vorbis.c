@@ -56,7 +56,7 @@
 #include "audacious/output.h"
 #include "audacious/util.h"
 #include "audacious/configdb.h"
-#include "audacious/titlestring.h"
+#include "audacious/main.h"
 #include <audacious/i18n.h>
 #include <audacious/strings.h>
 
@@ -64,7 +64,7 @@
 
 extern vorbis_config_t vorbis_cfg;
 
-static TitleInput *get_song_tuple(gchar *filename);
+static Tuple *get_song_tuple(gchar *filename);
 static int vorbis_check_file(char *filename);
 static int vorbis_check_fd(char *filename, VFSFile *stream);
 static void vorbis_play(InputPlayback *data);
@@ -604,15 +604,13 @@ vorbis_seek(InputPlayback *data, int time)
 static void
 vorbis_get_song_info(char *filename, char **title, int *length)
 {
-    TitleInput *tuple = get_song_tuple(filename);
+    Tuple *tuple = get_song_tuple(filename);
 
-    *length = tuple->length;
-    *title = xmms_get_titlestring(vorbis_cfg.tag_override ?
-                                  vorbis_cfg.tag_format :
-                                  xmms_get_gentitle_format(),
-                                  tuple);
+    *length = tuple_get_int(tuple, "length");
+    *title = tuple_formatter_process_string(tuple, vorbis_cfg.tag_override ?
+                                  vorbis_cfg.tag_format : cfg.gentitle_format);
 
-    bmp_title_input_free(tuple);
+    mowgli_object_unref(tuple);
 }
 
 static const gchar *
@@ -731,63 +729,64 @@ vorbis_process_replaygain(float **pcm, int samples, int ch,
     return 2 * ch * samples;
 }
 
+static void _tuple_associate_string(Tuple *tuple, const gchar *field, const gchar *string)
+{
+    gchar *str = str_to_utf8(string);
+
+    tuple_associate_string(tuple, field, str);
+
+    g_free(str);
+}
+
 /*
  * Ok, nhjm449! Are you *happy* now?!  -nenolod
  */
-static TitleInput *
+static Tuple *
 get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename, gboolean is_stream)
 {
-    TitleInput *tuple = NULL;
+    Tuple *tuple = NULL;
     vorbis_comment *comment;
     gchar *realfn = NULL;
-    tuple = bmp_title_input_new();
-
-    realfn = g_filename_from_uri(filename, NULL, NULL);
-    tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
-    tuple->file_ext = get_extension(realfn ? realfn : filename);
-    tuple->file_path = g_path_get_dirname(realfn ? realfn : filename);
-    g_free(realfn); realfn = NULL;
+    tuple = tuple_new_from_filename(filename);
 
     /* Retrieve the length */
     if (is_stream == FALSE)
-        tuple->length = ov_time_total(vorbisfile, -1) * 1000;
+        tuple_associate_int(tuple, "length", ov_time_total(vorbisfile, -1) * 1000);
     else
-        tuple->length = -1;
+        tuple_associate_int(tuple, "length", -1);
 
     if ((comment = ov_comment(vorbisfile, -1))) {
-        tuple->track_name =
-            str_to_utf8(vorbis_comment_query(comment, "title", 0));
-        tuple->performer =
-            str_to_utf8(vorbis_comment_query(comment, "artist", 0));
-        tuple->album_name =
-            str_to_utf8(vorbis_comment_query(comment, "album", 0));
+        _tuple_associate_string(tuple, "title", vorbis_comment_query(comment, "title", 0));
+        _tuple_associate_string(tuple, "artist", vorbis_comment_query(comment, "artist", 0));
+        _tuple_associate_string(tuple, "album", vorbis_comment_query(comment, "album", 0));
+        _tuple_associate_string(tuple, "date", vorbis_comment_query(comment, "date", 0));
+        _tuple_associate_string(tuple, "genre", vorbis_comment_query(comment, "genre", 0));
+        _tuple_associate_string(tuple, "comment", vorbis_comment_query(comment, "comment", 0));
 
         if (vorbis_comment_query(comment, "tracknumber", 0) != NULL)
-            tuple->track_number =
-                atoi(vorbis_comment_query(comment, "tracknumber", 0));
+            tuple_associate_int(tuple, "track-number", 
+                atoi(vorbis_comment_query(comment, "tracknumber", 0)));
 
-        tuple->date = str_to_utf8(vorbis_comment_query(comment, "date", 0));
-        tuple->genre = str_to_utf8(vorbis_comment_query(comment, "genre", 0));
-        tuple->comment =
-            str_to_utf8(vorbis_comment_query(comment, "comment", 0));
-
-        /* remove any blank tags */
-        REMOVE_NONEXISTANT_TAG(tuple->performer);
-        REMOVE_NONEXISTANT_TAG(tuple->album_name);
-        REMOVE_NONEXISTANT_TAG(tuple->track_name);
-        REMOVE_NONEXISTANT_TAG(tuple->genre);
-        REMOVE_NONEXISTANT_TAG(tuple->comment);
+        tuple_associate_string(tuple, "quality", "lossy");
+        if (comment && comment->vendor)
+        {
+            gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
+            tuple_associate_string(tuple, "codec", codec);
+            g_free(codec);
+        }
+        else
+            tuple_associate_string(tuple, "codec", "Ogg Vorbis");
     }
 
     return tuple;
 }
 
-static TitleInput *
+static Tuple *
 get_song_tuple(gchar *filename)
 {
     VFSFile *stream = NULL;
     OggVorbis_File vfile;          /* avoid thread interaction */
-    TitleInput *tuple = NULL;
+    Tuple *tuple = NULL;
     gboolean is_stream = FALSE;
     VFSVorbisFile *fd = NULL;
 
@@ -824,34 +823,34 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
 {
     /* Caller should hold vf_mutex */
     gchar *displaytitle = NULL;
-    TitleInput *input;
+    Tuple *input;
     gchar *tmp;
 
     input = get_tuple_for_vorbisfile(vorbisfile, filename, vorbis_is_streaming);
 
-    if (!(displaytitle = xmms_get_titlestring(vorbis_cfg.tag_override ?
-                                              vorbis_cfg.tag_format :
-                                              xmms_get_gentitle_format(),
-                                              input))) {
-        displaytitle = g_strdup(input->file_name);
-    }
+    displaytitle = tuple_formatter_process_string(input, vorbis_cfg.tag_override ?
+                                              vorbis_cfg.tag_format : cfg.gentitle_format);
 
     if ((tmp = vfs_get_metadata(((VFSVorbisFile *) vorbisfile->datasource)->fd, "stream-name")) != NULL)
     {
         gchar *old = displaytitle;
-        displaytitle = g_strdup_printf("%s (%s)", displaytitle, tmp);
+
+        tuple_associate_string(input, "stream", tmp);
+        tuple_associate_string(input, "title", old);
+
+        displaytitle = tuple_formatter_process_string(input, "${?title:${title}}${?stream: (${stream})}");
 
 	g_free(old);
 	g_free(tmp);
     }
 
-    bmp_title_input_free(input);
+    mowgli_object_unref(input);
 
     return displaytitle;
 }
 
 static void
-vorbis_aboutbox()
+vorbis_aboutbox(void)
 {
     static GtkWidget *about_window;
 
