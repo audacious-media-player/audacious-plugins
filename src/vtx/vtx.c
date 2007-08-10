@@ -21,9 +21,9 @@
 
 #include <audacious/output.h>
 #include <audacious/util.h>
-#include <audacious/titlestring.h>
 #include <audacious/configdb.h>
 #include <audacious/vfs.h>
+#include <audacious/main.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
 
@@ -92,36 +92,48 @@ vtx_is_our_file (char *filename)
   return ret;
 }
 
-TitleInput *
+Tuple *
 vtx_get_song_tuple_from_vtx(const gchar *filename, ayemu_vtx_t *in)
 {
-  TitleInput *out = bmp_title_input_new();
+  Tuple *out = tuple_new();
   gchar *string;
+  gchar *scratch;
 
-  out->performer = g_strdup(in->hdr.author);
-  out->track_name = g_strdup(in->hdr.title);
+  tuple_associate_string(out, "artist", in->hdr.author);
+  tuple_associate_string(out, "title", in->hdr.title);
 
-  out->file_name = g_strdup(g_basename(filename));
-  out->file_path = g_path_get_dirname(filename);
-  if ((string = strrchr(out->file_name, '.')))
-    {
-      out->file_ext = string + 1;
-      *string = '\0';
-    }
+  scratch = g_path_get_basename(filename);
+  tuple_associate_string(out, "file-name", scratch);
+  g_free(scratch);
+ 
+  scratch = g_path_get_dirname(filename);
+  tuple_associate_string(out, "file-path", scratch);
+  g_free(scratch);
 
-  out->length = in->hdr.regdata_size / 14 * 1000 / 50;
+  tuple_associate_string(out, "file-ext", strrchr(filename, '.') + 1);
+  tuple_associate_int(out, "length", in->hdr.regdata_size / 14 * 1000 / 50);
+
+  tuple_associate_string(out, "genre", (in->hdr.chiptype == AYEMU_AY)? "AY chiptunes" : "YM chiptunes");
+  tuple_associate_string(out, "album", in->hdr.from);
+  tuple_associate_string(out, "game", in->hdr.from);
+
+  tuple_associate_string(out, "quality", "sequenced");
+  tuple_associate_string(out, "codec", in->hdr.tracker);
+  tuple_associate_string(out, "tracker", in->hdr.tracker);
+
+  tuple_associate_int(out, "year", in->hdr.year);
 
   return out;
 }
 
-TitleInput *
+Tuple *
 vtx_get_song_tuple(gchar *filename)
 {
   ayemu_vtx_t tmp;
 
   if (ayemu_vtx_open (&tmp, filename))
     {
-      TitleInput *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
+      Tuple *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
       ayemu_vtx_free(&tmp);
       return ti;
     }
@@ -204,7 +216,7 @@ void vtx_play_file (InputPlayback *playback)
 {
   gchar *filename = playback->filename;
   gchar *buf;
-  TitleInput *ti;
+  Tuple *ti;
 
   memset (&ay, 0, sizeof(ay));
 
@@ -232,8 +244,7 @@ void vtx_play_file (InputPlayback *playback)
       seek_to = -1;
 
       ti = vtx_get_song_tuple_from_vtx(playback->filename, &vtx);
-
-      buf = xmms_get_titlestring(xmms_get_gentitle_format(), ti);
+      buf = tuple_formatter_process_string(ti, cfg.gentitle_format);
 
       vtx_ip.set_info (buf, vtx.hdr.regdata_size / 14 * 1000 / 50,
  	  	       14 * 50 * 8, freq, bits / 8);
@@ -294,13 +305,13 @@ vtx_get_song_info (char *filename, char **title, int *length)
   (*title) = NULL;
 
   if (ayemu_vtx_open (&tmp, filename)) {
-    TitleInput *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
+    Tuple *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
 
-    *title = xmms_get_titlestring(xmms_get_gentitle_format(), ti);
-    *length = ti->length;
+    *title = tuple_formatter_process_string(ti, cfg.gentitle_format);
+    *length = tuple_get_int(ti, "length");
 
     ayemu_vtx_free (&tmp);
-    bmp_title_input_free(ti);
+    mowgli_object_unref(ti);
   }
 }
 
