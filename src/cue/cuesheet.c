@@ -31,7 +31,6 @@
 #include <audacious/util.h>
 #include <audacious/strings.h>
 #include <audacious/main.h>
-#include <audacious/strings.h>
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000
@@ -46,8 +45,8 @@ static gint get_time(InputPlayback *data);
 static void seek(InputPlayback *data, gint time);
 static void stop(InputPlayback *data);
 static void cue_pause(InputPlayback *data, short);
-static TitleInput *get_tuple(gchar *uri);
-static TitleInput *get_tuple_uri(gchar *uri);
+static Tuple *get_tuple(gchar *uri);
+static Tuple *get_tuple_uri(gchar *uri);
 static void get_song_info(gchar *uri, gchar **title, gint *length);
 static void cue_init(void);
 static void cue_cleanup(void);
@@ -222,9 +221,9 @@ static void play(InputPlayback *data)
 	play_cue_uri(data, uri);
 }
 
-static TitleInput *get_tuple(gchar *uri)
+static Tuple *get_tuple(gchar *uri)
 {
-	TitleInput *ret;
+	Tuple *ret;
 
 	/* this isn't a cue:// uri? */
 	if (strncasecmp("cue://", uri, 6))
@@ -238,7 +237,14 @@ static TitleInput *get_tuple(gchar *uri)
 	return get_tuple_uri(uri);
 }
 
-static TitleInput *get_tuple_uri(gchar *uri)
+static void _tuple_copy_field(Tuple *tuple, Tuple *tuple2, const gchar *field)
+{
+    const gchar *str = tuple_get_string(tuple, field);
+    tuple_disassociate(tuple2, field);
+    tuple_associate_string(tuple2, field, str);
+}
+
+static Tuple *get_tuple_uri(gchar *uri)
 {
     gchar *path2 = g_strdup(uri + 6);
     gchar *_path = strchr(path2, '?');
@@ -247,7 +253,7 @@ static TitleInput *get_tuple_uri(gchar *uri)
 	ProbeResult *pr;
 	InputPlugin *dec;
 
-	TitleInput *phys_tuple, *out;
+	Tuple *phys_tuple, *out;
 
         if (_path != NULL && *_path == '?')
         {
@@ -273,34 +279,37 @@ static TitleInput *get_tuple_uri(gchar *uri)
 	else
 		phys_tuple = input_get_song_tuple(cue_file);
 
-	out = bmp_title_input_new();
-
     if(!phys_tuple)
-        return out;
+        return NULL;
 
-    if(phys_tuple->file_path)
-        out->file_path = g_strdup(phys_tuple->file_path);
-    if(phys_tuple->file_name)
-        out->file_name = g_strdup(phys_tuple->file_name);
-    if(phys_tuple->file_ext)
-        out->file_ext = g_strdup(phys_tuple->file_ext);
-	out->length = phys_tuple->length;
+    out = tuple_new();
 
-	bmp_title_input_free(phys_tuple);
+    _tuple_copy_field(phys_tuple, out, "file-path");
+    _tuple_copy_field(phys_tuple, out, "file-name");
+    _tuple_copy_field(phys_tuple, out, "file-exit");
+    _tuple_copy_field(phys_tuple, out, "codec");
+    _tuple_copy_field(phys_tuple, out, "quality");
+    _tuple_copy_field(phys_tuple, out, "copyright");
+    _tuple_copy_field(phys_tuple, out, "comment");
 
-	out->track_name = g_strdup(cue_tracks[track].title);
-	out->performer = g_strdup(cue_tracks[track].performer ?
+    tuple_associate_int(out, "length", tuple_get_int(phys_tuple, "length"));
+
+    mowgli_object_unref(phys_tuple);
+
+    tuple_associate_string(out, "title", cue_tracks[track].title);
+    tuple_associate_string(out, "artist", cue_tracks[track].performer ?
 				  cue_tracks[track].performer : cue_performer);
-	out->album_name = g_strdup(cue_title);
-	out->genre = g_strdup(cue_genre);
-	out->year = cue_year ? atoi(cue_year) : 0;
-	out->track_number = track + 1;
-	return out;
+    tuple_associate_string(out, "album", cue_title);
+    tuple_associate_string(out, "genre", cue_genre);
+    tuple_associate_int(out, "year", atoi(cue_year));
+    tuple_associate_int(out, "track-number", track + 1);
+
+    return out;
 }
 
 static void get_song_info(gchar *uri, gchar **title, gint *length)
 {
-	TitleInput *tuple;
+	Tuple *tuple;
 
 	/* this isn't a cue:// uri? */
 	if (strncasecmp("cue://", uri, 6))
@@ -314,10 +323,10 @@ static void get_song_info(gchar *uri, gchar **title, gint *length)
 
 	g_return_if_fail(tuple != NULL);
 
-	*title = xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
-	*length = tuple->length;
+	*title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
+	*length = tuple_get_int(tuple, "length");
 
-	bmp_title_input_free(tuple);
+	mowgli_object_unref(tuple);
 }
 
 static void seek(InputPlayback * data, gint time)

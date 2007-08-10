@@ -18,7 +18,9 @@
 
 #include "audacious/output.h"
 #include "audacious/plugin.h"
-#include "audacious/titlestring.h"
+#include "audacious/main.h"
+#include "audacious/tuple.h"
+#include "audacious/tuple_formatter.h"
 #include "audacious/util.h"
 #include "audacious/vfs.h"
 #include <stdio.h>
@@ -218,18 +220,35 @@ static void sexypsf_xmms_getsonginfo(char *fn, char **title, int *length)
     }
 }
 
-static TitleInput *get_tuple_psf(gchar *fn) {
-    TitleInput *tuple = NULL;
+static Tuple *get_tuple_psf(gchar *fn) {
+    Tuple *tuple = NULL;
     PSFINFO *tmp = sexypsf_getpsfinfo(fn);
 
     if (tmp->length) {
-        tuple = bmp_title_input_new();
-        tuple->length = tmp->length;
-        tuple->performer = g_strdup(tmp->artist);
-        tuple->album_name = g_strdup(tmp->game);
-        tuple->track_name = g_strdup(tmp->title);
-        tuple->file_name = g_path_get_basename(fn);
-        tuple->file_path = g_path_get_dirname(fn);
+        gchar *scratch;
+
+        tuple = tuple_new();
+	tuple_associate_int(tuple, "length", tmp->length);
+	tuple_associate_string(tuple, "artist", tmp->artist);
+	tuple_associate_string(tuple, "album", tmp->game);
+	tuple_associate_string(tuple, "game", tmp->game);
+        tuple_associate_string(tuple, "title", tmp->title);
+        tuple_associate_string(tuple, "genre", tmp->genre);
+        tuple_associate_string(tuple, "copyright", tmp->copyright);
+        tuple_associate_string(tuple, "quality", "sequenced");
+        tuple_associate_string(tuple, "codec", "PlayStation Audio");
+        tuple_associate_string(tuple, "console", "PlayStation");
+        tuple_associate_string(tuple, "dumper", tmp->psfby);
+        tuple_associate_string(tuple, "comment", tmp->comment);
+
+        scratch = g_path_get_basename(fn);
+        tuple_associate_string(tuple, "file-name", scratch);
+        g_free(scratch);
+
+        scratch = g_path_get_dirname(fn);
+        tuple_associate_string(tuple, "file-path", scratch);
+        g_free(scratch);
+
         sexypsf_freepsfinfo(tmp);
     }
 
@@ -238,12 +257,11 @@ static TitleInput *get_tuple_psf(gchar *fn) {
 
 static gchar *get_title_psf(gchar *fn) {
     gchar *title = NULL;
-    TitleInput *tinput = get_tuple_psf(fn);
+    Tuple *tuple = get_tuple_psf(fn);
 
-    if (tinput != NULL) {
-        title = xmms_get_titlestring(xmms_get_gentitle_format(),
-                                     tinput);
-        bmp_title_input_free(tinput);
+    if (tuple != NULL) {
+        title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
+        mowgli_object_unref(tuple);
     }
     else
         title = g_path_get_basename(fn);

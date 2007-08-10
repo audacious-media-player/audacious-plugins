@@ -364,6 +364,7 @@ vorbis_process_data(InputPlayback *playback, int last_section,
      */
     if (bytes <= 0 && bytes != OV_HOLE) {
         g_mutex_unlock(vf_mutex);
+        playback->playing = 0;
         playback->output->buffer_free();
         playback->output->buffer_free();
         playback->eof = TRUE;

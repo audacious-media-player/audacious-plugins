@@ -29,7 +29,9 @@
 #include <string.h>
 
 #include <audacious/util.h>
-#include <audacious/titlestring.h>
+#include <audacious/main.h>
+#include <audacious/tuple.h>
+#include <audacious/tuple_formatter.h>
 #include "audacious/output.h"
 #include <audacious/i18n.h>
 
@@ -204,21 +206,33 @@ is_our_file(gchar * filename)
 static gchar *
 get_title(const gchar * filename)
 {
-    TitleInput *input;
+    Tuple *tuple;
     gchar *title;
+    gchar *scratch;
 
-    input = bmp_title_input_new();
+    tuple = tuple_new();
 
-    input->file_name = g_path_get_basename(filename);
-    input->file_ext = get_extension(filename);
-    input->file_path = g_path_get_dirname(filename);
+    scratch = g_path_get_basename(filename);
+    tuple_associate_string(tuple, "file-name", scratch);
+    g_free(scratch);
 
-    if (!(title = xmms_get_titlestring(xmms_get_gentitle_format(), input)))
-        title = g_strdup(input->file_name);
+    tuple_associate_string(tuple, "file-ext", get_extension(filename));
 
-    g_free(input->file_path);
-    g_free(input->file_name);
-    g_free(input);
+    scratch = g_path_get_dirname(filename);
+    tuple_associate_string(tuple, "file-path", scratch);
+    g_free(scratch);
+
+    tuple_associate_string(tuple, "codec", "RIFF/WAV Audio (ADPCM)");
+    tuple_associate_string(tuple, "quality", "lossless");
+
+    title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
+    if (*title == '\0')
+    {
+        g_free(title);
+        title = g_strdup(tuple_get_string(tuple, "file-name"));
+    }
+
+    mowgli_object_unref(tuple);
 
     return title;
 }
