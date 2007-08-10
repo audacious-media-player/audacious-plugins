@@ -163,7 +163,7 @@ void mtp_cleanup(void)
 #if DEBUG
     g_print("Cleaning up MTP_upload\n");
 #endif
-//  audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST, menuitem );
+    audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST, menuitem );
     g_mutex_free (mutex);
     mutex = NULL;
 }
