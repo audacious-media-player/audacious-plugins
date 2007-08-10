@@ -84,33 +84,33 @@ static gint vorbis_open(void)
 
     if (tuple)
     {
-        gchar *scratch;
+        const gchar *scratch;
 
-        if (tuple->track_name)
-            vorbis_comment_add_tag(&vc, "title", tuple->track_name);
-        if (tuple->performer)
-            vorbis_comment_add_tag(&vc, "artist", tuple->performer);
-        if (tuple->album_name)
-            vorbis_comment_add_tag(&vc, "album", tuple->album_name);
-        if (tuple->genre)
-            vorbis_comment_add_tag(&vc, "genre", tuple->genre);
-        if (tuple->date)
-            vorbis_comment_add_tag(&vc, "date", tuple->date);
-        if (tuple->comment)
-            vorbis_comment_add_tag(&vc, "comment", tuple->comment);
+        if ((scratch = tuple_get_string(tuple, "title")))
+            vorbis_comment_add_tag(&vc, "title", (gchar *) scratch);
+        if ((scratch = tuple_get_string(tuple, "artist")))
+            vorbis_comment_add_tag(&vc, "artist", (gchar *) scratch);
+        if ((scratch = tuple_get_string(tuple, "album")))
+            vorbis_comment_add_tag(&vc, "album", (gchar *) scratch);
+        if ((scratch = tuple_get_string(tuple, "genre")))
+            vorbis_comment_add_tag(&vc, "genre", (gchar *) scratch);
+        if ((scratch = tuple_get_string(tuple, "date")))
+            vorbis_comment_add_tag(&vc, "date", (gchar *) scratch);
+        if ((scratch = tuple_get_string(tuple, "comment")))
+            vorbis_comment_add_tag(&vc, "comment", (gchar *) scratch);
 
-        if (tuple->track_number)
+        if (tuple_get_int(tuple, "track-number"))
         {
-            scratch = g_strdup_printf("%d", tuple->track_number);
-            vorbis_comment_add_tag(&vc, "tracknumber", scratch);
-            g_free(scratch);
+            gchar *tmp = g_strdup_printf("%d", tuple_get_int(tuple, "track-number"));
+            vorbis_comment_add_tag(&vc, "tracknumber", tmp);
+            g_free(tmp);
         }
 
-        if (tuple->year)
+        if (tuple_get_int(tuple, "year"))
         {
-            scratch = g_strdup_printf("%d", tuple->year);
-            vorbis_comment_add_tag(&vc, "year", scratch);
-            g_free(scratch);
+            gchar *tmp = g_strdup_printf("%d", tuple_get_int(tuple, "year"));
+            vorbis_comment_add_tag(&vc, "year", tmp);
+            g_free(tmp);
         }
     }
 

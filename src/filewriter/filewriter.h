@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <audacious/main.h>
 #include <audacious/plugin.h>
 #include <audacious/playlist.h>
 #include <audacious/configdb.h>
@@ -45,7 +46,7 @@ struct format_info {
 extern VFSFile *output_file;
 extern guint64 written;
 extern guint64 offset;
-extern TitleInput *tuple;
+extern Tuple *tuple;
 
 typedef struct _FileWriter FileWriter;
 

@@ -201,24 +201,24 @@ static gint mp3_open(void)
     if (tuple) {
         /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
 #ifdef DEBUG
-        g_print("track_name = %s\n", tuple->track_name);
+        g_print("track_name = %s\n", tuple_get_string(tuple, "title"));
 #endif
-        lameid3.track_name = g_strdup(tuple->track_name);
+        lameid3.track_name = g_strdup(tuple_get_string(tuple, "title"));
         id3tag_set_title(gfp, lameid3.track_name);
 
-        lameid3.performer = g_strdup(tuple->performer);
+        lameid3.performer = g_strdup(tuple_get_string(tuple, "artist"));
         id3tag_set_artist(gfp, lameid3.performer);
 
-        lameid3.album_name = g_strdup(tuple->album_name);
+        lameid3.album_name = g_strdup(tuple_get_string(tuple, "album"));
         id3tag_set_album(gfp, lameid3.album_name);
 
-        lameid3.genre = g_strdup(tuple->genre);
+        lameid3.genre = g_strdup(tuple_get_string(tuple, "genre"));
         id3tag_set_genre(gfp, lameid3.genre);
 
-        lameid3.year = g_strdup_printf("%d", tuple->year);
+        lameid3.year = g_strdup_printf("%d", tuple_get_int(tuple, "year"));
         id3tag_set_year(gfp, lameid3.year);
 
-        lameid3.track_number = g_strdup_printf("%d", tuple->track_number);
+        lameid3.track_number = g_strdup_printf("%d", tuple_get_int(tuple, "track-number"));
         id3tag_set_track(gfp, lameid3.track_number);
 
         //        id3tag_write_v1(gfp);

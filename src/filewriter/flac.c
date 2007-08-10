@@ -107,14 +107,14 @@ static gint flac_open(void)
 
         meta = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-        INSERT_VORBIS_COMMENT(tuple->track_name, "title=%s");
-        INSERT_VORBIS_COMMENT(tuple->performer, "artist=%s");
-        INSERT_VORBIS_COMMENT(tuple->album_name, "album=%s");
-        INSERT_VORBIS_COMMENT(tuple->genre, "genre=%s");
-        INSERT_VORBIS_COMMENT(tuple->comment, "comment=%s");
-        INSERT_VORBIS_COMMENT(tuple->date, "date=%s");
-        INSERT_VORBIS_COMMENT(tuple->year, "year=%d");
-        INSERT_VORBIS_COMMENT(tuple->track_number, "tracknumber=%d");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, "title"), "title=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, "artist"), "artist=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, "album"), "album=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, "genre"), "genre=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, "comment"), "comment=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_string(tuple, "date"), "date=%s");
+        INSERT_VORBIS_COMMENT(tuple_get_int(tuple, "year"), "year=%d");
+        INSERT_VORBIS_COMMENT(tuple_get_int(tuple, "track-number"), "tracknumber=%d");
 
         FLAC__stream_encoder_set_metadata(flac_encoder, &meta, 1);
     }

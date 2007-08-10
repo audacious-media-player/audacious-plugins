@@ -215,7 +215,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     if (filenamefromtags)
     {
-        gchar *utf8 = xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
+        gchar *utf8 = tuple_formatter_process_string(tuple, cfg.gentitle_format);
 
         g_strchomp(utf8); //chop trailing ^J --yaz
 
@@ -226,7 +226,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     }
     if (filename == NULL)
     {
-        filename = g_strdup(tuple->file_name);
+        filename = g_strdup(tuple_get_string(tuple, "file-name"));
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
                 *temp = '\0';
@@ -238,8 +238,8 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     if (prependnumber)
     {
         gint number;
-        if (tuple && tuple->track_number)
-            number = tuple->track_number;
+        if (tuple && tuple_get_int(tuple, "track-number"))
+            number = tuple_get_int(tuple, "track-number");
         else
             number = pos + 1;
 
@@ -250,7 +250,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     gchar *directory;
     if (save_original)
-        directory = g_strdup(tuple->file_path);
+        directory = g_strdup(tuple_get_string(tuple, "file-path"));
     else
         directory = g_strdup(file_path);
 
@@ -665,4 +665,4 @@ static void file_configure(void)
 VFSFile *output_file = NULL;
 guint64 written = 0;
 guint64 offset = 0;
-TitleInput *tuple = NULL;
+Tuple *tuple = NULL;
