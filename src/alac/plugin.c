@@ -46,6 +46,7 @@
 #include <audacious/i18n.h>
 
 #include <audacious/plugin.h>
+#include <audacious/main.h>
 #include <audacious/output.h>
 #include <audacious/vfs.h>
 #include <audacious/util.h>
@@ -116,31 +117,40 @@ gboolean is_our_fd(char *filename, VFSFile* input_file)
     return TRUE;
 }
 
-TitleInput *build_tuple_from_demux(demux_res_t *demux_res, char *path)
+Tuple *build_tuple_from_demux(demux_res_t *demux_res, char *path)
 {
-    TitleInput *ti = bmp_title_input_new();
+    Tuple *ti = tuple_new();
+    gchar *scratch;
 
     if (demux_res->tuple.art != NULL)
-        ti->performer = g_strdup(demux_res->tuple.art);
+        tuple_associate_string(ti, "artist", demux_res->tuple.art);
     if (demux_res->tuple.nam != NULL)
-        ti->track_name = g_strdup(demux_res->tuple.nam);
+        tuple_associate_string(ti, "title", demux_res->tuple.nam);
     if (demux_res->tuple.alb != NULL)
-        ti->album_name = g_strdup(demux_res->tuple.alb);
+        tuple_associate_string(ti, "album", demux_res->tuple.alb);
     if (demux_res->tuple.gen != NULL)
-        ti->genre = g_strdup(demux_res->tuple.gen);
+        tuple_associate_string(ti, "genre", demux_res->tuple.gen);
     if (demux_res->tuple.cmt != NULL)
-        ti->comment = g_strdup(demux_res->tuple.cmt);
+        tuple_associate_string(ti, "comment", demux_res->tuple.cmt);
     if (demux_res->tuple.day != NULL)
-        ti->year = atoi(demux_res->tuple.day);
+        tuple_associate_int(ti, "year", atoi(demux_res->tuple.day));
 
-    ti->file_name = g_path_get_basename(path);
-    ti->file_path = g_path_get_dirname(path);
-    ti->file_ext = extname(path);
+    scratch = g_path_get_basename(path);
+    tuple_associate_string(ti, "file-name", scratch);
+    g_free(scratch);
+
+    scratch = g_path_get_dirname(path);
+    tuple_associate_string(ti, "file-path", scratch);
+    g_free(scratch);
+
+    tuple_associate_string(ti, "file-ext", extname(path));
+    tuple_associate_string(ti, "codec", "Apple Lossless (ALAC)");
+    tuple_associate_string(ti, "quality", "lossless");
 
     return ti;
 }
 
-TitleInput *build_tuple(char *filename)
+Tuple *build_tuple(char *filename)
 {
     demux_res_t demux_res;
     VFSFile *input_file;
@@ -313,7 +323,7 @@ gpointer decode_thread(void *args)
     gulong duration = 0;	/* samples added up */
     VFSFile *input_file;
     stream_t *input_stream;
-    TitleInput *ti;
+    Tuple *ti;
     gchar *title;
 
     memset(&demux_res, 0, sizeof(demux_res));
@@ -335,7 +345,7 @@ gpointer decode_thread(void *args)
 
     /* Get the titlestring ready. */
     ti = build_tuple_from_demux(&demux_res, (char *) args);
-    title = xmms_get_titlestring(xmms_get_gentitle_format(), ti);
+    title = tuple_formatter_process_string(ti, cfg.gentitle_format);
 
     /* initialise the sound converter */
     demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);
