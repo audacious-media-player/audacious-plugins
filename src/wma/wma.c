@@ -32,13 +32,15 @@
 #include <strings.h>
 #include <glib.h>
 
-#include <audacious/plugin.h>
-#include <audacious/output.h>
-#include <audacious/util.h>
-#include <audacious/titlestring.h>
-#include <audacious/vfs.h>
-#include <audacious/strings.h>
-#include <audacious/i18n.h>
+#include "audacious/plugin.h"
+#include "audacious/output.h"
+#include "audacious/util.h"
+#include "audacious/vfs.h"
+#include "audacious/strings.h"
+#include "audacious/i18n.h"
+#include "audacious/main.h"
+#include "audacious/tuple.h"
+#include "audacious/tuple_formatter.h"
 
 #include "avcodec.h"
 #include "avformat.h"
@@ -82,7 +84,7 @@ static void wma_stop(InputPlayback *data);
 static void wma_seek(InputPlayback *data, int time);
 static void wma_do_pause(InputPlayback *data, short p);
 static void wma_get_song_info(char *filename, char **title, int *length);
-static TitleInput *wma_get_song_tuple(char *filename);
+static Tuple *wma_get_song_tuple(char *filename);
 static char *wsong_title;
 static int wsong_time;
 
@@ -241,39 +243,45 @@ static gchar *extname(const char *filename)
     return ext;
 }
 
-static TitleInput *wma_get_song_tuple(gchar * filename)
+static Tuple *wma_get_song_tuple(gchar * filename)
 {
-    TitleInput *tuple = NULL;
+    Tuple *ti = tuple_new();
     AVFormatContext *in = NULL;
-    gchar *filename_proxy = g_strdup(filename);
+    gchar *scratch;
 
     if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
 	return NULL;
 
-    tuple = bmp_title_input_new();
+    scratch = g_path_get_basename(filename);
+    tuple_associate_string(ti, "file-name", scratch);
+    g_free(scratch);
 
-    tuple->file_name = g_path_get_basename(filename_proxy);
-    tuple->file_path = g_path_get_dirname(filename_proxy);
-    tuple->file_ext = extname(filename_proxy);
-	
+    scratch = g_path_get_dirname(filename);
+    tuple_associate_string(ti, "file-path", scratch);
+    g_free(scratch);
+
+    tuple_associate_string(ti, "file-ext", extname(filename));
+    tuple_associate_string(ti, "codec", "Windows Media Audio (WMA)");
+    tuple_associate_string(ti, "quality", "lossy");
+
     av_find_stream_info(in);
 
     if(strlen(in->title))
-        tuple->track_name = strdup(in->title);
+        tuple_associate_string(ti, "title", in->title);
     if(strlen(in->author))
-        tuple->performer = strdup(in->author);
+        tuple_associate_string(ti, "artist", in->author);
     if(strlen(in->album))
-        tuple->album_name = strdup(in->album);
+        tuple_associate_string(ti, "album", in->album);
     if(strlen(in->comment))
-        tuple->comment = strdup(in->comment);
+        tuple_associate_string(ti, "comment", in->comment);
     if(strlen(in->genre))
-        tuple->genre = strdup(in->genre);
+        tuple_associate_string(ti, "genre", in->genre);
     if(in->year > 0)
-       tuple->year = in->year;
+        tuple_associate_int(ti, "year", in->year);
     if(in->track > 0)
-        tuple->track_number = in->track;
+        tuple_associate_int(ti, "track", in->track);
     if (in->duration)
-        tuple->length = in->duration / 1000;
+        tuple_associate_int(ti, "length", in->duration / 1000);
 
     av_close_input_file(in);
 
