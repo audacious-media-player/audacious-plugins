@@ -281,37 +281,30 @@ static Tuple *wma_get_song_tuple(gchar * filename)
 static gchar *get_song_title(AVFormatContext *in, gchar * filename)
 {
     gchar *ret = NULL;
-    TitleInput *input;
+    Tuple *ti = tuple_new_from_filename(filename);
 
-    input = bmp_title_input_new();
-    
+    tuple_associate_string(ti, "codec", "Windows Media Audio (WMA)");
+    tuple_associate_string(ti, "quality", "lossy");
+
     if(strlen(in->title))
-        input->track_name = strdup(in->title);
+        tuple_associate_string(ti, "title", in->title);
     if(strlen(in->author))
-        input->performer = strdup(in->author);
+        tuple_associate_string(ti, "artist", in->author);
     if(strlen(in->album))
-        input->album_name = strdup(in->album);
+        tuple_associate_string(ti, "album", in->album);
     if(strlen(in->comment))
-        input->comment = strdup(in->comment);
+        tuple_associate_string(ti, "comment", in->comment);
     if(strlen(in->genre))
-        input->genre = strdup(in->genre);
+        tuple_associate_string(ti, "genre", in->genre);
     if(in->year > 0)
-       input->year = in->year;
+        tuple_associate_int(ti, "year", in->year);
     if(in->track > 0)
-        input->track_number = in->track;
+        tuple_associate_int(ti, "track", in->track);
+    if (in->duration)
+        tuple_associate_int(ti, "length", in->duration / 1000);
+    
+    ret = tuple_formatter_process_string(ti, cfg.gentitle_format);
 
-    input->file_name = g_path_get_basename(filename);
-    input->file_path = g_path_get_dirname(filename);
-    input->file_ext = extname(filename);
-    ret = xmms_get_titlestring(xmms_get_gentitle_format(), input);
-    if(input) g_free(input);
-
-    if(!ret)
-    {
-	    ret = g_strdup(input->file_name);
-            if (extname(ret) != NULL)
-                    *(extname(ret) - 1) = '\0';
-    }
     return ret;
 }
 
@@ -325,13 +318,13 @@ static guint get_song_time(AVFormatContext *in)
 
 static void wma_get_song_info(char *filename, char **title_real, int *len_real)
 {
-    TitleInput *tuple = wma_get_song_tuple(filename);
+    Tuple *tuple = wma_get_song_tuple(filename);
 
     if (tuple == NULL)
         return;
 
-    (*len_real) = tuple->length;
-    (*title_real) = xmms_get_titlestring(xmms_get_gentitle_format(), tuple);
+    (*len_real) = tuple_get_int(tuple, "length");
+    (*title_real) = tuple_formatter_process_string(tuple, cfg.gentitle_format);
 }
 
 static void wma_playbuff(InputPlayback *playback, int out_size)

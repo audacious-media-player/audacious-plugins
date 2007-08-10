@@ -8,7 +8,7 @@ extern "C"
 #include "audacious/output.h"
 #include "audacious/util.h"
 #include "audacious/configdb.h"
-#include "audacious/titlestring.h"
+#include "audacious/main.h"
 #include "audacious/vfs.h"
 #include <audacious/i18n.h>
 #include "../../config.h"
@@ -134,7 +134,7 @@ static double     getOffset();
 static void       setOffset(double);
 static bool       isPause();
 static void       setReplaygain(mpc_streaminfo&, mpc_decoder&);
-static TitleInput* mpcGetSongTuple(char *);
+static Tuple *    mpcGetSongTuple(char *);
 
 #ifdef MPC_FIXED_POINT
 inline static int shiftSigned(MPC_SAMPLE_FORMAT val, int shift)

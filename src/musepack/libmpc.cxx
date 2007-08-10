@@ -346,30 +346,28 @@ static int mpcGetTime(InputPlayback *data)
     return data->output->output_time();
 }
 
-static TitleInput *mpcGetSongTuple(char* p_Filename)
+static Tuple *mpcGetSongTuple(char* p_Filename)
 {
     VFSFile *input = vfs_fopen(p_Filename, "rb");
-    TitleInput *tuple = NULL;
+    Tuple *tuple = NULL;
 
     if(input)
     {
-        tuple = bmp_title_input_new();
-        gchar *filename_proxy = g_strdup(p_Filename);
-
-        tuple->file_name = g_path_get_basename(filename_proxy);
-        tuple->file_path = g_path_get_dirname(filename_proxy);
-        tuple->file_ext = "mpc";		// XXX: I can't be assed. -nenolod
+        tuple = tuple_new_from_filename(p_Filename);
 
         MpcInfo tags = getTags(p_Filename);
 
-        tuple->date         = g_strdup(tags.date);
-        tuple->track_name   = g_strdup(tags.title);
-        tuple->performer    = g_strdup(tags.artist);
-        tuple->album_name   = g_strdup(tags.album);
-        tuple->track_number = tags.track;
-        tuple->year         = tags.year;
-        tuple->genre        = g_strdup(tags.genre);
-        tuple->comment      = g_strdup(tags.comment);
+        tuple_associate_string(tuple, "date", tags.date);
+        tuple_associate_string(tuple, "title", tags.title);
+        tuple_associate_string(tuple, "artist", tags.artist);
+        tuple_associate_string(tuple, "album", tags.album);
+        tuple_associate_int(tuple, "track-number", tags.track);
+        tuple_associate_int(tuple, "year", tags.year);
+        tuple_associate_string(tuple, "genre", tags.genre);
+        tuple_associate_string(tuple, "comment", tags.comment);
+
+        tuple_associate_string(tuple, "codec", "Musepack");
+        tuple_associate_string(tuple, "quality", "lossy");
 
         freeTags(tags);
 
@@ -378,7 +376,7 @@ static TitleInput *mpcGetSongTuple(char* p_Filename)
         mpc_reader_setup_file_vfs(&reader, input);
         mpc_streaminfo_read(&info, &reader.reader);
 
-        tuple->length = static_cast<int> (1000 * mpc_streaminfo_get_length(&info));
+        tuple_associate_int(tuple, "length", static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
         vfs_fclose(input);
     }
     else
@@ -733,15 +731,14 @@ static void closeInfoBox(GtkWidget* w, gpointer data)
 
 static char* mpcGenerateTitle(const MpcInfo& p_Tags, char* p_Filename)
 {
-    TitleInput* tuple = mpcGetSongTuple(p_Filename);
+    Tuple* tuple = mpcGetSongTuple(p_Filename);
 
-    char* title = xmms_get_titlestring (xmms_get_gentitle_format(), tuple);
-    if(!title)
-        title = g_strdup(tuple->file_name);
-    else if (!*title)
-        title = g_strdup(tuple->file_name);
+    char* title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
 
-    bmp_title_input_free(tuple);
+    if (!*title)
+        title = g_strdup(tuple_get_string(tuple, "file-name"));
+
+    mowgli_object_unref((void *) tuple);
     return title;
 }
 
