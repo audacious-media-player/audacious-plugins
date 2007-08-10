@@ -13,7 +13,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  */
-
+#ifdef DAAP_MDNS_AVAHI
 #include "daap_mdns_browse.h"
 
 #include <string.h>
@@ -264,4 +264,5 @@ daap_mdns_destroy ()
 {
 	/* FIXME: deinit avahi */
 }
+#endif
 

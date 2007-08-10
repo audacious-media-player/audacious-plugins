@@ -35,7 +35,7 @@
 #define CONTENT_LENGTH "Content-Length: "
 #define CONTENT_TYPE "Content-Type: "
 /* TODO does this work ok? */
-#define USER_AGENT VERSION
+#define USER_AGENT "Audacious"
 /*#define USER_AGENT "iTunes/4.6 (Windows; N)"*/
 
 GIOChannel *

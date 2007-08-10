@@ -12,6 +12,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  */
+#ifdef DAAP_MDNS_DNSSD
 
 #include <glib.h>
 #include <dns_sd.h>
@@ -182,7 +183,7 @@ browse_reply (DNSServiceRef client,
 		err = DNSServiceResolve (&ud2->client, 0, kDNSServiceInterfaceIndexAny,
 		                         server->mdnsname,
 		                         "_daap._tcp", "local",
-		                         resolve_reply, ud2);
+		                         (DNSServiceResolveReply)resolve_reply, ud2);
 
 		if (err != kDNSServiceErr_NoError) {
 			g_warning ("Couldn't do ServiceResolv");
@@ -332,7 +333,7 @@ g_mdns_browse (GMDNS *mdns,
 	                        service, 0, browse_reply, ud);
 
 	if (err != kDNSServiceErr_NoError) {
-		g_warning ("Couldn't setup mDNS poller");
+		g_warning ("Couldn't setup mDNS poller, error = %d",err);
 		return FALSE;
 	}
 
@@ -415,4 +416,4 @@ daap_mdns_initialize ()
 	g_mdns->mutex = g_mutex_new ();
 	return g_mdns_browse (g_mdns, "_daap._tcp", NULL, NULL);
 }
-
+#endif

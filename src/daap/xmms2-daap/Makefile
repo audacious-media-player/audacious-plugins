@@ -14,11 +14,14 @@ SOURCES= cc_handlers.c \
 
 #		 daap_xform.c 
 LIBADD = $(GLIB_LIBS) 
- 
 
-CFLAGS = $(GLIB_CFLAGS)  -I/usr/include   -std=c99 -Wall # -H -v
+#For the moment i'm hardcoding it but it will be configurable
+#MDNS_IMPL=DAAP_MDNS_DNSSD
+MDNS_IMPL=DAAP_MDNS_AVAHI
+#MDNS_IMPL=DAAP_MDNS_DUMMY 
 
-#CFLAGS += $(PICFLAGS) $(ARCH_DEFINES) $(CURL_CFLAGS) -c -I../../../intl -I../../.. -I/usr/include -Wall   -std=c99 -H -v
+CFLAGS = $(GLIB_CFLAGS) $(PICFLAGS) -std=c99 -Wall -D_POSIX_SOURCE -D$(MDNS_IMPL) 
+
 OBJECTS=${SOURCES:.c=.o}
 
 include ../../../mk/objective.mk
