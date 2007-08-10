@@ -37,10 +37,12 @@
 #include <math.h>
 #include <stdio.h>
 
-#include <audacious/plugin.h>
-#include <audacious/util.h>
-#include <audacious/titlestring.h>
-#include <audacious/i18n.h>
+#include "audacious/plugin.h"
+#include "audacious/util.h"
+#include "audacious/i18n.h"
+#include "audacious/main.h"
+#include "audacious/tuple.h"
+#include "audacious/tuple_formatter.h"
 #include "audacious/output.h"
 #include "wav-sndfile.h"
 
@@ -328,19 +330,15 @@ get_song_info (char *filename, char **title, int *length)
 	(*title) = get_title(filename);
 }
 
-static TitleInput*
+static Tuple*
 get_song_tuple (gchar *filename)
 {
-	gchar *realfn = NULL; 
-	TitleInput *tuple = bmp_title_input_new();
+	Tuple *ti = tuple_new_from_filename(filename);
+	tuple_associate_string(ti, "codec", "libsndfile");
+	tuple_associate_string(ti, "quality", "lossless");
+	tuple_associate_int(ti, "length", get_song_length(filename));
 
-        realfn = g_filename_from_uri(filename, NULL, NULL);
-        tuple->file_name = g_path_get_basename(realfn ? realfn : filename);
-        tuple->file_path = g_path_get_dirname(realfn ? realfn : filename); 
-	tuple->length = get_song_length(filename);
-        g_free(realfn); realfn = NULL;
-
-	return tuple;
+	return ti;
 }
 
 static void wav_about(void)

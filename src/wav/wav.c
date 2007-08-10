@@ -210,17 +210,7 @@ get_title(const gchar * filename)
     gchar *title;
     gchar *scratch;
 
-    tuple = tuple_new();
-
-    scratch = g_path_get_basename(filename);
-    tuple_associate_string(tuple, "file-name", scratch);
-    g_free(scratch);
-
-    tuple_associate_string(tuple, "file-ext", get_extension(filename));
-
-    scratch = g_path_get_dirname(filename);
-    tuple_associate_string(tuple, "file-path", scratch);
-    g_free(scratch);
+    tuple = tuple_new_from_filename(filename);
 
     tuple_associate_string(tuple, "codec", "RIFF/WAV Audio (ADPCM)");
     tuple_associate_string(tuple, "quality", "lossless");
