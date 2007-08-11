@@ -687,8 +687,8 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             }
 
 #ifdef DEBUG
-            g_message("audmad_get_song_tuple: track_name = %s", tuple->track_name);
-            g_message("audmad_get_song_tuple: stream_name = %s", tuple->album_name);
+            g_message("audmad_get_song_tuple: track_name = %s", tuple_get_string(tuple, "track-name"));
+            g_message("audmad_get_song_tuple: stream_name = %s", tuple_get_string(tuple, "stream-name"));
 #endif
             realfn = g_filename_from_uri(filename, NULL, NULL);
             __set_and_free(tuple, "file-name", g_path_get_basename(realfn ? realfn : filename));
@@ -776,7 +776,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             __set_and_free(tuple, "genre", input_id3_get_string(tag, ID3_FRAME_GENRE));
             __set_and_free(tuple, "comment", input_id3_get_string(tag, ID3_FRAME_COMMENT));
 #ifdef DEBUG
-            g_message("genre = %s", tuple->genre);
+            g_message("genre = %s", tuple_get_string(tuple, "genre"));
 #endif
         }
         id3_file_close(id3file);
