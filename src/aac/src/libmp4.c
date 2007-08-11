@@ -462,7 +462,7 @@ static gchar   *mp4_get_song_title(char *filename)
 
     title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
 
-    mowgli_object_unref(tuple);
+    tuple_free(tuple);
 
     return title;
 }

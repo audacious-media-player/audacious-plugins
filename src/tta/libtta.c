@@ -193,7 +193,7 @@ get_song_info (char *filename, char **title, int *length)
     	    *title = get_song_title(tuple);
 	}
 
-	mowgli_object_unref(tuple);
+	tuple_free(tuple);
 }
 
 static void *
@@ -503,7 +503,7 @@ play_file (InputPlayback *playback)
 
 	tuple = get_song_tuple(filename);
 	title = get_song_title(tuple);
-	mowgli_object_unref(tuple);
+	tuple_free(tuple);
 
 	datasize = file_size(filename) - info.DATAPOS;
 	origsize = info.DATALENGTH * info.BSIZE * info.NCH;

@@ -242,7 +242,7 @@ static char* format_and_free_ti( Tuple* ti, int* length )
 	char* result = tuple_formatter_process_string(ti, cfg.gentitle_format);
 	if ( result )
 		*length = tuple_get_int(ti, "length");
-	mowgli_object_unref((void *) ti);
+	tuple_free((void *) ti);
 
 	return result;
 }

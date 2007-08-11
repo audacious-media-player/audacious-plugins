@@ -739,7 +739,7 @@ static char* mpcGenerateTitle(const MpcInfo& p_Tags, char* p_Filename)
     if (!*title)
         title = g_strdup(tuple_get_string(tuple, "file-name"));
 
-    mowgli_object_unref((void *) tuple);
+    tuple_free((void *) tuple);
     return title;
 }
 

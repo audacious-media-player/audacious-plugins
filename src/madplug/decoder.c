@@ -708,7 +708,7 @@ gpointer decode_loop(gpointer arg)
     g_message("e: decode");
 #endif                          /* DEBUG */
 
-    mowgli_object_unref(info->tuple);
+    tuple_free(info->tuple);
     info->tuple = NULL;
 
     info->playback->output->close_audio();

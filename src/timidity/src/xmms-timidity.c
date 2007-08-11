@@ -314,7 +314,7 @@ static gchar *xmmstimid_get_title(gchar *filename) {
 	if (title == NULL || *title == '\0')
 		title = g_strdup(tuple_get_string(input, "file-name"));
 
-	mowgli_object_unref(input);
+	tuple_free(input);
 
 	return title;
 }

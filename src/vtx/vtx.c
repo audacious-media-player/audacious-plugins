@@ -241,7 +241,7 @@ void vtx_play_file (InputPlayback *playback)
 
       g_free (buf);
 
-      mowgli_object_unref(ti);
+      tuple_free(ti);
 
       playback->playing = TRUE;
       play_thread = g_thread_self();
@@ -302,7 +302,7 @@ vtx_get_song_info (char *filename, char **title, int *length)
     *length = tuple_get_int(ti, "length");
 
     ayemu_vtx_free (&tmp);
-    mowgli_object_unref(ti);
+    tuple_free(ti);
   }
 }
 

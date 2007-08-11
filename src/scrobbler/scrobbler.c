@@ -889,7 +889,7 @@ static void read_cache(void)
 
 			item = q_put(tuple, atoi(len));
 
-			mowgli_object_unref(tuple);
+			tuple_free(tuple);
 		}
 
 		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",

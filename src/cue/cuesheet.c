@@ -295,7 +295,7 @@ static Tuple *get_tuple_uri(gchar *uri)
 
     tuple_associate_int(out, "length", tuple_get_int(phys_tuple, "length"));
 
-    mowgli_object_unref(phys_tuple);
+    tuple_free(phys_tuple);
 
     tuple_associate_string(out, "title", cue_tracks[track].title);
     tuple_associate_string(out, "artist", cue_tracks[track].performer ?
@@ -327,7 +327,7 @@ static void get_song_info(gchar *uri, gchar **title, gint *length)
 	*title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
 	*length = tuple_get_int(tuple, "length");
 
-	mowgli_object_unref(tuple);
+	tuple_free(tuple);
 }
 
 static void seek(InputPlayback * data, gint time)

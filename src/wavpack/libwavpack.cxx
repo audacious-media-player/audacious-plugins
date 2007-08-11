@@ -410,7 +410,7 @@ generate_title(const char *fn, WavpackContext *ctx)
     if (!displaytitle || *displaytitle == '\0')
         displaytitle = g_strdup(fn);
 
-    mowgli_object_unref((void *) ti);
+    tuple_free((void *) ti);
 
     return displaytitle;
 }

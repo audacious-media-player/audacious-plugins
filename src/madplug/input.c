@@ -664,7 +664,7 @@ gboolean input_term(struct mad_info_t * info)
         g_free(info->mp3gain_minmax_str);
 
     if (info->tuple) {
-        mowgli_object_unref(info->tuple);
+        tuple_free(info->tuple);
         info->tuple = NULL;
     }
 

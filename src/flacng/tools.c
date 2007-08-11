@@ -286,7 +286,7 @@ gchar* get_title(const gchar* filename, callback_info* info) {
 
     title = tuple_formatter_process_string(input, cfg.gentitle_format);
 
-    mowgli_object_unref(input);
+    tuple_free(input);
 
     _DEBUG("Title created: <%s>", title);
 

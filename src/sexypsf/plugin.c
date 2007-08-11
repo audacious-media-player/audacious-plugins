@@ -252,7 +252,7 @@ static gchar *get_title_psf(gchar *fn) {
 
     if (tuple != NULL) {
         title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
-        mowgli_object_unref(tuple);
+        tuple_free(tuple);
     }
     else
         title = g_path_get_basename(fn);

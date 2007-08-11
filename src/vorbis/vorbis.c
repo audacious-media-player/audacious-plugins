@@ -611,7 +611,7 @@ vorbis_get_song_info(char *filename, char **title, int *length)
     *title = tuple_formatter_process_string(tuple, vorbis_cfg.tag_override ?
                                   vorbis_cfg.tag_format : cfg.gentitle_format);
 
-    mowgli_object_unref(tuple);
+    tuple_free(tuple);
 }
 
 static const gchar *
@@ -845,7 +845,7 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
 	g_free(tmp);
     }
 
-    mowgli_object_unref(input);
+    tuple_free(input);
 
     return displaytitle;
 }
