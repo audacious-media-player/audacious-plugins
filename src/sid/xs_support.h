@@ -15,10 +15,12 @@ extern "C" {
 #ifdef AUDACIOUS_PLUGIN
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/util.h>  
+#include <audacious/util.h>
+#include <audacious/tuple.h>
 #else
 #include <xmms/plugin.h>
 #include <xmms/util.h>
+#include <xmms/titlestring.h>
 #endif
 
 #ifdef HAVE_ASSERT_H
@@ -39,6 +41,13 @@ extern "C" {
 #include <memory.h>
 #endif
 
+
+/* Metadata structures */
+#ifdef AUDACIOUS_PLUGIN
+#define t_xs_tuple Tuple
+#else
+#define t_xs_tuple TitleInput
+#endif
 
 /* VFS replacement functions
  */

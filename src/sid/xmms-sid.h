@@ -189,7 +189,7 @@ void	xs_pause(InputPlayback *, short);
 void	xs_seek(InputPlayback *, gint);
 gint	xs_get_time(InputPlayback *);
 void	xs_get_song_info(gchar *, gchar **, gint *);
-TitleInput *xs_get_song_tuple(gchar *);
+t_xs_tuple *xs_get_song_tuple(gchar *);
 void	xs_about(void);
 
 

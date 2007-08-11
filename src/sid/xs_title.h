@@ -9,7 +9,7 @@ extern "C" {
 
 gchar *xs_make_titlestring(t_xs_tuneinfo *, gint);
 #ifdef AUDACIOUS_PLUGIN
-TitleInput * xs_make_titletuple(t_xs_tuneinfo *p, gint subTune);
+t_xs_tuple *xs_make_titletuple(t_xs_tuneinfo *p, gint subTune);
 #endif
 
 #ifdef __cplusplus

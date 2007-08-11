@@ -23,12 +23,6 @@
 #include "xs_title.h"
 #include "xs_support.h"
 #include "xs_config.h"
-#ifdef AUDACIOUS_PLUGIN
-#include <audacious/titlestring.h>
-#else
-#include <xmms/titlestring.h>
-#endif
-
 
 static void xs_path_split(gchar *path, gchar **tmpFilename, gchar **tmpFilePath, gchar **tmpFileExt)
 {
@@ -57,18 +51,24 @@ static void xs_path_split(gchar *path, gchar **tmpFilename, gchar **tmpFilePath,
 #if defined(HAVE_XMMSEXTRA) || defined(AUDACIOUS_PLUGIN)
 /* Tuple support
  */
-static TitleInput * xs_get_titletuple(gchar *tmpFilename, gchar *tmpFilePath,
+static t_xs_tuple * xs_get_titletuple(gchar *tmpFilename, gchar *tmpFilePath,
 	gchar *tmpFileExt, t_xs_tuneinfo *p, gint subTune)
 {
-	TitleInput *pResult;
-	
+   t_xs_tuple *pResult;
 #ifdef AUDACIOUS_PLUGIN
-	pResult = bmp_title_input_new();
+	pResult = tuple_new();
+	tuple_associate_string(pResult, "title", p->sidName);
+	tuple_associate_string(pResult, "artist", p->sidComposer);
+	tuple_associate_string(pResult, "file-name", tmpFilename);
+	tuple_associate_string(pResult, "file-ext", tmpFileExt);
+	tuple_associate_string(pResult, "file-path", tmpFilePath);
+	tuple_associate_int(pResult, "track-number", subTune);
+	tuple_associate_string(pResult, "genre", "SID-tune");
+	tuple_associate_string(pResult, "comment", p->sidCopyright);
 #else
 	pResult = (TitleInput *) g_malloc0(sizeof(TitleInput));
 	pResult->__size = XMMS_TITLEINPUT_SIZE;
 	pResult->__version = XMMS_TITLEINPUT_VERSION;
-#endif
 
 	/* Create the input fields */
 	pResult->file_name = tmpFilename;
@@ -84,12 +84,12 @@ static TitleInput * xs_get_titletuple(gchar *tmpFilename, gchar *tmpFilePath,
 	pResult->year = 0;
 	pResult->genre = g_strdup("SID-tune");
 	pResult->comment = g_strdup(p->sidCopyright);
-	
+#endif	
 	return pResult;
 }
 
 #ifdef AUDACIOUS_PLUGIN
-TitleInput * xs_make_titletuple(t_xs_tuneinfo *p, gint subTune)
+t_xs_tuple * xs_make_titletuple(t_xs_tuneinfo *p, gint subTune)
 {
 	gchar *tmpFilename, *tmpFilePath, *tmpFileExt;
 
@@ -137,9 +137,16 @@ gchar *xs_make_titlestring(t_xs_tuneinfo *p, gint subTune)
 
 
 	/* Check if the titles are overridden or not */
-#if defined(HAVE_XMMSEXTRA) || defined(AUDACIOUS_PLUGIN)
-	if (!xs_cfg.titleOverride) {
-		TitleInput *pTuple = xs_get_titletuple(
+#if defined(AUDACIOUS_PLUGIN)
+   if (!xs_cfg.titleOverride) {
+		t_xs_tuple *pTuple = xs_get_titletuple(
+			tmpFilename, tmpFilePath, tmpFileExt, p, subTune);
+		pcResult = tuple_formatter_process_string(pTuple, get_gentitle_format());
+		tuple_free(pTuple);
+	} else
+#elif defined(HAVE_XMMSEXTRA)
+   if (!xs_cfg.titleOverride) {
+		t_xs_tuple *pTuple = xs_get_titletuple(
 			tmpFilename, tmpFilePath, tmpFileExt, p, subTune);
 		
 		pcResult = xmms_get_titlestring(xmms_get_gentitle_format(), pTuple);
@@ -151,7 +158,7 @@ gchar *xs_make_titlestring(t_xs_tuneinfo *p, gint subTune)
 		g_free(pTuple->genre);
 		g_free(pTuple->comment);
 		g_free(pTuple);
-	} else 
+	} else
 #endif
 	{
 		/* Create the string */

@@ -940,10 +940,10 @@ void xs_get_song_info(gchar * songFilename, gchar ** songTitle, gint * songLengt
 }
 
 
-TitleInput * xs_get_song_tuple(gchar *songFilename)
+t_xs_tuple * xs_get_song_tuple(gchar *songFilename)
 {
 	t_xs_tuneinfo *pInfo;
-	TitleInput *pResult = NULL;
+	t_xs_tuple *pResult = NULL;
 
 	/* Get tune information from emulation engine */
 	pInfo = xs_status.sidPlayer->plrGetSIDInfo(songFilename);
@@ -957,10 +957,17 @@ TitleInput * xs_get_song_tuple(gchar *songFilename)
 		pResult = xs_make_titletuple(pInfo, pInfo->startTune);
 
 		tmpInt = pInfo->subTunes[pInfo->startTune-1].tuneLength;
+#ifdef AUDACIOUS_PLUGIN
+		if (tmpInt < 0)
+			tuple_associate_int(pResult, "length", -1);
+		else
+		   tuple_associate_int(pResult, "length", tmpInt * 1000);
+#else
 		if (tmpInt < 0)
 			pResult->length = -1;
 		else
 			pResult->length = (tmpInt * 1000);
+#endif
 	}
 
 	/* Free tune information */
