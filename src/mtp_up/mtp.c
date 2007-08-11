@@ -23,6 +23,10 @@
 #include <audacious/ui_plugin_menu.h>
 #define DEBUG 1
 
+#define DEFAULT_LABEL "Upload to MTP device"
+#define DISABLED_LABEL "MTP upload in progress..."
+
+
 GMutex * mutex = NULL; 
 gboolean mtp_initialised = FALSE;
 LIBMTP_mtpdevice_t *mtp_device = NULL;
@@ -126,7 +130,10 @@ gpointer upload(gpointer arg)
         return NULL;
     g_mutex_lock(mutex);
     if(!mtp_device)
-        return NULL;
+        {
+            g_mutex_unlock(mutex); 
+            return NULL;
+        }
     gchar* from_path;
     GList *up_list=NULL,*node;
     node=up_list=get_upload_list();
@@ -138,6 +145,10 @@ gpointer upload(gpointer arg)
     }
     g_list_free(up_list);
     g_mutex_unlock(mutex);
+
+    gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
+    gtk_widget_set_sensitive(menuitem, TRUE);
+  
     return NULL;
 }
 
@@ -177,12 +188,14 @@ void mtp_press()
         return;
 
     }
+    gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DISABLED_LABEL);
+    gtk_widget_set_sensitive(menuitem, FALSE);
     g_thread_create(upload,NULL,FALSE,NULL);    
 }
 
 void mtp_init(void)
 {
-    menuitem=gtk_menu_item_new_with_label("Upload to MTP");
+    menuitem=gtk_menu_item_new_with_label(DEFAULT_LABEL);
     gtk_widget_show (menuitem);
     audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, menuitem);
     g_signal_connect (G_OBJECT (menuitem), "button_press_event",G_CALLBACK (mtp_press), NULL);  
