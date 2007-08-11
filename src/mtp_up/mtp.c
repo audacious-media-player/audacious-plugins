@@ -30,6 +30,8 @@ LIBMTP_progressfunc_t *callback;
 LIBMTP_file_t *filelist;
 Playlist *active_playlist;
 
+static gboolean plugin_active = FALSE;
+
 void mtp_init ( void );
 void mtp_cleanup ( void );
 void mtp_prefs ( void );
@@ -156,15 +158,21 @@ void mtp_init(void)
     g_signal_connect (G_OBJECT (menuitem), "button_press_event",G_CALLBACK (mtp_press), NULL);  
     LIBMTP_Init();
     mutex = g_mutex_new();
+    plugin_active = TRUE;
 }
 
 void mtp_cleanup(void)
 {
+    if (plugin_active)
+    {
 #if DEBUG
-    g_print("Cleaning up MTP_upload\n");
+        g_print("Cleaning up MTP_upload\n");
 #endif
-    audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST, menuitem );
-    g_mutex_free (mutex);
-    mutex = NULL;
+        audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST_RCLICK, menuitem);
+        gtk_widget_destroy(menuitem);
+        g_mutex_free (mutex);
+        mutex = NULL;
+        plugin_active = FALSE;
+    }
 }
 
