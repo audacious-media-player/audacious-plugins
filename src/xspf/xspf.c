@@ -491,7 +491,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
         if(entry->tuple != NULL) {
             const gchar *scratch;
 
-            if((scratch = tuple_get_string(entry->tuple, "track-name")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, "title")) != NULL &&
                g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"title");
                 xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
