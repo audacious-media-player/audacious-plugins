@@ -1072,9 +1072,6 @@ if test "$beep_cv_newpcm_driver" = "yes"; then
 fi
 
 
-AC_CHECK_HEADERS(linux/cdrom.h)
-AC_CHECK_HEADERS(sys/cdio.h)
-AC_CHECK_HEADERS(sys/cdrio.h)
 AC_CHECK_HEADERS(linux/joystick.h)
 AC_CHECK_HEADERS(unistd.h)
 AC_CHECK_HEADERS(fcntl.h)
@@ -1101,15 +1098,24 @@ AC_ARG_ENABLE(cdaudio,
 
 if test "$enable_cdaudio_ng" = "yes"; then
    PKG_CHECK_MODULES(CDIO, [libcdio >= 0.70],
-   [INPUT_PLUGINS="$INPUT_PLUGINS cdaudio-ng"
-   CDIO_LIBS=`pkg-config --libs libcdio_cdda`
-   CDIO_CFLAGS=`pkg-config --cflags libcdio_cdda`
-   AC_SUBST(CDIO_LIBS)
-   AC_SUBST(CDIO_CFLAGS)],
+   ,
    [AC_MSG_WARN([*** Cannot find libcdio 0.70 or newer, cdaudio-ng will not be built ***])
    enable_cdaudio_ng=no]
 )
+fi
 
+if test "$enable_cdaudio_ng" = "yes"; then
+   PKG_CHECK_MODULES(CDIO, [libcdio_cdda >= 0.70],
+   [CDIO_LIBS=`pkg-config --libs libcdio_cdda`
+   CDIO_CFLAGS=`pkg-config --cflags libcdio_cdda`
+   AC_SUBST(CDIO_LIBS)
+   AC_SUBST(CDIO_CFLAGS)],
+   [AC_MSG_WARN([*** Cannot find libcdio_cdda 0.70 or newer, cdaudio-ng will not be built ***])
+   enable_cdaudio_ng=no] 
+)
+fi
+
+if test "$enable_cdaudio_ng" = "yes"; then
    PKG_CHECK_MODULES(CDDB, [libcddb >= 1.2.1],
    [INPUT_PLUGINS="$INPUT_PLUGINS cdaudio-ng"
    CDDB_LIBS=`pkg-config --libs libcddb`
@@ -1120,7 +1126,6 @@ if test "$enable_cdaudio_ng" = "yes"; then
    enable_cdaudio_ng=no]
 )
 fi
-
 
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
