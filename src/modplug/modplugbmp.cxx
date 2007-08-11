@@ -25,6 +25,7 @@ extern "C" {
 ModplugXMMS::ModplugXMMS()
 {
 	mSoundFile = new CSoundFile;
+	mOutPlug = NULL;
 }
 ModplugXMMS::~ModplugXMMS()
 {
@@ -490,7 +491,7 @@ void ModplugXMMS::Seek(float32 aTime)
 
 float32 ModplugXMMS::GetTime(void)
 {
-	if(mStopped)
+	if ((mStopped) || (!mOutPlug))
 		return -1;
 	return (float32)mOutPlug->output_time() / 1000;
 }
