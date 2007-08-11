@@ -92,7 +92,7 @@ InputPlugin wav_ip = {
     file_mseek,
 };
 
-int
+static int
 get_song_length (char *filename)
 {
 	SNDFILE	*tmp_sndfile;
@@ -114,6 +114,96 @@ get_song_length (char *filename)
 		return 0;
 
 	return (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate);
+}
+
+static void
+fill_song_tuple (char *filename, Tuple *ti)
+{
+	SNDFILE	*tmp_sndfile;
+	SF_INFO tmp_sfinfo;
+	gchar *realfn = NULL;
+
+	realfn = g_filename_from_uri(filename, NULL, NULL);
+	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
+	g_free(realfn); realfn = NULL;
+
+	if (!tmp_sndfile)
+		return;
+
+	sf_close (tmp_sndfile);
+	tmp_sndfile = NULL;
+
+	if (tmp_sfinfo.samplerate > 0)
+		tuple_associate_int(ti, "length", (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
+
+	switch (tmp_sfinfo.format & SF_FORMAT_TYPEMASK)
+	{
+		case SF_FORMAT_WAV:
+			tuple_associate_string(ti, "codec", "Microsoft WAV (little endian)");
+			break;
+		case SF_FORMAT_AIFF:
+			tuple_associate_string(ti, "codec", "Apple/SGI AIFF (big endian)");
+			break;
+		case SF_FORMAT_AU:
+			tuple_associate_string(ti, "codec", "Sun/NeXT AU (big endian)");
+			break;
+		case SF_FORMAT_RAW:
+			tuple_associate_string(ti, "codec", "Raw PCM data");
+			break;
+		case SF_FORMAT_PAF:
+			tuple_associate_string(ti, "codec", "Ensoniq PARIS");
+			break;
+		case SF_FORMAT_SVX:
+			tuple_associate_string(ti, "codec", "Amiga IFF / SVX8 / SV16");
+			break;
+		case SF_FORMAT_NIST:
+			tuple_associate_string(ti, "codec", "Sphere NIST");
+			break;
+		case SF_FORMAT_VOC:
+			tuple_associate_string(ti, "codec", "Creative Voice (VOC)");
+			break;
+		case SF_FORMAT_IRCAM:
+			tuple_associate_string(ti, "codec", "Berkeley/IRCAM/CARL");
+			break;
+		case SF_FORMAT_W64:
+			tuple_associate_string(ti, "codec", "Sonic Foundry's 64 bit RIFF/WAV");
+			break;
+		case SF_FORMAT_MAT4:
+			tuple_associate_string(ti, "codec", "Matlab (tm) V4.2 / GNU Octave 2.0");
+			break;
+		case SF_FORMAT_MAT5:
+			tuple_associate_string(ti, "codec", "Matlab (tm) V5.0 / GNU Octave 2.1");
+			break;
+		case SF_FORMAT_PVF:
+			tuple_associate_string(ti, "codec", "Portable Voice Format");
+			break;
+		case SF_FORMAT_XI:
+			tuple_associate_string(ti, "codec", "Fasttracker 2 Extended Instrument");
+			break;
+		case SF_FORMAT_HTK:
+			tuple_associate_string(ti, "codec", "HMM Tool Kit");
+			break;
+		case SF_FORMAT_SDS:
+			tuple_associate_string(ti, "codec", "Midi Sample Dump Standard");
+			break;
+		case SF_FORMAT_AVR:
+			tuple_associate_string(ti, "codec", "Audio Visual Research");
+			break;
+		case SF_FORMAT_WAVEX:
+			tuple_associate_string(ti, "codec", "Microsoft WAV (WAVEFORMATEX)");
+			break;
+		case SF_FORMAT_SD2:
+			tuple_associate_string(ti, "codec", "Sound Designer 2");
+			break;
+		case SF_FORMAT_FLAC:
+			tuple_associate_string(ti, "codec", "Free Lossless Audio Codec");
+			break;
+		case SF_FORMAT_CAF:
+			tuple_associate_string(ti, "codec", "Core Audio File");
+			break;
+		default:
+			tuple_associate_string(ti, "codec", "sndfile (unknown format)");
+	}
 }
 
 static gchar *get_title(char *filename)
@@ -334,10 +424,7 @@ static Tuple*
 get_song_tuple (gchar *filename)
 {
 	Tuple *ti = tuple_new_from_filename(filename);
-	tuple_associate_string(ti, "codec", "libsndfile");
-	tuple_associate_string(ti, "quality", "lossless");
-	tuple_associate_int(ti, "length", get_song_length(filename));
-
+	fill_song_tuple(filename, ti);
 	return ti;
 }
 
