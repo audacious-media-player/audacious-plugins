@@ -59,9 +59,9 @@ static gint				cdaudio_get_volume(gint *l, gint *r);
 static gint				cdaudio_set_volume(gint l, gint r);
 static void				cdaudio_cleanup();
 static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
-static TitleInput		*cdaudio_get_song_tuple(gchar *filename);
+static Tuple			*cdaudio_get_song_tuple(gchar *filename);
 
-static TitleInput		*create_tuple_from_trackinfo(char *filename);
+static Tuple			*create_tuple_from_trackinfo(char *filename);
 static void				dae_play_loop(dae_params_t *pdae_params);
 static int				calculate_track_length(int startlsn, int endlsn);
 static int				find_trackno_from_filename(char *filename);
@@ -447,6 +447,9 @@ GList *cdaudio_scan_dir(gchar *dirname)
 
 void cdaudio_play_file(InputPlayback *pinputplayback)
 {
+	Tuple *tuple;
+	char *title;
+
 	if (debug)
 		printf("cdaudio-ng: cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
 
@@ -482,10 +485,12 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	playing_track = trackno;
 	is_paused = FALSE;
 
-	char *title = xmms_get_titlestring(xmms_get_gentitle_format(), create_tuple_from_trackinfo(pinputplayback->filename));
+	tuple = create_tuple_from_trackinfo(pinputplayback->filename);
+	title = tuple_formatter_process_string(tuple, xmms_get_gentitle_format());
 
 	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
-	free(title);
+	free(title); title = NULL;
+	tuple_free(tuple); tuple = NULL;
 
 	if (use_dae) {
 		if (debug)
@@ -728,12 +733,17 @@ void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 		printf("cdaudio-ng: cdaudio_get_song_info(\"%s\")\n", filename);
 
 	int trackno = find_trackno_from_filename(filename);
+	Tuple *tuple = create_tuple_from_trackinfo(filename);
 
-	*title = xmms_get_titlestring(xmms_get_gentitle_format(), create_tuple_from_trackinfo(filename));
+	if(tuple) {
+		*title = tuple_formatter_process_string(tuple, xmms_get_gentitle_format());
+		tuple_free(tuple);
+		tuple = NULL;
+	}
 	*length = calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
 }
 
-TitleInput *cdaudio_get_song_tuple(gchar *filename)
+Tuple *cdaudio_get_song_tuple(gchar *filename)
 {
 	if (debug)
 		printf("cdaudio-ng: cdaudio_get_song_tuple(\"%s\")\n", filename);
@@ -744,26 +754,33 @@ TitleInput *cdaudio_get_song_tuple(gchar *filename)
 
 	/* auxiliar functions */
 
-TitleInput *create_tuple_from_trackinfo(char *filename)
+Tuple *create_tuple_from_trackinfo(char *filename)
 {
 	if (trackinfo == NULL)
 		return NULL;
 
-	TitleInput *tuple = bmp_title_input_new();
+	Tuple *tuple = tuple_new_from_filename(filename);
 	int trackno = find_trackno_from_filename(filename);
 
 	if (trackno < firsttrackno || trackno > lasttrackno)
 		return NULL;
 
-	tuple->performer = strlen(trackinfo[trackno].performer) > 0 ? g_strdup(trackinfo[trackno].performer) : NULL;
-	tuple->album_name = strlen(trackinfo[0].name) > 0 ? g_strdup(trackinfo[0].name) : NULL;
-	tuple->track_name = strlen(trackinfo[trackno].name) > 0 ? g_strdup(trackinfo[trackno].name) : NULL;
-	tuple->track_number = trackno;
-	tuple->file_name = g_strdup(basename(filename));
-	tuple->file_path = g_strdup(basename(filename));
-	tuple->file_ext = g_strdup("cda");
-	tuple->length = calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
-	tuple->genre = strlen(trackinfo[trackno].genre) > 0 ? g_strdup(trackinfo[trackno].genre) : NULL;
+	if(strlen(trackinfo[trackno].performer)) {
+		tuple_associate_string(tuple, "artist", trackinfo[trackno].performer);
+	}
+	if(strlen(trackinfo[0].name)) {
+		tuple_associate_string(tuple, "album", trackinfo[0].name);
+	}
+	if(strlen(trackinfo[trackno].name)) {
+		tuple_associate_string(tuple, "title", trackinfo[trackno].name);
+	}
+	tuple_associate_int(tuple, "track-number", trackno);
+	tuple_associate_string(tuple, "ext", "cda"); //XXX should do? --yaz
+
+	tuple_associate_int(tuple, "length", calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+	if(strlen(trackinfo[trackno].genre)) {
+		tuple_associate_string(tuple, "genre",  trackinfo[trackno].genre);
+	}
 	//tuple->year = 0; todo: set the year
 
 	return tuple;
