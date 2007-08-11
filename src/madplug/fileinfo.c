@@ -519,7 +519,6 @@ void create_window()
     g_signal_connect(G_OBJECT(save), "clicked",
                        G_CALLBACK(save_cb), NULL);
     gtk_box_pack_start(GTK_BOX(bbox), save, TRUE, TRUE, 0);
-    gtk_widget_grab_default(save);
 
     remove_id3 = gtk_button_new_from_stock(GTK_STOCK_DELETE);
     g_signal_connect(G_OBJECT(remove_id3), "clicked",
