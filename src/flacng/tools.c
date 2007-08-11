@@ -241,6 +241,9 @@ Tuple* get_tuple(const gchar* filename, callback_info* info) {
 
     out = tuple_new_from_filename(filename);
 
+    tuple_associate_string(out, "codec", "Free Lossless Audio Codec (FLAC)");
+    tuple_associate_string(out, "quality", "lossless");
+
     tuple_associate_string(out, "artist", info->comment.artist);
     tuple_associate_string(out, "title", info->comment.title);
     tuple_associate_string(out, "album", info->comment.album);
