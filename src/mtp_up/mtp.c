@@ -127,13 +127,20 @@ void upload_file(gchar *from_path)
 gpointer upload(gpointer arg)
 {
     if(!mutex)
-        return NULL;
+       {
+            gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
+            gtk_widget_set_sensitive(menuitem, TRUE);
+            return NULL;
+       }
     g_mutex_lock(mutex);
     if(!mtp_device)
-        {
-            g_mutex_unlock(mutex); 
+       {
+            gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
+            gtk_widget_set_sensitive(menuitem, TRUE);
+            g_mutex_unlock(mutex);
             return NULL;
-        }
+       }
+
     gchar* from_path;
     GList *up_list=NULL,*node;
     node=up_list=get_upload_list();
@@ -144,23 +151,20 @@ gpointer upload(gpointer arg)
         node = g_list_next(node);
     }
     g_list_free(up_list);
-    g_mutex_unlock(mutex);
 
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
     gtk_widget_set_sensitive(menuitem, TRUE);
-  
+    g_mutex_unlock(mutex);
     return NULL;
 }
 
-    void
-mtp_prefs ( void )
+void mtp_prefs ( void )
 {
     /*pref stub*/
 }
 
 
-    void
-mtp_about ( void )
+void mtp_about ( void )
 {
     /*about stub*/
 }
