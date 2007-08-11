@@ -177,7 +177,7 @@ tta_error (int error)
 static gchar *
 get_song_title(Tuple *tuple)
 {
-	return tuple_formatter_process_string(tuple, cfg.gentitle_format);
+	return tuple_formatter_process_string(tuple, get_gentitle_format());
 }
 
 static void

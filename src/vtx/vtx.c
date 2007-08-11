@@ -234,7 +234,7 @@ void vtx_play_file (InputPlayback *playback)
       seek_to = -1;
 
       ti = vtx_get_song_tuple_from_vtx(playback->filename, &vtx);
-      buf = tuple_formatter_process_string(ti, cfg.gentitle_format);
+      buf = tuple_formatter_process_string(ti, get_gentitle_format());
 
       vtx_ip.set_info (buf, vtx.hdr.regdata_size / 14 * 1000 / 50,
  	  	       14 * 50 * 8, freq, bits / 8);
@@ -298,7 +298,7 @@ vtx_get_song_info (char *filename, char **title, int *length)
   if (ayemu_vtx_open (&tmp, filename)) {
     Tuple *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
 
-    *title = tuple_formatter_process_string(ti, cfg.gentitle_format);
+    *title = tuple_formatter_process_string(ti, get_gentitle_format());
     *length = tuple_get_int(ti, "length");
 
     ayemu_vtx_free (&tmp);

@@ -310,7 +310,7 @@ static gchar *xmmstimid_get_title(gchar *filename) {
 
 	input = tuple_new_from_filename(filename);
 
-	title = tuple_formatter_process_string(input, cfg.gentitle_format);
+	title = tuple_formatter_process_string(input, get_gentitle_format());
 	if (title == NULL || *title == '\0')
 		title = g_strdup(tuple_get_string(input, "file-name"));
 

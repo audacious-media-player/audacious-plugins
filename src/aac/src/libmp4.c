@@ -460,7 +460,7 @@ static gchar   *mp4_get_song_title(char *filename)
     gchar *title;
     Tuple *tuple = mp4_get_song_tuple(filename);
 
-    title = tuple_formatter_process_string(tuple, cfg.gentitle_format);
+    title = tuple_formatter_process_string(tuple, get_gentitle_format());
 
     tuple_free(tuple);
 

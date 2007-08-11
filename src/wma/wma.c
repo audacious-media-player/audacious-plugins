@@ -303,7 +303,7 @@ static gchar *get_song_title(AVFormatContext *in, gchar * filename)
     if (in->duration)
         tuple_associate_int(ti, "length", in->duration / 1000);
     
-    ret = tuple_formatter_process_string(ti, cfg.gentitle_format);
+    ret = tuple_formatter_process_string(ti, get_gentitle_format());
 
     return ret;
 }
@@ -324,7 +324,7 @@ static void wma_get_song_info(char *filename, char **title_real, int *len_real)
         return;
 
     (*len_real) = tuple_get_int(tuple, "length");
-    (*title_real) = tuple_formatter_process_string(tuple, cfg.gentitle_format);
+    (*title_real) = tuple_formatter_process_string(tuple, get_gentitle_format());
 }
 
 static void wma_playbuff(InputPlayback *playback, int out_size)
