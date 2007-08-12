@@ -2,7 +2,7 @@
  *  Copyright (C) 2001-2003 Matthieu Sozeau <mattam@altern.org>
  *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2005  Haavard Kvaalen
+ *  Copyright (C) 1999-2006  Haavard Kvaalen
  *  Copyright (C) 2005       Takashi Iwai
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -31,6 +31,7 @@
 
 #include "alsa.h"
 #include <ctype.h>
+#include <math.h>
 #include <audacious/xconvert.h>
 
 static snd_pcm_t *alsa_pcm;
@@ -345,8 +346,6 @@ int alsa_get_mixer(snd_mixer_t **mixer, int card)
 
 	debug("alsa_get_mixer");
 
-	dev = g_strdup_printf("hw:%i", card);
-
 	if ((err = snd_mixer_open(mixer, 0)) < 0)
 	{
 		g_warning("alsa_get_mixer(): Failed to open empty mixer: %s",
@@ -354,12 +353,17 @@ int alsa_get_mixer(snd_mixer_t **mixer, int card)
 		mixer = NULL;
 		return -1;
 	}
+
+	dev = g_strdup_printf("hw:%i", card);
 	if ((err = snd_mixer_attach(*mixer, dev)) < 0)
 	{
 		g_warning("alsa_get_mixer(): Attaching to mixer %s failed: %s",
 			  dev, snd_strerror(-err));
+		g_free(dev);
 		return -1;
 	}
+	g_free(dev);
+
 	if ((err = snd_mixer_selem_register(*mixer, NULL, NULL)) < 0)
 	{
 		g_warning("alsa_get_mixer(): Failed to register mixer: %s",
@@ -372,8 +376,6 @@ int alsa_get_mixer(snd_mixer_t **mixer, int card)
 			  snd_strerror(-err));
 		return -1;
 	}
-
-	g_free(dev);
 
 	return (*mixer != NULL);
 }
@@ -459,7 +461,6 @@ static int alsa_mixer_timeout(void *data)
 	mixer_timeout = 0;
 	mixer_start = TRUE;
 
-	g_message("alsa mixer timed out");
 	return FALSE;
 }
 
@@ -594,10 +595,10 @@ do {										\
 	for (i = 0; i < length; i += 4)						\
 	{									\
 		*ptr = type2##_TO_##endian(type2##_FROM_## endian(*ptr) *	\
-					   alsa_cfg.vol.left / 100);		\
+					   lvol / 256);				\
 		ptr++;								\
 		*ptr = type2##_TO_##endian(type2##_FROM_##endian(*ptr) *	\
-					   alsa_cfg.vol.right / 100);		\
+					   rvol / 256);				\
 		ptr++;								\
 	}									\
 } while (0)
@@ -608,7 +609,7 @@ do {										\
 	for (i = 0; i < length; i += 2)						\
 	{									\
 		*ptr = type2##_TO_##endian(type2##_FROM_## endian(*ptr) *	\
-					   vol / 100);				\
+					   vol / 256);				\
 		ptr++;								\
 	}									\
 } while (0)
@@ -626,9 +627,9 @@ do {							\
 	type *ptr = data;				\
 	for (i = 0; i < length; i += 2)			\
 	{						\
-		*ptr = *ptr * alsa_cfg.vol.left / 100;	\
+		*ptr = *ptr * lvol / 256;		\
 		ptr++;					\
-		*ptr = *ptr * alsa_cfg.vol.right / 100;	\
+		*ptr = *ptr * rvol / 256;		\
 		ptr++;					\
 	}						\
 } while (0)
@@ -638,7 +639,7 @@ do {						\
 	type *ptr = data;			\
 	for (i = 0; i < length; i++)		\
 	{					\
-		*ptr = *ptr * vol / 100;	\
+		*ptr = *ptr * vol / 256;	\
 		ptr++;				\
 	}					\
 } while (0)
@@ -654,14 +655,16 @@ do {						\
 
 static void volume_adjust(void* data, int length, AFormat fmt, int channels)
 {
-	int i, vol;
+	int i, vol, lvol, rvol;
 
 	if ((alsa_cfg.vol.left == 100 && alsa_cfg.vol.right == 100) ||
 	    (channels == 1 &&
 	     (alsa_cfg.vol.left == 100 || alsa_cfg.vol.right == 100)))
 		return;
 
-	vol = MAX(alsa_cfg.vol.left, alsa_cfg.vol.right);
+	lvol = pow(10, (alsa_cfg.vol.left - 100) / 40.0) * 256;
+	rvol = pow(10, (alsa_cfg.vol.right - 100) / 40.0) * 256;
+	vol = MAX(lvol, rvol);
 
 	switch (fmt)
 	{
@@ -971,8 +974,7 @@ static int alsa_setup(struct snd_format *f)
 	int err;
 	snd_pcm_hw_params_t *hwparams;
 	snd_pcm_sw_params_t *swparams;
-	uint alsa_buffer_time;
-	unsigned int alsa_period_time;
+	unsigned int alsa_buffer_time, alsa_period_time;
 	snd_pcm_uframes_t alsa_buffer_size, alsa_period_size;
 
 	debug("alsa_setup");
@@ -1149,11 +1151,11 @@ static int alsa_setup(struct snd_format *f)
 	}
 
 	alsa_can_pause = snd_pcm_hw_params_can_pause(hwparams);
+	debug("can pause: %d", alsa_can_pause);
 
 	snd_pcm_sw_params_alloca(&swparams);
 	snd_pcm_sw_params_current(alsa_pcm, swparams);
 
-	/* This has effect for non-mmap only */
 	if ((err = snd_pcm_sw_params_set_start_threshold(alsa_pcm,
 			swparams, alsa_buffer_size - alsa_period_size) < 0))
 		g_warning("alsa_setup(): setting start "
