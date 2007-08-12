@@ -147,6 +147,8 @@ void cdaudio_init()
 
 	configure_set_variables(/*&use_dae, */&limitspeed, &use_cdtext, &use_cddb, device, &debug, cddb_server, &cddb_port);
 	configure_create_gui();
+	
+	uri_set_plugin("cdda://", &inputplugin);
 }
 
 void cdaudio_about()
