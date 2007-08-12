@@ -425,7 +425,9 @@ static void freeTags(MpcInfo& tags)
 
 static MpcInfo getTags(const char* p_Filename)
 {
-    File oFile(p_Filename, false);
+    gchar *pRealFilename = g_filename_from_uri(p_Filename, NULL, NULL);
+    File oFile(pRealFilename ? pRealFilename : p_Filename, false);
+    g_free(pRealFilename);
     Tag* poTag = oFile.tag();
     MpcInfo tags = {0};
     tags.title   = g_strdup(poTag->title().toCString(true));
