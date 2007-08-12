@@ -141,6 +141,7 @@ static void cue_init(void)
 #ifdef DEBUG
     g_print("watchdog_thread = %p\n", watchdog_thread);
 #endif
+    uri_set_plugin("cue://", &cue_ip);
 }
 
 static void cue_cleanup(void)
