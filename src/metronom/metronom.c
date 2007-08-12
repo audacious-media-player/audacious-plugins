@@ -74,6 +74,11 @@ gdouble tact_form[tact_id_max][tact_form_max]=
 		{1.0,0.5,0.5,0.6,0.5,0.5,0.0,0.0}
 	};
 
+static void metronom_init(void)
+{
+	uri_set_plugin("tact://", &metronom_ip);
+}
+
 static void metronom_about(void)
 {
 	static GtkWidget *box;
@@ -268,7 +273,7 @@ static InputPlugin metronom_ip =
 	NULL,
 	NULL,
 	"Tact Generator",
-	NULL,
+	metronom_init,
 	metronom_about,
 	NULL,
 	metronom_is_our_file,
