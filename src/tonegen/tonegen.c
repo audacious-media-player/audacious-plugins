@@ -42,6 +42,11 @@ static gboolean going;
 static gboolean audio_error;
 static GThread *play_thread;
 
+static void tone_init(void)
+{
+	uri_set_plugin("tone://", &tone_ip);
+}
+
 static void tone_about(void)
 {
 	static GtkWidget *box;
@@ -241,7 +246,7 @@ static InputPlugin tone_ip =
 	NULL,
 	NULL,
 	"Tone Generator", /* Description */
-	NULL,
+	tone_init,
 	tone_about,
 	NULL,
 	tone_is_our_file,
