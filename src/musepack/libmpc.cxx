@@ -367,9 +367,6 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
         tuple_associate_string(tuple, "genre", tags.genre);
         tuple_associate_string(tuple, "comment", tags.comment);
 
-        tuple_associate_string(tuple, "codec", "Musepack");
-        tuple_associate_string(tuple, "quality", "lossy");
-
         freeTags(tags);
 
         mpc_streaminfo info;
@@ -378,6 +375,15 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
         mpc_streaminfo_read(&info, &reader.reader);
 
         tuple_associate_int(tuple, "length", static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
+
+        gchar *scratch = g_strdup_printf("Musepack v%d (encoder %s)", info.stream_version, info.encoder);
+        tuple_associate_string(tuple, "codec", scratch);
+        g_free(scratch);
+
+        scratch = g_strdup_printf("lossy (%s)", info.profile_name);
+        tuple_associate_string(tuple, "quality", scratch);
+        g_free(scratch);
+
         vfs_fclose(input);
     }
     else
