@@ -1,3 +1,21 @@
+/*
+ * Audacious CD Digital Audio plugin
+ *
+ * Copyright (c) 2007 Calin Crisan <ccrisan@gmail.com>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; under version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses>.
+ */
+
 
 #include <string.h>
 #include <stdlib.h>
@@ -21,6 +39,8 @@
 #include <audacious/plugin.h>
 #include <audacious/util.h>
 #include <audacious/output.h>
+#include <audacious/ui_plugin_menu.h>
+#include <audacious/playlist.h>
 #include "config.h"
 
 #include "cdaudio-ng.h"
@@ -44,6 +64,7 @@ static gboolean			debug = FALSE;
 static char				cddb_server[DEF_STRING_LEN];
 static int				cddb_port;
 static InputPlayback	*pglobalinputplayback = NULL;
+static GtkWidget		*main_menu_item, *playlist_menu_item;
 
 static void				cdaudio_init();
 static void				cdaudio_about();
@@ -61,6 +82,7 @@ static void				cdaudio_cleanup();
 static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
 static Tuple			*cdaudio_get_song_tuple(gchar *filename);
 
+static void				menu_click();
 static Tuple			*create_tuple_from_trackinfo(char *filename);
 static void				dae_play_loop(dae_params_t *pdae_params);
 static int				calculate_track_length(int startlsn, int endlsn);
@@ -147,6 +169,18 @@ void cdaudio_init()
 
 	configure_set_variables(/*&use_dae, */&limitspeed, &use_cdtext, &use_cddb, device, &debug, cddb_server, &cddb_port);
 	configure_create_gui();
+
+	main_menu_item = gtk_image_menu_item_new_with_label(MENU_ITEM_TEXT);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+	gtk_widget_show(main_menu_item);
+	audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
+	g_signal_connect(G_OBJECT(main_menu_item), "button_press_event", G_CALLBACK(menu_click), NULL);  
+	
+	playlist_menu_item = gtk_image_menu_item_new_with_label(MENU_ITEM_TEXT);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+	gtk_widget_show(playlist_menu_item);
+	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST, playlist_menu_item);
+	g_signal_connect(G_OBJECT(playlist_menu_item), "button_press_event", G_CALLBACK(menu_click), NULL);  
 	
 	uri_set_plugin("cdda://", &inputplugin);
 }
@@ -755,6 +789,37 @@ Tuple *cdaudio_get_song_tuple(gchar *filename)
 
 
 	/* auxiliar functions */
+
+void menu_click()
+{
+    GList *list, *node;
+    gchar *filename;
+	
+	if (!(list = cdaudio_scan_dir(CDDA_DEFAULT))) {
+	    const gchar *markup =
+	        N_("<b><big>No playable CD found.</big></b>\n\n"
+	           "No CD inserted, or inserted CD is not an audio CD.\n");
+
+	    GtkWidget *dialog =
+	        gtk_message_dialog_new_with_markup(NULL,
+	                                           GTK_DIALOG_DESTROY_WITH_PARENT,
+	                                           GTK_MESSAGE_ERROR,
+	                                           GTK_BUTTONS_OK,
+	                                           _(markup));
+	    gtk_dialog_run(GTK_DIALOG(dialog));
+	    gtk_widget_destroy(dialog);
+		return;
+	}
+
+	for (node = list; node; node = g_list_next(node)) {
+		filename = g_build_filename(CDDA_DEFAULT, node->data, NULL);
+		playlist_add(playlist_get_active(), filename);
+		g_free(filename);
+		g_free(node->data);
+	}
+
+	g_list_free(list);
+}
 
 Tuple *create_tuple_from_trackinfo(char *filename)
 {
