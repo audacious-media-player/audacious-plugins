@@ -518,6 +518,7 @@ curl_manage_request(gpointer arg)
   g_cond_signal(handle->curl_cond);
   handle->thread = NULL;
 
+  g_thread_exit(NULL);
   return NULL;
 }
 
