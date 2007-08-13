@@ -59,7 +59,8 @@ DECLARE_PLUGIN(mtp_gp, NULL, NULL, NULL, NULL, NULL, mtp_gplist, NULL, NULL)
 GList * get_upload_list()
 {
     Tuple *tuple;
-    gchar *from_path;
+    gchar *from_path,*filename;
+    VFSFile*f;
     GList *node=NULL,*up_list=NULL;
     PlaylistEntry *entry;
     Playlist *current_play = playlist_get_active();
@@ -73,11 +74,15 @@ GList * get_upload_list()
         {
             tuple = entry->tuple;
             from_path = g_strdup_printf("%s/%s", tuple_get_string(tuple, "file-path"), tuple_get_string(tuple, "file-name"));
-            VFSFile* f = vfs_fopen(from_path,"r");
+            f = vfs_fopen(from_path,"r");
             if(!vfs_is_streaming(f))
-                up_list=g_list_prepend(up_list,from_path);
+                {
+                    filename=g_filename_from_uri(from_path,NULL,NULL);
+                    up_list=g_list_prepend(up_list,filename);
+                }
             vfs_fclose(f);
             entry->selected = FALSE;
+            g_free(from_path);
         }
         node = g_list_next(node);
     }
