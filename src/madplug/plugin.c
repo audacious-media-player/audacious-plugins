@@ -706,7 +706,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 #ifdef DEBUG
         g_message("get_song_tuple: remote: NULL");
 #endif
-        return NULL;
+//        return NULL;
     } /* info.remote  */
 
     // if !fd, pre-open the file with vfs_fopen() and reuse fd.
