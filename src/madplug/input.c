@@ -74,7 +74,7 @@ gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 #ifdef DEBUG
     g_message("f: input_init");
 #endif
-    memset(info, 0, sizeof(struct mad_info_t));
+    memset(info, 0, sizeof(struct mad_info_t)); // all fields are cleared to 0 --yaz
 
     info->fmt = FMT_S16_LE;
     info->channels = -1;
@@ -85,32 +85,13 @@ gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
     info->duration = mad_timer_zero;
     info->pos = mad_timer_zero;
     info->url = g_strdup(url);
-    info->current_frame = 0;
-    info->frames = 0;
-    info->bitrate = 0;
-    info->vbr = 0;
-    info->mode = 0;
-    info->title = 0;
-    info->offset = 0;
-    info->prev_title = NULL;
-
-    info->replaygain_album_str = 0;
-    info->replaygain_track_str = 0;
-    info->replaygain_album_peak_str = 0;
-    info->replaygain_track_peak_str = 0;
-    info->mp3gain_undo_str = 0;
-    info->mp3gain_minmax_str = 0;
+    info->filename = g_strdup(url);
 
     // from input_read_replaygain()
-    info->has_replaygain = FALSE;
     info->replaygain_album_scale = -1;
     info->replaygain_track_scale = -1;
     info->mp3gain_undo = -77;
     info->mp3gain_minmax = -77;
-
-    info->tuple = NULL;
-
-    info->filename = g_strdup(url);
 
     if(!fd){
         info->infile = vfs_fopen(info->filename, "rb");
@@ -353,15 +334,13 @@ static void input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gcha
 
 static void input_alloc_tag(struct mad_info_t *info)
 {
-    Tuple *title_input;
+    Tuple *tuple;
 
     if (info->tuple == NULL) {
-        title_input = tuple_new();
-        info->tuple = title_input;
+        tuple = tuple_new();
+        info->tuple = tuple;
         tuple_associate_int(info->tuple, "length", -1);
     }
-    else
-        title_input = info->tuple;
 }
 
 /**
@@ -371,18 +350,18 @@ static void input_read_tag(struct mad_info_t *info)
 {
     gchar *string = NULL;
     gchar *realfn = NULL;
-    Tuple *title_input;
+    Tuple *tuple;
     glong curpos = 0;
 
 #ifdef DEBUG
     g_message("f: input_read_tag");
 #endif
     if (info->tuple == NULL) {
-        title_input = tuple_new();
-        info->tuple = title_input;
+        tuple = tuple_new();
+        info->tuple = tuple;
     }
     else
-        title_input = info->tuple;
+        tuple = info->tuple;
 
     if(info->infile) {
         curpos = vfs_ftell(info->infile);
@@ -407,15 +386,15 @@ static void input_read_tag(struct mad_info_t *info)
         return;
     }
 
-    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_ARTIST, "artist");
-    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_TITLE, "title");
-    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_ALBUM, "album");
-    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_GENRE, "genre");
-    input_set_and_free_tag(info->tag, title_input, ID3_FRAME_COMMENT, "comment");
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ARTIST, "artist");
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_TITLE, "title");
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ALBUM, "album");
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_GENRE, "genre");
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_COMMENT, "comment");
 
     string = input_id3_get_string(info->tag, ID3_FRAME_TRACK);
     if (string) {
-        tuple_associate_int(title_input, "track-number", atoi(string));
+        tuple_associate_int(tuple, "track-number", atoi(string));
         g_free(string);
         string = NULL;
     }
@@ -427,7 +406,7 @@ static void input_read_tag(struct mad_info_t *info)
         string = input_id3_get_string(info->tag, "TYER");
 
     if (string) {
-        tuple_associate_int(title_input, "year", atoi(string));
+        tuple_associate_int(tuple, "year", atoi(string));
         g_free(string);
         string = NULL;
     }
@@ -435,7 +414,7 @@ static void input_read_tag(struct mad_info_t *info)
     // length
     string = input_id3_get_string(info->tag, "TLEN");
     if (string) {
-        tuple_associate_int(title_input, "length", atoi(string));
+        tuple_associate_int(tuple, "length", atoi(string));
 #ifdef DEBUG
         g_message("input_read_tag: TLEN = %d", atoi(string));
 #endif	
@@ -446,24 +425,24 @@ static void input_read_tag(struct mad_info_t *info)
     realfn = g_filename_from_uri(info->filename, NULL, NULL);
     
     string = g_strdup(g_basename(realfn ? realfn : info->filename));
-    tuple_associate_string(title_input, "file-name", string);
+    tuple_associate_string(tuple, "file-name", string);
     g_free(string);
 
     string = g_path_get_dirname(realfn ? realfn : info->filename);
-    tuple_associate_string(title_input, "file-path", string);
+    tuple_associate_string(tuple, "file-path", string);
     g_free(string);
 
     if ((string = strrchr(realfn ? realfn : info->filename, '.'))) {
         *string = '\0';         // make filename end at dot.
-        tuple_associate_string(title_input, "file-ext", string + 1);
+        tuple_associate_string(tuple, "file-ext", string + 1);
     }
 
     g_free(realfn); realfn = NULL;
 
-    tuple_associate_string(title_input, "codec", "MPEG Audio (MP3)");
-    tuple_associate_string(title_input, "quality", "lossy");
+    tuple_associate_string(tuple, "codec", "MPEG Audio (MP3)");
+    tuple_associate_string(tuple, "quality", "lossy");
 
-    info->title = tuple_formatter_process_string(title_input, audmad_config.title_override == TRUE ?
+    info->title = tuple_formatter_make_title_string(tuple, audmad_config.title_override == TRUE ?
         audmad_config.id3_format : get_gentitle_format());
 
     // for connection via proxy, we have to stop transfer once. I can't explain the reason.
