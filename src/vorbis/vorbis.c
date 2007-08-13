@@ -608,8 +608,8 @@ vorbis_get_song_info(char *filename, char **title, int *length)
     Tuple *tuple = get_song_tuple(filename);
 
     *length = tuple_get_int(tuple, "length");
-    *title = tuple_formatter_process_string(tuple, vorbis_cfg.tag_override ?
-                                  vorbis_cfg.tag_format : cfg.gentitle_format);
+    *title = tuple_formatter_make_title_string(tuple, vorbis_cfg.tag_override ?
+                                            vorbis_cfg.tag_format : get_gentitle_format());
 
     tuple_free(tuple);
 }
@@ -829,8 +829,8 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
 
     input = get_tuple_for_vorbisfile(vorbisfile, filename, vorbis_is_streaming);
 
-    displaytitle = tuple_formatter_process_string(input, vorbis_cfg.tag_override ?
-                                              vorbis_cfg.tag_format : cfg.gentitle_format);
+    displaytitle = tuple_formatter_make_title_string(input, vorbis_cfg.tag_override ?
+                                                  vorbis_cfg.tag_format : get_gentitle_format());
 
     if ((tmp = vfs_get_metadata(((VFSVorbisFile *) vorbisfile->datasource)->fd, "stream-name")) != NULL)
     {
