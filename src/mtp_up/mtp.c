@@ -73,16 +73,26 @@ GList * get_upload_list()
         if (entry->selected)  
         {
             tuple = entry->tuple;
-            from_path = g_strdup_printf("%s/%s", tuple_get_string(tuple, "file-path"), tuple_get_string(tuple, "file-name"));
+            from_path = g_strdup_printf("%s/%s", tuple_get_string(tuple, "file-path"), tuple_get_string(tuple, "file-name"));       
+            g_print("From_path: '%s'",from_path);
             f = vfs_fopen(from_path,"r");
             if(!vfs_is_streaming(f))
                 {
                     filename=g_filename_from_uri(from_path,NULL,NULL);
-                    up_list=g_list_prepend(up_list,filename);
+                    g_print("Filename: '%s'\n",filename);
+                    if(filename!= NULL)
+                        {
+                            up_list=g_list_prepend(up_list,filename);
+                            g_free(from_path);    
+                        }
+                    else 
+                        {
+                            up_list=g_list_prepend(up_list,from_path);
+                            g_free(filename);
+                        }
                 }
             vfs_fclose(f);
             entry->selected = FALSE;
-            g_free(from_path);
         }
         node = g_list_next(node);
     }
