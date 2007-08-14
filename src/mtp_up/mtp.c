@@ -33,8 +33,7 @@ LIBMTP_mtpdevice_t *mtp_device = NULL;
 LIBMTP_progressfunc_t *callback;
 LIBMTP_file_t *filelist;
 Playlist *active_playlist;
-
-static gboolean plugin_active = FALSE;
+static gboolean plugin_active = FALSE,exiting=FALSE;
 
 void mtp_init ( void );
 void mtp_cleanup ( void );
@@ -59,7 +58,7 @@ DECLARE_PLUGIN(mtp_gp, NULL, NULL, NULL, NULL, NULL, mtp_gplist, NULL, NULL)
 GList * get_upload_list()
 {
     Tuple *tuple;
-    gchar *from_path,*filename;
+    gchar *from_path,*uri;
     VFSFile*f;
     GList *node=NULL,*up_list=NULL;
     PlaylistEntry *entry;
@@ -74,23 +73,11 @@ GList * get_upload_list()
         {
             tuple = entry->tuple;
             from_path = g_strdup_printf("%s/%s", tuple_get_string(tuple, "file-path"), tuple_get_string(tuple, "file-name"));       
-            g_print("From_path: '%s'",from_path);
-            f = vfs_fopen(from_path,"r");
+            uri=g_filename_to_uri(from_path,NULL,NULL);
+            f = vfs_fopen(uri,"r");
+            g_free(uri);
             if(!vfs_is_streaming(f))
-                {
-                    filename=g_filename_from_uri(from_path,NULL,NULL);
-                    g_print("Filename: '%s'\n",filename);
-                    if(filename!= NULL)
-                        {
-                            up_list=g_list_prepend(up_list,filename);
-                            g_free(from_path);    
-                        }
-                    else 
-                        {
-                            up_list=g_list_prepend(up_list,from_path);
-                            g_free(filename);
-                        }
-                }
+                up_list=g_list_prepend(up_list,from_path);
             vfs_fclose(f);
             entry->selected = FALSE;
         }
@@ -161,6 +148,11 @@ gpointer upload(gpointer arg)
     node=up_list=get_upload_list();
     while(node)
     {
+        if(exiting)
+            {
+                g_print("\nCancelling pending uploads...\n\n");
+                break;
+            }
         from_path=(gchar*)(node->data);
         upload_file(from_path);
         node = g_list_next(node);
@@ -220,6 +212,7 @@ void mtp_init(void)
     g_signal_connect (G_OBJECT (menuitem), "button_press_event",G_CALLBACK (mtp_press), NULL);  
     mutex = g_mutex_new();
     plugin_active = TRUE;
+    exiting=FALSE;
 }
 
 void mtp_cleanup(void)
@@ -231,11 +224,10 @@ void mtp_cleanup(void)
         if(mtp_initialised)
             g_print("\n\n                 !!!CAUTION!!! \n\n"
                     "Cleaning up MTP upload plugin, please wait!!!...\n"
-                    "This will block until the pending tracks are uploaded,\n"
-                    "then it will gracefully close your device\n\n"
                     "!!! FORCING SHUTDOWN NOW MAY CAUSE DAMAGE TO YOUR DEVICE !!!\n\n\n"
                     "Waiting for the MTP mutex to unlock...\n");
 #endif
+        exiting=TRUE;
         if(mutex)
             g_mutex_lock(mutex);
         if(mtp_device!= NULL)
