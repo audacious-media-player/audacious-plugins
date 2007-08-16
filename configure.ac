@@ -1234,7 +1234,7 @@ fi
 dnl *** MTP Upload
 
 AC_ARG_ENABLE(mtp_up,
-[  --enable-mtp_up           enable mtp upload support. (default=disabled)],
+[  --enable-mtp_up           enable mtp upload support. (default=enabled)],
 [have_mtp_up=$enableval],
 [have_mtp_up=no])
 

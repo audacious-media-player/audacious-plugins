@@ -21,6 +21,10 @@
 #include <audacious/plugin.h>
 #include <audacious/playlist.h>
 #include <audacious/ui_plugin_menu.h>
+
+#include <gtk/gtk.h>
+#include <audacious/util.h>
+
 #define DEBUG 1
 
 #define DEFAULT_LABEL "Upload to MTP device"
@@ -34,7 +38,7 @@ LIBMTP_progressfunc_t *callback;
 LIBMTP_file_t *filelist;
 Playlist *active_playlist;
 
-static gboolean plugin_active = FALSE;
+static gboolean plugin_active = FALSE,exiting=FALSE;
 
 void mtp_init ( void );
 void mtp_cleanup ( void );
@@ -57,16 +61,19 @@ GeneralPlugin *mtp_gplist[] = { &mtp_gp, NULL };
 DECLARE_PLUGIN(mtp_gp, NULL, NULL, NULL, NULL, NULL, mtp_gplist, NULL, NULL)
 
 
-void show_dialog(gchar *message)
+void show_dialog(const gchar* message)
 {
-    GtkWidget *dialog;
-    dialog = gtk_message_dialog_new (NULL,
-            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+    GDK_THREADS_ENTER();
+    GtkWidget *dialog = gtk_message_dialog_new (NULL,
+            GTK_DIALOG_MODAL,
             GTK_MESSAGE_ERROR,
             GTK_BUTTONS_OK,
             message);
     gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);  
+    gtk_widget_show(dialog);
+    gtk_widget_destroy(dialog);
+    GDK_THREADS_LEAVE();
+
 }
 
 
@@ -119,7 +126,7 @@ GList * get_upload_list()
     return g_list_reverse(up_list);
 }
 
-void upload_file(gchar *from_path)
+gint upload_file(gchar *from_path)
 {
     int ret;
     gchar *comp, *filename;
@@ -134,11 +141,14 @@ void upload_file(gchar *from_path)
 #if DEBUG
         g_print("ERROR! encountered while stat()'ing \"%s\"\n",from_path);
 #endif
-        return;
+        return 1;
     }
     filesize = (uint64_t) sb.st_size;
     filename = g_path_get_basename(from_path);
-    parent_id = 0;
+    parent_id = mtp_device->default_music_folder;
+#if DEBUG 
+    g_print("Parent id : %d\n",parent_id); 
+#endif    
     genfile = LIBMTP_new_file_t();
     genfile->filesize = filesize;
     genfile->filename = strdup(filename);
@@ -151,9 +161,8 @@ void upload_file(gchar *from_path)
     else
     {
         g_print("An error has occured while uploading '%s'...\nUpload failed!!!",comp);
-        show_dialog("An error has occured while uploading...Upload failed! ");
         mtp_initialised = FALSE;
-        return;
+        return 1;
     }
     LIBMTP_destroy_file_t(genfile);
 #if DEBUG 
@@ -164,34 +173,47 @@ void upload_file(gchar *from_path)
 #if DEBUG
     g_print("Free ok..exiting upload_file \n ");    
 #endif
-    return;
+    return 0;
 }
 
 
 gpointer upload(gpointer arg)
 {
-    /* if(!mutex)
+     if(!mutex)
        {
        gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
        gtk_widget_set_sensitive(menuitem, TRUE);
        return NULL;
        } 
-       g_mutex_lock(mutex); */
+       g_mutex_lock(mutex); 
     if(!mtp_device)
     {
         gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
         gtk_widget_set_sensitive(menuitem, TRUE);
-        /*        g_mutex_unlock(mutex); */
+                g_mutex_unlock(mutex); 
         return NULL;
     }
 
     gchar* from_path;
+
     GList *up_list=NULL,*node;
     node=up_list=get_upload_list();
+    gint up_err=0;
     while(node)
     {
         from_path=(gchar*)(node->data);
-        upload_file(from_path);
+        up_err = upload_file(from_path);
+        if(up_err )
+         {
+             show_dialog("An error has occured while uploading...\nUpload failed!");
+             break;
+         }
+         if(exiting)
+         {
+             /*show_dialog("Shutting down MTP while uploading.\nPending uploads were cancelled");*/
+             break;
+         }
+
         node = g_list_next(node);
     }
     g_list_free(up_list);
@@ -201,7 +223,7 @@ gpointer upload(gpointer arg)
 
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
     gtk_widget_set_sensitive(menuitem, TRUE);
-    /*  g_mutex_unlock(mutex); */
+      g_mutex_unlock(mutex); 
 #if DEBUG
     g_print("upload thread killed exiting upload function\n");
 #endif    
@@ -260,6 +282,7 @@ void mtp_init(void)
     g_signal_connect (G_OBJECT (menuitem), "button_press_event",G_CALLBACK (mtp_press), NULL);  
     mutex = g_mutex_new();
     plugin_active = TRUE;
+    exiting=FALSE;
 }
 
 void mtp_cleanup(void)
@@ -269,12 +292,15 @@ void mtp_cleanup(void)
 
 #if DEBUG
         if(mtp_initialised)
-            g_print("\n\n                 !!!CAUTION!!! \n\n"
+           {
+               g_print("\n\n                 !!!CAUTION!!! \n\n"
                     "Cleaning up MTP upload plugin, please wait!!!...\n"
                     "This will block until the pending tracks are uploaded,\n"
                     "then it will gracefully close your device\n\n"
                     "!!! FORCING SHUTDOWN NOW MAY CAUSE DAMAGE TO YOUR DEVICE !!!\n\n\n"
                     "Waiting for the MTP mutex to unlock...\n");
+               exiting=TRUE;
+           }
 #endif
         if(mutex)
             g_mutex_lock(mutex);
