@@ -76,10 +76,22 @@ GList * get_upload_list()
             from_path = g_strdup_printf("%s/%s", tuple_get_string(tuple, "file-path"), tuple_get_string(tuple, "file-name"));
             f = vfs_fopen(from_path,"r");
             if(!vfs_is_streaming(f))
+            {
+                gchar *tmp;
+                tmp = g_strescape(from_path,NULL);
+                filename=g_filename_from_uri(tmp,NULL,NULL);
+
+                if(filename)
                 {
-                    filename=g_filename_from_uri(from_path,NULL,NULL);
                     up_list=g_list_prepend(up_list,filename);
+                    g_free(tmp);
                 }
+                else 
+                {
+                    up_list = g_list_prepend(up_list,tmp);
+                    g_free(filename);
+                }
+            }
             vfs_fclose(f);
             entry->selected = FALSE;
             g_free(from_path);
@@ -121,7 +133,10 @@ void upload_file(gchar *from_path)
     if (ret == 0) 
         g_print("Upload finished!\n");
     else
+    {
         g_print("An error has occured while uploading '%s'...\nUpload failed!!!",comp);
+        mtp_initialised = FALSE;
+    }
 #endif
     LIBMTP_destroy_file_t(genfile);
     g_free(filename);
@@ -132,19 +147,19 @@ void upload_file(gchar *from_path)
 gpointer upload(gpointer arg)
 {
     if(!mutex)
-       {
-            gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
-            gtk_widget_set_sensitive(menuitem, TRUE);
-            return NULL;
-       }
+    {
+        gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
+        gtk_widget_set_sensitive(menuitem, TRUE);
+        return NULL;
+    }
     g_mutex_lock(mutex);
     if(!mtp_device)
-       {
-            gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
-            gtk_widget_set_sensitive(menuitem, TRUE);
-            g_mutex_unlock(mutex);
-            return NULL;
-       }
+    {
+        gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
+        gtk_widget_set_sensitive(menuitem, TRUE);
+        g_mutex_unlock(mutex);
+        return NULL;
+    }
 
     gchar* from_path;
     GList *up_list=NULL,*node;
@@ -156,7 +171,6 @@ gpointer upload(gpointer arg)
         node = g_list_next(node);
     }
     g_list_free(up_list);
-
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
     gtk_widget_set_sensitive(menuitem, TRUE);
     g_mutex_unlock(mutex);
@@ -195,6 +209,7 @@ void mtp_press()
         g_print("No MTP devices have been found !!!");
 #endif
         return;
+        mtp_initialised = FALSE;
 
     }
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DISABLED_LABEL);
