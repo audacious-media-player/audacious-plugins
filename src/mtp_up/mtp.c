@@ -33,7 +33,8 @@ LIBMTP_mtpdevice_t *mtp_device = NULL;
 LIBMTP_progressfunc_t *callback;
 LIBMTP_file_t *filelist;
 Playlist *active_playlist;
-static gboolean plugin_active = FALSE,exiting=FALSE;
+
+static gboolean plugin_active = FALSE;
 
 void mtp_init ( void );
 void mtp_cleanup ( void );
@@ -58,7 +59,7 @@ DECLARE_PLUGIN(mtp_gp, NULL, NULL, NULL, NULL, NULL, mtp_gplist, NULL, NULL)
 GList * get_upload_list()
 {
     Tuple *tuple;
-    gchar *from_path,*uri;
+    gchar *from_path,*filename;
     VFSFile*f;
     GList *node=NULL,*up_list=NULL;
     PlaylistEntry *entry;
@@ -72,14 +73,28 @@ GList * get_upload_list()
         if (entry->selected)  
         {
             tuple = entry->tuple;
-            from_path = g_strdup_printf("%s/%s", tuple_get_string(tuple, "file-path"), tuple_get_string(tuple, "file-name"));       
-            uri=g_filename_to_uri(from_path,NULL,NULL);
-            f = vfs_fopen(uri,"r");
-            g_free(uri);
+            from_path = g_strdup_printf("%s/%s", tuple_get_string(tuple, "file-path"), tuple_get_string(tuple, "file-name"));
+            f = vfs_fopen(from_path,"r");
             if(!vfs_is_streaming(f))
-                up_list=g_list_prepend(up_list,from_path);
+            {
+                gchar *tmp;
+                tmp = g_strescape(from_path,NULL);
+                filename=g_filename_from_uri(tmp,NULL,NULL);
+
+                if(filename)
+                {
+                    up_list=g_list_prepend(up_list,filename);
+                    g_free(tmp);
+                }
+                else 
+                {
+                    up_list = g_list_prepend(up_list,tmp);
+                    g_free(filename);
+                }
+            }
             vfs_fclose(f);
             entry->selected = FALSE;
+            g_free(from_path);
         }
         node = g_list_next(node);
     }
@@ -118,7 +133,10 @@ void upload_file(gchar *from_path)
     if (ret == 0) 
         g_print("Upload finished!\n");
     else
+    {
         g_print("An error has occured while uploading '%s'...\nUpload failed!!!",comp);
+        mtp_initialised = FALSE;
+    }
 #endif
     LIBMTP_destroy_file_t(genfile);
     g_free(filename);
@@ -129,36 +147,30 @@ void upload_file(gchar *from_path)
 gpointer upload(gpointer arg)
 {
     if(!mutex)
-       {
-            gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
-            gtk_widget_set_sensitive(menuitem, TRUE);
-            return NULL;
-       }
+    {
+        gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
+        gtk_widget_set_sensitive(menuitem, TRUE);
+        return NULL;
+    }
     g_mutex_lock(mutex);
     if(!mtp_device)
-       {
-            gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
-            gtk_widget_set_sensitive(menuitem, TRUE);
-            g_mutex_unlock(mutex);
-            return NULL;
-       }
+    {
+        gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
+        gtk_widget_set_sensitive(menuitem, TRUE);
+        g_mutex_unlock(mutex);
+        return NULL;
+    }
 
     gchar* from_path;
     GList *up_list=NULL,*node;
     node=up_list=get_upload_list();
     while(node)
     {
-        if(exiting)
-            {
-                g_print("\nCancelling pending uploads...\n\n");
-                break;
-            }
         from_path=(gchar*)(node->data);
         upload_file(from_path);
         node = g_list_next(node);
     }
     g_list_free(up_list);
-
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DEFAULT_LABEL);
     gtk_widget_set_sensitive(menuitem, TRUE);
     g_mutex_unlock(mutex);
@@ -197,6 +209,7 @@ void mtp_press()
         g_print("No MTP devices have been found !!!");
 #endif
         return;
+        mtp_initialised = FALSE;
 
     }
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(menuitem))),DISABLED_LABEL);
@@ -212,7 +225,6 @@ void mtp_init(void)
     g_signal_connect (G_OBJECT (menuitem), "button_press_event",G_CALLBACK (mtp_press), NULL);  
     mutex = g_mutex_new();
     plugin_active = TRUE;
-    exiting=FALSE;
 }
 
 void mtp_cleanup(void)
@@ -224,10 +236,11 @@ void mtp_cleanup(void)
         if(mtp_initialised)
             g_print("\n\n                 !!!CAUTION!!! \n\n"
                     "Cleaning up MTP upload plugin, please wait!!!...\n"
+                    "This will block until the pending tracks are uploaded,\n"
+                    "then it will gracefully close your device\n\n"
                     "!!! FORCING SHUTDOWN NOW MAY CAUSE DAMAGE TO YOUR DEVICE !!!\n\n\n"
                     "Waiting for the MTP mutex to unlock...\n");
 #endif
-        exiting=TRUE;
         if(mutex)
             g_mutex_lock(mutex);
         if(mtp_device!= NULL)
