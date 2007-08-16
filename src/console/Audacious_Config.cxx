@@ -26,7 +26,6 @@ void console_cfg_load( void )
 	bmp_cfg_db_get_int(db, "console", "loop_length", &audcfg.loop_length);
 	bmp_cfg_db_get_bool(db, "console", "resample", &audcfg.resample);
 	bmp_cfg_db_get_int(db, "console", "resample_rate", &audcfg.resample_rate);
-	bmp_cfg_db_get_bool(db, "console", "nsfe_playlist", &audcfg.nsfe_playlist);
 	bmp_cfg_db_get_int(db, "console", "treble", &audcfg.treble);
 	bmp_cfg_db_get_int(db, "console", "bass", &audcfg.bass);
 	bmp_cfg_db_get_bool(db, "console", "ignore_spc_length", &audcfg.ignore_spc_length);
@@ -42,7 +41,6 @@ void console_cfg_save( void )
 	bmp_cfg_db_set_int(db, "console", "loop_length", audcfg.loop_length);
 	bmp_cfg_db_set_bool(db, "console", "resample", audcfg.resample);
 	bmp_cfg_db_set_int(db, "console", "resample_rate", audcfg.resample_rate);
-	bmp_cfg_db_set_bool(db, "console", "nsfe_playlist", audcfg.nsfe_playlist);
 	bmp_cfg_db_set_int(db, "console", "treble", audcfg.treble);
 	bmp_cfg_db_set_int(db, "console", "bass", audcfg.bass);
 	bmp_cfg_db_set_bool(db, "console", "ignore_spc_length", audcfg.ignore_spc_length);
@@ -79,11 +77,6 @@ static void i_cfg_ev_deflen_value_commit( gpointer spbt )
   audcfg.loop_length = (gint)gtk_spin_button_get_value( GTK_SPIN_BUTTON(spbt) );
 }
 
-static void i_cfg_ev_nsfeoptpl_enable_commit( gpointer cbt )
-{
-  audcfg.nsfe_playlist = gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) );
-}
-
 static void i_cfg_ev_ignorespclen_enable_commit( gpointer cbt )
 {
   audcfg.ignore_spc_length = gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) );
@@ -111,7 +104,7 @@ void console_cfg_ui( void )
 {
 	static GtkWidget *configwin = NULL;
 	GtkWidget *configwin_vbox;
-	GtkWidget *configwin_gen_vbox, *configwin_nsf_vbox, *configwin_spc_vbox;
+	GtkWidget *configwin_gen_vbox, *configwin_spc_vbox;
 	GtkWidget *configwin_gen_resample_frame, *configwin_gen_resample_vbox;
 	GtkWidget *configwin_gen_resample_cbt, *configwin_gen_resample_val_hbox;
 	GtkWidget *configwin_gen_resample_val_spbt;
@@ -120,7 +113,6 @@ void console_cfg_ui( void )
 	GtkWidget *configwin_gen_playback_tb_bass_hbox, *configwin_gen_playback_tb_bass_spbt;
 	GtkWidget *configwin_gen_playback_tb_treble_hbox, *configwin_gen_playback_tb_treble_spbt;
 	GtkWidget *configwin_gen_playback_deflen_hbox, *configwin_gen_playback_deflen_spbt;
-	GtkWidget *configwin_nsf_nsfeoptpl_cbt;
 	GtkWidget *configwin_spc_ignorespclen_cbt, *configwin_spc_increverb_cbt;
 	GtkWidget /* *hseparator, */ *hbuttonbox, *button_ok, *button_cancel;
 	GtkWidget *configwin_notebook;
@@ -237,17 +229,6 @@ void console_cfg_ui( void )
 		G_CALLBACK(i_cfg_ev_toggle_resample) , configwin_gen_resample_val_hbox );
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(configwin_gen_resample_cbt) , audcfg.resample );
 
-	// NSF/NSFE PAGE
-	configwin_nsf_vbox = gtk_vbox_new( FALSE , 3 );
-	gtk_container_set_border_width( GTK_CONTAINER(configwin_nsf_vbox), 5 );
-	gtk_notebook_append_page( GTK_NOTEBOOK(configwin_notebook) ,
-		configwin_nsf_vbox , gtk_label_new( _("NSF/NSFE") ) );
-	configwin_nsf_nsfeoptpl_cbt = gtk_check_button_new_with_label( _("Use optional NSFE playlist") );
-	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(configwin_nsf_nsfeoptpl_cbt) , audcfg.nsfe_playlist );
-	g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" ,
-		G_CALLBACK(i_cfg_ev_nsfeoptpl_enable_commit) , configwin_nsf_nsfeoptpl_cbt );
-	gtk_box_pack_start( GTK_BOX(configwin_nsf_vbox) ,
-		configwin_nsf_nsfeoptpl_cbt , FALSE , FALSE , 0 );
 
 	// SPC PAGE
 	configwin_spc_vbox = gtk_vbox_new( FALSE , 3 );
