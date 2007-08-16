@@ -35,7 +35,8 @@ int const fade_threshold = 10 * 1000;
 int const fade_length    = 8 * 1000;
 int const path_max = 4096;
 
-AudaciousConsoleConfig audcfg = { 180, FALSE, 32000, TRUE, 0, 0, FALSE, 0 };
+AudaciousConsoleConfig audcfg =
+{ 180, FALSE, 32000, TRUE, 0, 0, FALSE, 0, FALSE };
 static GThread* decode_thread;
 static GStaticMutex playback_mutex = G_STATIC_MUTEX_INIT;
 static int console_ip_is_going;

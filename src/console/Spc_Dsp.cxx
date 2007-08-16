@@ -1,5 +1,8 @@
 // snes_spc 0.9.0. http://www.slack.net/~ant/
 
+// TODO: we can remove this as soon as the reverb problem is fixed. -- mf0102
+#include "Audacious_Config.h"
+
 #include "Spc_Dsp.h"
 
 #include "blargg_endian.h"
@@ -589,8 +592,9 @@ skip_brr:
 		// Echo out
 		if ( !(REG(flg) & 0x20) )
 		{
-			int l = (echo_out_l >> 7) + ((echo_in_l * (int8_t) REG(efb)) >> 16);
-			int r = (echo_out_r >> 7) + ((echo_in_r * (int8_t) REG(efb)) >> 16);
+			unsigned shift = audcfg.inc_spc_reverb ? 14 : 16;
+			int l = (echo_out_l >> 7) + ((echo_in_l * (int8_t) REG(efb)) >> shift);
+			int r = (echo_out_r >> 7) + ((echo_in_r * (int8_t) REG(efb)) >> shift);
 			
 			// just to help pass more validation tests
 			#if SPC_MORE_ACCURACY

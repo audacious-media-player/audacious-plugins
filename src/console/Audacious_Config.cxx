@@ -31,6 +31,7 @@ void console_cfg_load( void )
 	bmp_cfg_db_get_int(db, "console", "bass", &audcfg.bass);
 	bmp_cfg_db_get_bool(db, "console", "ignore_spc_length", &audcfg.ignore_spc_length);
 	bmp_cfg_db_get_int(db, "console", "echo", &audcfg.echo);
+	bmp_cfg_db_get_bool(db, "console", "inc_spc_reverb", &audcfg.inc_spc_reverb);
 	bmp_cfg_db_close(db);
 }
 
@@ -46,6 +47,7 @@ void console_cfg_save( void )
 	bmp_cfg_db_set_int(db, "console", "bass", audcfg.bass);
 	bmp_cfg_db_set_bool(db, "console", "ignore_spc_length", audcfg.ignore_spc_length);
 	bmp_cfg_db_set_int(db, "console", "echo", audcfg.echo);
+	bmp_cfg_db_set_bool(db, "console", "inc_spc_reverb", audcfg.inc_spc_reverb);
 	bmp_cfg_db_close(db);
 }
 
@@ -87,6 +89,11 @@ static void i_cfg_ev_ignorespclen_enable_commit( gpointer cbt )
   audcfg.ignore_spc_length = gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) );
 }
 
+static void i_cfg_ev_incspcreverb_enable_commit( gpointer cbt )
+{
+  audcfg.inc_spc_reverb = gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) );
+}
+
 static void i_cfg_ev_bok( gpointer configwin )
 {
   console_cfg_save();
@@ -114,7 +121,7 @@ void console_cfg_ui( void )
 	GtkWidget *configwin_gen_playback_tb_treble_hbox, *configwin_gen_playback_tb_treble_spbt;
 	GtkWidget *configwin_gen_playback_deflen_hbox, *configwin_gen_playback_deflen_spbt;
 	GtkWidget *configwin_nsf_nsfeoptpl_cbt;
-	GtkWidget *configwin_spc_ignorespclen_cbt;
+	GtkWidget *configwin_spc_ignorespclen_cbt, *configwin_spc_increverb_cbt;
 	GtkWidget /* *hseparator, */ *hbuttonbox, *button_ok, *button_cancel;
 	GtkWidget *configwin_notebook;
 	GtkTooltips *tips;
@@ -248,11 +255,17 @@ void console_cfg_ui( void )
 	gtk_notebook_append_page( GTK_NOTEBOOK(configwin_notebook) ,
 		configwin_spc_vbox , gtk_label_new( _("SPC") ) );
 	configwin_spc_ignorespclen_cbt = gtk_check_button_new_with_label( _("Ignore length from SPC tags") );
+	configwin_spc_increverb_cbt = gtk_check_button_new_with_label( _("Increase reverb") );
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(configwin_spc_ignorespclen_cbt) , audcfg.ignore_spc_length );
+	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(configwin_spc_increverb_cbt) , audcfg.inc_spc_reverb );
 	g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" ,
 		G_CALLBACK(i_cfg_ev_ignorespclen_enable_commit) , configwin_spc_ignorespclen_cbt );
+	g_signal_connect_swapped( G_OBJECT(button_ok) , "clicked" ,
+		G_CALLBACK(i_cfg_ev_incspcreverb_enable_commit) , configwin_spc_increverb_cbt );
 	gtk_box_pack_start( GTK_BOX(configwin_spc_vbox) ,
 		configwin_spc_ignorespclen_cbt , FALSE , FALSE , 0 );
+	gtk_box_pack_start( GTK_BOX(configwin_spc_vbox) ,
+		configwin_spc_increverb_cbt , FALSE , FALSE , 0 );
 
 	// horizontal separator and buttons
 	hbuttonbox = gtk_hbutton_box_new();

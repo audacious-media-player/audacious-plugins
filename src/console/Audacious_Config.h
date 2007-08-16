@@ -22,6 +22,7 @@ typedef struct {
 	gint bass;   // -100 to +100
 	gboolean ignore_spc_length; // if true, ignore length from SPC tags
 	gint echo;   // 0 to +100
+	gboolean inc_spc_reverb; // if true, increases the default reverb
 }
 AudaciousConsoleConfig;
 
