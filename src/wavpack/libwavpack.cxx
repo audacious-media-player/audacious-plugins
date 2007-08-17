@@ -204,6 +204,18 @@ public:
         return true;
     }
 
+    bool attach(gchar *filename, VFSFile *wv_Input)
+    {
+        vfs_dup(wv_Input);
+
+        ctx = WavpackOpenFileInputEx(&reader, wv_Input, NULL, error_buff, OPEN_TAGS, 0);
+
+        if (ctx == NULL)
+            return false;
+
+        return true;
+    }
+
     bool attach_to_play(const char *filename)
     {
         wv_Input = vfs_fopen(filename, "rb");
@@ -216,9 +228,8 @@ public:
 
         ctx = WavpackOpenFileInputEx(&reader, wv_Input, wvc_Input, error_buff, OPEN_TAGS | OPEN_WVC, 0);
 
-        if (ctx == NULL) {
+        if (ctx == NULL)
             return false;
-        }
 
         sample_rate = WavpackGetSampleRate(ctx);
         num_channels = WavpackGetNumChannels(ctx);
@@ -238,9 +249,10 @@ public:
 
     void process_buffer(size_t num_samples)
     {
-        for (int i = 0; i < num_samples * num_channels; i++) {
+        /* TODO: dithering */
+        for (int i = 0; i < num_samples * num_channels; i++)
             output[i] = input[i];
-        }
+
         produce_audio(mod->output->output_time(), FMT_S16_NE, 
 		num_channels, 
 		num_samples * num_channels * sizeof(int16_t),
@@ -256,10 +268,11 @@ DECLARE_PLUGIN(wavpack, NULL, NULL, wv_iplist, NULL, NULL, NULL, NULL,NULL);
 static int
 wv_is_our_fd(gchar *filename, VFSFile *file)
 {
-    gchar magic[4];
-    vfs_fread(magic,1,4,file);
-    if (!memcmp(magic,"wvpk",4))
+    WavpackDecoder d(&mod);
+
+    if (d.attach(filename, file))
         return TRUE;
+
     return FALSE;
 }
 
