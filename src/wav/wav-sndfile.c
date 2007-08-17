@@ -35,6 +35,7 @@
 #include <glib.h>
 #include <string.h>
 #include <math.h>
+#define _GNU_SOURCE
 #include <stdio.h>
 
 #include "audacious/plugin.h"
@@ -121,7 +122,7 @@ fill_song_tuple (char *filename, Tuple *ti)
 {
 	SNDFILE	*tmp_sndfile;
 	SF_INFO tmp_sfinfo;
-	gchar *realfn = NULL;
+	gchar *realfn = NULL, *codec = NULL, *format, *subformat = NULL;
 
 	realfn = g_filename_from_uri(filename, NULL, NULL);
 	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
@@ -139,71 +140,144 @@ fill_song_tuple (char *filename, Tuple *ti)
 	switch (tmp_sfinfo.format & SF_FORMAT_TYPEMASK)
 	{
 		case SF_FORMAT_WAV:
-			tuple_associate_string(ti, "codec", "Microsoft WAV (little endian)");
+		case SF_FORMAT_WAVEX:
+			format = "Microsoft WAV";
 			break;
 		case SF_FORMAT_AIFF:
-			tuple_associate_string(ti, "codec", "Apple/SGI AIFF (big endian)");
+			format = "Apple/SGI AIFF";
 			break;
 		case SF_FORMAT_AU:
-			tuple_associate_string(ti, "codec", "Sun/NeXT AU (big endian)");
+			format = "Sun/NeXT AU";
 			break;
 		case SF_FORMAT_RAW:
-			tuple_associate_string(ti, "codec", "Raw PCM data");
+			format = "Raw PCM data";
 			break;
 		case SF_FORMAT_PAF:
-			tuple_associate_string(ti, "codec", "Ensoniq PARIS");
+			format = "Ensoniq PARIS";
 			break;
 		case SF_FORMAT_SVX:
-			tuple_associate_string(ti, "codec", "Amiga IFF / SVX8 / SV16");
+			format = "Amiga IFF / SVX8 / SV16";
 			break;
 		case SF_FORMAT_NIST:
-			tuple_associate_string(ti, "codec", "Sphere NIST");
+			format = "Sphere NIST";
 			break;
 		case SF_FORMAT_VOC:
-			tuple_associate_string(ti, "codec", "Creative Voice (VOC)");
+			format = "Creative VOC";
 			break;
 		case SF_FORMAT_IRCAM:
-			tuple_associate_string(ti, "codec", "Berkeley/IRCAM/CARL");
+			format = "Berkeley/IRCAM/CARL";
 			break;
 		case SF_FORMAT_W64:
-			tuple_associate_string(ti, "codec", "Sonic Foundry's 64 bit RIFF/WAV");
+			format = "Sonic Foundry's 64 bit RIFF/WAV";
 			break;
 		case SF_FORMAT_MAT4:
-			tuple_associate_string(ti, "codec", "Matlab (tm) V4.2 / GNU Octave 2.0");
+			format = "Matlab (tm) V4.2 / GNU Octave 2.0";
 			break;
 		case SF_FORMAT_MAT5:
-			tuple_associate_string(ti, "codec", "Matlab (tm) V5.0 / GNU Octave 2.1");
+			format = "Matlab (tm) V5.0 / GNU Octave 2.1";
 			break;
 		case SF_FORMAT_PVF:
-			tuple_associate_string(ti, "codec", "Portable Voice Format");
+			format = "Portable Voice Format";
 			break;
 		case SF_FORMAT_XI:
-			tuple_associate_string(ti, "codec", "Fasttracker 2 Extended Instrument");
+			format = "Fasttracker 2 Extended Instrument";
 			break;
 		case SF_FORMAT_HTK:
-			tuple_associate_string(ti, "codec", "HMM Tool Kit");
+			format = "HMM Tool Kit";
 			break;
 		case SF_FORMAT_SDS:
-			tuple_associate_string(ti, "codec", "Midi Sample Dump Standard");
+			format = "Midi Sample Dump Standard";
 			break;
 		case SF_FORMAT_AVR:
-			tuple_associate_string(ti, "codec", "Audio Visual Research");
-			break;
-		case SF_FORMAT_WAVEX:
-			tuple_associate_string(ti, "codec", "Microsoft WAV (WAVEFORMATEX)");
+			format = "Audio Visual Research";
 			break;
 		case SF_FORMAT_SD2:
-			tuple_associate_string(ti, "codec", "Sound Designer 2");
+			format = "Sound Designer 2";
 			break;
 		case SF_FORMAT_FLAC:
-			tuple_associate_string(ti, "codec", "Free Lossless Audio Codec");
+			format = "Free Lossless Audio Codec";
 			break;
 		case SF_FORMAT_CAF:
-			tuple_associate_string(ti, "codec", "Core Audio File");
+			format = "Core Audio File";
 			break;
 		default:
-			tuple_associate_string(ti, "codec", "sndfile (unknown format)");
+			format = "unknown sndfile";
 	}
+	switch (tmp_sfinfo.format & SF_FORMAT_SUBMASK)
+	{
+		case SF_FORMAT_PCM_S8:
+			subformat = "signed 8 bit";
+			break;
+		case SF_FORMAT_PCM_16:
+			subformat = "signed 16 bit";
+			break;
+		case SF_FORMAT_PCM_24:
+			subformat = "signed 24 bit";
+			break;
+		case SF_FORMAT_PCM_32:
+			subformat = "signed 32 bit";
+			break;
+		case SF_FORMAT_PCM_U8:
+			subformat = "unsigned 8 bit";
+			break;
+		case SF_FORMAT_FLOAT:
+			subformat = "32 bit float";
+			break;
+		case SF_FORMAT_DOUBLE:
+			subformat = "64 bit float";
+			break;
+		case SF_FORMAT_ULAW:
+			subformat = "U-Law";
+			break;
+		case SF_FORMAT_ALAW:
+			subformat = "A-Law";
+			break;
+		case SF_FORMAT_IMA_ADPCM:
+			subformat = "IMA ADPCM";
+			break;
+		case SF_FORMAT_MS_ADPCM:
+			subformat = "MS ADPCM";
+			break;
+		case SF_FORMAT_GSM610:
+			subformat = "GSM 6.10";
+			break;
+		case SF_FORMAT_VOX_ADPCM:
+			subformat = "Oki Dialogic ADPCM";
+			break;
+		case SF_FORMAT_G721_32:
+			subformat = "32kbs G721 ADPCM";
+			break;
+		case SF_FORMAT_G723_24:
+			subformat = "24kbs G723 ADPCM";
+			break;
+		case SF_FORMAT_G723_40:
+			subformat = "40kbs G723 ADPCM";
+			break;
+		case SF_FORMAT_DWVW_12:
+			subformat = "12 bit Delta Width Variable Word";
+			break;
+		case SF_FORMAT_DWVW_16:
+			subformat = "16 bit Delta Width Variable Word";
+			break;
+		case SF_FORMAT_DWVW_24:
+			subformat = "24 bit Delta Width Variable Word";
+			break;
+		case SF_FORMAT_DWVW_N:
+			subformat = "N bit Delta Width Variable Word";
+			break;
+		case SF_FORMAT_DPCM_8:
+			subformat = "8 bit differential PCM";
+			break;
+		case SF_FORMAT_DPCM_16:
+			subformat = "16 bit differential PCM";
+	}
+/*
+	if (subformat != NULL)
+		asprintf(*codec, "%s (%s)", format, subformat);
+	else
+		asprintf(*codec, "%s", format);
+*/
+	tuple_associate_string(ti, "codec", format);
 }
 
 static gchar *get_title(char *filename)
