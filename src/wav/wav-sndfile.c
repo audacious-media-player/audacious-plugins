@@ -35,8 +35,6 @@
 #include <glib.h>
 #include <string.h>
 #include <math.h>
-#define _GNU_SOURCE
-#include <stdio.h>
 
 #include "audacious/plugin.h"
 #include "audacious/util.h"
@@ -123,6 +121,7 @@ fill_song_tuple (char *filename, Tuple *ti)
 	SNDFILE	*tmp_sndfile;
 	SF_INFO tmp_sfinfo;
 	gchar *realfn = NULL, *codec = NULL, *format, *subformat = NULL;
+	GString *codec_gs = NULL;
 
 	realfn = g_filename_from_uri(filename, NULL, NULL);
 	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
@@ -271,13 +270,16 @@ fill_song_tuple (char *filename, Tuple *ti)
 		case SF_FORMAT_DPCM_16:
 			subformat = "16 bit differential PCM";
 	}
-/*
+
+	codec_gs = g_string_new("");
 	if (subformat != NULL)
-		asprintf(*codec, "%s (%s)", format, subformat);
+		g_string_append_printf(codec_gs, "%s (%s)", format, subformat);
 	else
-		asprintf(*codec, "%s", format);
-*/
-	tuple_associate_string(ti, "codec", format);
+		g_string_append_printf(codec_gs, "%s", format);
+	codec = g_strdup(codec_gs->str);
+	g_string_free(codec_gs, TRUE);
+
+	tuple_associate_string(ti, "codec", codec);
 }
 
 static gchar *get_title(char *filename)
