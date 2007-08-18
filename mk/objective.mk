@@ -126,9 +126,10 @@ distclean: clean
 	@if [ -f Makefile.in ]; then \
 		rm -f Makefile; \
 	fi
-	@if [ -f mk/rules.mk ]; then \
+	@if [ -f mk/rules.mk.in ]; then \
 		rm -f mk/rules.mk; \
 	fi
+	rm -f config.log config.status
 
 build: depend
 	$(MAKE) build-prehook
@@ -208,7 +209,7 @@ build: depend
 	fi;
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(OBJECTIVE_LIBS): $(OBJECTS) $(LIBDEP)
+$(OBJECTIVE_LIBS): $(OBJECTS)
 	if [ "x$(OBJECTS)" != "x" ]; then \
 		$(MAKE) $(OBJECTS) || exit;		\
 		printf "%10s     %-20s\n" LINK $@; \
@@ -230,7 +231,7 @@ $(OBJECTIVE_LIBS_NOINST): $(OBJECTS)
 		$(AR) cr $@ $(OBJECTS); \
 	fi
 
-$(OBJECTIVE_BINS): $(OBJECTS) $(LIBDEP)
+$(OBJECTIVE_BINS): $(OBJECTS)
 	if [ "x$(OBJECTS)" != "x" ]; then \
 		$(MAKE) $(OBJECTS) || exit;		\
 		printf "%10s     %-20s\n" LINK $@; \
@@ -251,11 +252,13 @@ mk/rules.mk:
 		echo "[complete]"; \
 	fi
 
-.PHONY: .depend depend clean distclean
+.PHONY: .depend depend depend-prehook clean distclean
 .depend:
+depend-prehook:
 
 # default depend rule. if something else is needed -- override depend target
 depend:
+	$(MAKE) depend-prehook
 	@if [ "x$(SUBDIRS)" != "x" ]; then \
 		for i in $(SUBDIRS); do \
 			if [ $(VERBOSITY) -gt 0 ]; then \
