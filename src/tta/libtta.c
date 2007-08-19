@@ -72,7 +72,7 @@ static void get_song_info (char *filename, char **title, int *length);
 static void file_info (char *filename);
 static void about ();
 static Tuple *get_song_tuple(char *filename);
-static gchar *extname(const char *filename);
+//static gchar *extname(const char *filename);
 
 static GThread *decode_thread = NULL;
 static char sample_buffer[PCM_BUFFER_LENGTH * MAX_BSIZE * MAX_NCH];
@@ -177,7 +177,7 @@ tta_error (int error)
 static gchar *
 get_song_title(Tuple *tuple)
 {
-	return tuple_formatter_process_string(tuple, get_gentitle_format());
+	return tuple_formatter_make_title_string(tuple, get_gentitle_format());
 }
 
 static void
@@ -570,7 +570,6 @@ get_song_tuple(char *filename)
 	Tuple *tuple = NULL;
 	tta_info *ttainfo;
 	VFSFile *file;
-	gchar *realfn = NULL;
 
 	ttainfo = g_malloc0(sizeof(tta_info));
 
@@ -610,6 +609,7 @@ get_song_tuple(char *filename)
 	return tuple;
 }
 
+#if 0
 static gchar *
 extname(const char *filename)
 {
@@ -620,6 +620,7 @@ extname(const char *filename)
 
 	return ext;
 }
+#endif
 
 /* return length in letters */
 size_t tta_ucs4len(id3_ucs4_t *ucs)
