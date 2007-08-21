@@ -389,6 +389,7 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
         faacDecClose(decoder);
 
         msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
+        tuple_associate_int(ti, "length", msDuration);
 
         mp4ff_meta_get_title(mp4file, &tmpval);
         if (tmpval)
@@ -400,7 +401,7 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
         mp4ff_meta_get_album(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, "title", tmpval);
+            tuple_associate_string(ti, "album", tmpval);
             free(tmpval);
         }
 
