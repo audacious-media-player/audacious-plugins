@@ -251,7 +251,7 @@ static gchar *get_title_psf(gchar *fn) {
     Tuple *tuple = get_tuple_psf(fn);
 
     if (tuple != NULL) {
-        title = tuple_formatter_process_string(tuple, get_gentitle_format());
+        title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
         tuple_free(tuple);
     }
     else

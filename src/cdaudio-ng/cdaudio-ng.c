@@ -522,7 +522,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	is_paused = FALSE;
 
 	tuple = create_tuple_from_trackinfo(pinputplayback->filename);
-	title = tuple_formatter_process_string(tuple, get_gentitle_format());
+	title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
 	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
 	free(title); title = NULL;

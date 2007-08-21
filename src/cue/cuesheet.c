@@ -325,7 +325,7 @@ static void get_song_info(gchar *uri, gchar **title, gint *length)
 
 	g_return_if_fail(tuple != NULL);
 
-	*title = tuple_formatter_process_string(tuple, get_gentitle_format());
+	*title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
 	*length = tuple_get_int(tuple, "length");
 
 	tuple_free(tuple);

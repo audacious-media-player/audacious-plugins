@@ -240,7 +240,7 @@ static Tuple* get_track_ti( const char* path, track_info_t const& info, int trac
 
 static char* format_and_free_ti( Tuple* ti, int* length )
 {
-	char* result = tuple_formatter_process_string(ti, get_gentitle_format());
+	char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
 	if ( result )
 		*length = tuple_get_int(ti, "length");
 	tuple_free((void *) ti);

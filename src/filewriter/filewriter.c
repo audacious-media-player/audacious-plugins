@@ -215,7 +215,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     if (filenamefromtags)
     {
-        gchar *utf8 = tuple_formatter_process_string(tuple, get_gentitle_format());
+        gchar *utf8 = tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
         g_strchomp(utf8); //chop trailing ^J --yaz
 

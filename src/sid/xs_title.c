@@ -141,7 +141,7 @@ gchar *xs_make_titlestring(t_xs_tuneinfo *p, gint subTune)
    if (!xs_cfg.titleOverride) {
 		t_xs_tuple *pTuple = xs_get_titletuple(
 			tmpFilename, tmpFilePath, tmpFileExt, p, subTune);
-		pcResult = tuple_formatter_process_string(pTuple, get_gentitle_format());
+		pcResult = tuple_formatter_make_title_string(pTuple, get_gentitle_format());
 		tuple_free(pTuple);
 	} else
 #elif defined(HAVE_XMMSEXTRA)
