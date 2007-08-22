@@ -280,7 +280,7 @@ static void playlist_load_xspf(const gchar *filename, gint pos)
 #ifdef DEBUG
     printf("playlist_load_xspf: filename = %s\n", filename);
 #endif
-    doc = xmlParseFile(filename);
+    doc = xmlRecoverFile(filename);
     if(doc == NULL)
         return;
 
