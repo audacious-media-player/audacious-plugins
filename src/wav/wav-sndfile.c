@@ -120,11 +120,13 @@ fill_song_tuple (char *filename, Tuple *ti)
 {
 	SNDFILE	*tmp_sndfile;
 	SF_INFO tmp_sfinfo;
+	unsigned int lossy = 0;
 	gchar *realfn = NULL, *codec = NULL, *format, *subformat = NULL;
 	GString *codec_gs = NULL;
 
 	realfn = g_filename_from_uri(filename, NULL, NULL);
 	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
+	tuple_associate_string(ti, "title", g_path_get_basename(realfn ? realfn : filename));
 	g_free(realfn); realfn = NULL;
 
 	if (!tmp_sndfile)
@@ -227,42 +229,55 @@ fill_song_tuple (char *filename, Tuple *ti)
 			break;
 		case SF_FORMAT_ULAW:
 			subformat = "U-Law";
+			lossy = 1;
 			break;
 		case SF_FORMAT_ALAW:
 			subformat = "A-Law";
+			lossy = 1;
 			break;
 		case SF_FORMAT_IMA_ADPCM:
 			subformat = "IMA ADPCM";
+			lossy = 1;
 			break;
 		case SF_FORMAT_MS_ADPCM:
 			subformat = "MS ADPCM";
+			lossy = 1;
 			break;
 		case SF_FORMAT_GSM610:
 			subformat = "GSM 6.10";
+			lossy = 1;
 			break;
 		case SF_FORMAT_VOX_ADPCM:
 			subformat = "Oki Dialogic ADPCM";
+			lossy = 1;
 			break;
 		case SF_FORMAT_G721_32:
 			subformat = "32kbs G721 ADPCM";
+			lossy = 1;
 			break;
 		case SF_FORMAT_G723_24:
 			subformat = "24kbs G723 ADPCM";
+			lossy = 1;
 			break;
 		case SF_FORMAT_G723_40:
 			subformat = "40kbs G723 ADPCM";
+			lossy = 1;
 			break;
 		case SF_FORMAT_DWVW_12:
 			subformat = "12 bit Delta Width Variable Word";
+			lossy = 1;
 			break;
 		case SF_FORMAT_DWVW_16:
 			subformat = "16 bit Delta Width Variable Word";
+			lossy = 1;
 			break;
 		case SF_FORMAT_DWVW_24:
 			subformat = "24 bit Delta Width Variable Word";
+			lossy = 1;
 			break;
 		case SF_FORMAT_DWVW_N:
 			subformat = "N bit Delta Width Variable Word";
+			lossy = 1;
 			break;
 		case SF_FORMAT_DPCM_8:
 			subformat = "8 bit differential PCM";
@@ -278,8 +293,12 @@ fill_song_tuple (char *filename, Tuple *ti)
 		g_string_append_printf(codec_gs, "%s", format);
 	codec = g_strdup(codec_gs->str);
 	g_string_free(codec_gs, TRUE);
-
 	tuple_associate_string(ti, "codec", codec);
+
+	if (lossy != 0)
+		tuple_associate_string(ti, "quality", "lossy");
+	else
+		tuple_associate_string(ti, "quality", "lossless");
 }
 
 static gchar *get_title(char *filename)
