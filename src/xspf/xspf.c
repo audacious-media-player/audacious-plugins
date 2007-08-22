@@ -331,6 +331,34 @@ static void playlist_load_xspf(const gchar *filename, gint pos)
     xmlFreeDoc(doc);
 }
 
+#define DEBUG_NOCTRL_VALIDATOR 1
+
+static gboolean validate_no_cntrl(const gchar *str)
+{
+    /* str must have been validated! */
+    const gchar *p = str;
+    glong len = g_utf8_strlen(str, -1), i = 0;
+#ifdef DEBUG_NOCTRL_VALIDATOR
+    g_print("xspf -> NOCTRL VALIDATING '%s', length %li ... ",str,len);
+#endif
+    for ( i = 0 ; i < len - 1 ; i++ )
+    {
+        p = g_utf8_next_char(p);
+        gunichar uc = g_utf8_get_char(p);
+        if ( g_unichar_iscntrl(uc) )
+        {
+#ifdef DEBUG_NOCTRL_VALIDATOR
+            g_print("NOCTRL VALIDATE FAIL!\n");
+#endif
+            return FALSE;
+        }
+    }
+#ifdef DEBUG_NOCTRL_VALIDATOR
+    g_print("VALIDATE OK!\n");
+#endif
+    return TRUE;
+}
+
 static void playlist_save_xspf(const gchar *filename, gint pos)
 {
     xmlDocPtr doc;
@@ -492,7 +520,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
             const gchar *scratch;
 
             if((scratch = tuple_get_string(entry->tuple, "title")) != NULL &&
-               g_utf8_validate(scratch, -1, NULL)) {
+               g_utf8_validate(scratch, -1, NULL) && validate_no_cntrl(scratch)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"title");
                 xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
                 xmlAddChild(track, tmp);
@@ -599,7 +627,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
         }                       /* tuple */
         else {
 
-            if(entry->title != NULL && g_utf8_validate(entry->title, -1, NULL)) {
+            if(entry->title != NULL && g_utf8_validate(entry->title, -1, NULL) && validate_no_cntrl(entry->title)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"title");
                 xmlAddChild(tmp, xmlNewText((xmlChar *)entry->title));
                 xmlAddChild(track, tmp);

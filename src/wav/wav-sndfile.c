@@ -462,7 +462,8 @@ play_start (InputPlayback *playback)
 	playback->playing = TRUE;
 
 	decode_thread = g_thread_self();
-        play_loop(playback);
+	playback->set_pb_ready(playback);
+	play_loop(playback);
 }
 
 static void
