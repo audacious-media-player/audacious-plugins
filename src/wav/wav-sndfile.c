@@ -303,12 +303,20 @@ fill_song_tuple (char *filename, Tuple *ti)
 
 static gchar *get_title(char *filename)
 {
+	Tuple *tuple;
 	gchar *title;
 	gchar *realfn = NULL;
 
-	realfn = g_filename_from_uri(filename, NULL, NULL);
-	title = g_path_get_basename(realfn ? realfn : filename);
-	g_free(realfn); realfn = NULL;
+	tuple = tuple_new_from_filename(filename);
+	fill_song_tuple(filename, tuple);
+	title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+	if (*title == '\0')
+	{
+		g_free(title);
+		title = g_strdup(tuple_get_string(tuple, "file-name"));
+	}
+
+	tuple_free(tuple);
 	return title;
 }
 
@@ -505,8 +513,8 @@ file_mseek (InputPlayback *playback, gulong millisecond)
 static void
 file_seek (InputPlayback *playback, int time)
 {
-    gulong millisecond = time * 1000;
-    file_mseek(playback, millisecond);
+	gulong millisecond = time * 1000;
+	file_mseek(playback, millisecond);
 }
 
 static void
