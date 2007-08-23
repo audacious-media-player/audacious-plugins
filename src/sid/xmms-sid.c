@@ -290,6 +290,14 @@ gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
 }
 
 
+static gboolean xs_schedule_subctrl_update( gpointer unused )
+{
+	if (xs_status.isPlaying == TRUE )
+		xs_subctrl_update();
+	return FALSE;
+}
+
+
 /*
  * Main playing thread loop
  */
@@ -387,9 +395,7 @@ void *xs_playthread(void *argPointer)
 
 		XSDEBUG("subtune #%i selected, initializing...\n", myStatus.currSong);
 
-		GDK_THREADS_ENTER();
-		xs_subctrl_update();
-		GDK_THREADS_LEAVE();
+		g_idle_add_full( G_PRIORITY_HIGH_IDLE , xs_schedule_subctrl_update , NULL , NULL );
 
 		/* Check minimum playtime */
 		songLength = myTune->subTunes[myStatus.currSong-1].tuneLength;
