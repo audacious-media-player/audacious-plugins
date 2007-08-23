@@ -126,7 +126,16 @@ fill_song_tuple (char *filename, Tuple *ti)
 
 	realfn = g_filename_from_uri(filename, NULL, NULL);
 	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
-	tuple_associate_string(ti, "title", g_path_get_basename(realfn ? realfn : filename));
+	if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
+		tuple_associate_string(ti, "title", g_path_get_basename(realfn ? realfn : filename));
+	else
+		tuple_associate_string(ti, "title", sf_get_string(tmp_sndfile, SF_STR_TITLE));
+
+	tuple_associate_string(ti, "artist", sf_get_string(tmp_sndfile, SF_STR_ARTIST));
+	tuple_associate_string(ti, "comment", sf_get_string(tmp_sndfile, SF_STR_COMMENT));
+	tuple_associate_string(ti, "date", sf_get_string(tmp_sndfile, SF_STR_DATE));
+	tuple_associate_string(ti, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
+
 	g_free(realfn); realfn = NULL;
 
 	if (!tmp_sndfile)
@@ -305,7 +314,6 @@ static gchar *get_title(char *filename)
 {
 	Tuple *tuple;
 	gchar *title;
-	gchar *realfn = NULL;
 
 	tuple = tuple_new_from_filename(filename);
 	fill_song_tuple(filename, tuple);
