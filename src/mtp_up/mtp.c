@@ -72,12 +72,12 @@ void show_dialog(const gchar* message)
             message);
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_show(dialog);
-    gtk_widget_destroy(dialog);
+   /* gtk_widget_destroy(dialog); */
     GDK_THREADS_LEAVE();
 
 }
 
-void free_device()
+gboolean free_device(void)
 {
 #if DEBUG
         if(mtp_initialised)
@@ -89,7 +89,7 @@ void free_device()
                     "Waiting for the MTP mutex to unlock...\n");
 #endif
         if(!mutex)
-            return;
+            return TRUE;
         g_mutex_lock(mutex);
         if(mtp_device!= NULL)
         {
@@ -99,7 +99,7 @@ void free_device()
             gtk_widget_hide(mtp_submenu_item_free);
         }
         g_mutex_unlock(mutex);
-return;        
+return TRUE;        
 }
 
 GList * get_upload_list()
@@ -162,14 +162,14 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
 
     /* track metadata*/
     tr = LIBMTP_new_track_t();
-    tr->title =(gchar*) tuple_get_string(from_tuple, "title"); 
-    tr->artist =(gchar*) tuple_get_string(from_tuple,"artist");
-    tr->album = (gchar*)tuple_get_string(from_tuple,"album");
+    tr->title =g_strdup((gchar*) tuple_get_string(from_tuple, "title")); 
+    tr->artist =g_strdup((gchar*) tuple_get_string(from_tuple,"artist"));
+    tr->album = g_strdup((gchar*)tuple_get_string(from_tuple,"album"));
     tr->filesize = filesize;
-    tr->filename = strdup(from_path);
+    tr->filename = g_strdup(from_path);
     tr->duration = (uint32_t)tuple_get_int(from_tuple, "length");
     tr->filetype = find_filetype (from_path);
-    tr->genre = (gchar*)tuple_get_string(from_tuple, "genre");
+    tr->genre = g_strdup((gchar*)tuple_get_string(from_tuple, "genre"));
     tr->date = g_strdup_printf("%d",tuple_get_int(from_tuple, "year"));
 
     g_free(filename);
@@ -195,6 +195,7 @@ gint upload_file(Tuple *from_tuple)
     g_print("Uploading track '%s'\n",comp);
 #endif
     ret = LIBMTP_Send_Track_From_File(mtp_device, comp , gentrack, NULL , NULL, parent_id);
+    LIBMTP_destroy_track_t(gentrack);
     if (ret == 0) 
         g_print("Track upload finished!\n");
     else
@@ -213,20 +214,16 @@ gpointer upload(gpointer arg)
     gtk_widget_hide(mtp_submenu_item_free);
     if(!mutex)
     {
-        gtk_widget_hide(mtp_submenu_item_up);
         gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
         gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
-        gtk_widget_show(mtp_submenu_item_up);
         return NULL;
     } 
     g_mutex_lock(mutex); 
     if(!mtp_device)
     { 
-        gtk_widget_hide(mtp_submenu_item_up);
         gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
         gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
         g_mutex_unlock(mutex); 
-        gtk_widget_show(mtp_submenu_item_up);
         return NULL;
     }
 
@@ -252,10 +249,8 @@ gpointer upload(gpointer arg)
         node = g_list_next(node);
     }
     g_list_free(up_list);
-    gtk_widget_hide(mtp_submenu_item_up);
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_DEFAULT_LABEL);
     gtk_widget_set_sensitive(mtp_submenu_item_up, TRUE);
-    gtk_widget_show(mtp_submenu_item_up);
     g_mutex_unlock(mutex); 
 #if DEBUG
     g_print("MTP upload process finished\n");
@@ -276,10 +271,10 @@ void mtp_about ( void )
     /*about stub*/
 }
 
-void mtp_press()
+gboolean mtp_press()
 {
     if(!mutex) 
-        return;
+        return TRUE;
     g_mutex_lock(mutex);
     if(!mtp_initialised)
     {
@@ -298,15 +293,15 @@ void mtp_press()
 #if DEBUG
         g_print("No MTP devices have been found !!!");
 #endif  
-        show_dialog("No MTP devices have been found !!!");
+       /* show_dialog("No MTP devices have been found !!!"); */
         mtp_initialised = FALSE;
-        return;
+        return TRUE;
 
     }
     gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_BUSY_LABEL);
     gtk_widget_set_sensitive(mtp_submenu_item_up, FALSE);
     g_thread_create(upload,NULL,FALSE,NULL); 
-    return;
+    return TRUE;
 
 }
 
