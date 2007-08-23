@@ -8,7 +8,7 @@ OBJECTIVE_LIBS = libmtp_up$(SHARED_SUFFIX)
 LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
 LIBADD += $(MTP_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) 
-SOURCES = mtp.c
+SOURCES = mtp.c filetype.c
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) -I../../intl -I../..
 
