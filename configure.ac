@@ -1234,17 +1234,18 @@ fi
 dnl *** MTP Upload
 
 AC_ARG_ENABLE(mtp_up,
-[  --enable-mtp_up           enable mtp upload support. (default=enabled)],
+[  --disable-mtp_up           disable mtp upload support. (default=enabled)],
 [have_mtp_up=$enableval],
-[have_mtp_up=no])
+[have_mtp_up=yes])
 
 if test "x$have_mtp_up" = "xyes"; then
     have_mtp_up=yes
-    PKG_CHECK_MODULES(MTP, [libmtp >= 0.1.0], [GENERAL_PLUGINS="$GENERAL_PLUGINS mtp_up" ], [have_mtp_up="no"])
+    PKG_CHECK_MODULES(MTP, [libmtp >= 0.1.3], [GENERAL_PLUGINS="$GENERAL_PLUGINS mtp_up" ], [have_mtp_up="no"])
     MTP_LIBS=`pkg-config --libs libmtp`
     MTP_CFLAGS=`pkg-config --cflags libmtp`
 else
     have_mtp_up=no
+    AC_MSG_RESULT([*** mtp upload plugin disabled by request ***])
 fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
