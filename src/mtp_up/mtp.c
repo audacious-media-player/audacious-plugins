@@ -72,7 +72,7 @@ void show_dialog(const gchar* message)
             message);
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_show(dialog);
-   /* gtk_widget_destroy(dialog); */
+    /* gtk_widget_destroy(dialog); */
     GDK_THREADS_LEAVE();
 
 }
@@ -80,26 +80,26 @@ void show_dialog(const gchar* message)
 gboolean free_device(void)
 {
 #if DEBUG
-        if(mtp_initialised)
-                   g_print("\n\n                 !!!CAUTION!!! \n\n"
-                    "Cleaning up MTP upload plugin, please wait!!!...\n"
-                    "This will block until the pending tracks are uploaded,\n"
-                    "then it will gracefully close your device\n\n"
-                    "!!! FORCING SHUTDOWN NOW MAY CAUSE DAMAGE TO YOUR DEVICE !!!\n\n\n"
-                    "Waiting for the MTP mutex to unlock...\n");
+    if(mtp_initialised)
+        g_print("\n\n                 !!!CAUTION!!! \n\n"
+                "Cleaning up MTP upload plugin, please wait!!!...\n"
+                "This will block until the pending tracks are uploaded,\n"
+                "then it will gracefully close your device\n\n"
+                "!!! FORCING SHUTDOWN NOW MAY CAUSE DAMAGE TO YOUR DEVICE !!!\n\n\n"
+                "Waiting for the MTP mutex to unlock...\n");
 #endif
-        if(!mutex)
-            return TRUE;
-        g_mutex_lock(mutex);
-        if(mtp_device!= NULL)
-        {
-            LIBMTP_Release_Device(mtp_device);
-            mtp_device = NULL;
-            mtp_initialised = FALSE;
-            gtk_widget_hide(mtp_submenu_item_free);
-        }
-        g_mutex_unlock(mutex);
-return TRUE;        
+    if(!mutex)
+        return TRUE;
+    g_mutex_lock(mutex);
+    if(mtp_device!= NULL)
+    {
+        LIBMTP_Release_Device(mtp_device);
+        mtp_device = NULL;
+        mtp_initialised = FALSE;
+        gtk_widget_hide(mtp_submenu_item_free);
+    }
+    g_mutex_unlock(mutex);
+    return TRUE;        
 }
 
 GList * get_upload_list()
@@ -129,7 +129,7 @@ GList * get_upload_list()
 LIBMTP_track_t *track_metadata(Tuple *from_tuple)
 {
     LIBMTP_track_t *tr;
-    gchar *from_path,*filename;
+    gchar *filename, *from_path;
     VFSFile *f;
     uint64_t filesize;
     uint32_t parent_id = 0;
@@ -139,7 +139,7 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     gchar *tmp;
     tmp = g_strescape(from_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
-    /* dealing the stream uploa (invalidating)*/
+    /* dealing the stream upload (invalidating)*/
     if(filename)
     {
         f = vfs_fopen(from_path,"r");
@@ -166,29 +166,28 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     tr->artist =g_strdup((gchar*) tuple_get_string(from_tuple,"artist"));
     tr->album = g_strdup((gchar*)tuple_get_string(from_tuple,"album"));
     tr->filesize = filesize;
-    tr->filename = g_strdup(from_path);
+    tr->filename = g_strdup(tuple_get_string(from_tuple, "file-name"));
     tr->duration = (uint32_t)tuple_get_int(from_tuple, "length");
     tr->filetype = find_filetype (from_path);
     tr->genre = g_strdup((gchar*)tuple_get_string(from_tuple, "genre"));
     tr->date = g_strdup_printf("%d",tuple_get_int(from_tuple, "year"));
-
     g_free(filename);
     g_free(from_path);
-    g_free(tmp);
+    g_free(tmp); 
     return tr;
 }
 
 gint upload_file(Tuple *from_tuple)
 {
     int ret;
-    gchar *comp;
+    gchar *comp, *from_path = NULL;
     uint32_t parent_id = 0;
     LIBMTP_track_t *gentrack;
-
     gentrack = track_metadata(from_tuple);
+    from_path = g_strdup_printf("%s/%s", tuple_get_string(from_tuple, "file-path"), tuple_get_string(from_tuple, "file-name"));
     if(gentrack == NULL) return 1;
-
-    comp = g_strescape(gentrack->filename,NULL);
+    comp = g_strescape(from_path,NULL);
+    g_free(from_path);
     parent_id = mtp_device->default_music_folder;
 
 #if DEBUG
@@ -196,11 +195,12 @@ gint upload_file(Tuple *from_tuple)
 #endif
     ret = LIBMTP_Send_Track_From_File(mtp_device, comp , gentrack, NULL , NULL, parent_id);
     LIBMTP_destroy_track_t(gentrack);
+    g_free(comp);
     if (ret == 0) 
         g_print("Track upload finished!\n");
     else
     {
-        g_print("An error has occured while uploading '%s'...\nUpload failed!!!",comp);
+        g_print("An error has occured while uploading '%s'...\nUpload failed!!!\n\n",comp);
         mtp_initialised = FALSE;
         return 1;
     }
@@ -237,7 +237,7 @@ gpointer upload(gpointer arg)
         up_err = upload_file(tuple);
         if(up_err )
         {
-            show_dialog("An error has occured while uploading...\nUpload failed!");
+            /*show_dialog("An error has occured while uploading...\nUpload failed!");*/
             break;
         }
         if(exiting)
@@ -291,9 +291,9 @@ gboolean mtp_press()
     if(mtp_device == NULL) 
     {
 #if DEBUG
-        g_print("No MTP devices have been found !!!");
+        g_print("No MTP devices have been found !!!\n");
 #endif  
-       /* show_dialog("No MTP devices have been found !!!"); */
+        /* show_dialog("No MTP devices have been found !!!"); */
         mtp_initialised = FALSE;
         return TRUE;
 
@@ -318,7 +318,7 @@ void mtp_init(void)
     gtk_widget_show (mtp_submenu_item_up);
 
     gtk_menu_shell_append (GTK_MENU_SHELL (mtp_submenu), mtp_submenu_item_free);
-  
+
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(mtp_root_menuitem),mtp_submenu);
     gtk_widget_show (mtp_submenu);
     gtk_widget_show (mtp_root_menuitem);
@@ -327,7 +327,7 @@ void mtp_init(void)
     audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, mtp_root_menuitem);
     g_signal_connect (G_OBJECT (mtp_submenu_item_up), "button_press_event",G_CALLBACK (mtp_press), NULL);  
     g_signal_connect (G_OBJECT (mtp_submenu_item_free), "button_press_event",G_CALLBACK (free_device), NULL);  
-    
+
     mutex = g_mutex_new();
     plugin_active = TRUE;
     exiting=FALSE;
@@ -371,7 +371,7 @@ void mtp_cleanup(void)
         gtk_widget_destroy(mtp_submenu);
 
         gtk_widget_destroy(mtp_root_menuitem);
-        
+
         g_mutex_free (mutex);
         mutex = NULL;
         plugin_active = FALSE;
