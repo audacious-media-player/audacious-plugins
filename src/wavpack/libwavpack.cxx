@@ -165,6 +165,8 @@ public:
         ctx = NULL;
         input = NULL;
         output = NULL;
+        wv_Input = NULL;
+        wvc_Input = NULL;
     }
 
     ~WavpackDecoder()
@@ -178,8 +180,11 @@ public:
             output = NULL;
         }
         if (ctx != NULL) {
-            vfs_fclose(wv_Input);
-            vfs_fclose(wvc_Input);
+            if (wv_Input)
+                vfs_fclose(wv_Input);
+
+            if (wvc_Input)
+                vfs_fclose(wvc_Input);
             g_free(ctx);
             ctx = NULL;
         }
@@ -204,11 +209,9 @@ public:
         return true;
     }
 
-    bool attach(gchar *filename, VFSFile *wv_Input)
+    bool attach(gchar *filename, VFSFile *wvi)
     {
-        vfs_dup(wv_Input);
-
-        ctx = WavpackOpenFileInputEx(&reader, wv_Input, NULL, error_buff, OPEN_TAGS, 0);
+        ctx = WavpackOpenFileInputEx(&reader, wvi, NULL, error_buff, OPEN_TAGS, 0);
 
         if (ctx == NULL)
             return false;
