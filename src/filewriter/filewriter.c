@@ -618,7 +618,7 @@ static void file_configure(void)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
         gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
         use_suffix_tooltips = gtk_tooltips_new();
-        gtk_tooltips_set_tip(use_suffix_tooltips, use_suffix_toggle, _("If enabled, the extension from the original filename will not be stripped before adding the .wav extension to the end."), NULL);
+        gtk_tooltips_set_tip(use_suffix_tooltips, use_suffix_toggle, _("If enabled, the extension from the original filename will not be stripped before adding the new file extension to the end."), NULL);
         gtk_tooltips_enable(use_suffix_tooltips);
 
         if (filenamefromtags)

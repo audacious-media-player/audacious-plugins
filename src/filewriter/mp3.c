@@ -112,6 +112,12 @@ static gint auto_ms_val = 0;
 static gint enforce_iso_val = 0;
 static gint error_protect_val = 0;
 
+static gint available_samplerates[] =
+{ 8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000 } ;
+
+static gint available_bitrates[] =
+{ 8, 16, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320 } ;
+
 typedef struct {
     gchar *track_name;
     gchar *album_name;
@@ -657,6 +663,8 @@ static void configure_ok_cb(gpointer data)
 
 static void mp3_configure(void)
 {
+    gint i;
+
     if (!configure_win) {
         configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -737,51 +745,18 @@ static void mp3_configure(void)
                            GTK_SIGNAL_FUNC(samplerate_activate),
                            GINT_TO_POINTER(0));
         gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("8000"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(8000));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("11025"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(11025));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("12000"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(12000));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("16000"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(16000));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("22050"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(22050));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("24000"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(24000));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("32000"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(32000));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("44100"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(44100));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
-        samplerate_menu_item = gtk_menu_item_new_with_label(_("48000"));
-        gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(samplerate_activate),
-                           GINT_TO_POINTER(48000));
-        gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
+
+        for (i = 0; i < sizeof(available_samplerates)/sizeof(gint); i++)
+        {
+            gchar *string = g_strdup_printf("%d", available_samplerates[i]);
+            samplerate_menu_item = gtk_menu_item_new_with_label(string);
+            gtk_signal_connect(GTK_OBJECT(samplerate_menu_item), "activate",
+                               GTK_SIGNAL_FUNC(samplerate_activate),
+                               GINT_TO_POINTER(available_samplerates[i]));
+            gtk_menu_append(GTK_MENU(samplerate_menu), samplerate_menu_item);
+            g_free(string);
+        }
+
         gtk_option_menu_set_menu(GTK_OPTION_MENU(samplerate_option_menu),
                                  samplerate_menu);
         gtk_widget_set_usize(samplerate_option_menu, 75, 28);
@@ -792,50 +767,10 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(samplerate_hbox), samplerate_label,
                            FALSE, FALSE, 0);
 
-        switch (out_samplerate_val) {
-
-            case 0:
+        for (i = 0; i < sizeof(available_samplerates)/sizeof(gint); i++)
+            if (out_samplerate_val == available_samplerates[i])
                 gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 0);
-                break;
-            case 8000:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 1);
-                break;
-            case 11025:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 2);
-                break;
-            case 12000:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 3);
-                break;
-            case 16000:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 4);
-                break;
-            case 22050:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 5);
-                break;
-            case 24000:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 6);
-                break;
-            case 32000:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 7);
-                break;
-            case 44100:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 8);
-                break;
-            case 48000:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (samplerate_option_menu), 9);
-                break;
-
-        }
+                                            (samplerate_option_menu), i+1);
 
         /* Encoder Quality */
 
@@ -871,169 +806,27 @@ static void mp3_configure(void)
         // bitrate menu
         bitrate_option_menu = gtk_option_menu_new();
         bitrate_menu = gtk_menu_new();
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("8"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(8));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("16"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(16));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("24"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(24));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("32"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(32));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("40"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(40));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("48"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(48));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("56"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(56));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("64"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(64));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label("80");
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(80));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("96"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(96));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("112"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(112));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("128"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(128));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("160"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(160));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("192"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(192));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("224"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(224));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("256"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(256));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
-        bitrate_menu_item = gtk_menu_item_new_with_label(_("320"));
-        gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(bitrate_activate),
-                           GINT_TO_POINTER(320));
-        gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
+
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+        {
+            gchar *string = g_strdup_printf("%d", available_bitrates[i]);
+            bitrate_menu_item = gtk_menu_item_new_with_label(string);
+            gtk_signal_connect(GTK_OBJECT(bitrate_menu_item), "activate",
+                               GTK_SIGNAL_FUNC(bitrate_activate),
+                               GINT_TO_POINTER(available_bitrates[i]));
+            gtk_menu_append(GTK_MENU(bitrate_menu), bitrate_menu_item);
+            g_free(string);
+        }
+
         gtk_option_menu_set_menu(GTK_OPTION_MENU(bitrate_option_menu),
                                  bitrate_menu);
         gtk_widget_set_usize(bitrate_option_menu, 80, 28);
         gtk_box_pack_end(GTK_BOX(hbox1), bitrate_option_menu, FALSE, FALSE, 0);
 
-
-        switch (bitrate_val) {
-
-            case 8:
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+            if (bitrate_val == available_bitrates[i])
                 gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 0);
-                break;
-            case 16:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 1);
-                break;
-            case 24:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 2);
-                break;
-            case 32:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 3);
-                break;
-            case 40:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 4);
-                break;
-            case 48:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 5);
-                break;
-            case 56:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 6);
-                break;
-            case 64:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 7);
-                break;
-            case 80:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 8);
-                break;
-            case 96:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 9);
-                break;
-            case 112:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 10);
-                break;
-            case 128:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 11);
-                break;
-            case 160:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 12);
-                break;
-            case 192:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 13);
-                break;
-            case 224:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 14);
-                break;
-            case 256:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 15);
-                break;
-            case 320:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (bitrate_option_menu), 16);
-                break;
-
-        }
+                                            (bitrate_option_menu), i);
 
         // hbox2 for compression ratio
         hbox2 = gtk_hbox_new(FALSE, 5);
@@ -1262,176 +1055,35 @@ static void mp3_configure(void)
         gtk_container_add(GTK_CONTAINER(vbr_options_vbox2),
                           vbr_options_hbox1);
 
-        vbr_min_label = gtk_label_new("Minimum bitrate (kbps):");
+        vbr_min_label = gtk_label_new(_("Minimum bitrate (kbps):"));
         gtk_misc_set_alignment(GTK_MISC(vbr_min_label), 0, 0.5);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox1), vbr_min_label, TRUE,
                            TRUE, 0);
 
         vbr_min_option_menu = gtk_option_menu_new();
         vbr_min_menu = gtk_menu_new();
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("8"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(8));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("16"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(16));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("24"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(24));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("32"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(32));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("40"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(40));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("48"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(48));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("56"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(56));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("64"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(64));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("80"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(80));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("96"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(96));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("112"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(112));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("128"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(128));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("160"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(160));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("192"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(192));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("224"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(224));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("256"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(256));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
-        vbr_min_menu_item = gtk_menu_item_new_with_label(_("320"));
-        gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_min_activate),
-                           GINT_TO_POINTER(320));
-        gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
+
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+        {
+            gchar *string = g_strdup_printf("%d", available_bitrates[i]);
+            vbr_min_menu_item = gtk_menu_item_new_with_label(string);
+            gtk_signal_connect(GTK_OBJECT(vbr_min_menu_item), "activate",
+                               GTK_SIGNAL_FUNC(vbr_min_activate),
+                               GINT_TO_POINTER(available_bitrates[i]));
+            gtk_menu_append(GTK_MENU(vbr_min_menu), vbr_min_menu_item);
+            g_free(string);
+        }
+
         gtk_option_menu_set_menu(GTK_OPTION_MENU(vbr_min_option_menu),
                                  vbr_min_menu);
         gtk_widget_set_usize(vbr_min_option_menu, 40, 25);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox1), vbr_min_option_menu,
                            TRUE, TRUE, 2);
 
-        switch (vbr_min_val) {
-
-            case 8:
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+            if (vbr_min_val == available_bitrates[i])
                 gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 0);
-                break;
-            case 16:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 1);
-                break;
-            case 24:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 2);
-                break;
-            case 32:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 3);
-                break;
-            case 40:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 4);
-                break;
-            case 48:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 5);
-                break;
-            case 56:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 6);
-                break;
-            case 64:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 7);
-                break;
-            case 80:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 8);
-                break;
-            case 96:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 9);
-                break;
-            case 112:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 10);
-                break;
-            case 128:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 11);
-                break;
-            case 160:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 12);
-                break;
-            case 192:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 13);
-                break;
-            case 224:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 14);
-                break;
-            case 256:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 15);
-                break;
-            case 320:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_min_option_menu), 16);
-                break;
-
-        }
+                                            (vbr_min_option_menu), i);
 
         vbr_options_hbox2 = gtk_hbox_new(FALSE, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_options_hbox2),
@@ -1446,169 +1098,28 @@ static void mp3_configure(void)
 
         vbr_max_option_menu = gtk_option_menu_new();
         vbr_max_menu = gtk_menu_new();
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("8"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(8));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("16"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(16));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("24"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(24));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("32"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(32));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("40"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(40));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("48"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(48));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("56"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(56));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("64"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(64));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("80"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(80));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("96"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(96));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("112"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(112));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("128"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(128));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("160"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(160));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("192"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(192));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("224"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(224));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("256"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(256));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
-        vbr_max_menu_item = gtk_menu_item_new_with_label(_("320"));
-        gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(vbr_max_activate),
-                           GINT_TO_POINTER(320));
-        gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
+
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+        {
+            gchar *string = g_strdup_printf("%d", available_bitrates[i]);
+            vbr_max_menu_item = gtk_menu_item_new_with_label(string);
+            gtk_signal_connect(GTK_OBJECT(vbr_max_menu_item), "activate",
+                               GTK_SIGNAL_FUNC(vbr_max_activate),
+                               GINT_TO_POINTER(available_bitrates[i]));
+            gtk_menu_append(GTK_MENU(vbr_max_menu), vbr_max_menu_item);
+            g_free(string);
+        }
+
         gtk_option_menu_set_menu(GTK_OPTION_MENU(vbr_max_option_menu),
                                  vbr_max_menu);
         gtk_widget_set_usize(vbr_max_option_menu, 40, 25);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox2), vbr_max_option_menu,
                            TRUE, TRUE, 2);
 
-        switch (vbr_max_val) {
-
-            case 8:
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+            if (vbr_max_val == available_bitrates[i])
                 gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 0);
-                break;
-            case 16:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 1);
-                break;
-            case 24:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 2);
-                break;
-            case 32:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 3);
-                break;
-            case 40:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 4);
-                break;
-            case 48:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 5);
-                break;
-            case 56:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 6);
-                break;
-            case 64:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 7);
-                break;
-            case 80:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 8);
-                break;
-            case 96:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 9);
-                break;
-            case 112:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 10);
-                break;
-            case 128:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 11);
-                break;
-            case 160:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 12);
-                break;
-            case 192:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 13);
-                break;
-            case 224:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 14);
-                break;
-            case 256:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 15);
-                break;
-            case 320:
-                gtk_option_menu_set_history(GTK_OPTION_MENU
-                                            (vbr_max_option_menu), 16);
-                break;
-
-        }
+                                            (vbr_max_option_menu), i);
 
         enforce_min_toggle =
             gtk_check_button_new_with_label
@@ -1643,169 +1154,28 @@ static void mp3_configure(void)
 
         abr_option_menu = gtk_option_menu_new();
         abr_menu = gtk_menu_new();
-        abr_menu_item = gtk_menu_item_new_with_label(_("8"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(8));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("16"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(16));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("24"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(24));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("32"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(32));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("40"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(40));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("48"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(48));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("56"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(56));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("64"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(64));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("80"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(80));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("96"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(96));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("112"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(112));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("128"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(128));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("160"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(160));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("192"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(192));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("224"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(224));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("256"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(256));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
-        abr_menu_item = gtk_menu_item_new_with_label(_("320"));
-        gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
-                           GTK_SIGNAL_FUNC(abr_activate),
-                           GINT_TO_POINTER(320));
-        gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
+
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+        {
+            gchar *string = g_strdup_printf("%d", available_bitrates[i]);
+            abr_menu_item = gtk_menu_item_new_with_label(string);
+            gtk_signal_connect(GTK_OBJECT(abr_menu_item), "activate",
+                               GTK_SIGNAL_FUNC(abr_activate),
+                               GINT_TO_POINTER(available_bitrates[i]));
+            gtk_menu_append(GTK_MENU(abr_menu), abr_menu_item);
+            g_free(string);
+        }
+
         gtk_option_menu_set_menu(GTK_OPTION_MENU(abr_option_menu),
                                  abr_menu);
         gtk_widget_set_usize(abr_option_menu, 40, 25);
         gtk_box_pack_start(GTK_BOX(abr_hbox), abr_option_menu, TRUE, TRUE,
                            2);
 
-        switch (abr_val) {
-
-            case 8:
+        for (i = 0; i < sizeof(available_bitrates)/sizeof(gint); i++)
+            if (abr_val == available_bitrates[i])
                 gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            0);
-                break;
-            case 16:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            1);
-                break;
-            case 24:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            2);
-                break;
-            case 32:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            3);
-                break;
-            case 40:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            4);
-                break;
-            case 48:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            5);
-                break;
-            case 56:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            6);
-                break;
-            case 64:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            7);
-                break;
-            case 80:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            8);
-                break;
-            case 96:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            9);
-                break;
-            case 112:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            10);
-                break;
-            case 128:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            11);
-                break;
-            case 160:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            12);
-                break;
-            case 192:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            13);
-                break;
-            case 224:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            14);
-                break;
-            case 256:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            15);
-                break;
-            case 320:
-                gtk_option_menu_set_history(GTK_OPTION_MENU(abr_option_menu),
-                                            16);
-                break;
-
-        }
+                                            i);
 
         /* Quality Level */
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins svn-1563\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-08-25 15:43+0200\n"
+"POT-Creation-Date: 2007-08-25 22:54+0200\n"
 "PO-Revision-Date: 2007-02-27 23:34+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -129,13 +129,13 @@ msgstr "16 bitů"
 msgid "Channels"
 msgstr "Kanálů"
 
-#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:1106
+#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:899
 #: src/sid/xmms-sid.glade:156 src/sid/xs_interface.c:302
 #: src/timidity/src/interface.c:167
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:333 src/filewriter/mp3.c:1101
+#: src/adplug/adplug-xmms.cc:333 src/filewriter/mp3.c:894
 #: src/modplug/gui/interface.cxx:195 src/sid/xmms-sid.glade:175
 #: src/sid/xs_interface.c:309 src/timidity/src/interface.c:175
 msgid "Stereo"
@@ -152,25 +152,25 @@ msgstr ""
 msgid "Frequency"
 msgstr "Francouzština:"
 
-#: src/adplug/adplug-xmms.cc:347 src/filewriter/mp3.c:745
-#: src/sid/xmms-sid.glade:326 src/sid/xs_interface.c:347
+#: src/adplug/adplug-xmms.cc:347 src/sid/xmms-sid.glade:326
+#: src/sid/xs_interface.c:347
 msgid "11025"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:354 src/filewriter/mp3.c:760
-#: src/sid/xmms-sid.glade:352 src/sid/xs_interface.c:348
+#: src/adplug/adplug-xmms.cc:354 src/sid/xmms-sid.glade:352
+#: src/sid/xs_interface.c:348
 #, fuzzy
 msgid "22050"
 msgstr "22000 Hz"
 
-#: src/adplug/adplug-xmms.cc:361 src/filewriter/mp3.c:775
-#: src/sid/xmms-sid.glade:378 src/sid/xs_interface.c:349
+#: src/adplug/adplug-xmms.cc:361 src/sid/xmms-sid.glade:378
+#: src/sid/xs_interface.c:349
 #, fuzzy
 msgid "44100"
 msgstr "44100 Hz"
 
-#: src/adplug/adplug-xmms.cc:368 src/filewriter/mp3.c:780
-#: src/sid/xmms-sid.glade:404 src/sid/xs_interface.c:350
+#: src/adplug/adplug-xmms.cc:368 src/sid/xmms-sid.glade:404
+#: src/sid/xs_interface.c:350
 msgid "48000"
 msgstr ""
 
@@ -2663,24 +2663,24 @@ msgstr "Nezkracovat příponu jména souboru"
 #: src/filewriter/filewriter.c:621
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
-"before adding the .wav extension to the end."
+"before adding the new file extension to the end."
 msgstr ""
 
 #: src/filewriter/filewriter.c:635
 msgid "Prepend track number to filename"
 msgstr ""
 
-#: src/filewriter/mp3.c:667
+#: src/filewriter/mp3.c:675
 #, fuzzy
 msgid "MP3 Configuration"
 msgstr "Flac – nastavení"
 
-#: src/filewriter/mp3.c:694
+#: src/filewriter/mp3.c:702
 #, fuzzy
 msgid "Algorithm Quality:"
 msgstr "Kvalita"
 
-#: src/filewriter/mp3.c:716
+#: src/filewriter/mp3.c:724
 msgid ""
 "best/slowest:0;\n"
 "worst/fastest:9;\n"
@@ -2688,283 +2688,178 @@ msgid ""
 "default:5;"
 msgstr ""
 
-#: src/filewriter/mp3.c:724
+#: src/filewriter/mp3.c:732
 #, fuzzy
 msgid "Output Samplerate:"
 msgstr "Vzorkovací kmitočet:"
 
-#: src/filewriter/mp3.c:735 src/filewriter/mp3.c:1091
+#: src/filewriter/mp3.c:743 src/filewriter/mp3.c:884
 #, fuzzy
 msgid "Auto"
 msgstr "Zvuk"
 
-#: src/filewriter/mp3.c:740 src/sid/xmms-sid.glade:300
-#: src/sid/xs_interface.c:346
-msgid "8000"
-msgstr ""
-
-#: src/filewriter/mp3.c:750
-#, fuzzy
-msgid "12000"
-msgstr "11000 Hz"
-
-#: src/filewriter/mp3.c:755
-#, fuzzy
-msgid "16000"
-msgstr "11000 Hz"
-
 #: src/filewriter/mp3.c:765
-#, fuzzy
-msgid "24000"
-msgstr "22000 Hz"
-
-#: src/filewriter/mp3.c:770
-#, fuzzy
-msgid "32000"
-msgstr "22000 Hz"
-
-#: src/filewriter/mp3.c:790
 #, fuzzy
 msgid "(Hz)"
 msgstr "Hz"
 
-#: src/filewriter/mp3.c:842
+#: src/filewriter/mp3.c:777
 #, fuzzy
 msgid "Bitrate / Compression ratio:"
 msgstr ""
 "Prům. datový tok: %.1f kb/s\n"
 "Kompresní poměr: %.1f%%"
 
-#: src/filewriter/mp3.c:868
+#: src/filewriter/mp3.c:803
 #, fuzzy
 msgid "Bitrate (kbps):"
 msgstr "Datový tok:"
 
-#: src/filewriter/mp3.c:874 src/filewriter/mp3.c:1272
-#: src/filewriter/mp3.c:1449 src/filewriter/mp3.c:1646
-msgid "8"
-msgstr ""
-
-#: src/filewriter/mp3.c:879 src/filewriter/mp3.c:1277
-#: src/filewriter/mp3.c:1454 src/filewriter/mp3.c:1651
-msgid "16"
-msgstr ""
-
-#: src/filewriter/mp3.c:884 src/filewriter/mp3.c:1282
-#: src/filewriter/mp3.c:1459 src/filewriter/mp3.c:1656
-msgid "24"
-msgstr ""
-
-#: src/filewriter/mp3.c:889 src/filewriter/mp3.c:1287
-#: src/filewriter/mp3.c:1464 src/filewriter/mp3.c:1661
-msgid "32"
-msgstr ""
-
-#: src/filewriter/mp3.c:894 src/filewriter/mp3.c:1292
-#: src/filewriter/mp3.c:1469 src/filewriter/mp3.c:1666
-msgid "40"
-msgstr ""
-
-#: src/filewriter/mp3.c:899 src/filewriter/mp3.c:1297
-#: src/filewriter/mp3.c:1474 src/filewriter/mp3.c:1671
-msgid "48"
-msgstr ""
-
-#: src/filewriter/mp3.c:904 src/filewriter/mp3.c:1302
-#: src/filewriter/mp3.c:1479 src/filewriter/mp3.c:1676
-msgid "56"
-msgstr ""
-
-#: src/filewriter/mp3.c:909 src/filewriter/mp3.c:1307
-#: src/filewriter/mp3.c:1484 src/filewriter/mp3.c:1681
-msgid "64"
-msgstr ""
-
-#: src/filewriter/mp3.c:919 src/filewriter/mp3.c:1317
-#: src/filewriter/mp3.c:1494 src/filewriter/mp3.c:1691
-msgid "96"
-msgstr ""
-
-#: src/filewriter/mp3.c:924 src/filewriter/mp3.c:1322
-#: src/filewriter/mp3.c:1499 src/filewriter/mp3.c:1696
-msgid "112"
-msgstr ""
-
-#: src/filewriter/mp3.c:929 src/filewriter/mp3.c:1327
-#: src/filewriter/mp3.c:1504 src/filewriter/mp3.c:1701
-msgid "128"
-msgstr ""
-
-#: src/filewriter/mp3.c:934 src/filewriter/mp3.c:1332
-#: src/filewriter/mp3.c:1509 src/filewriter/mp3.c:1706
-msgid "160"
-msgstr ""
-
-#: src/filewriter/mp3.c:939 src/filewriter/mp3.c:1337
-#: src/filewriter/mp3.c:1514 src/filewriter/mp3.c:1711
-msgid "192"
-msgstr ""
-
-#: src/filewriter/mp3.c:944 src/filewriter/mp3.c:1342
-#: src/filewriter/mp3.c:1519 src/filewriter/mp3.c:1716
-msgid "224"
-msgstr ""
-
-#: src/filewriter/mp3.c:949 src/filewriter/mp3.c:1347
-#: src/filewriter/mp3.c:1524 src/filewriter/mp3.c:1721
-msgid "256"
-msgstr ""
-
-#: src/filewriter/mp3.c:954 src/filewriter/mp3.c:1352
-#: src/filewriter/mp3.c:1529 src/filewriter/mp3.c:1726
-msgid "320"
-msgstr ""
-
-#: src/filewriter/mp3.c:1051
+#: src/filewriter/mp3.c:844
 msgid "Compression ratio:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1081
+#: src/filewriter/mp3.c:874
 #, fuzzy
 msgid "Audio Mode:"
 msgstr "Zvukové zařízení:"
 
-#: src/filewriter/mp3.c:1096
+#: src/filewriter/mp3.c:889
 #, fuzzy
 msgid "Joint-Stereo"
 msgstr "Joint stereo"
 
-#: src/filewriter/mp3.c:1137
+#: src/filewriter/mp3.c:930
 msgid "auto-M/S mode"
 msgstr ""
 
-#: src/filewriter/mp3.c:1149
+#: src/filewriter/mp3.c:942
 #, fuzzy
 msgid "Misc:"
 msgstr "Disko"
 
-#: src/filewriter/mp3.c:1160
+#: src/filewriter/mp3.c:953
 msgid "Enforce strict ISO complience"
 msgstr ""
 
-#: src/filewriter/mp3.c:1171
+#: src/filewriter/mp3.c:964
 #, fuzzy
 msgid "Error protection"
 msgstr "Chybová ochrana:"
 
-#: src/filewriter/mp3.c:1183
+#: src/filewriter/mp3.c:976
 msgid "Adds 16 bit checksum to every frame"
 msgstr ""
 
-#: src/filewriter/mp3.c:1188 src/filewriter/vorbis.c:271
+#: src/filewriter/mp3.c:981 src/filewriter/vorbis.c:271
 #: src/modplug/gui/interface.cxx:310
 msgid "Quality"
 msgstr "Kvalita"
 
-#: src/filewriter/mp3.c:1200
+#: src/filewriter/mp3.c:993
 #, fuzzy
 msgid "Enable VBR/ABR"
 msgstr "Povolit"
 
-#: src/filewriter/mp3.c:1212
+#: src/filewriter/mp3.c:1005
 msgid "Type:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1223
+#: src/filewriter/mp3.c:1016
 #, fuzzy
 msgid "Variable bitrate"
 msgstr ""
 "Proměnný,\n"
 "průměrný datový tok: %d kb/s"
 
-#: src/filewriter/mp3.c:1235
+#: src/filewriter/mp3.c:1028
 msgid "Average bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1249
+#: src/filewriter/mp3.c:1042
 #, fuzzy
 msgid "VBR Options:"
 msgstr "Volby:"
 
-#: src/filewriter/mp3.c:1312 src/filewriter/mp3.c:1489
-#: src/filewriter/mp3.c:1686
-msgid "80"
-msgstr ""
+#: src/filewriter/mp3.c:1058
+#, fuzzy
+msgid "Minimum bitrate (kbps):"
+msgstr "Datový tok:"
 
-#: src/filewriter/mp3.c:1442
+#: src/filewriter/mp3.c:1094
 msgid "Maximum bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1615
+#: src/filewriter/mp3.c:1126
 msgid "Strictly enforce minimum bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1617
+#: src/filewriter/mp3.c:1128
 msgid ""
 "For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
 "mp3 player)"
 msgstr ""
 
-#: src/filewriter/mp3.c:1630
+#: src/filewriter/mp3.c:1141
 #, fuzzy
 msgid "ABR Options:"
 msgstr "Volby:"
 
-#: src/filewriter/mp3.c:1640
+#: src/filewriter/mp3.c:1151
 msgid "Average bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1818
+#: src/filewriter/mp3.c:1188
 msgid "VBR quality level:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1833
+#: src/filewriter/mp3.c:1203
 msgid ""
 "highest:0;\n"
 "lowest:9;\n"
 "default:4;"
 msgstr ""
 
-#: src/filewriter/mp3.c:1841
+#: src/filewriter/mp3.c:1211
 msgid "Don't write Xing VBR header"
 msgstr ""
 
-#: src/filewriter/mp3.c:1856
+#: src/filewriter/mp3.c:1226
 #, fuzzy
 msgid "VBR/ABR"
 msgstr "VBR"
 
-#: src/filewriter/mp3.c:1868
+#: src/filewriter/mp3.c:1238
 #, fuzzy
 msgid "Frame params:"
 msgstr "Rámců:"
 
-#: src/filewriter/mp3.c:1880
+#: src/filewriter/mp3.c:1250
 msgid "Mark as copyright"
 msgstr ""
 
-#: src/filewriter/mp3.c:1891
+#: src/filewriter/mp3.c:1261
 msgid "Mark as original"
 msgstr ""
 
-#: src/filewriter/mp3.c:1903
+#: src/filewriter/mp3.c:1273
 #, fuzzy
 msgid "ID3 params:"
 msgstr "ID3 tagy:"
 
-#: src/filewriter/mp3.c:1914
+#: src/filewriter/mp3.c:1284
 msgid "Force addition of version 2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1924
+#: src/filewriter/mp3.c:1294
 msgid "Only add v1 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1931
+#: src/filewriter/mp3.c:1301
 msgid "Only add v2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1952
+#: src/filewriter/mp3.c:1322
 #, fuzzy
 msgid "Tags"
 msgstr "Tag:"
@@ -4091,6 +3986,10 @@ msgstr ""
 #: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
 msgid "Channels:"
 msgstr "Kanálů"
+
+#: src/sid/xmms-sid.glade:300 src/sid/xs_interface.c:346
+msgid "8000"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:351
 #, fuzzy
@@ -6156,6 +6055,22 @@ msgstr "Modul sndfile WAV"
 #, c-format
 msgid "About %s"
 msgstr "O %s"
+
+#, fuzzy
+#~ msgid "12000"
+#~ msgstr "11000 Hz"
+
+#, fuzzy
+#~ msgid "16000"
+#~ msgstr "11000 Hz"
+
+#, fuzzy
+#~ msgid "24000"
+#~ msgstr "22000 Hz"
+
+#, fuzzy
+#~ msgid "32000"
+#~ msgstr "22000 Hz"
 
 #~ msgid "OSS Output Plugin"
 #~ msgstr "OSS výstupní modul"
