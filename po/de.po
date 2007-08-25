@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-02-11 03:19-0600\n"
+"POT-Creation-Date: 2007-08-25 15:43+0200\n"
 "PO-Revision-Date: 2007-01-06 18:31+0100\n"
 "Last-Translator: Michael Hanselmann\n"
 "Language-Team: german <audacious@hansmi.ch>\n"
@@ -11,118 +11,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
 
-#: src/CoreAudio/coreaudio.c:49
-msgid "CoreAudio Output Plugin"
-msgstr "CoreAudio-Ausgabe-Plugin"
-
-#: src/OSS/configure.c:150
-#, c-format
-msgid "Default (%s)"
-msgstr "Standard (%s)"
-
-#: src/OSS/configure.c:168
-msgid "Default"
-msgstr "Standard"
-
-#: src/OSS/configure.c:200
-msgid "OSS Driver configuration"
-msgstr "OSS-Treiber-Konfiguration"
-
-#: src/OSS/configure.c:216 src/sun/configure.c:183 src/alsa/configure.c:285
-msgid "Audio device:"
-msgstr "Audiogerät:"
-
-#: src/OSS/configure.c:238 src/OSS/configure.c:279
-msgid "Use alternate device:"
-msgstr "Alternatives Gerät benutzen:"
-
-#: src/OSS/configure.c:259 src/sun/configure.c:220 src/alsa/configure.c:330
-msgid "Mixer device:"
+#: src/aac/src/libmp4.c:291
+msgid "Using libfaad2-"
 msgstr ""
 
-#: src/OSS/configure.c:301 src/sun/configure.c:248
-msgid "Devices"
-msgstr "Geräte"
-
-#: src/OSS/configure.c:303 src/esd/configure.c:171 src/sun/configure.c:259
-#: src/arts/configure.c:62
-msgid "Buffering:"
-msgstr "Zwischenspeichern:"
-
-#: src/OSS/configure.c:316 src/esd/configure.c:184 src/sun/configure.c:272
-#: src/arts/configure.c:74
-msgid "Buffer size (ms):"
-msgstr "Puffergrösse (ms):"
-
-#: src/OSS/configure.c:330 src/esd/configure.c:198 src/sun/configure.c:290
-msgid "Pre-buffer (percent):"
-msgstr ""
-
-#: src/OSS/configure.c:341 src/esd/configure.c:209 src/sun/configure.c:304
-#: src/arts/configure.c:84
-msgid "Buffering"
-msgstr "Zwischenspeichern"
-
-#: src/OSS/configure.c:342
-msgid "Mixer Settings:"
-msgstr ""
-
-#: src/OSS/configure.c:348
-msgid "Volume controls Master not PCM"
-msgstr ""
-
-#: src/OSS/configure.c:354 src/sun/configure.c:394
-msgid "Mixer"
-msgstr ""
-
-#: src/OSS/OSS.c:53
-msgid "OSS Output Plugin"
-msgstr "OSS-Ausgabe-Plugin"
-
-#: src/OSS/about.c:39
-msgid "About OSS Driver"
-msgstr "Über OSS-Treiber"
-
-#: src/OSS/about.c:40
+#: src/aac/src/libmp4.c:292
 msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
+" for decoding.\n"
+"FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+"Copyright (c) 2005-2006 Audacious team"
 msgstr ""
 
-#: src/OSS/about.c:54 src/adplug/adplug-xmms.cc:161 src/alac/plugin.c:87
-#: src/audiocompress/audacious-glue.c:107 src/console/Audacious_Driver.cxx:473
-#: src/echo_plugin/gui.c:27 src/echo_plugin/gui.c:138 src/esd/about.c:49
-#: src/jack/jack.c:598 src/null/null.c:63 src/paranormal/plugin.c:290
-#: src/scrobbler/gtkstuff.c:24 src/stereo_plugin/stereo.c:59
-#: src/stereo_plugin/stereo.c:122 src/sun/configure.c:559 src/sun/about.c:38
-#: src/timidity/src/xmms-timidity.c:140 src/timidity/src/interface.c:224
-#: src/tonegen/tonegen.c:57 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:894
-#: src/wav/wav-sndfile.c:270 src/arts/configure.c:91
-#: src/flac112/configure.c:478 src/flac112/configure.c:510
-#: src/flac113/configure.c:478 src/flac113/configure.c:510
-#: src/statusicon/si_ui.c:349
+#: src/aac/src/libmp4.c:296
+#, fuzzy
+msgid "About MP4 AAC player plugin"
+msgstr "Über Echo-Plugin"
+
+#: src/aac/src/libmp4.c:298 src/adplug/adplug-xmms.cc:185
+#: src/adplug/adplug-xmms.cc:268 src/adplug/adplug-xmms.cc:529
+#: src/alac/plugin.c:88 src/arts/arts.c:26 src/arts/configure.c:90
+#: src/audiocompress/audacious-glue.c:106
+#: src/audiocompress/audacious-glue.c:556 src/cdaudio-ng/configure.c:144
+#: src/console/Audacious_Driver.cxx:500 src/echo_plugin/gui.c:27
+#: src/echo_plugin/gui.c:138 src/esd/about.c:49
+#: src/filewriter/filewriter.c:182 src/jack/configure.c:140
+#: src/jack/jack.c:602 src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
+#: src/madplug/plugin.c:597 src/madplug/plugin.c:620
+#: src/metronom/metronom.c:87 src/modplug/gui/main.cxx:45
+#: src/musepack/libmpc.cxx:231 src/null/null.c:67 src/null/null.c:110
+#: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal/plugin.c:288
+#: src/rovascope/plugin.c:294 src/scrobbler/gtkstuff.c:24
+#: src/statusicon/si_ui.c:577 src/stereo_plugin/stereo.c:56
+#: src/stereo_plugin/stereo.c:119 src/sun/about.c:38 src/sun/configure.c:559
+#: src/timidity/src/interface.c:224 src/timidity/src/xmms-timidity.c:136
+#: src/tonegen/tonegen.c:62 src/tta/libtta.c:171 src/tta/libtta.c:285
+#: src/tta/libtta.c:420 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:880
+#: src/vtx/about.c:31 src/vtx/info.c:43 src/wavpack/ui.cxx:56
+#: src/wavpack/ui.cxx:554 src/wav/wav-sndfile.c:566
 msgid "Ok"
 msgstr "OK"
 
-#: src/adplug/adplug-xmms.cc:152
+#: src/adplug/adplug-xmms.cc:174
 msgid "About "
 msgstr "Über"
 
-#: src/adplug/adplug-xmms.cc:155
+#: src/adplug/adplug-xmms.cc:178
 msgid ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
@@ -135,1810 +68,528 @@ msgid ""
 "Linked AdPlug library version: "
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:100
-msgid "AudioCompress "
-msgstr "AudioCompress"
-
-#: src/audiocompress/audacious-glue.c:101
-msgid ""
-"\n"
-"(c)2003 trikuare studios(http://trikuare.cx)\n"
-"Ported to Audacious by Tony Vroon (chainsaw@gentoo.org)\n"
-"\n"
-"Simple dynamic range compressor for transparently\n"
-"keeping the volume level more or less consistent"
-msgstr ""
-
-#: src/audiocompress/audacious-glue.c:106
-msgid "About AudioCompress"
-msgstr "Über AudioCompress"
-
-#: src/blur_scope/config.c:73
-msgid "Blur Scope: Color selection"
-msgstr ""
-
-#: src/blur_scope/config.c:83
-msgid "Options:"
-msgstr "Optionen:"
-
-#: src/blur_scope/blur_scope.c:57
-msgid "/Toggle Decorations"
-msgstr "/Dekorationen umschalten"
-
-#: src/blur_scope/blur_scope.c:59
-msgid "/-"
-msgstr "/-"
-
-#: src/blur_scope/blur_scope.c:60
-msgid "/Close"
-msgstr "/Schliessen"
-
-#: src/blur_scope/blur_scope.c:194
-msgid "Blur scope"
-msgstr "Blur-Scope"
-
-#: src/cdaudio/configure.c:185 src/cdaudio/configure.c:199
-#: src/cdaudio/configure.c:525
-#, c-format
-msgid "Drive %d"
-msgstr "Laufwerk %d"
-
-#: src/cdaudio/configure.c:245
-#, c-format
-msgid ""
-"Failed to open device %s\n"
-"Error: %s\n"
-"\n"
-msgstr ""
-"Fehler beim Öffnen des Geräts %s: %s\n"
-"\n"
-
-#: src/cdaudio/configure.c:252
-msgid ""
-"Failed to read \"Table of Contents\"\n"
-"Maybe no disc in the drive?\n"
-"\n"
-msgstr ""
-
-#: src/cdaudio/configure.c:256
-#, c-format
-msgid ""
-"Device %s OK.\n"
-"Disc has %d tracks"
-msgstr ""
-
-#: src/cdaudio/configure.c:265
-#, c-format
-msgid " (%d data tracks)"
-msgstr ""
-
-#: src/cdaudio/configure.c:266
-#, c-format
-msgid ""
-"\n"
-"Total length: %d:%d\n"
-msgstr ""
-
-#: src/cdaudio/configure.c:271
-msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
-msgstr ""
-
-#: src/cdaudio/configure.c:288
-msgid ""
-"Digital audio extraction test: OK\n"
-"\n"
-msgstr ""
-
-#: src/cdaudio/configure.c:292
-#, c-format
-msgid ""
-"Digital audio extraction test failed: %s\n"
-"\n"
-msgstr ""
-
-#: src/cdaudio/configure.c:302
-#, c-format
-msgid ""
-"Failed to check directory %s\n"
-"Error: %s"
-msgstr ""
-
-#: src/cdaudio/configure.c:308
-#, c-format
-msgid "Error: %s exist, but is not a directory"
-msgstr ""
-
-#: src/cdaudio/configure.c:311
-#, c-format
-msgid "Directory %s OK."
-msgstr ""
-
-#: src/cdaudio/configure.c:355
-msgid "Device:"
-msgstr "Gerät:"
-
-#: src/cdaudio/configure.c:363
-msgid "_Device:"
-msgstr "_Gerät:"
-
-#: src/cdaudio/configure.c:373
-msgid "Dir_ectory:"
-msgstr "V_erzeichnis:"
-
-#: src/cdaudio/configure.c:385
-msgid "Play mode:"
-msgstr "Abspielmodus:"
-
-#: src/cdaudio/configure.c:391
-msgid "Analog"
-msgstr "Analog"
-
-#: src/cdaudio/configure.c:399
-msgid "Digital audio extraction"
-msgstr "Digitale Audioextraktion"
-
-#: src/cdaudio/configure.c:409
-msgid "Volume control:"
-msgstr "Lautstärkesteuerung:"
-
-#: src/cdaudio/configure.c:415
-msgid "No mixer"
-msgstr ""
-
-#: src/cdaudio/configure.c:421
-msgid "CDROM drive"
-msgstr "CD-ROM-Gerät"
-
-#: src/cdaudio/configure.c:427
-msgid "OSS mixer"
-msgstr ""
-
-#: src/cdaudio/configure.c:450
-msgid "Check drive..."
-msgstr "Gerät prüfen…"
-
-#: src/cdaudio/configure.c:456
-msgid "Remove drive"
-msgstr "Gerät löschen"
-
-#: src/cdaudio/configure.c:499
-msgid "CD Audio Player Configuration"
-msgstr "CD-Audio-Player-Konfiguration"
-
-#: src/cdaudio/configure.c:537
-msgid "Add drive"
-msgstr "Gerät hinzufügen"
-
-#: src/cdaudio/configure.c:545
-msgid "Device"
-msgstr "Gerät"
-
-#: src/cdaudio/configure.c:555
-msgid "CDDB:"
-msgstr "CDDB:"
-
-#: src/cdaudio/configure.c:566
-msgid "Use CDDB"
-msgstr "CDDB benutzen"
-
-#: src/cdaudio/configure.c:570
-msgid "Get server list"
-msgstr "Serverliste holen"
-
-#: src/cdaudio/configure.c:573
-msgid "Show network window"
-msgstr "Netzwerkfenster anzeigen"
-
-#: src/cdaudio/configure.c:583
-msgid "CDDB server:"
-msgstr ""
-
-#: src/cdaudio/configure.c:598
-msgid "Track names:"
-msgstr ""
-
-#: src/cdaudio/configure.c:605 src/vorbis/configure.c:138
-#: src/flac112/configure.c:302 src/flac113/configure.c:302
-#: src/madplug/configure.c:217
-msgid "Override generic titles"
-msgstr ""
-
-#: src/cdaudio/configure.c:621
-msgid "Name format:"
-msgstr ""
-
-#: src/cdaudio/configure.c:633
-msgid "CD Info"
-msgstr ""
-
-#: src/cdaudio/cdaudio.c:186
-msgid "CD Audio Plugin"
-msgstr ""
-
-#: src/cdaudio/cdaudio.c:1058 src/cdaudio/cdaudio.c:1063
-#, c-format
-msgid "CD Audio Track %02u"
-msgstr ""
-
-#: src/cdaudio/cdinfo.c:161 src/cdaudio/cdinfo.c:162 src/cdaudio/cdinfo.c:163
-msgid "(unknown)"
-msgstr ""
-
-#: src/console/Audacious_Driver.cxx:468
-msgid "About the Console Music Decoder"
-msgstr ""
-
-#: src/console/Audacious_Driver.cxx:469
-msgid ""
-"Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
-"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
-"        Shay Green <gblargg@gmail.com>"
-msgstr ""
-
-#: src/console/Audacious_Driver.cxx:518
-msgid "Game console audio module decoder"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:127
-msgid "Console Music Decoder"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:147 src/madplug/configure.c:170
-msgid "General"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:149
-msgid "Playback"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:164
-msgid "Bass:"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:168 src/console/Audacious_Config.cxx:179
-#: src/console/Audacious_Config.cxx:200
-msgid "secs"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:175
-msgid "Treble:"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:196
-msgid "Default song length:"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:202
-msgid "Resampling"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:208
-msgid "Enable audio resampling"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:223
-msgid "Resampling rate:"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:227
-msgid "Hz"
-msgstr "Hz"
-
-#: src/console/Audacious_Config.cxx:237
-msgid "NSF/NSFE"
-msgstr "NSF/NSFE"
-
-#: src/console/Audacious_Config.cxx:238
-msgid "Use optional NSFE playlist"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:249
-msgid "SPC"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:250
-msgid "Ignore length from SPC tags"
-msgstr ""
-
-#: src/console/Audacious_Config.cxx:270
-msgid ""
-"* Default song length *\n"
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
-msgstr ""
-
-#: src/disk_writer/disk_writer.c:111
-#, c-format
-msgid "Disk Writer Plugin %s"
-msgstr "Disk-Writer-Plugin %s"
-
-#: src/disk_writer/disk_writer.c:140 src/evdev-plug/ed_ui.c:318
-msgid "Error"
-msgstr "Fehler"
-
-#: src/disk_writer/disk_writer.c:141
-msgid ""
-"You cannot use the Disk Writer plugin\n"
-"when you're running in realtime mode."
-msgstr ""
-
-#: src/disk_writer/disk_writer.c:143 src/alsa/about.c:46
-#: src/alsa/configure.c:405
-msgid "OK"
-msgstr "OK"
-
-#: src/disk_writer/disk_writer.c:356
-msgid "Disk Writer Configuration"
-msgstr ""
-
-#: src/disk_writer/disk_writer.c:367
-msgid "Output file folder:"
-msgstr ""
-
-#: src/disk_writer/disk_writer.c:377
-msgid "Don't strip file name extension"
-msgstr "Dateiendung nicht entfernen"
-
-#: src/echo_plugin/echo.c:44
-#, c-format
-msgid "Echo Plugin %s"
-msgstr "Echo-Plugin %s"
-
-#: src/echo_plugin/gui.c:12
-msgid ""
-"Echo Plugin\n"
-"By Johan Levin 1999.\n"
-"\n"
-"Surround echo by Carl van Schaik 1999"
-msgstr ""
-
-#: src/echo_plugin/gui.c:26
-msgid "About Echo Plugin"
-msgstr "Über Echo-Plugin"
-
-#: src/echo_plugin/gui.c:77
-msgid "Configure Echo"
-msgstr "Echo-Plugin konfigurieren"
-
-#: src/echo_plugin/gui.c:90
-msgid "Delay: (ms)"
-msgstr "Verzögerung: (ms)"
-
-#: src/echo_plugin/gui.c:95
-msgid "Feedback: (%)"
-msgstr "Rückkoppelung: (%)"
-
-#: src/echo_plugin/gui.c:100
-msgid "Volume: (%)"
-msgstr "Lautstärke: (%)"
-
-#: src/echo_plugin/gui.c:123
-msgid "Surround echo"
-msgstr "Surround-Echo"
-
-#: src/echo_plugin/gui.c:146 src/stereo_plugin/stereo.c:131
+#: src/adplug/adplug-xmms.cc:259
+#, fuzzy
+msgid "AdPlug :: Configuration"
+msgstr "ESD-Ausgabe-Plugin-Konfiguration"
+
+#: src/adplug/adplug-xmms.cc:278 src/alarm/interface.c:1400
+#: src/alsa/configure.c:411 src/arts/configure.c:91
+#: src/audiocompress/audacious-glue.c:561 src/cdaudio-ng/configure.c:148
+#: src/echo_plugin/gui.c:146 src/jack/configure.c:147
+#: src/modplug/gui/interface.cxx:741 src/musepack/libmpc.cxx:236
+#: src/musepack/libmpc.cxx:556 src/null/null.c:111 src/sid/xmms-sid.glade:3599
+#: src/sid/xs_interface.c:1345 src/stereo_plugin/stereo.c:128
 #: src/sun/configure.c:567 src/timidity/src/interface.c:232
-#: src/alsa/configure.c:411 src/arts/configure.c:92
-#: src/flac112/configure.c:484 src/flac112/fileinfo.c:363
-#: src/flac113/configure.c:484 src/flac113/fileinfo.c:405
+#: src/wavpack/ui.cxx:278 src/wavpack/ui.cxx:561
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/echo_plugin/gui.c:153 src/stereo_plugin/stereo.c:138
-msgid "Apply"
-msgstr "Übernehmen"
-
-#: src/esd/configure.c:102
-msgid "ESD Output Plugin configuration"
-msgstr "ESD-Ausgabe-Plugin-Konfiguration"
-
-#: src/esd/configure.c:114 src/esd/configure.c:144
-msgid "Host:"
+#: src/adplug/adplug-xmms.cc:294 src/console/Audacious_Config.cxx:146
+#: src/madplug/configure.c:191 src/modplug/gui/interface.cxx:325
+#: src/modplug/gui/interface.cxx:833
+msgid "General"
 msgstr ""
 
-#: src/esd/configure.c:125
-msgid "Use remote host"
+#: src/adplug/adplug-xmms.cc:306
+msgid "Sound quality"
 msgstr ""
 
-#: src/esd/configure.c:132
-msgid "Volume controls OSS mixer"
-msgstr ""
+#: src/adplug/adplug-xmms.cc:311 src/modplug/gui/interface.cxx:151
+#, fuzzy
+msgid "Resolution"
+msgstr "Auflösung:"
 
-#: src/esd/configure.c:153
-msgid "Port:"
-msgstr ""
-
-#: src/esd/configure.c:169
-msgid "Server"
-msgstr ""
-
-#: src/esd/about.c:34
-msgid "About ESounD Plugin"
-msgstr ""
-
-#: src/esd/about.c:35
-msgid ""
-"Audacious ESounD Plugin\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-
-#: src/esd/esd.c:49
-msgid "eSound Output Plugin"
-msgstr ""
-
-#: src/jack/jack.c:594
-msgid "About JACK Output Plugin 0.17"
-msgstr ""
-
-#: src/jack/jack.c:595
-msgid ""
-"XMMS jack Driver 0.17\n"
-"\n"
-"xmms-jack.sf.net\n"
-"Chris Morgan<cmorgan@alum.wpi.edu>\n"
-"\n"
-"Audacious port by\n"
-"Giacomo Lozito from develia.org"
-msgstr ""
-
-#: src/lirc/lirc.c:66
-msgid "LIRC Plugin"
-msgstr ""
-
-#: src/lirc/lirc.c:84
-#, c-format
-msgid "%s: could not init LIRC support\n"
-msgstr ""
-
-#: src/lirc/lirc.c:92
-#, c-format
-msgid ""
-"%s: could not read LIRC config file\n"
-"%s: please read the documentation of LIRC\n"
-"%s: how to create a proper config file\n"
-msgstr ""
-
-#: src/lirc/lirc.c:338
-#, c-format
-msgid "%s: unknown command \"%s\"\n"
-msgstr ""
-
-#: src/lirc/lirc.c:348
-#, c-format
-msgid "%s: disconnected from LIRC\n"
-msgstr ""
-
-#: src/lirc/about.c:65
-msgid "About LIRC Audacious Plugin"
-msgstr ""
-
-#: src/lirc/about.c:92
-msgid "LIRC Plugin "
-msgstr ""
-
-#: src/lirc/about.c:94
-msgid ""
-"\n"
-"A simple plugin that lets you control\n"
-"Audacious using the LIRC remote control daemon\n"
-"\n"
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the XMMS LIRC plugin by:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"You can get LIRC information at:\n"
-"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
-msgstr ""
-
-#: src/lirc/about.c:116
-msgid "Close"
-msgstr ""
-
-#: src/null/null.c:59
-msgid "About Null Output"
-msgstr "Über Null-Ausgabe-Plugin"
-
-#: src/null/null.c:60
-msgid "Null output plugin "
-msgstr "Null-Ausgabe-Plugin"
-
-#: src/null/null.c:61
-msgid ""
-" by Christian Birchinger <joker@netswarm.net>\n"
-" based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
-msgstr ""
-
-#: src/scrobbler/configure.c:112
-msgid "<b>Services</b>"
-msgstr "<b>Dienste</b>"
-
-#: src/scrobbler/configure.c:134 src/scrobbler/configure.c:174
-#: src/scrobbler/configure.c:214
-msgid "Username:"
-msgstr "Benutzername:"
-
-#: src/scrobbler/configure.c:140 src/scrobbler/configure.c:180
-#: src/scrobbler/configure.c:220
-msgid "Password:"
-msgstr "Passwort:"
-
-#: src/scrobbler/configure.c:158
-msgid "<b>Last.FM</b>"
-msgstr "<b>Last.FM</b>"
-
-#: src/scrobbler/configure.c:198
-msgid "<b>Gerpok</b>"
-msgstr ""
-
-#: src/scrobbler/configure.c:238
-msgid "<b>Hatena</b>"
-msgstr ""
-
-#: src/scrobbler/gtkstuff.c:22
-msgid "About Scrobbler Plugin"
-msgstr "Über Scrobbler-Plugin"
-
-#: src/scrobbler/plugin.c:597
-msgid "Scrobbler Plugin"
-msgstr "Scrobbler-Plugin"
-
-#: src/song_change/song_change.c:55
-#, c-format
-msgid "Song Change %s"
-msgstr ""
-
-#: src/song_change/song_change.c:319
-msgid "Commands"
-msgstr ""
-
-#: src/song_change/song_change.c:326
-msgid "Command to run when Audacious starts a new song."
-msgstr ""
-
-#: src/song_change/song_change.c:335 src/song_change/song_change.c:357
-#: src/song_change/song_change.c:378
-msgid "Command:"
-msgstr "Befehl:"
-
-#: src/song_change/song_change.c:349
-msgid "Command to run toward the end of a song."
-msgstr ""
-
-#: src/song_change/song_change.c:369
-msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-
-#: src/song_change/song_change.c:390
-#, c-format
-msgid ""
-"You can use the following format strings which\n"
-"will be substituted before calling the command\n"
-"(not all are useful for the end-of-playlist command).\n"
-"\n"
-"%%F: Frequency (in hertz)\n"
-"%%c: Number of channels\n"
-"%%f: filename (full path)\n"
-"%%l: length (in milliseconds)\n"
-"%%n or %%s: Song name\n"
-"%%r: Rate (in bits per second)\n"
-"%%t: Playlist position (%%02d)\n"
-"%%p: Currently playing (1 or 0)"
-msgstr ""
-
-#: src/song_change/song_change.c:415
-msgid ""
-"<span size='small'>Parameters passed to the shell should be encapsulated in "
-"quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-
-#: src/stereo_plugin/stereo.c:29
-msgid ""
-"Extra Stereo Plugin\n"
-"\n"
-"By Johan Levin 1999."
-msgstr ""
-
-#: src/stereo_plugin/stereo.c:38
-#, c-format
-msgid "Extra Stereo Plugin %s"
-msgstr ""
-
-#: src/stereo_plugin/stereo.c:58
-msgid "About Extra Stereo Plugin"
-msgstr ""
-
-#: src/stereo_plugin/stereo.c:99
-msgid "Configure Extra Stereo"
-msgstr ""
-
-#: src/stereo_plugin/stereo.c:101
-msgid "Effect intensity:"
-msgstr "Effektstärke"
-
-#: src/sun/configure.c:201
-msgid "Audio control device:"
-msgstr ""
-
-#: src/sun/configure.c:350
-msgid "Volume controls device:"
-msgstr ""
-
-#: src/sun/configure.c:363
-msgid "XMMS uses mixer exclusively."
-msgstr ""
-
-#: src/sun/configure.c:488 src/evdev-plug/ed_ui.c:655
-msgid "Status"
-msgstr "Status"
-
-#: src/sun/configure.c:538
-msgid "Sun driver configuration"
-msgstr ""
-
-#: src/sun/sun.c:56
-#, c-format
-msgid "BSD Sun Driver %s"
-msgstr ""
-
-#: src/sun/about.c:34
-msgid "About the Sun Driver"
-msgstr ""
-
-#: src/sun/about.c:35
-msgid ""
-"XMMS BSD Sun Driver\n"
-"\n"
-"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
-"Maintainer: <vedge at csoft.org>.\n"
-msgstr ""
-
-#: src/timidity/src/xmms-timidity.c:103
-#, c-format
-msgid "TiMidity Player %s"
-msgstr ""
-
-#: src/timidity/src/xmms-timidity.c:138
-msgid ""
-"TiMidity Plugin\n"
-"http://libtimidity.sourceforge.net\n"
-"by Konstantin Korikov"
-msgstr ""
-
-#: src/timidity/src/xmms-timidity.c:139
-#, c-format
-msgid "TiMidity Plugin %s"
-msgstr ""
-
-#: src/timidity/src/xmms-timidity.c:365
-msgid "Couldn't load MIDI file"
-msgstr ""
-
-#: src/timidity/src/interface.c:56
-msgid "TiMidity Configuration"
-msgstr ""
-
-#: src/timidity/src/interface.c:76
-msgid "Sampling Rate"
-msgstr ""
-
-#: src/timidity/src/interface.c:93
-msgid "11000 Hz"
-msgstr "11000 Hz"
-
-#: src/timidity/src/interface.c:101
-msgid "22000 Hz"
-msgstr "22000 Hz"
-
-#: src/timidity/src/interface.c:109
-msgid "44100 Hz"
-msgstr "44100 Hz"
-
-#: src/timidity/src/interface.c:117
-msgid "Sample Width"
-msgstr ""
-
-#: src/timidity/src/interface.c:134
-msgid "8 bit"
+#: src/adplug/adplug-xmms.cc:313
+#, fuzzy
+msgid "8bit"
 msgstr "8 bit"
 
-#: src/timidity/src/interface.c:142
-msgid "16 bit"
+#: src/adplug/adplug-xmms.cc:318
+#, fuzzy
+msgid "16bit"
 msgstr "16 bit"
 
+#: src/adplug/adplug-xmms.cc:326 src/modplug/gui/interface.cxx:181
 #: src/timidity/src/interface.c:150
 msgid "Channels"
 msgstr "Kanäle"
 
+#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:1106
+#: src/sid/xmms-sid.glade:156 src/sid/xs_interface.c:302
 #: src/timidity/src/interface.c:167
 msgid "Mono"
 msgstr "Mono"
 
-#: src/timidity/src/interface.c:175
+#: src/adplug/adplug-xmms.cc:333 src/filewriter/mp3.c:1101
+#: src/modplug/gui/interface.cxx:195 src/sid/xmms-sid.glade:175
+#: src/sid/xs_interface.c:309 src/timidity/src/interface.c:175
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/timidity/src/interface.c:183
-msgid "TiMidity Configuration File"
-msgstr ""
-
-#: src/tonegen/tonegen.c:51
-msgid "About Tone Generator"
-msgstr "Über Ton-Generator"
-
-#: src/tonegen/tonegen.c:53
+#: src/adplug/adplug-xmms.cc:337
 msgid ""
-"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
-"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
-"\n"
-"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+"Setting stereo is not recommended, unless you need to. This won't add any "
+"stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
 msgstr ""
 
-#: src/tonegen/tonegen.c:166
-msgid "Tone Generator: "
-msgstr "Ton-Generator:"
-
-#: src/tonegen/tonegen.c:268
-#, c-format
-msgid "Tone Generator %s"
-msgstr "Ton-Generator %s"
-
-#: src/tta/aud-tta.c:423 src/flac112/fileinfo.c:420 src/flac113/fileinfo.c:487
-#, c-format
-msgid "File Info - %s"
-msgstr "Dateiinformationen - %s"
-
-#: src/vorbis/configure.c:118
-msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr ""
-
-#: src/vorbis/configure.c:130
-msgid "Ogg Vorbis Tags:"
-msgstr ""
-
-#: src/vorbis/configure.c:151 src/flac112/configure.c:311
-#: src/flac113/configure.c:311
-msgid "Title format:"
-msgstr ""
-
-#: src/vorbis/configure.c:165 src/flac112/configure.c:328
-#: src/flac113/configure.c:328 src/madplug/configure.c:244
-msgid "Title"
-msgstr "Titel"
-
-#: src/vorbis/configure.c:169
-msgid "ReplayGain Settings:"
-msgstr ""
-
-#: src/vorbis/configure.c:177
-msgid "Enable Clipping Prevention"
-msgstr ""
-
-#: src/vorbis/configure.c:182
-msgid "Enable ReplayGain"
-msgstr ""
-
-#: src/vorbis/configure.c:187
-msgid "ReplayGain Type:"
-msgstr ""
-
-#: src/vorbis/configure.c:198
-msgid "use Track Gain/Peak"
-msgstr ""
-
-#: src/vorbis/configure.c:208
-msgid "use Album Gain/Peak"
-msgstr ""
-
-#: src/vorbis/configure.c:220
-msgid "Enable 6dB Boost + Hard Limiting"
-msgstr ""
-
-#: src/vorbis/configure.c:226 src/flac112/configure.c:337
-#: src/flac113/configure.c:337
-msgid "ReplayGain"
-msgstr "ReplayGain"
-
-#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
-#: src/flac113/fileinfo.c:51
-msgid "Blues"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
-#: src/flac113/fileinfo.c:51
-msgid "Classic Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
-#: src/flac113/fileinfo.c:51
-msgid "Country"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:83 src/flac112/fileinfo.c:48
-#: src/flac113/fileinfo.c:51
-msgid "Dance"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
-#: src/flac113/fileinfo.c:52
-msgid "Disco"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
-#: src/flac113/fileinfo.c:52
-msgid "Funk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
-#: src/flac113/fileinfo.c:52
-msgid "Grunge"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:84 src/flac112/fileinfo.c:49
-#: src/flac113/fileinfo.c:52
-msgid "Hip-Hop"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
-#: src/flac113/fileinfo.c:53
-msgid "Jazz"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
-#: src/flac113/fileinfo.c:53
-msgid "Metal"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
-#: src/flac113/fileinfo.c:53
-msgid "New Age"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:85 src/flac112/fileinfo.c:50
-#: src/flac113/fileinfo.c:53
-msgid "Oldies"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
-#: src/flac113/fileinfo.c:54
-msgid "Other"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
-#: src/flac113/fileinfo.c:54
-msgid "Pop"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
-#: src/flac113/fileinfo.c:54
-msgid "R&B"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
-#: src/flac113/fileinfo.c:54
-msgid "Rap"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:86 src/flac112/fileinfo.c:51
-#: src/flac113/fileinfo.c:54
-msgid "Reggae"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
-#: src/flac113/fileinfo.c:55
-msgid "Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
-#: src/flac113/fileinfo.c:55
-msgid "Techno"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
-#: src/flac113/fileinfo.c:55
-msgid "Industrial"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:87 src/flac112/fileinfo.c:52
-#: src/flac113/fileinfo.c:55
-msgid "Alternative"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
-#: src/flac113/fileinfo.c:56
-msgid "Ska"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
-#: src/flac113/fileinfo.c:56
-msgid "Death Metal"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
-#: src/flac113/fileinfo.c:56
-msgid "Pranks"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:88 src/flac112/fileinfo.c:53
-#: src/flac113/fileinfo.c:56
-msgid "Soundtrack"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
-#: src/flac113/fileinfo.c:57
-msgid "Euro-Techno"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
-#: src/flac113/fileinfo.c:57
-msgid "Ambient"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
-#: src/flac113/fileinfo.c:57
-msgid "Trip-Hop"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:89 src/flac112/fileinfo.c:54
-#: src/flac113/fileinfo.c:57
-msgid "Vocal"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
-#: src/flac113/fileinfo.c:58
-msgid "Jazz+Funk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
-#: src/flac113/fileinfo.c:58
-msgid "Fusion"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
-#: src/flac113/fileinfo.c:58
-msgid "Trance"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:90 src/flac112/fileinfo.c:55
-#: src/flac113/fileinfo.c:58
-msgid "Classical"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
-#: src/flac113/fileinfo.c:59
-msgid "Instrumental"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
-#: src/flac113/fileinfo.c:59
-msgid "Acid"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
-#: src/flac113/fileinfo.c:59
-msgid "House"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:91 src/flac112/fileinfo.c:56
-#: src/flac113/fileinfo.c:59
-msgid "Game"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
-#: src/flac113/fileinfo.c:60
-msgid "Sound Clip"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
-#: src/flac113/fileinfo.c:60
-msgid "Gospel"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:92 src/flac112/fileinfo.c:57
-#: src/flac113/fileinfo.c:60
-msgid "Noise"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:92
-msgid "AlternRock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
-#: src/flac113/fileinfo.c:61
-msgid "Bass"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
-#: src/flac113/fileinfo.c:61
-msgid "Soul"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
-#: src/flac113/fileinfo.c:61
-msgid "Punk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:93 src/flac112/fileinfo.c:58
-#: src/flac113/fileinfo.c:61
-msgid "Space"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:94 src/flac112/fileinfo.c:59
-#: src/flac113/fileinfo.c:62
-msgid "Meditative"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:94 src/flac112/fileinfo.c:59
-#: src/flac113/fileinfo.c:62
-msgid "Instrumental Pop"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
-#: src/flac113/fileinfo.c:63
-msgid "Instrumental Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
-#: src/flac113/fileinfo.c:63
-msgid "Ethnic"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:95 src/flac112/fileinfo.c:60
-#: src/flac113/fileinfo.c:63
-msgid "Gothic"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
-#: src/flac113/fileinfo.c:64
-msgid "Darkwave"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
-#: src/flac113/fileinfo.c:64
-msgid "Techno-Industrial"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:96 src/flac112/fileinfo.c:61
-#: src/flac113/fileinfo.c:64
-msgid "Electronic"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
-#: src/flac113/fileinfo.c:65
-msgid "Pop-Folk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
-#: src/flac113/fileinfo.c:65
-msgid "Eurodance"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:97 src/flac112/fileinfo.c:62
-#: src/flac113/fileinfo.c:65
-msgid "Dream"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
-#: src/flac113/fileinfo.c:66
-msgid "Southern Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
-#: src/flac113/fileinfo.c:66
-msgid "Comedy"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:98 src/flac112/fileinfo.c:63
-#: src/flac113/fileinfo.c:66
-msgid "Cult"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
-#: src/flac113/fileinfo.c:67
-msgid "Gangsta Rap"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
-#: src/flac113/fileinfo.c:67
-msgid "Top 40"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:99 src/flac112/fileinfo.c:64
-#: src/flac113/fileinfo.c:67
-msgid "Christian Rap"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
-#: src/flac113/fileinfo.c:68
-msgid "Pop/Funk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
-#: src/flac113/fileinfo.c:68
-msgid "Jungle"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:100 src/flac112/fileinfo.c:65
-#: src/flac113/fileinfo.c:68
-msgid "Native American"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
-#: src/flac113/fileinfo.c:69
-msgid "Cabaret"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
-#: src/flac113/fileinfo.c:69
-msgid "New Wave"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
-#: src/flac113/fileinfo.c:69
-msgid "Psychedelic"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:101 src/flac112/fileinfo.c:66
-#: src/flac113/fileinfo.c:69
-msgid "Rave"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
-#: src/flac113/fileinfo.c:70
-msgid "Showtunes"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
-#: src/flac113/fileinfo.c:70
-msgid "Trailer"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
-#: src/flac113/fileinfo.c:70
-msgid "Lo-Fi"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:102 src/flac112/fileinfo.c:67
-#: src/flac113/fileinfo.c:70
-msgid "Tribal"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
-#: src/flac113/fileinfo.c:71
-msgid "Acid Punk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
-#: src/flac113/fileinfo.c:71
-msgid "Acid Jazz"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
-#: src/flac113/fileinfo.c:71
-msgid "Polka"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:103 src/flac112/fileinfo.c:68
-#: src/flac113/fileinfo.c:71
-msgid "Retro"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
-#: src/flac113/fileinfo.c:72
-msgid "Musical"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
-#: src/flac113/fileinfo.c:72
-msgid "Rock & Roll"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
-#: src/flac113/fileinfo.c:72
-msgid "Hard Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:104 src/flac112/fileinfo.c:69
-#: src/flac113/fileinfo.c:72
-msgid "Folk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
-#: src/flac113/fileinfo.c:73
-msgid "Folk/Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
-#: src/flac113/fileinfo.c:73
-msgid "National Folk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:105 src/flac112/fileinfo.c:70
-#: src/flac113/fileinfo.c:73
-msgid "Swing"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
-#: src/flac113/fileinfo.c:74
-msgid "Fast-Fusion"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
-#: src/flac113/fileinfo.c:74
-msgid "Bebob"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
-#: src/flac113/fileinfo.c:74
-msgid "Latin"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:106 src/flac112/fileinfo.c:71
-#: src/flac113/fileinfo.c:74
-msgid "Revival"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
-#: src/flac113/fileinfo.c:75
-msgid "Celtic"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
-#: src/flac113/fileinfo.c:75
-msgid "Bluegrass"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:107 src/flac112/fileinfo.c:72
-#: src/flac113/fileinfo.c:75
-msgid "Avantgarde"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:108 src/flac112/fileinfo.c:73
-#: src/flac113/fileinfo.c:76
-msgid "Gothic Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:108 src/flac112/fileinfo.c:73
-#: src/flac113/fileinfo.c:76
-msgid "Progressive Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
-#: src/flac113/fileinfo.c:77
-msgid "Psychedelic Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
-#: src/flac113/fileinfo.c:77
-msgid "Symphonic Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:109 src/flac112/fileinfo.c:74
-#: src/flac113/fileinfo.c:77
-msgid "Slow Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
-#: src/flac113/fileinfo.c:78
-msgid "Big Band"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
-#: src/flac113/fileinfo.c:78
-msgid "Chorus"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:110 src/flac112/fileinfo.c:75
-#: src/flac113/fileinfo.c:78
-msgid "Easy Listening"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
-#: src/flac113/fileinfo.c:79
-msgid "Acoustic"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
-#: src/flac113/fileinfo.c:79
-msgid "Humour"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
-#: src/flac113/fileinfo.c:79
-msgid "Speech"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:111 src/flac112/fileinfo.c:76
-#: src/flac113/fileinfo.c:79
-msgid "Chanson"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
-#: src/flac113/fileinfo.c:80
-msgid "Opera"
+#: src/adplug/adplug-xmms.cc:345
+msgid "Frequency"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
-#: src/flac113/fileinfo.c:80
-msgid "Chamber Music"
+#: src/adplug/adplug-xmms.cc:347 src/filewriter/mp3.c:745
+#: src/sid/xmms-sid.glade:326 src/sid/xs_interface.c:347
+msgid "11025"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
-#: src/flac113/fileinfo.c:80
-msgid "Sonata"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:112 src/flac112/fileinfo.c:77
-#: src/flac113/fileinfo.c:80
-msgid "Symphony"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
-#: src/flac113/fileinfo.c:81
-msgid "Booty Bass"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
-#: src/flac113/fileinfo.c:81
-msgid "Primus"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:113 src/flac112/fileinfo.c:78
-#: src/flac113/fileinfo.c:81
-msgid "Porn Groove"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
-#: src/flac113/fileinfo.c:82
-msgid "Satire"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
-#: src/flac113/fileinfo.c:82
-msgid "Slow Jam"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
-#: src/flac113/fileinfo.c:82
-msgid "Club"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:114 src/flac112/fileinfo.c:79
-#: src/flac113/fileinfo.c:82
-msgid "Tango"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
-#: src/flac113/fileinfo.c:83
-msgid "Samba"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
-#: src/flac113/fileinfo.c:83
-msgid "Folklore"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
-#: src/flac113/fileinfo.c:83
-msgid "Ballad"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:115 src/flac112/fileinfo.c:80
-#: src/flac113/fileinfo.c:83
-msgid "Power Ballad"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
-#: src/flac113/fileinfo.c:84
-msgid "Rhythmic Soul"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
-#: src/flac113/fileinfo.c:84
-msgid "Freestyle"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:116 src/flac112/fileinfo.c:81
-#: src/flac113/fileinfo.c:84
-msgid "Duet"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
-#: src/flac113/fileinfo.c:85
-msgid "Punk Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
-#: src/flac113/fileinfo.c:85
-msgid "Drum Solo"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:117 src/flac112/fileinfo.c:82
-#: src/flac113/fileinfo.c:85
-msgid "A Cappella"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
-#: src/flac113/fileinfo.c:86
-msgid "Euro-House"
-msgstr ""
+#: src/adplug/adplug-xmms.cc:354 src/filewriter/mp3.c:760
+#: src/sid/xmms-sid.glade:352 src/sid/xs_interface.c:348
+#, fuzzy
+msgid "22050"
+msgstr "22000 Hz"
 
-#: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
-#: src/flac113/fileinfo.c:86
-msgid "Dance Hall"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:118 src/flac112/fileinfo.c:83
-#: src/flac113/fileinfo.c:86
-msgid "Goa"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:119 src/flac112/fileinfo.c:84
-#: src/flac113/fileinfo.c:87
-msgid "Drum & Bass"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:119 src/flac112/fileinfo.c:84
-#: src/flac113/fileinfo.c:87
-msgid "Club-House"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:119 src/flac112/fileinfo.c:84
-#: src/flac113/fileinfo.c:87
-msgid "Hardcore"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
-#: src/flac113/fileinfo.c:88
-msgid "Terror"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
-#: src/flac113/fileinfo.c:88
-msgid "Indie"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
-#: src/flac113/fileinfo.c:88
-msgid "BritPop"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:120 src/flac112/fileinfo.c:85
-#: src/flac113/fileinfo.c:88
-msgid "Negerpunk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:121 src/flac112/fileinfo.c:86
-#: src/flac113/fileinfo.c:89
-msgid "Polsk Punk"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:121 src/flac112/fileinfo.c:86
-#: src/flac113/fileinfo.c:89
-msgid "Beat"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:121 src/flac112/fileinfo.c:86
-#: src/flac113/fileinfo.c:89
-msgid "Christian Gangsta Rap"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:122 src/flac112/fileinfo.c:87
-#: src/flac113/fileinfo.c:90
-msgid "Heavy Metal"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:122 src/flac112/fileinfo.c:87
-#: src/flac113/fileinfo.c:90
-msgid "Black Metal"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:122 src/flac112/fileinfo.c:87
-#: src/flac113/fileinfo.c:90
-msgid "Crossover"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:123 src/flac112/fileinfo.c:88
-#: src/flac113/fileinfo.c:91
-msgid "Contemporary Christian"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:123 src/flac112/fileinfo.c:88
-#: src/flac113/fileinfo.c:91
-msgid "Christian Rock"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:124 src/flac112/fileinfo.c:89
-#: src/flac113/fileinfo.c:92
-msgid "Merengue"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:124 src/flac112/fileinfo.c:89
-#: src/flac113/fileinfo.c:92
-msgid "Salsa"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:124 src/flac112/fileinfo.c:89
-#: src/flac113/fileinfo.c:92
-msgid "Thrash Metal"
-msgstr ""
+#: src/adplug/adplug-xmms.cc:361 src/filewriter/mp3.c:775
+#: src/sid/xmms-sid.glade:378 src/sid/xs_interface.c:349
+#, fuzzy
+msgid "44100"
+msgstr "44100 Hz"
 
-#: src/vorbis/fileinfo.c:125 src/flac112/fileinfo.c:90
-#: src/flac113/fileinfo.c:93
-msgid "Anime"
+#: src/adplug/adplug-xmms.cc:368 src/filewriter/mp3.c:780
+#: src/sid/xmms-sid.glade:404 src/sid/xs_interface.c:350
+msgid "48000"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:125 src/flac112/fileinfo.c:90
-#: src/flac113/fileinfo.c:93
-msgid "JPop"
+#: src/adplug/adplug-xmms.cc:381 src/adplug/adplug-xmms.cc:585
+#: src/console/Audacious_Config.cxx:148
+msgid "Playback"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:125 src/flac112/fileinfo.c:90
-#: src/flac113/fileinfo.c:93
-msgid "Synthpop"
+#: src/adplug/adplug-xmms.cc:385
+msgid "Detect songend"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:210
-#, c-format
+#: src/adplug/adplug-xmms.cc:389
 msgid ""
-"An error occured:\n"
-"%s"
-msgstr ""
-"Es ist ein Fehler aufgetreten:\n"
-"%s"
-
-#: src/vorbis/fileinfo.c:212
-msgid "Error!"
-msgstr "Fehler!"
-
-#: src/vorbis/fileinfo.c:244
-msgid "Failed to modify tag (open)"
+"If enabled, XMMS will detect a song's ending, stop it and advance in the "
+"playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
+"all over again and again."
 msgstr ""
 
-#: src/vorbis/fileinfo.c:297
-msgid "Failed to modify tag (close)"
+#: src/adplug/adplug-xmms.cc:400
+msgid "Formats"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:324 src/vorbis/fileinfo.c:333
-msgid "Failed to modify tag"
+#: src/adplug/adplug-xmms.cc:407
+msgid "Format selection"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:562 src/amidi-plug/i_fileinfo.c:169
-msgid "Name:"
-msgstr "Name:"
-
-#: src/vorbis/fileinfo.c:577
-msgid " Ogg Vorbis Tag "
+#: src/adplug/adplug-xmms.cc:410
+msgid "Format"
 msgstr ""
 
-#: src/vorbis/fileinfo.c:585 src/flac112/fileinfo.c:285
-#: src/flac113/fileinfo.c:327
-msgid "Title:"
+#: src/adplug/adplug-xmms.cc:410
+msgid "Extension"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:450
+msgid ""
+"Selected file types will be recognized and played back by this plugin. "
+"Deselected types will be ignored to make room for other plugins to play "
+"these files."
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:536
+msgid "AdPlug :: File Info"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:558 src/amidi-plug/i_configure-fluidsynth.c:448
+msgid "Filename"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:562
+#, fuzzy
+msgid "Title: "
 msgstr "Titel:"
 
-#: src/vorbis/fileinfo.c:596 src/flac112/fileinfo.c:292
-#: src/flac113/fileinfo.c:334
-msgid "Artist:"
-msgstr "Künstler:"
-
-#: src/vorbis/fileinfo.c:607 src/flac112/fileinfo.c:299
-#: src/flac113/fileinfo.c:341
-msgid "Album:"
-msgstr "Album:"
-
-#: src/vorbis/fileinfo.c:618 src/flac112/fileinfo.c:306
-#: src/flac113/fileinfo.c:348
-msgid "Comment:"
-msgstr "Kommentar:"
-
-#: src/vorbis/fileinfo.c:629 src/flac112/fileinfo.c:313
-#: src/flac113/fileinfo.c:355
-msgid "Date:"
-msgstr "Datum:"
-
-#: src/vorbis/fileinfo.c:641 src/flac112/fileinfo.c:321
-#: src/flac113/fileinfo.c:363
-msgid "Track number:"
-msgstr "Titelnummer:"
-
-#: src/vorbis/fileinfo.c:653 src/flac112/fileinfo.c:329
-#: src/flac113/fileinfo.c:371
-msgid "Genre:"
-msgstr "Genre:"
-
-#: src/vorbis/fileinfo.c:671
-msgid "Description:"
-msgstr "Beschreibung:"
-
-#: src/vorbis/fileinfo.c:681
-msgid "Location:"
-msgstr "Ort:"
-
-#: src/vorbis/fileinfo.c:691
-msgid "Version:"
-msgstr "Version:"
-
-#: src/vorbis/fileinfo.c:702
-msgid "ISRC number:"
-msgstr "ISRC-Nummer:"
-
-#: src/vorbis/fileinfo.c:713
-msgid "Organization:"
-msgstr "Organisation:"
-
-#: src/vorbis/fileinfo.c:723
-msgid "Copyright:"
-msgstr "Copyright:"
-
-#: src/vorbis/fileinfo.c:760
-msgid " Ogg Vorbis ReplayGain "
+#: src/adplug/adplug-xmms.cc:563
+msgid "Author: "
 msgstr ""
 
-#: src/vorbis/fileinfo.c:766
-msgid "Track gain:"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:776
-msgid "Track peak:"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:787
-msgid "Album gain:"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:797
-msgid "Album peak:"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:826
-msgid " Ogg Vorbis Info "
-msgstr " Ogg-Vorbis-Informationen"
-
-#: src/vorbis/fileinfo.c:841 src/vorbis/fileinfo.c:918
-msgid "Bit rate:"
-msgstr "Bitrate:"
-
-#: src/vorbis/fileinfo.c:854 src/vorbis/fileinfo.c:921
-msgid "Sample rate:"
-msgstr ""
-
-#: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
-msgid "Channels:"
-msgstr "Kanäle:"
-
-#: src/vorbis/fileinfo.c:880 src/vorbis/fileinfo.c:927
-msgid "Length:"
-msgstr "Länge:"
-
-#: src/vorbis/fileinfo.c:893 src/vorbis/fileinfo.c:930
-msgid "File size:"
+#: src/adplug/adplug-xmms.cc:564
+#, fuzzy
+msgid "File Type: "
 msgstr "Dateigrösse:"
 
-#: src/vorbis/fileinfo.c:919 src/vorbis/fileinfo.c:922
-#: src/vorbis/fileinfo.c:925 src/vorbis/fileinfo.c:928
-#: src/vorbis/fileinfo.c:931
-msgid "N/A"
-msgstr "K/A"
-
-#: src/vorbis/fileinfo.c:961
-#, c-format
-msgid "%d KBit/s (nominal)"
+#: src/adplug/adplug-xmms.cc:565
+msgid "Subsongs: "
 msgstr ""
 
-#: src/vorbis/fileinfo.c:962
-#, c-format
-msgid "%d Hz"
-msgstr "%d Hz"
+#: src/adplug/adplug-xmms.cc:566
+msgid "Instruments: "
+msgstr ""
 
-#: src/vorbis/fileinfo.c:963
-#, c-format
-msgid "%d"
-msgstr "%d"
+#: src/adplug/adplug-xmms.cc:571
+msgid "Orders: "
+msgstr ""
 
-#: src/vorbis/fileinfo.c:965
-#, c-format
-msgid "%d:%.2d"
-msgstr "%d:%.2d"
+#: src/adplug/adplug-xmms.cc:572
+msgid "Patterns: "
+msgstr ""
 
-#: src/vorbis/fileinfo.c:967
-#, c-format
-msgid "%d Bytes"
-msgstr "%d Bytes"
+#: src/adplug/adplug-xmms.cc:576
+msgid "Song"
+msgstr ""
 
-#: src/vorbis/fileinfo.c:1020
-#, c-format
-msgid "%s - Audacious"
-msgstr "%s - Audacious"
+#: src/adplug/adplug-xmms.cc:602
+msgid "#"
+msgstr ""
 
-#: src/vorbis/vorbis.c:143
-msgid "Ogg Vorbis Audio Plugin"
-msgstr "Ogg-Vorbis-Audio-Plugin"
+#: src/adplug/adplug-xmms.cc:602
+msgid "Instrument name"
+msgstr ""
 
-#: src/vorbis/vorbis.c:876
-msgid "About Ogg Vorbis Audio Plugin"
+#: src/adplug/adplug-xmms.cc:644
+msgid "Song message"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:666
+msgid "Subsong selection"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:688
+msgid "Order: "
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:688 src/adplug/adplug-xmms.cc:690
+msgid " / "
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:689
+msgid "Pattern: "
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:691
+msgid "Row: "
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:692
+msgid "Speed: "
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:693
+#, fuzzy
+msgid "Timer: "
+msgstr "Titel:"
+
+#: src/adplug/adplug-xmms.cc:694 src/console/Audacious_Config.cxx:226
+#: src/sid/xmms-sid.glade:513 src/sid/xs_interface.c:361
+msgid "Hz"
+msgstr "Hz"
+
+#: src/alac/plugin.c:85
+#, fuzzy
+msgid "About Apple Lossless Audio Plugin"
 msgstr "Über Ogg-Vorbis-Audio-Plugin"
 
-#: src/vorbis/vorbis.c:882
+#: src/alac/plugin.c:86
 msgid ""
-"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
-"\n"
-"Original code by\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Contributions from\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Haavard Kvaalen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"\n"
-"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+"Copyright (c) 2006 Audacious team\n"
+"Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
 msgstr ""
 
-#: src/wav/wav-sndfile.c:253
-msgid "About sndfile WAV support"
+#: src/alarm/interface.c:36
+msgid "About XMMS Alarm"
 msgstr ""
 
-#: src/wav/wav-sndfile.c:254
+#: src/alarm/interface.c:49
+msgid "XMMS Alarm"
+msgstr ""
+
+#: src/alarm/interface.c:58
 msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"An XMMS plugin which can be used\n"
+"to start playing at a certain time.\n"
 "\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
+"Send all complaints to:\n"
+"Adam Feakin <adamf@snika.uklinux.net>\n"
+"Daniel Stodden <stodden@in.tum.de>\n"
 "\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
+"http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
 
-#: src/wav/wav-sndfile.c:279
-msgid "sndfile WAV plugin"
+#: src/alarm/interface.c:73 src/lirc/about.c:116
+#: src/modplug/gui/interface.cxx:946 src/sid/xmms-sid.glade:4262
+#: src/sid/xs_interface.c:1882
+msgid "Close"
 msgstr ""
 
-#: src/wav/wav.c:77
-msgid "WAV Audio Plugin"
+#: src/alarm/interface.c:103
+msgid "Alarm"
 msgstr ""
 
-#: src/wma/wma.c:132
-#, c-format
-msgid "WMA Player %s"
+#: src/alarm/interface.c:111
+msgid "This is your wakeup call."
 msgstr ""
 
-#: src/wma/wma.c:165
-#, c-format
-msgid "About %s"
-msgstr "Über %s"
+#: src/alarm/interface.c:126 src/alarm/interface.c:1391 src/alsa/about.c:46
+#: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:205
+#: src/filewriter/filewriter.c:199 src/flacng/plugin.c:743
+#: src/modplug/gui/interface.cxx:725 src/pulse_audio/pulse_audio.c:694
+#: src/scrobbler/gtkstuff.c:43 src/sid/xmms-sid.glade:3585
+#: src/sid/xs_interface.c:1338
+msgid "OK"
+msgstr "OK"
 
-#: src/wma/wma.c:178
-msgid " Close "
-msgstr " Schliessen"
+#: src/alarm/interface.c:154
+msgid "Select Playlist"
+msgstr ""
+
+#: src/alarm/interface.c:198
+msgid "Sorry"
+msgstr ""
+
+#: src/alarm/interface.c:206
+msgid "Warning"
+msgstr ""
+
+#: src/alarm/interface.c:215
+msgid ""
+"For safety reasons the \"quiet\" time must be at least 65 seconds longer "
+"than the fading time, it must also be more than 10 seconds.  This basically "
+"means that there is a bug in the code and until I find a way of really "
+"fixing it this message will appear :)\n"
+"\n"
+"Your fading settings have NOT been saved\n"
+"\n"
+"--\n"
+"Adam"
+msgstr ""
+
+#: src/alarm/interface.c:231
+msgid "Oh Well"
+msgstr ""
+
+#: src/alarm/interface.c:390
+#, fuzzy
+msgid "Alarm Settings"
+msgstr "Zwischenspeichern"
+
+#: src/alarm/interface.c:406 src/alarm/interface.c:578
+#: src/alarm/interface.c:950
+#, fuzzy
+msgid "Time"
+msgstr "Titel"
+
+#: src/alarm/interface.c:447
+msgid "hours"
+msgstr ""
+
+#: src/alarm/interface.c:477 src/alarm/interface.c:633
+#: src/alarm/interface.c:681 src/alarm/interface.c:729
+#: src/alarm/interface.c:777 src/alarm/interface.c:825
+#: src/alarm/interface.c:873 src/alarm/interface.c:921
+msgid ":"
+msgstr ""
+
+#: src/alarm/interface.c:508
+msgid "h"
+msgstr ""
+
+#: src/alarm/interface.c:556
+#, fuzzy
+msgid "Quiet after:"
+msgstr "Bitrate:"
+
+#: src/alarm/interface.c:566
+msgid "Alarm at (default):"
+msgstr ""
+
+#: src/alarm/interface.c:586
+msgid "Choose the days for the alarm to come on"
+msgstr ""
+
+#: src/alarm/interface.c:614 src/alarm/interface.c:662
+#: src/alarm/interface.c:710 src/alarm/interface.c:758
+#: src/alarm/interface.c:806 src/alarm/interface.c:854
+#: src/alarm/interface.c:902 src/OSS4/configure.c:138 src/OSS/configure.c:170
+msgid "Default"
+msgstr "Standard"
+
+#: src/alarm/interface.c:940
+msgid "Day"
+msgstr ""
+
+#: src/alarm/interface.c:960
+msgid "Tuesday"
+msgstr ""
+
+#: src/alarm/interface.c:971
+msgid "Wednesday"
+msgstr ""
+
+#: src/alarm/interface.c:982
+msgid "Thursday"
+msgstr ""
+
+#: src/alarm/interface.c:993
+msgid "Friday"
+msgstr ""
+
+#: src/alarm/interface.c:1004
+msgid "Saturday"
+msgstr ""
+
+#: src/alarm/interface.c:1015
+msgid "Sunday"
+msgstr ""
+
+#: src/alarm/interface.c:1025
+#, fuzzy
+msgid "Monday"
+msgstr "Mono"
+
+#: src/alarm/interface.c:1036
+msgid "Days"
+msgstr ""
+
+#: src/alarm/interface.c:1052
+msgid "Fading"
+msgstr ""
+
+#: src/alarm/interface.c:1089 src/sid/xmms-sid.glade:2271
+#: src/sid/xmms-sid.glade:2442 src/sid/xmms-sid.glade:3408
+#: src/sid/xs_interface.c:923 src/sid/xs_interface.c:977
+#: src/sid/xs_interface.c:1289
+msgid "seconds"
+msgstr ""
+
+#: src/alarm/interface.c:1097 src/alarm/interface.c:1213
+#: src/modplug/gui/interface.cxx:635
+#, fuzzy
+msgid "Volume"
+msgstr "Lautstärke: (%)"
+
+#: src/alarm/interface.c:1123
+msgid "Current"
+msgstr ""
+
+#: src/alarm/interface.c:1130
+msgid "reset to current output volume"
+msgstr ""
+
+#: src/alarm/interface.c:1132
+msgid "Start at"
+msgstr ""
+
+#: src/alarm/interface.c:1160 src/alarm/interface.c:1204
+#, fuzzy
+msgid "%"
+msgstr "%d"
+
+#: src/alarm/interface.c:1176
+msgid "Final"
+msgstr ""
+
+#: src/alarm/interface.c:1229
+msgid "Additional Command"
+msgstr ""
+
+#: src/alarm/interface.c:1255
+msgid "enable"
+msgstr ""
+
+#: src/alarm/interface.c:1263
+msgid "Playlist (optional)"
+msgstr ""
+
+#: src/alarm/interface.c:1289
+#, fuzzy
+msgid "Browse..."
+msgstr "Suchen"
+
+#: src/alarm/interface.c:1297 src/alarm/interface.c:1462
+msgid "Reminder"
+msgstr ""
+
+#: src/alarm/interface.c:1314
+msgid "Use reminder"
+msgstr ""
+
+#: src/alarm/interface.c:1330 src/sndstretch/sndstretch_xmms.c:381
+#, fuzzy
+msgid "Options"
+msgstr "Optionen:"
+
+#: src/alarm/interface.c:1338
+msgid "What do these options mean?"
+msgstr ""
+
+#: src/alarm/interface.c:1366
+msgid ""
+"\n"
+"Time\n"
+"  Alarm at: \n"
+"    The time for the alarm to come on.\n"
+"\n"
+"  Quiet After: \n"
+"    Stop alarm after this amount of time.\n"
+"       (if the wakeup dialog is not closed)\n"
+"\n"
+"\n"
+"Days\n"
+"  Day:\n"
+"    Select the days for the alarm to activate.\n"
+"\n"
+"  Time:\n"
+"    Choose the time for the alarm on each day,\n"
+"    or select the toggle button to use the default\n"
+"    time.\n"
+"\n"
+"\n"
+"Volume\n"
+"  Fading: \n"
+"    Fade the volume up to the chosen volume \n"
+"    for this amount of time.\n"
+"\n"
+"  Start at: \n"
+"    Start fading from this volume.\n"
+"\n"
+"  Final: \n"
+"    The volume to stop fading at.  If the fading\n"
+"    time is 0 then set volume to this and start\n"
+"    playing.\n"
+"\n"
+"\n"
+"Options:\n"
+"  Additional Command:\n"
+"    Run this command at the alarm time.\n"
+"\n"
+"  Playlist: \n"
+"    Load this playlist for playing songs from \n"
+"    (must have .m3u extension).  If no playlist\n"
+"    is given then the songs which are currently\n"
+"    in the list will be used.\n"
+"    The URL of an mp3/ogg stream can also be\n"
+"    entered here, but loading of playlists from\n"
+"    URLs is not currently supported by xmms.\n"
+"\n"
+"  Reminder:\n"
+"    Display a reminder when the alarm goes off,\n"
+"    type the reminder in the box and turn on the\n"
+"    toggle button if you want it to be shown.\n"
+msgstr ""
+
+#: src/alarm/interface.c:1368
+msgid "Help"
+msgstr ""
+
+#: src/alarm/interface.c:1470
+msgid "Your reminder for today is.."
+msgstr ""
+
+#: src/alarm/interface.c:1495
+msgid "Thankyou"
+msgstr ""
 
 #: src/alsa/about.c:30
 #, fuzzy
@@ -1966,11 +617,6 @@ msgid ""
 "Author: Matthieu Sozeau (mattam@altern.org)"
 msgstr ""
 
-#: src/alsa/alsa.c:47
-#, fuzzy, c-format
-msgid "ALSA %s output plugin"
-msgstr "Null-Ausgabe-Plugin"
-
 #: src/alsa/configure.c:150
 msgid "Unknown soundcard"
 msgstr ""
@@ -1985,6 +631,11 @@ msgstr "Standard (%s)"
 msgid "ALSA Driver configuration"
 msgstr "OSS-Treiber-Konfiguration"
 
+#: src/alsa/configure.c:285 src/OSS4/configure.c:186 src/OSS/configure.c:218
+#: src/sun/configure.c:183
+msgid "Audio device:"
+msgstr "Audiogerät:"
+
 #: src/alsa/configure.c:299
 msgid "Mixer:"
 msgstr ""
@@ -1996,6 +647,10 @@ msgstr "Lautstärkesteuerung:"
 
 #: src/alsa/configure.c:317
 msgid "Mixer card:"
+msgstr ""
+
+#: src/alsa/configure.c:330 src/OSS/configure.c:261 src/sun/configure.c:220
+msgid "Mixer device:"
 msgstr ""
 
 #: src/alsa/configure.c:350
@@ -2021,19 +676,8 @@ msgstr "Puffergrösse (ms):"
 msgid "Advanced settings"
 msgstr ""
 
-#: src/amidi-plug/amidi-plug.c:26
-#, c-format
-msgid "AMIDI-Plug %s (MIDI Player)"
-msgstr ""
-
-#: src/amidi-plug/amidi-plug.c:380
-msgid "AMIDI-Plug - warning"
-msgstr ""
-
-#: src/amidi-plug/amidi-plug.c:381
-msgid ""
-"No sequencer backend has been selected!\n"
-"Please configure AMIDI-Plug before playing."
+#: src/amidi-plug/backend-alsa/b-alsa.c:35
+msgid "ALSA Backend "
 msgstr ""
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
@@ -2048,12 +692,20 @@ msgid ""
 "Backend written by Giacomo Lozito."
 msgstr ""
 
+#: src/amidi-plug/backend-dummy/b-dummy.c:35
+msgid "Dummy Backend "
+msgstr ""
+
 #: src/amidi-plug/backend-dummy/b-dummy.c:37
 msgid ""
 "This backend does not produce audio at all. It is mostly useful for analysis "
 "and testing purposes, as it can log all MIDI events to standard output, "
 "standard error or file.\n"
 "Backend written by Giacomo Lozito."
+msgstr ""
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:35
+msgid "FluidSynth Backend "
 msgstr ""
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
@@ -2127,6 +779,12 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "ALSA Backend not loaded or not available"
+msgstr ""
+
+#: src/amidi-plug/i_configure-alsa.c:463
+msgid ""
+"<span size=\"smaller\">ALSA\n"
+"backend</span>"
 msgstr ""
 
 #: src/amidi-plug/i_configure-ap.c:56
@@ -2231,6 +889,29 @@ msgid ""
 "dialog."
 msgstr ""
 
+#: src/amidi-plug/i_configure-ap.c:375
+msgid ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:75
+msgid "AMIDI-Plug - select file"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:122
+#, fuzzy
+msgid "AMIDI-Plug - configuration"
+msgstr "ESD-Ausgabe-Plugin-Konfiguration"
+
+#: src/amidi-plug/i_configure.c:241
+msgid "AMIDI-Plug message"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:242
+msgid "Please stop the player before changing AMIDI-Plug settings."
+msgstr ""
+
 #: src/amidi-plug/i_configure-dummy.c:137
 msgid "DUMMY BACKEND CONFIGURATION"
 msgstr ""
@@ -2301,6 +982,12 @@ msgstr ""
 msgid "Dummy Backend not loaded or not available"
 msgstr ""
 
+#: src/amidi-plug/i_configure-dummy.c:348
+msgid ""
+"<span size=\"smaller\">Dummy\n"
+"backend</span>"
+msgstr ""
+
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr ""
@@ -2311,10 +998,6 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "SoundFont settings"
-msgstr ""
-
-#: src/amidi-plug/i_configure-fluidsynth.c:448
-msgid "Filename"
 msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:452
@@ -2378,9 +1061,29 @@ msgstr ""
 msgid "sample rate"
 msgstr ""
 
+#: src/amidi-plug/i_configure-fluidsynth.c:653
+#, fuzzy
+msgid "22050 Hz "
+msgstr "22000 Hz"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:656
+#, fuzzy
+msgid "44100 Hz "
+msgstr "44100 Hz"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:659
+#, fuzzy
+msgid "96000 Hz "
+msgstr "11000 Hz"
+
 #: src/amidi-plug/i_configure-fluidsynth.c:662
 msgid "custom "
 msgstr ""
+
+#: src/amidi-plug/i_configure-fluidsynth.c:671
+#, fuzzy
+msgid "Hz "
+msgstr "Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:705
 #, fuzzy
@@ -2523,26 +1226,30 @@ msgstr ""
 msgid "FluidSynth Backend not loaded or not available"
 msgstr ""
 
+#: src/amidi-plug/i_configure-fluidsynth.c:956
+msgid ""
+"<span size=\"smaller\">FluidSynth\n"
+"backend</span>"
+msgstr ""
+
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:75
-msgid "AMIDI-Plug - select file"
+#: src/amidi-plug/i_configure-timidity.c:64
+msgid "TiMidity Backend not loaded or not available"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:122
-#, fuzzy
-msgid "AMIDI-Plug - configuration"
-msgstr "ESD-Ausgabe-Plugin-Konfiguration"
-
-#: src/amidi-plug/i_configure.c:241
-msgid "AMIDI-Plug message"
+#: src/amidi-plug/i_configure-timidity.c:83
+msgid ""
+"<span size=\"smaller\">TiMidity\n"
+"backend</span>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:242
-msgid "Please stop the player before changing AMIDI-Plug settings."
-msgstr ""
+#: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:4084
+#: src/sid/xs_interface.c:1828 src/vorbis/fileinfo.c:562
+msgid "Name:"
+msgstr "Name:"
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
@@ -2589,178 +1296,309 @@ msgstr ""
 msgid "* no lyrics available in this MIDI file *"
 msgstr ""
 
-#: src/amidi-plug/i_fileinfo.c:346
+#: src/amidi-plug/i_fileinfo.c:349
 msgid "  (invalid UTF-8)"
 msgstr ""
 
-#: src/aosd/aosd_style.c:76
+#: src/amidi-plug/i_utils.c:43
+#, fuzzy
+msgid "AMIDI-Plug - about"
+msgstr "ESD-Ausgabe-Plugin-Konfiguration"
+
+#: src/amidi-plug/i_utils.c:68
+msgid ""
+"\n"
+"AMIDI-Plug "
+msgstr ""
+
+#: src/amidi-plug/i_utils.c:69
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing\n"
+"\n"
+msgstr ""
+
+#: src/aosd/aosd_style.c:75
 msgid "Rectangle"
 msgstr ""
 
-#: src/aosd/aosd_style.c:80
+#: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
 msgstr ""
 
-#: src/aosd/aosd_style.c:84
+#: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
 msgstr ""
 
-#: src/aosd/aosd_style.c:88
+#: src/aosd/aosd_style.c:87
 msgid "None"
 msgstr "Kein"
 
-#: src/aosd/aosd_trigger.c:60
+#: src/aosd/aosd_trigger.c:73
 msgid "Playback Start"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:61
+#: src/aosd/aosd_trigger.c:74
 msgid "Triggers OSD when a playlist entry is played."
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:65
+#: src/aosd/aosd_trigger.c:78
 msgid "Title Change"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:66
+#: src/aosd/aosd_trigger.c:79
 msgid ""
-"Trigger OSD when, during playback, the song title changes but the filename "
+"Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
 
-#: src/aosd/aosd_ui.c:166
+#: src/aosd/aosd_trigger.c:85
+msgid "Volume Change"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:86
+msgid "Triggers OSD when volume is changed."
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:90
+msgid "Pause On"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:91
+msgid "Triggers OSD when playback is paused."
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:95
+msgid "Pause Off"
+msgstr ""
+
+#: src/aosd/aosd_trigger.c:96
+msgid "Triggers OSD when playback is unpaused."
+msgstr ""
+
+#: src/aosd/aosd_ui.c:168
 msgid "Placement"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:200
+#: src/aosd/aosd_ui.c:202
 msgid "Relative X offset:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:209
+#: src/aosd/aosd_ui.c:211
 msgid "Relative Y offset:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:218
+#: src/aosd/aosd_ui.c:220
 msgid "Max OSD width:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:235
-msgid "Display OSD using:"
+#: src/aosd/aosd_ui.c:233
+msgid "Multi-Monitor options"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:237
+msgid "Display OSD using:"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:239
 msgid "all monitors"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:240
+#: src/aosd/aosd_ui.c:242
 #, c-format
 msgid "monitor %i"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:293
+#: src/aosd/aosd_ui.c:295
 msgid "Timing (ms)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:298
+#: src/aosd/aosd_ui.c:300
 msgid "Display:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:303
+#: src/aosd/aosd_ui.c:305
 msgid "Fade in:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:308
+#: src/aosd/aosd_ui.c:310
 msgid "Fade out:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:380
+#: src/aosd/aosd_ui.c:391
 msgid "Fonts"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:405
+#: src/aosd/aosd_ui.c:399
+#, c-format
+msgid "Font %i:"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:416
 msgid "Shadow"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:449
+#: src/aosd/aosd_ui.c:451
+#, fuzzy
+msgid "Internationalization"
+msgstr "Organisation:"
+
+#: src/aosd/aosd_ui.c:457
+msgid "Disable UTF-8 conversion of text (in aosd)"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:475
 msgid "Select Skin File"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:557
+#: src/aosd/aosd_ui.c:583
 msgid "Render Style"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:573
+#: src/aosd/aosd_ui.c:599
 #, fuzzy
 msgid "Colors"
 msgstr "/Schliessen"
 
-#: src/aosd/aosd_ui.c:606
+#: src/aosd/aosd_ui.c:612
+#, fuzzy, c-format
+msgid "Color %i:"
+msgstr "/Schliessen"
+
+#: src/aosd/aosd_ui.c:632
 msgid "Custom Skin"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:612
+#: src/aosd/aosd_ui.c:638
 msgid "Skin file:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:641 src/sid/xmms-sid.glade:2595
+#: src/sid/xmms-sid.glade:2801 src/sid/xmms-sid.glade:2907
+#: src/sid/xs_interface.c:1024 src/sid/xs_interface.c:1093
+#: src/sid/xs_interface.c:1128
 msgid "Browse"
 msgstr "Suchen"
 
-#: src/aosd/aosd_ui.c:717
+#: src/aosd/aosd_ui.c:743
 msgid "Enable trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:744
+#: src/aosd/aosd_ui.c:770
 msgid "Event"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:845
+#: src/aosd/aosd_ui.c:798
+msgid "Composite manager detected"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:805
+msgid ""
+"Composite manager not detected;\n"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:813
+msgid "Composite manager not required for fake transparency"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:851
+msgid "Transparency"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:857
+msgid "Fake transparency"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:859
+msgid "Real transparency (requires X Composite Ext.)"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:901
+msgid "Composite extension not loaded"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:909
+msgid "Composite extension not available"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:931
+#, c-format
+msgid "<span font_desc='%s'>Audacious OSD</span>"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:1012
 #, fuzzy
 msgid "Audacious OSD - configuration"
 msgstr "CD-Audio-Player-Konfiguration"
 
-#: src/aosd/aosd_ui.c:866
+#: src/aosd/aosd_ui.c:1033
 msgid "Test"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:881
+#: src/aosd/aosd_ui.c:1048
 #, fuzzy
 msgid "Position"
 msgstr "Beschreibung:"
 
-#: src/aosd/aosd_ui.c:886
+#: src/aosd/aosd_ui.c:1053
 #, fuzzy
 msgid "Animation"
 msgstr "Organisation:"
 
-#: src/aosd/aosd_ui.c:891
+#: src/aosd/aosd_ui.c:1058
 msgid "Text"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:896
+#: src/aosd/aosd_ui.c:1063
 #, fuzzy
 msgid "Decoration"
 msgstr "Beschreibung:"
 
-#: src/aosd/aosd_ui.c:901
+#: src/aosd/aosd_ui.c:1068
 msgid "Trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:937
+#: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:87
+#: src/sid/xmms-sid.glade:3545 src/sid/xs_interface.c:1324
+msgid "Misc"
+msgstr ""
+
+#: src/aosd/aosd_ui.c:1110
 msgid "Audacious OSD - about"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:968
+#: src/aosd/aosd_ui.c:1140
 #, fuzzy
 msgid ""
 "\n"
 "Audacious OSD "
 msgstr "%s - Audacious"
 
-#: src/aosd/aosd_ui.c:969
+#: src/aosd/aosd_ui.c:1141
 msgid ""
 "\n"
-"http://www.develia.org/projects.php?p=aosd\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
 "written by Giacomo Lozito\n"
 "< james@develia.org >\n"
 "\n"
@@ -2770,76 +1608,442 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/arts/configure.c:51
+#: src/arts/arts.c:22
+#, fuzzy
+msgid "About aRts Output"
+msgstr "Über Null-Ausgabe-Plugin"
+
+#: src/arts/arts.c:23
+msgid ""
+"aRts output plugin by Håvard Kvålen <havardk@xmms.org>\n"
+"Audacious port by Giacomo Lozito from develia.org"
+msgstr ""
+
+#: src/arts/configure.c:50
 #, fuzzy
 msgid "aRts Driver configuration"
 msgstr "OSS-Treiber-Konfiguration"
 
-#: src/evdev-plug/ed.c:56
-msgid "Playback->Play"
+#: src/arts/configure.c:61 src/esd/configure.c:171 src/OSS4/configure.c:232
+#: src/OSS/configure.c:305 src/sun/configure.c:259
+msgid "Buffering:"
+msgstr "Zwischenspeichern:"
+
+#: src/arts/configure.c:73 src/esd/configure.c:184 src/OSS4/configure.c:245
+#: src/OSS/configure.c:318 src/sun/configure.c:272
+msgid "Buffer size (ms):"
+msgstr "Puffergrösse (ms):"
+
+#: src/arts/configure.c:83 src/esd/configure.c:209 src/OSS4/configure.c:270
+#: src/OSS/configure.c:343 src/sun/configure.c:304
+msgid "Buffering"
+msgstr "Zwischenspeichern"
+
+#: src/audiocompress/audacious-glue.c:99
+msgid "AudioCompress "
+msgstr "AudioCompress"
+
+#: src/audiocompress/audacious-glue.c:100
+msgid ""
+"\n"
+"(c)2003 trikuare studios(http://trikuare.cx)\n"
+"Ported to Audacious by Tony Vroon (chainsaw@gentoo.org)\n"
+"\n"
+"Simple dynamic range compressor for transparently\n"
+"keeping the volume level more or less consistent"
 msgstr ""
 
-#: src/evdev-plug/ed.c:57
-msgid "Playback->Stop"
+#: src/audiocompress/audacious-glue.c:105
+msgid "About AudioCompress"
+msgstr "Über AudioCompress"
+
+#: src/audiocompress/audacious-glue.c:324
+msgid ""
+"If checked, when the sound peaks the volume will be cut instantly; "
+"otherwise, it will ramp down just in time for the peak (but some minor "
+"clipping may still occur)."
 msgstr ""
 
-#: src/evdev-plug/ed.c:58
-msgid "Playback->Pause"
+#: src/audiocompress/audacious-glue.c:328
+msgid "The maximum amount to amplify the audio by"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:330
+msgid "Defines how smoothly the volume will ramp up"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:332
+msgid ""
+"The target audio level for ramping up. Lowering the value gives a bit more "
+"dynamic range for peaks, but will make the overall sound quieter."
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:335
+msgid "How long of a window to maintain"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:376
+#, fuzzy
+msgid "AudioCompress preferences"
+msgstr "AudioCompress"
+
+#: src/audiocompress/audacious-glue.c:393
+msgid " Quality Options "
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:398
+msgid " Aggressively prevent clipping"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:410
+msgid " Target & gain"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:421
+msgid "Target audio level:"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:429
+msgid "Maximum gain:"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:437
+msgid "Gain smooth:"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:489
+msgid " History "
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:521
+msgid ""
+"How long of a history to maintain.  A higher number will make the volume "
+"changes less responsive."
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:532
+msgid "Load default values"
+msgstr ""
+
+#: src/audiocompress/audacious-glue.c:537
+#, fuzzy
+msgid "Audio values"
+msgstr "Audiogerät:"
+
+#: src/audiocompress/audacious-glue.c:566 src/echo_plugin/gui.c:153
+#: src/modplug/gui/interface.cxx:733 src/stereo_plugin/stereo.c:135
+msgid "Apply"
+msgstr "Übernehmen"
+
+#: src/blur_scope/blur_scope.c:57
+msgid "/Toggle Decorations"
+msgstr "/Dekorationen umschalten"
+
+#: src/blur_scope/blur_scope.c:59
+msgid "/-"
+msgstr "/-"
+
+#: src/blur_scope/blur_scope.c:60
+msgid "/Close"
+msgstr "/Schliessen"
+
+#: src/blur_scope/blur_scope.c:190
+msgid "Blur scope"
+msgstr "Blur-Scope"
+
+#: src/blur_scope/config.c:73
+msgid "Blur Scope: Color selection"
+msgstr ""
+
+#: src/blur_scope/config.c:83 src/jack/configure.c:107
+msgid "Options:"
+msgstr "Optionen:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:200
+#, c-format
+msgid ""
+"Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
+"Team.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you Tony Vroon for mentoring & guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:205
+#, fuzzy
+msgid "About CD Audio Plugin NG"
+msgstr "CoreAudio-Ausgabe-Plugin"
+
+#: src/cdaudio-ng/cdaudio-ng.c:800
+msgid ""
+"<b><big>No playable CD found.</big></b>\n"
+"\n"
+"No CD inserted, or inserted CD is not an audio CD.\n"
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:67
+#, fuzzy
+msgid "CD Audio Plugin Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/cdaudio-ng/configure.c:77
+msgid "Digital audio extraction"
+msgstr "Digitale Audioextraktion"
+
+#: src/cdaudio-ng/configure.c:82
+#, fuzzy
+msgid "Title information"
+msgstr "Ort:"
+
+#: src/cdaudio-ng/configure.c:99
+msgid "Limit read speed to: "
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:106
+#, fuzzy
+msgid "Use cd-text if available"
+msgstr "Stereo (falls vorhanden)"
+
+#: src/cdaudio-ng/configure.c:110
+#, fuzzy
+msgid "Use CDDB if available"
+msgstr "Stereo (falls vorhanden)"
+
+#: src/cdaudio-ng/configure.c:114
+msgid "Server: "
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:117
+msgid "Port: "
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:127
+msgid "Override default device: "
+msgstr ""
+
+#: src/cdaudio-ng/configure.c:134
+msgid "Print debug information"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:126
+msgid "Console Music Decoder"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:163
+msgid "Bass:"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:167 src/console/Audacious_Config.cxx:178
+#: src/console/Audacious_Config.cxx:199
+msgid "secs"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:174
+msgid "Treble:"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:195
+msgid "Default song length:"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:201 src/modplug/gui/interface.cxx:264
+#: src/sid/xmms-sid.glade:1424 src/sid/xs_interface.c:673
+msgid "Resampling"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:207
+msgid "Enable audio resampling"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:222
+msgid "Resampling rate:"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:237
+msgid "SPC"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:238
+msgid "Ignore length from SPC tags"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:239
+msgid "Increase reverb"
+msgstr ""
+
+#: src/console/Audacious_Config.cxx:264
+msgid ""
+"* Default song length *\n"
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+
+#: src/console/Audacious_Driver.cxx:495
+msgid "About the Console Music Decoder"
+msgstr ""
+
+#: src/console/Audacious_Driver.cxx:496
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
+"        Shay Green <gblargg@gmail.com>"
+msgstr ""
+
+#: src/echo_plugin/gui.c:12
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin 1999.\n"
+"\n"
+"Surround echo by Carl van Schaik 1999"
+msgstr ""
+
+#: src/echo_plugin/gui.c:26
+msgid "About Echo Plugin"
+msgstr "Über Echo-Plugin"
+
+#: src/echo_plugin/gui.c:77
+msgid "Configure Echo"
+msgstr "Echo-Plugin konfigurieren"
+
+#: src/echo_plugin/gui.c:90
+msgid "Delay: (ms)"
+msgstr "Verzögerung: (ms)"
+
+#: src/echo_plugin/gui.c:95
+msgid "Feedback: (%)"
+msgstr "Rückkoppelung: (%)"
+
+#: src/echo_plugin/gui.c:100
+msgid "Volume: (%)"
+msgstr "Lautstärke: (%)"
+
+#: src/echo_plugin/gui.c:123
+msgid "Surround echo"
+msgstr "Surround-Echo"
+
+#: src/esd/about.c:34
+msgid "About ESounD Plugin"
+msgstr ""
+
+#: src/esd/about.c:35
+msgid ""
+"Audacious ESounD Plugin\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
+#: src/esd/configure.c:102
+msgid "ESD Output Plugin configuration"
+msgstr "ESD-Ausgabe-Plugin-Konfiguration"
+
+#: src/esd/configure.c:114 src/esd/configure.c:144
+msgid "Host:"
+msgstr ""
+
+#: src/esd/configure.c:125
+msgid "Use remote host"
+msgstr ""
+
+#: src/esd/configure.c:132
+msgid "Volume controls OSS mixer"
+msgstr ""
+
+#: src/esd/configure.c:153
+msgid "Port:"
+msgstr ""
+
+#: src/esd/configure.c:169
+msgid "Server"
+msgstr ""
+
+#: src/esd/configure.c:198 src/OSS4/configure.c:259 src/OSS/configure.c:332
+#: src/sun/configure.c:290
+msgid "Pre-buffer (percent):"
 msgstr ""
 
 #: src/evdev-plug/ed.c:59
-msgid "Playback->Prev"
+msgid "Playback->Play"
 msgstr ""
 
 #: src/evdev-plug/ed.c:60
-msgid "Playback->Next"
+msgid "Playback->Stop"
 msgstr ""
 
 #: src/evdev-plug/ed.c:61
-msgid "Playback->Eject"
+msgid "Playback->Pause"
+msgstr ""
+
+#: src/evdev-plug/ed.c:62
+msgid "Playback->Prev"
 msgstr ""
 
 #: src/evdev-plug/ed.c:63
-msgid "Playlist->Repeat"
+msgid "Playback->Next"
 msgstr ""
 
 #: src/evdev-plug/ed.c:64
-msgid "Playlist->Shuffle"
+msgid "Playback->Eject"
 msgstr ""
 
 #: src/evdev-plug/ed.c:66
-msgid "Volume->Up_5"
+msgid "Playlist->Repeat"
 msgstr ""
 
 #: src/evdev-plug/ed.c:67
-msgid "Volume->Down_5"
-msgstr ""
-
-#: src/evdev-plug/ed.c:68
-msgid "Volume->Up_10"
+msgid "Playlist->Shuffle"
 msgstr ""
 
 #: src/evdev-plug/ed.c:69
-msgid "Volume->Down_10"
+msgid "Volume->Up_5"
 msgstr ""
 
 #: src/evdev-plug/ed.c:70
-msgid "Volume->Mute"
+msgid "Volume->Down_5"
+msgstr ""
+
+#: src/evdev-plug/ed.c:71
+msgid "Volume->Up_10"
 msgstr ""
 
 #: src/evdev-plug/ed.c:72
-msgid "Window->Main"
+msgid "Volume->Down_10"
 msgstr ""
 
 #: src/evdev-plug/ed.c:73
-msgid "Window->Playlist"
-msgstr ""
-
-#: src/evdev-plug/ed.c:74
-msgid "Window->Equalizer"
+msgid "Volume->Mute"
 msgstr ""
 
 #: src/evdev-plug/ed.c:75
+msgid "Window->Main"
+msgstr ""
+
+#: src/evdev-plug/ed.c:76
+msgid "Window->Playlist"
+msgstr ""
+
+#: src/evdev-plug/ed.c:77
+msgid "Window->Equalizer"
+msgstr ""
+
+#: src/evdev-plug/ed.c:78
 msgid "Window->JumpToFile"
 msgstr ""
 
@@ -2937,7 +2141,7 @@ msgid ""
 msgstr ""
 
 #: src/evdev-plug/ed_ui.c:274 src/evdev-plug/ed_ui.c:410
-#: src/evdev-plug/ed_ui.c:862
+#: src/evdev-plug/ed_ui.c:872
 #, fuzzy
 msgid "Information"
 msgstr "Ort:"
@@ -2947,6 +2151,11 @@ msgid ""
 "Cannot open bindings window for a not-detected device.\n"
 "Ensure that the device has been correctly plugged in."
 msgstr ""
+
+#: src/evdev-plug/ed_ui.c:318 src/filewriter/filewriter.c:196
+#: src/madplug/plugin.c:620
+msgid "Error"
+msgstr "Fehler"
 
 #: src/evdev-plug/ed_ui.c:319
 msgid ""
@@ -3001,6 +2210,10 @@ msgstr "ESD-Ausgabe-Plugin-Konfiguration"
 msgid "Active"
 msgstr ""
 
+#: src/evdev-plug/ed_ui.c:655 src/sun/configure.c:488
+msgid "Status"
+msgstr "Status"
+
 #: src/evdev-plug/ed_ui.c:664
 #, fuzzy
 msgid "Device Name"
@@ -3020,14 +2233,14 @@ msgstr "Geräte"
 msgid "_Bindings"
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:826
+#: src/evdev-plug/ed_ui.c:836
 msgid ""
 "Press a key of your device to bind it;\n"
 "if no key is pressed in five seconds, this window\n"
 "will close without binding changes."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:863
+#: src/evdev-plug/ed_ui.c:873
 msgid ""
 "This input event has been already assigned.\n"
 "\n"
@@ -3035,651 +2248,2296 @@ msgid ""
 "(although it's possible to assign the same action to multiple events)."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:1312
+#: src/evdev-plug/ed_ui.c:1322
 #, fuzzy
 msgid "EvDev-Plug - Bindings Configuration"
 msgstr "ESD-Ausgabe-Plugin-Konfiguration"
 
-#: src/evdev-plug/ed_ui.c:1352
+#: src/evdev-plug/ed_ui.c:1362
 msgid "<b>Name: </b>"
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:1361
+#: src/evdev-plug/ed_ui.c:1371
 msgid "<b>Filename: </b>"
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:1370
+#: src/evdev-plug/ed_ui.c:1380
 msgid "<b>Phys.Address: </b>"
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:1448
+#: src/evdev-plug/ed_ui.c:1459
 msgid "EvDev-Plug - about"
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:1479
-msgid ""
-"\n"
-"EvDev-Plug "
-msgstr ""
-
-#: src/evdev-plug/ed_ui.c:1480
+#: src/evdev-plug/ed_ui.c:1490
 msgid ""
 "\n"
 "player remote control via event devices\n"
-"http://www.develia.org/projects.php?p=evdevplug\n"
+"http://www.develia.org/projects.php?p=audacious#evdevplug\n"
 "\n"
 "written by Giacomo Lozito\n"
-"< james@develia.org >\n"
-"\n"
 msgstr ""
 
-#: src/flac112/charset.c:40 src/flac113/charset.c:40
-msgid "Arabic (IBM-864)"
-msgstr ""
-
-#: src/flac112/charset.c:41 src/flac113/charset.c:41
-msgid "Arabic (ISO-8859-6)"
-msgstr ""
-
-#: src/flac112/charset.c:42 src/flac113/charset.c:42
-msgid "Arabic (Windows-1256)"
-msgstr ""
-
-#: src/flac112/charset.c:43 src/flac113/charset.c:43
-msgid "Baltic (ISO-8859-13)"
-msgstr ""
-
-#: src/flac112/charset.c:44 src/flac113/charset.c:44
-msgid "Baltic (ISO-8859-4)"
-msgstr ""
-
-#: src/flac112/charset.c:45 src/flac113/charset.c:45
-msgid "Baltic (Windows-1257)"
-msgstr ""
-
-#: src/flac112/charset.c:46 src/flac113/charset.c:46
-msgid "Celtic (ISO-8859-14)"
-msgstr ""
-
-#: src/flac112/charset.c:47 src/flac113/charset.c:47
-msgid "Central European (IBM-852)"
-msgstr ""
-
-#: src/flac112/charset.c:48 src/flac113/charset.c:48
-msgid "Central European (ISO-8859-2)"
-msgstr ""
-
-#: src/flac112/charset.c:49 src/flac113/charset.c:49
-msgid "Central European (Windows-1250)"
-msgstr ""
-
-#: src/flac112/charset.c:50 src/flac113/charset.c:50
-msgid "Chinese Simplified (GB18030)"
-msgstr ""
-
-#: src/flac112/charset.c:51 src/flac113/charset.c:51
-msgid "Chinese Simplified (GB2312)"
-msgstr ""
-
-#: src/flac112/charset.c:52 src/flac113/charset.c:52
-msgid "Chinese Traditional (Big5)"
-msgstr ""
-
-#: src/flac112/charset.c:53 src/flac113/charset.c:53
-msgid "Chinese Traditional (Big5-HKSCS)"
-msgstr ""
-
-#: src/flac112/charset.c:54 src/flac113/charset.c:54
-msgid "Cyrillic (IBM-855)"
-msgstr ""
-
-#: src/flac112/charset.c:55 src/flac113/charset.c:55
-msgid "Cyrillic (ISO-8859-5)"
-msgstr ""
-
-#: src/flac112/charset.c:56 src/flac113/charset.c:56
-msgid "Cyrillic (ISO-IR-111)"
-msgstr ""
-
-#: src/flac112/charset.c:57 src/flac113/charset.c:57
-msgid "Cyrillic (KOI8-R)"
-msgstr ""
-
-#: src/flac112/charset.c:58 src/flac113/charset.c:58
-msgid "Cyrillic (Windows-1251)"
-msgstr ""
-
-#: src/flac112/charset.c:59 src/flac113/charset.c:59
-msgid "Cyrillic/Russian (CP-866)"
-msgstr ""
-
-#: src/flac112/charset.c:60 src/flac113/charset.c:60
-msgid "Cyrillic/Ukrainian (KOI8-U)"
-msgstr ""
-
-#: src/flac112/charset.c:61 src/flac113/charset.c:61
-msgid "English (US-ASCII)"
-msgstr ""
-
-#: src/flac112/charset.c:62 src/flac113/charset.c:62
-msgid "Greek (ISO-8859-7)"
-msgstr ""
-
-#: src/flac112/charset.c:63 src/flac113/charset.c:63
-msgid "Greek (Windows-1253)"
-msgstr ""
-
-#: src/flac112/charset.c:64 src/flac113/charset.c:64
-msgid "Hebrew (IBM-862)"
-msgstr ""
-
-#: src/flac112/charset.c:65 src/flac113/charset.c:65
-msgid "Hebrew (Windows-1255)"
-msgstr ""
-
-#: src/flac112/charset.c:66 src/flac113/charset.c:66
-msgid "Japanese (EUC-JP)"
-msgstr ""
-
-#: src/flac112/charset.c:67 src/flac113/charset.c:67
-msgid "Japanese (ISO-2022-JP)"
-msgstr ""
-
-#: src/flac112/charset.c:68 src/flac113/charset.c:68
-msgid "Japanese (Shift_JIS)"
-msgstr ""
-
-#: src/flac112/charset.c:69 src/flac113/charset.c:69
-msgid "Korean (EUC-KR)"
-msgstr ""
-
-#: src/flac112/charset.c:70 src/flac113/charset.c:70
-msgid "Nordic (ISO-8859-10)"
-msgstr ""
-
-#: src/flac112/charset.c:71 src/flac113/charset.c:71
-msgid "South European (ISO-8859-3)"
-msgstr ""
-
-#: src/flac112/charset.c:72 src/flac113/charset.c:72
-msgid "Thai (TIS-620)"
-msgstr ""
-
-#: src/flac112/charset.c:73 src/flac113/charset.c:73
-msgid "Turkish (IBM-857)"
-msgstr ""
-
-#: src/flac112/charset.c:74 src/flac113/charset.c:74
-msgid "Turkish (ISO-8859-9)"
-msgstr ""
-
-#: src/flac112/charset.c:75 src/flac113/charset.c:75
-msgid "Turkish (Windows-1254)"
-msgstr ""
-
-#: src/flac112/charset.c:76 src/flac113/charset.c:76
-msgid "Unicode (UTF-7)"
-msgstr ""
-
-#: src/flac112/charset.c:77 src/flac113/charset.c:77
-msgid "Unicode (UTF-8)"
-msgstr ""
-
-#: src/flac112/charset.c:78 src/flac113/charset.c:78
-msgid "Unicode (UTF-16BE)"
-msgstr ""
-
-#: src/flac112/charset.c:79 src/flac113/charset.c:79
-msgid "Unicode (UTF-16LE)"
-msgstr ""
-
-#: src/flac112/charset.c:80 src/flac113/charset.c:80
-msgid "Unicode (UTF-32BE)"
-msgstr ""
-
-#: src/flac112/charset.c:81 src/flac113/charset.c:81
-msgid "Unicode (UTF-32LE)"
-msgstr ""
-
-#: src/flac112/charset.c:82 src/flac113/charset.c:82
-msgid "Vietnamese (VISCII)"
-msgstr ""
-
-#: src/flac112/charset.c:83 src/flac113/charset.c:83
-msgid "Vietnamese (Windows-1258)"
-msgstr ""
-
-#: src/flac112/charset.c:84 src/flac113/charset.c:84
-msgid "Visual Hebrew (ISO-8859-8)"
-msgstr ""
-
-#: src/flac112/charset.c:85 src/flac113/charset.c:85
-msgid "Western (IBM-850)"
-msgstr ""
-
-#: src/flac112/charset.c:86 src/flac113/charset.c:86
-msgid "Western (ISO-8859-1)"
-msgstr ""
-
-#: src/flac112/charset.c:87 src/flac113/charset.c:87
-msgid "Western (ISO-8859-15)"
-msgstr ""
-
-#: src/flac112/charset.c:88 src/flac113/charset.c:88
-msgid "Western (Windows-1252)"
-msgstr ""
-
-#: src/flac112/charset.c:94 src/flac113/charset.c:94
-msgid "Arabic (IBM-864-I)"
-msgstr ""
-
-#: src/flac112/charset.c:95 src/flac113/charset.c:95
-msgid "Arabic (ISO-8859-6-E)"
-msgstr ""
-
-#: src/flac112/charset.c:96 src/flac113/charset.c:96
-msgid "Arabic (ISO-8859-6-I)"
-msgstr ""
-
-#: src/flac112/charset.c:97 src/flac113/charset.c:97
-msgid "Arabic (MacArabic)"
-msgstr ""
-
-#: src/flac112/charset.c:98 src/flac113/charset.c:98
-msgid "Armenian (ARMSCII-8)"
-msgstr ""
-
-#: src/flac112/charset.c:99 src/flac113/charset.c:99
-msgid "Central European (MacCE)"
-msgstr ""
-
-#: src/flac112/charset.c:100 src/flac113/charset.c:100
-msgid "Chinese Simplified (GBK)"
-msgstr ""
-
-#: src/flac112/charset.c:101 src/flac113/charset.c:101
-msgid "Chinese Simplified (HZ)"
-msgstr ""
-
-#: src/flac112/charset.c:102 src/flac113/charset.c:102
-msgid "Chinese Traditional (EUC-TW)"
-msgstr ""
-
-#: src/flac112/charset.c:103 src/flac113/charset.c:103
-msgid "Croatian (MacCroatian)"
-msgstr ""
-
-#: src/flac112/charset.c:104 src/flac113/charset.c:104
-msgid "Cyrillic (MacCyrillic)"
-msgstr ""
-
-#: src/flac112/charset.c:105 src/flac113/charset.c:105
-msgid "Cyrillic/Ukrainian (MacUkrainian)"
-msgstr ""
-
-#: src/flac112/charset.c:106 src/flac113/charset.c:106
-msgid "Farsi (MacFarsi)"
-msgstr ""
-
-#: src/flac112/charset.c:107 src/flac113/charset.c:107
-msgid "Greek (MacGreek)"
-msgstr ""
-
-#: src/flac112/charset.c:108 src/flac113/charset.c:108
-msgid "Gujarati (MacGujarati)"
-msgstr ""
-
-#: src/flac112/charset.c:109 src/flac113/charset.c:109
-msgid "Gurmukhi (MacGurmukhi)"
-msgstr ""
-
-#: src/flac112/charset.c:110 src/flac113/charset.c:110
-msgid "Hebrew (ISO-8859-8-E)"
-msgstr ""
-
-#: src/flac112/charset.c:111 src/flac113/charset.c:111
-msgid "Hebrew (ISO-8859-8-I)"
-msgstr ""
-
-#: src/flac112/charset.c:112 src/flac113/charset.c:112
-msgid "Hebrew (MacHebrew)"
-msgstr ""
-
-#: src/flac112/charset.c:113 src/flac113/charset.c:113
-msgid "Hindi (MacDevanagari)"
-msgstr ""
-
-#: src/flac112/charset.c:114 src/flac113/charset.c:114
-msgid "Icelandic (MacIcelandic)"
-msgstr ""
-
-#: src/flac112/charset.c:115 src/flac113/charset.c:115
-msgid "Korean (JOHAB)"
-msgstr ""
-
-#: src/flac112/charset.c:116 src/flac113/charset.c:116
-msgid "Korean (UHC)"
-msgstr ""
-
-#: src/flac112/charset.c:117 src/flac113/charset.c:117
-msgid "Romanian (MacRomanian)"
-msgstr ""
-
-#: src/flac112/charset.c:118 src/flac113/charset.c:118
-msgid "Turkish (MacTurkish)"
-msgstr ""
-
-#: src/flac112/charset.c:119 src/flac113/charset.c:119
-msgid "User Defined"
-msgstr ""
-
-#: src/flac112/charset.c:120 src/flac113/charset.c:120
-msgid "Vietnamese (TCVN)"
-msgstr ""
-
-#: src/flac112/charset.c:121 src/flac113/charset.c:121
-msgid "Vietnamese (VPS)"
-msgstr ""
-
-#: src/flac112/charset.c:122 src/flac113/charset.c:122
-msgid "Western (MacRoman)"
-msgstr ""
-
-#: src/flac112/configure.c:249 src/flac113/configure.c:249
+#: src/filewriter/filewriter.c:167
 #, fuzzy
-msgid "Flac Configuration"
-msgstr "CD-Audio-Player-Konfiguration"
-
-#: src/flac112/configure.c:261 src/flac113/configure.c:261
-msgid "Tag Handling"
-msgstr ""
-
-#: src/flac112/configure.c:270 src/flac113/configure.c:270
-msgid "Convert Character Set"
-msgstr ""
-
-#: src/flac112/configure.c:278 src/flac113/configure.c:278
-msgid "Convert character set from :"
-msgstr ""
-
-#: src/flac112/configure.c:283 src/flac113/configure.c:283
-msgid "to :"
-msgstr ""
-
-#: src/flac112/configure.c:323 src/flac113/configure.c:323
-msgid "Disable bitrate update during playback (saves cpu usage)"
-msgstr ""
-
-#: src/flac112/configure.c:345 src/flac113/configure.c:345
-#: src/madplug/configure.c:175
-msgid "Enable ReplayGain processing"
-msgstr ""
-
-#: src/flac112/configure.c:350 src/flac113/configure.c:350
-#, fuzzy
-msgid "Album mode"
-msgstr "Album:"
-
-#: src/flac112/configure.c:357 src/flac113/configure.c:357
-msgid "Preamp:"
-msgstr ""
-
-#: src/flac112/configure.c:364 src/flac113/configure.c:364
-msgid "0 dB"
-msgstr ""
-
-#: src/flac112/configure.c:368 src/flac113/configure.c:368
-#: src/madplug/configure.c:187
-msgid "6dB hard limiting"
-msgstr ""
-
-#: src/flac112/configure.c:377 src/flac113/configure.c:377
-#, fuzzy
-msgid "Resolution"
-msgstr "Auflösung:"
-
-#: src/flac112/configure.c:385 src/flac113/configure.c:385
-#, fuzzy
-msgid "Without ReplayGain"
-msgstr "ReplayGain"
-
-#: src/flac112/configure.c:393 src/flac113/configure.c:393
-msgid "Dither 24bps to 16bps"
-msgstr ""
-
-#: src/flac112/configure.c:398 src/flac113/configure.c:398
-#, fuzzy
-msgid "With ReplayGain"
-msgstr "ReplayGain"
-
-#: src/flac112/configure.c:406 src/flac113/configure.c:406
-msgid "Enable dithering"
-msgstr ""
-
-#: src/flac112/configure.c:415 src/flac113/configure.c:415
-msgid "Noise shaping"
-msgstr ""
-
-#: src/flac112/configure.c:423 src/flac113/configure.c:423
-#, fuzzy
-msgid "none"
-msgstr "Kein"
-
-#: src/flac112/configure.c:429 src/flac113/configure.c:429
-msgid "low"
-msgstr ""
-
-#: src/flac112/configure.c:435 src/flac113/configure.c:435
-msgid "medium"
-msgstr ""
-
-#: src/flac112/configure.c:441 src/flac113/configure.c:441
-msgid "high"
-msgstr ""
-
-#: src/flac112/configure.c:447 src/flac113/configure.c:447
-msgid "Dither to"
-msgstr ""
-
-#: src/flac112/configure.c:455 src/flac113/configure.c:455
-#, fuzzy
-msgid "16 bps"
-msgstr "16 bit"
-
-#: src/flac112/configure.c:461 src/flac113/configure.c:461
-msgid "24 bps"
-msgstr ""
-
-#: src/flac112/configure.c:469 src/flac113/configure.c:469
-msgid "Output"
-msgstr ""
-
-#: src/flac112/configure.c:501 src/flac113/configure.c:501
-#, fuzzy
-msgid "About Flac Plugin"
+msgid "About FileWriter-Plugin"
 msgstr "Über Echo-Plugin"
 
-#: src/flac112/configure.c:502 src/flac113/configure.c:502
+#: src/filewriter/filewriter.c:168
 msgid ""
-"Flac Plugin by Josh Coalson\n"
-"contributions by\n"
-"......\n"
-"......\n"
-"and\n"
-"Daisuke Shimamura\n"
-"Visit http://flac.sourceforge.net/\n"
+"FileWriter-Plugin\n"
 "\n"
-"Audacious Team port"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA."
 msgstr ""
 
-#: src/flac112/fileinfo.c:57 src/flac113/fileinfo.c:60
-msgid "Alt"
-msgstr ""
-
-#: src/flac112/fileinfo.c:214 src/flac113/fileinfo.c:217
-#, c-format
-msgid "Samplerate: %d Hz"
-msgstr ""
-
-#: src/flac112/fileinfo.c:215 src/flac113/fileinfo.c:218
-#, fuzzy, c-format
-msgid "Channels: %d"
-msgstr "Kanäle:"
-
-#: src/flac112/fileinfo.c:216 src/flac113/fileinfo.c:219
-#, c-format
-msgid "Bits/Sample: %d"
-msgstr ""
-
-#: src/flac112/fileinfo.c:218 src/flac113/fileinfo.c:221
-#, c-format
-msgid "Blocksize: %d"
-msgstr ""
-
-#: src/flac112/fileinfo.c:220 src/flac113/fileinfo.c:223
-#, c-format
+#: src/filewriter/filewriter.c:197
 msgid ""
-"Blocksize: variable\n"
-"  min/max: %d/%d"
+"You cannot use the FileWriter plugin\n"
+"when you're running in realtime mode."
 msgstr ""
 
-#: src/flac112/fileinfo.c:223 src/flac113/fileinfo.c:226
-#, c-format
+#: src/filewriter/filewriter.c:512
+#, fuzzy
+msgid "File Writer Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/filewriter/filewriter.c:524
+msgid "Output file format:"
+msgstr ""
+
+#: src/filewriter/filewriter.c:542 src/ladspa/ladspa.c:962
+#, fuzzy
+msgid "Configure"
+msgstr "Echo-Plugin konfigurieren"
+
+#: src/filewriter/filewriter.c:557
+msgid "Save into original directory"
+msgstr ""
+
+#: src/filewriter/filewriter.c:562
+msgid "Save into custom directory"
+msgstr ""
+
+#: src/filewriter/filewriter.c:574
+msgid "Output file folder:"
+msgstr ""
+
+#: src/filewriter/filewriter.c:578
+msgid "Pick a folder"
+msgstr ""
+
+#: src/filewriter/filewriter.c:598
+msgid "Get filename from:"
+msgstr ""
+
+#: src/filewriter/filewriter.c:601
+msgid "original file tags"
+msgstr ""
+
+#: src/filewriter/filewriter.c:607
+msgid "original filename"
+msgstr ""
+
+#: src/filewriter/filewriter.c:617
+msgid "Don't strip file name extension"
+msgstr "Dateiendung nicht entfernen"
+
+#: src/filewriter/filewriter.c:621
 msgid ""
-"Samples: %llu\n"
-"Length: %d:%.2d"
+"If enabled, the extension from the original filename will not be stripped "
+"before adding the .wav extension to the end."
 msgstr ""
 
-#: src/flac112/fileinfo.c:229 src/flac113/fileinfo.c:235
-#, fuzzy, c-format
-msgid "Filesize: %ld B"
-msgstr "Dateigrösse:"
+#: src/filewriter/filewriter.c:635
+msgid "Prepend track number to filename"
+msgstr ""
 
-#: src/flac112/fileinfo.c:231 src/flac113/fileinfo.c:238
-#, c-format
+#: src/filewriter/mp3.c:667
+#, fuzzy
+msgid "MP3 Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/filewriter/mp3.c:694
+msgid "Algorithm Quality:"
+msgstr ""
+
+#: src/filewriter/mp3.c:716
 msgid ""
-"Avg. bitrate: %.1f kb/s\n"
-"Compression ratio: %.1f%%"
+"best/slowest:0;\n"
+"worst/fastest:9;\n"
+"recommended:2;\n"
+"default:5;"
 msgstr ""
 
-#: src/flac112/fileinfo.c:266 src/flac113/fileinfo.c:308
+#: src/filewriter/mp3.c:724
+msgid "Output Samplerate:"
+msgstr ""
+
+#: src/filewriter/mp3.c:735 src/filewriter/mp3.c:1091
 #, fuzzy
-msgid "Filename:"
-msgstr "Benutzername:"
+msgid "Auto"
+msgstr "Über"
 
-#: src/flac112/fileinfo.c:278 src/flac113/fileinfo.c:320
-msgid "Tag:"
+#: src/filewriter/mp3.c:740 src/sid/xmms-sid.glade:300
+#: src/sid/xs_interface.c:346
+msgid "8000"
 msgstr ""
 
-#: src/flac112/fileinfo.c:352 src/flac113/fileinfo.c:394
-msgid "Save"
-msgstr ""
-
-#: src/flac112/fileinfo.c:358 src/flac113/fileinfo.c:400
+#: src/filewriter/mp3.c:750
 #, fuzzy
-msgid "Remove Tag"
-msgstr "Gerät löschen"
+msgid "12000"
+msgstr "11000 Hz"
 
-#: src/flac112/fileinfo.c:368 src/flac113/fileinfo.c:410
-msgid "FLAC Info:"
+#: src/filewriter/mp3.c:755
+#, fuzzy
+msgid "16000"
+msgstr "11000 Hz"
+
+#: src/filewriter/mp3.c:765
+#, fuzzy
+msgid "24000"
+msgstr "22000 Hz"
+
+#: src/filewriter/mp3.c:770
+#, fuzzy
+msgid "32000"
+msgstr "22000 Hz"
+
+#: src/filewriter/mp3.c:790
+#, fuzzy
+msgid "(Hz)"
+msgstr "Hz"
+
+#: src/filewriter/mp3.c:842
+msgid "Bitrate / Compression ratio:"
 msgstr ""
 
-#: src/flac112/plugin.c:170 src/flac113/plugin.c:161
+#: src/filewriter/mp3.c:868
 #, fuzzy
-msgid "FLAC Audio Plugin"
+msgid "Bitrate (kbps):"
+msgstr "Bitrate:"
+
+#: src/filewriter/mp3.c:874 src/filewriter/mp3.c:1272
+#: src/filewriter/mp3.c:1449 src/filewriter/mp3.c:1646
+msgid "8"
+msgstr ""
+
+#: src/filewriter/mp3.c:879 src/filewriter/mp3.c:1277
+#: src/filewriter/mp3.c:1454 src/filewriter/mp3.c:1651
+msgid "16"
+msgstr ""
+
+#: src/filewriter/mp3.c:884 src/filewriter/mp3.c:1282
+#: src/filewriter/mp3.c:1459 src/filewriter/mp3.c:1656
+msgid "24"
+msgstr ""
+
+#: src/filewriter/mp3.c:889 src/filewriter/mp3.c:1287
+#: src/filewriter/mp3.c:1464 src/filewriter/mp3.c:1661
+msgid "32"
+msgstr ""
+
+#: src/filewriter/mp3.c:894 src/filewriter/mp3.c:1292
+#: src/filewriter/mp3.c:1469 src/filewriter/mp3.c:1666
+msgid "40"
+msgstr ""
+
+#: src/filewriter/mp3.c:899 src/filewriter/mp3.c:1297
+#: src/filewriter/mp3.c:1474 src/filewriter/mp3.c:1671
+msgid "48"
+msgstr ""
+
+#: src/filewriter/mp3.c:904 src/filewriter/mp3.c:1302
+#: src/filewriter/mp3.c:1479 src/filewriter/mp3.c:1676
+msgid "56"
+msgstr ""
+
+#: src/filewriter/mp3.c:909 src/filewriter/mp3.c:1307
+#: src/filewriter/mp3.c:1484 src/filewriter/mp3.c:1681
+msgid "64"
+msgstr ""
+
+#: src/filewriter/mp3.c:919 src/filewriter/mp3.c:1317
+#: src/filewriter/mp3.c:1494 src/filewriter/mp3.c:1691
+msgid "96"
+msgstr ""
+
+#: src/filewriter/mp3.c:924 src/filewriter/mp3.c:1322
+#: src/filewriter/mp3.c:1499 src/filewriter/mp3.c:1696
+msgid "112"
+msgstr ""
+
+#: src/filewriter/mp3.c:929 src/filewriter/mp3.c:1327
+#: src/filewriter/mp3.c:1504 src/filewriter/mp3.c:1701
+msgid "128"
+msgstr ""
+
+#: src/filewriter/mp3.c:934 src/filewriter/mp3.c:1332
+#: src/filewriter/mp3.c:1509 src/filewriter/mp3.c:1706
+msgid "160"
+msgstr ""
+
+#: src/filewriter/mp3.c:939 src/filewriter/mp3.c:1337
+#: src/filewriter/mp3.c:1514 src/filewriter/mp3.c:1711
+msgid "192"
+msgstr ""
+
+#: src/filewriter/mp3.c:944 src/filewriter/mp3.c:1342
+#: src/filewriter/mp3.c:1519 src/filewriter/mp3.c:1716
+msgid "224"
+msgstr ""
+
+#: src/filewriter/mp3.c:949 src/filewriter/mp3.c:1347
+#: src/filewriter/mp3.c:1524 src/filewriter/mp3.c:1721
+msgid "256"
+msgstr ""
+
+#: src/filewriter/mp3.c:954 src/filewriter/mp3.c:1352
+#: src/filewriter/mp3.c:1529 src/filewriter/mp3.c:1726
+msgid "320"
+msgstr ""
+
+#: src/filewriter/mp3.c:1051
+msgid "Compression ratio:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1081
+#, fuzzy
+msgid "Audio Mode:"
+msgstr "Audiogerät:"
+
+#: src/filewriter/mp3.c:1096
+#, fuzzy
+msgid "Joint-Stereo"
+msgstr "Stereo"
+
+#: src/filewriter/mp3.c:1137
+msgid "auto-M/S mode"
+msgstr ""
+
+#: src/filewriter/mp3.c:1149
+msgid "Misc:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1160
+msgid "Enforce strict ISO complience"
+msgstr ""
+
+#: src/filewriter/mp3.c:1171
+#, fuzzy
+msgid "Error protection"
+msgstr "Fehlerschutz:"
+
+#: src/filewriter/mp3.c:1183
+msgid "Adds 16 bit checksum to every frame"
+msgstr ""
+
+#: src/filewriter/mp3.c:1188 src/filewriter/vorbis.c:271
+#: src/modplug/gui/interface.cxx:310
+msgid "Quality"
+msgstr ""
+
+#: src/filewriter/mp3.c:1200
+msgid "Enable VBR/ABR"
+msgstr ""
+
+#: src/filewriter/mp3.c:1212
+msgid "Type:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1223
+msgid "Variable bitrate"
+msgstr ""
+
+#: src/filewriter/mp3.c:1235
+msgid "Average bitrate"
+msgstr ""
+
+#: src/filewriter/mp3.c:1249
+#, fuzzy
+msgid "VBR Options:"
+msgstr "Optionen:"
+
+#: src/filewriter/mp3.c:1312 src/filewriter/mp3.c:1489
+#: src/filewriter/mp3.c:1686
+msgid "80"
+msgstr ""
+
+#: src/filewriter/mp3.c:1442
+msgid "Maximum bitrate (kbps):"
+msgstr ""
+
+#: src/filewriter/mp3.c:1615
+msgid "Strictly enforce minimum bitrate"
+msgstr ""
+
+#: src/filewriter/mp3.c:1617
+msgid ""
+"For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
+"mp3 player)"
+msgstr ""
+
+#: src/filewriter/mp3.c:1630
+#, fuzzy
+msgid "ABR Options:"
+msgstr "Optionen:"
+
+#: src/filewriter/mp3.c:1640
+msgid "Average bitrate (kbps):"
+msgstr ""
+
+#: src/filewriter/mp3.c:1818
+msgid "VBR quality level:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1833
+msgid ""
+"highest:0;\n"
+"lowest:9;\n"
+"default:4;"
+msgstr ""
+
+#: src/filewriter/mp3.c:1841
+msgid "Don't write Xing VBR header"
+msgstr ""
+
+#: src/filewriter/mp3.c:1856
+msgid "VBR/ABR"
+msgstr ""
+
+#: src/filewriter/mp3.c:1868
+msgid "Frame params:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1880
+msgid "Mark as copyright"
+msgstr ""
+
+#: src/filewriter/mp3.c:1891
+msgid "Mark as original"
+msgstr ""
+
+#: src/filewriter/mp3.c:1903
+msgid "ID3 params:"
+msgstr ""
+
+#: src/filewriter/mp3.c:1914
+msgid "Force addition of version 2 tag"
+msgstr ""
+
+#: src/filewriter/mp3.c:1924
+msgid "Only add v1 tag"
+msgstr ""
+
+#: src/filewriter/mp3.c:1931
+msgid "Only add v2 tag"
+msgstr ""
+
+#: src/filewriter/mp3.c:1952
+msgid "Tags"
+msgstr ""
+
+#: src/filewriter/vorbis.c:264
+#, fuzzy
+msgid "Vorbis Encoder Configuration"
+msgstr "OSS-Treiber-Konfiguration"
+
+#: src/filewriter/vorbis.c:284
+msgid "Quality level (0 - 10):"
+msgstr ""
+
+#: src/flacng/plugin.c:735
+#, fuzzy
+msgid "FLAC Audio Plugin "
 msgstr "CoreAudio-Ausgabe-Plugin"
 
-#: src/flac113/fileinfo.c:233
-#, fuzzy, c-format
-msgid "Filesize: %lld B"
-msgstr "Dateigrösse:"
-
-#: src/flac113/fileinfo.c:268
-#, c-format
-msgid "ReplayGain Reference Loudness: %2.1f dB"
+#: src/flacng/plugin.c:736
+msgid ""
+"\n"
+"\n"
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
 
-#: src/flac113/fileinfo.c:270
-#, c-format
-msgid "ReplayGain Track Gain: %+2.2f dB"
+#: src/flacng/plugin.c:741
+#, fuzzy
+msgid "About FLAC Audio Plugin"
+msgstr "CoreAudio-Ausgabe-Plugin"
+
+#: src/jack/configure.c:69
+msgid "Connect to all available jack ports"
 msgstr ""
 
-#: src/flac113/fileinfo.c:272
-#, c-format
-msgid "ReplayGain Album Gain: %+2.2f dB"
+#: src/jack/configure.c:76
+msgid "Connect only the output ports"
 msgstr ""
 
-#: src/flac113/fileinfo.c:274
-#, c-format
-msgid "ReplayGain Track Peak: %1.8f"
+#: src/jack/configure.c:83
+msgid "Connect to no ports"
 msgstr ""
 
-#: src/flac113/fileinfo.c:276
-#, c-format
-msgid "ReplayGain Album Peak: %1.8f"
+#: src/jack/configure.c:98
+#, fuzzy
+msgid "jack Plugin configuration"
+msgstr "ESD-Ausgabe-Plugin-Konfiguration"
+
+#: src/jack/configure.c:116
+msgid "Connection mode:"
 msgstr ""
 
-#: src/madplug/configure.c:136
+#: src/jack/configure.c:128
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:102
+msgid "Sample rate mismatch"
+msgstr ""
+
+#: src/jack/jack.c:105
+msgid ""
+"Xmms is asking for a sample rate that differs from\n"
+" that of the jack server.  Xmms 1.2.8 or later\n"
+"contains resampling routines that xmms-jack will\n"
+"dynamically load and use to perform resampling.\n"
+"Or you can restart the jack server\n"
+"with a sample rate that matches the one that\n"
+"xmms desires.  -r is the option for the jack\n"
+"alsa driver so -r 44100 or -r 48000 should do\n"
+"\n"
+"Chris Morgan <cmorgan@alum.wpi.edu>\n"
+msgstr ""
+
+#: src/jack/jack.c:118 src/wma/wma.c:156
+msgid " Close "
+msgstr " Schliessen"
+
+#: src/jack/jack.c:598
+msgid "About JACK Output Plugin 0.17"
+msgstr ""
+
+#: src/jack/jack.c:599
+msgid ""
+"XMMS jack Driver 0.17\n"
+"\n"
+"xmms-jack.sf.net\n"
+"Chris Morgan<cmorgan@alum.wpi.edu>\n"
+"\n"
+"Audacious port by\n"
+"Giacomo Lozito from develia.org"
+msgstr ""
+
+#: src/ladspa/ladspa.c:724
+msgid "This LADSPA plugin has no user controls"
+msgstr ""
+
+#: src/ladspa/ladspa.c:769 src/ladspa/ladspa.c:855
+#, fuzzy
+msgid "Name"
+msgstr "Name:"
+
+#: src/ladspa/ladspa.c:855
+msgid "UID"
+msgstr ""
+
+#: src/ladspa/ladspa.c:930
+msgid "Installed plugins"
+msgstr ""
+
+#: src/ladspa/ladspa.c:939
+msgid "Running plugins"
+msgstr ""
+
+#: src/ladspa/ladspa.c:954
+msgid "Add"
+msgstr ""
+
+#: src/ladspa/ladspa.c:958
+#, fuzzy
+msgid "Remove"
+msgstr "Gerät löschen"
+
+#: src/ladspa/ladspa.c:971
+msgid "LADSPA Plugin Catalog"
+msgstr ""
+
+#: src/lastfm/lastfm.c:96
+msgid ""
+"<b><big>Couldn't initialize the last.fm radio plugin.</big></b>\n"
+"\n"
+"Check if your Scrobbler's plugin login data is set up properly."
+msgstr ""
+
+#: src/lirc/about.c:65
+msgid "About LIRC Audacious Plugin"
+msgstr ""
+
+#: src/lirc/about.c:92
+msgid "LIRC Plugin "
+msgstr ""
+
+#: src/lirc/about.c:94
+msgid ""
+"\n"
+"A simple plugin that lets you control\n"
+"Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"You can get LIRC information at:\n"
+"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+msgstr ""
+
+#: src/lirc/lirc.c:80
+#, c-format
+msgid "%s: could not init LIRC support\n"
+msgstr ""
+
+#: src/lirc/lirc.c:88
+#, c-format
+msgid ""
+"%s: could not read LIRC config file\n"
+"%s: please read the documentation of LIRC\n"
+"%s: how to create a proper config file\n"
+msgstr ""
+
+#: src/lirc/lirc.c:299
+#, c-format
+msgid "%s: unknown command \"%s\"\n"
+msgstr ""
+
+#: src/lirc/lirc.c:309
+#, c-format
+msgid "%s: disconnected from LIRC\n"
+msgstr ""
+
+#: src/madplug/configure.c:148
 msgid "MPEG Audio Plugin Configuration"
 msgstr ""
 
-#: src/madplug/configure.c:149
-msgid "Enable fast play-length calculation"
-msgstr ""
-
-#: src/madplug/configure.c:154
-msgid "Parse XING headers"
-msgstr ""
-
-#: src/madplug/configure.c:165
+#: src/madplug/configure.c:161
 msgid "Dither output when rounding to 16-bit"
 msgstr ""
 
-#: src/madplug/configure.c:180
+#: src/madplug/configure.c:167
+msgid "Enable fast play-length calculation"
+msgstr ""
+
+#: src/madplug/configure.c:172
+msgid "Parse XING headers"
+msgstr ""
+
+#: src/madplug/configure.c:177
+msgid "Use SJIS to write ID3 tags instead of UTF-8"
+msgstr ""
+
+#: src/madplug/configure.c:181
+msgid "Display average bitrate for VBR"
+msgstr ""
+
+#: src/madplug/configure.c:186
+msgid "Force reopen audio when audio type changed"
+msgstr ""
+
+#: src/madplug/configure.c:196
+msgid "Enable ReplayGain processing"
+msgstr ""
+
+#: src/madplug/configure.c:201
 #, fuzzy
 msgid "Track mode"
 msgstr "Titelnummer:"
 
-#: src/madplug/configure.c:192
+#: src/madplug/configure.c:208
+msgid "6dB hard limiting"
+msgstr ""
+
+#: src/madplug/configure.c:213
 #, fuzzy
 msgid "Default gain (dB):"
 msgstr "Standard (%s)"
 
-#: src/madplug/configure.c:203
+#: src/madplug/configure.c:224
 msgid "Preamp (dB):"
 msgstr ""
 
-#: src/madplug/configure.c:230
+#: src/madplug/configure.c:233 src/musepack/libmpc.cxx:223
+#: src/vorbis/configure.c:221 src/wavpack/ui.cxx:545
+msgid "ReplayGain"
+msgstr "ReplayGain"
+
+#: src/madplug/configure.c:238 src/vorbis/configure.c:137
+msgid "Override generic titles"
+msgstr ""
+
+#: src/madplug/configure.c:251
 msgid "ID3 format:"
 msgstr ""
 
-#: src/madplug/fileinfo.c:569
+#: src/madplug/configure.c:261 src/sid/xmms-sid.glade:3144
+#: src/sid/xs_interface.c:1189 src/vorbis/configure.c:160
+msgid "Title"
+msgstr "Titel"
+
+#: src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
+#, fuzzy
+msgid "File Info"
+msgstr "Dateiinformationen - %s"
+
+#: src/madplug/fileinfo.c:158
+msgid "Couldn't open file!"
+msgstr ""
+
+#: src/madplug/fileinfo.c:236
+msgid "Couldn't write tag!"
+msgstr ""
+
+#: src/madplug/fileinfo.c:330
+#, fuzzy
+msgid "<b>Name:</b>"
+msgstr "<b>Last.FM</b>"
+
+#: src/madplug/fileinfo.c:344
 msgid " MPEG Info "
 msgstr "MPEG-Info"
 
-#: src/madplug/fileinfo.c:642
+#: src/madplug/fileinfo.c:417
 msgid " ID3 Tag "
 msgstr "ID3-Tag"
 
-#: src/madplug/plugin.c:638
-msgid "MPEG Audio Plugin"
+#: src/madplug/fileinfo.c:425 src/musepack/libmpc.cxx:513 src/tta/libtta.c:341
+#: src/vorbis/fileinfo.c:585 src/wavpack/ui.cxx:170
+msgid "Title:"
+msgstr "Titel:"
+
+#: src/madplug/fileinfo.c:435 src/musepack/libmpc.cxx:517 src/tta/libtta.c:351
+#: src/vorbis/fileinfo.c:596 src/wavpack/ui.cxx:182
+msgid "Artist:"
+msgstr "Künstler:"
+
+#: src/madplug/fileinfo.c:445 src/musepack/libmpc.cxx:521 src/tta/libtta.c:362
+#: src/vorbis/fileinfo.c:607 src/wavpack/ui.cxx:194
+msgid "Album:"
+msgstr "Album:"
+
+#: src/madplug/fileinfo.c:455 src/musepack/libmpc.cxx:525 src/tta/libtta.c:373
+#: src/vorbis/fileinfo.c:618 src/wavpack/ui.cxx:206
+msgid "Comment:"
+msgstr "Kommentar:"
+
+#: src/madplug/fileinfo.c:465 src/musepack/libmpc.cxx:529 src/tta/libtta.c:384
+#: src/wavpack/ui.cxx:219
+msgid "Year:"
+msgstr "Jahr:"
+
+#: src/madplug/fileinfo.c:476 src/tta/libtta.c:396 src/vorbis/fileinfo.c:641
+#: src/wavpack/ui.cxx:232
+msgid "Track number:"
+msgstr "Titelnummer:"
+
+#: src/madplug/fileinfo.c:487 src/musepack/libmpc.cxx:539 src/tta/libtta.c:408
+#: src/vorbis/fileinfo.c:653 src/wavpack/ui.cxx:246
+msgid "Genre:"
+msgstr "Genre:"
+
+#: src/madplug/fileinfo.c:500
+msgid "Unknown"
 msgstr ""
 
-#: src/statusicon/gtktrayicon-x11.c:97
+#: src/madplug/fileinfo.c:620 src/musepack/libmpc.cxx:633 src/tta/libtta.c:431
+#: src/wavpack/ui.cxx:407
+#, c-format
+msgid "File Info - %s"
+msgstr "Dateiinformationen - %s"
+
+#: src/madplug/fileinfo.c:651
+#, c-format
+msgid "Layer %s"
+msgstr ""
+
+#: src/madplug/fileinfo.c:654
+#, c-format
+msgid "VBR (avg. %d kbps)"
+msgstr ""
+
+#: src/madplug/fileinfo.c:660 src/vorbis/fileinfo.c:962
+#, c-format
+msgid "%d Hz"
+msgstr "%d Hz"
+
+#: src/madplug/fileinfo.c:663
+#, c-format
+msgid "%d frames"
+msgstr ""
+
+#: src/madplug/fileinfo.c:672
+#, c-format
+msgid "%d:%02d (%d seconds)"
+msgstr ""
+
+#: src/madplug/fileinfo.c:677
+#, c-format
+msgid "RG_album=%4s (x%4.2f)"
+msgstr ""
+
+#: src/madplug/fileinfo.c:685
+#, c-format
+msgid "RG_track=%4s (x%4.2f)"
+msgstr ""
+
+#: src/madplug/fileinfo.c:693
+#, c-format
+msgid "Peak album=%4s (%+5.3fdBFS)"
+msgstr ""
+
+#: src/madplug/fileinfo.c:702
+#, c-format
+msgid "Peak track=%4s (%+5.3fdBFS)"
+msgstr ""
+
+#: src/madplug/fileinfo.c:711
+#, c-format
+msgid "mp3gain undo=%4s (%+5.3fdB)"
+msgstr ""
+
+#: src/madplug/fileinfo.c:719
+#, c-format
+msgid "mp3gain minmax=%4s (max-min=%+6.3fdB)"
+msgstr ""
+
+#: src/madplug/plugin.c:579
+#, c-format
+msgid ""
+"Audacious MPEG Audio Plugin\n"
+"\n"
+"Compiled against libMAD version: %d.%d.%d%s\n"
+"\n"
+"Written by:\n"
+"    William Pitcock <nenolod@sacredspiral.co.uk>\n"
+"    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
+"\n"
+"Portions derived from XMMS-MAD by:\n"
+"    Sam Clegg\n"
+"\n"
+"ReplayGain support by:\n"
+"    Samuel Krempp"
+msgstr ""
+
+#: src/madplug/plugin.c:595
+#, fuzzy
+msgid "About MPEG Audio Plugin"
+msgstr "Über Echo-Plugin"
+
+#: src/metronom/metronom.c:86
+#, fuzzy
+msgid "About Metronom"
+msgstr "Über"
+
+#: src/metronom/metronom.c:87
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+
+#: src/metronom/metronom.c:199 src/metronom/metronom.c:263
+#, fuzzy, c-format
+msgid "Tact generator: %d bpm"
+msgstr "Ton-Generator:"
+
+#: src/metronom/metronom.c:201 src/metronom/metronom.c:265
+#, c-format
+msgid "Tact generator: %d bpm %d/%d"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:117
+#, fuzzy
+msgid "ModPlug Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/modplug/gui/interface.cxx:165 src/timidity/src/interface.c:142
+msgid "16 bit"
+msgstr "16 bit"
+
+#: src/modplug/gui/interface.cxx:173 src/timidity/src/interface.c:134
+msgid "8 bit"
+msgstr "8 bit"
+
+#: src/modplug/gui/interface.cxx:203
+msgid "Mono (downmix)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:218 src/timidity/src/interface.c:76
+msgid "Sampling Rate"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:232
+msgid "48 kHz"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:240
+#, fuzzy
+msgid "44 kHz"
+msgstr "44100 Hz"
+
+#: src/modplug/gui/interface.cxx:248
+#, fuzzy
+msgid "22 kHz"
+msgstr "22000 Hz"
+
+#: src/modplug/gui/interface.cxx:256
+#, fuzzy
+msgid "11 kHz"
+msgstr "11000 Hz"
+
+#: src/modplug/gui/interface.cxx:278
+msgid "Nearest (fastest)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:286
+msgid "Linear (fast)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:294
+msgid "Spline (good quality)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:302
+msgid "8-tap Fir (extremely high quality)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:346
+msgid "Use Filename as Song Title"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:353
+msgid "Fast Playlist Info"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:368
+msgid "Noise Reduction"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:376
+msgid "Play Amiga MOD"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:384
+msgid "Reverb"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:398 src/modplug/gui/interface.cxx:470
+#: src/modplug/gui/interface.cxx:542 src/modplug/gui/interface.cxx:628
+msgid "Enable"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:438 src/modplug/gui/interface.cxx:582
+msgid "Depth"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:447 src/modplug/gui/interface.cxx:591
+#, fuzzy
+msgid "Delay"
+msgstr "Verzögerung: (ms)"
+
+#: src/modplug/gui/interface.cxx:456
+msgid "Bass Boost"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:510
+#, fuzzy
+msgid "Amount"
+msgstr "Über"
+
+#: src/modplug/gui/interface.cxx:519
+msgid "Range"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:528
+#, fuzzy
+msgid "Surround"
+msgstr "Surround-Echo"
+
+#: src/modplug/gui/interface.cxx:600
+msgid "Preamp"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:614
+msgid ""
+"Note:  Setting the preamp too high may cause\n"
+"clipping / distortion!"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:649
+msgid "Looping"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:663
+msgid "Don't loop"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:678
+msgid "Loop"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:694
+msgid "time(s)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:701
+msgid "Loop forever"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:709
+msgid "Effects"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:793
+#, fuzzy
+msgid "MOD Info"
+msgstr "MPEG-Info"
+
+#: src/modplug/gui/interface.cxx:817
+msgid ""
+"Filename:\n"
+"Title:\n"
+"Type:\n"
+"Length:\n"
+"Speed:\n"
+"Tempo:\n"
+"Samples:\n"
+"Instruments:\n"
+"Patterns:\n"
+"Channels:"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:866
+msgid "Samples"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:899
+msgid "Instruments"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:932
+msgid "Message"
+msgstr ""
+
+#: src/modplug/gui/main.cxx:43
+msgid "Modplug Input Plugin for Audacious ver"
+msgstr ""
+
+#: src/modplug/gui/main.cxx:44
+msgid ""
+"\n"
+"Modplug sound engine written by Olivier Lapicque.\n"
+"XMMS interface for Modplug by Kenton Varda.\n"
+"(c)2000 Olivier Lapicque and Kenton Varda.\n"
+"Updates and Maintainance by Konstanty Bialkowski.\n"
+"Ported to BMP by Theofilos Intzoglou."
+msgstr ""
+
+#: src/modplug/gui/main.cxx:45
+#, fuzzy
+msgid "About Modplug"
+msgstr "Über Echo-Plugin"
+
+#: src/modplug/gui/support.cxx:118 src/sid/xs_glade.c:90
+#: src/sid/xs_glade.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr ""
+
+#: src/modplug/gui/support.cxx:127
+#, c-format
+msgid "Error loading pixmap file: %s"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:145
+msgid "Musepack Decoder Plugin 1.2"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:146
+msgid ""
+"Plugin code by\n"
+"Benoit Amiaux\n"
+"Martin Spuler\n"
+"Kuniklo\n"
+"\n"
+"Get latest version at http://musepack.net\n"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:147
+msgid "Nevermind"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:165
+#, fuzzy
+msgid "Musepack Decoder Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/musepack/libmpc.cxx:175
+#, fuzzy
+msgid "General Settings"
+msgstr "Geräte"
+
+#: src/musepack/libmpc.cxx:182 src/wavpack/ui.cxx:490
+msgid "Enable Dynamic Bitrate Display"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:186 src/wavpack/ui.cxx:496
+#, fuzzy
+msgid "Plugin"
+msgstr "Echo-Plugin %s"
+
+#: src/musepack/libmpc.cxx:189
+#, fuzzy
+msgid "ReplayGain Settings"
+msgstr "ReplayGain"
+
+#: src/musepack/libmpc.cxx:196 src/vorbis/configure.c:172
+#: src/wavpack/ui.cxx:508
+msgid "Enable Clipping Prevention"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:201 src/vorbis/configure.c:177
+#: src/wavpack/ui.cxx:513
+msgid "Enable ReplayGain"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:206
+#, fuzzy
+msgid "ReplayGain Type"
+msgstr "ReplayGain"
+
+#: src/musepack/libmpc.cxx:214
+msgid "Use Track Gain"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:218
+msgid "Use Album Gain"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:490 src/sid/xmms-sid.glade:3755
+#: src/sid/xs_interface.c:1708 src/tta/libtta.c:322 src/wavpack/ui.cxx:150
+#, fuzzy
+msgid "Filename:"
+msgstr "Benutzername:"
+
+#: src/musepack/libmpc.cxx:505
+msgid "Musepack Tag"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:534
+#, fuzzy
+msgid "Track:"
+msgstr "Titelnummer:"
+
+#: src/musepack/libmpc.cxx:550 src/sid/xmms-sid.glade:1996
+#: src/sid/xs_interface.c:835 src/wavpack/ui.cxx:265
+msgid "Save"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:553 src/wavpack/ui.cxx:271
+#, fuzzy
+msgid "Remove Tag"
+msgstr "Gerät löschen"
+
+#: src/musepack/libmpc.cxx:561
+msgid "Musepack Info"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:594
+#, c-format
+msgid "Streamversion %d"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:595
+#, c-format
+msgid "Encoder: %s"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:596
+#, c-format
+msgid "Profile: %s"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:597
+#, c-format
+msgid "Average bitrate: %6.1f kbps"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:598
+#, c-format
+msgid "Samplerate: %d Hz"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:599
+#, fuzzy, c-format
+msgid "Channels: %d"
+msgstr "Kanäle:"
+
+#: src/musepack/libmpc.cxx:600
+#, fuzzy, c-format
+msgid "Length: %d:\\%.2d"
+msgstr "Länge:"
+
+#: src/musepack/libmpc.cxx:601
+#, fuzzy, c-format
+msgid "File size: %d Bytes"
+msgstr "Dateigrösse:"
+
+#: src/musepack/libmpc.cxx:602
+#, c-format
+msgid "Track Peak: %5u"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:603
+#, c-format
+msgid "Track Gain: %-+2.2f dB"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:604
+#, c-format
+msgid "Album Peak: %5u"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:605
+#, c-format
+msgid "Album Gain: %-+5.2f dB"
+msgstr ""
+
+#: src/null/null.c:61
+msgid "Null output plugin "
+msgstr "Null-Ausgabe-Plugin"
+
+#: src/null/null.c:62
+msgid ""
+" by Christian Birchinger <joker@netswarm.net>\n"
+"based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+msgstr ""
+
+#: src/null/null.c:65
+msgid "About Null Output"
+msgstr "Über Null-Ausgabe-Plugin"
+
+#: src/null/null.c:94
+#, fuzzy
+msgid "Null output preferences"
+msgstr "Null-Ausgabe-Plugin"
+
+#: src/null/null.c:103
+msgid "Run in real time"
+msgstr ""
+
+#: src/OSS4/about.c:42
+#, fuzzy
+msgid "About OSSv4 Driver"
+msgstr "Über OSS-Treiber"
+
+#: src/OSS4/about.c:43
+msgid ""
+"Audacious OSSv4 Driver\n"
+"\n"
+"Based on the OSSv3 Output plugin,\n"
+"Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
+#: src/OSS4/configure.c:120 src/OSS/configure.c:152
+#, c-format
+msgid "Default (%s)"
+msgstr "Standard (%s)"
+
+#: src/OSS4/configure.c:170 src/OSS/configure.c:202
+msgid "OSS Driver configuration"
+msgstr "OSS-Treiber-Konfiguration"
+
+#: src/OSS4/configure.c:208 src/OSS/configure.c:240 src/OSS/configure.c:281
+msgid "Use alternate device:"
+msgstr "Alternatives Gerät benutzen:"
+
+#: src/OSS4/configure.c:230 src/OSS/configure.c:303 src/sun/configure.c:248
+msgid "Devices"
+msgstr "Geräte"
+
+#: src/OSS4/configure.c:272 src/OSS/configure.c:344
+msgid "Mixer Settings:"
+msgstr ""
+
+#: src/OSS4/configure.c:278
+msgid "Save VMIX volume between sessions"
+msgstr ""
+
+#: src/OSS4/configure.c:284 src/OSS/configure.c:356 src/sun/configure.c:394
+msgid "Mixer"
+msgstr ""
+
+#: src/OSS/about.c:39
+msgid "About OSS Driver"
+msgstr "Über OSS-Treiber"
+
+#: src/OSS/about.c:40
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
+#: src/OSS/configure.c:350
+msgid "Volume controls Master not PCM"
+msgstr ""
+
+#: src/pulse_audio/pulse_audio.c:678
+#, fuzzy
+msgid "About Audacious PulseAudio Output Plugin"
+msgstr "CoreAudio-Ausgabe-Plugin"
+
+#: src/pulse_audio/pulse_audio.c:679
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
+#: src/scrobbler/configure.c:100
+msgid "<b>Services</b>"
+msgstr "<b>Dienste</b>"
+
+#: src/scrobbler/configure.c:122 src/scrobbler/configure.c:162
+msgid "Username:"
+msgstr "Benutzername:"
+
+#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:168
+msgid "Password:"
+msgstr "Passwort:"
+
+#: src/scrobbler/configure.c:146
+msgid "<b>Last.FM</b>"
+msgstr "<b>Last.FM</b>"
+
+#: src/scrobbler/configure.c:186
+msgid "<b>Gerpok</b>"
+msgstr ""
+
+#: src/scrobbler/gtkstuff.c:20
+msgid ""
+"Audacious AudioScrobbler Plugin\n"
+"\n"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
+"com>\n"
+msgstr ""
+
+#: src/scrobbler/gtkstuff.c:22
+msgid "About Scrobbler Plugin"
+msgstr "Über Scrobbler-Plugin"
+
+#: src/scrobbler/gtkstuff.c:35
+#, c-format
+msgid ""
+"There has been an error that may require your attention.\n"
+"\n"
+"Contents of server error:\n"
+"\n"
+"%s\n"
+msgstr ""
+
+#: src/scrobbler/gtkstuff.c:41
+#, fuzzy
+msgid "Scrobbler Error"
+msgstr "Scrobbler-Plugin"
+
+#: src/sid/xmms-sid.c:207
+msgid "Error initializing song-length database!\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:213
+msgid "Error initializing STIL database!\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:327
+msgid "Couldn't allocate memory for audio data buffer!\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:334
+msgid "Couldn't allocate memory for audio oversampling buffer!\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:409
+#, c-format
+msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:420
+#, c-format
+msgid "Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:466
+msgid "Oversampling rate-conversion pass failed.\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:770
+#, fuzzy
+msgid "Subtune Control"
+msgstr "Lautstärkesteuerung:"
+
+#: src/sid/xmms-sid.c:1001
+#, c-format
+msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:1008
+#, c-format
+msgid "Could not allocate sidFilename ('%s')\n"
+msgstr ""
+
+#: src/sid/xmms-sid.c:1017
+#, c-format
+msgid "Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:235
+#, fuzzy
+msgid "Audacious-SID Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/sid/xmms-sid.glade:70 src/sid/xs_interface.c:271
+#, fuzzy
+msgid "8-bit"
+msgstr "8 bit"
+
+#: src/sid/xmms-sid.glade:89 src/sid/xs_interface.c:278
+#, fuzzy
+msgid "16-bit"
+msgstr "16 bit"
+
+#: src/sid/xmms-sid.glade:110 src/sid/xs_interface.c:285
+#, fuzzy
+msgid "Resolution:"
+msgstr "Auflösung:"
+
+#: src/sid/xmms-sid.glade:195 src/sid/xs_interface.c:316
+msgid "Autopanning"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:216 src/sid/xs_interface.c:323
+#: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
+msgid "Channels:"
+msgstr "Kanäle:"
+
+#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:351
+msgid "64000"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:352
+msgid "96000"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:565 src/sid/xs_interface.c:373
+msgid "Samplerate:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:611 src/sid/xs_interface.c:390
+msgid "Use oversampling"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:637 src/sid/xs_interface.c:401
+msgid "Factor:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:681 src/sid/xs_interface.c:413
+msgid "Large factors require more CPU-power"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:715 src/sid/xs_interface.c:419
+msgid "Oversampling:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:751 src/sid/xs_interface.c:424
+msgid "Audio"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:801 src/sid/xs_interface.c:456
+msgid ""
+"If enabled, this option \"forces\" the emulation engine to use the selected "
+"clock speed/frequency. Otherwise the speed is determined from played file "
+"itself."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:803 src/sid/xs_interface.c:452
+msgid "Force speed"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:821 src/sid/xs_interface.c:462
+msgid ""
+"PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
+"Most of SID-tunes have been made for PAL computers."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:823 src/sid/xs_interface.c:458
+msgid "PAL (50 Hz)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:841 src/sid/xs_interface.c:470
+msgid ""
+"NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
+"that differ from PAL). It is mainly used in United States, Japan and certain "
+"other countries."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:843 src/sid/xs_interface.c:466
+msgid "NTSC (60 Hz)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:864 src/sid/xs_interface.c:474
+msgid "Clock speed:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:909 src/sid/xs_interface.c:495
+msgid ""
+"If enabled, this option \"forces\" the emulation engine to use the selected "
+"SID-chip model. Otherwise the preferred SID model is determined from the "
+"file (if PSIDv2NG type) or if not available, this setting is used."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:911 src/sid/xs_interface.c:491
+#, fuzzy
+msgid "Force model"
+msgstr "Titelnummer:"
+
+#: src/sid/xmms-sid.glade:929 src/sid/xs_interface.c:501
+msgid ""
+"MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
+"in few ways, having much fuller filter (which, due to design error, is never "
+"same between two different SID-chips) and has the \"volume adjustment bug\", "
+"which enables playing of digital samples."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:931 src/sid/xs_interface.c:497
+msgid "MOS 6581"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:950 src/sid/xs_interface.c:505
+msgid "MOS 8580"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:971 src/sid/xs_interface.c:512
+#, fuzzy
+msgid "SID model:"
+msgstr "Abspielmodus:"
+
+#: src/sid/xmms-sid.glade:1023 src/sid/xs_interface.c:533
+msgid ""
+"Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
+"cases, though."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1025 src/sid/xs_interface.c:529
+msgid "SIDPlay 1 (frame-based)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1044 src/sid/xs_interface.c:541
+msgid ""
+"Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
+"emulation."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1046 src/sid/xs_interface.c:537
+msgid "SIDPlay 2 (cycle-based)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1068 src/sid/xs_interface.c:545
+msgid "Emulation library selection:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1114 src/sid/xs_interface.c:562
+msgid "Real C64 (SIDPlay 2 only)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:569
+msgid "Bank switching"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1153 src/sid/xs_interface.c:576
+msgid "Transparent ROM"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1173 src/sid/xs_interface.c:583
+msgid "PlaySID environment"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1194 src/sid/xs_interface.c:590
+#, fuzzy
+msgid "Memory mode:"
+msgstr "Abspielmodus:"
+
+#: src/sid/xmms-sid.glade:1230 src/sid/xs_interface.c:595
+msgid "Emu#1"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1274 src/sid/xs_interface.c:622
+msgid ""
+"This setting can be used to enable libSIDPlay2's \"optimization mode\", "
+"which in downgrades the emulation from cycle-exact to something similar to "
+"frame-exact. The result is lower CPU usage, but worse accuracy."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1276 src/sid/xs_interface.c:618
+msgid "Optimization mode (faster, inaccurate)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1294 src/sid/xs_interface.c:628
+msgid ""
+"reSID is the software SID-chip simulator based on SID reverse-engineering, "
+"created by Dag Lem. It is probably the closest thing to real SID available "
+"as software-only emulation."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1296 src/sid/xs_interface.c:624
+msgid "reSID-emulation"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1314 src/sid/xs_interface.c:636
+msgid ""
+"HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
+"real SID-chip. Software can be used to control the HardSID and combined with "
+"software emulation of rest of C64 via libSIDPlay2 HardSID can be used to "
+"achieve \"near 100%\" similarity to real C64. For more information, see "
+"http://www.hardsid.com/"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1316 src/sid/xs_interface.c:632
+msgid "HardSID"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1337 src/sid/xs_interface.c:640
+msgid "SIDPlay 2 options:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1382 src/sid/xs_interface.c:661
+msgid ""
+"Fastest and also worst sounding sampling method, simply picks nearest "
+"neighbouring sample."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1384 src/sid/xs_interface.c:657
+msgid "Fast (nearest neighbour)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1402 src/sid/xs_interface.c:669
+msgid ""
+"Uses linear interpolation between samples, yielding higher audio quality "
+"with less sampling noise."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1404 src/sid/xs_interface.c:665
+msgid "Linear interpolation"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1444 src/sid/xs_interface.c:680
+msgid "Resampling (FIR)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1465 src/sid/xs_interface.c:687
+msgid "reSID sampling options:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1501 src/sid/xs_interface.c:692
+msgid "Emu#2"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1531 src/sid/xs_interface.c:708
+msgid ""
+"This option enables emulation of SID filter. The filter is an essential part "
+"of SID's sound capacity, but accurate emulation of it may require quite much "
+"CPU power. However, if filter emulation is disabled, tunes won't sound "
+"authentic at all if they utilize the filter."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1533 src/sid/xs_interface.c:704
+msgid "Emulate filters"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1590 src/sid/xs_interface.c:733
+msgid "FS"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1641 src/sid/xs_interface.c:750
+msgid "FM"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1692 src/sid/xs_interface.c:767
+msgid "FT"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1730 src/sid/xs_interface.c:778
+msgid "Reset values"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1759 src/sid/xs_interface.c:783
+msgid "SIDPlay1"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1828 src/sid/xs_interface.c:807
+msgid "6581 (reSID)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1854 src/sid/xs_interface.c:808
+msgid "8580 (reSID)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1880 src/sid/xs_interface.c:809
+msgid "6581R1 (alankila)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1906 src/sid/xs_interface.c:810
+msgid "6581R4 (alankila)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1975 src/sid/xs_interface.c:827
+msgid "Load"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2017 src/sid/xs_interface.c:843
+msgid "Import"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2038 src/sid/xs_interface.c:851
+msgid "Export"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2083 src/sid/xs_interface.c:865
+#, fuzzy
+msgid "Filter curve:"
+msgstr "Dateigrösse:"
+
+#: src/sid/xmms-sid.glade:2119 src/sid/xs_interface.c:870
+msgid "SIDPlay2"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2155 src/sid/xs_interface.c:876
+msgid "Filters"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2199 src/sid/xs_interface.c:903
+msgid ""
+"If enabled, the tune is played at least for the specified time, adding "
+"silence to the end if necessary."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2201 src/sid/xs_interface.c:899
+msgid "Play at least for specified time"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2226 src/sid/xmms-sid.glade:2397
+#: src/sid/xmms-sid.glade:3364 src/sid/xs_interface.c:910
+#: src/sid/xs_interface.c:964 src/sid/xs_interface.c:1276
+#, fuzzy
+msgid "Playtime:"
+msgstr "Abspielmodus:"
+
+#: src/sid/xmms-sid.glade:2305 src/sid/xs_interface.c:930
+msgid "Minimum playtime:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2350 src/sid/xs_interface.c:951
+msgid ""
+"If enabled, tune is played until specified duration is reached (aka maximum "
+"playtime)."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2352 src/sid/xs_interface.c:947
+msgid "Play for specified time maximum"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2371 src/sid/xs_interface.c:957
+msgid ""
+"If enabled, the maximum playtime is applied only if song/tune length is not "
+"known."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2373 src/sid/xs_interface.c:953
+msgid "Only when song length is unknown"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2476 src/sid/xs_interface.c:984
+msgid "Maximum playtime:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2521 src/sid/xs_interface.c:1005
+msgid ""
+"This option enables using of XSIDPLAY compatible song length database. "
+"(Refer to Audacious-SID documentation for more information)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2523 src/sid/xs_interface.c:1001
+msgid "Use XSIDPLAY-compatible database"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2548 src/sid/xs_interface.c:1012
+#, fuzzy
+msgid "DB-file:"
+msgstr "Gerät:"
+
+#: src/sid/xmms-sid.glade:2573 src/sid/xs_interface.c:1022
+msgid "Database path and filename"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2593 src/sid/xs_interface.c:1028
+msgid "Browse for song length-database file"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2620 src/sid/xs_interface.c:1030
+msgid "Song length database:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2656 src/sid/xs_interface.c:1035
+msgid "Songlength"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2700 src/sid/xs_interface.c:1062
+msgid ""
+"If this option is enabled (and the database & HVSC settings below are "
+"correctly set), Audacious-SID will use and display additional information "
+"from STIL database when HVSC SIDs are played."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2702 src/sid/xs_interface.c:1058
+msgid "Use STIL database"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2727 src/sid/xs_interface.c:1069
+#, fuzzy
+msgid "STIL file:"
+msgstr "Titel:"
+
+#: src/sid/xmms-sid.glade:2764 src/sid/xs_interface.c:1085
+msgid ""
+"Path and filename of STIL database file (STIL.txt), usually found from "
+"HVSC's DOCUMENTS-subdirectory."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2799 src/sid/xs_interface.c:1097
+msgid "Browse for STIL-database file"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2833 src/sid/xs_interface.c:1104
+msgid "HVSC path:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2870 src/sid/xs_interface.c:1120
+msgid ""
+"Path to base-directory of your High Voltage SID Collection (HVSC), for "
+"example /media/C64Music/"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2905 src/sid/xs_interface.c:1132
+msgid "Browse for HVSC path"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2935 src/sid/xs_interface.c:1134
+msgid "SID Tune Information List (STIL) database:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2980 src/sid/xs_interface.c:1155
+msgid ""
+"XMMS v1.2.5 and later support generic titlestring formatting (see XMMS "
+"preferences). This option can be enabled to override those generic titles "
+"with Audacious-SID specific ones. Formatting mnemonics are explained briefly "
+"below."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2982 src/sid/xs_interface.c:1151
+msgid "Override generic XMMS titles"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3032 src/sid/xs_interface.c:1172
+msgid ""
+"%% - '%' character\n"
+"%p - Performer/composer\n"
+"%t - Song name (title)\n"
+"%c - Copyright\n"
+"%s - File type\n"
+"%m - SID model"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3062 src/sid/xs_interface.c:1178
+msgid ""
+"%C - Speed/clock (PAL/NTSC)\n"
+"%n - Subtune\n"
+"%N - Number of subtunes\n"
+"%f - Filename\n"
+"%F - File path\n"
+"%e - File extension"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3108 src/sid/xs_interface.c:1184
+msgid "Song name/title format:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3188 src/sid/xs_interface.c:1216
+#, fuzzy
+msgid "No sub-tune control."
+msgstr "Lautstärkesteuerung:"
+
+#: src/sid/xmms-sid.glade:3190 src/sid/xs_interface.c:1212
+msgid "Disabled"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3208 src/sid/xs_interface.c:1224
+msgid ""
+"Seeking backwards/forwards selects previous/next sub-tune, similar to "
+"selector used in XMMS-SidPlay."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3210 src/sid/xs_interface.c:1220
+msgid "Seek back/forward changes sub-tune"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3229 src/sid/xs_interface.c:1232
+msgid ""
+"By pressing the seekbar a sub-tune control window pops up, in style of UADE "
+"(Unix Amiga Delitracker Emulator)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3231 src/sid/xs_interface.c:1228
+msgid "Pop-up via seekbar (UADE-style)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3250 src/sid/xs_interface.c:1240
+msgid ""
+"Seekbar works as a sub-tune selector (Best option if you have patched your "
+"XMMS with the song-position patch.)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3252 src/sid/xs_interface.c:1236
+msgid "Song-position patch"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3273 src/sid/xs_interface.c:1244
+#, fuzzy
+msgid "Sub-tune control:"
+msgstr "Lautstärkesteuerung:"
+
+#: src/sid/xmms-sid.glade:3319 src/sid/xs_interface.c:1261
+msgid "Go through all sub-tunes in file"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3339 src/sid/xs_interface.c:1266
+msgid "Only tunes with specified minimum length "
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3442 src/sid/xs_interface.c:1296
+msgid "Automatic sub-tune changes:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3487 src/sid/xs_interface.c:1317
+msgid ""
+"Determine if file is a SID-tune by checking the file contents. If NOT "
+"selected, filetype is determined by checking filename extension (.sid, ."
+"dat, ...)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3489 src/sid/xs_interface.c:1313
+msgid "Detect file by contents (slower)"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3509 src/sid/xs_interface.c:1319
+msgid "Miscellaneous options:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3582 src/sid/xs_interface.c:1343
+msgid "Accept and update changes"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3596 src/sid/xs_interface.c:1350
+msgid "Cancel any changes"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3620 src/sid/xs_interface.c:1651
+#, fuzzy
+msgid "Audacious-SID Fileinfo"
+msgstr "%s - Audacious"
+
+#: src/sid/xmms-sid.glade:3674 src/sid/xs_interface.c:1677
+msgid " < "
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3710 src/sid/xs_interface.c:1689
+msgid " > "
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3783 src/sid/xs_interface.c:1716
+msgid "Songname:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3811 src/sid/xs_interface.c:1724
+msgid "Composer:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3839 src/sid/xs_interface.c:1732
+#: src/vorbis/fileinfo.c:723
+msgid "Copyright:"
+msgstr "Copyright:"
+
+#: src/sid/xmms-sid.glade:3953 src/sid/xs_interface.c:1772
+#, fuzzy
+msgid "Song Information:"
+msgstr "Ort:"
+
+#: src/sid/xmms-sid.glade:4008 src/sid/xs_interface.c:1797
+msgid " "
+msgstr ""
+
+#: src/sid/xmms-sid.glade:4035 src/sid/xs_interface.c:1812
+msgid "Author:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:4133 src/sid/xs_interface.c:1844
+#, fuzzy
+msgid "Duration:"
+msgstr "Beschreibung:"
+
+#: src/sid/xmms-sid.glade:4227 src/sid/xs_interface.c:1877
+#, fuzzy
+msgid "Sub-tune Information:"
+msgstr "Ort:"
+
+#: src/sid/xmms-sid.glade:4281 src/sid/xs_interface.c:1951
+msgid "Select HVSC song length database"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:4322 src/sid/xs_interface.c:1989
+msgid "Select STIL-database "
+msgstr ""
+
+#: src/sid/xmms-sid.glade:4363 src/sid/xs_interface.c:2027
+msgid "Select HVSC location prefix"
+msgstr ""
+
+#: src/sid/xs_fileinfo.c:315
+msgid "General info"
+msgstr ""
+
+#: src/sid/xs_fileinfo.c:325
+#, c-format
+msgid "Tune #%i: "
+msgstr ""
+
+#: src/sid/xs_fileinfo.c:336
+#, c-format
+msgid "Tune #%i"
+msgstr ""
+
+#: src/sid/xs_length.c:113
+msgid "Error allocating new node. Fatal error.\n"
+msgstr ""
+
+#: src/sid/xs_length.c:128
+#, c-format
+msgid "'=' expected on column #%d.\n"
+msgstr ""
+
+#: src/sid/xs_length.c:153
+msgid "Could not allocate memory for node.\n"
+msgstr ""
+
+#: src/sid/xs_length.c:204
+#, c-format
+msgid "Could not open SongLengthDB '%s'\n"
+msgstr ""
+
+#: src/sid/xs_length.c:225
+#, c-format
+msgid "Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n"
+msgstr ""
+
+#: src/sid/xs_length.c:232
+#, c-format
+msgid "Invalid entry in SongLengthDB file '%s' line #%d!\n"
+msgstr ""
+
+#: src/sid/xs_length.c:237
+#, c-format
+msgid "Invalid line in SongLengthDB file '%s' line #%d\n"
+msgstr ""
+
+#: src/sid/xs_length.c:399
+#, c-format
+msgid "Not a PSID or RSID file '%s'\n"
+msgstr ""
+
+#: src/sid/xs_length.c:418
+#, c-format
+msgid "Error reading SID file header from '%s'\n"
+msgstr ""
+
+#: src/sid/xs_length.c:437
+#, c-format
+msgid "Error allocating temp data buffer for file '%s'\n"
+msgstr ""
+
+#: src/sid/xs_sidplay1.cc:96
+msgid "[SIDPlay1] Could not initialize emulation engine.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay1.cc:103
+msgid "[SIDPlay1] Endianess verification failed.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay1.cc:238
+msgid "[SIDPlay1] Emulator engine configuration failed!\n"
+msgstr ""
+
+#: src/sid/xs_sidplay1.cc:245
+msgid "[SIDPlay1] Could not initialize SIDTune object.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay1.cc:291
+msgid ""
+"[SIDPlay1] SID-tune struct pointer was NULL. This should not happen, report "
+"to XMMS-SID author.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay1.cc:296
+msgid ""
+"[SIDPlay1] SID-tune status check failed. This should not happen, report to "
+"XMMS-SID author.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:101
+msgid "[SIDPlay2] Could not initialize emulation engine.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:224
+msgid "reSID->create() failed.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:230
+#, c-format
+msgid "reSID->filter(%d) failed.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:238
+#, c-format
+msgid "reSID->sampling(%d) failed.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:248
+msgid "reSID->filter(NULL) failed.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:262
+msgid "hardSID->create() failed.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:268
+#, c-format
+msgid "hardSID->filter(%d) failed.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:276
+msgid "[SIDPlay2] Could not initialize SIDBuilder object.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:290
+#, c-format
+msgid "[SIDPlay2] Invalid clockSpeed=%d, falling back to PAL.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:314
+#, c-format
+msgid "Invalid sid2OptLevel=%d, falling back to %d.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:338
+msgid "[SIDPlay2] Emulator engine configuration failed!\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:345
+msgid "[SIDPlay2] Could not initialize SIDTune object.\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:396
+msgid "[SIDPlay2] currTune->selectSong() failed\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:401
+msgid "[SIDPlay2] currEng->load() failed\n"
+msgstr ""
+
+#: src/sid/xs_stil.c:44
+msgid "SubTune pointer structure realloc failed.\n"
+msgstr ""
+
+#: src/sid/xs_stil.c:61
+msgid "SubTune structure malloc failed!\n"
+msgstr ""
+
+#: src/sid/xs_stil.c:168
+#, c-format
+msgid "Could not open STILDB '%s'\n"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:163
+#, fuzzy
+msgid "About SndStretch"
+msgstr "Über OSS-Treiber"
+
+#: src/sndstretch/sndstretch_xmms.c:323
+#, fuzzy
+msgid "Volume corr."
+msgstr "Lautstärkesteuerung:"
+
+#: src/sndstretch/sndstretch_xmms.c:324
+msgid "Short Overlap"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:378
+msgid "Speed"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:379
+#, fuzzy
+msgid "Pitch"
+msgstr "Pfad:"
+
+#: src/sndstretch/sndstretch_xmms.c:380
+msgid "Scale"
+msgstr ""
+
+#: src/sndstretch/sndstretch_xmms.c:400
+#, fuzzy
+msgid "SndStretch - Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/song_change/song_change.c:349
+msgid "Commands"
+msgstr ""
+
+#: src/song_change/song_change.c:356
+msgid "Command to run when Audacious starts a new song."
+msgstr ""
+
+#: src/song_change/song_change.c:365 src/song_change/song_change.c:387
+#: src/song_change/song_change.c:408 src/song_change/song_change.c:429
+msgid "Command:"
+msgstr "Befehl:"
+
+#: src/song_change/song_change.c:379
+msgid "Command to run toward the end of a song."
+msgstr ""
+
+#: src/song_change/song_change.c:399
+msgid "Command to run when Audacious reaches the end of the playlist."
+msgstr ""
+
+#: src/song_change/song_change.c:420
+msgid ""
+"Command to run when title changes for a song (i.e. network streams titles)."
+msgstr ""
+
+#: src/song_change/song_change.c:441
+#, c-format
+msgid ""
+"You can use the following format strings which\n"
+"will be substituted before calling the command\n"
+"(not all are useful for the end-of-playlist command).\n"
+"\n"
+"%%F: Frequency (in hertz)\n"
+"%%c: Number of channels\n"
+"%%f: filename (full path)\n"
+"%%l: length (in milliseconds)\n"
+"%%n or %%s: Song name\n"
+"%%r: Rate (in bits per second)\n"
+"%%t: Playlist position (%%02d)\n"
+"%%p: Currently playing (1 or 0)"
+msgstr ""
+
+#: src/song_change/song_change.c:466
+msgid ""
+"<span size='small'>Parameters passed to the shell should be encapsulated in "
+"quotes. Doing otherwise is a security risk.</span>"
+msgstr ""
+
+#: src/spectrum/spectrum.c:96
+msgid "Spectrum Analyzer"
+msgstr ""
+
+#: src/statusicon/gtktrayicon-x11.c:133
 #, fuzzy
 msgid "Orientation"
 msgstr "Organisation:"
 
-#: src/statusicon/gtktrayicon-x11.c:98
+#: src/statusicon/gtktrayicon-x11.c:134
 msgid "The orientation of the tray"
 msgstr ""
 
-#: src/statusicon/si_ui.c:343
+#: src/statusicon/si_ui.c:571
 #, fuzzy
 msgid "About Status Icon Plugin"
 msgstr "Über Echo-Plugin"
 
-#: src/statusicon/si_ui.c:345
+#: src/statusicon/si_ui.c:573
 msgid ""
 "\n"
 "written by Giacomo Lozito < james@develia.org >\n"
@@ -3688,8 +4546,1201 @@ msgid ""
 "the system tray area of the window manager.\n"
 msgstr ""
 
-#~ msgid "Stereo (if available)"
-#~ msgstr "Stereo (falls vorhanden)"
+#: src/statusicon/si_ui.c:645
+#, fuzzy
+msgid "Status Icon Plugin - Preferences"
+msgstr "Über Echo-Plugin"
+
+#: src/statusicon/si_ui.c:656
+msgid "Right-Click Menu"
+msgstr ""
+
+#: src/statusicon/si_ui.c:661
+msgid "Audacious standard menu"
+msgstr ""
+
+#: src/statusicon/si_ui.c:666
+msgid "Small playback menu #1"
+msgstr ""
+
+#: src/statusicon/si_ui.c:671
+msgid "Small playback menu #2"
+msgstr ""
+
+#: src/statusicon/si_ui.c:694
+msgid "Mouse Scroll Action"
+msgstr ""
+
+#: src/statusicon/si_ui.c:699
+msgid "Change volume"
+msgstr ""
+
+#: src/statusicon/si_ui.c:704
+msgid "Change playing song"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:29
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin 1999."
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:55
+msgid "About Extra Stereo Plugin"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:96
+msgid "Configure Extra Stereo"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:98
+msgid "Effect intensity:"
+msgstr "Effektstärke"
+
+#: src/sun/about.c:34
+msgid "About the Sun Driver"
+msgstr ""
+
+#: src/sun/about.c:35
+msgid ""
+"XMMS BSD Sun Driver\n"
+"\n"
+"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+"Maintainer: <vedge at csoft.org>.\n"
+msgstr ""
+
+#: src/sun/configure.c:201
+msgid "Audio control device:"
+msgstr ""
+
+#: src/sun/configure.c:350
+msgid "Volume controls device:"
+msgstr ""
+
+#: src/sun/configure.c:363
+msgid "XMMS uses mixer exclusively."
+msgstr ""
+
+#: src/sun/configure.c:538
+msgid "Sun driver configuration"
+msgstr ""
+
+#: src/timidity/src/interface.c:56
+msgid "TiMidity Configuration"
+msgstr ""
+
+#: src/timidity/src/interface.c:93
+msgid "11000 Hz"
+msgstr "11000 Hz"
+
+#: src/timidity/src/interface.c:101
+msgid "22000 Hz"
+msgstr "22000 Hz"
+
+#: src/timidity/src/interface.c:109
+msgid "44100 Hz"
+msgstr "44100 Hz"
+
+#: src/timidity/src/interface.c:117
+msgid "Sample Width"
+msgstr ""
+
+#: src/timidity/src/interface.c:183
+msgid "TiMidity Configuration File"
+msgstr ""
+
+#: src/timidity/src/xmms-timidity.c:134
+msgid ""
+"TiMidity Plugin\n"
+"http://libtimidity.sourceforge.net\n"
+"by Konstantin Korikov"
+msgstr ""
+
+#: src/timidity/src/xmms-timidity.c:135
+#, c-format
+msgid "TiMidity Plugin %s"
+msgstr ""
+
+#: src/timidity/src/xmms-timidity.c:352
+msgid "Couldn't load MIDI file"
+msgstr ""
+
+#: src/tonegen/tonegen.c:56
+msgid "About Tone Generator"
+msgstr "Über Ton-Generator"
+
+#: src/tonegen/tonegen.c:58
+msgid ""
+"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+msgstr ""
+
+#: src/tonegen/tonegen.c:170
+#, c-format
+msgid "%s %.1f Hz"
+msgstr ""
+
+#: src/tonegen/tonegen.c:170
+msgid "Tone Generator: "
+msgstr "Ton-Generator:"
+
+#: src/tta/libtta.c:148
+msgid "Can't open file\n"
+msgstr ""
+
+#: src/tta/libtta.c:151
+msgid "Not supported file format\n"
+msgstr ""
+
+#: src/tta/libtta.c:154
+msgid "File is corrupted\n"
+msgstr ""
+
+#: src/tta/libtta.c:157
+msgid "Can't read from file\n"
+msgstr ""
+
+#: src/tta/libtta.c:160
+msgid "Insufficient memory available\n"
+msgstr ""
+
+#: src/tta/libtta.c:163
+#, fuzzy
+msgid "Output plugin error\n"
+msgstr "Null-Ausgabe-Plugin"
+
+#: src/tta/libtta.c:166
+msgid "Unknown error\n"
+msgstr ""
+
+#: src/tta/libtta.c:170
+msgid "TTA Decoder Error"
+msgstr ""
+
+#: src/tta/libtta.c:279
+#, fuzzy
+msgid "TTA input plugin "
+msgstr "Null-Ausgabe-Plugin"
+
+#: src/tta/libtta.c:280
+msgid ""
+" for BMP\n"
+"Copyright (c) 2004 True Audio Software\n"
+msgstr ""
+
+#: src/tta/libtta.c:283
+#, fuzzy
+msgid "About True Audio Plugin"
+msgstr "Über Ogg-Vorbis-Audio-Plugin"
+
+#: src/tta/libtta.c:334
+#, fuzzy
+msgid "ID3 Tag:"
+msgstr "ID3-Tag"
+
+#: src/vorbis/configure.c:117
+msgid "Ogg Vorbis Audio Plugin Configuration"
+msgstr ""
+
+#: src/vorbis/configure.c:129
+msgid "Ogg Vorbis Tags:"
+msgstr ""
+
+#: src/vorbis/configure.c:150
+msgid "Title format:"
+msgstr ""
+
+#: src/vorbis/configure.c:164 src/wavpack/ui.cxx:500
+msgid "ReplayGain Settings:"
+msgstr ""
+
+#: src/vorbis/configure.c:182 src/wavpack/ui.cxx:518
+msgid "ReplayGain Type:"
+msgstr ""
+
+#: src/vorbis/configure.c:193 src/wavpack/ui.cxx:529
+msgid "use Track Gain/Peak"
+msgstr ""
+
+#: src/vorbis/configure.c:203 src/wavpack/ui.cxx:537
+msgid "use Album Gain/Peak"
+msgstr ""
+
+#: src/vorbis/configure.c:215
+msgid "Enable 6dB Boost + Hard Limiting"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:83
+msgid "Blues"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:83
+msgid "Classic Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:83
+msgid "Country"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:83
+msgid "Dance"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:84
+msgid "Disco"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:84
+msgid "Funk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:84
+msgid "Grunge"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:84
+msgid "Hip-Hop"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:85
+msgid "Jazz"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:85
+msgid "Metal"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:85
+msgid "New Age"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:85
+msgid "Oldies"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:86
+msgid "Other"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:86
+msgid "Pop"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:86
+msgid "R&B"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:86
+msgid "Rap"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:86
+msgid "Reggae"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:87
+msgid "Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:87
+msgid "Techno"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:87
+msgid "Industrial"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:87
+msgid "Alternative"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:88
+msgid "Ska"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:88
+msgid "Death Metal"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:88
+msgid "Pranks"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:88
+msgid "Soundtrack"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:89
+msgid "Euro-Techno"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:89
+msgid "Ambient"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:89
+msgid "Trip-Hop"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:89
+msgid "Vocal"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:90
+msgid "Jazz+Funk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:90
+msgid "Fusion"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:90
+msgid "Trance"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:90
+msgid "Classical"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:91
+msgid "Instrumental"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:91
+msgid "Acid"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:91
+msgid "House"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:91
+msgid "Game"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:92
+msgid "Sound Clip"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:92
+msgid "Gospel"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:92
+msgid "Noise"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:92
+msgid "AlternRock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:93
+msgid "Bass"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:93
+msgid "Soul"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:93
+msgid "Punk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:93
+msgid "Space"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:94
+msgid "Meditative"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:94
+msgid "Instrumental Pop"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:95
+msgid "Instrumental Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:95
+msgid "Ethnic"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:95
+msgid "Gothic"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:96
+msgid "Darkwave"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:96
+msgid "Techno-Industrial"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:96
+msgid "Electronic"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:97
+msgid "Pop-Folk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:97
+msgid "Eurodance"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:97
+msgid "Dream"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:98
+msgid "Southern Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:98
+msgid "Comedy"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:98
+msgid "Cult"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:99
+msgid "Gangsta Rap"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:99
+msgid "Top 40"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:99
+msgid "Christian Rap"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:100
+msgid "Pop/Funk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:100
+msgid "Jungle"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:100
+msgid "Native American"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:101
+msgid "Cabaret"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:101
+msgid "New Wave"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:101
+msgid "Psychedelic"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:101
+msgid "Rave"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:102
+msgid "Showtunes"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:102
+msgid "Trailer"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:102
+msgid "Lo-Fi"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:102
+msgid "Tribal"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:103
+msgid "Acid Punk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:103
+msgid "Acid Jazz"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:103
+msgid "Polka"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:103
+msgid "Retro"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:104
+msgid "Musical"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:104
+msgid "Rock & Roll"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:104
+msgid "Hard Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:104
+msgid "Folk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:105
+msgid "Folk/Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:105
+msgid "National Folk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:105
+msgid "Swing"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:106
+msgid "Fast-Fusion"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:106
+msgid "Bebob"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:106
+msgid "Latin"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:106
+msgid "Revival"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:107
+msgid "Celtic"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:107
+msgid "Bluegrass"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:107
+msgid "Avantgarde"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:108
+msgid "Gothic Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:108
+msgid "Progressive Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:109
+msgid "Psychedelic Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:109
+msgid "Symphonic Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:109
+msgid "Slow Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:110
+msgid "Big Band"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:110
+msgid "Chorus"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:110
+msgid "Easy Listening"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:111
+msgid "Acoustic"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:111
+msgid "Humour"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:111
+msgid "Speech"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:111
+msgid "Chanson"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:112
+msgid "Opera"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:112
+msgid "Chamber Music"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:112
+msgid "Sonata"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:112
+msgid "Symphony"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:113
+msgid "Booty Bass"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:113
+msgid "Primus"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:113
+msgid "Porn Groove"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:114
+msgid "Satire"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:114
+msgid "Slow Jam"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:114
+msgid "Club"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:114
+msgid "Tango"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:115
+msgid "Samba"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:115
+msgid "Folklore"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:115
+msgid "Ballad"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:115
+msgid "Power Ballad"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:116
+msgid "Rhythmic Soul"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:116
+msgid "Freestyle"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:116
+msgid "Duet"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:117
+msgid "Punk Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:117
+msgid "Drum Solo"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:117
+msgid "A Cappella"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:118
+msgid "Euro-House"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:118
+msgid "Dance Hall"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:118
+msgid "Goa"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:119
+msgid "Drum & Bass"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:119
+msgid "Club-House"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:119
+msgid "Hardcore"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:120
+msgid "Terror"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:120
+msgid "Indie"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:120
+msgid "BritPop"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:120
+msgid "Negerpunk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:121
+msgid "Polsk Punk"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:121
+msgid "Beat"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:121
+msgid "Christian Gangsta Rap"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:122
+msgid "Heavy Metal"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:122
+msgid "Black Metal"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:122
+msgid "Crossover"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:123
+msgid "Contemporary Christian"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:123
+msgid "Christian Rock"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:124
+msgid "Merengue"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:124
+msgid "Salsa"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:124
+msgid "Thrash Metal"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:125
+msgid "Anime"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:125
+msgid "JPop"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:125
+msgid "Synthpop"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:210
+#, c-format
+msgid ""
+"An error occured:\n"
+"%s"
+msgstr ""
+"Es ist ein Fehler aufgetreten:\n"
+"%s"
+
+#: src/vorbis/fileinfo.c:212
+msgid "Error!"
+msgstr "Fehler!"
+
+#: src/vorbis/fileinfo.c:244
+msgid "Failed to modify tag (open)"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:297
+msgid "Failed to modify tag (close)"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:324 src/vorbis/fileinfo.c:333
+msgid "Failed to modify tag"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:577
+msgid " Ogg Vorbis Tag "
+msgstr ""
+
+#: src/vorbis/fileinfo.c:629
+msgid "Date:"
+msgstr "Datum:"
+
+#: src/vorbis/fileinfo.c:671
+msgid "Description:"
+msgstr "Beschreibung:"
+
+#: src/vorbis/fileinfo.c:681
+msgid "Location:"
+msgstr "Ort:"
+
+#: src/vorbis/fileinfo.c:691
+msgid "Version:"
+msgstr "Version:"
+
+#: src/vorbis/fileinfo.c:702
+msgid "ISRC number:"
+msgstr "ISRC-Nummer:"
+
+#: src/vorbis/fileinfo.c:713
+msgid "Organization:"
+msgstr "Organisation:"
+
+#: src/vorbis/fileinfo.c:760
+msgid " Ogg Vorbis ReplayGain "
+msgstr ""
+
+#: src/vorbis/fileinfo.c:766
+msgid "Track gain:"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:776
+msgid "Track peak:"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:787
+msgid "Album gain:"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:797
+msgid "Album peak:"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:826
+msgid " Ogg Vorbis Info "
+msgstr " Ogg-Vorbis-Informationen"
+
+#: src/vorbis/fileinfo.c:841 src/vorbis/fileinfo.c:918
+msgid "Bit rate:"
+msgstr "Bitrate:"
+
+#: src/vorbis/fileinfo.c:854 src/vorbis/fileinfo.c:921
+msgid "Sample rate:"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:880 src/vorbis/fileinfo.c:927
+msgid "Length:"
+msgstr "Länge:"
+
+#: src/vorbis/fileinfo.c:893 src/vorbis/fileinfo.c:930
+msgid "File size:"
+msgstr "Dateigrösse:"
+
+#: src/vorbis/fileinfo.c:919 src/vorbis/fileinfo.c:922
+#: src/vorbis/fileinfo.c:925 src/vorbis/fileinfo.c:928
+#: src/vorbis/fileinfo.c:931
+msgid "N/A"
+msgstr "K/A"
+
+#: src/vorbis/fileinfo.c:961
+#, c-format
+msgid "%d KBit/s (nominal)"
+msgstr ""
+
+#: src/vorbis/fileinfo.c:963
+#, c-format
+msgid "%d"
+msgstr "%d"
+
+#: src/vorbis/fileinfo.c:965
+#, c-format
+msgid "%d:%.2d"
+msgstr "%d:%.2d"
+
+#: src/vorbis/fileinfo.c:967
+#, c-format
+msgid "%d Bytes"
+msgstr "%d Bytes"
+
+#: src/vorbis/fileinfo.c:1024
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/vorbis/vorbis.c:862
+msgid "About Ogg Vorbis Audio Plugin"
+msgstr "Über Ogg-Vorbis-Audio-Plugin"
+
+#: src/vorbis/vorbis.c:868
+msgid ""
+"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
+"\n"
+"Original code by\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Contributions from\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"\n"
+"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+msgstr ""
+
+#: src/vtx/about.c:22
+msgid "About Vortex Player"
+msgstr ""
+
+#: src/vtx/about.c:24
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
+"ru>\n"
+"\n"
+"Music in vtx format can be found at http://vtx.microfor.ru/music.htm\n"
+"and other AY/YM music sites.\n"
+"\n"
+"Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+
+#: src/wavpack/ui.cxx:52
+#, fuzzy, c-format
+msgid "Wavpack Decoder Plugin %s"
+msgstr "Echo-Plugin %s"
+
+#: src/wavpack/ui.cxx:53
+msgid ""
+"Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan\n"
+"Visit the Wavpack site at http://www.wavpack.com/\n"
+msgstr ""
+
+#: src/wavpack/ui.cxx:163
+msgid "Ape2 Tag"
+msgstr ""
+
+#: src/wavpack/ui.cxx:286
+msgid "Wavpack Info:"
+msgstr ""
+
+#: src/wavpack/ui.cxx:379
+#, fuzzy, c-format
+msgid "version %d"
+msgstr "Version:"
+
+#: src/wavpack/ui.cxx:380
+#, c-format
+msgid "average bitrate: %6.1f kbps"
+msgstr ""
+
+#: src/wavpack/ui.cxx:381
+#, c-format
+msgid "samplerate: %d Hz"
+msgstr ""
+
+#: src/wavpack/ui.cxx:382
+#, c-format
+msgid "bits per sample: %d"
+msgstr ""
+
+#: src/wavpack/ui.cxx:383
+#, fuzzy, c-format
+msgid "channels: %d"
+msgstr "Kanäle:"
+
+#: src/wavpack/ui.cxx:384
+#, fuzzy, c-format
+msgid "length: %d:%.2d"
+msgstr "%d:%.2d"
+
+#: src/wavpack/ui.cxx:385
+#, fuzzy, c-format
+msgid "file size: %d Bytes"
+msgstr "Dateigrösse:"
+
+#: src/wavpack/ui.cxx:392
+#, fuzzy
+msgid "Title Peak: ?"
+msgstr "Titel:"
+
+#: src/wavpack/ui.cxx:393
+#, fuzzy
+msgid "Album Peak: ?"
+msgstr "Album:"
+
+#: src/wavpack/ui.cxx:394
+#, fuzzy
+msgid "Title Gain: ?"
+msgstr "Titel:"
+
+#: src/wavpack/ui.cxx:395
+#, fuzzy
+msgid "Album Gain: ?"
+msgstr "Album:"
+
+#: src/wavpack/ui.cxx:469
+#, fuzzy
+msgid "Wavpack Configuration"
+msgstr "CD-Audio-Player-Konfiguration"
+
+#: src/wavpack/ui.cxx:482
+msgid "General Plugin Settings:"
+msgstr ""
+
+#: src/wav/wav-sndfile.c:549
+msgid "About sndfile WAV support"
+msgstr ""
+
+#: src/wav/wav-sndfile.c:550
+msgid ""
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the xmms_sndfile plugin which is:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"This program is free software ; you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation ; either version 2 of the License, or \n"
+"(at your option) any later version. \n"
+" \n"
+"This program is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+"See the GNU General Public License for more details. \n"
+"\n"
+"You should have received a copy of the GNU General Public \n"
+"License along with this program ; if not, write to \n"
+"the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA"
+msgstr ""
+
+#: src/wav/wav-sndfile.c:574
+msgid "sndfile WAV plugin"
+msgstr ""
+
+#: src/wma/wma.c:143
+#, c-format
+msgid "About %s"
+msgstr "Über %s"
+
+#~ msgid "OSS Output Plugin"
+#~ msgstr "OSS-Ausgabe-Plugin"
+
+#~ msgid "Drive %d"
+#~ msgstr "Laufwerk %d"
+
+#~ msgid ""
+#~ "Failed to open device %s\n"
+#~ "Error: %s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Fehler beim Öffnen des Geräts %s: %s\n"
+#~ "\n"
+
+#~ msgid "Device:"
+#~ msgstr "Gerät:"
+
+#~ msgid "_Device:"
+#~ msgstr "_Gerät:"
+
+#~ msgid "Dir_ectory:"
+#~ msgstr "V_erzeichnis:"
+
+#~ msgid "Analog"
+#~ msgstr "Analog"
+
+#~ msgid "CDROM drive"
+#~ msgstr "CD-ROM-Gerät"
+
+#~ msgid "Check drive..."
+#~ msgstr "Gerät prüfen…"
+
+#~ msgid "Remove drive"
+#~ msgstr "Gerät löschen"
+
+#~ msgid "Add drive"
+#~ msgstr "Gerät hinzufügen"
+
+#~ msgid "Device"
+#~ msgstr "Gerät"
+
+#~ msgid "CDDB:"
+#~ msgstr "CDDB:"
+
+#~ msgid "Use CDDB"
+#~ msgstr "CDDB benutzen"
+
+#~ msgid "Get server list"
+#~ msgstr "Serverliste holen"
+
+#~ msgid "Show network window"
+#~ msgstr "Netzwerkfenster anzeigen"
+
+#~ msgid "NSF/NSFE"
+#~ msgstr "NSF/NSFE"
+
+#~ msgid "Disk Writer Plugin %s"
+#~ msgstr "Disk-Writer-Plugin %s"
+
+#~ msgid "Tone Generator %s"
+#~ msgstr "Ton-Generator %s"
+
+#~ msgid "Ogg Vorbis Audio Plugin"
+#~ msgstr "Ogg-Vorbis-Audio-Plugin"
+
+#, fuzzy
+#~ msgid "ALSA %s output plugin"
+#~ msgstr "Null-Ausgabe-Plugin"
+
+#, fuzzy
+#~ msgid "Album mode"
+#~ msgstr "Album:"
+
+#, fuzzy
+#~ msgid "Without ReplayGain"
+#~ msgstr "ReplayGain"
+
+#, fuzzy
+#~ msgid "With ReplayGain"
+#~ msgstr "ReplayGain"
+
+#, fuzzy
+#~ msgid "none"
+#~ msgstr "Kein"
+
+#, fuzzy
+#~ msgid "16 bps"
+#~ msgstr "16 bit"
+
+#, fuzzy
+#~ msgid "Filesize: %lld B"
+#~ msgstr "Dateigrösse:"
 
 #~ msgid "1:1 (44 kHz)"
 #~ msgstr "1:1 (44 kHz)"
@@ -3712,9 +5763,6 @@ msgstr ""
 #~ msgid "Save stream to disk"
 #~ msgstr "Stream auf Festplatte speichern"
 
-#~ msgid "Path:"
-#~ msgstr "Pfad:"
-
 #~ msgid "%d KBit/s"
 #~ msgstr "%d KBit/s"
 
@@ -3733,14 +5781,8 @@ msgstr ""
 #~ msgid "Mode:"
 #~ msgstr "Modus:"
 
-#~ msgid "Error Protection:"
-#~ msgstr "Fehlerschutz:"
-
 #~ msgid "Original:"
 #~ msgstr "Original:"
-
-#~ msgid "Year:"
-#~ msgstr "Jahr:"
 
 #~ msgid "%s"
 #~ msgstr "%s"
