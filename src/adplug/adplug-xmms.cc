@@ -599,7 +599,7 @@ adplug_info_box (char *filename)
     gchar tmpstr[10];
 
     {
-      const gchar *rowstr[] = { _("#"), _("Instrument name") };
+      const gchar *rowstr[] = { "#", _("Instrument name") };
       instnames = GTK_CLIST (gtk_clist_new_with_titles (2, (gchar **)rowstr));
     }
     gtk_clist_set_column_justification (instnames, 0, GTK_JUSTIFY_RIGHT);

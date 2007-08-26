@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins svn-1563\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-08-26 14:05+0200\n"
+"POT-Creation-Date: 2007-08-26 16:04+0200\n"
 "PO-Revision-Date: 2007-02-27 23:34+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -2073,8 +2073,8 @@ msgid "Increase reverb"
 msgstr ""
 
 #: src/console/Audacious_Config.cxx:264
+#, fuzzy
 msgid ""
-"* Default song length *\n"
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
