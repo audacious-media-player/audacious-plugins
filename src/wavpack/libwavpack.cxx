@@ -34,6 +34,7 @@ extern "C" {
 
 static void wv_load_config();
 static int wv_is_our_fd(gchar *filename, VFSFile *file);
+static Tuple *wv_probe_for_tuple(gchar *filename, VFSFile *file);
 static void wv_play(InputPlayback *);
 static void wv_stop(InputPlayback *);
 static void wv_pause(InputPlayback *, short);
@@ -90,6 +91,8 @@ InputPlugin mod = {
     NULL,
     wv_is_our_fd,
     (gchar **)wv_fmts,
+    NULL,			// high precision seeking
+    wv_probe_for_tuple		// probe for a tuple
 };
 
 int32_t read_bytes (void *id, void *data, int32_t bcount)
@@ -441,6 +444,20 @@ wv_get_song_tuple(char *filename)
         printf("wavpack: Error opening file: \"%s\"\n", filename);
         return NULL;
     }
+
+    ti = tuple_from_WavpackContext(filename, d.ctx);
+
+    return ti;
+}
+
+static Tuple *
+wv_probe_for_tuple(gchar *filename, VFSFile *file)
+{
+    Tuple *ti;
+    WavpackDecoder d(&mod);
+
+    if (!d.attach(filename, file))
+        return NULL;
 
     ti = tuple_from_WavpackContext(filename, d.ctx);
 
