@@ -26,7 +26,6 @@
 #define CDDA_DAE_FRAMES				8
 #define CDDA_DEFAULT_CDDB_SERVER	"freedb.org"
 #define CDDA_DEFAULT_CDDB_PORT		888
-#define MENU_ITEM_TEXT				"Add CD"
 
 
 typedef struct {

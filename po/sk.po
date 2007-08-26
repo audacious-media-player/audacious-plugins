@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-08-25 22:54+0200\n"
+"POT-Creation-Date: 2007-08-26 14:05+0200\n"
 "PO-Revision-Date: 2007-03-14 02:18+0100\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: \n"
@@ -148,28 +148,6 @@ msgstr ""
 
 #: src/adplug/adplug-xmms.cc:345
 msgid "Frequency"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:347 src/sid/xmms-sid.glade:326
-#: src/sid/xs_interface.c:347
-msgid "11025"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:354 src/sid/xmms-sid.glade:352
-#: src/sid/xs_interface.c:348
-#, fuzzy
-msgid "22050"
-msgstr "22000 Hz"
-
-#: src/adplug/adplug-xmms.cc:361 src/sid/xmms-sid.glade:378
-#: src/sid/xs_interface.c:349
-#, fuzzy
-msgid "44100"
-msgstr "44100 Hz"
-
-#: src/adplug/adplug-xmms.cc:368 src/sid/xmms-sid.glade:404
-#: src/sid/xs_interface.c:350
-msgid "48000"
 msgstr ""
 
 #: src/adplug/adplug-xmms.cc:381 src/adplug/adplug-xmms.cc:585
@@ -354,7 +332,7 @@ msgid "This is your wakeup call."
 msgstr ""
 
 #: src/alarm/interface.c:126 src/alarm/interface.c:1391 src/alsa/about.c:46
-#: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:205
+#: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:206
 #: src/filewriter/filewriter.c:199 src/flacng/plugin.c:743
 #: src/modplug/gui/interface.cxx:725 src/pulse_audio/pulse_audio.c:694
 #: src/scrobbler/gtkstuff.c:43 src/sid/xmms-sid.glade:3585
@@ -1955,7 +1933,11 @@ msgstr "Blur Scope: Výber farby"
 msgid "Options:"
 msgstr "Nastavenia:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:200
+#: src/cdaudio-ng/cdaudio-ng.c:141
+msgid "Add CD"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:201
 #, c-format
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
@@ -1969,12 +1951,12 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:205
+#: src/cdaudio-ng/cdaudio-ng.c:206
 #, fuzzy
 msgid "About CD Audio Plugin NG"
 msgstr "O module LIRC pre Audacious"
 
-#: src/cdaudio-ng/cdaudio-ng.c:800
+#: src/cdaudio-ng/cdaudio-ng.c:801
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
@@ -3960,12 +3942,8 @@ msgstr "Počet kanálov:"
 msgid "8000"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:351
-msgid "64000"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:352
-msgid "96000"
+#: src/sid/xmms-sid.glade:326 src/sid/xs_interface.c:347
+msgid "11025"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:565 src/sid/xs_interface.c:373
@@ -4579,6 +4557,28 @@ msgstr ""
 #: src/sid/xs_fileinfo.c:336
 #, c-format
 msgid "Tune #%i"
+msgstr ""
+
+#: src/sid/xs_interface.c:348
+#, fuzzy
+msgid "22050"
+msgstr "22000 Hz"
+
+#: src/sid/xs_interface.c:349
+#, fuzzy
+msgid "44100"
+msgstr "44100 Hz"
+
+#: src/sid/xs_interface.c:350
+msgid "48000"
+msgstr ""
+
+#: src/sid/xs_interface.c:351
+msgid "64000"
+msgstr ""
+
+#: src/sid/xs_interface.c:352
+msgid "96000"
 msgstr ""
 
 #: src/sid/xs_length.c:113

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-08-25 22:54+0200\n"
+"POT-Creation-Date: 2007-08-26 14:05+0200\n"
 "PO-Revision-Date: 2007-01-06 18:31+0100\n"
 "Last-Translator: Michael Hanselmann\n"
 "Language-Team: german <audacious@hansmi.ch>\n"
@@ -13,7 +13,7 @@ msgstr ""
 
 #: src/aac/src/libmp4.c:291
 msgid "Using libfaad2-"
-msgstr ""
+msgstr "Benütze libfaad2-"
 
 #: src/aac/src/libmp4.c:292
 msgid ""
@@ -21,11 +21,13 @@ msgid ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
+" zum Dekodieren.\n"
+"FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+"Copyright (c) 2005-2006 Audacious team"
 
 #: src/aac/src/libmp4.c:296
-#, fuzzy
 msgid "About MP4 AAC player plugin"
-msgstr "Über Echo-Plugin"
+msgstr "Über MP4-AAC-Player-Plugin"
 
 #: src/aac/src/libmp4.c:298 src/adplug/adplug-xmms.cc:185
 #: src/adplug/adplug-xmms.cc:268 src/adplug/adplug-xmms.cc:529
@@ -69,9 +71,8 @@ msgid ""
 msgstr ""
 
 #: src/adplug/adplug-xmms.cc:259
-#, fuzzy
 msgid "AdPlug :: Configuration"
-msgstr "ESD-Ausgabe-Plugin-Konfiguration"
+msgstr "AdPlug :: Konfiguration"
 
 #: src/adplug/adplug-xmms.cc:278 src/alarm/interface.c:1400
 #: src/alsa/configure.c:411 src/arts/configure.c:91
@@ -89,11 +90,11 @@ msgstr "Abbrechen"
 #: src/madplug/configure.c:191 src/modplug/gui/interface.cxx:325
 #: src/modplug/gui/interface.cxx:833
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: src/adplug/adplug-xmms.cc:306
 msgid "Sound quality"
-msgstr ""
+msgstr "Sound-Qualität"
 
 #: src/adplug/adplug-xmms.cc:311 src/modplug/gui/interface.cxx:151
 msgid "Resolution"
@@ -129,41 +130,21 @@ msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
 msgstr ""
+"Vom Gebrauch von Stereo wird abgeraten, da es dem Klang keine Stereo-Effekte "
+"hinzufügt - OPL2 ist nur Mono - aber mehr Rechenleistung benötigt!"
 
 #: src/adplug/adplug-xmms.cc:345
 msgid "Frequency"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:347 src/sid/xmms-sid.glade:326
-#: src/sid/xs_interface.c:347
-msgid "11025"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:354 src/sid/xmms-sid.glade:352
-#: src/sid/xs_interface.c:348
-#, fuzzy
-msgid "22050"
-msgstr "22000 Hz"
-
-#: src/adplug/adplug-xmms.cc:361 src/sid/xmms-sid.glade:378
-#: src/sid/xs_interface.c:349
-#, fuzzy
-msgid "44100"
-msgstr "44100 Hz"
-
-#: src/adplug/adplug-xmms.cc:368 src/sid/xmms-sid.glade:404
-#: src/sid/xs_interface.c:350
-msgid "48000"
-msgstr ""
+msgstr "Frequenz"
 
 #: src/adplug/adplug-xmms.cc:381 src/adplug/adplug-xmms.cc:585
 #: src/console/Audacious_Config.cxx:148
 msgid "Playback"
-msgstr ""
+msgstr "Wiedergabe"
 
 #: src/adplug/adplug-xmms.cc:385
 msgid "Detect songend"
-msgstr ""
+msgstr "Liedende ermitteln"
 
 #: src/adplug/adplug-xmms.cc:389
 msgid ""
@@ -329,7 +310,7 @@ msgid "This is your wakeup call."
 msgstr ""
 
 #: src/alarm/interface.c:126 src/alarm/interface.c:1391 src/alsa/about.c:46
-#: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:205
+#: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:206
 #: src/filewriter/filewriter.c:199 src/flacng/plugin.c:743
 #: src/modplug/gui/interface.cxx:725 src/pulse_audio/pulse_audio.c:694
 #: src/scrobbler/gtkstuff.c:43 src/sid/xmms-sid.glade:3585
@@ -1756,7 +1737,11 @@ msgstr ""
 msgid "Options:"
 msgstr "Optionen:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:200
+#: src/cdaudio-ng/cdaudio-ng.c:141
+msgid "Add CD"
+msgstr "CD hinzufügen"
+
+#: src/cdaudio-ng/cdaudio-ng.c:201
 #, c-format
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
@@ -1770,12 +1755,12 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:205
+#: src/cdaudio-ng/cdaudio-ng.c:206
 #, fuzzy
 msgid "About CD Audio Plugin NG"
 msgstr "CoreAudio-Ausgabe-Plugin"
 
-#: src/cdaudio-ng/cdaudio-ng.c:800
+#: src/cdaudio-ng/cdaudio-ng.c:801
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
@@ -2497,60 +2482,61 @@ msgid ""
 "lowest:9;\n"
 "default:4;"
 msgstr ""
+"höchste:0;\n"
+"niedrigste:9;\n"
+"voreingestellt:4;"
 
 #: src/filewriter/mp3.c:1211
 msgid "Don't write Xing VBR header"
-msgstr ""
+msgstr "Xing-VBR-Header nicht schreiben"
 
 #: src/filewriter/mp3.c:1226
 msgid "VBR/ABR"
-msgstr ""
+msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1238
 msgid "Frame params:"
-msgstr ""
+msgstr "Frame-Parameter:"
 
 #: src/filewriter/mp3.c:1250
 msgid "Mark as copyright"
-msgstr ""
+msgstr "Als Copyright kennzeichnen"
 
 #: src/filewriter/mp3.c:1261
 msgid "Mark as original"
-msgstr ""
+msgstr "Als Original kennzeichnen"
 
 #: src/filewriter/mp3.c:1273
 msgid "ID3 params:"
-msgstr ""
+msgstr "ID3-Parameter:"
 
 #: src/filewriter/mp3.c:1284
 msgid "Force addition of version 2 tag"
-msgstr ""
+msgstr "Hinzufügen von Version-2-Tags erzwingen"
 
 #: src/filewriter/mp3.c:1294
 msgid "Only add v1 tag"
-msgstr ""
+msgstr "Nur v1-Tag hinzufügen"
 
 #: src/filewriter/mp3.c:1301
 msgid "Only add v2 tag"
-msgstr ""
+msgstr "Nur v2-Tag hinzufügen"
 
 #: src/filewriter/mp3.c:1322
 msgid "Tags"
-msgstr ""
+msgstr "Tags"
 
 #: src/filewriter/vorbis.c:264
-#, fuzzy
 msgid "Vorbis Encoder Configuration"
-msgstr "OSS-Treiber-Konfiguration"
+msgstr "Vorbis-Encoder-Konfiguration"
 
 #: src/filewriter/vorbis.c:284
 msgid "Quality level (0 - 10):"
-msgstr ""
+msgstr "Qualitätsstufe (0 - 10):"
 
 #: src/flacng/plugin.c:735
-#, fuzzy
 msgid "FLAC Audio Plugin "
-msgstr "CoreAudio-Ausgabe-Plugin"
+msgstr "FLAC-Audio-Plugin "
 
 #: src/flacng/plugin.c:736
 msgid ""
@@ -2561,11 +2547,16 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
+"\n"
+"\n"
+"Originaler Code von\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:741
-#, fuzzy
 msgid "About FLAC Audio Plugin"
-msgstr "CoreAudio-Ausgabe-Plugin"
+msgstr "Über FLAC-Audio-Plugin"
 
 #: src/jack/configure.c:69
 msgid "Connect to all available jack ports"
@@ -3576,12 +3567,8 @@ msgstr "Kanäle:"
 msgid "8000"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:351
-msgid "64000"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:352
-msgid "96000"
+#: src/sid/xmms-sid.glade:326 src/sid/xs_interface.c:347
+msgid "11025"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:565 src/sid/xs_interface.c:373
@@ -4178,6 +4165,28 @@ msgstr ""
 #: src/sid/xs_fileinfo.c:336
 #, c-format
 msgid "Tune #%i"
+msgstr ""
+
+#: src/sid/xs_interface.c:348
+#, fuzzy
+msgid "22050"
+msgstr "22000 Hz"
+
+#: src/sid/xs_interface.c:349
+#, fuzzy
+msgid "44100"
+msgstr "44100 Hz"
+
+#: src/sid/xs_interface.c:350
+msgid "48000"
+msgstr ""
+
+#: src/sid/xs_interface.c:351
+msgid "64000"
+msgstr ""
+
+#: src/sid/xs_interface.c:352
+msgid "96000"
 msgstr ""
 
 #: src/sid/xs_length.c:113
