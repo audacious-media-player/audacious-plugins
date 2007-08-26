@@ -34,13 +34,13 @@
 
 #include <glib.h>
 
-#include <audacious/i18n.h>
 #include <audacious/configdb.h>
-#include <audacious/plugin.h>
-#include <audacious/util.h>
+#include <audacious/i18n.h>
 #include <audacious/output.h>
-#include <audacious/ui_plugin_menu.h>
 #include <audacious/playlist.h>
+#include <audacious/plugin.h>
+#include <audacious/ui_plugin_menu.h>
+#include <audacious/util.h>
 #include "config.h"
 
 #include "cdaudio-ng.h"
@@ -138,6 +138,7 @@ void cdaudio_init()
 
 	ConfigDb *db = bmp_cfg_db_open();
 	gchar *string = NULL;
+	gchar *menu_item_text = _("Add CD");
 
 	/*
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_dae", &use_dae))
@@ -170,13 +171,13 @@ void cdaudio_init()
 	configure_set_variables(/*&use_dae, */&limitspeed, &use_cdtext, &use_cddb, device, &debug, cddb_server, &cddb_port);
 	configure_create_gui();
 
-	main_menu_item = gtk_image_menu_item_new_with_label(MENU_ITEM_TEXT);
+	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
 	gtk_widget_show(main_menu_item);
 	audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
 	g_signal_connect(G_OBJECT(main_menu_item), "button_press_event", G_CALLBACK(menu_click), NULL);  
 	
-	playlist_menu_item = gtk_image_menu_item_new_with_label(MENU_ITEM_TEXT);
+	playlist_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
 	gtk_widget_show(playlist_menu_item);
 	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST, playlist_menu_item);
