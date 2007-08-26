@@ -460,6 +460,15 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
         xmlAddChild(rootnode, extension);
     }
 
+    /* save playlist title */
+    if(playlist->title && playlist->title[0]
+            && g_utf8_validate(playlist->title, -1, NULL)) {
+        xmlNodePtr title;
+        title = xmlNewNode(NULL, (xmlChar *)"title");
+        xmlAddChild(title, xmlNewText((xmlChar *)playlist->title));
+        xmlAddChild(rootnode, title);
+    }
+
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);
 
