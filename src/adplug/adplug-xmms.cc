@@ -685,9 +685,9 @@ update_infobox (void)
   std::ostringstream infotext;
 
   // Recreate info string
-  infotext << _("Order: ") << plr.p->getorder () << _(" / ") << plr.p->
+  infotext << _("Order: ") << plr.p->getorder () << " / " << plr.p->
     getorders () << std::endl << _("Pattern: ") << plr.p->
-    getpattern () << _(" / ") << plr.p->
+    getpattern () << " / " << plr.p->
     getpatterns () << std::endl << _("Row: ") << plr.p->
     getrow () << std::endl << _("Speed: ") << plr.p->
     getspeed () << std::endl << _("Timer: ") << plr.p->

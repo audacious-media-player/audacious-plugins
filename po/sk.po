@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-08-26 16:04+0200\n"
+"POT-Creation-Date: 2007-08-30 18:23+0200\n"
 "PO-Revision-Date: 2007-03-14 02:18+0100\n"
 "Last-Translator: Andrej Herceg <herceg.andrej@zoznam.sk>\n"
 "Language-Team: \n"
@@ -237,10 +237,6 @@ msgid "Song"
 msgstr "Swing"
 
 #: src/adplug/adplug-xmms.cc:602
-msgid "#"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:602
 #, fuzzy
 msgid "Instrument name"
 msgstr "Inštrumentálna"
@@ -257,10 +253,6 @@ msgstr "Výber koncového zariadenia"
 
 #: src/adplug/adplug-xmms.cc:688
 msgid "Order: "
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:688 src/adplug/adplug-xmms.cc:690
-msgid " / "
 msgstr ""
 
 #: src/adplug/adplug-xmms.cc:689
@@ -384,13 +376,6 @@ msgstr "Názov"
 #, fuzzy
 msgid "hours"
 msgstr "Chorus"
-
-#: src/alarm/interface.c:477 src/alarm/interface.c:633
-#: src/alarm/interface.c:681 src/alarm/interface.c:729
-#: src/alarm/interface.c:777 src/alarm/interface.c:825
-#: src/alarm/interface.c:873 src/alarm/interface.c:921
-msgid ":"
-msgstr ""
 
 #: src/alarm/interface.c:508
 msgid "h"
@@ -3938,14 +3923,6 @@ msgstr ""
 msgid "Channels:"
 msgstr "Počet kanálov:"
 
-#: src/sid/xmms-sid.glade:300 src/sid/xs_interface.c:346
-msgid "8000"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:326 src/sid/xs_interface.c:347
-msgid "11025"
-msgstr ""
-
 #: src/sid/xmms-sid.glade:565 src/sid/xs_interface.c:373
 #, fuzzy
 msgid "Samplerate:"
@@ -4557,28 +4534,6 @@ msgstr ""
 #: src/sid/xs_fileinfo.c:336
 #, c-format
 msgid "Tune #%i"
-msgstr ""
-
-#: src/sid/xs_interface.c:348
-#, fuzzy
-msgid "22050"
-msgstr "22000 Hz"
-
-#: src/sid/xs_interface.c:349
-#, fuzzy
-msgid "44100"
-msgstr "44100 Hz"
-
-#: src/sid/xs_interface.c:350
-msgid "48000"
-msgstr ""
-
-#: src/sid/xs_interface.c:351
-msgid "64000"
-msgstr ""
-
-#: src/sid/xs_interface.c:352
-msgid "96000"
 msgstr ""
 
 #: src/sid/xs_length.c:113
@@ -6012,6 +5967,14 @@ msgstr "Modul sndfile WAV"
 #, c-format
 msgid "About %s"
 msgstr "O %s"
+
+#, fuzzy
+#~ msgid "22050"
+#~ msgstr "22000 Hz"
+
+#, fuzzy
+#~ msgid "44100"
+#~ msgstr "44100 Hz"
 
 #, fuzzy
 #~ msgid "12000"
