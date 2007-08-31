@@ -409,6 +409,26 @@ if test "x$have_evdevplug" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS evdev-plug"
 fi
 
+dnl *** Global Hotkey general plugin (only built on X11)
+
+AC_ARG_ENABLE(hotkey,
+    [  --disable-hotkey        disable global hotkey plugin (default=enabled)],
+    [enable_hotkey=$enableval],
+    [enable_hotkey="yes"]
+)
+
+if test "x$enable_hotkey" = "xyes"; then
+    have_hotkey="yes"
+    PKG_CHECK_MODULES(GDKX11,[gdk-x11-2.0 >= 2.6.0],,[have_hotkey="no"])
+else
+    AC_MSG_RESULT([*** X11 Global Hotkey plugin disabled per user request ***])
+    have_hotkey="no"
+fi
+
+if test "x$have_hotkey" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS hotkey"
+fi
+
 dnl *** Status Icon plugin (for X11 only)
 
 AC_ARG_ENABLE(statusicon,
@@ -1524,6 +1544,7 @@ echo "  Status Icon:                            $have_statusicon"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
+echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
