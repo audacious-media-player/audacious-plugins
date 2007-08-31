@@ -191,8 +191,8 @@ case "$target" in
 	*-apple-*)
 		AC_MSG_RESULT([Mac OS X: -fPIC -bundle -fno-common -flat_namespace -undefined suppress, .dylib])
 		PICFLAGS="-DPIC -fno-common"
-		PICLDFLAGS="-DPIC -bundle -fno-common -flat_namespace -undefined suppress"
-		LIBLDFLAGS="-dynamiclib"
+		PICLDFLAGS="-DPIC -bundle -fno-common -flat_namespace -undefined suppress -single_module"
+		LIBLDFLAGS="-dynamiclib -single_module"
 		AUDLDFLAGS=""
 		SHARED_SUFFIX=".dylib"
 		;;
