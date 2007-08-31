@@ -1,23 +1,26 @@
-# Catalan messages for audacious plugins.
-# Copyright (C) 2007 Ernest Adrogué <eadrogue@gmx.net>
+# Romanian translations for audacious-plugins package
+# Traducerea în limba română pentru pachetul audacious-plugins.
+# Copyright (C) 2007 Translator <translator@invalid>
 # This file is distributed under the same license as the audacious-plugins package.
-# Ernest Adrogué <eadrogue@gmx.net>, 2007.
+# Cristi <majeru@atheme.org>, 2007.
+# Cristi <majeru@atheme.org>, 2007.
+#
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins 1.3.0-alpha4\n"
+"Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-08-30 18:23+0200\n"
-"PO-Revision-Date: 2007-02-09 21:12+0100\n"
-"Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
-"Language-Team: Catalan <ca@dodds.net>\n"
+"PO-Revision-Date: 2007-08-28 20:44+0200\n"
+"Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
+"Language-Team: Romanian <audacious@atheme.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/aac/src/libmp4.c:291
 msgid "Using libfaad2-"
-msgstr ""
+msgstr "Este utilizat libfaad2"
 
 #: src/aac/src/libmp4.c:292
 msgid ""
@@ -25,11 +28,14 @@ msgid ""
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
+"pentru decodarea \n"
+"FAAD2·AAC/HE-AAC/HE-AACv2/DRM, \n"
+"decoder-ul este ·(C)·Nero·AG,·www.nero.com\n"
+"Copyright·(c)·2005-2006·Echipa de dezvoltare Audacious"
 
 #: src/aac/src/libmp4.c:296
-#, fuzzy
 msgid "About MP4 AAC player plugin"
-msgstr "Quant al plugin per a àudio MPEG"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/aac/src/libmp4.c:298 src/adplug/adplug-xmms.cc:185
 #: src/adplug/adplug-xmms.cc:268 src/adplug/adplug-xmms.cc:529
@@ -53,11 +59,11 @@ msgstr "Quant al plugin per a àudio MPEG"
 #: src/vtx/about.c:31 src/vtx/info.c:43 src/wavpack/ui.cxx:56
 #: src/wavpack/ui.cxx:554 src/wav/wav-sndfile.c:566
 msgid "Ok"
-msgstr "D'acord"
+msgstr "Ok"
 
 #: src/adplug/adplug-xmms.cc:174
 msgid "About "
-msgstr "Quant a "
+msgstr "Despre "
 
 #: src/adplug/adplug-xmms.cc:178
 msgid ""
@@ -72,20 +78,18 @@ msgid ""
 "Linked AdPlug library version: "
 msgstr ""
 "\n"
-"Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
+"Copyright·(C)·2002,·2003·Simon·Peter·<dn.tlp@gmx.net>\n"
 "\n"
-"Aquest plugin està publicat sota els termes i condicions de la llicència\n"
-"GNU LGPL. Vegeu http://www.gnu.org/licenses/lgpl.html per a més detalls.\n"
+"Acest plugin este distribuit conform termenilor și condițiilor licenței GNU "
+"LGPL.\n"
+"Vedeți·http://www.gnu.org/licenses/lgpl.html·tentru detalii.\n"
 "\n"
-"Aquest plugin fa ús de la llibreria AdPlug, el copyright (C) de la qual\n"
-"pertany a Simon Peter, et al.\n"
-"\n"
-"Versió de la llibreria AdPlug enllaçada: "
+"Plugin-ul folosește biblioteca AdPlug,·Copyright·(C)·Simon·Peter·și alții.\n"
+"Versiunea AdPlug pentru care a fost link-editat:·"
 
 #: src/adplug/adplug-xmms.cc:259
-#, fuzzy
 msgid "AdPlug :: Configuration"
-msgstr "Configuració del plugin d'àudio MPEG"
+msgstr "AdPlug·::·Configurare"
 
 #: src/adplug/adplug-xmms.cc:278 src/alarm/interface.c:1400
 #: src/alsa/configure.c:411 src/arts/configure.c:91
@@ -97,7 +101,7 @@ msgstr "Configuració del plugin d'àudio MPEG"
 #: src/sun/configure.c:567 src/timidity/src/interface.c:232
 #: src/wavpack/ui.cxx:278 src/wavpack/ui.cxx:561
 msgid "Cancel"
-msgstr "Cancel·la"
+msgstr "Anulează"
 
 #: src/adplug/adplug-xmms.cc:294 src/console/Audacious_Config.cxx:146
 #: src/madplug/configure.c:191 src/modplug/gui/interface.cxx:325
@@ -106,29 +110,25 @@ msgid "General"
 msgstr "General"
 
 #: src/adplug/adplug-xmms.cc:306
-#, fuzzy
 msgid "Sound quality"
-msgstr "Clip d'àudio"
+msgstr "Calitatea sunetului"
 
 #: src/adplug/adplug-xmms.cc:311 src/modplug/gui/interface.cxx:151
-#, fuzzy
 msgid "Resolution"
-msgstr "Resolució:"
+msgstr "Rezoluție"
 
 #: src/adplug/adplug-xmms.cc:313
-#, fuzzy
 msgid "8bit"
-msgstr "8 bits"
+msgstr "8 biți"
 
 #: src/adplug/adplug-xmms.cc:318
-#, fuzzy
 msgid "16bit"
-msgstr "16 bits"
+msgstr "16 biți"
 
 #: src/adplug/adplug-xmms.cc:326 src/modplug/gui/interface.cxx:181
 #: src/timidity/src/interface.c:150
 msgid "Channels"
-msgstr "Canals"
+msgstr "Canale"
 
 #: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:899
 #: src/sid/xmms-sid.glade:156 src/sid/xs_interface.c:302
@@ -140,26 +140,29 @@ msgstr "Mono"
 #: src/modplug/gui/interface.cxx:195 src/sid/xmms-sid.glade:175
 #: src/sid/xs_interface.c:309 src/timidity/src/interface.c:175
 msgid "Stereo"
-msgstr "Estèreo"
+msgstr "Stereo"
 
 #: src/adplug/adplug-xmms.cc:337
 msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
 msgstr ""
+"Nu este recomandată setarea forțată Stereo, decât dacă este neapărată "
+"nevoieAceastă setare nu va adăuga efecte stereo, deoarece OPL2 suportă doar "
+"MonoVa consuma însă mai multe resurse de calcul!"
 
 #: src/adplug/adplug-xmms.cc:345
 msgid "Frequency"
-msgstr ""
+msgstr "Frecvența"
 
 #: src/adplug/adplug-xmms.cc:381 src/adplug/adplug-xmms.cc:585
 #: src/console/Audacious_Config.cxx:148
 msgid "Playback"
-msgstr "Reproducció"
+msgstr "Redare"
 
 #: src/adplug/adplug-xmms.cc:385
 msgid "Detect songend"
-msgstr ""
+msgstr "Detectează sfârșitul melodiei"
 
 #: src/adplug/adplug-xmms.cc:389
 msgid ""
@@ -167,22 +170,25 @@ msgid ""
 "playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
 "all over again and again."
 msgstr ""
+"Dacă este activat, Audacious va detecta·sfârșitul melodiei, va opri redarea "
+"și va avansa la melodia următoare. Dacă este dezactivat, nu se va ști când s-"
+"a terminat melodia și va fi redată din nou, la infinit. "
 
 #: src/adplug/adplug-xmms.cc:400
 msgid "Formats"
-msgstr ""
+msgstr "Formate"
 
 #: src/adplug/adplug-xmms.cc:407
 msgid "Format selection"
-msgstr ""
+msgstr "Selecția formatelor"
 
 #: src/adplug/adplug-xmms.cc:410
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: src/adplug/adplug-xmms.cc:410
 msgid "Extension"
-msgstr ""
+msgstr "Extensie"
 
 #: src/adplug/adplug-xmms.cc:450
 msgid ""
@@ -190,86 +196,80 @@ msgid ""
 "Deselected types will be ignored to make room for other plugins to play "
 "these files."
 msgstr ""
+"Tipurile de fișiere selectate vor fi recunoscute și redate de acest plugin. "
+"Cele deselectate vor fi ignorate, dar pot fi redate de alte pluginuri."
 
 #: src/adplug/adplug-xmms.cc:536
 msgid "AdPlug :: File Info"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/adplug/adplug-xmms.cc:558 src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
-msgstr ""
+msgstr "Numele Fișierului:"
 
 #: src/adplug/adplug-xmms.cc:562
-#, fuzzy
 msgid "Title: "
-msgstr "Títol:"
+msgstr "Titlu: "
 
 #: src/adplug/adplug-xmms.cc:563
 msgid "Author: "
-msgstr ""
+msgstr "Autor: "
 
 #: src/adplug/adplug-xmms.cc:564
-#, fuzzy
 msgid "File Type: "
-msgstr "Mida del fitxer:"
+msgstr "Tipul Fișierului: "
 
 #: src/adplug/adplug-xmms.cc:565
 msgid "Subsongs: "
-msgstr ""
+msgstr "Sub-melodii: "
 
 #: src/adplug/adplug-xmms.cc:566
-#, fuzzy
 msgid "Instruments: "
-msgstr "Instrumental"
+msgstr "Instrumente: "
 
 #: src/adplug/adplug-xmms.cc:571
 msgid "Orders: "
-msgstr ""
+msgstr "Ordine: "
 
 #: src/adplug/adplug-xmms.cc:572
 msgid "Patterns: "
-msgstr ""
+msgstr "Șabloane: "
 
 #: src/adplug/adplug-xmms.cc:576
-#, fuzzy
 msgid "Song"
-msgstr "Swing"
+msgstr "Melodia"
 
 #: src/adplug/adplug-xmms.cc:602
-#, fuzzy
 msgid "Instrument name"
-msgstr "Instrumental"
+msgstr "Numele Instrumentului"
 
 #: src/adplug/adplug-xmms.cc:644
-#, fuzzy
 msgid "Song message"
-msgstr "Canvi de cançó %s"
+msgstr "Mesajul melodiei"
 
 #: src/adplug/adplug-xmms.cc:666
 msgid "Subsong selection"
-msgstr ""
+msgstr "Selecția sub-melodiei"
 
 #: src/adplug/adplug-xmms.cc:688
 msgid "Order: "
-msgstr ""
+msgstr "Ordine: "
 
 #: src/adplug/adplug-xmms.cc:689
 msgid "Pattern: "
-msgstr ""
+msgstr "Șablon: "
 
 #: src/adplug/adplug-xmms.cc:691
 msgid "Row: "
-msgstr ""
+msgstr "Linie: "
 
 #: src/adplug/adplug-xmms.cc:692
-#, fuzzy
 msgid "Speed: "
-msgstr "Parlat"
+msgstr "Viteză: "
 
 #: src/adplug/adplug-xmms.cc:693
-#, fuzzy
 msgid "Timer: "
-msgstr "Títol:"
+msgstr "Cronometru: "
 
 #: src/adplug/adplug-xmms.cc:694 src/console/Audacious_Config.cxx:226
 #: src/sid/xmms-sid.glade:513 src/sid/xs_interface.c:361
@@ -277,23 +277,24 @@ msgid "Hz"
 msgstr "Hz"
 
 #: src/alac/plugin.c:85
-#, fuzzy
 msgid "About Apple Lossless Audio Plugin"
-msgstr "Quant al plugin d'àudio Ogg Vorbis"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/alac/plugin.c:86
 msgid ""
 "Copyright (c) 2006 Audacious team\n"
 "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
 msgstr ""
+"Copyright·(c)·2006·Echipa Audacious\n"
+"Porțiuni·(c)·2005-2006·David·Hammerton·<crazney·-at-·crazney.net>"
 
 #: src/alarm/interface.c:36
 msgid "About XMMS Alarm"
-msgstr ""
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/alarm/interface.c:49
 msgid "XMMS Alarm"
-msgstr ""
+msgstr "XMMS·Alarm"
 
 #: src/alarm/interface.c:58
 msgid ""
@@ -306,20 +307,28 @@ msgid ""
 "\n"
 "http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
+"Acest plugin poate fi folosit pentru\n"
+"a orni redarea la un anumit timp.\n"
+"\n"
+"Trimiteți eventualele reclamații la:\n"
+"Adam·Feakin·<adamf@snika.uklinux.net>\n"
+"Daniel·Stodden·<stodden@in.tum.de>\n"
+"\n"
+"http://www.snika.uklinux.net/xmms-alarm/"
 
 #: src/alarm/interface.c:73 src/lirc/about.c:116
 #: src/modplug/gui/interface.cxx:946 src/sid/xmms-sid.glade:4262
 #: src/sid/xs_interface.c:1882
 msgid "Close"
-msgstr "Tanca"
+msgstr "Închide"
 
 #: src/alarm/interface.c:103
 msgid "Alarm"
-msgstr ""
+msgstr "Alarmă"
 
 #: src/alarm/interface.c:111
 msgid "This is your wakeup call."
-msgstr ""
+msgstr "Acesta este semnalul de deșteptare."
 
 #: src/alarm/interface.c:126 src/alarm/interface.c:1391 src/alsa/about.c:46
 #: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:206
@@ -328,19 +337,19 @@ msgstr ""
 #: src/scrobbler/gtkstuff.c:43 src/sid/xmms-sid.glade:3585
 #: src/sid/xs_interface.c:1338
 msgid "OK"
-msgstr "D'acord"
+msgstr "Ok"
 
 #: src/alarm/interface.c:154
 msgid "Select Playlist"
-msgstr ""
+msgstr "Selectați Playlist-ul"
 
 #: src/alarm/interface.c:198
 msgid "Sorry"
-msgstr ""
+msgstr "Ne pare rău"
 
 #: src/alarm/interface.c:206
 msgid "Warning"
-msgstr ""
+msgstr "Avertizare"
 
 #: src/alarm/interface.c:215
 msgid ""
@@ -354,92 +363,97 @@ msgid ""
 "--\n"
 "Adam"
 msgstr ""
+"Din motive de siguranță, timpul de \"liniște\" trebuie să fie de minim 65 "
+"secunde.For·safety·reasons·the·\"quiet"
+"\"·time·must·be·at·least·65·seconds·longer·than·the·fading·time,"
+"·it·must·also·be·more·than·10·seconds."
+"··This·basically·means·that·there·is·a·bug·in·the·code·and·until·I·find·a·way·of·really·fixing·it·this·message·will·appear·:)\n"
+"\n"
+"Your·fading·settings·have·NOT·been·saved\n"
+"\n"
+"--\n"
+"Adam"
 
 #: src/alarm/interface.c:231
 msgid "Oh Well"
-msgstr ""
+msgstr "Ok"
 
 #: src/alarm/interface.c:390
-#, fuzzy
 msgid "Alarm Settings"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni ale plugin-ului Alarm"
 
 #: src/alarm/interface.c:406 src/alarm/interface.c:578
 #: src/alarm/interface.c:950
-#, fuzzy
 msgid "Time"
-msgstr "Anime"
+msgstr "Timp"
 
 #: src/alarm/interface.c:447
-#, fuzzy
 msgid "hours"
-msgstr "Cor"
+msgstr "ore"
 
 #: src/alarm/interface.c:508
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #: src/alarm/interface.c:556
-#, fuzzy
 msgid "Quiet after:"
-msgstr "Ràtio de bits:"
+msgstr "Oprește după:"
 
 #: src/alarm/interface.c:566
 msgid "Alarm at (default):"
-msgstr ""
+msgstr "Alarmă la (implicit):"
 
 #: src/alarm/interface.c:586
 msgid "Choose the days for the alarm to come on"
-msgstr ""
+msgstr "Alegeți zilele în care să pornească alarma"
 
 #: src/alarm/interface.c:614 src/alarm/interface.c:662
 #: src/alarm/interface.c:710 src/alarm/interface.c:758
 #: src/alarm/interface.c:806 src/alarm/interface.c:854
 #: src/alarm/interface.c:902 src/OSS4/configure.c:138 src/OSS/configure.c:170
+#, fuzzy
 msgid "Default"
-msgstr "Per defecte"
+msgstr "Implicit"
 
 #: src/alarm/interface.c:940
 msgid "Day"
-msgstr ""
+msgstr "Ziua"
 
 #: src/alarm/interface.c:960
 msgid "Tuesday"
-msgstr ""
+msgstr "Marți"
 
 #: src/alarm/interface.c:971
 msgid "Wednesday"
-msgstr ""
+msgstr "Miercuri"
 
 #: src/alarm/interface.c:982
 msgid "Thursday"
-msgstr ""
+msgstr "Joi"
 
 #: src/alarm/interface.c:993
 msgid "Friday"
-msgstr ""
+msgstr "Vineri"
 
 #: src/alarm/interface.c:1004
 msgid "Saturday"
-msgstr ""
+msgstr "Sâmbătă"
 
 #: src/alarm/interface.c:1015
-#, fuzzy
 msgid "Sunday"
-msgstr "Bandes sonores"
+msgstr "Duminică"
 
 #: src/alarm/interface.c:1025
-#, fuzzy
 msgid "Monday"
-msgstr "Mono"
+msgstr "Luni"
 
 #: src/alarm/interface.c:1036
 msgid "Days"
-msgstr ""
+msgstr "Zile"
 
 #: src/alarm/interface.c:1052
 msgid "Fading"
-msgstr ""
+msgstr "Tranziție"
 
 #: src/alarm/interface.c:1089 src/sid/xmms-sid.glade:2271
 #: src/sid/xmms-sid.glade:2442 src/sid/xmms-sid.glade:3408
@@ -447,68 +461,72 @@ msgstr ""
 #: src/sid/xs_interface.c:1289
 #, fuzzy
 msgid "seconds"
-msgstr "segons"
+msgstr "secunde"
 
 #: src/alarm/interface.c:1097 src/alarm/interface.c:1213
 #: src/modplug/gui/interface.cxx:635
 #, fuzzy
 msgid "Volume"
-msgstr "Volum: (%)"
+msgstr "Volum: %d%%"
 
 #: src/alarm/interface.c:1123
+#, fuzzy
 msgid "Current"
-msgstr ""
+msgstr "Plugin-ul de ieșire curent"
 
 #: src/alarm/interface.c:1130
 msgid "reset to current output volume"
-msgstr ""
+msgstr "resetează la volumul curent"
 
 #: src/alarm/interface.c:1132
+#, fuzzy
 msgid "Start at"
-msgstr ""
+msgstr "Începe redarea playlist-ului curent"
 
 #: src/alarm/interface.c:1160 src/alarm/interface.c:1204
-#, fuzzy
 msgid "%"
-msgstr "%s"
+msgstr "%"
 
 #: src/alarm/interface.c:1176
 msgid "Final"
-msgstr ""
+msgstr "Final"
 
 #: src/alarm/interface.c:1229
 msgid "Additional Command"
-msgstr ""
+msgstr "Comandă adițională"
 
 #: src/alarm/interface.c:1255
 #, fuzzy
 msgid "enable"
-msgstr "General"
+msgstr "Activează modul 'Mărime Dublă'"
 
 #: src/alarm/interface.c:1263
+#, fuzzy
 msgid "Playlist (optional)"
-msgstr ""
+msgstr "Selectați Playlist-ul"
 
 #: src/alarm/interface.c:1289
 msgid "Browse..."
-msgstr ""
+msgstr "Răsfoiește"
 
 #: src/alarm/interface.c:1297 src/alarm/interface.c:1462
+#, fuzzy
 msgid "Reminder"
-msgstr ""
+msgstr "Reminder"
 
 #: src/alarm/interface.c:1314
+#, fuzzy
 msgid "Use reminder"
-msgstr ""
+msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
 
 #: src/alarm/interface.c:1330 src/sndstretch/sndstretch_xmms.c:381
 #, fuzzy
 msgid "Options"
-msgstr "Opcions:"
+msgstr "Meniu de Opțiuni"
 
 #: src/alarm/interface.c:1338
 msgid "What do these options mean?"
-msgstr ""
+msgstr "Ce înseamnă opțiunile acestea?"
 
 #: src/alarm/interface.c:1366
 msgid ""
@@ -564,27 +582,76 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
+"\n"
+"Timp\n"
+"  Alarmă la: \n"
+"    Ora la care se va declanșa alarma.\n"
+"\n"
+"  Oprește după: \n"
+"    Oprește alarma după atât timp.\n"
+"       (dacă dialogul de trezire nu este închis)\n"
+"\n"
+"\n"
+"Zile\n"
+"  Ziua:\n"
+"    Selectați zilele în care să se activeze alarma.\n"
+"\n"
+"  Timp:\n"
+"    Alegeți timpul la care va porni alarma în fiecare zi.\n"
+"    sau selectați valoarea implicită folosind butonul\n"
+"\n"
+"\n"
+"Volum\n"
+"  Tranziție: \n"
+"    Va face volumul să crească lent până la valoarea \n"
+"    maximă, iar aceasta este durata perioadei de\n"
+"    tranziție.\n"
+"\n"
+"\n"
+"  Volum inițial: \n"
+"    Începe tranziția de la această valoare inițială a \n"
+"    volumului.\n"
+"\n"
+"  Volum final: \n"
+"    Volumul maxim la care se va ajunge în timpul \n"
+"    tranziției.\n"
+"\n"
+"\n"
+"Opțiuni:\n"
+"  Comandă adițională:\n"
+"    Comandă ce va fi rulată la momentul declanșării \n"
+"    alarmei.\n"
+"\n"
+"  Playlist: \n"
+"    Încarcă un playlist a cărui melodii vor fi redate\n"
+"    la declanșarea alarmei. (cu extensie .m3u), sau \n"
+"    un link spre un fișier sau stream audio.\n"
+"     Dacă nu este dat nimic vor fi folosite melodiile\n"
+"    existente în playlist.\n"
+"\n"
+"  Reminder:\n"
+"    Afișează un mesaj de reamintire când alarma se \n"
+"    oprește. Editați mesajul și activați-l dacă doriți \n"
+"    ca acesta să fie afișat.\n"
 
 #: src/alarm/interface.c:1368
 msgid "Help"
-msgstr ""
+msgstr "Ajutor"
 
 #: src/alarm/interface.c:1470
 msgid "Your reminder for today is.."
-msgstr ""
+msgstr "Mesajul de reamintire pentru ziua de azi este..."
 
 #: src/alarm/interface.c:1495
-#, fuzzy
 msgid "Thankyou"
-msgstr "Tango"
+msgstr "Mulțumesc"
 
 #: src/alsa/about.c:30
 #, fuzzy
 msgid "About ALSA Driver"
-msgstr "Quant al driver OSS"
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/alsa/about.c:31
-#, fuzzy
 msgid ""
 "Audacious ALSA Driver\n"
 "\n"
@@ -604,88 +671,84 @@ msgid ""
 "USA.\n"
 "Author: Matthieu Sozeau (mattam@altern.org)"
 msgstr ""
-"Driver OSS de l'Audacious\n"
+"Plugin de ieșire ALSA pentru Audacious\n"
 "\n"
-"Aquest programa és lliure; el podeu redistribuir i/o modificar sota\n"
-"els termes de la llicència GNU General Public Licence publicada per\n"
-"la Free Software Foundation; ja sigui la versió 2 de la Llicència, o\n"
-"(si ho desitgeu) qualsevol altra versió posterior.\n"
+"Acest program este software liber; poate fi redistribuit și/sau modificat\n"
+"în conformitte cu termenii și condițiile licenței GNU GPL, versiunea 2, sau\n"
+"orice versiune mai nouă.\n"
 "\n"
-"Aquest programa es distribueix amb l'esperança que sigui útil, però\n"
-"SENSE CAP GARANTIA; sense ni tan sols la garantia implícita de\n"
-"COMERCIABILITAT o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la\n"
-"llicència GNU General Public Licence per a més detalls.\n"
+"Citiți textul licenței pentru delatii suplimentare.\n"
 "\n"
-"Haurieu d'haver rebut una còpia de la llicència GNU General Public\n"
-"Licence juntament amb aquest programa; en cas contrari escriviu a la\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
-"Boston, MA 02110-1301, USA."
+"O traducere (neoficială) în limba română poate fi găsită la adresa:\n"
+"http://www.joomla.ro/content/view/144/45/ \n"
+"\n"
+"Textul original în engleză se află la adresa:\n"
+"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html\n"
+"\n"
+"Autor: Matthieu Sozeau (mattam@altern.org)"
 
 #: src/alsa/configure.c:150
 msgid "Unknown soundcard"
-msgstr ""
+msgstr "Placă de sunet necunoscută"
 
 #: src/alsa/configure.c:205
 #, fuzzy, c-format
 msgid "Default PCM device (%s)"
-msgstr "Per defecte (%s)"
+msgstr "Salvează Lista Implicită"
 
 #: src/alsa/configure.c:271
-#, fuzzy
 msgid "ALSA Driver configuration"
-msgstr "Configuració del driver OSS"
+msgstr "Configurarea plugin-ului ALSA"
 
 #: src/alsa/configure.c:285 src/OSS4/configure.c:186 src/OSS/configure.c:218
 #: src/sun/configure.c:183
+#, fuzzy
 msgid "Audio device:"
-msgstr "Dispositiu d'àudio:"
+msgstr "<b>Sistemul Audio</b>"
 
 #: src/alsa/configure.c:299
-#, fuzzy
 msgid "Mixer:"
-msgstr "Mesclador"
+msgstr "Mixer:"
 
 #: src/alsa/configure.c:307
-#, fuzzy
 msgid "Use software volume control"
-msgstr "Control del volum:"
+msgstr "Folosește controlul de volum în software"
 
 #: src/alsa/configure.c:317
-#, fuzzy
 msgid "Mixer card:"
-msgstr "Dispositiu de mescla:"
+msgstr "Placă mixer:"
 
 #: src/alsa/configure.c:330 src/OSS/configure.c:261 src/sun/configure.c:220
 msgid "Mixer device:"
-msgstr "Dispositiu de mescla:"
+msgstr "Dispozitiv mixer:"
 
 #: src/alsa/configure.c:350
 #, fuzzy
 msgid "Device settings"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/alsa/configure.c:356
-#, fuzzy
 msgid "Soundcard:"
-msgstr "Bandes sonores"
+msgstr "Placă de sunet:"
 
 #: src/alsa/configure.c:369
 #, fuzzy
 msgid "Buffer time (ms):"
-msgstr "Mida del buffer (ms):"
+msgstr "Sări la Timp"
 
 #: src/alsa/configure.c:383
 #, fuzzy
 msgid "Period time (ms):"
-msgstr "Mida del buffer (ms):"
+msgstr "Sări la Timp"
 
 #: src/alsa/configure.c:398 src/amidi-plug/i_configure-ap.c:287
+#, fuzzy
 msgid "Advanced settings"
-msgstr ""
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
-msgstr ""
+msgstr "Backend ALSA"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -698,10 +761,20 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Backendul trimite evenimente MIDI la un grup de porturi ale secvențer-ului "
+"ALSA alese de utilizator. Interfața este foarte versatilă și poate oferi "
+"suport pentru sintetizatoare audio hardware (de exemplu emu10k1) dar și "
+"software, dispozitive externe, etc.\n"
+"Backend-ul în sine nu produce semnal audio, evenimentele MIDI sunt "
+"prelucrate direct din dispozitivele/programele din spatele porturilor ALSA; "
+"de exemplu, evenimentele MIDI trimise sintetizatorului hardware for fi "
+"redate direct.\n"
+"\n"
+"Backend-ul a fost scris de către Giacomo Lozito."
 
 #: src/amidi-plug/backend-dummy/b-dummy.c:35
 msgid "Dummy Backend "
-msgstr ""
+msgstr "Backend nul"
 
 #: src/amidi-plug/backend-dummy/b-dummy.c:37
 msgid ""
@@ -710,10 +783,14 @@ msgid ""
 "standard error or file.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Acest backend nu produce audio de nici un fel. Este util pentru analiză și "
+"testare, deoarece poate înregistra evenimentele MIDI și le poate trimite la "
+"ieșirea standard sau într-un fișier.\n"
+"Backend-ul a fost scris de către Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:35
 msgid "FluidSynth Backend "
-msgstr ""
+msgstr "Backend-ul FluidSynth"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
 msgid ""
@@ -732,33 +809,35 @@ msgstr ""
 #: src/amidi-plug/i_configure-alsa.c:326
 #, fuzzy
 msgid "Port"
-msgstr "Port:"
+msgstr "Port-ul:"
 
 #: src/amidi-plug/i_configure-alsa.c:328
+#, fuzzy
 msgid "Client name"
-msgstr ""
+msgstr "Numele Instrumentului"
 
 #: src/amidi-plug/i_configure-alsa.c:330
+#, fuzzy
 msgid "Port name"
-msgstr ""
+msgstr "Numele Instrumentului"
 
 #: src/amidi-plug/i_configure-alsa.c:341
+#, fuzzy
 msgid "ALSA output ports"
-msgstr ""
+msgstr "Plugin-ul de ieșire curent"
 
 #: src/amidi-plug/i_configure-alsa.c:394
 msgid "Soundcard: "
-msgstr ""
+msgstr "Placa de sunet:"
 
 #: src/amidi-plug/i_configure-alsa.c:396
-#, fuzzy
 msgid "Mixer control: "
-msgstr "Control del volum:"
+msgstr "Controlul mixerului:"
 
 #: src/amidi-plug/i_configure-alsa.c:408
 #, fuzzy
 msgid "Mixer settings"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/amidi-plug/i_configure-alsa.c:421
 msgid ""
@@ -788,34 +867,39 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "ALSA Backend not loaded or not available"
-msgstr ""
+msgstr "Backend-ul ALSA nu este incarcat sau nu este disponibil"
 
 #: src/amidi-plug/i_configure-alsa.c:463
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">Backend-ul\n"
+"ALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:56
 msgid "AMIDI-Plug - backend information"
-msgstr ""
+msgstr "AMIDI-Plug - informatii backend"
 
 #: src/amidi-plug/i_configure-ap.c:194
+#, fuzzy
 msgid "AMIDI-PLUG PREFERENCES"
-msgstr ""
+msgstr "Preferințele Plugin-ului de Ieșire"
 
 #: src/amidi-plug/i_configure-ap.c:221
+#, fuzzy
 msgid "Backend selection"
-msgstr ""
+msgstr "Selecția formatelor"
 
 #: src/amidi-plug/i_configure-ap.c:225
+#, fuzzy
 msgid "Available backends"
-msgstr ""
+msgstr "_Preset-uri disponibile:"
 
 #: src/amidi-plug/i_configure-ap.c:255
 #, fuzzy
 msgid "Playback settings"
-msgstr "Paràmetres de ReplayGain:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/amidi-plug/i_configure-ap.c:260
 msgid "Transpose: "
@@ -831,11 +915,11 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-ap.c:296
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "extrage comentariile din fişierul MIDI (dacă sunt disponibile)"
 
 #: src/amidi-plug/i_configure-ap.c:301
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "extrage versuri din fişierul MIDI (dacă sunt disponibile)"
 
 #: src/amidi-plug/i_configure-ap.c:320
 msgid ""
@@ -907,20 +991,20 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.c:75
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Plug - Alege fişierul"
 
 #: src/amidi-plug/i_configure.c:122
-#, fuzzy
 msgid "AMIDI-Plug - configuration"
-msgstr "Configuració del plugin de sortida ESD"
+msgstr "AMIDI-Plug - Configuraţie"
 
 #: src/amidi-plug/i_configure.c:241
 msgid "AMIDI-Plug message"
-msgstr ""
+msgstr "Mesaj AMIDI-Plug "
 
 #: src/amidi-plug/i_configure.c:242
 msgid "Please stop the player before changing AMIDI-Plug settings."
 msgstr ""
+"Vă  rugăm opriţi playerul înainte de a schimba configuraţia AMIDI-Plug."
 
 #: src/amidi-plug/i_configure-dummy.c:137
 msgid "DUMMY BACKEND CONFIGURATION"
@@ -929,7 +1013,7 @@ msgstr ""
 #: src/amidi-plug/i_configure-dummy.c:173
 #, fuzzy
 msgid "MIDI logger settings"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/amidi-plug/i_configure-dummy.c:181
 msgid "Do not log anything"
@@ -944,13 +1028,14 @@ msgid "Log MIDI events to standard error"
 msgstr ""
 
 #: src/amidi-plug/i_configure-dummy.c:193
+#, fuzzy
 msgid "Log MIDI events to file"
-msgstr ""
+msgstr "Nu s-a putut crea fișierul de loguri (%s)!\n"
 
 #: src/amidi-plug/i_configure-dummy.c:202
 #, fuzzy
 msgid "Logfile settings"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/amidi-plug/i_configure-dummy.c:209
 msgid "Use a single file to log everything (rewrite)"
@@ -974,21 +1059,22 @@ msgid "browse"
 msgstr ""
 
 #: src/amidi-plug/i_configure-dummy.c:235
+#, fuzzy
 msgid "» Log file:"
-msgstr ""
+msgstr "Tipul Fișierului: "
 
 #: src/amidi-plug/i_configure-dummy.c:267
 #, fuzzy
 msgid "Playback speed"
-msgstr "Reproducció"
+msgstr "Continuă redarea la pornire"
 
 #: src/amidi-plug/i_configure-dummy.c:272
 msgid "Play at normal speed"
-msgstr ""
+msgstr "Redare la viteză normală"
 
 #: src/amidi-plug/i_configure-dummy.c:275
 msgid "Play as fast as possible"
-msgstr ""
+msgstr "Redare la viteză maximă"
 
 #: src/amidi-plug/i_configure-dummy.c:329
 msgid "Dummy Backend not loaded or not available"
@@ -1002,37 +1088,38 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr ""
+msgstr "AMIDI-Plug - Selectaţi fişierul SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:362
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
 msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
+#, fuzzy
 msgid "SoundFont settings"
-msgstr ""
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:452
+#, fuzzy
 msgid "Size (bytes)"
-msgstr ""
+msgstr "Mărimea Buffer-ului:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:501
 msgid "Load SF on player start"
-msgstr ""
+msgstr "Încarcă SF la pornirea playerului"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:505
 msgid "Load SF on first midifile play"
-msgstr ""
+msgstr "Încarcă SF la prima redare a unui fişier MIDI"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:520
 #, fuzzy
 msgid "Synthesizer settings"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:529
-#, fuzzy
 msgid "gain"
-msgstr "Llatina"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:535
 #: src/amidi-plug/i_configure-fluidsynth.c:563
@@ -1040,62 +1127,60 @@ msgstr "Llatina"
 #: src/amidi-plug/i_configure-fluidsynth.c:622
 #, fuzzy
 msgid "use default"
-msgstr "Per defecte"
+msgstr "Skin-ul implicit:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:538
 #: src/amidi-plug/i_configure-fluidsynth.c:566
 msgid "value:"
-msgstr ""
+msgstr "valoare:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:557
 msgid "poliphony"
-msgstr ""
+msgstr "polifonie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:585
-#, fuzzy
 msgid "reverb"
-msgstr "Servidor"
+msgstr "reverb"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:594
 #: src/amidi-plug/i_configure-fluidsynth.c:625
-#, fuzzy
 msgid "yes"
-msgstr "Sí"
+msgstr "da"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:596
 #: src/amidi-plug/i_configure-fluidsynth.c:627
 #, fuzzy
 msgid "no"
-msgstr "Mono"
+msgstr "Nu avansa în Playlist"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:616
-#, fuzzy
 msgid "chorus"
-msgstr "Cor"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:647
 #, fuzzy
 msgid "sample rate"
-msgstr "Freqüència de mostreig:"
+msgstr "Rata de Reîmprospătare"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:653
 #, fuzzy
 msgid "22050 Hz "
-msgstr "22000 Hz"
+msgstr "Rata de eșantionare [Hz]:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:656
 #, fuzzy
 msgid "44100 Hz "
-msgstr "44100 Hz"
+msgstr "Rata de eșantionare [Hz]:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:659
 #, fuzzy
 msgid "96000 Hz "
-msgstr "11000 Hz"
+msgstr "Rata de eșantionare [Hz]:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:662
+#, fuzzy
 msgid "custom "
-msgstr ""
+msgstr "Format specificat:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:671
 #, fuzzy
@@ -1105,27 +1190,31 @@ msgstr "Hz"
 #: src/amidi-plug/i_configure-fluidsynth.c:705
 #, fuzzy
 msgid "Buffer settings"
-msgstr "Buffers"
+msgstr "Mărimea Buffer-ului:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:714
+#, fuzzy
 msgid "<span size=\"smaller\">def</span>"
-msgstr ""
+msgstr "<span size=\"small\">Titlu</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:723
 msgid "<span size=\"smaller\">handy buffer tuner</span>"
 msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:737
+#, fuzzy
 msgid "<span size=\"smaller\">size</span>"
-msgstr ""
+msgstr "<span size=\"small\">Titlu</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:751
+#, fuzzy
 msgid "<span size=\"smaller\">margin</span>"
-msgstr ""
+msgstr "<span size=\"small\">Titlu</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:765
+#, fuzzy
 msgid "<span size=\"smaller\">increment</span>"
-msgstr ""
+msgstr "<span size=\"small\">Titlu</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:807
 msgid ""
@@ -1265,8 +1354,9 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:4084
 #: src/sid/xs_interface.c:1828 src/vorbis/fileinfo.c:562
+#, fuzzy
 msgid "Name:"
-msgstr "Nom:"
+msgstr "Numele Instrumentului"
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
@@ -1275,58 +1365,63 @@ msgstr ""
 #: src/amidi-plug/i_fileinfo.c:205
 #, fuzzy
 msgid "Format:"
-msgstr "Port:"
+msgstr "Format"
 
 #: src/amidi-plug/i_fileinfo.c:208
 #, fuzzy
 msgid "Length (msec):"
-msgstr "Durada:"
+msgstr "Mărimea track-ului"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "Num of Tracks:"
-msgstr ""
+msgstr "Numărul de Track-uri"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr ""
+msgstr "variabil"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
-msgstr ""
+msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr ""
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
+#, fuzzy
 msgid "Time Div:"
-msgstr ""
+msgstr "Timp Scurs"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> Comentarii şi versuri MIDI  </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
-msgstr ""
+msgstr "* nici un comentariu disponibil în acest fişier MIDI *"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no lyrics available in this MIDI file *"
-msgstr ""
+msgstr "* versuri ne-disponibile în acest fişier MIDI *"
 
 #: src/amidi-plug/i_fileinfo.c:349
+#, fuzzy
 msgid "  (invalid UTF-8)"
-msgstr ""
+msgstr " (UTF-8 invalid)"
 
 #: src/amidi-plug/i_utils.c:43
+#, fuzzy
 msgid "AMIDI-Plug - about"
-msgstr ""
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/amidi-plug/i_utils.c:68
 msgid ""
 "\n"
 "AMIDI-Plug "
 msgstr ""
+"\n"
+"AMIDI-Plug "
 
 #: src/amidi-plug/i_utils.c:69
 msgid ""
@@ -1355,24 +1450,25 @@ msgstr ""
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr ""
+msgstr "Dreptunghi"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr ""
+msgstr "Dreptunghi rotunjit"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr ""
+msgstr "Dreptunghi concav"
 
 #: src/aosd/aosd_style.c:87
+#, fuzzy
 msgid "None"
-msgstr "Cap"
+msgstr "Deselectează tot"
 
 #: src/aosd/aosd_trigger.c:73
 #, fuzzy
 msgid "Playback Start"
-msgstr "Reproducció"
+msgstr "Începe redarea playlist-ului curent"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Triggers OSD when a playlist entry is played."
@@ -1381,7 +1477,7 @@ msgstr ""
 #: src/aosd/aosd_trigger.c:78
 #, fuzzy
 msgid "Title Change"
-msgstr "Canal únic"
+msgstr "Formatul titlului:"
 
 #: src/aosd/aosd_trigger.c:79
 msgid ""
@@ -1391,24 +1487,27 @@ msgid ""
 msgstr ""
 
 #: src/aosd/aosd_trigger.c:85
+#, fuzzy
 msgid "Volume Change"
-msgstr ""
+msgstr "Schimbă volumul cu"
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Triggers OSD when volume is changed."
 msgstr ""
 
 #: src/aosd/aosd_trigger.c:90
+#, fuzzy
 msgid "Pause On"
-msgstr ""
+msgstr "La încărcare"
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Triggers OSD when playback is paused."
 msgstr ""
 
 #: src/aosd/aosd_trigger.c:95
+#, fuzzy
 msgid "Pause Off"
-msgstr ""
+msgstr "Pauză pentru"
 
 #: src/aosd/aosd_trigger.c:96
 msgid "Triggers OSD when playback is unpaused."
@@ -1416,15 +1515,17 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr ""
+msgstr "Pozitionare"
 
 #: src/aosd/aosd_ui.c:202
+#, fuzzy
 msgid "Relative X offset:"
-msgstr ""
+msgstr "Folosește cale relativă"
 
 #: src/aosd/aosd_ui.c:211
+#, fuzzy
 msgid "Relative Y offset:"
-msgstr ""
+msgstr "Folosește cale relativă"
 
 #: src/aosd/aosd_ui.c:220
 msgid "Max OSD width:"
@@ -1435,12 +1536,14 @@ msgid "Multi-Monitor options"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:237
+#, fuzzy
 msgid "Display OSD using:"
-msgstr ""
+msgstr "Arată fereastra principală"
 
 #: src/aosd/aosd_ui.c:239
+#, fuzzy
 msgid "all monitors"
-msgstr ""
+msgstr "Selectează Tot"
 
 #: src/aosd/aosd_ui.c:242
 #, c-format
@@ -1452,64 +1555,68 @@ msgid "Timing (ms)"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:300
+#, fuzzy
 msgid "Display:"
-msgstr ""
+msgstr "La afișare"
 
 #: src/aosd/aosd_ui.c:305
+#, fuzzy
 msgid "Fade in:"
-msgstr ""
+msgstr "Pornește"
 
 #: src/aosd/aosd_ui.c:310
 msgid "Fade out:"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:391
+#, fuzzy
 msgid "Fonts"
-msgstr ""
+msgstr "<b>_Fonturi</b>"
 
 #: src/aosd/aosd_ui.c:399
-#, c-format
+#, fuzzy, c-format
 msgid "Font %i:"
-msgstr ""
+msgstr "Alege fontul playlist-ului"
 
 #: src/aosd/aosd_ui.c:416
 msgid "Shadow"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:451
-#, fuzzy
 msgid "Internationalization"
-msgstr "Organització:"
+msgstr "Internaţionalizare"
 
 #: src/aosd/aosd_ui.c:457
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:475
+#, fuzzy
 msgid "Select Skin File"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/aosd/aosd_ui.c:583
 msgid "Render Style"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:599
-#, fuzzy
 msgid "Colors"
-msgstr "Tanca"
+msgstr "Culori"
 
 #: src/aosd/aosd_ui.c:612
-#, c-format
+#, fuzzy, c-format
 msgid "Color %i:"
-msgstr ""
+msgstr "Ajustarea culorii"
 
 #: src/aosd/aosd_ui.c:632
+#, fuzzy
 msgid "Custom Skin"
-msgstr ""
+msgstr "Skin-ul implicit:"
 
 #: src/aosd/aosd_ui.c:638
+#, fuzzy
 msgid "Skin file:"
-msgstr ""
+msgstr "Tipul Fișierului: "
 
 #: src/aosd/aosd_ui.c:641 src/sid/xmms-sid.glade:2595
 #: src/sid/xmms-sid.glade:2801 src/sid/xmms-sid.glade:2907
@@ -1519,16 +1626,18 @@ msgid "Browse"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:743
+#, fuzzy
 msgid "Enable trigger"
-msgstr ""
+msgstr "Activează modul 'Mărime Dublă'"
 
 #: src/aosd/aosd_ui.c:770
 msgid "Event"
-msgstr ""
+msgstr "Eveniment"
 
 #: src/aosd/aosd_ui.c:798
+#, fuzzy
 msgid "Composite manager detected"
-msgstr ""
+msgstr "Deschide Managerul de Playlist-uri"
 
 #: src/aosd/aosd_ui.c:805
 msgid ""
@@ -1543,23 +1652,23 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:851
 msgid "Transparency"
-msgstr ""
+msgstr "Transparenţă"
 
 #: src/aosd/aosd_ui.c:857
 msgid "Fake transparency"
-msgstr ""
+msgstr "Transparenţă falsă"
 
 #: src/aosd/aosd_ui.c:859
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr ""
+msgstr "Transparenţă reală (necesita Extensia X Composite)"
 
 #: src/aosd/aosd_ui.c:901
 msgid "Composite extension not loaded"
-msgstr ""
+msgstr "Extensia composită nu a fost încărcată"
 
 #: src/aosd/aosd_ui.c:909
 msgid "Composite extension not available"
-msgstr ""
+msgstr "Extensia composită nu este disponibilă"
 
 #: src/aosd/aosd_ui.c:931
 #, c-format
@@ -1569,52 +1678,47 @@ msgstr ""
 #: src/aosd/aosd_ui.c:1012
 #, fuzzy
 msgid "Audacious OSD - configuration"
-msgstr "Configuració del reproductor de CD"
+msgstr "Developerii Audacious:"
 
 #: src/aosd/aosd_ui.c:1033
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: src/aosd/aosd_ui.c:1048
-#, fuzzy
 msgid "Position"
-msgstr "Descripció:"
+msgstr "Poziţie"
 
 #: src/aosd/aosd_ui.c:1053
-#, fuzzy
 msgid "Animation"
-msgstr "Organització:"
+msgstr "Animaţie"
 
 #: src/aosd/aosd_ui.c:1058
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: src/aosd/aosd_ui.c:1063
-#, fuzzy
 msgid "Decoration"
-msgstr "Descripció:"
+msgstr "Decoraţii"
 
 #: src/aosd/aosd_ui.c:1068
-#, fuzzy
 msgid "Trigger"
-msgstr "Tràiler"
+msgstr "Declanşator"
 
 #: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:87
 #: src/sid/xmms-sid.glade:3545 src/sid/xs_interface.c:1324
-#, fuzzy
 msgid "Misc"
-msgstr "Disco"
-
-#: src/aosd/aosd_ui.c:1110
-msgid "Audacious OSD - about"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1140
+#: src/aosd/aosd_ui.c:1110
 #, fuzzy
+msgid "Audacious OSD - about"
+msgstr "Despre plugin-ul·pentru Alarmă"
+
+#: src/aosd/aosd_ui.c:1140
 msgid ""
 "\n"
 "Audacious OSD "
-msgstr "%s - Audacious"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:1141
 msgid ""
@@ -1632,7 +1736,7 @@ msgstr ""
 #: src/arts/arts.c:22
 #, fuzzy
 msgid "About aRts Output"
-msgstr "Quant a la sortida nul·la"
+msgstr "Plugin-ul de ieșire curent"
 
 #: src/arts/arts.c:23
 msgid ""
@@ -1641,28 +1745,28 @@ msgid ""
 msgstr ""
 
 #: src/arts/configure.c:50
-#, fuzzy
 msgid "aRts Driver configuration"
-msgstr "Configuració del driver OSS"
+msgstr ""
 
 #: src/arts/configure.c:61 src/esd/configure.c:171 src/OSS4/configure.c:232
 #: src/OSS/configure.c:305 src/sun/configure.c:259
 msgid "Buffering:"
-msgstr "Buffers:"
+msgstr ""
 
 #: src/arts/configure.c:73 src/esd/configure.c:184 src/OSS4/configure.c:245
 #: src/OSS/configure.c:318 src/sun/configure.c:272
+#, fuzzy
 msgid "Buffer size (ms):"
-msgstr "Mida del buffer (ms):"
+msgstr "<span size=\"small\">Titlu</span>"
 
 #: src/arts/configure.c:83 src/esd/configure.c:209 src/OSS4/configure.c:270
 #: src/OSS/configure.c:343 src/sun/configure.c:304
 msgid "Buffering"
-msgstr "Buffers"
+msgstr ""
 
 #: src/audiocompress/audacious-glue.c:99
 msgid "AudioCompress "
-msgstr "AudioCompress "
+msgstr ""
 
 #: src/audiocompress/audacious-glue.c:100
 msgid ""
@@ -1673,16 +1777,11 @@ msgid ""
 "Simple dynamic range compressor for transparently\n"
 "keeping the volume level more or less consistent"
 msgstr ""
-"\n"
-"(C) 2003 Trikuare Studios (http://trikuare.cx)\n"
-"Portat a l'Audacious per Tony Vroon (chainsaw@gentoo.org)\n"
-"\n"
-"Compressor simple del recorregut dinàmic per a mantenir el\n"
-"volum més o menys consistent de forma transparent."
 
 #: src/audiocompress/audacious-glue.c:105
+#, fuzzy
 msgid "About AudioCompress"
-msgstr "Quant a l'AudioCompress"
+msgstr "Despre Audacious"
 
 #: src/audiocompress/audacious-glue.c:324
 msgid ""
@@ -1712,11 +1811,12 @@ msgstr ""
 #: src/audiocompress/audacious-glue.c:376
 #, fuzzy
 msgid "AudioCompress preferences"
-msgstr "AudioCompress "
+msgstr "Preferințe Audacious"
 
 #: src/audiocompress/audacious-glue.c:393
+#, fuzzy
 msgid " Quality Options "
-msgstr ""
+msgstr "Meniu de Opțiuni"
 
 #: src/audiocompress/audacious-glue.c:398
 msgid " Aggressively prevent clipping"
@@ -1727,13 +1827,13 @@ msgid " Target & gain"
 msgstr ""
 
 #: src/audiocompress/audacious-glue.c:421
+#, fuzzy
 msgid "Target audio level:"
-msgstr ""
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/audiocompress/audacious-glue.c:429
-#, fuzzy
 msgid "Maximum gain:"
-msgstr "Guany del disc:"
+msgstr ""
 
 #: src/audiocompress/audacious-glue.c:437
 msgid "Gain smooth:"
@@ -1741,7 +1841,7 @@ msgstr ""
 
 #: src/audiocompress/audacious-glue.c:489
 msgid " History "
-msgstr ""
+msgstr " Istorie "
 
 #: src/audiocompress/audacious-glue.c:521
 msgid ""
@@ -1750,46 +1850,52 @@ msgid ""
 msgstr ""
 
 #: src/audiocompress/audacious-glue.c:532
+#, fuzzy
 msgid "Load default values"
-msgstr ""
+msgstr "Încarcă presetarea implicită a egalizatorului"
 
 #: src/audiocompress/audacious-glue.c:537
 #, fuzzy
 msgid "Audio values"
-msgstr "Dispositiu d'àudio:"
+msgstr "<b>Sistemul Audio</b>"
 
 #: src/audiocompress/audacious-glue.c:566 src/echo_plugin/gui.c:153
 #: src/modplug/gui/interface.cxx:733 src/stereo_plugin/stereo.c:135
 msgid "Apply"
-msgstr "Aplica"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:57
+#, fuzzy
 msgid "/Toggle Decorations"
-msgstr "/Mostra o amaga la decoració"
+msgstr "Schimbă Coada"
 
 #: src/blur_scope/blur_scope.c:59
 msgid "/-"
 msgstr "/-"
 
 #: src/blur_scope/blur_scope.c:60
+#, fuzzy
 msgid "/Close"
-msgstr "/Tanca"
+msgstr "Închide"
 
 #: src/blur_scope/blur_scope.c:190
+#, fuzzy
 msgid "Blur scope"
-msgstr "Oscil·loscopi difús"
+msgstr "Scop din Puncte"
 
 #: src/blur_scope/config.c:73
 msgid "Blur Scope: Color selection"
-msgstr "Oscil·loscopi difús: Selecció de color"
+msgstr ""
 
 #: src/blur_scope/config.c:83 src/jack/configure.c:107
+#, fuzzy
 msgid "Options:"
-msgstr "Opcions:"
+msgstr "Meniu de Opțiuni"
 
 #: src/cdaudio-ng/cdaudio-ng.c:141
+#, fuzzy
 msgid "Add CD"
-msgstr ""
+msgstr "Adauga CD..."
 
 #: src/cdaudio-ng/cdaudio-ng.c:201
 #, c-format
@@ -1808,94 +1914,103 @@ msgstr ""
 #: src/cdaudio-ng/cdaudio-ng.c:206
 #, fuzzy
 msgid "About CD Audio Plugin NG"
-msgstr "Quant al plugin per a àudio MPEG"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:801
+#, fuzzy
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
 "No CD inserted, or inserted CD is not an audio CD.\n"
 msgstr ""
+"<b><big>Nu a fost gasit nici un CD ce poate fi redat.</big></b>\n"
+"\n"
+"Nici un CD inserat, sau CD-ul inserat nu este audio.\n"
 
 #: src/cdaudio-ng/configure.c:67
 #, fuzzy
 msgid "CD Audio Plugin Configuration"
-msgstr "Configuració del plugin d'àudio MPEG"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/cdaudio-ng/configure.c:77
+#, fuzzy
 msgid "Digital audio extraction"
-msgstr "Extracció d'àudio digital"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/cdaudio-ng/configure.c:82
 #, fuzzy
 msgid "Title information"
-msgstr "Format del títol:"
+msgstr "Informații despre Track"
 
 #: src/cdaudio-ng/configure.c:99
 msgid "Limit read speed to: "
-msgstr ""
+msgstr "Limitează viteza de citire la:"
 
 #: src/cdaudio-ng/configure.c:106
 #, fuzzy
 msgid "Use cd-text if available"
-msgstr "Estèreo (si està disponible)"
+msgstr "Folosește fonturi Bitmap dacă sunt disponibile"
 
 #: src/cdaudio-ng/configure.c:110
 #, fuzzy
 msgid "Use CDDB if available"
-msgstr "Estèreo (si està disponible)"
+msgstr "Folosește fonturi Bitmap dacă sunt disponibile"
 
 #: src/cdaudio-ng/configure.c:114
-#, fuzzy
 msgid "Server: "
-msgstr "Servidor"
+msgstr "Server:"
 
 #: src/cdaudio-ng/configure.c:117
 #, fuzzy
 msgid "Port: "
-msgstr "Port:"
+msgstr "Port-ul:"
 
 #: src/cdaudio-ng/configure.c:127
+#, fuzzy
 msgid "Override default device: "
-msgstr ""
+msgstr "Salvează Lista Implicită"
 
 #: src/cdaudio-ng/configure.c:134
+#, fuzzy
 msgid "Print debug information"
-msgstr ""
+msgstr "Informații despre Pluginul de ieșire"
 
 #: src/console/Audacious_Config.cxx:126
 msgid "Console Music Decoder"
-msgstr "Descodificador de música de consoles"
+msgstr ""
 
 #: src/console/Audacious_Config.cxx:163
 msgid "Bass:"
-msgstr "Baixos:"
+msgstr "Bass:"
 
 #: src/console/Audacious_Config.cxx:167 src/console/Audacious_Config.cxx:178
 #: src/console/Audacious_Config.cxx:199
 msgid "secs"
-msgstr "segons"
+msgstr ""
 
 #: src/console/Audacious_Config.cxx:174
 msgid "Treble:"
-msgstr "Aguts:"
+msgstr "Inalte:"
 
 #: src/console/Audacious_Config.cxx:195
+#, fuzzy
 msgid "Default song length:"
-msgstr "Duració per defecte:"
+msgstr "Pauză"
 
 #: src/console/Audacious_Config.cxx:201 src/modplug/gui/interface.cxx:264
 #: src/sid/xmms-sid.glade:1424 src/sid/xs_interface.c:673
 msgid "Resampling"
-msgstr "Remostreig"
+msgstr ""
 
 #: src/console/Audacious_Config.cxx:207
+#, fuzzy
 msgid "Enable audio resampling"
-msgstr "Habilita el remostreig d'àudio"
+msgstr "Activează proxy"
 
 #: src/console/Audacious_Config.cxx:222
+#, fuzzy
 msgid "Resampling rate:"
-msgstr "Taxa de remostreig:"
+msgstr "Rata de Reîmprospătare"
 
 #: src/console/Audacious_Config.cxx:237
 msgid "SPC"
@@ -1903,25 +2018,21 @@ msgstr "SPC"
 
 #: src/console/Audacious_Config.cxx:238
 msgid "Ignore length from SPC tags"
-msgstr "Ignora la duració de les etiquetes SPC"
+msgstr ""
 
 #: src/console/Audacious_Config.cxx:239
 msgid "Increase reverb"
-msgstr ""
+msgstr "Măreşte reverbul"
 
 #: src/console/Audacious_Config.cxx:264
-#, fuzzy
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
-"* Durada per defecte *\n"
-"La durada per defecte, expressada en segons, s'utilitza en cançons que\n"
-"no proporcionen informació sobre la seva durada (ie, pistes bucle)."
 
 #: src/console/Audacious_Driver.cxx:495
 msgid "About the Console Music Decoder"
-msgstr "Quant al descodificador de música de consoles"
+msgstr ""
 
 #: src/console/Audacious_Driver.cxx:496
 msgid ""
@@ -1930,11 +2041,6 @@ msgid ""
 "Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 msgstr ""
-"Motor de descodificació de música de consoles basat en el Game_Music_Emu "
-"0.5.2.\n"
-"Formats suportats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Implemetació en l'Audacious per: William Pitcock <nenolod@nenolod.net>,\n"
-"Shay Green <gblargg@gmail.com>"
 
 #: src/echo_plugin/gui.c:12
 msgid ""
@@ -1943,38 +2049,37 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
-"Plugin d'eco\n"
-"Per Johan Levin, 1999.\n"
-"\n"
-"Eco envolvent per Carl van Schaik, 1999."
 
 #: src/echo_plugin/gui.c:26
+#, fuzzy
 msgid "About Echo Plugin"
-msgstr "Quant al plugin d'eco"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/echo_plugin/gui.c:77
 msgid "Configure Echo"
-msgstr "Configuració de l'eco"
+msgstr "Configurează Ecou"
 
 #: src/echo_plugin/gui.c:90
 msgid "Delay: (ms)"
-msgstr "Retard: (ms)"
+msgstr ""
 
 #: src/echo_plugin/gui.c:95
 msgid "Feedback: (%)"
-msgstr "Retorn: (%)"
+msgstr ""
 
 #: src/echo_plugin/gui.c:100
+#, fuzzy
 msgid "Volume: (%)"
-msgstr "Volum: (%)"
+msgstr "Volum: %d%%"
 
 #: src/echo_plugin/gui.c:123
 msgid "Surround echo"
-msgstr "Eco envolvent"
+msgstr ""
 
 #: src/esd/about.c:34
+#, fuzzy
 msgid "About ESounD Plugin"
-msgstr "Quant al plugin ESounD"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/esd/about.c:35
 msgid ""
@@ -1995,125 +2100,122 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Plugin ESound per a l'Audacious\n"
-"\n"
-"Aquest programa és lliure; el podeu redistribuir i/o modificar sota\n"
-"els termes de la llicència GNU General Public Licence publicada per\n"
-"la Free Software Foundation; ja sigui la versió 2 de la Llicència, o\n"
-"(si ho desitgeu) qualsevol altra versió posterior.\n"
-"\n"
-"Aquest programa es distribueix amb l'esperança que sigui útil, però\n"
-"SENSE CAP GARANTIA; sense ni tan sols la garantia implícita de\n"
-"COMERCIABILITAT o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la\n"
-"llicència GNU General Public Licence per a més detalls.\n"
-"\n"
-"Haurieu d'haver rebut una còpia de la llicència GNU General Public\n"
-"Licence juntament amb aquest programa; en cas contrari escriviu a la\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
-"Boston, MA 02110-1301, USA."
 
 #: src/esd/configure.c:102
 msgid "ESD Output Plugin configuration"
-msgstr "Configuració del plugin de sortida ESD"
+msgstr ""
 
 #: src/esd/configure.c:114 src/esd/configure.c:144
 msgid "Host:"
-msgstr "Màquina:"
+msgstr ""
 
 #: src/esd/configure.c:125
+#, fuzzy
 msgid "Use remote host"
-msgstr "Usa una màquina remota"
+msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
 
 #: src/esd/configure.c:132
 msgid "Volume controls OSS mixer"
-msgstr "El volum controla el mesclador OSS"
+msgstr ""
 
 #: src/esd/configure.c:153
+#, fuzzy
 msgid "Port:"
-msgstr "Port:"
+msgstr "Port-ul:"
 
 #: src/esd/configure.c:169
 msgid "Server"
-msgstr "Servidor"
+msgstr "Server"
 
 #: src/esd/configure.c:198 src/OSS4/configure.c:259 src/OSS/configure.c:332
 #: src/sun/configure.c:290
 msgid "Pre-buffer (percent):"
-msgstr "Pre-buffer (percentatge):"
+msgstr ""
 
 #: src/evdev-plug/ed.c:59
 #, fuzzy
 msgid "Playback->Play"
-msgstr "Reproducció"
+msgstr "Redă fișiere"
 
 #: src/evdev-plug/ed.c:60
 #, fuzzy
 msgid "Playback->Stop"
-msgstr "Reproducció"
+msgstr "Oprește melodia curentă"
 
 #: src/evdev-plug/ed.c:61
 #, fuzzy
 msgid "Playback->Pause"
-msgstr "Reproducció"
+msgstr "Pauză pentru"
 
 #: src/evdev-plug/ed.c:62
 #, fuzzy
 msgid "Playback->Prev"
-msgstr "Reproducció"
+msgstr "Continuă redarea la pornire"
 
 #: src/evdev-plug/ed.c:63
 #, fuzzy
 msgid "Playback->Next"
-msgstr "Reproducció"
+msgstr "Selectează Playlist-ul Următor"
 
 #: src/evdev-plug/ed.c:64
 #, fuzzy
 msgid "Playback->Eject"
-msgstr "Reproducció"
+msgstr "Continuă redarea la pornire"
 
 #: src/evdev-plug/ed.c:66
+#, fuzzy
 msgid "Playlist->Repeat"
-msgstr ""
+msgstr "Selectați Playlist-ul"
 
 #: src/evdev-plug/ed.c:67
+#, fuzzy
 msgid "Playlist->Shuffle"
-msgstr ""
+msgstr "Selectați Playlist-ul"
 
 #: src/evdev-plug/ed.c:69
+#, fuzzy
 msgid "Volume->Up_5"
-msgstr ""
+msgstr "Restrânge player-ul"
 
 #: src/evdev-plug/ed.c:70
+#, fuzzy
 msgid "Volume->Down_5"
-msgstr ""
+msgstr "Schimbă volumul cu"
 
 #: src/evdev-plug/ed.c:71
+#, fuzzy
 msgid "Volume->Up_10"
-msgstr ""
+msgstr "Restrânge player-ul"
 
 #: src/evdev-plug/ed.c:72
+#, fuzzy
 msgid "Volume->Down_10"
-msgstr ""
+msgstr "Schimbă volumul cu"
 
 #: src/evdev-plug/ed.c:73
+#, fuzzy
 msgid "Volume->Mute"
-msgstr ""
+msgstr "Schimbă volumul cu"
 
 #: src/evdev-plug/ed.c:75
+#, fuzzy
 msgid "Window->Main"
-msgstr ""
+msgstr "Arată fereastra principală"
 
 #: src/evdev-plug/ed.c:76
+#, fuzzy
 msgid "Window->Playlist"
-msgstr ""
+msgstr "Selectați Playlist-ul"
 
 #: src/evdev-plug/ed.c:77
+#, fuzzy
 msgid "Window->Equalizer"
-msgstr ""
+msgstr "Egalizator Audacious"
 
 #: src/evdev-plug/ed.c:78
+#, fuzzy
 msgid "Window->JumpToFile"
-msgstr ""
+msgstr "Fereastra de Preferințe"
 
 #: src/evdev-plug/ed_internals.c:93
 #, c-format
@@ -2212,7 +2314,7 @@ msgstr ""
 #: src/evdev-plug/ed_ui.c:872
 #, fuzzy
 msgid "Information"
-msgstr "Format ID3:"
+msgstr "Informații despre Track"
 
 #: src/evdev-plug/ed_ui.c:275
 msgid ""
@@ -2222,8 +2324,9 @@ msgstr ""
 
 #: src/evdev-plug/ed_ui.c:318 src/filewriter/filewriter.c:196
 #: src/madplug/plugin.c:620
+#, fuzzy
 msgid "Error"
-msgstr "Error"
+msgstr "Eroare în Audacious"
 
 #: src/evdev-plug/ed_ui.c:319
 msgid ""
@@ -2248,12 +2351,12 @@ msgstr ""
 #: src/evdev-plug/ed_ui.c:360
 #, fuzzy
 msgid "Device name:"
-msgstr "Dispositiu:"
+msgstr "Numele Instrumentului"
 
 #: src/evdev-plug/ed_ui.c:364
 #, fuzzy
 msgid "Device file:"
-msgstr "Dispositiu:"
+msgstr "Tipul Fișierului: "
 
 #: src/evdev-plug/ed_ui.c:411
 msgid ""
@@ -2270,33 +2373,31 @@ msgid "Do you want to remove the selected custom device?\n"
 msgstr ""
 
 #: src/evdev-plug/ed_ui.c:612
-#, fuzzy
 msgid "EvDev-Plug - Configuration"
-msgstr "Configuració del plugin de sortida ESD"
+msgstr ""
 
 #: src/evdev-plug/ed_ui.c:651
-#, fuzzy
 msgid "Active"
-msgstr "Àcid"
+msgstr "Activ"
 
 #: src/evdev-plug/ed_ui.c:655 src/sun/configure.c:488
 msgid "Status"
-msgstr "Estat"
+msgstr "Statut"
 
 #: src/evdev-plug/ed_ui.c:664
 #, fuzzy
 msgid "Device Name"
-msgstr "Dispositiu"
+msgstr "Numele Instrumentului"
 
 #: src/evdev-plug/ed_ui.c:668
 #, fuzzy
 msgid "Device File"
-msgstr "Dispositiu"
+msgstr "Tipul Fișierului: "
 
 #: src/evdev-plug/ed_ui.c:672
 #, fuzzy
 msgid "Device Address"
-msgstr "Dispositius"
+msgstr "Adaugă Adresa Internet..."
 
 #: src/evdev-plug/ed_ui.c:689
 msgid "_Bindings"
@@ -2318,27 +2419,28 @@ msgid ""
 msgstr ""
 
 #: src/evdev-plug/ed_ui.c:1322
-#, fuzzy
 msgid "EvDev-Plug - Bindings Configuration"
-msgstr "Configuració del plugin de sortida ESD"
+msgstr ""
 
 #: src/evdev-plug/ed_ui.c:1362
 #, fuzzy
 msgid "<b>Name: </b>"
-msgstr "<b>Hatena</b>"
+msgstr "Numele Instrumentului"
 
 #: src/evdev-plug/ed_ui.c:1371
 #, fuzzy
 msgid "<b>Filename: </b>"
-msgstr "<b>Hatena</b>"
+msgstr "Numele Fișierului:"
 
 #: src/evdev-plug/ed_ui.c:1380
+#, fuzzy
 msgid "<b>Phys.Address: </b>"
-msgstr ""
+msgstr "Adaugă Adresa Internet..."
 
 #: src/evdev-plug/ed_ui.c:1459
+#, fuzzy
 msgid "EvDev-Plug - about"
-msgstr ""
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/evdev-plug/ed_ui.c:1490
 msgid ""
@@ -2352,10 +2454,9 @@ msgstr ""
 #: src/filewriter/filewriter.c:167
 #, fuzzy
 msgid "About FileWriter-Plugin"
-msgstr "Quant al plugin per a Scrobbler"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/filewriter/filewriter.c:168
-#, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2374,78 +2475,62 @@ msgid ""
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA."
 msgstr ""
-"Plugin ESound per a l'Audacious\n"
-"\n"
-"Aquest programa és lliure; el podeu redistribuir i/o modificar sota\n"
-"els termes de la llicència GNU General Public Licence publicada per\n"
-"la Free Software Foundation; ja sigui la versió 2 de la Llicència, o\n"
-"(si ho desitgeu) qualsevol altra versió posterior.\n"
-"\n"
-"Aquest programa es distribueix amb l'esperança que sigui útil, però\n"
-"SENSE CAP GARANTIA; sense ni tan sols la garantia implícita de\n"
-"COMERCIABILITAT o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la\n"
-"llicència GNU General Public Licence per a més detalls.\n"
-"\n"
-"Haurieu d'haver rebut una còpia de la llicència GNU General Public\n"
-"Licence juntament amb aquest programa; en cas contrari escriviu a la\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
-"Boston, MA 02110-1301, USA."
 
 #: src/filewriter/filewriter.c:197
-#, fuzzy
 msgid ""
 "You cannot use the FileWriter plugin\n"
 "when you're running in realtime mode."
 msgstr ""
-"No podeu utilitzar el plugin d'escriptura\n"
-"al disc en mode de temps real."
 
 #: src/filewriter/filewriter.c:512
 #, fuzzy
 msgid "File Writer Configuration"
-msgstr "Configuració de l'escriptura al disc"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/filewriter/filewriter.c:524
 #, fuzzy
 msgid "Output file format:"
-msgstr "Directori de sortida:"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/filewriter/filewriter.c:542 src/ladspa/ladspa.c:962
-#, fuzzy
 msgid "Configure"
-msgstr "Configuració de l'eco"
+msgstr "Configurează"
 
 #: src/filewriter/filewriter.c:557
 msgid "Save into original directory"
-msgstr ""
+msgstr "Salvează în directorul original"
 
 #: src/filewriter/filewriter.c:562
 msgid "Save into custom directory"
-msgstr ""
+msgstr "Salvează în directorul specificat"
 
 #: src/filewriter/filewriter.c:574
+#, fuzzy
 msgid "Output file folder:"
-msgstr "Directori de sortida:"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/filewriter/filewriter.c:578
 msgid "Pick a folder"
-msgstr "Trieu un directori"
+msgstr "Alegeţi un director"
 
 #: src/filewriter/filewriter.c:598
+#, fuzzy
 msgid "Get filename from:"
-msgstr ""
+msgstr "După calea completă"
 
 #: src/filewriter/filewriter.c:601
+#, fuzzy
 msgid "original file tags"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/filewriter/filewriter.c:607
+#, fuzzy
 msgid "original filename"
-msgstr ""
+msgstr "După Fișier"
 
 #: src/filewriter/filewriter.c:617
 msgid "Don't strip file name extension"
-msgstr "Deixa l'extensió del fitxer"
+msgstr ""
 
 #: src/filewriter/filewriter.c:621
 msgid ""
@@ -2460,11 +2545,12 @@ msgstr ""
 #: src/filewriter/mp3.c:675
 #, fuzzy
 msgid "MP3 Configuration"
-msgstr "Configuració del TiMidity"
+msgstr "AdPlug·::·Configurare"
 
 #: src/filewriter/mp3.c:702
+#, fuzzy
 msgid "Algorithm Quality:"
-msgstr ""
+msgstr "Calitatea sunetului"
 
 #: src/filewriter/mp3.c:724
 msgid ""
@@ -2477,12 +2563,12 @@ msgstr ""
 #: src/filewriter/mp3.c:732
 #, fuzzy
 msgid "Output Samplerate:"
-msgstr "Freqüència de mostreig:"
+msgstr "Plugin-ul de ieșire curent"
 
 #: src/filewriter/mp3.c:743 src/filewriter/mp3.c:884
 #, fuzzy
 msgid "Auto"
-msgstr "Quant a "
+msgstr "Auto-Încarcă Preset-ul"
 
 #: src/filewriter/mp3.c:765
 #, fuzzy
@@ -2494,9 +2580,8 @@ msgid "Bitrate / Compression ratio:"
 msgstr ""
 
 #: src/filewriter/mp3.c:803
-#, fuzzy
 msgid "Bitrate (kbps):"
-msgstr "Ràtio de bits:"
+msgstr "Bitrate-ul (kbps):"
 
 #: src/filewriter/mp3.c:844
 msgid "Compression ratio:"
@@ -2505,21 +2590,20 @@ msgstr ""
 #: src/filewriter/mp3.c:874
 #, fuzzy
 msgid "Audio Mode:"
-msgstr "Dispositiu d'àudio:"
+msgstr "Mod de Vizualizare"
 
 #: src/filewriter/mp3.c:889
-#, fuzzy
 msgid "Joint-Stereo"
-msgstr "Estèreo conjunt"
-
-#: src/filewriter/mp3.c:930
-msgid "auto-M/S mode"
 msgstr ""
 
-#: src/filewriter/mp3.c:942
+#: src/filewriter/mp3.c:930
 #, fuzzy
+msgid "auto-M/S mode"
+msgstr "Mod de Vizualizare"
+
+#: src/filewriter/mp3.c:942
 msgid "Misc:"
-msgstr "Disco"
+msgstr ""
 
 #: src/filewriter/mp3.c:953
 msgid "Enforce strict ISO complience"
@@ -2528,7 +2612,7 @@ msgstr ""
 #: src/filewriter/mp3.c:964
 #, fuzzy
 msgid "Error protection"
-msgstr "Protecció d'errors:"
+msgstr "Eroare în Audacious"
 
 #: src/filewriter/mp3.c:976
 msgid "Adds 16 bit checksum to every frame"
@@ -2536,38 +2620,40 @@ msgstr ""
 
 #: src/filewriter/mp3.c:981 src/filewriter/vorbis.c:271
 #: src/modplug/gui/interface.cxx:310
+#, fuzzy
 msgid "Quality"
-msgstr ""
+msgstr "Calitatea sunetului"
 
 #: src/filewriter/mp3.c:993
+#, fuzzy
 msgid "Enable VBR/ABR"
-msgstr ""
+msgstr "Activează proxy"
 
 #: src/filewriter/mp3.c:1005
+#, fuzzy
 msgid "Type:"
-msgstr ""
+msgstr "Tipul Fișierului: "
 
 #: src/filewriter/mp3.c:1016
 msgid "Variable bitrate"
-msgstr ""
+msgstr "Bitrate variabil"
 
 #: src/filewriter/mp3.c:1028
 msgid "Average bitrate"
-msgstr ""
+msgstr "Bitrate mediu"
 
 #: src/filewriter/mp3.c:1042
 #, fuzzy
 msgid "VBR Options:"
-msgstr "Opcions:"
+msgstr "Meniu de Opțiuni"
 
 #: src/filewriter/mp3.c:1058
-#, fuzzy
 msgid "Minimum bitrate (kbps):"
-msgstr "Ràtio de bits:"
+msgstr "Bitrate minim (kbps)"
 
 #: src/filewriter/mp3.c:1094
 msgid "Maximum bitrate (kbps):"
-msgstr ""
+msgstr "Bitrate maxim (kbps)"
 
 #: src/filewriter/mp3.c:1126
 msgid "Strictly enforce minimum bitrate"
@@ -2582,7 +2668,7 @@ msgstr ""
 #: src/filewriter/mp3.c:1141
 #, fuzzy
 msgid "ABR Options:"
-msgstr "Opcions:"
+msgstr "Meniu de Opțiuni"
 
 #: src/filewriter/mp3.c:1151
 msgid "Average bitrate (kbps):"
@@ -2605,24 +2691,25 @@ msgstr ""
 
 #: src/filewriter/mp3.c:1226
 msgid "VBR/ABR"
-msgstr ""
+msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1238
 msgid "Frame params:"
 msgstr ""
 
 #: src/filewriter/mp3.c:1250
+#, fuzzy
 msgid "Mark as copyright"
-msgstr ""
+msgstr "Salvează ca și playlist static"
 
 #: src/filewriter/mp3.c:1261
+#, fuzzy
 msgid "Mark as original"
-msgstr ""
+msgstr "Salvează ca și playlist static"
 
 #: src/filewriter/mp3.c:1273
-#, fuzzy
 msgid "ID3 params:"
-msgstr "Etiquetes ID3:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1284
 msgid "Force addition of version 2 tag"
@@ -2630,30 +2717,28 @@ msgstr ""
 
 #: src/filewriter/mp3.c:1294
 msgid "Only add v1 tag"
-msgstr ""
+msgstr "Adaugă numai tag-ul v1"
 
 #: src/filewriter/mp3.c:1301
 msgid "Only add v2 tag"
-msgstr ""
+msgstr "Adaugă numai tag-ul v2"
 
 #: src/filewriter/mp3.c:1322
-#, fuzzy
 msgid "Tags"
-msgstr "Tango"
+msgstr "Tag-uri"
 
 #: src/filewriter/vorbis.c:264
-#, fuzzy
 msgid "Vorbis Encoder Configuration"
-msgstr "Configuració de l'escriptura al disc"
+msgstr "Configuraţia Vorbis Encoder"
 
 #: src/filewriter/vorbis.c:284
 msgid "Quality level (0 - 10):"
-msgstr ""
+msgstr "Nivelul de calitate (0 - 10):"
 
 #: src/flacng/plugin.c:735
 #, fuzzy
 msgid "FLAC Audio Plugin "
-msgstr "Plugin CD d'àudio"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/flacng/plugin.c:736
 msgid ""
@@ -2668,15 +2753,15 @@ msgstr ""
 #: src/flacng/plugin.c:741
 #, fuzzy
 msgid "About FLAC Audio Plugin"
-msgstr "Quant al plugin per a LIRC de l'Audacious"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/jack/configure.c:69
 msgid "Connect to all available jack ports"
-msgstr ""
+msgstr "Conectează la toate porturile jack"
 
 #: src/jack/configure.c:76
 msgid "Connect only the output ports"
-msgstr ""
+msgstr "Conectează numai la porturile de ieşire"
 
 #: src/jack/configure.c:83
 msgid "Connect to no ports"
@@ -2685,20 +2770,22 @@ msgstr ""
 #: src/jack/configure.c:98
 #, fuzzy
 msgid "jack Plugin configuration"
-msgstr "Configuració del plugin de sortida ESD"
+msgstr "Lista plugin-urilor _Generale"
 
 #: src/jack/configure.c:116
+#, fuzzy
 msgid "Connection mode:"
-msgstr ""
+msgstr "Mod de Vizualizare"
 
 #: src/jack/configure.c:128
+#, fuzzy
 msgid "Enable debug printing"
-msgstr ""
+msgstr "Activează proxy"
 
 #: src/jack/jack.c:102
 #, fuzzy
 msgid "Sample rate mismatch"
-msgstr "Freqüència de mostreig:"
+msgstr "<b>Convertor pentru rata de eșantionare</b>"
 
 #: src/jack/jack.c:105
 msgid ""
@@ -2715,12 +2802,13 @@ msgid ""
 msgstr ""
 
 #: src/jack/jack.c:118 src/wma/wma.c:156
+#, fuzzy
 msgid " Close "
-msgstr " Tanca "
+msgstr "Închide"
 
 #: src/jack/jack.c:598
 msgid "About JACK Output Plugin 0.17"
-msgstr "Quant al plugin de sortida JACK 0.17"
+msgstr ""
 
 #: src/jack/jack.c:599
 msgid ""
@@ -2732,13 +2820,6 @@ msgid ""
 "Audacious port by\n"
 "Giacomo Lozito from develia.org"
 msgstr ""
-"Driver JACK per a l'XMMS 0.17\n"
-"\n"
-"xmms-jack.sf.net\n"
-"Chris Morgan <cmorgan@alum.wpi.edu>\n"
-"\n"
-"Portat a l'Audacious per\n"
-"Giacomo Lozito de develia.org"
 
 #: src/ladspa/ladspa.c:724
 msgid "This LADSPA plugin has no user controls"
@@ -2747,32 +2828,36 @@ msgstr ""
 #: src/ladspa/ladspa.c:769 src/ladspa/ladspa.c:855
 #, fuzzy
 msgid "Name"
-msgstr "Nom:"
+msgstr "Numele Instrumentului"
 
 #: src/ladspa/ladspa.c:855
 msgid "UID"
 msgstr ""
 
 #: src/ladspa/ladspa.c:930
+#, fuzzy
 msgid "Installed plugins"
-msgstr ""
+msgstr "Reîncarcă Plugin-urile"
 
 #: src/ladspa/ladspa.c:939
+#, fuzzy
 msgid "Running plugins"
-msgstr ""
+msgstr "Reîncarcă Plugin-urile"
 
 #: src/ladspa/ladspa.c:954
+#, fuzzy
 msgid "Add"
-msgstr ""
+msgstr "Adaugă Fișiere"
 
 #: src/ladspa/ladspa.c:958
 #, fuzzy
 msgid "Remove"
-msgstr "Treu un lector"
+msgstr "Șterge Duplicatele"
 
 #: src/ladspa/ladspa.c:971
+#, fuzzy
 msgid "LADSPA Plugin Catalog"
-msgstr ""
+msgstr "Lista plugin-urilor _Generale"
 
 #: src/lastfm/lastfm.c:96
 msgid ""
@@ -2782,12 +2867,14 @@ msgid ""
 msgstr ""
 
 #: src/lirc/about.c:65
+#, fuzzy
 msgid "About LIRC Audacious Plugin"
-msgstr "Quant al plugin per a LIRC de l'Audacious"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/lirc/about.c:92
+#, fuzzy
 msgid "LIRC Plugin "
-msgstr "Plugin per a LIRC"
+msgstr "Plugin de intrare: %s"
 
 #: src/lirc/about.c:94
 msgid ""
@@ -2802,21 +2889,11 @@ msgid ""
 "You can get LIRC information at:\n"
 "http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 msgstr ""
-"\n"
-"Un simple plugin que us permet controlar\n"
-"l'Audacious amb el dimoni de control remot LIRC.\n"
-"\n"
-"Adapatat per a l'Audacious per Tony Vroon <chainsaw@gentoo.org>\n"
-"a partir del plugin per a LIRC de l'XMMS de:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Podeu trobar informació sobre LIRC a:\n"
-"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 
 #: src/lirc/lirc.c:80
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: no s'ha pogut inicialitzar el suport per a LIRC\n"
+msgstr ""
 
 #: src/lirc/lirc.c:88
 #, c-format
@@ -2825,23 +2902,21 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: no s'ha pogut llegir el firxer de configuració de LIRC\n"
-"%s: si us plau, llegiu la documentació de LIRC, per a saber\n"
-"%s: com crear un fitxer de configuració adequat\n"
 
 #: src/lirc/lirc.c:299
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: ordre desconeguda \"%s\"\n"
+msgstr ""
 
 #: src/lirc/lirc.c:309
-#, c-format
+#, fuzzy, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: desconnectat del LIRC\n"
+msgstr "Încarcă preset din fișier"
 
 #: src/madplug/configure.c:148
+#, fuzzy
 msgid "MPEG Audio Plugin Configuration"
-msgstr "Configuració del plugin d'àudio MPEG"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/madplug/configure.c:161
 msgid "Dither output when rounding to 16-bit"
@@ -2870,22 +2945,21 @@ msgstr ""
 #: src/madplug/configure.c:196
 #, fuzzy
 msgid "Enable ReplayGain processing"
-msgstr "Habilita el ReplayGain"
+msgstr "Activează proxy"
 
 #: src/madplug/configure.c:201
 #, fuzzy
 msgid "Track mode"
-msgstr "Nom de les pistes:"
+msgstr "Mod de Vizualizare"
 
 #: src/madplug/configure.c:208
-#, fuzzy
 msgid "6dB hard limiting"
-msgstr "Habilita guany de 6dB + limit rígid"
+msgstr ""
 
 #: src/madplug/configure.c:213
 #, fuzzy
 msgid "Default gain (dB):"
-msgstr "Per defecte (%s)"
+msgstr "Salvează Lista Implicită"
 
 #: src/madplug/configure.c:224
 msgid "Preamp (dB):"
@@ -2894,30 +2968,32 @@ msgstr ""
 #: src/madplug/configure.c:233 src/musepack/libmpc.cxx:223
 #: src/vorbis/configure.c:221 src/wavpack/ui.cxx:545
 msgid "ReplayGain"
-msgstr "ReplayGain"
+msgstr ""
 
 #: src/madplug/configure.c:238 src/vorbis/configure.c:137
 msgid "Override generic titles"
-msgstr "Ignora els títols genèrics"
+msgstr ""
 
 #: src/madplug/configure.c:251
+#, fuzzy
 msgid "ID3 format:"
-msgstr "Format ID3:"
+msgstr "Selecția formatelor"
 
 #: src/madplug/configure.c:261 src/sid/xmms-sid.glade:3144
 #: src/sid/xs_interface.c:1189 src/vorbis/configure.c:160
+#, fuzzy
 msgid "Title"
-msgstr "Títol"
+msgstr "Titlu"
 
 #: src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
 #, fuzzy
 msgid "File Info"
-msgstr "Informació del fitxer - %s"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/madplug/fileinfo.c:158
 #, fuzzy
 msgid "Couldn't open file!"
-msgstr "No s'ha pogut carregar el fitxer MIDI"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/madplug/fileinfo.c:236
 msgid "Couldn't write tag!"
@@ -2926,66 +3002,73 @@ msgstr ""
 #: src/madplug/fileinfo.c:330
 #, fuzzy
 msgid "<b>Name:</b>"
-msgstr "<b>Hatena</b>"
+msgstr "Numele Instrumentului"
 
 #: src/madplug/fileinfo.c:344
+#, fuzzy
 msgid " MPEG Info "
-msgstr " Informació MPEG "
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/madplug/fileinfo.c:417
 msgid " ID3 Tag "
-msgstr " Etiqueta ID3 "
+msgstr ""
 
 #: src/madplug/fileinfo.c:425 src/musepack/libmpc.cxx:513 src/tta/libtta.c:341
 #: src/vorbis/fileinfo.c:585 src/wavpack/ui.cxx:170
+#, fuzzy
 msgid "Title:"
-msgstr "Títol:"
+msgstr "Titlu: "
 
 #: src/madplug/fileinfo.c:435 src/musepack/libmpc.cxx:517 src/tta/libtta.c:351
 #: src/vorbis/fileinfo.c:596 src/wavpack/ui.cxx:182
+#, fuzzy
 msgid "Artist:"
-msgstr "Artista:"
+msgstr "Artist"
 
 #: src/madplug/fileinfo.c:445 src/musepack/libmpc.cxx:521 src/tta/libtta.c:362
 #: src/vorbis/fileinfo.c:607 src/wavpack/ui.cxx:194
+#, fuzzy
 msgid "Album:"
-msgstr "Disc:"
+msgstr "Album"
 
 #: src/madplug/fileinfo.c:455 src/musepack/libmpc.cxx:525 src/tta/libtta.c:373
 #: src/vorbis/fileinfo.c:618 src/wavpack/ui.cxx:206
+#, fuzzy
 msgid "Comment:"
-msgstr "Comentari:"
+msgstr "Comentariu"
 
 #: src/madplug/fileinfo.c:465 src/musepack/libmpc.cxx:529 src/tta/libtta.c:384
 #: src/wavpack/ui.cxx:219
+#, fuzzy
 msgid "Year:"
-msgstr "Any:"
+msgstr "Anul"
 
 #: src/madplug/fileinfo.c:476 src/tta/libtta.c:396 src/vorbis/fileinfo.c:641
 #: src/wavpack/ui.cxx:232
+#, fuzzy
 msgid "Track number:"
-msgstr "Número de pista:"
+msgstr "Numărul Trackului"
 
 #: src/madplug/fileinfo.c:487 src/musepack/libmpc.cxx:539 src/tta/libtta.c:408
 #: src/vorbis/fileinfo.c:653 src/wavpack/ui.cxx:246
+#, fuzzy
 msgid "Genre:"
-msgstr "Gènere:"
+msgstr "Genul"
 
 #: src/madplug/fileinfo.c:500
-#, fuzzy
 msgid "Unknown"
-msgstr "(desconegut)"
+msgstr ""
 
 #: src/madplug/fileinfo.c:620 src/musepack/libmpc.cxx:633 src/tta/libtta.c:431
 #: src/wavpack/ui.cxx:407
-#, c-format
+#, fuzzy, c-format
 msgid "File Info - %s"
-msgstr "Informació del fitxer - %s"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/madplug/fileinfo.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Layer %s"
-msgstr "Reproductor WMA %s"
+msgstr ""
 
 #: src/madplug/fileinfo.c:654
 #, c-format
@@ -2993,9 +3076,9 @@ msgid "VBR (avg. %d kbps)"
 msgstr ""
 
 #: src/madplug/fileinfo.c:660 src/vorbis/fileinfo.c:962
-#, c-format
+#, fuzzy, c-format
 msgid "%d Hz"
-msgstr "%d Hz"
+msgstr "Hz"
 
 #: src/madplug/fileinfo.c:663
 #, c-format
@@ -3003,9 +3086,9 @@ msgid "%d frames"
 msgstr ""
 
 #: src/madplug/fileinfo.c:672
-#, c-format
+#, fuzzy, c-format
 msgid "%d:%02d (%d seconds)"
-msgstr ""
+msgstr "minute:secunde"
 
 #: src/madplug/fileinfo.c:677
 #, c-format
@@ -3056,13 +3139,14 @@ msgid ""
 msgstr ""
 
 #: src/madplug/plugin.c:595
+#, fuzzy
 msgid "About MPEG Audio Plugin"
-msgstr "Quant al plugin per a àudio MPEG"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/metronom/metronom.c:86
 #, fuzzy
 msgid "About Metronom"
-msgstr "Quant a "
+msgstr "Despre Audacious"
 
 #: src/metronom/metronom.c:87
 msgid ""
@@ -3074,9 +3158,9 @@ msgid ""
 msgstr ""
 
 #: src/metronom/metronom.c:199 src/metronom/metronom.c:263
-#, fuzzy, c-format
+#, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Generador de tons:"
+msgstr ""
 
 #: src/metronom/metronom.c:201 src/metronom/metronom.c:265
 #, c-format
@@ -3086,42 +3170,40 @@ msgstr ""
 #: src/modplug/gui/interface.cxx:117
 #, fuzzy
 msgid "ModPlug Configuration"
-msgstr "Configuració del plugin d'àudio MPEG"
+msgstr "AdPlug·::·Configurare"
 
 #: src/modplug/gui/interface.cxx:165 src/timidity/src/interface.c:142
 msgid "16 bit"
-msgstr "16 bits"
+msgstr "16 bit"
 
 #: src/modplug/gui/interface.cxx:173 src/timidity/src/interface.c:134
 msgid "8 bit"
-msgstr "8 bits"
+msgstr "8 bit"
 
 #: src/modplug/gui/interface.cxx:203
 msgid "Mono (downmix)"
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:218 src/timidity/src/interface.c:76
+#, fuzzy
 msgid "Sampling Rate"
-msgstr "Freqüència de mostreig"
+msgstr "<b>Convertor pentru rata de eșantionare</b>"
 
 #: src/modplug/gui/interface.cxx:232
 msgid "48 kHz"
-msgstr ""
+msgstr "48 kHz"
 
 #: src/modplug/gui/interface.cxx:240
-#, fuzzy
 msgid "44 kHz"
-msgstr "44100 Hz"
+msgstr "44 kHz"
 
 #: src/modplug/gui/interface.cxx:248
-#, fuzzy
 msgid "22 kHz"
-msgstr "22000 Hz"
+msgstr "22 kHz"
 
 #: src/modplug/gui/interface.cxx:256
-#, fuzzy
 msgid "11 kHz"
-msgstr "11000 Hz"
+msgstr "11 kHz"
 
 #: src/modplug/gui/interface.cxx:278
 msgid "Nearest (fastest)"
@@ -3144,60 +3226,58 @@ msgid "Use Filename as Song Title"
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:353
+#, fuzzy
 msgid "Fast Playlist Info"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/modplug/gui/interface.cxx:368
 msgid "Noise Reduction"
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:376
+#, fuzzy
 msgid "Play Amiga MOD"
-msgstr ""
+msgstr "- redă fișierele multimedia"
 
 #: src/modplug/gui/interface.cxx:384
-#, fuzzy
 msgid "Reverb"
-msgstr "Servidor"
+msgstr ""
 
 #: src/modplug/gui/interface.cxx:398 src/modplug/gui/interface.cxx:470
 #: src/modplug/gui/interface.cxx:542 src/modplug/gui/interface.cxx:628
+#, fuzzy
 msgid "Enable"
-msgstr ""
+msgstr "Activează modul 'Mărime Dublă'"
 
 #: src/modplug/gui/interface.cxx:438 src/modplug/gui/interface.cxx:582
 #, fuzzy
 msgid "Depth"
-msgstr "Duet"
+msgstr "Adancimea cautarii"
 
 #: src/modplug/gui/interface.cxx:447 src/modplug/gui/interface.cxx:591
-#, fuzzy
 msgid "Delay"
-msgstr "Retard: (ms)"
+msgstr ""
 
 #: src/modplug/gui/interface.cxx:456
 msgid "Bass Boost"
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:510
-#, fuzzy
 msgid "Amount"
-msgstr "Quant a "
+msgstr ""
 
 #: src/modplug/gui/interface.cxx:519
-#, fuzzy
 msgid "Range"
-msgstr "Rave"
+msgstr ""
 
 #: src/modplug/gui/interface.cxx:528
-#, fuzzy
 msgid "Surround"
-msgstr "Eco envolvent"
+msgstr ""
 
 #: src/modplug/gui/interface.cxx:600
 #, fuzzy
 msgid "Preamp"
-msgstr "Dream"
+msgstr "PREAMP"
 
 #: src/modplug/gui/interface.cxx:614
 msgid ""
@@ -3210,29 +3290,32 @@ msgid "Looping"
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:663
+#, fuzzy
 msgid "Don't loop"
-msgstr ""
+msgstr "Nu curăța playlist-ul"
 
 #: src/modplug/gui/interface.cxx:678
 msgid "Loop"
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:694
+#, fuzzy
 msgid "time(s)"
-msgstr ""
+msgstr "Timp Scurs"
 
 #: src/modplug/gui/interface.cxx:701
 msgid "Loop forever"
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:709
+#, fuzzy
 msgid "Effects"
-msgstr ""
+msgstr "<b>Efecte</b>"
 
 #: src/modplug/gui/interface.cxx:793
 #, fuzzy
 msgid "MOD Info"
-msgstr "Informació del CD"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/modplug/gui/interface.cxx:817
 msgid ""
@@ -3249,18 +3332,18 @@ msgid ""
 msgstr ""
 
 #: src/modplug/gui/interface.cxx:866
-#, fuzzy
 msgid "Samples"
-msgstr "Salsa"
+msgstr ""
 
 #: src/modplug/gui/interface.cxx:899
 #, fuzzy
 msgid "Instruments"
-msgstr "Instrumental"
+msgstr "Instrumente: "
 
 #: src/modplug/gui/interface.cxx:932
+#, fuzzy
 msgid "Message"
-msgstr ""
+msgstr "Mesajul melodiei"
 
 #: src/modplug/gui/main.cxx:43
 msgid "Modplug Input Plugin for Audacious ver"
@@ -3279,13 +3362,13 @@ msgstr ""
 #: src/modplug/gui/main.cxx:45
 #, fuzzy
 msgid "About Modplug"
-msgstr "Quant al plugin d'eco"
+msgstr "Despre Audacious"
 
 #: src/modplug/gui/support.cxx:118 src/sid/xs_glade.c:90
 #: src/sid/xs_glade.c:114
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr "No s'ha pogut carregar el fitxer MIDI"
+msgstr ""
 
 #: src/modplug/gui/support.cxx:127
 #, c-format
@@ -3293,8 +3376,9 @@ msgid "Error loading pixmap file: %s"
 msgstr ""
 
 #: src/musepack/libmpc.cxx:145
+#, fuzzy
 msgid "Musepack Decoder Plugin 1.2"
-msgstr ""
+msgstr "Lista plugin-urilor _Generale"
 
 #: src/musepack/libmpc.cxx:146
 msgid ""
@@ -3311,14 +3395,13 @@ msgid "Nevermind"
 msgstr ""
 
 #: src/musepack/libmpc.cxx:165
-#, fuzzy
 msgid "Musepack Decoder Configuration"
-msgstr "Configuració de l'escriptura al disc"
+msgstr ""
 
 #: src/musepack/libmpc.cxx:175
 #, fuzzy
 msgid "General Settings"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/musepack/libmpc.cxx:182 src/wavpack/ui.cxx:490
 msgid "Enable Dynamic Bitrate Display"
@@ -3327,43 +3410,45 @@ msgstr ""
 #: src/musepack/libmpc.cxx:186 src/wavpack/ui.cxx:496
 #, fuzzy
 msgid "Plugin"
-msgstr "Plugin LIRC"
+msgstr "Plugin de intrare: %s"
 
 #: src/musepack/libmpc.cxx:189
 #, fuzzy
 msgid "ReplayGain Settings"
-msgstr "Paràmetres de ReplayGain:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/musepack/libmpc.cxx:196 src/vorbis/configure.c:172
 #: src/wavpack/ui.cxx:508
+#, fuzzy
 msgid "Enable Clipping Prevention"
-msgstr "Prevenció de distorsions"
+msgstr "Activează proxy"
 
 #: src/musepack/libmpc.cxx:201 src/vorbis/configure.c:177
 #: src/wavpack/ui.cxx:513
+#, fuzzy
 msgid "Enable ReplayGain"
-msgstr "Habilita el ReplayGain"
+msgstr "Activează modul 'Mărime Dublă'"
 
 #: src/musepack/libmpc.cxx:206
 #, fuzzy
 msgid "ReplayGain Type"
-msgstr "Tipus de ReplayGain:"
+msgstr "Tipul Fișierului: "
 
 #: src/musepack/libmpc.cxx:214
 #, fuzzy
 msgid "Use Track Gain"
-msgstr "usa el guany/pic de la pista"
+msgstr "Fereastra cu informații despre Track"
 
 #: src/musepack/libmpc.cxx:218
 #, fuzzy
 msgid "Use Album Gain"
-msgstr "usa el guany/pic del disc"
+msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
 
 #: src/musepack/libmpc.cxx:490 src/sid/xmms-sid.glade:3755
 #: src/sid/xs_interface.c:1708 src/tta/libtta.c:322 src/wavpack/ui.cxx:150
 #, fuzzy
 msgid "Filename:"
-msgstr "Nom d'usuari:"
+msgstr "Fișier:"
 
 #: src/musepack/libmpc.cxx:505
 msgid "Musepack Tag"
@@ -3372,27 +3457,28 @@ msgstr ""
 #: src/musepack/libmpc.cxx:534
 #, fuzzy
 msgid "Track:"
-msgstr "Guany de la pista:"
+msgstr "Informații despre Track"
 
 #: src/musepack/libmpc.cxx:550 src/sid/xmms-sid.glade:1996
 #: src/sid/xs_interface.c:835 src/wavpack/ui.cxx:265
 #, fuzzy
 msgid "Save"
-msgstr "Rave"
+msgstr "Salvează"
 
 #: src/musepack/libmpc.cxx:553 src/wavpack/ui.cxx:271
 #, fuzzy
 msgid "Remove Tag"
-msgstr "Treu un lector"
+msgstr "Șterge Duplicatele"
 
 #: src/musepack/libmpc.cxx:561
+#, fuzzy
 msgid "Musepack Info"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/musepack/libmpc.cxx:594
-#, fuzzy, c-format
+#, c-format
 msgid "Streamversion %d"
-msgstr "Streaming"
+msgstr ""
 
 #: src/musepack/libmpc.cxx:595
 #, c-format
@@ -3412,66 +3498,63 @@ msgstr ""
 #: src/musepack/libmpc.cxx:598
 #, fuzzy, c-format
 msgid "Samplerate: %d Hz"
-msgstr "Freqüència de mostreig:"
+msgstr "Rata de eșantionare [Hz]:"
 
 #: src/musepack/libmpc.cxx:599
 #, fuzzy, c-format
 msgid "Channels: %d"
-msgstr "Canals:"
+msgstr "Canale"
 
 #: src/musepack/libmpc.cxx:600
 #, fuzzy, c-format
 msgid "Length: %d:\\%.2d"
-msgstr ""
-"\n"
-"Durada total: %d:%d\n"
+msgstr "Mărimea track-ului"
 
 #: src/musepack/libmpc.cxx:601
 #, fuzzy, c-format
 msgid "File size: %d Bytes"
-msgstr "Mida del fitxer:"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/musepack/libmpc.cxx:602
 #, fuzzy, c-format
 msgid "Track Peak: %5u"
-msgstr "Pic de la pista:"
+msgstr "Fereastra cu informații despre Track"
 
 #: src/musepack/libmpc.cxx:603
-#, fuzzy, c-format
+#, c-format
 msgid "Track Gain: %-+2.2f dB"
-msgstr "Guany de la pista:"
+msgstr ""
 
 #: src/musepack/libmpc.cxx:604
 #, fuzzy, c-format
 msgid "Album Peak: %5u"
-msgstr "Pic del disc:"
+msgstr "<span size=\"small\">Album</span>"
 
 #: src/musepack/libmpc.cxx:605
-#, fuzzy, c-format
+#, c-format
 msgid "Album Gain: %-+5.2f dB"
-msgstr "Guany del disc:"
+msgstr ""
 
 #: src/null/null.c:61
+#, fuzzy
 msgid "Null output plugin "
-msgstr "Plugin de sortida nul"
+msgstr "Plugin-ul de ieșire curent"
 
 #: src/null/null.c:62
-#, fuzzy
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
 msgstr ""
-" per Christian Birchinger <joker@netswarm.net>\n"
-" basat el plugin de l'XMMS de Håvard Kvål <havardk@xmms.org>"
 
 #: src/null/null.c:65
+#, fuzzy
 msgid "About Null Output"
-msgstr "Quant a la sortida nul·la"
+msgstr "Plugin-ul de ieșire curent"
 
 #: src/null/null.c:94
 #, fuzzy
 msgid "Null output preferences"
-msgstr "Plugin de sortida nul"
+msgstr "Preferințele Plugin-ului de Ieșire"
 
 #: src/null/null.c:103
 msgid "Run in real time"
@@ -3480,10 +3563,9 @@ msgstr ""
 #: src/OSS4/about.c:42
 #, fuzzy
 msgid "About OSSv4 Driver"
-msgstr "Quant al driver OSS"
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/OSS4/about.c:43
-#, fuzzy
 msgid ""
 "Audacious OSSv4 Driver\n"
 "\n"
@@ -3505,43 +3587,29 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Driver OSS de l'Audacious\n"
-"\n"
-"Aquest programa és lliure; el podeu redistribuir i/o modificar sota\n"
-"els termes de la llicència GNU General Public Licence publicada per\n"
-"la Free Software Foundation; ja sigui la versió 2 de la Llicència, o\n"
-"(si ho desitgeu) qualsevol altra versió posterior.\n"
-"\n"
-"Aquest programa es distribueix amb l'esperança que sigui útil, però\n"
-"SENSE CAP GARANTIA; sense ni tan sols la garantia implícita de\n"
-"COMERCIABILITAT o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la\n"
-"llicència GNU General Public Licence per a més detalls.\n"
-"\n"
-"Haurieu d'haver rebut una còpia de la llicència GNU General Public\n"
-"Licence juntament amb aquest programa; en cas contrari escriviu a la\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
-"Boston, MA 02110-1301, USA."
 
 #: src/OSS4/configure.c:120 src/OSS/configure.c:152
-#, c-format
+#, fuzzy, c-format
 msgid "Default (%s)"
-msgstr "Per defecte (%s)"
+msgstr "Implicit"
 
 #: src/OSS4/configure.c:170 src/OSS/configure.c:202
 msgid "OSS Driver configuration"
-msgstr "Configuració del driver OSS"
+msgstr ""
 
 #: src/OSS4/configure.c:208 src/OSS/configure.c:240 src/OSS/configure.c:281
+#, fuzzy
 msgid "Use alternate device:"
-msgstr "Una un dispositiu alternatiu:"
+msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
 
 #: src/OSS4/configure.c:230 src/OSS/configure.c:303 src/sun/configure.c:248
 msgid "Devices"
-msgstr "Dispositius"
+msgstr ""
 
 #: src/OSS4/configure.c:272 src/OSS/configure.c:344
+#, fuzzy
 msgid "Mixer Settings:"
-msgstr "Paràmetres del mesclador:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/OSS4/configure.c:278
 msgid "Save VMIX volume between sessions"
@@ -3549,11 +3617,12 @@ msgstr ""
 
 #: src/OSS4/configure.c:284 src/OSS/configure.c:356 src/sun/configure.c:394
 msgid "Mixer"
-msgstr "Mesclador"
+msgstr ""
 
 #: src/OSS/about.c:39
+#, fuzzy
 msgid "About OSS Driver"
-msgstr "Quant al driver OSS"
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/OSS/about.c:40
 msgid ""
@@ -3574,34 +3643,16 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Driver OSS de l'Audacious\n"
-"\n"
-"Aquest programa és lliure; el podeu redistribuir i/o modificar sota\n"
-"els termes de la llicència GNU General Public Licence publicada per\n"
-"la Free Software Foundation; ja sigui la versió 2 de la Llicència, o\n"
-"(si ho desitgeu) qualsevol altra versió posterior.\n"
-"\n"
-"Aquest programa es distribueix amb l'esperança que sigui útil, però\n"
-"SENSE CAP GARANTIA; sense ni tan sols la garantia implícita de\n"
-"COMERCIABILITAT o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la\n"
-"llicència GNU General Public Licence per a més detalls.\n"
-"\n"
-"Haurieu d'haver rebut una còpia de la llicència GNU General Public\n"
-"Licence juntament amb aquest programa; en cas contrari escriviu a la\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
-"Boston, MA 02110-1301, USA."
 
 #: src/OSS/configure.c:350
 msgid "Volume controls Master not PCM"
-msgstr "El volum canvia el Master, no el PCM"
+msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:678
-#, fuzzy
 msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Plugin de sortida CoreAudio"
+msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:679
-#, fuzzy
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3620,42 +3671,29 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Plugin ESound per a l'Audacious\n"
-"\n"
-"Aquest programa és lliure; el podeu redistribuir i/o modificar sota\n"
-"els termes de la llicència GNU General Public Licence publicada per\n"
-"la Free Software Foundation; ja sigui la versió 2 de la Llicència, o\n"
-"(si ho desitgeu) qualsevol altra versió posterior.\n"
-"\n"
-"Aquest programa es distribueix amb l'esperança que sigui útil, però\n"
-"SENSE CAP GARANTIA; sense ni tan sols la garantia implícita de\n"
-"COMERCIABILITAT o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la\n"
-"llicència GNU General Public Licence per a més detalls.\n"
-"\n"
-"Haurieu d'haver rebut una còpia de la llicència GNU General Public\n"
-"Licence juntament amb aquest programa; en cas contrari escriviu a la\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
-"Boston, MA 02110-1301, USA."
 
 #: src/scrobbler/configure.c:100
 msgid "<b>Services</b>"
-msgstr "<b>Serveis</b>"
+msgstr ""
 
 #: src/scrobbler/configure.c:122 src/scrobbler/configure.c:162
+#, fuzzy
 msgid "Username:"
-msgstr "Nom d'usuari:"
+msgstr "Utilizator:"
 
 #: src/scrobbler/configure.c:128 src/scrobbler/configure.c:168
+#, fuzzy
 msgid "Password:"
-msgstr "Contrasenya:"
+msgstr "Parolă:"
 
 #: src/scrobbler/configure.c:146
+#, fuzzy
 msgid "<b>Last.FM</b>"
-msgstr "<b>Last.FM</b>"
+msgstr "Radio Last.fm"
 
 #: src/scrobbler/configure.c:186
 msgid "<b>Gerpok</b>"
-msgstr "<b>Gerpok</b>"
+msgstr ""
 
 #: src/scrobbler/gtkstuff.c:20
 msgid ""
@@ -3666,8 +3704,9 @@ msgid ""
 msgstr ""
 
 #: src/scrobbler/gtkstuff.c:22
+#, fuzzy
 msgid "About Scrobbler Plugin"
-msgstr "Quant al plugin per a Scrobbler"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/scrobbler/gtkstuff.c:35
 #, c-format
@@ -3682,7 +3721,7 @@ msgstr ""
 #: src/scrobbler/gtkstuff.c:41
 #, fuzzy
 msgid "Scrobbler Error"
-msgstr "Plugin per a Scrobbler"
+msgstr "Eroare în Audacious"
 
 #: src/sid/xmms-sid.c:207
 msgid "Error initializing song-length database!\n"
@@ -3715,9 +3754,8 @@ msgid "Oversampling rate-conversion pass failed.\n"
 msgstr ""
 
 #: src/sid/xmms-sid.c:770
-#, fuzzy
 msgid "Subtune Control"
-msgstr "Control del volum:"
+msgstr ""
 
 #: src/sid/xmms-sid.c:1001
 #, c-format
@@ -3725,9 +3763,9 @@ msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
 msgstr ""
 
 #: src/sid/xmms-sid.c:1008
-#, c-format
+#, fuzzy, c-format
 msgid "Could not allocate sidFilename ('%s')\n"
-msgstr ""
+msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
 #: src/sid/xmms-sid.c:1017
 #, c-format
@@ -3737,21 +3775,20 @@ msgstr ""
 #: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:235
 #, fuzzy
 msgid "Audacious-SID Configuration"
-msgstr "Configuració del plugin d'àudio MPEG"
+msgstr "Developerii Audacious:"
 
 #: src/sid/xmms-sid.glade:70 src/sid/xs_interface.c:271
-#, fuzzy
 msgid "8-bit"
-msgstr "8 bits"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:89 src/sid/xs_interface.c:278
-#, fuzzy
 msgid "16-bit"
-msgstr "16 bits"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:110 src/sid/xs_interface.c:285
+#, fuzzy
 msgid "Resolution:"
-msgstr "Resolució:"
+msgstr "Rezoluție"
 
 #: src/sid/xmms-sid.glade:195 src/sid/xs_interface.c:316
 msgid "Autopanning"
@@ -3759,18 +3796,18 @@ msgstr ""
 
 #: src/sid/xmms-sid.glade:216 src/sid/xs_interface.c:323
 #: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
+#, fuzzy
 msgid "Channels:"
-msgstr "Canals:"
+msgstr "Canale"
 
 #: src/sid/xmms-sid.glade:565 src/sid/xs_interface.c:373
-#, fuzzy
 msgid "Samplerate:"
-msgstr "Freqüència de mostreig:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:611 src/sid/xs_interface.c:390
 #, fuzzy
 msgid "Use oversampling"
-msgstr "Remostreig"
+msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
 
 #: src/sid/xmms-sid.glade:637 src/sid/xs_interface.c:401
 msgid "Factor:"
@@ -3781,13 +3818,13 @@ msgid "Large factors require more CPU-power"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:715 src/sid/xs_interface.c:419
-#, fuzzy
 msgid "Oversampling:"
-msgstr "Remostreig"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:751 src/sid/xs_interface.c:424
+#, fuzzy
 msgid "Audio"
-msgstr ""
+msgstr "Audio"
 
 #: src/sid/xmms-sid.glade:801 src/sid/xs_interface.c:456
 msgid ""
@@ -3807,8 +3844,9 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:823 src/sid/xs_interface.c:458
+#, fuzzy
 msgid "PAL (50 Hz)"
-msgstr ""
+msgstr "Rata de eșantionare [Hz]:"
 
 #: src/sid/xmms-sid.glade:841 src/sid/xs_interface.c:470
 msgid ""
@@ -3818,8 +3856,9 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:843 src/sid/xs_interface.c:466
+#, fuzzy
 msgid "NTSC (60 Hz)"
-msgstr ""
+msgstr "Rata de eșantionare [Hz]:"
 
 #: src/sid/xmms-sid.glade:864 src/sid/xs_interface.c:474
 msgid "Clock speed:"
@@ -3853,9 +3892,8 @@ msgid "MOS 8580"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:971 src/sid/xs_interface.c:512
-#, fuzzy
 msgid "SID model:"
-msgstr "Mode de reproducció:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:1023 src/sid/xs_interface.c:533
 msgid ""
@@ -3878,8 +3916,9 @@ msgid "SIDPlay 2 (cycle-based)"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1068 src/sid/xs_interface.c:545
+#, fuzzy
 msgid "Emulation library selection:"
-msgstr ""
+msgstr "Șterge selecția anterioară înainte de a căuta"
 
 #: src/sid/xmms-sid.glade:1114 src/sid/xs_interface.c:562
 msgid "Real C64 (SIDPlay 2 only)"
@@ -3900,7 +3939,7 @@ msgstr ""
 #: src/sid/xmms-sid.glade:1194 src/sid/xs_interface.c:590
 #, fuzzy
 msgid "Memory mode:"
-msgstr "Mode de reproducció:"
+msgstr "Mod de Vizualizare"
 
 #: src/sid/xmms-sid.glade:1230 src/sid/xs_interface.c:595
 msgid "Emu#1"
@@ -3942,8 +3981,9 @@ msgid "HardSID"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1337 src/sid/xs_interface.c:640
+#, fuzzy
 msgid "SIDPlay 2 options:"
-msgstr ""
+msgstr "Meniu de Opțiuni"
 
 #: src/sid/xmms-sid.glade:1382 src/sid/xs_interface.c:661
 msgid ""
@@ -3966,14 +4006,13 @@ msgid "Linear interpolation"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1444 src/sid/xs_interface.c:680
-#, fuzzy
 msgid "Resampling (FIR)"
-msgstr "Remostreig"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:1465 src/sid/xs_interface.c:687
 #, fuzzy
 msgid "reSID sampling options:"
-msgstr "Taxa de remostreig:"
+msgstr "<b>Convertor pentru rata de eșantionare</b>"
 
 #: src/sid/xmms-sid.glade:1501 src/sid/xs_interface.c:692
 msgid "Emu#2"
@@ -3996,8 +4035,9 @@ msgid "FS"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1641 src/sid/xs_interface.c:750
+#, fuzzy
 msgid "FM"
-msgstr ""
+msgstr "Radio Last.fm"
 
 #: src/sid/xmms-sid.glade:1692 src/sid/xs_interface.c:767
 msgid "FT"
@@ -4028,21 +4068,22 @@ msgid "6581R4 (alankila)"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1975 src/sid/xs_interface.c:827
+#, fuzzy
 msgid "Load"
-msgstr ""
+msgstr "Încarcă"
 
 #: src/sid/xmms-sid.glade:2017 src/sid/xs_interface.c:843
+#, fuzzy
 msgid "Import"
-msgstr ""
+msgstr "Importă"
 
 #: src/sid/xmms-sid.glade:2038 src/sid/xs_interface.c:851
 msgid "Export"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2083 src/sid/xs_interface.c:865
-#, fuzzy
 msgid "Filter curve:"
-msgstr "Mida del fitxer:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:2119 src/sid/xs_interface.c:870
 msgid "SIDPlay2"
@@ -4065,9 +4106,8 @@ msgstr ""
 #: src/sid/xmms-sid.glade:2226 src/sid/xmms-sid.glade:2397
 #: src/sid/xmms-sid.glade:3364 src/sid/xs_interface.c:910
 #: src/sid/xs_interface.c:964 src/sid/xs_interface.c:1276
-#, fuzzy
 msgid "Playtime:"
-msgstr "Mode de reproducció:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:2305 src/sid/xs_interface.c:930
 msgid "Minimum playtime:"
@@ -4108,8 +4148,9 @@ msgid "Use XSIDPLAY-compatible database"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2548 src/sid/xs_interface.c:1012
+#, fuzzy
 msgid "DB-file:"
-msgstr ""
+msgstr "Tipul Fișierului: "
 
 #: src/sid/xmms-sid.glade:2573 src/sid/xs_interface.c:1022
 msgid "Database path and filename"
@@ -4120,13 +4161,13 @@ msgid "Browse for song length-database file"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2620 src/sid/xs_interface.c:1030
+#, fuzzy
 msgid "Song length database:"
-msgstr ""
+msgstr "Pauză"
 
 #: src/sid/xmms-sid.glade:2656 src/sid/xs_interface.c:1035
-#, fuzzy
 msgid "Songlength"
-msgstr "Duració per defecte:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:2700 src/sid/xs_interface.c:1062
 msgid ""
@@ -4137,12 +4178,11 @@ msgstr ""
 
 #: src/sid/xmms-sid.glade:2702 src/sid/xs_interface.c:1058
 msgid "Use STIL database"
-msgstr ""
+msgstr "Foloseste baza de date STIL"
 
 #: src/sid/xmms-sid.glade:2727 src/sid/xs_interface.c:1069
-#, fuzzy
 msgid "STIL file:"
-msgstr "Títol:"
+msgstr "Fisierul STIL:"
 
 #: src/sid/xmms-sid.glade:2764 src/sid/xs_interface.c:1085
 msgid ""
@@ -4155,8 +4195,9 @@ msgid "Browse for STIL-database file"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2833 src/sid/xs_interface.c:1104
+#, fuzzy
 msgid "HVSC path:"
-msgstr ""
+msgstr "Calea fisierului"
 
 #: src/sid/xmms-sid.glade:2870 src/sid/xs_interface.c:1120
 msgid ""
@@ -4181,9 +4222,8 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2982 src/sid/xs_interface.c:1151
-#, fuzzy
 msgid "Override generic XMMS titles"
-msgstr "Ignora els títols genèrics"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:3032 src/sid/xs_interface.c:1172
 msgid ""
@@ -4206,14 +4246,12 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:3108 src/sid/xs_interface.c:1184
-#, fuzzy
 msgid "Song name/title format:"
-msgstr "Format del títol:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:3188 src/sid/xs_interface.c:1216
-#, fuzzy
 msgid "No sub-tune control."
-msgstr "Control del volum:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:3190 src/sid/xs_interface.c:1212
 msgid "Disabled"
@@ -4246,13 +4284,13 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:3252 src/sid/xs_interface.c:1236
+#, fuzzy
 msgid "Song-position patch"
-msgstr ""
+msgstr "Pauză"
 
 #: src/sid/xmms-sid.glade:3273 src/sid/xs_interface.c:1244
-#, fuzzy
 msgid "Sub-tune control:"
-msgstr "Control del volum:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:3319 src/sid/xs_interface.c:1261
 msgid "Go through all sub-tunes in file"
@@ -4274,12 +4312,14 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:3489 src/sid/xs_interface.c:1313
+#, fuzzy
 msgid "Detect file by contents (slower)"
-msgstr ""
+msgstr "Detecția formatului după extensie."
 
 #: src/sid/xmms-sid.glade:3509 src/sid/xs_interface.c:1319
+#, fuzzy
 msgid "Miscellaneous options:"
-msgstr ""
+msgstr "Meniu de Opțiuni"
 
 #: src/sid/xmms-sid.glade:3582 src/sid/xs_interface.c:1343
 msgid "Accept and update changes"
@@ -4287,11 +4327,12 @@ msgstr ""
 
 #: src/sid/xmms-sid.glade:3596 src/sid/xs_interface.c:1350
 msgid "Cancel any changes"
-msgstr ""
+msgstr "Anuleaza toate schimbarile"
 
 #: src/sid/xmms-sid.glade:3620 src/sid/xs_interface.c:1651
+#, fuzzy
 msgid "Audacious-SID Fileinfo"
-msgstr ""
+msgstr "Developerii Audacious:"
 
 #: src/sid/xmms-sid.glade:3674 src/sid/xs_interface.c:1677
 msgid " < "
@@ -4302,8 +4343,9 @@ msgid " > "
 msgstr ""
 
 #: src/sid/xmms-sid.glade:3783 src/sid/xs_interface.c:1716
+#, fuzzy
 msgid "Songname:"
-msgstr ""
+msgstr "Autoderularea Numelui Fișierului"
 
 #: src/sid/xmms-sid.glade:3811 src/sid/xs_interface.c:1724
 msgid "Composer:"
@@ -4312,36 +4354,39 @@ msgstr ""
 #: src/sid/xmms-sid.glade:3839 src/sid/xs_interface.c:1732
 #: src/vorbis/fileinfo.c:723
 msgid "Copyright:"
-msgstr "Copyright:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:3953 src/sid/xs_interface.c:1772
+#, fuzzy
 msgid "Song Information:"
-msgstr ""
+msgstr "Informații despre Track"
 
 #: src/sid/xmms-sid.glade:4008 src/sid/xs_interface.c:1797
 msgid " "
 msgstr ""
 
 #: src/sid/xmms-sid.glade:4035 src/sid/xs_interface.c:1812
+#, fuzzy
 msgid "Author:"
-msgstr ""
+msgstr "Autor: "
 
 #: src/sid/xmms-sid.glade:4133 src/sid/xs_interface.c:1844
-#, fuzzy
 msgid "Duration:"
-msgstr "Descripció:"
+msgstr ""
 
 #: src/sid/xmms-sid.glade:4227 src/sid/xs_interface.c:1877
+#, fuzzy
 msgid "Sub-tune Information:"
-msgstr ""
+msgstr "Informații despre Pluginul de ieșire"
 
 #: src/sid/xmms-sid.glade:4281 src/sid/xs_interface.c:1951
 msgid "Select HVSC song length database"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:4322 src/sid/xs_interface.c:1989
+#, fuzzy
 msgid "Select STIL-database "
-msgstr ""
+msgstr "Alege fontul playlist-ului"
 
 #: src/sid/xmms-sid.glade:4363 src/sid/xs_interface.c:2027
 msgid "Select HVSC location prefix"
@@ -4350,35 +4395,35 @@ msgstr ""
 #: src/sid/xs_fileinfo.c:315
 #, fuzzy
 msgid "General info"
-msgstr "General"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/sid/xs_fileinfo.c:325
-#, c-format
+#, fuzzy, c-format
 msgid "Tune #%i: "
-msgstr ""
+msgstr "Pornește"
 
 #: src/sid/xs_fileinfo.c:336
-#, c-format
+#, fuzzy, c-format
 msgid "Tune #%i"
-msgstr ""
+msgstr "Pornește"
 
 #: src/sid/xs_length.c:113
 msgid "Error allocating new node. Fatal error.\n"
 msgstr ""
 
 #: src/sid/xs_length.c:128
-#, c-format
+#, fuzzy, c-format
 msgid "'=' expected on column #%d.\n"
-msgstr ""
+msgstr "Închide dialogul după salt"
 
 #: src/sid/xs_length.c:153
 msgid "Could not allocate memory for node.\n"
 msgstr ""
 
 #: src/sid/xs_length.c:204
-#, c-format
+#, fuzzy, c-format
 msgid "Could not open SongLengthDB '%s'\n"
-msgstr ""
+msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
 #: src/sid/xs_length.c:225
 #, c-format
@@ -4443,8 +4488,9 @@ msgid "[SIDPlay2] Could not initialize emulation engine.\n"
 msgstr ""
 
 #: src/sid/xs_sidplay2.cc:224
+#, fuzzy
 msgid "reSID->create() failed.\n"
-msgstr ""
+msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
 #: src/sid/xs_sidplay2.cc:230
 #, c-format
@@ -4452,17 +4498,18 @@ msgid "reSID->filter(%d) failed.\n"
 msgstr ""
 
 #: src/sid/xs_sidplay2.cc:238
-#, c-format
+#, fuzzy, c-format
 msgid "reSID->sampling(%d) failed.\n"
-msgstr ""
+msgstr "<b>Convertor pentru rata de eșantionare</b>"
 
 #: src/sid/xs_sidplay2.cc:248
 msgid "reSID->filter(NULL) failed.\n"
 msgstr ""
 
 #: src/sid/xs_sidplay2.cc:262
+#, fuzzy
 msgid "hardSID->create() failed.\n"
-msgstr ""
+msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
 #: src/sid/xs_sidplay2.cc:268
 #, c-format
@@ -4508,19 +4555,19 @@ msgid "SubTune structure malloc failed!\n"
 msgstr ""
 
 #: src/sid/xs_stil.c:168
-#, c-format
+#, fuzzy, c-format
 msgid "Could not open STILDB '%s'\n"
-msgstr ""
+msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
 #: src/sndstretch/sndstretch_xmms.c:163
 #, fuzzy
 msgid "About SndStretch"
-msgstr "Quant al driver OSS"
+msgstr "Despre Audacious"
 
 #: src/sndstretch/sndstretch_xmms.c:323
 #, fuzzy
 msgid "Volume corr."
-msgstr "Control del volum:"
+msgstr "Schimbă volumul cu"
 
 #: src/sndstretch/sndstretch_xmms.c:324
 msgid "Short Overlap"
@@ -4529,45 +4576,41 @@ msgstr ""
 #: src/sndstretch/sndstretch_xmms.c:378
 #, fuzzy
 msgid "Speed"
-msgstr "Parlat"
+msgstr "Viteză: "
 
 #: src/sndstretch/sndstretch_xmms.c:379
-#, fuzzy
 msgid "Pitch"
-msgstr "Ubicació:"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:380
-#, fuzzy
 msgid "Scale"
-msgstr "Vocal"
+msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:400
 #, fuzzy
 msgid "SndStretch - Configuration"
-msgstr "Configuració del driver Sun"
+msgstr "AdPlug·::·Configurare"
 
 #: src/song_change/song_change.c:349
 msgid "Commands"
-msgstr "Ordres"
+msgstr ""
 
 #: src/song_change/song_change.c:356
 msgid "Command to run when Audacious starts a new song."
-msgstr "Ordre a executar quan l'Audacious comença una nova cançó."
+msgstr ""
 
 #: src/song_change/song_change.c:365 src/song_change/song_change.c:387
 #: src/song_change/song_change.c:408 src/song_change/song_change.c:429
 msgid "Command:"
-msgstr "Ordre:"
+msgstr ""
 
 #: src/song_change/song_change.c:379
 msgid "Command to run toward the end of a song."
-msgstr "Ordre a executar cap al final de la cançó."
+msgstr ""
 
 #: src/song_change/song_change.c:399
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
-"Ordre a executar quan l'Audacious arriba al final de la llista de "
-"reproducció."
 
 #: src/song_change/song_change.c:420
 msgid ""
@@ -4590,35 +4633,21 @@ msgid ""
 "%%t: Playlist position (%%02d)\n"
 "%%p: Currently playing (1 or 0)"
 msgstr ""
-"Podeu utilitzar les següents cadenes de format\n"
-"que es substituiràn abans de cridar l'ordre (no\n"
-"són totes útils per a l'ordre de final-de-llista).\n"
-"\n"
-"%%F: Freqüència (en hertz)\n"
-"%%c: Nombre de canals\n"
-"%%f: Nom del fitxer (camí complet)\n"
-"%%l: Durada (en milisegons)\n"
-"%%n o %%s: Nom de la cançó\n"
-"%%r: Taxa (en bits per segon)\n"
-"%%t: Posició a la llista de reproducció (%%02d)\n"
-"%%p: Reproducció en curs (1 o 0)"
 
 #: src/song_change/song_change.c:466
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>Els paràmetres passats a la shell s'han d'encapsular en\n"
-"cometes. Altrament és un risc per a la seguretat.</span>"
 
 #: src/spectrum/spectrum.c:96
+#, fuzzy
 msgid "Spectrum Analyzer"
-msgstr ""
+msgstr "Modul Analizatorului"
 
 #: src/statusicon/gtktrayicon-x11.c:133
-#, fuzzy
 msgid "Orientation"
-msgstr "Organització:"
+msgstr ""
 
 #: src/statusicon/gtktrayicon-x11.c:134
 msgid "The orientation of the tray"
@@ -4627,7 +4656,7 @@ msgstr ""
 #: src/statusicon/si_ui.c:571
 #, fuzzy
 msgid "About Status Icon Plugin"
-msgstr "Quant al plugin ESounD"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/statusicon/si_ui.c:573
 msgid ""
@@ -4647,28 +4676,33 @@ msgid "Right-Click Menu"
 msgstr ""
 
 #: src/statusicon/si_ui.c:661
+#, fuzzy
 msgid "Audacious standard menu"
-msgstr ""
+msgstr "Developerii Audacious:"
 
 #: src/statusicon/si_ui.c:666
+#, fuzzy
 msgid "Small playback menu #1"
-msgstr ""
+msgstr "Continuă redarea la pornire"
 
 #: src/statusicon/si_ui.c:671
+#, fuzzy
 msgid "Small playback menu #2"
-msgstr ""
+msgstr "Continuă redarea la pornire"
 
 #: src/statusicon/si_ui.c:694
 msgid "Mouse Scroll Action"
 msgstr ""
 
 #: src/statusicon/si_ui.c:699
+#, fuzzy
 msgid "Change volume"
-msgstr ""
+msgstr "Schimbă volumul cu"
 
 #: src/statusicon/si_ui.c:704
+#, fuzzy
 msgid "Change playing song"
-msgstr ""
+msgstr "Pauză"
 
 #: src/stereo_plugin/stereo.c:29
 msgid ""
@@ -4676,25 +4710,25 @@ msgid ""
 "\n"
 "By Johan Levin 1999."
 msgstr ""
-"Plugin d'estèreo extra\n"
-"\n"
-"Per Johan Levin, 1999."
 
 #: src/stereo_plugin/stereo.c:55
+#, fuzzy
 msgid "About Extra Stereo Plugin"
-msgstr "Quant al plugin d'estèreo extra"
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/stereo_plugin/stereo.c:96
 msgid "Configure Extra Stereo"
-msgstr "Configuració de l'estèreo extra"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:98
+#, fuzzy
 msgid "Effect intensity:"
-msgstr "Intensitat de l'efecte:"
+msgstr "Lista plugin-urilor de _Efecte"
 
 #: src/sun/about.c:34
+#, fuzzy
 msgid "About the Sun Driver"
-msgstr "Quant al driver Sun"
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/sun/about.c:35
 msgid ""
@@ -4703,30 +4737,29 @@ msgid ""
 "Copyright (c) 2001 CubeSoft Communications, Inc.\n"
 "Maintainer: <vedge at csoft.org>.\n"
 msgstr ""
-"Driver BSD Sun per a l'XMMS\n"
-"\n"
-"Copyright (C) 2001 CubeSoft Communications, Inc.\n"
-"Mantenidor: <vedge at csoft.org>.\n"
 
 #: src/sun/configure.c:201
+#, fuzzy
 msgid "Audio control device:"
-msgstr "Dispositiu de control d'àudio:"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/sun/configure.c:350
+#, fuzzy
 msgid "Volume controls device:"
-msgstr "Dispositiu de control del volum:"
+msgstr "Schimbă volumul cu"
 
 #: src/sun/configure.c:363
 msgid "XMMS uses mixer exclusively."
-msgstr "L'XMMS usa exclusivament el mesclador."
+msgstr ""
 
 #: src/sun/configure.c:538
 msgid "Sun driver configuration"
-msgstr "Configuració del driver Sun"
+msgstr ""
 
 #: src/timidity/src/interface.c:56
+#, fuzzy
 msgid "TiMidity Configuration"
-msgstr "Configuració del TiMidity"
+msgstr "AdPlug·::·Configurare"
 
 #: src/timidity/src/interface.c:93
 msgid "11000 Hz"
@@ -4742,11 +4775,12 @@ msgstr "44100 Hz"
 
 #: src/timidity/src/interface.c:117
 msgid "Sample Width"
-msgstr "Amplada de la mostra"
+msgstr ""
 
 #: src/timidity/src/interface.c:183
+#, fuzzy
 msgid "TiMidity Configuration File"
-msgstr "Fitxer de configuració del TiMidity"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/timidity/src/xmms-timidity.c:134
 msgid ""
@@ -4754,22 +4788,21 @@ msgid ""
 "http://libtimidity.sourceforge.net\n"
 "by Konstantin Korikov"
 msgstr ""
-"Plugin TiMidity\n"
-"http://libtimidity.sourceforge.net\n"
-"per Konstantin Korikov"
 
 #: src/timidity/src/xmms-timidity.c:135
-#, c-format
+#, fuzzy, c-format
 msgid "TiMidity Plugin %s"
-msgstr "Plugin TiMidity %s"
+msgstr "Plugin de intrare: %s"
 
 #: src/timidity/src/xmms-timidity.c:352
+#, fuzzy
 msgid "Couldn't load MIDI file"
-msgstr "No s'ha pogut carregar el fitxer MIDI"
+msgstr "Încarcă și redă un fișier"
 
 #: src/tonegen/tonegen.c:56
+#, fuzzy
 msgid "About Tone Generator"
-msgstr "Quant al Generador de Tons"
+msgstr "Despre plugin-ul·pentru Alarmă"
 
 #: src/tonegen/tonegen.c:58
 msgid ""
@@ -4779,59 +4812,59 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
-"Generador de tons per Haavard Kvaalen <havardk@xmms.org>\n"
-"Modificat per Daniel J. Peng <danielpeng@bigfoot.com>\n"
-"\n"
-"Per a fer-lo servir, afegiu un URL: tone://freq1;freq2;...\n"
-"e.g. tone://2000;2005 per a generar un to de 2000 Hz i un to\n"
-"de 2005 Hz."
 
 #: src/tonegen/tonegen.c:170
 #, c-format
 msgid "%s %.1f Hz"
-msgstr ""
+msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:170
 msgid "Tone Generator: "
-msgstr "Generador de tons:"
+msgstr ""
 
 #: src/tta/libtta.c:148
+#, fuzzy
 msgid "Can't open file\n"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/tta/libtta.c:151
 msgid "Not supported file format\n"
 msgstr ""
 
 #: src/tta/libtta.c:154
+#, fuzzy
 msgid "File is corrupted\n"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/tta/libtta.c:157
+#, fuzzy
 msgid "Can't read from file\n"
-msgstr ""
+msgstr "Încarcă preset din fișier"
 
 #: src/tta/libtta.c:160
+#, fuzzy
 msgid "Insufficient memory available\n"
-msgstr ""
+msgstr "Folosește fonturi Bitmap dacă sunt disponibile"
 
 #: src/tta/libtta.c:163
 #, fuzzy
 msgid "Output plugin error\n"
-msgstr "Plugin de sortida nul"
+msgstr "Plugin-ul de ieșire curent"
 
 #: src/tta/libtta.c:166
+#, fuzzy
 msgid "Unknown error\n"
-msgstr ""
+msgstr "Eroare în Audacious"
 
 #: src/tta/libtta.c:170
+#, fuzzy
 msgid "TTA Decoder Error"
-msgstr ""
+msgstr "Eroare în Audacious"
 
 #: src/tta/libtta.c:279
 #, fuzzy
 msgid "TTA input plugin "
-msgstr "Plugin de sortida nul"
+msgstr "Lista plugin-urilor _Generale"
 
 #: src/tta/libtta.c:280
 msgid ""
@@ -4842,44 +4875,46 @@ msgstr ""
 #: src/tta/libtta.c:283
 #, fuzzy
 msgid "About True Audio Plugin"
-msgstr "Quant al plugin per a àudio MPEG"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/tta/libtta.c:334
-#, fuzzy
 msgid "ID3 Tag:"
-msgstr "Etiquetes ID3:"
+msgstr ""
 
 #: src/vorbis/configure.c:117
 msgid "Ogg Vorbis Audio Plugin Configuration"
-msgstr "Configuració del plugin d'àudio Ogg Vorbis"
+msgstr ""
 
 #: src/vorbis/configure.c:129
 msgid "Ogg Vorbis Tags:"
-msgstr "Etiquetes Ogg Vorbis:"
+msgstr ""
 
 #: src/vorbis/configure.c:150
+#, fuzzy
 msgid "Title format:"
-msgstr "Format del títol:"
+msgstr "Formatul titlului:"
 
 #: src/vorbis/configure.c:164 src/wavpack/ui.cxx:500
+#, fuzzy
 msgid "ReplayGain Settings:"
-msgstr "Paràmetres de ReplayGain:"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #: src/vorbis/configure.c:182 src/wavpack/ui.cxx:518
+#, fuzzy
 msgid "ReplayGain Type:"
-msgstr "Tipus de ReplayGain:"
+msgstr "Tipul Fișierului: "
 
 #: src/vorbis/configure.c:193 src/wavpack/ui.cxx:529
 msgid "use Track Gain/Peak"
-msgstr "usa el guany/pic de la pista"
+msgstr ""
 
 #: src/vorbis/configure.c:203 src/wavpack/ui.cxx:537
 msgid "use Album Gain/Peak"
-msgstr "usa el guany/pic del disc"
+msgstr ""
 
 #: src/vorbis/configure.c:215
 msgid "Enable 6dB Boost + Hard Limiting"
-msgstr "Habilita guany de 6dB + limit rígid"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:83
 msgid "Blues"
@@ -4887,7 +4922,7 @@ msgstr "Blues"
 
 #: src/vorbis/fileinfo.c:83
 msgid "Classic Rock"
-msgstr "Rock clàssic"
+msgstr "Classic Rock"
 
 #: src/vorbis/fileinfo.c:83
 msgid "Country"
@@ -4922,16 +4957,17 @@ msgid "Metal"
 msgstr "Metal"
 
 #: src/vorbis/fileinfo.c:85
+#, fuzzy
 msgid "New Age"
-msgstr "Now Age"
+msgstr "Playlist Nou"
 
 #: src/vorbis/fileinfo.c:85
 msgid "Oldies"
-msgstr "Clàssiques"
+msgstr "Oldies"
 
 #: src/vorbis/fileinfo.c:86
 msgid "Other"
-msgstr "Altres"
+msgstr "Other"
 
 #: src/vorbis/fileinfo.c:86
 msgid "Pop"
@@ -4955,7 +4991,7 @@ msgstr "Rock"
 
 #: src/vorbis/fileinfo.c:87
 msgid "Techno"
-msgstr "Tecno"
+msgstr "Techno"
 
 #: src/vorbis/fileinfo.c:87
 msgid "Industrial"
@@ -4963,7 +4999,7 @@ msgstr "Industrial"
 
 #: src/vorbis/fileinfo.c:87
 msgid "Alternative"
-msgstr "Alternativa"
+msgstr "Alternative"
 
 #: src/vorbis/fileinfo.c:88
 msgid "Ska"
@@ -4975,19 +5011,19 @@ msgstr "Death Metal"
 
 #: src/vorbis/fileinfo.c:88
 msgid "Pranks"
-msgstr "Bromes"
+msgstr "Pranks"
 
 #: src/vorbis/fileinfo.c:88
 msgid "Soundtrack"
-msgstr "Bandes sonores"
+msgstr "Soundtrack"
 
 #: src/vorbis/fileinfo.c:89
 msgid "Euro-Techno"
-msgstr "Euro-tecno"
+msgstr "Euro-Techno"
 
 #: src/vorbis/fileinfo.c:89
 msgid "Ambient"
-msgstr "Ambiental"
+msgstr "Ambient"
 
 #: src/vorbis/fileinfo.c:89
 msgid "Trip-Hop"
@@ -5003,7 +5039,7 @@ msgstr "Jazz+Funk"
 
 #: src/vorbis/fileinfo.c:90
 msgid "Fusion"
-msgstr "Fusió"
+msgstr "Fusion"
 
 #: src/vorbis/fileinfo.c:90
 msgid "Trance"
@@ -5011,7 +5047,7 @@ msgstr "Trance"
 
 #: src/vorbis/fileinfo.c:90
 msgid "Classical"
-msgstr "Clàssica"
+msgstr "Classical"
 
 #: src/vorbis/fileinfo.c:91
 msgid "Instrumental"
@@ -5019,7 +5055,7 @@ msgstr "Instrumental"
 
 #: src/vorbis/fileinfo.c:91
 msgid "Acid"
-msgstr "Àcid"
+msgstr "Acid"
 
 #: src/vorbis/fileinfo.c:91
 msgid "House"
@@ -5027,11 +5063,12 @@ msgstr "House"
 
 #: src/vorbis/fileinfo.c:91
 msgid "Game"
-msgstr "Joc"
+msgstr "Game"
 
 #: src/vorbis/fileinfo.c:92
+#, fuzzy
 msgid "Sound Clip"
-msgstr "Clip d'àudio"
+msgstr "Calitatea sunetului"
 
 #: src/vorbis/fileinfo.c:92
 msgid "Gospel"
@@ -5039,11 +5076,11 @@ msgstr "Gospel"
 
 #: src/vorbis/fileinfo.c:92
 msgid "Noise"
-msgstr "Soroll"
+msgstr "Noise"
 
 #: src/vorbis/fileinfo.c:92
 msgid "AlternRock"
-msgstr "Rock alternatiu"
+msgstr "AlternRock"
 
 #: src/vorbis/fileinfo.c:93
 msgid "Bass"
@@ -5059,27 +5096,27 @@ msgstr "Punk"
 
 #: src/vorbis/fileinfo.c:93
 msgid "Space"
-msgstr "Espacial"
+msgstr "Space"
 
 #: src/vorbis/fileinfo.c:94
 msgid "Meditative"
-msgstr "Meditativa"
+msgstr "Meditative"
 
 #: src/vorbis/fileinfo.c:94
 msgid "Instrumental Pop"
-msgstr "Pop instrumental"
+msgstr "Instrumental Pop"
 
 #: src/vorbis/fileinfo.c:95
 msgid "Instrumental Rock"
-msgstr "Rock instrumental"
+msgstr "Instrumental Rock"
 
 #: src/vorbis/fileinfo.c:95
 msgid "Ethnic"
-msgstr "Ètnica"
+msgstr "Ethnic"
 
 #: src/vorbis/fileinfo.c:95
 msgid "Gothic"
-msgstr "Gòtica"
+msgstr "Gothic"
 
 #: src/vorbis/fileinfo.c:96
 msgid "Darkwave"
@@ -5087,15 +5124,15 @@ msgstr "Darkwave"
 
 #: src/vorbis/fileinfo.c:96
 msgid "Techno-Industrial"
-msgstr "Tecno-industrial"
+msgstr "Techno-Industrial"
 
 #: src/vorbis/fileinfo.c:96
 msgid "Electronic"
-msgstr "Electrònica"
+msgstr "Electronic"
 
 #: src/vorbis/fileinfo.c:97
 msgid "Pop-Folk"
-msgstr "Pop-folk"
+msgstr "Pop-Folk"
 
 #: src/vorbis/fileinfo.c:97
 msgid "Eurodance"
@@ -5107,19 +5144,19 @@ msgstr "Dream"
 
 #: src/vorbis/fileinfo.c:98
 msgid "Southern Rock"
-msgstr "Rock del sud"
+msgstr "Southern Rock"
 
 #: src/vorbis/fileinfo.c:98
 msgid "Comedy"
-msgstr "Comèdia"
+msgstr "Comedy"
 
 #: src/vorbis/fileinfo.c:98
 msgid "Cult"
-msgstr "De culte"
+msgstr "Cult"
 
 #: src/vorbis/fileinfo.c:99
 msgid "Gangsta Rap"
-msgstr "Rap gàngster"
+msgstr "Gangsta Rap"
 
 #: src/vorbis/fileinfo.c:99
 msgid "Top 40"
@@ -5127,7 +5164,7 @@ msgstr "Top 40"
 
 #: src/vorbis/fileinfo.c:99
 msgid "Christian Rap"
-msgstr "Rap cristià"
+msgstr "Christian Rap"
 
 #: src/vorbis/fileinfo.c:100
 msgid "Pop/Funk"
@@ -5139,7 +5176,7 @@ msgstr "Jungle"
 
 #: src/vorbis/fileinfo.c:100
 msgid "Native American"
-msgstr "Americana nativa"
+msgstr "Native American"
 
 #: src/vorbis/fileinfo.c:101
 msgid "Cabaret"
@@ -5151,7 +5188,7 @@ msgstr "New Wave"
 
 #: src/vorbis/fileinfo.c:101
 msgid "Psychedelic"
-msgstr "Psicodèlica"
+msgstr "Psychedelic"
 
 #: src/vorbis/fileinfo.c:101
 msgid "Rave"
@@ -5163,7 +5200,7 @@ msgstr "Showtunes"
 
 #: src/vorbis/fileinfo.c:102
 msgid "Trailer"
-msgstr "Tràiler"
+msgstr "Trailer"
 
 #: src/vorbis/fileinfo.c:102
 msgid "Lo-Fi"
@@ -5183,11 +5220,11 @@ msgstr "Acid Jazz"
 
 #: src/vorbis/fileinfo.c:103
 msgid "Polka"
-msgstr "Polca"
+msgstr "Polka"
 
 #: src/vorbis/fileinfo.c:103
 msgid "Retro"
-msgstr "Retrògrada"
+msgstr "Retro"
 
 #: src/vorbis/fileinfo.c:104
 msgid "Musical"
@@ -5211,7 +5248,7 @@ msgstr "Folk/Rock"
 
 #: src/vorbis/fileinfo.c:105
 msgid "National Folk"
-msgstr "Folk nacional"
+msgstr "National Folk"
 
 #: src/vorbis/fileinfo.c:105
 msgid "Swing"
@@ -5223,11 +5260,11 @@ msgstr "Fast-Fusion"
 
 #: src/vorbis/fileinfo.c:106
 msgid "Bebob"
-msgstr "Bebop"
+msgstr "Bebob"
 
 #: src/vorbis/fileinfo.c:106
 msgid "Latin"
-msgstr "Llatina"
+msgstr "Latin"
 
 #: src/vorbis/fileinfo.c:106
 msgid "Revival"
@@ -5235,7 +5272,7 @@ msgstr "Revival"
 
 #: src/vorbis/fileinfo.c:107
 msgid "Celtic"
-msgstr "Cèltica"
+msgstr "Celtic"
 
 #: src/vorbis/fileinfo.c:107
 msgid "Bluegrass"
@@ -5243,35 +5280,35 @@ msgstr "Bluegrass"
 
 #: src/vorbis/fileinfo.c:107
 msgid "Avantgarde"
-msgstr "Avantguardista"
+msgstr "Avantgarde"
 
 #: src/vorbis/fileinfo.c:108
 msgid "Gothic Rock"
-msgstr "Rock gòtic"
+msgstr "Gothic Rock"
 
 #: src/vorbis/fileinfo.c:108
 msgid "Progressive Rock"
-msgstr "Rock progressiu"
+msgstr "Progressive Rock"
 
 #: src/vorbis/fileinfo.c:109
 msgid "Psychedelic Rock"
-msgstr "Rock psicodèlic"
+msgstr "Psychedelic Rock"
 
 #: src/vorbis/fileinfo.c:109
 msgid "Symphonic Rock"
-msgstr "Rock simfònic"
+msgstr "Symphonic Rock"
 
 #: src/vorbis/fileinfo.c:109
 msgid "Slow Rock"
-msgstr "Rock lent"
+msgstr "Slow Rock"
 
 #: src/vorbis/fileinfo.c:110
 msgid "Big Band"
-msgstr "Big band"
+msgstr "Big Band"
 
 #: src/vorbis/fileinfo.c:110
 msgid "Chorus"
-msgstr "Cor"
+msgstr "Chorus"
 
 #: src/vorbis/fileinfo.c:110
 msgid "Easy Listening"
@@ -5279,15 +5316,15 @@ msgstr "Easy Listening"
 
 #: src/vorbis/fileinfo.c:111
 msgid "Acoustic"
-msgstr "Acústica"
+msgstr "Acoustic"
 
 #: src/vorbis/fileinfo.c:111
 msgid "Humour"
-msgstr "Humor"
+msgstr "Humour"
 
 #: src/vorbis/fileinfo.c:111
 msgid "Speech"
-msgstr "Parlat"
+msgstr "Speech"
 
 #: src/vorbis/fileinfo.c:111
 msgid "Chanson"
@@ -5295,11 +5332,11 @@ msgstr "Chanson"
 
 #: src/vorbis/fileinfo.c:112
 msgid "Opera"
-msgstr "Òpera"
+msgstr "Opera"
 
 #: src/vorbis/fileinfo.c:112
 msgid "Chamber Music"
-msgstr "Música de cambra"
+msgstr "Chamber Music"
 
 #: src/vorbis/fileinfo.c:112
 msgid "Sonata"
@@ -5307,7 +5344,7 @@ msgstr "Sonata"
 
 #: src/vorbis/fileinfo.c:112
 msgid "Symphony"
-msgstr "Simfonia"
+msgstr "Symphony"
 
 #: src/vorbis/fileinfo.c:113
 msgid "Booty Bass"
@@ -5323,7 +5360,7 @@ msgstr "Porn Groove"
 
 #: src/vorbis/fileinfo.c:114
 msgid "Satire"
-msgstr "Sàtira"
+msgstr "Satire"
 
 #: src/vorbis/fileinfo.c:114
 msgid "Slow Jam"
@@ -5343,23 +5380,23 @@ msgstr "Samba"
 
 #: src/vorbis/fileinfo.c:115
 msgid "Folklore"
-msgstr "Folclòrica"
+msgstr "Folklore"
 
 #: src/vorbis/fileinfo.c:115
 msgid "Ballad"
-msgstr "Balada"
+msgstr "Ballad"
 
 #: src/vorbis/fileinfo.c:115
 msgid "Power Ballad"
-msgstr "Balada enèrgica"
+msgstr "Power Ballad"
 
 #: src/vorbis/fileinfo.c:116
 msgid "Rhythmic Soul"
-msgstr "Soul rítmic"
+msgstr "Rhythmic Soul"
 
 #: src/vorbis/fileinfo.c:116
 msgid "Freestyle"
-msgstr "Estil lliure"
+msgstr "Freestyle"
 
 #: src/vorbis/fileinfo.c:116
 msgid "Duet"
@@ -5371,11 +5408,11 @@ msgstr "Punk Rock"
 
 #: src/vorbis/fileinfo.c:117
 msgid "Drum Solo"
-msgstr "Solo de bateria"
+msgstr "Drum Solo"
 
 #: src/vorbis/fileinfo.c:117
 msgid "A Cappella"
-msgstr "A capella"
+msgstr "A Cappella"
 
 #: src/vorbis/fileinfo.c:118
 msgid "Euro-House"
@@ -5407,11 +5444,11 @@ msgstr "Terror"
 
 #: src/vorbis/fileinfo.c:120
 msgid "Indie"
-msgstr "Independent"
+msgstr "Indie"
 
 #: src/vorbis/fileinfo.c:120
 msgid "BritPop"
-msgstr "Pop britànic"
+msgstr "BritPop"
 
 #: src/vorbis/fileinfo.c:120
 msgid "Negerpunk"
@@ -5427,7 +5464,7 @@ msgstr "Beat"
 
 #: src/vorbis/fileinfo.c:121
 msgid "Christian Gangsta Rap"
-msgstr "Rap gàngster cristià"
+msgstr "Christian Gangsta Rap"
 
 #: src/vorbis/fileinfo.c:122
 msgid "Heavy Metal"
@@ -5443,11 +5480,11 @@ msgstr "Crossover"
 
 #: src/vorbis/fileinfo.c:123
 msgid "Contemporary Christian"
-msgstr "Cristiana contemporània"
+msgstr "Contemporary Christian"
 
 #: src/vorbis/fileinfo.c:123
 msgid "Christian Rock"
-msgstr "Rock cristià"
+msgstr "Christian Rock"
 
 #: src/vorbis/fileinfo.c:124
 msgid "Merengue"
@@ -5474,33 +5511,31 @@ msgid "Synthpop"
 msgstr "Synthpop"
 
 #: src/vorbis/fileinfo.c:210
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "An error occured:\n"
 "%s"
-msgstr ""
-"S'ha produït un error:\n"
-"%s"
+msgstr "Eroare în Audacious"
 
 #: src/vorbis/fileinfo.c:212
 msgid "Error!"
-msgstr "Error!"
+msgstr "Eroare!"
 
 #: src/vorbis/fileinfo.c:244
 msgid "Failed to modify tag (open)"
-msgstr "Ha fallat la modificació de l'etiqueta (obrir)"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:297
 msgid "Failed to modify tag (close)"
-msgstr "Ha fallat la modificació de l'etiqueta (tancar)"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:324 src/vorbis/fileinfo.c:333
 msgid "Failed to modify tag"
-msgstr "Ha fallat la modificació de l'etiqueta"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:577
 msgid " Ogg Vorbis Tag "
-msgstr " Etiqueta Ogg Vorbis "
+msgstr ""
 
 #: src/vorbis/fileinfo.c:629
 msgid "Date:"
@@ -5508,98 +5543,109 @@ msgstr "Data:"
 
 #: src/vorbis/fileinfo.c:671
 msgid "Description:"
-msgstr "Descripció:"
+msgstr "Descriere:"
 
 #: src/vorbis/fileinfo.c:681
 msgid "Location:"
-msgstr "Ubicació:"
+msgstr "Locaţie:"
 
 #: src/vorbis/fileinfo.c:691
 msgid "Version:"
-msgstr "Versió:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:702
+#, fuzzy
 msgid "ISRC number:"
-msgstr "Número ISRC:"
+msgstr "Numărul Trackului"
 
 #: src/vorbis/fileinfo.c:713
 msgid "Organization:"
-msgstr "Organització:"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:760
 msgid " Ogg Vorbis ReplayGain "
-msgstr " ReplayGain d'Ogg Vorbis "
+msgstr ""
 
 #: src/vorbis/fileinfo.c:766
+#, fuzzy
 msgid "Track gain:"
-msgstr "Guany de la pista:"
+msgstr "Informații despre Track"
 
 #: src/vorbis/fileinfo.c:776
+#, fuzzy
 msgid "Track peak:"
-msgstr "Pic de la pista:"
+msgstr "Informații despre Track"
 
 #: src/vorbis/fileinfo.c:787
+#, fuzzy
 msgid "Album gain:"
-msgstr "Guany del disc:"
+msgstr "<span size=\"small\">Album</span>"
 
 #: src/vorbis/fileinfo.c:797
+#, fuzzy
 msgid "Album peak:"
-msgstr "Pic del disc:"
+msgstr "<span size=\"small\">Album</span>"
 
 #: src/vorbis/fileinfo.c:826
+#, fuzzy
 msgid " Ogg Vorbis Info "
-msgstr " Informació d'Ogg Vorbis "
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/vorbis/fileinfo.c:841 src/vorbis/fileinfo.c:918
+#, fuzzy
 msgid "Bit rate:"
-msgstr "Ràtio de bits:"
+msgstr "Rata de Reîmprospătare"
 
 #: src/vorbis/fileinfo.c:854 src/vorbis/fileinfo.c:921
+#, fuzzy
 msgid "Sample rate:"
-msgstr "Freqüència de mostreig:"
+msgstr "Rata de Reîmprospătare"
 
 #: src/vorbis/fileinfo.c:880 src/vorbis/fileinfo.c:927
+#, fuzzy
 msgid "Length:"
-msgstr "Durada:"
+msgstr "Mărimea track-ului"
 
 #: src/vorbis/fileinfo.c:893 src/vorbis/fileinfo.c:930
+#, fuzzy
 msgid "File size:"
-msgstr "Mida del fitxer:"
+msgstr "Mărimea Buffer-ului:"
 
 #: src/vorbis/fileinfo.c:919 src/vorbis/fileinfo.c:922
 #: src/vorbis/fileinfo.c:925 src/vorbis/fileinfo.c:928
 #: src/vorbis/fileinfo.c:931
 msgid "N/A"
-msgstr "N/A"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:961
 #, c-format
 msgid "%d KBit/s (nominal)"
-msgstr "%d KBit/s (nominal)"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:963
 #, c-format
 msgid "%d"
-msgstr "%d"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:965
-#, c-format
+#, fuzzy, c-format
 msgid "%d:%.2d"
-msgstr "%d:%.2d"
+msgstr "Salt la: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
 #: src/vorbis/fileinfo.c:967
 #, c-format
 msgid "%d Bytes"
-msgstr "%d octets"
+msgstr ""
 
 #: src/vorbis/fileinfo.c:1024
-#, c-format
+#, fuzzy, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
 #: src/vorbis/vorbis.c:862
+#, fuzzy
 msgid "About Ogg Vorbis Audio Plugin"
-msgstr "Quant al plugin d'àudio Ogg Vorbis"
+msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
 #: src/vorbis/vorbis.c:868
 msgid ""
@@ -5618,24 +5664,11 @@ msgid ""
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
-"Plugin Ogg Vorbis per la Fundació Xiph.org\n"
-"\n"
-"Codi original per\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Contribucions de\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Haavard Kvaalen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"\n"
-"Visiteu la Fundació Xiph.org a http://www.xiph.org/\n"
 
 #: src/vtx/about.c:22
+#, fuzzy
 msgid "About Vortex Player"
-msgstr ""
+msgstr "Despre plugin-ul decodor MP4·AAC"
 
 #: src/vtx/about.c:24
 msgid ""
@@ -5652,7 +5685,7 @@ msgstr ""
 #: src/wavpack/ui.cxx:52
 #, fuzzy, c-format
 msgid "Wavpack Decoder Plugin %s"
-msgstr "Plugin d'eco %s"
+msgstr "Lista plugin-urilor _Generale"
 
 #: src/wavpack/ui.cxx:53
 msgid ""
@@ -5667,79 +5700,78 @@ msgid "Ape2 Tag"
 msgstr ""
 
 #: src/wavpack/ui.cxx:286
+#, fuzzy
 msgid "Wavpack Info:"
-msgstr ""
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/wavpack/ui.cxx:379
-#, fuzzy, c-format
+#, c-format
 msgid "version %d"
-msgstr "Versió:"
+msgstr "versiunea %d"
 
 #: src/wavpack/ui.cxx:380
 #, c-format
 msgid "average bitrate: %6.1f kbps"
-msgstr ""
+msgstr "bitrate-ul mediu: %6.1f kbps"
 
 #: src/wavpack/ui.cxx:381
 #, fuzzy, c-format
 msgid "samplerate: %d Hz"
-msgstr "Freqüència de mostreig:"
+msgstr "Rata de eșantionare [Hz]:"
 
 #: src/wavpack/ui.cxx:382
-#, c-format
+#, fuzzy, c-format
 msgid "bits per sample: %d"
-msgstr ""
+msgstr "Foloseste coperta per-fișier"
 
 #: src/wavpack/ui.cxx:383
 #, fuzzy, c-format
 msgid "channels: %d"
-msgstr "Canals:"
+msgstr "Canale"
 
 #: src/wavpack/ui.cxx:384
 #, fuzzy, c-format
 msgid "length: %d:%.2d"
-msgstr ""
-"\n"
-"Durada total: %d:%d\n"
+msgstr "Mărimea track-ului"
 
 #: src/wavpack/ui.cxx:385
 #, fuzzy, c-format
 msgid "file size: %d Bytes"
-msgstr "Mida del fitxer:"
+msgstr "AdPlug·::·Informații despre fișier"
 
 #: src/wavpack/ui.cxx:392
 #, fuzzy
 msgid "Title Peak: ?"
-msgstr "Títol:"
+msgstr "Formatul titlului:"
 
 #: src/wavpack/ui.cxx:393
 #, fuzzy
 msgid "Album Peak: ?"
-msgstr "Pic del disc:"
+msgstr "<span size=\"small\">Album</span>"
 
 #: src/wavpack/ui.cxx:394
 #, fuzzy
 msgid "Title Gain: ?"
-msgstr "Títol:"
+msgstr "Formatul titlului:"
 
 #: src/wavpack/ui.cxx:395
 #, fuzzy
 msgid "Album Gain: ?"
-msgstr "Guany del disc:"
+msgstr "<span size=\"small\">Album</span>"
 
 #: src/wavpack/ui.cxx:469
 #, fuzzy
 msgid "Wavpack Configuration"
-msgstr "Configuració de l'escriptura al disc"
+msgstr "AdPlug·::·Configurare"
 
 #: src/wavpack/ui.cxx:482
 #, fuzzy
 msgid "General Plugin Settings:"
-msgstr "Paràmetres de ReplayGain:"
+msgstr "Lista plugin-urilor _Generale"
 
 #: src/wav/wav-sndfile.c:549
 msgid "About sndfile WAV support"
-msgstr "Quant al suport per a sndfile WAV"
+msgstr ""
 
 #: src/wav/wav-sndfile.c:550
 msgid ""
@@ -5763,281 +5795,34 @@ msgid ""
 "51 Franklin Street, Fifth Floor, \n"
 "Boston, MA  02110-1301  USA"
 msgstr ""
-"Adaptat a l'Audacious per Tony Vroon <chainsaw@gentoo.org>\n"
-"a partir del plugin xmms_sndfile que és:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"Aquest programa és lliure; el podeu redistribuir i/o modificar sota\n"
-"els termes de la llicència GNU General Public Licence publicada per\n"
-"la Free Software Foundation; ja sigui la versió 2 de la Llicència, o\n"
-"(si ho desitgeu) qualsevol altra versió posterior.\n"
-"\n"
-"Aquest programa es distribueix amb l'esperança que sigui útil, però\n"
-"SENSE CAP GARANTIA; sense ni tan sols la garantia implícita de\n"
-"COMERCIABILITAT o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la\n"
-"llicència GNU General Public Licence per a més detalls.\n"
-"\n"
-"Haurieu d'haver rebut una còpia de la llicència GNU General Public\n"
-"Licence juntament amb aquest programa; en cas contrari escriviu a la\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
-"Boston, MA 02110-1301, USA."
 
 #: src/wav/wav-sndfile.c:574
+#, fuzzy
 msgid "sndfile WAV plugin"
-msgstr "Plugin WAV sndfile"
+msgstr "Lista plugin-urilor _Generale"
 
 #: src/wma/wma.c:143
 #, c-format
 msgid "About %s"
-msgstr "Quant a %s"
+msgstr "Despre %s"
 
-#, fuzzy
+#~ msgid ":"
+#~ msgstr ":"
+
+#~ msgid " / "
+#~ msgstr " / "
+
+#~ msgid "#"
+#~ msgstr "#"
+
+#~ msgid "11025"
+#~ msgstr "11025"
+
 #~ msgid "22050"
-#~ msgstr "22000 Hz"
+#~ msgstr "22050"
 
-#, fuzzy
 #~ msgid "44100"
-#~ msgstr "44100 Hz"
+#~ msgstr "44100"
 
-#, fuzzy
-#~ msgid "12000"
-#~ msgstr "11000 Hz"
-
-#, fuzzy
-#~ msgid "16000"
-#~ msgstr "11000 Hz"
-
-#, fuzzy
-#~ msgid "24000"
-#~ msgstr "22000 Hz"
-
-#, fuzzy
-#~ msgid "32000"
-#~ msgstr "22000 Hz"
-
-#~ msgid "OSS Output Plugin"
-#~ msgstr "Plugin de sortida OSS"
-
-#~ msgid "Drive %d"
-#~ msgstr "Disc %d"
-
-#~ msgid ""
-#~ "Failed to open device %s\n"
-#~ "Error: %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "No s'ha pogut obrir el dispositiu %s\n"
-#~ "Error: %s\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Failed to read \"Table of Contents\"\n"
-#~ "Maybe no disc in the drive?\n"
-#~ "\n"
-#~ msgstr ""
-#~ "No s'ha pogut llegir l'índex de continguts\n"
-#~ "Potser no hi ha cap disc al lector?\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Device %s OK.\n"
-#~ "Disc has %d tracks"
-#~ msgstr ""
-#~ "El dispodisitiu %s és correcte.\n"
-#~ "El disc té %d pistes"
-
-#~ msgid " (%d data tracks)"
-#~ msgstr " (%d pistes de dades)"
-
-#~ msgid ""
-#~ "Digital audio extraction not tested as the disc has no audio tracks\n"
-#~ msgstr ""
-#~ "L'extracció digital d'àudio no s'ha provat, ja que el disc no té pistes "
-#~ "d'àudio\n"
-
-#~ msgid ""
-#~ "Digital audio extraction test: OK\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Test d'extracció digital d'àudio: Correcte\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Digital audio extraction test failed: %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "El test d'extracció d'àudio digital ha fallat: %s\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Failed to check directory %s\n"
-#~ "Error: %s"
-#~ msgstr ""
-#~ "Ha fallat la comprovació del directori %s\n"
-#~ "Error: %s"
-
-#~ msgid "Error: %s exist, but is not a directory"
-#~ msgstr "Error: existeix, però no és un directori: %s"
-
-#~ msgid "Directory %s OK."
-#~ msgstr "El directori és correcte: %s"
-
-#~ msgid "_Device:"
-#~ msgstr "_Dispositiu:"
-
-#~ msgid "Dir_ectory:"
-#~ msgstr "Dir_ectori:"
-
-#~ msgid "Analog"
-#~ msgstr "Analògic"
-
-#~ msgid "No mixer"
-#~ msgstr "Sense mesclador"
-
-#~ msgid "CDROM drive"
-#~ msgstr "Lector CDROM"
-
-#~ msgid "OSS mixer"
-#~ msgstr "Mesclador OSS"
-
-#~ msgid "Check drive..."
-#~ msgstr "Comprovació del lector..."
-
-#~ msgid "Add drive"
-#~ msgstr "Afegeix un lector"
-
-#~ msgid "CDDB:"
-#~ msgstr "CDDB:"
-
-#~ msgid "Use CDDB"
-#~ msgstr "Usa CDDB"
-
-#~ msgid "Get server list"
-#~ msgstr "Actualitza la llista de servidors"
-
-#~ msgid "Show network window"
-#~ msgstr "Mostra la finestra de xarxa"
-
-#~ msgid "CDDB server:"
-#~ msgstr "Servidor CDDB:"
-
-#~ msgid "Name format:"
-#~ msgstr "Format del nom:"
-
-#~ msgid "CD Audio Track %02u"
-#~ msgstr "Pista de CD d'àudio %02u"
-
-#~ msgid "Game console audio module decoder"
-#~ msgstr "Descòdificador de mòduls d'àudio de consola"
-
-#~ msgid "NSF/NSFE"
-#~ msgstr "NSF/NSFE"
-
-#~ msgid "Use optional NSFE playlist"
-#~ msgstr "Usa la llista de reproducció NSFE opcional"
-
-#~ msgid "Disk Writer Plugin %s"
-#~ msgstr "Plugin d'escriptura al disc %s"
-
-#~ msgid "eSound Output Plugin"
-#~ msgstr "Plugin de sortida eSound"
-
-#~ msgid ""
-#~ "Audacious decoding engine by William Pitcock <nenolod@nenolod.net>, "
-#~ "derived from:\n"
-#~ "mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
-#~ "Derived partially from mpg123 0.59s.mc3 as well.\n"
-#~ "Based on the original XMMS plugin."
-#~ msgstr ""
-#~ "Motor de descodificació per a l'Audacious\n"
-#~ "per William Pitcock <nenolod@nenolod.net>, derivat de:\n"
-#~ "Motor de descodificació mpg123 de Michael Hipp <mh@mpg123.de>\n"
-#~ "Derivat parcialment també de l'mpg123 0.59s.mc3.\n"
-#~ "Basat en el plugin original per a l'XMMS."
-
-#~ msgid "MPEG Audio Plugin"
-#~ msgstr "Plugin d'àudio MPEG"
-
-#~ msgid "Down sample:"
-#~ msgstr "Rebaixa la freqüència:"
-
-#~ msgid "1:1 (44 kHz)"
-#~ msgstr "1:1 (44 kHz)"
-
-#~ msgid "1:2 (22 kHz)"
-#~ msgstr "1:2 (22 kHz)"
-
-#~ msgid "1:4 (11 kHz)"
-#~ msgstr "1:4 (11 kHz)"
-
-#~ msgid "Decoder"
-#~ msgstr "Descodificador"
-
-#~ msgid "Buffer size (kb):"
-#~ msgstr "Mida del buffer (kb):"
-
-#~ msgid "Save stream to disk:"
-#~ msgstr "Desa l'stream al disc:"
-
-#~ msgid "Save stream to disk"
-#~ msgstr "Desa l'stream al disc"
-
-#~ msgid "SHOUT/Icecast:"
-#~ msgstr "SHOUT/Icecast:"
-
-#~ msgid "Enable Icecast Metadata UDP Channel"
-#~ msgstr "Habilita el canal UDP de l'Icecast per a metadades"
-
-#~ msgid "Disable ID3V2 tags"
-#~ msgstr "Deshabilita les etiquetes ID3V2"
-
-#~ msgid "Dual channel"
-#~ msgstr "Canal dual"
-
-#~ msgid "%d KBit/s"
-#~ msgstr "%d KBit/s"
-
-#~ msgid "%ld Hz"
-#~ msgstr "%ld Hz"
-
-#~ msgid "50/15 ms"
-#~ msgstr "50/15 ms"
-
-#~ msgid "CCIT J.17"
-#~ msgstr "CCIT J.17"
-
-#~ msgid "No"
-#~ msgstr "No"
-
-#~ msgid "MPEG Level:"
-#~ msgstr "Nivell d'MPEG:"
-
-#~ msgid "Mode:"
-#~ msgstr "Mode:"
-
-#~ msgid "Original:"
-#~ msgstr "Original:"
-
-#~ msgid "Emphasis:"
-#~ msgstr "Èmfasi:"
-
-#~ msgid "%lu Bytes"
-#~ msgstr "%lu octets"
-
-#~ msgid "Extra Stereo Plugin %s"
-#~ msgstr "Plugin d'estèreo extra %s"
-
-#~ msgid "BSD Sun Driver %s"
-#~ msgstr "Driver Sun BSD %s"
-
-#~ msgid "TiMidity Player %s"
-#~ msgstr "Reproductor TiMidity %s"
-
-#~ msgid "Tone Generator %s"
-#~ msgstr "Generador de tons %s"
-
-#~ msgid "Ogg Vorbis Audio Plugin"
-#~ msgstr "Plugin d'àudio Ogg Vorbis"
-
-#~ msgid "WAV Audio Plugin"
-#~ msgstr "Plugin d'àudio WAV"
+#~ msgid "48000"
+#~ msgstr "48000"

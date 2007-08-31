@@ -344,28 +344,28 @@ adplug_config (void)
     gtk_table_attach_defaults (sqt,
                                make_framed (GTK_WIDGET (fvb), _("Frequency")), 1,
                                2, 0, 2);
-    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, _("11025")));
+    rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, "11025"));
     if (cfg.freq == 11025)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, _("22050")));
+                        (rb, "22050"));
     if (cfg.freq == 22050)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, _("44100")));
+                        (rb, "44100"));
     if (cfg.freq == 44100)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
-                        (rb, _("48000")));
+                        (rb, "48000"));
     if (cfg.freq == 48000)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
@@ -599,7 +599,7 @@ adplug_info_box (char *filename)
     gchar tmpstr[10];
 
     {
-      const gchar *rowstr[] = { _("#"), _("Instrument name") };
+      const gchar *rowstr[] = { "#", _("Instrument name") };
       instnames = GTK_CLIST (gtk_clist_new_with_titles (2, (gchar **)rowstr));
     }
     gtk_clist_set_column_justification (instnames, 0, GTK_JUSTIFY_RIGHT);
@@ -685,9 +685,9 @@ update_infobox (void)
   std::ostringstream infotext;
 
   // Recreate info string
-  infotext << _("Order: ") << plr.p->getorder () << _(" / ") << plr.p->
+  infotext << _("Order: ") << plr.p->getorder () << " / " << plr.p->
     getorders () << std::endl << _("Pattern: ") << plr.p->
-    getpattern () << _(" / ") << plr.p->
+    getpattern () << " / " << plr.p->
     getpatterns () << std::endl << _("Row: ") << plr.p->
     getrow () << std::endl << _("Speed: ") << plr.p->
     getspeed () << std::endl << _("Timer: ") << plr.p->

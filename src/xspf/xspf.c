@@ -322,6 +322,18 @@ static void playlist_load_xspf(const gchar *filename, gint pos)
                 }
 
                 if(nptr2->type == XML_ELEMENT_NODE
+                   && !xmlStrcmp(nptr2->name, (xmlChar *)"title")) {
+                    Playlist *plist = playlist_get_active();
+                    xmlChar *title = xmlNodeGetContent(nptr2);
+                    if (title && *title) {
+                        gchar *old = plist->title;
+                        plist->title = g_strdup((gchar*)title);
+                        if(old) g_free(old);
+                    }
+                    xmlFree(title);
+                }
+
+                if(nptr2->type == XML_ELEMENT_NODE
                    && !xmlStrcmp(nptr2->name, (xmlChar *)"trackList")) {
                     find_track(nptr2, filename, pos);
                 }
@@ -446,6 +458,15 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
 
         xmlAddChild(extension, options);
         xmlAddChild(rootnode, extension);
+    }
+
+    /* save playlist title */
+    if(playlist->title && playlist->title[0]
+            && g_utf8_validate(playlist->title, -1, NULL)) {
+        xmlNodePtr title;
+        title = xmlNewNode(NULL, (xmlChar *)"title");
+        xmlAddChild(title, xmlNewText((xmlChar *)playlist->title));
+        xmlAddChild(rootnode, title);
     }
 
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");

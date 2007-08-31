@@ -4,9 +4,13 @@
  * This source code is public domain.
  */
 
-#include "audacious/plugin.h"
 #include "modplug.h"
 #include "gui/main.h"
+extern "C" {
+#include "audacious/plugin.h"
+#include "audacious/tuple.h"
+#include "audacious/tuple_formatter.h"
+}
 
 extern InputPlugin gModPlug;
 
@@ -44,6 +48,7 @@ static void Seek(InputPlayback *data, int aTime)
 {
 	gModplugXMMS.Seek(float32(aTime));
 }
+
 static int GetTime(InputPlayback *data)
 {
 	float32 lTime;
@@ -58,6 +63,11 @@ static int GetTime(InputPlayback *data)
 static void GetSongInfo(char* aFilename, char** aTitle, int* aLength)
 {
 	gModplugXMMS.GetSongInfo(aFilename, *aTitle, *aLength);
+}
+
+static Tuple* GetSongTuple(char* aFilename)
+{
+	return gModplugXMMS.GetSongTuple(aFilename);
 }
 
 void ShowAboutBox(void)
@@ -106,7 +116,7 @@ InputPlugin gModPlug =
 	GetSongInfo,
 	ShowFileInfoBox,
 	NULL,	// output
-	NULL,   // tuple
+	GetSongTuple,
 	NULL,
 	NULL,
 	CanPlayFileFromVFS,	// vfs

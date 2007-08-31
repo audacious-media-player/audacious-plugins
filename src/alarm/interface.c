@@ -474,7 +474,7 @@ create_config_dialog (void)
   gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_h_spin), GTK_UPDATE_IF_VALID);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_h_spin), TRUE);
 
-  label76 = gtk_label_new (_(":"));
+  label76 = gtk_label_new (":");
   gtk_widget_set_name (label76, "label76");
   gtk_widget_ref (label76);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label76", label76,
@@ -630,7 +630,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox31), mon_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (mon_h), TRUE);
 
-  label89 = gtk_label_new (_(":"));
+  label89 = gtk_label_new (":");
   gtk_widget_set_name (label89, "label89");
   gtk_widget_ref (label89);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label89", label89,
@@ -678,7 +678,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox32), tue_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (tue_h), TRUE);
 
-  label90 = gtk_label_new (_(":"));
+  label90 = gtk_label_new (":");
   gtk_widget_set_name (label90, "label90");
   gtk_widget_ref (label90);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label90", label90,
@@ -726,7 +726,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox33), wed_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (wed_h), TRUE);
 
-  label91 = gtk_label_new (_(":"));
+  label91 = gtk_label_new (":");
   gtk_widget_set_name (label91, "label91");
   gtk_widget_ref (label91);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label91", label91,
@@ -774,7 +774,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox34), thu_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (thu_h), TRUE);
 
-  label92 = gtk_label_new (_(":"));
+  label92 = gtk_label_new (":");
   gtk_widget_set_name (label92, "label92");
   gtk_widget_ref (label92);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label92", label92,
@@ -822,7 +822,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox35), fri_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fri_h), TRUE);
 
-  label93 = gtk_label_new (_(":"));
+  label93 = gtk_label_new (":");
   gtk_widget_set_name (label93, "label93");
   gtk_widget_ref (label93);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label93", label93,
@@ -870,7 +870,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox36), sat_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (sat_h), TRUE);
 
-  label94 = gtk_label_new (_(":"));
+  label94 = gtk_label_new (":");
   gtk_widget_set_name (label94, "label94");
   gtk_widget_ref (label94);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label94", label94,
@@ -918,7 +918,7 @@ create_config_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox37), sun_h, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (sun_h), TRUE);
 
-  label95 = gtk_label_new (_(":"));
+  label95 = gtk_label_new (":");
   gtk_widget_set_name (label95, "label95");
   gtk_widget_ref (label95);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label95", label95,

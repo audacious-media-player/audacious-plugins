@@ -297,7 +297,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="convertwidget3">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">8000</property>
+				      <property name="label" translatable="no">8000</property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -323,7 +323,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="convertwidget5">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">11025</property>
+				      <property name="label" translatable="no">11025</property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -349,7 +349,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="convertwidget7">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">22050</property>
+				      <property name="label" translatable="no">22050</property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -375,7 +375,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="convertwidget9">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">44100</property>
+				      <property name="label" translatable="no">44100</property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -401,7 +401,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="convertwidget11">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">48000</property>
+				      <property name="label" translatable="no">48000</property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -427,7 +427,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="convertwidget13">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">64000</property>
+				      <property name="label" translatable="no">64000</property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -453,7 +453,7 @@
 				  <child>
 				    <widget class="GtkLabel" id="convertwidget15">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">96000</property>
+				      <property name="label" translatable="no">96000</property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
