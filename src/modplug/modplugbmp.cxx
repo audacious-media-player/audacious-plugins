@@ -21,6 +21,16 @@ extern "C" {
 #include "audacious/vfs.h"
 }
 
+static char* format_and_free_ti( Tuple* ti, int* length )
+{
+        char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
+        if ( result )
+                *length = tuple_get_int(ti, "length");
+        tuple_free((void *) ti);
+
+        return result;
+}
+
 // ModplugXMMS member functions ===============================
 
 // operations ----------------------------------------
@@ -501,143 +511,11 @@ float32 ModplugXMMS::GetTime(void)
 void ModplugXMMS::GetSongInfo(const string& aFilename, char*& aTitle, int32& aLength)
 {
 	aLength = -1;
-	fstream lTestFile;
-	string lError;
-	bool lDone;
-	
-	lTestFile.open(aFilename.c_str(), ios::in);
-	if(!lTestFile)
-	{
-		lError = "**no such file: ";
-		lError += strrchr(aFilename.c_str(), '/') + 1;
-		aTitle = new char[lError.length() + 1];
-		strcpy(aTitle, lError.c_str());
-		return;
-	}
-	
-	lTestFile.close();
+        *aTitle = NULL;
 
-	if(mModProps.mFastinfo)
-	{
-		if(mModProps.mUseFilename)
-		{
-			//Use filename as name
-			aTitle = new char[aFilename.length() + 1];
-			strcpy(aTitle, strrchr(aFilename.c_str(), '/') + 1);
-			*strrchr(aTitle, '.') = '\0';
-			return;
-		}
-		
-		fstream lModFile;
-		string lExt;
-		uint32 lPos;
-		
-		lDone = true;
-
-		// previously ios::nocreate was used (X Standard C++ Library)
-		lModFile.open(aFilename.c_str(), ios::in);
-
-		lPos = aFilename.find_last_of('.');
-		if((int)lPos == 0)
-			return;
-		lExt = aFilename.substr(lPos);
-		for(uint32 i = 0; i < lExt.length(); i++)
-			lExt[i] = tolower(lExt[i]);
-
-		if (lExt == ".mod")
-		{
-			lModFile.read(mModName, 20);
-			mModName[20] = 0;
-		}
-		else if (lExt == ".s3m")
-		{
-			lModFile.read(mModName, 28);
-			mModName[28] = 0;
-		}
-		else if (lExt == ".xm")
-		{
-			lModFile.seekg(17);
-			lModFile.read(mModName, 20);
-			mModName[20] = 0;
-		}
-		else if (lExt == ".it")
-		{
-			lModFile.seekg(4);
-			lModFile.read(mModName, 28);
-			mModName[28] = 0;
-		}
-		else
-			lDone = false;     //fall back to slow info
-
-		lModFile.close();
-
-		if(lDone)
-		{
-			for(int i = 0; mModName[i] != 0; i++)
-			{
-				if(mModName[i] != ' ')
-				{
-					aTitle = new char[strlen(mModName) + 1];
-					strcpy(aTitle, mModName);
-					
-					return;
-				}
-			}
-			
-			//mod name is blank.  Use filename instead.
-			aTitle = new char[aFilename.length() + 1];
-			strcpy(aTitle, strrchr(aFilename.c_str(), '/') + 1);
-			*strrchr(aTitle, '.') = '\0';
-			return;
-		}
-	}
-		
-	Archive* lArchive;
-	CSoundFile* lSoundFile;
-	const char* lTitle;
-
-	//open and mmap the file
-	lArchive = OpenArchive(aFilename);
-	if(lArchive->Size() == 0)
-	{
-		lError = "**bad mod file: ";
-		lError += strrchr(aFilename.c_str(), '/') + 1;
-		aTitle = new char[lError.length() + 1];
-		strcpy(aTitle, lError.c_str());
-		delete lArchive;
-		return;
-	}
-
-	lSoundFile = new CSoundFile;
-	lSoundFile->Create((uchar*)lArchive->Map(), lArchive->Size());
-
-	if(!mModProps.mUseFilename)
-	{
-		lTitle = lSoundFile->GetTitle();
-		
-		for(int i = 0; lTitle[i] != 0; i++)
-		{
-			if(lTitle[i] != ' ')
-			{
-				aTitle = new char[strlen(lTitle) + 1];
-				strcpy(aTitle, lTitle);
-				goto therest;     //sorry
-			}
-		}
-	}
-	
-	//mod name is blank, or user wants the filename to be used as the title.
-	aTitle = new char[aFilename.length() + 1];
-	strcpy(aTitle, strrchr(aFilename.c_str(), '/') + 1);
-	*strrchr(aTitle, '.') = '\0';
-
-therest:
-	aLength = lSoundFile->GetSongTime() * 1000;                   //It wants milliseconds!?!
-
-	//unload the file
-	lSoundFile->Destroy();
-	delete lSoundFile;
-	delete lArchive;
+        Tuple* ti = GetSongTuple( aFilename );
+        if ( ti )
+                aTitle = format_and_free_ti( ti, &aLength );
 }
 
 Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
