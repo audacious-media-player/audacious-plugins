@@ -54,7 +54,8 @@ static void xs_path_split(gchar *path, gchar **tmpFilename, gchar **tmpFilePath,
 static t_xs_tuple * xs_get_titletuple(gchar *tmpFilename, gchar *tmpFilePath,
 	gchar *tmpFileExt, t_xs_tuneinfo *p, gint subTune)
 {
-   t_xs_tuple *pResult;
+	t_xs_tuple *pResult;
+
 #ifdef AUDACIOUS_PLUGIN
 	pResult = tuple_new();
 	tuple_associate_string(pResult, "title", p->sidName);
@@ -138,14 +139,14 @@ gchar *xs_make_titlestring(t_xs_tuneinfo *p, gint subTune)
 
 	/* Check if the titles are overridden or not */
 #if defined(AUDACIOUS_PLUGIN)
-   if (!xs_cfg.titleOverride) {
+	if (!xs_cfg.titleOverride) {
 		t_xs_tuple *pTuple = xs_get_titletuple(
 			tmpFilename, tmpFilePath, tmpFileExt, p, subTune);
 		pcResult = tuple_formatter_make_title_string(pTuple, get_gentitle_format());
 		tuple_free(pTuple);
 	} else
 #elif defined(HAVE_XMMSEXTRA)
-   if (!xs_cfg.titleOverride) {
+	if (!xs_cfg.titleOverride) {
 		t_xs_tuple *pTuple = xs_get_titletuple(
 			tmpFilename, tmpFilePath, tmpFileExt, p, subTune);
 		
