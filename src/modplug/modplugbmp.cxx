@@ -327,6 +327,8 @@ void ModplugXMMS::PlayLoop()
 
 void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 {
+	int32 aLength;
+	char *aModName;
 	mStopped = true;
 	mPaused = false;
 	
@@ -411,34 +413,15 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 		mArchive->Size()
 	);
 	mPlayed = 0;
-	
-	bool useFilename = mModProps.mUseFilename;
-	
-	if(!useFilename)
-	{
-		strncpy(mModName, mSoundFile->GetTitle(), 100);
-		
-		for(int i = 0; mModName[i] == ' ' || mModName[i] == 0; i++)
-		{
-			if(mModName[i] == 0)
-			{
-				useFilename = true;  //mod name is blank -- use filename
-				break;
-			}
-		}
-	}
-	
-	if(useFilename)
-	{
-		strncpy(mModName, strrchr(aFilename.c_str(), '/') + 1, 100);
-		char* ext = strrchr(mModName, '.');
-		if(ext) *ext = '\0';
-	}
-	
+
+        Tuple* ti = GetSongTuple( aFilename );
+        if ( ti )
+                aModName = format_and_free_ti( ti, &aLength );
+
 	mInPlug->set_info
 	(
-		mModName,
-		mSoundFile->GetSongTime() * 1000,
+		aModName,
+		aLength,
 		mSoundFile->GetNumChannels() * 1000,
 		mModProps.mFrequency,
 		mModProps.mChannels
