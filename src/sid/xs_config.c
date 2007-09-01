@@ -299,7 +299,7 @@ static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, t_xs_sid2
 	if (!XS_CFG_GET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, &tmpStr))
 		return FALSE;
 	
-	pResult->name = strdup(tmpStr);
+	pResult->name = g_strdup(tmpStr);
 	if (pResult->name == NULL) {
 		g_free(pResult);
 		return FALSE;
