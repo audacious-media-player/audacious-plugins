@@ -209,8 +209,7 @@ gint xs_sldb_read(t_xs_sldb *db, const gchar *dbFilename)
 	lineNum = 0;
 
 	while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
-		size_t linePos;
-		linePos = 0;
+		size_t linePos = 0;
 		lineNum++;
 		
 		xs_findnext(inLine, &linePos);

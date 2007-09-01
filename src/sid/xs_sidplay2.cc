@@ -204,6 +204,11 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 	/* Convert filter */
 	f = &(xs_cfg.sid2Filter);
 	XSDEBUG("using filter '%s', %d points\n", f->name, f->npoints);
+	if (f->npoints > XS_SIDPLAY2_NFPOINTS) {
+		xs_error(_("[SIDPlay2] Invalid number of filter curve points (%d > %d)\n"),
+			f->npoints, XS_SIDPLAY2_NFPOINTS);
+		f->npoints = XS_SIDPLAY2_NFPOINTS;
+	}
 	
 	tmpFilter.points = f->npoints;
 	for (i = 0; i < f->npoints; i++) {

@@ -160,7 +160,7 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 	t_xs_stil_node *tmpNode;
 	gboolean isError, isMulti;
 	gint subEntry;
-	gchar *tmpLine;
+	gchar *tmpLine = inLine;
 	assert(db);
 
 	/* Try to open the file */
@@ -178,8 +178,7 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 	subEntry = 0;
 
 	while (!isError && fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
-		size_t linePos, eolPos;
-		linePos = eolPos = 0;
+		size_t linePos = 0, eolPos = 0;
 		xs_findeol(inLine, &eolPos);
 		inLine[eolPos] = 0;
 		lineNum++;
