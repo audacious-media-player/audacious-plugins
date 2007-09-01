@@ -328,7 +328,7 @@ static void playlist_load_xspf(const gchar *filename, gint pos)
                     if (title && *title) {
                         gchar *old = plist->title;
                         plist->title = g_strdup((gchar*)title);
-                        if(old) g_free(old);
+                        g_free(old);
                     }
                     xmlFree(title);
                 }
