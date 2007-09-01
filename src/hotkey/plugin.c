@@ -49,20 +49,7 @@
 #include <audacious/auddrct.h>
 #include <audacious/configdb.h>
 
-#ifdef ENABLE_NLS
-	#ifdef HAVE_AUDACIOUS_I18N_H
-		#include <audacious/i18n.h>
-	#else
-		#ifdef HAVE_DCGETTEXT
-			#include <libintl.h>
-			#define _(String) dgettext(PACKAGE, String)
-		#else
-			#define _(String) (String)
-		#endif
-	#endif
-#else
-	#define _(String) (String)
-#endif
+#include <audacious/i18n.h>
 
 /* for xmms_show_message () */
 #include <audacious/util.h>
@@ -751,10 +738,6 @@ static void configure (void)
 	
 	if (!xdisplay) x_display_init();
 
-#ifdef ENABLE_NLS
-        bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
-
 	load_config ( );
 
 	ungrab_keys();
@@ -919,26 +902,18 @@ static void about (void)
 {
 	static GtkWidget *dialog;
 
-#ifdef 	ENABLE_NLS
-        bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
-
 	dialog = xmms_show_message (_("About Global Hotkey Plugin"),
-				_("Global Hotkey Plugin version " VERSION "\n\n"
+				_("Global Hotkey Plugin\n"
+				"Control the player with global key combinations or multimedia keys.\n\n"
 				"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
-
-				"Parts of the plugin source are from itouch-ctrl plugin.\n"
-				"Authors of itouch-ctrl are listed below:\n"
-				"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n\n"
-
-				"Parts of the plugin source are from xmms-itouch plugin.\n"
-				"Authors of xmms-itouch are listed below:\n"
+				"Contributers include:\n"
+				"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
 				"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
                          	"			Bryn Davies <curious@ihug.com.au>\n"
                         	"			Jonathan A. Davis <davis@jdhouse.org>\n"
                          	"			Jeremy Tan <nsx@nsx.homeip.net>\n\n"
                          	),
-                         	_("Ok"), TRUE, NULL, NULL);
+                         	_("OK"), TRUE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);						
@@ -1036,4 +1011,3 @@ static void ungrab_keys ()
 	
 	grabbed = 0;
 }
-
