@@ -145,6 +145,9 @@ void xs_reinit(void)
 		XS_MUTEX_UNLOCK(xs_status);
 	}
 
+	XS_MUTEX_LOCK(xs_status);
+	XS_MUTEX_LOCK(xs_cfg);
+
 	/* Initialize status and sanitize configuration */
 	xs_memset(&xs_status, 0, sizeof(xs_status));
 
@@ -195,11 +198,15 @@ void xs_reinit(void)
 
 	XSDEBUG("init#2: %s, %i\n", (isInitialized) ? "OK" : "FAILED", iPlayer);
 
+
 	/* Get settings back, in case the chosen emulator backend changed them */
 	xs_cfg.audioFrequency = xs_status.audioFrequency;
 	xs_cfg.audioBitsPerSample = xs_status.audioBitsPerSample;
 	xs_cfg.audioChannels = xs_status.audioChannels;
 	xs_cfg.oversampleEnable = xs_status.oversampleEnable;
+
+	XS_MUTEX_UNLOCK(xs_status);
+	XS_MUTEX_UNLOCK(xs_cfg);
 
 	/* Initialize song-length database */
 	xs_songlen_close();
@@ -212,6 +219,7 @@ void xs_reinit(void)
 	if (xs_cfg.stilDBEnable && (xs_stil_init() != 0)) {
 		xs_error(_("Error initializing STIL database!\n"));
 	}
+
 }
 
 
@@ -922,11 +930,15 @@ gint xs_get_time(InputPlayback *pb)
 void xs_get_song_info(gchar * songFilename, gchar ** songTitle, gint * songLength)
 {
 	t_xs_tuneinfo *pInfo;
+	
+	XS_MUTEX_LOCK(xs_status);
 
 	/* Get tune information from emulation engine */
 	pInfo = xs_status.sidPlayer->plrGetSIDInfo(songFilename);
-	if (!pInfo)
+	if (!pInfo) {
+		XS_MUTEX_UNLOCK(xs_status);
 		return;
+	}
 
 	/* Get sub-tune information, if available */
 	if ((pInfo->startTune > 0) && (pInfo->startTune <= pInfo->nsubTunes)) {
@@ -943,6 +955,7 @@ void xs_get_song_info(gchar * songFilename, gchar ** songTitle, gint * songLengt
 
 	/* Free tune information */
 	xs_tuneinfo_free(pInfo);
+	XS_MUTEX_UNLOCK(xs_status);
 }
 
 
