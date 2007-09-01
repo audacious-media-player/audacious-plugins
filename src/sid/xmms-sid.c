@@ -298,10 +298,18 @@ gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
 }
 
 
-static gboolean xs_schedule_subctrl_update( gpointer unused )
+static gboolean xs_schedule_subctrl_update(gpointer unused)
 {
-	if (xs_status.isPlaying == TRUE )
+	(void) unused;
+	gboolean isPlaying;
+	
+	XS_MUTEX_LOCK(xs_status);
+	isPlaying = xs_status.isPlaying;
+	XS_MUTEX_UNLOCK(xs_status);
+
+	if (isPlaying)
 		xs_subctrl_update();
+
 	return FALSE;
 }
 
@@ -964,10 +972,14 @@ t_xs_tuple * xs_get_song_tuple(gchar *songFilename)
 	t_xs_tuneinfo *pInfo;
 	t_xs_tuple *pResult = NULL;
 
+	XS_MUTEX_LOCK(xs_status);
+
 	/* Get tune information from emulation engine */
 	pInfo = xs_status.sidPlayer->plrGetSIDInfo(songFilename);
-	if (!pInfo)
+	if (!pInfo) {
+		XS_MUTEX_UNLOCK(xs_status);
 		return NULL;
+	}
 
 	/* Get sub-tune information, if available */
 	if ((pInfo->startTune > 0) && (pInfo->startTune <= pInfo->nsubTunes)) {
@@ -991,6 +1003,8 @@ t_xs_tuple * xs_get_song_tuple(gchar *songFilename)
 
 	/* Free tune information */
 	xs_tuneinfo_free(pInfo);
+
+	XS_MUTEX_UNLOCK(xs_status);
 
 	return pResult;
 }
