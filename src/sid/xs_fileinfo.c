@@ -217,9 +217,9 @@ gboolean xs_fileinfo_delete(GtkWidget * widget, GdkEvent * event, gpointer user_
 static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 {
 	t_xs_stil_subnode *tmpNode;
-	GtkWidget *tmpItem, *tmpText;
+	GtkWidget *tmpText;
 	gint tmpIndex;
-	gchar *subName, *subAuthor;
+	gchar *subName, *subAuthor, *subInfo;
 
 	(void) widget;
 	(void) data;
@@ -228,31 +228,31 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 	tmpText = LUW("fileinfo_sub_info");
 
 	/* Get subtune information */
-	tmpItem = gtk_menu_get_active(GTK_MENU(data));
-	tmpIndex = g_list_index(GTK_MENU_SHELL(data)->children, tmpItem);
-
+	if (widget)
+		tmpIndex = gtk_option_menu_get_history(GTK_OPTION_MENU(widget));
+	else
+		tmpIndex = 0;
+	
 	if (xs_fileinfostil && tmpIndex <= xs_fileinfostil->nsubTunes)
 		tmpNode = xs_fileinfostil->subTunes[tmpIndex];
 	else
 		tmpNode = NULL;
-
+	
 	if (tmpNode) {
 		subName = tmpNode->pName;
 		subAuthor = tmpNode->pAuthor;
-
-		if (tmpNode->pInfo) {
-			gtk_text_buffer_set_text(
-				GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(tmpText))),
-				tmpNode->pInfo, -1);
-		}
+		subInfo = tmpNode->pInfo;
 	} else {
 		subName = NULL;
 		subAuthor = NULL;
+		subInfo = NULL;
 	}
 
 	/* Get and set subtune information */
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_sub_name")), subName ? subName : "");
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_sub_author")), subAuthor ? subAuthor : "");
+	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(tmpText))),
+		subInfo ? subInfo : "", -1);
 }
 
 
@@ -260,7 +260,7 @@ void xs_fileinfo(gchar * pcFilename)
 {
 	GtkWidget *tmpMenuItem, *tmpMenu, *tmpOptionMenu;
 	t_xs_tuneinfo *tmpInfo;
-	gchar *tmpStr;
+	gchar tmpStr[256], *tmpStr2;
 	gint n;
 
 	/* Current implementation leaves old fileinfo window untouched if
@@ -280,28 +280,27 @@ void xs_fileinfo(gchar * pcFilename)
 	xs_fileinfostil = xs_stil_get(pcFilename);
 
 	/* Check if there already is an open fileinfo window */
-	if (xs_fileinfowin) {
-		/* Raise old window */
+	if (xs_fileinfowin)
 		gdk_window_raise(xs_fileinfowin->window);
-
-		/* Delete items */
-		tmpOptionMenu = LUW("fileinfo_sub_tune");
-		gtk_widget_destroy(GTK_OPTION_MENU(tmpOptionMenu)->menu);
-		GTK_OPTION_MENU(tmpOptionMenu)->menu = gtk_menu_new();
-	} else {
-		/* If not, create a new one */
+	else {
 		xs_fileinfowin = create_xs_fileinfowin();
-
-		/* Connect additional signals */
-		g_signal_connect(G_OBJECT(gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj")))),
-				   "value_changed", G_CALLBACK(xs_fileinfo_setsong), NULL);
+		g_signal_connect(G_OBJECT(
+			gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj")))), "value_changed",
+			G_CALLBACK(xs_fileinfo_setsong), NULL);
 	}
+
+	/* Delete current items */
+	tmpOptionMenu = LUW("fileinfo_sub_tune");
+	tmpMenu = gtk_option_menu_get_menu(GTK_OPTION_MENU(tmpOptionMenu));
+	gtk_widget_destroy(tmpMenu);
+	gtk_option_menu_remove_menu(GTK_OPTION_MENU(tmpOptionMenu));
+	tmpMenu = gtk_menu_new();
 
 
 	/* Set the generic song information */
-	tmpStr = g_filename_to_utf8(pcFilename, -1, NULL, NULL, NULL);
-	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_filename")), tmpStr);
-	g_free(tmpStr);
+	tmpStr2 = g_filename_to_utf8(pcFilename, -1, NULL, NULL, NULL);
+	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_filename")), tmpStr2);
+	g_free(tmpStr2);
 	
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_songname")), tmpInfo->sidName);
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_composer")), tmpInfo->sidComposer);
@@ -309,41 +308,37 @@ void xs_fileinfo(gchar * pcFilename)
 
 
 	/* Main tune - the pseudo tune */
-	tmpOptionMenu = LUW("fileinfo_sub_tune");
-	tmpMenu = GTK_OPTION_MENU(tmpOptionMenu)->menu;
-
 	tmpMenuItem = gtk_menu_item_new_with_label(_("General info"));
 	gtk_widget_show(tmpMenuItem);
 	gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-	g_signal_connect(G_OBJECT(tmpMenuItem), "activate", G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
 
 	/* Other menu items */
 	for (n = 1; n <= tmpInfo->nsubTunes; n++) {
 		if (xs_fileinfostil && n <= xs_fileinfostil->nsubTunes && xs_fileinfostil->subTunes[n]) {
 			t_xs_stil_subnode *tmpNode = xs_fileinfostil->subTunes[n];
 			
-			tmpStr = g_strdup_printf(_("Tune #%i: "), n);
+			g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i: "), n);
 
 			if (tmpNode->pName)
-				g_strconcat(tmpStr, tmpNode->pName, NULL);
+				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pName);
 			else if (tmpNode->pTitle)
-				g_strconcat(tmpStr, tmpNode->pTitle, NULL);
+				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pTitle);
 			else if (tmpNode->pInfo)
-				g_strconcat(tmpStr, tmpNode->pInfo, NULL);
+				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pInfo);
 			else
-				g_strconcat(tmpStr, "---", NULL);
+				xs_pnstrcat(tmpStr, sizeof(tmpStr), "---");
 		} else {
-			tmpStr = g_strdup_printf(_("Tune #%i"), n);
+			g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i"), n);
 		}
 
 		tmpMenuItem = gtk_menu_item_new_with_label(tmpStr);
 		gtk_widget_show(tmpMenuItem);
 		gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-
-		g_signal_connect(G_OBJECT(tmpMenuItem), "activate", G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
-		
-		g_free(tmpStr);
 	}
+
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(tmpOptionMenu), tmpMenu);
+	g_signal_connect(G_OBJECT(tmpOptionMenu), "changed", G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
+	gtk_widget_show(tmpOptionMenu);
 
 	/* Set the subtune information */
 	xs_fileinfo_subtune(NULL, tmpMenu);
