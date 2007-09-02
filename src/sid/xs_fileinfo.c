@@ -228,10 +228,7 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 	tmpText = LUW("fileinfo_sub_info");
 
 	/* Get subtune information */
-	if (widget)
-		tmpIndex = gtk_option_menu_get_history(GTK_OPTION_MENU(widget));
-	else
-		tmpIndex = 0;
+	tmpIndex = g_list_index(GTK_MENU_SHELL(data)->children, gtk_menu_get_active(GTK_MENU(data)));
 	
 	if (xs_fileinfostil && tmpIndex <= xs_fileinfostil->nsubTunes)
 		tmpNode = xs_fileinfostil->subTunes[tmpIndex];
@@ -311,6 +308,8 @@ void xs_fileinfo(gchar * pcFilename)
 	tmpMenuItem = gtk_menu_item_new_with_label(_("General info"));
 	gtk_widget_show(tmpMenuItem);
 	gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
+	g_signal_connect(G_OBJECT(tmpMenuItem), "activate",
+		G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
 
 	/* Other menu items */
 	for (n = 1; n <= tmpInfo->nsubTunes; n++) {
@@ -334,10 +333,11 @@ void xs_fileinfo(gchar * pcFilename)
 		tmpMenuItem = gtk_menu_item_new_with_label(tmpStr);
 		gtk_widget_show(tmpMenuItem);
 		gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
+		g_signal_connect(G_OBJECT(tmpMenuItem), "activate",
+			G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
 	}
 
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(tmpOptionMenu), tmpMenu);
-	g_signal_connect(G_OBJECT(tmpOptionMenu), "changed", G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
 	gtk_widget_show(tmpOptionMenu);
 
 	/* Set the subtune information */
