@@ -31,13 +31,13 @@
 #include "emuopl.h"
 #include "silentopl.h"
 #include "players.h"
-#include "audacious/plugin.h"
-#include "audacious/util.h"
-#include "audacious/configdb.h"
-#include <audacious/i18n.h>
+#include "audacious/i18n.h"
 extern "C"
 {
+#include "audacious/configdb.h"
+#include "audacious/plugin.h"
 #include "audacious/output.h"
+#include "audacious/util.h"
 }
 
 
@@ -679,6 +679,48 @@ adplug_info_box (char *filename)
 
 /***** Main player (!! threaded !!) *****/
 
+static Tuple*
+adplug_get_tuple (char *filename)
+{
+  CSilentopl tmpopl;
+  VFSFile *fd = vfs_buffered_file_new_from_uri (filename);
+
+  if (!fd)
+    return NULL;
+
+  CPlayer *p = factory (fd, &tmpopl);
+
+  if (p)
+  {
+    Tuple *ti = tuple_new_from_filename(filename);
+    if (! p->getauthor().empty())
+      tuple_associate_string(ti, "artist", p->getauthor().c_str());
+    if (! p->gettitle().empty())
+      tuple_associate_string(ti, "title", p->gettitle().c_str());
+    else if (! p->getdesc().empty())
+      tuple_associate_string(ti, "title", p->getdesc().c_str());
+    else
+      tuple_associate_string(ti, "title", g_path_get_basename(filename));
+    tuple_associate_string(ti, "codec", p->gettype().c_str());
+    tuple_associate_string(ti, "quality", "sequenced");
+    tuple_associate_int(ti, "length", p->songlength (plr.subsong));
+    delete p;
+    return ti;
+  }
+
+  return NULL;
+}
+
+static char* format_and_free_ti( Tuple* ti, int* length )
+{
+  char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
+  if ( result )
+    *length = tuple_get_int(ti, "length");
+  tuple_free((void *) ti);
+
+  return result;
+}
+
 static void
 update_infobox (void)
 {
@@ -711,6 +753,7 @@ play_loop (void *data)
   CEmuopl opl (cfg.freq, cfg.bit16, cfg.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
+  int songlength;
   bool playing = true,          // Song self-end indicator.
     bit16 = cfg.bit16,          // Duplicate config, so it doesn't affect us if
     stereo = cfg.stereo;        // the user changes it while we're playing.
@@ -737,17 +780,14 @@ play_loop (void *data)
     return (NULL);
   }
 
-  // Cache song length
-  dbg_printf ("length, ");
-  plr.songlength = plr.p->songlength (plr.subsong);
-
-  // cache song title
+  // cache song title & length from tuple
   dbg_printf ("title, ");
-  if (!plr.p->gettitle ().empty ())
+  Tuple* ti = adplug_get_tuple(filename);
+  if (ti)
   {
-    plr.songtitle = (char *) malloc (plr.p->gettitle ().length () + 1);
-    strcpy (plr.songtitle, plr.p->gettitle ().c_str ());
+    plr.songtitle = format_and_free_ti( ti, &songlength );
   }
+  plr.songlength = songlength;
 
   // reset to first subsong on new file
   dbg_printf ("subsong, ");
@@ -921,36 +961,12 @@ adplug_get_time (InputPlayback * data)
 static void
 adplug_song_info (char *filename, char **title, int *length)
 {
-  CSilentopl tmpopl;
-  VFSFile *fd = vfs_buffered_file_new_from_uri (filename);
+  *length = -1;
+  *title = NULL;
 
-  if (!fd)
-    return;
-
-  CPlayer *p = factory (fd, &tmpopl);
-
-  dbg_printf ("adplug_song_info(\"%s\", \"%s\", %d): ", filename, *title,
-              *length);
-
-  if (p)
-  {
-    // allocate and set title string
-    if (p->gettitle ().empty ())
-      *title = 0;
-    else
-    {
-      *title = (char *) malloc (p->gettitle ().length () + 1);
-      strcpy (*title, p->gettitle ().c_str ());
-    }
-
-    // get song length
-    *length = p->songlength (plr.subsong);
-
-    // delete temporary player object
-    delete p;
-  }
-
-  dbg_printf ("title = \"%s\", length = %d\n", *title, *length);
+  Tuple* ti = adplug_get_tuple( filename );
+  if ( ti )
+    *title = format_and_free_ti( ti, length );
 }
 
 /***** Player control *****/
@@ -1138,9 +1154,9 @@ InputPlugin adplug_ip = {
   NULL,                         // set_info (filled by XMMS)
   NULL,                         // set_info_text (filled by XMMS)
   adplug_song_info,
-  adplug_info_box,              // adplug_info_box was here (but it used deprecated GTK+ functions)
+  adplug_info_box,
   NULL,                         // output plugin (filled by XMMS)
-  NULL,
+  adplug_get_tuple,
   NULL,
   NULL,
   adplug_is_our_fd,
@@ -1150,3 +1166,4 @@ InputPlugin adplug_ip = {
 InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };
 
 DECLARE_PLUGIN(adplug, NULL, NULL, adplug_iplist, NULL, NULL, NULL, NULL,NULL);
+
