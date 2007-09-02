@@ -99,7 +99,6 @@ public:
 	void Seek(float32 aTime);                // Seek to the specified time.
 	float32 GetTime();                   // Get the current play time.
 
-	void GetSongInfo(const string& aFilename, char*& aTitle, int32& aLength); // Function to grab the title string
 	Tuple* GetSongTuple(const string& aFilename);
 
 	void SetInputPlugin(InputPlugin& aInPlugin);

@@ -491,16 +491,6 @@ float32 ModplugXMMS::GetTime(void)
 	return (float32)mOutPlug->output_time() / 1000;
 }
 
-void ModplugXMMS::GetSongInfo(const string& aFilename, char*& aTitle, int32& aLength)
-{
-	aLength = -1;
-        *aTitle = NULL;
-
-        Tuple* ti = GetSongTuple( aFilename );
-        if ( ti )
-                aTitle = format_and_free_ti( ti, &aLength );
-}
-
 Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
@@ -535,13 +525,13 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 		tuple_associate_string(ti, "codec", "OctaMed");
 		break;
 	case MOD_TYPE_MTM:
-		tuple_associate_string(ti, "codec", "MTM");
+		tuple_associate_string(ti, "codec", "MultiTracker Module");
 		break;
 	case MOD_TYPE_669:
 		tuple_associate_string(ti, "codec", "669 Composer / UNIS 669");
 		break;
 	case MOD_TYPE_ULT:
-		tuple_associate_string(ti, "codec", "ULT");
+		tuple_associate_string(ti, "codec", "Ultra Tracker");
 		break;
 	case MOD_TYPE_STM:
 		tuple_associate_string(ti, "codec", "Scream Tracker");
@@ -574,13 +564,13 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 		tuple_associate_string(ti, "codec", "DigiBooster Pro");
 		break;
 	case MOD_TYPE_MT2:
-		tuple_associate_string(ti, "codec", "MT2");
+		tuple_associate_string(ti, "codec", "MadTracker 2");
 		break;
 	case MOD_TYPE_AMF0:
 		tuple_associate_string(ti, "codec", "AMF0");
 		break;
 	case MOD_TYPE_PSM:
-		tuple_associate_string(ti, "codec", "PSM");
+		tuple_associate_string(ti, "codec", "Protracker Studio Module");
 		break;
 	default:
 		tuple_associate_string(ti, "codec", "ModPlug unknown");
