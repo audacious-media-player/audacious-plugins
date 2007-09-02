@@ -551,7 +551,7 @@ void xs_cfg_ok(void)
 	gint i;
 	gfloat tmpValue;
 	gint tmpInt;
-	gchar *tmpStr;
+	const gchar *tmpStr;
 
 	/* Get lock on configuration */
 	XS_MUTEX_LOCK(xs_cfg);

@@ -33,7 +33,6 @@
 #include "xs_config.h"
 #include "xs_length.h"
 #include "xs_stil.h"
-#include "xs_title.h"
 #include "xs_filter.h"
 #include "xs_fileinfo.h"
 #include "xs_interface.h"
@@ -324,7 +323,8 @@ void *xs_playthread(void *argPointer)
 	t_xs_tuneinfo *myTune;
 	gboolean audioOpen = FALSE, doPlay = FALSE, isFound = FALSE;
 	gint audioGot, songLength, i;
-	gchar *audioBuffer = NULL, *oversampleBuffer = NULL, *tmpTitle;
+	gchar *audioBuffer = NULL, *oversampleBuffer = NULL;
+	Tuple *tmpTitle;
 
 	(void) argPointer;
 
@@ -449,6 +449,7 @@ void *xs_playthread(void *argPointer)
 		/* Set song information for current subtune */
 		XSDEBUG("set tune info\n");
 		myStatus.sidPlayer->plrUpdateSIDInfo(&myStatus);
+/*
 		tmpTitle = xs_make_titlestring(myTune, myStatus.currSong);
 		
 		xs_plugin_ip.set_info(
@@ -459,7 +460,7 @@ void *xs_playthread(void *argPointer)
 			myStatus.audioChannels);
 		
 		g_free(tmpTitle);
-		
+*/		
 		XSDEBUG("playing\n");
 
 		/*
@@ -931,6 +932,7 @@ gint xs_get_time(InputPlayback *pb)
 }
 
 
+#ifndef AUDACIOUS_PLUGIN
 /* Return song information: called by XMMS when initially loading the playlist.
  * Subsequent changes to information are made by the player thread,
  * which uses xs_plugin_ip.set_info();
@@ -966,48 +968,54 @@ void xs_get_song_info(gchar * songFilename, gchar ** songTitle, gint * songLengt
 	XS_MUTEX_UNLOCK(xs_status);
 }
 
+#else
 
-t_xs_tuple * xs_get_song_tuple(gchar *songFilename)
+Tuple * xs_get_song_tuple(gchar *songFilename)
 {
 	t_xs_tuneinfo *pInfo;
-	t_xs_tuple *pResult = NULL;
+	Tuple *pResult;
+	gchar *tmpStr;
 
 	XS_MUTEX_LOCK(xs_status);
+
+	pResult = tuple_new_from_filename(songFilename);
 
 	/* Get tune information from emulation engine */
 	pInfo = xs_status.sidPlayer->plrGetSIDInfo(songFilename);
 	if (!pInfo) {
 		XS_MUTEX_UNLOCK(xs_status);
-		return NULL;
+		return pResult;
 	}
+
+	tuple_associate_string(pResult, "title", pInfo->sidName);
+	tuple_associate_string(pResult, "artist", pInfo->sidComposer);
+	tuple_associate_int(pResult, "track-number", pInfo->startTune);
+	tuple_associate_string(pResult, "genre", "SID-tune");
+	tuple_associate_string(pResult, "copyright", pInfo->sidCopyright);
+	tuple_associate_string(pResult, "format", pInfo->sidFormat);
+	tuple_associate_int(pResult, "subtunes", pInfo->nsubTunes);
+
+	switch (pInfo->sidModel) {
+		case XS_SIDMODEL_6581: tmpStr = "6581"; break;
+		case XS_SIDMODEL_8580: tmpStr = "8580"; break;
+		case XS_SIDMODEL_ANY: tmpStr = "ANY"; break;
+		default: tmpStr = "?"; break;
+	}
+	tuple_associate_string(pResult, "sid-model", tmpStr);
 
 	/* Get sub-tune information, if available */
 	if ((pInfo->startTune > 0) && (pInfo->startTune <= pInfo->nsubTunes)) {
-		gint tmpInt;
+		gint tmpInt = pInfo->subTunes[pInfo->startTune-1].tuneLength;
+		tuple_associate_int(pResult, "length", (tmpInt < 0) ? -1 : tmpInt * 1000);
 		
-		pResult = xs_make_titletuple(pInfo, pInfo->startTune);
-
-		tmpInt = pInfo->subTunes[pInfo->startTune-1].tuneLength;
-#ifdef AUDACIOUS_PLUGIN
-		if (tmpInt < 0)
-			tuple_associate_int(pResult, "length", -1);
-		else
-		   tuple_associate_int(pResult, "length", tmpInt * 1000);
-#else
-		if (tmpInt < 0)
-			pResult->length = -1;
-		else
-			pResult->length = (tmpInt * 1000);
-#endif
 	}
 
 	/* Free tune information */
 	xs_tuneinfo_free(pInfo);
-
 	XS_MUTEX_UNLOCK(xs_status);
-
 	return pResult;
 }
+#endif
 
 
 /* Allocate a new tune information structure
