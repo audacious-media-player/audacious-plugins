@@ -280,22 +280,20 @@ void xs_fileinfo(gchar * pcFilename)
 	xs_fileinfostil = xs_stil_get(pcFilename);
 
 	/* Check if there already is an open fileinfo window */
-	if (xs_fileinfowin) {
-		/* Raise old window */
+	if (xs_fileinfowin)
 		gdk_window_raise(xs_fileinfowin->window);
-
-		/* Delete items */
-		tmpOptionMenu = LUW("fileinfo_sub_tune");
-		gtk_widget_destroy(GTK_OPTION_MENU(tmpOptionMenu)->menu);
-		GTK_OPTION_MENU(tmpOptionMenu)->menu = gtk_menu_new();
-	} else {
-		/* If not, create a new one */
+	else {
 		xs_fileinfowin = create_xs_fileinfowin();
-
-		/* Connect additional signals */
 		g_signal_connect(G_OBJECT(gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj")))),
-				   "value_changed", G_CALLBACK(xs_fileinfo_setsong), NULL);
+			"value_changed", G_CALLBACK(xs_fileinfo_setsong), NULL);
 	}
+
+	/* Delete current items */
+	tmpOptionMenu = LUW("fileinfo_sub_tune");
+	tmpMenu = gtk_option_menu_get_menu(GTK_OPTION_MENU(tmpOptionMenu));
+	gtk_widget_destroy(tmpMenu);
+	gtk_option_menu_remove_menu(GTK_OPTION_MENU(tmpOptionMenu));
+	tmpMenu = gtk_menu_new();
 
 
 	/* Set the generic song information */
@@ -309,13 +307,11 @@ void xs_fileinfo(gchar * pcFilename)
 
 
 	/* Main tune - the pseudo tune */
-	tmpOptionMenu = LUW("fileinfo_sub_tune");
-	tmpMenu = GTK_OPTION_MENU(tmpOptionMenu)->menu;
-
 	tmpMenuItem = gtk_menu_item_new_with_label(_("General info"));
 	gtk_widget_show(tmpMenuItem);
 	gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-	g_signal_connect(G_OBJECT(tmpMenuItem), "activate", G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
+	g_signal_connect(G_OBJECT(tmpMenuItem), "activate",
+		G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
 
 	/* Other menu items */
 	for (n = 1; n <= tmpInfo->nsubTunes; n++) {
@@ -340,10 +336,14 @@ void xs_fileinfo(gchar * pcFilename)
 		gtk_widget_show(tmpMenuItem);
 		gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
 
-		g_signal_connect(G_OBJECT(tmpMenuItem), "activate", G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
+		g_signal_connect(G_OBJECT(tmpMenuItem), "activate",
+			G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
 		
 		g_free(tmpStr);
 	}
+
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(tmpOptionMenu), tmpMenu);
+	gtk_widget_show(tmpOptionMenu);
 
 	/* Set the subtune information */
 	xs_fileinfo_subtune(NULL, tmpMenu);
