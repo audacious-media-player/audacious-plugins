@@ -178,7 +178,7 @@ static int is_our_file(gchar *filename)
 		gint i;
 
 		/* add the files, build cue urls, etc. */
-		cache_cue_file(filename);
+		cache_cue_file(filename); //filename should be uri.
 
 		for (i = 0; i < last_cue_track; i++)
 		{
@@ -203,10 +203,11 @@ static gint get_time(InputPlayback *playback)
 
 static void play(InputPlayback *data)
 {
-    gchar *uri = data->filename;
+    gchar *uri = g_strdup(data->filename);
 
 #ifdef DEBUG
     g_print("play: playback = %p\n", data);
+    g_print("play: uri = %s\n", uri);
 #endif
 
     caller_ip = data;
@@ -214,13 +215,13 @@ static void play(InputPlayback *data)
 	if (strncasecmp("cue://", uri, 6))
 	{
 		gchar *tmp = g_strdup_printf("cue://%s?0", uri);
-		play_cue_uri(data, tmp);
-		g_free(tmp);
-		return;
+		g_free(uri);
+		uri = tmp;
 	}
 	play_thread = g_thread_self();
-	data->set_pb_ready(data);
+	data->set_pb_ready(data); // it should be done in real input plugin? --yaz
 	play_cue_uri(data, uri);
+	g_free(uri); uri = NULL;
 }
 
 static Tuple *get_tuple(gchar *uri)
@@ -264,11 +265,13 @@ static Tuple *get_tuple_uri(gchar *uri)
                 track = atoi(_path);
         }	
 
-	cache_cue_file(path2);
+	cache_cue_file(path2); //path2 should be uri.
 
 	if (cue_file == NULL)
 		return NULL;
-    
+#ifdef DEBUG    
+	g_print("cue_file = %s\n", cue_file);
+#endif
 	pr = input_check_file(cue_file, FALSE);
 	if (pr == NULL)
 		return NULL;
@@ -303,7 +306,8 @@ static Tuple *get_tuple_uri(gchar *uri)
 				  cue_tracks[track].performer : cue_performer);
     tuple_associate_string(out, "album", cue_title);
     tuple_associate_string(out, "genre", cue_genre);
-    tuple_associate_int(out, "year", atoi(cue_year));
+    if(cue_year)
+        tuple_associate_int(out, "year", atoi(cue_year));
     tuple_associate_int(out, "track-number", track + 1);
 
     return out;
@@ -467,7 +471,7 @@ static void set_info_override(gchar * unused, gint length, gint rate, gint freq,
 
 static void play_cue_uri(InputPlayback * data, gchar *uri)
 {
-    gchar *path2 = g_strdup(uri + 6);
+    gchar *path2 = g_strdup(uri + 6); // "cue://" is stripped.
     gchar *_path = strchr(path2, '?');
 	gint file_length = 0;
 	gint track = 0;
@@ -478,6 +482,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 #ifdef DEBUG
     g_print("f: play_cue_uri\n");
     g_print("play_cue_uri: playback = %p\n", data);
+    g_print("play_cue_uri: path2 = %s\n", path2);
 #endif
 
     /* stop watchdog thread */
@@ -493,7 +498,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
         track = atoi(_path);
     }	
 	cur_cue_track = track;
-	cache_cue_file(path2);
+	cache_cue_file(path2); //path2 should be uri.
 
     if (cue_file == NULL || !vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
         return;
@@ -517,6 +522,12 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		/* need to pass playback->output to real_ip */
 		real_ip->output = data->output;
 		real_ip->data = data->data;
+
+		/* we have to copy set_pb_ready things too. */
+		real_ip->pb_ready_mutex = data->pb_ready_mutex;
+		real_ip->pb_ready_cond = data->pb_ready_cond;
+		real_ip->pb_ready_val = data->pb_ready_val;
+		real_ip->set_pb_ready = data->set_pb_ready;
 
 		real_play_thread = g_thread_create((GThreadFunc)(real_ip->plugin->play_file), (gpointer)real_ip, TRUE, NULL);
 		g_usleep(50000); // wait for 50msec while real input plugin is initializing.
