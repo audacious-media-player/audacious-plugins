@@ -30,7 +30,6 @@ SOURCES =	\
 	xs_glade.c	\
 	xs_interface.c	\
 	xs_stil.c	\
-	xs_title.c	\
 	xs_fileinfo.c	\
 	xs_filter.c	\
 	xs_sidplay1.cc	\
