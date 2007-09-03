@@ -23,6 +23,8 @@
 #include "filewriter.h"
 #include "plugins.h"
 
+struct format_info input;
+
 static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *path_hbox, *path_label, *path_dirbrowser;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;

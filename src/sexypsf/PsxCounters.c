@@ -20,6 +20,10 @@
 
 #include "PsxCommon.h"
 
+psxCounter psxCounters[5];
+
+u32 psxNextCounter, psxNextsCounter;
+
 static int cnts = 4;
 static u32 last=0;
 

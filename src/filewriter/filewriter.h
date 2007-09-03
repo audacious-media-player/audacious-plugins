@@ -41,7 +41,9 @@ struct format_info {
     AFormat format;
     int frequency;
     int channels;
-} input;
+};
+
+extern struct format_info input;
 
 extern VFSFile *output_file;
 extern guint64 written;
