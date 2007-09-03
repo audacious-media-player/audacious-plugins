@@ -22,6 +22,9 @@
 
 #include "PsxCommon.h"
 
+psxRegisters psxRegs;
+R3000Acpu *psxCpu;
+
 int psxInit() {
 
 	psxCpu = &psxInt;

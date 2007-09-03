@@ -32,7 +32,7 @@ typedef struct {
 	void (*Shutdown)();
 } R3000Acpu;
 
-R3000Acpu *psxCpu;
+extern R3000Acpu *psxCpu;
 extern R3000Acpu psxInt;
 
 typedef union {
@@ -68,7 +68,7 @@ typedef struct {
 	u32 interrupt;
 } psxRegisters;
 
-psxRegisters psxRegs;
+extern psxRegisters psxRegs;
 
 #define _i32(x) (s32)x
 #define _u32(x) (u32)x
