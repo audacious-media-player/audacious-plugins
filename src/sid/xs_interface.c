@@ -1408,9 +1408,10 @@ create_xs_fileinfowin (void)
 
   convertwidget7 = gtk_menu_new ();
 
-  convertwidget8 = gtk_menu_item_new_with_mnemonic (_(" "));
-  gtk_widget_show (convertwidget8);
-  gtk_container_add (GTK_CONTAINER (convertwidget7), convertwidget8);
+  convertwidget30 = gtk_menu_item_new_with_mnemonic (" ");
+  gtk_widget_set_name (convertwidget30, "convertwidget30");
+  gtk_widget_show (convertwidget30);
+  gtk_container_add (GTK_CONTAINER (convertwidget29), convertwidget30);
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (fileinfo_sub_tune), convertwidget7);
 

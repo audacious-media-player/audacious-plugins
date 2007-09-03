@@ -535,7 +535,7 @@ create_config_dialog (void)
   gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_m_spin), GTK_UPDATE_IF_VALID);
   gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (stop_m_spin), TRUE);
 
-  label78 = gtk_label_new ("minutes");
+  label78 = gtk_label_new (_("minutes"));
   gtk_widget_set_name (label78, "label78");
   gtk_widget_ref (label78);
   gtk_object_set_data_full (GTK_OBJECT (config_dialog), "label78", label78,

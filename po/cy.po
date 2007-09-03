@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-08-30 18:23+0200\n"
+"POT-Creation-Date: 2007-09-03 23:38+0200\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
@@ -250,29 +250,29 @@ msgstr "Newid Cân %s"
 msgid "Subsong selection"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:688
+#: src/adplug/adplug-xmms.cc:730
 msgid "Order: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:689
+#: src/adplug/adplug-xmms.cc:731
 msgid "Pattern: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:691
+#: src/adplug/adplug-xmms.cc:733
 msgid "Row: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:692
+#: src/adplug/adplug-xmms.cc:734
 #, fuzzy
 msgid "Speed: "
 msgstr "Llais"
 
-#: src/adplug/adplug-xmms.cc:693
+#: src/adplug/adplug-xmms.cc:735
 #, fuzzy
 msgid "Timer: "
 msgstr "Teitl:"
 
-#: src/adplug/adplug-xmms.cc:694 src/console/Audacious_Config.cxx:226
+#: src/adplug/adplug-xmms.cc:736 src/console/Audacious_Config.cxx:226
 #: src/sid/xmms-sid.glade:513 src/sid/xs_interface.c:361
 msgid "Hz"
 msgstr "Hz"
@@ -378,6 +378,10 @@ msgstr "Chorus"
 
 #: src/alarm/interface.c:508
 msgid "h"
+msgstr ""
+
+#: src/alarm/interface.c:538
+msgid "minutes"
 msgstr ""
 
 #: src/alarm/interface.c:556
@@ -3660,52 +3664,52 @@ msgstr ""
 msgid "Scrobbler Error"
 msgstr "Ategyn Scrobbler"
 
-#: src/sid/xmms-sid.c:207
+#: src/sid/xmms-sid.c:213
 msgid "Error initializing song-length database!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:213
+#: src/sid/xmms-sid.c:219
 msgid "Error initializing STIL database!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:327
+#: src/sid/xmms-sid.c:343
 msgid "Couldn't allocate memory for audio data buffer!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:334
+#: src/sid/xmms-sid.c:350
 msgid "Couldn't allocate memory for audio oversampling buffer!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:409
+#: src/sid/xmms-sid.c:425
 #, c-format
 msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:420
+#: src/sid/xmms-sid.c:436
 #, c-format
 msgid "Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:466
+#: src/sid/xmms-sid.c:483
 msgid "Oversampling rate-conversion pass failed.\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:770
+#: src/sid/xmms-sid.c:787
 #, fuzzy
 msgid "Subtune Control"
 msgstr "Rheolwr sain"
 
-#: src/sid/xmms-sid.c:1001
+#: src/sid/xmms-sid.c:1036
 #, c-format
 msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:1008
+#: src/sid/xmms-sid.c:1043
 #, c-format
 msgid "Could not allocate sidFilename ('%s')\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:1017
+#: src/sid/xmms-sid.c:1052
 #, c-format
 msgid "Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"
 msgstr ""
@@ -4304,10 +4308,6 @@ msgstr "Hawlfraint:"
 msgid "Song Information:"
 msgstr "Fformat ID3:"
 
-#: src/sid/xmms-sid.glade:4008 src/sid/xs_interface.c:1797
-msgid " "
-msgstr ""
-
 #: src/sid/xmms-sid.glade:4035 src/sid/xs_interface.c:1812
 msgid "Author:"
 msgstr ""
@@ -4334,17 +4334,17 @@ msgstr ""
 msgid "Select HVSC location prefix"
 msgstr ""
 
-#: src/sid/xs_fileinfo.c:315
+#: src/sid/xs_fileinfo.c:308
 #, fuzzy
 msgid "General info"
 msgstr "Cyffredinol"
 
-#: src/sid/xs_fileinfo.c:325
+#: src/sid/xs_fileinfo.c:319
 #, c-format
 msgid "Tune #%i: "
 msgstr ""
 
-#: src/sid/xs_fileinfo.c:336
+#: src/sid/xs_fileinfo.c:330
 #, c-format
 msgid "Tune #%i"
 msgstr ""
@@ -4367,32 +4367,32 @@ msgstr ""
 msgid "Could not open SongLengthDB '%s'\n"
 msgstr ""
 
-#: src/sid/xs_length.c:225
+#: src/sid/xs_length.c:224
 #, c-format
 msgid "Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n"
 msgstr ""
 
-#: src/sid/xs_length.c:232
+#: src/sid/xs_length.c:231
 #, c-format
 msgid "Invalid entry in SongLengthDB file '%s' line #%d!\n"
 msgstr ""
 
-#: src/sid/xs_length.c:237
+#: src/sid/xs_length.c:236
 #, c-format
 msgid "Invalid line in SongLengthDB file '%s' line #%d\n"
 msgstr ""
 
-#: src/sid/xs_length.c:399
+#: src/sid/xs_length.c:398
 #, c-format
 msgid "Not a PSID or RSID file '%s'\n"
 msgstr ""
 
-#: src/sid/xs_length.c:418
+#: src/sid/xs_length.c:417
 #, c-format
 msgid "Error reading SID file header from '%s'\n"
 msgstr ""
 
-#: src/sid/xs_length.c:437
+#: src/sid/xs_length.c:436
 #, c-format
 msgid "Error allocating temp data buffer for file '%s'\n"
 msgstr ""
@@ -4429,60 +4429,65 @@ msgstr ""
 msgid "[SIDPlay2] Could not initialize emulation engine.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:224
+#: src/sid/xs_sidplay2.cc:208
+#, c-format
+msgid "[SIDPlay2] Invalid number of filter curve points (%d > %d)\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:229
 msgid "reSID->create() failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:230
+#: src/sid/xs_sidplay2.cc:235
 #, c-format
 msgid "reSID->filter(%d) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:238
+#: src/sid/xs_sidplay2.cc:243
 #, c-format
 msgid "reSID->sampling(%d) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:248
+#: src/sid/xs_sidplay2.cc:253
 msgid "reSID->filter(NULL) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:262
+#: src/sid/xs_sidplay2.cc:267
 msgid "hardSID->create() failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:268
+#: src/sid/xs_sidplay2.cc:273
 #, c-format
 msgid "hardSID->filter(%d) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:276
+#: src/sid/xs_sidplay2.cc:281
 msgid "[SIDPlay2] Could not initialize SIDBuilder object.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:290
+#: src/sid/xs_sidplay2.cc:295
 #, c-format
 msgid "[SIDPlay2] Invalid clockSpeed=%d, falling back to PAL.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:314
+#: src/sid/xs_sidplay2.cc:319
 #, c-format
 msgid "Invalid sid2OptLevel=%d, falling back to %d.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:338
+#: src/sid/xs_sidplay2.cc:343
 msgid "[SIDPlay2] Emulator engine configuration failed!\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:345
+#: src/sid/xs_sidplay2.cc:350
 msgid "[SIDPlay2] Could not initialize SIDTune object.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:396
+#: src/sid/xs_sidplay2.cc:401
 msgid "[SIDPlay2] currTune->selectSong() failed\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:401
+#: src/sid/xs_sidplay2.cc:406
 msgid "[SIDPlay2] currEng->load() failed\n"
 msgstr ""
 

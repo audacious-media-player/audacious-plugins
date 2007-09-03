@@ -3244,7 +3244,7 @@
 		      <child>
 			<widget class="GtkMenuItem" id="convertwidget8">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes"> </property>
+			  <property name="label" translatable="no"> </property>
 			  <property name="use_underline">True</property>
 			</widget>
 		      </child>
