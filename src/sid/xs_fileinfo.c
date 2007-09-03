@@ -145,7 +145,10 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 		tmpNode = NULL;
 	
 	if (tmpNode) {
-		subName = tmpNode->pName;
+		if (tmpNode->pName)
+			subName = tmpNode->pName;
+		else
+			subName = tmpNode->pTitle;
 		subAuthor = tmpNode->pAuthor;
 		subInfo = tmpNode->pInfo;
 	} else {
@@ -181,18 +184,27 @@ void xs_fileinfo(gchar * pcFilename)
 	/* Current implementation leaves old fileinfo window untouched if
 	 * no information can be found for the new file. Hmm...
 	 */
+#ifdef AUDACIOUS_PLUGIN
+	xs_get_trackinfo(pcFilename, &tmpFilename, &n);
+#else
+	tmpFilename = pcFilename;
+#endif	
 
 	/* Get new tune information */
 	XS_MUTEX_LOCK(xs_fileinfowin);
 	XS_MUTEX_LOCK(xs_status);
-	if ((tmpInfo = xs_status.sidPlayer->plrGetSIDInfo(pcFilename)) == NULL) {
+	if ((tmpInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename)) == NULL) {
 		XS_MUTEX_UNLOCK(xs_fileinfowin);
 		XS_MUTEX_UNLOCK(xs_status);
 		return;
 	}
 	XS_MUTEX_UNLOCK(xs_status);
 
-	xs_fileinfostil = xs_stil_get(pcFilename);
+	xs_fileinfostil = xs_stil_get(tmpFilename);
+
+#ifdef AUDACIOUS_PLUGIN
+	g_free(tmpFilename);
+#endif
 
 	/* Check if there already is an open fileinfo window */
 	if (xs_fileinfowin)
@@ -257,7 +269,7 @@ void xs_fileinfo(gchar * pcFilename)
 	gtk_widget_show(tmpOptionMenu);
 
 	/* Set the subtune information */
-	xs_fileinfo_subtune(NULL, tmpMenu);
+	xs_fileinfo_subtune(tmpOptionMenu, tmpMenu);
 
 	/* Free temporary tuneinfo */
 	xs_tuneinfo_free(tmpInfo);

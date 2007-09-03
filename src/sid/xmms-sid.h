@@ -63,7 +63,7 @@ extern "C" {
 
 /* Configuration section identifier
  */
-#define XS_PACKAGE_STRING	"Audacious-SID v0.8.0beta18"
+#define XS_PACKAGE_STRING	"Audacious-SID"
 #define XS_CONFIG_IDENT		"sid"
 
 /* Default audio rendering frequency in Hz
@@ -171,6 +171,7 @@ Tuple *	xs_get_song_tuple(gchar *);
 void	xs_about(void);
 
 void	xs_error(const char *, ...);
+gboolean xs_get_trackinfo(const gchar *, gchar **, gint *);
 
 
 /* Debugging

@@ -276,7 +276,8 @@ gint xs_is_our_file(gchar *pcFilename)
 	return result;
 }
 
-static gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrack)
+
+gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrack)
 {
 	gchar *tmpSep;
 
