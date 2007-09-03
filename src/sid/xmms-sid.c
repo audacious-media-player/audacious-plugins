@@ -390,7 +390,7 @@ void xs_play_file(InputPlayback *pb)
 	xs_status.isError = FALSE;
 	myTune = xs_status.tuneInfo;
 
-	if (subTune < 1 && subTune > xs_status.tuneInfo->nsubTunes)
+	if (subTune < 1 || subTune > xs_status.tuneInfo->nsubTunes)
 		xs_status.currSong = xs_status.tuneInfo->startTune;
 	else
 		xs_status.currSong = subTune;
