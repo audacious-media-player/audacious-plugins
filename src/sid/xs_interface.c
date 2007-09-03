@@ -899,7 +899,7 @@ create_xs_configwin (void)
   gtk_container_add (GTK_CONTAINER (w_frame31), w_vbox35);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox35), 2);
 
-  cfg_subauto_enable = gtk_check_button_new_with_mnemonic (_("Add all sub-tunes to playlist"));
+  cfg_subauto_enable = gtk_check_button_new_with_mnemonic (_("Add sub-tunes to playlist"));
   gtk_widget_show (cfg_subauto_enable);
   gtk_box_pack_start (GTK_BOX (w_vbox35), cfg_subauto_enable, FALSE, FALSE, 0);
 

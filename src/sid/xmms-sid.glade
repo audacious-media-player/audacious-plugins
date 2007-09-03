@@ -2434,7 +2434,7 @@
 			<widget class="GtkCheckButton" id="cfg_subauto_enable">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">Add all sub-tunes to playlist</property>
+			  <property name="label" translatable="yes">Add sub-tunes to playlist</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
