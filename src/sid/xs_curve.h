@@ -38,9 +38,7 @@ struct _XSCurve {
 	gfloat min_y;
 	gfloat max_y;
 	GdkPixmap *pixmap;
-	gint height;		/* (cached) graph height in pixels */
 	gint grab_point;	/* point currently grabbed */
-	gint last;
 
 	/* control points */
 	gint nctlpoints;	/* number of control points */
