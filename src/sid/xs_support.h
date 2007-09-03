@@ -92,7 +92,7 @@ gint	xs_fseek(t_xs_file *, glong, gint);
 #endif
 guint16 xs_fread_be16(t_xs_file *);
 guint32 xs_fread_be32(t_xs_file *);
-gint	xs_fload_buffer(gchar *, guint8 **, size_t *);
+gint	xs_fload_buffer(const gchar *, guint8 **, size_t *);
 
 
 /* Misc functions

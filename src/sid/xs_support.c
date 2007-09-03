@@ -93,7 +93,7 @@ guint32 xs_fread_be32(t_xs_file *f)
 
 /* Load a file to a buffer, return 0 on success, negative value on error
  */
-gint xs_fload_buffer(gchar *pcFilename, guint8 **buf, size_t *bufSize)
+gint xs_fload_buffer(const gchar *pcFilename, guint8 **buf, size_t *bufSize)
 {
 	t_xs_file *f;
 	glong seekPos;
