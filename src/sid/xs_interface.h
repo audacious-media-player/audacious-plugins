@@ -4,6 +4,9 @@
 
 GtkWidget* create_xs_configwin (void);
 GtkWidget* create_xs_fileinfowin (void);
-GtkWidget* create_xs_sldbfileselector (void);
-GtkWidget* create_xs_stilfileselector (void);
-GtkWidget* create_xs_hvscpathselector (void);
+GtkWidget* create_xs_sldb_fs (void);
+GtkWidget* create_xs_stil_fs (void);
+GtkWidget* create_xs_hvsc_fs (void);
+GtkWidget* create_xs_filter_import_fs (void);
+GtkWidget* create_xs_filter_export_fs (void);
+GtkWidget* create_xs_confirmwin (void);

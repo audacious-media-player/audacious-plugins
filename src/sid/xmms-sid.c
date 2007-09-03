@@ -38,6 +38,8 @@
 #include "xs_interface.h"
 #include "xs_glade.h"
 #include "xs_player.h"
+#include "xs_slsup.h"
+
 
 /*
  * Include player engines
@@ -86,20 +88,6 @@ t_xs_status xs_status;
 XS_MUTEX(xs_status);
 static XS_THREAD_T xs_decode_thread;
 
-static GtkWidget *xs_subctrl = NULL;
-static GtkObject *xs_subctrl_adj = NULL;
-XS_MUTEX(xs_subctrl);
-
-void		xs_subctrl_close(void);
-void		xs_subctrl_update(void);
-
-static t_xs_sldb *xs_sldb_db = NULL;
-XS_MUTEX(xs_sldb_db);
-
-gint		xs_songlen_init(void);
-void		xs_songlen_close(void);
-t_xs_sldb_node *xs_songlen_get(const gchar *);
-
 
 /*
  * Error messages
@@ -107,7 +95,7 @@ t_xs_sldb_node *xs_songlen_get(const gchar *);
 void xs_error(const char *fmt, ...)
 {
 	va_list ap;
-	fprintf(stderr, "XMMS-SID: ");
+	fprintf(stderr, "AUD-SID: ");
 	va_start(ap, fmt);
 	vfprintf(stderr, fmt, ap);
 	va_end(ap);
@@ -297,22 +285,6 @@ gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
 }
 
 
-static gboolean xs_schedule_subctrl_update(gpointer unused)
-{
-	(void) unused;
-	gboolean isPlaying;
-	
-	XS_MUTEX_LOCK(xs_status);
-	isPlaying = xs_status.isPlaying;
-	XS_MUTEX_UNLOCK(xs_status);
-
-	if (isPlaying)
-		xs_subctrl_update();
-
-	return FALSE;
-}
-
-
 /*
  * Main playing thread loop
  */
@@ -410,8 +382,6 @@ void *xs_playthread(void *argPointer)
 		XS_MUTEX_UNLOCK(xs_cfg);
 
 		XSDEBUG("subtune #%i selected, initializing...\n", myStatus.currSong);
-
-		g_idle_add_full( G_PRIORITY_HIGH_IDLE , xs_schedule_subctrl_update , NULL , NULL );
 
 		/* Check minimum playtime */
 		songLength = myTune->subTunes[myStatus.currSong-1].tuneLength;
@@ -618,9 +588,6 @@ void xs_stop(InputPlayback *pb)
 	
 	XSDEBUG("stop requested\n");
 
-	/* Close the sub-tune control window, if any */
-	xs_subctrl_close();
-
 	/* Lock xs_status and stop playing thread */
 	XS_MUTEX_LOCK(xs_status);
 	if (xs_status.isPlaying) {
@@ -634,11 +601,6 @@ void xs_stop(InputPlayback *pb)
 
 	XSDEBUG("done, updating status\n");
 	
-	/* Status is now stopped, update the sub-tune
-	 * controller in fileinfo window (if open)
-	 */
-	xs_fileinfo_update();
-
 	/* Free tune information */
 	XS_MUTEX_LOCK(xs_status);
 	xs_status.sidPlayer->plrDeleteSID(&xs_status);
@@ -654,233 +616,15 @@ void xs_stop(InputPlayback *pb)
  */
 void xs_pause(InputPlayback *pb, short pauseState)
 {
-	xs_subctrl_close();
-	xs_fileinfo_update();
 	pb->output->pause(pauseState);
 }
 
 
 /*
- * Pop-up subtune selector
- */
-void xs_subctrl_setsong(void)
-{
-	gint n;
-
-	XS_MUTEX_LOCK(xs_status);
-	XS_MUTEX_LOCK(xs_subctrl);
-
-	if (xs_status.tuneInfo && xs_status.isPlaying) {
-		n = (gint) GTK_ADJUSTMENT(xs_subctrl_adj)->value;
-		if ((n >= 1) && (n <= xs_status.tuneInfo->nsubTunes))
-			xs_status.currSong = n;
-	}
-
-	XS_MUTEX_UNLOCK(xs_subctrl);
-	XS_MUTEX_UNLOCK(xs_status);
-}
-
-
-void xs_subctrl_prevsong(void)
-{
-	XS_MUTEX_LOCK(xs_status);
-
-	if (xs_status.tuneInfo && xs_status.isPlaying) {
-		if (xs_status.currSong > 1)
-			xs_status.currSong--;
-	}
-
-	XS_MUTEX_UNLOCK(xs_status);
-
-	xs_subctrl_update();
-}
-
-
-void xs_subctrl_nextsong(void)
-{
-	XS_MUTEX_LOCK(xs_status);
-
-	if (xs_status.tuneInfo && xs_status.isPlaying) {
-		if (xs_status.currSong < xs_status.tuneInfo->nsubTunes)
-			xs_status.currSong++;
-	}
-
-	XS_MUTEX_UNLOCK(xs_status);
-
-	xs_subctrl_update();
-}
-
-
-void xs_subctrl_update(void)
-{
-	GtkAdjustment *tmpAdj;
-
-	XS_MUTEX_LOCK(xs_status);
-	XS_MUTEX_LOCK(xs_subctrl);
-
-	/* Check if control window exists, we are currently playing and have a tune */
-	if (xs_subctrl) {
-		if (xs_status.tuneInfo && xs_status.isPlaying) {
-			tmpAdj = GTK_ADJUSTMENT(xs_subctrl_adj);
-
-			tmpAdj->value = xs_status.currSong;
-			tmpAdj->lower = 1;
-			tmpAdj->upper = xs_status.tuneInfo->nsubTunes;
-			XS_MUTEX_UNLOCK(xs_status);
-			XS_MUTEX_UNLOCK(xs_subctrl);
-			gtk_adjustment_value_changed(tmpAdj);
-		} else {
-			XS_MUTEX_UNLOCK(xs_status);
-			XS_MUTEX_UNLOCK(xs_subctrl);
-			xs_subctrl_close();
-		}
-	} else {
-		XS_MUTEX_UNLOCK(xs_subctrl);
-		XS_MUTEX_UNLOCK(xs_status);
-	}
-
-	xs_fileinfo_update();
-}
-
-
-void xs_subctrl_close(void)
-{
-	XS_MUTEX_LOCK(xs_subctrl);
-
-	if (xs_subctrl) {
-		gtk_widget_destroy(xs_subctrl);
-		xs_subctrl = NULL;
-	}
-
-	XS_MUTEX_UNLOCK(xs_subctrl);
-}
-
-
-gboolean xs_subctrl_keypress(GtkWidget * win, GdkEventKey * ev)
-{
-	(void) win;
-
-	if (ev->keyval == GDK_Escape)
-		xs_subctrl_close();
-
-	return FALSE;
-}
-
-
-void xs_subctrl_open(void)
-{
-	GtkWidget *frame25, *hbox15, *subctrl_prev, *subctrl_current, *subctrl_next;
-
-	XS_MUTEX_LOCK(xs_subctrl);
-	if (!xs_status.tuneInfo || !xs_status.isPlaying ||
-		xs_subctrl || (xs_status.tuneInfo->nsubTunes <= 1)) {
-		XS_MUTEX_UNLOCK(xs_subctrl);
-		return;
-	}
-
-	/* Create the pop-up window */
-	xs_subctrl = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_type_hint(GTK_WINDOW(xs_subctrl), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_widget_set_name(xs_subctrl, "xs_subctrl");
-	g_object_set_data(G_OBJECT(xs_subctrl), "xs_subctrl", xs_subctrl);
-
-	gtk_window_set_title(GTK_WINDOW(xs_subctrl), _("Subtune Control"));
-	gtk_window_set_position(GTK_WINDOW(xs_subctrl), GTK_WIN_POS_MOUSE);
-	gtk_container_set_border_width(GTK_CONTAINER(xs_subctrl), 0);
-	gtk_window_set_policy(GTK_WINDOW(xs_subctrl), FALSE, FALSE, FALSE);
-
-	g_signal_connect(G_OBJECT(xs_subctrl), "destroy", G_CALLBACK(gtk_widget_destroyed), &xs_subctrl);
-
-	g_signal_connect(G_OBJECT(xs_subctrl), "focus_out_event", G_CALLBACK(xs_subctrl_close), NULL);
-
-	gtk_widget_realize(xs_subctrl);
-	gdk_window_set_decorations(xs_subctrl->window, (GdkWMDecoration) 0);
-
-
-	/* Create the control widgets */
-	frame25 = gtk_frame_new(NULL);
-	gtk_container_add(GTK_CONTAINER(xs_subctrl), frame25);
-	gtk_container_set_border_width(GTK_CONTAINER(frame25), 2);
-	gtk_frame_set_shadow_type(GTK_FRAME(frame25), GTK_SHADOW_OUT);
-
-	hbox15 = gtk_hbox_new(FALSE, 4);
-	gtk_container_add(GTK_CONTAINER(frame25), hbox15);
-
-	subctrl_prev = gtk_button_new_with_label(" < ");
-	gtk_widget_set_name(subctrl_prev, "subctrl_prev");
-	gtk_box_pack_start(GTK_BOX(hbox15), subctrl_prev, FALSE, FALSE, 0);
-
-	xs_subctrl_adj = gtk_adjustment_new(xs_status.currSong, 1, xs_status.tuneInfo->nsubTunes, 1, 1, 0);
-	g_signal_connect(G_OBJECT(xs_subctrl_adj), "value_changed", G_CALLBACK(xs_subctrl_setsong), NULL);
-
-	subctrl_current = gtk_hscale_new(GTK_ADJUSTMENT(xs_subctrl_adj));
-	gtk_widget_set_size_request(subctrl_current, 80, -1);
-	gtk_widget_set_name(subctrl_current, "subctrl_current");
-	gtk_box_pack_start(GTK_BOX(hbox15), subctrl_current, FALSE, TRUE, 0);
-	gtk_scale_set_digits(GTK_SCALE(subctrl_current), 0);
-	gtk_range_set_update_policy(GTK_RANGE(subctrl_current), GTK_UPDATE_DELAYED);
-	gtk_widget_grab_focus(subctrl_current);
-
-	subctrl_next = gtk_button_new_with_label(" > ");
-	gtk_widget_set_name(subctrl_next, "subctrl_next");
-	gtk_box_pack_start(GTK_BOX(hbox15), subctrl_next, FALSE, FALSE, 0);
-
-	g_signal_connect(G_OBJECT(subctrl_prev), "clicked", G_CALLBACK(xs_subctrl_prevsong), NULL);
-
-	g_signal_connect(G_OBJECT(subctrl_next), "clicked", G_CALLBACK(xs_subctrl_nextsong), NULL);
-
-	g_signal_connect(G_OBJECT(xs_subctrl), "key_press_event", G_CALLBACK(xs_subctrl_keypress), NULL);
-
-	gtk_widget_show_all(xs_subctrl);
-
-	XS_MUTEX_UNLOCK(xs_subctrl);
-}
-
-
-/*
- * Set the time-seek position
- * The playing thread will do the "seeking", which means sub-tune
- * changing in XMMS-SID's case. iTime argument is time in seconds,
- * in contrast to milliseconds used in other occasions.
- *
- * This function is called whenever position slider is clicked or
- * other method of seeking is used (keyboard, etc.)
+ * A stub seek function (Audacious will crash if seek is NULL)
  */
 void xs_seek(InputPlayback *pb, gint iTime)
 {
-	/* Check status */
-	XS_MUTEX_LOCK(xs_status);
-	if (!xs_status.tuneInfo || !xs_status.isPlaying) {
-		XS_MUTEX_UNLOCK(xs_status);
-		return;
-	}
-
-	/* Act according to settings */
-	switch (xs_cfg.subsongControl) {
-	case XS_SSC_SEEK:
-		if (iTime < xs_status.lastTime) {
-			if (xs_status.currSong > 1)
-				xs_status.currSong--;
-		} else if (iTime > xs_status.lastTime) {
-			if (xs_status.currSong < xs_status.tuneInfo->nsubTunes)
-				xs_status.currSong++;
-		}
-		break;
-
-	case XS_SSC_POPUP:
-		xs_subctrl_open();
-		break;
-
-		/* If we have song-position patch, check settings */
-#ifdef HAVE_SONG_POSITION
-	case XS_SSC_PATCH:
-		if ((iTime > 0) && (iTime <= xs_status.tuneInfo->nsubTunes))
-			xs_status.currSong = iTime;
-		break;
-#endif
-	}
-
-	XS_MUTEX_UNLOCK(xs_status);
 }
 
 
@@ -912,19 +656,6 @@ gint xs_get_time(InputPlayback *pb)
 		return -1;
 	}
 
-	/* Let's see what we do */
-	switch (xs_cfg.subsongControl) {
-	case XS_SSC_SEEK:
-		xs_status.lastTime = (pb->output->output_time() / 1000);
-		break;
-
-#ifdef HAVE_SONG_POSITION
-	case XS_SSC_PATCH:
-		set_song_position(xs_status.currSong, 1, xs_status.tuneInfo->nsubTunes);
-		break;
-#endif
-	}
-
 	XS_MUTEX_UNLOCK(xs_status);
 
 	/* Return output time reported by audio output plugin */
@@ -932,44 +663,8 @@ gint xs_get_time(InputPlayback *pb)
 }
 
 
-#ifndef AUDACIOUS_PLUGIN
-/* Return song information: called by XMMS when initially loading the playlist.
- * Subsequent changes to information are made by the player thread,
- * which uses xs_plugin_ip.set_info();
+/* Return song information Tuple
  */
-void xs_get_song_info(gchar * songFilename, gchar ** songTitle, gint * songLength)
-{
-	t_xs_tuneinfo *pInfo;
-	
-	XS_MUTEX_LOCK(xs_status);
-
-	/* Get tune information from emulation engine */
-	pInfo = xs_status.sidPlayer->plrGetSIDInfo(songFilename);
-	if (!pInfo) {
-		XS_MUTEX_UNLOCK(xs_status);
-		return;
-	}
-
-	/* Get sub-tune information, if available */
-	if ((pInfo->startTune > 0) && (pInfo->startTune <= pInfo->nsubTunes)) {
-		gint tmpInt;
-		
-		(*songTitle) = xs_make_titlestring(pInfo, pInfo->startTune);
-
-		tmpInt = pInfo->subTunes[pInfo->startTune-1].tuneLength;
-		if (tmpInt < 0)
-			(*songLength) = -1;
-		else
-			(*songLength) = (tmpInt * 1000);
-	}
-
-	/* Free tune information */
-	xs_tuneinfo_free(pInfo);
-	XS_MUTEX_UNLOCK(xs_status);
-}
-
-#else
-
 Tuple * xs_get_song_tuple(gchar *songFilename)
 {
 	t_xs_tuneinfo *pInfo;
@@ -1007,175 +702,10 @@ Tuple * xs_get_song_tuple(gchar *songFilename)
 	if ((pInfo->startTune > 0) && (pInfo->startTune <= pInfo->nsubTunes)) {
 		gint tmpInt = pInfo->subTunes[pInfo->startTune-1].tuneLength;
 		tuple_associate_int(pResult, "length", (tmpInt < 0) ? -1 : tmpInt * 1000);
-		
 	}
 
 	/* Free tune information */
 	xs_tuneinfo_free(pInfo);
 	XS_MUTEX_UNLOCK(xs_status);
-	return pResult;
-}
-#endif
-
-
-/* Allocate a new tune information structure
- */
-t_xs_tuneinfo *xs_tuneinfo_new(const gchar * pcFilename,
-		gint nsubTunes, gint startTune, const gchar * sidName,
-		const gchar * sidComposer, const gchar * sidCopyright,
-		gint loadAddr, gint initAddr, gint playAddr,
-		gint dataFileLen, const gchar *sidFormat, gint sidModel)
-{
-	t_xs_tuneinfo *pResult;
-	t_xs_sldb_node *tmpLength;
-	gint i;
-
-	/* Allocate structure */
-	pResult = (t_xs_tuneinfo *) g_malloc0(sizeof(t_xs_tuneinfo));
-	if (!pResult) {
-		xs_error(_("Could not allocate memory for t_xs_tuneinfo ('%s')\n"),
-			pcFilename);
-		return NULL;
-	}
-
-	pResult->sidFilename = g_filename_to_utf8(pcFilename, -1, NULL, NULL, NULL);
-	if (!pResult->sidFilename) {
-		xs_error(_("Could not allocate sidFilename ('%s')\n"),
-			pcFilename);
-		g_free(pResult);
-		return NULL;
-	}
-
-	/* Allocate space for subtune information */
-	pResult->subTunes = g_malloc0(sizeof(t_xs_subtuneinfo) * (nsubTunes + 1));
-	if (!pResult->subTunes) {
-		xs_error(_("Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"),
-			pcFilename, nsubTunes);
-
-		g_free(pResult->sidFilename);
-		g_free(pResult);
-		return NULL;
-	}
-
-	/* The following allocations don't matter if they fail */
-	pResult->sidName = XS_CS_SID(sidName);
-	pResult->sidComposer = XS_CS_SID(sidComposer);
-	pResult->sidCopyright = XS_CS_SID(sidCopyright);
-
-	pResult->nsubTunes = nsubTunes;
-	pResult->startTune = startTune;
-
-	pResult->loadAddr = loadAddr;
-	pResult->initAddr = initAddr;
-	pResult->playAddr = playAddr;
-	pResult->dataFileLen = dataFileLen;
-	pResult->sidFormat = XS_CS_SID(sidFormat);
-	
-	pResult->sidModel = sidModel;
-
-	/* Get length information (NOTE: Do not free this!) */
-	tmpLength = xs_songlen_get(pcFilename);
-	
-	/* Fill in sub-tune information */
-	for (i = 0; i < pResult->nsubTunes; i++) {
-		if (tmpLength && (i < tmpLength->nLengths))
-			pResult->subTunes[i].tuneLength = tmpLength->sLengths[i];
-		else
-			pResult->subTunes[i].tuneLength = -1;
-		
-		pResult->subTunes[i].tuneSpeed = -1;
-	}
-	
-	return pResult;
-}
-
-
-/* Free given tune information structure
- */
-void xs_tuneinfo_free(t_xs_tuneinfo * pTune)
-{
-	if (!pTune) return;
-
-	g_free(pTune->subTunes);
-	g_free(pTune->sidFilename);
-	g_free(pTune->sidName);
-	g_free(pTune->sidComposer);
-	g_free(pTune->sidCopyright);
-	g_free(pTune->sidFormat);
-	g_free(pTune);
-}
-
-
-/* Song length database handling glue
- */
-gint xs_songlen_init(void)
-{
-	XS_MUTEX_LOCK(xs_cfg);
-
-	if (!xs_cfg.songlenDBPath) {
-		XS_MUTEX_UNLOCK(xs_cfg);
-		return -1;
-	}
-
-	XS_MUTEX_LOCK(xs_sldb_db);
-
-	/* Check if already initialized */
-	if (xs_sldb_db)
-		xs_sldb_free(xs_sldb_db);
-
-	/* Allocate database */
-	xs_sldb_db = (t_xs_sldb *) g_malloc0(sizeof(t_xs_sldb));
-	if (!xs_sldb_db) {
-		XS_MUTEX_UNLOCK(xs_cfg);
-		XS_MUTEX_UNLOCK(xs_sldb_db);
-		return -2;
-	}
-
-	/* Read the database */
-	if (xs_sldb_read(xs_sldb_db, xs_cfg.songlenDBPath) != 0) {
-		xs_sldb_free(xs_sldb_db);
-		xs_sldb_db = NULL;
-		XS_MUTEX_UNLOCK(xs_cfg);
-		XS_MUTEX_UNLOCK(xs_sldb_db);
-		return -3;
-	}
-
-	/* Create index */
-	if (xs_sldb_index(xs_sldb_db) != 0) {
-		xs_sldb_free(xs_sldb_db);
-		xs_sldb_db = NULL;
-		XS_MUTEX_UNLOCK(xs_cfg);
-		XS_MUTEX_UNLOCK(xs_sldb_db);
-		return -4;
-	}
-
-	XS_MUTEX_UNLOCK(xs_cfg);
-	XS_MUTEX_UNLOCK(xs_sldb_db);
-	return 0;
-}
-
-
-void xs_songlen_close(void)
-{
-	XS_MUTEX_LOCK(xs_sldb_db);
-	xs_sldb_free(xs_sldb_db);
-	xs_sldb_db = NULL;
-	XS_MUTEX_UNLOCK(xs_sldb_db);
-}
-
-
-t_xs_sldb_node *xs_songlen_get(const gchar * pcFilename)
-{
-	t_xs_sldb_node *pResult;
-
-	XS_MUTEX_LOCK(xs_sldb_db);
-
-	if (xs_cfg.songlenDBEnable && xs_sldb_db)
-		pResult = xs_sldb_get(xs_sldb_db, pcFilename);
-	else
-		pResult = NULL;
-
-	XS_MUTEX_UNLOCK(xs_sldb_db);
-
 	return pResult;
 }
