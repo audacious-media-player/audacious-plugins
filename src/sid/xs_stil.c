@@ -299,7 +299,7 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 			break;
 		}
 		
-		g_free(tmpLine);
+		XS_CS_FREE(tmpLine);
 
 	} /* while */
 

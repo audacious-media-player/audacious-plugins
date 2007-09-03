@@ -64,7 +64,7 @@ extern "C" {
 /* Configuration section identifier
  */
 #define XS_PACKAGE_STRING	"Audacious-SID v0.8.0beta18"
-#define XS_CONFIG_IDENT		"sid"		/* Configuration file identifier */
+#define XS_CONFIG_IDENT		"sid"
 
 /* Default audio rendering frequency in Hz
  */
@@ -113,8 +113,10 @@ extern "C" {
 
 /* Character set conversion helper macros
  */
-#define XS_CS_SID(M)	g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
-#define XS_CS_STIL(M)	g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
+#define XS_CS_FILENAME(M)	g_filename_to_utf8(M, -1, NULL, NULL, NULL)
+#define XS_CS_SID(M)		g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
+#define XS_CS_STIL(M)		g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
+#define XS_CS_FREE(M)		g_free(M)
 
 /* Shorthands for linked lists
  */
@@ -190,6 +192,29 @@ void	XSDEBUG(const char *, ...);
 #    define XSDEBUG(...) /* stub */
 #  endif
 #endif
+
+
+/* And even some Gtk+ macro crap here, yay.
+ */
+#define XS_DEF_WINDOW_DELETE(ME, MV)					\
+gboolean xs_ ## ME ## _delete(GtkWidget *w, GdkEvent *e, gpointer d) {	\
+	(void) w; (void) e; (void) d;					\
+	if (xs_ ## MV ) {						\
+		gtk_widget_destroy(xs_ ## MV );				\
+		xs_ ## MV = NULL;					\
+	}								\
+	return FALSE;							\
+}
+
+#define XS_DEF_WINDOW_CLOSE(ME, MV)			\
+void xs_ ## ME (GtkButton *b, gpointer d) {		\
+	(void) b; (void) d;				\
+	gtk_widget_destroy(xs_ ## MV );			\
+	xs_ ## MV = NULL;				\
+}
+
+#define XS_SIGNAL_CONNECT(SOBJ, SNAME, SFUNC, SDATA)		\
+	g_signal_connect(G_OBJECT(SOBJ), SNAME, G_CALLBACK(SFUNC), SDATA)
 
 #ifdef __cplusplus
 }
