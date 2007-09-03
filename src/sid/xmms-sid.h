@@ -35,7 +35,7 @@ extern "C" {
 /* #define to enable spurious debugging messages for development
  * purposes. Output goes to stderr. See also DEBUG_NP below.
  */
-#undef DEBUG
+#define DEBUG
 
 /* Define to ISO C99 macro for debugging instead of varargs function.
  * This provides more useful information, but is incompatible with
@@ -169,14 +169,6 @@ void	xs_seek(InputPlayback *, gint);
 gint	xs_get_time(InputPlayback *);
 Tuple *	xs_get_song_tuple(gchar *);
 void	xs_about(void);
-
-
-t_xs_tuneinfo *xs_tuneinfo_new(const gchar * pcFilename,
-		gint nsubTunes, gint startTune, const gchar * sidName,
-		const gchar * sidComposer, const gchar * sidCopyright,
-		gint loadAddr, gint initAddr, gint playAddr,
-		gint dataFileLen, const gchar *sidFormat, gint sidModel);
-void	xs_tuneinfo_free(t_xs_tuneinfo *);
 
 void	xs_error(const char *, ...);
 
