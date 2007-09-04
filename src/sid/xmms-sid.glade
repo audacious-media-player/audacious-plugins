@@ -3235,19 +3235,11 @@
 		  <property name="border_width">2</property>
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="history">0</property>
+		  <property name="history">-1</property>
 
 		  <child internal-child="menu">
 		    <widget class="GtkMenu" id="convertwidget7">
 		      <property name="visible">True</property>
-
-		      <child>
-			<widget class="GtkMenuItem" id="convertwidget8">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="no"> </property>
-			  <property name="use_underline">True</property>
-			</widget>
-		      </child>
 		    </widget>
 		  </child>
 		</widget>

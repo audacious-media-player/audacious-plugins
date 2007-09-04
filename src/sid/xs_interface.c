@@ -209,90 +209,108 @@ create_xs_configwin (void)
   tooltips = gtk_tooltips_new ();
 
   xs_configwin = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_widget_set_name (xs_configwin, "xs_configwin");
   gtk_window_set_title (GTK_WINDOW (xs_configwin), _("Audacious-SID configuration"));
 
   w_vbox1 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (w_vbox1, "w_vbox1");
   gtk_widget_show (w_vbox1);
   gtk_container_add (GTK_CONTAINER (xs_configwin), w_vbox1);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox1), 8);
 
   cfg_notebook = gtk_notebook_new ();
+  gtk_widget_set_name (cfg_notebook, "cfg_notebook");
   gtk_widget_show (cfg_notebook);
   gtk_box_pack_start (GTK_BOX (w_vbox1), cfg_notebook, TRUE, TRUE, 0);
   gtk_notebook_set_show_border (GTK_NOTEBOOK (cfg_notebook), FALSE);
 
   w_vbox6 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (w_vbox6, "w_vbox6");
   gtk_widget_show (w_vbox6);
   gtk_container_add (GTK_CONTAINER (cfg_notebook), w_vbox6);
 
   w_hbox2 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (w_hbox2, "w_hbox2");
   gtk_widget_show (w_hbox2);
   gtk_box_pack_start (GTK_BOX (w_vbox6), w_hbox2, FALSE, TRUE, 0);
 
   cfg_sndres_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_sndres_frame, "cfg_sndres_frame");
   gtk_widget_show (cfg_sndres_frame);
   gtk_box_pack_start (GTK_BOX (w_hbox2), cfg_sndres_frame, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sndres_frame), 4);
 
   w_vbox9 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox9, "w_vbox9");
   gtk_widget_show (w_vbox9);
   gtk_container_add (GTK_CONTAINER (cfg_sndres_frame), w_vbox9);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox9), 2);
 
   cfg_res_8bit = gtk_radio_button_new_with_mnemonic (NULL, _("8-bit"));
+  gtk_widget_set_name (cfg_res_8bit, "cfg_res_8bit");
   gtk_widget_show (cfg_res_8bit);
   gtk_box_pack_start (GTK_BOX (w_vbox9), cfg_res_8bit, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_res_8bit), cfg_res_8bit_group);
   cfg_res_8bit_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_res_8bit));
 
   cfg_res_16bit = gtk_radio_button_new_with_mnemonic (NULL, _("16-bit"));
+  gtk_widget_set_name (cfg_res_16bit, "cfg_res_16bit");
   gtk_widget_show (cfg_res_16bit);
   gtk_box_pack_start (GTK_BOX (w_vbox9), cfg_res_16bit, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_res_16bit), cfg_res_8bit_group);
   cfg_res_8bit_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_res_16bit));
 
   label1 = gtk_label_new (_("Resolution:"));
+  gtk_widget_set_name (label1, "label1");
   gtk_widget_show (label1);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_sndres_frame), label1);
 
   cfg_channels_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_channels_frame, "cfg_channels_frame");
   gtk_widget_show (cfg_channels_frame);
   gtk_box_pack_start (GTK_BOX (w_hbox2), cfg_channels_frame, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_channels_frame), 4);
 
   w_vbox10 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox10, "w_vbox10");
   gtk_widget_show (w_vbox10);
   gtk_container_add (GTK_CONTAINER (cfg_channels_frame), w_vbox10);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox10), 2);
 
   cfg_chn_mono = gtk_radio_button_new_with_mnemonic (NULL, _("Mono"));
+  gtk_widget_set_name (cfg_chn_mono, "cfg_chn_mono");
   gtk_widget_show (cfg_chn_mono);
   gtk_box_pack_start (GTK_BOX (w_vbox10), cfg_chn_mono, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_chn_mono), cfg_chn_mono_group);
   cfg_chn_mono_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_chn_mono));
 
   cfg_chn_stereo = gtk_radio_button_new_with_mnemonic (NULL, _("Stereo"));
+  gtk_widget_set_name (cfg_chn_stereo, "cfg_chn_stereo");
   gtk_widget_show (cfg_chn_stereo);
   gtk_box_pack_start (GTK_BOX (w_vbox10), cfg_chn_stereo, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_chn_stereo), cfg_chn_mono_group);
   cfg_chn_mono_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_chn_stereo));
 
   cfg_chn_autopan = gtk_radio_button_new_with_mnemonic (NULL, _("Autopanning"));
+  gtk_widget_set_name (cfg_chn_autopan, "cfg_chn_autopan");
   gtk_widget_show (cfg_chn_autopan);
   gtk_box_pack_start (GTK_BOX (w_vbox10), cfg_chn_autopan, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_chn_autopan), cfg_chn_mono_group);
   cfg_chn_mono_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_chn_autopan));
 
   label2 = gtk_label_new (_("Channels:"));
+  gtk_widget_set_name (label2, "label2");
   gtk_widget_show (label2);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_channels_frame), label2);
 
   cfg_samplerate_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_samplerate_frame, "cfg_samplerate_frame");
   gtk_widget_show (cfg_samplerate_frame);
   gtk_box_pack_start (GTK_BOX (w_vbox6), cfg_samplerate_frame, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_samplerate_frame), 4);
 
   w_hbox4 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (w_hbox4, "w_hbox4");
   gtk_widget_show (w_hbox4);
   gtk_container_add (GTK_CONTAINER (cfg_samplerate_frame), w_hbox4);
   gtk_container_set_border_width (GTK_CONTAINER (w_hbox4), 4);
@@ -300,6 +318,7 @@ create_xs_configwin (void)
   cfg_samplerate_combo = gtk_combo_new ();
   g_object_set_data (G_OBJECT (GTK_COMBO (cfg_samplerate_combo)->popwin),
                      "GladeParentKey", cfg_samplerate_combo);
+  gtk_widget_set_name (cfg_samplerate_combo, "cfg_samplerate_combo");
   gtk_widget_show (cfg_samplerate_combo);
   gtk_box_pack_start (GTK_BOX (w_hbox4), cfg_samplerate_combo, FALSE, FALSE, 0);
   cfg_samplerate_combo_items = g_list_append (cfg_samplerate_combo_items, (gpointer) "");
@@ -307,90 +326,109 @@ create_xs_configwin (void)
   g_list_free (cfg_samplerate_combo_items);
 
   cfg_samplerate = GTK_COMBO (cfg_samplerate_combo)->entry;
+  gtk_widget_set_name (cfg_samplerate, "cfg_samplerate");
   gtk_widget_show (cfg_samplerate);
   gtk_entry_set_invisible_char (GTK_ENTRY (cfg_samplerate), 9679);
 
   w_label8 = gtk_label_new (_("Hz"));
+  gtk_widget_set_name (w_label8, "w_label8");
   gtk_widget_show (w_label8);
   gtk_box_pack_start (GTK_BOX (w_hbox4), w_label8, FALSE, TRUE, 4);
   gtk_label_set_justify (GTK_LABEL (w_label8), GTK_JUSTIFY_CENTER);
 
   w_label54 = gtk_label_new ("");
+  gtk_widget_set_name (w_label54, "w_label54");
   gtk_widget_show (w_label54);
   gtk_box_pack_start (GTK_BOX (w_hbox4), w_label54, FALSE, TRUE, 0);
   gtk_label_set_justify (GTK_LABEL (w_label54), GTK_JUSTIFY_CENTER);
 
   label3 = gtk_label_new (_("Samplerate:"));
+  gtk_widget_set_name (label3, "label3");
   gtk_widget_show (label3);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_samplerate_frame), label3);
 
   cfg_oversample_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_oversample_frame, "cfg_oversample_frame");
   gtk_widget_show (cfg_oversample_frame);
   gtk_box_pack_start (GTK_BOX (w_vbox6), cfg_oversample_frame, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_oversample_frame), 4);
 
   w_vbox27 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox27, "w_vbox27");
   gtk_widget_show (w_vbox27);
   gtk_container_add (GTK_CONTAINER (cfg_oversample_frame), w_vbox27);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox27), 2);
 
   cfg_oversample = gtk_check_button_new_with_mnemonic (_("Use oversampling"));
+  gtk_widget_set_name (cfg_oversample, "cfg_oversample");
   gtk_widget_show (cfg_oversample);
   gtk_box_pack_start (GTK_BOX (w_vbox27), cfg_oversample, FALSE, FALSE, 0);
 
   cfg_oversample_box = gtk_hbox_new (FALSE, 4);
+  gtk_widget_set_name (cfg_oversample_box, "cfg_oversample_box");
   gtk_widget_show (cfg_oversample_box);
   gtk_box_pack_start (GTK_BOX (w_vbox27), cfg_oversample_box, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_oversample_box), 2);
 
   cfg_oversample_label1 = gtk_label_new (_("Factor:"));
+  gtk_widget_set_name (cfg_oversample_label1, "cfg_oversample_label1");
   gtk_widget_show (cfg_oversample_label1);
   gtk_box_pack_start (GTK_BOX (cfg_oversample_box), cfg_oversample_label1, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_oversample_label1), GTK_JUSTIFY_CENTER);
 
   cfg_oversample_factor_adj = gtk_adjustment_new (2, 2, 8, 1, 1, 1);
   cfg_oversample_factor = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_oversample_factor_adj), 1, 0);
+  gtk_widget_set_name (cfg_oversample_factor, "cfg_oversample_factor");
   gtk_widget_show (cfg_oversample_factor);
   gtk_box_pack_start (GTK_BOX (cfg_oversample_box), cfg_oversample_factor, FALSE, TRUE, 0);
 
   cfg_oversample_label2 = gtk_label_new (_("Large factors require more CPU-power"));
+  gtk_widget_set_name (cfg_oversample_label2, "cfg_oversample_label2");
   gtk_widget_show (cfg_oversample_label2);
   gtk_box_pack_start (GTK_BOX (cfg_oversample_box), cfg_oversample_label2, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_oversample_label2), GTK_JUSTIFY_CENTER);
 
   label4 = gtk_label_new (_("Oversampling:"));
+  gtk_widget_set_name (label4, "label4");
   gtk_widget_show (label4);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_oversample_frame), label4);
 
   w_label1 = gtk_label_new (_("Audio"));
+  gtk_widget_set_name (w_label1, "w_label1");
   gtk_widget_show (w_label1);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 0), w_label1);
   gtk_label_set_justify (GTK_LABEL (w_label1), GTK_JUSTIFY_CENTER);
 
   w_vbox2 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (w_vbox2, "w_vbox2");
   gtk_widget_show (w_vbox2);
   gtk_container_add (GTK_CONTAINER (cfg_notebook), w_vbox2);
 
   w_hbox1 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (w_hbox1, "w_hbox1");
   gtk_widget_show (w_hbox1);
   gtk_box_pack_start (GTK_BOX (w_vbox2), w_hbox1, FALSE, TRUE, 0);
 
   cfg_clock_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_clock_frame, "cfg_clock_frame");
   gtk_widget_show (cfg_clock_frame);
   gtk_box_pack_start (GTK_BOX (w_hbox1), cfg_clock_frame, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_clock_frame), 4);
 
   w_vbox4 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox4, "w_vbox4");
   gtk_widget_show (w_vbox4);
   gtk_container_add (GTK_CONTAINER (cfg_clock_frame), w_vbox4);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox4), 2);
 
   cfg_emu_clock_force = gtk_check_button_new_with_mnemonic (_("Force speed"));
+  gtk_widget_set_name (cfg_emu_clock_force, "cfg_emu_clock_force");
   gtk_widget_show (cfg_emu_clock_force);
   gtk_box_pack_start (GTK_BOX (w_vbox4), cfg_emu_clock_force, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_clock_force, _("If enabled, this option \"forces\" the emulation engine to use the selected clock speed/frequency. Otherwise the speed is determined from played file itself."), NULL);
 
   cfg_emu_clock_pal = gtk_radio_button_new_with_mnemonic (NULL, _("PAL (50 Hz)"));
+  gtk_widget_set_name (cfg_emu_clock_pal, "cfg_emu_clock_pal");
   gtk_widget_show (cfg_emu_clock_pal);
   gtk_box_pack_start (GTK_BOX (w_vbox4), cfg_emu_clock_pal, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_clock_pal, _("PAL is the european TV standard, which uses 50Hz vertical refresh frequency. Most of SID-tunes have been made for PAL computers."), NULL);
@@ -398,6 +436,7 @@ create_xs_configwin (void)
   cfg_emu_clock_pal_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_clock_pal));
 
   cfg_emu_clock_ntsc = gtk_radio_button_new_with_mnemonic (NULL, _("NTSC (60 Hz)"));
+  gtk_widget_set_name (cfg_emu_clock_ntsc, "cfg_emu_clock_ntsc");
   gtk_widget_show (cfg_emu_clock_ntsc);
   gtk_box_pack_start (GTK_BOX (w_vbox4), cfg_emu_clock_ntsc, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_clock_ntsc, _("NTSC is the TV standard with 60Hz vertical refresh rate (and other features that differ from PAL). It is mainly used in United States, Japan and certain other countries."), NULL);
@@ -405,25 +444,30 @@ create_xs_configwin (void)
   cfg_emu_clock_pal_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_clock_ntsc));
 
   label5 = gtk_label_new (_("Clock speed:"));
+  gtk_widget_set_name (label5, "label5");
   gtk_widget_show (label5);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_clock_frame), label5);
 
   cfg_sid_model_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_sid_model_frame, "cfg_sid_model_frame");
   gtk_widget_show (cfg_sid_model_frame);
   gtk_box_pack_start (GTK_BOX (w_hbox1), cfg_sid_model_frame, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sid_model_frame), 4);
 
   w_vbox3 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox3, "w_vbox3");
   gtk_widget_show (w_vbox3);
   gtk_container_add (GTK_CONTAINER (cfg_sid_model_frame), w_vbox3);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox3), 2);
 
   cfg_emu_sid_force = gtk_check_button_new_with_mnemonic (_("Force model"));
+  gtk_widget_set_name (cfg_emu_sid_force, "cfg_emu_sid_force");
   gtk_widget_show (cfg_emu_sid_force);
   gtk_box_pack_start (GTK_BOX (w_vbox3), cfg_emu_sid_force, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_sid_force, _("If enabled, this option \"forces\" the emulation engine to use the selected SID-chip model. Otherwise the preferred SID model is determined from the file (if PSIDv2NG type) or if not available, this setting is used."), NULL);
 
   cfg_emu_mos6581 = gtk_radio_button_new_with_mnemonic (NULL, _("MOS 6581"));
+  gtk_widget_set_name (cfg_emu_mos6581, "cfg_emu_mos6581");
   gtk_widget_show (cfg_emu_mos6581);
   gtk_box_pack_start (GTK_BOX (w_vbox3), cfg_emu_mos6581, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_mos6581, _("MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 in few ways, having much fuller filter (which, due to design error, is never same between two different SID-chips) and has the \"volume adjustment bug\", which enables playing of digital samples."), NULL);
@@ -431,26 +475,31 @@ create_xs_configwin (void)
   cfg_emu_mos6581_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_mos6581));
 
   cfg_emu_mos8580 = gtk_radio_button_new_with_mnemonic (NULL, _("MOS 8580"));
+  gtk_widget_set_name (cfg_emu_mos8580, "cfg_emu_mos8580");
   gtk_widget_show (cfg_emu_mos8580);
   gtk_box_pack_start (GTK_BOX (w_vbox3), cfg_emu_mos8580, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_emu_mos8580), cfg_emu_mos6581_group);
   cfg_emu_mos6581_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_mos8580));
 
   label6 = gtk_label_new (_("SID model:"));
+  gtk_widget_set_name (label6, "label6");
   gtk_widget_show (label6);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_sid_model_frame), label6);
 
   cfg_emulib_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_emulib_frame, "cfg_emulib_frame");
   gtk_widget_show (cfg_emulib_frame);
   gtk_box_pack_start (GTK_BOX (w_vbox2), cfg_emulib_frame, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_emulib_frame), 4);
 
   w_vbox26 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox26, "w_vbox26");
   gtk_widget_show (w_vbox26);
   gtk_container_add (GTK_CONTAINER (cfg_emulib_frame), w_vbox26);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox26), 2);
 
   cfg_emu_sidplay1 = gtk_radio_button_new_with_mnemonic (NULL, _("SIDPlay 1 (frame-based)"));
+  gtk_widget_set_name (cfg_emu_sidplay1, "cfg_emu_sidplay1");
   gtk_widget_show (cfg_emu_sidplay1);
   gtk_box_pack_start (GTK_BOX (w_vbox26), cfg_emu_sidplay1, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_sidplay1, _("Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most cases, though."), NULL);
@@ -458,6 +507,7 @@ create_xs_configwin (void)
   cfg_emu_sidplay1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_sidplay1));
 
   cfg_emu_sidplay2 = gtk_radio_button_new_with_mnemonic (NULL, _("SIDPlay 2 (cycle-based)"));
+  gtk_widget_set_name (cfg_emu_sidplay2, "cfg_emu_sidplay2");
   gtk_widget_show (cfg_emu_sidplay2);
   gtk_box_pack_start (GTK_BOX (w_vbox26), cfg_emu_sidplay2, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_sidplay2, _("Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact emulation."), NULL);
@@ -465,72 +515,86 @@ create_xs_configwin (void)
   cfg_emu_sidplay1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_sidplay2));
 
   label7 = gtk_label_new (_("Emulation library selection:"));
+  gtk_widget_set_name (label7, "label7");
   gtk_widget_show (label7);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_emulib_frame), label7);
 
   cfg_memmode_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_memmode_frame, "cfg_memmode_frame");
   gtk_widget_show (cfg_memmode_frame);
   gtk_box_pack_start (GTK_BOX (w_vbox2), cfg_memmode_frame, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_memmode_frame), 4);
 
   w_vbox5 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox5, "w_vbox5");
   gtk_widget_show (w_vbox5);
   gtk_container_add (GTK_CONTAINER (cfg_memmode_frame), w_vbox5);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox5), 2);
 
   cfg_emu_mem_real = gtk_radio_button_new_with_mnemonic (NULL, _("Real C64 (SIDPlay 2 only)"));
+  gtk_widget_set_name (cfg_emu_mem_real, "cfg_emu_mem_real");
   gtk_widget_show (cfg_emu_mem_real);
   gtk_box_pack_start (GTK_BOX (w_vbox5), cfg_emu_mem_real, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_emu_mem_real), cfg_emu_mem_real_group);
   cfg_emu_mem_real_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_mem_real));
 
   cfg_emu_mem_banksw = gtk_radio_button_new_with_mnemonic (NULL, _("Bank switching"));
+  gtk_widget_set_name (cfg_emu_mem_banksw, "cfg_emu_mem_banksw");
   gtk_widget_show (cfg_emu_mem_banksw);
   gtk_box_pack_start (GTK_BOX (w_vbox5), cfg_emu_mem_banksw, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_emu_mem_banksw), cfg_emu_mem_real_group);
   cfg_emu_mem_real_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_mem_banksw));
 
   cfg_emu_mem_transrom = gtk_radio_button_new_with_mnemonic (NULL, _("Transparent ROM"));
+  gtk_widget_set_name (cfg_emu_mem_transrom, "cfg_emu_mem_transrom");
   gtk_widget_show (cfg_emu_mem_transrom);
   gtk_box_pack_start (GTK_BOX (w_vbox5), cfg_emu_mem_transrom, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_emu_mem_transrom), cfg_emu_mem_real_group);
   cfg_emu_mem_real_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_mem_transrom));
 
   cfg_emu_mem_playsid = gtk_radio_button_new_with_mnemonic (NULL, _("PlaySID environment"));
+  gtk_widget_set_name (cfg_emu_mem_playsid, "cfg_emu_mem_playsid");
   gtk_widget_show (cfg_emu_mem_playsid);
   gtk_box_pack_start (GTK_BOX (w_vbox5), cfg_emu_mem_playsid, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_emu_mem_playsid), cfg_emu_mem_real_group);
   cfg_emu_mem_real_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_mem_playsid));
 
   label8 = gtk_label_new (_("Memory mode:"));
+  gtk_widget_set_name (label8, "label8");
   gtk_widget_show (label8);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_memmode_frame), label8);
 
   w_label2 = gtk_label_new (_("Emu#1"));
+  gtk_widget_set_name (w_label2, "w_label2");
   gtk_widget_show (w_label2);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 1), w_label2);
   gtk_label_set_justify (GTK_LABEL (w_label2), GTK_JUSTIFY_CENTER);
 
   w_vbox29 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (w_vbox29, "w_vbox29");
   gtk_widget_show (w_vbox29);
   gtk_container_add (GTK_CONTAINER (cfg_notebook), w_vbox29);
 
   cfg_sidplay2_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_sidplay2_frame, "cfg_sidplay2_frame");
   gtk_widget_show (cfg_sidplay2_frame);
   gtk_box_pack_start (GTK_BOX (w_vbox29), cfg_sidplay2_frame, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sidplay2_frame), 4);
 
   w_vbox30 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox30, "w_vbox30");
   gtk_widget_show (w_vbox30);
   gtk_container_add (GTK_CONTAINER (cfg_sidplay2_frame), w_vbox30);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox30), 2);
 
   cfg_emu_sp2_opt = gtk_check_button_new_with_mnemonic (_("Optimization mode (faster, inaccurate)"));
+  gtk_widget_set_name (cfg_emu_sp2_opt, "cfg_emu_sp2_opt");
   gtk_widget_show (cfg_emu_sp2_opt);
   gtk_box_pack_start (GTK_BOX (w_vbox30), cfg_emu_sp2_opt, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_sp2_opt, _("This setting can be used to enable libSIDPlay2's \"optimization mode\", which in downgrades the emulation from cycle-exact to something similar to frame-exact. The result is lower CPU usage, but worse accuracy."), NULL);
 
   cfg_emu_sp2_resid = gtk_radio_button_new_with_mnemonic (NULL, _("reSID-emulation"));
+  gtk_widget_set_name (cfg_emu_sp2_resid, "cfg_emu_sp2_resid");
   gtk_widget_show (cfg_emu_sp2_resid);
   gtk_box_pack_start (GTK_BOX (w_vbox30), cfg_emu_sp2_resid, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_sp2_resid, _("reSID is the software SID-chip simulator based on SID reverse-engineering, created by Dag Lem. It is probably the closest thing to real SID available as software-only emulation."), NULL);
@@ -538,6 +602,7 @@ create_xs_configwin (void)
   cfg_emu_sp2_resid_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_sp2_resid));
 
   cfg_emu_sp2_hardsid = gtk_radio_button_new_with_mnemonic (NULL, _("HardSID"));
+  gtk_widget_set_name (cfg_emu_sp2_hardsid, "cfg_emu_sp2_hardsid");
   gtk_widget_show (cfg_emu_sp2_hardsid);
   gtk_box_pack_start (GTK_BOX (w_vbox30), cfg_emu_sp2_hardsid, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_sp2_hardsid, _("HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a real SID-chip. Software can be used to control the HardSID and combined with software emulation of rest of C64 via libSIDPlay2 HardSID can be used to achieve \"near 100%\" similarity to real C64. For more information, see http://www.hardsid.com/"), NULL);
@@ -545,20 +610,24 @@ create_xs_configwin (void)
   cfg_emu_sp2_resid_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_sp2_hardsid));
 
   label9 = gtk_label_new (_("SIDPlay 2 options:"));
+  gtk_widget_set_name (label9, "label9");
   gtk_widget_show (label9);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_sidplay2_frame), label9);
 
   cfg_resid_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_resid_frame, "cfg_resid_frame");
   gtk_widget_show (cfg_resid_frame);
   gtk_box_pack_start (GTK_BOX (w_vbox29), cfg_resid_frame, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_resid_frame), 4);
 
   w_vbox37 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox37, "w_vbox37");
   gtk_widget_show (w_vbox37);
   gtk_container_add (GTK_CONTAINER (cfg_resid_frame), w_vbox37);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox37), 2);
 
   cfg_emu_resid_fast = gtk_radio_button_new_with_mnemonic (NULL, _("Fast (nearest neighbour)"));
+  gtk_widget_set_name (cfg_emu_resid_fast, "cfg_emu_resid_fast");
   gtk_widget_show (cfg_emu_resid_fast);
   gtk_box_pack_start (GTK_BOX (w_vbox37), cfg_emu_resid_fast, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_resid_fast, _("Fastest and also worst sounding sampling method, simply picks nearest neighbouring sample."), NULL);
@@ -566,6 +635,7 @@ create_xs_configwin (void)
   cfg_emu_resid_fast_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_resid_fast));
 
   cfg_emu_resid_int = gtk_radio_button_new_with_mnemonic (NULL, _("Linear interpolation"));
+  gtk_widget_set_name (cfg_emu_resid_int, "cfg_emu_resid_int");
   gtk_widget_show (cfg_emu_resid_int);
   gtk_box_pack_start (GTK_BOX (w_vbox37), cfg_emu_resid_int, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_resid_int, _("Uses linear interpolation between samples, yielding higher audio quality with less sampling noise."), NULL);
@@ -573,106 +643,128 @@ create_xs_configwin (void)
   cfg_emu_resid_fast_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_resid_int));
 
   cfg_emu_resid_res_fast = gtk_radio_button_new_with_mnemonic (NULL, _("Resampling"));
+  gtk_widget_set_name (cfg_emu_resid_res_fast, "cfg_emu_resid_res_fast");
   gtk_widget_show (cfg_emu_resid_res_fast);
   gtk_box_pack_start (GTK_BOX (w_vbox37), cfg_emu_resid_res_fast, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_emu_resid_res_fast), cfg_emu_resid_fast_group);
   cfg_emu_resid_fast_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_resid_res_fast));
 
   cfg_emu_resid_res_int = gtk_radio_button_new_with_mnemonic (NULL, _("Resampling (FIR)"));
+  gtk_widget_set_name (cfg_emu_resid_res_int, "cfg_emu_resid_res_int");
   gtk_widget_show (cfg_emu_resid_res_int);
   gtk_box_pack_start (GTK_BOX (w_vbox37), cfg_emu_resid_res_int, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (cfg_emu_resid_res_int), cfg_emu_resid_fast_group);
   cfg_emu_resid_fast_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (cfg_emu_resid_res_int));
 
   label10 = gtk_label_new (_("reSID sampling options:"));
+  gtk_widget_set_name (label10, "label10");
   gtk_widget_show (label10);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_resid_frame), label10);
 
   w_label48 = gtk_label_new (_("Emu#2"));
+  gtk_widget_set_name (w_label48, "w_label48");
   gtk_widget_show (w_label48);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 2), w_label48);
   gtk_label_set_justify (GTK_LABEL (w_label48), GTK_JUSTIFY_CENTER);
 
   w_vbox25 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox25, "w_vbox25");
   gtk_widget_show (w_vbox25);
   gtk_container_add (GTK_CONTAINER (cfg_notebook), w_vbox25);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox25), 4);
 
   cfg_emu_filters = gtk_check_button_new_with_mnemonic (_("Emulate filters"));
+  gtk_widget_set_name (cfg_emu_filters, "cfg_emu_filters");
   gtk_widget_show (cfg_emu_filters);
   gtk_box_pack_start (GTK_BOX (w_vbox25), cfg_emu_filters, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_emu_filters, _("This option enables emulation of SID filter. The filter is an essential part of SID's sound capacity, but accurate emulation of it may require quite much CPU power. However, if filter emulation is disabled, tunes won't sound authentic at all if they utilize the filter."), NULL);
 
   cfg_filters_notebook = gtk_notebook_new ();
+  gtk_widget_set_name (cfg_filters_notebook, "cfg_filters_notebook");
   gtk_widget_show (cfg_filters_notebook);
   gtk_box_pack_start (GTK_BOX (w_vbox25), cfg_filters_notebook, TRUE, TRUE, 0);
 
   cfg_box_filter_sidplay1 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (cfg_box_filter_sidplay1, "cfg_box_filter_sidplay1");
   gtk_widget_show (cfg_box_filter_sidplay1);
   gtk_container_add (GTK_CONTAINER (cfg_filters_notebook), cfg_box_filter_sidplay1);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_box_filter_sidplay1), 4);
 
   cfg_sp1_frm_fs = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_sp1_frm_fs, "cfg_sp1_frm_fs");
   gtk_widget_show (cfg_sp1_frm_fs);
   gtk_box_pack_start (GTK_BOX (cfg_box_filter_sidplay1), cfg_sp1_frm_fs, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sp1_frm_fs), 2);
 
   cfg_sp1_filter_fs = gtk_vscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, 1000, 1, 100, 0)));
+  gtk_widget_set_name (cfg_sp1_filter_fs, "cfg_sp1_filter_fs");
   gtk_widget_show (cfg_sp1_filter_fs);
   gtk_container_add (GTK_CONTAINER (cfg_sp1_frm_fs), cfg_sp1_filter_fs);
   gtk_scale_set_digits (GTK_SCALE (cfg_sp1_filter_fs), 2);
 
   label11 = gtk_label_new (_("FS"));
+  gtk_widget_set_name (label11, "label11");
   gtk_widget_show (label11);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_sp1_frm_fs), label11);
 
   cfg_sp1_frm_fm = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_sp1_frm_fm, "cfg_sp1_frm_fm");
   gtk_widget_show (cfg_sp1_frm_fm);
   gtk_box_pack_start (GTK_BOX (cfg_box_filter_sidplay1), cfg_sp1_frm_fm, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sp1_frm_fm), 2);
 
   cfg_sp1_filter_fm = gtk_vscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, 100, 1, 10, 0)));
+  gtk_widget_set_name (cfg_sp1_filter_fm, "cfg_sp1_filter_fm");
   gtk_widget_show (cfg_sp1_filter_fm);
   gtk_container_add (GTK_CONTAINER (cfg_sp1_frm_fm), cfg_sp1_filter_fm);
   gtk_scale_set_digits (GTK_SCALE (cfg_sp1_filter_fm), 2);
 
   label12 = gtk_label_new (_("FM"));
+  gtk_widget_set_name (label12, "label12");
   gtk_widget_show (label12);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_sp1_frm_fm), label12);
 
   cfg_sp1_frm_ft = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_sp1_frm_ft, "cfg_sp1_frm_ft");
   gtk_widget_show (cfg_sp1_frm_ft);
   gtk_box_pack_start (GTK_BOX (cfg_box_filter_sidplay1), cfg_sp1_frm_ft, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sp1_frm_ft), 2);
 
   cfg_sp1_filter_ft = gtk_vscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, 1, 0.01, 0.1, 0)));
+  gtk_widget_set_name (cfg_sp1_filter_ft, "cfg_sp1_filter_ft");
   gtk_widget_show (cfg_sp1_filter_ft);
   gtk_container_add (GTK_CONTAINER (cfg_sp1_frm_ft), cfg_sp1_filter_ft);
   gtk_scale_set_digits (GTK_SCALE (cfg_sp1_filter_ft), 2);
 
   label13 = gtk_label_new (_("FT"));
+  gtk_widget_set_name (label13, "label13");
   gtk_widget_show (label13);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_sp1_frm_ft), label13);
 
   w_vbox17 = gtk_vbox_new (FALSE, 8);
+  gtk_widget_set_name (w_vbox17, "w_vbox17");
   gtk_widget_show (w_vbox17);
   gtk_box_pack_start (GTK_BOX (cfg_box_filter_sidplay1), w_vbox17, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox17), 4);
 
   cfg_sp1_filter_reset = gtk_button_new_with_mnemonic (_("Reset values"));
+  gtk_widget_set_name (cfg_sp1_filter_reset, "cfg_sp1_filter_reset");
   gtk_widget_show (cfg_sp1_filter_reset);
   gtk_box_pack_start (GTK_BOX (w_vbox17), cfg_sp1_filter_reset, FALSE, FALSE, 0);
 
   w_label55 = gtk_label_new (_("SIDPlay1"));
+  gtk_widget_set_name (w_label55, "w_label55");
   gtk_widget_show (w_label55);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_filters_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_filters_notebook), 0), w_label55);
   gtk_label_set_justify (GTK_LABEL (w_label55), GTK_JUSTIFY_CENTER);
 
   cfg_box_filter_sidplay2 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (cfg_box_filter_sidplay2, "cfg_box_filter_sidplay2");
   gtk_widget_show (cfg_box_filter_sidplay2);
   gtk_container_add (GTK_CONTAINER (cfg_filters_notebook), cfg_box_filter_sidplay2);
 
   cfg_sp_filter_controlbox = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (cfg_sp_filter_controlbox, "cfg_sp_filter_controlbox");
   gtk_widget_show (cfg_sp_filter_controlbox);
   gtk_box_pack_start (GTK_BOX (cfg_box_filter_sidplay2), cfg_sp_filter_controlbox, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sp_filter_controlbox), 2);
@@ -680,6 +772,7 @@ create_xs_configwin (void)
   cfg_sp2_filter_combo = gtk_combo_new ();
   g_object_set_data (G_OBJECT (GTK_COMBO (cfg_sp2_filter_combo)->popwin),
                      "GladeParentKey", cfg_sp2_filter_combo);
+  gtk_widget_set_name (cfg_sp2_filter_combo, "cfg_sp2_filter_combo");
   gtk_widget_show (cfg_sp2_filter_combo);
   gtk_box_pack_start (GTK_BOX (cfg_sp_filter_controlbox), cfg_sp2_filter_combo, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sp2_filter_combo), 2);
@@ -688,10 +781,12 @@ create_xs_configwin (void)
   g_list_free (cfg_sp2_filter_combo_items);
 
   cfg_sp2_filter_combo_entry = GTK_COMBO (cfg_sp2_filter_combo)->entry;
+  gtk_widget_set_name (cfg_sp2_filter_combo_entry, "cfg_sp2_filter_combo_entry");
   gtk_widget_show (cfg_sp2_filter_combo_entry);
   gtk_entry_set_invisible_char (GTK_ENTRY (cfg_sp2_filter_combo_entry), 9679);
 
   table3 = gtk_table_new (2, 3, TRUE);
+  gtk_widget_set_name (table3, "table3");
   gtk_widget_show (table3);
   gtk_box_pack_start (GTK_BOX (cfg_sp_filter_controlbox), table3, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (table3), 2);
@@ -699,6 +794,7 @@ create_xs_configwin (void)
   gtk_table_set_col_spacings (GTK_TABLE (table3), 4);
 
   cfg_sp2_filter_export = gtk_button_new_with_mnemonic (_("Export"));
+  gtk_widget_set_name (cfg_sp2_filter_export, "cfg_sp2_filter_export");
   gtk_widget_show (cfg_sp2_filter_export);
   gtk_table_attach (GTK_TABLE (table3), cfg_sp2_filter_export, 2, 3, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
@@ -706,6 +802,7 @@ create_xs_configwin (void)
   GTK_WIDGET_SET_FLAGS (cfg_sp2_filter_export, GTK_CAN_DEFAULT);
 
   cfg_sp2_filter_load = gtk_button_new_with_mnemonic (_("Use"));
+  gtk_widget_set_name (cfg_sp2_filter_load, "cfg_sp2_filter_load");
   gtk_widget_show (cfg_sp2_filter_load);
   gtk_table_attach (GTK_TABLE (table3), cfg_sp2_filter_load, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -713,6 +810,7 @@ create_xs_configwin (void)
   GTK_WIDGET_SET_FLAGS (cfg_sp2_filter_load, GTK_CAN_DEFAULT);
 
   cfg_sp2_filter_save = gtk_button_new_with_mnemonic (_("Save"));
+  gtk_widget_set_name (cfg_sp2_filter_save, "cfg_sp2_filter_save");
   gtk_widget_show (cfg_sp2_filter_save);
   gtk_table_attach (GTK_TABLE (table3), cfg_sp2_filter_save, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -720,6 +818,7 @@ create_xs_configwin (void)
   GTK_WIDGET_SET_FLAGS (cfg_sp2_filter_save, GTK_CAN_DEFAULT);
 
   cfg_sp2_filter_import = gtk_button_new_with_mnemonic (_("Import"));
+  gtk_widget_set_name (cfg_sp2_filter_import, "cfg_sp2_filter_import");
   gtk_widget_show (cfg_sp2_filter_import);
   gtk_table_attach (GTK_TABLE (table3), cfg_sp2_filter_import, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
@@ -727,6 +826,7 @@ create_xs_configwin (void)
   GTK_WIDGET_SET_FLAGS (cfg_sp2_filter_import, GTK_CAN_DEFAULT);
 
   cfg_sp2_filter_delete = gtk_button_new_with_mnemonic (_("Delete"));
+  gtk_widget_set_name (cfg_sp2_filter_delete, "cfg_sp2_filter_delete");
   gtk_widget_show (cfg_sp2_filter_delete);
   gtk_table_attach (GTK_TABLE (table3), cfg_sp2_filter_delete, 2, 3, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -734,48 +834,58 @@ create_xs_configwin (void)
   GTK_WIDGET_SET_FLAGS (cfg_sp2_filter_delete, GTK_CAN_DEFAULT);
 
   cfg_sp2_filter_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (cfg_sp2_filter_frame, "cfg_sp2_filter_frame");
   gtk_widget_show (cfg_sp2_filter_frame);
   gtk_box_pack_start (GTK_BOX (cfg_box_filter_sidplay2), cfg_sp2_filter_frame, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (cfg_sp2_filter_frame), 2);
 
   label14 = gtk_label_new (_("Filter curve:"));
+  gtk_widget_set_name (label14, "label14");
   gtk_widget_show (label14);
   gtk_frame_set_label_widget (GTK_FRAME (cfg_sp2_filter_frame), label14);
 
   w_label56 = gtk_label_new (_("SIDPlay2"));
+  gtk_widget_set_name (w_label56, "w_label56");
   gtk_widget_show (w_label56);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_filters_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_filters_notebook), 1), w_label56);
   gtk_label_set_justify (GTK_LABEL (w_label56), GTK_JUSTIFY_CENTER);
 
   w_label24 = gtk_label_new (_("Filters"));
+  gtk_widget_set_name (w_label24, "w_label24");
   gtk_widget_show (w_label24);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 3), w_label24);
   gtk_label_set_justify (GTK_LABEL (w_label24), GTK_JUSTIFY_CENTER);
 
   w_vbox20 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (w_vbox20, "w_vbox20");
   gtk_widget_show (w_vbox20);
   gtk_container_add (GTK_CONTAINER (cfg_notebook), w_vbox20);
 
   w_frame29 = gtk_frame_new (NULL);
+  gtk_widget_set_name (w_frame29, "w_frame29");
   gtk_widget_show (w_frame29);
   gtk_box_pack_start (GTK_BOX (w_vbox20), w_frame29, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_frame29), 4);
 
   w_vbox32 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox32, "w_vbox32");
   gtk_widget_show (w_vbox32);
   gtk_container_add (GTK_CONTAINER (w_frame29), w_vbox32);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox32), 2);
 
   cfg_mintime_enable = gtk_check_button_new_with_mnemonic (_("Play at least for specified time"));
+  gtk_widget_set_name (cfg_mintime_enable, "cfg_mintime_enable");
   gtk_widget_show (cfg_mintime_enable);
   gtk_box_pack_start (GTK_BOX (w_vbox32), cfg_mintime_enable, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_mintime_enable, _("If enabled, the tune is played at least for the specified time, adding silence to the end if necessary."), NULL);
 
   cfg_mintime_box = gtk_hbox_new (FALSE, 2);
+  gtk_widget_set_name (cfg_mintime_box, "cfg_mintime_box");
   gtk_widget_show (cfg_mintime_box);
   gtk_box_pack_start (GTK_BOX (w_vbox32), cfg_mintime_box, FALSE, TRUE, 2);
 
   cfg_mintime_label1 = gtk_label_new (_("Playtime:"));
+  gtk_widget_set_name (cfg_mintime_label1, "cfg_mintime_label1");
   gtk_widget_show (cfg_mintime_label1);
   gtk_box_pack_start (GTK_BOX (cfg_mintime_box), cfg_mintime_label1, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_mintime_label1), GTK_JUSTIFY_CENTER);
@@ -783,44 +893,53 @@ create_xs_configwin (void)
 
   cfg_mintime_adj = gtk_adjustment_new (15, 1, 32767, 1, 60, 60);
   cfg_mintime = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_mintime_adj), 1, 0);
+  gtk_widget_set_name (cfg_mintime, "cfg_mintime");
   gtk_widget_show (cfg_mintime);
   gtk_box_pack_start (GTK_BOX (cfg_mintime_box), cfg_mintime, FALSE, TRUE, 0);
 
   cfg_mintime_label2 = gtk_label_new (_("seconds"));
+  gtk_widget_set_name (cfg_mintime_label2, "cfg_mintime_label2");
   gtk_widget_show (cfg_mintime_label2);
   gtk_box_pack_start (GTK_BOX (cfg_mintime_box), cfg_mintime_label2, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_mintime_label2), GTK_JUSTIFY_CENTER);
   gtk_misc_set_alignment (GTK_MISC (cfg_mintime_label2), 0, 0.5);
 
   label15 = gtk_label_new (_("Minimum playtime:"));
+  gtk_widget_set_name (label15, "label15");
   gtk_widget_show (label15);
   gtk_frame_set_label_widget (GTK_FRAME (w_frame29), label15);
 
   w_frame21 = gtk_frame_new (NULL);
+  gtk_widget_set_name (w_frame21, "w_frame21");
   gtk_widget_show (w_frame21);
   gtk_box_pack_start (GTK_BOX (w_vbox20), w_frame21, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_frame21), 4);
 
   w_vbox21 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox21, "w_vbox21");
   gtk_widget_show (w_vbox21);
   gtk_container_add (GTK_CONTAINER (w_frame21), w_vbox21);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox21), 2);
 
   cfg_maxtime_enable = gtk_check_button_new_with_mnemonic (_("Play for specified time maximum"));
+  gtk_widget_set_name (cfg_maxtime_enable, "cfg_maxtime_enable");
   gtk_widget_show (cfg_maxtime_enable);
   gtk_box_pack_start (GTK_BOX (w_vbox21), cfg_maxtime_enable, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_maxtime_enable, _("If enabled, tune is played until specified duration is reached (aka maximum playtime)."), NULL);
 
   cfg_maxtime_unknown = gtk_check_button_new_with_mnemonic (_("Only when song length is unknown"));
+  gtk_widget_set_name (cfg_maxtime_unknown, "cfg_maxtime_unknown");
   gtk_widget_show (cfg_maxtime_unknown);
   gtk_box_pack_start (GTK_BOX (w_vbox21), cfg_maxtime_unknown, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_maxtime_unknown, _("If enabled, the maximum playtime is applied only if song/tune length is not known."), NULL);
 
   cfg_maxtime_box = gtk_hbox_new (FALSE, 2);
+  gtk_widget_set_name (cfg_maxtime_box, "cfg_maxtime_box");
   gtk_widget_show (cfg_maxtime_box);
   gtk_box_pack_start (GTK_BOX (w_vbox21), cfg_maxtime_box, FALSE, TRUE, 2);
 
   cfg_maxtime_label1 = gtk_label_new (_("Playtime:"));
+  gtk_widget_set_name (cfg_maxtime_label1, "cfg_maxtime_label1");
   gtk_widget_show (cfg_maxtime_label1);
   gtk_box_pack_start (GTK_BOX (cfg_maxtime_box), cfg_maxtime_label1, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_maxtime_label1), GTK_JUSTIFY_CENTER);
@@ -828,90 +947,109 @@ create_xs_configwin (void)
 
   cfg_maxtime_adj = gtk_adjustment_new (150, 1, 32767, 1, 60, 60);
   cfg_maxtime = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_maxtime_adj), 1, 0);
+  gtk_widget_set_name (cfg_maxtime, "cfg_maxtime");
   gtk_widget_show (cfg_maxtime);
   gtk_box_pack_start (GTK_BOX (cfg_maxtime_box), cfg_maxtime, FALSE, TRUE, 0);
 
   cfg_maxtime_label2 = gtk_label_new (_("seconds"));
+  gtk_widget_set_name (cfg_maxtime_label2, "cfg_maxtime_label2");
   gtk_widget_show (cfg_maxtime_label2);
   gtk_box_pack_start (GTK_BOX (cfg_maxtime_box), cfg_maxtime_label2, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_maxtime_label2), GTK_JUSTIFY_CENTER);
   gtk_misc_set_alignment (GTK_MISC (cfg_maxtime_label2), 0, 0.5);
 
   label16 = gtk_label_new (_("Maximum playtime:"));
+  gtk_widget_set_name (label16, "label16");
   gtk_widget_show (label16);
   gtk_frame_set_label_widget (GTK_FRAME (w_frame21), label16);
 
   w_frame18 = gtk_frame_new (NULL);
+  gtk_widget_set_name (w_frame18, "w_frame18");
   gtk_widget_show (w_frame18);
   gtk_box_pack_start (GTK_BOX (w_vbox20), w_frame18, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_frame18), 4);
 
   w_vbox18 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox18, "w_vbox18");
   gtk_widget_show (w_vbox18);
   gtk_container_add (GTK_CONTAINER (w_frame18), w_vbox18);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox18), 2);
 
   cfg_sld_enable = gtk_check_button_new_with_mnemonic (_("Use XSIDPLAY-compatible database"));
+  gtk_widget_set_name (cfg_sld_enable, "cfg_sld_enable");
   gtk_widget_show (cfg_sld_enable);
   gtk_box_pack_start (GTK_BOX (w_vbox18), cfg_sld_enable, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_sld_enable, _("This option enables using of XSIDPLAY compatible song length database. (Refer to Audacious-SID documentation for more information)"), NULL);
 
   cfg_sld_box = gtk_hbox_new (FALSE, 4);
+  gtk_widget_set_name (cfg_sld_box, "cfg_sld_box");
   gtk_widget_show (cfg_sld_box);
   gtk_box_pack_start (GTK_BOX (w_vbox18), cfg_sld_box, FALSE, TRUE, 0);
 
   cfg_sld_label1 = gtk_label_new (_("DB-file:"));
+  gtk_widget_set_name (cfg_sld_label1, "cfg_sld_label1");
   gtk_widget_show (cfg_sld_label1);
   gtk_box_pack_start (GTK_BOX (cfg_sld_box), cfg_sld_label1, FALSE, TRUE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_sld_label1), GTK_JUSTIFY_CENTER);
 
   cfg_sld_dbpath = gtk_entry_new ();
+  gtk_widget_set_name (cfg_sld_dbpath, "cfg_sld_dbpath");
   gtk_widget_show (cfg_sld_dbpath);
   gtk_box_pack_start (GTK_BOX (cfg_sld_box), cfg_sld_dbpath, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_sld_dbpath, _("Database path and filename"), NULL);
   gtk_entry_set_invisible_char (GTK_ENTRY (cfg_sld_dbpath), 9679);
 
   cfg_sld_dbbrowse = gtk_button_new_with_mnemonic (_("Browse"));
+  gtk_widget_set_name (cfg_sld_dbbrowse, "cfg_sld_dbbrowse");
   gtk_widget_show (cfg_sld_dbbrowse);
   gtk_box_pack_start (GTK_BOX (cfg_sld_box), cfg_sld_dbbrowse, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_sld_dbbrowse, _("Browse for song length-database file"), NULL);
 
   label17 = gtk_label_new (_("Song length database:"));
+  gtk_widget_set_name (label17, "label17");
   gtk_widget_show (label17);
   gtk_frame_set_label_widget (GTK_FRAME (w_frame18), label17);
 
   w_label26 = gtk_label_new (_("Songlength"));
+  gtk_widget_set_name (w_label26, "w_label26");
   gtk_widget_show (w_label26);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 4), w_label26);
   gtk_label_set_justify (GTK_LABEL (w_label26), GTK_JUSTIFY_CENTER);
 
   w_vbox19 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (w_vbox19, "w_vbox19");
   gtk_widget_show (w_vbox19);
   gtk_container_add (GTK_CONTAINER (cfg_notebook), w_vbox19);
 
   w_frame31 = gtk_frame_new (NULL);
+  gtk_widget_set_name (w_frame31, "w_frame31");
   gtk_widget_show (w_frame31);
   gtk_box_pack_start (GTK_BOX (w_vbox19), w_frame31, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_frame31), 4);
 
   w_vbox35 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox35, "w_vbox35");
   gtk_widget_show (w_vbox35);
   gtk_container_add (GTK_CONTAINER (w_frame31), w_vbox35);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox35), 2);
 
   cfg_subauto_enable = gtk_check_button_new_with_mnemonic (_("Add sub-tunes to playlist"));
+  gtk_widget_set_name (cfg_subauto_enable, "cfg_subauto_enable");
   gtk_widget_show (cfg_subauto_enable);
   gtk_box_pack_start (GTK_BOX (w_vbox35), cfg_subauto_enable, FALSE, FALSE, 0);
 
   cfg_subauto_min_only = gtk_check_button_new_with_mnemonic (_("Only tunes with specified minimum length "));
+  gtk_widget_set_name (cfg_subauto_min_only, "cfg_subauto_min_only");
   gtk_widget_show (cfg_subauto_min_only);
   gtk_box_pack_start (GTK_BOX (w_vbox35), cfg_subauto_min_only, FALSE, FALSE, 0);
 
   cfg_subauto_box = gtk_hbox_new (FALSE, 2);
+  gtk_widget_set_name (cfg_subauto_box, "cfg_subauto_box");
   gtk_widget_show (cfg_subauto_box);
   gtk_box_pack_start (GTK_BOX (w_vbox35), cfg_subauto_box, TRUE, TRUE, 0);
 
   w_label52 = gtk_label_new (_("Playtime:"));
+  gtk_widget_set_name (w_label52, "w_label52");
   gtk_widget_show (w_label52);
   gtk_box_pack_start (GTK_BOX (cfg_subauto_box), w_label52, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (w_label52), GTK_JUSTIFY_CENTER);
@@ -919,104 +1057,125 @@ create_xs_configwin (void)
 
   cfg_subauto_mintime_adj = gtk_adjustment_new (15, 1, 32767, 1, 60, 60);
   cfg_subauto_mintime = gtk_spin_button_new (GTK_ADJUSTMENT (cfg_subauto_mintime_adj), 1, 0);
+  gtk_widget_set_name (cfg_subauto_mintime, "cfg_subauto_mintime");
   gtk_widget_show (cfg_subauto_mintime);
   gtk_box_pack_start (GTK_BOX (cfg_subauto_box), cfg_subauto_mintime, FALSE, TRUE, 0);
 
   w_label53 = gtk_label_new (_("seconds"));
+  gtk_widget_set_name (w_label53, "w_label53");
   gtk_widget_show (w_label53);
   gtk_box_pack_start (GTK_BOX (cfg_subauto_box), w_label53, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (w_label53), GTK_JUSTIFY_CENTER);
   gtk_misc_set_alignment (GTK_MISC (w_label53), 0, 0.5);
 
   label21 = gtk_label_new (_("Sub-tune handling:"));
+  gtk_widget_set_name (label21, "label21");
   gtk_widget_show (label21);
   gtk_frame_set_label_widget (GTK_FRAME (w_frame31), label21);
 
   w_frame7 = gtk_frame_new (NULL);
+  gtk_widget_set_name (w_frame7, "w_frame7");
   gtk_widget_show (w_frame7);
   gtk_box_pack_start (GTK_BOX (w_vbox19), w_frame7, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_frame7), 4);
 
   w_vbox8 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox8, "w_vbox8");
   gtk_widget_show (w_vbox8);
   gtk_container_add (GTK_CONTAINER (w_frame7), w_vbox8);
   gtk_container_set_border_width (GTK_CONTAINER (w_vbox8), 2);
 
   cfg_stil_enable = gtk_check_button_new_with_mnemonic (_("Use STIL database"));
+  gtk_widget_set_name (cfg_stil_enable, "cfg_stil_enable");
   gtk_widget_show (cfg_stil_enable);
   gtk_box_pack_start (GTK_BOX (w_vbox8), cfg_stil_enable, TRUE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_stil_enable, _("If this option is enabled (and the database & HVSC settings below are correctly set), Audacious-SID will use and display additional information from STIL database when HVSC SIDs are played."), NULL);
 
   cfg_stil_box1 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (cfg_stil_box1, "cfg_stil_box1");
   gtk_widget_show (cfg_stil_box1);
   gtk_box_pack_start (GTK_BOX (w_vbox8), cfg_stil_box1, TRUE, TRUE, 0);
 
   cfg_stil_label1 = gtk_label_new (_("STIL file:"));
+  gtk_widget_set_name (cfg_stil_label1, "cfg_stil_label1");
   gtk_widget_show (cfg_stil_label1);
   gtk_box_pack_start (GTK_BOX (cfg_stil_box1), cfg_stil_label1, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_stil_label1), GTK_JUSTIFY_CENTER);
   gtk_misc_set_padding (GTK_MISC (cfg_stil_label1), 4, 0);
 
   w_alignment2 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_set_name (w_alignment2, "w_alignment2");
   gtk_widget_show (w_alignment2);
   gtk_box_pack_start (GTK_BOX (cfg_stil_box1), w_alignment2, TRUE, TRUE, 4);
 
   cfg_stil_dbpath = gtk_entry_new ();
+  gtk_widget_set_name (cfg_stil_dbpath, "cfg_stil_dbpath");
   gtk_widget_show (cfg_stil_dbpath);
   gtk_container_add (GTK_CONTAINER (w_alignment2), cfg_stil_dbpath);
   gtk_tooltips_set_tip (tooltips, cfg_stil_dbpath, _("Path and filename of STIL database file (STIL.txt), usually found from HVSC's DOCUMENTS-subdirectory."), NULL);
   gtk_entry_set_invisible_char (GTK_ENTRY (cfg_stil_dbpath), 9679);
 
   w_alignment1 = gtk_alignment_new (0.5, 0.5, 1, 0.300001);
+  gtk_widget_set_name (w_alignment1, "w_alignment1");
   gtk_widget_show (w_alignment1);
   gtk_box_pack_end (GTK_BOX (cfg_stil_box1), w_alignment1, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_alignment1), 4);
 
   cfg_stil_browse = gtk_button_new_with_mnemonic (_("Browse"));
+  gtk_widget_set_name (cfg_stil_browse, "cfg_stil_browse");
   gtk_widget_show (cfg_stil_browse);
   gtk_container_add (GTK_CONTAINER (w_alignment1), cfg_stil_browse);
   gtk_tooltips_set_tip (tooltips, cfg_stil_browse, _("Browse for STIL-database file"), NULL);
 
   cfg_stil_box2 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (cfg_stil_box2, "cfg_stil_box2");
   gtk_widget_show (cfg_stil_box2);
   gtk_box_pack_start (GTK_BOX (w_vbox8), cfg_stil_box2, TRUE, TRUE, 0);
 
   cfg_hvsc_label1 = gtk_label_new (_("HVSC path:"));
+  gtk_widget_set_name (cfg_hvsc_label1, "cfg_hvsc_label1");
   gtk_widget_show (cfg_hvsc_label1);
   gtk_box_pack_start (GTK_BOX (cfg_stil_box2), cfg_hvsc_label1, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (cfg_hvsc_label1), GTK_JUSTIFY_CENTER);
   gtk_misc_set_padding (GTK_MISC (cfg_hvsc_label1), 4, 0);
 
   w_alignment6 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_set_name (w_alignment6, "w_alignment6");
   gtk_widget_show (w_alignment6);
   gtk_box_pack_start (GTK_BOX (cfg_stil_box2), w_alignment6, TRUE, TRUE, 4);
 
   cfg_hvsc_path = gtk_entry_new ();
+  gtk_widget_set_name (cfg_hvsc_path, "cfg_hvsc_path");
   gtk_widget_show (cfg_hvsc_path);
   gtk_container_add (GTK_CONTAINER (w_alignment6), cfg_hvsc_path);
   gtk_tooltips_set_tip (tooltips, cfg_hvsc_path, _("Path to base-directory of your High Voltage SID Collection (HVSC), for example /media/C64Music/"), NULL);
   gtk_entry_set_invisible_char (GTK_ENTRY (cfg_hvsc_path), 9679);
 
   w_alignment7 = gtk_alignment_new (0.5, 0.5, 1, 0.300001);
+  gtk_widget_set_name (w_alignment7, "w_alignment7");
   gtk_widget_show (w_alignment7);
   gtk_box_pack_end (GTK_BOX (cfg_stil_box2), w_alignment7, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_alignment7), 4);
 
   cfg_hvsc_browse = gtk_button_new_with_mnemonic (_("Browse"));
+  gtk_widget_set_name (cfg_hvsc_browse, "cfg_hvsc_browse");
   gtk_widget_show (cfg_hvsc_browse);
   gtk_container_add (GTK_CONTAINER (w_alignment7), cfg_hvsc_browse);
   gtk_tooltips_set_tip (tooltips, cfg_hvsc_browse, _("Browse for HVSC path"), NULL);
 
   label18 = gtk_label_new (_("SID Tune Information List (STIL) database:"));
+  gtk_widget_set_name (label18, "label18");
   gtk_widget_show (label18);
   gtk_frame_set_label_widget (GTK_FRAME (w_frame7), label18);
 
   w_label3 = gtk_label_new (_("Misc"));
+  gtk_widget_set_name (w_label3, "w_label3");
   gtk_widget_show (w_label3);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 5), w_label3);
   gtk_label_set_justify (GTK_LABEL (w_label3), GTK_JUSTIFY_CENTER);
 
   hbuttonbox1 = gtk_hbutton_box_new ();
+  gtk_widget_set_name (hbuttonbox1, "hbuttonbox1");
   gtk_widget_show (hbuttonbox1);
   gtk_box_pack_end (GTK_BOX (w_vbox1), hbuttonbox1, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbuttonbox1), 4);
@@ -1024,12 +1183,14 @@ create_xs_configwin (void)
   gtk_box_set_spacing (GTK_BOX (hbuttonbox1), 8);
 
   cfg_ok = gtk_button_new_with_mnemonic (_("OK"));
+  gtk_widget_set_name (cfg_ok, "cfg_ok");
   gtk_widget_show (cfg_ok);
   gtk_container_add (GTK_CONTAINER (hbuttonbox1), cfg_ok);
   GTK_WIDGET_SET_FLAGS (cfg_ok, GTK_CAN_DEFAULT);
   gtk_tooltips_set_tip (tooltips, cfg_ok, _("Accept and update changes"), NULL);
 
   cfg_cancel = gtk_button_new_with_mnemonic (_("Cancel"));
+  gtk_widget_set_name (cfg_cancel, "cfg_cancel");
   gtk_widget_show (cfg_cancel);
   gtk_container_add (GTK_CONTAINER (hbuttonbox1), cfg_cancel);
   GTK_WIDGET_SET_FLAGS (cfg_cancel, GTK_CAN_DEFAULT);
@@ -1295,7 +1456,6 @@ create_xs_fileinfowin (void)
   GtkWidget *w_vbox15;
   GtkWidget *fileinfo_sub_tune;
   GtkWidget *convertwidget7;
-  GtkWidget *convertwidget8;
   GtkWidget *table2;
   GtkWidget *w_label41;
   GtkWidget *fileinfo_sub_author;
@@ -1309,19 +1469,23 @@ create_xs_fileinfowin (void)
   GtkWidget *button2;
 
   xs_fileinfowin = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_widget_set_name (xs_fileinfowin, "xs_fileinfowin");
   gtk_widget_set_size_request (xs_fileinfowin, 400, -1);
   gtk_window_set_title (GTK_WINDOW (xs_fileinfowin), _("Audacious-SID Fileinfo"));
 
   w_vbox14 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (w_vbox14, "w_vbox14");
   gtk_widget_show (w_vbox14);
   gtk_container_add (GTK_CONTAINER (xs_fileinfowin), w_vbox14);
 
   w_frame14 = gtk_frame_new (NULL);
+  gtk_widget_set_name (w_frame14, "w_frame14");
   gtk_widget_show (w_frame14);
   gtk_box_pack_start (GTK_BOX (w_vbox14), w_frame14, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_frame14), 4);
 
   table1 = gtk_table_new (4, 2, FALSE);
+  gtk_widget_set_name (table1, "table1");
   gtk_widget_show (table1);
   gtk_container_add (GTK_CONTAINER (w_frame14), table1);
   gtk_container_set_border_width (GTK_CONTAINER (table1), 4);
@@ -1329,6 +1493,7 @@ create_xs_fileinfowin (void)
   gtk_table_set_col_spacings (GTK_TABLE (table1), 4);
 
   w_label16 = gtk_label_new (_("Filename:"));
+  gtk_widget_set_name (w_label16, "w_label16");
   gtk_widget_show (w_label16);
   gtk_table_attach (GTK_TABLE (table1), w_label16, 0, 1, 0, 1,
                     (GtkAttachOptions) (0),
@@ -1336,6 +1501,7 @@ create_xs_fileinfowin (void)
   gtk_label_set_justify (GTK_LABEL (w_label16), GTK_JUSTIFY_CENTER);
 
   w_label17 = gtk_label_new (_("Songname:"));
+  gtk_widget_set_name (w_label17, "w_label17");
   gtk_widget_show (w_label17);
   gtk_table_attach (GTK_TABLE (table1), w_label17, 0, 1, 1, 2,
                     (GtkAttachOptions) (0),
@@ -1343,6 +1509,7 @@ create_xs_fileinfowin (void)
   gtk_label_set_justify (GTK_LABEL (w_label17), GTK_JUSTIFY_CENTER);
 
   w_label18 = gtk_label_new (_("Composer:"));
+  gtk_widget_set_name (w_label18, "w_label18");
   gtk_widget_show (w_label18);
   gtk_table_attach (GTK_TABLE (table1), w_label18, 0, 1, 2, 3,
                     (GtkAttachOptions) (0),
@@ -1350,6 +1517,7 @@ create_xs_fileinfowin (void)
   gtk_label_set_justify (GTK_LABEL (w_label18), GTK_JUSTIFY_CENTER);
 
   w_label19 = gtk_label_new (_("Copyright:"));
+  gtk_widget_set_name (w_label19, "w_label19");
   gtk_widget_show (w_label19);
   gtk_table_attach (GTK_TABLE (table1), w_label19, 0, 1, 3, 4,
                     (GtkAttachOptions) (0),
@@ -1357,6 +1525,7 @@ create_xs_fileinfowin (void)
   gtk_label_set_justify (GTK_LABEL (w_label19), GTK_JUSTIFY_CENTER);
 
   fileinfo_filename = gtk_entry_new ();
+  gtk_widget_set_name (fileinfo_filename, "fileinfo_filename");
   gtk_widget_show (fileinfo_filename);
   gtk_table_attach (GTK_TABLE (table1), fileinfo_filename, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1365,6 +1534,7 @@ create_xs_fileinfowin (void)
   gtk_entry_set_invisible_char (GTK_ENTRY (fileinfo_filename), 9679);
 
   fileinfo_songname = gtk_entry_new ();
+  gtk_widget_set_name (fileinfo_songname, "fileinfo_songname");
   gtk_widget_show (fileinfo_songname);
   gtk_table_attach (GTK_TABLE (table1), fileinfo_songname, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1373,6 +1543,7 @@ create_xs_fileinfowin (void)
   gtk_entry_set_invisible_char (GTK_ENTRY (fileinfo_songname), 9679);
 
   fileinfo_composer = gtk_entry_new ();
+  gtk_widget_set_name (fileinfo_composer, "fileinfo_composer");
   gtk_widget_show (fileinfo_composer);
   gtk_table_attach (GTK_TABLE (table1), fileinfo_composer, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1381,6 +1552,7 @@ create_xs_fileinfowin (void)
   gtk_entry_set_invisible_char (GTK_ENTRY (fileinfo_composer), 9679);
 
   fileinfo_copyright = gtk_entry_new ();
+  gtk_widget_set_name (fileinfo_copyright, "fileinfo_copyright");
   gtk_widget_show (fileinfo_copyright);
   gtk_table_attach (GTK_TABLE (table1), fileinfo_copyright, 1, 2, 3, 4,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1389,33 +1561,34 @@ create_xs_fileinfowin (void)
   gtk_entry_set_invisible_char (GTK_ENTRY (fileinfo_copyright), 9679);
 
   label23 = gtk_label_new (_("Song Information:"));
+  gtk_widget_set_name (label23, "label23");
   gtk_widget_show (label23);
   gtk_frame_set_label_widget (GTK_FRAME (w_frame14), label23);
 
   w_frame15 = gtk_frame_new (NULL);
+  gtk_widget_set_name (w_frame15, "w_frame15");
   gtk_widget_show (w_frame15);
   gtk_box_pack_start (GTK_BOX (w_vbox14), w_frame15, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_frame15), 4);
 
   w_vbox15 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (w_vbox15, "w_vbox15");
   gtk_widget_show (w_vbox15);
   gtk_container_add (GTK_CONTAINER (w_frame15), w_vbox15);
 
   fileinfo_sub_tune = gtk_option_menu_new ();
+  gtk_widget_set_name (fileinfo_sub_tune, "fileinfo_sub_tune");
   gtk_widget_show (fileinfo_sub_tune);
   gtk_box_pack_start (GTK_BOX (w_vbox15), fileinfo_sub_tune, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (fileinfo_sub_tune), 2);
 
   convertwidget7 = gtk_menu_new ();
-
-  convertwidget30 = gtk_menu_item_new_with_mnemonic (" ");
-  gtk_widget_set_name (convertwidget30, "convertwidget30");
-  gtk_widget_show (convertwidget30);
-  gtk_container_add (GTK_CONTAINER (convertwidget29), convertwidget30);
+  gtk_widget_set_name (convertwidget7, "convertwidget7");
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (fileinfo_sub_tune), convertwidget7);
 
   table2 = gtk_table_new (3, 2, FALSE);
+  gtk_widget_set_name (table2, "table2");
   gtk_widget_show (table2);
   gtk_box_pack_start (GTK_BOX (w_vbox15), table2, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (table2), 4);
@@ -1423,6 +1596,7 @@ create_xs_fileinfowin (void)
   gtk_table_set_col_spacings (GTK_TABLE (table2), 4);
 
   w_label41 = gtk_label_new (_("Author:"));
+  gtk_widget_set_name (w_label41, "w_label41");
   gtk_widget_show (w_label41);
   gtk_table_attach (GTK_TABLE (table2), w_label41, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
@@ -1430,6 +1604,7 @@ create_xs_fileinfowin (void)
   gtk_label_set_justify (GTK_LABEL (w_label41), GTK_JUSTIFY_CENTER);
 
   fileinfo_sub_author = gtk_entry_new ();
+  gtk_widget_set_name (fileinfo_sub_author, "fileinfo_sub_author");
   gtk_widget_show (fileinfo_sub_author);
   gtk_table_attach (GTK_TABLE (table2), fileinfo_sub_author, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1438,6 +1613,7 @@ create_xs_fileinfowin (void)
   gtk_entry_set_invisible_char (GTK_ENTRY (fileinfo_sub_author), 9679);
 
   w_label50 = gtk_label_new (_("Name:"));
+  gtk_widget_set_name (w_label50, "w_label50");
   gtk_widget_show (w_label50);
   gtk_table_attach (GTK_TABLE (table2), w_label50, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -1445,6 +1621,7 @@ create_xs_fileinfowin (void)
   gtk_label_set_justify (GTK_LABEL (w_label50), GTK_JUSTIFY_CENTER);
 
   fileinfo_sub_name = gtk_entry_new ();
+  gtk_widget_set_name (fileinfo_sub_name, "fileinfo_sub_name");
   gtk_widget_show (fileinfo_sub_name);
   gtk_table_attach (GTK_TABLE (table2), fileinfo_sub_name, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1453,6 +1630,7 @@ create_xs_fileinfowin (void)
   gtk_entry_set_invisible_char (GTK_ENTRY (fileinfo_sub_name), 9679);
 
   w_label51 = gtk_label_new (_("Duration:"));
+  gtk_widget_set_name (w_label51, "w_label51");
   gtk_widget_show (w_label51);
   gtk_table_attach (GTK_TABLE (table2), w_label51, 0, 1, 2, 3,
                     (GtkAttachOptions) (GTK_FILL),
@@ -1461,6 +1639,7 @@ create_xs_fileinfowin (void)
   gtk_misc_set_alignment (GTK_MISC (w_label51), 0, 0.5);
 
   entry1 = gtk_entry_new ();
+  gtk_widget_set_name (entry1, "entry1");
   gtk_widget_show (entry1);
   gtk_table_attach (GTK_TABLE (table2), entry1, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1469,6 +1648,7 @@ create_xs_fileinfowin (void)
   gtk_entry_set_invisible_char (GTK_ENTRY (entry1), 9679);
 
   scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_set_name (scrolledwindow2, "scrolledwindow2");
   gtk_widget_show (scrolledwindow2);
   gtk_box_pack_start (GTK_BOX (w_vbox15), scrolledwindow2, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow2), 4);
@@ -1477,16 +1657,19 @@ create_xs_fileinfowin (void)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_SHADOW_IN);
 
   fileinfo_sub_info = gtk_text_view_new ();
+  gtk_widget_set_name (fileinfo_sub_info, "fileinfo_sub_info");
   gtk_widget_show (fileinfo_sub_info);
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), fileinfo_sub_info);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (fileinfo_sub_info), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (fileinfo_sub_info), GTK_WRAP_WORD);
 
   label24 = gtk_label_new (_("Sub-tune Information:"));
+  gtk_widget_set_name (label24, "label24");
   gtk_widget_show (label24);
   gtk_frame_set_label_widget (GTK_FRAME (w_frame15), label24);
 
   button2 = gtk_button_new_with_mnemonic (_("Close"));
+  gtk_widget_set_name (button2, "button2");
   gtk_widget_show (button2);
   gtk_box_pack_start (GTK_BOX (w_vbox14), button2, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (button2), 4);
@@ -1517,7 +1700,6 @@ create_xs_fileinfowin (void)
   GLADE_HOOKUP_OBJECT (xs_fileinfowin, w_vbox15, "w_vbox15");
   GLADE_HOOKUP_OBJECT (xs_fileinfowin, fileinfo_sub_tune, "fileinfo_sub_tune");
   GLADE_HOOKUP_OBJECT (xs_fileinfowin, convertwidget7, "convertwidget7");
-  GLADE_HOOKUP_OBJECT (xs_fileinfowin, convertwidget8, "convertwidget8");
   GLADE_HOOKUP_OBJECT (xs_fileinfowin, table2, "table2");
   GLADE_HOOKUP_OBJECT (xs_fileinfowin, w_label41, "w_label41");
   GLADE_HOOKUP_OBJECT (xs_fileinfowin, fileinfo_sub_author, "fileinfo_sub_author");
@@ -1543,15 +1725,18 @@ create_xs_sldb_fs (void)
   GtkWidget *cancel_button2;
 
   xs_sldb_fs = gtk_file_selection_new (_("Select HVSC song length database"));
+  gtk_widget_set_name (xs_sldb_fs, "xs_sldb_fs");
   gtk_container_set_border_width (GTK_CONTAINER (xs_sldb_fs), 10);
   gtk_window_set_modal (GTK_WINDOW (xs_sldb_fs), TRUE);
   gtk_window_set_type_hint (GTK_WINDOW (xs_sldb_fs), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   ok_button2 = GTK_FILE_SELECTION (xs_sldb_fs)->ok_button;
+  gtk_widget_set_name (ok_button2, "ok_button2");
   gtk_widget_show (ok_button2);
   GTK_WIDGET_SET_FLAGS (ok_button2, GTK_CAN_DEFAULT);
 
   cancel_button2 = GTK_FILE_SELECTION (xs_sldb_fs)->cancel_button;
+  gtk_widget_set_name (cancel_button2, "cancel_button2");
   gtk_widget_show (cancel_button2);
   GTK_WIDGET_SET_FLAGS (cancel_button2, GTK_CAN_DEFAULT);
 
@@ -1581,15 +1766,18 @@ create_xs_stil_fs (void)
   GtkWidget *cancel_button3;
 
   xs_stil_fs = gtk_file_selection_new (_("Select STIL-database "));
+  gtk_widget_set_name (xs_stil_fs, "xs_stil_fs");
   gtk_container_set_border_width (GTK_CONTAINER (xs_stil_fs), 10);
   gtk_window_set_modal (GTK_WINDOW (xs_stil_fs), TRUE);
   gtk_window_set_type_hint (GTK_WINDOW (xs_stil_fs), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   ok_button3 = GTK_FILE_SELECTION (xs_stil_fs)->ok_button;
+  gtk_widget_set_name (ok_button3, "ok_button3");
   gtk_widget_show (ok_button3);
   GTK_WIDGET_SET_FLAGS (ok_button3, GTK_CAN_DEFAULT);
 
   cancel_button3 = GTK_FILE_SELECTION (xs_stil_fs)->cancel_button;
+  gtk_widget_set_name (cancel_button3, "cancel_button3");
   gtk_widget_show (cancel_button3);
   GTK_WIDGET_SET_FLAGS (cancel_button3, GTK_CAN_DEFAULT);
 
@@ -1619,15 +1807,18 @@ create_xs_hvsc_fs (void)
   GtkWidget *cancel_button4;
 
   xs_hvsc_fs = gtk_file_selection_new (_("Select HVSC location prefix"));
+  gtk_widget_set_name (xs_hvsc_fs, "xs_hvsc_fs");
   gtk_container_set_border_width (GTK_CONTAINER (xs_hvsc_fs), 10);
   gtk_window_set_modal (GTK_WINDOW (xs_hvsc_fs), TRUE);
   gtk_window_set_type_hint (GTK_WINDOW (xs_hvsc_fs), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   ok_button4 = GTK_FILE_SELECTION (xs_hvsc_fs)->ok_button;
+  gtk_widget_set_name (ok_button4, "ok_button4");
   gtk_widget_show (ok_button4);
   GTK_WIDGET_SET_FLAGS (ok_button4, GTK_CAN_DEFAULT);
 
   cancel_button4 = GTK_FILE_SELECTION (xs_hvsc_fs)->cancel_button;
+  gtk_widget_set_name (cancel_button4, "cancel_button4");
   gtk_widget_show (cancel_button4);
   GTK_WIDGET_SET_FLAGS (cancel_button4, GTK_CAN_DEFAULT);
 
@@ -1657,15 +1848,18 @@ create_xs_filter_import_fs (void)
   GtkWidget *cancel_button64;
 
   xs_filter_import_fs = gtk_file_selection_new (_("Select SIDPlay2 filters file for importing"));
+  gtk_widget_set_name (xs_filter_import_fs, "xs_filter_import_fs");
   gtk_container_set_border_width (GTK_CONTAINER (xs_filter_import_fs), 10);
   gtk_window_set_modal (GTK_WINDOW (xs_filter_import_fs), TRUE);
   gtk_window_set_type_hint (GTK_WINDOW (xs_filter_import_fs), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   ok_button64 = GTK_FILE_SELECTION (xs_filter_import_fs)->ok_button;
+  gtk_widget_set_name (ok_button64, "ok_button64");
   gtk_widget_show (ok_button64);
   GTK_WIDGET_SET_FLAGS (ok_button64, GTK_CAN_DEFAULT);
 
   cancel_button64 = GTK_FILE_SELECTION (xs_filter_import_fs)->cancel_button;
+  gtk_widget_set_name (cancel_button64, "cancel_button64");
   gtk_widget_show (cancel_button64);
   GTK_WIDGET_SET_FLAGS (cancel_button64, GTK_CAN_DEFAULT);
 
@@ -1695,15 +1889,18 @@ create_xs_filter_export_fs (void)
   GtkWidget *cancel_button64;
 
   xs_filter_export_fs = gtk_file_selection_new (_("Select SIDPlay2 filters file for exporting"));
+  gtk_widget_set_name (xs_filter_export_fs, "xs_filter_export_fs");
   gtk_container_set_border_width (GTK_CONTAINER (xs_filter_export_fs), 10);
   gtk_window_set_modal (GTK_WINDOW (xs_filter_export_fs), TRUE);
   gtk_window_set_type_hint (GTK_WINDOW (xs_filter_export_fs), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   ok_button64 = GTK_FILE_SELECTION (xs_filter_export_fs)->ok_button;
+  gtk_widget_set_name (ok_button64, "ok_button64");
   gtk_widget_show (ok_button64);
   GTK_WIDGET_SET_FLAGS (ok_button64, GTK_CAN_DEFAULT);
 
   cancel_button64 = GTK_FILE_SELECTION (xs_filter_export_fs)->cancel_button;
+  gtk_widget_set_name (cancel_button64, "cancel_button64");
   gtk_widget_show (cancel_button64);
   GTK_WIDGET_SET_FLAGS (cancel_button64, GTK_CAN_DEFAULT);
 
@@ -1738,37 +1935,45 @@ create_xs_confirmwin (void)
   GtkWidget *xs_confirm_no;
 
   xs_confirmwin = gtk_dialog_new ();
+  gtk_widget_set_name (xs_confirmwin, "xs_confirmwin");
   gtk_window_set_title (GTK_WINDOW (xs_confirmwin), _("Confirm selected action"));
   gtk_window_set_type_hint (GTK_WINDOW (xs_confirmwin), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox1 = GTK_DIALOG (xs_confirmwin)->vbox;
+  gtk_widget_set_name (dialog_vbox1, "dialog_vbox1");
   gtk_widget_show (dialog_vbox1);
 
   xs_confirm_frame = gtk_frame_new (NULL);
+  gtk_widget_set_name (xs_confirm_frame, "xs_confirm_frame");
   gtk_widget_show (xs_confirm_frame);
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), xs_confirm_frame, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (xs_confirm_frame), 6);
 
   label25 = gtk_label_new (_("Confirm selected action"));
+  gtk_widget_set_name (label25, "label25");
   gtk_widget_show (label25);
   gtk_frame_set_label_widget (GTK_FRAME (xs_confirm_frame), label25);
 
   dialog_action_area1 = GTK_DIALOG (xs_confirmwin)->action_area;
+  gtk_widget_set_name (dialog_action_area1, "dialog_action_area1");
   gtk_widget_show (dialog_action_area1);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1), GTK_BUTTONBOX_END);
 
   hbuttonbox2 = gtk_hbutton_box_new ();
+  gtk_widget_set_name (hbuttonbox2, "hbuttonbox2");
   gtk_widget_show (hbuttonbox2);
   gtk_container_add (GTK_CONTAINER (dialog_action_area1), hbuttonbox2);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox2), GTK_BUTTONBOX_END);
   gtk_box_set_spacing (GTK_BOX (hbuttonbox2), 8);
 
   xs_confirm_yes = gtk_button_new_with_mnemonic (_("Yes"));
+  gtk_widget_set_name (xs_confirm_yes, "xs_confirm_yes");
   gtk_widget_show (xs_confirm_yes);
   gtk_container_add (GTK_CONTAINER (hbuttonbox2), xs_confirm_yes);
   GTK_WIDGET_SET_FLAGS (xs_confirm_yes, GTK_CAN_DEFAULT);
 
   xs_confirm_no = gtk_button_new_with_mnemonic (_("No"));
+  gtk_widget_set_name (xs_confirm_no, "xs_confirm_no");
   gtk_widget_show (xs_confirm_no);
   gtk_container_add (GTK_CONTAINER (hbuttonbox2), xs_confirm_no);
   GTK_WIDGET_SET_FLAGS (xs_confirm_no, GTK_CAN_DEFAULT);
