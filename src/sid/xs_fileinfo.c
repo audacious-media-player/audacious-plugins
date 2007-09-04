@@ -122,7 +122,6 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 {
 	t_xs_stil_subnode *tmpNode;
 	GtkWidget *tmpText;
-	gint tmpIndex;
 	gchar *subName, *subAuthor, *subInfo;
 
 	(void) widget;
@@ -137,12 +136,9 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 #endif
 
 	/* Get subtune information */
-	tmpIndex = g_list_index(GTK_MENU_SHELL(data)->children, gtk_menu_get_active(GTK_MENU(data)));
-	
-	if (xs_fileinfostil && tmpIndex <= xs_fileinfostil->nsubTunes)
-		tmpNode = xs_fileinfostil->subTunes[tmpIndex];
-	else
-		tmpNode = NULL;
+	tmpNode = (t_xs_stil_subnode *) data;
+	if (!tmpNode && xs_fileinfostil)
+		tmpNode = xs_fileinfostil->subTunes[0];
 	
 	if (tmpNode) {
 		if (tmpNode->pName)
@@ -178,6 +174,7 @@ void xs_fileinfo(gchar * pcFilename)
 {
 	GtkWidget *tmpMenuItem, *tmpMenu, *tmpOptionMenu;
 	t_xs_tuneinfo *tmpInfo;
+	t_xs_stil_subnode *tmpNode;
 	gchar tmpStr[256], *tmpFilename;
 	gint n;
 
@@ -238,38 +235,53 @@ void xs_fileinfo(gchar * pcFilename)
 	tmpMenuItem = gtk_menu_item_new_with_label(_("General info"));
 	gtk_widget_show(tmpMenuItem);
 	gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-	XS_SIGNAL_CONNECT(tmpMenuItem, "activate", xs_fileinfo_subtune, tmpMenu);
+	if (xs_fileinfostil)
+		tmpNode = xs_fileinfostil->subTunes[0];
+	else
+		tmpNode = NULL;
+	XS_SIGNAL_CONNECT(tmpMenuItem, "activate", xs_fileinfo_subtune, tmpNode);
 
 	/* Other menu items */
 	for (n = 1; n <= tmpInfo->nsubTunes; n++) {
 		if (xs_fileinfostil && n <= xs_fileinfostil->nsubTunes && xs_fileinfostil->subTunes[n]) {
-			t_xs_stil_subnode *tmpNode = xs_fileinfostil->subTunes[n];
+			gboolean isSet = FALSE;
+			tmpNode = xs_fileinfostil->subTunes[n];
 			
 			g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i: "), n);
 
-			if (tmpNode->pName)
+			if (tmpNode->pName) {
 				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pName);
-			else if (tmpNode->pTitle)
-				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pTitle);
-			else if (tmpNode->pInfo)
-				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pInfo);
-			else
+				isSet = TRUE;
+			}
+
+			if (tmpNode->pTitle) {
+				xs_pnstrcat(tmpStr, sizeof(tmpStr),
+					isSet ? " [*]" : tmpNode->pTitle);
+				isSet = TRUE;
+			}
+
+			if (tmpNode->pInfo) {
+				xs_pnstrcat(tmpStr, sizeof(tmpStr),
+					isSet ? " [!]" : tmpNode->pInfo);
+				isSet = TRUE;
+			}
+
+			if (!isSet)
 				xs_pnstrcat(tmpStr, sizeof(tmpStr), "---");
-		} else {
-			g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i"), n);
+
+			tmpMenuItem = gtk_menu_item_new_with_label(tmpStr);
+			gtk_widget_show(tmpMenuItem);
+			gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
+			XS_SIGNAL_CONNECT(tmpMenuItem, "activate", xs_fileinfo_subtune, tmpNode);
 		}
 
-		tmpMenuItem = gtk_menu_item_new_with_label(tmpStr);
-		gtk_widget_show(tmpMenuItem);
-		gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-		XS_SIGNAL_CONNECT(tmpMenuItem, "activate", xs_fileinfo_subtune, tmpMenu);
 	}
 
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(tmpOptionMenu), tmpMenu);
 	gtk_widget_show(tmpOptionMenu);
 
 	/* Set the subtune information */
-	xs_fileinfo_subtune(tmpOptionMenu, tmpMenu);
+	xs_fileinfo_subtune(tmpOptionMenu, NULL);
 
 	/* Free temporary tuneinfo */
 	xs_tuneinfo_free(tmpInfo);
