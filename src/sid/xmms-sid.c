@@ -220,7 +220,6 @@ void xs_init(void)
 	XSDEBUG("xs_init()\n");
 
 	/* Initialize and get configuration */
-	xs_memset(&xs_cfg, 0, sizeof(xs_cfg));
 	xs_init_configuration();
 	xs_read_configuration();
 
