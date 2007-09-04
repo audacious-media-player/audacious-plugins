@@ -1765,7 +1765,7 @@ create_xs_stil_fs (void)
   GtkWidget *ok_button3;
   GtkWidget *cancel_button3;
 
-  xs_stil_fs = gtk_file_selection_new (_("Select STIL-database "));
+  xs_stil_fs = gtk_file_selection_new (_("Select STIL-database"));
   gtk_widget_set_name (xs_stil_fs, "xs_stil_fs");
   gtk_container_set_border_width (GTK_CONTAINER (xs_stil_fs), 10);
   gtk_window_set_modal (GTK_WINDOW (xs_stil_fs), TRUE);

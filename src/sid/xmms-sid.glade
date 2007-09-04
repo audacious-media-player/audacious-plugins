@@ -3551,7 +3551,7 @@
 <widget class="GtkFileSelection" id="xs_stil_fs">
   <property name="border_width">10</property>
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Select STIL-database </property>
+  <property name="title" translatable="yes">Select STIL-database</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">True</property>
