@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-09-03 23:38+0200\n"
-"PO-Revision-Date: 2007-08-31 17:04+0900\n"
+"PO-Revision-Date: 2007-09-04 20:38+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -396,7 +396,7 @@ msgstr "時"
 
 #: src/alarm/interface.c:538
 msgid "minutes"
-msgstr ""
+msgstr "分"
 
 #: src/alarm/interface.c:556
 msgid "Quiet after:"
@@ -4746,7 +4746,7 @@ msgstr "[SIDPlay2] エミュレーションエンジンを初期化できませ�
 #: src/sid/xs_sidplay2.cc:208
 #, c-format
 msgid "[SIDPlay2] Invalid number of filter curve points (%d > %d)\n"
-msgstr ""
+msgstr "[SIDPlay2] フィルタ曲線の分点の数が不正です (%d > %d)\n"
 
 #: src/sid/xs_sidplay2.cc:229
 msgid "reSID->create() failed.\n"
