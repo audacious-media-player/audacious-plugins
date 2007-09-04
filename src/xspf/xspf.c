@@ -112,16 +112,16 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
         if(nptr->type == XML_ELEMENT_NODE
            && !xmlStrcmp(nptr->name, (xmlChar *)"location")) {
             gchar *str = (gchar *)xmlNodeGetContent(nptr);
-            gchar *tmp = NULL;
 
-            // tmp is escaped uri or a part of escaped uri.
-            tmp = g_strdup_printf("%s%s", base ? base : "", str);
-            location = g_filename_from_uri(tmp, NULL, NULL);
-            if(!location) // http:// or something.
-                location = g_strdup(tmp);
-
-            xmlFree(str); str = NULL;
-            g_free(tmp); tmp = NULL;
+            location = g_strdup_printf("%s%s", base ? base : "", str);
+            xmlFree(str);
+            str = g_filename_from_uri(location, NULL, NULL);
+            if (str) {
+                g_free(location);
+                location = g_strdup_printf("file://%s", str);
+            }
+            
+            g_free(str);
         }
         else if(nptr->type == XML_ELEMENT_NODE
                 && !xmlStrcmp(nptr->name, (xmlChar *)"title")) {
