@@ -28,7 +28,6 @@
 
 #include <stdarg.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtk.h>
 
 #include "xs_config.h"
 #include "xs_length.h"
@@ -124,6 +123,8 @@ void xs_reinit(void)
 {
 	gint iPlayer;
 	gboolean isInitialized;
+
+	XSDEBUG("xs_reinit() thread = %p\n", g_thread_self());
 
 	/* Stop playing, if we are */
 	XS_MUTEX_LOCK(xs_status);
@@ -352,10 +353,9 @@ gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
  */
 void xs_play_file(InputPlayback *pb)
 {
-	t_xs_status myStatus;
-	t_xs_tuneinfo *myTune;
+	t_xs_tuneinfo *tmpTune;
 	gboolean audioOpen = FALSE;
-	gint audioGot, songLength, i, subTune;
+	gint audioGot, tmpLength, i, subTune;
 	gchar *tmpFilename, *audioBuffer = NULL, *oversampleBuffer = NULL, *tmpTitle;
 	Tuple *tmpTuple;
 
@@ -368,14 +368,15 @@ void xs_play_file(InputPlayback *pb)
 
 	/* Get tune information */
 	xs_get_trackinfo(pb->filename, &tmpFilename, &subTune);
-
 	if ((xs_status.tuneInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename)) == NULL) {
+		XS_MUTEX_UNLOCK(xs_status);
 		g_free(tmpFilename);
 		return;
 	}
 
 	/* Initialize the tune */
 	if (!xs_status.sidPlayer->plrLoadSID(&xs_status, tmpFilename)) {
+		XS_MUTEX_UNLOCK(xs_status);
 		g_free(tmpFilename);
 		xs_tuneinfo_free(xs_status.tuneInfo);
 		xs_status.tuneInfo = NULL;
@@ -390,7 +391,7 @@ void xs_play_file(InputPlayback *pb)
 	/* Set general status information */
 	xs_status.isPlaying = TRUE;
 	xs_status.isError = FALSE;
-	myTune = xs_status.tuneInfo;
+	tmpTune = xs_status.tuneInfo;
 
 	if (subTune < 1 || subTune > xs_status.tuneInfo->nsubTunes)
 		xs_status.currSong = xs_status.tuneInfo->startTune;
@@ -398,12 +399,11 @@ void xs_play_file(InputPlayback *pb)
 		xs_status.currSong = subTune;
 
 	XSDEBUG("subtune #%i selected (#%d wanted), initializing...\n", xs_status.currSong, subTune);
-	memcpy(&myStatus, &xs_status, sizeof(t_xs_status));
-	XS_MUTEX_UNLOCK(xs_status);
 
 
 	/* We are ready */
 	xs_decode_thread = g_thread_self();
+	XSDEBUG("playing thread = %p\n", xs_decode_thread);
 	pb->set_pb_ready(pb);
 
 
@@ -411,43 +411,45 @@ void xs_play_file(InputPlayback *pb)
 	audioBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE);
 	if (audioBuffer == NULL) {
 		xs_error(_("Couldn't allocate memory for audio data buffer!\n"));
+		XS_MUTEX_UNLOCK(xs_status);
 		goto xs_err_exit;
 	}
-
-	if (myStatus.oversampleEnable) {
-		oversampleBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE * myStatus.oversampleFactor);
+	
+	if (xs_status.oversampleEnable) {
+		oversampleBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE * xs_status.oversampleFactor);
 		if (oversampleBuffer == NULL) {
 			xs_error(_("Couldn't allocate memory for audio oversampling buffer!\n"));
+			XS_MUTEX_UNLOCK(xs_status);
 			goto xs_err_exit;
 		}
 	}
 
 
 	/* Check minimum playtime */
-	songLength = myTune->subTunes[myStatus.currSong - 1].tuneLength;
-	if (xs_cfg.playMinTimeEnable && (songLength >= 0)) {
-		if (songLength < xs_cfg.playMinTime)
-			songLength = xs_cfg.playMinTime;
+	tmpLength = tmpTune->subTunes[xs_status.currSong - 1].tuneLength;
+	if (xs_cfg.playMinTimeEnable && (tmpLength >= 0)) {
+		if (tmpLength < xs_cfg.playMinTime)
+			tmpLength = xs_cfg.playMinTime;
 	}
 
 	/* Initialize song */
-	if (!myStatus.sidPlayer->plrInitSong(&myStatus)) {
+	if (!xs_status.sidPlayer->plrInitSong(&xs_status)) {
 		xs_error(_("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"),
-		      myTune->sidFilename, myStatus.currSong);
+		      tmpTune->sidFilename, xs_status.currSong);
+		XS_MUTEX_UNLOCK(xs_status);
 		goto xs_err_exit;
 	}
 		
 	/* Open the audio output */
 	XSDEBUG("open audio output (%d, %d, %d)\n",
-		myStatus.audioFormat, myStatus.audioFrequency, myStatus.audioChannels);
+		xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels);
 		
-	if (!pb->output->open_audio(myStatus.audioFormat, myStatus.audioFrequency, myStatus.audioChannels)) {
+	if (!pb->output->open_audio(xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels)) {
 		xs_error(_("Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"),
-			myStatus.audioFormat,
-			myStatus.audioFrequency,
-			myStatus.audioChannels);
+			xs_status.audioFormat,
+			xs_status.audioFrequency,
+			xs_status.audioChannels);
 
-		XS_MUTEX_LOCK(xs_status);
 		xs_status.isError = TRUE;
 		XS_MUTEX_UNLOCK(xs_status);
 		goto xs_err_exit;
@@ -456,73 +458,81 @@ void xs_play_file(InputPlayback *pb)
 	audioOpen = TRUE;
 
 	/* Set song information for current subtune */
-	XSDEBUG("foobar\n");
-	myStatus.sidPlayer->plrUpdateSIDInfo(&myStatus);
-
-	tmpTuple = xs_get_song_tuple_info(myTune->sidFilename, myStatus.currSong);
+	XSDEBUG("foobar #1\n");
+	xs_status.sidPlayer->plrUpdateSIDInfo(&xs_status);
+	XSDEBUG("foobar #2\n");
+	XS_MUTEX_UNLOCK(xs_status);
+	tmpTuple = xs_get_song_tuple_info(tmpTune->sidFilename, xs_status.currSong);
+	XSDEBUG("foobar #3\n");
 	tmpTitle = tuple_formatter_process_string(tmpTuple, get_gentitle_format());
 	
+	XSDEBUG("foobar #4\n");
+	XS_MUTEX_LOCK(xs_status);
 	xs_plugin_ip.set_info(
 		tmpTitle,
-		(songLength > 0) ? (songLength * 1000) : 0,
+		(tmpLength > 0) ? (tmpLength * 1000) : 0,
 		-1,
-		myStatus.audioFrequency,
-		myStatus.audioChannels);
+		xs_status.audioFrequency,
+		xs_status.audioChannels);
 		
 	g_free(tmpTitle);
 	
-
+	XS_MUTEX_UNLOCK(xs_status);
 	XSDEBUG("playing\n");
-	while (xs_status.isPlaying && myStatus.isPlaying) {
+	while (xs_status.isPlaying) {
 		/* Render audio data */
-		if (myStatus.oversampleEnable) {
+		XS_MUTEX_LOCK(xs_status);
+		if (xs_status.oversampleEnable) {
 			/* Perform oversampled rendering */
-			audioGot = myStatus.sidPlayer->plrFillBuffer(
-				&myStatus,
+			audioGot = xs_status.sidPlayer->plrFillBuffer(
+				&xs_status,
 				oversampleBuffer,
-				(XS_AUDIOBUF_SIZE * myStatus.oversampleFactor));
+				(XS_AUDIOBUF_SIZE * xs_status.oversampleFactor));
 
-			audioGot /= myStatus.oversampleFactor;
+			audioGot /= xs_status.oversampleFactor;
 
 			/* Execute rate-conversion with filtering */
 			if (xs_filter_rateconv(audioBuffer, oversampleBuffer,
-				myStatus.audioFormat, myStatus.oversampleFactor, audioGot) < 0) {
+				xs_status.audioFormat, xs_status.oversampleFactor, audioGot) < 0) {
 				xs_error(_("Oversampling rate-conversion pass failed.\n"));
-				XS_MUTEX_LOCK(xs_status);
 				xs_status.isError = TRUE;
 				XS_MUTEX_UNLOCK(xs_status);
 				goto xs_err_exit;
 			}
 		} else {
-			audioGot = myStatus.sidPlayer->plrFillBuffer(
-				&myStatus, audioBuffer, XS_AUDIOBUF_SIZE);
+			audioGot = xs_status.sidPlayer->plrFillBuffer(
+				&xs_status, audioBuffer, XS_AUDIOBUF_SIZE);
 		}
 
 		/* I <3 visualice/haujobb */
 		produce_audio(pb->output->written_time(),
-			myStatus.audioFormat, myStatus.audioChannels,
+			xs_status.audioFormat, xs_status.audioChannels,
 			audioGot, audioBuffer, NULL);
+		
+		XS_MUTEX_UNLOCK(xs_status);
 
 		/* Wait a little */
 		while (xs_status.isPlaying && (pb->output->buffer_free() < audioGot))
 			xmms_usleep(500);
 
 		/* Check if we have played enough */
+		XS_MUTEX_LOCK(xs_status);
 		if (xs_cfg.playMaxTimeEnable) {
 			if (xs_cfg.playMaxTimeUnknown) {
-				if ((songLength < 0) &&
+				if ((tmpLength < 0) &&
 					(pb->output->output_time() >= (xs_cfg.playMaxTime * 1000)))
-					myStatus.isPlaying = FALSE;
+					xs_status.isPlaying = FALSE;
 			} else {
 				if (pb->output->output_time() >= (xs_cfg.playMaxTime * 1000))
-					myStatus.isPlaying = FALSE;
+					xs_status.isPlaying = FALSE;
 			}
 		}
 
-		if (songLength >= 0) {
-			if (pb->output->output_time() >= (songLength * 1000))
-				myStatus.isPlaying = FALSE;
+		if (tmpLength >= 0) {
+			if (pb->output->output_time() >= (tmpLength * 1000))
+				xs_status.isPlaying = FALSE;
 		}
+		XS_MUTEX_UNLOCK(xs_status);
 	}
 
 xs_err_exit:
