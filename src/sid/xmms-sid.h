@@ -35,7 +35,7 @@ extern "C" {
 /* #define to enable spurious debugging messages for development
  * purposes. Output goes to stderr. See also DEBUG_NP below.
  */
-#define DEBUG
+#undef DEBUG
 
 /* Define to ISO C99 macro for debugging instead of varargs function.
  * This provides more useful information, but is incompatible with
@@ -106,10 +106,20 @@ extern "C" {
 #define XS_THREAD_EXIT(M)	g_thread_exit(M)
 #define XS_THREAD_JOIN(M)	g_thread_join(M)
 #define XS_MPP(M)		M ## _mutex
-#define XS_MUTEX(M)		GStaticMutex	XS_MPP(M) = G_STATIC_MUTEX_INIT
+#define XS_MUTEX(M)		GStaticMutex XS_MPP(M) = G_STATIC_MUTEX_INIT
 #define XS_MUTEX_H(M)		extern GStaticMutex XS_MPP(M)
-#define XS_MUTEX_LOCK(M)	g_static_mutex_lock(&XS_MPP(M))
-#define XS_MUTEX_UNLOCK(M)	g_static_mutex_unlock(&XS_MPP(M))
+#ifdef XS_MUTEX_DEBUG
+#  define XS_MUTEX_LOCK(M)	{			\
+	gboolean tmpRes;				\
+	XSDEBUG("XS_MUTEX_TRYLOCK(" #M ")\n");	\
+	tmpRes = g_static_mutex_trylock(&XS_MPP(M));	\
+	XSDEBUG("[" #M "] = %s\n", tmpRes ? "TRUE" : "FALSE");	\
+	}
+#  define XS_MUTEX_UNLOCK(M)	{ XSDEBUG("XS_MUTEX_UNLOCK(" #M ")\n"); g_static_mutex_unlock(&XS_MPP(M)); }
+#else
+#  define XS_MUTEX_LOCK(M)	g_static_mutex_lock(&XS_MPP(M))
+#  define XS_MUTEX_UNLOCK(M)	g_static_mutex_unlock(&XS_MPP(M))
+#endif
 
 /* Character set conversion helper macros
  */
