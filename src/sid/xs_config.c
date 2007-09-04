@@ -74,13 +74,13 @@ static GtkWidget *xs_configwin = NULL,
 
 /* Samplerates
  */
-static gchar *xs_samplerates_table[] = {
+static const gchar *xs_samplerates_table[] = {
 	"8000", "11025", "22050", 
 	"44100", "48000", "64000",
 	"96000"
 };
 
-static gint xs_nsamplerates_table = (sizeof(xs_samplerates_table) / sizeof(xs_samplerates_table[0]));
+static const gint xs_nsamplerates_table = (sizeof(xs_samplerates_table) / sizeof(xs_samplerates_table[0]));
 
 /*
  * Configuration specific stuff
