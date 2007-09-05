@@ -505,6 +505,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
+	char* tmps;
 	
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
@@ -517,75 +518,33 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	Tuple *ti = tuple_new_from_filename(aFilename.c_str());
 	lSoundFile = new CSoundFile;
 	lSoundFile->Create((uchar*)lArchive->Map(), lArchive->Size());
+
 	switch(lSoundFile->GetType())
         {
-	case MOD_TYPE_MOD:
-		tuple_associate_string(ti, "codec", "ProTracker");
-		break;
-	case MOD_TYPE_S3M:
-		tuple_associate_string(ti, "codec", "Scream Tracker 3");
-		break;
-	case MOD_TYPE_XM:
-		tuple_associate_string(ti, "codec", "Fast Tracker 2");
-		break;
-	case MOD_TYPE_IT:
-		tuple_associate_string(ti, "codec", "Impulse Tracker");
-		break;
-	case MOD_TYPE_MED:
-		tuple_associate_string(ti, "codec", "OctaMed");
-		break;
-	case MOD_TYPE_MTM:
-		tuple_associate_string(ti, "codec", "MultiTracker Module");
-		break;
-	case MOD_TYPE_669:
-		tuple_associate_string(ti, "codec", "669 Composer / UNIS 669");
-		break;
-	case MOD_TYPE_ULT:
-		tuple_associate_string(ti, "codec", "Ultra Tracker");
-		break;
-	case MOD_TYPE_STM:
-		tuple_associate_string(ti, "codec", "Scream Tracker");
-		break;
-	case MOD_TYPE_FAR:
-		tuple_associate_string(ti, "codec", "Farandole");
-		break;
-	case MOD_TYPE_AMF:
-		tuple_associate_string(ti, "codec", "ASYLUM Music Format");
-		break;
-	case MOD_TYPE_AMS:
-		tuple_associate_string(ti, "codec", "AMS module");
-		break;
-	case MOD_TYPE_DSM:
-		tuple_associate_string(ti, "codec", "DSIK Internal Format");
-		break;
-	case MOD_TYPE_MDL:
-		tuple_associate_string(ti, "codec", "DigiTracker");
-		break;
-	case MOD_TYPE_OKT:
-		tuple_associate_string(ti, "codec", "Oktalyzer");
-		break;
-	case MOD_TYPE_DMF:
-		tuple_associate_string(ti, "codec", "Delusion Digital Music Fileformat (X-Tracker)");
-		break;
-	case MOD_TYPE_PTM:
-		tuple_associate_string(ti, "codec", "PolyTracker");
-		break;
-	case MOD_TYPE_DBM:
-		tuple_associate_string(ti, "codec", "DigiBooster Pro");
-		break;
-	case MOD_TYPE_MT2:
-		tuple_associate_string(ti, "codec", "MadTracker 2");
-		break;
-	case MOD_TYPE_AMF0:
-		tuple_associate_string(ti, "codec", "AMF0");
-		break;
-	case MOD_TYPE_PSM:
-		tuple_associate_string(ti, "codec", "Protracker Studio Module");
-		break;
-	default:
-		tuple_associate_string(ti, "codec", "ModPlug unknown");
-		break;
+	case MOD_TYPE_MOD:	tmps = "ProTracker"; break;
+	case MOD_TYPE_S3M:	tmps = "Scream Tracker 3"; break;
+	case MOD_TYPE_XM:	tmps = "Fast Tracker 2"; break;
+	case MOD_TYPE_IT:	tmps = "Impulse Tracker"; break;
+	case MOD_TYPE_MED:	tmps = "OctaMed"; break;
+	case MOD_TYPE_MTM:	tmps = "MultiTracker Module"; break;
+	case MOD_TYPE_669:	tmps = "669 Composer / UNIS 669"; break;
+	case MOD_TYPE_ULT:	tmps = "Ultra Tracker"; break;
+	case MOD_TYPE_STM:	tmps = "Scream Tracker"; break;
+	case MOD_TYPE_FAR:	tmps = "Farandole"; break;
+	case MOD_TYPE_AMF:	tmps = "ASYLUM Music Format"; break;
+	case MOD_TYPE_AMS:	tmps = "AMS module"; break;
+	case MOD_TYPE_DSM:	tmps = "DSIK Internal Format"; break;
+	case MOD_TYPE_MDL:	tmps = "DigiTracker"; break;
+	case MOD_TYPE_OKT:	tmps = "Oktalyzer"; break;
+	case MOD_TYPE_DMF:	tmps = "Delusion Digital Music Fileformat (X-Tracker)"; break;
+	case MOD_TYPE_PTM:	tmps = "PolyTracker"; break;
+	case MOD_TYPE_DBM:	tmps = "DigiBooster Pro"; break;
+	case MOD_TYPE_MT2:	tmps = "MadTracker 2"; break;
+	case MOD_TYPE_AMF0:	tmps = "AMF0"; break;
+	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
+	default:		tmps = "ModPlug unknown"; break;
 	}
+	tuple_associate_string(ti, "codec", tmps);
 	tuple_associate_string(ti, "quality", "sequenced");
 	tuple_associate_string(ti, "title", lSoundFile->GetTitle());
 	tuple_associate_int(ti, "length", lSoundFile->GetSongTime() * 1000);
