@@ -1080,7 +1080,7 @@ void xs_cfg_emu_filters_toggled(GtkToggleButton * togglebutton, gpointer user_da
 	gtk_widget_set_sensitive(LUW("cfg_filters_notebook"), isActive);
 }
 
-
+#ifndef AUDACIOUS_PLUGIN
 void xs_cfg_ftitle_override_toggled(GtkToggleButton * togglebutton, gpointer user_data)
 {
 	gboolean isActive = GTK_TOGGLE_BUTTON(togglebutton)->active;
@@ -1089,7 +1089,7 @@ void xs_cfg_ftitle_override_toggled(GtkToggleButton * togglebutton, gpointer use
 
 	gtk_widget_set_sensitive(LUW("cfg_ftitle_box"), isActive);
 }
-
+#endif
 
 void xs_cfg_emu_sidplay1_toggled(GtkToggleButton * togglebutton, gpointer user_data)
 {
@@ -1280,29 +1280,28 @@ void xs_configure(void)
 	/* Based on available optional parts, gray out options */
 #ifndef HAVE_SIDPLAY1
 	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay1"), FALSE);
-	gtk_widget_set_sensitive(LUW("cfg_box_sidplay1"), FALSE);
+	gtk_widget_set_sensitive(LUW("cfg_box_filter_sidplay1"), FALSE);
 #endif
 
 #ifndef HAVE_SIDPLAY2
 	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay2"), FALSE);
-	gtk_widget_set_sensitive(LUW("cfg_box_sidplay2"), FALSE);
+	gtk_widget_set_sensitive(LUW("cfg_box_filter_sidplay2"), FALSE);
 #endif
 
-#ifndef HAVE_XMMSEXTRA
-	gtk_widget_set_sensitive(LUW("cfg_ftitle_override"), FALSE);
-	xs_cfg.titleOverride = TRUE;
-#endif
-
-#ifndef HAVE_SONG_POSITION
-	gtk_widget_set_sensitive(LUW("cfg_subctrl_patch"), FALSE);
-#endif
-
-	/* Update the widget sensitivities */
 	gtk_widget_set_sensitive(LUW("cfg_resid_frame"), FALSE);
 
 #ifndef AUDACIOUS_PLUGIN
+#  ifndef HAVE_XMMSEXTRA
+	gtk_widget_set_sensitive(LUW("cfg_ftitle_override"), FALSE);
+	xs_cfg.titleOverride = TRUE;
+#  endif
+#  ifdef HAVE_SONG_POSITION
+	gtk_widget_set_sensitive(LUW("cfg_subctrl_patch"), FALSE);
+#  endif
+
 	xs_cfg_ftitle_override_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_ftitle_override")), NULL);
-#endif
+#endif /* !AUDACIOUS_PLUGIN */
+
 	xs_cfg_emu_filters_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_emu_filters")), NULL);
 	xs_cfg_emu_sidplay1_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_emu_sidplay1")), NULL);
 	xs_cfg_emu_sidplay2_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_emu_sidplay2")), NULL);
