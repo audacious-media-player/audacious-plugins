@@ -260,7 +260,7 @@ void xs_fileinfo(gchar * pcFilename)
 				isSet = TRUE;
 			}
 
-			if (tmpNode->pInfo && isSet) {
+			if (tmpNode->pInfo) {
 				xs_pnstrcat(tmpStr, sizeof(tmpStr), " [!]");
 				isSet = TRUE;
 			}
