@@ -329,11 +329,11 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
     {
         g_free(mp4cb);
 
-        tuple_associate_string(ti, "title", vfs_get_metadata(mp4fh, "track-name"));
-        tuple_associate_string(ti, "album", vfs_get_metadata(mp4fh, "stream-name"));
+        tuple_associate_string(ti, FIELD_TITLE, NULL, vfs_get_metadata(mp4fh, "track-name"));
+        tuple_associate_string(ti, FIELD_ALBUM, NULL, vfs_get_metadata(mp4fh, "stream-name"));
 
-        tuple_associate_string(ti, "codec", "Advanced Audio Coding (AAC)");
-        tuple_associate_string(ti, "quality", "lossy");
+        tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
+        tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
         vfs_fclose(mp4fh);
         return ti;
@@ -389,45 +389,45 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
         faacDecClose(decoder);
 
         msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
-        tuple_associate_int(ti, "length", msDuration);
+        tuple_associate_int(ti, FIELD_LENGTH, NULL, msDuration);
 
         mp4ff_meta_get_title(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, "title", tmpval);
+            tuple_associate_string(ti, FIELD_TITLE, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_album(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, "album", tmpval);
+            tuple_associate_string(ti, FIELD_ALBUM, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_artist(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, "artist", tmpval);
+            tuple_associate_string(ti, FIELD_ARTIST, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_genre(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, "genre", tmpval);
+            tuple_associate_string(ti, FIELD_GENRE, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_date(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_int(ti, "year", atoi(tmpval));
+            tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(tmpval));
             free(tmpval);
         }
 
-        tuple_associate_string(ti, "codec", "Advanced Audio Coding (AAC)");
-        tuple_associate_string(ti, "quality", "lossy");
+        tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
+        tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
         free (mp4cb);
         vfs_fclose(mp4fh);

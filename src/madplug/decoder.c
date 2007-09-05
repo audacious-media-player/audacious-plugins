@@ -192,7 +192,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     info->duration = mad_timer_zero; // should be cleared before loop, if we use it as break condition.
 
     if(info->fileinfo_request == TRUE) {
-        tuple_associate_int(info->tuple, "length", -1);
+        tuple_associate_int(info->tuple, FIELD_LENGTH, NULL, -1);
         info->fileinfo_request = FALSE;
     }
 
@@ -270,10 +270,10 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             g_message("size = %d", stream.next_frame - stream.this_frame);
 #endif
 #endif
-            if(tuple_get_int(info->tuple, "length") == -1)
+            if(tuple_get_int(info->tuple, FIELD_LENGTH, NULL) == -1)
                 mad_timer_add(&info->duration, header.duration);
             else {
-                gint length = tuple_get_int(info->tuple, "length");
+                gint length = tuple_get_int(info->tuple, FIELD_LENGTH, NULL);
 
                 info->duration.seconds = length / 1000;
                 info->duration.fraction = length % 1000;
@@ -357,7 +357,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #ifdef DEBUG
                 g_message("info->frames = %d", info->frames);
 #endif
-                if(tuple_get_int(info->tuple, "length") == -1) {
+                if(tuple_get_int(info->tuple, FIELD_LENGTH, NULL) == -1) {
                     if(xing_bitrate > 0.0) {
                         /* calc duration with xing info */
                         double tmp = 8 * (double)info->xing.bytes * 1000 / xing_bitrate;
@@ -371,7 +371,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                     }
                 }
                 else {
-                    gint length = tuple_get_int(info->tuple, "length");
+                    gint length = tuple_get_int(info->tuple, FIELD_LENGTH, NULL);
 
                     info->duration.seconds = length / 1000;
                     info->duration.fraction = length % 1000;

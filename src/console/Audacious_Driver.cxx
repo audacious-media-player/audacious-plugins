@@ -208,23 +208,23 @@ static Tuple* get_track_ti( const char* path, track_info_t const& info, int trac
 	Tuple* ti = tuple_new();
 	if ( ti )
 	{
-		tuple_associate_string(ti, "file-name", g_path_get_basename(path));
-		tuple_associate_string(ti, "file-path", g_path_get_dirname(path));
-		tuple_associate_string(ti, "artist", info.author);
-		tuple_associate_string(ti, "album", info.game);
-		tuple_associate_string(ti, "game", info.game);
-		tuple_associate_string(ti, "title", info.song ? info.song : g_path_get_basename(path));
+		tuple_associate_string(ti, FIELD_FILE_NAME, NULL, g_path_get_basename(path));
+		tuple_associate_string(ti, FIELD_FILE_PATH, NULL, g_path_get_dirname(path));
+		tuple_associate_string(ti, FIELD_ARTIST, NULL, info.author);
+		tuple_associate_string(ti, FIELD_ALBUM, NULL, info.game);
+		tuple_associate_string(ti, -1, "game", info.game);
+		tuple_associate_string(ti, FIELD_TITLE, NULL, info.song ? info.song : g_path_get_basename(path));
 		if ( info.track_count > 1 )
 		{
-			tuple_associate_int(ti, "track-number", track + 1);
-			tuple_associate_int(ti, "subsong", track);
+			tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);
+			tuple_associate_int(ti, -1, "subsong", track);
 		}
-		tuple_associate_string(ti, "copyright", info.copyright);
-		tuple_associate_string(ti, "console", info.system);
-		tuple_associate_string(ti, "codec", info.system);
-		tuple_associate_string(ti, "quality", "sequenced");
-		tuple_associate_string(ti, "dumper", info.dumper);
-		tuple_associate_string(ti, "comment", info.comment);
+		tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, info.copyright);
+		tuple_associate_string(ti, -1, "console", info.system);
+		tuple_associate_string(ti, FIELD_CODEC, NULL, info.system);
+		tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+		tuple_associate_string(ti, -1, "dumper", info.dumper);
+		tuple_associate_string(ti, FIELD_COMMENT, NULL, info.comment);
 
 		int length = info.length;
 		if ( length <= 0 )
@@ -233,7 +233,7 @@ static Tuple* get_track_ti( const char* path, track_info_t const& info, int trac
 			length = audcfg.loop_length * 1000;
 		else if ( length >= fade_threshold )
 			length += fade_length;
-		tuple_associate_int(ti, "length", length);
+		tuple_associate_int(ti, FIELD_LENGTH, NULL, length);
 	}
 	return ti;
 }
@@ -242,7 +242,7 @@ static char* format_and_free_ti( Tuple* ti, int* length )
 {
 	char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
 	if ( result )
-		*length = tuple_get_int(ti, "length");
+		*length = tuple_get_int(ti, FIELD_LENGTH, NULL);
 	tuple_free((void *) ti);
 
 	return result;

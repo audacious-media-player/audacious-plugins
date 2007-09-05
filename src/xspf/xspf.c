@@ -104,8 +104,8 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
 
     tuple = tuple_new();
 
-    tuple_associate_int(tuple, "length", -1);
-    tuple_associate_int(tuple, "mtime", -1);          // mark as uninitialized.
+    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+    tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);          // mark as uninitialized.
 
     // creator, album, title, duration, trackNum, annotation, image, 
     for(nptr = track->children; nptr != NULL; nptr = nptr->next) {
@@ -126,37 +126,37 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
         else if(nptr->type == XML_ELEMENT_NODE
                 && !xmlStrcmp(nptr->name, (xmlChar *)"title")) {
             xmlChar *str = xmlNodeGetContent(nptr);
-	    tuple_associate_string(tuple, "title", (gchar *) str);
+	    tuple_associate_string(tuple, FIELD_TITLE, NULL, (gchar *) str);
             xmlFree(str);
         }
         else if(nptr->type == XML_ELEMENT_NODE
                 && !xmlStrcmp(nptr->name, (xmlChar *)"creator")) {
             xmlChar *str = xmlNodeGetContent(nptr);
-	    tuple_associate_string(tuple, "artist", (gchar *) str);
+	    tuple_associate_string(tuple, FIELD_ARTIST, NULL, (gchar *) str);
             xmlFree(str);
         }
         else if(nptr->type == XML_ELEMENT_NODE
                 && !xmlStrcmp(nptr->name, (xmlChar *)"annotation")) {
             xmlChar *str = xmlNodeGetContent(nptr);
-            tuple_associate_string(tuple, "comment", (gchar *) str);
+            tuple_associate_string(tuple, FIELD_COMMENT, NULL, (gchar *) str);
             xmlFree(str);
         }
         else if(nptr->type == XML_ELEMENT_NODE
                 && !xmlStrcmp(nptr->name, (xmlChar *)"album")) {
             xmlChar *str = xmlNodeGetContent(nptr);
-	    tuple_associate_string(tuple, "album", (gchar *) str);
+	    tuple_associate_string(tuple, FIELD_ALBUM, NULL, (gchar *) str);
             xmlFree(str);
         }
         else if(nptr->type == XML_ELEMENT_NODE
                 && !xmlStrcmp(nptr->name, (xmlChar *)"trackNum")) {
             xmlChar *str = xmlNodeGetContent(nptr);
-            tuple_associate_int(tuple, "track-number", atol((char *)str));
+            tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atol((char *)str));
             xmlFree(str);
         }
         else if(nptr->type == XML_ELEMENT_NODE
                 && !xmlStrcmp(nptr->name, (xmlChar *)"duration")) {
             xmlChar *str = xmlNodeGetContent(nptr);
-            tuple_associate_int(tuple, "length", atol((char *)str));
+            tuple_associate_int(tuple, FIELD_LENGTH, NULL, atol((char *)str));
             xmlFree(str);
         }
 
@@ -173,32 +173,32 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
 
             if(!xmlStrcmp(rel, (xmlChar *)"year")) {
                 xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_int(tuple, "year", atol((char *)cont));
+                tuple_associate_int(tuple, FIELD_YEAR, NULL, atol((char *)cont));
                 xmlFree(cont);
                 continue;
             }
             else if(!xmlStrcmp(rel, (xmlChar *)"date")) {
                 xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_string(tuple, "date", (gchar *) cont);
+                tuple_associate_string(tuple, FIELD_DATE, NULL, (gchar *) cont);
                 xmlFree(cont);
                 continue;
             }
             else if(!xmlStrcmp(rel, (xmlChar *)"genre")) {
                 xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_string(tuple, "genre", (gchar *) cont);
+                tuple_associate_string(tuple, FIELD_GENRE, NULL, (gchar *) cont);
                 xmlFree(cont);
                 continue;
             }
             else if(!xmlStrcmp(rel, (xmlChar *)"formatter")) {
                 xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_string(tuple, "formatter", (gchar *) cont);
+                tuple_associate_string(tuple, FIELD_FORMATTER, NULL, (gchar *) cont);
                 xmlFree(cont);
                 continue;
             }
             else if(!xmlStrcmp(rel, (xmlChar *)"mtime")) {
                 xmlChar *str = NULL;
                 str = xmlNodeGetContent(nptr);
-                tuple_associate_int(tuple, "mtime", atoll((char *)str));
+                tuple_associate_int(tuple, FIELD_MTIME, NULL, atoll((char *)str));
                 xmlFree(str);
                 continue;
             }
@@ -213,18 +213,18 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
         gchar *scratch;
 
         scratch = g_path_get_basename(location);
-        tuple_associate_string(tuple, "file-name", scratch);
+        tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
         g_free(scratch);
 
         scratch = g_path_get_dirname(location);
-        tuple_associate_string(tuple, "file-path", scratch);
+        tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
         g_free(scratch);
 
 #ifdef DEBUG
-        printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, "file-name"));
-        printf("xspf: tuple->file_path = %s\n", tuple_get_string(tuple, "file-path"));
+        printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+        printf("xspf: tuple->file_path = %s\n", tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
 #endif
-        tuple_associate_string(tuple, "file-ext", strrchr(location, '.'));
+        tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
         // add file to playlist
         uri = g_filename_to_uri(location, NULL, NULL);
         // uri would be NULL if location is already uri. --yaz
@@ -512,42 +512,42 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
         /* do we have a tuple? */
         if(entry->tuple != NULL) {
 
-            if((scratch = tuple_get_string(entry->tuple, "title")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, FIELD_TITLE, NULL)) != NULL &&
                 g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"title");
                 xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
                 xmlAddChild(track, tmp);
             }
 
-            if((scratch = tuple_get_string(entry->tuple, "artist")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, FIELD_ARTIST, NULL)) != NULL &&
                 g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"creator");
                 xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
                 xmlAddChild(track, tmp);
             }
 
-            if((scratch = tuple_get_string(entry->tuple, "comment")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, FIELD_COMMENT, NULL)) != NULL &&
                 g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"annotation");
                 xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
                 xmlAddChild(track, tmp);
             }
 
-            if((scratch = tuple_get_string(entry->tuple, "album")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, FIELD_ALBUM, NULL)) != NULL &&
                 g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"album");
                 xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
                 xmlAddChild(track, tmp);
             }
 
-            if((tmpi = tuple_get_int(entry->tuple, "track-number")) != 0) {
+            if((tmpi = tuple_get_int(entry->tuple, FIELD_TRACK_NUMBER, NULL)) != 0) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"trackNum");
                 g_snprintf(tmps, sizeof(tmps), "%d", tmpi);
                 xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
                 xmlAddChild(track, tmp);
             }
 
-            if((tmpi = tuple_get_int(entry->tuple, "length")) > 0) {
+            if((tmpi = tuple_get_int(entry->tuple, FIELD_LENGTH, NULL)) > 0) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"duration");
                 g_snprintf(tmps, sizeof(tmps), "%d", tmpi);
                 xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
@@ -560,7 +560,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
             // year, date, genre, formatter, mtime
             //
 
-            if((tmpi = tuple_get_int(entry->tuple, "year")) != 0) {
+            if((tmpi = tuple_get_int(entry->tuple, FIELD_YEAR, NULL)) != 0) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"meta");
                 xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"year");
                 g_snprintf(tmps, sizeof(tmps), "%d", tmpi);
@@ -568,7 +568,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
                 xmlAddChild(track, tmp);
             }
 
-            if((scratch = tuple_get_string(entry->tuple, "date")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, FIELD_DATE, NULL)) != NULL &&
                 g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"meta");
                 xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"date");
@@ -576,7 +576,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
                 xmlAddChild(track, tmp);
             }
 
-            if((scratch = tuple_get_string(entry->tuple, "genre")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, FIELD_GENRE, NULL)) != NULL &&
                 g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"meta");
                 xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"genre");
@@ -584,7 +584,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
                 xmlAddChild(track, tmp);
             }
 
-            if((scratch = tuple_get_string(entry->tuple, "formatter")) != NULL &&
+            if((scratch = tuple_get_string(entry->tuple, FIELD_FORMATTER, NULL)) != NULL &&
                 g_utf8_validate(scratch, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"meta");
                 xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"formatter");
@@ -595,7 +595,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
             // mtime: write mtime unconditionally to support staticlist.
             tmp = xmlNewNode(NULL, (xmlChar *)"meta");
             xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"mtime");
-            g_snprintf(tmps, sizeof(tmps), "%ld", (long) tuple_get_int(entry->tuple, "mtime"));
+            g_snprintf(tmps, sizeof(tmps), "%ld", (long) tuple_get_int(entry->tuple, FIELD_MTIME, NULL));
             xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
             xmlAddChild(track, tmp);
         }                       /* tuple */

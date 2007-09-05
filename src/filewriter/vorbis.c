@@ -85,32 +85,32 @@ static gint vorbis_open(void)
     if (tuple)
     {
         const gchar *scratch;
+        gchar tmpstr[32];
+        gint scrint;
 
-        if ((scratch = tuple_get_string(tuple, "title")))
+        if ((scratch = tuple_get_string(tuple, FIELD_TITLE, NULL)))
             vorbis_comment_add_tag(&vc, "title", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, "artist")))
+        if ((scratch = tuple_get_string(tuple, FIELD_ARTIST, NULL)))
             vorbis_comment_add_tag(&vc, "artist", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, "album")))
+        if ((scratch = tuple_get_string(tuple, FIELD_ALBUM, NULL)))
             vorbis_comment_add_tag(&vc, "album", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, "genre")))
+        if ((scratch = tuple_get_string(tuple, FIELD_GENRE, NULL)))
             vorbis_comment_add_tag(&vc, "genre", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, "date")))
+        if ((scratch = tuple_get_string(tuple, FIELD_DATE, NULL)))
             vorbis_comment_add_tag(&vc, "date", (gchar *) scratch);
-        if ((scratch = tuple_get_string(tuple, "comment")))
+        if ((scratch = tuple_get_string(tuple, FIELD_COMMENT, NULL)))
             vorbis_comment_add_tag(&vc, "comment", (gchar *) scratch);
 
-        if (tuple_get_int(tuple, "track-number"))
+        if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL)))
         {
-            gchar *tmp = g_strdup_printf("%d", tuple_get_int(tuple, "track-number"));
-            vorbis_comment_add_tag(&vc, "tracknumber", tmp);
-            g_free(tmp);
+            g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
+            vorbis_comment_add_tag(&vc, "tracknumber", tmpstr);
         }
 
-        if (tuple_get_int(tuple, "year"))
+        if ((scrint = tuple_get_int(tuple, FIELD_YEAR, NULL)))
         {
-            gchar *tmp = g_strdup_printf("%d", tuple_get_int(tuple, "year"));
-            vorbis_comment_add_tag(&vc, "year", tmp);
-            g_free(tmp);
+            g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
+            vorbis_comment_add_tag(&vc, "year", tmpstr);
         }
     }
 
