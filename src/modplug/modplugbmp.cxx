@@ -110,13 +110,13 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 {
 	string lExt;
 	uint32 lPos;
+	const int magicSize = 32;
+	char magic[magicSize];
 
-	gchar magic[4];
-
-	vfs_fread(magic, 1, 4, file);
+	vfs_fread(magic, 1, magicSize, file);
 	if (!memcmp(magic, UMX_MAGIC, 4))
 		return true;
-	if (!memcmp(magic, XM_MAGIC, 4))
+	if (!memcmp(magic, "Extended Module:", 16))
 		return true;
 	if (!memcmp(magic, M669_MAGIC, 2))
 		return true;
@@ -131,12 +131,22 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	vfs_fread(magic, 1, 4, file);
 	if (!memcmp(magic, S3M_MAGIC, 4))
 		return true;
+
 	vfs_fseek(file, 1080, SEEK_SET);
 	vfs_fread(magic, 1, 4, file);
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER6, 4))
-		return true;
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER8, 4))
-		return true;
+	
+	// Check for Fast Tracker multichannel modules (xCHN, xxCH)
+	if (magic[1] == 'C' && magic[2] == 'H' && magic[3] == 'N') {
+		if (magic[0] == '6' || magic[0] == '8')
+			return true;
+	}
+	if (magic[2] == 'C' && magic[3] == 'H' && isdigit(magic[0]) && isdigit(magic[1])) {
+		int nch = (magic[0] - '0') * 10 + (magic[1] - '0');
+		if ((nch % 2 == 0) && nch >= 10)
+			return true;
+	}
+	
+	// Check for Amiga MOD module formats
 	if(mModProps.mGrabAmigaMOD) {
 	if (!memcmp(magic, MOD_MAGIC_PROTRACKER4, 4))
 		return true;
