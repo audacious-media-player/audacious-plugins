@@ -188,3 +188,7 @@ gboolean
 xs_confirmwin_delete                   (GtkWidget       *widget,
                                         GdkEvent        *event,
                                         gpointer         user_data);
+
+void
+xs_cfg_ftitle_override_toggled         (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);

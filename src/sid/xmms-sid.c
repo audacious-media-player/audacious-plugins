@@ -88,7 +88,7 @@ t_xs_status xs_status;
 XS_MUTEX(xs_status);
 static XS_THREAD_T xs_decode_thread;
 
-Tuple * xs_get_song_tuple_info(gchar *songFilename, gint subTune);
+void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
 
 /*
  * Error messages
@@ -460,11 +460,12 @@ void xs_play_file(InputPlayback *pb)
 	/* Set song information for current subtune */
 	XSDEBUG("foobar #1\n");
 	xs_status.sidPlayer->plrUpdateSIDInfo(&xs_status);
-	XSDEBUG("foobar #2\n");
 	XS_MUTEX_UNLOCK(xs_status);
-	tmpTuple = xs_get_song_tuple_info(tmpTune->sidFilename, xs_status.currSong);
-	XSDEBUG("foobar #3\n");
-	tmpTitle = tuple_formatter_process_string(tmpTuple, get_gentitle_format());
+	tmpTuple = tuple_new_from_filename(tmpTune->sidFilename);
+	xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
+
+	tmpTitle = tuple_formatter_process_string(tmpTuple,
+		xs_cfg.titleOverride ? xs_cfg.titleFormat : get_gentitle_format());
 	
 	XSDEBUG("foobar #4\n");
 	XS_MUTEX_LOCK(xs_status);
@@ -655,29 +656,17 @@ gint xs_get_time(InputPlayback *pb)
 
 /* Return song information Tuple
  */
-Tuple * xs_get_song_tuple_info(gchar *songFilename, gint subTune)
+void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 {
-	t_xs_tuneinfo *pInfo;
-	Tuple *pResult;
-	gchar *tmpStr;
+	gchar *tmpStr, tmpStr2[64];
 
-	pResult = tuple_new_from_filename(songFilename);
-
-	/* Get tune information from emulation engine */
-	XS_MUTEX_LOCK(xs_status);
-	pInfo = xs_status.sidPlayer->plrGetSIDInfo(songFilename);
-	if (!pInfo) {
-		XS_MUTEX_UNLOCK(xs_status);
-		return pResult;
-	}
-	XS_MUTEX_UNLOCK(xs_status);
-	
 	tuple_associate_string(pResult, "title", pInfo->sidName);
 	tuple_associate_string(pResult, "artist", pInfo->sidComposer);
 	tuple_associate_string(pResult, "genre", "SID-tune");
 	tuple_associate_string(pResult, "copyright", pInfo->sidCopyright);
-	tuple_associate_string(pResult, "format", pInfo->sidFormat);
+
 	tuple_associate_int(pResult, "subtunes", pInfo->nsubTunes);
+	tuple_associate_string(pResult, "sid-format", pInfo->sidFormat);
 
 	switch (pInfo->sidModel) {
 		case XS_SIDMODEL_6581: tmpStr = "6581"; break;
@@ -686,7 +675,7 @@ Tuple * xs_get_song_tuple_info(gchar *songFilename, gint subTune)
 		default: tmpStr = "?"; break;
 	}
 	tuple_associate_string(pResult, "sid-model", tmpStr);
-
+	
 	/* Get sub-tune information, if available */
 	if (subTune < 0 || pInfo->startTune > pInfo->nsubTunes)
 		subTune = pInfo->startTune;
@@ -694,26 +683,61 @@ Tuple * xs_get_song_tuple_info(gchar *songFilename, gint subTune)
 	if ((subTune > 0) && (subTune <= pInfo->nsubTunes)) {
 		gint tmpInt = pInfo->subTunes[subTune - 1].tuneLength;
 		tuple_associate_int(pResult, "length", (tmpInt < 0) ? -1 : tmpInt * 1000);
+		
+		tmpInt = pInfo->subTunes[subTune - 1].tuneSpeed;
+		if (tmpInt > 0) {
+			switch (tmpInt) {
+			case XS_CLOCK_PAL: tmpStr = "PAL"; break;
+			case XS_CLOCK_NTSC: tmpStr = "NTSC"; break;
+			case XS_CLOCK_ANY: tmpStr = "ANY"; break;
+			case XS_CLOCK_VBI: tmpStr = "VBI"; break;
+			case XS_CLOCK_CIA: tmpStr = "CIA"; break;
+			default:
+				g_snprintf(tmpStr2, sizeof(tmpStr2), "%dHz", tmpInt);
+				tmpStr = tmpStr2;
+				break;
+			}
+		} else
+			tmpStr = "?";
+
+		tuple_associate_string(pResult, "sid-speed", tmpStr);
 	} else
 		subTune = 1;
 
 	tuple_associate_int(pResult, "subtune", subTune);
 	tuple_associate_int(pResult, "track-number", subTune);
 
-	/* Free tune information */
-	xs_tuneinfo_free(pInfo);
-	return pResult;
+	if (xs_cfg.titleOverride)
+		tuple_associate_string(pResult, "formatter", xs_cfg.titleFormat);
 }
 
 Tuple * xs_get_song_tuple(gchar *songFilename)
 {
-	Tuple *pResult;
+	Tuple *tmpResult;
 	gchar *tmpFilename;
+	t_xs_tuneinfo *tmpInfo;
 	gint subTune;
 
+	/* Get information from URL */
 	xs_get_trackinfo(songFilename, &tmpFilename, &subTune);
-	pResult = xs_get_song_tuple_info(tmpFilename, subTune);
+
+	tmpResult = tuple_new_from_filename(tmpFilename);
+	if (!tmpResult) {
+		g_free(tmpFilename);
+		return NULL;
+	}
+
+	/* Get tune information from emulation engine */
+	XS_MUTEX_LOCK(xs_status);
+	tmpInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename);
+	XS_MUTEX_UNLOCK(xs_status);
 	g_free(tmpFilename);
 
-	return pResult;
+	if (!tmpInfo)
+		return tmpResult;
+	
+	xs_get_song_tuple_info(tmpResult, tmpInfo, subTune);
+	xs_tuneinfo_free(tmpInfo);
+
+	return tmpResult;
 }

@@ -173,6 +173,14 @@ create_xs_configwin (void)
   GtkWidget *cfg_sld_dbbrowse;
   GtkWidget *label17;
   GtkWidget *w_label26;
+  GtkWidget *frame1;
+  GtkWidget *vbox1;
+  GtkWidget *cfg_ftitle_override;
+  GtkWidget *cfg_ftitle_box;
+  GtkWidget *cfg_ftitle_format;
+  GtkWidget *cfg_ftitle_descs;
+  GtkWidget *label29;
+  GtkWidget *w_label27;
   GtkWidget *w_vbox19;
   GtkWidget *w_frame31;
   GtkWidget *w_vbox35;
@@ -1016,6 +1024,54 @@ create_xs_configwin (void)
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 4), w_label26);
   gtk_label_set_justify (GTK_LABEL (w_label26), GTK_JUSTIFY_CENTER);
 
+  frame1 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame1, "frame1");
+  gtk_widget_show (frame1);
+  gtk_container_add (GTK_CONTAINER (cfg_notebook), frame1);
+  gtk_container_set_border_width (GTK_CONTAINER (frame1), 4);
+
+  vbox1 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (vbox1, "vbox1");
+  gtk_widget_show (vbox1);
+  gtk_container_add (GTK_CONTAINER (frame1), vbox1);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox1), 2);
+
+  cfg_ftitle_override = gtk_check_button_new_with_mnemonic (_("Override generic Tuplez format string"));
+  gtk_widget_set_name (cfg_ftitle_override, "cfg_ftitle_override");
+  gtk_widget_show (cfg_ftitle_override);
+  gtk_box_pack_start (GTK_BOX (vbox1), cfg_ftitle_override, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, cfg_ftitle_override, _("By enabling this option you can specify a custom Tuplez formatting string for SID-files. The SID-plugin specific Tuplez tags are described shortly below."), NULL);
+
+  cfg_ftitle_box = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (cfg_ftitle_box, "cfg_ftitle_box");
+  gtk_widget_show (cfg_ftitle_box);
+  gtk_box_pack_start (GTK_BOX (vbox1), cfg_ftitle_box, TRUE, TRUE, 0);
+
+  cfg_ftitle_format = gtk_entry_new ();
+  gtk_widget_set_name (cfg_ftitle_format, "cfg_ftitle_format");
+  gtk_widget_show (cfg_ftitle_format);
+  gtk_box_pack_start (GTK_BOX (cfg_ftitle_box), cfg_ftitle_format, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, cfg_ftitle_format, _("Tuplez format string for SID-files"), NULL);
+  gtk_entry_set_invisible_char (GTK_ENTRY (cfg_ftitle_format), 9679);
+
+  cfg_ftitle_descs = gtk_label_new (_("Descriptions of <i>SID-specific</i> Tuplez fields go here. <b>:D</b>"));
+  gtk_widget_set_name (cfg_ftitle_descs, "cfg_ftitle_descs");
+  gtk_widget_show (cfg_ftitle_descs);
+  gtk_box_pack_start (GTK_BOX (cfg_ftitle_box), cfg_ftitle_descs, TRUE, TRUE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (cfg_ftitle_descs), TRUE);
+  gtk_label_set_line_wrap (GTK_LABEL (cfg_ftitle_descs), TRUE);
+  gtk_misc_set_padding (GTK_MISC (cfg_ftitle_descs), 8, 8);
+
+  label29 = gtk_label_new (_("Song title format:"));
+  gtk_widget_set_name (label29, "label29");
+  gtk_widget_show (label29);
+  gtk_frame_set_label_widget (GTK_FRAME (frame1), label29);
+
+  w_label27 = gtk_label_new (_("Title"));
+  gtk_widget_set_name (w_label27, "w_label27");
+  gtk_widget_show (w_label27);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 5), w_label27);
+
   w_vbox19 = gtk_vbox_new (FALSE, 0);
   gtk_widget_set_name (w_vbox19, "w_vbox19");
   gtk_widget_show (w_vbox19);
@@ -1037,11 +1093,13 @@ create_xs_configwin (void)
   gtk_widget_set_name (cfg_subauto_enable, "cfg_subauto_enable");
   gtk_widget_show (cfg_subauto_enable);
   gtk_box_pack_start (GTK_BOX (w_vbox35), cfg_subauto_enable, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, cfg_subauto_enable, _("If enabled, sub-tunes of each file will be added to playlist. If disabled, only the default sub-tune will be added."), NULL);
 
-  cfg_subauto_min_only = gtk_check_button_new_with_mnemonic (_("Only tunes with specified minimum length "));
+  cfg_subauto_min_only = gtk_check_button_new_with_mnemonic (_("Only tunes with specified minimum duration"));
   gtk_widget_set_name (cfg_subauto_min_only, "cfg_subauto_min_only");
   gtk_widget_show (cfg_subauto_min_only);
   gtk_box_pack_start (GTK_BOX (w_vbox35), cfg_subauto_min_only, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, cfg_subauto_min_only, _("Only add sub-tunes that have a duration of at least specified time."), NULL);
 
   cfg_subauto_box = gtk_hbox_new (FALSE, 2);
   gtk_widget_set_name (cfg_subauto_box, "cfg_subauto_box");
@@ -1171,7 +1229,7 @@ create_xs_configwin (void)
   w_label3 = gtk_label_new (_("Misc"));
   gtk_widget_set_name (w_label3, "w_label3");
   gtk_widget_show (w_label3);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 5), w_label3);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (cfg_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (cfg_notebook), 6), w_label3);
   gtk_label_set_justify (GTK_LABEL (w_label3), GTK_JUSTIFY_CENTER);
 
   hbuttonbox1 = gtk_hbutton_box_new ();
@@ -1246,6 +1304,9 @@ create_xs_configwin (void)
                     NULL);
   g_signal_connect ((gpointer) cfg_sld_dbbrowse, "clicked",
                     G_CALLBACK (xs_cfg_sldb_browse),
+                    NULL);
+  g_signal_connect ((gpointer) cfg_ftitle_override, "toggled",
+                    G_CALLBACK (xs_cfg_ftitle_override_toggled),
                     NULL);
   g_signal_connect ((gpointer) cfg_subauto_enable, "toggled",
                     G_CALLBACK (xs_cfg_subauto_enable_toggled),
@@ -1401,6 +1462,14 @@ create_xs_configwin (void)
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_sld_dbbrowse, "cfg_sld_dbbrowse");
   GLADE_HOOKUP_OBJECT (xs_configwin, label17, "label17");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_label26, "w_label26");
+  GLADE_HOOKUP_OBJECT (xs_configwin, frame1, "frame1");
+  GLADE_HOOKUP_OBJECT (xs_configwin, vbox1, "vbox1");
+  GLADE_HOOKUP_OBJECT (xs_configwin, cfg_ftitle_override, "cfg_ftitle_override");
+  GLADE_HOOKUP_OBJECT (xs_configwin, cfg_ftitle_box, "cfg_ftitle_box");
+  GLADE_HOOKUP_OBJECT (xs_configwin, cfg_ftitle_format, "cfg_ftitle_format");
+  GLADE_HOOKUP_OBJECT (xs_configwin, cfg_ftitle_descs, "cfg_ftitle_descs");
+  GLADE_HOOKUP_OBJECT (xs_configwin, label29, "label29");
+  GLADE_HOOKUP_OBJECT (xs_configwin, w_label27, "w_label27");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_vbox19, "w_vbox19");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_frame31, "w_frame31");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_vbox35, "w_vbox35");
