@@ -9,7 +9,10 @@
 
 #include <gtk/gtk.h>
 #include <libintl.h>
+extern "C" {
 #include "audacious/util.h"
+#include "audacious/strings.h"
+}
 
 #include "interface.h"
 #include "support.h"
@@ -152,7 +155,7 @@ void ShowInfoWindow(const string& aFilename)
 
 	uint32 lSongTime, lNumSamples, lNumInstruments, i;
 	string lInfo;
-	char lBuffer[33];
+	gchar lBuffer[33];
 	stringstream lStrStream(ios::out);   //C++ replacement for sprintf()
 
 	CSoundFile* lSoundFile;
@@ -160,6 +163,7 @@ void ShowInfoWindow(const string& aFilename)
 	Archive* lArchive;
 	string lShortFN;
 	uint32 lPos;
+	gchar *tmps;
 
 	lPos = aFilename.find_last_of('/') + 1;
 	lShortFN = aFilename.substr(lPos);
@@ -177,7 +181,9 @@ void ShowInfoWindow(const string& aFilename)
 
 	lInfo = lShortFN;
 	lInfo += '\n';
-	lInfo += lSoundFile->GetTitle();
+	tmps = str_to_utf8(lSoundFile->GetTitle());
+	lInfo += tmps;
+	g_free(tmps);
 	lInfo += '\n';
 
 	switch(lSoundFile->GetType())
@@ -275,7 +281,9 @@ void ShowInfoWindow(const string& aFilename)
 	for(i = 0; i < lNumSamples; i++)
 	{
 		lSoundFile->GetSampleName(i, lBuffer);
-		lInfo += lBuffer;
+		tmps = str_to_utf8(lBuffer);
+		lInfo += tmps;
+		g_free(tmps);
 		lInfo += '\n';
 	}
 	gtk_label_set_text((GtkLabel*)lookup_widget(InfoWin, "info_samples"), lInfo.c_str());
@@ -284,7 +292,9 @@ void ShowInfoWindow(const string& aFilename)
 	for(i = 0; i < lNumInstruments; i++)
 	{
 		lSoundFile->GetInstrumentName(i, lBuffer);
-		lInfo += lBuffer;
+		tmps = str_to_utf8(lBuffer);
+		lInfo += tmps;
+		g_free(tmps);
 		lInfo += '\n';
 	}
 	gtk_label_set_text((GtkLabel*)lookup_widget(InfoWin, "info_instruments"), lInfo.c_str());
@@ -296,7 +306,9 @@ void ShowInfoWindow(const string& aFilename)
 	//gtk_text_backward_delete(textbox, length);
 	length = lSoundFile->GetSongComments(message, MAX_MESSAGE_LENGTH, 80);
 	if (length != 0) {
-		gtk_label_set_text((GtkLabel*)lookup_widget(InfoWin, "info_message"), message);
+		tmps = str_to_utf8(message);
+		gtk_label_set_text((GtkLabel*)lookup_widget(InfoWin, "info_message"), tmps);
+		g_free(tmps);
 	}
 	
 	//unload the file
