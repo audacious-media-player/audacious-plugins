@@ -280,14 +280,17 @@ void xs_init_configuration(void)
 #else
 	xs_cfg.subsongControl = XS_SSC_POPUP;
 #endif
-
 	xs_cfg.detectMagic = FALSE;
 
 #ifndef HAVE_XMMSEXTRA
 	xs_cfg.titleOverride = TRUE;
 #endif
-	xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) [%n/%N][%m/%C]");
 
+#ifdef AUDACIOUS_PLUGIN
+	xs_pstrcpy(&xs_cfg.titleFormat, "${artist} - ${title} (${copyright}) <${subtune}/${subtunes}> [${sid-model}/${sid-speed}]");
+#else
+	xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) <%n/%N> [%m/%C]");
+#endif
 
 	xs_cfg.subAutoEnable = FALSE;
 	xs_cfg.subAutoMinOnly = TRUE;
