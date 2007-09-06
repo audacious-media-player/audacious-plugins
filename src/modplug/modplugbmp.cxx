@@ -19,6 +19,7 @@ extern "C" {
 #include "audacious/tuple.h"
 #include "audacious/tuple_formatter.h"
 #include "audacious/vfs.h"
+#include "audacious/strings.h"
 }
 
 static char* format_and_free_ti( Tuple* ti, int* length )
@@ -505,7 +506,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
-	char* tmps;
+	gchar* tmps;
 	
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
@@ -546,8 +547,15 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	}
 	tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
 	tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
-	tuple_associate_string(ti, FIELD_TITLE, NULL, lSoundFile->GetTitle());
 	tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
+
+	/* NOTICE! FIXME? This is actually incorrect. We _cannot_ know what charset
+	 * an arbitrary module file uses .. typically it is some DOS CP-variant,
+	 * except for true Amiga modules.
+	 */
+	tmps = str_to_utf8(lSoundFile->GetTitle());
+	tuple_associate_string(ti, FIELD_TITLE, NULL, lSoundFile->GetTitle());
+	g_free(tmps);
 	
 	//unload the file
 	lSoundFile->Destroy();

@@ -127,10 +127,10 @@ static t_xs_cfg_item xs_cfgtable[] = {
 #ifndef AUDACIOUS_PLUGIN
 { CTYPE_INT,	&xs_cfg.subsongControl,		"subsongControl" },
 { CTYPE_BOOL,	&xs_cfg.detectMagic,		"detectMagic" },
+#endif
 
 { CTYPE_BOOL,	&xs_cfg.titleOverride,		"titleOverride" },
 { CTYPE_STR,	&xs_cfg.titleFormat,		"titleFormat" },
-#endif
 
 { CTYPE_BOOL,	&xs_cfg.subAutoEnable,		"subAutoEnable" },
 { CTYPE_BOOL,	&xs_cfg.subAutoMinOnly,		"subAutoMinOnly" },
@@ -191,10 +191,10 @@ static t_xs_wid_item xs_widtable[] = {
 { WTYPE_BGROUP,	CTYPE_INT,	"cfg_subctrl_patch",	&xs_cfg.subsongControl,		XS_SSC_PATCH },
 
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_detectmagic",	&xs_cfg.detectMagic,		0 },
+#endif
 
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_ftitle_override",	&xs_cfg.titleOverride,		0 },
 { WTYPE_TEXT,	CTYPE_STR,	"cfg_ftitle_format",	&xs_cfg.titleFormat,		0 },
-#endif
 
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_subauto_enable",	&xs_cfg.subAutoEnable,		0 },
 { WTYPE_BUTTON,	CTYPE_BOOL,	"cfg_subauto_min_only",	&xs_cfg.subAutoMinOnly,		0 },
@@ -275,7 +275,7 @@ void xs_init_configuration(void)
 	xs_pstrcpy(&xs_cfg.stilDBPath, "~/C64Music/DOCUMENTS/STIL.txt");
 	xs_pstrcpy(&xs_cfg.hvscPath, "~/C64Music");
 
-#ifdef HAVE_SONG_POSITION
+#if defined(HAVE_SONG_POSITION) && !defined(AUDACIOUS_PLUGIN)
 	xs_cfg.subsongControl = XS_SSC_PATCH;
 #else
 	xs_cfg.subsongControl = XS_SSC_POPUP;
@@ -283,9 +283,7 @@ void xs_init_configuration(void)
 
 	xs_cfg.detectMagic = FALSE;
 
-#if defined(HAVE_XMMSEXTRA) || defined(AUDACIOUS_PLUGIN)
-	xs_cfg.titleOverride = FALSE;
-#else
+#ifndef HAVE_XMMSEXTRA
 	xs_cfg.titleOverride = TRUE;
 #endif
 	xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) [%n/%N][%m/%C]");
@@ -1280,29 +1278,26 @@ void xs_configure(void)
 	/* Based on available optional parts, gray out options */
 #ifndef HAVE_SIDPLAY1
 	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay1"), FALSE);
-	gtk_widget_set_sensitive(LUW("cfg_box_sidplay1"), FALSE);
+	gtk_widget_set_sensitive(LUW("cfg_box_filter_sidplay1"), FALSE);
 #endif
 
 #ifndef HAVE_SIDPLAY2
 	gtk_widget_set_sensitive(LUW("cfg_emu_sidplay2"), FALSE);
-	gtk_widget_set_sensitive(LUW("cfg_box_sidplay2"), FALSE);
+	gtk_widget_set_sensitive(LUW("cfg_box_filter_sidplay2"), FALSE);
 #endif
 
-#ifndef HAVE_XMMSEXTRA
+	gtk_widget_set_sensitive(LUW("cfg_resid_frame"), FALSE);
+
+#if !defined(HAVE_XMMSEXTRA) && !defined(AUDACIOUS_PLUGIN)
 	gtk_widget_set_sensitive(LUW("cfg_ftitle_override"), FALSE);
 	xs_cfg.titleOverride = TRUE;
 #endif
 
-#ifndef HAVE_SONG_POSITION
+#if !defined(HAVE_SONG_POSITION) && !defined(AUDACIOUS_PLUGIN)
 	gtk_widget_set_sensitive(LUW("cfg_subctrl_patch"), FALSE);
 #endif
 
-	/* Update the widget sensitivities */
-	gtk_widget_set_sensitive(LUW("cfg_resid_frame"), FALSE);
-
-#ifndef AUDACIOUS_PLUGIN
 	xs_cfg_ftitle_override_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_ftitle_override")), NULL);
-#endif
 	xs_cfg_emu_filters_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_emu_filters")), NULL);
 	xs_cfg_emu_sidplay1_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_emu_sidplay1")), NULL);
 	xs_cfg_emu_sidplay2_toggled(GTK_TOGGLE_BUTTON(LUW("cfg_emu_sidplay2")), NULL);
