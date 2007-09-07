@@ -996,18 +996,12 @@ static void alarm_cleanup()
  */
 static GeneralPlugin alarm_plugin =
 {
-     NULL,
-     NULL,
-     "Alarm "VERSION,
-     alarm_init,
-     alarm_about,
-     alarm_configure,
-     alarm_cleanup,
+     .description = "Alarm "VERSION,
+     .init = alarm_init,
+     .about = alarm_about,
+     .configure = alarm_configure,
+     .cleanup = alarm_cleanup,
 };
 
 GeneralPlugin *alarm_gplist[] = { &alarm_plugin, NULL };
-DECLARE_PLUGIN(alarm, NULL, NULL, NULL, NULL, NULL, alarm_gplist, NULL, NULL);
-
-/*
- * vi:ai:expandtab:ts=2 sts=2 shiftwidth=2:nowrap:
- */
+SIMPLE_GENERAL_PLUGIN(alarm, alarm_gplist);
