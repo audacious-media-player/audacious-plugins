@@ -21,25 +21,23 @@
 
 OutputPlugin alsa_op =
 {
-	NULL,
-	NULL,
-	"ALSA Output Plugin",
-	alsa_init,
-	alsa_cleanup,
-	alsa_about,
-	alsa_configure,
-	alsa_get_volume,
-	alsa_set_volume,
-	alsa_open,
-	alsa_write,
-	alsa_close,
-	alsa_flush,
-	alsa_pause,
-	alsa_free,
-	alsa_playing,
-	alsa_get_output_time,
-	alsa_get_written_time,
-	alsa_tell
+	.description = "ALSA Output Plugin",
+	.init = alsa_init,
+	.cleanup = alsa_cleanup,
+	.about = alsa_about,
+	.configure = alsa_configure,
+	.get_volume = alsa_get_volume,
+	.set_volume = alsa_set_volume,
+	.open_audio = alsa_open,
+	.write_audio = alsa_write,
+	.clean_audio = alsa_close,
+	.flush = alsa_flush,
+	.pause = alsa_pause,
+	.buffer_free = alsa_free,
+	.buffer_playing = alsa_playing,
+	.get_output_time = alsa_get_output_time,
+	.get_written_time = alsa_get_written_time,
+	.tell_audio = alsa_tell
 };
 
 OutputPlugin *alsa_oplist[] = { &alsa_op, NULL };
