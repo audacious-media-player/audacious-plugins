@@ -92,30 +92,24 @@ static void file_configure(void);
 
 OutputPlugin file_op =
 {
-    NULL,
-    NULL,
-    "FileWriter Plugin",
-    file_init,
-    NULL,
-    file_about,
-    file_configure,
-    NULL,
-    NULL,
-    file_open,
-    file_write,
-    file_close,
-    file_flush,
-    file_pause,
-    file_free,
-    file_playing,
-    file_get_output_time,
-    file_get_written_time,
-    NULL
+    .description = "FileWriter Plugin",
+    .init = file_init,
+    .about = file_about,
+    .configure = file_configure,
+    .open_audio = file_open,
+    .write_audio = file_write,
+    .close_audio = file_close,
+    .flush = file_flush,
+    .pause = file_pause,
+    .buffer_free = file_free,
+    .buffer_playing = file_playing,
+    .output_time = file_get_output_time,
+    .written_time = file_get_written_time
 };
 
 OutputPlugin *file_oplist[] = { &file_op, NULL };
 
-DECLARE_PLUGIN(filewriter, NULL, NULL, NULL, file_oplist, NULL, NULL, NULL, NULL);
+SIMPLE_OUTPUT_PLUGIN(filewriter, file_oplist);
 
 static void set_plugin(void)
 {
