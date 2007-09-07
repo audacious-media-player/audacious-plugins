@@ -16,14 +16,11 @@ static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint 
 
 EffectPlugin stereo_ep =
 {
-	NULL,
-	NULL,
-	"Extra Stereo Plugin", /* Description */
-	init,
-	NULL,
-	about,
-	configure,
-	mod_samples
+	.description = "Extra Stereo Plugin", /* Description */
+	.init = init,
+	.about = about,
+	.configure = configure,
+	.mod_samples = mod_samples
 };
 
 static const char *about_text = N_("Extra Stereo Plugin\n\n"
