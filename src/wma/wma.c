@@ -243,6 +243,18 @@ static gchar *extname(const char *filename)
     return ext;
 }
 
+static void _assoc_string(Tuple *tuple, const gint nfield, const gchar *str)
+{
+    if (strlen(str) > 0)
+        tuple_associate_string(tuple, nfield, NULL, str);
+}
+
+static void _assoc_int(Tuple *tuple, const gint nfield, const gint val)
+{
+    if (val > 0)
+        tuple_associate_int(tuple, nfield, NULL, val);
+}
+
 static Tuple *wma_get_song_tuple(gchar * filename)
 {
     Tuple *ti = tuple_new_from_filename(filename);
@@ -251,27 +263,19 @@ static Tuple *wma_get_song_tuple(gchar * filename)
     if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
 	return NULL;
 
-    tuple_associate_string(ti, "codec", "Windows Media Audio (WMA)");
-    tuple_associate_string(ti, "quality", "lossy");
+    tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
+    tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
     av_find_stream_info(in);
 
-    if(strlen(in->title))
-        tuple_associate_string(ti, "title", in->title);
-    if(strlen(in->author))
-        tuple_associate_string(ti, "artist", in->author);
-    if(strlen(in->album))
-        tuple_associate_string(ti, "album", in->album);
-    if(strlen(in->comment))
-        tuple_associate_string(ti, "comment", in->comment);
-    if(strlen(in->genre))
-        tuple_associate_string(ti, "genre", in->genre);
-    if(in->year > 0)
-        tuple_associate_int(ti, "year", in->year);
-    if(in->track > 0)
-        tuple_associate_int(ti, "track", in->track);
-    if (in->duration)
-        tuple_associate_int(ti, "length", in->duration / 1000);
+    _assoc_string(ti, FIELD_TITLE, in->title);
+    _assoc_string(ti, FIELD_ARTIST, in->author);
+    _assoc_string(ti, FIELD_ALBUM, in->album);
+    _assoc_string(ti, FIELD_COMMENT, in->comment);
+    _assoc_string(ti, FIELD_GENRE, in->genre);
+    _assoc_int(ti, FIELD_YEAR, in->year);
+    _assoc_int(ti, FIELD_TRACK_NUMBER, in->track);
+    _assoc_int(ti, FIELD_LENGTH, in->duration / 1000);
 
     av_close_input_file(in);
 
@@ -283,25 +287,17 @@ static gchar *get_song_title(AVFormatContext *in, gchar * filename)
     gchar *ret = NULL;
     Tuple *ti = tuple_new_from_filename(filename);
 
-    tuple_associate_string(ti, "codec", "Windows Media Audio (WMA)");
-    tuple_associate_string(ti, "quality", "lossy");
+    tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
+    tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
-    if(strlen(in->title))
-        tuple_associate_string(ti, "title", in->title);
-    if(strlen(in->author))
-        tuple_associate_string(ti, "artist", in->author);
-    if(strlen(in->album))
-        tuple_associate_string(ti, "album", in->album);
-    if(strlen(in->comment))
-        tuple_associate_string(ti, "comment", in->comment);
-    if(strlen(in->genre))
-        tuple_associate_string(ti, "genre", in->genre);
-    if(in->year > 0)
-        tuple_associate_int(ti, "year", in->year);
-    if(in->track > 0)
-        tuple_associate_int(ti, "track", in->track);
-    if (in->duration)
-        tuple_associate_int(ti, "length", in->duration / 1000);
+    _assoc_string(ti, FIELD_TITLE, in->title);
+    _assoc_string(ti, FIELD_ARTIST, in->author);
+    _assoc_string(ti, FIELD_ALBUM, in->album);
+    _assoc_string(ti, FIELD_COMMENT, in->comment);
+    _assoc_string(ti, FIELD_GENRE, in->genre);
+    _assoc_int(ti, FIELD_YEAR, in->year);
+    _assoc_int(ti, FIELD_TRACK_NUMBER, in->track);
+    _assoc_int(ti, FIELD_LENGTH, in->duration / 1000);
     
     ret = tuple_formatter_make_title_string(ti, get_gentitle_format());
 
@@ -323,7 +319,7 @@ static void wma_get_song_info(char *filename, char **title_real, int *len_real)
     if (tuple == NULL)
         return;
 
-    (*len_real) = tuple_get_int(tuple, "length");
+    (*len_real) = tuple_get_int(tuple, FIELD_LENGTH, NULL);
     (*title_real) = tuple_formatter_make_title_string(tuple, get_gentitle_format());
 }
 
