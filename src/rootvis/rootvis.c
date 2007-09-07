@@ -36,7 +36,7 @@ VisPlugin rootvis_vtable = {
 
 VisPlugin *rootvis_vplist[] = { &rootvis_vtable, NULL };
 
-DECLARE_PLUGIN(rootvis, NULL, NULL, NULL, NULL, NULL, NULL, rootvis_vplist,NULL);
+SIMPLE_VISUAL_PLUGIN(rootvis, rootvis_vplist);
 
 // X related
 struct rootvis_x {
