@@ -92,8 +92,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
     if ((file = vfs_fopen(uri ? uri : filename, "rb")) == NULL)
         return;
 
-    if (uri)
-        g_free(uri);
+    g_free(uri);
 
     line = g_malloc(line_len);
     while (vfs_fgets(line, line_len, file)) {
@@ -134,9 +133,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
 
         uri = g_filename_to_uri(line, NULL, NULL);
         playlist_load_ins_file(playlist, uri ? uri : line, filename, pos, ext_title, ext_len);
-
-        if (uri)
-            g_free(uri);
+        g_free(uri);
 
         str_replace_in(&ext_title, NULL);
         ext_len = -1;
@@ -163,7 +160,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
 
     fn = g_filename_to_uri(filename, NULL, NULL);
     file = vfs_fopen(fn ? fn : filename, "wb");
-    g_free(fn); fn = NULL;
+    g_free(fn);
     g_return_if_fail(file != NULL);
 
     if (cfg.use_pl_metadata)
@@ -194,8 +191,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
 
         fn = g_filename_from_uri(entry->filename, NULL, NULL);
         vfs_fprintf(file, "%s\n", fn ? fn : entry->filename);
-
-        g_free(fn); fn = NULL;
+        g_free(fn);
     }
 
     PLAYLIST_UNLOCK(playlist->mutex);
