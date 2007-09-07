@@ -23,23 +23,15 @@ static gboolean plugin_is_initted = FALSE;
 
 // Callback functions
 VisPlugin rootvis_vtable = {
-	0, // Handle, filled in by xmms
-	0, // Filename, filled in by xmms
-
-	"Root Spectrum Analyzer 0.0.8",  // description
-
-	0, // # of PCM channels for render_pcm()
-	2, // # of freq channels wanted for render_freq()
-
-	rootvis_init,           // Called when plugin is enabled
-	rootvis_cleanup,        // Called when plugin is disabled
-	NULL,//rootvis_about,          // Show the about box
-	rootvis_configure,      // Show the configure box
-	NULL,                     // Called to disable plugin, filled in by xmms
-	rootvis_playback_start, // Called when playback starts
-	rootvis_playback_stop,  // Called when playback stops
-	NULL,                     // Render the PCM data, must return quickly
-	rootvis_render_freq     // Render the freq data, must return quickly
+	.description = "Root Spectrum Analyzer 0.0.8",
+	.num_pcm_chs_wanted = 0,
+	.num_freq_chs_wanted = 2,
+	.init = rootvis_init,
+	.cleanup = rootvis_cleanup,
+	.configure = rootvis_configure,
+	.playback_start = rootvis_playback_start,
+	.playback_stop = rootvis_playback_stop,
+	.render_freq = rootvis_render_freq
 };
 
 VisPlugin *rootvis_vplist[] = { &rootvis_vtable, NULL };
