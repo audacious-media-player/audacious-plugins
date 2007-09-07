@@ -48,14 +48,16 @@ InputPlugin xs_plugin_ip = {
 	NULL,			/* OBSOLETE! */
 	NULL,			/* Send data to Visualization plugin */
 	NULL, NULL,		/* FILLED BY XMMS */
-	xs_get_song_info,	/* Get song title and length */
+	NULL,			/* Get song title and length */
 	xs_fileinfo,		/* Show file-information dialog */
 	NULL,			/* FILLED BY XMMS */
-	xs_get_song_tuple,	/* Tuple */
-	NULL,			/* Tuple */
+	xs_get_song_tuple,	/* Get Tuple */
+	NULL,			/* Set Tuple */
 	NULL,			/* Buffering status */
 	xs_is_our_file_vfs,	/* VFS */
-	xs_sid_fmts		/* File ext assist */
+	xs_sid_fmts,		/* File ext assist */
+	NULL,			/* ms accurate seek, mseek() */
+	NULL			/* Probe for tuple */
 };
 
 InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };

@@ -30,29 +30,6 @@ extern "C" {
 #endif
 
 /*
- * Standard gettext macros.
- */
-#ifdef ENABLE_NLS
-#  include <libintl.h>
-#  undef _
-#  define _(String) dgettext (PACKAGE, String)
-#  ifdef gettext_noop
-#    define N_(String) gettext_noop (String)
-#  else
-#    define N_(String) (String)
-#  endif
-#else
-#  define textdomain(String) (String)
-#  define gettext(String) (String)
-#  define dgettext(Domain,Message) (Message)
-#  define dcgettext(Domain,Message,Type) (Message)
-#  define bindtextdomain(Domain,Directory) (Domain)
-#  define _(String) (String)
-#  define N_(String) (String)
-#endif
-
-
-/*
  * Some constants and defines
  */
 /* #define to enable spurious debugging messages for development
@@ -86,8 +63,8 @@ extern "C" {
 
 /* Configuration section identifier
  */
-#define XS_PACKAGE_STRING	"Audacious-SID v0.8.0beta18"
-#define XS_CONFIG_IDENT		"sid"		/* Configuration file identifier */
+#define XS_PACKAGE_STRING	"Audacious-SID"
+#define XS_CONFIG_IDENT		"sid"
 
 /* Default audio rendering frequency in Hz
  */
@@ -129,15 +106,27 @@ extern "C" {
 #define XS_THREAD_EXIT(M)	g_thread_exit(M)
 #define XS_THREAD_JOIN(M)	g_thread_join(M)
 #define XS_MPP(M)		M ## _mutex
-#define XS_MUTEX(M)		GStaticMutex	XS_MPP(M) = G_STATIC_MUTEX_INIT
+#define XS_MUTEX(M)		GStaticMutex XS_MPP(M) = G_STATIC_MUTEX_INIT
 #define XS_MUTEX_H(M)		extern GStaticMutex XS_MPP(M)
-#define XS_MUTEX_LOCK(M)	g_static_mutex_lock(&XS_MPP(M))
-#define XS_MUTEX_UNLOCK(M)	g_static_mutex_unlock(&XS_MPP(M))
+#ifdef XS_MUTEX_DEBUG
+#  define XS_MUTEX_LOCK(M)	{			\
+	gboolean tmpRes;				\
+	XSDEBUG("XS_MUTEX_TRYLOCK(" #M ")\n");	\
+	tmpRes = g_static_mutex_trylock(&XS_MPP(M));	\
+	XSDEBUG("[" #M "] = %s\n", tmpRes ? "TRUE" : "FALSE");	\
+	}
+#  define XS_MUTEX_UNLOCK(M)	{ XSDEBUG("XS_MUTEX_UNLOCK(" #M ")\n"); g_static_mutex_unlock(&XS_MPP(M)); }
+#else
+#  define XS_MUTEX_LOCK(M)	g_static_mutex_lock(&XS_MPP(M))
+#  define XS_MUTEX_UNLOCK(M)	g_static_mutex_unlock(&XS_MPP(M))
+#endif
 
 /* Character set conversion helper macros
  */
-#define XS_CS_SID(M)	g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
-#define XS_CS_STIL(M)	g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
+#define XS_CS_FILENAME(M)	g_filename_to_utf8(M, -1, NULL, NULL, NULL)
+#define XS_CS_SID(M)		g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
+#define XS_CS_STIL(M)		g_convert(M, -1, "UTF-8", "ISO-8859-1", NULL, NULL, NULL)
+#define XS_CS_FREE(M)		g_free(M)
 
 /* Shorthands for linked lists
  */
@@ -188,19 +177,11 @@ void	xs_stop(InputPlayback *);
 void	xs_pause(InputPlayback *, short);
 void	xs_seek(InputPlayback *, gint);
 gint	xs_get_time(InputPlayback *);
-void	xs_get_song_info(gchar *, gchar **, gint *);
-t_xs_tuple *xs_get_song_tuple(gchar *);
+Tuple *	xs_get_song_tuple(gchar *);
 void	xs_about(void);
 
-
-t_xs_tuneinfo *xs_tuneinfo_new(const gchar * pcFilename,
-		gint nsubTunes, gint startTune, const gchar * sidName,
-		const gchar * sidComposer, const gchar * sidCopyright,
-		gint loadAddr, gint initAddr, gint playAddr,
-		gint dataFileLen, const gchar *sidFormat, gint sidModel);
-void	xs_tuneinfo_free(t_xs_tuneinfo *);
-
 void	xs_error(const char *, ...);
+gboolean xs_get_trackinfo(const gchar *, gchar **, gint *);
 
 
 /* Debugging
@@ -214,6 +195,29 @@ void	XSDEBUG(const char *, ...);
 #    define XSDEBUG(...) /* stub */
 #  endif
 #endif
+
+
+/* And even some Gtk+ macro crap here, yay.
+ */
+#define XS_DEF_WINDOW_DELETE(ME, MV)					\
+gboolean xs_ ## ME ## _delete(GtkWidget *w, GdkEvent *e, gpointer d) {	\
+	(void) w; (void) e; (void) d;					\
+	if (xs_ ## MV ) {						\
+		gtk_widget_destroy(xs_ ## MV );				\
+		xs_ ## MV = NULL;					\
+	}								\
+	return FALSE;							\
+}
+
+#define XS_DEF_WINDOW_CLOSE(ME, MV)			\
+void xs_ ## ME (GtkButton *b, gpointer d) {		\
+	(void) b; (void) d;				\
+	gtk_widget_destroy(xs_ ## MV );			\
+	xs_ ## MV = NULL;				\
+}
+
+#define XS_SIGNAL_CONNECT(SOBJ, SNAME, SFUNC, SDATA)		\
+	g_signal_connect(G_OBJECT(SOBJ), SNAME, G_CALLBACK(SFUNC), SDATA)
 
 #ifdef __cplusplus
 }

@@ -19,7 +19,7 @@ typedef struct {
 	guint		(*plrFillBuffer)(struct t_xs_status *, gchar *, guint);
 	gboolean	(*plrLoadSID)(struct t_xs_status *, gchar *);
 	void		(*plrDeleteSID)(struct t_xs_status *);
-	t_xs_tuneinfo*	(*plrGetSIDInfo)(gchar *);
+	t_xs_tuneinfo*	(*plrGetSIDInfo)(const gchar *);
 	gboolean	(*plrUpdateSIDInfo)(struct t_xs_status *);
 	void		(*plrFlush)(struct t_xs_status *);
 } t_xs_player;

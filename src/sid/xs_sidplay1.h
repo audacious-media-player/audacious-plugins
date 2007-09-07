@@ -3,6 +3,7 @@
 
 #include "xs_player.h"
 #include "xs_support.h"
+#include "xs_slsup.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +16,7 @@ gboolean	xs_sidplay1_initsong(t_xs_status *);
 guint		xs_sidplay1_fillbuffer(t_xs_status *, gchar *, guint);
 gboolean	xs_sidplay1_load(t_xs_status *, gchar *);
 void		xs_sidplay1_delete(t_xs_status *);
-t_xs_tuneinfo*	xs_sidplay1_getinfo(gchar *);
+t_xs_tuneinfo*	xs_sidplay1_getinfo(const gchar *);
 gboolean	xs_sidplay1_updateinfo(t_xs_status *);
 
 #ifdef __cplusplus

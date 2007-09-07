@@ -128,8 +128,8 @@ struct audmad_config_t
 };
 
 // global variables
-InputPlugin *mad_plugin;
-struct audmad_config_t audmad_config;
+extern InputPlugin *mad_plugin;
+extern struct audmad_config_t audmad_config;
 
 // gcond
 extern GMutex *mad_mutex;

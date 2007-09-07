@@ -291,7 +291,7 @@ static Tuple *get_tuple_uri(gchar *uri)
 
     _tuple_copy_field(phys_tuple, out, "file-path");
     _tuple_copy_field(phys_tuple, out, "file-name");
-    _tuple_copy_field(phys_tuple, out, "file-exit");
+    _tuple_copy_field(phys_tuple, out, "file-ext");
     _tuple_copy_field(phys_tuple, out, "codec");
     _tuple_copy_field(phys_tuple, out, "quality");
     _tuple_copy_field(phys_tuple, out, "copyright");

@@ -30,12 +30,12 @@ SOURCES =	\
 	xs_glade.c	\
 	xs_interface.c	\
 	xs_stil.c	\
-	xs_title.c	\
 	xs_fileinfo.c	\
 	xs_filter.c	\
 	xs_sidplay1.cc	\
 	xs_sidplay2.cc	\
 	xs_curve.c	\
+	xs_slsup.c	\
 	xmms-sid.c
 
 OBJECTS1 = ${SOURCES:.c=.o}

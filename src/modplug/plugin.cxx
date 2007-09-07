@@ -60,11 +60,6 @@ static int GetTime(InputPlayback *data)
 		return (int)(lTime * 1000);
 }
 
-static void GetSongInfo(char* aFilename, char** aTitle, int* aLength)
-{
-	gModplugXMMS.GetSongInfo(aFilename, *aTitle, *aLength);
-}
-
 static Tuple* GetSongTuple(char* aFilename)
 {
 	return gModplugXMMS.GetSongTuple(aFilename);
@@ -113,7 +108,7 @@ InputPlugin gModPlug =
 	NULL,
 	NULL,
 	NULL,
-	GetSongInfo,
+	NULL,
 	ShowFileInfoBox,
 	NULL,	// output
 	GetSongTuple,

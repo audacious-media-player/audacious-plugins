@@ -43,12 +43,28 @@ extern "C" {
 #endif
 
 
-/* Metadata structures */
-#ifdef AUDACIOUS_PLUGIN
-#define t_xs_tuple Tuple
+/* Standard gettext macros
+ */
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
 #else
-#define t_xs_tuple TitleInput
+#  define _LIBINTL_H
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
 #endif
+
 
 /* VFS replacement functions
  */
@@ -76,19 +92,19 @@ gint	xs_fseek(t_xs_file *, glong, gint);
 #endif
 guint16 xs_fread_be16(t_xs_file *);
 guint32 xs_fread_be32(t_xs_file *);
-gint	xs_fload_buffer(gchar *, guint8 **, size_t *);
+gint	xs_fload_buffer(const gchar *, guint8 **, size_t *);
 
 
 /* Misc functions
  */
-gchar	*xs_strncpy(gchar *, gchar *, size_t);
+gchar	*xs_strncpy(gchar *, const gchar *, size_t);
 gint	xs_pstrcpy(gchar **, const gchar *);
 gint	xs_pstrcat(gchar **, const gchar *);
-void	xs_pnstrcat(gchar *, size_t, gchar *);
-gchar	*xs_strrchr(gchar *, gchar);
-void	xs_findnext(gchar *, size_t *);
-void	xs_findeol(gchar *, size_t *);
-void	xs_findnum(gchar *, size_t *);
+void	xs_pnstrcat(gchar *, size_t, const gchar *);
+gchar	*xs_strrchr(gchar *, const gchar);
+void	xs_findnext(const gchar *, size_t *);
+void	xs_findeol(const gchar *, size_t *);
+void	xs_findnum(const gchar *, size_t *);
 
 #ifdef HAVE_MEMSET
 #define	xs_memset memset

@@ -51,12 +51,8 @@ gint xs_about_theme(void)
 #endif
 
 
-gint xs_about_ok(void)
-{
-	gtk_widget_destroy(xs_aboutwin);
-	xs_aboutwin = NULL;
-	return 0;
-}
+XS_DEF_WINDOW_CLOSE(about_ok, aboutwin)
+XS_DEF_WINDOW_DELETE(about, aboutwin)
 
 
 /*
@@ -72,6 +68,7 @@ void xs_about(void)
 	GtkWidget *about_text;
 	GtkWidget *alignment6;
 	GtkWidget *about_close;
+	gchar tmpStr[64];
 
 	/* Check if there already is an open about window */
 	if (xs_aboutwin != NULL) {
@@ -84,8 +81,11 @@ void xs_about(void)
 	gtk_window_set_type_hint(GTK_WINDOW(xs_aboutwin), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_widget_set_name(xs_aboutwin, "xs_aboutwin");
 	gtk_object_set_data(GTK_OBJECT(xs_aboutwin), "xs_aboutwin", xs_aboutwin);
-	gtk_window_set_title(GTK_WINDOW(xs_aboutwin), "About " XS_PACKAGE_STRING);
-	gtk_window_set_default_size(GTK_WINDOW(xs_aboutwin), 300, -1);
+	g_snprintf(tmpStr, sizeof(tmpStr), _("About %s"), XS_PACKAGE_STRING);
+	gtk_window_set_title(GTK_WINDOW(xs_aboutwin), tmpStr);
+	gtk_window_set_default_size(GTK_WINDOW(xs_aboutwin), 350, -1);
+
+	XS_SIGNAL_CONNECT(xs_aboutwin, "delete_event", xs_about_delete, NULL);
 
 	about_vbox1 = gtk_vbox_new(FALSE, 0);
 	gtk_widget_set_name(about_vbox1, "about_vbox1");
@@ -153,6 +153,11 @@ void xs_about(void)
 	gtk_text_buffer_set_text(
 	GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(about_text))),
 			"\n"
+			"This release of XMMS-SID is dedicated to\n"
+			"            Richard Joseph\n"
+			" - Now gone, but forever in our hearts -\n"
+			"\n"
+			"\n"
 			"(C) Copyright 1999-2007\n"
 			"\tTecnic Software productions (TNSP)\n"
 			"\n"
@@ -201,7 +206,7 @@ void xs_about(void)
 	gtk_box_pack_start(GTK_BOX(about_vbox1), alignment6, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(alignment6), 8);
 
-	about_close = gtk_button_new_with_label("Close");
+	about_close = gtk_button_new_with_label(_("Close"));
 	gtk_widget_set_name(about_close, "about_close");
 	gtk_widget_ref(about_close);
 	gtk_object_set_data_full(GTK_OBJECT(xs_aboutwin), "about_close", about_close,
@@ -210,8 +215,7 @@ void xs_about(void)
 	gtk_container_add(GTK_CONTAINER(alignment6), about_close);
 	GTK_WIDGET_SET_FLAGS(about_close, GTK_CAN_DEFAULT);
 
-	gtk_signal_connect(GTK_OBJECT(about_close), "clicked",
-		GTK_SIGNAL_FUNC(xs_about_ok), NULL);
+	XS_SIGNAL_CONNECT(about_close, "clicked", xs_about_ok, NULL);
 
 	gtk_widget_show(xs_aboutwin);
 }

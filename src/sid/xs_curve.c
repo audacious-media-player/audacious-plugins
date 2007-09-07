@@ -145,18 +145,16 @@ static void xs_curve_init(XSCurve *curve)
 {
 	gint old_mask;
 
-	curve->cursor_type = GDK_TOP_LEFT_ARROW;
 	curve->pixmap = NULL;
-	curve->height = 0;
 	curve->grab_point = -1;
 
 	curve->nctlpoints = 0;
 	curve->ctlpoints = NULL;
 
 	curve->min_x = 0.0;
-	curve->max_x = 1.0;
+	curve->max_x = 2047.0;
 	curve->min_y = 0.0;
-	curve->max_y = 1.0;
+	curve->max_y = 24000.0;
 
 	old_mask = gtk_widget_get_events(GTK_WIDGET(curve));
 	gtk_widget_set_events(GTK_WIDGET(curve), old_mask | GRAPH_MASK);
@@ -250,10 +248,10 @@ static inline void xs_cubic_coeff(gfloat x1, gfloat y1,
 
 static void xs_curve_draw(XSCurve *curve, gint width, gint height)
 {
-	gfloat res = 10.0f;
+	gfloat res = 5.0f;
 	GtkStateType state;
 	GtkStyle *style;
-	gint i;
+	gint i, ox = -1, oy = -1;
 	t_xs_point *p0, *p1, *p2, *p3;
 
 	if (!curve->pixmap)
@@ -285,8 +283,6 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
 			i * (width / 4.0) + RADIUS, height + RADIUS);
 	}
 
-#define Qprintf(x,y,...)
-
 #if 1
 	/* Draw the spline/curve itself */
 	p0 = curve->ctlpoints;
@@ -295,65 +291,49 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
 	p3 = p2; p3++;
 
 	/* Draw each curve segment */
-	Qprintf(stderr, "-- npoints = %d\n", curve->nctlpoints);
 	if (curve->nctlpoints > 5)
 	for (i = 0; i < curve->nctlpoints; i++, ++p0, ++p1, ++p2, ++p3) {
+		gint n;
 		gfloat k1, k2, a, b, c, d, x;
 		
-		Qprintf(stderr, "#%d: ", i);
 		if (p1->x == p2->x)
 			continue;
-#define PPASK(q, p) Qprintf(stderr, q "=[%1.3f, %1.3f]  ", p->x, p->y)
 
-		PPASK("p0", p1);
-		PPASK("p1", p1);
-		PPASK("p2", p2);
-		PPASK("p3", p3);
-		
-		Qprintf(stderr, "\ncase #");
 		if (p0->x == p1->x && p2->x == p3->x) {
-			Qprintf(stderr, "1");
 			k1 = k2 = (p2->y - p1->y) / (p2->x - p1->x);
 		} else if (p0->x == p1->x) {
-			Qprintf(stderr, "2");
 			k2 = (p3->y - p1->y) / (p3->x - p1->x);
 			k1 = (3 * (p2->y - p1->y) / (p2->x - p1->x) - k2) / 2;
 		} else if (p2->x == p3->x) {
-			Qprintf(stderr, "3");
 			k1 = (p2->y - p0->y) / (p2->x - p0->x);
 			k2 = (3 * (p2->y - p1->y) / (p2->x - p1->x) - k1) / 2;
 		} else {
-			Qprintf(stderr, "4");
 			k1 = (p2->y - p0->y) / (p2->x - p0->x);
 			k2 = (p3->y - p1->y) / (p3->x - p1->x);
 		}
 
 		xs_cubic_coeff(p1->x, p1->y, p2->x, p2->y, k1, k2, &a, &b, &c, &d);
 
-		Qprintf(stderr, " seg[%1.3f, %1.3f] => [%1.3f, %1.3f] k1=%1.3f, k2=%1.3f\n\n",
-			p1->x, p1->y,
-			p2->x, p2->y,
-			k1, k2);
-
-		for (x = p1->x; x <= p2->x; x += res) {
+		for (x = p1->x; x <= p2->x; x += res, n++) {
 			gfloat y = ((a * x + b) * x + c) * x + d;
 			gint qx, qy;
 			qx = RADIUS + xs_project(x, curve->min_x, curve->max_x, width);
 			qy = RADIUS + xs_project(y, curve->min_y, curve->max_y, height);
-
-			gdk_draw_point(curve->pixmap, style->fg_gc[state],
-				RADIUS + xs_project(x, curve->min_x, curve->max_x, width),
-				RADIUS + xs_project(y, curve->min_y, curve->max_y, height));
-
+			
+			if (ox != -1) {
+				gdk_draw_line(curve->pixmap, style->fg_gc[state],
+					ox, oy, qx, qy);
+			}
+			ox = qx; oy = qy;
 		}
 	}
 
-	Qprintf(stderr, "-------\n");
 #endif
 
 	/* Draw control points */
 	for (i = 0; i < curve->nctlpoints; ++i) {
 		gint x, y;
+		GtkStateType cstate;
 
 		if (GET_X(i) < curve->min_x || GET_Y(i) < curve->min_y ||
 			GET_X(i) >= curve->max_x || GET_Y(i) >= curve->max_y)
@@ -361,8 +341,17 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
 
 		x = xs_project(GET_X(i), curve->min_x, curve->max_x, width);
 		y = xs_project(GET_Y(i), curve->min_y, curve->max_y, height);
-
-		gdk_draw_arc(curve->pixmap, style->fg_gc[state], TRUE,
+		
+		if (i == curve->grab_point) {
+			cstate = GTK_STATE_SELECTED;
+			gdk_draw_line(curve->pixmap, style->fg_gc[cstate],
+				x + RADIUS, RADIUS, x + RADIUS, height + RADIUS);
+			gdk_draw_line(curve->pixmap, style->fg_gc[cstate],
+				RADIUS, y + RADIUS, width + RADIUS, y + RADIUS);
+		} else
+			cstate = state;
+		
+		gdk_draw_arc(curve->pixmap, style->fg_gc[cstate], TRUE,
 			x, y, RADIUS2, RADIUS2, 0, 360 * 64);
 	}
 	
@@ -485,6 +474,7 @@ static gint xs_curve_graph_events(GtkWidget *widget, GdkEvent *event, XSCurve *c
 		new_type = GDK_FLEUR;
 		curve->grab_point = -1;
 		}
+		xs_curve_draw(curve, width, height);
 		break;
 
 	case GDK_MOTION_NOTIFY:
@@ -709,6 +699,7 @@ static void xs_curve_finalize(GObject *object)
 {
 	XSCurve *curve;
 
+	g_return_if_fail(object != NULL);
 	g_return_if_fail(XS_IS_CURVE(object));
 
 	curve = XS_CURVE(object);
