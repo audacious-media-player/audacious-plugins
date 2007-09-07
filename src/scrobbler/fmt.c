@@ -9,11 +9,17 @@
 
 char *fmt_escape(const char *str)
 {
+	if (str == NULL)
+		return "";
+
 	return curl_escape(str, 0);
 }
 
 char *fmt_unescape(char *str)
 {
+	if (str == NULL)
+		return "";
+
 	return curl_unescape(str, 0);
 }
 

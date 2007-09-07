@@ -146,7 +146,7 @@ static item_t *q_put(Tuple *tuple, int len)
 		item->mb = fmt_escape((char*)tuple->mb);
 #endif
 
-	if((album = tuple_get_string(tuple, "album")))
+	if((album = tuple_get_string(tuple, "album")) != NULL)
 		item->album = fmt_escape("");
 	else
 		item->album = fmt_escape((char*) album);
