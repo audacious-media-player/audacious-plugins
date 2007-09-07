@@ -32,13 +32,11 @@ void si_about ( void );
 
 GeneralPlugin si_gp =
 {
-    NULL,					/* handle */
-    NULL,					/* filename */
-    "Status Icon " SI_VERSION_PLUGIN,		/* description */
-    si_init,					/* init */
-    si_about,					/* about */
-    si_prefs,					/* configure */
-    si_cleanup					/* cleanup */
+    .description = "Status Icon " SI_VERSION_PLUGIN,
+    .init = si_init,
+    .about = si_about,
+    .configure = si_prefs,
+    .cleanup = si_cleanup
 };
 
 #endif /* !_I_SI_H */
