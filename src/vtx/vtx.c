@@ -307,34 +307,20 @@ vtx_get_song_info (char *filename, char **title, int *length)
 }
 
 InputPlugin vtx_ip = {
-	NULL,			/* FILLED BY XMMS */
-	NULL,			/* FILLED BY XMMS */
-	"VTX Audio Plugin",	/* Plugin description */
-	vtx_init,		/* Initialization */
-	vtx_about,		/* Show aboutbox */
-	vtx_config,		/* Show/edit configuration */
-	vtx_is_our_file,	/* Check file, return 1 if the plugin can handle this file */
-	NULL,			/* Scan directory */
-	vtx_play_file,		/* Play given file */
-	vtx_stop,		/* Stop playing */
-	vtx_pause,		/* Pause playing */
-	vtx_seek,		/* Seek time */
-	NULL,			/* Set equalizer */
-	NULL,			/* Get playing time (obsoleted by InputPlayback API) */
-	NULL,			/* Get volume */
-	NULL,			/* Set volume */
-	NULL,			/* Cleanup */
-	NULL,			/* OBSOLETE! */
-	NULL,			/* Send data to Visualization plugin */
-	NULL, NULL,		/* FILLED BY XMMS */
-	vtx_get_song_info,	/* Get song title and length */
-	vtx_file_info,		/* Show file-information dialog */
-	NULL,			/* FILLED BY XMMS */
-	vtx_get_song_tuple,	/* Tuple */
-	NULL,			/* Tuple */
-	NULL,			/* Buffer */
-	vtx_is_our_fd,		/* VFS */
-	vtx_fmts		/* ext assist */
+	.description = "VTX Audio Plugin",	/* Plugin description */
+	.init = vtx_init,		/* Initialization */
+	.about = vtx_about,		/* Show aboutbox */
+	.configure = vtx_config,		/* Show/edit configuration */
+	.is_our_file = vtx_is_our_file,	/* Check file, return 1 if the plugin can handle this file */
+	.play_file = vtx_play_file,		/* Play given file */
+	.stop = vtx_stop,		/* Stop playing */
+	.pause = vtx_pause,		/* Pause playing */
+	.seek = vtx_seek,		/* Seek time */
+	.get_song_info = vtx_get_song_info,	/* Get song title and length */
+	.file_info_box = vtx_file_info,		/* Show file-information dialog */
+	.get_song_tuple = vtx_get_song_tuple,	/* Tuple */
+	.is_our_file_from_vfs = vtx_is_our_fd,		/* VFS */
+	.vfs_extensions = vtx_fmts		/* ext assist */
 };
 
 InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };
