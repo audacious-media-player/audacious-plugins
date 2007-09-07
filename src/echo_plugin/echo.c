@@ -23,15 +23,12 @@ static int mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint
 
 EffectPlugin echo_ep =
 {
-	NULL,
-	NULL,
-	"Echo Plugin", /* Description */
-	init,
-	cleanup,
-	echo_about,
-	echo_configure,
-	mod_samples,
-	NULL
+	.description = "Echo Plugin", /* Description */
+	.init = init,
+	.cleanup = cleanup,
+	.about = echo_about,
+	.configure = echo_configure,
+	.mod_samples = mod_samples,
 };
 
 static gint16 *buffer = NULL;
