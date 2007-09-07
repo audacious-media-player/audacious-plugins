@@ -56,13 +56,10 @@ static GCond *hs_cond, *xs_cond;
 
 static GeneralPlugin scrobbler_gp =
 {
-	NULL,
-	NULL,
-	"Scrobbler Plugin",
-	init,
-	about_show,
-	NULL,
-	cleanup
+	.description = "Scrobbler Plugin",
+	.init = init,
+	.about = about_show,
+	.cleanup = cleanup
 };
 
 static gboolean ishttp(const char *a)
