@@ -93,32 +93,17 @@ static InputPlayback *real_ip = NULL;
 
 InputPlugin cue_ip =
 {
-	NULL,			/* handle */
-	NULL,			/* filename */
-	"Cuesheet Plugin",	/* description */
-	cue_init,	       	/* init */
-	NULL,	       	/* about */
-	NULL,	  	   	/* configure */
-	is_our_file,
-	NULL,		/* audio cd */
-	play,
-	stop,
-	cue_pause,
-	seek,
-	NULL,		/* set eq */
-	get_time,
-	NULL,
-	NULL,
-	cue_cleanup,		/* cleanup */
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	get_song_info,	/* XXX get_song_info iface */
-	NULL,
-	NULL,
-	get_tuple,
-	NULL
+	.description = "Cuesheet Plugin",	/* description */
+	.init = cue_init,	       	/* init */
+	.is_our_file = is_our_file,
+	.play_file = play,
+	.stop = stop,
+	.pause = cue_pause,
+	.seek = seek,
+	.get_time = get_time,
+	.cleanup = cue_cleanup,		/* cleanup */
+	.get_song_info = get_song_info,	/* XXX get_song_info iface */
+	.get_tuple = get_tuple,
 };
 
 InputPlugin *cue_iplist[] = { &cue_ip, NULL };
