@@ -17,7 +17,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-
 #include <config.h>
 
 #include <glib.h>
@@ -46,9 +45,37 @@
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"
 
-#define TMP_BUF_LEN 128
+enum {
+    CMP_DEF = 0,
+    CMP_GT,
+    CMP_NULL
+} xspf_compare;
 
-gchar *base = NULL;
+typedef struct {
+    gchar *tupleName;
+    gchar *xspfName;
+    TupleValueType type;
+    gboolean isMeta;
+    gint compare;
+} xspf_entry_t;
+
+
+static const xspf_entry_t xspf_entries[] = {
+    { "title",          "title",        TUPLE_STRING,   FALSE,  CMP_DEF },
+    { "artist",         "creator",      TUPLE_STRING,   FALSE,  CMP_DEF },
+    { "comment",        "annotation",   TUPLE_STRING,   FALSE,  CMP_DEF },
+    { "album",          "album",        TUPLE_STRING,   FALSE,  CMP_DEF },
+    { "track-number",   "trackNum",     TUPLE_INT,      FALSE,  CMP_DEF },
+    { "length",         "duration",     TUPLE_INT,      FALSE,  CMP_GT },
+
+    { "year",           "year",         TUPLE_INT,      TRUE,   CMP_DEF },
+    { "date",           "date",         TUPLE_STRING,   TRUE,   CMP_DEF },
+    { "genre",          "genre",        TUPLE_STRING,   TRUE,   CMP_DEF },
+    { "formatter",      "formatter",    TUPLE_STRING,   TRUE,   CMP_DEF },
+};
+
+static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
+
 
 static gboolean is_uri(gchar *uri)
 {
@@ -58,157 +85,105 @@ static gboolean is_uri(gchar *uri)
         return FALSE;
 }
 
-#if 0
-static gboolean is_remote(gchar *uri)
-{
-    if(strstr(uri, "file://"))
-        return FALSE;
-
-    if(strstr(uri, "://"))
-        return TRUE;
-    else
-        return FALSE;
-}
-#endif
-
-// this function is taken from libxml2-2.6.27.
-static xmlChar *audPathToURI(const xmlChar *path)
+/* This function is taken from libxml2-2.6.27.
+ */
+static xmlChar *xspf_path_to_uri(const xmlChar *path)
 {
     xmlURIPtr uri;
     xmlURI temp;
     xmlChar *ret, *cal;
 
-    if(path == NULL)
+    if (path == NULL)
         return NULL;
 
-    if((uri = xmlParseURI((const char *)path)) != NULL) {
+    if ((uri = xmlParseURI((const char *)path)) != NULL) {
         xmlFreeURI(uri);
         return xmlStrdup(path);
     }
+
     cal = xmlCanonicPath(path);
-    if(cal == NULL)
+    if (cal == NULL)
         return NULL;
+    
     memset(&temp, 0, sizeof(temp));
     temp.path = (char *)cal;
     ret = xmlSaveUri(&temp);
     xmlFree(cal);
+    
     return ret;
 }
 
-static void add_file(xmlNode *track, const gchar *filename, gint pos)
+
+static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const gchar *base)
 {
     xmlNode *nptr;
     Tuple *tuple;
     gchar *location = NULL;
     Playlist *playlist = playlist_get_active();
 
+
     tuple = tuple_new();
-
     tuple_associate_int(tuple, "length", -1);
-    tuple_associate_int(tuple, "mtime", -1);          // mark as uninitialized.
+    tuple_associate_int(tuple, "mtime", -1);
 
-    // creator, album, title, duration, trackNum, annotation, image, 
-    for(nptr = track->children; nptr != NULL; nptr = nptr->next) {
-        if(nptr->type == XML_ELEMENT_NODE
-           && !xmlStrcmp(nptr->name, (xmlChar *)"location")) {
-            gchar *str = (gchar *)xmlNodeGetContent(nptr);
 
-            location = g_strdup_printf("%s%s", base ? base : "", str);
-            xmlFree(str);
-            str = g_filename_from_uri(location, NULL, NULL);
-            if (str) {
-                g_free(location);
-                location = g_strdup_printf("file://%s", str);
-            }
-            
-            g_free(str);
-        }
-        else if(nptr->type == XML_ELEMENT_NODE
-                && !xmlStrcmp(nptr->name, (xmlChar *)"title")) {
-            xmlChar *str = xmlNodeGetContent(nptr);
-	    tuple_associate_string(tuple, "title", (gchar *) str);
-            xmlFree(str);
-        }
-        else if(nptr->type == XML_ELEMENT_NODE
-                && !xmlStrcmp(nptr->name, (xmlChar *)"creator")) {
-            xmlChar *str = xmlNodeGetContent(nptr);
-	    tuple_associate_string(tuple, "artist", (gchar *) str);
-            xmlFree(str);
-        }
-        else if(nptr->type == XML_ELEMENT_NODE
-                && !xmlStrcmp(nptr->name, (xmlChar *)"annotation")) {
-            xmlChar *str = xmlNodeGetContent(nptr);
-            tuple_associate_string(tuple, "comment", (gchar *) str);
-            xmlFree(str);
-        }
-        else if(nptr->type == XML_ELEMENT_NODE
-                && !xmlStrcmp(nptr->name, (xmlChar *)"album")) {
-            xmlChar *str = xmlNodeGetContent(nptr);
-	    tuple_associate_string(tuple, "album", (gchar *) str);
-            xmlFree(str);
-        }
-        else if(nptr->type == XML_ELEMENT_NODE
-                && !xmlStrcmp(nptr->name, (xmlChar *)"trackNum")) {
-            xmlChar *str = xmlNodeGetContent(nptr);
-            tuple_associate_int(tuple, "track-number", atol((char *)str));
-            xmlFree(str);
-        }
-        else if(nptr->type == XML_ELEMENT_NODE
-                && !xmlStrcmp(nptr->name, (xmlChar *)"duration")) {
-            xmlChar *str = xmlNodeGetContent(nptr);
-            tuple_associate_int(tuple, "length", atol((char *)str));
-            xmlFree(str);
-        }
+    for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
+        if (nptr->type == XML_ELEMENT_NODE) {
+            if (!xmlStrcmp(nptr->name, (xmlChar *)"location")) {
+                /* Location is a special case */
+                gchar *str = (gchar *)xmlNodeGetContent(nptr);
 
-        //
-        // additional metadata
-        //
-        // year, date, genre, formatter, mtime
-        //
-        else if(nptr->type == XML_ELEMENT_NODE
-                && !xmlStrcmp(nptr->name, (xmlChar *)"meta")) {
-            xmlChar *rel = NULL;
-
-            rel = xmlGetProp(nptr, (xmlChar *)"rel");
-
-            if(!xmlStrcmp(rel, (xmlChar *)"year")) {
-                xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_int(tuple, "year", atol((char *)cont));
-                xmlFree(cont);
-                continue;
-            }
-            else if(!xmlStrcmp(rel, (xmlChar *)"date")) {
-                xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_string(tuple, "date", (gchar *) cont);
-                xmlFree(cont);
-                continue;
-            }
-            else if(!xmlStrcmp(rel, (xmlChar *)"genre")) {
-                xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_string(tuple, "genre", (gchar *) cont);
-                xmlFree(cont);
-                continue;
-            }
-            else if(!xmlStrcmp(rel, (xmlChar *)"formatter")) {
-                xmlChar *cont = xmlNodeGetContent(nptr);
-                tuple_associate_string(tuple, "formatter", (gchar *) cont);
-                xmlFree(cont);
-                continue;
-            }
-            else if(!xmlStrcmp(rel, (xmlChar *)"mtime")) {
-                xmlChar *str = NULL;
-                str = xmlNodeGetContent(nptr);
-                tuple_associate_int(tuple, "mtime", atoll((char *)str));
+                location = g_strdup_printf("%s%s", base ? base : "", str);
                 xmlFree(str);
-                continue;
-            }
-            xmlFree(rel);
-            rel = NULL;
-        }
+                str = g_filename_from_uri(location, NULL, NULL);
+                if (str) {
+                    g_free(location);
+                    location = g_strdup_printf("file://%s", str);
+                }
+            
+                g_free(str);
+            } else {
+                /* Rest of the nodes are handled here */
+                gint i;
+                gboolean isMeta;
+                xmlChar *findName;
 
+                if (!xmlStrcmp(nptr->name, (xmlChar *)"meta")) {
+                    isMeta = TRUE;
+                    findName = xmlGetProp(nptr, (xmlChar *)"rel");
+                } else {
+                    isMeta = FALSE;
+                    findName = xmlStrdup(nptr->name);
+                }
+                
+                for (i = 0; i < xspf_nentries; i++) {
+                    if ((xspf_entries[i].isMeta == isMeta) &&
+                        !xmlStrcmp(findName, (xmlChar *)xspf_entries[i].xspfName)) {
+                        xmlChar *str = xmlNodeGetContent(nptr);
+                        switch (xspf_entries[i].type) {
+                            case TUPLE_STRING:
+                                tuple_associate_string(tuple, xspf_entries[i].tupleName, (gchar *)str);
+                                break;
+                        
+                            case TUPLE_INT:
+                                tuple_associate_int(tuple, xspf_entries[i].tupleName, atol((char *)str));
+                                break;
+                            
+                            default:
+                                /* FIXME! error! */
+                                break;
+                        }
+                        xmlFree(str);
+                        break;
+                    }
+                }
+
+                xmlFree(findName);
+            }
+        }
     }
 
-    if(location) {
+    if (location) {
         gchar *uri = NULL;
         gchar *scratch;
 
@@ -220,77 +195,80 @@ static void add_file(xmlNode *track, const gchar *filename, gint pos)
         tuple_associate_string(tuple, "file-path", scratch);
         g_free(scratch);
 
+        tuple_associate_string(tuple, "file-ext", strrchr(location, '.'));
+
 #ifdef DEBUG
         printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, "file-name"));
         printf("xspf: tuple->file_path = %s\n", tuple_get_string(tuple, "file-path"));
 #endif
-        tuple_associate_string(tuple, "file-ext", strrchr(location, '.'));
         // add file to playlist
         uri = g_filename_to_uri(location, NULL, NULL);
         // uri would be NULL if location is already uri. --yaz
         playlist_load_ins_file_tuple(playlist, uri ? uri: location, filename, pos, tuple);
-        g_free(uri); uri = NULL;
+        g_free(uri);
         pos++;
     }
 
     g_free(location);
-    location = NULL;
 }
 
-static void find_track(xmlNode *tracklist, const gchar *filename, gint pos)
+
+static void xspf_find_track(xmlNode *tracklist, const gchar *filename, gint pos, const gchar *base)
 {
     xmlNode *nptr;
-    for(nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
-        if(nptr->type == XML_ELEMENT_NODE
-           && !xmlStrcmp(nptr->name, (xmlChar *)"track")) {
-            add_file(nptr, filename, pos);
+
+    for (nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
+        if (nptr->type == XML_ELEMENT_NODE &&
+            !xmlStrcmp(nptr->name, (xmlChar *)"track")) {
+            xspf_add_file(nptr, filename, pos, base);
         }
     }
 }
 
-static void find_audoptions(xmlNode *tracklist, const gchar *filename, gint pos)
+
+static void xspf_find_audoptions(xmlNode *tracklist, const gchar *filename, gint pos)
 {
     xmlNode *nptr;
     Playlist *playlist = playlist_get_active();
 
-    for(nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
-        if(nptr->type == XML_ELEMENT_NODE
-           && !xmlStrcmp(nptr->name, (xmlChar *)"options")) {
+    for (nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
+        if (nptr->type == XML_ELEMENT_NODE &&
+            !xmlStrcmp(nptr->name, (xmlChar *)"options")) {
             xmlChar *opt = NULL;
 
             opt = xmlGetProp(nptr, (xmlChar *)"staticlist");
-            if(!strcasecmp((char *)opt, "true")) {
+            if (!g_strcasecmp((char *)opt, "true"))
                 playlist->attribute |= PLAYLIST_STATIC;
-            }
             else
                 playlist->attribute ^= PLAYLIST_STATIC;
+
             xmlFree(opt);
             opt = NULL;
         }
     }
 }
 
-static void playlist_load_xspf(const gchar *filename, gint pos)
+
+static void xspf_playlist_load(const gchar *filename, gint pos)
 {
     xmlDocPtr doc;
     xmlNode *nptr, *nptr2;
-    gchar *tmp = NULL;
+    gchar *tmp = NULL, *base = NULL;
 
     g_return_if_fail(filename != NULL);
+
 #ifdef DEBUG
     printf("playlist_load_xspf: filename = %s\n", filename);
 #endif
+
     doc = xmlRecoverFile(filename);
     if(doc == NULL)
         return;
 
-    xmlFree(base);
-    base = NULL;
-
     // find trackList
-    for(nptr = doc->children; nptr != NULL; nptr = nptr->next) {
-        if(nptr->type == XML_ELEMENT_NODE
-           && !xmlStrcmp(nptr->name, (xmlChar *)"playlist")) {
+    for (nptr = doc->children; nptr != NULL; nptr = nptr->next) {
+        if (nptr->type == XML_ELEMENT_NODE &&
+            !xmlStrcmp(nptr->name, (xmlChar *)"playlist")) {
             base = (gchar *)xmlNodeGetBase(doc, nptr);
 #ifdef DEBUG
             printf("playlist_load_xspf: base @1 = %s\n", base);
@@ -308,34 +286,32 @@ static void playlist_load_xspf(const gchar *filename, gint pos)
 #ifdef DEBUG
             printf("playlist_load_xspf: base @2 = %s\n", base);
 #endif
-            for(nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
+            for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
 
-                if(nptr2->type == XML_ELEMENT_NODE
-                   && !xmlStrcmp(nptr2->name, (xmlChar *)"extension")) {
+                if (nptr2->type == XML_ELEMENT_NODE &&
+                    !xmlStrcmp(nptr2->name, (xmlChar *)"extension")) {
                     //check if application is audacious
                     xmlChar *app = NULL;
                     app = xmlGetProp(nptr2, (xmlChar *)"application");
-                    if(!xmlStrcmp(app, (xmlChar *)"audacious")) {
-                        find_audoptions(nptr2, filename, pos);
-                    }
+                    if (!xmlStrcmp(app, (xmlChar *)"audacious"))
+                        xspf_find_audoptions(nptr2, filename, pos);
                     xmlFree(app);
-                }
-
-                if(nptr2->type == XML_ELEMENT_NODE
-                   && !xmlStrcmp(nptr2->name, (xmlChar *)"title")) {
+                } else
+                if (nptr2->type == XML_ELEMENT_NODE &&
+                    !xmlStrcmp(nptr2->name, (xmlChar *)"title")) {
                     Playlist *plist = playlist_get_active();
                     xmlChar *title = xmlNodeGetContent(nptr2);
+                    
                     if (title && *title) {
                         gchar *old = plist->title;
                         plist->title = g_strdup((gchar*)title);
                         g_free(old);
                     }
                     xmlFree(title);
-                }
-
-                if(nptr2->type == XML_ELEMENT_NODE
-                   && !xmlStrcmp(nptr2->name, (xmlChar *)"trackList")) {
-                    find_track(nptr2, filename, pos);
+                } else
+                if(nptr2->type == XML_ELEMENT_NODE &&
+                    !xmlStrcmp(nptr2->name, (xmlChar *)"trackList")) {
+                    xspf_find_track(nptr2, filename, pos, base);
                 }
             }
         }
@@ -343,22 +319,21 @@ static void playlist_load_xspf(const gchar *filename, gint pos)
     xmlFreeDoc(doc);
 }
 
-static void playlist_save_xspf(const gchar *filename, gint pos)
+
+static void xspf_playlist_save(const gchar *filename, gint pos)
 {
     xmlDocPtr doc;
     xmlNodePtr rootnode, tmp, tracklist;
     GList *node;
     gint baselen = 0;
+    gchar *base = NULL;
     Playlist *playlist = playlist_get_active();
 
 #ifdef DEBUG
     printf("playlist_save_xspf: filename = %s\n", filename);
 #endif
-    xmlFree(base);
-    base = NULL;
 
     doc = xmlNewDoc((xmlChar *)"1.0");
-
     doc->charset = XML_CHAR_ENCODING_UTF8;
     doc->encoding = xmlStrdup((xmlChar *)"UTF-8");
 
@@ -369,15 +344,15 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
     PLAYLIST_LOCK(playlist->mutex);
 
     /* relative */
-    if(playlist->attribute & PLAYLIST_USE_RELATIVE) {
+    if (playlist->attribute & PLAYLIST_USE_RELATIVE) {
         /* prescan to determine base uri */
-        for(node = playlist->entries; node != NULL; node = g_list_next(node)) {
+        for (node = playlist->entries; node != NULL; node = g_list_next(node)) {
             gchar *ptr1, *ptr2;
             PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
             gchar *tmp;
             gint tmplen = 0;
 
-            if(!is_uri(entry->filename)) { //obsolete
+            if (!is_uri(entry->filename)) { //obsolete
                 gchar *tmp2;
                 tmp2 = g_path_get_dirname(entry->filename);
                 tmp = g_strdup_printf("%s/", tmp2);
@@ -391,6 +366,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
                 base = strdup(tmp);
                 baselen = strlen(base);
             }
+            
             ptr1 = base;
             ptr2 = tmp;
 
@@ -398,10 +374,11 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
                 ptr1++;
                 ptr2++;
             }
+            
             *ptr2 = '\0';       //terminate
             tmplen = ptr2 - tmp;
 
-            if(tmplen <= baselen) {
+            if (tmplen <= baselen) {
                 g_free(base);
                 base = tmp;
                 baselen = tmplen;
@@ -414,11 +391,12 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
                 tmp = NULL;
             }
         }
+        
         /* set base URI */
-        if(base) {
+        if (base) {
             gchar *tmp;
             if(!is_uri(base)) {
-                tmp = (gchar *)audPathToURI((xmlChar *)base);
+                tmp = (gchar *) xspf_path_to_uri((xmlChar *)base);
                 if(tmp) {
                     g_free(base);
                     base = tmp;
@@ -446,8 +424,8 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
     xmlAddChild(tmp, xmlNewText((xmlChar *)PACKAGE "-" VERSION));
     xmlAddChild(rootnode, tmp);
 
-    // add staticlist marker
-    if(playlist->attribute & PLAYLIST_STATIC) {
+    /* add staticlist marker */
+    if (playlist->attribute & PLAYLIST_STATIC) {
         xmlNodePtr extension, options;
 
         extension = xmlNewNode(NULL, (xmlChar *)"extension");
@@ -461,8 +439,8 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
     }
 
     /* save playlist title */
-    if(playlist->title && playlist->title[0]
-            && g_utf8_validate(playlist->title, -1, NULL)) {
+    if (playlist->title && playlist->title[0] &&
+        g_utf8_validate(playlist->title, -1, NULL)) {
         xmlNodePtr title;
         title = xmlNewNode(NULL, (xmlChar *)"title");
         xmlAddChild(title, xmlNewText((xmlChar *)playlist->title));
@@ -475,10 +453,9 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
     for(node = playlist->entries; node != NULL; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
         xmlNodePtr track, location;
-        gchar *filename = NULL;
-        const gchar *scratch;
-        gchar tmps[64];
-        gint tmpi;
+        gchar *filename = NULL, tmps[64];
+        const gchar *scratch = NULL;
+        gint scratchi = 0;
 
         track = xmlNewNode(NULL, (xmlChar *)"track");
         location = xmlNewNode(NULL, (xmlChar *)"location");
@@ -490,7 +467,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
             filename = g_strdup(entry->filename + baselen); // entry->filename is always uri now.
         }
         else {                  /* local file (obsolete) */
-            gchar *tmp = (gchar *)audPathToURI((const xmlChar *)entry->filename + baselen);
+            gchar *tmp = (gchar *) xspf_path_to_uri((const xmlChar *)entry->filename + baselen);
             if(base) { /* relative */
                 filename = g_strdup_printf("%s", tmp);
             } else {
@@ -510,86 +487,58 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
         xmlAddChild(tracklist, track);
 
         /* do we have a tuple? */
-        if(entry->tuple != NULL) {
+        if (entry->tuple != NULL) {
+            gint i;
+            for (i = 0; i < xspf_nentries; i++) {
+                const xspf_entry_t *xs = &xspf_entries[i];
+                gboolean isOK = FALSE;
+                
+                switch (xs->type) {
+                    case TUPLE_STRING:
+                        scratch = tuple_get_string(entry->tuple, xs->tupleName);
+                        switch (xs->compare) {
+                            case CMP_DEF: isOK = (scratch != NULL); break;
+                            case CMP_NULL: isOK = (scratch == NULL); break;
+                        }
+                        if (scratch != NULL && !g_utf8_validate(scratch, -1, NULL))
+                            isOK = FALSE;
+                        break;
+                    
+                    case TUPLE_INT:
+                        scratchi = tuple_get_int(entry->tuple, xs->tupleName);
+                        switch (xs->compare) {
+                            case CMP_DEF: isOK = (scratchi != 0); break;
+                            case CMP_GT:  isOK = (scratchi > 0); break;
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                if (isOK) {
+                    if (xs->isMeta) {
+                        tmp = xmlNewNode(NULL, (xmlChar *) "meta");
+                        xmlSetProp(tmp, (xmlChar *) "rel", (xmlChar *) xs->xspfName);
+                    } else
+                        tmp = xmlNewNode(NULL, (xmlChar *) xs->xspfName);
+                    
+                    switch (xs->type) {
+                        case TUPLE_STRING:
+                            xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
+                            break;
+                            
+                        case TUPLE_INT:
+                            g_snprintf(tmps, sizeof(tmps), "%d", scratchi);
+                            xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
+                            break;
 
-            if((scratch = tuple_get_string(entry->tuple, "title")) != NULL &&
-                g_utf8_validate(scratch, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"title");
-                xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                xmlAddChild(track, tmp);
-            }
-
-            if((scratch = tuple_get_string(entry->tuple, "artist")) != NULL &&
-                g_utf8_validate(scratch, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"creator");
-                xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                xmlAddChild(track, tmp);
-            }
-
-            if((scratch = tuple_get_string(entry->tuple, "comment")) != NULL &&
-                g_utf8_validate(scratch, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"annotation");
-                xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                xmlAddChild(track, tmp);
-            }
-
-            if((scratch = tuple_get_string(entry->tuple, "album")) != NULL &&
-                g_utf8_validate(scratch, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"album");
-                xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                xmlAddChild(track, tmp);
-            }
-
-            if((tmpi = tuple_get_int(entry->tuple, "track-number")) != 0) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"trackNum");
-                g_snprintf(tmps, sizeof(tmps), "%d", tmpi);
-                xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
-                xmlAddChild(track, tmp);
-            }
-
-            if((tmpi = tuple_get_int(entry->tuple, "length")) > 0) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"duration");
-                g_snprintf(tmps, sizeof(tmps), "%d", tmpi);
-                xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
-                xmlAddChild(track, tmp);
-            }
-
-            //
-            // additional metadata
-            //
-            // year, date, genre, formatter, mtime
-            //
-
-            if((tmpi = tuple_get_int(entry->tuple, "year")) != 0) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"meta");
-                xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"year");
-                g_snprintf(tmps, sizeof(tmps), "%d", tmpi);
-                xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
-                xmlAddChild(track, tmp);
-            }
-
-            if((scratch = tuple_get_string(entry->tuple, "date")) != NULL &&
-                g_utf8_validate(scratch, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"meta");
-                xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"date");
-                xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                xmlAddChild(track, tmp);
-            }
-
-            if((scratch = tuple_get_string(entry->tuple, "genre")) != NULL &&
-                g_utf8_validate(scratch, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"meta");
-                xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"genre");
-                xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                xmlAddChild(track, tmp);
-            }
-
-            if((scratch = tuple_get_string(entry->tuple, "formatter")) != NULL &&
-                g_utf8_validate(scratch, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"meta");
-                xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"formatter");
-                xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                xmlAddChild(track, tmp);
+                        default:
+                            break;
+                    }
+                    
+                    xmlAddChild(track, tmp);
+                }
             }
 
             // mtime: write mtime unconditionally to support staticlist.
@@ -598,16 +547,16 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
             g_snprintf(tmps, sizeof(tmps), "%ld", (long) tuple_get_int(entry->tuple, "mtime"));
             xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
             xmlAddChild(track, tmp);
-        }                       /* tuple */
-        else {
 
-            if(entry->title != NULL && g_utf8_validate(entry->title, -1, NULL)) {
+        } else {
+
+            if (entry->title != NULL && g_utf8_validate(entry->title, -1, NULL)) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"title");
                 xmlAddChild(tmp, xmlNewText((xmlChar *)entry->title));
                 xmlAddChild(track, tmp);
             }
 
-            if(entry->length > 0) {
+            if (entry->length > 0) {
                 tmp = xmlNewNode(NULL, (xmlChar *)"duration");
                 g_snprintf(tmps, sizeof(tmps), "%d", entry->length);
                 xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
@@ -620,7 +569,7 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
             g_snprintf(tmps, sizeof(tmps), "%ld", -1L);
             xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
             xmlAddChild(track, tmp);
-        }                       /* no tuple */
+        }
 
         g_free(filename);
         filename = NULL;
@@ -636,21 +585,22 @@ static void playlist_save_xspf(const gchar *filename, gint pos)
     base = NULL;
 }
 
+
 PlaylistContainer plc_xspf = {
     .name = "XSPF Playlist Format",
     .ext = "xspf",
-    .plc_read = playlist_load_xspf,
-    .plc_write = playlist_save_xspf,
+    .plc_read = xspf_playlist_load,
+    .plc_write = xspf_playlist_save,
 };
 
-static void init(void)
+static void xspf_init(void)
 {
     playlist_container_register(&plc_xspf);
 }
 
-static void cleanup(void)
+static void xspf_cleanup(void)
 {
     playlist_container_unregister(&plc_xspf);
 }
 
-DECLARE_PLUGIN(xspf, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
+DECLARE_PLUGIN(xspf, xspf_init, xspf_cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
