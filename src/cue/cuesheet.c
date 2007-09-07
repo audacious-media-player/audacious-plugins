@@ -103,7 +103,7 @@ InputPlugin cue_ip =
 	.get_time = get_time,
 	.cleanup = cue_cleanup,		/* cleanup */
 	.get_song_info = get_song_info,	/* XXX get_song_info iface */
-	.get_tuple = get_tuple,
+	.get_song_tuple = get_tuple,
 };
 
 InputPlugin *cue_iplist[] = { &cue_ip, NULL };
