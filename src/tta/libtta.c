@@ -84,36 +84,20 @@ gchar *tta_fmts[] = { "tta", NULL };
 
 InputPlugin tta_ip =
 {
-	NULL,
-	NULL,
-	"True Audio Plugin",
-	init,
-	about,
-	NULL,
-	is_our_file,
-	NULL,
-	play_file,
-	stop,
-	tta_pause,
-	seek,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	cleanup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	get_song_info,
-	file_info,
-	NULL,
-	get_song_tuple, // get_song_tuple
-	NULL, // set_song_tuple
-	NULL, // buffer
-	NULL, // vfs
-	tta_fmts,
-	mseek,
+	.description = "True Audio Plugin",
+	.init = init,
+	.about = about,
+	.is_our_file = is_our_file,
+	.play_file = play_file,
+	.stop = stop,
+	.pause = tta_pause,
+	.seek = seek,
+	.cleanup = cleanup,
+	.get_song_info = get_song_info,
+	.file_info_box = file_info,
+	.get_song_tuple = get_song_tuple,
+	.vfs_extensions = tta_fmts,
+	.mseek = mseek,
 };
 
 InputPlugin *tta_iplist[] = { &tta_ip, NULL };
