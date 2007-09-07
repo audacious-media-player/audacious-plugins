@@ -32,13 +32,11 @@ void ed_about ( void );
 
 GeneralPlugin ed_gp =
 {
-    NULL,					/* handle */
-    NULL,					/* filename */
-    "EvDev-Plug " ED_VERSION_PLUGIN,		/* description */
-    ed_init,					/* init */
-    ed_about,					/* about */
-    ed_config,					/* configure */
-    ed_cleanup					/* cleanup */
+    .description = "EvDev-Plug " ED_VERSION_PLUGIN,
+    .init = ed_init,
+    .about = ed_about,
+    .configure = ed_config,	
+    .cleanup = ed_cleanup
 };
 
 #endif /* !_I_ED_H */
