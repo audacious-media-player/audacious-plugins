@@ -26,7 +26,7 @@
 
 
 GeneralPlugin *aosd_gplist[] = { &aosd_gp, NULL };
-DECLARE_PLUGIN(aosd, NULL, NULL, NULL, NULL, NULL, aosd_gplist, NULL, NULL);
+SIMPLE_GENERAL_PLUGIN(aosd, aosd_gplist);
 
 aosd_cfg_t * global_config = NULL;
 gboolean plugin_is_active = FALSE;
