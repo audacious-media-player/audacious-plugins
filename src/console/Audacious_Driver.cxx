@@ -513,9 +513,9 @@ InputPlugin console_ip =
 	NULL,
 	(gchar *)"Game console audio module decoder",
 	console_init,
+	NULL,
 	console_aboutbox,
 	console_cfg_ui,
-	NULL,
 	FALSE,
 	NULL,
 	NULL,
@@ -543,8 +543,4 @@ InputPlugin console_ip =
 
 InputPlugin *console_iplist[] = { &console_ip, NULL };
 
-extern "C" {
-
-DECLARE_PLUGIN(console, NULL, NULL, console_iplist, NULL, NULL, NULL, NULL,NULL);
-
-};
+SIMPLE_INPUT_PLUGIN(console, console_iplist);
