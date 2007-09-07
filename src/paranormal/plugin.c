@@ -66,7 +66,7 @@ static VisPlugin pn_vp =
   .init = pn_xmms_init,
   .cleanup = pn_xmms_cleanup,
   .about = pn_xmms_about,
-  .configure pn_xmms_configure,
+  .configure = pn_xmms_configure,
   .render_pcm = pn_xmms_render_pcm,
   .render_freq = pn_xmms_render_freq
 };
