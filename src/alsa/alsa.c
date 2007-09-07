@@ -30,13 +30,13 @@ OutputPlugin alsa_op =
 	.set_volume = alsa_set_volume,
 	.open_audio = alsa_open,
 	.write_audio = alsa_write,
-	.clean_audio = alsa_close,
+	.close_audio = alsa_close,
 	.flush = alsa_flush,
 	.pause = alsa_pause,
 	.buffer_free = alsa_free,
 	.buffer_playing = alsa_playing,
-	.get_output_time = alsa_get_output_time,
-	.get_written_time = alsa_get_written_time,
+	.output_time = alsa_get_output_time,
+	.written_time = alsa_get_written_time,
 	.tell_audio = alsa_tell
 };
 
