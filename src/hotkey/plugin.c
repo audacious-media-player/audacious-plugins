@@ -129,17 +129,15 @@ typedef struct {
 
 static GeneralPlugin audacioushotkey =
 {
-	NULL,
-	NULL,
-	"Global Hotkey",
-	init,
-	about,
-	configure,
-	cleanup
+	.description = "Global Hotkey",
+	.init = init,
+	.about = about,
+	.configure = configure,
+	.cleanup = cleanup
 };
 
 GeneralPlugin *hotkey_gplist[] = { &audacioushotkey, NULL };
-DECLARE_PLUGIN(hotkey, NULL, NULL, NULL, NULL, NULL, hotkey_gplist, NULL, NULL);
+SIMPLE_GENERAL_PLUGIN(hotkey, hotkey_gplist);
 
 
 
