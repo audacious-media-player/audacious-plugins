@@ -240,25 +240,19 @@ static int null_get_output_time(void)
 
 OutputPlugin null_op =
 {
-	NULL,
-	NULL,
-	"Null Output Plugin",
-	null_init,
-	NULL,			/* cleanup */
-	null_about,
-	null_configure,
-	NULL,			/* Get volume */
-	NULL,			/* Set volume */
-	null_open,
-	null_write,
-	null_close,
-	null_flush,
-	null_pause,
-	null_buffer_free,
-	null_playing,
-	null_get_output_time,
-	null_get_written_time,
-	NULL			/* tell */
+	.description = "Null Output Plugin",
+	.init = null_init,
+	.about = null_about,
+	.configure = null_configure,
+	.open_audio = null_open,
+	.write_audio = null_write,
+	.close_audio = null_close,
+	.flush = null_flush,
+	.pause = null_pause,
+	.buffer_free = null_buffer_free,
+	.buffer_playing = null_playing,
+	.output_time = null_get_output_time,
+	.written_time = null_get_written_time,
 };
 
 OutputPlugin *null_oplist[] = { &null_op, NULL };
