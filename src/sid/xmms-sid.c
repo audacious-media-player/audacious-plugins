@@ -266,14 +266,12 @@ gint xs_is_our_file(gchar *pcFilename)
 	if (pcFilename == NULL)
 		return 0;
 
-//	XS_MUTEX_LOCK(xs_status);
 	if ((f = xs_fopen(pcFilename, "rb")) != NULL) {
 		if (xs_status.sidPlayer->plrProbe(f))
 			result = 1;
 		xs_fclose(f);
 	}
 
-//	XS_MUTEX_UNLOCK(xs_status);
 	return result;
 }
 
@@ -312,11 +310,19 @@ gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
 	/* Check the filename */
 	if (pcFilename == NULL)
 		return 0;
-	
+
+#ifdef LULZ
+	/* FIXME! ATTENTION! Subtune addition is now temporarily disabled
+	 * again, due to following reason: the way it currently is "supposed"
+	 * to be done is horribly broken and causes an "infinite recursive
+	 * addition loop" in some cases. - ccr
+	 */
 	if (xs_has_tracknumber(pcFilename) != NULL)
 		return 1;
+#endif
 	
 	if (xs_status.sidPlayer->plrProbe(f)) {
+#ifdef LULZ
 		t_xs_tuneinfo *pInfo;
 		
 		pInfo = xs_status.sidPlayer->plrGetSIDInfo(pcFilename);
@@ -345,6 +351,9 @@ gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
 			tmpResult = 1;
 			
 		xs_tuneinfo_free(pInfo);
+#else
+		tmpResult = 1;
+#endif
 	}
 		
 	return tmpResult;
