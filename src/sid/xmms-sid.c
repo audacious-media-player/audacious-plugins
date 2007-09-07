@@ -277,15 +277,23 @@ gint xs_is_our_file(gchar *pcFilename)
 	return result;
 }
 
+static gchar * xs_has_tracknumber(gchar *pcFilename)
+{
+	gchar *tmpSep = xs_strrchr(pcFilename, '?');
+	if (tmpSep && g_ascii_isdigit(*(tmpSep + 1)))
+		return tmpSep;
+	else
+		return NULL;
+}
 
 gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrack)
 {
 	gchar *tmpSep;
 
 	*pcResult = g_strdup(pcFilename);
-	tmpSep = xs_strrchr(*pcResult, '?');
+	tmpSep = xs_has_tracknumber(*pcResult);
 
-	if (tmpSep && g_ascii_isdigit(*(tmpSep + 1))) {
+	if (tmpSep) {
 		*tmpSep = '\0';
 		*pTrack = atoi(tmpSep + 1);
 		return TRUE;
@@ -298,52 +306,47 @@ gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrac
 
 gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
 {
-	gint tmpResult = 0;
+	gint tmpResult = 0, tmpDummy = 0;
 	assert(xs_status.sidPlayer);
 
 	/* Check the filename */
 	if (pcFilename == NULL)
 		return 0;
 	
-	if (xs_status.sidPlayer->plrProbe(f)) {
-		gchar *tmpFilename = NULL;
-		gint tmpDummy = 0;
-
-		if (xs_get_trackinfo(pcFilename, &tmpFilename, &tmpDummy)) {
-			tmpResult = 1;
-		} else {
-			t_xs_tuneinfo *pInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename);
-		
-			if (pInfo->nsubTunes > 1) {
-				gint i;
-				
-				for (i = 1; i <= pInfo->nsubTunes; i++) {
-					gchar *tmpStr = g_strdup_printf("%s?%d", pcFilename, i);
-					gboolean doAdd = FALSE;
-					
-					if (xs_cfg.subAutoMinOnly) {
-						if (i == pInfo->startTune ||
-							pInfo->subTunes[i - 1].tuneLength >= xs_cfg.subAutoMinTime)
-							doAdd = TRUE;
-					} else
-						doAdd = TRUE;
-					
-					if (doAdd)
-						playlist_add_url(playlist_get_active(), tmpStr);
-
-					g_free(tmpStr);
-				}
-
-				tmpResult = -1;
-			} else
-				tmpResult = 1;
-			
-			xs_tuneinfo_free(pInfo);
-		}
-		
-		g_free(tmpFilename);
-	}
+	if (xs_has_tracknumber(pcFilename) != NULL)
+		return 1;
 	
+	if (xs_status.sidPlayer->plrProbe(f)) {
+		t_xs_tuneinfo *pInfo;
+		
+		pInfo = xs_status.sidPlayer->plrGetSIDInfo(pcFilename);
+		
+		if (pInfo->nsubTunes > 1) {
+			gint i;
+			for (i = 1; i <= pInfo->nsubTunes; i++) {
+				gchar *tmpStr = g_strdup_printf("%s?%d", pcFilename, i);
+				gboolean doAdd = FALSE;
+					
+				if (xs_cfg.subAutoMinOnly) {
+					if (i == pInfo->startTune ||
+						pInfo->subTunes[i - 1].tuneLength >= xs_cfg.subAutoMinTime)
+						doAdd = TRUE;
+				} else
+					doAdd = TRUE;
+					
+				if (doAdd)
+					playlist_add_url(playlist_get_active(), tmpStr);
+
+				g_free(tmpStr);
+			}
+
+			tmpResult = -1;
+		} else
+			tmpResult = 1;
+			
+		xs_tuneinfo_free(pInfo);
+	}
+		
 	return tmpResult;
 }
 
