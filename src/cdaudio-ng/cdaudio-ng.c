@@ -91,31 +91,22 @@ static void				cleanup_on_error();
 
 
 static InputPlugin inputplugin = {
-	NULL,
-	NULL,
-	"CD Audio Plugin NG",
-	cdaudio_init,
-	cdaudio_about,
-	cdaudio_configure,
-	cdaudio_is_our_file,
-	cdaudio_scan_dir,
-	cdaudio_play_file,
-	cdaudio_stop,
-	cdaudio_pause,
-	cdaudio_seek,
-	NULL,
-	cdaudio_get_time,
-	cdaudio_get_volume,
-	cdaudio_set_volume,
-	cdaudio_cleanup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	cdaudio_get_song_info,
-	NULL,
-	NULL,
-	cdaudio_get_song_tuple
+	.description = "CD Audio Plugin NG",
+	.init = cdaudio_init,
+	.about = cdaudio_about,
+	.configure = cdaudio_configure,
+	.is_our_file = cdaudio_is_our_file,
+	.scan_dir = cdaudio_scan_dir,
+	.play_file = cdaudio_play_file,
+	.stop = cdaudio_stop,
+	.pause = cdaudio_pause,
+	.seek = cdaudio_seek,
+	.get_time = cdaudio_get_time,
+	.get_volume = cdaudio_get_volume,
+	.set_volume = cdaudio_set_volume,
+	.cleanup = cdaudio_cleanup,
+	.get_song_info = cdaudio_get_song_info,
+	.get_song_tuple = cdaudio_get_song_tuple
 };
 
 InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };

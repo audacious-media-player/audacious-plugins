@@ -28,38 +28,26 @@ static gchar *xs_sid_fmts[] = { "sid", "psid", NULL };
 
 
 InputPlugin xs_plugin_ip = {
-	NULL,			/* FILLED BY XMMS */
-	NULL,			/* FILLED BY XMMS */
-	XS_PACKAGE_STRING,	/* Plugin description */
-	xs_init,		/* Initialization */
-	xs_about,		/* Show aboutbox */
-	xs_configure,		/* Show/edit configuration */
-	xs_is_our_file,		/* Check file */
-	NULL,			/* Scan directory */
-	xs_play_file,		/* Play given file */
-	xs_stop,		/* Stop playing */
-	xs_pause,		/* Pause playing */
-	xs_seek,		/* Seek time */
-	NULL,			/* Set equalizer */
-	xs_get_time,		/* Get playing time */
-	NULL,			/* Get volume */
-	NULL,			/* Set volume */
-	xs_close,		/* Cleanup */
-	NULL,			/* OBSOLETE! */
-	NULL,			/* Send data to Visualization plugin */
-	NULL, NULL,		/* FILLED BY XMMS */
-	NULL,			/* Get song title and length */
-	xs_fileinfo,		/* Show file-information dialog */
-	NULL,			/* FILLED BY XMMS */
-	xs_get_song_tuple,	/* Get Tuple */
-	NULL,			/* Set Tuple */
-	NULL,			/* Buffering status */
-	xs_is_our_file_vfs,	/* VFS */
-	xs_sid_fmts,		/* File ext assist */
-	NULL,			/* ms accurate seek, mseek() */
-	NULL			/* Probe for tuple */
+	.description = XS_PACKAGE_STRING,	/* Plugin description */
+	.init = xs_init,			/* Initialization */
+	.cleanup = xs_close,			/* Cleanup */
+	.about = xs_about,			/* Show aboutbox */
+	.configure = xs_configure,		/* Show/edit configuration */
+
+	.play_file = xs_play_file,		/* Play given file */
+	.stop = xs_stop,			/* Stop playing */
+	.pause = xs_pause,			/* Pause playing */
+	.seek = xs_seek,			/* Seek time */
+	.get_time = xs_get_time,		/* Get playing time */
+
+	.file_info_box = xs_fileinfo,		/* Show file-information dialog */
+
+	.get_song_tuple = xs_get_song_tuple,		/* Get Tuple */
+	.is_our_file = xs_is_our_file,			/* Check file */
+	.is_our_file_from_vfs = xs_is_our_file_vfs,	/* VFS */
+	.vfs_extensions = xs_sid_fmts,			/* File ext assist */
 };
 
-InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };
+static InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };
 
 DECLARE_PLUGIN(sid, NULL, NULL, sid_iplist, NULL, NULL, NULL, NULL, NULL);

@@ -86,35 +86,23 @@ static void amidiplug_file_info_box( gchar * );
 
 InputPlugin amidiplug_ip =
 {
-  NULL,					/* handle */
-  NULL,					/* filename */
-  "AMIDI-Plug " AMIDIPLUG_VERSION " (MIDI Player)", /* description */
-  amidiplug_init,			/* init */
-  amidiplug_aboutbox,			/* aboutbox */
-  amidiplug_configure,			/* configure */
-  amidiplug_is_our_file,		/* is_our_file */
-  NULL,					/* scan_dir */
-  amidiplug_play,			/* play_file */
-  amidiplug_stop,			/* stop */
-  amidiplug_pause,			/* pause */
-  amidiplug_seek,			/* seek */
-  NULL,					/* set_eq */
-  amidiplug_get_time,			/* get_time */
-  amidiplug_get_volume,			/* get_volume */
-  amidiplug_set_volume,			/* set_volume */
-  amidiplug_cleanup,			/* cleanup */
-  NULL,					/* get_vis_type */
-  NULL,					/* add_vis_pcm */
-  NULL,					/* set_info */
-  NULL,					/* set_info_text */
-  amidiplug_get_song_info,		/* get_song_info */
-  amidiplug_file_info_box,		/* file_info_box */
-  NULL,					/* output */
-  NULL,					/* get_song_tuple */
-  NULL,					/* set_song_tuple */
-  NULL,					/* set_status_buffering */
-  amidiplug_is_our_file_from_vfs,	/* is_our_file_from_vfs */
-  amidiplug_vfs_extensions		/* vfs_extensions */
+  .description = "AMIDI-Plug " AMIDIPLUG_VERSION " (MIDI Player)", /* description */
+  .init = amidiplug_init,			/* init */
+  .about = amidiplug_aboutbox,			/* aboutbox */
+  .configure = amidiplug_configure,			/* configure */
+  .is_our_file = amidiplug_is_our_file,		/* is_our_file */
+  .play_file = amidiplug_play,			/* play_file */
+  .stop = amidiplug_stop,			/* stop */
+  .pause = amidiplug_pause,			/* pause */
+  .seek = amidiplug_seek,			/* seek */
+  .get_time = amidiplug_get_time,			/* get_time */
+  .get_volume = amidiplug_get_volume,			/* get_volume */
+  .set_volume = amidiplug_set_volume,			/* set_volume */
+  .cleanup = amidiplug_cleanup,			/* cleanup */
+  .get_song_info = amidiplug_get_song_info,		/* get_song_info */
+  .file_info_box = amidiplug_file_info_box,		/* file_info_box */
+  .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,	/* is_our_file_from_vfs */
+  .vfs_extensions = amidiplug_vfs_extensions		/* vfs_extensions */
 };
 
 #endif /* !_I_AMIDIPLUG_H */
