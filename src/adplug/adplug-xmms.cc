@@ -1136,8 +1136,10 @@ InputPlugin adplug_ip = {
   NULL,                         // filename (filled by XMMS)
   (gchar *)ADPLUG_NAME,                  // plugin description
   adplug_init,                  // plugin functions...
+  adplug_quit,
   adplug_about,
   adplug_config,
+  FALSE,
   adplug_is_our_file,
   NULL,                         // scan_dir (look in Input/cdaudio/cdaudio.c)
   adplug_play,
@@ -1148,7 +1150,6 @@ InputPlugin adplug_ip = {
   adplug_get_time,
   NULL,                         // get_volume (handled by output plugin)
   NULL,                         // set_volume (...)
-  adplug_quit,
   NULL,                         // OBSOLETE - DO NOT USE!
   NULL,                         // add_vis_pcm (filled by XMMS)
   NULL,                         // set_info (filled by XMMS)
