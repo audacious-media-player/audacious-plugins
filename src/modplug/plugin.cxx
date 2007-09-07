@@ -94,8 +94,6 @@ InputPlugin gModPlug =
 	NULL,
 	ShowAboutBox,
 	ShowConfigureBox,
-	NULL,
-	NULL,
 	FALSE,
 	PlayFile,
 	Stop,
