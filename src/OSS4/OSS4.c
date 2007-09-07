@@ -27,25 +27,23 @@
 #include <audacious/configdb.h>
 
 OutputPlugin oss_op = {
-    NULL,
-    NULL,
-    "OSS4 Output Plugin",                       /* Description */
-    oss_init,
-    oss_cleanup,
-    oss_about,
-    oss_configure,
-    oss_get_volume,
-    oss_set_volume,
-    oss_open,
-    oss_write,
-    oss_close,
-    oss_flush,
-    oss_pause,
-    oss_free,
-    oss_playing,
-    oss_get_output_time,
-    oss_get_written_time,
-    oss_tell
+    .description = "OSS4 Output Plugin",                      /* Description */
+    .init = oss_init,
+    .cleanup = oss_cleanup,
+    .about = oss_about,
+    .configure = oss_configure,
+    .get_volume = oss_get_volume,
+    .set_volume = oss_set_volume,
+    .open_audio = oss_open,
+    .write_audio = oss_write,
+    .close_audio = oss_close,
+    .flush = oss_flush,
+    .pause = oss_pause,
+    .buffer_free = oss_free,
+    .buffer_playing = oss_playing,
+    .output_time = oss_get_output_time,
+    .written_time = oss_get_written_time,
+    .tell_audio = oss_tell
 };
 
 OutputPlugin *oss_oplist[] = { &oss_op, NULL };
