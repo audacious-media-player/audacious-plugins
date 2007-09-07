@@ -123,7 +123,6 @@ static gpointer sexypsf_playloop(gpointer arg)
 
     playback->output->close_audio();
     if (!(stop)) nextsong = TRUE;
-    g_thread_exit(NULL);
     return NULL;
 }
 
