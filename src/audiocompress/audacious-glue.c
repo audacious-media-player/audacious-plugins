@@ -45,14 +45,12 @@ static int inited = 0;
 
 
 static EffectPlugin xmms_plugin = {
-	NULL, NULL,
-	"AudioCompressor AGC plugin",
-	myInit,
-	myCleanup,
-	myAbout,
-	myPrefs,
-	myModify,
- 	NULL
+	.description = "AudioCompressor AGC plugin",
+	.init = myInit,
+	.cleanup = myCleanup,
+	.about = myAbout,
+	.configure = myPrefs,
+	.mod_samples = myModify,
 };
 
 EffectPlugin *audiocompress_eplist[] = { &xmms_plugin, NULL };
