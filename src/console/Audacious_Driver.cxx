@@ -486,7 +486,7 @@ static void console_init(void)
 	console_cfg_load();
 }
 
-extern "C" void console_aboutbox(void)
+void console_aboutbox(void)
 {
 	static GtkWidget * aboutbox = NULL;
 
