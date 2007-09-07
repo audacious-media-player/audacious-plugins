@@ -38,36 +38,17 @@
 gchar *wav_fmts[] = { "wav", "raw", "pcm", NULL };
 
 InputPlugin wav_ip = {
-    NULL,
-    NULL,
-    "WAV Audio Plugin",                       /* Description */
-    wav_init,
-    NULL,
-    NULL,
-    is_our_file,
-    NULL,
-    play_file,
-    stop,
-    wav_pause,
-    seek,
-    NULL,
-    get_time,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    get_song_info,
-    NULL,                       /* file_info_box */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    wav_fmts,
-    mseek,
+    .description = "WAV Audio Plugin",                       /* Description */
+    .init = wav_init,
+    .is_our_file = is_our_file,
+    .play_file = play_file,
+    .stop = stop,
+    .pause = wav_pause,
+    .seek = seek,
+    .get_time = get_time,
+    .get_song_info = get_song_info,
+    .vfs_extensions = wav_fmts,
+    .mseek = mseek,
 };
 
 WaveFile *wav_file = NULL;

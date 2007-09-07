@@ -66,8 +66,10 @@ InputPlugin mod = {
     NULL,                       //filename
     (gchar *)"WavPack Audio Plugin",
     wv_load_config,
+    NULL,
     wv_about_box,
     wv_configure,
+    FALSE,
     NULL,
     NULL,                       //no use
     wv_play,
@@ -81,7 +83,6 @@ InputPlugin mod = {
     NULL,                       //cleanup
     NULL,                       //obsolete
     NULL,                       //add_vis
-    NULL,
     NULL,
     wv_get_song_info,
     wv_file_info_box,           //info box

@@ -96,35 +96,21 @@ ov_callbacks vorbis_callbacks = {
 gchar *vorbis_fmts[] = { "ogg", "ogm", NULL };
 
 InputPlugin vorbis_ip = {
-    NULL,
-    NULL,
-    "Ogg Vorbis Audio Plugin",  /* description */
-    vorbis_init,                /* init */
-    vorbis_aboutbox,            /* aboutbox */
-    vorbis_configure,           /* configure */
-    vorbis_check_file,          /* is_our_file */
-    NULL,
-    vorbis_play,
-    vorbis_stop,
-    vorbis_pause,
-    vorbis_seek,
-    NULL,                       /* set eq */
-    NULL,
-    NULL,
-    NULL,
-    vorbis_cleanup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    vorbis_get_song_info,
-    vorbis_file_info_box,       /* file info box, tag editing */
-    NULL,
-    get_song_tuple,
-    NULL,
-    NULL,
-    vorbis_check_fd,
-    vorbis_fmts,
+    .description = "Ogg Vorbis Audio Plugin",  /* description */
+    .init = vorbis_init,                /* init */
+    .about = vorbis_aboutbox,            /* aboutbox */
+    .configure = vorbis_configure,           /* configure */
+    .is_our_file = vorbis_check_file,          /* is_our_file */
+    .play_file = vorbis_play,
+    .stop = vorbis_stop,
+    .pause = vorbis_pause,
+    .seek = vorbis_seek,
+    .cleanup = vorbis_cleanup,
+    .get_song_info = vorbis_get_song_info,
+    .file_info_box = vorbis_file_info_box,       /* file info box, tag editing */
+    .get_song_tuple = get_song_tuple,
+    .is_our_file_from_vfs = vorbis_check_fd,
+    .vfs_extensions = vorbis_fmts,
 };
 
 InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };

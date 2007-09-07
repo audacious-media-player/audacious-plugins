@@ -243,30 +243,15 @@ static void tone_song_info(char *filename, char **title, int *length)
 
 static InputPlugin tone_ip =
 {
-	NULL,
-	NULL,
-	"Tone Generator", /* Description */
-	tone_init,
-	tone_about,
-	NULL,
-	tone_is_our_file,
-	NULL,
-	tone_play,
-	tone_stop,
-	tone_pause,
-	NULL,
-	NULL,
-	tone_get_time,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	tone_song_info,
-	NULL,
-	NULL
+	.description = "Tone Generator",
+	.init = tone_init,
+	.about = tone_about,
+	.is_our_file = tone_is_our_file,
+	.play_file = tone_play,
+	.stop = tone_stop,
+	.pause = tone_pause,
+	.get_time = tone_get_time,
+	.get_song_info = tone_song_info,
 };
 
 InputPlugin *tonegen_iplist[] = { &tone_ip, NULL };

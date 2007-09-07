@@ -15,8 +15,10 @@ InputPlugin MpcPlugin = {
     NULL,           //Filename                  char* filename
     (gchar *)"Musepack Audio Plugin",
     mpcOpenPlugin,  //Open Plugin               [CALLBACK]
+    NULL,           //Cleanup                   [UNUSED]
     mpcAboutBox,    //Show About box            [CALLBACK]
     mpcConfigBox,   //Show Configure box        [CALLBACK]
+    FALSE,          //Enabled/Disabled          [BOOLEAN]
     mpcIsOurFile,   //Check if it's our file    [CALLBACK]
     NULL,           //Scan the directory        [UNUSED]
     mpcPlay,        //Play                      [CALLBACK]
@@ -27,7 +29,6 @@ InputPlugin MpcPlugin = {
     mpcGetTime,     //Get Time                  [CALLBACK]
     NULL,           //Get Volume                [UNUSED]
     NULL,           //Set Volume                [UNUSED]
-    NULL,           //Close Plugin              [UNUSED]
     NULL,           //Obsolete                  [UNUSED]
     NULL,           //Visual plugins            add_vis_pcm(int time, AFormat fmt, int nch, int length, void *ptr)
     NULL,           //Set Info Settings         set_info(char *title, int length, int rate, int freq, int nch)
