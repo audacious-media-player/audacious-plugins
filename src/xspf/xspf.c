@@ -157,26 +157,24 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
                     findName = xmlStrdup(nptr->name);
                 }
                 
-                for (i = 0; i < xspf_nentries; i++) {
-                    if ((xspf_entries[i].isMeta == isMeta) &&
-                        !xmlStrcmp(findName, (xmlChar *)xspf_entries[i].xspfName)) {
-                        xmlChar *str = xmlNodeGetContent(nptr);
-                        switch (xspf_entries[i].type) {
-                            case TUPLE_STRING:
-                                tuple_associate_string(tuple, xspf_entries[i].tupleName, (gchar *)str);
-                                break;
+                for (i = 0; i < xspf_nentries; i++)
+                if ((xspf_entries[i].isMeta == isMeta) &&
+                    !xmlStrcmp(findName, (xmlChar *)xspf_entries[i].xspfName)) {
+                    xmlChar *str = xmlNodeGetContent(nptr);
+                    switch (xspf_entries[i].type) {
+                        case TUPLE_STRING:
+                            tuple_associate_string(tuple, xspf_entries[i].tupleName, (gchar *)str);
+                            break;
                         
-                            case TUPLE_INT:
-                                tuple_associate_int(tuple, xspf_entries[i].tupleName, atol((char *)str));
-                                break;
-                            
-                            default:
-                                /* FIXME! error! */
-                                break;
-                        }
-                        xmlFree(str);
-                        break;
+                        case TUPLE_INT:
+                            tuple_associate_int(tuple, xspf_entries[i].tupleName, atol((char *)str));
+                            break;
+                        
+                        default:
+                            break;
                     }
+                    xmlFree(str);
+                    break;
                 }
 
                 xmlFree(findName);
@@ -355,7 +353,7 @@ static void xspf_add_node(
 static void xspf_playlist_save(const gchar *filename, gint pos)
 {
     xmlDocPtr doc;
-    xmlNodePtr rootnode, tmp, tracklist;
+    xmlNodePtr rootnode, tracklist;
     GList *node;
     gint baselen = 0;
     gchar *base = NULL;
@@ -388,9 +386,8 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 gchar *tmp2;
                 tmp2 = g_path_get_dirname(entry->filename);
                 tmp = g_strdup_printf("%s/", tmp2);
-                g_free(tmp2); tmp2 = NULL;
-            }
-            else { //uri
+                g_free(tmp2);
+            } else {
                 tmp = g_strdup(entry->filename);
             }
 
@@ -442,7 +439,6 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 tmp = g_strdup_printf("file://%s", base);
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)tmp);
                 g_free(tmp);
-                tmp = NULL;
             }
             else
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)base);
@@ -452,9 +448,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     /* common */
     xmlDocSetRootElement(doc, rootnode);
 
-    tmp = xmlNewNode(NULL, (xmlChar *)"creator");
-    xmlAddChild(tmp, xmlNewText((xmlChar *)PACKAGE "-" VERSION));
-    xmlAddChild(rootnode, tmp);
+    xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
 
     /* add staticlist marker */
     if (playlist->attribute & PLAYLIST_STATIC) {
@@ -472,12 +466,9 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
 
     /* save playlist title */
     if (playlist->title && playlist->title[0] &&
-        g_utf8_validate(playlist->title, -1, NULL)) {
-        xmlNodePtr title;
-        title = xmlNewNode(NULL, (xmlChar *)"title");
-        xmlAddChild(title, xmlNewText((xmlChar *)playlist->title));
-        xmlAddChild(rootnode, title);
-    }
+        g_utf8_validate(playlist->title, -1, NULL))
+        xspf_add_node(rootnode, TUPLE_STRING, FALSE, "title", playlist->title, 0);
+
 
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);
@@ -518,7 +509,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         xmlAddChild(track, location);
         xmlAddChild(tracklist, track);
 
-        /* do we have a tuple? */
+        /* Do we have a tuple? */
         if (entry->tuple != NULL) {
             gint i;
             for (i = 0; i < xspf_nentries; i++) {
@@ -552,7 +543,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                     xspf_add_node(track, xs->type, xs->isMeta, xs->xspfName, scratch, scratchi);
             }
 
-            // mtime: write mtime unconditionally to support staticlist.
+            /* Write mtime unconditionally to support staticlist */
             xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL, tuple_get_int(entry->tuple, "mtime"));
         } else {
 
@@ -562,7 +553,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             if (entry->length > 0)
                 xspf_add_node(track, TUPLE_INT, FALSE, "duration", NULL, entry->length);
 
-            /* add mtime of -1 */
+            /* Add mtime of -1 */
             xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL, -1);
         }
 
