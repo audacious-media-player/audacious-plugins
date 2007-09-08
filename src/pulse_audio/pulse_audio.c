@@ -704,27 +704,21 @@ static void pulse_about(void) {
 }
 
 static OutputPlugin pulse_op = {
-        NULL,
-        NULL,
-        "PulseAudio Output Plugin",
-        NULL,
-	NULL,
-        pulse_about,
-        NULL,
-        pulse_get_volume,
-        pulse_set_volume,
-        pulse_open,
-        pulse_write,
-        pulse_close,
-        pulse_flush,
-        pulse_pause,
-        pulse_free,
-        pulse_playing,
-        pulse_get_output_time,
-        pulse_get_written_time,
-	NULL,
+        .description = "PulseAudio Output Plugin",
+        .about = pulse_about,
+        .get_volume = pulse_get_volume,
+        .set_volume = pulse_set_volume,
+        .open_audio = pulse_open,
+        .write_audio = pulse_write,
+        .close_audio = pulse_close,
+        .flush = pulse_flush,
+        .pause = pulse_pause,
+        .buffer_free = pulse_free,
+        .buffer_playing = pulse_playing,
+        .output_time = pulse_get_output_time,
+        .written_time = pulse_get_written_time,
 };
 
 OutputPlugin *pulse_oplist[] = { &pulse_op, NULL };
 
-DECLARE_PLUGIN(pulse, NULL, NULL, NULL, pulse_oplist, NULL, NULL, NULL, NULL);
+SIMPLE_OUTPUT_PLUGIN(pulser, pulse_oplist);
