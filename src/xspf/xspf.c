@@ -321,6 +321,37 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 }
 
 
+static void xspf_add_node(
+        xmlNodePtr node, TupleValueType type, gboolean isMeta,
+        const gchar *xspfName, const gchar *strVal, const gint intVal)
+{
+    gchar tmps[64];
+    xmlNodePtr tmp;
+    
+    if (isMeta) {
+        tmp = xmlNewNode(NULL, (xmlChar *) "meta");
+        xmlSetProp(tmp, (xmlChar *) "rel", (xmlChar *) xspfName);
+    } else
+        tmp = xmlNewNode(NULL, (xmlChar *) xspfName);
+    
+    switch (type) {
+        case TUPLE_STRING:
+            xmlAddChild(tmp, xmlNewText((xmlChar *) strVal));
+            break;
+            
+        case TUPLE_INT:
+            g_snprintf(tmps, sizeof(tmps), "%d", intVal);
+            xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
+            break;
+
+        default:
+            break;
+    }
+
+    xmlAddChild(node, tmp);
+}
+
+
 static void xspf_playlist_save(const gchar *filename, gint pos)
 {
     xmlDocPtr doc;
@@ -454,7 +485,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     for(node = playlist->entries; node != NULL; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
         xmlNodePtr track, location;
-        gchar *filename = NULL, tmps[64];
+        gchar *filename = NULL;
         const gchar *scratch = NULL;
         gint scratchi = 0;
 
@@ -517,59 +548,22 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                         break;
                 }
                 
-                if (isOK) {
-                    if (xs->isMeta) {
-                        tmp = xmlNewNode(NULL, (xmlChar *) "meta");
-                        xmlSetProp(tmp, (xmlChar *) "rel", (xmlChar *) xs->xspfName);
-                    } else
-                        tmp = xmlNewNode(NULL, (xmlChar *) xs->xspfName);
-                    
-                    switch (xs->type) {
-                        case TUPLE_STRING:
-                            xmlAddChild(tmp, xmlNewText((xmlChar *) scratch));
-                            break;
-                            
-                        case TUPLE_INT:
-                            g_snprintf(tmps, sizeof(tmps), "%d", scratchi);
-                            xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
-                            break;
-
-                        default:
-                            break;
-                    }
-                    
-                    xmlAddChild(track, tmp);
-                }
+                if (isOK)
+                    xspf_add_node(track, xs->type, xs->isMeta, xs->xspfName, scratch, scratchi);
             }
 
             // mtime: write mtime unconditionally to support staticlist.
-            tmp = xmlNewNode(NULL, (xmlChar *)"meta");
-            xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"mtime");
-            g_snprintf(tmps, sizeof(tmps), "%ld", (long) tuple_get_int(entry->tuple, "mtime"));
-            xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
-            xmlAddChild(track, tmp);
-
+            xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL, tuple_get_int(entry->tuple, "mtime"));
         } else {
 
-            if (entry->title != NULL && g_utf8_validate(entry->title, -1, NULL)) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"title");
-                xmlAddChild(tmp, xmlNewText((xmlChar *)entry->title));
-                xmlAddChild(track, tmp);
-            }
+            if (entry->title != NULL && g_utf8_validate(entry->title, -1, NULL))
+                xspf_add_node(track, TUPLE_STRING, FALSE, "title", entry->title, 0);
 
-            if (entry->length > 0) {
-                tmp = xmlNewNode(NULL, (xmlChar *)"duration");
-                g_snprintf(tmps, sizeof(tmps), "%d", entry->length);
-                xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
-                xmlAddChild(track, tmp);
-            }
+            if (entry->length > 0)
+                xspf_add_node(track, TUPLE_INT, FALSE, "duration", NULL, entry->length);
 
             /* add mtime of -1 */
-            tmp = xmlNewNode(NULL, (xmlChar *)"meta");
-            xmlSetProp(tmp, (xmlChar *)"rel", (xmlChar *)"mtime");
-            g_snprintf(tmps, sizeof(tmps), "%ld", -1L);
-            xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
-            xmlAddChild(track, tmp);
+            xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL, -1);
         }
 
         g_free(filename);
