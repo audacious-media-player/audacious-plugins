@@ -325,4 +325,4 @@ InputPlugin vtx_ip = {
 
 InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };
 
-DECLARE_PLUGIN(vtx, NULL, NULL, vtx_iplist, NULL, NULL, NULL, NULL, NULL);
+SIMPLE_INPUT_PLUGIN(vtx, vtx_iplist);
