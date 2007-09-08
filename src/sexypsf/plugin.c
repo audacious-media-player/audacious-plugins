@@ -226,18 +226,18 @@ static Tuple *get_tuple_psf(gchar *fn) {
 
     if (tmp->length) {
         tuple = tuple_new_from_filename(fn);
-	tuple_associate_int(tuple, "length", tmp->length);
-	tuple_associate_string(tuple, "artist", tmp->artist);
-	tuple_associate_string(tuple, "album", tmp->game);
-	tuple_associate_string(tuple, "game", tmp->game);
-        tuple_associate_string(tuple, "title", tmp->title);
-        tuple_associate_string(tuple, "genre", tmp->genre);
-        tuple_associate_string(tuple, "copyright", tmp->copyright);
-        tuple_associate_string(tuple, "quality", "sequenced");
-        tuple_associate_string(tuple, "codec", "PlayStation Audio");
-        tuple_associate_string(tuple, "console", "PlayStation");
-        tuple_associate_string(tuple, "dumper", tmp->psfby);
-        tuple_associate_string(tuple, "comment", tmp->comment);
+	tuple_associate_int(tuple, FIELD_LENGTH, NULL, tmp->length);
+	tuple_associate_string(tuple, FIELD_ARTIST, NULL, tmp->artist);
+	tuple_associate_string(tuple, FIELD_ALBUM, NULL, tmp->game);
+	tuple_associate_string(tuple, -1, "game", tmp->game);
+        tuple_associate_string(tuple, FIELD_TITLE, NULL, tmp->title);
+        tuple_associate_string(tuple, FIELD_GENRE, NULL, tmp->genre);
+        tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, tmp->copyright);
+        tuple_associate_string(tuple, FIELD_QUALITY, NULL, "sequenced");
+        tuple_associate_string(tuple, FIELD_CODEC, NULL, "PlayStation Audio");
+        tuple_associate_string(tuple, -1, "console", "PlayStation");
+        tuple_associate_string(tuple, -1, "dumper", tmp->psfby);
+        tuple_associate_string(tuple, FIELD_COMMENT, NULL, tmp->comment);
 
         sexypsf_freepsfinfo(tmp);
     }

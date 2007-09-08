@@ -53,7 +53,7 @@ enum {
 } xspf_compare;
 
 typedef struct {
-    gchar *tupleName;
+    gint tupleField;
     gchar *xspfName;
     TupleValueType type;
     gboolean isMeta;
@@ -62,17 +62,17 @@ typedef struct {
 
 
 static const xspf_entry_t xspf_entries[] = {
-    { "title",          "title",        TUPLE_STRING,   FALSE,  CMP_DEF },
-    { "artist",         "creator",      TUPLE_STRING,   FALSE,  CMP_DEF },
-    { "comment",        "annotation",   TUPLE_STRING,   FALSE,  CMP_DEF },
-    { "album",          "album",        TUPLE_STRING,   FALSE,  CMP_DEF },
-    { "track-number",   "trackNum",     TUPLE_INT,      FALSE,  CMP_DEF },
-    { "length",         "duration",     TUPLE_INT,      FALSE,  CMP_GT },
+    { FIELD_TITLE,        "title",        TUPLE_STRING,   FALSE,  CMP_DEF },
+    { FIELD_ARTIST,       "creator",      TUPLE_STRING,   FALSE,  CMP_DEF },
+    { FIELD_COMMENT,      "annotation",   TUPLE_STRING,   FALSE,  CMP_DEF },
+    { FIELD_ALBUM,        "album",        TUPLE_STRING,   FALSE,  CMP_DEF },
+    { FIELD_TRACK_NUMBER, "trackNum",     TUPLE_INT,      FALSE,  CMP_DEF },
+    { FIELD_LENGTH,       "duration",     TUPLE_INT,      FALSE,  CMP_GT },
 
-    { "year",           "year",         TUPLE_INT,      TRUE,   CMP_DEF },
-    { "date",           "date",         TUPLE_STRING,   TRUE,   CMP_DEF },
-    { "genre",          "genre",        TUPLE_STRING,   TRUE,   CMP_DEF },
-    { "formatter",      "formatter",    TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_YEAR,         "year",         TUPLE_INT,      TRUE,   CMP_DEF },
+    { FIELD_DATE,         "date",         TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_GENRE,        "genre",        TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_FORMATTER,    "formatter",    TUPLE_STRING,   TRUE,   CMP_DEF },
 };
 
 static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
@@ -124,8 +124,8 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
 
 
     tuple = tuple_new();
-    tuple_associate_int(tuple, "length", -1);
-    tuple_associate_int(tuple, "mtime", -1);
+    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+    tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);
 
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
@@ -163,11 +163,11 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
                     xmlChar *str = xmlNodeGetContent(nptr);
                     switch (xspf_entries[i].type) {
                         case TUPLE_STRING:
-                            tuple_associate_string(tuple, xspf_entries[i].tupleName, (gchar *)str);
+                            tuple_associate_string(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
                             break;
                         
                         case TUPLE_INT:
-                            tuple_associate_int(tuple, xspf_entries[i].tupleName, atol((char *)str));
+                            tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
                         
                         default:
@@ -187,18 +187,18 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
         gchar *scratch;
 
         scratch = g_path_get_basename(location);
-        tuple_associate_string(tuple, "file-name", scratch);
+        tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
         g_free(scratch);
 
         scratch = g_path_get_dirname(location);
-        tuple_associate_string(tuple, "file-path", scratch);
+        tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
         g_free(scratch);
 
-        tuple_associate_string(tuple, "file-ext", strrchr(location, '.'));
+        tuple_associate_string(tuple, FIELD_FILE_EXT, strrchr(location, '.'));
 
 #ifdef DEBUG
-        printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, "file-name"));
-        printf("xspf: tuple->file_path = %s\n", tuple_get_string(tuple, "file-path"));
+        printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+        printf("xspf: tuple->file_path = %s\n", tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
 #endif
         // add file to playlist
         uri = g_filename_to_uri(location, NULL, NULL);
@@ -518,7 +518,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 
                 switch (xs->type) {
                     case TUPLE_STRING:
-                        scratch = tuple_get_string(entry->tuple, xs->tupleName);
+                        scratch = tuple_get_string(entry->tuple, xs->tupleField, NULL);
                         switch (xs->compare) {
                             case CMP_DEF: isOK = (scratch != NULL); break;
                             case CMP_NULL: isOK = (scratch == NULL); break;
@@ -528,7 +528,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                         break;
                     
                     case TUPLE_INT:
-                        scratchi = tuple_get_int(entry->tuple, xs->tupleName);
+                        scratchi = tuple_get_int(entry->tuple, xs->tupleField, NULL);
                         switch (xs->compare) {
                             case CMP_DEF: isOK = (scratchi != 0); break;
                             case CMP_GT:  isOK = (scratchi > 0); break;
@@ -544,7 +544,8 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             }
 
             /* Write mtime unconditionally to support staticlist */
-            xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL, tuple_get_int(entry->tuple, "mtime"));
+            xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL,
+                tuple_get_int(entry->tuple, FIELD_MTIME, NULL));
         } else {
 
             if (entry->title != NULL && g_utf8_validate(entry->title, -1, NULL))

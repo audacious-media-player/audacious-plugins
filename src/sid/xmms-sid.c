@@ -672,13 +672,13 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 {
 	gchar *tmpStr, tmpStr2[64];
 
-	tuple_associate_string(pResult, "title", pInfo->sidName);
-	tuple_associate_string(pResult, "artist", pInfo->sidComposer);
-	tuple_associate_string(pResult, "genre", "SID-tune");
-	tuple_associate_string(pResult, "copyright", pInfo->sidCopyright);
+	tuple_associate_string(pResult, FIELD_TITLE, NULL, pInfo->sidName);
+	tuple_associate_string(pResult, FIELD_ARTIST, NULL, pInfo->sidComposer);
+	tuple_associate_string(pResult, FIELD_GENRE, NULL, "SID-tune");
+	tuple_associate_string(pResult, FIELD_COPYRIGHT, NULL, pInfo->sidCopyright);
 
-	tuple_associate_int(pResult, "subtunes", pInfo->nsubTunes);
-	tuple_associate_string(pResult, "sid-format", pInfo->sidFormat);
+	tuple_associate_int(pResult, -1, "subtunes", pInfo->nsubTunes);
+	tuple_associate_string(pResult, -1, "sid-format", pInfo->sidFormat);
 
 	switch (pInfo->sidModel) {
 		case XS_SIDMODEL_6581: tmpStr = "6581"; break;
@@ -686,7 +686,7 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 		case XS_SIDMODEL_ANY: tmpStr = "ANY"; break;
 		default: tmpStr = "?"; break;
 	}
-	tuple_associate_string(pResult, "sid-model", tmpStr);
+	tuple_associate_string(pResult, -1, "sid-model", tmpStr);
 	
 	/* Get sub-tune information, if available */
 	if (subTune < 0 || pInfo->startTune > pInfo->nsubTunes)
@@ -694,7 +694,7 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 	
 	if ((subTune > 0) && (subTune <= pInfo->nsubTunes)) {
 		gint tmpInt = pInfo->subTunes[subTune - 1].tuneLength;
-		tuple_associate_int(pResult, "length", (tmpInt < 0) ? -1 : tmpInt * 1000);
+		tuple_associate_int(pResult, FIELD_LENGTH, NULL, (tmpInt < 0) ? -1 : tmpInt * 1000);
 		
 		tmpInt = pInfo->subTunes[subTune - 1].tuneSpeed;
 		if (tmpInt > 0) {
@@ -712,15 +712,15 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 		} else
 			tmpStr = "?";
 
-		tuple_associate_string(pResult, "sid-speed", tmpStr);
+		tuple_associate_string(pResult, -1, "sid-speed", tmpStr);
 	} else
 		subTune = 1;
 
-	tuple_associate_int(pResult, "subtune", subTune);
-	tuple_associate_int(pResult, "track-number", subTune);
+	tuple_associate_int(pResult, -1, "subtune", subTune);
+	tuple_associate_int(pResult, FIELD_TRACK_NUMBER, NULL, subTune);
 
 	if (xs_cfg.titleOverride)
-		tuple_associate_string(pResult, "formatter", xs_cfg.titleFormat);
+		tuple_associate_string(pResult, FIELD_FORMATTER, NULL, xs_cfg.titleFormat);
 }
 
 Tuple * xs_get_song_tuple(gchar *songFilename)

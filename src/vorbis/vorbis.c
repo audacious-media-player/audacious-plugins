@@ -593,7 +593,7 @@ vorbis_get_song_info(char *filename, char **title, int *length)
 {
     Tuple *tuple = get_song_tuple(filename);
 
-    *length = tuple_get_int(tuple, "length");
+    *length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
     *title = tuple_formatter_make_title_string(tuple, vorbis_cfg.tag_override ?
                                             vorbis_cfg.tag_format : get_gentitle_format());
 
@@ -716,13 +716,13 @@ vorbis_process_replaygain(float **pcm, int samples, int ch,
     return 2 * ch * samples;
 }
 
-static void _tuple_associate_string(Tuple *tuple, const gchar *field, const gchar *string)
+static void _tuple_associate_string(Tuple *tuple, const gint nfield, const gchar *field, const gchar *string)
 {
-    gchar *str = str_to_utf8(string);
-
-    tuple_associate_string(tuple, field, str);
-
-    g_free(str);
+    if (string) {
+        gchar *str = str_to_utf8(string);
+        tuple_associate_string(tuple, nfield, field, str);
+        g_free(str);
+    }
 }
 
 /*
@@ -733,36 +733,34 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename, gboolean 
 {
     Tuple *tuple = NULL;
     vorbis_comment *comment;
-    gchar *realfn = NULL;
     tuple = tuple_new_from_filename(filename);
 
     /* Retrieve the length */
-    if (is_stream == FALSE)
-        tuple_associate_int(tuple, "length", ov_time_total(vorbisfile, -1) * 1000);
-    else
-        tuple_associate_int(tuple, "length", -1);
+    tuple_associate_int(tuple, FIELD_LENGTH, NULL,
+        is_stream ? -1 : (ov_time_total(vorbisfile, -1) * 1000));
 
     if ((comment = ov_comment(vorbisfile, -1))) {
-        _tuple_associate_string(tuple, "title", vorbis_comment_query(comment, "title", 0));
-        _tuple_associate_string(tuple, "artist", vorbis_comment_query(comment, "artist", 0));
-        _tuple_associate_string(tuple, "album", vorbis_comment_query(comment, "album", 0));
-        _tuple_associate_string(tuple, "date", vorbis_comment_query(comment, "date", 0));
-        _tuple_associate_string(tuple, "genre", vorbis_comment_query(comment, "genre", 0));
-        _tuple_associate_string(tuple, "comment", vorbis_comment_query(comment, "comment", 0));
+        gchar *tmps;
+        _tuple_associate_string(tuple, FIELD_TITLE, NULL, vorbis_comment_query(comment, "title", 0));
+        _tuple_associate_string(tuple, FIELD_ARTIST, NULL, vorbis_comment_query(comment, "artist", 0));
+        _tuple_associate_string(tuple, FIELD_ALBUM, NULL, vorbis_comment_query(comment, "album", 0));
+        _tuple_associate_string(tuple, -1, "date", vorbis_comment_query(comment, "date", 0));
+        _tuple_associate_string(tuple, FIELD_GENRE, NULL, vorbis_comment_query(comment, "genre", 0));
+        _tuple_associate_string(tuple, FIELD_COMMENT, NULL, vorbis_comment_query(comment, "comment", 0));
 
-        if (vorbis_comment_query(comment, "tracknumber", 0) != NULL)
-            tuple_associate_int(tuple, "track-number", 
-                atoi(vorbis_comment_query(comment, "tracknumber", 0)));
+        if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
+            tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
 
-        tuple_associate_string(tuple, "quality", "lossy");
+        tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+
         if (comment && comment->vendor)
         {
             gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
-            tuple_associate_string(tuple, "codec", codec);
+            tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
             g_free(codec);
         }
         else
-            tuple_associate_string(tuple, "codec", "Ogg Vorbis");
+            tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
     }
 
     return tuple;
@@ -822,8 +820,8 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
     {
         gchar *old = displaytitle;
 
-        tuple_associate_string(input, "stream", tmp);
-        tuple_associate_string(input, "title", old);
+        tuple_associate_string(input, -1, "stream", tmp);
+        tuple_associate_string(input, FIELD_TITLE, NULL, old);
 
         displaytitle = tuple_formatter_process_string(input, "${?title:${title}}${?stream: (${stream})}");
 

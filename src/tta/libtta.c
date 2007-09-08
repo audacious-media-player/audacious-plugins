@@ -173,7 +173,7 @@ get_song_info (char *filename, char **title, int *length)
 	*title = NULL;
 
 	if ((tuple = get_song_tuple(filename)) != NULL) {
-    	    *length = tuple_get_int(tuple, "length");
+    	    *length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
     	    *title = get_song_title(tuple);
 	}
 
@@ -561,30 +561,30 @@ get_song_tuple(char *filename)
 		if(open_tta_file(filename, ttainfo, 0) >= 0) {
 			tuple = tuple_new_from_filename(filename);
 
-			tuple_associate_string(tuple, "codec", "True Audio (TTA)");
-			tuple_associate_string(tuple, "quality", "lossless");
+			tuple_associate_string(tuple, FIELD_CODEC, NULL, "True Audio (TTA)");
+			tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
 
 			if (ttainfo->ID3.id3has) {
 				if (ttainfo->ID3.artist)
-					tuple_associate_string(tuple, "artist", (gchar *) ttainfo->ID3.artist);
+					tuple_associate_string(tuple, FIELD_ARTIST, NULL, (gchar *) ttainfo->ID3.artist);
 
 				if (ttainfo->ID3.album)
-					tuple_associate_string(tuple, "album", (gchar *) ttainfo->ID3.album);
+					tuple_associate_string(tuple, FIELD_ALBUM, NULL, (gchar *) ttainfo->ID3.album);
 
 				if (ttainfo->ID3.title)
-					tuple_associate_string(tuple, "title", (gchar *) ttainfo->ID3.title);
+					tuple_associate_string(tuple, FIELD_TITLE, NULL, (gchar *) ttainfo->ID3.title);
 
 				if (ttainfo->ID3.year)
-					tuple_associate_int(tuple, "year", atoi((char *)ttainfo->ID3.year));
+					tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi((char *)ttainfo->ID3.year));
 
 				if(ttainfo->ID3.track)
-					tuple_associate_int(tuple, "track-number", atoi((char *)ttainfo->ID3.track));
+					tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi((char *)ttainfo->ID3.track));
 
 				if(ttainfo->ID3.genre)
-					tuple_associate_string(tuple, "genre", (gchar *) ttainfo->ID3.genre);
+					tuple_associate_string(tuple, FIELD_GENRE, NULL, (gchar *) ttainfo->ID3.genre);
 
 				if(ttainfo->ID3.comment)
-					tuple_associate_string(tuple, "comment", (gchar *) ttainfo->ID3.comment);
+					tuple_associate_string(tuple, FIELD_COMMENT, NULL, (gchar *) ttainfo->ID3.comment);
 			}
 			close_tta_file (ttainfo);
 		}
