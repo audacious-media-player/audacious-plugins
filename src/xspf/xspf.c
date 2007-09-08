@@ -1,7 +1,8 @@
 /*
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2006 William Pitcock, Tony Vroon, George Averill,
- *                    Giacomo Lozito, Derek Pomery and Yoshiki Yazawa.
+ *                    Giacomo Lozito, Derek Pomery, Yoshiki Yazawa
+ *                    and Matti Hämäläinen.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
