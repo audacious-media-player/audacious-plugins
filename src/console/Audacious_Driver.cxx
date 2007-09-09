@@ -492,7 +492,7 @@ void console_aboutbox(void)
 
 	if (!aboutbox)
 	{
-		aboutbox = xmms_show_message(_("About the Console Music Decoder"),
+		aboutbox = audacious_info_dialog(_("About the Console Music Decoder"),
 						_("Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
 						"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 						"Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"

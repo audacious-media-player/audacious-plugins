@@ -151,7 +151,7 @@ tta_error (int error)
 	    break;
 	}
 
-	xmms_show_message (_("TTA Decoder Error"), message,
+	audacious_info_dialog (_("TTA Decoder Error"), message,
 	    _("Ok"), FALSE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(errorbox), "destroy",
@@ -264,7 +264,7 @@ about ()
 				   _(" for BMP\n"
 		        	   "Copyright (c) 2004 True Audio Software\n"), PROJECT_URL, NULL);
 
-	aboutbox = xmms_show_message(_("About True Audio Plugin"),
+	aboutbox = audacious_info_dialog(_("About True Audio Plugin"),
 				     about_text,
 				     _("Ok"), FALSE, NULL, NULL);
 

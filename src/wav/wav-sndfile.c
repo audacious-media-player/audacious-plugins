@@ -526,7 +526,7 @@ static void wav_about(void)
 	static GtkWidget *box;
 	if (!box)
 	{
-        	box = xmms_show_message(
+        	box = audacious_info_dialog(
 			_("About sndfile WAV support"),
 			_("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 			  "from the xmms_sndfile plugin which is:\n"

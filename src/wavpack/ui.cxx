@@ -48,7 +48,7 @@ wv_about_box()
         gdk_window_raise(about_window->window);
 
     about_window =
-        xmms_show_message(g_strdup_printf
+        audacious_info_dialog(g_strdup_printf
                           (_("Wavpack Decoder Plugin %s"), VERSION),
                           (_("Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n\n"
                            "Some of the plugin code was by Miles Egan\n"

@@ -594,7 +594,7 @@ void jack_about(void)
 
 	if ( aboutbox == NULL )
 	{
-		aboutbox = xmms_show_message(
+		aboutbox = audacious_info_dialog(
 			_("About JACK Output Plugin 0.17"),
 			_("XMMS jack Driver 0.17\n\n"
 			  "xmms-jack.sf.net\nChris Morgan<cmorgan@alum.wpi.edu>\n\n"

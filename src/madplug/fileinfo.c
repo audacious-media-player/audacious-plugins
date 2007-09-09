@@ -155,7 +155,7 @@ static void save_cb(GtkWidget * w, gpointer data)
     /* read tag from file */
     id3file = id3_file_open(info.filename, ID3_FILE_MODE_READWRITE);
     if (!id3file) {
-        xmms_show_message(_("File Info"), _("Couldn't open file!"), _("Ok"),
+        audacious_info_dialog(_("File Info"), _("Couldn't open file!"), _("Ok"),
                           FALSE, NULL, NULL);
         return;
     }
@@ -233,7 +233,7 @@ static void save_cb(GtkWidget * w, gpointer data)
     printf("about to write id3tag\n");
 #endif
     if (id3_file_update(id3file) != 0) {
-        xmms_show_message(_("File Info"), _("Couldn't write tag!"), _("Ok"), FALSE,
+        audacious_info_dialog(_("File Info"), _("Couldn't write tag!"), _("Ok"), FALSE,
                           NULL, NULL);
     }
     id3_file_close(id3file);

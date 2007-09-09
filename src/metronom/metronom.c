@@ -82,7 +82,7 @@ static void metronom_init(void)
 static void metronom_about(void)
 {
 	static GtkWidget *box;
-	box = xmms_show_message(
+	box = audacious_info_dialog(
 		_("About Metronom"),
 		_("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\nTo use it, add a URL: tact://beats*num/den\ne.g. tact://77 to play 77 beats per minute\nor   tact://60*3/4 to play 60 bpm in 3/4 tacts"), _("Ok"),
 		FALSE, NULL, NULL);

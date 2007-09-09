@@ -194,7 +194,7 @@ void cdaudio_about()
 						"Also thank you Tony Vroon for mentoring & guiding me.\n\n"
  						"This was a Google Summer of Code 2007 project."));
 
-    about_window = xmms_show_message(_("About CD Audio Plugin NG"), about_text, _("OK"), FALSE, NULL, NULL);
+    about_window = audacious_info_dialog(_("About CD Audio Plugin NG"), about_text, _("OK"), FALSE, NULL, NULL);
 
     g_signal_connect(G_OBJECT(about_window), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &about_window);

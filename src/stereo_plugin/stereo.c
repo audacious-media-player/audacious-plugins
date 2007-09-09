@@ -49,7 +49,7 @@ static void about(void)
 	if (about_dialog != NULL)
 		return;
 
-	about_dialog = xmms_show_message(_("About Extra Stereo Plugin"),
+	about_dialog = audacious_info_dialog(_("About Extra Stereo Plugin"),
 					 _(about_text), _("Ok"), FALSE,
 					 NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(about_dialog), "destroy",

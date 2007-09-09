@@ -19,7 +19,7 @@ vtx_about (void)
   static GtkWidget *box;
   if (box) gdk_window_raise(box->window);
   else {
-	box = xmms_show_message (_("About Vortex Player"),
+	box = audacious_info_dialog (_("About Vortex Player"),
 				_
 				("Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 				"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"

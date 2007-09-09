@@ -62,7 +62,7 @@ static void null_about(void)
 			           _(" by Christian Birchinger <joker@netswarm.net>\n"
 			             "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"), NULL);
 
-	about = xmms_show_message(_("About Null Output"),
+	about = audacious_info_dialog(_("About Null Output"),
 				  about_text,
 				  _("Ok"), FALSE, NULL, NULL);
 

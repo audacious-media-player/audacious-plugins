@@ -209,7 +209,7 @@ fail(const gchar * error)
     gchar *errorstring;
     errorstring = g_strdup_printf(_("An error occured:\n%s"), error);
 
-    xmms_show_message(_("Error!"), errorstring, _("Ok"), FALSE, NULL, NULL);
+    audacious_info_dialog(_("Error!"), errorstring, _("Ok"), FALSE, NULL, NULL);
 
     g_free(errorstring);
     return;

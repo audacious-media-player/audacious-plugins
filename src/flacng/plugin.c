@@ -721,7 +721,7 @@ void flac_aboutbox(void) {
                                "\n"
                                "http://www.skytale.net/projects/bmp-flac2/"), NULL);
 
-    about_window = xmms_show_message(_("About FLAC Audio Plugin"),
+    about_window = audacious_info_dialog(_("About FLAC Audio Plugin"),
                                      about_text,
                                      _("OK"), FALSE, NULL, NULL);
 

@@ -51,7 +51,7 @@
 
 #include <audacious/i18n.h>
 
-/* for xmms_show_message () */
+/* for audacious_info_dialog () */
 #include <audacious/util.h>
 
 
@@ -900,7 +900,7 @@ static void about (void)
 {
 	static GtkWidget *dialog;
 
-	dialog = xmms_show_message (_("About Global Hotkey Plugin"),
+	dialog = audacious_info_dialog (_("About Global Hotkey Plugin"),
 				_("Global Hotkey Plugin\n"
 				"Control the player with global key combinations or multimedia keys.\n\n"
 				"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"

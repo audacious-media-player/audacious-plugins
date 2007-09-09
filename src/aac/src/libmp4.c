@@ -293,7 +293,7 @@ static void mp4_about(void)
 				  "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 				  "Copyright (c) 2005-2006 Audacious team"), NULL);
 
-    aboutbox = xmms_show_message(_("About MP4 AAC player plugin"),
+    aboutbox = audacious_info_dialog(_("About MP4 AAC player plugin"),
 				 about_text,
 				 _("Ok"), FALSE, NULL, NULL);
 

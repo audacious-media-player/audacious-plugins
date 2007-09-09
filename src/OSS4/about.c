@@ -39,7 +39,7 @@ oss_about(void)
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message(_("About OSSv4 Driver"),
+    dialog = audacious_info_dialog(_("About OSSv4 Driver"),
                                _("Audacious OSSv4 Driver\n\n"
                                  "Based on the OSSv3 Output plugin,\n" 
                                  "Ported to OSSv4's VMIX by Cristi Magherusan <majeru@gentoo.ro>\n\n"

@@ -160,7 +160,7 @@ void file_about(void)
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message(_("About FileWriter-Plugin"),
+    dialog = audacious_info_dialog(_("About FileWriter-Plugin"),
                                _("FileWriter-Plugin\n\n"
                                "This program is free software; you can redistribute it and/or modify\n"
                                "it under the terms of the GNU General Public License as published by\n"
@@ -189,7 +189,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     if (xmms_check_realtime_priority())
     {
-        xmms_show_message(_("Error"),
+        audacious_info_dialog(_("Error"),
                           _("You cannot use the FileWriter plugin\n"
                             "when you're running in realtime mode."),
                           _("OK"), FALSE, NULL, NULL);

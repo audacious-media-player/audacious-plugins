@@ -45,7 +45,7 @@ void ShowAboutWindow()
 	{
 		gchar * about_text = g_strjoin( "" , _("Modplug Input Plugin for Audacious ver") ,
 				VERSION , _("\nModplug sound engine written by Olivier Lapicque.\nXMMS interface for Modplug by Kenton Varda.\n(c)2000 Olivier Lapicque and Kenton Varda.\nUpdates and Maintainance by Konstanty Bialkowski.\nPorted to BMP by Theofilos Intzoglou.") , NULL );
-		AboutWin = xmms_show_message( _("About Modplug") , about_text , _("Ok") , FALSE , NULL , NULL );
+		AboutWin = audacious_info_dialog( _("About Modplug") , about_text , _("Ok") , FALSE , NULL , NULL );
 		gtk_signal_connect( GTK_OBJECT(AboutWin) , "destroy" ,
 			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &AboutWin);
 		g_free( about_text );

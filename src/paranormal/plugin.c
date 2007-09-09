@@ -261,7 +261,7 @@ about_closed(GtkWidget *w, GdkEvent *e, GtkWidget **window)
 static void
 pn_xmms_about (void)
 {
-  xmms_show_message("About Paranormal Visualization Studio", 
+  audacious_info_dialog("About Paranormal Visualization Studio", 
 
 "Paranormal Visualization Studio " VERSION "\n\n\
 Copyright (C) 2006, William Pitcock <nenolod -at- nenolod.net>\n\

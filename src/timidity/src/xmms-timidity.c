@@ -117,7 +117,7 @@ void xmmstimid_about(void) {
 		about_text = g_strjoin( "" ,
 			_("TiMidity Plugin\nhttp://libtimidity.sourceforge.net\nby Konstantin Korikov") , NULL );
 		about_title = g_strdup_printf( _("TiMidity Plugin %s") , PACKAGE_VERSION );
-		xmmstimid_about_wnd = xmms_show_message( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
+		xmmstimid_about_wnd = audacious_info_dialog( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
 		g_signal_connect(G_OBJECT(xmmstimid_about_wnd), "destroy",
 					(GCallback)gtk_widget_destroyed, &xmmstimid_about_wnd);
 		g_free(about_title);

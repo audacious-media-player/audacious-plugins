@@ -674,7 +674,7 @@ static void pulse_about(void) {
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message(
+    dialog = audacious_info_dialog(
             _("About Audacious PulseAudio Output Plugin"),
             _("Audacious PulseAudio Output Plugin\n\n "
             "This program is free software; you can redistribute it and/or modify\n"

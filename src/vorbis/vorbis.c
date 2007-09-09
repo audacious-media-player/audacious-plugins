@@ -845,7 +845,7 @@ vorbis_aboutbox(void)
         gdk_window_raise(about_window->window);
     else
     {
-      about_window = xmms_show_message(_("About Ogg Vorbis Audio Plugin"),
+      about_window = audacious_info_dialog(_("About Ogg Vorbis Audio Plugin"),
                                        /*
                                         * I18N: UTF-8 Translation: "Haavard Kvaalen" ->
                                         * "H\303\245vard Kv\303\245len"

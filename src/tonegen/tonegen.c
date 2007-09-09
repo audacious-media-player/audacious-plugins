@@ -52,7 +52,7 @@ static void tone_about(void)
 	static GtkWidget *box;
 	if (!box)
 	{
-		box = xmms_show_message(
+		box = audacious_info_dialog(
 			_("About Tone Generator"),
 	/* I18N: UTF-8 Translation: "Haavard Kvaalen" -> "H\303\245vard Kv\303\245len" */
 			_("Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"

@@ -155,7 +155,7 @@ MessageBox (const char *title, const char *text, const char *button)
   strcpy (tmptxt, text);
   strcpy (tmpbutton, button);
 
-  GtkWidget *msgbox = xmms_show_message (tmptitle, tmptxt, tmpbutton, FALSE,
+  GtkWidget *msgbox = audacious_info_dialog (tmptitle, tmptxt, tmpbutton, FALSE,
                                          G_CALLBACK (gtk_widget_destroyed),
                                          &msgbox);
 
@@ -182,7 +182,7 @@ adplug_about (void)
                                     "Linked AdPlug library version: "),
                                    version_text, NULL);
     about_win =
-      xmms_show_message (about_title, about_text, _("Ok"), FALSE, NULL, NULL);
+      audacious_info_dialog (about_title, about_text, _("Ok"), FALSE, NULL, NULL);
     g_signal_connect (G_OBJECT (about_win), "destroy",
                       G_CALLBACK (gtk_widget_destroyed), &about_win);
     g_free (about_text);

@@ -262,7 +262,7 @@ about_closed(GtkWidget *w, GdkEvent *e, GtkWidget **window)
 static void
 pn_xmms_about (void)
 {
-  xmms_show_message("About Rovascope", 
+  audacious_info_dialog("About Rovascope", 
 
 "Rovascope " VERSION "\n\n\
 Copyright (C) 2007, William Pitcock <nenolod -at- dereferenced.org>\n\

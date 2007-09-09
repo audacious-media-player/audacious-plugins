@@ -146,7 +146,7 @@ static void mpcAboutBox()
         char* titleText      = g_strdup_printf(_("Musepack Decoder Plugin 1.2"));
         const char* contentText = _("Plugin code by\nBenoit Amiaux\nMartin Spuler\nKuniklo\n\nGet latest version at http://musepack.net\n");
         const char* buttonText  = _("Nevermind");
-        aboutBox = xmms_show_message(titleText, contentText, buttonText, FALSE, NULL, NULL);
+        aboutBox = audacious_info_dialog(titleText, contentText, buttonText, FALSE, NULL, NULL);
         widgets.aboutBox = aboutBox;
         g_signal_connect(G_OBJECT(aboutBox), "destroy", G_CALLBACK(gtk_widget_destroyed), &widgets.aboutBox);
     }

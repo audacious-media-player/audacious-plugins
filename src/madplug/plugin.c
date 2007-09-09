@@ -592,7 +592,7 @@ static void audmad_about()
     MAD_VERSION_MAJOR, MAD_VERSION_MINOR, MAD_VERSION_PATCH,
     MAD_VERSION_EXTRA);
 
-    aboutbox = xmms_show_message(_("About MPEG Audio Plugin"),
+    aboutbox = audacious_info_dialog(_("About MPEG Audio Plugin"),
                                  scratch,
                                  _("Ok"), FALSE, NULL, NULL);
 
@@ -617,7 +617,7 @@ void audmad_error(char *error, ...)
         va_end(args);
         GDK_THREADS_ENTER();
         error_dialog =
-            xmms_show_message(_("Error"), string, _("Ok"), FALSE, 0, 0);
+            audacious_info_dialog(_("Error"), string, _("Ok"), FALSE, 0, 0);
         gtk_signal_connect(GTK_OBJECT(error_dialog), "destroy",
                            GTK_SIGNAL_FUNC(gtk_widget_destroyed),
                            &error_dialog);

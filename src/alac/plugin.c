@@ -82,7 +82,7 @@ static void alac_about(void)
 	if(aboutbox != NULL)
 		return;
 
-	aboutbox = xmms_show_message(_("About Apple Lossless Audio Plugin"),
+	aboutbox = audacious_info_dialog(_("About Apple Lossless Audio Plugin"),
 				     _("Copyright (c) 2006 Audacious team\n"
 				     "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"),
 				     _("Ok"), FALSE, NULL, NULL);

@@ -36,7 +36,7 @@ oss_about(void)
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message(_("About OSS Driver"),
+    dialog = audacious_info_dialog(_("About OSS Driver"),
                                _("Audacious OSS Driver\n\n "
                                  "This program is free software; you can redistribute it and/or modify\n"
                                  "it under the terms of the GNU General Public License as published by\n"
