@@ -194,7 +194,7 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
         tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
         g_free(scratch);
 
-        tuple_associate_string(tuple, FIELD_FILE_EXT, strrchr(location, '.'));
+        tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
 
 #ifdef DEBUG
         printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
