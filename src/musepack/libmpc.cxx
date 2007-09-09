@@ -865,7 +865,7 @@ static void* decodeStream(void* data)
         else
         {
             lockRelease();
-            xmms_usleep(10000);
+            g_usleep(10000);
         }
     }
     return endThread(filename, input, false);

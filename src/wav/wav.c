@@ -436,7 +436,7 @@ mseek(InputPlayback * playback, gulong millisecond)
     playback->eof = FALSE;
 
     while (wav_file->seek_to != -1)
-        xmms_usleep(10000);
+        g_usleep(10000);
 }
 
 static void

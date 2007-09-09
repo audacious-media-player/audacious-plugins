@@ -115,7 +115,7 @@ static void* play_loop(void *arg)
 				       (sum_sines / frequencies->len));
 		}
 		while (playback->output->buffer_free() < BUF_BYTES && going)
-		        xmms_usleep(30000);
+		        g_usleep(30000);
 		produce_audio(playback->output->written_time(), FMT_S16_NE, 1, BUF_BYTES, data, &going);
 	}
 

@@ -358,7 +358,7 @@ DecodeThread(void *a)
             }
         }
         else {
-            xmms_usleep(10000);
+            g_usleep(10000);
         }
     }
     return end_thread();

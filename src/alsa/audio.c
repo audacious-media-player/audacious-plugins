@@ -155,7 +155,7 @@ static int suspend_recover(void)
 
 	while ((err = snd_pcm_resume(alsa_pcm)) == -EAGAIN)
 		/* wait until suspend flag is released */
-		xmms_usleep(1000000);
+		g_usleep(1000000);
 	if (err < 0)
 	{
 		g_warning("alsa_handle_error(): "
@@ -316,7 +316,7 @@ void alsa_flush(int time)
 {
 	flush_request = time;
 	while (flush_request != -1)
-		xmms_usleep(10000);
+		g_usleep(10000);
 }
 
 static void parse_mixer_name(char *str, char **name, int *index)
@@ -854,7 +854,7 @@ static void *alsa_loop(void *arg)
 			}
 		}
 		else
-			xmms_usleep(10000);
+			g_usleep(10000);
 
 		if (pause_request != paused)
 			alsa_do_pause(pause_request);

@@ -199,7 +199,7 @@ play_loop (InputPlayback *playback)
             {
                 if (!playback->playing)
                     goto DONE;
-                xmms_usleep (10000);
+                g_usleep (10000);
             }
             if (seek_position == -1)
             {
@@ -223,7 +223,7 @@ play_loop (InputPlayback *playback)
 	    playback->output->buffer_free ();
 	    playback->output->buffer_free ();
 	    while (playback->output->buffer_playing()) {
-		    xmms_usleep(10000);
+		    g_usleep(10000);
 		    if(!playback->playing)
 			    goto DONE;
 	    }
@@ -537,7 +537,7 @@ mseek (InputPlayback *data, gulong millisec)
 	    seek_position = (int)(millisec / SEEK_STEP);
 
 	    while (seek_position != -1)
-		xmms_usleep (10000);
+		g_usleep (10000);
 	}
 }
 

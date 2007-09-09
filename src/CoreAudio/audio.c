@@ -498,7 +498,7 @@ void osx_flush(gint time)
 
 	while (flush != -1)
 	{
-		xmms_usleep(10000);
+		g_usleep(10000);
 	}
 }
 

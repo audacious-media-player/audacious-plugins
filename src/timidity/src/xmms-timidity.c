@@ -382,7 +382,7 @@ void xmmstimid_seek(InputPlayback * playback, int time) {
 	playback->eof = FALSE;
 
 	while (xmmstimid_seek_to != -1)
-		xmms_usleep(10000);
+		g_usleep(10000);
 }
 
 int xmmstimid_get_time(InputPlayback * playback) {

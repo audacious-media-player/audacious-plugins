@@ -501,7 +501,7 @@ static void* sun_loop(void *arg)
 			}
 		}
 		else
-			xmms_usleep(10000);
+			g_usleep(10000);
 
 		sun_bufused();
 

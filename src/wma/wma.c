@@ -232,7 +232,7 @@ static void wma_seek(InputPlayback *playback, int time)
 {
     wma_seekpos = time;
     if(wma_pause) playback->output->pause(0);
-    while(wma_decode && wma_seekpos!=-1) xmms_usleep(10000);
+    while(wma_decode && wma_seekpos!=-1) g_usleep(10000);
     if(wma_pause) playback->output->pause(1);
 }
 
@@ -338,7 +338,7 @@ static void wma_playbuff(InputPlayback *playback, int out_size)
     {
         sst_buff = wma_st_buff;
 	if(wma_pause) memset(wma_s_outbuf, 0, sst_buff);	
-    	while(playback->output->buffer_free() < wma_st_buff) xmms_usleep(20000);
+    	while(playback->output->buffer_free() < wma_st_buff) g_usleep(20000);
 	produce_audio(playback->output->written_time(), FMT_S16_NE,
     			    c->channels, sst_buff, (short *)wma_s_outbuf, NULL);
 	memset(wma_s_outbuf, 0, sst_buff);
@@ -385,7 +385,7 @@ static void *wma_play_loop(void *arg)
             if(pkt.data) av_free_packet(&pkt);
         }
     }
-    while(playback->playing && playback->output->buffer_playing()) xmms_usleep(30000);
+    while(playback->playing && playback->output->buffer_playing()) g_usleep(30000);
     playback->playing = 0;
     if(wma_s_outbuf) g_free(wma_s_outbuf);
     if(wma_outbuf) g_free(wma_outbuf);

@@ -311,7 +311,7 @@ static void mp4_seek(InputPlayback *data, int time)
 {
     seekPosition = time;
     while(buffer_playing && seekPosition != -1)
-        xmms_usleep(10000);
+        g_usleep(10000);
 }
 
 static void mp4_cleanup(void)
@@ -549,7 +549,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             /* Finish playing before we close the
                output. */
             while ( playback->output->buffer_playing() ) {
-                xmms_usleep(10000);
+                g_usleep(10000);
             }
 
             playback->output->flush(seekPosition*1000);

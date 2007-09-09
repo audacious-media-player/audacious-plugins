@@ -614,7 +614,7 @@ void flac_seek(InputPlayback* input, gint time) {
     seek_to = time;
 
     while (-1 != seek_to) {
-        xmms_usleep(10000);
+        g_usleep(10000);
     }
 
     _LEAVE;

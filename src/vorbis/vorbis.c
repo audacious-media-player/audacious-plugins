@@ -497,7 +497,7 @@ vorbis_play_loop(gpointer arg)
             do_seek(playback);
 
         if (playback->eof) {
-            xmms_usleep(20000);
+            g_usleep(20000);
             continue;
         }
 
@@ -585,7 +585,7 @@ vorbis_seek(InputPlayback *data, int time)
     seekneeded = time;
 
     while (seekneeded != -1)
-        xmms_usleep(20000);
+        g_usleep(20000);
 }
 
 static void

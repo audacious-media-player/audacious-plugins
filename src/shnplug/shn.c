@@ -796,7 +796,7 @@ void write_and_wait(shn_file *this_shn,int block_size)
 		this_shn->wave_header.channels, bytes_to_write, this_shn->vars.buffer);
 
 	while(shn_ip.output->buffer_free() < bytes_to_write && playback->playing && this_shn->vars.seek_to == -1)
-		xmms_usleep(10000);
+		g_usleep(10000);
 
 	if(playback->playing && this_shn->vars.seek_to == -1) {
 		if (shn_cfg.swap_bytes)
@@ -1187,7 +1187,7 @@ restart:
                 goto restart;
               }
               else
-                xmms_usleep(10000);
+                g_usleep(10000);
             }
 
             goto cleanup;
@@ -1227,7 +1227,7 @@ cleanup:
     write_and_wait(this_shn,this_shn->vars.bytes_in_buf);
     shn_ip.output->buffer_free();
     shn_ip.output->buffer_free();
-    xmms_usleep(10000);
+    g_usleep(10000);
 
 finish:
 
@@ -1328,7 +1328,7 @@ static void shn_seek(InputPlayback *playback, int time)
 	shnfile->vars.seek_to = time;
 
 	while (shnfile->vars.seek_to != -1)
-		xmms_usleep(10000);
+		g_usleep(10000);
 }
 
 static void shn_get_file_info(char *filename, char **title, int *length)

@@ -305,7 +305,7 @@ oss_write_audio(gpointer data, int length)
 #endif
     if (realtime && !ioctl(fd, SNDCTL_DSP_GETOSPACE, &abuf_info)) {
         while (abuf_info.bytes < length) {
-            xmms_usleep(10000);
+            g_usleep(10000);
             if (ioctl(fd, SNDCTL_DSP_GETOSPACE, &abuf_info))
                 break;
         }
@@ -511,7 +511,7 @@ oss_flush(gint time)
     if (!realtime) {
         flush = time;
         while (flush != -1)
-            xmms_usleep(10000);
+            g_usleep(10000);
     }
     else {
         ioctl(fd, SNDCTL_DSP_RESET, 0);
@@ -566,7 +566,7 @@ oss_loop(gpointer arg)
             }
         }
         else
-            xmms_usleep(10000);
+            g_usleep(10000);
         oss_calc_device_buffer_used();
         if (do_pause && !paused) {
             do_pause = FALSE;

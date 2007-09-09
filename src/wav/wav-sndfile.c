@@ -496,7 +496,7 @@ file_mseek (InputPlayback *playback, gulong millisecond)
 	seek_time = (glong)millisecond;
 
 	while (seek_time != -1)
-		xmms_usleep (80000);
+		g_usleep (80000);
 }
 
 static void

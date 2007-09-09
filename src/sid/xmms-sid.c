@@ -526,7 +526,7 @@ void xs_play_file(InputPlayback *pb)
 
 		/* Wait a little */
 		while (xs_status.isPlaying && (pb->output->buffer_free() < audioGot))
-			xmms_usleep(500);
+			g_usleep(500);
 
 		/* Check if we have played enough */
 		XS_MUTEX_LOCK(xs_status);

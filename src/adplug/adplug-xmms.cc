@@ -853,7 +853,7 @@ play_loop (void *data)
 
     // write sound buffer
     while (playback->output->buffer_free () < SNDBUFSIZE * sampsize)
-      xmms_usleep (10000);
+      g_usleep (10000);
     produce_audio (playback->output->written_time (),
                    bit16 ? FORMAT_16 : FORMAT_8,
                    stereo ? 2 : 1, SNDBUFSIZE * sampsize, sndbuf, NULL);
@@ -869,7 +869,7 @@ play_loop (void *data)
   {                             // wait for output plugin to finish if song has self-ended
     dbg_printf ("wait, ");
     while (playback->output->buffer_playing ())
-      xmms_usleep (10000);
+      g_usleep (10000);
   }
   else
   {                             // or else, flush its output buffers
