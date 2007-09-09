@@ -225,11 +225,11 @@ static Tuple *get_tuple(gchar *uri)
 	return get_tuple_uri(uri);
 }
 
-static void _tuple_copy_field(Tuple *tuple, Tuple *tuple2, const gchar *field)
+static void _tuple_copy_field(Tuple *tuple, Tuple *tuple2, const gint nfield, const gchar *field)
 {
-    const gchar *str = tuple_get_string(tuple, field);
-    tuple_disassociate(tuple2, field);
-    tuple_associate_string(tuple2, field, str);
+    const gchar *str = tuple_get_string(tuple, nfield, field);
+    tuple_disassociate(tuple2, nfield, field);
+    tuple_associate_string(tuple2, nfield, field, str);
 }
 
 static Tuple *get_tuple_uri(gchar *uri)
@@ -274,26 +274,26 @@ static Tuple *get_tuple_uri(gchar *uri)
 
     out = tuple_new();
 
-    _tuple_copy_field(phys_tuple, out, "file-path");
-    _tuple_copy_field(phys_tuple, out, "file-name");
-    _tuple_copy_field(phys_tuple, out, "file-ext");
-    _tuple_copy_field(phys_tuple, out, "codec");
-    _tuple_copy_field(phys_tuple, out, "quality");
-    _tuple_copy_field(phys_tuple, out, "copyright");
-    _tuple_copy_field(phys_tuple, out, "comment");
+    _tuple_copy_field(phys_tuple, out, FIELD_FILE_PATH, NULL);
+    _tuple_copy_field(phys_tuple, out, FIELD_FILE_NAME, NULL);
+    _tuple_copy_field(phys_tuple, out, FIELD_FILE_EXT, NULL);
+    _tuple_copy_field(phys_tuple, out, FIELD_CODEC, NULL);
+    _tuple_copy_field(phys_tuple, out, FIELD_QUALITY, NULL);
+    _tuple_copy_field(phys_tuple, out, FIELD_COPYRIGHT, NULL);
+    _tuple_copy_field(phys_tuple, out, FIELD_COMMENT, NULL);
 
-    tuple_associate_int(out, "length", tuple_get_int(phys_tuple, "length"));
+    tuple_associate_int(out, FIELD_LENGTH, NULL, tuple_get_int(phys_tuple, FIELD_LENGTH, NULL));
 
     tuple_free(phys_tuple);
 
-    tuple_associate_string(out, "title", cue_tracks[track].title);
-    tuple_associate_string(out, "artist", cue_tracks[track].performer ?
+    tuple_associate_string(out, FIELD_TITLE, NULL, cue_tracks[track].title);
+    tuple_associate_string(out, FIELD_ARTIST, NULL, cue_tracks[track].performer ?
 				  cue_tracks[track].performer : cue_performer);
-    tuple_associate_string(out, "album", cue_title);
-    tuple_associate_string(out, "genre", cue_genre);
+    tuple_associate_string(out, FIELD_ALBUM, NULL, cue_title);
+    tuple_associate_string(out, FIELD_GENRE, NULL, cue_genre);
     if(cue_year)
-        tuple_associate_int(out, "year", atoi(cue_year));
-    tuple_associate_int(out, "track-number", track + 1);
+        tuple_associate_int(out, FIELD_YEAR, NULL, atoi(cue_year));
+    tuple_associate_int(out, FIELD_TRACK_NUMBER, NULL, track + 1);
 
     return out;
 }
@@ -315,7 +315,7 @@ static void get_song_info(gchar *uri, gchar **title, gint *length)
 	g_return_if_fail(tuple != NULL);
 
 	*title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
-	*length = tuple_get_int(tuple, "length");
+	*length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
 
 	tuple_free(tuple);
 }

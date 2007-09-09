@@ -183,6 +183,7 @@ void file_about(void)
 static gint file_open(AFormat fmt, gint rate, gint nch)
 {
     gchar *filename = NULL, *temp = NULL;
+    const gchar *directory;
     gint pos;
     gint rv;
     Playlist *playlist;
@@ -222,7 +223,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     }
     if (filename == NULL)
     {
-        filename = g_strdup(tuple_get_string(tuple, "file-name"));
+        filename = g_strdup(tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
                 *temp = '\0';
@@ -233,10 +234,8 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     if (prependnumber)
     {
-        gint number;
-        if (tuple && tuple_get_int(tuple, "track-number"))
-            number = tuple_get_int(tuple, "track-number");
-        else
+        gint number = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+        if (!tuple || !number)
             number = pos + 1;
 
         temp = g_strdup_printf("%.02d %s", number, filename);
@@ -244,15 +243,13 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
         filename = temp;
     }
 
-    gchar *directory;
     if (save_original)
-        directory = g_strdup(tuple_get_string(tuple, "file-path"));
+        directory = tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
     else
-        directory = g_strdup(file_path);
+        directory = file_path;
 
     temp = g_strdup_printf("file://%s/%s.%s",
                            directory, filename, fileext_str[fileext]);
-    g_free(directory);
     g_free(filename);
     filename = temp;
 

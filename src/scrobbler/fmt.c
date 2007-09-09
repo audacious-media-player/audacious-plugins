@@ -29,7 +29,7 @@ char *fmt_timestr(time_t t, int gmt)
 	static char buf[30];
 
 	tm = gmt ? gmtime(&t) : localtime(&t);
-	snprintf(buf, sizeof(buf), "%d-%.2d-%.2d %.2d:%.2d:%.2d",
+	g_snprintf(buf, sizeof(buf), "%d-%.2d-%.2d %.2d:%.2d:%.2d",
 			tm->tm_year + 1900,
 			tm->tm_mon + 1,
 			tm->tm_mday,
