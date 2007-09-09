@@ -615,27 +615,25 @@ jack_tell_audio(AFormat * fmt, gint * srate, gint * nch)
 
 OutputPlugin jack_op =
 {
-	NULL,
-	NULL,
-	"JACK Output Plugin 0.17",
-	jack_init,
-	jack_cleanup,
-	jack_about,
-	jack_configure,
-	jack_get_volume,
-	jack_set_volume,
-	jack_open,
-	jack_write,
-	jack_close,
-	jack_flush,
-	jack_pause,
-	jack_free,
-	jack_playing,
-	jack_get_output_time,
-	jack_get_written_time,
-	jack_tell_audio
+	.description = "JACK Output Plugin 0.17",
+	.init = jack_init,
+	.cleanup = jack_cleanup,
+	.about = jack_about,
+	.configure = jack_configure,
+	.get_volume = jack_get_volume,
+	.set_volume = jack_set_volume,
+	.open_audio = jack_open,
+	.write_audio = jack_write,
+	.close_audio = jack_close,
+	.flush = jack_flush,
+	.pause = jack_pause,
+	.buffer_free = jack_free,
+	.buffer_playing = jack_playing,
+	.output_time = jack_get_output_time,
+	.written_time = jack_get_written_time,
+	.tell_audio = jack_tell_audio
 };
 
 OutputPlugin *jack_oplist[] = { &jack_op, NULL };
 
-DECLARE_PLUGIN(jack, NULL, NULL, NULL, jack_oplist, NULL, NULL, NULL, NULL);
+SIMPLE_OUTPUT_PLUGIN(jack, jack_oplist);
