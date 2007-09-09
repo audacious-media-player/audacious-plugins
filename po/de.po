@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-09-05 00:28+0200\n"
-"PO-Revision-Date: 2007-09-08 00:43+0100\n"
+"PO-Revision-Date: 2007-09-09 21:45+0100\n"
 "Last-Translator: Michael Färber <0102@gmx.at>\n"
 "Language-Team: german <0102@gmx.at>\n"
 "MIME-Version: 1.0\n"
@@ -790,6 +790,8 @@ msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">ALSA-\n"
+"Backend</span>"
 
 #: src/amidi-plug/i_configure-ap.c:56
 msgid "AMIDI-Plug - backend information"
@@ -821,15 +823,15 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-ap.c:291
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "Länge von MIDI-Dateien in der Wiedergabeliste ausrechnen"
 
 #: src/amidi-plug/i_configure-ap.c:296
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "Kommentare aus MIDI-Datei extrahieren (falls verfügbar)"
 
 #: src/amidi-plug/i_configure-ap.c:301
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "Liedtexte aus MIDI-Dateien extrahieren (falls verfügbar)"
 
 #: src/amidi-plug/i_configure-ap.c:320
 msgid ""
@@ -875,10 +877,12 @@ msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 msgstr ""
+"<span size=\"smaller\">AMIDI-\n"
+"Plug</span>"
 
 #: src/amidi-plug/i_configure.c:75
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Plug - Datei auswählen"
 
 #: src/amidi-plug/i_configure.c:122
 msgid "AMIDI-Plug - configuration"
@@ -886,7 +890,7 @@ msgstr "AMIDI-Plug - Konfiguration"
 
 #: src/amidi-plug/i_configure.c:241
 msgid "AMIDI-Plug message"
-msgstr ""
+msgstr "AMIDI-Plug-Meldung"
 
 #: src/amidi-plug/i_configure.c:242
 msgid "Please stop the player before changing AMIDI-Plug settings."
@@ -906,15 +910,15 @@ msgstr "Nichts mitloggen"
 
 #: src/amidi-plug/i_configure-dummy.c:185
 msgid "Log MIDI events to standard output"
-msgstr ""
+msgstr "MIDI-Ereignisse an stdout loggen"
 
 #: src/amidi-plug/i_configure-dummy.c:189
 msgid "Log MIDI events to standard error"
-msgstr ""
+msgstr "MIDI-Ereignisse an stderr loggen"
 
 #: src/amidi-plug/i_configure-dummy.c:193
 msgid "Log MIDI events to file"
-msgstr ""
+msgstr "MIDI-Ereignisse in Datei loggen"
 
 #: src/amidi-plug/i_configure-dummy.c:202
 msgid "Logfile settings"
@@ -959,13 +963,15 @@ msgstr "So schnell wie möglich abspielen"
 
 #: src/amidi-plug/i_configure-dummy.c:329
 msgid "Dummy Backend not loaded or not available"
-msgstr ""
+msgstr "Dummy-Backend nicht geladen oder nicht verfügbar"
 
 #: src/amidi-plug/i_configure-dummy.c:348
 msgid ""
 "<span size=\"smaller\">Dummy\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">Dummy-\n"
+"Backend</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
@@ -973,7 +979,7 @@ msgstr "AMIDI-Plug - SoundFont-Datei wählen"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:362
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
-msgstr ""
+msgstr "Fluidsynth-Backend-Konfiguration"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "SoundFont settings"
@@ -1013,7 +1019,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:557
 msgid "poliphony"
-msgstr ""
+msgstr "Polyphonie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:585
 msgid "reverb"
@@ -1035,7 +1041,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:647
 msgid "sample rate"
-msgstr ""
+msgstr "Abtastfrequenz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:653
 msgid "22050 Hz "
@@ -1086,6 +1092,8 @@ msgid ""
 "* Select SoundFont files *\n"
 "In order to play MIDI with FluidSynth, you need to specify at least one valid SoundFont file here (use absolute paths). The loading order is from the top (first) to the bottom (last)."
 msgstr ""
+"* SoundFont-Dateien auswählen *\n"
+"Um MIDI-Dateien mit FluidSynth abzuspielen, muss hier mindestens eine gültige SoundFont-Datei angegeben werden (absolute Pfade verwenden). Die Lade-Reihenfolge ist von der Spitze (erstes) bis zum  The loading order is from the top (first) to the bottom (last)."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:812
 msgid ""
@@ -2583,11 +2591,11 @@ msgstr ""
 
 #: src/lirc/about.c:65
 msgid "About LIRC Audacious Plugin"
-msgstr ""
+msgstr "Über das LIRC-Audacious-Plugin"
 
 #: src/lirc/about.c:92
 msgid "LIRC Plugin "
-msgstr ""
+msgstr "LIRC-Plugin "
 
 #: src/lirc/about.c:94
 msgid ""
@@ -2602,11 +2610,21 @@ msgid ""
 "You can get LIRC information at:\n"
 "http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 msgstr ""
+"\n"
+"Ein einfaches Plugin, das Audacious mithilfe des\n"
+"LIRC-Daemons kontrollieren lässt\n"
+"\n"
+"Für Audacious angepasst von Tony Vroon <chainsaw@gentoo.org>\n"
+"vom XMMS-LIRC-Plugin von:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Informationen zu LIRC sind verfügbar bei:\n"
+"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 
 #: src/lirc/lirc.c:80
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr ""
+msgstr "%s: Konnte LIRC-Unterstützung nicht initialisieren\n"
 
 #: src/lirc/lirc.c:88
 #, c-format
@@ -2877,6 +2895,11 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
+"Ein Takt-Generator von Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"Zur Verwendung eine URL hinzufügen: tact://Schläge*Zähler/Nenner\n"
+"z.B. tact://77 zum Spielen von 77 Schlägen pro Minute\n"
+"oder tact://60*3/4 zum Spielen von 60 bpm im 3/4-Takt"
 
 #: src/metronom/metronom.c:199
 #: src/metronom/metronom.c:263
@@ -3108,7 +3131,7 @@ msgstr ""
 
 #: src/musepack/libmpc.cxx:147
 msgid "Nevermind"
-msgstr ""
+msgstr "Vergiss es"
 
 #: src/musepack/libmpc.cxx:165
 msgid "Musepack Decoder Configuration"
@@ -3442,20 +3465,20 @@ msgstr ""
 
 #: src/sid/xmms-sid.c:209
 msgid "Error initializing STIL database!\n"
-msgstr ""
+msgstr "Fehler beim Initialisieren der STIL-Datenbank!\n"
 
 #: src/sid/xmms-sid.c:414
 msgid "Couldn't allocate memory for audio data buffer!\n"
-msgstr ""
+msgstr "Konnte keinen Speicher für den Audio-Daten-Buffer allozieren!\n"
 
 #: src/sid/xmms-sid.c:421
 msgid "Couldn't allocate memory for audio oversampling buffer!\n"
-msgstr ""
+msgstr "Konnte keinen Speicher für den Audio-Oversampling-Buffer allozieren!\n"
 
 #: src/sid/xmms-sid.c:436
 #, c-format
 msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
-msgstr ""
+msgstr "Konnte SID-Tune '%s' (Unter-Tune #%i) nicht initialisieren!\n"
 
 #: src/sid/xmms-sid.c:446
 #, c-format
@@ -3501,32 +3524,32 @@ msgstr "Kanäle:"
 #: src/sid/xmms-sid.glade:384
 #: src/sid/xs_interface.c:345
 msgid "Samplerate:"
-msgstr ""
+msgstr "Abtastfrequenz:"
 
 #: src/sid/xmms-sid.glade:430
 #: src/sid/xs_interface.c:362
 msgid "Use oversampling"
-msgstr ""
+msgstr "Oversampling benützen"
 
 #: src/sid/xmms-sid.glade:456
 #: src/sid/xs_interface.c:373
 msgid "Factor:"
-msgstr ""
+msgstr "Faktor:"
 
 #: src/sid/xmms-sid.glade:500
 #: src/sid/xs_interface.c:385
 msgid "Large factors require more CPU-power"
-msgstr ""
+msgstr "Große Faktoren benötigen mehr Rechenleistung"
 
 #: src/sid/xmms-sid.glade:534
 #: src/sid/xs_interface.c:391
 msgid "Oversampling:"
-msgstr ""
+msgstr "Oversampling:"
 
 #: src/sid/xmms-sid.glade:570
 #: src/sid/xs_interface.c:396
 msgid "Audio"
-msgstr ""
+msgstr "Audio"
 
 #: src/sid/xmms-sid.glade:620
 #: src/sid/xs_interface.c:428
@@ -3611,7 +3634,7 @@ msgstr ""
 #: src/sid/xmms-sid.glade:865
 #: src/sid/xs_interface.c:509
 msgid "SIDPlay 2 (cycle-based)"
-msgstr ""
+msgstr "SIDPlay 2 (zyklus-basiert)"
 
 #: src/sid/xmms-sid.glade:887
 #: src/sid/xs_interface.c:517
@@ -3701,17 +3724,17 @@ msgstr ""
 #: src/sid/xmms-sid.glade:1223
 #: src/sid/xs_interface.c:637
 msgid "Linear interpolation"
-msgstr ""
+msgstr "Lineare Interpolation"
 
 #: src/sid/xmms-sid.glade:1263
 #: src/sid/xs_interface.c:652
 msgid "Resampling (FIR)"
-msgstr ""
+msgstr "Resampling (FIR)"
 
 #: src/sid/xmms-sid.glade:1284
 #: src/sid/xs_interface.c:659
 msgid "reSID sampling options:"
-msgstr ""
+msgstr "reSID-Sampling-Optionen:"
 
 #: src/sid/xmms-sid.glade:1320
 #: src/sid/xs_interface.c:664
@@ -3726,7 +3749,7 @@ msgstr ""
 #: src/sid/xmms-sid.glade:1352
 #: src/sid/xs_interface.c:676
 msgid "Emulate filters"
-msgstr ""
+msgstr "Filter emulieren"
 
 #: src/sid/xmms-sid.glade:1409
 #: src/sid/xs_interface.c:705
@@ -3746,12 +3769,12 @@ msgstr ""
 #: src/sid/xmms-sid.glade:1549
 #: src/sid/xs_interface.c:750
 msgid "Reset values"
-msgstr ""
+msgstr "Werte zurücksetzen"
 
 #: src/sid/xmms-sid.glade:1578
 #: src/sid/xs_interface.c:755
 msgid "SIDPlay1"
-msgstr ""
+msgstr "SIDPlay1"
 
 #: src/sid/xmms-sid.glade:1690
 #: src/sid/xs_interface.c:796
@@ -3791,12 +3814,12 @@ msgstr "Filter"
 #: src/sid/xmms-sid.glade:1935
 #: src/sid/xs_interface.c:880
 msgid "If enabled, the tune is played at least for the specified time, adding silence to the end if necessary."
-msgstr ""
+msgstr "Wenn aktiviert, wird das Stück mindestens für die angegebene Zeit abgespielt, wobei nötigenfalls Stille zum Ende hinzugefügt wird."
 
 #: src/sid/xmms-sid.glade:1937
 #: src/sid/xs_interface.c:876
 msgid "Play at least for specified time"
-msgstr ""
+msgstr "Mindestens für die angegebene Zeit spielen"
 
 #: src/sid/xmms-sid.glade:1962
 #: src/sid/xmms-sid.glade:2133
@@ -3906,32 +3929,32 @@ msgstr "STIL-Datei:"
 #: src/sid/xmms-sid.glade:2669
 #: src/sid/xs_interface.c:1115
 msgid "Path and filename of STIL database file (STIL.txt), usually found from HVSC's DOCUMENTS-subdirectory."
-msgstr ""
+msgstr "Pfad und Dateiname der STIL-Datenbank-Datei (STIL.txt), üblicherweise im HVSC-DOCUMENTS-Unterverzeichnis."
 
 #: src/sid/xmms-sid.glade:2704
 #: src/sid/xs_interface.c:1128
 msgid "Browse for STIL-database file"
-msgstr ""
+msgstr "Nach STIL-Datenbank-Datei suchen"
 
 #: src/sid/xmms-sid.glade:2738
 #: src/sid/xs_interface.c:1135
 msgid "HVSC path:"
-msgstr ""
+msgstr "HVSC-Pfad:"
 
 #: src/sid/xmms-sid.glade:2775
 #: src/sid/xs_interface.c:1151
 msgid "Path to base-directory of your High Voltage SID Collection (HVSC), for example /media/C64Music/"
-msgstr ""
+msgstr "Pfad zum Basis-Verzeichnis der High Voltage SID Collection (HVSC), zum Beispiel /media/C64Music/"
 
 #: src/sid/xmms-sid.glade:2810
 #: src/sid/xs_interface.c:1164
 msgid "Browse for HVSC path"
-msgstr ""
+msgstr "Nach HVSC-Pfad suchen"
 
 #: src/sid/xmms-sid.glade:2840
 #: src/sid/xs_interface.c:1166
 msgid "SID Tune Information List (STIL) database:"
-msgstr ""
+msgstr "SID Tune Information List (STIL)-Datenbank:"
 
 #: src/sid/xmms-sid.glade:2913
 #: src/sid/xs_interface.c:1190
@@ -3941,7 +3964,7 @@ msgstr ""
 #: src/sid/xmms-sid.glade:2927
 #: src/sid/xs_interface.c:1197
 msgid "Cancel any changes"
-msgstr ""
+msgstr "Alle Änderungen verwerfen"
 
 #: src/sid/xmms-sid.glade:2952
 #: src/sid/xs_interface.c:1474
@@ -5311,6 +5334,10 @@ msgid ""
 "Some of the plugin code was by Miles Egan\n"
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
+"Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+"\n"
+"Ein Teil des Plugin-Codes war von Miles Egan\n"
+"Die Wavpack-Seite befindet sich auf http://www.wavpack.com/\n"
 
 #: src/wavpack/ui.cxx:163
 msgid "Ape2 Tag"
@@ -5328,7 +5355,7 @@ msgstr "Version %d"
 #: src/wavpack/ui.cxx:380
 #, c-format
 msgid "average bitrate: %6.1f kbps"
-msgstr ""
+msgstr "durchschnittliche Bitrate: %6.1f kbps"
 
 #: src/wavpack/ui.cxx:381
 #, c-format
