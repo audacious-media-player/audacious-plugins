@@ -110,7 +110,7 @@ GList * get_upload_list()
     Playlist *current_play = playlist_get_active();
 
     node = current_play->entries;
-    PLAYLIST_LOCK(current_play->mutex);     /*needed so that the user doesn't modify the selection*/ 
+    PLAYLIST_LOCK(current_play);            /*needed so that the user doesn't modify the selection*/ 
     while (node)                            /*while creating the list of files to be uploaded*/
     {
         entry = PLAYLIST_ENTRY(node->data);
@@ -122,7 +122,7 @@ GList * get_upload_list()
         }
         node = g_list_next(node);
     }
-    PLAYLIST_UNLOCK(current_play->mutex);
+    PLAYLIST_UNLOCK(current_play);
     return g_list_reverse(up_list);
 }
 

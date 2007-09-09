@@ -371,7 +371,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     xmlSetProp(rootnode, (xmlChar *)"version", (xmlChar *)"1");
     xmlSetProp(rootnode, (xmlChar *)"xmlns", (xmlChar *)XSPF_XMLNS);
 
-    PLAYLIST_LOCK(playlist->mutex);
+    PLAYLIST_LOCK(playlist);
 
     /* relative */
     if (playlist->attribute & PLAYLIST_USE_RELATIVE) {
@@ -561,7 +561,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         filename = NULL;
     }
 
-    PLAYLIST_UNLOCK(playlist->mutex);
+    PLAYLIST_UNLOCK(playlist);
 
     xmlSaveFormatFile(filename, doc, 1);
     xmlFreeDoc(doc);
