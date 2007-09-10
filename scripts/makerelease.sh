@@ -44,6 +44,7 @@ echo "Making release named $RELEASENAME (tip $TIP)"
 echo
 echo "Building root: $RELEASENAME/"
 hg archive $RELEASENAME
+sh autogen.sh
 cd $RELEASENAME
 rm -rf autogen.sh autom4te.cache
 
