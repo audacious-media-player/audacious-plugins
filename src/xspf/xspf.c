@@ -302,9 +302,7 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                     xmlChar *title = xmlNodeGetContent(nptr2);
                     
                     if (title && *title) {
-                        gchar *old = plist->title;
-                        plist->title = g_strdup((gchar*)title);
-                        g_free(old);
+                        playlist_set_current_name(plist, (gchar*)title);
                     }
                     xmlFree(title);
                 } else
