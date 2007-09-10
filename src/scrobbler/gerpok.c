@@ -92,10 +92,10 @@ static void q_put(Tuple *tuple, int len)
 
 	item = malloc(sizeof(item_t));
 
-	item->artist = fmt_escape(tuple_get_string(tuple, "artist"));
-	item->title = fmt_escape(tuple_get_string(tuple, "title"));
+	item->artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
+	item->title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
 	item->utctime = fmt_escape(fmt_timestr(time(NULL), 1));
-	snprintf(item->len, sizeof(item->len), "%d", len);
+	g_snprintf(item->len, sizeof(item->len), "%d", len);
 
 #ifdef NOTYET
 	if(tuple->mb == NULL)
@@ -106,7 +106,7 @@ static void q_put(Tuple *tuple, int len)
 		item->mb = fmt_escape((char*)tuple->mb);
 #endif
 
-	if((album = tuple_get_string(tuple, "album")))
+	if((album = tuple_get_string(tuple, FIELD_ALBUM, NULL)))
 		item->album = fmt_escape("");
 	else
 		item->album = fmt_escape((char*) album);
@@ -412,7 +412,7 @@ static int gerpok_sc_handshake(void)
 	char buf[4096];
 	CURL *curl;
 
-	snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s",
+	g_snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s",
 			SCROBBLER_HS_URL, SCROBBLER_VERSION,
 			SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, gerpok_sc_username);
 
@@ -568,9 +568,9 @@ static int gerpok_sc_parse_sb_res(void)
 
 static gchar *gerpok_sc_itemtag(char c, int n, char *str)
 {
-    static char buf[SCROBBLER_SB_MAXLEN]; 
-    snprintf(buf, SCROBBLER_SB_MAXLEN, "&%c[%d]=%s", c, n, str);
-    return buf;
+	static char buf[SCROBBLER_SB_MAXLEN]; 
+	g_snprintf(buf, SCROBBLER_SB_MAXLEN, "&%c[%d]=%s", c, n, str);
+	return buf;
 }
 
 #define cfa(f, l, n, v) \
@@ -748,7 +748,7 @@ static void read_cache(void)
 
 	cachesize = written = 0;
 
-	snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", audacious_get_localdir());
+	g_snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", audacious_get_localdir());
 
 	if (!(fd = fopen(buf, "r")))
 		return;
@@ -832,7 +832,7 @@ static void dump_queue(void)
 		return;
 	}
 
-	snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", audacious_get_localdir());
+	g_snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", audacious_get_localdir());
 
 	if (!(fd = fopen(buf, "w")))
 	{

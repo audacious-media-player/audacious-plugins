@@ -359,14 +359,14 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
 
         MpcInfo tags = getTags(p_Filename);
 
-        tuple_associate_string(tuple, "date", tags.date);
-        tuple_associate_string(tuple, "title", tags.title);
-        tuple_associate_string(tuple, "artist", tags.artist);
-        tuple_associate_string(tuple, "album", tags.album);
-        tuple_associate_int(tuple, "track-number", tags.track);
-        tuple_associate_int(tuple, "year", tags.year);
-        tuple_associate_string(tuple, "genre", tags.genre);
-        tuple_associate_string(tuple, "comment", tags.comment);
+        tuple_associate_string(tuple, FIELD_DATE, NULL, tags.date);
+        tuple_associate_string(tuple, FIELD_TITLE, NULL, tags.title);
+        tuple_associate_string(tuple, FIELD_ARTIST, NULL, tags.artist);
+        tuple_associate_string(tuple, FIELD_ALBUM, NULL, tags.album);
+        tuple_associate_int(tuple, FIELD_TRACK_NUMER, NULL, tags.track);
+        tuple_associate_int(tuple, FIELD_YEAR, NULL, tags.year);
+        tuple_associate_string(tuple, FIELD_GENRE, NULL, tags.genre);
+        tuple_associate_string(tuple, FIELD_COMMENT, NULL, tags.comment);
 
         freeTags(tags);
 
@@ -375,14 +375,14 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
         mpc_reader_setup_file_vfs(&reader, input);
         mpc_streaminfo_read(&info, &reader.reader);
 
-        tuple_associate_int(tuple, "length", static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
 
         gchar *scratch = g_strdup_printf("Musepack v%d (encoder %s)", info.stream_version, info.encoder);
-        tuple_associate_string(tuple, "codec", scratch);
+        tuple_associate_string(tuple, FIELD_CODEC, NULL, scratch);
         g_free(scratch);
 
         scratch = g_strdup_printf("lossy (%s)", info.profile_name);
-        tuple_associate_string(tuple, "quality", scratch);
+        tuple_associate_string(tuple, FIELD_QUALITY, NULL, scratch);
         g_free(scratch);
 
         vfs_fclose(input);
