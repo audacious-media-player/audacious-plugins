@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-09-05 00:28+0200\n"
-"PO-Revision-Date: 2007-09-04 20:38+0900\n"
+"PO-Revision-Date: 2007-09-10 09:42+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3964,7 +3964,6 @@ msgid "Oversampling rate-conversion pass failed.\n"
 msgstr "オーバーサンプリングレート変換パスに失敗しました.\n"
 
 #: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:213
-#, fuzzy
 msgid "Audacious-SID configuration"
 msgstr "Audacious-SID 設定"
 
@@ -4272,16 +4271,15 @@ msgstr "エクスポート"
 
 #: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:804
 msgid "Use"
-msgstr ""
+msgstr "使用"
 
 #: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:820
 msgid "Import"
 msgstr "インポート"
 
 #: src/sid/xmms-sid.glade:1774 src/sid/xs_interface.c:828
-#, fuzzy
 msgid "Delete"
-msgstr "デフォルト"
+msgstr "削除"
 
 #: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:842
 msgid "Filter curve:"
@@ -4378,16 +4376,15 @@ msgstr "曲の長さ"
 
 #: src/sid/xmms-sid.glade:2437 src/sid/xs_interface.c:1036
 msgid "Add sub-tunes to playlist"
-msgstr ""
+msgstr "サブチューンをプレイリストに追加"
 
 #: src/sid/xmms-sid.glade:2457 src/sid/xs_interface.c:1041
 msgid "Only tunes with specified minimum length "
 msgstr "指定された最小の長さのチューンのみ"
 
 #: src/sid/xmms-sid.glade:2560 src/sid/xs_interface.c:1071
-#, fuzzy
 msgid "Sub-tune handling:"
-msgstr "サブチューンコントロール:"
+msgstr "サブチューンの取り扱い:"
 
 #: src/sid/xmms-sid.glade:2605 src/sid/xs_interface.c:1092
 msgid ""
@@ -4485,7 +4482,6 @@ msgid "Select HVSC song length database"
 msgstr "HVSC 曲の長さデータベースを選択"
 
 #: src/sid/xmms-sid.glade:3554 src/sid/xs_interface.c:1768
-#, fuzzy
 msgid "Select STIL-database"
 msgstr "STIL データベースを選択"
 
@@ -4495,27 +4491,24 @@ msgstr "HVSC 位置のプレフィックスを選択"
 
 #: src/sid/xmms-sid.glade:3638 src/sid/xs_interface.c:1850
 msgid "Select SIDPlay2 filters file for importing"
-msgstr ""
+msgstr "インポートする SIDPlay2 フィルタファイルを選択"
 
 #: src/sid/xmms-sid.glade:3680 src/sid/xs_interface.c:1891
 msgid "Select SIDPlay2 filters file for exporting"
-msgstr ""
+msgstr "エクスポートする SIDPlay2 フィルタファイルを選択"
 
 #: src/sid/xmms-sid.glade:3721 src/sid/xmms-sid.glade:3803
 #: src/sid/xs_interface.c:1939 src/sid/xs_interface.c:1952
-#, fuzzy
 msgid "Confirm selected action"
-msgstr "フォーマット選択"
+msgstr "選択されたアクションの確認"
 
 #: src/sid/xmms-sid.glade:3759 src/sid/xs_interface.c:1969
-#, fuzzy
 msgid "Yes"
 msgstr "はい"
 
 #: src/sid/xmms-sid.glade:3771 src/sid/xs_interface.c:1975
-#, fuzzy
 msgid "No"
-msgstr "なし"
+msgstr "いいえ"
 
 #: src/sid/xs_fileinfo.c:238
 msgid "General info"
