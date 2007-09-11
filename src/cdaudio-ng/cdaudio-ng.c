@@ -828,7 +828,7 @@ Tuple *create_tuple_from_trackinfo(char *filename)
 		tuple_associate_string(tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
 	}
 	if(strlen(trackinfo[0].name)) {
-		tuple_associate_string(tuple, FIELD_ALBUM, NULL trackinfo[0].name);
+		tuple_associate_string(tuple, FIELD_ALBUM, NULL, trackinfo[0].name);
 	}
 	if(strlen(trackinfo[trackno].name)) {
 		tuple_associate_string(tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
