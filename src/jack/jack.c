@@ -429,72 +429,9 @@ gint jack_open(AFormat fmt, gint sample_rate, gint num_channels)
 void jack_write(gpointer ptr, gint length)
 {
   long written;
-#if 0
-  EffectPlugin *ep;
-  AFormat new_format;
-  int new_frequency, new_channels;
-  long positionMS;
-#endif
 
   TRACE("starting length of %d\n", length);
 
-#if 0
-  /* copy the current values into temporary values */
-  new_format = input.format;
-  new_frequency = input.frequency;
-  new_channels = input.channels;
-
-  /* query xmms for the current plugin */
-  ep = get_current_effect_plugin();
-  if(effects_enabled() && ep && ep->query_format)
-  {
-    ep->query_format(&new_format, &new_frequency, &new_channels);
-  }
-
-  /* if the format has changed take this into account by modifying */
-  /* the time offset and reopening the device with the new format settings */
-  if (new_format != effect.format ||
-      new_frequency != effect.frequency ||
-      new_channels != effect.channels)
-  {
-    TRACE("format changed, storing new values and opening/closing jack\n");
-    TRACE("effect.format == %d, new_format == %d, effect.frequency == %ld, new_frequency == %d, effect.channels == %d, new_channels = %d\n",
-	  effect.format, new_format, effect.frequency, new_frequency, effect.channels, new_channels);
-
-    positionMS = JACK_GetPosition(driver, MILLISECONDS, PLAYED);
-
-    jack_close();
-    jack_open(new_format, new_frequency, new_channels);
-
-    /* restore the position after the open and close */
-    JACK_SetState(driver, PAUSED);
-    JACK_SetPosition(driver, MILLISECONDS, positionMS);
-    JACK_SetState(driver, PLAYING);
-  }
-
-  /* if effects are enabled and we have a plugin, run the current */
-  /* samples through the plugin */
-  if (effects_enabled() && ep && ep->mod_samples)
-  {
-    length = ep->mod_samples(&ptr, length,
-                             input.format,
-                             input.frequency,
-                             input.channels);
-    TRACE("effects_enabled(), length is now %d\n", length);
-  }
-
-  TRACE("effect.frequency == %ld, input.frequency == %ld, output.frequency == %ld\n",
-        effect.frequency, input.frequency, output.frequency);
-
-  /* if we need rate conversion, perform it here */
-  if((effect.frequency != output.frequency) && isXmmsFrequencyAvailable)
-  {
-    TRACE("performing rate conversion from '%ld'(effect) to '%ld'(output)\n", effect.frequency, output.frequency);
-    length = freq_convert (convertb, &ptr, length, effect.frequency, output.frequency);
-  }
-
-  TRACE("length = %d\n", length);
-#endif
   /* loop until we have written all the data out to the jack device */
   /* this is due to xmms' audio driver api */
   char *buf = (char*)ptr;

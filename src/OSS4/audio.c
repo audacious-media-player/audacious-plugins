@@ -47,7 +47,7 @@ static gint flush;
 static gint fragsize, device_buffer_size;
 static gchar *device_name;
 static GThread *buffer_thread;
-static gboolean realtime, select_works;
+static gboolean select_works;
 
 static int (*oss_convert_func) (void **data, int length);
 static int (*oss_stereo_convert_func) (void **data, int length, int fmt);
@@ -197,8 +197,6 @@ oss_get_output_time(void)
     if (!fd || !going)
         return 0;
 
-    if (realtime)
-        oss_calc_device_buffer_used();
     bytes = output_bytes < device_buffer_used ?
         0 : output_bytes - device_buffer_used;
 
@@ -208,13 +206,10 @@ oss_get_output_time(void)
 static int
 oss_used(void)
 {
-    if (realtime)
-        return 0;
-    else {
-        if (wr_index >= rd_index)
-            return wr_index - rd_index;
-        return buffer_size - (rd_index - wr_index);
-    }
+    if (wr_index >= rd_index)
+        return wr_index - rd_index;
+
+    return buffer_size - (rd_index - wr_index);
 }
 
 gint
@@ -222,8 +217,6 @@ oss_playing(void)
 {
     if (!going)
         return 0;
-    if (realtime)
-        oss_calc_device_buffer_used();
     if (!oss_used() && (device_buffer_used - (3 * blk_size)) <= 0)
         return FALSE;
 
@@ -233,22 +226,18 @@ oss_playing(void)
 gint
 oss_free(void)
 {
-    if (!realtime) {
-        if (remove_prebuffer && prebuffer) {
-            prebuffer = FALSE;
-            remove_prebuffer = FALSE;
-        }
-        if (prebuffer)
-            remove_prebuffer = TRUE;
-
-        if (rd_index > wr_index)
-            return (rd_index - wr_index) - device_buffer_size - 1;
-        return (buffer_size - (wr_index - rd_index)) - device_buffer_size - 1;
+    if (remove_prebuffer && prebuffer) {
+        prebuffer = FALSE;
+        remove_prebuffer = FALSE;
     }
-    else if (paused)
-        return 0;
-    else
-        return 1000000;
+
+    if (prebuffer)
+        remove_prebuffer = TRUE;
+
+    if (rd_index > wr_index)
+        return (rd_index - wr_index) - device_buffer_size - 1;
+
+    return (buffer_size - (wr_index - rd_index)) - device_buffer_size - 1;
 }
 
 static inline ssize_t
@@ -274,42 +263,6 @@ oss_write_audio(gpointer data, int length)
 {
 
     audio_buf_info abuf_info;
-#if 0
-    AFormat new_format;
-    int new_frequency, new_channels;
-    EffectPlugin *ep;
-
-    new_format = input.format.xmms;
-    new_frequency = input.frequency;
-    new_channels = input.channels;
-
-
-    ep = get_current_effect_plugin();
-    if (effects_enabled() && ep && ep->query_format) {
-        ep->query_format(&new_format, &new_frequency, &new_channels);
-    }
-
-    if (new_format != effect.format.xmms ||
-        new_frequency != effect.frequency ||
-        new_channels != effect.channels) {
-        output_time_offset += (output_bytes * 1000) / output.bps;
-        output_bytes = 0;
-        close(fd);
-        fd = open(device_name, O_WRONLY);
-        oss_setup_format(new_format, new_frequency, new_channels);
-    }
-    if (effects_enabled() && ep && ep->mod_samples)
-        length = ep->mod_samples(&data, length,
-                                 input.format.xmms,
-                                 input.frequency, input.channels);
-#endif
-    if (realtime && !ioctl(fd, SNDCTL_DSP_GETOSPACE, &abuf_info)) {
-        while (abuf_info.bytes < length) {
-            g_usleep(10000);
-            if (ioctl(fd, SNDCTL_DSP_GETOSPACE, &abuf_info))
-                break;
-        }
-    }
 
     if (oss_convert_func != NULL)
         length = oss_convert_func(&data, length);
@@ -465,23 +418,15 @@ oss_write(gpointer ptr, int length)
 {
     int cnt, off = 0;
 
-    if (!realtime) {
-        remove_prebuffer = FALSE;
+    remove_prebuffer = FALSE;
 
-        written += length;
-        while (length > 0) {
-            cnt = MIN(length, buffer_size - wr_index);
-            memcpy(buffer + wr_index, (char *) ptr + off, cnt);
-            wr_index = (wr_index + cnt) % buffer_size;
-            length -= cnt;
-            off += cnt;
-        }
-    }
-    else {
-        if (paused)
-            return;
-        oss_write_audio(ptr, length);
-        written += length;
+    written += length;
+    while (length > 0) {
+        cnt = MIN(length, buffer_size - wr_index);
+        memcpy(buffer + wr_index, (char *) ptr + off, cnt);
+        wr_index = (wr_index + cnt) % buffer_size;
+        length -= cnt;
+        off += cnt;
     }
 }
 
@@ -491,12 +436,9 @@ oss_close(void)
     if (!going)
         return;
     going = 0;
-    if (!realtime)
-        g_thread_join(buffer_thread);
-    else {
-        ioctl(fd, SNDCTL_DSP_RESET, 0);
-        close(fd);
-    }
+
+    g_thread_join(buffer_thread);
+
     g_free(device_name);
     oss_free_convert_buffer();
     wr_index = 0;
@@ -508,34 +450,18 @@ oss_close(void)
 void
 oss_flush(gint time)
 {
-    if (!realtime) {
-        flush = time;
-        while (flush != -1)
-            g_usleep(10000);
-    }
-    else {
-        ioctl(fd, SNDCTL_DSP_RESET, 0);
-        close(fd);
-        fd = open(device_name, O_WRONLY);
-        oss_set_audio_params();
-        output_time_offset = time;
-        written = ((guint64) time * input.bps) / 1000;
-        output_bytes = 0;
-    }
+    flush = time;
+    while (flush != -1)
+        g_usleep(10000);
 }
 
 void
 oss_pause(short p)
 {
-    if (!realtime) {
-        if (p == TRUE)
-            do_pause = TRUE;
-        else
-            unpause = TRUE;
-    }
+    if (p == TRUE)
+        do_pause = TRUE;
     else
-        paused = p;
-
+        unpause = TRUE;
 }
 
 gpointer
@@ -694,19 +620,18 @@ oss_open(AFormat fmt, gint rate, gint nch)
 
     oss_setup_format(fmt, rate, nch);
 
-    realtime = xmms_check_realtime_priority();
+    buffer_size = (oss_cfg.buffer_size * input.bps) / 1000;
 
-    if (!realtime) {
-        buffer_size = (oss_cfg.buffer_size * input.bps) / 1000;
-        if (buffer_size < 8192)
-            buffer_size = 8192;
-        prebuffer_size = (buffer_size * oss_cfg.prebuffer) / 100;
-        if (buffer_size - prebuffer_size < 4096)
-            prebuffer_size = buffer_size - 4096;
+    if (buffer_size < 8192)
+        buffer_size = 8192;
 
-        buffer_size += device_buffer_size;
-        buffer = g_malloc0(buffer_size);
-    }
+    prebuffer_size = (buffer_size * oss_cfg.prebuffer) / 100;
+    if (buffer_size - prebuffer_size < 4096)
+        prebuffer_size = buffer_size - 4096;
+
+    buffer_size += device_buffer_size;
+    buffer = g_malloc0(buffer_size);
+
     flush = -1;
     prebuffer = TRUE;
     wr_index = rd_index = output_time_offset = written = output_bytes = 0;
@@ -716,8 +641,9 @@ oss_open(AFormat fmt, gint rate, gint nch)
     remove_prebuffer = FALSE;
 
     going = 1;
-    if (!realtime)
-        buffer_thread = g_thread_create(oss_loop, NULL, TRUE, NULL);
+
+    buffer_thread = g_thread_create(oss_loop, NULL, TRUE, NULL);
+
     return 1;
 }
 

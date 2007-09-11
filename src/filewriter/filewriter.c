@@ -188,15 +188,6 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     gint rv;
     Playlist *playlist;
 
-    if (xmms_check_realtime_priority())
-    {
-        audacious_info_dialog(_("Error"),
-                          _("You cannot use the FileWriter plugin\n"
-                            "when you're running in realtime mode."),
-                          _("OK"), FALSE, NULL, NULL);
-        return 0;
-    }
-
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
@@ -318,26 +309,6 @@ static void convert_buffer(gpointer buffer, gint length)
 
 static void file_write(void *ptr, gint length)
 {
-    AFormat new_format;
-    int new_frequency, new_channels;
-    EffectPlugin *ep;
-
-    new_format = input.format;
-    new_frequency = input.frequency;
-    new_channels = input.channels;
-
-    ep = get_current_effect_plugin();
-    if ( effects_enabled() && ep && ep->query_format ) {
-        ep->query_format(&new_format,&new_frequency,&new_channels);
-    }
-
-    if ( effects_enabled() && ep && ep->mod_samples ) {
-        length = ep->mod_samples(&ptr,length,
-                                 input.format,
-                                 input.frequency,
-                                 input.channels );
-    }
-
     if (input.format == FMT_S8 || input.format == FMT_S16_BE ||
         input.format == FMT_U16_LE || input.format == FMT_U16_BE ||
         input.format == FMT_U16_NE)
