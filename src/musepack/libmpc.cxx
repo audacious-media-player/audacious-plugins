@@ -363,7 +363,7 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
         tuple_associate_string(tuple, FIELD_TITLE, NULL, tags.title);
         tuple_associate_string(tuple, FIELD_ARTIST, NULL, tags.artist);
         tuple_associate_string(tuple, FIELD_ALBUM, NULL, tags.album);
-        tuple_associate_int(tuple, FIELD_TRACK_NUMER, NULL, tags.track);
+        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, tags.track);
         tuple_associate_int(tuple, FIELD_YEAR, NULL, tags.year);
         tuple_associate_string(tuple, FIELD_GENRE, NULL, tags.genre);
         tuple_associate_string(tuple, FIELD_COMMENT, NULL, tags.comment);
