@@ -43,7 +43,6 @@ static gint format, channels, frequency, latency;
 static esd_format_t esd_format;
 static gint input_bps, input_format, input_frequency, input_channels;
 static GThread *buffer_thread;
-static gboolean realtime = FALSE;
 static void *(*esd_translate) (void *, gint);
 static int player_id_unique = 0;
 
@@ -227,13 +226,10 @@ esdout_get_output_time(void)
 gint
 esdout_used(void)
 {
-    if (realtime)
-        return 0;
-    else {
-        if (wr_index >= rd_index)
-            return wr_index - rd_index;
-        return buffer_size - (rd_index - wr_index);
-    }
+    if (wr_index >= rd_index)
+        return wr_index - rd_index;
+
+    return buffer_size - (rd_index - wr_index);
 }
 
 gint
@@ -250,24 +246,18 @@ esdout_playing(void)
 gint
 esdout_free(void)
 {
-    if (!realtime) {
-        if (remove_prebuffer && prebuffer) {
-            prebuffer = FALSE;
-            remove_prebuffer = FALSE;
-        }
-        if (prebuffer)
-            remove_prebuffer = TRUE;
+    if (remove_prebuffer && prebuffer) {
+        prebuffer = FALSE;
+        remove_prebuffer = FALSE;
+    }
 
-        if (rd_index > wr_index)
-            return (rd_index - wr_index) - 1;
-        return (buffer_size - (wr_index - rd_index)) - 1;
-    }
-    else {
-        if (paused)
-            return 0;
-        else
-            return 1000000;
-    }
+    if (prebuffer)
+        remove_prebuffer = TRUE;
+
+    if (rd_index > wr_index)
+        return (rd_index - wr_index) - 1;
+
+    return (buffer_size - (wr_index - rd_index)) - 1;
 }
 
 static void
@@ -293,27 +283,16 @@ esdout_write(gpointer ptr, gint length)
 {
     gint cnt, off = 0;
 
-    if (!realtime) {
-        remove_prebuffer = FALSE;
+    remove_prebuffer = FALSE;
 
-        written += length;
-        while (length > 0) {
-            cnt = MIN(length, buffer_size - wr_index);
-            memcpy((gchar *) buffer + wr_index, (gchar *) ptr + off, cnt);
-            wr_index = (wr_index + cnt) % buffer_size;
-            length -= cnt;
-            off += cnt;
-
-        }
+    written += length;
+    while (length > 0) {
+        cnt = MIN(length, buffer_size - wr_index);
+        memcpy((gchar *) buffer + wr_index, (gchar *) ptr + off, cnt);
+        wr_index = (wr_index + cnt) % buffer_size;
+        length -= cnt;
+        off += cnt;
     }
-    else {
-        if (paused)
-            return;
-        esdout_write_audio(ptr, length);
-        written += length;
-
-    }
-
 }
 
 void
@@ -324,10 +303,7 @@ esdout_close(void)
 
     going = 0;
 
-    if (!realtime)
-        g_thread_join(buffer_thread);
-    else
-        esd_close(fd);
+    g_thread_join(buffer_thread);
 
     wr_index = 0;
     rd_index = 0;
@@ -338,16 +314,10 @@ esdout_close(void)
 void
 esdout_flush(gint time)
 {
-    if (!realtime) {
-        flush = time;
-        while (flush != -1)
-            g_usleep(10000);
-    }
-    else {
-        output_time_offset = time;
-        written = (guint64) (time / 10) * (guint64) (input_bps / 100);
-        output_bytes = 0;
-    }
+    flush = time;
+
+    while (flush != -1)
+        g_usleep(10000);
 }
 
 void
@@ -417,18 +387,15 @@ esdout_open(AFormat fmt, gint rate, gint nch)
     input_frequency = frequency;
     input_bps = bps;
 
-    realtime = xmms_check_realtime_priority();
+    buffer_size = (esd_cfg.buffer_size * input_bps) / 1000;
+    if (buffer_size < 8192)
+        buffer_size = 8192;
+    prebuffer_size = (buffer_size * esd_cfg.prebuffer) / 100;
+    if (buffer_size - prebuffer_size < 4096)
+        prebuffer_size = buffer_size - 4096;
 
-    if (!realtime) {
-        buffer_size = (esd_cfg.buffer_size * input_bps) / 1000;
-        if (buffer_size < 8192)
-            buffer_size = 8192;
-        prebuffer_size = (buffer_size * esd_cfg.prebuffer) / 100;
-        if (buffer_size - prebuffer_size < 4096)
-            prebuffer_size = buffer_size - 4096;
+    buffer = g_malloc0(buffer_size);
 
-        buffer = g_malloc0(buffer_size);
-    }
     flush = -1;
     prebuffer = 1;
     wr_index = rd_index = output_time_offset = written = output_bytes = 0;
@@ -454,8 +421,8 @@ esdout_open(AFormat fmt, gint rate, gint nch)
     }
     going = 1;
 
-    if (!realtime)
-        buffer_thread = g_thread_create(esdout_loop, NULL, TRUE, NULL);
+    buffer_thread = g_thread_create(esdout_loop, NULL, TRUE, NULL);
+
     return 1;
 }
 

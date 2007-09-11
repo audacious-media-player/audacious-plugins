@@ -187,15 +187,6 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     gint rv;
     Playlist *playlist;
 
-    if (xmms_check_realtime_priority())
-    {
-        audacious_info_dialog(_("Error"),
-                          _("You cannot use the FileWriter plugin\n"
-                            "when you're running in realtime mode."),
-                          _("OK"), FALSE, NULL, NULL);
-        return 0;
-    }
-
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
