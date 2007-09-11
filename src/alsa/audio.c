@@ -708,36 +708,6 @@ static void alsa_do_write(gpointer data, int length)
 	if (paused)
 		return;
 
-#if 0
-	new_freq = inputf->rate;
-	new_chn = inputf->channels;
-	f = inputf->xmms_format;
-
-	if (effects_enabled() && (ep = get_current_effect_plugin()) &&
-	    ep->query_format)
-		ep->query_format(&f, &new_freq, &new_chn);
-
-	if (f != effectf->xmms_format || (unsigned int)new_freq != effectf->rate ||
-	    (unsigned int)new_chn != effectf->channels)
-	{
-		debug("Changing audio format for effect plugin");
-		g_free(effectf);
-		effectf = snd_format_from_xmms(f, new_freq, new_chn);
-		if (alsa_reopen(effectf) < 0)
-		{
-			/* fatal error... */
-			alsa_close();
-			return;
-		}
-	}
-
-	if (ep)
-		length = ep->mod_samples(&data, length,
-					 inputf->xmms_format,
-					 inputf->rate,
-					 inputf->channels);
-#endif
-
 	if (alsa_convert_func != NULL)
 		length = alsa_convert_func(convertb, &data, length);
 	if (alsa_stereo_convert_func != NULL)

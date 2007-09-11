@@ -276,48 +276,6 @@ int artsxmms_free(void)
 
 void artsxmms_write(gpointer ptr, int length)
 {
-#if 0
-	AFormat new_format;
-	int new_frequency, new_channels;
-	EffectPlugin *ep;
-	
-	new_format = input_params.format;
-	new_frequency = input_params.frequency;
-	new_channels = input_params.channels;
-
-	ep = get_current_effect_plugin();
-	if (effects_enabled() && ep && ep->query_format)
-		ep->query_format(&new_format, &new_frequency, &new_channels);
-	
-	if (new_format != output_params.format ||
-	    new_frequency != output_params.frequency ||
-	    new_channels != output_params.channels)
-	{
-		/*
-		 * The effect plugins has changed the format of the stream.
-		 */
-
-		guint64 offset = (written * 1000) / output_params.bps;
-		artsxmms_set_params(&output_params, new_format,
-				    new_frequency, new_channels);
-		arts_convert_func = arts_get_convert_func(output_params.format);
-	
-		written = (offset * output_params.bps) / 1000;
-
-		artsxmms_helper_init(&output_params);
-	}
-
-	/*
-	 * Doing the effect plugin processing here adds some latency,
-	 * but the alternative is just too frigging hairy.
-	 */
-	
-	if (effects_enabled() && ep && ep->mod_samples)
-		length = ep->mod_samples(&ptr, length, input_params.format,
-					 input_params.frequency,
-					 input_params.channels);
-#endif
-
 	if (arts_convert_func)
 		arts_convert_func(ptr, length);
 

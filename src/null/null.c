@@ -149,21 +149,11 @@ static int null_open(AFormat fmt, int rate, int nch)
 
 static void null_write(void *ptr, int length)
 {
-#if 0
-	EffectPlugin *ep;
-#endif
 	if (timer && !started)
 	{
 		g_timer_start(timer);
 		started = TRUE;
 	}
-
-#if 0
-	if ((ep = get_current_effect_plugin()) != NULL &&
-	    effects_enabled() && ep->mod_samples)
-		ep->mod_samples(&ptr, length, input_format.format,
-				input_format.frequency, input_format.channels);
-#endif
 
 	written += length;
 }
