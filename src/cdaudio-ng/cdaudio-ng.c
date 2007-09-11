@@ -825,20 +825,20 @@ Tuple *create_tuple_from_trackinfo(char *filename)
 		return NULL;
 
 	if(strlen(trackinfo[trackno].performer)) {
-		tuple_associate_string(tuple, "artist", trackinfo[trackno].performer);
+		tuple_associate_string(tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
 	}
 	if(strlen(trackinfo[0].name)) {
-		tuple_associate_string(tuple, "album", trackinfo[0].name);
+		tuple_associate_string(tuple, FIELD_ALBUM, NULL trackinfo[0].name);
 	}
 	if(strlen(trackinfo[trackno].name)) {
-		tuple_associate_string(tuple, "title", trackinfo[trackno].name);
+		tuple_associate_string(tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
 	}
-	tuple_associate_int(tuple, "track-number", trackno);
-	tuple_associate_string(tuple, "ext", "cda"); //XXX should do? --yaz
+	tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, trackno);
+	tuple_associate_string(tuple, -1, "ext", "cda"); //XXX should do? --yaz
 
-	tuple_associate_int(tuple, "length", calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+	tuple_associate_int(tuple, FIELD_LENGTH, NULL, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 	if(strlen(trackinfo[trackno].genre)) {
-		tuple_associate_string(tuple, "genre",  trackinfo[trackno].genre);
+		tuple_associate_string(tuple, FIELD_GENRE, NULL,  trackinfo[trackno].genre);
 	}
 	//tuple->year = 0; todo: set the year
 
