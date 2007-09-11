@@ -273,35 +273,6 @@ esdout_free(void)
 static void
 esdout_write_audio(gpointer data, gint length)
 {
-#if 0
-    AFormat new_format;
-    gint new_frequency, new_channels;
-    EffectPlugin *ep;
-
-    new_format = input_format;
-    new_frequency = input_frequency;
-    new_channels = input_channels;
-
-    ep = get_current_effect_plugin();
-    if (effects_enabled() && ep && ep->query_format) {
-        ep->query_format(&new_format, &new_frequency, &new_channels);
-    }
-
-    if (new_format != format || new_frequency != frequency
-        || new_channels != channels) {
-        output_time_offset += (gint) ((output_bytes * 1000) / ebps);
-        output_bytes = 0;
-        esdout_setup_format(new_format, new_frequency, new_channels);
-        frequency = new_frequency;
-        channels = new_channels;
-        esd_close(fd);
-        esdout_set_audio_params();
-    }
-    if (effects_enabled() && ep && ep->mod_samples)
-        length =
-            ep->mod_samples(&data, length, input_format, input_frequency,
-                            input_channels);
-#endif
     while (length > 0) {
         int num_written;
         if (esd_translate)

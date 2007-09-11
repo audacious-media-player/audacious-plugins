@@ -274,35 +274,7 @@ oss_write_audio(gpointer data, int length)
 {
 
     audio_buf_info abuf_info;
-#if 0
-    AFormat new_format;
-    int new_frequency, new_channels;
-    EffectPlugin *ep;
 
-    new_format = input.format.xmms;
-    new_frequency = input.frequency;
-    new_channels = input.channels;
-
-
-    ep = get_current_effect_plugin();
-    if (effects_enabled() && ep && ep->query_format) {
-        ep->query_format(&new_format, &new_frequency, &new_channels);
-    }
-
-    if (new_format != effect.format.xmms ||
-        new_frequency != effect.frequency ||
-        new_channels != effect.channels) {
-        output_time_offset += (output_bytes * 1000) / output.bps;
-        output_bytes = 0;
-        close(fd);
-        fd = open(device_name, O_WRONLY);
-        oss_setup_format(new_format, new_frequency, new_channels);
-    }
-    if (effects_enabled() && ep && ep->mod_samples)
-        length = ep->mod_samples(&data, length,
-                                 input.format.xmms,
-                                 input.frequency, input.channels);
-#endif
     if (realtime && !ioctl(fd, SNDCTL_DSP_GETOSPACE, &abuf_info)) {
         while (abuf_info.bytes < length) {
             g_usleep(10000);

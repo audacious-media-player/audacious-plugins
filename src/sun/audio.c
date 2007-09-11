@@ -309,36 +309,6 @@ static inline ssize_t write_all(int fd, const void *buf, size_t count)
 
 static inline void sun_write_audio(gpointer data, int length)
 {
-#if 0
-	AFormat new_format;
-	EffectPlugin *ep;
-	int new_frequency, new_channels;
-
-	new_format = input.format.xmms;
-	new_frequency = input.frequency;
-	new_channels = input.channels;
-
-	ep = get_current_effect_plugin();
-	if (effects_enabled() && ep && ep->query_format)
-		ep->query_format(&new_format, &new_frequency, &new_channels);
-
-	if (new_format != effect.format.xmms || 
-	    new_frequency != effect.frequency ||
-	    new_channels != effect.channels)
-	{
-		output_time_offset += (output_bytes * 1000) / output.bps;
-		output_bytes = 0;
-		close(audio.fd);
-		audio.fd = open(audio.devaudio, O_RDWR);
-		sun_setformat(new_format, new_frequency, new_channels);
-	}
-	if (effects_enabled() && ep && ep->mod_samples)
-	{
-		length = ep->mod_samples(&data, length, input.format.xmms,
-					 input.frequency, input.channels);
-	}
-#endif
-
 	if (sun_convert != NULL)
 		length = sun_convert(&data, length);
 
