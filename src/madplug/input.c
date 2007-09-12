@@ -418,7 +418,8 @@ static void input_read_tag(struct mad_info_t *info)
 #endif	
         g_free(string);
         string = NULL;
-    }
+    } else
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
     
     tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
     tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
