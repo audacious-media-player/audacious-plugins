@@ -30,35 +30,18 @@
 static gchar *flac_fmts[] = { "flac", NULL };
 
 InputPlugin flac_ip = {
-    NULL,
-    NULL,
-    "FLACng Audio Plugin",
-    flac_init,
-    flac_aboutbox,
-    NULL,
-    flac_is_our_file,
-    NULL,
-    flac_play_file,
-    flac_stop,
-    flac_pause,
-    flac_seek,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    flac_get_song_info,
-    NULL,
-    NULL,
-    flac_get_song_tuple,	// get a tuple
-    NULL,
-    NULL,			// write a tuple back to a file as a tag
-    flac_is_our_fd,	// version of is_our_file which is handed an FD
-    flac_fmts			// vector of fileextensions allowed by the plugin
+    .description = "FLACng Audio Plugin",
+    .init = flac_init,
+    .about = flac_aboutbox,
+    .is_our_file = flac_is_our_file,
+    .play_file = flac_play_file,
+    .stop = flac_stop,
+    .pause = flac_pause,
+    .seek = flac_seek,
+    .get_song_info = flac_get_song_info,
+    .get_song_tuple = flac_get_song_tuple,	// get a tuple
+    .is_our_file_from_vfs = flac_is_our_fd,	// version of is_our_file which is handed an FD
+    .vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
 };
 
 InputPlugin *flac_iplist[] = { &flac_ip, NULL };
@@ -631,7 +614,7 @@ void flac_seek(InputPlayback* input, gint time) {
     seek_to = time;
 
     while (-1 != seek_to) {
-        xmms_usleep(10000);
+        g_usleep(10000);
     }
 
     _LEAVE;
@@ -738,7 +721,7 @@ void flac_aboutbox(void) {
                                "\n"
                                "http://www.skytale.net/projects/bmp-flac2/"), NULL);
 
-    about_window = xmms_show_message(_("About FLAC Audio Plugin"),
+    about_window = audacious_info_dialog(_("About FLAC Audio Plugin"),
                                      about_text,
                                      _("OK"), FALSE, NULL, NULL);
 

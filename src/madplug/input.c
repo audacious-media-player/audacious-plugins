@@ -322,12 +322,12 @@ gchar *input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
     return rtn;
 }
 
-static void input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gchar *frame, const gchar *tuple_name)
+static void input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gchar *frame, const gint nfield)
 {
     gchar *scratch = input_id3_get_string(tag, frame);
 
-    tuple_associate_string(tuple, tuple_name, scratch);
-    tuple_associate_string(tuple, frame, scratch);
+    tuple_associate_string(tuple, nfield, NULL, scratch);
+    tuple_associate_string(tuple, -1, frame, scratch);
 
     g_free(scratch);
 }
@@ -339,7 +339,7 @@ static void input_alloc_tag(struct mad_info_t *info)
     if (info->tuple == NULL) {
         tuple = tuple_new();
         info->tuple = tuple;
-        tuple_associate_int(info->tuple, "length", -1);
+        tuple_associate_int(info->tuple, FIELD_LENGTH, NULL, -1);
     }
 }
 
@@ -349,19 +349,17 @@ static void input_alloc_tag(struct mad_info_t *info)
 static void input_read_tag(struct mad_info_t *info)
 {
     gchar *string = NULL;
-    gchar *realfn = NULL;
     Tuple *tuple;
     glong curpos = 0;
 
 #ifdef DEBUG
     g_message("f: input_read_tag");
 #endif
-    if (info->tuple == NULL) {
-        tuple = tuple_new();
-        info->tuple = tuple;
-    }
-    else
-        tuple = info->tuple;
+    if (info->tuple != NULL)
+        tuple_free(info->tuple);
+        
+    tuple = tuple_new_from_filename(info->filename);
+    info->tuple = tuple;
 
     if(info->infile) {
         curpos = vfs_ftell(info->infile);
@@ -386,15 +384,15 @@ static void input_read_tag(struct mad_info_t *info)
         return;
     }
 
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ARTIST, "artist");
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_TITLE, "title");
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ALBUM, "album");
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_GENRE, "genre");
-    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_COMMENT, "comment");
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ARTIST, FIELD_ARTIST);
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_TITLE, FIELD_TITLE);
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_ALBUM, FIELD_ALBUM);
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_GENRE, FIELD_GENRE);
+    input_set_and_free_tag(info->tag, tuple, ID3_FRAME_COMMENT, FIELD_COMMENT);
 
     string = input_id3_get_string(info->tag, ID3_FRAME_TRACK);
     if (string) {
-        tuple_associate_int(tuple, "track-number", atoi(string));
+        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
         g_free(string);
         string = NULL;
     }
@@ -406,7 +404,7 @@ static void input_read_tag(struct mad_info_t *info)
         string = input_id3_get_string(info->tag, "TYER");
 
     if (string) {
-        tuple_associate_int(tuple, "year", atoi(string));
+        tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
         g_free(string);
         string = NULL;
     }
@@ -414,33 +412,17 @@ static void input_read_tag(struct mad_info_t *info)
     // length
     string = input_id3_get_string(info->tag, "TLEN");
     if (string) {
-        tuple_associate_int(tuple, "length", atoi(string));
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
 #ifdef DEBUG
         g_message("input_read_tag: TLEN = %d", atoi(string));
 #endif	
         g_free(string);
         string = NULL;
-    }
+    } else
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
     
-    realfn = g_filename_from_uri(info->filename, NULL, NULL);
-    
-    string = g_strdup(g_basename(realfn ? realfn : info->filename));
-    tuple_associate_string(tuple, "file-name", string);
-    g_free(string);
-
-    string = g_path_get_dirname(realfn ? realfn : info->filename);
-    tuple_associate_string(tuple, "file-path", string);
-    g_free(string);
-
-    if ((string = strrchr(realfn ? realfn : info->filename, '.'))) {
-        *string = '\0';         // make filename end at dot.
-        tuple_associate_string(tuple, "file-ext", string + 1);
-    }
-
-    g_free(realfn); realfn = NULL;
-
-    tuple_associate_string(tuple, "codec", "MPEG Audio (MP3)");
-    tuple_associate_string(tuple, "quality", "lossy");
+    tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
+    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
     info->title = tuple_formatter_make_title_string(tuple, audmad_config.title_override == TRUE ?
         audmad_config.id3_format : get_gentitle_format());
@@ -470,8 +452,8 @@ void input_process_remote_metadata(struct mad_info_t *info)
 
         g_free(info->title);
         info->title = NULL;
-        tuple_disassociate(info->tuple, "title");
-        tuple_disassociate(info->tuple, "album");
+        tuple_disassociate(info->tuple, FIELD_TITLE, NULL);
+        tuple_disassociate(info->tuple, FIELD_ALBUM, NULL);
 
         tmp = vfs_get_metadata(info->infile, "track-name");
         if(tmp){
@@ -479,7 +461,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
             gchar *scratch;
 
             scratch = str_to_utf8(tmp);
-            tuple_associate_string(info->tuple, "title", scratch);
+            tuple_associate_string(info->tuple, FIELD_TITLE, NULL, scratch);
             g_free(scratch);
 
             g_free(tmp);
@@ -492,8 +474,8 @@ void input_process_remote_metadata(struct mad_info_t *info)
             gchar *scratch;
 
             scratch = str_to_utf8(tmp);
-            tuple_associate_string(info->tuple, "album", scratch);
-            tuple_associate_string(info->tuple, "stream", scratch);
+            tuple_associate_string(info->tuple, FIELD_ALBUM, NULL, scratch);
+            tuple_associate_string(info->tuple, -1, "stream", scratch);
             g_free(scratch);
 
             g_free(tmp);

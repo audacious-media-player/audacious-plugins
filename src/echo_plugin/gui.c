@@ -23,7 +23,7 @@ void echo_about(void)
 	if (echo_about_dialog != NULL)
 		return;
 
-	echo_about_dialog = xmms_show_message(_("About Echo Plugin"),
+	echo_about_dialog = audacious_info_dialog(_("About Echo Plugin"),
 					      _(echo_about_text), _("Ok"),
 					      FALSE, NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(echo_about_dialog), "destroy",

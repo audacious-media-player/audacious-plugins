@@ -443,7 +443,7 @@ static void configure_stats_loop(void)
 		gtk_label_set_text(GTK_LABEL(stats_frame.ooffs_label), sl);
 
 		pthread_mutex_unlock(&stats_frame.audioctl_mutex);
-		xmms_usleep(400000);
+		g_usleep(400000);
 	}
 	pthread_mutex_unlock(&stats_frame.active_mutex);
 

@@ -19,13 +19,14 @@ extern "C" {
 #include "audacious/tuple.h"
 #include "audacious/tuple_formatter.h"
 #include "audacious/vfs.h"
+#include "audacious/strings.h"
 }
 
 static char* format_and_free_ti( Tuple* ti, int* length )
 {
         char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
         if ( result )
-                *length = tuple_get_int(ti, "length");
+                *length = tuple_get_int(ti, FIELD_LENGTH, NULL);
         tuple_free((void *) ti);
 
         return result;
@@ -110,13 +111,13 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 {
 	string lExt;
 	uint32 lPos;
+	const int magicSize = 32;
+	char magic[magicSize];
 
-	gchar magic[4];
-
-	vfs_fread(magic, 1, 4, file);
+	vfs_fread(magic, 1, magicSize, file);
 	if (!memcmp(magic, UMX_MAGIC, 4))
 		return true;
-	if (!memcmp(magic, XM_MAGIC, 4))
+	if (!memcmp(magic, "Extended Module:", 16))
 		return true;
 	if (!memcmp(magic, M669_MAGIC, 2))
 		return true;
@@ -131,12 +132,22 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	vfs_fread(magic, 1, 4, file);
 	if (!memcmp(magic, S3M_MAGIC, 4))
 		return true;
+
 	vfs_fseek(file, 1080, SEEK_SET);
 	vfs_fread(magic, 1, 4, file);
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER6, 4))
-		return true;
-	if (!memcmp(magic, MOD_MAGIC_FASTTRACKER8, 4))
-		return true;
+	
+	// Check for Fast Tracker multichannel modules (xCHN, xxCH)
+	if (magic[1] == 'C' && magic[2] == 'H' && magic[3] == 'N') {
+		if (magic[0] == '6' || magic[0] == '8')
+			return true;
+	}
+	if (magic[2] == 'C' && magic[3] == 'H' && isdigit(magic[0]) && isdigit(magic[1])) {
+		int nch = (magic[0] - '0') * 10 + (magic[1] - '0');
+		if ((nch % 2 == 0) && nch >= 10)
+			return true;
+	}
+	
+	// Check for Amiga MOD module formats
 	if(mModProps.mGrabAmigaMOD) {
 	if (!memcmp(magic, MOD_MAGIC_PROTRACKER4, 4))
 		return true;
@@ -495,6 +506,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
+	gchar* tmps;
 	
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
@@ -507,78 +519,43 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	Tuple *ti = tuple_new_from_filename(aFilename.c_str());
 	lSoundFile = new CSoundFile;
 	lSoundFile->Create((uchar*)lArchive->Map(), lArchive->Size());
+	
 	switch(lSoundFile->GetType())
         {
-	case MOD_TYPE_MOD:
-		tuple_associate_string(ti, "codec", "ProTracker");
-		break;
-	case MOD_TYPE_S3M:
-		tuple_associate_string(ti, "codec", "Scream Tracker 3");
-		break;
-	case MOD_TYPE_XM:
-		tuple_associate_string(ti, "codec", "Fast Tracker 2");
-		break;
-	case MOD_TYPE_IT:
-		tuple_associate_string(ti, "codec", "Impulse Tracker");
-		break;
-	case MOD_TYPE_MED:
-		tuple_associate_string(ti, "codec", "OctaMed");
-		break;
-	case MOD_TYPE_MTM:
-		tuple_associate_string(ti, "codec", "MultiTracker Module");
-		break;
-	case MOD_TYPE_669:
-		tuple_associate_string(ti, "codec", "669 Composer / UNIS 669");
-		break;
-	case MOD_TYPE_ULT:
-		tuple_associate_string(ti, "codec", "Ultra Tracker");
-		break;
-	case MOD_TYPE_STM:
-		tuple_associate_string(ti, "codec", "Scream Tracker");
-		break;
-	case MOD_TYPE_FAR:
-		tuple_associate_string(ti, "codec", "Farandole");
-		break;
-	case MOD_TYPE_AMF:
-		tuple_associate_string(ti, "codec", "ASYLUM Music Format");
-		break;
-	case MOD_TYPE_AMS:
-		tuple_associate_string(ti, "codec", "AMS module");
-		break;
-	case MOD_TYPE_DSM:
-		tuple_associate_string(ti, "codec", "DSIK Internal Format");
-		break;
-	case MOD_TYPE_MDL:
-		tuple_associate_string(ti, "codec", "DigiTracker");
-		break;
-	case MOD_TYPE_OKT:
-		tuple_associate_string(ti, "codec", "Oktalyzer");
-		break;
-	case MOD_TYPE_DMF:
-		tuple_associate_string(ti, "codec", "Delusion Digital Music Fileformat (X-Tracker)");
-		break;
-	case MOD_TYPE_PTM:
-		tuple_associate_string(ti, "codec", "PolyTracker");
-		break;
-	case MOD_TYPE_DBM:
-		tuple_associate_string(ti, "codec", "DigiBooster Pro");
-		break;
-	case MOD_TYPE_MT2:
-		tuple_associate_string(ti, "codec", "MadTracker 2");
-		break;
-	case MOD_TYPE_AMF0:
-		tuple_associate_string(ti, "codec", "AMF0");
-		break;
-	case MOD_TYPE_PSM:
-		tuple_associate_string(ti, "codec", "Protracker Studio Module");
-		break;
-	default:
-		tuple_associate_string(ti, "codec", "ModPlug unknown");
-		break;
+	case MOD_TYPE_MOD:	tmps = "ProTracker"; break;
+	case MOD_TYPE_S3M:	tmps = "Scream Tracker 3"; break;
+	case MOD_TYPE_XM:	tmps = "Fast Tracker 2"; break;
+	case MOD_TYPE_IT:	tmps = "Impulse Tracker"; break;
+	case MOD_TYPE_MED:	tmps = "OctaMed"; break;
+	case MOD_TYPE_MTM:	tmps = "MultiTracker Module"; break;
+	case MOD_TYPE_669:	tmps = "669 Composer / UNIS 669"; break;
+	case MOD_TYPE_ULT:	tmps = "Ultra Tracker"; break;
+	case MOD_TYPE_STM:	tmps = "Scream Tracker"; break;
+	case MOD_TYPE_FAR:	tmps = "Farandole"; break;
+	case MOD_TYPE_AMF:	tmps = "ASYLUM Music Format"; break;
+	case MOD_TYPE_AMS:	tmps = "AMS module"; break;
+	case MOD_TYPE_DSM:	tmps = "DSIK Internal Format"; break;
+	case MOD_TYPE_MDL:	tmps = "DigiTracker"; break;
+	case MOD_TYPE_OKT:	tmps = "Oktalyzer"; break;
+	case MOD_TYPE_DMF:	tmps = "Delusion Digital Music Fileformat (X-Tracker)"; break;
+	case MOD_TYPE_PTM:	tmps = "PolyTracker"; break;
+	case MOD_TYPE_DBM:	tmps = "DigiBooster Pro"; break;
+	case MOD_TYPE_MT2:	tmps = "MadTracker 2"; break;
+	case MOD_TYPE_AMF0:	tmps = "AMF0"; break;
+	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
+	default:		tmps = "ModPlug unknown"; break;
 	}
-	tuple_associate_string(ti, "quality", "sequenced");
-	tuple_associate_string(ti, "title", lSoundFile->GetTitle());
-	tuple_associate_int(ti, "length", lSoundFile->GetSongTime() * 1000);
+	tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
+	tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+	tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
+
+	/* NOTICE! FIXME? This is actually incorrect. We _cannot_ know what charset
+	 * an arbitrary module file uses .. typically it is some DOS CP-variant,
+	 * except for true Amiga modules.
+	 */
+	tmps = str_to_utf8(lSoundFile->GetTitle());
+	tuple_associate_string(ti, FIELD_TITLE, NULL, lSoundFile->GetTitle());
+	g_free(tmps);
 	
 	//unload the file
 	lSoundFile->Destroy();

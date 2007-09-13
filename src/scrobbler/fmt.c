@@ -9,11 +9,17 @@
 
 char *fmt_escape(const char *str)
 {
+	if (str == NULL)
+		return "";
+
 	return curl_escape(str, 0);
 }
 
 char *fmt_unescape(char *str)
 {
+	if (str == NULL)
+		return "";
+
 	return curl_unescape(str, 0);
 }
 
@@ -23,7 +29,7 @@ char *fmt_timestr(time_t t, int gmt)
 	static char buf[30];
 
 	tm = gmt ? gmtime(&t) : localtime(&t);
-	snprintf(buf, sizeof(buf), "%d-%.2d-%.2d %.2d:%.2d:%.2d",
+	g_snprintf(buf, sizeof(buf), "%d-%.2d-%.2d %.2d:%.2d:%.2d",
 			tm->tm_year + 1900,
 			tm->tm_mon + 1,
 			tm->tm_mday,

@@ -38,7 +38,7 @@ void vtx_file_info(gchar *filename)
 	      "Player Freq:%P\n"
 	      "Year: %y");
       
-      box = xmms_show_message (head,
+      box = audacious_info_dialog (head,
 			       body,
 			       _("Ok"), FALSE, NULL, NULL);
       

@@ -30,7 +30,7 @@ void sun_about(void)
 	if (dialog != NULL)
 		return;
 
-	dialog = xmms_show_message(
+	dialog = audacious_info_dialog(
 		_("About the Sun Driver"),
 		_("XMMS BSD Sun Driver\n\n"
 		  "Copyright (c) 2001 CubeSoft Communications, Inc.\n"

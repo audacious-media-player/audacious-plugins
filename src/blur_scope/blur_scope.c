@@ -66,20 +66,14 @@ static const int blurscope_menu_entries_num =
 
 
 VisPlugin bscope_vp = {
-    NULL,
-    NULL,
-    "Blur Scope",                       /* description */
-    1,                          /* Number of PCM channels wanted */
-    0,                          /* Number of freq channels wanted */
-    bscope_init,                /* init */
-    bscope_cleanup,             /* cleanup */
-    NULL,                       /* about */
-    bscope_configure,           /* configure */
-    NULL,                       /* disable_plugin */
-    NULL,                       /* playback_start */
-    bscope_playback_stop,       /* playback_stop */
-    bscope_render_pcm,          /* render_pcm */
-    NULL                        /* render_freq */
+    .description = "Blur Scope",                       /* description */
+    .num_pcm_chs_wanted = 1, /* Number of PCM channels wanted */
+    .num_freq_chs_wanted = 0, /* Number of freq channels wanted */
+    .init = bscope_init,                /* init */
+    .cleanup = bscope_cleanup,             /* cleanup */
+    .configure = bscope_configure,           /* configure */
+    .playback_stop = bscope_playback_stop,       /* playback_stop */
+    .render_pcm = bscope_render_pcm,          /* render_pcm */
 };
 
 VisPlugin *bscope_vplist[] = { &bscope_vp, NULL };

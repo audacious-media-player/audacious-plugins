@@ -37,34 +37,18 @@
 #include "interface.h"
 
 InputPlugin xmmstimid_ip = {
-	NULL,
-	NULL,
-	"TiMidity Audio Plugin",
-	xmmstimid_init,
-	xmmstimid_about,
-	xmmstimid_configure,
-	NULL,
-	NULL,
-	xmmstimid_play_file,
-	xmmstimid_stop,
-	xmmstimid_pause,
-	xmmstimid_seek,
-	NULL,
-	xmmstimid_get_time,
-	NULL,
-	NULL,
-	xmmstimid_cleanup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	xmmstimid_get_song_info,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	xmmstimid_is_our_fd,
+	.description = "TiMidity Audio Plugin",
+	.init = xmmstimid_init,
+	.about = xmmstimid_about,
+	.configure = xmmstimid_configure,
+	.play_file = xmmstimid_play_file,
+	.stop = xmmstimid_stop,
+	.pause = xmmstimid_pause,
+	.seek = xmmstimid_seek,
+	.get_time = xmmstimid_get_time,
+	.cleanup = xmmstimid_cleanup,
+	.get_song_info = xmmstimid_get_song_info,
+	.is_our_file_from_vfs = xmmstimid_is_our_fd,
 };
 
 InputPlugin *timidity_iplist[] = { &xmmstimid_ip, NULL };
@@ -133,7 +117,7 @@ void xmmstimid_about(void) {
 		about_text = g_strjoin( "" ,
 			_("TiMidity Plugin\nhttp://libtimidity.sourceforge.net\nby Konstantin Korikov") , NULL );
 		about_title = g_strdup_printf( _("TiMidity Plugin %s") , PACKAGE_VERSION );
-		xmmstimid_about_wnd = xmms_show_message( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
+		xmmstimid_about_wnd = audacious_info_dialog( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
 		g_signal_connect(G_OBJECT(xmmstimid_about_wnd), "destroy",
 					(GCallback)gtk_widget_destroyed, &xmmstimid_about_wnd);
 		g_free(about_title);
@@ -312,7 +296,7 @@ static gchar *xmmstimid_get_title(gchar *filename) {
 
 	title = tuple_formatter_make_title_string(input, get_gentitle_format());
 	if (title == NULL || *title == '\0')
-		title = g_strdup(tuple_get_string(input, "file-name"));
+		title = g_strdup(tuple_get_string(input, FIELD_FILE_NAME, NULL));
 
 	tuple_free(input);
 
@@ -398,7 +382,7 @@ void xmmstimid_seek(InputPlayback * playback, int time) {
 	playback->eof = FALSE;
 
 	while (xmmstimid_seek_to != -1)
-		xmms_usleep(10000);
+		g_usleep(10000);
 }
 
 int xmmstimid_get_time(InputPlayback * playback) {

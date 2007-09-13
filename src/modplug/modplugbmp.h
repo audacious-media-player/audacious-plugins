@@ -29,8 +29,6 @@ extern "C" {
 #define MOD_MAGIC_STARTRACKER4X	(unsigned char [4]) { 0x45, 0x58, 0x30, 0x34 }  // "EX04" - Startracker 4 channel (Startrekker/AudioSculpture)
 #define MOD_MAGIC_STARTRACKER8X	(unsigned char [4]) { 0x45, 0x58, 0x30, 0x38 }  // "EX08" - Startracker 8 channel (Startrekker/AudioSculpture) 
 #define MOD_MAGIC_FASTTRACKER4	(unsigned char [4]) { 0x34, 0x43, 0x48, 0x4E }  // "4CHN" - Fasttracker 4 channel
-#define MOD_MAGIC_FASTTRACKER6	(unsigned char [4]) { 0x36, 0x43, 0x48, 0x4E }  // "6CHN" - Fasttracker 6 channel
-#define MOD_MAGIC_FASTTRACKER8	(unsigned char [4]) { 0x38, 0x43, 0x48, 0x4E }  // "8CHN" - Fasttracker 8 channel
 #define MOD_MAGIC_OKTALYZER8	(unsigned char [4]) { 0x43, 0x44, 0x38, 0x31 }  // "CD81" - Atari oktalyzer 8 channel
 #define MOD_MAGIC_OKTALYZER8X	(unsigned char [4]) { 0x4F, 0x4B, 0x54, 0x41 }  // "OKTA" - Atari oktalyzer 8 channel
 #define MOD_MAGIC_TAKETRACKER16	(unsigned char [4]) { 0x31, 0x36, 0x43, 0x4E }  // "16CN" - Taketracker 16 channel

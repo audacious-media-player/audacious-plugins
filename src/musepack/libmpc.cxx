@@ -15,8 +15,10 @@ InputPlugin MpcPlugin = {
     NULL,           //Filename                  char* filename
     (gchar *)"Musepack Audio Plugin",
     mpcOpenPlugin,  //Open Plugin               [CALLBACK]
+    NULL,           //Cleanup                   [UNUSED]
     mpcAboutBox,    //Show About box            [CALLBACK]
     mpcConfigBox,   //Show Configure box        [CALLBACK]
+    FALSE,          //Enabled/Disabled          [BOOLEAN]
     mpcIsOurFile,   //Check if it's our file    [CALLBACK]
     NULL,           //Scan the directory        [UNUSED]
     mpcPlay,        //Play                      [CALLBACK]
@@ -27,7 +29,6 @@ InputPlugin MpcPlugin = {
     mpcGetTime,     //Get Time                  [CALLBACK]
     NULL,           //Get Volume                [UNUSED]
     NULL,           //Set Volume                [UNUSED]
-    NULL,           //Close Plugin              [UNUSED]
     NULL,           //Obsolete                  [UNUSED]
     NULL,           //Visual plugins            add_vis_pcm(int time, AFormat fmt, int nch, int length, void *ptr)
     NULL,           //Set Info Settings         set_info(char *title, int length, int rate, int freq, int nch)
@@ -145,7 +146,7 @@ static void mpcAboutBox()
         char* titleText      = g_strdup_printf(_("Musepack Decoder Plugin 1.2"));
         const char* contentText = _("Plugin code by\nBenoit Amiaux\nMartin Spuler\nKuniklo\n\nGet latest version at http://musepack.net\n");
         const char* buttonText  = _("Nevermind");
-        aboutBox = xmms_show_message(titleText, contentText, buttonText, FALSE, NULL, NULL);
+        aboutBox = audacious_info_dialog(titleText, contentText, buttonText, FALSE, NULL, NULL);
         widgets.aboutBox = aboutBox;
         g_signal_connect(G_OBJECT(aboutBox), "destroy", G_CALLBACK(gtk_widget_destroyed), &widgets.aboutBox);
     }
@@ -358,14 +359,14 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
 
         MpcInfo tags = getTags(p_Filename);
 
-        tuple_associate_string(tuple, "date", tags.date);
-        tuple_associate_string(tuple, "title", tags.title);
-        tuple_associate_string(tuple, "artist", tags.artist);
-        tuple_associate_string(tuple, "album", tags.album);
-        tuple_associate_int(tuple, "track-number", tags.track);
-        tuple_associate_int(tuple, "year", tags.year);
-        tuple_associate_string(tuple, "genre", tags.genre);
-        tuple_associate_string(tuple, "comment", tags.comment);
+        tuple_associate_string(tuple, FIELD_DATE, NULL, tags.date);
+        tuple_associate_string(tuple, FIELD_TITLE, NULL, tags.title);
+        tuple_associate_string(tuple, FIELD_ARTIST, NULL, tags.artist);
+        tuple_associate_string(tuple, FIELD_ALBUM, NULL, tags.album);
+        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, tags.track);
+        tuple_associate_int(tuple, FIELD_YEAR, NULL, tags.year);
+        tuple_associate_string(tuple, FIELD_GENRE, NULL, tags.genre);
+        tuple_associate_string(tuple, FIELD_COMMENT, NULL, tags.comment);
 
         freeTags(tags);
 
@@ -374,14 +375,14 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
         mpc_reader_setup_file_vfs(&reader, input);
         mpc_streaminfo_read(&info, &reader.reader);
 
-        tuple_associate_int(tuple, "length", static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
+        tuple_associate_int(tuple, FIELD_LENGTH, NULL, static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
 
         gchar *scratch = g_strdup_printf("Musepack v%d (encoder %s)", info.stream_version, info.encoder);
-        tuple_associate_string(tuple, "codec", scratch);
+        tuple_associate_string(tuple, FIELD_CODEC, NULL, scratch);
         g_free(scratch);
 
         scratch = g_strdup_printf("lossy (%s)", info.profile_name);
-        tuple_associate_string(tuple, "quality", scratch);
+        tuple_associate_string(tuple, FIELD_QUALITY, NULL, scratch);
         g_free(scratch);
 
         vfs_fclose(input);
@@ -864,7 +865,7 @@ static void* decodeStream(void* data)
         else
         {
             lockRelease();
-            xmms_usleep(10000);
+            g_usleep(10000);
         }
     }
     return endThread(filename, input, false);

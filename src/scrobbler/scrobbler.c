@@ -131,11 +131,12 @@ static item_t *q_put(Tuple *tuple, int len)
 
 	item = malloc(sizeof(item_t));
 
-	item->artist = fmt_escape(tuple_get_string(tuple, "artist"));
-	item->title = fmt_escape(tuple_get_string(tuple, "title"));
-	snprintf(item->utctime, sizeof(item->utctime), "%ld", time(NULL));
-	snprintf(item->len, sizeof(item->len), "%d", len);
-	snprintf(item->track, sizeof(item->track), "%d", tuple_get_int(tuple, "track-number"));
+	item->artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
+	item->title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
+	g_snprintf(item->utctime, sizeof(item->utctime), "%ld", time(NULL));
+	g_snprintf(item->len, sizeof(item->len), "%d", len);
+	g_snprintf(item->track, sizeof(item->track), "%d",
+		tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
 
 #ifdef NOTYET
 	if(tuple->mb == NULL)
@@ -146,7 +147,7 @@ static item_t *q_put(Tuple *tuple, int len)
 		item->mb = fmt_escape((char*)tuple->mb);
 #endif
 
-	if((album = tuple_get_string(tuple, "album")))
+	if((album = tuple_get_string(tuple, FIELD_ALBUM, NULL)) != NULL)
 		item->album = fmt_escape("");
 	else
 		item->album = fmt_escape((char*) album);
@@ -442,7 +443,7 @@ static int sc_handshake(void)
 	hexify(auth, strlen(auth));
 	auth_tmp = g_strdup(sc_response_hash);
 
-	snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s&t=%ld&a=%s",
+	g_snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s&t=%ld&a=%s",
 			SCROBBLER_HS_URL, SCROBBLER_VERSION,
 			SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, time(NULL),
 			auth_tmp);
@@ -600,9 +601,9 @@ static int sc_parse_sb_res(void)
 
 static gchar *sc_itemtag(char c, int n, char *str)
 {
-    static char buf[SCROBBLER_SB_MAXLEN]; 
-    snprintf(buf, SCROBBLER_SB_MAXLEN, "&%c[%d]=%s", c, n, str);
-    return buf;
+	static char buf[SCROBBLER_SB_MAXLEN]; 
+	g_snprintf(buf, SCROBBLER_SB_MAXLEN, "&%c[%d]=%s", c, n, str);
+	return buf;
 }
 
 #define cfa(f, l, n, v) \
@@ -673,10 +674,11 @@ static int sc_submit_np(Tuple *tuple)
 	/*cfa(&post, &last, "debug", "failed");*/
 
 	entry = g_strdup_printf("s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
-		tuple_get_string(tuple, "artist"),
-		tuple_get_string(tuple, "title"),
-		tuple_get_string(tuple, "album") ? tuple_get_string(tuple, "album") : "",
-		tuple_get_int(tuple, "length") / 1000, tuple_get_int(tuple, "track-number"));
+		tuple_get_string(tuple, FIELD_ARTIST, NULL),
+		tuple_get_string(tuple, FIELD_TITLE, NULL),
+		tuple_get_string(tuple, FIELD_ALBUM, NULL) ? tuple_get_string(tuple, FIELD_ALBUM, NULL) : "",
+		tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
+		tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
 
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *) entry);
 	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
@@ -831,7 +833,7 @@ static void read_cache(void)
 
 	cachesize = written = 0;
 
-	snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", audacious_get_localdir());
+	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", audacious_get_localdir());
 
 	if (!(fd = fopen(buf, "r")))
 		return;
@@ -883,9 +885,9 @@ static void read_cache(void)
 		{
 			Tuple *tuple = tuple_new();
 
-			tuple_associate_string(tuple, "artist", xmms_urldecode_plain(artist));
-			tuple_associate_string(tuple, "title", xmms_urldecode_plain(title));
-			tuple_associate_string(tuple, "album", xmms_urldecode_plain(album));
+			tuple_associate_string(tuple, FIELD_ARTIST, NULL, xmms_urldecode_plain(artist));
+			tuple_associate_string(tuple, FIELD_TITLE, NULL, xmms_urldecode_plain(title));
+			tuple_associate_string(tuple, FIELD_ALBUM, NULL, xmms_urldecode_plain(album));
 
 			item = q_put(tuple, atoi(len));
 
@@ -926,7 +928,7 @@ static void dump_queue(void)
 		return;
 	}
 
-	snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", audacious_get_localdir());
+	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", audacious_get_localdir());
 
 	if (!(fd = fopen(buf, "w")))
 	{

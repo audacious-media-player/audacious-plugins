@@ -59,36 +59,17 @@ static GMutex *decode_mutex;
 static GCond *decode_cond;
 
 InputPlugin wav_ip = {
-    NULL,
-    NULL,
-    NULL,
-    plugin_init,
-    wav_about,
-    NULL,
-    is_our_file,
-    NULL,
-    play_start,
-    play_stop,
-    play_pause,
-    file_seek,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    plugin_cleanup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    get_song_info,
-    NULL,
-    NULL,
-    get_song_tuple,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    file_mseek,
+    .init = plugin_init,
+    .about = wav_about,
+    .is_our_file = is_our_file,
+    .play_file = play_start,
+    .stop = play_stop,
+    .pause = play_pause,
+    .seek = file_seek,
+    .cleanup = plugin_cleanup,
+    .get_song_info = get_song_info,
+    .get_song_tuple = get_song_tuple,
+    .mseek = file_mseek,
 };
 
 static int
@@ -127,14 +108,14 @@ fill_song_tuple (char *filename, Tuple *ti)
 	realfn = g_filename_from_uri(filename, NULL, NULL);
 	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
 	if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
-		tuple_associate_string(ti, "title", g_path_get_basename(realfn ? realfn : filename));
+		tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(realfn ? realfn : filename));
 	else
-		tuple_associate_string(ti, "title", sf_get_string(tmp_sndfile, SF_STR_TITLE));
+		tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(tmp_sndfile, SF_STR_TITLE));
 
-	tuple_associate_string(ti, "artist", sf_get_string(tmp_sndfile, SF_STR_ARTIST));
-	tuple_associate_string(ti, "comment", sf_get_string(tmp_sndfile, SF_STR_COMMENT));
-	tuple_associate_string(ti, "date", sf_get_string(tmp_sndfile, SF_STR_DATE));
-	tuple_associate_string(ti, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
+	tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(tmp_sndfile, SF_STR_ARTIST));
+	tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(tmp_sndfile, SF_STR_COMMENT));
+	tuple_associate_string(ti, -1, "date", sf_get_string(tmp_sndfile, SF_STR_DATE));
+	tuple_associate_string(ti, -1, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
 
 	g_free(realfn); realfn = NULL;
 
@@ -145,7 +126,7 @@ fill_song_tuple (char *filename, Tuple *ti)
 	tmp_sndfile = NULL;
 
 	if (tmp_sfinfo.samplerate > 0)
-		tuple_associate_int(ti, "length", (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
+		tuple_associate_int(ti, FIELD_LENGTH, NULL, (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
 
 	switch (tmp_sfinfo.format & SF_FORMAT_TYPEMASK)
 	{
@@ -302,12 +283,12 @@ fill_song_tuple (char *filename, Tuple *ti)
 		g_string_append_printf(codec_gs, "%s", format);
 	codec = g_strdup(codec_gs->str);
 	g_string_free(codec_gs, TRUE);
-	tuple_associate_string(ti, "codec", codec);
+	tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
 
 	if (lossy != 0)
-		tuple_associate_string(ti, "quality", "lossy");
+		tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 	else
-		tuple_associate_string(ti, "quality", "lossless");
+		tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
 }
 
 static gchar *get_title(char *filename)
@@ -321,7 +302,7 @@ static gchar *get_title(char *filename)
 	if (*title == '\0')
 	{
 		g_free(title);
-		title = g_strdup(tuple_get_string(tuple, "file-name"));
+		title = g_strdup(tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
 	}
 
 	tuple_free(tuple);
@@ -515,7 +496,7 @@ file_mseek (InputPlayback *playback, gulong millisecond)
 	seek_time = (glong)millisecond;
 
 	while (seek_time != -1)
-		xmms_usleep (80000);
+		g_usleep (80000);
 }
 
 static void
@@ -545,7 +526,7 @@ static void wav_about(void)
 	static GtkWidget *box;
 	if (!box)
 	{
-        	box = xmms_show_message(
+        	box = audacious_info_dialog(
 			_("About sndfile WAV support"),
 			_("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 			  "from the xmms_sndfile plugin which is:\n"

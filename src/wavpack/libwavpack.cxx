@@ -66,8 +66,10 @@ InputPlugin mod = {
     NULL,                       //filename
     (gchar *)"WavPack Audio Plugin",
     wv_load_config,
+    NULL,
     wv_about_box,
     wv_configure,
+    FALSE,
     NULL,
     NULL,                       //no use
     wv_play,
@@ -81,7 +83,6 @@ InputPlugin mod = {
     NULL,                       //cleanup
     NULL,                       //obsolete
     NULL,                       //add_vis
-    NULL,
     NULL,
     wv_get_song_info,
     wv_file_info_box,           //info box
@@ -357,7 +358,7 @@ DecodeThread(void *a)
             }
         }
         else {
-            xmms_usleep(10000);
+            g_usleep(10000);
         }
     }
     return end_thread();
@@ -401,18 +402,18 @@ tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
 
     load_tag(&tag, ctx);
 
-    tuple_associate_string(ti, "title", tag.title);
-    tuple_associate_string(ti, "artist", tag.artist);
-    tuple_associate_string(ti, "album", tag.album);
-    tuple_associate_string(ti, "genre", tag.genre);
-    tuple_associate_string(ti, "comment", tag.comment);
-    tuple_associate_string(ti, "date", tag.year);
-    tuple_associate_string(ti, "quality", WavpackPluginGetQualityString(ctx).c_str());
-    tuple_associate_string(ti, "codec", "WavPack");
+    tuple_associate_string(ti, FIELD_TITLE, NULL, tag.title);
+    tuple_associate_string(ti, FIELD_ARTIST, NULL, tag.artist);
+    tuple_associate_string(ti, FIELD_ALBUM, NULL, tag.album);
+    tuple_associate_string(ti, FIELD_GENRE, NULL, tag.genre);
+    tuple_associate_string(ti, FIELD_COMMENT, NULL, tag.comment);
+    tuple_associate_string(ti, FIELD_DATE, NULL, tag.year);
+    tuple_associate_string(ti, FIELD_QUALITY, NULL, WavpackPluginGetQualityString(ctx).c_str());
+    tuple_associate_string(ti, FIELD_CODEC, NULL, "WavPack");
 
-    tuple_associate_int(ti, "track-number", atoi(tag.track));
-    tuple_associate_int(ti, "year", atoi(tag.year));
-    tuple_associate_int(ti, "length", (int)(WavpackGetNumSamples(ctx) / sample_rate) * 1000);
+    tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, atoi(tag.track));
+    tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(tag.year));
+    tuple_associate_int(ti, FIELD_LENGTH, NULL, (int)(WavpackGetNumSamples(ctx) / sample_rate) * 1000);
 
     return ti;
 }

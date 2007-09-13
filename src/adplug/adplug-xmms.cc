@@ -155,7 +155,7 @@ MessageBox (const char *title, const char *text, const char *button)
   strcpy (tmptxt, text);
   strcpy (tmpbutton, button);
 
-  GtkWidget *msgbox = xmms_show_message (tmptitle, tmptxt, tmpbutton, FALSE,
+  GtkWidget *msgbox = audacious_info_dialog (tmptitle, tmptxt, tmpbutton, FALSE,
                                          G_CALLBACK (gtk_widget_destroyed),
                                          &msgbox);
 
@@ -182,7 +182,7 @@ adplug_about (void)
                                     "Linked AdPlug library version: "),
                                    version_text, NULL);
     about_win =
-      xmms_show_message (about_title, about_text, _("Ok"), FALSE, NULL, NULL);
+      audacious_info_dialog (about_title, about_text, _("Ok"), FALSE, NULL, NULL);
     g_signal_connect (G_OBJECT (about_win), "destroy",
                       G_CALLBACK (gtk_widget_destroyed), &about_win);
     g_free (about_text);
@@ -694,16 +694,16 @@ adplug_get_tuple (char *filename)
   {
     Tuple *ti = tuple_new_from_filename(filename);
     if (! p->getauthor().empty())
-      tuple_associate_string(ti, "artist", p->getauthor().c_str());
+      tuple_associate_string(ti, FIELD_ARTIST, NULL, p->getauthor().c_str());
     if (! p->gettitle().empty())
-      tuple_associate_string(ti, "title", p->gettitle().c_str());
+      tuple_associate_string(ti, FIELD_TITLE, NULL, p->gettitle().c_str());
     else if (! p->getdesc().empty())
-      tuple_associate_string(ti, "title", p->getdesc().c_str());
+      tuple_associate_string(ti, FIELD_TITLE, NULL, p->getdesc().c_str());
     else
-      tuple_associate_string(ti, "title", g_path_get_basename(filename));
-    tuple_associate_string(ti, "codec", p->gettype().c_str());
-    tuple_associate_string(ti, "quality", "sequenced");
-    tuple_associate_int(ti, "length", p->songlength (plr.subsong));
+      tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
+    tuple_associate_string(ti, FIELD_CODEC, NULL, p->gettype().c_str());
+    tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+    tuple_associate_int(ti, FIELD_LENGTH, NULL, p->songlength (plr.subsong));
     delete p;
     return ti;
   }
@@ -715,7 +715,7 @@ static char* format_and_free_ti( Tuple* ti, int* length )
 {
   char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
   if ( result )
-    *length = tuple_get_int(ti, "length");
+    *length = tuple_get_int(ti, FIELD_LENGTH, NULL);
   tuple_free((void *) ti);
 
   return result;
@@ -853,7 +853,7 @@ play_loop (void *data)
 
     // write sound buffer
     while (playback->output->buffer_free () < SNDBUFSIZE * sampsize)
-      xmms_usleep (10000);
+      g_usleep (10000);
     produce_audio (playback->output->written_time (),
                    bit16 ? FORMAT_16 : FORMAT_8,
                    stereo ? 2 : 1, SNDBUFSIZE * sampsize, sndbuf, NULL);
@@ -869,7 +869,7 @@ play_loop (void *data)
   {                             // wait for output plugin to finish if song has self-ended
     dbg_printf ("wait, ");
     while (playback->output->buffer_playing ())
-      xmms_usleep (10000);
+      g_usleep (10000);
   }
   else
   {                             // or else, flush its output buffers
@@ -1136,8 +1136,10 @@ InputPlugin adplug_ip = {
   NULL,                         // filename (filled by XMMS)
   (gchar *)ADPLUG_NAME,                  // plugin description
   adplug_init,                  // plugin functions...
+  adplug_quit,
   adplug_about,
   adplug_config,
+  FALSE,
   adplug_is_our_file,
   NULL,                         // scan_dir (look in Input/cdaudio/cdaudio.c)
   adplug_play,
@@ -1148,7 +1150,6 @@ InputPlugin adplug_ip = {
   adplug_get_time,
   NULL,                         // get_volume (handled by output plugin)
   NULL,                         // set_volume (...)
-  adplug_quit,
   NULL,                         // OBSOLETE - DO NOT USE!
   NULL,                         // add_vis_pcm (filled by XMMS)
   NULL,                         // set_info (filled by XMMS)

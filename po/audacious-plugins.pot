@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-08-30 18:23+0200\n"
+"POT-Creation-Date: 2007-09-05 00:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgstr ""
 #: src/audiocompress/audacious-glue.c:556 src/cdaudio-ng/configure.c:144
 #: src/console/Audacious_Driver.cxx:500 src/echo_plugin/gui.c:27
 #: src/echo_plugin/gui.c:138 src/esd/about.c:49
-#: src/filewriter/filewriter.c:182 src/jack/configure.c:140
+#: src/filewriter/filewriter.c:184 src/jack/configure.c:140
 #: src/jack/jack.c:602 src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
 #: src/madplug/plugin.c:597 src/madplug/plugin.c:620
 #: src/metronom/metronom.c:87 src/modplug/gui/main.cxx:45
@@ -81,8 +81,8 @@ msgstr ""
 #: src/audiocompress/audacious-glue.c:561 src/cdaudio-ng/configure.c:148
 #: src/echo_plugin/gui.c:146 src/jack/configure.c:147
 #: src/modplug/gui/interface.cxx:741 src/musepack/libmpc.cxx:236
-#: src/musepack/libmpc.cxx:556 src/null/null.c:111 src/sid/xmms-sid.glade:3599
-#: src/sid/xs_interface.c:1345 src/stereo_plugin/stereo.c:128
+#: src/musepack/libmpc.cxx:556 src/null/null.c:111 src/sid/xmms-sid.glade:2930
+#: src/sid/xs_interface.c:1192 src/stereo_plugin/stereo.c:128
 #: src/sun/configure.c:567 src/timidity/src/interface.c:232
 #: src/wavpack/ui.cxx:278 src/wavpack/ui.cxx:561
 msgid "Cancel"
@@ -116,14 +116,14 @@ msgid "Channels"
 msgstr ""
 
 #: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:899
-#: src/sid/xmms-sid.glade:156 src/sid/xs_interface.c:302
+#: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:280
 #: src/timidity/src/interface.c:167
 msgid "Mono"
 msgstr ""
 
 #: src/adplug/adplug-xmms.cc:333 src/filewriter/mp3.c:894
-#: src/modplug/gui/interface.cxx:195 src/sid/xmms-sid.glade:175
-#: src/sid/xs_interface.c:309 src/timidity/src/interface.c:175
+#: src/modplug/gui/interface.cxx:195 src/sid/xmms-sid.glade:176
+#: src/sid/xs_interface.c:287 src/timidity/src/interface.c:175
 msgid "Stereo"
 msgstr ""
 
@@ -228,28 +228,28 @@ msgstr ""
 msgid "Subsong selection"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:688
+#: src/adplug/adplug-xmms.cc:730
 msgid "Order: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:689
+#: src/adplug/adplug-xmms.cc:731
 msgid "Pattern: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:691
+#: src/adplug/adplug-xmms.cc:733
 msgid "Row: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:692
+#: src/adplug/adplug-xmms.cc:734
 msgid "Speed: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:693
+#: src/adplug/adplug-xmms.cc:735
 msgid "Timer: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:694 src/console/Audacious_Config.cxx:226
-#: src/sid/xmms-sid.glade:513 src/sid/xs_interface.c:361
+#: src/adplug/adplug-xmms.cc:736 src/console/Audacious_Config.cxx:226
+#: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:333
 msgid "Hz"
 msgstr ""
 
@@ -284,8 +284,8 @@ msgid ""
 msgstr ""
 
 #: src/alarm/interface.c:73 src/lirc/about.c:116
-#: src/modplug/gui/interface.cxx:946 src/sid/xmms-sid.glade:4262
-#: src/sid/xs_interface.c:1882
+#: src/modplug/gui/interface.cxx:946 src/sid/xmms-sid.glade:3493
+#: src/sid/xs_interface.c:1671
 msgid "Close"
 msgstr ""
 
@@ -299,10 +299,10 @@ msgstr ""
 
 #: src/alarm/interface.c:126 src/alarm/interface.c:1391 src/alsa/about.c:46
 #: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:206
-#: src/filewriter/filewriter.c:199 src/flacng/plugin.c:743
+#: src/filewriter/filewriter.c:201 src/flacng/plugin.c:743
 #: src/modplug/gui/interface.cxx:725 src/pulse_audio/pulse_audio.c:694
-#: src/scrobbler/gtkstuff.c:43 src/sid/xmms-sid.glade:3585
-#: src/sid/xs_interface.c:1338
+#: src/scrobbler/gtkstuff.c:43 src/sid/xmms-sid.glade:2916
+#: src/sid/xs_interface.c:1185
 msgid "OK"
 msgstr ""
 
@@ -350,6 +350,10 @@ msgstr ""
 
 #: src/alarm/interface.c:508
 msgid "h"
+msgstr ""
+
+#: src/alarm/interface.c:538
+msgid "minutes"
 msgstr ""
 
 #: src/alarm/interface.c:556
@@ -411,10 +415,10 @@ msgstr ""
 msgid "Fading"
 msgstr ""
 
-#: src/alarm/interface.c:1089 src/sid/xmms-sid.glade:2271
-#: src/sid/xmms-sid.glade:2442 src/sid/xmms-sid.glade:3408
-#: src/sid/xs_interface.c:923 src/sid/xs_interface.c:977
-#: src/sid/xs_interface.c:1289
+#: src/alarm/interface.c:1089 src/sid/xmms-sid.glade:2007
+#: src/sid/xmms-sid.glade:2178 src/sid/xmms-sid.glade:2526
+#: src/sid/xs_interface.c:900 src/sid/xs_interface.c:954
+#: src/sid/xs_interface.c:1064
 msgid "seconds"
 msgstr ""
 
@@ -1180,8 +1184,8 @@ msgid ""
 "backend</span>"
 msgstr ""
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:4084
-#: src/sid/xs_interface.c:1828 src/vorbis/fileinfo.c:562
+#: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:3315
+#: src/sid/xs_interface.c:1615 src/vorbis/fileinfo.c:562
 msgid "Name:"
 msgstr ""
 
@@ -1422,10 +1426,10 @@ msgstr ""
 msgid "Skin file:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:641 src/sid/xmms-sid.glade:2595
-#: src/sid/xmms-sid.glade:2801 src/sid/xmms-sid.glade:2907
-#: src/sid/xs_interface.c:1024 src/sid/xs_interface.c:1093
-#: src/sid/xs_interface.c:1128
+#: src/aosd/aosd_ui.c:641 src/sid/xmms-sid.glade:2331
+#: src/sid/xmms-sid.glade:2706 src/sid/xmms-sid.glade:2812
+#: src/sid/xs_interface.c:1002 src/sid/xs_interface.c:1124
+#: src/sid/xs_interface.c:1160
 msgid "Browse"
 msgstr ""
 
@@ -1506,7 +1510,7 @@ msgid "Trigger"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:87
-#: src/sid/xmms-sid.glade:3545 src/sid/xs_interface.c:1324
+#: src/sid/xmms-sid.glade:2876 src/sid/xs_interface.c:1171
 msgid "Misc"
 msgstr ""
 
@@ -1771,7 +1775,7 @@ msgid "Default song length:"
 msgstr ""
 
 #: src/console/Audacious_Config.cxx:201 src/modplug/gui/interface.cxx:264
-#: src/sid/xmms-sid.glade:1424 src/sid/xs_interface.c:673
+#: src/sid/xmms-sid.glade:1243 src/sid/xs_interface.c:645
 msgid "Resampling"
 msgstr ""
 
@@ -2070,7 +2074,7 @@ msgid ""
 "Ensure that the device has been correctly plugged in."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:318 src/filewriter/filewriter.c:196
+#: src/evdev-plug/ed_ui.c:318 src/filewriter/filewriter.c:198
 #: src/madplug/plugin.c:620
 msgid "Error"
 msgstr ""
@@ -2189,11 +2193,11 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/filewriter/filewriter.c:167
+#: src/filewriter/filewriter.c:169
 msgid "About FileWriter-Plugin"
 msgstr ""
 
-#: src/filewriter/filewriter.c:168
+#: src/filewriter/filewriter.c:170
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2213,63 +2217,63 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/filewriter/filewriter.c:197
+#: src/filewriter/filewriter.c:199
 msgid ""
 "You cannot use the FileWriter plugin\n"
 "when you're running in realtime mode."
 msgstr ""
 
-#: src/filewriter/filewriter.c:512
+#: src/filewriter/filewriter.c:514
 msgid "File Writer Configuration"
 msgstr ""
 
-#: src/filewriter/filewriter.c:524
+#: src/filewriter/filewriter.c:526
 msgid "Output file format:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:542 src/ladspa/ladspa.c:962
+#: src/filewriter/filewriter.c:544 src/ladspa/ladspa.c:962
 msgid "Configure"
 msgstr ""
 
-#: src/filewriter/filewriter.c:557
+#: src/filewriter/filewriter.c:559
 msgid "Save into original directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:562
+#: src/filewriter/filewriter.c:564
 msgid "Save into custom directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:574
+#: src/filewriter/filewriter.c:576
 msgid "Output file folder:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:578
+#: src/filewriter/filewriter.c:580
 msgid "Pick a folder"
 msgstr ""
 
-#: src/filewriter/filewriter.c:598
+#: src/filewriter/filewriter.c:600
 msgid "Get filename from:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:601
+#: src/filewriter/filewriter.c:603
 msgid "original file tags"
 msgstr ""
 
-#: src/filewriter/filewriter.c:607
+#: src/filewriter/filewriter.c:609
 msgid "original filename"
 msgstr ""
 
-#: src/filewriter/filewriter.c:617
+#: src/filewriter/filewriter.c:619
 msgid "Don't strip file name extension"
 msgstr ""
 
-#: src/filewriter/filewriter.c:621
+#: src/filewriter/filewriter.c:623
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
 "before adding the new file extension to the end."
 msgstr ""
 
-#: src/filewriter/filewriter.c:635
+#: src/filewriter/filewriter.c:637
 msgid "Prepend track number to filename"
 msgstr ""
 
@@ -2675,8 +2679,7 @@ msgstr ""
 msgid "ID3 format:"
 msgstr ""
 
-#: src/madplug/configure.c:261 src/sid/xmms-sid.glade:3144
-#: src/sid/xs_interface.c:1189 src/vorbis/configure.c:160
+#: src/madplug/configure.c:261 src/vorbis/configure.c:160
 msgid "Title"
 msgstr ""
 
@@ -3103,8 +3106,8 @@ msgstr ""
 msgid "Use Album Gain"
 msgstr ""
 
-#: src/musepack/libmpc.cxx:490 src/sid/xmms-sid.glade:3755
-#: src/sid/xs_interface.c:1708 src/tta/libtta.c:322 src/wavpack/ui.cxx:150
+#: src/musepack/libmpc.cxx:490 src/sid/xmms-sid.glade:2994
+#: src/sid/xs_interface.c:1495 src/tta/libtta.c:322 src/wavpack/ui.cxx:150
 msgid "Filename:"
 msgstr ""
 
@@ -3116,8 +3119,8 @@ msgstr ""
 msgid "Track:"
 msgstr ""
 
-#: src/musepack/libmpc.cxx:550 src/sid/xmms-sid.glade:1996
-#: src/sid/xs_interface.c:835 src/wavpack/ui.cxx:265
+#: src/musepack/libmpc.cxx:550 src/sid/xmms-sid.glade:1732
+#: src/sid/xs_interface.c:812 src/wavpack/ui.cxx:265
 msgid "Save"
 msgstr ""
 
@@ -3365,152 +3368,133 @@ msgstr ""
 msgid "Scrobbler Error"
 msgstr ""
 
-#: src/sid/xmms-sid.c:207
+#: src/sid/xmms-sid.c:203
 msgid "Error initializing song-length database!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:213
+#: src/sid/xmms-sid.c:209
 msgid "Error initializing STIL database!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:327
+#: src/sid/xmms-sid.c:414
 msgid "Couldn't allocate memory for audio data buffer!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:334
+#: src/sid/xmms-sid.c:421
 msgid "Couldn't allocate memory for audio oversampling buffer!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:409
+#: src/sid/xmms-sid.c:436
 #, c-format
 msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:420
+#: src/sid/xmms-sid.c:446
 #, c-format
 msgid "Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:466
+#: src/sid/xmms-sid.c:491
 msgid "Oversampling rate-conversion pass failed.\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:770
-msgid "Subtune Control"
+#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:213
+msgid "Audacious-SID configuration"
 msgstr ""
 
-#: src/sid/xmms-sid.c:1001
-#, c-format
-msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
-msgstr ""
-
-#: src/sid/xmms-sid.c:1008
-#, c-format
-msgid "Could not allocate sidFilename ('%s')\n"
-msgstr ""
-
-#: src/sid/xmms-sid.c:1017
-#, c-format
-msgid "Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:235
-msgid "Audacious-SID Configuration"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:70 src/sid/xs_interface.c:271
+#: src/sid/xmms-sid.glade:71 src/sid/xs_interface.c:249
 msgid "8-bit"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:89 src/sid/xs_interface.c:278
+#: src/sid/xmms-sid.glade:90 src/sid/xs_interface.c:256
 msgid "16-bit"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:110 src/sid/xs_interface.c:285
+#: src/sid/xmms-sid.glade:111 src/sid/xs_interface.c:263
 msgid "Resolution:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:195 src/sid/xs_interface.c:316
+#: src/sid/xmms-sid.glade:196 src/sid/xs_interface.c:294
 msgid "Autopanning"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:216 src/sid/xs_interface.c:323
+#: src/sid/xmms-sid.glade:217 src/sid/xs_interface.c:301
 #: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
 msgid "Channels:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:565 src/sid/xs_interface.c:373
+#: src/sid/xmms-sid.glade:384 src/sid/xs_interface.c:345
 msgid "Samplerate:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:611 src/sid/xs_interface.c:390
+#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:362
 msgid "Use oversampling"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:637 src/sid/xs_interface.c:401
+#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:373
 msgid "Factor:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:681 src/sid/xs_interface.c:413
+#: src/sid/xmms-sid.glade:500 src/sid/xs_interface.c:385
 msgid "Large factors require more CPU-power"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:715 src/sid/xs_interface.c:419
+#: src/sid/xmms-sid.glade:534 src/sid/xs_interface.c:391
 msgid "Oversampling:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:751 src/sid/xs_interface.c:424
+#: src/sid/xmms-sid.glade:570 src/sid/xs_interface.c:396
 msgid "Audio"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:801 src/sid/xs_interface.c:456
+#: src/sid/xmms-sid.glade:620 src/sid/xs_interface.c:428
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "clock speed/frequency. Otherwise the speed is determined from played file "
 "itself."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:803 src/sid/xs_interface.c:452
+#: src/sid/xmms-sid.glade:622 src/sid/xs_interface.c:424
 msgid "Force speed"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:821 src/sid/xs_interface.c:462
+#: src/sid/xmms-sid.glade:640 src/sid/xs_interface.c:434
 msgid ""
 "PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
 "Most of SID-tunes have been made for PAL computers."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:823 src/sid/xs_interface.c:458
+#: src/sid/xmms-sid.glade:642 src/sid/xs_interface.c:430
 msgid "PAL (50 Hz)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:841 src/sid/xs_interface.c:470
+#: src/sid/xmms-sid.glade:660 src/sid/xs_interface.c:442
 msgid ""
 "NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
 "that differ from PAL). It is mainly used in United States, Japan and certain "
 "other countries."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:843 src/sid/xs_interface.c:466
+#: src/sid/xmms-sid.glade:662 src/sid/xs_interface.c:438
 msgid "NTSC (60 Hz)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:864 src/sid/xs_interface.c:474
+#: src/sid/xmms-sid.glade:683 src/sid/xs_interface.c:446
 msgid "Clock speed:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:909 src/sid/xs_interface.c:495
+#: src/sid/xmms-sid.glade:728 src/sid/xs_interface.c:467
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "SID-chip model. Otherwise the preferred SID model is determined from the "
 "file (if PSIDv2NG type) or if not available, this setting is used."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:911 src/sid/xs_interface.c:491
+#: src/sid/xmms-sid.glade:730 src/sid/xs_interface.c:463
 msgid "Force model"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:929 src/sid/xs_interface.c:501
+#: src/sid/xmms-sid.glade:748 src/sid/xs_interface.c:473
 msgid ""
 "MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
 "in few ways, having much fuller filter (which, due to design error, is never "
@@ -3518,89 +3502,89 @@ msgid ""
 "which enables playing of digital samples."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:931 src/sid/xs_interface.c:497
+#: src/sid/xmms-sid.glade:750 src/sid/xs_interface.c:469
 msgid "MOS 6581"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:950 src/sid/xs_interface.c:505
+#: src/sid/xmms-sid.glade:769 src/sid/xs_interface.c:477
 msgid "MOS 8580"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:971 src/sid/xs_interface.c:512
+#: src/sid/xmms-sid.glade:790 src/sid/xs_interface.c:484
 msgid "SID model:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1023 src/sid/xs_interface.c:533
+#: src/sid/xmms-sid.glade:842 src/sid/xs_interface.c:505
 msgid ""
 "Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
 "cases, though."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1025 src/sid/xs_interface.c:529
+#: src/sid/xmms-sid.glade:844 src/sid/xs_interface.c:501
 msgid "SIDPlay 1 (frame-based)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1044 src/sid/xs_interface.c:541
+#: src/sid/xmms-sid.glade:863 src/sid/xs_interface.c:513
 msgid ""
 "Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
 "emulation."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1046 src/sid/xs_interface.c:537
+#: src/sid/xmms-sid.glade:865 src/sid/xs_interface.c:509
 msgid "SIDPlay 2 (cycle-based)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1068 src/sid/xs_interface.c:545
+#: src/sid/xmms-sid.glade:887 src/sid/xs_interface.c:517
 msgid "Emulation library selection:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1114 src/sid/xs_interface.c:562
+#: src/sid/xmms-sid.glade:933 src/sid/xs_interface.c:534
 msgid "Real C64 (SIDPlay 2 only)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:569
+#: src/sid/xmms-sid.glade:952 src/sid/xs_interface.c:541
 msgid "Bank switching"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1153 src/sid/xs_interface.c:576
+#: src/sid/xmms-sid.glade:972 src/sid/xs_interface.c:548
 msgid "Transparent ROM"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1173 src/sid/xs_interface.c:583
+#: src/sid/xmms-sid.glade:992 src/sid/xs_interface.c:555
 msgid "PlaySID environment"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1194 src/sid/xs_interface.c:590
+#: src/sid/xmms-sid.glade:1013 src/sid/xs_interface.c:562
 msgid "Memory mode:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1230 src/sid/xs_interface.c:595
+#: src/sid/xmms-sid.glade:1049 src/sid/xs_interface.c:567
 msgid "Emu#1"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1274 src/sid/xs_interface.c:622
+#: src/sid/xmms-sid.glade:1093 src/sid/xs_interface.c:594
 msgid ""
 "This setting can be used to enable libSIDPlay2's \"optimization mode\", "
 "which in downgrades the emulation from cycle-exact to something similar to "
 "frame-exact. The result is lower CPU usage, but worse accuracy."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1276 src/sid/xs_interface.c:618
+#: src/sid/xmms-sid.glade:1095 src/sid/xs_interface.c:590
 msgid "Optimization mode (faster, inaccurate)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1294 src/sid/xs_interface.c:628
+#: src/sid/xmms-sid.glade:1113 src/sid/xs_interface.c:600
 msgid ""
 "reSID is the software SID-chip simulator based on SID reverse-engineering, "
 "created by Dag Lem. It is probably the closest thing to real SID available "
 "as software-only emulation."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1296 src/sid/xs_interface.c:624
+#: src/sid/xmms-sid.glade:1115 src/sid/xs_interface.c:596
 msgid "reSID-emulation"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1314 src/sid/xs_interface.c:636
+#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:608
 msgid ""
 "HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
 "real SID-chip. Software can be used to control the HardSID and combined with "
@@ -3609,47 +3593,47 @@ msgid ""
 "http://www.hardsid.com/"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1316 src/sid/xs_interface.c:632
+#: src/sid/xmms-sid.glade:1135 src/sid/xs_interface.c:604
 msgid "HardSID"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1337 src/sid/xs_interface.c:640
+#: src/sid/xmms-sid.glade:1156 src/sid/xs_interface.c:612
 msgid "SIDPlay 2 options:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1382 src/sid/xs_interface.c:661
+#: src/sid/xmms-sid.glade:1201 src/sid/xs_interface.c:633
 msgid ""
 "Fastest and also worst sounding sampling method, simply picks nearest "
 "neighbouring sample."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1384 src/sid/xs_interface.c:657
+#: src/sid/xmms-sid.glade:1203 src/sid/xs_interface.c:629
 msgid "Fast (nearest neighbour)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1402 src/sid/xs_interface.c:669
+#: src/sid/xmms-sid.glade:1221 src/sid/xs_interface.c:641
 msgid ""
 "Uses linear interpolation between samples, yielding higher audio quality "
 "with less sampling noise."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1404 src/sid/xs_interface.c:665
+#: src/sid/xmms-sid.glade:1223 src/sid/xs_interface.c:637
 msgid "Linear interpolation"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1444 src/sid/xs_interface.c:680
+#: src/sid/xmms-sid.glade:1263 src/sid/xs_interface.c:652
 msgid "Resampling (FIR)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1465 src/sid/xs_interface.c:687
+#: src/sid/xmms-sid.glade:1284 src/sid/xs_interface.c:659
 msgid "reSID sampling options:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1501 src/sid/xs_interface.c:692
+#: src/sid/xmms-sid.glade:1320 src/sid/xs_interface.c:664
 msgid "Emu#2"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1531 src/sid/xs_interface.c:708
+#: src/sid/xmms-sid.glade:1350 src/sid/xs_interface.c:680
 msgid ""
 "This option enables emulation of SID filter. The filter is an essential part "
 "of SID's sound capacity, but accurate emulation of it may require quite much "
@@ -3657,367 +3641,271 @@ msgid ""
 "authentic at all if they utilize the filter."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1533 src/sid/xs_interface.c:704
+#: src/sid/xmms-sid.glade:1352 src/sid/xs_interface.c:676
 msgid "Emulate filters"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1590 src/sid/xs_interface.c:733
+#: src/sid/xmms-sid.glade:1409 src/sid/xs_interface.c:705
 msgid "FS"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1641 src/sid/xs_interface.c:750
+#: src/sid/xmms-sid.glade:1460 src/sid/xs_interface.c:722
 msgid "FM"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1692 src/sid/xs_interface.c:767
+#: src/sid/xmms-sid.glade:1511 src/sid/xs_interface.c:739
 msgid "FT"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1730 src/sid/xs_interface.c:778
+#: src/sid/xmms-sid.glade:1549 src/sid/xs_interface.c:750
 msgid "Reset values"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1759 src/sid/xs_interface.c:783
+#: src/sid/xmms-sid.glade:1578 src/sid/xs_interface.c:755
 msgid "SIDPlay1"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1828 src/sid/xs_interface.c:807
-msgid "6581 (reSID)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1854 src/sid/xs_interface.c:808
-msgid "8580 (reSID)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1880 src/sid/xs_interface.c:809
-msgid "6581R1 (alankila)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1906 src/sid/xs_interface.c:810
-msgid "6581R4 (alankila)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:1975 src/sid/xs_interface.c:827
-msgid "Load"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2017 src/sid/xs_interface.c:843
-msgid "Import"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2038 src/sid/xs_interface.c:851
+#: src/sid/xmms-sid.glade:1690 src/sid/xs_interface.c:796
 msgid "Export"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2083 src/sid/xs_interface.c:865
+#: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:804
+msgid "Use"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:820
+msgid "Import"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1774 src/sid/xs_interface.c:828
+msgid "Delete"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:842
 msgid "Filter curve:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2119 src/sid/xs_interface.c:870
+#: src/sid/xmms-sid.glade:1855 src/sid/xs_interface.c:847
 msgid "SIDPlay2"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2155 src/sid/xs_interface.c:876
+#: src/sid/xmms-sid.glade:1891 src/sid/xs_interface.c:853
 msgid "Filters"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2199 src/sid/xs_interface.c:903
+#: src/sid/xmms-sid.glade:1935 src/sid/xs_interface.c:880
 msgid ""
 "If enabled, the tune is played at least for the specified time, adding "
 "silence to the end if necessary."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2201 src/sid/xs_interface.c:899
+#: src/sid/xmms-sid.glade:1937 src/sid/xs_interface.c:876
 msgid "Play at least for specified time"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2226 src/sid/xmms-sid.glade:2397
-#: src/sid/xmms-sid.glade:3364 src/sid/xs_interface.c:910
-#: src/sid/xs_interface.c:964 src/sid/xs_interface.c:1276
+#: src/sid/xmms-sid.glade:1962 src/sid/xmms-sid.glade:2133
+#: src/sid/xmms-sid.glade:2482 src/sid/xs_interface.c:887
+#: src/sid/xs_interface.c:941 src/sid/xs_interface.c:1051
 msgid "Playtime:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2305 src/sid/xs_interface.c:930
+#: src/sid/xmms-sid.glade:2041 src/sid/xs_interface.c:907
 msgid "Minimum playtime:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2350 src/sid/xs_interface.c:951
+#: src/sid/xmms-sid.glade:2086 src/sid/xs_interface.c:928
 msgid ""
 "If enabled, tune is played until specified duration is reached (aka maximum "
 "playtime)."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2352 src/sid/xs_interface.c:947
+#: src/sid/xmms-sid.glade:2088 src/sid/xs_interface.c:924
 msgid "Play for specified time maximum"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2371 src/sid/xs_interface.c:957
+#: src/sid/xmms-sid.glade:2107 src/sid/xs_interface.c:934
 msgid ""
 "If enabled, the maximum playtime is applied only if song/tune length is not "
 "known."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2373 src/sid/xs_interface.c:953
+#: src/sid/xmms-sid.glade:2109 src/sid/xs_interface.c:930
 msgid "Only when song length is unknown"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2476 src/sid/xs_interface.c:984
+#: src/sid/xmms-sid.glade:2212 src/sid/xs_interface.c:961
 msgid "Maximum playtime:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2521 src/sid/xs_interface.c:1005
+#: src/sid/xmms-sid.glade:2257 src/sid/xs_interface.c:982
 msgid ""
 "This option enables using of XSIDPLAY compatible song length database. "
 "(Refer to Audacious-SID documentation for more information)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2523 src/sid/xs_interface.c:1001
+#: src/sid/xmms-sid.glade:2259 src/sid/xs_interface.c:978
 msgid "Use XSIDPLAY-compatible database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2548 src/sid/xs_interface.c:1012
+#: src/sid/xmms-sid.glade:2284 src/sid/xs_interface.c:989
 msgid "DB-file:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2573 src/sid/xs_interface.c:1022
+#: src/sid/xmms-sid.glade:2309 src/sid/xs_interface.c:999
 msgid "Database path and filename"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2593 src/sid/xs_interface.c:1028
+#: src/sid/xmms-sid.glade:2329 src/sid/xs_interface.c:1006
 msgid "Browse for song length-database file"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2620 src/sid/xs_interface.c:1030
+#: src/sid/xmms-sid.glade:2356 src/sid/xs_interface.c:1008
 msgid "Song length database:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2656 src/sid/xs_interface.c:1035
+#: src/sid/xmms-sid.glade:2392 src/sid/xs_interface.c:1013
 msgid "Songlength"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2700 src/sid/xs_interface.c:1062
+#: src/sid/xmms-sid.glade:2437 src/sid/xs_interface.c:1036
+msgid "Add sub-tunes to playlist"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2457 src/sid/xs_interface.c:1041
+msgid "Only tunes with specified minimum length "
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2560 src/sid/xs_interface.c:1071
+msgid "Sub-tune handling:"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2605 src/sid/xs_interface.c:1092
 msgid ""
 "If this option is enabled (and the database & HVSC settings below are "
 "correctly set), Audacious-SID will use and display additional information "
 "from STIL database when HVSC SIDs are played."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2702 src/sid/xs_interface.c:1058
+#: src/sid/xmms-sid.glade:2607 src/sid/xs_interface.c:1088
 msgid "Use STIL database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2727 src/sid/xs_interface.c:1069
+#: src/sid/xmms-sid.glade:2632 src/sid/xs_interface.c:1099
 msgid "STIL file:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2764 src/sid/xs_interface.c:1085
+#: src/sid/xmms-sid.glade:2669 src/sid/xs_interface.c:1115
 msgid ""
 "Path and filename of STIL database file (STIL.txt), usually found from "
 "HVSC's DOCUMENTS-subdirectory."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2799 src/sid/xs_interface.c:1097
+#: src/sid/xmms-sid.glade:2704 src/sid/xs_interface.c:1128
 msgid "Browse for STIL-database file"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2833 src/sid/xs_interface.c:1104
+#: src/sid/xmms-sid.glade:2738 src/sid/xs_interface.c:1135
 msgid "HVSC path:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2870 src/sid/xs_interface.c:1120
+#: src/sid/xmms-sid.glade:2775 src/sid/xs_interface.c:1151
 msgid ""
 "Path to base-directory of your High Voltage SID Collection (HVSC), for "
 "example /media/C64Music/"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2905 src/sid/xs_interface.c:1132
+#: src/sid/xmms-sid.glade:2810 src/sid/xs_interface.c:1164
 msgid "Browse for HVSC path"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2935 src/sid/xs_interface.c:1134
+#: src/sid/xmms-sid.glade:2840 src/sid/xs_interface.c:1166
 msgid "SID Tune Information List (STIL) database:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2980 src/sid/xs_interface.c:1155
-msgid ""
-"XMMS v1.2.5 and later support generic titlestring formatting (see XMMS "
-"preferences). This option can be enabled to override those generic titles "
-"with Audacious-SID specific ones. Formatting mnemonics are explained briefly "
-"below."
-msgstr ""
-
-#: src/sid/xmms-sid.glade:2982 src/sid/xs_interface.c:1151
-msgid "Override generic XMMS titles"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3032 src/sid/xs_interface.c:1172
-msgid ""
-"%% - '%' character\n"
-"%p - Performer/composer\n"
-"%t - Song name (title)\n"
-"%c - Copyright\n"
-"%s - File type\n"
-"%m - SID model"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3062 src/sid/xs_interface.c:1178
-msgid ""
-"%C - Speed/clock (PAL/NTSC)\n"
-"%n - Subtune\n"
-"%N - Number of subtunes\n"
-"%f - Filename\n"
-"%F - File path\n"
-"%e - File extension"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3108 src/sid/xs_interface.c:1184
-msgid "Song name/title format:"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3188 src/sid/xs_interface.c:1216
-msgid "No sub-tune control."
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3190 src/sid/xs_interface.c:1212
-msgid "Disabled"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3208 src/sid/xs_interface.c:1224
-msgid ""
-"Seeking backwards/forwards selects previous/next sub-tune, similar to "
-"selector used in XMMS-SidPlay."
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3210 src/sid/xs_interface.c:1220
-msgid "Seek back/forward changes sub-tune"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3229 src/sid/xs_interface.c:1232
-msgid ""
-"By pressing the seekbar a sub-tune control window pops up, in style of UADE "
-"(Unix Amiga Delitracker Emulator)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3231 src/sid/xs_interface.c:1228
-msgid "Pop-up via seekbar (UADE-style)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3250 src/sid/xs_interface.c:1240
-msgid ""
-"Seekbar works as a sub-tune selector (Best option if you have patched your "
-"XMMS with the song-position patch.)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3252 src/sid/xs_interface.c:1236
-msgid "Song-position patch"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3273 src/sid/xs_interface.c:1244
-msgid "Sub-tune control:"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3319 src/sid/xs_interface.c:1261
-msgid "Go through all sub-tunes in file"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3339 src/sid/xs_interface.c:1266
-msgid "Only tunes with specified minimum length "
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3442 src/sid/xs_interface.c:1296
-msgid "Automatic sub-tune changes:"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3487 src/sid/xs_interface.c:1317
-msgid ""
-"Determine if file is a SID-tune by checking the file contents. If NOT "
-"selected, filetype is determined by checking filename extension (.sid, ."
-"dat, ...)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3489 src/sid/xs_interface.c:1313
-msgid "Detect file by contents (slower)"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3509 src/sid/xs_interface.c:1319
-msgid "Miscellaneous options:"
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3582 src/sid/xs_interface.c:1343
+#: src/sid/xmms-sid.glade:2913 src/sid/xs_interface.c:1190
 msgid "Accept and update changes"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3596 src/sid/xs_interface.c:1350
+#: src/sid/xmms-sid.glade:2927 src/sid/xs_interface.c:1197
 msgid "Cancel any changes"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3620 src/sid/xs_interface.c:1651
+#: src/sid/xmms-sid.glade:2952 src/sid/xs_interface.c:1474
 msgid "Audacious-SID Fileinfo"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3674 src/sid/xs_interface.c:1677
-msgid " < "
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3710 src/sid/xs_interface.c:1689
-msgid " > "
-msgstr ""
-
-#: src/sid/xmms-sid.glade:3783 src/sid/xs_interface.c:1716
+#: src/sid/xmms-sid.glade:3022 src/sid/xs_interface.c:1503
 msgid "Songname:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3811 src/sid/xs_interface.c:1724
+#: src/sid/xmms-sid.glade:3050 src/sid/xs_interface.c:1511
 msgid "Composer:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3839 src/sid/xs_interface.c:1732
+#: src/sid/xmms-sid.glade:3078 src/sid/xs_interface.c:1519
 #: src/vorbis/fileinfo.c:723
 msgid "Copyright:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3953 src/sid/xs_interface.c:1772
+#: src/sid/xmms-sid.glade:3192 src/sid/xs_interface.c:1563
 msgid "Song Information:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4008 src/sid/xs_interface.c:1797
-msgid " "
-msgstr ""
-
-#: src/sid/xmms-sid.glade:4035 src/sid/xs_interface.c:1812
+#: src/sid/xmms-sid.glade:3266 src/sid/xs_interface.c:1598
 msgid "Author:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4133 src/sid/xs_interface.c:1844
+#: src/sid/xmms-sid.glade:3364 src/sid/xs_interface.c:1632
 msgid "Duration:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4227 src/sid/xs_interface.c:1877
+#: src/sid/xmms-sid.glade:3458 src/sid/xs_interface.c:1666
 msgid "Sub-tune Information:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4281 src/sid/xs_interface.c:1951
+#: src/sid/xmms-sid.glade:3512 src/sid/xs_interface.c:1727
 msgid "Select HVSC song length database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4322 src/sid/xs_interface.c:1989
-msgid "Select STIL-database "
+#: src/sid/xmms-sid.glade:3554 src/sid/xs_interface.c:1768
+msgid "Select STIL-database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:4363 src/sid/xs_interface.c:2027
+#: src/sid/xmms-sid.glade:3596 src/sid/xs_interface.c:1809
 msgid "Select HVSC location prefix"
 msgstr ""
 
-#: src/sid/xs_fileinfo.c:315
+#: src/sid/xmms-sid.glade:3638 src/sid/xs_interface.c:1850
+msgid "Select SIDPlay2 filters file for importing"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3680 src/sid/xs_interface.c:1891
+msgid "Select SIDPlay2 filters file for exporting"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3721 src/sid/xmms-sid.glade:3803
+#: src/sid/xs_interface.c:1939 src/sid/xs_interface.c:1952
+msgid "Confirm selected action"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3759 src/sid/xs_interface.c:1969
+msgid "Yes"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:3771 src/sid/xs_interface.c:1975
+msgid "No"
+msgstr ""
+
+#: src/sid/xs_fileinfo.c:238
 msgid "General info"
 msgstr ""
 
-#: src/sid/xs_fileinfo.c:325
+#: src/sid/xs_fileinfo.c:248
 #, c-format
 msgid "Tune #%i: "
 msgstr ""
 
-#: src/sid/xs_fileinfo.c:336
+#: src/sid/xs_fileinfo.c:259
 #, c-format
 msgid "Tune #%i"
 msgstr ""
@@ -4040,32 +3928,32 @@ msgstr ""
 msgid "Could not open SongLengthDB '%s'\n"
 msgstr ""
 
-#: src/sid/xs_length.c:225
+#: src/sid/xs_length.c:224
 #, c-format
 msgid "Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n"
 msgstr ""
 
-#: src/sid/xs_length.c:232
+#: src/sid/xs_length.c:231
 #, c-format
 msgid "Invalid entry in SongLengthDB file '%s' line #%d!\n"
 msgstr ""
 
-#: src/sid/xs_length.c:237
+#: src/sid/xs_length.c:236
 #, c-format
 msgid "Invalid line in SongLengthDB file '%s' line #%d\n"
 msgstr ""
 
-#: src/sid/xs_length.c:399
+#: src/sid/xs_length.c:398
 #, c-format
 msgid "Not a PSID or RSID file '%s'\n"
 msgstr ""
 
-#: src/sid/xs_length.c:418
+#: src/sid/xs_length.c:417
 #, c-format
 msgid "Error reading SID file header from '%s'\n"
 msgstr ""
 
-#: src/sid/xs_length.c:437
+#: src/sid/xs_length.c:436
 #, c-format
 msgid "Error allocating temp data buffer for file '%s'\n"
 msgstr ""
@@ -4102,72 +3990,77 @@ msgstr ""
 msgid "[SIDPlay2] Could not initialize emulation engine.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:224
+#: src/sid/xs_sidplay2.cc:208
+#, c-format
+msgid "[SIDPlay2] Invalid number of filter curve points (%d > %d)\n"
+msgstr ""
+
+#: src/sid/xs_sidplay2.cc:229
 msgid "reSID->create() failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:230
+#: src/sid/xs_sidplay2.cc:235
 #, c-format
 msgid "reSID->filter(%d) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:238
+#: src/sid/xs_sidplay2.cc:243
 #, c-format
 msgid "reSID->sampling(%d) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:248
+#: src/sid/xs_sidplay2.cc:253
 msgid "reSID->filter(NULL) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:262
+#: src/sid/xs_sidplay2.cc:267
 msgid "hardSID->create() failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:268
+#: src/sid/xs_sidplay2.cc:273
 #, c-format
 msgid "hardSID->filter(%d) failed.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:276
+#: src/sid/xs_sidplay2.cc:281
 msgid "[SIDPlay2] Could not initialize SIDBuilder object.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:290
+#: src/sid/xs_sidplay2.cc:295
 #, c-format
 msgid "[SIDPlay2] Invalid clockSpeed=%d, falling back to PAL.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:314
+#: src/sid/xs_sidplay2.cc:319
 #, c-format
 msgid "Invalid sid2OptLevel=%d, falling back to %d.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:338
+#: src/sid/xs_sidplay2.cc:343
 msgid "[SIDPlay2] Emulator engine configuration failed!\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:345
+#: src/sid/xs_sidplay2.cc:350
 msgid "[SIDPlay2] Could not initialize SIDTune object.\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:396
+#: src/sid/xs_sidplay2.cc:401
 msgid "[SIDPlay2] currTune->selectSong() failed\n"
 msgstr ""
 
-#: src/sid/xs_sidplay2.cc:401
+#: src/sid/xs_sidplay2.cc:406
 msgid "[SIDPlay2] currEng->load() failed\n"
 msgstr ""
 
-#: src/sid/xs_stil.c:44
+#: src/sid/xs_stil.c:46
 msgid "SubTune pointer structure realloc failed.\n"
 msgstr ""
 
-#: src/sid/xs_stil.c:61
+#: src/sid/xs_stil.c:69
 msgid "SubTune structure malloc failed!\n"
 msgstr ""
 
-#: src/sid/xs_stil.c:168
+#: src/sid/xs_stil.c:176
 #, c-format
 msgid "Could not open STILDB '%s'\n"
 msgstr ""

@@ -62,7 +62,7 @@ static void null_about(void)
 			           _(" by Christian Birchinger <joker@netswarm.net>\n"
 			             "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"), NULL);
 
-	about = xmms_show_message(_("About Null Output"),
+	about = audacious_info_dialog(_("About Null Output"),
 				  about_text,
 				  _("Ok"), FALSE, NULL, NULL);
 
@@ -149,21 +149,11 @@ static int null_open(AFormat fmt, int rate, int nch)
 
 static void null_write(void *ptr, int length)
 {
-#if 0
-	EffectPlugin *ep;
-#endif
 	if (timer && !started)
 	{
 		g_timer_start(timer);
 		started = TRUE;
 	}
-
-#if 0
-	if ((ep = get_current_effect_plugin()) != NULL &&
-	    effects_enabled() && ep->mod_samples)
-		ep->mod_samples(&ptr, length, input_format.format,
-				input_format.frequency, input_format.channels);
-#endif
 
 	written += length;
 }
@@ -240,25 +230,19 @@ static int null_get_output_time(void)
 
 OutputPlugin null_op =
 {
-	NULL,
-	NULL,
-	"Null Output Plugin",
-	null_init,
-	NULL,			/* cleanup */
-	null_about,
-	null_configure,
-	NULL,			/* Get volume */
-	NULL,			/* Set volume */
-	null_open,
-	null_write,
-	null_close,
-	null_flush,
-	null_pause,
-	null_buffer_free,
-	null_playing,
-	null_get_output_time,
-	null_get_written_time,
-	NULL			/* tell */
+	.description = "Null Output Plugin",
+	.init = null_init,
+	.about = null_about,
+	.configure = null_configure,
+	.open_audio = null_open,
+	.write_audio = null_write,
+	.close_audio = null_close,
+	.flush = null_flush,
+	.pause = null_pause,
+	.buffer_free = null_buffer_free,
+	.buffer_playing = null_playing,
+	.output_time = null_get_output_time,
+	.written_time = null_get_written_time,
 };
 
 OutputPlugin *null_oplist[] = { &null_op, NULL };

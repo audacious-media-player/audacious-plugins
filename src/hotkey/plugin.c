@@ -51,7 +51,7 @@
 
 #include <audacious/i18n.h>
 
-/* for xmms_show_message () */
+/* for audacious_info_dialog () */
 #include <audacious/util.h>
 
 
@@ -129,17 +129,15 @@ typedef struct {
 
 static GeneralPlugin audacioushotkey =
 {
-	NULL,
-	NULL,
-	"Global Hotkey",
-	init,
-	about,
-	configure,
-	cleanup
+	.description = "Global Hotkey",
+	.init = init,
+	.about = about,
+	.configure = configure,
+	.cleanup = cleanup
 };
 
 GeneralPlugin *hotkey_gplist[] = { &audacioushotkey, NULL };
-DECLARE_PLUGIN(hotkey, NULL, NULL, NULL, NULL, NULL, hotkey_gplist, NULL, NULL);
+SIMPLE_GENERAL_PLUGIN(hotkey, hotkey_gplist);
 
 
 
@@ -902,7 +900,7 @@ static void about (void)
 {
 	static GtkWidget *dialog;
 
-	dialog = xmms_show_message (_("About Global Hotkey Plugin"),
+	dialog = audacious_info_dialog (_("About Global Hotkey Plugin"),
 				_("Global Hotkey Plugin\n"
 				"Control the player with global key combinations or multimedia keys.\n\n"
 				"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"

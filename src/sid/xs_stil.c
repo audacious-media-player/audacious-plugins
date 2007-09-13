@@ -36,6 +36,8 @@ static gboolean xs_stildb_node_realloc(t_xs_stil_node *pNode, gint nsubTunes)
 
 	/* Re-allocate subTune structure if needed */
 	if (nsubTunes > pNode->nsubTunes) {
+		gint clearIndex, clearLength;
+		
 		pNode->subTunes =
 			(t_xs_stil_subnode **) g_realloc(pNode->subTunes,
 			(nsubTunes + 1) * sizeof(t_xs_stil_subnode **));
@@ -46,8 +48,14 @@ static gboolean xs_stildb_node_realloc(t_xs_stil_node *pNode, gint nsubTunes)
 		}
 		
 		/* Clear the newly allocated memory */
-		xs_memset(&(pNode->subTunes[pNode->nsubTunes]), 0,
-		(nsubTunes - pNode->nsubTunes + 1) * sizeof(t_xs_stil_subnode **));
+		if (pNode->nsubTunes == 0) {
+			clearIndex = 0;
+			clearLength = nsubTunes + 1;
+		} else {
+			clearIndex = pNode->nsubTunes + 1;
+			clearLength = (nsubTunes - clearIndex + 1);
+		}
+		xs_memset(&(pNode->subTunes[clearIndex]), 0, clearLength * sizeof(t_xs_stil_subnode **));
 		
 		pNode->nsubTunes = nsubTunes;
 	}
@@ -268,7 +276,7 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 			}
 			
 			/* Some other type */
-			if (strncmp(tmpLine, " NAME:", 8) == 0) {
+			if (strncmp(tmpLine, "   NAME:", 8) == 0) {
 				XS_STILDB_MULTI;
 				g_free(tmpNode->subTunes[subEntry]->pName);
 				tmpNode->subTunes[subEntry]->pName = g_strdup(&tmpLine[9]);
@@ -299,7 +307,7 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 			break;
 		}
 		
-		g_free(tmpLine);
+		XS_CS_FREE(tmpLine);
 
 	} /* while */
 

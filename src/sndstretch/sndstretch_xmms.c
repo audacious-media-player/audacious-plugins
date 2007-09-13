@@ -44,15 +44,11 @@ void sndstretch_config         (void);
 int sndstretch_mod_samples (gpointer *ptr, gint length, AFormat fmt, gint srate, gint nch);
 
 EffectPlugin sndstretch_ep = {
-	NULL,
-	NULL,
-	"SndStretch",
-	sndstretch_init,
-	NULL,
-	sndstretch_about,
-	sndstretch_config,
-	sndstretch_mod_samples,
-	NULL
+	.description = "SndStretch",
+	.init = sndstretch_init,
+	.about = sndstretch_about,
+	.configure = sndstretch_config,
+	.mod_samples = sndstretch_mod_samples,
 };
 
 EffectPlugin *sndstretch_eplist[] = { &sndstretch_ep, NULL };

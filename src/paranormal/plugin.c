@@ -60,20 +60,15 @@ static void pn_xmms_render_freq (gint16 data[2][256]);
 
 static VisPlugin pn_vp = 
 {
-  NULL,
-  NULL,
-  "Paranormal Visualization Studio",
-  2,
-  2,
-  pn_xmms_init,
-  pn_xmms_cleanup,
-  pn_xmms_about,
-  pn_xmms_configure,
-  NULL, /* disable_plugin */
-  NULL, /* pn_xmms_playback_start */
-  NULL, /* pn_xmms_playback_stop */
-  pn_xmms_render_pcm,
-  pn_xmms_render_freq
+  .description = "Paranormal Visualization Studio",
+  .num_pcm_chs_wanted = 2,
+  .num_freq_chs_wanted = 2,
+  .init = pn_xmms_init,
+  .cleanup = pn_xmms_cleanup,
+  .about = pn_xmms_about,
+  .configure = pn_xmms_configure,
+  .render_pcm = pn_xmms_render_pcm,
+  .render_freq = pn_xmms_render_freq
 };
 
 VisPlugin *pn_vplist[] = { &pn_vp, NULL };
@@ -266,7 +261,7 @@ about_closed(GtkWidget *w, GdkEvent *e, GtkWidget **window)
 static void
 pn_xmms_about (void)
 {
-  xmms_show_message("About Paranormal Visualization Studio", 
+  audacious_info_dialog("About Paranormal Visualization Studio", 
 
 "Paranormal Visualization Studio " VERSION "\n\n\
 Copyright (C) 2006, William Pitcock <nenolod -at- nenolod.net>\n\

@@ -19,7 +19,7 @@ static void about(void)
 	if (dialog)
 		return;
 
-	dialog = xmms_show_message(_("About aRts Output"),
+	dialog = audacious_info_dialog(_("About aRts Output"),
 				   _("aRts output plugin by "
 				   "H\303\245vard Kv\303\245len <havardk@xmms.org>\n"
 				   "Audacious port by Giacomo Lozito from develia.org"),

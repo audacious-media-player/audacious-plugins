@@ -20,7 +20,6 @@
 #include <string.h>
 #include <FLAC/all.h>
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <audacious/vfs.h>
 #include "flacng.h"
 #include "tools.h"

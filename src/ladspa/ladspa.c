@@ -117,14 +117,11 @@ static struct {
 static GtkWidget *config_window = NULL, *run_clist = NULL;
 
 static EffectPlugin ladspa_ep = {
-  NULL, NULL,
-  PLUGIN_NAME,
-  start,
-  stop,
-  NULL,
-  configure,
-  apply_effect,
-  NULL
+  .description = PLUGIN_NAME,
+  .init = start,
+  .cleanup = stop,
+  .configure = configure,
+  .mod_samples = apply_effect,
 };
 
 EffectPlugin *ladspa_eplist[] = { &ladspa_ep, NULL };

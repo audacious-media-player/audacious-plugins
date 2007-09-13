@@ -56,13 +56,10 @@ static GCond *hs_cond, *xs_cond;
 
 static GeneralPlugin scrobbler_gp =
 {
-	NULL,
-	NULL,
-	"Scrobbler Plugin",
-	init,
-	about_show,
-	NULL,
-	cleanup
+	.description = "Scrobbler Plugin",
+	.init = init,
+	.about = about_show,
+	.cleanup = cleanup
 };
 
 static gboolean ishttp(const char *a)
@@ -243,16 +240,19 @@ static void *xs_thread(void *data __attribute__((unused)))
 			if (tuple == NULL)
 				continue;
 
-			if (ishttp(tuple_get_string(tuple, "file-name")))
+			if (ishttp(tuple_get_string(tuple, FIELD_FILE_NAME, NULL)))
 				continue;
 
-			if(tuple_get_string(tuple, "artist") != NULL && tuple_get_string(tuple, "title") != NULL)
+			if (tuple_get_string(tuple, FIELD_ARTIST, NULL) != NULL &&
+				tuple_get_string(tuple, FIELD_TITLE, NULL) != NULL)
 			{
 				pdebug(fmt_vastr(
 					"submitting artist: %s, title: %s",
-					tuple_get_string(tuple, "artist"), tuple_get_string(tuple, "title")), DEBUG);
-				sc_addentry(m_scrobbler, tuple, tuple_get_int(tuple, "length") / 1000);
-				gerpok_sc_addentry(m_scrobbler, tuple, tuple_get_int(tuple, "length") / 1000);
+					tuple_get_string(tuple, FIELD_ARTIST, NULL),
+					tuple_get_string(tuple, FIELD_TITLE, NULL)), DEBUG);
+				
+				sc_addentry(m_scrobbler, tuple, tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
+				gerpok_sc_addentry(m_scrobbler, tuple, tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
 			}
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);

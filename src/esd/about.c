@@ -31,7 +31,7 @@ esdout_about(void)
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message(_("About ESounD Plugin"),
+    dialog = audacious_info_dialog(_("About ESounD Plugin"),
                                _("Audacious ESounD Plugin\n\n "
                                  "This program is free software; you can redistribute it and/or modify\n"
                                  "it under the terms of the GNU General Public License as published by\n"

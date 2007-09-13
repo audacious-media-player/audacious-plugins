@@ -155,7 +155,7 @@ static int suspend_recover(void)
 
 	while ((err = snd_pcm_resume(alsa_pcm)) == -EAGAIN)
 		/* wait until suspend flag is released */
-		xmms_usleep(1000000);
+		g_usleep(1000000);
 	if (err < 0)
 	{
 		g_warning("alsa_handle_error(): "
@@ -316,7 +316,7 @@ void alsa_flush(int time)
 {
 	flush_request = time;
 	while (flush_request != -1)
-		xmms_usleep(10000);
+		g_usleep(10000);
 }
 
 static void parse_mixer_name(char *str, char **name, int *index)
@@ -708,36 +708,6 @@ static void alsa_do_write(gpointer data, int length)
 	if (paused)
 		return;
 
-#if 0
-	new_freq = inputf->rate;
-	new_chn = inputf->channels;
-	f = inputf->xmms_format;
-
-	if (effects_enabled() && (ep = get_current_effect_plugin()) &&
-	    ep->query_format)
-		ep->query_format(&f, &new_freq, &new_chn);
-
-	if (f != effectf->xmms_format || (unsigned int)new_freq != effectf->rate ||
-	    (unsigned int)new_chn != effectf->channels)
-	{
-		debug("Changing audio format for effect plugin");
-		g_free(effectf);
-		effectf = snd_format_from_xmms(f, new_freq, new_chn);
-		if (alsa_reopen(effectf) < 0)
-		{
-			/* fatal error... */
-			alsa_close();
-			return;
-		}
-	}
-
-	if (ep)
-		length = ep->mod_samples(&data, length,
-					 inputf->xmms_format,
-					 inputf->rate,
-					 inputf->channels);
-#endif
-
 	if (alsa_convert_func != NULL)
 		length = alsa_convert_func(convertb, &data, length);
 	if (alsa_stereo_convert_func != NULL)
@@ -854,7 +824,7 @@ static void *alsa_loop(void *arg)
 			}
 		}
 		else
-			xmms_usleep(10000);
+			g_usleep(10000);
 
 		if (pause_request != paused)
 			alsa_do_pause(pause_request);

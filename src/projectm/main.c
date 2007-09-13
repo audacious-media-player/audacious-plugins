@@ -73,20 +73,17 @@ void read_config();
 
 // Callback functions
 VisPlugin projectM_vtable = {
-  NULL, // Handle, filled in by xmms
-  NULL, // Filename, filled in by xmms
-  "projectM v0.99",       // description
-  2, // # of PCM channels for render_pcm()
-  0, // # of freq channels wanted for render_freq()
-  projectM_xmms_init,     // Called when plugin is enabled
-  projectM_cleanup,        // Called when plugin is disabled
-  projectM_about,          // Show the about box
-  projectM_configure,      // Show the configure box
-  NULL,                     // Called to disable plugin, filled in by xmms
-  projectM_playback_start, // Called when playback starts
-  projectM_playback_stop,  // Called when playback stops
-  projectM_render_pcm,      // Render the PCM data, must return quickly
-  projectM_render_freq     // Render the freq data, must return quickly
+  .description = "projectM v0.99",       // description
+  .num_pcm_chs_wanted = 2, // # of PCM channels for render_pcm()
+  .num_freq_chs_wanted = 0, // # of freq channels wanted for render_freq()
+  .init = projectM_xmms_init,     // Called when plugin is enabled
+  .cleanup = projectM_cleanup,        // Called when plugin is disabled
+  .about = projectM_about,          // Show the about box
+  .configure = projectM_configure,      // Show the configure box
+  .playback_start = projectM_playback_start, // Called when playback starts
+  .playback_stop = projectM_playback_stop,  // Called when playback stops
+  .render_pcm = projectM_render_pcm,      // Render the PCM data, must return quickly
+  .render_freq = projectM_render_freq     // Render the freq data, must return quickly
 };
 
 VisPlugin *projectM_vplist[] = { &projectM_vtable, NULL };

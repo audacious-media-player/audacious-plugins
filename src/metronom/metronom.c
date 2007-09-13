@@ -82,7 +82,7 @@ static void metronom_init(void)
 static void metronom_about(void)
 {
 	static GtkWidget *box;
-	box = xmms_show_message(
+	box = audacious_info_dialog(
 		_("About Metronom"),
 		_("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\nTo use it, add a URL: tact://beats*num/den\ne.g. tact://77 to play 77 beats per minute\nor   tact://60*3/4 to play 60 bpm in 3/4 tacts"), _("Ok"),
 		FALSE, NULL, NULL);
@@ -148,7 +148,7 @@ static void* play_loop(void *arg)
 			t++;
 		}
 		while(playback->output->buffer_free() < BUF_BYTES && going)
-			xmms_usleep(30000);
+			g_usleep(30000);
 		if (going)
 			produce_audio(playback->output->written_time(), FMT_S16_LE, 1, BUF_BYTES, data, &going);
 	}
@@ -270,34 +270,15 @@ static void metronom_song_info(char *filename, char **title, int *length)
 
 static InputPlugin metronom_ip =
 {
-	NULL,
-	NULL,
-	"Tact Generator",
-	metronom_init,
-	metronom_about,
-	NULL,
-	metronom_is_our_file,
-	NULL,
-	metronom_play,
-	metronom_stop,
-	metronom_pause,
-	NULL,
-	NULL,
-	metronom_get_time,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	metronom_song_info,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
+	.description = "Tact Generator",
+	.init = metronom_init,
+	.about = metronom_about,
+	.is_our_file = metronom_is_our_file,
+	.play_file = metronom_play,
+	.stop = metronom_stop,
+	.pause = metronom_pause,
+	.get_time = metronom_get_time,
+	.get_song_info = metronom_song_info,
 };
 
 InputPlugin *metronom_iplist[] = { &metronom_ip, NULL };

@@ -52,7 +52,7 @@ static void tone_about(void)
 	static GtkWidget *box;
 	if (!box)
 	{
-		box = xmms_show_message(
+		box = audacious_info_dialog(
 			_("About Tone Generator"),
 	/* I18N: UTF-8 Translation: "Haavard Kvaalen" -> "H\303\245vard Kv\303\245len" */
 			_("Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
@@ -115,7 +115,7 @@ static void* play_loop(void *arg)
 				       (sum_sines / frequencies->len));
 		}
 		while (playback->output->buffer_free() < BUF_BYTES && going)
-		        xmms_usleep(30000);
+		        g_usleep(30000);
 		produce_audio(playback->output->written_time(), FMT_S16_NE, 1, BUF_BYTES, data, &going);
 	}
 
@@ -243,30 +243,15 @@ static void tone_song_info(char *filename, char **title, int *length)
 
 static InputPlugin tone_ip =
 {
-	NULL,
-	NULL,
-	"Tone Generator", /* Description */
-	tone_init,
-	tone_about,
-	NULL,
-	tone_is_our_file,
-	NULL,
-	tone_play,
-	tone_stop,
-	tone_pause,
-	NULL,
-	NULL,
-	tone_get_time,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	tone_song_info,
-	NULL,
-	NULL
+	.description = "Tone Generator",
+	.init = tone_init,
+	.about = tone_about,
+	.is_our_file = tone_is_our_file,
+	.play_file = tone_play,
+	.stop = tone_stop,
+	.pause = tone_pause,
+	.get_time = tone_get_time,
+	.get_song_info = tone_song_info,
 };
 
 InputPlugin *tonegen_iplist[] = { &tone_ip, NULL };

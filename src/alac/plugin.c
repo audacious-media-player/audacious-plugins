@@ -82,7 +82,7 @@ static void alac_about(void)
 	if(aboutbox != NULL)
 		return;
 
-	aboutbox = xmms_show_message(_("About Apple Lossless Audio Plugin"),
+	aboutbox = audacious_info_dialog(_("About Apple Lossless Audio Plugin"),
 				     _("Copyright (c) 2006 Audacious team\n"
 				     "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"),
 				     _("Ok"), FALSE, NULL, NULL);
@@ -122,20 +122,20 @@ Tuple *build_tuple_from_demux(demux_res_t *demux_res, char *path)
     Tuple *ti = tuple_new_from_filename(path);
 
     if (demux_res->tuple.art != NULL)
-        tuple_associate_string(ti, "artist", demux_res->tuple.art);
+        tuple_associate_string(ti, FIELD_ARTIST, NULL, demux_res->tuple.art);
     if (demux_res->tuple.nam != NULL)
-        tuple_associate_string(ti, "title", demux_res->tuple.nam);
+        tuple_associate_string(ti, FIELD_TITLE, NULL, demux_res->tuple.nam);
     if (demux_res->tuple.alb != NULL)
-        tuple_associate_string(ti, "album", demux_res->tuple.alb);
+        tuple_associate_string(ti, FIELD_ALBUM, NULL, demux_res->tuple.alb);
     if (demux_res->tuple.gen != NULL)
-        tuple_associate_string(ti, "genre", demux_res->tuple.gen);
+        tuple_associate_string(ti, FIELD_GENRE, NULL, demux_res->tuple.gen);
     if (demux_res->tuple.cmt != NULL)
-        tuple_associate_string(ti, "comment", demux_res->tuple.cmt);
+        tuple_associate_string(ti, FIELD_COMMENT, NULL, demux_res->tuple.cmt);
     if (demux_res->tuple.day != NULL)
-        tuple_associate_int(ti, "year", atoi(demux_res->tuple.day));
+        tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(demux_res->tuple.day));
 
-    tuple_associate_string(ti, "codec", "Apple Lossless (ALAC)");
-    tuple_associate_string(ti, "quality", "lossless");
+    tuple_associate_string(ti, FIELD_CODEC, NULL, "Apple Lossless (ALAC)");
+    tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
 
     return ti;
 }

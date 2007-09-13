@@ -35,7 +35,6 @@ static int sun_downsample(gpointer, guint, guint, guint);
 static gboolean	prebuffer, remove_prebuffer;
 static pthread_t buffer_thread;
 static int (*sun_convert)(void **, int);
-static int realtime;
 static int rd_index, wr_index;
 static int buffer_size;
 static int prebuffer_size;
@@ -233,9 +232,6 @@ int sun_output_time(void)
 	if (!audio.fd || !audio.going)
 		return 0;
 
-	if (realtime)
-		sun_bufused();
-
 	bytes = output_bytes < device_buffer_used ?
 		0 : output_bytes - device_buffer_used;
 	return (output_time_offset + ((bytes * 1000) / output.bps));
@@ -243,9 +239,6 @@ int sun_output_time(void)
 
 static inline int sun_used(void)
 {
-	if (realtime)
-		return 0;
-	
 	if (wr_index >= rd_index)
 		return (wr_index - rd_index);
 
@@ -257,9 +250,6 @@ int sun_playing(void)
 	if (!audio.going)
 		return 0;
 
-	if (realtime)
-		sun_bufused();
-
 	if (!sun_used() && (device_buffer_used - (3 * blocksize)) <= 0)
 		return (FALSE);
 
@@ -268,9 +258,6 @@ int sun_playing(void)
 
 int sun_free(void)
 {
-	if (realtime)
-		return (audio.paused ? 0 : 1000000);
-	
 	if (remove_prebuffer && prebuffer)
 	{
 		prebuffer = FALSE;
@@ -309,36 +296,6 @@ static inline ssize_t write_all(int fd, const void *buf, size_t count)
 
 static inline void sun_write_audio(gpointer data, int length)
 {
-#if 0
-	AFormat new_format;
-	EffectPlugin *ep;
-	int new_frequency, new_channels;
-
-	new_format = input.format.xmms;
-	new_frequency = input.frequency;
-	new_channels = input.channels;
-
-	ep = get_current_effect_plugin();
-	if (effects_enabled() && ep && ep->query_format)
-		ep->query_format(&new_format, &new_frequency, &new_channels);
-
-	if (new_format != effect.format.xmms || 
-	    new_frequency != effect.frequency ||
-	    new_channels != effect.channels)
-	{
-		output_time_offset += (output_bytes * 1000) / output.bps;
-		output_bytes = 0;
-		close(audio.fd);
-		audio.fd = open(audio.devaudio, O_RDWR);
-		sun_setformat(new_format, new_frequency, new_channels);
-	}
-	if (effects_enabled() && ep && ep->mod_samples)
-	{
-		length = ep->mod_samples(&data, length, input.format.xmms,
-					 input.frequency, input.channels);
-	}
-#endif
-
 	if (sun_convert != NULL)
 		length = sun_convert(&data, length);
 
@@ -402,15 +359,6 @@ void sun_write(gpointer ptr, int length)
 {
 	int cnt, off = 0;
 
-	if (realtime)
-	{
-		if (audio.paused)
-			return;
-		sun_write_audio(ptr, length);
-		written += length;
-		return;
-	}
-
 	remove_prebuffer = FALSE;
 	written += length;
 	while (length > 0)
@@ -430,15 +378,7 @@ void sun_close(void)
 
 	audio.going = 0;
 
-	if (realtime)
-	{
-		ioctl(audio.fd, AUDIO_FLUSH, NULL);
-		close(audio.fd);
-	}
-	else
-	{
-		pthread_join(buffer_thread, NULL);
-	}
+	pthread_join(buffer_thread, NULL);
 
 	sun_get_convert_buffer(0);
 	wr_index = 0;
@@ -456,15 +396,10 @@ void sun_flush(int time)
 
 void sun_pause(short p)
 {
-	if (!realtime)
-	{
-		if (p == TRUE)
-			audio.do_pause = TRUE;
-		else
-			audio.unpause = TRUE;
-	}
+	if (p == TRUE)
+		audio.do_pause = TRUE;
 	else
-		audio.paused = p;
+		audio.unpause = TRUE;
 }
 
 static void* sun_loop(void *arg)
@@ -501,7 +436,7 @@ static void* sun_loop(void *arg)
 			}
 		}
 		else
-			xmms_usleep(10000);
+			g_usleep(10000);
 
 		sun_bufused();
 
@@ -549,25 +484,21 @@ int sun_open(AFormat fmt, int rate, int nch)
 	input.bps = sun_bps(sun_format(fmt), rate, nch);
 	sun_setformat(fmt, rate, nch);
 
-	realtime = xmms_check_realtime_priority();
-
 	if (ioctl(audio.fd, AUDIO_GETINFO, &info) != 0)
 		blocksize = SUN_DEFAULT_BLOCKSIZE;
 	else
 		blocksize = info.blocksize;
 
-	if (!realtime)
-	{
-		buffer_size = audio.req_buffer_size;
+	buffer_size = audio.req_buffer_size;
 
-		if (buffer_size < SUN_MIN_BUFFER_SIZE)
-			buffer_size = SUN_MIN_BUFFER_SIZE;
+	if (buffer_size < SUN_MIN_BUFFER_SIZE)
+		buffer_size = SUN_MIN_BUFFER_SIZE;
 
-		prebuffer_size = (buffer_size * audio.req_prebuffer_size) / 100;
+	prebuffer_size = (buffer_size * audio.req_prebuffer_size) / 100;
 
-		buffer_size += blocksize;
-		buffer = g_malloc0(buffer_size);
-	}
+	buffer_size += blocksize;
+	buffer = g_malloc0(buffer_size);
+
 	prebuffer = TRUE;
 	wr_index = 0;
 	rd_index = 0;
@@ -581,8 +512,8 @@ int sun_open(AFormat fmt, int rate, int nch)
 	remove_prebuffer = FALSE;
 
 	audio.going++;
-	if (!realtime)
-		pthread_create(&buffer_thread, NULL, sun_loop, NULL);
+
+	pthread_create(&buffer_thread, NULL, sun_loop, NULL);
 
 	return 1;
 }

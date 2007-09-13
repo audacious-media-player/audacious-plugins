@@ -19,7 +19,7 @@ void about_show(void)
 
 	tmp = g_strdup_printf(_("Audacious AudioScrobbler Plugin\n\n"
 				"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>\n"));
-	aboutbox = xmms_show_message(_("About Scrobbler Plugin"),
+	aboutbox = audacious_info_dialog(_("About Scrobbler Plugin"),
 			tmp,
 			_("Ok"), FALSE, NULL, NULL);
 
@@ -38,7 +38,7 @@ void errorbox_show(char *errortxt)
 			"%s\n"),
 			errortxt);
 
-	xmms_show_message(_("Scrobbler Error"),
+	audacious_info_dialog(_("Scrobbler Error"),
 			tmp,
 			_("OK"), FALSE, NULL, NULL);
 	g_free(tmp);

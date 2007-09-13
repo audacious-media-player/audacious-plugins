@@ -7,9 +7,9 @@
 extern "C" {
 #endif
 
-gint	xs_stil_init(void);
-void	xs_stil_close(void);
+#ifndef AUDACIOUS_PLUGIN
 void	xs_fileinfo_update(void);
+#endif
 void	xs_fileinfo(gchar *);
 
 #ifdef __cplusplus

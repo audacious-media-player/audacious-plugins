@@ -92,30 +92,24 @@ static void file_configure(void);
 
 OutputPlugin file_op =
 {
-    NULL,
-    NULL,
-    "FileWriter Plugin",
-    file_init,
-    NULL,
-    file_about,
-    file_configure,
-    NULL,
-    NULL,
-    file_open,
-    file_write,
-    file_close,
-    file_flush,
-    file_pause,
-    file_free,
-    file_playing,
-    file_get_output_time,
-    file_get_written_time,
-    NULL
+    .description = "FileWriter Plugin",
+    .init = file_init,
+    .about = file_about,
+    .configure = file_configure,
+    .open_audio = file_open,
+    .write_audio = file_write,
+    .close_audio = file_close,
+    .flush = file_flush,
+    .pause = file_pause,
+    .buffer_free = file_free,
+    .buffer_playing = file_playing,
+    .output_time = file_get_output_time,
+    .written_time = file_get_written_time
 };
 
 OutputPlugin *file_oplist[] = { &file_op, NULL };
 
-DECLARE_PLUGIN(filewriter, NULL, NULL, NULL, file_oplist, NULL, NULL, NULL, NULL);
+SIMPLE_OUTPUT_PLUGIN(filewriter, file_oplist);
 
 static void set_plugin(void)
 {
@@ -166,7 +160,7 @@ void file_about(void)
     if (dialog != NULL)
         return;
 
-    dialog = xmms_show_message(_("About FileWriter-Plugin"),
+    dialog = audacious_info_dialog(_("About FileWriter-Plugin"),
                                _("FileWriter-Plugin\n\n"
                                "This program is free software; you can redistribute it and/or modify\n"
                                "it under the terms of the GNU General Public License as published by\n"
@@ -189,18 +183,10 @@ void file_about(void)
 static gint file_open(AFormat fmt, gint rate, gint nch)
 {
     gchar *filename = NULL, *temp = NULL;
+    const gchar *directory;
     gint pos;
     gint rv;
     Playlist *playlist;
-
-    if (xmms_check_realtime_priority())
-    {
-        xmms_show_message(_("Error"),
-                          _("You cannot use the FileWriter plugin\n"
-                            "when you're running in realtime mode."),
-                          _("OK"), FALSE, NULL, NULL);
-        return 0;
-    }
 
     input.format = fmt;
     input.frequency = rate;
@@ -228,7 +214,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     }
     if (filename == NULL)
     {
-        filename = g_strdup(tuple_get_string(tuple, "file-name"));
+        filename = g_strdup(tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
                 *temp = '\0';
@@ -239,10 +225,8 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     if (prependnumber)
     {
-        gint number;
-        if (tuple && tuple_get_int(tuple, "track-number"))
-            number = tuple_get_int(tuple, "track-number");
-        else
+        gint number = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+        if (!tuple || !number)
             number = pos + 1;
 
         temp = g_strdup_printf("%.02d %s", number, filename);
@@ -250,15 +234,13 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
         filename = temp;
     }
 
-    gchar *directory;
     if (save_original)
-        directory = g_strdup(tuple_get_string(tuple, "file-path"));
+        directory = tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
     else
-        directory = g_strdup(file_path);
+        directory = file_path;
 
     temp = g_strdup_printf("file://%s/%s.%s",
                            directory, filename, fileext_str[fileext]);
-    g_free(directory);
     g_free(filename);
     filename = temp;
 
@@ -327,26 +309,6 @@ static void convert_buffer(gpointer buffer, gint length)
 
 static void file_write(void *ptr, gint length)
 {
-    AFormat new_format;
-    int new_frequency, new_channels;
-    EffectPlugin *ep;
-
-    new_format = input.format;
-    new_frequency = input.frequency;
-    new_channels = input.channels;
-
-    ep = get_current_effect_plugin();
-    if ( effects_enabled() && ep && ep->query_format ) {
-        ep->query_format(&new_format,&new_frequency,&new_channels);
-    }
-
-    if ( effects_enabled() && ep && ep->mod_samples ) {
-        length = ep->mod_samples(&ptr,length,
-                                 input.format,
-                                 input.frequency,
-                                 input.channels );
-    }
-
     if (input.format == FMT_S8 || input.format == FMT_S16_BE ||
         input.format == FMT_U16_LE || input.format == FMT_U16_BE ||
         input.format == FMT_U16_NE)

@@ -45,14 +45,12 @@ static int inited = 0;
 
 
 static EffectPlugin xmms_plugin = {
-	NULL, NULL,
-	"AudioCompressor AGC plugin",
-	myInit,
-	myCleanup,
-	myAbout,
-	myPrefs,
-	myModify,
- 	NULL
+	.description = "AudioCompressor AGC plugin",
+	.init = myInit,
+	.cleanup = myCleanup,
+	.about = myAbout,
+	.configure = myPrefs,
+	.mod_samples = myModify,
 };
 
 EffectPlugin *audiocompress_eplist[] = { &xmms_plugin, NULL };
@@ -102,7 +100,7 @@ void myAbout(void)
 			  "Simple dynamic range compressor for transparently\n"
 			  "keeping the volume level more or less consistent") , NULL );
 
-			about_xmms_compress = xmms_show_message( _("About AudioCompress") ,
+			about_xmms_compress = audacious_info_dialog( _("About AudioCompress") ,
 				about_text , _("Ok") , FALSE , NULL , NULL );
 			gtk_signal_connect( GTK_OBJECT(about_xmms_compress) , "destroy" ,
 				GTK_SIGNAL_FUNC(gtk_widget_destroyed), &about_xmms_compress );

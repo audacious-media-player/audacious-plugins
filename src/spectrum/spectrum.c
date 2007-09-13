@@ -61,20 +61,14 @@ static void fsanalyzer_playback_stop(void);
 static void fsanalyzer_render_freq(gint16 data[2][256]);
 
 VisPlugin fsanalyzer_vp = {
-	NULL,
-	NULL,
-	"Spectrum Analyzer",
-	0,
-	1,
-	fsanalyzer_init, /* init */
-	fsanalyzer_cleanup, /* cleanup */
-	NULL, /* about */
-	NULL, /* configure */
-	NULL, /* disable_plugin */
-	fsanalyzer_playback_start, /* playback_start */
-	fsanalyzer_playback_stop, /* playback_stop */
-	NULL, /* render_pcm */
-	fsanalyzer_render_freq  /* render_freq */
+	.description = "Spectrum Analyzer",
+	.num_pcm_chs_wanted = 0,
+	.num_freq_chs_wanted = 1,
+	.init = fsanalyzer_init, /* init */
+	.cleanup = fsanalyzer_cleanup, /* cleanup */
+	.playback_start = fsanalyzer_playback_start, /* playback_start */
+	.playback_stop = fsanalyzer_playback_stop, /* playback_stop */
+	.render_freq = fsanalyzer_render_freq  /* render_freq */
 };
 
 VisPlugin *spectrum_vplist[] = { &fsanalyzer_vp, NULL };

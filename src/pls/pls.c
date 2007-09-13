@@ -110,7 +110,7 @@ playlist_save_pls(const gchar *filename, gint pos)
     vfs_fprintf(file, "[playlist]\n");
     vfs_fprintf(file, "NumberOfEntries=%d\n", playlist_get_length(playlist));
 
-    PLAYLIST_LOCK(playlist->mutex);
+    PLAYLIST_LOCK(playlist);
 
     for (node = playlist->entries; node; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
@@ -127,7 +127,7 @@ playlist_save_pls(const gchar *filename, gint pos)
         g_free(fn);
     }
 
-    PLAYLIST_UNLOCK(playlist->mutex);
+    PLAYLIST_UNLOCK(playlist);
 
     vfs_fclose(file);
 }

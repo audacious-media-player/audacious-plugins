@@ -32,15 +32,8 @@ static int apply_effect (gpointer *d, gint length, AFormat afmt,
 			gint srate, gint nch);
 
 static EffectPlugin xmms_plugin = {
-	NULL,
-	NULL,
-	PLUGIN_NAME,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	apply_effect,
-	NULL
+	.description = PLUGIN_NAME,
+	.mod_samples = apply_effect,
 };
 
 EffectPlugin *voice_eplist[] = { &xmms_plugin, NULL };

@@ -93,7 +93,7 @@ guint32 xs_fread_be32(t_xs_file *f)
 
 /* Load a file to a buffer, return 0 on success, negative value on error
  */
-gint xs_fload_buffer(gchar *pcFilename, guint8 **buf, size_t *bufSize)
+gint xs_fload_buffer(const gchar *pcFilename, guint8 **buf, size_t *bufSize)
 {
 	t_xs_file *f;
 	glong seekPos;
@@ -144,9 +144,10 @@ gint xs_fload_buffer(gchar *pcFilename, guint8 **buf, size_t *bufSize)
 
 /* Copy a string
  */
-gchar *xs_strncpy(gchar *pDest, gchar *pSource, size_t n)
+gchar *xs_strncpy(gchar *pDest, const gchar *pSource, size_t n)
 {
-	gchar *s, *d;
+	const gchar *s;
+	gchar *d;
 	size_t i;
 
 	/* Check the string pointers */
@@ -224,10 +225,11 @@ gint xs_pstrcat(gchar **ppResult, const gchar *pStr)
 /* Concatenate a given string up to given dest size or \n.
  * If size max is reached, change the end to "..."
  */
-void xs_pnstrcat(gchar *pDest, size_t iSize, gchar *pStr)
+void xs_pnstrcat(gchar *pDest, size_t iSize, const gchar *pStr)
 {
 	size_t i, n;
-	gchar *s, *d;
+	const gchar *s;
+	gchar *d;
 
 	d = pDest;
 	i = 0;
@@ -262,7 +264,7 @@ void xs_pnstrcat(gchar *pDest, size_t iSize, gchar *pStr)
 
 /* Locate character in string
  */
-gchar *xs_strrchr(gchar *pcStr, gchar ch)
+gchar *xs_strrchr(gchar *pcStr, const gchar ch)
 {
 	gchar *lastPos = NULL;
 
@@ -276,21 +278,21 @@ gchar *xs_strrchr(gchar *pcStr, gchar ch)
 }
 
 
-void xs_findnext(gchar *pcStr, size_t *piPos)
+void xs_findnext(const gchar *pcStr, size_t *piPos)
 {
 	while (pcStr[*piPos] && isspace(pcStr[*piPos]))
 		(*piPos)++;
 }
 
 
-void xs_findeol(gchar *pcStr, size_t *piPos)
+void xs_findeol(const gchar *pcStr, size_t *piPos)
 {
 	while (pcStr[*piPos] && (pcStr[*piPos] != '\n') && (pcStr[*piPos] != '\r'))
 		(*piPos)++;
 }
 
 
-void xs_findnum(gchar *pcStr, size_t *piPos)
+void xs_findnum(const gchar *pcStr, size_t *piPos)
 {
 	while (pcStr[*piPos] && isdigit(pcStr[*piPos]))
 		(*piPos)++;

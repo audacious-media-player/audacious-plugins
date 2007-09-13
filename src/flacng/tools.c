@@ -241,29 +241,29 @@ Tuple* get_tuple(const gchar* filename, callback_info* info) {
 
     out = tuple_new_from_filename(filename);
 
-    tuple_associate_string(out, "codec", "Free Lossless Audio Codec (FLAC)");
-    tuple_associate_string(out, "quality", "lossless");
+    tuple_associate_string(out, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
+    tuple_associate_string(out, FIELD_CODEC, NULL, "lossless");
 
-    tuple_associate_string(out, "artist", info->comment.artist);
-    tuple_associate_string(out, "title", info->comment.title);
-    tuple_associate_string(out, "album", info->comment.album);
-    tuple_associate_string(out, "genre", info->comment.genre);
+    tuple_associate_string(out, FIELD_ARTIST, NULL, info->comment.artist);
+    tuple_associate_string(out, FIELD_TITLE, NULL, info->comment.title);
+    tuple_associate_string(out, FIELD_ALBUM, NULL, info->comment.album);
+    tuple_associate_string(out, FIELD_GENRE, NULL, info->comment.genre);
 
     if (info->comment.tracknumber != NULL)
-        tuple_associate_int(out, "track-number", atoi(info->comment.tracknumber));
+        tuple_associate_int(out, FIELD_TRACK_NUMBER, NULL, atoi(info->comment.tracknumber));
 
     if (info->comment.date != NULL)
-        tuple_associate_int(out, "year", atoi(info->comment.date));
+        tuple_associate_int(out, FIELD_YEAR, NULL, atoi(info->comment.date));
 
     /*
      * Calculate the stream length (milliseconds)
      */
     if (0 == info->stream.samplerate) {
         _ERROR("Invalid sample rate for stream!");
-        tuple_associate_int(out, "length", -1);
+        tuple_associate_int(out, FIELD_LENGTH, NULL, -1);
     } else {
-        tuple_associate_int(out, "length", (info->stream.samples / info->stream.samplerate) * 1000);
-        _DEBUG("Stream length: %d seconds", tuple_get_int(out, "length"));
+        tuple_associate_int(out, FIELD_LENGTH, NULL, (info->stream.samples / info->stream.samplerate) * 1000);
+        _DEBUG("Stream length: %d seconds", tuple_get_int(out, FIELD_LENGTH, NULL));
     }
 
     _DEBUG("Tuple created: [%p]", out);

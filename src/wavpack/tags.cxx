@@ -310,7 +310,7 @@ DeleteTag(char *filename)
 
         sprintf(text, "File \"%s\" not found or is read protected!\n",
                 filename);
-        xmms_show_message("File-Error", (gchar *) text, "Ok", FALSE, NULL,
+        audacious_info_dialog("File-Error", (gchar *) text, "Ok", FALSE, NULL,
                           NULL);
         return -1;
     }
@@ -385,7 +385,7 @@ WriteAPE2Tag(char *filename, ape_tag * Tag)
 
         snprintf(text, 256, "File \"%s\" not found or is read protected!\n",
                 filename);
-        xmms_show_message("File-Error", (gchar *) text, "Ok", FALSE, NULL,
+        audacious_info_dialog("File-Error", (gchar *) text, "Ok", FALSE, NULL,
                           NULL);
         return -1;
     }

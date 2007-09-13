@@ -84,36 +84,20 @@ gchar *tta_fmts[] = { "tta", NULL };
 
 InputPlugin tta_ip =
 {
-	NULL,
-	NULL,
-	"True Audio Plugin",
-	init,
-	about,
-	NULL,
-	is_our_file,
-	NULL,
-	play_file,
-	stop,
-	tta_pause,
-	seek,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	cleanup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	get_song_info,
-	file_info,
-	NULL,
-	get_song_tuple, // get_song_tuple
-	NULL, // set_song_tuple
-	NULL, // buffer
-	NULL, // vfs
-	tta_fmts,
-	mseek,
+	.description = "True Audio Plugin",
+	.init = init,
+	.about = about,
+	.is_our_file = is_our_file,
+	.play_file = play_file,
+	.stop = stop,
+	.pause = tta_pause,
+	.seek = seek,
+	.cleanup = cleanup,
+	.get_song_info = get_song_info,
+	.file_info_box = file_info,
+	.get_song_tuple = get_song_tuple,
+	.vfs_extensions = tta_fmts,
+	.mseek = mseek,
 };
 
 InputPlugin *tta_iplist[] = { &tta_ip, NULL };
@@ -167,7 +151,7 @@ tta_error (int error)
 	    break;
 	}
 
-	xmms_show_message (_("TTA Decoder Error"), message,
+	audacious_info_dialog (_("TTA Decoder Error"), message,
 	    _("Ok"), FALSE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(errorbox), "destroy",
@@ -189,7 +173,7 @@ get_song_info (char *filename, char **title, int *length)
 	*title = NULL;
 
 	if ((tuple = get_song_tuple(filename)) != NULL) {
-    	    *length = tuple_get_int(tuple, "length");
+    	    *length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
     	    *title = get_song_title(tuple);
 	}
 
@@ -215,7 +199,7 @@ play_loop (InputPlayback *playback)
             {
                 if (!playback->playing)
                     goto DONE;
-                xmms_usleep (10000);
+                g_usleep (10000);
             }
             if (seek_position == -1)
             {
@@ -239,7 +223,7 @@ play_loop (InputPlayback *playback)
 	    playback->output->buffer_free ();
 	    playback->output->buffer_free ();
 	    while (playback->output->buffer_playing()) {
-		    xmms_usleep(10000);
+		    g_usleep(10000);
 		    if(!playback->playing)
 			    goto DONE;
 	    }
@@ -280,7 +264,7 @@ about ()
 				   _(" for BMP\n"
 		        	   "Copyright (c) 2004 True Audio Software\n"), PROJECT_URL, NULL);
 
-	aboutbox = xmms_show_message(_("About True Audio Plugin"),
+	aboutbox = audacious_info_dialog(_("About True Audio Plugin"),
 				     about_text,
 				     _("Ok"), FALSE, NULL, NULL);
 
@@ -553,7 +537,7 @@ mseek (InputPlayback *data, gulong millisec)
 	    seek_position = (int)(millisec / SEEK_STEP);
 
 	    while (seek_position != -1)
-		xmms_usleep (10000);
+		g_usleep (10000);
 	}
 }
 
@@ -577,30 +561,30 @@ get_song_tuple(char *filename)
 		if(open_tta_file(filename, ttainfo, 0) >= 0) {
 			tuple = tuple_new_from_filename(filename);
 
-			tuple_associate_string(tuple, "codec", "True Audio (TTA)");
-			tuple_associate_string(tuple, "quality", "lossless");
+			tuple_associate_string(tuple, FIELD_CODEC, NULL, "True Audio (TTA)");
+			tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
 
 			if (ttainfo->ID3.id3has) {
 				if (ttainfo->ID3.artist)
-					tuple_associate_string(tuple, "artist", (gchar *) ttainfo->ID3.artist);
+					tuple_associate_string(tuple, FIELD_ARTIST, NULL, (gchar *) ttainfo->ID3.artist);
 
 				if (ttainfo->ID3.album)
-					tuple_associate_string(tuple, "album", (gchar *) ttainfo->ID3.album);
+					tuple_associate_string(tuple, FIELD_ALBUM, NULL, (gchar *) ttainfo->ID3.album);
 
 				if (ttainfo->ID3.title)
-					tuple_associate_string(tuple, "title", (gchar *) ttainfo->ID3.title);
+					tuple_associate_string(tuple, FIELD_TITLE, NULL, (gchar *) ttainfo->ID3.title);
 
 				if (ttainfo->ID3.year)
-					tuple_associate_int(tuple, "year", atoi((char *)ttainfo->ID3.year));
+					tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi((char *)ttainfo->ID3.year));
 
 				if(ttainfo->ID3.track)
-					tuple_associate_int(tuple, "track-number", atoi((char *)ttainfo->ID3.track));
+					tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi((char *)ttainfo->ID3.track));
 
 				if(ttainfo->ID3.genre)
-					tuple_associate_string(tuple, "genre", (gchar *) ttainfo->ID3.genre);
+					tuple_associate_string(tuple, FIELD_GENRE, NULL, (gchar *) ttainfo->ID3.genre);
 
 				if(ttainfo->ID3.comment)
-					tuple_associate_string(tuple, "comment", (gchar *) ttainfo->ID3.comment);
+					tuple_associate_string(tuple, FIELD_COMMENT, NULL, (gchar *) ttainfo->ID3.comment);
 			}
 			close_tta_file (ttainfo);
 		}

@@ -21,25 +21,22 @@
 
 
 OutputPlugin esd_op = {
-    NULL,
-    NULL,
-    "ESD Output Plugin",
-    esdout_init,
-    NULL,
-    esdout_about,
-    esdout_configure,
-    esdout_get_volume,
-    esdout_set_volume,
-    esdout_open,
-    esdout_write,
-    esdout_close,
-    esdout_flush,
-    esdout_pause,
-    esdout_free,
-    esdout_playing,
-    esdout_get_output_time,
-    esdout_get_written_time,
-    esdout_tell
+    .description = "ESD Output Plugin",
+    .init = esdout_init,
+    .about = esdout_about,
+    .configure = esdout_configure,
+    .get_volume = esdout_get_volume,
+    .set_volume = esdout_set_volume,
+    .open_audio = esdout_open,
+    .write_audio = esdout_write,
+    .close_audio = esdout_close,
+    .flush = esdout_flush,
+    .pause = esdout_pause,
+    .buffer_free = esdout_free,
+    .buffer_playing = esdout_playing,
+    .output_time = esdout_get_output_time,
+    .written_time = esdout_get_written_time,
+    .tell_audio = esdout_tell
 };
 
 OutputPlugin *esd_oplist[] = { &esd_op, NULL };

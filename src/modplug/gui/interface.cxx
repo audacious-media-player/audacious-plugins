@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -17,6 +18,13 @@
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
+
+#define GLADE_HOOKUP_OBJECT(component,widget,name) \
+  g_object_set_data_full (G_OBJECT (component), name, \
+    gtk_widget_ref (widget), (GDestroyNotify) gtk_widget_unref)
+
+#define GLADE_HOOKUP_OBJECT_NO_REF(component,widget,name) \
+  g_object_set_data (G_OBJECT (component), name, widget)
 
 GtkWidget*
 create_Config (void)
@@ -28,31 +36,73 @@ create_Config (void)
   GtkWidget *hbox2;
   GtkWidget *frame1;
   GtkWidget *vbox4;
-  GSList *vbox4_group = NULL;
   GtkWidget *bit16;
+  GSList *bit16_group = NULL;
   GtkWidget *bit8;
+  GtkWidget *xlabel2;
   GtkWidget *frame2;
   GtkWidget *vbox5;
-  GSList *vbox5_group = NULL;
   GtkWidget *stereo;
+  GSList *stereo_group = NULL;
   GtkWidget *mono;
-  GtkWidget *hbox10;
-  GtkWidget *frame3;
-  GtkWidget *vbox6;
-  GSList *vbox6_group = NULL;
-  GtkWidget *samp48;
-  GtkWidget *samp44;
-  GtkWidget *samp22;
-  GtkWidget *samp11;
+  GtkWidget *label3;
+  GtkWidget *hbox14;
   GtkWidget *frame9;
   GtkWidget *vbox15;
-  GSList *vbox15_group = NULL;
   GtkWidget *resampNearest;
+  GSList *resampNearest_group = NULL;
   GtkWidget *resampLinear;
   GtkWidget *resampSpline;
   GtkWidget *resampPolyphase;
+  GtkWidget *label4;
+  GtkWidget *frame3;
+  GtkWidget *vbox6;
+  GtkWidget *samp44;
+  GSList *samp44_group = NULL;
+  GtkWidget *samp22;
+  GtkWidget *samp11;
+  GtkWidget *label5;
   GtkWidget *label2;
   GtkWidget *vbox7;
+  GtkWidget *hbox15;
+  GtkWidget *frame5;
+  GtkWidget *vbox20;
+  GtkWidget *fxReverb;
+  GtkWidget *table1;
+  GtkWidget *fxReverbDepth;
+  GtkWidget *fxReverbDelay;
+  GtkWidget *xlabel3;
+  GtkWidget *xlabel4;
+  GtkWidget *label6;
+  GtkWidget *frame6;
+  GtkWidget *vbox21;
+  GtkWidget *fxBassBoost;
+  GtkWidget *table2;
+  GtkWidget *fxBassAmount;
+  GtkWidget *fxBassRange;
+  GtkWidget *xlabel5;
+  GtkWidget *xlabel6;
+  GtkWidget *label7;
+  GtkWidget *hbox16;
+  GtkWidget *frame7;
+  GtkWidget *vbox22;
+  GtkWidget *fxSurround;
+  GtkWidget *table3;
+  GtkWidget *fxSurroundDepth;
+  GtkWidget *fxSurroundDelay;
+  GtkWidget *xlabel7;
+  GtkWidget *label8;
+  GtkWidget *xlabel8;
+  GtkWidget *frame10;
+  GtkWidget *vbox16;
+  GtkWidget *fxPreamp;
+  GtkWidget *hbox11;
+  GtkWidget *label19;
+  GtkWidget *fxPreampLevel;
+  GtkWidget *label20;
+  GtkWidget *label9;
+  GtkWidget *label10;
+  GtkWidget *vbox19;
   GtkWidget *frame4;
   GtkWidget *hbox3;
   GtkWidget *vbox8;
@@ -61,703 +111,711 @@ create_Config (void)
   GtkWidget *vbox9;
   GtkWidget *fxNR;
   GtkWidget *fxAmigaMOD;
-  GtkWidget *frame5;
-  GtkWidget *hbox4;
-  GtkWidget *fxReverb;
-  GtkWidget *vbox10;
-  GtkWidget *table1;
-  GtkWidget *fxReverbDepth;
-  GtkWidget *fxReverbDelay;
-  GtkWidget *label3;
-  GtkWidget *label4;
-  GtkWidget *frame6;
-  GtkWidget *hbox5;
-  GtkWidget *fxBassBoost;
-  GtkWidget *vbox11;
-  GtkWidget *table2;
-  GtkWidget *fxBassAmount;
-  GtkWidget *fxBassRange;
-  GtkWidget *label5;
-  GtkWidget *label6;
-  GtkWidget *frame7;
-  GtkWidget *hbox6;
-  GtkWidget *fxSurround;
-  GtkWidget *vbox12;
-  GtkWidget *table3;
-  GtkWidget *fxSurroundDepth;
-  GtkWidget *fxSurroundDelay;
-  GtkWidget *label7;
-  GtkWidget *label8;
-  GtkWidget *frame10;
-  GtkWidget *vbox16;
-  GtkWidget *label20;
-  GtkWidget *hbox11;
-  GtkWidget *fxPreamp;
-  GtkWidget *label19;
-  GtkWidget *fxPreampLevel;
+  GtkWidget *label21;
   GtkWidget *frame11;
   GtkWidget *vbox17;
-  GSList *loopGroup_group = NULL;
   GtkWidget *fxNoLoop;
+  GSList *fxNoLoop_group = NULL;
   GtkWidget *hbox13;
   GtkWidget *fxLoopFinite;
   GtkObject *fxLoopCount_adj;
   GtkWidget *fxLoopCount;
-  GtkWidget *label21;
+  GtkWidget *xlabel21;
   GtkWidget *fxLoopForever;
-  GtkWidget *label10;
+  GtkWidget *label22;
+  GtkWidget *xlabel22;
   GtkWidget *hbuttonbox2;
   GtkWidget *config_ok;
   GtkWidget *config_apply;
   GtkWidget *config_cancel;
 
   Config = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_object_set_data (GTK_OBJECT (Config), "Config", Config);
-  gtk_widget_set_usize (Config, -1, -1);
+  gtk_widget_set_name (Config, "Config");
+  gtk_widget_set_size_request (Config, 500, -1);
   gtk_window_set_title (GTK_WINDOW (Config), _("ModPlug Configuration"));
-  gtk_window_set_policy (GTK_WINDOW (Config), FALSE, FALSE, FALSE);
+  gtk_window_set_resizable (GTK_WINDOW (Config), FALSE);
 
   vbox2 = gtk_vbox_new (FALSE, 0);
-  gtk_container_set_border_width(GTK_CONTAINER(vbox2),5);
-  gtk_widget_ref (vbox2);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox2", vbox2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox2, "vbox2");
   gtk_widget_show (vbox2);
   gtk_container_add (GTK_CONTAINER (Config), vbox2);
 
   notebook1 = gtk_notebook_new ();
-  gtk_widget_ref (notebook1);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "notebook1", notebook1,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (notebook1, "notebook1");
   gtk_widget_show (notebook1);
-  gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 5);
-  gtk_container_set_border_width (GTK_CONTAINER (notebook1), 0);
+  gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (notebook1), 4);
 
   vbox3 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox3);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox3", vbox3,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox3, "vbox3");
   gtk_widget_show (vbox3);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox3);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox3), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox3), 2);
 
-  hbox2 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox2);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox2", hbox2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  hbox2 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_set_name (hbox2, "hbox2");
   gtk_widget_show (hbox2);
-  gtk_box_pack_start (GTK_BOX (vbox3), hbox2, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox3), hbox2, FALSE, TRUE, 0);
 
-  frame1 = gtk_frame_new (_("Resolution"));
-  gtk_widget_ref (frame1);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame1", frame1,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  frame1 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame1, "frame1");
   gtk_widget_show (frame1);
   gtk_box_pack_start (GTK_BOX (hbox2), frame1, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame1), 2);
 
   vbox4 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox4);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox4", vbox4,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox4, "vbox4");
   gtk_widget_show (vbox4);
   gtk_container_add (GTK_CONTAINER (frame1), vbox4);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox4), 2);
 
-  bit16 = gtk_radio_button_new_with_label (vbox4_group, _("16 bit"));
-  vbox4_group = gtk_radio_button_group (GTK_RADIO_BUTTON (bit16));
-  gtk_widget_ref (bit16);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "bit16", bit16,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  bit16 = gtk_radio_button_new_with_mnemonic (NULL, _("16 bit"));
+  gtk_widget_set_name (bit16, "bit16");
   gtk_widget_show (bit16);
   gtk_box_pack_start (GTK_BOX (vbox4), bit16, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (bit16), bit16_group);
+  bit16_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (bit16));
 
-  bit8 = gtk_radio_button_new_with_label (vbox4_group, _("8 bit"));
-  vbox4_group = gtk_radio_button_group (GTK_RADIO_BUTTON (bit8));
-  gtk_widget_ref (bit8);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "bit8", bit8,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  bit8 = gtk_radio_button_new_with_mnemonic (NULL, _("8 bit"));
+  gtk_widget_set_name (bit8, "bit8");
   gtk_widget_show (bit8);
   gtk_box_pack_start (GTK_BOX (vbox4), bit8, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (bit8), bit16_group);
+  bit16_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (bit8));
 
-  frame2 = gtk_frame_new (_("Channels"));
-  gtk_widget_ref (frame2);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame2", frame2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  xlabel2 = gtk_label_new (_("Resolution"));
+  gtk_widget_set_name (xlabel2, "xlabel2");
+  gtk_widget_show (xlabel2);
+  gtk_frame_set_label_widget (GTK_FRAME (frame1), xlabel2);
+
+  frame2 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame2, "frame2");
   gtk_widget_show (frame2);
   gtk_box_pack_start (GTK_BOX (hbox2), frame2, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame2), 2);
 
   vbox5 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox5);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox5", vbox5,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox5, "vbox5");
   gtk_widget_show (vbox5);
   gtk_container_add (GTK_CONTAINER (frame2), vbox5);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox5), 2);
 
-  stereo = gtk_radio_button_new_with_label (vbox5_group, _("Stereo"));
-  vbox5_group = gtk_radio_button_group (GTK_RADIO_BUTTON (stereo));
-  gtk_widget_ref (stereo);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "stereo", stereo,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  stereo = gtk_radio_button_new_with_mnemonic (NULL, _("Stereo"));
+  gtk_widget_set_name (stereo, "stereo");
   gtk_widget_show (stereo);
   gtk_box_pack_start (GTK_BOX (vbox5), stereo, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (stereo), stereo_group);
+  stereo_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (stereo));
 
-  mono = gtk_radio_button_new_with_label (vbox5_group, _("Mono (downmix)"));
-  vbox5_group = gtk_radio_button_group (GTK_RADIO_BUTTON (mono));
-  gtk_widget_ref (mono);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "mono", mono,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  mono = gtk_radio_button_new_with_mnemonic (NULL, _("Mono (downmix)"));
+  gtk_widget_set_name (mono, "mono");
   gtk_widget_show (mono);
   gtk_box_pack_start (GTK_BOX (vbox5), mono, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (mono), stereo_group);
+  stereo_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (mono));
 
-  hbox10 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox10);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox10", hbox10,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (hbox10);
-  gtk_box_pack_start (GTK_BOX (vbox3), hbox10, TRUE, TRUE, 0);
+  label3 = gtk_label_new (_("Channels"));
+  gtk_widget_set_name (label3, "label3");
+  gtk_widget_show (label3);
+  gtk_frame_set_label_widget (GTK_FRAME (frame2), label3);
 
-  frame3 = gtk_frame_new (_("Sampling Rate"));
-  gtk_widget_ref (frame3);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame3", frame3,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (frame3);
-  gtk_box_pack_start (GTK_BOX (hbox10), frame3, TRUE, TRUE, 0);
+  hbox14 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (hbox14, "hbox14");
+  gtk_widget_show (hbox14);
+  gtk_box_pack_start (GTK_BOX (vbox3), hbox14, FALSE, TRUE, 0);
 
-  vbox6 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox6);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox6", vbox6,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox6);
-  gtk_container_add (GTK_CONTAINER (frame3), vbox6);
-
-  samp48 = gtk_radio_button_new_with_label (vbox6_group, _("48 kHz"));
-  vbox6_group = gtk_radio_button_group (GTK_RADIO_BUTTON (samp48));
-  gtk_widget_ref (samp48);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "samp48", samp48,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (samp48);
-  gtk_box_pack_start (GTK_BOX (vbox6), samp48, FALSE, FALSE, 0);
-
-  samp44 = gtk_radio_button_new_with_label (vbox6_group, _("44 kHz"));
-  vbox6_group = gtk_radio_button_group (GTK_RADIO_BUTTON (samp44));
-  gtk_widget_ref (samp44);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "samp44", samp44,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (samp44);
-  gtk_box_pack_start (GTK_BOX (vbox6), samp44, FALSE, FALSE, 0);
-
-  samp22 = gtk_radio_button_new_with_label (vbox6_group, _("22 kHz"));
-  vbox6_group = gtk_radio_button_group (GTK_RADIO_BUTTON (samp22));
-  gtk_widget_ref (samp22);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "samp22", samp22,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (samp22);
-  gtk_box_pack_start (GTK_BOX (vbox6), samp22, FALSE, FALSE, 0);
-
-  samp11 = gtk_radio_button_new_with_label (vbox6_group, _("11 kHz"));
-  vbox6_group = gtk_radio_button_group (GTK_RADIO_BUTTON (samp11));
-  gtk_widget_ref (samp11);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "samp11", samp11,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (samp11);
-  gtk_box_pack_start (GTK_BOX (vbox6), samp11, FALSE, FALSE, 0);
-
-  frame9 = gtk_frame_new (_("Resampling"));
-  gtk_widget_ref (frame9);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame9", frame9,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  frame9 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame9, "frame9");
   gtk_widget_show (frame9);
-  gtk_box_pack_start (GTK_BOX (hbox10), frame9, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox14), frame9, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame9), 2);
 
   vbox15 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox15);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox15", vbox15,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox15, "vbox15");
   gtk_widget_show (vbox15);
   gtk_container_add (GTK_CONTAINER (frame9), vbox15);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox15), 2);
 
-  resampNearest = gtk_radio_button_new_with_label (vbox15_group, _("Nearest (fastest)"));
-  vbox15_group = gtk_radio_button_group (GTK_RADIO_BUTTON (resampNearest));
-  gtk_widget_ref (resampNearest);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "resampNearest", resampNearest,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  resampNearest = gtk_radio_button_new_with_mnemonic (NULL, _("Nearest (fastest)"));
+  gtk_widget_set_name (resampNearest, "resampNearest");
   gtk_widget_show (resampNearest);
   gtk_box_pack_start (GTK_BOX (vbox15), resampNearest, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (resampNearest), resampNearest_group);
+  resampNearest_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (resampNearest));
 
-  resampLinear = gtk_radio_button_new_with_label (vbox15_group, _("Linear (fast)"));
-  vbox15_group = gtk_radio_button_group (GTK_RADIO_BUTTON (resampLinear));
-  gtk_widget_ref (resampLinear);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "resampLinear", resampLinear,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  resampLinear = gtk_radio_button_new_with_mnemonic (NULL, _("Linear (fast)"));
+  gtk_widget_set_name (resampLinear, "resampLinear");
   gtk_widget_show (resampLinear);
   gtk_box_pack_start (GTK_BOX (vbox15), resampLinear, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (resampLinear), resampNearest_group);
+  resampNearest_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (resampLinear));
 
-  resampSpline = gtk_radio_button_new_with_label (vbox15_group, _("Spline (good quality)"));
-  vbox15_group = gtk_radio_button_group (GTK_RADIO_BUTTON (resampSpline));
-  gtk_widget_ref (resampSpline);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "resampSpline", resampSpline,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  resampSpline = gtk_radio_button_new_with_mnemonic (NULL, _("Spline (good quality)"));
+  gtk_widget_set_name (resampSpline, "resampSpline");
   gtk_widget_show (resampSpline);
   gtk_box_pack_start (GTK_BOX (vbox15), resampSpline, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (resampSpline), resampNearest_group);
+  resampNearest_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (resampSpline));
 
-  resampPolyphase = gtk_radio_button_new_with_label (vbox15_group, _("8-tap Fir (extremely high quality)"));
-  vbox15_group = gtk_radio_button_group (GTK_RADIO_BUTTON (resampPolyphase));
-  gtk_widget_ref (resampPolyphase);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "resampPolyphase", resampPolyphase,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  resampPolyphase = gtk_radio_button_new_with_mnemonic (NULL, _("8-tap Fir (extremely high quality)"));
+  gtk_widget_set_name (resampPolyphase, "resampPolyphase");
   gtk_widget_show (resampPolyphase);
   gtk_box_pack_start (GTK_BOX (vbox15), resampPolyphase, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (resampPolyphase), resampNearest_group);
+  resampNearest_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (resampPolyphase));
+
+  label4 = gtk_label_new (_("Resampling"));
+  gtk_widget_set_name (label4, "label4");
+  gtk_widget_show (label4);
+  gtk_frame_set_label_widget (GTK_FRAME (frame9), label4);
+
+  frame3 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame3, "frame3");
+  gtk_widget_show (frame3);
+  gtk_box_pack_start (GTK_BOX (hbox14), frame3, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame3), 2);
+
+  vbox6 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox6, "vbox6");
+  gtk_widget_show (vbox6);
+  gtk_container_add (GTK_CONTAINER (frame3), vbox6);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox6), 2);
+
+  samp44 = gtk_radio_button_new_with_mnemonic (NULL, _("44 kHz"));
+  gtk_widget_set_name (samp44, "samp44");
+  gtk_widget_show (samp44);
+  gtk_box_pack_start (GTK_BOX (vbox6), samp44, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp44), samp44_group);
+  samp44_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp44));
+
+  samp22 = gtk_radio_button_new_with_mnemonic (NULL, _("22 kHz"));
+  gtk_widget_set_name (samp22, "samp22");
+  gtk_widget_show (samp22);
+  gtk_box_pack_start (GTK_BOX (vbox6), samp22, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp22), samp44_group);
+  samp44_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp22));
+
+  samp11 = gtk_radio_button_new_with_mnemonic (NULL, _("11 kHz"));
+  gtk_widget_set_name (samp11, "samp11");
+  gtk_widget_show (samp11);
+  gtk_box_pack_start (GTK_BOX (vbox6), samp11, FALSE, FALSE, 0);
+  gtk_button_set_focus_on_click (GTK_BUTTON (samp11), FALSE);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (samp11), samp44_group);
+  samp44_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samp11));
+
+  label5 = gtk_label_new (_("Sampling Rate"));
+  gtk_widget_set_name (label5, "label5");
+  gtk_widget_show (label5);
+  gtk_frame_set_label_widget (GTK_FRAME (frame3), label5);
 
   label2 = gtk_label_new (_("Quality"));
-  gtk_widget_ref (label2);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label2", label2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label2, "label2");
   gtk_widget_show (label2);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label2);
+  gtk_label_set_justify (GTK_LABEL (label2), GTK_JUSTIFY_CENTER);
 
   vbox7 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox7);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox7", vbox7,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox7, "vbox7");
   gtk_widget_show (vbox7);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox7);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox7), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox7), 2);
 
-  frame4 = gtk_frame_new (_("General"));
-  gtk_widget_ref (frame4);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame4", frame4,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (frame4);
-  gtk_box_pack_start (GTK_BOX (vbox7), frame4, TRUE, TRUE, 0);
+  hbox15 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (hbox15, "hbox15");
+  gtk_widget_show (hbox15);
+  gtk_box_pack_start (GTK_BOX (vbox7), hbox15, FALSE, TRUE, 0);
 
-  hbox3 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox3);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox3", hbox3,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (hbox3);
-  gtk_container_add (GTK_CONTAINER (frame4), hbox3);
-
-  vbox8 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox8);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox8", vbox8,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox8);
-  gtk_box_pack_start (GTK_BOX (hbox3), vbox8, TRUE, TRUE, 0);
-
-  fxUseFilename = gtk_check_button_new_with_label (_("Use Filename as Song Title"));
-  gtk_widget_ref (fxUseFilename);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxUseFilename", fxUseFilename,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (fxUseFilename);
-  gtk_box_pack_start (GTK_BOX (vbox8), fxUseFilename, FALSE, FALSE, 0);
-
-  fxFastInfo = gtk_check_button_new_with_label (_("Fast Playlist Info"));
-  gtk_widget_ref (fxFastInfo);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxFastInfo", fxFastInfo,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (fxFastInfo);
-  gtk_box_pack_start (GTK_BOX (vbox8), fxFastInfo, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxFastInfo), TRUE);
-
-  vbox9 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox9);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox9", vbox9,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox9);
-  gtk_box_pack_start (GTK_BOX (hbox3), vbox9, TRUE, TRUE, 0);
-
-  fxNR = gtk_check_button_new_with_label (_("Noise Reduction"));
-  gtk_widget_ref (fxNR);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxNR", fxNR,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (fxNR);
-  gtk_box_pack_start (GTK_BOX (vbox9), fxNR, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxNR), TRUE);
-
-  fxAmigaMOD = gtk_check_button_new_with_label (_("Play Amiga MOD"));
-  gtk_widget_ref (fxAmigaMOD);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxAmigaMOD", fxAmigaMOD,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (fxAmigaMOD);
-  gtk_box_pack_start (GTK_BOX (vbox9), fxAmigaMOD, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxAmigaMOD), TRUE);
-
-  frame5 = gtk_frame_new (_("Reverb"));
-  gtk_widget_ref (frame5);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame5", frame5,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  frame5 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame5, "frame5");
   gtk_widget_show (frame5);
-  gtk_box_pack_start (GTK_BOX (vbox7), frame5, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox15), frame5, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame5), 2);
 
-  hbox4 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox4);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox4", hbox4,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (hbox4);
-  gtk_container_add (GTK_CONTAINER (frame5), hbox4);
+  vbox20 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox20, "vbox20");
+  gtk_widget_show (vbox20);
+  gtk_container_add (GTK_CONTAINER (frame5), vbox20);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox20), 2);
 
-  fxReverb = gtk_check_button_new_with_label (_("Enable"));
-  gtk_widget_ref (fxReverb);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxReverb", fxReverb,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  fxReverb = gtk_check_button_new_with_mnemonic (_("Enable"));
+  gtk_widget_set_name (fxReverb, "fxReverb");
   gtk_widget_show (fxReverb);
-  gtk_box_pack_start (GTK_BOX (hbox4), fxReverb, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox20), fxReverb, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (fxReverb), 2);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxReverb), TRUE);
 
-  vbox10 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox10);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox10", vbox10,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox10);
-  gtk_box_pack_start (GTK_BOX (hbox4), vbox10, TRUE, TRUE, 0);
-
   table1 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_ref (table1);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "table1", table1,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (table1, "table1");
   gtk_widget_show (table1);
-  gtk_box_pack_start (GTK_BOX (vbox10), table1, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox20), table1, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (table1), 2);
+  gtk_table_set_row_spacings (GTK_TABLE (table1), 4);
+  gtk_table_set_col_spacings (GTK_TABLE (table1), 4);
 
   fxReverbDepth = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (30, 0, 100, 0, 0, 0)));
-  gtk_widget_ref (fxReverbDepth);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxReverbDepth", fxReverbDepth,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxReverbDepth, "fxReverbDepth");
   gtk_widget_show (fxReverbDepth);
   gtk_table_attach (GTK_TABLE (table1), fxReverbDepth, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
   fxReverbDelay = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (90, 40, 200, 0, 0, 0)));
-  gtk_widget_ref (fxReverbDelay);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxReverbDelay", fxReverbDelay,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxReverbDelay, "fxReverbDelay");
   gtk_widget_show (fxReverbDelay);
   gtk_table_attach (GTK_TABLE (table1), fxReverbDelay, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  label3 = gtk_label_new (_("Depth"));
-  gtk_widget_ref (label3);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label3", label3,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label3);
-  gtk_table_attach (GTK_TABLE (table1), label3, 0, 1, 0, 1,
+  xlabel3 = gtk_label_new (_("Depth"));
+  gtk_widget_set_name (xlabel3, "xlabel3");
+  gtk_widget_show (xlabel3);
+  gtk_table_attach (GTK_TABLE (table1), xlabel3, 0, 1, 0, 1,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_justify (GTK_LABEL (xlabel3), GTK_JUSTIFY_CENTER);
 
-  label4 = gtk_label_new (_("Delay"));
-  gtk_widget_ref (label4);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label4", label4,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label4);
-  gtk_table_attach (GTK_TABLE (table1), label4, 0, 1, 1, 2,
+  xlabel4 = gtk_label_new (_("Delay"));
+  gtk_widget_set_name (xlabel4, "xlabel4");
+  gtk_widget_show (xlabel4);
+  gtk_table_attach (GTK_TABLE (table1), xlabel4, 0, 1, 1, 2,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_justify (GTK_LABEL (xlabel4), GTK_JUSTIFY_CENTER);
 
-  frame6 = gtk_frame_new (_("Bass Boost"));
-  gtk_widget_ref (frame6);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame6", frame6,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  label6 = gtk_label_new (_("Reverb"));
+  gtk_widget_set_name (label6, "label6");
+  gtk_widget_show (label6);
+  gtk_frame_set_label_widget (GTK_FRAME (frame5), label6);
+
+  frame6 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame6, "frame6");
   gtk_widget_show (frame6);
-  gtk_box_pack_start (GTK_BOX (vbox7), frame6, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox15), frame6, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame6), 2);
 
-  hbox5 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox5);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox5", hbox5,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (hbox5);
-  gtk_container_add (GTK_CONTAINER (frame6), hbox5);
+  vbox21 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox21, "vbox21");
+  gtk_widget_show (vbox21);
+  gtk_container_add (GTK_CONTAINER (frame6), vbox21);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox21), 2);
 
-  fxBassBoost = gtk_check_button_new_with_label (_("Enable"));
-  gtk_widget_ref (fxBassBoost);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxBassBoost", fxBassBoost,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  fxBassBoost = gtk_check_button_new_with_mnemonic (_("Enable"));
+  gtk_widget_set_name (fxBassBoost, "fxBassBoost");
   gtk_widget_show (fxBassBoost);
-  gtk_box_pack_start (GTK_BOX (hbox5), fxBassBoost, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox21), fxBassBoost, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (fxBassBoost), 2);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxBassBoost), TRUE);
 
-  vbox11 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox11);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox11", vbox11,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox11);
-  gtk_box_pack_start (GTK_BOX (hbox5), vbox11, TRUE, TRUE, 0);
-
   table2 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_ref (table2);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "table2", table2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (table2, "table2");
   gtk_widget_show (table2);
-  gtk_box_pack_start (GTK_BOX (vbox11), table2, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox21), table2, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (table2), 2);
+  gtk_table_set_row_spacings (GTK_TABLE (table2), 4);
+  gtk_table_set_col_spacings (GTK_TABLE (table2), 4);
 
   fxBassAmount = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (30, 0, 100, 0, 0, 0)));
-  gtk_widget_ref (fxBassAmount);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxBassAmount", fxBassAmount,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxBassAmount, "fxBassAmount");
   gtk_widget_show (fxBassAmount);
   gtk_table_attach (GTK_TABLE (table2), fxBassAmount, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
   fxBassRange = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (30, 10, 100, 0, 0, 0)));
-  gtk_widget_ref (fxBassRange);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxBassRange", fxBassRange,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxBassRange, "fxBassRange");
   gtk_widget_show (fxBassRange);
   gtk_table_attach (GTK_TABLE (table2), fxBassRange, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  label5 = gtk_label_new (_("Amount"));
-  gtk_widget_ref (label5);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label5", label5,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label5);
-  gtk_table_attach (GTK_TABLE (table2), label5, 0, 1, 0, 1,
+  xlabel5 = gtk_label_new (_("Amount"));
+  gtk_widget_set_name (xlabel5, "xlabel5");
+  gtk_widget_show (xlabel5);
+  gtk_table_attach (GTK_TABLE (table2), xlabel5, 0, 1, 0, 1,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_justify (GTK_LABEL (xlabel5), GTK_JUSTIFY_CENTER);
 
-  label6 = gtk_label_new (_("Range"));
-  gtk_widget_ref (label6);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label6", label6,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label6);
-  gtk_table_attach (GTK_TABLE (table2), label6, 0, 1, 1, 2,
+  xlabel6 = gtk_label_new (_("Range"));
+  gtk_widget_set_name (xlabel6, "xlabel6");
+  gtk_widget_show (xlabel6);
+  gtk_table_attach (GTK_TABLE (table2), xlabel6, 0, 1, 1, 2,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_justify (GTK_LABEL (xlabel6), GTK_JUSTIFY_CENTER);
 
-  frame7 = gtk_frame_new (_("Surround"));
-  gtk_widget_ref (frame7);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame7", frame7,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  label7 = gtk_label_new (_("Bass Boost"));
+  gtk_widget_set_name (label7, "label7");
+  gtk_widget_show (label7);
+  gtk_frame_set_label_widget (GTK_FRAME (frame6), label7);
+
+  hbox16 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (hbox16, "hbox16");
+  gtk_widget_show (hbox16);
+  gtk_box_pack_start (GTK_BOX (vbox7), hbox16, FALSE, TRUE, 0);
+
+  frame7 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame7, "frame7");
   gtk_widget_show (frame7);
-  gtk_box_pack_start (GTK_BOX (vbox7), frame7, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox16), frame7, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame7), 2);
 
-  hbox6 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox6);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox6", hbox6,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (hbox6);
-  gtk_container_add (GTK_CONTAINER (frame7), hbox6);
+  vbox22 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox22, "vbox22");
+  gtk_widget_show (vbox22);
+  gtk_container_add (GTK_CONTAINER (frame7), vbox22);
 
-  fxSurround = gtk_check_button_new_with_label (_("Enable"));
-  gtk_widget_ref (fxSurround);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxSurround", fxSurround,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  fxSurround = gtk_check_button_new_with_mnemonic (_("Enable"));
+  gtk_widget_set_name (fxSurround, "fxSurround");
   gtk_widget_show (fxSurround);
-  gtk_box_pack_start (GTK_BOX (hbox6), fxSurround, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox22), fxSurround, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (fxSurround), 2);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxSurround), TRUE);
 
-  vbox12 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox12);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox12", vbox12,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox12);
-  gtk_box_pack_start (GTK_BOX (hbox6), vbox12, TRUE, TRUE, 0);
-
   table3 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_ref (table3);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "table3", table3,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (table3, "table3");
   gtk_widget_show (table3);
-  gtk_box_pack_start (GTK_BOX (vbox12), table3, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox22), table3, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (table3), 2);
+  gtk_table_set_row_spacings (GTK_TABLE (table3), 4);
+  gtk_table_set_col_spacings (GTK_TABLE (table3), 4);
 
   fxSurroundDepth = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (20, 0, 100, 0, 0, 0)));
-  gtk_widget_ref (fxSurroundDepth);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxSurroundDepth", fxSurroundDepth,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxSurroundDepth, "fxSurroundDepth");
   gtk_widget_show (fxSurroundDepth);
   gtk_table_attach (GTK_TABLE (table3), fxSurroundDepth, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
   fxSurroundDelay = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (20, 5, 40, 0, 0, 0)));
-  gtk_widget_ref (fxSurroundDelay);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxSurroundDelay", fxSurroundDelay,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxSurroundDelay, "fxSurroundDelay");
   gtk_widget_show (fxSurroundDelay);
   gtk_table_attach (GTK_TABLE (table3), fxSurroundDelay, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  label7 = gtk_label_new (_("Depth"));
-  gtk_widget_ref (label7);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label7", label7,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label7);
-  gtk_table_attach (GTK_TABLE (table3), label7, 0, 1, 0, 1,
+  xlabel7 = gtk_label_new (_("Depth"));
+  gtk_widget_set_name (xlabel7, "xlabel7");
+  gtk_widget_show (xlabel7);
+  gtk_table_attach (GTK_TABLE (table3), xlabel7, 0, 1, 0, 1,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_justify (GTK_LABEL (xlabel7), GTK_JUSTIFY_CENTER);
 
   label8 = gtk_label_new (_("Delay"));
-  gtk_widget_ref (label8);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label8", label8,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label8, "label8");
   gtk_widget_show (label8);
   gtk_table_attach (GTK_TABLE (table3), label8, 0, 1, 1, 2,
                     (GtkAttachOptions) (0),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_justify (GTK_LABEL (label8), GTK_JUSTIFY_CENTER);
 
-  frame10 = gtk_frame_new (_("Preamp"));
-  gtk_widget_ref (frame10);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame10", frame10,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  xlabel8 = gtk_label_new (_("Surround"));
+  gtk_widget_set_name (xlabel8, "xlabel8");
+  gtk_widget_show (xlabel8);
+  gtk_frame_set_label_widget (GTK_FRAME (frame7), xlabel8);
+
+  frame10 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame10, "frame10");
   gtk_widget_show (frame10);
-  gtk_box_pack_start (GTK_BOX (vbox7), frame10, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox16), frame10, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame10), 2);
 
-  vbox16 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox16);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox16", vbox16,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  vbox16 = gtk_vbox_new (FALSE, 2);
+  gtk_widget_set_name (vbox16, "vbox16");
   gtk_widget_show (vbox16);
   gtk_container_add (GTK_CONTAINER (frame10), vbox16);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox16), 4);
 
-  label20 = gtk_label_new (_("Note:  Setting the preamp too high may cause\nclipping / distortion!"));
-  gtk_widget_ref (label20);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label20", label20,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label20);
-  gtk_box_pack_start (GTK_BOX (vbox16), label20, FALSE, FALSE, 0);
+  fxPreamp = gtk_check_button_new_with_mnemonic (_("Enable"));
+  gtk_widget_set_name (fxPreamp, "fxPreamp");
+  gtk_widget_show (fxPreamp);
+  gtk_box_pack_start (GTK_BOX (vbox16), fxPreamp, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (fxPreamp), 2);
 
-  hbox11 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox11);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox11", hbox11,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  hbox11 = gtk_hbox_new (FALSE, 4);
+  gtk_widget_set_name (hbox11, "hbox11");
   gtk_widget_show (hbox11);
   gtk_box_pack_start (GTK_BOX (vbox16), hbox11, TRUE, TRUE, 0);
 
-  fxPreamp = gtk_check_button_new_with_label (_("Enable"));
-  gtk_widget_ref (fxPreamp);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxPreamp", fxPreamp,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (fxPreamp);
-  gtk_box_pack_start (GTK_BOX (hbox11), fxPreamp, FALSE, FALSE, 0);
-
   label19 = gtk_label_new (_("Volume"));
-  gtk_widget_ref (label19);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label19", label19,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label19, "label19");
   gtk_widget_show (label19);
   gtk_box_pack_start (GTK_BOX (hbox11), label19, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label19), GTK_JUSTIFY_CENTER);
 
   fxPreampLevel = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (0, -3, 3, 1, 0, 0)));
-  gtk_widget_ref (fxPreampLevel);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxPreampLevel", fxPreampLevel,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxPreampLevel, "fxPreampLevel");
   gtk_widget_show (fxPreampLevel);
   gtk_box_pack_start (GTK_BOX (hbox11), fxPreampLevel, TRUE, TRUE, 0);
 
-  frame11 = gtk_frame_new (_("Looping"));
-  gtk_widget_ref (frame11);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "frame11", frame11,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  label20 = gtk_label_new (_("Note:  Setting the preamp\ntoo high may cause clipping\n(annoying clicks and pops)!"));
+  gtk_widget_set_name (label20, "label20");
+  gtk_widget_show (label20);
+  gtk_box_pack_start (GTK_BOX (vbox16), label20, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label20), GTK_JUSTIFY_CENTER);
+
+  label9 = gtk_label_new (_("Preamp"));
+  gtk_widget_set_name (label9, "label9");
+  gtk_widget_show (label9);
+  gtk_frame_set_label_widget (GTK_FRAME (frame10), label9);
+
+  label10 = gtk_label_new (_("Effects"));
+  gtk_widget_set_name (label10, "label10");
+  gtk_widget_show (label10);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label10);
+  gtk_label_set_justify (GTK_LABEL (label10), GTK_JUSTIFY_CENTER);
+
+  vbox19 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox19, "vbox19");
+  gtk_widget_show (vbox19);
+  gtk_container_add (GTK_CONTAINER (notebook1), vbox19);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox19), 2);
+
+  frame4 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame4, "frame4");
+  gtk_widget_show (frame4);
+  gtk_box_pack_start (GTK_BOX (vbox19), frame4, FALSE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame4), 2);
+
+  hbox3 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_set_name (hbox3, "hbox3");
+  gtk_widget_show (hbox3);
+  gtk_container_add (GTK_CONTAINER (frame4), hbox3);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox3), 2);
+
+  vbox8 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox8, "vbox8");
+  gtk_widget_show (vbox8);
+  gtk_box_pack_start (GTK_BOX (hbox3), vbox8, TRUE, TRUE, 0);
+
+  fxUseFilename = gtk_check_button_new_with_mnemonic (_("Use Filename as Song Title"));
+  gtk_widget_set_name (fxUseFilename, "fxUseFilename");
+  gtk_widget_show (fxUseFilename);
+  gtk_box_pack_start (GTK_BOX (vbox8), fxUseFilename, FALSE, FALSE, 0);
+
+  fxFastInfo = gtk_check_button_new_with_mnemonic (_("Fast Playlist Info"));
+  gtk_widget_set_name (fxFastInfo, "fxFastInfo");
+  gtk_widget_show (fxFastInfo);
+  gtk_box_pack_start (GTK_BOX (vbox8), fxFastInfo, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxFastInfo), TRUE);
+
+  vbox9 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox9, "vbox9");
+  gtk_widget_show (vbox9);
+  gtk_box_pack_start (GTK_BOX (hbox3), vbox9, TRUE, TRUE, 0);
+
+  fxNR = gtk_check_button_new_with_mnemonic (_("Noise Reduction"));
+  gtk_widget_set_name (fxNR, "fxNR");
+  gtk_widget_show (fxNR);
+  gtk_box_pack_start (GTK_BOX (vbox9), fxNR, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxNR), TRUE);
+
+  fxAmigaMOD = gtk_check_button_new_with_mnemonic (_("Play Amiga MOD"));
+  gtk_widget_set_name (fxAmigaMOD, "fxAmigaMOD");
+  gtk_widget_show (fxAmigaMOD);
+  gtk_box_pack_start (GTK_BOX (vbox9), fxAmigaMOD, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fxAmigaMOD), TRUE);
+
+  label21 = gtk_label_new (_("General"));
+  gtk_widget_set_name (label21, "label21");
+  gtk_widget_show (label21);
+  gtk_frame_set_label_widget (GTK_FRAME (frame4), label21);
+
+  frame11 = gtk_frame_new (NULL);
+  gtk_widget_set_name (frame11, "frame11");
   gtk_widget_show (frame11);
-  gtk_box_pack_start (GTK_BOX (vbox7), frame11, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox19), frame11, FALSE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame11), 2);
 
   vbox17 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox17);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "vbox17", vbox17,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox17, "vbox17");
   gtk_widget_show (vbox17);
   gtk_container_add (GTK_CONTAINER (frame11), vbox17);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox17), 2);
 
-  fxNoLoop = gtk_radio_button_new_with_label (loopGroup_group, _("Don't loop"));
-  loopGroup_group = gtk_radio_button_group (GTK_RADIO_BUTTON (fxNoLoop));
-  gtk_widget_ref (fxNoLoop);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxNoLoop", fxNoLoop,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  fxNoLoop = gtk_radio_button_new_with_mnemonic (NULL, _("Don't loop"));
+  gtk_widget_set_name (fxNoLoop, "fxNoLoop");
   gtk_widget_show (fxNoLoop);
   gtk_box_pack_start (GTK_BOX (vbox17), fxNoLoop, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (fxNoLoop), fxNoLoop_group);
+  fxNoLoop_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (fxNoLoop));
 
   hbox13 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox13);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbox13", hbox13,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (hbox13, "hbox13");
   gtk_widget_show (hbox13);
   gtk_box_pack_start (GTK_BOX (vbox17), hbox13, FALSE, FALSE, 0);
 
-  fxLoopFinite = gtk_radio_button_new_with_label (loopGroup_group, _("Loop"));
-  loopGroup_group = gtk_radio_button_group (GTK_RADIO_BUTTON (fxLoopFinite));
-  gtk_widget_ref (fxLoopFinite);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxLoopFinite", fxLoopFinite,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  fxLoopFinite = gtk_radio_button_new_with_mnemonic (NULL, _("Loop"));
+  gtk_widget_set_name (fxLoopFinite, "fxLoopFinite");
   gtk_widget_show (fxLoopFinite);
   gtk_box_pack_start (GTK_BOX (hbox13), fxLoopFinite, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (fxLoopFinite), fxNoLoop_group);
+  fxNoLoop_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (fxLoopFinite));
 
   fxLoopCount_adj = gtk_adjustment_new (1, 0, 100, 1, 10, 10);
   fxLoopCount = gtk_spin_button_new (GTK_ADJUSTMENT (fxLoopCount_adj), 1, 0);
-  gtk_widget_ref (fxLoopCount);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxLoopCount", fxLoopCount,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (fxLoopCount, "fxLoopCount");
   gtk_widget_show (fxLoopCount);
   gtk_box_pack_start (GTK_BOX (hbox13), fxLoopCount, FALSE, TRUE, 0);
 
-  label21 = gtk_label_new (_("time(s)"));
-  gtk_widget_ref (label21);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label21", label21,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label21);
-  gtk_box_pack_start (GTK_BOX (hbox13), label21, FALSE, FALSE, 0);
+  xlabel21 = gtk_label_new (_("time(s)"));
+  gtk_widget_set_name (xlabel21, "xlabel21");
+  gtk_widget_show (xlabel21);
+  gtk_box_pack_start (GTK_BOX (hbox13), xlabel21, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (xlabel21), GTK_JUSTIFY_CENTER);
 
-  fxLoopForever = gtk_radio_button_new_with_label (loopGroup_group, _("Loop forever"));
-  loopGroup_group = gtk_radio_button_group (GTK_RADIO_BUTTON (fxLoopForever));
-  gtk_widget_ref (fxLoopForever);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "fxLoopForever", fxLoopForever,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  fxLoopForever = gtk_radio_button_new_with_mnemonic (NULL, _("Loop forever"));
+  gtk_widget_set_name (fxLoopForever, "fxLoopForever");
   gtk_widget_show (fxLoopForever);
   gtk_box_pack_start (GTK_BOX (vbox17), fxLoopForever, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (fxLoopForever), fxNoLoop_group);
+  fxNoLoop_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (fxLoopForever));
 
-  label10 = gtk_label_new (_("Effects"));
-  gtk_widget_ref (label10);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "label10", label10,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label10);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label10);
+  label22 = gtk_label_new (_("Looping"));
+  gtk_widget_set_name (label22, "label22");
+  gtk_widget_show (label22);
+  gtk_frame_set_label_widget (GTK_FRAME (frame11), label22);
+
+  xlabel22 = gtk_label_new (_("Misc"));
+  gtk_widget_set_name (xlabel22, "xlabel22");
+  gtk_widget_show (xlabel22);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 2), xlabel22);
+  gtk_label_set_justify (GTK_LABEL (xlabel22), GTK_JUSTIFY_CENTER);
 
   hbuttonbox2 = gtk_hbutton_box_new ();
-  gtk_widget_ref (hbuttonbox2);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "hbuttonbox2", hbuttonbox2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (hbuttonbox2, "hbuttonbox2");
   gtk_widget_show (hbuttonbox2);
   gtk_box_pack_start (GTK_BOX (vbox2), hbuttonbox2, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbuttonbox2), 4);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox2), GTK_BUTTONBOX_END);
-  gtk_button_box_set_spacing (GTK_BUTTON_BOX (hbuttonbox2), 5);
+  gtk_box_set_spacing (GTK_BOX (hbuttonbox2), 8);
 
-  config_ok = gtk_button_new_with_label (_("OK"));
-  gtk_widget_ref (config_ok);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "config_ok", config_ok,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  config_ok = gtk_button_new_with_mnemonic (_("OK"));
+  gtk_widget_set_name (config_ok, "config_ok");
   gtk_widget_show (config_ok);
   gtk_container_add (GTK_CONTAINER (hbuttonbox2), config_ok);
   GTK_WIDGET_SET_FLAGS (config_ok, GTK_CAN_DEFAULT);
 
-  config_apply = gtk_button_new_with_label (_("Apply"));
-  gtk_widget_ref (config_apply);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "config_apply", config_apply,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  config_apply = gtk_button_new_with_mnemonic (_("Apply"));
+  gtk_widget_set_name (config_apply, "config_apply");
   gtk_widget_show (config_apply);
   gtk_container_add (GTK_CONTAINER (hbuttonbox2), config_apply);
   GTK_WIDGET_SET_FLAGS (config_apply, GTK_CAN_DEFAULT);
 
-  config_cancel = gtk_button_new_with_label (_("Cancel"));
-  gtk_widget_ref (config_cancel);
-  gtk_object_set_data_full (GTK_OBJECT (Config), "config_cancel", config_cancel,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  config_cancel = gtk_button_new_with_mnemonic (_("Cancel"));
+  gtk_widget_set_name (config_cancel, "config_cancel");
   gtk_widget_show (config_cancel);
   gtk_container_add (GTK_CONTAINER (hbuttonbox2), config_cancel);
   GTK_WIDGET_SET_FLAGS (config_cancel, GTK_CAN_DEFAULT);
 
-  gtk_signal_connect (GTK_OBJECT (Config), "delete_event",
-                      GTK_SIGNAL_FUNC (hide_window),
-                      NULL);
-  gtk_signal_connect (GTK_OBJECT (config_ok), "clicked",
-                      GTK_SIGNAL_FUNC (on_config_ok_clicked),
-                      NULL);
-  gtk_signal_connect (GTK_OBJECT (config_apply), "clicked",
-                      GTK_SIGNAL_FUNC (on_config_apply_clicked),
-                      NULL);
-  gtk_signal_connect (GTK_OBJECT (config_cancel), "clicked",
-                      GTK_SIGNAL_FUNC (on_config_cancel_clicked),
-                      NULL);
+  g_signal_connect ((gpointer) Config, "delete_event",
+                    G_CALLBACK (hide_window),
+                    NULL);
+  g_signal_connect ((gpointer) config_ok, "clicked",
+                    G_CALLBACK (on_config_ok_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) config_apply, "clicked",
+                    G_CALLBACK (on_config_apply_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) config_cancel, "clicked",
+                    G_CALLBACK (on_config_cancel_clicked),
+                    NULL);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (Config, Config, "Config");
+  GLADE_HOOKUP_OBJECT (Config, vbox2, "vbox2");
+  GLADE_HOOKUP_OBJECT (Config, notebook1, "notebook1");
+  GLADE_HOOKUP_OBJECT (Config, vbox3, "vbox3");
+  GLADE_HOOKUP_OBJECT (Config, hbox2, "hbox2");
+  GLADE_HOOKUP_OBJECT (Config, frame1, "frame1");
+  GLADE_HOOKUP_OBJECT (Config, vbox4, "vbox4");
+  GLADE_HOOKUP_OBJECT (Config, bit16, "bit16");
+  GLADE_HOOKUP_OBJECT (Config, bit8, "bit8");
+  GLADE_HOOKUP_OBJECT (Config, xlabel2, "xlabel2");
+  GLADE_HOOKUP_OBJECT (Config, frame2, "frame2");
+  GLADE_HOOKUP_OBJECT (Config, vbox5, "vbox5");
+  GLADE_HOOKUP_OBJECT (Config, stereo, "stereo");
+  GLADE_HOOKUP_OBJECT (Config, mono, "mono");
+  GLADE_HOOKUP_OBJECT (Config, label3, "label3");
+  GLADE_HOOKUP_OBJECT (Config, hbox14, "hbox14");
+  GLADE_HOOKUP_OBJECT (Config, frame9, "frame9");
+  GLADE_HOOKUP_OBJECT (Config, vbox15, "vbox15");
+  GLADE_HOOKUP_OBJECT (Config, resampNearest, "resampNearest");
+  GLADE_HOOKUP_OBJECT (Config, resampLinear, "resampLinear");
+  GLADE_HOOKUP_OBJECT (Config, resampSpline, "resampSpline");
+  GLADE_HOOKUP_OBJECT (Config, resampPolyphase, "resampPolyphase");
+  GLADE_HOOKUP_OBJECT (Config, label4, "label4");
+  GLADE_HOOKUP_OBJECT (Config, frame3, "frame3");
+  GLADE_HOOKUP_OBJECT (Config, vbox6, "vbox6");
+  GLADE_HOOKUP_OBJECT (Config, samp44, "samp44");
+  GLADE_HOOKUP_OBJECT (Config, samp22, "samp22");
+  GLADE_HOOKUP_OBJECT (Config, samp11, "samp11");
+  GLADE_HOOKUP_OBJECT (Config, label5, "label5");
+  GLADE_HOOKUP_OBJECT (Config, label2, "label2");
+  GLADE_HOOKUP_OBJECT (Config, vbox7, "vbox7");
+  GLADE_HOOKUP_OBJECT (Config, hbox15, "hbox15");
+  GLADE_HOOKUP_OBJECT (Config, frame5, "frame5");
+  GLADE_HOOKUP_OBJECT (Config, vbox20, "vbox20");
+  GLADE_HOOKUP_OBJECT (Config, fxReverb, "fxReverb");
+  GLADE_HOOKUP_OBJECT (Config, table1, "table1");
+  GLADE_HOOKUP_OBJECT (Config, fxReverbDepth, "fxReverbDepth");
+  GLADE_HOOKUP_OBJECT (Config, fxReverbDelay, "fxReverbDelay");
+  GLADE_HOOKUP_OBJECT (Config, xlabel3, "xlabel3");
+  GLADE_HOOKUP_OBJECT (Config, xlabel4, "xlabel4");
+  GLADE_HOOKUP_OBJECT (Config, label6, "label6");
+  GLADE_HOOKUP_OBJECT (Config, frame6, "frame6");
+  GLADE_HOOKUP_OBJECT (Config, vbox21, "vbox21");
+  GLADE_HOOKUP_OBJECT (Config, fxBassBoost, "fxBassBoost");
+  GLADE_HOOKUP_OBJECT (Config, table2, "table2");
+  GLADE_HOOKUP_OBJECT (Config, fxBassAmount, "fxBassAmount");
+  GLADE_HOOKUP_OBJECT (Config, fxBassRange, "fxBassRange");
+  GLADE_HOOKUP_OBJECT (Config, xlabel5, "xlabel5");
+  GLADE_HOOKUP_OBJECT (Config, xlabel6, "xlabel6");
+  GLADE_HOOKUP_OBJECT (Config, label7, "label7");
+  GLADE_HOOKUP_OBJECT (Config, hbox16, "hbox16");
+  GLADE_HOOKUP_OBJECT (Config, frame7, "frame7");
+  GLADE_HOOKUP_OBJECT (Config, vbox22, "vbox22");
+  GLADE_HOOKUP_OBJECT (Config, fxSurround, "fxSurround");
+  GLADE_HOOKUP_OBJECT (Config, table3, "table3");
+  GLADE_HOOKUP_OBJECT (Config, fxSurroundDepth, "fxSurroundDepth");
+  GLADE_HOOKUP_OBJECT (Config, fxSurroundDelay, "fxSurroundDelay");
+  GLADE_HOOKUP_OBJECT (Config, xlabel7, "xlabel7");
+  GLADE_HOOKUP_OBJECT (Config, label8, "label8");
+  GLADE_HOOKUP_OBJECT (Config, xlabel8, "xlabel8");
+  GLADE_HOOKUP_OBJECT (Config, frame10, "frame10");
+  GLADE_HOOKUP_OBJECT (Config, vbox16, "vbox16");
+  GLADE_HOOKUP_OBJECT (Config, fxPreamp, "fxPreamp");
+  GLADE_HOOKUP_OBJECT (Config, hbox11, "hbox11");
+  GLADE_HOOKUP_OBJECT (Config, label19, "label19");
+  GLADE_HOOKUP_OBJECT (Config, fxPreampLevel, "fxPreampLevel");
+  GLADE_HOOKUP_OBJECT (Config, label20, "label20");
+  GLADE_HOOKUP_OBJECT (Config, label9, "label9");
+  GLADE_HOOKUP_OBJECT (Config, label10, "label10");
+  GLADE_HOOKUP_OBJECT (Config, vbox19, "vbox19");
+  GLADE_HOOKUP_OBJECT (Config, frame4, "frame4");
+  GLADE_HOOKUP_OBJECT (Config, hbox3, "hbox3");
+  GLADE_HOOKUP_OBJECT (Config, vbox8, "vbox8");
+  GLADE_HOOKUP_OBJECT (Config, fxUseFilename, "fxUseFilename");
+  GLADE_HOOKUP_OBJECT (Config, fxFastInfo, "fxFastInfo");
+  GLADE_HOOKUP_OBJECT (Config, vbox9, "vbox9");
+  GLADE_HOOKUP_OBJECT (Config, fxNR, "fxNR");
+  GLADE_HOOKUP_OBJECT (Config, fxAmigaMOD, "fxAmigaMOD");
+  GLADE_HOOKUP_OBJECT (Config, label21, "label21");
+  GLADE_HOOKUP_OBJECT (Config, frame11, "frame11");
+  GLADE_HOOKUP_OBJECT (Config, vbox17, "vbox17");
+  GLADE_HOOKUP_OBJECT (Config, fxNoLoop, "fxNoLoop");
+  GLADE_HOOKUP_OBJECT (Config, hbox13, "hbox13");
+  GLADE_HOOKUP_OBJECT (Config, fxLoopFinite, "fxLoopFinite");
+  GLADE_HOOKUP_OBJECT (Config, fxLoopCount, "fxLoopCount");
+  GLADE_HOOKUP_OBJECT (Config, xlabel21, "xlabel21");
+  GLADE_HOOKUP_OBJECT (Config, fxLoopForever, "fxLoopForever");
+  GLADE_HOOKUP_OBJECT (Config, label22, "label22");
+  GLADE_HOOKUP_OBJECT (Config, xlabel22, "xlabel22");
+  GLADE_HOOKUP_OBJECT (Config, hbuttonbox2, "hbuttonbox2");
+  GLADE_HOOKUP_OBJECT (Config, config_ok, "config_ok");
+  GLADE_HOOKUP_OBJECT (Config, config_apply, "config_apply");
+  GLADE_HOOKUP_OBJECT (Config, config_cancel, "config_cancel");
 
   return Config;
 }
@@ -781,182 +839,160 @@ create_Info (void)
   GtkWidget *info_instruments;
   GtkWidget *label17;
   GtkWidget *scrolledwindow3;
-  GtkWidget *viewport3;
   GtkWidget *info_message;
   GtkWidget *label18;
   GtkWidget *hbuttonbox3;
   GtkWidget *info_close;
 
   Info = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_object_set_data (GTK_OBJECT (Info), "Info", Info);
-  gtk_widget_set_usize (Info, -1, 264);
+  gtk_widget_set_name (Info, "Info");
   gtk_window_set_title (GTK_WINDOW (Info), _("MOD Info"));
 
   vbox14 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox14);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "vbox14", vbox14,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (vbox14, "vbox14");
   gtk_widget_show (vbox14);
   gtk_container_add (GTK_CONTAINER (Info), vbox14);
 
   notebook2 = gtk_notebook_new ();
-  gtk_widget_ref (notebook2);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "notebook2", notebook2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (notebook2, "notebook2");
   gtk_widget_show (notebook2);
   gtk_box_pack_start (GTK_BOX (vbox14), notebook2, TRUE, TRUE, 8);
-  gtk_container_set_border_width (GTK_CONTAINER (notebook2), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (notebook2), 4);
 
   hbox9 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_ref (hbox9);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "hbox9", hbox9,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (hbox9, "hbox9");
   gtk_widget_show (hbox9);
   gtk_container_add (GTK_CONTAINER (notebook2), hbox9);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox9), 2);
 
   label11 = gtk_label_new (_("Filename:\nTitle:\nType:\nLength:\nSpeed:\nTempo:\nSamples:\nInstruments:\nPatterns:\nChannels:"));
-  gtk_widget_ref (label11);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "label11", label11,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label11, "label11");
   gtk_widget_show (label11);
   gtk_box_pack_start (GTK_BOX (hbox9), label11, FALSE, FALSE, 4);
-  gtk_label_set_justify (GTK_LABEL (label11), GTK_JUSTIFY_LEFT);
 
-  info_general = gtk_label_new ("---\n---\n---\n---\n---\n---\n---\n---\n---\n---");
-  gtk_widget_ref (info_general);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "info_general", info_general,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  info_general = gtk_label_new (_("---\n---\n---\n---\n---\n---\n---\n---\n---\n---"));
+  gtk_widget_set_name (info_general, "info_general");
   gtk_widget_show (info_general);
   gtk_box_pack_start (GTK_BOX (hbox9), info_general, FALSE, FALSE, 4);
-  gtk_label_set_justify (GTK_LABEL (info_general), GTK_JUSTIFY_LEFT);
 
   label13 = gtk_label_new (_("General"));
-  gtk_widget_ref (label13);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "label13", label13,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label13, "label13");
   gtk_widget_show (label13);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 0), label13);
+  gtk_label_set_justify (GTK_LABEL (label13), GTK_JUSTIFY_CENTER);
 
   scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_ref (scrolledwindow1);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "scrolledwindow1", scrolledwindow1,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (scrolledwindow1, "scrolledwindow1");
   gtk_widget_show (scrolledwindow1);
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow1);
   gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow1), 6);
+  GTK_WIDGET_UNSET_FLAGS (scrolledwindow1, GTK_CAN_FOCUS);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
   viewport1 = gtk_viewport_new (NULL, NULL);
-  gtk_widget_ref (viewport1);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "viewport1", viewport1,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (viewport1, "viewport1");
   gtk_widget_show (viewport1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow1), viewport1);
 
   info_samples = gtk_label_new ("");
-  gtk_widget_ref (info_samples);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "info_samples", info_samples,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (info_samples, "info_samples");
   gtk_widget_show (info_samples);
   gtk_container_add (GTK_CONTAINER (viewport1), info_samples);
-  gtk_label_set_justify (GTK_LABEL (info_samples), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (info_samples), 7.45058e-09, 7.45058e-09);
-  gtk_label_set_selectable(GTK_LABEL (info_samples), TRUE);
 
   label15 = gtk_label_new (_("Samples"));
-  gtk_widget_ref (label15);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "label15", label15,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label15, "label15");
   gtk_widget_show (label15);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 1), label15);
+  gtk_label_set_justify (GTK_LABEL (label15), GTK_JUSTIFY_CENTER);
 
   scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_ref (scrolledwindow2);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "scrolledwindow2", scrolledwindow2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (scrolledwindow2, "scrolledwindow2");
   gtk_widget_show (scrolledwindow2);
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow2);
   gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow2), 6);
+  GTK_WIDGET_UNSET_FLAGS (scrolledwindow2, GTK_CAN_FOCUS);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
   viewport2 = gtk_viewport_new (NULL, NULL);
-  gtk_widget_ref (viewport2);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "viewport2", viewport2,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (viewport2, "viewport2");
   gtk_widget_show (viewport2);
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), viewport2);
 
   info_instruments = gtk_label_new ("");
-  gtk_widget_ref (info_instruments);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "info_instruments", info_instruments,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (info_instruments, "info_instruments");
   gtk_widget_show (info_instruments);
   gtk_container_add (GTK_CONTAINER (viewport2), info_instruments);
-  gtk_label_set_justify (GTK_LABEL (info_instruments), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (info_instruments), 1.49012e-08, 7.45058e-09);
-  gtk_label_set_selectable(GTK_LABEL (info_instruments), TRUE);
 
   label17 = gtk_label_new (_("Instruments"));
-  gtk_widget_ref (label17);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "label17", label17,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label17, "label17");
   gtk_widget_show (label17);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 2), label17);
+  gtk_label_set_justify (GTK_LABEL (label17), GTK_JUSTIFY_CENTER);
 
   scrolledwindow3 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_ref (scrolledwindow3);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "scrolledwindow3", scrolledwindow3,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (scrolledwindow3, "scrolledwindow3");
   gtk_widget_show (scrolledwindow3);
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow3);
-  gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow3), 6);
+  GTK_WIDGET_UNSET_FLAGS (scrolledwindow3, GTK_CAN_FOCUS);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow3), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow3), GTK_SHADOW_IN);
 
-  viewport3 = gtk_viewport_new (NULL, NULL);
-  gtk_widget_ref (viewport3);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "viewport3", viewport3,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (viewport3);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow3), viewport3);
-
-  info_message = gtk_label_new ("");
-  gtk_widget_ref (info_message);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "info_message", info_message,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  info_message = gtk_text_view_new ();
+  gtk_widget_set_name (info_message, "info_message");
   gtk_widget_show (info_message);
-  gtk_container_add (GTK_CONTAINER (viewport3), info_message);
-  gtk_label_set_justify (GTK_LABEL (info_message), GTK_JUSTIFY_LEFT);
-  gtk_label_set_line_wrap(GTK_LABEL (info_message), TRUE);
-  gtk_label_set_selectable(GTK_LABEL (info_message), TRUE);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow3), info_message);
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (info_message), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (info_message), GTK_WRAP_WORD);
 
   label18 = gtk_label_new (_("Message"));
-  gtk_widget_ref (label18);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "label18", label18,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (label18, "label18");
   gtk_widget_show (label18);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 3), label18);
+  gtk_label_set_justify (GTK_LABEL (label18), GTK_JUSTIFY_CENTER);
 
   hbuttonbox3 = gtk_hbutton_box_new ();
-  gtk_widget_ref (hbuttonbox3);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "hbuttonbox3", hbuttonbox3,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_set_name (hbuttonbox3, "hbuttonbox3");
   gtk_widget_show (hbuttonbox3);
   gtk_box_pack_start (GTK_BOX (vbox14), hbuttonbox3, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbuttonbox3), 2);
+  gtk_box_set_spacing (GTK_BOX (hbuttonbox3), 30);
 
-  info_close = gtk_button_new_with_label (_("Close"));
-  gtk_widget_ref (info_close);
-  gtk_object_set_data_full (GTK_OBJECT (Info), "info_close", info_close,
-                            (GtkDestroyNotify) gtk_widget_unref);
+  info_close = gtk_button_new_with_mnemonic (_("Close"));
+  gtk_widget_set_name (info_close, "info_close");
   gtk_widget_show (info_close);
   gtk_container_add (GTK_CONTAINER (hbuttonbox3), info_close);
   GTK_WIDGET_SET_FLAGS (info_close, GTK_CAN_DEFAULT);
 
-  gtk_signal_connect (GTK_OBJECT (Info), "delete_event",
-                      GTK_SIGNAL_FUNC (hide_window),
-                      NULL);
-  gtk_signal_connect (GTK_OBJECT (info_close), "clicked",
-                      GTK_SIGNAL_FUNC (on_info_close_clicked),
-                      NULL);
+  g_signal_connect ((gpointer) Info, "delete_event",
+                    G_CALLBACK (hide_window),
+                    NULL);
+  g_signal_connect ((gpointer) info_close, "clicked",
+                    G_CALLBACK (on_info_close_clicked),
+                    NULL);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (Info, Info, "Info");
+  GLADE_HOOKUP_OBJECT (Info, vbox14, "vbox14");
+  GLADE_HOOKUP_OBJECT (Info, notebook2, "notebook2");
+  GLADE_HOOKUP_OBJECT (Info, hbox9, "hbox9");
+  GLADE_HOOKUP_OBJECT (Info, label11, "label11");
+  GLADE_HOOKUP_OBJECT (Info, info_general, "info_general");
+  GLADE_HOOKUP_OBJECT (Info, label13, "label13");
+  GLADE_HOOKUP_OBJECT (Info, scrolledwindow1, "scrolledwindow1");
+  GLADE_HOOKUP_OBJECT (Info, viewport1, "viewport1");
+  GLADE_HOOKUP_OBJECT (Info, info_samples, "info_samples");
+  GLADE_HOOKUP_OBJECT (Info, label15, "label15");
+  GLADE_HOOKUP_OBJECT (Info, scrolledwindow2, "scrolledwindow2");
+  GLADE_HOOKUP_OBJECT (Info, viewport2, "viewport2");
+  GLADE_HOOKUP_OBJECT (Info, info_instruments, "info_instruments");
+  GLADE_HOOKUP_OBJECT (Info, label17, "label17");
+  GLADE_HOOKUP_OBJECT (Info, scrolledwindow3, "scrolledwindow3");
+  GLADE_HOOKUP_OBJECT (Info, info_message, "info_message");
+  GLADE_HOOKUP_OBJECT (Info, label18, "label18");
+  GLADE_HOOKUP_OBJECT (Info, hbuttonbox3, "hbuttonbox3");
+  GLADE_HOOKUP_OBJECT (Info, info_close, "info_close");
 
   return Info;
 }

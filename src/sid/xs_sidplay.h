@@ -26,7 +26,7 @@
  * (those variables that are only set by libSIDPlay when tune is initialized).
  * Rest of the information is acquired in TFUNCTION2()
  */
-t_xs_tuneinfo *TFUNCTION(gchar *sidFilename)
+t_xs_tuneinfo *TFUNCTION(const gchar *sidFilename)
 {
 	t_xs_tuneinfo *pResult;
 	TTUNEINFO myInfo;

@@ -38,36 +38,17 @@
 gchar *wav_fmts[] = { "wav", "raw", "pcm", NULL };
 
 InputPlugin wav_ip = {
-    NULL,
-    NULL,
-    "WAV Audio Plugin",                       /* Description */
-    wav_init,
-    NULL,
-    NULL,
-    is_our_file,
-    NULL,
-    play_file,
-    stop,
-    wav_pause,
-    seek,
-    NULL,
-    get_time,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    get_song_info,
-    NULL,                       /* file_info_box */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    wav_fmts,
-    mseek,
+    .description = "WAV Audio Plugin",                       /* Description */
+    .init = wav_init,
+    .is_our_file = is_our_file,
+    .play_file = play_file,
+    .stop = stop,
+    .pause = wav_pause,
+    .seek = seek,
+    .get_time = get_time,
+    .get_song_info = get_song_info,
+    .vfs_extensions = wav_fmts,
+    .mseek = mseek,
 };
 
 WaveFile *wav_file = NULL;
@@ -212,14 +193,14 @@ get_title(const gchar * filename)
 
     tuple = tuple_new_from_filename(filename);
 
-    tuple_associate_string(tuple, "codec", "RIFF/WAV Audio (ADPCM)");
-    tuple_associate_string(tuple, "quality", "lossless");
+    tuple_associate_string(tuple, FIELD_CODEC, NULL, "RIFF/WAV Audio (ADPCM)");
+    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
 
     title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
     if (*title == '\0')
     {
         g_free(title);
-        title = g_strdup(tuple_get_string(tuple, "file-name"));
+        title = g_strdup(tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
     }
 
     tuple_free(tuple);
@@ -455,7 +436,7 @@ mseek(InputPlayback * playback, gulong millisecond)
     playback->eof = FALSE;
 
     while (wav_file->seek_to != -1)
-        xmms_usleep(10000);
+        g_usleep(10000);
 }
 
 static void

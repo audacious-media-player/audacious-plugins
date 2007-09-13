@@ -150,7 +150,7 @@ si_ui_statusicon_popup_show ( gpointer evbox )
     GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
 
     tuple = playlist_get_tuple( pl_active , pos );
-    if ( ( tuple == NULL ) || ( tuple_get_int(tuple, "length") < 1 ) )
+    if ( ( tuple == NULL ) || ( tuple_get_int(tuple, FIELD_LENGTH, NULL) < 1 ) )
     {
       gchar *title = playlist_get_songtitle( pl_active , pos );
       audacious_fileinfopopup_show_from_title( popup , title );
@@ -574,7 +574,7 @@ si_ui_about_show ( void )
                    "This plugin provides a status icon, placed in\n"
                    "the system tray area of the window manager.\n") , NULL );
 
-  about_dlg = xmms_show_message( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
+  about_dlg = audacious_info_dialog( about_title , about_text , _("Ok") , FALSE , NULL , NULL );
   g_signal_connect( G_OBJECT(about_dlg) , "destroy" ,
                     G_CALLBACK(gtk_widget_destroyed), &about_dlg );
   g_free( about_text );

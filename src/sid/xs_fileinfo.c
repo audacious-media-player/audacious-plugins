@@ -26,14 +26,11 @@
 #include "xs_fileinfo.h"
 #include "xs_player.h"
 #include "xs_support.h"
-#include "xs_stil.h"
 #include "xs_config.h"
 #include "xs_interface.h"
 #include "xs_glade.h"
+#include "xs_slsup.h"
 
-
-static t_xs_stildb *xs_stildb_db = NULL;
-XS_MUTEX(xs_stildb_db);
 
 static GtkWidget *xs_fileinfowin = NULL;
 static t_xs_stil_node *xs_fileinfostil = NULL;
@@ -42,101 +39,7 @@ XS_MUTEX(xs_fileinfowin);
 #define LUW(x)	lookup_widget(xs_fileinfowin, x)
 
 
-/* STIL-database handling
- */
-gint xs_stil_init(void)
-{
-	XS_MUTEX_LOCK(xs_cfg);
-
-	if (!xs_cfg.stilDBPath) {
-		XS_MUTEX_UNLOCK(xs_cfg);
-		return -1;
-	}
-
-	XS_MUTEX_LOCK(xs_stildb_db);
-
-	/* Check if already initialized */
-	if (xs_stildb_db)
-		xs_stildb_free(xs_stildb_db);
-
-	/* Allocate database */
-	xs_stildb_db = (t_xs_stildb *) g_malloc0(sizeof(t_xs_stildb));
-	if (!xs_stildb_db) {
-		XS_MUTEX_UNLOCK(xs_cfg);
-		XS_MUTEX_UNLOCK(xs_stildb_db);
-		return -2;
-	}
-
-	/* Read the database */
-	if (xs_stildb_read(xs_stildb_db, xs_cfg.stilDBPath) != 0) {
-		xs_stildb_free(xs_stildb_db);
-		xs_stildb_db = NULL;
-		XS_MUTEX_UNLOCK(xs_cfg);
-		XS_MUTEX_UNLOCK(xs_stildb_db);
-		return -3;
-	}
-
-	/* Create index */
-	if (xs_stildb_index(xs_stildb_db) != 0) {
-		xs_stildb_free(xs_stildb_db);
-		xs_stildb_db = NULL;
-		XS_MUTEX_UNLOCK(xs_cfg);
-		XS_MUTEX_UNLOCK(xs_stildb_db);
-		return -4;
-	}
-
-	XS_MUTEX_UNLOCK(xs_cfg);
-	XS_MUTEX_UNLOCK(xs_stildb_db);
-	return 0;
-}
-
-
-void xs_stil_close(void)
-{
-	XS_MUTEX_LOCK(xs_stildb_db);
-	xs_stildb_free(xs_stildb_db);
-	xs_stildb_db = NULL;
-	XS_MUTEX_UNLOCK(xs_stildb_db);
-}
-
-
-t_xs_stil_node *xs_stil_get(gchar *pcFilename)
-{
-	t_xs_stil_node *pResult;
-	gchar *tmpFilename;
-
-	XS_MUTEX_LOCK(xs_stildb_db);
-	XS_MUTEX_LOCK(xs_cfg);
-
-	if (xs_cfg.stilDBEnable && xs_stildb_db) {
-		if (xs_cfg.hvscPath) {
-			/* Remove postfixed directory separator from HVSC-path */
-			tmpFilename = xs_strrchr(xs_cfg.hvscPath, '/');
-			if (tmpFilename && (tmpFilename[1] == 0))
-				tmpFilename[0] = 0;
-
-			/* Remove HVSC location-prefix from filename */
-			tmpFilename = strstr(pcFilename, xs_cfg.hvscPath);
-			if (tmpFilename)
-				tmpFilename += strlen(xs_cfg.hvscPath);
-			else
-				tmpFilename = pcFilename;
-		} else
-			tmpFilename = pcFilename;
-
-XSDEBUG("xs_stil_get('%s') = '%s'\n", pcFilename, tmpFilename);
-		
-		pResult = xs_stildb_get_node(xs_stildb_db, tmpFilename);
-	} else
-		pResult = NULL;
-
-	XS_MUTEX_UNLOCK(xs_stildb_db);
-	XS_MUTEX_UNLOCK(xs_cfg);
-
-	return pResult;
-}
-
-
+#ifndef AUDACIOUS_PLUGIN
 void xs_fileinfo_update(void)
 {
 	XS_MUTEX_LOCK(xs_status);
@@ -189,6 +92,7 @@ static void xs_fileinfo_setsong(void)
 	XS_MUTEX_UNLOCK(xs_fileinfowin);
 	XS_MUTEX_UNLOCK(xs_status);
 }
+#endif /* AUDACIOUS_PLUGIN */
 
 
 void xs_fileinfo_ok(void)
@@ -218,7 +122,6 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 {
 	t_xs_stil_subnode *tmpNode;
 	GtkWidget *tmpText;
-	gint tmpIndex;
 	gchar *subName, *subAuthor, *subInfo;
 
 	(void) widget;
@@ -226,17 +129,22 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 
 	/* Freeze text-widget and delete the old text */
 	tmpText = LUW("fileinfo_sub_info");
+#ifndef AUDACIOUS_PLUGIN
+	gtk_text_freeze(GTK_TEXT(tmpText));
+	gtk_text_set_point(GTK_TEXT(tmpText), 0);
+	gtk_text_forward_delete(GTK_TEXT(tmpText), gtk_text_get_length(GTK_TEXT(tmpText)));
+#endif
 
 	/* Get subtune information */
-	tmpIndex = g_list_index(GTK_MENU_SHELL(data)->children, gtk_menu_get_active(GTK_MENU(data)));
-	
-	if (xs_fileinfostil && tmpIndex <= xs_fileinfostil->nsubTunes)
-		tmpNode = xs_fileinfostil->subTunes[tmpIndex];
-	else
-		tmpNode = NULL;
+	tmpNode = (t_xs_stil_subnode *) data;
+	if (!tmpNode && xs_fileinfostil)
+		tmpNode = xs_fileinfostil->subTunes[0];
 	
 	if (tmpNode) {
-		subName = tmpNode->pName;
+		if (tmpNode->pName)
+			subName = tmpNode->pName;
+		else
+			subName = tmpNode->pTitle;
 		subAuthor = tmpNode->pAuthor;
 		subInfo = tmpNode->pInfo;
 	} else {
@@ -248,8 +156,17 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 	/* Get and set subtune information */
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_sub_name")), subName ? subName : "");
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_sub_author")), subAuthor ? subAuthor : "");
+
+#ifdef AUDACIOUS_PLUGIN
 	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(tmpText))),
 		subInfo ? subInfo : "", -1);
+#else
+	gtk_text_insert(GTK_TEXT(tmpText), NULL, NULL, NULL,
+		subInfo ? subInfo : "", -1);
+
+	/* Un-freeze the widget */
+	gtk_text_thaw(GTK_TEXT(tmpText));
+#endif
 }
 
 
@@ -257,33 +174,44 @@ void xs_fileinfo(gchar * pcFilename)
 {
 	GtkWidget *tmpMenuItem, *tmpMenu, *tmpOptionMenu;
 	t_xs_tuneinfo *tmpInfo;
-	gchar tmpStr[256], *tmpStr2;
+	t_xs_stil_subnode *tmpNode;
+	gchar tmpStr[256], *tmpFilename;
 	gint n;
 
 	/* Current implementation leaves old fileinfo window untouched if
 	 * no information can be found for the new file. Hmm...
 	 */
+#ifdef AUDACIOUS_PLUGIN
+	xs_get_trackinfo(pcFilename, &tmpFilename, &n);
+#else
+	tmpFilename = pcFilename;
+#endif	
 
 	/* Get new tune information */
 	XS_MUTEX_LOCK(xs_fileinfowin);
 	XS_MUTEX_LOCK(xs_status);
-	if ((tmpInfo = xs_status.sidPlayer->plrGetSIDInfo(pcFilename)) == NULL) {
+	if ((tmpInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename)) == NULL) {
 		XS_MUTEX_UNLOCK(xs_fileinfowin);
 		XS_MUTEX_UNLOCK(xs_status);
 		return;
 	}
 	XS_MUTEX_UNLOCK(xs_status);
 
-	xs_fileinfostil = xs_stil_get(pcFilename);
+	xs_fileinfostil = xs_stil_get(tmpFilename);
+
+#ifdef AUDACIOUS_PLUGIN
+	g_free(tmpFilename);
+#endif
 
 	/* Check if there already is an open fileinfo window */
 	if (xs_fileinfowin)
 		gdk_window_raise(xs_fileinfowin->window);
 	else {
 		xs_fileinfowin = create_xs_fileinfowin();
-		g_signal_connect(G_OBJECT(
-			gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj")))), "value_changed",
-			G_CALLBACK(xs_fileinfo_setsong), NULL);
+#ifndef AUDACIOUS_PLUGIN
+		XS_SIGNAL_CONNECT(gtk_range_get_adjustment(GTK_RANGE(LUW("fileinfo_subctrl_adj"))),
+			"value_changed", xs_fileinfo_setsong, NULL);
+#endif
 	}
 
 	/* Delete current items */
@@ -295,10 +223,9 @@ void xs_fileinfo(gchar * pcFilename)
 
 
 	/* Set the generic song information */
-	tmpStr2 = g_filename_to_utf8(pcFilename, -1, NULL, NULL, NULL);
-	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_filename")), tmpStr2);
-	g_free(tmpStr2);
-	
+	tmpFilename = XS_CS_FILENAME(pcFilename);
+	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_filename")), tmpFilename);
+	g_free(tmpFilename);
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_songname")), tmpInfo->sidName);
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_composer")), tmpInfo->sidComposer);
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_copyright")), tmpInfo->sidCopyright);
@@ -308,40 +235,52 @@ void xs_fileinfo(gchar * pcFilename)
 	tmpMenuItem = gtk_menu_item_new_with_label(_("General info"));
 	gtk_widget_show(tmpMenuItem);
 	gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-	g_signal_connect(G_OBJECT(tmpMenuItem), "activate",
-		G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
+	if (xs_fileinfostil)
+		tmpNode = xs_fileinfostil->subTunes[0];
+	else
+		tmpNode = NULL;
+	XS_SIGNAL_CONNECT(tmpMenuItem, "activate", xs_fileinfo_subtune, tmpNode);
 
 	/* Other menu items */
 	for (n = 1; n <= tmpInfo->nsubTunes; n++) {
 		if (xs_fileinfostil && n <= xs_fileinfostil->nsubTunes && xs_fileinfostil->subTunes[n]) {
-			t_xs_stil_subnode *tmpNode = xs_fileinfostil->subTunes[n];
+			gboolean isSet = FALSE;
+			tmpNode = xs_fileinfostil->subTunes[n];
 			
 			g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i: "), n);
 
-			if (tmpNode->pName)
+			if (tmpNode->pName) {
 				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pName);
-			else if (tmpNode->pTitle)
-				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pTitle);
-			else if (tmpNode->pInfo)
-				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pInfo);
-			else
+				isSet = TRUE;
+			}
+
+			if (tmpNode->pTitle) {
+				xs_pnstrcat(tmpStr, sizeof(tmpStr),
+					isSet ? " [*]" : tmpNode->pTitle);
+				isSet = TRUE;
+			}
+
+			if (tmpNode->pInfo) {
+				xs_pnstrcat(tmpStr, sizeof(tmpStr), " [!]");
+				isSet = TRUE;
+			}
+
+			if (!isSet)
 				xs_pnstrcat(tmpStr, sizeof(tmpStr), "---");
-		} else {
-			g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i"), n);
+
+			tmpMenuItem = gtk_menu_item_new_with_label(tmpStr);
+			gtk_widget_show(tmpMenuItem);
+			gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
+			XS_SIGNAL_CONNECT(tmpMenuItem, "activate", xs_fileinfo_subtune, tmpNode);
 		}
 
-		tmpMenuItem = gtk_menu_item_new_with_label(tmpStr);
-		gtk_widget_show(tmpMenuItem);
-		gtk_menu_append(GTK_MENU(tmpMenu), tmpMenuItem);
-		g_signal_connect(G_OBJECT(tmpMenuItem), "activate",
-			G_CALLBACK(xs_fileinfo_subtune), tmpMenu);
 	}
 
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(tmpOptionMenu), tmpMenu);
 	gtk_widget_show(tmpOptionMenu);
 
 	/* Set the subtune information */
-	xs_fileinfo_subtune(NULL, tmpMenu);
+	xs_fileinfo_subtune(tmpOptionMenu, NULL);
 
 	/* Free temporary tuneinfo */
 	xs_tuneinfo_free(tmpInfo);
@@ -351,5 +290,7 @@ void xs_fileinfo(gchar * pcFilename)
 
 	XS_MUTEX_UNLOCK(xs_fileinfowin);
 
+#ifndef AUDACIOUS_PLUGIN
 	xs_fileinfo_update();
+#endif
 }

@@ -82,7 +82,7 @@ void shn_display_about(void)
 		return;
 	}
 
-	about_box = xmms_show_message(
+	about_box = audacious_info_dialog(
 		(gchar *) "About " PACKAGE,
 		(gchar *) PACKAGE " version " VERSION "\n"
 			  "Copyright (C) 2000-2007 Jason Jordan <shnutils@freeshell.org>\n"

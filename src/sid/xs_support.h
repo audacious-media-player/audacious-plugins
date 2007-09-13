@@ -92,19 +92,19 @@ gint	xs_fseek(t_xs_file *, glong, gint);
 #endif
 guint16 xs_fread_be16(t_xs_file *);
 guint32 xs_fread_be32(t_xs_file *);
-gint	xs_fload_buffer(gchar *, guint8 **, size_t *);
+gint	xs_fload_buffer(const gchar *, guint8 **, size_t *);
 
 
 /* Misc functions
  */
-gchar	*xs_strncpy(gchar *, gchar *, size_t);
+gchar	*xs_strncpy(gchar *, const gchar *, size_t);
 gint	xs_pstrcpy(gchar **, const gchar *);
 gint	xs_pstrcat(gchar **, const gchar *);
-void	xs_pnstrcat(gchar *, size_t, gchar *);
-gchar	*xs_strrchr(gchar *, gchar);
-void	xs_findnext(gchar *, size_t *);
-void	xs_findeol(gchar *, size_t *);
-void	xs_findnum(gchar *, size_t *);
+void	xs_pnstrcat(gchar *, size_t, const gchar *);
+gchar	*xs_strrchr(gchar *, const gchar);
+void	xs_findnext(const gchar *, size_t *);
+void	xs_findeol(const gchar *, size_t *);
+void	xs_findnum(const gchar *, size_t *);
 
 #ifdef HAVE_MEMSET
 #define	xs_memset memset
