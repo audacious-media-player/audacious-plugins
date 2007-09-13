@@ -250,7 +250,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     if (!output_file)
         return 0;
 
-    rv = plugin.open();
+    rv = (plugin.open)();
 
     return rv;
 }
