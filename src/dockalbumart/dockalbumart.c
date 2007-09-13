@@ -80,7 +80,6 @@ dock_set_icon_from_pixbuf(const GdkPixbuf *in)
 static void
 pixbuf_find_and_load(Tuple *tuple)
 {
-    static gchar *last_artwork = NULL;
     GdkPixbuf *out;
     gchar *tmp;
     const gchar *file_path, *file_name;
@@ -93,20 +92,13 @@ pixbuf_find_and_load(Tuple *tuple)
         tmp = fileinfo_recursive_get_image(file_path, file_name, 0);
         if (tmp)
         {
-            if (!last_artwork || strcmp(last_artwork, tmp))
-            {
-                GdkPixbuf *new = gdk_pixbuf_new_from_file(tmp, NULL);
-                if (last_artwork) g_free(last_artwork);
-                last_artwork = tmp;
-                dock_set_icon_from_pixbuf(new);
-                g_object_unref(new);                
-            }                              
+            GdkPixbuf *new = gdk_pixbuf_new_from_file(tmp, NULL);
+            dock_set_icon_from_pixbuf(new);
+            g_object_unref(new);                
         }
         else
         {
             GdkPixbuf *new = gdk_pixbuf_new_from_xpm_data((const gchar **) audacious_player_xpm);
-            if (last_artwork) g_free(last_artwork);
-            last_artwork = NULL;
             dock_set_icon_from_pixbuf(new);
             g_object_unref(new);
         }
