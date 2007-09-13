@@ -280,6 +280,24 @@ else
 	have_coreaudio=no
 fi
 
+dnl *** Dock Album Art (MacOS)
+
+AC_ARG_ENABLE(dockalbumart,
+    [  --disable-dockalbumart  disable MacOS dock albumart plugin (default=guess)],
+    [enable_dockalbumart=$enableval],
+    [enable_dockalbumart="yes"]
+)
+
+if test "$enable_dockalbumart" = "yes"; then
+	AC_CHECK_HEADERS([Carbon/Carbon.h],
+		[have_dockalbumart=yes
+		 GENERAL_PLUGINS="$GENERAL_PLUGINS dockalbumart"],
+		[have_dockalbumart=no])
+else
+	AC_MSG_RESULT([*** DockAlbumArt plugin disabled per user request ***])
+	have_dockalbumart=no
+fi
+
 dnl *** AltiVec
 
 AC_ARG_ENABLE(altivec,
@@ -1548,6 +1566,7 @@ echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
+echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
 echo
 echo "  Effect"
 echo "  ------"
