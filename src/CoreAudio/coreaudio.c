@@ -24,24 +24,21 @@
 
 OutputPlugin osx_op =
 {
-	NULL,
-	NULL,
-	"CoreAudio Output Plugin", /* Description */
-	osx_init,
-	NULL,
-	osx_about,
-	osx_configure,
-	osx_get_volume,
-	osx_set_volume,
-	osx_open,
-	osx_write,
-	osx_close,
-	osx_flush,
-	osx_pause,
-	osx_free,
-	osx_playing,
-	osx_get_output_time,
-	osx_get_written_time,
+	.description = "CoreAudio Output Plugin", /* Description */
+	.init = osx_init,
+	.about = osx_about,
+	.configure = osx_configure,
+	.get_volume = osx_get_volume,
+	.set_volume = osx_set_volume,
+	.open_audio = osx_open,
+	.write_audio = osx_write,
+	.close_audio = osx_close,
+	.flush = osx_flush,
+	.pause = osx_pause,
+	.buffer_free = osx_free,
+	.buffer_playing = osx_playing,
+	.output_time = osx_get_output_time,
+	.written_time = osx_get_written_time,
 };
 
 OutputPlugin *coreaudio_oplist[] = { &osx_op, NULL };
