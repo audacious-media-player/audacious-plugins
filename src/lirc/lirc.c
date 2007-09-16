@@ -51,13 +51,11 @@
 const char *plugin_name="LIRC Plugin";
 
 GeneralPlugin lirc_plugin = {
-	NULL,
-	NULL,
-	"LIRC Plugin",
-	init,
-	about,
-	NULL,
-	cleanup,
+    .description = "LIRC Plugin",
+    .init = init,
+    .about = about,
+    .configure = NULL,
+    .cleanup = cleanup
 };
 
 GeneralPlugin *lirc_gplist[] = { &lirc_plugin, NULL };
