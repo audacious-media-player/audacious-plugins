@@ -1607,6 +1607,7 @@ echo "  Transport"
 echo "  ---------"
 echo "  stdio transport:                        yes"
 echo "  curl-based http/https:                  $have_curl"
+echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  lastfm transport:                       $have_lastfm"
 echo
