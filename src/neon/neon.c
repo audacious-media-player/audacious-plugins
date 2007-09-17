@@ -228,6 +228,7 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
                 _ERROR("Could not parse redirect response");
                 _LEAVE -1;
             }
+            _LEAVE 1;
             break;
 
         default:

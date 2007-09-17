@@ -22,7 +22,7 @@
 
 #define _ENTER _DEBUG("enter")
 #define _LEAVE _DEBUG("leave"); return
-#define _MESSAGE(tag, string, ...) do { fprintf(stderr, "%s: libneontrans.so: %s:%d (%s): " string "\n", \
+#define _MESSAGE(tag, string, ...) do { fprintf(stderr, "%s: libneonsrc.so: %s:%d (%s): " string "\n", \
     tag, __FILE__, __LINE__, __func__, ##__VA_ARGS__); } while(0)
 
 #define _ERROR(...) _MESSAGE("ERROR", __VA_ARGS__)
