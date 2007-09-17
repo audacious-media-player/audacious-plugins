@@ -1253,6 +1253,24 @@ AC_SUBST(CURL_LIBS)
 
 dnl *** End of Scrobbler checks ***
 
+dnl *** neon http plugin ***
+
+AC_ARG_ENABLE(neon,
+[  --enable-neon           enable neon support (experimental).  (default=disabled)],
+[have_neon=$enableval],
+[have_neon=no])
+
+if test "x$have_neon" = "xyes"; then
+    PKG_CHECK_MODULES(NEON, [neon >= 0.27], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon" ], [have_neon="no"])
+    NEON_LIBS=`pkg-config --libs neon`
+    NEON_CFLAGS=`pkg-config --cflags neon`
+else
+    have_neon=no
+fi
+AC_SUBST(NEON_LIBS)
+AC_SUBST(NEON_CLFAGS)
+
+
 dnl *** MMS
 
 AC_ARG_ENABLE(mms,
