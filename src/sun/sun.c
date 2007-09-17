@@ -29,25 +29,22 @@ struct sun_audio audio;
 
 OutputPlugin sun_op =
 {
-	NULL,
-	NULL,
-	"BSD/Sun Output Plugin",	/* Description */
-	sun_init,
-	sun_cleanup,
-	sun_about,
-	sun_configure,
-	sun_get_volume,
-	sun_set_volume,
-	sun_open,
-	sun_write,
-	sun_close,
-	sun_flush,
-	sun_pause,
-	sun_free,
-	sun_playing,
-	sun_output_time,
-	sun_written_time,
-	NULL
+	.description = "BSD/Sun Output Plugin",	/* Description */
+	.init = sun_init,
+	.cleanup = sun_cleanup,
+	.about = sun_about,
+	.configure = sun_configure,
+	.get_volume = sun_get_volume,
+	.set_volume = sun_set_volume,
+	.open_audio = sun_open,
+	.write_audio = sun_write,
+	.close_audio = sun_close,
+	.flush = sun_flush,
+	.pause = sun_pause,
+	.buffer_free = sun_free,
+	.buffer_playing = sun_playing,
+	.output_time = sun_output_time,
+	.written_time = sun_written_time,
 };
 
 OutputPlugin *sun_oplist[] = { &sun_op, NULL };
