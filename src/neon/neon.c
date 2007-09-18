@@ -271,6 +271,9 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
         handle->session = ne_session_create(handle->purl->scheme, handle->purl->host, handle->purl->port);
         ne_set_session_flag(handle->session, NE_SESSFLAG_ICYPROTO, 1);
         ne_set_session_flag(handle->session, NE_SESSFLAG_PERSIST, 0);
+        ne_set_connect_timeout(handle->session, 10);
+        ne_set_read_timeout(handle->session, 10);
+        ne_set_useragent(handle->session, "Audacious/1.4.0");
         ne_redirect_register(handle->session);
 
         _DEBUG("Creating request");
