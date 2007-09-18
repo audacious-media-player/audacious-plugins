@@ -62,6 +62,11 @@ static struct neon_handle* handle_init(void) {
     h->pos = 0;
     h->content_length = -1;
     h->can_ranges = FALSE;
+    h->icy_metaint = 0;
+    h->icy_metaleft = 0;
+    h->icy_metadata.stream_name = NULL;
+    h->icy_metadata.stream_title = NULL;
+    h->icy_metadata.stream_url = NULL;
     h->reader = NULL;
     h->reader_status.mutex = g_mutex_new();
     h->reader_status.cond = g_cond_new();
@@ -128,6 +133,126 @@ static void fini(void) {
  * -----
  */
 
+static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) { 
+
+    _ENTER;
+
+    if (0 == g_ascii_strncasecmp(name, "StreamTitle", 11)) {
+        _DEBUG("Found StreamTitle: %s", value);
+        if (NULL != m->stream_title) {
+            free(m->stream_title);
+        }
+        m->stream_title = g_strdup(value);
+    }
+
+    if (0 == g_ascii_strncasecmp(name, "StreamUrl", 9)) {
+        _DEBUG("Found StreamUrl: %s", value);
+        if (NULL != m->stream_url) {
+            free(m->stream_url);
+        }
+        m->stream_url = g_strdup(value);
+    }
+
+    _LEAVE;
+}
+
+/*
+ * -----
+ */
+
+static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
+
+    gchar* p;
+    gchar* tstart;
+    gchar* tend;
+    gchar name[4096];
+    gchar value[4096];
+    int state;
+    int pos;
+
+    _ENTER;
+
+    p = metadata;
+    state = 1;
+    pos = 0;
+    name[0] = '\0';
+    value[0] = '\0';
+    tstart = metadata;
+    tend = metadata;
+    while ((pos < len) && (*p != '\0')) {
+        switch (state) {
+            case 1:
+                /*
+                 * Reading tag name
+                 */
+                if ('=' == *p) {
+                    /*
+                     * End of tag name.
+                     */
+                    *p = '\0';
+                    strcpy(name, tstart);
+                    _DEBUG("Found tag name: %s", name);
+                    state = 2;
+                } else {
+                    tend = p;
+                };
+                break;
+            case 2:
+                /*
+                 * Waiting for start of value
+                 */
+                if ('\'' == *p) {
+                    /*
+                     * Leading ' of value
+                     */
+                    tend = tstart = p + 1;
+                    state = 3;
+                    value[0] = '\0';
+                }
+                break;
+            case 3:
+                /*
+                 * Reading value
+                 */
+                if ('\'' == *p) {
+                    /*
+                     * End of value
+                     */
+                    *p = '\0';
+                    strcpy(value, tstart);
+                    _DEBUG("Found tag value: %s", value);
+                    add_icy(m, name, value);
+                    state = 4;
+                } else {
+                    tend = p;
+                }
+                break;
+            case 4:
+                /*
+                 * Waiting for next tag start
+                 */
+                if (';' == *p) {
+                    /*
+                     * Next tag name starts after this char
+                     */
+                    tend = tstart = p + 1;
+                    state = 1;
+                    name[0] = '\0';
+                    value[0] = '\0';
+                }
+                break;
+        }
+        p++;
+        pos++;
+    }
+
+    _LEAVE;
+}
+
+/*
+ * -----
+ */
+
 static void kill_reader(struct neon_handle* h) {
 
     _ENTER;
@@ -176,13 +301,43 @@ static void handle_headers(struct neon_handle* h) {
              * The server sent us the content length. Parse and store.
              */
             len = strtol(value, &endptr, 10);
-            if ((*value != '\0') && (*endptr == '\0')) {
+            if ((*value != '\0') && (*endptr == '\0') && (len >= 0)) {
                 /*
                  * Valid data.
                  */
-                _DEBUG("Content length as advertised by server: %d", len);
+                _DEBUG("Content length as advertised by server: %ld", len);
                 h->content_length = len;
+            } else {
+                _ERROR("Invalid content length header: %s", value);
             }
+        }
+
+        if (0 == g_ascii_strncasecmp("icy-metaint", name, 11)) {
+            /*
+             * The server sent us a ICY metaint header. Parse and store.
+             */
+            len = strtol(value, &endptr, 10);
+            if ((*value != '\0') && (*endptr == '\0') && (len > 0)) {
+                /*
+                 * Valid data
+                 */
+                _DEBUG("ICY MetaInt as advertised by server: %ld", len);
+                h->icy_metaint = len;
+                h->icy_metaleft = len;
+            } else {
+                _ERROR("Invalid ICY MetaInt header: %s", value);
+            }
+        }
+
+        if (0 == g_ascii_strncasecmp("icy-name", name, 8)) {
+            /*
+             * The server sent us a ICY name. Save it for later
+             */
+            _DEBUG("ICY stream name: %s", value);
+            if (NULL != h->icy_metadata.stream_name) {
+                free(h->icy_metadata.stream_name);
+            }
+            h->icy_metadata.stream_name = g_strdup(value);
         }
     }
 
@@ -201,6 +356,7 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 
     handle->request = ne_request_create(handle->session, "GET", handle->purl->path);
     ne_print_request_header(handle->request, "Range", "bytes=%ld-", startbyte);
+    ne_print_request_header(handle->request, "Icy-MetaData", "1");
 
     /*
      * Try to connect to the server.
@@ -521,7 +677,10 @@ size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* fi
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
     int belem;
+    int relem;
     int ret;
+    char icy_metadata[4096];
+    unsigned char icy_metalen;
 
     _ENTER;
 
@@ -549,6 +708,17 @@ size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* fi
             g_mutex_unlock(h->reader_status.mutex);
             _ERROR("Buffer underrun, trying rebuffering");
             kill_reader(h);
+
+            /*
+             * We have to check if the reader terminated gracefully
+             * again
+             */
+            if (NEON_READER_TERM != h->reader_status.status) {
+                /*
+                 * Reader thread did not terminate gracefully.
+                 */
+                _LEAVE 0;
+            }
         } else {
             g_mutex_unlock(h->reader_status.mutex);
         }
@@ -634,18 +804,59 @@ size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* fi
     /*
      * Deliver data from the buffer
      */
-    belem = used_rb(&h->rb) / size;
-
-    if (0 == belem) {
+    if (0 == used_rb(&h->rb)) {
         /*
-         * The buffer is empty, we can deliver no data!
+         * The buffer is still empty, we can deliver no data!
          */
         _ERROR("Buffer still underrun, fatal.");
         _LEAVE 0;
     }
 
-    _DEBUG("%d elements of data in the buffer", belem);
-    read_rb(&h->rb, ptr_, MIN(belem, nmemb)*size);
+    if (0 != h->icy_metaint) {
+        _DEBUG("%ld bytes left before next ICY metadata announcement", h->icy_metaleft);
+        if (0 == h->icy_metaleft) {
+            /*
+             * The next data in the buffer is a ICY metadata announcement.
+             * Get the length byte
+             */
+            read_rb(&h->rb, &icy_metalen, 1);
+
+            /*
+             * We need enough data in the buffer to
+             * a) Read the complete ICY metadata block
+             * b) deliver at least one byte to the reader
+             */
+            _DEBUG("Expecting %d bytes of ICY metadata", (icy_metalen*16));
+
+            if ((free_rb(&h->rb)-(icy_metalen*16)) < size) {
+                /* There is not enough data. We do not have much choice at this point,
+                 * so we'll deliver the metadata as normal data to the reader and
+                 * hope for the best.
+                 */
+                _ERROR("Buffer underrun when reading metadata. Expect audio degradation");
+                h->icy_metaleft = h->icy_metaint + (icy_metalen*16);
+            } else {
+                /*
+                 * Grab the metadata from the buffer and send it to the parser
+                 */
+                read_rb(&h->rb, icy_metadata, (icy_metalen*16));
+                parse_icy(&h->icy_metadata, icy_metadata, (icy_metalen*16));
+                h->icy_metaleft = h->icy_metaint;
+            }
+        }
+
+        /*
+         * The maximum number of bytes we can deliver is determined
+         * by the number of bytes left until the next metadata announcement
+         */
+        belem = h->icy_metaleft / size;
+    } else {
+        belem = used_rb(&h->rb) / size;
+    }
+
+    relem = MIN(belem, nmemb);
+    _DEBUG("%d elements of returnable data in the buffer", belem);
+    read_rb(&h->rb, ptr_, relem*size);
 
     /*
      * Signal the network thread to continue reading
@@ -655,11 +866,12 @@ size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* fi
     g_cond_signal(h->reader_status.cond);
     g_mutex_unlock(h->reader_status.mutex);
 
-    h->pos += (MIN(belem, nmemb)*size);
+    h->pos += (relem*size);
+    h->icy_metaleft -= (relem*size);
 
-    _DEBUG("Returning %d elements", MIN(belem, nmemb));
+    _DEBUG("Returning %d elements", relem);
 
-    _LEAVE MIN(belem, nmemb);
+    _LEAVE relem;
 }
 
 
@@ -730,7 +942,7 @@ glong neon_vfs_ftell_impl(VFSFile* file) {
 
     _ENTER;
 
-    _DEBUG("Current file position: %d", h->pos);
+    _DEBUG("Current file position: %ld", h->pos);
 
     _LEAVE h->pos;
 }
@@ -858,11 +1070,21 @@ gint neon_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
  * -----
  */
 
-gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar * field) {
+gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
+
+    struct neon_handle* h = (struct neon_handle*)file->handle;
 
     _ENTER;
 
-    _ERROR("NOT IMPLEMENTED");
+    _DEBUG("Field name: %s", field);
+
+    if (0 == g_ascii_strncasecmp(field, "track-name", 10)) {
+        _LEAVE g_strdup(h->icy_metadata.stream_title);
+    }
+
+    if (0 == g_ascii_strncasecmp(field, "stream-name", 11)) {
+        _LEAVE g_strdup(h->icy_metadata.stream_name);
+    }
 
     _LEAVE NULL;
 }
