@@ -4,6 +4,7 @@
  *                           Thomas Nilsson and 4Front Technologies
  *  Copyright (C) 1999-2006  Haavard Kvaalen
  *  Copyright (C) 2005       Takashi Iwai
+ *  Copyright (C) 2007       William Pitcock
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -132,8 +133,12 @@ int alsa_playing(void)
 	return snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING;
 }
 
-static int xrun_recover(void)
+static int
+alsa_recovery(int err)
 {
+	int err2;
+
+	/* if debug mode is enabled, dump ALSA state to console */
 	if (alsa_cfg.debug)
 	{
 		snd_pcm_status_t *alsa_status;
@@ -146,37 +151,33 @@ static int xrun_recover(void)
 			snd_pcm_status_dump(alsa_status, logs);
 		}
 	}
-	return snd_pcm_prepare(alsa_pcm);
-}
 
-static int suspend_recover(void)
-{
-	int err;
-
-	while ((err = snd_pcm_resume(alsa_pcm)) == -EAGAIN)
-		/* wait until suspend flag is released */
-		g_usleep(1000000);
-	if (err < 0)
-	{
-		g_warning("alsa_handle_error(): "
-			  "snd_pcm_resume() failed.");
-		return snd_pcm_prepare(alsa_pcm);
-	}
-	return err;
-}
-
-/* handle generic errors */
-static int alsa_handle_error(int err)
-{
+	/*
+	 * specifically handle -EPIPE and -ESTRPIPE to recover 
+	 * PCM fragment periods without losing data.
+	 */
 	switch (err)
 	{
-		case -EPIPE:
-			return xrun_recover();
-		case -ESTRPIPE:
-			return suspend_recover();
+	case -ESTRPIPE:   /* "suspend": wait until ALSA is "running" again. */
+		while ((err2 = snd_pcm_resume(alsa_pcm)) == -EAGAIN)
+			g_usleep(100000);
+
+		if (err2 < 0)
+			return snd_pcm_prepare(alsa_pcm);
+
+		break;
+
+	case -EPIPE:      /* under-run and the I/O pipe closed on us */
+		return snd_pcm_prepare(alsa_pcm);
+		break;
+
+	default:
+		g_warning("Unhandled ALSA exception code %d (%s), trying hard restart.", err, snd_strerror(err));
+		return snd_pcm_prepare(alsa_pcm);
+		break;
 	}
 
-	return err;
+	return 0;
 }
 
 /* update and get the available space on h/w buffer (in frames) */
@@ -189,7 +190,7 @@ static snd_pcm_sframes_t alsa_get_avail(void)
 
 	while ((ret = snd_pcm_avail_update(alsa_pcm)) < 0)
 	{
-		ret = alsa_handle_error(ret);
+		ret = alsa_recovery(ret);
 		if (ret < 0)
 		{
 			g_warning("alsa_get_avail(): snd_pcm_avail_update() failed: %s",
@@ -764,7 +765,7 @@ static void alsa_write_audio(char *data, int length)
 		}
 		else
 		{
-			int err = alsa_handle_error((int)written_frames);
+			int err = alsa_recovery((int)written_frames);
 			if (err < 0)
 			{
 				g_warning("alsa_write_audio(): write error: %s",
@@ -820,7 +821,7 @@ static void *alsa_loop(void *arg)
 			}
 			else if (wr < 0)
 			{
-				alsa_handle_error(wr);
+				alsa_recovery(wr);
 			}
 		}
 		else
