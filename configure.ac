@@ -447,6 +447,27 @@ if test "x$have_hotkey" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS hotkey"
 fi
 
+dnl *** Gnome Shortcuts Plugin
+
+AC_ARG_ENABLE(gnomeshortcuts,
+    [  --disable-gnomeshortcuts        disable gnome shortcuts (default=enabled)],
+    [enable_gnomeshortcuts=$enableval],
+    [enable_gnomeshortcuts="yes"]
+)
+
+if test "x$enable_gnomeshortcuts" = "xyes"; then
+    have_gnomeshortcuts="yes"
+    PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],,
+         [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60 for gnomeshortcuts plugin])])
+else
+    AC_MSG_RESULT([*** Gnome Shortcuts Plugin disabled per user request ***])
+    have_gnomeshortcuts="no"
+fi
+
+if test "x$have_gnomeshortcuts" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS gnomeshortcuts"
+fi
+
 dnl *** Status Icon plugin (for X11 only)
 
 AC_ARG_ENABLE(statusicon,
@@ -1581,6 +1602,7 @@ echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
+echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
