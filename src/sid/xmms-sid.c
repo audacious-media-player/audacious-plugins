@@ -633,7 +633,9 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 	tuple_associate_string(pResult, FIELD_ARTIST, NULL, pInfo->sidComposer);
 	tuple_associate_string(pResult, FIELD_GENRE, NULL, "SID-tune");
 	tuple_associate_string(pResult, FIELD_COPYRIGHT, NULL, pInfo->sidCopyright);
-	tuple_associate_int(pResult, FIELD_SUBSONG_NUM, NULL, pInfo->nsubTunes);
+
+	if (xs_cfg.subAutoEnable)
+		tuple_associate_int(pResult, FIELD_SUBSONG_NUM, NULL, pInfo->nsubTunes);
 
 	tuple_associate_int(pResult, -1, "subtunes", pInfo->nsubTunes);
 	tuple_associate_string(pResult, -1, "sid-format", pInfo->sidFormat);
