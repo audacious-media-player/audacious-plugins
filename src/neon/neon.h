@@ -43,6 +43,12 @@ struct reader_status {
     neon_reader_t status;
 };
 
+struct icy_metadata {
+    gchar* stream_name;
+    gchar* stream_title;
+    gchar* stream_url;
+};
+
 struct neon_handle {
     gchar* url;                         /* The URL, as passed to us */
     ne_uri* purl;                       /* The URL, parsed into a structure */
@@ -52,6 +58,9 @@ struct neon_handle {
     unsigned long content_start;        /* Start position in the stream */
     long content_length;                /* Total content length, counting from content_start, if known. -1 if unknown */
     gboolean can_ranges;                /* TRUE if the webserver advertised accept-range: bytes */
+    unsigned long icy_metaint;          /* Interval in which the server will send metadata announcements. 0 if no announcments */
+    unsigned long icy_metaleft;         /* Bytes left until the next metadata block */
+    struct icy_metadata icy_metadata;   /* Current ICY metadata */
     ne_session* session;
     ne_request* request;
     GThread* reader;
