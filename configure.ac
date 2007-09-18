@@ -447,6 +447,27 @@ if test "x$have_hotkey" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS hotkey"
 fi
 
+dnl *** Gnome Shortcuts Plugin
+
+AC_ARG_ENABLE(gnomeshortcuts,
+    [  --disable-gnomeshortcuts        disable gnome shortcuts (default=enabled)],
+    [enable_gnomeshortcuts=$enableval],
+    [enable_gnomeshortcuts="yes"]
+)
+
+if test "x$enable_gnomeshortcuts" = "xyes"; then
+    have_gnomeshortcuts="yes"
+    PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],,
+         [AC_MSG_ERROR([Cannot find dbus-glib >= 0.60 for gnomeshortcuts plugin])])
+else
+    AC_MSG_RESULT([*** Gnome Shortcuts Plugin disabled per user request ***])
+    have_gnomeshortcuts="no"
+fi
+
+if test "x$have_gnomeshortcuts" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS gnomeshortcuts"
+fi
+
 dnl *** Status Icon plugin (for X11 only)
 
 AC_ARG_ENABLE(statusicon,
@@ -1253,6 +1274,24 @@ AC_SUBST(CURL_LIBS)
 
 dnl *** End of Scrobbler checks ***
 
+dnl *** neon http plugin ***
+
+AC_ARG_ENABLE(neon,
+[  --enable-neon           enable neon support (experimental).  (default=disabled)],
+[have_neon=$enableval],
+[have_neon=no])
+
+if test "x$have_neon" = "xyes"; then
+    PKG_CHECK_MODULES(NEON, [neon >= 0.27], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon" ], [have_neon="no"])
+    NEON_LIBS=`pkg-config --libs neon`
+    NEON_CFLAGS=`pkg-config --cflags neon`
+else
+    have_neon=no
+fi
+AC_SUBST(NEON_LIBS)
+AC_SUBST(NEON_CLFAGS)
+
+
 dnl *** MMS
 
 AC_ARG_ENABLE(mms,
@@ -1563,6 +1602,7 @@ echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  Control via event device (evdev-plug):  $have_evdevplug"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
+echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
@@ -1589,6 +1629,7 @@ echo "  Transport"
 echo "  ---------"
 echo "  stdio transport:                        yes"
 echo "  curl-based http/https:                  $have_curl"
+echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  lastfm transport:                       $have_lastfm"
 echo

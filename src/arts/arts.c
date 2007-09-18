@@ -32,25 +32,23 @@ static void about(void)
 
 OutputPlugin arts_op =
 {
-	NULL,
-	NULL,
-	"aRts Output Plugin",
-	artsxmms_init,
-	NULL,
-	about,
-	artsxmms_configure,
-	artsxmms_get_volume,
-	artsxmms_set_volume,
-	artsxmms_open,
-	artsxmms_write,
-	artsxmms_close,
-	artsxmms_flush,
-	artsxmms_pause,
-	artsxmms_free,
-	artsxmms_playing,
-	artsxmms_get_output_time,
-	artsxmms_get_written_time,
-	artsxmms_tell_audio
+	.description = "aRts Output Plugin",
+	.init = artsxmms_init,
+	.cleanup = NULL,
+	.about = about,
+	.configure = artsxmms_configure,
+	.get_volume = artsxmms_get_volume,
+	.set_volume = artsxmms_set_volume,
+	.open_audio = artsxmms_open,
+	.write_audio = artsxmms_write,
+	.close_audio = artsxmms_close,
+	.flush = artsxmms_flush,
+	.pause = artsxmms_pause,
+	.buffer_free = artsxmms_free,
+	.buffer_playing = artsxmms_playing,
+	.output_time = artsxmms_get_output_time,
+	.written_time = artsxmms_get_written_time,
+	.tell_audio = artsxmms_tell_audio
 };
 
 OutputPlugin *arts_oplist[] = { &arts_op, NULL };
