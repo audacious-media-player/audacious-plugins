@@ -47,11 +47,6 @@ void alsa_init(void)
 	bmp_cfg_db_get_int(cfgfile, "ALSA", "buffer_time", &alsa_cfg.buffer_time);
 	bmp_cfg_db_get_int(cfgfile, "ALSA", "period_time", &alsa_cfg.period_time);
 
-	bmp_cfg_db_get_bool(cfgfile, "ALSA", "soft_volume",
-			      &alsa_cfg.soft_volume);
-	bmp_cfg_db_get_int(cfgfile, "ALSA", "volume_left", &alsa_cfg.vol.left);
-	bmp_cfg_db_get_int(cfgfile, "ALSA", "volume_right", &alsa_cfg.vol.right);
-
 	bmp_cfg_db_get_bool(cfgfile, "ALSA", "debug", &alsa_cfg.debug);
 	bmp_cfg_db_close(cfgfile);
 

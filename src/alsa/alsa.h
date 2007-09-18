@@ -56,7 +56,6 @@ struct alsa_config
 	{
 		int left, right;
 	} vol;
-	gboolean soft_volume;
 };
 
 extern struct alsa_config alsa_cfg;

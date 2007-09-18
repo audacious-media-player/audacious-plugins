@@ -443,8 +443,7 @@ static int alsa_setup_mixer(void)
 		return -1;
 	}
 
-	if (!alsa_cfg.soft_volume)
-		alsa_set_volume(a * 100 / alsa_max_vol, b * 100 / alsa_max_vol);
+	alsa_set_volume(a * 100 / alsa_max_vol, b * 100 / alsa_max_vol);
 
 	debug("alsa_setup_mixer: end");
 
@@ -485,28 +484,20 @@ void alsa_get_volume(int *l, int *r)
 		mixer_start = FALSE;
 	}
 
-	if (alsa_cfg.soft_volume)
-	{
-		*l = alsa_cfg.vol.left;
-		*r = alsa_cfg.vol.right;
-	}
-
 	if (!pcm_element)
 		return;
 
 	snd_mixer_handle_events(mixer);
 
-	if (!alsa_cfg.soft_volume)
-	{
-		snd_mixer_selem_get_playback_volume(pcm_element,
-						    SND_MIXER_SCHN_FRONT_LEFT,
-						    &ll);
-		snd_mixer_selem_get_playback_volume(pcm_element,
-						    SND_MIXER_SCHN_FRONT_RIGHT,
-						    &lr);
-		*l = ll;
-		*r = lr;
-	}
+	snd_mixer_selem_get_playback_volume(pcm_element,
+					    SND_MIXER_SCHN_FRONT_LEFT,
+					    &ll);
+	snd_mixer_selem_get_playback_volume(pcm_element,
+					    SND_MIXER_SCHN_FRONT_RIGHT,
+					    &lr);
+	*l = ll;
+	*r = lr;
+
 	if (mixer_timeout)
 		gtk_timeout_remove(mixer_timeout);
 	mixer_timeout = gtk_timeout_add(5000, alsa_mixer_timeout, NULL);
@@ -515,13 +506,6 @@ void alsa_get_volume(int *l, int *r)
 
 void alsa_set_volume(int l, int r)
 {
-	if (alsa_cfg.soft_volume)
-	{
-		alsa_cfg.vol.left = l;
-		alsa_cfg.vol.right = r;
-		return;
-	}
-
 	if (!pcm_element)
 		return;
 
@@ -590,110 +574,6 @@ int alsa_get_written_time(void)
 	return (alsa_total_written * 1000) / inputf->bps;
 }
 
-#define STEREO_ADJUST(type, type2, endian)					\
-do {										\
-	type *ptr = data;							\
-	for (i = 0; i < length; i += 4)						\
-	{									\
-		*ptr = type2##_TO_##endian(type2##_FROM_## endian(*ptr) *	\
-					   lvol / 256);				\
-		ptr++;								\
-		*ptr = type2##_TO_##endian(type2##_FROM_##endian(*ptr) *	\
-					   rvol / 256);				\
-		ptr++;								\
-	}									\
-} while (0)
-
-#define MONO_ADJUST(type, type2, endian)					\
-do {										\
-	type *ptr = data;							\
-	for (i = 0; i < length; i += 2)						\
-	{									\
-		*ptr = type2##_TO_##endian(type2##_FROM_## endian(*ptr) *	\
-					   vol / 256);				\
-		ptr++;								\
-	}									\
-} while (0)
-
-#define VOLUME_ADJUST(type, type2, endian)		\
-do {							\
-	if (channels == 2)				\
-		STEREO_ADJUST(type, type2, endian);	\
-	else						\
-		MONO_ADJUST(type, type2, endian);	\
-} while (0)
-
-#define STEREO_ADJUST8(type)				\
-do {							\
-	type *ptr = data;				\
-	for (i = 0; i < length; i += 2)			\
-	{						\
-		*ptr = *ptr * lvol / 256;		\
-		ptr++;					\
-		*ptr = *ptr * rvol / 256;		\
-		ptr++;					\
-	}						\
-} while (0)
-
-#define MONO_ADJUST8(type)			\
-do {						\
-	type *ptr = data;			\
-	for (i = 0; i < length; i++)		\
-	{					\
-		*ptr = *ptr * vol / 256;	\
-		ptr++;				\
-	}					\
-} while (0)
-
-#define VOLUME_ADJUST8(type)			\
-do {						\
-	if (channels == 2)			\
-		STEREO_ADJUST8(type);		\
-	else					\
-		MONO_ADJUST8(type);		\
-} while (0)
-
-
-static void volume_adjust(void* data, int length, AFormat fmt, int channels)
-{
-	int i, vol, lvol, rvol;
-
-	if ((alsa_cfg.vol.left == 100 && alsa_cfg.vol.right == 100) ||
-	    (channels == 1 &&
-	     (alsa_cfg.vol.left == 100 || alsa_cfg.vol.right == 100)))
-		return;
-
-	lvol = pow(10, (alsa_cfg.vol.left - 100) / 40.0) * 256;
-	rvol = pow(10, (alsa_cfg.vol.right - 100) / 40.0) * 256;
-	vol = MAX(lvol, rvol);
-
-	switch (fmt)
-	{
-		case FMT_S16_LE:
-			VOLUME_ADJUST(gint16, GINT16, LE);
-			break;
-		case FMT_U16_LE:
-			VOLUME_ADJUST(guint16, GUINT16, LE);
-			break;
-		case FMT_S16_BE:
-			VOLUME_ADJUST(gint16, GINT16, BE);
-			break;
-		case FMT_U16_BE:
-			VOLUME_ADJUST(guint16, GUINT16, BE);
-			break;
-		case FMT_S8:
-			VOLUME_ADJUST8(gint8);
-			break;
-		case FMT_U8:
-			VOLUME_ADJUST8(guint8);
-			break;
-		default:
-			g_warning("volue_adjust(): unhandled format: %d", fmt);
-			break;
-	}
-}
-
-
 /* transfer data to audio h/w; length is given in bytes
  *
  * data can be modified via effect plugin, rate conversion or
@@ -717,9 +597,6 @@ static void alsa_do_write(gpointer data, int length)
 		length = alsa_frequency_convert_func(convertb, &data, length,
 						     effectf->rate,
 						     outputf->rate);
-
-	if (alsa_cfg.soft_volume)
-		volume_adjust(data, length, outputf->xmms_format, outputf->channels);
 
 	alsa_write_audio(data, length);
 }

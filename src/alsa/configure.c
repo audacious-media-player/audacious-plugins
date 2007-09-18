@@ -21,7 +21,6 @@
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *buffer_time_spin, *period_time_spin;
-static GtkWidget *softvolume_toggle_button;
 
 static GtkWidget *devices_combo, *mixer_devices_combo;
 
@@ -38,7 +37,6 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 	alsa_cfg.pcm_device = GET_CHARS(GTK_COMBO(devices_combo)->entry);
 	alsa_cfg.buffer_time = GET_SPIN_INT(buffer_time_spin);
 	alsa_cfg.period_time = GET_SPIN_INT(period_time_spin);
-	alsa_cfg.soft_volume = GET_TOGGLE(softvolume_toggle_button);
 	alsa_cfg.mixer_card = current_mixer_card;
 	alsa_cfg.mixer_device = GET_CHARS(GTK_COMBO(mixer_devices_combo)->entry);
 
@@ -55,8 +53,6 @@ void alsa_save_config(void)
 	bmp_cfg_db_set_string(cfgfile,"ALSA","pcm_device", alsa_cfg.pcm_device);
 	bmp_cfg_db_set_int(cfgfile, "ALSA", "mixer_card", alsa_cfg.mixer_card);
 	bmp_cfg_db_set_string(cfgfile,"ALSA","mixer_device", alsa_cfg.mixer_device);
-	bmp_cfg_db_set_bool(cfgfile, "ALSA", "soft_volume",
-			       alsa_cfg.soft_volume);
 	bmp_cfg_db_set_int(cfgfile, "ALSA", "volume_left", alsa_cfg.vol.left);
 	bmp_cfg_db_set_int(cfgfile, "ALSA", "volume_right", alsa_cfg.vol.right);
 	bmp_cfg_db_close(cfgfile);
@@ -236,13 +232,6 @@ static void mixer_card_cb(GtkWidget * widget, gpointer card)
 			  current_mixer_card);
 }
 
-static void softvolume_toggle_cb(GtkToggleButton * widget, gpointer data)
-{
-	gboolean softvolume = gtk_toggle_button_get_active(widget);
-	gtk_widget_set_sensitive(GTK_WIDGET(data), !softvolume);
-	gtk_widget_set_sensitive(mixer_devices_combo, !softvolume);
-}
-
 void alsa_configure(void)
 {
 	GtkWidget *vbox, *notebook;
@@ -303,12 +292,6 @@ void alsa_configure(void)
 	gtk_container_set_border_width(GTK_CONTAINER(mixer_box), 5);
 	gtk_container_add(GTK_CONTAINER(mixer_frame), mixer_box);
 
-	softvolume_toggle_button = gtk_check_button_new_with_label(
-		_("Use software volume control"));
-
-	gtk_box_pack_start(GTK_BOX(mixer_box), softvolume_toggle_button,
-			   FALSE, FALSE, 0);
-
 	mixer_table = gtk_table_new(2, 2, FALSE);
 	gtk_table_set_row_spacings(GTK_TABLE(mixer_table), 5);
 	gtk_table_set_col_spacings(GTK_TABLE(mixer_table), 5);
@@ -340,11 +323,6 @@ void alsa_configure(void)
 
 	gtk_table_attach(GTK_TABLE(mixer_table), mixer_devices_combo,
 			 1, 2, 1, 2, GTK_FILL | GTK_EXPAND, 0, 0, 0);
-
-	gtk_signal_connect(GTK_OBJECT(softvolume_toggle_button), "toggled",
-			   (GCallback)softvolume_toggle_cb, mixer_card_om);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(softvolume_toggle_button),
-				     alsa_cfg.soft_volume);
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), dev_vbox,
 				 gtk_label_new(_("Device settings")));
