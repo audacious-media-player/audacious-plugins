@@ -193,7 +193,7 @@ static snd_pcm_sframes_t alsa_get_avail(void)
 		if (ret < 0)
 		{
 			g_warning("alsa_get_avail(): snd_pcm_avail_update() failed: %s",
-				  snd_strerror(-ret));
+				  snd_strerror(ret));
 			return 0;
 		}
 	}
@@ -248,7 +248,7 @@ static void alsa_close_pcm(void)
 		snd_pcm_drop(alsa_pcm);
 		if ((err = snd_pcm_close(alsa_pcm)) < 0)
 			g_warning("alsa_pcm_close() failed: %s",
-				  snd_strerror(-err));
+				  snd_strerror(err));
 		alsa_pcm = NULL;
 	}
 }
@@ -349,7 +349,7 @@ int alsa_get_mixer(snd_mixer_t **mixer, int card)
 	if ((err = snd_mixer_open(mixer, 0)) < 0)
 	{
 		g_warning("alsa_get_mixer(): Failed to open empty mixer: %s",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		mixer = NULL;
 		return -1;
 	}
@@ -358,7 +358,7 @@ int alsa_get_mixer(snd_mixer_t **mixer, int card)
 	if ((err = snd_mixer_attach(*mixer, dev)) < 0)
 	{
 		g_warning("alsa_get_mixer(): Attaching to mixer %s failed: %s",
-			  dev, snd_strerror(-err));
+			  dev, snd_strerror(err));
 		g_free(dev);
 		return -1;
 	}
@@ -367,13 +367,13 @@ int alsa_get_mixer(snd_mixer_t **mixer, int card)
 	if ((err = snd_mixer_selem_register(*mixer, NULL, NULL)) < 0)
 	{
 		g_warning("alsa_get_mixer(): Failed to register mixer: %s",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		return -1;
 	}
 	if ((err = snd_mixer_load(*mixer)) < 0)
 	{
 		g_warning("alsa_get_mixer(): Failed to load mixer: %s",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		return -1;
 	}
 
@@ -768,7 +768,7 @@ static void alsa_write_audio(char *data, int length)
 			if (err < 0)
 			{
 				g_warning("alsa_write_audio(): write error: %s",
-					  snd_strerror(-err));
+					  snd_strerror(err));
 				break;
 			}
 		}
@@ -963,7 +963,7 @@ static int alsa_setup(struct snd_format *f)
 				SND_PCM_NONBLOCK)) < 0)
 	{
 		g_warning("alsa_setup(): Failed to open pcm device (%s): %s",
-			  alsa_cfg.pcm_device, snd_strerror(-err));
+			  alsa_cfg.pcm_device, snd_strerror(err));
 		alsa_pcm = NULL;
 		g_free(outputf);
 		outputf = NULL;
@@ -992,7 +992,7 @@ static int alsa_setup(struct snd_format *f)
 	if ((err = snd_pcm_hw_params_any(alsa_pcm, hwparams)) < 0)
 	{
 		g_warning("alsa_setup(): No configuration available for "
-			  "playback: %s", snd_strerror(-err));
+			  "playback: %s", snd_strerror(err));
 		return -1;
 	}
 
@@ -1000,7 +1000,7 @@ static int alsa_setup(struct snd_format *f)
 						SND_PCM_ACCESS_RW_INTERLEAVED)) < 0)
 	{
 		g_warning("alsa_setup(): Cannot set direct write mode: %s",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		return -1;
 	}
 
@@ -1040,7 +1040,7 @@ static int alsa_setup(struct snd_format *f)
 		{
 			g_warning("alsa_setup(): Sample format not "
 				  "available for playback: %s",
-				  snd_strerror(-err));
+				  snd_strerror(err));
 			return -1;
 		}
 	}
@@ -1083,7 +1083,7 @@ static int alsa_setup(struct snd_format *f)
 							  &alsa_buffer_time, 0)) < 0)
 	{
 		g_warning("alsa_setup(): Set buffer time failed: %s.",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		return -1;
 	}
 
@@ -1092,7 +1092,7 @@ static int alsa_setup(struct snd_format *f)
 							  &alsa_period_time, 0)) < 0)
 	{
 		g_warning("alsa_setup(): Set period time failed: %s.",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		return -1;
 	}
 
@@ -1108,7 +1108,7 @@ static int alsa_setup(struct snd_format *f)
 	{
 		g_warning("alsa_setup(): snd_pcm_hw_params_get_buffer_size() "
 			  "failed: %s",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		return -1;
 	}
 
@@ -1116,7 +1116,7 @@ static int alsa_setup(struct snd_format *f)
 	{
 		g_warning("alsa_setup(): snd_pcm_hw_params_get_period_size() "
 			  "failed: %s",
-			  snd_strerror(-err));
+			  snd_strerror(err));
 		return -1;
 	}
 
@@ -1129,7 +1129,7 @@ static int alsa_setup(struct snd_format *f)
 	if ((err = snd_pcm_sw_params_set_start_threshold(alsa_pcm,
 			swparams, alsa_buffer_size - alsa_period_size) < 0))
 		g_warning("alsa_setup(): setting start "
-			  "threshold failed: %s", snd_strerror(-err));
+			  "threshold failed: %s", snd_strerror(err));
 	if (snd_pcm_sw_params(alsa_pcm, swparams) < 0)
 	{
 		g_warning("alsa_setup(): Unable to install sw params");

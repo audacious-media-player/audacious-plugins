@@ -69,7 +69,7 @@ static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
 
 	menu = gtk_menu_new();
 	if ((err = snd_card_next(&card)) != 0)
-		g_warning("snd_next_card() failed: %s", snd_strerror(-err));
+		g_warning("snd_next_card() failed: %s", snd_strerror(err));
 
 	while (card > -1)
 	{
@@ -81,7 +81,7 @@ static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
 		if ((err = snd_card_get_name(card, &label)) != 0)
 		{
 			g_warning("snd_carg_get_name() failed: %s",
-				  snd_strerror(-err));
+				  snd_strerror(err));
 			break;
 		}
 
@@ -93,7 +93,7 @@ static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
 		if ((err = snd_card_next(&card)) != 0)
 		{
 			g_warning("snd_next_card() failed: %s",
-				  snd_strerror(-err));
+				  snd_strerror(err));
 			break;
 		}
 	}
@@ -140,13 +140,13 @@ static void get_devices_for_card(GtkCombo *combo, int card)
 
 	if ((err = snd_ctl_open(&ctl, dev, 0)) < 0)
 	{
-		printf("snd_ctl_open() failed: %s", snd_strerror(-err));
+		printf("snd_ctl_open() failed: %s", snd_strerror(err));
 		return;
 	}
 
 	if ((err = snd_card_get_name(card, &card_name)) != 0)
 	{
-		g_warning("snd_card_get_name() failed: %s", snd_strerror(-err));
+		g_warning("snd_card_get_name() failed: %s", snd_strerror(err));
 		card_name = _("Unknown soundcard");
 	}
 
@@ -158,7 +158,7 @@ static void get_devices_for_card(GtkCombo *combo, int card)
 		if ((err = snd_ctl_pcm_next_device(ctl, &pcm_device)) < 0)
 		{
 			g_warning("snd_ctl_pcm_next_device() failed: %s",
-				  snd_strerror(-err));
+				  snd_strerror(err));
 			pcm_device = -1;
 		}
 		if (pcm_device < 0)
@@ -174,7 +174,7 @@ static void get_devices_for_card(GtkCombo *combo, int card)
 				g_warning("get_devices_for_card(): "
 					  "snd_ctl_pcm_info() "
 					  "failed (%d:%d): %s.", card,
-					  pcm_device, snd_strerror(-err));
+					  pcm_device, snd_strerror(err));
 			continue;
 		}
 
@@ -211,7 +211,7 @@ static void get_devices(GtkCombo *combo)
 
 	if ((err = snd_card_next(&card)) != 0)
 	{
-		g_warning("snd_next_card() failed: %s", snd_strerror(-err));
+		g_warning("snd_next_card() failed: %s", snd_strerror(err));
 		return;
 	}
 
@@ -221,7 +221,7 @@ static void get_devices(GtkCombo *combo)
 		if ((err = snd_card_next(&card)) != 0)
 		{
 			g_warning("snd_next_card() failed: %s",
-				  snd_strerror(-err));
+				  snd_strerror(err));
 			break;
 		}
 	}
