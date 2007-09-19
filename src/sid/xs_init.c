@@ -46,6 +46,7 @@ InputPlugin xs_plugin_ip = {
 	.is_our_file = xs_is_our_file,			/* Check file */
 	.is_our_file_from_vfs = xs_is_our_file_vfs,	/* VFS */
 	.vfs_extensions = xs_sid_fmts,			/* File ext assist */
+	.probe_for_tuple = xs_probe_for_tuple
 };
 
 static InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };
