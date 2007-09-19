@@ -520,10 +520,10 @@ audmad_get_song_info(char *url, char **title, int *length)
             *title = g_strdup(tuple_get_string(myinfo.tuple, -1, "track-name"));
         else
             *title = g_strdup(url);
-        if(tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL) == -1)
+
+        *length = tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
+        if(*length == -1)
             *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-        else
-            *length = tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
     }
     else {
         *title = g_strdup(url);
@@ -553,10 +553,9 @@ audmad_get_song_length(char *url, int *length, VFSFile *fd)
     }
 
     if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
-        if(tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL) == -1)
+        *length = tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
+        if(*length == -1)
             *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-        else
-            *length = tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
     }
     else {
         *length = -1;
