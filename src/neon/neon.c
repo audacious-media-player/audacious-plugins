@@ -68,6 +68,7 @@ static struct neon_handle* handle_init(void) {
     h->icy_metadata.stream_name = NULL;
     h->icy_metadata.stream_title = NULL;
     h->icy_metadata.stream_url = NULL;
+    h->icy_metadata.stream_contenttype = NULL;
     h->reader = NULL;
     h->reader_status.mutex = g_mutex_new();
     h->reader_status.cond = g_cond_new();
@@ -88,6 +89,18 @@ static void handle_free(struct neon_handle* h) {
 
     ne_uri_free(h->purl);
     destroy_rb(&h->rb);
+    if (NULL != h->icy_metadata.stream_name) {
+        free(h->icy_metadata.stream_name);
+    }
+    if (NULL != h->icy_metadata.stream_title) {
+        free(h->icy_metadata.stream_title);
+    }
+    if (NULL != h->icy_metadata.stream_url) {
+        free(h->icy_metadata.stream_url);
+    }
+    if (NULL != h->icy_metadata.stream_contenttype) {
+        free(h->icy_metadata.stream_contenttype);
+    }
     free(h);
 
     _LEAVE;
@@ -161,15 +174,13 @@ static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) {
  * -----
  */
 
-#define TAGSIZE 4096
-
 static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
 
     gchar* p;
     gchar* tstart;
     gchar* tend;
-    gchar name[TAGSIZE];
-    gchar value[TAGSIZE];
+    gchar name[4096];
+    gchar value[4096];
     int state;
     int pos;
 
@@ -193,7 +204,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of tag name.
                      */
                     *p = '\0';
-                    g_strlcpy(name, tstart, TAGSIZE);
+                    strcpy(name, tstart);
                     _DEBUG("Found tag name: %s", name);
                     state = 2;
                 } else {
@@ -222,7 +233,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of value
                      */
                     *p = '\0';
-                    g_strlcpy(value, tstart, TAGSIZE);
+                    strcpy(value, tstart);
                     _DEBUG("Found tag value: %s", value);
                     add_icy(m, name, value);
                     state = 4;
@@ -341,6 +352,8 @@ static void handle_headers(struct neon_handle* h) {
                 _DEBUG("server can_ranges");
                 h->can_ranges = TRUE;
             }
+
+            continue;
         }
 
         if (0 == g_ascii_strncasecmp("content-length", name, 14)) {
@@ -357,6 +370,21 @@ static void handle_headers(struct neon_handle* h) {
             } else {
                 _ERROR("Invalid content length header: %s", value);
             }
+
+            continue;
+        }
+
+        if (0 == g_ascii_strncasecmp("content-type", name, 12)) {
+            /*
+             * The server sent us a content type. Save it for later
+             */
+            _DEBUG("Content-Type: %s", value);
+            if (NULL != h->icy_metadata.stream_contenttype) {
+                free(h->icy_metadata.stream_contenttype);
+            }
+            h->icy_metadata.stream_contenttype = g_strdup(value);
+
+            continue;
         }
 
         if (0 == g_ascii_strncasecmp("icy-metaint", name, 11)) {
@@ -374,6 +402,8 @@ static void handle_headers(struct neon_handle* h) {
             } else {
                 _ERROR("Invalid ICY MetaInt header: %s", value);
             }
+
+            continue;
         }
 
         if (0 == g_ascii_strncasecmp("icy-name", name, 8)) {
@@ -386,6 +416,8 @@ static void handle_headers(struct neon_handle* h) {
             }
             h->icy_metadata.stream_name = g_strdup(value);
         }
+
+        continue;
     }
 
     _LEAVE;
@@ -1143,6 +1175,10 @@ gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
     if (0 == g_ascii_strncasecmp(field, "stream-name", 11)) {
         _LEAVE g_strdup(h->icy_metadata.stream_name);
+    }
+
+    if (0 == g_ascii_strncasecmp(field, "content-type", 12)) {
+        _LEAVE g_strdup(h->icy_metadata.stream_contenttype);
     }
 
     _LEAVE NULL;

@@ -47,6 +47,7 @@ struct icy_metadata {
     gchar* stream_name;
     gchar* stream_title;
     gchar* stream_url;
+    gchar* stream_contenttype;
 };
 
 struct neon_handle {
