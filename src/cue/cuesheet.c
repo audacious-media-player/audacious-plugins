@@ -47,7 +47,6 @@ static void stop(InputPlayback *data);
 static void cue_pause(InputPlayback *data, short);
 static Tuple *get_tuple(gchar *uri);
 static Tuple *get_tuple_uri(gchar *uri);
-static void get_song_info(gchar *uri, gchar **title, gint *length);
 static void cue_init(void);
 static void cue_cleanup(void);
 static gpointer watchdog_func(gpointer data);
@@ -102,7 +101,6 @@ InputPlugin cue_ip =
 	.seek = seek,
 	.get_time = get_time,
 	.cleanup = cue_cleanup,		/* cleanup */
-	.get_song_info = get_song_info,	/* XXX get_song_info iface */
 	.get_song_tuple = get_tuple,
 };
 
@@ -298,28 +296,6 @@ static Tuple *get_tuple_uri(gchar *uri)
     return out;
 }
 
-static void get_song_info(gchar *uri, gchar **title, gint *length)
-{
-	Tuple *tuple;
-
-	/* this isn't a cue:// uri? */
-	if (strncasecmp("cue://", uri, 6))
-	{
-		gchar *tmp = g_strdup_printf("cue://%s?0", uri);
-		tuple = get_tuple_uri(tmp);
-		g_free(tmp);
-	}
-	else
-		tuple = get_tuple_uri(uri);
-
-	g_return_if_fail(tuple != NULL);
-
-	*title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
-	*length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
-
-	tuple_free(tuple);
-}
-
 static void seek(InputPlayback * data, gint time)
 {
     g_mutex_lock(cue_target_time_mutex);
@@ -458,11 +434,10 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 {
     gchar *path2 = g_strdup(uri + 6); // "cue://" is stripped.
     gchar *_path = strchr(path2, '?');
-	gint file_length = 0;
 	gint track = 0;
-	gchar *dummy = NULL;
 	ProbeResult *pr;
 	InputPlugin *real_ip_plugin;
+    Tuple *tuple = NULL;
 
 #ifdef DEBUG
     g_print("f: play_cue_uri\n");
@@ -532,10 +507,12 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 #ifdef DEBUG
         g_print("cue: play_cue_uri: target_time = %d\n", target_time);
 #endif
-		/* in some plugins, NULL as 2nd arg causes crash. */
-		real_ip->plugin->get_song_info(cue_file, &dummy, &file_length);
-		g_free(dummy);
-		cue_tracks[last_cue_track].index = file_length;
+
+        tuple = real_ip->plugin->get_song_tuple(cue_file);
+        if(tuple) {
+            cue_tracks[last_cue_track].index = tuple_get_int(tuple, FIELD_LENGTH, NULL);
+            tuple_free(tuple); tuple = NULL;
+        }
 
         /* kick watchdog thread */
         g_mutex_lock(cue_mutex);

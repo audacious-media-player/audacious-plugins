@@ -161,13 +161,15 @@ static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) {
  * -----
  */
 
+#define TAGSIZE 4096
+
 static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
 
     gchar* p;
     gchar* tstart;
     gchar* tend;
-    gchar name[4096];
-    gchar value[4096];
+    gchar name[TAGSIZE];
+    gchar value[TAGSIZE];
     int state;
     int pos;
 
@@ -191,7 +193,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of tag name.
                      */
                     *p = '\0';
-                    strcpy(name, tstart);
+                    g_strlcpy(name, tstart, TAGSIZE);
                     _DEBUG("Found tag name: %s", name);
                     state = 2;
                 } else {
@@ -220,7 +222,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of value
                      */
                     *p = '\0';
-                    strcpy(value, tstart);
+                    g_strlcpy(value, tstart, TAGSIZE);
                     _DEBUG("Found tag value: %s", value);
                     add_icy(m, name, value);
                     state = 4;

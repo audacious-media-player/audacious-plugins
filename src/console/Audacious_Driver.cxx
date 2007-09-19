@@ -110,7 +110,7 @@ File_Handler::File_Handler( const char* path_in, VFSFile* fd, gboolean is_our_fi
 		*args = '\0';
 		// TODO: use func with better error reporting, and perhaps don't
 		// truncate path if there is no number after ?
-		track = atoi( args + 1 );
+		track = atoi( args + 1 ) - 1;
 		track_specified = true;
 	}
 
@@ -217,7 +217,9 @@ static Tuple* get_track_ti( const char* path, track_info_t const& info, int trac
 		if ( info.track_count > 1 )
 		{
 			tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);
-			tuple_associate_int(ti, -1, "subsong", track);
+			tuple_associate_int(ti, -1, "subsong", track + 1);
+			tuple_associate_int(ti, FIELD_SUBSONG_ID, NULL, track + 1);
+			tuple_associate_int(ti, FIELD_SUBSONG_NUM, NULL, info.track_count);
 		}
 		tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, info.copyright);
 		tuple_associate_string(ti, -1, "console", info.system);
@@ -444,6 +446,8 @@ static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
 	File_Handler fh( path, fd, TRUE );
 	if ( fh.type )
 	{
+		result = 1;
+		/*
 		if ( fh.track_specified || fh.type->track_count == 1 )
 		{
 			// don't even need to read file if track is specified or
@@ -470,6 +474,7 @@ static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
 				result = -1;
 			}
 		}
+		*/
 	}
 	else if (fh.track_specified)
 	{
@@ -477,6 +482,16 @@ static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
 	}
 
 	return result;
+}
+
+static Tuple *probe_for_tuple(gchar *filename, VFSFile *fd)
+{
+	if (!is_our_file_from_vfs(filename, fd))
+		return NULL;
+
+	vfs_rewind(fd);
+
+	return get_song_tuple(filename);
 }
 
 // Setup
@@ -538,7 +553,9 @@ InputPlugin console_ip =
 	NULL,
 	NULL,
 	is_our_file_from_vfs,
-	(gchar **)gme_fmts
+	(gchar **)gme_fmts,
+	NULL,
+	probe_for_tuple
 };
 
 InputPlugin *console_iplist[] = { &console_ip, NULL };

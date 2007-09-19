@@ -304,59 +304,16 @@ gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrac
 
 gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
 {
-	gint tmpResult = 0, tmpDummy = 0;
 	assert(xs_status.sidPlayer);
 
 	/* Check the filename */
 	if (pcFilename == NULL)
 		return 0;
-
-#ifdef LULZ
-	/* FIXME! ATTENTION! Subtune addition is now temporarily disabled
-	 * again, due to following reason: the way it currently is "supposed"
-	 * to be done is horribly broken and causes an "infinite recursive
-	 * addition loop" in some cases. - ccr
-	 */
-	if (xs_has_tracknumber(pcFilename) != NULL)
-		return 1;
-#endif
 	
-	if (xs_status.sidPlayer->plrProbe(f)) {
-#ifdef LULZ
-		t_xs_tuneinfo *pInfo;
-		
-		pInfo = xs_status.sidPlayer->plrGetSIDInfo(pcFilename);
-		
-		if (pInfo->nsubTunes > 1) {
-			gint i;
-			for (i = 1; i <= pInfo->nsubTunes; i++) {
-				gchar *tmpStr = g_strdup_printf("%s?%d", pcFilename, i);
-				gboolean doAdd = FALSE;
-					
-				if (xs_cfg.subAutoMinOnly) {
-					if (i == pInfo->startTune ||
-						pInfo->subTunes[i - 1].tuneLength >= xs_cfg.subAutoMinTime)
-						doAdd = TRUE;
-				} else
-					doAdd = TRUE;
-					
-				if (doAdd)
-					playlist_add_url(playlist_get_active(), tmpStr);
-
-				g_free(tmpStr);
-			}
-
-			tmpResult = -1;
-		} else
-			tmpResult = 1;
-			
-		xs_tuneinfo_free(pInfo);
-#else
-		tmpResult = 1;
-#endif
-	}
-		
-	return tmpResult;
+	if (xs_status.sidPlayer->plrProbe(f))
+		return 1;
+	else
+		return 0;
 }
 
 
@@ -677,6 +634,9 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 	tuple_associate_string(pResult, FIELD_GENRE, NULL, "SID-tune");
 	tuple_associate_string(pResult, FIELD_COPYRIGHT, NULL, pInfo->sidCopyright);
 
+	if (xs_cfg.subAutoEnable)
+		tuple_associate_int(pResult, FIELD_SUBSONG_NUM, NULL, pInfo->nsubTunes);
+
 	tuple_associate_int(pResult, -1, "subtunes", pInfo->nsubTunes);
 	tuple_associate_string(pResult, -1, "sid-format", pInfo->sidFormat);
 
@@ -717,6 +677,7 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 		subTune = 1;
 
 	tuple_associate_int(pResult, -1, "subtune", subTune);
+	tuple_associate_int(pResult, FIELD_SUBSONG_ID, NULL, subTune);
 	tuple_associate_int(pResult, FIELD_TRACK_NUMBER, NULL, subTune);
 
 	if (xs_cfg.titleOverride)
@@ -752,4 +713,14 @@ Tuple * xs_get_song_tuple(gchar *songFilename)
 	xs_tuneinfo_free(tmpInfo);
 
 	return tmpResult;
+}
+
+Tuple *xs_probe_for_tuple(gchar *filename, t_xs_file *fd)
+{
+    if (!xs_is_our_file_vfs(filename, fd))
+        return NULL;
+
+    vfs_rewind(fd);
+
+    return xs_get_song_tuple(filename);
 }
