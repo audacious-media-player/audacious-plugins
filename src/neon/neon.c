@@ -940,7 +940,7 @@ size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* fi
          * The maximum number of bytes we can deliver is determined
          * by the number of bytes left until the next metadata announcement
          */
-        belem = h->icy_metaleft / size;
+        belem = MIN(used_rb(&h->rb), h->icy_metaleft) / size;
     } else {
         belem = used_rb(&h->rb) / size;
     }
