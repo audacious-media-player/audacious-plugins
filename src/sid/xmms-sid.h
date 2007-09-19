@@ -170,7 +170,6 @@ extern InputPlugin	xs_plugin_ip;
 void	xs_init(void);
 void	xs_reinit(void);
 void	xs_close(void);
-gint	xs_is_our_file(gchar *);
 gint	xs_is_our_file_vfs(gchar *, t_xs_file *);
 void	xs_play_file(InputPlayback *);
 void	xs_stop(InputPlayback *);

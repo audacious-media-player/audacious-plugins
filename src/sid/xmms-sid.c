@@ -256,25 +256,6 @@ void xs_close(void)
 /*
  * Check whether the given file is handled by this plugin
  */
-gint xs_is_our_file(gchar *pcFilename)
-{
-	gint result = 0;
-	t_xs_file *f;
-	assert(xs_status.sidPlayer);
-
-	/* Check the filename */
-	if (pcFilename == NULL)
-		return 0;
-
-	if ((f = xs_fopen(pcFilename, "rb")) != NULL) {
-		if (xs_status.sidPlayer->plrProbe(f))
-			result = 1;
-		xs_fclose(f);
-	}
-
-	return result;
-}
-
 static gchar * xs_has_tracknumber(gchar *pcFilename)
 {
 	gchar *tmpSep = xs_strrchr(pcFilename, '?');
@@ -684,6 +665,7 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 		tuple_associate_string(pResult, FIELD_FORMATTER, NULL, xs_cfg.titleFormat);
 }
 
+
 Tuple * xs_get_song_tuple(gchar *songFilename)
 {
 	Tuple *tmpResult;
@@ -714,6 +696,7 @@ Tuple * xs_get_song_tuple(gchar *songFilename)
 
 	return tmpResult;
 }
+
 
 Tuple *xs_probe_for_tuple(gchar *filename, t_xs_file *fd)
 {
