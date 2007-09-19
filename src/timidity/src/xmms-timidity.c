@@ -97,7 +97,7 @@ void xmmstimid_init(void) {
 
 	if (! bmp_cfg_db_get_string(db, "timidity", "config_file",
                                 &xmmstimid_cfg.config_file))
-        xmmstimid_cfg.config_file = g_strdup("/etc/timidity.cfg");
+        xmmstimid_cfg.config_file = g_strdup("/etc/timidity/timidity.cfg");
 
 	bmp_cfg_db_get_int(db, "timidity", "samplerate", &xmmstimid_cfg.rate);
 	bmp_cfg_db_get_int(db, "timidity", "bits", &xmmstimid_cfg.bits);
