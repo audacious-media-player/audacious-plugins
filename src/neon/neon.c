@@ -5,6 +5,7 @@
 #include <ne_utils.h>
 #include <ne_redirect.h>
 #include <ne_request.h>
+#include <ne_auth.h>
 
 #include "debug.h"
 #include "neon.h"
@@ -273,6 +274,50 @@ static void kill_reader(struct neon_handle* h) {
  * -----
  */
 
+static int auth_callback(void* userdata, const char* realm, int attempt, char* username, char* password) {
+
+    struct neon_handle* h = (struct neon_handle*)userdata;
+    gchar* authcpy;
+    gchar** authtok;
+
+    _ENTER;
+
+    if ((NULL == h->purl->userinfo) || ('\0' == *(h->purl->userinfo))) {
+        _ERROR("Authentication required, but no credentials set");
+        _LEAVE 1;
+    }
+
+    if (NULL == (authcpy = g_strdup(h->purl->userinfo))) {
+        /*
+         * No auth data
+         */
+        _ERROR("Could not allocate memory for authentication data");
+        _LEAVE 1;
+    }
+
+    authtok = g_strsplit(authcpy, ":", 2);
+    if ((strlen(authtok[1]) > (NE_ABUFSIZ-1)) || (strlen(authtok[0]) > (NE_ABUFSIZ-1))) {
+        _ERROR("Username/Password too long");
+        g_strfreev(authtok);
+        free(authcpy);
+        _LEAVE 1;
+    }
+
+    strncpy(username, authtok[0], NE_ABUFSIZ);
+    strncpy(password, authtok[1], NE_ABUFSIZ);
+
+    _DEBUG("Authenticating: Username: %s, Password: %s", username, password);
+
+    g_strfreev(authtok);
+    free(authcpy);
+
+    _LEAVE attempt;
+}
+
+/*
+ * -----
+ */
+
 static void handle_headers(struct neon_handle* h) {
 
     const gchar* name;
@@ -351,6 +396,7 @@ static void handle_headers(struct neon_handle* h) {
 static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
+    const ne_status* status;
 
     _ENTER;
 
@@ -363,6 +409,16 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
      */
     _DEBUG("Connecting...");
     ret = ne_begin_request(handle->request);
+    status = ne_get_status(handle->request);
+    if ((NE_OK == ret) && (401 == status->code)) {
+        /*
+         * Authorization required. Reconnect to
+         * authenticate
+         */
+        _DEBUG("Reconnecting due to 401");
+        ne_end_request(handle->request);
+        ret = ne_begin_request(handle->request);
+    }
 
     switch (ret) {
         case NE_OK:
@@ -425,6 +481,7 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
         _DEBUG("Creating session");
         handle->session = ne_session_create(handle->purl->scheme, handle->purl->host, handle->purl->port);
+        ne_add_server_auth(handle->session, NE_AUTH_BASIC, auth_callback, (void *)handle);
         ne_set_session_flag(handle->session, NE_SESSFLAG_ICYPROTO, 1);
         ne_set_session_flag(handle->session, NE_SESSFLAG_PERSIST, 0);
         ne_set_connect_timeout(handle->session, 10);
