@@ -256,25 +256,6 @@ void xs_close(void)
 /*
  * Check whether the given file is handled by this plugin
  */
-gint xs_is_our_file(gchar *pcFilename)
-{
-	gint result = 0;
-	t_xs_file *f;
-	assert(xs_status.sidPlayer);
-
-	/* Check the filename */
-	if (pcFilename == NULL)
-		return 0;
-
-	if ((f = xs_fopen(pcFilename, "rb")) != NULL) {
-		if (xs_status.sidPlayer->plrProbe(f))
-			result = 1;
-		xs_fclose(f);
-	}
-
-	return result;
-}
-
 static gchar * xs_has_tracknumber(gchar *pcFilename)
 {
 	gchar *tmpSep = xs_strrchr(pcFilename, '?');
@@ -299,21 +280,6 @@ gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrac
 		*pTrack = -1;
 		return FALSE;
 	}
-}
-
-
-gint xs_is_our_file_vfs(gchar *pcFilename, t_xs_file *f)
-{
-	assert(xs_status.sidPlayer);
-
-	/* Check the filename */
-	if (pcFilename == NULL)
-		return 0;
-	
-	if (xs_status.sidPlayer->plrProbe(f))
-		return 1;
-	else
-		return 0;
 }
 
 
@@ -623,7 +589,8 @@ gint xs_get_time(InputPlayback *pb)
 }
 
 
-/* Return song information Tuple
+/*
+ * Return song information Tuple
  */
 void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 {
@@ -684,15 +651,16 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 		tuple_associate_string(pResult, FIELD_FORMATTER, NULL, xs_cfg.titleFormat);
 }
 
+
 Tuple * xs_get_song_tuple(gchar *songFilename)
 {
 	Tuple *tmpResult;
 	gchar *tmpFilename;
 	t_xs_tuneinfo *tmpInfo;
-	gint subTune;
+	gint tmpTune;
 
 	/* Get information from URL */
-	xs_get_trackinfo(songFilename, &tmpFilename, &subTune);
+	xs_get_trackinfo(songFilename, &tmpFilename, &tmpTune);
 
 	tmpResult = tuple_new_from_filename(tmpFilename);
 	if (!tmpResult) {
@@ -709,18 +677,53 @@ Tuple * xs_get_song_tuple(gchar *songFilename)
 	if (!tmpInfo)
 		return tmpResult;
 	
-	xs_get_song_tuple_info(tmpResult, tmpInfo, subTune);
+	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
 	xs_tuneinfo_free(tmpInfo);
 
 	return tmpResult;
 }
 
-Tuple *xs_probe_for_tuple(gchar *filename, t_xs_file *fd)
+
+Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 {
-    if (!xs_is_our_file_vfs(filename, fd))
-        return NULL;
+	Tuple *tmpResult;
+	gchar *tmpFilename;
+	t_xs_tuneinfo *tmpInfo;
+	gint tmpTune;
 
-    vfs_rewind(fd);
+	assert(xs_status.sidPlayer);
 
-    return xs_get_song_tuple(filename);
+	if (songFilename == NULL)
+		return NULL;
+
+	XS_MUTEX_LOCK(xs_status);
+	if (!xs_status.sidPlayer->plrProbe(fd)) {
+		XS_MUTEX_UNLOCK(xs_status);
+		return NULL;
+	}
+	XS_MUTEX_UNLOCK(xs_status);
+
+
+	/* Get information from URL */
+	xs_get_trackinfo(songFilename, &tmpFilename, &tmpTune);
+
+	tmpResult = tuple_new_from_filename(tmpFilename);
+	if (!tmpResult) {
+		g_free(tmpFilename);
+		return NULL;
+	}
+
+	/* Get tune information from emulation engine */
+	XS_MUTEX_LOCK(xs_status);
+	tmpInfo = xs_status.sidPlayer->plrGetSIDInfo(tmpFilename);
+	XS_MUTEX_UNLOCK(xs_status);
+	g_free(tmpFilename);
+
+	if (!tmpInfo)
+		return tmpResult;
+	
+	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
+	xs_tuneinfo_free(tmpInfo);
+
+	return tmpResult;
 }
