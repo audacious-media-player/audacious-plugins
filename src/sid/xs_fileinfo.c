@@ -141,10 +141,7 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 		tmpNode = xs_fileinfostil->subTunes[0];
 	
 	if (tmpNode) {
-		if (tmpNode->pName)
-			subName = tmpNode->pName;
-		else
-			subName = tmpNode->pTitle;
+		subName = tmpNode->pName;
 		subAuthor = tmpNode->pAuthor;
 		subInfo = tmpNode->pInfo;
 	} else {
