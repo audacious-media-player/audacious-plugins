@@ -66,7 +66,7 @@ static int rd_index, wr_index;	 /* current read/write position in int-buffer */
 static gboolean pause_request;	 /* pause status currently requested */
 static int flush_request;	 /* flush status (time) currently requested */
 static int prebuffer_size;
-GMutex *alsa_mutex;
+GStaticMutex alsa_mutex = G_STATIC_MUTEX_INIT;
 
 static guint mixer_timeout;
 
@@ -265,7 +265,7 @@ void alsa_close(void)
 
 	g_thread_join(audio_thread);
 
-	g_mutex_lock(alsa_mutex); /* alsa_loop locks alsa_mutex! */
+	g_static_mutex_lock(&alsa_mutex); /* alsa_loop locks alsa_mutex! */
 
 	alsa_cleanup_mixer();
 
@@ -284,7 +284,7 @@ void alsa_close(void)
 		snd_output_close(logs);
 	debug("Device closed");
 
-	g_mutex_unlock(alsa_mutex);
+	g_static_mutex_unlock(&alsa_mutex);
 }
 
 /* reopen ALSA PCM */
@@ -679,7 +679,7 @@ static void *alsa_loop(void *arg)
 	int npfds = snd_pcm_poll_descriptors_count(alsa_pcm);
 	int wr = 0;
 
-	g_mutex_lock(alsa_mutex);
+	g_static_mutex_lock(&alsa_mutex);
 
 	if (npfds <= 0)
 		goto _error;
@@ -716,7 +716,7 @@ static void *alsa_loop(void *arg)
 	}
 
  _error:
-	g_mutex_unlock(alsa_mutex);
+	g_static_mutex_unlock(&alsa_mutex);
 	alsa_close_pcm();
 	g_free(thread_buffer);
 	thread_buffer = NULL;
@@ -740,7 +740,7 @@ int alsa_open(AFormat fmt, int rate, int nch)
 		return 0;
 	}
 
-	g_mutex_lock(alsa_mutex);
+	g_static_mutex_lock(&alsa_mutex);
 
 	if (!mixer)
 		alsa_setup_mixer();
@@ -769,7 +769,7 @@ int alsa_open(AFormat fmt, int rate, int nch)
 	pause_request = FALSE;
 	flush_request = -1;
 
-	g_mutex_unlock(alsa_mutex);
+	g_static_mutex_unlock(&alsa_mutex);
 	
 	audio_thread = g_thread_create((GThreadFunc)alsa_loop, NULL, TRUE, NULL);
 	return 1;
