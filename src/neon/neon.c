@@ -223,7 +223,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of tag name.
                      */
                     *p = '\0';
-                    strcpy(name, tstart);
+                    g_strlcpy(name, tstart, 4096);
                     _DEBUG("Found tag name: %s", name);
                     state = 2;
                 } else {
@@ -252,7 +252,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of value
                      */
                     *p = '\0';
-                    strcpy(value, tstart);
+                    g_strlcpy(value, tstart, 4096);
                     _DEBUG("Found tag value: %s", value);
                     add_icy(m, name, value);
                     state = 4;
