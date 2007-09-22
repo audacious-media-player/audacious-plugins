@@ -19,6 +19,7 @@
 
 #include <audacious/vfs.h>
 #include <audacious/plugin.h>
+#include <audacious/configdb.h>
 
 #include <ne_socket.h>
 #include <ne_utils.h>
@@ -306,7 +307,7 @@ static void kill_reader(struct neon_handle* h) {
  * -----
  */
 
-static int auth_callback(void* userdata, const char* realm, int attempt, char* username, char* password) {
+static int server_auth_callback(void* userdata, const char* realm, int attempt, char* username, char* password) {
 
     struct neon_handle* h = (struct neon_handle*)userdata;
     gchar* authcpy;
@@ -515,8 +516,20 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
+    ConfigDB* db;
+    gchar* proxy_host;
+    int proxy_port;
+    gboolean use_proxy;
 
     _ENTER;
+
+    db = bmp_cfg_db_open();
+    bmp_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy);
+    if (use_proxy) {
+        bmp_cfg_db_get_string(db, NULL, "proxy_ip", &proxy_host);
+        bmp_cfg_db_get_int(db, NULL, "proxy_port", &proxy_port);
+        _DEBUG("Using proxy: %s:%d", proxy_host, proxy_port);
+    }
 
     handle->redircount = 0;
 
@@ -534,13 +547,17 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
         _DEBUG("Creating session");
         handle->session = ne_session_create(handle->purl->scheme, handle->purl->host, handle->purl->port);
-        ne_add_server_auth(handle->session, NE_AUTH_BASIC, auth_callback, (void *)handle);
+        ne_add_server_auth(handle->session, NE_AUTH_BASIC, server_auth_callback, (void *)handle);
         ne_set_session_flag(handle->session, NE_SESSFLAG_ICYPROTO, 1);
         ne_set_session_flag(handle->session, NE_SESSFLAG_PERSIST, 0);
         ne_set_connect_timeout(handle->session, 10);
         ne_set_read_timeout(handle->session, 10);
         ne_set_useragent(handle->session, "Audacious/1.4.0");
         ne_redirect_register(handle->session);
+
+        if (use_proxy) {
+            ne_session_proxy(handle->session, proxy_host, proxy_port);
+        }
 
         _DEBUG("Creating request");
         ret = open_request(handle, startbyte);
