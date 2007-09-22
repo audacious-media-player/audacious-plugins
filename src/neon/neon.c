@@ -516,9 +516,11 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
-    ConfigDB* db;
+    ConfigDb* db;
     gchar* proxy_host;
-    int proxy_port;
+    gchar* proxy_port_s;
+    gchar* endptr;
+    unsigned int proxy_port = 0;
     gboolean use_proxy;
 
     _ENTER;
@@ -526,9 +528,22 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
     db = bmp_cfg_db_open();
     bmp_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy);
     if (use_proxy) {
-        bmp_cfg_db_get_string(db, NULL, "proxy_ip", &proxy_host);
-        bmp_cfg_db_get_int(db, NULL, "proxy_port", &proxy_port);
-        _DEBUG("Using proxy: %s:%d", proxy_host, proxy_port);
+        if (FALSE == bmp_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host)) {
+            _ERROR("Could not read proxy host, disabling proxy use");
+            use_proxy = FALSE;
+        }
+        if (FALSE == bmp_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port_s)) {
+            _ERROR("Could not read proxy port, disabling proxy use");
+            use_proxy = FALSE;
+        }
+        proxy_port = strtoul(proxy_port_s, &endptr, 10);
+        if (!((*proxy_port_s != '\0') && (*endptr == '\0') && (proxy_port < 65536))) {
+            /*
+             * Invalid data
+             */
+            _ERROR("Invalid proxy port, disabling proxy use");
+            use_proxy = FALSE;
+        }
     }
 
     handle->redircount = 0;
@@ -556,6 +571,7 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
         ne_redirect_register(handle->session);
 
         if (use_proxy) {
+            _DEBUG("Using proxy: %s:%d", proxy_host, proxy_port);
             ne_session_proxy(handle->session, proxy_host, proxy_port);
         }
 
