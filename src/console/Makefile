@@ -1,11 +1,10 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libconsole$(SHARED_SUFFIX)
+PLUGIN = console$(PLUGIN_SUFFIX)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-SOURCES = \
+SRCS = \
 	Audacious_Config.cxx    \
 	Audacious_Driver.cxx    \
 	Ay_Apu.cxx              \
@@ -57,10 +56,9 @@ SOURCES = \
 	Ym2612_Emu.cxx          \
 	Zlib_Inflater.cxx
 
-OBJECTS = ${SOURCES:.cxx=.o}
+include ../../buildsys.mk
 
-LIBADD += -lz $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -lstdc++
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
-
-include ../../mk/objective.mk
+LIBS += -lz $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -lstdc++
+CFLAGS += $(PLUGIN_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
+CXXFLAGS += $(PLUGIN_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
+CPPFLAGS += $(CXXFLAGS)

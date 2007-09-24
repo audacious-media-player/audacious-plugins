@@ -1,12 +1,9 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libsexypsf$(SHARED_SUFFIX)
+PLUGIN = sexypsf$(PLUGIN_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
-
-SOURCES = \
+SRCS = \
 	PsxBios.c \
 	PsxCounters.c \
 	PsxDma.c \
@@ -20,13 +17,12 @@ SOURCES = \
 	spu/spu.c \
 	plugin.c
 
-LIBADD = -lz
+LIBS += -lz $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
-OBJECTS = ${SOURCES:.c=.o}
+include ../../buildsys.mk
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
-
-include ../../mk/objective.mk
+CPPFLAGS += $(MOWGLI_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
+CFLAGS += $(PLUGIN_CFLAGS)
 
 clean-posthook:
 	@rm -f spu/*.o
