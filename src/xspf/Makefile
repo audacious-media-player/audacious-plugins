@@ -1,18 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = xspf$(PLUGIN_SUFFIX)
+plugindir = audacious/$(CONTAINER_PLUGIN_DIR)
 
-OBJECTIVE_LIBS = libxspf$(SHARED_SUFFIX)
+SRCS = xspf.c
 
-LIBDIR = $(plugindir)/$(CONTAINER_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = xspf.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) -I../../intl -I../.. -Wall
-
-CXXFLAGS = $(CFLAGS)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(XML_LIBS)
-
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) \
+	-I../../intl -I../.. -Wall
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(XML_LIBS)
