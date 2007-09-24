@@ -1,12 +1,10 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../../extra.mk
 
-CFLAGS   += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../..
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../..
+STATIC_LIB_NOINST = libgui.a
+SRCS = main.cxx support.cxx interface.cxx callbacks.cxx
 
-OBJECTIVE_LIBS_NOINST = libgui.a
-SOURCES = main.cxx support.cxx interface.cxx callbacks.cxx
+include ../../../buildsys.mk
 
-OBJECTS = ${SOURCES:.cxx=.o}
-
-include ../../../mk/objective.mk
+CFLAGS   += $(PLUGIN_CFLAGS)
+CXXFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../..

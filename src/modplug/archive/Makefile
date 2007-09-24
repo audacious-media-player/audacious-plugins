@@ -1,11 +1,8 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../../extra.mk
 
-CXXFLAGS += $(PICFLAGS) -I../../.. $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(AUDACIOUS_CFLAGS)
+STATIC_LIB_NOINST = libarchive.a
 
-OBJECTIVE_LIBS_NOINST = libarchive.a
-
-SOURCES = archive.cxx     \
+SRCS = archive.cxx     \
           open.cxx        \
           arch_raw.cxx    \
           arch_gzip.cxx   \
@@ -13,6 +10,7 @@ SOURCES = archive.cxx     \
           arch_rar.cxx    \
           arch_bz2.cxx
 
-OBJECTS = ${SOURCES:.cxx=.o}
+include ../../../buildsys.mk
 
-include ../../../mk/objective.mk
+CPPFLAGS += -I../../.. $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(AUDACIOUS_CFLAGS)
+CXXFLAGS += $(PLUGIN_CFLAGS) 

@@ -1,14 +1,8 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libmodplug$(SHARED_SUFFIX)
-SUBDIRS = archive gui
+PLUGIN = modplug$(SHARED_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
-
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I.. -I../.. -I../../intl
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I.. -I../.. -I../../intl
-LIBADD  = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -lstdc++ ./archive/libarchive.a ./gui/libgui.a
 SOURCES.plugin  = plugin.cxx modplugbmp.cxx
 SOURCES.core = tables.cxx         \
                sndmix.cxx         \
@@ -43,11 +37,16 @@ SOURCES.core = tables.cxx         \
                load_psm.cxx       \
                modplug.cxx
 
-SOURCES = ${SOURCES.core} ${SOURCES.plugin}
-
-OBJECTS = ${SOURCES:.cxx=.o}
+SRCS = ${SOURCES.core} ${SOURCES.plugin}
 
 LIBDEP = gui/libgui.a archive/libarchive.a
 
-include ../../mk/objective.mk
+include ../../buildsys.mk
 
+CXXFLAGS += $(PLUGIN_CFLAGS)
+CFLAGS   += $(PLUGIN_CFLAGS)
+
+CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I.. -I../.. -I../../intl
+LIBS     += $(MOWGLI_LIBS) $(DBUS_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -lstdc++ ./archive/libarchive.a ./gui/libgui.a
+
+SUBDIRS = archive gui
