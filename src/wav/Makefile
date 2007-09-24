@@ -1,16 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libwav$(SHARED_SUFFIX)
+PLUGIN = libwav$(PLUGIN_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+SRCS = wav$(WAV_SNDFILE).c
 
-SOURCES = wav$(WAV_SNDFILE).c
+include ../../buildsys.mk
 
-LIBADD = -L/usr/local/lib $(SNDFILE_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(MOWGLI_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -Wall
+LIBS += -L/usr/local/lib $(MOWGLI_LIBS) $(SNDFILE_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -Wall
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
