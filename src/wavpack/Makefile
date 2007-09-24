@@ -1,18 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libwavpackplugin$(SHARED_SUFFIX)
+PLUGIN = wavpack$(PLUGIN_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
+SRCS = tags.cxx ui.cxx libwavpack.cxx
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+include ../../buildsys.mk
 
-SOURCES = tags.cxx ui.cxx libwavpack.cxx
+CPPFLAGS += $(DBUS_CFLAGS) $(MOWGLI_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(WAVPACK_CFLAGS) -I../../intl -I../..
+CXXFLAGS += $(PLUGIN_CFLAGS)
 
-LIBADD = -L/usr/local/lib $(WAVPACK_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+LIBS += -L/usr/local/lib $(WAVPACK_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -lstdc++
 
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(WAVPACK_CFLAGS) -I../../intl -I../..
-
-LDFLAGS += -lstdc++
-
-OBJECTS = ${SOURCES:.cxx=.o}
-
-include ../../mk/objective.mk
