@@ -1,15 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = pulse_audio${PLUGIN_SUFFIX}
+SRCS = pulse_audio.c
 
-OBJECTIVE_LIBS = libpulse_audio$(SHARED_SUFFIX)
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -lpulse
-SOURCES = pulse_audio.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BEEP_DEFINES} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += -lpulse ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
