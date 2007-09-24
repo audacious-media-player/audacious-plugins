@@ -28,9 +28,7 @@
  *   - TITLE_LEN removed
  */
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <glib.h>
 #include <string.h>
