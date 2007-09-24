@@ -1,16 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = song_change${PLUGIN_SUFFIX}
+SRCS = song_change.c
 
-OBJECTIVE_LIBS = libsong_change$(SHARED_SUFFIX)
+plugindir = audacious/${GENERAL_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-SOURCES = song_change.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(BEEP_DEFINES) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BEEP_DEFINES} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBADD = ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
