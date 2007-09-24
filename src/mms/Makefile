@@ -1,18 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = mms$(PLUGIN_SUFFIX)
+plugindir = audacious/$(TRANSPORT_PLUGIN_DIR)
 
-OBJECTIVE_LIBS = libmms$(SHARED_SUFFIX)
+SRCS = mms.c
 
-LIBDIR = $(plugindir)/$(TRANSPORT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = mms.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(MMS_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
-
-CXXFLAGS = $(CFLAGS)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(MMS_LIBS)
-
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) \
+	$(MMS_CFLAGS) -I../../intl -I../.. -Wall
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(XML_LIBS) $(MMS_LIBS)
