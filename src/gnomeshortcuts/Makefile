@@ -1,16 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = gnomeshortcuts$(PLUGIN_SUFFIX)
+plugindir = audacious/$(GENERAL_PLUGIN_DIR)
 
-OBJECTIVE_LIBS = libgnomeshortcuts$(SHARED_SUFFIX)
+SRCS = gnomeshortcuts.c
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
 LIBADD = $(GLIB_LIBS) $(DBUS_LIBS)
-SOURCES = gnomeshortcuts.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) \
-	-I../../intl -I../.. -I..
-
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(MOWGLI_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) -I../../intl -I../.. -I..
