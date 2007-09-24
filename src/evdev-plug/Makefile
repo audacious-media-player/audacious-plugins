@@ -1,18 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = evdev-plug${PLUGIN_SUFFIX}
+SRCS = ed.c  ed_bindings_store.c  ed_internals.c  ed_ui.c
 
-OBJECTIVE_LIBS = libevdev-plug$(SHARED_SUFFIX)
+plugindir = audacious/${GENERAL_PLUGIN_DIR}
 
-noinst_HEADERS = ed.h ed_ui.h ed_types.h ed_internals.h ed_actions.h ed_bindings_store.h ed_common.h
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-SOURCES = ed.c ed_ui.c ed_internals.c ed_bindings_store.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) \
-	-I../../intl -I../.. -I..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BEEP_DEFINES} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBADD = ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
