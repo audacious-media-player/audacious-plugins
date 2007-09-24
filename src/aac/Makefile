@@ -1,6 +1,3 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../buildsys.mk
 
 SUBDIRS = mp4ff libfaad2 src
-
-include ../../mk/objective.mk

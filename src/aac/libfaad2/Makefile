@@ -1,13 +1,8 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../../extra.mk
 
-CFLAGS += -I../include -I../../.. -I. $(PICFLAGS) -Wall
+STATIC_LIB_NOINST = libfaad.a
 
-OBJECTIVE_LIBS_NOINST = libfaad.a
-
-LDFLAGS += -lm
-
-SOURCES = bits.c cfft.c decoder.c drc.c \
+SRCS = bits.c cfft.c decoder.c drc.c \
 	drm_dec.c error.c filtbank.c \
 	ic_predict.c is.c lt_predict.c mdct.c mp4.c ms.c output.c pns.c \
 	ps_dec.c ps_syntax.c \
@@ -16,6 +11,9 @@ SOURCES = bits.c cfft.c decoder.c drc.c \
 	sbr_dct.c sbr_e_nf.c sbr_fbt.c sbr_hfadj.c sbr_hfgen.c \
 	sbr_huff.c sbr_qmf.c sbr_syntax.c sbr_tf_grid.c sbr_dec.c
 
-OBJECTS = ${SOURCES:.c=.o}
+include ../../../buildsys.mk
 
-include ../../../mk/objective.mk
+CPPFLAGS += -I../include -I../../.. -I.
+CFLAGS += $(PLUGIN_CFLAGS) -Wall
+
+LIBS += -lm

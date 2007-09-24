@@ -1,13 +1,10 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../../extra.mk
 
-OBJECTIVE_LIBS_NOINST = libmp4ff.a
+STATIC_LIB_NOINST = libmp4ff.a
 
-SOURCES = mp4ff.c mp4atom.c mp4meta.c mp4sample.c mp4util.c \
+SRCS = mp4ff.c mp4atom.c mp4meta.c mp4sample.c mp4util.c \
    mp4tagupdate.c
 
-OBJECTS = ${SOURCES:.c=.o}
+include ../../../buildsys.mk
 
-CFLAGS += $(PICFLAGS) -DUSE_TAGGING=1 -fsigned-char -I../../.. -Wall
-
-include ../../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS) -DUSE_TAGGING=1 -fsigned-char -I../../.. -Wall
