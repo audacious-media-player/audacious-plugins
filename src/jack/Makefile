@@ -1,15 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = jackout${PLUGIN_SUFFIX}
+SRCS = jack.c configure.c bio2jack.c
 
-SOURCES = jack.c configure.c bio2jack.c
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
-OBJECTIVE_LIBS = libjackout$(SHARED_SUFFIX)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -Wall $(SAMPLERATE_CFLAGS) -I../../intl -I../..
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(JACK_LIBS) $(SAMPLERATE_LIBS) -lpthread
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
+CPPFLAGS += ${MOWGLI_CFLAGS} ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${SAMPLERATE_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${JACK_LIBS} ${SAMPLERATE_LIBS} -pthread
