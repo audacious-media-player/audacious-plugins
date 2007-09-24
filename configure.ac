@@ -185,6 +185,8 @@ AC_SUBST(USE_CHARDET)
 dnl plugin stuff
 dnl ========================
 
+AM_SHARED_LIB
+
 dnl Ok, first we find out what flags we need to use.
 AC_MSG_CHECKING([for what extension and flags to use for plugin compilation])
 case "$target" in
@@ -1537,6 +1539,8 @@ AC_SUBST(TRANSPORT_PLUGINS)
 AC_SUBST(GCC42_CFLAGS)
 
 AC_CONFIG_FILES([
+	buildsys.mk
+	extra.mk
 	mk/rules.mk
 	po/Makefile.in
 ])
