@@ -1,15 +1,7 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = paranormal$(PLUGIN_SUFFIX)
+plugindir = audacious/$(VISUALIZATION_PLUGIN_DIR)
 
-OBJECTIVE_LIBS = libparanormal$(SHARED_SUFFIX)
-
-SUBDIRS = libcalc presets
-
-LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(XML_LIBS) $(SDL_LIBS) libcalc/libcalc.a
-
-SOURCES =			\
+SRCS =			\
 	actuators.c		\
 	beatdetect.c		\
 	builtins.c		\
@@ -26,10 +18,14 @@ SOURCES =			\
 	wave.c			\
 	xform.c
 
-OBJECTS = ${SOURCES:.c=.o}
+EXT_DEPS = libcalc/libcalc.a
 
-LIBDEP = libcalc/libcalc.a
+include ../../buildsys.mk
+include ../../extra.mk
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) $(SDL_CFLAGS) -I../../intl -I../..
+SUBDIRS = libcalc presets
 
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) $(SDL_CFLAGS) -I../../intl \
+	-I../.. -I.
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(XML_LIBS) $(SDL_LIBS) libcalc/libcalc.a
