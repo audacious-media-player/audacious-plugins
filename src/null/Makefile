@@ -1,15 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libnull${SHARED_SUFFIX}
+PLUGIN = null${PLUGIN_SUFFIX}
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
-LIBDIR = ${plugindir}/${OUTPUT_PLUGIN_DIR}
+SRCS = null.c
 
-SOURCES = null.c
+include ../../buildsys.mk
 
-OBJECTS = ${SOURCES:.c=.o}
+CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${DBUS_CFLAGS} ${MOWGLI_CFLAGS} -I../..
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
 
-CFLAGS += ${PICFLAGS} \
-	-I../..
-
-include ../../mk/objective.mk
