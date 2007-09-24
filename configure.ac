@@ -1358,7 +1358,7 @@ AM_PATH_XML2(2.0.0, , [
 ])
 
 if test "$have_paranormal" = "yes"; then
-	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal rovascope"
+	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
 fi
 
 if test "$have_xspf" = "yes"; then

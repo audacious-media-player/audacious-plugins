@@ -1,18 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = pls$(PLUGIN_SUFFIX)
+plugindir = audacious/$(CONTAINER_PLUGIN_DIR)
 
-OBJECTIVE_LIBS = libpls$(SHARED_SUFFIX)
+SRCS = pls.c
 
-LIBDIR = $(plugindir)/$(CONTAINER_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = pls.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
-
-CXXFLAGS = $(CFLAGS)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) \
+	-I../../intl -I../.. -Wall
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(XML_LIBS)
