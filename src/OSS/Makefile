@@ -1,17 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libOSS$(SHARED_SUFFIX)
+PLUGIN = OSS$(SHARED_SUFFIX)
+plugindir = audacious/$(OUTPUT_PLUGIN_DIR)
 
-noinst_HEADERS = OSS.h soundcard.h
+SRCS = OSS.c mixer.c about.c configure.c audio.c init.c convert.c
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
+include ../../buildsys.mk
 
-LIBADD = $(OSS_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-SOURCES = OSS.c mixer.c about.c configure.c audio.c init.c convert.c
+LIBS += $(OSS_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(MOWGLI_CFLAGS) $(OSS_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -I.
 
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-
-include ../../mk/objective.mk
