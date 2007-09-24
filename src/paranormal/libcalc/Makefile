@@ -1,16 +1,9 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+STATIC_LIB_NOINST = libcalc.a
 
-OBJECTIVE_LIBS_NOINST = libcalc.a
+SRCS = dict.c  execute.c  function.c  parser.c  storage.c
 
-LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
+include ../../../extra.mk
+include ../../../buildsys.mk
 
-LIBADD = $(GTK_LIBS) $(XML_LIBS) $(SDL_LIBS)
-
-SOURCES = dict.c  execute.c  function.c  parser.c  storage.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) $(SDL_CFLAGS) -I../../intl -I../..
-
-include ../../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(ARCH_DEFINES) $(XML_CPPFLAGS) $(SDL_CFLAGS) -I../../intl -I../..
