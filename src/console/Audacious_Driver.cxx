@@ -6,9 +6,7 @@
  * http://www.slack.net/~ant/libs/
  */
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <glib.h>
 #include <audacious/i18n.h>
