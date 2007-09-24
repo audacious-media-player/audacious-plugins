@@ -1,21 +1,17 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../../extra.mk
 
-OBJECTIVE_LIBS = libtimidity$(SHARED_SUFFIX)
+PLUGIN = timidity$(PLUGIN_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
-
-LIBADD = ../libtimidity/libtimidity.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-SOURCES = \
+SRCS = \
 	callbacks.c \
 	interface.c \
 	xmms-timidity.c \
 
-OBJECTS = ${SOURCES:.c=.o}
-
 LIBDEP = ../libtimidity/libtimidity.a
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../.. -I../libtimidity
+include ../../../buildsys.mk
 
-include ../../../mk/objective.mk
+LIBS += ../libtimidity/libtimidity.a $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../.. -I../libtimidity

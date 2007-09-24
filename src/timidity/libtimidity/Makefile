@@ -1,9 +1,8 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+include ../../../extra.mk
 
-OBJECTIVE_LIBS_NOINST = libtimidity.a
+STATIC_LIB_NOINST = libtimidity.a
 
-SOURCES = \
+SRCS = \
 	common.c \
 	instrum.c \
 	instrum_dls.c \
@@ -16,8 +15,7 @@ SOURCES = \
 	tables.c \
 	timidity.c
 
-CFLAGS += $(PICFLAGS) -I../../..
+include ../../../buildsys.mk
 
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += -I../../.. $(GLIB_CFLAGS)
