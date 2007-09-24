@@ -1,16 +1,15 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libflacng$(SHARED_SUFFIX)
+PLUGIN = flacng$(SHARED_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+SRCS = plugin.c tools.c seekable_stream_callbacks.c flac_compat112.c
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(LIBFLAC_LIBS)
+include ../../buildsys.mk
 
-SOURCES = plugin.c tools.c seekable_stream_callbacks.c flac_compat112.c
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(LIBFLAC_LIBS)
 
 OBJECTS = ${SOURCES:.c=.o}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. $(LIBFLAC_CFLAGS) -Wall
-
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. $(LIBFLAC_CFLAGS) -Wall
