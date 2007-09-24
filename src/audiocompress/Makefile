@@ -1,4 +1,4 @@
-PLUGIN = baudiocompress${PLUGIN_SUFFIX}
+PLUGIN = audiocompress${PLUGIN_SUFFIX}
 SRCS = compress.c	\
        audacious-glue.c
 
