@@ -14,9 +14,8 @@
  * GNU General Public License. Please consult the file "COPYING" for
  * details.
  */
-#ifdef HAVE_CONFIG_H
+
 #include "config.h"
-#endif
 
 /* #define DEBUG 1 */
 

@@ -1,6 +1,6 @@
 include ../../extra.mk
 
-PLUGIN = libwav$(PLUGIN_SUFFIX)
+PLUGIN = wav$(PLUGIN_SUFFIX)
 plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
 SRCS = wav$(WAV_SNDFILE).c

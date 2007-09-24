@@ -1,18 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libcuesheet$(SHARED_SUFFIX)
+PLUGIN = cuesheet$(SHARED_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+SRCS = cuesheet.c
 
-SOURCES = cuesheet.c
-
-OBJECTS = ${SOURCES:.c=.o}
+include ../../buildsys.mk
 
 CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../.. -Wall
-
-CXXFLAGS = $(CFLAGS)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-include ../../mk/objective.mk
+CPPFLAGS = $(CFLAGS)
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
