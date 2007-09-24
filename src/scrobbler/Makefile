@@ -1,20 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-SUBDIRS = 
+PLUGIN = scrobbler$(SHARED_SUFFIX)
+plugindir = audacious/$(GENERAL_PLUGIN_DIR)
 
-OBJECTIVE_LIBS = libscrobbler$(SHARED_SUFFIX)
+DATA = images/audioscrobbler.png images/audioscrobbler_badge.png
 
-imagesdir = $(datadir)/audacious/images
-
-OBJECTIVE_DATA = audioscrobbler.png:$(imagesdir)	\
-	   audioscrobbler_badge.png:$(imagesdir)
-
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
-
-LIBADD += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CURL_LIBS) $(MUSICBRAINZ_LIBS)
-
-SOURCES = 			\
+SRCS = 			\
 	fmt.c			\
 	configure.c		\
 	gtkstuff.c		\
@@ -23,8 +14,13 @@ SOURCES = 			\
 	gerpok.c		\
 	plugin.c
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) -I../../intl -I../.. -Wall
+include ../../buildsys.mk
 
-OBJECTS = ${SOURCES:.c=.o}
+# XXX: used to get install paths right
+PACKAGE = audacious
 
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) $(CURL_CFLAGS) \
+	-I../../intl -I../..
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CURL_LIBS) $(MUSICBRAINZ_LIBS)
+
