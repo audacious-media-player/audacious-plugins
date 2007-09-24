@@ -6,7 +6,7 @@ SRCS = OSS4.c		\
        init.c		\
        convert.c
 
-plugindir = audacious/${INPUT_PLUGIN_DIR}
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
 include ../../buildsys.mk
 include ../../extra.mk
