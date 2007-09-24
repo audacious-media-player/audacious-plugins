@@ -1,17 +1,16 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
-
 SUBDIRS = arts_helper
 
-SOURCES = arts.c configure.c audio.c convert.c
+PLUGIN = arts${PLUGIN_SUFFIX}
+SRCS = arts.c		\
+       configure.c	\
+       audio.c		\
+       convert.c
 
-OBJECTIVE_LIBS = libarts$(SHARED_SUFFIX)
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -Wall $(ARTSC_CFLAGS) -I../../intl -I../..
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(ARTSC_LIBS) -lpthread
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARTSC_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${ARTSC_LIBS} -lpthread

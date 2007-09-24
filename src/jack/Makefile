@@ -1,5 +1,7 @@
 PLUGIN = jackout${PLUGIN_SUFFIX}
-SRCS = jack.c configure.c bio2jack.c
+SRCS = jack.c		\
+       configure.c	\
+       bio2jack.c
 
 plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 

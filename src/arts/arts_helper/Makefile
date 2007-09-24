@@ -1,15 +1,10 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+PROG = audacious-arts-helper
+SRCS = arts_helper.c
 
-SOURCES = arts_helper.c
+include ../../../buildsys.mk
+include ../../../extra.mk
 
-OBJECTIVE_BINS = audacious-arts-helper
+LDFLAGS += -Wl,-export-dynamic
+LIBS += ${ARTSC_LIBS}
 
-LDFLAGS = -Wl,-export-dynamic
-LIBADD = $(ARTSC_LIBS)
-
-CFLAGS += $(ARTSC_CFLAGS) -I../../../intl -I../../..
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../../mk/objective.mk
+CPPFLAGS += ${ARTSC_CFLAGS} -I../../../intl -I../../..
