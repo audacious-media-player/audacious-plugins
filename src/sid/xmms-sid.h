@@ -23,6 +23,7 @@
 #ifndef XMMS_SID_H
 #define XMMS_SID_H
 
+#include <config.h>
 #include "xs_support.h"
 
 #ifdef __cplusplus
