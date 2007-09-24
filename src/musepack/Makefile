@@ -1,16 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libmpc$(SHARED_SUFFIX)
+PLUGIN = musepack$(PLUGIN_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+SRCS = libmpc.cxx
 
-SOURCES = libmpc.cxx
+include ../../buildsys.mk
 
-LIBADD = -lmpcdec $(TAGLIB_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+LIBS += -lmpcdec $(TAGLIB_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
-OBJECTS = ${SOURCES:.cxx=.o}
-
-CXXFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(TAGLIB_CFLAGS) -I../../intl -I../..
-
-include ../../mk/objective.mk
+CXXFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(TAGLIB_CFLAGS) -I../../intl -I../..
