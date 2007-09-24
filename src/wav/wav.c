@@ -161,13 +161,6 @@ read_wav_id(gchar * filename)
     return 0;
 }
 
-static const gchar *
-get_extension(const gchar * filename)
-{
-    const gchar *ext = strrchr(filename, '.');
-    return ext ? ext + 1 : NULL;
-}
-
 static gboolean
 is_our_file(gchar * filename)
 {
@@ -187,7 +180,6 @@ get_title(const gchar * filename)
 {
     Tuple *tuple;
     gchar *title;
-    gchar *scratch;
 
     tuple = tuple_new_from_filename(filename);
 
