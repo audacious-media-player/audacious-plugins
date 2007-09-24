@@ -1,5 +1,5 @@
-include ../mk/rules.mk
-include ../mk/init.mk
+include ../extra.mk
+include ../buildsys.mk
 
 SUBDIRS = $(INPUT_PLUGINS) \
 	$(OUTPUT_PLUGINS) \
@@ -8,5 +8,3 @@ SUBDIRS = $(INPUT_PLUGINS) \
 	$(GENERAL_PLUGINS) \
 	$(CONTAINER_PLUGINS) \
 	$(TRANSPORT_PLUGINS)
-
-include ../mk/objective.mk
