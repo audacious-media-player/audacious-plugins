@@ -1,15 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libcdaudio-ng$(SHARED_SUFFIX)
+PLUGIN = cdaudio-ng$(PLUGIN_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CDIO_LIBS) $(CDDB_LIBS)
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+SRCS = cdaudio-ng.c configure.c
 
-SOURCES = cdaudio-ng.c configure.c
+include ../../buildsys.mk
 
-OBJECTS = ${SOURCES:.c=.o}
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -Wall
+CPPFLAGS = $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CDIO_CFLAGS) $(CDDB_CFLAGS) -I../..
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CDIO_LIBS) $(CDDB_LIBS)
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CDIO_CFLAGS) $(CDDB_CFLAGS) -I../../intl -I../..
-
-include ../../mk/objective.mk
