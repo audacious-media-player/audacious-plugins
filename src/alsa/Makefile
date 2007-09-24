@@ -1,18 +1,14 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libALSA$(SHARED_SUFFIX)
+PLUGIN = ALSA$(SHARED_SUFFIX)
+plugindir = audacious/$(OUTPUT_PLUGIN_DIR)
 
-noinst_HEADERS = alsa.h
+SRCS = alsa.c about.c audio.c configure.c init.c
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
+include ../../buildsys.mk
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(ALSA_LIBS) -lpthread
-SOURCES = alsa.c about.c audio.c configure.c init.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ALSA_CFLAGS) \
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ALSA_CFLAGS) \
 	-I../../intl -I../..
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(ALSA_LIBS)
 
-include ../../mk/objective.mk
