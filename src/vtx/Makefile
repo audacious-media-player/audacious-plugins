@@ -1,16 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libvtx$(SHARED_SUFFIX)
+PLUGIN = vtx$(SHARED_SUFFIX)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+SRCS = about.c  ay8912.c  config.c  info.c  lh5dec.c  vtx.c  vtxfile.c
 
-SOURCES = lh5dec.c ay8912.c about.c config.c info.c vtx.c vtxfile.c 
+include ../../buildsys.mk
 
-OBJECTS = ${SOURCES:.c=.o}
-
-LIBADD = $(VTX_LIBS)
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I. -I../../intl -I../.. -I../..
-
-include ../../mk/objective.mk
+CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../.. -Wall
+CPPFLAGS = $(CFLAGS) -I.
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
