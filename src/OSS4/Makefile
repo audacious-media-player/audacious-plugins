@@ -1,17 +1,16 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = OSS4${PLUGIN_SUFFIX}
+SRCS = OSS4.c		\
+       about.c		\
+       configure.c	\
+       audio.c		\
+       init.c		\
+       convert.c
 
-OBJECTIVE_LIBS = libOSS4$(SHARED_SUFFIX)
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-noinst_HEADERS = OSS4.h soundcard.h
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
-
-LIBADD = $(OSS_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-SOURCES = OSS4.c about.c configure.c audio.c init.c convert.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I/usr/lib/oss/include -I../../intl -I../..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I/usr/lib/oss/include -I../../intl -I../.. ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS} -I/usr/lib/oss/include -I../../intl -I../.. ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS}
+LIBS += ${OSS_LIBS} ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
