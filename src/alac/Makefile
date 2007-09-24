@@ -1,12 +1,11 @@
-include ../../extra.mk
-
-PLUGIN = alac$(SHARED_SUFFIX)
-plugindir = audacious/$(INPUT_PLUGIN_DIR)
-
+PLUGIN = alac${PLUGIN_SUFFIX}
 SRCS = alac.c demux.c plugin.c stream.c
 
-include ../../buildsys.mk
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../.. -Wall
-CPPFLAGS = $(CFLAGS)
-LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+include ../../buildsys.mk
+include ../../extra.mk
+
+CPPFLAGS += ${PLUGIN_CFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

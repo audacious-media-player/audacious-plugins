@@ -1,5 +1,6 @@
 PLUGIN = echo${PLUGIN_SUFFIX}
-SRCS = echo.c gui.c
+SRCS = echo.c	\
+       gui.c
 
 plugindir = audacious/${EFFECT_PLUGIN_DIR}
 
@@ -8,4 +9,4 @@ include ../../extra.mk
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBADD = ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

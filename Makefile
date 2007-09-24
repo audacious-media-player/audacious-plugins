@@ -1,3 +1,3 @@
-include buildsys.mk
-
 SUBDIRS = src po
+
+include buildsys.mk
