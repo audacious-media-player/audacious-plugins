@@ -1,15 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+include ../../extra.mk
 
-OBJECTIVE_LIBS = libfilewriter$(SHARED_SUFFIX)
+PLUGIN = filewriter$(SHARED_SUFFIX)
+plugindir = audacious/$(OUTPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
+SRCS = filewriter.c wav.c mp3.c vorbis.c flac.c
 
-LIBADD = $(GTK_LIBS) ${FILEWRITER_LIBS}
-SOURCES = filewriter.c wav.c mp3.c vorbis.c flac.c
+include ../../buildsys.mk
 
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) -I../../intl -I../.. -Wall
-
-include ../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS) $(PANGO_CFLAGS) $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) -I../../intl -I../.. -Wall
+LIBS += $(GTK_LIBS) ${FILEWRITER_LIBS}
