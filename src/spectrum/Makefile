@@ -1,16 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = spectrum${PLUGIN_SUFFIX}
+SRCS = spectrum.c
 
-OBJECTIVE_LIBS = libspectrum$(SHARED_SUFFIX)
+plugindir = audacious/${VISUALIZATION_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-SOURCES = spectrum.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBADD = ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
