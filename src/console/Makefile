@@ -55,7 +55,9 @@ plugindir = audacious/${INPUT_PLUGIN_DIR}
 include ../../buildsys.mk
 include ../../extra.mk
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} ${DBUS_CFLAGS} -I../../intl -I../..
+LD = ${CXX}
+
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lz ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}$ ${DBUS_LIB} 
+LIBS += -lz ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

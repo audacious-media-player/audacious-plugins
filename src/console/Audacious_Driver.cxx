@@ -12,7 +12,6 @@
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 extern "C" {
-#include "audacious/main.h"
 #include "audacious/tuple.h"
 #include "audacious/tuple_formatter.h"
 #include "audacious/util.h"
