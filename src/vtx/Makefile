@@ -1,4 +1,4 @@
-PLUGIN = vtx${SHARED_SUFFIX}
+PLUGIN = vtx${PLUGIN_SUFFIX}
 SRCS = about.c		\
        ay8912.c		\
        config.c		\
