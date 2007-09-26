@@ -1,13 +1,11 @@
-include ../../extra.mk
-
-PLUGIN = musepack$(PLUGIN_SUFFIX)
-plugindir = audacious/$(INPUT_PLUGIN_DIR)
-
+PLUGIN = musepack${PLUGIN_SUFFIX}
 SRCS = libmpc.cxx
 
+plugindir = audacious/${INPUT_PLUGIN_DIR}
+
 include ../../buildsys.mk
+include ../../extra.mk
 
-LIBS += -lmpcdec $(TAGLIB_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-CXXFLAGS += $(PLUGIN_CFLAGS)
-CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(TAGLIB_CFLAGS) -I../../intl -I../..
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${TAGLIB_CFLAGS} -I../../intl -I../..
+CXXFLAGS += ${PLUGIN_CFLAGS}
+LIBS += -lmpcdec ${TAGLIB_LIBS} ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

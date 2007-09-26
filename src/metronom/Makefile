@@ -1,12 +1,11 @@
-include ../../extra.mk
-
-PLUGIN = metronom$(SHARED_SUFFIX)
-plugindir = audacious/$(INPUT_PLUGIN_DIR)
-
+PLUGIN = metronom${SHARED_SUFFIX}
 SRCS = metronom.c
 
-include ../../buildsys.mk
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../.. -Wall
-CPPFLAGS = $(CFLAGS)
-LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+include ../../buildsys.mk
+include ../../extra.mk
+
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

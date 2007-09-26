@@ -1,12 +1,10 @@
-PLUGIN = sndstretch$(PLUGIN_SUFFIX)
-plugindir = audacious/$(EFFECT_PLUGIN_DIR)
-
+PLUGIN = sndstretch${PLUGIN_SUFFIX}
 SRCS = sndstretch_xmms.c sndstretch.c
 
-include ../../extra.mk
+plugindir = audacious/${EFFECT_PLUGIN_DIR}
+
 include ../../buildsys.mk
+include ../../extra.mk
 
-CFLAGS += $(PLUGIN_CFLAGS)
-CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(MOWGLI_CFLAGS) $(PANGO_CFLAGS) \
-	-I../../intl -I../..
-
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${MOWGLI_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}

@@ -1,5 +1,6 @@
 PLUGIN = blur_scope${PLUGIN_SUFFIX}
-SRCS = blur_scope.c config.c
+SRCS = blur_scope.c	\
+       config.c
 
 plugindir = audacious/${VISUALIZATION_PLUGIN_DIR}
 

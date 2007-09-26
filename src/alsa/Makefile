@@ -1,5 +1,9 @@
 PLUGIN = ALSA${PLUGIN_SUFFIX}
-SRCS = alsa.c about.c audio.c configure.c init.c
+SRCS = alsa.c		\
+       about.c		\
+       audio.c		\
+       configure.c	\
+       init.c
 
 plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 

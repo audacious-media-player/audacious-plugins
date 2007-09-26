@@ -1,12 +1,12 @@
-include ../../extra.mk
+PLUGIN = tta${PLUGIN_SUFFIX}
+SRCS = libtta.c	\
+       ttadec.c
 
-PLUGIN = tta$(PLUGIN_SUFFIX)
-plugindir = audacious/$(INPUT_PLUGIN_DIR)
-
-SRCS = libtta.c ttadec.c
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
 include ../../buildsys.mk
+include ../../extra.mk
 
-CFLAGS += $(PLUGIN_CFLAGS)
-CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-LIBS += -L$(libdir) -laudid3tag $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += -L${libdir} -laudid3tag ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

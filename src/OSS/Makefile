@@ -1,6 +1,4 @@
 PLUGIN = OSS${PLUGIN_SUFFIX}
-plugindir = audacious/${OUTPUT_PLUGIN_DIR}
-
 SRCS = OSS.c		\
        mixer.c		\
        about.c		\
@@ -8,6 +6,8 @@ SRCS = OSS.c		\
        audio.c		\
        init.c		\
        convert.c
+
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
 include ../../buildsys.mk
 include ../../extra.mk

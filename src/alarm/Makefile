@@ -1,5 +1,6 @@
 PLUGIN = alarm${PLUGIN_SUFFIX}
-SRCS = alarm.c interface.c
+SRCS = alarm.c	\
+       interface.c
 
 plugindir = audacious/${GENERAL_PLUGIN_DIR}
 
