@@ -1,7 +1,4 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
-
-OBJECTIVE_LIBS = libamidi-plug$(SHARED_SUFFIX)
+PLUGIN = amidi-plug$(PLUGIN_SUFFIX)
 SUBDIRS = pcfg $(AMIDIPLUG_BACKENDS)
 
 noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
@@ -12,19 +9,22 @@ noinst_HEADERS = amidi-plug.h i_backend.h i_midi.h i_midievent.h \
                  amidi-plug-icon.xpm amidi-plug.logo.xpm \
                  amidi-plug.midiicon.xpm
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+plugindir = audacious/$(INPUT_PLUGIN_DIR)
 
-LIBADD = $(GTK_LIBS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GMODULE_LIBS) -lpthread ./pcfg/libpcfg.a
-SOURCES = amidi-plug.c i_vfslayer.c i_midi.c i_backend.c \
+SRCS = amidi-plug.c i_vfslayer.c i_midi.c i_backend.c \
           i_configure.c i_configure-ap.c i_configure-alsa.c \
           i_configure-fluidsynth.c i_configure-dummy.c \
           i_utils.c i_fileinfo.c
 
+include ../../buildsys.mk
+include ../../extra.mk
+
 OBJECTS = ${SOURCES:.c=.o}
 
-LIBDEP = ./pcfg/libpcfg.a
+EXT_DEPS = ./pcfg/libpcfg.a
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GMODULE_CFLAGS) -DAMIDIPLUGBACKENDDIR=\"$(AMIDIPLUGBACKENDDIR)\" \
-          -I../../intl -I../..
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GMODULE_CFLAGS) $(MOWGLI_CFLAGS) \
+	-DAMIDIPLUGBACKENDDIR=\"$(AMIDIPLUGBACKENDDIR)\" -I../../intl -I../..
 
-include ../../mk/objective.mk
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(GMODULE_LIBS) -lpthread ./pcfg/libpcfg.a

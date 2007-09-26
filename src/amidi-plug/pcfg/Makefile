@@ -1,14 +1,12 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+SRCS = i_pcfg.c
+
+STATIC_LIB_NOINST = libpcfg.a
+
+include ../../../buildsys.mk
+include ../../../extra.mk
 
 noinst_HEADERS = i_pcfg.h
 
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) -I../../..
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GLIB_CFLAGS) -I../../..
 
-OBJECTIVE_LIBS_NOINST = libpcfg.a
-
-SOURCES = i_pcfg.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../../mk/objective.mk
