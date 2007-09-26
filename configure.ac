@@ -184,7 +184,7 @@ AC_SUBST(USE_CHARDET)
 dnl plugin stuff
 dnl ========================
 
-AM_SHARED_LIB
+BUILDSYS_SHARED_LIB
 
 dnl Ok, first we find out what flags we need to use.
 AC_MSG_CHECKING([for what extension and flags to use for plugin compilation])
