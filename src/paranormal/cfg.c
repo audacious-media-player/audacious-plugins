@@ -609,23 +609,26 @@ pn_configure (void)
       gtk_button_box_set_child_size (GTK_BUTTON_BOX (bbox), 64, 0);
       gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cfg_dialog)->action_area),
 			  bbox, FALSE, FALSE, 0);
-      button = gtk_button_new_with_label ("OK");
+
+      button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
       gtk_widget_show (button);
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			  GTK_SIGNAL_FUNC (ok_button_cb), NULL);
+			  GTK_SIGNAL_FUNC (cancel_button_cb), NULL);
       gtk_box_pack_start (GTK_BOX (bbox), button, FALSE, FALSE, 0);
-      button = gtk_button_new_with_label ("Apply");
+
+      button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
       gtk_widget_show (button);
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			  GTK_SIGNAL_FUNC (apply_button_cb), NULL);
       gtk_box_pack_start (GTK_BOX (bbox), button, FALSE, FALSE, 0);
-      button = gtk_button_new_with_label ("Cancel");
+
+      button = gtk_button_new_from_stock (GTK_STOCK_OK);
       gtk_widget_show (button);
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			  GTK_SIGNAL_FUNC (cancel_button_cb), NULL);
+			  GTK_SIGNAL_FUNC (ok_button_cb), NULL);
       gtk_box_pack_start (GTK_BOX (bbox), button, FALSE, FALSE, 0);
     }
 
