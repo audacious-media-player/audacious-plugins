@@ -26,6 +26,8 @@
 #include <gtk/gtk.h>
 #include <audacious/configdb.h>
 
+#include <math.h>
+
 #include "paranormal.h"
 #include "actuators.h"
 #include "containers.h"
@@ -82,6 +84,18 @@ add_actuator (struct pn_actuator *a, GtkCTreeNode *parent, gboolean copy)
 				    ((GtkDestroyNotify) actuator_row_data_destroyed_cb));
 }
 
+static guchar
+gdk_colour_to_paranormal_colour(gint16 colour)
+{
+  return (guchar) (colour / 255);
+}
+
+static gint16
+paranormal_colour_to_gdk_colour(guchar colour)
+{
+  return (gint16) (colour * 255);
+}
+
 static void
 int_changed_cb (GtkSpinButton *sb, int *i)
 {
@@ -104,9 +118,15 @@ string_changed_cb (GtkEditable *t, char **s)
 }
 
 static void
-color_changed_cb (GtkSpinButton *sb, guchar *c)
+color_changed_cb (GtkColorButton *cb, struct pn_color *c)
 {
-  *c = gtk_spin_button_get_value_as_int (sb);
+  GdkColor colour;
+
+  gtk_color_button_get_color(cb, &colour);
+
+  c->r = gdk_colour_to_paranormal_colour(colour.red);
+  c->g = gdk_colour_to_paranormal_colour(colour.green);
+  c->b = gdk_colour_to_paranormal_colour(colour.blue);
 }
 
 static void
@@ -189,42 +209,18 @@ row_select_cb (GtkCTree *ctree, GtkCTreeNode *node,
 	case OPT_TYPE_COLOR:
 	  {
 	    /* FIXME: add some color preview */
-	    GtkWidget *hbox;
-	    hbox = gtk_hbox_new (FALSE, 0);
-	    adj = gtk_adjustment_new (a->options[j].val.cval.r,
-				      0, 255,
-				      1, 2, 0);
-	    w = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 1.0, 0);
-	    gtk_widget_show (w);
-	    gtk_signal_connect (GTK_OBJECT (w), "changed",
-			       GTK_SIGNAL_FUNC (color_changed_cb),
-			       &a->options[j].val.cval.r);
-	    gtk_tooltips_set_tip (actuator_tooltips, w,
+            GdkColor *colour = g_new0(GdkColor, 1);
+
+            colour->red = paranormal_colour_to_gdk_colour(a->options[j].val.cval.r);
+            colour->green = paranormal_colour_to_gdk_colour(a->options[j].val.cval.g);
+            colour->blue = paranormal_colour_to_gdk_colour(a->options[j].val.cval.b);
+
+            w = gtk_color_button_new_with_color(colour);
+	    g_signal_connect(G_OBJECT (w), "color-set",
+			       G_CALLBACK (color_changed_cb),
+			       &a->options[j].val.cval);
+	    gtk_tooltips_set_tip (actuator_tooltips, GTK_WIDGET(w),
 				  a->desc->option_descs[j].doc, NULL);
-	    gtk_box_pack_start (GTK_BOX (hbox), w, TRUE, TRUE, 0);
-	    adj = gtk_adjustment_new (a->options[j].val.cval.g,
-				      0, 255,
-				      1, 2, 0);
-	    w = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 1.0, 0);
-	    gtk_widget_show (w);
-	    gtk_signal_connect (GTK_OBJECT (w), "changed",
-			       GTK_SIGNAL_FUNC (color_changed_cb),
-			       &a->options[j].val.cval.g);
-	    gtk_tooltips_set_tip (actuator_tooltips, w,
-				  a->desc->option_descs[j].doc, NULL);
-	    gtk_box_pack_start (GTK_BOX (hbox), w, TRUE, TRUE, 6);
-	    adj = gtk_adjustment_new (a->options[j].val.cval.b,
-				      0, 255,
-				      1, 2, 0);
-	    w = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 1.0, 0);
-	    gtk_widget_show (w);
-	    gtk_signal_connect (GTK_OBJECT (w), "changed",
-			       GTK_SIGNAL_FUNC (color_changed_cb),
-			       &a->options[j].val.cval.b);
-	    gtk_tooltips_set_tip (actuator_tooltips, w,
-				  a->desc->option_descs[j].doc, NULL);
-	    gtk_box_pack_start (GTK_BOX (hbox), w, TRUE, TRUE, 0);
-	    w = hbox;
 	  }
 	  break;	  
 	case OPT_TYPE_COLOR_INDEX:
