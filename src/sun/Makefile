@@ -1,19 +1,17 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+SRCS =	sun.c	    \
+	audio.c	    \
+	convert.c   \
+	mixer.c	    \
+	configure.c \
+	about.c
 
-sunsources =	sun.c	    \
-		audio.c	    \
-		convert.c   \
-		mixer.c	    \
-		configure.c \
-		about.c
+PLUGIN = sun$(PLUGIN_SUFFIX)
+plugindir = audacious/$(OUTPUT_PLUGIN_DIR)
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
-OBJECTIVE_LIBS = libsun$(SHARED_SUFFIX)
+include ../../buildsys.mk
+include ../../extra.mk
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-SOURCES= $(sunsources)
-OBJECTS= ${SOURCES:.c=.o}
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
-include ../../mk/objective.mk
