@@ -1,4 +1,4 @@
-PLUGIN = filewriter${SHARED_SUFFIX}
+PLUGIN = filewriter${PLUGIN_SUFFIX}
 SRCS = filewriter.c	\
        wav.c		\
        mp3.c		\

@@ -1,4 +1,4 @@
-PLUGIN = flacng${SHARED_SUFFIX}
+PLUGIN = flacng${PLUGIN_SUFFIX}
 SRCS = plugin.c				\
        tools.c				\
        seekable_stream_callbacks.c	\
