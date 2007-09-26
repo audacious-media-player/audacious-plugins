@@ -556,7 +556,7 @@ pn_configure (void)
 			0, 2, 0, 1,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      actuator_add_button = gtk_button_new_with_label ("Add");
+      actuator_add_button = gtk_button_new_from_stock(GTK_STOCK_ADD);
       gtk_widget_show (actuator_add_button);
       gtk_signal_connect (GTK_OBJECT (actuator_add_button), "clicked",
 			  GTK_SIGNAL_FUNC (add_actuator_cb), NULL);
@@ -564,7 +564,7 @@ pn_configure (void)
 			0, 1, 1, 2,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      actuator_remove_button = gtk_button_new_with_label ("Remove");
+      actuator_remove_button = gtk_button_new_from_stock(GTK_STOCK_REMOVE);
       gtk_widget_set_sensitive (actuator_remove_button, FALSE);
       gtk_widget_show (actuator_remove_button);
       gtk_signal_connect (GTK_OBJECT (actuator_remove_button), "clicked",
@@ -573,7 +573,7 @@ pn_configure (void)
 			1, 2, 1, 2,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      button = gtk_button_new_with_label ("Load");
+      button = gtk_button_new_from_stock(GTK_STOCK_OPEN);
       gtk_widget_show (button);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			  GTK_SIGNAL_FUNC (load_button_cb), NULL);
@@ -581,7 +581,7 @@ pn_configure (void)
 			0, 1, 2, 3,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      button = gtk_button_new_with_label ("Save");
+      button = gtk_button_new_from_stock(GTK_STOCK_SAVE);
       gtk_widget_show (button);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			  GTK_SIGNAL_FUNC (save_button_cb), NULL);
