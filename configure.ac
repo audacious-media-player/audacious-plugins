@@ -185,6 +185,8 @@ dnl plugin stuff
 dnl ========================
 
 BUILDSYS_SHARED_LIB
+BUILDSYS_PROG_IMPLIB
+test x"$PROG_IMPLIB_NEEDED" = x"yes" && LIBS="$LIBS -L\${libdir} -laudacious.exe"
 
 dnl Ok, first we find out what flags we need to use.
 AC_MSG_CHECKING([for what extension and flags to use for plugin compilation])
