@@ -1283,7 +1283,7 @@ AC_ARG_ENABLE(neon,
 [have_neon=no])
 
 if test "x$have_neon" = "xyes"; then
-    PKG_CHECK_MODULES(NEON, [neon >= 0.27], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon" ], [have_neon="no"])
+    PKG_CHECK_MODULES(NEON, [neon >= 0.26], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon" ], [have_neon="no"])
     NEON_LIBS=`pkg-config --libs neon`
     NEON_CFLAGS=`pkg-config --cflags neon`
 else
