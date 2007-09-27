@@ -1,15 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = lirc$(PLUGIN_SUFFIX)
 
-OBJECTIVE_LIBS = liblirc$(SHARED_SUFFIX)
+plugindir = audacious/$(GENERAL_PLUGIN_DIR)
+SRCS = about.c lirc.c
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBADD = -llirc_client $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-SOURCES = about.c lirc.c
+LIBS += -llirc_client $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(MOWGLI_CFLAGS) $(PANGO_CFLAGS) $(DBUS_CFLAGS) -I../../intl -I../..
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
