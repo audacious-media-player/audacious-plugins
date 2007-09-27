@@ -53,6 +53,11 @@ VFSConstructor neon_http_const = {
     neon_vfs_metadata_impl
 };
 
+/* bring ne_set_connect_timeout in as a weak reference, not using it
+ * unless we have it available (neon 0.27) --nenolod
+ */
+extern void ne_set_connect_timeout(ne_session *sess, int timeout) __attribute__ ((weak));
+
 /*
  * ========
  */
@@ -565,7 +570,10 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
         ne_add_server_auth(handle->session, NE_AUTH_BASIC, server_auth_callback, (void *)handle);
         ne_set_session_flag(handle->session, NE_SESSFLAG_ICYPROTO, 1);
         ne_set_session_flag(handle->session, NE_SESSFLAG_PERSIST, 0);
-        ne_set_connect_timeout(handle->session, 10);
+
+        if (ne_set_connect_timeout != NULL)
+            ne_set_connect_timeout(handle->session, 10);
+
         ne_set_read_timeout(handle->session, 10);
         ne_set_useragent(handle->session, "Audacious/1.4.0");
         ne_redirect_register(handle->session);
