@@ -1,5 +1,4 @@
-h
-LUGIN = metronom${PLUGIN_SUFFIX}
+PLUGIN = metronom${PLUGIN_SUFFIX}
 SRCS = metronom.c
 
 plugindir = audacious/${INPUT_PLUGIN_DIR}
