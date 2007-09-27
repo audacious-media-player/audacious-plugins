@@ -101,7 +101,7 @@ depend: pre-depend ${SRCS}
 				;; \
 			esac; \
 		done; \
-		if ${CPP} ${CPPFLAGS} -M $$list >.deps; then \
+		if ${CPP} ${CPPFLAGS} ${CFLAGS} -M $$list >.deps; then \
 			${DEPEND_OK}; \
 		else \
 			${DEPEND_FAILED}; \
