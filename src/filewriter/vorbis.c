@@ -20,6 +20,9 @@
  */
 
 #include "plugins.h"
+
+#ifdef FILEWRITER_VORBIS
+
 #include <vorbis/vorbisenc.h>
 #include <stdlib.h>
 
@@ -310,3 +313,5 @@ static void vorbis_configure(void)
 
     gtk_widget_show_all(configure_win);
 }
+
+#endif
