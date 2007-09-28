@@ -22,6 +22,11 @@ if test -d "/usr/X11R6/include"; then
 	CPPFLAGS="$CPPFLAGS -I/usr/X11R6/include"
 fi
 
+dnl append audacious header path to CPPFLAGS when --prefix is specified.
+if test "$prefix" != "NONE" ; then
+   CPPFLAGS="$CPPFLAGS -I${includedir}"
+fi
+
 dnl OMK bootstrap
 AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])
 AC_SUBST([VERSION], [AC_PACKAGE_VERSION])
