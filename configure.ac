@@ -1371,7 +1371,7 @@ if test "$have_xspf" = "yes"; then
 	CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
 fi
 
-dnl *** ProjectM (GL Milkdrop port)
+dnl *** projectM (GL Milkdrop port)
 
 AC_ARG_ENABLE(projectm,
 [  --disable-projectm      disable projectM vis plugin. (default=enabled)],
@@ -1379,7 +1379,7 @@ AC_ARG_ENABLE(projectm,
 [have_projectm=yes])
 
 if test "$have_projectm" = "yes"; then
-	PKG_CHECK_MODULES(LIBPROJECTM, libprojectM >= 0.0.0, [have_projectm="yes"], [have_projectm="no"])
+	PKG_CHECK_MODULES(LIBPROJECTM, libprojectM < 1.0, [have_projectm="yes"], [have_projectm="no"])
 	AM_PATH_SDL(1.2.5, , [
 		AC_MSG_WARN([*** SDL is not installed. projectM will not be built. ***])
 		have_projectm="no"
@@ -1387,7 +1387,7 @@ if test "$have_projectm" = "yes"; then
 	if test x$libprjM = xno; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
-	                        You can download libprojectM at http://xmms-projectM.sf.net/])
+	                        You can download libprojectM at http://projectm.sf.net/])
 	fi
 	LIBPROJECTM_datadir=`pkg-config --variable=pkgdatadir libprojectM`;
 	LIBPROJECTM_sysconfdir=`pkg-config --variable=sysconfdir libprojectM`;
@@ -1398,6 +1398,36 @@ AC_SUBST(LIBPROJECTM_CFLAGS)
 
 if test "$have_projectm" = "yes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm"
+fi
+
+dnl *** projectM (GL Milkdrop port)
+
+AC_ARG_ENABLE(projectm-1.0,
+[  --disable-projectm-1.0      disable projectM 1.0+ vis plugin. (default=enabled)],
+[have_projectm1=$enableval],
+[have_projectm1=yes])
+
+if test "$have_projectm1" = "yes"; then
+	PKG_CHECK_MODULES(LIBPROJECTM1, libprojectM >= 1.0, [have_projectm1="yes"], [have_projectm1="no"])
+	AM_PATH_SDL(1.2.5, , [
+		AC_MSG_WARN([*** SDL is not installed. projectM will not be built. ***])
+		have_projectm1="no"
+	])
+	if test x$libprjM = xno; then
+	        AC_MSG_WARN([*** libprojectM not found.
+	                        libprojectM is needed to build this package.
+	                        You can download libprojectM at http://projectm.sf.net/])
+	fi
+	LIBPROJECTM1_datadir=`pkg-config --variable=pkgdatadir libprojectM`;
+	LIBPROJECTM1_sysconfdir=`pkg-config --variable=sysconfdir libprojectM`;
+        LIBPROJECTM1_prefix=`pkg-config --variable=prefix libprojectM`;
+	LIBPROJECTM1_CFLAGS="$LIBPROJECTM1_CFLAGS -DPROJECTM_DATADIR=\\\"$LIBPROJECTM1_datadir\\\" -DPROJECTM_SYSCONFDIR=\\\"$LIBPROJECTM1_sysconfdir\\\" -DPROJECTM_PREFIX=\\\"$LIBPROJECTM1_prefix\\\"";
+fi
+AC_SUBST(LIBPROJECTM1_LIBS)
+AC_SUBST(LIBPROJECTM1_CFLAGS)
+
+if test "$have_projectm1" = "yes"; then
+	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm-1.0"
 fi
 
 dnl *** TTA
@@ -1632,7 +1662,8 @@ echo "  -------------"
 echo "  Blur Scope:                             yes"
 echo "  Spectrum Analyzer:                      yes"
 echo "  Paranormal Visualization Library:       $have_paranormal"
-echo "  ProjectM (GL milkdrop):                 $have_projectm"
+echo "  projectM 0.x (GL milkdrop):             $have_projectm"
+echo "  projectM 1.x (GL milkdrop):             $have_projectm1"
 echo "  RootVis plugin:                         $have_rootvis"
 echo
 echo "  Transport"
