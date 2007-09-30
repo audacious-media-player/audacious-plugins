@@ -106,6 +106,7 @@ depend: pre-depend ${SRCS}
 			if ${CPP} ${CPPFLAGS} -M $$list >.deps; then \
 				${DEPEND_OK}; \
 			else \
+				rm -f .deps; \
 				${DEPEND_FAILED}; \
 			fi; \
 		fi; \
