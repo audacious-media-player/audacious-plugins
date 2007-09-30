@@ -531,7 +531,10 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
     _ENTER;
 
     db = bmp_cfg_db_open();
-    bmp_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy);
+    if (FALSE == bmp_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy)) {
+        use_proxy = FALSE;
+    }
+
     if (use_proxy) {
         if (FALSE == bmp_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host)) {
             _ERROR("Could not read proxy host, disabling proxy use");
