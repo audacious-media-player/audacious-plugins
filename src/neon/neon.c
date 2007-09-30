@@ -53,6 +53,23 @@ VFSConstructor neon_http_const = {
     neon_vfs_metadata_impl
 };
 
+VFSConstructor neon_https_const = {
+    "https://",
+    neon_vfs_fopen_impl,
+    neon_vfs_fclose_impl,
+    neon_vfs_fread_impl,
+    neon_vfs_fwrite_impl,
+    neon_vfs_getc_impl,
+    neon_vfs_ungetc_impl,
+    neon_vfs_fseek_impl,
+    neon_vfs_rewind_impl,
+    neon_vfs_ftell_impl,
+    neon_vfs_feof_impl,
+    neon_vfs_truncate_impl,
+    neon_vfs_fsize_impl,
+    neon_vfs_metadata_impl
+};
+
 /* bring ne_set_connect_timeout in as a weak reference, not using it
  * unless we have it available (neon 0.27) --nenolod
  */
@@ -150,6 +167,7 @@ static void init(void) {
 
     if (0 != ne_has_support(NE_FEATURE_SSL)) {
         _DEBUG("neon compiled with thread-safe SSL, enabling https:// transport");
+        vfs_register_transport(&neon_https_const);
     }
 
     _LEAVE;
