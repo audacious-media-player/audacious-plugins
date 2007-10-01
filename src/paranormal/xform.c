@@ -22,9 +22,7 @@
    so that only 1 apply_xform needs to be done for as many
    of these as someone wants to use */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#include <config.h>
 
 #include <math.h>
 
