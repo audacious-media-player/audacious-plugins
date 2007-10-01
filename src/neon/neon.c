@@ -1277,7 +1277,7 @@ off_t neon_vfs_fsize_impl(VFSFile* file) {
 
     if (-1 == h->content_length) {
         _DEBUG("Unknown content length");
-        _LEAVE 0;
+        _LEAVE -1;
     }
 
     _LEAVE (h->content_start + h->content_length);
