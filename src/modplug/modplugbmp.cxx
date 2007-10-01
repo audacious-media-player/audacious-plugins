@@ -14,12 +14,9 @@
 #include "stddefs.h"
 #include "archive/open.h"
 extern "C" {
-#include "audacious/configdb.h"
-#include "audacious/output.h"
-#include "audacious/tuple.h"
-#include "audacious/tuple_formatter.h"
-#include "audacious/vfs.h"
-#include "audacious/strings.h"
+#include <audacious/configdb.h>
+#include <audacious/output.h>
+#include <audacious/strings.h>
 }
 
 static char* format_and_free_ti( Tuple* ti, int* length )
