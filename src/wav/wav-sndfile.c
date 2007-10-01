@@ -38,8 +38,6 @@
 #include <audacious/util.h>
 #include <audacious/i18n.h>
 #include <audacious/main.h>
-#include <audacious/tuple.h>
-#include <audacious/tuple_formatter.h>
 #include <audacious/output.h>
 #include "wav-sndfile.h"
 
@@ -498,14 +496,14 @@ file_mseek (InputPlayback *playback, gulong millisecond)
 }
 
 static void
-file_seek (InputPlayback *playback, int time)
+file_seek (InputPlayback *playback, gint time)
 {
 	gulong millisecond = time * 1000;
 	file_mseek(playback, millisecond);
 }
 
 static void
-get_song_info (char *filename, char **title, int *length)
+get_song_info (gchar *filename, gchar **title, gint *length)
 {
 	(*length) = get_song_length(filename);
 	(*title) = get_title(filename);

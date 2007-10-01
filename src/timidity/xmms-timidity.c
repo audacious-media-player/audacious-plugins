@@ -17,12 +17,11 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include <config.h>
+#include "config.h"
 
 #include <audacious/util.h>
 #include <audacious/configdb.h>
 #include <audacious/main.h>
-#include <audacious/vfs.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>

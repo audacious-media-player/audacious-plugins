@@ -20,11 +20,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
+#include "config.h"
 
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 
-#include "../../config.h"
 
 static int apply_effect (gpointer *d, gint length, AFormat afmt,
 			gint srate, gint nch);

@@ -1,6 +1,8 @@
 #ifndef XMMS_MUSEPACK
 #define XMMS_MUSEPACK
 
+#include "config.h"
+
 //xmms headers
 extern "C"
 {
@@ -9,9 +11,7 @@ extern "C"
 #include <audacious/util.h>
 #include <audacious/configdb.h>
 #include <audacious/main.h>
-#include <audacious/vfs.h>
 #include <audacious/i18n.h>
-#include "../../config.h"
 }
 
 //stdlib headers

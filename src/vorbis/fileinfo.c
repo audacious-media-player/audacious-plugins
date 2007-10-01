@@ -37,7 +37,6 @@
 
 #include <audacious/strings.h>
 #include <audacious/util.h>
-#include <audacious/vfs.h>
 #include <audacious/i18n.h>
 
 #include "vorbis.h"

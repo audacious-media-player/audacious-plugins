@@ -18,7 +18,6 @@
 
 #include "config.h"
 
-#include <audacious/vfs.h>
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
 

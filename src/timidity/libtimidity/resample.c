@@ -22,7 +22,6 @@
 
 #include <config.h>
 
-#include <audacious/vfs.h>
 #include <math.h>
 #include <stdlib.h>
 
