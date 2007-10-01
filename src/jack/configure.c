@@ -24,7 +24,7 @@
 
 #include "jack.h"
 
-#include "audacious/configdb.h"
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 # include "config.h"
 

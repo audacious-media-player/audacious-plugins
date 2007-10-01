@@ -6,7 +6,7 @@
 
 
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 
 void convert_free_buffer(void);
 

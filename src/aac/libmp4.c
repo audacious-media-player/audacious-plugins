@@ -6,14 +6,14 @@
 #include "mp4ff.h"
 #include "tagging.h"
 
-#include "audacious/plugin.h"
-#include "audacious/output.h"
-#include "audacious/util.h"
-#include "audacious/vfs.h"
+#include <audacious/plugin.h>
+#include <audacious/output.h>
+#include <audacious/util.h>
+#include <audacious/vfs.h>
 #include "audacious/i18n.h"
-#include "audacious/strings.h"
-#include "audacious/main.h"
-#include "audacious/tuple.h"
+#include <audacious/strings.h>
+#include <audacious/main.h>
+#include <audacious/tuple.h>
 #include "audacious/tuple_formatter.h"
 
 #define MP4_VERSION VERSION

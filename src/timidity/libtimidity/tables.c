@@ -21,7 +21,7 @@
 
 #include <config.h>
 
-#include "audacious/vfs.h"
+#include <audacious/vfs.h>
 
 #include "timidity.h"
 #include "tables.h"

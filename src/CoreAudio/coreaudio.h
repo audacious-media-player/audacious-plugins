@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 
 #ifdef WORDS_BIGENDIAN
 # define IS_BIG_ENDIAN TRUE

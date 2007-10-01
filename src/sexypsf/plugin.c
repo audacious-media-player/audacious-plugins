@@ -16,13 +16,13 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "audacious/output.h"
-#include "audacious/plugin.h"
-#include "audacious/main.h"
-#include "audacious/tuple.h"
+#include <audacious/output.h>
+#include <audacious/plugin.h>
+#include <audacious/main.h>
+#include <audacious/tuple.h>
 #include "audacious/tuple_formatter.h"
-#include "audacious/util.h"
-#include "audacious/vfs.h"
+#include <audacious/util.h>
+#include <audacious/vfs.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

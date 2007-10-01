@@ -35,8 +35,8 @@
 
 #include "audioio.h"
 
-#include "audacious/plugin.h"
-#include "audacious/configdb.h"
+#include <audacious/plugin.h>
+#include <audacious/configdb.h>
 
 /* Default path to audio device. */
 #ifndef SUN_DEV_AUDIO

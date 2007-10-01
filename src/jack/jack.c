@@ -6,8 +6,8 @@
  *	This code maps xmms calls into the jack translation library
  */
 
-#include "audacious/configdb.h"
-#include "audacious/util.h"
+#include <audacious/configdb.h>
+#include <audacious/util.h>
 #include <dlfcn.h>
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>

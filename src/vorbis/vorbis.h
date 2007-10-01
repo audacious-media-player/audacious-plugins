@@ -3,7 +3,7 @@
 
 #include <vorbis/vorbisfile.h>
 
-#include "audacious/vfs.h"
+#include <audacious/vfs.h>
 
 typedef struct {
     VFSFile *fd;

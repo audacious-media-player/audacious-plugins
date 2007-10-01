@@ -22,8 +22,8 @@
 #include <errno.h>
 
 #include "sun.h"
-#include "audacious/util.h"
-#include "audacious/configdb.h"
+#include <audacious/util.h>
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 
 #include "mixer.h"

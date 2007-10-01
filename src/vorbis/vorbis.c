@@ -50,11 +50,11 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
-#include "audacious/plugin.h"
-#include "audacious/output.h"
-#include "audacious/util.h"
-#include "audacious/configdb.h"
-#include "audacious/main.h"
+#include <audacious/plugin.h>
+#include <audacious/output.h>
+#include <audacious/util.h>
+#include <audacious/configdb.h>
+#include <audacious/main.h>
 #include <audacious/i18n.h>
 #include <audacious/strings.h>
 

@@ -18,7 +18,7 @@
  */
 
 #include "coreaudio.h"
-#include "audacious/configdb.h"
+#include <audacious/configdb.h>
 #include <CoreAudio/CoreAudio.h>
 
 #include <audacious/i18n.h>

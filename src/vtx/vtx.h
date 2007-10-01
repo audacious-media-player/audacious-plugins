@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 
 void vtx_init(void);
 void vtx_about(void);

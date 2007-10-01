@@ -31,13 +31,13 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
-#include "audacious/vfs.h"
-#include "audacious/main.h"
-#include "audacious/util.h"
-#include "audacious/playlist.h"
+#include <audacious/vfs.h>
+#include <audacious/main.h>
+#include <audacious/util.h>
+#include <audacious/playlist.h>
 #include "audacious/playlist_container.h"
-#include "audacious/plugin.h"
-#include "audacious/strings.h"
+#include <audacious/plugin.h>
+#include <audacious/strings.h>
 
 static void
 parse_extm3u_info(const gchar * info, gchar ** title, gint * length)

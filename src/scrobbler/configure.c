@@ -2,8 +2,8 @@
 
 #include <config.h>
 
-#include "audacious/util.h"
-#include "audacious/configdb.h"
+#include <audacious/util.h>
+#include <audacious/configdb.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -21,7 +21,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 #include "rocklight.h"
 
 enum type {

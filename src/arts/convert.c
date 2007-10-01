@@ -18,7 +18,7 @@
 
 #include "config.h"
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 #include <glib.h>
 
 #ifdef WORDS_BIGENDIAN

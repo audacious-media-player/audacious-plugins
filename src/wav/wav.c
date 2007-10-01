@@ -30,7 +30,7 @@
 #include <audacious/main.h>
 #include <audacious/tuple.h>
 #include <audacious/tuple_formatter.h>
-#include "audacious/output.h"
+#include <audacious/output.h>
 #include <audacious/i18n.h>
 
 gchar *wav_fmts[] = { "wav", "raw", "pcm", NULL };

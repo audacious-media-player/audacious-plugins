@@ -19,16 +19,16 @@
 
 #include <config.h>
 
-#include "audacious/util.h"
-#include "audacious/configdb.h"
-#include "audacious/main.h"
-#include "audacious/vfs.h"
+#include <audacious/util.h>
+#include <audacious/configdb.h>
+#include <audacious/main.h>
+#include <audacious/vfs.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include <timidity.h>
 #include <stdio.h>
-#include "audacious/output.h"
+#include <audacious/output.h>
 #include <audacious/i18n.h>
 
 #include "xmms-timidity.h"
