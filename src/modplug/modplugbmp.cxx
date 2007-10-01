@@ -14,7 +14,6 @@
 #include "stddefs.h"
 #include "archive/open.h"
 extern "C" {
-#include <glib.h>
 #include "audacious/configdb.h"
 #include "audacious/output.h"
 #include "audacious/tuple.h"
@@ -523,28 +522,28 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	
 	switch(lSoundFile->GetType())
         {
-	case MOD_TYPE_MOD:	tmps = g_strdup("ProTracker"); break;
-	case MOD_TYPE_S3M:	tmps = g_strdup("Scream Tracker 3"); break;
-	case MOD_TYPE_XM:	tmps = g_strdup("Fast Tracker 2"); break;
-	case MOD_TYPE_IT:	tmps = g_strdup("Impulse Tracker"); break;
-	case MOD_TYPE_MED:	tmps = g_strdup("OctaMed"); break;
-	case MOD_TYPE_MTM:	tmps = g_strdup("MultiTracker Module"); break;
-	case MOD_TYPE_669:	tmps = g_strdup("669 Composer / UNIS 669"); break;
-	case MOD_TYPE_ULT:	tmps = g_strdup("Ultra Tracker"); break;
-	case MOD_TYPE_STM:	tmps = g_strdup("Scream Tracker"); break;
-	case MOD_TYPE_FAR:	tmps = g_strdup("Farandole"); break;
-	case MOD_TYPE_AMF:	tmps = g_strdup("ASYLUM Music Format"); break;
-	case MOD_TYPE_AMS:	tmps = g_strdup("AMS module"); break;
-	case MOD_TYPE_DSM:	tmps = g_strdup("DSIK Internal Format"); break;
-	case MOD_TYPE_MDL:	tmps = g_strdup("DigiTracker"); break;
-	case MOD_TYPE_OKT:	tmps = g_strdup("Oktalyzer"); break;
-	case MOD_TYPE_DMF:	tmps = g_strdup("Delusion Digital Music Fileformat (X-Tracker)"); break;
-	case MOD_TYPE_PTM:	tmps = g_strdup("PolyTracker"); break;
-	case MOD_TYPE_DBM:	tmps = g_strdup("DigiBooster Pro"); break;
-	case MOD_TYPE_MT2:	tmps = g_strdup("MadTracker 2"); break;
-	case MOD_TYPE_AMF0:	tmps = g_strdup("AMF0"); break;
-	case MOD_TYPE_PSM:	tmps = g_strdup("Protracker Studio Module"); break;
-	default:			tmps = g_strdup("ModPlug unknown"); break;
+	case MOD_TYPE_MOD:	tmps = "ProTracker"; break;
+	case MOD_TYPE_S3M:	tmps = "Scream Tracker 3"; break;
+	case MOD_TYPE_XM:	tmps = "Fast Tracker 2"; break;
+	case MOD_TYPE_IT:	tmps = "Impulse Tracker"; break;
+	case MOD_TYPE_MED:	tmps = "OctaMed"; break;
+	case MOD_TYPE_MTM:	tmps = "MultiTracker Module"; break;
+	case MOD_TYPE_669:	tmps = "669 Composer / UNIS 669"; break;
+	case MOD_TYPE_ULT:	tmps = "Ultra Tracker"; break;
+	case MOD_TYPE_STM:	tmps = "Scream Tracker"; break;
+	case MOD_TYPE_FAR:	tmps = "Farandole"; break;
+	case MOD_TYPE_AMF:	tmps = "ASYLUM Music Format"; break;
+	case MOD_TYPE_AMS:	tmps = "AMS module"; break;
+	case MOD_TYPE_DSM:	tmps = "DSIK Internal Format"; break;
+	case MOD_TYPE_MDL:	tmps = "DigiTracker"; break;
+	case MOD_TYPE_OKT:	tmps = "Oktalyzer"; break;
+	case MOD_TYPE_DMF:	tmps = "Delusion Digital Music Fileformat (X-Tracker)"; break;
+	case MOD_TYPE_PTM:	tmps = "PolyTracker"; break;
+	case MOD_TYPE_DBM:	tmps = "DigiBooster Pro"; break;
+	case MOD_TYPE_MT2:	tmps = "MadTracker 2"; break;
+	case MOD_TYPE_AMF0:	tmps = "AMF0"; break;
+	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
+	default:		tmps = "ModPlug unknown"; break;
 	}
 	tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
 	tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
