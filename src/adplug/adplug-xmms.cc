@@ -29,7 +29,7 @@
 #include "emuopl.h"
 #include "silentopl.h"
 #include "players.h"
-#include "audacious/i18n.h"
+#include <audacious/i18n.h>
 extern "C"
 {
 #include <audacious/plugin.h>

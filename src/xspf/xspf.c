@@ -33,7 +33,7 @@
 #include <audacious/main.h>
 #include <audacious/util.h>
 #include <audacious/playlist.h>
-#include "audacious/playlist_container.h"
+#include <audacious/playlist_container.h>
 #include <audacious/plugin.h>
 
 #include <libxml/tree.h>

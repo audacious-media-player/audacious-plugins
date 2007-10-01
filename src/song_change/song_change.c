@@ -16,7 +16,7 @@
 #include <string.h>
 
 #include <audacious/plugin.h>
-#include "audacious/ui_preferences.h"
+#include <audacious/ui_preferences.h>
 #include <audacious/configdb.h>
 #include <audacious/auddrct.h>
 #include <audacious/formatter.h>

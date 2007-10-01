@@ -20,7 +20,7 @@
 #include <audacious/plugin.h>
 #include <audacious/main.h>
 #include <audacious/tuple.h>
-#include "audacious/tuple_formatter.h"
+#include <audacious/tuple_formatter.h>
 #include <audacious/util.h>
 #include <audacious/vfs.h>
 #include <stdio.h>

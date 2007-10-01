@@ -36,10 +36,10 @@
 
 #include <audacious/plugin.h>
 #include <audacious/util.h>
-#include "audacious/i18n.h"
+#include <audacious/i18n.h>
 #include <audacious/main.h>
 #include <audacious/tuple.h>
-#include "audacious/tuple_formatter.h"
+#include <audacious/tuple_formatter.h>
 #include <audacious/output.h>
 #include "wav-sndfile.h"
 
