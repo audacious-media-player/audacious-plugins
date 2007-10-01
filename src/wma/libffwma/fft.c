@@ -25,10 +25,7 @@
 #include "dsputil.h"
 
 #ifdef HAVE_ALTIVEC
-
-#ifdef HAVE_ALTIVEC_H
 #include <altivec.h>
-#endif
 
 #ifdef CONFIG_DARWIN
 #include <sys/sysctl.h>
