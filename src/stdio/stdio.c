@@ -27,8 +27,6 @@
 
 #include <string.h>
 
-#include <magic.h>
-
 static gchar *
 vfs_stdio_urldecode_path(const gchar * encoded_path)
 {
@@ -251,28 +249,6 @@ stdio_vfs_fsize_impl(VFSFile * file)
     return s.st_size;
 }
 
-static magic_t mdb_handle = NULL;
-
-gchar *
-stdio_vfs_metadata_impl(VFSFile *file, const gchar *field)
-{
-    if (!g_ascii_strcasecmp(field, "content-type"))
-    {
-        gchar *decpath;
-        const gchar *out;
-
-        if (mdb_handle == NULL)
-            mdb_handle = magic_open(MAGIC_MIME);
-
-        decpath = vfs_stdio_urldecode_path(file->uri);
-        out = magic_file(mdb_handle, decpath);
-
-        return g_strdup(out);
-    }
-
-    return NULL;
-}
-
 VFSConstructor file_const = {
 	"file://",
 	stdio_vfs_fopen_impl,
@@ -286,8 +262,7 @@ VFSConstructor file_const = {
 	stdio_vfs_ftell_impl,
 	stdio_vfs_feof_impl,
 	stdio_vfs_truncate_impl,
-	stdio_vfs_fsize_impl,
-	stdio_vfs_metadata_impl
+	stdio_vfs_fsize_impl
 };
 
 static void init(void)
