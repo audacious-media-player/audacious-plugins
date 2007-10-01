@@ -13,7 +13,7 @@
 #include <gtk/gtk.h>
 extern "C" {
 #include <audacious/tuple.h>
-#include "audacious/tuple_formatter.h"
+#include <audacious/tuple_formatter.h>
 #include <audacious/util.h>
 #include <audacious/output.h>
 #include <audacious/playlist.h>

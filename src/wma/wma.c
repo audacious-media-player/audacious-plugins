@@ -40,10 +40,10 @@
 #include <audacious/util.h>
 #include <audacious/vfs.h>
 #include <audacious/strings.h>
-#include "audacious/i18n.h"
+#include <audacious/i18n.h>
 #include <audacious/main.h>
 #include <audacious/tuple.h>
-#include "audacious/tuple_formatter.h"
+#include <audacious/tuple_formatter.h>
 
 #include "avcodec.h"
 #include "avformat.h"
