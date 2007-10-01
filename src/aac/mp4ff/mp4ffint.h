@@ -107,9 +107,7 @@ extern "C" {
 #define ATOM_SINF 24
 #define ATOM_SCHI 25
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #ifndef _WIN32
 #define stricmp strcasecmp

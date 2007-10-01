@@ -40,9 +40,7 @@ extern "C" {
 #define __STRICT_ANSI__
 #endif
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #define INLINE __inline
 #if 0 //defined(_WIN32) && !defined(_WIN32_WCE)

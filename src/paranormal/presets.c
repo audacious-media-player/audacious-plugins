@@ -20,9 +20,7 @@
 /* FIXME: add documentation support to preset files */
 /* FIXME: add multiple-presets-per-file support (maybe) */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#include <config.h>
 
 #include <stdlib.h>
 #include <ctype.h>

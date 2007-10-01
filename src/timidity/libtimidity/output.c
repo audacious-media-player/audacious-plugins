@@ -22,9 +22,7 @@
     Audio output (to file / device) functions.
 */
 
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include <config.h>
 
 #include "timidity.h"
 #include "timidity_internal.h"
