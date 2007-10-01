@@ -1,6 +1,58 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = aac${PLUGIN_SUFFIX}
+SRCS = libmp4.c			\
+       mp4_utils.c		\
+       aac_utils.c		\
+       tagging_mp4.c		\
+       libfaad2/bits.c		\
+       libfaad2/cfft.c		\
+       libfaad2/decoder.c	\
+       libfaad2/drc.c		\
+       libfaad2/drm_dec.c	\
+       libfaad2/error.c		\
+       libfaad2/filtbank.c	\
+       libfaad2/ic_predict.c	\
+       libfaad2/is.c		\
+       libfaad2/lt_predict.c	\
+       libfaad2/mdct.c		\
+       libfaad2/mp4.c		\
+       libfaad2/ms.c		\
+       libfaad2/output.c	\
+       libfaad2/pns.c		\
+       libfaad2/ps_dec.c	\
+       libfaad2/ps_syntax.c	\
+       libfaad2/pulse.c		\
+       libfaad2/specrec.c	\
+       libfaad2/syntax.c	\
+       libfaad2/tns.c		\
+       libfaad2/hcr.c		\
+       libfaad2/huffman.c	\
+       libfaad2/rvlc.c		\
+       libfaad2/ssr.c		\
+       libfaad2/ssr_fb.c	\
+       libfaad2/ssr_ipqf.c	\
+       libfaad2/common.c	\
+       libfaad2/sbr_dct.c	\
+       libfaad2/sbr_e_nf.c	\
+       libfaad2/sbr_fbt.c	\
+       libfaad2/sbr_hfadj.c	\
+       libfaad2/sbr_hfgen.c	\
+       libfaad2/sbr_huff.c	\
+       libfaad2/sbr_qmf.c	\
+       libfaad2/sbr_syntax.c	\
+       libfaad2/sbr_tf_grid.c	\
+       libfaad2/sbr_dec.c	\
+       mp4ff/mp4ff.c		\
+       mp4ff/mp4atom.c		\
+       mp4ff/mp4meta.c		\
+       mp4ff/mp4sample.c	\
+       mp4ff/mp4util.c		\
+       mp4ff/mp4tagupdate.c
 
-SUBDIRS = mp4ff libfaad2 src
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-include ../../mk/objective.mk
+include ../../buildsys.mk
+include ../../extra.mk
+
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../.. -I. -I./include -I./libfaad2 -I./mp4ff -DUSE_TAGGING=1
+CFLAGS += ${PLUGIN_CFLAGS} -fsigned-char
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} -lm

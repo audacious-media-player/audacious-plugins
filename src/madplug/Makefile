@@ -1,25 +1,18 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = madplug${PLUGIN_SUFFIX}
+SRCS = configure.c	\
+       dither.c		\
+       input.c		\
+       replaygain.c	\
+       decoder.c	\
+       fileinfo.c	\
+       plugin.c		\
+       xing.c
 
-OBJECTIVE_LIBS = libmadplug$(SHARED_SUFFIX)
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = \
-  configure.c \
-  dither.c \
-  input.c \
-  replaygain.c \
-  decoder.c \
-  fileinfo.c \
-  plugin.c \
-  xing.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS   += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(SIMD_CFLAGS) -I../../intl -I../.. -Wall
-
-LDFLAGS += $(AUDLDFLAGS)
-LIBADD = -L/opt/local/lib -L$(libdir) -laudid3tag -lmad $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${MOWGLI_CFLAGS} ${ARCH_DEFINES} ${SIMD_CFLAGS} -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += -L${libdir} -laudid3tag -lmad ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

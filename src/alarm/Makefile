@@ -1,18 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = alarm${PLUGIN_SUFFIX}
+SRCS = alarm.c	\
+       interface.c
 
-SUBDIRS = 
+plugindir = audacious/${GENERAL_PLUGIN_DIR}
 
-OBJECTIVE_LIBS = libalarm$(SHARED_SUFFIX)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
-
-LIBADD += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-SOURCES = alarm.c interface.c
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) -I../../intl -I../..
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BEEP_DEFINES} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

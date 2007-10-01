@@ -81,6 +81,6 @@ int alsa_get_output_time(void);
 int alsa_get_written_time(void);
 void alsa_tell(AFormat * fmt, gint * rate, gint * nch);
 
-extern GMutex *alsa_mutex;
+extern GStaticMutex alsa_mutex;
 
 #endif

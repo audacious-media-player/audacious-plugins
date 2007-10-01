@@ -55,8 +55,4 @@ void alsa_cleanup(void)
 		free(alsa_cfg.mixer_device);
 		alsa_cfg.mixer_device = NULL;
 	}
-
-	/* release our mutex */
-	g_mutex_free(alsa_mutex);
-	alsa_mutex = NULL;
 }

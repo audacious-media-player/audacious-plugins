@@ -1,18 +1,18 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = aosd${PLUGIN_SUFFIX}
+SRCS = aosd.c		\
+       aosd_osd.c	\
+       aosd_style.c	\
+       aosd_trigger.c	\
+       aosd_ui.c	\
+       aosd_cfg.c	\
+       ghosd.c		\
+       ghosd-main.c
 
-OBJECTIVE_LIBS = libaosd$(SHARED_SUFFIX)
+plugindir = audacious/${GENERAL_PLUGIN_DIR}
 
-noinst_HEADERS = aosd.h aosd_osd.h aosd_style.h aosd_style_private.h aosd_trigger.h aosd_trigger_private.h aosd_ui.h aosd_cfg.h aosd_common.h ghosd.h ghosd-internal.h
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(CAIRO_LIBS) $(PANGOCAIRO_LIBS) $(XRENDER_LIBS) $(XCOMPOSITE_LIBS)
-SOURCES = aosd.c aosd_osd.c aosd_style.c aosd_trigger.c aosd_ui.c aosd_cfg.c ghosd.c ghosd-main.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(CAIRO_CFLAGS) $(PANGOCAIRO_CFLAGS) $(XRENDER_CFLAGS) $(XCOMPOSITE_CFLAGS) \
-	-I../../intl -I../.. -I..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${CAIRO_CFLAGS} ${PANGOCAIRO_CFLAGS} ${XRENDER_CFLAGS} ${XCOMPOSITE_CFLAGS} -I../../intl -I../.. -I..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${CAIRO_LIBS} ${PANGOCAIRO_LIBS} ${XRENDER_LIBS} ${XCOMPOSITE_LIBS}

@@ -26,13 +26,11 @@
 
 #include "../../config.h"
 
-#define PLUGIN_NAME "voice_removal " PACKAGE_VERSION
-
 static int apply_effect (gpointer *d, gint length, AFormat afmt,
 			gint srate, gint nch);
 
 static EffectPlugin xmms_plugin = {
-	.description = PLUGIN_NAME,
+	.description = "Voice Removal Plugin",
 	.mod_samples = apply_effect,
 };
 

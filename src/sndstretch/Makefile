@@ -1,15 +1,10 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = sndstretch${PLUGIN_SUFFIX}
+SRCS = sndstretch_xmms.c sndstretch.c
 
-OBJECTIVE_LIBS = libsndstretch$(SHARED_SUFFIX)
+plugindir = audacious/${EFFECT_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(EFFECT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = sndstretch_xmms.c sndstretch.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) \
-	-I../../intl -I../..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${MOWGLI_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}

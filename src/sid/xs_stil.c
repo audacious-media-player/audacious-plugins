@@ -262,6 +262,8 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 
 		default:
 			/* Check if we are parsing an entry */
+			xs_findnext(tmpLine, &linePos);
+			
 			if (!tmpNode) {
 				XS_STILDB_ERR(lineNum, tmpLine,
 					"Entry data encountered outside of entry or syntax error!\n");
@@ -282,8 +284,10 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 				tmpNode->subTunes[subEntry]->pName = g_strdup(&tmpLine[9]);
 			} else if (strncmp(tmpLine, "  TITLE:", 8) == 0) {
 				XS_STILDB_MULTI;
-				g_free(tmpNode->subTunes[subEntry]->pTitle);
-				tmpNode->subTunes[subEntry]->pTitle = g_strdup(&tmpLine[9]);
+				isMulti = TRUE;
+				if (!tmpNode->subTunes[subEntry]->pTitle)
+					tmpNode->subTunes[subEntry]->pTitle = g_strdup(&tmpLine[9]);
+				xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), &tmpLine[2]);
 			} else if (strncmp(tmpLine, " AUTHOR:", 8) == 0) {
 				XS_STILDB_MULTI;
 				g_free(tmpNode->subTunes[subEntry]->pAuthor);
@@ -296,9 +300,10 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 				XS_STILDB_MULTI;
 				isMulti = TRUE;
 				xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), tmpLine);
-			} else if (strncmp(tmpLine, "        ", 8) == 0) {
+			} else {
 				if (isMulti) {
-					xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), &tmpLine[8]);
+					xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), " ");
+					xs_pstrcat(&(tmpNode->subTunes[subEntry]->pInfo), &tmpLine[linePos]);
 				} else {
 					XS_STILDB_ERR(lineNum, tmpLine,
 					"Entry continuation found when isMulti == FALSE.\n");

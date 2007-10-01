@@ -1,15 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = tonegen${PLUGIN_SUFFIX}
+SRCS = tonegen.c
 
-OBJECTIVE_LIBS = libtonegen$(SHARED_SUFFIX)
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = tonegen.c
 
-OBJECTS = ${SOURCES:.c=.o}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../..
 
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-
-include ../../mk/objective.mk
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

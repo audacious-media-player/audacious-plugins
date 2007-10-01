@@ -1,16 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = hotkey${PLUGIN_SUFFIX}
+plugindir = audacious/${GENERAL_PLUGIN_DIR}
 
-OBJECTIVE_LIBS = libhotkey$(SHARED_SUFFIX)
+SRCS = plugin.c
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS)
-SOURCES = plugin.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) \
-	-I../../intl -I../.. -I..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${MOWGLI_CFLAGS} ${GLIB_CFLAGS} ${DBUS_CFLAGS} -I../../intl -I../.. -I..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GLIB_LIBS} ${DBUS_LIBS}

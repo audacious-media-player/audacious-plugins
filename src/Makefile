@@ -1,12 +1,11 @@
-include ../mk/rules.mk
-include ../mk/init.mk
+include ../extra.mk
 
-SUBDIRS = $(INPUT_PLUGINS) \
-	$(OUTPUT_PLUGINS) \
-	$(EFFECT_PLUGINS) \
-	$(VISUALIZATION_PLUGINS) \
-	$(GENERAL_PLUGINS) \
-	$(CONTAINER_PLUGINS) \
-	$(TRANSPORT_PLUGINS)
+SUBDIRS = ${INPUT_PLUGINS}		\
+	  ${OUTPUT_PLUGINS}		\
+	  ${EFFECT_PLUGINS}		\
+	  ${VISUALIZATION_PLUGINS}	\
+	  ${GENERAL_PLUGINS}		\
+	  ${CONTAINER_PLUGINS}		\
+	  ${TRANSPORT_PLUGINS}
 
-include ../mk/objective.mk
+include ../buildsys.mk

@@ -1,8 +1,23 @@
-/* FIXME: add fullscreen / screenshots */
+/*
+ * paranormal: iterated pipeline-driven visualization plugin
+ * Copyright (c) 2006, 2007 William Pitcock <nenolod@dereferenced.org>
+ * Portions copyright (c) 2001 Jamie Gennis <jgennis@mindspring.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; under version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#include <config.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -133,7 +148,7 @@ pn_init (void)
   resize_video (1280, 1024);
 #endif
 
-  SDL_WM_SetCaption ("Paranormal Visualization Studio " VERSION, PACKAGE);
+  SDL_WM_SetCaption ("Paranormal Visualization Studio", PACKAGE);
 
   for(i=0; i<360; i++)
     {

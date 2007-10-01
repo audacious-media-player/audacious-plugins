@@ -17,9 +17,7 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <algorithm>
 #include <sstream>
@@ -34,8 +32,8 @@
 #include "audacious/i18n.h"
 extern "C"
 {
-#include "audacious/configdb.h"
 #include "audacious/plugin.h"
+#include "audacious/configdb.h"
 #include "audacious/output.h"
 #include "audacious/util.h"
 }

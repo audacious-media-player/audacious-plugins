@@ -1,22 +1,16 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = rootvis${PLUGIN_SUFFIX}
+SRCS = config_backend.c			\
+       config_definition.c		\
+       config_frontend.c		\
+       config_frontend_widgets.c	\
+       getroot.c			\
+       rootvis.c
 
-OBJECTIVE_LIBS = librootvis.so
+plugindir = audacious/${VISUALIZATION_PLUGIN_DIR}
 
-CFLAGS += -I. $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(IMLIB2_CFLAGS)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
-
-LIBADD += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(IMLIB2_LIBS)
-
-SOURCES = \
-	config_backend.c \
-	config_definition.c \
-	config_frontend.c \
-	config_frontend_widgets.c \
-	getroot.c \
-	rootvis.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} -I. ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${IMLIB2_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${IMLIB2_LIBS}

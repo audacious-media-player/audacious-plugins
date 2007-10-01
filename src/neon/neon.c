@@ -19,6 +19,7 @@
 
 #include <audacious/vfs.h>
 #include <audacious/plugin.h>
+#include <audacious/configdb.h>
 
 #include <ne_socket.h>
 #include <ne_utils.h>
@@ -51,6 +52,28 @@ VFSConstructor neon_http_const = {
     neon_vfs_fsize_impl,
     neon_vfs_metadata_impl
 };
+
+VFSConstructor neon_https_const = {
+    "https://",
+    neon_vfs_fopen_impl,
+    neon_vfs_fclose_impl,
+    neon_vfs_fread_impl,
+    neon_vfs_fwrite_impl,
+    neon_vfs_getc_impl,
+    neon_vfs_ungetc_impl,
+    neon_vfs_fseek_impl,
+    neon_vfs_rewind_impl,
+    neon_vfs_ftell_impl,
+    neon_vfs_feof_impl,
+    neon_vfs_truncate_impl,
+    neon_vfs_fsize_impl,
+    neon_vfs_metadata_impl
+};
+
+/* bring ne_set_connect_timeout in as a weak reference, not using it
+ * unless we have it available (neon 0.27) --nenolod
+ */
+extern void ne_set_connect_timeout(ne_session *sess, int timeout) __attribute__ ((weak));
 
 /*
  * ========
@@ -144,6 +167,7 @@ static void init(void) {
 
     if (0 != ne_has_support(NE_FEATURE_SSL)) {
         _DEBUG("neon compiled with thread-safe SSL, enabling https:// transport");
+        vfs_register_transport(&neon_https_const);
     }
 
     _LEAVE;
@@ -223,7 +247,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of tag name.
                      */
                     *p = '\0';
-                    strcpy(name, tstart);
+                    g_strlcpy(name, tstart, 4096);
                     _DEBUG("Found tag name: %s", name);
                     state = 2;
                 } else {
@@ -252,7 +276,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of value
                      */
                     *p = '\0';
-                    strcpy(value, tstart);
+                    g_strlcpy(value, tstart, 4096);
                     _DEBUG("Found tag value: %s", value);
                     add_icy(m, name, value);
                     state = 4;
@@ -306,7 +330,7 @@ static void kill_reader(struct neon_handle* h) {
  * -----
  */
 
-static int auth_callback(void* userdata, const char* realm, int attempt, char* username, char* password) {
+static int server_auth_callback(void* userdata, const char* realm, int attempt, char* username, char* password) {
 
     struct neon_handle* h = (struct neon_handle*)userdata;
     gchar* authcpy;
@@ -515,8 +539,38 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
+    ConfigDb* db;
+    gchar* proxy_host;
+    gchar* proxy_port_s;
+    gchar* endptr;
+    unsigned int proxy_port = 0;
+    gboolean use_proxy;
 
     _ENTER;
+
+    db = bmp_cfg_db_open();
+    if (FALSE == bmp_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy)) {
+        use_proxy = FALSE;
+    }
+
+    if (use_proxy) {
+        if (FALSE == bmp_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host)) {
+            _ERROR("Could not read proxy host, disabling proxy use");
+            use_proxy = FALSE;
+        }
+        if (FALSE == bmp_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port_s)) {
+            _ERROR("Could not read proxy port, disabling proxy use");
+            use_proxy = FALSE;
+        }
+        proxy_port = strtoul(proxy_port_s, &endptr, 10);
+        if (!((*proxy_port_s != '\0') && (*endptr == '\0') && (proxy_port < 65536))) {
+            /*
+             * Invalid data
+             */
+            _ERROR("Invalid proxy port, disabling proxy use");
+            use_proxy = FALSE;
+        }
+    }
 
     handle->redircount = 0;
 
@@ -534,13 +588,21 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
         _DEBUG("Creating session");
         handle->session = ne_session_create(handle->purl->scheme, handle->purl->host, handle->purl->port);
-        ne_add_server_auth(handle->session, NE_AUTH_BASIC, auth_callback, (void *)handle);
+        ne_add_server_auth(handle->session, NE_AUTH_BASIC, server_auth_callback, (void *)handle);
         ne_set_session_flag(handle->session, NE_SESSFLAG_ICYPROTO, 1);
         ne_set_session_flag(handle->session, NE_SESSFLAG_PERSIST, 0);
-        ne_set_connect_timeout(handle->session, 10);
+
+        if (ne_set_connect_timeout != NULL)
+            ne_set_connect_timeout(handle->session, 10);
+
         ne_set_read_timeout(handle->session, 10);
         ne_set_useragent(handle->session, "Audacious/1.4.0");
         ne_redirect_register(handle->session);
+
+        if (use_proxy) {
+            _DEBUG("Using proxy: %s:%d", proxy_host, proxy_port);
+            ne_session_proxy(handle->session, proxy_host, proxy_port);
+        }
 
         _DEBUG("Creating request");
         ret = open_request(handle, startbyte);
@@ -1215,7 +1277,7 @@ off_t neon_vfs_fsize_impl(VFSFile* file) {
 
     if (-1 == h->content_length) {
         _DEBUG("Unknown content length");
-        _LEAVE 0;
+        _LEAVE -1;
     }
 
     _LEAVE (h->content_start + h->content_length);

@@ -1,17 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = tta${PLUGIN_SUFFIX}
+SRCS = libtta.c	\
+       ttadec.c
 
-OBJECTIVE_LIBS = libtta$(SHARED_SUFFIX)
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = libtta.c ttadec.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += -fPIC -DPIC $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-
-LDFLAGS += $(AUDLDFLAGS)
-LIBADD = -L$(libdir) -laudid3tag $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += -L${libdir} -laudid3tag ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

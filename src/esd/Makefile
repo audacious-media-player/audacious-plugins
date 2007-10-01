@@ -1,18 +1,16 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = ESD${PLUGIN_SUFFIX}
+SRCS = esd.c		\
+       mixer.c		\
+       about.c		\
+       configure.c	\
+       audio.c		\
+       init.c
 
-OBJECTIVE_LIBS = libESD$(SHARED_SUFFIX)
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
-noinst_HEADERS = esdout.h
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(ESD_LIBS) $(OSS_LIBS)
-SOURCES = esd.c mixer.c about.c configure.c audio.c init.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ESD_CFLAGS) \
-	-I../../intl -I../.. -I..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ESD_CFLAGS} -I../../intl -I../.. -I..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${ESD_LIBS} ${OSS_LIBS}

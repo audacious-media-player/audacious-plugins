@@ -1,13 +1,32 @@
+/*
+ * paranormal: iterated pipeline-driven visualization plugin
+ * Copyright (c) 2006, 2007 William Pitcock <nenolod@dereferenced.org>
+ * Portions copyright (c) 2001 Jamie Gennis <jgennis@mindspring.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; under version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 /* FIXME: prevent the user from dragging something above the root
    actuator */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#include <config.h>
 
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <audacious/configdb.h>
+
+#include <math.h>
 
 #include "paranormal.h"
 #include "actuators.h"
@@ -65,6 +84,18 @@ add_actuator (struct pn_actuator *a, GtkCTreeNode *parent, gboolean copy)
 				    ((GtkDestroyNotify) actuator_row_data_destroyed_cb));
 }
 
+static guchar
+gdk_colour_to_paranormal_colour(gint16 colour)
+{
+  return (guchar) (colour / 255);
+}
+
+static gint16
+paranormal_colour_to_gdk_colour(guchar colour)
+{
+  return (gint16) (colour * 255);
+}
+
 static void
 int_changed_cb (GtkSpinButton *sb, int *i)
 {
@@ -87,9 +118,15 @@ string_changed_cb (GtkEditable *t, char **s)
 }
 
 static void
-color_changed_cb (GtkSpinButton *sb, guchar *c)
+color_changed_cb (GtkColorButton *cb, struct pn_color *c)
 {
-  *c = gtk_spin_button_get_value_as_int (sb);
+  GdkColor colour;
+
+  gtk_color_button_get_color(cb, &colour);
+
+  c->r = gdk_colour_to_paranormal_colour(colour.red);
+  c->g = gdk_colour_to_paranormal_colour(colour.green);
+  c->b = gdk_colour_to_paranormal_colour(colour.blue);
 }
 
 static void
@@ -172,42 +209,18 @@ row_select_cb (GtkCTree *ctree, GtkCTreeNode *node,
 	case OPT_TYPE_COLOR:
 	  {
 	    /* FIXME: add some color preview */
-	    GtkWidget *hbox;
-	    hbox = gtk_hbox_new (FALSE, 0);
-	    adj = gtk_adjustment_new (a->options[j].val.cval.r,
-				      0, 255,
-				      1, 2, 0);
-	    w = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 1.0, 0);
-	    gtk_widget_show (w);
-	    gtk_signal_connect (GTK_OBJECT (w), "changed",
-			       GTK_SIGNAL_FUNC (color_changed_cb),
-			       &a->options[j].val.cval.r);
-	    gtk_tooltips_set_tip (actuator_tooltips, w,
+            GdkColor *colour = g_new0(GdkColor, 1);
+
+            colour->red = paranormal_colour_to_gdk_colour(a->options[j].val.cval.r);
+            colour->green = paranormal_colour_to_gdk_colour(a->options[j].val.cval.g);
+            colour->blue = paranormal_colour_to_gdk_colour(a->options[j].val.cval.b);
+
+            w = gtk_color_button_new_with_color(colour);
+	    g_signal_connect(G_OBJECT (w), "color-set",
+			       G_CALLBACK (color_changed_cb),
+			       &a->options[j].val.cval);
+	    gtk_tooltips_set_tip (actuator_tooltips, GTK_WIDGET(w),
 				  a->desc->option_descs[j].doc, NULL);
-	    gtk_box_pack_start (GTK_BOX (hbox), w, TRUE, TRUE, 0);
-	    adj = gtk_adjustment_new (a->options[j].val.cval.g,
-				      0, 255,
-				      1, 2, 0);
-	    w = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 1.0, 0);
-	    gtk_widget_show (w);
-	    gtk_signal_connect (GTK_OBJECT (w), "changed",
-			       GTK_SIGNAL_FUNC (color_changed_cb),
-			       &a->options[j].val.cval.g);
-	    gtk_tooltips_set_tip (actuator_tooltips, w,
-				  a->desc->option_descs[j].doc, NULL);
-	    gtk_box_pack_start (GTK_BOX (hbox), w, TRUE, TRUE, 6);
-	    adj = gtk_adjustment_new (a->options[j].val.cval.b,
-				      0, 255,
-				      1, 2, 0);
-	    w = gtk_spin_button_new (GTK_ADJUSTMENT (adj), 1.0, 0);
-	    gtk_widget_show (w);
-	    gtk_signal_connect (GTK_OBJECT (w), "changed",
-			       GTK_SIGNAL_FUNC (color_changed_cb),
-			       &a->options[j].val.cval.b);
-	    gtk_tooltips_set_tip (actuator_tooltips, w,
-				  a->desc->option_descs[j].doc, NULL);
-	    gtk_box_pack_start (GTK_BOX (hbox), w, TRUE, TRUE, 0);
-	    w = hbox;
 	  }
 	  break;	  
 	case OPT_TYPE_COLOR_INDEX:
@@ -488,7 +501,7 @@ pn_configure (void)
     {
       /* The dialog */
       cfg_dialog = gtk_dialog_new ();
-      gtk_window_set_title (GTK_WINDOW (cfg_dialog), "Paranormal Visualization Studio - Editor (PNS " VERSION ")");
+      gtk_window_set_title (GTK_WINDOW (cfg_dialog), "Paranormal Visualization Studio - Editor");
       gtk_widget_set_usize (cfg_dialog, 530, 370);
       gtk_container_border_width (GTK_CONTAINER (cfg_dialog), 8);
       gtk_signal_connect_object (GTK_OBJECT (cfg_dialog), "delete-event",
@@ -543,7 +556,7 @@ pn_configure (void)
 			0, 2, 0, 1,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      actuator_add_button = gtk_button_new_with_label ("Add");
+      actuator_add_button = gtk_button_new_from_stock(GTK_STOCK_ADD);
       gtk_widget_show (actuator_add_button);
       gtk_signal_connect (GTK_OBJECT (actuator_add_button), "clicked",
 			  GTK_SIGNAL_FUNC (add_actuator_cb), NULL);
@@ -551,7 +564,7 @@ pn_configure (void)
 			0, 1, 1, 2,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      actuator_remove_button = gtk_button_new_with_label ("Remove");
+      actuator_remove_button = gtk_button_new_from_stock(GTK_STOCK_REMOVE);
       gtk_widget_set_sensitive (actuator_remove_button, FALSE);
       gtk_widget_show (actuator_remove_button);
       gtk_signal_connect (GTK_OBJECT (actuator_remove_button), "clicked",
@@ -560,7 +573,7 @@ pn_configure (void)
 			1, 2, 1, 2,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      button = gtk_button_new_with_label ("Load");
+      button = gtk_button_new_from_stock(GTK_STOCK_OPEN);
       gtk_widget_show (button);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			  GTK_SIGNAL_FUNC (load_button_cb), NULL);
@@ -568,7 +581,7 @@ pn_configure (void)
 			0, 1, 2, 3,
 			GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0,
 			3, 3);
-      button = gtk_button_new_with_label ("Save");
+      button = gtk_button_new_from_stock(GTK_STOCK_SAVE);
       gtk_widget_show (button);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			  GTK_SIGNAL_FUNC (save_button_cb), NULL);
@@ -611,23 +624,26 @@ pn_configure (void)
       gtk_button_box_set_child_size (GTK_BUTTON_BOX (bbox), 64, 0);
       gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cfg_dialog)->action_area),
 			  bbox, FALSE, FALSE, 0);
-      button = gtk_button_new_with_label ("OK");
+
+      button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
       gtk_widget_show (button);
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			  GTK_SIGNAL_FUNC (ok_button_cb), NULL);
+			  GTK_SIGNAL_FUNC (cancel_button_cb), NULL);
       gtk_box_pack_start (GTK_BOX (bbox), button, FALSE, FALSE, 0);
-      button = gtk_button_new_with_label ("Apply");
+
+      button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
       gtk_widget_show (button);
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			  GTK_SIGNAL_FUNC (apply_button_cb), NULL);
       gtk_box_pack_start (GTK_BOX (bbox), button, FALSE, FALSE, 0);
-      button = gtk_button_new_with_label ("Cancel");
+
+      button = gtk_button_new_from_stock (GTK_STOCK_OK);
       gtk_widget_show (button);
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NORMAL);
       gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			  GTK_SIGNAL_FUNC (cancel_button_cb), NULL);
+			  GTK_SIGNAL_FUNC (ok_button_cb), NULL);
       gtk_box_pack_start (GTK_BOX (bbox), button, FALSE, FALSE, 0);
     }
 

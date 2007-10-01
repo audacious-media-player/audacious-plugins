@@ -28,9 +28,7 @@
  *   - TITLE_LEN removed
  */
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <glib.h>
 #include <string.h>
@@ -114,7 +112,7 @@ fill_song_tuple (char *filename, Tuple *ti)
 
 	tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(tmp_sndfile, SF_STR_ARTIST));
 	tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(tmp_sndfile, SF_STR_COMMENT));
-	tuple_associate_string(ti, -1, "date", sf_get_string(tmp_sndfile, SF_STR_DATE));
+	tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(tmp_sndfile, SF_STR_DATE));
 	tuple_associate_string(ti, -1, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
 
 	g_free(realfn); realfn = NULL;

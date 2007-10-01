@@ -38,7 +38,6 @@
 #include "xs_glade.h"
 #include "xs_player.h"
 #include "xs_slsup.h"
-#include "audacious/playlist.h"
 
 
 /*

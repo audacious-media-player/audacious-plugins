@@ -1,16 +1,13 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = rocklight${PLUGIN_SUFFIX}
+SRCS = rocklight.c	\
+       sysled.c		\
+       thinklight.c
 
-OBJECTIVE_LIBS = librocklight$(SHARED_SUFFIX)
+plugindir = audacious/${VISUALIZATION_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(VISUALIZATION_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-SOURCES = rocklight.c thinklight.c sysled.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) -I../../intl -I../..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

@@ -1,42 +1,38 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+DATA = nazca_-_smoke_on_the_water.pnv		\
+       nenolod_-_3d_wave.pnv			\
+       nenolod_-_aquamarine_dream.pnv		\
+       nenolod_-_purple_flower.pnv		\
+       nenolod_-_bumblebees.pnv			\
+       nenolod_-_flying_into_pastels.pnv	\
+       nenolod_-_phosphor_flame.pnv		\
+       nenolod_-_psuedo_starfield.pnv		\
+       nenolod_-_quakingscope.pnv		\
+       nenolod_-_beatscope.pnv			\
+       nenolod_-_branchscope.pnv		\
+       nenolod_-_retroscope.pnv			\
+       nenolod_-_technicolour_nightmare.pnv	\
+       nenolod_-_trapped.pnv			\
+       nenolod_-_value_replace_fun.pnv		\
+       nenolod_-_rush.pnv			\
+       nenolod_-_worms.pnv			\
+       nenolod_-_scopefun.pnv			\
+       nenolod_-_smoke.pnv			\
+       nenolod_-_swarm.pnv			\
+       nenolod_-_interlaced.pnv			\
+       nenolod_-_cubism.pnv			\
+       nenolod_-_transform_fun.pnv		\
+       nenolod_-_tunnel_vision.pnv		\
+       nenolod_-_kaliedoscope.pnv		\
+       nenolod_-_simple_yet_pretty.pnv		\
+       nenolod_-_quasar.pnv			\
+       aerdan_-_bloody_vortex.pnv		\
+       aerdan_-_cloudscape.pnv			\
+       aerdan_-_cloudscape2.pnv			\
+       aerdan_-_dancing_snow.pnv		\
+       aerdan_-_portal_to_hell.pnv		\
+       aerdan_-_telestatic.pnv			\
+       ticpu_-_colored_beat-o-scope.pnv	
 
-presetsdir = $(pkgdatadir)/paranormal/Presets
+include ../../../buildsys.mk
 
-OBJECTIVE_DATA = \
-	nazca_-_smoke_on_the_water.pnv:$(presetsdir)	\
-	nenolod_-_3d_wave.pnv:$(presetsdir)		\
-	nenolod_-_aquamarine_dream.pnv:$(presetsdir)	\
-	nenolod_-_purple_flower.pnv:$(presetsdir)	\
-	nenolod_-_bumblebees.pnv:$(presetsdir)		\
-	nenolod_-_flying_into_pastels.pnv:$(presetsdir)	\
-	nenolod_-_phosphor_flame.pnv:$(presetsdir)	\
-	nenolod_-_psuedo_starfield.pnv:$(presetsdir)	\
-	nenolod_-_quakingscope.pnv:$(presetsdir)	\
-	nenolod_-_beatscope.pnv:$(presetsdir)		\
-	nenolod_-_branchscope.pnv:$(presetsdir)		\
-	nenolod_-_retroscope.pnv:$(presetsdir)		\
-	nenolod_-_technicolour_nightmare.pnv:$(presetsdir) \
-	nenolod_-_trapped.pnv:$(presetsdir)	\
-	nenolod_-_value_replace_fun.pnv:$(presetsdir)	\
-	nenolod_-_rush.pnv:$(presetsdir)		\
-	nenolod_-_worms.pnv:$(presetsdir)		\
-	nenolod_-_scopefun.pnv:$(presetsdir)		\
-	nenolod_-_smoke.pnv:$(presetsdir)		\
-	nenolod_-_swarm.pnv:$(presetsdir)		\
-	nenolod_-_interlaced.pnv:$(presetsdir)		\
-	nenolod_-_cubism.pnv:$(presetsdir)		\
-	nenolod_-_transform_fun.pnv:$(presetsdir)	\
-	nenolod_-_tunnel_vision.pnv:$(presetsdir)	\
-	nenolod_-_kaliedoscope.pnv:$(presetsdir)	\
-	nenolod_-_simple_yet_pretty.pnv:$(presetsdir)	\
-	nenolod_-_quasar.pnv:$(presetsdir)		\
-	aerdan_-_bloody_vortex.pnv:${presetsdir}	\
-	aerdan_-_cloudscape.pnv:${presetsdir}		\
-	aerdan_-_cloudscape2.pnv:${presetsdir}		\
-	aerdan_-_dancing_snow.pnv:${presetsdir}		\
-	aerdan_-_portal_to_hell.pnv:${presetsdir}	\
-	aerdan_-_telestatic.pnv:${presetsdir}		\
-	ticpu_-_colored_beat-o-scope.pnv:$(presetsdir)
-
-include ../../../mk/objective.mk
+PACKAGE = audacious-plugins/paranormal/Presets

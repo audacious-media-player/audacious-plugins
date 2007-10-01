@@ -14,9 +14,8 @@
  * GNU General Public License. Please consult the file "COPYING" for
  * details.
  */
-#ifdef HAVE_CONFIG_H
+
 #include "config.h"
-#endif
 
 /* #define DEBUG 1 */
 
@@ -775,22 +774,21 @@ static void cache_cue_file(char *f)
 		line[q] = '\0';
 		for (q++; line[q] && isspace((int) line[q]); q++);
 		if (strcasecmp(line+p, "REM") == 0) {
-			gint r;
-			for (r = q; line[r] && !isspace((int) line[r]); r++);
-			if (!line[r])
+			for (p = q; line[p] && !isspace((int) line[p]); p++);
+			if (!line[p])
 				continue;
-			line[r] = '\0';
-			for (r++; line[r] && isspace((int) line[r]); r++);
+			line[p] = '\0';
+			for (p++; line[p] && isspace((int) line[p]); p++);
 			if(strcasecmp(line+q, "GENRE") == 0) {
-				fix_cue_argument(line+r);
+				fix_cue_argument(line+p);
 				if (last_cue_track == 0)
-					cue_genre = str_to_utf8(line + r);
+					cue_genre = str_to_utf8(line + p);
 			}
 			if(strcasecmp(line+q, "DATE") == 0) {
 				gchar *tmp;
-				fix_cue_argument(line+r);
+				fix_cue_argument(line+p);
 				if (last_cue_track == 0) {
-					tmp = g_strdup(line + r);
+					tmp = g_strdup(line + p);
 					if (tmp) {
 						cue_year = strtok(tmp, "/"); // XXX: always in the same format?
 					}
@@ -808,9 +806,7 @@ static void cache_cue_file(char *f)
 		else if (strcasecmp(line+p, "FILE") == 0) {
 			gchar *tmp = g_path_get_dirname(f);
 			fix_cue_argument(line+q);
-			cue_file = g_strdup_printf("%s/%s", tmp, line+q);
-			/* XXX: yaz might need to UTF validate this?? -nenolod */
-			/* as far as I know, all FILEs are in plain ASCII -yaz */
+			cue_file = g_strdup_printf("%s/%s", tmp, line+q); //XXX need to check encoding?
 			g_free(tmp);
 		}
 		else if (strcasecmp(line+p, "TITLE") == 0) {
@@ -838,19 +834,19 @@ static void cache_cue_file(char *f)
 			cue_tracks[last_cue_track-1].title = NULL;
 		}
 		else if (strcasecmp(line+p, "INDEX") == 0) {
+            gint min, sec, frac;
 			for (p = q; line[p] && !isspace((int) line[p]); p++);
 			if (!line[p])
 				continue;
 			for (p++; line[p] && isspace((int) line[p]); p++);
 			for (q = p; line[q] && !isspace((int) line[q]); q++);
-			if (q-p >= 8 && line[p+2] == ':' && line[p+5] == ':') {
-				cue_tracks[last_cue_track-1].index =
-						((line[p+0]-'0')*10 + (line[p+1]-'0')) * 60000 +
-						((line[p+3]-'0')*10 + (line[p+4]-'0')) * 1000 +
-						((line[p+6]-'0')*10 + (line[p+7]-'0')) * 10;
-			}
-		}
-	}
+
+            if(sscanf(line+p, "%d:%d:%d", &min, &sec, &frac) == 3) {
+//                printf("%3d:%02d:%02d\n", min, sec, frac);
+                cue_tracks[last_cue_track-1].index = min * 60000 + sec * 1000 + frac * 10;
+            }
+        }
+    }
 
 	vfs_fclose(file);
 }

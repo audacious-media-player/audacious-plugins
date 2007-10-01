@@ -1,6 +1,24 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = timidity${PLUGIN_SUFFIX}
+SRCS = callbacks.c			\
+       interface.c			\
+       xmms-timidity.c			\
+       libtimidity/common.c		\
+       libtimidity/instrum.c		\
+       libtimidity/instrum_dls.c	\
+       libtimidity/mix.c		\
+       libtimidity/output.c		\
+       libtimidity/playmidi.c		\
+       libtimidity/readmidi.c		\
+       libtimidity/resample.c		\
+       libtimidity/stream.c		\
+       libtimidity/tables.c		\
+       libtimidity/timidity.c
 
-SUBDIRS = libtimidity src
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-include ../../mk/objective.mk
+include ../../buildsys.mk
+include ../../extra.mk
+
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../.. -I./libtimidity
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

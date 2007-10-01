@@ -6,15 +6,12 @@
  * http://www.slack.net/~ant/libs/
  */
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 extern "C" {
-#include "audacious/main.h"
 #include "audacious/tuple.h"
 #include "audacious/tuple_formatter.h"
 #include "audacious/util.h"

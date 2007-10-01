@@ -1,17 +1,18 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = CoreAudio${PLUGIN_SUFFIX}
+SRCS = about.c		\
+       configure.c	\
+       coreaudio.c	\
+       init.c		\
+       audio.c		\
+       convert.c	\
+       dbconvert.c	\
+       mixer.c
 
-OBJECTIVE_LIBS = libcoreaudio$(SHARED_SUFFIX)
+plugindir = audacious/${OUTPUT_PLUGIN_DIR}
 
-noinst_HEADERS = coreaudio.h
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
-
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) -Wl,-framework,CoreAudio
-SOURCES = coreaudio.c mixer.c about.c configure.c audio.c init.c convert.c dbconvert.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../..intl -I../..
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} -I../../intl -I../.. ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

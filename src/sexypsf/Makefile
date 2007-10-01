@@ -1,32 +1,22 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = sexypsf${PLUGIN_SUFFIX}
+SRCS = PsxBios.c 	\
+       PsxCounters.c	\
+       PsxDma.c		\
+       Spu.c		\
+       PsxMem.c		\
+       PsxHw.c		\
+       Misc.c		\
+       R3000A.c		\
+       PsxInterpreter.c	\
+       PsxHLE.c		\
+       spu/spu.c	\
+       plugin.c
 
-OBJECTIVE_LIBS = libsexypsf$(SHARED_SUFFIX)
+plugindir = audacious/${INPUT_PLUGIN_DIR}
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = \
-	PsxBios.c \
-	PsxCounters.c \
-	PsxDma.c \
-	Spu.c \
-	PsxMem.c \
-	PsxHw.c \
-	Misc.c \
-	R3000A.c \
-	PsxInterpreter.c \
-	PsxHLE.c \
-	spu/spu.c \
-	plugin.c
-
-LIBADD = -lz
-
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../.. -Ispu/ -I.
-
-include ../../mk/objective.mk
-
-clean-posthook:
-	@rm -f spu/*.o
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../.. -Ispu/ -I.
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += -lz ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

@@ -1,19 +1,11 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = mtp_up${PLUGIN_SUFFIX}
+SRCS = mtp.c filetype.c
 
-SUBDIRS = 
+plugindir = audacious/${GENERAL_PLUGIN_DIR}
 
-OBJECTIVE_LIBS = libmtp_up$(SHARED_SUFFIX)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBDIR = $(plugindir)/$(GENERAL_PLUGIN_DIR)
-
-LIBADD += $(MTP_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) 
-SOURCES = mtp.c filetype.c
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(BEEP_DEFINES) -I../../intl -I../..
-
-CFLAGS += -Wall  -pedantic -std=c99 $(GCC42_CFLAGS) -D_BSD_SOURCE
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BEEP_DEFINES} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../.. ${MTP_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${MTP_LIBS}

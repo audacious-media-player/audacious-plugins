@@ -1,16 +1,12 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = echo${PLUGIN_SUFFIX}
+SRCS = echo.c	\
+       gui.c
 
-OBJECTIVE_LIBS = libecho$(SHARED_SUFFIX)
+plugindir = audacious/${EFFECT_PLUGIN_DIR}
 
-LIBDIR = $(plugindir)/$(EFFECT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-LIBADD = $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
-
-SOURCES = echo.c gui.c
-
-CFLAGS += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../intl -I../..
-
-OBJECTS = ${SOURCES:.c=.o}
-
-include ../../mk/objective.mk
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
+CFLAGS += ${PLUGIN_CFLAGS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
