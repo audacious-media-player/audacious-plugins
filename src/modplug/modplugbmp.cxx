@@ -506,7 +506,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
-	const gchar* tmps;
+	std::string tmps;
 	
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
@@ -545,7 +545,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
 	default:		tmps = "ModPlug unknown"; break;
 	}
-	tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
+	tuple_associate_string(ti, FIELD_CODEC, NULL, tmps.c_str());
 	tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
 	tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
 
