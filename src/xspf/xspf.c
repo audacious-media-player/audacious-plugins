@@ -78,6 +78,13 @@ static const xspf_entry_t xspf_entries[] = {
 static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
 
 
+#ifdef DEBUG
+#  define XSDEBUG(...) { fprintf(stderr, "xspf[%s:%d]: ", __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
+#else
+#  define XSDEBUG(...) /* stub */
+#endif
+
+
 static gboolean is_uri(gchar *uri)
 {
     if(strstr(uri, "://"))
@@ -85,6 +92,7 @@ static gboolean is_uri(gchar *uri)
     else
         return FALSE;
 }
+
 
 /* This function is taken from libxml2-2.6.27.
  */
@@ -197,10 +205,9 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
 
         tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
 
-#ifdef DEBUG
-        printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
-        printf("xspf: tuple->file_path = %s\n", tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
-#endif
+        XSDEBUG("tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+        XSDEBUG("tuple->file_path = %s\n", tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
+
         // add file to playlist
         uri = g_filename_to_uri(location, NULL, NULL);
         // uri would be NULL if location is already uri. --yaz
@@ -258,9 +265,7 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 
     g_return_if_fail(filename != NULL);
 
-#ifdef DEBUG
-    printf("playlist_load_xspf: filename = %s\n", filename);
-#endif
+    XSDEBUG("filename='%s', pos=%d\n", filename, pos);
 
     doc = xmlRecoverFile(filename);
     if(doc == NULL)
@@ -271,9 +276,9 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
         if (nptr->type == XML_ELEMENT_NODE &&
             !xmlStrcmp(nptr->name, (xmlChar *)"playlist")) {
             base = (gchar *)xmlNodeGetBase(doc, nptr);
-#ifdef DEBUG
-            printf("playlist_load_xspf: base @1 = %s\n", base);
-#endif
+
+            XSDEBUG("base @1 = %s\n", base);
+            
             // if filename is specified as a base, ignore it.
             tmp = xmlURIUnescapeString(base, -1, NULL);
             if(tmp) {
@@ -284,9 +289,9 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                 g_free(tmp);
                 tmp = NULL;
             }
-#ifdef DEBUG
-            printf("playlist_load_xspf: base @2 = %s\n", base);
-#endif
+            
+            XSDEBUG("base @2 = %s\n", base);
+            
             for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
 
                 if (nptr2->type == XML_ELEMENT_NODE &&
@@ -359,9 +364,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     gchar *base = NULL;
     Playlist *playlist = playlist_get_active();
 
-#ifdef DEBUG
-    printf("playlist_save_xspf: filename = %s\n", filename);
-#endif
+    XSDEBUG("filename='%s', pos=%d\n", filename, pos);
 
     doc = xmlNewDoc((xmlChar *)"1.0");
     doc->charset = XML_CHAR_ENCODING_UTF8;
@@ -411,9 +414,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 g_free(base);
                 base = tmp;
                 baselen = tmplen;
-#ifdef DEBUG
-                printf("base = \"%s\" baselen = %d\n", base, baselen);
-#endif
+                XSDEBUG("base='%s', baselen=%d\n", base, baselen);
             }
             else {
                 g_free(tmp);
@@ -433,9 +434,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             }
 
             if(!is_uri(base)) {
-#ifdef DEBUG
-                printf("base is not uri. something is wrong.\n");
-#endif
+                XSDEBUG("base is not uri. something is wrong.\n");
                 tmp = g_strdup_printf("file://%s", base);
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)tmp);
                 g_free(tmp);
@@ -483,9 +482,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         location = xmlNewNode(NULL, (xmlChar *)"location");
 
         if(is_uri(entry->filename)) {   /* uri */
-#ifdef DEBUG
-            printf("filename is uri\n");
-#endif
+            XSDEBUG("filename is uri\n");
             filename = g_strdup(entry->filename + baselen); // entry->filename is always uri now.
         }
         else {                  /* local file (obsolete) */
@@ -493,9 +490,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             if(base) { /* relative */
                 filename = g_strdup_printf("%s", tmp);
             } else {
-#ifdef DEBUG
-                printf("absolute and local (obsolete)\n");
-#endif
+                XSDEBUG("absolute and local (obsolete)\n");
                 filename = g_filename_to_uri(tmp, NULL, NULL);
             }
             g_free(tmp); tmp = NULL;
