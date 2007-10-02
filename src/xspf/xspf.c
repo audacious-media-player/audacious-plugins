@@ -385,13 +385,11 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             gint tmplen = 0;
 
             if (!is_uri(entry->filename)) { //obsolete
-                gchar *tmp2;
-                tmp2 = g_path_get_dirname(entry->filename);
+                gchar *tmp2 = g_path_get_dirname(entry->filename);
                 tmp = g_strdup_printf("%s/", tmp2);
                 g_free(tmp2);
-            } else {
+            } else
                 tmp = g_strdup(entry->filename);
-            }
 
             if (!base) {
                 base = strdup(tmp);
@@ -414,10 +412,8 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 base = tmp;
                 baselen = tmplen;
                 XSDEBUG("base='%s', baselen=%d\n", base, baselen);
-            }
-            else {
+            } else
                 g_free(tmp);
-            }
         }
         
         /* set base URI */
@@ -436,8 +432,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 tmp = g_strdup_printf("file://%s", base);
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)tmp);
                 g_free(tmp);
-            }
-            else
+            } else
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)base);
         }
     }                           /* USE_RELATIVE */
@@ -482,8 +477,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         if (is_uri(entry->filename)) {   /* uri */
             XSDEBUG("filename is uri\n");
             filename = g_strdup(entry->filename + baselen); // entry->filename is always uri now.
-        }
-        else {                  /* local file (obsolete) */
+        } else {                  /* local file (obsolete) */
             gchar *tmp = (gchar *) xspf_path_to_uri((const xmlChar *)entry->filename + baselen);
             if (base) { /* relative */
                 filename = g_strdup_printf("%s", tmp);
