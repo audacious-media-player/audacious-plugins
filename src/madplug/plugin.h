@@ -40,7 +40,6 @@
 #include <audacious/main.h>
 #include <audacious/util.h>
 #include <audacious/strings.h>
-#include <audacious/vfs.h>
 #include <audacious/i18n.h>
 #include <audacious/id3tag.h>
 #include <mad.h>

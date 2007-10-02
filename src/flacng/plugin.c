@@ -17,10 +17,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include "flacng.h"
 #include <audacious/util.h>
 #include <audacious/output.h>
 #include <glib/gi18n.h>
-#include "flacng.h"
 #include "tools.h"
 #include "plugin.h"
 #include "seekable_stream_callbacks.h"

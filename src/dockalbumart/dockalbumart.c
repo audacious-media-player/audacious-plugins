@@ -30,7 +30,6 @@
 #include <audacious/plugin.h>
 #include <audacious/util.h>
 #include <audacious/playlist.h>
-#include <audacious/tuple.h>
 
 #include "audacious_player.xpm"
 

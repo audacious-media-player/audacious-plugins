@@ -17,10 +17,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
 #include <audacious/plugin.h>
 #include <audacious/util.h>
 #include <audacious/i18n.h>
-#include "../../config.h"
 #include <glib.h>
 #include <string.h>
 

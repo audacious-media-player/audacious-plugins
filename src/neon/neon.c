@@ -17,7 +17,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <audacious/vfs.h>
+#include "neon.h"
+
 #include <audacious/plugin.h>
 #include <audacious/configdb.h>
 
@@ -28,7 +29,6 @@
 #include <ne_auth.h>
 
 #include "debug.h"
-#include "neon.h"
 #include "rb.h"
 
 #define NBUFSIZ (128u*1024u)

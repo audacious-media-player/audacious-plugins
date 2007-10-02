@@ -45,7 +45,6 @@
 #include <audacious/output.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
-
 #include <audacious/id3tag.h>
 
 #define  PLUGIN_VERSION "1.4"

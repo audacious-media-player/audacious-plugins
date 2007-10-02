@@ -18,6 +18,8 @@
 
 /* BMP-ladspa port by Giacomo Lozito <city_hunter@users.sf.net> */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,7 +33,6 @@
 #include <audacious/configdb.h>
 #include <audacious/i18n.h>
 
-#include "../../config.h"
 #include "ladspa.h"
 
 #ifndef PATH_MAX

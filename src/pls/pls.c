@@ -36,7 +36,6 @@
 #include <audacious/playlist.h>
 #include <audacious/playlist_container.h>
 #include <audacious/plugin.h>
-#include <audacious/vfs.h>
 #include <audacious/strings.h>
 
 static void

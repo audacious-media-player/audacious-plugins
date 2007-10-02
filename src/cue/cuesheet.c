@@ -26,7 +26,6 @@
 #include <audacious/plugin.h>
 #include <audacious/output.h>
 #include <audacious/playlist.h>
-#include <audacious/vfs.h>
 #include <audacious/util.h>
 #include <audacious/strings.h>
 #include <audacious/main.h>
