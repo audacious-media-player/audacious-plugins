@@ -250,10 +250,10 @@ void gui_to_values()
 		*limitspeed = 0;
 	*usecdtext = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton));
 	*usecddb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton));
-	strcpy(cddbserver, gtk_entry_get_text(GTK_ENTRY(cddbserverentry)));
+	strncpy(cddbserver, gtk_entry_get_text(GTK_ENTRY(cddbserverentry)), strlen(gtk_entry_get_text(GTK_ENTRY(cddbserverentry))) + 1);
 	*cddbport = strtol(gtk_entry_get_text(GTK_ENTRY(cddbportentry)), NULL, 10);
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)))
-		strcpy(device, gtk_entry_get_text(GTK_ENTRY(deviceentry)));
+		strncpy(device, gtk_entry_get_text(GTK_ENTRY(deviceentry)), strlen(gtk_entry_get_text(GTK_ENTRY(deviceentry))) + 1);
 	else
 		strcpy(device, "");
 	*debug = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debugcheckbutton));
