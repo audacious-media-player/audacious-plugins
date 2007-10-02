@@ -30,11 +30,11 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
+#include <audacious/plugin.h>
 #include <audacious/main.h>
 #include <audacious/util.h>
 #include <audacious/playlist.h>
 #include <audacious/playlist_container.h>
-#include <audacious/plugin.h>
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -115,7 +115,8 @@ static xmlChar *xspf_path_to_uri(const xmlChar *path)
 }
 
 
-static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const gchar *base)
+static void xspf_add_file(xmlNode *track, const gchar *filename,
+            gint pos, const gchar *base)
 {
     xmlNode *nptr;
     Tuple *tuple;
@@ -212,7 +213,8 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
 }
 
 
-static void xspf_find_track(xmlNode *tracklist, const gchar *filename, gint pos, const gchar *base)
+static void xspf_find_track(xmlNode *tracklist, const gchar *filename,
+            gint pos, const gchar *base)
 {
     xmlNode *nptr;
 
@@ -317,9 +319,9 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 }
 
 
-static void xspf_add_node(
-        xmlNodePtr node, TupleValueType type, gboolean isMeta,
-        const gchar *xspfName, const gchar *strVal, const gint intVal)
+static void xspf_add_node(xmlNodePtr node, TupleValueType type,
+        gboolean isMeta, const gchar *xspfName, const gchar *strVal,
+        const gint intVal)
 {
     gchar tmps[64];
     xmlNodePtr tmp;
@@ -445,7 +447,6 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
 
     /* common */
     xmlDocSetRootElement(doc, rootnode);
-
     xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
 
     /* add staticlist marker */
@@ -578,14 +579,17 @@ PlaylistContainer plc_xspf = {
     .plc_write = xspf_playlist_save,
 };
 
+
 static void xspf_init(void)
 {
     playlist_container_register(&plc_xspf);
 }
 
+
 static void xspf_cleanup(void)
 {
     playlist_container_unregister(&plc_xspf);
 }
+
 
 DECLARE_PLUGIN(xspf, xspf_init, xspf_cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
