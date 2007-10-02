@@ -19,8 +19,6 @@
 #include <mmsystem.h>
 #include <stdio.h>
 
-inline void ProcessPlugins(int n) {}
-
 #elif defined(__x86_64__) || defined(__powerpc64__)
 
 #include <stdlib.h>
@@ -73,8 +71,6 @@ inline signed char * GlobalAllocPtr(unsigned int, size_t size)
   if (p != NULL) memset(p, 0, size);
   return p;
 }
-
-inline void ProcessPlugins(int n) {}
 
 #define GlobalFreePtr(p) free((void *)(p))
 
@@ -151,8 +147,6 @@ inline signed char * GlobalAllocPtr(unsigned int, size_t size)
   if (p != NULL) memset(p, 0, size);
   return p;
 }
-
-inline void ProcessPlugins(int n) {}
 
 #define GlobalFreePtr(p) free((void *)(p))
 
