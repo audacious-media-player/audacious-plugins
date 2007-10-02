@@ -522,7 +522,6 @@ static gboolean xs_filters_export(const gchar *pcFilename, t_xs_sid2_filter **pF
 	return TRUE;
 }
 
-
 /* Get the configuration (from file or default)
  */
 void xs_read_configuration(void)
@@ -753,6 +752,19 @@ void xs_cfg_ok(void)
 	/* Re-initialize */
 	xs_reinit();
 }
+
+
+/* Confirmation window
+ */
+gboolean xs_confirmwin_delete(GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
+	(void) widget;
+	(void) event;
+	(void) user_data;
+	
+	return FALSE;
+}
+
 
 
 /* HVSC songlength-database file selector response-functions
