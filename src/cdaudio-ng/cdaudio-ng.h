@@ -30,9 +30,9 @@
 
 typedef struct {
 
-	char				performer[DEF_STRING_LEN];
-	char				name[DEF_STRING_LEN];
-	char				genre[DEF_STRING_LEN];
+	gchar				performer[DEF_STRING_LEN];
+	gchar				name[DEF_STRING_LEN];
+	gchar				genre[DEF_STRING_LEN];
 	lsn_t				startlsn;
 	lsn_t				endlsn;
 

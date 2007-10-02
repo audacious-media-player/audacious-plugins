@@ -49,7 +49,7 @@ static void				values_to_gui();
 static void				gui_to_values();
 
 
-void configure_set_variables(/*gboolean *_usedae, */int *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, char *_device, gboolean *_debug, char *_cddbserver, int *_cddbport)
+void configure_set_variables(/*gboolean *_usedae, */gint *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, gchar *_device, gboolean *_debug, gchar *_cddbserver, gint *_cddbport)
 {
 	/*usedae = _usedae;*/
 	limitspeed = _limitspeed;
@@ -214,6 +214,8 @@ void checkbutton_toggled(GtkWidget *widget, gpointer data)
 
 void values_to_gui()
 {
+	gchar portstr[16];
+
 	/*gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedaecheckbutton), *usedae);*/
 
 	/*gtk_widget_set_sensitive(limitcheckbutton, *usedae);*/
@@ -225,8 +227,7 @@ void values_to_gui()
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton), *usecdtext);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton), *usecddb);
 
-	char portstr[10];
-	sprintf(portstr, "%d", *cddbport);
+	g_snprintf(portstr, sizeof(portstr), "%d", *cddbport);
 	gtk_entry_set_text(GTK_ENTRY(cddbserverentry), cddbserver);
 	gtk_entry_set_text(GTK_ENTRY(cddbportentry), portstr);
 	gtk_widget_set_sensitive(cddbserverentry, *usecddb);

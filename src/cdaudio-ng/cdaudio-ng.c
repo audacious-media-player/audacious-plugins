@@ -241,7 +241,7 @@ gint cdaudio_is_our_file(gchar *filename)
 		}
 
 			/* check if the requested track actually exists on the current audio cd */
-		int trackno = find_trackno_from_filename(filename);
+		gint trackno = find_trackno_from_filename(filename);
 		if (trackno < firsttrackno || trackno > lasttrackno) {
 			if (debug)
 				printf("cdaudio-ng: \"%s\" is not our file\n", filename);
@@ -280,7 +280,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		}
 	}
 	else {
-		char **ppcd_drives = cdio_get_devices_with_cap(NULL, CDIO_FS_AUDIO, false);
+		gchar **ppcd_drives = cdio_get_devices_with_cap(NULL, CDIO_FS_AUDIO, false);
 		pcdio = NULL;
 		if (ppcd_drives != NULL && *ppcd_drives != NULL) { /* we have at least one audio capable cd drive */
 			pcdio = cdio_open(*ppcd_drives, DRIVER_UNKNOWN);
@@ -321,10 +321,9 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	if (debug)
 		printf("cdaudio-ng: first track is %d and last track is %d\n", firsttrackno, lasttrackno);
 
-	if (trackinfo != NULL) /* if a previously allocated track information exists, we free it */
-		free(trackinfo);
-	trackinfo = (trackinfo_t *) malloc(sizeof(trackinfo_t) * (lasttrackno + 1));
-	int trackno;
+	g_free(trackinfo);
+	trackinfo = (trackinfo_t *) g_new(trackinfo_t, (lasttrackno + 1));
+	gint trackno;
 
 	trackinfo[0].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, 0);
 	trackinfo[0].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, CDIO_CDROM_LEADOUT_TRACK);
@@ -476,7 +475,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 void cdaudio_play_file(InputPlayback *pinputplayback)
 {
 	Tuple *tuple;
-	char *title;
+	gchar *title;
 
 	if (debug)
 		printf("cdaudio-ng: cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
@@ -517,8 +516,8 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
 	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
-	free(title); title = NULL;
-	tuple_free(tuple); tuple = NULL;
+	g_free(title);
+	tuple_free(tuple);
 
 	if (use_dae) {
 		if (debug)
@@ -539,7 +538,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 		if (debug)
 			printf("cdaudio-ng: starting dae thread...\n");
 		*/
-		pdae_params = (dae_params_t *) malloc(sizeof(dae_params_t));
+		pdae_params = (dae_params_t *) g_new(dae_params_t, 1);
 		pdae_params->startlsn = trackinfo[trackno].startlsn;
 		pdae_params->endlsn = trackinfo[trackno].endlsn;
 		pdae_params->pplayback = pinputplayback;
@@ -582,7 +581,7 @@ void cdaudio_stop(InputPlayback *pinputplayback)
 	if (use_dae) {
 		if (pdae_params != NULL) {
 			g_thread_join(pdae_params->thread);
-			free(pdae_params);
+			g_free(pdae_params);
 			pdae_params = NULL;
 		}
 	}
@@ -633,7 +632,7 @@ void cdaudio_seek(InputPlayback *pinputplayback, gint time)
 		}
 	}
 	else {
-		int newstartlsn = trackinfo[playing_track].startlsn + time * 75;
+		gint newstartlsn = trackinfo[playing_track].startlsn + time * 75;
 		msf_t startmsf, endmsf;
 		cdio_lsn_to_msf(newstartlsn, &startmsf);
 		cdio_lsn_to_msf(trackinfo[playing_track].endlsn, &endmsf);
@@ -660,7 +659,7 @@ gint cdaudio_get_time(InputPlayback *pinputplayback)
 			cleanup_on_error();
 			return 0;
 		}
-		int currlsn = cdio_msf_to_lsn(&subchannel.abs_addr);
+		gint currlsn = cdio_msf_to_lsn(&subchannel.abs_addr);
 
 			/* check to see if we have reached the end of the song */
 		if (currlsn == trackinfo[playing_track].endlsn)
@@ -736,7 +735,7 @@ void cdaudio_cleanup()
 		pcdio = NULL;
 	}
 	if (trackinfo != NULL) {
-		free(trackinfo);
+		g_free(trackinfo);
 		trackinfo = NULL;
 	}
 	playing_track = -1;
@@ -760,7 +759,7 @@ void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 	if (debug)
 		printf("cdaudio-ng: cdaudio_get_song_info(\"%s\")\n", filename);
 
-	int trackno = find_trackno_from_filename(filename);
+	gint trackno = find_trackno_from_filename(filename);
 	Tuple *tuple = create_tuple_from_trackinfo(filename);
 
 	if(tuple) {
@@ -819,7 +818,7 @@ Tuple *create_tuple_from_trackinfo(char *filename)
 		return NULL;
 
 	Tuple *tuple = tuple_new_from_filename(filename);
-	int trackno = find_trackno_from_filename(filename);
+	gint trackno = find_trackno_from_filename(filename);
 
 	if (trackno < firsttrackno || trackno > lasttrackno)
 		return NULL;
@@ -847,14 +846,14 @@ Tuple *create_tuple_from_trackinfo(char *filename)
 
 void dae_play_loop(dae_params_t *pdae_params)
 {
-	unsigned char *buffer = (unsigned char *) malloc(CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
+	guchar *buffer = g_new(guchar, CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
 
 	if (debug)
 		printf("cdaudio-ng: dae started\n");
 	cdio_lseek(pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 
 	gboolean output_paused = FALSE;
-	int read_error_counter = 0;
+	gint read_error_counter = 0;
 
 	//pdae_params->endlsn += 75 * 3;
 
@@ -867,7 +866,7 @@ void dae_play_loop(dae_params_t *pdae_params)
 				pdae_params->pplayback->output->pause(TRUE);
 				output_paused = TRUE;
 			}
-			usleep(1000);
+			g_usleep(1000);
 			continue;
 		}
 		else {
@@ -883,7 +882,7 @@ void dae_play_loop(dae_params_t *pdae_params)
 		if (pdae_params->seektime != -1) {
 			if (debug)
 				printf("cdaudio-ng: requested seek to %d ms\n", pdae_params->seektime);
-			int newlsn = pdae_params->startlsn + pdae_params->seektime * 75 / 1000;
+			gint newlsn = pdae_params->startlsn + pdae_params->seektime * 75 / 1000;
 			cdio_lseek(pcdio, newlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 			pdae_params->pplayback->output->flush(pdae_params->seektime);
 			pdae_params->currlsn = newlsn;
@@ -891,7 +890,7 @@ void dae_play_loop(dae_params_t *pdae_params)
 		}
 
 			/* compute the actual number of sectors to read */
-		int lsncount = CDDA_DAE_FRAMES <= (pdae_params->endlsn - pdae_params->currlsn + 1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn - pdae_params->currlsn + 1);
+		gint lsncount = CDDA_DAE_FRAMES <= (pdae_params->endlsn - pdae_params->currlsn + 1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn - pdae_params->currlsn + 1);
 			/* check too see if we have reached the end of the song */
 		if (lsncount <= 0) {
 			sleep(3);
@@ -910,11 +909,11 @@ void dae_play_loop(dae_params_t *pdae_params)
 		else
 			read_error_counter = 0;
 
-		int remainingbytes = lsncount * CDIO_CD_FRAMESIZE_RAW;
-		unsigned char *bytebuff = buffer;
+		gint remainingbytes = lsncount * CDIO_CD_FRAMESIZE_RAW;
+		guchar *bytebuff = buffer;
 		while (pdae_params->pplayback->playing && remainingbytes > 0 && pdae_params->seektime == -1) {
 				/* compute the actual number of bytes to play */
-			int bytecount = CDIO_CD_FRAMESIZE_RAW <= remainingbytes ? CDIO_CD_FRAMESIZE_RAW : remainingbytes;
+			gint bytecount = CDIO_CD_FRAMESIZE_RAW <= remainingbytes ? CDIO_CD_FRAMESIZE_RAW : remainingbytes;
 				/* wait until the output buffer has enough room */
 			while (pdae_params->pplayback->playing && pdae_params->pplayback->output->buffer_free() < bytecount && pdae_params->seektime == -1)
 				usleep(1000);
@@ -934,20 +933,20 @@ void dae_play_loop(dae_params_t *pdae_params)
 	is_paused = FALSE;
 
 	pdae_params->pplayback->output->close_audio();
-	free(buffer);
+	g_free(buffer);
 }
 
-int calculate_track_length(int startlsn, int endlsn)
+gint calculate_track_length(gint startlsn, gint endlsn)
 {
 	return ((endlsn - startlsn + 1) * 1000) / 75;
 }
 
-int find_trackno_from_filename(char *filename)
+gint find_trackno_from_filename(gchar *filename)
 {
+	gchar tracknostr[3];
 	if ((filename == NULL) || strlen(filename) <= 6)
 		return -1;
 
-	char tracknostr[3];
 	strncpy(tracknostr, filename + strlen(filename) - 6, 2);
 	tracknostr[2] = '\0';
 	return strtol(tracknostr, NULL, 10);
@@ -960,7 +959,7 @@ void cleanup_on_error()
 	}
 
 	if (trackinfo != NULL) {
-		free(trackinfo);
+		g_free(trackinfo);
 		trackinfo = NULL;
 	}
 }
