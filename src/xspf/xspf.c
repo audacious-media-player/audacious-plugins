@@ -87,7 +87,7 @@ static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
 
 static gboolean is_uri(gchar *uri)
 {
-    if(strstr(uri, "://"))
+    if (strstr(uri, "://"))
         return TRUE;
     else
         return FALSE;
@@ -268,7 +268,7 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
     XSDEBUG("filename='%s', pos=%d\n", filename, pos);
 
     doc = xmlRecoverFile(filename);
-    if(doc == NULL)
+    if (doc == NULL)
         return;
 
     // find trackList
@@ -281,8 +281,8 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
             
             // if filename is specified as a base, ignore it.
             tmp = xmlURIUnescapeString(base, -1, NULL);
-            if(tmp) {
-                if(!strcmp(tmp, filename)) {   
+            if (tmp) {
+                if (!strcmp(tmp, filename)) {   
                     xmlFree(base);
                     base = NULL;
                 }
@@ -313,7 +313,7 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                     }
                     xmlFree(title);
                 } else
-                if(nptr2->type == XML_ELEMENT_NODE &&
+                if (nptr2->type == XML_ELEMENT_NODE &&
                     !xmlStrcmp(nptr2->name, (xmlChar *)"trackList")) {
                     xspf_find_track(nptr2, filename, pos, base);
                 }
@@ -394,7 +394,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 tmp = g_strdup(entry->filename);
             }
 
-            if(!base) {
+            if (!base) {
                 base = strdup(tmp);
                 baselen = strlen(base);
             }
@@ -425,15 +425,15 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         /* set base URI */
         if (base) {
             gchar *tmp;
-            if(!is_uri(base)) {
+            if (!is_uri(base)) {
                 tmp = (gchar *) xspf_path_to_uri((xmlChar *)base);
-                if(tmp) {
+                if (tmp) {
                     g_free(base);
                     base = tmp;
                 }
             }
 
-            if(!is_uri(base)) {
+            if (!is_uri(base)) {
                 XSDEBUG("base is not uri. something is wrong.\n");
                 tmp = g_strdup_printf("file://%s", base);
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)tmp);
@@ -471,7 +471,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);
 
-    for(node = playlist->entries; node != NULL; node = g_list_next(node)) {
+    for (node = playlist->entries; node != NULL; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
         xmlNodePtr track, location;
         gchar *filename = NULL;
@@ -481,13 +481,13 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         track = xmlNewNode(NULL, (xmlChar *)"track");
         location = xmlNewNode(NULL, (xmlChar *)"location");
 
-        if(is_uri(entry->filename)) {   /* uri */
+        if (is_uri(entry->filename)) {   /* uri */
             XSDEBUG("filename is uri\n");
             filename = g_strdup(entry->filename + baselen); // entry->filename is always uri now.
         }
         else {                  /* local file (obsolete) */
             gchar *tmp = (gchar *) xspf_path_to_uri((const xmlChar *)entry->filename + baselen);
-            if(base) { /* relative */
+            if (base) { /* relative */
                 filename = g_strdup_printf("%s", tmp);
             } else {
                 XSDEBUG("absolute and local (obsolete)\n");
@@ -496,7 +496,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             g_free(tmp); tmp = NULL;
         } /* obsolete */
 
-        if(!g_utf8_validate(filename, -1, NULL))
+        if (!g_utf8_validate(filename, -1, NULL))
             continue;
 
         xmlAddChild(location, xmlNewText((xmlChar *)filename));
