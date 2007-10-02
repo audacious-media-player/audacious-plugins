@@ -164,15 +164,15 @@ static void cdaudio_init()
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cddb", &use_cddb))
 		use_cddb = TRUE;
 	if (!bmp_cfg_db_get_string(db, "CDDA", "cddbserver", &string))
-		strcpy(cddb_server, CDDA_DEFAULT_CDDB_SERVER);
+		strncpy(cddb_server, CDDA_DEFAULT_CDDB_SERVER, strlen(CDDA_DEFAULT_CDDB_SERVER) + 1);
 	else
-		strcpy(cddb_server, string);
+		strncpy(cddb_server, string, strlen(string) + 1);
 	if (!bmp_cfg_db_get_int(db, "CDDA", "cddbport", &cddb_port))
 		cddb_port = CDDA_DEFAULT_CDDB_PORT;
 	if (!bmp_cfg_db_get_string(db, "CDDA", "device", &string))
 		strcpy(device, "");
 	else
-		strcpy(device, string);
+		strncpy(device, string, strlen(device) + 1);
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "debug", &use_debug))
 		use_debug = FALSE;
 
@@ -395,9 +395,9 @@ GList *cdaudio_scan_dir(gchar *dirname)
 				else {
 					CDDEBUG("we have got the cddb info\n");
 
-					strcpy(trackinfo[0].performer, cddb_disc_get_artist(pcddb_disc));
-					strcpy(trackinfo[0].name, cddb_disc_get_title(pcddb_disc));
-					strcpy(trackinfo[0].genre, cddb_disc_get_genre(pcddb_disc));
+					strncpy(trackinfo[0].performer, cddb_disc_get_artist(pcddb_disc), strlen(cddb_disc_get_artist(pcddb_disc)) + 1);
+					strncpy(trackinfo[0].name, cddb_disc_get_title(pcddb_disc), strlen(cddb_disc_get_title(pcddb_disc)) + 1);
+					strncpy(trackinfo[0].genre, cddb_disc_get_genre(pcddb_disc), strlen(cddb_disc_get_genre(pcddb_disc)) + 1);
 				}
 			}
 		}
@@ -411,9 +411,9 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			CDDEBUG("no cd-text available for disc\n");
 		}
 		else {
-			strcpy(trackinfo[0].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "");
-			strcpy(trackinfo[0].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "");
-			strcpy(trackinfo[0].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "");
+			strncpy(trackinfo[0].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "", strlen(pcdtext->field[CDTEXT_PERFORMER]) + 1);
+			strncpy(trackinfo[0].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "", strlen(pcdtext->field[CDTEXT_TITLE]) + 1);
+			strncpy(trackinfo[0].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "", strlen(pcdtext->field[CDTEXT_GENRE]) + 1);
 		}
 	}
 
@@ -432,16 +432,16 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		}
 
 		if (pcdtext != NULL) {
-			strcpy(trackinfo[trackno].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "");
-			strcpy(trackinfo[trackno].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "");
-			strcpy(trackinfo[trackno].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "");
+			strncpy(trackinfo[trackno].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "", strlen(pcdtext->field[CDTEXT_PERFORMER]) + 1);
+			strncpy(trackinfo[trackno].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "", strlen(pcdtext->field[CDTEXT_TITLE]) + 1);
+			strncpy(trackinfo[trackno].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "", strlen(pcdtext->field[CDTEXT_GENRE]) + 1);
 		}
 		else
 			if (pcddb_disc != NULL) {
 				cddb_track_t *pcddb_track = cddb_disc_get_track(pcddb_disc, trackno - 1);
-				strcpy(trackinfo[trackno].performer, cddb_track_get_artist(pcddb_track));
-				strcpy(trackinfo[trackno].name, cddb_track_get_title(pcddb_track));
-				strcpy(trackinfo[trackno].genre, cddb_disc_get_genre(pcddb_disc));
+				strncpy(trackinfo[trackno].performer, cddb_track_get_artist(pcddb_track), strlen(cddb_track_get_artist(pcddb_track)) + 1);
+				strncpy(trackinfo[trackno].name, cddb_track_get_title(pcddb_track), strlen(cddb_track_get_title(pcddb_track)) + 1);
+				strncpy(trackinfo[trackno].genre, cddb_disc_get_genre(pcddb_disc), strlen(cddb_disc_get_genre(pcddb_disc)) + 1);
 			}
 			else {
 				strcpy(trackinfo[trackno].performer, "");
@@ -450,7 +450,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			}
 
 		if (strlen(trackinfo[trackno].name) == 0)
-			sprintf(trackinfo[trackno].name, "CD Audio Track %02u", trackno);
+			snprintf(trackinfo[trackno].name, trackno, "CD Audio Track %02u", sizeof(trackinfo[trackno].name));
 
 	}
 
@@ -923,7 +923,7 @@ static gint calculate_track_length(gint startlsn, gint endlsn)
 
 static gint find_trackno_from_filename(gchar *filename)
 {
-	gchar tracknostr[3];
+	gchar tracknostr[DEF_STRING_LEN];
 	if ((filename == NULL) || strlen(filename) <= 6)
 		return -1;
 
