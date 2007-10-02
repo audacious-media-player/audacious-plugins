@@ -251,7 +251,6 @@ static void xspf_find_audoptions(xmlNode *tracklist, const gchar *filename, gint
                 playlist->attribute ^= PLAYLIST_STATIC;
 
             xmlFree(opt);
-            opt = NULL;
         }
     }
 }
@@ -261,7 +260,6 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 {
     xmlDocPtr doc;
     xmlNode *nptr, *nptr2;
-    gchar *tmp = NULL, *base = NULL;
 
     g_return_if_fail(filename != NULL);
 
@@ -275,6 +273,8 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
     for (nptr = doc->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE &&
             !xmlStrcmp(nptr->name, (xmlChar *)"playlist")) {
+            gchar *tmp, *base;
+            
             base = (gchar *)xmlNodeGetBase(doc, nptr);
 
             XSDEBUG("base @1 = %s\n", base);
@@ -287,7 +287,6 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                     base = NULL;
                 }
                 g_free(tmp);
-                tmp = NULL;
             }
             
             XSDEBUG("base @2 = %s\n", base);
@@ -418,7 +417,6 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             }
             else {
                 g_free(tmp);
-                tmp = NULL;
             }
         }
         
@@ -493,7 +491,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 XSDEBUG("absolute and local (obsolete)\n");
                 filename = g_filename_to_uri(tmp, NULL, NULL);
             }
-            g_free(tmp); tmp = NULL;
+            g_free(tmp);
         } /* obsolete */
 
         if (!g_utf8_validate(filename, -1, NULL))
@@ -553,17 +551,13 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         }
 
         g_free(filename);
-        filename = NULL;
     }
 
     PLAYLIST_UNLOCK(playlist);
 
     xmlSaveFormatFile(filename, doc, 1);
     xmlFreeDoc(doc);
-    doc = NULL;
-
     xmlFree(base);
-    base = NULL;
 }
 
 
