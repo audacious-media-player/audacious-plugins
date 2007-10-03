@@ -24,7 +24,7 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <audacious/configdb.h>
+#include <audacious/plugin.h>
 
 #include <math.h>
 
