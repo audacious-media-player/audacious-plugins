@@ -64,6 +64,7 @@ static int seek_to = -1;
 
 extern void set_endian();
 
+/*
 static gchar *
 extname(const char *filename)
 {
@@ -74,6 +75,7 @@ extname(const char *filename)
 
     return ext;
 }
+*/
 
 static void alac_about(void)
 {

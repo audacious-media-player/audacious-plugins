@@ -261,9 +261,6 @@ write_all(int fd, const void *buf, size_t count)
 static void
 oss_write_audio(gpointer data, int length)
 {
-
-    audio_buf_info abuf_info;
-
     if (oss_convert_func != NULL)
         length = oss_convert_func(&data, length);
 
@@ -655,12 +652,6 @@ void oss_tell(AFormat * fmt, gint * rate, gint * nch)
 }
 
 //-----------------------------OSS4 MIXER CODE-----------------------------
-static int
-open_mixer_device()  //i think we dont need this anymore
-{
-    return 0;
-}
-
 void oss_get_volume(int *l, int *r)
 {
     int v;

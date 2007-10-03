@@ -598,6 +598,7 @@ vorbis_get_song_info(char *filename, char **title, int *length)
     tuple_free(tuple);
 }
 
+/*
 static const gchar *
 get_extension(const gchar * filename)
 {
@@ -606,6 +607,7 @@ get_extension(const gchar * filename)
         ++ext;
     return ext;
 }
+*/
 
 /* Make sure you've locked vf_mutex */
 static gboolean

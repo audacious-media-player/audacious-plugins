@@ -149,7 +149,7 @@ oss_configure(void)
 {
     GtkWidget *vbox, *notebook;
     GtkWidget *dev_vbox, *adevice_frame, *adevice_box, *adevice;
-    GtkWidget *mdevice_frame, *mdevice_box, *mdevice;
+    /* GtkWidget *mdevice_frame, *mdevice_box, *mdevice; */
     GtkWidget *buffer_frame, *buffer_vbox, *buffer_table;
     GtkWidget *buffer_size_box, *buffer_size_label;
     GtkObject *buffer_size_adj, *buffer_pre_adj;

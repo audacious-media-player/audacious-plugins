@@ -41,6 +41,10 @@ AC_PROG_CXX
 AC_ISC_POSIX
 AC_C_BIGENDIAN
 
+if test x"$GCC" = x"yes"; then
+	CFLAGS="$CFLAGS -pipe -Wall"
+	CXXFLAGS="$CXXFLAGS -pipe -Wall"
+fi
 
 dnl Locate a program and check that its version is acceptable.
 dnl AC_PROG_CHECK_VER(var, namelist, version-switch,

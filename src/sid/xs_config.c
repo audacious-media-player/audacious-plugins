@@ -356,7 +356,7 @@ static t_xs_sid2_filter * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
 		return pResult;
 }
 
-
+#if 0
 static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, t_xs_sid2_filter *pFilter, gint nFilter)
 {
 	gchar *tmpValue, tmpKey[64];
@@ -387,7 +387,7 @@ static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, t_xs_sid2_filter *pFilter, g
 	g_free(tmpValue);
 	return TRUE;
 }
-
+#endif
 
 /* Filter exporting and importing. These functions export/import
  * filter settings to/from SIDPlay2 INI-type files.

@@ -19,6 +19,7 @@
 
 #include "config.h"
 #include <audacious/plugin.h>
+#include <audacious/output.h>
 #include <audacious/util.h>
 #include <audacious/i18n.h>
 #include <glib.h>
@@ -101,7 +102,7 @@ static int metronom_is_our_file(char *filename)
 #define BUF_BYTES BUF_SAMPLES * 2
 #define MAX_AMPL (GINT16_TO_LE((1<<15) - 1))
 
-static void* play_loop(void *arg)
+static void play_loop(void *arg)
 {
 	gint16 data[BUF_SAMPLES];
 	InputPlayback *playback = arg;
