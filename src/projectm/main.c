@@ -50,9 +50,8 @@ www.gamedev.net/reference/programming/features/beatdetection/
 #include "sdltoprojectM.h"
 #include "video_init.h"
 
-#if HAVE_CONFIG_H
 #include <config.h>
-#endif
+
 #define CONFIG_FILE "/config"
 #define PRESETS_DIR "/presets"
 #define FONTS_DIR "/fonts"

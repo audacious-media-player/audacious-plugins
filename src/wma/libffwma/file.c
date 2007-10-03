@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
-#include "audacious/vfs.h"
+#include <audacious/vfs.h>
 
 /* standard file protocol */
 

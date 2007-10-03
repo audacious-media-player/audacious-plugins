@@ -12007,7 +12007,7 @@
 
 2006-09-18 15:47:33 +0000  Jonathan Schleifer <js@h3c.de>
   revision [68]
-  #include "audacious/util.h"? WTF? Fixed.
+  #include <audacious/util.h>? WTF? Fixed.
 
   Changes:        Modified:
   +1 -1           trunk/src/modplug/gui/main.cxx  

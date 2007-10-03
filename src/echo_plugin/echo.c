@@ -5,7 +5,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
-#include "audacious/configdb.h"
+#include <audacious/configdb.h>
 #include "echo.h"
 
 #include "../../config.h"

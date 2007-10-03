@@ -289,7 +289,7 @@ void xs_play_file(InputPlayback *pb)
 {
 	t_xs_tuneinfo *tmpTune;
 	gboolean audioOpen = FALSE;
-	gint audioGot, tmpLength, i, subTune;
+	gint audioGot, tmpLength, subTune;
 	gchar *tmpFilename, *audioBuffer = NULL, *oversampleBuffer = NULL, *tmpTitle;
 	Tuple *tmpTuple;
 
@@ -548,8 +548,9 @@ void xs_pause(InputPlayback *pb, short pauseState)
 /*
  * A stub seek function (Audacious will crash if seek is NULL)
  */
-void xs_seek(InputPlayback *pb, gint iTime)
+void xs_seek(InputPlayback *pb, gint time)
 {
+	(void) pb; (void) time;
 }
 
 

@@ -121,9 +121,7 @@ private:
 	friend class Blip_Reader;
 };
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"
-#endif
+#include "config.h"
 
 // Number of bits in resample ratio fraction. Higher values give a more accurate ratio
 // but reduce maximum buffer size.

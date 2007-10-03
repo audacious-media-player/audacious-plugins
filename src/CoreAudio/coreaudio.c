@@ -19,7 +19,7 @@
 
 #include "coreaudio.h"
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
 OutputPlugin osx_op =

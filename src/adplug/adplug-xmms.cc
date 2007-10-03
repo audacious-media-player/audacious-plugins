@@ -29,13 +29,13 @@
 #include "emuopl.h"
 #include "silentopl.h"
 #include "players.h"
-#include "audacious/i18n.h"
+#include <audacious/i18n.h>
 extern "C"
 {
-#include "audacious/plugin.h"
-#include "audacious/configdb.h"
-#include "audacious/output.h"
-#include "audacious/util.h"
+#include <audacious/plugin.h>
+#include <audacious/configdb.h>
+#include <audacious/output.h>
+#include <audacious/util.h>
 }
 
 

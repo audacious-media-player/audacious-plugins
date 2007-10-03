@@ -20,12 +20,9 @@
  * $Id: id3v2.c,v 1.6 2007/03/23 05:49:48 jason Exp $
  */
 
+#include "config.h"
 #include <stdio.h>
 #include "shorten.h"
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 
 #define ID3V2_MAGIC "ID3"
 

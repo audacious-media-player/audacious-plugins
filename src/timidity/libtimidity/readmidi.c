@@ -19,11 +19,8 @@
 
 */
 
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include <config.h>
 
-#include "audacious/vfs.h"
 #include <stdlib.h>
 #include <string.h>
 

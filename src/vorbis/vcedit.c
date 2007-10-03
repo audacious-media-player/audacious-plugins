@@ -17,7 +17,6 @@
 #include <vorbis/codec.h>
 
 #include "vcedit.h"
-#include <audacious/vfs.h>
 
 #define CHUNKSIZE 4096
 

@@ -12,11 +12,10 @@
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 extern "C" {
-#include "audacious/tuple.h"
-#include "audacious/tuple_formatter.h"
-#include "audacious/util.h"
-#include "audacious/output.h"
-#include "audacious/playlist.h"
+#include <audacious/plugin.h>
+#include <audacious/util.h>
+#include <audacious/output.h>
+#include <audacious/playlist.h>
 }
 #include <string.h>
 #include <stdlib.h>

@@ -19,9 +19,7 @@
 
 /* FIXME: what to name this file? */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#include <config.h>
 
 #include "paranormal.h"
 #include "actuators.h"

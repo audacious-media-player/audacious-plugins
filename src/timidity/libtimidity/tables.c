@@ -19,11 +19,7 @@
 
 */
 
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include "audacious/vfs.h"
+#include <config.h>
 
 #include "timidity.h"
 #include "tables.h"

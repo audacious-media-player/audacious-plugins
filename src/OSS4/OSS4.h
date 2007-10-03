@@ -30,7 +30,7 @@
 #include <soundcard.h>
 #endif
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 #include <glib.h>
 
 #define IS_BIG_ENDIAN (G_BYTE_ORDER == G_BIG_ENDIAN)

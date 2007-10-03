@@ -27,7 +27,6 @@
 #include <string.h>
 
 #include <audacious/configdb.h>
-#include <audacious/vfs.h>
 #include <audacious/i18n.h>
 
 

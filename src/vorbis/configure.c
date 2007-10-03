@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "audacious/configdb.h"
-#include "audacious/util.h"
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
+#include <audacious/configdb.h>
+#include <audacious/util.h>
 #include <audacious/i18n.h>
 
 extern GMutex *vf_mutex;

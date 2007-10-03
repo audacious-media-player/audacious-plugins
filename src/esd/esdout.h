@@ -26,7 +26,7 @@
 
 #include <glib.h>
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 
 
 extern OutputPlugin op;

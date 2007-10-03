@@ -158,7 +158,8 @@ alsa_recovery(int err)
 	 */
 	switch (err)
 	{
-	case -ESTRPIPE:   /* "suspend": wait until ALSA is "running" again. */
+	case -ESTRPIPE:
+	case ESTRPIPE:   /* "suspend": wait until ALSA is "running" again. */
 		while ((err2 = snd_pcm_resume(alsa_pcm)) == -EAGAIN)
 			g_usleep(100000);
 
@@ -167,8 +168,13 @@ alsa_recovery(int err)
 
 		break;
 
-	case -EPIPE:      /* under-run and the I/O pipe closed on us */
+	case -EPIPE:
+	case EPIPE:      /* under-run and the I/O pipe closed on us */
 		return snd_pcm_prepare(alsa_pcm);
+		break;
+
+	case EINTR:
+	case -EINTR:
 		break;
 
 	default:
@@ -701,7 +707,7 @@ static void *alsa_loop(void *arg)
 				alsa_recovery(wr);
 			}
 		}
-		else
+		else	/* XXX: why is this here? --nenolod */
 			g_usleep(10000);
 
 		if (pause_request != paused)

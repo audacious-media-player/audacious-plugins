@@ -16,7 +16,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <audacious/vfs.h>
+#include "config.h"
 #include <audacious/plugin.h>
 #include <stdio.h>
 

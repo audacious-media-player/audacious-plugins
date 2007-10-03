@@ -20,7 +20,6 @@
 
 #include <glib.h>
 
-#include <audacious/vfs.h>
 #include <audacious/plugin.h>
 #include <audacious/discovery.h>
 

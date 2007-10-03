@@ -21,11 +21,8 @@
 #include "config.h"
 
 #include <glib.h>
-
 #include <sys/types.h>
-
-#include <audacious/vfs.h>
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 
 #define	WAVE_FORMAT_UNKNOWN		(0x0000)
 #define	WAVE_FORMAT_PCM			(0x0001)

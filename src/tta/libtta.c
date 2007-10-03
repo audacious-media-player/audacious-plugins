@@ -39,14 +39,12 @@
 #include <glib.h>
 #include <string.h>
 
-#include <audacious/util.h>
 #include <audacious/plugin.h>
+#include <audacious/util.h>
 #include <audacious/main.h>
-#include <audacious/vfs.h>
 #include <audacious/output.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
-
 #include <audacious/id3tag.h>
 
 #define  PLUGIN_VERSION "1.4"

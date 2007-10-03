@@ -4,7 +4,7 @@
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 
-#include "audacious/configdb.h"
+#include <audacious/configdb.h>
 #include "blur_scope.h"
 
 

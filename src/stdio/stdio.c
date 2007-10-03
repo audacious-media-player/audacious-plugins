@@ -16,9 +16,9 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <audacious/vfs.h>
+#include "config.h"
 #include <audacious/plugin.h>
-#include "audacious/strings.h"
+#include <audacious/strings.h>
 #include <stdio.h>
 
 #include <unistd.h>
@@ -26,8 +26,6 @@
 #include <sys/types.h>
 
 #include <string.h>
-
-#include <magic.h>
 
 static gchar *
 vfs_stdio_urldecode_path(const gchar * encoded_path)
@@ -251,43 +249,20 @@ stdio_vfs_fsize_impl(VFSFile * file)
     return s.st_size;
 }
 
-static magic_t mdb_handle = NULL;
-
-gchar *
-stdio_vfs_metadata_impl(VFSFile *file, const gchar *field)
-{
-    if (!g_ascii_strcasecmp(field, "content-type"))
-    {
-        gchar *decpath;
-        const gchar *out;
-
-        if (mdb_handle == NULL)
-            mdb_handle = magic_open(MAGIC_MIME);
-
-        decpath = vfs_stdio_urldecode_path(file->uri);
-        out = magic_file(mdb_handle, decpath);
-
-        return g_strdup(out);
-    }
-
-    return NULL;
-}
-
 VFSConstructor file_const = {
-	"file://",
-	stdio_vfs_fopen_impl,
-	stdio_vfs_fclose_impl,
-	stdio_vfs_fread_impl,
-	stdio_vfs_fwrite_impl,
-	stdio_vfs_getc_impl,
-	stdio_vfs_ungetc_impl,
-	stdio_vfs_fseek_impl,
-	stdio_vfs_rewind_impl,
-	stdio_vfs_ftell_impl,
-	stdio_vfs_feof_impl,
-	stdio_vfs_truncate_impl,
-	stdio_vfs_fsize_impl,
-	stdio_vfs_metadata_impl
+	.uri_id = "file://",
+	.vfs_fopen_impl = stdio_vfs_fopen_impl,
+	.vfs_fclose_impl = stdio_vfs_fclose_impl,
+	.vfs_fread_impl = stdio_vfs_fread_impl,
+	.vfs_fwrite_impl = stdio_vfs_fwrite_impl,
+	.vfs_getc_impl = stdio_vfs_getc_impl,
+	.vfs_ungetc_impl = stdio_vfs_ungetc_impl,
+	.vfs_fseek_impl = stdio_vfs_fseek_impl,
+	.vfs_rewind_impl = stdio_vfs_rewind_impl,
+	.vfs_ftell_impl = stdio_vfs_ftell_impl,
+	.vfs_feof_impl = stdio_vfs_feof_impl,
+	.vfs_truncate_impl = stdio_vfs_truncate_impl,
+	.vfs_fsize_impl = stdio_vfs_fsize_impl
 };
 
 static void init(void)

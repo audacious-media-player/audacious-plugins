@@ -169,22 +169,22 @@ static void xs_curve_set_property(GObject * object, guint prop_id, const GValue 
 
 	switch (prop_id) {
 	case PROP_MIN_X:
-		gtk_curve_set_range(curve,
+		xs_curve_set_range(curve,
 			g_value_get_float(value), curve->max_x,
 			curve->min_y, curve->max_y);
 		break;
 	case PROP_MAX_X:
-		gtk_curve_set_range(curve,
+		xs_curve_set_range(curve,
 			curve->min_x, g_value_get_float(value),
 			curve->min_y, curve->max_y);
 		break;
 	case PROP_MIN_Y:
-		gtk_curve_set_range(curve,
+		xs_curve_set_range(curve,
 			curve->min_x, curve->max_x,
 			g_value_get_float(value), curve->max_y);
 		break;
 	case PROP_MAX_Y:
-		gtk_curve_set_range(curve,
+		xs_curve_set_range(curve,
 			curve->min_x, curve->max_x,
 			curve->min_y, g_value_get_float(value));
 		break;

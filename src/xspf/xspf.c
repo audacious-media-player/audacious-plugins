@@ -30,11 +30,11 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
-#include "audacious/main.h"
-#include "audacious/util.h"
-#include "audacious/playlist.h"
-#include "audacious/playlist_container.h"
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
+#include <audacious/main.h>
+#include <audacious/util.h>
+#include <audacious/playlist.h>
+#include <audacious/playlist_container.h>
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -78,13 +78,21 @@ static const xspf_entry_t xspf_entries[] = {
 static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
 
 
+#ifdef DEBUG
+#  define XSDEBUG(...) { fprintf(stderr, "xspf[%s:%d]: ", __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
+#else
+#  define XSDEBUG(...) /* stub */
+#endif
+
+
 static gboolean is_uri(gchar *uri)
 {
-    if(strstr(uri, "://"))
+    if (strstr(uri, "://"))
         return TRUE;
     else
         return FALSE;
 }
+
 
 /* This function is taken from libxml2-2.6.27.
  */
@@ -115,7 +123,8 @@ static xmlChar *xspf_path_to_uri(const xmlChar *path)
 }
 
 
-static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const gchar *base)
+static void xspf_add_file(xmlNode *track, const gchar *filename,
+            gint pos, const gchar *base)
 {
     xmlNode *nptr;
     Tuple *tuple;
@@ -196,10 +205,9 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
 
         tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
 
-#ifdef DEBUG
-        printf("xspf: tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
-        printf("xspf: tuple->file_path = %s\n", tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
-#endif
+        XSDEBUG("tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+        XSDEBUG("tuple->file_path = %s\n", tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
+
         // add file to playlist
         uri = g_filename_to_uri(location, NULL, NULL);
         // uri would be NULL if location is already uri. --yaz
@@ -212,7 +220,8 @@ static void xspf_add_file(xmlNode *track, const gchar *filename, gint pos, const
 }
 
 
-static void xspf_find_track(xmlNode *tracklist, const gchar *filename, gint pos, const gchar *base)
+static void xspf_find_track(xmlNode *tracklist, const gchar *filename,
+            gint pos, const gchar *base)
 {
     xmlNode *nptr;
 
@@ -242,7 +251,6 @@ static void xspf_find_audoptions(xmlNode *tracklist, const gchar *filename, gint
                 playlist->attribute ^= PLAYLIST_STATIC;
 
             xmlFree(opt);
-            opt = NULL;
         }
     }
 }
@@ -252,39 +260,37 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 {
     xmlDocPtr doc;
     xmlNode *nptr, *nptr2;
-    gchar *tmp = NULL, *base = NULL;
 
     g_return_if_fail(filename != NULL);
 
-#ifdef DEBUG
-    printf("playlist_load_xspf: filename = %s\n", filename);
-#endif
+    XSDEBUG("filename='%s', pos=%d\n", filename, pos);
 
     doc = xmlRecoverFile(filename);
-    if(doc == NULL)
+    if (doc == NULL)
         return;
 
     // find trackList
     for (nptr = doc->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE &&
             !xmlStrcmp(nptr->name, (xmlChar *)"playlist")) {
+            gchar *tmp, *base;
+            
             base = (gchar *)xmlNodeGetBase(doc, nptr);
-#ifdef DEBUG
-            printf("playlist_load_xspf: base @1 = %s\n", base);
-#endif
+
+            XSDEBUG("base @1 = %s\n", base);
+            
             // if filename is specified as a base, ignore it.
             tmp = xmlURIUnescapeString(base, -1, NULL);
-            if(tmp) {
-                if(!strcmp(tmp, filename)) {   
+            if (tmp) {
+                if (!strcmp(tmp, filename)) {   
                     xmlFree(base);
                     base = NULL;
                 }
                 g_free(tmp);
-                tmp = NULL;
             }
-#ifdef DEBUG
-            printf("playlist_load_xspf: base @2 = %s\n", base);
-#endif
+            
+            XSDEBUG("base @2 = %s\n", base);
+            
             for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
 
                 if (nptr2->type == XML_ELEMENT_NODE &&
@@ -306,7 +312,7 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                     }
                     xmlFree(title);
                 } else
-                if(nptr2->type == XML_ELEMENT_NODE &&
+                if (nptr2->type == XML_ELEMENT_NODE &&
                     !xmlStrcmp(nptr2->name, (xmlChar *)"trackList")) {
                     xspf_find_track(nptr2, filename, pos, base);
                 }
@@ -317,9 +323,9 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 }
 
 
-static void xspf_add_node(
-        xmlNodePtr node, TupleValueType type, gboolean isMeta,
-        const gchar *xspfName, const gchar *strVal, const gint intVal)
+static void xspf_add_node(xmlNodePtr node, TupleValueType type,
+        gboolean isMeta, const gchar *xspfName, const gchar *strVal,
+        const gint intVal)
 {
     gchar tmps[64];
     xmlNodePtr tmp;
@@ -357,9 +363,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     gchar *base = NULL;
     Playlist *playlist = playlist_get_active();
 
-#ifdef DEBUG
-    printf("playlist_save_xspf: filename = %s\n", filename);
-#endif
+    XSDEBUG("filename='%s', pos=%d\n", filename, pos);
 
     doc = xmlNewDoc((xmlChar *)"1.0");
     doc->charset = XML_CHAR_ENCODING_UTF8;
@@ -381,15 +385,13 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             gint tmplen = 0;
 
             if (!is_uri(entry->filename)) { //obsolete
-                gchar *tmp2;
-                tmp2 = g_path_get_dirname(entry->filename);
+                gchar *tmp2 = g_path_get_dirname(entry->filename);
                 tmp = g_strdup_printf("%s/", tmp2);
                 g_free(tmp2);
-            } else {
+            } else
                 tmp = g_strdup(entry->filename);
-            }
 
-            if(!base) {
+            if (!base) {
                 base = strdup(tmp);
                 baselen = strlen(base);
             }
@@ -409,43 +411,34 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 g_free(base);
                 base = tmp;
                 baselen = tmplen;
-#ifdef DEBUG
-                printf("base = \"%s\" baselen = %d\n", base, baselen);
-#endif
-            }
-            else {
+                XSDEBUG("base='%s', baselen=%d\n", base, baselen);
+            } else
                 g_free(tmp);
-                tmp = NULL;
-            }
         }
         
         /* set base URI */
         if (base) {
             gchar *tmp;
-            if(!is_uri(base)) {
+            if (!is_uri(base)) {
                 tmp = (gchar *) xspf_path_to_uri((xmlChar *)base);
-                if(tmp) {
+                if (tmp) {
                     g_free(base);
                     base = tmp;
                 }
             }
 
-            if(!is_uri(base)) {
-#ifdef DEBUG
-                printf("base is not uri. something is wrong.\n");
-#endif
+            if (!is_uri(base)) {
+                XSDEBUG("base is not uri. something is wrong.\n");
                 tmp = g_strdup_printf("file://%s", base);
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)tmp);
                 g_free(tmp);
-            }
-            else
+            } else
                 xmlSetProp(rootnode, (xmlChar *)"xml:base", (xmlChar *)base);
         }
     }                           /* USE_RELATIVE */
 
     /* common */
     xmlDocSetRootElement(doc, rootnode);
-
     xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
 
     /* add staticlist marker */
@@ -471,7 +464,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);
 
-    for(node = playlist->entries; node != NULL; node = g_list_next(node)) {
+    for (node = playlist->entries; node != NULL; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
         xmlNodePtr track, location;
         gchar *filename = NULL;
@@ -481,26 +474,21 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         track = xmlNewNode(NULL, (xmlChar *)"track");
         location = xmlNewNode(NULL, (xmlChar *)"location");
 
-        if(is_uri(entry->filename)) {   /* uri */
-#ifdef DEBUG
-            printf("filename is uri\n");
-#endif
+        if (is_uri(entry->filename)) {   /* uri */
+            XSDEBUG("filename is uri\n");
             filename = g_strdup(entry->filename + baselen); // entry->filename is always uri now.
-        }
-        else {                  /* local file (obsolete) */
+        } else {                  /* local file (obsolete) */
             gchar *tmp = (gchar *) xspf_path_to_uri((const xmlChar *)entry->filename + baselen);
-            if(base) { /* relative */
+            if (base) { /* relative */
                 filename = g_strdup_printf("%s", tmp);
             } else {
-#ifdef DEBUG
-                printf("absolute and local (obsolete)\n");
-#endif
+                XSDEBUG("absolute and local (obsolete)\n");
                 filename = g_filename_to_uri(tmp, NULL, NULL);
             }
-            g_free(tmp); tmp = NULL;
+            g_free(tmp);
         } /* obsolete */
 
-        if(!g_utf8_validate(filename, -1, NULL))
+        if (!g_utf8_validate(filename, -1, NULL))
             continue;
 
         xmlAddChild(location, xmlNewText((xmlChar *)filename));
@@ -557,17 +545,13 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
         }
 
         g_free(filename);
-        filename = NULL;
     }
 
     PLAYLIST_UNLOCK(playlist);
 
     xmlSaveFormatFile(filename, doc, 1);
     xmlFreeDoc(doc);
-    doc = NULL;
-
     xmlFree(base);
-    base = NULL;
 }
 
 
@@ -578,14 +562,17 @@ PlaylistContainer plc_xspf = {
     .plc_write = xspf_playlist_save,
 };
 
+
 static void xspf_init(void)
 {
     playlist_container_register(&plc_xspf);
 }
 
+
 static void xspf_cleanup(void)
 {
     playlist_container_unregister(&plc_xspf);
 }
+
 
 DECLARE_PLUGIN(xspf, xspf_init, xspf_cleanup, NULL, NULL, NULL, NULL, NULL, NULL);

@@ -15,9 +15,7 @@
 #endif
 
 extern "C" {
-#include "audacious/plugin.h"
-#include "audacious/tuple.h"
-#include "audacious/tuple_formatter.h"
+#include <audacious/plugin.h>
 }
 
 /* Module files have their magic deep inside the file, at offset 1080; source: http://www.onicos.com/staff/iz/formats/mod.html and information by Michael Doering from UADE */

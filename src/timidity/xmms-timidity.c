@@ -17,18 +17,17 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include <config.h>
+#include "config.h"
 
-#include "audacious/util.h"
-#include "audacious/configdb.h"
-#include "audacious/main.h"
-#include "audacious/vfs.h"
+#include <audacious/util.h>
+#include <audacious/configdb.h>
+#include <audacious/main.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
 #include <timidity.h>
 #include <stdio.h>
-#include "audacious/output.h"
+#include <audacious/output.h>
 #include <audacious/i18n.h>
 
 #include "xmms-timidity.h"

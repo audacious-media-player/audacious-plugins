@@ -16,11 +16,9 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#if defined(HAVE_CONFIG_H)
 #include "config.h"
-#endif
 
-#include "audacious/plugin.h"
+#include <audacious/plugin.h>
 #include <glib.h>
 
 #ifdef WORDS_BIGENDIAN

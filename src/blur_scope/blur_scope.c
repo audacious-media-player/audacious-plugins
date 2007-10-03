@@ -25,9 +25,9 @@
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <string.h>
-#include "audacious/plugin.h"
-#include "audacious/util.h"
-#include "audacious/configdb.h"
+#include <audacious/plugin.h>
+#include <audacious/util.h>
+#include <audacious/configdb.h>
 #include "blur_scope.h"
 #include "bscope_logo.xpm"
 
