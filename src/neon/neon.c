@@ -724,7 +724,7 @@ static gpointer reader_thread(void* data) {
                  * Set the error flag and terminate the
                  * reader thread.
                  */
-                _DEBUG("Error while reading from the network. Terminating reader thread");
+                _ERROR("Error while reading from the network. Terminating reader thread");
                 h->reader_status.status = NEON_READER_ERROR;
                 g_mutex_unlock(h->reader_status.mutex);
                 _LEAVE NULL;
@@ -889,6 +889,7 @@ size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* fi
                 /*
                  * Reader thread did not terminate gracefully.
                  */
+                _ERROR("Reader thread did not terminate gracefully: %d", h->reader_status.status);
                 _LEAVE 0;
             }
         } else {
