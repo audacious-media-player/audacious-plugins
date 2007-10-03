@@ -511,7 +511,7 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
             /* We hit a redirect. Handle it. */
             _DEBUG("Redirect encountered");
             handle->redircount += 1;
-            handle->purl = ne_redirect_location(handle->session);
+            handle->purl = (ne_uri*)ne_redirect_location(handle->session);
             ne_request_destroy(handle->request);
             if (NULL == handle->purl) {
                 _ERROR("Could not parse redirect response");
