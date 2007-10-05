@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-09-05 00:28+0200\n"
-"PO-Revision-Date: 2007-09-09 21:45+0100\n"
+"PO-Revision-Date: 2007-10-05 23:23+0100\n"
 "Last-Translator: Michael Färber <0102@gmx.at>\n"
 "Language-Team: german <0102@gmx.at>\n"
 "MIME-Version: 1.0\n"
@@ -1718,6 +1718,14 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"Copyright (c) 2007, von Calin Crisan <ccrisan@gmail.com> und dem Audacious-Team.\n"
+"\n"
+"Vielen Dank an die libcdio-Entwickler <http://www.gnu.org/software/libcdio/>\n"
+"\tund die libcddb-Entwickler <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Danke auch an Tony Vroon für die Beratung und die Hilfe.\n"
+"\n"
+"Das war ein Google Summer of Code 2007 Projektt."
 
 #: src/cdaudio-ng/cdaudio-ng.c:206
 msgid "About CD Audio Plugin NG"
@@ -1837,6 +1845,10 @@ msgid ""
 "Audacious implementation by: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Console music decoder engine basierend auf Game_Music_Emu 0.5.2.\n"
+"Unterstützte Formate: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Implementierung für Audacious von: William Pitcock <nenolod@nenolod.net>, \n"
+"        Shay Green <gblargg@gmail.com>"
 
 #: src/echo_plugin/gui.c:12
 msgid ""
@@ -2646,35 +2658,35 @@ msgstr ""
 
 #: src/madplug/configure.c:148
 msgid "MPEG Audio Plugin Configuration"
-msgstr ""
+msgstr "MPEG-Audio-Plugin-Konfiguration"
 
 #: src/madplug/configure.c:161
 msgid "Dither output when rounding to 16-bit"
-msgstr ""
+msgstr "Ausgabe beim Runden auf 16-Bit dithern"
 
 #: src/madplug/configure.c:167
 msgid "Enable fast play-length calculation"
-msgstr ""
+msgstr "Schnelle Spieldauer-Berechnung aktivieren"
 
 #: src/madplug/configure.c:172
 msgid "Parse XING headers"
-msgstr ""
+msgstr "XING-Header parsen"
 
 #: src/madplug/configure.c:177
 msgid "Use SJIS to write ID3 tags instead of UTF-8"
-msgstr ""
+msgstr "SJIS anstatt UTF-8 zum Schreiben von ID3-Tags benutzen"
 
 #: src/madplug/configure.c:181
 msgid "Display average bitrate for VBR"
-msgstr ""
+msgstr "Durchschnittliche Bitrate für VBR anzeigen"
 
 #: src/madplug/configure.c:186
 msgid "Force reopen audio when audio type changed"
-msgstr ""
+msgstr "Neuöffnen von Audio bei Änderung des Audiotyps erzwingen"
 
 #: src/madplug/configure.c:196
 msgid "Enable ReplayGain processing"
-msgstr ""
+msgstr "ReplayGain-Bearbeitung aktivieren"
 
 #: src/madplug/configure.c:201
 #, fuzzy
@@ -2683,7 +2695,7 @@ msgstr "Titelnummer:"
 
 #: src/madplug/configure.c:208
 msgid "6dB hard limiting"
-msgstr ""
+msgstr "6dB fest beschränken"
 
 #: src/madplug/configure.c:213
 msgid "Default gain (dB):"
@@ -2691,7 +2703,7 @@ msgstr "Standard-Verstärkung (dB):"
 
 #: src/madplug/configure.c:224
 msgid "Preamp (dB):"
-msgstr ""
+msgstr "Vorverstärkung (dB):"
 
 #: src/madplug/configure.c:233
 #: src/musepack/libmpc.cxx:223
@@ -2703,7 +2715,7 @@ msgstr "ReplayGain"
 #: src/madplug/configure.c:238
 #: src/vorbis/configure.c:137
 msgid "Override generic titles"
-msgstr ""
+msgstr "Allgemeine Titel überschreiben"
 
 #: src/madplug/configure.c:251
 msgid "ID3 format:"
@@ -2878,6 +2890,19 @@ msgid ""
 "ReplayGain support by:\n"
 "    Samuel Krempp"
 msgstr ""
+"Audacious MPEG Audio Plugin\n"
+"\n"
+"Kompiliert gegen libMAD Version: %d.%d.%d%s\n"
+"\n"
+"Geschrieben von:\n"
+"    William Pitcock <nenolod@sacredspiral.co.uk>\n"
+"    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
+"\n"
+"Teile abgeleitet von XMMS-MAD durch:\n"
+"    Sam Clegg\n"
+"\n"
+"ReplayGain-Unterstützung von:\n"
+"    Samuel Krempp"
 
 #: src/madplug/plugin.c:595
 msgid "About MPEG Audio Plugin"
@@ -2929,7 +2954,7 @@ msgstr "8 bit"
 
 #: src/modplug/gui/interface.cxx:203
 msgid "Mono (downmix)"
-msgstr ""
+msgstr "Mono (downmix)"
 
 #: src/modplug/gui/interface.cxx:218
 #: src/timidity/src/interface.c:76
@@ -2954,19 +2979,19 @@ msgstr "11 kHz"
 
 #: src/modplug/gui/interface.cxx:278
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Am nähesten (schnellstes)"
 
 #: src/modplug/gui/interface.cxx:286
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Linear (schnell)"
 
 #: src/modplug/gui/interface.cxx:294
 msgid "Spline (good quality)"
-msgstr ""
+msgstr "Spline (gute Qualität)"
 
 #: src/modplug/gui/interface.cxx:302
 msgid "8-tap Fir (extremely high quality)"
-msgstr ""
+msgstr "8-tap Fir (extrem hohe Qualität)"
 
 #: src/modplug/gui/interface.cxx:346
 msgid "Use Filename as Song Title"
@@ -2974,26 +2999,26 @@ msgstr "Dateinamen als Liedtitel verwenden"
 
 #: src/modplug/gui/interface.cxx:353
 msgid "Fast Playlist Info"
-msgstr ""
+msgstr "Schnelle Wiedergabenliste-Information"
 
 #: src/modplug/gui/interface.cxx:368
 msgid "Noise Reduction"
-msgstr ""
+msgstr "Geräuschreduktion"
 
 #: src/modplug/gui/interface.cxx:376
 msgid "Play Amiga MOD"
-msgstr ""
+msgstr "Amiga MOD abspielen"
 
 #: src/modplug/gui/interface.cxx:384
 msgid "Reverb"
-msgstr ""
+msgstr "Hall"
 
 #: src/modplug/gui/interface.cxx:398
 #: src/modplug/gui/interface.cxx:470
 #: src/modplug/gui/interface.cxx:542
 #: src/modplug/gui/interface.cxx:628
 msgid "Enable"
-msgstr ""
+msgstr "Aktivieren"
 
 #: src/modplug/gui/interface.cxx:438
 #: src/modplug/gui/interface.cxx:582
@@ -3023,7 +3048,7 @@ msgstr "Surround"
 
 #: src/modplug/gui/interface.cxx:600
 msgid "Preamp"
-msgstr ""
+msgstr "Vorverstärkung"
 
 #: src/modplug/gui/interface.cxx:614
 msgid ""
@@ -3033,15 +3058,15 @@ msgstr ""
 
 #: src/modplug/gui/interface.cxx:649
 msgid "Looping"
-msgstr ""
+msgstr "Loopen"
 
 #: src/modplug/gui/interface.cxx:663
 msgid "Don't loop"
-msgstr ""
+msgstr "Nicht loopen"
 
 #: src/modplug/gui/interface.cxx:678
 msgid "Loop"
-msgstr ""
+msgstr "Loop"
 
 #: src/modplug/gui/interface.cxx:694
 msgid "time(s)"
@@ -3049,7 +3074,7 @@ msgstr ""
 
 #: src/modplug/gui/interface.cxx:701
 msgid "Loop forever"
-msgstr ""
+msgstr "Für immer loopen"
 
 #: src/modplug/gui/interface.cxx:709
 msgid "Effects"
@@ -3072,10 +3097,20 @@ msgid ""
 "Patterns:\n"
 "Channels:"
 msgstr ""
+"Dateiname:\n"
+"Titel:\n"
+"Typ:\n"
+"Länge:\n"
+"Geschwindigkeit:\n"
+"Tempo:\n"
+"Samples:\n"
+"Instrumente:\n"
+"Patterns:\n"
+"Kanäle:"
 
 #: src/modplug/gui/interface.cxx:866
 msgid "Samples"
-msgstr ""
+msgstr "Samples"
 
 #: src/modplug/gui/interface.cxx:899
 msgid "Instruments"
@@ -3087,7 +3122,7 @@ msgstr "Meldung"
 
 #: src/modplug/gui/main.cxx:43
 msgid "Modplug Input Plugin for Audacious ver"
-msgstr ""
+msgstr "Modplug-Input-Plugin für Audacious Version"
 
 #: src/modplug/gui/main.cxx:44
 msgid ""
@@ -3098,6 +3133,12 @@ msgid ""
 "Updates and Maintainance by Konstanty Bialkowski.\n"
 "Ported to BMP by Theofilos Intzoglou."
 msgstr ""
+"\n"
+"Modplug sound engine geschrieben von Olivier Lapicque.\n"
+"XMMS interface für Modplug von Kenton Varda.\n"
+"(c)2000 Olivier Lapicque und Kenton Varda.\n"
+"Updates und Betreunung von Konstanty Bialkowski.\n"
+"Portiert für BMP von Theofilos Intzoglou."
 
 #: src/modplug/gui/main.cxx:45
 msgid "About Modplug"
@@ -3108,16 +3149,16 @@ msgstr "Über Modplug"
 #: src/sid/xs_glade.c:114
 #, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr ""
+msgstr "Konnte Pixmap-Datei nicht finden: %s"
 
 #: src/modplug/gui/support.cxx:127
 #, c-format
 msgid "Error loading pixmap file: %s"
-msgstr ""
+msgstr "Fehler beim Laden der Pixmap-Datei: %s"
 
 #: src/musepack/libmpc.cxx:145
 msgid "Musepack Decoder Plugin 1.2"
-msgstr ""
+msgstr "Musepack-Dekoder-Plugin 1.2"
 
 #: src/musepack/libmpc.cxx:146
 msgid ""
@@ -3128,6 +3169,12 @@ msgid ""
 "\n"
 "Get latest version at http://musepack.net\n"
 msgstr ""
+"Plugin-Code von\n"
+"Benoit Amiaux\n"
+"Martin Spuler\n"
+"Kuniklo\n"
+"\n"
+"Die neueste Version ist erhältlich auf http://musepack.net\n"
 
 #: src/musepack/libmpc.cxx:147
 msgid "Nevermind"
@@ -3144,7 +3191,7 @@ msgstr "Allgemeine Einstellungen"
 #: src/musepack/libmpc.cxx:182
 #: src/wavpack/ui.cxx:490
 msgid "Enable Dynamic Bitrate Display"
-msgstr ""
+msgstr "Dynamische-Bitraten-Anzeige aktivieren"
 
 #: src/musepack/libmpc.cxx:186
 #: src/wavpack/ui.cxx:496
@@ -3159,13 +3206,13 @@ msgstr "ReplayGain-Einstellungen"
 #: src/vorbis/configure.c:172
 #: src/wavpack/ui.cxx:508
 msgid "Enable Clipping Prevention"
-msgstr ""
+msgstr "Clipping-Verhinderung aktivieren"
 
 #: src/musepack/libmpc.cxx:201
 #: src/vorbis/configure.c:177
 #: src/wavpack/ui.cxx:513
 msgid "Enable ReplayGain"
-msgstr ""
+msgstr "ReplayGain aktivieren"
 
 #: src/musepack/libmpc.cxx:206
 msgid "ReplayGain Type"
@@ -3173,11 +3220,11 @@ msgstr "ReplayGain-Typ"
 
 #: src/musepack/libmpc.cxx:214
 msgid "Use Track Gain"
-msgstr ""
+msgstr "Track Gain benutzen"
 
 #: src/musepack/libmpc.cxx:218
 msgid "Use Album Gain"
-msgstr ""
+msgstr "Album Gain benutzen"
 
 #: src/musepack/libmpc.cxx:490
 #: src/sid/xmms-sid.glade:2994
@@ -3214,7 +3261,7 @@ msgstr ""
 #: src/musepack/libmpc.cxx:594
 #, c-format
 msgid "Streamversion %d"
-msgstr ""
+msgstr "Streamversion %d"
 
 #: src/musepack/libmpc.cxx:595
 #, c-format
@@ -3254,22 +3301,22 @@ msgstr "Dateigröße: %d Byte"
 #: src/musepack/libmpc.cxx:602
 #, c-format
 msgid "Track Peak: %5u"
-msgstr ""
+msgstr "Track Peak: %5u"
 
 #: src/musepack/libmpc.cxx:603
 #, c-format
 msgid "Track Gain: %-+2.2f dB"
-msgstr ""
+msgstr "Track Gain: %-+2.2f dB"
 
 #: src/musepack/libmpc.cxx:604
 #, c-format
 msgid "Album Peak: %5u"
-msgstr ""
+msgstr "Album Peak: %5u"
 
 #: src/musepack/libmpc.cxx:605
 #, c-format
 msgid "Album Gain: %-+5.2f dB"
-msgstr ""
+msgstr "Album Gain: %-+5.2f dB"
 
 #: src/null/null.c:61
 msgid "Null output plugin "
@@ -3604,12 +3651,12 @@ msgstr ""
 #: src/sid/xmms-sid.glade:750
 #: src/sid/xs_interface.c:469
 msgid "MOS 6581"
-msgstr ""
+msgstr "MOS 6581"
 
 #: src/sid/xmms-sid.glade:769
 #: src/sid/xs_interface.c:477
 msgid "MOS 8580"
-msgstr ""
+msgstr "MOS 8580"
 
 #: src/sid/xmms-sid.glade:790
 #: src/sid/xs_interface.c:484
@@ -3679,7 +3726,7 @@ msgstr ""
 #: src/sid/xmms-sid.glade:1095
 #: src/sid/xs_interface.c:590
 msgid "Optimization mode (faster, inaccurate)"
-msgstr ""
+msgstr "Optimierungs-Modus (schneller, ungenau)"
 
 #: src/sid/xmms-sid.glade:1113
 #: src/sid/xs_interface.c:600
