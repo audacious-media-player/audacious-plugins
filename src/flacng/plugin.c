@@ -20,7 +20,7 @@
 #include "flacng.h"
 #include <audacious/util.h>
 #include <audacious/output.h>
-#include <glib/gi18n.h>
+#include <audacious/i18n.h>
 #include "tools.h"
 #include "plugin.h"
 #include "seekable_stream_callbacks.h"
