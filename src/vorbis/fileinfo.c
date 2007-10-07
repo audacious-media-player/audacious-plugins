@@ -359,7 +359,7 @@ rg_show_cb(GtkWidget * w, gpointer data)
 static gint
 init_files(vcedit_state * state)
 {
-    if ((vte.in = vfs_fopen(vte.filename, "rb")) == NULL) {
+    if ((vte.in = aud_vfs_fopen(vte.filename, "rb")) == NULL) {
 #ifdef DEBUG
         g_message("fileinfo.c: couldn't open file %s", vte.filename);
 #endif
@@ -371,7 +371,7 @@ init_files(vcedit_state * state)
         g_message("fileinfo.c: couldn't open file for editing %s",
                   vte.filename);
 #endif
-        vfs_fclose(vte.in);
+        aud_vfs_fclose(vte.in);
         return -1;
     }
 
@@ -394,7 +394,7 @@ close_files(vcedit_state * state)
 
     if ((ofh = mkstemp(tmpfn)) < 0) {
         g_free(tmpfn);
-        vfs_fclose(vte.in);
+        aud_vfs_fclose(vte.in);
 #ifdef DEBUG
         g_critical("fileinfo.c: couldn't create temp file");
 #endif
@@ -406,11 +406,11 @@ close_files(vcedit_state * state)
 #endif
     }
 
-    if ((out = vfs_fopen(tmpfn, "wb")) == NULL) {
+    if ((out = aud_vfs_fopen(tmpfn, "wb")) == NULL) {
         close(ofh);
         remove(tmpfn);
         g_free(tmpfn);
-        vfs_fclose(vte.in);
+        aud_vfs_fclose(vte.in);
 #ifdef DEBUG
         g_critical("fileinfo.c: couldn't open temp file");
 #endif
@@ -429,9 +429,9 @@ close_files(vcedit_state * state)
         retval = -1;
     }
 
-    vfs_fclose(vte.in);
+    aud_vfs_fclose(vte.in);
 
-    if (vfs_fclose(out) != 0) {
+    if (aud_vfs_fclose(out) != 0) {
 #ifdef DEBUG
         g_critical("fileinfo.c: couldn't close out file");
 #endif
@@ -927,7 +927,7 @@ vorbis_file_info_box(gchar * filename)
     gtk_label_set_text(GTK_LABEL(filesize_label), _("File size:"));
     gtk_label_set_text(GTK_LABEL(filesize_label_val), _("N/A"));
 
-    if ((fh->fd = vfs_fopen(vte.filename, "r")) != NULL) {
+    if ((fh->fd = aud_vfs_fopen(vte.filename, "r")) != NULL) {
         g_mutex_lock(vf_mutex);
 
         if (ov_open_callbacks(fh, &vf, NULL, 0, vorbis_callbacks) == 0) {
@@ -951,8 +951,8 @@ vorbis_file_info_box(gchar * filename)
             time = ov_time_total(&vf, -1);
             minutes = time / 60;
             seconds = time % 60;
-            vfs_fseek(fh->fd, 0, SEEK_END);
-            filesize = vfs_ftell(fh->fd);
+            aud_vfs_fseek(fh->fd, 0, SEEK_END);
+            filesize = aud_vfs_ftell(fh->fd);
 
             label_set_text(GTK_LABEL(bitrate_label_val),
                            _("%d KBit/s (nominal)"), bitrate);
@@ -965,7 +965,7 @@ vorbis_file_info_box(gchar * filename)
 
         }
         else
-            vfs_fclose(fh->fd);
+            aud_vfs_fclose(fh->fd);
     }
 
     rg_track_gain = get_comment(comment, "replaygain_track_gain");
@@ -1048,7 +1048,7 @@ vorbis_file_info_box(gchar * filename)
     g_mutex_unlock(vf_mutex);
 
 
-    gtk_widget_set_sensitive(tag_frame, vfs_is_writeable(vte.filename));
+    gtk_widget_set_sensitive(tag_frame, aud_vfs_is_writeable(vte.filename));
 
     g_signal_connect_swapped(title_entry, "changed", change_buttons,
                              save_button);

@@ -148,14 +148,14 @@ Tuple *build_tuple(char *filename)
     VFSFile *input_file;
     stream_t *input_stream;
 
-    input_file = vfs_fopen(filename, "rb");
+    input_file = aud_vfs_fopen(filename, "rb");
     input_stream = stream_create_file(input_file, 1);
 
     set_endian();
 
     if (!input_stream)
     {
-	vfs_fclose(input_file);
+	aud_vfs_fclose(input_file);
         return NULL;
     }
 
@@ -164,12 +164,12 @@ Tuple *build_tuple(char *filename)
     if (!qtmovie_read(input_stream, &demux_res))
     {
         stream_destroy(input_stream);
-        vfs_fclose(input_file);
+        aud_vfs_fclose(input_file);
         return NULL;
     }
 
     stream_destroy(input_stream);
-    vfs_fclose(input_file);
+    aud_vfs_fclose(input_file);
 
     return build_aud_tuple_from_demux(&demux_res, filename);
 }
@@ -303,7 +303,7 @@ InputPlugin alac_ip = {
     .seek = seek,
     .get_song_tuple = build_tuple,
     .is_our_file_from_vfs = is_our_fd,
-    .vfs_extensions = fmts,
+    .aud_vfs_extensions = fmts,
 };
 
 InputPlugin *alac_iplist[] = { &alac_ip, NULL };
@@ -323,7 +323,7 @@ gpointer decode_thread(void *args)
 
     set_endian();
 
-    input_file = vfs_fopen((char *) args, "rb");
+    input_file = aud_vfs_fopen((char *) args, "rb");
     input_stream = stream_create_file(input_file, 1);
 
     if (!input_stream)
@@ -359,7 +359,7 @@ gpointer decode_thread(void *args)
     stream_destroy(input_stream);
 
     if (input_opened)
-        vfs_fclose(input_file);
+        aud_vfs_fclose(input_file);
 
     playback->output->close_audio();
 

@@ -101,8 +101,8 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
 
     menu = gtk_menu_new();
 
-    if ((file = vfs_fopen("/dev/sndstat", "r"))) {
-        while (vfs_fgets(buffer, 255, file)) {
+    if ((file = aud_vfs_fopen("/dev/sndstat", "r"))) {
+        while (aud_vfs_fgets(buffer, 255, file)) {
             if (found && buffer[0] == '\n')
                 break;
             if (buffer[strlen(buffer) - 1] == '\n')
@@ -132,7 +132,7 @@ scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
                 found = 1;
 
         }
-        vfs_fclose(file);
+        aud_vfs_fclose(file);
     }
     else {
         item = gtk_menu_item_new_with_label(_("Default"));

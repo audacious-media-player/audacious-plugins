@@ -71,8 +71,8 @@ void stream_read(stream_t *stream, size_t size, void *buf)
 {
     size_t ret;
 
-    ret = vfs_fread(buf, 4, size >> 2, stream->f) * 4;
-    ret += vfs_fread((char*)buf + ret, 1, size - ret, stream->f);
+    ret = aud_vfs_fread(buf, 4, size >> 2, stream->f) * 4;
+    ret += aud_vfs_fread((char*)buf + ret, 1, size - ret, stream->f);
 
     if (ret == 0 && size != 0) stream->eof = 1;
 }
@@ -142,7 +142,7 @@ uint8_t stream_read_uint8(stream_t *stream)
 
 void stream_skip(stream_t *stream, size_t skip)
 {
-    if (vfs_fseek(stream->f, (long)skip, SEEK_CUR) == 0) return;
+    if (aud_vfs_fseek(stream->f, (long)skip, SEEK_CUR) == 0) return;
     if (errno == ESPIPE)
     {
         char *buffer = malloc(skip);
@@ -158,12 +158,12 @@ int stream_eof(stream_t *stream)
 
 long stream_tell(stream_t *stream)
 {
-    return vfs_ftell(stream->f); /* returns -1 on error */
+    return aud_vfs_ftell(stream->f); /* returns -1 on error */
 }
 
 int stream_setpos(stream_t *stream, long pos)
 {
-    return vfs_fseek(stream->f, pos, SEEK_SET);
+    return aud_vfs_fseek(stream->f, pos, SEEK_SET);
 }
 
 stream_t *stream_create_file(VFSFile *file,

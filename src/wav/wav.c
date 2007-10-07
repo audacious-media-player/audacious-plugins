@@ -43,7 +43,7 @@ InputPlugin wav_ip = {
     .seek = seek,
     .get_time = get_time,
     .get_song_info = get_song_info,
-    .vfs_extensions = wav_fmts,
+    .aud_vfs_extensions = wav_fmts,
     .mseek = mseek,
 };
 
@@ -65,7 +65,7 @@ wav_init(void)
 static gint
 read_n_bytes(VFSFile * file, guint8 * buf, gsize n)
 {
-    if (vfs_fread(buf, 1, n, file) != n) {
+    if (aud_vfs_fread(buf, 1, n, file) != n) {
         return FALSE;
     }
     return TRUE;
@@ -94,21 +94,21 @@ read_wav_id(gchar * filename)
     guint32 head;
     glong seek;
 
-    if (!(file = vfs_fopen(filename, "rb"))) {  /* Could not open file */
+    if (!(file = aud_vfs_fopen(filename, "rb"))) {  /* Could not open file */
         return 0;
     }
     if (!(read_n_bytes(file, buf, 4))) {
-        vfs_fclose(file);
+        aud_vfs_fclose(file);
         return 0;
     }
     head = convert_to_header(buf);
     if (head == ('R' << 24) + ('I' << 16) + ('F' << 8) + 'F') { /* Found a riff -- maybe WAVE */
-        if (vfs_fseek(file, 4, SEEK_CUR) != 0) {    /* some error occured */
-            vfs_fclose(file);
+        if (aud_vfs_fseek(file, 4, SEEK_CUR) != 0) {    /* some error occured */
+            aud_vfs_fclose(file);
             return 0;
         }
         if (!(read_n_bytes(file, buf, 4))) {
-            vfs_fclose(file);
+            aud_vfs_fclose(file);
             return 0;
         }
         head = convert_to_header(buf);
@@ -120,18 +120,18 @@ read_wav_id(gchar * filename)
                    We'll skip all chunks until we find the "data"-one which could contain
                    mpeg-data */
                 if (seek != 0) {
-                    if (vfs_fseek(file, seek, SEEK_CUR) != 0) { /* some error occured */
-                        vfs_fclose(file);
+                    if (aud_vfs_fseek(file, seek, SEEK_CUR) != 0) { /* some error occured */
+                        aud_vfs_fclose(file);
                         return 0;
                     }
                 }
                 if (!(read_n_bytes(file, buf, 4))) {
-                    vfs_fclose(file);
+                    aud_vfs_fclose(file);
                     return 0;
                 }
                 head = convert_to_header(buf);
                 if (!(read_n_bytes(file, buf, 4))) {
-                    vfs_fclose(file);
+                    aud_vfs_fclose(file);
                     return 0;
                 }
                 seek = convert_to_long(buf);
@@ -139,13 +139,13 @@ read_wav_id(gchar * filename)
                 if (seek >= 2
                     && head == ('f' << 24) + ('m' << 16) + ('t' << 8) + ' ') {
                     if (!(read_n_bytes(file, buf, 2))) {
-                        vfs_fclose(file);
+                        aud_vfs_fclose(file);
                         return 0;
                     }
                     wavid = buf[0] + 256 * buf[1];
                     seek -= 2;
                     /* we could go on looking for other things, but all we wanted was the wavid */
-                    vfs_fclose(file);
+                    aud_vfs_fclose(file);
                     return wavid;
                 }
             }
@@ -155,7 +155,7 @@ read_wav_id(gchar * filename)
         /* it's RIFF */
     }
     /* it's not even RIFF */
-    vfs_fclose(file);
+    aud_vfs_fclose(file);
     return 0;
 }
 
@@ -201,7 +201,7 @@ read_le_long(VFSFile * file, glong * ret)
 {
     guchar buf[4];
 
-    if (vfs_fread(buf, 1, 4, file) != 4)
+    if (aud_vfs_fread(buf, 1, 4, file) != 4)
         return 0;
 
     *ret = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | buf[0];
@@ -215,7 +215,7 @@ read_le_short(VFSFile * file, gshort * ret)
 {
     guchar buf[2];
 
-    if (vfs_fread(buf, 1, 2, file) != 2)
+    if (aud_vfs_fread(buf, 1, 2, file) != 2)
         return 0;
 
     *ret = (buf[1] << 8) | buf[0];
@@ -240,7 +240,7 @@ play_loop(gpointer arg)
             if (wav_file->length - wav_file->position < bytes)
                 bytes = wav_file->length - wav_file->position;
             if (bytes > 0) {
-                actual_read = vfs_fread(data, 1, bytes, wav_file->file);
+                actual_read = aud_vfs_fread(data, 1, bytes, wav_file->file);
 
                 if (actual_read == 0)
                     playback->eof = TRUE;
@@ -267,14 +267,14 @@ play_loop(gpointer arg)
 
         if (wav_file->seek_to != -1) {
             wav_file->position = (unsigned long)((gint64)wav_file->seek_to * (gint64)rate / 1000L);
-            vfs_fseek(wav_file->file,
+            aud_vfs_fseek(wav_file->file,
                       wav_file->position + wav_file->data_offset, SEEK_SET);
             playback->output->flush(wav_file->seek_to);
             wav_file->seek_to = -1;
         }
 
     }
-    vfs_fclose(wav_file->file);
+    aud_vfs_fclose(wav_file->file);
     return NULL;
 }
 
@@ -289,36 +289,36 @@ play_file(InputPlayback * playback)
     audio_error = FALSE;
 
     wav_file = g_new0(WaveFile, 1);
-    if ((wav_file->file = vfs_fopen(filename, "rb"))) {
-        vfs_fread(magic, 1, 4, wav_file->file);
+    if ((wav_file->file = aud_vfs_fopen(filename, "rb"))) {
+        aud_vfs_fread(magic, 1, 4, wav_file->file);
         if (strncmp(magic, "RIFF", 4)) {
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
         }
         read_le_ulong(wav_file->file, &len);
-        vfs_fread(magic, 1, 4, wav_file->file);
+        aud_vfs_fread(magic, 1, 4, wav_file->file);
         if (strncmp(magic, "WAVE", 4)) {
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
         }
         for (;;) {
-            vfs_fread(magic, 1, 4, wav_file->file);
+            aud_vfs_fread(magic, 1, 4, wav_file->file);
             if (!read_le_ulong(wav_file->file, &len)) {
-                vfs_fclose(wav_file->file);
+                aud_vfs_fclose(wav_file->file);
                 g_free(wav_file);
                 wav_file = NULL;
                 return;
             }
             if (!strncmp("fmt ", magic, 4))
                 break;
-            vfs_fseek(wav_file->file, len, SEEK_CUR);
+            aud_vfs_fseek(wav_file->file, len, SEEK_CUR);
         }
         if (len < 16) {
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
@@ -335,7 +335,7 @@ play_file(InputPlayback * playback)
         case IBM_FORMAT_MULAW:
         case IBM_FORMAT_ALAW:
         case IBM_FORMAT_ADPCM:
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
@@ -346,29 +346,29 @@ play_file(InputPlayback * playback)
         read_le_short(wav_file->file, &wav_file->block_align);
         read_le_short(wav_file->file, &wav_file->bits_per_sample);
         if (wav_file->bits_per_sample != 8 && wav_file->bits_per_sample != 16) {
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
         }
         len -= 16;
         if (len)
-            vfs_fseek(wav_file->file, len, SEEK_CUR);
+            aud_vfs_fseek(wav_file->file, len, SEEK_CUR);
 
         for (;;) {
-            vfs_fread(magic, 4, 1, wav_file->file);
+            aud_vfs_fread(magic, 4, 1, wav_file->file);
 
             if (!read_le_ulong(wav_file->file, &len)) {
-                vfs_fclose(wav_file->file);
+                aud_vfs_fclose(wav_file->file);
                 g_free(wav_file);
                 wav_file = NULL;
                 return;
             }
             if (!strncmp("data", magic, 4))
                 break;
-            vfs_fseek(wav_file->file, len, SEEK_CUR);
+            aud_vfs_fseek(wav_file->file, len, SEEK_CUR);
         }
-        wav_file->data_offset = vfs_ftell(wav_file->file);
+        wav_file->data_offset = aud_vfs_ftell(wav_file->file);
         wav_file->length = len;
 
         wav_file->position = 0;
@@ -379,7 +379,7 @@ play_file(InputPlayback * playback)
                         16) ? FMT_S16_LE : FMT_U8,
                        wav_file->samples_per_sec, wav_file->channels) == 0) {
             audio_error = TRUE;
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
@@ -459,38 +459,38 @@ get_song_info(gchar * filename, gchar ** title, gint * length)
 
     wav_file = g_malloc(sizeof(WaveFile));
     memset(wav_file, 0, sizeof(WaveFile));
-    if (!(wav_file->file = vfs_fopen(filename, "rb")))
+    if (!(wav_file->file = aud_vfs_fopen(filename, "rb")))
         return;
 
-    vfs_fread(magic, 1, 4, wav_file->file);
+    aud_vfs_fread(magic, 1, 4, wav_file->file);
     if (strncmp(magic, "RIFF", 4)) {
-        vfs_fclose(wav_file->file);
+        aud_vfs_fclose(wav_file->file);
         g_free(wav_file);
         wav_file = NULL;
         return;
     }
     read_le_ulong(wav_file->file, &len);
-    vfs_fread(magic, 1, 4, wav_file->file);
+    aud_vfs_fread(magic, 1, 4, wav_file->file);
     if (strncmp(magic, "WAVE", 4)) {
-        vfs_fclose(wav_file->file);
+        aud_vfs_fclose(wav_file->file);
         g_free(wav_file);
         wav_file = NULL;
         return;
     }
     for (;;) {
-        vfs_fread(magic, 1, 4, wav_file->file);
+        aud_vfs_fread(magic, 1, 4, wav_file->file);
         if (!read_le_ulong(wav_file->file, &len)) {
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
         }
         if (!strncmp("fmt ", magic, 4))
             break;
-        vfs_fseek(wav_file->file, len, SEEK_CUR);
+        aud_vfs_fseek(wav_file->file, len, SEEK_CUR);
     }
     if (len < 16) {
-        vfs_fclose(wav_file->file);
+        aud_vfs_fclose(wav_file->file);
         g_free(wav_file);
         wav_file = NULL;
         return;
@@ -507,7 +507,7 @@ get_song_info(gchar * filename, gchar ** title, gint * length)
     case IBM_FORMAT_MULAW:
     case IBM_FORMAT_ALAW:
     case IBM_FORMAT_ADPCM:
-        vfs_fclose(wav_file->file);
+        aud_vfs_fclose(wav_file->file);
         g_free(wav_file);
         wav_file = NULL;
         return;
@@ -518,27 +518,27 @@ get_song_info(gchar * filename, gchar ** title, gint * length)
     read_le_short(wav_file->file, &wav_file->block_align);
     read_le_short(wav_file->file, &wav_file->bits_per_sample);
     if (wav_file->bits_per_sample != 8 && wav_file->bits_per_sample != 16) {
-        vfs_fclose(wav_file->file);
+        aud_vfs_fclose(wav_file->file);
         g_free(wav_file);
         wav_file = NULL;
         return;
     }
     len -= 16;
     if (len)
-        vfs_fseek(wav_file->file, len, SEEK_CUR);
+        aud_vfs_fseek(wav_file->file, len, SEEK_CUR);
 
     for (;;) {
-        vfs_fread(magic, 4, 1, wav_file->file);
+        aud_vfs_fread(magic, 4, 1, wav_file->file);
 
         if (!read_le_ulong(wav_file->file, &len)) {
-            vfs_fclose(wav_file->file);
+            aud_vfs_fclose(wav_file->file);
             g_free(wav_file);
             wav_file = NULL;
             return;
         }
         if (!strncmp("data", magic, 4))
             break;
-        vfs_fseek(wav_file->file, len, SEEK_CUR);
+        aud_vfs_fseek(wav_file->file, len, SEEK_CUR);
     }
     rate =
         wav_file->samples_per_sec * wav_file->channels *
@@ -546,7 +546,7 @@ get_song_info(gchar * filename, gchar ** title, gint * length)
     (*length) = 1000 * (len / rate);
     (*title) = get_title(filename);
 
-    vfs_fclose(wav_file->file);
+    aud_vfs_fclose(wav_file->file);
     g_free(wav_file);
     wav_file = NULL;
 }

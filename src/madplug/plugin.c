@@ -292,7 +292,7 @@ static int mp3_head_convert(const guchar * hbuf)
 
 gboolean audmad_is_remote(gchar *url)
 {
-    gboolean rv = vfs_is_remote(url);
+    gboolean rv = aud_vfs_is_remote(url);
     return rv;
 }
 
@@ -325,9 +325,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
         return 0;
     }
 
-    if(vfs_fread(buf, 1, 4, fin) == 0) {
+    if(aud_vfs_fread(buf, 1, 4, fin) == 0) {
         gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-        g_message("vfs_fread failed @1 %s", tmp);
+        g_message("aud_vfs_fread failed @1 %s", tmp);
         g_free(tmp);
         return 0;
     }
@@ -340,10 +340,10 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
         return 0;
     else if (memcmp(buf, "RIFF", 4) == 0)
     {
-        vfs_fseek(fin, 4, SEEK_CUR);
-        if(vfs_fread(buf, 1, 4, fin) == 0) {
+        aud_vfs_fseek(fin, 4, SEEK_CUR);
+        if(aud_vfs_fread(buf, 1, 4, fin) == 0) {
             gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-            g_message("vfs_fread failed @2 %s", tmp);
+            g_message("aud_vfs_fread failed @2 %s", tmp);
             g_free(tmp);
             return 0;
         }
@@ -355,9 +355,9 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     // check data for frame header
     while (!mp3_head_check(check, &frameSize))
     {
-        if((ret = vfs_fread(tmp, 1, chksize, fin)) == 0){
+        if((ret = aud_vfs_fread(tmp, 1, chksize, fin)) == 0){
             gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-            g_message("vfs_fread failed @3 %s", tmp);
+            g_message("aud_vfs_fread failed @3 %s", tmp);
             g_free(tmp);
             return 0;
         }
@@ -372,7 +372,7 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
                  * next header ... also reduce the check size.
                  */
                 if (++chkcount >= 3) return 1;
-                vfs_fseek(fin, frameSize-4, SEEK_CUR);
+                aud_vfs_fseek(fin, frameSize-4, SEEK_CUR);
                 check = 0;
                 chksize = 8;
             }
@@ -391,13 +391,13 @@ static int audmad_is_our_file(char *filename)
     VFSFile *fin = NULL;
     gint rtn;
 
-    fin = vfs_fopen(filename, "rb");
+    fin = aud_vfs_fopen(filename, "rb");
 
     if (fin == NULL)
         return 0;
 
     rtn = audmad_is_our_fd(filename, fin);
-    vfs_fclose(fin);
+    aud_vfs_fclose(fin);
 
     return rtn;
 }
@@ -654,7 +654,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 #endif
 
     if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
-        if((fd && vfs_is_streaming(fd)) || (info.playback && info.playback->playing)) {
+        if((fd && aud_vfs_is_streaming(fd)) || (info.playback && info.playback->playing)) {
             gchar *tmp = NULL;
             tuple = aud_tuple_new_from_filename(filename);
 
@@ -662,7 +662,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             if(info.playback)
                 g_message("info.playback->playing = %d",info.playback->playing);
 #endif
-            tmp = vfs_get_metadata(info.infile ? info.infile : fd, "track-name");
+            tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "track-name");
             if(tmp){
                 gchar *scratch;
 
@@ -673,7 +673,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 
                 tmp = NULL;
             }
-            tmp = vfs_get_metadata(info.infile ? info.infile : fd, "stream-name");
+            tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "stream-name");
             if(tmp){
                 gchar *scratch;
 
@@ -702,9 +702,9 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 //        return NULL;
     } /* info.remote  */
 
-    // if !fd, pre-open the file with vfs_fopen() and reuse fd.
+    // if !fd, pre-open the file with aud_vfs_fopen() and reuse fd.
     if(!fd) {
-        fd = vfs_fopen(filename, "rb");
+        fd = aud_vfs_fopen(filename, "rb");
         if(!fd)
             return NULL;
         local_fd = TRUE;
@@ -796,7 +796,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
 
     if(local_fd)
-        vfs_fclose(fd);
+        aud_vfs_fclose(fd);
 
 #ifdef DEBUG
     g_message("e: mad: audmad_get_song_tuple");
@@ -814,7 +814,7 @@ static Tuple *audmad_probe_for_tuple(char *filename, VFSFile *fd)
     if (!audmad_is_our_fd(filename, fd))
         return NULL;
 
-    vfs_rewind(fd);
+    aud_vfs_rewind(fd);
 
     return __audmad_get_song_tuple(filename, fd);
 }
@@ -836,7 +836,7 @@ InputPlugin mad_ip = {
     .file_info_box = audmad_get_file_info,
     .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
-    .vfs_extensions = fmts,
+    .aud_vfs_extensions = fmts,
     .mseek = audmad_mseek,
     .probe_for_tuple = audmad_probe_for_tuple
 };

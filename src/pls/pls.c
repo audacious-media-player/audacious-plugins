@@ -100,14 +100,14 @@ static void
 playlist_save_pls(const gchar *filename, gint pos)
 {
     GList *node;
-    VFSFile *file = vfs_fopen(filename, "wb");
+    VFSFile *file = aud_vfs_fopen(filename, "wb");
     Playlist *playlist = playlist_get_active();
 
     g_return_if_fail(file != NULL);
     g_return_if_fail(playlist != NULL);
 
-    vfs_fprintf(file, "[playlist]\n");
-    vfs_fprintf(file, "NumberOfEntries=%d\n", playlist_get_length(playlist));
+    aud_vfs_fprintf(file, "[playlist]\n");
+    aud_vfs_fprintf(file, "NumberOfEntries=%d\n", playlist_get_length(playlist));
 
     PLAYLIST_LOCK(playlist);
 
@@ -115,12 +115,12 @@ playlist_save_pls(const gchar *filename, gint pos)
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
         gchar *fn;
 
-        if (vfs_is_remote(entry->filename))
+        if (aud_vfs_is_remote(entry->filename))
             fn = g_strdup(entry->filename);
         else
             fn = g_filename_from_uri(entry->filename, NULL, NULL);
 
-        vfs_fprintf(file, "File%d=%s\n", g_list_position(playlist->entries, node) + 1,
+        aud_vfs_fprintf(file, "File%d=%s\n", g_list_position(playlist->entries, node) + 1,
                     fn);
 
         g_free(fn);
@@ -128,7 +128,7 @@ playlist_save_pls(const gchar *filename, gint pos)
 
     PLAYLIST_UNLOCK(playlist);
 
-    vfs_fclose(file);
+    aud_vfs_fclose(file);
 }
 
 PlaylistContainer plc_pls = {

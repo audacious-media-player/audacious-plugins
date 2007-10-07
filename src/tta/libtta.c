@@ -92,7 +92,7 @@ InputPlugin tta_ip =
 	.get_song_info = get_song_info,
 	.file_info_box = file_info,
 	.get_song_tuple = get_song_tuple,
-	.vfs_extensions = tta_fmts,
+	.aud_vfs_extensions = tta_fmts,
 	.mseek = mseek,
 };
 
@@ -106,11 +106,11 @@ file_size (char *filename)
 	VFSFile *f;
 	size_t size = -1;
 
-	if ((f = vfs_fopen (filename, "r")))
+	if ((f = aud_vfs_fopen (filename, "r")))
 	{
-	    vfs_fseek (f, 0, SEEK_END);
-	    size = vfs_ftell (f);
-	    vfs_fclose (f);
+	    aud_vfs_fseek (f, 0, SEEK_END);
+	    size = aud_vfs_ftell (f);
+	    aud_vfs_fclose (f);
 	}
 	return size;
 }
@@ -553,7 +553,7 @@ get_song_tuple(char *filename)
 
 	ttainfo = g_malloc0(sizeof(tta_info));
 
-	if((file = vfs_fopen(filename, "rb")) != NULL) {
+	if((file = aud_vfs_fopen(filename, "rb")) != NULL) {
 		if(open_tta_file(filename, ttainfo, 0) >= 0) {
 			tuple = aud_tuple_new_from_filename(filename);
 
@@ -584,7 +584,7 @@ get_song_tuple(char *filename)
 			}
 			close_tta_file (ttainfo);
 		}
-		vfs_fclose(file);
+		aud_vfs_fclose(file);
 	}
 	return tuple;
 }

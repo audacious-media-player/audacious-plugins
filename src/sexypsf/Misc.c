@@ -236,13 +236,13 @@ static PSFINFO *LoadPSF(char *path, int level, int type) // Type==1 for just inf
 	PSFINFO *psfi;
 	PSFINFO *tmpi;
 
-        if(!(fp=vfs_fopen(path,"rb")))
+        if(!(fp=aud_vfs_fopen(path,"rb")))
  	{
          printf("path %s failed to load\n", path);
 	 return(0);
 	}
  
-	vfs_fread(head,1,4,fp);
+	aud_vfs_fread(head,1,4,fp);
 	if(memcmp(head,"PSF\x01",4)) return(0);
 
 	psfi=malloc(sizeof(PSFINFO));
@@ -250,22 +250,22 @@ static PSFINFO *LoadPSF(char *path, int level, int type) // Type==1 for just inf
         psfi->stop=~0;
         psfi->fade=0; 
 
-        vfs_fread(&reserved,1,4,fp);
-        vfs_fread(&complen,1,4,fp);
+        aud_vfs_fread(&reserved,1,4,fp);
+        aud_vfs_fread(&complen,1,4,fp);
 	complen=BFLIP32(complen);
 
-        vfs_fread(&crc32,1,4,fp);
+        aud_vfs_fread(&crc32,1,4,fp);
 	crc32=BFLIP32(crc32);
 
-        vfs_fseek(fp,reserved,SEEK_CUR);
+        aud_vfs_fseek(fp,reserved,SEEK_CUR);
 
         if(type)
-	 vfs_fseek(fp,complen,SEEK_CUR);
+	 aud_vfs_fseek(fp,complen,SEEK_CUR);
         else
         {
          in=malloc(complen);
          out=malloc(1024*1024*2+0x800);
-         vfs_fread(in,1,complen,fp);
+         aud_vfs_fread(in,1,complen,fp);
          outlen=1024*1024*2;
          uncompress(out,&outlen,in,complen);
          free(in);
@@ -284,13 +284,13 @@ static PSFINFO *LoadPSF(char *path, int level, int type) // Type==1 for just inf
 
         {
          u8 tagdata[5];
-         if(vfs_fread(tagdata,1,5,fp)==5)
+         if(aud_vfs_fread(tagdata,1,5,fp)==5)
          {
           if(!memcmp(tagdata,"[TAG]",5))
           {
            char linebuf[1024];
 
-           while(vfs_fgets(linebuf,1024,fp))
+           while(aud_vfs_fgets(linebuf,1024,fp))
            {
             int x;
 	    char *key=0,*value=0;
@@ -332,7 +332,7 @@ static PSFINFO *LoadPSF(char *path, int level, int type) // Type==1 for just inf
 	      free(value);
 	      free(tmpfn);
  	      if(!level) free(out);
-	      vfs_fclose(fp);
+	      aud_vfs_fclose(fp);
 	      FreeTags(psfi->tags);
 	      free(psfi);
 	      return(0);
@@ -346,7 +346,7 @@ static PSFINFO *LoadPSF(char *path, int level, int type) // Type==1 for just inf
          }
         }  
 
-        vfs_fclose(fp);
+        aud_vfs_fclose(fp);
 
 	/* Now, if we're at level 0(main PSF), load the main executable, and any libN stuff */
         if(!level && !type)
@@ -406,7 +406,7 @@ static PSFINFO *LoadPSF(char *path, int level, int type) // Type==1 for just inf
             //free(key);
             //free(value);
             //free(tmpfn);
-            //vfs_fclose(fp);
+            //aud_vfs_fclose(fp);
             //return(0);
            }
            free(tmpfn);

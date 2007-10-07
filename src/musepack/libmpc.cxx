@@ -60,34 +60,34 @@ GStaticMutex threadMutex = G_STATIC_MUTEX_INIT;
  * This _IS_ very sick, but it works. -nenolod
  */
 static mpc_int32_t
-vfs_fread_impl(void *data, void *ptr, mpc_int32_t size)
+aud_vfs_fread_impl(void *data, void *ptr, mpc_int32_t size)
 {
     mpc_reader_file *d = (mpc_reader_file *) data;
     VFSFile *file = (VFSFile *) d->file;
 
-    return (mpc_int32_t) vfs_fread(ptr, 1, size, file);
+    return (mpc_int32_t) aud_vfs_fread(ptr, 1, size, file);
 }
 
 static mpc_bool_t
-vfs_fseek_impl(void *data, mpc_int32_t offset)
+aud_vfs_fseek_impl(void *data, mpc_int32_t offset)
 {
     mpc_reader_file *d = (mpc_reader_file *) data;
     VFSFile *file = (VFSFile *) d->file;
 
-    return d->is_seekable ? vfs_fseek(file, offset, SEEK_SET) == 0 : FALSE;
+    return d->is_seekable ? aud_vfs_fseek(file, offset, SEEK_SET) == 0 : FALSE;
 }
 
 static mpc_int32_t
-vfs_ftell_impl(void *data)
+aud_vfs_ftell_impl(void *data)
 {
     mpc_reader_file *d = (mpc_reader_file *) data;
     VFSFile *file = (VFSFile *) d->file;
 
-    return vfs_ftell(file);
+    return aud_vfs_ftell(file);
 }
 
 static mpc_int32_t
-vfs_getsize_impl(void *data)
+aud_vfs_getsize_impl(void *data)
 {
     mpc_reader_file *d = (mpc_reader_file *) data;
 
@@ -95,7 +95,7 @@ vfs_getsize_impl(void *data)
 }
 
 static mpc_bool_t
-vfs_canseek_impl(void *data)
+aud_vfs_canseek_impl(void *data)
 {
     mpc_reader_file *d = (mpc_reader_file *) data;
 
@@ -110,19 +110,19 @@ vfs_canseek_impl(void *data)
 void
 mpc_reader_setup_file_vfs(mpc_reader_file *p_reader, VFSFile *input)
 {
-    p_reader->reader.seek = vfs_fseek_impl;
-    p_reader->reader.read = vfs_fread_impl;
-    p_reader->reader.tell = vfs_ftell_impl;
-    p_reader->reader.get_size = vfs_getsize_impl;
-    p_reader->reader.canseek = vfs_canseek_impl;
+    p_reader->reader.seek = aud_vfs_fseek_impl;
+    p_reader->reader.read = aud_vfs_fread_impl;
+    p_reader->reader.tell = aud_vfs_ftell_impl;
+    p_reader->reader.get_size = aud_vfs_getsize_impl;
+    p_reader->reader.canseek = aud_vfs_canseek_impl;
     p_reader->reader.data = p_reader;
 
     p_reader->file = (FILE *) input; // no worries, it gets cast back -nenolod
     p_reader->is_seekable = TRUE;    // XXX streams
 
-    vfs_fseek(input, 0, SEEK_END);
-    p_reader->file_size = vfs_ftell(input);
-    vfs_fseek(input, 0, SEEK_SET);
+    aud_vfs_fseek(input, 0, SEEK_END);
+    p_reader->file_size = aud_vfs_ftell(input);
+    aud_vfs_fseek(input, 0, SEEK_SET);
 }
 
 static void mpcOpenPlugin()
@@ -279,13 +279,13 @@ static int mpcIsOurFile(char* p_Filename)
 {
     VFSFile *file;
     gchar magic[3];
-    if ((file = vfs_fopen(p_Filename, "rb"))) {
-        vfs_fread(magic, 1, 3, file);
+    if ((file = aud_vfs_fopen(p_Filename, "rb"))) {
+        aud_vfs_fread(magic, 1, 3, file);
         if (!memcmp(magic, "MP+", 3)) {
-             vfs_fclose(file);
+             aud_vfs_fclose(file);
              return 1;
         }
-        vfs_fclose(file);
+        aud_vfs_fclose(file);
     }
     return 0;
 }
@@ -293,7 +293,7 @@ static int mpcIsOurFile(char* p_Filename)
 static int mpcIsOurFD(char* p_Filename, VFSFile* file)
 {
     gchar magic[3];
-    vfs_fread(magic, 1, 3, file);
+    aud_vfs_fread(magic, 1, 3, file);
     if (!memcmp(magic, "MP+", 3))
         return 1;
     return 0;
@@ -350,7 +350,7 @@ static int mpcGetTime(InputPlayback *data)
 
 static Tuple *mpcGetSongTuple(char* p_Filename)
 {
-    VFSFile *input = vfs_fopen(p_Filename, "rb");
+    VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
     Tuple *tuple = NULL;
 
     if(input)
@@ -385,7 +385,7 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
         aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, scratch);
         g_free(scratch);
 
-        vfs_fclose(input);
+        aud_vfs_fclose(input);
     }
     else
     {
@@ -399,7 +399,7 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
 
 static void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length)
 {
-    VFSFile *input = vfs_fopen(p_Filename, "rb");
+    VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
     if(input)
     {
         MpcInfo tags = getTags(p_Filename);
@@ -410,7 +410,7 @@ static void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length)
         mpc_reader_setup_file_vfs(&reader, input);
         mpc_streaminfo_read(&info, &reader.reader);
         *p_Length = static_cast<int> (1000 * mpc_streaminfo_get_length(&info));
-        vfs_fclose(input);
+        aud_vfs_fclose(input);
     }
     else
     {
@@ -580,7 +580,7 @@ static void mpcFileInfoBox(char* p_Filename)
         GtkWidget* albumPeakLabel = mpcGtkLabel(infoVbox);
         GtkWidget* albumGainLabel = mpcGtkLabel(infoVbox);
 
-        VFSFile *input = vfs_fopen(p_Filename, "rb");
+        VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
         if(input)
         {
             mpc_streaminfo info;
@@ -621,7 +621,7 @@ static void mpcFileInfoBox(char* p_Filename)
             gtk_entry_set_text(GTK_ENTRY(fileEntry), entry);
             free(entry);
             freeTags(tags);
-            vfs_fclose(input);
+            aud_vfs_fclose(input);
         }
         else
         {
@@ -762,7 +762,7 @@ static void* endThread(char* p_FileName, VFSFile * p_FileHandle, bool release)
     }
     setAlive(false);
     if(p_FileHandle)
-        vfs_fclose(p_FileHandle);
+        aud_vfs_fclose(p_FileHandle);
     if(track.display)
     {
         free(track.display);
@@ -775,7 +775,7 @@ static void* decodeStream(void* data)
 {
     lockAcquire();
     char* filename = static_cast<char*> (data);
-    VFSFile *input = vfs_fopen(filename, "rb");
+    VFSFile *input = aud_vfs_fopen(filename, "rb");
     if (!input)
     {
         mpcDecoder.isError = g_strdup_printf("[xmms-musepack] decodeStream is unable to open %s", filename);

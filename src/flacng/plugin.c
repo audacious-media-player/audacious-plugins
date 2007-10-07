@@ -41,7 +41,7 @@ InputPlugin flac_ip = {
     .get_song_info = flac_get_song_info,
     .get_song_tuple = flac_get_song_tuple,	// get a tuple
     .is_our_file_from_vfs = flac_is_our_fd,	// version of is_our_file which is handed an FD
-    .vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
+    .aud_vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
 };
 
 InputPlugin *flac_iplist[] = { &flac_ip, NULL };
@@ -232,14 +232,14 @@ gboolean flac_is_our_file(gchar* filename) {
     /*
      * Open the file
      */
-    if (NULL == (fd = vfs_fopen(filename, "rb"))) {
+    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
         _ERROR("Could not open file for reading! (%s)", filename);
         _LEAVE FALSE;
     }
 
     ret = flac_is_our_fd(filename, fd);
 
-    vfs_fclose(fd);
+    aud_vfs_fclose(fd);
 
     _LEAVE ret;
 }
@@ -536,7 +536,7 @@ void flac_play_file (InputPlayback* input) {
     /*
      * Open the file
      */
-    if (NULL == (fd = vfs_fopen(input->filename, "rb"))) {
+    if (NULL == (fd = aud_vfs_fopen(input->filename, "rb"))) {
         _ERROR("Could not open file for reading! (%s)", input->filename);
         _LEAVE;
     }
@@ -633,7 +633,7 @@ void flac_get_song_info(gchar* filename, gchar** title, gint* length) {
     /*
      * Open the file
      */
-    if (NULL == (fd = vfs_fopen(filename, "rb"))) {
+    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
         _ERROR("Could not open file for reading! (%s)", filename);
         _LEAVE;
     }
@@ -682,7 +682,7 @@ Tuple *flac_get_song_tuple(gchar* filename) {
     /*
      * Open the file
      */
-    if (NULL == (fd = vfs_fopen(filename, "rb"))) {
+    if (NULL == (fd = aud_vfs_fopen(filename, "rb"))) {
         _ERROR("Could not open file for reading! (%s)", filename);
         _LEAVE NULL;
     }

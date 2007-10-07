@@ -63,7 +63,7 @@ amidiplug_cfg_ap_t amidiplug_cfg_ap =
   0		/* ap_opts_lyrics_extract */
 };
 
-gchar *amidiplug_vfs_extensions[] = { "mid" , "midi" , "rmi" , "rmid" , NULL };
+gchar *amidiplug_aud_vfs_extensions[] = { "mid" , "midi" , "rmi" , "rmid" , NULL };
 
 gpointer amidiplug_play_loop( gpointer );
 gpointer amidiplug_audio_loop( gpointer );
@@ -102,7 +102,7 @@ InputPlugin amidiplug_ip =
   .get_song_info = amidiplug_get_song_info,		/* get_song_info */
   .file_info_box = amidiplug_file_info_box,		/* file_info_box */
   .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,	/* is_our_file_from_vfs */
-  .vfs_extensions = amidiplug_vfs_extensions		/* vfs_extensions */
+  .aud_vfs_extensions = amidiplug_aud_vfs_extensions		/* aud_vfs_extensions */
 };
 
 #endif /* !_I_AMIDIPLUG_H */

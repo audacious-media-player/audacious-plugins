@@ -55,7 +55,7 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
         _LEAVE FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
     }
 
-    read = vfs_fread(buffer, 1, to_read, info->input_stream);
+    read = aud_vfs_fread(buffer, 1, to_read, info->input_stream);
 
     if ((0 < read) && (0 < info->read_max)) {
         info->read_max -= read;
@@ -93,7 +93,7 @@ FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, 
 
     _DEBUG("Seeking to %lld", absolute_byte_offset);
 
-    if (0 != vfs_fseek(info->input_stream, absolute_byte_offset, SEEK_SET)) {
+    if (0 != aud_vfs_fseek(info->input_stream, absolute_byte_offset, SEEK_SET)) {
         _ERROR("Could not seek to %lld!", (long long)absolute_byte_offset);
         _LEAVE FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
     }
@@ -113,7 +113,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
     info = (callback_info*) client_data;
     _DEBUG("Using callback_info %s", info->name);
 
-    if (-1 == (position = vfs_ftell(info->input_stream))) {
+    if (-1 == (position = aud_vfs_ftell(info->input_stream))) {
         _ERROR("Could not tell current position!");
         _LEAVE FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
@@ -147,7 +147,7 @@ FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data) {
         _LEAVE TRUE;
     }
 
-    eof = vfs_feof(info->input_stream);
+    eof = aud_vfs_feof(info->input_stream);
 
     _LEAVE eof;
 }
@@ -164,7 +164,7 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
     info = (callback_info*) client_data;
     _DEBUG("Using callback_info %s", info->name);
 
-    if (-1 == (size = vfs_fsize(info->input_stream))) {
+    if (-1 == (size = aud_vfs_fsize(info->input_stream))) {
         /*
          * Could not get the stream size. This is not necessarily an
          * error, maybe the stream has no fixed size (think streaming

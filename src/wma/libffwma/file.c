@@ -31,9 +31,9 @@ static int file_open(URLContext *h, const char *filename, int flags)
     VFSFile *file;
 
     if (flags & URL_WRONLY) {
-	file = vfs_fopen(filename, "wb");
+	file = aud_vfs_fopen(filename, "wb");
     } else {
-	file = vfs_fopen(filename, "rb");
+	file = aud_vfs_fopen(filename, "rb");
     }
     
     if (file == NULL)
@@ -46,14 +46,14 @@ static int file_read(URLContext *h, unsigned char *buf, int size)
 {
     VFSFile *file;
     file = h->priv_data;
-    return vfs_fread(buf, 1, size, file);
+    return aud_vfs_fread(buf, 1, size, file);
 }
 
 static int file_write(URLContext *h, unsigned char *buf, int size)
 {
     VFSFile *file;
     file = h->priv_data;
-    return vfs_fwrite(buf, 1, size, file);
+    return aud_vfs_fwrite(buf, 1, size, file);
 }
 
 /* XXX: use llseek */
@@ -62,9 +62,9 @@ static offset_t file_seek(URLContext *h, offset_t pos, int whence)
     int result = 0;
     VFSFile *file;
     file = h->priv_data;
-    result = vfs_fseek(file, pos, whence);
+    result = aud_vfs_fseek(file, pos, whence);
     if (result == 0)
-	result = vfs_ftell(file);
+	result = aud_vfs_ftell(file);
     else
         result = -1;
     return result;
@@ -74,7 +74,7 @@ static int file_close(URLContext *h)
 {
     VFSFile *file;
     file = h->priv_data;
-    return vfs_fclose(file);
+    return aud_vfs_fclose(file);
 }
 
 URLProtocol file_protocol = {

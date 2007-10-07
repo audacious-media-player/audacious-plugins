@@ -88,17 +88,17 @@ playlist_load_m3u(const gchar * filename, gint pos)
     
     uri = g_filename_to_uri(filename, NULL, NULL);
 
-    if ((file = vfs_fopen(uri ? uri : filename, "rb")) == NULL)
+    if ((file = aud_vfs_fopen(uri ? uri : filename, "rb")) == NULL)
         return;
 
     g_free(uri);
 
     line = g_malloc(line_len);
-    while (vfs_fgets(line, line_len, file)) {
+    while (aud_vfs_fgets(line, line_len, file)) {
         while (strlen(line) == line_len - 1 && line[strlen(line) - 1] != '\n') {
             line_len += 1024;
             line = g_realloc(line, line_len);
-            vfs_fgets(&line[strlen(line)], 1024, file);
+            aud_vfs_fgets(&line[strlen(line)], 1024, file);
         }
 
         while (line[strlen(line) - 1] == '\r' ||
@@ -141,7 +141,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
             pos++;
     }
 
-    vfs_fclose(file);
+    aud_vfs_fclose(file);
     g_free(line);
 }
 
@@ -158,12 +158,12 @@ playlist_save_m3u(const gchar *filename, gint pos)
     g_return_if_fail(playlist != NULL);
 
     fn = g_filename_to_uri(filename, NULL, NULL);
-    file = vfs_fopen(fn ? fn : filename, "wb");
+    file = aud_vfs_fopen(fn ? fn : filename, "wb");
     g_free(fn);
     g_return_if_fail(file != NULL);
 
     if (cfg.use_pl_metadata)
-        vfs_fprintf(file, "#EXTM3U\n");
+        aud_vfs_fprintf(file, "#EXTM3U\n");
 
     PLAYLIST_LOCK(playlist);
 
@@ -180,22 +180,22 @@ playlist_save_m3u(const gchar *filename, gint pos)
 
             outstr = g_locale_from_utf8(entry->title, -1, NULL, NULL, NULL);
             if(outstr) {
-                vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, outstr);
+                aud_vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, outstr);
                 g_free(outstr);
                 outstr = NULL;
             } else {
-                vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, entry->title);
+                aud_vfs_fprintf(file, "#EXTINF:%d,%s\n", seconds, entry->title);
             }
         }
 
         fn = g_filename_from_uri(entry->filename, NULL, NULL);
-        vfs_fprintf(file, "%s\n", fn ? fn : entry->filename);
+        aud_vfs_fprintf(file, "%s\n", fn ? fn : entry->filename);
         g_free(fn);
     }
 
     PLAYLIST_UNLOCK(playlist);
 
-    vfs_fclose(file);
+    aud_vfs_fclose(file);
 }
 
 PlaylistContainer plc_m3u = {

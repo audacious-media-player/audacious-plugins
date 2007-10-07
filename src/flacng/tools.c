@@ -83,7 +83,7 @@ void reset_info(callback_info* info, gboolean close_fd) {
 
     if (close_fd && (NULL != info->input_stream)) {
         _DEBUG("Closing fd");
-        vfs_fclose(info->input_stream);
+        aud_vfs_fclose(info->input_stream);
     }
     info->input_stream = NULL;
 

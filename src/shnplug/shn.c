@@ -223,7 +223,7 @@ int get_wave_header(shn_file *this_shn)
       version = MAX_VERSION + 1;
       while(version > MAX_VERSION)
       {
-        int byte = vfs_getc(this_shn->vars.fd);
+        int byte = aud_vfs_getc(this_shn->vars.fd);
         this_shn->vars.bytes_read++;
         if(byte == EOF)
           return 0;
@@ -553,7 +553,7 @@ void shn_unload(shn_file *this_shn)
 	{
 		if (this_shn->vars.fd)
 		{
-			vfs_fclose(this_shn->vars.fd);
+			aud_vfs_fclose(this_shn->vars.fd);
 			this_shn->vars.fd = NULL;
 		}
 
@@ -671,13 +671,13 @@ shn_file *load_shn(InputPlayback *playback, char *filename, VFSFile *fd)
 
 	if (tmp_file->wave_header.file_has_id3v2_tag)
 	{
-		vfs_fseek(tmp_file->vars.fd,tmp_file->wave_header.id3v2_tag_size,SEEK_SET);
+		aud_vfs_fseek(tmp_file->vars.fd,tmp_file->wave_header.id3v2_tag_size,SEEK_SET);
 		tmp_file->vars.bytes_read += tmp_file->wave_header.id3v2_tag_size;
 		tmp_file->vars.seek_offset = tmp_file->wave_header.id3v2_tag_size;
 	}
     else
 	{
-		vfs_fseek(tmp_file->vars.fd,0,SEEK_SET);
+		aud_vfs_fseek(tmp_file->vars.fd,0,SEEK_SET);
 	}
 
 	if (0 == shn_verify_header(tmp_file))
@@ -747,7 +747,7 @@ static int shn_is_our_fd(char *fn, VFSFile *fd)
 {
 	char data[4];
 
-	if (vfs_fread((void *)data,1,4,fd) != 4)
+	if (aud_vfs_fread((void *)data,1,4,fd) != 4)
 		return FALSE;
 
 	if (memcmp(data,MAGIC,4))
@@ -865,7 +865,7 @@ restart:
       version = MAX_VERSION + 1;
       while(version > MAX_VERSION)
       {
-  	int byte = vfs_getc(this_shn->vars.fd);
+  	int byte = aud_vfs_getc(this_shn->vars.fd);
  	if(byte == EOF) {
 	  shn_error_fatal(this_shn,"No magic number");
           goto exit_thread;
@@ -1142,8 +1142,8 @@ restart:
 
                 seekto_offset = shn_uchar_to_ulong_le(seek_info->data+8) + this_shn->vars.seek_offset;
 
-                vfs_fseek(this_shn->vars.fd,(slong)seekto_offset,SEEK_SET);
-                vfs_fread((uchar*) this_shn->decode_state->getbuf, 1, BUFSIZ, this_shn->vars.fd);
+                aud_vfs_fseek(this_shn->vars.fd,(slong)seekto_offset,SEEK_SET);
+                aud_vfs_fread((uchar*) this_shn->decode_state->getbuf, 1, BUFSIZ, this_shn->vars.fd);
 
                 this_shn->decode_state->getbufp = this_shn->decode_state->getbuf + shn_uchar_to_ushort_le(seek_info->data+14);
                 this_shn->decode_state->nbitget = shn_uchar_to_ushort_le(seek_info->data+16);
@@ -1183,7 +1183,7 @@ restart:
                 if(maxnlpc > 0 && qlpc)
                   free((void *) qlpc);
 
-                vfs_fseek(this_shn->vars.fd,0,SEEK_SET);
+                aud_vfs_fseek(this_shn->vars.fd,0,SEEK_SET);
                 goto restart;
               }
               else
@@ -1261,7 +1261,7 @@ static void shn_play(InputPlayback *playback)
 		return;
 	}
 
-	vfs_fseek(shnfile->vars.fd,0,SEEK_SET);
+	aud_vfs_fseek(shnfile->vars.fd,0,SEEK_SET);
 
 	playback->playing = TRUE;
 

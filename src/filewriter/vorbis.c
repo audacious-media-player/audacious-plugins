@@ -140,8 +140,8 @@ static gint vorbis_open(void)
         if (result == 0)
             break;
 
-        written += vfs_fwrite(og.header, 1, og.header_len, output_file);
-        written += vfs_fwrite(og.body, 1, og.body_len, output_file);
+        written += aud_vfs_fwrite(og.header, 1, og.header_len, output_file);
+        written += aud_vfs_fwrite(og.body, 1, og.body_len, output_file);
     }
 
     return 1;
@@ -194,8 +194,8 @@ static void vorbis_write(gpointer data, gint length)
                 if (result == 0)
                     break;
 
-                written += vfs_fwrite(og.header, 1, og.header_len, output_file);
-                written += vfs_fwrite(og.body, 1, og.body_len, output_file);
+                written += aud_vfs_fwrite(og.header, 1, og.header_len, output_file);
+                written += aud_vfs_fwrite(og.body, 1, og.body_len, output_file);
             }
         }
     }

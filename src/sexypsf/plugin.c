@@ -44,7 +44,7 @@ static gchar *get_title_psf(gchar *fn);
 
 static int is_our_fd(gchar *filename, VFSFile *file) {
     gchar magic[4];
-    vfs_fread(magic, 1, 4, file);
+    aud_vfs_fread(magic, 1, 4, file);
 
     // only allow PSF1 for now
     if (!memcmp(magic, "PSF\x01", 4))
@@ -269,7 +269,7 @@ InputPlugin sexypsf_ip =
     .get_song_info = sexypsf_xmms_getsonginfo,
     .get_song_tuple = get_aud_tuple_psf,
     .is_our_file_from_vfs = is_our_fd,
-    .vfs_extensions = sexypsf_fmts,
+    .aud_vfs_extensions = sexypsf_fmts,
 };
 
 InputPlugin *sexypsf_iplist[] = { &sexypsf_ip, NULL };

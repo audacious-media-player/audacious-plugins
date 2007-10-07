@@ -424,7 +424,7 @@ gpointer lastfm_metadata_thread_func(gpointer arg)
         return NULL;
 }
 
-VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
+VFSFile *lastfm_aud_vfs_fopen_impl(const gchar * path, const gchar * mode)
 {
         VFSFile *file = g_new0(VFSFile, 1);
         LastFM  *handle = g_new0(LastFM, 1);
@@ -453,7 +453,7 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
         g_thread_create(lastfm_adjust,temp_path,FALSE,NULL);
         metadata_thread = g_thread_create(lastfm_metadata_thread_func, handle, FALSE, NULL);
         thread_count++;
-        handle->proxy_fd = vfs_fopen(handle->lastfm_mp3_stream_url, mode);
+        handle->proxy_fd = aud_vfs_fopen(handle->lastfm_mp3_stream_url, mode);
         file->handle = handle;
 #if DEBUG
         g_print("LASTFM: (fopen) Thread_count: %d\n",thread_count);
@@ -461,7 +461,7 @@ VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode)
         return file;
 }
 
-gint lastfm_vfs_fclose_impl(VFSFile * file)
+gint lastfm_aud_vfs_fclose_impl(VFSFile * file)
 {
         gint ret = 0;
 
@@ -471,7 +471,7 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
         {
                 g_mutex_lock(metadata_mutex);
                 LastFM *handle = file->handle;
-                ret = vfs_fclose(handle->proxy_fd);
+                ret = aud_vfs_fclose(handle->proxy_fd);
                 if (!ret)
                         handle->proxy_fd = NULL;
                 g_free(handle);
@@ -482,65 +482,65 @@ gint lastfm_vfs_fclose_impl(VFSFile * file)
         return ret;
 }
 
-size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+size_t lastfm_aud_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
         LastFM *handle = file->handle;
-        size_t ret = vfs_fread(ptr, size, nmemb, handle->proxy_fd);
+        size_t ret = aud_vfs_fread(ptr, size, nmemb, handle->proxy_fd);
         return ret;
 }
 
-size_t lastfm_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
+size_t lastfm_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file)
 {
         return -1;
 }
 
-gint lastfm_vfs_getc_impl(VFSFile * stream)
+gint lastfm_aud_vfs_getc_impl(VFSFile * stream)
 {
         LastFM *handle = stream->handle;
-        return vfs_getc(handle->proxy_fd);
+        return aud_vfs_getc(handle->proxy_fd);
 }
 
-gint lastfm_vfs_ungetc_impl(gint c, VFSFile * stream)
+gint lastfm_aud_vfs_ungetc_impl(gint c, VFSFile * stream)
 {
         LastFM *handle = stream->handle;
-        return vfs_ungetc(c, handle->proxy_fd);
+        return aud_vfs_ungetc(c, handle->proxy_fd);
 }
 
-gint lastfm_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
+gint lastfm_aud_vfs_fseek_impl(VFSFile * file, glong offset, gint whence)
 {
         return -1;
 }
 
-void lastfm_vfs_rewind_impl(VFSFile * file)
+void lastfm_aud_vfs_rewind_impl(VFSFile * file)
 {
         return;
 }
 
-glong lastfm_vfs_ftell_impl(VFSFile * file)
+glong lastfm_aud_vfs_ftell_impl(VFSFile * file)
 {
         LastFM *handle = file->handle;
 
-        return vfs_ftell(handle->proxy_fd);
+        return aud_vfs_ftell(handle->proxy_fd);
 }
 
-gboolean lastfm_vfs_feof_impl(VFSFile * file)
+gboolean lastfm_aud_vfs_feof_impl(VFSFile * file)
 {
         LastFM *handle = file->handle;
 
-        return vfs_feof(handle->proxy_fd);
+        return aud_vfs_feof(handle->proxy_fd);
 }
 
-gint lastfm_vfs_truncate_impl(VFSFile * file, glong size)
+gint lastfm_aud_vfs_truncate_impl(VFSFile * file, glong size)
 {
         return -1;
 }
 
-off_t lastfm_vfs_fsize_impl(VFSFile * file)
+off_t lastfm_aud_vfs_fsize_impl(VFSFile * file)
 {
         return 0;
 }
 
-gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
+gchar *lastfm_aud_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
         LastFM * handle;
         if(file->handle!= NULL)
@@ -560,24 +560,24 @@ gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field)
 
 VFSConstructor lastfm_const = {
         "lastfm://",
-        lastfm_vfs_fopen_impl,
-        lastfm_vfs_fclose_impl,
-        lastfm_vfs_fread_impl,
-        lastfm_vfs_fwrite_impl,
-        lastfm_vfs_getc_impl,
-        lastfm_vfs_ungetc_impl,
-        lastfm_vfs_fseek_impl,
-        lastfm_vfs_rewind_impl,
-        lastfm_vfs_ftell_impl,
-        lastfm_vfs_feof_impl,
-        lastfm_vfs_truncate_impl,
-        lastfm_vfs_fsize_impl,
-        lastfm_vfs_metadata_impl
+        lastfm_aud_vfs_fopen_impl,
+        lastfm_aud_vfs_fclose_impl,
+        lastfm_aud_vfs_fread_impl,
+        lastfm_aud_vfs_fwrite_impl,
+        lastfm_aud_vfs_getc_impl,
+        lastfm_aud_vfs_ungetc_impl,
+        lastfm_aud_vfs_fseek_impl,
+        lastfm_aud_vfs_rewind_impl,
+        lastfm_aud_vfs_ftell_impl,
+        lastfm_aud_vfs_feof_impl,
+        lastfm_aud_vfs_truncate_impl,
+        lastfm_aud_vfs_fsize_impl,
+        lastfm_aud_vfs_metadata_impl
 };
 
 static void init(void)
 {       
-        vfs_register_transport(&lastfm_const);
+        aud_vfs_register_transport(&lastfm_const);
         if (!metadata_mutex)
                 metadata_mutex = g_mutex_new ();
         t0=g_new0(GTimeVal,1);

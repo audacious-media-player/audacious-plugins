@@ -98,27 +98,27 @@ InputPlugin mod = {
 
 int32_t read_bytes (void *id, void *data, int32_t bcount)
 {
-    return vfs_fread (data, 1, bcount, (VFSFile *) id);
+    return aud_vfs_fread (data, 1, bcount, (VFSFile *) id);
 }
 
 uint32_t get_pos (void *id)
 {
-    return vfs_ftell ((VFSFile *) id);
+    return aud_vfs_ftell ((VFSFile *) id);
 }
 
 int set_pos_abs (void *id, uint32_t pos)
 {
-    return vfs_fseek ((VFSFile *) id, pos, SEEK_SET);
+    return aud_vfs_fseek ((VFSFile *) id, pos, SEEK_SET);
 }
 
 int set_pos_rel (void *id, int32_t delta, int mode)
 {
-    return vfs_fseek ((VFSFile *) id, delta, mode);
+    return aud_vfs_fseek ((VFSFile *) id, delta, mode);
 }
 
 int push_back_byte (void *id, int c)
 {
-    return vfs_ungetc (c, (VFSFile *) id);
+    return aud_vfs_ungetc (c, (VFSFile *) id);
 }
 
 uint32_t get_length (void *id)
@@ -129,9 +129,9 @@ uint32_t get_length (void *id)
     if (file == NULL)
         return 0;
 
-    vfs_fseek(file, 0, SEEK_END);
-    sz = vfs_ftell(file);
-    vfs_fseek(file, 0, SEEK_SET);
+    aud_vfs_fseek(file, 0, SEEK_END);
+    sz = aud_vfs_ftell(file);
+    aud_vfs_fseek(file, 0, SEEK_SET);
 
     return sz;
 }
@@ -144,7 +144,7 @@ int can_seek (void *id)
 
 int32_t write_bytes (void *id, void *data, int32_t bcount)
 {
-    return vfs_fwrite (data, 1, bcount, (VFSFile *) id);
+    return aud_vfs_fwrite (data, 1, bcount, (VFSFile *) id);
 }
 
 WavpackStreamReader reader = {
@@ -185,10 +185,10 @@ public:
         }
         if (ctx != NULL) {
             if (wv_Input)
-                vfs_fclose(wv_Input);
+                aud_vfs_fclose(wv_Input);
 
             if (wvc_Input)
-                vfs_fclose(wvc_Input);
+                aud_vfs_fclose(wvc_Input);
             g_free(ctx);
             ctx = NULL;
         }
@@ -196,11 +196,11 @@ public:
 
     bool attach(const char *filename)
     {
-        wv_Input = vfs_fopen(filename, "rb");
+        wv_Input = aud_vfs_fopen(filename, "rb");
 
         char *corrFilename = g_strconcat(filename, "c", NULL);
 
-        wvc_Input = vfs_fopen(corrFilename, "rb");
+        wvc_Input = aud_vfs_fopen(corrFilename, "rb");
 
         g_free(corrFilename);
 
@@ -225,11 +225,11 @@ public:
 
     bool attach_to_play(const char *filename)
     {
-        wv_Input = vfs_fopen(filename, "rb");
+        wv_Input = aud_vfs_fopen(filename, "rb");
 
         char *corrFilename = g_strconcat(filename, "c", NULL);
 
-        wvc_Input = vfs_fopen(corrFilename, "rb");
+        wvc_Input = aud_vfs_fopen(corrFilename, "rb");
 
         g_free(corrFilename);
 

@@ -596,7 +596,7 @@ void audmad_get_file_info(char *fileurl)
     }
 #endif
 
-    if(!vfs_is_remote(fileurl) && !vfs_file_test(fileurl, G_FILE_TEST_EXISTS)) {
+    if(!aud_vfs_is_remote(fileurl) && !aud_vfs_file_test(fileurl, G_FILE_TEST_EXISTS)) {
         return;
     }
 
@@ -604,7 +604,7 @@ void audmad_get_file_info(char *fileurl)
 
     if(audmad_is_remote(fileurl)) {
         info.remote = TRUE;
-        if(vfs_is_streaming(info.infile))
+        if(aud_vfs_is_streaming(info.infile))
            return; //file info dialog for remote streaming doesn't make sense.
     }
 

@@ -16,7 +16,7 @@
 
 arch_Raw::arch_Raw(const string& aFileName)
 {
-	mFileDesc = vfs_fopen(aFileName.c_str(), "rb");
+	mFileDesc = aud_vfs_fopen(aFileName.c_str(), "rb");
 
 	//open and mmap the file
 	if(mFileDesc == NULL)
@@ -24,12 +24,12 @@ arch_Raw::arch_Raw(const string& aFileName)
 		mSize = 0;
 		return;
 	}
-	vfs_fseek(mFileDesc, 0, SEEK_END);
-	mSize = vfs_ftell(mFileDesc);
-	vfs_fseek(mFileDesc, 0, SEEK_SET);
+	aud_vfs_fseek(mFileDesc, 0, SEEK_END);
+	mSize = aud_vfs_ftell(mFileDesc);
+	aud_vfs_fseek(mFileDesc, 0, SEEK_SET);
 
 	mMap = malloc(mSize);
-	vfs_fread(mMap, 1, mSize, mFileDesc);
+	aud_vfs_fread(mMap, 1, mSize, mFileDesc);
 }
 
 arch_Raw::~arch_Raw()
@@ -37,7 +37,7 @@ arch_Raw::~arch_Raw()
 	if(mSize != 0)
 	{
 		free(mMap);
-		vfs_fclose(mFileDesc);
+		aud_vfs_fclose(mFileDesc);
 	}
 }
 

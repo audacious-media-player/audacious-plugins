@@ -32,31 +32,31 @@ GThread* metadata_thread=NULL;
 gint thread_count=0;
 static GMutex * metadata_mutex = NULL;
 static gchar * login_url=NULL;
-VFSFile *lastfm_vfs_fopen_impl(const gchar * path, const gchar * mode);
+VFSFile *lastfm_aud_vfs_fopen_impl(const gchar * path, const gchar * mode);
 
-size_t lastfm_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file);
+size_t lastfm_aud_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile * file);
 
-size_t lastfm_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file);
+size_t lastfm_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile * file);
 
-gint lastfm_vfs_getc_impl(VFSFile * stream);
+gint lastfm_aud_vfs_getc_impl(VFSFile * stream);
 
-gint lastfm_vfs_ungetc_impl(gint c, VFSFile * stream);
+gint lastfm_aud_vfs_ungetc_impl(gint c, VFSFile * stream);
 
-gint lastfm_vfs_fseek_impl(VFSFile * file, glong offset, gint whence);
+gint lastfm_aud_vfs_fseek_impl(VFSFile * file, glong offset, gint whence);
 
-void lastfm_vfs_rewind_impl(VFSFile * file);
+void lastfm_aud_vfs_rewind_impl(VFSFile * file);
 
-glong lastfm_vfs_ftell_impl(VFSFile * file);
+glong lastfm_aud_vfs_ftell_impl(VFSFile * file);
 
-gboolean lastfm_vfs_feof_impl(VFSFile * file);
+gboolean lastfm_aud_vfs_feof_impl(VFSFile * file);
 
-gint lastfm_vfs_truncate_impl(VFSFile * file, glong size);
+gint lastfm_aud_vfs_truncate_impl(VFSFile * file, glong size);
 
-off_t lastfm_vfs_fsize_impl(VFSFile * file);
+off_t lastfm_aud_vfs_fsize_impl(VFSFile * file);
 
-gint lastfm_vfs_fclose_impl(VFSFile * file);
+gint lastfm_aud_vfs_fclose_impl(VFSFile * file);
 
-gchar *lastfm_vfs_metadata_impl(VFSFile * file, const gchar * field);
+gchar *lastfm_aud_vfs_metadata_impl(VFSFile * file, const gchar * field);
 
 gboolean parse_metadata(LastFM * handle,gchar **res);
 

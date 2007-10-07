@@ -571,7 +571,7 @@ gpointer decode_loop(gpointer arg)
 #ifdef DEBUG
                 g_message("seeking to: %d bytes", new_position);
 #endif
-                if (vfs_fseek(info->infile, new_position, SEEK_SET) == -1)
+                if (aud_vfs_fseek(info->infile, new_position, SEEK_SET) == -1)
                     audmad_error("failed to seek to: %d", new_position);
                 mad_frame_mute(&frame);
                 mad_synth_mute(&synth);

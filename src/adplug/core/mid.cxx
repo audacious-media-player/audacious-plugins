@@ -214,12 +214,12 @@ CmidPlayer::load_sierra_ins (const std::string & fname,
     }
   sprintf (pfilename + j + 3, "patch.003");
 
-  VFSFile *instfd = vfs_fopen (pfilename, "rb");
+  VFSFile *instfd = aud_vfs_fopen (pfilename, "rb");
   f = fp.open (instfd);
   free (pfilename);
   if (!f)
   {
-    vfs_fclose (instfd);
+    aud_vfs_fclose (instfd);
     return false;
   }
 
@@ -259,7 +259,7 @@ CmidPlayer::load_sierra_ins (const std::string & fname,
   }
 
   fp.close (f);
-  vfs_fclose (instfd);
+  aud_vfs_fclose (instfd);
   memcpy (smyinsbank, myinsbank, 128 * 16);
   return true;
 }

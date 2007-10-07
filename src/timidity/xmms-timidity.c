@@ -223,7 +223,7 @@ static gint xmmstimid_is_our_fd( gchar * filename, VFSFile * fp )
 {
 	gchar magic_bytes[4];
 
-	vfs_fread( magic_bytes , 1 , 4 , fp );
+	aud_vfs_fread( magic_bytes , 1 , 4 , fp );
 
 	if ( !memcmp( magic_bytes , "MThd" , 4 ) )
 		return TRUE;
@@ -232,8 +232,8 @@ static gint xmmstimid_is_our_fd( gchar * filename, VFSFile * fp )
 	{
 	/* skip the four bytes after RIFF,
 	   then read the next four */
-	vfs_fseek( fp , 4 , SEEK_CUR );
-	vfs_fread( magic_bytes , 1 , 4 , fp );
+	aud_vfs_fseek( fp , 4 , SEEK_CUR );
+	aud_vfs_fread( magic_bytes , 1 , 4 , fp );
 	if ( !memcmp( magic_bytes , "RMID" , 4 ) )
 		return TRUE;
 	}

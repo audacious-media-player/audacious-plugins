@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <stdio.h>
 #include <audacious/vfs.h>
-#include <audacious/vfs_buffer.h>
+#include <audacious/aud_vfs_buffer.h>
 
 #include "execute.h"
 

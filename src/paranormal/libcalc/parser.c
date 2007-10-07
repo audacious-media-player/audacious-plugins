@@ -1377,7 +1377,7 @@ int yylex (YYSTYPE *yylval, void *yyparam) {
   parser_control *pc = (parser_control *) yyparam;
   
   /* Ignore whitespace, get first nonwhite character. */
-  while ((c = vfs_getc (pc->input)) == ' ' || c == '\t' || c == '\n');
+  while ((c = aud_vfs_getc (pc->input)) == ' ' || c == '\t' || c == '\n');
   
   /* End of input ? */
   if (c == EOF)
@@ -1385,7 +1385,7 @@ int yylex (YYSTYPE *yylval, void *yyparam) {
 
   /* Char starts a number => parse the number. */
   if (isdigit (c)) {
-    vfs_fseek (pc->input, -1, SEEK_CUR); /* Put the char back. */
+    aud_vfs_fseek (pc->input, -1, SEEK_CUR); /* Put the char back. */
     {
       char *old_locale, *saved_locale;
 
@@ -1396,10 +1396,10 @@ int yylex (YYSTYPE *yylval, void *yyparam) {
 
       while (isdigit(c) || c == '.')
       {
-        c = vfs_getc(pc->input);
+        c = aud_vfs_getc(pc->input);
       }
 
-      vfs_fseek(pc->input, -1, SEEK_CUR);
+      aud_vfs_fseek(pc->input, -1, SEEK_CUR);
 
       setlocale (LC_ALL, saved_locale);
       g_free (saved_locale);
@@ -1417,10 +1417,10 @@ int yylex (YYSTYPE *yylval, void *yyparam) {
       sym_name = g_string_append_c (sym_name, c);
 
       /* Get another character. */
-      c = vfs_getc (pc->input);
+      c = aud_vfs_getc (pc->input);
     } while (c != EOF && isalnum (c));
     
-    vfs_fseek (pc->input, -1, SEEK_CUR);
+    aud_vfs_fseek (pc->input, -1, SEEK_CUR);
 
     yylval->s_value = sym_name->str;
     
@@ -1501,7 +1501,7 @@ expression_t *expr_compile_string (const char* str, symbol_dict_t *dict)
 
   g_return_val_if_fail(str != NULL && dict != NULL, NULL);
 
-  stream = vfs_buffer_new_from_string ( (char *) str );
+  stream = aud_vfs_buffer_new_from_string ( (char *) str );
 
   pc.input = stream;
   pc.expr = expr_new ();
@@ -1513,7 +1513,7 @@ expression_t *expr_compile_string (const char* str, symbol_dict_t *dict)
     pc.expr = NULL;
   }
 
-  vfs_fclose (stream);
+  aud_vfs_fclose (stream);
 
   return pc.expr;
 }

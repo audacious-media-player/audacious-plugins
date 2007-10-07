@@ -94,20 +94,20 @@ gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
     info->mp3gain_minmax = -77;
 
     if(!fd){
-        info->infile = vfs_fopen(info->filename, "rb");
+        info->infile = aud_vfs_fopen(info->filename, "rb");
         if (info->infile == NULL) {
             return FALSE;
         }
     }
     else{
 #ifdef DEBUG
-        printf("input_init: vfs_dup\n");
+        printf("input_init: aud_vfs_dup\n");
 #endif
-        info->infile = vfs_dup(fd);
+        info->infile = aud_vfs_dup(fd);
     }
 
     // obtain file size
-    info->size = vfs_fsize(info->infile);
+    info->size = aud_vfs_fsize(info->infile);
     info->remote = info->size == 0 ? TRUE : FALSE; //proxy connection may result in non-zero size.
     if(audmad_is_remote((gchar *)url))
         info->remote = TRUE;
@@ -362,7 +362,7 @@ static void input_read_tag(struct mad_info_t *info)
     info->tuple = tuple;
 
     if(info->infile) {
-        curpos = vfs_ftell(info->infile);
+        curpos = aud_vfs_ftell(info->infile);
         info->id3file = id3_file_vfsopen(info->infile, ID3_FILE_MODE_READONLY);
     }
     else {
@@ -429,8 +429,8 @@ static void input_read_tag(struct mad_info_t *info)
 
     // for connection via proxy, we have to stop transfer once. I can't explain the reason.
     if (info->infile != NULL) {
-        vfs_fseek(info->infile, -1, SEEK_SET); // an impossible request
-        vfs_fseek(info->infile, curpos, SEEK_SET);
+        aud_vfs_fseek(info->infile, -1, SEEK_SET); // an impossible request
+        aud_vfs_fseek(info->infile, curpos, SEEK_SET);
     }
     
 #ifdef DEBUG
@@ -455,7 +455,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
         aud_tuple_disassociate(info->tuple, FIELD_TITLE, NULL);
         aud_tuple_disassociate(info->tuple, FIELD_ALBUM, NULL);
 
-        tmp = vfs_get_metadata(info->infile, "track-name");
+        tmp = aud_vfs_get_metadata(info->infile, "track-name");
         if(tmp){
             metadata = TRUE;
             gchar *scratch;
@@ -468,7 +468,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
             tmp = NULL;
         }
 
-        tmp = vfs_get_metadata(info->infile, "stream-name");
+        tmp = aud_vfs_get_metadata(info->infile, "stream-name");
         if(tmp){
             metadata = TRUE;
             gchar *scratch;
@@ -538,7 +538,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
     }
 
     /* reset the input file to the start */
-    vfs_fseek(info->infile, 0, SEEK_SET);
+    aud_vfs_fseek(info->infile, 0, SEEK_SET);
     info->offset = 0;
 
     /* use the filename for the title as a last resort */
@@ -576,7 +576,7 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
 #endif
 #endif
     /* simply read to data from the file */
-    len = vfs_fread(buffer, 1, buffer_size, info->infile); //vfs_fread returns num of elements.
+    len = aud_vfs_fread(buffer, 1, buffer_size, info->infile); //aud_vfs_fread returns num of elements.
 
     if(len == 0 && info->playback){
         info->playback->eof = TRUE;
@@ -607,7 +607,7 @@ gboolean input_term(struct mad_info_t * info)
     if (info->filename)
         g_free(info->filename);
     if (info->infile)
-        vfs_fclose(info->infile);
+        aud_vfs_fclose(info->infile);
     if (info->id3file)
         id3_file_close(info->id3file);
 

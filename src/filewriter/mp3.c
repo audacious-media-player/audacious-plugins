@@ -299,7 +299,7 @@ static void mp3_write(void *ptr, gint length)
                                            ENCBUFFER_SIZE);
     }
 
-    vfs_fwrite(encbuffer, 1, encout, output_file);
+    aud_vfs_fwrite(encbuffer, 1, encout, output_file);
     written += encout;
     olen += length;
 }
@@ -309,7 +309,7 @@ static void mp3_close(void)
     if (output_file)
     {
         encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
-        vfs_fwrite(encbuffer, 1, encout, output_file);
+        aud_vfs_fwrite(encbuffer, 1, encout, output_file);
 
         //        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag??
 

@@ -143,18 +143,18 @@ GetTageType(VFSFile * fp)
         return TAG_NONE;
     }
 
-    if (vfs_fseek(fp, 0, SEEK_END) != 0)
+    if (aud_vfs_fseek(fp, 0, SEEK_END) != 0)
         return TAG_NONE;
-    size = vfs_ftell(fp);
-    if (vfs_fseek(fp, size - sizeof T, SEEK_SET) != 0)
+    size = aud_vfs_ftell(fp);
+    if (aud_vfs_fseek(fp, size - sizeof T, SEEK_SET) != 0)
         return TAG_NONE;
-    if (vfs_fread(&T, 1, sizeof T, fp) != sizeof T)
+    if (aud_vfs_fread(&T, 1, sizeof T, fp) != sizeof T)
         return TAG_NONE;
     if (memcmp(T.ID, "APETAGEX", sizeof T.ID) == 0)
         return TAG_APE;
-    if (vfs_fseek(fp, -128L, SEEK_END) != 0)
+    if (aud_vfs_fseek(fp, -128L, SEEK_END) != 0)
         return TAG_NONE;
-    if (vfs_fread(tagheader, 1, 3, fp) != 3)
+    if (aud_vfs_fread(tagheader, 1, 3, fp) != 3)
         return TAG_NONE;
     if (0 == memcmp(tagheader, "TAG", 3))
         return TAG_ID3;
@@ -179,9 +179,9 @@ ReadID3Tag(VFSFile * fp, ape_tag * Tag)
     *(Tag->track) = '\0';
     *(Tag->year) = '\0';
 
-    if (vfs_fseek(fp, -128L, SEEK_END) != 0)
+    if (aud_vfs_fseek(fp, -128L, SEEK_END) != 0)
         return 0;
-    if (vfs_fread(buff, 1, 128, fp) != 128)
+    if (aud_vfs_fread(buff, 1, 128, fp) != 128)
         return 0;
     tag = buff;
     tag_insert(Tag->title, (tag + 3), 30, 32, false);
@@ -222,12 +222,12 @@ ReadAPE2Tag(VFSFile * fp, ape_tag * Tag)
     *(Tag->track) = '\0';
     *(Tag->year) = '\0';
 
-    if (vfs_fseek(fp, 0, SEEK_END) != 0)
+    if (aud_vfs_fseek(fp, 0, SEEK_END) != 0)
         return 0;
-    size = vfs_ftell(fp);
-    if (vfs_fseek(fp, size - sizeof T, SEEK_SET) != 0)
+    size = aud_vfs_ftell(fp);
+    if (aud_vfs_fseek(fp, size - sizeof T, SEEK_SET) != 0)
         return 0;
-    if (vfs_fread(&T, 1, sizeof T, fp) != sizeof T)
+    if (aud_vfs_fread(&T, 1, sizeof T, fp) != sizeof T)
         return 0;
     if (memcmp(T.ID, "APETAGEX", sizeof T.ID) != 0)
         return 0;
@@ -236,11 +236,11 @@ ReadAPE2Tag(VFSFile * fp, ape_tag * Tag)
     TagLen = Read_LE_Uint32(T.Length);
     if (TagLen < sizeof T)
         return 0;
-    if (vfs_fseek(fp, size - TagLen, SEEK_SET) != 0)
+    if (aud_vfs_fseek(fp, size - TagLen, SEEK_SET) != 0)
         return 0;
     if ((buff = (unsigned char *) malloc(TagLen)) == NULL)
         return 0;
-    if (vfs_fread(buff, 1, TagLen - sizeof T, fp) != TagLen - sizeof T) {
+    if (aud_vfs_fread(buff, 1, TagLen - sizeof T, fp) != TagLen - sizeof T) {
         free(buff);
         return 0;
     }
@@ -296,7 +296,7 @@ int
 DeleteTag(char *filename)
 {
 
-    VFSFile *fp = vfs_fopen(filename, "rb+");
+    VFSFile *fp = aud_vfs_fopen(filename, "rb+");
     int tagtype;
     int fd;
     long filelength = 0;
@@ -317,8 +317,8 @@ DeleteTag(char *filename)
     tagtype = GetTageType(fp);
 
     // get Length of File
-    vfs_fseek(fp, 0L, SEEK_END);
-    filelength = vfs_ftell(fp);
+    aud_vfs_fseek(fp, 0L, SEEK_END);
+    filelength = aud_vfs_ftell(fp);
 
     apelength = (unsigned long *) malloc(4);
     tagheader = (char *) malloc(9);
@@ -327,11 +327,11 @@ DeleteTag(char *filename)
         dellength = 128L;
     }
     else if (tagtype == TAG_APE) {
-        vfs_fseek(fp, -32L, SEEK_END);
-        vfs_fread(tagheader, 8, 1, fp);
+        aud_vfs_fseek(fp, -32L, SEEK_END);
+        aud_vfs_fread(tagheader, 8, 1, fp);
         if (0 == memcmp(tagheader, "APETAGEX", 8)) {
-            vfs_fseek(fp, -20L, SEEK_END);
-            vfs_fread(apelength, 4, 1, fp);
+            aud_vfs_fseek(fp, -20L, SEEK_END);
+            aud_vfs_fread(apelength, 4, 1, fp);
             dellength = *apelength + 32;
         }
     }
@@ -379,7 +379,7 @@ WriteAPE2Tag(char *filename, ape_tag * Tag)
 
 
     // Delete Tag if there is one
-    fp = vfs_fopen(filename, "rb+");
+    fp = aud_vfs_fopen(filename, "rb+");
     if (fp == NULL) {
         char text[256];
 
@@ -481,7 +481,7 @@ WriteAPE2Tag(char *filename, ape_tag * Tag)
         free(value);
     }
     // Start writing the new Ape2 Tag
-    vfs_fseek(fp, 0L, SEEK_END);
+    aud_vfs_fseek(fp, 0L, SEEK_END);
 
     if (TagCount == 0) {
         printf("no tag to write");
@@ -509,7 +509,7 @@ WriteAPE2Tag(char *filename, ape_tag * Tag)
     H[19] = TagCount >> 24;
 
     H[23] = 0x80 | 0x20;
-    writtenbytes += vfs_fwrite(H, 1, 32, fp);
+    writtenbytes += aud_vfs_fwrite(H, 1, 32, fp);
 
     for (unsigned int i = 0; i < TagCount; i++) {
         dw[0] = T[i].valuelen >> 0;
@@ -520,19 +520,19 @@ WriteAPE2Tag(char *filename, ape_tag * Tag)
         dw[5] = T[i].flags >> 8;
         dw[6] = T[i].flags >> 16;
         dw[7] = T[i].flags >> 24;
-        writtenbytes += vfs_fwrite(dw, 1, 8, fp);
-        writtenbytes += vfs_fwrite(T[i].key, 1, T[i].keylen, fp);
-        writtenbytes += vfs_fwrite("", 1, 1, fp);
+        writtenbytes += aud_vfs_fwrite(dw, 1, 8, fp);
+        writtenbytes += aud_vfs_fwrite(T[i].key, 1, T[i].keylen, fp);
+        writtenbytes += aud_vfs_fwrite("", 1, 1, fp);
         if (T[i].valuelen > 0)
-            writtenbytes += vfs_fwrite(T[i].value, 1, T[i].valuelen, fp);
+            writtenbytes += aud_vfs_fwrite(T[i].value, 1, T[i].valuelen, fp);
     }
 
     H[23] = 0x80;
-    writtenbytes += vfs_fwrite(H, 1, 32, fp);
+    writtenbytes += aud_vfs_fwrite(H, 1, 32, fp);
 
     if (estimatedbytes != (unsigned long) writtenbytes)
         printf("\nError writing APE tag.\n");
-    vfs_fclose(fp);
+    aud_vfs_fclose(fp);
     TagCount = 0;
     return 0;
 }

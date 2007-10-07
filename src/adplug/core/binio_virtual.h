@@ -27,24 +27,24 @@ public:
 	};
 
 	vfsistream(const char *file) {
-		this->fd = vfs_fopen(file, "rb");
+		this->fd = aud_vfs_fopen(file, "rb");
 	};
 
 	vfsistream(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "rb");
+		this->fd = aud_vfs_fopen(file.c_str(), "rb");
 	};
 
 	void open(const char *file) {
-		this->fd = vfs_fopen(file, "rb");
+		this->fd = aud_vfs_fopen(file, "rb");
 	};
 
 	void open(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "rb");
+		this->fd = aud_vfs_fopen(file.c_str(), "rb");
 	};
 
 	// XXX: this sucks because binio won't let us do sanity checking
 	Byte getByte(void) {
-		int c = vfs_getc(this->fd);
+		int c = aud_vfs_getc(this->fd);
 
 		if (c == EOF) err |= Eof;
 
@@ -55,21 +55,21 @@ public:
 		switch (offs)
 		{
 			case Add:
-				vfs_fseek(this->fd, pos, SEEK_CUR);
+				aud_vfs_fseek(this->fd, pos, SEEK_CUR);
 				break;
 			case End:
-				vfs_fseek(this->fd, pos, SEEK_END);
+				aud_vfs_fseek(this->fd, pos, SEEK_END);
 				break;
 			case Set:
 			default:
-				vfs_fseek(this->fd, pos, SEEK_SET);
+				aud_vfs_fseek(this->fd, pos, SEEK_SET);
 				break;
 		}
 
 	}
 
 	long pos(void) {
-		return vfs_ftell(this->fd);
+		return aud_vfs_ftell(this->fd);
 	}
 };
 
@@ -87,45 +87,45 @@ public:
 	};
 
 	vfsostream(const char *file) {
-		this->fd = vfs_fopen(file, "wb");
+		this->fd = aud_vfs_fopen(file, "wb");
 	};
 
 	vfsostream(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "wb");
+		this->fd = aud_vfs_fopen(file.c_str(), "wb");
 	};
 
 	void open(const char *file) {
-		this->fd = vfs_fopen(file, "wb");
+		this->fd = aud_vfs_fopen(file, "wb");
 	};
 
 	void open(std::string &file) {
-		this->fd = vfs_fopen(file.c_str(), "wb");
+		this->fd = aud_vfs_fopen(file.c_str(), "wb");
 	};
 
 	// XXX: this sucks because binio won't let us do sanity checking
 	void putByte(Byte b) {
-		vfs_fwrite(&b, 1, 1, this->fd);
+		aud_vfs_fwrite(&b, 1, 1, this->fd);
 	};
 
 	void seek(long pos, Offset offs = Set) {
 		switch (offs)
 		{
 			case Add:
-				vfs_fseek(this->fd, pos, SEEK_CUR);
+				aud_vfs_fseek(this->fd, pos, SEEK_CUR);
 				break;
 			case End:
-				vfs_fseek(this->fd, pos, SEEK_END);
+				aud_vfs_fseek(this->fd, pos, SEEK_END);
 				break;
 			case Set:
 			default:
-				vfs_fseek(this->fd, pos, SEEK_SET);
+				aud_vfs_fseek(this->fd, pos, SEEK_SET);
 				break;
 		}
 
 	}
 
 	long pos(void) {
-		return vfs_ftell(this->fd);
+		return aud_vfs_ftell(this->fd);
 	}
 };
 

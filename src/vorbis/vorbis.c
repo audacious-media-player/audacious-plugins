@@ -108,7 +108,7 @@ InputPlugin vorbis_ip = {
     .file_info_box = vorbis_file_info_box,       /* file info box, tag editing */
     .get_song_tuple = get_song_tuple,
     .is_our_file_from_vfs = vorbis_check_fd,
-    .vfs_extensions = vorbis_fmts,
+    .aud_vfs_extensions = vorbis_fmts,
 };
 
 InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
@@ -134,7 +134,7 @@ vorbis_check_file(char *filename)
     gint result;
     VFSVorbisFile *fd;
 
-    if (!(stream = vfs_fopen(filename, "r"))) {
+    if (!(stream = aud_vfs_fopen(filename, "r"))) {
         return FALSE;
     }
 
@@ -160,7 +160,7 @@ vorbis_check_file(char *filename)
         g_message("** vorbis.c: Media read error: %s", filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
+        aud_vfs_fclose(stream);
         return FALSE;
         break;
     case OV_ENOTVORBIS:
@@ -168,7 +168,7 @@ vorbis_check_file(char *filename)
         g_message("** vorbis.c: Not Vorbis data: %s", filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
+        aud_vfs_fclose(stream);
         return FALSE;
         break;
     case OV_EVERSION:
@@ -176,7 +176,7 @@ vorbis_check_file(char *filename)
         g_message("** vorbis.c: Version mismatch: %s", filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
+        aud_vfs_fclose(stream);
         return FALSE;
         break;
     case OV_EBADHEADER:
@@ -185,7 +185,7 @@ vorbis_check_file(char *filename)
                   filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
+        aud_vfs_fclose(stream);
         return FALSE;
         break;
     case OV_EFAULT:
@@ -194,7 +194,7 @@ vorbis_check_file(char *filename)
                   filename);
 #endif
         g_mutex_unlock(vf_mutex);
-        vfs_fclose(stream);
+        aud_vfs_fclose(stream);
         return FALSE;
         break;
     case 0:
@@ -423,7 +423,7 @@ vorbis_play_loop(gpointer arg)
 
     memset(&vf, 0, sizeof(vf));
 
-    if ((stream = vfs_fopen(filename, "r")) == NULL) {
+    if ((stream = aud_vfs_fopen(filename, "r")) == NULL) {
         playback->eof = TRUE;
         goto play_cleanup;
     }
@@ -775,7 +775,7 @@ get_song_tuple(gchar *filename)
     gboolean is_stream = FALSE;
     VFSVorbisFile *fd = NULL;
 
-    if ((stream = vfs_fopen(filename, "r")) == NULL)
+    if ((stream = aud_vfs_fopen(filename, "r")) == NULL)
         return NULL;
 
     fd = g_new0(VFSVorbisFile, 1);
@@ -788,7 +788,7 @@ get_song_tuple(gchar *filename)
      */
     if (ov_open_callbacks(fd, &vfile, NULL, 0, vorbis_callbacks) < 0) {
         if (is_stream == FALSE)
-            vfs_fclose(stream);
+            aud_vfs_fclose(stream);
         return NULL;
     }
 
@@ -816,7 +816,7 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
     displaytitle = aud_tuple_formatter_make_title_string(input, vorbis_cfg.tag_override ?
                                                   vorbis_cfg.tag_format : get_gentitle_format());
 
-    if ((tmp = vfs_get_metadata(((VFSVorbisFile *) vorbisfile->datasource)->fd, "stream-name")) != NULL)
+    if ((tmp = aud_vfs_get_metadata(((VFSVorbisFile *) vorbisfile->datasource)->fd, "stream-name")) != NULL)
     {
         gchar *old = displaytitle;
 
@@ -970,7 +970,7 @@ ovcb_read(void *ptr, size_t size, size_t nmemb, void *datasource)
 {
     VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
 
-    return vfs_fread(ptr, size, nmemb, handle->fd);
+    return aud_vfs_fread(ptr, size, nmemb, handle->fd);
 }
 
 static int
@@ -978,7 +978,7 @@ ovcb_seek(void *datasource, int64_t offset, int whence)
 {
     VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
 
-    return vfs_fseek(handle->fd, offset, whence);
+    return aud_vfs_fseek(handle->fd, offset, whence);
 }
 
 static int
@@ -990,7 +990,7 @@ ovcb_close(void *datasource)
 
     if (handle->probe == FALSE)
     {
-        ret = vfs_fclose(handle->fd);
+        ret = aud_vfs_fclose(handle->fd);
 //        g_free(handle); // it causes double free. i'm not really sure that commenting out at here is correct. --yaz
     }
 
@@ -1002,5 +1002,5 @@ ovcb_tell(void *datasource)
 {
     VFSVorbisFile *handle = (VFSVorbisFile *) datasource;
 
-    return vfs_ftell(handle->fd);
+    return aud_vfs_ftell(handle->fd);
 }

@@ -72,9 +72,9 @@ static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
 
     tp = &T;
 
-    if (vfs_fseek(fp, -sizeof(T), SEEK_CUR) != 0)
+    if (aud_vfs_fseek(fp, -sizeof(T), SEEK_CUR) != 0)
         return 18;
-    if (vfs_fread(tp, 1, sizeof(T), fp) != sizeof T)
+    if (aud_vfs_fread(tp, 1, sizeof(T), fp) != sizeof T)
         return 2;
     if (memcmp(tp->ID, "APETAGEX", sizeof(tp->ID)) != 0)
         return 3;
@@ -83,12 +83,12 @@ static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
     TagLen = Read_LE_Uint32(tp->Length);
     if (TagLen < sizeof(T))
         return 5;
-    if (vfs_fseek(fp, -TagLen, SEEK_CUR) != 0)
+    if (aud_vfs_fseek(fp, -TagLen, SEEK_CUR) != 0)
         return 6;
     if ((buff = (char *) malloc(TagLen)) == NULL) {
         return 7;
     }
-    if (vfs_fread(buff, 1, TagLen - sizeof(T), fp) != TagLen - sizeof(T)) {
+    if (aud_vfs_fread(buff, 1, TagLen - sizeof(T), fp) != TagLen - sizeof(T)) {
         free(buff);
         return 8;
     }
@@ -170,8 +170,8 @@ static int find_offset(VFSFile * fp)
     static const char *key = "APETAGEX";
     char buff[20000];
     int N = 0;
-    if (vfs_fseek(fp, -20000, SEEK_CUR) != 0);
-    if ((N = vfs_fread(buff, 1, 20000, fp)) < 16)
+    if (aud_vfs_fseek(fp, -20000, SEEK_CUR) != 0);
+    if ((N = aud_vfs_fread(buff, 1, 20000, fp)) < 16)
         return 1;
     int matched = 0;
     int i, last_match = -1;
@@ -285,36 +285,36 @@ void read_replaygain(struct mad_info_t *file_info)
 
     /* APEv2 stuff */
     if (file_info->infile) {
-        fp = vfs_dup(file_info->infile);
-        curpos = vfs_ftell(fp);
+        fp = aud_vfs_dup(file_info->infile);
+        curpos = aud_vfs_ftell(fp);
     }
     else {
-        if ((fp = vfs_fopen(file_info->filename, "rb")) == NULL)
+        if ((fp = aud_vfs_fopen(file_info->filename, "rb")) == NULL)
             return;
     }
 
-    if (vfs_fseek(fp, 0L, SEEK_END) != 0) {
-        vfs_fclose(fp);
+    if (aud_vfs_fseek(fp, 0L, SEEK_END) != 0) {
+        aud_vfs_fclose(fp);
         return;
     }
     
-    long pos = vfs_ftell(fp);
+    long pos = aud_vfs_ftell(fp);
     int res = -1;
     int try = 0;
     while (res != 0 && try < 10) {
         // try skipping an id3 tag
-        vfs_fseek(fp, pos, SEEK_SET);
-        vfs_fseek(fp, try * -128, SEEK_CUR);
+        aud_vfs_fseek(fp, pos, SEEK_SET);
+        aud_vfs_fseek(fp, try * -128, SEEK_CUR);
         res = ReadAPE2Tag(fp, file_info);
         ++try;
     }
     if (res != 0) {
         // try brute search (don't want to parse all possible kinds of tags..)
-        vfs_fseek(fp, pos, SEEK_SET);
+        aud_vfs_fseek(fp, pos, SEEK_SET);
         int offs = find_offset(fp);
         if (offs <= 0) {        // found !
-            vfs_fseek(fp, pos, SEEK_SET);
-            vfs_fseek(fp, offs, SEEK_CUR);
+            aud_vfs_fseek(fp, pos, SEEK_SET);
+            aud_vfs_fseek(fp, offs, SEEK_CUR);
             res = ReadAPE2Tag(fp, file_info);
             if (res != 0) {
                 g_message
@@ -342,9 +342,9 @@ void read_replaygain(struct mad_info_t *file_info)
         file_info->has_replaygain = TRUE;
 
     if (file_info->infile)
-        vfs_fseek(fp, curpos, SEEK_SET);
+        aud_vfs_fseek(fp, curpos, SEEK_SET);
 
-    vfs_fclose(fp);
+    aud_vfs_fclose(fp);
 
 #ifdef DEBUG
     g_message("e: read_replaygain");

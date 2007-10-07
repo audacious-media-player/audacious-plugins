@@ -38,36 +38,36 @@ DECLARE_PLUGIN(neon, init, fini)
 
 VFSConstructor neon_http_const = {
     "http://",
-    neon_vfs_fopen_impl,
-    neon_vfs_fclose_impl,
-    neon_vfs_fread_impl,
-    neon_vfs_fwrite_impl,
-    neon_vfs_getc_impl,
-    neon_vfs_ungetc_impl,
-    neon_vfs_fseek_impl,
-    neon_vfs_rewind_impl,
-    neon_vfs_ftell_impl,
-    neon_vfs_feof_impl,
-    neon_vfs_truncate_impl,
-    neon_vfs_fsize_impl,
-    neon_vfs_metadata_impl
+    neon_aud_vfs_fopen_impl,
+    neon_aud_vfs_fclose_impl,
+    neon_aud_vfs_fread_impl,
+    neon_aud_vfs_fwrite_impl,
+    neon_aud_vfs_getc_impl,
+    neon_aud_vfs_ungetc_impl,
+    neon_aud_vfs_fseek_impl,
+    neon_aud_vfs_rewind_impl,
+    neon_aud_vfs_ftell_impl,
+    neon_aud_vfs_feof_impl,
+    neon_aud_vfs_truncate_impl,
+    neon_aud_vfs_fsize_impl,
+    neon_aud_vfs_metadata_impl
 };
 
 VFSConstructor neon_https_const = {
     "https://",
-    neon_vfs_fopen_impl,
-    neon_vfs_fclose_impl,
-    neon_vfs_fread_impl,
-    neon_vfs_fwrite_impl,
-    neon_vfs_getc_impl,
-    neon_vfs_ungetc_impl,
-    neon_vfs_fseek_impl,
-    neon_vfs_rewind_impl,
-    neon_vfs_ftell_impl,
-    neon_vfs_feof_impl,
-    neon_vfs_truncate_impl,
-    neon_vfs_fsize_impl,
-    neon_vfs_metadata_impl
+    neon_aud_vfs_fopen_impl,
+    neon_aud_vfs_fclose_impl,
+    neon_aud_vfs_fread_impl,
+    neon_aud_vfs_fwrite_impl,
+    neon_aud_vfs_getc_impl,
+    neon_aud_vfs_ungetc_impl,
+    neon_aud_vfs_fseek_impl,
+    neon_aud_vfs_rewind_impl,
+    neon_aud_vfs_ftell_impl,
+    neon_aud_vfs_feof_impl,
+    neon_aud_vfs_truncate_impl,
+    neon_aud_vfs_fsize_impl,
+    neon_aud_vfs_metadata_impl
 };
 
 /* bring ne_set_connect_timeout in as a weak reference, not using it
@@ -163,11 +163,11 @@ static void init(void) {
         _LEAVE;
     }
 
-    vfs_register_transport(&neon_http_const);
+    aud_vfs_register_transport(&neon_http_const);
 
     if (0 != ne_has_support(NE_FEATURE_SSL)) {
         _DEBUG("neon compiled with thread-safe SSL, enabling https:// transport");
-        vfs_register_transport(&neon_https_const);
+        aud_vfs_register_transport(&neon_https_const);
     }
 
     _LEAVE;
@@ -774,7 +774,7 @@ static gpointer reader_thread(void* data) {
  * -----
  */
 
-VFSFile* neon_vfs_fopen_impl(const gchar* path, const gchar* mode) {
+VFSFile* neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode) {
 
     VFSFile* file;
     struct neon_handle* handle;
@@ -818,7 +818,7 @@ VFSFile* neon_vfs_fopen_impl(const gchar* path, const gchar* mode) {
  * ----
  */
 
-gint neon_vfs_fclose_impl(VFSFile* file) {
+gint neon_aud_vfs_fclose_impl(VFSFile* file) {
 
     struct neon_handle* h = (struct neon_handle *)file->handle;
 
@@ -845,7 +845,7 @@ gint neon_vfs_fclose_impl(VFSFile* file) {
  * -----
  */
 
-size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* file) {
+size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* file) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
     int belem;
@@ -1052,7 +1052,7 @@ size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* fi
  * -----
  */
 
-size_t neon_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile* file) {
+size_t neon_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile* file) {
 
     _ENTER;
 
@@ -1065,13 +1065,13 @@ size_t neon_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFil
  * -----
  */
 
-gint neon_vfs_getc_impl(VFSFile* file) {
+gint neon_aud_vfs_getc_impl(VFSFile* file) {
 
     gchar c;
 
     _ENTER;
 
-    if (1 != neon_vfs_fread_impl(&c, 1, 1, file)) {
+    if (1 != neon_aud_vfs_fread_impl(&c, 1, 1, file)) {
         _ERROR("Could not getc()!");
         _LEAVE -1;
     }
@@ -1083,7 +1083,7 @@ gint neon_vfs_getc_impl(VFSFile* file) {
  * -----
  */
 
-gint neon_vfs_ungetc_impl(gint c, VFSFile* stream) {
+gint neon_aud_vfs_ungetc_impl(gint c, VFSFile* stream) {
 
     _ENTER;
 
@@ -1096,11 +1096,11 @@ gint neon_vfs_ungetc_impl(gint c, VFSFile* stream) {
  * -----
  */
 
-void neon_vfs_rewind_impl(VFSFile* file) {
+void neon_aud_vfs_rewind_impl(VFSFile* file) {
 
     _ENTER;
 
-    (void)neon_vfs_fseek_impl(file, 0L, SEEK_SET);
+    (void)neon_aud_vfs_fseek_impl(file, 0L, SEEK_SET);
 
     _LEAVE;
 }
@@ -1109,7 +1109,7 @@ void neon_vfs_rewind_impl(VFSFile* file) {
  * -----
  */
 
-glong neon_vfs_ftell_impl(VFSFile* file) {
+glong neon_aud_vfs_ftell_impl(VFSFile* file) {
 
     struct neon_handle* h = (struct neon_handle *)file->handle;
 
@@ -1124,7 +1124,7 @@ glong neon_vfs_ftell_impl(VFSFile* file) {
  * -----
  */
 
-gboolean neon_vfs_feof_impl(VFSFile* file) {
+gboolean neon_aud_vfs_feof_impl(VFSFile* file) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
 
@@ -1137,7 +1137,7 @@ gboolean neon_vfs_feof_impl(VFSFile* file) {
  * -----
  */
 
-gint neon_vfs_truncate_impl(VFSFile* file, glong size) {
+gint neon_aud_vfs_truncate_impl(VFSFile* file, glong size) {
 
     _ENTER;
 
@@ -1150,7 +1150,7 @@ gint neon_vfs_truncate_impl(VFSFile* file, glong size) {
  * -----
  */
 
-gint neon_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
+gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
     long newpos;
@@ -1243,7 +1243,7 @@ gint neon_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
  * -----
  */
 
-gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
+gchar *neon_aud_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
 
@@ -1270,7 +1270,7 @@ gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
  * -----
  */
 
-off_t neon_vfs_fsize_impl(VFSFile* file) {
+off_t neon_aud_vfs_fsize_impl(VFSFile* file) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
 

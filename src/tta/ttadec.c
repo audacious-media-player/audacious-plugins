@@ -87,7 +87,7 @@ static void init_buffer_read() {
 __inline void get_binary(unsigned int *value, unsigned int bits) {
 	while (bit_count < bits) {
 		if (bitpos == iso_buffers_end) {
-			int res = vfs_fread(isobuffers, 1,
+			int res = aud_vfs_fread(isobuffers, 1,
 				ISO_BUFFERS_SIZE, ttainfo->HANDLE);
 			if (!res) {
 				ttainfo->STATE = READ_ERROR;
@@ -113,7 +113,7 @@ __inline void get_unary(unsigned int *value) {
 
 	while (!(bit_cache ^ bit_mask[bit_count])) {
 		if (bitpos == iso_buffers_end) {
-			int res = vfs_fread(isobuffers, 1,
+			int res = aud_vfs_fread(isobuffers, 1,
 				ISO_BUFFERS_SIZE, ttainfo->HANDLE);
 			if (!res) {
 				ttainfo->STATE = READ_ERROR;
@@ -145,7 +145,7 @@ static int done_buffer_read() {
 	rbytes = iso_buffers_end - bitpos;
 	if (rbytes < sizeof(int)) {
 		memcpy(isobuffers, bitpos, 4);
-		res = vfs_fread(isobuffers + rbytes, 1,
+		res = aud_vfs_fread(isobuffers + rbytes, 1,
 			ISO_BUFFERS_SIZE - rbytes, ttainfo->HANDLE);
 		if (!res) {
 			ttainfo->STATE = READ_ERROR;
@@ -260,7 +260,7 @@ int id3v2_header_length (tta_info *ttainfo) {
 	} __ATTRIBUTE_PACKED__ id3v2;
 	unsigned int len = 0;
 
-	if (!vfs_fread(&id3v2, sizeof(id3v2), 1, ttainfo->HANDLE) || 
+	if (!aud_vfs_fread(&id3v2, sizeof(id3v2), 1, ttainfo->HANDLE) || 
 	    memcmp(id3v2.id, "ID3", 3) ||
 	    id3v2.size[0] & 0x80)
 	{
@@ -286,7 +286,7 @@ int open_tta_file (const char *filename, tta_info *info, unsigned int data_offse
 	// clear the memory
 	memset (info, 0, sizeof(tta_info));
 
-	info->HANDLE = infile = vfs_fopen(filename, "rb");
+	info->HANDLE = infile = aud_vfs_fopen(filename, "rb");
 	if (!infile) return OPEN_ERROR;
 
 	// read id3v2 header
@@ -294,18 +294,18 @@ int open_tta_file (const char *filename, tta_info *info, unsigned int data_offse
 //		data_offset = id3v2_header_length(info);
 
 	data_offset = get_id3_tags (filename, info);
-	vfs_fseek (infile, data_offset, SEEK_SET);
+	aud_vfs_fseek (infile, data_offset, SEEK_SET);
 
 	// read TTA header
-	if (vfs_fread (&ttahdr, 1, sizeof (ttahdr), infile) == 0) {
-		vfs_fclose (infile);
+	if (aud_vfs_fread (&ttahdr, 1, sizeof (ttahdr), infile) == 0) {
+		aud_vfs_fclose (infile);
 		info->STATE = READ_ERROR;
 		return -1;
 	}
 
 	// check for TTA3 signature
 	if (ENDSWAP_INT32(ttahdr.TTAid) != TTA1_SIGN) {
-		vfs_fclose (infile);
+		aud_vfs_fclose (infile);
 		info->STATE = FORMAT_ERROR;
 		return -1;
 	}
@@ -314,7 +314,7 @@ int open_tta_file (const char *filename, tta_info *info, unsigned int data_offse
 	checksum = crc32((unsigned char *) &ttahdr,
 	sizeof(tta_hdr) - sizeof(int));
 	if (checksum != ttahdr.CRC32) {
-		vfs_fclose (infile);
+		aud_vfs_fclose (infile);
 		info->STATE = FILE_ERROR;
 		return -1;
 	}
@@ -338,7 +338,7 @@ int open_tta_file (const char *filename, tta_info *info, unsigned int data_offse
 		ttahdr.SampleRate != 64000 &&
 		ttahdr.SampleRate != 88200 &&
 		ttahdr.SampleRate != 96000)) {
-		vfs_fclose (infile);
+		aud_vfs_fclose (infile);
 		info->STATE = FORMAT_ERROR;
 		return FORMAT_ERROR;
 	}
@@ -398,7 +398,7 @@ int set_position (unsigned int pos) {
 	}
 
 	seek_pos = ttainfo->DATAPOS + seek_table[data_pos = pos];
-	vfs_fseek(ttainfo->HANDLE, seek_pos, SEEK_SET);
+	aud_vfs_fseek(ttainfo->HANDLE, seek_pos, SEEK_SET);
 
 	data_cur = 0;
 	framelen = 0;
@@ -432,7 +432,7 @@ int player_init (tta_info *info) {
 	}
 
 	// read seek table
-	if (!vfs_fread(seek_table, st_size, 1, ttainfo->HANDLE)) {
+	if (!aud_vfs_fread(seek_table, st_size, 1, ttainfo->HANDLE)) {
 		ttainfo->STATE = READ_ERROR;
 		return -1;
 	}
@@ -455,7 +455,7 @@ int player_init (tta_info *info) {
 
 void close_tta_file (tta_info *info) {
 	if (info->HANDLE) {
-		vfs_fclose (info->HANDLE);
+		aud_vfs_fclose (info->HANDLE);
 		info->HANDLE = NULL;
 	}
 }

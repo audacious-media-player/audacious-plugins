@@ -202,7 +202,7 @@ static MidInstrument *load_instrument(MidSong *song, char *name, int percussion,
   /* Read some headers and do cursory sanity checks. There are loads
      of magic offsets. This could be rewritten... */
 
-  if ((239 != vfs_fread(tmp, 1, 239, fp)) ||
+  if ((239 != aud_vfs_fread(tmp, 1, 239, fp)) ||
       (memcmp(tmp, "GF1PATCH110\0ID#000002", 22) &&
        memcmp(tmp, "GF1PATCH100\0ID#000002", 22))) /* don't know what the
 						      differences are */
@@ -236,18 +236,18 @@ static MidInstrument *load_instrument(MidSong *song, char *name, int percussion,
       uint8 tmpchar;
 
 #define READ_CHAR(thing) \
-      if (1 != vfs_fread(&tmpchar, 1, 1, fp)) goto fail; \
+      if (1 != aud_vfs_fread(&tmpchar, 1, 1, fp)) goto fail; \
       thing = tmpchar;
 #define READ_SHORT(thing) \
-      if (1 != vfs_fread(&tmpshort, 2, 1, fp)) goto fail; \
+      if (1 != aud_vfs_fread(&tmpshort, 2, 1, fp)) goto fail; \
       thing = SWAPLE16(tmpshort);
 #define READ_LONG(thing) \
-      if (1 != vfs_fread(&tmplong, 4, 1, fp)) goto fail; \
+      if (1 != aud_vfs_fread(&tmplong, 4, 1, fp)) goto fail; \
       thing = SWAPLE32(tmplong);
 
-      vfs_fseek(fp, 7, SEEK_CUR); /* Skip the wave name */
+      aud_vfs_fseek(fp, 7, SEEK_CUR); /* Skip the wave name */
 
-      if (1 != vfs_fread(&fractions, 1, 1, fp))
+      if (1 != aud_vfs_fread(&fractions, 1, 1, fp))
 	{
 	fail:
 	  DEBUG_MSG("Error reading sample %d\n", i);
@@ -269,7 +269,7 @@ static MidInstrument *load_instrument(MidSong *song, char *name, int percussion,
       READ_LONG(sp->root_freq);
       sp->low_vel = 0;
       sp->high_vel = 127;
-      vfs_fseek(fp, 2, SEEK_CUR); /* Why have a "root frequency" and then
+      aud_vfs_fseek(fp, 2, SEEK_CUR); /* Why have a "root frequency" and then
 				    * "tuning"?? */
       
       READ_CHAR(tmp[0]);
@@ -280,7 +280,7 @@ static MidInstrument *load_instrument(MidSong *song, char *name, int percussion,
 	sp->panning=(uint8)(panning & 0x7F);
 
       /* envelope, tremolo, and vibrato */
-      if (18 != vfs_fread(tmp, 1, 18, fp)) goto fail; 
+      if (18 != aud_vfs_fread(tmp, 1, 18, fp)) goto fail; 
 
       if (!tmp[13] || !tmp[14])
 	{
@@ -318,7 +318,7 @@ static MidInstrument *load_instrument(MidSong *song, char *name, int percussion,
 
       READ_CHAR(sp->modes);
 
-      vfs_fseek(fp, 40, SEEK_CUR); /* skip the useless scale frequency, scale
+      aud_vfs_fseek(fp, 40, SEEK_CUR); /* skip the useless scale frequency, scale
 				       factor (what's it mean?), and reserved
 				       space */
 
@@ -392,7 +392,7 @@ static MidInstrument *load_instrument(MidSong *song, char *name, int percussion,
 
       /* Then read the sample data */
       sp->data = safe_malloc(sp->data_length);
-      if (1 != vfs_fread(sp->data, sp->data_length, 1, fp))
+      if (1 != aud_vfs_fread(sp->data, sp->data_length, 1, fp))
 	goto fail;
       
       if (!(sp->modes & MODES_16BIT)) /* convert to 16-bit data */
@@ -507,7 +507,7 @@ static MidInstrument *load_instrument(MidSong *song, char *name, int percussion,
 	}
     }
 
-  vfs_fclose(fp);
+  aud_vfs_fclose(fp);
   return ip;
 }
 

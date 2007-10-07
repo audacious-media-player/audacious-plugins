@@ -75,7 +75,7 @@ vtx_is_our_fd (char *filename, VFSFile *fp)
 {
   char buf[2];
     
-  vfs_fread (buf, 2, 1, fp);
+  aud_vfs_fread (buf, 2, 1, fp);
   return (!strncasecmp (buf, "ay", 2) || !strncasecmp (buf, "ym", 2));
 }
 
@@ -85,9 +85,9 @@ vtx_is_our_file (char *filename)
   gboolean ret;
   VFSFile *fp;
 
-  fp = vfs_fopen(filename, "rb");    
+  fp = aud_vfs_fopen(filename, "rb");    
   ret = vtx_is_our_fd(filename, fp);
-  vfs_fclose(fp);
+  aud_vfs_fclose(fp);
 
   return ret;
 }
@@ -320,7 +320,7 @@ InputPlugin vtx_ip = {
 	.file_info_box = vtx_file_info,		/* Show file-information dialog */
 	.get_song_tuple = vtx_get_song_tuple,	/* Tuple */
 	.is_our_file_from_vfs = vtx_is_our_fd,		/* VFS */
-	.vfs_extensions = vtx_fmts		/* ext assist */
+	.aud_vfs_extensions = vtx_fmts		/* ext assist */
 };
 
 InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };

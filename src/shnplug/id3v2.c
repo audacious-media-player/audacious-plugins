@@ -58,7 +58,7 @@ static unsigned long check_for_id3v2_tag(VFSFile *f)
   unsigned long tag_size;
 
   /* read an ID3v2 header's size worth of data */
-  if (sizeof(_id3v2_header) != vfs_fread(&id3v2_header,1,sizeof(_id3v2_header),f)) {
+  if (sizeof(_id3v2_header) != aud_vfs_fread(&id3v2_header,1,sizeof(_id3v2_header),f)) {
     return 0;
   }
 
@@ -83,7 +83,7 @@ VFSFile *shn_open_and_discard_id3v2_tag(char *filename,int *file_has_id3v2_tag,l
   VFSFile *f;
   unsigned long tag_size;
 
-  if (NULL == (f = vfs_fopen(filename,"rb"))) {
+  if (NULL == (f = aud_vfs_fopen(filename,"rb"))) {
     return NULL;
   }
 
@@ -95,8 +95,8 @@ VFSFile *shn_open_and_discard_id3v2_tag(char *filename,int *file_has_id3v2_tag,l
 
   /* check for ID3v2 tag on input */
   if (0 == (tag_size = check_for_id3v2_tag(f))) {
-    vfs_fclose(f);
-    return vfs_fopen(filename,"rb");
+    aud_vfs_fclose(f);
+    return aud_vfs_fopen(filename,"rb");
   }
 
   if (file_has_id3v2_tag)
@@ -107,10 +107,10 @@ VFSFile *shn_open_and_discard_id3v2_tag(char *filename,int *file_has_id3v2_tag,l
 
   shn_debug("Discarding %lu-byte ID3v2 tag at beginning of file '%s'.",tag_size+sizeof(_id3v2_header),filename);
 
-  if (0 != vfs_fseek(f,(long)tag_size,SEEK_CUR)) {
+  if (0 != aud_vfs_fseek(f,(long)tag_size,SEEK_CUR)) {
     shn_debug("Error while discarding ID3v2 tag in file '%s'.",filename);
-    vfs_fclose(f);
-    return vfs_fopen(filename,"rb");
+    aud_vfs_fclose(f);
+    return aud_vfs_fopen(filename,"rb");
   }
 
   return f;

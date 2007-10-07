@@ -28,7 +28,7 @@
 #include <string.h>
 
 static gchar *
-vfs_stdio_urldecode_path(const gchar * encoded_path)
+aud_vfs_stdio_urldecode_path(const gchar * encoded_path)
 {
     const gchar *cur, *ext;
     gchar *path, *tmp;
@@ -71,7 +71,7 @@ vfs_stdio_urldecode_path(const gchar * encoded_path)
 }
 
 VFSFile *
-stdio_vfs_fopen_impl(const gchar * path,
+stdio_aud_vfs_fopen_impl(const gchar * path,
           const gchar * mode)
 {
     VFSFile *file;
@@ -80,7 +80,7 @@ stdio_vfs_fopen_impl(const gchar * path,
     if (!path || !mode)
 	return NULL;
 
-    decpath = vfs_stdio_urldecode_path(path);
+    decpath = aud_vfs_stdio_urldecode_path(path);
 
     file = g_new(VFSFile, 1);
 
@@ -98,7 +98,7 @@ stdio_vfs_fopen_impl(const gchar * path,
 }
 
 gint
-stdio_vfs_fclose_impl(VFSFile * file)
+stdio_aud_vfs_fclose_impl(VFSFile * file)
 {
     gint ret = 0;
 
@@ -118,7 +118,7 @@ stdio_vfs_fclose_impl(VFSFile * file)
 }
 
 size_t
-stdio_vfs_fread_impl(gpointer ptr,
+stdio_aud_vfs_fread_impl(gpointer ptr,
           size_t size,
           size_t nmemb,
           VFSFile * file)
@@ -134,7 +134,7 @@ stdio_vfs_fread_impl(gpointer ptr,
 }
 
 size_t
-stdio_vfs_fwrite_impl(gconstpointer ptr,
+stdio_aud_vfs_fwrite_impl(gconstpointer ptr,
            size_t size,
            size_t nmemb,
            VFSFile * file)
@@ -150,7 +150,7 @@ stdio_vfs_fwrite_impl(gconstpointer ptr,
 }
 
 gint
-stdio_vfs_getc_impl(VFSFile *stream)
+stdio_aud_vfs_getc_impl(VFSFile *stream)
 {
   FILE *handle = (FILE *) stream->handle;
 
@@ -158,7 +158,7 @@ stdio_vfs_getc_impl(VFSFile *stream)
 }
 
 gint
-stdio_vfs_ungetc_impl(gint c, VFSFile *stream)
+stdio_aud_vfs_ungetc_impl(gint c, VFSFile *stream)
 {
   FILE *handle = (FILE *) stream->handle;
 
@@ -166,7 +166,7 @@ stdio_vfs_ungetc_impl(gint c, VFSFile *stream)
 }
 
 gint
-stdio_vfs_fseek_impl(VFSFile * file,
+stdio_aud_vfs_fseek_impl(VFSFile * file,
           glong offset,
           gint whence)
 {
@@ -181,7 +181,7 @@ stdio_vfs_fseek_impl(VFSFile * file,
 }
 
 void
-stdio_vfs_rewind_impl(VFSFile * file)
+stdio_aud_vfs_rewind_impl(VFSFile * file)
 {
     FILE *handle;
 
@@ -194,7 +194,7 @@ stdio_vfs_rewind_impl(VFSFile * file)
 }
 
 glong
-stdio_vfs_ftell_impl(VFSFile * file)
+stdio_aud_vfs_ftell_impl(VFSFile * file)
 {
     FILE *handle;
 
@@ -207,7 +207,7 @@ stdio_vfs_ftell_impl(VFSFile * file)
 }
 
 gboolean
-stdio_vfs_feof_impl(VFSFile * file)
+stdio_aud_vfs_feof_impl(VFSFile * file)
 {
     FILE *handle;
 
@@ -220,7 +220,7 @@ stdio_vfs_feof_impl(VFSFile * file)
 }
 
 gint
-stdio_vfs_truncate_impl(VFSFile * file, glong size)
+stdio_aud_vfs_truncate_impl(VFSFile * file, glong size)
 {
     FILE *handle;
 
@@ -233,7 +233,7 @@ stdio_vfs_truncate_impl(VFSFile * file, glong size)
 }
 
 off_t
-stdio_vfs_fsize_impl(VFSFile * file)
+stdio_aud_vfs_fsize_impl(VFSFile * file)
 {
     FILE *handle;
     struct stat s;
@@ -251,29 +251,29 @@ stdio_vfs_fsize_impl(VFSFile * file)
 
 VFSConstructor file_const = {
 	.uri_id = "file://",
-	.vfs_fopen_impl = stdio_vfs_fopen_impl,
-	.vfs_fclose_impl = stdio_vfs_fclose_impl,
-	.vfs_fread_impl = stdio_vfs_fread_impl,
-	.vfs_fwrite_impl = stdio_vfs_fwrite_impl,
-	.vfs_getc_impl = stdio_vfs_getc_impl,
-	.vfs_ungetc_impl = stdio_vfs_ungetc_impl,
-	.vfs_fseek_impl = stdio_vfs_fseek_impl,
-	.vfs_rewind_impl = stdio_vfs_rewind_impl,
-	.vfs_ftell_impl = stdio_vfs_ftell_impl,
-	.vfs_feof_impl = stdio_vfs_feof_impl,
-	.vfs_truncate_impl = stdio_vfs_truncate_impl,
-	.vfs_fsize_impl = stdio_vfs_fsize_impl
+	.aud_vfs_fopen_impl = stdio_aud_vfs_fopen_impl,
+	.aud_vfs_fclose_impl = stdio_aud_vfs_fclose_impl,
+	.aud_vfs_fread_impl = stdio_aud_vfs_fread_impl,
+	.aud_vfs_fwrite_impl = stdio_aud_vfs_fwrite_impl,
+	.aud_vfs_getc_impl = stdio_aud_vfs_getc_impl,
+	.aud_vfs_ungetc_impl = stdio_aud_vfs_ungetc_impl,
+	.aud_vfs_fseek_impl = stdio_aud_vfs_fseek_impl,
+	.aud_vfs_rewind_impl = stdio_aud_vfs_rewind_impl,
+	.aud_vfs_ftell_impl = stdio_aud_vfs_ftell_impl,
+	.aud_vfs_feof_impl = stdio_aud_vfs_feof_impl,
+	.aud_vfs_truncate_impl = stdio_aud_vfs_truncate_impl,
+	.aud_vfs_fsize_impl = stdio_aud_vfs_fsize_impl
 };
 
 static void init(void)
 {
-	vfs_register_transport(&file_const);
+	aud_vfs_register_transport(&file_const);
 }
 
 static void cleanup(void)
 {
 #if 0
-	vfs_unregister_transport(&file_const);
+	aud_vfs_unregister_transport(&file_const);
 #endif
 }
 

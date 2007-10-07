@@ -51,7 +51,7 @@ static char *__fgets(char *s, int size, VFSFile *fp)
 
     while (num_read < size && !newline)
     {
-	if (vfs_fread(&s[num_read], 1, 1, fp) != 1)
+	if (aud_vfs_fread(&s[num_read], 1, 1, fp) != 1)
 	    break;
 
 	/* Unlike fgets(), don't store newline. Under Windows/DOS we'll
@@ -387,7 +387,7 @@ static int read_config_file(char *name)
       }
     }
   }
-  vfs_fclose(fp);
+  aud_vfs_fclose(fp);
   return 0;
 }
 

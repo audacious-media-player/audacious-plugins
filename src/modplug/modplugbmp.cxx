@@ -111,7 +111,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	const int magicSize = 32;
 	char magic[magicSize];
 
-	vfs_fread(magic, 1, magicSize, file);
+	aud_vfs_fread(magic, 1, magicSize, file);
 	if (!memcmp(magic, UMX_MAGIC, 4))
 		return true;
 	if (!memcmp(magic, "Extended Module:", 16))
@@ -125,13 +125,13 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	if (!memcmp(magic, PSM_MAGIC, 4))
 		return true;
 
-	vfs_fseek(file, 44, SEEK_SET);
-	vfs_fread(magic, 1, 4, file);
+	aud_vfs_fseek(file, 44, SEEK_SET);
+	aud_vfs_fread(magic, 1, 4, file);
 	if (!memcmp(magic, S3M_MAGIC, 4))
 		return true;
 
-	vfs_fseek(file, 1080, SEEK_SET);
-	vfs_fread(magic, 1, 4, file);
+	aud_vfs_fseek(file, 1080, SEEK_SET);
+	aud_vfs_fread(magic, 1, 4, file);
 	
 	// Check for Fast Tracker multichannel modules (xCHN, xxCH)
 	if (magic[1] == 'C' && magic[2] == 'H' && magic[3] == 'N') {

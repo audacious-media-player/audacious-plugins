@@ -142,10 +142,10 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     /* dealing the stream upload (invalidating)*/
     if(filename)
     {
-        f = vfs_fopen(from_path,"r");
-        if(vfs_is_streaming(f)) 
+        f = aud_vfs_fopen(from_path,"r");
+        if(aud_vfs_is_streaming(f)) 
         {
-            vfs_fclose(f);
+            aud_vfs_fclose(f);
             return NULL;
         }
     }       

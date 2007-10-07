@@ -33,19 +33,19 @@
 static void init(void);
 static void fini(void);
 
-VFSFile *neon_vfs_fopen_impl(const gchar* path, const gchar* mode);
-gint neon_vfs_fclose_impl(VFSFile* file);
-size_t neon_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* file);
-size_t neon_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile* file);
-gint neon_vfs_getc_impl(VFSFile* file);
-gint neon_vfs_ungetc_impl(gint c, VFSFile* file);
-void neon_vfs_rewind_impl(VFSFile* file);
-glong neon_vfs_ftell_impl(VFSFile* file);
-gboolean neon_vfs_feof_impl(VFSFile* file);
-gint neon_vfs_truncate_impl(VFSFile* file, glong size);
-gint neon_vfs_fseek_impl(VFSFile* file, glong offset, gint whence);
-gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar * field);
-off_t neon_vfs_fsize_impl(VFSFile* file);
+VFSFile *neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode);
+gint neon_aud_vfs_fclose_impl(VFSFile* file);
+size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* file);
+size_t neon_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile* file);
+gint neon_aud_vfs_getc_impl(VFSFile* file);
+gint neon_aud_vfs_ungetc_impl(gint c, VFSFile* file);
+void neon_aud_vfs_rewind_impl(VFSFile* file);
+glong neon_aud_vfs_ftell_impl(VFSFile* file);
+gboolean neon_aud_vfs_feof_impl(VFSFile* file);
+gint neon_aud_vfs_truncate_impl(VFSFile* file, glong size);
+gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence);
+gchar *neon_aud_vfs_metadata_impl(VFSFile* file, const gchar * field);
+off_t neon_aud_vfs_fsize_impl(VFSFile* file);
 
 ne_uri purl;
 

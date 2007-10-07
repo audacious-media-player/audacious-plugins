@@ -34,13 +34,13 @@
 
 // audacious support
 #define FILE	VFSFile
-#define fopen	vfs_fopen
-#define fclose	vfs_fclose
-#define fwrite	vfs_fwrite
-#define fread	vfs_fread
-#define frewind vfs_frewind
-#define ftell	vfs_ftell
-#define fseek	vfs_fseek
+#define fopen	aud_vfs_fopen
+#define fclose	aud_vfs_fclose
+#define fwrite	aud_vfs_fwrite
+#define fread	aud_vfs_fread
+#define frewind aud_vfs_frewind
+#define ftell	aud_vfs_ftell
+#define fseek	aud_vfs_fseek
 
 #define MAX_BPS         24	// Max supported Bit resolution
 #define MAX_NCH         8	// Max supported number of channels

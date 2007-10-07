@@ -53,16 +53,16 @@ int load_separate_seek_table_generic(char *filename,shn_file *this_shn)
 
 	shn_debug("Looking for seek table in separate file: '%s'",filename);
 
-	if (!(f=vfs_fopen(filename,"rb")))
+	if (!(f=aud_vfs_fopen(filename,"rb")))
 	{
 		return 0;
 	}
 
-	vfs_fseek(f,0,SEEK_END);
-	seek_table_len = (slong)vfs_ftell(f) - SEEK_HEADER_SIZE;
-	vfs_fseek(f,0,SEEK_SET);
+	aud_vfs_fseek(f,0,SEEK_END);
+	seek_table_len = (slong)aud_vfs_ftell(f) - SEEK_HEADER_SIZE;
+	aud_vfs_fseek(f,0,SEEK_SET);
 
-	if (vfs_fread((void *)this_shn->seek_header.data,1,SEEK_HEADER_SIZE,f) == SEEK_HEADER_SIZE)
+	if (aud_vfs_fread((void *)this_shn->seek_header.data,1,SEEK_HEADER_SIZE,f) == SEEK_HEADER_SIZE)
 	{
 		this_shn->seek_header.version = (slong)shn_uchar_to_ulong_le(this_shn->seek_header.data+4);
 		this_shn->seek_header.shnFileSize = shn_uchar_to_ulong_le(this_shn->seek_header.data+8);
@@ -76,7 +76,7 @@ int load_separate_seek_table_generic(char *filename,shn_file *this_shn)
 
 			if ((this_shn->seek_table = malloc(seek_table_len)))
 			{
-				if (vfs_fread((void *)this_shn->seek_table,1,seek_table_len,f) == seek_table_len)
+				if (aud_vfs_fread((void *)this_shn->seek_table,1,seek_table_len,f) == seek_table_len)
 				{
 					shn_debug("Successfully loaded seek table in separate file: '%s'",filename);
 
@@ -87,7 +87,7 @@ int load_separate_seek_table_generic(char *filename,shn_file *this_shn)
 					else
 						this_shn->vars.seek_resolution = SEEK_RESOLUTION;
 
-					vfs_fclose(f);
+					aud_vfs_fclose(f);
 
 					return 1;
 				}
@@ -95,7 +95,7 @@ int load_separate_seek_table_generic(char *filename,shn_file *this_shn)
 		}
 	}
 
-	vfs_fclose(f);
+	aud_vfs_fclose(f);
 	return 0;
 }
 
@@ -114,21 +114,21 @@ int load_appended_seek_table(shn_file *this_shn,char *filename,long bytes_from_e
 			break;
 	}
 
-	vfs_fseek(this_shn->vars.fd,-(SEEK_TRAILER_SIZE+bytes_from_end),SEEK_END);
-	if (vfs_fread((void *)this_shn->seek_trailer.data,1,SEEK_TRAILER_SIZE,this_shn->vars.fd) == SEEK_TRAILER_SIZE)
+	aud_vfs_fseek(this_shn->vars.fd,-(SEEK_TRAILER_SIZE+bytes_from_end),SEEK_END);
+	if (aud_vfs_fread((void *)this_shn->seek_trailer.data,1,SEEK_TRAILER_SIZE,this_shn->vars.fd) == SEEK_TRAILER_SIZE)
 	{
 		this_shn->seek_trailer.seekTableSize = shn_uchar_to_ulong_le(this_shn->seek_trailer.data);
 		if (memcmp(this_shn->seek_trailer.data+4,SEEK_TRAILER_SIGNATURE,strlen(SEEK_TRAILER_SIGNATURE)) == 0)
 		{
-			vfs_fseek(this_shn->vars.fd,-(this_shn->seek_trailer.seekTableSize+bytes_from_end),SEEK_END);
+			aud_vfs_fseek(this_shn->vars.fd,-(this_shn->seek_trailer.seekTableSize+bytes_from_end),SEEK_END);
 			this_shn->seek_trailer.seekTableSize -= (SEEK_HEADER_SIZE + SEEK_TRAILER_SIZE);
-			if (vfs_fread((void *)this_shn->seek_header.data,1,SEEK_HEADER_SIZE,this_shn->vars.fd) == SEEK_HEADER_SIZE)
+			if (aud_vfs_fread((void *)this_shn->seek_header.data,1,SEEK_HEADER_SIZE,this_shn->vars.fd) == SEEK_HEADER_SIZE)
 			{
 				this_shn->seek_header.version = (slong)shn_uchar_to_ulong_le(this_shn->seek_header.data+4);
 				this_shn->seek_header.shnFileSize = shn_uchar_to_ulong_le(this_shn->seek_header.data+8);
 				if ((this_shn->seek_table = malloc(this_shn->seek_trailer.seekTableSize)))
 				{
-					if (vfs_fread((void *)this_shn->seek_table,1,this_shn->seek_trailer.seekTableSize,this_shn->vars.fd) == this_shn->seek_trailer.seekTableSize)
+					if (aud_vfs_fread((void *)this_shn->seek_table,1,this_shn->seek_trailer.seekTableSize,this_shn->vars.fd) == this_shn->seek_trailer.seekTableSize)
 					{
 						shn_debug("Successfully loaded seek table appended to file: '%s'",filename);
 

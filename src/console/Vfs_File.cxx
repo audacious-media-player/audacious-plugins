@@ -13,7 +13,7 @@ void Vfs_File_Reader::reset( VFSFile* f )
 Vfs_File_Reader::error_t Vfs_File_Reader::open( const char* path )
 {
 	close();
-	file_ = owned_file_ = vfs_fopen( path, "rb" );
+	file_ = owned_file_ = aud_vfs_fopen( path, "rb" );
 	if ( !file_ )
 		return "Couldn't open file";
 	return 0;
@@ -22,27 +22,27 @@ Vfs_File_Reader::error_t Vfs_File_Reader::open( const char* path )
 long Vfs_File_Reader::size() const
 {
 	long pos = tell();
-	vfs_fseek( file_, 0, SEEK_END );
+	aud_vfs_fseek( file_, 0, SEEK_END );
 	long result = tell();
-	vfs_fseek( file_, pos, SEEK_SET );
+	aud_vfs_fseek( file_, pos, SEEK_SET );
 	return result;
 }
 
 long Vfs_File_Reader::read_avail( void* p, long s )
 {
-	return (long) vfs_fread( p, 1, s, file_ );
+	return (long) aud_vfs_fread( p, 1, s, file_ );
 }
 
 long Vfs_File_Reader::tell() const
 {
-	return vfs_ftell( file_ );
+	return aud_vfs_ftell( file_ );
 }
 
 Vfs_File_Reader::error_t Vfs_File_Reader::seek( long n )
 {
 	if ( n == 0 ) // optimization
-		vfs_rewind( file_ );
-	else if ( vfs_fseek( file_, n, SEEK_SET ) != 0 )
+		aud_vfs_rewind( file_ );
+	else if ( aud_vfs_fseek( file_, n, SEEK_SET ) != 0 )
 		return eof_error;
 	return 0;
 }
@@ -52,7 +52,7 @@ void Vfs_File_Reader::close()
 	file_ = 0;
 	if ( owned_file_ )
 	{
-		vfs_fclose( owned_file_ );
+		aud_vfs_fclose( owned_file_ );
 		owned_file_ = 0;
 	}
 }

@@ -22,7 +22,7 @@ typedef struct StdIOContext
 size_t
 stdio_istream_read (void *ctx, void *ptr, size_t size, size_t nmemb)
 {
-  return vfs_fread (ptr, size, nmemb, ((StdIOContext *) ctx)->fp);
+  return aud_vfs_fread (ptr, size, nmemb, ((StdIOContext *) ctx)->fp);
 }
 
 int
@@ -30,7 +30,7 @@ stdio_istream_close (void *ctx)
 {
   int ret = 0;
   if (((StdIOContext *) ctx)->autoclose)
-    ret = vfs_fclose (((StdIOContext *) ctx)->fp);
+    ret = aud_vfs_fclose (((StdIOContext *) ctx)->fp);
   free (ctx);
   return ret;
 }
@@ -101,7 +101,7 @@ mid_istream_open_file (const char *file)
 {
   VFSFile *fp;
 
-  fp = vfs_fopen (file, "rb");
+  fp = aud_vfs_fopen (file, "rb");
   if (fp == NULL)
     return NULL;
 

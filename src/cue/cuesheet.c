@@ -458,7 +458,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 	cur_cue_track = track;
 	cache_cue_file(path2); //path2 should be uri.
 
-    if (cue_file == NULL || !vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
+    if (cue_file == NULL || !aud_vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
         return;
 
 	pr = input_check_file(cue_file, FALSE);
@@ -749,7 +749,7 @@ static void free_cue_info(void)
 
 static void cache_cue_file(char *f)
 {
-	VFSFile *file = vfs_fopen(f, "rb");
+	VFSFile *file = aud_vfs_fopen(f, "rb");
 	gchar line[MAX_CUE_LINE_LENGTH+1];
 
 	if(!file)
@@ -759,8 +759,8 @@ static void cache_cue_file(char *f)
 		gint p;
 		gint q;
 
-		if (vfs_fgets(line, MAX_CUE_LINE_LENGTH+1, file) == NULL) {
-			vfs_fclose(file);
+		if (aud_vfs_fgets(line, MAX_CUE_LINE_LENGTH+1, file) == NULL) {
+			aud_vfs_fclose(file);
 			return;
         }
 
@@ -847,7 +847,7 @@ static void cache_cue_file(char *f)
         }
     }
 
-	vfs_fclose(file);
+	aud_vfs_fclose(file);
 }
 
 static void fix_cue_argument(char *line)

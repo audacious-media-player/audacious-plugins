@@ -102,22 +102,22 @@ typedef struct {
 
 CurlOptions curl_options;
 
-void curl_vfs_rewind_impl(VFSFile * file);
-glong curl_vfs_ftell_impl(VFSFile * file);
-gboolean curl_vfs_feof_impl(VFSFile * file);
-gint curl_vfs_truncate_impl(VFSFile * file, glong size);
-gchar *curl_vfs_metadata_impl(VFSFile * file, const gchar * field);
-size_t curl_vfs_fwrite_impl(gconstpointer ptr, size_t size,
+void curl_aud_vfs_rewind_impl(VFSFile * file);
+glong curl_aud_vfs_ftell_impl(VFSFile * file);
+gboolean curl_aud_vfs_feof_impl(VFSFile * file);
+gint curl_aud_vfs_truncate_impl(VFSFile * file, glong size);
+gchar *curl_aud_vfs_metadata_impl(VFSFile * file, const gchar * field);
+size_t curl_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size,
 		     size_t nmemb,
 		     VFSFile * file);
-size_t curl_vfs_fread_impl(gpointer ptr_, size_t size,
+size_t curl_aud_vfs_fread_impl(gpointer ptr_, size_t size,
 		     size_t nmemb,
 		     VFSFile * file);
-gint curl_vfs_fclose_impl(VFSFile * file);
-gint curl_vfs_getc_impl(VFSFile *stream);
-gint curl_vfs_ungetc_impl(gint c, VFSFile *stream);
-gint curl_vfs_fseek_impl(VFSFile * file, glong offset, gint whence);
-VFSFile *curl_vfs_fopen_impl(const gchar * path,
+gint curl_aud_vfs_fclose_impl(VFSFile * file);
+gint curl_aud_vfs_getc_impl(VFSFile *stream);
+gint curl_aud_vfs_ungetc_impl(gint c, VFSFile *stream);
+gint curl_aud_vfs_fseek_impl(VFSFile * file, glong offset, gint whence);
+VFSFile *curl_aud_vfs_fopen_impl(const gchar * path,
 		    const gchar * mode);
 
 VFSConstructor curl_const;
@@ -350,7 +350,7 @@ static size_t curl_writecb(unsigned char *ptr, size_t size, size_t nmemb, void *
 	      handle->wr_abs += trans;
 	      if (handle->download)
 		{
-		  vfs_fwrite(ptr + ret, trans, 1, handle->download);
+		  aud_vfs_fwrite(ptr + ret, trans, 1, handle->download);
 		}
 	      if (handle->icy_interval && !handle->icy_left)
 		{
@@ -448,7 +448,7 @@ static size_t curl_writecb(unsigned char *ptr, size_t size, size_t nmemb, void *
 			  // the data which has to go into the
 			  // beginning of the file must be at the end
 			  // of the input that we've dealt with.
-			  vfs_fwrite(ptr + ret - leftover, leftover, 1, 
+			  aud_vfs_fwrite(ptr + ret - leftover, leftover, 1, 
 				     handle->download);
 			}
 		      handle->icy_left = handle->icy_interval;
@@ -560,7 +560,7 @@ static void curl_req_no_xfer(CurlHandle *handle)
 }
 
 VFSFile *
-curl_vfs_fopen_impl(const gchar * path,
+curl_aud_vfs_fopen_impl(const gchar * path,
 		    const gchar * mode)
 {
   CurlHandle *handle;
@@ -663,7 +663,7 @@ curl_vfs_fopen_impl(const gchar * path,
     curl_easy_setopt(handle->curl, CURLOPT_HTTPHEADER, hdr);
   }
 
-  //handle->download = vfs_fopen(FILENAME, "wb");
+  //handle->download = aud_vfs_fopen(FILENAME, "wb");
 
   file->handle = handle;
   file->base = &curl_const;
@@ -675,7 +675,7 @@ curl_vfs_fopen_impl(const gchar * path,
 }
 
 gint
-curl_vfs_fclose_impl(VFSFile * file)
+curl_aud_vfs_fclose_impl(VFSFile * file)
 {
   gint ret = 0;
   if (file == NULL)
@@ -712,7 +712,7 @@ curl_vfs_fclose_impl(VFSFile * file)
 
       if (handle->download)
 	{
-	  vfs_fclose(handle->download);
+	  aud_vfs_fclose(handle->download);
 	}
 
       if (handle->url != NULL)
@@ -725,7 +725,7 @@ curl_vfs_fclose_impl(VFSFile * file)
 }
 
 size_t
-curl_vfs_fread_impl(gpointer ptr_,
+curl_aud_vfs_fread_impl(gpointer ptr_,
 		    size_t size,
 		    size_t nmemb,
 		    VFSFile * file)
@@ -802,7 +802,7 @@ curl_vfs_fread_impl(gpointer ptr_,
 }
 
 size_t
-curl_vfs_fwrite_impl(gconstpointer ptr,
+curl_aud_vfs_fwrite_impl(gconstpointer ptr,
 		     size_t size,
 		     size_t nmemb,
 		     VFSFile * file)
@@ -811,7 +811,7 @@ curl_vfs_fwrite_impl(gconstpointer ptr,
 }
 
 gint
-curl_vfs_getc_impl(VFSFile *stream)
+curl_aud_vfs_getc_impl(VFSFile *stream)
 {
   CurlHandle *handle = (CurlHandle *) stream->handle;
   guchar uc;
@@ -825,13 +825,13 @@ curl_vfs_getc_impl(VFSFile *stream)
     handle->rd_abs++;
     return uc;
   }
-  else if (curl_vfs_fread_impl(&uc, 1, 1, stream) != 1)
+  else if (curl_aud_vfs_fread_impl(&uc, 1, 1, stream) != 1)
     return EOF;
   return uc;
 }
 
 gint
-curl_vfs_ungetc_impl(gint c, VFSFile *stream)
+curl_aud_vfs_ungetc_impl(gint c, VFSFile *stream)
 {
   CurlHandle *handle = (CurlHandle *) stream->handle;
 
@@ -848,7 +848,7 @@ curl_vfs_ungetc_impl(gint c, VFSFile *stream)
 }
 
 gint
-curl_vfs_fseek_impl(VFSFile * file,
+curl_aud_vfs_fseek_impl(VFSFile * file,
 		    glong offset,
 		    gint whence)
 {
@@ -927,33 +927,33 @@ curl_vfs_fseek_impl(VFSFile * file,
 }
 
 void
-curl_vfs_rewind_impl(VFSFile * file)
+curl_aud_vfs_rewind_impl(VFSFile * file)
 {
-  curl_vfs_fseek_impl(file, 0, SEEK_SET);
+  curl_aud_vfs_fseek_impl(file, 0, SEEK_SET);
 }
 
 glong
-curl_vfs_ftell_impl(VFSFile * file)
+curl_aud_vfs_ftell_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
   return handle->rd_abs;
 }
 
 gboolean
-curl_vfs_feof_impl(VFSFile * file)
+curl_aud_vfs_feof_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
   return handle->rd_abs == handle->length;
 }
 
 gint
-curl_vfs_truncate_impl(VFSFile * file, glong size)
+curl_aud_vfs_truncate_impl(VFSFile * file, glong size)
 {
   return -1;
 }
 
 off_t
-curl_vfs_fsize_impl(VFSFile * file)
+curl_aud_vfs_fsize_impl(VFSFile * file)
 {
   CurlHandle *handle = file->handle;
 
@@ -987,7 +987,7 @@ curl_vfs_fsize_impl(VFSFile * file)
 }
 
 gchar *
-curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
+curl_aud_vfs_metadata_impl(VFSFile * file, const gchar * field)
 {
   CurlHandle *handle = file->handle;
   if (!strcmp(field, "stream-name") && handle->name != NULL)
@@ -1009,36 +1009,36 @@ curl_vfs_metadata_impl(VFSFile * file, const gchar * field)
 
 VFSConstructor curl_const = {
   "http://",
-  curl_vfs_fopen_impl,
-  curl_vfs_fclose_impl,
-  curl_vfs_fread_impl,
-  curl_vfs_fwrite_impl,
-  curl_vfs_getc_impl,
-  curl_vfs_ungetc_impl,
-  curl_vfs_fseek_impl,
-  curl_vfs_rewind_impl,
-  curl_vfs_ftell_impl,
-  curl_vfs_feof_impl,
-  curl_vfs_truncate_impl,
-  curl_vfs_fsize_impl,
-  curl_vfs_metadata_impl
+  curl_aud_vfs_fopen_impl,
+  curl_aud_vfs_fclose_impl,
+  curl_aud_vfs_fread_impl,
+  curl_aud_vfs_fwrite_impl,
+  curl_aud_vfs_getc_impl,
+  curl_aud_vfs_ungetc_impl,
+  curl_aud_vfs_fseek_impl,
+  curl_aud_vfs_rewind_impl,
+  curl_aud_vfs_ftell_impl,
+  curl_aud_vfs_feof_impl,
+  curl_aud_vfs_truncate_impl,
+  curl_aud_vfs_fsize_impl,
+  curl_aud_vfs_metadata_impl
 };
 
 VFSConstructor curl_https_const = {
   "https://",
-  curl_vfs_fopen_impl,
-  curl_vfs_fclose_impl,
-  curl_vfs_fread_impl,
-  curl_vfs_fwrite_impl,
-  curl_vfs_getc_impl,
-  curl_vfs_ungetc_impl,
-  curl_vfs_fseek_impl,
-  curl_vfs_rewind_impl,
-  curl_vfs_ftell_impl,
-  curl_vfs_feof_impl,
-  curl_vfs_truncate_impl,
-  curl_vfs_fsize_impl,
-  curl_vfs_metadata_impl
+  curl_aud_vfs_fopen_impl,
+  curl_aud_vfs_fclose_impl,
+  curl_aud_vfs_fread_impl,
+  curl_aud_vfs_fwrite_impl,
+  curl_aud_vfs_getc_impl,
+  curl_aud_vfs_ungetc_impl,
+  curl_aud_vfs_fseek_impl,
+  curl_aud_vfs_rewind_impl,
+  curl_aud_vfs_ftell_impl,
+  curl_aud_vfs_feof_impl,
+  curl_aud_vfs_truncate_impl,
+  curl_aud_vfs_fsize_impl,
+  curl_aud_vfs_metadata_impl
 };
 
 static void curl_load_settings(void)
@@ -1075,16 +1075,16 @@ static void curl_save_settings(void)
 static void init(void)
 {
   curl_load_settings();
-  vfs_register_transport(&curl_const);
-  vfs_register_transport(&curl_https_const);
+  aud_vfs_register_transport(&curl_const);
+  aud_vfs_register_transport(&curl_https_const);
 }
 
 static void cleanup(void)
 {
   curl_save_settings();
 #if 0
-  vfs_unregister_transport(&curl_const);
-  vfs_unregister_transport(&curl_https_const);
+  aud_vfs_unregister_transport(&curl_const);
+  aud_vfs_unregister_transport(&curl_https_const);
 #endif
 }
 

@@ -244,7 +244,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     g_free(filename);
     filename = temp;
 
-    output_file = vfs_fopen(filename, "w");
+    output_file = aud_vfs_fopen(filename, "w");
     g_free(filename);
 
     if (!output_file)
@@ -328,7 +328,7 @@ static void file_close(void)
     if (output_file)
     {
         written = 0;
-        vfs_fclose(output_file);
+        aud_vfs_fclose(output_file);
     }
     output_file = NULL;
 }

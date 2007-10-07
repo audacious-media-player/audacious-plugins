@@ -166,7 +166,7 @@ extern shn_file *shnfile;
 
 extern int getc_exit_val;
 #define getc_exit(stream)\
-(((getc_exit_val = vfs_getc(stream)) == EOF) ? \
+(((getc_exit_val = aud_vfs_getc(stream)) == EOF) ? \
   complain("FATALERROR: read failed: getc returns EOF"), 0: getc_exit_val)
 
 /************************/

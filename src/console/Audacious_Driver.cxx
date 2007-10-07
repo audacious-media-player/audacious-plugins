@@ -84,7 +84,7 @@ public:
 	~File_Handler();
 private:
 	char header [4];
-	Vfs_File_Reader vfs_in;
+	Vfs_File_Reader aud_vfs_in;
 	Gzip_Reader in;
 };
 
@@ -117,12 +117,12 @@ File_Handler::File_Handler( const char* path_in, VFSFile* fd, gboolean is_our_fi
 	
 	// open vfs
 	if ( fd )
-		vfs_in.reset( fd );
-	else if ( log_err( vfs_in.open( path ) ) )
+		aud_vfs_in.reset( fd );
+	else if ( log_err( aud_vfs_in.open( path ) ) )
 		return;
 	
 	// now open gzip_reader on top of vfs
-	if ( log_err( in.open( &vfs_in ) ) )
+	if ( log_err( in.open( &aud_vfs_in ) ) )
 		return;
 	
 	// read and identify header
@@ -165,7 +165,7 @@ int File_Handler::load( long sample_rate )
 	
 	// files can be closed now
 	in.close();
-	vfs_in.close();
+	aud_vfs_in.close();
 	
 	log_warning( emu );
 	
@@ -485,7 +485,7 @@ static Tuple *probe_for_tuple(gchar *filename, VFSFile *fd)
 	if (!is_our_file_from_vfs(filename, fd))
 		return NULL;
 
-	vfs_rewind(fd);
+	aud_vfs_rewind(fd);
 
 	return get_song_tuple(filename);
 }
