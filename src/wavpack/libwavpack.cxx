@@ -223,11 +223,11 @@ public:
         return true;
     }
 
-    bool attach_to_play(const char *filename)
+    bool attach_to_play(InputPlayback *playback)
     {
-        wv_Input = aud_vfs_fopen(filename, "rb");
+        wv_Input = aud_vfs_fopen(playback->filename, "rb");
 
-        char *corrFilename = g_strconcat(filename, "c", NULL);
+        char *corrFilename = g_strconcat(playback->filename, "c", NULL);
 
         wvc_Input = aud_vfs_fopen(corrFilename, "rb");
 
@@ -242,7 +242,7 @@ public:
         num_channels = WavpackGetNumChannels(ctx);
         input = (int32_t *)calloc(BUFFER_SIZE, num_channels * sizeof(int32_t));
         output = (int16_t *)calloc(BUFFER_SIZE, num_channels * sizeof(int16_t));
-        mod->set_info(generate_title(filename, ctx),
+        playback->set_params(playback, generate_title(filename, ctx),
                       (int) (WavpackGetNumSamples(ctx) / sample_rate) * 1000,
                       (int) WavpackGetAverageBitrate(ctx, num_channels),
                       (int) sample_rate, num_channels);
@@ -303,16 +303,16 @@ end_thread()
 }
 
 static void *
-DecodeThread(void *a)
+DecodeThread(InputPlayback *playback)
 {
     ape_tag tag;
-    char *filename = (char *) a;
+    char *filename = playback->filename;
     int bps_updateCounter = 0;
     int bps;
     int i;
     WavpackDecoder d(&mod);
 
-    if (!d.attach_to_play(filename)) {
+    if (!d.attach_to_play(playback)) {
         killDecodeThread = true;
         return end_thread();
     }
@@ -373,7 +373,7 @@ wv_play(InputPlayback *data)
     AudioError = false;
     thread_handle = g_thread_self();
     data->set_pb_ready(data);
-    DecodeThread((void *) data->filename);
+    DecodeThread(data);
     return;
 }
 
