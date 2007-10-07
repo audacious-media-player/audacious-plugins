@@ -14,7 +14,7 @@
 #include <glib.h>
 
 extern "C" {
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 };
 
 class vfsistream : public binistream, virtual public binio {
