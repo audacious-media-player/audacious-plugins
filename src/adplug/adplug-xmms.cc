@@ -93,9 +93,6 @@ static struct
 
 static InputPlayback *playback;
 
-// XXX: this function is not in the public API yet.
-extern "C" VFSFile * aud_vfs_buffered_file_new_from_uri (gchar * uri);
-
 /***** Debugging *****/
 
 #ifdef DEBUG

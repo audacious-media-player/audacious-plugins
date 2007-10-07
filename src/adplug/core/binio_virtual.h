@@ -12,7 +12,10 @@
 #include <string>
 
 #include <glib.h>
+
+extern "C" {
 #include <audacious/vfs.h>
+};
 
 class vfsistream : public binistream, virtual public binio {
 private:
