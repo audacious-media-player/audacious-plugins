@@ -77,7 +77,7 @@ gdouble tact_form[tact_id_max][tact_form_max]=
 
 static void metronom_init(void)
 {
-	uri_set_plugin("tact://", &metronom_ip);
+	aud_uri_set_plugin("tact://", &metronom_ip);
 }
 
 static void metronom_about(void)

@@ -195,7 +195,7 @@ static void cdaudio_init()
 	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST, playlist_menu_item);
 	g_signal_connect(G_OBJECT(playlist_menu_item), "button_press_event", G_CALLBACK(menu_click), NULL);  
 	
-	uri_set_plugin("cdda://", &inputplugin);
+	aud_uri_set_plugin("cdda://", &inputplugin);
 }
 
 static void cdaudio_about()

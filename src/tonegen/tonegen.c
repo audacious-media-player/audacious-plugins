@@ -44,7 +44,7 @@ static GThread *play_thread;
 
 static void tone_init(void)
 {
-	uri_set_plugin("tone://", &tone_ip);
+	aud_uri_set_plugin("tone://", &tone_ip);
 }
 
 static void tone_about(void)
