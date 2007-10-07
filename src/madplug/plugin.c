@@ -177,7 +177,7 @@ static void audmad_init()
 
     init_gen_rand(4357);
 
-    mime_set_plugin("audio/mpeg", mad_plugin);
+    aud_mime_set_plugin("audio/mpeg", mad_plugin);
 }
 
 static void audmad_cleanup()
