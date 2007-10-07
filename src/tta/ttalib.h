@@ -30,7 +30,7 @@
 #ifndef TTALIB_H_
 #define TTALIB_H_
 
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 
 // audacious support
 #define FILE	VFSFile

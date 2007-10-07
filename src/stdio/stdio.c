@@ -251,18 +251,18 @@ stdio_aud_vfs_fsize_impl(VFSFile * file)
 
 VFSConstructor file_const = {
 	.uri_id = "file://",
-	.aud_vfs_fopen_impl = stdio_aud_vfs_fopen_impl,
-	.aud_vfs_fclose_impl = stdio_aud_vfs_fclose_impl,
-	.aud_vfs_fread_impl = stdio_aud_vfs_fread_impl,
-	.aud_vfs_fwrite_impl = stdio_aud_vfs_fwrite_impl,
-	.aud_vfs_getc_impl = stdio_aud_vfs_getc_impl,
-	.aud_vfs_ungetc_impl = stdio_aud_vfs_ungetc_impl,
-	.aud_vfs_fseek_impl = stdio_aud_vfs_fseek_impl,
-	.aud_vfs_rewind_impl = stdio_aud_vfs_rewind_impl,
-	.aud_vfs_ftell_impl = stdio_aud_vfs_ftell_impl,
-	.aud_vfs_feof_impl = stdio_aud_vfs_feof_impl,
-	.aud_vfs_truncate_impl = stdio_aud_vfs_truncate_impl,
-	.aud_vfs_fsize_impl = stdio_aud_vfs_fsize_impl
+	.vfs_fopen_impl = stdio_aud_vfs_fopen_impl,
+	.vfs_fclose_impl = stdio_aud_vfs_fclose_impl,
+	.vfs_fread_impl = stdio_aud_vfs_fread_impl,
+	.vfs_fwrite_impl = stdio_aud_vfs_fwrite_impl,
+	.vfs_getc_impl = stdio_aud_vfs_getc_impl,
+	.vfs_ungetc_impl = stdio_aud_vfs_ungetc_impl,
+	.vfs_fseek_impl = stdio_aud_vfs_fseek_impl,
+	.vfs_rewind_impl = stdio_aud_vfs_rewind_impl,
+	.vfs_ftell_impl = stdio_aud_vfs_ftell_impl,
+	.vfs_feof_impl = stdio_aud_vfs_feof_impl,
+	.vfs_truncate_impl = stdio_aud_vfs_truncate_impl,
+	.vfs_fsize_impl = stdio_aud_vfs_fsize_impl
 };
 
 static void init(void)

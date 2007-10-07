@@ -11,7 +11,7 @@
 #include <string>
 
 extern "C" {
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 };
 
 class arch_Raw: public Archive
