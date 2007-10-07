@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <audacious/util.h>
 #include <audacious/configdb.h>
