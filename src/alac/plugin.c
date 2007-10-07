@@ -119,25 +119,25 @@ gboolean is_our_fd(char *filename, VFSFile* input_file)
     return TRUE;
 }
 
-Tuple *build_tuple_from_demux(demux_res_t *demux_res, char *path)
+Tuple *build_aud_tuple_from_demux(demux_res_t *demux_res, char *path)
 {
-    Tuple *ti = tuple_new_from_filename(path);
+    Tuple *ti = aud_tuple_new_from_filename(path);
 
     if (demux_res->tuple.art != NULL)
-        tuple_associate_string(ti, FIELD_ARTIST, NULL, demux_res->tuple.art);
+        aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, demux_res->tuple.art);
     if (demux_res->tuple.nam != NULL)
-        tuple_associate_string(ti, FIELD_TITLE, NULL, demux_res->tuple.nam);
+        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, demux_res->tuple.nam);
     if (demux_res->tuple.alb != NULL)
-        tuple_associate_string(ti, FIELD_ALBUM, NULL, demux_res->tuple.alb);
+        aud_tuple_associate_string(ti, FIELD_ALBUM, NULL, demux_res->tuple.alb);
     if (demux_res->tuple.gen != NULL)
-        tuple_associate_string(ti, FIELD_GENRE, NULL, demux_res->tuple.gen);
+        aud_tuple_associate_string(ti, FIELD_GENRE, NULL, demux_res->tuple.gen);
     if (demux_res->tuple.cmt != NULL)
-        tuple_associate_string(ti, FIELD_COMMENT, NULL, demux_res->tuple.cmt);
+        aud_tuple_associate_string(ti, FIELD_COMMENT, NULL, demux_res->tuple.cmt);
     if (demux_res->tuple.day != NULL)
-        tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(demux_res->tuple.day));
+        aud_tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(demux_res->tuple.day));
 
-    tuple_associate_string(ti, FIELD_CODEC, NULL, "Apple Lossless (ALAC)");
-    tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
+    aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Apple Lossless (ALAC)");
+    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
 
     return ti;
 }
@@ -171,7 +171,7 @@ Tuple *build_tuple(char *filename)
     stream_destroy(input_stream);
     vfs_fclose(input_file);
 
-    return build_tuple_from_demux(&demux_res, filename);
+    return build_aud_tuple_from_demux(&demux_res, filename);
 }
 
 static InputPlayback *playback;
@@ -337,8 +337,8 @@ gpointer decode_thread(void *args)
     demux_res.stream = input_stream;
 
     /* Get the titlestring ready. */
-    ti = build_tuple_from_demux(&demux_res, (char *) args);
-    title = tuple_formatter_make_title_string(ti, get_gentitle_format());
+    ti = build_aud_tuple_from_demux(&demux_res, (char *) args);
+    title = aud_tuple_formatter_make_title_string(ti, get_gentitle_format());
 
     /* initialise the sound converter */
     demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);

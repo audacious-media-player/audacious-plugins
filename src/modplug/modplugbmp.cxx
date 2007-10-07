@@ -21,10 +21,10 @@ extern "C" {
 
 static char* format_and_free_ti( Tuple* ti, int* length )
 {
-        char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
+        char* result = aud_tuple_formatter_make_title_string(ti, get_gentitle_format());
         if ( result )
-                *length = tuple_get_int(ti, FIELD_LENGTH, NULL);
-        tuple_free((void *) ti);
+                *length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);
+        aud_tuple_free((void *) ti);
 
         return result;
 }
@@ -513,7 +513,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
                 return NULL;
         }
 
-	Tuple *ti = tuple_new_from_filename(aFilename.c_str());
+	Tuple *ti = aud_tuple_new_from_filename(aFilename.c_str());
 	lSoundFile = new CSoundFile;
 	lSoundFile->Create((uchar*)lArchive->Map(), lArchive->Size());
 	
@@ -542,16 +542,16 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
 	default:		tmps = "ModPlug unknown"; break;
 	}
-	tuple_associate_string(ti, FIELD_CODEC, NULL, tmps.c_str());
-	tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
-	tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
+	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, tmps.c_str());
+	aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+	aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
 
 	/* NOTICE! FIXME? This is actually incorrect. We _cannot_ know what charset
 	 * an arbitrary module file uses .. typically it is some DOS CP-variant,
 	 * except for true Amiga modules.
 	 */
 	gchar *tmps2 = str_to_utf8(lSoundFile->GetTitle());
-	tuple_associate_string(ti, FIELD_TITLE, NULL, tmps2);
+	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps2);
 	g_free(tmps2);
 	
 	//unload the file

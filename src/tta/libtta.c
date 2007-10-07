@@ -157,7 +157,7 @@ tta_error (int error)
 static gchar *
 get_song_title(Tuple *tuple)
 {
-	return tuple_formatter_make_title_string(tuple, get_gentitle_format());
+	return aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 }
 
 static void
@@ -169,11 +169,11 @@ get_song_info (char *filename, char **title, int *length)
 	*title = NULL;
 
 	if ((tuple = get_song_tuple(filename)) != NULL) {
-    	    *length = tuple_get_int(tuple, FIELD_LENGTH, NULL);
+    	    *length = aud_tuple_get_int(tuple, FIELD_LENGTH, NULL);
     	    *title = get_song_title(tuple);
 	}
 
-	tuple_free(tuple);
+	aud_tuple_free(tuple);
 }
 
 static void *
@@ -483,7 +483,7 @@ play_file (InputPlayback *playback)
 
 	tuple = get_song_tuple(filename);
 	title = get_song_title(tuple);
-	tuple_free(tuple);
+	aud_tuple_free(tuple);
 
 	datasize = file_size(filename) - info.DATAPOS;
 	origsize = info.DATALENGTH * info.BSIZE * info.NCH;
@@ -555,32 +555,32 @@ get_song_tuple(char *filename)
 
 	if((file = vfs_fopen(filename, "rb")) != NULL) {
 		if(open_tta_file(filename, ttainfo, 0) >= 0) {
-			tuple = tuple_new_from_filename(filename);
+			tuple = aud_tuple_new_from_filename(filename);
 
-			tuple_associate_string(tuple, FIELD_CODEC, NULL, "True Audio (TTA)");
-			tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
+			aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "True Audio (TTA)");
+			aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
 
 			if (ttainfo->ID3.id3has) {
 				if (ttainfo->ID3.artist)
-					tuple_associate_string(tuple, FIELD_ARTIST, NULL, (gchar *) ttainfo->ID3.artist);
+					aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, (gchar *) ttainfo->ID3.artist);
 
 				if (ttainfo->ID3.album)
-					tuple_associate_string(tuple, FIELD_ALBUM, NULL, (gchar *) ttainfo->ID3.album);
+					aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, (gchar *) ttainfo->ID3.album);
 
 				if (ttainfo->ID3.title)
-					tuple_associate_string(tuple, FIELD_TITLE, NULL, (gchar *) ttainfo->ID3.title);
+					aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, (gchar *) ttainfo->ID3.title);
 
 				if (ttainfo->ID3.year)
-					tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi((char *)ttainfo->ID3.year));
+					aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi((char *)ttainfo->ID3.year));
 
 				if(ttainfo->ID3.track)
-					tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi((char *)ttainfo->ID3.track));
+					aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi((char *)ttainfo->ID3.track));
 
 				if(ttainfo->ID3.genre)
-					tuple_associate_string(tuple, FIELD_GENRE, NULL, (gchar *) ttainfo->ID3.genre);
+					aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, (gchar *) ttainfo->ID3.genre);
 
 				if(ttainfo->ID3.comment)
-					tuple_associate_string(tuple, FIELD_COMMENT, NULL, (gchar *) ttainfo->ID3.comment);
+					aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, (gchar *) ttainfo->ID3.comment);
 			}
 			close_tta_file (ttainfo);
 		}

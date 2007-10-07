@@ -44,7 +44,7 @@ static void seek(InputPlayback *data, gint time);
 static void stop(InputPlayback *data);
 static void cue_pause(InputPlayback *data, short);
 static Tuple *get_tuple(gchar *uri);
-static Tuple *get_tuple_uri(gchar *uri);
+static Tuple *get_aud_tuple_uri(gchar *uri);
 static void cue_init(void);
 static void cue_cleanup(void);
 static gpointer watchdog_func(gpointer data);
@@ -213,22 +213,22 @@ static Tuple *get_tuple(gchar *uri)
 	if (strncasecmp("cue://", uri, 6))
 	{
 		gchar *tmp = g_strdup_printf("cue://%s?0", uri);
-		ret = get_tuple_uri(tmp);
+		ret = get_aud_tuple_uri(tmp);
 		g_free(tmp);
 		return ret;
 	}
 
-	return get_tuple_uri(uri);
+	return get_aud_tuple_uri(uri);
 }
 
-static void _tuple_copy_field(Tuple *tuple, Tuple *tuple2, const gint nfield, const gchar *field)
+static void _aud_tuple_copy_field(Tuple *tuple, Tuple *tuple2, const gint nfield, const gchar *field)
 {
-    const gchar *str = tuple_get_string(tuple, nfield, field);
-    tuple_disassociate(tuple2, nfield, field);
-    tuple_associate_string(tuple2, nfield, field, str);
+    const gchar *str = aud_tuple_get_string(tuple, nfield, field);
+    aud_tuple_disassociate(tuple2, nfield, field);
+    aud_tuple_associate_string(tuple2, nfield, field, str);
 }
 
-static Tuple *get_tuple_uri(gchar *uri)
+static Tuple *get_aud_tuple_uri(gchar *uri)
 {
     gchar *path2 = g_strdup(uri + 6);
     gchar *_path = strchr(path2, '?');
@@ -268,28 +268,28 @@ static Tuple *get_tuple_uri(gchar *uri)
     if(!phys_tuple)
         return NULL;
 
-    out = tuple_new();
+    out = aud_tuple_new();
 
-    _tuple_copy_field(phys_tuple, out, FIELD_FILE_PATH, NULL);
-    _tuple_copy_field(phys_tuple, out, FIELD_FILE_NAME, NULL);
-    _tuple_copy_field(phys_tuple, out, FIELD_FILE_EXT, NULL);
-    _tuple_copy_field(phys_tuple, out, FIELD_CODEC, NULL);
-    _tuple_copy_field(phys_tuple, out, FIELD_QUALITY, NULL);
-    _tuple_copy_field(phys_tuple, out, FIELD_COPYRIGHT, NULL);
-    _tuple_copy_field(phys_tuple, out, FIELD_COMMENT, NULL);
+    _aud_tuple_copy_field(phys_tuple, out, FIELD_FILE_PATH, NULL);
+    _aud_tuple_copy_field(phys_tuple, out, FIELD_FILE_NAME, NULL);
+    _aud_tuple_copy_field(phys_tuple, out, FIELD_FILE_EXT, NULL);
+    _aud_tuple_copy_field(phys_tuple, out, FIELD_CODEC, NULL);
+    _aud_tuple_copy_field(phys_tuple, out, FIELD_QUALITY, NULL);
+    _aud_tuple_copy_field(phys_tuple, out, FIELD_COPYRIGHT, NULL);
+    _aud_tuple_copy_field(phys_tuple, out, FIELD_COMMENT, NULL);
 
-    tuple_associate_int(out, FIELD_LENGTH, NULL, tuple_get_int(phys_tuple, FIELD_LENGTH, NULL));
+    aud_tuple_associate_int(out, FIELD_LENGTH, NULL, aud_tuple_get_int(phys_tuple, FIELD_LENGTH, NULL));
 
-    tuple_free(phys_tuple);
+    aud_tuple_free(phys_tuple);
 
-    tuple_associate_string(out, FIELD_TITLE, NULL, cue_tracks[track].title);
-    tuple_associate_string(out, FIELD_ARTIST, NULL, cue_tracks[track].performer ?
+    aud_tuple_associate_string(out, FIELD_TITLE, NULL, cue_tracks[track].title);
+    aud_tuple_associate_string(out, FIELD_ARTIST, NULL, cue_tracks[track].performer ?
 				  cue_tracks[track].performer : cue_performer);
-    tuple_associate_string(out, FIELD_ALBUM, NULL, cue_title);
-    tuple_associate_string(out, FIELD_GENRE, NULL, cue_genre);
+    aud_tuple_associate_string(out, FIELD_ALBUM, NULL, cue_title);
+    aud_tuple_associate_string(out, FIELD_GENRE, NULL, cue_genre);
     if(cue_year)
-        tuple_associate_int(out, FIELD_YEAR, NULL, atoi(cue_year));
-    tuple_associate_int(out, FIELD_TRACK_NUMBER, NULL, track + 1);
+        aud_tuple_associate_int(out, FIELD_YEAR, NULL, atoi(cue_year));
+    aud_tuple_associate_int(out, FIELD_TRACK_NUMBER, NULL, track + 1);
 
     return out;
 }
@@ -508,8 +508,8 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 
         tuple = real_ip->plugin->get_song_tuple(cue_file);
         if(tuple) {
-            cue_tracks[last_cue_track].index = tuple_get_int(tuple, FIELD_LENGTH, NULL);
-            tuple_free(tuple); tuple = NULL;
+            cue_tracks[last_cue_track].index = aud_tuple_get_int(tuple, FIELD_LENGTH, NULL);
+            aud_tuple_free(tuple); tuple = NULL;
         }
 
         /* kick watchdog thread */

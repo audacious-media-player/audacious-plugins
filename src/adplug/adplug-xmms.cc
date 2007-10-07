@@ -690,18 +690,18 @@ adplug_get_tuple (char *filename)
 
   if (p)
   {
-    Tuple *ti = tuple_new_from_filename(filename);
+    Tuple *ti = aud_tuple_new_from_filename(filename);
     if (! p->getauthor().empty())
-      tuple_associate_string(ti, FIELD_ARTIST, NULL, p->getauthor().c_str());
+      aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, p->getauthor().c_str());
     if (! p->gettitle().empty())
-      tuple_associate_string(ti, FIELD_TITLE, NULL, p->gettitle().c_str());
+      aud_tuple_associate_string(ti, FIELD_TITLE, NULL, p->gettitle().c_str());
     else if (! p->getdesc().empty())
-      tuple_associate_string(ti, FIELD_TITLE, NULL, p->getdesc().c_str());
+      aud_tuple_associate_string(ti, FIELD_TITLE, NULL, p->getdesc().c_str());
     else
-      tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
-    tuple_associate_string(ti, FIELD_CODEC, NULL, p->gettype().c_str());
-    tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
-    tuple_associate_int(ti, FIELD_LENGTH, NULL, p->songlength (plr.subsong));
+      aud_tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
+    aud_tuple_associate_string(ti, FIELD_CODEC, NULL, p->gettype().c_str());
+    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
+    aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, p->songlength (plr.subsong));
     delete p;
     return ti;
   }
@@ -711,10 +711,10 @@ adplug_get_tuple (char *filename)
 
 static char* format_and_free_ti( Tuple* ti, int* length )
 {
-  char* result = tuple_formatter_make_title_string(ti, get_gentitle_format());
+  char* result = aud_tuple_formatter_make_title_string(ti, get_gentitle_format());
   if ( result )
-    *length = tuple_get_int(ti, FIELD_LENGTH, NULL);
-  tuple_free((void *) ti);
+    *length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);
+  aud_tuple_free((void *) ti);
 
   return result;
 }

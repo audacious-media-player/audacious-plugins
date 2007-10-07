@@ -355,18 +355,18 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
 
     if(input)
     {
-        tuple = tuple_new_from_filename(p_Filename);
+        tuple = aud_tuple_new_from_filename(p_Filename);
 
         MpcInfo tags = getTags(p_Filename);
 
-        tuple_associate_string(tuple, FIELD_DATE, NULL, tags.date);
-        tuple_associate_string(tuple, FIELD_TITLE, NULL, tags.title);
-        tuple_associate_string(tuple, FIELD_ARTIST, NULL, tags.artist);
-        tuple_associate_string(tuple, FIELD_ALBUM, NULL, tags.album);
-        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, tags.track);
-        tuple_associate_int(tuple, FIELD_YEAR, NULL, tags.year);
-        tuple_associate_string(tuple, FIELD_GENRE, NULL, tags.genre);
-        tuple_associate_string(tuple, FIELD_COMMENT, NULL, tags.comment);
+        aud_tuple_associate_string(tuple, FIELD_DATE, NULL, tags.date);
+        aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, tags.title);
+        aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, tags.artist);
+        aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, tags.album);
+        aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, tags.track);
+        aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, tags.year);
+        aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, tags.genre);
+        aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, tags.comment);
 
         freeTags(tags);
 
@@ -375,14 +375,14 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
         mpc_reader_setup_file_vfs(&reader, input);
         mpc_streaminfo_read(&info, &reader.reader);
 
-        tuple_associate_int(tuple, FIELD_LENGTH, NULL, static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
+        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, static_cast<int> (1000 * mpc_streaminfo_get_length(&info)));
 
         gchar *scratch = g_strdup_printf("Musepack v%d (encoder %s)", info.stream_version, info.encoder);
-        tuple_associate_string(tuple, FIELD_CODEC, NULL, scratch);
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, scratch);
         g_free(scratch);
 
         scratch = g_strdup_printf("lossy (%s)", info.profile_name);
-        tuple_associate_string(tuple, FIELD_QUALITY, NULL, scratch);
+        aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, scratch);
         g_free(scratch);
 
         vfs_fclose(input);
@@ -743,9 +743,9 @@ static char* mpcGenerateTitle(const MpcInfo& p_Tags, char* p_Filename)
 {
     Tuple* tuple = mpcGetSongTuple(p_Filename);
 
-    char* title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+    char* title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
-    tuple_free((void *) tuple);
+    aud_tuple_free((void *) tuple);
     return title;
 }
 

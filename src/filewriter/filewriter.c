@@ -203,7 +203,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     if (filenamefromtags)
     {
-        gchar *utf8 = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+        gchar *utf8 = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
         g_strchomp(utf8); //chop trailing ^J --yaz
 
@@ -214,7 +214,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     }
     if (filename == NULL)
     {
-        filename = g_strdup(tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+        filename = g_strdup(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
                 *temp = '\0';
@@ -225,7 +225,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
 
     if (prependnumber)
     {
-        gint number = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+        gint number = aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
         if (!tuple || !number)
             number = pos + 1;
 
@@ -235,7 +235,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     }
 
     if (save_original)
-        directory = tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
+        directory = aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
     else
         directory = file_path;
 

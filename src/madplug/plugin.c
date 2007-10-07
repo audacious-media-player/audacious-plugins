@@ -516,12 +516,12 @@ audmad_get_song_info(char *url, char **title, int *length)
     }
 
     if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
-        if(tuple_get_string(myinfo.tuple, -1, "track-name"))
-            *title = g_strdup(tuple_get_string(myinfo.tuple, -1, "track-name"));
+        if(aud_tuple_get_string(myinfo.tuple, -1, "track-name"))
+            *title = g_strdup(aud_tuple_get_string(myinfo.tuple, -1, "track-name"));
         else
             *title = g_strdup(url);
 
-        *length = tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
+        *length = aud_tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
         if(*length == -1)
             *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
     }
@@ -553,7 +553,7 @@ audmad_get_song_length(char *url, int *length, VFSFile *fd)
     }
 
     if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
-        *length = tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
+        *length = aud_tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
         if(*length == -1)
             *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
     }
@@ -630,7 +630,7 @@ extern void audmad_configure();
 
 static void __set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
 {
-    tuple_associate_string(tuple, nfield, name, value);
+    aud_tuple_associate_string(tuple, nfield, name, value);
     g_free(value);
 }
 
@@ -656,7 +656,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
     if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
         if((fd && vfs_is_streaming(fd)) || (info.playback && info.playback->playing)) {
             gchar *tmp = NULL;
-            tuple = tuple_new_from_filename(filename);
+            tuple = aud_tuple_new_from_filename(filename);
 
 #ifdef DEBUG
             if(info.playback)
@@ -667,7 +667,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 gchar *scratch;
 
                 scratch = str_to_utf8(tmp);
-                tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
+                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
                 g_free(tmp);
                 g_free(scratch);
 
@@ -678,7 +678,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 gchar *scratch;
 
                 scratch = str_to_utf8(tmp);
-                tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
+                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
                 g_free(tmp);
                 g_free(scratch);
 
@@ -686,11 +686,11 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             }
 
 #ifdef DEBUG
-            g_message("audmad_get_song_tuple: track_name = %s", tuple_get_string(tuple, -1, "track-name"));
-            g_message("audmad_get_song_tuple: stream_name = %s", tuple_get_string(tuple, -1, "stream-name"));
+            g_message("audmad_get_song_tuple: track_name = %s", aud_tuple_get_string(tuple, -1, "track-name"));
+            g_message("audmad_get_song_tuple: stream_name = %s", aud_tuple_get_string(tuple, -1, "stream-name"));
 #endif
-            tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-            tuple_associate_int(tuple, FIELD_MTIME, NULL, 0); // this indicates streaming
+            aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+            aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, 0); // this indicates streaming
 #ifdef DEBUG
             g_message("get_song_tuple: remote: tuple");
 #endif
@@ -710,8 +710,8 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         local_fd = TRUE;
     }
 
-    tuple = tuple_new();
-    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+    tuple = aud_tuple_new();
+    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
 
     id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READONLY);
 
@@ -730,22 +730,22 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 string = input_id3_get_string(tag, "TYER");
 
             if (string) {
-                tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
+                aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
                 g_free(string);
                 string = NULL;
             }
             realfn = g_filename_from_uri(filename, NULL, NULL);
             __set_and_free(tuple, FIELD_FILE_NAME, NULL, g_path_get_basename(realfn ? realfn : filename));
             __set_and_free(tuple, FIELD_FILE_PATH, NULL, g_path_get_dirname(realfn ? realfn : filename));
-            tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
+            aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
             g_free(realfn); realfn = NULL;
 
             // length
             string = input_id3_get_string(tag, "TLEN");
             if (string) {
-                tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
+                aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
 #ifdef DEBUG
-                g_message("get_song_tuple: TLEN = %d", tuple_get_int(tuple, FIELD_LENGTH, NULL));
+                g_message("get_song_tuple: TLEN = %d", aud_tuple_get_int(tuple, FIELD_LENGTH, NULL));
 #endif
                 g_free(string);
                 string = NULL;
@@ -754,14 +754,14 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 char *dummy = NULL;
                 int length = 0;
                 audmad_get_song_length(filename, &length, fd);
-                tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
+                aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
                 g_free(dummy);
             }
 
             // track number
             string = input_id3_get_string(tag, ID3_FRAME_TRACK);
             if (string) {
-                tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
+                aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
                 g_free(string);
                 string = NULL;
             }
@@ -769,7 +769,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             __set_and_free(tuple, FIELD_GENRE, NULL, input_id3_get_string(tag, ID3_FRAME_GENRE));
             __set_and_free(tuple, FIELD_COMMENT, NULL, input_id3_get_string(tag, ID3_FRAME_COMMENT));
 #ifdef DEBUG
-            g_message("genre = %s", tuple_get_string(tuple, FIELD_GENRE, NULL));
+            g_message("genre = %s", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
 #endif
         }
         id3_file_close(id3file);
@@ -778,22 +778,22 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         realfn = g_filename_from_uri(filename, NULL, NULL);
         __set_and_free(tuple, FIELD_FILE_NAME, NULL, g_path_get_basename(realfn ? realfn : filename));
         __set_and_free(tuple, FIELD_FILE_PATH, NULL, g_path_get_dirname(realfn ? realfn : filename));
-        tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
+        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
         g_free(realfn); realfn = NULL;
         // length
         {
             char *dummy = NULL;
             int length = 0;
-            if(tuple_get_int(tuple, FIELD_LENGTH, NULL) == -1) {
+            if(aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) == -1) {
                 audmad_get_song_length(filename, &length, fd);
-                tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
+                aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
             }
             g_free(dummy);
         }
     }
 
-    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-    tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
+    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
 
     if(local_fd)
         vfs_fclose(fd);

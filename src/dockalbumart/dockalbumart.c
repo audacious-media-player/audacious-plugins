@@ -83,8 +83,8 @@ pixbuf_find_and_load(Tuple *tuple)
     gchar *tmp;
     const gchar *file_path, *file_name;
 
-    file_name = tuple_get_string(tuple, FIELD_FILE_NAME, NULL);
-    file_path = tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
+    file_name = aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL);
+    file_path = aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL);
 
     if (file_name != NULL && file_path != NULL)
     {

@@ -246,25 +246,25 @@ static gchar *extname(const char *filename)
 static void _assoc_string(Tuple *tuple, const gint nfield, const gchar *str)
 {
     if (strlen(str) > 0)
-        tuple_associate_string(tuple, nfield, NULL, str);
+        aud_tuple_associate_string(tuple, nfield, NULL, str);
 }
 
 static void _assoc_int(Tuple *tuple, const gint nfield, const gint val)
 {
     if (val > 0)
-        tuple_associate_int(tuple, nfield, NULL, val);
+        aud_tuple_associate_int(tuple, nfield, NULL, val);
 }
 
 static Tuple *wma_get_song_tuple(gchar * filename)
 {
-    Tuple *ti = tuple_new_from_filename(filename);
+    Tuple *ti = aud_tuple_new_from_filename(filename);
     AVFormatContext *in = NULL;
 
     if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
 	return NULL;
 
-    tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
-    tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
+    aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
+    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
     av_find_stream_info(in);
 
@@ -285,10 +285,10 @@ static Tuple *wma_get_song_tuple(gchar * filename)
 static gchar *get_song_title(AVFormatContext *in, gchar * filename)
 {
     gchar *ret = NULL;
-    Tuple *ti = tuple_new_from_filename(filename);
+    Tuple *ti = aud_tuple_new_from_filename(filename);
 
-    tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
-    tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
+    aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
+    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
     _assoc_string(ti, FIELD_TITLE, in->title);
     _assoc_string(ti, FIELD_ARTIST, in->author);
@@ -299,7 +299,7 @@ static gchar *get_song_title(AVFormatContext *in, gchar * filename)
     _assoc_int(ti, FIELD_TRACK_NUMBER, in->track);
     _assoc_int(ti, FIELD_LENGTH, in->duration / 1000);
     
-    ret = tuple_formatter_make_title_string(ti, get_gentitle_format());
+    ret = aud_tuple_formatter_make_title_string(ti, get_gentitle_format());
 
     return ret;
 }
@@ -319,8 +319,8 @@ static void wma_get_song_info(char *filename, char **title_real, int *len_real)
     if (tuple == NULL)
         return;
 
-    (*len_real) = tuple_get_int(tuple, FIELD_LENGTH, NULL);
-    (*title_real) = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+    (*len_real) = aud_tuple_get_int(tuple, FIELD_LENGTH, NULL);
+    (*title_real) = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 }
 
 static void wma_playbuff(InputPlayback *playback, int out_size)

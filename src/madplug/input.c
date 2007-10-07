@@ -326,8 +326,8 @@ static void input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gcha
 {
     gchar *scratch = input_id3_get_string(tag, frame);
 
-    tuple_associate_string(tuple, nfield, NULL, scratch);
-    tuple_associate_string(tuple, -1, frame, scratch);
+    aud_tuple_associate_string(tuple, nfield, NULL, scratch);
+    aud_tuple_associate_string(tuple, -1, frame, scratch);
 
     g_free(scratch);
 }
@@ -337,9 +337,9 @@ static void input_alloc_tag(struct mad_info_t *info)
     Tuple *tuple;
 
     if (info->tuple == NULL) {
-        tuple = tuple_new();
+        tuple = aud_tuple_new();
         info->tuple = tuple;
-        tuple_associate_int(info->tuple, FIELD_LENGTH, NULL, -1);
+        aud_tuple_associate_int(info->tuple, FIELD_LENGTH, NULL, -1);
     }
 }
 
@@ -356,9 +356,9 @@ static void input_read_tag(struct mad_info_t *info)
     g_message("f: input_read_tag");
 #endif
     if (info->tuple != NULL)
-        tuple_free(info->tuple);
+        aud_tuple_free(info->tuple);
         
-    tuple = tuple_new_from_filename(info->filename);
+    tuple = aud_tuple_new_from_filename(info->filename);
     info->tuple = tuple;
 
     if(info->infile) {
@@ -392,7 +392,7 @@ static void input_read_tag(struct mad_info_t *info)
 
     string = input_id3_get_string(info->tag, ID3_FRAME_TRACK);
     if (string) {
-        tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
+        aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
         g_free(string);
         string = NULL;
     }
@@ -404,7 +404,7 @@ static void input_read_tag(struct mad_info_t *info)
         string = input_id3_get_string(info->tag, "TYER");
 
     if (string) {
-        tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
+        aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
         g_free(string);
         string = NULL;
     }
@@ -412,19 +412,19 @@ static void input_read_tag(struct mad_info_t *info)
     // length
     string = input_id3_get_string(info->tag, "TLEN");
     if (string) {
-        tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
+        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
 #ifdef DEBUG
         g_message("input_read_tag: TLEN = %d", atoi(string));
 #endif	
         g_free(string);
         string = NULL;
     } else
-        tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
     
-    tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
-    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
+    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
-    info->title = tuple_formatter_make_title_string(tuple, audmad_config.title_override == TRUE ?
+    info->title = aud_tuple_formatter_make_title_string(tuple, audmad_config.title_override == TRUE ?
         audmad_config.id3_format : get_gentitle_format());
 
     // for connection via proxy, we have to stop transfer once. I can't explain the reason.
@@ -452,8 +452,8 @@ void input_process_remote_metadata(struct mad_info_t *info)
 
         g_free(info->title);
         info->title = NULL;
-        tuple_disassociate(info->tuple, FIELD_TITLE, NULL);
-        tuple_disassociate(info->tuple, FIELD_ALBUM, NULL);
+        aud_tuple_disassociate(info->tuple, FIELD_TITLE, NULL);
+        aud_tuple_disassociate(info->tuple, FIELD_ALBUM, NULL);
 
         tmp = vfs_get_metadata(info->infile, "track-name");
         if(tmp){
@@ -461,7 +461,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
             gchar *scratch;
 
             scratch = str_to_utf8(tmp);
-            tuple_associate_string(info->tuple, FIELD_TITLE, NULL, scratch);
+            aud_tuple_associate_string(info->tuple, FIELD_TITLE, NULL, scratch);
             g_free(scratch);
 
             g_free(tmp);
@@ -474,8 +474,8 @@ void input_process_remote_metadata(struct mad_info_t *info)
             gchar *scratch;
 
             scratch = str_to_utf8(tmp);
-            tuple_associate_string(info->tuple, FIELD_ALBUM, NULL, scratch);
-            tuple_associate_string(info->tuple, -1, "stream", scratch);
+            aud_tuple_associate_string(info->tuple, FIELD_ALBUM, NULL, scratch);
+            aud_tuple_associate_string(info->tuple, -1, "stream", scratch);
             g_free(scratch);
 
             g_free(tmp);
@@ -483,7 +483,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
         }
 
         if (metadata)
-            tmp = tuple_formatter_process_string(info->tuple, "${?title:${title}}${?stream: (${stream})");
+            tmp = aud_tuple_formatter_process_string(info->tuple, "${?title:${title}}${?stream: (${stream})");
         else {
             gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
             gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
@@ -625,7 +625,7 @@ gboolean input_term(struct mad_info_t * info)
         g_free(info->mp3gain_minmax_str);
 
     if (info->tuple) {
-        tuple_free(info->tuple);
+        aud_tuple_free(info->tuple);
         info->tuple = NULL;
     }
 

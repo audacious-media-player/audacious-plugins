@@ -84,7 +84,7 @@ static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *lengt
 static Tuple			*cdaudio_get_song_tuple(gchar *filename);
 
 static void				menu_click();
-static Tuple			*create_tuple_from_trackinfo(char *filename);
+static Tuple			*create_aud_tuple_from_trackinfo(char *filename);
 static void				dae_play_loop(dae_params_t *pdae_params);
 static int				calculate_track_length(int startlsn, int endlsn);
 static int				find_trackno_from_filename(char *filename);
@@ -507,12 +507,12 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	playing_track = trackno;
 	is_paused = FALSE;
 
-	tuple = create_tuple_from_trackinfo(pinputplayback->filename);
-	title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+	tuple = create_aud_tuple_from_trackinfo(pinputplayback->filename);
+	title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
 	inputplugin.set_info(title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
 	g_free(title);
-	tuple_free(tuple);
+	aud_tuple_free(tuple);
 
 	if (use_dae) {
 		CDDEBUG("using digital audio extraction\n");
@@ -746,11 +746,11 @@ void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 	CDDEBUG("cdaudio_get_song_info(\"%s\")\n", filename);
 
 	gint trackno = find_trackno_from_filename(filename);
-	Tuple *tuple = create_tuple_from_trackinfo(filename);
+	Tuple *tuple = create_aud_tuple_from_trackinfo(filename);
 
 	if(tuple) {
-		*title = tuple_formatter_process_string(tuple, get_gentitle_format());
-		tuple_free(tuple);
+		*title = aud_tuple_formatter_process_string(tuple, get_gentitle_format());
+		aud_tuple_free(tuple);
 		tuple = NULL;
 	}
 	*length = calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
@@ -760,7 +760,7 @@ Tuple *cdaudio_get_song_tuple(gchar *filename)
 {
 	CDDEBUG("cdaudio_get_song_tuple(\"%s\")\n", filename);
 
-	return create_tuple_from_trackinfo(filename);
+	return create_aud_tuple_from_trackinfo(filename);
 }
 
 
@@ -797,32 +797,32 @@ void menu_click()
 	g_list_free(list);
 }
 
-Tuple *create_tuple_from_trackinfo(char *filename)
+Tuple *create_aud_tuple_from_trackinfo(char *filename)
 {
 	if (trackinfo == NULL)
 		return NULL;
 
-	Tuple *tuple = tuple_new_from_filename(filename);
+	Tuple *tuple = aud_tuple_new_from_filename(filename);
 	gint trackno = find_trackno_from_filename(filename);
 
 	if (trackno < firsttrackno || trackno > lasttrackno)
 		return NULL;
 
 	if(strlen(trackinfo[trackno].performer)) {
-		tuple_associate_string(tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
+		aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
 	}
 	if(strlen(trackinfo[0].name)) {
-		tuple_associate_string(tuple, FIELD_ALBUM, NULL, trackinfo[0].name);
+		aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, trackinfo[0].name);
 	}
 	if(strlen(trackinfo[trackno].name)) {
-		tuple_associate_string(tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
+		aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
 	}
-	tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, trackno);
-	tuple_associate_string(tuple, -1, "ext", "cda"); //XXX should do? --yaz
+	aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, trackno);
+	aud_tuple_associate_string(tuple, -1, "ext", "cda"); //XXX should do? --yaz
 
-	tuple_associate_int(tuple, FIELD_LENGTH, NULL, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 	if(strlen(trackinfo[trackno].genre)) {
-		tuple_associate_string(tuple, FIELD_GENRE, NULL,  trackinfo[trackno].genre);
+		aud_tuple_associate_string(tuple, FIELD_GENRE, NULL,  trackinfo[trackno].genre);
 	}
 	//tuple->year = 0; todo: set the year
 

@@ -131,12 +131,12 @@ static item_t *q_put(Tuple *tuple, int len)
 
 	item = malloc(sizeof(item_t));
 
-	item->artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
-	item->title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
+	item->artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
+	item->title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
 	g_snprintf(item->utctime, sizeof(item->utctime), "%ld", time(NULL));
 	g_snprintf(item->len, sizeof(item->len), "%d", len);
 	g_snprintf(item->track, sizeof(item->track), "%d",
-		tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+		aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
 
 #ifdef NOTYET
 	if(tuple->mb == NULL)
@@ -147,7 +147,7 @@ static item_t *q_put(Tuple *tuple, int len)
 		item->mb = fmt_escape((char*)tuple->mb);
 #endif
 
-	if((album = tuple_get_string(tuple, FIELD_ALBUM, NULL)) != NULL)
+	if((album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)) != NULL)
 		item->album = fmt_escape("");
 	else
 		item->album = fmt_escape((char*) album);
@@ -674,11 +674,11 @@ static int sc_submit_np(Tuple *tuple)
 	/*cfa(&post, &last, "debug", "failed");*/
 
 	entry = g_strdup_printf("s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
-		tuple_get_string(tuple, FIELD_ARTIST, NULL),
-		tuple_get_string(tuple, FIELD_TITLE, NULL),
-		tuple_get_string(tuple, FIELD_ALBUM, NULL) ? tuple_get_string(tuple, FIELD_ALBUM, NULL) : "",
-		tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
-		tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+		aud_tuple_get_string(tuple, FIELD_ARTIST, NULL),
+		aud_tuple_get_string(tuple, FIELD_TITLE, NULL),
+		aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) ? aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) : "",
+		aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
+		aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
 
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *) entry);
 	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
@@ -883,15 +883,15 @@ static void read_cache(void)
 		ptr1 = ptr2 + 1;
 
 		{
-			Tuple *tuple = tuple_new();
+			Tuple *tuple = aud_tuple_new();
 
-			tuple_associate_string(tuple, FIELD_ARTIST, NULL, xmms_urldecode_plain(artist));
-			tuple_associate_string(tuple, FIELD_TITLE, NULL, xmms_urldecode_plain(title));
-			tuple_associate_string(tuple, FIELD_ALBUM, NULL, xmms_urldecode_plain(album));
+			aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, xmms_urldecode_plain(artist));
+			aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, xmms_urldecode_plain(title));
+			aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, xmms_urldecode_plain(album));
 
 			item = q_put(tuple, atoi(len));
 
-			tuple_free(tuple);
+			aud_tuple_free(tuple);
 		}
 
 		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",

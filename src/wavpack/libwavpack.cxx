@@ -392,28 +392,28 @@ WavpackPluginGetQualityString(WavpackContext *ctx)
 }
 
 static Tuple *
-tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
+aud_tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
 {
     ape_tag tag;
     Tuple *ti;
     int sample_rate = WavpackGetSampleRate(ctx);
 
-    ti = tuple_new_from_filename(fn);
+    ti = aud_tuple_new_from_filename(fn);
 
     load_tag(&tag, ctx);
 
-    tuple_associate_string(ti, FIELD_TITLE, NULL, tag.title);
-    tuple_associate_string(ti, FIELD_ARTIST, NULL, tag.artist);
-    tuple_associate_string(ti, FIELD_ALBUM, NULL, tag.album);
-    tuple_associate_string(ti, FIELD_GENRE, NULL, tag.genre);
-    tuple_associate_string(ti, FIELD_COMMENT, NULL, tag.comment);
-    tuple_associate_string(ti, FIELD_DATE, NULL, tag.year);
-    tuple_associate_string(ti, FIELD_QUALITY, NULL, WavpackPluginGetQualityString(ctx).c_str());
-    tuple_associate_string(ti, FIELD_CODEC, NULL, "WavPack");
+    aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tag.title);
+    aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, tag.artist);
+    aud_tuple_associate_string(ti, FIELD_ALBUM, NULL, tag.album);
+    aud_tuple_associate_string(ti, FIELD_GENRE, NULL, tag.genre);
+    aud_tuple_associate_string(ti, FIELD_COMMENT, NULL, tag.comment);
+    aud_tuple_associate_string(ti, FIELD_DATE, NULL, tag.year);
+    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, WavpackPluginGetQualityString(ctx).c_str());
+    aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "WavPack");
 
-    tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, atoi(tag.track));
-    tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(tag.year));
-    tuple_associate_int(ti, FIELD_LENGTH, NULL, (int)(WavpackGetNumSamples(ctx) / sample_rate) * 1000);
+    aud_tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, atoi(tag.track));
+    aud_tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(tag.year));
+    aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, (int)(WavpackGetNumSamples(ctx) / sample_rate) * 1000);
 
     return ti;
 }
@@ -424,13 +424,13 @@ generate_title(const char *fn, WavpackContext *ctx)
     static char *displaytitle = NULL;
     Tuple *ti;
 
-    ti = tuple_from_WavpackContext(fn, ctx);
+    ti = aud_tuple_from_WavpackContext(fn, ctx);
 
-    displaytitle = tuple_formatter_make_title_string(ti, cfg.gentitle_format);
+    displaytitle = aud_tuple_formatter_make_title_string(ti, cfg.gentitle_format);
     if (!displaytitle || *displaytitle == '\0')
         displaytitle = g_strdup(fn);
 
-    tuple_free((void *) ti);
+    aud_tuple_free((void *) ti);
 
     return displaytitle;
 }
@@ -446,7 +446,7 @@ wv_get_song_tuple(char *filename)
         return NULL;
     }
 
-    ti = tuple_from_WavpackContext(filename, d.ctx);
+    ti = aud_tuple_from_WavpackContext(filename, d.ctx);
 
     return ti;
 }
@@ -460,7 +460,7 @@ wv_probe_for_tuple(gchar *filename, VFSFile *file)
     if (!d.attach(filename, file))
         return NULL;
 
-    ti = tuple_from_WavpackContext(filename, d.ctx);
+    ti = aud_tuple_from_WavpackContext(filename, d.ctx);
 
     return ti;
 }

@@ -104,14 +104,14 @@ fill_song_tuple (char *filename, Tuple *ti)
 	realfn = g_filename_from_uri(filename, NULL, NULL);
 	tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
 	if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
-		tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(realfn ? realfn : filename));
+		aud_tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(realfn ? realfn : filename));
 	else
-		tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(tmp_sndfile, SF_STR_TITLE));
+		aud_tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(tmp_sndfile, SF_STR_TITLE));
 
-	tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(tmp_sndfile, SF_STR_ARTIST));
-	tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(tmp_sndfile, SF_STR_COMMENT));
-	tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(tmp_sndfile, SF_STR_DATE));
-	tuple_associate_string(ti, -1, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
+	aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, sf_get_string(tmp_sndfile, SF_STR_ARTIST));
+	aud_tuple_associate_string(ti, FIELD_COMMENT, NULL, sf_get_string(tmp_sndfile, SF_STR_COMMENT));
+	aud_tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(tmp_sndfile, SF_STR_DATE));
+	aud_tuple_associate_string(ti, -1, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
 
 	g_free(realfn); realfn = NULL;
 
@@ -122,7 +122,7 @@ fill_song_tuple (char *filename, Tuple *ti)
 	tmp_sndfile = NULL;
 
 	if (tmp_sfinfo.samplerate > 0)
-		tuple_associate_int(ti, FIELD_LENGTH, NULL, (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
+		aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
 
 	switch (tmp_sfinfo.format & SF_FORMAT_TYPEMASK)
 	{
@@ -279,12 +279,12 @@ fill_song_tuple (char *filename, Tuple *ti)
 		g_string_append_printf(codec_gs, "%s", format);
 	codec = g_strdup(codec_gs->str);
 	g_string_free(codec_gs, TRUE);
-	tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
+	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
 
 	if (lossy != 0)
-		tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
+		aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 	else
-		tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
+		aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
 }
 
 static gchar *get_title(char *filename)
@@ -292,16 +292,16 @@ static gchar *get_title(char *filename)
 	Tuple *tuple;
 	gchar *title;
 
-	tuple = tuple_new_from_filename(filename);
+	tuple = aud_tuple_new_from_filename(filename);
 	fill_song_tuple(filename, tuple);
-	title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+	title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 	if (*title == '\0')
 	{
 		g_free(title);
-		title = g_strdup(tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+		title = g_strdup(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
 	}
 
-	tuple_free(tuple);
+	aud_tuple_free(tuple);
 	return title;
 }
 
@@ -512,7 +512,7 @@ get_song_info (gchar *filename, gchar **title, gint *length)
 static Tuple*
 get_song_tuple (gchar *filename)
 {
-	Tuple *ti = tuple_new_from_filename(filename);
+	Tuple *ti = aud_tuple_new_from_filename(filename);
 	fill_song_tuple(filename, ti);
 	return ti;
 }

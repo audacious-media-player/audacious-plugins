@@ -217,24 +217,24 @@ static void sexypsf_xmms_getsonginfo(char *fn, char **title, int *length)
     }
 }
 
-static Tuple *get_tuple_psf(gchar *fn) {
+static Tuple *get_aud_tuple_psf(gchar *fn) {
     Tuple *tuple = NULL;
     PSFINFO *tmp = sexypsf_getpsfinfo(fn);
 
     if (tmp->length) {
-        tuple = tuple_new_from_filename(fn);
-	tuple_associate_int(tuple, FIELD_LENGTH, NULL, tmp->length);
-	tuple_associate_string(tuple, FIELD_ARTIST, NULL, tmp->artist);
-	tuple_associate_string(tuple, FIELD_ALBUM, NULL, tmp->game);
-	tuple_associate_string(tuple, -1, "game", tmp->game);
-        tuple_associate_string(tuple, FIELD_TITLE, NULL, tmp->title);
-        tuple_associate_string(tuple, FIELD_GENRE, NULL, tmp->genre);
-        tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, tmp->copyright);
-        tuple_associate_string(tuple, FIELD_QUALITY, NULL, "sequenced");
-        tuple_associate_string(tuple, FIELD_CODEC, NULL, "PlayStation Audio");
-        tuple_associate_string(tuple, -1, "console", "PlayStation");
-        tuple_associate_string(tuple, -1, "dumper", tmp->psfby);
-        tuple_associate_string(tuple, FIELD_COMMENT, NULL, tmp->comment);
+        tuple = aud_tuple_new_from_filename(fn);
+	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, tmp->length);
+	aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, tmp->artist);
+	aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, tmp->game);
+	aud_tuple_associate_string(tuple, -1, "game", tmp->game);
+        aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, tmp->title);
+        aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, tmp->genre);
+        aud_tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, tmp->copyright);
+        aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "sequenced");
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "PlayStation Audio");
+        aud_tuple_associate_string(tuple, -1, "console", "PlayStation");
+        aud_tuple_associate_string(tuple, -1, "dumper", tmp->psfby);
+        aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, tmp->comment);
 
         sexypsf_freepsfinfo(tmp);
     }
@@ -244,11 +244,11 @@ static Tuple *get_tuple_psf(gchar *fn) {
 
 static gchar *get_title_psf(gchar *fn) {
     gchar *title = NULL;
-    Tuple *tuple = get_tuple_psf(fn);
+    Tuple *tuple = get_aud_tuple_psf(fn);
 
     if (tuple != NULL) {
-        title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
-        tuple_free(tuple);
+        title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
+        aud_tuple_free(tuple);
     }
     else
         title = g_path_get_basename(fn);
@@ -267,7 +267,7 @@ InputPlugin sexypsf_ip =
     .seek = sexypsf_xmms_seek,
     .get_time = sexypsf_xmms_gettime,
     .get_song_info = sexypsf_xmms_getsonginfo,
-    .get_song_tuple = get_tuple_psf,
+    .get_song_tuple = get_aud_tuple_psf,
     .is_our_file_from_vfs = is_our_fd,
     .vfs_extensions = sexypsf_fmts,
 };

@@ -132,9 +132,9 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
     Playlist *playlist = playlist_get_active();
 
 
-    tuple = tuple_new();
-    tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-    tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);
+    tuple = aud_tuple_new();
+    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
+    aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, -1);
 
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
@@ -172,11 +172,11 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
                     xmlChar *str = xmlNodeGetContent(nptr);
                     switch (xspf_entries[i].type) {
                         case TUPLE_STRING:
-                            tuple_associate_string(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
+                            aud_tuple_associate_string(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
                             break;
                         
                         case TUPLE_INT:
-                            tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
+                            aud_tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
                         
                         default:
@@ -196,17 +196,17 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
         gchar *scratch;
 
         scratch = g_path_get_basename(location);
-        tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
+        aud_tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
         g_free(scratch);
 
         scratch = g_path_get_dirname(location);
-        tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
+        aud_tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
         g_free(scratch);
 
-        tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
+        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
 
-        XSDEBUG("tuple->file_name = %s\n", tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
-        XSDEBUG("tuple->file_path = %s\n", tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
+        XSDEBUG("tuple->file_name = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+        XSDEBUG("tuple->file_path = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
 
         // add file to playlist
         uri = g_filename_to_uri(location, NULL, NULL);
@@ -504,7 +504,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 
                 switch (xs->type) {
                     case TUPLE_STRING:
-                        scratch = tuple_get_string(entry->tuple, xs->tupleField, NULL);
+                        scratch = aud_tuple_get_string(entry->tuple, xs->tupleField, NULL);
                         switch (xs->compare) {
                             case CMP_DEF: isOK = (scratch != NULL); break;
                             case CMP_NULL: isOK = (scratch == NULL); break;
@@ -514,7 +514,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                         break;
                     
                     case TUPLE_INT:
-                        scratchi = tuple_get_int(entry->tuple, xs->tupleField, NULL);
+                        scratchi = aud_tuple_get_int(entry->tuple, xs->tupleField, NULL);
                         switch (xs->compare) {
                             case CMP_DEF: isOK = (scratchi != 0); break;
                             case CMP_GT:  isOK = (scratchi > 0); break;
@@ -531,7 +531,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
 
             /* Write mtime unconditionally to support staticlist */
             xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL,
-                tuple_get_int(entry->tuple, FIELD_MTIME, NULL));
+                aud_tuple_get_int(entry->tuple, FIELD_MTIME, NULL));
         } else {
 
             if (entry->title != NULL && g_utf8_validate(entry->title, -1, NULL))

@@ -314,22 +314,22 @@ static void mp4_cleanup(void)
 {
 }
 
-static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
+static Tuple *mp4_get_song_aud_tuple_base(char *filename, VFSFile *mp4fh)
 {
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
     mp4ff_t *mp4file;
-    Tuple *ti = tuple_new_from_filename(filename);
+    Tuple *ti = aud_tuple_new_from_filename(filename);
 
     /* check if this file is an ADTS stream, if so return a blank tuple */
     if (parse_aac_stream(mp4fh))
     {
         g_free(mp4cb);
 
-        tuple_associate_string(ti, FIELD_TITLE, NULL, vfs_get_metadata(mp4fh, "track-name"));
-        tuple_associate_string(ti, FIELD_ALBUM, NULL, vfs_get_metadata(mp4fh, "stream-name"));
+        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, vfs_get_metadata(mp4fh, "track-name"));
+        aud_tuple_associate_string(ti, FIELD_ALBUM, NULL, vfs_get_metadata(mp4fh, "stream-name"));
 
-        tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
-        tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
+        aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
+        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
         vfs_fclose(mp4fh);
         return ti;
@@ -385,45 +385,45 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
         faacDecClose(decoder);
 
         msDuration = ((float)numSamples * (float)(framesize - 1.0)/(float)samplerate) * 1000;
-        tuple_associate_int(ti, FIELD_LENGTH, NULL, msDuration);
+        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, msDuration);
 
         mp4ff_meta_get_title(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, FIELD_TITLE, NULL, tmpval);
+            aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_album(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, FIELD_ALBUM, NULL, tmpval);
+            aud_tuple_associate_string(ti, FIELD_ALBUM, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_artist(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, FIELD_ARTIST, NULL, tmpval);
+            aud_tuple_associate_string(ti, FIELD_ARTIST, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_genre(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_string(ti, FIELD_GENRE, NULL, tmpval);
+            aud_tuple_associate_string(ti, FIELD_GENRE, NULL, tmpval);
             free(tmpval);
         }
 
         mp4ff_meta_get_date(mp4file, &tmpval);
         if (tmpval)
         {
-            tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(tmpval));
+            aud_tuple_associate_int(ti, FIELD_YEAR, NULL, atoi(tmpval));
             free(tmpval);
         }
 
-        tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
-        tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
+        aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Advanced Audio Coding (AAC)");
+        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
 
         free (mp4cb);
         vfs_fclose(mp4fh);
@@ -441,7 +441,7 @@ static Tuple *mp4_get_song_tuple(char *filename)
 
     mp4fh = remote ? vfs_buffered_file_new_from_uri(filename) : vfs_fopen(filename, "rb");
 
-    tuple = mp4_get_song_tuple_base(filename, mp4fh);
+    tuple = mp4_get_song_aud_tuple_base(filename, mp4fh);
 
     return tuple;
 }
@@ -457,9 +457,9 @@ static gchar   *mp4_get_song_title(char *filename)
     gchar *title;
     Tuple *tuple = mp4_get_song_tuple(filename);
 
-    title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+    title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
-    tuple_free(tuple);
+    aud_tuple_free(tuple);
 
     return title;
 }

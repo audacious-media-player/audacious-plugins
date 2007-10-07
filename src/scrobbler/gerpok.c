@@ -92,8 +92,8 @@ static void q_put(Tuple *tuple, int len)
 
 	item = malloc(sizeof(item_t));
 
-	item->artist = fmt_escape(tuple_get_string(tuple, FIELD_ARTIST, NULL));
-	item->title = fmt_escape(tuple_get_string(tuple, FIELD_TITLE, NULL));
+	item->artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
+	item->title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
 	item->utctime = fmt_escape(fmt_timestr(time(NULL), 1));
 	g_snprintf(item->len, sizeof(item->len), "%d", len);
 
@@ -106,7 +106,7 @@ static void q_put(Tuple *tuple, int len)
 		item->mb = fmt_escape((char*)tuple->mb);
 #endif
 
-	if((album = tuple_get_string(tuple, FIELD_ALBUM, NULL)))
+	if((album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)))
 		item->album = fmt_escape("");
 	else
 		item->album = fmt_escape((char*) album);

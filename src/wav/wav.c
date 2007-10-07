@@ -179,19 +179,19 @@ get_title(const gchar * filename)
     Tuple *tuple;
     gchar *title;
 
-    tuple = tuple_new_from_filename(filename);
+    tuple = aud_tuple_new_from_filename(filename);
 
-    tuple_associate_string(tuple, FIELD_CODEC, NULL, "RIFF/WAV Audio (ADPCM)");
-    tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
+    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "RIFF/WAV Audio (ADPCM)");
+    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
 
-    title = tuple_formatter_make_title_string(tuple, get_gentitle_format());
+    title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
     if (*title == '\0')
     {
         g_free(title);
-        title = g_strdup(tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
+        title = g_strdup(aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
     }
 
-    tuple_free(tuple);
+    aud_tuple_free(tuple);
 
     return title;
 }
