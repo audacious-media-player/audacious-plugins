@@ -419,7 +419,7 @@ static void wma_play_file(InputPlayback *playback)
 
     wma_st_buff  = ST_BUFF;
 	
-    wma_ip.set_info(wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
+    playback->set_params(playback, wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
 
     /* av_malloc() will wrap posix_memalign() if necessary -nenolod */
     wma_s_outbuf = av_malloc(wma_st_buff);
