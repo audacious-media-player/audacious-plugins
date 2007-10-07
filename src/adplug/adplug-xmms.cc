@@ -801,7 +801,7 @@ play_loop (void *data)
 
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  adplug_ip.set_info (plr.songtitle, plr.songlength, freq * sampsize * 8,
+  playback->set_params (playback, plr.songtitle, plr.songlength, freq * sampsize * 8,
                       freq, stereo ? 2 : 1);
 
   // Rewind player to right subsong

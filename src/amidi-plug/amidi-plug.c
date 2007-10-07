@@ -445,7 +445,7 @@ static void amidiplug_play( InputPlayback * playback )
       /* our length is in microseconds, but the player wants milliseconds */
       filename = g_filename_from_uri( filename_uri , NULL , NULL );
       if ( !filename ) filename = g_strdup( filename_uri );
-      amidiplug_ip.set_info( G_PATH_GET_BASENAME(filename) ,
+      playback->set_params( playback , G_PATH_GET_BASENAME(filename) ,
                              (gint)(midifile.length / 1000) ,
                              au_bitdepth * au_samplerate * au_channels / 8 ,
                              au_samplerate , au_channels );

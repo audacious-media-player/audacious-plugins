@@ -377,7 +377,7 @@ static void play_file( InputPlayback *playback )
 			char* title = format_and_free_ti( ti, &length );
 			if ( title )
 			{
-				console_ip.set_info( title, length, fh.emu->voice_count() * 1000, sample_rate, 2 );
+				playback->set_params( playback, title, length, fh.emu->voice_count() * 1000, sample_rate, 2 );
 				g_free( title );
 			}
 		}

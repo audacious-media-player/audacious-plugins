@@ -487,6 +487,13 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip->pb_ready_val = data->pb_ready_val;
 		real_ip->set_pb_ready = data->set_pb_ready;
 
+		real_ip->pb_change_mutex = data->pb_change_mutex;
+		real_ip->pb_change_cond = data->pb_change_cond;
+		real_ip->set_pb_change = data->set_pb_change;
+
+		real_ip->set_params = data->set_params;
+		real_ip->set_title = data->set_title;
+
 		real_play_thread = g_thread_create((GThreadFunc)(real_ip->plugin->play_file), (gpointer)real_ip, TRUE, NULL);
 		g_usleep(50000); // wait for 50msec while real input plugin is initializing.
 

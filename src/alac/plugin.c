@@ -349,7 +349,7 @@ gpointer decode_thread(void *args)
 	(float)(demux_res.sample_rate / 251));
 
     playback->output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
-    alac_ip.set_info(title, duration, -1, demux_res.sample_rate, demux_res.num_channels);
+    playback->set_params(playback, title, duration, -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
     GetBuffer(&demux_res);

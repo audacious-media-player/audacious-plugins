@@ -558,7 +558,7 @@ void flac_play_file (InputPlayback* input) {
 
     input->playing = TRUE;
 
-    flac_ip.set_info(get_title(input->filename, main_info), l, -1, main_info->stream.samplerate, main_info->stream.channels);
+    input->set_params(input, get_title(input->filename, main_info), l, -1, main_info->stream.samplerate, main_info->stream.channels);
 
     thread = g_thread_self();
     input->set_pb_ready(input);

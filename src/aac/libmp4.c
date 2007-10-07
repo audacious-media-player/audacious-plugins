@@ -518,7 +518,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     playback->output->open_audio(FMT_S16_NE, samplerate, channels);
     playback->output->flush(0);
 
-    mp4_ip.set_info(xmmstitle, msDuration,
+    playback->set_params(playback, xmmstitle, msDuration,
             mp4ff_get_avg_bitrate( mp4file, mp4track ),
             samplerate,channels);
 
@@ -695,7 +695,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
         return;
     }
 
-    mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
+    playback->set_params(playback, xmmstitle, -1, -1, samplerate, channels);
     playback->output->flush(0);
 
     while(buffer_playing && buffervalid > 0 && streambuffer != NULL)
@@ -733,7 +733,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
 
                     ostmp = stemp;
 
-                    mp4_ip.set_info(xmmstitle, -1, -1, samplerate, channels);
+                    playback->set_params(playback, xmmstitle, -1, -1, samplerate, channels);
                 }
             }
 
