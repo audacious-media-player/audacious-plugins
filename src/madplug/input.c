@@ -497,7 +497,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
         if ( ( ( info->prev_title != NULL ) && ( strcmp(info->prev_title,tmp) ) ) ||
              ( info->prev_title == NULL ) )
         {
-            mad_plugin->set_info(tmp,
+            info->playback->set_params(info->playback, tmp,
                                  -1, // indicate the stream is unseekable
                                  info->bitrate, info->freq, info->channels);
             if (info->prev_title)

@@ -486,7 +486,7 @@ gpointer decode_loop(gpointer arg)
                                        audmad_config.id3_format : get_gentitle_format());
 
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
-        mad_plugin->set_info(info->title,
+        info->playback->set_params(info->playback, info->title,
                              (tlen == 0 || info->size <= 0) ? -1 : tlen,
                              info->bitrate, info->freq, info->channels);
 #ifdef DEBUG
@@ -613,7 +613,7 @@ gpointer decode_loop(gpointer arg)
                 g_message("decode vbr tlen = %d", tlen);
 #endif
 #endif
-                mad_plugin->set_info(info->title,
+                info->playback->set_params(info->playback, info->title,
                                      (tlen == 0 || info->size <= 0) ? -1 : tlen,
                                      info->bitrate, info->freq, info->channels);
             }
