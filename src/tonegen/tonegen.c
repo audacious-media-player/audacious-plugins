@@ -203,7 +203,7 @@ static void tone_play(InputPlayback *playback)
 	}
 
 	name = tone_title(filename);
-	tone_ip.set_info(name, -1, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
+	playback->set_params(playback, name, -1, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
 	g_free(name);
 	playback->data = frequencies;
 	play_thread = g_thread_self();

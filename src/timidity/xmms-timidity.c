@@ -330,7 +330,7 @@ void xmmstimid_play_file(InputPlayback * playback) {
 	mid_istream_close(stream);
 
 	if (xmmstimid_song == NULL) {
-		xmmstimid_ip.set_info_text(_("Couldn't load MIDI file"));
+		playback->set_title(playback, _("Couldn't load MIDI file"));
 		return;
 	}
 
@@ -345,7 +345,7 @@ void xmmstimid_play_file(InputPlayback * playback) {
 	}
 
 	title = xmmstimid_get_title(filename);
-	xmmstimid_ip.set_info(title,
+	playback->set_params(playback, title,
 			mid_song_get_total_time(xmmstimid_song),
 			0, xmmstimid_opts.rate, xmmstimid_opts.channels);
 	g_free(title);

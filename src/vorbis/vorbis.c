@@ -473,7 +473,7 @@ vorbis_play_loop(gpointer arg)
 
     g_mutex_unlock(vf_mutex);
 
-    vorbis_ip.set_info(title, time, br, samplerate, channels);
+    playback->set_params(playback, title, time, br, samplerate, channels);
     if (!playback->output->open_audio(FMT_S16_NE, vi->rate, vi->channels)) {
         playback->error = TRUE;
         goto play_cleanup;
@@ -521,7 +521,7 @@ vorbis_play_loop(gpointer arg)
 
             g_mutex_unlock(vf_mutex);
 
-            vorbis_ip.set_info(title, time, br, samplerate, channels);
+            playback->set_params(playback, title, time, br, samplerate, channels);
             timercount = playback->output->output_time();
 
             last_section = current_section;

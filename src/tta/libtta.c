@@ -491,7 +491,7 @@ play_file (InputPlayback *playback)
 	bitrate  = (int) ((float) datasize / origsize *
 	        (info.SAMPLERATE * info.NCH * info.BPS));
 
-	tta_ip.set_info (title, 1000 * info.LENGTH, bitrate, info.SAMPLERATE, info.NCH);
+	playback->set_params(playback, title, 1000 * info.LENGTH, bitrate, info.SAMPLERATE, info.NCH);
 
 	if (title)
 	    g_free (title);

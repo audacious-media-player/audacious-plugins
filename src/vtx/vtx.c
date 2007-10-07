@@ -236,7 +236,7 @@ void vtx_play_file (InputPlayback *playback)
       ti = vtx_get_song_aud_tuple_from_vtx(playback->filename, &vtx);
       buf = aud_tuple_formatter_make_title_string(ti, get_gentitle_format());
 
-      vtx_ip.set_info (buf, vtx.hdr.regdata_size / 14 * 1000 / 50,
+      playback->set_params (playback, buf, vtx.hdr.regdata_size / 14 * 1000 / 50,
  	  	       14 * 50 * 8, freq, bits / 8);
 
       g_free (buf);
