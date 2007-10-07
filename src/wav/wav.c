@@ -388,7 +388,7 @@ play_file(InputPlayback * playback)
         rate =
             wav_file->samples_per_sec * wav_file->channels *
             (wav_file->bits_per_sample / 8);
-        wav_ip.set_info(name, 1000 * (wav_file->length / rate), 8 * rate,
+        playback->set_params(playback, name, 1000 * (wav_file->length / rate), 8 * rate,
                         wav_file->samples_per_sec, wav_file->channels);
         g_free(name);
         wav_file->seek_to = -1;

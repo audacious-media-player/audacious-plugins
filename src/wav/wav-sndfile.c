@@ -449,7 +449,7 @@ play_start (InputPlayback *playback)
 		return;
 	}
 
-	wav_ip.set_info (song_title, song_length, bit_rate, sfinfo.samplerate, sfinfo.channels);
+	playback->set_params(playback, song_title, song_length, bit_rate, sfinfo.samplerate, sfinfo.channels);
 	g_free (song_title);
 
 	playback->playing = TRUE;
