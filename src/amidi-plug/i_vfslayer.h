@@ -23,7 +23,7 @@
 #define _I_VFSLAYER_H 1
 
 #include "i_common.h"
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 
 
 #define VFS_FOPEN( x , y )		aud_vfs_fopen( x , y )
