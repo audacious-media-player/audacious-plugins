@@ -108,7 +108,7 @@ InputPlugin vorbis_ip = {
     .file_info_box = vorbis_file_info_box,       /* file info box, tag editing */
     .get_song_tuple = get_song_tuple,
     .is_our_file_from_vfs = vorbis_check_fd,
-    .aud_vfs_extensions = vorbis_fmts,
+    .vfs_extensions = vorbis_fmts,
 };
 
 InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };

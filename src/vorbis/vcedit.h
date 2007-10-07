@@ -17,7 +17,7 @@ extern "C" {
 #include <stdio.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 
 typedef size_t (*vcedit_read_func)(void *, size_t, size_t, void *);
 typedef size_t (*vcedit_write_func)(const void *, size_t, size_t, void *);

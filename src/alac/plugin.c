@@ -303,7 +303,7 @@ InputPlugin alac_ip = {
     .seek = seek,
     .get_song_tuple = build_tuple,
     .is_our_file_from_vfs = is_our_fd,
-    .aud_vfs_extensions = fmts,
+    .vfs_extensions = fmts,
 };
 
 InputPlugin *alac_iplist[] = { &alac_ip, NULL };

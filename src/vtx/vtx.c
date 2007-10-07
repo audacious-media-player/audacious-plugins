@@ -320,7 +320,7 @@ InputPlugin vtx_ip = {
 	.file_info_box = vtx_file_info,		/* Show file-information dialog */
 	.get_song_tuple = vtx_get_song_tuple,	/* Tuple */
 	.is_our_file_from_vfs = vtx_is_our_fd,		/* VFS */
-	.aud_vfs_extensions = vtx_fmts		/* ext assist */
+	.vfs_extensions = vtx_fmts		/* ext assist */
 };
 
 InputPlugin *vtx_iplist[] = { &vtx_ip, NULL };

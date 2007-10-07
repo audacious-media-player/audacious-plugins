@@ -5,7 +5,7 @@
 
 #include "Data_Reader.h"
 
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 
 class Vfs_File_Reader : public File_Reader {
 public:

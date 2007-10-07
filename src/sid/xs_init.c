@@ -43,7 +43,7 @@ InputPlugin xs_plugin_ip = {
 	.file_info_box = xs_fileinfo,		/* Show file-information dialog */
 
 	.get_song_tuple = xs_get_song_tuple,		/* Get Tuple */
-	.aud_vfs_extensions = xs_sid_fmts,			/* File ext assist */
+	.vfs_extensions = xs_sid_fmts,			/* File ext assist */
 	.probe_for_tuple = xs_probe_for_tuple
 };
 

@@ -269,7 +269,7 @@ InputPlugin sexypsf_ip =
     .get_song_info = sexypsf_xmms_getsonginfo,
     .get_song_tuple = get_aud_tuple_psf,
     .is_our_file_from_vfs = is_our_fd,
-    .aud_vfs_extensions = sexypsf_fmts,
+    .vfs_extensions = sexypsf_fmts,
 };
 
 InputPlugin *sexypsf_iplist[] = { &sexypsf_ip, NULL };

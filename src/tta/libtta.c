@@ -92,7 +92,7 @@ InputPlugin tta_ip =
 	.get_song_info = get_song_info,
 	.file_info_box = file_info,
 	.get_song_tuple = get_song_tuple,
-	.aud_vfs_extensions = tta_fmts,
+	.vfs_extensions = tta_fmts,
 	.mseek = mseek,
 };
 

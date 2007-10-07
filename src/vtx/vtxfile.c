@@ -5,6 +5,8 @@
 #include <ctype.h>
 #include <inttypes.h>
 
+#include <audacious/plugin.h>
+
 #include "ayemu.h"
 
 /* defined in lh5dec.c */

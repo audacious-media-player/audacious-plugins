@@ -836,7 +836,7 @@ InputPlugin mad_ip = {
     .file_info_box = audmad_get_file_info,
     .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
-    .aud_vfs_extensions = fmts,
+    .vfs_extensions = fmts,
     .mseek = audmad_mseek,
     .probe_for_tuple = audmad_probe_for_tuple
 };

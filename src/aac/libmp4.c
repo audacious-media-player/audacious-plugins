@@ -16,8 +16,6 @@
 #define MP4_VERSION VERSION
 #define SBR_DEC
 
-extern VFSFile *aud_vfs_buffered_file_new_from_uri(gchar *uri);
-
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
  * We use this for sanity checks, among other things, as mp4ff needs
@@ -62,7 +60,7 @@ InputPlugin mp4_ip =
     .get_song_info = mp4_get_song_title_len,
     .get_song_tuple = mp4_get_song_tuple,
     .is_our_file_from_vfs = mp4_is_our_fd,
-    .aud_vfs_extensions = fmts,
+    .vfs_extensions = fmts,
 };
 
 InputPlugin *mp4_iplist[] = { &mp4_ip, NULL };

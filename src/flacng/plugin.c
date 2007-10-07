@@ -41,7 +41,7 @@ InputPlugin flac_ip = {
     .get_song_info = flac_get_song_info,
     .get_song_tuple = flac_get_song_tuple,	// get a tuple
     .is_our_file_from_vfs = flac_is_our_fd,	// version of is_our_file which is handed an FD
-    .aud_vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
+    .vfs_extensions = flac_fmts			// vector of fileextensions allowed by the plugin
 };
 
 InputPlugin *flac_iplist[] = { &flac_ip, NULL };

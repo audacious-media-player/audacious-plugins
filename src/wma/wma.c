@@ -104,7 +104,7 @@ InputPlugin wma_ip =
     .get_song_info = wma_get_song_info,
     .get_song_tuple = wma_get_song_tuple,
     .is_our_file_from_vfs = wma_is_our_fd,
-    .aud_vfs_extensions = fmts,
+    .vfs_extensions = fmts,
 };
 
 InputPlugin *wma_iplist[] = { &wma_ip, NULL };

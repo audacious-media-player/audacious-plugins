@@ -43,7 +43,7 @@ InputPlugin wav_ip = {
     .seek = seek,
     .get_time = get_time,
     .get_song_info = get_song_info,
-    .aud_vfs_extensions = wav_fmts,
+    .vfs_extensions = wav_fmts,
     .mseek = mseek,
 };
 
