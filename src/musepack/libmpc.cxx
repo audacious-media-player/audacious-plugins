@@ -307,7 +307,7 @@ static void mpcPlay(InputPlayback *data)
     mpcDecoder.isPause  = false;
     threadHandle = g_thread_self();
     data->set_pb_ready(data);
-    decodeStream((void *) g_strdup(data->filename));
+    decodeStream(data);
 }
 
 static void mpcStop(InputPlayback *data)
@@ -771,10 +771,10 @@ static void* endThread(char* p_FileName, VFSFile * p_FileHandle, bool release)
     return 0;
 }
 
-static void* decodeStream(void* data)
+static void* decodeStream(InputPlayback *data)
 {
     lockAcquire();
-    char* filename = static_cast<char*> (data);
+    char* filename = data->filename;
     VFSFile *input = aud_vfs_fopen(filename, "rb");
     if (!input)
     {
@@ -800,7 +800,7 @@ static void* decodeStream(void* data)
     track.channels   = info.channels;
     freeTags(tags);
 
-    MpcPlugin.set_info(track.display, track.length, track.bitrate, track.sampleFreq, track.channels);
+    data->set_params(data, track.display, track.length, track.bitrate, track.sampleFreq, track.channels);
 
     mpc_decoder decoder;
     mpc_decoder_setup(&decoder, &reader.reader);
@@ -857,7 +857,7 @@ static void* decodeStream(void* data)
                 counter -= status;
                 if(counter < 0)
                 {
-                    MpcPlugin.set_info(track.display, track.length, track.bitrate, track.sampleFreq, track.channels);
+                    data->set_params(data, track.display, track.length, track.bitrate, track.sampleFreq, track.channels);
                     counter = 2 * track.sampleFreq / 3;
                 }
             }

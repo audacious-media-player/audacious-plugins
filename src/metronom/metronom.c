@@ -201,7 +201,7 @@ static void metronom_play(InputPlayback *playback)
 	} else {
 		name = g_strdup_printf(_("Tact generator: %d bpm %d/%d"), pmetronom->bpm,pmetronom->num,pmetronom->den);
 	}
-	metronom_ip.set_info(name, -1, 16 * 44100, 44100, 1);
+	playback->set_params(playback, name, -1, 16 * 44100, 44100, 1);
 	g_free(name);
 	playback->data = pmetronom;
 	play_thread = g_thread_self();

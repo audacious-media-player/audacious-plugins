@@ -150,7 +150,7 @@ static void sexypsf_xmms_play(InputPlayback *data)
         stop = seek = 0;
 
         gchar *name = get_title_psf(data->filename);
-        sexypsf_ip.set_info(name, PSFInfo->length, 44100*2*2*8, 44100, 2);
+        data->set_params(data, name, PSFInfo->length, 44100*2*2*8, 44100, 2);
         g_free(name);
 
         playing = 1;

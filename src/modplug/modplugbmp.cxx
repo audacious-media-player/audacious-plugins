@@ -426,8 +426,9 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
         if ( ti )
                 aModName = format_and_free_ti( ti, &aLength );
 
-	mInPlug->set_info
+	ipb->set_params
 	(
+		ipb,
 		aModName,
 		aLength,
 		mSoundFile->GetNumChannels() * 1000,

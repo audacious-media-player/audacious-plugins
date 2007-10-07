@@ -403,7 +403,7 @@ void xs_play_file(InputPlayback *pb)
 	
 	XSDEBUG("foobar #4\n");
 	XS_MUTEX_LOCK(xs_status);
-	xs_plugin_ip.set_info(
+	pb->set_params(pb,
 		tmpTitle,
 		(tmpLength > 0) ? (tmpLength * 1000) : 0,
 		-1,

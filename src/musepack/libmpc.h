@@ -125,7 +125,7 @@ static void       closeInfoBox(GtkWidget*, gpointer);
 static char*      mpcGenerateTitle(const MpcInfo&, char*);
 static void       lockAcquire();
 static void       lockRelease();
-static void*      decodeStream(void*);
+static void*      decodeStream(InputPlayback*);
 static int        processBuffer(MPC_SAMPLE_FORMAT*, char*, mpc_decoder&);
 static void*      endThread(char*, FILE*, bool);
 static bool       isAlive();
