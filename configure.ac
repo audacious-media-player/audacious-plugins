@@ -752,6 +752,7 @@ fi
 
 if test "$enable_musepack" = "yes"; then
         INPUT_PLUGINS="$INPUT_PLUGINS musepack"
+        AC_SUBST(TAGLIB_CFLAGS)
 fi
 
 dnl *** WMA
