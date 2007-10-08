@@ -471,28 +471,13 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 	{
 		if (real_ip)
 			g_free(real_ip);
-		real_ip = g_new0(InputPlayback, 1);
+
+		/* duplicate original playback and modify */
+		real_ip = (InputPlayback *)g_memdup(data, sizeof(InputPlayback));
 		real_ip->plugin = real_ip_plugin;
 		real_ip->plugin->set_info = set_info_override;
 		real_ip->plugin->output = cue_ip.output;
 		real_ip->filename = cue_file;
-
-		/* need to pass playback->output to real_ip */
-		real_ip->output = data->output;
-		real_ip->data = data->data;
-
-		/* we have to copy set_pb_ready things too. */
-		real_ip->pb_ready_mutex = data->pb_ready_mutex;
-		real_ip->pb_ready_cond = data->pb_ready_cond;
-		real_ip->pb_ready_val = data->pb_ready_val;
-		real_ip->set_pb_ready = data->set_pb_ready;
-
-		real_ip->pb_change_mutex = data->pb_change_mutex;
-		real_ip->pb_change_cond = data->pb_change_cond;
-		real_ip->set_pb_change = data->set_pb_change;
-
-		real_ip->set_params = data->set_params;
-		real_ip->set_title = data->set_title;
 
 		real_play_thread = g_thread_create((GThreadFunc)(real_ip->plugin->play_file), (gpointer)real_ip, TRUE, NULL);
 		g_usleep(50000); // wait for 50msec while real input plugin is initializing.
