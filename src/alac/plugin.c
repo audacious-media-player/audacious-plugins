@@ -285,7 +285,7 @@ void GetBuffer(demux_res_t *demux_res)
         /* write */
         bytes_read += outputBytes;
 
-        produce_audio(playback->output->written_time(), FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
+        playback->pass_audio(playback, FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
     }
 
     free(buffer);

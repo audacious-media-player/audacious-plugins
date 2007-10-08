@@ -242,7 +242,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	return false;
 }
 
-void ModplugXMMS::PlayLoop()
+void ModplugXMMS::PlayLoop(InputPlayback *playback)
 {
 	uint32 lLength;
 	//the user might change the number of channels while playing.
@@ -303,9 +303,9 @@ void ModplugXMMS::PlayLoop()
 		if(mStopped)
 			break;
 		
-		produce_audio
+		playback->pass_audio
 		(
-			mPlayed,
+			playback,
 			mFormat,
 			lChannels,
 			mBufSize,
@@ -452,7 +452,7 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
 	mDecodeThread = g_thread_self();
 	ipb->set_pb_ready(ipb);
-	this->PlayLoop();
+	this->PlayLoop(ipb);
 }
 
 void ModplugXMMS::Stop(void)

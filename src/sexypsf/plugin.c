@@ -60,13 +60,12 @@ void sexypsf_update(unsigned char *buffer, long count)
     {
         int t = playback->output->buffer_free() & mask;
         if (t > count)     
-            produce_audio(playback->output->written_time(),
+            playback->pass_audio(playback,
                           FMT_S16_NE, 2, count, buffer, NULL);
         else
         {
             if (t)
-                produce_audio(playback->output->written_time(),
-                              FMT_S16_NE, 2, t, buffer, NULL);
+                playback->pass_audio(playback, FMT_S16_NE, 2, t, buffer, NULL);
             g_usleep((count-t)*1000*5/441/2);
         }
         count -= t;

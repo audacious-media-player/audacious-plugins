@@ -440,8 +440,7 @@ void xs_play_file(InputPlayback *pb)
 		}
 
 		/* I <3 visualice/haujobb */
-		produce_audio(pb->output->written_time(),
-			xs_status.audioFormat, xs_status.audioChannels,
+		pb->pass_audio(pb, xs_status.audioFormat, xs_status.audioChannels,
 			audioGot, audioBuffer, NULL);
 		
 		XS_MUTEX_UNLOCK(xs_status);

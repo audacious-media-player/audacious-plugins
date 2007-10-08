@@ -446,7 +446,7 @@ static gpointer flac_play_loop(gpointer arg) {
 
             _DEBUG("Copying %d samples to output plugin", sample_count);
 
-            produce_audio(flac_ip.output->written_time(), FMT_S16_NE, main_info->frame.channels, sample_count * sizeof(gint16), play_buffer, NULL);
+            playback->pass_audio(playback, FMT_S16_NE, main_info->frame.channels, sample_count * sizeof(gint16), play_buffer, NULL);
 
             read_pointer += sample_count;
             elements_left -= sample_count;

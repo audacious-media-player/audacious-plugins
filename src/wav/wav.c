@@ -246,7 +246,7 @@ play_loop(gpointer arg)
                     playback->eof = TRUE;
                 else {
                     if (wav_file->seek_to == -1)
-                        produce_audio(playback->output->written_time(),
+                        playback->pass_audio(playback,
                                       (wav_file->bits_per_sample ==
                                        16) ? FMT_S16_LE : FMT_U8,
                                       wav_file->channels, bytes, data,

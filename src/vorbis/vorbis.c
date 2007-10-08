@@ -395,8 +395,7 @@ vorbis_process_data(InputPlayback *playback, int last_section,
     if (seekneeded != -1)
         do_seek(playback);
 
-    produce_audio(playback->output->written_time(),
-                  FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
+    playback->pass_audio(playback, FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
 
     return current_section;
 }

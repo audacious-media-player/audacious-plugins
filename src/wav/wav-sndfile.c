@@ -372,7 +372,7 @@ play_loop (gpointer arg)
 					break;	
 			}
 
-			produce_audio (playback->output->written_time (), FMT_S16_NE, sfinfo.channels, 
+			playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels, 
 				samples * sizeof (short), buffer, &playback->playing);
 		}
 		else {

@@ -841,7 +841,7 @@ static void* decodeStream(InputPlayback *data)
         int iFree = MpcPlugin.output->buffer_free();
         if (!mpcDecoder.isPause &&  iFree >= ((1152 * 4) << iPlaying))
         {
-            unsigned status = processBuffer(sampleBuffer, xmmsBuffer, decoder);
+            unsigned status = processBuffer(data, sampleBuffer, xmmsBuffer, decoder);
             if (status == (unsigned) (-1))
             {
                 mpcDecoder.isError = g_strdup_printf("[xmms-musepack] error from internal decoder on %s", filename);
@@ -871,7 +871,8 @@ static void* decodeStream(InputPlayback *data)
     return endThread(filename, input, false);
 }
 
-static int processBuffer(MPC_SAMPLE_FORMAT* sampleBuffer, char* xmmsBuffer, mpc_decoder& decoder)
+static int processBuffer(InputPlayback *playback, 
+    MPC_SAMPLE_FORMAT* sampleBuffer, char* xmmsBuffer, mpc_decoder& decoder)
 {
     mpc_uint32_t vbrAcc = 0;
     mpc_uint32_t vbrUpd = 0;
@@ -884,7 +885,7 @@ static int processBuffer(MPC_SAMPLE_FORMAT* sampleBuffer, char* xmmsBuffer, mpc_
         track.bitrate = static_cast<int> (vbrUpd * track.sampleFreq / 1152);
     }
 
-    produce_audio(MpcPlugin.output->written_time(), FMT_S16_LE, track.channels, status * 4, xmmsBuffer, NULL);
+    playback->pass_audio(playback, FMT_S16_LE, track.channels, status * 4, xmmsBuffer, NULL);
     return status;
 }
 

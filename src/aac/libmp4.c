@@ -600,7 +600,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             playback->output->close_audio();
             return FALSE;
         }
-        produce_audio(playback->output->written_time(),
+        playback->pass_audio(playback,
                    FMT_S16_NE,
                    channels,
                    frameInfo.samples<<1,
@@ -770,7 +770,7 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
             continue;
         }
 
-        produce_audio(playback->output->written_time(),
+        playback->pass_audio(playback,
                    FMT_S16_LE, channels,
                    samplesdecoded<<1, sample_buffer, &buffer_playing);
     }

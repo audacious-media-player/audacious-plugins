@@ -900,7 +900,8 @@ void dae_play_loop(dae_params_t *pdae_params)
 				usleep(1000);
 				/* play the sound :) */
 			if (pdae_params->pplayback->playing && pdae_params->seektime == -1)
-				produce_audio(pdae_params->pplayback->output->written_time(), FMT_S16_LE, 2, bytecount, bytebuff, &pdae_params->pplayback->playing);
+				pdae_params->pplayback->pass_audio(pdae_params->pplayback, FMT_S16_LE, 2, 
+					bytecount, bytebuff, &pdae_params->pplayback->playing);
 			remainingbytes -= bytecount;
 			bytebuff += bytecount;
 		}

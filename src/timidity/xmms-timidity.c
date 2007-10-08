@@ -261,7 +261,7 @@ static void *xmmstimid_play_loop(void *arg) {
 				buffer, buffer_size);
 
 		if (bytes_read != 0)
-			produce_audio(mid_song_get_time(xmmstimid_song),
+			playback->pass_audio(playback,
 					fmt, xmmstimid_opts.channels,
 					bytes_read, buffer, &playback->playing);
 		else {

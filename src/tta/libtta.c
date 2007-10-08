@@ -199,7 +199,7 @@ play_loop (InputPlayback *playback)
             }
             if (seek_position == -1)
             {
-                produce_audio(playback->output->written_time(),
+                playback->pass_audio(playback,
                               ((info.BPS == 8) ? FMT_U8 : FMT_S16_LE),
                               info.NCH,
                               read_samples * info.NCH * info.BSIZE,

@@ -178,7 +178,7 @@ play_loop (gpointer args)
 	g_usleep(10000);
 
       if (playback->playing && seek_to == -1)
-        produce_audio(playback->output->written_time (), FMT_S16_NE,
+        playback->pass_audio(playback, FMT_S16_NE,
   			  chans , SNDBUFSIZE, sndbuf, &playback->playing);
     
       if (playback->eof)

@@ -254,13 +254,13 @@ public:
         return mod->output->open_audio(FMT_S16_NE, sample_rate, num_channels);
     }
 
-    void process_buffer(size_t num_samples)
+    void process_buffer(InputPlayback *playback, size_t num_samples)
     {
         /* TODO: dithering */
         for (int i = 0; i < num_samples * num_channels; i++)
             output[i] = input[i];
 
-        produce_audio(mod->output->output_time(), FMT_S16_NE, 
+        playback->pass_audio(playback, FMT_S16_NE, 
 		num_channels, 
 		num_samples * num_channels * sizeof(int16_t),
 		output,
@@ -354,7 +354,7 @@ DecodeThread(InputPlayback *playback)
                 break;
             }
             else {
-                d.process_buffer(status);
+                d.process_buffer(playback, status);
             }
         }
         else {

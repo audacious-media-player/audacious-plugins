@@ -130,7 +130,7 @@ private:
 	
 	float mPreampFactor;
 
-	void PlayLoop();
+	void PlayLoop(InputPlayback *);
 	static void* PlayThread(void* arg);
 	const char* Bool2OnOff(bool aValue);
 };

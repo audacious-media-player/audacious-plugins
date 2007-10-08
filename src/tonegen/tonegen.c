@@ -114,9 +114,7 @@ static void* play_loop(void *arg)
 			data[i] = rint(((1 << 15) - 1) *
 				       (sum_sines / frequencies->len));
 		}
-		while (playback->output->buffer_free() < BUF_BYTES && going)
-		        g_usleep(30000);
-		produce_audio(playback->output->written_time(), FMT_S16_NE, 1, BUF_BYTES, data, &going);
+		playback->pass_audio(playback, FMT_S16_NE, 1, BUF_BYTES, data, &going);
 	}
 
 	g_array_free(frequencies, TRUE);

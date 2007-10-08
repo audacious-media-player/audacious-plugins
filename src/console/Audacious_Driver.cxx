@@ -309,7 +309,7 @@ static void* play_loop_track( gpointer arg )
 				end_delay = emu->sample_rate() * (int) (seconds * 2) / buf_size;
 			}
 		}
-		produce_audio( playback->output->written_time(), 
+		playback->pass_audio( playback, 
 			FMT_S16_NE, 1, sizeof buf, buf, 
 			&console_ip_is_going );
 	}

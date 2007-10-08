@@ -148,10 +148,8 @@ static void play_loop(void *arg)
 			datagoal=(datamiddle+7*datagoal)/8;
 			t++;
 		}
-		while(playback->output->buffer_free() < BUF_BYTES && going)
-			g_usleep(30000);
 		if (going)
-			produce_audio(playback->output->written_time(), FMT_S16_LE, 1, BUF_BYTES, data, &going);
+			playback->pass_audio(playback, FMT_S16_LE, 1, BUF_BYTES, data, &going);
 	}
 	/* Make sure the output plugin stops prebuffering */
 	playback->output->buffer_free();

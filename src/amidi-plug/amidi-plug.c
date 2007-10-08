@@ -757,9 +757,7 @@ gpointer amidiplug_audio_loop( gpointer arg )
   {
     if ( backend.seq_output( &buffer , &buffer_size ) )
     {
-      while( ( playback->output->buffer_free() < buffer_size ) && ( going == TRUE ) )
-        G_USLEEP(10000);
-      produce_audio( playback->output->written_time() ,
+      playback->pass_audio( playback ,
                      FMT_S16_NE , 2 , buffer_size , buffer , &going );
     }
     g_mutex_lock( amidiplug_playing_mutex );

@@ -847,9 +847,7 @@ play_loop (void *data)
     }
 
     // write sound buffer
-    while (playback->output->buffer_free () < SNDBUFSIZE * sampsize)
-      g_usleep (10000);
-    produce_audio (playback->output->written_time (),
+    playback->pass_audio(playback,
                    bit16 ? FORMAT_16 : FORMAT_8,
                    stereo ? 2 : 1, SNDBUFSIZE * sampsize, sndbuf, NULL);
 
