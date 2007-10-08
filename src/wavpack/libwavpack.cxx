@@ -242,7 +242,7 @@ public:
         num_channels = WavpackGetNumChannels(ctx);
         input = (int32_t *)calloc(BUFFER_SIZE, num_channels * sizeof(int32_t));
         output = (int16_t *)calloc(BUFFER_SIZE, num_channels * sizeof(int16_t));
-        playback->set_params(playback, generate_title(filename, ctx),
+        playback->set_params(playback, generate_title(playback->filename, ctx),
                       (int) (WavpackGetNumSamples(ctx) / sample_rate) * 1000,
                       (int) WavpackGetAverageBitrate(ctx, num_channels),
                       (int) sample_rate, num_channels);
@@ -257,7 +257,7 @@ public:
     void process_buffer(InputPlayback *playback, size_t num_samples)
     {
         /* TODO: dithering */
-        for (int i = 0; i < num_samples * num_channels; i++)
+        for (unsigned int i = 0; i < num_samples * num_channels; i++)
             output[i] = input[i];
 
         playback->pass_audio(playback, FMT_S16_NE, 
