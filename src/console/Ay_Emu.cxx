@@ -116,7 +116,7 @@ struct Ay_File : Gme_Info_
 static Music_Emu* new_ay_emu () { return BLARGG_NEW Ay_Emu ; }
 static Music_Emu* new_ay_file() { return BLARGG_NEW Ay_File; }
 
-gme_type_t_ const gme_ay_type [1] = { "ZX Spectrum", 0, &new_ay_emu, &new_ay_file, "AY", 1 };
+gme_type_t_ const gme_ay_type [1] = {{ "ZX Spectrum", 0, &new_ay_emu, &new_ay_file, "AY", 1 }};
 
 // Setup
 

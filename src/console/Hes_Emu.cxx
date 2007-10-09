@@ -132,7 +132,7 @@ struct Hes_File : Gme_Info_
 static Music_Emu* new_hes_emu () { return BLARGG_NEW Hes_Emu ; }
 static Music_Emu* new_hes_file() { return BLARGG_NEW Hes_File; }
 
-gme_type_t_ const gme_hes_type [1] = { "PC Engine", 256, &new_hes_emu, &new_hes_file, "HES", 1 };
+gme_type_t_ const gme_hes_type [1] = {{ "PC Engine", 256, &new_hes_emu, &new_hes_file, "HES", 1 }};
 
 // Setup
 

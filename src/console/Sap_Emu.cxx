@@ -235,7 +235,7 @@ struct Sap_File : Gme_Info_
 static Music_Emu* new_sap_emu () { return BLARGG_NEW Sap_Emu ; }
 static Music_Emu* new_sap_file() { return BLARGG_NEW Sap_File; }
 
-gme_type_t_ const gme_sap_type [1] = { "Atari XL", 0, &new_sap_emu, &new_sap_file, "SAP", 1 };
+gme_type_t_ const gme_sap_type [1] = {{ "Atari XL", 0, &new_sap_emu, &new_sap_file, "SAP", 1 }};
 
 // Setup
 

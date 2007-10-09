@@ -297,7 +297,7 @@ struct Nsfe_File : Gme_Info_
 static Music_Emu* new_nsfe_emu () { return BLARGG_NEW Nsfe_Emu ; }
 static Music_Emu* new_nsfe_file() { return BLARGG_NEW Nsfe_File; }
 
-gme_type_t_ const gme_nsfe_type [1] = { "Nintendo NES", 0, &new_nsfe_emu, &new_nsfe_file, "NSFE", 1 };
+gme_type_t_ const gme_nsfe_type [1] = {{ "Nintendo NES", 0, &new_nsfe_emu, &new_nsfe_file, "NSFE", 1 }};
 
 blargg_err_t Nsfe_Emu::load_( Data_Reader& in )
 {

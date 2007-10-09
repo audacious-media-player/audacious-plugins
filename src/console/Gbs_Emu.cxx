@@ -99,7 +99,7 @@ struct Gbs_File : Gme_Info_
 static Music_Emu* new_gbs_emu () { return BLARGG_NEW Gbs_Emu ; }
 static Music_Emu* new_gbs_file() { return BLARGG_NEW Gbs_File; }
 
-gme_type_t_ const gme_gbs_type [1] = { "Game Boy", 0, &new_gbs_emu, &new_gbs_file, "GBS", 1 };
+gme_type_t_ const gme_gbs_type [1] = {{ "Game Boy", 0, &new_gbs_emu, &new_gbs_file, "GBS", 1 }};
 
 // Setup
 

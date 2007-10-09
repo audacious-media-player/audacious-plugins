@@ -101,7 +101,7 @@ struct Kss_File : Gme_Info_
 static Music_Emu* new_kss_emu () { return BLARGG_NEW Kss_Emu ; }
 static Music_Emu* new_kss_file() { return BLARGG_NEW Kss_File; }
 
-gme_type_t_ const gme_kss_type [1] = { "MSX", 256, &new_kss_emu, &new_kss_file, "KSS", 0x03 };
+gme_type_t_ const gme_kss_type [1] = {{ "MSX", 256, &new_kss_emu, &new_kss_file, "KSS", 0x03 }};
 
 // Setup
 

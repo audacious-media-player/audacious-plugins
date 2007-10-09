@@ -203,8 +203,8 @@ struct Vgm_File : Gme_Info_
 static Music_Emu* new_vgm_emu () { return BLARGG_NEW Vgm_Emu ; }
 static Music_Emu* new_vgm_file() { return BLARGG_NEW Vgm_File; }
 
-gme_type_t_ const gme_vgm_type [1] = { "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGM", 1 };
-gme_type_t_ const gme_vgz_type [1] = { "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGZ", 1 };
+gme_type_t_ const gme_vgm_type [1] = {{ "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGM", 1 }};
+gme_type_t_ const gme_vgz_type [1] = {{ "Sega SMS/Genesis", 1, &new_vgm_emu, &new_vgm_file, "VGZ", 1 }};
 
 // Setup
 
