@@ -1,19 +1,13 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+PLUGIN = ap-dummy$(PLUGIN_SUFFIX)
+plugindir = audacious/$(AMIDIPLUG_BACKEND_DIR)
 
 noinst_HEADERS = b-dummy.h b-dummy-config.h backend-dummy-icon.xpm
 
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) -I../../..
+SRCS = b-dummy.c
 
-libdir = $(AMIDIPLUGBACKENDDIR)
+include ../../../buildsys.mk
+include ../../../extra.mk
 
-OBJECTIVE_LIBS = ap-dummy$(SHARED_SUFFIX)
-
-LIBADD = $(GLIB_LIBS) ../pcfg/libpcfg.a
-SOURCES = b-dummy.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-LIBDEP = ../pcfg/libpcfg.a
-
-include ../../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GLIB_CFLAGS) -I../../..
+LIBS += ../pcfg/libpcfg.a

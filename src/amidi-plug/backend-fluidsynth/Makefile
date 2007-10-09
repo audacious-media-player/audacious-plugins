@@ -1,19 +1,13 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+PLUGIN = ap-fluidsynth$(PLUGIN_SUFFIX)
+plugindir = audacious/$(AMIDIPLUG_BACKEND_DIR)
 
 noinst_HEADERS = b-fluidsynth.h b-fluidsynth-config.h backend-fluidsynth-icon.xpm
 
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) $(FLUIDSYNTH_CFLAGS) -I../../..
+SRCS = b-fluidsynth.c
 
-libdir = $(AMIDIPLUGBACKENDDIR)
+include ../../../buildsys.mk
+include ../../../extra.mk
 
-OBJECTIVE_LIBS = ap-fluidsynth$(SHARED_SUFFIX)
-
-LIBADD = -lm $(GLIB_LIBS) $(FLUIDSYNTH_LIBS) ../pcfg/libpcfg.a
-SOURCES = b-fluidsynth.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-LIBDEP =  ../pcfg/libpcfg.a
-
-include ../../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS) $(FLUIDSYNTH_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(FLUIDSYNTH_CFLAGS) $(GLIB_CFLAGS) -I../../..
+LIBS += $(FLUIDSYNTH_LIBS) ../pcfg/libpcfg.a

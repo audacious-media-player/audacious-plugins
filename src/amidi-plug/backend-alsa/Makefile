@@ -1,19 +1,13 @@
-include ../../../mk/rules.mk
-include ../../../mk/init.mk
+PLUGIN = ap-alsa$(PLUGIN_SUFFIX)
+plugindir = audacious/$(AMIDIPLUG_BACKEND_DIR)
 
 noinst_HEADERS = b-alsa.h b-alsa-config.h backend-alsa-icon.xpm
 
-CFLAGS += $(PICFLAGS) $(GLIB_CFLAGS) $(ALSA_CFLAGS) -I../../..
+SRCS = b-alsa.c
 
-libdir = $(AMIDIPLUGBACKENDDIR)
+include ../../../buildsys.mk
+include ../../../extra.mk
 
-OBJECTIVE_LIBS = ap-alsa$(SHARED_SUFFIX)
-
-LIBADD = $(GLIB_LIBS) $(ALSA_LIBS) ../pcfg/libpcfg.a
-SOURCES = b-alsa.c
-
-OBJECTS = ${SOURCES:.c=.o}
-
-LIBDEP =  ../pcfg/libpcfg.a
-
-include ../../../mk/objective.mk
+CFLAGS += $(PLUGIN_CFLAGS) $(ALSA_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(ALSA_CFLAGS) $(GLIB_CFLAGS) -I../../..
+LIBS += $(ALSA_LIBS) ../pcfg/libpcfg.a
