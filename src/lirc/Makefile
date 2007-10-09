@@ -1,10 +1,11 @@
 PLUGIN = lirc$(PLUGIN_SUFFIX)
 
-plugindir = audacious/$(GENERAL_PLUGIN_DIR)
 SRCS = about.c lirc.c
 
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/$(GENERAL_PLUGIN_DIR)
 
 LIBS += -llirc_client $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 CFLAGS += $(PLUGIN_CFLAGS)

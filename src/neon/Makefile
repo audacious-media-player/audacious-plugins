@@ -2,10 +2,10 @@ PLUGIN = neon${PLUGIN_SUFFIX}
 SRCS = neon.c	\
        rb.c
 
-plugindir = audacious/${TRANSPORT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${TRANSPORT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} ${XML_CPPFLAGS} ${NEON_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}

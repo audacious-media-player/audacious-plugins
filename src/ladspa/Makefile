@@ -1,10 +1,10 @@
 PLUGIN = ladspa${PLUGIN_SUFFIX}
 SRCS = ladspa.c
 
-plugindir = audacious/${EFFECT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${EFFECT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}

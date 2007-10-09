@@ -1,10 +1,11 @@
 PLUGIN = mms${PLUGIN_SUFFIX}
-SRCS = mms.c
 
-plugindir = audacious/${TRANSPORT_PLUGIN_DIR}
+SRCS = mms.c
 
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${TRANSPORT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} ${XML_CPPFLAGS} ${MMS_CFLAGS} -I../../intl -I../.. -Wall
 CFLAGS += ${PLUGIN_CFLAGS}

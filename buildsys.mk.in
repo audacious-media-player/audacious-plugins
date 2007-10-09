@@ -58,7 +58,7 @@ prefix = @prefix@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 libdir = @libdir@
-plugindir ?= ${PACKAGE}
+plugindir = @plugindir@
 datarootdir = @datarootdir@
 datadir = @datadir@
 includedir = @includedir@
@@ -220,7 +220,7 @@ install: ${LIB} ${STATIC_LIB} ${PLUGIN} ${PROG} install-extra
 
 	for i in ${PLUGIN}; do \
 		${INSTALL_STATUS}; \
-		if ${MKDIR_P} ${DESTDIR}${libdir}/${plugindir} && ${INSTALL} -m 755 $$i ${DESTDIR}${libdir}/${plugindir}/$$i; then \
+		if ${MKDIR_P} ${DESTDIR}${plugindir} && ${INSTALL} -m 755 $$i ${DESTDIR}${plugindir}/$$i; then \
 			${INSTALL_OK}; \
 		else \
 			${INSTALL_FAILED}; \
@@ -293,15 +293,15 @@ uninstall: uninstall-extra
 	done
 
 	for i in ${PLUGIN}; do \
-		if test -f ${DESTDIR}${libdir}/${plugindir}/$$i; then \
-			if rm -f ${DESTDIR}${libdir}/${plugindir}/$$i; then \
+		if test -f ${DESTDIR}${plugindir}/$$i; then \
+			if rm -f ${DESTDIR}${plugindir}/$$i; then \
 				${DELETE_OK}; \
 			else \
 				${DELETE_FAILED}; \
 			fi \
 		fi \
 	done
-	-rmdir ${DESTDIR}${libdir}/${plugindir} >/dev/null 2>&1
+	-rmdir ${plugindir} >/dev/null 2>&1
 
 	for i in ${DATA}; do \
 		if test -f ${DESTDIR}${datadir}/${PACKAGE}/$$i; then \

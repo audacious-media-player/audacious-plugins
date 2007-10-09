@@ -6,10 +6,10 @@ SRCS = config_backend.c			\
        getroot.c			\
        rootvis.c
 
-plugindir = audacious/${VISUALIZATION_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${VISUALIZATION_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} -I. ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${IMLIB2_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}

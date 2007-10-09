@@ -6,10 +6,10 @@ SRCS = arts.c		\
        audio.c		\
        convert.c
 
-plugindir = audacious/${OUTPUT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${OUTPUT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARTSC_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}

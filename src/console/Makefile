@@ -50,10 +50,10 @@ SRCS = Audacious_Config.cxx    \
        Ym2612_Emu.cxx          \
        Zlib_Inflater.cxx
 
-plugindir = audacious/${INPUT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 

@@ -17,10 +17,10 @@ SRCS = xs_init.c	\
        xs_slsup.c	\
        xmms-sid.c
 
-plugindir = audacious/${INPUT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -D_REENTRANT -I../../intl -I../.. -DAUDACIOUS_PLUGIN ${MOWGLI_CFLAGS} ${SIDPLAY1_INCLUDES} ${SIDPLAY2_INCLUDES} ${BUILDERS_INCLUDES} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}

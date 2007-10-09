@@ -20,10 +20,10 @@ SRCS = wma.c			\
        libffwma/mem.c		\
        libffwma/uri.c
 
-plugindir = audacious/${INPUT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${SIMD_CFLAGS} -I../.. -I./libffwma -std=c99 ${GCC42_CFLAGS} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE
 CFLAGS += ${PLUGIN_CFLAGS}

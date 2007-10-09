@@ -6,10 +6,10 @@ SRCS = OSS4.c		\
        init.c		\
        convert.c
 
-plugindir = audacious/${OUTPUT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${OUTPUT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} -I/usr/lib/oss/include -I../../intl -I../.. ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}

@@ -10,12 +10,12 @@ SRCS = fmt.c			\
 DATA = images/audioscrobbler.png	\
        images/audioscrobbler_badge.png
 
-plugindir = audacious/${GENERAL_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
 
 PACKAGE = audacious
+
+plugindir := $(plugindir)/${GENERAL_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${BEEP_DEFINES} ${CURL_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}

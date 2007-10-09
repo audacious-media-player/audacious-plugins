@@ -5,10 +5,10 @@ SRCS = filewriter.c	\
        vorbis.c		\
        flac.c
 
-plugindir = audacious/${OUTPUT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${OUTPUT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${GTK_CFLAGS} ${PANGO_CFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}

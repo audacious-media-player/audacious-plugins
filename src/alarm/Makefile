@@ -2,10 +2,10 @@ PLUGIN = alarm${PLUGIN_SUFFIX}
 SRCS = alarm.c	\
        interface.c
 
-plugindir = audacious/${GENERAL_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${GENERAL_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BEEP_DEFINES} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}

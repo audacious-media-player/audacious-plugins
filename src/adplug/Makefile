@@ -52,10 +52,10 @@ SRCS = adplug-xmms.cc		\
        core/adl.cxx		\
        core/jbm.cxx
 
-plugindir = audacious/${INPUT_PLUGIN_DIR}
-
 include ../../buildsys.mk
 include ../../extra.mk
+
+plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 
