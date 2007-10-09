@@ -609,6 +609,7 @@ fi
 
 if test "$have_adplug" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS adplug"
+	AC_SUBST(BINIO_CFLAGS)
 fi
 
 dnl *** Ogg Vorbis
