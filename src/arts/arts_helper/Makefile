@@ -1,4 +1,5 @@
 PROG = audacious-arts-helper${PROG_SUFFIX}
+
 SRCS = arts_helper.c
 
 include ../../../buildsys.mk

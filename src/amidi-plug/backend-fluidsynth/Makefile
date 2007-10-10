@@ -1,5 +1,4 @@
 PLUGIN = ap-fluidsynth$(PLUGIN_SUFFIX)
-noinst_HEADERS = b-fluidsynth.h b-fluidsynth-config.h backend-fluidsynth-icon.xpm
 
 SRCS = b-fluidsynth.c
 

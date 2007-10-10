@@ -1,9 +1,12 @@
-include ../../../extra.mk
-
 STATIC_LIB_NOINST = libgui.a
-SRCS = main.cxx support.cxx interface.cxx callbacks.cxx
+
+SRCS = main.cxx		\
+       support.cxx	\
+       interface.cxx	\
+       callbacks.cxx
 
 include ../../../buildsys.mk
+include ../../../extra.mk
 
 CFLAGS   += $(PLUGIN_CFLAGS)
 CXXFLAGS += $(PLUGIN_CFLAGS)

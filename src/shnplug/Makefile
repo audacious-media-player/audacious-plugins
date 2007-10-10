@@ -20,9 +20,9 @@ include ../../extra.mk
 plugindir := $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 CFLAGS += $(PLUGIN_CFLAGS)
+LDFLAGS += $(AUDLDFLAGS)
 CPPFLAGS += $(PLUGIN_CPPFLAGS) $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(MOWGLI_CFLAGS) \
 	    $(PANGO_CFLAGS) $(ARCH_DEFINES) $(SIMD_CFLAGS) -I../../intl -I../.. -Wall
-LDFLAGS += $(AUDLDFLAGS)
 LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
 # These were the additional link flags in the old Makefile:

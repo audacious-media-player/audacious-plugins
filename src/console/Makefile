@@ -1,4 +1,5 @@
 PLUGIN = console${PLUGIN_SUFFIX}
+
 SRCS = Audacious_Config.cxx    \
        Audacious_Driver.cxx    \
        Ay_Apu.cxx              \
@@ -55,9 +56,7 @@ include ../../extra.mk
 
 plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
-LD = ${CXX}
-
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lz ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ARCH_DEFINES} -I../../intl -I../..
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} -lz

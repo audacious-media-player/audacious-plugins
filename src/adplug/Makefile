@@ -1,4 +1,5 @@
 PLUGIN = adplug${PLUGIN_SUFFIX}
+
 SRCS = adplug-xmms.cc		\
        core/fmopl.c		\
        core/debug.c		\
@@ -57,9 +58,7 @@ include ../../extra.mk
 
 plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
-LD = ${CXX}
-
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${BINIO_CFLAGS} -I../../intl -I../.. -I./core -Dstricmp=strcasecmp
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${BINIO_CFLAGS} -I../../intl -I../.. -I./core -Dstricmp=strcasecmp
 LIBS += ${BINIO_LIBS} ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

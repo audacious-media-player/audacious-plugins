@@ -1,4 +1,5 @@
 PLUGIN = OSS${PLUGIN_SUFFIX}
+
 SRCS = OSS.c		\
        mixer.c		\
        about.c		\
@@ -12,6 +13,6 @@ include ../../extra.mk
 
 plugindir := $(plugindir)/${OUTPUT_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${OSS_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../.. -I.
 CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${OSS_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../.. -I.
 LIBS += ${OSS_LIBS} ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

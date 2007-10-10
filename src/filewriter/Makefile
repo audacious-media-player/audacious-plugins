@@ -1,4 +1,5 @@
 PLUGIN = filewriter${PLUGIN_SUFFIX}
+
 SRCS = filewriter.c	\
        wav.c		\
        mp3.c		\
@@ -10,6 +11,6 @@ include ../../extra.mk
 
 plugindir := $(plugindir)/${OUTPUT_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${GTK_CFLAGS} ${PANGO_CFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${GTK_CFLAGS} ${PANGO_CFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} -I../../intl -I../..
 LIBS += ${GTK_LIBS} ${FILEWRITER_LIBS}

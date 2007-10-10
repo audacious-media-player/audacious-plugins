@@ -1,4 +1,5 @@
 PLUGIN = aac${PLUGIN_SUFFIX}
+
 SRCS = libmp4.c			\
        mp4_utils.c		\
        aac_utils.c		\
@@ -53,6 +54,6 @@ include ../../extra.mk
 
 plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../.. -I. -I./include -I./libfaad2 -I./mp4ff -DUSE_TAGGING=1
 CFLAGS += ${PLUGIN_CFLAGS} -fsigned-char
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../.. -I. -I./include -I./libfaad2 -I./mp4ff -DUSE_TAGGING=1
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} -lm

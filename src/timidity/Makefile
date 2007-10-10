@@ -1,4 +1,5 @@
 PLUGIN = timidity${PLUGIN_SUFFIX}
+
 SRCS = callbacks.c			\
        interface.c			\
        xmms-timidity.c			\

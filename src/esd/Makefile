@@ -1,4 +1,5 @@
 PLUGIN = ESD${PLUGIN_SUFFIX}
+
 SRCS = esd.c		\
        mixer.c		\
        about.c		\
@@ -11,6 +12,6 @@ include ../../extra.mk
 
 plugindir := $(plugindir)/${OUTPUT_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ESD_CFLAGS} -I../../intl -I../.. -I..
 CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${ESD_CFLAGS} -I../../intl -I../.. -I..
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${ESD_LIBS} ${OSS_LIBS}

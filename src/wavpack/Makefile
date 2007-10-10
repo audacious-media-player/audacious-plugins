@@ -1,4 +1,5 @@
 PLUGIN = wavpack${PLUGIN_SUFFIX}
+
 SRCS = tags.cxx		\
        ui.cxx		\
        libwavpack.cxx

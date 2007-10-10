@@ -1,4 +1,5 @@
 PLUGIN = sexypsf${PLUGIN_SUFFIX}
+
 SRCS = PsxBios.c 	\
        PsxCounters.c	\
        PsxDma.c		\
@@ -17,6 +18,6 @@ include ../../extra.mk
 
 plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../.. -Ispu/ -I.
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lz ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../.. -Ispu/ -I.
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} -lz

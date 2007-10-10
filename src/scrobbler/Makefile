@@ -1,4 +1,5 @@
 PLUGIN = scrobbler${PLUGIN_SUFFIX}
+
 SRCS = fmt.c			\
        configure.c		\
        gtkstuff.c		\
@@ -17,6 +18,6 @@ PACKAGE = audacious
 
 plugindir := $(plugindir)/${GENERAL_PLUGIN_DIR}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${BEEP_DEFINES} ${CURL_CFLAGS} -I../../intl -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${BEEP_DEFINES} ${CURL_CFLAGS} -I../../intl -I../..
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${CURL_LIBS} ${MUSICBRAINZ_LIBS}

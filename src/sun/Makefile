@@ -1,4 +1,5 @@
 PLUGIN = sun$(PLUGIN_SUFFIX)
+
 SRCS =	sun.c	    \
 	audio.c	    \
 	convert.c   \
