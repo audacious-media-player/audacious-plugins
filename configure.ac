@@ -1583,7 +1583,6 @@ AC_SUBST(GCC42_CFLAGS)
 AC_CONFIG_FILES([
 	buildsys.mk
 	extra.mk
-	mk/rules.mk
 	po/Makefile.in
 ])
 
