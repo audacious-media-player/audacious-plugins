@@ -1,30 +1,29 @@
-include ../../mk/rules.mk
-include ../../mk/init.mk
+PLUGIN = libshnplug$(PLUGIN_SUFFIX)
 
-OBJECTIVE_LIBS = libshnplug$(SHARED_SUFFIX)
+SRCS = array.c		\
+       convert.c	\
+       fixio.c		\
+       gtk.c		\
+       id3v2.c		\
+       misc.c		\
+       output.c		\
+       seek.c		\
+       shn.c		\
+       shorten.c	\
+       sulawalaw.c	\
+       vario.c		\
+       wave.c
 
-LIBDIR = $(plugindir)/$(INPUT_PLUGIN_DIR)
+include ../../buildsys.mk
+include ../../extra.mk
 
-SOURCES = \
-  array.c \
-  convert.c \
-  fixio.c \
-  gtk.c \
-  id3v2.c \
-  misc.c \
-  output.c \
-  seek.c \
-  shn.c \
-  shorten.c \
-  sulawalaw.c \
-  vario.c \
-  wave.c
+plugindir := $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-OBJECTS = ${SOURCES:.c=.o}
-
-CFLAGS   += $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(ARCH_DEFINES) $(SIMD_CFLAGS) -I../../intl -I../.. -Wall
-
+CFLAGS += $(PLUGIN_CFLAGS)
+CPPFLAGS += $(PLUGIN_CPPFLAGS) $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(MOWGLI_CFLAGS) \
+	    $(PANGO_CFLAGS) $(ARCH_DEFINES) $(SIMD_CFLAGS) -I../../intl -I../.. -Wall
 LDFLAGS += $(AUDLDFLAGS)
-LIBADD = -L/opt/local/lib -L$(plugindir) -Wl,-rpath=$(plugindir) -laudid3tag $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
 
-include ../../mk/objective.mk
+# These were the additional link flags in the old Makefile:
+# -L/opt/local/lib -L$(plugindir) -laudid3tag -Wl,-rpath=$(plugindir)
