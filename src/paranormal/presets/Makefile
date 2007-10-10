@@ -35,4 +35,4 @@ DATA = nazca_-_smoke_on_the_water.pnv		\
 
 include ../../../buildsys.mk
 
-PACKAGE = audacious-plugins/paranormal/Presets
+PACKAGE = audacious/paranormal/Presets
