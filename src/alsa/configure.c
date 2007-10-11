@@ -128,7 +128,7 @@ static void get_devices_for_card(GtkCombo *combo, int card)
 {
 	GtkWidget *item;
 	int pcm_device = -1, err;
-	snd_pcm_info_t *pcm_info;
+	snd_pcm_info_t *pcm_info = NULL;
 	snd_ctl_t *ctl;
 	char dev[64], *card_name;
 

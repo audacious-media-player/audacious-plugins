@@ -141,7 +141,7 @@ alsa_recovery(int err)
 	/* if debug mode is enabled, dump ALSA state to console */
 	if (alsa_cfg.debug)
 	{
-		snd_pcm_status_t *alsa_status;
+		snd_pcm_status_t *alsa_status = NULL;
 		snd_pcm_status_alloca(&alsa_status);
 		if (snd_pcm_status(alsa_pcm, alsa_status) < 0)
 			g_warning("xrun_recover(): snd_pcm_status() failed");
@@ -587,11 +587,6 @@ int alsa_get_written_time(void)
  */
 static void alsa_do_write(gpointer data, int length)
 {
-	EffectPlugin *ep = NULL;
-	int new_freq;
-	int new_chn;
-	AFormat f;
-
 	if (paused)
 		return;
 
@@ -826,8 +821,8 @@ static int format_from_alsa(snd_pcm_format_t fmt)
 static int alsa_setup(struct snd_format *f)
 {
 	int err;
-	snd_pcm_hw_params_t *hwparams;
-	snd_pcm_sw_params_t *swparams;
+	snd_pcm_hw_params_t *hwparams = NULL;
+	snd_pcm_sw_params_t *swparams = NULL;
 	unsigned int alsa_buffer_time, alsa_period_time;
 	snd_pcm_uframes_t alsa_buffer_size, alsa_period_size;
 
@@ -859,12 +854,12 @@ static int alsa_setup(struct snd_format *f)
 
 	if (alsa_cfg.debug)
 	{
-		snd_pcm_info_t *info;
+		snd_pcm_info_t *info = NULL;
 		int alsa_card, alsa_device, alsa_subdevice;
 
 		snd_pcm_info_alloca(&info);
 		snd_pcm_info(alsa_pcm, info);
-		alsa_card =  snd_pcm_info_get_card(info);
+		alsa_card = snd_pcm_info_get_card(info);
 		alsa_device = snd_pcm_info_get_device(info);
 		alsa_subdevice = snd_pcm_info_get_subdevice(info);
 		printf("Card %i, Device %i, Subdevice %i\n",
