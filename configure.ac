@@ -1273,7 +1273,6 @@ have_curl="no"
 have_lastfm="no"
 PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
 [
-	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS curl"
 	have_curl="yes"
 ], [scrobbler="no"])
 
