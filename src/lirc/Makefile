@@ -6,7 +6,7 @@ SRCS = about.c \
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := $(plugindir)/$(GENERAL_PLUGIN_DIR)
+plugindir := ${plugindir}/$(GENERAL_PLUGIN_DIR)
 
 CFLAGS += $(PLUGIN_CFLAGS)
 CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(MOWGLI_CFLAGS) $(PANGO_CFLAGS) $(DBUS_CFLAGS) -I../../intl -I../..

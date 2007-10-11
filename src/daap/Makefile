@@ -7,7 +7,7 @@ SUBDIRS = xmms2-daap
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := $(plugindir)/$(TRANSPORT_PLUGIN_DIR)
+plugindir := ${plugindir}/$(TRANSPORT_PLUGIN_DIR)
 
 #For the moment i'm hardcoding it but it will be configurable
 #MDNS_LIBS=-ldns_sd

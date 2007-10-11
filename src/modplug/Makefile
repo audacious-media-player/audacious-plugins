@@ -49,7 +49,7 @@ SRCS = plugin.cxx		\
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}

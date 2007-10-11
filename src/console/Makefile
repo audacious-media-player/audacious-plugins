@@ -54,7 +54,7 @@ SRCS = Audacious_Config.cxx    \
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 

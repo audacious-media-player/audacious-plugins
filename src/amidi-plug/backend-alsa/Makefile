@@ -5,7 +5,7 @@ SRCS = b-alsa.c
 include ../../../buildsys.mk
 include ../../../extra.mk
 
-plugindir := $(plugindir)/$(AMIDIPLUG_BACKEND_DIR)
+plugindir := ${plugindir}/$(AMIDIPLUG_BACKEND_DIR)
 
 CFLAGS += $(PLUGIN_CFLAGS) $(ALSA_CFLAGS)
 CPPFLAGS += $(PLUGIN_CPPFLAGS) $(ALSA_CFLAGS) $(GLIB_CFLAGS) -I../../..

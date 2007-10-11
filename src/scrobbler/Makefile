@@ -16,7 +16,7 @@ include ../../extra.mk
 
 PACKAGE = audacious
 
-plugindir := $(plugindir)/${GENERAL_PLUGIN_DIR}
+plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${BEEP_DEFINES} ${CURL_CFLAGS} -I../../intl -I../..

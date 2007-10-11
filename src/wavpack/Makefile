@@ -7,7 +7,7 @@ SRCS = tags.cxx		\
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := $(plugindir)/${INPUT_PLUGIN_DIR}
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${DBUS_CFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${WAVPACK_CFLAGS} -I../../intl -I../..
 CXXFLAGS += ${PLUGIN_CFLAGS}

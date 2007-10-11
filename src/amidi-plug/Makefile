@@ -22,4 +22,4 @@ CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GM
 	-DAMIDIPLUGBACKENDDIR=\"$(plugindir)/$(AMIDIPLUG_BACKEND_DIR)\" -I../../intl -I../..
 LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(GMODULE_LIBS) -lpthread ./pcfg/libpcfg.a
 
-plugindir := $(plugindir)/$(INPUT_PLUGIN_DIR)
+plugindir := ${plugindir}/$(INPUT_PLUGIN_DIR)

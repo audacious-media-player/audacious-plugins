@@ -5,7 +5,7 @@ SRCS = stereo.c
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := $(plugindir)/${EFFECT_PLUGIN_DIR}
+plugindir := ${plugindir}/${EFFECT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../intl -I../..
