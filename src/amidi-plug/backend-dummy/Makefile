@@ -5,7 +5,7 @@ SRCS = b-dummy.c
 include ../../../buildsys.mk
 include ../../../extra.mk
 
-plugindir := ${plugindir}/${AMIDIPLUG_BACKEND_DIR}
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}/${AMIDIPLUG_BACKEND_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} -I../../..

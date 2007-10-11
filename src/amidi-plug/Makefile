@@ -17,9 +17,9 @@ SUBDIRS = pcfg ${AMIDIPLUG_BACKENDS}
 include ../../buildsys.mk
 include ../../extra.mk
 
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
+
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${GMODULE_CFLAGS} ${MOWGLI_CFLAGS} \
 	-DAMIDIPLUGBACKENDDIR=\"${plugindir}/${AMIDIPLUG_BACKEND_DIR}\" -I../../intl -I../..
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${GMODULE_LIBS} -lpthread ./pcfg/libpcfg.a
-
-plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
