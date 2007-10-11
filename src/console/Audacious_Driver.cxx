@@ -34,7 +34,6 @@ int const path_max = 4096;
 AudaciousConsoleConfig audcfg =
 { 180, FALSE, 32000, 0, 0, FALSE, 0, FALSE };
 static GThread* decode_thread;
-static GStaticMutex playback_mutex = G_STATIC_MUTEX_INIT;
 static int console_ip_is_going;
 static volatile long pending_seek;
 extern InputPlugin console_ip;
@@ -274,7 +273,6 @@ static void get_song_info( char* path, char** title, int* length )
 static void* play_loop_track( gpointer arg )
 {
         InputPlayback *playback = (InputPlayback *) arg;
-	g_static_mutex_lock( &playback_mutex );
 
 	int end_delay = 0;	
 	while ( console_ip_is_going )
@@ -318,7 +316,6 @@ static void* play_loop_track( gpointer arg )
 	unload_file();
 	playback->output->close_audio();
 	console_ip_is_going = 0;
-	g_static_mutex_unlock( &playback_mutex );
 	return NULL;
 }
 
