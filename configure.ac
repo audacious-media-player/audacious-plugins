@@ -1292,7 +1292,7 @@ dnl *** neon http plugin ***
 AC_ARG_ENABLE(neon,
 [  --enable-neon           enable neon support (experimental).  (default=disabled)],
 [have_neon=$enableval],
-[have_neon=no])
+[have_neon=yes])
 
 if test "x$have_neon" = "xyes"; then
     PKG_CHECK_MODULES(NEON, [neon >= 0.26], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon" ], [have_neon="no"])
