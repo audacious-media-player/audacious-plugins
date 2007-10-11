@@ -1,4 +1,4 @@
-PLUGIN = amidi-plug$(PLUGIN_SUFFIX)
+PLUGIN = amidi-plug${PLUGIN_SUFFIX}
 
 SRCS = amidi-plug.c		\
        i_vfslayer.c		\
@@ -12,14 +12,14 @@ SRCS = amidi-plug.c		\
        i_utils.c		\
        i_fileinfo.c
 
-SUBDIRS = pcfg $(AMIDIPLUG_BACKENDS)
+SUBDIRS = pcfg ${AMIDIPLUG_BACKENDS}
 
 include ../../buildsys.mk
 include ../../extra.mk
 
-CFLAGS += $(PLUGIN_CFLAGS)
-CPPFLAGS += $(PLUGIN_CPPFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) $(GMODULE_CFLAGS) $(MOWGLI_CFLAGS) \
-	-DAMIDIPLUGBACKENDDIR=\"$(plugindir)/$(AMIDIPLUG_BACKEND_DIR)\" -I../../intl -I../..
-LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(GMODULE_LIBS) -lpthread ./pcfg/libpcfg.a
+CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${GMODULE_CFLAGS} ${MOWGLI_CFLAGS} \
+	-DAMIDIPLUGBACKENDDIR=\"${plugindir}/${AMIDIPLUG_BACKEND_DIR}\" -I../../intl -I../..
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${GMODULE_LIBS} -lpthread ./pcfg/libpcfg.a
 
-plugindir := ${plugindir}/$(INPUT_PLUGIN_DIR)
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}

@@ -8,6 +8,6 @@ SRCS = main.cxx		\
 include ../../../buildsys.mk
 include ../../../extra.mk
 
-CFLAGS   += $(PLUGIN_CFLAGS)
-CXXFLAGS += $(PLUGIN_CFLAGS)
-CPPFLAGS += $(MOWGLI_CFLAGS) $(DBUS_CFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(PANGO_CFLAGS) -I../../..
+CFLAGS   += ${PLUGIN_CFLAGS}
+CXXFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../../..

@@ -1,4 +1,4 @@
-PLUGIN = libshnplug$(PLUGIN_SUFFIX)
+PLUGIN = libshnplug${PLUGIN_SUFFIX}
 
 SRCS = array.c		\
        convert.c	\
@@ -17,13 +17,13 @@ SRCS = array.c		\
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := ${plugindir}/$(INPUT_PLUGIN_DIR)
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
-CFLAGS += $(PLUGIN_CFLAGS)
-LDFLAGS += $(AUDLDFLAGS)
-CPPFLAGS += $(PLUGIN_CPPFLAGS) $(PICFLAGS) $(GTK_CFLAGS) $(GLIB_CFLAGS) $(MOWGLI_CFLAGS) \
-	    $(PANGO_CFLAGS) $(ARCH_DEFINES) $(SIMD_CFLAGS) -I../../intl -I../.. -Wall
-LIBS += $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS)
+CFLAGS += ${PLUGIN_CFLAGS}
+LDFLAGS += ${AUDLDFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${PICFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${MOWGLI_CFLAGS} \
+	    ${PANGO_CFLAGS} ${ARCH_DEFINES} ${SIMD_CFLAGS} -I../../intl -I../.. -Wall
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
 
 # These were the additional link flags in the old Makefile:
-# -L/opt/local/lib -L$(plugindir) -laudid3tag -Wl,-rpath=$(plugindir)
+# -L/opt/local/lib -L${plugindir} -laudid3tag -Wl,-rpath=${plugindir}
