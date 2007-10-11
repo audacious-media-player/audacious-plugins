@@ -261,9 +261,6 @@ write_all(int fd, const void *buf, size_t count)
 static void
 oss_write_audio(gpointer data, int length)
 {
-
-    audio_buf_info abuf_info;
-
     if (oss_convert_func != NULL)
         length = oss_convert_func(&data, length);
 
