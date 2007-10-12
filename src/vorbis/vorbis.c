@@ -389,13 +389,13 @@ vorbis_process_data(InputPlayback *playback, int last_section,
 
     g_mutex_unlock(vf_mutex);
 
+    playback->pass_audio(playback, FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
+
     if (!playback->playing)
         return current_section;
 
     if (seekneeded != -1)
         do_seek(playback);
-
-    playback->pass_audio(playback, FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
 
     return current_section;
 }
