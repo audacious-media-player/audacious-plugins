@@ -783,7 +783,7 @@ VFSFile* neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode) {
 
     _DEBUG("Trying to open '%s' with neon", path);
 
-    if (NULL == (file = malloc(sizeof(VFSFile)))) {
+    if (NULL == (file = g_new0(VFSFile, 1))) {
         _ERROR("Could not allocate memory for filehandle");
         _LEAVE NULL;
     }
@@ -1187,12 +1187,9 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
     }
 
     _DEBUG("Position to seek to: %ld, current: %ld", newpos, h->pos);
-
-    /* if seek <0, plugin probably wants the beginning of the stream.
-       cope with it. --nenolod */
     if (0 > newpos) {
-        _DEBUG("A seek was requested before start of stream, seeking to start of stream instead.");
-        newpos = 0;
+        _ERROR("Can not seek before start of stream");
+	_LEAVE -1;
     }
 
     if (newpos > content_length) {
