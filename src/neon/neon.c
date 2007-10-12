@@ -1187,9 +1187,12 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
     }
 
     _DEBUG("Position to seek to: %ld, current: %ld", newpos, h->pos);
+
+    /* if seek <0, plugin probably wants the beginning of the stream.
+       cope with it. --nenolod */
     if (0 > newpos) {
-        _ERROR("Can not seek before start of stream");
-        _LEAVE -1;
+        _DEBUG("A seek was requested before start of stream, seeking to start of stream instead.");
+        newpos = 0;
     }
 
     if (newpos > content_length) {
