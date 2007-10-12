@@ -925,6 +925,8 @@ vorbis_init(void)
     bmp_cfg_db_close(db);
 
     vf_mutex = g_mutex_new();
+
+    aud_mime_set_plugin("application/ogg", &vorbis_ip);
 }
 
 static void
