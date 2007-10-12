@@ -16,4 +16,4 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${MOWGLI_CFLAGS} ${ARCH_DEFINES} ${SIMD_CFLAGS} -I../..
-LIBS += -lmad -laudid3tag ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
+LIBS += -L${libdir} -lmad -laudid3tag ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}

@@ -1260,6 +1260,7 @@ esac
 dnl *** Scrobbler ***
 
 scrobbler="yes"
+have_lastfm="no"
 
 dnl libcurl check
 
@@ -1269,21 +1270,15 @@ check="7.9.7"
 dnl check_hex must be UPPERCASE if any hex letters are present
 check_hex="070907"
 
-have_curl="no"
-have_lastfm="no"
-PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
-[
-	have_curl="yes"
-], [scrobbler="no"])
+PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7], [], [scrobbler="no"])
+AC_SUBST(CURL_CFLAGS)
+AC_SUBST(CURL_LIBS)
 
 if test "x$scrobbler" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
 	TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS lastfm"
 	have_lastfm="yes"
 fi
-
-AC_SUBST(CURL_CFLAGS)
-AC_SUBST(CURL_LIBS)
 
 dnl *** End of Scrobbler checks ***
 
@@ -1673,7 +1668,6 @@ echo
 echo "  Transport"
 echo "  ---------"
 echo "  stdio transport:                        yes"
-echo "  curl-based http/https:                  $have_curl"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  lastfm transport:                       $have_lastfm"

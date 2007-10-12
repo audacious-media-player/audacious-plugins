@@ -450,7 +450,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			}
 
 		if (strlen(trackinfo[trackno].name) == 0)
-			snprintf(trackinfo[trackno].name, trackno, "CD Audio Track %02u", sizeof(trackinfo[trackno].name));
+			snprintf(trackinfo[trackno].name, sizeof(trackinfo[trackno].name), "CD Audio Track %02u", trackno);
 
 	}
 
