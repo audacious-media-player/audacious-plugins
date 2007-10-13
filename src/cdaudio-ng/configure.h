@@ -1,11 +1,21 @@
+#ifndef _CDNG_CONFIGURE_H
+#define _CDNG_CONFIGURE_H
+#include <glib.h>
 
-#ifndef CONFIGURE_H
-#define CONFIGURE_H
+extern struct cdng_cfg_t {
+	gboolean	use_dae,
+			use_cdtext,
+			use_cddb,
+			debug;
+	gchar		*device,
+			*cddb_server;
+	gint		cddb_port,
+			limitspeed;
+} cdng_cfg;
 
-void				configure_set_variables(/*gboolean *usedae, */gint *limitspeed, gboolean *usecdtext, gboolean *usecddb, char *device, gboolean *debug, gchar *cddbserver, gint *cddbport);
-void				configure_create_gui();
-void				configure_show_gui();
 
+void	configure_create_gui(void);
+void	configure_show_gui(void);
+gint	pstrcpy(gchar **, const gchar *);
 
-#endif	// CONFIGURE_H
-
+#endif	// _CDNG_CONFIGURE_H

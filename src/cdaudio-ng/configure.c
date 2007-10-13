@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,33 +31,98 @@ static GtkWidget *configwindow,
 		*deviceentry,
 		*debugcheckbutton;
 
-/*static gboolean			*usedae;*/
-static int				*limitspeed;
-static gboolean			*usecdtext;
-static gboolean			*usecddb;
-static char				*device;
-static gboolean			*debug;
-static char				*cddbserver;
-static int				*cddbport;
 
-static gboolean			delete_window(GtkWidget *widget, GdkEvent *event, gpointer data);
-static void				button_clicked(GtkWidget *widget, gpointer data);
-static void				checkbutton_toggled(GtkWidget *widget, gpointer data);
-static void				values_to_gui();
-static void				gui_to_values();
-
-
-void configure_set_variables(/*gboolean *_usedae, */gint *_limitspeed, gboolean *_usecdtext, gboolean *_usecddb, gchar *_device, gboolean *_debug, gchar *_cddbserver, gint *_cddbport)
+static void configure_values_to_gui(void)
 {
-	/*usedae = _usedae;*/
-	limitspeed = _limitspeed;
-	usecdtext = _usecdtext;
-	usecddb = _usecddb;
-	device = _device;
-	debug = _debug;
-	cddbserver = _cddbserver;
-	cddbport = _cddbport;
+	gchar portstr[16];
+
+	/*gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedaecheckbutton), cdng_cfg.use_dae);*/
+
+	/*gtk_widget_set_sensitive(limitcheckbutton, cdng_cfg.use_dae);*/
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(limitcheckbutton), cdng_cfg.limitspeed > 0);
+
+	/*gtk_widget_set_sensitive(limitspinbutton, cdng_cfg.use_dae && cdng_cfg.limitspeed > 0);*/
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(limitspinbutton), cdng_cfg.limitspeed);
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton), cdng_cfg.use_cdtext);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton), cdng_cfg.use_cddb);
+
+	gtk_entry_set_text(GTK_ENTRY(cddbserverentry), cdng_cfg.cddb_server);
+	g_snprintf(portstr, sizeof(portstr), "%d", cdng_cfg.cddb_port);
+	gtk_entry_set_text(GTK_ENTRY(cddbportentry), portstr);
+	gtk_widget_set_sensitive(cddbserverentry, cdng_cfg.use_cddb);
+	gtk_widget_set_sensitive(cddbportentry, cdng_cfg.use_cddb);
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton), strlen(cdng_cfg.device) > 0);
+
+	gtk_widget_set_sensitive(deviceentry, strlen(cdng_cfg.device) > 0);
+	gtk_entry_set_text(GTK_ENTRY(deviceentry), cdng_cfg.device);
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(debugcheckbutton), cdng_cfg.debug);
 }
+
+
+static void configure_gui_to_values(void)
+{
+	/*usedae = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton));*/
+	
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)))
+		cdng_cfg.limitspeed = gtk_spin_button_get_value(GTK_SPIN_BUTTON(limitspinbutton));
+	else
+		cdng_cfg.limitspeed = 0;
+	
+	cdng_cfg.use_cdtext = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton));
+	cdng_cfg.use_cddb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton));
+	pstrcpy(&cdng_cfg.cddb_server, gtk_entry_get_text(GTK_ENTRY(cddbserverentry)));
+	cdng_cfg.cddb_port = strtol(gtk_entry_get_text(GTK_ENTRY(cddbportentry)), NULL, 10);
+	
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)))
+		pstrcpy(&cdng_cfg.device, gtk_entry_get_text(GTK_ENTRY(deviceentry)));
+	else
+		pstrcpy(&cdng_cfg.device, "");
+	
+	cdng_cfg.debug = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debugcheckbutton));
+}
+
+
+static gboolean delete_window(GtkWidget *widget, GdkEvent *event, gpointer data)
+{
+	(void) widget; (void) event; (void) data;
+	gtk_widget_hide(configwindow);
+	return TRUE;
+}
+
+
+static void button_clicked(GtkWidget *widget, gpointer data)
+{
+	(void) data;
+	
+	gtk_widget_hide(configwindow);
+	if (widget == okbutton)
+		configure_gui_to_values();
+}
+
+
+static void checkbutton_toggled(GtkWidget *widget, gpointer data)
+{
+	(void) widget; (void) data;
+	
+	/*gtk_widget_set_sensitive(limitcheckbutton, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)));*/
+
+	gtk_widget_set_sensitive(limitspinbutton,
+		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)) &&
+		GTK_WIDGET_IS_SENSITIVE(limitcheckbutton));
+
+	gtk_widget_set_sensitive(cddbserverentry,
+		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
+	
+	gtk_widget_set_sensitive(cddbportentry,
+		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
+	
+	gtk_widget_set_sensitive(deviceentry,
+		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)));
+}
+
 
 void configure_create_gui()
 {
@@ -176,84 +240,22 @@ void configure_create_gui()
 	gtk_widget_show(maintable);
 }
 
-void configure_show_gui()
+
+void configure_show_gui(void)
 {
-	values_to_gui();
+	configure_values_to_gui();
 	gtk_widget_show(configwindow);
 }
 
-gboolean delete_window(GtkWidget *widget, GdkEvent *event, gpointer data)
+
+gint pstrcpy(gchar **res, const gchar *str)
 {
-	gtk_widget_hide(configwindow);
-	return TRUE;
-}
+	if (!res || !str) return -1;
 
-void button_clicked(GtkWidget *widget, gpointer data)
-{
-	gtk_widget_hide(configwindow);
-	if (widget == okbutton)
-		gui_to_values();
-}
+	if (*res) g_free(*res);
+	if ((*res = (gchar *) g_malloc(strlen(str) + 1)) == NULL)
+		return -2;
 
-
-void checkbutton_toggled(GtkWidget *widget, gpointer data)
-{
-	/*gtk_widget_set_sensitive(limitcheckbutton, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)));*/
-
-	gtk_widget_set_sensitive(
-		limitspinbutton,
-		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)) &&
-		GTK_WIDGET_IS_SENSITIVE(limitcheckbutton));
-
-	gtk_widget_set_sensitive(cddbserverentry, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
-	gtk_widget_set_sensitive(cddbportentry, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
-
-	gtk_widget_set_sensitive(deviceentry, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)));
-}
-
-void values_to_gui()
-{
-	gchar portstr[16];
-
-	/*gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedaecheckbutton), *usedae);*/
-
-	/*gtk_widget_set_sensitive(limitcheckbutton, *usedae);*/
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(limitcheckbutton), *limitspeed > 0);
-
-	/*gtk_widget_set_sensitive(limitspinbutton, *usedae && *limitspeed > 0);*/
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(limitspinbutton), *limitspeed);
-
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton), *usecdtext);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton), *usecddb);
-
-	g_snprintf(portstr, sizeof(portstr), "%d", *cddbport);
-	gtk_entry_set_text(GTK_ENTRY(cddbserverentry), cddbserver);
-	gtk_entry_set_text(GTK_ENTRY(cddbportentry), portstr);
-	gtk_widget_set_sensitive(cddbserverentry, *usecddb);
-	gtk_widget_set_sensitive(cddbportentry, *usecddb);
-
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton), strlen(device) > 0);
-
-	gtk_widget_set_sensitive(deviceentry, strlen(device) > 0);
-	gtk_entry_set_text(GTK_ENTRY(deviceentry), device);
-
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(debugcheckbutton), *debug);
-}
-
-void gui_to_values()
-{
-	/*usedae = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton));*/
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)))
-		*limitspeed = gtk_spin_button_get_value(GTK_SPIN_BUTTON(limitspinbutton));
-	else
-		*limitspeed = 0;
-	*usecdtext = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton));
-	*usecddb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton));
-	strncpy(cddbserver, gtk_entry_get_text(GTK_ENTRY(cddbserverentry)), strlen(gtk_entry_get_text(GTK_ENTRY(cddbserverentry))) + 1);
-	*cddbport = strtol(gtk_entry_get_text(GTK_ENTRY(cddbportentry)), NULL, 10);
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)))
-		strncpy(device, gtk_entry_get_text(GTK_ENTRY(deviceentry)), strlen(gtk_entry_get_text(GTK_ENTRY(deviceentry))) + 1);
-	else
-		strcpy(device, "");
-	*debug = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debugcheckbutton));
+	strcpy(*res, str);
+	return 0;
 }
