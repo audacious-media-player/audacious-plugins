@@ -47,38 +47,38 @@
 #include "configure.h"
 
 struct cdng_cfg_t		cdng_cfg;
-static gint				firsttrackno = -1;
-static gint				lasttrackno = -1;
+static gint			firsttrackno = -1;
+static gint			lasttrackno = -1;
 static CdIo_t			*pcdio = NULL;
 static trackinfo_t		*trackinfo = NULL;
 static gboolean			is_paused = FALSE;
-static gint				playing_track = -1;
+static gint			playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
-static InputPlayback	*pglobalinputplayback = NULL;
+static InputPlayback		*pglobalinputplayback = NULL;
 static GtkWidget		*main_menu_item, *playlist_menu_item;
 
-static void				cdaudio_init(void);
-static void				cdaudio_about(void);
-static void				cdaudio_configure(void);
-static gint				cdaudio_is_our_file(gchar *filename);
+static void			cdaudio_init(void);
+static void			cdaudio_about(void);
+static void			cdaudio_configure(void);
+static gint			cdaudio_is_our_file(gchar *filename);
 static GList			*cdaudio_scan_dir(gchar *dirname);
-static void				cdaudio_play_file(InputPlayback *pinputplayback);
-static void				cdaudio_stop(InputPlayback *pinputplayback);
-static void				cdaudio_pause(InputPlayback *pinputplayback, gshort paused);
-static void				cdaudio_seek(InputPlayback *pinputplayback, gint time);
-static gint				cdaudio_get_time(InputPlayback *pinputplayback);
-static gint				cdaudio_get_volume(gint *l, gint *r);
-static gint				cdaudio_set_volume(gint l, gint r);
-static void				cdaudio_cleanup(void);
-static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
+static void			cdaudio_play_file(InputPlayback *pinputplayback);
+static void			cdaudio_stop(InputPlayback *pinputplayback);
+static void			cdaudio_pause(InputPlayback *pinputplayback, gshort paused);
+static void			cdaudio_seek(InputPlayback *pinputplayback, gint time);
+static gint			cdaudio_get_time(InputPlayback *pinputplayback);
+static gint			cdaudio_get_volume(gint *l, gint *r);
+static gint			cdaudio_set_volume(gint l, gint r);
+static void			cdaudio_cleanup(void);
+static void			cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
 static Tuple			*cdaudio_get_song_tuple(gchar *filename);
 
-static void				menu_click(void);
-static Tuple			*create_aud_tuple_from_trackinfo(gchar *filename);
-static void				dae_play_loop(dae_params_t *pdae_params);
-static gint				calculate_track_length(gint startlsn, gint endlsn);
-static gint				find_trackno_from_filename(gchar *filename);
-static void				cleanup_on_error(void);
+static void			menu_click(void);
+static Tuple			*create_tuple_from_trackinfo(gchar *filename);
+static void			dae_play_loop(dae_params_t *pdae_params);
+static gint			calculate_track_length(gint startlsn, gint endlsn);
+static gint			find_trackno_from_filename(gchar *filename);
+static void			cleanup_on_error(void);
 
 
 static InputPlugin inputplugin = {
@@ -105,7 +105,7 @@ InputPlugin *cdaudio_iplist[] = { &inputplugin, NULL };
 DECLARE_PLUGIN(cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL, NULL);
 
 
-void cdaudio_error(const char *fmt, ...)
+static void cdaudio_error(const char *fmt, ...)
 {
 	va_list ap;
 	fprintf(stderr, "cdaudio-ng: ");
@@ -115,7 +115,7 @@ void cdaudio_error(const char *fmt, ...)
 }
 
 
-void CDDEBUG(const char *fmt, ...)
+static void CDDEBUG(const char *fmt, ...)
 {
 	if (cdng_cfg.debug) {
 		va_list ap;
@@ -199,19 +199,18 @@ static void cdaudio_about()
 
 	static GtkWidget* about_window = NULL;
 
-    if (about_window) {
-    	gdk_window_raise(about_window->window);
-    }
+	if (about_window) {
+		gdk_window_raise(about_window->window);
+	}
+	about_window = audacious_info_dialog(_("About CD Audio Plugin NG"),
+	_("Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
+	"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+	"\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+	"Also thank you Tony Vroon for mentoring & guiding me.\n\n"
+	"This was a Google Summer of Code 2007 project."), _("OK"), FALSE, NULL, NULL);
 
-    about_window = audacious_info_dialog(_("About CD Audio Plugin NG"),
-    _("Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
-    "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-    "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
-    "Also thank you Tony Vroon for mentoring & guiding me.\n\n"
-    "This was a Google Summer of Code 2007 project."), _("OK"), FALSE, NULL, NULL);
-
-    g_signal_connect(G_OBJECT(about_window), "destroy",
-                     G_CALLBACK(gtk_widget_destroyed), &about_window);
+	g_signal_connect(G_OBJECT(about_window), "destroy",
+		G_CALLBACK(gtk_widget_destroyed), &about_window);
 }
 
 static void cdaudio_configure()
@@ -231,13 +230,13 @@ static gint cdaudio_is_our_file(gchar *filename)
 	CDDEBUG("cdaudio_is_our_file(\"%s\")\n", filename);
 
 	if ((filename != NULL) && strlen(filename) > 4 && (!strcasecmp(filename + strlen(filename) - 4, ".cda"))) {
-			/* no CD information yet */
+		/* no CD information yet */
 		if (pcdio == NULL) {
 			CDDEBUG("no CD information, scanning\n");
 			cdaudio_scan_dir(CDDA_DEFAULT);
 		}
 
-			/* reload the cd information if the media has changed */
+		/* reload the cd information if the media has changed */
 		if (cdio_get_media_changed(pcdio) && pcdio != NULL) {
 			CDDEBUG("CD changed, rescanning\n");
 			if (cdaudio_scan_dir(CDDA_DEFAULT) == NULL)
@@ -249,7 +248,7 @@ static gint cdaudio_is_our_file(gchar *filename)
 			return FALSE;
 		}
 
-			/* check if the requested track actually exists on the current audio cd */
+		/* check if the requested track actually exists on the current audio cd */
 		gint trackno = find_trackno_from_filename(filename);
 		if (trackno < firsttrackno || trackno > lasttrackno) {
 			CDDEBUG("\"%s\" is not our file\n", filename);
@@ -285,19 +284,19 @@ static void cdaudio_set_fullinfo(trackinfo_t *t,
 }
 
 
-GList *cdaudio_scan_dir(gchar *dirname)
+static GList *cdaudio_scan_dir(gchar *dirname)
 {
 	gint trackno;
 
 	CDDEBUG("cdaudio_scan_dir(\"%s\")\n", dirname);
 
-		/* if the given dirname does not belong to us, we return NULL */
+	/* if the given dirname does not belong to us, we return NULL */
 	if (strstr(dirname, CDDA_DEFAULT) == NULL) {
 		CDDEBUG("\"%s\" directory does not belong to us\n", dirname);
 		return NULL;
 	}
 
-		/* find an available, audio capable, cd drive  */
+	/* find an available, audio capable, cd drive  */
 	if (cdng_cfg.device != NULL && strlen(cdng_cfg.device) > 0) {
 		pcdio = cdio_open(cdng_cfg.device, DRIVER_UNKNOWN);
 		if (pcdio == NULL) {
@@ -326,14 +325,14 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			cdio_free_device_list(ppcd_drives);
 	}
 
-		/* limit read speed */
+	/* limit read speed */
 	if (cdng_cfg.limitspeed > 0 && cdng_cfg.use_dae) {
 		CDDEBUG("setting drive speed limit to %dx\n", cdng_cfg.limitspeed);
 		if (cdio_set_speed(pcdio, cdng_cfg.limitspeed) != DRIVER_OP_SUCCESS)
 			cdaudio_error("Failed to set drive speed to %dx.\n", cdng_cfg.limitspeed);
 	}
 
-		/* get general track initialization */
+	/* get general track initialization */
 	cdrom_drive_t *pcdrom_drive = cdio_cddap_identify_cdio(pcdio, 1, NULL);	// todo : check return / NULL
 	firsttrackno = cdio_get_first_track_num(pcdrom_drive->p_cdio);
 	lasttrackno = cdio_get_last_track_num(pcdrom_drive->p_cdio);
@@ -365,7 +364,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		}
 	}
 
-		/* initialize de cddb subsystem */
+	/* initialize de cddb subsystem */
 	cddb_conn_t *pcddb_conn = NULL;
 	cddb_disc_t *pcddb_disc = NULL;
 	cddb_track_t *pcddb_track = NULL;
@@ -418,7 +417,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		}
 	}
 
-		/* adding trackinfo[0] information (the disc) */
+	/* adding trackinfo[0] information (the disc) */
 	if (cdng_cfg.use_cdtext) {
 		CDDEBUG("getting cd-text information for disc\n");
 		cdtext_t *pcdtext = cdio_get_cdtext(pcdrom_drive->p_cdio, 0);
@@ -433,7 +432,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		}
 	}
 
-		/* add track "file" names to the list */
+	/* add track "file" names to the list */
 	GList *list = NULL;
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 		list = g_list_append(list, g_strdup_printf("track%02u.cda", trackno));
@@ -465,7 +464,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		}
 
 		if (strlen(trackinfo[trackno].name) == 0) {
-			g_snprintf(trackinfo[trackno].name, sizeof(trackinfo[trackno].name),
+			g_snprintf(trackinfo[trackno].name, DEF_STRING_LEN,
 				"CD Audio Track %02u", trackno);
 		}
 
@@ -490,7 +489,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	return list;
 }
 
-void cdaudio_play_file(InputPlayback *pinputplayback)
+static void cdaudio_play_file(InputPlayback *pinputplayback)
 {
 	Tuple *tuple;
 	gchar *title;
@@ -526,7 +525,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	playing_track = trackno;
 	is_paused = FALSE;
 
-	tuple = create_aud_tuple_from_trackinfo(pinputplayback->filename);
+	tuple = create_tuple_from_trackinfo(pinputplayback->filename);
 	title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
 
 	pinputplayback->set_params(pinputplayback, title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
@@ -574,7 +573,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 	}
 }
 
-void cdaudio_stop(InputPlayback *pinputplayback)
+static void cdaudio_stop(InputPlayback *pinputplayback)
 {
 	CDDEBUG("cdaudio_stop(\"%s\")\n", pinputplayback != NULL ? pinputplayback->filename : "N/A");
 
@@ -603,7 +602,7 @@ void cdaudio_stop(InputPlayback *pinputplayback)
 	}
 }
 
-void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
+static void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
 {
 	CDDEBUG("cdaudio_pause(\"%s\", %d)\n", pinputplayback->filename, paused);
 
@@ -627,7 +626,7 @@ void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
 	}
 }
 
-void cdaudio_seek(InputPlayback *pinputplayback, gint time)
+static void cdaudio_seek(InputPlayback *pinputplayback, gint time)
 {
 	CDDEBUG("cdaudio_seek(\"%s\", %d)\n", pinputplayback->filename, time);
 
@@ -653,9 +652,9 @@ void cdaudio_seek(InputPlayback *pinputplayback, gint time)
 	}
 }
 
-gint cdaudio_get_time(InputPlayback *pinputplayback)
+static gint cdaudio_get_time(InputPlayback *pinputplayback)
 {
-	//printf("cdaudio-ng: cdaudio_get_time(\"%s\")\n", pinputplayback->filename); // annoying!
+	//CDDEBUG("cdaudio_get_time(\"%s\")\n", pinputplayback->filename); // annoying!
 
 	if (playing_track == -1)
 		return -1;
@@ -669,7 +668,7 @@ gint cdaudio_get_time(InputPlayback *pinputplayback)
 		}
 		gint currlsn = cdio_msf_to_lsn(&subchannel.abs_addr);
 
-			/* check to see if we have reached the end of the song */
+		/* check to see if we have reached the end of the song */
 		if (currlsn == trackinfo[playing_track].endlsn)
 			return -1;
 
@@ -686,7 +685,7 @@ gint cdaudio_get_time(InputPlayback *pinputplayback)
 	}
 }
 
-gint cdaudio_get_volume(gint *l, gint *r)
+static gint cdaudio_get_volume(gint *l, gint *r)
 {
 	//printf("cdaudio-ng: cdaudio_get_volume()\n"); // annoying!
 
@@ -709,7 +708,7 @@ gint cdaudio_get_volume(gint *l, gint *r)
 	}
 }
 
-gint cdaudio_set_volume(gint l, gint r)
+static gint cdaudio_set_volume(gint l, gint r)
 {
 	CDDEBUG("cdaudio_set_volume(%d, %d)\n", l, r);
 
@@ -728,7 +727,7 @@ gint cdaudio_set_volume(gint l, gint r)
 	}
 }
 
-void cdaudio_cleanup()
+static void cdaudio_cleanup(void)
 {
 	CDDEBUG("cdaudio_cleanup()\n");
 
@@ -760,12 +759,12 @@ void cdaudio_cleanup()
 	aud_cfg_db_close(db);
 }
 
-void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
+static void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 {
 	CDDEBUG("cdaudio_get_song_info(\"%s\")\n", filename);
 
 	gint trackno = find_trackno_from_filename(filename);
-	Tuple *tuple = create_aud_tuple_from_trackinfo(filename);
+	Tuple *tuple = create_tuple_from_trackinfo(filename);
 
 	if (tuple) {
 		*title = aud_tuple_formatter_process_string(tuple, get_gentitle_format());
@@ -775,17 +774,18 @@ void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 	*length = calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
 }
 
-Tuple *cdaudio_get_song_tuple(gchar *filename)
+static Tuple *cdaudio_get_song_tuple(gchar *filename)
 {
 	CDDEBUG("cdaudio_get_song_tuple(\"%s\")\n", filename);
 
-	return create_aud_tuple_from_trackinfo(filename);
+	return create_tuple_from_trackinfo(filename);
 }
 
 
-	/* auxiliar functions */
-
-void menu_click()
+/*
+ * auxiliar functions
+ */
+static void menu_click()
 {
     GList *list, *node;
     gchar *filename;
@@ -816,7 +816,7 @@ void menu_click()
 	g_list_free(list);
 }
 
-Tuple *create_aud_tuple_from_trackinfo(char *filename)
+static Tuple *create_tuple_from_trackinfo(gchar *filename)
 {
 	Tuple *tuple = aud_tuple_new_from_filename(filename);
 
@@ -852,7 +852,7 @@ Tuple *create_aud_tuple_from_trackinfo(char *filename)
 	return tuple;
 }
 
-void dae_play_loop(dae_params_t *pdae_params)
+static void dae_play_loop(dae_params_t *pdae_params)
 {
 	guchar *buffer = g_new(guchar, CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
 
@@ -865,7 +865,7 @@ void dae_play_loop(dae_params_t *pdae_params)
 	//pdae_params->endlsn += 75 * 3;
 
 	while (pdae_params->pplayback->playing) {
-			/* handle pause status */
+		/* handle pause status */
 		if (is_paused) {
 			if (!output_paused) {
 				CDDEBUG("playback was not paused, pausing\n");
@@ -883,7 +883,7 @@ void dae_play_loop(dae_params_t *pdae_params)
 			}
 		}
 
-			/* check if we have to seek */
+		/* check if we have to seek */
 		if (pdae_params->seektime != -1) {
 			CDDEBUG("requested seek to %d ms\n", pdae_params->seektime);
 			gint newlsn = pdae_params->startlsn + ((pdae_params->seektime * 75) / 1000);
@@ -893,9 +893,10 @@ void dae_play_loop(dae_params_t *pdae_params)
 			pdae_params->seektime = -1;
 		}
 
-			/* compute the actual number of sectors to read */
+		/* compute the actual number of sectors to read */
 		gint lsncount = CDDA_DAE_FRAMES <= (pdae_params->endlsn - pdae_params->currlsn + 1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn - pdae_params->currlsn + 1);
-			/* check too see if we have reached the end of the song */
+		
+		/* check too see if we have reached the end of the song */
 		if (lsncount <= 0) {
 			sleep(3);
 			break;
@@ -916,12 +917,14 @@ void dae_play_loop(dae_params_t *pdae_params)
 		gint remainingbytes = lsncount * CDIO_CD_FRAMESIZE_RAW;
 		guchar *bytebuff = buffer;
 		while (pdae_params->pplayback->playing && remainingbytes > 0 && pdae_params->seektime == -1) {
-				/* compute the actual number of bytes to play */
+			/* compute the actual number of bytes to play */
 			gint bytecount = CDIO_CD_FRAMESIZE_RAW <= remainingbytes ? CDIO_CD_FRAMESIZE_RAW : remainingbytes;
-				/* wait until the output buffer has enough room */
+			
+			/* wait until the output buffer has enough room */
 			while (pdae_params->pplayback->playing && pdae_params->pplayback->output->buffer_free() < bytecount && pdae_params->seektime == -1)
 				g_usleep(1000);
-				/* play the sound :) */
+			
+			/* play the sound :) */
 			if (pdae_params->pplayback->playing && pdae_params->seektime == -1)
 				pdae_params->pplayback->pass_audio(pdae_params->pplayback, FMT_S16_LE, 2, 
 					bytecount, bytebuff, &pdae_params->pplayback->playing);

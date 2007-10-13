@@ -96,7 +96,6 @@ static gboolean delete_window(GtkWidget *widget, GdkEvent *event, gpointer data)
 static void button_clicked(GtkWidget *widget, gpointer data)
 {
 	(void) data;
-	
 	gtk_widget_hide(configwindow);
 	if (widget == okbutton)
 		configure_gui_to_values();
@@ -252,7 +251,7 @@ gint pstrcpy(gchar **res, const gchar *str)
 {
 	if (!res || !str) return -1;
 
-	if (*res) g_free(*res);
+	g_free(*res);
 	if ((*res = (gchar *) g_malloc(strlen(str) + 1)) == NULL)
 		return -2;
 
