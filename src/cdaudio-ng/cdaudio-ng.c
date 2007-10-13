@@ -56,14 +56,14 @@ static trackinfo_t		*trackinfo = NULL;
 static gboolean			use_dae = TRUE;
 static gboolean			use_cdtext = TRUE;
 static gboolean			use_cddb = TRUE;
-static char				device[DEF_STRING_LEN];
-static int				limitspeed = 1;
+static gchar				*cd_device = NULL;
+static gint				limitspeed = 1;
 static gboolean			is_paused = FALSE;
-static int				playing_track = -1;
+static gint				playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
 static gboolean			use_debug = FALSE;
-static char				cddb_server[DEF_STRING_LEN];
-static int				cddb_port;
+static gchar				*cddb_server = NULL;
+static gint				cddb_port;
 static InputPlayback	*pglobalinputplayback = NULL;
 static GtkWidget		*main_menu_item, *playlist_menu_item;
 
@@ -139,7 +139,17 @@ void CDDEBUG(const char *fmt, ...)
 
 static void cdaudio_init()
 {
+	ConfigDb *db;
+	gchar *menu_item_text;
+	gchar *tmpstr;
+	
 	CDDEBUG("cdaudio_init()\n");
+
+	if ((db = bmp_cfg_db_open()) == NULL) {
+		cdaudio_error("Failed to read configuration.\n");
+		cleanup_on_error();
+		return;
+	}
 
 	if (!cdio_init()) {
 		cdaudio_error("Failed to initialize cdio subsystem.\n");
@@ -148,10 +158,6 @@ static void cdaudio_init()
 	}
 
 	libcddb_init();
-
-	ConfigDb *db = bmp_cfg_db_open();
-	gchar *string = NULL;
-	gchar *menu_item_text = _("Add CD");
 
 	/*
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_dae", &use_dae))
@@ -163,26 +169,23 @@ static void cdaudio_init()
 		use_cdtext = TRUE;
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cddb", &use_cddb))
 		use_cddb = TRUE;
-	if (!bmp_cfg_db_get_string(db, "CDDA", "cddbserver", &string))
-		strncpy(cddb_server, CDDA_DEFAULT_CDDB_SERVER, strlen(CDDA_DEFAULT_CDDB_SERVER) + 1);
-	else
-		strncpy(cddb_server, string, strlen(string) + 1);
+	if (!bmp_cfg_db_get_string(db, "CDDA", "cddbserver", &cddb_server))
+		cddb_server = g_strdup(CDDA_DEFAULT_CDDB_SERVER);
 	if (!bmp_cfg_db_get_int(db, "CDDA", "cddbport", &cddb_port))
 		cddb_port = CDDA_DEFAULT_CDDB_PORT;
-	if (!bmp_cfg_db_get_string(db, "CDDA", "device", &string))
-		strcpy(device, "");
-	else
-		strncpy(device, string, strlen(device) + 1);
+	if (!bmp_cfg_db_get_string(db, "CDDA", "device", &cd_device))
+		cd_device = g_strdup("");
 	if (!bmp_cfg_db_get_bool(db, "CDDA", "debug", &use_debug))
 		use_debug = FALSE;
 
 	bmp_cfg_db_close(db);
 
-	CDDEBUG(/*use_dae = %d, */"limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n", /*use_dae, */limitspeed, use_cdtext, use_cddb, cddb_server, cddb_port, device, use_debug);
+	CDDEBUG(/*use_dae = %d, */"limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n", /*use_dae, */limitspeed, use_cdtext, use_cddb, cddb_server, cddb_port, cd_device, use_debug);
 
-	configure_set_variables(/*&use_dae, */&limitspeed, &use_cdtext, &use_cddb, device, &use_debug, cddb_server, &cddb_port);
+	configure_set_variables(/*&use_dae, */&limitspeed, &use_cdtext, &use_cddb, cd_device, &use_debug, cddb_server, &cddb_port);
 	configure_create_gui();
 
+	menu_item_text = _("Add CD");
 	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
 	gtk_widget_show(main_menu_item);
@@ -281,10 +284,10 @@ GList *cdaudio_scan_dir(gchar *dirname)
 	}
 
 		/* find an available, audio capable, cd drive  */
-	if (device != NULL && strlen(device) > 0) {
-		pcdio = cdio_open(device, DRIVER_UNKNOWN);
+	if (cd_device != NULL && strlen(cd_device) > 0) {
+		pcdio = cdio_open(cd_device, DRIVER_UNKNOWN);
 		if (pcdio == NULL) {
-			cdaudio_error("Failed to open CD device \"%s\".\n", device);
+			cdaudio_error("Failed to open CD device \"%s\".\n", cd_device);
 			return NULL;
 		}
 	}
@@ -736,7 +739,7 @@ void cdaudio_cleanup()
 	bmp_cfg_db_set_bool(db, "CDDA", "use_cddb", use_cddb);
 	bmp_cfg_db_set_string(db, "CDDA", "cddbserver", cddb_server);
 	bmp_cfg_db_set_int(db, "CDDA", "cddbport", cddb_port);
-	bmp_cfg_db_set_string(db, "CDDA", "device", device);
+	bmp_cfg_db_set_string(db, "CDDA", "device", cd_device);
 	bmp_cfg_db_set_bool(db, "CDDA", "debug", use_debug);
 	bmp_cfg_db_close(db);
 }
