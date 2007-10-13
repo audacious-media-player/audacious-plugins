@@ -571,6 +571,7 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
             use_proxy = FALSE;
         }
     }
+    bmp_cfg_db_close(db);
 
     handle->redircount = 0;
 
