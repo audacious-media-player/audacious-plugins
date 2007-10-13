@@ -47,8 +47,8 @@
 #include "configure.h"
 
 
-static int				firsttrackno = -1;
-static int				lasttrackno = -1;
+static gint				firsttrackno = -1;
+static gint				lasttrackno = -1;
 static CdIo_t			*pcdio = NULL;
 static trackinfo_t		*trackinfo = NULL;
 
@@ -78,16 +78,16 @@ static void				cdaudio_seek(InputPlayback *pinputplayback, gint time);
 static gint				cdaudio_get_time(InputPlayback *pinputplayback);
 static gint				cdaudio_get_volume(gint *l, gint *r);
 static gint				cdaudio_set_volume(gint l, gint r);
-static void				cdaudio_cleanup();
+static void				cdaudio_cleanup(void);
 static void				cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
 static Tuple			*cdaudio_get_song_tuple(gchar *filename);
 
-static void				menu_click();
-static Tuple			*create_aud_tuple_from_trackinfo(char *filename);
+static void				menu_click(void);
+static Tuple			*create_aud_tuple_from_trackinfo(gchar *filename);
 static void				dae_play_loop(dae_params_t *pdae_params);
-static int				calculate_track_length(int startlsn, int endlsn);
-static int				find_trackno_from_filename(char *filename);
-static void				cleanup_on_error();
+static gint				calculate_track_length(gint startlsn, gint endlsn);
+static gint				find_trackno_from_filename(gchar *filename);
+static void				cleanup_on_error(void);
 
 
 static InputPlugin inputplugin = {
@@ -181,7 +181,6 @@ static void cdaudio_init()
 
 	CDDEBUG(/*use_dae = %d, */"limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n", /*use_dae, */limitspeed, use_cdtext, use_cddb, cddb_server, cddb_port, cd_device, use_debug);
 
-	configure_set_variables(/*&use_dae, */&limitspeed, &use_cdtext, &use_cddb, cd_device, &use_debug, cddb_server, &cddb_port);
 	configure_create_gui();
 
 	menu_item_text = _("Add CD");
@@ -207,7 +206,7 @@ static void cdaudio_about()
 	static GtkWidget* about_window = NULL;
 
     if (about_window) {
-        gdk_window_raise(about_window->window);
+    	gdk_window_raise(about_window->window);
     }
 
     about_window = audacious_info_dialog(_("About CD Audio Plugin NG"),
