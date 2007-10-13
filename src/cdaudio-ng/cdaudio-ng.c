@@ -273,8 +273,30 @@ static gint cdaudio_is_our_file(gchar *filename)
 	}
 }
 
+
+static cdaudio_set_strinfo(trackinfo_t *t,
+		const gchar *performer, const gchar *name, const gchar *genre)
+{
+	g_strlcpy(t->performer, performer, DEF_STRING_LEN);
+	g_strlcpy(t->name, name, DEF_STRING_LEN);
+	g_strlcpy(t->genre, genre, DEF_STRING_LEN);
+}
+
+
+static cdaudio_set_fullinfo(trackinfo_t *t,
+		const lsn_t startlsn, const lsn_t endlsn,
+		const gchar *performer, const gchar *name, const gchar *genre)
+{
+	t->startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, 0);
+	t->endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, CDIO_CDROM_LEADOUT_TRACK);
+	cdaudio_set_strinfo(t, performer, name, genre);
+}
+
+
 GList *cdaudio_scan_dir(gchar *dirname)
 {
+	gint trackno;
+
 	CDDEBUG("cdaudio_scan_dir(\"%s\")\n", dirname);
 
 		/* if the given dirname does not belong to us, we return NULL */
@@ -332,20 +354,18 @@ GList *cdaudio_scan_dir(gchar *dirname)
 
 	g_free(trackinfo);
 	trackinfo = (trackinfo_t *) g_new(trackinfo_t, (lasttrackno + 1));
-	gint trackno;
 
-	trackinfo[0].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, 0);
-	trackinfo[0].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, CDIO_CDROM_LEADOUT_TRACK);
-	strcpy(trackinfo[0].performer, "");
-	strcpy(trackinfo[0].name, "");
-	strcpy(trackinfo[0].genre, "");
+	cdaudio_set_fullinfo(&trackinfo[0],
+		cdio_get_track_lsn(pcdrom_drive->p_cdio, 0),
+		cdio_get_track_last_lsn(pcdrom_drive->p_cdio, CDIO_CDROM_LEADOUT_TRACK),
+		"", "", "");
+	
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
-		trackinfo[trackno].startlsn = cdio_get_track_lsn(pcdrom_drive->p_cdio, trackno);
-		trackinfo[trackno].endlsn = cdio_get_track_last_lsn(pcdrom_drive->p_cdio, trackno);
-		strcpy(trackinfo[trackno].performer, "");
-		strcpy(trackinfo[trackno].name, "");
-		strcpy(trackinfo[trackno].genre, "");
-
+		cdaudio_set_fullinfo(&trackinfo[trackno],
+			cdio_get_track_lsn(pcdrom_drive->p_cdio, trackno),
+			cdio_get_track_last_lsn(pcdrom_drive->p_cdio, trackno),
+			"", "", "");
+		
 		if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN || trackinfo[trackno].endlsn == CDIO_INVALID_LSN) {
 			cdaudio_error("Failed to retrieve stard/end lsn for track %d.\n", trackno);
 			cleanup_on_error();
@@ -397,10 +417,10 @@ GList *cdaudio_scan_dir(gchar *dirname)
 				}
 				else {
 					CDDEBUG("we have got the cddb info\n");
-
-					strncpy(trackinfo[0].performer, cddb_disc_get_artist(pcddb_disc), strlen(cddb_disc_get_artist(pcddb_disc)) + 1);
-					strncpy(trackinfo[0].name, cddb_disc_get_title(pcddb_disc), strlen(cddb_disc_get_title(pcddb_disc)) + 1);
-					strncpy(trackinfo[0].genre, cddb_disc_get_genre(pcddb_disc), strlen(cddb_disc_get_genre(pcddb_disc)) + 1);
+					cdaudio_set_strinfo(&trackinfo[0],
+						cddb_disc_get_artist(pcddb_disc),
+						cddb_disc_get_title(pcddb_disc),
+						cddb_disc_get_genre(pcddb_disc));
 				}
 			}
 		}
@@ -414,9 +434,10 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			CDDEBUG("no cd-text available for disc\n");
 		}
 		else {
-			strncpy(trackinfo[0].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "", strlen(pcdtext->field[CDTEXT_PERFORMER]) + 1);
-			strncpy(trackinfo[0].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "", strlen(pcdtext->field[CDTEXT_TITLE]) + 1);
-			strncpy(trackinfo[0].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "", strlen(pcdtext->field[CDTEXT_GENRE]) + 1);
+			cdaudio_set_strinfo(&trackinfo[0],
+				pcdtext->field[CDTEXT_PERFORMER] ? pcdtext->field[CDTEXT_PERFORMER] : "",
+				pcdtext->field[CDTEXT_TITLE] ? pcdtext->field[CDTEXT_TITLE] : "",
+				pcdtext->field[CDTEXT_GENRE] ? pcdtext->field[CDTEXT_GENRE] : "");
 		}
 	}
 
@@ -435,31 +456,33 @@ GList *cdaudio_scan_dir(gchar *dirname)
 		}
 
 		if (pcdtext != NULL) {
-			strncpy(trackinfo[trackno].performer, pcdtext->field[CDTEXT_PERFORMER] != NULL ? pcdtext->field[CDTEXT_PERFORMER] : "", strlen(pcdtext->field[CDTEXT_PERFORMER]) + 1);
-			strncpy(trackinfo[trackno].name, pcdtext->field[CDTEXT_TITLE] != NULL ? pcdtext->field[CDTEXT_TITLE] : "", strlen(pcdtext->field[CDTEXT_TITLE]) + 1);
-			strncpy(trackinfo[trackno].genre, pcdtext->field[CDTEXT_GENRE] != NULL ? pcdtext->field[CDTEXT_GENRE] : "", strlen(pcdtext->field[CDTEXT_GENRE]) + 1);
+			cdaudio_set_strinfo(&trackinfo[trackno],
+				pcdtext->field[CDTEXT_PERFORMER] ? pcdtext->field[CDTEXT_PERFORMER] : "",
+				pcdtext->field[CDTEXT_TITLE] ? pcdtext->field[CDTEXT_TITLE] : "",
+				pcdtext->field[CDTEXT_GENRE] ? pcdtext->field[CDTEXT_GENRE] : "");
 		}
-		else
-			if (pcddb_disc != NULL) {
-				cddb_track_t *pcddb_track = cddb_disc_get_track(pcddb_disc, trackno - 1);
-				strncpy(trackinfo[trackno].performer, cddb_track_get_artist(pcddb_track), strlen(cddb_track_get_artist(pcddb_track)) + 1);
-				strncpy(trackinfo[trackno].name, cddb_track_get_title(pcddb_track), strlen(cddb_track_get_title(pcddb_track)) + 1);
-				strncpy(trackinfo[trackno].genre, cddb_disc_get_genre(pcddb_disc), strlen(cddb_disc_get_genre(pcddb_disc)) + 1);
-			}
-			else {
-				strcpy(trackinfo[trackno].performer, "");
-				strcpy(trackinfo[trackno].name, "");
-				strcpy(trackinfo[trackno].genre, "");
-			}
+		else if (pcddb_disc != NULL) {
+			cddb_track_t *pcddb_track = cddb_disc_get_track(pcddb_disc, trackno - 1);
+			cdaudio_set_strinfo(&trackinfo[trackno],
+				cddb_track_get_artist(pcddb_track),
+				cddb_track_get_title(pcddb_track),
+				cddb_disc_get_genre(pcddb_disc));
+		}
+		else {
+			cdaudio_set_strinfo(&trackinfo[trackno], "", "", "");
+		}
 
-		if (strlen(trackinfo[trackno].name) == 0)
-			snprintf(trackinfo[trackno].name, sizeof(trackinfo[trackno].name), "CD Audio Track %02u", trackno);
+		if (strlen(trackinfo[trackno].name) == 0) {
+			g_snprintf(trackinfo[trackno].name, sizeof(trackinfo[trackno].name),
+				"CD Audio Track %02u", trackno);
+		}
 
 	}
 
 	if (use_debug) {
 		CDDEBUG("disc has : performer = \"%s\", name = \"%s\", genre = \"%s\"\n",
-			   trackinfo[0].performer, trackinfo[0].name, trackinfo[0].genre);
+			trackinfo[0].performer, trackinfo[0].name, trackinfo[0].genre);
+		
 		for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 			CDDEBUG("track %d has : performer = \"%s\", name = \"%s\", genre = \"%s\", startlsn = %d, endlsn = %d\n",
 				trackno, trackinfo[trackno].performer, trackinfo[trackno].name, trackinfo[trackno].genre, trackinfo[trackno].startlsn, trackinfo[trackno].endlsn);
@@ -468,6 +491,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 
 	if (pcddb_disc != NULL)
 		cddb_disc_destroy(pcddb_disc);
+	
 	if (pcddb_conn != NULL)
 		cddb_destroy(pcddb_conn);
 
@@ -499,7 +523,7 @@ void cdaudio_play_file(InputPlayback *pinputplayback)
 		return;
 	}
 
-	int trackno = find_trackno_from_filename(pinputplayback->filename);
+	gint trackno = find_trackno_from_filename(pinputplayback->filename);
 	if (trackno < firsttrackno || trackno > lasttrackno) {
 		cdaudio_error("Track #%d is out of range [%d..%d]\n", trackno, firsttrackno, lasttrackno);
 		cleanup_on_error();
@@ -802,14 +826,15 @@ void menu_click()
 
 Tuple *create_aud_tuple_from_trackinfo(char *filename)
 {
-	if (trackinfo == NULL)
-		return NULL;
-
 	Tuple *tuple = aud_tuple_new_from_filename(filename);
+
+	if (trackinfo == NULL)
+		return tuple;
+
 	gint trackno = find_trackno_from_filename(filename);
 
 	if (trackno < firsttrackno || trackno > lasttrackno)
-		return NULL;
+		return tuple;
 
 	if(strlen(trackinfo[trackno].performer)) {
 		aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
@@ -820,10 +845,13 @@ Tuple *create_aud_tuple_from_trackinfo(char *filename)
 	if(strlen(trackinfo[trackno].name)) {
 		aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
 	}
+	
 	aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, trackno);
 	aud_tuple_associate_string(tuple, -1, "ext", "cda"); //XXX should do? --yaz
 
-	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL,
+		calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+	
 	if(strlen(trackinfo[trackno].genre)) {
 		aud_tuple_associate_string(tuple, FIELD_GENRE, NULL,  trackinfo[trackno].genre);
 	}
