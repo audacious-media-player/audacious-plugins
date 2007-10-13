@@ -152,8 +152,9 @@ static void cdaudio_init()
 
 	/*
 	if (!aud_cfg_db_get_bool(db, "CDDA", "use_dae", &cdng_cfg.use_dae))
-		cdng_cfg.use_dae = TRUE;
 	*/
+	cdng_cfg.use_dae = TRUE;
+		
 	if (!aud_cfg_db_get_int(db, "CDDA", "limitspeed", &cdng_cfg.limitspeed))
 		cdng_cfg.limitspeed = 1;
 	if (!aud_cfg_db_get_bool(db, "CDDA", "use_cdtext", &cdng_cfg.use_cdtext))
@@ -171,8 +172,8 @@ static void cdaudio_init()
 
 	aud_cfg_db_close(db);
 
-	CDDEBUG(/*use_dae = %d, */"limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n",
-	/*cdng_cfg.use_dae, */cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
+	CDDEBUG("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n",
+	cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
 	cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.device, cdng_cfg.debug);
 
 	configure_create_gui();
