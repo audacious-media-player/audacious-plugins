@@ -9,29 +9,28 @@
 #include "configure.h"
 
 
-static GtkWidget		*configwindow;
-static GtkWidget		*okbutton;
-static GtkWidget		*cancelbutton;
-static GtkWidget		*maintable;
-static GtkWidget		*daeframe;
-static GtkWidget		*titleinfoframe;
-static GtkWidget		*miscframe;
-static GtkWidget		*daetable;
-static GtkWidget		*titleinfotable;
-static GtkWidget		*misctable;
-/*static GtkWidget		*usedaecheckbutton;*/
-static GtkWidget		*limitcheckbutton;
-static GtkWidget		*usecdtextcheckbutton;
-static GtkWidget		*usecddbcheckbutton;
-static GtkWidget		*cddbserverlabel;
-static GtkWidget		*cddbportlabel;
-static GtkWidget		*cddbserverentry;
-static GtkWidget		*cddbportentry;
-static GtkWidget		*usedevicecheckbutton;
-static GtkWidget		*buttonbox;
-static GtkWidget		*limitspinbutton;
-static GtkWidget		*deviceentry;
-static GtkWidget		*debugcheckbutton;
+static GtkWidget *configwindow,
+		*okbutton,
+		*cancelbutton,
+		*maintable,
+		*daeframe,
+		*titleinfoframe,
+		*miscframe,
+		*daetable,
+		*titleinfotable,
+		*misctable,
+		*limitcheckbutton,
+		*usecdtextcheckbutton,
+		*usecddbcheckbutton,
+		*cddbserverlabel,
+		*cddbportlabel,
+		*cddbserverentry,
+		*cddbportentry,
+		*usedevicecheckbutton,
+		*buttonbox,
+		*limitspinbutton,
+		*deviceentry,
+		*debugcheckbutton;
 
 /*static gboolean			*usedae;*/
 static int				*limitspeed;
