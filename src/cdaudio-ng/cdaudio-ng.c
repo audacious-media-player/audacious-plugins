@@ -900,7 +900,7 @@ void dae_play_loop(dae_params_t *pdae_params)
 			gint bytecount = CDIO_CD_FRAMESIZE_RAW <= remainingbytes ? CDIO_CD_FRAMESIZE_RAW : remainingbytes;
 				/* wait until the output buffer has enough room */
 			while (pdae_params->pplayback->playing && pdae_params->pplayback->output->buffer_free() < bytecount && pdae_params->seektime == -1)
-				usleep(1000);
+				g_usleep(1000);
 				/* play the sound :) */
 			if (pdae_params->pplayback->playing && pdae_params->seektime == -1)
 				pdae_params->pplayback->pass_audio(pdae_params->pplayback, FMT_S16_LE, 2, 
