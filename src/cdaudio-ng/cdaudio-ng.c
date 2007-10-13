@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
+/* TODO (added by ccr)
+ * - DAE seems to be always used, does analog mode work at all?
+ * - maybe make CDDB lib optional?
+ * - use_cddb/use_cdtext don't seem to be checked in all necessary places. why?
+ */
+
 #include "config.h"
 
 #include <string.h>
