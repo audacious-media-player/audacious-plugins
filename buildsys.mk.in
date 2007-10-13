@@ -58,7 +58,7 @@ prefix = @prefix@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 libdir = @libdir@
-plugindir = @plugindir@
+plugindir ?= ${libdir}/${PACKAGE}
 datarootdir = @datarootdir@
 datadir = @datadir@
 includedir = @includedir@
@@ -91,6 +91,7 @@ subdirs:
 
 depend: pre-depend ${SRCS}
 	regen=0; \
+	test -f .deps || regen=1; \
 	for i in ${SRCS}; do test $$i -nt .deps && regen=1; done; \
 	if test x"$$regen" = x"1"; then \
 		list=""; \
@@ -301,7 +302,7 @@ uninstall: uninstall-extra
 			fi \
 		fi \
 	done
-	-rmdir ${plugindir} >/dev/null 2>&1
+	-rmdir ${DESTDIR}${plugindir} >/dev/null 2>&1
 
 	for i in ${DATA}; do \
 		if test -f ${DESTDIR}${datadir}/${PACKAGE}/$$i; then \
@@ -353,7 +354,7 @@ clean:
 		${DIR_LEAVE}; \
 	done
 	
-	for i in ${OBJS} ${PLUGIN} ${CLEAN} ${CLEAN_LIB} .deps; do \
+	for i in ${OBJS} ${CLEAN} ${CLEAN_LIB} .deps; do \
 		if test -f $$i -o -d $$i; then \
 			if rm -fr $$i; then \
 				${DELETE_OK}; \
@@ -380,32 +381,21 @@ distclean: clean
 		fi \
 	done
 
-NORM = \e[0m
-BOLD = \e[1m
-
-RED = \e[0;31m
-GREEN = \e[0;32m
-BROWN = \e[0;33m
-BLUE = \e[0;34m
-CYAN = \e[0;36m
-
-KILL = \e[K
-
-DIR_ENTER = printf "${KILL}${CYAN}Entering directory ${BOLD}$$i${CYAN}.${NORM}\n"; cd $$i || exit 1
-DIR_LEAVE = printf "${KILL}${CYAN}Leaving directory ${BOLD}$$i${CYAN}.${NORM}\n"; cd .. || exit 1
-DEPEND_STATUS = printf "${KILL}${BROWN}Generating dependencies...${NORM}\r"
-DEPEND_OK = printf "${KILL}${GREEN}Successfully generated dependencies.${NORM}\n"
-DEPEND_FAILED = printf "${KILL}${RED}Failed to generate dependencies!${NORM}\n"; exit 1
-COMPILE_STATUS = printf "${KILL}${BROWN}Compiling ${BOLD}$<${BROWN}...${NORM}\r"
-COMPILE_OK = printf "${KILL}${GREEN}Successfully compiled ${BOLD}$<${GREEN}.${NORM}\n"
-COMPILE_FAILED = printf "${KILL}${RED}Failed to compile ${BOLD}$<${RED}!${NORM}\n"; exit 1
-LINK_STATUS = printf "${KILL}${BROWN}Linking ${BOLD}$@${BROWN}...${NORM}\r"
-LINK_OK = printf "${KILL}${GREEN}Successfully linked ${BOLD}$@${GREEN}.${NORM}\n"
-LINK_FAILED = printf "${KILL}${RED}Failed to link ${BOLD}$@${RED}!${NORM}\n"; exit 1
-INSTALL_STATUS = printf "${KILL}${BROWN}Installing ${BOLD}$$i${BROWN}...${NORM}\r"
-INSTALL_OK = printf "${KILL}${GREEN}Successfully installed ${BOLD}$$i${GREEN}.${NORM}\n"
-INSTALL_FAILED = printf "${KILL}${RED}Failed to install ${BOLD}$$i${RED}!${NORM}\n"; exit 1
-DELETE_OK = printf "${KILL}${BLUE}Deleted ${BOLD}$$i${BLUE}.${NORM}\n"
-DELETE_FAILED = printf "${KILL}${RED}Failed to delete ${BOLD}$$i${RED}!${NORM}\n"; exit 1
+DIR_ENTER = printf "\033[K\033[0;36mEntering directory \033[1;36m$$i\033[0;36m.\033[0m\n"; cd $$i || exit 1
+DIR_LEAVE = printf "\033[K\033[0;36mLeaving directory \033[1;36m$$i\033[0;36m.\033[0m\n"; cd .. || exit 1
+DEPEND_STATUS = printf "\033[K\033[0;33mGenerating dependencies...\033[0m\r"
+DEPEND_OK = printf "\033[K\033[0;32mSuccessfully generated dependencies.\033[0m\n"
+DEPEND_FAILED = printf "\033[K\033[0;31mFailed to generate dependencies!\033[0m\n"; exit 1
+COMPILE_STATUS = printf "\033[K\033[0;33mCompiling \033[1;33m$<\033[0;33m...\033[0m\r"
+COMPILE_OK = printf "\033[K\033[0;32mSuccessfully compiled \033[1;32m$<\033[0;32m.\033[0m\n"
+COMPILE_FAILED = printf "\033[K\033[0;31mFailed to compile \033[1;31m$<\033[0;31m!\033[0m\n"; exit 1
+LINK_STATUS = printf "\033[K\033[0;33mLinking \033[1;33m$@\033[0;33m...\033[0m\r"
+LINK_OK = printf "\033[K\033[0;32mSuccessfully linked \033[1;32m$@\033[0;32m.\033[0m\n"
+LINK_FAILED = printf "\033[K\033[0;31mFailed to link \033[1;31m$@\033[0;31m!\033[0m\n"; exit 1
+INSTALL_STATUS = printf "\033[K\033[0;33mInstalling \033[1;33m$$i\033[0;33m...\033[0m\r"
+INSTALL_OK = printf "\033[K\033[0;32mSuccessfully installed \033[1;32m$$i\033[0;32m.\033[0m\n"
+INSTALL_FAILED = printf "\033[K\033[0;31mFailed to install \033[1;31m$$i\033[0;31m!\033[0m\n"; exit 1
+DELETE_OK = printf "\033[K\033[0;34mDeleted \033[1;34m$$i\033[0;34m.\033[0m\n"
+DELETE_FAILED = printf "\033[K\033[0;31mFailed to delete \033[1;31m$$i\033[0;31m!\033[0m\n"; exit 1
 
 -include .deps
