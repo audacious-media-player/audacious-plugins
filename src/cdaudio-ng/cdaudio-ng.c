@@ -37,7 +37,6 @@
 #include <glib.h>
 
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/output.h>
 #include <audacious/playlist.h>
@@ -145,7 +144,7 @@ static void cdaudio_init()
 	
 	CDDEBUG("cdaudio_init()\n");
 
-	if ((db = bmp_cfg_db_open()) == NULL) {
+	if ((db = aud_cfg_db_open()) == NULL) {
 		cdaudio_error("Failed to read configuration.\n");
 		cleanup_on_error();
 		return;
@@ -160,25 +159,25 @@ static void cdaudio_init()
 	libcddb_init();
 
 	/*
-	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_dae", &use_dae))
+	if (!aud_cfg_db_get_bool(db, "CDDA", "use_dae", &use_dae))
 		use_dae = TRUE;
 	*/
-	if (!bmp_cfg_db_get_int(db, "CDDA", "limitspeed", &limitspeed))
+	if (!aud_cfg_db_get_int(db, "CDDA", "limitspeed", &limitspeed))
 		limitspeed = 1;
-	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cdtext", &use_cdtext))
+	if (!aud_cfg_db_get_bool(db, "CDDA", "use_cdtext", &use_cdtext))
 		use_cdtext = TRUE;
-	if (!bmp_cfg_db_get_bool(db, "CDDA", "use_cddb", &use_cddb))
+	if (!aud_cfg_db_get_bool(db, "CDDA", "use_cddb", &use_cddb))
 		use_cddb = TRUE;
-	if (!bmp_cfg_db_get_string(db, "CDDA", "cddbserver", &cddb_server))
+	if (!aud_cfg_db_get_string(db, "CDDA", "cddbserver", &cddb_server))
 		cddb_server = g_strdup(CDDA_DEFAULT_CDDB_SERVER);
-	if (!bmp_cfg_db_get_int(db, "CDDA", "cddbport", &cddb_port))
+	if (!aud_cfg_db_get_int(db, "CDDA", "cddbport", &cddb_port))
 		cddb_port = CDDA_DEFAULT_CDDB_PORT;
-	if (!bmp_cfg_db_get_string(db, "CDDA", "device", &cd_device))
+	if (!aud_cfg_db_get_string(db, "CDDA", "device", &cd_device))
 		cd_device = g_strdup("");
-	if (!bmp_cfg_db_get_bool(db, "CDDA", "debug", &use_debug))
+	if (!aud_cfg_db_get_bool(db, "CDDA", "debug", &use_debug))
 		use_debug = FALSE;
 
-	bmp_cfg_db_close(db);
+	aud_cfg_db_close(db);
 
 	CDDEBUG(/*use_dae = %d, */"limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, device = \"%s\", debug = %d\n", /*use_dae, */limitspeed, use_cdtext, use_cddb, cddb_server, cddb_port, cd_device, use_debug);
 
@@ -756,16 +755,16 @@ void cdaudio_cleanup()
 
 	// todo: destroy the gui
 
-	ConfigDb *db = bmp_cfg_db_open();
-	/*bmp_cfg_db_set_bool(db, "CDDA", "use_dae", use_dae);*/
-	bmp_cfg_db_set_int(db, "CDDA", "limitspeed", limitspeed);
-	bmp_cfg_db_set_bool(db, "CDDA", "use_cdtext", use_cdtext);
-	bmp_cfg_db_set_bool(db, "CDDA", "use_cddb", use_cddb);
-	bmp_cfg_db_set_string(db, "CDDA", "cddbserver", cddb_server);
-	bmp_cfg_db_set_int(db, "CDDA", "cddbport", cddb_port);
-	bmp_cfg_db_set_string(db, "CDDA", "device", cd_device);
-	bmp_cfg_db_set_bool(db, "CDDA", "debug", use_debug);
-	bmp_cfg_db_close(db);
+	ConfigDb *db = aud_cfg_db_open();
+	/*aud_cfg_db_set_bool(db, "CDDA", "use_dae", use_dae);*/
+	aud_cfg_db_set_int(db, "CDDA", "limitspeed", limitspeed);
+	aud_cfg_db_set_bool(db, "CDDA", "use_cdtext", use_cdtext);
+	aud_cfg_db_set_bool(db, "CDDA", "use_cddb", use_cddb);
+	aud_cfg_db_set_string(db, "CDDA", "cddbserver", cddb_server);
+	aud_cfg_db_set_int(db, "CDDA", "cddbport", cddb_port);
+	aud_cfg_db_set_string(db, "CDDA", "device", cd_device);
+	aud_cfg_db_set_bool(db, "CDDA", "debug", use_debug);
+	aud_cfg_db_close(db);
 }
 
 void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
