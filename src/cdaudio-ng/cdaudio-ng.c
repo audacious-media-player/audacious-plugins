@@ -927,7 +927,7 @@ static gint calculate_track_length(gint startlsn, gint endlsn)
 
 static gint find_trackno_from_filename(gchar *filename)
 {
-	gchar tracknostr[DEF_STRING_LEN];
+	gchar tracknostr[3];
 	if ((filename == NULL) || strlen(filename) <= 6)
 		return -1;
 
