@@ -380,7 +380,7 @@ GList *cdaudio_scan_dir(gchar *dirname)
 			cdio_get_track_msf(pcdio, CDIO_CDROM_LEADOUT_TRACK, &endmsf);
 			cddb_disc_set_length(pcddb_disc, cdio_audio_get_msf_seconds(&endmsf) - cdio_audio_get_msf_seconds(&startmsf));
 
-			int matches;
+			gint matches;
 			if ((matches = cddb_query(pcddb_conn, pcddb_disc)) == -1) {
 				cdaudio_error("Failed to query the CDDB server: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
 				cddb_disc_destroy(pcddb_disc);
