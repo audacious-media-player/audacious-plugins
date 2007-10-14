@@ -411,6 +411,7 @@ aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean c
   {
     g_warning( "OSD display requested, but no osd object is loaded!\n" );
   }
+  return 1;
 }
 
 

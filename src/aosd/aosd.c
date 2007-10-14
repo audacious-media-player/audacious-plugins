@@ -19,6 +19,7 @@
 */
 
 #include "aosd.h"
+#include "aosd_ui.h"
 #include "aosd_osd.h"
 #include "aosd_cfg.h"
 #include "aosd_trigger.h"
