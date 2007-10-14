@@ -664,7 +664,7 @@ static gpointer watchdog_func(gpointer data)
 #ifdef DEBUG
             g_print("cue: next_track: target_time = %d\n", target_time);
 #endif
-            if(cfg.stopaftersong) {
+            if(aud_cfg->stopaftersong) {
                 g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
                 continue;
             }
@@ -684,7 +684,7 @@ static gpointer watchdog_func(gpointer data)
 #ifdef DEBUG
                     g_print("i: watchdog eof reached\n\n");
 #endif
-                    if(cfg.repeat) {
+                    if(aud_cfg->repeat) {
                         static gint incr = 0;
                         incr = -pos;
                         g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
@@ -696,7 +696,7 @@ static gpointer watchdog_func(gpointer data)
                     }
                 }
                 else {
-                    if(cfg.stopaftersong) {
+                    if(aud_cfg->stopaftersong) {
                         g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
                         continue;
                     }
