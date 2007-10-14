@@ -51,10 +51,10 @@ playlist_load_pls(const gchar * filename, gint pos)
     if (!aud_str_has_suffix_nocase(filename, ".pls"))
         return;
 
-    INIFile *inifile = open_ini_file(filename);
-    if (!(line = read_ini_string(inifile, "playlist", "NumberOfEntries")))
+    INIFile *inifile = aud_open_ini_file(filename);
+    if (!(line = aud_read_ini_string(inifile, "playlist", "NumberOfEntries")))
     {
-        close_ini_file(inifile);
+        aud_close_ini_file(inifile);
         return;
     }
 
@@ -63,7 +63,7 @@ playlist_load_pls(const gchar * filename, gint pos)
 
     for (i = 1; i <= count; i++) {
         g_snprintf(line_key, sizeof(line_key), "File%d", i);
-        if ((line = read_ini_string(inifile, "playlist", line_key)))
+        if ((line = aud_read_ini_string(inifile, "playlist", line_key)))
         {
             gchar *uri = g_filename_to_uri(line, NULL, NULL);
 
@@ -76,7 +76,7 @@ playlist_load_pls(const gchar * filename, gint pos)
             {
                 g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 
-                if ((title = read_ini_string(inifile, "playlist", title_key)))
+                if ((title = aud_read_ini_string(inifile, "playlist", title_key)))
                     aud_playlist_load_ins_file(playlist, uri, filename, pos, title, -1);
                 else
                     aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
@@ -93,7 +93,7 @@ playlist_load_pls(const gchar * filename, gint pos)
         }
     }
 
-    close_ini_file(inifile);
+    aud_close_ini_file(inifile);
 }
 
 static void
