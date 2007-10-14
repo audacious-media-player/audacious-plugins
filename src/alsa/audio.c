@@ -275,7 +275,7 @@ void alsa_close(void)
 
 	alsa_cleanup_mixer();
 
-	xmms_convert_buffers_destroy(convertb);
+	aud_convert_buffers_destroy(convertb);
 	convertb = NULL;
 	g_free(inputf);
 	inputf = NULL;
@@ -746,7 +746,7 @@ int alsa_open(AFormat fmt, int rate, int nch)
 	if (!mixer)
 		alsa_setup_mixer();
 
-	convertb = xmms_convert_buffers_new();
+	convertb = aud_convert_buffers_new();
 
 	output_time_offset = 0;
 	alsa_total_written = alsa_hw_written = 0;
@@ -910,7 +910,7 @@ static int alsa_setup(struct snd_format *f)
 			debug("Converting format from %d to %d",
 			      f->xmms_format, outputf->xmms_format);
 			alsa_convert_func =
-				xmms_convert_get_func(outputf->xmms_format,
+				aud_convert_get_func(outputf->xmms_format,
 						      f->xmms_format);
 			if (alsa_convert_func == NULL)
 				return -1;
@@ -930,7 +930,7 @@ static int alsa_setup(struct snd_format *f)
 		debug("Converting channels from %d to %d",
 		      f->channels, outputf->channels);
 		alsa_stereo_convert_func =
-			xmms_convert_get_channel_func(outputf->xmms_format,
+			aud_convert_get_channel_func(outputf->xmms_format,
 						      outputf->channels,
 						      f->channels);
 		if (alsa_stereo_convert_func == NULL)
@@ -948,7 +948,7 @@ static int alsa_setup(struct snd_format *f)
 		debug("Converting samplerate from %d to %d",
 		      f->rate, outputf->rate);
 		alsa_frequency_convert_func =
-			xmms_convert_get_frequency_func(outputf->xmms_format,
+			aud_convert_get_frequency_func(outputf->xmms_format,
 							outputf->channels);
 		if (alsa_frequency_convert_func == NULL)
 			return -1;
