@@ -743,7 +743,7 @@ static char* mpcGenerateTitle(const MpcInfo& p_Tags, char* p_Filename)
 {
     Tuple* tuple = mpcGetSongTuple(p_Filename);
 
-    char* title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
+    char* title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 
     aud_tuple_free((void *) tuple);
     return title;

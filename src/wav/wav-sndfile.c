@@ -294,7 +294,7 @@ static gchar *get_title(char *filename)
 
 	tuple = aud_tuple_new_from_filename(filename);
 	fill_song_tuple(filename, tuple);
-	title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
+	title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 	if (*title == '\0')
 	{
 		g_free(title);

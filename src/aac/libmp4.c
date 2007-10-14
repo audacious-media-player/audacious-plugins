@@ -455,7 +455,7 @@ static gchar   *mp4_get_song_title(char *filename)
     gchar *title;
     Tuple *tuple = mp4_get_song_tuple(filename);
 
-    title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
+    title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 
     aud_tuple_free(tuple);
 

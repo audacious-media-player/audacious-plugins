@@ -284,7 +284,7 @@ gchar* get_title(const gchar* filename, callback_info* info) {
 
     input = get_tuple(filename, info);
 
-    title = aud_tuple_formatter_make_title_string(input, get_gentitle_format());
+    title = aud_tuple_formatter_make_title_string(input, aud_get_gentitle_format());
 
     aud_tuple_free(input);
 

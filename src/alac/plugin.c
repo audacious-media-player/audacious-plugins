@@ -338,7 +338,7 @@ gpointer decode_thread(void *args)
 
     /* Get the titlestring ready. */
     ti = build_aud_tuple_from_demux(&demux_res, (char *) args);
-    title = aud_tuple_formatter_make_title_string(ti, get_gentitle_format());
+    title = aud_tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
 
     /* initialise the sound converter */
     demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);

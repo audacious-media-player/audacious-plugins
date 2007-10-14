@@ -291,7 +291,7 @@ static gchar *xmmstimid_get_title(gchar *filename) {
 
 	input = aud_tuple_new_from_filename(filename);
 
-	title = aud_tuple_formatter_make_title_string(input, get_gentitle_format());
+	title = aud_tuple_formatter_make_title_string(input, aud_get_gentitle_format());
 	if (title == NULL || *title == '\0')
 		title = g_strdup(aud_tuple_get_string(input, FIELD_FILE_NAME, NULL));
 

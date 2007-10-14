@@ -157,7 +157,7 @@ tta_error (int error)
 static gchar *
 get_song_title(Tuple *tuple)
 {
-	return aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
+	return aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 }
 
 static void

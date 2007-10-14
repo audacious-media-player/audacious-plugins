@@ -425,7 +425,7 @@ static void input_read_tag(struct mad_info_t *info)
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
     info->title = aud_tuple_formatter_make_title_string(tuple, audmad_config.title_override == TRUE ?
-        audmad_config.id3_format : get_gentitle_format());
+        audmad_config.id3_format : aud_get_gentitle_format());
 
     // for connection via proxy, we have to stop transfer once. I can't explain the reason.
     if (info->infile != NULL) {

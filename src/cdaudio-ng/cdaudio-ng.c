@@ -533,7 +533,7 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 	is_paused = FALSE;
 
 	tuple = create_tuple_from_trackinfo(pinputplayback->filename);
-	title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
+	title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 
 	pinputplayback->set_params(pinputplayback, title, calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn), 1411200, 44100, 2);
 	g_free(title);
@@ -774,7 +774,7 @@ static void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
 	Tuple *tuple = create_tuple_from_trackinfo(filename);
 
 	if (tuple) {
-		*title = aud_tuple_formatter_process_string(tuple, get_gentitle_format());
+		*title = aud_tuple_formatter_process_string(tuple, aud_get_gentitle_format());
 		aud_tuple_free(tuple);
 		tuple = NULL;
 	}

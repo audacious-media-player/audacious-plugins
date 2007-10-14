@@ -483,7 +483,7 @@ gpointer decode_loop(gpointer arg)
     if (info->title)
         g_free(info->title);
     info->title = aud_tuple_formatter_make_title_string(info->tuple, audmad_config.title_override == TRUE ?
-                                       audmad_config.id3_format : get_gentitle_format());
+                                       audmad_config.id3_format : aud_get_gentitle_format());
 
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
         info->playback->set_params(info->playback, info->title,

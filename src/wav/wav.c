@@ -184,7 +184,7 @@ get_title(const gchar * filename)
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "RIFF/WAV Audio (ADPCM)");
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossless");
 
-    title = aud_tuple_formatter_make_title_string(tuple, get_gentitle_format());
+    title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
     if (*title == '\0')
     {
         g_free(title);

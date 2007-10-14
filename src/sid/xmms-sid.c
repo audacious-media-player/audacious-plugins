@@ -399,7 +399,7 @@ void xs_play_file(InputPlayback *pb)
 	xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
 
 	tmpTitle = aud_tuple_formatter_process_string(tmpTuple,
-		xs_cfg.titleOverride ? xs_cfg.titleFormat : get_gentitle_format());
+		xs_cfg.titleOverride ? xs_cfg.titleFormat : aud_get_gentitle_format());
 	
 	XSDEBUG("foobar #4\n");
 	XS_MUTEX_LOCK(xs_status);
