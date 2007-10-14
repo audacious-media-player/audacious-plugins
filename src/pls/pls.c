@@ -72,7 +72,7 @@ playlist_load_pls(const gchar * filename, gint pos)
             else
                 uri = line;
 
-            if (cfg.use_pl_metadata)
+            if (aud_cfg->use_pl_metadata)
             {
                 g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 

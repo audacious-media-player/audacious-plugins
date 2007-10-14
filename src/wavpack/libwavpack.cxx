@@ -426,7 +426,7 @@ generate_title(const char *fn, WavpackContext *ctx)
 
     ti = aud_tuple_from_WavpackContext(fn, ctx);
 
-    displaytitle = aud_tuple_formatter_make_title_string(ti, cfg.gentitle_format);
+    displaytitle = aud_tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
     if (!displaytitle || *displaytitle == '\0')
         displaytitle = g_strdup(fn);
 

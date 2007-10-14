@@ -124,7 +124,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
         }
 
         if (is_extm3u) {
-            if (cfg.use_pl_metadata && ext_info)
+            if (aud_cfg->use_pl_metadata && ext_info)
                 parse_extm3u_info(ext_info, &ext_title, &ext_len);
             g_free(ext_info);
             ext_info = NULL;
@@ -162,7 +162,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
     g_free(fn);
     g_return_if_fail(file != NULL);
 
-    if (cfg.use_pl_metadata)
+    if (aud_cfg->use_pl_metadata)
         aud_vfs_fprintf(file, "#EXTM3U\n");
 
     PLAYLIST_LOCK(playlist);
@@ -170,7 +170,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
     for (node = playlist->entries; node; node = g_list_next(node)) {
         PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
 
-        if (entry->title && cfg.use_pl_metadata) {
+        if (entry->title && aud_cfg->use_pl_metadata) {
             gint seconds;
 
             if (entry->length > 0)
