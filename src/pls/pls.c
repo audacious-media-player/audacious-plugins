@@ -140,12 +140,12 @@ PlaylistContainer plc_pls = {
 
 static void init(void)
 {
-    playlist_container_register(&plc_pls);
+    aud_playlist_container_register(&plc_pls);
 }
 
 static void cleanup(void)
 {
-    playlist_container_unregister(&plc_pls);
+    aud_playlist_container_unregister(&plc_pls);
 }
 
 DECLARE_PLUGIN(pls, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);
