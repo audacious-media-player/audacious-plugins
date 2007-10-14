@@ -64,19 +64,6 @@ static int seek_to = -1;
 
 extern void set_endian();
 
-/*
-static gchar *
-extname(const char *filename)
-{
-    gchar *ext = strrchr(filename, '.');
-
-    if (ext != NULL)
-        ++ext;
-
-    return ext;
-}
-*/
-
 static void alac_about(void)
 {
 	static GtkWidget *aboutbox;
@@ -190,12 +177,12 @@ static void stop(InputPlayback * data)
 {
     going = 0;
     g_thread_join(playback_thread);
-    output_close_audio();
+    data->output->close_audio();
 }
 
 static void do_pause(InputPlayback *data, short paused)
 {
-    output_pause(paused);
+    data->output->pause(paused);
 }
 
 static void seek(InputPlayback * data, gint time)
