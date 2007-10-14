@@ -207,12 +207,12 @@ PlaylistContainer plc_m3u = {
 
 static void init(void)
 {
-	playlist_container_register(&plc_m3u);
+	aud_playlist_container_register(&plc_m3u);
 }
 
 static void cleanup(void)
 {
-	playlist_container_unregister(&plc_m3u);
+	aud_playlist_container_unregister(&plc_m3u);
 }
 
 DECLARE_PLUGIN(m3u, init, cleanup, NULL, NULL, NULL, NULL, NULL, NULL);

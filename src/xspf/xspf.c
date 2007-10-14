@@ -565,13 +565,13 @@ PlaylistContainer plc_xspf = {
 
 static void xspf_init(void)
 {
-    playlist_container_register(&plc_xspf);
+    aud_playlist_container_register(&plc_xspf);
 }
 
 
 static void xspf_cleanup(void)
 {
-    playlist_container_unregister(&plc_xspf);
+    aud_playlist_container_unregister(&plc_xspf);
 }
 
 
