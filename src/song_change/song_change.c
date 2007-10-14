@@ -83,39 +83,6 @@ static void execute_command(char *cmd)
 	}
 }
 
-/*
- * aud_escape_shell_chars()
- *
- * Escapes characters that are special to the shell inside double quotes.
- */
-static char* aud_escape_shell_chars(const char *string)
-{
-	const char *special = "$`\"\\"; /* Characters to escape */
-	const char *in = string;
-	char *out;
-	char *escaped;
-	int num = 0;
-
-	while (*in != '\0')
-		if (strchr(special, *in++))
-			num++;
-
-	escaped = g_malloc(strlen(string) + num + 1);
-
-	in = string;
-	out = escaped;
-
-	while (*in != '\0')
-	{
-		if (strchr(special, *in))
-			*out++ = '\\';
-		*out++ = *in++;
-	}
-	*out = '\0';
-
-	return escaped;
-}
-
 /* Format codes:
  *
  *   F - frequency (in hertz)
