@@ -192,12 +192,12 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     input.frequency = rate;
     input.channels = nch;
 
-    playlist = playlist_get_active();
+    playlist = aud_playlist_get_active();
     if(!playlist)
         return 0;
 
-    pos = playlist_get_position(playlist);
-    tuple = playlist_get_tuple(playlist, pos);
+    pos = aud_playlist_get_position(playlist);
+    tuple = aud_playlist_get_tuple(playlist, pos);
     if(!tuple)
         return 0;
 

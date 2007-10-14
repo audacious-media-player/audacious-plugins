@@ -83,7 +83,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
     gsize line_len = 1024;
     gint ext_len = -1;
     gboolean is_extm3u = FALSE;
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
     gchar *uri;
     
     uri = g_filename_to_uri(filename, NULL, NULL);
@@ -131,7 +131,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
         }
 
         uri = g_filename_to_uri(line, NULL, NULL);
-        playlist_load_ins_file(playlist, uri ? uri : line, filename, pos, ext_title, ext_len);
+        aud_playlist_load_ins_file(playlist, uri ? uri : line, filename, pos, ext_title, ext_len);
         g_free(uri);
 
         aud_str_replace_in(&ext_title, NULL);
@@ -151,7 +151,7 @@ playlist_save_m3u(const gchar *filename, gint pos)
     GList *node;
     gchar *outstr = NULL;
     VFSFile *file;
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
     gchar *fn = NULL;
 
     g_return_if_fail(filename != NULL);

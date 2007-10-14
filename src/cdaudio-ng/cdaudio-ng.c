@@ -815,7 +815,7 @@ static void menu_click()
 
 	for (node = list; node; node = g_list_next(node)) {
 		filename = g_build_filename(CDDA_DEFAULT, node->data, NULL);
-		playlist_add(playlist_get_active(), filename);
+		aud_playlist_add(aud_playlist_get_active(), filename);
 		g_free(filename);
 		g_free(node->data);
 	}

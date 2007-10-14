@@ -166,7 +166,7 @@ static int is_our_file(gchar *filename)
 			gchar _buf[65535];
 
 			g_snprintf(_buf, 65535, "cue://%s?%d", filename, i);
-			playlist_add_url(playlist_get_active(), _buf);
+			aud_playlist_add_url(aud_playlist_get_active(), _buf);
 		}
 
 		free_cue_info();
@@ -382,8 +382,8 @@ static gboolean do_stop(gpointer data)
 
 static gboolean do_setpos(gpointer data)
 {
-    Playlist *playlist = playlist_get_active();
-    gint pos = playlist_get_position_nolock(playlist);
+    Playlist *playlist = aud_playlist_get_active();
+    gint pos = aud_playlist_get_position_nolock(playlist);
     gint incr = *(gint *)data;
 
     pos = pos + incr;
@@ -398,7 +398,7 @@ static gboolean do_setpos(gpointer data)
         return FALSE;
 
     /* being done from the main loop thread, does not require locks */
-    playlist_set_position(playlist, (guint)pos);
+    aud_playlist_set_position(playlist, (guint)pos);
 
     return FALSE; //one-shot
 }
@@ -412,15 +412,15 @@ static void cue_pause(InputPlayback * data, short p)
 static void set_info_override(gchar * unused, gint length, gint rate, gint freq, gint nch)
 {
 	gchar *title;
-	Playlist *playlist = playlist_get_active();
+	Playlist *playlist = aud_playlist_get_active();
 
 	g_return_if_fail(playlist != NULL);
 
 	/* annoying. */
 	if (playlist->position->tuple == NULL)
 	{
-		gint pos = playlist_get_position(playlist);
-		playlist_get_tuple(playlist, pos);
+		gint pos = aud_playlist_get_position(playlist);
+		aud_playlist_get_tuple(playlist, pos);
 	}
 
 	title = g_strdup(playlist->position->title);
@@ -576,7 +576,7 @@ static gpointer watchdog_func(gpointer data)
             break;
         case RUN:
             if(!playlist)
-                playlist = playlist_get_active();
+                playlist = aud_playlist_get_active();
             g_cond_timed_wait(cue_cond, cue_mutex, &sleep_time);
             break;
         case STOP:
@@ -584,7 +584,7 @@ static gpointer watchdog_func(gpointer data)
             g_print("watchdog deactivated\n");
 #endif
             g_cond_wait(cue_cond, cue_mutex);
-            playlist = playlist_get_active();
+            playlist = aud_playlist_get_active();
             break;
         }
         g_mutex_unlock(cue_mutex);
@@ -679,8 +679,8 @@ static gpointer watchdog_func(gpointer data)
             (cue_tracks[last_cue_track].index - time < 500 ||
              time > cue_tracks[last_cue_track].index) ){ // may not happen. for safety.
             if(!real_ip->output->buffer_playing()) {
-                gint pos = playlist_get_position(playlist);
-                if (pos + 1 == playlist_get_length(playlist)) {
+                gint pos = aud_playlist_get_position(playlist);
+                if (pos + 1 == aud_playlist_get_length(playlist)) {
 #ifdef DEBUG
                     g_print("i: watchdog eof reached\n\n");
 #endif

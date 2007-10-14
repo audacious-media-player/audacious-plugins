@@ -44,7 +44,7 @@ playlist_load_pls(const gchar * filename, gint pos)
     guint i, count, added_count = 0;
     gchar line_key[10], title_key[10];
     gchar *line, *title;
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
 
     g_return_if_fail(filename != NULL);
 
@@ -77,12 +77,12 @@ playlist_load_pls(const gchar * filename, gint pos)
                 g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 
                 if ((title = read_ini_string(inifile, "playlist", title_key)))
-                    playlist_load_ins_file(playlist, uri, filename, pos, title, -1);
+                    aud_playlist_load_ins_file(playlist, uri, filename, pos, title, -1);
                 else
-                    playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
+                    aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
             }
             else
-                playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
+                aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
 
             added_count++;
 
@@ -101,13 +101,13 @@ playlist_save_pls(const gchar *filename, gint pos)
 {
     GList *node;
     VFSFile *file = aud_vfs_fopen(filename, "wb");
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
 
     g_return_if_fail(file != NULL);
     g_return_if_fail(playlist != NULL);
 
     aud_vfs_fprintf(file, "[playlist]\n");
-    aud_vfs_fprintf(file, "NumberOfEntries=%d\n", playlist_get_length(playlist));
+    aud_vfs_fprintf(file, "NumberOfEntries=%d\n", aud_playlist_get_length(playlist));
 
     PLAYLIST_LOCK(playlist);
 

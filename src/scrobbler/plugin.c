@@ -234,8 +234,8 @@ static void *xs_thread(void *data __attribute__((unused)))
 
 			pdebug("Submitting song.", DEBUG);
 
-			playlist = playlist_get_active();
-			tuple = playlist_get_tuple(playlist, playlist_get_position(playlist));
+			playlist = aud_playlist_get_active();
+			tuple = aud_playlist_get_tuple(playlist, aud_playlist_get_position(playlist));
 
 			if (tuple == NULL)
 				continue;

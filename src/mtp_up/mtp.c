@@ -107,7 +107,7 @@ GList * get_upload_list()
     Tuple *tuple;
     GList *node=NULL,*up_list=NULL;
     PlaylistEntry *entry;
-    Playlist *current_play = playlist_get_active();
+    Playlist *current_play = aud_playlist_get_active();
 
     node = current_play->entries;
     PLAYLIST_LOCK(current_play);            /*needed so that the user doesn't modify the selection*/ 

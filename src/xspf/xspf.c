@@ -129,7 +129,7 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
     xmlNode *nptr;
     Tuple *tuple;
     gchar *location = NULL;
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
 
 
     tuple = aud_tuple_new();
@@ -211,7 +211,7 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
         // add file to playlist
         uri = g_filename_to_uri(location, NULL, NULL);
         // uri would be NULL if location is already uri. --yaz
-        playlist_load_ins_file_tuple(playlist, uri ? uri: location, filename, pos, tuple);
+        aud_playlist_load_ins_file_tuple(playlist, uri ? uri: location, filename, pos, tuple);
         g_free(uri);
         pos++;
     }
@@ -237,7 +237,7 @@ static void xspf_find_track(xmlNode *tracklist, const gchar *filename,
 static void xspf_find_audoptions(xmlNode *tracklist, const gchar *filename, gint pos)
 {
     xmlNode *nptr;
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
 
     for (nptr = tracklist->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE &&
@@ -304,11 +304,11 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                 } else
                 if (nptr2->type == XML_ELEMENT_NODE &&
                     !xmlStrcmp(nptr2->name, (xmlChar *)"title")) {
-                    Playlist *plist = playlist_get_active();
+                    Playlist *plist = aud_playlist_get_active();
                     xmlChar *title = xmlNodeGetContent(nptr2);
                     
                     if (title && *title) {
-                        playlist_set_current_name(plist, (gchar*)title);
+                        aud_playlist_set_current_name(plist, (gchar*)title);
                     }
                     xmlFree(title);
                 } else
@@ -361,7 +361,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     GList *node;
     gint baselen = 0;
     gchar *base = NULL;
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
 
     XSDEBUG("filename='%s', pos=%d\n", filename, pos);
 

@@ -190,9 +190,9 @@ aosd_trigger_func_pb_start_cb ( gpointer plentry_gp , gpointer unused )
     else
     {
       /* pick what we have as song title */
-      Playlist *active = playlist_get_active();
-      gint pos = playlist_get_position(active);
-      title = playlist_get_songtitle(active, pos);
+      Playlist *active = aud_playlist_get_active();
+      gint pos = aud_playlist_get_position(active);
+      title = aud_playlist_get_songtitle(active, pos);
     }
     utf8_title = aosd_trigger_utf8convert( title );
     if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
@@ -388,20 +388,20 @@ aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
 static void
 aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
 {
-  Playlist *active = playlist_get_active();
-  gint pos = playlist_get_position(active);
+  Playlist *active = aud_playlist_get_active();
+  gint pos = aud_playlist_get_position(active);
   gchar *title, *utf8_title, *utf8_title_markup;
   gint time_cur, time_tot;
   gint time_cur_m, time_cur_s, time_tot_m, time_tot_s;
 
-  time_tot = playlist_get_songtime(active, pos) / 1000;
+  time_tot = aud_playlist_get_songtime(active, pos) / 1000;
   time_cur = audacious_drct_get_time() / 1000;
   time_cur_s = time_cur % 60;
   time_cur_m = (time_cur - time_cur_s) / 60;
   time_tot_s = time_tot % 60;
   time_tot_m = (time_tot - time_tot_s) / 60;
 
-  title = playlist_get_songtitle(active, pos);
+  title = aud_playlist_get_songtitle(active, pos);
   utf8_title = aosd_trigger_utf8convert( title );
   utf8_title_markup = g_markup_printf_escaped(
     "<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>" ,

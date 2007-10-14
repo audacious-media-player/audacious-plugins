@@ -72,10 +72,10 @@ static const char* get_song_name(void) {
     static char t[256];
     gint session, pos;
     char *str, *u;
-    Playlist *playlist = playlist_get_active();
+    Playlist *playlist = aud_playlist_get_active();
 
-    pos = playlist_get_position(playlist);
-    if (!(str = playlist_get_songtitle(playlist, pos)))
+    pos = aud_playlist_get_position(playlist);
+    if (!(str = aud_playlist_get_songtitle(playlist, pos)))
         return "Playback Stream";
 
     snprintf(t, sizeof(t), "%s", u = pa_locale_to_utf8(str));

@@ -145,14 +145,14 @@ si_ui_statusicon_popup_show ( gpointer evbox )
   if ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "timer_active" )) == 1 )
   {
     Tuple *tuple;
-    Playlist *pl_active = playlist_get_active();
-    gint pos = playlist_get_position(pl_active);
+    Playlist *pl_active = aud_playlist_get_active();
+    gint pos = aud_playlist_get_position(pl_active);
     GtkWidget *popup = g_object_get_data( G_OBJECT(evbox) , "popup" );
 
-    tuple = playlist_get_tuple( pl_active , pos );
+    tuple = aud_playlist_get_tuple( pl_active , pos );
     if ( ( tuple == NULL ) || ( aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) < 1 ) )
     {
-      gchar *title = playlist_get_songtitle( pl_active , pos );
+      gchar *title = aud_playlist_get_songtitle( pl_active , pos );
       audacious_fileinfopopup_show_from_title( popup , title );
       g_free( title );
     }
