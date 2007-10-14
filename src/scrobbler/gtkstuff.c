@@ -3,6 +3,7 @@
 
 #include <glib.h>
 #include <audacious/i18n.h>
+#include <audacious/plugin.h>
 
 #include <stdio.h>
 #include <string.h>
