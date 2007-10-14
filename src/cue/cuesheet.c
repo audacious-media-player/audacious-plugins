@@ -368,9 +368,9 @@ static gboolean do_stop(gpointer data)
     g_print("f: do_stop\n");
 #endif
 
-    ip_data.stop = TRUE;
+    aud_ip_state->stop = TRUE;
     playback_stop();
-    ip_data.stop = FALSE;
+    aud_ip_state->stop = FALSE;
 
     mainwin_clear_song_info();
 

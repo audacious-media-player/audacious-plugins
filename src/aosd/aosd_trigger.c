@@ -247,7 +247,7 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
 static void
 aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
 {
-  if ( ip_data.playing )
+  if ( aud_ip_state->playing )
   {
     aosd_pb_titlechange_prevs_t *prevs = prevs_gp;
     PlaylistEntry *pl_entry = plentry_gp;

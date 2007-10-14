@@ -495,7 +495,7 @@ songchange_playback_end(gpointer unused, gpointer unused2)
 static void
 songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
 {
-  if ( ( ip_data.playing ) && ( strcmp(cmd_line_ttc,"") ) )
+  if ( ( aud_ip_state->playing ) && ( strcmp(cmd_line_ttc,"") ) )
   {
     songchange_playback_ttc_prevs_t *prevs = prevs_gp;
     PlaylistEntry *pl_entry = plentry_gp;
