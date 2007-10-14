@@ -21,6 +21,7 @@
 #include "aosd_trigger.h"
 #include "aosd_trigger_private.h"
 #include "aosd_cfg.h"
+#include "aosd_osd.h"
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <audacious/playlist.h>
