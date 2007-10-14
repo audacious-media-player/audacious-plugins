@@ -183,10 +183,10 @@ static void read_config(void)
 
 static void cleanup(void)
 {
-	hook_dissociate("playback begin", songchange_playback_begin);
-	hook_dissociate("playback end", songchange_playback_end);
-	hook_dissociate("playlist end reached", songchange_playlist_eof);
-      hook_dissociate( "playlist set info" , songchange_playback_ttc);
+	aud_hook_dissociate("playback begin", songchange_playback_begin);
+	aud_hook_dissociate("playback end", songchange_playback_end);
+	aud_hook_dissociate("playlist end reached", songchange_playlist_eof);
+      aud_hook_dissociate( "playlist set info" , songchange_playback_ttc);
 
 	if ( ttc_prevs != NULL )
 	{
@@ -452,14 +452,14 @@ static void init(void)
 	configure_vbox = configure();
 	prefswin_page_new(configure_vbox, "Song Change", DATA_DIR "/images/plugins.png");
 
-	hook_associate("playback begin", songchange_playback_begin, NULL);
-	hook_associate("playback end", songchange_playback_end, NULL);
-	hook_associate("playlist end reached", songchange_playlist_eof, NULL);
+	aud_hook_associate("playback begin", songchange_playback_begin, NULL);
+	aud_hook_associate("playback end", songchange_playback_end, NULL);
+	aud_hook_associate("playlist end reached", songchange_playlist_eof, NULL);
 
 	ttc_prevs = g_malloc0(sizeof(songchange_playback_ttc_prevs_t));
 	ttc_prevs->title = NULL;
 	ttc_prevs->filename = NULL;
-	hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
+	aud_hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
 
 	configure_ok_cb(NULL, NULL);
 }

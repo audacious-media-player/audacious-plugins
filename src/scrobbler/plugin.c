@@ -68,9 +68,9 @@ static gboolean ishttp(const char *a)
 	return aud_str_has_prefix_nocase(a, "http://") || aud_str_has_prefix_nocase(a, "https://");
 }
 
-static void hook_playback_begin(gpointer hook_data, gpointer user_data)
+static void aud_hook_playback_begin(gpointer aud_hook_data, gpointer user_data)
 {
-	PlaylistEntry *entry = (PlaylistEntry *) hook_data;
+	PlaylistEntry *entry = (PlaylistEntry *) aud_hook_data;
 
 	g_return_if_fail(entry != NULL);
 
@@ -165,7 +165,7 @@ static void init(void)
 		return;
 	}
 
-	hook_associate("playback begin", hook_playback_begin, NULL);
+	aud_hook_associate("playback begin", aud_hook_playback_begin, NULL);
 
 	pdebug("plugin started", DEBUG);
 }
@@ -204,7 +204,7 @@ static void cleanup(void)
 	sc_cleaner();
 	gerpok_sc_cleaner();
 
-	hook_dissociate("playback begin", hook_playback_begin);
+	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
 }
 
 static void *xs_thread(void *data __attribute__((unused)))

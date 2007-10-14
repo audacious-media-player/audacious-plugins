@@ -169,9 +169,9 @@ static void
 aosd_trigger_func_pb_start_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    hook_associate( "playback begin" , aosd_trigger_func_pb_start_cb , NULL );
+    aud_hook_associate( "playback begin" , aosd_trigger_func_pb_start_cb , NULL );
   else
-    hook_dissociate( "playback begin" , aosd_trigger_func_pb_start_cb );
+    aud_hook_dissociate( "playback begin" , aosd_trigger_func_pb_start_cb );
   return;
 }
 
@@ -228,11 +228,11 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
     prevs = g_malloc0(sizeof(aosd_pb_titlechange_prevs_t));
     prevs->title = NULL;
     prevs->filename = NULL;
-    hook_associate( "playlist set info" , aosd_trigger_func_pb_titlechange_cb , prevs );
+    aud_hook_associate( "playlist set info" , aosd_trigger_func_pb_titlechange_cb , prevs );
   }
   else
   {
-    hook_dissociate( "playlist set info" , aosd_trigger_func_pb_titlechange_cb );
+    aud_hook_dissociate( "playlist set info" , aosd_trigger_func_pb_titlechange_cb );
     if ( prevs != NULL )
     {
       if ( prevs->title != NULL ) g_free( prevs->title );
@@ -301,9 +301,9 @@ static void
 aosd_trigger_func_vol_change_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    hook_associate( "volume set" , aosd_trigger_func_vol_change_cb , NULL );
+    aud_hook_associate( "volume set" , aosd_trigger_func_vol_change_cb , NULL );
   else
-    hook_dissociate( "volume set" , aosd_trigger_func_vol_change_cb );
+    aud_hook_dissociate( "volume set" , aosd_trigger_func_vol_change_cb );
   return;
 }
 
@@ -358,9 +358,9 @@ static void
 aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , NULL );
+    aud_hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , NULL );
   else
-    hook_dissociate( "playback pause" , aosd_trigger_func_pb_pauseon_cb );
+    aud_hook_dissociate( "playback pause" , aosd_trigger_func_pb_pauseon_cb );
   return;
 }
 
@@ -379,9 +379,9 @@ static void
 aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , NULL );
+    aud_hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , NULL );
   else
-    hook_dissociate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb );
+    aud_hook_dissociate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb );
   return;
 }
 

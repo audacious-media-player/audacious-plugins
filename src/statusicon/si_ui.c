@@ -51,7 +51,7 @@ typedef struct
   gchar *filename;
   gpointer evbox;
 }
-si_hook_tchange_prevs_t;
+si_aud_hook_tchange_prevs_t;
 
 
 static AudGtkTrayIcon *
@@ -204,7 +204,7 @@ si_ui_statusicon_popup_timer_stop ( GtkWidget * evbox )
 
 
 static void
-si_ui_statusicon_cb_hook_pbstart ( gpointer plentry_gp , gpointer evbox )
+si_ui_statusicon_cb_aud_hook_pbstart ( gpointer plentry_gp , gpointer evbox )
 {
   if ( ( GPOINTER_TO_INT(g_object_get_data( G_OBJECT(evbox) , "popup_active" )) == 1 ) &&
        ( plentry_gp != NULL ) )
@@ -216,9 +216,9 @@ si_ui_statusicon_cb_hook_pbstart ( gpointer plentry_gp , gpointer evbox )
 
 
 static void
-si_ui_statusicon_cb_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
+si_ui_statusicon_cb_aud_hook_tchange ( gpointer plentry_gp , gpointer prevs_gp )
 {
-  si_hook_tchange_prevs_t *prevs = prevs_gp;
+  si_aud_hook_tchange_prevs_t *prevs = prevs_gp;
   PlaylistEntry *pl_entry = plentry_gp;
   gboolean upd_pop = FALSE;
 
@@ -464,7 +464,7 @@ void
 si_ui_statusicon_enable ( gboolean enable )
 {
   static GtkWidget *si_evbox = NULL;
-  static si_hook_tchange_prevs_t *si_hook_tchange_prevs = NULL;
+  static si_aud_hook_tchange_prevs_t *si_aud_hook_tchange_prevs = NULL;
 
   if (( enable == TRUE ) && ( si_evbox == NULL ))
   {
@@ -522,12 +522,12 @@ si_ui_statusicon_enable ( gboolean enable )
     si_smenu = si_ui_statusicon_smallmenu_create();
     g_object_set_data( G_OBJECT(si_evbox) , "smenu" , si_smenu );
 
-    hook_associate( "playback begin" , si_ui_statusicon_cb_hook_pbstart , si_evbox );
-    si_hook_tchange_prevs = g_malloc0(sizeof(si_hook_tchange_prevs_t));
-    si_hook_tchange_prevs->title = NULL;
-    si_hook_tchange_prevs->filename = NULL;
-    si_hook_tchange_prevs->evbox = si_evbox;
-    hook_associate( "playlist set info" , si_ui_statusicon_cb_hook_tchange , si_hook_tchange_prevs );
+    aud_hook_associate( "playback begin" , si_ui_statusicon_cb_aud_hook_pbstart , si_evbox );
+    si_aud_hook_tchange_prevs = g_malloc0(sizeof(si_aud_hook_tchange_prevs_t));
+    si_aud_hook_tchange_prevs->title = NULL;
+    si_aud_hook_tchange_prevs->filename = NULL;
+    si_aud_hook_tchange_prevs->evbox = si_evbox;
+    aud_hook_associate( "playlist set info" , si_ui_statusicon_cb_aud_hook_tchange , si_aud_hook_tchange_prevs );
 
     return;
   }
@@ -541,12 +541,12 @@ si_ui_statusicon_enable ( gboolean enable )
       gtk_widget_destroy( GTK_WIDGET(si_evbox) );
       gtk_widget_destroy( GTK_WIDGET(si_applet) );
       gtk_widget_destroy( GTK_WIDGET(si_smenu) );
-      hook_dissociate( "playback begin" , si_ui_statusicon_cb_hook_pbstart );
-      hook_dissociate( "playlist set info" , si_ui_statusicon_cb_hook_tchange );
-      if ( si_hook_tchange_prevs->title != NULL ) g_free( si_hook_tchange_prevs->title );
-      if ( si_hook_tchange_prevs->filename != NULL ) g_free( si_hook_tchange_prevs->filename );
-      g_free( si_hook_tchange_prevs );
-      si_hook_tchange_prevs = NULL;
+      aud_hook_dissociate( "playback begin" , si_ui_statusicon_cb_aud_hook_pbstart );
+      aud_hook_dissociate( "playlist set info" , si_ui_statusicon_cb_aud_hook_tchange );
+      if ( si_aud_hook_tchange_prevs->title != NULL ) g_free( si_aud_hook_tchange_prevs->title );
+      if ( si_aud_hook_tchange_prevs->filename != NULL ) g_free( si_aud_hook_tchange_prevs->filename );
+      g_free( si_aud_hook_tchange_prevs );
+      si_aud_hook_tchange_prevs = NULL;
       si_smenu = NULL;
       si_evbox = NULL;
     }
