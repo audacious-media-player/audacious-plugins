@@ -37,12 +37,12 @@ aud_vfs_stdio_urldecode_path(const gchar * encoded_path)
     if (!encoded_path)
         return NULL;
 
-    if (!str_has_prefix_nocase(encoded_path, "file:"))
+    if (!aud_str_has_prefix_nocase(encoded_path, "file:"))
         return NULL;
 
     cur = encoded_path + 5;
 
-    if (str_has_prefix_nocase(cur, "//localhost"))
+    if (aud_str_has_prefix_nocase(cur, "//localhost"))
         cur += 11;
 
     if (*cur == '/')

@@ -84,11 +84,11 @@ static void execute_command(char *cmd)
 }
 
 /*
- * escape_shell_chars()
+ * aud_escape_shell_chars()
  *
  * Escapes characters that are special to the shell inside double quotes.
  */
-static char* escape_shell_chars(const char *string)
+static char* aud_escape_shell_chars(const char *string)
 {
 	const char *special = "$`\"\\"; /* Characters to escape */
 	const char *in = string;
@@ -146,7 +146,7 @@ do_command(char *cmd, const char *current_file, int pos)
 		str = audacious_drct_pl_get_title(pos);
 		if (str)
 		{
-			temp = escape_shell_chars(str);
+			temp = aud_escape_shell_chars(str);
 			formatter_associate(formatter, 's', temp);
 			formatter_associate(formatter, 'n', temp);
 			g_free(str);
@@ -160,7 +160,7 @@ do_command(char *cmd, const char *current_file, int pos)
 
 		if (current_file)
 		{
-			temp = escape_shell_chars(current_file);
+			temp = aud_escape_shell_chars(current_file);
 			formatter_associate(formatter, 'f', temp);
 			g_free(temp);
 		}

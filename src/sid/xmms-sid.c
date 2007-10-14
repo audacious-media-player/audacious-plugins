@@ -87,7 +87,7 @@ t_xs_status xs_status;
 XS_MUTEX(xs_status);
 static XS_THREAD_T xs_decode_thread;
 
-void xs_get_song_aud_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
+void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
 
 /*
  * Error messages
@@ -396,7 +396,7 @@ void xs_play_file(InputPlayback *pb)
 	xs_status.sidPlayer->plrUpdateSIDInfo(&xs_status);
 	XS_MUTEX_UNLOCK(xs_status);
 	tmpTuple = aud_tuple_new_from_filename(tmpTune->sidFilename);
-	xs_get_song_aud_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
+	xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
 
 	tmpTitle = aud_tuple_formatter_process_string(tmpTuple,
 		xs_cfg.titleOverride ? xs_cfg.titleFormat : get_gentitle_format());
@@ -591,7 +591,7 @@ gint xs_get_time(InputPlayback *pb)
 /*
  * Return song information Tuple
  */
-void xs_get_song_aud_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
+void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 {
 	gchar *tmpStr, tmpStr2[64];
 
@@ -676,7 +676,7 @@ Tuple * xs_get_song_tuple(gchar *songFilename)
 	if (!tmpInfo)
 		return tmpResult;
 	
-	xs_get_song_aud_tuple_info(tmpResult, tmpInfo, tmpTune);
+	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
 	xs_tuneinfo_free(tmpInfo);
 
 	return tmpResult;
@@ -721,7 +721,7 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 	if (!tmpInfo)
 		return tmpResult;
 	
-	xs_get_song_aud_tuple_info(tmpResult, tmpInfo, tmpTune);
+	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
 	xs_tuneinfo_free(tmpInfo);
 
 	return tmpResult;

@@ -65,7 +65,7 @@ static GeneralPlugin scrobbler_gp =
 static gboolean ishttp(const char *a)
 {
 	g_return_val_if_fail(a != NULL, FALSE);
-	return str_has_prefix_nocase(a, "http://") || str_has_prefix_nocase(a, "https://");
+	return aud_str_has_prefix_nocase(a, "http://") || aud_str_has_prefix_nocase(a, "https://");
 }
 
 static void hook_playback_begin(gpointer hook_data, gpointer user_data)

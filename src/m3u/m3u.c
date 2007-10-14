@@ -51,7 +51,7 @@ parse_extm3u_info(const gchar * info, gchar ** title, gint * length)
     *title = NULL;
     *length = -1;
 
-    if (!str_has_prefix_nocase(info, "#EXTINF:")) {
+    if (!aud_str_has_prefix_nocase(info, "#EXTINF:")) {
         g_message("Invalid m3u metadata (%s)", info);
         return;
     }
@@ -105,13 +105,13 @@ playlist_load_m3u(const gchar * filename, gint pos)
                line[strlen(line) - 1] == '\n')
             line[strlen(line) - 1] = '\0';
 
-        if (str_has_prefix_nocase(line, "#EXTM3U")) {
+        if (aud_str_has_prefix_nocase(line, "#EXTM3U")) {
             is_extm3u = TRUE;
             continue;
         }
 
-        if (is_extm3u && str_has_prefix_nocase(line, "#EXTINF:")) {
-            str_replace_in(&ext_info, g_strdup(line));
+        if (is_extm3u && aud_str_has_prefix_nocase(line, "#EXTINF:")) {
+            aud_str_replace_in(&ext_info, g_strdup(line));
             continue;
         }
 
@@ -134,7 +134,7 @@ playlist_load_m3u(const gchar * filename, gint pos)
         playlist_load_ins_file(playlist, uri ? uri : line, filename, pos, ext_title, ext_len);
         g_free(uri);
 
-        str_replace_in(&ext_title, NULL);
+        aud_str_replace_in(&ext_title, NULL);
         ext_len = -1;
 
         if (pos >= 0)

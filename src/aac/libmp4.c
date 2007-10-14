@@ -312,7 +312,7 @@ static void mp4_cleanup(void)
 {
 }
 
-static Tuple *mp4_get_song_aud_tuple_base(char *filename, VFSFile *mp4fh)
+static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
 {
     mp4ff_callback_t *mp4cb = g_malloc0(sizeof(mp4ff_callback_t));
     mp4ff_t *mp4file;
@@ -434,12 +434,12 @@ static Tuple *mp4_get_song_tuple(char *filename)
 {
     Tuple *tuple;
     VFSFile *mp4fh;
-    gboolean remote = str_has_prefix_nocase(filename, "http:") ||
-	              str_has_prefix_nocase(filename, "https:");
+    gboolean remote = aud_str_has_prefix_nocase(filename, "http:") ||
+	              aud_str_has_prefix_nocase(filename, "https:");
 
     mp4fh = remote ? aud_vfs_buffered_file_new_from_uri(filename) : aud_vfs_fopen(filename, "rb");
 
-    tuple = mp4_get_song_aud_tuple_base(filename, mp4fh);
+    tuple = mp4_get_song_tuple_base(filename, mp4fh);
 
     return tuple;
 }
@@ -624,8 +624,8 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
     gchar       *ttemp = NULL, *stemp = NULL;
     gchar       *temp = g_strdup(filename);
     gchar       *xmmstitle = NULL;
-    gboolean    remote = str_has_prefix_nocase(filename, "http:") ||
-			 str_has_prefix_nocase(filename, "https:");
+    gboolean    remote = aud_str_has_prefix_nocase(filename, "http:") ||
+			 aud_str_has_prefix_nocase(filename, "https:");
 
     aud_vfs_rewind(file);
     if((decoder = faacDecOpen()) == NULL){

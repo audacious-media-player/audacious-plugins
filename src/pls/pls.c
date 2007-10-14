@@ -48,7 +48,7 @@ playlist_load_pls(const gchar * filename, gint pos)
 
     g_return_if_fail(filename != NULL);
 
-    if (!str_has_suffix_nocase(filename, ".pls"))
+    if (!aud_str_has_suffix_nocase(filename, ".pls"))
         return;
 
     INIFile *inifile = open_ini_file(filename);

@@ -306,7 +306,7 @@ gchar *input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
     switch (encoding) {
     case ID3_FIELD_TEXTENCODING_ISO_8859_1:
         rtn0 = (gchar *)id3_ucs4_latin1duplicate(string);
-        rtn = str_to_utf8(rtn0);
+        rtn = aud_str_to_utf8(rtn0);
         g_free(rtn0);
         break;
     case ID3_FIELD_TEXTENCODING_UTF_8:
@@ -460,7 +460,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
             metadata = TRUE;
             gchar *scratch;
 
-            scratch = str_to_utf8(tmp);
+            scratch = aud_str_to_utf8(tmp);
             aud_tuple_associate_string(info->tuple, FIELD_TITLE, NULL, scratch);
             g_free(scratch);
 
@@ -473,7 +473,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
             metadata = TRUE;
             gchar *scratch;
 
-            scratch = str_to_utf8(tmp);
+            scratch = aud_str_to_utf8(tmp);
             aud_tuple_associate_string(info->tuple, FIELD_ALBUM, NULL, scratch);
             aud_tuple_associate_string(info->tuple, -1, "stream", scratch);
             g_free(scratch);
@@ -487,7 +487,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
         else {
             gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
             gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
-            tmp = str_to_utf8(tmp2);
+            tmp = aud_str_to_utf8(tmp2);
             g_free(tmp2); tmp2 = NULL;
             g_free(realfn); realfn = NULL;
 //            tmp = g_strdup(g_basename(info->filename)); //XXX maybe ok. --yaz

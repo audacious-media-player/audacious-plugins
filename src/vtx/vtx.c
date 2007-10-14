@@ -93,7 +93,7 @@ vtx_is_our_file (char *filename)
 }
 
 Tuple *
-vtx_get_song_aud_tuple_from_vtx(const gchar *filename, ayemu_vtx_t *in)
+vtx_get_song_tuple_from_vtx(const gchar *filename, ayemu_vtx_t *in)
 {
   Tuple *out = aud_tuple_new_from_filename(filename);
   gchar *string;
@@ -123,7 +123,7 @@ vtx_get_song_tuple(gchar *filename)
 
   if (ayemu_vtx_open (&tmp, filename))
     {
-      Tuple *ti = vtx_get_song_aud_tuple_from_vtx(filename, &tmp);
+      Tuple *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
       ayemu_vtx_free(&tmp);
       return ti;
     }
@@ -233,7 +233,7 @@ void vtx_play_file (InputPlayback *playback)
       playback->eof = FALSE;
       seek_to = -1;
 
-      ti = vtx_get_song_aud_tuple_from_vtx(playback->filename, &vtx);
+      ti = vtx_get_song_tuple_from_vtx(playback->filename, &vtx);
       buf = aud_tuple_formatter_make_title_string(ti, get_gentitle_format());
 
       playback->set_params (playback, buf, vtx.hdr.regdata_size / 14 * 1000 / 50,
@@ -296,7 +296,7 @@ vtx_get_song_info (char *filename, char **title, int *length)
   (*title) = NULL;
 
   if (ayemu_vtx_open (&tmp, filename)) {
-    Tuple *ti = vtx_get_song_aud_tuple_from_vtx(filename, &tmp);
+    Tuple *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
 
     *title = aud_tuple_formatter_process_string(ti, get_gentitle_format());
     *length = aud_tuple_get_int(ti, FIELD_LENGTH, NULL);

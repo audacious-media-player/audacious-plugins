@@ -773,7 +773,7 @@ static void cache_cue_file(char *f)
 			if(strcasecmp(line+q, "GENRE") == 0) {
 				fix_cue_argument(line+p);
 				if (last_cue_track == 0)
-					cue_genre = str_to_utf8(line + p);
+					cue_genre = aud_str_to_utf8(line + p);
 			}
 			if(strcasecmp(line+q, "DATE") == 0) {
 				gchar *tmp;
@@ -790,9 +790,9 @@ static void cache_cue_file(char *f)
 			fix_cue_argument(line+q);
 
 			if (last_cue_track == 0)
-				cue_performer = str_to_utf8(line + q);
+				cue_performer = aud_str_to_utf8(line + q);
 			else
-				cue_tracks[last_cue_track - 1].performer = str_to_utf8(line + q);
+				cue_tracks[last_cue_track - 1].performer = aud_str_to_utf8(line + q);
 		}
 		else if (strcasecmp(line+p, "FILE") == 0) {
 			gchar *tmp = g_path_get_dirname(f);
@@ -803,9 +803,9 @@ static void cache_cue_file(char *f)
 		else if (strcasecmp(line+p, "TITLE") == 0) {
 			fix_cue_argument(line+q);
 			if (last_cue_track == 0)
-				cue_title = str_to_utf8(line + q);
+				cue_title = aud_str_to_utf8(line + q);
 			else
-				cue_tracks[last_cue_track-1].title = str_to_utf8(line + q);
+				cue_tracks[last_cue_track-1].title = aud_str_to_utf8(line + q);
 		}
 		else if (strcasecmp(line+p, "TRACK") == 0) {
 			gint track;

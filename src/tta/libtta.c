@@ -406,7 +406,7 @@ file_info (char *filename)
 	    gtk_widget_show_all (window);
 	}
 	realfn = g_filename_from_uri(filename, NULL, NULL);
-	utf_filename = str_to_utf8(realfn ? realfn : filename);
+	utf_filename = aud_str_to_utf8(realfn ? realfn : filename);
 	g_free(realfn); realfn = NULL;
 	title = g_strdup_printf(_("File Info - %s"), g_basename(utf_filename));
 	gtk_window_set_title(GTK_WINDOW(window), title);
@@ -787,7 +787,7 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
     }
     else {
         rtn = (gchar *)id3_ucs4_latin1duplicate(string);
-        rtn2 = str_to_utf8(rtn);
+        rtn2 = aud_str_to_utf8(rtn);
         free(rtn);
         rtn = rtn2;
     }

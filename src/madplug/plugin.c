@@ -647,7 +647,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
     gboolean local_fd = FALSE;
 
 #ifdef DEBUG
-    string = str_to_utf8(filename);
+    string = aud_str_to_utf8(filename);
     g_message("f: mad: audmad_get_song_tuple: %s", string);
     g_free(string);
     string = NULL;
@@ -666,7 +666,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             if(tmp){
                 gchar *scratch;
 
-                scratch = str_to_utf8(tmp);
+                scratch = aud_str_to_utf8(tmp);
                 aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
                 g_free(tmp);
                 g_free(scratch);
@@ -677,7 +677,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             if(tmp){
                 gchar *scratch;
 
-                scratch = str_to_utf8(tmp);
+                scratch = aud_str_to_utf8(tmp);
                 aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, scratch);
                 g_free(tmp);
                 g_free(scratch);

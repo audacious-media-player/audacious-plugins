@@ -718,7 +718,7 @@ vorbis_process_replaygain(float **pcm, int samples, int ch,
 static void _aud_tuple_associate_string(Tuple *tuple, const gint nfield, const gchar *field, const gchar *string)
 {
     if (string) {
-        gchar *str = str_to_utf8(string);
+        gchar *str = aud_str_to_utf8(string);
         aud_tuple_associate_string(tuple, nfield, field, str);
         g_free(str);
     }

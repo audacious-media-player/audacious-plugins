@@ -1014,7 +1014,7 @@ vorbis_file_info_box(gchar * filename)
     {
         gchar *realfn = NULL;
         realfn = g_filename_from_uri(vte.filename, NULL, NULL);
-        filename_utf8 = filename_to_utf8(realfn ? realfn : vte.filename);
+        filename_utf8 = aud_filename_to_utf8(realfn ? realfn : vte.filename);
         g_free(realfn); realfn = NULL;
     }
 

@@ -589,7 +589,7 @@ void audmad_get_file_info(char *fileurl)
     gchar *realfn = NULL;
 #ifdef DEBUG
     {
-        tmp = str_to_utf8(fileurl);
+        tmp = aud_str_to_utf8(fileurl);
         g_message("f: audmad_get_file_info: %s", tmp);
         g_free(tmp);
         tmp = NULL;
@@ -609,7 +609,7 @@ void audmad_get_file_info(char *fileurl)
     }
 
     realfn = g_filename_from_uri(fileurl, NULL, NULL);
-    utf_filename = str_to_utf8(realfn ? realfn : fileurl);
+    utf_filename = aud_str_to_utf8(realfn ? realfn : fileurl);
     g_free(realfn); realfn = NULL;
     create_window();
 

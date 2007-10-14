@@ -551,7 +551,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	 * an arbitrary module file uses .. typically it is some DOS CP-variant,
 	 * except for true Amiga modules.
 	 */
-	gchar *tmps2 = str_to_utf8(lSoundFile->GetTitle());
+	gchar *tmps2 = aud_str_to_utf8(lSoundFile->GetTitle());
 	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps2);
 	g_free(tmps2);
 	

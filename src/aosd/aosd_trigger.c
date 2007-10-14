@@ -157,7 +157,7 @@ static gchar *
 aosd_trigger_utf8convert ( gchar * str )
 {
   if ( global_config->osd->text.utf8conv_disable == FALSE )
-    return str_to_utf8( str );
+    return aud_str_to_utf8( str );
   else
     return g_strdup( str );
 }
