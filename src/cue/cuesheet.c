@@ -253,7 +253,7 @@ static Tuple *get_aud_tuple_uri(gchar *uri)
 #ifdef DEBUG    
 	g_print("cue_file = %s\n", cue_file);
 #endif
-	pr = input_check_file(cue_file, FALSE);
+	pr = aud_input_check_file(cue_file, FALSE);
 	if (pr == NULL)
 		return NULL;
 	dec = pr->ip;
@@ -451,7 +451,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
     if (cue_file == NULL || !aud_vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
         return;
 
-	pr = input_check_file(cue_file, FALSE);
+	pr = aud_input_check_file(cue_file, FALSE);
 	if (pr == NULL)
 		return;
 
