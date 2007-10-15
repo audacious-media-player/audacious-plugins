@@ -109,52 +109,52 @@ do_command(char *cmd, const char *current_file, int pos)
 
 	if (cmd && strlen(cmd) > 0)
 	{
-		formatter = formatter_new();
+		formatter = aud_formatter_new();
 		str = audacious_drct_pl_get_title(pos);
 		if (str)
 		{
 			temp = aud_escape_shell_chars(str);
-			formatter_associate(formatter, 's', temp);
-			formatter_associate(formatter, 'n', temp);
+			aud_formatter_associate(formatter, 's', temp);
+			aud_formatter_associate(formatter, 'n', temp);
 			g_free(str);
 			g_free(temp);
 		}
 		else
 		{
-			formatter_associate(formatter, 's', "");
-			formatter_associate(formatter, 'n', "");
+			aud_formatter_associate(formatter, 's', "");
+			aud_formatter_associate(formatter, 'n', "");
 		}
 
 		if (current_file)
 		{
 			temp = aud_escape_shell_chars(current_file);
-			formatter_associate(formatter, 'f', temp);
+			aud_formatter_associate(formatter, 'f', temp);
 			g_free(temp);
 		}
 		else
-			formatter_associate(formatter, 'f', "");
+			aud_formatter_associate(formatter, 'f', "");
 		sprintf(numbuf, "%02d", pos + 1);
-		formatter_associate(formatter, 't', numbuf);
+		aud_formatter_associate(formatter, 't', numbuf);
 		length = audacious_drct_pl_get_time(pos);
 		if (length != -1)
 		{
 			sprintf(numbuf, "%d", length);
-			formatter_associate(formatter, 'l', numbuf);
+			aud_formatter_associate(formatter, 'l', numbuf);
 		}
 		else
-			formatter_associate(formatter, 'l', "0");
+			aud_formatter_associate(formatter, 'l', "0");
 		audacious_drct_get_info(&rate, &freq, &nch);
 		sprintf(numbuf, "%d", rate);
-		formatter_associate(formatter, 'r', numbuf);
+		aud_formatter_associate(formatter, 'r', numbuf);
 		sprintf(numbuf, "%d", freq);
-		formatter_associate(formatter, 'F', numbuf);
+		aud_formatter_associate(formatter, 'F', numbuf);
 		sprintf(numbuf, "%d", nch);
-		formatter_associate(formatter, 'c', numbuf);
+		aud_formatter_associate(formatter, 'c', numbuf);
 		playing = audacious_drct_get_playing();
 		sprintf(numbuf, "%d", playing);
-		formatter_associate(formatter, 'p', numbuf);
-		shstring = formatter_format(formatter, cmd);
-		formatter_destroy(formatter);
+		aud_formatter_associate(formatter, 'p', numbuf);
+		shstring = aud_formatter_format(formatter, cmd);
+		aud_formatter_destroy(formatter);
 
 		if (shstring)
 		{
