@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <color> 0, 161, 226 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <xform_movement>
+   <formula> r=(tan(r)^sin(r)) </formula>
+  </xform_movement>
+  <wave_scope>
+   <init_script> points=192; t = -0.05; </init_script>
+   <frame_script> t = t + 0.05; </frame_script>
+   <sample_script> d = index + value; r = t + tan(index) * 3.141952924 * 4; x = (sin(r) * sin(d)) / 1.3; y = cos(r) * cos(d); </sample_script>
+   <lines> TRUE </lines>
+  </wave_scope>
+  <general_fade>
+   <amount> 3 </amount>
+  </general_fade>
+  <general_blur>
+  </general_blur>
+ </container_simple>
+</paranormal_preset>

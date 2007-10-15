@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <color> 0, 161, 255 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <wave_normalize>
+   <height> -1 </height>
+   <hfrac> -1.00000 </hfrac>
+   <vfrac> 0.12500 </vfrac>
+   <channels> 0 </channels>
+  </wave_normalize>
+  <wave_scope>
+   <init_script> n = 800; t = -0.05; </init_script>
+   <frame_script> t = t + 0.05; </frame_script>
+   <sample_script> d = index + value; r = t + index * 3.141952924 * 4; x = cos(r) * d; y = sin(r) * d; </sample_script>
+   <lines> TRUE </lines>
+  </wave_scope>
+  <general_blur>
+  </general_blur>
+  <xform_movement>
+   <formula>  r = sin(r); d = cos(d)^2;  </formula>
+   <polar> TRUE </polar>
+  </xform_movement>
+  <general_blur>
+  </general_blur>
+  <general_fade>
+   <amount> 8 </amount>
+  </general_fade>
+ </container_simple>
+</paranormal_preset>

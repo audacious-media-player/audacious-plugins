@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_gradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <lcolor> 0, 0, 127 </lcolor>
+    <hcolor> 0, 127, 255 </hcolor>
+   </cmap_gradient>
+  </container_once>
+  <wave_horizontal>
+   <channels> -1 </channels>
+   <value> 255 </value>
+   <lines> FALSE </lines>
+  </wave_horizontal>
+  <wave_vertical>
+   <channels> -1 </channels>
+   <value> 255 </value>
+   <lines> FALSE </lines>
+  </wave_vertical>
+  <container_cycle>
+   <change_interval> 0 </change_interval>
+   <beat> TRUE </beat>
+   <xform_spin>
+    <angle> -4.00000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 0.75000 </r_scale>
+   </xform_spin>
+   <xform_spin>
+    <angle> 4.00000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 0.75000 </r_scale>
+   </xform_spin>
+   <xform_spin>
+    <angle> -8.00000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 0.75000 </r_scale>
+   </xform_spin>
+   <xform_spin>
+    <angle> 8.00000 </angle>
+    <r_add> 0.00000 </r_add>
+    <r_scale> 0.75000 </r_scale>
+   </xform_spin>
+  </container_cycle>
+  <general_fade>
+   <amount> 3 </amount>
+  </general_fade>
+ </container_simple>
+</paranormal_preset>

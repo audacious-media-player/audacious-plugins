@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 140 </low_index>
+    <high_index> 255 </high_index>
+    <color> 76, 122, 229 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <wave_normalize>
+   <height> -6 </height>
+   <hfrac> 6.00000 </hfrac>
+   <vfrac> 0.12500 </vfrac>
+   <channels> 0 </channels>
+  </wave_normalize>
+  <wave_radial>
+   <base_radius> 0.00000 </base_radius>
+  </wave_radial>
+  <xform_ripple>
+   <angle> 0.00000 </angle>
+   <ripples> 8.00000 </ripples>
+   <base_speed> 1.00000 </base_speed>
+   <mod_speed> 1.00000 </mod_speed>
+  </xform_ripple>
+  <general_blur>
+  </general_blur>
+  <general_fade>
+   <amount> 1 </amount>
+  </general_fade>
+  <xform_spin>
+   <angle> -0.50000 </angle>
+   <r_add> 0.00000 </r_add>
+   <r_scale> 0.94000 </r_scale>
+  </xform_spin>
+ </container_simple>
+</paranormal_preset>

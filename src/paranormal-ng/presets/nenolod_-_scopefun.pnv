@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <color> 0, 191, 255 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <general_invert>
+  </general_invert>
+  <wave_scope>
+   <init_script> n=7;r=0.5;mx=0;my=0;mz=0;dst=2;rx=0;ry=0;rz=0;rdx=1;rdy=1;rdz=1;p=3.14159265;p2=2.0*p;p3=180/p; </init_script>
+   <frame_script> ;rx=rx+rdx;ry=ry+rdy;rz=rz+rdz;xs=sin(rx/p3);ys=sin(ry/p3);zs=sin(rz/p3);xc=cos(rx/p3);yc=cos(ry/p3);zc=cos(rz/p3); </frame_script>
+   <sample_script> x1=value*sin(p2*index);y1=cos(p2*index);z1=r*cos(p2*index);y2=y1*xc-z1*xs;z2=y1*xs+z1*xc;x2=z2*ys+x1*yc;z3=z2*yc-x1*ys;x3=x2*zc-y2*zs;y3=y2*zc+x2*zs;x4=mx+x3;y4=my+y3;z4=mz+z3;x=x4/(1+z4/dst);y=y4/(1+z4/dst); </sample_script>
+   <lines> TRUE </lines>
+  </wave_scope>
+  <general_fade>
+   <amount> 10 </amount>
+  </general_fade>
+  <general_invert>
+  </general_invert>
+ </container_simple>
+</paranormal_preset>

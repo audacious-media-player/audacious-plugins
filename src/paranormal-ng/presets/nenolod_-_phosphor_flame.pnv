@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<paranormal_preset>
+ <container_simple>
+  <container_once>
+   <cmap_bwgradient>
+    <low_index> 0 </low_index>
+    <high_index> 255 </high_index>
+    <color> 120, 223, 193 </color>
+   </cmap_bwgradient>
+  </container_once>
+  <freq_drops>
+  </freq_drops>
+  <general_fade>
+   <amount> 1 </amount>
+  </general_fade>
+  <general_blur>
+  </general_blur>
+  <wave_radial>
+   <base_radius> 0.00000 </base_radius>
+  </wave_radial>
+  <xform_spin>
+   <angle> 0.00000 </angle>
+   <r_add> 0.00000 </r_add>
+   <r_scale> 1.04000 </r_scale>
+  </xform_spin>
+ </container_simple>
+</paranormal_preset>
