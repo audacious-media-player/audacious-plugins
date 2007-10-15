@@ -69,7 +69,7 @@ static struct
   gint freq;
   gboolean bit16, stereo, endless;
   CPlayers players;
-} cfg =
+} conf =
 {
 44100l, true, false, false, CAdPlug::players};
 
@@ -190,31 +190,31 @@ static void
 close_config_box_ok (GtkButton * button, GPtrArray * rblist)
 {
   // Apply configuration settings
-  cfg.bit16 =
+  conf.bit16 =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
                                   (g_ptr_array_index (rblist, 0)));
-  cfg.stereo =
+  conf.stereo =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
                                   (g_ptr_array_index (rblist, 1)));
 
   if (gtk_toggle_button_get_active
       (GTK_TOGGLE_BUTTON (g_ptr_array_index (rblist, 2))))
-    cfg.freq = 11025;
+    conf.freq = 11025;
   if (gtk_toggle_button_get_active
       (GTK_TOGGLE_BUTTON (g_ptr_array_index (rblist, 3))))
-    cfg.freq = 22050;
+    conf.freq = 22050;
   if (gtk_toggle_button_get_active
       (GTK_TOGGLE_BUTTON (g_ptr_array_index (rblist, 4))))
-    cfg.freq = 44100;
+    conf.freq = 44100;
   if (gtk_toggle_button_get_active
       (GTK_TOGGLE_BUTTON (g_ptr_array_index (rblist, 5))))
-    cfg.freq = 48000;
+    conf.freq = 48000;
 
-  cfg.endless =
+  conf.endless =
     !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
                                    (g_ptr_array_index (rblist, 6)));
 
-  cfg.players = *(CPlayers *) g_ptr_array_index (rblist, 7);
+  conf.players = *(CPlayers *) g_ptr_array_index (rblist, 7);
   delete (CPlayers *) g_ptr_array_index (rblist, 7);
 
   g_ptr_array_free (rblist, FALSE);
@@ -306,12 +306,12 @@ adplug_config (void)
                                make_framed (GTK_WIDGET (fvb), _("Resolution")),
                                0, 1, 0, 1);
     rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, _("8bit")));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), !cfg.bit16);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), !conf.bit16);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
                         (rb, _("16bit")));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), cfg.bit16);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), conf.bit16);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
 
@@ -321,12 +321,12 @@ adplug_config (void)
                                make_framed (GTK_WIDGET (fvb), _("Channels")), 0,
                                1, 1, 2);
     rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, _("Mono")));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), !cfg.stereo);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), !conf.stereo);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
                         (rb, _("Stereo")));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), cfg.stereo);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), conf.stereo);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     gtk_tooltips_set_tip (tooltips, GTK_WIDGET (rb),
                           _("Setting stereo is not recommended, unless you need to. "
@@ -340,28 +340,28 @@ adplug_config (void)
                                make_framed (GTK_WIDGET (fvb), _("Frequency")), 1,
                                2, 0, 2);
     rb = GTK_RADIO_BUTTON (gtk_radio_button_new_with_label (NULL, "11025"));
-    if (cfg.freq == 11025)
+    if (conf.freq == 11025)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
                         (rb, "22050"));
-    if (cfg.freq == 22050)
+    if (conf.freq == 22050)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
                         (rb, "44100"));
-    if (cfg.freq == 44100)
+    if (conf.freq == 44100)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
     rb =
       GTK_RADIO_BUTTON (gtk_radio_button_new_with_label_from_widget
                         (rb, "48000"));
-    if (cfg.freq == 48000)
+    if (conf.freq == 48000)
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (rb), TRUE);
     gtk_container_add (GTK_CONTAINER (fvb), GTK_WIDGET (rb));
     g_ptr_array_add (rblist, (gpointer) rb);
@@ -378,7 +378,7 @@ adplug_config (void)
 
     cb =
       GTK_CHECK_BUTTON (gtk_check_button_new_with_label (_("Detect songend")));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (cb), !cfg.endless);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (cb), !conf.endless);
     gtk_container_add (GTK_CONTAINER (vb), GTK_WIDGET (cb));
     gtk_tooltips_set_tip (tooltips, GTK_WIDGET (cb),
                           _("If enabled, XMMS will detect a song's ending, stop "
@@ -425,15 +425,15 @@ adplug_config (void)
         g_free (rws[0]);
         g_free (rws[1]);
         gtk_clist_set_row_data (fl, rownum, (gpointer) (*i));
-        if (find (cfg.players.begin (), cfg.players.end (), *i) !=
-            cfg.players.end ())
+        if (find (conf.players.begin (), conf.players.end (), *i) !=
+            conf.players.end ())
           gtk_clist_select_row (fl, rownum, 0);
       }
 
       gtk_clist_columns_autosize (fl);
       gtk_scrolled_window_set_policy (formatswnd, GTK_POLICY_AUTOMATIC,
                                       GTK_POLICY_AUTOMATIC);
-      gpointer pl = (gpointer) new CPlayers (cfg.players);
+      gpointer pl = (gpointer) new CPlayers (conf.players);
       g_signal_connect (G_OBJECT (fl), "select-row",
                         G_CALLBACK (config_fl_row_select), pl);
       g_signal_connect (G_OBJECT (fl), "unselect-row",
@@ -473,7 +473,7 @@ factory (VFSFile * fd, Copl * newopl)
 
   dbg_printf ("factory(%p<%s>,opl): ", fd,
               fd->uri != NULL ? fd->uri : "unknown");
-  return CAdPlug::factory (fd, newopl, cfg.players);
+  return CAdPlug::factory (fd, newopl, conf.players);
 }
 
 static void adplug_stop (InputPlayback * data);
@@ -745,14 +745,14 @@ play_loop (void *data)
   InputPlayback *playback = (InputPlayback *) data;
   char *filename = (char *) playback->filename;
   dbg_printf ("play_loop(\"%s\"): ", filename);
-  CEmuopl opl (cfg.freq, cfg.bit16, cfg.stereo);
+  CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
   int songlength;
   bool playing = true,          // Song self-end indicator.
-    bit16 = cfg.bit16,          // Duplicate config, so it doesn't affect us if
-    stereo = cfg.stereo;        // the user changes it while we're playing.
-  unsigned long freq = cfg.freq;
+    bit16 = conf.bit16,          // Duplicate config, so it doesn't affect us if
+    stereo = conf.stereo;        // the user changes it while we're playing.
+  unsigned long freq = conf.freq;
 
   // we use VfsBufferedFile class here because adplug does a lot of
   // probing. a short delay before probing begins is better than
@@ -807,7 +807,7 @@ play_loop (void *data)
 
   // main playback loop
   dbg_printf ("loop.\n");
-  while ((playing || cfg.endless) && plr.playing)
+  while ((playing || conf.endless) && plr.playing)
   {
     // seek requested ?
     if (plr.seek != -1)
@@ -980,8 +980,8 @@ adplug_play (InputPlayback * data)
   // open output plugin
   dbg_printf ("open, ");
   if (!playback->output->
-      open_audio (cfg.bit16 ? FORMAT_16 : FORMAT_8, cfg.freq,
-                  cfg.stereo ? 2 : 1))
+      open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq,
+                  conf.stereo ? 2 : 1))
   {
     audio_error = TRUE;
     return;
@@ -1040,11 +1040,11 @@ adplug_init (void)
 
   // Read configuration
   dbg_printf ("read, ");
-  bmp_cfg_db_get_bool (db, CFG_VERSION, "16bit", (gboolean *) & cfg.bit16);
-  bmp_cfg_db_get_bool (db, CFG_VERSION, "Stereo", (gboolean *) & cfg.stereo);
-  bmp_cfg_db_get_int (db, CFG_VERSION, "Frequency", (gint *) & cfg.freq);
+  bmp_cfg_db_get_bool (db, CFG_VERSION, "16bit", (gboolean *) & conf.bit16);
+  bmp_cfg_db_get_bool (db, CFG_VERSION, "Stereo", (gboolean *) & conf.stereo);
+  bmp_cfg_db_get_int (db, CFG_VERSION, "Frequency", (gint *) & conf.freq);
   bmp_cfg_db_get_bool (db, CFG_VERSION, "Endless",
-                       (gboolean *) & cfg.endless);
+                       (gboolean *) & conf.endless);
 
   // Read file type exclusion list
   dbg_printf ("exclusion, ");
@@ -1059,7 +1059,7 @@ adplug_init (void)
         exclude[strlen (exclude) + 1] = '\0';
         g_strdelimit (exclude, ":", '\0');
         for (gchar * p = exclude; *p; p += strlen (p) + 1)
-            cfg.players.remove (cfg.players.lookup_filetype (p));
+            conf.players.remove (conf.players.lookup_filetype (p));
         free (exclude); free (cfgstr);
     }
   }
@@ -1097,17 +1097,17 @@ adplug_quit (void)
 
   // Write configuration
   dbg_printf ("write, ");
-  bmp_cfg_db_set_bool (db, CFG_VERSION, "16bit", cfg.bit16);
-  bmp_cfg_db_set_bool (db, CFG_VERSION, "Stereo", cfg.stereo);
-  bmp_cfg_db_set_int (db, CFG_VERSION, "Frequency", cfg.freq);
-  bmp_cfg_db_set_bool (db, CFG_VERSION, "Endless", cfg.endless);
+  bmp_cfg_db_set_bool (db, CFG_VERSION, "16bit", conf.bit16);
+  bmp_cfg_db_set_bool (db, CFG_VERSION, "Stereo", conf.stereo);
+  bmp_cfg_db_set_int (db, CFG_VERSION, "Frequency", conf.freq);
+  bmp_cfg_db_set_bool (db, CFG_VERSION, "Endless", conf.endless);
 
   dbg_printf ("exclude, ");
   std::string exclude;
   for (CPlayers::const_iterator i = CAdPlug::players.begin ();
        i != CAdPlug::players.end (); i++)
-    if (find (cfg.players.begin (), cfg.players.end (), *i) ==
-        cfg.players.end ())
+    if (find (conf.players.begin (), conf.players.end (), *i) ==
+        conf.players.end ())
     {
       if (!exclude.empty ())
         exclude += ":";

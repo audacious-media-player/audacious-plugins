@@ -466,7 +466,7 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
   return tex_vbox;
 }
 
-
+#if 0
 static void
 aosd_ui_configure_decoration_browse ( GtkButton * button , gpointer entry )
 {
@@ -487,6 +487,7 @@ aosd_ui_configure_decoration_browse ( GtkButton * button , gpointer entry )
   gtk_widget_destroy( dialog );
   return;
 }
+#endif
 
 
 static void
@@ -521,14 +522,14 @@ aosd_cb_configure_decoration_color_commit ( GtkWidget * colorbt , aosd_cfg_t * c
   return;
 }
 
-
+#if 0
 static void
 aosd_cb_configure_decoration_skinfile_commit ( GtkWidget * entry , aosd_cfg_t * cfg )
 {
   cfg->osd->decoration.skin_file = g_strdup( gtk_entry_get_text(GTK_ENTRY(entry)) );
   return;
 }
-
+#endif
 
 static GtkWidget *
 aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
@@ -542,8 +543,10 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkTreeIter iter, iter_sel;
   GtkWidget *dec_rstyle_hbox;
   GtkWidget *dec_rstyleopts_frame, *dec_rstyleopts_table;
+#if 0
   GtkWidget *dec_rstylecustom_frame, *dec_rstylecustom_table;
   GtkWidget *dec_rstylecustom_label, *dec_rstylecustom_entry, *dec_rstylecustom_browse_bt;
+#endif
   gint *deco_code_array, deco_code_array_size;
   gint colors_max_num = 0, i = 0;
 
@@ -956,7 +959,7 @@ aosd_cb_configure_cancel ( gpointer cfg_win )
 static void
 aosd_cb_configure_ok ( gpointer cfg_win )
 {
-  gchar *markup_message = NULL;
+  //gchar *markup_message = NULL;
   aosd_cfg_t *cfg = aosd_cfg_new();
   GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_run( cb_list , cfg );
