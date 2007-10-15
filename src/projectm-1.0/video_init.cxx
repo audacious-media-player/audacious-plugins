@@ -54,8 +54,9 @@ void init_display(int w, int h, int *fvw, int *fvh, int f)
   }
   
 //  printf("Screen Resolution: %d x %d\n", info->current_w, info->current_h);
-  *fvw = info->current_w;
-  *fvh = info->current_h;
+// XXX
+  *fvw = w;
+  *fvh = h;
   bpp = info->vfmt->BitsPerPixel;
   //SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
   //SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 );
