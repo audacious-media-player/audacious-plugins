@@ -180,6 +180,34 @@ struct pn_actuator_desc builtin_general_clear =
   NULL, NULL, general_clear_exec
 };
 
+/* **************** general_setalpha **************** */
+static struct pn_actuator_option_desc general_setalpha_opts[] =
+{
+  { "blend_colour", "The colour which should be used for blending.",
+    OPT_TYPE_COLOR, { cval: {255, 255, 255} } },
+  { "alpha", "The alpha value.",
+    OPT_TYPE_COLOR_INDEX, { ival: 128 } },
+  { NULL }
+};
+
+static void
+general_setalpha_exec (const struct pn_actuator_option *opts,
+	   gpointer data)
+{
+  GLubyte colour[] = { opts[0].val.cval.r, opts[0].val.cval.g, opts[0].val.cval.b,
+                       opts[1].val.ival };
+
+  glColor4ubv(colour);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+}
+
+struct pn_actuator_desc builtin_general_setalpha =
+{
+  "general_setalpha", "Change Blend Setting", "Changes the blending setting (alpha transparency mask).",
+  0, general_setalpha_opts,
+  NULL, NULL, general_setalpha_exec
+};
+
 /* **************** general_noop **************** */
 static void
 general_noop_exec (const struct pn_actuator_option *opts,

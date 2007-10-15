@@ -52,6 +52,7 @@ DECLARE_ACTUATOR (general_swap);
 DECLARE_ACTUATOR (general_copy);
 DECLARE_ACTUATOR (general_flip);
 DECLARE_ACTUATOR (general_evaluate);
+DECLARE_ACTUATOR (general_setalpha);
 
 /* **************** misc **************** */
 DECLARE_ACTUATOR (misc_floater);
@@ -100,6 +101,7 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_general_copy,
   &builtin_general_flip,
   &builtin_general_evaluate,
+  &builtin_general_setalpha,
   /* **************** misc **************** */
   &builtin_misc_floater,
   /* **************** wave **************** */

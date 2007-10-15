@@ -74,6 +74,9 @@ resize_video (guint w, guint h)
   glViewport(0, 0, w, h);
   glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
   glClearDepth(1.0f);
+
+  glEnable(GL_BLEND);
+  glDisable(GL_DEPTH_TEST);
 }
 
 static void
