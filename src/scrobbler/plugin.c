@@ -101,7 +101,7 @@ static void init(void)
 	GError **moo = NULL;
 	cfgdlg = create_cfgdlg();
 
-        prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
+        aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
 
 	if ((cfgfile = bmp_cfg_db_open()) != NULL) {
 		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "username",
@@ -172,7 +172,7 @@ static void init(void)
 
 static void cleanup(void)
 {
-        prefswin_page_destroy(cfgdlg);
+        aud_prefswin_page_destroy(cfgdlg);
 
 	if (!sc_going && !ge_going)
 		return;

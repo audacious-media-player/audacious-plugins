@@ -206,7 +206,7 @@ static void cleanup(void)
 	cmd_line_ttc = NULL;
 	signal(SIGCHLD, SIG_DFL);
 
-	prefswin_page_destroy(configure_vbox);
+	aud_prefswin_page_destroy(configure_vbox);
 }
 
 static void save_and_close(GtkWidget *w, gpointer data)
@@ -450,7 +450,7 @@ static void init(void)
 	read_config();
 
 	configure_vbox = configure();
-	prefswin_page_new(configure_vbox, "Song Change", DATA_DIR "/images/plugins.png");
+	aud_prefswin_page_new(configure_vbox, "Song Change", DATA_DIR "/images/plugins.png");
 
 	aud_hook_associate("playback begin", songchange_playback_begin, NULL);
 	aud_hook_associate("playback end", songchange_playback_end, NULL);
