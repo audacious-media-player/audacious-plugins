@@ -176,7 +176,7 @@ si_audacious_playback_ctrl ( gpointer ctrl_code_gp )
       break;
 
     case SI_AUDACIOUS_PLAYBACK_CTRL_EJECT:
-      mainwin_eject_pushed();
+      audacious_drct_eject();
       break;
   }
 }
