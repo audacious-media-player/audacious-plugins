@@ -262,8 +262,6 @@ static Tuple *get_aud_tuple_uri(gchar *uri)
 
 	if (dec->get_song_tuple)
 		phys_tuple = dec->get_song_tuple(cue_file);
-	else
-		phys_tuple = input_get_song_tuple(cue_file);
 
     if(!phys_tuple)
         return NULL;
