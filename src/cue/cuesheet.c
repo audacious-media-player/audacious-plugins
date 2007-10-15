@@ -358,21 +358,13 @@ static void stop(InputPlayback * data)
 #endif
 }
 
-/* not publicly available functions. */
-extern void playback_stop(void);
-extern void mainwin_clear_song_info(void);
-
 static gboolean do_stop(gpointer data)
 {
 #ifdef DEBUG
     g_print("f: do_stop\n");
 #endif
 
-    aud_ip_state->stop = TRUE;
-    playback_stop();
-    aud_ip_state->stop = FALSE;
-
-    mainwin_clear_song_info();
+    audacious_drct_stop();
 
 #ifdef DEBUG
     g_print("e: do_stop\n");
