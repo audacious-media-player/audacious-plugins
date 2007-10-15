@@ -582,7 +582,7 @@ static gpointer watchdog_func(gpointer data)
         if(watchdog_state != RUN)
             continue;
 
-        time = get_output_time();
+        time = audacious_drct_get_output_time();
 #if 0
 #ifdef DEBUG
         g_print("time = %d target_time = %d\n", time, target_time);
