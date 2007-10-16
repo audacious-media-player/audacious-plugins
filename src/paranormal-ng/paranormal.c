@@ -51,7 +51,6 @@ gboolean pn_new_beat;
 static void
 blit_to_screen (void)
 {
-  SDL_GL_SwapBuffers();
 }
 
 static void
@@ -203,8 +202,15 @@ pn_render (void)
 
   if (pn_rc->actuator)
     {
+      // set the viewport to a texture size
+      glViewport(0, 0, 128, 128);
+
+      // run actuators
       exec_actuator (pn_rc->actuator);
-      blit_to_screen ();
+
+      // reset the viewport to window size and draw
+      glViewport(0, 0, pn_image_data->width, pn_image_data->height);
+      SDL_GL_SwapBuffers();
     }
 }
 
