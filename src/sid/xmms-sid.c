@@ -637,25 +637,6 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 	} else
 		subTune = 1;
 	
-	/* Set subtunes */
-	if (xs_cfg.subAutoEnable && pInfo->nsubTunes > 1) {
-		gint i, n;
-		pResult->subtunes = g_new(gint, pInfo->nsubTunes);
-		for (n = 0, i = 1; i <= pInfo->nsubTunes; i++) {
-			gboolean doAdd = FALSE;
-					
-			if (xs_cfg.subAutoMinOnly) {
-				if (i == pInfo->startTune ||
-					pInfo->subTunes[i - 1].tuneLength >= xs_cfg.subAutoMinTime)
-					doAdd = TRUE;
-			} else
-				doAdd = TRUE;
-					
-			if (doAdd) pResult->subtunes[n++] = i;
-		}
-	} else
-		pResult->nsubtunes = 0;
-
 	aud_tuple_associate_int(pResult, FIELD_SUBSONG_NUM, NULL, pInfo->nsubTunes);
 	aud_tuple_associate_int(pResult, FIELD_SUBSONG_ID, NULL, subTune);
 	aud_tuple_associate_int(pResult, FIELD_TRACK_NUMBER, NULL, subTune);
@@ -719,7 +700,6 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 
 	/* Get information from URL */
 	xs_get_trackinfo(songFilename, &tmpFilename, &tmpTune);
-
 	tmpResult = aud_tuple_new_from_filename(tmpFilename);
 	if (!tmpResult) {
 		g_free(tmpFilename);
@@ -736,6 +716,27 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 		return tmpResult;
 	
 	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
+
+	/* Set subtunes */
+	if (xs_cfg.subAutoEnable && tmpInfo->nsubTunes > 1 && tmpTune < 0) {
+		gint i, n;
+		tmpResult->subtunes = g_new(gint, tmpInfo->nsubTunes);
+		for (n = 0, i = 1; i <= tmpInfo->nsubTunes; i++) {
+			gboolean doAdd = FALSE;
+					
+			if (xs_cfg.subAutoMinOnly) {
+				if (i == tmpInfo->startTune ||
+					tmpInfo->subTunes[i - 1].tuneLength >= xs_cfg.subAutoMinTime)
+					doAdd = TRUE;
+			} else
+				doAdd = TRUE;
+					
+			if (doAdd) tmpResult->subtunes[n++] = i;
+		}
+		tmpResult->nsubtunes = n;
+	} else
+		tmpResult->nsubtunes = 0;
+	
 	xs_tuneinfo_free(tmpInfo);
 
 	return tmpResult;
