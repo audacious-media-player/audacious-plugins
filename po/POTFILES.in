@@ -1,4 +1,4 @@
-src/aac/src/libmp4.c
+src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
 src/alac/plugin.c
 src/alarm/interface.c
@@ -88,7 +88,6 @@ src/OSS/about.c
 src/OSS/configure.c
 src/paranormal/plugin.c
 src/pulse_audio/pulse_audio.c
-src/rovascope/plugin.c
 src/scrobbler/configure.c
 src/scrobbler/gerpok.c
 src/scrobbler/gtkstuff.c
@@ -111,8 +110,8 @@ src/statusicon/si_ui.c
 src/stereo_plugin/stereo.c
 src/sun/about.c
 src/sun/configure.c
-src/timidity/src/interface.c
-src/timidity/src/xmms-timidity.c
+src/timidity/interface.c
+src/timidity/xmms-timidity.c
 src/tonegen/tonegen.c
 src/tta/libtta.c
 src/vorbis/configure.c
