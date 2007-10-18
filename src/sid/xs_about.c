@@ -168,13 +168,13 @@ void xs_about(void)
 			"\n"
 #ifdef HAVE_SIDPLAY1
 			"libSIDPlay1 created by\n"
-			"\tMichael Schwendt\n"
-			"\n"
+			"\tMichael Schwendt\n" "\n"
 #endif
 #ifdef HAVE_SIDPLAY2
 			"libSIDPlay2 and reSID created by\n"
 			"\tSimon White, Dag Lem,\n"
-			"\tMichael Schwendt and rest.\n" "\n"
+			"\tMichael Schwendt and rest.\n"
+			"\n"
 #endif
 #ifdef HAVE_THEMETUNE
 			"\"Kummatti City\", theme of XMMS-SID 0.8\n"
