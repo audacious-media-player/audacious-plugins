@@ -1,3 +1,4 @@
+# Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
 src/alac/plugin.c
@@ -66,6 +67,8 @@ src/filewriter/filewriter.c
 src/filewriter/mp3.c
 src/filewriter/vorbis.c
 src/flacng/plugin.c
+src/gnomeshortcuts/gnomeshortcuts.c
+src/hotkey/plugin.c
 src/jack/bio2jack.c
 src/jack/configure.c
 src/jack/jack.c
@@ -79,6 +82,7 @@ src/madplug/plugin.c
 src/metronom/metronom.c
 src/modplug/gui/interface.cxx
 src/modplug/gui/main.cxx
+src/modplug/gui/modplug.glade
 src/modplug/gui/support.cxx
 src/musepack/libmpc.cxx
 src/null/null.c
@@ -86,6 +90,7 @@ src/OSS4/about.c
 src/OSS4/configure.c
 src/OSS/about.c
 src/OSS/configure.c
+src/paranormal-ng/plugin.c
 src/paranormal/plugin.c
 src/pulse_audio/pulse_audio.c
 src/scrobbler/configure.c
@@ -95,12 +100,15 @@ src/scrobbler/plugin.c
 src/scrobbler/scrobbler.c
 src/sid/xmms-sid.c
 src/sid/xmms-sid.glade
+src/sid/xs_about.c
+src/sid/xs_config.c
 src/sid/xs_fileinfo.c
 src/sid/xs_glade.c
 src/sid/xs_interface.c
 src/sid/xs_length.c
 src/sid/xs_sidplay1.cc
 src/sid/xs_sidplay2.cc
+src/sid/xs_slsup.c
 src/sid/xs_stil.c
 src/sndstretch/sndstretch_xmms.c
 src/song_change/song_change.c
