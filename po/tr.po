@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aaudacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-09-05 00:28+0200\n"
+"POT-Creation-Date: 2007-10-18 21:38+0200\n"
 "PO-Revision-Date: 2007-05-23 00:00+0300\n"
 "Last-Translator: Murat Şenel <muratasenel@gmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
@@ -18,51 +18,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/aac/src/libmp4.c:291
+#: src/aac/libmp4.c:285
 msgid "Using libfaad2-"
 msgstr ""
 
-#: src/aac/src/libmp4.c:292
+#: src/aac/libmp4.c:286
 msgid ""
 " for decoding.\n"
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
 
-#: src/aac/src/libmp4.c:296
+#: src/aac/libmp4.c:290
 #, fuzzy
 msgid "About MP4 AAC player plugin"
 msgstr "Flac Eklentisi Hakkında"
 
-#: src/aac/src/libmp4.c:298 src/adplug/adplug-xmms.cc:185
-#: src/adplug/adplug-xmms.cc:268 src/adplug/adplug-xmms.cc:529
-#: src/alac/plugin.c:88 src/arts/arts.c:26 src/arts/configure.c:90
-#: src/audiocompress/audacious-glue.c:106
-#: src/audiocompress/audacious-glue.c:556 src/cdaudio-ng/configure.c:144
-#: src/console/Audacious_Driver.cxx:500 src/echo_plugin/gui.c:27
-#: src/echo_plugin/gui.c:138 src/esd/about.c:49
-#: src/filewriter/filewriter.c:184 src/jack/configure.c:140
-#: src/jack/jack.c:602 src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
-#: src/madplug/plugin.c:597 src/madplug/plugin.c:620
-#: src/metronom/metronom.c:87 src/modplug/gui/main.cxx:45
-#: src/musepack/libmpc.cxx:231 src/null/null.c:67 src/null/null.c:110
-#: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal/plugin.c:288
-#: src/rovascope/plugin.c:294 src/scrobbler/gtkstuff.c:24
-#: src/statusicon/si_ui.c:577 src/stereo_plugin/stereo.c:56
-#: src/stereo_plugin/stereo.c:119 src/sun/about.c:38 src/sun/configure.c:559
-#: src/timidity/src/interface.c:224 src/timidity/src/xmms-timidity.c:136
-#: src/tonegen/tonegen.c:62 src/tta/libtta.c:171 src/tta/libtta.c:285
-#: src/tta/libtta.c:420 src/vorbis/fileinfo.c:212 src/vorbis/vorbis.c:880
+#: src/aac/libmp4.c:292 src/adplug/adplug-xmms.cc:180
+#: src/adplug/adplug-xmms.cc:263 src/adplug/adplug-xmms.cc:524
+#: src/alac/plugin.c:77 src/arts/arts.c:26 src/arts/configure.c:90
+#: src/audiocompress/audacious-glue.c:102
+#: src/audiocompress/audacious-glue.c:552 src/cdaudio-ng/configure.c:206
+#: src/console/Audacious_Driver.cxx:449 src/echo_plugin/gui.c:26
+#: src/echo_plugin/gui.c:137 src/esd/about.c:49
+#: src/filewriter/filewriter.c:178 src/jack/configure.c:141
+#: src/jack/jack.c:539 src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
+#: src/madplug/plugin.c:596 src/madplug/plugin.c:619
+#: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:46
+#: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
+#: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
+#: src/paranormal/plugin.c:300 src/scrobbler/gtkstuff.c:25
+#: src/statusicon/si_ui.c:577 src/stereo_plugin/stereo.c:53
+#: src/stereo_plugin/stereo.c:116 src/sun/about.c:38 src/sun/configure.c:559
+#: src/timidity/interface.c:222 src/timidity/xmms-timidity.c:117
+#: src/tonegen/tonegen.c:62 src/tta/libtta.c:151 src/tta/libtta.c:265
+#: src/tta/libtta.c:400 src/vorbis/fileinfo.c:209 src/vorbis/vorbis.c:863
 #: src/vtx/about.c:31 src/vtx/info.c:43 src/wavpack/ui.cxx:56
-#: src/wavpack/ui.cxx:554 src/wav/wav-sndfile.c:566
+#: src/wavpack/ui.cxx:554 src/wav/wav-sndfile.c:543
 msgid "Ok"
 msgstr "Tamam"
 
-#: src/adplug/adplug-xmms.cc:174
+#: src/adplug/adplug-xmms.cc:169
 msgid "About "
 msgstr "Hakkında"
 
-#: src/adplug/adplug-xmms.cc:178
+#: src/adplug/adplug-xmms.cc:173
 msgid ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
@@ -85,223 +85,226 @@ msgstr ""
 "kullanmaktadır.\n"
 "AdPlug Eklentisinin Sürüm Numarası: "
 
-#: src/adplug/adplug-xmms.cc:259
+#: src/adplug/adplug-xmms.cc:254
 #, fuzzy
 msgid "AdPlug :: Configuration"
 msgstr "AMIDI-Plug - Yapılandırması"
 
-#: src/adplug/adplug-xmms.cc:278 src/alarm/interface.c:1400
-#: src/alsa/configure.c:411 src/arts/configure.c:91
-#: src/audiocompress/audacious-glue.c:561 src/cdaudio-ng/configure.c:148
-#: src/echo_plugin/gui.c:146 src/jack/configure.c:147
-#: src/modplug/gui/interface.cxx:741 src/musepack/libmpc.cxx:236
-#: src/musepack/libmpc.cxx:556 src/null/null.c:111 src/sid/xmms-sid.glade:2930
-#: src/sid/xs_interface.c:1192 src/stereo_plugin/stereo.c:128
-#: src/sun/configure.c:567 src/timidity/src/interface.c:232
-#: src/wavpack/ui.cxx:278 src/wavpack/ui.cxx:561
+#: src/adplug/adplug-xmms.cc:273 src/alarm/interface.c:1398
+#: src/alsa/configure.c:389 src/arts/configure.c:91
+#: src/audiocompress/audacious-glue.c:557 src/cdaudio-ng/configure.c:210
+#: src/echo_plugin/gui.c:145 src/jack/configure.c:148
+#: src/modplug/gui/interface.cxx:704 src/modplug/gui/modplug.glade:1648
+#: src/musepack/libmpc.cxx:237 src/musepack/libmpc.cxx:557 src/null/null.c:111
+#: src/sid/xmms-sid.glade:3080 src/sid/xs_interface.c:1250
+#: src/stereo_plugin/stereo.c:125 src/sun/configure.c:567
+#: src/timidity/interface.c:230 src/wavpack/ui.cxx:278 src/wavpack/ui.cxx:561
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/adplug/adplug-xmms.cc:294 src/console/Audacious_Config.cxx:146
-#: src/madplug/configure.c:191 src/modplug/gui/interface.cxx:325
-#: src/modplug/gui/interface.cxx:833
+#: src/adplug/adplug-xmms.cc:289 src/console/Audacious_Config.cxx:145
+#: src/madplug/configure.c:191 src/modplug/gui/interface.cxx:618
+#: src/modplug/gui/interface.cxx:876 src/modplug/gui/modplug.glade:1384
+#: src/modplug/gui/modplug.glade:1784
 msgid "General"
 msgstr "Genel"
 
-#: src/adplug/adplug-xmms.cc:306
+#: src/adplug/adplug-xmms.cc:301
 #, fuzzy
 msgid "Sound quality"
 msgstr "Ses Klibi"
 
-#: src/adplug/adplug-xmms.cc:311 src/modplug/gui/interface.cxx:151
+#: src/adplug/adplug-xmms.cc:306 src/modplug/gui/interface.cxx:184
+#: src/modplug/gui/modplug.glade:113
 msgid "Resolution"
 msgstr "Çözünürlük"
 
-#: src/adplug/adplug-xmms.cc:313
+#: src/adplug/adplug-xmms.cc:308
 #, fuzzy
 msgid "8bit"
 msgstr "8 bit"
 
-#: src/adplug/adplug-xmms.cc:318
+#: src/adplug/adplug-xmms.cc:313
 #, fuzzy
 msgid "16bit"
 msgstr "16 bit"
 
-#: src/adplug/adplug-xmms.cc:326 src/modplug/gui/interface.cxx:181
-#: src/timidity/src/interface.c:150
+#: src/adplug/adplug-xmms.cc:321 src/modplug/gui/interface.cxx:215
+#: src/modplug/gui/modplug.glade:199 src/timidity/interface.c:148
 msgid "Channels"
 msgstr "Kanallar"
 
-#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:899
-#: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:280
-#: src/timidity/src/interface.c:167
+#: src/adplug/adplug-xmms.cc:323 src/filewriter/mp3.c:899
+#: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:288
+#: src/timidity/interface.c:165
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:333 src/filewriter/mp3.c:894
-#: src/modplug/gui/interface.cxx:195 src/sid/xmms-sid.glade:176
-#: src/sid/xs_interface.c:287 src/timidity/src/interface.c:175
+#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:894
+#: src/modplug/gui/interface.cxx:201 src/modplug/gui/modplug.glade:159
+#: src/sid/xmms-sid.glade:176 src/sid/xs_interface.c:295
+#: src/timidity/interface.c:173
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/adplug/adplug-xmms.cc:337
+#: src/adplug/adplug-xmms.cc:332
 msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:345
+#: src/adplug/adplug-xmms.cc:340
 msgid "Frequency"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:381 src/adplug/adplug-xmms.cc:585
-#: src/console/Audacious_Config.cxx:148
+#: src/adplug/adplug-xmms.cc:376 src/adplug/adplug-xmms.cc:580
+#: src/console/Audacious_Config.cxx:147
 msgid "Playback"
 msgstr "Çal"
 
-#: src/adplug/adplug-xmms.cc:385
+#: src/adplug/adplug-xmms.cc:380
 msgid "Detect songend"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:389
+#: src/adplug/adplug-xmms.cc:384
 msgid ""
 "If enabled, XMMS will detect a song's ending, stop it and advance in the "
 "playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
 "all over again and again."
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:400
+#: src/adplug/adplug-xmms.cc:395
 #, fuzzy
 msgid "Formats"
 msgstr "Biçim:"
 
-#: src/adplug/adplug-xmms.cc:407
+#: src/adplug/adplug-xmms.cc:402
 #, fuzzy
 msgid "Format selection"
 msgstr "Backend bölümü"
 
-#: src/adplug/adplug-xmms.cc:410
+#: src/adplug/adplug-xmms.cc:405
 #, fuzzy
 msgid "Format"
 msgstr "Biçim:"
 
-#: src/adplug/adplug-xmms.cc:410
+#: src/adplug/adplug-xmms.cc:405
 msgid "Extension"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:450
+#: src/adplug/adplug-xmms.cc:445
 msgid ""
 "Selected file types will be recognized and played back by this plugin. "
 "Deselected types will be ignored to make room for other plugins to play "
 "these files."
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:536
+#: src/adplug/adplug-xmms.cc:531
 msgid "AdPlug :: File Info"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:558 src/amidi-plug/i_configure-fluidsynth.c:448
+#: src/adplug/adplug-xmms.cc:553 src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
 msgstr "Dosya adı"
 
-#: src/adplug/adplug-xmms.cc:562
+#: src/adplug/adplug-xmms.cc:557
 #, fuzzy
 msgid "Title: "
 msgstr "Başlık:"
 
-#: src/adplug/adplug-xmms.cc:563
+#: src/adplug/adplug-xmms.cc:558
 msgid "Author: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:564
+#: src/adplug/adplug-xmms.cc:559
 #, fuzzy
 msgid "File Type: "
 msgstr "Dosya boytu:"
 
-#: src/adplug/adplug-xmms.cc:565
+#: src/adplug/adplug-xmms.cc:560
 msgid "Subsongs: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:566
+#: src/adplug/adplug-xmms.cc:561
 #, fuzzy
 msgid "Instruments: "
 msgstr "Enstrümantal"
 
-#: src/adplug/adplug-xmms.cc:571
+#: src/adplug/adplug-xmms.cc:566
 msgid "Orders: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:572
+#: src/adplug/adplug-xmms.cc:567
 msgid "Patterns: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:576
+#: src/adplug/adplug-xmms.cc:571
 #, fuzzy
 msgid "Song"
 msgstr "Swing"
 
-#: src/adplug/adplug-xmms.cc:602
+#: src/adplug/adplug-xmms.cc:597
 #, fuzzy
 msgid "Instrument name"
 msgstr "Enstrümantal"
 
-#: src/adplug/adplug-xmms.cc:644
+#: src/adplug/adplug-xmms.cc:639
 #, fuzzy
 msgid "Song message"
 msgstr "Şarkı Değişimi %s"
 
-#: src/adplug/adplug-xmms.cc:666
+#: src/adplug/adplug-xmms.cc:661
 #, fuzzy
 msgid "Subsong selection"
 msgstr "Backend bölümü"
 
-#: src/adplug/adplug-xmms.cc:730
+#: src/adplug/adplug-xmms.cc:725
 msgid "Order: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:731
+#: src/adplug/adplug-xmms.cc:726
 msgid "Pattern: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:733
+#: src/adplug/adplug-xmms.cc:728
 msgid "Row: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:734
+#: src/adplug/adplug-xmms.cc:729
 #, fuzzy
 msgid "Speed: "
 msgstr "Konuşma"
 
-#: src/adplug/adplug-xmms.cc:735
+#: src/adplug/adplug-xmms.cc:730
 #, fuzzy
 msgid "Timer: "
 msgstr "Zaman Böl:"
 
-#: src/adplug/adplug-xmms.cc:736 src/console/Audacious_Config.cxx:226
-#: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:333
+#: src/adplug/adplug-xmms.cc:731 src/console/Audacious_Config.cxx:225
+#: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:341
 msgid "Hz"
 msgstr "Hz"
 
-#: src/alac/plugin.c:85
+#: src/alac/plugin.c:74
 #, fuzzy
 msgid "About Apple Lossless Audio Plugin"
 msgstr "OGG Vorbis Ses Eklentisi Hakkında"
 
-#: src/alac/plugin.c:86
+#: src/alac/plugin.c:75
 msgid ""
 "Copyright (c) 2006 Audacious team\n"
 "Portions (c) 2005-2006 David Hammerton <crazney -at- crazney.net>"
 msgstr ""
 
-#: src/alarm/interface.c:36
+#: src/alarm/interface.c:34
 msgid "About XMMS Alarm"
 msgstr ""
 
-#: src/alarm/interface.c:49
+#: src/alarm/interface.c:47
 msgid "XMMS Alarm"
 msgstr ""
 
-#: src/alarm/interface.c:58
+#: src/alarm/interface.c:56
 msgid ""
 "An XMMS plugin which can be used\n"
 "to start playing at a certain time.\n"
@@ -313,42 +316,44 @@ msgid ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
 
-#: src/alarm/interface.c:73 src/lirc/about.c:116
-#: src/modplug/gui/interface.cxx:946 src/sid/xmms-sid.glade:3493
-#: src/sid/xs_interface.c:1671
+#: src/alarm/interface.c:71 src/lirc/about.c:114
+#: src/modplug/gui/interface.cxx:960 src/modplug/gui/modplug.glade:2010
+#: src/sid/xmms-sid.glade:3643 src/sid/xs_about.c:213
+#: src/sid/xs_interface.c:1740
 msgid "Close"
 msgstr "Kapat"
 
-#: src/alarm/interface.c:103
+#: src/alarm/interface.c:101
 msgid "Alarm"
 msgstr ""
 
-#: src/alarm/interface.c:111
+#: src/alarm/interface.c:109
 msgid "This is your wakeup call."
 msgstr ""
 
-#: src/alarm/interface.c:126 src/alarm/interface.c:1391 src/alsa/about.c:46
-#: src/alsa/configure.c:405 src/cdaudio-ng/cdaudio-ng.c:206
-#: src/filewriter/filewriter.c:201 src/flacng/plugin.c:743
-#: src/modplug/gui/interface.cxx:725 src/pulse_audio/pulse_audio.c:694
-#: src/scrobbler/gtkstuff.c:43 src/sid/xmms-sid.glade:2916
-#: src/sid/xs_interface.c:1185
+#: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
+#: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:217
+#: src/flacng/plugin.c:726 src/gnomeshortcuts/gnomeshortcuts.c:290
+#: src/hotkey/plugin.c:914 src/modplug/gui/interface.cxx:692
+#: src/modplug/gui/modplug.glade:1622 src/pulse_audio/pulse_audio.c:692
+#: src/scrobbler/gtkstuff.c:44 src/sid/xmms-sid.glade:3066
+#: src/sid/xs_interface.c:1243
 msgid "OK"
 msgstr "Tamam"
 
-#: src/alarm/interface.c:154
+#: src/alarm/interface.c:152
 msgid "Select Playlist"
 msgstr ""
 
-#: src/alarm/interface.c:198
+#: src/alarm/interface.c:196
 msgid "Sorry"
 msgstr ""
 
-#: src/alarm/interface.c:206
+#: src/alarm/interface.c:204
 msgid "Warning"
 msgstr ""
 
-#: src/alarm/interface.c:215
+#: src/alarm/interface.c:213
 msgid ""
 "For safety reasons the \"quiet\" time must be at least 65 seconds longer "
 "than the fading time, it must also be more than 10 seconds.  This basically "
@@ -361,171 +366,171 @@ msgid ""
 "Adam"
 msgstr ""
 
-#: src/alarm/interface.c:231
+#: src/alarm/interface.c:229
 msgid "Oh Well"
 msgstr ""
 
-#: src/alarm/interface.c:390
+#: src/alarm/interface.c:388
 #, fuzzy
 msgid "Alarm Settings"
 msgstr "Karıştırıcı Ayarları:"
 
-#: src/alarm/interface.c:406 src/alarm/interface.c:578
-#: src/alarm/interface.c:950
+#: src/alarm/interface.c:404 src/alarm/interface.c:576
+#: src/alarm/interface.c:948
 #, fuzzy
 msgid "Time"
 msgstr "Başlık"
 
-#: src/alarm/interface.c:447
+#: src/alarm/interface.c:445
 #, fuzzy
 msgid "hours"
 msgstr "Chorus"
 
-#: src/alarm/interface.c:508
+#: src/alarm/interface.c:506
 msgid "h"
 msgstr ""
 
-#: src/alarm/interface.c:538
+#: src/alarm/interface.c:536
 msgid "minutes"
 msgstr ""
 
-#: src/alarm/interface.c:556
+#: src/alarm/interface.c:554
 #, fuzzy
 msgid "Quiet after:"
 msgstr "Bit oranı:"
 
-#: src/alarm/interface.c:566
+#: src/alarm/interface.c:564
 msgid "Alarm at (default):"
 msgstr ""
 
-#: src/alarm/interface.c:586
+#: src/alarm/interface.c:584
 msgid "Choose the days for the alarm to come on"
 msgstr ""
 
-#: src/alarm/interface.c:614 src/alarm/interface.c:662
-#: src/alarm/interface.c:710 src/alarm/interface.c:758
-#: src/alarm/interface.c:806 src/alarm/interface.c:854
-#: src/alarm/interface.c:902 src/OSS4/configure.c:138 src/OSS/configure.c:170
+#: src/alarm/interface.c:612 src/alarm/interface.c:660
+#: src/alarm/interface.c:708 src/alarm/interface.c:756
+#: src/alarm/interface.c:804 src/alarm/interface.c:852
+#: src/alarm/interface.c:900 src/OSS4/configure.c:138 src/OSS/configure.c:169
 msgid "Default"
 msgstr "Varsayılan"
 
-#: src/alarm/interface.c:940
+#: src/alarm/interface.c:938
 msgid "Day"
 msgstr ""
 
-#: src/alarm/interface.c:960
+#: src/alarm/interface.c:958
 msgid "Tuesday"
 msgstr ""
 
-#: src/alarm/interface.c:971
+#: src/alarm/interface.c:969
 msgid "Wednesday"
 msgstr ""
 
-#: src/alarm/interface.c:982
+#: src/alarm/interface.c:980
 msgid "Thursday"
 msgstr ""
 
-#: src/alarm/interface.c:993
+#: src/alarm/interface.c:991
 msgid "Friday"
 msgstr ""
 
-#: src/alarm/interface.c:1004
+#: src/alarm/interface.c:1002
 msgid "Saturday"
 msgstr ""
 
-#: src/alarm/interface.c:1015
+#: src/alarm/interface.c:1013
 #, fuzzy
 msgid "Sunday"
 msgstr "Soundtrack"
 
-#: src/alarm/interface.c:1025
+#: src/alarm/interface.c:1023
 #, fuzzy
 msgid "Monday"
 msgstr "Mono"
 
-#: src/alarm/interface.c:1036
+#: src/alarm/interface.c:1034
 msgid "Days"
 msgstr ""
 
-#: src/alarm/interface.c:1052
+#: src/alarm/interface.c:1050
 #, fuzzy
 msgid "Fading"
 msgstr "Geciktirme:"
 
-#: src/alarm/interface.c:1089 src/sid/xmms-sid.glade:2007
-#: src/sid/xmms-sid.glade:2178 src/sid/xmms-sid.glade:2526
-#: src/sid/xs_interface.c:900 src/sid/xs_interface.c:954
-#: src/sid/xs_interface.c:1064
+#: src/alarm/interface.c:1087 src/sid/xmms-sid.glade:2007
+#: src/sid/xmms-sid.glade:2178 src/sid/xmms-sid.glade:2676
+#: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
+#: src/sid/xs_interface.c:1122
 #, fuzzy
 msgid "seconds"
 msgstr "saniye"
 
-#: src/alarm/interface.c:1097 src/alarm/interface.c:1213
-#: src/modplug/gui/interface.cxx:635
+#: src/alarm/interface.c:1095 src/alarm/interface.c:1211
+#: src/modplug/gui/interface.cxx:539 src/modplug/gui/modplug.glade:1113
 #, fuzzy
 msgid "Volume"
 msgstr "Ses: (%)"
 
-#: src/alarm/interface.c:1123
+#: src/alarm/interface.c:1121
 msgid "Current"
 msgstr ""
 
-#: src/alarm/interface.c:1130
+#: src/alarm/interface.c:1128
 msgid "reset to current output volume"
 msgstr ""
 
-#: src/alarm/interface.c:1132
+#: src/alarm/interface.c:1130
 msgid "Start at"
 msgstr ""
 
-#: src/alarm/interface.c:1160 src/alarm/interface.c:1204
+#: src/alarm/interface.c:1158 src/alarm/interface.c:1202
 #, fuzzy
 msgid "%"
 msgstr "%d"
 
-#: src/alarm/interface.c:1176
+#: src/alarm/interface.c:1174
 #, fuzzy
 msgid "Final"
 msgstr "Dosya adı"
 
-#: src/alarm/interface.c:1229
+#: src/alarm/interface.c:1227
 msgid "Additional Command"
 msgstr ""
 
-#: src/alarm/interface.c:1255
+#: src/alarm/interface.c:1253
 #, fuzzy
 msgid "enable"
 msgstr "Genel"
 
-#: src/alarm/interface.c:1263
+#: src/alarm/interface.c:1261
 msgid "Playlist (optional)"
 msgstr ""
 
-#: src/alarm/interface.c:1289
+#: src/alarm/interface.c:1287
 #, fuzzy
 msgid "Browse..."
 msgstr "Araştır"
 
-#: src/alarm/interface.c:1297 src/alarm/interface.c:1462
+#: src/alarm/interface.c:1295 src/alarm/interface.c:1460
 #, fuzzy
 msgid "Reminder"
 msgstr "İşleme Stili"
 
-#: src/alarm/interface.c:1314
+#: src/alarm/interface.c:1312
 #, fuzzy
 msgid "Use reminder"
 msgstr "Kullanıcı Tanımlı"
 
-#: src/alarm/interface.c:1330 src/sndstretch/sndstretch_xmms.c:381
+#: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:377
 #, fuzzy
 msgid "Options"
 msgstr "Seçenekler:"
 
-#: src/alarm/interface.c:1338
+#: src/alarm/interface.c:1336
 msgid "What do these options mean?"
 msgstr ""
 
-#: src/alarm/interface.c:1366
+#: src/alarm/interface.c:1364
 msgid ""
 "\n"
 "Time\n"
@@ -580,15 +585,15 @@ msgid ""
 "    toggle button if you want it to be shown.\n"
 msgstr ""
 
-#: src/alarm/interface.c:1368
+#: src/alarm/interface.c:1366
 msgid "Help"
 msgstr ""
 
-#: src/alarm/interface.c:1470
+#: src/alarm/interface.c:1468
 msgid "Your reminder for today is.."
 msgstr ""
 
-#: src/alarm/interface.c:1495
+#: src/alarm/interface.c:1493
 #, fuzzy
 msgid "Thankyou"
 msgstr "Tango"
@@ -637,57 +642,53 @@ msgstr ""
 "USA.\n"
 " Yazan: Matthieu Sozeau (mattam@altern.org)"
 
-#: src/alsa/configure.c:150
+#: src/alsa/configure.c:146
 msgid "Unknown soundcard"
 msgstr "Bilinmeyen ses kartı"
 
-#: src/alsa/configure.c:205
+#: src/alsa/configure.c:201
 #, c-format
 msgid "Default PCM device (%s)"
 msgstr "Varsayılan PCM aygıtı (%s)"
 
-#: src/alsa/configure.c:271
+#: src/alsa/configure.c:260
 msgid "ALSA Driver configuration"
 msgstr "ALSA Sürücüsü ayarları"
 
-#: src/alsa/configure.c:285 src/OSS4/configure.c:186 src/OSS/configure.c:218
+#: src/alsa/configure.c:274 src/OSS4/configure.c:186 src/OSS/configure.c:217
 #: src/sun/configure.c:183
 msgid "Audio device:"
 msgstr "Ses aygıtı:"
 
-#: src/alsa/configure.c:299
+#: src/alsa/configure.c:288
 msgid "Mixer:"
 msgstr "Karıştırıcı:"
 
-#: src/alsa/configure.c:307
-msgid "Use software volume control"
-msgstr "Yazılımsal ses kontrolü kullan"
-
-#: src/alsa/configure.c:317
+#: src/alsa/configure.c:300
 msgid "Mixer card:"
 msgstr "Karıştırıcı kart:"
 
-#: src/alsa/configure.c:330 src/OSS/configure.c:261 src/sun/configure.c:220
+#: src/alsa/configure.c:313 src/OSS/configure.c:260 src/sun/configure.c:220
 msgid "Mixer device:"
 msgstr "Karıştırıcı aygıt:"
 
-#: src/alsa/configure.c:350
+#: src/alsa/configure.c:328
 msgid "Device settings"
 msgstr "Karıştırıcı ayarları"
 
-#: src/alsa/configure.c:356
+#: src/alsa/configure.c:334
 msgid "Soundcard:"
 msgstr "Ses kartı:"
 
-#: src/alsa/configure.c:369
+#: src/alsa/configure.c:347
 msgid "Buffer time (ms):"
 msgstr "Tampon zamanı (ms):"
 
-#: src/alsa/configure.c:383
+#: src/alsa/configure.c:361
 msgid "Period time (ms):"
 msgstr "Periyot zamanı (ms):"
 
-#: src/alsa/configure.c:398 src/amidi-plug/i_configure-ap.c:287
+#: src/alsa/configure.c:376 src/amidi-plug/i_configure-ap.c:287
 msgid "Advanced settings"
 msgstr "Gelişmiş ayarlar"
 
@@ -1325,8 +1326,8 @@ msgid ""
 "backend</span>"
 msgstr "<span size=\"smaller\">varsayılan</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:3315
-#: src/sid/xs_interface.c:1615 src/vorbis/fileinfo.c:562
+#: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:3465
+#: src/sid/xs_interface.c:1684 src/vorbis/fileinfo.c:559
 msgid "Name:"
 msgstr "İsim:"
 
@@ -1427,23 +1428,23 @@ msgstr "Yuvarlak Köşeli Dikdörtgen"
 msgid "Concave Rectangle"
 msgstr "Konkav Dikdörtgen"
 
-#: src/aosd/aosd_style.c:87
+#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:717
 msgid "None"
 msgstr "Hiçbiri"
 
-#: src/aosd/aosd_trigger.c:73
+#: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
 msgstr "Çal"
 
-#: src/aosd/aosd_trigger.c:74
+#: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
 msgstr "Playlist yüklendiğinde görsel öğeyi oynat"
 
-#: src/aosd/aosd_trigger.c:78
+#: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
 msgstr "Başlık Değiştirme"
 
-#: src/aosd/aosd_trigger.c:79
+#: src/aosd/aosd_trigger.c:80
 #, fuzzy
 msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
@@ -1453,30 +1454,30 @@ msgstr ""
 "Şarkı başladığında görünen şarkı başlığı değişir, fakat dosya adı aynıkalır. "
 "İnternet den inen akıcı dosyaları çalarken kullanışlı oluyor. "
 
-#: src/aosd/aosd_trigger.c:85
+#: src/aosd/aosd_trigger.c:86
 #, fuzzy
 msgid "Volume Change"
 msgstr "Başlık Değiştirme"
 
-#: src/aosd/aosd_trigger.c:86
+#: src/aosd/aosd_trigger.c:87
 #, fuzzy
 msgid "Triggers OSD when volume is changed."
 msgstr "Playlist yüklendiğinde görsel öğeyi oynat"
 
-#: src/aosd/aosd_trigger.c:90
+#: src/aosd/aosd_trigger.c:91
 msgid "Pause On"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:91
+#: src/aosd/aosd_trigger.c:92
 #, fuzzy
 msgid "Triggers OSD when playback is paused."
 msgstr "Playlist yüklendiğinde görsel öğeyi oynat"
 
-#: src/aosd/aosd_trigger.c:95
+#: src/aosd/aosd_trigger.c:96
 msgid "Pause Off"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:96
+#: src/aosd/aosd_trigger.c:97
 #, fuzzy
 msgid "Triggers OSD when playback is unpaused."
 msgstr "Playlist yüklendiğinde görsel öğeyi oynat"
@@ -1556,122 +1557,123 @@ msgstr ""
 msgid "Select Skin File"
 msgstr "Arayüz dosyası seçin"
 
-#: src/aosd/aosd_ui.c:583
+#: src/aosd/aosd_ui.c:586
 msgid "Render Style"
 msgstr "İşleme Stili"
 
-#: src/aosd/aosd_ui.c:599
+#: src/aosd/aosd_ui.c:602
 msgid "Colors"
 msgstr "Renkler"
 
-#: src/aosd/aosd_ui.c:612
+#: src/aosd/aosd_ui.c:615
 #, fuzzy, c-format
 msgid "Color %i:"
 msgstr "Renkler"
 
-#: src/aosd/aosd_ui.c:632
+#: src/aosd/aosd_ui.c:635
 msgid "Custom Skin"
 msgstr "Geçerli Arayüz"
 
-#: src/aosd/aosd_ui.c:638
+#: src/aosd/aosd_ui.c:641
 msgid "Skin file:"
 msgstr "Arayüz Dosyası:"
 
-#: src/aosd/aosd_ui.c:641 src/sid/xmms-sid.glade:2331
-#: src/sid/xmms-sid.glade:2706 src/sid/xmms-sid.glade:2812
-#: src/sid/xs_interface.c:1002 src/sid/xs_interface.c:1124
-#: src/sid/xs_interface.c:1160
+#: src/aosd/aosd_ui.c:644 src/sid/xmms-sid.glade:2331
+#: src/sid/xmms-sid.glade:2856 src/sid/xmms-sid.glade:2962
+#: src/sid/xs_interface.c:1010 src/sid/xs_interface.c:1182
+#: src/sid/xs_interface.c:1218
 msgid "Browse"
 msgstr "Araştır"
 
-#: src/aosd/aosd_ui.c:743
+#: src/aosd/aosd_ui.c:746
 msgid "Enable trigger"
 msgstr "Tetikleyici Aktif"
 
-#: src/aosd/aosd_ui.c:770
+#: src/aosd/aosd_ui.c:773
 msgid "Event"
 msgstr "Olay"
 
-#: src/aosd/aosd_ui.c:798
+#: src/aosd/aosd_ui.c:801
 msgid "Composite manager detected"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:805
+#: src/aosd/aosd_ui.c:808
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:813
+#: src/aosd/aosd_ui.c:816
 msgid "Composite manager not required for fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:851
+#: src/aosd/aosd_ui.c:854
 #, fuzzy
 msgid "Transparency"
 msgstr "Transpoze:"
 
-#: src/aosd/aosd_ui.c:857
+#: src/aosd/aosd_ui.c:860
 msgid "Fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:859
+#: src/aosd/aosd_ui.c:862
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:901
+#: src/aosd/aosd_ui.c:904
 msgid "Composite extension not loaded"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:909
+#: src/aosd/aosd_ui.c:912
 msgid "Composite extension not available"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:931
+#: src/aosd/aosd_ui.c:934
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1012
+#: src/aosd/aosd_ui.c:1015
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - yapılandırması"
 
-#: src/aosd/aosd_ui.c:1033
+#: src/aosd/aosd_ui.c:1036
 msgid "Test"
 msgstr "Test"
 
-#: src/aosd/aosd_ui.c:1048
+#: src/aosd/aosd_ui.c:1051
 msgid "Position"
 msgstr "Konum"
 
-#: src/aosd/aosd_ui.c:1053
+#: src/aosd/aosd_ui.c:1056
 msgid "Animation"
 msgstr "Animasyon"
 
-#: src/aosd/aosd_ui.c:1058
+#: src/aosd/aosd_ui.c:1061
 msgid "Text"
 msgstr "Yazı"
 
-#: src/aosd/aosd_ui.c:1063
+#: src/aosd/aosd_ui.c:1066
 msgid "Decoration"
 msgstr "Dekorasyon"
 
-#: src/aosd/aosd_ui.c:1068
+#: src/aosd/aosd_ui.c:1071
 msgid "Trigger"
 msgstr "Başlat"
 
-#: src/aosd/aosd_ui.c:1073 src/cdaudio-ng/configure.c:87
-#: src/sid/xmms-sid.glade:2876 src/sid/xs_interface.c:1171
+#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:149
+#: src/modplug/gui/interface.cxx:678 src/modplug/gui/modplug.glade:1583
+#: src/sid/xmms-sid.glade:3026 src/sid/xs_interface.c:1229
 #, fuzzy
 msgid "Misc"
 msgstr "Disko"
 
-#: src/aosd/aosd_ui.c:1110
+#: src/aosd/aosd_ui.c:1113
 msgid "Audacious OSD - about"
 msgstr "Audacius OSD - Hakkında"
 
-#: src/aosd/aosd_ui.c:1140
+#: src/aosd/aosd_ui.c:1143
 msgid ""
 "\n"
 "Audacious OSD "
@@ -1679,7 +1681,7 @@ msgstr ""
 "\n"
 "Audacious OSD "
 
-#: src/aosd/aosd_ui.c:1141
+#: src/aosd/aosd_ui.c:1144
 #, fuzzy
 msgid ""
 "\n"
@@ -1719,25 +1721,25 @@ msgid "aRts Driver configuration"
 msgstr "aRTS Ses Sürücüsü ayarları"
 
 #: src/arts/configure.c:61 src/esd/configure.c:171 src/OSS4/configure.c:232
-#: src/OSS/configure.c:305 src/sun/configure.c:259
+#: src/OSS/configure.c:304 src/sun/configure.c:259
 msgid "Buffering:"
 msgstr "Tamponlama:"
 
 #: src/arts/configure.c:73 src/esd/configure.c:184 src/OSS4/configure.c:245
-#: src/OSS/configure.c:318 src/sun/configure.c:272
+#: src/OSS/configure.c:317 src/sun/configure.c:272
 msgid "Buffer size (ms):"
 msgstr "Tampon boyutu (ms):"
 
 #: src/arts/configure.c:83 src/esd/configure.c:209 src/OSS4/configure.c:270
-#: src/OSS/configure.c:343 src/sun/configure.c:304
+#: src/OSS/configure.c:342 src/sun/configure.c:304
 msgid "Buffering"
 msgstr "Tamponlama"
 
-#: src/audiocompress/audacious-glue.c:99
+#: src/audiocompress/audacious-glue.c:95
 msgid "AudioCompress "
 msgstr "AudioCompress"
 
-#: src/audiocompress/audacious-glue.c:100
+#: src/audiocompress/audacious-glue.c:96
 msgid ""
 "\n"
 "(c)2003 trikuare studios(http://trikuare.cx)\n"
@@ -1753,119 +1755,124 @@ msgstr ""
 "Temiz sıkıştırma için kullanabileceğiniz\n"
 "ses seviyesini normal değerlerde tutan bir işleyici"
 
-#: src/audiocompress/audacious-glue.c:105
+#: src/audiocompress/audacious-glue.c:101
 msgid "About AudioCompress"
 msgstr "AudioCompress Hakkında"
 
-#: src/audiocompress/audacious-glue.c:324
+#: src/audiocompress/audacious-glue.c:320
 msgid ""
 "If checked, when the sound peaks the volume will be cut instantly; "
 "otherwise, it will ramp down just in time for the peak (but some minor "
 "clipping may still occur)."
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:328
+#: src/audiocompress/audacious-glue.c:324
 msgid "The maximum amount to amplify the audio by"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:330
+#: src/audiocompress/audacious-glue.c:326
 msgid "Defines how smoothly the volume will ramp up"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:332
+#: src/audiocompress/audacious-glue.c:328
 msgid ""
 "The target audio level for ramping up. Lowering the value gives a bit more "
 "dynamic range for peaks, but will make the overall sound quieter."
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:335
+#: src/audiocompress/audacious-glue.c:331
 msgid "How long of a window to maintain"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:376
+#: src/audiocompress/audacious-glue.c:372
 #, fuzzy
 msgid "AudioCompress preferences"
 msgstr "AudioCompress"
 
-#: src/audiocompress/audacious-glue.c:393
+#: src/audiocompress/audacious-glue.c:389
 msgid " Quality Options "
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:398
+#: src/audiocompress/audacious-glue.c:394
 msgid " Aggressively prevent clipping"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:410
+#: src/audiocompress/audacious-glue.c:406
 msgid " Target & gain"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:421
+#: src/audiocompress/audacious-glue.c:417
 msgid "Target audio level:"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:429
+#: src/audiocompress/audacious-glue.c:425
 #, fuzzy
 msgid "Maximum gain:"
 msgstr "Albüm ses yüksekliği:"
 
-#: src/audiocompress/audacious-glue.c:437
+#: src/audiocompress/audacious-glue.c:433
 msgid "Gain smooth:"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:489
+#: src/audiocompress/audacious-glue.c:485
 msgid " History "
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:521
+#: src/audiocompress/audacious-glue.c:517
 msgid ""
 "How long of a history to maintain.  A higher number will make the volume "
 "changes less responsive."
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:532
+#: src/audiocompress/audacious-glue.c:528
 msgid "Load default values"
 msgstr ""
 
-#: src/audiocompress/audacious-glue.c:537
+#: src/audiocompress/audacious-glue.c:533
 #, fuzzy
 msgid "Audio values"
 msgstr "Ses aygıtı:"
 
-#: src/audiocompress/audacious-glue.c:566 src/echo_plugin/gui.c:153
-#: src/modplug/gui/interface.cxx:733 src/stereo_plugin/stereo.c:135
+#: src/audiocompress/audacious-glue.c:562 src/echo_plugin/gui.c:152
+#: src/modplug/gui/interface.cxx:698 src/modplug/gui/modplug.glade:1635
+#: src/stereo_plugin/stereo.c:132
 msgid "Apply"
 msgstr "Uygula"
 
-#: src/blur_scope/blur_scope.c:57
+#: src/blur_scope/blur_scope.c:54
 msgid "/Toggle Decorations"
 msgstr "/Geçiş Dekorasyonları"
 
-#: src/blur_scope/blur_scope.c:59
+#: src/blur_scope/blur_scope.c:56
 msgid "/-"
 msgstr "/-"
 
-#: src/blur_scope/blur_scope.c:60
+#: src/blur_scope/blur_scope.c:57
 msgid "/Close"
 msgstr "/Kapat"
 
-#: src/blur_scope/blur_scope.c:190
+#: src/blur_scope/blur_scope.c:181
 msgid "Blur scope"
 msgstr "Bulanık Alan"
 
-#: src/blur_scope/config.c:73
+#: src/blur_scope/config.c:72
 msgid "Blur Scope: Color selection"
 msgstr "Bulanık alan: Renk seçimi"
 
-#: src/blur_scope/config.c:83 src/jack/configure.c:107
+#: src/blur_scope/config.c:82 src/jack/configure.c:108
 msgid "Options:"
 msgstr "Seçenekler:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:141
+#: src/cdaudio-ng/cdaudio-ng.c:187
 msgid "Add CD"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:201
-#, c-format
+#: src/cdaudio-ng/cdaudio-ng.c:212
+#, fuzzy
+msgid "About CD Audio Plugin NG"
+msgstr "LIRC Audacious Eklentisi Hakkında"
+
+#: src/cdaudio-ng/cdaudio-ng.c:213
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1878,109 +1885,105 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:206
-#, fuzzy
-msgid "About CD Audio Plugin NG"
-msgstr "LIRC Audacious Eklentisi Hakkında"
-
-#: src/cdaudio-ng/cdaudio-ng.c:801
+#: src/cdaudio-ng/cdaudio-ng.c:802
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
 "No CD inserted, or inserted CD is not an audio CD.\n"
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:67
+#: src/cdaudio-ng/configure.c:129
 #, fuzzy
 msgid "CD Audio Plugin Configuration"
 msgstr "MPEG Ses Eklentisi Yapılandırması"
 
-#: src/cdaudio-ng/configure.c:77
+#: src/cdaudio-ng/configure.c:139
 msgid "Digital audio extraction"
 msgstr "Sayısal ses elde etme"
 
-#: src/cdaudio-ng/configure.c:82
+#: src/cdaudio-ng/configure.c:144
 #, fuzzy
 msgid "Title information"
 msgstr "Başlık biçimi:"
 
-#: src/cdaudio-ng/configure.c:99
+#: src/cdaudio-ng/configure.c:161
 msgid "Limit read speed to: "
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:106
+#: src/cdaudio-ng/configure.c:168
 msgid "Use cd-text if available"
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:110
+#: src/cdaudio-ng/configure.c:172
 msgid "Use CDDB if available"
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:114
+#: src/cdaudio-ng/configure.c:176
 #, fuzzy
 msgid "Server: "
 msgstr "Sunucu"
 
-#: src/cdaudio-ng/configure.c:117
+#: src/cdaudio-ng/configure.c:179
 #, fuzzy
 msgid "Port: "
 msgstr "Port:"
 
-#: src/cdaudio-ng/configure.c:127
+#: src/cdaudio-ng/configure.c:189
 msgid "Override default device: "
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:134
+#: src/cdaudio-ng/configure.c:196
 msgid "Print debug information"
 msgstr ""
 
-#: src/console/Audacious_Config.cxx:126
+#: src/console/Audacious_Config.cxx:125
 msgid "Console Music Decoder"
 msgstr "Konsol Müzik Çözücüsü"
 
-#: src/console/Audacious_Config.cxx:163
+#: src/console/Audacious_Config.cxx:162
 msgid "Bass:"
 msgstr "Bas:"
 
-#: src/console/Audacious_Config.cxx:167 src/console/Audacious_Config.cxx:178
-#: src/console/Audacious_Config.cxx:199
+#: src/console/Audacious_Config.cxx:166 src/console/Audacious_Config.cxx:177
+#: src/console/Audacious_Config.cxx:198
 msgid "secs"
 msgstr "saniye"
 
-#: src/console/Audacious_Config.cxx:174
+#: src/console/Audacious_Config.cxx:173
 msgid "Treble:"
 msgstr "Tiz:"
 
-#: src/console/Audacious_Config.cxx:195
+#: src/console/Audacious_Config.cxx:194
 msgid "Default song length:"
 msgstr "Varsayılan şarkı uzunluğu:"
 
-#: src/console/Audacious_Config.cxx:201 src/modplug/gui/interface.cxx:264
-#: src/sid/xmms-sid.glade:1243 src/sid/xs_interface.c:645
+#: src/console/Audacious_Config.cxx:200 src/modplug/gui/interface.cxx:265
+#: src/modplug/gui/modplug.glade:338 src/sid/xmms-sid.glade:1243
+#: src/sid/xs_interface.c:653
 msgid "Resampling"
 msgstr "Yeniden örnekleme"
 
-#: src/console/Audacious_Config.cxx:207
+#: src/console/Audacious_Config.cxx:206
 msgid "Enable audio resampling"
 msgstr "Ses örneklemesini etkinleştir"
 
-#: src/console/Audacious_Config.cxx:222
+#: src/console/Audacious_Config.cxx:221
 msgid "Resampling rate:"
 msgstr "Örnekleme oranı:"
 
-#: src/console/Audacious_Config.cxx:237
+#: src/console/Audacious_Config.cxx:236
 msgid "SPC"
 msgstr "SPC"
 
-#: src/console/Audacious_Config.cxx:238
+#: src/console/Audacious_Config.cxx:237
 msgid "Ignore length from SPC tags"
 msgstr "SPC etiketlerindeki uzunluğu gözardı et"
 
-#: src/console/Audacious_Config.cxx:239
+#: src/console/Audacious_Config.cxx:238
 msgid "Increase reverb"
 msgstr ""
 
-#: src/console/Audacious_Config.cxx:264
+#: src/console/Audacious_Config.cxx:263
 #, fuzzy
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
@@ -1990,11 +1993,11 @@ msgstr ""
 "Saniyelerle belirtilen varsayılan şarkı uzunluğu, uzunluk bilgisi bulunmayan "
 "parçalar için kullanılır."
 
-#: src/console/Audacious_Driver.cxx:495
+#: src/console/Audacious_Driver.cxx:444
 msgid "About the Console Music Decoder"
 msgstr "Konsol Müzik Çözücüsü Hakkında"
 
-#: src/console/Audacious_Driver.cxx:496
+#: src/console/Audacious_Driver.cxx:445
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
@@ -2006,7 +2009,7 @@ msgstr ""
 "Audacious için uyarlayan: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 
-#: src/echo_plugin/gui.c:12
+#: src/echo_plugin/gui.c:11
 msgid ""
 "Echo Plugin\n"
 "By Johan Levin 1999.\n"
@@ -2018,27 +2021,27 @@ msgstr ""
 "\n"
 "Surround Eko - Carl van Schaik 1999"
 
-#: src/echo_plugin/gui.c:26
+#: src/echo_plugin/gui.c:25
 msgid "About Echo Plugin"
 msgstr "Yankı (Eko) Eklentisi Hakkında"
 
-#: src/echo_plugin/gui.c:77
+#: src/echo_plugin/gui.c:76
 msgid "Configure Echo"
 msgstr "Yankı (Eko) Eklentisini Yapılandır"
 
-#: src/echo_plugin/gui.c:90
+#: src/echo_plugin/gui.c:89
 msgid "Delay: (ms)"
 msgstr "Gecikme: (ms )"
 
-#: src/echo_plugin/gui.c:95
+#: src/echo_plugin/gui.c:94
 msgid "Feedback: (%)"
 msgstr "Geribesleme: (%)"
 
-#: src/echo_plugin/gui.c:100
+#: src/echo_plugin/gui.c:99
 msgid "Volume: (%)"
 msgstr "Ses: (%)"
 
-#: src/echo_plugin/gui.c:123
+#: src/echo_plugin/gui.c:122
 msgid "Surround echo"
 msgstr "Çevresel Yankı"
 
@@ -2108,7 +2111,7 @@ msgstr "Port:"
 msgid "Server"
 msgstr "Sunucu"
 
-#: src/esd/configure.c:198 src/OSS4/configure.c:259 src/OSS/configure.c:332
+#: src/esd/configure.c:198 src/OSS4/configure.c:259 src/OSS/configure.c:331
 #: src/sun/configure.c:290
 msgid "Pre-buffer (percent):"
 msgstr "Ön tampon (yüzde):"
@@ -2292,8 +2295,7 @@ msgid ""
 "Ensure that the device has been correctly plugged in."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:318 src/filewriter/filewriter.c:198
-#: src/madplug/plugin.c:620
+#: src/evdev-plug/ed_ui.c:318 src/madplug/plugin.c:619
 msgid "Error"
 msgstr "Hata"
 
@@ -2411,12 +2413,12 @@ msgid ""
 "written by Giacomo Lozito\n"
 msgstr ""
 
-#: src/filewriter/filewriter.c:169
+#: src/filewriter/filewriter.c:163
 #, fuzzy
 msgid "About FileWriter-Plugin"
 msgstr "Flac Eklentisi Hakkında"
 
-#: src/filewriter/filewriter.c:170
+#: src/filewriter/filewriter.c:164
 #, fuzzy
 msgid ""
 "FileWriter-Plugin\n"
@@ -2455,69 +2457,60 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:199
-#, fuzzy
-msgid ""
-"You cannot use the FileWriter plugin\n"
-"when you're running in realtime mode."
-msgstr ""
-"Gerçek zamanlı kipte çalışırken\n"
-"disk yazma eklentisini kullanamazsınız."
-
-#: src/filewriter/filewriter.c:514
+#: src/filewriter/filewriter.c:476
 #, fuzzy
 msgid "File Writer Configuration"
 msgstr "Disk Yazıcı Ayarları"
 
-#: src/filewriter/filewriter.c:526
+#: src/filewriter/filewriter.c:488
 #, fuzzy
 msgid "Output file format:"
 msgstr "Çıktı dosya klasörü:"
 
-#: src/filewriter/filewriter.c:544 src/ladspa/ladspa.c:962
+#: src/filewriter/filewriter.c:506 src/ladspa/ladspa.c:960
 #, fuzzy
 msgid "Configure"
 msgstr "Yankı (Eko) Eklentisini Yapılandır"
 
-#: src/filewriter/filewriter.c:559
+#: src/filewriter/filewriter.c:521
 msgid "Save into original directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:564
+#: src/filewriter/filewriter.c:526
 msgid "Save into custom directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:576
+#: src/filewriter/filewriter.c:538
 msgid "Output file folder:"
 msgstr "Çıktı dosya klasörü:"
 
-#: src/filewriter/filewriter.c:580
+#: src/filewriter/filewriter.c:542
 msgid "Pick a folder"
 msgstr ""
 
-#: src/filewriter/filewriter.c:600
+#: src/filewriter/filewriter.c:562
 msgid "Get filename from:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:603
+#: src/filewriter/filewriter.c:565
 msgid "original file tags"
 msgstr ""
 
-#: src/filewriter/filewriter.c:609
+#: src/filewriter/filewriter.c:571
 msgid "original filename"
 msgstr ""
 
-#: src/filewriter/filewriter.c:619
+#: src/filewriter/filewriter.c:581
 msgid "Don't strip file name extension"
 msgstr "Dosya ismi uzantılarını daraltma"
 
-#: src/filewriter/filewriter.c:623
+#: src/filewriter/filewriter.c:585
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
 "before adding the new file extension to the end."
 msgstr ""
 
-#: src/filewriter/filewriter.c:637
+#: src/filewriter/filewriter.c:599
 msgid "Prepend track number to filename"
 msgstr ""
 
@@ -2600,8 +2593,8 @@ msgstr ""
 msgid "Adds 16 bit checksum to every frame"
 msgstr ""
 
-#: src/filewriter/mp3.c:981 src/filewriter/vorbis.c:271
-#: src/modplug/gui/interface.cxx:310
+#: src/filewriter/mp3.c:981 src/filewriter/vorbis.c:274
+#: src/modplug/gui/interface.cxx:309 src/modplug/gui/modplug.glade:487
 msgid "Quality"
 msgstr ""
 
@@ -2707,21 +2700,21 @@ msgstr ""
 msgid "Tags"
 msgstr "Etiket:"
 
-#: src/filewriter/vorbis.c:264
+#: src/filewriter/vorbis.c:267
 #, fuzzy
 msgid "Vorbis Encoder Configuration"
 msgstr "Disk Yazıcı Ayarları"
 
-#: src/filewriter/vorbis.c:284
+#: src/filewriter/vorbis.c:287
 msgid "Quality level (0 - 10):"
 msgstr ""
 
-#: src/flacng/plugin.c:735
+#: src/flacng/plugin.c:718
 #, fuzzy
 msgid "FLAC Audio Plugin "
 msgstr "FLAC Ses Eklentisi"
 
-#: src/flacng/plugin.c:736
+#: src/flacng/plugin.c:719
 msgid ""
 "\n"
 "\n"
@@ -2731,33 +2724,164 @@ msgid ""
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
 
-#: src/flacng/plugin.c:741
+#: src/flacng/plugin.c:724
 #, fuzzy
 msgid "About FLAC Audio Plugin"
 msgstr "FLAC Ses Eklentisi"
 
-#: src/jack/configure.c:69
+#: src/gnomeshortcuts/gnomeshortcuts.c:285
+#, fuzzy
+msgid "About Gnome Shortcut Plugin"
+msgstr "ESounD Eklentisi Hakkında"
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:286
+msgid ""
+"Gnome Shortcut Plugin\n"
+"Let's you control the player with Gnome's shortcuts.\n"
+"\n"
+"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+msgstr ""
+
+#: src/hotkey/plugin.c:607
+#, fuzzy
+msgid "(none)"
+msgstr "hiçbiri"
+
+#: src/hotkey/plugin.c:752
+#, fuzzy
+msgid "Global Hotkey Plugin Configuration"
+msgstr "ESD Çıkış Eklentisi yapılandırması"
+
+#: src/hotkey/plugin.c:768
+msgid "Press a key combination inside a text field."
+msgstr ""
+
+#: src/hotkey/plugin.c:773
+#, fuzzy
+msgid "<b>Playback:</b>"
+msgstr "Çal"
+
+#: src/hotkey/plugin.c:788
+msgid "<i>Configure keys which controls Audacious playback.</i>"
+msgstr ""
+
+#: src/hotkey/plugin.c:795
+msgid "Previous Track:"
+msgstr ""
+
+#: src/hotkey/plugin.c:798
+#, fuzzy
+msgid "Play/Pause:"
+msgstr "Durakla"
+
+#: src/hotkey/plugin.c:801
+#, fuzzy
+msgid "Pause:"
+msgstr "Değer:"
+
+#: src/hotkey/plugin.c:804
+#, fuzzy
+msgid "Stop:"
+msgstr "sonu:"
+
+#: src/hotkey/plugin.c:807
+#, fuzzy
+msgid "Next Track:"
+msgstr "Parça ses yüksekliği:"
+
+#: src/hotkey/plugin.c:810
+msgid "Forward 5 sec.:"
+msgstr ""
+
+#: src/hotkey/plugin.c:813
+msgid "Rewind 5 sec.:"
+msgstr ""
+
+#: src/hotkey/plugin.c:818
+#, fuzzy
+msgid "<b>Volume Control:</b>"
+msgstr "Ses kontrolleri aygıtı:"
+
+#: src/hotkey/plugin.c:833
+msgid "<i>Configure keys which controls music volume.</i>"
+msgstr ""
+
+#: src/hotkey/plugin.c:841
+#, fuzzy
+msgid "Mute:"
+msgstr "Tarih:"
+
+#: src/hotkey/plugin.c:844
+#, fuzzy
+msgid "Volume Up:"
+msgstr "Ses: (%)"
+
+#: src/hotkey/plugin.c:847
+#, fuzzy
+msgid "Volume Down:"
+msgstr "Sesi 5 Birim Azalt"
+
+#: src/hotkey/plugin.c:852
+#, fuzzy
+msgid "<b>Player:</b>"
+msgstr "<b>İsim: </b>"
+
+#: src/hotkey/plugin.c:867
+msgid "<i>Configure keys which control the player.</i>"
+msgstr ""
+
+#: src/hotkey/plugin.c:873
+msgid "Jump to File:"
+msgstr ""
+
+#: src/hotkey/plugin.c:876
+msgid "Toggle Player Windows:"
+msgstr ""
+
+#: src/hotkey/plugin.c:903
+#, fuzzy
+msgid "About Global Hotkey Plugin"
+msgstr "Scrobbler Eklentisi Hakkında"
+
+#: src/hotkey/plugin.c:904
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+"\t\t\tBryn Davies <curious@ihug.com.au>\n"
+"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+"\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
+"\n"
+msgstr ""
+
+#: src/jack/configure.c:70
 msgid "Connect to all available jack ports"
 msgstr ""
 
-#: src/jack/configure.c:76
+#: src/jack/configure.c:77
 msgid "Connect only the output ports"
 msgstr ""
 
-#: src/jack/configure.c:83
+#: src/jack/configure.c:84
 msgid "Connect to no ports"
 msgstr ""
 
-#: src/jack/configure.c:98
+#: src/jack/configure.c:99
 #, fuzzy
 msgid "jack Plugin configuration"
 msgstr "ESD Çıkış Eklentisi yapılandırması"
 
-#: src/jack/configure.c:116
+#: src/jack/configure.c:117
 msgid "Connection mode:"
 msgstr ""
 
-#: src/jack/configure.c:128
+#: src/jack/configure.c:129
 #, fuzzy
 msgid "Enable debug printing"
 msgstr "Ses titremesini etkinleştir"
@@ -2781,15 +2905,15 @@ msgid ""
 "Chris Morgan <cmorgan@alum.wpi.edu>\n"
 msgstr ""
 
-#: src/jack/jack.c:118 src/wma/wma.c:156
+#: src/jack/jack.c:118 src/wma/wma.c:157
 msgid " Close "
 msgstr " Kapat "
 
-#: src/jack/jack.c:598
+#: src/jack/jack.c:535
 msgid "About JACK Output Plugin 0.17"
 msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
 
-#: src/jack/jack.c:599
+#: src/jack/jack.c:536
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -2807,37 +2931,37 @@ msgstr ""
 "Audacious uyarlaması\n"
 "develia.org'tan Giacomo Lozito"
 
-#: src/ladspa/ladspa.c:724
+#: src/ladspa/ladspa.c:722
 msgid "This LADSPA plugin has no user controls"
 msgstr ""
 
-#: src/ladspa/ladspa.c:769 src/ladspa/ladspa.c:855
+#: src/ladspa/ladspa.c:767 src/ladspa/ladspa.c:853
 #, fuzzy
 msgid "Name"
 msgstr "İsim:"
 
-#: src/ladspa/ladspa.c:855
+#: src/ladspa/ladspa.c:853
 msgid "UID"
 msgstr ""
 
-#: src/ladspa/ladspa.c:930
+#: src/ladspa/ladspa.c:928
 msgid "Installed plugins"
 msgstr ""
 
-#: src/ladspa/ladspa.c:939
+#: src/ladspa/ladspa.c:937
 msgid "Running plugins"
 msgstr ""
 
-#: src/ladspa/ladspa.c:954
+#: src/ladspa/ladspa.c:952
 msgid "Add"
 msgstr ""
 
-#: src/ladspa/ladspa.c:958
+#: src/ladspa/ladspa.c:956
 #, fuzzy
 msgid "Remove"
 msgstr "Etiketi kaldır"
 
-#: src/ladspa/ladspa.c:971
+#: src/ladspa/ladspa.c:969
 msgid "LADSPA Plugin Catalog"
 msgstr ""
 
@@ -2848,15 +2972,15 @@ msgid ""
 "Check if your Scrobbler's plugin login data is set up properly."
 msgstr ""
 
-#: src/lirc/about.c:65
+#: src/lirc/about.c:63
 msgid "About LIRC Audacious Plugin"
 msgstr "LIRC Audacious Eklentisi Hakkında"
 
-#: src/lirc/about.c:92
+#: src/lirc/about.c:90
 msgid "LIRC Plugin "
 msgstr "LIRC Eklentisi"
 
-#: src/lirc/about.c:94
+#: src/lirc/about.c:92
 msgid ""
 "\n"
 "A simple plugin that lets you control\n"
@@ -2880,12 +3004,12 @@ msgstr ""
 "LIRC hakkında bilgi almak için:\n"
 "http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 
-#: src/lirc/lirc.c:80
+#: src/lirc/lirc.c:76
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: LIRC desteği başlatılamadı\n"
 
-#: src/lirc/lirc.c:88
+#: src/lirc/lirc.c:84
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -2896,12 +3020,12 @@ msgstr ""
 "%s: lütfen LIRC belgelerini okuyun\n"
 "%s: uygun yapılandırma dosyası nasıl oluşturulur\n"
 
-#: src/lirc/lirc.c:299
+#: src/lirc/lirc.c:295
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: bilinmeyen komut \"%s\"\n"
 
-#: src/lirc/lirc.c:309
+#: src/lirc/lirc.c:305
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: LIRC bağlantısı kesildi\n"
@@ -2954,12 +3078,12 @@ msgstr "Varsayılan artış miktarı (dB):"
 msgid "Preamp (dB):"
 msgstr "Ön anfi (dB)"
 
-#: src/madplug/configure.c:233 src/musepack/libmpc.cxx:223
-#: src/vorbis/configure.c:221 src/wavpack/ui.cxx:545
+#: src/madplug/configure.c:233 src/musepack/libmpc.cxx:224
+#: src/vorbis/configure.c:219 src/wavpack/ui.cxx:545
 msgid "ReplayGain"
 msgstr "ReplayGain"
 
-#: src/madplug/configure.c:238 src/vorbis/configure.c:137
+#: src/madplug/configure.c:238 src/vorbis/configure.c:135
 msgid "Override generic titles"
 msgstr "Genel başlıkları geçersiz kıl"
 
@@ -2967,7 +3091,8 @@ msgstr "Genel başlıkları geçersiz kıl"
 msgid "ID3 format:"
 msgstr "ID3 biçimi:"
 
-#: src/madplug/configure.c:261 src/vorbis/configure.c:160
+#: src/madplug/configure.c:261 src/sid/xmms-sid.glade:2540
+#: src/sid/xs_interface.c:1070 src/vorbis/configure.c:158
 msgid "Title"
 msgstr "Başlık"
 
@@ -2998,38 +3123,38 @@ msgstr " MPEG Bilgisi "
 msgid " ID3 Tag "
 msgstr "ID3 Etiketi"
 
-#: src/madplug/fileinfo.c:425 src/musepack/libmpc.cxx:513 src/tta/libtta.c:341
-#: src/vorbis/fileinfo.c:585 src/wavpack/ui.cxx:170
+#: src/madplug/fileinfo.c:425 src/musepack/libmpc.cxx:514 src/tta/libtta.c:321
+#: src/vorbis/fileinfo.c:582 src/wavpack/ui.cxx:170
 msgid "Title:"
 msgstr "Başlık:"
 
-#: src/madplug/fileinfo.c:435 src/musepack/libmpc.cxx:517 src/tta/libtta.c:351
-#: src/vorbis/fileinfo.c:596 src/wavpack/ui.cxx:182
+#: src/madplug/fileinfo.c:435 src/musepack/libmpc.cxx:518 src/tta/libtta.c:331
+#: src/vorbis/fileinfo.c:593 src/wavpack/ui.cxx:182
 msgid "Artist:"
 msgstr "Sanatçı:"
 
-#: src/madplug/fileinfo.c:445 src/musepack/libmpc.cxx:521 src/tta/libtta.c:362
-#: src/vorbis/fileinfo.c:607 src/wavpack/ui.cxx:194
+#: src/madplug/fileinfo.c:445 src/musepack/libmpc.cxx:522 src/tta/libtta.c:342
+#: src/vorbis/fileinfo.c:604 src/wavpack/ui.cxx:194
 msgid "Album:"
 msgstr "Albüm:"
 
-#: src/madplug/fileinfo.c:455 src/musepack/libmpc.cxx:525 src/tta/libtta.c:373
-#: src/vorbis/fileinfo.c:618 src/wavpack/ui.cxx:206
+#: src/madplug/fileinfo.c:455 src/musepack/libmpc.cxx:526 src/tta/libtta.c:353
+#: src/vorbis/fileinfo.c:615 src/wavpack/ui.cxx:206
 msgid "Comment:"
 msgstr "Yorum:"
 
-#: src/madplug/fileinfo.c:465 src/musepack/libmpc.cxx:529 src/tta/libtta.c:384
+#: src/madplug/fileinfo.c:465 src/musepack/libmpc.cxx:530 src/tta/libtta.c:364
 #: src/wavpack/ui.cxx:219
 msgid "Year:"
 msgstr ""
 
-#: src/madplug/fileinfo.c:476 src/tta/libtta.c:396 src/vorbis/fileinfo.c:641
+#: src/madplug/fileinfo.c:476 src/tta/libtta.c:376 src/vorbis/fileinfo.c:638
 #: src/wavpack/ui.cxx:232
 msgid "Track number:"
 msgstr "Parça numarası:"
 
-#: src/madplug/fileinfo.c:487 src/musepack/libmpc.cxx:539 src/tta/libtta.c:408
-#: src/vorbis/fileinfo.c:653 src/wavpack/ui.cxx:246
+#: src/madplug/fileinfo.c:487 src/musepack/libmpc.cxx:540 src/tta/libtta.c:388
+#: src/vorbis/fileinfo.c:650 src/wavpack/ui.cxx:246
 msgid "Genre:"
 msgstr "Tür:"
 
@@ -3038,7 +3163,7 @@ msgstr "Tür:"
 msgid "Unknown"
 msgstr "(bilinmeyen)"
 
-#: src/madplug/fileinfo.c:620 src/musepack/libmpc.cxx:633 src/tta/libtta.c:431
+#: src/madplug/fileinfo.c:620 src/musepack/libmpc.cxx:634 src/tta/libtta.c:411
 #: src/wavpack/ui.cxx:407
 #, c-format
 msgid "File Info - %s"
@@ -3054,7 +3179,7 @@ msgstr "%s WMA Oynatıcı"
 msgid "VBR (avg. %d kbps)"
 msgstr ""
 
-#: src/madplug/fileinfo.c:660 src/vorbis/fileinfo.c:962
+#: src/madplug/fileinfo.c:660 src/vorbis/fileinfo.c:959
 #, c-format
 msgid "%d Hz"
 msgstr "%d Hz"
@@ -3099,7 +3224,7 @@ msgstr ""
 msgid "mp3gain minmax=%4s (max-min=%+6.3fdB)"
 msgstr ""
 
-#: src/madplug/plugin.c:579
+#: src/madplug/plugin.c:578
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3117,17 +3242,17 @@ msgid ""
 "    Samuel Krempp"
 msgstr ""
 
-#: src/madplug/plugin.c:595
+#: src/madplug/plugin.c:594
 #, fuzzy
 msgid "About MPEG Audio Plugin"
 msgstr "MPEG Ses Eklentisi"
 
-#: src/metronom/metronom.c:86
+#: src/metronom/metronom.c:87
 #, fuzzy
 msgid "About Metronom"
 msgstr "Hakkında"
 
-#: src/metronom/metronom.c:87
+#: src/metronom/metronom.c:88
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
@@ -3136,169 +3261,173 @@ msgid ""
 "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
 
-#: src/metronom/metronom.c:199 src/metronom/metronom.c:263
+#: src/metronom/metronom.c:198 src/metronom/metronom.c:262
 #, fuzzy, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Ton Oluşturucu: "
 
-#: src/metronom/metronom.c:201 src/metronom/metronom.c:265
+#: src/metronom/metronom.c:200 src/metronom/metronom.c:264
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:117
+#: src/modplug/gui/interface.cxx:133 src/modplug/gui/modplug.glade:9
 #, fuzzy
 msgid "ModPlug Configuration"
 msgstr "Flac Yapılandırması"
 
-#: src/modplug/gui/interface.cxx:165 src/timidity/src/interface.c:142
+#: src/modplug/gui/interface.cxx:170 src/modplug/gui/modplug.glade:73
+#: src/timidity/interface.c:140
 msgid "16 bit"
 msgstr "16 bit"
 
-#: src/modplug/gui/interface.cxx:173 src/timidity/src/interface.c:134
+#: src/modplug/gui/interface.cxx:177 src/modplug/gui/modplug.glade:92
+#: src/timidity/interface.c:132
 msgid "8 bit"
 msgstr "8 bit"
 
-#: src/modplug/gui/interface.cxx:203
+#: src/modplug/gui/interface.cxx:208 src/modplug/gui/modplug.glade:178
 msgid "Mono (downmix)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:218 src/timidity/src/interface.c:76
-msgid "Sampling Rate"
-msgstr "Örnekleme Oranı"
-
-#: src/modplug/gui/interface.cxx:232
-msgid "48 kHz"
+#: src/modplug/gui/interface.cxx:237 src/modplug/gui/modplug.glade:258
+msgid "Nearest (fastest)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:240
+#: src/modplug/gui/interface.cxx:244 src/modplug/gui/modplug.glade:277
+msgid "Linear (fast)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:251 src/modplug/gui/modplug.glade:297
+msgid "Spline (good quality)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:258 src/modplug/gui/modplug.glade:317
+msgid "8-tap Fir (extremely high quality)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:282 src/modplug/gui/modplug.glade:384
 #, fuzzy
 msgid "44 kHz"
 msgstr "44100 Hz"
 
-#: src/modplug/gui/interface.cxx:248
+#: src/modplug/gui/interface.cxx:289 src/modplug/gui/modplug.glade:403
 #, fuzzy
 msgid "22 kHz"
 msgstr "22000 Hz"
 
-#: src/modplug/gui/interface.cxx:256
+#: src/modplug/gui/interface.cxx:296 src/modplug/gui/modplug.glade:423
 #, fuzzy
 msgid "11 kHz"
 msgstr "11000 Hz"
 
-#: src/modplug/gui/interface.cxx:278
-msgid "Nearest (fastest)"
-msgstr ""
+#: src/modplug/gui/interface.cxx:304 src/modplug/gui/modplug.glade:444
+#: src/timidity/interface.c:74
+msgid "Sampling Rate"
+msgstr "Örnekleme Oranı"
 
-#: src/modplug/gui/interface.cxx:286
-msgid "Linear (fast)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:294
-msgid "Spline (good quality)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:302
-msgid "8-tap Fir (extremely high quality)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:346
-msgid "Use Filename as Song Title"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:353
-msgid "Fast Playlist Info"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:368
-msgid "Noise Reduction"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:376
-msgid "Play Amiga MOD"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:384
-#, fuzzy
-msgid "Reverb"
-msgstr "Derinlik"
-
-#: src/modplug/gui/interface.cxx:398 src/modplug/gui/interface.cxx:470
-#: src/modplug/gui/interface.cxx:542 src/modplug/gui/interface.cxx:628
+#: src/modplug/gui/interface.cxx:338 src/modplug/gui/interface.cxx:400
+#: src/modplug/gui/interface.cxx:466 src/modplug/gui/interface.cxx:528
+#: src/modplug/gui/modplug.glade:540 src/modplug/gui/modplug.glade:719
+#: src/modplug/gui/modplug.glade:910 src/modplug/gui/modplug.glade:1089
 #, fuzzy
 msgid "Enable"
 msgstr "Tetikleyici Aktif"
 
-#: src/modplug/gui/interface.cxx:438 src/modplug/gui/interface.cxx:582
+#: src/modplug/gui/interface.cxx:367 src/modplug/gui/interface.cxx:495
+#: src/modplug/gui/modplug.glade:607 src/modplug/gui/modplug.glade:977
 #, fuzzy
 msgid "Depth"
 msgstr "Düet"
 
-#: src/modplug/gui/interface.cxx:447 src/modplug/gui/interface.cxx:591
+#: src/modplug/gui/interface.cxx:375 src/modplug/gui/interface.cxx:503
+#: src/modplug/gui/modplug.glade:635 src/modplug/gui/modplug.glade:1005
 #, fuzzy
 msgid "Delay"
 msgstr "Gecikme: (ms )"
 
-#: src/modplug/gui/interface.cxx:456
-msgid "Bass Boost"
-msgstr ""
+#: src/modplug/gui/interface.cxx:383 src/modplug/gui/modplug.glade:672
+#, fuzzy
+msgid "Reverb"
+msgstr "Derinlik"
 
-#: src/modplug/gui/interface.cxx:510
+#: src/modplug/gui/interface.cxx:429 src/modplug/gui/modplug.glade:786
 #, fuzzy
 msgid "Amount"
 msgstr "Hakkında"
 
-#: src/modplug/gui/interface.cxx:519
+#: src/modplug/gui/interface.cxx:437 src/modplug/gui/modplug.glade:814
 #, fuzzy
 msgid "Range"
 msgstr "Dikdörtgen"
 
-#: src/modplug/gui/interface.cxx:528
+#: src/modplug/gui/interface.cxx:445 src/modplug/gui/modplug.glade:851
+msgid "Bass Boost"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:511 src/modplug/gui/modplug.glade:1042
 #, fuzzy
 msgid "Surround"
 msgstr "Çevresel Yankı"
 
-#: src/modplug/gui/interface.cxx:600
+#: src/modplug/gui/interface.cxx:550 src/modplug/gui/modplug.glade:1163
+msgid ""
+"Note:  Setting the preamp\n"
+"too high may cause clipping\n"
+"(annoying clicks and pops)!"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:556 src/modplug/gui/modplug.glade:1192
 #, fuzzy
 msgid "Preamp"
 msgstr "Ön anfi:"
 
-#: src/modplug/gui/interface.cxx:614
-msgid ""
-"Note:  Setting the preamp too high may cause\n"
-"clipping / distortion!"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:649
-msgid "Looping"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:663
-msgid "Don't loop"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:678
-msgid "Loop"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:694
-msgid "time(s)"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:701
-msgid "Loop forever"
-msgstr ""
-
-#: src/modplug/gui/interface.cxx:709
+#: src/modplug/gui/interface.cxx:561 src/modplug/gui/modplug.glade:1235
 msgid "Effects"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:793
+#: src/modplug/gui/interface.cxx:590 src/modplug/gui/modplug.glade:1287
+msgid "Use Filename as Song Title"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:595 src/modplug/gui/modplug.glade:1306
+msgid "Fast Playlist Info"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:606 src/modplug/gui/modplug.glade:1338
+msgid "Noise Reduction"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:612 src/modplug/gui/modplug.glade:1357
+msgid "Play Amiga MOD"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:635 src/modplug/gui/modplug.glade:1430
+msgid "Don't loop"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:647 src/modplug/gui/modplug.glade:1455
+msgid "Loop"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:660 src/modplug/gui/modplug.glade:1493
+msgid "time(s)"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:666 src/modplug/gui/modplug.glade:1526
+msgid "Loop forever"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:673 src/modplug/gui/modplug.glade:1547
+msgid "Looping"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:847 src/modplug/gui/modplug.glade:1668
 #, fuzzy
 msgid "MOD Info"
 msgstr "CD Bilgisi"
 
-#: src/modplug/gui/interface.cxx:817
+#: src/modplug/gui/interface.cxx:866 src/modplug/gui/modplug.glade:1710
 msgid ""
 "Filename:\n"
 "Title:\n"
@@ -3312,25 +3441,39 @@ msgid ""
 "Channels:"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:866
+#: src/modplug/gui/interface.cxx:871 src/modplug/gui/modplug.glade:1744
+msgid ""
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---"
+msgstr ""
+
+#: src/modplug/gui/interface.cxx:901 src/modplug/gui/modplug.glade:1849
 #, fuzzy
 msgid "Samples"
 msgstr "Salsa"
 
-#: src/modplug/gui/interface.cxx:899
+#: src/modplug/gui/interface.cxx:926 src/modplug/gui/modplug.glade:1914
 #, fuzzy
 msgid "Instruments"
 msgstr "Enstrümantal"
 
-#: src/modplug/gui/interface.cxx:932
+#: src/modplug/gui/interface.cxx:947 src/modplug/gui/modplug.glade:1971
 msgid "Message"
 msgstr ""
 
-#: src/modplug/gui/main.cxx:43
+#: src/modplug/gui/main.cxx:44
 msgid "Modplug Input Plugin for Audacious ver"
 msgstr ""
 
-#: src/modplug/gui/main.cxx:44
+#: src/modplug/gui/main.cxx:45
 msgid ""
 "\n"
 "Modplug sound engine written by Olivier Lapicque.\n"
@@ -3340,27 +3483,22 @@ msgid ""
 "Ported to BMP by Theofilos Intzoglou."
 msgstr ""
 
-#: src/modplug/gui/main.cxx:45
+#: src/modplug/gui/main.cxx:46
 #, fuzzy
 msgid "About Modplug"
 msgstr "Yankı (Eko) Eklentisi Hakkında"
 
-#: src/modplug/gui/support.cxx:118 src/sid/xs_glade.c:90
-#: src/sid/xs_glade.c:114
+#: src/modplug/gui/support.cxx:88 src/modplug/gui/support.cxx:112
+#: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
 #, fuzzy, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "MIDI dosyası yüklenemedi"
 
-#: src/modplug/gui/support.cxx:127
-#, c-format
-msgid "Error loading pixmap file: %s"
-msgstr ""
-
-#: src/musepack/libmpc.cxx:145
+#: src/musepack/libmpc.cxx:146
 msgid "Musepack Decoder Plugin 1.2"
 msgstr ""
 
-#: src/musepack/libmpc.cxx:146
+#: src/musepack/libmpc.cxx:147
 msgid ""
 "Plugin code by\n"
 "Benoit Amiaux\n"
@@ -3370,144 +3508,144 @@ msgid ""
 "Get latest version at http://musepack.net\n"
 msgstr ""
 
-#: src/musepack/libmpc.cxx:147
+#: src/musepack/libmpc.cxx:148
 msgid "Nevermind"
 msgstr ""
 
-#: src/musepack/libmpc.cxx:165
+#: src/musepack/libmpc.cxx:166
 #, fuzzy
 msgid "Musepack Decoder Configuration"
 msgstr "Disk Yazıcı Ayarları"
 
-#: src/musepack/libmpc.cxx:175
+#: src/musepack/libmpc.cxx:176
 #, fuzzy
 msgid "General Settings"
 msgstr "Karıştırıcı Ayarları:"
 
-#: src/musepack/libmpc.cxx:182 src/wavpack/ui.cxx:490
+#: src/musepack/libmpc.cxx:183 src/wavpack/ui.cxx:490
 msgid "Enable Dynamic Bitrate Display"
 msgstr ""
 
-#: src/musepack/libmpc.cxx:186 src/wavpack/ui.cxx:496
+#: src/musepack/libmpc.cxx:187 src/wavpack/ui.cxx:496
 #, fuzzy
 msgid "Plugin"
 msgstr "LIRC Eklentisi"
 
-#: src/musepack/libmpc.cxx:189
+#: src/musepack/libmpc.cxx:190
 #, fuzzy
 msgid "ReplayGain Settings"
 msgstr "ReplayGain Ayarları:"
 
-#: src/musepack/libmpc.cxx:196 src/vorbis/configure.c:172
+#: src/musepack/libmpc.cxx:197 src/vorbis/configure.c:170
 #: src/wavpack/ui.cxx:508
 msgid "Enable Clipping Prevention"
 msgstr " Çatlama Korumasını Etkinleştir"
 
-#: src/musepack/libmpc.cxx:201 src/vorbis/configure.c:177
+#: src/musepack/libmpc.cxx:202 src/vorbis/configure.c:175
 #: src/wavpack/ui.cxx:513
 msgid "Enable ReplayGain"
 msgstr "ReplayGain Etkinleştir"
 
-#: src/musepack/libmpc.cxx:206
+#: src/musepack/libmpc.cxx:207
 #, fuzzy
 msgid "ReplayGain Type"
 msgstr "ReplayGain Türü:"
 
-#: src/musepack/libmpc.cxx:214
+#: src/musepack/libmpc.cxx:215
 #, fuzzy
 msgid "Use Track Gain"
 msgstr "Parçada Gain/Peak kullan"
 
-#: src/musepack/libmpc.cxx:218
+#: src/musepack/libmpc.cxx:219
 #, fuzzy
 msgid "Use Album Gain"
 msgstr "Albümde Gain/Peak kullan"
 
-#: src/musepack/libmpc.cxx:490 src/sid/xmms-sid.glade:2994
-#: src/sid/xs_interface.c:1495 src/tta/libtta.c:322 src/wavpack/ui.cxx:150
+#: src/musepack/libmpc.cxx:491 src/sid/xmms-sid.glade:3144
+#: src/sid/xs_interface.c:1564 src/tta/libtta.c:302 src/wavpack/ui.cxx:150
 msgid "Filename:"
 msgstr "Dosya adı:"
 
-#: src/musepack/libmpc.cxx:505
+#: src/musepack/libmpc.cxx:506
 msgid "Musepack Tag"
 msgstr ""
 
-#: src/musepack/libmpc.cxx:534
+#: src/musepack/libmpc.cxx:535
 #, fuzzy
 msgid "Track:"
 msgstr "Parça ses yüksekliği:"
 
-#: src/musepack/libmpc.cxx:550 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:812 src/wavpack/ui.cxx:265
+#: src/musepack/libmpc.cxx:551 src/sid/xmms-sid.glade:1732
+#: src/sid/xs_interface.c:820 src/wavpack/ui.cxx:265
 msgid "Save"
 msgstr "Kaydet"
 
-#: src/musepack/libmpc.cxx:553 src/wavpack/ui.cxx:271
+#: src/musepack/libmpc.cxx:554 src/wavpack/ui.cxx:271
 msgid "Remove Tag"
 msgstr "Etiketi kaldır"
 
-#: src/musepack/libmpc.cxx:561
+#: src/musepack/libmpc.cxx:562
 msgid "Musepack Info"
-msgstr ""
-
-#: src/musepack/libmpc.cxx:594
-#, c-format
-msgid "Streamversion %d"
 msgstr ""
 
 #: src/musepack/libmpc.cxx:595
 #, c-format
-msgid "Encoder: %s"
+msgid "Streamversion %d"
 msgstr ""
 
 #: src/musepack/libmpc.cxx:596
 #, c-format
-msgid "Profile: %s"
+msgid "Encoder: %s"
 msgstr ""
 
 #: src/musepack/libmpc.cxx:597
 #, c-format
-msgid "Average bitrate: %6.1f kbps"
+msgid "Profile: %s"
 msgstr ""
 
 #: src/musepack/libmpc.cxx:598
 #, c-format
+msgid "Average bitrate: %6.1f kbps"
+msgstr ""
+
+#: src/musepack/libmpc.cxx:599
+#, c-format
 msgid "Samplerate: %d Hz"
 msgstr "Örnekleme oranı: %d Hz"
 
-#: src/musepack/libmpc.cxx:599
+#: src/musepack/libmpc.cxx:600
 #, c-format
 msgid "Channels: %d"
 msgstr "Kanallar: %d"
 
-#: src/musepack/libmpc.cxx:600
+#: src/musepack/libmpc.cxx:601
 #, fuzzy, c-format
 msgid "Length: %d:\\%.2d"
 msgstr ""
 "Örnekler: %llu\n"
 "Uzunluk: %d:%.2d"
 
-#: src/musepack/libmpc.cxx:601
+#: src/musepack/libmpc.cxx:602
 #, fuzzy, c-format
 msgid "File size: %d Bytes"
 msgstr "Dosya boyutu: %ld B"
 
-#: src/musepack/libmpc.cxx:602
+#: src/musepack/libmpc.cxx:603
 #, fuzzy, c-format
 msgid "Track Peak: %5u"
 msgstr "Parça doruğu:"
 
-#: src/musepack/libmpc.cxx:603
+#: src/musepack/libmpc.cxx:604
 #, fuzzy, c-format
 msgid "Track Gain: %-+2.2f dB"
 msgstr "Parçanın desibel olarak ortalamasını yükselt: %+2.2f dB"
 
-#: src/musepack/libmpc.cxx:604
+#: src/musepack/libmpc.cxx:605
 #, fuzzy, c-format
 msgid "Album Peak: %5u"
 msgstr "Albüm doruğu:"
 
-#: src/musepack/libmpc.cxx:605
+#: src/musepack/libmpc.cxx:606
 #, fuzzy, c-format
 msgid "Album Gain: %-+5.2f dB"
 msgstr "Tüm albümün desibel olarak ortalamasını yükselt: %+2.2f dB"
@@ -3585,24 +3723,24 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/OSS4/configure.c:120 src/OSS/configure.c:152
+#: src/OSS4/configure.c:120 src/OSS/configure.c:151
 #, c-format
 msgid "Default (%s)"
 msgstr "Varsayılan (%s)"
 
-#: src/OSS4/configure.c:170 src/OSS/configure.c:202
+#: src/OSS4/configure.c:170 src/OSS/configure.c:201
 msgid "OSS Driver configuration"
 msgstr "OSS Sürücüsü ayarları"
 
-#: src/OSS4/configure.c:208 src/OSS/configure.c:240 src/OSS/configure.c:281
+#: src/OSS4/configure.c:208 src/OSS/configure.c:239 src/OSS/configure.c:280
 msgid "Use alternate device:"
 msgstr "Farklı aygıt kullan:"
 
-#: src/OSS4/configure.c:230 src/OSS/configure.c:303 src/sun/configure.c:248
+#: src/OSS4/configure.c:230 src/OSS/configure.c:302 src/sun/configure.c:248
 msgid "Devices"
 msgstr "Aygıtlar"
 
-#: src/OSS4/configure.c:272 src/OSS/configure.c:344
+#: src/OSS4/configure.c:272 src/OSS/configure.c:343
 msgid "Mixer Settings:"
 msgstr "Karıştırıcı Ayarları:"
 
@@ -3610,7 +3748,7 @@ msgstr "Karıştırıcı Ayarları:"
 msgid "Save VMIX volume between sessions"
 msgstr ""
 
-#: src/OSS4/configure.c:284 src/OSS/configure.c:356 src/sun/configure.c:394
+#: src/OSS4/configure.c:284 src/OSS/configure.c:355 src/sun/configure.c:394
 msgid "Mixer"
 msgstr "Karıştırıcı"
 
@@ -3656,16 +3794,16 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/OSS/configure.c:350
+#: src/OSS/configure.c:349
 msgid "Volume controls Master not PCM"
 msgstr "Ses ayarı PCM değil, ana kanalı ayarlasın"
 
-#: src/pulse_audio/pulse_audio.c:678
+#: src/pulse_audio/pulse_audio.c:676
 #, fuzzy
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "CoreAudio Çıkış Eklentisi"
 
-#: src/pulse_audio/pulse_audio.c:679
+#: src/pulse_audio/pulse_audio.c:677
 #, fuzzy
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
@@ -3704,27 +3842,27 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/scrobbler/configure.c:100
+#: src/scrobbler/configure.c:99
 msgid "<b>Services</b>"
 msgstr "<b>Hizmetler</b>"
 
-#: src/scrobbler/configure.c:122 src/scrobbler/configure.c:162
+#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:161
 msgid "Username:"
 msgstr "Kullanıcı adı:"
 
-#: src/scrobbler/configure.c:128 src/scrobbler/configure.c:168
+#: src/scrobbler/configure.c:127 src/scrobbler/configure.c:167
 msgid "Password:"
 msgstr "Şifre:"
 
-#: src/scrobbler/configure.c:146
+#: src/scrobbler/configure.c:145
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:186
+#: src/scrobbler/configure.c:185
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
 
-#: src/scrobbler/gtkstuff.c:20
+#: src/scrobbler/gtkstuff.c:21
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
@@ -3732,11 +3870,11 @@ msgid ""
 "com>\n"
 msgstr ""
 
-#: src/scrobbler/gtkstuff.c:22
+#: src/scrobbler/gtkstuff.c:23
 msgid "About Scrobbler Plugin"
 msgstr "Scrobbler Eklentisi Hakkında"
 
-#: src/scrobbler/gtkstuff.c:35
+#: src/scrobbler/gtkstuff.c:36
 #, c-format
 msgid ""
 "There has been an error that may require your attention.\n"
@@ -3746,7 +3884,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/scrobbler/gtkstuff.c:41
+#: src/scrobbler/gtkstuff.c:42
 #, fuzzy
 msgid "Scrobbler Error"
 msgstr "Scrobbler Eklentisi"
@@ -3759,134 +3897,134 @@ msgstr ""
 msgid "Error initializing STIL database!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:414
+#: src/sid/xmms-sid.c:347
 msgid "Couldn't allocate memory for audio data buffer!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:421
+#: src/sid/xmms-sid.c:355
 msgid "Couldn't allocate memory for audio oversampling buffer!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:436
+#: src/sid/xmms-sid.c:371
 #, c-format
 msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:446
+#: src/sid/xmms-sid.c:382
 #, c-format
 msgid "Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"
 msgstr ""
 
-#: src/sid/xmms-sid.c:491
+#: src/sid/xmms-sid.c:432
 msgid "Oversampling rate-conversion pass failed.\n"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:213
+#: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:221
 #, fuzzy
 msgid "Audacious-SID configuration"
 msgstr "Audacious OSD - yapılandırması"
 
-#: src/sid/xmms-sid.glade:71 src/sid/xs_interface.c:249
+#: src/sid/xmms-sid.glade:71 src/sid/xs_interface.c:257
 #, fuzzy
 msgid "8-bit"
 msgstr "8 bit"
 
-#: src/sid/xmms-sid.glade:90 src/sid/xs_interface.c:256
+#: src/sid/xmms-sid.glade:90 src/sid/xs_interface.c:264
 #, fuzzy
 msgid "16-bit"
 msgstr "16 bit"
 
-#: src/sid/xmms-sid.glade:111 src/sid/xs_interface.c:263
+#: src/sid/xmms-sid.glade:111 src/sid/xs_interface.c:271
 #, fuzzy
 msgid "Resolution:"
 msgstr "Çözünürlük"
 
-#: src/sid/xmms-sid.glade:196 src/sid/xs_interface.c:294
+#: src/sid/xmms-sid.glade:196 src/sid/xs_interface.c:302
 msgid "Autopanning"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:217 src/sid/xs_interface.c:301
-#: src/vorbis/fileinfo.c:867 src/vorbis/fileinfo.c:924
+#: src/sid/xmms-sid.glade:217 src/sid/xs_interface.c:309
+#: src/vorbis/fileinfo.c:864 src/vorbis/fileinfo.c:921
 msgid "Channels:"
 msgstr "Kanallar:"
 
-#: src/sid/xmms-sid.glade:384 src/sid/xs_interface.c:345
+#: src/sid/xmms-sid.glade:384 src/sid/xs_interface.c:353
 #, fuzzy
 msgid "Samplerate:"
 msgstr "Örnekleme oranı:"
 
-#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:362
+#: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:370
 #, fuzzy
 msgid "Use oversampling"
 msgstr "Yeniden örnekleme"
 
-#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:373
+#: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:381
 msgid "Factor:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:500 src/sid/xs_interface.c:385
+#: src/sid/xmms-sid.glade:500 src/sid/xs_interface.c:393
 msgid "Large factors require more CPU-power"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:534 src/sid/xs_interface.c:391
+#: src/sid/xmms-sid.glade:534 src/sid/xs_interface.c:399
 #, fuzzy
 msgid "Oversampling:"
 msgstr "Yeniden örnekleme"
 
-#: src/sid/xmms-sid.glade:570 src/sid/xs_interface.c:396
+#: src/sid/xmms-sid.glade:570 src/sid/xs_interface.c:404
 msgid "Audio"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:620 src/sid/xs_interface.c:428
+#: src/sid/xmms-sid.glade:620 src/sid/xs_interface.c:436
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "clock speed/frequency. Otherwise the speed is determined from played file "
 "itself."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:622 src/sid/xs_interface.c:424
+#: src/sid/xmms-sid.glade:622 src/sid/xs_interface.c:432
 msgid "Force speed"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:640 src/sid/xs_interface.c:434
+#: src/sid/xmms-sid.glade:640 src/sid/xs_interface.c:442
 msgid ""
 "PAL is the european TV standard, which uses 50Hz vertical refresh frequency. "
 "Most of SID-tunes have been made for PAL computers."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:642 src/sid/xs_interface.c:430
+#: src/sid/xmms-sid.glade:642 src/sid/xs_interface.c:438
 msgid "PAL (50 Hz)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:660 src/sid/xs_interface.c:442
+#: src/sid/xmms-sid.glade:660 src/sid/xs_interface.c:450
 msgid ""
 "NTSC is the TV standard with 60Hz vertical refresh rate (and other features "
 "that differ from PAL). It is mainly used in United States, Japan and certain "
 "other countries."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:662 src/sid/xs_interface.c:438
+#: src/sid/xmms-sid.glade:662 src/sid/xs_interface.c:446
 msgid "NTSC (60 Hz)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:683 src/sid/xs_interface.c:446
+#: src/sid/xmms-sid.glade:683 src/sid/xs_interface.c:454
 #, fuzzy
 msgid "Clock speed:"
 msgstr "Çalma hızı"
 
-#: src/sid/xmms-sid.glade:728 src/sid/xs_interface.c:467
+#: src/sid/xmms-sid.glade:728 src/sid/xs_interface.c:475
 msgid ""
 "If enabled, this option \"forces\" the emulation engine to use the selected "
 "SID-chip model. Otherwise the preferred SID model is determined from the "
 "file (if PSIDv2NG type) or if not available, this setting is used."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:730 src/sid/xs_interface.c:463
+#: src/sid/xmms-sid.glade:730 src/sid/xs_interface.c:471
 #, fuzzy
 msgid "Force model"
 msgstr "Çalma modu"
 
-#: src/sid/xmms-sid.glade:748 src/sid/xs_interface.c:473
+#: src/sid/xmms-sid.glade:748 src/sid/xs_interface.c:481
 msgid ""
 "MOS/CSG 6581 is the earlier major version of SID chip. It differs from 8580 "
 "in few ways, having much fuller filter (which, due to design error, is never "
@@ -3894,92 +4032,92 @@ msgid ""
 "which enables playing of digital samples."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:750 src/sid/xs_interface.c:469
+#: src/sid/xmms-sid.glade:750 src/sid/xs_interface.c:477
 msgid "MOS 6581"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:769 src/sid/xs_interface.c:477
+#: src/sid/xmms-sid.glade:769 src/sid/xs_interface.c:485
 msgid "MOS 8580"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:790 src/sid/xs_interface.c:484
+#: src/sid/xmms-sid.glade:790 src/sid/xs_interface.c:492
 #, fuzzy
 msgid "SID model:"
 msgstr "Çalma kipi:"
 
-#: src/sid/xmms-sid.glade:842 src/sid/xs_interface.c:505
+#: src/sid/xmms-sid.glade:842 src/sid/xs_interface.c:513
 msgid ""
 "Use libSIDPlay 1.x emulation, faster but not so accurate. Good in most "
 "cases, though."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:844 src/sid/xs_interface.c:501
+#: src/sid/xmms-sid.glade:844 src/sid/xs_interface.c:509
 msgid "SIDPlay 1 (frame-based)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:863 src/sid/xs_interface.c:513
+#: src/sid/xmms-sid.glade:863 src/sid/xs_interface.c:521
 msgid ""
 "Use libSIDPlay 2.x emulation, which requires powerful CPU due to more exact "
 "emulation."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:865 src/sid/xs_interface.c:509
+#: src/sid/xmms-sid.glade:865 src/sid/xs_interface.c:517
 msgid "SIDPlay 2 (cycle-based)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:887 src/sid/xs_interface.c:517
+#: src/sid/xmms-sid.glade:887 src/sid/xs_interface.c:525
 msgid "Emulation library selection:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:933 src/sid/xs_interface.c:534
+#: src/sid/xmms-sid.glade:933 src/sid/xs_interface.c:542
 msgid "Real C64 (SIDPlay 2 only)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:952 src/sid/xs_interface.c:541
+#: src/sid/xmms-sid.glade:952 src/sid/xs_interface.c:549
 msgid "Bank switching"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:972 src/sid/xs_interface.c:548
+#: src/sid/xmms-sid.glade:972 src/sid/xs_interface.c:556
 #, fuzzy
 msgid "Transparent ROM"
 msgstr "Transpoze:"
 
-#: src/sid/xmms-sid.glade:992 src/sid/xs_interface.c:555
+#: src/sid/xmms-sid.glade:992 src/sid/xs_interface.c:563
 msgid "PlaySID environment"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1013 src/sid/xs_interface.c:562
+#: src/sid/xmms-sid.glade:1013 src/sid/xs_interface.c:570
 #, fuzzy
 msgid "Memory mode:"
 msgstr "Çalma kipi:"
 
-#: src/sid/xmms-sid.glade:1049 src/sid/xs_interface.c:567
+#: src/sid/xmms-sid.glade:1049 src/sid/xs_interface.c:575
 msgid "Emu#1"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1093 src/sid/xs_interface.c:594
+#: src/sid/xmms-sid.glade:1093 src/sid/xs_interface.c:602
 msgid ""
 "This setting can be used to enable libSIDPlay2's \"optimization mode\", "
 "which in downgrades the emulation from cycle-exact to something similar to "
 "frame-exact. The result is lower CPU usage, but worse accuracy."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1095 src/sid/xs_interface.c:590
+#: src/sid/xmms-sid.glade:1095 src/sid/xs_interface.c:598
 msgid "Optimization mode (faster, inaccurate)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1113 src/sid/xs_interface.c:600
+#: src/sid/xmms-sid.glade:1113 src/sid/xs_interface.c:608
 msgid ""
 "reSID is the software SID-chip simulator based on SID reverse-engineering, "
 "created by Dag Lem. It is probably the closest thing to real SID available "
 "as software-only emulation."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1115 src/sid/xs_interface.c:596
+#: src/sid/xmms-sid.glade:1115 src/sid/xs_interface.c:604
 msgid "reSID-emulation"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:608
+#: src/sid/xmms-sid.glade:1133 src/sid/xs_interface.c:616
 msgid ""
 "HardSID is a EISA/PCI card for PC-compatibles, which can be fitted with a "
 "real SID-chip. Software can be used to control the HardSID and combined with "
@@ -3988,49 +4126,49 @@ msgid ""
 "http://www.hardsid.com/"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1135 src/sid/xs_interface.c:604
+#: src/sid/xmms-sid.glade:1135 src/sid/xs_interface.c:612
 msgid "HardSID"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1156 src/sid/xs_interface.c:612
+#: src/sid/xmms-sid.glade:1156 src/sid/xs_interface.c:620
 msgid "SIDPlay 2 options:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1201 src/sid/xs_interface.c:633
+#: src/sid/xmms-sid.glade:1201 src/sid/xs_interface.c:641
 msgid ""
 "Fastest and also worst sounding sampling method, simply picks nearest "
 "neighbouring sample."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1203 src/sid/xs_interface.c:629
+#: src/sid/xmms-sid.glade:1203 src/sid/xs_interface.c:637
 msgid "Fast (nearest neighbour)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1221 src/sid/xs_interface.c:641
+#: src/sid/xmms-sid.glade:1221 src/sid/xs_interface.c:649
 msgid ""
 "Uses linear interpolation between samples, yielding higher audio quality "
 "with less sampling noise."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1223 src/sid/xs_interface.c:637
+#: src/sid/xmms-sid.glade:1223 src/sid/xs_interface.c:645
 msgid "Linear interpolation"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1263 src/sid/xs_interface.c:652
+#: src/sid/xmms-sid.glade:1263 src/sid/xs_interface.c:660
 #, fuzzy
 msgid "Resampling (FIR)"
 msgstr "Yeniden örnekleme"
 
-#: src/sid/xmms-sid.glade:1284 src/sid/xs_interface.c:659
+#: src/sid/xmms-sid.glade:1284 src/sid/xs_interface.c:667
 #, fuzzy
 msgid "reSID sampling options:"
 msgstr "Örnekleme oranı:"
 
-#: src/sid/xmms-sid.glade:1320 src/sid/xs_interface.c:664
+#: src/sid/xmms-sid.glade:1320 src/sid/xs_interface.c:672
 msgid "Emu#2"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1350 src/sid/xs_interface.c:680
+#: src/sid/xmms-sid.glade:1350 src/sid/xs_interface.c:688
 msgid ""
 "This option enables emulation of SID filter. The filter is an essential part "
 "of SID's sound capacity, but accurate emulation of it may require quite much "
@@ -4038,293 +4176,336 @@ msgid ""
 "authentic at all if they utilize the filter."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1352 src/sid/xs_interface.c:676
+#: src/sid/xmms-sid.glade:1352 src/sid/xs_interface.c:684
 msgid "Emulate filters"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1409 src/sid/xs_interface.c:705
+#: src/sid/xmms-sid.glade:1409 src/sid/xs_interface.c:713
 msgid "FS"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1460 src/sid/xs_interface.c:722
+#: src/sid/xmms-sid.glade:1460 src/sid/xs_interface.c:730
 msgid "FM"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1511 src/sid/xs_interface.c:739
+#: src/sid/xmms-sid.glade:1511 src/sid/xs_interface.c:747
 msgid "FT"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1549 src/sid/xs_interface.c:750
+#: src/sid/xmms-sid.glade:1549 src/sid/xs_interface.c:758
 msgid "Reset values"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1578 src/sid/xs_interface.c:755
+#: src/sid/xmms-sid.glade:1578 src/sid/xs_interface.c:763
 msgid "SIDPlay1"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1690 src/sid/xs_interface.c:796
+#: src/sid/xmms-sid.glade:1690 src/sid/xs_interface.c:804
 #, fuzzy
 msgid "Export"
 msgstr "Port"
 
-#: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:804
+#: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:812
 msgid "Use"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:820
+#: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:828
 #, fuzzy
 msgid "Import"
 msgstr "Port"
 
-#: src/sid/xmms-sid.glade:1774 src/sid/xs_interface.c:828
+#: src/sid/xmms-sid.glade:1774 src/sid/xs_interface.c:836
 #, fuzzy
 msgid "Delete"
 msgstr "Varsayılan"
 
-#: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:842
+#: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:850
 #, fuzzy
 msgid "Filter curve:"
 msgstr "Dosya boytu:"
 
-#: src/sid/xmms-sid.glade:1855 src/sid/xs_interface.c:847
+#: src/sid/xmms-sid.glade:1855 src/sid/xs_interface.c:855
 msgid "SIDPlay2"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1891 src/sid/xs_interface.c:853
+#: src/sid/xmms-sid.glade:1891 src/sid/xs_interface.c:861
 msgid "Filters"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1935 src/sid/xs_interface.c:880
+#: src/sid/xmms-sid.glade:1935 src/sid/xs_interface.c:888
 msgid ""
 "If enabled, the tune is played at least for the specified time, adding "
 "silence to the end if necessary."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:1937 src/sid/xs_interface.c:876
+#: src/sid/xmms-sid.glade:1937 src/sid/xs_interface.c:884
 #, fuzzy
 msgid "Play at least for specified time"
 msgstr "Normal hızda çal"
 
 #: src/sid/xmms-sid.glade:1962 src/sid/xmms-sid.glade:2133
-#: src/sid/xmms-sid.glade:2482 src/sid/xs_interface.c:887
-#: src/sid/xs_interface.c:941 src/sid/xs_interface.c:1051
+#: src/sid/xmms-sid.glade:2632 src/sid/xs_interface.c:895
+#: src/sid/xs_interface.c:949 src/sid/xs_interface.c:1109
 #, fuzzy
 msgid "Playtime:"
 msgstr "Çalma kipi:"
 
-#: src/sid/xmms-sid.glade:2041 src/sid/xs_interface.c:907
+#: src/sid/xmms-sid.glade:2041 src/sid/xs_interface.c:915
 msgid "Minimum playtime:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2086 src/sid/xs_interface.c:928
+#: src/sid/xmms-sid.glade:2086 src/sid/xs_interface.c:936
 msgid ""
 "If enabled, tune is played until specified duration is reached (aka maximum "
 "playtime)."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2088 src/sid/xs_interface.c:924
+#: src/sid/xmms-sid.glade:2088 src/sid/xs_interface.c:932
 msgid "Play for specified time maximum"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2107 src/sid/xs_interface.c:934
+#: src/sid/xmms-sid.glade:2107 src/sid/xs_interface.c:942
 msgid ""
 "If enabled, the maximum playtime is applied only if song/tune length is not "
 "known."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2109 src/sid/xs_interface.c:930
+#: src/sid/xmms-sid.glade:2109 src/sid/xs_interface.c:938
 msgid "Only when song length is unknown"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2212 src/sid/xs_interface.c:961
+#: src/sid/xmms-sid.glade:2212 src/sid/xs_interface.c:969
 msgid "Maximum playtime:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2257 src/sid/xs_interface.c:982
+#: src/sid/xmms-sid.glade:2257 src/sid/xs_interface.c:990
 msgid ""
 "This option enables using of XSIDPLAY compatible song length database. "
 "(Refer to Audacious-SID documentation for more information)"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2259 src/sid/xs_interface.c:978
+#: src/sid/xmms-sid.glade:2259 src/sid/xs_interface.c:986
 msgid "Use XSIDPLAY-compatible database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2284 src/sid/xs_interface.c:989
+#: src/sid/xmms-sid.glade:2284 src/sid/xs_interface.c:997
 #, fuzzy
 msgid "DB-file:"
 msgstr "Aygıt dosyası:"
 
-#: src/sid/xmms-sid.glade:2309 src/sid/xs_interface.c:999
+#: src/sid/xmms-sid.glade:2309 src/sid/xs_interface.c:1007
 msgid "Database path and filename"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2329 src/sid/xs_interface.c:1006
+#: src/sid/xmms-sid.glade:2329 src/sid/xs_interface.c:1014
 msgid "Browse for song length-database file"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2356 src/sid/xs_interface.c:1008
+#: src/sid/xmms-sid.glade:2356 src/sid/xs_interface.c:1016
 msgid "Song length database:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2392 src/sid/xs_interface.c:1013
+#: src/sid/xmms-sid.glade:2392 src/sid/xs_interface.c:1021
 #, fuzzy
 msgid "Songlength"
 msgstr "Varsayılan şarkı uzunluğu:"
 
-#: src/sid/xmms-sid.glade:2437 src/sid/xs_interface.c:1036
+#: src/sid/xmms-sid.glade:2430 src/sid/xs_interface.c:1043
+msgid ""
+"By enabling this option you can specify a custom Tuplez formatting string "
+"for SID-files. The SID-plugin specific Tuplez tags are described shortly "
+"below."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2432 src/sid/xs_interface.c:1039
+#, fuzzy
+msgid "Override generic Tuplez format string"
+msgstr "Genel başlıkları geçersiz kıl"
+
+#: src/sid/xmms-sid.glade:2457 src/sid/xs_interface.c:1054
+msgid "Tuplez format string for SID-files"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2477 src/sid/xs_interface.c:1057
+msgid "Descriptions of <i>SID-specific</i> Tuplez fields go here. <b>:D</b>"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2511 src/sid/xs_interface.c:1065
+#, fuzzy
+msgid "Song title format:"
+msgstr "Başlık biçimi:"
+
+#: src/sid/xmms-sid.glade:2584 src/sid/xs_interface.c:1096
+msgid ""
+"If enabled, sub-tunes of each file will be added to playlist. If disabled, "
+"only the default sub-tune will be added."
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2586 src/sid/xs_interface.c:1092
 msgid "Add sub-tunes to playlist"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2457 src/sid/xs_interface.c:1041
-msgid "Only tunes with specified minimum length "
+#: src/sid/xmms-sid.glade:2605 src/sid/xs_interface.c:1102
+msgid "Only add sub-tunes that have a duration of at least specified time."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2560 src/sid/xs_interface.c:1071
+#: src/sid/xmms-sid.glade:2607 src/sid/xs_interface.c:1098
+msgid "Only tunes with specified minimum duration"
+msgstr ""
+
+#: src/sid/xmms-sid.glade:2710 src/sid/xs_interface.c:1129
 #, fuzzy
 msgid "Sub-tune handling:"
 msgstr "Ses kontrolü:"
 
-#: src/sid/xmms-sid.glade:2605 src/sid/xs_interface.c:1092
+#: src/sid/xmms-sid.glade:2755 src/sid/xs_interface.c:1150
 msgid ""
 "If this option is enabled (and the database & HVSC settings below are "
 "correctly set), Audacious-SID will use and display additional information "
 "from STIL database when HVSC SIDs are played."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2607 src/sid/xs_interface.c:1088
+#: src/sid/xmms-sid.glade:2757 src/sid/xs_interface.c:1146
 msgid "Use STIL database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2632 src/sid/xs_interface.c:1099
+#: src/sid/xmms-sid.glade:2782 src/sid/xs_interface.c:1157
 #, fuzzy
 msgid "STIL file:"
 msgstr "Arayüz Dosyası:"
 
-#: src/sid/xmms-sid.glade:2669 src/sid/xs_interface.c:1115
+#: src/sid/xmms-sid.glade:2819 src/sid/xs_interface.c:1173
 msgid ""
 "Path and filename of STIL database file (STIL.txt), usually found from "
 "HVSC's DOCUMENTS-subdirectory."
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2704 src/sid/xs_interface.c:1128
+#: src/sid/xmms-sid.glade:2854 src/sid/xs_interface.c:1186
 msgid "Browse for STIL-database file"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2738 src/sid/xs_interface.c:1135
+#: src/sid/xmms-sid.glade:2888 src/sid/xs_interface.c:1193
 msgid "HVSC path:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2775 src/sid/xs_interface.c:1151
+#: src/sid/xmms-sid.glade:2925 src/sid/xs_interface.c:1209
 msgid ""
 "Path to base-directory of your High Voltage SID Collection (HVSC), for "
 "example /media/C64Music/"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2810 src/sid/xs_interface.c:1164
+#: src/sid/xmms-sid.glade:2960 src/sid/xs_interface.c:1222
 msgid "Browse for HVSC path"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2840 src/sid/xs_interface.c:1166
+#: src/sid/xmms-sid.glade:2990 src/sid/xs_interface.c:1224
 msgid "SID Tune Information List (STIL) database:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2913 src/sid/xs_interface.c:1190
+#: src/sid/xmms-sid.glade:3063 src/sid/xs_interface.c:1248
 msgid "Accept and update changes"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2927 src/sid/xs_interface.c:1197
+#: src/sid/xmms-sid.glade:3077 src/sid/xs_interface.c:1255
 msgid "Cancel any changes"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:2952 src/sid/xs_interface.c:1474
+#: src/sid/xmms-sid.glade:3102 src/sid/xs_interface.c:1543
 #, fuzzy
 msgid "Audacious-SID Fileinfo"
 msgstr ""
 "\n"
 "Audacious OSD "
 
-#: src/sid/xmms-sid.glade:3022 src/sid/xs_interface.c:1503
+#: src/sid/xmms-sid.glade:3172 src/sid/xs_interface.c:1572
 msgid "Songname:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3050 src/sid/xs_interface.c:1511
+#: src/sid/xmms-sid.glade:3200 src/sid/xs_interface.c:1580
 msgid "Composer:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3078 src/sid/xs_interface.c:1519
-#: src/vorbis/fileinfo.c:723
+#: src/sid/xmms-sid.glade:3228 src/sid/xs_interface.c:1588
+#: src/vorbis/fileinfo.c:720
 msgid "Copyright:"
 msgstr "Telif Hakkı:"
 
-#: src/sid/xmms-sid.glade:3192 src/sid/xs_interface.c:1563
+#: src/sid/xmms-sid.glade:3342 src/sid/xs_interface.c:1632
 #, fuzzy
 msgid "Song Information:"
 msgstr "Bilgi"
 
-#: src/sid/xmms-sid.glade:3266 src/sid/xs_interface.c:1598
+#: src/sid/xmms-sid.glade:3416 src/sid/xs_interface.c:1667
 msgid "Author:"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3364 src/sid/xs_interface.c:1632
+#: src/sid/xmms-sid.glade:3514 src/sid/xs_interface.c:1701
 #, fuzzy
 msgid "Duration:"
 msgstr "Dekorasyon"
 
-#: src/sid/xmms-sid.glade:3458 src/sid/xs_interface.c:1666
+#: src/sid/xmms-sid.glade:3608 src/sid/xs_interface.c:1735
 #, fuzzy
 msgid "Sub-tune Information:"
 msgstr "Bilgi"
 
-#: src/sid/xmms-sid.glade:3512 src/sid/xs_interface.c:1727
+#: src/sid/xmms-sid.glade:3662 src/sid/xs_interface.c:1796
 msgid "Select HVSC song length database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3554 src/sid/xs_interface.c:1768
+#: src/sid/xmms-sid.glade:3704 src/sid/xs_interface.c:1837
 msgid "Select STIL-database"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3596 src/sid/xs_interface.c:1809
+#: src/sid/xmms-sid.glade:3746 src/sid/xs_interface.c:1878
 msgid "Select HVSC location prefix"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3638 src/sid/xs_interface.c:1850
+#: src/sid/xmms-sid.glade:3788 src/sid/xs_interface.c:1919
 msgid "Select SIDPlay2 filters file for importing"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3680 src/sid/xs_interface.c:1891
+#: src/sid/xmms-sid.glade:3830 src/sid/xs_interface.c:1960
 msgid "Select SIDPlay2 filters file for exporting"
 msgstr ""
 
-#: src/sid/xmms-sid.glade:3721 src/sid/xmms-sid.glade:3803
-#: src/sid/xs_interface.c:1939 src/sid/xs_interface.c:1952
+#: src/sid/xmms-sid.glade:3871 src/sid/xmms-sid.glade:3953
+#: src/sid/xs_interface.c:2008 src/sid/xs_interface.c:2021
 #, fuzzy
 msgid "Confirm selected action"
 msgstr "Backend bölümü"
 
-#: src/sid/xmms-sid.glade:3759 src/sid/xs_interface.c:1969
+#: src/sid/xmms-sid.glade:3909 src/sid/xs_interface.c:2038
 #, fuzzy
 msgid "Yes"
 msgstr "evet"
 
-#: src/sid/xmms-sid.glade:3771 src/sid/xs_interface.c:1975
+#: src/sid/xmms-sid.glade:3921 src/sid/xs_interface.c:2044
 #, fuzzy
 msgid "No"
 msgstr "Hiçbiri"
 
-#: src/sid/xs_fileinfo.c:238
+#: src/sid/xs_about.c:84 src/wma/wma.c:130
+#, c-format
+msgid "About %s"
+msgstr "%s Hakkında"
+
+#: src/sid/xs_config.c:580
+msgid "Allocation of sid2FilterPresets structure failed!\n"
+msgstr ""
+
+#: src/sid/xs_config.c:908
+msgid "Warning: Could not set filter curve widget points!\n"
+msgstr ""
+
+#: src/sid/xs_fileinfo.c:232
 #, fuzzy
 msgid "General info"
 msgstr "Genel"
 
-#: src/sid/xs_fileinfo.c:248
+#: src/sid/xs_fileinfo.c:247
 #, c-format
 msgid "Tune #%i: "
-msgstr ""
-
-#: src/sid/xs_fileinfo.c:259
-#, c-format
-msgid "Tune #%i"
 msgstr ""
 
 #: src/sid/xs_length.c:113
@@ -4469,6 +4650,21 @@ msgstr ""
 msgid "[SIDPlay2] currEng->load() failed\n"
 msgstr ""
 
+#: src/sid/xs_slsup.c:217
+#, c-format
+msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
+msgstr ""
+
+#: src/sid/xs_slsup.c:224
+#, c-format
+msgid "Could not allocate sidFilename ('%s')\n"
+msgstr ""
+
+#: src/sid/xs_slsup.c:233
+#, c-format
+msgid "Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"
+msgstr ""
+
 #: src/sid/xs_stil.c:46
 msgid "SubTune pointer structure realloc failed.\n"
 msgstr ""
@@ -4482,66 +4678,66 @@ msgstr ""
 msgid "Could not open STILDB '%s'\n"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:163
+#: src/sndstretch/sndstretch_xmms.c:159
 #, fuzzy
 msgid "About SndStretch"
 msgstr "OSS Sürücüsü Hakkında"
 
-#: src/sndstretch/sndstretch_xmms.c:323
+#: src/sndstretch/sndstretch_xmms.c:319
 #, fuzzy
 msgid "Volume corr."
 msgstr "Ses kontrolü:"
 
-#: src/sndstretch/sndstretch_xmms.c:324
+#: src/sndstretch/sndstretch_xmms.c:320
 msgid "Short Overlap"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:378
+#: src/sndstretch/sndstretch_xmms.c:374
 #, fuzzy
 msgid "Speed"
 msgstr "Konuşma"
 
-#: src/sndstretch/sndstretch_xmms.c:379
+#: src/sndstretch/sndstretch_xmms.c:375
 msgid "Pitch"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:380
+#: src/sndstretch/sndstretch_xmms.c:376
 #, fuzzy
 msgid "Scale"
 msgstr "Kaydet"
 
-#: src/sndstretch/sndstretch_xmms.c:400
+#: src/sndstretch/sndstretch_xmms.c:396
 #, fuzzy
 msgid "SndStretch - Configuration"
 msgstr "Sun sürücüsü yapılandırması"
 
-#: src/song_change/song_change.c:349
+#: src/song_change/song_change.c:316
 msgid "Commands"
 msgstr "Komutlar"
 
-#: src/song_change/song_change.c:356
+#: src/song_change/song_change.c:323
 msgid "Command to run when Audacious starts a new song."
 msgstr "Audacious yeni bir şarkı başlattığında çalışacak komut."
 
-#: src/song_change/song_change.c:365 src/song_change/song_change.c:387
-#: src/song_change/song_change.c:408 src/song_change/song_change.c:429
+#: src/song_change/song_change.c:332 src/song_change/song_change.c:354
+#: src/song_change/song_change.c:375 src/song_change/song_change.c:396
 msgid "Command:"
 msgstr "Komut:"
 
-#: src/song_change/song_change.c:379
+#: src/song_change/song_change.c:346
 msgid "Command to run toward the end of a song."
 msgstr "Bir şarkının sonuna doğru çalışacak komut."
 
-#: src/song_change/song_change.c:399
+#: src/song_change/song_change.c:366
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Audacious çalma listesinin sonuna ulaştığında çalıştırılacak komut."
 
-#: src/song_change/song_change.c:420
+#: src/song_change/song_change.c:387
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 
-#: src/song_change/song_change.c:441
+#: src/song_change/song_change.c:408
 #, c-format
 msgid ""
 "You can use the following format strings which\n"
@@ -4570,7 +4766,7 @@ msgstr ""
 "%%t: Çalma listesi durumu (%%02d)\n"
 "%%p: Şu an oynatılan (1 or 0)"
 
-#: src/song_change/song_change.c:466
+#: src/song_change/song_change.c:433
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -4578,7 +4774,7 @@ msgstr ""
 "<span size='small'>Kabuğa yollanan parametreler tırnak içinde belirtilmeli. "
 "Aksi takdirde güvenlik sorunu yaratır. </span>"
 
-#: src/spectrum/spectrum.c:96
+#: src/spectrum/spectrum.c:90
 msgid "Spectrum Analyzer"
 msgstr ""
 
@@ -4640,7 +4836,7 @@ msgstr ""
 msgid "Change playing song"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:29
+#: src/stereo_plugin/stereo.c:26
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
@@ -4650,15 +4846,15 @@ msgstr ""
 "\n"
 "Johan Levin 1999."
 
-#: src/stereo_plugin/stereo.c:55
+#: src/stereo_plugin/stereo.c:52
 msgid "About Extra Stereo Plugin"
 msgstr "Ekstra Stereo Eklentisi Hakkında"
 
-#: src/stereo_plugin/stereo.c:96
+#: src/stereo_plugin/stereo.c:93
 msgid "Configure Extra Stereo"
 msgstr "Ekstra Stereo Eklentisini Yapılandır"
 
-#: src/stereo_plugin/stereo.c:98
+#: src/stereo_plugin/stereo.c:95
 msgid "Effect intensity:"
 msgstr "Efekt yoğunluğu:"
 
@@ -4694,31 +4890,31 @@ msgstr "XMMS, sadece karıştırıcıyı kullanıyor."
 msgid "Sun driver configuration"
 msgstr "Sun sürücüsü yapılandırması"
 
-#: src/timidity/src/interface.c:56
+#: src/timidity/interface.c:54
 msgid "TiMidity Configuration"
 msgstr "TiMidity Yapılandırması"
 
-#: src/timidity/src/interface.c:93
+#: src/timidity/interface.c:91
 msgid "11000 Hz"
 msgstr "11000 Hz"
 
-#: src/timidity/src/interface.c:101
+#: src/timidity/interface.c:99
 msgid "22000 Hz"
 msgstr "22000 Hz"
 
-#: src/timidity/src/interface.c:109
+#: src/timidity/interface.c:107
 msgid "44100 Hz"
 msgstr "44100 Hz"
 
-#: src/timidity/src/interface.c:117
+#: src/timidity/interface.c:115
 msgid "Sample Width"
 msgstr "Örnekleme Genişliği"
 
-#: src/timidity/src/interface.c:183
+#: src/timidity/interface.c:181
 msgid "TiMidity Configuration File"
 msgstr "TiMidity Yapılandırma Dosyası"
 
-#: src/timidity/src/xmms-timidity.c:134
+#: src/timidity/xmms-timidity.c:115
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
@@ -4728,12 +4924,12 @@ msgstr ""
 "http://libtimidity.sourceforge.net\n"
 "Konstantin Korikov"
 
-#: src/timidity/src/xmms-timidity.c:135
+#: src/timidity/xmms-timidity.c:116
 #, c-format
 msgid "TiMidity Plugin %s"
 msgstr "TiMidity Eklentisi %s"
 
-#: src/timidity/src/xmms-timidity.c:352
+#: src/timidity/xmms-timidity.c:333
 msgid "Couldn't load MIDI file"
 msgstr "MIDI dosyası yüklenemedi"
 
@@ -4755,695 +4951,695 @@ msgstr ""
 "Kullanmak için bir URL ekleyin: tone://frequency1;frequency2;frequency3;...\n"
 "ör: 2000Hz ton ve 2005Hz ton çalmak için tone://2000;2005"
 
-#: src/tonegen/tonegen.c:170
+#: src/tonegen/tonegen.c:168
 #, c-format
 msgid "%s %.1f Hz"
 msgstr ""
 
-#: src/tonegen/tonegen.c:170
+#: src/tonegen/tonegen.c:168
 msgid "Tone Generator: "
 msgstr "Ton Oluşturucu: "
 
-#: src/tta/libtta.c:148
+#: src/tta/libtta.c:128
 msgid "Can't open file\n"
 msgstr ""
 
-#: src/tta/libtta.c:151
+#: src/tta/libtta.c:131
 msgid "Not supported file format\n"
 msgstr ""
 
-#: src/tta/libtta.c:154
+#: src/tta/libtta.c:134
 msgid "File is corrupted\n"
 msgstr ""
 
-#: src/tta/libtta.c:157
+#: src/tta/libtta.c:137
 msgid "Can't read from file\n"
 msgstr ""
 
-#: src/tta/libtta.c:160
+#: src/tta/libtta.c:140
 msgid "Insufficient memory available\n"
 msgstr ""
 
-#: src/tta/libtta.c:163
+#: src/tta/libtta.c:143
 #, fuzzy
 msgid "Output plugin error\n"
 msgstr "Null Çıkış eklentisi"
 
-#: src/tta/libtta.c:166
+#: src/tta/libtta.c:146
 #, fuzzy
 msgid "Unknown error\n"
 msgstr "Bilinmeyen ses kartı"
 
-#: src/tta/libtta.c:170
+#: src/tta/libtta.c:150
 msgid "TTA Decoder Error"
 msgstr ""
 
-#: src/tta/libtta.c:279
+#: src/tta/libtta.c:259
 #, fuzzy
 msgid "TTA input plugin "
 msgstr "Null Çıkış eklentisi"
 
-#: src/tta/libtta.c:280
+#: src/tta/libtta.c:260
 msgid ""
 " for BMP\n"
 "Copyright (c) 2004 True Audio Software\n"
 msgstr ""
 
-#: src/tta/libtta.c:283
+#: src/tta/libtta.c:263
 #, fuzzy
 msgid "About True Audio Plugin"
 msgstr "OGG Vorbis Ses Eklentisi Hakkında"
 
-#: src/tta/libtta.c:334
+#: src/tta/libtta.c:314
 #, fuzzy
 msgid "ID3 Tag:"
 msgstr "ID3 Etiketi"
 
-#: src/vorbis/configure.c:117
+#: src/vorbis/configure.c:115
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg Vorbis Ses Eklentisi Yapılandırması"
 
-#: src/vorbis/configure.c:129
+#: src/vorbis/configure.c:127
 msgid "Ogg Vorbis Tags:"
 msgstr "Ogg Vorbis Etiketleri:"
 
-#: src/vorbis/configure.c:150
+#: src/vorbis/configure.c:148
 msgid "Title format:"
 msgstr "Başlık biçimi:"
 
-#: src/vorbis/configure.c:164 src/wavpack/ui.cxx:500
+#: src/vorbis/configure.c:162 src/wavpack/ui.cxx:500
 msgid "ReplayGain Settings:"
 msgstr "ReplayGain Ayarları:"
 
-#: src/vorbis/configure.c:182 src/wavpack/ui.cxx:518
+#: src/vorbis/configure.c:180 src/wavpack/ui.cxx:518
 msgid "ReplayGain Type:"
 msgstr "ReplayGain Türü:"
 
-#: src/vorbis/configure.c:193 src/wavpack/ui.cxx:529
+#: src/vorbis/configure.c:191 src/wavpack/ui.cxx:529
 msgid "use Track Gain/Peak"
 msgstr "Parçada Gain/Peak kullan"
 
-#: src/vorbis/configure.c:203 src/wavpack/ui.cxx:537
+#: src/vorbis/configure.c:201 src/wavpack/ui.cxx:537
 msgid "use Album Gain/Peak"
 msgstr "Albümde Gain/Peak kullan"
 
-#: src/vorbis/configure.c:215
+#: src/vorbis/configure.c:213
 msgid "Enable 6dB Boost + Hard Limiting"
 msgstr "6dB artırma (kompresör) + sınırlayıcı (limitır) Aktif"
 
-#: src/vorbis/fileinfo.c:83
+#: src/vorbis/fileinfo.c:80
 msgid "Blues"
 msgstr "Blues"
 
-#: src/vorbis/fileinfo.c:83
+#: src/vorbis/fileinfo.c:80
 msgid "Classic Rock"
 msgstr "Klasik Rock"
 
-#: src/vorbis/fileinfo.c:83
+#: src/vorbis/fileinfo.c:80
 msgid "Country"
 msgstr "Country"
 
-#: src/vorbis/fileinfo.c:83
+#: src/vorbis/fileinfo.c:80
 msgid "Dance"
 msgstr "Dans"
 
-#: src/vorbis/fileinfo.c:84
+#: src/vorbis/fileinfo.c:81
 msgid "Disco"
 msgstr "Disko"
 
-#: src/vorbis/fileinfo.c:84
+#: src/vorbis/fileinfo.c:81
 msgid "Funk"
 msgstr "Funk"
 
-#: src/vorbis/fileinfo.c:84
+#: src/vorbis/fileinfo.c:81
 msgid "Grunge"
 msgstr "Grunge"
 
-#: src/vorbis/fileinfo.c:84
+#: src/vorbis/fileinfo.c:81
 msgid "Hip-Hop"
 msgstr "Hip-Hop"
 
-#: src/vorbis/fileinfo.c:85
+#: src/vorbis/fileinfo.c:82
 msgid "Jazz"
 msgstr "Jazz"
 
-#: src/vorbis/fileinfo.c:85
+#: src/vorbis/fileinfo.c:82
 msgid "Metal"
 msgstr "Metal"
 
-#: src/vorbis/fileinfo.c:85
+#: src/vorbis/fileinfo.c:82
 msgid "New Age"
 msgstr "New Age"
 
-#: src/vorbis/fileinfo.c:85
+#: src/vorbis/fileinfo.c:82
 msgid "Oldies"
 msgstr "Eskiler"
 
-#: src/vorbis/fileinfo.c:86
+#: src/vorbis/fileinfo.c:83
 msgid "Other"
 msgstr "Diğer"
 
-#: src/vorbis/fileinfo.c:86
+#: src/vorbis/fileinfo.c:83
 msgid "Pop"
 msgstr "Pop"
 
-#: src/vorbis/fileinfo.c:86
+#: src/vorbis/fileinfo.c:83
 msgid "R&B"
 msgstr "R&B"
 
-#: src/vorbis/fileinfo.c:86
+#: src/vorbis/fileinfo.c:83
 msgid "Rap"
 msgstr "Rap"
 
-#: src/vorbis/fileinfo.c:86
+#: src/vorbis/fileinfo.c:83
 msgid "Reggae"
 msgstr "Reggae"
 
-#: src/vorbis/fileinfo.c:87
+#: src/vorbis/fileinfo.c:84
 msgid "Rock"
 msgstr "Rock"
 
-#: src/vorbis/fileinfo.c:87
+#: src/vorbis/fileinfo.c:84
 msgid "Techno"
 msgstr "Tekno"
 
-#: src/vorbis/fileinfo.c:87
+#: src/vorbis/fileinfo.c:84
 msgid "Industrial"
 msgstr "Endüstriyel"
 
-#: src/vorbis/fileinfo.c:87
+#: src/vorbis/fileinfo.c:84
 msgid "Alternative"
 msgstr "Alternatif"
 
-#: src/vorbis/fileinfo.c:88
+#: src/vorbis/fileinfo.c:85
 msgid "Ska"
 msgstr "Ska"
 
-#: src/vorbis/fileinfo.c:88
+#: src/vorbis/fileinfo.c:85
 msgid "Death Metal"
 msgstr "Death Metal"
 
-#: src/vorbis/fileinfo.c:88
+#: src/vorbis/fileinfo.c:85
 msgid "Pranks"
 msgstr "Pranks"
 
-#: src/vorbis/fileinfo.c:88
+#: src/vorbis/fileinfo.c:85
 msgid "Soundtrack"
 msgstr "Soundtrack"
 
-#: src/vorbis/fileinfo.c:89
+#: src/vorbis/fileinfo.c:86
 msgid "Euro-Techno"
 msgstr "Euro-Techno"
 
-#: src/vorbis/fileinfo.c:89
+#: src/vorbis/fileinfo.c:86
 msgid "Ambient"
 msgstr "Ambiyans"
 
-#: src/vorbis/fileinfo.c:89
+#: src/vorbis/fileinfo.c:86
 msgid "Trip-Hop"
 msgstr "Trip-Hop"
 
-#: src/vorbis/fileinfo.c:89
+#: src/vorbis/fileinfo.c:86
 msgid "Vocal"
 msgstr "Vokal"
 
-#: src/vorbis/fileinfo.c:90
+#: src/vorbis/fileinfo.c:87
 msgid "Jazz+Funk"
 msgstr "Jazz+Funk"
 
-#: src/vorbis/fileinfo.c:90
+#: src/vorbis/fileinfo.c:87
 msgid "Fusion"
 msgstr "Fusion"
 
-#: src/vorbis/fileinfo.c:90
+#: src/vorbis/fileinfo.c:87
 msgid "Trance"
 msgstr "Trance"
 
-#: src/vorbis/fileinfo.c:90
+#: src/vorbis/fileinfo.c:87
 msgid "Classical"
 msgstr "Klasik"
 
-#: src/vorbis/fileinfo.c:91
+#: src/vorbis/fileinfo.c:88
 msgid "Instrumental"
 msgstr "Enstrümantal"
 
-#: src/vorbis/fileinfo.c:91
+#: src/vorbis/fileinfo.c:88
 msgid "Acid"
 msgstr "Asit"
 
-#: src/vorbis/fileinfo.c:91
+#: src/vorbis/fileinfo.c:88
 msgid "House"
 msgstr "House"
 
-#: src/vorbis/fileinfo.c:91
+#: src/vorbis/fileinfo.c:88
 msgid "Game"
 msgstr "Oyun"
 
-#: src/vorbis/fileinfo.c:92
+#: src/vorbis/fileinfo.c:89
 msgid "Sound Clip"
 msgstr "Ses Klibi"
 
-#: src/vorbis/fileinfo.c:92
+#: src/vorbis/fileinfo.c:89
 msgid "Gospel"
 msgstr "Gospel"
 
-#: src/vorbis/fileinfo.c:92
+#: src/vorbis/fileinfo.c:89
 msgid "Noise"
 msgstr "Gürültü"
 
-#: src/vorbis/fileinfo.c:92
+#: src/vorbis/fileinfo.c:89
 msgid "AlternRock"
 msgstr "Alternatif Rock"
 
-#: src/vorbis/fileinfo.c:93
+#: src/vorbis/fileinfo.c:90
 msgid "Bass"
 msgstr "Bas"
 
-#: src/vorbis/fileinfo.c:93
+#: src/vorbis/fileinfo.c:90
 msgid "Soul"
 msgstr "Soul"
 
-#: src/vorbis/fileinfo.c:93
+#: src/vorbis/fileinfo.c:90
 msgid "Punk"
 msgstr "Punk"
 
-#: src/vorbis/fileinfo.c:93
+#: src/vorbis/fileinfo.c:90
 msgid "Space"
 msgstr "Uzay"
 
-#: src/vorbis/fileinfo.c:94
+#: src/vorbis/fileinfo.c:91
 msgid "Meditative"
 msgstr "Meditasyon"
 
-#: src/vorbis/fileinfo.c:94
+#: src/vorbis/fileinfo.c:91
 msgid "Instrumental Pop"
 msgstr "Enstrümantal Pop"
 
-#: src/vorbis/fileinfo.c:95
+#: src/vorbis/fileinfo.c:92
 msgid "Instrumental Rock"
 msgstr "Enstrümantal Rock"
 
-#: src/vorbis/fileinfo.c:95
+#: src/vorbis/fileinfo.c:92
 msgid "Ethnic"
 msgstr "Etnik"
 
-#: src/vorbis/fileinfo.c:95
+#: src/vorbis/fileinfo.c:92
 msgid "Gothic"
 msgstr "Gotik"
 
-#: src/vorbis/fileinfo.c:96
+#: src/vorbis/fileinfo.c:93
 msgid "Darkwave"
 msgstr "Darkwave"
 
-#: src/vorbis/fileinfo.c:96
+#: src/vorbis/fileinfo.c:93
 msgid "Techno-Industrial"
 msgstr "Tekno-Endüstriyel"
 
-#: src/vorbis/fileinfo.c:96
+#: src/vorbis/fileinfo.c:93
 msgid "Electronic"
 msgstr "Elektronik"
 
-#: src/vorbis/fileinfo.c:97
+#: src/vorbis/fileinfo.c:94
 msgid "Pop-Folk"
 msgstr "Pop-Folk"
 
-#: src/vorbis/fileinfo.c:97
+#: src/vorbis/fileinfo.c:94
 msgid "Eurodance"
 msgstr "Eurodance"
 
-#: src/vorbis/fileinfo.c:97
+#: src/vorbis/fileinfo.c:94
 msgid "Dream"
 msgstr "Rüya"
 
-#: src/vorbis/fileinfo.c:98
+#: src/vorbis/fileinfo.c:95
 msgid "Southern Rock"
 msgstr "Southern Rock"
 
-#: src/vorbis/fileinfo.c:98
+#: src/vorbis/fileinfo.c:95
 msgid "Comedy"
 msgstr "Komedi"
 
-#: src/vorbis/fileinfo.c:98
+#: src/vorbis/fileinfo.c:95
 msgid "Cult"
 msgstr "Kült"
 
-#: src/vorbis/fileinfo.c:99
+#: src/vorbis/fileinfo.c:96
 msgid "Gangsta Rap"
 msgstr "Gangsta Rap"
 
-#: src/vorbis/fileinfo.c:99
+#: src/vorbis/fileinfo.c:96
 msgid "Top 40"
 msgstr "Top 40"
 
-#: src/vorbis/fileinfo.c:99
+#: src/vorbis/fileinfo.c:96
 msgid "Christian Rap"
 msgstr "Christian Rap"
 
-#: src/vorbis/fileinfo.c:100
+#: src/vorbis/fileinfo.c:97
 msgid "Pop/Funk"
 msgstr "Pop/Funk"
 
-#: src/vorbis/fileinfo.c:100
+#: src/vorbis/fileinfo.c:97
 msgid "Jungle"
 msgstr "Jungle"
 
-#: src/vorbis/fileinfo.c:100
+#: src/vorbis/fileinfo.c:97
 msgid "Native American"
 msgstr "Amerikan Folk"
 
-#: src/vorbis/fileinfo.c:101
+#: src/vorbis/fileinfo.c:98
 msgid "Cabaret"
 msgstr "Kabare"
 
-#: src/vorbis/fileinfo.c:101
+#: src/vorbis/fileinfo.c:98
 msgid "New Wave"
 msgstr "New Wave"
 
-#: src/vorbis/fileinfo.c:101
+#: src/vorbis/fileinfo.c:98
 msgid "Psychedelic"
 msgstr "Psychedelic"
 
-#: src/vorbis/fileinfo.c:101
+#: src/vorbis/fileinfo.c:98
 msgid "Rave"
 msgstr "Rave"
 
-#: src/vorbis/fileinfo.c:102
+#: src/vorbis/fileinfo.c:99
 msgid "Showtunes"
 msgstr "Showtunes"
 
-#: src/vorbis/fileinfo.c:102
+#: src/vorbis/fileinfo.c:99
 msgid "Trailer"
 msgstr "Trailer"
 
-#: src/vorbis/fileinfo.c:102
+#: src/vorbis/fileinfo.c:99
 msgid "Lo-Fi"
 msgstr "Lo-Fi"
 
-#: src/vorbis/fileinfo.c:102
+#: src/vorbis/fileinfo.c:99
 msgid "Tribal"
 msgstr "Tribal"
 
-#: src/vorbis/fileinfo.c:103
+#: src/vorbis/fileinfo.c:100
 msgid "Acid Punk"
 msgstr "Acid Punk"
 
-#: src/vorbis/fileinfo.c:103
+#: src/vorbis/fileinfo.c:100
 msgid "Acid Jazz"
 msgstr "Acid Jazz"
 
-#: src/vorbis/fileinfo.c:103
+#: src/vorbis/fileinfo.c:100
 msgid "Polka"
 msgstr "Polka"
 
-#: src/vorbis/fileinfo.c:103
+#: src/vorbis/fileinfo.c:100
 msgid "Retro"
 msgstr "Retro"
 
-#: src/vorbis/fileinfo.c:104
+#: src/vorbis/fileinfo.c:101
 msgid "Musical"
 msgstr "Müzikal"
 
-#: src/vorbis/fileinfo.c:104
+#: src/vorbis/fileinfo.c:101
 msgid "Rock & Roll"
 msgstr "Rock & Roll"
 
-#: src/vorbis/fileinfo.c:104
+#: src/vorbis/fileinfo.c:101
 msgid "Hard Rock"
 msgstr "Hard Rock"
 
-#: src/vorbis/fileinfo.c:104
+#: src/vorbis/fileinfo.c:101
 msgid "Folk"
 msgstr "Folk"
 
-#: src/vorbis/fileinfo.c:105
+#: src/vorbis/fileinfo.c:102
 msgid "Folk/Rock"
 msgstr "Folk/Rock"
 
-#: src/vorbis/fileinfo.c:105
+#: src/vorbis/fileinfo.c:102
 msgid "National Folk"
 msgstr "Ulusal Folk"
 
-#: src/vorbis/fileinfo.c:105
+#: src/vorbis/fileinfo.c:102
 msgid "Swing"
 msgstr "Swing"
 
-#: src/vorbis/fileinfo.c:106
+#: src/vorbis/fileinfo.c:103
 msgid "Fast-Fusion"
 msgstr "Fast-Fusion"
 
-#: src/vorbis/fileinfo.c:106
+#: src/vorbis/fileinfo.c:103
 msgid "Bebob"
 msgstr "Bebob"
 
-#: src/vorbis/fileinfo.c:106
+#: src/vorbis/fileinfo.c:103
 msgid "Latin"
 msgstr "Latin"
 
-#: src/vorbis/fileinfo.c:106
+#: src/vorbis/fileinfo.c:103
 msgid "Revival"
 msgstr "Revival"
 
-#: src/vorbis/fileinfo.c:107
+#: src/vorbis/fileinfo.c:104
 msgid "Celtic"
 msgstr "Kelt"
 
-#: src/vorbis/fileinfo.c:107
+#: src/vorbis/fileinfo.c:104
 msgid "Bluegrass"
 msgstr "Bluegrass"
 
-#: src/vorbis/fileinfo.c:107
+#: src/vorbis/fileinfo.c:104
 msgid "Avantgarde"
 msgstr "Avantgarde"
 
-#: src/vorbis/fileinfo.c:108
+#: src/vorbis/fileinfo.c:105
 msgid "Gothic Rock"
 msgstr "Gothic Rock"
 
-#: src/vorbis/fileinfo.c:108
+#: src/vorbis/fileinfo.c:105
 msgid "Progressive Rock"
 msgstr "Progressive Rock"
 
-#: src/vorbis/fileinfo.c:109
+#: src/vorbis/fileinfo.c:106
 msgid "Psychedelic Rock"
 msgstr "Psychedelic Rock"
 
-#: src/vorbis/fileinfo.c:109
+#: src/vorbis/fileinfo.c:106
 msgid "Symphonic Rock"
 msgstr "Senfonik Rock"
 
-#: src/vorbis/fileinfo.c:109
+#: src/vorbis/fileinfo.c:106
 msgid "Slow Rock"
 msgstr "Slow Rock"
 
-#: src/vorbis/fileinfo.c:110
+#: src/vorbis/fileinfo.c:107
 msgid "Big Band"
 msgstr "Big Band"
 
-#: src/vorbis/fileinfo.c:110
+#: src/vorbis/fileinfo.c:107
 msgid "Chorus"
 msgstr "Chorus"
 
-#: src/vorbis/fileinfo.c:110
+#: src/vorbis/fileinfo.c:107
 msgid "Easy Listening"
 msgstr "Rahatlatıcı Tür"
 
-#: src/vorbis/fileinfo.c:111
+#: src/vorbis/fileinfo.c:108
 msgid "Acoustic"
 msgstr "Akustik"
 
-#: src/vorbis/fileinfo.c:111
+#: src/vorbis/fileinfo.c:108
 msgid "Humour"
 msgstr "Humour"
 
-#: src/vorbis/fileinfo.c:111
+#: src/vorbis/fileinfo.c:108
 msgid "Speech"
 msgstr "Konuşma"
 
-#: src/vorbis/fileinfo.c:111
+#: src/vorbis/fileinfo.c:108
 msgid "Chanson"
 msgstr "Türkü"
 
-#: src/vorbis/fileinfo.c:112
+#: src/vorbis/fileinfo.c:109
 msgid "Opera"
 msgstr "Opera"
 
-#: src/vorbis/fileinfo.c:112
+#: src/vorbis/fileinfo.c:109
 msgid "Chamber Music"
 msgstr "Oda Müziği"
 
-#: src/vorbis/fileinfo.c:112
+#: src/vorbis/fileinfo.c:109
 msgid "Sonata"
 msgstr "Sonata"
 
-#: src/vorbis/fileinfo.c:112
+#: src/vorbis/fileinfo.c:109
 msgid "Symphony"
 msgstr "Senfoni"
 
-#: src/vorbis/fileinfo.c:113
+#: src/vorbis/fileinfo.c:110
 msgid "Booty Bass"
 msgstr "Yoğun Bas"
 
-#: src/vorbis/fileinfo.c:113
+#: src/vorbis/fileinfo.c:110
 msgid "Primus"
 msgstr "Primus"
 
-#: src/vorbis/fileinfo.c:113
+#: src/vorbis/fileinfo.c:110
 msgid "Porn Groove"
 msgstr "Porn Groove"
 
-#: src/vorbis/fileinfo.c:114
+#: src/vorbis/fileinfo.c:111
 msgid "Satire"
 msgstr "Taşlama"
 
-#: src/vorbis/fileinfo.c:114
+#: src/vorbis/fileinfo.c:111
 msgid "Slow Jam"
 msgstr "Slow Jam"
 
-#: src/vorbis/fileinfo.c:114
+#: src/vorbis/fileinfo.c:111
 msgid "Club"
 msgstr "Club"
 
-#: src/vorbis/fileinfo.c:114
+#: src/vorbis/fileinfo.c:111
 msgid "Tango"
 msgstr "Tango"
 
-#: src/vorbis/fileinfo.c:115
+#: src/vorbis/fileinfo.c:112
 msgid "Samba"
 msgstr "Samba"
 
-#: src/vorbis/fileinfo.c:115
+#: src/vorbis/fileinfo.c:112
 msgid "Folklore"
 msgstr "Folklor"
 
-#: src/vorbis/fileinfo.c:115
+#: src/vorbis/fileinfo.c:112
 msgid "Ballad"
 msgstr "Ballad"
 
-#: src/vorbis/fileinfo.c:115
+#: src/vorbis/fileinfo.c:112
 msgid "Power Ballad"
 msgstr "Power Ballad"
 
-#: src/vorbis/fileinfo.c:116
+#: src/vorbis/fileinfo.c:113
 msgid "Rhythmic Soul"
 msgstr "Ritmik Soul"
 
-#: src/vorbis/fileinfo.c:116
+#: src/vorbis/fileinfo.c:113
 msgid "Freestyle"
 msgstr "Freestyle"
 
-#: src/vorbis/fileinfo.c:116
+#: src/vorbis/fileinfo.c:113
 msgid "Duet"
 msgstr "Düet"
 
-#: src/vorbis/fileinfo.c:117
+#: src/vorbis/fileinfo.c:114
 msgid "Punk Rock"
 msgstr "Punk Rock"
 
-#: src/vorbis/fileinfo.c:117
+#: src/vorbis/fileinfo.c:114
 msgid "Drum Solo"
 msgstr "Davul Solo"
 
-#: src/vorbis/fileinfo.c:117
+#: src/vorbis/fileinfo.c:114
 msgid "A Cappella"
 msgstr "Cappella"
 
-#: src/vorbis/fileinfo.c:118
+#: src/vorbis/fileinfo.c:115
 msgid "Euro-House"
 msgstr "Euro-House"
 
-#: src/vorbis/fileinfo.c:118
+#: src/vorbis/fileinfo.c:115
 msgid "Dance Hall"
 msgstr "Dans Salonu"
 
-#: src/vorbis/fileinfo.c:118
+#: src/vorbis/fileinfo.c:115
 msgid "Goa"
 msgstr "Goa"
 
-#: src/vorbis/fileinfo.c:119
+#: src/vorbis/fileinfo.c:116
 msgid "Drum & Bass"
 msgstr "Davul & Bas"
 
-#: src/vorbis/fileinfo.c:119
+#: src/vorbis/fileinfo.c:116
 msgid "Club-House"
 msgstr "Club-House"
 
-#: src/vorbis/fileinfo.c:119
+#: src/vorbis/fileinfo.c:116
 msgid "Hardcore"
 msgstr "Hardcore"
 
-#: src/vorbis/fileinfo.c:120
+#: src/vorbis/fileinfo.c:117
 msgid "Terror"
 msgstr "Terör"
 
-#: src/vorbis/fileinfo.c:120
+#: src/vorbis/fileinfo.c:117
 msgid "Indie"
 msgstr "Indie"
 
-#: src/vorbis/fileinfo.c:120
+#: src/vorbis/fileinfo.c:117
 msgid "BritPop"
 msgstr "BritPop"
 
-#: src/vorbis/fileinfo.c:120
+#: src/vorbis/fileinfo.c:117
 msgid "Negerpunk"
 msgstr "Negerpunk"
 
-#: src/vorbis/fileinfo.c:121
+#: src/vorbis/fileinfo.c:118
 msgid "Polsk Punk"
 msgstr "Polsk Punk"
 
-#: src/vorbis/fileinfo.c:121
+#: src/vorbis/fileinfo.c:118
 msgid "Beat"
 msgstr "Beat"
 
-#: src/vorbis/fileinfo.c:121
+#: src/vorbis/fileinfo.c:118
 msgid "Christian Gangsta Rap"
 msgstr "Christian Gangsta Rap"
 
-#: src/vorbis/fileinfo.c:122
+#: src/vorbis/fileinfo.c:119
 msgid "Heavy Metal"
 msgstr "Heavy Metal"
 
-#: src/vorbis/fileinfo.c:122
+#: src/vorbis/fileinfo.c:119
 msgid "Black Metal"
 msgstr "Black Metal"
 
-#: src/vorbis/fileinfo.c:122
+#: src/vorbis/fileinfo.c:119
 msgid "Crossover"
 msgstr "Crossover"
 
-#: src/vorbis/fileinfo.c:123
+#: src/vorbis/fileinfo.c:120
 msgid "Contemporary Christian"
 msgstr "Contemporary Christian"
 
-#: src/vorbis/fileinfo.c:123
+#: src/vorbis/fileinfo.c:120
 msgid "Christian Rock"
 msgstr "Christian Rock"
 
-#: src/vorbis/fileinfo.c:124
+#: src/vorbis/fileinfo.c:121
 msgid "Merengue"
 msgstr "Merengue"
 
-#: src/vorbis/fileinfo.c:124
+#: src/vorbis/fileinfo.c:121
 msgid "Salsa"
 msgstr "Salsa"
 
-#: src/vorbis/fileinfo.c:124
+#: src/vorbis/fileinfo.c:121
 msgid "Thrash Metal"
 msgstr "Thrash Metal"
 
-#: src/vorbis/fileinfo.c:125
+#: src/vorbis/fileinfo.c:122
 msgid "Anime"
 msgstr "Anime"
 
-#: src/vorbis/fileinfo.c:125
+#: src/vorbis/fileinfo.c:122
 msgid "JPop"
 msgstr "JPop"
 
-#: src/vorbis/fileinfo.c:125
+#: src/vorbis/fileinfo.c:122
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: src/vorbis/fileinfo.c:210
+#: src/vorbis/fileinfo.c:207
 #, c-format
 msgid ""
 "An error occured:\n"
@@ -5452,126 +5648,126 @@ msgstr ""
 "Bir hata oluştu:\n"
 "%s"
 
-#: src/vorbis/fileinfo.c:212
+#: src/vorbis/fileinfo.c:209
 msgid "Error!"
 msgstr "Hata!"
 
-#: src/vorbis/fileinfo.c:244
+#: src/vorbis/fileinfo.c:241
 msgid "Failed to modify tag (open)"
 msgstr "Etiket düzenlenemedi (aç)"
 
-#: src/vorbis/fileinfo.c:297
+#: src/vorbis/fileinfo.c:294
 msgid "Failed to modify tag (close)"
 msgstr "Etiket düzenlenemedi (kapat)"
 
-#: src/vorbis/fileinfo.c:324 src/vorbis/fileinfo.c:333
+#: src/vorbis/fileinfo.c:321 src/vorbis/fileinfo.c:330
 msgid "Failed to modify tag"
 msgstr "Etiket düzenlenemedi"
 
-#: src/vorbis/fileinfo.c:577
+#: src/vorbis/fileinfo.c:574
 msgid " Ogg Vorbis Tag "
 msgstr " Ogg Vorbis Etiketi "
 
-#: src/vorbis/fileinfo.c:629
+#: src/vorbis/fileinfo.c:626
 msgid "Date:"
 msgstr "Tarih:"
 
-#: src/vorbis/fileinfo.c:671
+#: src/vorbis/fileinfo.c:668
 msgid "Description:"
 msgstr "Açıklama:"
 
-#: src/vorbis/fileinfo.c:681
+#: src/vorbis/fileinfo.c:678
 msgid "Location:"
 msgstr "Yer:"
 
-#: src/vorbis/fileinfo.c:691
+#: src/vorbis/fileinfo.c:688
 msgid "Version:"
 msgstr "Sürüm:"
 
-#: src/vorbis/fileinfo.c:702
+#: src/vorbis/fileinfo.c:699
 msgid "ISRC number:"
 msgstr "ISRC numarası:"
 
-#: src/vorbis/fileinfo.c:713
+#: src/vorbis/fileinfo.c:710
 msgid "Organization:"
 msgstr "Kurum:"
 
-#: src/vorbis/fileinfo.c:760
+#: src/vorbis/fileinfo.c:757
 msgid " Ogg Vorbis ReplayGain "
 msgstr " Ogg Vorbis ReplayGain "
 
-#: src/vorbis/fileinfo.c:766
+#: src/vorbis/fileinfo.c:763
 msgid "Track gain:"
 msgstr "Parça ses yüksekliği:"
 
-#: src/vorbis/fileinfo.c:776
+#: src/vorbis/fileinfo.c:773
 msgid "Track peak:"
 msgstr "Parça doruğu:"
 
-#: src/vorbis/fileinfo.c:787
+#: src/vorbis/fileinfo.c:784
 msgid "Album gain:"
 msgstr "Albüm ses yüksekliği:"
 
-#: src/vorbis/fileinfo.c:797
+#: src/vorbis/fileinfo.c:794
 msgid "Album peak:"
 msgstr "Albüm doruğu:"
 
-#: src/vorbis/fileinfo.c:826
+#: src/vorbis/fileinfo.c:823
 msgid " Ogg Vorbis Info "
 msgstr " Ogg Vorbis Bilgisi "
 
-#: src/vorbis/fileinfo.c:841 src/vorbis/fileinfo.c:918
+#: src/vorbis/fileinfo.c:838 src/vorbis/fileinfo.c:915
 msgid "Bit rate:"
 msgstr "Bit oranı:"
 
-#: src/vorbis/fileinfo.c:854 src/vorbis/fileinfo.c:921
+#: src/vorbis/fileinfo.c:851 src/vorbis/fileinfo.c:918
 msgid "Sample rate:"
 msgstr "Örnekleme oranı:"
 
-#: src/vorbis/fileinfo.c:880 src/vorbis/fileinfo.c:927
+#: src/vorbis/fileinfo.c:877 src/vorbis/fileinfo.c:924
 msgid "Length:"
 msgstr "Uzunluk:"
 
-#: src/vorbis/fileinfo.c:893 src/vorbis/fileinfo.c:930
+#: src/vorbis/fileinfo.c:890 src/vorbis/fileinfo.c:927
 msgid "File size:"
 msgstr "Dosya boytu:"
 
-#: src/vorbis/fileinfo.c:919 src/vorbis/fileinfo.c:922
-#: src/vorbis/fileinfo.c:925 src/vorbis/fileinfo.c:928
-#: src/vorbis/fileinfo.c:931
+#: src/vorbis/fileinfo.c:916 src/vorbis/fileinfo.c:919
+#: src/vorbis/fileinfo.c:922 src/vorbis/fileinfo.c:925
+#: src/vorbis/fileinfo.c:928
 msgid "N/A"
 msgstr "N/A"
 
-#: src/vorbis/fileinfo.c:961
+#: src/vorbis/fileinfo.c:958
 #, c-format
 msgid "%d KBit/s (nominal)"
 msgstr "%d KBit/s (nominal)"
 
-#: src/vorbis/fileinfo.c:963
+#: src/vorbis/fileinfo.c:960
 #, c-format
 msgid "%d"
 msgstr "%d"
 
-#: src/vorbis/fileinfo.c:965
+#: src/vorbis/fileinfo.c:962
 #, c-format
 msgid "%d:%.2d"
 msgstr "%d:%.2d"
 
-#: src/vorbis/fileinfo.c:967
+#: src/vorbis/fileinfo.c:964
 #, c-format
 msgid "%d Bytes"
 msgstr "%d Byte"
 
-#: src/vorbis/fileinfo.c:1024
+#: src/vorbis/fileinfo.c:1021
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/vorbis/vorbis.c:862
+#: src/vorbis/vorbis.c:845
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "OGG Vorbis Ses Eklentisi Hakkında"
 
-#: src/vorbis/vorbis.c:868
+#: src/vorbis/vorbis.c:851
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5707,11 +5903,11 @@ msgstr "Flac Yapılandırması"
 msgid "General Plugin Settings:"
 msgstr "ReplayGain Ayarları:"
 
-#: src/wav/wav-sndfile.c:549
+#: src/wav/wav-sndfile.c:526
 msgid "About sndfile WAV support"
 msgstr "sndfile WAV desteği hakkında"
 
-#: src/wav/wav-sndfile.c:550
+#: src/wav/wav-sndfile.c:527
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -5754,14 +5950,30 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/wav/wav-sndfile.c:574
+#: src/wav/wav-sndfile.c:551
 msgid "sndfile WAV plugin"
 msgstr "sndfile WAV eklentisi"
 
-#: src/wma/wma.c:143
-#, c-format
-msgid "About %s"
-msgstr "%s Hakkında"
+#: src/wma/wma.c:132
+msgid ""
+"Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
+"the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka "
+"McMCC (mcmcc@mail.ru)\n"
+"and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy "
+"<bogorodskiy@inbox.ru>.\n"
+"This plugin based on source code "
+msgstr ""
+
+#~ msgid "Use software volume control"
+#~ msgstr "Yazılımsal ses kontrolü kullan"
+
+#, fuzzy
+#~ msgid ""
+#~ "You cannot use the FileWriter plugin\n"
+#~ "when you're running in realtime mode."
+#~ msgstr ""
+#~ "Gerçek zamanlı kipte çalışırken\n"
+#~ "disk yazma eklentisini kullanamazsınız."
 
 #, fuzzy
 #~ msgid "Subtune Control"
@@ -5770,10 +5982,6 @@ msgstr "%s Hakkında"
 #, fuzzy
 #~ msgid "Override generic XMMS titles"
 #~ msgstr "Genel başlıkları geçersiz kıl"
-
-#, fuzzy
-#~ msgid "Song name/title format:"
-#~ msgstr "Başlık biçimi:"
 
 #, fuzzy
 #~ msgid "No sub-tune control."
@@ -6226,9 +6434,6 @@ msgstr "%s Hakkında"
 #~ msgid "Convert character set from :"
 #~ msgstr "Karakter seti çeviri başlangıcı:"
 
-#~ msgid "to :"
-#~ msgstr "sonu:"
-
 #~ msgid "Disable bitrate update during playback (saves cpu usage)"
 #~ msgstr ""
 #~ "Çalarken ses kalitesini güncellemeyi devre dışı bırak (işlemci gücünü "
@@ -6251,9 +6456,6 @@ msgstr "%s Hakkında"
 
 #~ msgid "Noise shaping"
 #~ msgstr "Gürültü biçimlendrme"
-
-#~ msgid "none"
-#~ msgstr "hiçbiri"
 
 #~ msgid "low"
 #~ msgstr "Düşük"
