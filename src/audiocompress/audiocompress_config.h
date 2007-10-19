@@ -1,4 +1,4 @@
-/* config.h
+/* audiocompress_config.h
 ** Default values for the configuration, and also a few random debug things
 */
 

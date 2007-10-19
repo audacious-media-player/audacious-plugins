@@ -13,7 +13,7 @@
 #include <audacious/util.h>
 #include <audacious/configdb.h>
 
-#include "config.h"
+#include "audiocompress_config.h"
 #include "compress.h"
 
 typedef struct {
