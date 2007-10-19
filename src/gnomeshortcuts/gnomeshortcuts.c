@@ -21,6 +21,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#define DBUS_API_SUBJECT_TO_CHANGE
+
 #include <config.h>
 
 #include <string.h>
