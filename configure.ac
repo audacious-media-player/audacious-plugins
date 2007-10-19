@@ -368,8 +368,13 @@ AC_ARG_ENABLE(mp3,
 
 if test "$enable_mp3" = "yes"; then
         AC_CHECK_LIB(mad, mad_timer_add,
-		[INPUT_PLUGINS="$INPUT_PLUGINS madplug"],
-		[enable_mp3="no"])
+		[INPUT_PLUGINS="$INPUT_PLUGINS madplug"
+		 MAD_CFLAGS=""
+		 MAD_LIBS="-lmad -lm"],
+		[PKG_CHECK_MODULES(MAD, [libmad],
+		 [INPUT_PLUGINS="$INPUT_PLUGINS madplug"],
+		 [enable_mp3="no"])
+		])
 fi
 # XXX rtsp support
 #        PKG_CHECK_MODULES(LIBNMS,[libnms >= 0.6.0],
@@ -380,6 +385,9 @@ fi
 #        AC_SUBST(LIBNMS_LIBS)
 #        AC_SUBST(LIBNMS_SRC)
 # fi
+
+AC_SUBST(MAD_CFLAGS)
+AC_SUBST(MAD_LIBS)
 
 dnl *** Rocklight
 
