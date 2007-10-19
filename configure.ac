@@ -1463,7 +1463,7 @@ AC_ARG_ENABLE(filewriter_mp3,
 if test "$enable_filewriter_mp3" = "yes"; then
    AC_CHECK_LIB(mp3lame -lm, lame_init, [have_lame=yes], [have_lame=no])
    if test "$have_lame" = yes; then
-      AC_DEFINE(FILEWRITER_MP3, 1, [Define if Vorbis output part should be built])
+      AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS -lmp3lame"
    fi
 fi
@@ -1479,6 +1479,7 @@ if test "$enable_filewriter_vorbis" = "yes"; then
    [have_vorbisenc=yes], [have_vorbisenc=no])
    if test "$have_vorbisenc" = yes; then
       AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
+      FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags vorbisenc`"
       FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs vorbisenc`"
    fi
 fi
@@ -1495,6 +1496,7 @@ if test "$enable_filewriter_flac" = "yes"; then
    )
    if test "$have_writer_flac" = yes; then
       AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
+	  FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags flac`"
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs flac`"
    fi
 fi
@@ -1505,6 +1507,7 @@ if test "$enable_filewriter" != yes; then
    have_writer_flac=no
    FILEWRITER_LIBS=""
 fi
+AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
 
 dnl *** End of all plugin checks ***
