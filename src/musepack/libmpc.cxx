@@ -128,12 +128,12 @@ mpc_reader_setup_file_vfs(mpc_reader_file *p_reader, VFSFile *input)
 static void mpcOpenPlugin()
 {
     ConfigDb *cfg;
-    cfg = bmp_cfg_db_open();
-    bmp_cfg_db_get_bool(cfg, "musepack", "clipPrevention", &pluginConfig.clipPrevention);
-    bmp_cfg_db_get_bool(cfg, "musepack", "albumGain",      &pluginConfig.albumGain);
-    bmp_cfg_db_get_bool(cfg, "musepack", "dynamicBitrate", &pluginConfig.dynamicBitrate);
-    bmp_cfg_db_get_bool(cfg, "musepack", "replaygain",     &pluginConfig.replaygain);
-    bmp_cfg_db_close(cfg);
+    cfg = aud_cfg_db_open();
+    aud_cfg_db_get_bool(cfg, "musepack", "clipPrevention", &pluginConfig.clipPrevention);
+    aud_cfg_db_get_bool(cfg, "musepack", "albumGain",      &pluginConfig.albumGain);
+    aud_cfg_db_get_bool(cfg, "musepack", "dynamicBitrate", &pluginConfig.dynamicBitrate);
+    aud_cfg_db_get_bool(cfg, "musepack", "replaygain",     &pluginConfig.replaygain);
+    aud_cfg_db_close(cfg);
 }
 
 static void mpcAboutBox()
@@ -263,14 +263,14 @@ static void saveConfigBox(GtkWidget* p_Widget, gpointer p_Data)
     tb = GTK_TOGGLE_BUTTON(widgets.albumCheck);
     pluginConfig.albumGain = gtk_toggle_button_get_active(tb);
 
-    cfg = bmp_cfg_db_open();
+    cfg = aud_cfg_db_open();
 
-    bmp_cfg_db_set_bool(cfg, "musepack", "clipPrevention", pluginConfig.clipPrevention);
-    bmp_cfg_db_set_bool(cfg, "musepack", "albumGain",      pluginConfig.albumGain);
-    bmp_cfg_db_set_bool(cfg, "musepack", "dynamicBitrate", pluginConfig.dynamicBitrate);
-    bmp_cfg_db_set_bool(cfg, "musepack", "replaygain",     pluginConfig.replaygain);
+    aud_cfg_db_set_bool(cfg, "musepack", "clipPrevention", pluginConfig.clipPrevention);
+    aud_cfg_db_set_bool(cfg, "musepack", "albumGain",      pluginConfig.albumGain);
+    aud_cfg_db_set_bool(cfg, "musepack", "dynamicBitrate", pluginConfig.dynamicBitrate);
+    aud_cfg_db_set_bool(cfg, "musepack", "replaygain",     pluginConfig.replaygain);
 
-    bmp_cfg_db_close(cfg);
+    aud_cfg_db_close(cfg);
 
     gtk_widget_destroy (widgets.configBox);
 }
