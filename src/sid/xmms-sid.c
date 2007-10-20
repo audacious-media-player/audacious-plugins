@@ -87,7 +87,7 @@ t_xs_status xs_status;
 XS_MUTEX(xs_status);
 static XS_THREAD_T xs_decode_thread;
 
-void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
+static void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
 
 /*
  * Error messages
@@ -591,7 +591,7 @@ gint xs_get_time(InputPlayback *pb)
 /*
  * Return song information Tuple
  */
-void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
+static void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 {
 	gchar *tmpStr, tmpStr2[64];
 
