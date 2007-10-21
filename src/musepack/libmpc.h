@@ -69,7 +69,7 @@ typedef struct Widgets
 
 typedef struct MpcDecoder
 {
-    char*      isError;
+    gchar*     isError;
     double     offset;
     bool       isOutput;
     bool       isAlive;
@@ -78,23 +78,23 @@ typedef struct MpcDecoder
 
 typedef struct TrackInfo
 {
-    int   bitrate;
-    char* display;
-    int   length;
-    int   sampleFreq;
-    int   channels;
+    gint   bitrate;
+    gchar* display;
+    gint   length;
+    gint   sampleFreq;
+    gint   channels;
 };
 
 typedef struct MpcInfo
 {
-    char*    title;
-    char*    artist;
-    char*    album;
-    char*    comment;
-    char*    genre;
-    char*    date;
-    unsigned track;
-    unsigned year;
+    gchar*    title;
+    gchar*    artist;
+    gchar*    album;
+    gchar*    comment;
+    gchar*    genre;
+    gchar*    date;
+    unsigned  track;
+    unsigned  year;
 };
 
 static void       mpcOpenPlugin();

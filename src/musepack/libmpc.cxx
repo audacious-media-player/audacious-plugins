@@ -128,12 +128,12 @@ mpc_reader_setup_file_vfs(mpc_reader_file *p_reader, VFSFile *input)
 static void mpcOpenPlugin()
 {
     ConfigDb *cfg;
-    cfg = bmp_cfg_db_open();
-    bmp_cfg_db_get_bool(cfg, "musepack", "clipPrevention", &pluginConfig.clipPrevention);
-    bmp_cfg_db_get_bool(cfg, "musepack", "albumGain",      &pluginConfig.albumGain);
-    bmp_cfg_db_get_bool(cfg, "musepack", "dynamicBitrate", &pluginConfig.dynamicBitrate);
-    bmp_cfg_db_get_bool(cfg, "musepack", "replaygain",     &pluginConfig.replaygain);
-    bmp_cfg_db_close(cfg);
+    cfg = aud_cfg_db_open();
+    aud_cfg_db_get_bool(cfg, "musepack", "clipPrevention", &pluginConfig.clipPrevention);
+    aud_cfg_db_get_bool(cfg, "musepack", "albumGain",      &pluginConfig.albumGain);
+    aud_cfg_db_get_bool(cfg, "musepack", "dynamicBitrate", &pluginConfig.dynamicBitrate);
+    aud_cfg_db_get_bool(cfg, "musepack", "replaygain",     &pluginConfig.replaygain);
+    aud_cfg_db_close(cfg);
 }
 
 static void mpcAboutBox()
@@ -263,19 +263,19 @@ static void saveConfigBox(GtkWidget* p_Widget, gpointer p_Data)
     tb = GTK_TOGGLE_BUTTON(widgets.albumCheck);
     pluginConfig.albumGain = gtk_toggle_button_get_active(tb);
 
-    cfg = bmp_cfg_db_open();
+    cfg = aud_cfg_db_open();
 
-    bmp_cfg_db_set_bool(cfg, "musepack", "clipPrevention", pluginConfig.clipPrevention);
-    bmp_cfg_db_set_bool(cfg, "musepack", "albumGain",      pluginConfig.albumGain);
-    bmp_cfg_db_set_bool(cfg, "musepack", "dynamicBitrate", pluginConfig.dynamicBitrate);
-    bmp_cfg_db_set_bool(cfg, "musepack", "replaygain",     pluginConfig.replaygain);
+    aud_cfg_db_set_bool(cfg, "musepack", "clipPrevention", pluginConfig.clipPrevention);
+    aud_cfg_db_set_bool(cfg, "musepack", "albumGain",      pluginConfig.albumGain);
+    aud_cfg_db_set_bool(cfg, "musepack", "dynamicBitrate", pluginConfig.dynamicBitrate);
+    aud_cfg_db_set_bool(cfg, "musepack", "replaygain",     pluginConfig.replaygain);
 
-    bmp_cfg_db_close(cfg);
+    aud_cfg_db_close(cfg);
 
     gtk_widget_destroy (widgets.configBox);
 }
 
-static int mpcIsOurFile(char* p_Filename)
+static gint mpcIsOurFile(gchar* p_Filename)
 {
     VFSFile *file;
     gchar magic[3];
@@ -290,7 +290,7 @@ static int mpcIsOurFile(char* p_Filename)
     return 0;
 }
 
-static int mpcIsOurFD(char* p_Filename, VFSFile* file)
+static gint mpcIsOurFD(gchar* p_Filename, VFSFile* file)
 {
     gchar magic[3];
     aud_vfs_fread(magic, 1, 3, file);
@@ -341,14 +341,14 @@ static void mpcSeek(InputPlayback *data, int p_Offset)
     lockRelease();
 }
 
-static int mpcGetTime(InputPlayback *data)
+static gint mpcGetTime(InputPlayback *data)
 {
     if(!isAlive())
         return -1;
     return data->output->output_time();
 }
 
-static Tuple *mpcGetSongTuple(char* p_Filename)
+static Tuple *mpcGetSongTuple(gchar* p_Filename)
 {
     VFSFile *input = aud_vfs_fopen(p_Filename, "rb");
     Tuple *tuple = NULL;
@@ -389,9 +389,9 @@ static Tuple *mpcGetSongTuple(char* p_Filename)
     }
     else
     {
-        char* temp = g_strdup_printf("[xmms-musepack] mpcGetSongInfo is unable to open %s\n", p_Filename);
+        gchar* temp = g_strdup_printf("[xmms-musepack] mpcGetSongInfo is unable to open %s\n", p_Filename);
         perror(temp);
-        free(temp);
+        g_free(temp);
     }
 
     return tuple;
@@ -414,23 +414,23 @@ static void mpcGetSongInfo(char* p_Filename, char** p_Title, int* p_Length)
     }
     else
     {
-        char* temp = g_strdup_printf("[xmms-musepack] mpcGetSongInfo is unable to open %s\n", p_Filename);
+        gchar* temp = g_strdup_printf("[xmms-musepack] mpcGetSongInfo is unable to open %s\n", p_Filename);
         perror(temp);
-        free(temp);
+        g_free(temp);
     }
 }
 
 static void freeTags(MpcInfo& tags)
 {
-    free(tags.title);
-    free(tags.artist);
-    free(tags.album);
-    free(tags.comment);
-    free(tags.genre);
-    free(tags.date);
+    g_free(tags.title);
+    g_free(tags.artist);
+    g_free(tags.album);
+    g_free(tags.comment);
+    g_free(tags.genre);
+    g_free(tags.date);
 }
 
-static MpcInfo getTags(const char* p_Filename)
+static MpcInfo getTags(const gchar* p_Filename)
 {
     gchar *pRealFilename = g_filename_from_uri(p_Filename, NULL, NULL);
     File oFile(pRealFilename ? pRealFilename : p_Filename, false);
@@ -588,9 +588,9 @@ static void mpcFileInfoBox(char* p_Filename)
             mpc_reader_setup_file_vfs(&reader, input);
             mpc_streaminfo_read(&info, &reader.reader);
 
-            int time = static_cast<int> (mpc_streaminfo_get_length(&info));
-            int minutes = time / 60;
-            int seconds = time % 60;
+            gint time = static_cast<int> (mpc_streaminfo_get_length(&info));
+            gint minutes = time / 60;
+            gint seconds = time % 60;
 
             mpcGtkPrintLabel(streamLabel,    _("Streamversion %d"), info.stream_version);
             mpcGtkPrintLabel(encoderLabel,   _("Encoder: %s"), info.encoder);
@@ -611,30 +611,30 @@ static void mpcFileInfoBox(char* p_Filename)
             gtk_entry_set_text(GTK_ENTRY(albumEntry),   tags.album);
             gtk_entry_set_text(GTK_ENTRY(commentEntry), tags.comment);
             gtk_entry_set_text(GTK_ENTRY(genreEntry),   tags.genre);
-            char* entry = g_strdup_printf ("%d", tags.track);
+            gchar* entry = g_strdup_printf ("%d", tags.track);
             gtk_entry_set_text(GTK_ENTRY(trackEntry), entry);
-            free(entry);
+            g_free(entry);
             entry = g_strdup_printf ("%d", tags.year);
             gtk_entry_set_text(GTK_ENTRY(yearEntry), entry);
-            free(entry);
+            g_free(entry);
             entry = g_filename_display_name(p_Filename);
             gtk_entry_set_text(GTK_ENTRY(fileEntry), entry);
-            free(entry);
+            g_free(entry);
             freeTags(tags);
             aud_vfs_fclose(input);
         }
         else
         {
-            char* temp = g_strdup_printf("[xmms-musepack] mpcFileInfoBox is unable to read tags from %s", p_Filename);
+            gchar* temp = g_strdup_printf("[xmms-musepack] mpcFileInfoBox is unable to read tags from %s", p_Filename);
             perror(temp);
-            free(temp);
+            g_free(temp);
         }
 
-	char* name = g_filename_display_basename(p_Filename);
-        char* text = g_strdup_printf(_("File Info - %s"), name);
-        free(name);
+	gchar* name = g_filename_display_basename(p_Filename);
+        gchar* text = g_strdup_printf(_("File Info - %s"), name);
+        g_free(name);
         gtk_window_set_title(GTK_WINDOW(infoBox), text);
-        free(text);
+        g_free(text);
 
         gtk_widget_show_all(infoBox);
     }
@@ -645,11 +645,11 @@ static void mpcGtkPrintLabel(GtkWidget* widget, const char* format,...)
     va_list args;
 
     va_start(args, format);
-    char* temp = g_strdup_vprintf(format, args);
+    gchar* temp = g_strdup_vprintf(format, args);
     va_end(args);
 
     gtk_label_set_text(GTK_LABEL(widget), temp);
-    free(temp);
+    g_free(temp);
 }
 
 static GtkWidget* mpcGtkTagLabel(const char* p_Text, int a, int b, int c, int d, GtkWidget* p_Box)
@@ -703,11 +703,11 @@ static void saveTags(GtkWidget* w, gpointer data)
     File oFile(gtk_entry_get_text(GTK_ENTRY(widgets.fileEntry)));
     Tag* poTag = oFile.tag();
 
-    char* cAlbum   = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.albumEntry)));
-    char* cArtist  = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.artistEntry)));
-    char* cTitle   = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.titleEntry)));
-    char* cGenre   = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.genreEntry)));
-    char* cComment = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.commentEntry)));
+    gchar* cAlbum   = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.albumEntry)));
+    gchar* cArtist  = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.artistEntry)));
+    gchar* cTitle   = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.titleEntry)));
+    gchar* cGenre   = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.genreEntry)));
+    gchar* cComment = g_strdup(gtk_entry_get_text(GTK_ENTRY(widgets.commentEntry)));
 
     const String album   = String(cAlbum,   TagLib::String::UTF8);
     const String artist  = String(cArtist,  TagLib::String::UTF8);
@@ -723,11 +723,11 @@ static void saveTags(GtkWidget* w, gpointer data)
     poTag->setYear(atoi(gtk_entry_get_text(GTK_ENTRY(widgets.yearEntry))));
     poTag->setTrack(atoi(gtk_entry_get_text(GTK_ENTRY(widgets.trackEntry))));
 
-    free(cAlbum);
-    free(cArtist);
-    free(cTitle);
-    free(cGenre);
-    free(cComment);
+    g_free(cAlbum);
+    g_free(cArtist);
+    g_free(cTitle);
+    g_free(cGenre);
+    g_free(cComment);
 
     oFile.save();
     closeInfoBox(NULL, NULL);
@@ -739,25 +739,25 @@ static void closeInfoBox(GtkWidget* w, gpointer data)
     widgets.infoBox = NULL;
 }
 
-static char* mpcGenerateTitle(const MpcInfo& p_Tags, char* p_Filename)
+static char* mpcGenerateTitle(const MpcInfo& p_Tags, gchar* p_Filename)
 {
     Tuple* tuple = mpcGetSongTuple(p_Filename);
 
-    char* title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
+    gchar* title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 
     aud_tuple_free((void *) tuple);
     return title;
 }
 
-static void* endThread(char* p_FileName, VFSFile * p_FileHandle, bool release)
+static void* endThread(gchar* p_FileName, VFSFile * p_FileHandle, bool release)
 {
-    free(p_FileName);
+    g_free(p_FileName);
     if(release)
         lockRelease();
     if(mpcDecoder.isError)
     {
         perror(mpcDecoder.isError);
-        free(mpcDecoder.isError);
+        g_free(mpcDecoder.isError);
         mpcDecoder.isError = NULL;
     }
     setAlive(false);
@@ -765,7 +765,7 @@ static void* endThread(char* p_FileName, VFSFile * p_FileHandle, bool release)
         aud_vfs_fclose(p_FileHandle);
     if(track.display)
     {
-        free(track.display);
+        g_free(track.display);
         track.display = NULL;
     }
     return 0;
@@ -827,7 +827,7 @@ static void* decodeStream(InputPlayback *data)
 
     lockRelease();
 
-    int counter = 2 * track.sampleFreq / 3;
+    gint counter = 2 * track.sampleFreq / 3;
     while (isAlive())
     {
         if (getOffset() != -1)
@@ -838,7 +838,7 @@ static void* decodeStream(InputPlayback *data)
 
         lockAcquire();
         short iPlaying = MpcPlugin.output->buffer_playing()? 1 : 0;
-        int iFree = MpcPlugin.output->buffer_free();
+        gint iFree = MpcPlugin.output->buffer_free();
         if (!mpcDecoder.isPause &&  iFree >= ((1152 * 4) << iPlaying))
         {
             unsigned status = processBuffer(data, sampleBuffer, xmmsBuffer, decoder);

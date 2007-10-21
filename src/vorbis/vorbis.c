@@ -743,7 +743,7 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename, gbool
         _aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, vorbis_comment_query(comment, "title", 0));
         _aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, vorbis_comment_query(comment, "artist", 0));
         _aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, vorbis_comment_query(comment, "album", 0));
-        _aud_tuple_associate_string(tuple, -1, "date", vorbis_comment_query(comment, "date", 0));
+        _aud_tuple_associate_string(tuple, FIELD_DATE, NULL, vorbis_comment_query(comment, "date", 0));
         _aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, vorbis_comment_query(comment, "genre", 0));
         _aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, vorbis_comment_query(comment, "comment", 0));
 
