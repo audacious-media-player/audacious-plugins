@@ -751,7 +751,6 @@ static char* mpcGenerateTitle(const MpcInfo& p_Tags, gchar* p_Filename)
 
 static void* endThread(gchar* p_FileName, VFSFile * p_FileHandle, bool release)
 {
-    g_free(p_FileName);
     if(release)
         lockRelease();
     if(mpcDecoder.isError)
