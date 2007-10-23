@@ -504,7 +504,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
-	std::string tmps;
+	const gchar *tmps;
 	
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
@@ -543,15 +543,11 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
 	default:		tmps = "ModPlug unknown"; break;
 	}
-	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, tmps.c_str());
+	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
 	aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
 	aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
-
-	/* NOTICE! FIXME? This is actually incorrect. We _cannot_ know what charset
-	 * an arbitrary module file uses .. typically it is some DOS CP-variant,
-	 * except for true Amiga modules.
-	 */
-	gchar *tmps2 = aud_str_to_utf8(lSoundFile->GetTitle());
+	
+	gchar *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
 	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps2);
 	g_free(tmps2);
 	

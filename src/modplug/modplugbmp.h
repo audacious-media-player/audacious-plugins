@@ -18,8 +18,6 @@ extern "C" {
 #include <audacious/plugin.h>
 }
 
-#define MODPLUG_CFGID	"modplug"
-
 /* Module files have their magic deep inside the file, at offset 1080; source: http://www.onicos.com/staff/iz/formats/mod.html and information by Michael Doering from UADE */
 #define MOD_MAGIC_PROTRACKER4	(unsigned char [4]) { 0x4D, 0x2E, 0x4B, 0x2E }  // "M.K." - Protracker 4 channel
 #define MOD_MAGIC_PROTRACKER4X	(unsigned char [4]) { 0x4D, 0x21, 0x4B, 0x21 }  // "M!K!" - Protracker 4 channel

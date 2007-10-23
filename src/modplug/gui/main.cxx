@@ -182,7 +182,7 @@ void ShowInfoWindow(const string& aFilename)
 
 	lInfo = lShortFN;
 	lInfo += '\n';
-	tmps = aud_str_to_utf8(lSoundFile->GetTitle());
+	tmps = MODPLUG_CONVERT(lSoundFile->GetTitle());
 	lInfo += tmps;
 	g_free(tmps);
 	lInfo += '\n';
@@ -282,7 +282,7 @@ void ShowInfoWindow(const string& aFilename)
 	for(i = 0; i < lNumSamples; i++)
 	{
 		lSoundFile->GetSampleName(i, lBuffer);
-		tmps = aud_str_to_utf8(lBuffer);
+		tmps = MODPLUG_CONVERT(lBuffer);
 		lInfo += tmps;
 		g_free(tmps);
 		lInfo += '\n';
@@ -293,7 +293,7 @@ void ShowInfoWindow(const string& aFilename)
 	for(i = 0; i < lNumInstruments; i++)
 	{
 		lSoundFile->GetInstrumentName(i, lBuffer);
-		tmps = aud_str_to_utf8(lBuffer);
+		tmps = MODPLUG_CONVERT(lBuffer);
 		lInfo += tmps;
 		g_free(tmps);
 		lInfo += '\n';
@@ -307,7 +307,7 @@ void ShowInfoWindow(const string& aFilename)
 	//gtk_text_backward_delete(textbox, length);
 	length = lSoundFile->GetSongComments(message, MAX_MESSAGE_LENGTH, 80);
 	if (length != 0) {
-		tmps = aud_str_to_utf8(message);
+		tmps = MODPLUG_CONVERT(message);
 		gtk_label_set_text((GtkLabel*)lookup_widget(InfoWin, "info_message"), tmps);
 		g_free(tmps);
 	}

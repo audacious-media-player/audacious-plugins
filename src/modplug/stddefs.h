@@ -11,6 +11,9 @@
 #if !defined(__MODPLUGXMMS_STDDEFS_H__INCLUDED__)
 #define __MODPLUGXMMS_STDDEFS_H__INCLUDED__
 
+#define MODPLUG_CFGID		"modplug"
+#define MODPLUG_CONVERT(X)	g_convert(X, -1, "UTF-8", "CP850", NULL, NULL, NULL)
+
 //Invalid pointer
 #ifndef NULL
 #define NULL 0
