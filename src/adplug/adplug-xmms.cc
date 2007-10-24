@@ -1036,14 +1036,14 @@ static void
 adplug_init (void)
 {
   dbg_printf ("adplug_init(): open, ");
-  ConfigDb *db = bmp_cfg_db_open ();
+  ConfigDb *db = aud_cfg_db_open ();
 
   // Read configuration
   dbg_printf ("read, ");
-  bmp_cfg_db_get_bool (db, CFG_VERSION, "16bit", (gboolean *) & conf.bit16);
-  bmp_cfg_db_get_bool (db, CFG_VERSION, "Stereo", (gboolean *) & conf.stereo);
-  bmp_cfg_db_get_int (db, CFG_VERSION, "Frequency", (gint *) & conf.freq);
-  bmp_cfg_db_get_bool (db, CFG_VERSION, "Endless",
+  aud_cfg_db_get_bool (db, CFG_VERSION, "16bit", (gboolean *) & conf.bit16);
+  aud_cfg_db_get_bool (db, CFG_VERSION, "Stereo", (gboolean *) & conf.stereo);
+  aud_cfg_db_get_int (db, CFG_VERSION, "Frequency", (gint *) & conf.freq);
+  aud_cfg_db_get_bool (db, CFG_VERSION, "Endless",
                        (gboolean *) & conf.endless);
 
   // Read file type exclusion list
@@ -1052,7 +1052,7 @@ adplug_init (void)
     gchar *cfgstr = NULL, *exclude = NULL;
     gboolean cfgread;
 
-    cfgread = bmp_cfg_db_get_string (db, CFG_VERSION, "Exclude", &cfgstr);
+    cfgread = aud_cfg_db_get_string (db, CFG_VERSION, "Exclude", &cfgstr);
     if (cfgread) {
         exclude = (char *) malloc (strlen (cfgstr) + 2);
         strcpy (exclude, cfgstr);
@@ -1063,7 +1063,7 @@ adplug_init (void)
         free (exclude); free (cfgstr);
     }
   }
-  bmp_cfg_db_close (db);
+  aud_cfg_db_close (db);
 
   // Load database from disk and hand it to AdPlug
   dbg_printf ("database");
@@ -1088,7 +1088,7 @@ static void
 adplug_quit (void)
 {
   dbg_printf ("adplug_quit(): open, ");
-  ConfigDb *db = bmp_cfg_db_open ();
+  ConfigDb *db = aud_cfg_db_open ();
 
   // Close database
   dbg_printf ("db, ");
@@ -1097,10 +1097,10 @@ adplug_quit (void)
 
   // Write configuration
   dbg_printf ("write, ");
-  bmp_cfg_db_set_bool (db, CFG_VERSION, "16bit", conf.bit16);
-  bmp_cfg_db_set_bool (db, CFG_VERSION, "Stereo", conf.stereo);
-  bmp_cfg_db_set_int (db, CFG_VERSION, "Frequency", conf.freq);
-  bmp_cfg_db_set_bool (db, CFG_VERSION, "Endless", conf.endless);
+  aud_cfg_db_set_bool (db, CFG_VERSION, "16bit", conf.bit16);
+  aud_cfg_db_set_bool (db, CFG_VERSION, "Stereo", conf.stereo);
+  aud_cfg_db_set_int (db, CFG_VERSION, "Frequency", conf.freq);
+  aud_cfg_db_set_bool (db, CFG_VERSION, "Endless", conf.endless);
 
   dbg_printf ("exclude, ");
   std::string exclude;
@@ -1114,11 +1114,11 @@ adplug_quit (void)
       exclude += (*i)->filetype;
     }
   gchar *cfgval = g_strdup (exclude.c_str ());
-  bmp_cfg_db_set_string (db, CFG_VERSION, "Exclude", cfgval);
+  aud_cfg_db_set_string (db, CFG_VERSION, "Exclude", cfgval);
   free (cfgval);
 
   dbg_printf ("close");
-  bmp_cfg_db_close (db);
+  aud_cfg_db_close (db);
   dbg_printf (".\n");
 }
 

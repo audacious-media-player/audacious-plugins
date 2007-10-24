@@ -77,35 +77,35 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
 
     audmad_config_compute(&audmad_config);
 
-    db = bmp_cfg_db_open();
-    bmp_cfg_db_set_int(db, "MAD", "http_buffer_size",
+    db = aud_cfg_db_open();
+    aud_cfg_db_set_int(db, "MAD", "http_buffer_size",
                        audmad_config.http_buffer_size);
-    bmp_cfg_db_set_bool(db, "MAD", "fast_play_time_calc",
+    aud_cfg_db_set_bool(db, "MAD", "fast_play_time_calc",
                         audmad_config.fast_play_time_calc);
-    bmp_cfg_db_set_bool(db, "MAD", "use_xing", audmad_config.use_xing);
-    bmp_cfg_db_set_bool(db, "MAD", "dither", audmad_config.dither);
-    bmp_cfg_db_set_bool(db, "MAD", "sjis", audmad_config.sjis);
-    bmp_cfg_db_set_bool(db, "MAD", "hard_limit",
+    aud_cfg_db_set_bool(db, "MAD", "use_xing", audmad_config.use_xing);
+    aud_cfg_db_set_bool(db, "MAD", "dither", audmad_config.dither);
+    aud_cfg_db_set_bool(db, "MAD", "sjis", audmad_config.sjis);
+    aud_cfg_db_set_bool(db, "MAD", "hard_limit",
                         audmad_config.hard_limit);
-    bmp_cfg_db_set_string(db, "MAD", "pregain_db",
+    aud_cfg_db_set_string(db, "MAD", "pregain_db",
                           audmad_config.pregain_db);
 
-    bmp_cfg_db_set_bool(db, "MAD", "RG.enable",
+    aud_cfg_db_set_bool(db, "MAD", "RG.enable",
                         audmad_config.replaygain.enable);
-    bmp_cfg_db_set_bool(db, "MAD", "RG.track_mode",
+    aud_cfg_db_set_bool(db, "MAD", "RG.track_mode",
                         audmad_config.replaygain.track_mode);
-    bmp_cfg_db_set_string(db, "MAD", "RG.default_db",
+    aud_cfg_db_set_string(db, "MAD", "RG.default_db",
                           audmad_config.replaygain.default_db);
 
-    bmp_cfg_db_set_bool(db, "MAD", "title_override", audmad_config.title_override);
-    bmp_cfg_db_set_string(db, "MAD", "id3_format", audmad_config.id3_format);
+    aud_cfg_db_set_bool(db, "MAD", "title_override", audmad_config.title_override);
+    aud_cfg_db_set_string(db, "MAD", "id3_format", audmad_config.id3_format);
 
-    bmp_cfg_db_set_bool(db, "MAD", "show_avg_vbr_bitrate",
+    aud_cfg_db_set_bool(db, "MAD", "show_avg_vbr_bitrate",
                             audmad_config.show_avg_vbr_bitrate);
-    bmp_cfg_db_set_bool(db, "MAD", "force_reopen_audio",
+    aud_cfg_db_set_bool(db, "MAD", "force_reopen_audio",
                             audmad_config.force_reopen_audio);
 
-    bmp_cfg_db_close(db);
+    aud_cfg_db_close(db);
     gtk_widget_destroy(configure_win);
 }
 

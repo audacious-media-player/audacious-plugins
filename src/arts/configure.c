@@ -23,9 +23,9 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 	artsxmms_cfg.buffer_size =
 		gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffer_size_spin));
 
-	db = bmp_cfg_db_open();
-	bmp_cfg_db_set_int(db, "arts", "buffer_size", artsxmms_cfg.buffer_size);
-	bmp_cfg_db_close(db);
+	db = aud_cfg_db_open();
+	aud_cfg_db_set_int(db, "arts", "buffer_size", artsxmms_cfg.buffer_size);
+	aud_cfg_db_close(db);
 
 	gtk_widget_destroy(configure_win);
 }

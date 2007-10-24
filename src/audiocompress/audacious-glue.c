@@ -122,20 +122,20 @@ void initPrefs(CompressorPrefs * prefs)
 {
 	ConfigDb *db;
 
-	db = bmp_cfg_db_open();
+	db = aud_cfg_db_open();
 
-	bmp_cfg_db_get_bool(db, "AudioCompress",
+	aud_cfg_db_get_bool(db, "AudioCompress",
 			       "anticlip", &prefs->anticlip);
-	bmp_cfg_db_get_int(db, "AudioCompress", "target",
+	aud_cfg_db_get_int(db, "AudioCompress", "target",
 			   &prefs->target);
-	bmp_cfg_db_get_int(db, "AudioCompress", "gainmax",
+	aud_cfg_db_get_int(db, "AudioCompress", "gainmax",
 			   &prefs->gainmax);
-	bmp_cfg_db_get_int(db, "AudioCompress",
+	aud_cfg_db_get_int(db, "AudioCompress",
 			   "gainsmooth", &prefs->gainsmooth);
-	bmp_cfg_db_get_int(db, "AudioCompress", "buckets",
+	aud_cfg_db_get_int(db, "AudioCompress", "buckets",
 			   &prefs->buckets);
 
-	bmp_cfg_db_close(db);
+	aud_cfg_db_close(db);
 
 	if ((prefs->gainmax == 0) && (prefs->gainsmooth == 0) && (prefs->buckets == 0)) {
 		prefs->anticlip = ANTICLIP;
@@ -161,20 +161,20 @@ void savePrefs(CompressorPrefs * prefs)
 {
 	ConfigDb *db;
 
-	db = bmp_cfg_db_open();
+	db = aud_cfg_db_open();
 
-	bmp_cfg_db_set_bool(db, "AudioCompress", "anticlip",
+	aud_cfg_db_set_bool(db, "AudioCompress", "anticlip",
 			    prefs->anticlip);
-	bmp_cfg_db_set_int(db, "AudioCompress", "target",
+	aud_cfg_db_set_int(db, "AudioCompress", "target",
 			    prefs->target);
-	bmp_cfg_db_set_int(db, "AudioCompress", "gainmax",
+	aud_cfg_db_set_int(db, "AudioCompress", "gainmax",
 			    prefs->gainmax);
-	bmp_cfg_db_set_int(db, "AudioCompress", "gainsmooth",
+	aud_cfg_db_set_int(db, "AudioCompress", "gainsmooth",
 			    prefs->gainsmooth);
-	bmp_cfg_db_set_int(db, "AudioCompress", "buckets",
+	aud_cfg_db_set_int(db, "AudioCompress", "buckets",
 			    prefs->buckets);
 
-	bmp_cfg_db_close(db);
+	aud_cfg_db_close(db);
 }
 
 

@@ -43,18 +43,18 @@ void cval_writefile(struct config_value val, ConfigDb *fp, char* sect)
 	{
 		case BOOLN:
 		case INT:
-			bmp_cfg_db_set_int(fp, sect, val.name, *val.vali.var);
+			aud_cfg_db_set_int(fp, sect, val.name, *val.vali.var);
 		break;
 		case FLOAT:
-			bmp_cfg_db_set_float(fp, sect, val.name, *val.valf.var);
+			aud_cfg_db_set_float(fp, sect, val.name, *val.valf.var);
 		break;
 		case TEXT:
-			bmp_cfg_db_set_string(fp, sect, val.name, *val.valt.var);
+			aud_cfg_db_set_string(fp, sect, val.name, *val.valt.var);
 		break;
 		case COLOR:
 		{
 			char colortmp[10];
-			bmp_cfg_db_set_string(fp, sect, val.name, color_arr2quad(val.valc.var, colortmp));
+			aud_cfg_db_set_string(fp, sect, val.name, color_arr2quad(val.valc.var, colortmp));
 		}
 		break;
 	}
@@ -66,21 +66,21 @@ void cval_readfile(struct config_value val, ConfigDb *fp, char* sect)
 	{
 		case BOOLN:
 		case INT:
-			if (!(bmp_cfg_db_get_int(fp, sect, val.name, val.vali.var)))
+			if (!(aud_cfg_db_get_int(fp, sect, val.name, val.vali.var)))
 				cval_writefile(val, fp, sect);
 		break;
 		case FLOAT:
-			if (!(bmp_cfg_db_get_float(fp, sect, val.name, val.valf.var)))
+			if (!(aud_cfg_db_get_float(fp, sect, val.name, val.valf.var)))
 				cval_writefile(val, fp, sect);
 		break;
 		case TEXT:
-			if (!(bmp_cfg_db_get_string(fp, sect, val.name, val.valt.var)))
+			if (!(aud_cfg_db_get_string(fp, sect, val.name, val.valt.var)))
 				cval_writefile(val, fp, sect);
 		break;
 		case COLOR:
 		{
 			char* colortmp = NULL;
-			if (!(bmp_cfg_db_get_string(fp, sect, val.name, &colortmp)))
+			if (!(aud_cfg_db_get_string(fp, sect, val.name, &colortmp)))
 				cval_writefile(val, fp, sect);
 			else	color_quad2arr(val.valc.var, colortmp);
 		}
@@ -95,7 +95,7 @@ void config_read(int number) {
 	int i, j;
 	ConfigDb *fp;
 
-	fp = bmp_cfg_db_open();
+	fp = aud_cfg_db_open();
 
 	print_status("Reading configuration");
 
@@ -114,7 +114,7 @@ void config_read(int number) {
 				cval_readfile(Cchannel[j].def[i], fp, (j == 0 ? "rootvis" : "rootvis2"));
 			}
 
-	bmp_cfg_db_close(fp);
+	aud_cfg_db_close(fp);
 	print_status("Configuration finished");
 }
 
@@ -123,7 +123,7 @@ void config_write(int number) {
 	ConfigDb *fp;
 
 	print_status("Writing configuration");
-	fp = bmp_cfg_db_open();
+	fp = aud_cfg_db_open();
 
 	if (number == 2)
 		for (i = 0; i < Cmain.count; ++i)
@@ -134,7 +134,7 @@ void config_write(int number) {
 			for (i = 0; i < Cchannel[j].count; ++i)
 				cval_writefile(Cchannel[j].def[i], fp, (j == 0 ? "rootvis" : "rootvis2"));
 
-	bmp_cfg_db_close(fp);
+	aud_cfg_db_close(fp);
 }
 
 void config_revert(int number) {

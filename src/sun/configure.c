@@ -57,26 +57,26 @@ static void configure_win_ok_cb(GtkWidget *w, gpointer data)
 		sun_mixer_close();
 	}
 
-	cfgfile = bmp_cfg_db_open();
+	cfgfile = aud_cfg_db_open();
 
-	bmp_cfg_db_set_string(cfgfile, "sun",
+	aud_cfg_db_set_string(cfgfile, "sun",
 			      "audio_devaudio", audio.devaudio);
-	bmp_cfg_db_set_string(cfgfile, "sun",
+	aud_cfg_db_set_string(cfgfile, "sun",
 			      "audio_devaudioctl", audio.devaudioctl);
-	bmp_cfg_db_set_string(cfgfile, "sun",
+	aud_cfg_db_set_string(cfgfile, "sun",
 			      "audio_devmixer", audio.devmixer);
 
-	bmp_cfg_db_set_string(cfgfile, "sun",
+	aud_cfg_db_set_string(cfgfile, "sun",
 			      "mixer_voldev", audio.mixer_voldev);
-	bmp_cfg_db_set_bool(cfgfile, "sun",
+	aud_cfg_db_set_bool(cfgfile, "sun",
 			       "mixer_keepopen", audio.mixer_keepopen);
 
-	bmp_cfg_db_set_int(cfgfile, "sun",
+	aud_cfg_db_set_int(cfgfile, "sun",
 			   "buffer_size", audio.req_buffer_size);
-	bmp_cfg_db_set_int(cfgfile, "sun",
+	aud_cfg_db_set_int(cfgfile, "sun",
 			   "prebuffer_size", audio.req_prebuffer_size);
 
-	bmp_cfg_db_close(cfgfile);
+	aud_cfg_db_close(cfgfile);
 
 	configure_win_destroy();
 }

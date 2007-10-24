@@ -25,9 +25,9 @@ configure_ok(GtkWidget * w, gpointer data)
     bscope_cfg.color =
         ((guint32) (255.0 * color[0]) << 16) |
         ((guint32) (255.0 * color[1]) << 8) | ((guint32) (255.0 * color[2]));
-    db = bmp_cfg_db_open();
-    bmp_cfg_db_set_int(db, "BlurScope", "color", bscope_cfg.color);
-    bmp_cfg_db_close(db);
+    db = aud_cfg_db_open();
+    aud_cfg_db_set_int(db, "BlurScope", "color", bscope_cfg.color);
+    aud_cfg_db_close(db);
     generate_cmap();
     gtk_widget_destroy(configure_win);
 }

@@ -136,14 +136,14 @@ static void file_init(void)
 {
     ConfigDb *db;
 
-    db = bmp_cfg_db_open();
-    bmp_cfg_db_get_int(db, "filewriter", "fileext", &fileext);
-    bmp_cfg_db_get_string(db, "filewriter", "file_path", &file_path);
-    bmp_cfg_db_get_bool(db, "filewriter", "save_original", &save_original);
-    bmp_cfg_db_get_bool(db, "filewriter", "use_suffix", &use_suffix);
-    bmp_cfg_db_get_bool(db, "filewriter", "filenamefromtags", &filenamefromtags);
-    bmp_cfg_db_get_bool(db, "filewriter", "prependnumber", &prependnumber);
-    bmp_cfg_db_close(db);
+    db = aud_cfg_db_open();
+    aud_cfg_db_get_int(db, "filewriter", "fileext", &fileext);
+    aud_cfg_db_get_string(db, "filewriter", "file_path", &file_path);
+    aud_cfg_db_get_bool(db, "filewriter", "save_original", &save_original);
+    aud_cfg_db_get_bool(db, "filewriter", "use_suffix", &use_suffix);
+    aud_cfg_db_get_bool(db, "filewriter", "filenamefromtags", &filenamefromtags);
+    aud_cfg_db_get_bool(db, "filewriter", "prependnumber", &prependnumber);
+    aud_cfg_db_close(db);
 
     if (!file_path)
         file_path = g_strdup(g_get_home_dir());
@@ -383,15 +383,15 @@ static void configure_ok_cb(gpointer data)
     prependnumber =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prependnumber_toggle));
 
-    db = bmp_cfg_db_open();
-    bmp_cfg_db_set_int(db, "filewriter", "fileext", fileext);
-    bmp_cfg_db_set_string(db, "filewriter", "file_path", file_path);
-    bmp_cfg_db_set_bool(db, "filewriter", "save_original", save_original);
-    bmp_cfg_db_set_bool(db, "filewriter", "filenamefromtags", filenamefromtags);
-    bmp_cfg_db_set_bool(db, "filewriter", "use_suffix", use_suffix);
-    bmp_cfg_db_set_bool(db, "filewriter", "prependnumber", prependnumber);
+    db = aud_cfg_db_open();
+    aud_cfg_db_set_int(db, "filewriter", "fileext", fileext);
+    aud_cfg_db_set_string(db, "filewriter", "file_path", file_path);
+    aud_cfg_db_set_bool(db, "filewriter", "save_original", save_original);
+    aud_cfg_db_set_bool(db, "filewriter", "filenamefromtags", filenamefromtags);
+    aud_cfg_db_set_bool(db, "filewriter", "use_suffix", use_suffix);
+    aud_cfg_db_set_bool(db, "filewriter", "prependnumber", prependnumber);
 
-    bmp_cfg_db_close(db);
+    aud_cfg_db_close(db);
 
     gtk_widget_destroy(configure_win);
     if (path_dirbrowser)

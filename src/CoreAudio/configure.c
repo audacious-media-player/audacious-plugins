@@ -62,18 +62,18 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 		if (osx_cfg.alt_mixer_device[0] != '/') 
 			osx_cfg.use_alt_mixer_device = FALSE;
 	
-	cfgfile = bmp_cfg_db_open();
+	cfgfile = aud_cfg_db_open();
 
-	bmp_cfg_db_set_int(cfgfile, "OSX", "audio_device", osx_cfg.audio_device);
-	bmp_cfg_db_set_int(cfgfile, "OSX", "mixer_device", osx_cfg.mixer_device);
-	bmp_cfg_db_set_int(cfgfile, "OSX", "buffer_size", osx_cfg.buffer_size);
-	bmp_cfg_db_set_int(cfgfile, "OSX", "prebuffer", osx_cfg.prebuffer);
-	bmp_cfg_db_set_bool(cfgfile,"OSX","use_master",osx_cfg.use_master);
-	bmp_cfg_db_set_bool(cfgfile, "OSX", "use_alt_audio_device", osx_cfg.use_alt_audio_device);
-	bmp_cfg_db_set_string(cfgfile, "OSX", "alt_audio_device", osx_cfg.alt_audio_device);
-	bmp_cfg_db_set_bool(cfgfile, "OSX", "use_alt_mixer_device", osx_cfg.use_alt_mixer_device);
-	bmp_cfg_db_set_string(cfgfile, "OSX", "alt_mixer_device", osx_cfg.alt_mixer_device);
-	bmp_cfg_db_close(cfgfile);
+	aud_cfg_db_set_int(cfgfile, "OSX", "audio_device", osx_cfg.audio_device);
+	aud_cfg_db_set_int(cfgfile, "OSX", "mixer_device", osx_cfg.mixer_device);
+	aud_cfg_db_set_int(cfgfile, "OSX", "buffer_size", osx_cfg.buffer_size);
+	aud_cfg_db_set_int(cfgfile, "OSX", "prebuffer", osx_cfg.prebuffer);
+	aud_cfg_db_set_bool(cfgfile,"OSX","use_master",osx_cfg.use_master);
+	aud_cfg_db_set_bool(cfgfile, "OSX", "use_alt_audio_device", osx_cfg.use_alt_audio_device);
+	aud_cfg_db_set_string(cfgfile, "OSX", "alt_audio_device", osx_cfg.alt_audio_device);
+	aud_cfg_db_set_bool(cfgfile, "OSX", "use_alt_mixer_device", osx_cfg.use_alt_mixer_device);
+	aud_cfg_db_set_string(cfgfile, "OSX", "alt_mixer_device", osx_cfg.alt_mixer_device);
+	aud_cfg_db_close(cfgfile);
 
 	gtk_widget_destroy(configure_win);
 }
