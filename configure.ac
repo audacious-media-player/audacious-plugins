@@ -367,24 +367,18 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "$enable_mp3" = "yes"; then
-        AC_CHECK_LIB(mad, mad_timer_add,
-		[INPUT_PLUGINS="$INPUT_PLUGINS madplug"
-		 MAD_CFLAGS=""
-		 MAD_LIBS="-lmad -lm"],
-		[PKG_CHECK_MODULES(MAD, [libmad],
-		 [INPUT_PLUGINS="$INPUT_PLUGINS madplug"],
-		 [enable_mp3="no"])
-		])
+    AM_PATH_LIBMAD([enable_mp3=yes], 
+        [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
+         enable_mp3=no]
+    )
+else
+    AC_MSG_RESULT([*** mp3 plugin disabled per user request ***])
+    enable_mp3=no
 fi
-# XXX rtsp support
-#        PKG_CHECK_MODULES(LIBNMS,[libnms >= 0.6.0],
-#            [LIBNMS_SRC=rtsp.c
-#             AC_DEFINE(HAVE_NEMESI,,[Define if rtp/rtsp support is available])
-#            ],[LIBNMS_SRC=""])
-#        AC_SUBST(LIBNMS_CFLAGS)
-#        AC_SUBST(LIBNMS_LIBS)
-#        AC_SUBST(LIBNMS_SRC)
-# fi
+
+if test "$enable_mp3" = "yes"; then
+	INPUT_PLUGINS="$INPUT_PLUGINS madplug"
+fi
 
 AC_SUBST(MAD_CFLAGS)
 AC_SUBST(MAD_LIBS)
