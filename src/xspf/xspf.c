@@ -145,13 +145,6 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
 
                 location = g_strdup_printf("%s%s", base ? base : "", str);
                 xmlFree(str);
-                str = g_filename_from_uri(location, NULL, NULL);
-                if (str) {
-                    g_free(location);
-                    location = g_strdup_printf("file://%s", str);
-                }
-            
-                g_free(str);
             } else {
                 /* Rest of the nodes are handled here */
                 gint i;
