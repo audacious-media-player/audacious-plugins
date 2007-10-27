@@ -367,10 +367,7 @@ vorbis_play_loop(gpointer arg)
     vi = ov_info(&vf, -1);
 
     if (aud_vfs_is_streaming(fd->fd))
-    {
         time = -1;
-	vf.seekable = FALSE;   /* XXX: don't ask. -nenolod */
-    }
 
     if (vi->channels > 2) {
         playback->eof = TRUE;
