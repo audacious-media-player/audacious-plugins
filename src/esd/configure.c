@@ -53,15 +53,15 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
     esd_cfg.prebuffer =
         gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffer_pre_spin));
 
-    db = bmp_cfg_db_open();
+    db = aud_cfg_db_open();
 
-    bmp_cfg_db_set_bool(db, "ESD", "use_remote", esd_cfg.use_remote);
-    bmp_cfg_db_set_bool(db, "ESD", "use_oss_mixer", esd_cfg.use_oss_mixer);
-    bmp_cfg_db_set_string(db, "ESD", "remote_host", esd_cfg.server);
-    bmp_cfg_db_set_int(db, "ESD", "remote_port", esd_cfg.port);
-    bmp_cfg_db_set_int(db, "ESD", "buffer_size", esd_cfg.buffer_size);
-    bmp_cfg_db_set_int(db, "ESD", "prebuffer", esd_cfg.prebuffer);
-    bmp_cfg_db_close(db);
+    aud_cfg_db_set_bool(db, "ESD", "use_remote", esd_cfg.use_remote);
+    aud_cfg_db_set_bool(db, "ESD", "use_oss_mixer", esd_cfg.use_oss_mixer);
+    aud_cfg_db_set_string(db, "ESD", "remote_host", esd_cfg.server);
+    aud_cfg_db_set_int(db, "ESD", "remote_port", esd_cfg.port);
+    aud_cfg_db_set_int(db, "ESD", "buffer_size", esd_cfg.buffer_size);
+    aud_cfg_db_set_int(db, "ESD", "prebuffer", esd_cfg.prebuffer);
+    aud_cfg_db_close(db);
 
 }
 

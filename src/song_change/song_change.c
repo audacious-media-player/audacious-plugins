@@ -169,16 +169,16 @@ static void read_config(void)
 {
 	ConfigDb *db;
 
-	db = bmp_cfg_db_open();
-	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line", &cmd_line) )
+	db = aud_cfg_db_open();
+	if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line", &cmd_line) )
 		cmd_line = g_strdup("");
-	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line_after", &cmd_line_after) )
+	if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line_after", &cmd_line_after) )
 		cmd_line_after = g_strdup("");
-	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line_end", &cmd_line_end) )
+	if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line_end", &cmd_line_end) )
 		cmd_line_end = g_strdup("");
-	if ( !bmp_cfg_db_get_string(db, "song_change", "cmd_line_ttc", &cmd_line_ttc) )
+	if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line_ttc", &cmd_line_ttc) )
 		cmd_line_ttc = g_strdup("");
-	bmp_cfg_db_close(db);
+	aud_cfg_db_close(db);
 }
 
 static void cleanup(void)
@@ -219,12 +219,12 @@ static void save_and_close(GtkWidget *w, gpointer data)
 	cmd_end = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_end_entry)));
 	cmd_ttc = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_ttc_entry)));
 
-	db = bmp_cfg_db_open();
-	bmp_cfg_db_set_string(db, "song_change", "cmd_line", cmd);
-	bmp_cfg_db_set_string(db, "song_change", "cmd_line_after", cmd_after);
-	bmp_cfg_db_set_string(db, "song_change", "cmd_line_end", cmd_end);
-	bmp_cfg_db_set_string(db, "song_change", "cmd_line_ttc", cmd_ttc);
-	bmp_cfg_db_close(db);
+	db = aud_cfg_db_open();
+	aud_cfg_db_set_string(db, "song_change", "cmd_line", cmd);
+	aud_cfg_db_set_string(db, "song_change", "cmd_line_after", cmd_after);
+	aud_cfg_db_set_string(db, "song_change", "cmd_line_end", cmd_end);
+	aud_cfg_db_set_string(db, "song_change", "cmd_line_ttc", cmd_ttc);
+	aud_cfg_db_close(db);
 
 	if (cmd_line != NULL)
 		g_free(cmd_line);

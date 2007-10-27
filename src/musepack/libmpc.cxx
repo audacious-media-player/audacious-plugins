@@ -773,7 +773,7 @@ static void* endThread(gchar* p_FileName, VFSFile * p_FileHandle, bool release)
 static void* decodeStream(InputPlayback *data)
 {
     lockAcquire();
-    char* filename = data->filename;
+    gchar* filename = data->filename;
     VFSFile *input = aud_vfs_fopen(filename, "rb");
     if (!input)
     {

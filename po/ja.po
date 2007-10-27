@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-10-18 21:38+0200\n"
-"PO-Revision-Date: 2007-09-10 09:42+0900\n"
+"PO-Revision-Date: 2007-10-21 18:38+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2894,12 +2894,11 @@ msgstr ""
 
 #: src/flacng/plugin.c:724
 msgid "About FLAC Audio Plugin"
-msgstr "FLAC オーディオ プラグインについて"
+msgstr "FLAC オーディオプラグインについて"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:285
-#, fuzzy
 msgid "About Gnome Shortcut Plugin"
-msgstr "ESounD プラグインについて"
+msgstr "Gnome ショートカットプラグインについて"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:286
 msgid ""
@@ -2909,107 +2908,99 @@ msgid ""
 "Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 msgstr ""
+"Gnome ショートカットプラグイン\n"
+"Gnome ショートカットでプレイヤを操作しよう．\n"
+"\n"
+"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
 
 #: src/hotkey/plugin.c:607
-#, fuzzy
 msgid "(none)"
-msgstr "なし"
+msgstr "(なし)"
 
 #: src/hotkey/plugin.c:752
-#, fuzzy
 msgid "Global Hotkey Plugin Configuration"
-msgstr "jack プラグイン設定"
+msgstr "グローバルホットキープラグイン設定"
 
 #: src/hotkey/plugin.c:768
 msgid "Press a key combination inside a text field."
-msgstr ""
+msgstr "テキストフィールド内でキーコンビネーションを押してください."
 
 #: src/hotkey/plugin.c:773
-#, fuzzy
 msgid "<b>Playback:</b>"
-msgstr "演奏"
+msgstr "<b>演奏:</b>"
 
 #: src/hotkey/plugin.c:788
 msgid "<i>Configure keys which controls Audacious playback.</i>"
-msgstr ""
+msgstr "<i>Audacious の演奏を制御するキーを設定します.</i>"
 
 #: src/hotkey/plugin.c:795
 msgid "Previous Track:"
-msgstr ""
+msgstr "次のトラック:"
 
 #: src/hotkey/plugin.c:798
-#, fuzzy
 msgid "Play/Pause:"
-msgstr "演奏->一時停止"
+msgstr "演奏/一時停止:"
 
 #: src/hotkey/plugin.c:801
-#, fuzzy
 msgid "Pause:"
-msgstr "演奏停止"
+msgstr "一時停止:"
 
 #: src/hotkey/plugin.c:804
-#, fuzzy
 msgid "Stop:"
-msgstr " -> "
+msgstr "演奏停止:"
 
 #: src/hotkey/plugin.c:807
-#, fuzzy
 msgid "Next Track:"
-msgstr "トラック:"
+msgstr "次のトラック:"
 
 #: src/hotkey/plugin.c:810
 msgid "Forward 5 sec.:"
-msgstr ""
+msgstr "5秒進める:"
 
 #: src/hotkey/plugin.c:813
 msgid "Rewind 5 sec.:"
-msgstr ""
+msgstr "5秒戻す:"
 
 #: src/hotkey/plugin.c:818
-#, fuzzy
 msgid "<b>Volume Control:</b>"
-msgstr "音量コントロールデバイス:"
+msgstr "<b>音量コントロール:</b>"
 
 #: src/hotkey/plugin.c:833
 msgid "<i>Configure keys which controls music volume.</i>"
-msgstr ""
+msgstr "<i>曲の音量をコントロールするキーを設定します.</i>"
 
 #: src/hotkey/plugin.c:841
-#, fuzzy
 msgid "Mute:"
-msgstr "日付:"
+msgstr "無音:"
 
 #: src/hotkey/plugin.c:844
-#, fuzzy
 msgid "Volume Up:"
-msgstr "音量"
+msgstr "音量を上げる:"
 
 #: src/hotkey/plugin.c:847
-#, fuzzy
 msgid "Volume Down:"
-msgstr "音量->5下げる"
+msgstr "音量を下げる:"
 
 #: src/hotkey/plugin.c:852
-#, fuzzy
 msgid "<b>Player:</b>"
-msgstr "<b>名前:</b>"
+msgstr "<b>プレイヤ:</b>"
 
 #: src/hotkey/plugin.c:867
 msgid "<i>Configure keys which control the player.</i>"
-msgstr ""
+msgstr "<i>プレイヤをコントロールするキーを設定します.</i>"
 
 #: src/hotkey/plugin.c:873
 msgid "Jump to File:"
-msgstr ""
+msgstr "指定ファイルへ移動:"
 
 #: src/hotkey/plugin.c:876
 msgid "Toggle Player Windows:"
-msgstr ""
+msgstr "プレイヤウィンドウを切り替える:"
 
 #: src/hotkey/plugin.c:903
-#, fuzzy
 msgid "About Global Hotkey Plugin"
-msgstr "Scrobbler プラグインについて"
+msgstr "グローバルホットキープラグインについて"
 
 #: src/hotkey/plugin.c:904
 msgid ""
@@ -3026,6 +3017,18 @@ msgid ""
 "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
 "\n"
 msgstr ""
+"グローバルホットキープラグイン\n"
+"グローバルキーコンビネーションかマルチメディアキーでプレイヤをコントロール.\n"
+"\n"
+"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"貢献者:\n"
+"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+"\t\t\tBryn Davies <curious@ihug.com.au>\n"
+"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+"\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
+"\n"
 
 #: src/jack/configure.c:70
 msgid "Connect to all available jack ports"
@@ -3546,14 +3549,14 @@ msgid "Surround"
 msgstr "サラウンド"
 
 #: src/modplug/gui/interface.cxx:550 src/modplug/gui/modplug.glade:1163
-#, fuzzy
 msgid ""
 "Note:  Setting the preamp\n"
 "too high may cause clipping\n"
 "(annoying clicks and pops)!"
 msgstr ""
 "注意: プリアンプの設定が高すぎると\n"
-"クリッピングや歪みの原因になります!"
+"クリッピング(うるさいカチカチ音や\n"
+"ブツブツ音)の原因になります!"
 
 #: src/modplug/gui/interface.cxx:556 src/modplug/gui/modplug.glade:1192
 msgid "Preamp"
@@ -3640,6 +3643,16 @@ msgid ""
 "---\n"
 "---"
 msgstr ""
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---\n"
+"---"
 
 #: src/modplug/gui/interface.cxx:901 src/modplug/gui/modplug.glade:1849
 msgid "Samples"
@@ -4520,30 +4533,32 @@ msgid ""
 "for SID-files. The SID-plugin specific Tuplez tags are described shortly "
 "below."
 msgstr ""
+"このオプションを有効にすると，SID ファイルのカスタムタプルフォーマット文字列"
+"を指定できます．SID プラグインで指定するタプルタグはすぐ下に記述します．"
 
 #: src/sid/xmms-sid.glade:2432 src/sid/xs_interface.c:1039
-#, fuzzy
 msgid "Override generic Tuplez format string"
-msgstr "オリジナルのタイトルを上書きする"
+msgstr "オリジナルのタプルフォーマット文字列を上書きする"
 
 #: src/sid/xmms-sid.glade:2457 src/sid/xs_interface.c:1054
 msgid "Tuplez format string for SID-files"
-msgstr ""
+msgstr "SID ファイルのタプルフォーマット文字列"
 
 #: src/sid/xmms-sid.glade:2477 src/sid/xs_interface.c:1057
 msgid "Descriptions of <i>SID-specific</i> Tuplez fields go here. <b>:D</b>"
-msgstr ""
+msgstr "<i>SID 特有</i>のタプルフィールドはここに記載されます．<b>:D</b>"
 
 #: src/sid/xmms-sid.glade:2511 src/sid/xs_interface.c:1065
-#, fuzzy
 msgid "Song title format:"
-msgstr "曲名/タイトルの書式:"
+msgstr "曲のタイトルの書式:"
 
 #: src/sid/xmms-sid.glade:2584 src/sid/xs_interface.c:1096
 msgid ""
 "If enabled, sub-tunes of each file will be added to playlist. If disabled, "
 "only the default sub-tune will be added."
 msgstr ""
+"有効にすると，各ファイルのサブチューンがプレイリストに追加されます．"
+"無効にすると，デフォルトのサブチューンのみが追加されます．"
 
 #: src/sid/xmms-sid.glade:2586 src/sid/xs_interface.c:1092
 msgid "Add sub-tunes to playlist"
@@ -4551,10 +4566,9 @@ msgstr "サブチューンをプレイリストに追加"
 
 #: src/sid/xmms-sid.glade:2605 src/sid/xs_interface.c:1102
 msgid "Only add sub-tunes that have a duration of at least specified time."
-msgstr ""
+msgstr "少なくとも指定された時間の持続時間を持ったサブチューンのみ追加します．"
 
 #: src/sid/xmms-sid.glade:2607 src/sid/xs_interface.c:1098
-#, fuzzy
 msgid "Only tunes with specified minimum duration"
 msgstr "指定された最小の長さのチューンのみ"
 
@@ -4693,11 +4707,11 @@ msgstr "%s について"
 
 #: src/sid/xs_config.c:580
 msgid "Allocation of sid2FilterPresets structure failed!\n"
-msgstr ""
+msgstr "sid2FilterPresets 構造体の割り当てに失敗しました!\n"
 
 #: src/sid/xs_config.c:908
 msgid "Warning: Could not set filter curve widget points!\n"
-msgstr ""
+msgstr "警告: フィルタ曲線の分点がセットできませんでした!\n"
 
 #: src/sid/xs_fileinfo.c:232
 msgid "General info"

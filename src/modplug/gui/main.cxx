@@ -41,12 +41,15 @@ void ShowAboutWindow()
 {
 	if(!AboutWin)
 	{
-		gchar * about_text = g_strjoin( "" , _("Modplug Input Plugin for Audacious ver") ,
-				VERSION , _("\nModplug sound engine written by Olivier Lapicque.\nXMMS interface for Modplug by Kenton Varda.\n(c)2000 Olivier Lapicque and Kenton Varda.\nUpdates and Maintainance by Konstanty Bialkowski.\nPorted to BMP by Theofilos Intzoglou.") , NULL );
-		AboutWin = audacious_info_dialog( _("About Modplug") , about_text , _("Ok") , FALSE , NULL , NULL );
-		gtk_signal_connect( GTK_OBJECT(AboutWin) , "destroy" ,
+		gchar * about_text = g_strjoin("",
+			_("Modplug Input Plugin for Audacious ver"), VERSION,
+			_("\nModplug sound engine written by Olivier Lapicque.\nXMMS interface for Modplug by Kenton Varda.\n(c)2000 Olivier Lapicque and Kenton Varda.\nUpdates and Maintainance by Konstanty Bialkowski.\nPorted to BMP by Theofilos Intzoglou."),
+			NULL);
+		
+		AboutWin = audacious_info_dialog(_("About Modplug"), about_text, _("Ok"), FALSE, NULL, NULL);
+		gtk_signal_connect(GTK_OBJECT(AboutWin), "destroy",
 			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &AboutWin);
-		g_free( about_text );
+		g_free(about_text);
 	}
 	gtk_widget_show(AboutWin);
 }
@@ -179,7 +182,7 @@ void ShowInfoWindow(const string& aFilename)
 
 	lInfo = lShortFN;
 	lInfo += '\n';
-	tmps = aud_str_to_utf8(lSoundFile->GetTitle());
+	tmps = MODPLUG_CONVERT(lSoundFile->GetTitle());
 	lInfo += tmps;
 	g_free(tmps);
 	lInfo += '\n';
@@ -279,7 +282,7 @@ void ShowInfoWindow(const string& aFilename)
 	for(i = 0; i < lNumSamples; i++)
 	{
 		lSoundFile->GetSampleName(i, lBuffer);
-		tmps = aud_str_to_utf8(lBuffer);
+		tmps = MODPLUG_CONVERT(lBuffer);
 		lInfo += tmps;
 		g_free(tmps);
 		lInfo += '\n';
@@ -290,7 +293,7 @@ void ShowInfoWindow(const string& aFilename)
 	for(i = 0; i < lNumInstruments; i++)
 	{
 		lSoundFile->GetInstrumentName(i, lBuffer);
-		tmps = aud_str_to_utf8(lBuffer);
+		tmps = MODPLUG_CONVERT(lBuffer);
 		lInfo += tmps;
 		g_free(tmps);
 		lInfo += '\n';
@@ -304,7 +307,7 @@ void ShowInfoWindow(const string& aFilename)
 	//gtk_text_backward_delete(textbox, length);
 	length = lSoundFile->GetSongComments(message, MAX_MESSAGE_LENGTH, 80);
 	if (length != 0) {
-		tmps = aud_str_to_utf8(message);
+		tmps = MODPLUG_CONVERT(message);
 		gtk_label_set_text((GtkLabel*)lookup_widget(InfoWin, "info_message"), tmps);
 		g_free(tmps);
 	}

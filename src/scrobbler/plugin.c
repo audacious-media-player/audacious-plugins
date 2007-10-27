@@ -103,16 +103,16 @@ static void init(void)
 
         aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
 
-	if ((cfgfile = bmp_cfg_db_open()) != NULL) {
-		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "username",
+	if ((cfgfile = aud_cfg_db_open()) != NULL) {
+		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "username",
 				&username);
-		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "password",
+		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "password",
 				&password);
-		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_username",
+		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_username",
 				&ge_username);
-		bmp_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_password",
+		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_password",
 				&ge_password);
-		bmp_cfg_db_close(cfgfile);
+		aud_cfg_db_close(cfgfile);
 	}
 
 	if ((!username || !password) || (!*username || !*password))

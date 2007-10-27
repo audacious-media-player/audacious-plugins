@@ -144,29 +144,29 @@ static void restore (void)
   ConfigDb *db;
   gint k, plugins= 0;
 
-  db = bmp_cfg_db_open();
+  db = aud_cfg_db_open();
 
-  bmp_cfg_db_get_int(db, "ladspa", "plugins", &plugins);
+  aud_cfg_db_get_int(db, "ladspa", "plugins", &plugins);
   for (k= 0; k < plugins; ++k) {
     gint id;
     int port, ports= 0;
     plugin_instance *instance;
     gchar *section = g_strdup_printf("ladspa_plugin%d", k);
 
-    bmp_cfg_db_get_int(db, section, "id", &id);
+    aud_cfg_db_get_int(db, section, "id", &id);
     instance = add_plugin(get_plugin_by_id(id));
     if (!instance) continue; /* couldn't load this plugin */
-    bmp_cfg_db_get_int(db, section, "ports", &ports);
+    aud_cfg_db_get_int(db, section, "ports", &ports);
     for (port= 0; port < ports && port < MAX_KNOBS; ++port) {
       gchar *key = g_strdup_printf("port%d", port);
-      bmp_cfg_db_get_float(db, section, key, &(instance->knobs[port]));
+      aud_cfg_db_get_float(db, section, key, &(instance->knobs[port]));
     }
     instance->restored = TRUE;
     g_free(section);
   }
 
   state.initialised = TRUE;
-  bmp_cfg_db_close(db);
+  aud_cfg_db_close(db);
 }
 
 static ladspa_plugin *get_plugin_by_id(long id)
@@ -261,33 +261,33 @@ static void stop (void)
     return;
   }
   state.running = FALSE;
-  db = bmp_cfg_db_open();
+  db = aud_cfg_db_open();
   G_LOCK (running_plugins);
   for (list= running_plugins; list != NULL; list = g_slist_next(list)) {
     plugin_instance *instance = (plugin_instance *) list->data;
     gchar *section = g_strdup_printf("ladspa_plugin%d", plugins++);
     int port, ports= 0;
 
-    bmp_cfg_db_set_int(db, section, "id", instance->descriptor->UniqueID);
-    bmp_cfg_db_set_string(db, section, "file", instance->filename);
-    bmp_cfg_db_set_string(db, section, "label", (gchar *)
+    aud_cfg_db_set_int(db, section, "id", instance->descriptor->UniqueID);
+    aud_cfg_db_set_string(db, section, "file", instance->filename);
+    aud_cfg_db_set_string(db, section, "label", (gchar *)
                                               instance->descriptor->Label);
 
     ports = instance->descriptor->PortCount;
     if (ports > MAX_KNOBS) ports = MAX_KNOBS;
     for (port= 0; port < ports; ++port) {
       gchar *key = g_strdup_printf("port%d", port);
-      bmp_cfg_db_set_float(db, section, key, instance->knobs[port]);
+      aud_cfg_db_set_float(db, section, key, instance->knobs[port]);
       g_free(key);
     }
-    bmp_cfg_db_set_int(db, section, "ports", ports);
+    aud_cfg_db_set_int(db, section, "ports", ports);
     g_free(section);
     ladspa_shutdown (instance);
   }
   G_UNLOCK (running_plugins);
 
-  bmp_cfg_db_set_int(db, "ladspa", "plugins", plugins);
-  bmp_cfg_db_close(db);
+  aud_cfg_db_set_int(db, "ladspa", "plugins", plugins);
+  aud_cfg_db_close(db);
 }
 
 static void ladspa_shutdown (plugin_instance *instance)

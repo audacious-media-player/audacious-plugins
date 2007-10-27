@@ -61,13 +61,13 @@ void
 vtx_init(void)
 {
         ConfigDb *db;
-        db = bmp_cfg_db_open();
+        db = aud_cfg_db_open();
 
-        bmp_cfg_db_get_int(db, NULL, "src_rate", &freq);
+        aud_cfg_db_get_int(db, NULL, "src_rate", &freq);
         if (freq < 4000 || freq > 192000)
                 freq = 44100;
 
-        bmp_cfg_db_close(db);
+        aud_cfg_db_close(db);
 }
 
 int

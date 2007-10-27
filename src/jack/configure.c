@@ -53,11 +53,11 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 
   jack_set_port_connection_mode(); /* update the connection mode */
 
-	cfgfile = bmp_cfg_db_open();
+	cfgfile = aud_cfg_db_open();
 
-	bmp_cfg_db_set_bool(cfgfile, "jack", "isTraceEnabled", jack_cfg.isTraceEnabled);
-	bmp_cfg_db_set_string(cfgfile, "jack", "port_connection_mode", jack_cfg.port_connection_mode);
-	bmp_cfg_db_close(cfgfile);
+	aud_cfg_db_set_bool(cfgfile, "jack", "isTraceEnabled", jack_cfg.isTraceEnabled);
+	aud_cfg_db_set_string(cfgfile, "jack", "port_connection_mode", jack_cfg.port_connection_mode);
+	aud_cfg_db_close(cfgfile);
 
 	gtk_widget_destroy(configure_win);
 }

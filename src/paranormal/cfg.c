@@ -370,11 +370,11 @@ load_sel_cb (GtkButton *button, GtkFileSelection *selector)
       GtkCTreeNode *root;
       ConfigDb *db;
 
-      db = bmp_cfg_db_open();
+      db = aud_cfg_db_open();
       fname = (char *) gtk_file_selection_get_filename (selector);
       a = load_preset (fname);
-      bmp_cfg_db_set_string(db, "paranormal", "last_path", (char*)fname);
-      bmp_cfg_db_close(db);
+      aud_cfg_db_set_string(db, "paranormal", "last_path", (char*)fname);
+      aud_cfg_db_close(db);
       if (! a)
 	pn_error ("Unable to load file: \"%s\"", fname);
       else
@@ -395,12 +395,12 @@ load_button_cb (GtkButton *button, gpointer data)
   ConfigDb *db;
   gchar *last_path;
 
-  db = bmp_cfg_db_open();
+  db = aud_cfg_db_open();
   selector = gtk_file_selection_new ("Load Preset");
-  if(bmp_cfg_db_get_string(db, "paranormal", "last_path", &last_path)) {
+  if(aud_cfg_db_get_string(db, "paranormal", "last_path", &last_path)) {
      gtk_file_selection_set_filename(GTK_FILE_SELECTION(selector), last_path);
   }
-  bmp_cfg_db_close(db);
+  aud_cfg_db_close(db);
 
   gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
 		      "clicked", GTK_SIGNAL_FUNC (load_sel_cb), selector);

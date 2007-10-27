@@ -196,7 +196,7 @@ void jack_init(void)
   /* read the isTraceEnabled setting from the config file */
   ConfigDb *cfgfile;
 
-  cfgfile = bmp_cfg_db_open();
+  cfgfile = aud_cfg_db_open();
   if (!cfgfile)
   {
       jack_cfg.isTraceEnabled = FALSE;
@@ -205,16 +205,16 @@ void jack_init(void)
       jack_cfg.volume_right = 25;
   } else
   {
-      bmp_cfg_db_get_bool(cfgfile, "jack", "isTraceEnabled", &jack_cfg.isTraceEnabled);
-      if(!bmp_cfg_db_get_string(cfgfile, "jack", "port_connection_mode", &jack_cfg.port_connection_mode))
+      aud_cfg_db_get_bool(cfgfile, "jack", "isTraceEnabled", &jack_cfg.isTraceEnabled);
+      if(!aud_cfg_db_get_string(cfgfile, "jack", "port_connection_mode", &jack_cfg.port_connection_mode))
           jack_cfg.port_connection_mode = "CONNECT_ALL";
-      if(!bmp_cfg_db_get_int(cfgfile, "jack", "volume_left", &jack_cfg.volume_left))
+      if(!aud_cfg_db_get_int(cfgfile, "jack", "volume_left", &jack_cfg.volume_left))
           jack_cfg.volume_left = 25;
-      if(!bmp_cfg_db_get_int(cfgfile, "jack", "volume_right", &jack_cfg.volume_right))
+      if(!aud_cfg_db_get_int(cfgfile, "jack", "volume_right", &jack_cfg.volume_right))
           jack_cfg.volume_right = 25;
   }
 
-  bmp_cfg_db_close(cfgfile);
+  aud_cfg_db_close(cfgfile);
 
 
   TRACE("initializing\n");
@@ -274,10 +274,10 @@ void jack_close(void)
 {
   ConfigDb *cfgfile;
 
-  cfgfile = bmp_cfg_db_open();
-  bmp_cfg_db_set_int(cfgfile, "jack", "volume_left", jack_cfg.volume_left); /* stores the volume setting */
-  bmp_cfg_db_set_int(cfgfile, "jack", "volume_right", jack_cfg.volume_right);
-  bmp_cfg_db_close(cfgfile);
+  cfgfile = aud_cfg_db_open();
+  aud_cfg_db_set_int(cfgfile, "jack", "volume_left", jack_cfg.volume_left); /* stores the volume setting */
+  aud_cfg_db_set_int(cfgfile, "jack", "volume_right", jack_cfg.volume_right);
+  aud_cfg_db_close(cfgfile);
 
   TRACE("\n");
 

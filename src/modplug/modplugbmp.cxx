@@ -76,32 +76,32 @@ void ModplugXMMS::Init(void)
 {
 	ConfigDb *db;
 	
-	db = bmp_cfg_db_open();
+	db = aud_cfg_db_open();
 
-	bmp_cfg_db_get_bool(db,"modplug","Surround", &mModProps.mSurround);
-        bmp_cfg_db_get_bool(db,"modplug","Oversampling", &mModProps.mOversamp);
-        bmp_cfg_db_get_bool(db,"modplug","Megabass", &mModProps.mMegabass);
-        bmp_cfg_db_get_bool(db,"modplug","NoiseReduction", &mModProps.mNoiseReduction);
-        bmp_cfg_db_get_bool(db,"modplug","VolumeRamp", &mModProps.mVolumeRamp);
-        bmp_cfg_db_get_bool(db,"modplug","Reverb", &mModProps.mReverb);
-        bmp_cfg_db_get_bool(db,"modplug","FastInfo", &mModProps.mFastinfo);
-        bmp_cfg_db_get_bool(db,"modplug","UseFileName", &mModProps.mUseFilename);
-        bmp_cfg_db_get_bool(db,"modplug","GrabAmigaMOD", &mModProps.mGrabAmigaMOD);
-        bmp_cfg_db_get_bool(db,"modplug","PreAmp", &mModProps.mPreamp);
-        bmp_cfg_db_get_float(db,"modplug","PreAmpLevel", &mModProps.mPreampLevel);
-        bmp_cfg_db_get_int(db,"modplug", "Channels", &mModProps.mChannels);
-        bmp_cfg_db_get_int(db,"modplug", "Bits", &mModProps.mBits);
-        bmp_cfg_db_get_int(db,"modplug", "Frequency", &mModProps.mFrequency);
-        bmp_cfg_db_get_int(db,"modplug", "ResamplineMode", &mModProps.mResamplingMode);
-        bmp_cfg_db_get_int(db,"modplug", "ReverbDepth", &mModProps.mReverbDepth);
-        bmp_cfg_db_get_int(db,"modplug", "ReverbDelay", &mModProps.mReverbDelay);
-        bmp_cfg_db_get_int(db,"modplug", "BassAmount", &mModProps.mBassAmount);
-        bmp_cfg_db_get_int(db,"modplug", "BassRange", &mModProps.mBassRange);
-        bmp_cfg_db_get_int(db,"modplug", "SurroundDepth", &mModProps.mSurroundDepth);
-        bmp_cfg_db_get_int(db,"modplug", "SurroundDelay", &mModProps.mSurroundDelay);
-        bmp_cfg_db_get_int(db,"modplug", "LoopCount", &mModProps.mLoopCount);
+	aud_cfg_db_get_bool(db, MODPLUG_CFGID,"Surround", &mModProps.mSurround);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"Oversampling", &mModProps.mOversamp);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"Megabass", &mModProps.mMegabass);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"NoiseReduction", &mModProps.mNoiseReduction);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"VolumeRamp", &mModProps.mVolumeRamp);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"Reverb", &mModProps.mReverb);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"FastInfo", &mModProps.mFastinfo);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"UseFileName", &mModProps.mUseFilename);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"GrabAmigaMOD", &mModProps.mGrabAmigaMOD);
+        aud_cfg_db_get_bool(db, MODPLUG_CFGID,"PreAmp", &mModProps.mPreamp);
+        aud_cfg_db_get_float(db, MODPLUG_CFGID,"PreAmpLevel", &mModProps.mPreampLevel);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "Channels", &mModProps.mChannels);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "Bits", &mModProps.mBits);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "Frequency", &mModProps.mFrequency);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "ResamplineMode", &mModProps.mResamplingMode);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "ReverbDepth", &mModProps.mReverbDepth);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "ReverbDelay", &mModProps.mReverbDelay);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "BassAmount", &mModProps.mBassAmount);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "BassRange", &mModProps.mBassRange);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "SurroundDepth", &mModProps.mSurroundDepth);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "SurroundDelay", &mModProps.mSurroundDelay);
+        aud_cfg_db_get_int(db, MODPLUG_CFGID, "LoopCount", &mModProps.mLoopCount);
 
-	bmp_cfg_db_close(db);
+	aud_cfg_db_close(db);
 }
 
 bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
@@ -504,7 +504,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 {
 	CSoundFile* lSoundFile;
 	Archive* lArchive;
-	std::string tmps;
+	const gchar *tmps;
 	
 	//open and mmap the file
         lArchive = OpenArchive(aFilename);
@@ -543,15 +543,11 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	case MOD_TYPE_PSM:	tmps = "Protracker Studio Module"; break;
 	default:		tmps = "ModPlug unknown"; break;
 	}
-	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, tmps.c_str());
+	aud_tuple_associate_string(ti, FIELD_CODEC, NULL, tmps);
 	aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "sequenced");
 	aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
-
-	/* NOTICE! FIXME? This is actually incorrect. We _cannot_ know what charset
-	 * an arbitrary module file uses .. typically it is some DOS CP-variant,
-	 * except for true Amiga modules.
-	 */
-	gchar *tmps2 = aud_str_to_utf8(lSoundFile->GetTitle());
+	
+	gchar *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
 	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps2);
 	g_free(tmps2);
 	
@@ -637,32 +633,32 @@ void ModplugXMMS::SetModProps(const Settings& aModProps)
 	CSoundFile::SetResamplingMode(mModProps.mResamplingMode);
 	mPreampFactor = exp(mModProps.mPreampLevel);
 
-	db = bmp_cfg_db_open();
+	db = aud_cfg_db_open();
 
-	bmp_cfg_db_set_bool(db,"modplug","Surround", mModProps.mSurround);
-        bmp_cfg_db_set_bool(db,"modplug","Oversampling", mModProps.mOversamp);
-        bmp_cfg_db_set_bool(db,"modplug","Megabass", mModProps.mMegabass);
-        bmp_cfg_db_set_bool(db,"modplug","NoiseReduction", mModProps.mNoiseReduction);
-        bmp_cfg_db_set_bool(db,"modplug","VolumeRamp", mModProps.mVolumeRamp);
-        bmp_cfg_db_set_bool(db,"modplug","Reverb", mModProps.mReverb);
-        bmp_cfg_db_set_bool(db,"modplug","FastInfo", mModProps.mFastinfo);
-        bmp_cfg_db_set_bool(db,"modplug","UseFileName", mModProps.mUseFilename);
-        bmp_cfg_db_set_bool(db,"modplug","GrabAmigaMOD", mModProps.mGrabAmigaMOD);
-        bmp_cfg_db_set_bool(db,"modplug","PreAmp", mModProps.mPreamp);
-        bmp_cfg_db_set_float(db,"modplug","PreAmpLevel", mModProps.mPreampLevel);
-        bmp_cfg_db_set_int(db,"modplug", "Channels", mModProps.mChannels);
-        bmp_cfg_db_set_int(db,"modplug", "Bits", mModProps.mBits);
-        bmp_cfg_db_set_int(db,"modplug", "Frequency", mModProps.mFrequency);
-        bmp_cfg_db_set_int(db,"modplug", "ResamplineMode", mModProps.mResamplingMode);
-        bmp_cfg_db_set_int(db,"modplug", "ReverbDepth", mModProps.mReverbDepth);
-        bmp_cfg_db_set_int(db,"modplug", "ReverbDelay", mModProps.mReverbDelay);
-        bmp_cfg_db_set_int(db,"modplug", "BassAmount", mModProps.mBassAmount);
-        bmp_cfg_db_set_int(db,"modplug", "BassRange", mModProps.mBassRange);
-        bmp_cfg_db_set_int(db,"modplug", "SurroundDepth", mModProps.mSurroundDepth);
-        bmp_cfg_db_set_int(db,"modplug", "SurroundDelay", mModProps.mSurroundDelay);
-        bmp_cfg_db_set_int(db,"modplug", "LoopCount", mModProps.mLoopCount);
+	aud_cfg_db_set_bool(db, MODPLUG_CFGID,"Surround", mModProps.mSurround);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"Oversampling", mModProps.mOversamp);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"Megabass", mModProps.mMegabass);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"NoiseReduction", mModProps.mNoiseReduction);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"VolumeRamp", mModProps.mVolumeRamp);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"Reverb", mModProps.mReverb);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"FastInfo", mModProps.mFastinfo);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"UseFileName", mModProps.mUseFilename);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"GrabAmigaMOD", mModProps.mGrabAmigaMOD);
+        aud_cfg_db_set_bool(db, MODPLUG_CFGID,"PreAmp", mModProps.mPreamp);
+        aud_cfg_db_set_float(db, MODPLUG_CFGID,"PreAmpLevel", mModProps.mPreampLevel);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "Channels", mModProps.mChannels);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "Bits", mModProps.mBits);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "Frequency", mModProps.mFrequency);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "ResamplineMode", mModProps.mResamplingMode);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "ReverbDepth", mModProps.mReverbDepth);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "ReverbDelay", mModProps.mReverbDelay);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "BassAmount", mModProps.mBassAmount);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "BassRange", mModProps.mBassRange);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "SurroundDepth", mModProps.mSurroundDepth);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "SurroundDelay", mModProps.mSurroundDelay);
+        aud_cfg_db_set_int(db, MODPLUG_CFGID, "LoopCount", mModProps.mLoopCount);
 
-	bmp_cfg_db_close(db);
+	aud_cfg_db_close(db);
 }
 
 ModplugXMMS gModplugXMMS;

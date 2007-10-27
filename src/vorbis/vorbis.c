@@ -799,42 +799,42 @@ vorbis_init(void)
     vorbis_cfg.replaygain_mode = REPLAYGAIN_MODE_TRACK;
     vorbis_cfg.use_booster = FALSE;
 
-    db = bmp_cfg_db_open();
-    bmp_cfg_db_get_int(db, "vorbis", "http_buffer_size",
+    db = aud_cfg_db_open();
+    aud_cfg_db_get_int(db, "vorbis", "http_buffer_size",
                        &vorbis_cfg.http_buffer_size);
-    bmp_cfg_db_get_int(db, "vorbis", "http_prebuffer",
+    aud_cfg_db_get_int(db, "vorbis", "http_prebuffer",
                        &vorbis_cfg.http_prebuffer);
-    bmp_cfg_db_get_bool(db, "vorbis", "save_http_stream",
+    aud_cfg_db_get_bool(db, "vorbis", "save_http_stream",
                         &vorbis_cfg.save_http_stream);
-    if (!bmp_cfg_db_get_string(db, "vorbis", "save_http_path",
+    if (!aud_cfg_db_get_string(db, "vorbis", "save_http_path",
                                &vorbis_cfg.save_http_path))
         vorbis_cfg.save_http_path = g_strdup(g_get_home_dir());
 
-    bmp_cfg_db_get_bool(db, "vorbis", "tag_override",
+    aud_cfg_db_get_bool(db, "vorbis", "tag_override",
                         &vorbis_cfg.tag_override);
-    if (!bmp_cfg_db_get_string(db, "vorbis", "tag_format",
+    if (!aud_cfg_db_get_string(db, "vorbis", "tag_format",
                                &vorbis_cfg.tag_format))
         vorbis_cfg.tag_format = g_strdup("%p - %t");
-    bmp_cfg_db_get_bool(db, "vorbis", "use_anticlip",
+    aud_cfg_db_get_bool(db, "vorbis", "use_anticlip",
                         &vorbis_cfg.use_anticlip);
-    bmp_cfg_db_get_bool(db, "vorbis", "use_replaygain",
+    aud_cfg_db_get_bool(db, "vorbis", "use_replaygain",
                         &vorbis_cfg.use_replaygain);
-    bmp_cfg_db_get_int(db, "vorbis", "replaygain_mode",
+    aud_cfg_db_get_int(db, "vorbis", "replaygain_mode",
                        &vorbis_cfg.replaygain_mode);
-    bmp_cfg_db_get_bool(db, "vorbis", "use_booster", &vorbis_cfg.use_booster);
+    aud_cfg_db_get_bool(db, "vorbis", "use_booster", &vorbis_cfg.use_booster);
 
-    bmp_cfg_db_get_bool(db, NULL, "use_proxy", &vorbis_cfg.use_proxy);
-    bmp_cfg_db_get_string(db, NULL, "proxy_host", &vorbis_cfg.proxy_host);
-    bmp_cfg_db_get_string(db, NULL, "proxy_port", &tmp);
+    aud_cfg_db_get_bool(db, NULL, "use_proxy", &vorbis_cfg.use_proxy);
+    aud_cfg_db_get_string(db, NULL, "proxy_host", &vorbis_cfg.proxy_host);
+    aud_cfg_db_get_string(db, NULL, "proxy_port", &tmp);
 
     if (tmp != NULL)
 	vorbis_cfg.proxy_port = atoi(tmp);
 
-    bmp_cfg_db_get_bool(db, NULL, "proxy_use_auth", &vorbis_cfg.proxy_use_auth);
-    bmp_cfg_db_get_string(db, NULL, "proxy_user", &vorbis_cfg.proxy_user);
-    bmp_cfg_db_get_string(db, NULL, "proxy_pass", &vorbis_cfg.proxy_pass);
+    aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &vorbis_cfg.proxy_use_auth);
+    aud_cfg_db_get_string(db, NULL, "proxy_user", &vorbis_cfg.proxy_user);
+    aud_cfg_db_get_string(db, NULL, "proxy_pass", &vorbis_cfg.proxy_pass);
 
-    bmp_cfg_db_close(db);
+    aud_cfg_db_close(db);
 
     vf_mutex = g_mutex_new();
 

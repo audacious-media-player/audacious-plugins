@@ -428,15 +428,15 @@ wv_configurewin_ok(GtkWidget * widget, gpointer data)
     tb = GTK_TOGGLE_BUTTON(rg_track_gain);
     albumReplaygainEnabled = !gtk_toggle_button_get_active(tb);
 
-    cfg = bmp_cfg_db_open();
+    cfg = aud_cfg_db_open();
 
-    bmp_cfg_db_set_bool(cfg, "wavpack", "clip_prevention",
+    aud_cfg_db_set_bool(cfg, "wavpack", "clip_prevention",
                            clipPreventionEnabled);
-    bmp_cfg_db_set_bool(cfg, "wavpack", "album_replaygain",
+    aud_cfg_db_set_bool(cfg, "wavpack", "album_replaygain",
                            albumReplaygainEnabled);
-    bmp_cfg_db_set_bool(cfg, "wavpack", "dyn_bitrate", dynBitrateEnabled);
-    bmp_cfg_db_set_bool(cfg, "wavpack", "replaygain", replaygainEnabled);
-    bmp_cfg_db_close(cfg);
+    aud_cfg_db_set_bool(cfg, "wavpack", "dyn_bitrate", dynBitrateEnabled);
+    aud_cfg_db_set_bool(cfg, "wavpack", "replaygain", replaygainEnabled);
+    aud_cfg_db_close(cfg);
     gtk_widget_destroy(wv_configurewin);
 }
 

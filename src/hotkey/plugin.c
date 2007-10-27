@@ -447,34 +447,34 @@ static void load_config (void)
 	plugin_cfg.toggle_win_mask = 0;
 
 	/* open configuration database */
-	cfdb = bmp_cfg_db_open ( );
+	cfdb = aud_cfg_db_open ( );
 
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "mute", &plugin_cfg.mute);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "mute_mask", &plugin_cfg.mute_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "vol_down", &plugin_cfg.vol_down);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "vol_down_mask", &plugin_cfg.vol_down_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "vol_up", &plugin_cfg.vol_up);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "vol_up_mask", &plugin_cfg.vol_up_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "play", &plugin_cfg.play);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "play_mask", &plugin_cfg.play_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "pause", &plugin_cfg.pause);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "pause_mask", &plugin_cfg.pause_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "stop", &plugin_cfg.stop);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "stop_mask", &plugin_cfg.stop_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "prev_track", &plugin_cfg.prev_track);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "prev_track_mask", &plugin_cfg.prev_track_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "next_track", &plugin_cfg.next_track);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "next_track_mask", &plugin_cfg.next_track_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "jump_to_file", &plugin_cfg.jump_to_file);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "jump_to_file_mask", &plugin_cfg.jump_to_file_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "forward", &plugin_cfg.forward);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "forward_mask", &plugin_cfg.forward_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "backward", &plugin_cfg.backward);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "backward_mask", &plugin_cfg.backward_mask);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "toggle_win", &plugin_cfg.toggle_win);
-	bmp_cfg_db_get_int (cfdb, "globalHotkey", "toggle_win_mask", &plugin_cfg.toggle_win_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "mute", &plugin_cfg.mute);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "mute_mask", &plugin_cfg.mute_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_down", &plugin_cfg.vol_down);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_down_mask", &plugin_cfg.vol_down_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_up", &plugin_cfg.vol_up);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_up_mask", &plugin_cfg.vol_up_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "play", &plugin_cfg.play);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "play_mask", &plugin_cfg.play_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "pause", &plugin_cfg.pause);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "pause_mask", &plugin_cfg.pause_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "stop", &plugin_cfg.stop);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "stop_mask", &plugin_cfg.stop_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "prev_track", &plugin_cfg.prev_track);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "prev_track_mask", &plugin_cfg.prev_track_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "next_track", &plugin_cfg.next_track);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "next_track_mask", &plugin_cfg.next_track_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "jump_to_file", &plugin_cfg.jump_to_file);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "jump_to_file_mask", &plugin_cfg.jump_to_file_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "forward", &plugin_cfg.forward);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "forward_mask", &plugin_cfg.forward_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "backward", &plugin_cfg.backward);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "backward_mask", &plugin_cfg.backward_mask);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "toggle_win", &plugin_cfg.toggle_win);
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "toggle_win_mask", &plugin_cfg.toggle_win_mask);
 
-	bmp_cfg_db_close (cfdb);
+	aud_cfg_db_close (cfdb);
 }
 
 /* save plugin configuration */
@@ -483,33 +483,33 @@ static void save_config (void)
 	ConfigDb *cfdb;
 	
 	/* open configuration database */
-	cfdb = bmp_cfg_db_open ( );
+	cfdb = aud_cfg_db_open ( );
 	
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "mute", plugin_cfg.mute);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "mute_mask", plugin_cfg.mute_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "vol_up", plugin_cfg.vol_up);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "vol_up_mask", plugin_cfg.vol_up_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "vol_down", plugin_cfg.vol_down);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "vol_down_mask", plugin_cfg.vol_down_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "play", plugin_cfg.play);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "play_mask", plugin_cfg.play_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "pause", plugin_cfg.pause);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "pause_mask", plugin_cfg.pause_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "stop", plugin_cfg.stop);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "stop_mask", plugin_cfg.stop_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "prev_track", plugin_cfg.prev_track);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "prev_track_mask", plugin_cfg.prev_track_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "next_track", plugin_cfg.next_track);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "next_track_mask", plugin_cfg.next_track_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "jump_to_file", plugin_cfg.jump_to_file);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "jump_to_file_mask", plugin_cfg.jump_to_file_mask);	
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "forward", plugin_cfg.forward);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "forward_mask", plugin_cfg.forward_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "backward", plugin_cfg.backward);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "backward_mask", plugin_cfg.backward_mask);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "toggle_win", plugin_cfg.toggle_win);
-	bmp_cfg_db_set_int (cfdb, "globalHotkey", "toggle_win_mask", plugin_cfg.toggle_win_mask);
-	bmp_cfg_db_close (cfdb);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "mute", plugin_cfg.mute);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "mute_mask", plugin_cfg.mute_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_up", plugin_cfg.vol_up);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_up_mask", plugin_cfg.vol_up_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_down", plugin_cfg.vol_down);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_down_mask", plugin_cfg.vol_down_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "play", plugin_cfg.play);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "play_mask", plugin_cfg.play_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "pause", plugin_cfg.pause);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "pause_mask", plugin_cfg.pause_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "stop", plugin_cfg.stop);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "stop_mask", plugin_cfg.stop_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "prev_track", plugin_cfg.prev_track);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "prev_track_mask", plugin_cfg.prev_track_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "next_track", plugin_cfg.next_track);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "next_track_mask", plugin_cfg.next_track_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "jump_to_file", plugin_cfg.jump_to_file);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "jump_to_file_mask", plugin_cfg.jump_to_file_mask);	
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "forward", plugin_cfg.forward);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "forward_mask", plugin_cfg.forward_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "backward", plugin_cfg.backward);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "backward_mask", plugin_cfg.backward_mask);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "toggle_win", plugin_cfg.toggle_win);
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "toggle_win_mask", plugin_cfg.toggle_win_mask);
+	aud_cfg_db_close (cfdb);
 }
 
 static int x11_error_handler (Display *dpy, XErrorEvent *error)
