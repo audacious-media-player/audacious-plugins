@@ -90,6 +90,13 @@ ov_callbacks vorbis_callbacks = {
     ovcb_tell
 };
 
+ov_callbacks vorbis_callbacks_stream = {
+    ovcb_read,
+    NULL,
+    ovcb_close,
+    NULL
+};
+
 gchar *vorbis_fmts[] = { "ogg", "ogm", NULL };
 
 InputPlugin vorbis_ip = {
@@ -116,8 +123,6 @@ DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL, NULL);
 static OggVorbis_File vf;
 
 static GThread *thread;
-static int vorbis_is_streaming = 0;
-static int vorbis_bytes_streamed = 0;
 static volatile int seekneeded = -1;
 static int samplerate, channels;
 GMutex *vf_mutex;
@@ -145,7 +150,7 @@ vorbis_check_fd(char *filename, VFSFile *stream)
     memset(&vfile, 0, sizeof(vfile));
     g_mutex_lock(vf_mutex);
 
-    result = ov_test_callbacks(fd, &vfile, NULL, 0, vorbis_callbacks);
+    result = ov_test_callbacks(fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks);
 
     switch (result) {
     case OV_EREAD:
@@ -219,7 +224,7 @@ vorbis_jump_to_time(InputPlayback *playback, long time)
 static void
 do_seek(InputPlayback *playback)
 {
-    if (seekneeded != -1 && !vorbis_is_streaming) {
+    if (seekneeded != -1) {
         vorbis_jump_to_time(playback, seekneeded);
         seekneeded = -1;
         playback->eof = FALSE;
@@ -353,7 +358,7 @@ vorbis_play_loop(gpointer arg)
      */
 
     g_mutex_lock(vf_mutex);
-    if (ov_open_callbacks(datasource, &vf, NULL, 0, vorbis_callbacks) < 0) {
+    if (ov_open_callbacks(datasource, &vf, NULL, 0, aud_vfs_is_streaming(fd->fd) ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
         vorbis_callbacks.close_func(datasource);
         g_mutex_unlock(vf_mutex);
         playback->eof = TRUE;
@@ -361,10 +366,7 @@ vorbis_play_loop(gpointer arg)
     }
     vi = ov_info(&vf, -1);
 
-    /* XXX this isn't very correct, but it works */
-    vorbis_is_streaming = ((time = ov_time_total(&vf, -1)) <= 1.);
-
-    if (vorbis_is_streaming)
+    if (aud_vfs_is_streaming(fd->fd))
     {
         time = -1;
 	vf.seekable = FALSE;   /* XXX: don't ask. -nenolod */
@@ -428,9 +430,7 @@ vorbis_play_loop(gpointer arg)
             title = vorbis_generate_title(&vf, filename);
             use_rg = vorbis_update_replaygain(&rg_scale);
 
-            if (vorbis_is_streaming)
-                time = -1;
-            else
+            if (time != -1)
                 time = ov_time_total(&vf, -1) * 1000;
 
             g_mutex_unlock(vf_mutex);
@@ -455,7 +455,6 @@ vorbis_play_loop(gpointer arg)
     g_mutex_lock(vf_mutex);
     ov_clear(&vf);
     g_mutex_unlock(vf_mutex);
-    vorbis_is_streaming = 0;
     playback->playing = 0;
     return NULL;
 }
@@ -464,7 +463,6 @@ static void
 vorbis_play(InputPlayback *playback)
 {
     playback->playing = 1;
-    vorbis_bytes_streamed = 0;
     playback->eof = 0;
     playback->error = FALSE;
 
@@ -491,9 +489,6 @@ vorbis_pause(InputPlayback *playback, short p)
 static void
 vorbis_seek(InputPlayback *data, int time)
 {
-    if (vorbis_is_streaming)
-        return;
-
     seekneeded = time;
 
     while (seekneeded != -1)
@@ -643,11 +638,15 @@ static void _aud_tuple_associate_string(Tuple *tuple, const gint nfield, const g
  * Ok, nhjm449! Are you *happy* now?!  -nenolod
  */
 static Tuple *
-get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename, gboolean is_stream)
+get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
 {
+    VFSVorbisFile *vfd = (VFSVorbisFile *) vorbisfile->datasource;
     Tuple *tuple = NULL;
+    gboolean is_stream;
     vorbis_comment *comment;
+
     tuple = aud_tuple_new_from_filename(filename);
+    is_stream = aud_vfs_is_streaming(vfd->fd);
 
     /* Retrieve the length */
     aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL,
@@ -686,7 +685,6 @@ get_song_tuple(gchar *filename)
     VFSFile *stream = NULL;
     OggVorbis_File vfile;          /* avoid thread interaction */
     Tuple *tuple = NULL;
-    gboolean is_stream = FALSE;
     VFSVorbisFile *fd = NULL;
 
     if ((stream = aud_vfs_fopen(filename, "r")) == NULL)
@@ -700,13 +698,12 @@ get_song_tuple(gchar *filename)
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks(fd, &vfile, NULL, 0, vorbis_callbacks) < 0) {
-        if (is_stream == FALSE)
-            aud_vfs_fclose(stream);
+    if (ov_open_callbacks(fd, &vfile, NULL, 0, aud_vfs_is_streaming(stream) ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
+        aud_vfs_fclose(stream);
         return NULL;
     }
 
-    tuple = get_aud_tuple_for_vorbisfile(&vfile, filename, is_stream);
+    tuple = get_aud_tuple_for_vorbisfile(&vfile, filename);
 
     /*
      * once the ov_open succeeds, the stream belongs to
@@ -725,7 +722,7 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
     Tuple *input;
     gchar *tmp;
 
-    input = get_aud_tuple_for_vorbisfile(vorbisfile, filename, vorbis_is_streaming);
+    input = get_aud_tuple_for_vorbisfile(vorbisfile, filename);
 
     displaytitle = aud_tuple_formatter_make_title_string(input, vorbis_cfg.tag_override ?
                                                   vorbis_cfg.tag_format : aud_get_gentitle_format());
