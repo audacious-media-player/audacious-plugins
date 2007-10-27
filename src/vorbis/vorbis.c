@@ -68,7 +68,6 @@ static void vorbis_play(InputPlayback *data);
 static void vorbis_stop(InputPlayback *data);
 static void vorbis_pause(InputPlayback *data, short p);
 static void vorbis_seek(InputPlayback *data, int time);
-static void vorbis_get_song_info(char *filename, char **title, int *length);
 static gchar *vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * fn);
 static void vorbis_aboutbox(void);
 static void vorbis_init(void);
@@ -109,7 +108,6 @@ InputPlugin vorbis_ip = {
     .pause = vorbis_pause,
     .seek = vorbis_seek,
     .cleanup = vorbis_cleanup,
-    .get_song_info = vorbis_get_song_info,
     .file_info_box = vorbis_file_info_box,       /* file info box, tag editing */
     .get_song_tuple = get_song_tuple,
     .is_our_file_from_vfs = vorbis_check_fd,
@@ -368,6 +366,8 @@ vorbis_play_loop(gpointer arg)
 
     if (aud_vfs_is_streaming(fd->fd))
         time = -1;
+    else
+        time = ov_time_total(&vf, -1) * 1000;
 
     if (vi->channels > 2) {
         playback->eof = TRUE;
@@ -491,29 +491,6 @@ vorbis_seek(InputPlayback *data, int time)
     while (seekneeded != -1)
         g_usleep(20000);
 }
-
-static void
-vorbis_get_song_info(char *filename, char **title, int *length)
-{
-    Tuple *tuple = get_song_tuple(filename);
-
-    *length = aud_tuple_get_int(tuple, FIELD_LENGTH, NULL);
-    *title = aud_tuple_formatter_make_title_string(tuple, vorbis_cfg.tag_override ?
-                                            vorbis_cfg.tag_format : aud_get_gentitle_format());
-
-    aud_tuple_free(tuple);
-}
-
-/*
-static const gchar *
-get_extension(const gchar * filename)
-{
-    const gchar *ext;
-    if ((ext = strrchr(filename, '.')))
-        ++ext;
-    return ext;
-}
-*/
 
 /* Make sure you've locked vf_mutex */
 static gboolean
@@ -639,15 +616,18 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
 {
     VFSVorbisFile *vfd = (VFSVorbisFile *) vorbisfile->datasource;
     Tuple *tuple = NULL;
-    gboolean is_stream;
+    gint length;
     vorbis_comment *comment;
 
     tuple = aud_tuple_new_from_filename(filename);
-    is_stream = aud_vfs_is_streaming(vfd->fd);
 
-    /* Retrieve the length */
-    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL,
-        is_stream ? -1 : (ov_time_total(vorbisfile, -1) * 1000));
+    if (aud_vfs_is_streaming(vfd->fd))
+        length = -1;
+    else
+        length = ov_time_total(vorbisfile, -1) * 1000;
+
+    /* associate with tuple */
+    aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
 
     if ((comment = ov_comment(vorbisfile, -1))) {
         gchar *tmps;
