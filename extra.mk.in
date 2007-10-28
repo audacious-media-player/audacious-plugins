@@ -378,4 +378,5 @@ LIBFLAC_LIBS ?= @LIBFLAC_LIBS@
 LIBFLAC_CFLAGS ?= @LIBFLAC_CFLAGS@
 MOWGLI_CFLAGS ?= @MOWGLI_CFLAGS@
 MOWGLI_LIBS ?= @MOWGLI_LIBS@
-plugindir = @plugindir@
+pluginlibdir = @plugindir@
+plugindir = ${pluginlibdir}
