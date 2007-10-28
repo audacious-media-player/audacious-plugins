@@ -25,5 +25,3 @@ CPPFLAGS += ${PLUGIN_CPPFLAGS} ${PICFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${MOWGLI
 	    ${PANGO_CFLAGS} ${ARCH_DEFINES} ${SIMD_CFLAGS} -I../../intl -I../.. -Wall
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS}
 
-# These were the additional link flags in the old Makefile:
-# -L/opt/local/lib -L${plugindir} -laudid3tag -Wl,-rpath=${plugindir}

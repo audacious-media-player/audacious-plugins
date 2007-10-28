@@ -213,7 +213,7 @@ case "$target" in
 		PICFLAGS="-fPIC -DPIC"
 		PICLDFLAGS="-fPIC -DPIC -shared"
 		LIBLDFLAGS="-fPIC -DPIC -shared"
-		AUDLDFLAGS="-Wl,-export-dynamic -Wl,-rpath=\${libdir},-rpath=\${plugindir}"
+		AUDLDFLAGS="-L${plugindir} -Wl,-export-dynamic -Wl,-rpath=\${plugindir}"
 		SHARED_SUFFIX=".so"
 		;;
 esac
