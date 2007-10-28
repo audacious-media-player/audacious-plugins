@@ -483,7 +483,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
         }
 
         if (metadata)
-            tmp = aud_tuple_formatter_process_string(info->tuple, "${?title:${title}}${?stream: (${stream})");
+            tmp = aud_tuple_formatter_process_string(info->tuple, "${?title:${title}}${?stream: (${stream})}");
         else {
             gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
             gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
