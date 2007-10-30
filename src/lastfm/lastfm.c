@@ -537,7 +537,7 @@ gint lastfm_aud_vfs_truncate_impl(VFSFile * file, glong size)
 
 off_t lastfm_aud_vfs_fsize_impl(VFSFile * file)
 {
-        return 0;
+        return -1;
 }
 
 gchar *lastfm_aud_vfs_metadata_impl(VFSFile * file, const gchar * field)
