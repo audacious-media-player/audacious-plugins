@@ -156,7 +156,7 @@ void xs_about(void)
 			"This release of XMMS-SID is dedicated to\n"
 			"            Richard Joseph\n"
 			"                  and\n"
-			"      Lauri Sipil‰ (aka Xaztur/PWP)\n"
+			"      Lauri Sipil√§ (aka Xaztur/PWP)\n"
 			" - Now gone, but forever in our hearts -\n"
 			"\n"
 			"\n"
@@ -164,7 +164,7 @@ void xs_about(void)
 			"\tTecnic Software productions (TNSP)\n"
 			"\n"
 			"Programming and design\n"
-			"\tMatti 'ccr' H‰m‰l‰inen\n"
+			"\tMatti 'ccr' H√§m√§l√§inen\n"
 			"\n"
 #ifdef HAVE_SIDPLAY1
 			"libSIDPlay1 created by\n"
