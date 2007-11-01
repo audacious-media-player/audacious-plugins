@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-10-18 21:38+0200\n"
-"PO-Revision-Date: 2007-10-23 17:35+0100\n"
+"PO-Revision-Date: 2007-11-01 00:22+0100\n"
 "Last-Translator: Michael Färber <0102@gmx.at>\n"
 "Language-Team: german <0102@gmx.at>\n"
 "MIME-Version: 1.0\n"
@@ -621,6 +621,54 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
+"\n"
+"Zeit\n"
+"  Alarm um: \n"
+"    Die Zeit, um die der Alarm ausgelöst wird.\n"
+"\n"
+"  Still nach: \n"
+"    Der Alarm wird nach dieser Zeit gestoppt.\n"
+"       (sofern der Aufweck-Dialog nicht geschlossen wird)\n"
+"\n"
+"\n"
+"Tage\n"
+"  Tag:\n"
+"    Die Tage wählen, an denen der Alarm aktiviert wird.\n"
+"\n"
+"  Zeit:\n"
+"    Für jeden Tag einzeln die Zeit für den Alarm wählen,\n"
+"    oder den Alarm zur Standard-Zeit aktivieren.\n"
+"\n"
+"\n"
+"Lautstärke\n"
+"  Übergang: \n"
+"    Passt die Lautstärke an die gewählte Lautstärke\n"
+"    in diesem Zeitraum an.\n"
+"\n"
+"  Beginnen bei: \n"
+"    Starte den Übergang bei dieser Lautstärke.\n"
+"\n"
+"  Schluss: \n"
+"    Die Lautstärke, bei der der Übergang stoppt.\n"
+"    Falls die Übergangszeit 0 beträgt, wird die\n"
+"    Wiedergabe schon mit dieser Lautstärke gestartet.\n"
+"\n"
+"\n"
+"Optionen:\n"
+"  Zusätzlicher Befehl:\n"
+"    Führe diesen Befehl bei Auslösung des Alarms aus.\n"
+"\n"
+"  Wiedergabeliste: \n"
+"    Lade diese Wiedergabeliste zu Wiedergabe\n"
+"    (muss die Erweiterung .m3u haben). Wenn keine Wiedergabeliste\n"
+"    gegeben ist, werden die momentan in der\n"
+"    Wiedergabeliste befindlichen Stücke verwendet.\n"
+"    Die URL eines MP3/OGG-Streams kann auch hier\n"
+"    angegeben werden, aber das Laden von Wiedergabelisten\n"
+"    von URLs wird momentan noch nicht unterstützt.\n"
+"\n"
+"  Erinnerung:\n"
+"    Zeige eine Erinnerung an, wenn der Alarm ausgelöst wird.\n"
 
 #: src/alarm/interface.c:1366
 msgid "Help"
@@ -2720,7 +2768,7 @@ msgstr ""
 
 #: src/ladspa/ladspa.c:722
 msgid "This LADSPA plugin has no user controls"
-msgstr ""
+msgstr "Dieses LADSPA-Plugin hat keine Benutzeroberfläche."
 
 #: src/ladspa/ladspa.c:767
 #: src/ladspa/ladspa.c:853
@@ -2737,7 +2785,7 @@ msgstr "Installierte Plugins"
 
 #: src/ladspa/ladspa.c:937
 msgid "Running plugins"
-msgstr ""
+msgstr "Aktive Plugins"
 
 #: src/ladspa/ladspa.c:952
 msgid "Add"
@@ -2749,7 +2797,7 @@ msgstr "Entfernen"
 
 #: src/ladspa/ladspa.c:969
 msgid "LADSPA Plugin Catalog"
-msgstr ""
+msgstr "LADSPA-Plugin-Liste"
 
 #: src/lastfm/lastfm.c:96
 msgid ""
@@ -4546,11 +4594,11 @@ msgstr "Lautstärkekorrektur"
 
 #: src/sndstretch/sndstretch_xmms.c:320
 msgid "Short Overlap"
-msgstr ""
+msgstr "Kurzes Überlappen"
 
 #: src/sndstretch/sndstretch_xmms.c:374
 msgid "Speed"
-msgstr ""
+msgstr "Geschwindigkeit"
 
 #: src/sndstretch/sndstretch_xmms.c:375
 msgid "Pitch"
@@ -4558,7 +4606,7 @@ msgstr "Tonhöhe"
 
 #: src/sndstretch/sndstretch_xmms.c:376
 msgid "Scale"
-msgstr ""
+msgstr "Skalierung"
 
 #: src/sndstretch/sndstretch_xmms.c:396
 msgid "SndStretch - Configuration"
