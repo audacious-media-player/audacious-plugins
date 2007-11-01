@@ -40,17 +40,17 @@ oss_init(void)
     oss_cfg.use_alt_audio_device = FALSE;
     oss_cfg.alt_audio_device = NULL;
 
-    if ((db = bmp_cfg_db_open())) {
-        bmp_cfg_db_get_int(db, "OSS", "audio_device", &oss_cfg.audio_device);
-        bmp_cfg_db_get_int(db, "OSS", "buffer_size", &oss_cfg.buffer_size);
-        bmp_cfg_db_get_int(db, "OSS", "prebuffer", &oss_cfg.prebuffer);
-        bmp_cfg_db_get_bool(db, "OSS", "save_volume", &oss_cfg.save_volume);
-        bmp_cfg_db_get_bool(db, "OSS", "use_alt_audio_device",
+    if ((db = aud_cfg_db_open())) {
+        aud_cfg_db_get_int(db, "OSS", "audio_device", &oss_cfg.audio_device);
+        aud_cfg_db_get_int(db, "OSS", "buffer_size", &oss_cfg.buffer_size);
+        aud_cfg_db_get_int(db, "OSS", "prebuffer", &oss_cfg.prebuffer);
+        aud_cfg_db_get_bool(db, "OSS", "save_volume", &oss_cfg.save_volume);
+        aud_cfg_db_get_bool(db, "OSS", "use_alt_audio_device",
                             &oss_cfg.use_alt_audio_device);
-        bmp_cfg_db_get_string(db, "OSS", "alt_audio_device",
+        aud_cfg_db_get_string(db, "OSS", "alt_audio_device",
                               &oss_cfg.alt_audio_device);
-        bmp_cfg_db_get_int(db, "OSS", "saved_volume", &vol);
-        bmp_cfg_db_close(db);
+        aud_cfg_db_get_int(db, "OSS", "saved_volume", &vol);
+        aud_cfg_db_close(db);
     }
         //volume gets saved anyway, but is ignored unless "saved_volume" is true
         if(!oss_cfg.save_volume)

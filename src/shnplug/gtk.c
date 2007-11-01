@@ -125,16 +125,16 @@ void shn_configurewin_save(void)
 	shn_cfg.textfile_extensions = g_strdup(gtk_entry_get_text(GTK_ENTRY(textfile_extensions_entry)));
 
 	filename = g_strconcat(g_get_home_dir(), "/.xmms/config", NULL);
-	cfg = bmp_cfg_db_open();
-	bmp_cfg_db_set_int(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.error_output_method_config_name, shn_cfg.error_output_method);
-	bmp_cfg_db_set_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.verbose_config_name, shn_cfg.verbose);
-	bmp_cfg_db_set_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.seek_tables_path_config_name, shn_cfg.seek_tables_path);
-	bmp_cfg_db_set_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.relative_seek_tables_path_config_name, shn_cfg.relative_seek_tables_path);
-	bmp_cfg_db_set_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.swap_bytes_config_name, shn_cfg.swap_bytes);
-	bmp_cfg_db_set_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.load_textfiles_config_name, shn_cfg.load_textfiles);
-	bmp_cfg_db_set_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.textfile_extensions_config_name, shn_cfg.textfile_extensions);
+	cfg = aud_cfg_db_open();
+	aud_cfg_db_set_int(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.error_output_method_config_name, shn_cfg.error_output_method);
+	aud_cfg_db_set_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.verbose_config_name, shn_cfg.verbose);
+	aud_cfg_db_set_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.seek_tables_path_config_name, shn_cfg.seek_tables_path);
+	aud_cfg_db_set_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.relative_seek_tables_path_config_name, shn_cfg.relative_seek_tables_path);
+	aud_cfg_db_set_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.swap_bytes_config_name, shn_cfg.swap_bytes);
+	aud_cfg_db_set_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.load_textfiles_config_name, shn_cfg.load_textfiles);
+	aud_cfg_db_set_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.textfile_extensions_config_name, shn_cfg.textfile_extensions);
 
-	bmp_cfg_db_close(cfg);
+	aud_cfg_db_close(cfg);
 	g_free(filename);
 }
 

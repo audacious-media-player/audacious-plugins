@@ -35,20 +35,20 @@ void alsa_init(void)
 	alsa_cfg.vol.left = 100;
 	alsa_cfg.vol.right = 100;
 
-	cfgfile = bmp_cfg_db_open();
-	if (!bmp_cfg_db_get_string(cfgfile, "ALSA", "pcm_device",
+	cfgfile = aud_cfg_db_open();
+	if (!aud_cfg_db_get_string(cfgfile, "ALSA", "pcm_device",
 				  &alsa_cfg.pcm_device))
 		alsa_cfg.pcm_device = g_strdup("default");
 	g_message("device: %s", alsa_cfg.pcm_device);
-	if (!bmp_cfg_db_get_string(cfgfile, "ALSA", "mixer_device",
+	if (!aud_cfg_db_get_string(cfgfile, "ALSA", "mixer_device",
 				  &alsa_cfg.mixer_device))
 		alsa_cfg.mixer_device = g_strdup("PCM");
-	bmp_cfg_db_get_int(cfgfile, "ALSA", "mixer_card", &alsa_cfg.mixer_card);
-	bmp_cfg_db_get_int(cfgfile, "ALSA", "buffer_time", &alsa_cfg.buffer_time);
-	bmp_cfg_db_get_int(cfgfile, "ALSA", "period_time", &alsa_cfg.period_time);
+	aud_cfg_db_get_int(cfgfile, "ALSA", "mixer_card", &alsa_cfg.mixer_card);
+	aud_cfg_db_get_int(cfgfile, "ALSA", "buffer_time", &alsa_cfg.buffer_time);
+	aud_cfg_db_get_int(cfgfile, "ALSA", "period_time", &alsa_cfg.period_time);
 
-	bmp_cfg_db_get_bool(cfgfile, "ALSA", "debug", &alsa_cfg.debug);
-	bmp_cfg_db_close(cfgfile);
+	aud_cfg_db_get_bool(cfgfile, "ALSA", "debug", &alsa_cfg.debug);
+	aud_cfg_db_close(cfgfile);
 
 	if (dlopen("libasound.so.2", RTLD_NOW | RTLD_GLOBAL) == NULL)
 	{

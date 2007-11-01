@@ -66,12 +66,7 @@ DECLARE_ACTUATOR (wave_radial);
 DECLARE_ACTUATOR (wave_scope);
 
 /* **************** xform **************** */
-DECLARE_ACTUATOR (xform_spin);
-DECLARE_ACTUATOR (xform_ripple);
-DECLARE_ACTUATOR (xform_bump_spin);
-DECLARE_ACTUATOR (xform_halfrender);
-DECLARE_ACTUATOR (xform_movement);
-DECLARE_ACTUATOR (xform_dynmovement);
+DECLARE_ACTUATOR (xform_adjust);
 
 /* **************** builtin_table **************** */
 struct pn_actuator_desc *builtin_table[] =
@@ -112,12 +107,7 @@ struct pn_actuator_desc *builtin_table[] =
   &builtin_wave_radial,
   &builtin_wave_scope,
   /* **************** xform **************** */
-  &builtin_xform_spin,
-  &builtin_xform_ripple,
-  &builtin_xform_bump_spin,
-  &builtin_xform_halfrender,
-  &builtin_xform_movement,
-  &builtin_xform_dynmovement,
+  &builtin_xform_adjust,
   /* **************** the end! **************** */
   NULL
 };

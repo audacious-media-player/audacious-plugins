@@ -56,58 +56,63 @@ struct pn_actuator_desc builtin_general_fade =
   NULL, NULL, general_fade_exec
 };
 
+/* thanks to feelgood_ICBM @ freenode for this */
+#define glError() { GLenum err; for(err = glGetError(); err; err = glGetError()) { fprintf(stderr, "glError: %s caught at %s:%u\n", \
+	(GLchar*)gluErrorString(err), __FILE__, __LINE__); } }
+
 /* **************** general_blur **************** */
-/* FIXME: add a variable radius */
-/* FIXME: SPEEEED */
 static void
 general_blur_exec (const struct pn_actuator_option *opts,
 	   gpointer data)
 {
-  int i,j;
-  register guchar *srcptr = pn_image_data->surface[0];
-  register guchar *destptr = pn_image_data->surface[1];
-  register int sum;
+  GLuint texture_id;
 
-  for (j=0; j<pn_image_data->height; j++)
-    for (i=0; i<pn_image_data->width; i++)
-      {
-	sum = *(srcptr)<<2;
+  glGenTextures(1, &texture_id);
+  glBindTexture(GL_TEXTURE_2D, texture_id);
 
-	/* top */
-	if (j > 0)
-	  {
-	    sum += *(srcptr-pn_image_data->width)<<1;
-	    if (i > 0)
-	      sum += *(srcptr-pn_image_data->width-1);
-	    if (i < pn_image_data->width-1)
-	      sum += *(srcptr-pn_image_data->width+1);
-	  }
-	/* bottom */
-	if (j < pn_image_data->height-1)
-	  {
-	    sum += *(srcptr+pn_image_data->width)<<1;
-	    if (i > 0)
-	      sum += *(srcptr+pn_image_data->width-1);
-	    if (i < pn_image_data->width-1)
-	      sum += *(srcptr+pn_image_data->width+1);
-	  }
-	/* left */
-	if (i > 0)
-	  sum += *(srcptr-1)<<1;
-	/* right */
-	if (i < pn_image_data->width-1)
-	  sum += *(srcptr+1)<<1;
+  glError();
 
-	*destptr++ = (guchar)(sum >> 4);
-	srcptr++;
-      }
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 128, 128, 0, GL_RGBA, GL_BYTE, NULL);
 
-  pn_swap_surfaces ();
+  glError();
+
+  glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, -1, -1, 1, 1, 0);
+
+  glError();
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+  glBindTexture(GL_TEXTURE_2D, texture_id);
+
+  glError();
+
+  glBegin(GL_QUADS);
+
+  glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+  glTexCoord2f(0, 1);
+  glVertex2i(-1, -1);
+  glVertex2i(-1, 1);
+  glVertex2i(1, 1);
+  glVertex2i(1, -1);
+
+  glEnd();
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  glError();
+
+  glDeleteTextures(1, &texture_id);
+
+  glFlush();
+
+  glError();
 }
 
 struct pn_actuator_desc builtin_general_blur = 
 {
-  "general_blur", "Blur", "A simple 1 pixel radius blur",
+  "general_blur", "Blur", "A simple radial blur",
   0, NULL,
   NULL, NULL, general_blur_exec
 };

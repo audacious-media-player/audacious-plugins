@@ -45,22 +45,9 @@
 #include "avcodec.h"
 #include "avformat.h"
 
-#define ABOUT_TXT "Adapted for use in audacious by Tony Vroon (chainsaw@gentoo.org) from\n \
-the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC (mcmcc@mail.ru)\n \
-and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox.ru>.\n \
-This plugin based on source code " LIBAVCODEC_IDENT "\nby Fabrice Bellard from \
-http://ffmpeg.sourceforge.net.\n\n \
-This program is free software; you can redistribute it and/or modify \n \
-it under the terms of the GNU General Public License as published by \n \
-the Free Software Foundation; either version 2 of the License, or \n \
-(at your option) any later version. \n\n \
-This program is distributed in the hope that it will be useful, \n \
-but WITHOUT ANY WARRANTY; without even the implied warranty of \n \
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \n \
-See the GNU General Public License for more details.\n"
-#define PLUGIN_NAME "Audacious-WMA"
-#define PLUGIN_VERSION "v.1.0.5"
-#define ST_BUFF 1024
+static const gchar * PLUGIN_NAME = "Audacious-WMA";
+static const gchar * PLUGIN_VERSION = "v.1.0.5";
+static const int ST_BUFF = 1024;
 
 static int wma_decode = 0;
 static gboolean wma_pause = 0;
@@ -134,18 +121,32 @@ static void wma_about(void)
     char *message;
 
     if (dialog1) return;
-    
+
     title = (char *)g_malloc(80);
     message = (char *)g_malloc(1000);
     memset(title, 0, 80);
     memset(message, 0, 1000);
 
     sprintf(title, _("About %s"), PLUGIN_NAME);
-    sprintf(message, "%s %s\n\n%s", PLUGIN_NAME, PLUGIN_VERSION, ABOUT_TXT);
+    sprintf(message, "%s %s\n\n%s", PLUGIN_NAME, PLUGIN_VERSION,
+            _("Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
+              "the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC (mcmcc@mail.ru)\n"
+              "and the BMP-WMA plugin which is Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox.ru>.\n"
+              "This plugin based on source code " LIBAVCODEC_IDENT "\nby Fabrice Bellard from"
+              "http://ffmpeg.sourceforge.net.\n\n"
+              "This program is free software; you can redistribute it and/or modify \n"
+              "it under the terms of the GNU General Public License as published by \n"
+              "the Free Software Foundation; either version 2 of the License, or \n"
+              "(at your option) any later version. \n\n"
+              "This program is distributed in the hope that it will be useful, \n"
+              "but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
+              "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \n"
+              "See the GNU General Public License for more details.\n"
+             ));
 
     dialog1 = gtk_dialog_new();
     g_signal_connect(G_OBJECT(dialog1), "destroy",
-                        G_CALLBACK(gtk_widget_destroyed), &dialog1);
+                     G_CALLBACK(gtk_widget_destroyed), &dialog1);
     gtk_window_set_title(GTK_WINDOW(dialog1), title);
     gtk_window_set_policy(GTK_WINDOW(dialog1), FALSE, FALSE, FALSE);
     gtk_container_border_width(GTK_CONTAINER(dialog1), 5);
@@ -155,10 +156,10 @@ static void wma_about(void)
 
     button1 = gtk_button_new_with_label(_(" Close "));
     g_signal_connect_swapped(G_OBJECT(button1), "clicked",
-	                        G_CALLBACK(gtk_widget_destroy),
-    	                        GTK_OBJECT(dialog1));
+                             G_CALLBACK(gtk_widget_destroy),
+                             GTK_OBJECT(dialog1));
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog1)->action_area), button1,
-                     FALSE, FALSE, 0);
+                       FALSE, FALSE, 0);
 
     gtk_widget_show(button1);
     gtk_widget_show(dialog1);
@@ -191,9 +192,9 @@ static int wma_is_our_file(char *filename)
 
     if(!codec2) {
         av_close_input_file(ic2);
-	return 0;
+        return 0;
     }
-	
+
     av_close_input_file(ic2);
     return 1;
 }
@@ -236,13 +237,6 @@ static void wma_seek(InputPlayback *playback, int time)
     if(wma_pause) playback->output->pause(1);
 }
 
-static gchar *extname(const char *filename)
-{
-    gchar *ext = strrchr(filename, '.');
-    if(ext != NULL) ++ext;
-    return ext;
-}
-
 static void _assoc_string(Tuple *tuple, const gint nfield, const gchar *str)
 {
     if (strlen(str) > 0)
@@ -261,7 +255,7 @@ static Tuple *wma_get_song_tuple(gchar * filename)
     AVFormatContext *in = NULL;
 
     if (av_open_input_file(&in, str_twenty_to_space(filename), NULL, 0, NULL) < 0)
-	return NULL;
+        return NULL;
 
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Windows Media Audio (WMA)");
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
@@ -298,7 +292,7 @@ static gchar *get_song_title(AVFormatContext *in, gchar * filename)
     _assoc_int(ti, FIELD_YEAR, in->year);
     _assoc_int(ti, FIELD_TRACK_NUMBER, in->track);
     _assoc_int(ti, FIELD_LENGTH, in->duration / 1000);
-    
+
     ret = aud_tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
 
     return ret;
@@ -307,9 +301,9 @@ static gchar *get_song_title(AVFormatContext *in, gchar * filename)
 static guint get_song_time(AVFormatContext *in)
 {
     if(in->duration)
-	return in->duration/1000;
+        return in->duration/1000;
     else
-	return 0;
+        return 0;
 }
 
 static void wma_get_song_info(char *filename, char **title_real, int *len_real)
@@ -327,16 +321,16 @@ static void wma_playbuff(InputPlayback *playback, int out_size)
 {
     FifoBuffer f;
     int sst_buff;
-    
+
     fifo_init(&f, out_size*2);
     fifo_write(&f, wma_outbuf, out_size, &f.wptr);
     while(!fifo_read(&f, wma_s_outbuf, wma_st_buff, &f.rptr) && wma_decode)
     {
         sst_buff = wma_st_buff;
-	if(wma_pause) memset(wma_s_outbuf, 0, sst_buff);	
-	playback->pass_audio(playback, FMT_S16_NE,
-            c->channels, sst_buff, (short *)wma_s_outbuf, NULL);
-	memset(wma_s_outbuf, 0, sst_buff);
+        if(wma_pause) memset(wma_s_outbuf, 0, sst_buff);    
+        playback->pass_audio(playback, FMT_S16_NE,
+                             c->channels, sst_buff, (short *)wma_s_outbuf, NULL);
+        memset(wma_s_outbuf, 0, sst_buff);
     }
     fifo_free(&f);
     return;
@@ -348,32 +342,32 @@ static void *wma_play_loop(void *arg)
     uint8_t *inbuf_ptr;
     int out_size, size, len;
     AVPacket pkt;
-    
+
     g_static_mutex_lock(&wma_mutex);
     while(playback->playing)
     {
-	if(wma_seekpos != -1)
-	{
-	    av_seek_frame(ic, wma_idx, wma_seekpos * 1000000LL);
-	    playback->output->flush(wma_seekpos * 1000);
-	    wma_seekpos = -1;
-	}
+        if(wma_seekpos != -1)
+        {
+            av_seek_frame(ic, wma_idx, wma_seekpos * 1000000LL);
+            playback->output->flush(wma_seekpos * 1000);
+            wma_seekpos = -1;
+        }
 
         if(av_read_frame(ic, &pkt) < 0) break;
 
         size = pkt.size;
         inbuf_ptr = pkt.data;
-	
+
         if(size == 0) break;
-	
+
         while(size > 0){
             len = avcodec_decode_audio(c, (short *)wma_outbuf, &out_size,
                                        inbuf_ptr, size);
-	    if(len < 0) break;
-	    
+            if(len < 0) break;
+
             if(out_size <= 0) continue;
 
-	    wma_playbuff(playback, out_size);
+            wma_playbuff(playback, out_size);
 
             size -= len;
             inbuf_ptr += len;
@@ -395,7 +389,7 @@ static void wma_play_file(InputPlayback *playback)
 {
     char *filename = playback->filename;
     AVCodec *codec;
-    
+
     if(av_open_input_file(&ic, filename, NULL, 0, NULL) < 0) return;
 
     for(wma_idx = 0; wma_idx < ic->nb_streams; wma_idx++) {
@@ -408,16 +402,16 @@ static void wma_play_file(InputPlayback *playback)
     codec = avcodec_find_decoder(c->codec_id);
 
     if(!codec) return;
-	
+
     if(avcodec_open(c, codec) < 0) return;
-	    	    
+
     wsong_title = get_song_title(ic, filename);
     wsong_time = get_song_time(ic);
 
     if(playback->output->open_audio(FMT_S16_NE, c->sample_rate, c->channels) <= 0) return;
 
     wma_st_buff  = ST_BUFF;
-	
+
     playback->set_params(playback, wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
 
     /* av_malloc() will wrap posix_memalign() if necessary -nenolod */
@@ -439,4 +433,4 @@ static void wma_stop(InputPlayback *playback)
     if(wma_pause) wma_do_pause(playback, 0);
     g_thread_join(wma_decode_thread);
     playback->output->close_audio();
-}	
+}   

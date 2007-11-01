@@ -285,7 +285,7 @@ void xs_init_configuration(void)
 #endif
 
 #ifdef AUDACIOUS_PLUGIN
-	xs_pstrcpy(&xs_cfg.titleFormat, "${artist} - ${title} (${copyright}) <${subtune}/${subtunes}> [${sid-model}/${sid-speed}]");
+	xs_pstrcpy(&xs_cfg.titleFormat, "${artist} - ${title} (${copyright}) <${subsong-id}/${subsong-num}> [${sid-model}/${sid-speed}]");
 #else
 	xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) <%n/%N> [%m/%C]");
 #endif

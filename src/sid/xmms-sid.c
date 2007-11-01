@@ -87,7 +87,7 @@ t_xs_status xs_status;
 XS_MUTEX(xs_status);
 static XS_THREAD_T xs_decode_thread;
 
-void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
+static void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
 
 /*
  * Error messages
@@ -591,7 +591,7 @@ gint xs_get_time(InputPlayback *pb)
 /*
  * Return song information Tuple
  */
-void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
+static void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 {
 	gchar *tmpStr, tmpStr2[64];
 
@@ -599,11 +599,6 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 	aud_tuple_associate_string(pResult, FIELD_ARTIST, NULL, pInfo->sidComposer);
 	aud_tuple_associate_string(pResult, FIELD_GENRE, NULL, "SID-tune");
 	aud_tuple_associate_string(pResult, FIELD_COPYRIGHT, NULL, pInfo->sidCopyright);
-
-	if (xs_cfg.subAutoEnable)
-		aud_tuple_associate_int(pResult, FIELD_SUBSONG_NUM, NULL, pInfo->nsubTunes);
-
-	aud_tuple_associate_int(pResult, -1, "subtunes", pInfo->nsubTunes);
 	aud_tuple_associate_string(pResult, -1, "sid-format", pInfo->sidFormat);
 
 	switch (pInfo->sidModel) {
@@ -641,8 +636,8 @@ void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
 		aud_tuple_associate_string(pResult, -1, "sid-speed", tmpStr);
 	} else
 		subTune = 1;
-
-	aud_tuple_associate_int(pResult, -1, "subtune", subTune);
+	
+	aud_tuple_associate_int(pResult, FIELD_SUBSONG_NUM, NULL, pInfo->nsubTunes);
 	aud_tuple_associate_int(pResult, FIELD_SUBSONG_ID, NULL, subTune);
 	aud_tuple_associate_int(pResult, FIELD_TRACK_NUMBER, NULL, subTune);
 
@@ -705,7 +700,6 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 
 	/* Get information from URL */
 	xs_get_trackinfo(songFilename, &tmpFilename, &tmpTune);
-
 	tmpResult = aud_tuple_new_from_filename(tmpFilename);
 	if (!tmpResult) {
 		g_free(tmpFilename);
@@ -722,6 +716,27 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 		return tmpResult;
 	
 	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
+
+	/* Set subtunes */
+	if (xs_cfg.subAutoEnable && tmpInfo->nsubTunes > 1 && tmpTune < 0) {
+		gint i, n;
+		tmpResult->subtunes = g_new(gint, tmpInfo->nsubTunes);
+		for (n = 0, i = 1; i <= tmpInfo->nsubTunes; i++) {
+			gboolean doAdd = FALSE;
+					
+			if (xs_cfg.subAutoMinOnly) {
+				if (i == tmpInfo->startTune ||
+					tmpInfo->subTunes[i - 1].tuneLength >= xs_cfg.subAutoMinTime)
+					doAdd = TRUE;
+			} else
+				doAdd = TRUE;
+					
+			if (doAdd) tmpResult->subtunes[n++] = i;
+		}
+		tmpResult->nsubtunes = n;
+	} else
+		tmpResult->nsubtunes = 0;
+	
 	xs_tuneinfo_free(tmpInfo);
 
 	return tmpResult;

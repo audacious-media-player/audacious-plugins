@@ -90,16 +90,16 @@ void xmmstimid_init(void) {
 	xmmstimid_cfg.channels = 2;
 	xmmstimid_cfg.buffer_size = 512;
 
-	db = bmp_cfg_db_open();
+	db = aud_cfg_db_open();
 
-	if (! bmp_cfg_db_get_string(db, "timidity", "config_file",
+	if (! aud_cfg_db_get_string(db, "timidity", "config_file",
                                 &xmmstimid_cfg.config_file))
         xmmstimid_cfg.config_file = g_strdup("/etc/timidity/timidity.cfg");
 
-	bmp_cfg_db_get_int(db, "timidity", "samplerate", &xmmstimid_cfg.rate);
-	bmp_cfg_db_get_int(db, "timidity", "bits", &xmmstimid_cfg.bits);
-	bmp_cfg_db_get_int(db, "timidity", "channels", &xmmstimid_cfg.channels);
-	bmp_cfg_db_close(db);
+	aud_cfg_db_get_int(db, "timidity", "samplerate", &xmmstimid_cfg.rate);
+	aud_cfg_db_get_int(db, "timidity", "bits", &xmmstimid_cfg.bits);
+	aud_cfg_db_get_int(db, "timidity", "channels", &xmmstimid_cfg.channels);
+	aud_cfg_db_close(db);
 
 	if (mid_init(xmmstimid_cfg.config_file) != 0) {
 		xmmstimid_initialized = FALSE;
@@ -203,18 +203,18 @@ void xmmstimid_conf_ok(GtkButton *button, gpointer user_data) {
 	else if (gtk_toggle_button_get_active(xmmstimid_conf_channels_2))
 		xmmstimid_cfg.channels = 2;
 
-	db = bmp_cfg_db_open();
+	db = aud_cfg_db_open();
 
 	g_free(xmmstimid_cfg.config_file);
 	xmmstimid_cfg.config_file = g_strdup(
         gtk_entry_get_text(xmmstimid_conf_config_file));
 
-	bmp_cfg_db_set_string(db, "timidity", "config_file", xmmstimid_cfg.config_file);
+	aud_cfg_db_set_string(db, "timidity", "config_file", xmmstimid_cfg.config_file);
 
-	bmp_cfg_db_set_int(db, "timidity", "samplerate", xmmstimid_cfg.rate);
-	bmp_cfg_db_set_int(db, "timidity", "bits", xmmstimid_cfg.bits);
-	bmp_cfg_db_set_int(db, "timidity", "channels", xmmstimid_cfg.channels);
-	bmp_cfg_db_close(db);
+	aud_cfg_db_set_int(db, "timidity", "samplerate", xmmstimid_cfg.rate);
+	aud_cfg_db_set_int(db, "timidity", "bits", xmmstimid_cfg.bits);
+	aud_cfg_db_set_int(db, "timidity", "channels", xmmstimid_cfg.channels);
+	aud_cfg_db_close(db);
 
 	gtk_widget_hide(xmmstimid_conf_wnd);
 }

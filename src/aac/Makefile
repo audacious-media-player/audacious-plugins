@@ -56,4 +56,4 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS} -fsigned-char
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I../.. -I. -I./include -I./libfaad2 -I./mp4ff -DUSE_TAGGING=1
-LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} -lm
+LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${MOWGLI_LIBS} -lm

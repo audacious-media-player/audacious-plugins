@@ -62,10 +62,10 @@ void artsxmms_init(void)
 
 	artsxmms_cfg.buffer_size = 400;
 	
-	db = bmp_cfg_db_open();
-	bmp_cfg_db_get_int(db, "arts", "buffer_size",
+	db = aud_cfg_db_open();
+	aud_cfg_db_get_int(db, "arts", "buffer_size",
 			  &artsxmms_cfg.buffer_size);
-	bmp_cfg_db_close(db);
+	aud_cfg_db_close(db);
 }
 
 

@@ -107,19 +107,19 @@ static void shn_init()
 	shn_cfg.textfile_extensions = NULL;
 	shn_cfg.textfile_extensions_config_name = "textfile_extensions";
 
-	if ((cfg = bmp_cfg_db_open()) != 0)
+	if ((cfg = aud_cfg_db_open()) != 0)
 	{
-		bmp_cfg_db_get_int(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.error_output_method_config_name, &shn_cfg.error_output_method);
-		bmp_cfg_db_get_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.verbose_config_name, &shn_cfg.verbose);
-		if (!bmp_cfg_db_get_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.seek_tables_path_config_name, &shn_cfg.seek_tables_path))
+		aud_cfg_db_get_int(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.error_output_method_config_name, &shn_cfg.error_output_method);
+		aud_cfg_db_get_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.verbose_config_name, &shn_cfg.verbose);
+		if (!aud_cfg_db_get_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.seek_tables_path_config_name, &shn_cfg.seek_tables_path))
 			shn_cfg.seek_tables_path = g_strdup(g_get_home_dir());
-		if (!bmp_cfg_db_get_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.relative_seek_tables_path_config_name, &shn_cfg.relative_seek_tables_path))
+		if (!aud_cfg_db_get_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.relative_seek_tables_path_config_name, &shn_cfg.relative_seek_tables_path))
 			shn_cfg.relative_seek_tables_path = g_strdup("");
-		bmp_cfg_db_get_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.swap_bytes_config_name, &shn_cfg.swap_bytes);
-		bmp_cfg_db_get_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.load_textfiles_config_name, &shn_cfg.load_textfiles);
-		if (!bmp_cfg_db_get_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.textfile_extensions_config_name, &shn_cfg.textfile_extensions))
+		aud_cfg_db_get_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.swap_bytes_config_name, &shn_cfg.swap_bytes);
+		aud_cfg_db_get_bool(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.load_textfiles_config_name, &shn_cfg.load_textfiles);
+		if (!aud_cfg_db_get_string(cfg, XMMS_SHN_VERSION_TAG, shn_cfg.textfile_extensions_config_name, &shn_cfg.textfile_extensions))
 			shn_cfg.textfile_extensions = g_strdup("txt,nfo");
-		bmp_cfg_db_close(cfg);
+		aud_cfg_db_close(cfg);
 	}
 }
 

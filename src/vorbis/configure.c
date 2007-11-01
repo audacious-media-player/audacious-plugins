@@ -49,19 +49,19 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
     else
         vorbis_cfg.replaygain_mode = REPLAYGAIN_MODE_ALBUM;
 
-    db = bmp_cfg_db_open();
+    db = aud_cfg_db_open();
 
-    bmp_cfg_db_set_bool(db, "vorbis", "tag_override",
+    aud_cfg_db_set_bool(db, "vorbis", "tag_override",
                         vorbis_cfg.tag_override);
-    bmp_cfg_db_set_string(db, "vorbis", "tag_format", vorbis_cfg.tag_format);
-    bmp_cfg_db_set_bool(db, "vorbis", "use_anticlip",
+    aud_cfg_db_set_string(db, "vorbis", "tag_format", vorbis_cfg.tag_format);
+    aud_cfg_db_set_bool(db, "vorbis", "use_anticlip",
                         vorbis_cfg.use_anticlip);
-    bmp_cfg_db_set_bool(db, "vorbis", "use_replaygain",
+    aud_cfg_db_set_bool(db, "vorbis", "use_replaygain",
                         vorbis_cfg.use_replaygain);
-    bmp_cfg_db_set_int(db, "vorbis", "replaygain_mode",
+    aud_cfg_db_set_int(db, "vorbis", "replaygain_mode",
                        vorbis_cfg.replaygain_mode);
-    bmp_cfg_db_set_bool(db, "vorbis", "use_booster", vorbis_cfg.use_booster);
-    bmp_cfg_db_close(db);
+    aud_cfg_db_set_bool(db, "vorbis", "use_booster", vorbis_cfg.use_booster);
+    aud_cfg_db_close(db);
     gtk_widget_destroy(vorbis_configurewin);
 }
 

@@ -213,7 +213,7 @@ case "$target" in
 		PICFLAGS="-fPIC -DPIC"
 		PICLDFLAGS="-fPIC -DPIC -shared"
 		LIBLDFLAGS="-fPIC -DPIC -shared"
-		AUDLDFLAGS="-Wl,-export-dynamic -Wl,-rpath=\${libdir},-rpath=\${plugindir}"
+		AUDLDFLAGS="-L \${pluginlibdir} -Wl,-export-dynamic -Wl,-rpath=\${pluginlibdir}"
 		SHARED_SUFFIX=".so"
 		;;
 esac
@@ -367,19 +367,21 @@ AC_ARG_ENABLE(mp3,
 )
 
 if test "$enable_mp3" = "yes"; then
-        AC_CHECK_LIB(mad, mad_timer_add,
-		[INPUT_PLUGINS="$INPUT_PLUGINS madplug"],
-		[enable_mp3="no"])
+    AM_PATH_LIBMAD([enable_mp3=yes], 
+        [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
+         enable_mp3=no]
+    )
+else
+    AC_MSG_RESULT([*** mp3 plugin disabled per user request ***])
+    enable_mp3=no
 fi
-# XXX rtsp support
-#        PKG_CHECK_MODULES(LIBNMS,[libnms >= 0.6.0],
-#            [LIBNMS_SRC=rtsp.c
-#             AC_DEFINE(HAVE_NEMESI,,[Define if rtp/rtsp support is available])
-#            ],[LIBNMS_SRC=""])
-#        AC_SUBST(LIBNMS_CFLAGS)
-#        AC_SUBST(LIBNMS_LIBS)
-#        AC_SUBST(LIBNMS_SRC)
-# fi
+
+if test "$enable_mp3" = "yes"; then
+	INPUT_PLUGINS="$INPUT_PLUGINS madplug"
+fi
+
+AC_SUBST(MAD_CFLAGS)
+AC_SUBST(MAD_LIBS)
 
 dnl *** Rocklight
 
@@ -621,7 +623,7 @@ AC_ARG_ENABLE(vorbis,
 )
 
 if test "$enable_vorbis" = "yes"; then
-    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.0 vorbisfile >= 1.0],
+    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.2 vorbisfile >= 1.2],
         [have_oggvorbis=yes],
         [AC_MSG_WARN([*** Cannot find libogg/libvorbis, Ogg Vorbis support will not be built ***])
          have_oggvorbis=no]
@@ -1463,7 +1465,7 @@ AC_ARG_ENABLE(filewriter_mp3,
 if test "$enable_filewriter_mp3" = "yes"; then
    AC_CHECK_LIB(mp3lame -lm, lame_init, [have_lame=yes], [have_lame=no])
    if test "$have_lame" = yes; then
-      AC_DEFINE(FILEWRITER_MP3, 1, [Define if Vorbis output part should be built])
+      AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS -lmp3lame"
    fi
 fi
@@ -1479,6 +1481,7 @@ if test "$enable_filewriter_vorbis" = "yes"; then
    [have_vorbisenc=yes], [have_vorbisenc=no])
    if test "$have_vorbisenc" = yes; then
       AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
+      FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags vorbisenc`"
       FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs vorbisenc`"
    fi
 fi
@@ -1495,6 +1498,7 @@ if test "$enable_filewriter_flac" = "yes"; then
    )
    if test "$have_writer_flac" = yes; then
       AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
+	  FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags flac`"
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs flac`"
    fi
 fi
@@ -1505,6 +1509,7 @@ if test "$enable_filewriter" != yes; then
    have_writer_flac=no
    FILEWRITER_LIBS=""
 fi
+AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
 
 dnl *** End of all plugin checks ***

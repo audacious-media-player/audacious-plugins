@@ -160,40 +160,40 @@ static void lame_debugf(const char *format, va_list ap)
 
 static void mp3_init(void)
 {
-    ConfigDb *db = bmp_cfg_db_open();
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "vbr_on", &vbr_on);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "vbr_type", &vbr_type);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "vbr_min_val", &vbr_min_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "vbr_max_val", &vbr_max_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "enforce_min_val",
+    ConfigDb *db = aud_cfg_db_open();
+    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_on", &vbr_on);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_type", &vbr_type);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_min_val", &vbr_min_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_max_val", &vbr_max_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "enforce_min_val",
                        &enforce_min_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "vbr_quality_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_quality_val",
                        &vbr_quality_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "abr_val", &abr_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "toggle_xing_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "abr_val", &abr_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "toggle_xing_val",
                        &toggle_xing_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "mark_original_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "mark_original_val",
                        &mark_original_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "mark_copyright_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "mark_copyright_val",
                        &mark_copyright_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "force_v2_val", &force_v2_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "only_v1_val", &only_v1_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "only_v2_val", &only_v2_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "algo_quality_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "force_v2_val", &force_v2_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "only_v1_val", &only_v1_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "only_v2_val", &only_v2_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "algo_quality_val",
                        &algo_quality_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "out_samplerate_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "out_samplerate_val",
                        &out_samplerate_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "bitrate_val", &bitrate_val);
-    bmp_cfg_db_get_float(db, "filewriter_mp3", "compression_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "bitrate_val", &bitrate_val);
+    aud_cfg_db_get_float(db, "filewriter_mp3", "compression_val",
                          &compression_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "enc_toggle_val", &enc_toggle_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "audio_mode_val", &audio_mode_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "auto_ms_val", &auto_ms_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "enforce_iso_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "enc_toggle_val", &enc_toggle_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "audio_mode_val", &audio_mode_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "auto_ms_val", &auto_ms_val);
+    aud_cfg_db_get_int(db, "filewriter_mp3", "enforce_iso_val",
                        &enforce_iso_val);
-    bmp_cfg_db_get_int(db, "filewriter_mp3", "error_protect_val",
+    aud_cfg_db_get_int(db, "filewriter_mp3", "error_protect_val",
                        &error_protect_val);
-    bmp_cfg_db_close(db);
+    aud_cfg_db_close(db);
 }
 
 static gint mp3_open(void)
@@ -619,37 +619,37 @@ static void configure_ok_cb(gpointer data)
     if (vbr_min_val > vbr_max_val)
         vbr_max_val = vbr_min_val;
 
-    db = bmp_cfg_db_open();
+    db = aud_cfg_db_open();
 
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "vbr_on", vbr_on);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "vbr_type", vbr_type);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "vbr_min_val", vbr_min_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "vbr_max_val", vbr_max_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "enforce_min_val", enforce_min_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "vbr_quality_val", vbr_quality_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "abr_val", abr_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "toggle_xing_val", toggle_xing_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "mark_original_val",
+    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_on", vbr_on);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_type", vbr_type);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_min_val", vbr_min_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_max_val", vbr_max_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "enforce_min_val", enforce_min_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "vbr_quality_val", vbr_quality_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "abr_val", abr_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "toggle_xing_val", toggle_xing_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "mark_original_val",
                        mark_original_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "mark_copyright_val",
+    aud_cfg_db_set_int(db, "filewriter_mp3", "mark_copyright_val",
                        mark_copyright_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "force_v2_val", force_v2_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "only_v1_val", only_v1_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "only_v2_val", only_v2_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "algo_quality_val",
+    aud_cfg_db_set_int(db, "filewriter_mp3", "force_v2_val", force_v2_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "only_v1_val", only_v1_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "only_v2_val", only_v2_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "algo_quality_val",
                        algo_quality_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "out_samplerate_val",
+    aud_cfg_db_set_int(db, "filewriter_mp3", "out_samplerate_val",
                        out_samplerate_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "bitrate_val", bitrate_val);
-    bmp_cfg_db_set_float(db, "filewriter_mp3", "compression_val",
+    aud_cfg_db_set_int(db, "filewriter_mp3", "bitrate_val", bitrate_val);
+    aud_cfg_db_set_float(db, "filewriter_mp3", "compression_val",
                          compression_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "enc_toggle_val", enc_toggle_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "audio_mode_val", audio_mode_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "auto_ms_val", auto_ms_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "enforce_iso_val", enforce_iso_val);
-    bmp_cfg_db_set_int(db, "filewriter_mp3", "error_protect_val",
+    aud_cfg_db_set_int(db, "filewriter_mp3", "enc_toggle_val", enc_toggle_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "audio_mode_val", audio_mode_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "auto_ms_val", auto_ms_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "enforce_iso_val", enforce_iso_val);
+    aud_cfg_db_set_int(db, "filewriter_mp3", "error_protect_val",
                        error_protect_val);
-    bmp_cfg_db_close(db);
+    aud_cfg_db_close(db);
 
 
     gtk_widget_destroy(configure_win);

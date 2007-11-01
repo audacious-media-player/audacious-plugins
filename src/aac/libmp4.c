@@ -240,8 +240,10 @@ static int mp4_is_our_file(char *filename)
           !strcasecmp(extension, ".aac")    // old MPEG2/4-AAC extension
        ))
           return 1;
-       else
-          return 0;
+       else {
+            aud_vfs_fclose(file);
+            return 0;
+        }
       }
       if (!memcmp(&magic[4], "ftyp", 4)) {
            aud_vfs_fclose(file);
@@ -355,20 +357,30 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
         guint bufferSize = 0;
         faacDecHandle decoder;
 
-        if (mp4track == -1)
+        if (mp4track == -1) {
+            // clean up
+            g_free(mp4cb);
+            aud_vfs_fclose(mp4fh);
             return NULL;
+        }
 
         decoder = faacDecOpen();
         mp4ff_get_decoder_config(mp4file, mp4track, &buffer, &bufferSize);
 
         if ( !buffer ) {
             faacDecClose(decoder);
+            // clean up
+            g_free(mp4cb);
+            aud_vfs_fclose(mp4fh);
             return FALSE;
         }
         if ( faacDecInit2(decoder, buffer, bufferSize,
                   &samplerate, &channels) < 0 ) {
             faacDecClose(decoder);
 
+            // clean up
+            g_free(mp4cb);
+            aud_vfs_fclose(mp4fh);
             return FALSE;
         }
 

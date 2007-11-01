@@ -53,9 +53,9 @@ DECLARE_PLUGIN(OSS4, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL, NULL);
 void oss_cleanup(void)
 {
     ConfigDb *db;
-    db = bmp_cfg_db_open();
-    bmp_cfg_db_set_int(db, "OSS", "saved_volume", vol);
-    bmp_cfg_db_close(db);
+    db = aud_cfg_db_open();
+    aud_cfg_db_set_int(db, "OSS", "saved_volume", vol);
+    aud_cfg_db_close(db);
 
     if (oss_cfg.alt_audio_device) {
         free(oss_cfg.alt_audio_device);

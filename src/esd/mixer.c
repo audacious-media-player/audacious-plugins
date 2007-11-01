@@ -160,10 +160,10 @@ esdout_set_volume(int l, int r)
     }
     
     /* save volume values in db */
-    db = bmp_cfg_db_open();
-    bmp_cfg_db_set_int(db, "ESD", "volume_left", lp);
-    bmp_cfg_db_set_int(db, "ESD", "volume_right", rp);
-    bmp_cfg_db_close(db);
+    db = aud_cfg_db_open();
+    aud_cfg_db_set_int(db, "ESD", "volume_left", lp);
+    aud_cfg_db_set_int(db, "ESD", "volume_right", rp);
+    aud_cfg_db_close(db);
 }
 
 #ifdef HAVE_OSS

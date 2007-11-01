@@ -50,20 +50,20 @@ static void saveconfig(GtkWidget *wid __attribute__((unused)), gpointer data)
         const char *ge_uid = gtk_entry_get_text(GTK_ENTRY(ge_entry1));
         const char *ge_pwd = gtk_entry_get_text(GTK_ENTRY(ge_entry2));
 
-        if ((cfgfile = bmp_cfg_db_open()))
+        if ((cfgfile = aud_cfg_db_open()))
 	{
                 md5_state_t md5state;
                 unsigned char md5pword[16], ge_md5pword[16];
 
-                bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (char *)uid);
-                bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (char *)ge_uid);
+                aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (char *)uid);
+                aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (char *)ge_uid);
 
                 if (pwd != NULL && pwd[0] != '\0' && strlen(pwd))
 		{
                         md5_init(&md5state);
                         md5_append(&md5state, (unsigned const char *)pwd, strlen(pwd));
                         md5_finish(&md5state, md5pword);
-                        bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "password",
+                        aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password",
                                         hexify((char*)md5pword, sizeof(md5pword)));
                 }
 
@@ -72,11 +72,11 @@ static void saveconfig(GtkWidget *wid __attribute__((unused)), gpointer data)
                         md5_init(&md5state);
                         md5_append(&md5state, (unsigned const char *)ge_pwd, strlen(ge_pwd));
                         md5_finish(&md5state, ge_md5pword);
-                        bmp_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password",
+                        aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password",
                                         hexify((char*)ge_md5pword, sizeof(ge_md5pword)));
                 }
 
-                bmp_cfg_db_close(cfgfile);
+                aud_cfg_db_close(cfgfile);
         }
 }
 
@@ -197,10 +197,10 @@ create_cfgdlg(void)
 	gtk_entry_set_text(GTK_ENTRY(entry1), "");
 	gtk_entry_set_text(GTK_ENTRY(entry2), "");
 
-        if ((db = bmp_cfg_db_open())) {
+        if ((db = aud_cfg_db_open())) {
                 gchar *username = NULL;
 		// last fm
-                bmp_cfg_db_get_string(db, "audioscrobbler", "username",
+                aud_cfg_db_get_string(db, "audioscrobbler", "username",
                         &username);
                 if (username) {
                         gtk_entry_set_text(GTK_ENTRY(entry1), username);
@@ -208,7 +208,7 @@ create_cfgdlg(void)
 			username = NULL;
                 }
 		// gerpok
-                bmp_cfg_db_get_string(db, "audioscrobbler", "ge_username",
+                aud_cfg_db_get_string(db, "audioscrobbler", "ge_username",
                         &username);
                 if (username) {
                         gtk_entry_set_text(GTK_ENTRY(ge_entry1), username);
@@ -216,7 +216,7 @@ create_cfgdlg(void)
 			username = NULL;
                 }
 
-                bmp_cfg_db_close(db);
+                aud_cfg_db_close(db);
         }
 
   return vbox2;

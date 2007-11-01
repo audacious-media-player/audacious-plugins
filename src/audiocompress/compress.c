@@ -7,7 +7,7 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include "config.h"
+#include "audiocompress_config.h"
 #include "compress.h"
 
 static int *peaks = NULL;

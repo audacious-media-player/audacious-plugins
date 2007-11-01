@@ -21,31 +21,31 @@
 
 void console_cfg_load( void )
 {
-    ConfigDb *db = bmp_cfg_db_open();
-    bmp_cfg_db_get_int(db, "console", "loop_length", &audcfg.loop_length);
-    bmp_cfg_db_get_bool(db, "console", "resample", &audcfg.resample);
-    bmp_cfg_db_get_int(db, "console", "resample_rate", &audcfg.resample_rate);
-    bmp_cfg_db_get_int(db, "console", "treble", &audcfg.treble);
-    bmp_cfg_db_get_int(db, "console", "bass", &audcfg.bass);
-    bmp_cfg_db_get_bool(db, "console", "ignore_spc_length", &audcfg.ignore_spc_length);
-    bmp_cfg_db_get_int(db, "console", "echo", &audcfg.echo);
-    bmp_cfg_db_get_bool(db, "console", "inc_spc_reverb", &audcfg.inc_spc_reverb);
-    bmp_cfg_db_close(db);
+    ConfigDb *db = aud_cfg_db_open();
+    aud_cfg_db_get_int(db, "console", "loop_length", &audcfg.loop_length);
+    aud_cfg_db_get_bool(db, "console", "resample", &audcfg.resample);
+    aud_cfg_db_get_int(db, "console", "resample_rate", &audcfg.resample_rate);
+    aud_cfg_db_get_int(db, "console", "treble", &audcfg.treble);
+    aud_cfg_db_get_int(db, "console", "bass", &audcfg.bass);
+    aud_cfg_db_get_bool(db, "console", "ignore_spc_length", &audcfg.ignore_spc_length);
+    aud_cfg_db_get_int(db, "console", "echo", &audcfg.echo);
+    aud_cfg_db_get_bool(db, "console", "inc_spc_reverb", &audcfg.inc_spc_reverb);
+    aud_cfg_db_close(db);
 }
 
 
 void console_cfg_save( void )
 {
-    ConfigDb *db = bmp_cfg_db_open();
-    bmp_cfg_db_set_int(db, "console", "loop_length", audcfg.loop_length);
-    bmp_cfg_db_set_bool(db, "console", "resample", audcfg.resample);
-    bmp_cfg_db_set_int(db, "console", "resample_rate", audcfg.resample_rate);
-    bmp_cfg_db_set_int(db, "console", "treble", audcfg.treble);
-    bmp_cfg_db_set_int(db, "console", "bass", audcfg.bass);
-    bmp_cfg_db_set_bool(db, "console", "ignore_spc_length", audcfg.ignore_spc_length);
-    bmp_cfg_db_set_int(db, "console", "echo", audcfg.echo);
-    bmp_cfg_db_set_bool(db, "console", "inc_spc_reverb", audcfg.inc_spc_reverb);
-    bmp_cfg_db_close(db);
+    ConfigDb *db = aud_cfg_db_open();
+    aud_cfg_db_set_int(db, "console", "loop_length", audcfg.loop_length);
+    aud_cfg_db_set_bool(db, "console", "resample", audcfg.resample);
+    aud_cfg_db_set_int(db, "console", "resample_rate", audcfg.resample_rate);
+    aud_cfg_db_set_int(db, "console", "treble", audcfg.treble);
+    aud_cfg_db_set_int(db, "console", "bass", audcfg.bass);
+    aud_cfg_db_set_bool(db, "console", "ignore_spc_length", audcfg.ignore_spc_length);
+    aud_cfg_db_set_int(db, "console", "echo", audcfg.echo);
+    aud_cfg_db_set_bool(db, "console", "inc_spc_reverb", audcfg.inc_spc_reverb);
+    aud_cfg_db_close(db);
 }
 
 

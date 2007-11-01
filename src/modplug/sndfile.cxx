@@ -174,12 +174,7 @@ BOOL CSoundFile::Create(LPCBYTE lpStream, DWORD dwMemLength)
 		LPSTR p = m_szNames[i];
 		int j = 31;
 		p[j] = 0;
-		while ((j>=0) && (p[j]<=' ')) p[j--] = 0;
-		while (j>=0)
-		{
-			if (((BYTE)p[j]) < ' ') p[j] = ' ';
-			j--;
-		}
+		while ((j >= 0) && (p[j] == ' ')) p[j--] = 0;
 	}
 	// Adjust channels
 	for (i=0; i<MAX_BASECHANNELS; i++)

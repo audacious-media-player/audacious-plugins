@@ -99,12 +99,12 @@ bscope_read_config(void)
 
     if (!config_read) {
         bscope_cfg.color = 0xFF3F7F;
-        db = bmp_cfg_db_open();
+        db = aud_cfg_db_open();
 
         if (db) {
-            bmp_cfg_db_get_int(db, "BlurScope", "color",
+            aud_cfg_db_get_int(db, "BlurScope", "color",
                                (int *) &bscope_cfg.color);
-            bmp_cfg_db_close(db);
+            aud_cfg_db_close(db);
         }
         config_read = TRUE;
     }

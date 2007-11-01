@@ -47,12 +47,12 @@ static void init(void)
 	if (sizeof(short) != sizeof(gint16))
 		abort();
 
-	cfg = bmp_cfg_db_open();
-	bmp_cfg_db_get_int(cfg, "echo_plugin", "delay", &echo_delay);
-	bmp_cfg_db_get_int(cfg, "echo_plugin", "feedback", &echo_feedback);
-	bmp_cfg_db_get_int(cfg, "echo_plugin", "volume", &echo_volume);
-	bmp_cfg_db_get_bool(cfg, "echo_plugin", "enable_surround", &echo_surround_enable);
-	bmp_cfg_db_close(cfg);
+	cfg = aud_cfg_db_open();
+	aud_cfg_db_get_int(cfg, "echo_plugin", "delay", &echo_delay);
+	aud_cfg_db_get_int(cfg, "echo_plugin", "feedback", &echo_feedback);
+	aud_cfg_db_get_int(cfg, "echo_plugin", "volume", &echo_volume);
+	aud_cfg_db_get_bool(cfg, "echo_plugin", "enable_surround", &echo_surround_enable);
+	aud_cfg_db_close(cfg);
 }
 
 static void cleanup(void)

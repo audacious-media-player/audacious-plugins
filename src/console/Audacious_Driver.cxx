@@ -68,12 +68,11 @@ class File_Handler {
 public:
 	gchar* path;            // path without track number specification
 	int track;              // track number (0 = first track)
-	bool track_specified;   // false if no track number was specified in path
 	Music_Emu* emu;         // set to 0 to take ownership
 	gme_type_t type;
 	
 	// Parses path and identifies file type
-	File_Handler( const char* path, VFSFile* fd = 0, gboolean is_our_file_hack = FALSE );
+	File_Handler( const char* path, VFSFile* fd = 0 );
 	
 	// Creates emulator and returns 0. If this wasn't a music file or
 	// emulator couldn't be created, returns 1.
@@ -87,33 +86,26 @@ private:
 	Gzip_Reader in;
 };
 
-File_Handler::File_Handler( const char* path_in, VFSFile* fd, gboolean is_our_file_hack )
+File_Handler::File_Handler( const char* path_in, VFSFile* fd )
 {
 	emu   = 0;
 	type  = 0;
 	track = 0;
-	track_specified = false;
 	
 	path = g_strdup( path_in );
 	if ( !path )
 		return; // out of memory
 	
 	// extract track number
-	gchar* args = strchr( path, '?' ); // TODO: use strrchr()?
+	gchar* args = strrchr( path, '?' ); // TODO: use strrchr()?
 	if ( args && g_ascii_isdigit( (guchar) *(args + 1) ) )
 	{
 		*args = '\0';
 		// TODO: use func with better error reporting, and perhaps don't
 		// truncate path if there is no number after ?
 		track = atoi( args + 1 ) - 1;
-		track_specified = true;
 	}
 
-	// if the track is specified, then we have a match. don't worry
-	// about it right now -nenolod
-	if (track_specified && is_our_file_hack)
-		return;
-	
 	// open vfs
 	if ( fd )
 		aud_vfs_in.reset( fd );
@@ -212,9 +204,10 @@ static Tuple* get_track_ti( const char* path, track_info_t const& info, int trac
 		if ( info.track_count > 1 )
 		{
 			aud_tuple_associate_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);
-			aud_tuple_associate_int(ti, -1, "subsong", track + 1);
 			aud_tuple_associate_int(ti, FIELD_SUBSONG_ID, NULL, track + 1);
 			aud_tuple_associate_int(ti, FIELD_SUBSONG_NUM, NULL, info.track_count);
+			ti->nsubtunes = info.track_count;
+			ti->subtunes = NULL;
 		}
 		aud_tuple_associate_string(ti, FIELD_COPYRIGHT, NULL, info.copyright);
 		aud_tuple_associate_string(ti, -1, "console", info.system);
@@ -247,7 +240,7 @@ static char* format_and_free_ti( Tuple* ti, int* length )
 
 static Tuple *get_song_tuple( gchar *path )
 {
-	Tuple* result = 0;
+	Tuple* result = NULL;
 	File_Handler fh( path );
 	if ( !fh.load( gme_info_only ) )
 	{
@@ -256,16 +249,6 @@ static Tuple *get_song_tuple( gchar *path )
 			result = get_track_ti( fh.path, info, fh.track );
 	}
 	return result;
-}
-
-static void get_song_info( char* path, char** title, int* length )
-{
-	*length = -1;
-	*title = NULL;
-	
-	Tuple* ti = get_song_tuple( path );
-	if ( ti )
-		*title = format_and_free_ti( ti, length );
 }
 
 // Playback
@@ -433,53 +416,11 @@ static int get_time(InputPlayback *playback)
 	return console_ip_is_going ? playback->output->output_time() : -1;
 }
 
-static gint is_our_file_from_vfs( gchar* path, VFSFile* fd )
-{
-	gint result = 0;
-	File_Handler fh( path, fd, TRUE );
-	if ( fh.type )
-	{
-		result = 1;
-		/*
-		if ( fh.track_specified || fh.type->track_count == 1 )
-		{
-			// don't even need to read file if track is specified or
-			// that file format can't have more than one track per file
-			result = 1;
-		}
-		else if ( !fh.load( gme_info_only ) )
-		{
-			// format requires reading file info to get track count
-			if ( fh.emu->track_count() == 1 )
-			{
-				result = 1;
-			}
-			else
-			{
-				// for multi-track types, add each track to playlist
-				for (int i = 0; i < fh.emu->track_count(); i++)
-				{
-					gchar _buf[path_max];
-					g_snprintf(_buf, path_max, "%s?%d", fh.path, i);
-
-					playlist_add_url(playlist_get_active(), _buf);
-				}
-				result = -1;
-			}
-		}
-		*/
-	}
-	else if (fh.track_specified)
-	{
-		result = 1;
-	}
-
-	return result;
-}
-
 static Tuple *probe_for_tuple(gchar *filename, VFSFile *fd)
 {
-	if (!is_our_file_from_vfs(filename, fd))
+	File_Handler fh(filename, fd);
+	
+	if (!fh.type)
 		return NULL;
 
 	aud_vfs_rewind(fd);
@@ -539,13 +480,13 @@ InputPlugin console_ip =
 	NULL,
 	NULL,
 	NULL,
-	get_song_info,
+	NULL,
 	NULL,
 	NULL,
 	get_song_tuple,
 	NULL,
 	NULL,
-	is_our_file_from_vfs,
+	NULL,
 	(gchar **)gme_fmts,
 	NULL,
 	probe_for_tuple

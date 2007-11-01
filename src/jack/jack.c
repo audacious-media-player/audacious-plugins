@@ -6,6 +6,7 @@
  *	This code maps xmms calls into the jack translation library
  */
 
+#include <audacious/plugin.h>
 #include <audacious/configdb.h>
 #include <audacious/util.h>
 #include <dlfcn.h>
@@ -15,7 +16,6 @@
 #include "config.h"
 #include "bio2jack.h" /* includes for the bio2jack library */
 #include "jack.h"
-#include "xconvert.h" /* xmms rate conversion header file */
 #include <string.h>
 
 
@@ -58,12 +58,6 @@ static format_info_t output;
 static convert_freq_func_t freq_convert; /* rate convert function */
 static struct xmms_convert_buffers *convertb; /* convert buffer */
 
-#define MAKE_FUNCPTR(f) static typeof(f) * fp_##f = NULL;
-MAKE_FUNCPTR(xmms_convert_buffers_new);
-MAKE_FUNCPTR(xmms_convert_buffers_destroy);
-MAKE_FUNCPTR(xmms_convert_get_frequency_func);
-void *xmmslibhandle; /* handle to the dlopen'ed libxmms.so */
-
 static int isXmmsFrequencyAvailable = 0;
 
 static gboolean output_opened; /* true if we have a connection to jack */
@@ -88,8 +82,7 @@ void jack_cleanup(void)
   /* only clean this up if we have the function to call */
   if(isXmmsFrequencyAvailable)
   {
-    fp_xmms_convert_buffers_destroy(convertb); /* clean up the rate conversion buffers */
-    dlclose(xmmslibhandle);
+    aud_convert_buffers_destroy(convertb); /* clean up the rate conversion buffers */
   }
 
   return;
@@ -203,7 +196,7 @@ void jack_init(void)
   /* read the isTraceEnabled setting from the config file */
   ConfigDb *cfgfile;
 
-  cfgfile = bmp_cfg_db_open();
+  cfgfile = aud_cfg_db_open();
   if (!cfgfile)
   {
       jack_cfg.isTraceEnabled = FALSE;
@@ -212,16 +205,16 @@ void jack_init(void)
       jack_cfg.volume_right = 25;
   } else
   {
-      bmp_cfg_db_get_bool(cfgfile, "jack", "isTraceEnabled", &jack_cfg.isTraceEnabled);
-      if(!bmp_cfg_db_get_string(cfgfile, "jack", "port_connection_mode", &jack_cfg.port_connection_mode))
+      aud_cfg_db_get_bool(cfgfile, "jack", "isTraceEnabled", &jack_cfg.isTraceEnabled);
+      if(!aud_cfg_db_get_string(cfgfile, "jack", "port_connection_mode", &jack_cfg.port_connection_mode))
           jack_cfg.port_connection_mode = "CONNECT_ALL";
-      if(!bmp_cfg_db_get_int(cfgfile, "jack", "volume_left", &jack_cfg.volume_left))
+      if(!aud_cfg_db_get_int(cfgfile, "jack", "volume_left", &jack_cfg.volume_left))
           jack_cfg.volume_left = 25;
-      if(!bmp_cfg_db_get_int(cfgfile, "jack", "volume_right", &jack_cfg.volume_right))
+      if(!aud_cfg_db_get_int(cfgfile, "jack", "volume_right", &jack_cfg.volume_right))
           jack_cfg.volume_right = 25;
   }
 
-  bmp_cfg_db_close(cfgfile);
+  aud_cfg_db_close(cfgfile);
 
 
   TRACE("initializing\n");
@@ -234,52 +227,13 @@ void jack_init(void)
   /* set the port connection mode */
   jack_set_port_connection_mode();
 
-  /* XXX unportable to 2.x */
-  xmmslibhandle = dlopen("libaudacious.so", RTLD_NOW);
-  if(xmmslibhandle)
-  {
-    fp_xmms_convert_buffers_new = dlsym(xmmslibhandle, "xmms_convert_buffers_new");
-    fp_xmms_convert_buffers_destroy = dlsym(xmmslibhandle, "xmms_convert_buffers_destroy");
-    fp_xmms_convert_get_frequency_func = dlsym(xmmslibhandle, "xmms_convert_get_frequency_func");
-
-    if(!fp_xmms_convert_buffers_new)
-    {
-      TRACE("fp_xmms_convert_buffers_new couldn't be dlsym'ed\n");
-      TRACE("dlerror: %s\n", dlerror());
-    }
-
-    if(!fp_xmms_convert_buffers_destroy)
-    {
-      TRACE("fp_xmms_convert_buffers_destroy couldn't be dlsym'ed\n");
-      TRACE("dlerror: %s\n", dlerror());
-    }
-
-    if(!fp_xmms_convert_get_frequency_func)
-    {
-      TRACE("fp_xmms_get_frequency_func couldn't be dlsym'ed\n");
-      TRACE("dlerror: %s\n", dlerror());
-    }
-
-    if(!fp_xmms_convert_buffers_new || !fp_xmms_convert_buffers_destroy ||
-       !fp_xmms_convert_get_frequency_func)
-    {
-      dlclose(xmmslibhandle); /* close the library, no need to keep it open */
-      TRACE("One or more frequency convertion functions are missing, upgrade to xmms >=1.2.8\n");
-    } else
-    {
-      TRACE("Found frequency convertion functions, setting isXmmsFrequencyAvailable to 1\n");
-      isXmmsFrequencyAvailable = 1;
-    }
-  } else
-  {
-    TRACE("unable to dlopen '%s'\n", "libaudacious.so");
-  }
+  isXmmsFrequencyAvailable = 1;
 
   /* only initialize this stuff if we have the functions available */
   if(isXmmsFrequencyAvailable)
   {
-    convertb = fp_xmms_convert_buffers_new ();
-    freq_convert = fp_xmms_convert_get_frequency_func(FMT_S16_LE, 2);
+    convertb = aud_convert_buffers_new ();
+    freq_convert = aud_convert_get_frequency_func(FMT_S16_LE, 2);
   }
 
   output_opened = FALSE;
@@ -320,10 +274,10 @@ void jack_close(void)
 {
   ConfigDb *cfgfile;
 
-  cfgfile = bmp_cfg_db_open();
-  bmp_cfg_db_set_int(cfgfile, "jack", "volume_left", jack_cfg.volume_left); /* stores the volume setting */
-  bmp_cfg_db_set_int(cfgfile, "jack", "volume_right", jack_cfg.volume_right);
-  bmp_cfg_db_close(cfgfile);
+  cfgfile = aud_cfg_db_open();
+  aud_cfg_db_set_int(cfgfile, "jack", "volume_left", jack_cfg.volume_left); /* stores the volume setting */
+  aud_cfg_db_set_int(cfgfile, "jack", "volume_right", jack_cfg.volume_right);
+  aud_cfg_db_close(cfgfile);
 
   TRACE("\n");
 

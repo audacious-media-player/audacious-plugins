@@ -177,18 +177,18 @@ void alarm_save(GtkButton *w, gpointer data)
 
    DEBUG("alarm_save\n");
 
-   conf = bmp_cfg_db_open();
+   conf = aud_cfg_db_open();
 
    /*
     * update the live values and write them out
     */
    alarm_h = alarm_conf.default_hour = 
      gtk_spin_button_get_value_as_int(alarm_conf.alarm_h);
-   bmp_cfg_db_set_int(conf, "alarm", "alarm_h", alarm_h);
+   aud_cfg_db_set_int(conf, "alarm", "alarm_h", alarm_h);
 
    alarm_m = alarm_conf.default_min = 
      gtk_spin_button_get_value_as_int(alarm_conf.alarm_m);
-   bmp_cfg_db_set_int(conf, "alarm", "alarm_m", alarm_m);
+   aud_cfg_db_set_int(conf, "alarm", "alarm_m", alarm_m);
 
 
    stop_h =
@@ -216,20 +216,20 @@ void alarm_save(GtkButton *w, gpointer data)
      alarm_conf.day[daynum].min = 
        gtk_spin_button_get_value_as_int(alarm_conf.day[daynum].spin_min);
 
-     bmp_cfg_db_set_int(conf, "alarm", day_flags[daynum], alarm_conf.day[daynum].flags);
-     bmp_cfg_db_set_int(conf, "alarm", day_h[daynum], alarm_conf.day[daynum].hour);
-     bmp_cfg_db_set_int(conf, "alarm", day_m[daynum], alarm_conf.day[daynum].min);
+     aud_cfg_db_set_int(conf, "alarm", day_flags[daynum], alarm_conf.day[daynum].flags);
+     aud_cfg_db_set_int(conf, "alarm", day_h[daynum], alarm_conf.day[daynum].hour);
+     aud_cfg_db_set_int(conf, "alarm", day_m[daynum], alarm_conf.day[daynum].min);
    }
 
    /* END: days of week */
 
    volume =
      gtk_range_get_adjustment(alarm_conf.volume)->value;
-   bmp_cfg_db_set_int(conf, "alarm", "volume", volume);
+   aud_cfg_db_set_int(conf, "alarm", "volume", volume);
 
    quietvol =
      gtk_range_get_adjustment(alarm_conf.quietvol)->value;
-   bmp_cfg_db_set_int(conf, "alarm", "quietvol", quietvol);
+   aud_cfg_db_set_int(conf, "alarm", "quietvol", quietvol);
 
    fading =
      gtk_spin_button_get_value_as_int(alarm_conf.fading);
@@ -252,38 +252,38 @@ void alarm_save(GtkButton *w, gpointer data)
    else
    {
 	   /* write the new values */
-	   bmp_cfg_db_set_int(conf, "alarm", "stop_h", stop_h);
-	   bmp_cfg_db_set_int(conf, "alarm", "stop_m", stop_m);
-	   bmp_cfg_db_set_int(conf, "alarm", "fading", fading);
-	   bmp_cfg_db_set_bool(conf, "alarm", "stop_on", stop_on);
+	   aud_cfg_db_set_int(conf, "alarm", "stop_h", stop_h);
+	   aud_cfg_db_set_int(conf, "alarm", "stop_m", stop_m);
+	   aud_cfg_db_set_int(conf, "alarm", "fading", fading);
+	   aud_cfg_db_set_bool(conf, "alarm", "stop_on", stop_on);
    }
 
 
    g_free(cmdstr);
    cmdstr = gtk_editable_get_chars(GTK_EDITABLE(alarm_conf.cmdstr),
 				   0, -1);
-   bmp_cfg_db_set_string(conf, "alarm", "cmdstr", cmdstr);
+   aud_cfg_db_set_string(conf, "alarm", "cmdstr", cmdstr);
 
    cmd_on =
      gtk_toggle_button_get_active(alarm_conf.cmd_on);
-   bmp_cfg_db_set_bool(conf, "alarm", "cmd_on", cmd_on);
+   aud_cfg_db_set_bool(conf, "alarm", "cmd_on", cmd_on);
 
    g_free(playlist);
    playlist = gtk_editable_get_chars(GTK_EDITABLE(alarm_conf.playlist),
 				     0, -1);
-   bmp_cfg_db_set_string(conf, "alarm", "playlist", playlist);
+   aud_cfg_db_set_string(conf, "alarm", "playlist", playlist);
 
    /* reminder */
    g_free(alarm_conf.reminder_msg);
    alarm_conf.reminder_msg = gtk_editable_get_chars(GTK_EDITABLE(alarm_conf.reminder),
        0, -1);
-   bmp_cfg_db_set_string(conf, "alarm", "reminder_msg", alarm_conf.reminder_msg);
+   aud_cfg_db_set_string(conf, "alarm", "reminder_msg", alarm_conf.reminder_msg);
    
    alarm_conf.reminder_on = 
      gtk_toggle_button_get_active(alarm_conf.reminder_cb);
-   bmp_cfg_db_set_bool(conf, "alarm", "reminder_on", alarm_conf.reminder_on);
+   aud_cfg_db_set_bool(conf, "alarm", "reminder_on", alarm_conf.reminder_on);
 
-   bmp_cfg_db_close(conf);
+   aud_cfg_db_close(conf);
 }
 
 /*
@@ -296,50 +296,50 @@ static void alarm_read_config()
 
    DEBUG("alarm_read_config\n");
 
-   conf = bmp_cfg_db_open();
+   conf = aud_cfg_db_open();
 
-   if(!bmp_cfg_db_get_int(conf, "alarm", "alarm_h", &alarm_h))
+   if(!aud_cfg_db_get_int(conf, "alarm", "alarm_h", &alarm_h))
      alarm_h = DEFAULT_ALARM_HOUR;
-   if(!bmp_cfg_db_get_int(conf, "alarm", "alarm_m", &alarm_m))
+   if(!aud_cfg_db_get_int(conf, "alarm", "alarm_m", &alarm_m))
      alarm_m = DEFAULT_ALARM_MIN;
 
    /* save them here too */
    alarm_conf.default_hour = alarm_h;
    alarm_conf.default_min = alarm_m;
 
-   if(!bmp_cfg_db_get_int( conf, "alarm", "stop_h", &stop_h))
+   if(!aud_cfg_db_get_int( conf, "alarm", "stop_h", &stop_h))
      stop_h = DEFAULT_STOP_HOURS;
-   if(!bmp_cfg_db_get_int( conf, "alarm", "stop_m", &stop_m))
+   if(!aud_cfg_db_get_int( conf, "alarm", "stop_m", &stop_m))
      stop_m = DEFAULT_STOP_MINS;
-   if(!bmp_cfg_db_get_bool(conf, "alarm", "stop_on", &stop_on))
+   if(!aud_cfg_db_get_bool(conf, "alarm", "stop_on", &stop_on))
      stop_on = TRUE;
 
-   if(!bmp_cfg_db_get_int(conf, "alarm", "volume", &volume))
+   if(!aud_cfg_db_get_int(conf, "alarm", "volume", &volume))
      volume = DEFAULT_VOLUME;
-   if(!bmp_cfg_db_get_int(conf, "alarm", "quietvol", &quietvol))
+   if(!aud_cfg_db_get_int(conf, "alarm", "quietvol", &quietvol))
      quietvol = DEFAULT_QUIET_VOL;
 
-   if(!bmp_cfg_db_get_int(conf, "alarm", "fading", &fading))
+   if(!aud_cfg_db_get_int(conf, "alarm", "fading", &fading))
      fading = DEFAULT_FADING;
 
-   if(!bmp_cfg_db_get_string(conf, "alarm", "cmdstr", &cmdstr))
+   if(!aud_cfg_db_get_string(conf, "alarm", "cmdstr", &cmdstr))
      cmdstr = g_strdup("");
-   if(!bmp_cfg_db_get_bool(conf, "alarm", "cmd_on", &cmd_on))
+   if(!aud_cfg_db_get_bool(conf, "alarm", "cmd_on", &cmd_on))
      cmd_on = FALSE;
 
-   if(!bmp_cfg_db_get_string(conf, "alarm", "playlist", &playlist))
+   if(!aud_cfg_db_get_string(conf, "alarm", "playlist", &playlist))
      playlist = g_strdup("");
 
-   if(!bmp_cfg_db_get_string(conf, "alarm", "reminder_msg", &alarm_conf.reminder_msg))
+   if(!aud_cfg_db_get_string(conf, "alarm", "reminder_msg", &alarm_conf.reminder_msg))
      alarm_conf.reminder_msg = g_strdup("");
-   if(!bmp_cfg_db_get_bool(conf, "alarm", "reminder_on", &alarm_conf.reminder_on))
+   if(!aud_cfg_db_get_bool(conf, "alarm", "reminder_on", &alarm_conf.reminder_on))
      alarm_conf.reminder_on = FALSE;
 
    /* day flags and times */
    for(; daynum < 7; daynum++)
    {
      /* read the flags */
-     if(!bmp_cfg_db_get_int(conf, "alarm", day_flags[daynum], &alarm_conf.day[daynum].flags)) {
+     if(!aud_cfg_db_get_int(conf, "alarm", day_flags[daynum], &alarm_conf.day[daynum].flags)) {
        // only turn alarm off by default on a sunday
        if(daynum != 0)
          alarm_conf.day[daynum].flags = DEFAULT_FLAGS;
@@ -348,10 +348,10 @@ static void alarm_read_config()
      }
 
      /* read the times */
-     if(!bmp_cfg_db_get_int(conf, "alarm", day_h[daynum], &alarm_conf.day[daynum].hour))
+     if(!aud_cfg_db_get_int(conf, "alarm", day_h[daynum], &alarm_conf.day[daynum].hour))
        alarm_conf.day[daynum].hour = DEFAULT_ALARM_HOUR;
 
-     if(!bmp_cfg_db_get_int(conf, "alarm", day_m[daynum], &alarm_conf.day[daynum].min))
+     if(!aud_cfg_db_get_int(conf, "alarm", day_m[daynum], &alarm_conf.day[daynum].min))
        alarm_conf.day[daynum].min = DEFAULT_ALARM_MIN;
    }
 

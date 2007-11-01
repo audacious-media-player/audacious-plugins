@@ -113,7 +113,9 @@ static gpointer sexypsf_playloop(gpointer arg)
         }
 
         // timeout at the end of a file
-        sleep(4);
+        while (playback->output->buffer_playing())
+             g_usleep(10000);
+
         break;
     }
 
@@ -222,10 +224,10 @@ static Tuple *get_aud_tuple_psf(gchar *fn) {
 
     if (tmp->length) {
         tuple = aud_tuple_new_from_filename(fn);
-	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, tmp->length);
-	aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, tmp->artist);
-	aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, tmp->game);
-	aud_tuple_associate_string(tuple, -1, "game", tmp->game);
+        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, tmp->length);
+        aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, tmp->artist);
+        aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, tmp->game);
+        aud_tuple_associate_string(tuple, -1, "game", tmp->game);
         aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, tmp->title);
         aud_tuple_associate_string(tuple, FIELD_GENRE, NULL, tmp->genre);
         aud_tuple_associate_string(tuple, FIELD_COPYRIGHT, NULL, tmp->copyright);

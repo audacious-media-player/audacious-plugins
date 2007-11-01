@@ -477,7 +477,14 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 
     _ENTER;
 
-    handle->request = ne_request_create(handle->session, "GET", handle->purl->path);
+    if (handle->purl->query && *(handle->purl->query)) {
+        gchar *tmp = g_strdup_printf("%s?%s", handle->purl->path, handle->purl->query);
+        handle->request = ne_request_create(handle->session, "GET", tmp);
+        g_free(tmp);
+    } else {
+        handle->request = ne_request_create(handle->session, "GET", handle->purl->path);
+    }
+
     ne_print_request_header(handle->request, "Range", "bytes=%ld-", startbyte);
     ne_print_request_header(handle->request, "Icy-MetaData", "1");
 
@@ -548,17 +555,17 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
     _ENTER;
 
-    db = bmp_cfg_db_open();
-    if (FALSE == bmp_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy)) {
+    db = aud_cfg_db_open();
+    if (FALSE == aud_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy)) {
         use_proxy = FALSE;
     }
 
     if (use_proxy) {
-        if (FALSE == bmp_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host)) {
+        if (FALSE == aud_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host)) {
             _ERROR("Could not read proxy host, disabling proxy use");
             use_proxy = FALSE;
         }
-        if (FALSE == bmp_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port_s)) {
+        if (FALSE == aud_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port_s)) {
             _ERROR("Could not read proxy port, disabling proxy use");
             use_proxy = FALSE;
         }
@@ -571,7 +578,7 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
             use_proxy = FALSE;
         }
     }
-    bmp_cfg_db_close(db);
+    aud_cfg_db_close(db);
 
     handle->redircount = 0;
 

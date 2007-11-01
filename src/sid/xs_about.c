@@ -155,6 +155,8 @@ void xs_about(void)
 			"\n"
 			"This release of XMMS-SID is dedicated to\n"
 			"            Richard Joseph\n"
+			"                  and\n"
+			"      Lauri Sipilä (aka Xaztur/PWP)\n"
 			" - Now gone, but forever in our hearts -\n"
 			"\n"
 			"\n"
@@ -162,7 +164,8 @@ void xs_about(void)
 			"\tTecnic Software productions (TNSP)\n"
 			"\n"
 			"Programming and design\n"
-			"\tMatti 'ccr' Hämäläinen\n" "\n"
+			"\tMatti 'ccr' Hämäläinen\n"
+			"\n"
 #ifdef HAVE_SIDPLAY1
 			"libSIDPlay1 created by\n"
 			"\tMichael Schwendt\n" "\n"
@@ -170,7 +173,8 @@ void xs_about(void)
 #ifdef HAVE_SIDPLAY2
 			"libSIDPlay2 and reSID created by\n"
 			"\tSimon White, Dag Lem,\n"
-			"\tMichael Schwendt and rest.\n" "\n"
+			"\tMichael Schwendt and rest.\n"
+			"\n"
 #endif
 #ifdef HAVE_THEMETUNE
 			"\"Kummatti City\", theme of XMMS-SID 0.8\n"

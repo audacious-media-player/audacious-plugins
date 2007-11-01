@@ -242,7 +242,7 @@ Tuple* get_tuple(const gchar* filename, callback_info* info) {
     out = aud_tuple_new_from_filename(filename);
 
     aud_tuple_associate_string(out, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
-    aud_tuple_associate_string(out, FIELD_CODEC, NULL, "lossless");
+    aud_tuple_associate_string(out, FIELD_QUALITY, NULL, "lossless");
 
     aud_tuple_associate_string(out, FIELD_ARTIST, NULL, info->comment.artist);
     aud_tuple_associate_string(out, FIELD_TITLE, NULL, info->comment.title);

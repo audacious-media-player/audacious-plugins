@@ -112,11 +112,11 @@ gchar* lastfm_get_login_uri()  /* reads the audioscrobbler login data from the c
         gchar   *buf=NULL,
                 *username = NULL, 
                 *password = NULL;
-        if ((cfg = bmp_cfg_db_open()) != NULL)
+        if ((cfg = aud_cfg_db_open()) != NULL)
         {
-                bmp_cfg_db_get_string(cfg, "audioscrobbler","username",
+                aud_cfg_db_get_string(cfg, "audioscrobbler","username",
                                 &username);
-                bmp_cfg_db_get_string(cfg, "audioscrobbler","password",
+                aud_cfg_db_get_string(cfg, "audioscrobbler","password",
                                 &password);
                 g_free(cfg);
         }
@@ -537,7 +537,7 @@ gint lastfm_aud_vfs_truncate_impl(VFSFile * file, glong size)
 
 off_t lastfm_aud_vfs_fsize_impl(VFSFile * file)
 {
-        return 0;
+        return -1;
 }
 
 gchar *lastfm_aud_vfs_metadata_impl(VFSFile * file, const gchar * field)

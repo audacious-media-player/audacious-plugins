@@ -129,7 +129,7 @@ create_Config (void)
 
   Config = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_set_name (Config, "Config");
-  gtk_widget_set_size_request (Config, 500, -1);
+  gtk_widget_set_size_request (Config, -1, -1);
   gtk_window_set_title (GTK_WINDOW (Config), _("ModPlug Configuration"));
   gtk_window_set_resizable (GTK_WINDOW (Config), FALSE);
 

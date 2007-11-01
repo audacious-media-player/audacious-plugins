@@ -39,12 +39,12 @@ static void apply_changes(void)
 	echo_surround_enable =
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(surround_btn));
 
-	cfg = bmp_cfg_db_open();
-	bmp_cfg_db_set_int(cfg, "echo_plugin", "delay", echo_delay);
-	bmp_cfg_db_set_int(cfg, "echo_plugin", "feedback", echo_feedback);
-	bmp_cfg_db_set_int(cfg, "echo_plugin", "volume", echo_volume);
-	bmp_cfg_db_set_bool(cfg, "echo_plugin", "enable_surround", echo_surround_enable);
-	bmp_cfg_db_close(cfg);
+	cfg = aud_cfg_db_open();
+	aud_cfg_db_set_int(cfg, "echo_plugin", "delay", echo_delay);
+	aud_cfg_db_set_int(cfg, "echo_plugin", "feedback", echo_feedback);
+	aud_cfg_db_set_int(cfg, "echo_plugin", "volume", echo_volume);
+	aud_cfg_db_set_bool(cfg, "echo_plugin", "enable_surround", echo_surround_enable);
+	aud_cfg_db_close(cfg);
 }
 
 static void conf_ok_cb(GtkButton * button, gpointer data)
