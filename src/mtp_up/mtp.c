@@ -43,18 +43,12 @@ static gboolean plugin_active = FALSE,exiting=FALSE;
 
 void mtp_init ( void );
 void mtp_cleanup ( void );
-void mtp_prefs ( void );
-void mtp_about ( void );
 
 GeneralPlugin mtp_gp =
 {
-    NULL,                                   /* handle */
-    NULL,                                   /* filename */
-    "MTP Upload " ,                         /* description */
-    mtp_init,                               /* init */
-    mtp_about,                              /* about */
-    mtp_prefs,                              /* configure */
-    mtp_cleanup                             /* cleanup */
+    .description = "MTP Upload",
+    .init = mtp_init,
+    .cleanup = mtp_cleanup
 };
 GtkWidget *mtp_root_menuitem,*mtp_submenu_item_up,*mtp_submenu_item_free,*mtp_submenu;
 
@@ -258,17 +252,6 @@ gpointer upload(gpointer arg)
     gtk_widget_show(mtp_submenu_item_free);
     g_thread_exit(NULL);
     return NULL;
-}
-
-void mtp_prefs ( void )
-{
-    /*pref stub*/
-}
-
-
-void mtp_about ( void )
-{
-    /*about stub*/
 }
 
 gboolean mtp_press()

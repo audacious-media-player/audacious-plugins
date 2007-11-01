@@ -51,17 +51,13 @@ static GtkWidget *cmd_warn_label, *cmd_warn_img;
 
 GeneralPlugin sc_gp =
 {
-	NULL,			/* handle */
-	NULL,			/* filename */
-	"Song Change " PACKAGE_VERSION,			/* Description */
-	init,
-	NULL,
-	NULL,
-	cleanup,
+	.description = "Song Change " PACKAGE_VERSION,
+	.init = init,
+	.cleanup = cleanup,
 };
 
 GeneralPlugin *songchange_gplist[] = { &sc_gp, NULL };
-DECLARE_PLUGIN(songchange, NULL, NULL, NULL, NULL, NULL, songchange_gplist, NULL, NULL);
+SIMPLE_GENERAL_PLUGIN(songchange, songchange_gplist);
 
 static void bury_child(int signal)
 {

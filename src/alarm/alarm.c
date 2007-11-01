@@ -687,7 +687,8 @@ static inline pthread_t alarm_thread_create(void *(*start_routine)(void *), void
 static void *alarm_fade(void *arg)
 {
    fader *vols = (fader *)arg;
-   guint i, v;
+   guint i;
+   gint v;
    gint inc, diff, adiff;
 
    /* lock */
@@ -718,7 +719,7 @@ static void *alarm_fade(void *arg)
      //threadsleep((gfloat)fading / (vols->end - vols->start));
      threadsleep((gfloat)fading / (gfloat)adiff);
      audacious_drct_get_volume_main(&v);
-     audacious_drct_set_volume_main((gint)(v + inc));
+     audacious_drct_set_volume_main(v + inc);
    }
    /* Setting the volume to the end volume sort of defeats the point if having
     * the code in there to allow other apps to control volume too :)
@@ -991,9 +992,6 @@ static void alarm_cleanup()
    stop_tid = 0;
 }
 
-/*
- * for xmms to get the function names
- */
 static GeneralPlugin alarm_plugin =
 {
      .description = "Alarm "VERSION,

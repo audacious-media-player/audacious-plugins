@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2007-10-18 21:38+0200\n"
-"PO-Revision-Date: 2007-11-01 00:22+0100\n"
+"PO-Revision-Date: 2007-11-01 21:10+0100\n"
 "Last-Translator: Michael Färber <0102@gmx.at>\n"
 "Language-Team: german <0102@gmx.at>\n"
 "MIME-Version: 1.0\n"
@@ -1377,7 +1377,7 @@ msgstr "Titeländerung"
 
 #: src/aosd/aosd_trigger.c:80
 msgid "Triggers OSD when, during playback, the song title changes but the filename is the same. This is mostly useful to display title changes in internet streams."
-msgstr ""
+msgstr "Löst OSD aus, wenn sich während der Wiedergabe der Liedtitel ändert, aber der Dateiname gleich bleibt. Das ist hauptsächlich nützlich, um Titeländerungen bei Internetstreams anzuzeigen."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Volume Change"
@@ -1518,17 +1518,19 @@ msgstr "Ereignis"
 
 #: src/aosd/aosd_ui.c:801
 msgid "Composite manager detected"
-msgstr ""
+msgstr "Composite manager erkannt"
 
 #: src/aosd/aosd_ui.c:808
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
 msgstr ""
+"Composite manager nicht erkannt;\n"
+"sofern ein solcher nicht doch aktiv ist, bitte einen solchen aktivieren, sonst wird der OSD nicht funktionieren"
 
 #: src/aosd/aosd_ui.c:816
 msgid "Composite manager not required for fake transparency"
-msgstr ""
+msgstr "Composite manager nicht benötigt für vorgetäuschte Transparenz"
 
 #: src/aosd/aosd_ui.c:854
 msgid "Transparency"
@@ -4618,7 +4620,7 @@ msgstr "Befehle"
 
 #: src/song_change/song_change.c:323
 msgid "Command to run when Audacious starts a new song."
-msgstr "Auszuführender Befehl, wenn Audacious ein neues Lied startet."
+msgstr "Auszuführender Befehl, wenn Audacious ein neues Lied startet"
 
 #: src/song_change/song_change.c:332
 #: src/song_change/song_change.c:354
@@ -4633,11 +4635,11 @@ msgstr "Auszuführender Befehl am Ende eines Lieds"
 
 #: src/song_change/song_change.c:366
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
+msgstr "Auszuführender Befehl am Ende der Wiedergabeliste"
 
 #: src/song_change/song_change.c:387
 msgid "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
+msgstr "Auszuführender Befehl, wenn sich der Titel eines Lieds ändert (z.B. bei Netzwerk-Streams)"
 
 #: src/song_change/song_change.c:408
 #, c-format
@@ -4655,6 +4657,18 @@ msgid ""
 "%%t: Playlist position (%%02d)\n"
 "%%p: Currently playing (1 or 0)"
 msgstr ""
+"Verwendbar sind folgende Zeichenketten, die ersetzt\n"
+" werden, bevor ein Befehl aufgerufen wird.\n"
+"(es sind jedoch nicht alle nützlich für den Ende-der-Wiedergabeliste-Befehl)\n"
+"\n"
+"%%F: Frequenz (in Hertz)\n"
+"%%c: Anzahl der Kanäle\n"
+"%%f: Dateiname (absoluter Pfad)\n"
+"%%l: Länge (in Millisekunden)\n"
+"%%n oder %%s: Titel\n"
+"%%r: Bitrate (in Bits pro Sekunde)\n"
+"%%t: Wiedergabelisten-Position (%%02d)\n"
+"%%p: Ist die Wiedergabe momentan aktiv? (1 oder 0)"
 
 #: src/song_change/song_change.c:433
 msgid "<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"
