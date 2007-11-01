@@ -182,7 +182,7 @@
   1 file changed, 5 insertions(+)
 
 
-2007-06-03 14:16:44 +0000  Jonathan Schleifer <js@h3c.de>
+2007-06-03 14:16:44 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2484]
   Replace sprintf with snprintf.
   
@@ -190,7 +190,7 @@
   1 file changed, 1 insertion(+), 1 deletion(-)
 
 
-2007-06-01 23:03:58 +0000  Jonathan Schleifer <js@h3c.de>
+2007-06-01 23:03:58 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2482]
   Revert r2480, thanks to FreeBSD.
   
@@ -198,7 +198,7 @@
   1 file changed, 1 insertion(+), 1 deletion(-)
 
 
-2007-06-01 22:48:43 +0000  Jonathan Schleifer <js@h3c.de>
+2007-06-01 22:48:43 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2480]
   Same as r4658 in Audacious.
   
@@ -1520,7 +1520,7 @@
   1 file changed, 1 insertion(+), 7 deletions(-)
 
 
-2007-05-05 19:11:33 +0000  Jonathan Schleifer <js@h3c.de>
+2007-05-05 19:11:33 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2168]
   ifdef filewriter/flac.c out completely if FILEWRITER_FLAC isn't defined
   
@@ -4839,7 +4839,7 @@
   1 file changed, 1 insertion(+), 1 deletion(-)
 
 
-2007-02-25 00:17:26 +0000  Jonathan Schleifer <js@h3c.de>
+2007-02-25 00:17:26 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1530]
   * Delete flac112
   * Rename flac113 -> flac
@@ -4850,7 +4850,7 @@
   2 files changed, 39 insertions(+), 46 deletions(-)
 
 
-2007-02-24 19:40:20 +0000  Jonathan Schleifer <js@h3c.de>
+2007-02-24 19:40:20 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1528]
   More VFS stuff.
   trunk/src/flac113/libflac/FLAC/stream_decoder.h |    5 +-
@@ -4858,7 +4858,7 @@
   2 files changed, 50 insertions(+), 13 deletions(-)
 
 
-2007-02-24 19:04:38 +0000  Jonathan Schleifer <js@h3c.de>
+2007-02-24 19:04:38 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1526]
   * Link libogg and static libflac
   * First steps towards using VFS
@@ -4893,14 +4893,14 @@
   1 file changed, 18 insertions(+), 15 deletions(-)
 
 
-2007-02-24 18:21:48 +0000  Jonathan Schleifer <js@h3c.de>
+2007-02-24 18:21:48 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1518]
   We don't need .pc.in files for FLAC...
   trunk/src/flac113/libflac/flac.pc.in |   10 ----------
   1 file changed, 10 deletions(-)
 
 
-2007-02-24 18:20:58 +0000  Jonathan Schleifer <js@h3c.de>
+2007-02-24 18:20:58 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1516]
   Import flac. Please test.
   trunk/src/flac113/Makefile                                      |    6 
@@ -5362,7 +5362,7 @@
   1 file changed, 10 insertions(+), 2 deletions(-)
 
 
-2007-02-20 14:11:10 +0000  Jonathan Schleifer <js@h3c.de>
+2007-02-20 14:11:10 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1460]
   Revert r1456, this gives problems with some files with broken ID3-Tags.
   trunk/src/madplug/input.c |    2 +-
@@ -5377,7 +5377,7 @@
   1 file changed, 8 insertions(+), 31 deletions(-)
 
 
-2007-02-20 13:51:23 +0000  Jonathan Schleifer <js@h3c.de>
+2007-02-20 13:51:23 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1456]
   Use g_convert instead of str_to_utf8. This fixes ID3-Tags with ISO8859-1 encoded umlauts.
   trunk/src/madplug/input.c |    2 +-
@@ -7640,14 +7640,14 @@
   1 file changed, 50 insertions(+), 17 deletions(-)
 
 
-2007-01-17 18:50:00 +0000  Jonathan Schleifer <js@h3c.de>
+2007-01-17 18:50:00 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1002]
   D'oh, a 2 was missing.
   trunk/src/wavpack/tags.h |    2 +-
   1 file changed, 1 insertion(+), 1 deletion(-)
 
 
-2007-01-17 18:49:17 +0000  Jonathan Schleifer <js@h3c.de>
+2007-01-17 18:49:17 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [1000]
   Fixed possible buffer overflow.
   trunk/src/wavpack/tags.h |    5 +++--
@@ -7773,14 +7773,14 @@
   3 files changed, 497 insertions(+), 114 deletions(-)
 
 
-2007-01-16 20:50:30 +0000  Jonathan Schleifer <js@h3c.de>
+2007-01-16 20:50:30 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [970]
   One more. Seems like one meant id3v1, not id3v2 for the 30 char limit.
   trunk/src/tta/aud-tta.c |    6 ++++--
   1 file changed, 4 insertions(+), 2 deletions(-)
 
 
-2007-01-16 20:47:04 +0000  Jonathan Schleifer <js@h3c.de>
+2007-01-16 20:47:04 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [968]
   I committed too fast, there was even more.
   trunk/src/tta/aud-tta.c   |   12 +++++-------
@@ -7788,7 +7788,7 @@
   2 files changed, 11 insertions(+), 10 deletions(-)
 
 
-2007-01-16 20:41:40 +0000  Jonathan Schleifer <js@h3c.de>
+2007-01-16 20:41:40 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [966]
   Fix of possible buffer overflow.
   trunk/src/tta/aud-tta.c |    2 +-
@@ -10067,7 +10067,7 @@
   1 file changed, 12 insertions(+), 13 deletions(-)
 
 
-2006-11-06 21:30:44 +0000  Jonathan Schleifer <js@h3c.de>
+2006-11-06 21:30:44 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [454]
   Fixed missing header
   trunk/src/mplayer/common.c |    1 +
@@ -10115,7 +10115,7 @@
   1 file changed, 13 insertions(+), 3 deletions(-)
 
 
-2006-11-05 18:24:30 +0000  Jonathan Schleifer <js@h3c.de>
+2006-11-05 18:24:30 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [442]
   Fixed crash when a stream is in the playlist.
   
@@ -11510,7 +11510,7 @@
   2 files changed, 11 insertions(+), 7 deletions(-)
 
 
-2006-10-07 20:34:06 +0000  Jonathan Schleifer <js@h3c.de>
+2006-10-07 20:34:06 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [176]
   - Replace ?= at CFLAGS, CPPFLAGS and CXXFLAGS with +=
   - Replace ?= at CC, CPP and CXX with =
@@ -11540,7 +11540,7 @@
   1 file changed, 26 insertions(+), 3 deletions(-)
 
 
-2006-10-05 04:01:38 +0000  Jonathan Schleifer <js@h3c.de>
+2006-10-05 04:01:38 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [170]
   - Imported a few changes from alac decoder 0.1.3
   - Added myself to AUTHORS
@@ -11560,7 +11560,7 @@
   1 file changed, 7 insertions(+), 1 deletion(-)
 
 
-2006-10-05 01:24:55 +0000  Jonathan Schleifer <js@h3c.de>
+2006-10-05 01:24:55 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [166]
   The same change like for the FT8 MODs, but this time for FT6 MODs.
   (Sorry, I forget to move them as well.)
@@ -11569,7 +11569,7 @@
   1 file changed, 4 insertions(+), 4 deletions(-)
 
 
-2006-10-05 01:21:08 +0000  Jonathan Schleifer <js@h3c.de>
+2006-10-05 01:21:08 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [164]
   Always grab FT8 files, they're NOT Amiga MODs. (They are software mixed
   on Amiga.)
@@ -11632,14 +11632,14 @@
   1 file changed, 2 insertions(+), 4 deletions(-)
 
 
-2006-10-02 18:40:03 +0000  Jonathan Schleifer <js@h3c.de>
+2006-10-02 18:40:03 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [150]
   Typo in ChangeLog fixed.
   trunk/ChangeLog |    2 +-
   1 file changed, 1 insertion(+), 1 deletion(-)
 
 
-2006-10-02 18:29:31 +0000  Jonathan Schleifer <js@h3c.de>
+2006-10-02 18:29:31 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [148]
   The mixer device isn't opened and closed for every action now, instead
   it gets opened as soon as needed and closed if it's not needed anymore.
@@ -11651,7 +11651,7 @@
   2 files changed, 33 insertions(+), 25 deletions(-)
 
 
-2006-10-02 17:49:55 +0000  Jonathan Schleifer <js@h3c.de>
+2006-10-02 17:49:55 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [146]
   Reverted cuesheet.c to revision 104 because it was broken with rev 144.
   trunk/src/cue/cuesheet.c |    4 +++-
@@ -11837,14 +11837,14 @@
   2 files changed, 105 insertions(+), 78 deletions(-)
 
 
-2006-09-22 21:25:52 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-22 21:25:52 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [104]
   Add +1 to the position so that the position isn't in two tracks anymore
   trunk/src/cue/cuesheet.c |    3 ++-
   1 file changed, 2 insertions(+), 1 deletion(-)
 
 
-2006-09-22 21:18:37 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-22 21:18:37 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [102]
   Fixed a crash in the cue plugin when no plugin is found / the file doesn't exist
   trunk/src/cue/cuesheet.c |    8 +++++---
@@ -11918,7 +11918,7 @@
   +12 -1          trunk/configure.ac  
 
 
-2006-09-20 15:25:46 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-20 15:25:46 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [86]
   Added some missing targets for the .a files
   
@@ -11956,7 +11956,7 @@
   +1 -1           trunk/src/amidi-plug/Makefile  
 
 
-2006-09-19 14:53:54 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-19 14:53:54 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [78]
   Removed the check for socklen_t. This fixes building on NetBSD.
   curl defined socklen_t anyway, so no need for this.
@@ -12005,7 +12005,7 @@
   +3 -3           trunk/src/adplug/core/Makefile  
 
 
-2006-09-18 15:47:33 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-18 15:47:33 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [68]
   #include <audacious/util.h>? WTF? Fixed.
 
@@ -12013,7 +12013,7 @@
   +1 -1           trunk/src/modplug/gui/main.cxx  
 
 
-2006-09-18 15:38:24 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-18 15:38:24 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [66]
   Removed BMP_RCPATH from configure.ac, mk/rules.mk.in and Makefiles and added it to config.h via configure.ac
 
@@ -12023,7 +12023,7 @@
   +1 -1           trunk/src/cdaudio/Makefile  
 
 
-2006-09-18 15:31:59 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-18 15:31:59 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [64]
   Add BMP_RCPATH to configure.ac and -DBMP_RCPATH=$(BMP_RCPATH\)
 
@@ -12033,7 +12033,7 @@
   +0 -1           trunk/src/cdaudio/cdinfo.c  
 
 
-2006-09-18 15:24:01 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-18 15:24:01 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [62]
   @GTK_CFLAGS@ replaced with $(GTK_CFLAGS).
   (Hey, this isn't a Makefile.in!)
@@ -13303,7 +13303,7 @@
   +1 -1           trunk/configure.ac  
 
 
-2006-09-17 02:37:08 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-17 02:37:08 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2395]
   Fixed unused variable and missing type conversion
 
@@ -13312,7 +13312,7 @@
   +4 -2           trunk/Plugins/Visualization/paranormal/client.c  
 
 
-2006-09-17 02:21:06 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-17 02:21:06 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2393]
   Add #undef FSCALE, since it's already defined on OpenBSD
 
@@ -13320,7 +13320,7 @@
   +1 -0           trunk/Plugins/Input/timidity/libtimidity/options.h  
 
 
-2006-09-17 02:18:59 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-17 02:18:59 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2391]
   #undef TRUE and FALSE before inclusion of mpcdec.h since both, GTK and mpcdev, define this, which leads to a hard error on OpenBSD
 
@@ -13328,7 +13328,7 @@
   +2 -0           trunk/Plugins/Input/musepack/libmpc.h  
 
 
-2006-09-17 02:13:26 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-17 02:13:26 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2389]
   #undef ALIGN, since it's already defined on OpenBSD.
 
@@ -13336,7 +13336,7 @@
   +1 -0           trunk/Plugins/Input/wma/libffwma/utils.c  
 
 
-2006-09-17 02:10:07 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-17 02:10:07 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2387]
   Seems like someone did a fix for Linux' iconv like I did for BSD's in another file. Added an #ifdef here, too.
 
@@ -13344,7 +13344,7 @@
   +4 -0           trunk/Plugins/Input/flac/plugin_common/charset.c  
 
 
-2006-09-17 01:58:23 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-17 01:58:23 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2385]
   nenolod's fix for the soundcard.h check was incomplete, fixed
 
@@ -13400,7 +13400,7 @@
   +0 -58          trunk/Plugins/Input/wma/libffwma/mms.c  
 
 
-2006-09-17 00:17:22 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-17 00:17:22 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2373]
   Fixed a LOT of warnings showing up with -Wall. This is the first step
   towards making Audacious compile with -Wall -Werror, but it's still far
@@ -13424,7 +13424,7 @@
   +3 -3           trunk/Plugins/Input/wma/libffwma/futils.c  
 
 
-2006-09-16 23:26:54 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-16 23:26:54 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2371]
   Fixed a lot of warnings that only showed up on *BSD.
 
@@ -13448,7 +13448,7 @@
   +1 -1           trunk/configure.ac  
 
 
-2006-09-16 17:08:23 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-16 17:08:23 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2367]
   Fixed 3 warnings, 2 unused variables and 1 missing include
 
@@ -13465,7 +13465,7 @@
   +4 -3           trunk/Plugins/Input/cue/cuesheet.c  
 
 
-2006-09-16 14:33:28 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-16 14:33:28 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2363]
   More .cpp -> .cxx. Noticed by Chainsaw. Shame on me that I forgot some ;).
   
@@ -13678,7 +13678,7 @@
   +0 -1           trunk/audacious/Makefile  
 
 
-2006-09-15 15:01:40 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-15 15:01:40 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2331]
   This adds -lossaudio to the OSS and esd plugin on platforms having that libs. With this, Audacious finally build & runs perfectly on OpenBSD.
   
@@ -13699,7 +13699,7 @@
   +2 -2           trunk/audacious/mainwin.c  
 
 
-2006-09-15 13:36:26 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-15 13:36:26 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2327]
   - Removed .cpp.o target since we don't have any .cpp files anymore.
   - A test build then revealed that we still had two .cpp files in
@@ -13730,7 +13730,7 @@
   +2 -0           trunk/mk/init.mk  
 
 
-2006-09-14 20:56:35 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-14 20:56:35 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2323]
   * One more .cpp -> .cxx
   * Changed sinclude -> include for OpenBSD make compatibility
@@ -13745,7 +13745,7 @@
   +0 -5           trunk/mk/objective.mk  
 
 
-2006-09-14 20:38:05 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-14 20:38:05 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2321]
   Forgot to change .cpp -> .cxx in the Makefile.in. Shame on me...
   
@@ -13754,7 +13754,7 @@
   +35 -35         trunk/Plugins/Input/console/Makefile.in  
 
 
-2006-09-14 20:33:10 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-14 20:33:10 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2319]
   .cpp -> .cxx
   This has the nice side effect that we don't need to add .cpp to .SUFFIXES for OpenBSD.
@@ -13806,7 +13806,7 @@
   +4 -4           trunk/audacious/playlist.c  
 
 
-2006-09-14 15:46:01 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-14 15:46:01 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2315]
   Install audacious_player.xpm as well, so one can use it as a desktop icon.
   Requested by Jan Schummers <darkadmiral@onlinehome.de>.
@@ -13816,7 +13816,7 @@
   +1 -0           trunk/audacious/images/Makefile.in  
 
 
-2006-09-14 14:50:44 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-14 14:50:44 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2313]
   Made the content of the password field in the AudioScrobbler plugin invisible.
   
@@ -13825,7 +13825,7 @@
   +1 -0           trunk/Plugins/General/scrobbler/configure.c  
 
 
-2006-09-14 14:40:39 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-14 14:40:39 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2311]
   Just saw another bug in the same line. The if was always false.
   
@@ -13834,7 +13834,7 @@
   +1 -1           trunk/mk/objective.mk  
 
 
-2006-09-14 14:38:06 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-14 14:38:06 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2309]
   Fixed mk/objective.mk so that there won't be any
   [: ==: unexpected operator
@@ -13875,7 +13875,7 @@
   +12 -0          trunk/libaudacious/vfs_stdio.c  
 
 
-2006-09-13 21:01:54 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-13 21:01:54 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2301]
   Added BSD make to the recommended make versions since it's officially supported now.
   
@@ -13893,7 +13893,7 @@
   +1 -1           trunk/ChangeLog  
 
 
-2006-09-13 20:56:08 +0000  Jonathan Schleifer <js@h3c.de>
+2006-09-13 20:56:08 +0000  Jonathan Schleifer <js-audacious@webkeks.org>
   revision [2297]
   Fixed some Makefiles to make it work with BSD make.
   I checked that it doesn't break gmake (compile & run works).
@@ -13910,7 +13910,7 @@
 
 2006-09-13 18:03:25 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2295]
-  Link C++ plugins correctly on *BSD, by Jonathan Schleifer <js@h3c.de>.
+  Link C++ plugins correctly on *BSD, by Jonathan Schleifer <js-audacious@webkeks.org>.
 
   Changes:        Modified:
   +1 -1           trunk/Plugins/Input/modplug/gui/support.h  
@@ -13919,7 +13919,7 @@
 
 2006-09-13 16:40:07 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2293]
-  Remove built-in soundcard.h silliness so OSS actually works on *BSD, by Jonathan Schleifer <js@h3c.de>.
+  Remove built-in soundcard.h silliness so OSS actually works on *BSD, by Jonathan Schleifer <js-audacious@webkeks.org>.
 
   Changes:        Modified:
   +5 -1           trunk/Plugins/Input/cdaudio/cdaudio.h  
@@ -13937,7 +13937,7 @@
 
 2006-09-13 15:06:57 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2289]
-  4-way scroll support in the main window (volume & seek) by Jonathan Schleifer <js@h3c.de>.
+  4-way scroll support in the main window (volume & seek) by Jonathan Schleifer <js-audacious@webkeks.org>.
 
   Changes:        Modified:
   +20 -8          trunk/audacious/mainwin.c  
@@ -13945,7 +13945,7 @@
 
 2006-09-13 13:38:40 +0000  Tony Vroon <chainsaw@gentoo.org>
   revision [2287]
-  Fixes for NetBSD by Jonathan Schleifer <js@h3c.de>
+  Fixes for NetBSD by Jonathan Schleifer <js-audacious@webkeks.org>
 
   Changes:        Modified:
   +2 -0           trunk/Plugins/Container/xspf/xspf.c  

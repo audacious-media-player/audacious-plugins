@@ -2,7 +2,7 @@
  * cuesheet.c: Support cuesheets as a media container.
  *
  * Copyright (C) 2006 William Pitcock <nenolod -at- nenolod.net>.
- *                    Jonathan Schleifer <js@h3c.de> (only small fixes)
+ *                    Jonathan Schleifer <js-audacious@webkeks.org> (few fixes)
  *
  * Copyright (C) 2007 Yoshiki Yazawa <yaz@cc.rim.or.jp> (millisecond
  * seek and multithreading)
