@@ -17,7 +17,6 @@
  */
 
 /* TODO (added by ccr)
- * - DAE seems to be always used, does analog mode work at all?
  * - maybe make CDDB lib optional?
  * - use_cddb/use_cdtext don't seem to be checked in all necessary places. why?
  */
@@ -405,20 +404,28 @@ static GList *cdaudio_scan_dir(gchar *dirname)
 				pcddb_disc = NULL;
 			}
 			else {
-				CDDEBUG("discid = %X, category = \"%s\"\n", cddb_disc_get_discid(pcddb_disc), cddb_disc_get_category_str(pcddb_disc));
-
-				cddb_read(pcddb_conn, pcddb_disc);
-				if (cddb_errno(pcddb_conn) != CDDB_ERR_OK) {
-					fprintf(stderr, "cdaudio-ng: failed to read the cddb info: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
+				if (!strcmp(cddb_disc_get_category_str(pcddb_disc), "invalid")) {
+					CDDEBUG("no cddb info available for this disc\n");
+					
 					cddb_disc_destroy(pcddb_disc);
 					pcddb_disc = NULL;
 				}
 				else {
-					CDDEBUG("we have got the cddb info\n");
-					cdaudio_set_strinfo(&trackinfo[0],
-						cddb_disc_get_artist(pcddb_disc),
-						cddb_disc_get_title(pcddb_disc),
-						cddb_disc_get_genre(pcddb_disc));
+					CDDEBUG("discid = %X, category = \"%s\"\n", cddb_disc_get_discid(pcddb_disc), cddb_disc_get_category_str(pcddb_disc));
+
+					cddb_read(pcddb_conn, pcddb_disc);
+					if (cddb_errno(pcddb_conn) != CDDB_ERR_OK) {
+						cdaudio_error("failed to read the cddb info: %s\n", cddb_error_str(cddb_errno(pcddb_conn)));
+						cddb_disc_destroy(pcddb_disc);
+						pcddb_disc = NULL;
+					}
+					else {
+						CDDEBUG("we have got the cddb info\n");
+						cdaudio_set_strinfo(&trackinfo[0],
+							cddb_disc_get_artist(pcddb_disc),
+							cddb_disc_get_title(pcddb_disc),
+							cddb_disc_get_genre(pcddb_disc));
+					}
 				}
 			}
 		}
@@ -725,7 +732,7 @@ static gint cdaudio_set_volume(gint l, gint r)
 	else {
 		cdio_audio_volume_t volume = {{l, r, 0, 0}};
 		if (cdio_audio_set_volume(pcdio, &volume) != DRIVER_OP_SUCCESS) {
-			fprintf(stderr, "cdaudio-ng: failed to set analog cd volume\n");
+			cdaudio_error("cdaudio-ng: failed to set analog cd volume\n");
 			cleanup_on_error();
 			return FALSE;
 		}
