@@ -93,7 +93,7 @@ void reset_rb(struct ringbuf* rb) {
 
     _ENTER;
 
-    pthread_mutex_lock(&rb->lock);
+    _RB_LOCK(rb->lock);
 
     rb->wp = rb->buf;
     rb->rp = rb->buf;
@@ -101,7 +101,7 @@ void reset_rb(struct ringbuf* rb) {
     rb->used = 0;
     rb->end = rb->buf+(rb->size-1);
 
-    pthread_mutex_unlock(&rb->lock);
+    _RB_UNLOCK(rb->lock);
 
     _LEAVE;
 }
@@ -120,9 +120,52 @@ int init_rb(struct ringbuf* rb, unsigned int size) {
         _LEAVE -1;
     }
 
-    if (0 != pthread_mutex_init(&rb->lock, NULL)) {
+    if (NULL == (rb->buf = malloc(size))) {
         _LEAVE -1;
     }
+    rb->size = size;
+
+    #ifdef _RB_USE_GLIB
+    if (NULL == (rb->lock = g_mutex_new())) {
+        _LEAVE -1;
+    }
+    #else
+    if (NULL == (rb->lock = malloc(sizeof(pthread_mutex_t)))) {
+        _LEAVE -1;
+    }
+
+    if (0 != pthread_mutex_init(rb->lock, NULL)) {
+        free(rb->lock);
+        _LEAVE -1;
+    }
+    #endif
+    rb->_free_lock = 1;
+
+    reset_rb(rb);
+
+    ASSERT_RB(rb);
+
+    _LEAVE 0;
+}
+
+/* 
+ * Initialize a ringbuffer structure (including
+ * memory allocation.
+ * The mutex to be used is passed in the function call.
+ * The mutex must not be held while calling this function.
+ *
+ * Return -1 on error
+ */
+int init_rb_with_lock(struct ringbuf* rb, unsigned int size, rb_mutex_t* lock) {
+
+    _ENTER;
+
+    if (0 == size) {
+        _LEAVE -1;
+    }
+
+    rb->lock = lock;
+    rb->_free_lock = 0;
 
     if (NULL == (rb->buf = malloc(size))) {
         _LEAVE -1;
@@ -146,7 +189,7 @@ int write_rb(struct ringbuf* rb, void* buf, unsigned int size) {
 
     _ENTER;
 
-    pthread_mutex_lock(&rb->lock);
+    _RB_LOCK(rb->lock);
 
     ASSERT_RB(rb);
 
@@ -186,7 +229,7 @@ int write_rb(struct ringbuf* rb, void* buf, unsigned int size) {
 
 out:
     ASSERT_RB(rb);
-    pthread_mutex_unlock(&rb->lock);
+    _RB_UNLOCK(rb->lock);
 
     _LEAVE ret;
 }
@@ -201,9 +244,9 @@ int read_rb(struct ringbuf* rb, void* buf, unsigned int size) {
 
     _ENTER;
 
-    pthread_mutex_lock(&rb->lock);
+    _RB_LOCK(rb->lock);
     ret = read_rb_locked(rb, buf, size);
-    pthread_mutex_unlock(&rb->lock);
+    _RB_UNLOCK(rb->lock);
 
     _LEAVE ret;
 }
@@ -228,7 +271,7 @@ int read_rb_locked(struct ringbuf* rb, void* buf, unsigned int size) {
 
     if (rb->rp < rb->wp) {
         /*
-        Read pointer is behind write pointer, all the data is available in one cunk
+        Read pointer is behind write pointer, all the data is available in one chunk
         */
         memcpy(buf, rb->rp, size);
         rb->rp += size;
@@ -271,11 +314,22 @@ unsigned int free_rb(struct ringbuf* rb) {
 
     _ENTER;
 
-    pthread_mutex_lock(&rb->lock);
-    f = rb->free;
-    pthread_mutex_unlock(&rb->lock);
+    _RB_LOCK(rb->lock);
+    f = free_rb_locked(rb);
+    _RB_UNLOCK(rb->lock);
 
     _LEAVE f;
+}
+
+/*
+ * Return the amount of free space currently in the rb.
+ * Assume the rb lock is already being held.
+ */
+unsigned int free_rb_locked(struct ringbuf* rb) {
+
+    _ENTER;
+
+    _LEAVE rb->free;
 }
 
 
@@ -288,9 +342,9 @@ unsigned int used_rb(struct ringbuf* rb) {
 
     _ENTER;
 
-    pthread_mutex_lock(&rb->lock);
+    _RB_LOCK(rb->lock);
     u = rb->used;
-    pthread_mutex_unlock(&rb->lock);
+    _RB_UNLOCK(rb->lock);
 
     _LEAVE u;
 }
@@ -302,9 +356,15 @@ unsigned int used_rb(struct ringbuf* rb) {
 void destroy_rb(struct ringbuf* rb) {
 
     _ENTER;
-    pthread_mutex_lock(&rb->lock);
     free(rb->buf);
-    pthread_mutex_unlock(&rb->lock);
+    if (rb->_free_lock) {
+#ifdef _RB_USE_GLIB
+        g_mutex_free(rb->lock);
+#else
+        pthread_mutex_destroy(rb->lock);
+        free(rb->lock);
+#endif
+    }
 
     _LEAVE;
 }
