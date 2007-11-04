@@ -90,7 +90,13 @@ static struct neon_handle* handle_init(void) {
         _LEAVE NULL;
     }
 
-    if (0 != init_rb(&(h->rb), NBUFSIZ)) {
+    h->reader = NULL;
+    h->reader_status.mutex = g_mutex_new();
+    h->reader_status.cond = g_cond_new();
+    h->reader_status.reading = FALSE;
+    h->reader_status.status = NEON_READER_INIT;
+
+    if (0 != init_rb_with_lock(&(h->rb), NBUFSIZ, h->reader_status.mutex)) {
         _ERROR("Could not initialize buffer");
         free(h);
         _LEAVE NULL;
@@ -111,11 +117,6 @@ static struct neon_handle* handle_init(void) {
     h->icy_metadata.stream_title = NULL;
     h->icy_metadata.stream_url = NULL;
     h->icy_metadata.stream_contenttype = NULL;
-    h->reader = NULL;
-    h->reader_status.mutex = g_mutex_new();
-    h->reader_status.cond = g_cond_new();
-    h->reader_status.reading = FALSE;
-    h->reader_status.status = NEON_READER_INIT;
     h->eof = FALSE;
 
     _LEAVE h;
@@ -715,12 +716,12 @@ static gpointer reader_thread(void* data) {
     g_mutex_lock(h->reader_status.mutex);
 
     while(h->reader_status.reading) {
-        g_mutex_unlock(h->reader_status.mutex);
 
         /*
          * Hit the network only if we have more than NETBLKSIZ of free buffer
          */
-        if (NETBLKSIZ < free_rb(&h->rb)) {
+        if (NETBLKSIZ < free_rb_locked(&h->rb)) {
+            g_mutex_unlock(h->reader_status.mutex);
 
             _DEBUG("Filling buffer...");
             ret = fill_buffer(h);
@@ -756,18 +757,9 @@ static gpointer reader_thread(void* data) {
              * Not enough free space in the buffer.
              * Sleep until the main thread wakes us up.
              */
-            g_mutex_lock(h->reader_status.mutex);
-            if (h->reader_status.reading) {
-                _DEBUG("Reader thread going to sleep");
-                g_cond_wait(h->reader_status.cond, h->reader_status.mutex);
-                _DEBUG("Reader thread woke up");
-            } else {
-                /*
-                 * Main thread has ordered termination of this thread.
-                 * Leave the loop.
-                 */
-                break;
-            }
+            _DEBUG("Reader thread going to sleep");
+            g_cond_wait(h->reader_status.cond, h->reader_status.mutex);
+            _DEBUG("Reader thread woke up");
         }
     }
 
