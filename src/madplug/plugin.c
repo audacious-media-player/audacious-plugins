@@ -819,7 +819,7 @@ static Tuple *audmad_probe_for_tuple(char *filename, VFSFile *fd)
     return __audmad_get_song_tuple(filename, fd);
 }
 
-static gchar *fmts[] = { "mp3", "mp2", "mpg", NULL };
+static gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
 
 InputPlugin mad_ip = {
     .description = "MPEG Audio Plugin",
