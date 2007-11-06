@@ -585,6 +585,8 @@ void flac_stop(InputPlayback* input) {
         _DEBUG("Decoder thread has finished");
     }
 
+    reset_info(main_info, TRUE);
+
     _LEAVE;
 }
 
