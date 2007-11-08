@@ -123,32 +123,41 @@ GList * get_upload_list()
 LIBMTP_track_t *track_metadata(Tuple *from_tuple)
 {
     LIBMTP_track_t *tr;
-    gchar *filename, *from_path;
+    gchar *filename, *uri_path;
     VFSFile *f;
     uint64_t filesize;
     uint32_t parent_id = 0;
     struct stat sb;
 
-    from_path = g_strdup_printf("%s/%s", aud_tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), aud_tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
-    gchar *tmp;
-    tmp = g_strescape(from_path,NULL);
+    uri_path = g_strdup_printf("%s/%s", aud_tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), aud_tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
+    gchar *tmp = g_strescape(uri_path,NULL);
     filename=g_filename_from_uri(tmp,NULL,NULL);
+    g_free(tmp); 
     /* dealing the stream upload (invalidating)*/
     if(filename)
     {
-        f = aud_vfs_fopen(from_path,"r");
+        f = aud_vfs_fopen(uri_path,"r");
+        g_free(uri_path);
         if(aud_vfs_is_streaming(f)) 
         {
             aud_vfs_fclose(f);
+            g_free(filename);
             return NULL;
         }
     }       
+    else 
+    {
+        g_print("Warning! the filename is NULL, exiting");
+        return NULL;
+        
+    }
 
-    if ( stat(from_path, &sb) == -1 )
+    if ( stat(filename, &sb) == -1 )
     {
 #if DEBUG
-        g_print("ERROR! encountered while stat()'ing \"%s\"\n",from_path);
+        g_print("ERROR! encountered while stat()'ing \"%s\"\n",filename);
 #endif
+        g_free(filename);
         return NULL;
     }
     filesize = (uint64_t) sb.st_size;
@@ -162,43 +171,44 @@ LIBMTP_track_t *track_metadata(Tuple *from_tuple)
     tr->filesize = filesize;
     tr->filename = g_strdup(aud_tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
     tr->duration = (uint32_t)aud_tuple_get_int(from_tuple, FIELD_LENGTH, NULL);
-    tr->filetype = find_filetype (from_path);
+    tr->filetype = find_filetype (filename);
     tr->genre = g_strdup((gchar*)aud_tuple_get_string(from_tuple, FIELD_GENRE, NULL));
     tr->date = g_strdup_printf("%d",aud_tuple_get_int(from_tuple, FIELD_YEAR, NULL));
     g_free(filename);
-    g_free(from_path);
-    g_free(tmp); 
     return tr;
 }
 
 gint upload_file(Tuple *from_tuple)
 {
     int ret;
-    gchar *comp, *from_path = NULL;
+    gchar *tmp, *from_path = NULL, *filename;
     uint32_t parent_id = 0;
     LIBMTP_track_t *gentrack;
     gentrack = track_metadata(from_tuple);
     from_path = g_strdup_printf("%s/%s", aud_tuple_get_string(from_tuple, FIELD_FILE_PATH, NULL), aud_tuple_get_string(from_tuple, FIELD_FILE_NAME, NULL));
     if(gentrack == NULL) return 1;
-    comp = g_strescape(from_path,NULL);
+    tmp = g_strescape(from_path,NULL);
+    filename=g_filename_from_uri(tmp,NULL,NULL);
+
     g_free(from_path);
+    g_free(tmp);
     parent_id = mtp_device->default_music_folder;
 
 #if DEBUG
-    g_print("Uploading track '%s'\n",comp);
+    g_print("Uploading track '%s'\n",filename);
 #endif
-    ret = LIBMTP_Send_Track_From_File(mtp_device, comp , gentrack, NULL , NULL, parent_id);
+    ret = LIBMTP_Send_Track_From_File(mtp_device, filename , gentrack, NULL , NULL, parent_id);
     LIBMTP_destroy_track_t(gentrack);
-    g_free(comp);
     if (ret == 0) 
         g_print("Track upload finished!\n");
     else
     {
-        g_print("An error has occured while uploading '%s'...\nUpload failed!!!\n\n",comp);
+        g_print("An error has occured while uploading '%s'...\nUpload failed!!!\n\n",filename);
         mtp_initialised = FALSE;
+        g_free(filename);
         return 1;
     }
-
+    g_free(filename);
     return 0;
 }
 
