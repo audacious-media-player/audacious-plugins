@@ -499,7 +499,7 @@ si_ui_statusicon_enable ( gboolean enable )
     g_object_set_data( G_OBJECT(si_evbox) , "popup_active" , GINT_TO_POINTER(0) );
     g_object_set_data( G_OBJECT(si_evbox) , "popup" , si_popup );
 
-    g_signal_connect( G_OBJECT(si_evbox) , "button-press-event" ,
+    g_signal_connect( G_OBJECT(si_evbox) , "button-release-event" ,
                       G_CALLBACK(si_ui_statusicon_cb_btpress) , NULL );
     g_signal_connect( G_OBJECT(si_evbox) , "scroll-event" ,
                       G_CALLBACK(si_ui_statusicon_cb_btscroll) , NULL );
