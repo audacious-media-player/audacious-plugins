@@ -39,7 +39,6 @@ static void fix_cue_argument(char *line);
 static gboolean is_our_file(gchar *filespec);
 static void play(InputPlayback *data);
 static void play_cue_uri(InputPlayback *data, gchar *uri);
-static gint get_time(InputPlayback *data);
 static void seek(InputPlayback *data, gint time);
 static void stop(InputPlayback *data);
 static void cue_pause(InputPlayback *data, short);
@@ -97,7 +96,6 @@ InputPlugin cue_ip =
 	.stop = stop,
 	.pause = cue_pause,
 	.seek = seek,
-	.get_time = get_time,
 	.cleanup = cue_cleanup,		/* cleanup */
 	.get_song_tuple = get_tuple,
 };
@@ -175,11 +173,6 @@ static int is_our_file(gchar *filename)
 	}
 
 	return FALSE;
-}
-
-static gint get_time(InputPlayback *playback)
-{
-	return playback->output->output_time();
 }
 
 static void play(InputPlayback *data)
@@ -468,6 +461,8 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip->plugin->set_info = set_info_override;
 		real_ip->plugin->output = cue_ip.output;
 		real_ip->filename = cue_file;
+
+		data->playing = 1;
 
 		real_play_thread = g_thread_create((GThreadFunc)(real_ip->plugin->play_file), (gpointer)real_ip, TRUE, NULL);
 		g_usleep(50000); // wait for 50msec while real input plugin is initializing.
