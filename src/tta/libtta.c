@@ -581,6 +581,9 @@ get_song_tuple(char *filename)
 
 				if(ttainfo->ID3.comment)
 					aud_tuple_associate_string(tuple, FIELD_COMMENT, NULL, (gchar *) ttainfo->ID3.comment);
+				if(ttainfo->LENGTH)
+					aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, 1000 * ttainfo->LENGTH);
+
 			}
 			close_tta_file (ttainfo);
 		}
@@ -803,14 +806,11 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
 int get_id3_tags (const char *filename, tta_info *ttainfo) {
 	int id3v2_size = 0;
 	gchar *str = NULL;
-	gchar *realfn = NULL;
 
 	struct id3_file *id3file = NULL;
 	struct id3_tag  *tag = NULL;
 
-	realfn = g_filename_from_uri(filename, NULL, NULL);
-	id3file = id3_file_open (realfn ? realfn : filename, ID3_FILE_MODE_READONLY);
-	g_free(realfn); realfn = NULL;
+	id3file = id3_file_open (filename, ID3_FILE_MODE_READONLY);
 
 	if (id3file) {
 		tag = id3_file_tag (id3file);
