@@ -33,6 +33,7 @@
 #include <audacious/plugin.h>
 #include <audacious/main.h>
 #include <audacious/util.h>
+#include <audacious/strings.h>
 #include <audacious/playlist.h>
 #include <audacious/playlist_container.h>
 
@@ -77,9 +78,10 @@ static const xspf_entry_t xspf_entries[] = {
 
 static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
 
-
+/* we need encoding conversion */
 #ifdef DEBUG
-#  define XSDEBUG(...) { fprintf(stderr, "xspf[%s:%d]: ", __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
+//#  define XSDEBUG(...) { fprintf(stderr, "xspf[%s:%d]: ", __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
+#  define XSDEBUG(...) { g_print("xspf[%s:%d]: ", __FUNCTION__, (int) __LINE__); g_print(__VA_ARGS__); }
 #else
 #  define XSDEBUG(...) /* stub */
 #endif
@@ -185,27 +187,30 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
     }
 
     if (location) {
-        gchar *uri = NULL;
-        gchar *scratch;
+        gchar *uri = NULL, *realfn = NULL, *scratch = NULL;
 
-        scratch = g_path_get_basename(location);
+        /* filename and path in tuple must be unescaped. */
+        scratch = g_filename_from_uri(location, NULL, NULL);
+        realfn = aud_str_to_utf8(scratch ? scratch : location);
+        uri = aud_str_to_utf8(scratch ? location : scratch);
+        g_free(scratch);
+
+        scratch = g_path_get_basename(realfn);
         aud_tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
         g_free(scratch);
 
-        scratch = g_path_get_dirname(location);
+        scratch = g_path_get_dirname(realfn);
         aud_tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
         g_free(scratch);
 
-        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
+        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(realfn, '.'));
 
         XSDEBUG("tuple->file_name = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
         XSDEBUG("tuple->file_path = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
 
-        // add file to playlist
-        uri = g_filename_to_uri(location, NULL, NULL);
-        // uri would be NULL if location is already uri. --yaz
-        aud_playlist_load_ins_file_tuple(playlist, uri ? uri: location, filename, pos, tuple);
-        g_free(uri);
+        /* add file to playlist */
+        aud_playlist_load_ins_file_tuple(playlist, uri, filename, pos, tuple);
+        g_free(realfn); g_free(uri);
         pos++;
     }
 
