@@ -233,21 +233,20 @@ static int mp4_is_our_file(char *filename)
            return TRUE;
       }
       if (!memcmp(magic, "ID3", 3)) {       // ID3 tag bolted to the front, obfuscated magic bytes
-           aud_vfs_fclose(file);
-           if (extension &&(
-          !strcasecmp(extension, ".mp4") || // official extension
-          !strcasecmp(extension, ".m4a") || // Apple mp4 extension
-          !strcasecmp(extension, ".aac")    // old MPEG2/4-AAC extension
-       ))
-          return 1;
-       else {
-            aud_vfs_fclose(file);
-            return 0;
-        }
+          aud_vfs_fclose(file);
+          if (extension &&(
+                  !strcasecmp(extension, ".mp4") || // official extension
+                  !strcasecmp(extension, ".m4a") || // Apple mp4 extension
+                  !strcasecmp(extension, ".aac")    // old MPEG2/4-AAC extension
+                  ))
+              return 1;
+          else {
+              return 0;
+          }
       }
       if (!memcmp(&magic[4], "ftyp", 4)) {
-           aud_vfs_fclose(file);
-           return 1;
+          aud_vfs_fclose(file);
+          return 1;
       }
       aud_vfs_fclose(file);
   }
