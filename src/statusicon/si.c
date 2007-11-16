@@ -180,3 +180,12 @@ si_audacious_playback_ctrl ( gpointer ctrl_code_gp )
       break;
   }
 }
+
+void
+si_audacious_toggle_playback ( void )
+{
+  if ( audacious_drct_get_playing() )
+    audacious_drct_pause();
+  else
+    audacious_drct_play();
+}

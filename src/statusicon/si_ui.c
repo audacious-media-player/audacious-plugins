@@ -78,6 +78,12 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
       break;
     }
 
+    case 2:
+    {
+      si_audacious_toggle_playback();
+      break;
+    }
+
     case 3:
     {
       switch ( si_cfg.rclick_menu )
