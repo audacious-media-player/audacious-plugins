@@ -80,7 +80,6 @@ static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
 
 /* we need encoding conversion */
 #ifdef DEBUG
-//#  define XSDEBUG(...) { fprintf(stderr, "xspf[%s:%d]: ", __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
 #  define XSDEBUG(...) { g_print("xspf[%s:%d]: ", __FUNCTION__, (int) __LINE__); g_print(__VA_ARGS__); }
 #else
 #  define XSDEBUG(...) /* stub */
@@ -187,19 +186,12 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
     }
 
     if (location) {
-        gchar *uri = NULL, *realfn = NULL, *scratch = NULL;
+        gchar *realfn = NULL, *scratch = NULL;
 
         /* filename and path in tuple must be unescaped. */
         scratch = g_filename_from_uri(location, NULL, NULL);
-
-        if (scratch != NULL) {
-            realfn = aud_str_to_utf8(scratch ? scratch : location);
-       	    uri = aud_str_to_utf8(scratch ? location : scratch);
-            g_free(scratch);
-        } else {
-            realfn = g_strdup(location);
-            uri = g_strdup(location);
-        }
+        realfn = aud_str_to_utf8(scratch ? scratch : location);
+        g_free(scratch);
 
         scratch = g_path_get_basename(realfn);
         aud_tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
@@ -215,8 +207,8 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
         XSDEBUG("tuple->file_path = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
 
         /* add file to playlist */
-        aud_playlist_load_ins_file_tuple(playlist, uri, filename, pos, tuple);
-        g_free(realfn); g_free(uri);
+        aud_playlist_load_ins_file_tuple(playlist, location, filename, pos, tuple);
+        g_free(realfn);
         pos++;
     }
 
