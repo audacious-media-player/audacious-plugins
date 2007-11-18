@@ -44,7 +44,8 @@ InputPlugin xs_plugin_ip = {
 
 	.get_song_tuple = xs_get_song_tuple,		/* Get Tuple */
 	.vfs_extensions = xs_sid_fmts,			/* File ext assist */
-	.probe_for_tuple = xs_probe_for_tuple
+	.probe_for_tuple = xs_probe_for_tuple,
+	.have_subtune = TRUE
 };
 
 static InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };
