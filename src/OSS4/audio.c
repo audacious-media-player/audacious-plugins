@@ -434,6 +434,8 @@ oss_close(void)
         return;
     going = 0;
 
+    oss_set_volume(100, 100);
+
     g_thread_join(buffer_thread);
 
     g_free(device_name);
