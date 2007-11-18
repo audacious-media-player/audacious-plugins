@@ -191,9 +191,15 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
 
         /* filename and path in tuple must be unescaped. */
         scratch = g_filename_from_uri(location, NULL, NULL);
-        realfn = aud_str_to_utf8(scratch ? scratch : location);
-        uri = aud_str_to_utf8(scratch ? location : scratch);
-        g_free(scratch);
+
+        if (scratch != NULL) {
+            realfn = aud_str_to_utf8(scratch ? scratch : location);
+       	    uri = aud_str_to_utf8(scratch ? location : scratch);
+            g_free(scratch);
+        } else {
+            realfn = g_strdup(location);
+            uri = g_strdup(location);
+        }
 
         scratch = g_path_get_basename(realfn);
         aud_tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
