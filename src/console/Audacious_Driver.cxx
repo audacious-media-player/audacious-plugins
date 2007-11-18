@@ -489,7 +489,8 @@ InputPlugin console_ip =
 	NULL,
 	(gchar **)gme_fmts,
 	NULL,
-	probe_for_tuple
+	probe_for_tuple,
+	TRUE
 };
 
 InputPlugin *console_iplist[] = { &console_ip, NULL };
