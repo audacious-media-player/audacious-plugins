@@ -48,6 +48,7 @@ static gint fragsize, device_buffer_size;
 static gchar *device_name;
 static GThread *buffer_thread;
 static gboolean select_works;
+static int start_vol_l, start_vol_r;
 
 static int (*oss_convert_func) (void **data, int length);
 static int (*oss_stereo_convert_func) (void **data, int length, int fmt);
@@ -434,6 +435,8 @@ oss_close(void)
         return;
     going = 0;
 
+    oss_set_volume(start_vol_l, start_vol_r);
+
     g_thread_join(buffer_thread);
 
     g_free(device_name);
@@ -640,6 +643,8 @@ oss_open(AFormat fmt, gint rate, gint nch)
     going = 1;
 
     buffer_thread = g_thread_create(oss_loop, NULL, TRUE, NULL);
+
+    oss_get_volume(&start_vol_l, &start_vol_r);
 
     return 1;
 }
