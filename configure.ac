@@ -155,7 +155,7 @@ PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
 AC_ARG_ENABLE(dbus,
 	[  --enable-dbus		  enable DBus support (default=yes)],
 			enable_dbus=$enableval, enable_dbus=yes)
-if test "x$enable_dbus" == "xyes"; then
+if test "x$enable_dbus" = "xyes"; then
 	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60],
 	    [ADD_PC_REQUIRES([dbus-1 >= 0.60 dbus-glib-1 >= 0.60])
 	     AC_DEFINE(USE_DBUS, 1, [Define if D-Bus support enabled])],
