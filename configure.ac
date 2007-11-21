@@ -770,6 +770,18 @@ if test "$enable_wma" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS wma"
 fi
 
+dnl *** Monkey's Audio
+
+AC_ARG_ENABLE(ape,
+    [  --disable-ape           disable Monkey's Audio plugin. (default=enabled)],
+    [enable_ape=$enableval],
+    [enable_ape=yes]
+)
+
+if test "$enable_ape" = "yes"; then
+	INPUT_PLUGINS="$INPUT_PLUGINS demac"
+fi
+
 dnl *** jack output plugin
 AC_ARG_ENABLE( jack,
 [  --disable-jack          disable jack output plugin (default=enabled)], [enable_jack=$enableval],
@@ -1615,6 +1627,7 @@ echo "  -------------"
 echo "  MPEG 1/2/3 (madplug):                   $enable_mp3"
 echo "  MPEG 4 Audio (AAC):                     $enable_aac"
 echo "  Windows Media Audio (wma):              $enable_wma"
+echo "  Monkey's Audio (ape):                   $enable_ape"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
 echo "    -> ALSA backend:                      $enable_amidiplug_alsa"
