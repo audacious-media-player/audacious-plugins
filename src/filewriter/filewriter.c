@@ -33,31 +33,31 @@ static GtkWidget *fileext_hbox, *fileext_label, *fileext_combo, *plugin_button;
 
 enum fileext_t
 {
-	WAV = 0,
+    WAV = 0,
 #ifdef FILEWRITER_MP3
-	MP3,
+    MP3,
 #endif
 #ifdef FILEWRITER_VORBIS
-	VORBIS,
+    VORBIS,
 #endif
 #ifdef FILEWRITER_FLAC
-	FLAC,
+    FLAC,
 #endif
-	FILEEXT_MAX
+    FILEEXT_MAX
 };
 
 static gint fileext = WAV;
 static gchar *fileext_str[] =
 {
-	"wav",
+    "wav",
 #ifdef FILEWRITER_MP3
-	"mp3",
+    "mp3",
 #endif
 #ifdef FILEWRITER_VORBIS
-	"ogg",
+    "ogg",
 #endif
 #ifdef FILEWRITER_FLAC
-	"flac"
+    "flac"
 #endif
 };
 
@@ -135,6 +135,11 @@ static void set_plugin(void)
 static void file_init(void)
 {
     ConfigDb *db;
+    GtkWidget *menu_root;
+
+    /*menu_root = gtk_menu_item_new_with_label(_("FileWriter"));
+    gtk_widget_show(menu_root);
+    audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, menu_root);*/
 
     db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "filewriter", "fileext", &fileext);
