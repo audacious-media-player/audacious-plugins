@@ -16,22 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
+#include <config.h>
+
 #include <glib.h>
 #include <sys/types.h>
 #include <libmtp.h>
 #include <audacious/plugin.h>
 #include <audacious/playlist.h>
 #include <audacious/ui_plugin_menu.h>
+#include <audacious/i18n.h>
 
 #include <gtk/gtk.h>
 #include <audacious/util.h>
 #include "filetype.h"
+
 #define DEBUG 1
 
-#define ROOT_LABEL "MTP device handler"
-#define UP_DEFAULT_LABEL "Upload selected track(s)"
-#define UP_BUSY_LABEL "Upload in progress..."
-#define FREE_LABEL      "Disconnect the device"
+#define UP_DEFAULT_LABEL  _("Upload selected track(s)")
+
 GMutex * mutex = NULL; 
 gboolean mtp_initialised = FALSE;
 LIBMTP_mtpdevice_t *mtp_device = NULL;
@@ -291,7 +293,7 @@ gboolean mtp_press()
         return TRUE;
 
     }
-    gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))),UP_BUSY_LABEL);
+    gtk_label_set_text(GTK_LABEL(gtk_bin_get_child(GTK_BIN(mtp_submenu_item_up))), _("Upload in progress..."));
     gtk_widget_set_sensitive(mtp_submenu_item_up, FALSE);
     g_thread_create(upload,NULL,FALSE,NULL); 
     return TRUE;
@@ -300,11 +302,11 @@ gboolean mtp_press()
 
 void mtp_init(void)
 {
-    mtp_root_menuitem=gtk_menu_item_new_with_label(ROOT_LABEL);
+    mtp_root_menuitem=gtk_menu_item_new_with_label(_("MTP device handler"));
     mtp_submenu=gtk_menu_new();
 
     mtp_submenu_item_up=gtk_menu_item_new_with_label(UP_DEFAULT_LABEL);
-    mtp_submenu_item_free=gtk_menu_item_new_with_label(FREE_LABEL);
+    mtp_submenu_item_free=gtk_menu_item_new_with_label(_("Disconnect the device"));
 
 
     gtk_menu_shell_append (GTK_MENU_SHELL (mtp_submenu), mtp_submenu_item_up);
