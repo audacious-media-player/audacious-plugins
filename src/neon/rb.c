@@ -343,10 +343,21 @@ unsigned int used_rb(struct ringbuf* rb) {
     _ENTER;
 
     _RB_LOCK(rb->lock);
-    u = rb->used;
+    u = used_rb_locked(rb);
     _RB_UNLOCK(rb->lock);
 
     _LEAVE u;
+}
+
+/*
+ * Return the amount of used space currently in the rb.
+ * Assume the rb lock is already being held.
+ */
+unsigned int used_rb_locked(struct ringbuf* rb) {
+
+    _ENTER;
+
+    _LEAVE rb->used;
 }
 
 

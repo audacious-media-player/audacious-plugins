@@ -61,6 +61,7 @@ void reset_rb(struct ringbuf* rb);
 unsigned int free_rb(struct ringbuf* rb);
 unsigned int free_rb_locked(struct ringbuf* rb);
 unsigned int used_rb(struct ringbuf* rb);
+unsigned int used_rb_locked(struct ringbuf* rb);
 void destroy_rb(struct ringbuf* rb);
 
 #endif
