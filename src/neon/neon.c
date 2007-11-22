@@ -885,7 +885,8 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
              * We have to check if the reader terminated gracefully
              * again
              */
-            if (NEON_READER_TERM != h->reader_status.status) {
+            if ((NEON_READER_TERM != h->reader_status.status) &&
+                (NEON_READER_EOF != h->reader_status.status)) {
                 /*
                  * Reader thread did not terminate gracefully.
                  */
@@ -918,13 +919,14 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
          * We have some data in the buffer now.
          * Start the reader thread.
          */
+        g_mutex_lock(h->reader_status.mutex);
         h->reader_status.reading = TRUE;
         if (NULL == (h->reader = g_thread_create(reader_thread, h, TRUE, NULL))) {
             h->reader_status.reading = FALSE;
+            g_mutex_unlock(h->reader_status.mutex);
             _ERROR("Error creating reader thread!");
             _LEAVE 0;
         }
-        g_mutex_lock(h->reader_status.mutex);
         h->reader_status.status = NEON_READER_RUN;
         g_mutex_unlock(h->reader_status.mutex);
     } else {
@@ -946,7 +948,7 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
                  * If there still is data in the buffer, carry on.
                  * If not, terminate the reader thread and return 0.
                  */
-                if (0 == used_rb(&h->rb)) {
+                if (0 == used_rb_locked(&h->rb)) {
                     _DEBUG("Reached end of stream");
                     g_mutex_unlock(h->reader_status.mutex);
                     kill_reader(h);
