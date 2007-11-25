@@ -326,6 +326,7 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
 #endif
     aud_tuple_associate_string(tpl, FIELD_CODEC, NULL, codec_string);
     aud_tuple_associate_string(tpl, FIELD_QUALITY, NULL, "lossless");
+    aud_tuple_associate_string(tpl, FIELD_MIMETYPE, NULL, "audio/x-ape");
     return tpl;
 }
 
