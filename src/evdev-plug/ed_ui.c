@@ -25,6 +25,7 @@
 #include "ed_bindings_store.h"
 #include "ed_common.h"
 #include <stdlib.h>
+#include <string.h>
 #include <linux/input.h>
 
 #include <audacious/i18n.h>
@@ -536,7 +537,6 @@ static void
 cfg_config_cb_commit ( gpointer cfg_device_lv )
 {
   GList *config_device_list = NULL;
-  GList *list_iter;
   GtkTreeModel *model;
 
   model = gtk_tree_view_get_model( GTK_TREE_VIEW(cfg_device_lv) );
@@ -757,7 +757,6 @@ cfg_bindbox_assign_binding_input_func ( GIOChannel * iochan ,
     case G_IO_IN:
     {
       gsize rb = 0;
-      GError *gerr = NULL;
       struct input_event inputev;
       g_io_channel_read_chars( iochan , (gchar*)&inputev ,
                                sizeof(struct input_event) , &rb , NULL );
@@ -792,6 +791,9 @@ cfg_bindbox_assign_binding_input_func ( GIOChannel * iochan ,
         }
       }
     }
+
+  default:
+    ;
   }
   return TRUE;
 }
@@ -802,7 +804,7 @@ cfg_bindbox_assign_binding_checkdups( GtkWidget * table , ed_inputevent_t * inpu
 {
   /* check if inputev is already assigned in table */
   GList *children = GTK_TABLE(table)->children;
-  for ( children ; children != NULL ; children = g_list_next(children) )
+  for ( ; children != NULL ; children = g_list_next(children) )
   {
     GtkTableChild *child = children->data;
 
@@ -1070,7 +1072,7 @@ cfg_bindbox_populate( GtkWidget * bind_table , GtkWidget * bindings_win , gpoint
     for ( i = 0 ; i < bindings_num ; i++ )
     {
       GList *children = GTK_TABLE(bind_table)->children;
-      for ( children ; children != NULL ; children = g_list_next(children) )
+      for ( ; children != NULL ; children = g_list_next(children) )
       {
         GtkTableChild *child = children->data;
         if ( ( (child->top_attach + 1) == GTK_TABLE(bind_table)->nrows ) &&
@@ -1082,7 +1084,6 @@ cfg_bindbox_populate( GtkWidget * bind_table , GtkWidget * bindings_win , gpoint
           GtkWidget *label = g_object_get_data(G_OBJECT(child->widget),"label");
           GtkWidget *delbt = g_object_get_data(G_OBJECT(child->widget),"delbt");
           GtkTreeModel *combomodel;
-          GtkTreeIter comboiter;
           combosas_helper_t *combosas_helper;
           gchar *input_str;
 
@@ -1235,7 +1236,7 @@ cfg_bindings_cb_commit ( gpointer bindings_win )
       array_actioncode = calloc( table->nrows - 1 , sizeof(gint) );
       array_inputevent = calloc( table->nrows - 1 , sizeof(ed_inputevent_t*) );
 
-      for ( children ; children != NULL ; children = g_list_next( children ) )
+      for ( ; children != NULL ; children = g_list_next( children ) )
       {
         /* pick information from relevant table cells and put them in arrays */
         GtkTableChild *child = children->data;
