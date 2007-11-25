@@ -318,6 +318,8 @@ ed_device_giofunc ( GIOChannel * iochan , GIOCondition cond , gpointer event_dev
       }
       break;
     }
+    default:
+      ;
   }
 
   return TRUE;
@@ -414,11 +416,11 @@ ed_device_get_list_from_system ( void )
             submatch[3].rm_eo - submatch[3].rm_so );
 
           /* let's check if the filename actually exists in /dev */
-          g_string_printf( device_test , "/dev/input/%s" , device_file->str );
+          g_string_printf( device_test , "/dev/input/%s" , (char*)device_file->str );
           if ( !g_file_test( device_test->str , G_FILE_TEST_EXISTS ) )
           {
             /* it doesn't exist, mark as invalid device by nullifying device_file*/
-            g_warning( _("event-device-plugin: device %s not found in /dev/input , skipping.\n") , device_file );
+            g_warning( _("event-device-plugin: device %s not found in /dev/input , skipping.\n") , (char*)device_file );
             g_string_free( device_file , TRUE );
             device_file = NULL;
           }
