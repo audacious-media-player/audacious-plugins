@@ -51,6 +51,21 @@ static int read_uint32(VFSFile *vfd, guint32* x) {
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #endif
 
+static gboolean strcase_equal (gconstpointer v1, gconstpointer v2) {
+  return (g_ascii_strcasecmp((gchar *)v1, (gchar *)v2) == 0);
+}
+
+static guint strcase_hash (gconstpointer v) {
+  gchar *tmp;
+  gchar buf[TMP_BUFSIZE+1];
+  gchar *p = buf;
+  
+  for(tmp=(gchar*)v; (*tmp && (p < buf+TMP_BUFSIZE)); tmp++)
+    *(p++) = g_ascii_toupper(*tmp);
+  *p = '\0';
+  return g_str_hash((gconstpointer)buf);
+}
+
 GHashTable* parse_apev2_tag(VFSFile *vfd) {
   unsigned char tmp[TMP_BUFSIZE+1];
   unsigned char tmp2[TMP_BUFSIZE+1];
@@ -84,7 +99,7 @@ GHashTable* parse_apev2_tag(VFSFile *vfd) {
     return NULL;
   }
   
-  hash = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free); /* string-keyed table with dynamically allocated keys and items */
+  hash = g_hash_table_new_full(strcase_hash, strcase_equal, g_free, g_free); /* string-keyed table with dynamically allocated keys and items */
 
   aud_vfs_fseek(vfd, -tag_size, SEEK_END);
   int i;
