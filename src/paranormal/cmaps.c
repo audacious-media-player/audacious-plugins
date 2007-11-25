@@ -151,7 +151,7 @@ cmap_dynamic_exec(const struct pn_actuator_option *opts,
 		  gpointer data)
 {
   PnDynamicColourmapData *d = (PnDynamicColourmapData *) data;
-  gint i, j;
+  gint i;
   gdouble *rf, *bf, *gf, *inf;
   gint rn, bn, gn;
 

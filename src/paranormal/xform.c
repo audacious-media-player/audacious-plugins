@@ -541,12 +541,9 @@ inline void
 xform_trans_literal (struct xform_vector *vfield, gint x, gint y,
 	expression_t *expr, symbol_dict_t *dict)
 {
-  gdouble rf, df;
-  gdouble *xf, *yf;
   gint xn, yn;
-
-  xf = dict_variable(dict, "x");
-  yf = dict_variable(dict, "y");
+  gdouble *xf = dict_variable(dict, "x");
+  gdouble *yf = dict_variable(dict, "y");
 
   /* Points (xf, yf) must be in a (-1..1) square. */
   *xf = 2.0 * x / (pn_image_data->width - 1) - 1.0;
@@ -580,8 +577,6 @@ xform_movement_exec (const struct pn_actuator_option *opts,
     {
       gint i, j;
       gdouble *rf, *df;
-      gdouble xf, yf;
-      gint xn, yn;
       expression_t *expr;
       symbol_dict_t *dict;
 
@@ -693,8 +688,6 @@ xform_dynmovement_exec (const struct pn_actuator_option *opts,
   PnDynMovementData *d = (PnDynMovementData *) odata;
   gint i, j;
   gdouble *rf, *df;
-  gdouble xf, yf;
-  gint xn, yn;
   void (*transform_func)(struct xform_vector *, gint, gint, expression_t *, symbol_dict_t *) = 
         opts[4].val.bval == TRUE ? xform_trans_polar : xform_trans_literal;
   gboolean make_table = FALSE;

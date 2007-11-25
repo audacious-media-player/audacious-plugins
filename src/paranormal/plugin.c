@@ -42,6 +42,10 @@
 #include <SDL.h>
 #include <SDL_thread.h>
 
+#ifdef _POSIX_PRIORITY_SCHEDULING
+#include <sched.h>
+#endif
+
 #include "paranormal.h"
 #include "actuators.h"
 #include "presets.h"
@@ -267,12 +271,6 @@ about_close_clicked(GtkWidget *w, GtkWidget **window)
 {
 	gtk_widget_destroy(*window);
 	*window=NULL;
-}
-
-static void
-about_closed(GtkWidget *w, GdkEvent *e, GtkWidget **window)
-{
-	about_close_clicked(w,window);
 }
 
 static void

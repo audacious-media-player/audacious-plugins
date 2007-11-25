@@ -129,7 +129,6 @@ general_mosaic_exec (const struct pn_actuator_option *opts,
   int i,j;
   register guchar *srcptr = pn_image_data->surface[0];
   register guchar *destptr = pn_image_data->surface[1];
-  register int sum;
   int radius = opts[0].val.ival > 255 || opts[0].val.ival < 0 ? 6 : opts[0].val.ival;
 
   for (j=0; j<pn_image_data->height; j += radius)
