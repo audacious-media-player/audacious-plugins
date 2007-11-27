@@ -385,6 +385,19 @@ static void demac_about(void) {
     }
 }
 
+static gboolean demac_update_song_tuple(Tuple *tuple, VFSFile *vfd) {
+    fprintf(stderr, "demac_update_song_tuple(): stub\n");
+    fprintf(stderr, "Title: %s\n", aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
+    fprintf(stderr, "Artist: %s\n", aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
+    fprintf(stderr, "Album: %s\n", aud_tuple_get_string(tuple, FIELD_ALBUM, NULL));
+    fprintf(stderr, "Comment: %s\n", aud_tuple_get_string(tuple, FIELD_COMMENT, NULL));
+    fprintf(stderr, "Genre: %s\n", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
+    fprintf(stderr, "Year: %d\n", aud_tuple_get_int(tuple, FIELD_YEAR, NULL));
+    fprintf(stderr, "Track: %d\n", aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+
+    return TRUE;
+}
+
 static gchar *fmts[] = { "ape", NULL };
 
 static InputPlugin demac_ip = {
@@ -401,6 +414,7 @@ static InputPlugin demac_ip = {
     .vfs_extensions = fmts,
     .mseek = demac_mseek,
     .probe_for_tuple = demac_probe_for_tuple,
+    .update_song_tuple = demac_update_song_tuple,
 };
 
 InputPlugin *demac_iplist[] = { &demac_ip, NULL };
