@@ -66,6 +66,7 @@ static GMutex *demac_mutex;
 static unsigned long seek_to_msec=(unsigned long)-1; /* -1 == not needed */
 
 static InputPlugin demac_ip;
+static GtkWidget *about_window = NULL;
 
 #ifdef DEBUG
 # include "crc.c"
@@ -369,19 +370,17 @@ static void demac_cleanup() {
 }
 
 static void demac_about(void) {
-    static GtkWidget *about_window = NULL;
 
-    if (about_window)
-      gdk_window_raise(about_window->window);
-    else {
+    if (about_window) {
+      gtk_window_present(GTK_WINDOW(about_window));
+    } else {
       about_window = audacious_info_dialog(_("About Monkey's Audio Plugin"),
                                        _("Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
                                         "Based on ffape decoder, Copyright (C) 2007 Benjamin Zores\n"
 					"ffape itself based on libdemac by Dave Chapman\n\n"
 					"ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"),
                                        _("Ok"), FALSE, NULL, NULL);
-      g_signal_connect(G_OBJECT(about_window), "destroy",
-                       G_CALLBACK(gtk_widget_destroyed), &about_window);
+      g_signal_connect(G_OBJECT(about_window), "destroy", G_CALLBACK(gtk_widget_destroyed), &about_window);
     }
 }
 

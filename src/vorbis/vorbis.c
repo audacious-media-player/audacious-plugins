@@ -126,6 +126,7 @@ static int samplerate, channels;
 GMutex *vf_mutex;
 
 gchar **vorbis_tag_encoding_list = NULL;
+static GtkWidget *about_window;
 
 static int
 vorbis_check_fd(char *filename, VFSFile *stream)
@@ -725,10 +726,8 @@ vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * filename)
 static void
 vorbis_aboutbox(void)
 {
-    static GtkWidget *about_window;
-
     if (about_window)
-        gdk_window_raise(about_window->window);
+        gtk_window_present(GTK_WINDOW(about_window));
     else
     {
       about_window = audacious_info_dialog(_("About Ogg Vorbis Audio Plugin"),
