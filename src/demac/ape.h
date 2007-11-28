@@ -32,7 +32,10 @@
 #define av_log(a, b, ...) ;
 #endif
 
-#define MKTAG(a,b,c,d) (a | (b << 8) | (c << 16) | (d << 24))
+#define MKTAG(a,b,c,d)           (a | (b << 8) | (c << 16) | (d << 24))
+#define MKTAG64(a,b,c,d,e,f,g,h) ((uint64_t)a | ((uint64_t)b << 8) | ((uint64_t)c << 16) | ((uint64_t)d << 24) | \
+                                 ((uint64_t)e << 32) | ((uint64_t)f << 40) | ((uint64_t)g << 48) | ((uint64_t)h << 56))
+
 #define AV_TIME_BASE 1000
 #define AV_WL16(a,b) { \
           ((uint8_t*)(a))[0] =  (uint16_t)(b) & 0x00ff;        \
@@ -284,6 +287,10 @@ static inline int16_t av_clip_int16(int a) {
     if ((a+32768) & ~65535) return (a>>31) ^ 32767;
     else                    return a;
 }
+
+uint16_t get_le16(VFSFile *vfd);
+uint32_t get_le32(VFSFile *vfd);
+uint64_t get_le64(VFSFile *vfd);
 
 int ape_read_header(APEContext *ape, VFSFile *pb, int probe_only);
 int ape_read_packet(APEContext *ape, VFSFile *pb, uint8_t *pkt, int *pkt_size);
