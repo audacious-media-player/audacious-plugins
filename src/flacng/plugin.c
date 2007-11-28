@@ -714,7 +714,8 @@ void flac_aboutbox(void) {
     gchar *about_text;
 
     if (about_window) {
-        gdk_window_raise(about_window->window);
+        gtk_window_present(GTK_WINDOW(about_window));
+        return;
     }
 
     about_text = g_strjoin("", _("FLAC Audio Plugin "), _VERSION,

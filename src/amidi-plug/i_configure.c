@@ -234,7 +234,7 @@ void i_configure_ev_bokcheck( GtkWidget * button_ok , gpointer configwin )
     g_object_set_data( G_OBJECT(button_ok) , "bapply_pressed" , GUINT_TO_POINTER(0) );
     if ( configwin_warnmsg != NULL )
     {
-      gdk_window_raise( configwin_warnmsg->window );
+      gtk_window_present(GTK_WINDOW(configwin_warnmsg));
     }
     else
     {

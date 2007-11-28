@@ -244,6 +244,7 @@ void configure_show_gui(void)
 {
 	configure_values_to_gui();
 	gtk_widget_show(configwindow);
+        gtk_window_present(GTK_WINDOW(configwindow));
 }
 
 

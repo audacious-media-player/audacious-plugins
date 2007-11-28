@@ -527,7 +527,7 @@ void sun_configure(void)
 
 	if (configure_win)
 	{
-		gdk_window_raise(configure_win->window);
+                gtk_window_present(GTK_WINDOW(configure_win));
 		return;
 	}
 	configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
