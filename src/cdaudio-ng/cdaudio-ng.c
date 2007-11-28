@@ -206,17 +206,17 @@ static void cdaudio_about()
 	static GtkWidget* about_window = NULL;
 
 	if (about_window) {
-		gdk_window_raise(about_window->window);
-	}
-	about_window = audacious_info_dialog(_("About CD Audio Plugin NG"),
-	_("Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
-	"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-	"\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
-	"Also thank you Tony Vroon for mentoring & guiding me.\n\n"
-	"This was a Google Summer of Code 2007 project."), _("OK"), FALSE, NULL, NULL);
+            gtk_window_present(GTK_WINDOW(about_window));
+	} else {
+            about_window = audacious_info_dialog(_("About CD Audio Plugin NG"),
+	    _("Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious Team.\n\n"
+	    "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+	    "\tand to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+	    "Also thank you Tony Vroon for mentoring & guiding me.\n\n"
+	    "This was a Google Summer of Code 2007 project."), _("OK"), FALSE, NULL, NULL);
 
-	g_signal_connect(G_OBJECT(about_window), "destroy",
-		G_CALLBACK(gtk_widget_destroyed), &about_window);
+	    g_signal_connect(G_OBJECT(about_window), "destroy",	G_CALLBACK(gtk_widget_destroyed), &about_window);
+        }
 }
 
 static void cdaudio_configure()

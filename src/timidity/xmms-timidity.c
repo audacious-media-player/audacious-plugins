@@ -122,7 +122,7 @@ void xmmstimid_about(void) {
 	}
 	else
 	{
-		gdk_window_raise(xmmstimid_about_wnd->window);
+                gtk_window_present(GTK_WINDOW(xmmstimid_about_wnd));
 	}
 }
 
@@ -182,7 +182,7 @@ void xmmstimid_configure(void) {
 	if (tb != NULL) gtk_toggle_button_set_active(tb, TRUE);
 
 	gtk_widget_show(xmmstimid_conf_wnd);
-	gdk_window_raise(xmmstimid_conf_wnd->window);
+        gtk_window_present(GTK_WINDOW(xmmstimid_conf_wnd));
 }
 
 void xmmstimid_conf_ok(GtkButton *button, gpointer user_data) {

@@ -775,7 +775,7 @@ void xs_cfg_sldb_browse(GtkButton * button, gpointer user_data)
 	(void) user_data;
 
 	if (xs_sldb_fileselector != NULL) {
-		gdk_window_raise(xs_sldb_fileselector->window);
+                gtk_window_present(GTK_WINDOW(xs_sldb_fileselector));
 		return;
 	}
 
@@ -813,7 +813,7 @@ void xs_cfg_stil_browse(GtkButton * button, gpointer user_data)
 	(void) user_data;
 
 	if (xs_stil_fileselector != NULL) {
-		gdk_window_raise(xs_stil_fileselector->window);
+                gtk_window_present(GTK_WINDOW(xs_stil_fileselector));
 		return;
 	}
 
@@ -852,7 +852,7 @@ void xs_cfg_hvsc_browse(GtkButton * button, gpointer user_data)
 	(void) user_data;
 
 	if (xs_hvsc_selector != NULL) {
-		gdk_window_raise(xs_hvsc_selector->window);
+                gtk_window_present(GTK_WINDOW(xs_hvsc_selector));
 		return;
 	}
 
@@ -1011,7 +1011,7 @@ void xs_cfg_sp2_filter_import(GtkButton *button, gpointer user_data)
 	(void) user_data;
 
 	if (xs_filt_importselector != NULL) {
-		gdk_window_raise(xs_filt_importselector->window);
+                gtk_window_present(GTK_WINDOW(xs_filt_importselector));
 		return;
 	}
 
@@ -1050,7 +1050,7 @@ void xs_cfg_sp2_filter_export(GtkButton *button, gpointer user_data)
 	(void) user_data;
 
 	if (xs_filt_exportselector != NULL) {
-		gdk_window_raise(xs_filt_exportselector->window);
+                gtk_window_present(GTK_WINDOW(xs_filt_exportselector));
 		return;
 	}
 
@@ -1260,7 +1260,7 @@ void xs_configure(void)
 
 	/* Check if the window already exists */
 	if (xs_configwin) {
-		gdk_window_raise(xs_configwin->window);
+                gtk_window_present(GTK_WINDOW(xs_configwin));
 		return;
 	}
 

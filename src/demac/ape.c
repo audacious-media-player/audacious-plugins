@@ -58,7 +58,7 @@
 #define TAG(name, field)  {name, offsetof(AVFormatContext, field), sizeof(((AVFormatContext *)0)->field)}
 
 
-static uint16_t get_le16(VFSFile *vfd)
+uint16_t get_le16(VFSFile *vfd)
 {
     unsigned char tmp[2];
     
@@ -66,12 +66,21 @@ static uint16_t get_le16(VFSFile *vfd)
     return tmp[0] | (tmp[1] << 8);
 }
 
-static uint32_t get_le32(VFSFile *vfd)
+uint32_t get_le32(VFSFile *vfd)
 {
     unsigned char tmp[4];
     
     if(aud_vfs_fread(tmp, 1, 4, vfd) != 4) return -1;
     return tmp[0] | (tmp[1] << 8) | (tmp[2] << 16) | (tmp[3] << 24);
+}
+
+uint64_t get_le64(VFSFile *vfd)
+{
+    unsigned char tmp[8];
+    
+    if(aud_vfs_fread(tmp, 1, 8, vfd) != 8) return -1;
+    return (uint64_t)tmp[0] | ((uint64_t)tmp[1] << 8) | ((uint64_t)tmp[2] << 16) | ((uint64_t)tmp[3] << 24) |
+           ((uint64_t)tmp[4] << 32) | ((uint64_t)tmp[5] << 40) | ((uint64_t)tmp[6] << 48) | ((uint64_t)tmp[7] << 56);
 }
 
 #ifdef DEBUG

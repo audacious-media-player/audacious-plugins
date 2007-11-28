@@ -17,8 +17,9 @@ void
 vtx_about (void)
 {
   static GtkWidget *box;
-  if (box) gdk_window_raise(box->window);
-  else {
+  if (box) {
+      gtk_window_present(GTK_WINDOW(box));
+  } else {
 	box = audacious_info_dialog (_("About Vortex Player"),
 				_
 				("Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"

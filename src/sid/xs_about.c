@@ -72,7 +72,7 @@ void xs_about(void)
 
 	/* Check if there already is an open about window */
 	if (xs_aboutwin != NULL) {
-		gdk_window_raise(xs_aboutwin->window);
+                gtk_window_present(GTK_WINDOW(xs_aboutwin));
 		return;
 	}
 

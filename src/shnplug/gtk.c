@@ -78,7 +78,7 @@ void shn_display_about(void)
 {
 	if (about_box != NULL)
 	{
-		gdk_window_raise(about_box->window);
+                gtk_window_present(GTK_WINDOW(about_box));
 		return;
 	}
 
@@ -153,7 +153,7 @@ void shn_display_configure(void)
 {
 	if (shn_configurewin != NULL)
 	{
-		gdk_window_raise(shn_configurewin->window);
+                gtk_window_present(GTK_WINDOW(shn_configurewin));
 		return;
 	}
 

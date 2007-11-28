@@ -46,20 +46,20 @@ static GtkWidget *port_connection_mode_combo;
 
 static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-	ConfigDb *cfgfile;
+        ConfigDb *cfgfile;
 
-	jack_cfg.isTraceEnabled = (gint) GTK_CHECK_BUTTON(GTK_isTraceEnabled)->toggle_button.active;
+        jack_cfg.isTraceEnabled = (gint) GTK_CHECK_BUTTON(GTK_isTraceEnabled)->toggle_button.active;
   jack_cfg.port_connection_mode = GET_CHARS(GTK_COMBO(port_connection_mode_combo)->entry);
 
   jack_set_port_connection_mode(); /* update the connection mode */
 
-	cfgfile = aud_cfg_db_open();
+        cfgfile = aud_cfg_db_open();
 
-	aud_cfg_db_set_bool(cfgfile, "jack", "isTraceEnabled", jack_cfg.isTraceEnabled);
-	aud_cfg_db_set_string(cfgfile, "jack", "port_connection_mode", jack_cfg.port_connection_mode);
-	aud_cfg_db_close(cfgfile);
+        aud_cfg_db_set_bool(cfgfile, "jack", "isTraceEnabled", jack_cfg.isTraceEnabled);
+        aud_cfg_db_set_string(cfgfile, "jack", "port_connection_mode", jack_cfg.port_connection_mode);
+        aud_cfg_db_close(cfgfile);
 
-	gtk_widget_destroy(configure_win);
+        gtk_widget_destroy(configure_win);
 }
 
 static void get_port_connection_modes(GtkCombo *combo)
@@ -91,68 +91,68 @@ static void get_port_connection_modes(GtkCombo *combo)
 
 void jack_configure(void)
 {
-	if (!configure_win)
-	{
-		configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-		gtk_window_set_type_hint ( GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
-		gtk_signal_connect(GTK_OBJECT(configure_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &configure_win);
-		gtk_window_set_title(GTK_WINDOW(configure_win), _("jack Plugin configuration"));
-		gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, FALSE, FALSE);
-		gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_MOUSE);
-		gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
+        if (!configure_win)
+        {
+                configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+                gtk_window_set_type_hint ( GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
+                gtk_signal_connect(GTK_OBJECT(configure_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &configure_win);
+                gtk_window_set_title(GTK_WINDOW(configure_win), _("jack Plugin configuration"));
+                gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, FALSE, FALSE);
+                gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_MOUSE);
+                gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
 
-    vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_add(GTK_CONTAINER(configure_win), vbox);
+                vbox = gtk_vbox_new(FALSE, 10);
+                gtk_container_add(GTK_CONTAINER(configure_win), vbox);
 
-    /* add a frame for other xmms-jack options */
-    option_frame = gtk_frame_new(_("Options:"));
-    gtk_box_pack_start(GTK_BOX(vbox), option_frame, FALSE, FALSE, 0);
+                /* add a frame for other xmms-jack options */
+                option_frame = gtk_frame_new(_("Options:"));
+                gtk_box_pack_start(GTK_BOX(vbox), option_frame, FALSE, FALSE, 0);
 
-    /* add a hbox that will contain a label for a dropdown and the dropdown itself */
-    port_connection_mode_box = gtk_hbox_new(FALSE, 5);
-    gtk_container_set_border_width(GTK_CONTAINER(port_connection_mode_box), 5);
-    gtk_container_add(GTK_CONTAINER(option_frame), port_connection_mode_box);
+                /* add a hbox that will contain a label for a dropdown and the dropdown itself */
+                port_connection_mode_box = gtk_hbox_new(FALSE, 5);
+                gtk_container_set_border_width(GTK_CONTAINER(port_connection_mode_box), 5);
+                gtk_container_add(GTK_CONTAINER(option_frame), port_connection_mode_box);
 
-    /* add the label */
-    gtk_box_pack_start(GTK_BOX(port_connection_mode_box), gtk_label_new(_("Connection mode:")),
-                       FALSE, FALSE, 0);
+                /* add the label */
+                gtk_box_pack_start(GTK_BOX(port_connection_mode_box), gtk_label_new(_("Connection mode:")),
+                                   FALSE, FALSE, 0);
 
-    /* add the dropdown */
-    port_connection_mode_combo = gtk_combo_new();
-    get_port_connection_modes(GTK_COMBO(port_connection_mode_combo));
-    gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(port_connection_mode_combo)->entry),
-                       jack_cfg.port_connection_mode);
-    gtk_box_pack_start(GTK_BOX(port_connection_mode_box), port_connection_mode_combo,
-                       TRUE, TRUE, 0);
+                /* add the dropdown */
+                port_connection_mode_combo = gtk_combo_new();
+                get_port_connection_modes(GTK_COMBO(port_connection_mode_combo));
+                gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(port_connection_mode_combo)->entry),
+                                   jack_cfg.port_connection_mode);
+                gtk_box_pack_start(GTK_BOX(port_connection_mode_box), port_connection_mode_combo,
+                                   TRUE, TRUE, 0);
 
-    /* create a check_button for debug output */
-    GTK_isTraceEnabled = gtk_check_button_new_with_label(_("Enable debug printing"));
-    gtk_box_pack_start(GTK_BOX(vbox), GTK_isTraceEnabled, FALSE, FALSE, 0);
-    gtk_widget_show(GTK_isTraceEnabled);
+                /* create a check_button for debug output */
+                GTK_isTraceEnabled = gtk_check_button_new_with_label(_("Enable debug printing"));
+                gtk_box_pack_start(GTK_BOX(vbox), GTK_isTraceEnabled, FALSE, FALSE, 0);
+                gtk_widget_show(GTK_isTraceEnabled);
 
-    /* set the state of the check_button based upon the value of */
-    /* isTracingEnabled */
-    GTK_CHECK_BUTTON(GTK_isTraceEnabled)->toggle_button.active = jack_cfg.isTraceEnabled;
+                /* set the state of the check_button based upon the value of */
+                /* isTracingEnabled */
+                GTK_CHECK_BUTTON(GTK_isTraceEnabled)->toggle_button.active = jack_cfg.isTraceEnabled;
 
-    /* add the box for the ok/canceled buttons at the bottom */
-    bbox = gtk_hbox_new(FALSE, 10);
-    gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
+                /* add the box for the ok/canceled buttons at the bottom */
+                bbox = gtk_hbox_new(FALSE, 10);
+                gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-		ok = gtk_button_new_with_label(_("Ok"));
-		gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(configure_win_ok_cb), NULL);
-		GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
-		gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
-		gtk_widget_show(ok);
-		gtk_widget_grab_default(ok);
+                ok = gtk_button_new_with_label(_("Ok"));
+                gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(configure_win_ok_cb), NULL);
+                GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
+                gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
+                gtk_widget_show(ok);
+                gtk_widget_grab_default(ok);
 
-		cancel = gtk_button_new_with_label(_("Cancel"));
-		gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(configure_win));
-		GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
-		gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
-		gtk_widget_show(cancel);
+                cancel = gtk_button_new_with_label(_("Cancel"));
+                gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(configure_win));
+                GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
+                gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
+                gtk_widget_show(cancel);
 
-		gtk_widget_show_all(configure_win);
-	}
-	else
-		gdk_window_raise(configure_win->window);
+                gtk_widget_show_all(configure_win);
+        }
+        else
+                gtk_window_present(GTK_WINDOW(configure_win));
 }

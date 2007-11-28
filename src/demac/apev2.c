@@ -28,23 +28,8 @@
 #include <audacious/vfs.h>
 #include <audacious/plugin.h> 
 
+#include "ape.h"
 #include "apev2.h"
-
-
-static int read_uint32(VFSFile *vfd, guint32* x) {
-    unsigned char tmp[4];
-    int n;
-
-    n = aud_vfs_fread(tmp, 1, 4, vfd);
-
-    if (n != 4)
-        return -1;
-    
-    /* convert to native endianness */
-    *x = tmp[0] | (tmp[1] << 8) | (tmp[2] << 16) | (tmp[3] << 24);
-
-    return 0;
-}
 
 #define TMP_BUFSIZE 256
 #ifndef MIN
@@ -69,6 +54,7 @@ static guint strcase_hash (gconstpointer v) {
 GHashTable* parse_apev2_tag(VFSFile *vfd) {
   unsigned char tmp[TMP_BUFSIZE+1];
   unsigned char tmp2[TMP_BUFSIZE+1];
+  guint64 signature;
   guint32 tag_version;
   guint32 tag_size, item_size, item_flags;
   guint32 tag_items;
@@ -76,19 +62,18 @@ GHashTable* parse_apev2_tag(VFSFile *vfd) {
   GHashTable *hash;
 
   aud_vfs_fseek(vfd, -32, SEEK_END);
-  aud_vfs_fread(tmp, 1, 8, vfd);
-  if ((tmp[0]!='A')||(tmp[1]!='P')||(tmp[2]!='E')||(tmp[3]!='T')||
-     (tmp[4]!='A')||(tmp[5]!='G')||(tmp[6]!='E')||(tmp[7]!='X')) {
+  signature = get_le64(vfd);
+  if (signature != MKTAG64('A', 'P', 'E', 'T', 'A', 'G', 'E', 'X')) {
 #ifdef DEBUG
     fprintf(stderr, "** demac: apev2.c: APE tag not found\n");
 #endif
     return NULL;
   }
   
-  read_uint32(vfd, &tag_version);
-  read_uint32(vfd, &tag_size);
-  read_uint32(vfd, &tag_items);
-  read_uint32(vfd, &tag_flags);
+  tag_version = get_le32(vfd);
+  tag_size = get_le32(vfd);
+  tag_items = get_le32(vfd);
+  tag_flags = get_le32(vfd);
 #ifdef DEBUG
   fprintf(stderr, "** demac: apev2.c: found APE tag version %d contains %d items, flags %08x\n", tag_version, tag_items, tag_flags);
 #endif
@@ -105,8 +90,8 @@ GHashTable* parse_apev2_tag(VFSFile *vfd) {
   int i;
   unsigned char *p;
   for(i=0; i<tag_items; i++) {
-      read_uint32(vfd, &item_size);
-      read_uint32(vfd, &item_flags);
+      item_size = get_le32(vfd);
+      item_flags = get_le32(vfd);
       
       /* read key */
       for(p = tmp; p <= tmp+TMP_BUFSIZE; p++) {

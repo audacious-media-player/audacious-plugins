@@ -157,7 +157,7 @@ void osx_configure(void)
 	
 	if (configure_win)
 	{
-		gdk_window_raise(configure_win->window);
+                gtk_window_present(GTK_WINDOW(configure_win));
 		return;
 	}
 
