@@ -593,6 +593,7 @@ oss_set_audio_params(void)
 gint
 oss_open(AFormat fmt, gint rate, gint nch)
 {
+    int l, r;
 
     if (oss_cfg.use_alt_audio_device && oss_cfg.alt_audio_device)
         device_name = g_strdup(oss_cfg.alt_audio_device);
@@ -645,6 +646,8 @@ oss_open(AFormat fmt, gint rate, gint nch)
     buffer_thread = g_thread_create(oss_loop, NULL, TRUE, NULL);
 
     oss_get_volume(&start_vol_l, &start_vol_r);
+    aud_input_get_volume(&l, &r);
+    oss_set_volume(l, r);
 
     return 1;
 }
