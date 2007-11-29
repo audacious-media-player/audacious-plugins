@@ -25,6 +25,7 @@
 #include <string.h> 
 
 #include <glib.h>
+#include <mowgli.h>
 #include <audacious/vfs.h>
 #include <audacious/plugin.h> 
 
@@ -36,22 +37,7 @@
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #endif
 
-static gboolean strcase_equal (gconstpointer v1, gconstpointer v2) {
-  return (g_ascii_strcasecmp((gchar *)v1, (gchar *)v2) == 0);
-}
-
-static guint strcase_hash (gconstpointer v) {
-  gchar *tmp;
-  gchar buf[TMP_BUFSIZE+1];
-  gchar *p = buf;
-  
-  for(tmp=(gchar*)v; (*tmp && (p < buf+TMP_BUFSIZE)); tmp++)
-    *(p++) = g_ascii_toupper(*tmp);
-  *p = '\0';
-  return g_str_hash((gconstpointer)buf);
-}
-
-GHashTable* parse_apev2_tag(VFSFile *vfd) {
+mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
   unsigned char tmp[TMP_BUFSIZE+1];
   unsigned char tmp2[TMP_BUFSIZE+1];
   guint64 signature;
@@ -59,7 +45,7 @@ GHashTable* parse_apev2_tag(VFSFile *vfd) {
   guint32 tag_size, item_size, item_flags;
   guint32 tag_items;
   guint32 tag_flags;
-  GHashTable *hash;
+  mowgli_dictionary_t *dict;
 
   aud_vfs_fseek(vfd, -32, SEEK_END);
   signature = get_le64(vfd);
@@ -84,7 +70,7 @@ GHashTable* parse_apev2_tag(VFSFile *vfd) {
     return NULL;
   }
   
-  hash = g_hash_table_new_full(strcase_hash, strcase_equal, g_free, g_free); /* string-keyed table with dynamically allocated keys and items */
+  dict = mowgli_dictionary_create(g_ascii_strcasecmp);
 
   aud_vfs_fseek(vfd, -tag_size, SEEK_END);
   int i;
@@ -109,8 +95,8 @@ GHashTable* parse_apev2_tag(VFSFile *vfd) {
       /* APEv2 stores all items in utf-8 */
       gchar *item = ((tag_version == 1000 ) ? aud_str_to_utf8((gchar*)tmp2) : g_strdup((gchar*)tmp2));
       
-      g_hash_table_insert (hash, g_strdup((gchar*)tmp), item);
+      mowgli_dictionary_add(dict, (char*)tmp, item);
   }
   
-  return hash;
+  return dict;
 }

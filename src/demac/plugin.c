@@ -39,6 +39,7 @@
 #include <glib.h> 
 #include <gtk/gtk.h>
 #include <glib/gprintf.h>
+#include <mowgli.h>
 
 #include <audacious/i18n.h> 
 
@@ -293,6 +294,10 @@ static void demac_pause(InputPlayback *pb, short paused) {
     pb->output->pause(paused);
 }
 
+static void destroy_cb(mowgli_dictionary_elem_t *delem, void *privdata) {
+    g_free(delem->data);
+}
+
 Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
 #ifdef DEBUG
     fprintf(stderr, "** demac: plugin.c: demac_probe_for_tuple()\n");
@@ -300,16 +305,16 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     Tuple *tpl = aud_tuple_new_from_filename(uri);
     gchar codec_string[32];
 
-    GHashTable *tag = NULL;
+    mowgli_dictionary_t *tag = NULL;
     gchar *item;
     if ((tag = parse_apev2_tag(vfd)) != NULL) {
-        if((item = g_hash_table_lookup (tag, "Artist")) != NULL) aud_tuple_associate_string(tpl, FIELD_ARTIST, NULL, item);
-        if((item = g_hash_table_lookup (tag, "Title")) != NULL) aud_tuple_associate_string(tpl, FIELD_TITLE, NULL, item);
-        if((item = g_hash_table_lookup (tag, "Album")) != NULL) aud_tuple_associate_string(tpl, FIELD_ALBUM, NULL, item);
-        if((item = g_hash_table_lookup (tag, "Comment")) != NULL) aud_tuple_associate_string(tpl, FIELD_COMMENT, NULL, item);
-        if((item = g_hash_table_lookup (tag, "Genre")) != NULL) aud_tuple_associate_string(tpl, FIELD_GENRE, NULL, item);
-        if((item = g_hash_table_lookup (tag, "Track")) != NULL) aud_tuple_associate_int(tpl, FIELD_TRACK_NUMBER, NULL, atoi(item));
-        if((item = g_hash_table_lookup (tag, "Year")) != NULL) aud_tuple_associate_int(tpl, FIELD_YEAR, NULL, atoi(item));
+        if((item = mowgli_dictionary_retrieve(tag, "Artist")) != NULL) aud_tuple_associate_string(tpl, FIELD_ARTIST, NULL, item);
+        if((item = mowgli_dictionary_retrieve(tag, "Title")) != NULL) aud_tuple_associate_string(tpl, FIELD_TITLE, NULL, item);
+        if((item = mowgli_dictionary_retrieve(tag, "Album")) != NULL) aud_tuple_associate_string(tpl, FIELD_ALBUM, NULL, item);
+        if((item = mowgli_dictionary_retrieve(tag, "Comment")) != NULL) aud_tuple_associate_string(tpl, FIELD_COMMENT, NULL, item);
+        if((item = mowgli_dictionary_retrieve(tag, "Genre")) != NULL) aud_tuple_associate_string(tpl, FIELD_GENRE, NULL, item);
+        if((item = mowgli_dictionary_retrieve(tag, "Track")) != NULL) aud_tuple_associate_int(tpl, FIELD_TRACK_NUMBER, NULL, atoi(item));
+        if((item = mowgli_dictionary_retrieve(tag, "Year")) != NULL) aud_tuple_associate_int(tpl, FIELD_YEAR, NULL, atoi(item));
     }
 
     APEContext *ctx = calloc(sizeof(APEContext), 1);
@@ -319,7 +324,7 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     ape_read_close(ctx);
     free(ctx);
 
-    if (tag) g_hash_table_remove_all(tag);
+    if (tag) mowgli_dictionary_destroy(tag, destroy_cb, NULL);
     
     g_sprintf(codec_string, "Monkey's Audio v%4.2f", (float)ctx->fileversion/1000.0);
 #ifdef DEBUG

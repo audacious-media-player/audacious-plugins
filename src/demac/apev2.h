@@ -1,9 +1,9 @@
 #ifndef APEV2_H
 #define APEV2_H
 
-#include <glib.h>
+#include <mowgli.h>
 #include <audacious/vfs.h>
 
-GHashTable* parse_apev2_tag(VFSFile *vfd);
+mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd);
 
 #endif
