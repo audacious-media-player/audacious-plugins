@@ -19,6 +19,8 @@
  *
  */
 
+#define DEBUG
+
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <errno.h> 
@@ -41,10 +43,11 @@ mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
   unsigned char tmp[TMP_BUFSIZE+1];
   unsigned char tmp2[TMP_BUFSIZE+1];
   guint64 signature;
-  guint32 tag_version;
-  guint32 tag_size, item_size, item_flags;
-  guint32 tag_items;
-  guint32 tag_flags;
+  int tag_version;
+  long tag_size, item_size;
+  int item_flags;
+  int tag_items;
+  int tag_flags;
   mowgli_dictionary_t *dict;
 
   aud_vfs_fseek(vfd, -32, SEEK_END);
@@ -61,7 +64,8 @@ mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
   tag_items = get_le32(vfd);
   tag_flags = get_le32(vfd);
 #ifdef DEBUG
-  fprintf(stderr, "** demac: apev2.c: found APE tag version %d contains %d items, flags %08x\n", tag_version, tag_items, tag_flags);
+  fprintf(stderr, "** demac: apev2.c: found APE tag version %d, size %ld, contains %d items, flags %08x\n",
+         tag_version, tag_size, tag_items, tag_flags);
 #endif
   if(tag_items == 0) {
 #ifdef DEBUG
@@ -78,6 +82,9 @@ mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
   for(i=0; i<tag_items; i++) {
       item_size = get_le32(vfd);
       item_flags = get_le32(vfd);
+#ifdef DEBUG
+      fprintf(stderr, "** demac: apev2.c: item %d, size %ld, flags %d\n", i, item_size, item_flags);
+#endif
       
       /* read key */
       for(p = tmp; p <= tmp+TMP_BUFSIZE; p++) {
