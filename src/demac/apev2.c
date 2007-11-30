@@ -41,11 +41,11 @@
 #define FLAGS_HEADER (1 << 29)
 #define APE_SIGNATURE MKTAG64('A', 'P', 'E', 'T', 'A', 'G', 'E', 'X')
 
-typedef struct {
+/*typedef struct {
   int tag_items;
   int tag_size;
   VFSFile *vfd;
-} iterator_pvt_t;
+} iterator_pvt_t;*/
 
 mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
   unsigned char tmp[TMP_BUFSIZE+1];
@@ -129,37 +129,13 @@ static void write_header_or_footer(guint32 version, guint32 size, guint32 items,
   aud_vfs_fwrite(&filling, 1, 8, vfd);
 }
 
-static int foreach_cb (mowgli_dictionary_elem_t *delem, void *privdata) {
-    iterator_pvt_t *s = (iterator_pvt_t*)privdata;
-    guint32 item_size, item_flags=0;
-    if (s->vfd == NULL) {
-
-          if(strlen((char*)(delem->data)) != 0) {
-              s->tag_items++;
-              s->tag_size += strlen((char*)(delem->key)) + strlen((char*)(delem->data)) + 9; /* length in bytes not symbols */
-          }
-
-    } else {
-
-          if( (item_size = strlen((char*)delem->data)) != 0 ) {
-#ifdef DEBUG
-              fprintf(stderr, "Writing field %s = %s\n", (char*)delem->key, (char*)delem->data);
-#endif
-              put_le32(item_size, s->vfd);
-              put_le32(item_flags, s->vfd); /* all set to zero */
-              aud_vfs_fwrite(delem->key, 1, strlen((char*)delem->key) + 1, s->vfd); /* null-terminated */
-              aud_vfs_fwrite(delem->data, 1, item_size, s->vfd);
-          }
-    }
-
-    return 1;
-}
-
 gboolean write_apev2_tag(VFSFile *vfd, mowgli_dictionary_t *tag) {
   guint64 signature;
   guint32 tag_version;
   guint32 tag_size, tag_items = 0, tag_flags;
+  guint32 item_size, item_flags=0;
   long file_size;
+  void *current_field;
 
   if (vfd == NULL || tag == NULL) return FALSE;
 
@@ -194,13 +170,17 @@ gboolean write_apev2_tag(VFSFile *vfd, mowgli_dictionary_t *tag) {
   }
   aud_vfs_fseek(vfd, 0, SEEK_END);
 
-  iterator_pvt_t state;
-  memset(&state, 0, sizeof(iterator_pvt_t));
+  mowgli_dictionary_iteration_state_t state;
   
-  state.tag_size = 32; /* footer size */
-  mowgli_dictionary_foreach(tag, foreach_cb, &state); /* let's count tag size */
-  tag_size = state.tag_size;
-  tag_items = state.tag_items;
+  tag_size = 32; /* footer size */
+  /* let's count tag size */
+  tag_items = 0;
+  MOWGLI_DICTIONARY_FOREACH(current_field, &state, tag) {
+          if(strlen((char*)current_field) != 0) {
+              tag_items++;
+              tag_size += strlen((char*)state.cur->key) + strlen((char*)current_field) + 9; /* length in bytes not symbols */
+          }
+  }
 
   if(tag_items == 0) {
 #ifdef DEBUG
@@ -210,8 +190,17 @@ gboolean write_apev2_tag(VFSFile *vfd, mowgli_dictionary_t *tag) {
   }
 
   write_header_or_footer(2000, tag_size, tag_items, FLAGS_HEADER | FLAGS_HEADER_EXISTS, vfd); /* header */
-  state.vfd = vfd;
-  mowgli_dictionary_foreach(tag, foreach_cb, &state);
+  MOWGLI_DICTIONARY_FOREACH(current_field, &state, tag) {
+          if( (item_size = strlen((char*)current_field)) != 0 ) {
+#ifdef DEBUG
+              fprintf(stderr, "Writing field %s = %s\n", (char*)state.cur->key, (char*)current_field);
+#endif
+              put_le32(item_size, vfd);
+              put_le32(item_flags, vfd); /* all set to zero */
+              aud_vfs_fwrite(state.cur->key, 1, strlen((char*)state.cur->key) + 1, vfd); /* null-terminated */
+              aud_vfs_fwrite(current_field, 1, item_size, vfd);
+          }
+  }
   write_header_or_footer(2000, tag_size, tag_items, FLAGS_HEADER_EXISTS, vfd); /* footer */
 
   return TRUE;
