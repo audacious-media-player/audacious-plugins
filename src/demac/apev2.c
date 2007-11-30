@@ -37,6 +37,16 @@
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #endif
 
+#define FLAGS_HEADER_EXISTS (1 << 31)
+#define FLAGS_HEADER (1 << 29)
+#define APE_SIGNATURE MKTAG64('A', 'P', 'E', 'T', 'A', 'G', 'E', 'X')
+
+typedef struct {
+  int tag_items;
+  int tag_size;
+  VFSFile *vfd;
+} iterator_pvt_t;
+
 mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
   unsigned char tmp[TMP_BUFSIZE+1];
   unsigned char tmp2[TMP_BUFSIZE+1];
@@ -45,12 +55,12 @@ mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
   long tag_size, item_size;
   int item_flags;
   int tag_items;
-  int tag_flags;
+  unsigned int tag_flags;
   mowgli_dictionary_t *dict;
 
   aud_vfs_fseek(vfd, -32, SEEK_END);
   signature = get_le64(vfd);
-  if (signature != MKTAG64('A', 'P', 'E', 'T', 'A', 'G', 'E', 'X')) {
+  if (signature != APE_SIGNATURE) {
 #ifdef DEBUG
     fprintf(stderr, "** demac: apev2.c: APE tag not found\n");
 #endif
@@ -85,23 +95,125 @@ mowgli_dictionary_t* parse_apev2_tag(VFSFile *vfd) {
 #endif
       
       /* read key */
-      for(p = tmp; p <= tmp+TMP_BUFSIZE; p++) {
-        aud_vfs_fread(p, 1, 1, vfd);
-	if(*p == '\0') break;
-      }
-      *(p+1) = '\0';
+      if (item_size > 0 && item_size < tag_size) { /* be bulletproof */
+          for(p = tmp; p <= tmp+TMP_BUFSIZE; p++) {
+            aud_vfs_fread(p, 1, 1, vfd);
+            if(*p == '\0') break;
+          }
+          *(p+1) = '\0';
 
-      /* read item */
-      aud_vfs_fread(tmp2, 1, MIN(item_size, TMP_BUFSIZE), vfd);
-      tmp2[item_size] = '\0';
+          /* read item */
+          aud_vfs_fread(tmp2, 1, MIN(item_size, TMP_BUFSIZE), vfd);
+          tmp2[item_size] = '\0';
 #ifdef DEBUG
-      fprintf(stderr, "%s: \"%s\", f:%08x\n", tmp, tmp2, item_flags);
+          fprintf(stderr, "%s: \"%s\", f:%08x\n", tmp, tmp2, item_flags);
 #endif
-      /* APEv2 stores all items in utf-8 */
-      gchar *item = ((tag_version == 1000 ) ? aud_str_to_utf8((gchar*)tmp2) : g_strdup((gchar*)tmp2));
+          /* APEv2 stores all items in utf-8 */
+          gchar *item = ((tag_version == 1000 ) ? aud_str_to_utf8((gchar*)tmp2) : g_strdup((gchar*)tmp2));
       
-      mowgli_dictionary_add(dict, (char*)tmp, item);
+          mowgli_dictionary_add(dict, (char*)tmp, item);
+    }
   }
-  
+
   return dict;
 }
+
+static void write_header_or_footer(guint32 version, guint32 size, guint32 items, guint32 flags, VFSFile *vfd) {
+  guint64 filling = 0;
+
+  aud_vfs_fwrite("APETAGEX", 1, 8, vfd);
+  put_le32(version, vfd);
+  put_le32(size, vfd);
+  put_le32(items, vfd);
+  put_le32(flags, vfd);
+  aud_vfs_fwrite(&filling, 1, 8, vfd);
+}
+
+static int foreach_cb (mowgli_dictionary_elem_t *delem, void *privdata) {
+    iterator_pvt_t *s = (iterator_pvt_t*)privdata;
+    guint32 item_size, item_flags=0;
+    if (s->vfd == NULL) {
+
+          if(strlen((char*)(delem->data)) != 0) {
+              s->tag_items++;
+              s->tag_size += strlen((char*)(delem->key)) + strlen((char*)(delem->data)) + 9; /* length in bytes not symbols */
+          }
+
+    } else {
+
+          if( (item_size = strlen((char*)delem->data)) != 0 ) {
+#ifdef DEBUG
+              fprintf(stderr, "Writing field %s = %s\n", (char*)delem->key, (char*)delem->data);
+#endif
+              put_le32(item_size, s->vfd);
+              put_le32(item_flags, s->vfd); /* all set to zero */
+              aud_vfs_fwrite(delem->key, 1, strlen((char*)delem->key) + 1, s->vfd); /* null-terminated */
+              aud_vfs_fwrite(delem->data, 1, item_size, s->vfd);
+          }
+    }
+
+    return 1;
+}
+
+gboolean write_apev2_tag(VFSFile *vfd, mowgli_dictionary_t *tag) {
+  guint64 signature;
+  guint32 tag_version;
+  guint32 tag_size, tag_items = 0, tag_flags;
+  long file_size;
+
+  if (vfd == NULL || tag == NULL) return FALSE;
+
+  aud_vfs_fseek(vfd, -32, SEEK_END);
+  signature = get_le64(vfd);
+
+  /* strip existing tag */
+  if (signature == APE_SIGNATURE) {
+      tag_version = get_le32(vfd);
+      tag_size = get_le32(vfd);
+      tag_items = get_le32(vfd);
+      tag_flags = get_le32(vfd);
+      aud_vfs_fseek(vfd, 0, SEEK_END);
+      file_size = aud_vfs_ftell(vfd);
+      file_size -= (long)tag_size;
+
+      /* also strip header */
+      if((tag_version >= 2000) && (tag_flags | FLAGS_HEADER_EXISTS)) {
+          aud_vfs_fseek(vfd, -((long)tag_size)-32, SEEK_END);
+          signature = get_le64(vfd); /* be bulletproof: check header also */
+          if (signature == APE_SIGNATURE) {
+#ifdef DEBUG
+              fprintf(stderr, "stripping also header\n");
+#endif
+              file_size -= 32;
+          }
+      }
+#ifdef DEBUG
+      fprintf(stderr, "stripping existing tag\n");
+#endif
+      if(aud_vfs_truncate(vfd, file_size) < 0) return FALSE;
+  }
+  aud_vfs_fseek(vfd, 0, SEEK_END);
+
+  iterator_pvt_t state;
+  memset(&state, 0, sizeof(iterator_pvt_t));
+  
+  state.tag_size = 32; /* footer size */
+  mowgli_dictionary_foreach(tag, foreach_cb, &state); /* let's count tag size */
+  tag_size = state.tag_size;
+  tag_items = state.tag_items;
+
+  if(tag_items == 0) {
+#ifdef DEBUG
+      fprintf(stderr, "tag stripped, all done\n");
+#endif
+      return TRUE; /* old tag is stripped, new one is empty */
+  }
+
+  write_header_or_footer(2000, tag_size, tag_items, FLAGS_HEADER | FLAGS_HEADER_EXISTS, vfd); /* header */
+  state.vfd = vfd;
+  mowgli_dictionary_foreach(tag, foreach_cb, &state);
+  write_header_or_footer(2000, tag_size, tag_items, FLAGS_HEADER_EXISTS, vfd); /* footer */
+
+  return TRUE;
+}
+

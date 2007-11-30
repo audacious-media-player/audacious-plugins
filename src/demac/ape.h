@@ -290,6 +290,7 @@ static inline int16_t av_clip_int16(int a) {
 
 uint16_t get_le16(VFSFile *vfd);
 uint32_t get_le32(VFSFile *vfd);
+int put_le32(uint32_t val, VFSFile *vfd);
 uint64_t get_le64(VFSFile *vfd);
 
 int ape_read_header(APEContext *ape, VFSFile *pb, int probe_only);

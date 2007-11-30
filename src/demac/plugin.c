@@ -389,17 +389,43 @@ static void demac_about(void) {
     }
 }
 
-static gboolean demac_update_song_tuple(Tuple *tuple, VFSFile *vfd) {
-    fprintf(stderr, "demac_update_song_tuple(): stub\n");
-    fprintf(stderr, "Title: %s\n", aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
-    fprintf(stderr, "Artist: %s\n", aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
-    fprintf(stderr, "Album: %s\n", aud_tuple_get_string(tuple, FIELD_ALBUM, NULL));
-    fprintf(stderr, "Comment: %s\n", aud_tuple_get_string(tuple, FIELD_COMMENT, NULL));
-    fprintf(stderr, "Genre: %s\n", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
-    fprintf(stderr, "Year: %d\n", aud_tuple_get_int(tuple, FIELD_YEAR, NULL));
-    fprintf(stderr, "Track: %d\n", aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+static void insert_str_tuple_field_to_dictionary(Tuple *tuple, int fieldn, mowgli_dictionary_t *dict, char *key) {
+    
+    if(mowgli_dictionary_find(dict, key) != NULL) g_free(mowgli_dictionary_delete(dict, key));
+    
+    gchar *tmp = (gchar*)aud_tuple_get_string(tuple, fieldn, NULL);
+    if(tmp != NULL && strlen(tmp) != 0) mowgli_dictionary_add(dict, key, g_strdup(tmp));
+}
 
-    return TRUE;
+static void insert_int_tuple_field_to_dictionary(Tuple *tuple, int fieldn, mowgli_dictionary_t *dict, char *key) {
+    int val;
+
+    if(mowgli_dictionary_find(dict, key) != NULL) g_free(mowgli_dictionary_delete(dict, key));
+    
+    if(aud_tuple_get_value_type(tuple, fieldn, NULL) == TUPLE_INT && (val = aud_tuple_get_int(tuple, fieldn, NULL)) >= 0) {
+        gchar *tmp = g_strdup_printf("%d", val);
+        mowgli_dictionary_add(dict, key, tmp);
+    }
+}
+
+static gboolean demac_update_song_tuple(Tuple *tuple, VFSFile *vfd) {
+
+    mowgli_dictionary_t *tag = parse_apev2_tag(vfd);
+    if (tag == NULL) tag = mowgli_dictionary_create(g_ascii_strcasecmp);
+
+    insert_str_tuple_field_to_dictionary(tuple, FIELD_TITLE, tag, "Title");
+    insert_str_tuple_field_to_dictionary(tuple, FIELD_ARTIST, tag, "Artist");
+    insert_str_tuple_field_to_dictionary(tuple, FIELD_ALBUM, tag, "Album");
+    insert_str_tuple_field_to_dictionary(tuple, FIELD_COMMENT, tag, "Comment");
+    insert_str_tuple_field_to_dictionary(tuple, FIELD_GENRE, tag, "Genre");
+    
+    insert_int_tuple_field_to_dictionary(tuple, FIELD_YEAR, tag, "Year");
+    insert_int_tuple_field_to_dictionary(tuple, FIELD_TRACK_NUMBER, tag, "Track");
+
+    gboolean ret = write_apev2_tag(vfd, tag);
+    mowgli_dictionary_destroy(tag, destroy_cb, NULL);
+
+    return ret;
 }
 
 static gchar *fmts[] = { "ape", NULL };

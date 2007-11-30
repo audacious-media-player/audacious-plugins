@@ -74,6 +74,18 @@ uint32_t get_le32(VFSFile *vfd)
     return tmp[0] | (tmp[1] << 8) | (tmp[2] << 16) | (tmp[3] << 24);
 }
 
+int put_le32(uint32_t val, VFSFile *vfd)
+{
+    unsigned char tmp[4];
+    
+    tmp[0] = (val & 0x000000ff);
+    tmp[1] = (val & 0x0000ff00) >> 8;
+    tmp[2] = (val & 0x00ff0000) >> 16;
+    tmp[3] = (val & 0xff000000) >> 24;
+    
+    return aud_vfs_fwrite(tmp, 1, 4, vfd);
+}
+
 uint64_t get_le64(VFSFile *vfd)
 {
     unsigned char tmp[8];
