@@ -33,6 +33,7 @@
 #include <audacious/vfs.h>
 #include <sys/stat.h>
 #include "SFMT.h"
+#include "tuples.h"
 
 /*
  * Global variables
@@ -625,7 +626,6 @@ void audmad_error(char *error, ...)
 #endif                          /* !NOGUI */
 }
 
-extern void audmad_get_file_info(char *filename);
 extern void audmad_configure();
 
 static void __set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
@@ -794,6 +794,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
+    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "audio/mpeg");
 
     if(local_fd)
         aud_vfs_fclose(fd);
@@ -833,12 +834,12 @@ InputPlugin mad_ip = {
     .seek = audmad_seek,
     .cleanup = audmad_cleanup,
     .get_song_info = audmad_get_song_info,
-    .file_info_box = audmad_get_file_info,
     .get_song_tuple = audmad_get_song_tuple,
     .is_our_file_from_vfs = audmad_is_our_fd,
     .vfs_extensions = fmts,
     .mseek = audmad_mseek,
-    .probe_for_tuple = audmad_probe_for_tuple
+    .probe_for_tuple = audmad_probe_for_tuple,
+    .update_song_tuple = audmad_update_song_tuple,
 };
 
 InputPlugin *madplug_iplist[] = { &mad_ip, NULL };

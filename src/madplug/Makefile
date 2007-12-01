@@ -5,7 +5,7 @@ SRCS = configure.c	\
        input.c		\
        replaygain.c	\
        decoder.c	\
-       fileinfo.c	\
+       tuples.c	        \
        plugin.c		\
        xing.c
 
