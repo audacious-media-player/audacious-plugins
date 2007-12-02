@@ -22,7 +22,8 @@
 #include "config.h"
 
 #include "plugin.h"
-#include "tuples.h"
+#include "tuple.h"
+#include "input.h"
 
 #include <math.h>
 #include <string.h>
@@ -158,6 +159,8 @@ audmad_update_song_tuple(Tuple *tuple, VFSFile *fd)
 {
     struct id3_file *id3file;
     struct id3_tag *id3tag;
+    gchar *text;
+    struct mad_info_t songinfo;
 
     if ((id3file = id3_file_vfsopen(fd, ID3_FILE_MODE_READWRITE)) == NULL) return FALSE;
     
@@ -180,6 +183,21 @@ audmad_update_song_tuple(Tuple *tuple, VFSFile *fd)
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_COMMENT, tuple, FIELD_COMMENT, audmad_config.sjis);
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_TRACK, tuple, FIELD_TRACK_NUMBER, audmad_config.sjis);
     update_id3_frame_from_tuple(id3tag, ID3_FRAME_GENRE, tuple, FIELD_GENRE, audmad_config.sjis);
+
+    if(!id3_tag_findframe(id3tag, "TLEN", 0) && input_init(&songinfo, fd->uri, fd) && !songinfo.remote) {
+#ifdef DEBUG
+        fprintf(stderr, "update TLEN frame\n");
+#endif
+        songinfo.fileinfo_request = FALSE; /* we don't need to read tuple again */
+        input_get_info(&songinfo, FALSE);
+        text = g_strdup_printf("%ld", mad_timer_count(songinfo.duration, MAD_UNITS_MILLISECONDS));
+#ifdef DEBUG
+        fprintf(stderr, "TLEN: \"%s\"\n", text);
+#endif
+        update_id3_frame(id3tag, "TLEN", text, 0);
+        g_free(text);
+        input_term(&songinfo);
+    }
 
     if (id3_file_update(id3file) != 0) return FALSE;
 

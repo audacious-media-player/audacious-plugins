@@ -33,7 +33,7 @@
 #include <audacious/vfs.h>
 #include <sys/stat.h>
 #include "SFMT.h"
-#include "tuples.h"
+#include "tuple.h"
 
 /*
  * Global variables
