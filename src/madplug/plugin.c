@@ -792,6 +792,9 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         }
     }
 
+    /* TUDO: make tuple more informative (bitrate, layer).
+     * but it can slowdown tuple creation and avoid sense of TLEN reading. --eugene */
+
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
     aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "audio/mpeg");
