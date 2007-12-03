@@ -27,7 +27,7 @@
 #include "version.h"
 #include "debug.h"
 
-static gchar *flac_fmts[] = { "flac", NULL };
+static gchar *flac_fmts[] = { "flac", "fla", NULL };
 
 InputPlugin flac_ip = {
     .description = "FLACng Audio Plugin",
