@@ -772,12 +772,8 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
     }
 
-    if (myinfo.vbr) {
-        string = g_strdup_printf("lossy, bitrate: VBR (avg. %d kbps)", myinfo.bitrate / 1000);
-    } else {
-        string = g_strdup_printf("lossy, bitrate: %d kbps", myinfo.bitrate / 1000);
-    }
-    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, string);
+    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, myinfo.bitrate / 1000);
     g_free(string);
 
     string = g_strdup_printf("MPEG-1 Audio Layer %d", myinfo.mpeg_layer);
