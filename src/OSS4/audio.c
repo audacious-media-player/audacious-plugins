@@ -502,7 +502,7 @@ oss_loop(gpointer arg)
              * soundcard, but not yet played.  I don't
              * think this is worth fixing.
              */
-            ioctl(fd, SNDCTL_DSP_RESET, 0);
+            ioctl(fd, SNDCTL_DSP_SYNC, 0);
         }
         else if (unpause && paused) {
             unpause = FALSE;
@@ -519,7 +519,7 @@ oss_loop(gpointer arg)
              * the driver to get fucked up by a reset
              */
 
-            ioctl(fd, SNDCTL_DSP_RESET, 0);
+            ioctl(fd, SNDCTL_DSP_SYNC, 0);
             close(fd);
             fd = open(device_name, O_WRONLY);
             oss_set_audio_params();
@@ -532,7 +532,7 @@ oss_loop(gpointer arg)
 
     }
 
-    ioctl(fd, SNDCTL_DSP_RESET, 0);
+    ioctl(fd, SNDCTL_DSP_SYNC, 0);
     close(fd);
     g_free(buffer);
     return NULL;
@@ -545,7 +545,7 @@ oss_set_audio_params(void)
     struct timeval tv;
     fd_set set;
 
-    ioctl(fd, SNDCTL_DSP_RESET, 0);
+    ioctl(fd, SNDCTL_DSP_SYNC, 0);
     frag = (NFRAGS << 16) | fragsize;
     ioctl(fd, SNDCTL_DSP_SETFRAGMENT, &frag);
     /*
