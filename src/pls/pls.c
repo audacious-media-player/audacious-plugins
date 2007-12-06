@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+/* #define AUD_DEBUG 1 */
+
 #include <glib.h>
 #include <string.h>
 #include <glib.h>
@@ -65,30 +67,28 @@ playlist_load_pls(const gchar * filename, gint pos)
         g_snprintf(line_key, sizeof(line_key), "File%d", i);
         if ((line = aud_read_ini_string(inifile, "playlist", line_key)))
         {
-            gchar *uri = g_filename_to_uri(line, NULL, NULL);
+            gchar *uri = aud_construct_uri(line, filename);
+            g_free(line);
 
-            if (uri)
-                g_free(line);
-            else
-                uri = line;
+            /* add file only if valid uri has been constructed */
+            if (uri) {
+                if (aud_cfg->use_pl_metadata)
+                {
+                    g_snprintf(title_key, sizeof(title_key), "Title%d", i);
 
-            if (aud_cfg->use_pl_metadata)
-            {
-                g_snprintf(title_key, sizeof(title_key), "Title%d", i);
-
-                if ((title = aud_read_ini_string(inifile, "playlist", title_key)))
-                    aud_playlist_load_ins_file(playlist, uri, filename, pos, title, -1);
+                    if ((title = aud_read_ini_string(inifile, "playlist", title_key)))
+                        aud_playlist_load_ins_file(playlist, uri, filename, pos, title, -1);
+                    else
+                        aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
+                }
                 else
                     aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
+
+                added_count++;
+
+                if (pos >= 0)
+                    pos++;
             }
-            else
-                aud_playlist_load_ins_file(playlist, uri, filename, pos, NULL, -1);
-
-            added_count++;
-
-            if (pos >= 0)
-                pos++;
-
             g_free(uri);
         }
     }
@@ -99,9 +99,13 @@ playlist_load_pls(const gchar * filename, gint pos)
 static void
 playlist_save_pls(const gchar *filename, gint pos)
 {
+    gchar *uri = g_filename_to_uri(filename, NULL, NULL);
     GList *node;
-    VFSFile *file = aud_vfs_fopen(filename, "wb");
+    VFSFile *file = aud_vfs_fopen(uri, "wb");
     Playlist *playlist = aud_playlist_get_active();
+
+    AUDDBG("filename=%s\n", filename);
+    AUDDBG("uri=%s\n", uri);
 
     g_return_if_fail(file != NULL);
     g_return_if_fail(playlist != NULL);
