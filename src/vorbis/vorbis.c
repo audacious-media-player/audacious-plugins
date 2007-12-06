@@ -620,7 +620,7 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
     VFSVorbisFile *vfd = (VFSVorbisFile *) vorbisfile->datasource;
     Tuple *tuple = NULL;
     gint length;
-    vorbis_comment *comment;
+    vorbis_comment *comment = NULL;
 
     tuple = aud_tuple_new_from_filename(filename);
 
@@ -645,18 +645,20 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
             aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
-
-        aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-
-        if (comment && comment->vendor)
-        {
-            gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
-            aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
-            g_free(codec);
-        }
-        else
-            aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
     }
+
+    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+
+    if (comment && comment->vendor)
+    {
+        gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
+        g_free(codec);
+    }
+    else
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
+    
+    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
 
     return tuple;
 }
