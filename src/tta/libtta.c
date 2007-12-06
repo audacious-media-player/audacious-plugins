@@ -28,6 +28,8 @@
  * information.
  */
 
+/* #define AUD_DEBUG 1 */
+
 #include "config.h"
 
 #include <stdio.h>
@@ -695,18 +697,14 @@ id3_ucs4_t *tta_parse_genre(const id3_ucs4_t *string)
                 tp++;
             }
             if(is_num) {
-#ifdef DEBUG
-                printf("is_num!\n");
-#endif
+                AUDDBG("is_num!\n");
                 tmp = g_malloc0(BYTES(end - ptr + 1));
                 memcpy(tmp, ptr, BYTES(end - ptr));
                 *(tmp + (end - ptr)) = 0; //terminate
                 ptr += end - ptr;
 
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
-#ifdef DEBUG
-                printf("genre length = %d\n", tta_ucs4len(genre));
-#endif
+                AUDDBG("genre length = %d\n", tta_ucs4len(genre));
                 g_free(tmp);
                 tmp = NULL;
 
@@ -718,10 +716,8 @@ id3_ucs4_t *tta_parse_genre(const id3_ucs4_t *string)
                 *(ret + ret_len) = 0; //terminate
             }
             else { // plain text
-#ifdef DEBUG
-                printf("plain!\n");
-                printf("ret_len = %d\n", ret_len);
-#endif
+                AUDDBG("plain!\n");
+                AUDDBG("ret_len = %d\n", ret_len);
                 memcpy(ret + BYTES(ret_len), ptr, BYTES(end - ptr));
                 ret_len = ret_len + (end - ptr);
                 *(ret + ret_len) = 0; //terminate
@@ -796,9 +792,7 @@ gchar *tta_input_id3_get_string(struct id3_tag * tag, char *frame_name)
     }
     g_free(string);
     string = NULL;
-#ifdef DEBUG
-    g_print("string = %s\n", rtn);
-#endif
+    AUDDBG("string = %s\n", rtn);
 
     return rtn;
 }
