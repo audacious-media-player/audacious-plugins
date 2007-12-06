@@ -538,8 +538,10 @@ vorbis_update_replaygain(float *scale)
         if (!rg_peak_str)
             rg_peak_str = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
 
-        if (rg_peak_str)
+        if (rg_peak_str) {
             rg_peak = atof(rg_peak_str);
+            rg_peak = rg_peak == 0.0 ? 1.0 : rg_peak; /* be aware of incorrect formatted strings --eugene */
+        }
         else
             rg_peak = 1;
 
