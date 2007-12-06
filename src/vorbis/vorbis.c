@@ -631,6 +631,8 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
 
     /* associate with tuple */
     aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
+    /* maybe, it would be better to display nominal bitrate (like in main win), not average? --eugene */
+    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, ov_bitrate(vorbisfile, -1)/1000);
 
     if ((comment = ov_comment(vorbisfile, -1))) {
         gchar *tmps;

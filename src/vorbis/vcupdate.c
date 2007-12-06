@@ -18,8 +18,6 @@
  *
  */
 
-#define AUD_DEBUG
-
 #include "config.h"
 
 #include <glib.h>
