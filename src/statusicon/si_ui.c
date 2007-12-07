@@ -34,6 +34,10 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
+#ifndef MAX
+# define MAX(a,b) ((a) > (b) ? (a) : (b))
+#endif
+
 static void si_ui_statusicon_popup_timer_start ( GtkWidget * );
 static void si_ui_statusicon_popup_timer_stop ( GtkWidget * );
 static void si_ui_statusicon_smallmenu_show ( gint x, gint y, guint button, guint32 time , gpointer );
@@ -335,7 +339,6 @@ si_ui_statusicon_image_update ( GtkWidget * image )
   AUDDBG("WM reported proposed icon size: %d\n", size);
 
   /* sometimes, KDE won't give the correct size-allocation; workaround this */
-  /* Xfwm4 sometimes too... --eugene */
   if ( wmname == NULL )
   {
     GdkScreen *screen = gdk_screen_get_default();
@@ -343,7 +346,7 @@ si_ui_statusicon_image_update ( GtkWidget * image )
       wmname = (gchar*)gdk_x11_screen_get_window_manager_name( screen );
       AUDDBG("WM name: %s\n", wmname);
   }
-  if ( ( size <= 1 || size > 22 ) && ( wmname != NULL ) && ( !strcmp("KWin",wmname) || !strcmp("Xfwm4",wmname) ) )
+  if ( ( size <= 1 || size > 22 ) && ( wmname != NULL ) && !strcmp("KWin",wmname) )
     size = 22;
 
   si_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char**)si_xpm );
@@ -359,15 +362,17 @@ si_ui_statusicon_image_update ( GtkWidget * image )
 static void
 si_ui_statusicon_cb_image_sizalloc ( GtkWidget * image , GtkAllocation * allocation , gpointer si_applet )
 {
-  GtkOrientation orientation;
+  /*GtkOrientation orientation;*/
   static gint prev_size = 0;
   gint size = 0;
 
-  orientation = _aud_gtk_tray_icon_get_orientation( AUD_GTK_TRAY_ICON(si_applet) );
+  /*orientation = _aud_gtk_tray_icon_get_orientation( AUD_GTK_TRAY_ICON(si_applet) );
   if ( orientation == GTK_ORIENTATION_HORIZONTAL )
     size = allocation->height;
   else
-    size = allocation->width;
+    size = allocation->width;*/
+  
+  size = MAX(allocation->height, allocation->width); /* some WMs doesn't report orientation correctly --asphyx */
 
   if ( prev_size != size )
   {
