@@ -44,6 +44,9 @@ UINT CSoundFile::m_nReverbDelay = 100;
 UINT CSoundFile::m_nProLogicDepth = 12;
 UINT CSoundFile::m_nProLogicDelay = 20;
 
+void (*CSoundFile::_midi_out_note)(int chan, const MODCOMMAND *m) = NULL;
+void (*CSoundFile::_midi_out_raw)(unsigned char *,unsigned int, unsigned int) = NULL;
+
 ////////////////////////////////////////////////////////////////////
 // DSP Effects internal state
 
@@ -168,6 +171,9 @@ void CSoundFile::InitializeDSP(BOOL bReset)
 			memset(ReverbBuffer3, 0, sizeof(ReverbBuffer3));
 			memset(ReverbBuffer4, 0, sizeof(ReverbBuffer4));
 			memset(gRvbLowPass, 0, sizeof(gRvbLowPass));
+/* mrsb: libmodplug bug hahahah */
+			memset(MixSoundBuffer,0,sizeof(MixSoundBuffer));
+			memset(MixReverbBuffer,0,sizeof(MixReverbBuffer));
 		}
 	} else nReverbSize = 0;
 #endif
@@ -468,12 +474,12 @@ BOOL CSoundFile::SetSurroundParameters(UINT nDepth, UINT nDelay)
 	return TRUE;
 }
 
-BOOL CSoundFile::SetWaveConfigEx(BOOL bSurround,BOOL bNoOverSampling,BOOL bReverb,BOOL hqido,BOOL bMegaBass,BOOL bNR,BOOL bEQ)
+BOOL CSoundFile::SetWaveConfigEx(BOOL bSurround,BOOL /*bNoOverSampling*/,BOOL bReverb,BOOL hqido,BOOL bMegaBass,BOOL bNR,BOOL bEQ)
 //----------------------------------------------------------------------------------------------------------------------------
 {
 	DWORD d = gdwSoundSetup & ~(SNDMIX_SURROUND | SNDMIX_NORESAMPLING | SNDMIX_REVERB | SNDMIX_HQRESAMPLER | SNDMIX_MEGABASS | SNDMIX_NOISEREDUCTION | SNDMIX_EQ);
 	if (bSurround) d |= SNDMIX_SURROUND;
-	if (bNoOverSampling) d |= SNDMIX_NORESAMPLING;
+//	if (bNoOverSampling) d |= SNDMIX_NORESAMPLING;
 	if (bReverb) d |= SNDMIX_REVERB;
 	if (hqido) d |= SNDMIX_HQRESAMPLER;
 	if (bMegaBass) d |= SNDMIX_MEGABASS;

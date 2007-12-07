@@ -64,10 +64,9 @@ BOOL CSoundFile::ReadFAR(const BYTE *lpStream, DWORD dwMemLength)
 	UINT headerlen;
 	BYTE samplemap[8];
 
-	if ((!lpStream) || (dwMemLength < 1024) || (bswapLE32(pmh1->id) != FARFILEMAGIC)
+	if ((!lpStream) || (dwMemLength < 1024) || (pmh1->id != FARFILEMAGIC)
 	 || (pmh1->magic2[0] != 13) || (pmh1->magic2[1] != 10) || (pmh1->magic2[2] != 26)) return FALSE;
-	headerlen = bswapLE16(pmh1->headerlen);
-	pmh1->stlen = bswapLE16( pmh1->stlen ); /* inplace byteswap -- Toad */
+	headerlen = pmh1->headerlen;
 	if ((headerlen >= dwMemLength) || (dwMemPos + pmh1->stlen + sizeof(FARHEADER2) >= dwMemLength)) return FALSE;
 	// Globals
 	m_nType = MOD_TYPE_FAR;
@@ -112,14 +111,6 @@ BOOL CSoundFile::ReadFAR(const BYTE *lpStream, DWORD dwMemLength)
 	dwMemPos += headerlen - (869 + pmh1->stlen);
 	if (dwMemPos >= dwMemLength) return TRUE;
 
-	// byteswap pattern data -- Toad
-	UINT psfix = 0 ;
-	while( psfix++ < 256 )
-	{
-		pmh2->patsiz[psfix] = bswapLE16( pmh2->patsiz[psfix] ) ;
-	}
-	// end byteswap of pattern data
-
 	WORD *patsiz = (WORD *)pmh2->patsiz;
 	for (UINT ipat=0; ipat<256; ipat++) if (patsiz[ipat])
 	{
@@ -139,6 +130,7 @@ BOOL CSoundFile::ReadFAR(const BYTE *lpStream, DWORD dwMemLength)
 		if (rows > 256) rows = 256;
 		if (rows < 16) rows = 16;
 		PatternSize[ipat] = rows;
+		PatternAllocSize[ipat] = rows;
 		if ((Patterns[ipat] = AllocatePattern(rows, m_nChannels)) == NULL) return TRUE;
 		MODCOMMAND *m = Patterns[ipat];
 		UINT patbrk = lpStream[dwMemPos];
@@ -241,10 +233,9 @@ BOOL CSoundFile::ReadFAR(const BYTE *lpStream, DWORD dwMemLength)
 		dwMemPos += sizeof(FARSAMPLE);
 		m_nSamples = ismp + 1;
 		memcpy(m_szNames[ismp+1], pfs->samplename, 32);
-		pfs->length = bswapLE32( pfs->length ) ; /* endian fix - Toad */
-		pins->nLength = pfs->length ;
-		pins->nLoopStart = bswapLE32(pfs->reppos) ;
-		pins->nLoopEnd = bswapLE32(pfs->repend) ;
+		pins->nLength = pfs->length;
+		pins->nLoopStart = pfs->reppos;
+		pins->nLoopEnd = pfs->repend;
 		pins->nFineTune = 0;
 		pins->nC4Speed = 8363*2;
 		pins->nGlobalVol = 64;

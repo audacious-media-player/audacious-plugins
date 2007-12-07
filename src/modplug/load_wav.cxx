@@ -18,26 +18,53 @@ BOOL CSoundFile::ReadWav(const BYTE *lpStream, DWORD dwMemLength)
 //---------------------------------------------------------------
 {
 	DWORD dwMemPos = 0;
-	WAVEFILEHEADER *phdr = (WAVEFILEHEADER *)lpStream;
-	WAVEFORMATHEADER *pfmt = (WAVEFORMATHEADER *)(lpStream + sizeof(WAVEFILEHEADER));
-	if ((!lpStream) || (dwMemLength < (DWORD)sizeof(WAVEFILEHEADER))) return FALSE;
-	if ((phdr->id_RIFF != IFFID_RIFF) || (phdr->id_WAVE != IFFID_WAVE)
-	 || (pfmt->id_fmt != IFFID_fmt)) return FALSE;
-	dwMemPos = sizeof(WAVEFILEHEADER) + 8 + pfmt->hdrlen;
+	WAVEFILEHEADER phdr;
+	WAVEFORMATHEADER pfmt;
+
+	if ((!lpStream)
+	|| (dwMemLength < (DWORD)(sizeof(WAVEFORMATHEADER)+sizeof(WAVEFILEHEADER))))
+		return FALSE;
+
+	memcpy(&phdr, lpStream, sizeof(phdr));
+	memcpy(&pfmt, lpStream+sizeof(phdr), sizeof(pfmt));
+
+	phdr.id_RIFF = bswapLE32(phdr.id_RIFF);
+	phdr.filesize = bswapLE32(phdr.filesize);
+	phdr.id_WAVE = bswapLE32(phdr.id_WAVE);
+
+	pfmt.id_fmt = bswapLE32(pfmt.id_fmt);
+	pfmt.hdrlen = bswapLE32(pfmt.hdrlen);
+	pfmt.format = bswapLE16(pfmt.format);
+	pfmt.channels = bswapLE16(pfmt.channels);
+	pfmt.freqHz = bswapLE32(pfmt.freqHz);
+	pfmt.bytessec = bswapLE32(pfmt.bytessec);
+	pfmt.samplesize = bswapLE16(pfmt.samplesize);
+	pfmt.bitspersample = bswapLE16(pfmt.bitspersample);
+
+	if ((phdr.id_RIFF != IFFID_RIFF) || (phdr.id_WAVE != IFFID_WAVE)
+	 || (pfmt.id_fmt != IFFID_fmt)) return FALSE;
+
+	dwMemPos = sizeof(WAVEFILEHEADER) + 8 + pfmt.hdrlen;
+
 	if ((dwMemPos + 8 >= dwMemLength)
-	 || ((pfmt->format != WAVE_FORMAT_PCM) && (pfmt->format != WAVE_FORMAT_EXTENSIBLE))
-	 || (pfmt->channels > 4)
-	 || (!pfmt->channels)
-	 || (!pfmt->freqHz)
-	 || (pfmt->bitspersample & 7)
-	 || (pfmt->bitspersample < 8)
-	 || (pfmt->bitspersample > 32))  return FALSE;
-	WAVEDATAHEADER *pdata;
+	 || ((pfmt.format != WAVE_FORMAT_PCM) && (pfmt.format != WAVE_FORMAT_EXTENSIBLE))
+	 || (pfmt.channels > 4)
+	 || (!pfmt.channels)
+	 || (!pfmt.freqHz)
+	 || (pfmt.bitspersample & 7)
+	 || (pfmt.bitspersample < 8)
+	 || (pfmt.bitspersample > 32))  return FALSE;
+
+	WAVEDATAHEADER pdata;
+
 	for (;;)
 	{
-		pdata = (WAVEDATAHEADER *)(lpStream + dwMemPos);
-		if (pdata->id_data == IFFID_data) break;
-		dwMemPos += pdata->length + 8;
+		memcpy(&pdata, lpStream+dwMemPos, sizeof(pdata));
+		pdata.id_data = bswapLE32(pdata.id_data);
+		pdata.length = bswapLE32(pdata.length);
+
+		if (pdata.id_data == IFFID_data) break;
+		dwMemPos += pdata.length + 8;
 		if (dwMemPos + 8 >= dwMemLength) return FALSE;
 	}
 	m_nType = MOD_TYPE_WAV;
@@ -50,18 +77,19 @@ BOOL CSoundFile::ReadWav(const BYTE *lpStream, DWORD dwMemLength)
 	Order[0] = 0;
 	Order[1] = 0xFF;
 	PatternSize[0] = PatternSize[1] = 64;
+	PatternAllocSize[0] = PatternAllocSize[1] = 64;
 	if ((Patterns[0] = AllocatePattern(64, 4)) == NULL) return TRUE;
 	if ((Patterns[1] = AllocatePattern(64, 4)) == NULL) return TRUE;
-	UINT samplesize = (pfmt->channels * pfmt->bitspersample) >> 3;
-	UINT len = pdata->length, bytelen;
+	UINT samplesize = (pfmt.channels * pfmt.bitspersample) >> 3;
+	UINT len = pdata.length, bytelen;
 	if (dwMemPos + len > dwMemLength - 8) len = dwMemLength - dwMemPos - 8;
 	len /= samplesize;
 	bytelen = len;
-	if (pfmt->bitspersample >= 16) bytelen *= 2;
+	if (pfmt.bitspersample >= 16) bytelen *= 2;
 	if (len > MAX_SAMPLE_LENGTH) len = MAX_SAMPLE_LENGTH;
 	if (!len) return TRUE;
 	// Setting up module length
-	DWORD dwTime = ((len * 50) / pfmt->freqHz) + 1;
+	DWORD dwTime = ((len * 50) / pfmt.freqHz) + 1;
 	DWORD framesperrow = (dwTime + 63) / 63;
 	if (framesperrow < 4) framesperrow = 4;
 	UINT norders = 1;
@@ -87,7 +115,7 @@ BOOL CSoundFile::ReadWav(const BYTE *lpStream, DWORD dwMemLength)
 	pcmd[0].instr = 1;
 	pcmd[1].note = pcmd[0].note;
 	pcmd[1].instr = pcmd[0].instr;
-	m_nSamples = pfmt->channels;
+	m_nSamples = pfmt.channels;
 	// Support for Multichannel Wave
 	for (UINT nChn=0; nChn<m_nSamples; nChn++)
 	{
@@ -95,11 +123,11 @@ BOOL CSoundFile::ReadWav(const BYTE *lpStream, DWORD dwMemLength)
 		pcmd[nChn].note = pcmd[0].note;
 		pcmd[nChn].instr = (BYTE)(nChn+1);
 		pins->nLength = len;
-		pins->nC4Speed = pfmt->freqHz;
+		pins->nC4Speed = pfmt.freqHz;
 		pins->nVolume = 256;
 		pins->nPan = 128;
 		pins->nGlobalVol = 64;
-		pins->uFlags = (WORD)((pfmt->bitspersample >= 16) ? CHN_16BIT : 0);
+		pins->uFlags = (WORD)((pfmt.bitspersample >= 16) ? CHN_16BIT : 0);
 		pins->uFlags |= CHN_PANNING;
 		if (m_nSamples > 1)
 		{
@@ -113,14 +141,14 @@ BOOL CSoundFile::ReadWav(const BYTE *lpStream, DWORD dwMemLength)
 			}
 		}
 		if ((pins->pSample = AllocateSample(bytelen+8)) == NULL) return TRUE;
-		if (pfmt->bitspersample >= 16)
+		if (pfmt.bitspersample >= 16)
 		{
-			int slsize = pfmt->bitspersample >> 3;
+			int slsize = pfmt.bitspersample >> 3;
 			signed short *p = (signed short *)pins->pSample;
 			signed char *psrc = (signed char *)(lpStream+dwMemPos+8+nChn*slsize+slsize-2);
 			for (UINT i=0; i<len; i++)
 			{
-				p[i] = *((signed short *)psrc);
+				p[i] = bswapLE16(*((signed short *)psrc));
 				psrc += samplesize;
 			}
 			p[len+1] = p[len] = p[len-1];
@@ -184,8 +212,8 @@ BOOL IMAADPCMUnpack16(signed short *pdest, UINT nLen, LPBYTE psrc, DWORD dwBytes
 	while ((nPos < nLen) && (dwBytes > 4))
 	{
 		int nIndex;
-		value = *((short int *)psrc);
-		nIndex = psrc[2];
+		value = bswapLE16(*((short int *)psrc));
+		nIndex = bswapLE16((short int)psrc[2]);
 		psrc += 4;
 		dwBytes -= 4;
 		pdest[nPos++] = (short int)value;
@@ -200,7 +228,7 @@ BOOL IMAADPCMUnpack16(signed short *pdest, UINT nLen, LPBYTE psrc, DWORD dwBytes
 			{
 				delta = (BYTE)((*psrc) & 0x0F);
 			}
-			int v = gIMAUnpackTable[nIndex] >> 3;
+			int v = gIMAUnpackTable[nIndex % 90] >> 3;
 			if (delta & 1) v += gIMAUnpackTable[nIndex] >> 2;
 			if (delta & 2) v += gIMAUnpackTable[nIndex] >> 1;
 			if (delta & 4) v += gIMAUnpackTable[nIndex];

@@ -158,7 +158,7 @@ BOOL CSoundFile::ReadDBM(const BYTE *lpStream, DWORD dwMemLength)
 				}
 				Headers[iIns+1] = penv;
 				penv->nFadeOut = 1024;	// ???
-				penv->nGlobalVol = 64;
+				penv->nGlobalVol = 128;
 				penv->nPan = bswapBE16(pih->panning);
 				if ((penv->nPan) && (penv->nPan < 256))
 					penv->dwFlags = ENV_SETPANNING;
@@ -193,6 +193,7 @@ BOOL CSoundFile::ReadDBM(const BYTE *lpStream, DWORD dwMemLength)
 				chunk_pos += sizeof(DBMINSTRUMENT);
 				m_nInstruments = iIns+1;
 			}
+			m_dwSongFlags |= SONG_INSTRUMENTMODE;
 		} else
 		// Volume Envelopes
 		if (chunk_id == DBM_ID_VENV)
@@ -215,15 +216,15 @@ BOOL CSoundFile::ReadDBM(const BYTE *lpStream, DWORD dwMemLength)
 					if (peh->flags & 1) penv->dwFlags |= ENV_VOLUME;
 					if (peh->flags & 2) penv->dwFlags |= ENV_VOLSUSTAIN;
 					if (peh->flags & 4) penv->dwFlags |= ENV_VOLLOOP;
-					penv->nVolEnv = peh->numpoints + 1;
-					if (penv->nVolEnv > MAX_ENVPOINTS) penv->nVolEnv = MAX_ENVPOINTS;
-					penv->nVolLoopStart = peh->loopbegin;
-					penv->nVolLoopEnd = peh->loopend;
-					penv->nVolSustainBegin = penv->nVolSustainEnd = peh->sustain1;
-					for (UINT i=0; i<penv->nVolEnv; i++)
+					penv->VolEnv.nNodes = peh->numpoints + 1;
+					if (penv->VolEnv.nNodes > MAX_ENVPOINTS) penv->VolEnv.nNodes = MAX_ENVPOINTS;
+					penv->VolEnv.nLoopStart = peh->loopbegin;
+					penv->VolEnv.nLoopEnd = peh->loopend;
+					penv->VolEnv.nSustainStart = penv->VolEnv.nSustainEnd = peh->sustain1;
+					for (int i=0; i<penv->VolEnv.nNodes; i++)
 					{
-						penv->VolPoints[i] = bswapBE16(peh->volenv[i*2]);
-						penv->VolEnv[i] = (BYTE)bswapBE16(peh->volenv[i*2+1]);
+						penv->VolEnv.Ticks[i] = bswapBE16(peh->volenv[i*2]);
+						penv->VolEnv.Values[i] = (BYTE)bswapBE16(peh->volenv[i*2+1]);
 					}
 				}
 				chunk_pos += sizeof(DBMENVELOPE);
@@ -254,6 +255,7 @@ BOOL CSoundFile::ReadDBM(const BYTE *lpStream, DWORD dwMemLength)
 						UINT i = 0;
 
 						PatternSize[iPat] = nRows;
+						PatternAllocSize[iPat] = nRows;
 						Patterns[iPat] = m;
 						while ((i+3<pksize) && (row < nRows))
 						{

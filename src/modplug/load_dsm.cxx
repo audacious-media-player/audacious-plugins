@@ -136,6 +136,7 @@ BOOL CSoundFile::ReadDSM(LPCBYTE lpStream, DWORD dwMemLength)
 			MODCOMMAND *m = AllocatePattern(64, m_nChannels);
 			if (!m) break;
 			PatternSize[nPat] = 64;
+			PatternAllocSize[nPat] = 64;
 			Patterns[nPat] = m;
 			UINT row = 0;
 			while ((row < 64) && (dwPos + 2 <= dwMemPos))
