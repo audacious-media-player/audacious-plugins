@@ -1,5 +1,8 @@
 /*
- * This source code is public domain.
+ * This program is  free software; you can redistribute it  and modify it
+ * under the terms of the GNU  General Public License as published by the
+ * Free Software Foundation; either version 2  of the license or (at your
+ * option) any later version.
  *
  * Authors: Olivier Lapicque <olivierl@jps.net>
  *          Markus Fick <webmaster@mark-f.de> spline + fir-resampler
@@ -8,6 +11,10 @@
 #include "stdafx.h"
 #include "sndfile.h"
 #include <math.h>
+
+#ifdef MSC_VER
+#pragma bss_seg(".modplug")
+#endif
 
 // Front Mix Buffer (Also room for interleaved rear mix)
 int MixSoundBuffer[MIXBUFFERSIZE*4];
@@ -18,8 +25,14 @@ int MixReverbBuffer[MIXBUFFERSIZE*2];
 extern UINT gnReverbSend;
 #endif
 
+#ifndef MODPLUG_FASTSOUNDLIB
 int MixRearBuffer[MIXBUFFERSIZE*2];
 float MixFloatBuffer[MIXBUFFERSIZE*2];
+#endif
+
+#ifdef MSC_VER
+#pragma bss_seg()
+#endif
 
 
 extern LONG gnDryROfsVol;
@@ -517,39 +530,37 @@ CzWINDOWEDFIR sfir;
 // Resonant Filters
 
 // Mono
-#define MIX_BEGIN_FILTER \
-	double fy1 = pChannel->nFilter_Y1;\
-	double fy2 = pChannel->nFilter_Y2;\
-	double ta;
+#define MIX_BEGIN_FILTER\
+	int fy1 = pChannel->nFilter_Y1;\
+	int fy2 = pChannel->nFilter_Y2;\
 
-#define MIX_END_FILTER \
+#define MIX_END_FILTER\
 	pChannel->nFilter_Y1 = fy1;\
 	pChannel->nFilter_Y2 = fy2;
 
-#define SNDMIX_PROCESSFILTER \
-ta = ((double)vol * pChn->nFilter_A0 + fy1 * pChn->nFilter_B0 + fy2 * pChn->nFilter_B1);\
-fy2 = fy1;\
-fy1 = ta;vol=(int)ta;
+#define SNDMIX_PROCESSFILTER\
+	vol = (vol * pChn->nFilter_A0 + fy1 * pChn->nFilter_B0 + fy2 * pChn->nFilter_B1 + 4096) >> 13;\
+	fy2 = fy1;\
+	fy1 = vol;\
 
 // Stereo
-#define MIX_BEGIN_STEREO_FILTER \
-double fy1 = pChannel->nFilter_Y1;\
-double fy2 = pChannel->nFilter_Y2;\
-double fy3 = pChannel->nFilter_Y3;\
-double fy4 = pChannel->nFilter_Y4;\
-double ta, tb;
+#define MIX_BEGIN_STEREO_FILTER\
+	int fy1 = pChannel->nFilter_Y1;\
+	int fy2 = pChannel->nFilter_Y2;\
+	int fy3 = pChannel->nFilter_Y3;\
+	int fy4 = pChannel->nFilter_Y4;\
 
-#define MIX_END_STEREO_FILTER \
-pChannel->nFilter_Y1 = fy1;\
-pChannel->nFilter_Y2 = fy2;\
-pChannel->nFilter_Y3 = fy3;\
-pChannel->nFilter_Y4 = fy4;\
+#define MIX_END_STEREO_FILTER\
+	pChannel->nFilter_Y1 = fy1;\
+	pChannel->nFilter_Y2 = fy2;\
+	pChannel->nFilter_Y3 = fy3;\
+	pChannel->nFilter_Y4 = fy4;\
 
-#define SNDMIX_PROCESSSTEREOFILTER \
-ta = ((double)vol_l * pChn->nFilter_A0 + fy1 * pChn->nFilter_B0 + fy2 * pChn->nFilter_B1);\
-tb = ((double)vol_r * pChn->nFilter_A0 + fy3 * pChn->nFilter_B0 + fy4 * pChn->nFilter_B1);\
-fy2 = fy1; fy1 = ta;vol_l=(int)ta;\
-fy4 = fy3; fy3 = tb;vol_r=(int)tb;
+#define SNDMIX_PROCESSSTEREOFILTER\
+	vol_l = (vol_l * pChn->nFilter_A0 + fy1 * pChn->nFilter_B0 + fy2 * pChn->nFilter_B1 + 4096) >> 13;\
+	vol_r = (vol_r * pChn->nFilter_A0 + fy3 * pChn->nFilter_B0 + fy4 * pChn->nFilter_B1 + 4096) >> 13;\
+	fy2 = fy1; fy1 = vol_l;\
+	fy4 = fy3; fy3 = vol_r;\
 
 //////////////////////////////////////////////////////////
 // Interfaces
@@ -648,17 +659,11 @@ typedef VOID (MPPASMCALL * LPMIXINTERFACE)(MODCHANNEL *, int *, int *);
 /////////////////////////////////////////////////////
 //
 
-extern void StereoMixToFloat(const int *pSrc, float *pOut1, float *pOut2, UINT nCount, const float _i2fc);
-extern void FloatToStereoMix(const float *pIn1, const float *pIn2, int *pOut, UINT nCount, const float _f2ic);
-extern void MonoMixToFloat(const int *pSrc, float *pOut, UINT nCount, const float _i2fc);
-extern void FloatToMonoMix(const float *pIn, int *pOut, UINT nCount, const float _f2ic);
-
-void InitMixBuffer(int *pBuffer, UINT nSamples);
-void EndChannelOfs(MODCHANNEL *pChannel, int *pBuffer, UINT nSamples);
-void StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs);
-
-void StereoMixToFloat(const int *, float *, float *, UINT nCount);
-void FloatToStereoMix(const float *pIn1, const float *pIn2, int *pOut, UINT nCount);
+void MPPASMCALL X86_InitMixBuffer(int *pBuffer, UINT nSamples);
+void MPPASMCALL X86_EndChannelOfs(MODCHANNEL *pChannel, int *pBuffer, UINT nSamples);
+void MPPASMCALL X86_StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs);
+void X86_StereoMixToFloat(const int *, float *, float *, UINT nCount);
+void X86_FloatToStereoMix(const float *pIn1, const float *pIn2, int *pOut, UINT nCount);
 
 /////////////////////////////////////////////////////
 // Mono samples functions
@@ -1461,7 +1466,9 @@ UINT CSoundFile::CreateStereoMix(int count)
 	DWORD nchused, nchmixed;
 
 	if (!count) return 0;
-	if (gnChannels > 2) InitMixBuffer(MixRearBuffer, count*2);
+#ifndef MODPLUG_FASTSOUNDLIB
+	if (gnChannels > 2) X86_InitMixBuffer(MixRearBuffer, count*2);
+#endif
 	nchused = nchmixed = 0;
 	for (UINT nChn=0; nChn<m_nMixChannels; nChn++)
 	{
@@ -1482,16 +1489,15 @@ UINT CSoundFile::CreateStereoMix(int count)
 	#ifndef NO_FILTER
 		if (pChannel->dwFlags & CHN_FILTER) nFlags |= MIXNDX_FILTER;
 	#endif
-		if (!(pChannel->dwFlags & CHN_NOIDO)
-		&& !(gdwSoundSetup & SNDMIX_NORESAMPLING))
+		if (!(pChannel->dwFlags & CHN_NOIDO))
 		{
 			// use hq-fir mixer?
 			if( (gdwSoundSetup & (SNDMIX_HQRESAMPLER|SNDMIX_ULTRAHQSRCMODE)) == (SNDMIX_HQRESAMPLER|SNDMIX_ULTRAHQSRCMODE) )
-				nFlags |= MIXNDX_FIRSRC;
-			else if( (gdwSoundSetup & SNDMIX_HQRESAMPLER))
-				nFlags |= MIXNDX_SPLINESRC;
+				nFlags += MIXNDX_FIRSRC;
+			else if( (gdwSoundSetup & (SNDMIX_HQRESAMPLER)) == SNDMIX_HQRESAMPLER )
+				nFlags += MIXNDX_SPLINESRC;
 			else
-				nFlags |= MIXNDX_LINEARSRC; // use
+				nFlags += MIXNDX_LINEARSRC; // use
 		}
 		if ((nFlags < 0x40) && (pChannel->nLeftVol == pChannel->nRightVol)
 		 && ((!pChannel->nRampLength) || (pChannel->nLeftRamp == pChannel->nRightRamp)))
@@ -1530,7 +1536,7 @@ UINT CSoundFile::CreateStereoMix(int count)
 			pChannel->nPos = 0;
 			pChannel->nPosLo = 0;
 			pChannel->nRampLength = 0;
-			EndChannelOfs(pChannel, pbuffer, nsamples);
+			X86_EndChannelOfs(pChannel, pbuffer, nsamples);
 			*pOfsR += pChannel->nROfs;
 			*pOfsL += pChannel->nLOfs;
 			pChannel->nROfs = pChannel->nLOfs = 0;
@@ -1551,10 +1557,6 @@ UINT CSoundFile::CreateStereoMix(int count)
 		} else
 		// Do mixing
 		{
-			if (pChannel->nLength) {
-				pChannel->topnote_offset = ((pChannel->nPos << 16) | pChannel->nPosLo) % pChannel->nLength;
-			}
-
 			// Choose function for mixing
 			LPMIXINTERFACE pMixFunc;
 			pMixFunc = (pChannel->nRampLength) ? pMixFuncTable[nFlags|MIXNDX_RAMP] : pMixFuncTable[nFlags];
@@ -1591,59 +1593,81 @@ UINT CSoundFile::CreateStereoMix(int count)
 	return nchused;
 }
 
-static float f2ic = (float)(1 << 28);
-static float i2fc = (float)(1.0 / (1 << 28));
 
-VOID CSoundFile::StereoMixToFloat(const int *pSrc, float *pOut1, float *pOut2, UINT nCount)
-//-----------------------------------------------------------------------------------------
-{
-	for (UINT i = 0; i < nCount; i++) {
-		*pOut1++ = *pSrc * i2fc; /*!*/
-		pSrc++;
-
-		*pOut2++ = *pSrc * i2fc; /*!*/
-		pSrc++;
-	}
-}
-
-
-VOID CSoundFile::FloatToStereoMix(const float *pIn1, const float *pIn2, int *pOut, UINT nCount)
-//---------------------------------------------------------------------------------------------
-{
-	for (UINT i = 0; i < nCount; i++) {
-		*pOut++ = (int)(*pIn1 * f2ic);
-		*pOut++ = (int)(*pIn2 * f2ic);
-		pIn1++;
-		pIn2++;
-	}
-}
-
-
-VOID CSoundFile::MonoMixToFloat(const int *pSrc, float *pOut, UINT nCount)
-//------------------------------------------------------------------------
-{
-	for (UINT i = 0; i < nCount; i++) {
-		*pOut++ = *pSrc * i2fc; /*!*/
-		pSrc++;
-	}
-}
-
-
-VOID CSoundFile::FloatToMonoMix(const float *pIn, int *pOut, UINT nCount)
-//-----------------------------------------------------------------------
-{
-	for (UINT i = 0; i < nCount; i++) {
-		*pOut++ = (int)(*pIn * f2ic); /*!*/
-		pIn++;
-	}
-}
-
+#ifdef MSC_VER
+#pragma warning (disable:4100)
+#endif
 
 // Clip and convert to 8 bit
+#ifdef MSC_VER
+__declspec(naked) DWORD MPPASMCALL X86_Convert32To8(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
+//----------------------------------------------------------------------------------------------------------------------------
+{
+    _asm {
+        push ebx
+	push esi
+	push edi
+	mov ebx, 16[esp]		// ebx = 8-bit buffer
+	mov esi, 20[esp]		// esi = pBuffer
+	mov edi, 24[esp]		// edi = lSampleCount
+	mov eax, 28[esp]
+	mov ecx, dword ptr [eax]	// ecx = clipmin
+	mov eax, 32[esp]
+	mov edx, dword ptr [eax]	// edx = clipmax
+cliploop:
+	mov eax, dword ptr [esi]
+	inc ebx
+	cdq
+	and edx, (1 << (24-MIXING_ATTENUATION)) - 1
+	add eax, edx
+	cmp eax, MIXING_CLIPMIN
+	jl cliplow
+	cmp eax, MIXING_CLIPMAX
+	jg cliphigh
+	cmp eax, ecx
+	jl updatemin
+	cmp eax, edx
+	jg updatemax
+cliprecover:
+	add esi, 4
+	sar eax, 24-MIXING_ATTENUATION
+	xor eax, 0x80
+	dec edi
+	mov byte ptr [ebx-1], al
+	jnz cliploop
+	mov eax, 28[esp]
+	mov dword ptr [eax], ecx
+	mov eax, 32[esp]
+	mov dword ptr [eax], edx
+	mov eax, 24[esp]
+	pop edi
+	pop esi
+	pop ebx
+	ret
+updatemin:
+	mov ecx, eax
+	jmp cliprecover
+updatemax:
+	mov edx, eax
+	jmp cliprecover
+cliplow:
+	mov ecx, MIXING_CLIPMIN
+	mov edx, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMIN
+	jmp cliprecover
+cliphigh:
+	mov ecx, MIXING_CLIPMIN
+	mov edx, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMAX
+	jmp cliprecover
+	}
+}
+#else //MSC_VER
 //---GCCFIX: Asm replaced with C function
 // The C version was written by Rani Assaf <rani@magic.metawire.com>, I believe
-DWORD Convert32To8(LPVOID lp8, int *pBuffer, DWORD lSampleCount, LONG mins[2], LONG maxs[2])
+DWORD MPPASMCALL X86_Convert32To8(LPVOID lp8, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
 {
+	int vumin = *lpMin, vumax = *lpMax;
 	unsigned char *p = (unsigned char *)lp8;
 	for (UINT i=0; i<lSampleCount; i++)
 	{
@@ -1652,18 +1676,92 @@ DWORD Convert32To8(LPVOID lp8, int *pBuffer, DWORD lSampleCount, LONG mins[2], L
 			n = MIXING_CLIPMIN;
 		else if (n > MIXING_CLIPMAX)
 			n = MIXING_CLIPMAX;
-		if (n < mins[i&1])
-			mins[i&1]= n;
-		else if (n > maxs[i&1])
-			maxs[i&1] = n;
+		if (n < vumin)
+			vumin = n;
+		else if (n > vumax)
+			vumax = n;
 		p[i] = (n >> (24-MIXING_ATTENUATION)) ^ 0x80;	// 8-bit unsigned
 	}
+	*lpMin = vumin;
+	*lpMax = vumax;
 	return lSampleCount;
 }
+#endif //MSC_VER, else
+
+
+#ifdef MSC_VER
+// Clip and convert to 16 bit
+__declspec(naked) DWORD MPPASMCALL X86_Convert32To16(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
+//-----------------------------------------------------------------------------------------------------------------------------
+{
+	_asm {
+	push ebx
+	push esi
+	push edi
+	mov ebx, 16[esp]		// ebx = 16-bit buffer
+	mov eax, 28[esp]
+	mov esi, 20[esp]		// esi = pBuffer
+	mov ecx, dword ptr [eax]	// ecx = clipmin
+	mov edi, 24[esp]		// edi = lSampleCount
+	mov eax, 32[esp]
+	push ebp
+	mov ebp, dword ptr [eax]	// edx = clipmax
+cliploop:
+	mov eax, dword ptr [esi]
+	add ebx, 2
+	cdq
+	and edx, (1 << (16-MIXING_ATTENUATION)) - 1
+	add esi, 4
+	add eax, edx
+	cmp eax, MIXING_CLIPMIN
+	jl cliplow
+	cmp eax, MIXING_CLIPMAX
+	jg cliphigh
+	cmp eax, ecx
+	jl updatemin
+	cmp eax, ebp
+	jg updatemax
+cliprecover:
+	sar eax, 16-MIXING_ATTENUATION
+	dec edi
+	mov word ptr [ebx-2], ax
+	jnz cliploop
+	mov edx, ebp
+	pop ebp
+	mov eax, 28[esp]
+	mov dword ptr [eax], ecx
+	mov eax, 32[esp]
+	mov dword ptr [eax], edx
+	mov eax, 24[esp]
+	pop edi
+	shl eax, 1
+	pop esi
+	pop ebx
+	ret
+updatemin:
+	mov ecx, eax
+	jmp cliprecover
+updatemax:
+	mov ebp, eax
+	jmp cliprecover
+cliplow:
+	mov ecx, MIXING_CLIPMIN
+	mov ebp, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMIN
+	jmp cliprecover
+cliphigh:
+	mov ecx, MIXING_CLIPMIN
+	mov ebp, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMAX
+	jmp cliprecover
+	}
+}
+#else //MSC_VER
 //---GCCFIX: Asm replaced with C function
 // The C version was written by Rani Assaf <rani@magic.metawire.com>, I believe
-DWORD Convert32To16(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LONG mins[2], LONG maxs[2])
+DWORD MPPASMCALL X86_Convert32To16(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
 {
+	int vumin = *lpMin, vumax = *lpMax;
 	signed short *p = (signed short *)lp16;
 	for (UINT i=0; i<lSampleCount; i++)
 	{
@@ -1672,78 +1770,323 @@ DWORD Convert32To16(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LONG mins[2],
 			n = MIXING_CLIPMIN;
 		else if (n > MIXING_CLIPMAX)
 			n = MIXING_CLIPMAX;
-		if (n < mins[i&1])
-			mins[i&1]= n;
-		else if (n > maxs[i&1])
-			maxs[i&1] = n;
+		if (n < vumin)
+			vumin = n;
+		else if (n > vumax)
+			vumax = n;
 		p[i] = n >> (16-MIXING_ATTENUATION);	// 16-bit signed
 	}
+	*lpMin = vumin;
+	*lpMax = vumax;
 	return lSampleCount * 2;
 }
-//---GCCFIX: Asm replaced with C function
-// 24-bit might not work...
-DWORD Convert32To24(LPVOID lp24, int *pBuffer, DWORD lSampleCount, LONG mins[2], LONG maxs[2])
+#endif //MSC_VER, else
+
+#ifdef MSC_VER
+// Clip and convert to 24 bit
+__declspec(naked) DWORD MPPASMCALL X86_Convert32To24(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
+//-----------------------------------------------------------------------------------------------------------------------------
 {
-	/* the inventor of 24bit anything should be shot */
-	unsigned char *p = (unsigned char *)lp24;
-	for (UINT i=0; i<lSampleCount; i++)
+	_asm {
+	push ebx
+	push esi
+	push edi
+	mov ebx, 16[esp]		// ebx = 8-bit buffer
+	mov esi, 20[esp]		// esi = pBuffer
+	mov edi, 24[esp]		// edi = lSampleCount
+	mov eax, 28[esp]
+	mov ecx, dword ptr [eax]	// ecx = clipmin
+	mov eax, 32[esp]
+	push ebp
+	mov edx, dword ptr [eax]	// edx = clipmax
+cliploop:
+	mov eax, dword ptr [esi]
+	mov ebp, eax
+	sar ebp, 31
+	and ebp, (1 << (8-MIXING_ATTENUATION)) - 1
+	add eax, ebp
+	cmp eax, MIXING_CLIPMIN
+	jl cliplow
+	cmp eax, MIXING_CLIPMAX
+	jg cliphigh
+	cmp eax, ecx
+	jl updatemin
+	cmp eax, edx
+	jg updatemax
+cliprecover:
+	add ebx, 3
+	sar eax, 8-MIXING_ATTENUATION
+	add esi, 4
+	mov word ptr [ebx-3], ax
+	shr eax, 16
+	dec edi
+	mov byte ptr [ebx-1], al
+	jnz cliploop
+	pop ebp
+	mov eax, 28[esp]
+	mov dword ptr [eax], ecx
+	mov eax, 32[esp]
+	mov dword ptr [eax], edx
+	mov edx, 24[esp]
+	mov eax, edx
+	pop edi
+	shl eax, 1
+	pop esi
+	add eax, edx
+	pop ebx
+	ret
+updatemin:
+	mov ecx, eax
+	jmp cliprecover
+updatemax:
+	mov edx, eax
+	jmp cliprecover
+cliplow:
+	mov ecx, MIXING_CLIPMIN
+	mov edx, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMIN
+	jmp cliprecover
+cliphigh:
+	mov ecx, MIXING_CLIPMIN
+	mov edx, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMAX
+	jmp cliprecover
+	}
+}
+#else //MSC_VER
+//---GCCFIX: Asm replaced with C function
+DWORD MPPASMCALL X86_Convert32To24(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
+{
+	UINT i ;
+	int vumin = *lpMin, vumax = *lpMax;
+	int n,p ;
+	unsigned char* buf = (unsigned char*)lp16 ;
+	
+	for ( i=0; i<lSampleCount; i++)
+	{
+		n = pBuffer[i];
+		if (n < MIXING_CLIPMIN)
+			n = MIXING_CLIPMIN;
+		else if (n > MIXING_CLIPMAX)
+			n = MIXING_CLIPMAX;
+		if (n < vumin)
+			vumin = n;
+		else if (n > vumax)
+			vumax = n;
+		p = n >> (8-MIXING_ATTENUATION) ; // 24-bit signed
+//		buf[i*3]   = p & 0xFF0000 ; //XXX
+//		buf[i*3+1] = p & 0x00FF00 ;
+//		buf[i*3+2] = p & 0x0000FF ;
+		buf[i*3]   = (p & 0xFF0000) >> 16 ;
+		buf[i*3+1] = (p & 0x00FF00) >> 8 ;
+		buf[i*3+2] = p & 0x0000FF ;
+	}
+	*lpMin = vumin;
+	*lpMax = vumax;
+	return lSampleCount * 3;
+}
+#endif
+
+#ifdef MSC_VER
+// Clip and convert to 32 bit
+__declspec(naked) DWORD MPPASMCALL X86_Convert32To32(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
+//-----------------------------------------------------------------------------------------------------------------------------
+{
+	_asm {
+	push ebx
+	push esi
+	push edi
+	mov ebx, 16[esp]			// ebx = 32-bit buffer
+	mov esi, 20[esp]			// esi = pBuffer
+	mov edi, 24[esp]			// edi = lSampleCount
+	mov eax, 28[esp]
+	mov ecx, dword ptr [eax]	// ecx = clipmin
+	mov eax, 32[esp]
+	mov edx, dword ptr [eax]	// edx = clipmax
+cliploop:
+	mov eax, dword ptr [esi]
+	add ebx, 4
+	add esi, 4
+	cmp eax, MIXING_CLIPMIN
+	jl cliplow
+	cmp eax, MIXING_CLIPMAX
+	jg cliphigh
+	cmp eax, ecx
+	jl updatemin
+	cmp eax, edx
+	jg updatemax
+cliprecover:
+	shl eax, MIXING_ATTENUATION
+	dec edi
+	mov dword ptr [ebx-4], eax
+	jnz cliploop
+	mov eax, 28[esp]
+	mov dword ptr [eax], ecx
+	mov eax, 32[esp]
+	mov dword ptr [eax], edx
+	mov edx, 24[esp]
+	pop edi
+	mov eax, edx
+	pop esi
+	shl eax, 2
+	pop ebx
+	ret
+updatemin:
+	mov ecx, eax
+	jmp cliprecover
+updatemax:
+	mov edx, eax
+	jmp cliprecover
+cliplow:
+	mov ecx, MIXING_CLIPMIN
+	mov edx, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMIN
+	jmp cliprecover
+cliphigh:
+	mov ecx, MIXING_CLIPMIN
+	mov edx, MIXING_CLIPMAX
+	mov eax, MIXING_CLIPMAX
+	jmp cliprecover
+	}
+}
+#else
+//---GCCFIX: Asm replaced with C function
+DWORD MPPASMCALL X86_Convert32To32(LPVOID lp16, int *pBuffer, DWORD lSampleCount, LPLONG lpMin, LPLONG lpMax)
+{
+	UINT i ;
+	int vumin = *lpMin, vumax = *lpMax;
+	signed long *p = (signed long *)lp16;
+	
+	for ( i=0; i<lSampleCount; i++)
 	{
 		int n = pBuffer[i];
 		if (n < MIXING_CLIPMIN)
 			n = MIXING_CLIPMIN;
 		else if (n > MIXING_CLIPMAX)
 			n = MIXING_CLIPMAX;
-		if (n < mins[i&1])
-			mins[i&1]= n;
-		else if (n > maxs[i&1])
-			maxs[i&1] = n;
-		n = n >> (8-MIXING_ATTENUATION);	// 24-bit signed
-		/* err, assume same endian */
-		memcpy(p, &n, 3);
-		p += 3;
+		if (n < vumin)
+			vumin = n;
+		else if (n > vumax)
+			vumax = n;
+		p[i] = n << MIXING_ATTENUATION;	// 32-bit signed
 	}
-	return lSampleCount * 2;
+	*lpMin = vumin;
+	*lpMax = vumax;
+	return lSampleCount * 4;
 }
-//---GCCFIX: Asm replaced with C function
-// 32-bit might not work...
-DWORD Convert32To32(LPVOID lp32, int *pBuffer, DWORD lSampleCount, LONG mins[2], LONG maxs[2])
+#endif
+
+
+#ifdef MSC_VER
+void MPPASMCALL X86_InitMixBuffer(int *pBuffer, UINT nSamples)
+//------------------------------------------------------------
 {
-	signed int *p = (signed int *)lp32;
-	for (UINT i=0; i<lSampleCount; i++)
-	{
-		int n = pBuffer[i];
-		if (n < MIXING_CLIPMIN)
-			n = MIXING_CLIPMIN;
-		else if (n > MIXING_CLIPMAX)
-			n = MIXING_CLIPMAX;
-		if (n < mins[i&1])
-			mins[i&1]= n;
-		else if (n > maxs[i&1])
-			maxs[i&1] = n;
-		p[i] = (n >> MIXING_ATTENUATION);	// 32-bit signed
+	_asm {
+	mov ecx, nSamples
+	mov esi, pBuffer
+	xor eax, eax
+	mov edx, ecx
+	shr ecx, 2
+	and edx, 3
+	jz unroll4x
+loop1x:
+	add esi, 4
+	dec edx
+	mov dword ptr [esi-4], eax
+	jnz loop1x
+unroll4x:
+	or ecx, ecx
+	jnz loop4x
+	jmp done
+loop4x:
+	add esi, 16
+	dec ecx
+	mov dword ptr [esi-16], eax
+	mov dword ptr [esi-12], eax
+	mov dword ptr [esi-8], eax
+	mov dword ptr [esi-4], eax
+	jnz loop4x
+done:;
 	}
-	return lSampleCount * 2;
 }
+#else
 //---GCCFIX: Asm replaced with C function
 // Will fill in later.
-void InitMixBuffer(int *pBuffer, UINT nSamples)
+void MPPASMCALL X86_InitMixBuffer(int *pBuffer, UINT nSamples)
 {
 	memset(pBuffer, 0, nSamples * sizeof(int));
 }
+#endif
 
-//---GCCFIX: Asm replaced with C function
-void InterleaveFrontRear(int *pFrontBuf, int *pRearBuf, DWORD nSamples)
+
+#ifdef MSC_VER
+__declspec(naked) void MPPASMCALL X86_InterleaveFrontRear(int *pFrontBuf, int *pRearBuf, DWORD nSamples)
+//------------------------------------------------------------------------------------------------------
 {
-	DWORD i=0;
-
-	pRearBuf[i] = pFrontBuf[1];
-	for (i = 1; i < nSamples; i++) {
-		pRearBuf[i] = pFrontBuf[(i*2)+1];
-		pFrontBuf[i] = pFrontBuf[i*2];
+	_asm {
+	push ebx
+	push ebp
+	push esi
+	push edi
+	mov ecx, 28[esp] // ecx = samplecount
+	mov esi, 20[esp] // esi = front buffer
+	mov edi, 24[esp] // edi = rear buffer
+	lea esi, [esi+ecx*4]	// esi = &front[N]
+	lea edi, [edi+ecx*4]	// edi = &rear[N]
+	lea ebx, [esi+ecx*4]	// ebx = &front[N*2]
+interleaveloop:
+	mov eax, dword ptr [esi-8]
+	mov edx, dword ptr [esi-4]
+	sub ebx, 16
+	mov ebp, dword ptr [edi-8]
+	mov dword ptr [ebx], eax
+	mov dword ptr [ebx+4], edx
+	mov eax, dword ptr [edi-4]
+	sub esi, 8
+	sub edi, 8
+	dec ecx
+	mov dword ptr [ebx+8], ebp
+	mov dword ptr [ebx+12], eax
+	jnz interleaveloop
+	pop edi
+	pop esi
+	pop ebp
+	pop ebx
+	ret
 	}
 }
+#else
 //---GCCFIX: Asm replaced with C function
-VOID MonoFromStereo(int *pMixBuf, UINT nSamples)
+// Multichannel not supported.
+void MPPASMCALL X86_InterleaveFrontRear(int *pFrontBuf, int *pRearBuf, DWORD nSamples)
+{
+}
+#endif
+
+
+#ifdef MSC_VER
+VOID MPPASMCALL X86_MonoFromStereo(int *pMixBuf, UINT nSamples)
+//-------------------------------------------------------------
+{
+	_asm {
+	mov ecx, nSamples
+	mov esi, pMixBuf
+	mov edi, esi
+stloop:
+	mov eax, dword ptr [esi]
+	mov edx, dword ptr [esi+4]
+	add edi, 4
+	add esi, 8
+	add eax, edx
+	sar eax, 1
+	dec ecx
+	mov dword ptr [edi-4], eax
+	jnz stloop
+	}
+}
+#else
+//---GCCFIX: Asm replaced with C function
+VOID MPPASMCALL X86_MonoFromStereo(int *pMixBuf, UINT nSamples)
 {
 	UINT j;
 	for(UINT i = 0; i < nSamples; i++)
@@ -1752,11 +2095,89 @@ VOID MonoFromStereo(int *pMixBuf, UINT nSamples)
 		pMixBuf[i] = (pMixBuf[j] + pMixBuf[j + 1]) >> 1;
 	}
 }
+#endif
 
+#define OFSDECAYSHIFT	8
+#define OFSDECAYMASK	0xFF
+
+
+#ifdef MSC_VER
+void MPPASMCALL X86_StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs)
+//---------------------------------------------------------------------------------------
+{
+	_asm {
+	mov edi, pBuffer
+	mov ecx, nSamples
+	mov eax, lpROfs
+	mov edx, lpLOfs
+	mov eax, [eax]
+	mov edx, [edx]
+	or ecx, ecx
+	jz fill_loop
+	mov ebx, eax
+	or ebx, edx
+	jz fill_loop
+ofsloop:
+	mov ebx, eax
+	mov esi, edx
+	neg ebx
+	neg esi
+	sar ebx, 31
+	sar esi, 31
+	and ebx, OFSDECAYMASK
+	and esi, OFSDECAYMASK
+	add ebx, eax
+	add esi, edx
+	sar ebx, OFSDECAYSHIFT
+	sar esi, OFSDECAYSHIFT
+	sub eax, ebx
+	sub edx, esi
+	mov ebx, eax
+	or ebx, edx
+	jz fill_loop
+	add edi, 8
+	dec ecx
+	mov [edi-8], eax
+	mov [edi-4], edx
+	jnz ofsloop
+fill_loop:
+	mov ebx, ecx
+	and ebx, 3
+	jz fill4x
+fill1x:
+	mov [edi], eax
+	mov [edi+4], edx
+	add edi, 8
+	dec ebx
+	jnz fill1x
+fill4x:
+	shr ecx, 2
+	or ecx, ecx
+	jz done
+fill4xloop:
+	mov [edi], eax
+	mov [edi+4], edx
+	mov [edi+8], eax
+	mov [edi+12], edx
+	add edi, 8*4
+	dec ecx
+	mov [edi-16], eax
+	mov [edi-12], edx
+	mov [edi-8], eax
+	mov [edi-4], edx
+	jnz fill4xloop
+done:
+	mov esi, lpROfs
+	mov edi, lpLOfs
+	mov [esi], eax
+	mov [edi], edx
+	}
+}
+#else
 //---GCCFIX: Asm replaced with C function
 #define OFSDECAYSHIFT    8
 #define OFSDECAYMASK     0xFF
-void StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs)
+void MPPASMCALL X86_StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs)
 //---------------------------------------------------------------------------------------------------------
 {
 	int rofs = *lpROfs;
@@ -1764,7 +2185,7 @@ void StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs)
 
 	if ((!rofs) && (!lofs))
 	{
-		InitMixBuffer(pBuffer, nSamples*2);
+		X86_InitMixBuffer(pBuffer, nSamples*2);
 		return;
 	}
 	for (UINT i=0; i<nSamples; i++)
@@ -1779,9 +2200,53 @@ void StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs)
 	*lpROfs = rofs;
 	*lpLOfs = lofs;
 }
+#endif
+
+#ifdef MSC_VER
+void MPPASMCALL X86_EndChannelOfs(MODCHANNEL *pChannel, int *pBuffer, UINT nSamples)
+//----------------------------------------------------------------------------------
+{
+	_asm {
+	mov esi, pChannel
+	mov edi, pBuffer
+	mov ecx, nSamples
+	mov eax, dword ptr [esi+MODCHANNEL.nROfs]
+	mov edx, dword ptr [esi+MODCHANNEL.nLOfs]
+	or ecx, ecx
+	jz brkloop
+ofsloop:
+	mov ebx, eax
+	mov esi, edx
+	neg ebx
+	neg esi
+	sar ebx, 31
+	sar esi, 31
+	and ebx, OFSDECAYMASK
+	and esi, OFSDECAYMASK
+	add ebx, eax
+	add esi, edx
+	sar ebx, OFSDECAYSHIFT
+	sar esi, OFSDECAYSHIFT
+	sub eax, ebx
+	sub edx, esi
+	mov ebx, eax
+	add dword ptr [edi], eax
+	add dword ptr [edi+4], edx
+	or ebx, edx
+	jz brkloop
+	add edi, 8
+	dec ecx
+	jnz ofsloop
+brkloop:
+	mov esi, pChannel
+	mov dword ptr [esi+MODCHANNEL.nROfs], eax
+	mov dword ptr [esi+MODCHANNEL.nLOfs], edx
+	}
+}
+#else
 //---GCCFIX: Asm replaced with C function
 // Will fill in later.
-void EndChannelOfs(MODCHANNEL *pChannel, int *pBuffer, UINT nSamples)
+void MPPASMCALL X86_EndChannelOfs(MODCHANNEL *pChannel, int *pBuffer, UINT nSamples)
 {
 	int rofs = pChannel->nROfs;
 	int lofs = pChannel->nLOfs;
@@ -1799,9 +2264,7 @@ void EndChannelOfs(MODCHANNEL *pChannel, int *pBuffer, UINT nSamples)
 	pChannel->nROfs = rofs;
 	pChannel->nLOfs = lofs;
 }
-
-
-
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -1813,11 +2276,72 @@ void EndChannelOfs(MODCHANNEL *pChannel, int *pBuffer, UINT nSamples)
 #define MIXING_LIMITMAX		(0x08100000)
 #define MIXING_LIMITMIN		(-MIXING_LIMITMAX)
 
+#ifdef MSC_VER
+__declspec(naked) UINT MPPASMCALL X86_AGC(int *pBuffer, UINT nSamples, UINT nAGC)
+//-------------------------------------------------------------------------------
+{
+	__asm {
+	push ebx
+	push ebp
+	push esi
+	push edi
+	mov esi, 20[esp]	// esi = pBuffer+i
+	mov ecx, 24[esp]	// ecx = i
+	mov edi, 28[esp]	// edi = AGC (0..256)
+agcloop:
+	mov eax, dword ptr [esi]
+	imul edi
+	shrd eax, edx, AGC_PRECISION
+	add esi, 4
+	cmp eax, MIXING_LIMITMIN
+	jl agcupdate
+	cmp eax, MIXING_LIMITMAX
+	jg agcupdate
+agcrecover:
+	dec ecx
+	mov dword ptr [esi-4], eax
+	jnz agcloop
+	mov eax, edi
+	pop edi
+	pop esi
+	pop ebp
+	pop ebx
+	ret
+agcupdate:
+	dec edi
+	jmp agcrecover
+	}
+}
+
+#pragma warning (default:4100)
+#else
+// Version for GCC
+UINT MPPASMCALL X86_AGC(int *pBuffer, UINT nSamples, UINT nAGC)
+{
+	int x;
+
+	while(nSamples)
+	{
+		x = ((long long int)(*pBuffer) * nAGC) >> AGC_PRECISION;
+
+		if((x < MIXING_LIMITMIN) || (x > MIXING_LIMITMAX))
+		nAGC--;
+
+		*pBuffer = x;
+
+		pBuffer++;
+		nSamples--;
+	}
+
+	return nAGC;
+}
+#endif
+
 void CSoundFile::ProcessAGC(int count)
 //------------------------------------
 {
 	static DWORD gAGCRecoverCount = 0;
-	UINT agc = AGC(MixSoundBuffer, count, gnAGC);
+	UINT agc = X86_AGC(MixSoundBuffer, count, gnAGC);
 	// Some kind custom law, so that the AGC stays quite stable, but slowly
 	// goes back up if the sound level stays below a level inversely proportional
 	// to the AGC level. (J'me comprends)
@@ -1847,4 +2371,3 @@ void CSoundFile::ResetAGC()
 }
 
 #endif // NO_AGC
-

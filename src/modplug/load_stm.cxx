@@ -94,14 +94,14 @@ BOOL CSoundFile::ReadSTM(const BYTE *lpStream, DWORD dwMemLength)
 		STMSAMPLE *pStm = &phdr->sample[nIns];  // STM sample data
 		memcpy(pIns->name, pStm->filename, 13);
 		memcpy(m_szNames[nIns+1], pStm->filename, 12);
-		pIns->nC4Speed = pStm->c2spd;
+		pIns->nC4Speed = bswapLE16(pStm->c2spd);
 		pIns->nGlobalVol = 64;
 		pIns->nVolume = pStm->volume << 2;
 		if (pIns->nVolume > 256) pIns->nVolume = 256;
-		pIns->nLength = pStm->length;
-		if ((pIns->nLength < 2) || (!pIns->nVolume)) pIns->nLength = 0;
-		pIns->nLoopStart = pStm->loopbeg;
-		pIns->nLoopEnd = pStm->loopend;
+		pIns->nLength = bswapLE16(pStm->length);
+		if ((pIns->nLength < 4) || (!pIns->nVolume)) pIns->nLength = 0;
+		pIns->nLoopStart = bswapLE16(pStm->loopbeg);
+		pIns->nLoopEnd = bswapLE16(pStm->loopend);
 		if ((pIns->nLoopEnd > pIns->nLoopStart) && (pIns->nLoopEnd != 0xFFFF)) pIns->uFlags |= CHN_LOOP;
 	}
 	dwMemPos = sizeof(STMHEADER);
@@ -111,7 +111,6 @@ BOOL CSoundFile::ReadSTM(const BYTE *lpStream, DWORD dwMemLength)
 	{
 		if (dwMemPos + 64*4*4 > dwMemLength) return TRUE;
 		PatternSize[nPat] = 64;
-		PatternAllocSize[nPat] = 64;
 		if ((Patterns[nPat] = AllocatePattern(64, m_nChannels)) == NULL) return TRUE;
 		MODCOMMAND *m = Patterns[nPat];
 		STMNOTE *p = (STMNOTE *)(lpStream + dwMemPos);

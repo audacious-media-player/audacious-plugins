@@ -7,8 +7,7 @@ typedef struct tagITFILEHEADER
 {
 	DWORD id;			// 0x4D504D49
 	CHAR songname[26];
-	BYTE hilight_minor;
-	BYTE hilight_major;
+	WORD reserved1;		// 0x1004
 	WORD ordnum;
 	WORD insnum;
 	WORD smpnum;
@@ -22,7 +21,7 @@ typedef struct tagITFILEHEADER
 	BYTE speed;
 	BYTE tempo;
 	BYTE sep;
-	BYTE pwd;
+	BYTE zero;
 	WORD msglength;
 	DWORD msgoffset;
 	DWORD reserved2;

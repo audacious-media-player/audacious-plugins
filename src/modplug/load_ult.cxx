@@ -135,7 +135,6 @@ BOOL CSoundFile::ReadUlt(const BYTE *lpStream, DWORD dwMemLength)
 		if (nAllocPat < MAX_PATTERNS)
 		{
 			PatternSize[nAllocPat] = 64;
-			PatternAllocSize[nAllocPat] = 64;
 			Patterns[nAllocPat] = AllocatePattern(64, m_nChannels);
 		}
 	}

@@ -120,7 +120,6 @@ BOOL CSoundFile::ReadOKT(const BYTE *lpStream, DWORD dwMemLength)
 			if ((Patterns[npat] = AllocatePattern(rows, m_nChannels)) == NULL) return TRUE;
 			MODCOMMAND *m = Patterns[npat];
 			PatternSize[npat] = rows;
-			PatternAllocSize[npat] = rows;
 			UINT imax = m_nChannels*rows;
 			for (UINT i=0; i<imax; i++, m++, dwPos+=4)
 			{

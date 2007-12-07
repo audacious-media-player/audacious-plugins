@@ -142,7 +142,6 @@ BOOL CSoundFile::ReadAMS(LPCBYTE lpStream, DWORD dwMemLength)
 		dwMemPos += 4;
 		if ((len >= dwMemLength) || (dwMemPos + len > dwMemLength)) return TRUE;
 		PatternSize[iPat] = 64;
-		PatternAllocSize[iPat] = 64;
 		MODCOMMAND *m = AllocatePattern(PatternSize[iPat], m_nChannels);
 		if (!m) return TRUE;
 		Patterns[iPat] = m;
@@ -335,7 +334,6 @@ BOOL CSoundFile::ReadAMS2(LPCBYTE lpStream, DWORD dwMemLength)
 	m_nDefaultSpeed = psh->speed;
 	m_nInstruments = psh->instruments;
 	m_nSamples = 0;
-	m_dwSongFlags |= SONG_INSTRUMENTMODE;
 	if (psh->flags & 0x40) m_dwSongFlags |= SONG_LINEARSLIDES;
 	for (UINT nIns=1; nIns<=m_nInstruments; nIns++)
 	{
@@ -380,15 +378,15 @@ BOOL CSoundFile::ReadAMS2(LPCBYTE lpStream, DWORD dwMemLength)
 		// Volume Envelope
 		{
 			UINT pos = 0;
-			penv->VolEnv.nNodes = (volenv->points > 16) ? 16 : volenv->points;
-			penv->VolEnv.nSustainStart = penv->VolEnv.nSustainEnd = volenv->sustain;
-			penv->VolEnv.nLoopStart = volenv->loopbegin;
-			penv->VolEnv.nLoopEnd = volenv->loopend;
-			for (int i=0; i<penv->VolEnv.nNodes; i++)
+			penv->nVolEnv = (volenv->points > 16) ? 16 : volenv->points;
+			penv->nVolSustainBegin = penv->nVolSustainEnd = volenv->sustain;
+			penv->nVolLoopStart = volenv->loopbegin;
+			penv->nVolLoopEnd = volenv->loopend;
+			for (UINT i=0; i<penv->nVolEnv; i++)
 			{
-				penv->VolEnv.Values[i] = (BYTE)((volenv->info[i*3+2] & 0x7F) >> 1);
+				penv->VolEnv[i] = (BYTE)((volenv->info[i*3+2] & 0x7F) >> 1);
 				pos += volenv->info[i*3] + ((volenv->info[i*3+1] & 1) << 8);
-				penv->VolEnv.Ticks[i] = (WORD)pos;
+				penv->VolPoints[i] = (WORD)pos;
 			}
 		}
 		penv->nFadeOut = (((lpStream[dwMemPos+2] & 0x0F) << 8) | (lpStream[dwMemPos+1])) << 3;
@@ -489,7 +487,6 @@ BOOL CSoundFile::ReadAMS2(LPCBYTE lpStream, DWORD dwMemLength)
 				SetPatternName(ipat, s);
 			}
 			PatternSize[ipat] = numrows;
-			PatternAllocSize[ipat] = numrows;
 			Patterns[ipat] = AllocatePattern(numrows, m_nChannels);
 			if (!Patterns[ipat]) return TRUE;
 			// Unpack Pattern Data

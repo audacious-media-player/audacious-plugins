@@ -76,31 +76,8 @@ void ConvertMDLCommand(MODCOMMAND *m, UINT eff, UINT data)
 		}
 		break;
 	case 0x0F:	command = CMD_SPEED; break;
-                
-	case 0x10:
-                if ((param & 0xF0) != 0xE0) {
-                        command = CMD_VOLUMESLIDE;
-                        if ((param & 0xF0) == 0xF0) {
-                                param = ((param << 4) | 0x0F);
-                        } else {
-                                param >>= 2;
-                                if (param > 0xF)
-                                        param = 0xF;
-                                param <<= 4;
-                        }
-                }
-                break;
-	case 0x20:
-                if ((param & 0xF0) != 0xE0) {
-                        command = CMD_VOLUMESLIDE;
-                        if ((param & 0xF0) != 0xF0) {
-                                param >>= 2;
-                                if (param > 0xF)
-                                        param = 0xF;
-                        }
-                }
-                break;
-                
+	case 0x10:	if ((param & 0xF0) != 0xE0) { command = CMD_VOLUMESLIDE; if ((param & 0xF0) == 0xF0) param = ((param << 4) | 0x0F); else param >>= 2; } break;
+	case 0x20:	if ((param & 0xF0) != 0xE0) { command = CMD_VOLUMESLIDE; if ((param & 0xF0) != 0xF0) param >>= 2; } break;
 	case 0x30:	command = CMD_RETRIG; break;
 	case 0x40:	command = CMD_TREMOLO; break;
 	case 0x50:	command = CMD_TREMOR; break;
@@ -217,7 +194,7 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 	UINT nvolenv, npanenv, npitchenv;
 
 	if ((!lpStream) || (dwMemLength < 1024)) return FALSE;
-	if ((bswapLE32(pmsh->id) != 0x4C444D44) || ((pmsh->version & 0xF0) > 0x10)) return FALSE;
+	if ((pmsh->id != 0x4C444D44) || ((pmsh->version & 0xF0) > 0x10)) return FALSE;
 	memset(patterntracks, 0, sizeof(patterntracks));
 	memset(smpinfo, 0, sizeof(smpinfo));
 	memset(insvolenv, 0, sizeof(insvolenv));
@@ -227,13 +204,10 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 	pvolenv = ppanenv = ppitchenv = NULL;
 	nvolenv = npanenv = npitchenv = 0;
 	m_nSamples = m_nInstruments = 0;
-	m_dwSongFlags |= SONG_INSTRUMENTMODE;
 	while (dwMemPos+6 < dwMemLength)
 	{
 		block = *((WORD *)(lpStream+dwMemPos));
 		blocklen = *((DWORD *)(lpStream+dwMemPos+2));
-		block = bswapLE16(block);
-		blocklen = bswapLE32(blocklen);
 		dwMemPos += 6;
 		if (dwMemPos + blocklen > dwMemLength)
 		{
@@ -246,12 +220,10 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 		case 0x4E49:
 			pmib = (MDLINFOBLOCK *)(lpStream+dwMemPos);
 			memcpy(m_szNames[0], pmib->songname, 32);
-			norders = bswapLE16(pmib->norders);
+			norders = pmib->norders;
 			if (norders > MAX_ORDERS) norders = MAX_ORDERS;
-			m_nRestartPos = bswapLE16(pmib->repeatpos);
+			m_nRestartPos = pmib->repeatpos;
 			m_nDefaultGlobalVolume = pmib->globalvol;
-                        if (m_nDefaultGlobalVolume == 255)
-                                m_nDefaultGlobalVolume++;
 			m_nDefaultTempo = pmib->tempo;
 			m_nDefaultSpeed = pmib->speed;
 			m_nChannels = 4;
@@ -290,12 +262,11 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 				pmpd = (MDLPATTERNDATA *)(lpStream + dwPos);
 				if (pmpd->channels > 32) break;
 				PatternSize[i] = pmpd->lastrow+1;
-				PatternAllocSize[i] = pmpd->lastrow+1;
 				if (m_nChannels < pmpd->channels) m_nChannels = pmpd->channels;
 				dwPos += 18 + 2*pmpd->channels;
 				for (j=0; j<pmpd->channels; j++)
 				{
-					patterntracks[i*32+j] = bswapLE16(pmpd->data[j]);
+					patterntracks[i*32+j] = pmpd->data[j];
 				}
 			}
 			break;
@@ -303,7 +274,6 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 		case 0x5254:
 			if (dwTrackPos) break;
 			ntracks = *((WORD *)(lpStream+dwMemPos));
-			ntracks = bswapLE16(ntracks);
 			dwTrackPos = dwMemPos+2;
 			break;
 		// II: Instruments
@@ -322,7 +292,7 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 					INSTRUMENTHEADER *penv = Headers[nins];
 					memset(penv, 0, sizeof(INSTRUMENTHEADER));
 					memcpy(penv->name, lpStream+dwPos+2, 32);
-					penv->nGlobalVol = 128;
+					penv->nGlobalVol = 64;
 					penv->nPPC = 5*12;
 					for (j=0; j<lpStream[dwPos+1]; j++)
 					{
@@ -395,13 +365,9 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 				memcpy(m_szNames[nins], lpStream+dwPos+1, 32);
 				memcpy(pins->name, lpStream+dwPos+33, 8);
 				pins->nC4Speed = *((DWORD *)(lpStream+dwPos+41));
-				pins->nC4Speed = bswapLE32(pins->nC4Speed);
 				pins->nLength = *((DWORD *)(lpStream+dwPos+45));
-				pins->nLength = bswapLE32(pins->nLength);
 				pins->nLoopStart = *((DWORD *)(lpStream+dwPos+49));
-				pins->nLoopStart = bswapLE32(pins->nLoopStart);
 				pins->nLoopEnd = pins->nLoopStart + *((DWORD *)(lpStream+dwPos+53));
-				pins->nLoopEnd = bswapLE32(pins->nLoopEnd);
 				if (pins->nLoopEnd > pins->nLoopStart) pins->uFlags |= CHN_LOOP;
 				pins->nGlobalVol = 64;
 				if (lpStream[dwPos+58] & 0x01)
@@ -428,7 +394,6 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 				} else
 				{
 					DWORD dwLen = *((DWORD *)(lpStream+dwPos));
-					dwLen = bswapLE32(dwLen);
 					dwPos += 4;
 					if ((dwPos+dwLen <= dwMemLength) && (dwLen > 4))
 					{
@@ -466,23 +431,23 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 			for (UINT nve=0; nve<nvolenv; nve++, pve+=33) if (pve[0]+1 == insvolenv[iIns])
 			{
 				WORD vtick = 1;
-				penv->VolEnv.nNodes = 15;
+				penv->nVolEnv = 15;
 				for (UINT iv=0; iv<15; iv++)
 				{
 					if (iv) vtick += pve[iv*2+1];
-					penv->VolEnv.Ticks[iv] = vtick;
-					penv->VolEnv.Values[iv] = pve[iv*2+2];
+					penv->VolPoints[iv] = vtick;
+					penv->VolEnv[iv] = pve[iv*2+2];
 					if (!pve[iv*2+1])
 					{
-						penv->VolEnv.nNodes = iv+1;
+						penv->nVolEnv = iv+1;
 						break;
 					}
 				}
-				penv->VolEnv.nSustainStart = penv->VolEnv.nSustainEnd = pve[31] & 0x0F;
+				penv->nVolSustainBegin = penv->nVolSustainEnd = pve[31] & 0x0F;
 				if (pve[31] & 0x10) penv->dwFlags |= ENV_VOLSUSTAIN;
 				if (pve[31] & 0x20) penv->dwFlags |= ENV_VOLLOOP;
-				penv->VolEnv.nLoopStart = pve[32] & 0x0F;
-				penv->VolEnv.nLoopEnd = pve[32] >> 4;
+				penv->nVolLoopStart = pve[32] & 0x0F;
+				penv->nVolLoopEnd = pve[32] >> 4;
 			}
 		}
 		// Setup panning envelope
@@ -492,22 +457,22 @@ BOOL CSoundFile::ReadMDL(const BYTE *lpStream, DWORD dwMemLength)
 			for (UINT npe=0; npe<npanenv; npe++, ppe+=33) if (ppe[0]+1 == inspanenv[iIns])
 			{
 				WORD vtick = 1;
-				penv->PanEnv.nNodes = 15;
+				penv->nPanEnv = 15;
 				for (UINT iv=0; iv<15; iv++)
 				{
 					if (iv) vtick += ppe[iv*2+1];
-					penv->PanEnv.Ticks[iv] = vtick;
-					penv->PanEnv.Values[iv] = ppe[iv*2+2];
+					penv->PanPoints[iv] = vtick;
+					penv->PanEnv[iv] = ppe[iv*2+2];
 					if (!ppe[iv*2+1])
 					{
-						penv->PanEnv.nNodes = iv+1;
+						penv->nPanEnv = iv+1;
 						break;
 					}
 				}
 				if (ppe[31] & 0x10) penv->dwFlags |= ENV_PANSUSTAIN;
 				if (ppe[31] & 0x20) penv->dwFlags |= ENV_PANLOOP;
-				penv->PanEnv.nLoopStart = ppe[32] & 0x0F;
-				penv->PanEnv.nLoopEnd = ppe[32] >> 4;
+				penv->nPanLoopStart = ppe[32] & 0x0F;
+				penv->nPanLoopEnd = ppe[32] >> 4;
 			}
 		}
 	}

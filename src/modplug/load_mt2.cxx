@@ -282,7 +282,6 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 			Log("Pattern #%d @%04X: %d lines, %d bytes\n", iPat, dwMemPos-6, nLines, pmp->wDataLen);
 	#endif
 			PatternSize[iPat] = nLines;
-			PatternAllocSize[iPat] = nLines;
 			Patterns[iPat] = AllocatePattern(nLines, m_nChannels);
 			if (!Patterns[iPat]) return TRUE;
 			MODCOMMAND *m = Patterns[iPat];
@@ -396,7 +395,6 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 #endif
 	memset(InstrMap, 0, sizeof(InstrMap));
 	m_nInstruments = (pfh->wInstruments < MAX_INSTRUMENTS) ? pfh->wInstruments : MAX_INSTRUMENTS-1;
-	m_dwSongFlags |= SONG_INSTRUMENTMODE;
 	for (UINT iIns=1; iIns<=255; iIns++)
 	{
 		if (dwMemPos+36 > dwMemLength) return TRUE;
@@ -410,7 +408,7 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 			{
 				memset(penv, 0, sizeof(INSTRUMENTHEADER));
 				memcpy(penv->name, pmi->szName, 32);
-				penv->nGlobalVol = 128;
+				penv->nGlobalVol = 64;
 				penv->nPan = 128;
 				for (UINT i=0; i<120; i++)
 				{
@@ -462,7 +460,7 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 				for (UINT iEnv=0; iEnv<4; iEnv++) if (pehdr[iEnv])
 				{
 					MT2ENVELOPE *pme = pehdr[iEnv];
-					int *pEnvPoints = NULL;
+					WORD *pEnvPoints = NULL;
 					BYTE *pEnvData = NULL;
 				#ifdef MT2DEBUG
 					Log("  Env %d.%d @%04X: %d points\n", iIns, iEnv, (UINT)(((BYTE *)pme)-lpStream), pme->nPoints);
@@ -474,12 +472,12 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 						if (pme->nFlags & 1) penv->dwFlags |= ENV_VOLUME;
 						if (pme->nFlags & 2) penv->dwFlags |= ENV_VOLSUSTAIN;
 						if (pme->nFlags & 4) penv->dwFlags |= ENV_VOLLOOP;
-						penv->VolEnv.nNodes = (pme->nPoints > 16) ? 16 : pme->nPoints;
-						penv->VolEnv.nSustainStart = penv->VolEnv.nSustainEnd = pme->nSustainPos;
-						penv->VolEnv.nLoopStart = pme->nLoopStart;
-						penv->VolEnv.nLoopEnd = pme->nLoopEnd;
-						pEnvPoints = penv->VolEnv.Ticks;
-						pEnvData = penv->VolEnv.Values;
+						penv->nVolEnv = (pme->nPoints > 16) ? 16 : pme->nPoints;
+						penv->nVolSustainBegin = penv->nVolSustainEnd = pme->nSustainPos;
+						penv->nVolLoopStart = pme->nLoopStart;
+						penv->nVolLoopEnd = pme->nLoopEnd;
+						pEnvPoints = penv->VolPoints;
+						pEnvData = penv->VolEnv;
 						break;
 
 					// Panning Envelope
@@ -487,12 +485,12 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 						if (pme->nFlags & 1) penv->dwFlags |= ENV_PANNING;
 						if (pme->nFlags & 2) penv->dwFlags |= ENV_PANSUSTAIN;
 						if (pme->nFlags & 4) penv->dwFlags |= ENV_PANLOOP;
-						penv->PanEnv.nNodes = (pme->nPoints > 16) ? 16 : pme->nPoints;
-						penv->PanEnv.nSustainStart = penv->PanEnv.nSustainEnd = pme->nSustainPos;
-						penv->PanEnv.nLoopStart = pme->nLoopStart;
-						penv->PanEnv.nLoopEnd = pme->nLoopEnd;
-						pEnvPoints = penv->PanEnv.Ticks;
-						pEnvData = penv->PanEnv.Values;
+						penv->nPanEnv = (pme->nPoints > 16) ? 16 : pme->nPoints;
+						penv->nPanSustainBegin = penv->nPanSustainEnd = pme->nSustainPos;
+						penv->nPanLoopStart = pme->nLoopStart;
+						penv->nPanLoopEnd = pme->nLoopEnd;
+						pEnvPoints = penv->PanPoints;
+						pEnvData = penv->PanEnv;
 						break;
 
 					// Pitch/Filter envelope
@@ -500,12 +498,12 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 						if (pme->nFlags & 1) penv->dwFlags |= (iEnv==3) ? (ENV_PITCH|ENV_FILTER) : ENV_PITCH;
 						if (pme->nFlags & 2) penv->dwFlags |= ENV_PITCHSUSTAIN;
 						if (pme->nFlags & 4) penv->dwFlags |= ENV_PITCHLOOP;
-						penv->PitchEnv.nNodes = (pme->nPoints > 16) ? 16 : pme->nPoints;
-						penv->PitchEnv.nSustainStart = penv->PitchEnv.nSustainEnd = pme->nSustainPos;
-						penv->PitchEnv.nLoopStart = pme->nLoopStart;
-						penv->PitchEnv.nLoopEnd = pme->nLoopEnd;
-						pEnvPoints = penv->PitchEnv.Ticks;
-						pEnvData = penv->PitchEnv.Values;
+						penv->nPitchEnv = (pme->nPoints > 16) ? 16 : pme->nPoints;
+						penv->nPitchSustainBegin = penv->nPitchSustainEnd = pme->nSustainPos;
+						penv->nPitchLoopStart = pme->nLoopStart;
+						penv->nPitchLoopEnd = pme->nLoopEnd;
+						pEnvPoints = penv->PitchPoints;
+						pEnvData = penv->PitchEnv;
 					}
 					// Envelope data
 					if ((pEnvPoints) && (pEnvData) && (pedata[iEnv]))
@@ -594,7 +592,7 @@ BOOL CSoundFile::ReadMT2(LPCBYTE lpStream, DWORD dwMemLength)
 							Ins[nSmp].nVibType = pmi->bVibType;
 							Ins[nSmp].nVibSweep = pmi->bVibSweep;
 							Ins[nSmp].nVibDepth = pmi->bVibDepth;
-							Ins[nSmp].nVibRate = pmi->bVibRate/4;
+							Ins[nSmp].nVibRate = pmi->bVibRate;
 						}
 					}
 				}

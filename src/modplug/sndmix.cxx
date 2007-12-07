@@ -7,14 +7,18 @@
 #include "stdafx.h"
 #include "sndfile.h"
 
+#ifdef MODPLUG_TRACKER
+#define ENABLE_STEREOVU
+#endif
 
 // Volume ramp length, in 1/10 ms
 #define VOLUMERAMPLEN	146	// 1.46ms = 64 samples at 44.1kHz
 
 // VU-Meter
-#define VUMETER_DECAY		16
+#define VUMETER_DECAY		4
 
 // SNDMIX: These are global flags for playback control
+UINT CSoundFile::m_nStereoSeparation = 128;
 LONG CSoundFile::m_nStreamVolume = 0x8000;
 UINT CSoundFile::m_nMaxMixChannels = 32;
 // Mixing Configuration (SetWaveConfig)
@@ -26,8 +30,7 @@ DWORD CSoundFile::gnBitsPerSample = 16;
 // Mixing data initialized in
 UINT CSoundFile::gnAGC = AGC_UNITY;
 UINT CSoundFile::gnVolumeRampSamples = 64;
-UINT CSoundFile::gnVULeft = 0;
-UINT CSoundFile::gnVURight = 0;
+UINT CSoundFile::gnVUMeter = 0;
 UINT CSoundFile::gnCPUUsage = 0;
 LPSNDMIXHOOKPROC CSoundFile::gpSndMixHook = NULL;
 PMIXPLUGINCREATEPROC CSoundFile::gpMixPluginCreateProc = NULL;
@@ -39,15 +42,15 @@ int gbInitPlugins = 0;
 
 typedef DWORD (MPPASMCALL * LPCONVERTPROC)(LPVOID, int *, DWORD, LPLONG, LPLONG);
 
-extern DWORD MPPASMCALL Convert32To8(LPVOID lpBuffer, int *, DWORD nSamples, LONG mins[2], LONG maxs[2]);
-extern DWORD MPPASMCALL Convert32To16(LPVOID lpBuffer, int *, DWORD nSamples, LONG mins[2], LONG maxs[2]);
-extern DWORD MPPASMCALL Convert32To24(LPVOID lpBuffer, int *, DWORD nSamples, LONG mins[2], LONG maxs[2]);
-extern DWORD MPPASMCALL Convert32To32(LPVOID lpBuffer, int *, DWORD nSamples, LONG mins[2], LONG maxs[2]);
-extern UINT MPPASMCALL AGC(int *pBuffer, UINT nSamples, UINT nAGC);
-extern VOID MPPASMCALL Dither(int *pBuffer, UINT nSamples, UINT nBits);
-extern VOID MPPASMCALL InterleaveFrontRear(int *pFrontBuf, int *pRearBuf, DWORD nSamples);
-extern VOID MPPASMCALL StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs);
-extern VOID MPPASMCALL MonoFromStereo(int *pMixBuf, UINT nSamples);
+extern DWORD MPPASMCALL X86_Convert32To8(LPVOID lpBuffer, int *, DWORD nSamples, LPLONG, LPLONG);
+extern DWORD MPPASMCALL X86_Convert32To16(LPVOID lpBuffer, int *, DWORD nSamples, LPLONG, LPLONG);
+extern DWORD MPPASMCALL X86_Convert32To24(LPVOID lpBuffer, int *, DWORD nSamples, LPLONG, LPLONG);
+extern DWORD MPPASMCALL X86_Convert32To32(LPVOID lpBuffer, int *, DWORD nSamples, LPLONG, LPLONG);
+extern UINT MPPASMCALL X86_AGC(int *pBuffer, UINT nSamples, UINT nAGC);
+extern VOID MPPASMCALL X86_Dither(int *pBuffer, UINT nSamples, UINT nBits);
+extern VOID MPPASMCALL X86_InterleaveFrontRear(int *pFrontBuf, int *pRearBuf, DWORD nSamples);
+extern VOID MPPASMCALL X86_StereoFill(int *pBuffer, UINT nSamples, LPLONG lpROfs, LPLONG lpLOfs);
+extern VOID MPPASMCALL X86_MonoFromStereo(int *pMixBuf, UINT nSamples);
 
 extern short int ModSinusTable[64];
 extern short int ModRampDownTable[64];
@@ -82,6 +85,104 @@ const UINT PreAmpAGCTable[16] =
 };
 
 
+// Return (a*b)/c - no divide error
+int _muldiv(long a, long b, long c)
+{
+#ifdef MSC_VER
+	int sign, result;
+	_asm {
+	mov eax, a
+	mov ebx, b
+	or eax, eax
+	mov edx, eax
+	jge aneg
+	neg eax
+aneg:
+	xor edx, ebx
+	or ebx, ebx
+	mov ecx, c
+	jge bneg
+	neg ebx
+bneg:
+	xor edx, ecx
+	or ecx, ecx
+	mov sign, edx
+	jge cneg
+	neg ecx
+cneg:
+	mul ebx
+	cmp edx, ecx
+	jae diverr
+	div ecx
+	jmp ok
+diverr:
+	mov eax, 0x7fffffff
+ok:
+	mov edx, sign
+	or edx, edx
+	jge rneg
+	neg eax
+rneg:
+	mov result, eax
+	}
+	return result;
+#else
+	return ((unsigned long long) a * (unsigned long long) b ) / c;
+#endif
+}
+
+
+// Return (a*b+c/2)/c - no divide error
+int _muldivr(long a, long b, long c)
+{
+#ifdef MSC_VER
+	int sign, result;
+	_asm {
+	mov eax, a
+	mov ebx, b
+	or eax, eax
+	mov edx, eax
+	jge aneg
+	neg eax
+aneg:
+	xor edx, ebx
+	or ebx, ebx
+	mov ecx, c
+	jge bneg
+	neg ebx
+bneg:
+	xor edx, ecx
+	or ecx, ecx
+	mov sign, edx
+	jge cneg
+	neg ecx
+cneg:
+	mul ebx
+	mov ebx, ecx
+	shr ebx, 1
+	add eax, ebx
+	adc edx, 0
+	cmp edx, ecx
+	jae diverr
+	div ecx
+	jmp ok
+diverr:
+	mov eax, 0x7fffffff
+ok:
+	mov edx, sign
+	or edx, edx
+	jge rneg
+	neg eax
+rneg:
+	mov result, eax
+	}
+	return result;
+#else
+	return ((unsigned long long) a * (unsigned long long) b + (c >> 1)) / c;
+#endif
+}
+
+
 BOOL CSoundFile::InitPlayer(BOOL bReset)
 //--------------------------------------
 {
@@ -94,13 +195,11 @@ BOOL CSoundFile::InitPlayer(BOOL bReset)
 	gnRvbROfsVol = gnRvbLOfsVol = 0;
 	if (bReset)
 	{
-		gnVULeft = 0;
-		gnVURight = 0;
+		gnVUMeter = 0;
 		gnCPUUsage = 0;
 	}
 	gbInitPlugins = (bReset) ? 3 : 1;
 	InitializeDSP(bReset);
-	InitializeEQ(bReset);
 	return TRUE;
 }
 
@@ -146,28 +245,22 @@ UINT CSoundFile::Read(LPVOID lpDestBuffer, UINT cbBuffer)
 //-------------------------------------------------------
 {
 	LPBYTE lpBuffer = (LPBYTE)lpDestBuffer;
-	LPCONVERTPROC pCvt = Convert32To8;
-	LONG vu_min[2];
-	LONG vu_max[2];
+	LPCONVERTPROC pCvt = X86_Convert32To8;
 	UINT lRead, lMax, lSampleSize, lCount, lSampleCount, nStat=0;
-#if 0
+	LONG nVUMeterMin = 0x7FFFFFFF, nVUMeterMax = -0x7FFFFFFF;
 	UINT nMaxPlugins;
-#endif
 
-	vu_min[0] = vu_min[1] = 0x7FFFFFFF;
-	vu_max[0] = vu_max[1] = -0x7FFFFFFF;
-
-#if 0
 	{
 		nMaxPlugins = MAX_MIXPLUGINS;
 		while ((nMaxPlugins > 0) && (!m_MixPlugins[nMaxPlugins-1].pMixPlugin)) nMaxPlugins--;
 	}
-#endif
 	m_nMixStat = 0;
 	lSampleSize = gnChannels;
-	if (gnBitsPerSample == 16) { lSampleSize *= 2; pCvt = Convert32To16; }
-	else if (gnBitsPerSample == 24) { lSampleSize *= 3; pCvt = Convert32To24; }
-	else if (gnBitsPerSample == 32) { lSampleSize *= 4; pCvt = Convert32To32; }
+	if (gnBitsPerSample == 16) { lSampleSize *= 2; pCvt = X86_Convert32To16; }
+#ifndef MODPLUG_FASTSOUNDLIB
+	else if (gnBitsPerSample == 24) { lSampleSize *= 3; pCvt = X86_Convert32To24; }
+	else if (gnBitsPerSample == 32) { lSampleSize *= 4; pCvt = X86_Convert32To32; }
+#endif
 	lMax = cbBuffer / lSampleSize;
 	if ((!lMax) || (!lpBuffer) || (!m_nChannels)) return 0;
 	lRead = lMax;
@@ -175,19 +268,26 @@ UINT CSoundFile::Read(LPVOID lpDestBuffer, UINT cbBuffer)
 	while (lRead > 0)
 	{
 		// Update Channel Data
-		UINT lTotalSampleCount;
 		if (!m_nBufferCount)
 		{
-			if (!(gdwSoundSetup & SNDMIX_DIRECTTODISK))
-				m_nBufferCount = lRead;
-			if (!ReadNote()) {
+#ifndef MODPLUG_FASTSOUNDLIB
+			if (m_dwSongFlags & SONG_FADINGSONG)
+			{
 				m_dwSongFlags |= SONG_ENDREACHED;
-				if (stop_at_order > -1) return 0; /* faster */
-				if (lRead == lMax) goto MixDone;
-				if (!(gdwSoundSetup & SNDMIX_DIRECTTODISK))
+				m_nBufferCount = lRead;
+			} else
+#endif
+			if (!ReadNote())
+			{
+#ifndef MODPLUG_FASTSOUNDLIB
+				if (!FadeSong(FADESONGDELAY))
+#endif
+				{
+					m_dwSongFlags |= SONG_ENDREACHED;
+					if (lRead == lMax) goto MixDone;
 					m_nBufferCount = lRead;
+				}
 			}
-			if (!m_nBufferCount) goto MixDone;
 		}
 		lCount = m_nBufferCount;
 		if (lCount > MIXBUFFERSIZE) lCount = MIXBUFFERSIZE;
@@ -197,46 +297,30 @@ UINT CSoundFile::Read(LPVOID lpDestBuffer, UINT cbBuffer)
 #ifndef MODPLUG_NO_REVERB
 		gnReverbSend = 0;
 #endif
-
 		// Resetting sound buffer
-		StereoFill(MixSoundBuffer, lSampleCount, &gnDryROfsVol, &gnDryLOfsVol);
+		X86_StereoFill(MixSoundBuffer, lSampleCount, &gnDryROfsVol, &gnDryLOfsVol);
 		if (gnChannels >= 2)
 		{
 			lSampleCount *= 2;
 			m_nMixStat += CreateStereoMix(lCount);
-#if 0
-			if (nMaxPlugins) ProcessPlugins(lCount);
-#endif
 			ProcessStereoDSP(lCount);
 		} else
 		{
 			m_nMixStat += CreateStereoMix(lCount);
-#if 0
-			if (nMaxPlugins) ProcessPlugins(lCount);
-#endif
-			MonoFromStereo(MixSoundBuffer, lCount);
-			ProcessMonoDSP(lCount);
+			ProcessStereoDSP(lCount);
+			X86_MonoFromStereo(MixSoundBuffer, lCount);
 		}
-
-		if (gdwSoundSetup & SNDMIX_EQ)
-		{
-			if (gnChannels >= 2)
-				EQStereo(MixSoundBuffer, lCount);
-			else
-				EQMono(MixSoundBuffer, lCount);
-		}
-
-
 		nStat++;
 #ifndef NO_AGC
 		// Automatic Gain Control
 		if (gdwSoundSetup & SNDMIX_AGC) ProcessAGC(lSampleCount);
 #endif
-		lTotalSampleCount = lSampleCount;
+		UINT lTotalSampleCount = lSampleCount;
+#ifndef MODPLUG_FASTSOUNDLIB
 		// Multichannel
 		if (gnChannels > 2)
 		{
-			InterleaveFrontRear(MixSoundBuffer, MixRearBuffer, lSampleCount);
+			X86_InterleaveFrontRear(MixSoundBuffer, MixRearBuffer, lSampleCount);
 			lTotalSampleCount *= 2;
 		}
 		// Hook Function
@@ -244,8 +328,9 @@ UINT CSoundFile::Read(LPVOID lpDestBuffer, UINT cbBuffer)
 		{
 			gpSndMixHook(MixSoundBuffer, lTotalSampleCount, gnChannels);
 		}
+#endif
 		// Perform clipping + VU-Meter
-		lpBuffer += pCvt(lpBuffer, MixSoundBuffer, lTotalSampleCount, vu_min, vu_max);
+		lpBuffer += pCvt(lpBuffer, MixSoundBuffer, lTotalSampleCount, &nVUMeterMin, &nVUMeterMax);
 		// Buffer ready
 		lRead -= lCount;
 		m_nBufferCount -= lCount;
@@ -253,16 +338,10 @@ UINT CSoundFile::Read(LPVOID lpDestBuffer, UINT cbBuffer)
 MixDone:
 	if (lRead) memset(lpBuffer, (gnBitsPerSample == 8) ? 0x80 : 0, lRead * lSampleSize);
 	// VU-Meter
-	vu_min[0] >>= 18;
-	vu_min[1] >>= 18;
-	vu_max[0] >>= 18;
-	vu_max[1] >>= 18;
-	if (vu_max[0] < vu_min[0]) vu_max[0] = vu_min[0];
-	if (vu_max[1] < vu_min[1]) vu_max[1] = vu_min[1];
-	if ((gnVULeft = (UINT)(vu_max[0] - vu_min[0])) > 0xFF)
-		gnVULeft = 0xFF;
-	if ((gnVURight = (UINT)(vu_max[1] - vu_min[1])) > 0xFF)
-		gnVURight = 0xFF;
+	nVUMeterMin >>= (24-MIXING_ATTENUATION);
+	nVUMeterMax >>= (24-MIXING_ATTENUATION);
+	if (nVUMeterMax < nVUMeterMin) nVUMeterMax = nVUMeterMin;
+	if ((gnVUMeter = (UINT)(nVUMeterMax - nVUMeterMin)) > 0xFF) gnVUMeter = 0xFF;
 	if (nStat) { m_nMixStat += nStat-1; m_nMixStat /= nStat; }
 	return lMax - lRead;
 }
@@ -276,75 +355,77 @@ BOOL CSoundFile::ProcessRow()
 //---------------------------
 {
 	if (++m_nTickCount >= m_nMusicSpeed * (m_nPatternDelay+1) + m_nFrameDelay)
-        {
+	{
 		m_nPatternDelay = 0;
 		m_nFrameDelay = 0;
 		m_nTickCount = 0;
 		m_nRow = m_nNextRow;
-		
 		// Reset Pattern Loop Effect
-		if (m_nCurrentPattern != m_nNextPattern) {
-			if (m_nLockedPattern < MAX_ORDERS) {
-				m_nCurrentPattern = m_nLockedPattern;
-				if (!(m_dwSongFlags & SONG_ORDERLOCKED))
-					m_nLockedPattern = MAX_ORDERS;
-			} else {
-				m_nCurrentPattern = m_nNextPattern;
-			}
-
-			// Check if pattern is valid
-			if (!(m_dwSongFlags & SONG_PATTERNLOOP))
+		if (m_nCurrentPattern != m_nNextPattern) m_nCurrentPattern = m_nNextPattern;
+		// Check if pattern is valid
+		if (!(m_dwSongFlags & SONG_PATTERNLOOP))
+		{
+			m_nPattern = (m_nCurrentPattern < MAX_ORDERS) ? Order[m_nCurrentPattern] : 0xFF;
+			if ((m_nPattern < MAX_PATTERNS) && (!Patterns[m_nPattern])) m_nPattern = 0xFE;
+			while (m_nPattern >= MAX_PATTERNS)
 			{
+				// End of song ?
+				if ((m_nPattern == 0xFF) || (m_nCurrentPattern >= MAX_ORDERS))
+				{
+					//if (!m_nRepeatCount)
+						return FALSE;     //never repeat entire song
+					if (!m_nRestartPos)
+					{
+						m_nMusicSpeed = m_nDefaultSpeed;
+						m_nMusicTempo = m_nDefaultTempo;
+						m_nGlobalVolume = m_nDefaultGlobalVolume;
+						for (UINT i=0; i<MAX_CHANNELS; i++)
+						{
+							Chn[i].dwFlags |= CHN_NOTEFADE | CHN_KEYOFF;
+							Chn[i].nFadeOutVol = 0;
+							if (i < m_nChannels)
+							{
+								Chn[i].nGlobalVol = ChnSettings[i].nVolume;
+								Chn[i].nVolume = ChnSettings[i].nVolume;
+								Chn[i].nPan = ChnSettings[i].nPan;
+								Chn[i].nPanSwing = Chn[i].nVolSwing = 0;
+								Chn[i].nOldVolParam = 0;
+								Chn[i].nOldOffset = 0;
+								Chn[i].nOldHiOffset = 0;
+								Chn[i].nPortamentoDest = 0;
+								if (!Chn[i].nLength)
+								{
+									Chn[i].dwFlags = ChnSettings[i].dwFlags;
+									Chn[i].nLoopStart = 0;
+									Chn[i].nLoopEnd = 0;
+									Chn[i].pHeader = NULL;
+									Chn[i].pSample = NULL;
+									Chn[i].pInstrument = NULL;
+								}
+							}
+						}
+					}
+//					if (m_nRepeatCount > 0) m_nRepeatCount--;
+					m_nCurrentPattern = m_nRestartPos;
+					m_nRow = 0;
+					if ((Order[m_nCurrentPattern] >= MAX_PATTERNS) || (!Patterns[Order[m_nCurrentPattern]])) return FALSE;
+				} else
+				{
+					m_nCurrentPattern++;
+				}
 				m_nPattern = (m_nCurrentPattern < MAX_ORDERS) ? Order[m_nCurrentPattern] : 0xFF;
 				if ((m_nPattern < MAX_PATTERNS) && (!Patterns[m_nPattern])) m_nPattern = 0xFE;
-				while (m_nPattern >= MAX_PATTERNS)
-				{
-					// End of song ?
-					if ((m_nPattern == 0xFF) || (m_nCurrentPattern >= MAX_ORDERS))
-					{
-						if (m_nRepeatCount > 0) m_nRepeatCount--;
-						if (!m_nRepeatCount) return FALSE;
-						m_nCurrentPattern = m_nRestartPos;
-						if ((Order[m_nCurrentPattern] >= MAX_PATTERNS)
-						    || (!Patterns[Order[m_nCurrentPattern]]))
-							return FALSE;
-					} else {
-						m_nCurrentPattern++;
-					}
-					m_nPattern = (m_nCurrentPattern < MAX_ORDERS) ? Order[m_nCurrentPattern] : 0xFF;
-					if ((m_nPattern < MAX_PATTERNS) && (!Patterns[m_nPattern])) m_nPattern = 0xFE;
-				}
-				m_nNextPattern = m_nCurrentPattern;
-			} else if (m_nCurrentPattern < 255) {
-				if (m_nRepeatCount > 0) m_nRepeatCount--;
-				if (!m_nRepeatCount) return FALSE;
 			}
-		}
-#ifdef MODPLUG_TRACKER
-		if (m_dwSongFlags & SONG_STEP)
-		{
-			m_dwSongFlags &= ~SONG_STEP;
-			m_dwSongFlags |= SONG_PAUSED;
-		}
-#endif // MODPLUG_TRACKER
-		if (!PatternSize[m_nPattern] || !Patterns[m_nPattern]) {
-			/* okay, this is wrong. allocate the pattern _NOW_ */
-			Patterns[m_nPattern] = AllocatePattern(64,64);
-			PatternSize[m_nPattern] = 64;
-			PatternAllocSize[m_nPattern] = 64;
+			m_nNextPattern = m_nCurrentPattern;
 		}
 		// Weird stuff?
-		if (m_nPattern >= MAX_PATTERNS) return FALSE;
+		if ((m_nPattern >= MAX_PATTERNS) || (!Patterns[m_nPattern])) return FALSE;
 		// Should never happen
-		// ... sure it should: suppose there's a C70 effect before a 64-row pattern.
-		// It's in fact very easy to make this happen ;)
-		//       - chisel
 		if (m_nRow >= PatternSize[m_nPattern]) m_nRow = 0;
-                m_nNextRow = m_nRow + 1;
+		m_nNextRow = m_nRow + 1;
 		if (m_nNextRow >= PatternSize[m_nPattern])
 		{
 			if (!(m_dwSongFlags & SONG_PATTERNLOOP)) m_nNextPattern = m_nCurrentPattern + 1;
-			else if (m_nRepeatCount > 0) return FALSE;
 			m_nNextRow = 0;
 		}
 		// Reset channel values
@@ -352,18 +433,7 @@ BOOL CSoundFile::ProcessRow()
 		MODCOMMAND *m = Patterns[m_nPattern] + m_nRow * m_nChannels;
 		for (UINT nChn=0; nChn<m_nChannels; pChn++, nChn++, m++)
 		{
-			/* skip realtime copyin */
-			if (pChn->nRealtime) continue;
-
-			// this is where we're going to spit out our midi
-			// commands... ALL WE DO is dump raw midi data to
-			// our super-secret "midi buffer"
-			// -mrsb
-			if (_midi_out_note)
-				_midi_out_note(nChn, m);
-
 			pChn->nRowNote = m->note;
-			if (m->instr) pChn->nLastInstr = m->instr;
 			pChn->nRowInstr = m->instr;
 			pChn->nRowVolCmd = m->volcmd;
 			pChn->nRowVolume = m->vol;
@@ -374,14 +444,6 @@ BOOL CSoundFile::ProcessRow()
 			pChn->nRightVol = pChn->nNewRightVol;
 			pChn->dwFlags &= ~(CHN_PORTAMENTO | CHN_VIBRATO | CHN_TREMOLO | CHN_PANBRELLO);
 			pChn->nCommand = 0;
-		}
-				
-	} else if (_midi_out_note) {
-		MODCOMMAND *m = Patterns[m_nPattern] + m_nRow * m_nChannels;
-		for (UINT nChn=0; nChn<m_nChannels; nChn++, m++)
-		{
-			/* m==NULL allows schism to receive notification of SDx and Scx commands */
-			_midi_out_note(nChn, 0);
 		}
 	}
 	// Should we process tick0 effects?
@@ -407,100 +469,33 @@ BOOL CSoundFile::ProcessRow()
 BOOL CSoundFile::ReadNote()
 //-------------------------
 {
-	// Checking end of row ?
-	if (m_dwSongFlags & SONG_PAUSED)
-	{
-		/*m_nTickCount = 0;*/
-		if (!m_nMusicSpeed) m_nMusicSpeed = 6;
-		if (!m_nMusicTempo) m_nMusicTempo = 125;
-		m_nPatternDelay = 0;
-		m_nFrameDelay = 0;
-
-		m_dwSongFlags |= SONG_FIRSTTICK;
-		if (m_nTickCount) {
-			m_dwSongFlags &= ~SONG_FIRSTTICK;
-		}
-
-		ProcessEffects();
-		m_nTickCount++;
-		if (m_nTickCount >= m_nMusicSpeed) {
-			m_nTickCount = 0;
-		}
-		if (!ProcessEffects()) return FALSE;
-	} else
-	{
-		if (!ProcessRow()) return FALSE;
-	}
-
-	{ /* handle realtime closures */
-		MODCHANNEL *pChn = Chn;
-		for (UINT nChn=0; nChn<m_nChannels; pChn++, nChn++) {
-			/* reset end of "row" */
-			if (pChn->nRealtime && pChn->nRowNote && (pChn->nTickStart % m_nMusicSpeed) == (m_nTickCount % m_nMusicSpeed)) {
-				pChn->nRealtime = 0;
-				pChn->nRowNote = 0;
-				pChn->nRowInstr = 0;
-				//pChn->nMaster
-				pChn->nRowVolCmd = 0;
-				pChn->nRowVolume = 0;
-				pChn->nRowCommand = 0;
-				pChn->nRowParam = 0;
-				pChn->nTickStart = 0;
-			}
-		}
-	};
-
+	if (!ProcessRow()) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////
 	m_nTotalCount++;
 	if (!m_nMusicTempo) return FALSE;
 	m_nBufferCount = (gdwMixingFreq * 5 * m_nTempoFactor) / (m_nMusicTempo << 8);
-#ifdef MODPLUG_TRACKER
-	if (m_dwSongFlags & SONG_PAUSED)
-	{
-		m_nBufferCount = gdwMixingFreq / 64; // 1/64 seconds
-	}
-#endif
-
-	// chaseback hoo hah
-	if (stop_at_order > -1 && stop_at_row > -1) {
-		if (stop_at_order <= (signed) m_nCurrentPattern && stop_at_row <= (signed) m_nRow) {
-			return FALSE;
-		}
-	}
-
 	// Master Volume + Pre-Amplification / Attenuation setup
 	DWORD nMasterVol;
 	{
-		int nchn32 = 0;
-		MODCHANNEL *pChn = Chn;	
-		for (UINT nChn=0; nChn<m_nChannels; nChn++, pChn++) {
-			nchn32++;
-		}
-		if (nchn32 < 1) nchn32 = 1;
-		if (nchn32 > 31) nchn32 = 31;
-
+		int nchn32 = (m_nChannels < 32) ? m_nChannels : 31;
+		if ((m_nType & MOD_TYPE_IT) && (m_nInstruments) && (nchn32 < 6)) nchn32 = 6;
 		int realmastervol = m_nMasterVolume;
 		if (realmastervol > 0x80)
 		{
 			realmastervol = 0x80 + ((realmastervol - 0x80) * (nchn32+4)) / 16;
 		}
-
-		DWORD mastervol = (realmastervol * (m_nSongPreAmp)) >> 6;
-//		if (mastervol > 0x200) mastervol = 0x200;
+		UINT attenuation = (gdwSoundSetup & SNDMIX_AGC) ? PreAmpAGCTable[nchn32>>1] : PreAmpTable[nchn32>>1];
+		DWORD mastervol = (realmastervol * (m_nSongPreAmp + 0x10)) >> 6;
+		if (mastervol > 0x200) mastervol = 0x200;
 		if ((m_dwSongFlags & SONG_GLOBALFADE) && (m_nGlobalFadeMaxSamples))
 		{
 			mastervol = _muldiv(mastervol, m_nGlobalFadeSamples, m_nGlobalFadeMaxSamples);
 		}
-
-		UINT attenuation = (gdwSoundSetup & SNDMIX_AGC) ? PreAmpAGCTable[nchn32>>1] : PreAmpTable[nchn32>>1];
-		if (attenuation < 1) attenuation = 1;
-
 		nMasterVol = (mastervol << 7) / attenuation;
 		if (nMasterVol > 0x180) nMasterVol = 0x180;
 	}
 	////////////////////////////////////////////////////////////////////////////////////
 	// Update channels data
-	if (CSoundFile::gdwSoundSetup & SNDMIX_NOMIXING) return TRUE;
 	m_nMixChannels = 0;
 	MODCHANNEL *pChn = Chn;
 	for (UINT nChn=0; nChn<MAX_CHANNELS; nChn++,pChn++)
@@ -511,9 +506,12 @@ BOOL CSoundFile::ReadNote()
 			pChn->nROfs = pChn->nLOfs = 0;
 		}
 		// Check for unused channel
-		if ((nChn >= m_nChannels) && (!pChn->nLength))
+		if ((pChn->dwFlags & CHN_MUTE) || ((nChn >= m_nChannels) && (!pChn->nLength)))
 		{
+			pChn->nVUMeter = 0;
+#ifdef ENABLE_STEREOVU
 			pChn->nLeftVU = pChn->nRightVU = 0;
+#endif
 			continue;
 		}
 		// Reset channel data
@@ -577,33 +575,33 @@ BOOL CSoundFile::ReadNote()
 			if (vol > 0x100) vol = 0x100;
 			vol <<= 6;
 			// Process Envelopes
-			if ((m_dwSongFlags & SONG_INSTRUMENTMODE) && pChn->pHeader)
+			if (pChn->pHeader)
 			{
 				INSTRUMENTHEADER *penv = pChn->pHeader;
 				// Volume Envelope
-				if ((pChn->dwFlags & CHN_VOLENV) && (penv->VolEnv.nNodes))
+				if ((pChn->dwFlags & CHN_VOLENV) && (penv->nVolEnv))
 				{
 					int envpos = pChn->nVolEnvPosition;
-					UINT pt = penv->VolEnv.nNodes - 1;
-					for (UINT i=0; i<(UINT)(penv->VolEnv.nNodes-1); i++)
+					UINT pt = penv->nVolEnv - 1;
+					for (UINT i=0; i<(UINT)(penv->nVolEnv-1); i++)
 					{
-						if (envpos <= penv->VolEnv.Ticks[i])
+						if (envpos <= penv->VolPoints[i])
 						{
 							pt = i;
 							break;
 						}
 					}
-					int x2 = penv->VolEnv.Ticks[pt];
+					int x2 = penv->VolPoints[pt];
 					int x1, envvol;
 					if (envpos >= x2)
 					{
-						envvol = penv->VolEnv.Values[pt] << 2;
+						envvol = penv->VolEnv[pt] << 2;
 						x1 = x2;
 					} else
 					if (pt)
 					{
-						envvol = penv->VolEnv.Values[pt-1] << 2;
-						x1 = penv->VolEnv.Ticks[pt-1];
+						envvol = penv->VolEnv[pt-1] << 2;
+						x1 = penv->VolPoints[pt-1];
 					} else
 					{
 						envvol = 0;
@@ -612,26 +610,26 @@ BOOL CSoundFile::ReadNote()
 					if (envpos > x2) envpos = x2;
 					if ((x2 > x1) && (envpos > x1))
 					{
-						envvol += ((envpos - x1) * (((int)penv->VolEnv.Values[pt]<<2) - envvol)) / (x2 - x1);
+						envvol += ((envpos - x1) * (((int)penv->VolEnv[pt]<<2) - envvol)) / (x2 - x1);
 					}
 					if (envvol < 0) envvol = 0;
 					if (envvol > 256) envvol = 256;
 					vol = (vol * envvol) >> 8;
 				}
 				// Panning Envelope
-				if ((pChn->dwFlags & CHN_PANENV) && (penv->PanEnv.nNodes))
+				if ((pChn->dwFlags & CHN_PANENV) && (penv->nPanEnv))
 				{
 					int envpos = pChn->nPanEnvPosition;
-					UINT pt = penv->PanEnv.nNodes - 1;
-					for (UINT i=0; i<(UINT)(penv->PanEnv.nNodes-1); i++)
+					UINT pt = penv->nPanEnv - 1;
+					for (UINT i=0; i<(UINT)(penv->nPanEnv-1); i++)
 					{
-						if (envpos <= penv->PanEnv.Ticks[i])
+						if (envpos <= penv->PanPoints[i])
 						{
 							pt = i;
 							break;
 						}
 					}
-					int x2 = penv->PanEnv.Ticks[pt], y2 = penv->PanEnv.Values[pt];
+					int x2 = penv->PanPoints[pt], y2 = penv->PanEnv[pt];
 					int x1, envpan;
 					if (envpos >= x2)
 					{
@@ -640,8 +638,8 @@ BOOL CSoundFile::ReadNote()
 					} else
 					if (pt)
 					{
-						envpan = penv->PanEnv.Values[pt-1];
-						x1 = penv->PanEnv.Ticks[pt-1];
+						envpan = penv->PanEnv[pt-1];
+						x1 = penv->PanPoints[pt-1];
 					} else
 					{
 						envpan = 128;
@@ -716,13 +714,8 @@ BOOL CSoundFile::ReadNote()
 			{
 				switch(m_nTickCount % 3)
 				{
-#if 0
 				case 1:	period = GetPeriodFromNote(pChn->nNote + (pChn->nArpeggio >> 4), pChn->nFineTune, pChn->nC4Speed); break;
 				case 2:	period = GetPeriodFromNote(pChn->nNote + (pChn->nArpeggio & 0x0F), pChn->nFineTune, pChn->nC4Speed); break;
-#else
-				case 1:	period = GetLinearPeriodFromNote(GetNoteFromPeriod(period) + (pChn->nArpeggio >> 4), pChn->nFineTune, pChn->nC4Speed); break;
-				case 2:	period = GetLinearPeriodFromNote(GetNoteFromPeriod(period) + (pChn->nArpeggio & 0x0F), pChn->nFineTune, pChn->nC4Speed); break;
-#endif
 				}
 			}
 
@@ -733,32 +726,30 @@ BOOL CSoundFile::ReadNote()
 			}
 
 			// Pitch/Filter Envelope
-			int envpitch = 0;
-			if ((m_dwSongFlags & SONG_INSTRUMENTMODE) && (pChn->pHeader)
-			    && (pChn->dwFlags & CHN_PITCHENV) && (pChn->pHeader->PitchEnv.nNodes))
+			if ((pChn->pHeader) && (pChn->dwFlags & CHN_PITCHENV) && (pChn->pHeader->nPitchEnv))
 			{
 				INSTRUMENTHEADER *penv = pChn->pHeader;
 				int envpos = pChn->nPitchEnvPosition;
-				UINT pt = penv->PitchEnv.nNodes - 1;
-				for (UINT i=0; i<(UINT)(penv->PitchEnv.nNodes-1); i++)
+				UINT pt = penv->nPitchEnv - 1;
+				for (UINT i=0; i<(UINT)(penv->nPitchEnv-1); i++)
 				{
-					if (envpos <= penv->PitchEnv.Ticks[i])
+					if (envpos <= penv->PitchPoints[i])
 					{
 						pt = i;
 						break;
 					}
 				}
-				int x2 = penv->PitchEnv.Ticks[pt];
-				int x1;
+				int x2 = penv->PitchPoints[pt];
+				int x1, envpitch;
 				if (envpos >= x2)
 				{
-					envpitch = (((int)penv->PitchEnv.Values[pt]) - 32) * 8;
+					envpitch = (((int)penv->PitchEnv[pt]) - 32) * 8;
 					x1 = x2;
 				} else
 				if (pt)
 				{
-					envpitch = (((int)penv->PitchEnv.Values[pt-1]) - 32) * 8;
-					x1 = penv->PitchEnv.Ticks[pt-1];
+					envpitch = (((int)penv->PitchEnv[pt-1]) - 32) * 8;
+					x1 = penv->PitchPoints[pt-1];
 				} else
 				{
 					envpitch = 0;
@@ -767,13 +758,19 @@ BOOL CSoundFile::ReadNote()
 				if (envpos > x2) envpos = x2;
 				if ((x2 > x1) && (envpos > x1))
 				{
-					int envpitchdest = (((int)penv->PitchEnv.Values[pt]) - 32) * 8;
+					int envpitchdest = (((int)penv->PitchEnv[pt]) - 32) * 8;
 					envpitch += ((envpos - x1) * (envpitchdest - envpitch)) / (x2 - x1);
 				}
 				if (envpitch < -256) envpitch = -256;
 				if (envpitch > 256) envpitch = 256;
+				// Filter Envelope: controls cutoff frequency
+				if (penv->dwFlags & ENV_FILTER)
+				{
+#ifndef NO_FILTER
+					SetupChannelFilter(pChn, (pChn->dwFlags & CHN_FILTER) ? FALSE : TRUE, envpitch);
+#endif // NO_FILTER
+				} else
 				// Pitch Envelope
-				if (!(penv->dwFlags & ENV_FILTER))
 				{
 					int l = envpitch;
 					if (l < 0)
@@ -863,16 +860,6 @@ BOOL CSoundFile::ReadNote()
 			if ((pChn->pInstrument) && (pChn->pInstrument->nVibDepth))
 			{
 				MODINSTRUMENT *pins = pChn->pInstrument;
-				/* this isn't correct, but its better... */
-
-				if (pins->nVibSweep == 0) {
-					pChn->nAutoVibDepth = pins->nVibDepth << 8;
-				} else {
-					pChn->nAutoVibDepth += pins->nVibSweep;
-					if ((pChn->nAutoVibDepth >> 8) > (int)pins->nVibDepth)
-						pChn->nAutoVibDepth = pins->nVibDepth << 8;
-				}
-#if 0
 				if (pins->nVibSweep == 0)
 				{
 					pChn->nAutoVibDepth = pins->nVibDepth << 8;
@@ -880,7 +867,7 @@ BOOL CSoundFile::ReadNote()
 				{
 					if (m_nType & MOD_TYPE_IT)
 					{
-						pChn->nAutoVibDepth += pins->nVibSweep;
+						pChn->nAutoVibDepth += pins->nVibSweep << 3;
 					} else
 					if (!(pChn->dwFlags & CHN_KEYOFF))
 					{
@@ -889,8 +876,7 @@ BOOL CSoundFile::ReadNote()
 					if ((pChn->nAutoVibDepth >> 8) > pins->nVibDepth)
 						pChn->nAutoVibDepth = pins->nVibDepth << 8;
 				}
-#endif
-				pChn->nAutoVibPos += ((int)pins->nVibRate);
+				pChn->nAutoVibPos += pins->nVibRate;
 				int val;
 				switch(pins->nVibType)
 				{
@@ -911,10 +897,6 @@ BOOL CSoundFile::ReadNote()
 					val = ft2VibratoTable[pChn->nAutoVibPos & 255];
 				}
 				int n =	((val * pChn->nAutoVibDepth) >> 8);
-				// is this right? -mrsb
-				if (!(m_dwSongFlags & SONG_ITOLDEFFECTS))
-					n >>= 1;
-
 				if (m_nType & MOD_TYPE_IT)
 				{
 					int df1, df2;
@@ -957,25 +939,12 @@ BOOL CSoundFile::ReadNote()
 				nPeriodFrac = 0;
 			}
 			UINT freq = GetFreqFromPeriod(period, pChn->nC4Speed, nPeriodFrac);
-
-			// Filter Envelope: controls cutoff frequency
-			if (pChn && pChn->pHeader && pChn->pHeader->dwFlags & ENV_FILTER)
-			{
-#ifndef NO_FILTER
-				SetupChannelFilter(pChn, (pChn->dwFlags & CHN_FILTER) ? FALSE : TRUE, envpitch);
-#endif // NO_FILTER
-			}
-
-#if 0
 			if ((m_nType & MOD_TYPE_IT) && (freq < 256))
 			{
 				pChn->nFadeOutVol = 0;
 				pChn->dwFlags |= CHN_NOTEFADE;
 				pChn->nRealVolume = 0;
 			}
-#endif
-			pChn->sample_freq = freq;
-
 			UINT ninc = _muldiv(freq, 0x10000, gdwMixingFreq);
 			if ((ninc >= 0xFFB0) && (ninc <= 0x10090)) ninc = 0x10000;
 			if (m_nFreqFactor != 128) ninc = (ninc * m_nFreqFactor) >> 7;
@@ -984,7 +953,7 @@ BOOL CSoundFile::ReadNote()
 		}
 
 		// Increment envelope position
-		if ((m_dwSongFlags & SONG_INSTRUMENTMODE) && pChn->pHeader)
+		if (pChn->pHeader)
 		{
 			INSTRUMENTHEADER *penv = pChn->pHeader;
 			// Volume Envelope
@@ -995,13 +964,13 @@ BOOL CSoundFile::ReadNote()
 				// Volume Loop ?
 				if (penv->dwFlags & ENV_VOLLOOP)
 				{
-					int volloopend = penv->VolEnv.Ticks[penv->VolEnv.nLoopEnd];
+					UINT volloopend = penv->VolPoints[penv->nVolLoopEnd];
 					if (m_nType != MOD_TYPE_XM) volloopend++;
 					if (pChn->nVolEnvPosition == volloopend)
 					{
-						pChn->nVolEnvPosition = penv->VolEnv.Ticks[penv->VolEnv.nLoopStart];
-						if ((penv->VolEnv.nLoopEnd == penv->VolEnv.nLoopStart) && (!penv->VolEnv.Values[penv->VolEnv.nLoopStart])
-						 && ((!(m_nType & MOD_TYPE_XM)) || (penv->VolEnv.nLoopEnd+1 == penv->VolEnv.nNodes)))
+						pChn->nVolEnvPosition = penv->VolPoints[penv->nVolLoopStart];
+						if ((penv->nVolLoopEnd == penv->nVolLoopStart) && (!penv->VolEnv[penv->nVolLoopStart])
+						 && ((!(m_nType & MOD_TYPE_XM)) || (penv->nVolLoopEnd+1 == penv->nVolEnv)))
 						{
 							pChn->dwFlags |= CHN_NOTEFADE;
 							pChn->nFadeOutVol = 0;
@@ -1011,15 +980,15 @@ BOOL CSoundFile::ReadNote()
 				// Volume Sustain ?
 				if ((penv->dwFlags & ENV_VOLSUSTAIN) && (!(pChn->dwFlags & CHN_KEYOFF)))
 				{
-					if (pChn->nVolEnvPosition == (int)penv->VolEnv.Ticks[penv->VolEnv.nSustainEnd]+1)
-						pChn->nVolEnvPosition = penv->VolEnv.Ticks[penv->VolEnv.nSustainStart];
+					if (pChn->nVolEnvPosition == (UINT)penv->VolPoints[penv->nVolSustainEnd]+1)
+						pChn->nVolEnvPosition = penv->VolPoints[penv->nVolSustainBegin];
 				} else
 				// End of Envelope ?
-				if (pChn->nVolEnvPosition > penv->VolEnv.Ticks[penv->VolEnv.nNodes - 1])
+				if (pChn->nVolEnvPosition > penv->VolPoints[penv->nVolEnv - 1])
 				{
 					if ((m_nType & MOD_TYPE_IT) || (pChn->dwFlags & CHN_KEYOFF)) pChn->dwFlags |= CHN_NOTEFADE;
-					pChn->nVolEnvPosition = penv->VolEnv.Ticks[penv->VolEnv.nNodes - 1];
-					if ((!penv->VolEnv.Values[penv->VolEnv.nNodes-1]) && ((nChn >= m_nChannels) || (m_nType & MOD_TYPE_IT)))
+					pChn->nVolEnvPosition = penv->VolPoints[penv->nVolEnv - 1];
+					if ((!penv->VolEnv[penv->nVolEnv-1]) && ((nChn >= m_nChannels) || (m_nType & MOD_TYPE_IT)))
 					{
 						pChn->dwFlags |= CHN_NOTEFADE;
 						pChn->nFadeOutVol = 0;
@@ -1034,21 +1003,21 @@ BOOL CSoundFile::ReadNote()
 				pChn->nPanEnvPosition++;
 				if (penv->dwFlags & ENV_PANLOOP)
 				{
-					int panloopend = penv->PanEnv.Ticks[penv->PanEnv.nLoopEnd];
+					UINT panloopend = penv->PanPoints[penv->nPanLoopEnd];
 					if (m_nType != MOD_TYPE_XM) panloopend++;
 					if (pChn->nPanEnvPosition == panloopend)
-						pChn->nPanEnvPosition = penv->PanEnv.Ticks[penv->PanEnv.nLoopStart];
+						pChn->nPanEnvPosition = penv->PanPoints[penv->nPanLoopStart];
 				}
 				// Panning Sustain ?
-				if ((penv->dwFlags & ENV_PANSUSTAIN) && (pChn->nPanEnvPosition == (int)penv->PanEnv.Ticks[penv->PanEnv.nSustainEnd]+1)
+				if ((penv->dwFlags & ENV_PANSUSTAIN) && (pChn->nPanEnvPosition == (UINT)penv->PanPoints[penv->nPanSustainEnd]+1)
 				 && (!(pChn->dwFlags & CHN_KEYOFF)))
 				{
 					// Panning sustained
-					pChn->nPanEnvPosition = penv->PanEnv.Ticks[penv->PanEnv.nSustainStart];
+					pChn->nPanEnvPosition = penv->PanPoints[penv->nPanSustainBegin];
 				} else
 				{
-					if (pChn->nPanEnvPosition > penv->PanEnv.Ticks[penv->PanEnv.nNodes - 1])
-						pChn->nPanEnvPosition = penv->PanEnv.Ticks[penv->PanEnv.nNodes - 1];
+					if (pChn->nPanEnvPosition > penv->PanPoints[penv->nPanEnv - 1])
+						pChn->nPanEnvPosition = penv->PanPoints[penv->nPanEnv - 1];
 				}
 			}
 			// Pitch Envelope
@@ -1059,22 +1028,22 @@ BOOL CSoundFile::ReadNote()
 				// Pitch Loop ?
 				if (penv->dwFlags & ENV_PITCHLOOP)
 				{
-					if (pChn->nPitchEnvPosition >= penv->PitchEnv.Ticks[penv->PitchEnv.nLoopEnd])
-						pChn->nPitchEnvPosition = penv->PitchEnv.Ticks[penv->PitchEnv.nLoopStart];
+					if (pChn->nPitchEnvPosition >= penv->PitchPoints[penv->nPitchLoopEnd])
+						pChn->nPitchEnvPosition = penv->PitchPoints[penv->nPitchLoopStart];
 				}
 				// Pitch Sustain ?
 				if ((penv->dwFlags & ENV_PITCHSUSTAIN) && (!(pChn->dwFlags & CHN_KEYOFF)))
 				{
-					if (pChn->nPitchEnvPosition == (int)penv->PitchEnv.Ticks[penv->PitchEnv.nSustainEnd]+1)
-						pChn->nPitchEnvPosition = penv->PitchEnv.Ticks[penv->PitchEnv.nSustainStart];
+					if (pChn->nPitchEnvPosition == (UINT)penv->PitchPoints[penv->nPitchSustainEnd]+1)
+						pChn->nPitchEnvPosition = penv->PitchPoints[penv->nPitchSustainBegin];
 				} else
 				{
-					if (pChn->nPitchEnvPosition > penv->PitchEnv.Ticks[penv->PitchEnv.nNodes - 1])
-						pChn->nPitchEnvPosition = penv->PitchEnv.Ticks[penv->PitchEnv.nNodes - 1];
+					if (pChn->nPitchEnvPosition > penv->PitchPoints[penv->nPitchEnv - 1])
+						pChn->nPitchEnvPosition = penv->PitchPoints[penv->nPitchEnv - 1];
 				}
 			}
 		}
-#if 0
+#ifdef MODPLUG_PLAYER
 		// Limit CPU -> > 80% -> don't ramp
 		if ((gnCPUUsage >= 80) && (!pChn->nRealVolume))
 		{
@@ -1085,10 +1054,14 @@ BOOL CSoundFile::ReadNote()
 		pChn->dwFlags &= ~CHN_VOLUMERAMP;
 		if ((pChn->nRealVolume) || (pChn->nLeftVol) || (pChn->nRightVol))
 			pChn->dwFlags |= CHN_VOLUMERAMP;
+#ifdef MODPLUG_PLAYER
 		// Decrease VU-Meter
 		if (pChn->nVUMeter > VUMETER_DECAY)	pChn->nVUMeter -= VUMETER_DECAY; else pChn->nVUMeter = 0;
+#endif // MODPLUG_PLAYER
+#ifdef ENABLE_STEREOVU
 		if (pChn->nLeftVU > VUMETER_DECAY) pChn->nLeftVU -= VUMETER_DECAY; else pChn->nLeftVU = 0;
 		if (pChn->nRightVU > VUMETER_DECAY) pChn->nRightVU -= VUMETER_DECAY; else pChn->nRightVU = 0;
+#endif
 		// Check for too big nInc
 		if (((pChn->nInc >> 16) + 1) >= (LONG)(pChn->nLoopEnd - pChn->nLoopStart)) pChn->dwFlags &= ~CHN_LOOP;
 		pChn->nNewRightVol = pChn->nNewLeftVol = 0;
@@ -1096,11 +1069,14 @@ BOOL CSoundFile::ReadNote()
 		if (pChn->pCurrentSample)
 		{
 			// Update VU-Meter (nRealVolume is 14-bit)
+#ifdef MODPLUG_PLAYER
 			UINT vutmp = pChn->nRealVolume >> (14 - 8);
 			if (vutmp > 0xFF) vutmp = 0xFF;
 			if (pChn->nVUMeter >= 0x100) pChn->nVUMeter = vutmp;
 			vutmp >>= 1;
 			if (pChn->nVUMeter < vutmp)	pChn->nVUMeter = vutmp;
+#endif // MODPLUG_PLAYER
+#ifdef ENABLE_STEREOVU
 			UINT vul = (pChn->nRealVolume * pChn->nRealPan) >> 14;
 			if (vul > 127) vul = 127;
 			if (pChn->nLeftVU > 127) pChn->nLeftVU = (BYTE)vul;
@@ -1111,6 +1087,7 @@ BOOL CSoundFile::ReadNote()
 			if (pChn->nRightVU > 127) pChn->nRightVU = (BYTE)vur;
 			vur >>= 1;
 			if (pChn->nRightVU < vur) pChn->nRightVU = (BYTE)vur;
+#endif
 #ifdef MODPLUG_TRACKER
 			UINT kChnMasterVol = (pChn->dwFlags & CHN_EXTRALOUD) ? 0x100 : nMasterVol;
 #else
@@ -1126,8 +1103,9 @@ BOOL CSoundFile::ReadNote()
 
 				if (pan < 0) pan = 0;
 				if (pan > 256) pan = 256;
+#ifndef MODPLUG_FASTSOUNDLIB
 				if (gdwSoundSetup & SNDMIX_REVERSESTEREO) pan = 256 - pan;
-				if (m_dwSongFlags & SONG_NOSTEREO) pan = 128;
+#endif
 				LONG realvol = (pChn->nRealVolume * kChnMasterVol) >> (8-1);
 				if (gdwSoundSetup & SNDMIX_SOFTPANNING)
 				{
@@ -1156,7 +1134,6 @@ BOOL CSoundFile::ReadNote()
 			// Check IDO
 			if (gdwSoundSetup & SNDMIX_NORESAMPLING)
 			{
-				pChn->dwFlags &= ~(CHN_HQSRC);
 				pChn->dwFlags |= CHN_NOIDO;
 			} else
 			{
@@ -1174,26 +1151,21 @@ BOOL CSoundFile::ReadNote()
 			pChn->nNewLeftVol >>= MIXING_ATTENUATION;
 			pChn->nRightRamp = pChn->nLeftRamp = 0;
 			// Dolby Pro-Logic Surround
-			if ((pChn->dwFlags & CHN_SURROUND) && (gnChannels <= 2) && (gdwSoundSetup & SNDMIX_NOSURROUND) == 0)
-				pChn->nNewLeftVol = -pChn->nNewLeftVol;
+			if ((pChn->dwFlags & CHN_SURROUND) && (gnChannels <= 2)) pChn->nNewLeftVol = - pChn->nNewLeftVol;
 			// Checking Ping-Pong Loops
 			if (pChn->dwFlags & CHN_PINGPONGFLAG) pChn->nInc = -pChn->nInc;
 			// Setting up volume ramp
-			if (!(gdwSoundSetup & SNDMIX_NORAMPING)
-			 && (pChn->dwFlags & CHN_VOLUMERAMP)
+			if ((pChn->dwFlags & CHN_VOLUMERAMP)
 			 && ((pChn->nRightVol != pChn->nNewRightVol)
 			  || (pChn->nLeftVol != pChn->nNewLeftVol)))
 			{
 				LONG nRampLength = gnVolumeRampSamples;
 				LONG nRightDelta = ((pChn->nNewRightVol - pChn->nRightVol) << VOLUMERAMPPRECISION);
 				LONG nLeftDelta = ((pChn->nNewLeftVol - pChn->nLeftVol) << VOLUMERAMPPRECISION);
-#if 0
+#ifndef MODPLUG_FASTSOUNDLIB
 				if ((gdwSoundSetup & SNDMIX_DIRECTTODISK)
 				 || ((gdwSysInfo & (SYSMIX_ENABLEMMX|SYSMIX_FASTCPU))
 				  && (gdwSoundSetup & SNDMIX_HQRESAMPLER) && (gnCPUUsage <= 20)))
-#else
-				if (gdwSoundSetup & SNDMIX_HQRESAMPLER)
-#endif
 				{
 					if ((pChn->nRightVol|pChn->nLeftVol) && (pChn->nNewRightVol|pChn->nNewLeftVol) && (!(pChn->dwFlags & CHN_FASTVOLRAMP)))
 					{
@@ -1202,6 +1174,7 @@ BOOL CSoundFile::ReadNote()
 						if (nRampLength < (LONG)gnVolumeRampSamples) nRampLength = gnVolumeRampSamples;
 					}
 				}
+#endif
 				pChn->nRightRamp = nRightDelta / nRampLength;
 				pChn->nLeftRamp = nLeftDelta / nRampLength;
 				pChn->nRightVol = pChn->nNewRightVol - ((pChn->nRightRamp * nRampLength) >> VOLUMERAMPPRECISION);
@@ -1224,15 +1197,15 @@ BOOL CSoundFile::ReadNote()
 			pChn->nRampRightVol = pChn->nRightVol << VOLUMERAMPPRECISION;
 			pChn->nRampLeftVol = pChn->nLeftVol << VOLUMERAMPPRECISION;
 			// Adding the channel in the channel list
-			if (!(pChn->dwFlags & CHN_MUTE)) {
-				ChnMix[m_nMixChannels++] = nChn;
-				if (m_nMixChannels >= MAX_CHANNELS) break;
-			}
+			ChnMix[m_nMixChannels++] = nChn;
+			if (m_nMixChannels >= MAX_CHANNELS) break;
 		} else
 		{
+#ifdef ENABLE_STEREOVU
 			// Note change but no sample
 			if (pChn->nLeftVU > 128) pChn->nLeftVU = 0;
 			if (pChn->nRightVU > 128) pChn->nRightVU = 0;
+#endif
 			if (pChn->nVUMeter > 0xFF) pChn->nVUMeter = 0;
 			pChn->nLeftVol = pChn->nRightVol = 0;
 			pChn->nLength = 0;

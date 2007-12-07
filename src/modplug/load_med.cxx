@@ -572,7 +572,6 @@ BOOL CSoundFile::ReadMed(const BYTE *lpStream, DWORD dwMemLength)
 	m_nChannels = 4;
 	m_nSamples = pmsh->numsamples;
 	if (m_nSamples > 63) m_nSamples = 63;
-	m_nStereoSeparation = ((pmsh2->mix_stereosep < 0) ? -32 : 32) * pmsh2->mix_stereosep;
 	// Tempo
 	m_nDefaultTempo = 125;
 	deftempo = bswapBE16(pmsh->deftempo);
@@ -812,7 +811,6 @@ BOOL CSoundFile::ReadMed(const BYTE *lpStream, DWORD dwMemLength)
 			if (!tracks) tracks = m_nChannels;
 			if ((Patterns[iBlk] = AllocatePattern(lines, m_nChannels)) == NULL) continue;
 			PatternSize[iBlk] = lines;
-			PatternAllocSize[iBlk] = lines;
 			MODCOMMAND *p = Patterns[iBlk];
 			LPBYTE s = (LPBYTE)(lpStream + dwPos + 2);
 			UINT maxlen = tracks*lines*3;
@@ -849,7 +847,6 @@ BOOL CSoundFile::ReadMed(const BYTE *lpStream, DWORD dwMemLength)
 			if (!tracks) tracks = m_nChannels;
 			if ((Patterns[iBlk] = AllocatePattern(lines, m_nChannels)) == NULL) continue;
 			PatternSize[iBlk] = (WORD)lines;
-			PatternAllocSize[iBlk] = (WORD)lines;
 			DWORD dwBlockInfo = bswapBE32(pmb->info);
 			if ((dwBlockInfo) && (dwBlockInfo < dwMemLength - sizeof(MMD1BLOCKINFO)))
 			{
