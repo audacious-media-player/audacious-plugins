@@ -110,7 +110,7 @@ WORD CSoundFile::ModSaveCommand(const MODCOMMAND *m, BOOL bXM) const
 	case CMD_PATTERNBREAK:		command = 0x0D; param = ((param / 10) << 4) | (param % 10); break;
 	case CMD_MODCMDEX:			command = 0x0E; break;
 	case CMD_SPEED:				command = 0x0F; if (param > 0x20) param = 0x20; break;
-	case CMD_TEMPO:				if (param > 0x20) { command = 0x0F; break; }
+	case CMD_TEMPO:				if (param > 0x20) { command = 0x0F; break; } return 0;
 	case CMD_GLOBALVOLUME:		command = 'G' - 55; break;
 	case CMD_GLOBALVOLSLIDE:	command = 'H' - 55; break;
 	case CMD_KEYOFF:			command = 'K' - 55; break;
@@ -192,7 +192,7 @@ BOOL CSoundFile::ReadMod(const BYTE *lpStream, DWORD dwMemLength)
 	 || (IsMagic(s, "M&K!")) || (IsMagic(s, "N.T."))) m_nChannels = 4; else
 	if ((IsMagic(s, "CD81")) || (IsMagic(s, "OKTA"))) m_nChannels = 8; else
 	if ((s[0]=='F') && (s[1]=='L') && (s[2]=='T') && (s[3]>='4') && (s[3]<='9')) m_nChannels = s[3] - '0'; else
-	if ((s[0]>='2') && (s[0]<='9') && (s[1]=='C') && (s[2]=='H') && (s[3]=='N')) m_nChannels = s[0] - '0'; else
+	if ((s[0]>='4') && (s[0]<='9') && (s[1]=='C') && (s[2]=='H') && (s[3]=='N')) m_nChannels = s[0] - '0'; else
 	if ((s[0]=='1') && (s[1]>='0') && (s[1]<='9') && (s[2]=='C') && (s[3]=='H')) m_nChannels = s[1] - '0' + 10; else
 	if ((s[0]=='2') && (s[1]>='0') && (s[1]<='9') && (s[2]=='C') && (s[3]=='H')) m_nChannels = s[1] - '0' + 20; else
 	if ((s[0]=='3') && (s[1]>='0') && (s[1]<='2') && (s[2]=='C') && (s[3]=='H')) m_nChannels = s[1] - '0' + 30; else
@@ -228,19 +228,13 @@ BOOL CSoundFile::ReadMod(const BYTE *lpStream, DWORD dwMemLength)
 		}
 		psmp->nLoopStart = loopstart;
 		psmp->nLoopEnd = loopstart + looplen;
-		if (psmp->nLength < 4) psmp->nLength = 0;
+		if (psmp->nLength < 2) psmp->nLength = 0;
 		if (psmp->nLength)
 		{
 			UINT derr = 0;
 			if (psmp->nLoopStart >= psmp->nLength) { psmp->nLoopStart = psmp->nLength-1; derr|=1; }
 			if (psmp->nLoopEnd > psmp->nLength) { psmp->nLoopEnd = psmp->nLength; derr |= 1; }
 			if (psmp->nLoopStart > psmp->nLoopEnd) derr |= 1;
-			if ((psmp->nLoopStart > psmp->nLoopEnd) || (psmp->nLoopEnd <= 8)
-			 || (psmp->nLoopEnd - psmp->nLoopStart <= 4))
-			{
-				psmp->nLoopStart = 0;
-				psmp->nLoopEnd = 0;
-			}
 			if (psmp->nLoopEnd > psmp->nLoopStart)
 			{
 				psmp->uFlags |= CHN_LOOP;
@@ -306,11 +300,10 @@ BOOL CSoundFile::ReadMod(const BYTE *lpStream, DWORD dwMemLength)
 	for (UINT ich=0; ich<m_nChannels; ich++)
 	{
 		ChnSettings[ich].nVolume = 64;
-		if (gdwSoundSetup & SNDMIX_MAXDEFAULTPAN)
-			ChnSettings[ich].nPan = (((ich&3)==1) || ((ich&3)==2)) ? 256 : 0;
-		else
-			ChnSettings[ich].nPan = (((ich&3)==1) || ((ich&3)==2)) ? 0xC0 : 0x40;
+		ChnSettings[ich].nPan = (((ich&3)==1) || ((ich&3)==2)) ? 256 : 0;
 	}
+	m_nStereoSeparation = (gdwSoundSetup & SNDMIX_MAXDEFAULTPAN) ? 128 : 64;
+	
 	// Reading channels
 	for (UINT ipat=0; ipat<nbp; ipat++)
 	{
@@ -318,6 +311,7 @@ BOOL CSoundFile::ReadMod(const BYTE *lpStream, DWORD dwMemLength)
 		{
 			if ((Patterns[ipat] = AllocatePattern(64, m_nChannels)) == NULL) break;
 			PatternSize[ipat] = 64;
+			PatternAllocSize[ipat] = 64;
 			if (dwMemPos + m_nChannels*256 >= dwMemLength) break;
 			MODCOMMAND *m = Patterns[ipat];
 			LPCBYTE p = lpStream + dwMemPos;
@@ -363,22 +357,27 @@ BOOL CSoundFile::ReadMod(const BYTE *lpStream, DWORD dwMemLength)
 
 
 #ifndef MODPLUG_NO_FILESAVE
-#pragma warning(disable:4100)
 
-BOOL CSoundFile::SaveMod(LPCSTR lpszFileName, UINT nPacking)
+#ifdef MSC_VER
+#pragma warning(disable:4100)
+#endif
+
+BOOL CSoundFile::SaveMod(diskwriter_driver_t *fp, UINT nPacking)
 //----------------------------------------------------------
 {
 	BYTE insmap[32];
 	UINT inslen[32];
 	BYTE bTab[32];
 	BYTE ord[128];
-	FILE *f;
+	UINT chanlim;
 
-	if ((!m_nChannels) || (!lpszFileName)) return FALSE;
-	if ((f = fopen(lpszFileName, "wb")) == NULL) return FALSE;
+	if ((!m_nChannels) || (!fp)) return FALSE;
+	chanlim  = GetHighestUsedChannel();
+	if (chanlim < 4) chanlim = 4;
+
 	memset(ord, 0, sizeof(ord));
 	memset(inslen, 0, sizeof(inslen));
-	if (m_nInstruments)
+	if (m_dwSongFlags & SONG_INSTRUMENTMODE)
 	{
 		memset(insmap, 0, sizeof(insmap));
 		for (UINT i=1; i<32; i++) if (Headers[i])
@@ -394,25 +393,28 @@ BOOL CSoundFile::SaveMod(LPCSTR lpszFileName, UINT nPacking)
 		for (UINT i=0; i<32; i++) insmap[i] = (BYTE)i;
 	}
 	// Writing song name
-	fwrite(m_szNames, 20, 1, f);
+	fp->o(fp, (const unsigned char *)m_szNames, 20);
 	// Writing instrument definition
 	for (UINT iins=1; iins<=31; iins++)
 	{
 		MODINSTRUMENT *pins = &Ins[insmap[iins]];
+		WORD gg;
+		FrequencyToTranspose(pins);
+
 		memcpy(bTab, m_szNames[iins],22);
 		inslen[iins] = pins->nLength;
 		if (inslen[iins] > 0x1fff0) inslen[iins] = 0x1fff0;
-		bTab[22] = inslen[iins] >> 9;
-		bTab[23] = inslen[iins] >> 1;
+		gg = bswapBE16(inslen[iins] / 2);
+		memcpy(bTab+22, &gg, 2);
 		if (pins->RelativeTone < 0) bTab[24] = 0x08; else
 		if (pins->RelativeTone > 0) bTab[24] = 0x07; else
 		bTab[24] = (BYTE)XM2MODFineTune(pins->nFineTune);
-		bTab[25] = pins->nVolume >> 2;
-		bTab[26] = pins->nLoopStart >> 9;
-		bTab[27] = pins->nLoopStart >> 1;
-		bTab[28] = (pins->nLoopEnd - pins->nLoopStart) >> 9;
-		bTab[29] = (pins->nLoopEnd - pins->nLoopStart) >> 1;
-		fwrite(bTab, 30, 1, f);
+		bTab[25] = pins->nVolume  / 4;
+		gg = bswapBE16(pins->nLoopStart / 2);
+		memcpy(bTab+26, &gg, 2);
+		gg = bswapBE16((pins->nLoopEnd - pins->nLoopStart)/ 2);
+		memcpy(bTab+28, &gg, 2);
+		fp->o(fp,(const unsigned char *) bTab, 30);
 	}
 	// Writing number of patterns
 	UINT nbp=0, norders=128;
@@ -427,26 +429,27 @@ BOOL CSoundFile::SaveMod(LPCSTR lpszFileName, UINT nPacking)
 	}
 	bTab[0] = norders;
 	bTab[1] = m_nRestartPos;
-	fwrite(bTab, 2, 1, f);
+	fp->o(fp, (const unsigned char *)bTab, 2);
 	// Writing pattern list
 	if (norders) memcpy(ord, Order, norders);
-	fwrite(ord, 128, 1, f);
+	fp->o(fp, (const unsigned char *)ord, 128);
 	// Writing signature
-	if (m_nChannels == 4)
+	if (chanlim == 4)
 		lstrcpy((LPSTR)&bTab, "M.K.");
 	else
-		wsprintf((LPSTR)&bTab, "%luCHN", m_nChannels);
-	fwrite(bTab, 4, 1, f);
+		wsprintf((LPSTR)&bTab, "%uCHN", chanlim);
+	fp->o(fp, (const unsigned char *)bTab, 4);
 	// Writing patterns
 	for (UINT ipat=0; ipat<nbp; ipat++) if (Patterns[ipat])
 	{
 		BYTE s[64*4];
-		MODCOMMAND *m = Patterns[ipat];
+		MODCOMMAND *pm = Patterns[ipat];
 		for (UINT i=0; i<64; i++) if (i < PatternSize[ipat])
 		{
 			LPBYTE p=s;
-			for (UINT c=0; c<m_nChannels; c++,p+=4,m++)
+			for (UINT c=0; c<chanlim; c++,p+=4)
 			{
+				MODCOMMAND *m = &pm[ i * m_nChannels + c];
 				UINT param = ModSaveCommand(m, FALSE);
 				UINT command = param >> 8;
 				param &= 0xFF;
@@ -461,16 +464,16 @@ BOOL CSoundFile::SaveMod(LPCSTR lpszFileName, UINT nPacking)
 					period = ProTrackerPeriodTable[period];
 				}
 				UINT instr = (m->instr > 31) ? 0 : m->instr;
-				p[0] = ((period >> 8) & 0x0F) | (instr & 0x10);
-				p[1] = period & 0xFF;
+				p[0] = ((period / 256) & 0x0F) | (instr & 0x10);
+				p[1] = period % 256;
 				p[2] = ((instr & 0x0F) << 4) | (command & 0x0F);
 				p[3] = param;
 			}
-			fwrite(s, m_nChannels, 4, f);
+			fp->o(fp, (const unsigned char *)s, chanlim*4);
 		} else
 		{
-			memset(s, 0, m_nChannels*4);
-			fwrite(s, m_nChannels, 4, f);
+			memset(s, 0, chanlim*4);
+			fp->o(fp, (const unsigned char *)s, chanlim*4);
 		}
 	}
 	// Writing instruments
@@ -483,16 +486,18 @@ BOOL CSoundFile::SaveMod(LPCSTR lpszFileName, UINT nPacking)
 		{
 			if ((nPacking) && (CanPackSample((char *)pins->pSample, inslen[ismpd], nPacking)))
 			{
-				fwrite("ADPCM", 1, 5, f);
+				fp->o(fp, (const unsigned char *)"ADPCM", 5);
 				flags = RS_ADPCM4;
 			}
 		}
 #endif
-		WriteSample(f, pins, flags, inslen[ismpd]);
+		WriteSample(fp, pins, flags, inslen[ismpd]);
 	}
-	fclose(f);
 	return TRUE;
 }
 
+#ifdef MSC_VER
 #pragma warning(default:4100)
+#endif
+
 #endif // MODPLUG_NO_FILESAVE
