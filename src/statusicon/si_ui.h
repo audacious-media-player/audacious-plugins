@@ -21,12 +21,14 @@
 #ifndef _I_SI_UI_H
 #define _I_SI_UI_H 1
 
-#include "si_ui.h"
+#include <glib.h>
 
 
 void si_ui_statusicon_show( void );
 void si_ui_statusicon_hide( void );
 void si_ui_about_show( void );
+void si_ui_statusicon_enable ( gboolean );
+void si_ui_prefs_show ( void );
 
 
 #endif /* !_I_SI_UI_H */

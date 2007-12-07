@@ -34,7 +34,6 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
-
 static void si_ui_statusicon_popup_timer_start ( GtkWidget * );
 static void si_ui_statusicon_popup_timer_stop ( GtkWidget * );
 static void si_ui_statusicon_smallmenu_show ( gint x, gint y, guint button, guint32 time , gpointer );
@@ -139,6 +138,8 @@ si_ui_statusicon_cb_btscroll ( GtkWidget * evbox , GdkEventScroll * event )
       }
       break;
     }
+
+    default: ;
   }
 
   return FALSE;
@@ -330,6 +331,8 @@ si_ui_statusicon_image_update ( GtkWidget * image )
   GdkPixbuf *si_pixbuf, *si_scaled_pixbuf;
   gint size = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(image) , "size" ));
   static gchar *wmname = NULL;
+  
+  AUDDBG("WM reported proposed icon size: %d\n", size);
 
   /* sometimes, KDE won't give the correct size-allocation; workaround this */
   if ( wmname == NULL )
