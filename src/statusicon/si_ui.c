@@ -340,8 +340,9 @@ si_ui_statusicon_image_update ( GtkWidget * image )
     GdkScreen *screen = gdk_screen_get_default();
     if ( screen != NULL )
       wmname = (gchar*)gdk_x11_screen_get_window_manager_name( screen );
+      AUDDBG("WM name: %s\n", wmname);
   }
-  if ( ( size > 22 ) && ( wmname != NULL ) && ( !strcmp("KWin",wmname) ) )
+  if ( ( size <= 1 || size > 22 ) && ( wmname != NULL ) && ( !strcmp("KWin",wmname) || !strcmp("Xfwm4",wmname) ) )
     size = 22;
 
   si_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char**)si_xpm );
