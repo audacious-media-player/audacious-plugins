@@ -335,6 +335,7 @@ si_ui_statusicon_image_update ( GtkWidget * image )
   AUDDBG("WM reported proposed icon size: %d\n", size);
 
   /* sometimes, KDE won't give the correct size-allocation; workaround this */
+  /* Xfwm4 sometimes too... --eugene */
   if ( wmname == NULL )
   {
     GdkScreen *screen = gdk_screen_get_default();
