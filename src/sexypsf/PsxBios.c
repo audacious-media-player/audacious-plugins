@@ -269,12 +269,14 @@ static void bios_labs() { // 0x0f
 }
 
 static void bios_atoi() { // 0x10
-	v0 = atoi((char *)Ra0);
+	char *p0 = Ra0;
+	v0 = atoi(p0);
 	pc0 = ra;
 }
 
 static void bios_atol() { // 0x11
-	v0 = atoi((char *)Ra0);
+	char *p0 = Ra0;
+	v0 = atoi(p0);
 	pc0 = ra;
 }
 
@@ -353,7 +355,8 @@ static void bios_strncat()
 }
 
 static void bios_strcmp() { // 0x17
-	v0 = strcmp(Ra0, Ra1);
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = strcmp(p0, p1);
 	pc0 = ra;
 }
 
@@ -475,8 +478,8 @@ static void bios_strrchr() { // 0x1f
 }
 
 static void bios_strpbrk() { // 0x20
-	char *pcA0 = (char *)Ra0; 
-	char *pcRet = strpbrk(pcA0, (char *)Ra1); 
+	char *pcA0 = Ra0, *pcA1 = Ra1;
+	char *pcRet = strpbrk(pcA0, pcA1); 
 	if(pcRet) 
 		v0 = a0 + pcRet - pcA0; 
 	else 
@@ -484,13 +487,21 @@ static void bios_strpbrk() { // 0x20
 	pc0 = ra;
 }
 
-static void bios_strspn()  { v0 = strspn ((char *)Ra0, (char *)Ra1); pc0 = ra;}/*21*/ 
-static void bios_strcspn() { v0 = strcspn((char *)Ra0, (char *)Ra1); pc0 = ra;}/*22*/ 
+static void bios_strspn() { /*21*/
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = strspn (p0, p1);
+	pc0 = ra;
+}
+static void bios_strcspn() { /*22*/
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = strcspn(p0, p1);
+	pc0 = ra;
+}
 
 #ifdef MOO
 static void bios_strtok() { // 0x23
-	char *pcA0 = (char *)Ra0;
-	char *pcRet = strtok(pcA0, (char *)Ra1);
+	char *pcA0 = Ra0, *pcA1 = Ra1;
+	char *pcRet = strtok(pcA0, pcA1);
 	if(pcRet)
 		v0 = a0 + pcRet - pcA0;
 	else
@@ -500,8 +511,8 @@ static void bios_strtok() { // 0x23
 #endif
 
 static void bios_strstr() { // 0x24
-	char *pcA0 = (char *)Ra0;
-	char *pcRet = strstr(pcA0, (char *)Ra1);
+	char *pcA0 = Ra0, *pcA1 = Ra1;
+	char *pcRet = strstr(pcA0, pcA1);
 	if(pcRet)
 		v0 = a0 + pcRet - pcA0;
 	else
@@ -546,7 +557,11 @@ static void bios_bzero()
 }
 
 /*0x29*/
-static void bios_bcmp()    {v0 = memcmp(Ra0,Ra1,a2); pc0=ra; }
+static void bios_bcmp() {
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = memcmp(p0, p1, a2);
+	pc0=ra;
+}
 
 /*0x2a*/
 static void bios_memcpy()  
@@ -580,19 +595,25 @@ static void bios_memset()  /*0x2b*/
 }
 
 #ifdef MOO
-/*0x2c*/void bios_memmove() {memmove(Ra0, Ra1, a2); v0 = a0; pc0 = ra;}
+/*0x2c*/void bios_memmove() {
+	char *p0 = Ra0, *p1 = Ra1;
+	memmove(p0, p1, a2);
+	v0 = a0;
+	pc0 = ra;
+}
 #endif
 
 /*0x2d*/
-static void bios_memcmp()  
-{
-	v0 = memcmp(Ra0, Ra1, a2); 
+static void bios_memcmp() {
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = memcmp(p0, p1, a2); 
 	pc0 = ra;
 }
 
 static void bios_memchr() { // 2e
-	void *ret = memchr(Ra0, a1, a2);
-	if (ret != NULL) v0 = (u32)((char*)ret - Ra0) + a0;
+	char *p0 = Ra0;
+	void *ret = memchr(p0, a1, a2);
+	if (ret != NULL) v0 = (u32)((char*)ret - p0) + a0;
 	else v0 = 0;
 	pc0 = ra;
 }
@@ -603,7 +624,8 @@ static void bios_rand() { // 2f
 }
 
 static void bios_srand() { // 30
-	srand(a0); pc0 = ra;
+	srand(a0);
+	pc0 = ra;
 }
 
 static void bios_malloc() { // 33
