@@ -267,13 +267,6 @@ pn_xmms_cleanup (void)
 }
 
 static void
-about_close_clicked(GtkWidget *w, GtkWidget **window)
-{
-	gtk_widget_destroy(*window);
-	*window=NULL;
-}
-
-static void
 pn_xmms_about (void)
 {
   audacious_info_dialog("About Paranormal Visualization Studio", 
