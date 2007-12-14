@@ -21,6 +21,8 @@
 #ifndef ALSA_H
 #define ALSA_H
 
+#define NDEBUG
+
 #include "config.h"
 
 #include <audacious/util.h>

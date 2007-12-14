@@ -294,6 +294,7 @@ void alsa_close(void)
 }
 
 /* reopen ALSA PCM */
+#if 0
 static int alsa_reopen(struct snd_format *f)
 {
 	/* remember the current position */
@@ -304,6 +305,7 @@ static int alsa_reopen(struct snd_format *f)
 
 	return alsa_setup(f);
 }
+#endif
 
 /* do flush (drop) operation */
 static void alsa_do_flush(int time)
