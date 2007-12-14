@@ -96,7 +96,6 @@ Tuple *
 vtx_get_song_tuple_from_vtx(const gchar *filename, ayemu_vtx_t *in)
 {
   Tuple *out = aud_tuple_new_from_filename(filename);
-  gchar *string;
 
   aud_tuple_associate_string(out, FIELD_ARTIST, NULL, in->hdr.author);
   aud_tuple_associate_string(out, FIELD_TITLE, NULL, in->hdr.title);
@@ -159,7 +158,7 @@ play_loop (gpointer args)
 	  }
 	else
 	  {			/* get next AY register frame */
-	    if (ayemu_vtx_get_next_frame (&vtx, regs) == 0)
+	    if (ayemu_vtx_get_next_frame (&vtx, (char *)regs) == 0)
 	      {
 		playback->eof = TRUE;
 		donow = need;

@@ -192,11 +192,11 @@ char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
   aud_vfs_fclose (vtx->fp);
   vtx->fp = NULL;
   if ((vtx->regdata = (char *) malloc (vtx->hdr.regdata_size)) == NULL) {
-    fprintf (stderr, "ayemu_vtx_load_data: Can allocate %d bytes for unpack register data\n", vtx->hdr.regdata_size);
+    fprintf (stderr, "ayemu_vtx_load_data: Can allocate %d bytes for unpack register data\n", (int)(vtx->hdr.regdata_size));
     free (packed_data);
     return NULL;
   }
-  lh5_decode (packed_data, vtx->regdata, vtx->hdr.regdata_size, packed_size);
+  lh5_decode ((unsigned char *)packed_data, (unsigned char *)(vtx->regdata), vtx->hdr.regdata_size, packed_size);
   free (packed_data);
   vtx->pos = 0;
   return vtx->regdata;
