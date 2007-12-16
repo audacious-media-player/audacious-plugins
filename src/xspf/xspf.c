@@ -76,6 +76,7 @@ static const xspf_entry_t xspf_entries[] = {
     { FIELD_YEAR,         "year",         TUPLE_INT,      TRUE,   CMP_DEF },
     { FIELD_DATE,         "date",         TUPLE_STRING,   TRUE,   CMP_DEF },
     { FIELD_GENRE,        "genre",        TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_MTIME,        "mtime",        TUPLE_INT,      TRUE,   CMP_DEF },
     { FIELD_FORMATTER,    "formatter",    TUPLE_STRING,   TRUE,   CMP_DEF },
 };
 
@@ -165,6 +166,7 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
                             break;
                         
                         case TUPLE_INT:
+                            AUDDBG("field=%s val=%s\n", xspf_entries[i].xspfName, str);
                             aud_tuple_associate_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
                             break;
                         
@@ -520,9 +522,6 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                     xspf_add_node(track, xs->type, xs->isMeta, xs->xspfName, scratch, scratchi);
             }
 
-            /* Write mtime unconditionally to support staticlist */
-            xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL,
-                aud_tuple_get_int(entry->tuple, FIELD_MTIME, NULL));
         } else {
 
             if (entry->title != NULL && g_utf8_validate(entry->title, -1, NULL))
