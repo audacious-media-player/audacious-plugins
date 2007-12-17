@@ -183,29 +183,24 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
     }
 
     if (location) {
-        gchar *realfn = NULL, *scratch = NULL;
+        gchar *scratch = NULL;
 
         /* filename and path in tuple must be unescaped. */
-        scratch = g_filename_from_uri(location, NULL, NULL);
-        realfn = aud_str_to_utf8(scratch ? scratch : location);
-        g_free(scratch);
-
-        scratch = g_path_get_basename(realfn);
+        scratch = aud_uri_to_display_basename(location);
         aud_tuple_associate_string(tuple, FIELD_FILE_NAME, NULL, scratch);
         g_free(scratch);
 
-        scratch = g_path_get_dirname(realfn);
+        scratch = aud_uri_to_display_dirname(location);
         aud_tuple_associate_string(tuple, FIELD_FILE_PATH, NULL, scratch);
         g_free(scratch);
 
-        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(realfn, '.'));
+        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, strrchr(location, '.'));
 
         AUDDBG("tuple->file_name = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_NAME, NULL));
         AUDDBG("tuple->file_path = %s\n", aud_tuple_get_string(tuple, FIELD_FILE_PATH, NULL));
 
         /* add file to playlist */
         aud_playlist_load_ins_file_tuple(playlist, location, filename, pos, tuple);
-        g_free(realfn);
         pos++;
     }
 
