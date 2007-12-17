@@ -13,7 +13,6 @@ extern Window ToonGetRootWindow(Display*, int, Window*);
 // Forward declarations
 static void rootvis_init(void);
 static void rootvis_cleanup(void);
-static void rootvis_about(void);
 static void rootvis_configure(void);
 static void rootvis_playback_start(void);
 static void rootvis_playback_stop(void);
@@ -414,11 +413,6 @@ static void rootvis_cleanup(void) {
 	  print_status("Clean Exit");
     plugin_is_initted = FALSE;
   }
-}
-
-static void rootvis_about(void)
-{
-	print_status("About");
 }
 
 static void rootvis_configure(void)
