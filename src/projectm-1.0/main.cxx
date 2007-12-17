@@ -280,8 +280,8 @@ class projectMPlugin
         dumpPath.append(".projectM/");
 
         gchar *frame_ = g_strdup_printf("%.8d.bmp", frame);
-
         dumpPath.append(frame_);
+        g_free(frame_);
 
         SDL_Surface *bitmap;
 
