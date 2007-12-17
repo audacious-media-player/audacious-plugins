@@ -610,7 +610,6 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 {
     Tuple *tuple = NULL;
     gchar *string = NULL;
-    gchar *realfn = NULL;
 
     struct id3_file *id3file = NULL;
     struct id3_tag *tag = NULL;
@@ -709,11 +708,10 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 g_free(string);
                 string = NULL;
             }
-            realfn = g_filename_from_uri(filename, NULL, NULL);
-            __set_and_free(tuple, FIELD_FILE_NAME, NULL, g_path_get_basename(realfn ? realfn : filename));
-            __set_and_free(tuple, FIELD_FILE_PATH, NULL, g_path_get_dirname(realfn ? realfn : filename));
-            aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
-            g_free(realfn); realfn = NULL;
+
+            __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
+            __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
+            aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
 
             // length
             length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
@@ -734,11 +732,9 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         id3_file_close(id3file);
     } // id3file
     else { // no id3tag
-        realfn = g_filename_from_uri(filename, NULL, NULL);
-        __set_and_free(tuple, FIELD_FILE_NAME, NULL, g_path_get_basename(realfn ? realfn : filename));
-        __set_and_free(tuple, FIELD_FILE_PATH, NULL, g_path_get_dirname(realfn ? realfn : filename));
-        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
-        g_free(realfn); realfn = NULL;
+        __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
+        __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
+        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
         // length
         length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
