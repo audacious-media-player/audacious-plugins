@@ -277,7 +277,7 @@ class projectMPlugin
         static int frame = 1;
 
         std::string dumpPath(g_get_home_dir());
-        dumpPath.append(".projectM/");
+        dumpPath.append("/.projectM/");
 
         gchar *frame_ = g_strdup_printf("%.8d.bmp", frame);
         dumpPath.append(frame_);
