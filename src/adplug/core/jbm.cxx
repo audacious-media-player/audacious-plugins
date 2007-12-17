@@ -75,7 +75,7 @@ bool CjbmPlayer::load(VFSFile * fd, const CFileProvider & fp)
   // Allocate memory buffer m[] and read entire file into it
 
   m = new unsigned char[filelen];
-  if (f->readString((char *)m, filelen) != filelen) goto loaderr;
+  if (f->readString((char *)m, filelen) != (unsigned int)filelen) goto loaderr;
 
   fp.close(f);
 
