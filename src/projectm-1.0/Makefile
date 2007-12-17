@@ -1,7 +1,6 @@
 PLUGIN = projectm-1.0${PLUGIN_SUFFIX}
 
 SRCS = main.cxx		\
-       video_init.cxx   \
        ConfigFile.cxx   \
        main_visplugin.c
 
