@@ -40,7 +40,6 @@ extern "C" void projectM_cleanup(void);
 extern "C" void projectM_render_pcm(gint16 pcm_data[2][512]);
 extern "C" int worker_func(void *);
 std::string read_config();
-void saveSnapshotToFile();
 
 extern "C" VisPlugin projectM_vtable;
 
@@ -61,7 +60,7 @@ class projectMPlugin
     SDL_Thread *worker_thread;
     SDL_sem *sem;
 
-  protected:
+  public:
     projectMPlugin()
     {
         std::string configFile = read_config();
@@ -112,7 +111,6 @@ class projectMPlugin
         aud_hook_dissociate("playback begin", handle_playback_trigger);
     }
 
-  public:
     int run(void *unused)
     {
         if (error)
@@ -145,7 +143,7 @@ class projectMPlugin
                       switch (key)
                       {
                         case PROJECTM_K_c:
-                            saveSnapshotToFile();
+                            this->takeScreenshot();
                             break;
 
                         case PROJECTM_K_f:
@@ -272,6 +270,44 @@ class projectMPlugin
     {
         std::string title(entry->title);
         this->pm->projectM_setTitle(title);
+    }
+
+    void takeScreenshot(void)
+    {
+        static int frame = 1;
+
+        std::string dumpPath(g_get_home_dir());
+        dumpPath.append(".projectM/");
+
+        gchar *frame_ = g_strdup_printf("%.8d.bmp", frame);
+
+        dumpPath.append(frame_);
+
+        SDL_Surface *bitmap;
+
+        GLint viewport[4];
+        long bytewidth;
+        GLint width, height;
+        long bytes;
+
+        glReadBuffer(GL_FRONT);
+        glGetIntegerv(GL_VIEWPORT, viewport);
+
+        width = viewport[2];
+        height = viewport[3];
+
+        bytewidth = width * 4;
+        bytewidth = (bytewidth + 3) & ~3;
+        bytes = bytewidth * height;
+
+        bitmap = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
+        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, bitmap->pixels);
+
+        SDL_SaveBMP(bitmap, dumpPath.c_str());
+
+        SDL_FreeSurface(bitmap);
+
+        frame++;
     }
 };
 
@@ -412,54 +448,4 @@ std::string read_config()
     }
 
     abort();
-}
-
-int frame = 1;
-
-
-void saveSnapshotToFile()
-{
-    char dumpPath[512];
-    char Home[512];
-    //char *home;
-
-    SDL_Surface *bitmap;
-
-    GLint viewport[4];
-    long bytewidth;
-    GLint width, height;
-    long bytes;
-
-    glReadBuffer(GL_FRONT);
-    glGetIntegerv(GL_VIEWPORT, viewport);
-
-    width = viewport[2];
-    height = viewport[3];
-
-    bytewidth = width * 4;
-    bytewidth = (bytewidth + 3) & ~3;
-    bytes = bytewidth * height;
-
-    /*
-       glFinish();
-       glPixelStorei(GL_PACK_ALIGNMENT, 4);
-       glPixelStorei(GL_PACK_ROW_LENGTH, 0);
-       glPixelStorei(GL_PACK_SKIP_ROWS, 0);
-       glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-     */
-
-
-    bitmap = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-    glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, bitmap->pixels);
-
-    sprintf(dumpPath, "/.projectM/%.8d.bmp", frame++);
-    // home=getenv("HOME");
-    strcpy(Home, getenv("HOME"));
-    strcpy(Home + strlen(Home), dumpPath);
-    Home[strlen(Home)] = '\0';
-    SDL_SaveBMP(bitmap, Home);
-
-    SDL_FreeSurface(bitmap);
-
-
 }
