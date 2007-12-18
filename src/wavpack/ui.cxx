@@ -1,3 +1,5 @@
+// #define AUD_DEBUG 1
+
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
@@ -20,8 +22,6 @@ extern "C" {
 #ifndef M_LN10
 #define M_LN10   2.3025850929940456840179914546843642
 #endif
-
-#define DBG(format, args...) fprintf(stderr, format, ## args)
 
 void load_tag(ape_tag *tag, WavpackContext *ctx);
 gboolean clipPreventionEnabled;
@@ -118,10 +118,12 @@ wv_file_info_box(char *fn)
         printf("wavpack: Error opening file: \"%s: %s\"\n", fn, error_buff);
         return;
     }
+#ifdef AUD_DEBUG
     int sample_rate = WavpackGetSampleRate(ctx);
     int num_channels = WavpackGetNumChannels(ctx);
+#endif
     load_tag(&tag, ctx);
-    DBG("opened %s at %d rate with %d channels\n", fn, sample_rate, num_channels);
+    AUDDBG("opened %s at %d rate with %d channels\n", fn, sample_rate, num_channels);
 
     filename = g_strdup(fn);
     static GtkWidget *info_frame, *info_box, *bitrate_label, *rate_label;

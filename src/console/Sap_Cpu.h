@@ -8,7 +8,7 @@
 
 typedef blargg_long sap_time_t; // clock cycle count
 typedef unsigned sap_addr_t; // 16-bit address
-enum { future_sap_time = LONG_MAX / 2 + 1 };
+enum { future_sap_time = INT_MAX / 2 + 1 };
 
 class Sap_Cpu {
 public:

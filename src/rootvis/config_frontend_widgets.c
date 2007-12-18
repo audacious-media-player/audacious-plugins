@@ -371,8 +371,7 @@ GtkWidget *frontend_create_channel(int channel)
 
 	{
 		GtkWidget *vbox_0, *notebook_1, *button_box_1,
-			*vbox_2[4], *frame_3[4], *vbox_3[1], *hbox_4[5],
-			*check_debug, *check_stereo,
+			*vbox_2[4], *frame_3[4], *hbox_4[5],
 			*close_button, *revert_button;
 
 		vbox_0 = frontend_create_box(VBOX, window, "rootvis_config_vbox", ATTACH_TO_CONTAINER);
@@ -427,7 +426,7 @@ GtkWidget *frontend_create_main(void)
 {
 	GtkWidget *window, *channel_button[2],
 		  *button_box[2], *channels_frame, *main_frame, *vbox,
-		  *main_vbox, *channels_hbox, *channel_vbox[2],
+		  *main_vbox, *channel_vbox[2],
 		  *save_button, *revert_button, *close_button;
 
 	window = frontend_create_window(GTK_WINDOW_TOPLEVEL, "Main");

@@ -82,7 +82,7 @@ hashfunc_foreach( gpointer key , gpointer value , gpointer container_gp )
   return;
 }
 
-gint
+void
 ed_bindings_store_foreach ( gpointer hashtable_gp ,
                             ed_bindings_store_foreach_func callback ,
                             gpointer user_data1 ,

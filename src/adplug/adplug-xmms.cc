@@ -139,6 +139,7 @@ print_left (const gchar * text)
   return GTK_WIDGET (label);
 }
 
+#if 0
 static void
 MessageBox (const char *title, const char *text, const char *button)
 {
@@ -158,6 +159,7 @@ MessageBox (const char *title, const char *text, const char *button)
   free (tmptxt);
   free (tmpbutton);
 }
+#endif
 
 /***** Dialog boxes *****/
 

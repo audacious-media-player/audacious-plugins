@@ -674,9 +674,9 @@ static int sc_submit_np(Tuple *tuple)
 	/*cfa(&post, &last, "debug", "failed");*/
 
 	entry = g_strdup_printf("s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
-		aud_tuple_get_string(tuple, FIELD_ARTIST, NULL),
-		aud_tuple_get_string(tuple, FIELD_TITLE, NULL),
-		aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) ? aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) : "",
+		fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL)),
+		fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL)),
+		aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) ? fmt_escape(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)) : "",
 		aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
 		aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
 

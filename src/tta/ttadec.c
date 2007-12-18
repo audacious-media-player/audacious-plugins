@@ -476,7 +476,7 @@ int get_samples (byte *buffer) {
 	byte *p = buffer;
 	decoder *dec = tta;
 	int *prev = cache;
-	int value, res;
+	int value, value_tmp, res;
 
 	for (res = 0; p < buffer + pcm_buffer_size;) {
 		fltst *fst = &dec->fst;
@@ -529,8 +529,8 @@ int get_samples (byte *buffer) {
 			else if (rice->sum0 > shift_16[rice->k0 + 1])
 			rice->k0++;
 		}
-
-		value = DEC(value);
+		value_tmp = DEC(value);
+		value = value_tmp;
 
 		// decompress stage 1: adaptive hybrid filter
 		hybrid_filter(fst, &value);
