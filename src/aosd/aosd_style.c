@@ -161,6 +161,22 @@ aosd_deco_style_get_max_numcol ( void )
 }
 
 
+// sizing helper
+static void
+aosd_layout_size( PangoLayout * layout , gint * width , gint * height , gint * bearing )
+{
+  PangoRectangle ink, log;
+
+  pango_layout_get_pixel_extents( layout , &ink , &log );
+
+  if ( width != NULL )
+    *width = ink.width;
+  if ( height != NULL )
+    *height = log.height;
+  if ( bearing != NULL )
+    *bearing = -ink.x;
+}
+
 
 /* RENDER FUNCTIONS */
 
@@ -178,9 +194,9 @@ aosd_deco_rfunc_rect( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * data
   aosd_color_t textcolor0 = data->text->fonts_color[0];
   aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
   gboolean draw_shadow = data->text->fonts_draw_shadow[0];
-  gint width = 0, height = 0;
+  gint width = 0, height = 0, bearing = 0;
 
-  pango_layout_get_pixel_size( osd_layout , &width , &height );
+  aosd_layout_size( osd_layout , &width , &height , &bearing );
 
   /* draw rectangle container */
   cairo_set_source_rgba( cr , (gdouble)color0.red / 65535 , (gdouble)color0.green / 65535 ,
@@ -201,7 +217,7 @@ aosd_deco_rfunc_rect( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * data
     cairo_set_source_rgba( cr , (gdouble)shadowcolor0.red / 65535 , (gdouble)shadowcolor0.green / 65535 ,
       (gdouble)shadowcolor0.blue / 65535 , (gdouble)shadowcolor0.alpha / 65535 );
     cairo_move_to( cr,
-      aosd_deco_styles[AOSD_DECO_STYLE_RECT].padding.left + 2 ,
+      aosd_deco_styles[AOSD_DECO_STYLE_RECT].padding.left + bearing + 2 ,
       aosd_deco_styles[AOSD_DECO_STYLE_RECT].padding.top + 2 );
     pango_cairo_show_layout( cr , osd_layout );
   }
@@ -210,7 +226,7 @@ aosd_deco_rfunc_rect( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * data
   cairo_set_source_rgba( cr , (gdouble)textcolor0.red / 65535 , (gdouble)textcolor0.green / 65535 ,
     (gdouble)textcolor0.blue / 65535 , (gdouble)textcolor0.alpha / 65535 );
   cairo_move_to( cr,
-    aosd_deco_styles[AOSD_DECO_STYLE_RECT].padding.left ,
+    aosd_deco_styles[AOSD_DECO_STYLE_RECT].padding.left + bearing ,
     aosd_deco_styles[AOSD_DECO_STYLE_RECT].padding.top );
   pango_cairo_show_layout( cr , osd_layout );
 }
@@ -230,9 +246,9 @@ aosd_deco_rfunc_roundrect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t 
   aosd_color_t textcolor0 = data->text->fonts_color[0];
   aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
   gboolean draw_shadow = data->text->fonts_draw_shadow[0];
-  gint width = 0, height = 0;
+  gint width = 0, height = 0, bearing = 0;
 
-  pango_layout_get_pixel_size( osd_layout , &width , &height );
+  aosd_layout_size( osd_layout , &width , &height , &bearing );
 
   /* draw rounded-rectangle container */
   cairo_set_source_rgba( cr , (gdouble)color0.red / 65535 , (gdouble)color0.green / 65535 ,
@@ -262,7 +278,7 @@ aosd_deco_rfunc_roundrect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t 
     cairo_set_source_rgba( cr , (gdouble)shadowcolor0.red / 65535 , (gdouble)shadowcolor0.green / 65535 ,
       (gdouble)shadowcolor0.blue / 65535 , (gdouble)shadowcolor0.alpha / 65535 );
     cairo_move_to( cr ,
-      aosd_deco_styles[AOSD_DECO_STYLE_ROUNDRECT].padding.left + 2 ,
+      aosd_deco_styles[AOSD_DECO_STYLE_ROUNDRECT].padding.left + bearing + 2 ,
       aosd_deco_styles[AOSD_DECO_STYLE_ROUNDRECT].padding.top + 2 );
     pango_cairo_show_layout( cr , osd_layout );
   }
@@ -271,7 +287,7 @@ aosd_deco_rfunc_roundrect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t 
   cairo_set_source_rgba( cr , (gdouble)textcolor0.red / 65535 , (gdouble)textcolor0.green / 65535 ,
     (gdouble)textcolor0.blue / 65535 , (gdouble)textcolor0.alpha / 65535 );
   cairo_move_to( cr ,
-    aosd_deco_styles[AOSD_DECO_STYLE_ROUNDRECT].padding.left ,
+    aosd_deco_styles[AOSD_DECO_STYLE_ROUNDRECT].padding.left + bearing ,
     aosd_deco_styles[AOSD_DECO_STYLE_ROUNDRECT].padding.top );
   pango_cairo_show_layout( cr , osd_layout );
 }
@@ -291,9 +307,9 @@ aosd_deco_rfunc_concaverect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_
   aosd_color_t textcolor0 = data->text->fonts_color[0];
   aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
   gboolean draw_shadow = data->text->fonts_draw_shadow[0];
-  gint width = 0, height = 0;
+  gint width = 0, height = 0, bearing = 0;
 
-  pango_layout_get_pixel_size( osd_layout , &width , &height );
+  aosd_layout_size( osd_layout , &width , &height , &bearing );
 
   /* draw jigsaw-piece-like container */
   cairo_set_source_rgba( cr , (gdouble)color0.red / 65535 , (gdouble)color0.green / 65535 ,
@@ -323,7 +339,7 @@ aosd_deco_rfunc_concaverect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_
     cairo_set_source_rgba( cr , (gdouble)shadowcolor0.red / 65535 , (gdouble)shadowcolor0.green / 65535 ,
       (gdouble)shadowcolor0.blue / 65535 , (gdouble)shadowcolor0.alpha / 65535 );
     cairo_move_to( cr ,
-      aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.left + 2 ,
+      aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.left + bearing + 2 ,
       aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.top + 2 );
     pango_cairo_show_layout( cr , osd_layout );
   }
@@ -332,7 +348,7 @@ aosd_deco_rfunc_concaverect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_
   cairo_set_source_rgba( cr , (gdouble)textcolor0.red / 65535 , (gdouble)textcolor0.green / 65535 ,
     (gdouble)textcolor0.blue / 65535 , (gdouble)textcolor0.alpha / 65535 );
   cairo_move_to( cr ,
-    aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.left ,
+    aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.left + bearing ,
     aosd_deco_styles[AOSD_DECO_STYLE_CONCAVERECT].padding.top );
   pango_cairo_show_layout( cr , osd_layout );
 }
@@ -350,9 +366,9 @@ aosd_deco_rfunc_none ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * dat
   aosd_color_t textcolor0 = data->text->fonts_color[0];
   aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
   gboolean draw_shadow = data->text->fonts_draw_shadow[0];
-  gint width = 0, height = 0;
+  gint width = 0, height = 0, bearing = 0;
 
-  pango_layout_get_pixel_size( osd_layout , &width , &height );
+  aosd_layout_size( osd_layout , &width , &height , &bearing );
 
   if ( draw_shadow == TRUE )
   {
@@ -360,7 +376,7 @@ aosd_deco_rfunc_none ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * dat
     cairo_set_source_rgba( cr , (gdouble)shadowcolor0.red / 65535 , (gdouble)shadowcolor0.green / 65535 ,
       (gdouble)shadowcolor0.blue / 65535 , (gdouble)shadowcolor0.alpha / 65535 );
     cairo_move_to( cr ,
-      aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.left + 2 ,
+      aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.left + bearing + 2 ,
       aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.top + 2 );
     pango_cairo_show_layout( cr , osd_layout );
   }
@@ -369,7 +385,7 @@ aosd_deco_rfunc_none ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * dat
   cairo_set_source_rgba( cr , (gdouble)textcolor0.red / 65535 , (gdouble)textcolor0.green / 65535 ,
     (gdouble)textcolor0.blue / 65535 , (gdouble)textcolor0.alpha / 65535 );
   cairo_move_to( cr ,
-    aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.left ,
+    aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.left + bearing ,
     aosd_deco_styles[AOSD_DECO_STYLE_NONE].padding.top );
   pango_cairo_show_layout( cr , osd_layout );
 }
