@@ -38,7 +38,8 @@
 #include <stdarg.h>
 
 #include <audacious/i18n.h>
-
+#include <glib.h>
+#include <glib/gstdio.h>
 
 static gboolean ed_device_giofunc ( GIOChannel * , GIOCondition , gpointer );
 
@@ -240,7 +241,7 @@ ed_device_stop_listening_from_info ( ed_device_info_t * info )
 }
 
 
-gint
+void
 ed_device_stop_listening_all ( gboolean delete_bindings )
 {
   /* convenience function that stops listening for all

@@ -108,10 +108,10 @@ InputPlugin vorbis_ip = {
     .pause = vorbis_pause,
     .seek = vorbis_seek,
     .cleanup = vorbis_cleanup,
-    .file_info_box = vorbis_file_info_box,       /* file info box, tag editing */
     .get_song_tuple = get_song_tuple,
     .is_our_file_from_vfs = vorbis_check_fd,
     .vfs_extensions = vorbis_fmts,
+    .update_song_tuple = vorbis_update_song_tuple,
 };
 
 InputPlugin *vorbis_iplist[] = { &vorbis_ip, NULL };
@@ -538,8 +538,10 @@ vorbis_update_replaygain(float *scale)
         if (!rg_peak_str)
             rg_peak_str = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
 
-        if (rg_peak_str)
+        if (rg_peak_str) {
             rg_peak = atof(rg_peak_str);
+            rg_peak = rg_peak == 0.0 ? 1.0 : rg_peak; /* be aware of incorrect formatted strings --eugene */
+        }
         else
             rg_peak = 1;
 
@@ -618,7 +620,7 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
     VFSVorbisFile *vfd = (VFSVorbisFile *) vorbisfile->datasource;
     Tuple *tuple = NULL;
     gint length;
-    vorbis_comment *comment;
+    vorbis_comment *comment = NULL;
 
     tuple = aud_tuple_new_from_filename(filename);
 
@@ -629,6 +631,8 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
 
     /* associate with tuple */
     aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
+    /* maybe, it would be better to display nominal bitrate (like in main win), not average? --eugene */
+    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, ov_bitrate(vorbisfile, -1)/1000);
 
     if ((comment = ov_comment(vorbisfile, -1))) {
         gchar *tmps;
@@ -641,18 +645,20 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
             aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(tmps));
-
-        aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-
-        if (comment && comment->vendor)
-        {
-            gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
-            aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
-            g_free(codec);
-        }
-        else
-            aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
     }
+
+    aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
+
+    if (comment && comment->vendor)
+    {
+        gchar *codec = g_strdup_printf("Ogg Vorbis [%s]", comment->vendor);
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, codec);
+        g_free(codec);
+    }
+    else
+        aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
+    
+    aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
 
     return tuple;
 }

@@ -179,6 +179,7 @@ static void
 aosd_osd_create ( void )
 {
   gint max_width, layout_width, layout_height;
+  PangoRectangle ink, log;
   GdkScreen *screen = gdk_screen_get_default();
   gint pos_x = 0, pos_y = 0;
   gint pad_left = 0 , pad_right = 0 , pad_top = 0 , pad_bottom = 0;
@@ -228,7 +229,9 @@ aosd_osd_create ( void )
   pango_layout_set_ellipsize( osd_data->pango_layout , PANGO_ELLIPSIZE_NONE );
   pango_layout_set_justify( osd_data->pango_layout , FALSE );
   pango_layout_set_width( osd_data->pango_layout , PANGO_SCALE * max_width );
-  pango_layout_get_pixel_size( osd_data->pango_layout , &layout_width , &layout_height );
+  pango_layout_get_pixel_extents( osd_data->pango_layout , &ink , &log );
+  layout_width = ink.width;
+  layout_height = log.height;
 
   /* osd position */
   switch ( osd_data->cfg_osd->position.placement )

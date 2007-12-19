@@ -1,30 +1,11 @@
-/* 
-projectM v1.01 - xmms-projectm.sourceforge.net
---------------------------------------------------
-
-Lead Developers:  Carmelo Piccione (carmelo.piccione@gmail.com) &
-                  Peter Sperl (peter@sperl.com)
-
-We have also been advised by some professors at CMU, namely Roger B. Dannenberg.
-http://www-2.cs.cmu.edu/~rbd/    
-  
-The inspiration for this program was Milkdrop by Ryan Geiss. Obviously. 
-
-This code is distributed under the GPL.
-
-
-THANKS FOR THE CODE!!!
--------------------------------------------------
-The base for this program was andy@nobugs.org's XMMS plugin tutorial
-http://www.xmms.org/docs/vis-plugin.html
-
-We used some FFT code by Takuya OOURA instead of XMMS' built-in fft code
-fftsg.c - http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html
-
-and some beat detection code was inspired by Frederic Patin @
-www.gamedev.net/reference/programming/features/beatdetection/
-
-*/
+/*
+ * main.cxx: plugin glue to libprojectm
+ * Copyright (c) 2008 William Pitcock <nenolod@sacredspiral.co.uk>
+ * Portions copyright (c) 2004-2006 Peter Sperl
+ *
+ * This program is free software; you may distribute it under the terms
+ * of the GNU General Public License; version 2.
+ */
 
 #include <stdio.h>
 #include <string.h>
@@ -35,9 +16,11 @@ www.gamedev.net/reference/programming/features/beatdetection/
 #include <SDL/SDL.h>
 #include <SDL/SDL_thread.h>
 
-extern "C" {
+extern "C"
+{
 #include <audacious/util.h>
 #include <audacious/plugin.h>
+#include <audacious/playlist.h>
 #include <audacious/auddrct.h>
 }
 
@@ -47,416 +30,422 @@ extern "C" {
 #include <libprojectM/projectM.hpp>
 
 #include "sdltoprojectM.h"
-#include "video_init.h"
 
 #include <GL/gl.h>
 #define CONFIG_FILE "/share/projectM/config.inp"
 
 // Forward declarations 
-extern "C" void projectM_xmms_init(void); 
+extern "C" void projectM_xmms_init(void);
 extern "C" void projectM_cleanup(void);
-extern "C" void projectM_about(void);
-extern "C" void projectM_configure(void);
-extern "C" void projectM_playback_start(void);
-extern "C" void projectM_playback_stop(void);
 extern "C" void projectM_render_pcm(gint16 pcm_data[2][512]);
-extern "C" void projectM_render_freq(gint16 pcm_data[2][256]);
-extern "C" int worker_func(void*);
+extern "C" int worker_func(void *);
 std::string read_config();
-void saveSnapshotToFile();
 
 extern "C" VisPlugin projectM_vtable;
 
-//extern preset_t * active_preset;
+int SDLThreadWrapper(void *);
+void handle_playback_trigger(void *, void *);
 
-//FILE * debugFile = fopen("./dwrite-dump", "wb");
-
-// Our worker thread
-SDL_Thread *worker_thread = NULL;
-SDL_sem *sem = NULL;
-SDL_Event event;
-
-SDL_Surface *screen;
-
-
-projectM * globalPM = NULL;
-
-int maxsamples=512;
-
-int texsize=512;
-int gx=32,gy=24;
-int wvw=400,wvh=400;
-int fvw=1024,fvh=768;
-int fps=35, fullscreen=0;
-
-// char *title;
-
-gint disable_projectm(void *something) {
-	projectM_vtable.disable_plugin(&projectM_vtable);
-	return 0;
-}
-
-Uint32 get_xmms_title(Uint32 something, void *somethingelse) {
-	static char check_title = 1;
-	static int last_pos;
-	static char *last_title = NULL;
-	int pos;
-	char *title = NULL;
-
-	//Nice optimization, but we want the title no matter what so I can display it when the song changes
-#if 0
-	if(!(globalPM->showtitle%2)) {
-		/* Repeat less often when not showing title */
-		return 1000;
-	}
-#endif
-
-        pos = audacious_drct_pl_get_pos();
-	/* Only check every 1 second for title change, otherwise check pos */
-	if(check_title || pos != last_pos) {
-                title = audacious_drct_pl_get_title(pos);
-		if(title && (!last_title || strcmp(last_title,title))) {
-		  //globalPM->renderer->title = title;
-			//globalPM->renderer->drawtitle = 1;
-
-		  std::string titlepp(title);
-		  globalPM->projectM_setTitle(titlepp);
-			g_free(last_title);
-			last_title = title;
-		} else if(title && last_title != title) {
-			/* New copy of last title */
-			g_free(title);
-		}
-		check_title = !check_title;
-	}
-	last_pos = pos;
-	/* Repeat every 500ms */
-	return 500;
-}
-
-int capture = 0;
-
-int worker_func(void*)
-{ 
-// char projectM_data[1024]; 
- SDL_TimerID title_timer = NULL;
- std::string config_file;
- config_file = read_config();
- ConfigFile config(config_file);
-
- int wvw = config.read<int>( "Window Width", 512 );
- int wvh = config.read<int>( "Window Height", 512 );
-
- int fullscreen = 0;
- if (config.read("Fullscreen", true)) fullscreen = 1;
-      else fullscreen = 0;
-
-  init_display(wvw,wvh,&fvw,&fvh,fullscreen); 
-  SDL_WM_SetCaption("projectM v1.00", "projectM v1.00");
-
-  /** Initialise projectM */
-    
-  globalPM = new projectM(config_file);
-  SDL_SemPost(sem);
-  title_timer = SDL_AddTimer(500, get_xmms_title, NULL);
-    /** Initialise the thread */
-  // SDL_SemTryWait(sem);
-  while ( SDL_SemValue(sem)==1 ) {
-        projectMEvent evt;
-        projectMKeycode key;
-        projectMModifier mod;
-
-        /** Process SDL events */
-        SDL_Event event;
-        while ( SDL_PollEvent( &event ) ) {
-            /** Translate into projectM codes and process */
-            evt = sdl2pmEvent( event );	  
-
-            key = sdl2pmKeycode( event.key.keysym.sym );
-            mod = sdl2pmModifier( event.key.keysym.mod );
-
-            if ( evt == PROJECTM_KEYDOWN ) {                 
-	   
-	      if(key == PROJECTM_K_c)
-		{
-		  //SDL_SaveBMP(screen, "/home/pete/1.bmp");
-		  saveSnapshotToFile();
-		}
-	      if(key == PROJECTM_K_v)
-		{
-		  // capture++;
-		}
-	      if(key == PROJECTM_K_f)
-		{
-		 
-
-		 int w, h;
-                    if (fullscreen == 0) {
-                        w = fvw;
-                        h = fvh;
-			fullscreen = 1;
-                    } else {
-                        w = wvw;
-                        h = wvh;
-			fullscreen = 0;
-                    }
-                  
-                    resize_display(w, h, fullscreen);
-                    globalPM->projectM_resetGL( w, h ); 
-                }
-	      else  globalPM->key_handler(evt,key,mod);
-
-              }
-	    else if ( evt == PROJECTM_VIDEORESIZE )
-	      {
-
-	       
-
-		wvw=event.resize.w;
-		wvh=event.resize.h;
-	       
-		
-		resize_display(wvw,wvh,fullscreen);
-		globalPM->projectM_resetGL( wvw, wvh ); 
- 
-              } 
-	    else if ( evt == PROJECTM_VIDEOQUIT ) {
-	      
-	      (void) g_idle_add ((GSourceFunc) disable_projectm, NULL);
-	    }
-	}
-	
-        /** Add the waveform data */
-      
-
-        /** Render the new frame */
-	//	 strcpy(title,xmms_remote_get_playlist_title(projectM_vtable.xmms_session, xmms_remote_get_playlist_pos(projectM_vtable.xmms_session))); 
-
-	 //printf("%s\n",title);
-	// strcpy(globalPM->title,title);
-	
-	  globalPM->renderFrame();
-	
-      
-
-        SDL_GL_SwapBuffers();
-
-	if (capture % 2 == 1) saveSnapshotToFile();
-	//	SDL_SemPost(sem);
-      }
-
- if(title_timer) 
-  	SDL_RemoveTimer(title_timer);
- delete globalPM;
-
-
- return 0;
-}
-
-extern "C" void projectM_xmms_init(void) 
+class projectMPlugin
 {
-  
-  /* First, initialize SDL's video subsystem. */
- // std::cerr << "sdl init begin" << std::endl;  
-  if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 ) {
-    /* Failed, exit. */
-    fprintf( stderr, "Video initialization failed: %s\n",
-             SDL_GetError( ) );
-    //projectM_vtable.disable_plugin (&projectM_vtable);
-    return;
-    
-  }
-  sem = SDL_CreateSemaphore(0);
- // printf("projectM plugin: Initializing\n");
- 
-  SDL_EnableUNICODE(1);
-  
-  worker_thread = SDL_CreateThread ( *worker_func, NULL);
- 
+  private:
+    projectM *pm;
+
+    gint wvw, wvh, fvw, fvh;
+    gboolean fullscreen;
+    gboolean error;
+
+    SDL_Event event;
+    SDL_Surface *screen;
+    SDL_Thread *worker_thread;
+    SDL_sem *sem;
+
+  public:
+    projectMPlugin()
+    {
+        std::string configFile = read_config();
+        ConfigFile config(configFile);
+
+        this->wvw = config.read<int>("Window Width", 512);
+        this->wvh = config.read<int>("Window Height", 512);
+
+        this->fullscreen = FALSE;
+        if (config.read("Fullscreen", true))
+              this->fullscreen = TRUE;
+
+        /* initialise SDL */
+        if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        {
+            this->error++;
+            return;
+        }
+
+        SDL_WM_SetCaption("projectM", "audacious");
+        SDL_EnableUNICODE(1);
+
+        this->sem = SDL_CreateSemaphore(0);
+
+        /* XXX */
+        aud_hook_associate("playback begin", handle_playback_trigger, NULL);
+    }
+
+    ~projectMPlugin()
+    {
+        if (!this->sem)
+            return;
+
+        SDL_SemWait(this->sem);
+
+        if (this->worker_thread)
+            SDL_WaitThread(this->worker_thread, NULL);
+
+        SDL_DestroySemaphore(this->sem);
+        SDL_Quit();
+
+        this->sem = 0;
+        this->worker_thread = 0;
+
+        delete this->pm;
+        this->pm = 0;
+
+        aud_hook_dissociate("playback begin", handle_playback_trigger);
+    }
+
+    int run(void *unused)
+    {
+        if (error)
+            return -1;
+
+        std::string configFile = read_config();
+        this->initDisplay(this->wvw, this->wvh, &this->fvw, &this->fvh, this->fullscreen);
+        this->pm = new projectM(configFile);
+        this->pm->projectM_resetGL(this->wvw, this->wvh);
+
+        SDL_SemPost(this->sem);
+
+        while (SDL_SemValue(this->sem) == 1)
+        {
+            projectMEvent evt;
+            projectMKeycode key;
+            projectMModifier mod;
+
+            SDL_Event event;
+            while (SDL_PollEvent(&event))
+            {
+                evt = sdl2pmEvent(event);
+
+                key = sdl2pmKeycode(event.key.keysym.sym);
+                mod = sdl2pmModifier(event.key.keysym.mod);
+
+                switch (evt)
+                {
+                  case PROJECTM_KEYDOWN:
+                      switch (key)
+                      {
+                        case PROJECTM_K_c:
+                            this->takeScreenshot();
+                            break;
+
+                        case PROJECTM_K_f:
+                            int w, h;
+                            if (fullscreen == 0)
+                            {
+                                w = fvw;
+                                h = fvh;
+                                fullscreen = 1;
+                            }
+                            else
+                            {
+                                w = wvw;
+                                h = wvh;
+                                fullscreen = 0;
+                            }
+
+                            this->resizeDisplay(w, h, fullscreen);
+                            this->pm->projectM_resetGL(w, h);
+
+                            break;
+
+                        default:
+                            this->pm->key_handler(evt, key, mod);
+                            break;
+                      }
+
+                      break;
+
+                  case PROJECTM_VIDEORESIZE:
+                      wvw = event.resize.w;
+                      wvh = event.resize.h;
+                      this->resizeDisplay(wvw, wvh, fullscreen);
+                      this->pm->projectM_resetGL(wvw, wvh);
+
+                      break;
+
+                  case PROJECTM_VIDEOQUIT:
+                      std::cerr << "XXX: PROJECTM_VIDEOQUIT is not implemented yet!" << std::endl;
+                      break;
+
+                  default:
+                      break;
+                }
+            }
+
+            this->pm->renderFrame();
+
+            SDL_GL_SwapBuffers();
+        }
+
+        return 0;
+    }
+
+    void launchThread()
+    {
+        /* SDL sucks and won't let you use C++ functors... */
+        this->worker_thread = SDL_CreateThread(SDLThreadWrapper, NULL);
+    }
+
+    void addPCMData(gint16 pcm_data[2][512])
+    {
+        if (SDL_SemValue(this->sem) == 1)
+            this->pm->pcm->addPCM16(pcm_data);
+    }
+
+    void initDisplay(gint width, gint height, gint *rwidth, gint *rheight, gboolean fullscreen)
+    {
+        this->wvw = width;
+        this->wvh = height;
+        this->fvw = *rwidth;
+        this->fvw = *rheight;
+        this->fullscreen = fullscreen;
+
+        const SDL_VideoInfo *info = NULL;
+        int bpp;
+        int flags;
+
+        info = SDL_GetVideoInfo();
+        if (!info)
+        {
+            this->error++;
+            return;
+        }
+
+        /* initialize fullscreen resolution to something "sane" */
+        *rwidth = width;
+        *rheight = height;
+
+        bpp = info->vfmt->BitsPerPixel;
+        SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+        if (this->fullscreen)
+            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_FULLSCREEN;
+        else
+            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_RESIZABLE;
+
+        this->screen = SDL_SetVideoMode(width, height, bpp, flags);
+        if (!this->screen)
+            this->error++;
+    }
+
+    void resizeDisplay(gint width, gint height, gboolean fullscreen)
+    {
+        this->fullscreen = fullscreen;
+
+        int flags;
+
+        if (this->fullscreen)
+            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_FULLSCREEN;
+        else
+            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_RESIZABLE;
+
+        this->screen = SDL_SetVideoMode(width, height, 0, flags);
+        if (this->screen == 0)
+            return;
+
+        SDL_ShowCursor(this->fullscreen ? SDL_DISABLE : SDL_ENABLE);
+    }
+
+    void triggerPlaybackBegin(PlaylistEntry *entry)
+    {
+        std::string title(entry->title);
+        this->pm->projectM_setTitle(title);
+    }
+
+    void takeScreenshot(void)
+    {
+        static int frame = 1;
+
+        std::string dumpPath(g_get_home_dir());
+        dumpPath.append("/.projectM/");
+
+        gchar *frame_ = g_strdup_printf("%.8d.bmp", frame);
+        dumpPath.append(frame_);
+        g_free(frame_);
+
+        SDL_Surface *bitmap;
+
+        GLint viewport[4];
+        long bytewidth;
+        GLint width, height;
+        long bytes;
+
+        glReadBuffer(GL_FRONT);
+        glGetIntegerv(GL_VIEWPORT, viewport);
+
+        width = viewport[2];
+        height = viewport[3];
+
+        bytewidth = width * 4;
+        bytewidth = (bytewidth + 3) & ~3;
+        bytes = bytewidth * height;
+
+        bitmap = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
+        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, bitmap->pixels);
+
+        SDL_SaveBMP(bitmap, dumpPath.c_str());
+
+        SDL_FreeSurface(bitmap);
+
+        frame++;
+    }
+};
+
+/* glue to implementation section */
+projectMPlugin *thePlugin = 0;
+
+/* SDL sucks and won't let you use proper C++ functors. :( */
+int SDLThreadWrapper(void *unused)
+{
+    return thePlugin->run(unused);
 }
 
+void handle_playback_trigger(gpointer plentry_p, gpointer unused)
+{
+    PlaylistEntry *entry = reinterpret_cast<PlaylistEntry *>(plentry_p);
 
+    if (!thePlugin)
+        return;
+
+    thePlugin->triggerPlaybackBegin(entry);
+}
+
+extern "C" void projectM_xmms_init(void)
+{
+    thePlugin = new projectMPlugin;
+    thePlugin->launchThread();
+}
 
 extern "C" void projectM_cleanup(void)
 {
+    if (!thePlugin)
+        return;
 
-  if(!sem) return;
-  SDL_SemWait(sem);
-  if(worker_thread) SDL_WaitThread(worker_thread, NULL);
-  // SDL_KillThread(worker_thread);
-  //printf("killed thread\n");
+    delete thePlugin;
+}
 
-  SDL_DestroySemaphore(sem);
-  //printf("Destroy Mutex\n");
-  SDL_Quit();
-
-  sem = NULL;
-  worker_thread = NULL;
-  
- // printf("projectM plugin: Cleanup completed\n");
-}
-extern "C" void projectM_about(void)
-{
-  printf("projectM plugin: About\n");
-}
-extern "C" void projectM_configure(void)
-{
-  printf("projectM plugin: Configure\n");
-}
-extern "C" void projectM_playback_start(void)
-{//thread_control = GO;
-  printf("projectM plugin: Playback starting\n");
-}
-extern "C" void projectM_playback_stop(void)
-{//thread_control = STOP;
-  printf("projectM plugin: Playback stopping\n");
-}
 extern "C" void projectM_render_pcm(gint16 pcm_data[2][512])
 {
-  //SDL_mutexP(mutex); while ( SDL_SemValue(sem)==1 )
-  if ( SDL_SemValue(sem)==1 )
-        globalPM->pcm->addPCM16(pcm_data);
-	 
-       	//SDL_mutexV(mutex);
-	
+    if (!thePlugin)
+        return;
+
+    thePlugin->addPCMData(pcm_data);
 }
 
-extern "C" void projectM_render_freq(gint16 freq_data[2][256])
-{
-  printf("NO GOOD\n");
- }
-
+/********************************************************************************
+ * XXX: This code is from projectM and still needs to be rewritten!             *
+ ********************************************************************************/
 std::string read_config()
 {
 
 //   int n;
-   
-   char num[512];
-   FILE *in; 
-   FILE *out;
 
-   char* home;
-   char projectM_home[1024];
-   char projectM_config[1024];
+    char num[512];
+    FILE *in;
+    FILE *out;
 
-   strcpy(projectM_config, PROJECTM_PREFIX);
-   strcpy(projectM_config+strlen(PROJECTM_PREFIX), CONFIG_FILE);
-   projectM_config[strlen(PROJECTM_PREFIX)+strlen(CONFIG_FILE)]='\0';
-   //printf("dir:%s \n",projectM_config);
-   home=getenv("HOME");
-   strcpy(projectM_home, home);
-   strcpy(projectM_home+strlen(home), "/.projectM/config.inp");
-   projectM_home[strlen(home)+strlen("/.projectM/config.inp")]='\0';
+    char *home;
+    char projectM_home[1024];
+    char projectM_config[1024];
 
-  
- if ((in = fopen(projectM_home, "r")) != 0) 
-   {
-     //printf("reading ~/.projectM/config.inp \n");
-     fclose(in);
-     return std::string(projectM_home);
-   }
- else
-   {
-     printf("trying to create ~/.projectM/config.inp \n");
+    strcpy(projectM_config, PROJECTM_PREFIX);
+    strcpy(projectM_config + strlen(PROJECTM_PREFIX), CONFIG_FILE);
+    projectM_config[strlen(PROJECTM_PREFIX) + strlen(CONFIG_FILE)] = '\0';
+    //printf("dir:%s \n",projectM_config);
+    home = getenv("HOME");
+    strcpy(projectM_home, home);
+    strcpy(projectM_home + strlen(home), "/.projectM/config.inp");
+    projectM_home[strlen(home) + strlen("/.projectM/config.inp")] = '\0';
 
-     strcpy(projectM_home, home);
-     strcpy(projectM_home+strlen(home), "/.projectM");
-     projectM_home[strlen(home)+strlen("/.projectM")]='\0';
-     mkdir(projectM_home,0755);
 
-     strcpy(projectM_home, home);
-     strcpy(projectM_home+strlen(home), "/.projectM/config.inp");
-     projectM_home[strlen(home)+strlen("/.projectM/config.inp")]='\0';
+    if ((in = fopen(projectM_home, "r")) != 0)
+    {
+        //printf("reading ~/.projectM/config.inp \n");
+        fclose(in);
+        return std::string(projectM_home);
+    }
+    else
+    {
+        printf("trying to create ~/.projectM/config.inp \n");
 
-     if((out = fopen(projectM_home,"w"))!=0)
-       {
-	
-	 if ((in = fopen(projectM_config, "r")) != 0) 
-	   {
+        strcpy(projectM_home, home);
+        strcpy(projectM_home + strlen(home), "/.projectM");
+        projectM_home[strlen(home) + strlen("/.projectM")] = '\0';
+        mkdir(projectM_home, 0755);
 
-	     while(fgets(num,80,in)!=NULL)
-	       {
-		 fputs(num,out);
-	       }
-	     fclose(in);
-	     fclose(out);
-	    
+        strcpy(projectM_home, home);
+        strcpy(projectM_home + strlen(home), "/.projectM/config.inp");
+        projectM_home[strlen(home) + strlen("/.projectM/config.inp")] = '\0';
 
-	     if ((in = fopen(projectM_home, "r")) != 0) 
-	       { 
-		 printf("created ~/.projectM/config.inp successfully\n");  
-		 fclose(in);
-		 return std::string(projectM_home);
-	       }
-	     else{printf("This shouldn't happen, using implementation defualts\n");abort();}
-	   }
-	 else{printf("Cannot find projectM default config, using implementation defaults\n");abort();}
-       }
-     else
-       {
-	 printf("Cannot create ~/.projectM/config.inp, using default config file\n");
-	 if ((in = fopen(projectM_config, "r")) != 0) 
-	   { printf("Successfully opened default config file\n");
-	     fclose(in);
-	     return std::string(projectM_config);}
-	 else{ printf("Using implementation defaults, your system is really messed up, I'm suprised we even got this far\n");  abort();}
-       }
+        if ((out = fopen(projectM_home, "w")) != 0)
+        {
 
-   }
+            if ((in = fopen(projectM_config, "r")) != 0)
+            {
 
- abort();
+                while (fgets(num, 80, in) != NULL)
+                {
+                    fputs(num, out);
+                }
+                fclose(in);
+                fclose(out);
+
+
+                if ((in = fopen(projectM_home, "r")) != 0)
+                {
+                    printf("created ~/.projectM/config.inp successfully\n");
+                    fclose(in);
+                    return std::string(projectM_home);
+                }
+                else
+                {
+                    printf("This shouldn't happen, using implementation defualts\n");
+                    abort();
+                }
+            }
+            else
+            {
+                printf("Cannot find projectM default config, using implementation defaults\n");
+                abort();
+            }
+        }
+        else
+        {
+            printf("Cannot create ~/.projectM/config.inp, using default config file\n");
+            if ((in = fopen(projectM_config, "r")) != 0)
+            {
+                printf("Successfully opened default config file\n");
+                fclose(in);
+                return std::string(projectM_config);
+            }
+            else
+            {
+                printf("Using implementation defaults, your system is really messed up, I'm suprised we even got this far\n");
+                abort();
+            }
+        }
+
+    }
+
+    abort();
 }
-
-int frame = 1;
-
-
-void saveSnapshotToFile()
-{
-  char dumpPath[512];
-  char Home[512];
-  //char *home;
-  
-  SDL_Surface *	bitmap;
-  
-  GLint		viewport[4];
-  long		bytewidth;
-  GLint		width, height;
-  long		bytes;
-  
-  glReadBuffer(GL_FRONT);
-  glGetIntegerv(GL_VIEWPORT, viewport);
-  
-  width = viewport[2];
-  height = viewport[3];
-            
-  bytewidth = width * 4;
-  bytewidth = (bytewidth + 3) & ~3;
-  bytes = bytewidth * height;
-  
-  /*
-    glFinish();
-    glPixelStorei(GL_PACK_ALIGNMENT, 4);
-    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
-    glPixelStorei(GL_PACK_SKIP_ROWS, 0);
-    glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-  */
-  
-  
-  bitmap = SDL_CreateRGBSurface(SDL_SWSURFACE, width,  height, 32,0,0,0,0);
-  glReadPixels(0, 0, width, height,
-	       GL_BGRA,
-	       GL_UNSIGNED_INT_8_8_8_8_REV,
-	       bitmap->pixels);
-  
-  sprintf(dumpPath, "/.projectM/%.8d.bmp", frame++);
-  // home=getenv("HOME");
-  strcpy(Home, getenv("HOME"));
-  strcpy(Home+strlen(Home), dumpPath);
-  Home[strlen(Home)]='\0';
-  SDL_SaveBMP(bitmap, Home);
-     
-  SDL_FreeSurface(bitmap);
- 
-       
-}
-

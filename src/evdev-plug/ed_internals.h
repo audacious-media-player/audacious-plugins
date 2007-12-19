@@ -48,7 +48,7 @@ gint ed_device_start_listening ( ed_device_t * );
 void ed_device_start_listening_from_config ( void );
 gint ed_device_stop_listening ( ed_device_t * );
 gint ed_device_stop_listening_from_info ( ed_device_info_t * );
-gint ed_device_stop_listening_all ( gboolean );
+void ed_device_stop_listening_all ( gboolean );
 gboolean ed_device_check_listening_from_info ( ed_device_info_t * );
 
 gboolean ed_inputevent_check_equality( ed_inputevent_t * , ed_inputevent_t * );

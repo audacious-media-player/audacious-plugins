@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+/* #define AUD_DEBUG 1 */
+
 #include <glib.h>
 #include <string.h>
 #include <glib.h>
@@ -84,14 +86,14 @@ playlist_load_m3u(const gchar * filename, gint pos)
     gint ext_len = -1;
     gboolean is_extm3u = FALSE;
     Playlist *playlist = aud_playlist_get_active();
-    gchar *uri;
+    gchar *uri = NULL;
     
     uri = g_filename_to_uri(filename, NULL, NULL);
 
     if ((file = aud_vfs_fopen(uri ? uri : filename, "rb")) == NULL)
         return;
 
-    g_free(uri);
+    g_free(uri); uri = NULL;
 
     line = g_malloc(line_len);
     while (aud_vfs_fgets(line, line_len, file)) {
@@ -130,15 +132,21 @@ playlist_load_m3u(const gchar * filename, gint pos)
             ext_info = NULL;
         }
 
-        uri = g_filename_to_uri(line, NULL, NULL);
-        aud_playlist_load_ins_file(playlist, uri ? uri : line, filename, pos, ext_title, ext_len);
+        uri = aud_construct_uri(line, filename);
+        AUDDBG("uri=%s\n", uri);
+
+        /* add file only if valid uri has been constructed */
+        if (uri) {
+            aud_playlist_load_ins_file(playlist, uri, filename, pos, ext_title, ext_len);
+
+            if (pos >= 0)
+                pos++;
+        }
+
         g_free(uri);
 
         aud_str_replace_in(&ext_title, NULL);
         ext_len = -1;
-
-        if (pos >= 0)
-            pos++;
     }
 
     aud_vfs_fclose(file);

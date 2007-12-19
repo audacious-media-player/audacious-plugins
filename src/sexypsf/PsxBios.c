@@ -269,12 +269,14 @@ static void bios_labs() { // 0x0f
 }
 
 static void bios_atoi() { // 0x10
-	v0 = atoi((char *)Ra0);
+	char *p0 = Ra0;
+	v0 = atoi(p0);
 	pc0 = ra;
 }
 
 static void bios_atol() { // 0x11
-	v0 = atoi((char *)Ra0);
+	char *p0 = Ra0;
+	v0 = atoi(p0);
 	pc0 = ra;
 }
 
@@ -300,7 +302,7 @@ static void bios_longjmp() { //14
 	sp = BFLIP32(jmp_buf[1]); /* sp */
 	fp = BFLIP32(jmp_buf[2]); /* fp */
 	for (i=0; i<8; i++) // s0-s7
-	   psxRegs.GPR.r[16+i] =  BFLIP32(jmp_buf[3+i]);
+		psxRegs.GPR.r[16+i] =  BFLIP32(jmp_buf[3+i]);
 	gp = BFLIP32(jmp_buf[11]); /* gp */
 
 	v0 = a1; pc0 = ra;
@@ -315,10 +317,10 @@ static void bios_strcat() { // 0x15
 	while(PSXMu8(dest) != 0) dest++; /* Move to end of first string. */
 	while(PSXMu8(src) != 0) 
 	{
-	 if(PSXM(dest) && PSXM(src))
-	  PSXMu8(dest)=PSXMu8(src);
-	 src++;
-	 dest++;
+		if(PSXM(dest) && PSXM(src))
+			PSXMu8(dest)=PSXMu8(src);
+		src++;
+		dest++;
 	}
 	PSXMu8(dest) = 0;	/* Append null character. */
 	//strcat(Ra0, Ra1);
@@ -339,21 +341,22 @@ static void bios_strncat()
         while(PSXMu8(dest) != 0) dest++; /* Move to end of first string. */
         while(PSXMu8(src) != 0 && count)
         {
-         if(PSXM(dest) && PSXM(src))
-          PSXMu8(dest)=PSXMu8(src);
-         src++;
-         dest++;
-	 count--;
+		if(PSXM(dest) && PSXM(src))
+			PSXMu8(dest)=PSXMu8(src);
+		src++;
+		dest++;
+		count--;
         }
         PSXMu8(dest) = 0;       /* Append null character. */
 
- //strncat(Ra0, Ra1, a2); 
- v0 = a0; 
- pc0 = ra;
+	//strncat(Ra0, Ra1, a2); 
+	v0 = a0; 
+	pc0 = ra;
 }
 
 static void bios_strcmp() { // 0x17
-	v0 = strcmp(Ra0, Ra1);
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = strcmp(p0, p1);
 	pc0 = ra;
 }
 
@@ -365,18 +368,18 @@ static void bios_strncmp() { // 0x18
 
 	while(max>0)
 	{
-	 u8 tmp1=PSXMuR8(string1);
-	 u8 tmp2=PSXMuR8(string2);
+		u8 tmp1=PSXMuR8(string1);
+		u8 tmp2=PSXMuR8(string2);
 
-	 if(!tmp1 || !tmp2) break;
+		if(!tmp1 || !tmp2) break;
 
-	 tmpv=tmp1-tmp2;
-	 if(tmpv) break;
-         if(!tmp1 || !tmp2) break;
-	 if(!PSXM(string1) || !PSXM(string2)) break;
-	 max--;
-	 string1++;
-	 string2++;
+		tmpv=tmp1-tmp2;
+		if(tmpv) break;
+		if(!tmp1 || !tmp2) break;
+		if(!PSXM(string1) || !PSXM(string2)) break;
+		max--;
+		string1++;
+		string2++;
 	}
 	if(tmpv>0) v0=1;
 	else if(tmpv<0) v0=-1;
@@ -389,49 +392,49 @@ static void bios_strncmp() { // 0x18
 /*0x19*/
 static void bios_strcpy()  
 { 
- u32 src=a1,dest=a0;
- u8 val;
+	u32 src=a1,dest=a0;
+	u8 val;
 
- do
- {
-  val=PSXMu8(src);
-  PSXMu8(dest)=val;
-  src++; 
-  dest++;
- } while(val);
- //strcpy(Ra0, Ra1); 
- v0 = a0; 
- pc0 = ra;
+	do
+	{
+		val=PSXMu8(src);
+		PSXMu8(dest)=val;
+		src++; 
+		dest++;
+	} while(val);
+	//strcpy(Ra0, Ra1); 
+	v0 = a0; 
+	pc0 = ra;
 }
 /*0x1a*/
 static void bios_strncpy() 
 { 
- u32 src=a1,dest=a0,max=a2;
- u8 val;  
+	u32 src=a1,dest=a0,max=a2;
+	u8 val;  
  
- do
- {
-  val=PSXMu8(src); 
-  PSXMu8(dest)=val;
-  src++;   
-  dest++;
-  max--;
- } while(val && max);
+	do
+	{
+		val=PSXMu8(src); 
+		PSXMu8(dest)=val;
+		src++;   
+		dest++;
+		max--;
+	} while(val && max);
 
- //strncpy(Ra0, Ra1, a2);  
- v0 = a0; 
- pc0 = ra;
+	//strncpy(Ra0, Ra1, a2);  
+	v0 = a0; 
+	pc0 = ra;
 }
 
 /*0x1b*/
 static void bios_strlen()  
 { 
- u32 src=a0;
+	u32 src=a0;
 
- while(PSXMu8(src)) src++;
+	while(PSXMu8(src)) src++;
 
- v0 = src-a0;  
- pc0 = ra;
+	v0 = src-a0;  
+	pc0 = ra;
 }
 
 static void bios_index() { // 0x1c
@@ -441,7 +444,7 @@ static void bios_index() { // 0x1c
 		v0 = a0 + pcRet - pcA0; 
 	else 
 		v0 = 0;
-    pc0 = ra;
+	pc0 = ra;
 }
 
 static void bios_rindex() { // 0x1d
@@ -451,7 +454,7 @@ static void bios_rindex() { // 0x1d
 		v0 = a0 + pcRet - pcA0; 
 	else 
 		v0 = 0;
-    pc0 = ra;  
+	pc0 = ra;  
 }
 
 static void bios_strchr() { // 0x1e
@@ -461,7 +464,7 @@ static void bios_strchr() { // 0x1e
 		v0 = a0 + pcRet - pcA0; 
 	else 
 		v0 = 0;
-    pc0 = ra;
+	pc0 = ra;
 }
 
 static void bios_strrchr() { // 0x1f
@@ -471,42 +474,50 @@ static void bios_strrchr() { // 0x1f
 		v0 = a0 + pcRet - pcA0; 
 	else 
 		v0 = 0;
-    pc0 = ra;
+	pc0 = ra;
 }
 
 static void bios_strpbrk() { // 0x20
-	char *pcA0 = (char *)Ra0; 
-	char *pcRet = strpbrk(pcA0, (char *)Ra1); 
+	char *pcA0 = Ra0, *pcA1 = Ra1;
+	char *pcRet = strpbrk(pcA0, pcA1); 
 	if(pcRet) 
 		v0 = a0 + pcRet - pcA0; 
 	else 
 		v0 = 0;
-    pc0 = ra;
+	pc0 = ra;
 }
 
-static void bios_strspn()  { v0 = strspn ((char *)Ra0, (char *)Ra1); pc0 = ra;}/*21*/ 
-static void bios_strcspn() { v0 = strcspn((char *)Ra0, (char *)Ra1); pc0 = ra;}/*22*/ 
+static void bios_strspn() { /*21*/
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = strspn (p0, p1);
+	pc0 = ra;
+}
+static void bios_strcspn() { /*22*/
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = strcspn(p0, p1);
+	pc0 = ra;
+}
 
 #ifdef MOO
 static void bios_strtok() { // 0x23
-	char *pcA0 = (char *)Ra0;
-	char *pcRet = strtok(pcA0, (char *)Ra1);
+	char *pcA0 = Ra0, *pcA1 = Ra1;
+	char *pcRet = strtok(pcA0, pcA1);
 	if(pcRet)
 		v0 = a0 + pcRet - pcA0;
 	else
 		v0 = 0;
-    pc0 = ra;
+	pc0 = ra;
 }
 #endif
 
 static void bios_strstr() { // 0x24
-	char *pcA0 = (char *)Ra0;
-	char *pcRet = strstr(pcA0, (char *)Ra1);
+	char *pcA0 = Ra0, *pcA1 = Ra1;
+	char *pcRet = strstr(pcA0, pcA1);
 	if(pcRet)
 		v0 = a0 + pcRet - pcA0;
 	else
 		v0 = 0;
-    pc0 = ra;
+	pc0 = ra;
 }
 
 /*0x25*/
@@ -518,81 +529,91 @@ static void bios_tolower() {v0 = tolower(a0); pc0 = ra;}
 /*0x27*/
 static void bios_bcopy()   
 {
- u32 dest=a1, src=a0, len=a2;
+	u32 dest=a1, src=a0, len=a2;
 
- while(len--)
- {
-  PSXMu8(dest)=PSXMu8(src);
-  dest++;
-  src++;
- }
- //memcpy(Ra1,Ra0,a2); 
- pc0=ra;
+	while(len--)
+	{
+		PSXMu8(dest)=PSXMu8(src);
+		dest++;
+		src++;
+	}
+	//memcpy(Ra1,Ra0,a2); 
+	pc0=ra;
 }
 
 /*0x28*/
 static void bios_bzero()   
 {
- u32 dest=a0, len=a1;
+	u32 dest=a0, len=a1;
  
- while(len--)
- {
-  PSXMu8(dest)=0;
-  dest++;
- }
+	while(len--)
+	{
+		PSXMu8(dest)=0;
+		dest++;
+	}
 
- //memset(Ra0,0,a1); 
- pc0=ra;
+	//memset(Ra0,0,a1); 
+	pc0=ra;
 }
 
 /*0x29*/
-static void bios_bcmp()    {v0 = memcmp(Ra0,Ra1,a2); pc0=ra; }
+static void bios_bcmp() {
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = memcmp(p0, p1, a2);
+	pc0=ra;
+}
 
 /*0x2a*/
 static void bios_memcpy()  
 {
- u32 dest=a0, src=a1, len=a2;
+	u32 dest=a0, src=a1, len=a2;
  
- while(len--)
- {
-  PSXMu8(dest)=PSXMu8(src);
-  dest++;
-  src++;
- }
- //memcpy(Ra0, Ra1, a2); 
- v0 = a0; 
- pc0 = ra;
+	while(len--)
+	{
+		PSXMu8(dest)=PSXMu8(src);
+		dest++;
+		src++;
+	}
+	//memcpy(Ra0, Ra1, a2); 
+	v0 = a0; 
+	pc0 = ra;
 }
 
 static void bios_memset()  /*0x2b*/
 {
- u32 len=a2;
- u32 dest=a0;
+	u32 len=a2;
+	u32 dest=a0;
 
- while(len--)
- {
-  if(PSXM(dest)) PSXMu8(dest)=a1;
-  dest++;
- }
- //memset(Ra0, a1, a2);
- v0 = a0; 
- pc0 = ra;
+	while(len--)
+	{
+		if(PSXM(dest)) PSXMu8(dest)=a1;
+		dest++;
+	}
+	//memset(Ra0, a1, a2);
+	v0 = a0; 
+	pc0 = ra;
 }
 
 #ifdef MOO
-/*0x2c*/void bios_memmove() {memmove(Ra0, Ra1, a2); v0 = a0; pc0 = ra;}
+/*0x2c*/void bios_memmove() {
+	char *p0 = Ra0, *p1 = Ra1;
+	memmove(p0, p1, a2);
+	v0 = a0;
+	pc0 = ra;
+}
 #endif
 
 /*0x2d*/
-static void bios_memcmp()  
-{
- v0 = memcmp(Ra0, Ra1, a2); 
- pc0 = ra;
+static void bios_memcmp() {
+	char *p0 = Ra0, *p1 = Ra1;
+	v0 = memcmp(p0, p1, a2); 
+	pc0 = ra;
 }
 
 static void bios_memchr() { // 2e
-	void *ret = memchr(Ra0, a1, a2);
-	if (ret != NULL) v0 = (u32)((char*)ret - Ra0) + a0;
+	char *p0 = Ra0;
+	void *ret = memchr(p0, a1, a2);
+	if (ret != NULL) v0 = (u32)((char*)ret - p0) + a0;
 	else v0 = 0;
 	pc0 = ra;
 }
@@ -603,7 +624,8 @@ static void bios_rand() { // 2f
 }
 
 static void bios_srand() { // 30
-	srand(a0); pc0 = ra;
+	srand(a0);
+	pc0 = ra;
 }
 
 static void bios_malloc() { // 33
@@ -618,7 +640,7 @@ static void bios_malloc() { // 33
 	   being used.
 	*/
 	while( (a0 > BFLIP32(((malloc_chunk*)PSXM(chunk)) ->size)) ||
-		(BFLIP32( ((malloc_chunk*)PSXM(chunk))->stat  ) == INUSE)
+	       (BFLIP32( ((malloc_chunk*)PSXM(chunk))->stat  ) == INUSE)
 		)
 		chunk=((malloc_chunk*)PSXM(chunk)) -> fd;
 	//printf("%08x\n",chunk);
@@ -649,7 +671,7 @@ static void bios_InitHeap() { // 39
 	chunk = (malloc_chunk *)PSXM(heap_addr);
 	chunk->stat = 0;
 	if (((a0 & 0x1fffff) + a1)>= 0x200000) 
-	 chunk->size = BFLIP32(0x1ffffc - (a0 & 0x1fffff));
+		chunk->size = BFLIP32(0x1ffffc - (a0 & 0x1fffff));
 	else chunk->size = BFLIP32(a1);
 	chunk->fd = 0;
 	chunk->bk = 0;
@@ -737,21 +759,21 @@ static void bios_ResetRCnt() { // 06
 
 
 /* gets ev for use with Event */
-#define GetEv() \
-	ev = (a0 >> 24) & 0xf; \
-	if (ev == 0xf) ev = 0x5; \
-	ev*= 32; \
+#define GetEv()					\
+	ev = (a0 >> 24) & 0xf;			\
+	if (ev == 0xf) ev = 0x5;		\
+	ev*= 32;				\
 	ev+= a0&0x1f;
 
 /* gets spec for use with Event */
-#define GetSpec() \
-	spec = 0; \
-	switch (a1) { \
-		case 0x0301: spec = 16; break; \
-		case 0x0302: spec = 17; break; \
-		default: \
-			for (i=0; i<16; i++) if (a1 & (1 << i)) { spec = i; break; } \
-			break; \
+#define GetSpec()							\
+	spec = 0;							\
+	switch (a1) {							\
+	case 0x0301: spec = 16; break;					\
+	case 0x0302: spec = 17; break;					\
+	default:							\
+		for (i=0; i<16; i++) if (a1 & (1 << i)) { spec = i; break; } \
+		break;							\
 	}
 
 static void bios_DeliverEvent() { // 07
@@ -909,7 +931,7 @@ static void bios_ReturnFromException() { // 17
 	if (psxRegs.CP0.n.Cause & 0x80000000) pc0+=4;
 
 	psxRegs.CP0.n.Status = (psxRegs.CP0.n.Status & 0xfffffff0) |
-						  ((psxRegs.CP0.n.Status & 0x3c) >> 2);
+		((psxRegs.CP0.n.Status & 0x3c) >> 2);
 }
 
 static void bios_ResetEntryInt() { // 18
@@ -932,8 +954,8 @@ static void bios_UnDeliverEvent() { // 0x20
 	GetSpec();
 
 	if (Event[ev][spec].status == BFLIP32S(EvStALREADY) &&
-		Event[ev][spec].mode == BFLIP32S(EvMdNOINTR))
-			Event[ev][spec].status = BFLIP32S(EvStACTIVE);
+	    Event[ev][spec].mode == BFLIP32S(EvMdNOINTR))
+		Event[ev][spec].status = BFLIP32S(EvStACTIVE);
 
 	pc0 = ra;
 }
@@ -1302,66 +1324,66 @@ void psxBiosException() {
 	int i;
 
 	switch (psxRegs.CP0.n.Cause & 0x3c) {
-		case 0x00: // Interrupt
+	case 0x00: // Interrupt
 #ifdef PSXCPU_LOG
 //			PSXCPU_LOG("interrupt\n");
 #endif
-			SaveRegs();
+		SaveRegs();
 
-			biosInterrupt();
+		biosInterrupt();
 
-			for (i=0; i<8; i++) {
-				if (SysIntRP[i]) {
-					u32 *queue = (u32*)PSXM(SysIntRP[i]);
+		for (i=0; i<8; i++) {
+			if (SysIntRP[i]) {
+				u32 *queue = (u32*)PSXM(SysIntRP[i]);
 
-					s0 = BFLIP32(queue[2]);
-					softCall(BFLIP32(queue[1]));
-				}
+				s0 = BFLIP32(queue[2]);
+				softCall(BFLIP32(queue[1]));
 			}
+		}
 
-			if (jmp_int != NULL) {
-				int i;
+		if (jmp_int != NULL) {
+			int i;
 
-				psxHwWrite32(0x1f801070, 0xffffffff);
+			psxHwWrite32(0x1f801070, 0xffffffff);
 
-				ra = BFLIP32(jmp_int[0]);
-				sp = BFLIP32(jmp_int[1]);
-				fp = BFLIP32(jmp_int[2]);
-				for (i=0; i<8; i++) // s0-s7
-					 psxRegs.GPR.r[16+i] = BFLIP32(jmp_int[3+i]);
-				gp = BFLIP32(jmp_int[11]);
+			ra = BFLIP32(jmp_int[0]);
+			sp = BFLIP32(jmp_int[1]);
+			fp = BFLIP32(jmp_int[2]);
+			for (i=0; i<8; i++) // s0-s7
+				psxRegs.GPR.r[16+i] = BFLIP32(jmp_int[3+i]);
+			gp = BFLIP32(jmp_int[11]);
 
-				v0 = 1;
-				pc0 = ra;
-				return;
-			}
-			psxHwWrite16(0x1f801070, 0);
-			break;
-		case 0x20: // Syscall
+			v0 = 1;
+			pc0 = ra;
+			return;
+		}
+		psxHwWrite16(0x1f801070, 0);
+		break;
+	case 0x20: // Syscall
 #ifdef PSXCPU_LOG
 //			PSXCPU_LOG("syscall exp %x\n", a0);
 #endif
-			switch (a0) {
-				case 1: // EnterCritical - disable irq's
-					psxRegs.CP0.n.Status&=~0x404; break;
-				case 2: // ExitCritical - enable irq's
-					psxRegs.CP0.n.Status|= 0x404; break;
-			}
-			pc0 = psxRegs.CP0.n.EPC + 4;
+		switch (a0) {
+		case 1: // EnterCritical - disable irq's
+			psxRegs.CP0.n.Status&=~0x404; break;
+		case 2: // ExitCritical - enable irq's
+			psxRegs.CP0.n.Status|= 0x404; break;
+		}
+		pc0 = psxRegs.CP0.n.EPC + 4;
 
-			psxRegs.CP0.n.Status = (psxRegs.CP0.n.Status & 0xfffffff0) |
-								  ((psxRegs.CP0.n.Status & 0x3c) >> 2);
-			return;
-		default:
+		psxRegs.CP0.n.Status = (psxRegs.CP0.n.Status & 0xfffffff0) |
+			((psxRegs.CP0.n.Status & 0x3c) >> 2);
+		return;
+	default:
 #ifdef PSXCPU_LOG
-			PSXCPU_LOG("unk exp\n");
+		PSXCPU_LOG("unk exp\n");
 #endif
-			break;
+		break;
 	}
 
 	pc0 = psxRegs.CP0.n.EPC;
 	if (psxRegs.CP0.n.Cause & 0x80000000) pc0+=4;
 
 	psxRegs.CP0.n.Status = (psxRegs.CP0.n.Status & 0xfffffff0) |
-						  ((psxRegs.CP0.n.Status & 0x3c) >> 2);
+		((psxRegs.CP0.n.Status & 0x3c) >> 2);
 }

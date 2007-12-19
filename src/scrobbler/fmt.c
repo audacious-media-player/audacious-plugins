@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include "fmt.h"
 #include <curl/curl.h>
+#include <glib.h>
 
 char *fmt_escape(const char *str)
 {

@@ -224,6 +224,12 @@ static inline uint32_t bytestream_get_be32(uint8_t** ptr) {
   return tmp;
 }
 
+#ifdef ARCH_X86_64
+#  define LEGACY_REGS "=Q"
+#else
+#  define LEGACY_REGS "=q"
+#endif
+
 static inline uint32_t bswap_32(uint32_t x)
 {
 #if defined(ARCH_X86)

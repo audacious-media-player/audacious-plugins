@@ -29,7 +29,7 @@ typedef void (*ed_bindings_store_foreach_func)( ed_inputevent_t * , gint , gpoin
 
 gpointer ed_bindings_store_new ( void );
 gint ed_bindings_store_insert ( gpointer , ed_inputevent_t * , gint );
-gint ed_bindings_store_foreach ( gpointer , ed_bindings_store_foreach_func , gpointer , gpointer );
+void ed_bindings_store_foreach ( gpointer , ed_bindings_store_foreach_func , gpointer , gpointer );
 guint ed_bindings_store_size ( gpointer );
 gboolean ed_bindings_store_lookup( gpointer , ed_inputevent_t * , gint * );
 gint ed_bindings_store_delete ( gpointer );

@@ -71,9 +71,8 @@ extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
  */
 gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 {
-#ifdef DEBUG
-    g_message("f: input_init");
-#endif
+    AUDDBG("f: input_init");
+
     memset(info, 0, sizeof(struct mad_info_t)); // all fields are cleared to 0 --yaz
 
     info->fmt = FMT_S16_LE;
@@ -100,9 +99,8 @@ gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
         }
     }
     else{
-#ifdef DEBUG
-        printf("input_init: aud_vfs_dup\n");
-#endif
+        AUDDBG("input_init: aud_vfs_dup\n");
+
         info->infile = aud_vfs_dup(fd);
     }
 
@@ -114,10 +112,9 @@ gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 
     info->fileinfo_request = FALSE;
 
-#ifdef DEBUG
-    g_message("i: info->size = %lu", (long unsigned int)info->size);
-    g_message("e: input_init");
-#endif
+    AUDDBG("i: info->size = %lu", (long unsigned int)info->size);
+    AUDDBG("e: input_init");
+
     return TRUE;
 }
 
@@ -223,18 +220,16 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
                 tp++;
             }
             if(is_num) {
-#ifdef DEBUG
-                printf("is_num!\n");
-#endif
+                AUDDBG("is_num!\n");
+
                 tmp = g_malloc0(BYTES(end - ptr + 1));
                 memcpy(tmp, ptr, BYTES(end - ptr));
                 *(tmp + (end - ptr)) = 0; //terminate
                 ptr += end - ptr;
 
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
-#ifdef DEBUG
-                printf("genre length = %d\n", mad_ucs4len(genre));
-#endif
+                AUDDBG("genre length = %d\n", mad_ucs4len(genre));
+
                 g_free(tmp);
                 tmp = NULL;
 
@@ -246,11 +241,10 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
                 *(ret + ret_len) = 0; //terminate
             }
             else { // plain text
-#ifdef DEBUG
-                printf("plain!\n");
-                printf("ret_len = %d\n", ret_len);
-                printf("end - ptr = %d\n", BYTES(end - ptr));
-#endif
+                AUDDBG("plain!\n");
+                AUDDBG("ret_len = %d\n", ret_len);
+                AUDDBG("end - ptr = %d\n", BYTES(end - ptr));
+
                 memcpy(ret + BYTES(ret_len), ptr, BYTES(end - ptr));
                 ret_len = ret_len + (end - ptr);
                 *(ret + ret_len) = 0; //terminate
@@ -316,9 +310,8 @@ gchar *input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
     }
     g_free((void *)string);
         
-#ifdef DEBUG
-    g_print("i: string = %s\n", rtn);
-#endif
+    AUDDBG("i: string = %s\n", rtn);
+
     return rtn;
 }
 
@@ -352,9 +345,8 @@ static void input_read_tag(struct mad_info_t *info)
     Tuple *tuple;
     glong curpos = 0;
 
-#ifdef DEBUG
-    g_message("f: input_read_tag");
-#endif
+    AUDDBG("f: input_read_tag");
+
     if (info->tuple != NULL)
         aud_tuple_free(info->tuple);
         
@@ -370,17 +362,13 @@ static void input_read_tag(struct mad_info_t *info)
     }
 
     if (!info->id3file) {
-#ifdef DEBUG
-        g_message("read_tag: no id3file");
-#endif
+        AUDDBG("read_tag: no id3file");
         return;
     }
 
     info->tag = id3_file_tag(info->id3file);
     if (!info->tag) {
-#ifdef DEBUG
-        g_message("read_tag: no tag");
-#endif
+        AUDDBG("read_tag: no tag");
         return;
     }
 
@@ -413,9 +401,7 @@ static void input_read_tag(struct mad_info_t *info)
     string = input_id3_get_string(info->tag, "TLEN");
     if (string) {
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
-#ifdef DEBUG
-        g_message("input_read_tag: TLEN = %d", atoi(string));
-#endif	
+        AUDDBG("input_read_tag: TLEN = %d", atoi(string));
         g_free(string);
         string = NULL;
     } else
@@ -433,9 +419,7 @@ static void input_read_tag(struct mad_info_t *info)
         aud_vfs_fseek(info->infile, curpos, SEEK_SET);
     }
     
-#ifdef DEBUG
-    g_message("e: input_read_tag");
-#endif
+    AUDDBG("e: input_read_tag");
 }
 
 void input_process_remote_metadata(struct mad_info_t *info)
@@ -444,12 +428,10 @@ void input_process_remote_metadata(struct mad_info_t *info)
 
     if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) <= 0){
         gchar *tmp = NULL;
-#ifdef DEBUG
-#ifdef DEBUG_INTENSIVELY
-        g_message("process_remote_meta");
-#endif
-#endif
 
+#ifdef DEBUG_INTENSIVELY
+        AUDDBG("process_remote_meta");
+#endif
         g_free(info->title);
         info->title = NULL;
         aud_tuple_disassociate(info->tuple, FIELD_TITLE, NULL);
@@ -516,9 +498,9 @@ void input_process_remote_metadata(struct mad_info_t *info)
  */
 gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 {
-#ifdef DEBUG
+#ifdef AUD_DEBUG
     gchar *tmp = g_filename_to_utf8(info->filename, -1, NULL, NULL, NULL);    
-    g_message("f: input_get_info: %s, fast_scan = %s", tmp, fast_scan ? "TRUE" : "FALSE");
+    AUDDBG("f: input_get_info: %s, fast_scan = %s", tmp, fast_scan ? "TRUE" : "FALSE");
     g_free(tmp);
 #endif                          /* DEBUG */
 
@@ -531,9 +513,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 
     /* scan mp3 file, decoding headers */
     if (scan_file(info, fast_scan) == FALSE) {
-#ifdef DEBUG
-        g_message("input_get_info: scan_file failed");
-#endif
+        AUDDBG("input_get_info: scan_file failed");
         return FALSE;
     }
 
@@ -550,9 +530,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
             info->title = g_strdup(info->filename); //XXX info->filename is uri. --yaz
     }
 
-#ifdef DEBUG
-    g_message("e: input_get_info");
-#endif                          /* DEBUG */
+    AUDDBG("e: input_get_info");
     return TRUE;
 }
 
@@ -570,10 +548,8 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
                int buffer_size)
 {
     int len = 0;
-#ifdef DEBUG
 #ifdef DEBUG_INTENSIVELY
-  g_message ("f: input_get_data: %d", buffer_size);
-#endif
+  AUDDBG ("f: input_get_data: %d", buffer_size);
 #endif
     /* simply read to data from the file */
     len = aud_vfs_fread(buffer, 1, buffer_size, info->infile); //aud_vfs_fread returns num of elements.
@@ -582,11 +558,10 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
         info->playback->eof = TRUE;
     }
 
-#ifdef DEBUG
 #ifdef DEBUG_INTENSIVELY
-    g_message ("e: input_get_data: size=%d offset=%d", len, info->offset);
+    AUDDBG ("e: input_get_data: size=%d offset=%d", len, info->offset);
 #endif
-#endif
+
     info->offset += len;
     return len;
 }
@@ -596,9 +571,7 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
  */
 gboolean input_term(struct mad_info_t * info)
 {
-#ifdef DEBUG
-    g_message("f: input_term");
-#endif
+    AUDDBG("f: input_term");
 
     if (info->title)
         g_free(info->title);
@@ -634,8 +607,8 @@ gboolean input_term(struct mad_info_t * info)
 
     /* set everything to zero in case it gets used again. */
     memset(info, 0, sizeof(struct mad_info_t));
-#ifdef DEBUG
-    g_message("e: input_term");
-#endif
+
+    AUDDBG("e: input_term");
+
     return TRUE;
 }

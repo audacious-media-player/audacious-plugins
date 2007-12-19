@@ -1,6 +1,6 @@
 /*
  * mad plugin for audacious
- * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa
+ * Copyright (C) 2005-2007 William Pitcock, Yoshiki Yazawa, Eugene Zagidullin
  *
  * Portions derived from xmms-mad:
  * Copyright (C) 2001-2002 Sam Clegg - See COPYING
@@ -18,6 +18,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+/* #define AUD_DEBUG 1 */
 
 #include "config.h"
 #include "plugin.h"
@@ -102,19 +104,15 @@ void audmad_config_compute(struct audmad_config_t *config)
     else
       x = 0;
     config->pregain_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-#ifdef DEBUG
-    g_message("pregain=[%s] -> %g  -> %g", text, x, config->pregain_scale);
-#endif
+    AUDDBG("pregain=[%s] -> %g  -> %g", text, x, config->pregain_scale);
     text = config->replaygain.default_db;
     if ( text != NULL )
       x = g_strtod(text, NULL);
     else
       x = 0;
     config->replaygain.default_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-#ifdef DEBUG
-    g_message("RG.default=[%s] -> %g  -> %g", text, x,
+    AUDDBG("RG.default=[%s] -> %g  -> %g", text, x,
               config->replaygain.default_scale);
-#endif
 }
 
 static void audmad_init()
@@ -405,9 +403,7 @@ static int audmad_is_our_file(char *filename)
 
 static void audmad_stop(InputPlayback *playback)
 {
-#ifdef DEBUG
-    g_message("f: audmad_stop");
-#endif
+    AUDDBG("f: audmad_stop");
     g_mutex_lock(mad_mutex);
     info.playback = playback;
     g_mutex_unlock(mad_mutex);
@@ -419,20 +415,15 @@ static void audmad_stop(InputPlayback *playback)
         g_mutex_unlock(mad_mutex);
         g_cond_signal(mad_cond);
 
-#ifdef DEBUG
-        g_message("waiting for thread");
-#endif
+        AUDDBG("waiting for thread");
         g_thread_join(decode_thread);
-#ifdef DEBUG
-        g_message("thread done");
-#endif
+        AUDDBG("thread done");
+
         input_term(&info);
         decode_thread = NULL;
 
     }
-#ifdef DEBUG
-    g_message("e: audmad_stop");
-#endif
+    AUDDBG("e: audmad_stop");
 }
 
 static void audmad_play_file(InputPlayback *playback)
@@ -440,10 +431,10 @@ static void audmad_play_file(InputPlayback *playback)
     gboolean rtn;
     gchar *url = playback->filename;
 
-#ifdef DEBUG
+#ifdef AUD_DEBUG
     {
         gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
-        g_message("playing %s", tmp);
+        AUDDBG("playing %s", tmp);
         g_free(tmp);
     }
 #endif                          /* DEBUG */
@@ -503,16 +494,14 @@ static void
 audmad_get_song_info(char *url, char **title, int *length)
 {
     struct mad_info_t myinfo;
-#ifdef DEBUG
+#ifdef AUD_DEBUG
     gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
-    g_message("f: audmad_get_song_info: %s", tmp);
+    AUDDBG("f: audmad_get_song_info: %s", tmp);
     g_free(tmp);
 #endif                          /* DEBUG */
 
     if (input_init(&myinfo, url, NULL) == FALSE) {
-#ifdef DEBUG
-        g_message("error initialising input");
-#endif
+        AUDDBG("error initialising input");
         return;
     }
 
@@ -531,40 +520,22 @@ audmad_get_song_info(char *url, char **title, int *length)
         *length = -1;
     }
     input_term(&myinfo);
-#ifdef DEBUG
-    g_message("e: audmad_get_song_info");
-#endif                          /* DEBUG */
+    AUDDBG("e: audmad_get_song_info");
 }
 
-static void
-audmad_get_song_length(char *url, int *length, VFSFile *fd)
+static gboolean
+audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
 {
-    struct mad_info_t myinfo;
-#ifdef DEBUG
-    gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
-    g_message("f: audmad_get_song_length: %s", tmp);
-    g_free(tmp);
-#endif                          /* DEBUG */
+    if (fd == NULL || info == NULL) return FALSE;
+    AUDDBG("f: audmad_fill_info(): %s", fd->uri);
 
-    if (input_init(&myinfo, url, fd ? fd : NULL) == FALSE) {
-#ifdef DEBUG
-        g_message("error initialising input");
-#endif
-        return;
+    if (input_init(info, fd->uri, fd) == FALSE) {
+        AUDDBG("audmad_fill_info(): error initialising input");
+        return FALSE;
     }
-
-    if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
-        *length = aud_tuple_get_int(myinfo.tuple, FIELD_LENGTH, NULL);
-        if(*length == -1)
-            *length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
-    }
-    else {
-        *length = -1;
-    }
-    input_term(&myinfo);
-#ifdef DEBUG
-    g_message("e: audmad_get_song_info");
-#endif                          /* DEBUG */
+    
+    info->fileinfo_request = FALSE; /* we don't need to read tuple again */
+    return input_get_info(info, aud_vfs_is_remote(fd->uri) ? TRUE : audmad_config.fast_play_time_calc);
 }
 
 static void audmad_about()
@@ -639,28 +610,32 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 {
     Tuple *tuple = NULL;
     gchar *string = NULL;
-    gchar *realfn = NULL;
 
     struct id3_file *id3file = NULL;
     struct id3_tag *tag = NULL;
 
-    gboolean local_fd = FALSE;
+    struct mad_info_t myinfo;
 
-#ifdef DEBUG
+    gboolean local_fd = FALSE;
+    int length;
+
+#ifdef AUD_DEBUG
     string = aud_str_to_utf8(filename);
-    g_message("f: mad: audmad_get_song_tuple: %s", string);
+    AUDDBG("f: mad: audmad_get_song_tuple: %s", string);
     g_free(string);
     string = NULL;
 #endif
+
+    /* isn't is obfuscated? --eugene */
 
     if(info.remote && mad_timer_count(info.duration, MAD_UNITS_SECONDS) <= 0){
         if((fd && aud_vfs_is_streaming(fd)) || (info.playback && info.playback->playing)) {
             gchar *tmp = NULL;
             tuple = aud_tuple_new_from_filename(filename);
 
-#ifdef DEBUG
+#ifdef AUD_DEBUG
             if(info.playback)
-                g_message("info.playback->playing = %d",info.playback->playing);
+                AUDDBG("info.playback->playing = %d",info.playback->playing);
 #endif
             tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "track-name");
             if(tmp){
@@ -685,21 +660,14 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 tmp = NULL;
             }
 
-#ifdef DEBUG
-            g_message("audmad_get_song_tuple: track_name = %s", aud_tuple_get_string(tuple, -1, "track-name"));
-            g_message("audmad_get_song_tuple: stream_name = %s", aud_tuple_get_string(tuple, -1, "stream-name"));
-#endif
+            AUDDBG("audmad_get_song_tuple: track_name = %s", aud_tuple_get_string(tuple, -1, "track-name"));
+            AUDDBG("audmad_get_song_tuple: stream_name = %s", aud_tuple_get_string(tuple, -1, "stream-name"));
             aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
             aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, 0); // this indicates streaming
-#ifdef DEBUG
-            g_message("get_song_tuple: remote: tuple");
-#endif
+            AUDDBG("get_song_tuple: remote: tuple");
             return tuple;
         }
-#ifdef DEBUG
-        g_message("get_song_tuple: remote: NULL");
-#endif
-//        return NULL;
+        AUDDBG("get_song_tuple: remote: NULL");
     } /* info.remote  */
 
     // if !fd, pre-open the file with aud_vfs_fopen() and reuse fd.
@@ -708,6 +676,12 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
         if(!fd)
             return NULL;
         local_fd = TRUE;
+    }
+
+    if (!audmad_fill_info(&myinfo, fd)) {
+        AUDDBG("get_song_tuple: error obtaining info\n");
+        if (local_fd) aud_vfs_fclose(fd);
+        return NULL;
     }
 
     tuple = aud_tuple_new();
@@ -734,29 +708,14 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 g_free(string);
                 string = NULL;
             }
-            realfn = g_filename_from_uri(filename, NULL, NULL);
-            __set_and_free(tuple, FIELD_FILE_NAME, NULL, g_path_get_basename(realfn ? realfn : filename));
-            __set_and_free(tuple, FIELD_FILE_PATH, NULL, g_path_get_dirname(realfn ? realfn : filename));
-            aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
-            g_free(realfn); realfn = NULL;
+
+            __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
+            __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
+            aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
 
             // length
-            string = input_id3_get_string(tag, "TLEN");
-            if (string) {
-                aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
-#ifdef DEBUG
-                g_message("get_song_tuple: TLEN = %d", aud_tuple_get_int(tuple, FIELD_LENGTH, NULL));
-#endif
-                g_free(string);
-                string = NULL;
-            }
-            else {
-                char *dummy = NULL;
-                int length = 0;
-                audmad_get_song_length(filename, &length, fd);
-                aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-                g_free(dummy);
-            }
+            length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
+            aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
 
             // track number
             string = input_id3_get_string(tag, ID3_FRAME_TRACK);
@@ -768,43 +727,35 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             // genre
             __set_and_free(tuple, FIELD_GENRE, NULL, input_id3_get_string(tag, ID3_FRAME_GENRE));
             __set_and_free(tuple, FIELD_COMMENT, NULL, input_id3_get_string(tag, ID3_FRAME_COMMENT));
-#ifdef DEBUG
-            g_message("genre = %s", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
-#endif
+            AUDDBG("genre = %s", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
         }
         id3_file_close(id3file);
     } // id3file
     else { // no id3tag
-        realfn = g_filename_from_uri(filename, NULL, NULL);
-        __set_and_free(tuple, FIELD_FILE_NAME, NULL, g_path_get_basename(realfn ? realfn : filename));
-        __set_and_free(tuple, FIELD_FILE_PATH, NULL, g_path_get_dirname(realfn ? realfn : filename));
-        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(realfn ? realfn : filename));
-        g_free(realfn); realfn = NULL;
+        __set_and_free(tuple, FIELD_FILE_NAME, NULL, aud_uri_to_display_basename(filename));
+        __set_and_free(tuple, FIELD_FILE_PATH, NULL, aud_uri_to_display_dirname(filename));
+        aud_tuple_associate_string(tuple, FIELD_FILE_EXT, NULL, extname(filename));
         // length
-        {
-            char *dummy = NULL;
-            int length = 0;
-            if(aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) == -1) {
-                audmad_get_song_length(filename, &length, fd);
-                aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
-            }
-            g_free(dummy);
-        }
+        length = mad_timer_count(myinfo.duration, MAD_UNITS_MILLISECONDS);
+        aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, length);
     }
 
-    /* TUDO: make tuple more informative (bitrate, layer).
-     * but it can slowdown tuple creation and avoid sense of TLEN reading. --eugene */
-
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
-    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
+    aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, myinfo.bitrate / 1000);
+    g_free(string);
+
+    string = g_strdup_printf("MPEG-1 Audio Layer %d", myinfo.mpeg_layer);
+    aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, string);
+    g_free(string);
+
     aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "audio/mpeg");
+    
+    input_term(&myinfo);
 
     if(local_fd)
         aud_vfs_fclose(fd);
 
-#ifdef DEBUG
-    g_message("e: mad: audmad_get_song_tuple");
-#endif
+    AUDDBG("e: mad: audmad_get_song_tuple");
     return tuple;
 }
 

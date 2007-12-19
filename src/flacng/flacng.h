@@ -25,7 +25,7 @@
 #include <audacious/main.h>
 #include <audacious/i18n.h>
 
-#define OUTPUT_BLOCK_SIZE (8192u)
+#define OUTPUT_BLOCK_SIZE (1024u)
 #define MAX_SUPPORTED_CHANNELS (2u)
 #define BUFFER_SIZE_SAMP (FLAC__MAX_BLOCK_SIZE * FLAC__MAX_CHANNELS)
 #define BUFFER_SIZE_BYTE (BUFFER_SIZE_SAMP * (FLAC__MAX_BITS_PER_SAMPLE/8))

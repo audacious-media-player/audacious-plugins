@@ -37,9 +37,8 @@ static void configure_win_ok(GtkWidget * widget, gpointer data)
 {
     ConfigDb *db;
     const gchar *text = NULL;
-#ifdef DEBUG
-    g_message("saving");
-#endif
+
+    AUDDBG("saving");
 
     audmad_config.fast_play_time_calc =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(fast_playback));

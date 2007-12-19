@@ -92,10 +92,9 @@ static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
         free(buff);
         return 8;
     }
-#ifdef DEBUG
-    printf("ver = %ld\n", Read_LE_Uint32(tp->Version));
-    printf("taglen = %ld\n", TagLen);
-#endif
+
+    AUDDBG("ver = %ld\n", Read_LE_Uint32(tp->Version));
+    AUDDBG("taglen = %ld\n", TagLen);
 
     TagCount = Read_LE_Uint32(tp->TagCount);
     end = buff + TagLen - sizeof(T);
@@ -204,14 +203,11 @@ static int ReadId3v2TXXX(struct mad_info_t *file_info)
 	char *value;
 	struct id3_frame *frame;
 
-#ifdef DEBUG
-	g_message("f: ReadId3v2TXXX");
-#endif
+	AUDDBG("f: ReadId3v2TXXX");
+
 	/* tag must be read before! */
 	if (! file_info->tag ) {
-#ifdef DEBUG
-		g_message("id3v2 not found");
-#endif
+		AUDDBG("id3v2 not found");
 		return 0;
 	}
 
@@ -259,9 +255,7 @@ void read_replaygain(struct mad_info_t *file_info)
     VFSFile *fp;
     glong curpos = 0;
 
-#ifdef DEBUG
-    g_message("f: read_replaygain");
-#endif
+    AUDDBG("f: read_replaygain");
 
     file_info->has_replaygain = FALSE;
     file_info->replaygain_album_scale = -1;
@@ -270,11 +264,11 @@ void read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_minmax = -77;
 
     if (ReadId3v2TXXX(file_info)) {
-#ifdef DEBUG
-        g_message("found ReplayGain info in id3v2 tag");
+#ifdef AUD_DEBUG
+        AUDDBG("found ReplayGain info in id3v2 tag");
 
 	gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);
-        g_message("RG album scale= %g, RG track scale = %g, in %s",
+        AUDDBG("RG album scale= %g, RG track scale = %g, in %s",
 		  file_info->replaygain_album_scale,
 		  file_info->replaygain_track_scale, tmp);
         g_free(tmp);
@@ -322,15 +316,15 @@ void read_replaygain(struct mad_info_t *file_info)
                      offs, res);
             }
         }
-#ifdef DEBUG
+#ifdef AUD_DEBUG
         else 
-            g_message("replaygain: not found");
+            AUDDBG("replaygain: not found");
 #endif
     }
-#ifdef DEBUG
+#ifdef AUD_DEBUG
     if (res == 0) {             // got APE tags, show the result
         gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);        
-        g_message("RG album scale= %g, RG track scale = %g, in %s",
+        AUDDBG("RG album scale= %g, RG track scale = %g, in %s",
 		  file_info->replaygain_album_scale,
 		  file_info->replaygain_track_scale, tmp);
         g_free(tmp);
@@ -346,7 +340,5 @@ void read_replaygain(struct mad_info_t *file_info)
 
     aud_vfs_fclose(fp);
 
-#ifdef DEBUG
-    g_message("e: read_replaygain");
-#endif
+    AUDDBG("e: read_replaygain");
 }

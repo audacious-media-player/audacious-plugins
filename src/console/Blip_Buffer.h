@@ -8,7 +8,7 @@
 	#include <limits.h>
 	#if INT_MAX >= 0x7FFFFFFF
 		typedef int blip_long;
-		typedef unsigned blip_ulong;
+		typedef unsigned int blip_ulong;
 	#else
 		typedef long blip_long;
 		typedef unsigned long blip_ulong;

@@ -8,7 +8,7 @@
 
 typedef blargg_long nes_time_t; // clock cycle count
 typedef unsigned nes_addr_t; // 16-bit address
-enum { future_nes_time = LONG_MAX / 2 + 1 };
+enum { future_nes_time = INT_MAX / 2 + 1 };
 
 class Nes_Cpu {
 public:

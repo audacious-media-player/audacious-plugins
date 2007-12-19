@@ -1,3 +1,5 @@
+// #define AUD_DEBUG 1
+
 #include <string>
 
 #include <assert.h>
@@ -24,12 +26,6 @@ extern "C" {
 #define M_LN10   2.3025850929940456840179914546843642
 #endif
 
-#ifdef DEBUG
-# define DBG(format, args...) fprintf(stderr, format, ## args)
-#else
-# define DBG(format, args...)
-#endif
-
 #define BUFFER_SIZE 256 // read buffer size, in samples
 
 static void wv_load_config();
@@ -42,7 +38,7 @@ static void wv_seek(InputPlayback *, int);
 static int wv_get_time(InputPlayback *);
 static void wv_get_song_info(char *, char **, int *);
 static char *generate_title(const char *, WavpackContext *ctx);
-static double isSeek;
+static int isSeek;
 static short paused;
 static bool killDecodeThread;
 static bool AudioError;
@@ -305,11 +301,10 @@ end_thread()
 static void *
 DecodeThread(InputPlayback *playback)
 {
-    ape_tag tag;
-    char *filename = playback->filename;
-    int bps_updateCounter = 0;
     int bps;
-    int i;
+#ifdef AUD_DEBUG
+    char *filename = playback->filename;
+#endif
     WavpackDecoder d(&mod);
 
     if (!d.attach_to_play(playback)) {
@@ -317,25 +312,26 @@ DecodeThread(InputPlayback *playback)
         return end_thread();
     }
     bps = WavpackGetBytesPerSample(d.ctx) * d.num_channels;
-    DBG("reading %s at %d rate with %d channels\n", filename, d.sample_rate, d.num_channels);
+    AUDDBG("reading %s at %d rate with %d channels\n", filename, d.sample_rate, d.num_channels);
 
     if (!d.open_audio()) {
-        DBG("error opening audio channel\n");
+        AUDDBG("error opening audio channel\n");
         killDecodeThread = true;
         AudioError = true;
         openedAudio = false;
     }
     else {
-        DBG("opened audio channel\n");
+        AUDDBG("opened audio channel\n");
         openedAudio = true;
     }
     unsigned status;
+#if 0
     char *display = generate_title(filename, d.ctx);
     int length = (int) (1000 * WavpackGetNumSamples(d.ctx));
-
+#endif
     while (!killDecodeThread) {
         if (isSeek != -1) {
-            DBG("seeking to position %d\n", isSeek);
+            AUDDBG("seeking to position %d\n", isSeek);
             WavpackSeekSample(d.ctx, (int)(isSeek * d.sample_rate));
             isSeek = -1;
         }
@@ -477,12 +473,14 @@ wv_get_song_info(char *filename, char **title, int *length)
     }
 
     int sample_rate = WavpackGetSampleRate(d.ctx);
+#ifdef AUD_DEBUG
     int num_channels = WavpackGetNumChannels(d.ctx);
-    DBG("reading %s at %d rate with %d channels\n", filename, sample_rate, num_channels);
+#endif
+    AUDDBG("reading %s at %d rate with %d channels\n", filename, sample_rate, num_channels);
 
     *length = (int)(WavpackGetNumSamples(d.ctx) / sample_rate) * 1000,
     *title = generate_title(filename, d.ctx);
-    DBG("title for %s = %s\n", filename, *title);
+    AUDDBG("title for %s = %s\n", filename, *title);
 }
 
 static int

@@ -22,7 +22,7 @@
 #ifndef AUD_MAD_H
 #define AUD_MAD_H
 
-/* #define DEBUG 1 */
+/* #define AUD_DEBUG 1 */
 /* #define DEBUG_INTENSIVELY 1 */
 /* #define DEBUG_DITHER 1 */
 
