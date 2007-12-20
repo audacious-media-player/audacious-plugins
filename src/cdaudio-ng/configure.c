@@ -25,6 +25,7 @@ static GtkWidget *configwindow,
 		*cddbportlabel,
 		*cddbserverentry,
 		*cddbportentry,
+		*cddbhttpcheckbutton,
 		*usedevicecheckbutton,
 		*buttonbox,
 		*limitspinbutton,
@@ -52,7 +53,10 @@ static void configure_values_to_gui(void)
 	gtk_entry_set_text(GTK_ENTRY(cddbportentry), portstr);
 	gtk_widget_set_sensitive(cddbserverentry, cdng_cfg.use_cddb);
 	gtk_widget_set_sensitive(cddbportentry, cdng_cfg.use_cddb);
-
+	
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cddbhttpcheckbutton), cdng_cfg.cddb_http);
+	gtk_widget_set_sensitive(cddbhttpcheckbutton, cdng_cfg.use_cddb);
+	
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton), strlen(cdng_cfg.device) > 0);
 
 	gtk_widget_set_sensitive(deviceentry, strlen(cdng_cfg.device) > 0);
@@ -74,6 +78,7 @@ static void configure_gui_to_values(void)
 	cdng_cfg.use_cdtext = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton));
 	cdng_cfg.use_cddb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton));
 	pstrcpy(&cdng_cfg.cddb_server, gtk_entry_get_text(GTK_ENTRY(cddbserverentry)));
+	cdng_cfg.cddb_http = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cddbhttpcheckbutton));
 	cdng_cfg.cddb_port = strtol(gtk_entry_get_text(GTK_ENTRY(cddbportentry)), NULL, 10);
 	
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)))
@@ -114,12 +119,24 @@ static void checkbutton_toggled(GtkWidget *widget, gpointer data)
 
 	gtk_widget_set_sensitive(cddbserverentry,
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
+
+	gtk_widget_set_sensitive(cddbhttpcheckbutton,
+		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
 	
 	gtk_widget_set_sensitive(cddbportentry,
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
 	
 	gtk_widget_set_sensitive(deviceentry,
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)));
+
+	/*		
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cddbhttpcheckbutton)) && (widget CDDEBUG("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
+	cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
+	cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);== cddbhttpcheckbutton))
+		gtk_entry_set_text(GTK_ENTRY(cddbportentry), _("80"));
+	else
+		gtk_entry_set_text(GTK_ENTRY(cddbportentry), _("8880"));
+	*/
 }
 
 
@@ -167,11 +184,11 @@ void configure_create_gui()
 
 	usecdtextcheckbutton = gtk_check_button_new_with_label(_("Use cd-text if available"));
 	g_signal_connect(G_OBJECT(usecdtextcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
-	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), usecdtextcheckbutton, 0, 2, 0, 1);
+	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), usecdtextcheckbutton, 0, 1, 0, 1);
 
 	usecddbcheckbutton = gtk_check_button_new_with_label(_("Use CDDB if available"));
 	g_signal_connect(G_OBJECT(usecddbcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
-	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), usecddbcheckbutton, 0, 2, 1, 2);
+	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), usecddbcheckbutton, 0, 1, 1, 2);
 
 	cddbserverlabel = gtk_label_new(_("Server: "));
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbserverlabel, 0, 1, 2, 3);
@@ -181,6 +198,10 @@ void configure_create_gui()
 
 	cddbserverentry = gtk_entry_new();
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbserverentry, 1, 2, 2, 3);
+
+	cddbhttpcheckbutton = gtk_check_button_new_with_label(_("Use HTTP instead of CDDBP"));
+	g_signal_connect(G_OBJECT(cddbhttpcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
+	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbhttpcheckbutton, 1, 2, 1, 2);
 
 	cddbportentry = gtk_entry_new();
 	gtk_table_attach_defaults(GTK_TABLE(titleinfotable), cddbportentry, 1, 2, 3, 4);
@@ -218,6 +239,7 @@ void configure_create_gui()
 	gtk_widget_show(usecdtextcheckbutton);
 	gtk_widget_show(usecddbcheckbutton);
 	gtk_widget_show(cddbserverentry);
+	gtk_widget_show(cddbhttpcheckbutton);
 	gtk_widget_show(cddbportentry);
 	gtk_widget_show(cddbserverlabel);
 	gtk_widget_show(cddbportlabel);
@@ -259,3 +281,4 @@ gint pstrcpy(gchar **res, const gchar *str)
 	strcpy(*res, str);
 	return 0;
 }
+
