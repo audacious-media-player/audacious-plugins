@@ -435,8 +435,6 @@ oss_close(void)
         return;
     going = 0;
 
-    oss_set_volume(start_vol_l, start_vol_r);
-
     g_thread_join(buffer_thread);
 
     g_free(device_name);
@@ -444,6 +442,7 @@ oss_close(void)
     wr_index = 0;
     rd_index = 0;
 
+    oss_set_volume(start_vol_l, start_vol_r);
     close_mixer_device();
 }
 
