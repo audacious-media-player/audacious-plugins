@@ -442,7 +442,6 @@ oss_close(void)
     wr_index = 0;
     rd_index = 0;
 
-    oss_set_volume(start_vol_l, start_vol_r);
     close_mixer_device();
 }
 
@@ -532,6 +531,7 @@ oss_loop(gpointer arg)
     }
 
     ioctl(fd, SNDCTL_DSP_SYNC, 0);
+    oss_set_volume(start_vol_l, start_vol_r);
     close(fd);
     g_free(buffer);
     return NULL;
