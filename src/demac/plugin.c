@@ -305,6 +305,11 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     Tuple *tpl = aud_tuple_new_from_filename(uri);
     gchar codec_string[32];
 
+    if (aud_vfs_is_streaming(vfd)) {
+        /* This plugin does not support streams yet */
+        return NULL;
+    }
+
     mowgli_dictionary_t *tag = NULL;
     gchar *item;
     if ((tag = parse_apev2_tag(vfd)) != NULL) {
