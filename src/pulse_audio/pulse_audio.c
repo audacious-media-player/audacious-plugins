@@ -70,7 +70,7 @@ gint ctrlsocket_get_session_id(void);
 
 static const char* get_song_name(void) {
     static char t[256];
-    gint session, pos;
+    gint pos;
     char *str, *u;
     Playlist *playlist = aud_playlist_get_active();
 
@@ -415,6 +415,11 @@ static void pulse_flush(int time) {
 
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
+
+    /* gapless playback: new stream, reset the title. --nenolod */
+    if (time == 0) {
+        pa_stream_set_name(stream, get_song_name(), stream_success_cb, &success);
+    }
 
     if (!(o = pa_stream_flush(stream, stream_success_cb, &success))) {
         g_warning("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
