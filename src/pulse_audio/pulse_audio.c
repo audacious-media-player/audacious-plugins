@@ -446,22 +446,37 @@ fail:
 }
 
 static void pulse_write(void* ptr, int length) {
+    gint writeoffs, remain, writable;
+    gint fragsize = 1024; /* TODO: make fragment size configurable */
 
     CHECK_CONNECTED();
 
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
 
-    if (pa_stream_write(stream, ptr, length, NULL, PA_SEEK_RELATIVE, 0) < 0) {
-        g_warning("pa_stream_write() failed: %s", pa_strerror(pa_context_errno(context)));
-        goto fail;
+    /* break large fragments into smaller fragments. --nenolod */
+    for (writeoffs = 0, remain = length;
+         writeoffs < length;
+         writeoffs += writable, remain -= writable)
+    {
+         gpointer pptr = ptr + writeoffs;
+
+         writable = length - writeoffs;
+
+         /* don't write any more than a fragment the size of fragsize at a time. */
+         if (writable > fragsize)
+             writable = fragsize;
+
+         if (pa_stream_write(stream, pptr, writable, NULL, PA_SEEK_RELATIVE, 0) < 0) {
+             g_warning("pa_stream_write() failed: %s", pa_strerror(pa_context_errno(context)));
+             goto fail;
+         }
     }
 
     do_trigger = 0;
     written += length;
 
 fail:
-
     pa_threaded_mainloop_unlock(mainloop);
 }
 
@@ -494,8 +509,8 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void pulse_close(void) {
-
+static void pulse_close(void)
+{
     drain();
 
     connected = 0;
