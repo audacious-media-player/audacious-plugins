@@ -591,6 +591,7 @@ get_song_tuple(char *filename)
 		}
 		aud_vfs_fclose(file);
 	}
+        g_free(ttainfo);
 	return tuple;
 }
 
