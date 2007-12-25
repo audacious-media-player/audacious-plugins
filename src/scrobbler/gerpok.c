@@ -745,10 +745,13 @@ static void read_cache(void)
 	char buf[PATH_MAX], *cache = NULL, *ptr1, *ptr2;
 	int cachesize, written, i = 0;
 	item_t *item;
+	gchar* config_datadir;
 
 	cachesize = written = 0;
 
-	g_snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", audacious_get_localdir());
+	config_datadir = audacious_get_localdir();
+	g_snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", config_datadir);
+	g_free(config_datadir);
 
 	if (!(fd = fopen(buf, "r")))
 		return;
@@ -823,6 +826,7 @@ static void dump_queue(void)
 	FILE *fd;
 	item_t *item;
 	char *home, buf[PATH_MAX];
+	gchar* config_datadir;
 
 	/*pdebug("Entering dump_queue();", DEBUG);*/
 
@@ -832,7 +836,9 @@ static void dump_queue(void)
 		return;
 	}
 
-	g_snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", audacious_get_localdir());
+	config_datadir = audacious_get_localdir();
+	g_snprintf(buf, sizeof(buf), "%s/gerpokqueue.txt", config_datadir);
+	g_free(config_datadir);
 
 	if (!(fd = fopen(buf, "w")))
 	{

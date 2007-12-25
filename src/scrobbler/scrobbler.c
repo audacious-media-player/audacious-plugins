@@ -830,10 +830,13 @@ static void read_cache(void)
 	char buf[PATH_MAX], *cache = NULL, *ptr1, *ptr2;
 	int cachesize, written, i = 0;
 	item_t *item;
+	gchar* config_datadir;
 
 	cachesize = written = 0;
 
-	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", audacious_get_localdir());
+	config_datadir = audacious_get_localdir();
+	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
+	g_free(config_datadir);
 
 	if (!(fd = fopen(buf, "r")))
 		return;
@@ -884,10 +887,19 @@ static void read_cache(void)
 
 		{
 			Tuple *tuple = aud_tuple_new();
+			gchar* string_value;
 
-			aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, xmms_urldecode_plain(artist));
-			aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, xmms_urldecode_plain(title));
-			aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, xmms_urldecode_plain(album));
+			string_value = xmms_urldecode_plain(artist);
+			aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, string_value);
+			g_free(string_value);
+
+			string_value = xmms_urldecode_plain(title);
+			aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, string_value);
+			g_free(string_value);
+
+			string_value = xmms_urldecode_plain(album);
+			aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, string_value);
+			g_free(string_value);
 
 			item = q_put(tuple, atoi(len));
 
@@ -919,6 +931,7 @@ static void dump_queue(void)
 	FILE *fd;
 	item_t *item;
 	char *home, buf[PATH_MAX];
+	gchar* config_datadir;
 
 	/*pdebug("Entering dump_queue();", DEBUG);*/
 
@@ -928,7 +941,9 @@ static void dump_queue(void)
 		return;
 	}
 
-	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", audacious_get_localdir());
+	config_datadir = audacious_get_localdir();
+	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
+	g_free(config_datadir);
 
 	if (!(fd = fopen(buf, "w")))
 	{
