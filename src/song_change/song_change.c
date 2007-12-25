@@ -430,6 +430,7 @@ static GtkWidget *configure(void)
 	cmd_warn_label = gtk_label_new(temp);
 	gtk_label_set_markup(GTK_LABEL(cmd_warn_label), temp);
 	gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_label, FALSE, FALSE, 0);
+        g_free(temp);
 
 	g_signal_connect(GTK_OBJECT(cmd_entry), "changed", GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
 	g_signal_connect(GTK_OBJECT(cmd_after_entry), "changed", GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
