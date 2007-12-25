@@ -40,6 +40,7 @@
     } while(0)
 
 callback_info* init_callback_info(gchar* name);
+void clean_callback_info(callback_info* info);
 void reset_info(callback_info* info, gboolean close_fd);
 gchar* get_title(const gchar* filename, callback_info* info);
 Tuple *get_tuple(const gchar *filename, callback_info* info);

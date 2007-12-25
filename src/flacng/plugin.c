@@ -32,6 +32,7 @@ static gchar *flac_fmts[] = { "flac", "fla", NULL };
 InputPlugin flac_ip = {
     .description = "FLACng Audio Plugin",
     .init = flac_init,
+    .cleanup = flac_cleanup,
     .about = flac_aboutbox,
     .is_our_file = flac_is_our_file,
     .play_file = flac_play_file,
@@ -147,6 +148,23 @@ void flac_init(void) {
 
      _DEBUG("plugin initialized OK!");
      plugin_initialized = TRUE;
+    _LEAVE;
+}
+
+/* --- */
+
+void flac_cleanup(void)
+{
+    _ENTER;
+
+    FLAC__stream_decoder_delete(main_decoder);
+    clean_callback_info(main_info);
+
+    FLAC__stream_decoder_delete(test_decoder);
+    clean_callback_info(test_info);
+
+    plugin_initialized = FALSE;
+
     _LEAVE;
 }
 

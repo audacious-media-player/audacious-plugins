@@ -2,6 +2,7 @@
 #define _PLUGIN_H
 
 void flac_init(void);
+void flac_cleanup(void);
 void flac_aboutbox(void);
 gboolean flac_is_our_file(gchar* filename);
 gboolean flac_is_our_fd(gchar* filename, VFSFile* fd);

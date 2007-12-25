@@ -75,6 +75,15 @@ callback_info* init_callback_info(gchar* name) {
 
 /* --- */
 
+void clean_callback_info(callback_info* info)
+{
+    g_mutex_free(info->mutex);
+    free(info->output_buffer);
+    free(info);
+}
+
+/* --- */
+
 void reset_info(callback_info* info, gboolean close_fd) {
 
     _ENTER;
