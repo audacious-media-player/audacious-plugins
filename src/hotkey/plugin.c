@@ -2,7 +2,7 @@
 /*
  *  This file is part of audacious-hotkey plugin for audacious
  *
- *  Copyright (c) 2007        Sascha Hlusiak <contact@saschahlusiak.de>
+ *  Copyright (c) 2007 - 2008  Sascha Hlusiak <contact@saschahlusiak.de>
  *  Name: plugin.c
  *  Description: plugin.c
  * 
@@ -75,24 +75,32 @@ void ok_callback (GtkWidget *widget, gpointer data);
 static void about (void);
 static void cleanup (void);
 
+#define TYPE_KEY 0
+#define TYPE_MOUSE 1
+
+
+typedef struct {
+	gint key, mask;
+	gint type;
+} HotkeyConfiguration;
+
 typedef struct {
 	gint vol_increment;
 	gint vol_decrement;
 	
 	/* keyboard */
-	gint mute, mute_mask;
-	gint vol_down, vol_down_mask;
-	gint vol_up, vol_up_mask;
-	gint play, play_mask;
-	gint stop, stop_mask;
-	gint pause, pause_mask;
-	gint prev_track, prev_track_mask;
-	gint next_track, next_track_mask;
-	gint jump_to_file, jump_to_file_mask;
-	gint toggle_win, toggle_win_mask;
-
-	gint forward,  forward_mask;
-	gint backward, backward_mask;
+	HotkeyConfiguration mute;
+	HotkeyConfiguration vol_down;
+	HotkeyConfiguration vol_up;
+	HotkeyConfiguration play;
+	HotkeyConfiguration stop;
+	HotkeyConfiguration pause;
+	HotkeyConfiguration prev_track;
+	HotkeyConfiguration next_track;
+	HotkeyConfiguration jump_to_file;
+	HotkeyConfiguration toggle_win;
+	HotkeyConfiguration forward;
+	HotkeyConfiguration backward;
 } PluginConfig;
 
 PluginConfig plugin_cfg;
@@ -109,17 +117,17 @@ static unsigned int capslock_mask = 0;
 
 typedef struct {
 	GtkWidget *keytext;
-	gint key, mask;
+	HotkeyConfiguration hotkey;
 } KeyControls;
 
 typedef struct {
 	KeyControls play;
 	KeyControls stop;
 	KeyControls pause;
-	KeyControls prev;
-	KeyControls next;
-	KeyControls up;
-	KeyControls down;
+	KeyControls prev_track;
+	KeyControls next_track;
+	KeyControls vol_up;
+	KeyControls vol_down;
 	KeyControls mute;
 	KeyControls jump_to_file;
 	KeyControls forward;
@@ -225,7 +233,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	state &= ~(scrolllock_mask | numlock_mask | capslock_mask);
 	
 	/* mute the playback */
-	if ((keycode == plugin_cfg.mute) && (state == plugin_cfg.mute_mask))
+	if ((keycode == plugin_cfg.mute.key) && (state == plugin_cfg.mute.mask))
 	{
 		if (!mute)
 		{
@@ -240,7 +248,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* decreace volume */
-	if ((keycode == plugin_cfg.vol_down) && (state == plugin_cfg.vol_down_mask))
+	if ((keycode == plugin_cfg.vol_down.key) && (state == plugin_cfg.vol_down.mask))
 	{
 		if (mute)
 		{
@@ -264,7 +272,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* increase volume */
-	if ((keycode == plugin_cfg.vol_up) && (state == plugin_cfg.vol_up_mask))
+	if ((keycode == plugin_cfg.vol_up.key) && (state == plugin_cfg.vol_up.mask))
 	{
 		if (mute)
 		{
@@ -288,7 +296,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* play */
-	if ((keycode == plugin_cfg.play) && (state == plugin_cfg.play_mask))
+	if ((keycode == plugin_cfg.play.key) && (state == plugin_cfg.play.mask))
 	{
 		if (!play)
 		{
@@ -300,7 +308,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 
 	/* pause */
-	if ((keycode == plugin_cfg.pause) && (state == plugin_cfg.pause_mask))
+	if ((keycode == plugin_cfg.pause.key) && (state == plugin_cfg.pause.mask))
 	{
 		if (!play) audacious_drct_play ();
 		else audacious_drct_pause ();
@@ -309,28 +317,28 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* stop */
-	if ((keycode == plugin_cfg.stop) && (state == plugin_cfg.stop_mask))
+	if ((keycode == plugin_cfg.stop.key) && (state == plugin_cfg.stop.mask))
 	{
 		audacious_drct_stop ();
 		return TRUE;
 	}
 	
 	/* prev track */	
-	if ((keycode == plugin_cfg.prev_track) && (state == plugin_cfg.prev_track_mask))
+	if ((keycode == plugin_cfg.prev_track.key) && (state == plugin_cfg.prev_track.mask))
 	{
 		audacious_drct_playlist_prev ();
 		return TRUE;
 	}
 	
 	/* next track */
-	if ((keycode == plugin_cfg.next_track) && (state == plugin_cfg.next_track_mask))
+	if ((keycode == plugin_cfg.next_track.key) && (state == plugin_cfg.next_track.mask))
 	{
 		audacious_drct_playlist_next ();
 		return TRUE;
 	}
 
 	/* forward */
-	if ((keycode == plugin_cfg.forward) && (state == plugin_cfg.forward_mask))
+	if ((keycode == plugin_cfg.forward.key) && (state == plugin_cfg.forward.mask))
 	{
 		gint time = audacious_drct_get_output_time();
 		time += 5000; /* Jump 5s into future */
@@ -339,7 +347,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 
 	/* backward */
-	if ((keycode == plugin_cfg.backward) && (state == plugin_cfg.backward_mask))
+	if ((keycode == plugin_cfg.backward.key) && (state == plugin_cfg.backward.mask))
 	{
 		gint time = audacious_drct_get_output_time();
 		if (time > 5000) time -= 5000; /* Jump 5s back */
@@ -349,14 +357,14 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 
 	/* Open Jump-To-File dialog */
-	if ((keycode == plugin_cfg.jump_to_file) && (state == plugin_cfg.jump_to_file_mask))
+	if ((keycode == plugin_cfg.jump_to_file.key) && (state == plugin_cfg.jump_to_file.mask))
 	{
 		audacious_drct_show_jtf_box();
 		return TRUE;
 	}
 
 	/* Toggle Windows */
-	if ((keycode == plugin_cfg.toggle_win) && (state == plugin_cfg.toggle_win_mask))
+	if ((keycode == plugin_cfg.toggle_win.key) && (state == plugin_cfg.toggle_win.mask))
 	{
 		static gboolean is_main, is_eq, is_pl;
 		is_main = audacious_drct_main_win_is_visible();
@@ -421,58 +429,30 @@ static void load_config (void)
 	plugin_cfg.vol_increment = 4;
 	plugin_cfg.vol_decrement = 4;
 
-	plugin_cfg.mute = XKeysymToKeycode(xdisplay, XF86XK_AudioMute);
-	plugin_cfg.mute_mask = 0;
-	plugin_cfg.vol_down = XKeysymToKeycode(xdisplay, XF86XK_AudioLowerVolume);
-	plugin_cfg.vol_down_mask = 0;
-	plugin_cfg.vol_up = XKeysymToKeycode(xdisplay, XF86XK_AudioRaiseVolume);
-	plugin_cfg.vol_up_mask = 0;
-	plugin_cfg.play = XKeysymToKeycode(xdisplay, XF86XK_AudioPlay);
-	plugin_cfg.play_mask = 0;
-	plugin_cfg.pause = XKeysymToKeycode(xdisplay, XF86XK_AudioPause);
-	plugin_cfg.pause_mask = 0;
-	plugin_cfg.stop = XKeysymToKeycode(xdisplay, XF86XK_AudioStop);
-	plugin_cfg.stop_mask = 0;
-	plugin_cfg.prev_track = XKeysymToKeycode(xdisplay, XF86XK_AudioPrev);
-	plugin_cfg.prev_track_mask = 0;
-	plugin_cfg.next_track = XKeysymToKeycode(xdisplay, XF86XK_AudioNext);
-	plugin_cfg.next_track_mask = 0;
-	plugin_cfg.jump_to_file = XKeysymToKeycode(xdisplay, XF86XK_AudioMedia);
-	plugin_cfg.jump_to_file_mask = 0;
-	plugin_cfg.forward = 0;
-	plugin_cfg.forward_mask = 0;
-	plugin_cfg.backward = XKeysymToKeycode(xdisplay, XF86XK_AudioRewind);
-	plugin_cfg.backward_mask = 0;
-	plugin_cfg.toggle_win = 0;
-	plugin_cfg.toggle_win_mask = 0;
+#define load_key(hotkey,default) \
+	plugin_cfg.hotkey.key = (default)?(XKeysymToKeycode(xdisplay, (default))):0; \
+	plugin_cfg.hotkey.mask = 0; \
+	plugin_cfg.hotkey.type = TYPE_KEY; \
+	aud_cfg_db_get_int (cfdb, "globalHotkey", #hotkey, &plugin_cfg.hotkey.key); \
+	aud_cfg_db_get_int (cfdb, "globalHotkey", #hotkey "_mask", &plugin_cfg.hotkey.mask); \
+	aud_cfg_db_get_int (cfdb, "globalHotkey", #hotkey "_type", &plugin_cfg.hotkey.type);
+
 
 	/* open configuration database */
 	cfdb = aud_cfg_db_open ( );
 
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "mute", &plugin_cfg.mute);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "mute_mask", &plugin_cfg.mute_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_down", &plugin_cfg.vol_down);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_down_mask", &plugin_cfg.vol_down_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_up", &plugin_cfg.vol_up);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "vol_up_mask", &plugin_cfg.vol_up_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "play", &plugin_cfg.play);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "play_mask", &plugin_cfg.play_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "pause", &plugin_cfg.pause);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "pause_mask", &plugin_cfg.pause_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "stop", &plugin_cfg.stop);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "stop_mask", &plugin_cfg.stop_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "prev_track", &plugin_cfg.prev_track);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "prev_track_mask", &plugin_cfg.prev_track_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "next_track", &plugin_cfg.next_track);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "next_track_mask", &plugin_cfg.next_track_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "jump_to_file", &plugin_cfg.jump_to_file);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "jump_to_file_mask", &plugin_cfg.jump_to_file_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "forward", &plugin_cfg.forward);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "forward_mask", &plugin_cfg.forward_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "backward", &plugin_cfg.backward);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "backward_mask", &plugin_cfg.backward_mask);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "toggle_win", &plugin_cfg.toggle_win);
-	aud_cfg_db_get_int (cfdb, "globalHotkey", "toggle_win_mask", &plugin_cfg.toggle_win_mask);
+	load_key(mute, XF86XK_AudioMute);
+	load_key(vol_down, XF86XK_AudioLowerVolume);
+	load_key(vol_up, XF86XK_AudioRaiseVolume);
+	load_key(play, XF86XK_AudioPlay);
+	load_key(pause, XF86XK_AudioPause);
+	load_key(stop, XF86XK_AudioStop);
+	load_key(prev_track, XF86XK_AudioPrev);
+	load_key(next_track, XF86XK_AudioNext);
+	load_key(jump_to_file, XF86XK_AudioMedia);
+	load_key(toggle_win, 0);
+	load_key(forward, 0);
+	load_key(backward, XF86XK_AudioRewind);
 
 	aud_cfg_db_close (cfdb);
 }
@@ -481,34 +461,28 @@ static void load_config (void)
 static void save_config (void)
 {
 	ConfigDb *cfdb;
+
+#define save_key(hotkey) \
+	aud_cfg_db_set_int (cfdb, "globalHotkey", #hotkey, plugin_cfg.hotkey.key); \
+	aud_cfg_db_set_int (cfdb, "globalHotkey", #hotkey "_mask", plugin_cfg.hotkey.mask); \
+	aud_cfg_db_set_int (cfdb, "globalHotkey", #hotkey "_type", plugin_cfg.hotkey.type);
 	
 	/* open configuration database */
 	cfdb = aud_cfg_db_open ( );
 	
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "mute", plugin_cfg.mute);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "mute_mask", plugin_cfg.mute_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_up", plugin_cfg.vol_up);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_up_mask", plugin_cfg.vol_up_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_down", plugin_cfg.vol_down);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "vol_down_mask", plugin_cfg.vol_down_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "play", plugin_cfg.play);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "play_mask", plugin_cfg.play_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "pause", plugin_cfg.pause);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "pause_mask", plugin_cfg.pause_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "stop", plugin_cfg.stop);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "stop_mask", plugin_cfg.stop_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "prev_track", plugin_cfg.prev_track);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "prev_track_mask", plugin_cfg.prev_track_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "next_track", plugin_cfg.next_track);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "next_track_mask", plugin_cfg.next_track_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "jump_to_file", plugin_cfg.jump_to_file);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "jump_to_file_mask", plugin_cfg.jump_to_file_mask);	
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "forward", plugin_cfg.forward);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "forward_mask", plugin_cfg.forward_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "backward", plugin_cfg.backward);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "backward_mask", plugin_cfg.backward_mask);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "toggle_win", plugin_cfg.toggle_win);
-	aud_cfg_db_set_int (cfdb, "globalHotkey", "toggle_win_mask", plugin_cfg.toggle_win_mask);
+	save_key(mute);
+	save_key(vol_up);
+	save_key(vol_down);
+	save_key(play);
+	save_key(pause);
+	save_key(stop);
+	save_key(prev_track);
+	save_key(next_track);
+	save_key(jump_to_file);
+	save_key(forward);
+	save_key(backward);
+	save_key(toggle_win);
+
 	aud_cfg_db_close (cfdb);
 }
 
@@ -518,48 +492,50 @@ static int x11_error_handler (Display *dpy, XErrorEvent *error)
 }
 
 /* grab requied keys */
-static void grab_key(KeyCode keycode, unsigned int modifier)
+static void grab_key(HotkeyConfiguration hotkey)
 {
-	modifier &= ~(numlock_mask | capslock_mask | scrolllock_mask);
+	unsigned int modifier = hotkey.mask & ~(numlock_mask | capslock_mask | scrolllock_mask);
 	
-	XGrabKey (xdisplay, keycode, modifier, x_root_window,
+	if (hotkey.key == 0) return;
+
+	XGrabKey (xdisplay, hotkey.key, modifier, x_root_window,
 		False, GrabModeAsync, GrabModeAsync);
 	
 	if (modifier == AnyModifier)
 		return;
 	
 	if (numlock_mask)
-		XGrabKey (xdisplay, keycode, modifier | numlock_mask,
+		XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask,
 			x_root_window,
 			False, GrabModeAsync, GrabModeAsync);
 	
 	if (capslock_mask)
-		XGrabKey (xdisplay, keycode, modifier | capslock_mask,
+		XGrabKey (xdisplay, hotkey.key, modifier | capslock_mask,
 			x_root_window,
 			False, GrabModeAsync, GrabModeAsync);
 	
 	if (scrolllock_mask)
-		XGrabKey (xdisplay, keycode, modifier | scrolllock_mask,
+		XGrabKey (xdisplay, hotkey.key, modifier | scrolllock_mask,
 			x_root_window,
 			False, GrabModeAsync, GrabModeAsync);
 	
 	if (numlock_mask && capslock_mask)
-		XGrabKey (xdisplay, keycode, modifier | numlock_mask | capslock_mask,
+		XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask,
 			x_root_window,
 			False, GrabModeAsync, GrabModeAsync);
 	
 	if (numlock_mask && scrolllock_mask)
-		XGrabKey (xdisplay, keycode, modifier | numlock_mask | scrolllock_mask,
+		XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask | scrolllock_mask,
 			x_root_window,
 			False, GrabModeAsync, GrabModeAsync);
 	
 	if (capslock_mask && scrolllock_mask)
-		XGrabKey (xdisplay, keycode, modifier | capslock_mask | scrolllock_mask,
+		XGrabKey (xdisplay, hotkey.key, modifier | capslock_mask | scrolllock_mask,
 			x_root_window,
 			False, GrabModeAsync, GrabModeAsync);
 	
 	if (numlock_mask && capslock_mask && scrolllock_mask)
-		XGrabKey (xdisplay, keycode,
+		XGrabKey (xdisplay, hotkey.key,
 			modifier | numlock_mask | capslock_mask | scrolllock_mask,
 			x_root_window, False, GrabModeAsync,
 			GrabModeAsync);
@@ -575,20 +551,20 @@ static void grab_keys ()
 
 	XSync(xdisplay, False);
 	old_handler = XSetErrorHandler (x11_error_handler);
-	
-	if (plugin_cfg.mute) grab_key(plugin_cfg.mute, plugin_cfg.mute_mask);
-	if (plugin_cfg.vol_up) grab_key(plugin_cfg.vol_up, plugin_cfg.vol_up_mask);
-	if (plugin_cfg.vol_down) grab_key(plugin_cfg.vol_down, plugin_cfg.vol_down_mask);
-	if (plugin_cfg.play) grab_key(plugin_cfg.play, plugin_cfg.play_mask);
-	if (plugin_cfg.pause) grab_key(plugin_cfg.pause, plugin_cfg.pause_mask);
-	if (plugin_cfg.stop) grab_key(plugin_cfg.stop, plugin_cfg.stop_mask);
-	if (plugin_cfg.prev_track) grab_key(plugin_cfg.prev_track, plugin_cfg.prev_track_mask);
-	if (plugin_cfg.next_track) grab_key(plugin_cfg.next_track, plugin_cfg.next_track_mask);
-	if (plugin_cfg.jump_to_file) grab_key(plugin_cfg.jump_to_file, plugin_cfg.jump_to_file_mask);
-	if (plugin_cfg.forward) grab_key(plugin_cfg.forward, plugin_cfg.forward_mask);
-	if (plugin_cfg.backward) grab_key(plugin_cfg.backward, plugin_cfg.backward_mask);
-	if (plugin_cfg.toggle_win) grab_key(plugin_cfg.toggle_win, plugin_cfg.toggle_win_mask);
 
+	grab_key(plugin_cfg.mute);
+	grab_key(plugin_cfg.vol_up);
+	grab_key(plugin_cfg.vol_down);
+	grab_key(plugin_cfg.play);
+	grab_key(plugin_cfg.pause);
+	grab_key(plugin_cfg.stop);
+	grab_key(plugin_cfg.prev_track);
+	grab_key(plugin_cfg.next_track);
+	grab_key(plugin_cfg.jump_to_file);
+	grab_key(plugin_cfg.forward);
+	grab_key(plugin_cfg.backward);
+	grab_key(plugin_cfg.toggle_win);
+	
 	XSync(xdisplay, False);
 	XSetErrorHandler (old_handler);
 
@@ -598,7 +574,7 @@ static void grab_keys ()
  * plugin init end
  */
 
-static void set_keytext (GtkWidget *entry, gint key, gint mask)
+static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
 {
 	gchar *text = NULL;
 
@@ -667,11 +643,12 @@ on_entry_key_press_event(GtkWidget * widget,
         	mod |= Mod4Mask;
 
 	if (!is_mod) {
-		controls->key = event->hardware_keycode;
-		controls->mask = mod;
-	} else controls->key = 0;
+		controls->hotkey.key = event->hardware_keycode;
+		controls->hotkey.mask = mod;
+		controls->hotkey.type = TYPE_KEY;
+	} else controls->hotkey.key = 0;
 
-	set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode, mod);
+	set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode, mod, TYPE_KEY);
 	return FALSE;
 }
 
@@ -681,21 +658,25 @@ on_entry_key_release_event(GtkWidget * widget,
                            gpointer user_data)
 {
 	KeyControls *controls = (KeyControls*) user_data;
-	if (controls->key == 0) {
-		controls->mask = 0;
+	if (controls->hotkey.key == 0) {
+		controls->hotkey.mask = 0;
 	}
-	set_keytext(controls->keytext, controls->key, controls->mask);
+	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
 	return FALSE;
 }
 
 
-static void add_event_controls(GtkWidget *table, KeyControls *controls, int row, char* descr, gint key, gint mask)
+static void add_event_controls(GtkWidget *table, 
+				KeyControls *controls, 
+				int row, 
+				char* descr, 
+				HotkeyConfiguration hotkey)
 {
 	GtkWidget *label;
 	GtkWidget *button;
 
-	controls->key = key;
-	controls->mask = mask;	
+	controls->hotkey.key = hotkey.key;
+	controls->hotkey.mask = hotkey.mask;
 
 	label = gtk_label_new (_(descr));
 	gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1, 
@@ -708,7 +689,7 @@ static void add_event_controls(GtkWidget *table, KeyControls *controls, int row,
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 	gtk_entry_set_editable (GTK_ENTRY (controls->keytext), FALSE);
 
-	set_keytext(controls->keytext, key, mask);
+	set_keytext(controls->keytext, hotkey.key, hotkey.mask, hotkey.type);
 	g_signal_connect((gpointer)controls->keytext, "key_press_event",
                          G_CALLBACK(on_entry_key_press_event), controls);
 	g_signal_connect((gpointer)controls->keytext, "key_release_event",
@@ -792,26 +773,26 @@ static void configure (void)
 	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 
 	/* prev track */
-	add_event_controls(table, &controls->prev, 0, _("Previous Track:"), 
-			plugin_cfg.prev_track, plugin_cfg.prev_track_mask);
+	add_event_controls(table, &controls->prev_track, 0, _("Previous Track:"), 
+			plugin_cfg.prev_track);
 
 	add_event_controls(table, &controls->play, 1, _("Play/Pause:"), 
-			plugin_cfg.play, plugin_cfg.play_mask);
+			plugin_cfg.play);
 
 	add_event_controls(table, &controls->pause, 2, _("Pause:"), 
-			plugin_cfg.pause, plugin_cfg.pause_mask);
+			plugin_cfg.pause);
 
 	add_event_controls(table, &controls->stop, 3, _("Stop:"), 
-			plugin_cfg.stop, plugin_cfg.stop_mask);
+			plugin_cfg.stop);
 
-	add_event_controls(table, &controls->next, 4, _("Next Track:"), 
-			plugin_cfg.next_track, plugin_cfg.next_track_mask);
+	add_event_controls(table, &controls->next_track, 4, _("Next Track:"), 
+			plugin_cfg.next_track);
 
 	add_event_controls(table, &controls->forward, 5, _("Forward 5 sec.:"), 
-			plugin_cfg.forward, plugin_cfg.forward_mask);
+			plugin_cfg.forward);
 
 	add_event_controls(table, &controls->backward, 6, _("Rewind 5 sec.:"), 
-			plugin_cfg.backward, plugin_cfg.backward_mask);
+			plugin_cfg.backward);
 
 
 	label = gtk_label_new (NULL);
@@ -835,17 +816,15 @@ static void configure (void)
 	gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 2);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-	
-
 
 	add_event_controls(table, &controls->mute, 0, _("Mute:"),
-			plugin_cfg.mute, plugin_cfg.mute_mask);
+			plugin_cfg.mute);
 
-	add_event_controls(table, &controls->up, 1, _("Volume Up:"), 
-			plugin_cfg.vol_up, plugin_cfg.vol_up_mask);
+	add_event_controls(table, &controls->vol_up, 1, _("Volume Up:"), 
+			plugin_cfg.vol_up);
 
-	add_event_controls(table, &controls->down, 2, _("Volume Down:"), 
-			plugin_cfg.vol_down, plugin_cfg.vol_down_mask);
+	add_event_controls(table, &controls->vol_down, 2, _("Volume Down:"), 
+			plugin_cfg.vol_down);
 
 
 	label = gtk_label_new (NULL);
@@ -871,10 +850,10 @@ static void configure (void)
 	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 
 	add_event_controls(table, &controls->jump_to_file, 0, _("Jump to File:"), 
-			plugin_cfg.jump_to_file, plugin_cfg.jump_to_file_mask);
+			plugin_cfg.jump_to_file);
 
 	add_event_controls(table, &controls->toggle_win, 1, _("Toggle Player Windows:"), 
-			plugin_cfg.toggle_win, plugin_cfg.toggle_win_mask);
+			plugin_cfg.toggle_win);
 
 
 	button_box = gtk_hbutton_box_new ( );
@@ -903,9 +882,9 @@ static void about (void)
 	dialog = audacious_info_dialog (_("About Global Hotkey Plugin"),
 				_("Global Hotkey Plugin\n"
 				"Control the player with global key combinations or multimedia keys.\n\n"
-				"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
+				"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
 				"Contributers include:\n"
-				"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+				"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
 				"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
                          	"			Bryn Davies <curious@ihug.com.au>\n"
                         	"			Jonathan A. Davis <davis@jdhouse.org>\n"
@@ -921,9 +900,10 @@ static void about (void)
 static void clear_keyboard (GtkWidget *widget, gpointer data)
 {
 	KeyControls *spins = (KeyControls*)data;
-	spins->key = 0;
-	spins->mask = 0;
-	set_keytext(spins->keytext, 0, 0);
+	spins->hotkey.key = 0;
+	spins->hotkey.mask = 0;
+	spins->hotkey.type = TYPE_KEY;
+	set_keytext(spins->keytext, 0, 0, TYPE_KEY);
 }
 
 void cancel_callback (GtkWidget *widget, gpointer data)
@@ -941,42 +921,19 @@ void ok_callback (GtkWidget *widget, gpointer data)
 {
 	ConfigurationControls *controls= (ConfigurationControls*)data;
 	
-	plugin_cfg.play = controls->play.key;
-	plugin_cfg.play_mask = controls->play.mask;
+	plugin_cfg.play = controls->play.hotkey;
+	plugin_cfg.pause = controls->pause.hotkey;
+	plugin_cfg.stop= controls->stop.hotkey;
+	plugin_cfg.prev_track= controls->prev_track.hotkey;
+	plugin_cfg.next_track = controls->next_track.hotkey;
+	plugin_cfg.forward = controls->forward.hotkey;
+	plugin_cfg.backward = controls->backward.hotkey;
+	plugin_cfg.vol_up= controls->vol_up.hotkey;
+	plugin_cfg.vol_down = controls->vol_down.hotkey;
+	plugin_cfg.mute = controls->mute.hotkey;
+	plugin_cfg.jump_to_file= controls->jump_to_file.hotkey;
+	plugin_cfg.toggle_win = controls->toggle_win.hotkey;
 	
-	plugin_cfg.pause = controls->pause.key;
-	plugin_cfg.pause_mask = controls->pause.mask;
-
-	plugin_cfg.stop = controls->stop.key;
-	plugin_cfg.stop_mask = controls->stop.mask;
-	
-	plugin_cfg.prev_track = controls->prev.key;
-	plugin_cfg.prev_track_mask = controls->prev.mask;
-	
-	plugin_cfg.next_track = controls->next.key;
-	plugin_cfg.next_track_mask = controls->next.mask;
-
-	plugin_cfg.forward = controls->forward.key;
-	plugin_cfg.forward_mask = controls->forward.mask;
-
-	plugin_cfg.backward = controls->backward.key;
-	plugin_cfg.backward_mask = controls->backward.mask;
-	
-	plugin_cfg.vol_up = controls->up.key;
-	plugin_cfg.vol_up_mask = controls->up.mask;
-	
-	plugin_cfg.vol_down = controls->down.key;
-	plugin_cfg.vol_down_mask = controls->down.mask;
-	
-	plugin_cfg.mute = controls->mute.key;
-	plugin_cfg.mute_mask = controls->mute.mask;
-	
-	plugin_cfg.jump_to_file = controls->jump_to_file.key;
-	plugin_cfg.jump_to_file_mask = controls->jump_to_file.mask;
-
-	plugin_cfg.toggle_win= controls->toggle_win.key;
-	plugin_cfg.toggle_win_mask = controls->toggle_win.mask;
-
 	save_config ( );
 	
 	if (loaded)
