@@ -61,7 +61,7 @@ static void get_offending_modifiers (Display * dpy);
 static void init (void);
 static void grab_keys ();
 static void ungrab_keys ();
-static gboolean handle_keyevent(int keycode, int state);
+static gboolean handle_keyevent(int keycode, int state, int type);
 static gboolean setup_filter();
 static void release_filter();
 
@@ -209,7 +209,7 @@ static void get_offending_modifiers (Display * dpy)
 }
 
 /* handle keys */
-static gboolean handle_keyevent (int keycode, int state)
+static gboolean handle_keyevent (int keycode, int state, int type)
 {
 	gint current_volume, old_volume;
 	static gint volume_static = 0;
@@ -233,7 +233,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	state &= ~(scrolllock_mask | numlock_mask | capslock_mask);
 	
 	/* mute the playback */
-	if ((keycode == plugin_cfg.mute.key) && (state == plugin_cfg.mute.mask))
+	if ((keycode == plugin_cfg.mute.key) && (state == plugin_cfg.mute.mask) && (type == plugin_cfg.mute.type))
 	{
 		if (!mute)
 		{
@@ -248,7 +248,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* decreace volume */
-	if ((keycode == plugin_cfg.vol_down.key) && (state == plugin_cfg.vol_down.mask))
+	if ((keycode == plugin_cfg.vol_down.key) && (state == plugin_cfg.vol_down.mask) && (type == plugin_cfg.vol_down.type))
 	{
 		if (mute)
 		{
@@ -272,7 +272,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* increase volume */
-	if ((keycode == plugin_cfg.vol_up.key) && (state == plugin_cfg.vol_up.mask))
+	if ((keycode == plugin_cfg.vol_up.key) && (state == plugin_cfg.vol_up.mask) && (type == plugin_cfg.vol_up.type))
 	{
 		if (mute)
 		{
@@ -296,7 +296,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* play */
-	if ((keycode == plugin_cfg.play.key) && (state == plugin_cfg.play.mask))
+	if ((keycode == plugin_cfg.play.key) && (state == plugin_cfg.play.mask) && (type == plugin_cfg.play.type))
 	{
 		if (!play)
 		{
@@ -308,7 +308,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 
 	/* pause */
-	if ((keycode == plugin_cfg.pause.key) && (state == plugin_cfg.pause.mask))
+	if ((keycode == plugin_cfg.pause.key) && (state == plugin_cfg.pause.mask) && (type == plugin_cfg.pause.type))
 	{
 		if (!play) audacious_drct_play ();
 		else audacious_drct_pause ();
@@ -317,28 +317,28 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 	
 	/* stop */
-	if ((keycode == plugin_cfg.stop.key) && (state == plugin_cfg.stop.mask))
+	if ((keycode == plugin_cfg.stop.key) && (state == plugin_cfg.stop.mask) && (type == plugin_cfg.stop.type))
 	{
 		audacious_drct_stop ();
 		return TRUE;
 	}
 	
 	/* prev track */	
-	if ((keycode == plugin_cfg.prev_track.key) && (state == plugin_cfg.prev_track.mask))
+	if ((keycode == plugin_cfg.prev_track.key) && (state == plugin_cfg.prev_track.mask) && (type == plugin_cfg.prev_track.type))
 	{
 		audacious_drct_playlist_prev ();
 		return TRUE;
 	}
 	
 	/* next track */
-	if ((keycode == plugin_cfg.next_track.key) && (state == plugin_cfg.next_track.mask))
+	if ((keycode == plugin_cfg.next_track.key) && (state == plugin_cfg.next_track.mask) && (type == plugin_cfg.next_track.type))
 	{
 		audacious_drct_playlist_next ();
 		return TRUE;
 	}
 
 	/* forward */
-	if ((keycode == plugin_cfg.forward.key) && (state == plugin_cfg.forward.mask))
+	if ((keycode == plugin_cfg.forward.key) && (state == plugin_cfg.forward.mask) && (type == plugin_cfg.forward.type))
 	{
 		gint time = audacious_drct_get_output_time();
 		time += 5000; /* Jump 5s into future */
@@ -347,7 +347,7 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 
 	/* backward */
-	if ((keycode == plugin_cfg.backward.key) && (state == plugin_cfg.backward.mask))
+	if ((keycode == plugin_cfg.backward.key) && (state == plugin_cfg.backward.mask) && (type == plugin_cfg.backward.type))
 	{
 		gint time = audacious_drct_get_output_time();
 		if (time > 5000) time -= 5000; /* Jump 5s back */
@@ -357,14 +357,14 @@ static gboolean handle_keyevent (int keycode, int state)
 	}
 
 	/* Open Jump-To-File dialog */
-	if ((keycode == plugin_cfg.jump_to_file.key) && (state == plugin_cfg.jump_to_file.mask))
+	if ((keycode == plugin_cfg.jump_to_file.key) && (state == plugin_cfg.jump_to_file.mask) && (type == plugin_cfg.jump_to_file.type))
 	{
 		audacious_drct_show_jtf_box();
 		return TRUE;
 	}
 
 	/* Toggle Windows */
-	if ((keycode == plugin_cfg.toggle_win.key) && (state == plugin_cfg.toggle_win.mask))
+	if ((keycode == plugin_cfg.toggle_win.key) && (state == plugin_cfg.toggle_win.mask) && (type == plugin_cfg.toggle_win.type))
 	{
 		static gboolean is_main, is_eq, is_pl;
 		is_main = audacious_drct_main_win_is_visible();
@@ -390,13 +390,25 @@ gdk_filter(GdkXEvent *xevent,
 	   GdkEvent *event,
 	   gpointer data)
 {
-	XKeyEvent *keyevent = (XKeyEvent*)xevent;
-	
-	if (((XEvent*)keyevent)->type != KeyPress)
+	switch (((XEvent*)xevent)->type)
+	{
+	case KeyPress:
+		{
+			XKeyEvent *keyevent = (XKeyEvent*)xevent;
+			if (handle_keyevent(keyevent->keycode, keyevent->state, TYPE_KEY))
+				return GDK_FILTER_REMOVE;
+			break;
+		}
+	case ButtonPress:
+		{
+			XButtonEvent *buttonevent = (XButtonEvent*)xevent;
+			if (handle_keyevent(buttonevent->button, buttonevent->state, TYPE_MOUSE))
+				return GDK_FILTER_REMOVE;
+			break;
+		}
+	default:
 		return -1;
-	
-	if (handle_keyevent(keyevent->keycode, keyevent->state))
-		return GDK_FILTER_REMOVE;
+	}
 	
 	return GDK_FILTER_CONTINUE;
 }
@@ -491,56 +503,102 @@ static int x11_error_handler (Display *dpy, XErrorEvent *error)
 	return 0;
 }
 
-/* grab requied keys */
+/* grab required keys */
 static void grab_key(HotkeyConfiguration hotkey)
 {
 	unsigned int modifier = hotkey.mask & ~(numlock_mask | capslock_mask | scrolllock_mask);
 	
 	if (hotkey.key == 0) return;
 
-	XGrabKey (xdisplay, hotkey.key, modifier, x_root_window,
-		False, GrabModeAsync, GrabModeAsync);
-	
-	if (modifier == AnyModifier)
-		return;
-	
-	if (numlock_mask)
-		XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask,
-			x_root_window,
+	if (hotkey.type == TYPE_KEY)
+	{
+		XGrabKey (xdisplay, hotkey.key, modifier, x_root_window,
 			False, GrabModeAsync, GrabModeAsync);
-	
-	if (capslock_mask)
-		XGrabKey (xdisplay, hotkey.key, modifier | capslock_mask,
-			x_root_window,
-			False, GrabModeAsync, GrabModeAsync);
-	
-	if (scrolllock_mask)
-		XGrabKey (xdisplay, hotkey.key, modifier | scrolllock_mask,
-			x_root_window,
-			False, GrabModeAsync, GrabModeAsync);
-	
-	if (numlock_mask && capslock_mask)
-		XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask,
-			x_root_window,
-			False, GrabModeAsync, GrabModeAsync);
-	
-	if (numlock_mask && scrolllock_mask)
-		XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask | scrolllock_mask,
-			x_root_window,
-			False, GrabModeAsync, GrabModeAsync);
-	
-	if (capslock_mask && scrolllock_mask)
-		XGrabKey (xdisplay, hotkey.key, modifier | capslock_mask | scrolllock_mask,
-			x_root_window,
-			False, GrabModeAsync, GrabModeAsync);
-	
-	if (numlock_mask && capslock_mask && scrolllock_mask)
-		XGrabKey (xdisplay, hotkey.key,
-			modifier | numlock_mask | capslock_mask | scrolllock_mask,
-			x_root_window, False, GrabModeAsync,
-			GrabModeAsync);
+		
+		if (modifier == AnyModifier)
+			return;
+		
+		if (numlock_mask)
+			XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask,
+				x_root_window,
+				False, GrabModeAsync, GrabModeAsync);
+		
+		if (capslock_mask)
+			XGrabKey (xdisplay, hotkey.key, modifier | capslock_mask,
+				x_root_window,
+				False, GrabModeAsync, GrabModeAsync);
+		
+		if (scrolllock_mask)
+			XGrabKey (xdisplay, hotkey.key, modifier | scrolllock_mask,
+				x_root_window,
+				False, GrabModeAsync, GrabModeAsync);
+		
+		if (numlock_mask && capslock_mask)
+			XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask,
+				x_root_window,
+				False, GrabModeAsync, GrabModeAsync);
+		
+		if (numlock_mask && scrolllock_mask)
+			XGrabKey (xdisplay, hotkey.key, modifier | numlock_mask | scrolllock_mask,
+				x_root_window,
+				False, GrabModeAsync, GrabModeAsync);
+		
+		if (capslock_mask && scrolllock_mask)
+			XGrabKey (xdisplay, hotkey.key, modifier | capslock_mask | scrolllock_mask,
+				x_root_window,
+				False, GrabModeAsync, GrabModeAsync);
+		
+		if (numlock_mask && capslock_mask && scrolllock_mask)
+			XGrabKey (xdisplay, hotkey.key,
+				modifier | numlock_mask | capslock_mask | scrolllock_mask,
+				x_root_window, False, GrabModeAsync,
+				GrabModeAsync);
+	}
+	if (hotkey.type == TYPE_MOUSE)
+	{
+		XGrabButton (xdisplay, hotkey.key, modifier, x_root_window,
+			False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+		
+		if (modifier == AnyModifier)
+			return;
+		
+		if (numlock_mask)
+			XGrabButton (xdisplay, hotkey.key, modifier | numlock_mask,
+				x_root_window,
+				False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+		
+		if (capslock_mask)
+			XGrabButton (xdisplay, hotkey.key, modifier | capslock_mask,
+				x_root_window,
+				False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+		
+		if (scrolllock_mask)
+			XGrabButton (xdisplay, hotkey.key, modifier | scrolllock_mask,
+				x_root_window,
+				False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+		
+		if (numlock_mask && capslock_mask)
+			XGrabButton (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask,
+				x_root_window,
+				False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+		
+		if (numlock_mask && scrolllock_mask)
+			XGrabButton (xdisplay, hotkey.key, modifier | numlock_mask | scrolllock_mask,
+				x_root_window,
+				False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+		
+		if (capslock_mask && scrolllock_mask)
+			XGrabButton (xdisplay, hotkey.key, modifier | capslock_mask | scrolllock_mask,
+				x_root_window,
+				False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+		
+		if (numlock_mask && capslock_mask && scrolllock_mask)
+			XGrabButton (xdisplay, hotkey.key,
+				modifier | numlock_mask | capslock_mask | scrolllock_mask,
+				x_root_window, False, ButtonPressMask, GrabModeAsync,
+				GrabModeAsync, None, None);
+	}
 }
-
 
 static void grab_keys ()
 {
@@ -587,14 +645,20 @@ static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
 		gchar *strings[9];
 		gchar *keytext = NULL;
 		int i, j;
-		KeySym keysym;
-
-		keysym = XKeycodeToKeysym(xdisplay, key, 0);
-		if (keysym == 0 || keysym == NoSymbol)
+		if (type == TYPE_KEY)
 		{
-			keytext = g_strdup_printf("#%3d", key);
-		} else {
-			keytext = g_strdup(XKeysymToString(keysym));
+			KeySym keysym;
+			keysym = XKeycodeToKeysym(xdisplay, key, 0);
+			if (keysym == 0 || keysym == NoSymbol)
+			{
+				keytext = g_strdup_printf("#%d", key);
+			} else {
+				keytext = g_strdup(XKeysymToString(keysym));
+			}
+		}
+		if (type == TYPE_MOUSE)
+		{
+			keytext = g_strdup_printf("Button%d", key);
 		}
 
 		for (i = 0, j=0; j<7; j++)
@@ -624,6 +688,7 @@ on_entry_key_press_event(GtkWidget * widget,
 	int mod;
 
 	if (event->keyval == GDK_Tab) return FALSE;
+
 	mod = 0;
 	is_mod = 0;
 
@@ -649,7 +714,7 @@ on_entry_key_press_event(GtkWidget * widget,
 	} else controls->hotkey.key = 0;
 
 	set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode, mod, TYPE_KEY);
-	return FALSE;
+	return TRUE;
 }
 
 static gboolean
@@ -660,11 +725,102 @@ on_entry_key_release_event(GtkWidget * widget,
 	KeyControls *controls = (KeyControls*) user_data;
 	if (controls->hotkey.key == 0) {
 		controls->hotkey.mask = 0;
+		return TRUE;
 	}
 	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
-	return FALSE;
+	return TRUE;
 }
 
+static gboolean
+on_entry_button_press_event(GtkWidget * widget,
+                            GdkEventButton * event,
+                            gpointer user_data)
+{
+	KeyControls *controls = (KeyControls*) user_data;
+	int mod;
+	
+	if (!gtk_widget_is_focus(widget)) return FALSE;
+
+	mod = 0;
+	if (event->state & GDK_CONTROL_MASK)
+        	mod |= ControlMask;
+
+	if (event->state & GDK_MOD1_MASK)
+        	mod |= Mod1Mask;
+
+	if (event->state & GDK_SHIFT_MASK)
+        	mod |= ShiftMask;
+
+	if (event->state & GDK_MOD5_MASK)
+        	mod |= Mod5Mask;
+
+	if (event->state & GDK_MOD4_MASK)
+        	mod |= Mod4Mask;
+
+	if ((event->button <= 3) && (mod == 0))
+	{
+		GtkWidget* dialog;
+		GtkResponseType response;
+		dialog = gtk_message_dialog_new (GTK_WINDOW(gtk_widget_get_toplevel(widget)),
+			GTK_DIALOG_MODAL,
+			GTK_MESSAGE_WARNING,
+			GTK_BUTTONS_YES_NO,
+			_("It is not recommended to bind the primary mouse buttons without modificators.\n\n"
+			  "Do you want to continue?"));
+		gtk_window_set_title(GTK_WINDOW(dialog), _("Binding mouse buttons"));
+		response = gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_destroy (dialog);
+		if (response != GTK_RESPONSE_YES) return TRUE;
+	}
+
+	controls->hotkey.key = event->button;
+	controls->hotkey.mask = mod;
+        controls->hotkey.type = TYPE_MOUSE;
+	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
+	return TRUE;
+}
+
+static gboolean
+on_entry_scroll_event(GtkWidget * widget,
+                            GdkEventScroll * event,
+                            gpointer user_data)
+{
+	KeyControls *controls = (KeyControls*) user_data;
+	int mod;
+	
+	if (!gtk_widget_is_focus(widget)) return FALSE;
+
+	mod = 0;
+	if (event->state & GDK_CONTROL_MASK)
+        	mod |= ControlMask;
+
+	if (event->state & GDK_MOD1_MASK)
+        	mod |= Mod1Mask;
+
+	if (event->state & GDK_SHIFT_MASK)
+        	mod |= ShiftMask;
+
+	if (event->state & GDK_MOD5_MASK)
+        	mod |= Mod5Mask;
+
+	if (event->state & GDK_MOD4_MASK)
+        	mod |= Mod4Mask;
+
+	if (event->direction == GDK_SCROLL_UP)
+		controls->hotkey.key = 4;
+	else if (event->direction == GDK_SCROLL_DOWN)
+		controls->hotkey.key = 5;
+	else if (event->direction == GDK_SCROLL_LEFT)
+		controls->hotkey.key = 6;
+	else if (event->direction == GDK_SCROLL_RIGHT)
+		controls->hotkey.key = 7;
+	else return FALSE;
+
+	controls->hotkey.mask = mod;
+        controls->hotkey.type = TYPE_MOUSE;
+	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
+	return TRUE;
+}
 
 static void add_event_controls(GtkWidget *table, 
 				KeyControls *controls, 
@@ -677,6 +833,9 @@ static void add_event_controls(GtkWidget *table,
 
 	controls->hotkey.key = hotkey.key;
 	controls->hotkey.mask = hotkey.mask;
+	controls->hotkey.type = hotkey.type;
+	if (controls->hotkey.key == 0)
+		controls->hotkey.mask = 0;
 
 	label = gtk_label_new (_(descr));
 	gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1, 
@@ -694,6 +853,10 @@ static void add_event_controls(GtkWidget *table,
                          G_CALLBACK(on_entry_key_press_event), controls);
 	g_signal_connect((gpointer)controls->keytext, "key_release_event",
                          G_CALLBACK(on_entry_key_release_event), controls);
+	g_signal_connect((gpointer)controls->keytext, "button_press_event",
+                         G_CALLBACK(on_entry_button_press_event), controls);
+	g_signal_connect((gpointer)controls->keytext, "scroll_event",
+                         G_CALLBACK(on_entry_scroll_event), controls);
 
 	button = gtk_button_new_with_label (_("None"));
 	gtk_table_attach (GTK_TABLE (table), button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
@@ -956,13 +1119,97 @@ static void cleanup (void)
 	release_filter();
 	loaded = FALSE;
 }
- 
+
+/* grab required keys */
+static void ungrab_key(HotkeyConfiguration hotkey)
+{
+	unsigned int modifier = hotkey.mask & ~(numlock_mask | capslock_mask | scrolllock_mask);
+	
+	if (hotkey.key == 0) return;
+	
+	if (hotkey.type == TYPE_KEY)
+	{
+		XUngrabKey (xdisplay, hotkey.key, modifier, x_root_window);
+		
+		if (modifier == AnyModifier)
+			return;
+		
+		if (numlock_mask)
+			XUngrabKey (xdisplay, hotkey.key, modifier | numlock_mask, x_root_window);
+	
+		if (capslock_mask)
+			XUngrabKey (xdisplay, hotkey.key, modifier | capslock_mask, x_root_window);
+	
+		if (scrolllock_mask)
+			XUngrabKey (xdisplay, hotkey.key, modifier | scrolllock_mask, x_root_window);
+	
+		if (numlock_mask && capslock_mask)
+			XUngrabKey (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask, x_root_window);
+	
+		if (numlock_mask && scrolllock_mask)
+			XUngrabKey (xdisplay, hotkey.key, modifier | numlock_mask | scrolllock_mask, x_root_window);
+	
+		if (capslock_mask && scrolllock_mask)
+			XUngrabKey (xdisplay, hotkey.key, modifier | capslock_mask | scrolllock_mask, x_root_window);
+	
+		if (numlock_mask && capslock_mask && scrolllock_mask)
+			XUngrabKey (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask | scrolllock_mask, x_root_window);
+	}
+	if (hotkey.type == TYPE_MOUSE)
+	{
+		XUngrabButton (xdisplay, hotkey.key, modifier, x_root_window);
+		
+		if (modifier == AnyModifier)
+			return;
+		
+		if (numlock_mask)
+			XUngrabButton (xdisplay, hotkey.key, modifier | numlock_mask, x_root_window);
+	
+		if (capslock_mask)
+			XUngrabButton (xdisplay, hotkey.key, modifier | capslock_mask, x_root_window);
+	
+		if (scrolllock_mask)
+			XUngrabButton (xdisplay, hotkey.key, modifier | scrolllock_mask, x_root_window);
+	
+		if (numlock_mask && capslock_mask)
+			XUngrabButton (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask, x_root_window);
+	
+		if (numlock_mask && scrolllock_mask)
+			XUngrabButton (xdisplay, hotkey.key, modifier | numlock_mask | scrolllock_mask, x_root_window);
+	
+		if (capslock_mask && scrolllock_mask)
+			XUngrabButton (xdisplay, hotkey.key, modifier | capslock_mask | scrolllock_mask, x_root_window);
+	
+		if (numlock_mask && capslock_mask && scrolllock_mask)
+			XUngrabButton (xdisplay, hotkey.key, modifier | numlock_mask | capslock_mask | scrolllock_mask, x_root_window);
+	}
+}
+
 static void ungrab_keys ()
 {
+	XErrorHandler old_handler = 0;
+
 	if (!grabbed) return;
 	if (!xdisplay) return;
+
+	XSync(xdisplay, False);
+	old_handler = XSetErrorHandler (x11_error_handler);
+
+	ungrab_key(plugin_cfg.mute);
+	ungrab_key(plugin_cfg.vol_up);
+	ungrab_key(plugin_cfg.vol_down);
+	ungrab_key(plugin_cfg.play);
+	ungrab_key(plugin_cfg.pause);
+	ungrab_key(plugin_cfg.stop);
+	ungrab_key(plugin_cfg.prev_track);
+	ungrab_key(plugin_cfg.next_track);
+	ungrab_key(plugin_cfg.jump_to_file);
+	ungrab_key(plugin_cfg.forward);
+	ungrab_key(plugin_cfg.backward);
+	ungrab_key(plugin_cfg.toggle_win);
 	
-	XUngrabKey (xdisplay, AnyKey, AnyModifier, x_root_window);
-	
+	XSync(xdisplay, False);
+	XSetErrorHandler (old_handler);
+
 	grabbed = 0;
 }
