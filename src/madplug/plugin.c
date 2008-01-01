@@ -104,14 +104,14 @@ void audmad_config_compute(struct audmad_config_t *config)
     else
       x = 0;
     config->pregain_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-    AUDDBG("pregain=[%s] -> %g  -> %g", text, x, config->pregain_scale);
+    AUDDBG("pregain=[%s] -> %g  -> %g\n", text, x, config->pregain_scale);
     text = config->replaygain.default_db;
     if ( text != NULL )
       x = g_strtod(text, NULL);
     else
       x = 0;
     config->replaygain.default_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-    AUDDBG("RG.default=[%s] -> %g  -> %g", text, x,
+    AUDDBG("RG.default=[%s] -> %g  -> %g\n", text, x,
               config->replaygain.default_scale);
 }
 
@@ -403,7 +403,7 @@ static int audmad_is_our_file(char *filename)
 
 static void audmad_stop(InputPlayback *playback)
 {
-    AUDDBG("f: audmad_stop");
+    AUDDBG("f: audmad_stop\n");
     g_mutex_lock(mad_mutex);
     info.playback = playback;
     g_mutex_unlock(mad_mutex);
@@ -415,15 +415,15 @@ static void audmad_stop(InputPlayback *playback)
         g_mutex_unlock(mad_mutex);
         g_cond_signal(mad_cond);
 
-        AUDDBG("waiting for thread");
+        AUDDBG("waiting for thread\n");
         g_thread_join(decode_thread);
-        AUDDBG("thread done");
+        AUDDBG("thread done\n");
 
         input_term(&info);
         decode_thread = NULL;
 
     }
-    AUDDBG("e: audmad_stop");
+    AUDDBG("e: audmad_stop\n");
 }
 
 static void audmad_play_file(InputPlayback *playback)
@@ -434,7 +434,7 @@ static void audmad_play_file(InputPlayback *playback)
 #ifdef AUD_DEBUG
     {
         gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
-        AUDDBG("playing %s", tmp);
+        AUDDBG("playing %s\n", tmp);
         g_free(tmp);
     }
 #endif                          /* DEBUG */
@@ -496,12 +496,12 @@ audmad_get_song_info(char *url, char **title, int *length)
     struct mad_info_t myinfo;
 #ifdef AUD_DEBUG
     gchar *tmp = g_filename_to_utf8(url, -1, NULL, NULL, NULL);
-    AUDDBG("f: audmad_get_song_info: %s", tmp);
+    AUDDBG("f: audmad_get_song_info: %s\n", tmp);
     g_free(tmp);
 #endif                          /* DEBUG */
 
     if (input_init(&myinfo, url, NULL) == FALSE) {
-        AUDDBG("error initialising input");
+        AUDDBG("error initialising input\n");
         return;
     }
 
@@ -520,17 +520,17 @@ audmad_get_song_info(char *url, char **title, int *length)
         *length = -1;
     }
     input_term(&myinfo);
-    AUDDBG("e: audmad_get_song_info");
+    AUDDBG("e: audmad_get_song_info\n");
 }
 
 static gboolean
 audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
 {
     if (fd == NULL || info == NULL) return FALSE;
-    AUDDBG("f: audmad_fill_info(): %s", fd->uri);
+    AUDDBG("f: audmad_fill_info(): %s\n", fd->uri);
 
     if (input_init(info, fd->uri, fd) == FALSE) {
-        AUDDBG("audmad_fill_info(): error initialising input");
+        AUDDBG("audmad_fill_info(): error initialising input\n");
         return FALSE;
     }
     
@@ -621,7 +621,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 
 #ifdef AUD_DEBUG
     string = aud_str_to_utf8(filename);
-    AUDDBG("f: mad: audmad_get_song_tuple: %s", string);
+    AUDDBG("f: mad: audmad_get_song_tuple: %s\n", string);
     g_free(string);
     string = NULL;
 #endif
@@ -635,7 +635,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 
 #ifdef AUD_DEBUG
             if(info.playback)
-                AUDDBG("info.playback->playing = %d",info.playback->playing);
+                AUDDBG("info.playback->playing = %d\n",info.playback->playing);
 #endif
             tmp = aud_vfs_get_metadata(info.infile ? info.infile : fd, "track-name");
             if(tmp){
@@ -660,14 +660,14 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
                 tmp = NULL;
             }
 
-            AUDDBG("audmad_get_song_tuple: track_name = %s", aud_tuple_get_string(tuple, -1, "track-name"));
-            AUDDBG("audmad_get_song_tuple: stream_name = %s", aud_tuple_get_string(tuple, -1, "stream-name"));
+            AUDDBG("audmad_get_song_tuple: track_name = %s\n", aud_tuple_get_string(tuple, -1, "track-name"));
+            AUDDBG("audmad_get_song_tuple: stream_name = %s\n", aud_tuple_get_string(tuple, -1, "stream-name"));
             aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
             aud_tuple_associate_int(tuple, FIELD_MTIME, NULL, 0); // this indicates streaming
-            AUDDBG("get_song_tuple: remote: tuple");
+            AUDDBG("get_song_tuple: remote: tuple\n");
             return tuple;
         }
-        AUDDBG("get_song_tuple: remote: NULL");
+        AUDDBG("get_song_tuple: remote: NULL\n");
     } /* info.remote  */
 
     // if !fd, pre-open the file with aud_vfs_fopen() and reuse fd.
@@ -727,7 +727,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
             // genre
             __set_and_free(tuple, FIELD_GENRE, NULL, input_id3_get_string(tag, ID3_FRAME_GENRE));
             __set_and_free(tuple, FIELD_COMMENT, NULL, input_id3_get_string(tag, ID3_FRAME_COMMENT));
-            AUDDBG("genre = %s", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
+            AUDDBG("genre = %s\n", aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
         }
         id3_file_close(id3file);
     } // id3file
@@ -755,7 +755,7 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
     if(local_fd)
         aud_vfs_fclose(fd);
 
-    AUDDBG("e: mad: audmad_get_song_tuple");
+    AUDDBG("e: mad: audmad_get_song_tuple\n");
     return tuple;
 }
 

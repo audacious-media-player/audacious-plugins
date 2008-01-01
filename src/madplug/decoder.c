@@ -196,8 +196,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
         info->fileinfo_request = FALSE;
     }
 
-    AUDDBG("f: scan_file");
-    AUDDBG("scan_file frames = %d", info->frames);
+    AUDDBG("f: scan_file\n");
+    AUDDBG("scan_file frames = %d\n", info->frames);
 
     while (1) {
         remainder = stream.bufend - stream.next_frame;
@@ -214,7 +214,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                              BUFFER_SIZE - remainder);
 
         if (len <= 0) {
-            AUDDBG("scan_file: len <= 0 len = %d", len);
+            AUDDBG("scan_file: len <= 0 len = %d\n", len);
             break;
         }
 
@@ -226,10 +226,10 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                     break;
                 }
                 if (!MAD_RECOVERABLE(stream.error)) {
-                    AUDDBG("(fatal) error decoding header %d: %s",
+                    AUDDBG("(fatal) error decoding header %d: %s\n",
                               info->frames, mad_stream_errorstr(&stream));
-                    AUDDBG("remainder = %d", remainder);
-                    AUDDBG("len = %d", len);
+                    AUDDBG("remainder = %d\n", remainder);
+                    AUDDBG("len = %d\n", len);
                     break;
                 }
                 if (stream.error == MAD_ERROR_LOSTSYNC) {
@@ -238,27 +238,27 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                                             stream.bufend -
                                             stream.this_frame);
                     if (tagsize > 0) {
-                        AUDDBG("skipping id3_tag: %d", tagsize);
+                        AUDDBG("skipping id3_tag: %d\n", tagsize);
                         mad_stream_skip(&stream, tagsize);
                         continue;
                     }
                 }
 
-                AUDDBG("(recovered) error decoding header %d: %s",
+                AUDDBG("(recovered) error decoding header %d: %s\n",
                           info->frames, mad_stream_errorstr(&stream));
-                AUDDBG("remainder = %d", remainder);
-                AUDDBG("len = %d", len);
+                AUDDBG("remainder = %d\n", remainder);
+                AUDDBG("len = %d\n", len);
 
                 continue;
             }
             info->frames++;
 
 #ifdef DEBUG_INTENSIVELY
-            AUDDBG("header bitrate = %ld", header.bitrate);
-            AUDDBG("duration = %ul",
+            AUDDBG("header bitrate = %ld\n", header.bitrate);
+            AUDDBG("duration = %ul\n",
                       mad_timer_count(header.duration,
                                       MAD_UNITS_MILLISECONDS));
-            AUDDBG("size = %d", stream.next_frame - stream.this_frame);
+            AUDDBG("size = %d\n", stream.next_frame - stream.this_frame);
 #endif
             if(aud_tuple_get_int(info->tuple, FIELD_LENGTH, NULL) == -1)
                 mad_timer_add(&info->duration, header.duration);
@@ -280,15 +280,15 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 if (audmad_config.use_xing) {
                     frame.header = header;
                     if (mad_frame_decode(&frame, &stream) == -1) {
-                        AUDDBG("xing frame decode failed");
+                        AUDDBG("xing frame decode failed\n");
                         goto no_xing;
                     }
                     if (xing_parse(&info->xing, stream.anc_ptr, stream.anc_bitlen) == 0) {
-                        AUDDBG("xing header found ");
+                        AUDDBG("xing header found\n");
                         has_xing = TRUE;
                         info->vbr = TRUE;   /* otherwise xing header would have been 'Info' */
 
-                        AUDDBG("xing: bytes = %ld frames = %ld", info->xing.bytes, info->xing.frames);
+                        AUDDBG("xing: bytes = %ld frames = %ld\n", info->xing.bytes, info->xing.frames);
 
                         /* we have enough info to calculate bitrate and duration */
                         if(info->xing.bytes && info->xing.frames) {
@@ -296,8 +296,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 #ifdef AUD_DEBUG
                             {
                                 gint tmp = (gint)(info->xing.bytes * 8 / xing_bitrate);
-                                AUDDBG("xing: bitrate = %4.1f kbps", xing_bitrate / 1000);
-                                AUDDBG("xing: duration = %d:%02d", tmp / 60, tmp % 60);
+                                AUDDBG("xing: bitrate = %4.1f kbps\n", xing_bitrate / 1000);
+                                AUDDBG("xing: duration = %d:%02d\n", tmp / 60, tmp % 60);
                             }
 #endif
                         }
@@ -305,7 +305,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                     }
 #ifdef AUD_DEBUG
                     else {
-                        AUDDBG("no usable xing header");
+                        AUDDBG("no usable xing header\n");
                         continue;
                     }
 #endif
@@ -332,14 +332,14 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
             if (fast && info->frames >= N_AVERAGE_FRAMES) {
                 float frame_size = ((double) data_used) / N_AVERAGE_FRAMES;
 
-                AUDDBG("bitrate = %ld samplerate = %d", header.bitrate, header.samplerate);
-                AUDDBG("data_used = %d info->frames = %d info->size = %d tagsize = %d frame_size = %lf",
+                AUDDBG("bitrate = %ld samplerate = %d\n", header.bitrate, header.samplerate);
+                AUDDBG("data_used = %d info->frames = %d info->size = %d tagsize = %d frame_size = %lf\n",
                           data_used, info->frames, info->size, tagsize, frame_size);
 
                 if(info->size != 0)
                     info->frames = (info->size - tagsize) / frame_size;
 
-                AUDDBG("info->frames = %d", info->frames);
+                AUDDBG("info->frames = %d\n", info->frames);
 
                 if(aud_tuple_get_int(info->tuple, FIELD_LENGTH, NULL) == -1) {
                     if(xing_bitrate > 0.0) {
@@ -361,14 +361,14 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                     info->duration.fraction = length % 1000;
                 }
 #ifdef AUD_DEBUG
-                AUDDBG("using fast playtime calculation");
-                AUDDBG("data used = %d [tagsize=%d framesize=%f]",
+                AUDDBG("using fast playtime calculation\n");
+                AUDDBG("data used = %d [tagsize=%d framesize=%f]\n",
                           data_used, tagsize, frame_size);
-                AUDDBG("frames = %d, frequency = %d, channels = %d",
+                AUDDBG("frames = %d, frequency = %d, channels = %d\n",
                           info->frames, info->freq, info->channels);
                 long millis = mad_timer_count(info->duration,
                                               MAD_UNITS_MILLISECONDS);
-                AUDDBG("duration = %ld:%02ld", millis / 1000 / 60, (millis / 1000) % 60);
+                AUDDBG("duration = %ld:%02ld\n", millis / 1000 / 60, (millis / 1000) % 60);
 #endif                          /* DEBUG */
                 break;
             }
@@ -392,8 +392,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     mad_stream_finish(&stream);
     xing_finish(&info->xing);
 
-    AUDDBG("scan_file: info->frames = %d", info->frames);
-    AUDDBG("e: scan_file");
+    AUDDBG("scan_file: info->frames = %d\n", info->frames);
+    AUDDBG("e: scan_file\n");
 
     return (info->frames != 0 || info->remote == TRUE);
 }
@@ -428,7 +428,7 @@ gpointer decode_loop(gpointer arg)
     /* track info is passed in as thread argument */
     struct mad_info_t *info = (struct mad_info_t *) arg;
 
-    AUDDBG("f: decode");
+    AUDDBG("f: decode\n");
 
     /* init mad stuff */
     mad_frame_init(&frame);
@@ -437,11 +437,11 @@ gpointer decode_loop(gpointer arg)
     mad_synth_init(&synth);
 
     if(!info->playback){
-        AUDDBG("decode: playback == NULL");
+        AUDDBG("decode: playback == NULL\n");
         return NULL;
     }
 
-    AUDDBG("decode: fmt = %d freq = %d channels = %d", info->fmt, info->freq, info->channels);
+    AUDDBG("decode: fmt = %d freq = %d channels = %d\n", info->fmt, info->freq, info->channels);
 
     if(check_audio_param(info) == FALSE)
         return NULL;
@@ -467,12 +467,12 @@ gpointer decode_loop(gpointer arg)
                              (tlen == 0 || info->size <= 0) ? -1 : tlen,
                              info->bitrate, info->freq, info->channels);
 
-    AUDDBG("decode: tlen = %d", tlen);
+    AUDDBG("decode: tlen = %d\n", tlen);
 
     /* main loop */
     do {
         if (!info->playback->playing) {
-            AUDDBG("decode: stop signaled");
+            AUDDBG("decode: stop signaled\n");
             break;
         }
         if (seek_skip)
@@ -487,7 +487,7 @@ gpointer decode_loop(gpointer arg)
         input_process_remote_metadata(info);
 
         if (len <= 0) {
-            AUDDBG("finished decoding");
+            AUDDBG("finished decoding\n");
             break;
         }
         len += remainder;
@@ -502,7 +502,7 @@ gpointer decode_loop(gpointer arg)
 
         if (seek_skip) {
 
-            AUDDBG("skipping: %d", seek_skip);
+            AUDDBG("skipping: %d\n", seek_skip);
 
             int skip = 2;
             do {
@@ -526,7 +526,7 @@ gpointer decode_loop(gpointer arg)
         while (info->playback->playing) {
             if (info->seek != -1 && info->size > 0) {
 
-                AUDDBG("seeking: %ld", info->seek);
+                AUDDBG("seeking: %ld\n", info->seek);
 
                 int new_position;
                 gulong milliseconds =
@@ -541,7 +541,7 @@ gpointer decode_loop(gpointer arg)
                 if(new_position < 0)
                     new_position = 0;
 
-                AUDDBG("seeking to: %d bytes", new_position);
+                AUDDBG("seeking to: %d bytes\n", new_position);
 
                 if (aud_vfs_fseek(info->infile, new_position, SEEK_SET) == -1)
                     audmad_error("failed to seek to: %d", new_position);
@@ -570,7 +570,7 @@ gpointer decode_loop(gpointer arg)
                     }
                 }
 
-                AUDDBG("(recovered) error decoding header %d: %s",
+                AUDDBG("(recovered) error decoding header %d: %s\n",
                           info->current_frame,
                           mad_stream_errorstr(&stream));
 
@@ -582,7 +582,7 @@ gpointer decode_loop(gpointer arg)
             if (!audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
 
 #ifdef DEBUG_INTENSIVELY
-                AUDDBG("decode vbr tlen = %d", tlen);
+                AUDDBG("decode vbr tlen = %d\n", tlen);
 #endif
                 info->playback->set_params(info->playback, info->title,
                                      (tlen == 0 || info->size <= 0) ? -1 : tlen,
@@ -594,7 +594,7 @@ gpointer decode_loop(gpointer arg)
                 if (!MAD_RECOVERABLE(stream.error))
                     break;
 
-                AUDDBG("(recovered) error decoding frame %d: %s",
+                AUDDBG("(recovered) error decoding frame %d: %s\n",
                           info->current_frame,
                           mad_stream_errorstr(&stream));
 
@@ -606,10 +606,10 @@ gpointer decode_loop(gpointer arg)
                 || info->channels !=
                 (guint) MAD_NCHANNELS(&frame.header)) {
 
-                AUDDBG("change in audio type detected");
-                AUDDBG("old: frequency = %d, channels = %d", info->freq,
+                AUDDBG("change in audio type detected\n");
+                AUDDBG("old: frequency = %d, channels = %d\n", info->freq,
                           info->channels);
-                AUDDBG("new: frequency = %d, channels = %d",
+                AUDDBG("new: frequency = %d, channels = %d\n",
                           frame.header.samplerate,
                           (guint) MAD_NCHANNELS(&frame.header));
 
@@ -619,7 +619,7 @@ gpointer decode_loop(gpointer arg)
                 if(audmad_config.force_reopen_audio && check_audio_param(info)) {
                     gint current_time = info->playback->output->output_time();
 
-                    AUDDBG("re-opening audio due to change in audio type");
+                    AUDDBG("re-opening audio due to change in audio type\n");
 
                     info->playback->output->close_audio();
                     if (!info->playback->output->open_audio(info->fmt, info->freq,
@@ -660,7 +660,7 @@ gpointer decode_loop(gpointer arg)
         info->playback->output->buffer_free();
         while (info->playback->output->buffer_playing()) {
 
-            AUDDBG("f: buffer_playing=%d", info->playback->output->buffer_playing());
+            AUDDBG("f: buffer_playing=%d\n", info->playback->output->buffer_playing());
 
             g_get_current_time(&sleeptime);
             g_time_val_add(&sleeptime, 500000);
@@ -675,7 +675,7 @@ gpointer decode_loop(gpointer arg)
         }
     }
 
-    AUDDBG("e: decode");
+    AUDDBG("e: decode\n");
 
     aud_tuple_free(info->tuple);
     info->tuple = NULL;

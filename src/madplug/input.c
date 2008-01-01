@@ -71,7 +71,7 @@ extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
  */
 gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 {
-    AUDDBG("f: input_init");
+    AUDDBG("f: input_init\n");
 
     memset(info, 0, sizeof(struct mad_info_t)); // all fields are cleared to 0 --yaz
 
@@ -112,8 +112,8 @@ gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 
     info->fileinfo_request = FALSE;
 
-    AUDDBG("i: info->size = %lu", (long unsigned int)info->size);
-    AUDDBG("e: input_init");
+    AUDDBG("i: info->size = %lu\n", (long unsigned int)info->size);
+    AUDDBG("e: input_init\n");
 
     return TRUE;
 }
@@ -345,7 +345,7 @@ static void input_read_tag(struct mad_info_t *info)
     Tuple *tuple;
     glong curpos = 0;
 
-    AUDDBG("f: input_read_tag");
+    AUDDBG("f: input_read_tag\n");
 
     if (info->tuple != NULL)
         aud_tuple_free(info->tuple);
@@ -362,13 +362,13 @@ static void input_read_tag(struct mad_info_t *info)
     }
 
     if (!info->id3file) {
-        AUDDBG("read_tag: no id3file");
+        AUDDBG("read_tag: no id3file\n");
         return;
     }
 
     info->tag = id3_file_tag(info->id3file);
     if (!info->tag) {
-        AUDDBG("read_tag: no tag");
+        AUDDBG("read_tag: no tag\n");
         return;
     }
 
@@ -401,7 +401,7 @@ static void input_read_tag(struct mad_info_t *info)
     string = input_id3_get_string(info->tag, "TLEN");
     if (string) {
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
-        AUDDBG("input_read_tag: TLEN = %d", atoi(string));
+        AUDDBG("input_read_tag: TLEN = %d\n", atoi(string));
         g_free(string);
         string = NULL;
     } else
@@ -419,7 +419,7 @@ static void input_read_tag(struct mad_info_t *info)
         aud_vfs_fseek(info->infile, curpos, SEEK_SET);
     }
     
-    AUDDBG("e: input_read_tag");
+    AUDDBG("e: input_read_tag\n");
 }
 
 void input_process_remote_metadata(struct mad_info_t *info)
@@ -430,7 +430,7 @@ void input_process_remote_metadata(struct mad_info_t *info)
         gchar *tmp = NULL;
 
 #ifdef DEBUG_INTENSIVELY
-        AUDDBG("process_remote_meta");
+        AUDDBG("process_remote_meta\n");
 #endif
         g_free(info->title);
         info->title = NULL;
@@ -500,7 +500,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 {
 #ifdef AUD_DEBUG
     gchar *tmp = g_filename_to_utf8(info->filename, -1, NULL, NULL, NULL);    
-    AUDDBG("f: input_get_info: %s, fast_scan = %s", tmp, fast_scan ? "TRUE" : "FALSE");
+    AUDDBG("f: input_get_info: %s, fast_scan = %s\n", tmp, fast_scan ? "TRUE" : "FALSE");
     g_free(tmp);
 #endif                          /* DEBUG */
 
@@ -513,7 +513,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
 
     /* scan mp3 file, decoding headers */
     if (scan_file(info, fast_scan) == FALSE) {
-        AUDDBG("input_get_info: scan_file failed");
+        AUDDBG("input_get_info: scan_file failed\n");
         return FALSE;
     }
 
@@ -530,7 +530,7 @@ gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
             info->title = g_strdup(info->filename); //XXX info->filename is uri. --yaz
     }
 
-    AUDDBG("e: input_get_info");
+    AUDDBG("e: input_get_info\n");
     return TRUE;
 }
 
@@ -549,7 +549,7 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
 {
     int len = 0;
 #ifdef DEBUG_INTENSIVELY
-  AUDDBG ("f: input_get_data: %d", buffer_size);
+  AUDDBG ("f: input_get_data: %d\n", buffer_size);
 #endif
     /* simply read to data from the file */
     len = aud_vfs_fread(buffer, 1, buffer_size, info->infile); //aud_vfs_fread returns num of elements.
@@ -559,7 +559,7 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
     }
 
 #ifdef DEBUG_INTENSIVELY
-    AUDDBG ("e: input_get_data: size=%d offset=%d", len, info->offset);
+    AUDDBG ("e: input_get_data: size=%d offset=%d\n", len, info->offset);
 #endif
 
     info->offset += len;
@@ -571,7 +571,7 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
  */
 gboolean input_term(struct mad_info_t * info)
 {
-    AUDDBG("f: input_term");
+    AUDDBG("f: input_term\n");
 
     if (info->title)
         g_free(info->title);
@@ -608,7 +608,7 @@ gboolean input_term(struct mad_info_t * info)
     /* set everything to zero in case it gets used again. */
     memset(info, 0, sizeof(struct mad_info_t));
 
-    AUDDBG("e: input_term");
+    AUDDBG("e: input_term\n");
 
     return TRUE;
 }
