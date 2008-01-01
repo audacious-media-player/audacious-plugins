@@ -96,8 +96,9 @@ void about(void)
 "from the XMMS LIRC plugin by:\n"
 "Carl van Schaik <carl@leg.uct.ac.za>\n"
 "Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
 "You can get LIRC information at:\n"
-"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"));
+"http://lirc.org"));
 
 	label=gtk_label_new( logo_text->str );
         g_string_free( logo_text, TRUE );

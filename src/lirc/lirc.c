@@ -46,13 +46,15 @@
 
 #include "lirc.h"
 
+#include "common.h"
+
 const char *plugin_name="LIRC Plugin";
 
 GeneralPlugin lirc_plugin = {
     .description = "LIRC Plugin",
     .init = init,
     .about = about,
-    .configure = NULL,
+    .configure = configure,
     .cleanup = cleanup
 };
 
@@ -67,7 +69,7 @@ gint mute_vol=0;    /* holds volume before mute */
 
 gint input_tag;
 
-void init(void)
+void init_lirc(void)
 {
 	int flags;
 	
@@ -96,6 +98,19 @@ void init(void)
 		fcntl(lirc_fd,F_SETFL,flags|O_NONBLOCK);
 	}
 	fflush(stdout);
+}
+
+void init(void)
+{
+	load_cfg();
+	init_lirc();
+}
+
+gboolean reconnect_lirc(gpointer data)
+{
+	fprintf(stderr,_("%s: trying to reconnect...\n"),plugin_name);
+	init();
+	return (lirc_fd==-1);
 }
 
 void lirc_input_callback(gpointer data,gint source,
@@ -304,7 +319,11 @@ void lirc_input_callback(gpointer data,gint source,
 		/* something went badly wrong */
 		fprintf(stderr,_("%s: disconnected from LIRC\n"),plugin_name);
 		cleanup();
-		return;
+		if(b_enable_reconnect)
+		{
+			fprintf(stderr,_("%s: will try reconnect every %d seconds...\n"),plugin_name,reconnect_timeout);
+			g_timeout_add(1000*reconnect_timeout, reconnect_lirc, NULL);
+		}
 	}
 }
 
