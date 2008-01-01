@@ -1,7 +1,10 @@
 PLUGIN = lirc${PLUGIN_SUFFIX}
 
 SRCS = about.c \
-       lirc.c
+       lirc.c \
+       lirc_cfg.c \
+       callbacks.c \
+       interface.c
 
 include ../../buildsys.mk
 include ../../extra.mk
