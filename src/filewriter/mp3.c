@@ -20,6 +20,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+/* #define AUD_DEBUG 1 */
+
 #include "plugins.h"
 
 #ifdef FILEWRITER_MP3
@@ -156,8 +158,6 @@ static void lame_debugf(const char *format, va_list ap)
     (void) vfprintf(stdout, format, ap);
 }
 
-
-
 static void mp3_init(void)
 {
     ConfigDb *db = aud_cfg_db_open();
@@ -206,9 +206,9 @@ static gint mp3_open(void)
 
     if (tuple) {
         /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
-#ifdef DEBUG
-        g_print("track_name = %s\n", aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
-#endif
+
+        AUDDBG("track_name = %s\n", aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
+
         lameid3.track_name = g_strdup(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
         id3tag_set_title(gfp, lameid3.track_name);
 
@@ -244,9 +244,7 @@ static gint mp3_open(void)
     lame_set_bWriteVbrTag(gfp, toggle_xing_val);
     lame_set_quality(gfp, algo_quality_val);
     if (audio_mode_val != 4) {
-#ifdef DEBUG
-        printf("set mode to %d\n", audio_mode_val);
-#endif
+        AUDDBG("set mode to %d\n", audio_mode_val);
         lame_set_mode(gfp, audio_mode_val);
     }
     if(auto_ms_val)
@@ -328,10 +326,7 @@ static gint mp3_free(void)
 
 static gint mp3_playing(void)
 {
-#ifdef DEBUG
-    printf("lame: buffer_playing = %d\n", encout ? 1 : 0);
-#endif
-    return encout ? 1 : 0;
+    return 0;
 }
 
 static gint mp3_get_written_time(void)
