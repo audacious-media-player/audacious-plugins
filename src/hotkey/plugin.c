@@ -298,12 +298,7 @@ static gboolean handle_keyevent (int keycode, int state, int type)
 	/* play */
 	if ((keycode == plugin_cfg.play.key) && (state == plugin_cfg.play.mask) && (type == plugin_cfg.play.type))
 	{
-		if (!play)
-		{
-			audacious_drct_play ();
-		} else {
-			audacious_drct_pause ();
-		}
+		audacious_drct_play ();
 		return TRUE;
 	}
 
@@ -939,10 +934,10 @@ static void configure (void)
 	add_event_controls(table, &controls->prev_track, 0, _("Previous Track:"), 
 			plugin_cfg.prev_track);
 
-	add_event_controls(table, &controls->play, 1, _("Play/Pause:"), 
+	add_event_controls(table, &controls->play, 1, _("Play:"), 
 			plugin_cfg.play);
 
-	add_event_controls(table, &controls->pause, 2, _("Pause:"), 
+	add_event_controls(table, &controls->pause, 2, _("Pause/Resume:"), 
 			plugin_cfg.pause);
 
 	add_event_controls(table, &controls->stop, 3, _("Stop:"), 
