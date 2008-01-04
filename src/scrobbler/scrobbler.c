@@ -673,12 +673,18 @@ static int sc_submit_np(Tuple *tuple)
 	curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 	/*cfa(&post, &last, "debug", "failed");*/
 
+        char *field_artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
+        char *field_title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
+        char *field_album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) ? fmt_escape(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)) : fmt_escape("");
 	entry = g_strdup_printf("s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
-		fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL)),
-		fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL)),
-		aud_tuple_get_string(tuple, FIELD_ALBUM, NULL) ? fmt_escape(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)) : "",
+		field_artist,
+		field_title,
+		field_album,
 		aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
 		aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+        curl_free(field_artist);
+        curl_free(field_title);
+        curl_free(field_album);
 
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *) entry);
 	memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
@@ -741,6 +747,7 @@ static int sc_submitentry(gchar *entry)
 	status = curl_easy_perform(curl);
 
 	curl_easy_cleanup(curl);
+        g_string_free(submission, TRUE);
 
 	if (status) {
 		pdebug(sc_curl_errbuf, DEBUG);
