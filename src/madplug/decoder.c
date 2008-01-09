@@ -153,12 +153,12 @@ write_output(struct mad_info_t *info, struct mad_pcm *pcm,
         }
     }
     assert(pos == olen);
-    if (!info->playback->playing)
+    if (!info->playback->playing) {
+        g_free(output);
         return;
+    }
     info->playback->pass_audio(info->playback,
                   FMT_S16_LE, MAD_NCHANNELS(header), olen, output, &(info->playback->playing));
-    if (!info->playback->playing)
-        return;
     g_free(output);
 }
 
