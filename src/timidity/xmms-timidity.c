@@ -33,6 +33,8 @@
 #include "xmms-timidity.h"
 #include "interface.h"
 
+static gchar *midi_exts[] = { "mid", "midi", "rmi", NULL };
+
 InputPlugin xmmstimid_ip = {
 	.description = "TiMidity Audio Plugin",
 	.init = xmmstimid_init,
@@ -46,6 +48,7 @@ InputPlugin xmmstimid_ip = {
 	.cleanup = xmmstimid_cleanup,
 	.get_song_info = xmmstimid_get_song_info,
 	.is_our_file_from_vfs = xmmstimid_is_our_fd,
+	.vfs_extensions = midi_exts,
 };
 
 InputPlugin *timidity_iplist[] = { &xmmstimid_ip, NULL };
