@@ -22,18 +22,8 @@
 #ifndef WAV_SNDFILE_H
 #define WAV_SNDFILE_H
 
-#define BUFFER_SIZE 			8192
+#define BUFFER_SIZE 8192
 
-static	void 	plugin_init (void);
-static	void 	plugin_cleanup (void);
-static	int	is_our_file (char *filename);
-static	void 	play_start (InputPlayback *playback);
-static	void 	play_stop (InputPlayback *playback);
-static	void 	file_seek (InputPlayback *playback, gint time);
-static	void 	get_song_info (gchar *filename, gchar **title, gint *length);
-static	Tuple*  get_song_tuple (gchar *filename);
-static  void    wav_about (void);
-static	void	play_pause (InputPlayback *playback, gshort p);
-static  void file_mseek (InputPlayback *playback, gulong millisecond);
+extern InputPlugin wav_ip;
 
 #endif
