@@ -67,6 +67,7 @@ static void aosd_trigger_func_pb_pauseon_onoff ( gboolean );
 static void aosd_trigger_func_pb_pauseon_cb ( gpointer , gpointer );
 static void aosd_trigger_func_pb_pauseoff_onoff ( gboolean );
 static void aosd_trigger_func_pb_pauseoff_cb ( gpointer , gpointer );
+static void aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused );
 
 /* map trigger codes to trigger objects */
 aosd_trigger_t aosd_triggers[] =
@@ -135,6 +136,10 @@ aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
     gint trig_code = g_array_index( cfg_trigger->active , gint , i );
     aosd_triggers[trig_code].onoff_func( TRUE );
   }
+  /* When called, this hook will display the text of the user pointer
+     or the current playing song, if NULL */
+  aud_hook_register("aosd toggle");
+  aud_hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , NULL );
   return;
 }
 
@@ -143,6 +148,7 @@ void
 aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 {
   gint i = 0;
+  aud_hook_dissociate( "aosd toggle" , aosd_trigger_func_hook_cb );
   for ( i = 0 ; i < cfg_trigger->active->len ; i++ )
   {
     gint trig_code = g_array_index( cfg_trigger->active , gint , i );
@@ -411,5 +417,29 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
   g_free( utf8_title_markup );
   g_free( utf8_title );
   g_free( title );
+  return;
+}
+
+
+/* Call with aud_hook_call("aosd toggle", param);
+   If param != NULL, display the supplied text in the OSD
+   If param == NULL, display the current playing song */
+static void
+aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused )
+{
+  if ( markup_text != NULL )
+  {
+    /* Display text from caller */
+    aosd_osd_display( markup_text , global_config->osd , FALSE );
+  } else {
+    /* Display currently playing song */
+    Playlist* pl;
+    PlaylistEntry *pl_entry;
+
+    pl = aud_playlist_get_active();
+    if (pl == NULL) return;
+    pl_entry = aud_playlist_get_entry_to_play(pl);
+    aosd_trigger_func_pb_start_cb ( (void*)pl_entry, NULL );
+  }
   return;
 }
