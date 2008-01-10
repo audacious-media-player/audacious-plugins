@@ -56,6 +56,37 @@ static GCond *decode_cond;
 
 
 
+
+static sf_count_t sf_get_filelen (void *user_data)
+{
+    return aud_vfs_fsize (user_data);
+}
+static sf_count_t sf_vseek (sf_count_t offset, int whence, void *user_data)
+{
+    return aud_vfs_fseek(user_data, offset, whence);
+}
+static sf_count_t sf_vread (void *ptr, sf_count_t count, void *user_data)
+{
+    return vfs_fread(ptr, 1, count, user_data);
+}
+static sf_count_t sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
+{
+    return vfs_fwrite(ptr, 1, count, user_data);
+}
+static sf_count_t sf_tell (void *user_data)
+{
+    return vfs_ftell(user_data);
+}
+static SF_VIRTUAL_IO sf_virtual_io =
+{
+    sf_get_filelen,
+    sf_vseek,
+    sf_vread,
+    sf_vwrite,
+    sf_tell
+};
+
+
 static void
 plugin_init (void)
 {
@@ -505,9 +536,23 @@ get_song_tuple (gchar *filename)
     return ti;
 }
 
-/*static int is_our_file_from_vfs(char *filename, VFSFile *fin)
+static int is_our_file_from_vfs(char *filename, VFSFile *fin)
 {
-}*/
+    SNDFILE *tmp_sndfile;
+    SF_INFO tmp_sfinfo;
+
+    /* Have to open the file to see if libsndfile can handle it. */
+    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, fin);
+
+    if (!tmp_sndfile)
+        return FALSE;
+
+    /* It can so close file and return TRUE. */
+    sf_close (tmp_sndfile);
+    tmp_sndfile = NULL;
+
+    return TRUE;
+}
 
 static void wav_about(void)
 {
