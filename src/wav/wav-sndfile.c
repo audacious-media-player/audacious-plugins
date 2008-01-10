@@ -505,6 +505,10 @@ get_song_tuple (gchar *filename)
     return ti;
 }
 
+/*static int is_our_file_from_vfs(char *filename, VFSFile *fin)
+{
+}*/
+
 static void wav_about(void)
 {
     static GtkWidget *box;
@@ -533,7 +537,7 @@ static void wav_about(void)
     }
 }
 
-static gchar *fmts[] = { "wav", NULL };
+static gchar *fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
 InputPlugin wav_ip = {
     .description = "sndfile WAV plugin",
@@ -547,6 +551,7 @@ InputPlugin wav_ip = {
     .cleanup = plugin_cleanup,
     .get_song_info = get_song_info,
     .get_song_tuple = get_song_tuple,
+    //.is_our_file_from_vfs = is_our_file_from_vfs,
     .vfs_extensions = fmts,
     .mseek = file_mseek,
 };
