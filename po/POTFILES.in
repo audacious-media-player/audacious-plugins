@@ -57,6 +57,7 @@ src/console/Spc_Emu.cxx
 src/console/Vfs_File.cxx
 src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
+src/demac/plugin.c
 src/echo_plugin/gui.c
 src/esd/about.c
 src/esd/configure.c
@@ -75,15 +76,16 @@ src/jack/jack.c
 src/ladspa/ladspa.c
 src/lastfm/lastfm.c
 src/lirc/about.c
+src/lirc/interface.c
 src/lirc/lirc.c
 src/madplug/configure.c
-src/madplug/fileinfo.c
 src/madplug/plugin.c
 src/metronom/metronom.c
 src/modplug/gui/interface.cxx
 src/modplug/gui/main.cxx
 src/modplug/gui/modplug.glade
 src/modplug/gui/support.cxx
+src/mtp_up/mtp.c
 src/musepack/libmpc.cxx
 src/null/null.c
 src/OSS4/about.c
@@ -123,7 +125,6 @@ src/timidity/xmms-timidity.c
 src/tonegen/tonegen.c
 src/tta/libtta.c
 src/vorbis/configure.c
-src/vorbis/fileinfo.c
 src/vorbis/vorbis.c
 src/vtx/about.c
 src/vtx/info.c
