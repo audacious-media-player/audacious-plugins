@@ -289,12 +289,6 @@ static int mp3_head_convert(const guchar * hbuf)
         ((unsigned long) hbuf[2] << 8) | (unsigned long) hbuf[3];
 }
 
-gboolean audmad_is_remote(gchar *url)
-{
-    gboolean rv = aud_vfs_is_remote(url);
-    return rv;
-}
-
 // audacious vfs fast version
 static int audmad_is_our_fd(char *filename, VFSFile *fin)
 {
@@ -305,10 +299,7 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
     guchar tmp[4096];
     gint ret, i, frameSize;
 
-    info.remote = FALSE;
-
-    if(audmad_is_remote(filename))
-        info.remote = TRUE;
+    info.remote = aud_vfs_is_remote(filename);
 
     /* I've seen some flac files beginning with id3 frames..
        so let's exclude known non-mp3 filename extensions */
@@ -445,7 +436,7 @@ static void audmad_play_file(InputPlayback *playback)
     }
 
     // remote access must use fast scan.
-    rtn = input_get_info(&info, audmad_is_remote(url) ? TRUE : audmad_config.fast_play_time_calc);
+    rtn = input_get_info(&info, aud_vfs_is_remote(url) ? TRUE : audmad_config.fast_play_time_calc);
 
     if (rtn == FALSE) {
         g_message("error reading input info");
