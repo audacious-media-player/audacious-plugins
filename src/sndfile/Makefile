@@ -1,8 +1,8 @@
 include ../../extra.mk
 
-PLUGIN = wav${PLUGIN_SUFFIX}
+PLUGIN = sndfile${PLUGIN_SUFFIX}
 
-SRCS = wav.c
+SRCS = plugin.c
 
 include ../../buildsys.mk
 
