@@ -39,7 +39,7 @@
 #include <audacious/i18n.h>
 #include <audacious/main.h>
 #include <audacious/output.h>
-#include "wav-sndfile.h"
+#include "plugin.h"
 
 #include <sndfile.h>
 
@@ -540,12 +540,12 @@ static int is_our_file_from_vfs(char *filename, VFSFile *fin)
     return TRUE;
 }
 
-static void wav_about(void)
+static void plugin_about(void)
 {
     static GtkWidget *box;
     if (!box)
     {
-        box = audacious_info_dialog(_("About sndfile WAV support"),
+        box = audacious_info_dialog(_("About sndfile plugin"),
                                     _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
                                       "from the xmms_sndfile plugin which is:\n"
                                       "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
@@ -570,10 +570,10 @@ static void wav_about(void)
 
 static gchar *fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
-InputPlugin wav_ip = {
-    .description = "sndfile WAV plugin",
+InputPlugin sndfile_ip = {
+    .description = "sndfile plugin",
     .init = plugin_init,
-    .about = wav_about,
+    .about = plugin_about,
     .is_our_file = is_our_file,
     .play_file = play_start,
     .stop = play_stop,
@@ -586,6 +586,6 @@ InputPlugin wav_ip = {
     .mseek = file_mseek,
 };
 
-InputPlugin *wav_iplist[] = { &wav_ip, NULL };
+InputPlugin *sndfile_iplist[] = { &sndfile_ip, NULL };
 
-SIMPLE_INPUT_PLUGIN(wav-sndfile, wav_iplist)
+SIMPLE_INPUT_PLUGIN(sndfile, sndfile_iplist)

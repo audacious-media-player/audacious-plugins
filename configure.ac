@@ -120,7 +120,7 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console sexypsf wav cue alac metronom vtx"
+INPUT_PLUGINS="tonegen console sexypsf cue alac metronom vtx"
 OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="audiocompress ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
@@ -713,10 +713,8 @@ else
 fi
 
 if test "$enable_sndfile" = "yes"; then
-	WAV_SNDFILE="-sndfile"
+	INPUT_PLUGINS="$INPUT_PLUGINS sndfile"
 fi
-
-AC_SUBST(WAV_SNDFILE)
 
 dnl *** modplug
 
@@ -1635,8 +1633,7 @@ echo "    -> FluidSynth backend:                $enable_amidiplug_fluidsynth"
 echo "    -> dummy backend:                     $enable_amidiplug_dummy"
 echo "  MIDI to WAVE converter (timidity):      $enable_timidity"
 echo "  CD Digital Audio (cdaudio_ng):          $enable_cdaudio_ng"
-echo "  Microsoft WAV (wav):                    yes"
-echo "    + sndfile extensions:                 $enable_sndfile"
+echo "  sndfile extensions:                     $enable_sndfile"
 echo "  Tone Generator:                         yes"
 echo "  Ogg Vorbis (vorbis):                    $have_oggvorbis"
 echo "  Free Lossless Audio Codec (flacng):     $have_flacng"

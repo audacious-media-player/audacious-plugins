@@ -19,11 +19,11 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef WAV_SNDFILE_H
-#define WAV_SNDFILE_H
+#ifndef PLUGIN_H
+#define PLUGIN_H
 
 #define BUFFER_SIZE 8192
 
-extern InputPlugin wav_ip;
+extern InputPlugin sndfile_ip;
 
 #endif
