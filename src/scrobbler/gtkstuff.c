@@ -39,8 +39,11 @@ void errorbox_show(char *errortxt)
 			"%s\n"),
 			errortxt);
 
+	GDK_THREADS_ENTER();
 	audacious_info_dialog(_("Scrobbler Error"),
 			tmp,
 			_("OK"), FALSE, NULL, NULL);
+	GDK_THREADS_LEAVE();
+
 	g_free(tmp);
 }
