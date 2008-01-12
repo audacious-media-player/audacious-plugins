@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the audacious-plugins
 # package.
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
-# Petr Pisar <petr.pisar@atlas.cz>, 2007.
+# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins hg-2148\n"
+"Project-Id-Version: audacious-plugins hg-2287\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2008-01-11 00:58+0300\n"
-"PO-Revision-Date: 2007-11-06 21:18+0100\n"
+"POT-Creation-Date: 2008-01-09 18:05+0100\n"
+"PO-Revision-Date: 2008-01-09 18:56+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -43,10 +43,10 @@ msgstr "O MP4 AAC modulu"
 #: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:392
 #: src/echo_plugin/gui.c:26 src/echo_plugin/gui.c:137 src/esd/about.c:49
 #: src/filewriter/filewriter.c:183 src/jack/configure.c:141
-#: src/jack/jack.c:493 src/madplug/plugin.c:559 src/madplug/plugin.c:582
+#: src/jack/jack.c:493 src/madplug/plugin.c:568 src/madplug/plugin.c:591
 #: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:49
 #: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
-#: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
+#: src/OSS/about.c:54 src/OSS4/about.c:59 src/paranormal-ng/plugin.c:283
 #: src/paranormal/plugin.c:291 src/scrobbler/gtkstuff.c:25
 #: src/statusicon/si_ui.c:593 src/stereo_plugin/stereo.c:53
 #: src/stereo_plugin/stereo.c:116 src/sun/about.c:38 src/sun/configure.c:559
@@ -54,7 +54,7 @@ msgstr "O MP4 AAC modulu"
 #: src/tonegen/tonegen.c:62 src/tta/libtta.c:153 src/tta/libtta.c:267
 #: src/tta/libtta.c:402 src/vorbis/vorbis.c:757 src/vtx/about.c:32
 #: src/vtx/info.c:43 src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
-#: src/wav/wav-sndfile.c:579
+#: src/wav/wav-sndfile.c:530
 msgid "Ok"
 msgstr "OK"
 
@@ -333,7 +333,7 @@ msgstr "Toto je váš budící signál."
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
 #: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:228
 #: src/flacng/plugin.c:747 src/gnomeshortcuts/gnomeshortcuts.c:292
-#: src/hotkey/plugin.c:1075 src/modplug/gui/interface.cxx:702
+#: src/hotkey/plugin.c:1051 src/modplug/gui/interface.cxx:702
 #: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:712
 #: src/scrobbler/gtkstuff.c:44 src/sid/xmms-sid.glade:3066
 #: src/sid/xs_interface.c:1243
@@ -414,7 +414,7 @@ msgstr "Vyberte dny, kdy má budík budit"
 #: src/alarm/interface.c:612 src/alarm/interface.c:660
 #: src/alarm/interface.c:708 src/alarm/interface.c:756
 #: src/alarm/interface.c:804 src/alarm/interface.c:852
-#: src/alarm/interface.c:900 src/OSS4/configure.c:138 src/OSS/configure.c:169
+#: src/alarm/interface.c:900 src/OSS/configure.c:169 src/OSS4/configure.c:138
 msgid "Default"
 msgstr "Standardní"
 
@@ -619,7 +619,7 @@ msgstr ""
 "    seznamu skladeb.\n"
 "    URL MP3/OGG proudu zde také může být zadáno,\n"
 "    ale načítání seznamu skladeb z URL není\n"
-"    v současnosti podporáno.\n"
+"    v současnosti podporováno.\n"
 "\n"
 "  Upomínání:\n"
 "    Při vypnutí budíku zobrazí vzkaz.\n"
@@ -692,7 +692,7 @@ msgstr "Implicitní PCM zařízení (%s)"
 msgid "ALSA Driver configuration"
 msgstr "Nastavení ovladače ALSA"
 
-#: src/alsa/configure.c:274 src/OSS4/configure.c:186 src/OSS/configure.c:217
+#: src/alsa/configure.c:274 src/OSS/configure.c:217 src/OSS4/configure.c:186
 #: src/sun/configure.c:183
 msgid "Audio device:"
 msgstr "Zvukové zařízení:"
@@ -1117,7 +1117,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug – vyberte SoundFontový soubor"
+msgstr "AMIDI-Plug – vyberte soundfontový soubor"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:362
 msgid "FLUIDSYNTH BACKEND CONFIGURATION"
@@ -1238,7 +1238,7 @@ msgid ""
 msgstr ""
 "* Výběr SoundFont souborů *\n"
 "Abyste mohli přehrávat MIDI přes FluidSynth, musíte určit alespoň jeden "
-"platný SoundFontový soubor (použijte absolutní cesty). Pořadí nahrávání je "
+"platný soundfontový soubor (použijte absolutní cesty). Pořadí nahrávání je "
 "od shora (první) dolů (poslední)."
 
 #: src/amidi-plug/i_configure-fluidsynth.c:812
@@ -1558,27 +1558,27 @@ msgstr "Zaoblený obdélník"
 msgid "Concave Rectangle"
 msgstr "Konkávní obdélník"
 
-# FIXME: Zadny (styl) a Zadne (klavesy). Je treba rozlisit ve zdrojaku
-# kontext.
+# FIXME: Utilize gettext context feature to distinguish between None (style)
+# and None (keys).
 # http://bugzilla.atheme.org/show_bug.cgi?id=48
-#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:870
+#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:856
 #, fuzzy
 msgid "None"
 msgstr "Žádný"
 
-#: src/aosd/aosd_trigger.c:75
+#: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
 msgstr "Zahájení přehrávání"
 
-#: src/aosd/aosd_trigger.c:76
+#: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
 msgstr "Spustí OSD, když se začne přehrávay skladba."
 
-#: src/aosd/aosd_trigger.c:80
+#: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
 msgstr "Změna názvu"
 
-#: src/aosd/aosd_trigger.c:81
+#: src/aosd/aosd_trigger.c:80
 msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
@@ -1588,27 +1588,27 @@ msgstr ""
 "je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se "
 "střídají skladby."
 
-#: src/aosd/aosd_trigger.c:87
+#: src/aosd/aosd_trigger.c:86
 msgid "Volume Change"
 msgstr "Změna hlasitosti"
 
-#: src/aosd/aosd_trigger.c:88
+#: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when volume is changed."
 msgstr "Spustí OSD, když se změní hlasitost."
 
-#: src/aosd/aosd_trigger.c:92
+#: src/aosd/aosd_trigger.c:91
 msgid "Pause On"
 msgstr "Pozastavení"
 
-#: src/aosd/aosd_trigger.c:93
+#: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is paused."
 msgstr "Spustí OSD, když je přehrávání pozastaveno."
 
-#: src/aosd/aosd_trigger.c:97
+#: src/aosd/aosd_trigger.c:96
 msgid "Pause Off"
 msgstr "Obnovení přehrávání"
 
-#: src/aosd/aosd_trigger.c:98
+#: src/aosd/aosd_trigger.c:97
 msgid "Triggers OSD when playback is unpaused."
 msgstr "Spustí OSD, když přehrávání obnoveno."
 
@@ -1733,12 +1733,12 @@ msgid ""
 "manager otherwise the OSD won't work properly"
 msgstr ""
 "Kompozitní správce nebyl nalezen.\n"
-"Pokud nevíte, že byste jste již nějakého pustili, prosím, aktivujte "
+"Pokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte "
 "kompozitního správce, jinak OSD nebude správně fungovat."
 
 #: src/aosd/aosd_ui.c:816
 msgid "Composite manager not required for fake transparency"
-msgstr "Kompozitní správce není vyžadován při falešné průhlednosti"
+msgstr "Při falešné průhlednosti není kompozitní správce potřeba"
 
 #: src/aosd/aosd_ui.c:854
 msgid "Transparency"
@@ -1849,18 +1849,18 @@ msgstr ""
 msgid "aRts Driver configuration"
 msgstr "Nastavení ovladače aRts"
 
-#: src/arts/configure.c:61 src/esd/configure.c:171 src/OSS4/configure.c:232
-#: src/OSS/configure.c:304 src/sun/configure.c:259
+#: src/arts/configure.c:61 src/esd/configure.c:171 src/OSS/configure.c:304
+#: src/OSS4/configure.c:232 src/sun/configure.c:259
 msgid "Buffering:"
 msgstr "Vyrovnávání:"
 
-#: src/arts/configure.c:73 src/esd/configure.c:184 src/OSS4/configure.c:245
-#: src/OSS/configure.c:317 src/sun/configure.c:272
+#: src/arts/configure.c:73 src/esd/configure.c:184 src/OSS/configure.c:317
+#: src/OSS4/configure.c:245 src/sun/configure.c:272
 msgid "Buffer size (ms):"
 msgstr "Velikost vyrovnávací paměti (ms):"
 
-#: src/arts/configure.c:83 src/esd/configure.c:209 src/OSS4/configure.c:270
-#: src/OSS/configure.c:342 src/sun/configure.c:304
+#: src/arts/configure.c:83 src/esd/configure.c:209 src/OSS/configure.c:342
+#: src/OSS4/configure.c:270 src/sun/configure.c:304
 msgid "Buffering"
 msgstr "Vyrovnávání"
 
@@ -2069,7 +2069,7 @@ msgstr "Port: "
 
 #: src/cdaudio-ng/configure.c:202
 msgid "Use HTTP instead of CDDBP"
-msgstr ""
+msgstr "Použít HTTP místo CDDBP"
 
 #: src/cdaudio-ng/configure.c:210
 msgid "Override default device: "
@@ -2151,9 +2151,8 @@ msgstr ""
 "        Shay Green <gblargg@gmail.com>"
 
 #: src/demac/plugin.c:387
-#, fuzzy
 msgid "About Monkey's Audio Plugin"
-msgstr "O modul pro MPEG zvuk"
+msgstr "O modulu pro Monkey's Audio"
 
 #: src/demac/plugin.c:388
 msgid ""
@@ -2163,6 +2162,11 @@ msgid ""
 "\n"
 "ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"
 msgstr ""
+"Copyright © 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+"Založeno na dekodéru ffape, Copyright © 2007 Benjamin Zores\n"
+"ffape sám vychází z libdemac od Dava Chapmana.\n"
+"\n"
+"ffape je součástí projektu FFmpeg, http://ffmpeg.mplayerhq.hu/"
 
 #: src/echo_plugin/gui.c:11
 msgid ""
@@ -2262,7 +2266,7 @@ msgstr "Port:"
 msgid "Server"
 msgstr "Server"
 
-#: src/esd/configure.c:198 src/OSS4/configure.c:259 src/OSS/configure.c:331
+#: src/esd/configure.c:198 src/OSS/configure.c:331 src/OSS4/configure.c:259
 #: src/sun/configure.c:290
 msgid "Pre-buffer (percent):"
 msgstr "Načíst předem (v procentech):"
@@ -2469,7 +2473,7 @@ msgstr ""
 "Nelze otevřít okno s vazbami pro nerozpoznané zařízení.\n"
 "Ujistěte se, že zařízení bylo správně zapojeno."
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:582
+#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:591
 msgid "Error"
 msgstr "Chyba"
 
@@ -2932,118 +2936,110 @@ msgstr ""
 "Copyright © 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
-#: src/hotkey/plugin.c:649
+#: src/hotkey/plugin.c:636
 msgid "(none)"
 msgstr "(žádné)"
 
-#: src/hotkey/plugin.c:776
+#: src/hotkey/plugin.c:763
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n"
+"\n"
+"Chcete pokračovat?"
 
-#: src/hotkey/plugin.c:778
+#: src/hotkey/plugin.c:765
 msgid "Binding mouse buttons"
-msgstr ""
+msgstr "Přiřazuji tlačítka myši"
 
-#: src/hotkey/plugin.c:912
+#: src/hotkey/plugin.c:891
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Hlavní nastavení modulu pro horké klávesy"
 
-#: src/hotkey/plugin.c:928
+#: src/hotkey/plugin.c:907
 msgid "Press a key combination inside a text field."
 msgstr "Uvnitř textového pole stiskněte kombinaci kláves."
 
-#: src/hotkey/plugin.c:933
+#: src/hotkey/plugin.c:912
 msgid "<b>Playback:</b>"
 msgstr "<b>Přehrávání:</b>"
 
-#: src/hotkey/plugin.c:948
+#: src/hotkey/plugin.c:927
 msgid "<i>Configure keys which controls Audacious playback.</i>"
 msgstr "<i>Konfiguruje klávesy, které ovládají přehrávání v Audacious.</i>"
 
-#: src/hotkey/plugin.c:955
+#: src/hotkey/plugin.c:934
 msgid "Previous Track:"
 msgstr "Předchozí stopa:"
 
-#: src/hotkey/plugin.c:958
-#, fuzzy
+#: src/hotkey/plugin.c:937
 msgid "Play:"
-msgstr "V okně _přehrávače:"
+msgstr "Hrát:"
 
-#: src/hotkey/plugin.c:961
-#, fuzzy
+#: src/hotkey/plugin.c:940
 msgid "Pause/Resume:"
-msgstr "Pozastavit:"
+msgstr "Pozastavit/Pokračovat:"
 
-#: src/hotkey/plugin.c:964
+#: src/hotkey/plugin.c:943
 msgid "Stop:"
 msgstr "Zastavit:"
 
-#: src/hotkey/plugin.c:967
+#: src/hotkey/plugin.c:946
 msgid "Next Track:"
 msgstr "Další stopa:"
 
-#: src/hotkey/plugin.c:970
+#: src/hotkey/plugin.c:949
 msgid "Forward 5 sec.:"
 msgstr "5 s vpřed:"
 
-#: src/hotkey/plugin.c:973
+#: src/hotkey/plugin.c:952
 msgid "Rewind 5 sec.:"
 msgstr "5 s zpět:"
 
-#: src/hotkey/plugin.c:978
+#: src/hotkey/plugin.c:957
 msgid "<b>Volume Control:</b>"
 msgstr "<b>Ovládání hlasitosti:</b>"
 
-#: src/hotkey/plugin.c:993
+#: src/hotkey/plugin.c:972
 msgid "<i>Configure keys which controls music volume.</i>"
 msgstr "<i>Konfiguruje klávesy, které ovládají hlasitost hudby.</i>"
 
-#: src/hotkey/plugin.c:999
+#: src/hotkey/plugin.c:978
 msgid "Mute:"
 msgstr "Vypnout zvuk:"
 
-#: src/hotkey/plugin.c:1002
+#: src/hotkey/plugin.c:981
 msgid "Volume Up:"
 msgstr "Zesílit:"
 
-#: src/hotkey/plugin.c:1005
+#: src/hotkey/plugin.c:984
 msgid "Volume Down:"
 msgstr "Ztišit:"
 
-#: src/hotkey/plugin.c:1010
+#: src/hotkey/plugin.c:989
 msgid "<b>Player:</b>"
 msgstr "<b>Přehrávač</b>"
 
-#: src/hotkey/plugin.c:1025
+#: src/hotkey/plugin.c:1004
 msgid "<i>Configure keys which control the player.</i>"
 msgstr "<i>Konfiguruje klávesy, které ovládají přehrávač.</i>"
 
-#: src/hotkey/plugin.c:1031
+#: src/hotkey/plugin.c:1010
 msgid "Jump to File:"
 msgstr "Přeskočit na soubor:"
 
-#: src/hotkey/plugin.c:1034
+#: src/hotkey/plugin.c:1013
 msgid "Toggle Player Windows:"
 msgstr "Přepnout okna přehrávače:"
 
-#: src/hotkey/plugin.c:1037
-msgid "Show On-Screen-Display:"
-msgstr ""
-
-#: src/hotkey/plugin.c:1038
-msgid "For this, the Audacious OSD plugin must be activated."
-msgstr ""
-
-#: src/hotkey/plugin.c:1064
+#: src/hotkey/plugin.c:1040
 msgid "About Global Hotkey Plugin"
 msgstr "O modulu Global Hotkey"
 
-#: src/hotkey/plugin.c:1065
-#, fuzzy
+#: src/hotkey/plugin.c:1041
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3062,7 +3058,7 @@ msgstr ""
 "Ovládá přehrávač pomocí globálních kombinací kláves nebo pomocí "
 "multimediálních kláves.\n"
 "\n"
-"Copyright © 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Copyright © 2007–2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 "Přispěvatelé:\n"
 "Copyright © 2006–2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
@@ -3201,7 +3197,6 @@ msgid "LIRC Plugin "
 msgstr "Modul LIRC "
 
 #: src/lirc/about.c:92
-#, fuzzy
 msgid ""
 "\n"
 "A simple plugin that lets you control\n"
@@ -3223,30 +3218,29 @@ msgstr ""
 "z XMMS LIRC modulu, jehož tvůrci jsou:\n"
 "Carl van Schaik <carl@leg.uct.ac.za>\n"
 "Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
 "Informace o LIRC lze získat na:\n"
-"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+"http://lirc.org/"
 
 #: src/lirc/interface.c:37
-#, fuzzy
 msgid "LIRC plugin settings"
-msgstr "Modul LIRC "
+msgstr "Nastavení modulu LIRC"
 
 #: src/lirc/interface.c:61
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Znovu se připojit k serveru LIRC"
 
 #: src/lirc/interface.c:68
 msgid "Timeout before reconnecting (seconds): "
-msgstr ""
+msgstr "Časový limit pro znovupřipojení (sekundy): "
 
 #: src/lirc/interface.c:75
 msgid "Reconnect"
-msgstr ""
+msgstr "Znovu se připojit"
 
 #: src/lirc/interface.c:79
-#, fuzzy
 msgid "Connection"
-msgstr "Režim připojení:"
+msgstr "Spojení"
 
 #: src/lirc/lirc.c:78
 #, c-format
@@ -3267,7 +3261,7 @@ msgstr ""
 #: src/lirc/lirc.c:111
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: pokouším se znovu připojit…\n"
 
 #: src/lirc/lirc.c:310
 #, c-format
@@ -3282,7 +3276,7 @@ msgstr "%s: odpojeno od LIRC\n"
 #: src/lirc/lirc.c:324
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: pokus o připojení budu opakovat každých %d sekund…\n"
 
 #: src/madplug/configure.c:147
 msgid "MPEG Audio Plugin Configuration"
@@ -3350,7 +3344,7 @@ msgstr "Formát ID3:"
 msgid "Title"
 msgstr "Název"
 
-#: src/madplug/plugin.c:541
+#: src/madplug/plugin.c:550
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3381,7 +3375,7 @@ msgstr ""
 "Podpora zesílení přehrávání od:\n"
 "    Samuel Krempp"
 
-#: src/madplug/plugin.c:557
+#: src/madplug/plugin.c:566
 msgid "About MPEG Audio Plugin"
 msgstr "O modul pro MPEG zvuk"
 
@@ -3448,9 +3442,8 @@ msgid "8-tap Fir (extremely high quality)"
 msgstr "FIR filtr osmého řádu (velmi kvalitní)"
 
 #: src/modplug/gui/interface.cxx:285 src/modplug/gui/modplug.glade:384
-#, fuzzy
 msgid "48 kHz"
-msgstr "44 kHz"
+msgstr "48 kHz"
 
 #: src/modplug/gui/interface.cxx:292 src/modplug/gui/modplug.glade:403
 msgid "44 kHz"
@@ -3641,7 +3634,7 @@ msgstr ""
 "Zvukové jádro Modplugu napsal Olivier Lapicque.\n"
 "XMMS rozhraní Modplugu od Kentona Varda.\n"
 "© 2000 Olivier Lapicque a Kenton Varda.\n"
-"Aktualizuje a údržuje Konstanty Bialkowski.\n"
+"Aktualizuje a udržuje Konstanty Bialkowski.\n"
 "Na BMP převedl Theofilos Intzoglou."
 
 #: src/modplug/gui/main.cxx:49
@@ -3656,19 +3649,19 @@ msgstr "Nebylo možné nalézt soubor s pixmapou: %s"
 
 #: src/mtp_up/mtp.c:35
 msgid "Upload selected track(s)"
-msgstr ""
+msgstr "Nahrát vybranou stopu(y)"
 
 #: src/mtp_up/mtp.c:296
 msgid "Upload in progress..."
-msgstr ""
+msgstr "Nahrávám…"
 
 #: src/mtp_up/mtp.c:305
 msgid "MTP device handler"
-msgstr ""
+msgstr "Deskriptor MTP zařízení"
 
 #: src/mtp_up/mtp.c:309
 msgid "Disconnect the device"
-msgstr ""
+msgstr "Odpojit zařízení"
 
 #: src/musepack/libmpc.cxx:146
 msgid "Musepack Decoder Plugin 1.2"
@@ -3875,6 +3868,73 @@ msgstr "Nastavení slepého výstupu"
 msgid "Run in real time"
 msgstr "Běžet v reálném čase"
 
+#: src/OSS/about.c:39
+msgid "About OSS Driver"
+msgstr "O modulu OSS"
+
+#: src/OSS/about.c:40
+msgid ""
+"Audacious OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Ovladač OSS programu Audacious\n"
+"\n"
+"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
+"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
+"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
+"libovolné novější.\n"
+"\n"
+"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
+"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"\n"
+"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
+"nestalo, obraťte se na Free Software Foundation, Inc.,\n"
+"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: src/OSS/configure.c:151 src/OSS4/configure.c:120
+#, c-format
+msgid "Default (%s)"
+msgstr "Standardně (%s)"
+
+#: src/OSS/configure.c:201 src/OSS4/configure.c:170
+msgid "OSS Driver configuration"
+msgstr "Nastavení ovladače OSS"
+
+#: src/OSS/configure.c:239 src/OSS/configure.c:280 src/OSS4/configure.c:208
+msgid "Use alternate device:"
+msgstr "Použít jiné zařízení:"
+
+#: src/OSS/configure.c:302 src/OSS4/configure.c:230 src/sun/configure.c:248
+msgid "Devices"
+msgstr "Zařízení"
+
+#: src/OSS/configure.c:343 src/OSS4/configure.c:272
+msgid "Mixer Settings:"
+msgstr "Nastavení mixéru:"
+
+#: src/OSS/configure.c:349
+msgid "Volume controls Master not PCM"
+msgstr "Hlasitost ovládána Master kanálem místo PCM"
+
+#: src/OSS/configure.c:355 src/OSS4/configure.c:284 src/sun/configure.c:394
+msgid "Mixer"
+msgstr "Mixér"
+
 #: src/OSS4/about.c:42
 msgid "About OSSv4 Driver"
 msgstr "O OSSv4 ovladači"
@@ -3919,76 +3979,9 @@ msgstr ""
 "nestalo, obraťte se na Free Software Foundation, Inc.,\n"
 "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/OSS4/configure.c:120 src/OSS/configure.c:151
-#, c-format
-msgid "Default (%s)"
-msgstr "Standardně (%s)"
-
-#: src/OSS4/configure.c:170 src/OSS/configure.c:201
-msgid "OSS Driver configuration"
-msgstr "Nastavení ovladače OSS"
-
-#: src/OSS4/configure.c:208 src/OSS/configure.c:239 src/OSS/configure.c:280
-msgid "Use alternate device:"
-msgstr "Použít jiné zařízení:"
-
-#: src/OSS4/configure.c:230 src/OSS/configure.c:302 src/sun/configure.c:248
-msgid "Devices"
-msgstr "Zařízení"
-
-#: src/OSS4/configure.c:272 src/OSS/configure.c:343
-msgid "Mixer Settings:"
-msgstr "Nastavení mixéru:"
-
 #: src/OSS4/configure.c:278
 msgid "Save VMIX volume between sessions"
 msgstr "Mezi relacemi uložit hlasitost VMIXU"
-
-#: src/OSS4/configure.c:284 src/OSS/configure.c:355 src/sun/configure.c:394
-msgid "Mixer"
-msgstr "Mixér"
-
-#: src/OSS/about.c:39
-msgid "About OSS Driver"
-msgstr "O modulu OSS"
-
-#: src/OSS/about.c:40
-msgid ""
-"Audacious OSS Driver\n"
-"\n"
-" This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Ovladač OSS programu Audacious\n"
-"\n"
-"Tento program je svobodný software; můžete jej šířit a/nebo měnit,\n"
-"pokud dodržíte podmínky GNU General Public License (GPL) vydané\n"
-"Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
-"libovolné novější.\n"
-"\n"
-"Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
-"ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
-"\n"
-"S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
-"nestalo, obraťte se na Free Software Foundation, Inc.,\n"
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/OSS/configure.c:349
-msgid "Volume controls Master not PCM"
-msgstr "Hlasitost ovládána Master kanálem místo PCM"
 
 #: src/pulse_audio/pulse_audio.c:696
 msgid "About Audacious PulseAudio Output Plugin"
@@ -5015,7 +5008,7 @@ msgstr ""
 "napsal Giacomo Lozito < james@develia.org >\n"
 "\n"
 "Tento modul poskytuje stavovou ikonu, která\n"
-"je umístěna v systémovém oblasti desktopu.\n"
+"je umístěna v systémové oblasti desktopu.\n"
 
 #: src/statusicon/si_ui.c:661
 msgid "Status Icon Plugin - Preferences"
@@ -5406,11 +5399,11 @@ msgstr "Nastavení Wavepacku"
 msgid "General Plugin Settings:"
 msgstr "Obecná nastavení modulu:"
 
-#: src/wav/wav-sndfile.c:562
+#: src/wav/wav-sndfile.c:513
 msgid "About sndfile WAV support"
 msgstr "O podpoře sndfile WAV"
 
-#: src/wav/wav-sndfile.c:563
+#: src/wav/wav-sndfile.c:514
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -7805,7 +7798,7 @@ msgstr ""
 #~ "Audacious allows you to alter the color balance of the skinned UI. The "
 #~ "sliders below will allow you to do this."
 #~ msgstr ""
-#~ "Audacious umožňuje změnit zabarvení měnitelného vzehledu uživatelského "
+#~ "Audacious umožňuje změnit zabarvení měnitelného vzhledu uživatelského "
 #~ "rozhraní pomocí následujících jezdců."
 
 #~ msgid "Red"
@@ -8127,7 +8120,7 @@ msgstr ""
 #~ msgstr "Server s databází CD:"
 
 #~ msgid "SPC, VGM, NSF/NSFE, GBS, and GYM module decoder"
-#~ msgstr "Dekodér SPC, VGM, NSF/NSFE a GYM"
+#~ msgstr "Dekodér SPC, VGM, NSF/NSFE, GBS a GYM"
 
 #~ msgid "Select the directory where you want to store the MPEG streams:"
 #~ msgstr "Vyberte adresář, do něhož chcete vysílání uložit:"
