@@ -89,12 +89,17 @@ static SF_VIRTUAL_IO sf_virtual_io =
 static SNDFILE *
 open_sndfile_from_uri(gchar *filename, VFSFile *vfsfile, SF_INFO *tmp_sfinfo)
 {
+    SNDFILE *snd_file = NULL;
     vfsfile = aud_vfs_fopen(filename, "rb");
 
     if (vfsfile == NULL)
         return NULL;
 
-    return sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, vfsfile);
+    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, vfsfile);
+    if (snd_file == NULL)
+        aud_vfs_fclose(vfsfile);
+
+    return snd_file;
 }
 
 static void
