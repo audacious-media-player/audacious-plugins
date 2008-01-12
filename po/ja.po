@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2008-01-11 00:58+0300\n"
-"PO-Revision-Date: 2007-10-21 18:38+0900\n"
+"PO-Revision-Date: 2008-01-12 22:51+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2061,7 +2061,7 @@ msgstr "ポート番号: "
 
 #: src/cdaudio-ng/configure.c:202
 msgid "Use HTTP instead of CDDBP"
-msgstr ""
+msgstr "CDDBP の代わりに HTTP を使う"
 
 #: src/cdaudio-ng/configure.c:210
 msgid "Override default device: "
@@ -2145,9 +2145,8 @@ msgstr ""
 "Shay Green <hotpop.com@blargg> によります."
 
 #: src/demac/plugin.c:387
-#, fuzzy
 msgid "About Monkey's Audio Plugin"
-msgstr "MPEG オーディオプラグインについて"
+msgstr "Monkey's オーディオプラグインについて"
 
 #: src/demac/plugin.c:388
 msgid ""
@@ -2157,6 +2156,11 @@ msgid ""
 "\n"
 "ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"
 msgstr ""
+"Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+"ffape デコーダ (Copyright (C) 2007 Benjamin Zores) を元とする.\n"
+"ffape 自体は Dave Chapman による libdemac を元とする.\n"
+"\n"
+"ffape は FFmpeg プロジェクト(http://ffmpeg.mplayerhq.hu/) の一部である."
 
 #: src/echo_plugin/gui.c:11
 msgid ""
@@ -2942,10 +2946,13 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"修飾キーなしでプライマリマウスボタンに割り当てるのはお勧めしません.\n"
+"\n"
+"続けますか?"
 
 #: src/hotkey/plugin.c:778
 msgid "Binding mouse buttons"
-msgstr ""
+msgstr "マウスボタン割り当て"
 
 #: src/hotkey/plugin.c:912
 msgid "Global Hotkey Plugin Configuration"
@@ -2968,14 +2975,12 @@ msgid "Previous Track:"
 msgstr "次のトラック:"
 
 #: src/hotkey/plugin.c:958
-#, fuzzy
 msgid "Play:"
-msgstr "演奏時間:"
+msgstr "演奏開始:"
 
 #: src/hotkey/plugin.c:961
-#, fuzzy
 msgid "Pause/Resume:"
-msgstr "一時停止:"
+msgstr "一時停止/再開:"
 
 #: src/hotkey/plugin.c:964
 msgid "Stop:"
@@ -3031,18 +3036,17 @@ msgstr "プレイヤウィンドウを切り替える:"
 
 #: src/hotkey/plugin.c:1037
 msgid "Show On-Screen-Display:"
-msgstr ""
+msgstr "On-Screen-Display を表示する:"
 
 #: src/hotkey/plugin.c:1038
 msgid "For this, the Audacious OSD plugin must be activated."
-msgstr ""
+msgstr "Audacious OSD プラグインを有効にしなければ,利用できません."
 
 #: src/hotkey/plugin.c:1064
 msgid "About Global Hotkey Plugin"
 msgstr "グローバルホットキープラグインについて"
 
 #: src/hotkey/plugin.c:1065
-#, fuzzy
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3060,10 +3064,10 @@ msgstr ""
 "グローバルホットキープラグイン\n"
 "グローバルキーコンビネーションかマルチメディアキーでプレイヤをコントロール.\n"
 "\n"
-"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 "貢献者:\n"
-"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2006-2008 Vladimir Paskov <vlado.paskov@gmail.com>\n"
 "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
 "\t\t\tBryn Davies <curious@ihug.com.au>\n"
 "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
@@ -3198,7 +3202,6 @@ msgid "LIRC Plugin "
 msgstr "LIRC プラグイン"
 
 #: src/lirc/about.c:92
-#, fuzzy
 msgid ""
 "\n"
 "A simple plugin that lets you control\n"
@@ -3219,31 +3222,30 @@ msgstr ""
 "Tony Vroon <chainsaw@gentoo.org> による Audacious への適用\n"
 "元となった XMMS LIRC プラグインは\n"
 "Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de> による.\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by> による.\n"
 "LIRC の情報は以下で得られる.\n"
-"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+"http://lirc.org"
 
 #: src/lirc/interface.c:37
-#, fuzzy
 msgid "LIRC plugin settings"
-msgstr "LIRC プラグイン"
+msgstr "LIRC プラグイン設定"
 
 #: src/lirc/interface.c:61
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "LIRC サーバに再接続"
 
 #: src/lirc/interface.c:68
 msgid "Timeout before reconnecting (seconds): "
-msgstr ""
+msgstr "再接続までのタイムアウト(秒): "
 
 #: src/lirc/interface.c:75
 msgid "Reconnect"
-msgstr ""
+msgstr "再接続"
 
 #: src/lirc/interface.c:79
-#, fuzzy
 msgid "Connection"
-msgstr "接続モード"
+msgstr "接続"
 
 #: src/lirc/lirc.c:78
 #, c-format
@@ -3264,7 +3266,7 @@ msgstr ""
 #: src/lirc/lirc.c:111
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: 再接続を試行中...\n"
 
 #: src/lirc/lirc.c:310
 #, c-format
@@ -3279,7 +3281,7 @@ msgstr "%s: LIRC から切断されました\n"
 #: src/lirc/lirc.c:324
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: %d 秒ごとに再接続を試みます...\n"
 
 #: src/madplug/configure.c:147
 msgid "MPEG Audio Plugin Configuration"
@@ -3652,19 +3654,19 @@ msgstr "pixmap ファイルが見つかりませんでした: %s"
 
 #: src/mtp_up/mtp.c:35
 msgid "Upload selected track(s)"
-msgstr ""
+msgstr "選択されたトラックをアップロード"
 
 #: src/mtp_up/mtp.c:296
 msgid "Upload in progress..."
-msgstr ""
+msgstr "アップロード進行中..."
 
 #: src/mtp_up/mtp.c:305
 msgid "MTP device handler"
-msgstr ""
+msgstr "MTP デバイスハンドラ"
 
 #: src/mtp_up/mtp.c:309
 msgid "Disconnect the device"
-msgstr ""
+msgstr "デバイスを切断"
 
 #: src/musepack/libmpc.cxx:146
 msgid "Musepack Decoder Plugin 1.2"
@@ -5458,6 +5460,12 @@ msgid ""
 "<bogorodskiy@inbox.ru>.\n"
 "This plugin based on source code "
 msgstr ""
+"BEEP-WMA プラグイン (Copyright (C) 2004,2005 Mokrushin I.V. "
+"aka McMCC (mcmcc@mail.ru)) と \n"
+"BMP-WMA プラグイン (Copyright (C) 2004 Roman Bogorodskiy "
+"<bogorodskiy@inbox.ru>) の\n"
+"Tony Vroon <chainsaw@gentoo.org> による Audacious への適用.\n"
+"このプラグインは以下のソースコードを元とする: "
 
 #~ msgid "Play/Pause:"
 #~ msgstr "演奏/一時停止:"
