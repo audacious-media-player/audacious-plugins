@@ -65,6 +65,7 @@ typedef struct {
 		*mb,
 		*album;
 	int utctime, track, len;
+int timeplayed;
 	int numtries;
 	void *next;
 } item_t;
@@ -72,6 +73,14 @@ typedef struct {
 static item_t *q_queue = NULL;
 static item_t *q_queue_last = NULL;
 static int q_nitems;
+
+/* isn't there better way for that? --desowin */
+gboolean sc_timeout(gpointer data) {
+    if (q_queue_last && audacious_drct_get_playing())
+        q_queue_last->timeplayed+=1;
+
+    return TRUE;
+}
 
 gchar *
 xmms_urldecode_plain(const gchar * encoded_path)
@@ -131,9 +140,15 @@ static item_t *q_put(Tuple *tuple, int t, int len)
 
 	item->artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
 	item->title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
-	item->utctime = t;
 	item->len = len;
 	item->track = aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+        if (t == -1) { /* now playing song */
+            item->timeplayed = 0;
+            item->utctime = time(NULL);
+        } else { /* item from queue */
+            item->timeplayed = len;
+            item->utctime = t;
+        }
 
 #ifdef NOTYET
 	if(tuple->mb == NULL)
@@ -623,8 +638,8 @@ static int sc_generateentry(GString *submission)
 		 * don't submit queued tracks which don't yet meet audioscrobbler
 		 * requirements...
 		 */
-		if ((time(NULL) - item->utctime) < (item->len / 2) &&
-		    (time(NULL) - item->utctime) < 240)
+		if ((item->timeplayed < (item->len / 2)) &&
+		    (item->timeplayed < 240))
 			continue;
 
 		if (!item)
@@ -870,10 +885,9 @@ static void read_cache(void)
             title = g_strdup(entry[2]);
             track = atoi(entry[3]);
             len = atoi(entry[4]);
-            /* entry[5] should always be "P"... */
             t = atoi(entry[6]);
 
-            {
+            if (!strncmp(entry[5], "L", 1)) {
                 Tuple *tuple = aud_tuple_new();
                 gchar* string_value;
                 string_value = xmms_urldecode_plain(artist);
@@ -946,7 +960,7 @@ static void dump_queue(void)
                     I_TITLE(item),
                     item->track,
                     I_LEN(item),
-                    "P",
+                    ((item->timeplayed > item->len/2) || (item->timeplayed > 240)) ? "L" : "S",
                     I_TIME(item));
     }
 
@@ -1028,7 +1042,7 @@ void sc_addentry(GMutex *mutex, Tuple *tuple, int len)
 	g_mutex_lock(mutex);
 
 	sc_submit_np(tuple);
-	q_put(tuple, time(NULL), len);
+	q_put(tuple, -1, len);
 
 	/*
 	 * This will help make sure the queue will be saved on a nasty

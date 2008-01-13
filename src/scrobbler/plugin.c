@@ -53,6 +53,7 @@ static GThread *pt_handshake;
 
 static GMutex *hs_mutex, *xs_mutex;
 static GCond *hs_cond, *xs_cond;
+guint track_timeout;
 
 static GeneralPlugin scrobbler_gp =
 {
@@ -89,6 +90,14 @@ static void aud_hook_playback_begin(gpointer aud_hook_data, gpointer user_data)
 	/* wake up the scrobbler thread to submit or queue */
 	submit = TRUE;
 	g_cond_signal(xs_cond);
+}
+
+static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
+{
+    if (track_timeout) {
+        g_source_remove(track_timeout);
+        track_timeout = 0;
+    }
 }
 
 static void init(void)
@@ -166,6 +175,7 @@ static void init(void)
 	}
 
 	aud_hook_associate("playback begin", aud_hook_playback_begin, NULL);
+	aud_hook_associate("playback end", aud_hook_playback_end, NULL);
 
 	pdebug("plugin started", DEBUG);
 }
@@ -205,6 +215,7 @@ static void cleanup(void)
 	gerpok_sc_cleaner();
 
 	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
+	aud_hook_dissociate("playback end", aud_hook_playback_end);
 }
 
 static void *xs_thread(void *data __attribute__((unused)))
@@ -253,6 +264,8 @@ static void *xs_thread(void *data __attribute__((unused)))
 				
 				sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
 				gerpok_sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
+                                if (!track_timeout)
+                                    track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
 			}
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
