@@ -1100,7 +1100,7 @@ gint neon_aud_vfs_ungetc_impl(gint c, VFSFile* stream) {
 
     _ENTER;
 
-    _ERROR("<%p> NOT IMPLEMENTED", file->handle);
+    _ERROR("<%p> NOT IMPLEMENTED", stream->handle);
 
     _LEAVE 0;
 }
