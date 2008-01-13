@@ -124,6 +124,7 @@ gboolean jump_to(gpointer data)
 {
 	audacious_drct_pl_set_pos(atoi(track_no)-1);
 	track_no_pos=0;
+	tid=0;
 	return FALSE;
 }
 
