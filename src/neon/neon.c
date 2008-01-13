@@ -301,6 +301,13 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                     value[0] = '\0';
                 }
                 break;
+            default:
+                /*
+                 * This should not happen
+                 */
+                _ERROR("Invalid state while parsing metadata, metadata may be corrupted: %d", state);
+                _LEAVE;
+                break;
         }
         p++;
         pos++;
