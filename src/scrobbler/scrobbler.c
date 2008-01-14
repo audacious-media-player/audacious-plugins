@@ -661,7 +661,7 @@ static int sc_generateentry(GString *submission)
                 g_free(tmp);
                 g_string_append(submission,sc_itemtag('r',i,""));
 
-		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
+		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d m[%d]=%s b[%d]=%s",
 				i, I_ARTIST(item),
 				i, I_TITLE(item),
 				i, I_LEN(item),
