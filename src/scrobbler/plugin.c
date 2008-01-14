@@ -189,6 +189,10 @@ static void cleanup(void)
 	pdebug("about to lock mutex", DEBUG);
 	g_mutex_lock(m_scrobbler);
 	pdebug("locked mutex", DEBUG);
+	if (sc_going)
+		sc_cleaner();
+	if (ge_going)
+		gerpok_sc_cleaner();
 	sc_going = 0;
 	ge_going = 0;
 	g_mutex_unlock(m_scrobbler);
@@ -210,9 +214,6 @@ static void cleanup(void)
 	g_mutex_free(hs_mutex);
 	g_mutex_free(xs_mutex);
 	g_mutex_free(m_scrobbler);
-
-	sc_cleaner();
-	gerpok_sc_cleaner();
 
 	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
 	aud_hook_dissociate("playback end", aud_hook_playback_end);
@@ -261,9 +262,11 @@ static void *xs_thread(void *data __attribute__((unused)))
 					"submitting artist: %s, title: %s",
 					aud_tuple_get_string(tuple, FIELD_ARTIST, NULL),
 					aud_tuple_get_string(tuple, FIELD_TITLE, NULL)), DEBUG);
-				
-				sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
-				gerpok_sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
+
+				if (sc_going)
+					sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
+				if (ge_going)
+					gerpok_sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
                                 if (!track_timeout)
                                     track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
 			}
@@ -297,7 +300,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 
 	while(run)
 	{
-		if(sc_idle(m_scrobbler))
+		if(sc_going && sc_idle(m_scrobbler))
 		{
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);
@@ -305,7 +308,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 			g_mutex_unlock(m_scrobbler);
 		}
 
-		if(gerpok_sc_idle(m_scrobbler))
+		if(ge_going && gerpok_sc_idle(m_scrobbler))
 		{
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);
