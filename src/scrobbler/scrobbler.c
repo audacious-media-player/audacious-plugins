@@ -56,16 +56,12 @@ static void dump_queue();
 #define I_TITLE(i) i->title
 #define I_TIME(i) i->utctime
 #define I_LEN(i) i->len
-#define I_MB(i) i->mb
 #define I_ALBUM(i) i->album
 
 typedef struct {
-	char *artist,
-		*title,
-		*mb,
-		*album;
+	char *artist, *title, *album;
 	int utctime, track, len;
-int timeplayed;
+	int timeplayed;
 	int numtries;
 	void *next;
 } item_t;
@@ -126,7 +122,6 @@ static void q_item_free(item_t *item)
 		return;
 	curl_free(item->artist);
 	curl_free(item->title);
-	curl_free(item->mb);
 	curl_free(item->album);
 	free(item);
 }
@@ -149,15 +144,6 @@ static item_t *q_put(Tuple *tuple, int t, int len)
             item->timeplayed = len;
             item->utctime = t;
         }
-
-#ifdef NOTYET
-	if(tuple->mb == NULL)
-#endif
-		item->mb = fmt_escape("");
-#ifdef NOTYET
-	else
-		item->mb = fmt_escape((char*)tuple->mb);
-#endif
 
 	album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL);
 	if (album)
@@ -653,7 +639,7 @@ static int sc_generateentry(GString *submission)
                 tmp = g_strdup_printf("%d",I_TIME(item));
                 g_string_append(submission,sc_itemtag('i',i,tmp));
                 g_free(tmp);
-                g_string_append(submission,sc_itemtag('m',i,I_MB(item)));
+                g_string_append(submission,sc_itemtag('m',i,""));
                 g_string_append(submission,sc_itemtag('b',i,I_ALBUM(item)));
                 g_string_append(submission,sc_itemtag('o',i,"P"));
                 tmp = g_strdup_printf("%d",item->track);
@@ -661,12 +647,11 @@ static int sc_generateentry(GString *submission)
                 g_free(tmp);
                 g_string_append(submission,sc_itemtag('r',i,""));
 
-		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d m[%d]=%s b[%d]=%s",
+		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
 				i, I_ARTIST(item),
 				i, I_TITLE(item),
 				i, I_LEN(item),
 				i, I_TIME(item),
-				i, I_MB(item),
 				i, I_ALBUM(item)), DEBUG);
 #ifdef ALLOW_MULTIPLE
 		i++;
@@ -903,15 +888,15 @@ static void read_cache(void)
                 item = q_put(tuple, t, len);
 
                 aud_tuple_free(tuple);
+
+                pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
+                                 i, I_ARTIST(item),
+                                 i, I_TITLE(item),
+                                 i, I_LEN(item),
+                                 i, I_TIME(item),
+                                 i, I_ALBUM(item)), DEBUG);
             }
 
-            pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d m[%d]=%s b[%d]=%s",
-                             i, I_ARTIST(item),
-                             i, I_TITLE(item),
-                             i, I_LEN(item),
-                             i, I_TIME(item),
-                             i, I_MB(item),
-                             i, I_ALBUM(item)), DEBUG);
             free(artist);
             free(title);
             free(album);
