@@ -20,7 +20,7 @@
 #define SCROBBLER_HS_WAIT 1800
 #define SCROBBLER_SB_WAIT 10
 #define SCROBBLER_VERSION "1.2"
-#define SCROBBLER_IMPLEMENTATION "0.1"		/* This is the implementation, not the player version. */
+#define SCROBBLER_IMPLEMENTATION "0.2"		/* This is the implementation, not the player version. */
 #define SCROBBLER_SB_MAXLEN 1024
 #define CACHE_SIZE 1024
 
