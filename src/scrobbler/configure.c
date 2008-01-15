@@ -25,6 +25,7 @@
 
 GtkWidget *entry1, *entry2, *ge_entry1, *ge_entry2, *cfgdlg;
 guint apply_timeout = 0; /* ID of timeout to save new config */
+gboolean running = TRUE; /* if plugin threads are running */
 
 static char *hexify(char *pass, int len)
 {
@@ -82,14 +83,19 @@ static gboolean saveconfig(gpointer data)
         }
 
     apply_timeout = 0;
-    stop();
     start();
+    running = TRUE;
     return FALSE;
 }
 
 static void
 entry_changed(GtkWidget *widget, gpointer data)
 {
+    if (running) {
+        stop();
+        running = FALSE;
+    }
+
     if (apply_timeout)
         g_source_remove(apply_timeout);
 
