@@ -100,17 +100,13 @@ static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
     }
 }
 
-static void init(void)
-{
+void start(void) {
 	char *username = NULL, *password = NULL;
 	char *ge_username = NULL, *ge_password = NULL;
 	ConfigDb *cfgfile;
 	sc_going = 1;
 	ge_going = 1;
 	GError **moo = NULL;
-	cfgdlg = create_cfgdlg();
-
-        aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
 
 	if ((cfgfile = aud_cfg_db_open()) != NULL) {
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "username",
@@ -180,10 +176,7 @@ static void init(void)
 	pdebug("plugin started", DEBUG);
 }
 
-static void cleanup(void)
-{
-        aud_prefswin_page_destroy(cfgdlg);
-
+void stop(void) {
 	if (!sc_going && !ge_going)
 		return;
 	pdebug("about to lock mutex", DEBUG);
@@ -217,6 +210,19 @@ static void cleanup(void)
 
 	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
 	aud_hook_dissociate("playback end", aud_hook_playback_end);
+}
+
+static void init(void)
+{
+    start();
+    cfgdlg = create_cfgdlg();
+    aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
+}
+
+static void cleanup(void)
+{
+    stop();
+    aud_prefswin_page_destroy(cfgdlg);
 }
 
 static void *xs_thread(void *data __attribute__((unused)))
