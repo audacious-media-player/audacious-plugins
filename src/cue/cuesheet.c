@@ -230,7 +230,7 @@ static Tuple *get_aud_tuple_uri(gchar *uri)
 	ProbeResult *pr;
 	InputPlugin *dec;
 
-	Tuple *phys_tuple, *out;
+	Tuple *phys_tuple=NULL, *out;
 
         if (_path != NULL && *_path == '?')
         {
