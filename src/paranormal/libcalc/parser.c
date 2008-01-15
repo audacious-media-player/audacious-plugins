@@ -489,8 +489,10 @@ while (0)
 /* YYLEX -- calling `yylex' with the right arguments.  */
 
 #ifdef YYLEX_PARAM
+int yylex (YYSTYPE *yylval, void *yyparam);
 # define YYLEX yylex (&yylval, YYLEX_PARAM)
 #else
+int yylex (YYSTYPE *yylval);
 # define YYLEX yylex (&yylval)
 #endif
 
@@ -751,6 +753,7 @@ int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
+int yyerror (char *s); 
 
 
 
@@ -1392,7 +1395,7 @@ int yylex (YYSTYPE *yylval, void *yyparam) {
       old_locale = setlocale (LC_ALL, NULL);
       saved_locale = g_strdup (old_locale);
       setlocale (LC_ALL, "C");
-      sscanf (((VFSBuffer *)(pc->input->handle))->iter, "%lf", &yylval->d_value);
+      sscanf ((const char*)((VFSBuffer *)(pc->input->handle))->iter, "%lf", &yylval->d_value);
 
       while (isdigit(c) || c == '.')
       {

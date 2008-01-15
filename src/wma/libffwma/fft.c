@@ -301,9 +301,9 @@ int fft_inits(FFTContext *s, int nbits, int inverse)
     }
     return 0;
  fail:
-    av_freep(&s->revtab);
-    av_freep(&s->exptab);
-    av_freep(&s->exptab1);
+    av_freep((void*)&s->revtab);
+    av_freep((void*)&s->exptab);
+    av_freep((void*)&s->exptab1);
     return -1;
 }
 
@@ -431,8 +431,8 @@ void fft_permute(FFTContext *s, FFTComplex *z)
 
 void fft_end(FFTContext *s)
 {
-    av_freep(&s->revtab);
-    av_freep(&s->exptab);
-    av_freep(&s->exptab1);
+    av_freep((void*)&s->revtab);
+    av_freep((void*)&s->exptab);
+    av_freep((void*)&s->exptab1);
 }
 
