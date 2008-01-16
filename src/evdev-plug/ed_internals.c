@@ -378,13 +378,13 @@ ed_device_get_list_from_system ( void )
 
     /* parse content of /proc/bus/input/devices */
     regcomp( &preg,
-      "I:[^\n]*\nN: Name=\"([^\n]*)\"\nP: Phys=([^\n]*)\n[^\n]+\nH: Handlers=[^\n]*(event[0-9]+)[^\n]*\n" ,
+      "I:[^\n]*\nN: Name=\"([^\n]*)\"\nP: Phys=([^\n]*)\n([^\n]+\n)*H: Handlers=[^\n]*(event[0-9]+)[^\n]*\n" ,
       REG_ICASE | REG_EXTENDED );
 
     while ( search_offset > -1 )
     {
-      size_t nmatch = 4;
-      regmatch_t submatch[4];
+      size_t nmatch = 5;
+      regmatch_t submatch[5];
 
       if ( regexec( &preg , &buffer[search_offset] , nmatch , submatch , 0 ) == 0 )
       {
@@ -408,13 +408,13 @@ ed_device_get_list_from_system ( void )
             submatch[2].rm_eo - submatch[2].rm_so );
         }
 
-        if ( submatch[3].rm_so != -1 ) /* check validity of filename sub-expression */
+        if ( submatch[4].rm_so != -1 ) /* check validity of filename sub-expression */
         {
           device_file = g_string_new( "" );
           GString *device_test = g_string_new( "" );
           g_string_append_len( device_file ,
-            &buffer[(search_offset + submatch[3].rm_so)] ,
-            submatch[3].rm_eo - submatch[3].rm_so );
+            &buffer[(search_offset + submatch[4].rm_so)] ,
+            submatch[4].rm_eo - submatch[4].rm_so );
 
           /* let's check if the filename actually exists in /dev */
           g_string_printf( device_test , "/dev/input/%s" , (char*)device_file->str );
