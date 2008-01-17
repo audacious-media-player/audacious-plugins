@@ -484,6 +484,7 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
     const ne_status* status;
+    ne_uri* rediruri;
 
     _ENTER;
 
@@ -501,9 +502,10 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
     /*
      * Try to connect to the server.
      */
-    _DEBUG("Connecting...");
+    _DEBUG("<%p> Connecting...", handle);
     ret = ne_begin_request(handle->request);
     status = ne_get_status(handle->request);
+    _DEBUG("<%p> Return: %d, Status: %d", handle, ret, status->code);
     if ((NE_OK == ret) && (401 == status->code)) {
         /*
          * Authorization required. Reconnect to
@@ -514,10 +516,18 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
         ret = ne_begin_request(handle->request);
     }
 
+    if ((NE_OK == ret) && ((301 == status->code) || (302 == status->code) || (303 == status->code) || (307 == status->code))) {
+        /*
+         * Redirect encountered. Reconnect.
+         */
+        ne_end_request(handle->request);
+        ret = NE_REDIRECT;
+    }
+
     switch (ret) {
         case NE_OK:
             /* URL opened OK */
-            _DEBUG("URL opened OK");
+            _DEBUG("<%p> URL opened OK", handle);
             handle->content_start = startbyte;
             handle->pos = startbyte;
             handle_headers(handle);
@@ -526,22 +536,25 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 
         case NE_REDIRECT:
             /* We hit a redirect. Handle it. */
-            _DEBUG("Redirect encountered");
+            _DEBUG("<%p> Redirect encountered", handle);
             handle->redircount += 1;
-            handle->purl = (ne_uri*)ne_redirect_location(handle->session);
+            rediruri = (ne_uri*)ne_redirect_location(handle->session);
             ne_request_destroy(handle->request);
-            if (NULL == handle->purl) {
-                _ERROR("Could not parse redirect response");
+
+            if (NULL == rediruri) {
+                _ERROR("<%p> Could not parse redirect response", handle);
                 _LEAVE -1;
             }
+            ne_uri_free(handle->purl);
+            ne_uri_copy(handle->purl, rediruri);
             _LEAVE 1;
             break;
 
         default:
             /* Something went wrong. */
-            _ERROR("Could not open URL: %d", ret);
+            _ERROR("<%p> Could not open URL: %d", ret);
             if (1 == ret) {
-                _ERROR("neon error string: %s", ne_get_error(handle->session));
+                _ERROR("<%p> neon error string: %s", ne_get_error(handle->session));
             }
             ne_request_destroy(handle->request);
             _LEAVE -1;
@@ -598,14 +611,15 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
         _LEAVE -1;
     }
 
-    if (0 == handle->purl->port) {
-        handle->purl->port = 80;
-    }
-
     while (handle->redircount < 10) {
 
-        _DEBUG("<%p> Creating session", handle);
+        if (0 == handle->purl->port) {
+            handle->purl->port = ne_uri_defaultport(handle->purl->scheme);
+        }
+
+        _DEBUG("<%p> Creating session to %s://%s:%d", handle, handle->purl->scheme, handle->purl->host, handle->purl->port);
         handle->session = ne_session_create(handle->purl->scheme, handle->purl->host, handle->purl->port);
+        ne_redirect_register(handle->session);
         ne_add_server_auth(handle->session, NE_AUTH_BASIC, server_auth_callback, (void *)handle);
         ne_set_session_flag(handle->session, NE_SESSFLAG_ICYPROTO, 1);
         ne_set_session_flag(handle->session, NE_SESSFLAG_PERSIST, 0);
@@ -615,7 +629,6 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
         ne_set_read_timeout(handle->session, 10);
         ne_set_useragent(handle->session, "Audacious/1.4.0");
-        ne_redirect_register(handle->session);
 
         if (use_proxy) {
             _DEBUG("<%p> Using proxy: %s:%d", handle, proxy_host, proxy_port);
@@ -631,6 +644,9 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
             ne_session_destroy(handle->session);
             _LEAVE -1;
         }
+
+        _DEBUG("<%p> Following redirect...", handle);
+        ne_session_destroy(handle->session);
     }
 
     /*
