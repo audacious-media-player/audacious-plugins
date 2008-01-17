@@ -101,6 +101,7 @@ typedef struct {
 	HotkeyConfiguration toggle_win;
 	HotkeyConfiguration forward;
 	HotkeyConfiguration backward;
+	HotkeyConfiguration show_aosd;
 } PluginConfig;
 
 PluginConfig plugin_cfg;
@@ -133,6 +134,7 @@ typedef struct {
 	KeyControls forward;
 	KeyControls backward;
 	KeyControls toggle_win;
+	KeyControls show_aosd;
 } ConfigurationControls;
 
 static GeneralPlugin audacioushotkey =
@@ -363,17 +365,25 @@ static gboolean handle_keyevent (int keycode, int state, int type)
 	{
 		static gboolean is_main, is_eq, is_pl;
 		is_main = audacious_drct_main_win_is_visible();
-		if (is_main) {
+		if (is_main) { /* Hide windows */
 			is_pl = audacious_drct_pl_win_is_visible();
 			is_eq = audacious_drct_eq_win_is_visible();
 			audacious_drct_main_win_toggle(FALSE);
 			audacious_drct_pl_win_toggle(FALSE);
 			audacious_drct_eq_win_toggle(FALSE);
-		} else {
+		} else { /* Show hidden windows */
 			audacious_drct_main_win_toggle(TRUE);
 			audacious_drct_pl_win_toggle(is_pl);
 			audacious_drct_eq_win_toggle(is_eq);
+			audacious_drct_activate();
 		}
+		return TRUE;
+	}
+
+	/* Show OSD through AOSD plugin*/
+	if ((keycode == plugin_cfg.show_aosd.key) && (state == plugin_cfg.show_aosd.mask) && (type == plugin_cfg.show_aosd.type))
+	{
+		aud_hook_call("aosd toggle", NULL);
 		return TRUE;
 	}
 
@@ -460,6 +470,7 @@ static void load_config (void)
 	load_key(toggle_win, 0);
 	load_key(forward, 0);
 	load_key(backward, XF86XK_AudioRewind);
+	load_key(show_aosd, 0);
 
 	aud_cfg_db_close (cfdb);
 }
@@ -489,6 +500,7 @@ static void save_config (void)
 	save_key(forward);
 	save_key(backward);
 	save_key(toggle_win);
+	save_key(show_aosd);
 
 	aud_cfg_db_close (cfdb);
 }
@@ -617,6 +629,7 @@ static void grab_keys ()
 	grab_key(plugin_cfg.forward);
 	grab_key(plugin_cfg.backward);
 	grab_key(plugin_cfg.toggle_win);
+	grab_key(plugin_cfg.show_aosd);
 	
 	XSync(xdisplay, False);
 	XSetErrorHandler (old_handler);
@@ -820,7 +833,8 @@ on_entry_scroll_event(GtkWidget * widget,
 static void add_event_controls(GtkWidget *table, 
 				KeyControls *controls, 
 				int row, 
-				char* descr, 
+				char* descr,
+				char* tooltip,
 				HotkeyConfiguration hotkey)
 {
 	GtkWidget *label;
@@ -857,6 +871,13 @@ static void add_event_controls(GtkWidget *table,
 	gtk_table_attach (GTK_TABLE (table), button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
 	g_signal_connect (G_OBJECT (button), "clicked",
 			G_CALLBACK (clear_keyboard), controls);
+
+	if (tooltip != NULL) {
+		GtkTooltips *tip = gtk_tooltips_new();
+		gtk_tooltips_set_tip(tip, controls->keytext, tooltip, NULL);
+		gtk_tooltips_set_tip(tip, button, tooltip, NULL);
+		gtk_tooltips_set_tip(tip, label, tooltip, NULL);
+	}
 }
 
 /* configuration window */
@@ -931,25 +952,25 @@ static void configure (void)
 	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 
 	/* prev track */
-	add_event_controls(table, &controls->prev_track, 0, _("Previous Track:"), 
+	add_event_controls(table, &controls->prev_track, 0, _("Previous Track:"), NULL, 
 			plugin_cfg.prev_track);
 
-	add_event_controls(table, &controls->play, 1, _("Play:"), 
+	add_event_controls(table, &controls->play, 1, _("Play:"), NULL, 
 			plugin_cfg.play);
 
-	add_event_controls(table, &controls->pause, 2, _("Pause/Resume:"), 
+	add_event_controls(table, &controls->pause, 2, _("Pause/Resume:"), NULL,
 			plugin_cfg.pause);
 
-	add_event_controls(table, &controls->stop, 3, _("Stop:"), 
+	add_event_controls(table, &controls->stop, 3, _("Stop:"), NULL,
 			plugin_cfg.stop);
 
-	add_event_controls(table, &controls->next_track, 4, _("Next Track:"), 
+	add_event_controls(table, &controls->next_track, 4, _("Next Track:"), NULL,
 			plugin_cfg.next_track);
 
-	add_event_controls(table, &controls->forward, 5, _("Forward 5 sec.:"), 
+	add_event_controls(table, &controls->forward, 5, _("Forward 5 sec.:"), NULL,
 			plugin_cfg.forward);
 
-	add_event_controls(table, &controls->backward, 6, _("Rewind 5 sec.:"), 
+	add_event_controls(table, &controls->backward, 6, _("Rewind 5 sec.:"), NULL,
 			plugin_cfg.backward);
 
 
@@ -975,13 +996,13 @@ static void configure (void)
 	gtk_table_set_col_spacings (GTK_TABLE (table), 2);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 
-	add_event_controls(table, &controls->mute, 0, _("Mute:"),
+	add_event_controls(table, &controls->mute, 0, _("Mute:"),NULL, 
 			plugin_cfg.mute);
 
-	add_event_controls(table, &controls->vol_up, 1, _("Volume Up:"), 
+	add_event_controls(table, &controls->vol_up, 1, _("Volume Up:"), NULL,
 			plugin_cfg.vol_up);
 
-	add_event_controls(table, &controls->vol_down, 2, _("Volume Down:"), 
+	add_event_controls(table, &controls->vol_down, 2, _("Volume Down:"), NULL,
 			plugin_cfg.vol_down);
 
 
@@ -1002,17 +1023,20 @@ static void configure (void)
 	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
 	gtk_label_set_markup (GTK_LABEL (label), 
 			_("<i>Configure keys which control the player.</i>"));
-	table = gtk_table_new (3, 2, FALSE);
+	table = gtk_table_new (3, 3, FALSE);
 	gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 2);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 
-	add_event_controls(table, &controls->jump_to_file, 0, _("Jump to File:"), 
+	add_event_controls(table, &controls->jump_to_file, 0, _("Jump to File:"), NULL,
 			plugin_cfg.jump_to_file);
 
-	add_event_controls(table, &controls->toggle_win, 1, _("Toggle Player Windows:"), 
+	add_event_controls(table, &controls->toggle_win, 1, _("Toggle Player Windows:"), NULL,
 			plugin_cfg.toggle_win);
 
+	add_event_controls(table, &controls->show_aosd, 2, _("Show On-Screen-Display:"), 
+			_("For this, the Audacious OSD plugin must be activated."),
+			plugin_cfg.show_aosd);
 
 	button_box = gtk_hbutton_box_new ( );
 	gtk_box_pack_start (GTK_BOX (main_vbox), button_box, FALSE, TRUE, 6);
@@ -1091,6 +1115,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
 	plugin_cfg.mute = controls->mute.hotkey;
 	plugin_cfg.jump_to_file= controls->jump_to_file.hotkey;
 	plugin_cfg.toggle_win = controls->toggle_win.hotkey;
+	plugin_cfg.show_aosd = controls->show_aosd.hotkey;
 	
 	save_config ( );
 	
@@ -1202,6 +1227,7 @@ static void ungrab_keys ()
 	ungrab_key(plugin_cfg.forward);
 	ungrab_key(plugin_cfg.backward);
 	ungrab_key(plugin_cfg.toggle_win);
+	ungrab_key(plugin_cfg.show_aosd);
 	
 	XSync(xdisplay, False);
 	XSetErrorHandler (old_handler);

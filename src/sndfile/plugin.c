@@ -39,7 +39,7 @@
 #include <audacious/i18n.h>
 #include <audacious/main.h>
 #include <audacious/output.h>
-#include "wav-sndfile.h"
+#include "plugin.h"
 
 #include <sndfile.h>
 
@@ -53,6 +53,61 @@ static glong seek_time = -1;
 static GThread *decode_thread;
 static GMutex *decode_mutex;
 static GCond *decode_cond;
+
+
+
+
+static sf_count_t sf_get_filelen (void *user_data)
+{
+    return aud_vfs_fsize (user_data);
+}
+static sf_count_t sf_vseek (sf_count_t offset, int whence, void *user_data)
+{
+    return aud_vfs_fseek(user_data, offset, whence);
+}
+static sf_count_t sf_vread (void *ptr, sf_count_t count, void *user_data)
+{
+    return aud_vfs_fread(ptr, 1, count, user_data);
+}
+static sf_count_t sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
+{
+    return aud_vfs_fwrite(ptr, 1, count, user_data);
+}
+static sf_count_t sf_tell (void *user_data)
+{
+    return aud_vfs_ftell(user_data);
+}
+static SF_VIRTUAL_IO sf_virtual_io =
+{
+    sf_get_filelen,
+    sf_vseek,
+    sf_vread,
+    sf_vwrite,
+    sf_tell
+};
+
+static SNDFILE *
+open_sndfile_from_uri(gchar *filename, VFSFile *vfsfile, SF_INFO *tmp_sfinfo)
+{
+    SNDFILE *snd_file = NULL;
+    vfsfile = aud_vfs_fopen(filename, "rb");
+
+    if (vfsfile == NULL)
+        return NULL;
+
+    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, vfsfile);
+    if (snd_file == NULL)
+        aud_vfs_fclose(vfsfile);
+
+    return snd_file;
+}
+
+static void
+close_sndfile(SNDFILE *snd_file, VFSFile *vfsfile)
+{
+    sf_close(snd_file);
+    aud_vfs_fclose(vfsfile);
+}
 
 
 
@@ -72,43 +127,19 @@ plugin_cleanup (void)
     g_mutex_free(decode_mutex);
 }
 
-static int
-get_song_length (char *filename)
-{
-    SNDFILE *tmp_sndfile;
-    SF_INFO tmp_sfinfo;
-    gchar *realfn = NULL;
-
-    realfn = g_filename_from_uri(filename, NULL, NULL);
-    tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
-    g_free(realfn); realfn = NULL;
-
-    if (!tmp_sndfile) {
-        return 0;
-    }
-
-    sf_close (tmp_sndfile);
-    tmp_sndfile = NULL;
-
-    if (tmp_sfinfo.samplerate <= 0)
-        return 0;
-
-    return (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate);
-}
-
 static void
 fill_song_tuple (char *filename, Tuple *ti)
 {
+    VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
     unsigned int lossy = 0;
-    gchar *realfn = NULL, *codec = NULL, *format, *subformat = NULL;
+    gchar *codec = NULL, *format, *subformat = NULL;
     GString *codec_gs = NULL;
 
-    realfn = g_filename_from_uri(filename, NULL, NULL);
-    tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
+    tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
     if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
-        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(realfn ? realfn : filename));
+        aud_tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
     else
         aud_tuple_associate_string(ti, FIELD_TITLE, NULL, sf_get_string(tmp_sndfile, SF_STR_TITLE));
 
@@ -117,12 +148,10 @@ fill_song_tuple (char *filename, Tuple *ti)
     aud_tuple_associate_string(ti, FIELD_DATE, NULL, sf_get_string(tmp_sndfile, SF_STR_DATE));
     aud_tuple_associate_string(ti, -1, "software", sf_get_string(tmp_sndfile, SF_STR_SOFTWARE));
 
-    g_free(realfn); realfn = NULL;
-
     if (!tmp_sndfile)
         return;
 
-    sf_close (tmp_sndfile);
+    close_sndfile (tmp_sndfile, vfsfile);
     tmp_sndfile = NULL;
 
     if (tmp_sfinfo.samplerate > 0)
@@ -312,22 +341,19 @@ static gchar *get_title(char *filename)
 static int
 is_our_file (char *filename)
 {
+    VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
-    gchar *realfn = NULL; 
-
-    realfn = g_filename_from_uri(filename, NULL, NULL);
 
     /* Have to open the file to see if libsndfile can handle it. */
-    tmp_sndfile = sf_open (realfn ? realfn : filename, SFM_READ, &tmp_sfinfo);
-    g_free(realfn); realfn = NULL;
+    tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
 
     if (!tmp_sndfile) {
         return FALSE;
     }
 
     /* It can so close file and return TRUE. */
-    sf_close (tmp_sndfile);
+    close_sndfile (tmp_sndfile, vfsfile);
     tmp_sndfile = NULL;
 
     return TRUE;
@@ -406,7 +432,7 @@ play_loop (gpointer arg)
 static void
 play_start (InputPlayback *playback)
 {
-    gchar *realfn = NULL;
+    VFSFile *vfsfile = NULL;
     int pcmbitwidth;
     gchar *song_title;
 
@@ -416,9 +442,7 @@ play_start (InputPlayback *playback)
     pcmbitwidth = 32;
     song_title = get_title(playback->filename);
 
-    realfn = g_filename_from_uri(playback->filename, NULL, NULL);
-    sndfile = sf_open (realfn ? realfn : playback->filename, SFM_READ, &sfinfo);
-    g_free(realfn); realfn = NULL;
+    sndfile = open_sndfile_from_uri(playback->filename, vfsfile, &sfinfo);
 
     if (!sndfile)
         return;
@@ -432,7 +456,7 @@ play_start (InputPlayback *playback)
 
     if (! playback->output->open_audio (FMT_S16_NE, sfinfo.samplerate, sfinfo.channels))
     {
-        sf_close (sndfile);
+        close_sndfile (sndfile, vfsfile);
         sndfile = NULL;
         return;
     }
@@ -490,13 +514,6 @@ file_seek (InputPlayback *playback, gint time)
     file_mseek(playback, millisecond);
 }
 
-static void
-get_song_info (gchar *filename, gchar **title, gint *length)
-{
-    (*length) = get_song_length(filename);
-    (*title) = get_title(filename);
-}
-
 static Tuple*
 get_song_tuple (gchar *filename)
 {
@@ -505,12 +522,30 @@ get_song_tuple (gchar *filename)
     return ti;
 }
 
-static void wav_about(void)
+static int is_our_file_from_vfs(char *filename, VFSFile *fin)
+{
+    SNDFILE *tmp_sndfile;
+    SF_INFO tmp_sfinfo;
+
+    /* Have to open the file to see if libsndfile can handle it. */
+    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, fin);
+
+    if (!tmp_sndfile)
+        return FALSE;
+
+    /* It can so close file and return TRUE. */
+    sf_close (tmp_sndfile);
+    tmp_sndfile = NULL;
+
+    return TRUE;
+}
+
+static void plugin_about(void)
 {
     static GtkWidget *box;
     if (!box)
     {
-        box = audacious_info_dialog(_("About sndfile WAV support"),
+        box = audacious_info_dialog(_("About sndfile plugin"),
                                     _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
                                       "from the xmms_sndfile plugin which is:\n"
                                       "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
@@ -533,24 +568,24 @@ static void wav_about(void)
     }
 }
 
-static gchar *fmts[] = { "wav", NULL };
+static gchar *fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
-InputPlugin wav_ip = {
-    .description = "sndfile WAV plugin",
+InputPlugin sndfile_ip = {
+    .description = "sndfile plugin",
     .init = plugin_init,
-    .about = wav_about,
+    .about = plugin_about,
     .is_our_file = is_our_file,
     .play_file = play_start,
     .stop = play_stop,
     .pause = play_pause,
     .seek = file_seek,
     .cleanup = plugin_cleanup,
-    .get_song_info = get_song_info,
     .get_song_tuple = get_song_tuple,
+    .is_our_file_from_vfs = is_our_file_from_vfs,
     .vfs_extensions = fmts,
     .mseek = file_mseek,
 };
 
-InputPlugin *wav_iplist[] = { &wav_ip, NULL };
+InputPlugin *sndfile_iplist[] = { &sndfile_ip, NULL };
 
-SIMPLE_INPUT_PLUGIN(wav-sndfile, wav_iplist)
+SIMPLE_INPUT_PLUGIN(sndfile, sndfile_iplist)

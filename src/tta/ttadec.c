@@ -472,7 +472,7 @@ int get_bitrate () {
 }
 
 int get_samples (byte *buffer) {
-	unsigned int k, depth, unary, binary;
+	unsigned int k, depth, unary, binary=0;
 	byte *p = buffer;
 	decoder *dec = tta;
 	int *prev = cache;

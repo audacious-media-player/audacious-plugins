@@ -5,6 +5,8 @@
 
 #define SC_CURL_TIMEOUT 5
 
+gboolean sc_timeout(gpointer data);
+
 int sc_idle(GMutex *);
 void sc_init(char *, char *);
 void sc_addentry(GMutex *, Tuple *, int);

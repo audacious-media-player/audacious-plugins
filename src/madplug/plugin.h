@@ -137,7 +137,6 @@ extern GCond *mad_cond;
 
 // prototypes
 void audmad_config_compute(struct audmad_config_t *config);
-gboolean audmad_is_remote(gchar *url);
 void input_process_remote_metadata(struct mad_info_t *info);
 gpointer decode_loop(gpointer arg);
 void audmad_error(gchar * fmt, ...);

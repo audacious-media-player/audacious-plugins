@@ -53,6 +53,7 @@ static GThread *pt_handshake;
 
 static GMutex *hs_mutex, *xs_mutex;
 static GCond *hs_cond, *xs_cond;
+guint track_timeout;
 
 static GeneralPlugin scrobbler_gp =
 {
@@ -91,17 +92,21 @@ static void aud_hook_playback_begin(gpointer aud_hook_data, gpointer user_data)
 	g_cond_signal(xs_cond);
 }
 
-static void init(void)
+static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 {
+    if (track_timeout) {
+        g_source_remove(track_timeout);
+        track_timeout = 0;
+    }
+}
+
+void start(void) {
 	char *username = NULL, *password = NULL;
 	char *ge_username = NULL, *ge_password = NULL;
 	ConfigDb *cfgfile;
 	sc_going = 1;
 	ge_going = 1;
 	GError **moo = NULL;
-	cfgdlg = create_cfgdlg();
-
-        aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
 
 	if ((cfgfile = aud_cfg_db_open()) != NULL) {
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "username",
@@ -166,19 +171,21 @@ static void init(void)
 	}
 
 	aud_hook_associate("playback begin", aud_hook_playback_begin, NULL);
+	aud_hook_associate("playback end", aud_hook_playback_end, NULL);
 
 	pdebug("plugin started", DEBUG);
 }
 
-static void cleanup(void)
-{
-        aud_prefswin_page_destroy(cfgdlg);
-
+void stop(void) {
 	if (!sc_going && !ge_going)
 		return;
 	pdebug("about to lock mutex", DEBUG);
 	g_mutex_lock(m_scrobbler);
 	pdebug("locked mutex", DEBUG);
+	if (sc_going)
+		sc_cleaner();
+	if (ge_going)
+		gerpok_sc_cleaner();
 	sc_going = 0;
 	ge_going = 0;
 	g_mutex_unlock(m_scrobbler);
@@ -201,10 +208,21 @@ static void cleanup(void)
 	g_mutex_free(xs_mutex);
 	g_mutex_free(m_scrobbler);
 
-	sc_cleaner();
-	gerpok_sc_cleaner();
-
 	aud_hook_dissociate("playback begin", aud_hook_playback_begin);
+	aud_hook_dissociate("playback end", aud_hook_playback_end);
+}
+
+static void init(void)
+{
+    start();
+    cfgdlg = create_cfgdlg();
+    aud_prefswin_page_new(cfgdlg, "Scrobbler", DATA_DIR "/images/audioscrobbler.png");
+}
+
+static void cleanup(void)
+{
+    stop();
+    aud_prefswin_page_destroy(cfgdlg);
 }
 
 static void *xs_thread(void *data __attribute__((unused)))
@@ -250,9 +268,13 @@ static void *xs_thread(void *data __attribute__((unused)))
 					"submitting artist: %s, title: %s",
 					aud_tuple_get_string(tuple, FIELD_ARTIST, NULL),
 					aud_tuple_get_string(tuple, FIELD_TITLE, NULL)), DEBUG);
-				
-				sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
-				gerpok_sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
+
+				if (sc_going)
+					sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
+				if (ge_going)
+					gerpok_sc_addentry(m_scrobbler, tuple, aud_tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000);
+                                if (!track_timeout)
+                                    track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
 			}
 			else
 				pdebug("tuple does not contain an artist or a title, not submitting.", DEBUG);
@@ -284,7 +306,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 
 	while(run)
 	{
-		if(sc_idle(m_scrobbler))
+		if(sc_going && sc_idle(m_scrobbler))
 		{
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);
@@ -292,7 +314,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 			g_mutex_unlock(m_scrobbler);
 		}
 
-		if(gerpok_sc_idle(m_scrobbler))
+		if(ge_going && gerpok_sc_idle(m_scrobbler))
 		{
 			pdebug("Giving up due to fatal error", DEBUG);
 			g_mutex_lock(m_scrobbler);

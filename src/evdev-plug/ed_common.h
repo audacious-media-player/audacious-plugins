@@ -30,7 +30,7 @@
 
 #include "../../config.h"
 
-#define ED_VERSION_PLUGIN "0.2"
+#define ED_VERSION_PLUGIN "0.2p1"
 #define ED_VERSION_CONFIG "0"
 
 #define PLAYER_LOCALRC_FILE "evdev-plug.conf"

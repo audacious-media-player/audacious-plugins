@@ -69,6 +69,11 @@ gint mute_vol=0;    /* holds volume before mute */
 
 gint input_tag;
 
+char track_no[64];
+int track_no_pos;
+
+gint tid;
+
 void init_lirc(void)
 {
 	int flags;
@@ -104,6 +109,8 @@ void init(void)
 {
 	load_cfg();
 	init_lirc();
+	track_no_pos=0;
+	tid=0;
 }
 
 gboolean reconnect_lirc(gpointer data)
@@ -111,6 +118,14 @@ gboolean reconnect_lirc(gpointer data)
 	fprintf(stderr,_("%s: trying to reconnect...\n"),plugin_name);
 	init();
 	return (lirc_fd==-1);
+}
+
+gboolean jump_to(gpointer data)
+{
+	audacious_drct_pl_set_pos(atoi(track_no)-1);
+	track_no_pos=0;
+	tid=0;
+	return FALSE;
 }
 
 void lirc_input_callback(gpointer data,gint source,
@@ -124,6 +139,7 @@ void lirc_input_callback(gpointer data,gint source,
 	gint balance;
 	gboolean show_pl;
         int n;
+	gchar *utf8_title_markup;
 	
 	while((ret=lirc_nextcode(&code))==0 && code!=NULL)
 	{
@@ -305,6 +321,19 @@ void lirc_input_callback(gpointer data,gint source,
 				/* This is to refresh window content */
 				audacious_drct_pl_win_toggle(pl_visible);
                         }
+			else if((strlen(c)==1) && ((*c>='0') || (*c<='9')))
+			{
+				if (track_no_pos<63)
+				{
+					if (tid) g_source_remove(tid);
+					track_no[track_no_pos++]=*c;
+					track_no[track_no_pos]=0;
+					tid=g_timeout_add(1500, jump_to, NULL);
+					utf8_title_markup = g_markup_printf_escaped(
+					    "<span font_desc='%s'>%s</span>", aosd_font, track_no);
+					aud_hook_call("aosd toggle", utf8_title_markup);
+				}
+			}
 			else
 			{
 				fprintf(stderr,_("%s: unknown command \"%s\"\n"),
@@ -341,4 +370,5 @@ void cleanup()
 		lirc_deinit();
 		lirc_fd=-1;
 	}
+	g_free(aosd_font);
 }

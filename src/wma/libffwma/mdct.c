@@ -52,8 +52,8 @@ int ff_mdct_init(MDCTContext *s, int nbits, int inverse)
         goto fail;
     return 0;
  fail:
-    av_freep(&s->tcos);
-    av_freep(&s->tsin);
+    av_freep((void*)&s->tcos);
+    av_freep((void*)&s->tsin);
     return -1;
 }
 
@@ -169,7 +169,7 @@ void ff_mdct_calc(MDCTContext *s, FFTSample *out,
 
 void ff_mdct_end(MDCTContext *s)
 {
-    av_freep(&s->tcos);
-    av_freep(&s->tsin);
+    av_freep((void*)&s->tcos);
+    av_freep((void*)&s->tsin);
     fft_end(&s->fft);
 }

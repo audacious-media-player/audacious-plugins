@@ -335,8 +335,8 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 
 void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 {
-	int32 aLength;
-	char *aModName;
+	int32 aLength=0;
+	char *aModName=NULL;
 	mStopped = true;
 	mPaused = false;
 	

@@ -8,61 +8,64 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins 1.3\n"
+"Project-Id-Version: audacious-plugins 1.5\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2007-10-18 21:38+0200\n"
-"PO-Revision-Date: 2007-04-12 21:50+0300\n"
-"Last-Translator: Alexander Orlov <alxorlov@pochta.ru>\n"
+"POT-Creation-Date: 2008-01-11 00:58+0300\n"
+"PO-Revision-Date: 2008-01-11 04:59+0300\n"
+"Last-Translator: Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: src/aac/libmp4.c:285
-msgid "Using libfaad2-"
-msgstr ""
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Basepath: /home/asphyx/ahinea/audacious-plugins\n"
 
 #: src/aac/libmp4.c:286
+msgid "Using libfaad2-"
+msgstr "Используется libfaad2-"
+
+#: src/aac/libmp4.c:287
 msgid ""
 " for decoding.\n"
 "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
 "Copyright (c) 2005-2006 Audacious team"
 msgstr ""
+" для декодирования.\n"
+"FAAD2 AAC/HE-AAC/HE-AACv2/DRM декодер (c) Nero AG, www.nero.com\n"
+"Copyright (c) 2005-2006 Команда разработчиков Audacious"
 
-#: src/aac/libmp4.c:290
-#, fuzzy
+#: src/aac/libmp4.c:291
 msgid "About MP4 AAC player plugin"
-msgstr "О модуле Flac"
+msgstr "О модуле MP4 AAC"
 
-#: src/aac/libmp4.c:292 src/adplug/adplug-xmms.cc:180
-#: src/adplug/adplug-xmms.cc:263 src/adplug/adplug-xmms.cc:524
+#: src/aac/libmp4.c:293 src/adplug/adplug-xmms.cc:182
+#: src/adplug/adplug-xmms.cc:265 src/adplug/adplug-xmms.cc:526
 #: src/alac/plugin.c:77 src/arts/arts.c:26 src/arts/configure.c:90
 #: src/audiocompress/audacious-glue.c:102
-#: src/audiocompress/audacious-glue.c:552 src/cdaudio-ng/configure.c:206
-#: src/console/Audacious_Driver.cxx:449 src/echo_plugin/gui.c:26
-#: src/echo_plugin/gui.c:137 src/esd/about.c:49
-#: src/filewriter/filewriter.c:178 src/jack/configure.c:141
-#: src/jack/jack.c:539 src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
-#: src/madplug/plugin.c:596 src/madplug/plugin.c:619
-#: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:46
+#: src/audiocompress/audacious-glue.c:552 src/cdaudio-ng/configure.c:227
+#: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:392
+#: src/echo_plugin/gui.c:26 src/echo_plugin/gui.c:137 src/esd/about.c:49
+#: src/filewriter/filewriter.c:183 src/jack/configure.c:141
+#: src/jack/jack.c:493 src/madplug/plugin.c:559 src/madplug/plugin.c:582
+#: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:49
 #: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
 #: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
-#: src/paranormal/plugin.c:300 src/scrobbler/gtkstuff.c:25
-#: src/statusicon/si_ui.c:577 src/stereo_plugin/stereo.c:53
+#: src/paranormal/plugin.c:291 src/scrobbler/gtkstuff.c:25
+#: src/statusicon/si_ui.c:593 src/stereo_plugin/stereo.c:53
 #: src/stereo_plugin/stereo.c:116 src/sun/about.c:38 src/sun/configure.c:559
-#: src/timidity/interface.c:222 src/timidity/xmms-timidity.c:117
-#: src/tonegen/tonegen.c:62 src/tta/libtta.c:151 src/tta/libtta.c:265
-#: src/tta/libtta.c:400 src/vorbis/fileinfo.c:209 src/vorbis/vorbis.c:863
-#: src/vtx/about.c:31 src/vtx/info.c:43 src/wavpack/ui.cxx:56
-#: src/wavpack/ui.cxx:554 src/wav/wav-sndfile.c:543
+#: src/timidity/interface.c:222 src/timidity/xmms-timidity.c:120
+#: src/tonegen/tonegen.c:62 src/tta/libtta.c:153 src/tta/libtta.c:267
+#: src/tta/libtta.c:402 src/vorbis/vorbis.c:757 src/vtx/about.c:32
+#: src/vtx/info.c:43 src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
+#: src/wav/wav-sndfile.c:579
 msgid "Ok"
 msgstr "ОК"
 
-#: src/adplug/adplug-xmms.cc:169
+#: src/adplug/adplug-xmms.cc:171
 msgid "About "
 msgstr "О "
 
-#: src/adplug/adplug-xmms.cc:173
+#: src/adplug/adplug-xmms.cc:175
 msgid ""
 "\n"
 "Copyright (C) 2002, 2003 Simon Peter <dn.tlp@gmx.net>\n"
@@ -84,210 +87,193 @@ msgstr ""
 "Этот модуль использует библиотеку AdPlug, Copyright (C) Simon Peter.\n"
 "Версия библиотеки AdPlug: "
 
-#: src/adplug/adplug-xmms.cc:254
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:256
 msgid "AdPlug :: Configuration"
-msgstr "AMIDI-Plug - настройка"
+msgstr "AdPlug :: Настройка"
 
-#: src/adplug/adplug-xmms.cc:273 src/alarm/interface.c:1398
+#: src/adplug/adplug-xmms.cc:275 src/alarm/interface.c:1398
 #: src/alsa/configure.c:389 src/arts/configure.c:91
-#: src/audiocompress/audacious-glue.c:557 src/cdaudio-ng/configure.c:210
+#: src/audiocompress/audacious-glue.c:557 src/cdaudio-ng/configure.c:231
 #: src/echo_plugin/gui.c:145 src/jack/configure.c:148
-#: src/modplug/gui/interface.cxx:704 src/modplug/gui/modplug.glade:1648
+#: src/modplug/gui/interface.cxx:714 src/modplug/gui/modplug.glade:1668
 #: src/musepack/libmpc.cxx:237 src/musepack/libmpc.cxx:557 src/null/null.c:111
 #: src/sid/xmms-sid.glade:3080 src/sid/xs_interface.c:1250
 #: src/stereo_plugin/stereo.c:125 src/sun/configure.c:567
-#: src/timidity/interface.c:230 src/wavpack/ui.cxx:278 src/wavpack/ui.cxx:561
+#: src/timidity/interface.c:230 src/wavpack/ui.cxx:280 src/wavpack/ui.cxx:563
 msgid "Cancel"
 msgstr "Отмена"
 
-#: src/adplug/adplug-xmms.cc:289 src/console/Audacious_Config.cxx:145
-#: src/madplug/configure.c:191 src/modplug/gui/interface.cxx:618
-#: src/modplug/gui/interface.cxx:876 src/modplug/gui/modplug.glade:1384
-#: src/modplug/gui/modplug.glade:1784
+#: src/adplug/adplug-xmms.cc:291 src/console/Audacious_Config.cxx:145
+#: src/madplug/configure.c:190 src/modplug/gui/interface.cxx:628
+#: src/modplug/gui/interface.cxx:887 src/modplug/gui/modplug.glade:1404
+#: src/modplug/gui/modplug.glade:1804
 msgid "General"
 msgstr "Основной"
 
-#: src/adplug/adplug-xmms.cc:301
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:303
 msgid "Sound quality"
-msgstr "Музыкальный клип"
+msgstr "Качество звука"
 
-#: src/adplug/adplug-xmms.cc:306 src/modplug/gui/interface.cxx:184
+#: src/adplug/adplug-xmms.cc:308 src/modplug/gui/interface.cxx:187
 #: src/modplug/gui/modplug.glade:113
 msgid "Resolution"
 msgstr "Разрешение"
 
-#: src/adplug/adplug-xmms.cc:308
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:310
 msgid "8bit"
 msgstr "8 бит"
 
-#: src/adplug/adplug-xmms.cc:313
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:315
 msgid "16bit"
 msgstr "16 бит"
 
-#: src/adplug/adplug-xmms.cc:321 src/modplug/gui/interface.cxx:215
+#: src/adplug/adplug-xmms.cc:323 src/modplug/gui/interface.cxx:218
 #: src/modplug/gui/modplug.glade:199 src/timidity/interface.c:148
 msgid "Channels"
 msgstr "Каналы"
 
-#: src/adplug/adplug-xmms.cc:323 src/filewriter/mp3.c:899
+#: src/adplug/adplug-xmms.cc:325 src/filewriter/mp3.c:894
 #: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:288
 #: src/timidity/interface.c:165
 msgid "Mono"
 msgstr "Моно"
 
-#: src/adplug/adplug-xmms.cc:328 src/filewriter/mp3.c:894
-#: src/modplug/gui/interface.cxx:201 src/modplug/gui/modplug.glade:159
+#: src/adplug/adplug-xmms.cc:330 src/filewriter/mp3.c:889
+#: src/modplug/gui/interface.cxx:204 src/modplug/gui/modplug.glade:159
 #: src/sid/xmms-sid.glade:176 src/sid/xs_interface.c:295
 #: src/timidity/interface.c:173
 msgid "Stereo"
 msgstr "Стерео"
 
-#: src/adplug/adplug-xmms.cc:332
+#: src/adplug/adplug-xmms.cc:334
 msgid ""
 "Setting stereo is not recommended, unless you need to. This won't add any "
 "stereo effects to the sound - OPL2 is just mono - but eats up more CPU power!"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:340
+#: src/adplug/adplug-xmms.cc:342
 msgid "Frequency"
-msgstr ""
+msgstr "Частота"
 
-#: src/adplug/adplug-xmms.cc:376 src/adplug/adplug-xmms.cc:580
+#: src/adplug/adplug-xmms.cc:378 src/adplug/adplug-xmms.cc:582
 #: src/console/Audacious_Config.cxx:147
 msgid "Playback"
 msgstr "Воспроизведение"
 
-#: src/adplug/adplug-xmms.cc:380
+#: src/adplug/adplug-xmms.cc:382
 msgid "Detect songend"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:384
+#: src/adplug/adplug-xmms.cc:386
 msgid ""
 "If enabled, XMMS will detect a song's ending, stop it and advance in the "
 "playlist. If disabled, XMMS won't take notice of a song's ending and loop it "
 "all over again and again."
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:395
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:397
 msgid "Formats"
-msgstr "Формат:"
+msgstr "Форматы"
 
-#: src/adplug/adplug-xmms.cc:402
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:404
 msgid "Format selection"
-msgstr "Выбор внутреннего модуля"
+msgstr "Выбор формата"
 
-#: src/adplug/adplug-xmms.cc:405
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:407
 msgid "Format"
-msgstr "Формат:"
+msgstr "Формат"
 
-#: src/adplug/adplug-xmms.cc:405
+#: src/adplug/adplug-xmms.cc:407
 msgid "Extension"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:445
+#: src/adplug/adplug-xmms.cc:447
 msgid ""
 "Selected file types will be recognized and played back by this plugin. "
 "Deselected types will be ignored to make room for other plugins to play "
 "these files."
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:531
+#: src/adplug/adplug-xmms.cc:533
 msgid "AdPlug :: File Info"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:553 src/amidi-plug/i_configure-fluidsynth.c:448
+#: src/adplug/adplug-xmms.cc:555 src/amidi-plug/i_configure-fluidsynth.c:448
 msgid "Filename"
 msgstr "Имя файла"
 
-#: src/adplug/adplug-xmms.cc:557
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:559
 msgid "Title: "
 msgstr "Название:"
 
-#: src/adplug/adplug-xmms.cc:558
+#: src/adplug/adplug-xmms.cc:560
 msgid "Author: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:559
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:561
 msgid "File Type: "
-msgstr "Размер файла:"
+msgstr "Тип файла:"
 
-#: src/adplug/adplug-xmms.cc:560
+#: src/adplug/adplug-xmms.cc:562
 msgid "Subsongs: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:561
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:563
 msgid "Instruments: "
-msgstr "Инструментальный"
+msgstr "Инструменты:"
 
-#: src/adplug/adplug-xmms.cc:566
+#: src/adplug/adplug-xmms.cc:568
 msgid "Orders: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:567
+#: src/adplug/adplug-xmms.cc:569
 msgid "Patterns: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:571
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:573
 msgid "Song"
-msgstr "Свинг"
+msgstr "Дорожка"
 
-#: src/adplug/adplug-xmms.cc:597
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:599
 msgid "Instrument name"
-msgstr "Инструментальный"
+msgstr "Название инструмента"
 
-#: src/adplug/adplug-xmms.cc:639
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:641
 msgid "Song message"
-msgstr "Смена песни %s"
+msgstr "Сообщение дорожки"
 
-#: src/adplug/adplug-xmms.cc:661
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:663
 msgid "Subsong selection"
-msgstr "Выбор внутреннего модуля"
+msgstr "Выбор поддорожки"
 
-#: src/adplug/adplug-xmms.cc:725
+#: src/adplug/adplug-xmms.cc:727
 msgid "Order: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:726
+#: src/adplug/adplug-xmms.cc:728
 msgid "Pattern: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:728
+#: src/adplug/adplug-xmms.cc:730
 msgid "Row: "
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:729
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:731
 msgid "Speed: "
-msgstr "Речь"
+msgstr "Скорость:"
 
-#: src/adplug/adplug-xmms.cc:730
-#, fuzzy
+#: src/adplug/adplug-xmms.cc:732
 msgid "Timer: "
-msgstr "Time Div:"
+msgstr "Таймер:"
 
-#: src/adplug/adplug-xmms.cc:731 src/console/Audacious_Config.cxx:225
+#: src/adplug/adplug-xmms.cc:733 src/console/Audacious_Config.cxx:225
 #: src/sid/xmms-sid.glade:332 src/sid/xs_interface.c:341
 msgid "Hz"
 msgstr "Гц"
 
 #: src/alac/plugin.c:74
-#, fuzzy
 msgid "About Apple Lossless Audio Plugin"
-msgstr "О модуле поддержки Ogg Vorbis"
+msgstr "О модуле Apple Lossless"
 
 #: src/alac/plugin.c:75
 msgid ""
@@ -315,8 +301,8 @@ msgid ""
 "http://www.snika.uklinux.net/xmms-alarm/"
 msgstr ""
 
-#: src/alarm/interface.c:71 src/lirc/about.c:114
-#: src/modplug/gui/interface.cxx:960 src/modplug/gui/modplug.glade:2010
+#: src/alarm/interface.c:71 src/lirc/about.c:115
+#: src/modplug/gui/interface.cxx:971 src/modplug/gui/modplug.glade:2030
 #: src/sid/xmms-sid.glade:3643 src/sid/xs_about.c:213
 #: src/sid/xs_interface.c:1740
 msgid "Close"
@@ -331,10 +317,10 @@ msgid "This is your wakeup call."
 msgstr ""
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
-#: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:217
-#: src/flacng/plugin.c:726 src/gnomeshortcuts/gnomeshortcuts.c:290
-#: src/hotkey/plugin.c:914 src/modplug/gui/interface.cxx:692
-#: src/modplug/gui/modplug.glade:1622 src/pulse_audio/pulse_audio.c:692
+#: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:228
+#: src/flacng/plugin.c:747 src/gnomeshortcuts/gnomeshortcuts.c:292
+#: src/hotkey/plugin.c:1075 src/modplug/gui/interface.cxx:702
+#: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:712
 #: src/scrobbler/gtkstuff.c:44 src/sid/xmms-sid.glade:3066
 #: src/sid/xs_interface.c:1243
 msgid "OK"
@@ -370,20 +356,17 @@ msgid "Oh Well"
 msgstr ""
 
 #: src/alarm/interface.c:388
-#, fuzzy
 msgid "Alarm Settings"
-msgstr "Настройки микшера:"
+msgstr "Настройки будильника"
 
 #: src/alarm/interface.c:404 src/alarm/interface.c:576
 #: src/alarm/interface.c:948
-#, fuzzy
 msgid "Time"
-msgstr "Название"
+msgstr "Время"
 
 #: src/alarm/interface.c:445
-#, fuzzy
 msgid "hours"
-msgstr "Хор"
+msgstr "часов"
 
 #: src/alarm/interface.c:506
 msgid "h"
@@ -394,9 +377,8 @@ msgid "minutes"
 msgstr ""
 
 #: src/alarm/interface.c:554
-#, fuzzy
 msgid "Quiet after:"
-msgstr "Битрэйт:"
+msgstr "Отключение сигнала после:"
 
 #: src/alarm/interface.c:564
 msgid "Alarm at (default):"
@@ -438,37 +420,32 @@ msgid "Saturday"
 msgstr ""
 
 #: src/alarm/interface.c:1013
-#, fuzzy
 msgid "Sunday"
-msgstr "Звуковая дорожка"
+msgstr "Воскресенье"
 
 #: src/alarm/interface.c:1023
-#, fuzzy
 msgid "Monday"
-msgstr "Моно"
+msgstr "Понедельник"
 
 #: src/alarm/interface.c:1034
 msgid "Days"
 msgstr ""
 
 #: src/alarm/interface.c:1050
-#, fuzzy
 msgid "Fading"
-msgstr "Усиления:"
+msgstr "Затухание"
 
 #: src/alarm/interface.c:1087 src/sid/xmms-sid.glade:2007
 #: src/sid/xmms-sid.glade:2178 src/sid/xmms-sid.glade:2676
 #: src/sid/xs_interface.c:908 src/sid/xs_interface.c:962
 #: src/sid/xs_interface.c:1122
-#, fuzzy
 msgid "seconds"
 msgstr "секунд"
 
 #: src/alarm/interface.c:1095 src/alarm/interface.c:1211
-#: src/modplug/gui/interface.cxx:539 src/modplug/gui/modplug.glade:1113
-#, fuzzy
+#: src/modplug/gui/interface.cxx:549 src/modplug/gui/modplug.glade:1133
 msgid "Volume"
-msgstr "Громкость: (%)"
+msgstr "Громкость"
 
 #: src/alarm/interface.c:1121
 msgid "Current"
@@ -483,47 +460,40 @@ msgid "Start at"
 msgstr ""
 
 #: src/alarm/interface.c:1158 src/alarm/interface.c:1202
-#, fuzzy
 msgid "%"
-msgstr "%d"
+msgstr "%"
 
 #: src/alarm/interface.c:1174
-#, fuzzy
 msgid "Final"
-msgstr "Имя файла"
+msgstr "Конечная"
 
 #: src/alarm/interface.c:1227
 msgid "Additional Command"
 msgstr ""
 
 #: src/alarm/interface.c:1253
-#, fuzzy
 msgid "enable"
-msgstr "Основной"
+msgstr "разрешить"
 
 #: src/alarm/interface.c:1261
 msgid "Playlist (optional)"
 msgstr ""
 
 #: src/alarm/interface.c:1287
-#, fuzzy
 msgid "Browse..."
-msgstr "Просмотреть"
+msgstr "Обзор..."
 
 #: src/alarm/interface.c:1295 src/alarm/interface.c:1460
-#, fuzzy
 msgid "Reminder"
-msgstr "Стиль отображения"
+msgstr "Напоминание"
 
 #: src/alarm/interface.c:1312
-#, fuzzy
 msgid "Use reminder"
-msgstr "Определенная пользователем"
+msgstr "Использовать напоминание"
 
 #: src/alarm/interface.c:1328 src/sndstretch/sndstretch_xmms.c:377
-#, fuzzy
 msgid "Options"
-msgstr "Параметры:"
+msgstr "Параметры"
 
 #: src/alarm/interface.c:1336
 msgid "What do these options mean?"
@@ -593,9 +563,8 @@ msgid "Your reminder for today is.."
 msgstr ""
 
 #: src/alarm/interface.c:1493
-#, fuzzy
 msgid "Thankyou"
-msgstr "Танго"
+msgstr "Спасибо"
 
 #: src/alsa/about.c:30
 msgid "About ALSA Driver"
@@ -693,7 +662,7 @@ msgstr "Дополнительные настройки"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
-msgstr ""
+msgstr "ALSA модуль"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -717,7 +686,7 @@ msgstr ""
 
 #: src/amidi-plug/backend-dummy/b-dummy.c:35
 msgid "Dummy Backend "
-msgstr ""
+msgstr "Фиктивный модуль"
 
 #: src/amidi-plug/backend-dummy/b-dummy.c:37
 msgid ""
@@ -733,7 +702,7 @@ msgstr ""
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:35
 msgid "FluidSynth Backend "
-msgstr ""
+msgstr "FluidSynth модуль"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:37
 msgid ""
@@ -830,11 +799,12 @@ msgid "ALSA Backend not loaded or not available"
 msgstr "Внутренний модуль ALSA не загружен или недоступен"
 
 #: src/amidi-plug/i_configure-alsa.c:463
-#, fuzzy
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">определение</span>"
+msgstr ""
+"<span size=\"smaller\">ALSA\n"
+"модуль</span>"
 
 #: src/amidi-plug/i_configure-ap.c:56
 msgid "AMIDI-Plug - backend information"
@@ -977,11 +947,12 @@ msgstr ""
 "информационном окне."
 
 #: src/amidi-plug/i_configure-ap.c:375
-#, fuzzy
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr "<span size=\"smaller\"> Информация MIDI </span>"
+msgstr ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
 
 #: src/amidi-plug/i_configure.c:75
 msgid "AMIDI-Plug - select file"
@@ -1070,11 +1041,12 @@ msgid "Dummy Backend not loaded or not available"
 msgstr "Внутренний модуль пустышка не загружен или недоступен"
 
 #: src/amidi-plug/i_configure-dummy.c:348
-#, fuzzy
 msgid ""
 "<span size=\"smaller\">Dummy\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">поле</span>"
+msgstr ""
+"<span size=\"smaller\">Фиктивный\n"
+"модуль</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:83
 msgid "AMIDI-Plug - select SoundFont file"
@@ -1147,26 +1119,22 @@ msgid "sample rate"
 msgstr "частота"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:653
-#, fuzzy
 msgid "22050 Hz "
-msgstr "22000 Гц"
+msgstr "22050 Гц"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:656
-#, fuzzy
 msgid "44100 Hz "
 msgstr "44100 Гц"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:659
-#, fuzzy
 msgid "96000 Hz "
-msgstr "11000 Гц"
+msgstr "96000 Гц"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:662
 msgid "custom "
 msgstr "особый "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:671
-#, fuzzy
 msgid "Hz "
 msgstr "Гц"
 
@@ -1375,30 +1343,31 @@ msgid "FluidSynth Backend not loaded or not available"
 msgstr "Внутренний модуль FluidSynth не загружен или недоступен"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:956
-#, fuzzy
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">увеличение</span>"
+msgstr ""
+"<span size=\"smaller\">FluidSynth\n"
+"модуль</span>"
 
 #: src/amidi-plug/i_configure-timidity.c:39
 msgid "TIMIDITY BACKEND CONFIGURATION"
 msgstr "НАСТРОЙКА ВНУТРЕННЕГО МОДУЛЯ TIMIDITY"
 
 #: src/amidi-plug/i_configure-timidity.c:64
-#, fuzzy
 msgid "TiMidity Backend not loaded or not available"
-msgstr "Внутренний модуль пустышка не загружен или недоступен"
+msgstr "Модуль TiMidity не загружен или не доступен"
 
 #: src/amidi-plug/i_configure-timidity.c:83
-#, fuzzy
 msgid ""
 "<span size=\"smaller\">TiMidity\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">определение</span>"
+msgstr ""
+"<span size=\"smaller\">TiMidity\n"
+"модуль</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169 src/sid/xmms-sid.glade:3465
-#: src/sid/xs_interface.c:1684 src/vorbis/fileinfo.c:559
+#: src/sid/xs_interface.c:1684
 msgid "Name:"
 msgstr "Имя:"
 
@@ -1451,16 +1420,16 @@ msgid "  (invalid UTF-8)"
 msgstr "  (недопустимая последовательность Юникод)"
 
 #: src/amidi-plug/i_utils.c:43
-#, fuzzy
 msgid "AMIDI-Plug - about"
-msgstr "EvDev-Plug - о модуле"
+msgstr "О модуле AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:68
-#, fuzzy
 msgid ""
 "\n"
 "AMIDI-Plug "
-msgstr "AMIDI-Plug сообщение"
+msgstr ""
+"\n"
+"AMIDI-Plug "
 
 #: src/amidi-plug/i_utils.c:69
 msgid ""
@@ -1499,60 +1468,55 @@ msgstr "Скругленный прямоугольник"
 msgid "Concave Rectangle"
 msgstr "Вогнутый прямоугольник"
 
-#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:717
+#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:870
 msgid "None"
 msgstr "Нет"
 
-#: src/aosd/aosd_trigger.c:74
+#: src/aosd/aosd_trigger.c:75
 msgid "Playback Start"
 msgstr "Начало воспроизведения"
 
-#: src/aosd/aosd_trigger.c:75
+#: src/aosd/aosd_trigger.c:76
 msgid "Triggers OSD when a playlist entry is played."
 msgstr "Показывает OSD, когда начинается проигрывание."
 
-#: src/aosd/aosd_trigger.c:79
+#: src/aosd/aosd_trigger.c:80
 msgid "Title Change"
 msgstr "Изменение названия"
 
-#: src/aosd/aosd_trigger.c:80
-#, fuzzy
+#: src/aosd/aosd_trigger.c:81
 msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Показывает OSD, когда во время проигрывания название песни меняется, но имя "
-"файла остается тем же. Это полезно, для показа изменений названий у потоков "
-"из Интернет."
-
-#: src/aosd/aosd_trigger.c:86
-#, fuzzy
-msgid "Volume Change"
-msgstr "Изменение названия"
+"Включает OSD когда, в процессе воспроизведения, меняется название, но имя "
+"файла остаётся прежним. Полезно для отображения названий при воспроизведении "
+"Интернет-потоков."
 
 #: src/aosd/aosd_trigger.c:87
-#, fuzzy
-msgid "Triggers OSD when volume is changed."
-msgstr "Показывает OSD, когда начинается проигрывание."
+msgid "Volume Change"
+msgstr "Изменение громкости"
 
-#: src/aosd/aosd_trigger.c:91
+#: src/aosd/aosd_trigger.c:88
+msgid "Triggers OSD when volume is changed."
+msgstr "Показывает OSD, когда меняется громкость."
+
+#: src/aosd/aosd_trigger.c:92
 msgid "Pause On"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:92
-#, fuzzy
+#: src/aosd/aosd_trigger.c:93
 msgid "Triggers OSD when playback is paused."
-msgstr "Показывает OSD, когда начинается проигрывание."
+msgstr "Показывает OSD, когда воспроизведение приостанавливается."
 
-#: src/aosd/aosd_trigger.c:96
+#: src/aosd/aosd_trigger.c:97
 msgid "Pause Off"
 msgstr ""
 
-#: src/aosd/aosd_trigger.c:97
-#, fuzzy
+#: src/aosd/aosd_trigger.c:98
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Показывает OSD, когда начинается проигрывание."
+msgstr "Показывает OSD, когда воспроизведение возобновляется."
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
@@ -1572,7 +1536,7 @@ msgstr "Максимальная ширина OSD:"
 
 #: src/aosd/aosd_ui.c:233
 msgid "Multi-Monitor options"
-msgstr ""
+msgstr "Настройки для систем с несколькими мониторами"
 
 #: src/aosd/aosd_ui.c:237
 msgid "Display OSD using:"
@@ -1608,22 +1572,21 @@ msgid "Fonts"
 msgstr "Шрифты"
 
 #: src/aosd/aosd_ui.c:399
-#, fuzzy, c-format
+#, c-format
 msgid "Font %i:"
-msgstr "монитор %i"
+msgstr "Шрифт %i:"
 
 #: src/aosd/aosd_ui.c:416
 msgid "Shadow"
 msgstr "Тень"
 
 #: src/aosd/aosd_ui.c:451
-#, fuzzy
 msgid "Internationalization"
-msgstr "Организация:"
+msgstr "Поддержка интернационализации"
 
 #: src/aosd/aosd_ui.c:457
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr ""
+msgstr "Отключить преобразование текста в UTF-8"
 
 #: src/aosd/aosd_ui.c:475
 msgid "Select Skin File"
@@ -1638,9 +1601,9 @@ msgid "Colors"
 msgstr "Цвета"
 
 #: src/aosd/aosd_ui.c:615
-#, fuzzy, c-format
+#, c-format
 msgid "Color %i:"
-msgstr "Цвета"
+msgstr "Цвет %i:"
 
 #: src/aosd/aosd_ui.c:635
 msgid "Custom Skin"
@@ -1667,7 +1630,7 @@ msgstr "Событие"
 
 #: src/aosd/aosd_ui.c:801
 msgid "Composite manager detected"
-msgstr ""
+msgstr "Найден композитный менеджер"
 
 #: src/aosd/aosd_ui.c:808
 msgid ""
@@ -1675,36 +1638,38 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
+"Композитный менеджер не найден;\n"
+"Пожалуйста, запустите композитный менеджер; в противном случае\n"
+"OSD не будет работать корректно."
 
 #: src/aosd/aosd_ui.c:816
 msgid "Composite manager not required for fake transparency"
-msgstr ""
+msgstr "Композитный менеджер не требуется для \"фальшивой\" прозрачности"
 
 #: src/aosd/aosd_ui.c:854
-#, fuzzy
 msgid "Transparency"
-msgstr "Транспонирование: "
+msgstr "Прозрачность"
 
 #: src/aosd/aosd_ui.c:860
 msgid "Fake transparency"
-msgstr ""
+msgstr "Фальшивая прозрачность"
 
 #: src/aosd/aosd_ui.c:862
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr ""
+msgstr "Подлинная прозрачность (требуется расширение XComposite)"
 
 #: src/aosd/aosd_ui.c:904
 msgid "Composite extension not loaded"
-msgstr ""
+msgstr "Расширение XComposite не загружено"
 
 #: src/aosd/aosd_ui.c:912
 msgid "Composite extension not available"
-msgstr ""
+msgstr "Расширение XComposite недоступно"
 
 #: src/aosd/aosd_ui.c:934
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr ""
+msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
 #: src/aosd/aosd_ui.c:1015
 msgid "Audacious OSD - configuration"
@@ -1734,12 +1699,11 @@ msgstr "Стиль"
 msgid "Trigger"
 msgstr "События"
 
-#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:149
-#: src/modplug/gui/interface.cxx:678 src/modplug/gui/modplug.glade:1583
+#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:166
+#: src/modplug/gui/interface.cxx:688 src/modplug/gui/modplug.glade:1603
 #: src/sid/xmms-sid.glade:3026 src/sid/xs_interface.c:1229
-#, fuzzy
 msgid "Misc"
-msgstr "Диско"
+msgstr "Прочее"
 
 #: src/aosd/aosd_ui.c:1113
 msgid "Audacious OSD - about"
@@ -1754,7 +1718,6 @@ msgstr ""
 "Audacious OSD "
 
 #: src/aosd/aosd_ui.c:1144
-#, fuzzy
 msgid ""
 "\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -1777,9 +1740,8 @@ msgstr ""
 "\n"
 
 #: src/arts/arts.c:22
-#, fuzzy
 msgid "About aRts Output"
-msgstr "О модуле Ноль-вывод"
+msgstr "О модуле вывода звука aRts"
 
 #: src/arts/arts.c:23
 msgid ""
@@ -1856,17 +1818,16 @@ msgid "How long of a window to maintain"
 msgstr ""
 
 #: src/audiocompress/audacious-glue.c:372
-#, fuzzy
 msgid "AudioCompress preferences"
-msgstr "AudioCompress "
+msgstr "Настройки AudioCompress"
 
 #: src/audiocompress/audacious-glue.c:389
 msgid " Quality Options "
-msgstr ""
+msgstr "Параметры качества"
 
 #: src/audiocompress/audacious-glue.c:394
 msgid " Aggressively prevent clipping"
-msgstr ""
+msgstr "Усиленно предотвращать срезание"
 
 #: src/audiocompress/audacious-glue.c:406
 msgid " Target & gain"
@@ -1877,9 +1838,8 @@ msgid "Target audio level:"
 msgstr ""
 
 #: src/audiocompress/audacious-glue.c:425
-#, fuzzy
 msgid "Maximum gain:"
-msgstr "Усиление альбома:"
+msgstr "Максимальное усиление:"
 
 #: src/audiocompress/audacious-glue.c:433
 msgid "Gain smooth:"
@@ -1900,12 +1860,11 @@ msgid "Load default values"
 msgstr ""
 
 #: src/audiocompress/audacious-glue.c:533
-#, fuzzy
 msgid "Audio values"
-msgstr "Аудиоустройство:"
+msgstr "Параметры аудио"
 
 #: src/audiocompress/audacious-glue.c:562 src/echo_plugin/gui.c:152
-#: src/modplug/gui/interface.cxx:698 src/modplug/gui/modplug.glade:1635
+#: src/modplug/gui/interface.cxx:708 src/modplug/gui/modplug.glade:1655
 #: src/stereo_plugin/stereo.c:132
 msgid "Apply"
 msgstr "Применить"
@@ -1934,16 +1893,15 @@ msgstr "Размытый осциллоскоп: выбор цвета"
 msgid "Options:"
 msgstr "Параметры:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:187
+#: src/cdaudio-ng/cdaudio-ng.c:198
 msgid "Add CD"
-msgstr ""
+msgstr "Добавить CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:212
-#, fuzzy
+#: src/cdaudio-ng/cdaudio-ng.c:223
 msgid "About CD Audio Plugin NG"
-msgstr "О модуле LIRC"
+msgstr "О модуле CD Audio NG"
 
-#: src/cdaudio-ng/cdaudio-ng.c:213
+#: src/cdaudio-ng/cdaudio-ng.c:224
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1955,57 +1913,70 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"Copyright (c) 2007 Calin Crisan <ccrisan@gmail.com> и  Команда разработчиков "
+"Audacious.\n"
+"\n"
+"Автор выражает благодарность разработчикам библиотеки libcdio <http://www."
+"gnu.org/software/libcdio/>\n"
+"\tи разработчикам библиотеки libcddb <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Также спасибо тебе, Tony Vroon, за наставления .\n"
+"\n"
+"Этот модуль являлся частью проекта Google Summer of Code в 2007 году."
 
-#: src/cdaudio-ng/cdaudio-ng.c:802
+#: src/cdaudio-ng/cdaudio-ng.c:850
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
 "No CD inserted, or inserted CD is not an audio CD.\n"
 msgstr ""
+"<b><big>Ну найден пригодный к воспроизведению диск.</big></b>\n"
+"\n"
+"Диск не вставлен в привод, или вставленный диск не является Audio CD.\n"
 
-#: src/cdaudio-ng/configure.c:129
-#, fuzzy
+#: src/cdaudio-ng/configure.c:146
 msgid "CD Audio Plugin Configuration"
-msgstr "Настройка модуля поддержки MPEG"
+msgstr "Настройки модуля CD Audio"
 
-#: src/cdaudio-ng/configure.c:139
+#: src/cdaudio-ng/configure.c:156
 msgid "Digital audio extraction"
 msgstr "Цифровое считывание аудио"
 
-#: src/cdaudio-ng/configure.c:144
-#, fuzzy
-msgid "Title information"
-msgstr "Формат названия:"
-
 #: src/cdaudio-ng/configure.c:161
+msgid "Title information"
+msgstr "Формат названия"
+
+#: src/cdaudio-ng/configure.c:178
 msgid "Limit read speed to: "
-msgstr ""
+msgstr "Ограничить скорость чтения:"
 
-#: src/cdaudio-ng/configure.c:168
+#: src/cdaudio-ng/configure.c:185
 msgid "Use cd-text if available"
-msgstr ""
+msgstr "Использовать CD-Text, если возможно"
 
-#: src/cdaudio-ng/configure.c:172
+#: src/cdaudio-ng/configure.c:189
 msgid "Use CDDB if available"
-msgstr ""
+msgstr "Использовать CDDB, если возможно"
 
-#: src/cdaudio-ng/configure.c:176
-#, fuzzy
+#: src/cdaudio-ng/configure.c:193
 msgid "Server: "
-msgstr "Сервер"
+msgstr "Сервер:"
 
-#: src/cdaudio-ng/configure.c:179
-#, fuzzy
+#: src/cdaudio-ng/configure.c:196
 msgid "Port: "
 msgstr "Порт:"
 
-#: src/cdaudio-ng/configure.c:189
-msgid "Override default device: "
-msgstr ""
+#: src/cdaudio-ng/configure.c:202
+msgid "Use HTTP instead of CDDBP"
+msgstr "Использовать HTTP вместо CDDBP"
 
-#: src/cdaudio-ng/configure.c:196
+#: src/cdaudio-ng/configure.c:210
+msgid "Override default device: "
+msgstr "Переопределить устройство по-умолчанию:"
+
+#: src/cdaudio-ng/configure.c:217
 msgid "Print debug information"
-msgstr ""
+msgstr "Выводить отладочную информацию"
 
 #: src/console/Audacious_Config.cxx:125
 msgid "Console Music Decoder"
@@ -2028,7 +1999,7 @@ msgstr "Высокие:"
 msgid "Default song length:"
 msgstr "Длительность песни по-умолчанию:"
 
-#: src/console/Audacious_Config.cxx:200 src/modplug/gui/interface.cxx:265
+#: src/console/Audacious_Config.cxx:200 src/modplug/gui/interface.cxx:268
 #: src/modplug/gui/modplug.glade:338 src/sid/xmms-sid.glade:1243
 #: src/sid/xs_interface.c:653
 msgid "Resampling"
@@ -2052,15 +2023,13 @@ msgstr "Игнорировать длительность из тэгов SPC"
 
 #: src/console/Audacious_Config.cxx:238
 msgid "Increase reverb"
-msgstr ""
+msgstr "Увеличить реверберацию"
 
 #: src/console/Audacious_Config.cxx:263
-#, fuzzy
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
-"* Длительность песни по-умолчанию *\n"
 "Длительность песни по-умолчанию, заданная в секундах, используется для "
 "записей, у которых отсутствуют данные о длительности (например, бесконечные "
 "дорожки)."
@@ -2081,6 +2050,24 @@ msgstr ""
 "VGZ\n"
 "Портирование под Audacious: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
+
+#: src/demac/plugin.c:387
+msgid "About Monkey's Audio Plugin"
+msgstr "О модуле Monkey's Audio"
+
+#: src/demac/plugin.c:388
+msgid ""
+"Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+"Based on ffape decoder, Copyright (C) 2007 Benjamin Zores\n"
+"ffape itself based on libdemac by Dave Chapman\n"
+"\n"
+"ffape is a part of FFmpeg project, http://ffmpeg.mplayerhq.hu/"
+msgstr ""
+"Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
+"Основан на декодере ffape, Copyright (C) 2007 Benjamin Zores\n"
+"ffape, в свою очередь, основан на libdemac от Dave Chapman\n"
+"\n"
+"ffape является частью проекта FFmpeg, http://ffmpeg.mplayerhq.hu/"
 
 #: src/echo_plugin/gui.c:11
 msgid ""
@@ -2257,7 +2244,7 @@ msgstr "Оксно->Еквалайзер"
 msgid "Window->JumpToFile"
 msgstr "Окно->ПерейтиНаФайл"
 
-#: src/evdev-plug/ed_internals.c:93
+#: src/evdev-plug/ed_internals.c:94
 #, c-format
 msgid ""
 "event-device-plugin: unable to open device file %s , skipping this device; "
@@ -2267,7 +2254,7 @@ msgstr ""
 "устройства; проверьте, что файл существует и что у вас есть привелегии для "
 "его чтения\n"
 
-#: src/evdev-plug/ed_internals.c:102
+#: src/evdev-plug/ed_internals.c:103
 #, c-format
 msgid ""
 "event-device-plugin: unable to create a io_channel for device file %s ,"
@@ -2276,7 +2263,7 @@ msgstr ""
 "event-device-plugin: невозможно создать io_channel для устройства %s ,"
 "пропуск устройства\n"
 
-#: src/evdev-plug/ed_internals.c:339
+#: src/evdev-plug/ed_internals.c:342
 msgid ""
 "event-device-plugin: unable to open /proc/bus/input/devices , automatic "
 "detection of event devices won't work.\n"
@@ -2284,7 +2271,7 @@ msgstr ""
 "event-device-plugin: невозможно открыть /proc/bus/input/devices , "
 "автоматическое распознавание устройств событий не будет работать.\n"
 
-#: src/evdev-plug/ed_internals.c:348
+#: src/evdev-plug/ed_internals.c:351
 msgid ""
 "event-device-plugin: unable to open a io_channel for /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
@@ -2292,7 +2279,7 @@ msgstr ""
 "event-device-plugin: невозможно открыть io_channel для /proc/bus/input/"
 "devices, автоматическое распознавание устройств событий не будет работать.\n"
 
-#: src/evdev-plug/ed_internals.c:358
+#: src/evdev-plug/ed_internals.c:361
 msgid ""
 "event-device-plugin: an error occurred while reading /proc/bus/input/"
 "devices , automatic detection of event devices won't work.\n"
@@ -2300,13 +2287,13 @@ msgstr ""
 "event-device-plugin: произошла ошибка при чтении /proc/bus/input/devices , "
 "автоматическое распознавание устройств событий не будет работать.\n"
 
-#: src/evdev-plug/ed_internals.c:421
+#: src/evdev-plug/ed_internals.c:424
 #, c-format
 msgid "event-device-plugin: device %s not found in /dev/input , skipping.\n"
 msgstr ""
 "event-device-plugin: устройство %s не найдено в /dev/input , пропускаю.\n"
 
-#: src/evdev-plug/ed_internals.c:486 src/evdev-plug/ed_internals.c:580
+#: src/evdev-plug/ed_internals.c:489 src/evdev-plug/ed_internals.c:583
 #, c-format
 msgid ""
 "event-device-plugin: unable to load config file %s , default settings will "
@@ -2315,7 +2302,7 @@ msgstr ""
 "event-device-plugin: невозможно загрузить конфигурационный файл %s , будут "
 "использованы настройки по-умолчанию.\n"
 
-#: src/evdev-plug/ed_internals.c:532
+#: src/evdev-plug/ed_internals.c:535
 #, c-format
 msgid ""
 "event-device-plugin: incomplete information in config file for device \"%s"
@@ -2324,7 +2311,7 @@ msgstr ""
 "event-device-plugin: неполная информация в конфигурационном файле для "
 "устройства \"%s\" , пропускаю.\n"
 
-#: src/evdev-plug/ed_internals.c:601 src/evdev-plug/ed_internals.c:933
+#: src/evdev-plug/ed_internals.c:604 src/evdev-plug/ed_internals.c:936
 #, c-format
 msgid ""
 "event-device-plugin: configuration, unable to get is_active value for device "
@@ -2333,7 +2320,7 @@ msgstr ""
 "event-device-plugin: настройка, невозможно получить значение is_active для "
 "устройства \"%s\", пропускаю.\n"
 
-#: src/evdev-plug/ed_internals.c:837
+#: src/evdev-plug/ed_internals.c:840
 #, c-format
 msgid ""
 "event-device-plugin: unable to access local directory %s , settings will not "
@@ -2342,7 +2329,7 @@ msgstr ""
 "event-device-plugin: невозможно получить доступ к локальному каталогу %s , "
 "настройки не будут сохранены.\n"
 
-#: src/evdev-plug/ed_internals.c:887
+#: src/evdev-plug/ed_internals.c:890
 #, c-format
 msgid ""
 "event-device-plugin: configuration, unable to get filename value for device "
@@ -2351,7 +2338,7 @@ msgstr ""
 "event-device-plugin: настройка, невозможно получить имя файла для устройства "
 "\"%s\", пропускаю.\n"
 
-#: src/evdev-plug/ed_internals.c:903
+#: src/evdev-plug/ed_internals.c:906
 #, c-format
 msgid ""
 "event-device-plugin: configuration, unable to get phys value for device \"%s"
@@ -2360,7 +2347,7 @@ msgstr ""
 "event-device-plugin: настройка, невозможно получить физическое значение для "
 "устройства \"%s\", пропускаю.\n"
 
-#: src/evdev-plug/ed_internals.c:919
+#: src/evdev-plug/ed_internals.c:922
 #, c-format
 msgid ""
 "event-device-plugin: configuration, unable to get is_custom value for device "
@@ -2369,7 +2356,7 @@ msgstr ""
 "event-device-plugin: настройка, невозможно получить значение is_custom для "
 "устройства \"%s\", пропускаю.\n"
 
-#: src/evdev-plug/ed_internals.c:943
+#: src/evdev-plug/ed_internals.c:946
 #, c-format
 msgid ""
 "event-device-plugin: configuration, unexpected value for device \"%s\", "
@@ -2378,12 +2365,12 @@ msgstr ""
 "event-device-plugin: настройка, неожиданное значение для устройства \"%s\", "
 "пропускаю.\n"
 
-#: src/evdev-plug/ed_ui.c:274 src/evdev-plug/ed_ui.c:410
-#: src/evdev-plug/ed_ui.c:872
+#: src/evdev-plug/ed_ui.c:275 src/evdev-plug/ed_ui.c:411
+#: src/evdev-plug/ed_ui.c:874
 msgid "Information"
 msgstr "Информация"
 
-#: src/evdev-plug/ed_ui.c:275
+#: src/evdev-plug/ed_ui.c:276
 msgid ""
 "Cannot open bindings window for a not-detected device.\n"
 "Ensure that the device has been correctly plugged in."
@@ -2391,11 +2378,11 @@ msgstr ""
 "Невозможно открыть окно для неопознанного устройства.\n"
 "Убедитесь, что устройство правильно подключено."
 
-#: src/evdev-plug/ed_ui.c:318 src/madplug/plugin.c:619
+#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:582
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/evdev-plug/ed_ui.c:319
+#: src/evdev-plug/ed_ui.c:320
 msgid ""
 "Unable to open selected device.\n"
 "Please check read permissions on device file."
@@ -2403,11 +2390,11 @@ msgstr ""
 "Невозможно открыть выбранное устройство.\n"
 "Пожалуйста проверьте права доступа к файлу устройства."
 
-#: src/evdev-plug/ed_ui.c:340
+#: src/evdev-plug/ed_ui.c:341
 msgid "EvDev-Plug - Add custom device"
 msgstr "EvDev-Plug - Добавить особое устройство"
 
-#: src/evdev-plug/ed_ui.c:352
+#: src/evdev-plug/ed_ui.c:353
 msgid ""
 "EvDev-Plug tries to automatically detect and update information about\n"
 "event devices available on the system.\n"
@@ -2423,15 +2410,15 @@ msgstr ""
 "только в /dev/input/ ), вы можете добавить устройство вручную, указав\n"
 "название и файл устройства."
 
-#: src/evdev-plug/ed_ui.c:360
+#: src/evdev-plug/ed_ui.c:361
 msgid "Device name:"
 msgstr "Имя устройства:"
 
-#: src/evdev-plug/ed_ui.c:364
+#: src/evdev-plug/ed_ui.c:365
 msgid "Device file:"
 msgstr "Файл устройства:"
 
-#: src/evdev-plug/ed_ui.c:411
+#: src/evdev-plug/ed_ui.c:412
 msgid ""
 "Please specify both name and filename.\n"
 "Filename must be specified with absolute path."
@@ -2439,12 +2426,12 @@ msgstr ""
 "Пожалуйста укажите название и имя файла.\n"
 "Имя файла должно быть указано с полным путем."
 
-#: src/evdev-plug/ed_ui.c:446
+#: src/evdev-plug/ed_ui.c:447
 msgid "Do you want to remove the existing configuration for selected device?\n"
 msgstr ""
 "Вы хотите удалить существующую конфигурацию для выбранного устройства?\n"
 
-#: src/evdev-plug/ed_ui.c:465
+#: src/evdev-plug/ed_ui.c:466
 msgid "Do you want to remove the selected custom device?\n"
 msgstr "Вы хотите удалить выбранное особое устройство?\n"
 
@@ -2476,7 +2463,7 @@ msgstr "Адрес устройства"
 msgid "_Bindings"
 msgstr "_Привязки клавиш"
 
-#: src/evdev-plug/ed_ui.c:836
+#: src/evdev-plug/ed_ui.c:838
 msgid ""
 "Press a key of your device to bind it;\n"
 "if no key is pressed in five seconds, this window\n"
@@ -2486,7 +2473,7 @@ msgstr ""
 "если ни одна клавиша не будет нажата в течение пяти секунд,\n"
 "это окно закроется без изменения привязки."
 
-#: src/evdev-plug/ed_ui.c:873
+#: src/evdev-plug/ed_ui.c:875
 msgid ""
 "This input event has been already assigned.\n"
 "\n"
@@ -2498,28 +2485,27 @@ msgstr ""
 "Невозможно назначить несколько действий на одно и тоже входное событие (так "
 "же как нельзя назначить одно действие на несколько событий)."
 
-#: src/evdev-plug/ed_ui.c:1322
+#: src/evdev-plug/ed_ui.c:1323
 msgid "EvDev-Plug - Bindings Configuration"
 msgstr "EvDev-Plug - Настойка привязок клавиш"
 
-#: src/evdev-plug/ed_ui.c:1362
+#: src/evdev-plug/ed_ui.c:1363
 msgid "<b>Name: </b>"
 msgstr "<b>Название: </b>"
 
-#: src/evdev-plug/ed_ui.c:1371
+#: src/evdev-plug/ed_ui.c:1372
 msgid "<b>Filename: </b>"
 msgstr "<b>Имя файла: </b>"
 
-#: src/evdev-plug/ed_ui.c:1380
+#: src/evdev-plug/ed_ui.c:1381
 msgid "<b>Phys.Address: </b>"
 msgstr "<b>Физ. Адрес: </b>"
 
-#: src/evdev-plug/ed_ui.c:1459
+#: src/evdev-plug/ed_ui.c:1460
 msgid "EvDev-Plug - about"
 msgstr "EvDev-Plug - о модуле"
 
-#: src/evdev-plug/ed_ui.c:1490
-#, fuzzy
+#: src/evdev-plug/ed_ui.c:1491
 msgid ""
 "\n"
 "player remote control via event devices\n"
@@ -2535,13 +2521,11 @@ msgstr ""
 "< james@develia.org >\n"
 "\n"
 
-#: src/filewriter/filewriter.c:163
-#, fuzzy
+#: src/filewriter/filewriter.c:168
 msgid "About FileWriter-Plugin"
-msgstr "О модуле Flac"
+msgstr "О модуле записи на диск"
 
-#: src/filewriter/filewriter.c:164
-#, fuzzy
+#: src/filewriter/filewriter.c:169
 msgid ""
 "FileWriter-Plugin\n"
 "\n"
@@ -2560,7 +2544,7 @@ msgid ""
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA."
 msgstr ""
-"Драйвер ESounD для Audacious\n"
+"Модуль записи на диск\n"
 "\n"
 " Эта программа - бесплатное программное обеспечение; вы можете "
 "распространять и/или модифицировать ее\n"
@@ -2579,73 +2563,69 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02111-1307,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:476
-#, fuzzy
+#: src/filewriter/filewriter.c:481
 msgid "File Writer Configuration"
 msgstr "Настройка записи на диск"
 
-#: src/filewriter/filewriter.c:488
-#, fuzzy
+#: src/filewriter/filewriter.c:493
 msgid "Output file format:"
-msgstr "Каталог для выходных файлов:"
+msgstr "Выходной формат файла:"
 
-#: src/filewriter/filewriter.c:506 src/ladspa/ladspa.c:960
-#, fuzzy
+#: src/filewriter/filewriter.c:511 src/ladspa/ladspa.c:960
 msgid "Configure"
-msgstr "Настроить Эхо"
+msgstr "Настроить"
 
-#: src/filewriter/filewriter.c:521
+#: src/filewriter/filewriter.c:526
 msgid "Save into original directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:526
+#: src/filewriter/filewriter.c:531
 msgid "Save into custom directory"
 msgstr ""
 
-#: src/filewriter/filewriter.c:538
+#: src/filewriter/filewriter.c:543
 msgid "Output file folder:"
 msgstr "Каталог для выходных файлов:"
 
-#: src/filewriter/filewriter.c:542
+#: src/filewriter/filewriter.c:547
 msgid "Pick a folder"
 msgstr ""
 
-#: src/filewriter/filewriter.c:562
+#: src/filewriter/filewriter.c:567
 msgid "Get filename from:"
 msgstr ""
 
-#: src/filewriter/filewriter.c:565
+#: src/filewriter/filewriter.c:570
 msgid "original file tags"
 msgstr ""
 
-#: src/filewriter/filewriter.c:571
+#: src/filewriter/filewriter.c:576
 msgid "original filename"
 msgstr ""
 
-#: src/filewriter/filewriter.c:581
+#: src/filewriter/filewriter.c:586
 msgid "Don't strip file name extension"
 msgstr "Не удалять расширение имени файла"
 
-#: src/filewriter/filewriter.c:585
+#: src/filewriter/filewriter.c:590
 msgid ""
 "If enabled, the extension from the original filename will not be stripped "
 "before adding the new file extension to the end."
 msgstr ""
 
-#: src/filewriter/filewriter.c:599
+#: src/filewriter/filewriter.c:604
 msgid "Prepend track number to filename"
 msgstr ""
 
-#: src/filewriter/mp3.c:675
-#, fuzzy
+#: src/filewriter/mp3.c:670
 msgid "MP3 Configuration"
-msgstr "Настройка Flac"
+msgstr "Настройка MP3"
 
-#: src/filewriter/mp3.c:702
+#: src/filewriter/mp3.c:697
 msgid "Algorithm Quality:"
 msgstr ""
 
-#: src/filewriter/mp3.c:724
+#: src/filewriter/mp3.c:719
 msgid ""
 "best/slowest:0;\n"
 "worst/fastest:9;\n"
@@ -2653,190 +2633,173 @@ msgid ""
 "default:5;"
 msgstr ""
 
-#: src/filewriter/mp3.c:732
-#, fuzzy
+#: src/filewriter/mp3.c:727
 msgid "Output Samplerate:"
-msgstr "Частота:"
+msgstr "Выходная частота:"
 
-#: src/filewriter/mp3.c:743 src/filewriter/mp3.c:884
-#, fuzzy
+#: src/filewriter/mp3.c:738 src/filewriter/mp3.c:879
 msgid "Auto"
-msgstr "О "
+msgstr "Автоматически"
 
-#: src/filewriter/mp3.c:765
-#, fuzzy
+#: src/filewriter/mp3.c:760
 msgid "(Hz)"
-msgstr "Гц"
+msgstr "(Гц)"
 
-#: src/filewriter/mp3.c:777
-#, fuzzy
+#: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr ""
-"Средний битрейт: %.1f КБ/с\n"
-"Степень сжатия: %.1f%%"
+msgstr "Битрейт/ Степень сжатия:"
 
-#: src/filewriter/mp3.c:803
-#, fuzzy
+#: src/filewriter/mp3.c:798
 msgid "Bitrate (kbps):"
-msgstr "Битрэйт:"
+msgstr "Битрейт (кб/с)"
 
-#: src/filewriter/mp3.c:844
+#: src/filewriter/mp3.c:839
 msgid "Compression ratio:"
 msgstr ""
 
-#: src/filewriter/mp3.c:874
-#, fuzzy
+#: src/filewriter/mp3.c:869
 msgid "Audio Mode:"
-msgstr "Аудиоустройство:"
+msgstr "Режим аудио:"
 
-#: src/filewriter/mp3.c:889
-#, fuzzy
+#: src/filewriter/mp3.c:884
 msgid "Joint-Stereo"
-msgstr "Стерео"
+msgstr "Совмещенное стерео"
 
-#: src/filewriter/mp3.c:930
+#: src/filewriter/mp3.c:925
 msgid "auto-M/S mode"
 msgstr ""
 
-#: src/filewriter/mp3.c:942
-#, fuzzy
+#: src/filewriter/mp3.c:937
 msgid "Misc:"
-msgstr "Диско"
+msgstr "Прочее:"
 
-#: src/filewriter/mp3.c:953
+#: src/filewriter/mp3.c:948
 msgid "Enforce strict ISO complience"
 msgstr ""
 
-#: src/filewriter/mp3.c:964
+#: src/filewriter/mp3.c:959
 msgid "Error protection"
 msgstr ""
 
-#: src/filewriter/mp3.c:976
+#: src/filewriter/mp3.c:971
 msgid "Adds 16 bit checksum to every frame"
 msgstr ""
 
-#: src/filewriter/mp3.c:981 src/filewriter/vorbis.c:274
-#: src/modplug/gui/interface.cxx:309 src/modplug/gui/modplug.glade:487
+#: src/filewriter/mp3.c:976 src/filewriter/vorbis.c:274
+#: src/modplug/gui/interface.cxx:319 src/modplug/gui/modplug.glade:507
 msgid "Quality"
-msgstr ""
+msgstr "Качество"
 
-#: src/filewriter/mp3.c:993
+#: src/filewriter/mp3.c:988
 msgid "Enable VBR/ABR"
-msgstr ""
+msgstr "Включить VBR/ABR"
 
-#: src/filewriter/mp3.c:1005
+#: src/filewriter/mp3.c:1000
 msgid "Type:"
-msgstr ""
+msgstr "Тип:"
 
-#: src/filewriter/mp3.c:1016
+#: src/filewriter/mp3.c:1011
 msgid "Variable bitrate"
-msgstr ""
+msgstr "Переменный битрейт"
 
-#: src/filewriter/mp3.c:1028
+#: src/filewriter/mp3.c:1023
 msgid "Average bitrate"
-msgstr ""
+msgstr "Средний битрейт"
 
-#: src/filewriter/mp3.c:1042
-#, fuzzy
+#: src/filewriter/mp3.c:1037
 msgid "VBR Options:"
-msgstr "Параметры:"
+msgstr "Параметры VBR:"
 
-#: src/filewriter/mp3.c:1058
-#, fuzzy
+#: src/filewriter/mp3.c:1053
 msgid "Minimum bitrate (kbps):"
-msgstr "Битрэйт:"
+msgstr "Минимальный битрейт (кб/с):"
 
-#: src/filewriter/mp3.c:1094
+#: src/filewriter/mp3.c:1089
 msgid "Maximum bitrate (kbps):"
-msgstr ""
+msgstr "Максимальный битрейт (кб/с):"
 
-#: src/filewriter/mp3.c:1126
+#: src/filewriter/mp3.c:1121
 msgid "Strictly enforce minimum bitrate"
 msgstr ""
 
-#: src/filewriter/mp3.c:1128
+#: src/filewriter/mp3.c:1123
 msgid ""
 "For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
 "mp3 player)"
 msgstr ""
 
-#: src/filewriter/mp3.c:1141
-#, fuzzy
+#: src/filewriter/mp3.c:1136
 msgid "ABR Options:"
-msgstr "Параметры:"
+msgstr "Параметры ABR:"
 
-#: src/filewriter/mp3.c:1151
+#: src/filewriter/mp3.c:1146
 msgid "Average bitrate (kbps):"
 msgstr ""
 
-#: src/filewriter/mp3.c:1188
+#: src/filewriter/mp3.c:1183
 msgid "VBR quality level:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1203
+#: src/filewriter/mp3.c:1198
 msgid ""
 "highest:0;\n"
 "lowest:9;\n"
 "default:4;"
 msgstr ""
 
-#: src/filewriter/mp3.c:1211
+#: src/filewriter/mp3.c:1206
 msgid "Don't write Xing VBR header"
 msgstr ""
 
-#: src/filewriter/mp3.c:1226
+#: src/filewriter/mp3.c:1221
 msgid "VBR/ABR"
 msgstr ""
 
-#: src/filewriter/mp3.c:1238
+#: src/filewriter/mp3.c:1233
 msgid "Frame params:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1250
+#: src/filewriter/mp3.c:1245
 msgid "Mark as copyright"
 msgstr ""
 
-#: src/filewriter/mp3.c:1261
+#: src/filewriter/mp3.c:1256
 msgid "Mark as original"
 msgstr ""
 
-#: src/filewriter/mp3.c:1273
-#, fuzzy
+#: src/filewriter/mp3.c:1268
 msgid "ID3 params:"
-msgstr "Формат ID3-тега:"
+msgstr "Параметры ID3:"
 
-#: src/filewriter/mp3.c:1284
+#: src/filewriter/mp3.c:1279
 msgid "Force addition of version 2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1294
+#: src/filewriter/mp3.c:1289
 msgid "Only add v1 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1301
+#: src/filewriter/mp3.c:1296
 msgid "Only add v2 tag"
 msgstr ""
 
-#: src/filewriter/mp3.c:1322
-#, fuzzy
+#: src/filewriter/mp3.c:1317
 msgid "Tags"
-msgstr "Тэг:"
+msgstr "Тэги"
 
 #: src/filewriter/vorbis.c:267
-#, fuzzy
 msgid "Vorbis Encoder Configuration"
-msgstr "Настройка записи на диск"
+msgstr "Настройка кодировщика Vorbis"
 
 #: src/filewriter/vorbis.c:287
 msgid "Quality level (0 - 10):"
 msgstr ""
 
-#: src/flacng/plugin.c:718
-#, fuzzy
+#: src/flacng/plugin.c:739
 msgid "FLAC Audio Plugin "
-msgstr "Модуль поддержки FLAC"
+msgstr "Модуль поддержки FLAC "
 
-#: src/flacng/plugin.c:719
+#: src/flacng/plugin.c:740
 msgid ""
 "\n"
 "\n"
@@ -2846,17 +2809,15 @@ msgid ""
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
 
-#: src/flacng/plugin.c:724
-#, fuzzy
+#: src/flacng/plugin.c:745
 msgid "About FLAC Audio Plugin"
-msgstr "Модуль поддержки FLAC"
+msgstr "О модуле поддержки FLAC"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:285
-#, fuzzy
+#: src/gnomeshortcuts/gnomeshortcuts.c:287
 msgid "About Gnome Shortcut Plugin"
-msgstr "О модуле вывода звука ESounD"
+msgstr "О модуле горячих клавиш для Gnome"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:286
+#: src/gnomeshortcuts/gnomeshortcuts.c:288
 msgid ""
 "Gnome Shortcut Plugin\n"
 "Let's you control the player with Gnome's shortcuts.\n"
@@ -2864,123 +2825,151 @@ msgid ""
 "Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 msgstr ""
+"Модуль горячих клавиш для Gnome\n"
+"Управляйте плеером при помощи горячих клавиш,\n"
+"указанных в настройках Gnome.\n"
+"\n"
+"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
 
-#: src/hotkey/plugin.c:607
-#, fuzzy
+#: src/hotkey/plugin.c:649
 msgid "(none)"
-msgstr "нет"
+msgstr "(нет)"
 
-#: src/hotkey/plugin.c:752
-#, fuzzy
+#: src/hotkey/plugin.c:776
+msgid ""
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+
+#: src/hotkey/plugin.c:778
+msgid "Binding mouse buttons"
+msgstr ""
+
+#: src/hotkey/plugin.c:912
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Настройка модуля вывода звука ESD"
+msgstr "Настройка модуля горячих клавиш"
 
-#: src/hotkey/plugin.c:768
+#: src/hotkey/plugin.c:928
 msgid "Press a key combination inside a text field."
-msgstr ""
+msgstr "Нажмите желаемое сочетание клавиш в поле ввода."
 
-#: src/hotkey/plugin.c:773
-#, fuzzy
+#: src/hotkey/plugin.c:933
 msgid "<b>Playback:</b>"
-msgstr "Воспроизведение"
+msgstr "<b>Воспроизведение:</b>"
 
-#: src/hotkey/plugin.c:788
+#: src/hotkey/plugin.c:948
 msgid "<i>Configure keys which controls Audacious playback.</i>"
-msgstr ""
+msgstr "<i>Клавиши для управления воспроизведением в Audacious.</i>"
 
-#: src/hotkey/plugin.c:795
+#: src/hotkey/plugin.c:955
 msgid "Previous Track:"
-msgstr ""
+msgstr "Предыдущая дорожка:"
 
-#: src/hotkey/plugin.c:798
-#, fuzzy
-msgid "Play/Pause:"
-msgstr "Воспроизведение->Приостановить"
+#: src/hotkey/plugin.c:958
+msgid "Play:"
+msgstr "Играть:"
 
-#: src/hotkey/plugin.c:801
-#, fuzzy
-msgid "Pause:"
-msgstr "значение:"
+#: src/hotkey/plugin.c:961
+msgid "Pause/Resume:"
+msgstr "Приостановить / Возобновить:"
 
-#: src/hotkey/plugin.c:804
-#, fuzzy
+#: src/hotkey/plugin.c:964
 msgid "Stop:"
-msgstr "в :"
+msgstr "Остановить:"
 
-#: src/hotkey/plugin.c:807
-#, fuzzy
+#: src/hotkey/plugin.c:967
 msgid "Next Track:"
-msgstr "Усиление дорожки:"
+msgstr "Следующая дорожка:"
 
-#: src/hotkey/plugin.c:810
+#: src/hotkey/plugin.c:970
 msgid "Forward 5 sec.:"
-msgstr ""
+msgstr "Перемотка вперёд на 5 сек.:"
 
-#: src/hotkey/plugin.c:813
+#: src/hotkey/plugin.c:973
 msgid "Rewind 5 sec.:"
-msgstr ""
+msgstr "Перемотка назад на 5 сек.:"
 
-#: src/hotkey/plugin.c:818
-#, fuzzy
+#: src/hotkey/plugin.c:978
 msgid "<b>Volume Control:</b>"
-msgstr "Устройство управления громкостью:"
+msgstr "<b>Регулировка громкости:</b>"
 
-#: src/hotkey/plugin.c:833
+#: src/hotkey/plugin.c:993
 msgid "<i>Configure keys which controls music volume.</i>"
-msgstr ""
+msgstr "<i>Клавиши для управления громкостью.</i>"
 
-#: src/hotkey/plugin.c:841
-#, fuzzy
+#: src/hotkey/plugin.c:999
 msgid "Mute:"
-msgstr "Дата:"
+msgstr "Выключить звук:"
 
-#: src/hotkey/plugin.c:844
-#, fuzzy
+#: src/hotkey/plugin.c:1002
 msgid "Volume Up:"
-msgstr "Громкость: (%)"
+msgstr "Громче:"
 
-#: src/hotkey/plugin.c:847
-#, fuzzy
+#: src/hotkey/plugin.c:1005
 msgid "Volume Down:"
-msgstr "Громкость->Вниз_5"
+msgstr "Тише:"
 
-#: src/hotkey/plugin.c:852
-#, fuzzy
+#: src/hotkey/plugin.c:1010
 msgid "<b>Player:</b>"
-msgstr "<b>Название: </b>"
+msgstr "<b>Плеер:</b>"
 
-#: src/hotkey/plugin.c:867
+#: src/hotkey/plugin.c:1025
 msgid "<i>Configure keys which control the player.</i>"
-msgstr ""
+msgstr "<i>Клавиши для управления плеером.</i>"
 
-#: src/hotkey/plugin.c:873
+#: src/hotkey/plugin.c:1031
 msgid "Jump to File:"
-msgstr ""
+msgstr "Перескочить на дорожку:"
 
-#: src/hotkey/plugin.c:876
+#: src/hotkey/plugin.c:1034
 msgid "Toggle Player Windows:"
+msgstr "Показать/скрыть окна плеера:"
+
+#: src/hotkey/plugin.c:1037
+msgid "Show On-Screen-Display:"
+msgstr "Отобразить экранное сообщение (OSD):"
+
+#: src/hotkey/plugin.c:1038
+msgid "For this, the Audacious OSD plugin must be activated."
 msgstr ""
+"Чтобы эта функция стала доступной,\n"
+"необходимо включить модуль Audacious OSD."
 
-#: src/hotkey/plugin.c:903
-#, fuzzy
+#: src/hotkey/plugin.c:1064
 msgid "About Global Hotkey Plugin"
-msgstr "О модуле Scrobbler"
+msgstr "О модуле горячих клавиш"
 
-#: src/hotkey/plugin.c:904
+#: src/hotkey/plugin.c:1065
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
 "\n"
-"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 "Contributers include:\n"
-"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
 "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
 "\t\t\tBryn Davies <curious@ihug.com.au>\n"
 "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
 "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
 "\n"
 msgstr ""
+"Модуль глобальных горячих клавиш\n"
+"Позволяет управлять плеером при помощи сочетаний клавиш\n"
+"и Multimedia-клавиш из любого приложения.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Также содействовали:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+"\t\t\tBryn Davies <curious@ihug.com.au>\n"
+"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+"\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
+"\n"
 
 #: src/jack/configure.c:70
 msgid "Connect to all available jack ports"
@@ -2995,25 +2984,22 @@ msgid "Connect to no ports"
 msgstr ""
 
 #: src/jack/configure.c:99
-#, fuzzy
 msgid "jack Plugin configuration"
-msgstr "Настройка модуля вывода звука ESD"
+msgstr "Настройка модуля Jack"
 
 #: src/jack/configure.c:117
 msgid "Connection mode:"
 msgstr ""
 
 #: src/jack/configure.c:129
-#, fuzzy
 msgid "Enable debug printing"
-msgstr "Включить преобразование"
+msgstr "Выводить отладочную информацию"
 
-#: src/jack/jack.c:102
-#, fuzzy
+#: src/jack/jack.c:95
 msgid "Sample rate mismatch"
-msgstr "Частота:"
+msgstr "Некорректная частота сэмплирования"
 
-#: src/jack/jack.c:105
+#: src/jack/jack.c:98
 msgid ""
 "Xmms is asking for a sample rate that differs from\n"
 " that of the jack server.  Xmms 1.2.8 or later\n"
@@ -3027,15 +3013,15 @@ msgid ""
 "Chris Morgan <cmorgan@alum.wpi.edu>\n"
 msgstr ""
 
-#: src/jack/jack.c:118 src/wma/wma.c:157
+#: src/jack/jack.c:111 src/wma/wma.c:157
 msgid " Close "
 msgstr " Закрыть "
 
-#: src/jack/jack.c:535
+#: src/jack/jack.c:489
 msgid "About JACK Output Plugin 0.17"
 msgstr "О модуле вывода JACK 0.17"
 
-#: src/jack/jack.c:536
+#: src/jack/jack.c:490
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -3055,37 +3041,35 @@ msgstr ""
 
 #: src/ladspa/ladspa.c:722
 msgid "This LADSPA plugin has no user controls"
-msgstr ""
+msgstr "Этот модуль LADSPA не допускает настройку"
 
 #: src/ladspa/ladspa.c:767 src/ladspa/ladspa.c:853
-#, fuzzy
 msgid "Name"
-msgstr "Имя:"
+msgstr "Имя"
 
 #: src/ladspa/ladspa.c:853
 msgid "UID"
-msgstr ""
+msgstr "UID"
 
 #: src/ladspa/ladspa.c:928
 msgid "Installed plugins"
-msgstr ""
+msgstr "Установленные модули"
 
 #: src/ladspa/ladspa.c:937
 msgid "Running plugins"
-msgstr ""
+msgstr "Активные модули"
 
 #: src/ladspa/ladspa.c:952
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: src/ladspa/ladspa.c:956
-#, fuzzy
 msgid "Remove"
-msgstr "Удалить тэг"
+msgstr "Удалить"
 
 #: src/ladspa/ladspa.c:969
 msgid "LADSPA Plugin Catalog"
-msgstr ""
+msgstr "Каталог модулей LADSPA"
 
 #: src/lastfm/lastfm.c:96
 msgid ""
@@ -3093,6 +3077,9 @@ msgid ""
 "\n"
 "Check if your Scrobbler's plugin login data is set up properly."
 msgstr ""
+"<b><big>Невозможно инициализировать модуль last.fm радио.</big></b>\n"
+"\n"
+"Проверьте корректность имени пользователя и пароля."
 
 #: src/lirc/about.c:63
 msgid "About LIRC Audacious Plugin"
@@ -3112,26 +3099,50 @@ msgid ""
 "from the XMMS LIRC plugin by:\n"
 "Carl van Schaik <carl@leg.uct.ac.za>\n"
 "Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
 "You can get LIRC information at:\n"
-"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+"http://lirc.org"
 msgstr ""
 "\n"
 "Простой модуль, позволяющий управлять Audacious\n"
 "с помощью инфракрасного пульта управления\n"
+"и системного сервиса LIRC\n"
 "\n"
-"Адаптировано Tony Vroon <chainsaw@gentoo.org>,\n"
+"Адаптировано для Audacious:\n"
+"Tony Vroon <chainsaw@gentoo.org>,\n"
 "основано на модуле XMMS LIRC:\n"
 "Carl van Schaik <carl@leg.uct.ac.za>\n"
 "Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Информацию о LIRC вы можете посмотреть на:\n"
-"http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"Информацию о LIRC вы можете найти на:\n"
+"http://lirc.org"
 
-#: src/lirc/lirc.c:76
+#: src/lirc/interface.c:37
+msgid "LIRC plugin settings"
+msgstr "Настройки модуля LIRC"
+
+#: src/lirc/interface.c:61
+msgid "Reconnect to LIRC server"
+msgstr ""
+
+#: src/lirc/interface.c:68
+msgid "Timeout before reconnecting (seconds): "
+msgstr ""
+
+#: src/lirc/interface.c:75
+msgid "Reconnect"
+msgstr ""
+
+#: src/lirc/interface.c:79
+msgid "Connection"
+msgstr "Соединение"
+
+#: src/lirc/lirc.c:78
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: невозможно инициализировать поддержку LIRC\n"
 
-#: src/lirc/lirc.c:84
+#: src/lirc/lirc.c:86
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -3142,211 +3153,93 @@ msgstr ""
 "%s: пожалуйста, прочитайте в документации LIRC\n"
 "%s: как создать рабочий конфигурационый файл\n"
 
-#: src/lirc/lirc.c:295
+#: src/lirc/lirc.c:111
+#, c-format
+msgid "%s: trying to reconnect...\n"
+msgstr ""
+
+#: src/lirc/lirc.c:310
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: неизвестная команда \"%s\"\n"
 
-#: src/lirc/lirc.c:305
+#: src/lirc/lirc.c:320
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: отключение от LIRC\n"
 
-#: src/madplug/configure.c:148
+#: src/lirc/lirc.c:324
+#, c-format
+msgid "%s: will try reconnect every %d seconds...\n"
+msgstr ""
+
+#: src/madplug/configure.c:147
 msgid "MPEG Audio Plugin Configuration"
 msgstr "Настройка модуля поддержки MPEG"
 
-#: src/madplug/configure.c:161
+#: src/madplug/configure.c:160
 msgid "Dither output when rounding to 16-bit"
 msgstr "Размыть вывод при округлении до 16 бит"
 
-#: src/madplug/configure.c:167
+#: src/madplug/configure.c:166
 msgid "Enable fast play-length calculation"
 msgstr "Включить быстрое определение длительности"
 
-#: src/madplug/configure.c:172
+#: src/madplug/configure.c:171
 msgid "Parse XING headers"
 msgstr "Обрабатывать заголовки XING"
 
-#: src/madplug/configure.c:177
+#: src/madplug/configure.c:176
 msgid "Use SJIS to write ID3 tags instead of UTF-8"
-msgstr ""
+msgstr "Использовать SJIS для записи тегов ID3 вместо UTF-8"
 
-#: src/madplug/configure.c:181
+#: src/madplug/configure.c:180
 msgid "Display average bitrate for VBR"
-msgstr ""
+msgstr "Отображать средний битрейт для VBR"
 
-#: src/madplug/configure.c:186
+#: src/madplug/configure.c:185
 msgid "Force reopen audio when audio type changed"
-msgstr ""
+msgstr "Принудительно пере-открывать аудио-вывод при смене типа аудио"
 
-#: src/madplug/configure.c:196
+#: src/madplug/configure.c:195
 msgid "Enable ReplayGain processing"
 msgstr "Включить ReplayGain"
 
-#: src/madplug/configure.c:201
+#: src/madplug/configure.c:200
 msgid "Track mode"
 msgstr "Режим дорожки"
 
-#: src/madplug/configure.c:208
+#: src/madplug/configure.c:207
 msgid "6dB hard limiting"
-msgstr "6dB тяжелое ограничение"
+msgstr "6dB жёсткое ограничение"
 
-#: src/madplug/configure.c:213
+#: src/madplug/configure.c:212
 msgid "Default gain (dB):"
 msgstr "Усиление по-умолачнию (дБ):"
 
-#: src/madplug/configure.c:224
+#: src/madplug/configure.c:223
 msgid "Preamp (dB):"
 msgstr "Предусиление (дБ):"
 
-#: src/madplug/configure.c:233 src/musepack/libmpc.cxx:224
-#: src/vorbis/configure.c:219 src/wavpack/ui.cxx:545
+#: src/madplug/configure.c:232 src/musepack/libmpc.cxx:224
+#: src/vorbis/configure.c:219 src/wavpack/ui.cxx:547
 msgid "ReplayGain"
 msgstr "ReplayGain"
 
-#: src/madplug/configure.c:238 src/vorbis/configure.c:135
+#: src/madplug/configure.c:237 src/vorbis/configure.c:135
 msgid "Override generic titles"
 msgstr "Не использовать стандартные названия"
 
-#: src/madplug/configure.c:251
+#: src/madplug/configure.c:250
 msgid "ID3 format:"
 msgstr "Формат ID3-тега:"
 
-#: src/madplug/configure.c:261 src/sid/xmms-sid.glade:2540
+#: src/madplug/configure.c:260 src/sid/xmms-sid.glade:2540
 #: src/sid/xs_interface.c:1070 src/vorbis/configure.c:158
 msgid "Title"
 msgstr "Название"
 
-#: src/madplug/fileinfo.c:158 src/madplug/fileinfo.c:236
-#, fuzzy
-msgid "File Info"
-msgstr "Инфрмация о файле - %s"
-
-#: src/madplug/fileinfo.c:158
-#, fuzzy
-msgid "Couldn't open file!"
-msgstr "Невозможно загрузить MIDI файл"
-
-#: src/madplug/fileinfo.c:236
-msgid "Couldn't write tag!"
-msgstr ""
-
-#: src/madplug/fileinfo.c:330
-#, fuzzy
-msgid "<b>Name:</b>"
-msgstr "<b>Название: </b>"
-
-#: src/madplug/fileinfo.c:344
-msgid " MPEG Info "
-msgstr " Информация MPEG "
-
-#: src/madplug/fileinfo.c:417
-msgid " ID3 Tag "
-msgstr " ID3-тег "
-
-#: src/madplug/fileinfo.c:425 src/musepack/libmpc.cxx:514 src/tta/libtta.c:321
-#: src/vorbis/fileinfo.c:582 src/wavpack/ui.cxx:170
-msgid "Title:"
-msgstr "Название:"
-
-#: src/madplug/fileinfo.c:435 src/musepack/libmpc.cxx:518 src/tta/libtta.c:331
-#: src/vorbis/fileinfo.c:593 src/wavpack/ui.cxx:182
-msgid "Artist:"
-msgstr "Исполнитель:"
-
-#: src/madplug/fileinfo.c:445 src/musepack/libmpc.cxx:522 src/tta/libtta.c:342
-#: src/vorbis/fileinfo.c:604 src/wavpack/ui.cxx:194
-msgid "Album:"
-msgstr "Альбом:"
-
-#: src/madplug/fileinfo.c:455 src/musepack/libmpc.cxx:526 src/tta/libtta.c:353
-#: src/vorbis/fileinfo.c:615 src/wavpack/ui.cxx:206
-msgid "Comment:"
-msgstr "Комментарий:"
-
-#: src/madplug/fileinfo.c:465 src/musepack/libmpc.cxx:530 src/tta/libtta.c:364
-#: src/wavpack/ui.cxx:219
-msgid "Year:"
-msgstr ""
-
-#: src/madplug/fileinfo.c:476 src/tta/libtta.c:376 src/vorbis/fileinfo.c:638
-#: src/wavpack/ui.cxx:232
-msgid "Track number:"
-msgstr "Номер дорожки:"
-
-#: src/madplug/fileinfo.c:487 src/musepack/libmpc.cxx:540 src/tta/libtta.c:388
-#: src/vorbis/fileinfo.c:650 src/wavpack/ui.cxx:246
-msgid "Genre:"
-msgstr "Стиль:"
-
-#: src/madplug/fileinfo.c:500
-#, fuzzy
-msgid "Unknown"
-msgstr "(неизвестно)"
-
-#: src/madplug/fileinfo.c:620 src/musepack/libmpc.cxx:634 src/tta/libtta.c:411
-#: src/wavpack/ui.cxx:407
-#, c-format
-msgid "File Info - %s"
-msgstr "Инфрмация о файле - %s"
-
-#: src/madplug/fileinfo.c:651
-#, fuzzy, c-format
-msgid "Layer %s"
-msgstr "Проигрыватель WMA %s"
-
-#: src/madplug/fileinfo.c:654
-#, c-format
-msgid "VBR (avg. %d kbps)"
-msgstr ""
-
-#: src/madplug/fileinfo.c:660 src/vorbis/fileinfo.c:959
-#, c-format
-msgid "%d Hz"
-msgstr "%d Гц"
-
-#: src/madplug/fileinfo.c:663
-#, c-format
-msgid "%d frames"
-msgstr ""
-
-#: src/madplug/fileinfo.c:672
-#, c-format
-msgid "%d:%02d (%d seconds)"
-msgstr ""
-
-#: src/madplug/fileinfo.c:677
-#, c-format
-msgid "RG_album=%4s (x%4.2f)"
-msgstr ""
-
-#: src/madplug/fileinfo.c:685
-#, c-format
-msgid "RG_track=%4s (x%4.2f)"
-msgstr ""
-
-#: src/madplug/fileinfo.c:693
-#, c-format
-msgid "Peak album=%4s (%+5.3fdBFS)"
-msgstr ""
-
-#: src/madplug/fileinfo.c:702
-#, c-format
-msgid "Peak track=%4s (%+5.3fdBFS)"
-msgstr ""
-
-#: src/madplug/fileinfo.c:711
-#, c-format
-msgid "mp3gain undo=%4s (%+5.3fdB)"
-msgstr ""
-
-#: src/madplug/fileinfo.c:719
-#, c-format
-msgid "mp3gain minmax=%4s (max-min=%+6.3fdB)"
-msgstr ""
-
-#: src/madplug/plugin.c:578
+#: src/madplug/plugin.c:541
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3363,16 +3256,27 @@ msgid ""
 "ReplayGain support by:\n"
 "    Samuel Krempp"
 msgstr ""
+"Модуль Audacious MPEG Audio\n"
+"\n"
+"Собран с библиотекой libMAD версии: %d.%d.%d%s\n"
+"\n"
+"Авторы:\n"
+"    William Pitcock <nenolod@sacredspiral.co.uk>\n"
+"    Yoshiki Yazawa <yaz@cc.rim.or.jp>\n"
+"\n"
+"Частично использован XMMS-MAD от:\n"
+"    Sam Clegg\n"
+"\n"
+"Поддержка ReplayGain:\n"
+"    Samuel Krempp"
 
-#: src/madplug/plugin.c:594
-#, fuzzy
+#: src/madplug/plugin.c:557
 msgid "About MPEG Audio Plugin"
-msgstr "Модуль поддержки MPEG"
+msgstr "О модуле поддержки MPEG"
 
 #: src/metronom/metronom.c:87
-#, fuzzy
 msgid "About Metronom"
-msgstr "О "
+msgstr "О модуле \"метроном\""
 
 #: src/metronom/metronom.c:88
 msgid ""
@@ -3382,174 +3286,174 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
+"Тактовый генератор от Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"Для использования добавьте URL вида: tact://такты[*числ/знам]\n"
+"Например, tact://77 для воспроизведения 77и тактов в минуту\n"
+"или   tact://60*3/4 для воспроизведения 60и тактов в минуту\n"
+"в размере 3/4"
 
 #: src/metronom/metronom.c:198 src/metronom/metronom.c:262
-#, fuzzy, c-format
+#, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Генератор сигналов: "
+msgstr "Генератор тактов: %d тактов/с"
 
 #: src/metronom/metronom.c:200 src/metronom/metronom.c:264
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr ""
+msgstr "Тактовый генератор: %d такт/мин %d/%d"
 
-#: src/modplug/gui/interface.cxx:133 src/modplug/gui/modplug.glade:9
-#, fuzzy
+#: src/modplug/gui/interface.cxx:136 src/modplug/gui/modplug.glade:9
 msgid "ModPlug Configuration"
-msgstr "Настройка Flac"
+msgstr "Настройка ModPlug"
 
-#: src/modplug/gui/interface.cxx:170 src/modplug/gui/modplug.glade:73
+#: src/modplug/gui/interface.cxx:173 src/modplug/gui/modplug.glade:73
 #: src/timidity/interface.c:140
 msgid "16 bit"
 msgstr "16 бит"
 
-#: src/modplug/gui/interface.cxx:177 src/modplug/gui/modplug.glade:92
+#: src/modplug/gui/interface.cxx:180 src/modplug/gui/modplug.glade:92
 #: src/timidity/interface.c:132
 msgid "8 bit"
 msgstr "8 бит"
 
-#: src/modplug/gui/interface.cxx:208 src/modplug/gui/modplug.glade:178
+#: src/modplug/gui/interface.cxx:211 src/modplug/gui/modplug.glade:178
 msgid "Mono (downmix)"
-msgstr ""
+msgstr "Моно (микшировать 2 канала в 1)"
 
-#: src/modplug/gui/interface.cxx:237 src/modplug/gui/modplug.glade:258
+#: src/modplug/gui/interface.cxx:240 src/modplug/gui/modplug.glade:258
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Кусочно-постоянное (быстрейшее)"
 
-#: src/modplug/gui/interface.cxx:244 src/modplug/gui/modplug.glade:277
+#: src/modplug/gui/interface.cxx:247 src/modplug/gui/modplug.glade:277
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Линейное (быстрое)"
 
-#: src/modplug/gui/interface.cxx:251 src/modplug/gui/modplug.glade:297
+#: src/modplug/gui/interface.cxx:254 src/modplug/gui/modplug.glade:297
 msgid "Spline (good quality)"
-msgstr ""
+msgstr "Сплайнами (хорошее качество)"
 
-#: src/modplug/gui/interface.cxx:258 src/modplug/gui/modplug.glade:317
+#: src/modplug/gui/interface.cxx:261 src/modplug/gui/modplug.glade:317
 msgid "8-tap Fir (extremely high quality)"
-msgstr ""
+msgstr "8-точечный КИХ (наилучшее качество)"
 
-#: src/modplug/gui/interface.cxx:282 src/modplug/gui/modplug.glade:384
-#, fuzzy
+#: src/modplug/gui/interface.cxx:285 src/modplug/gui/modplug.glade:384
+msgid "48 kHz"
+msgstr "48 кГц"
+
+#: src/modplug/gui/interface.cxx:292 src/modplug/gui/modplug.glade:403
 msgid "44 kHz"
-msgstr "44100 Гц"
+msgstr "44 кГц"
 
-#: src/modplug/gui/interface.cxx:289 src/modplug/gui/modplug.glade:403
-#, fuzzy
+#: src/modplug/gui/interface.cxx:299 src/modplug/gui/modplug.glade:423
 msgid "22 kHz"
-msgstr "22000 Гц"
+msgstr "22 кГц"
 
-#: src/modplug/gui/interface.cxx:296 src/modplug/gui/modplug.glade:423
-#, fuzzy
+#: src/modplug/gui/interface.cxx:306 src/modplug/gui/modplug.glade:443
 msgid "11 kHz"
-msgstr "11000 Гц"
+msgstr "11 кГц"
 
-#: src/modplug/gui/interface.cxx:304 src/modplug/gui/modplug.glade:444
+#: src/modplug/gui/interface.cxx:314 src/modplug/gui/modplug.glade:464
 #: src/timidity/interface.c:74
 msgid "Sampling Rate"
 msgstr "Частота"
 
-#: src/modplug/gui/interface.cxx:338 src/modplug/gui/interface.cxx:400
-#: src/modplug/gui/interface.cxx:466 src/modplug/gui/interface.cxx:528
-#: src/modplug/gui/modplug.glade:540 src/modplug/gui/modplug.glade:719
-#: src/modplug/gui/modplug.glade:910 src/modplug/gui/modplug.glade:1089
-#, fuzzy
+#: src/modplug/gui/interface.cxx:348 src/modplug/gui/interface.cxx:410
+#: src/modplug/gui/interface.cxx:476 src/modplug/gui/interface.cxx:538
+#: src/modplug/gui/modplug.glade:560 src/modplug/gui/modplug.glade:739
+#: src/modplug/gui/modplug.glade:930 src/modplug/gui/modplug.glade:1109
 msgid "Enable"
-msgstr "Включить событие"
+msgstr "Включить"
 
-#: src/modplug/gui/interface.cxx:367 src/modplug/gui/interface.cxx:495
-#: src/modplug/gui/modplug.glade:607 src/modplug/gui/modplug.glade:977
-#, fuzzy
+#: src/modplug/gui/interface.cxx:377 src/modplug/gui/interface.cxx:505
+#: src/modplug/gui/modplug.glade:627 src/modplug/gui/modplug.glade:997
 msgid "Depth"
-msgstr "Дуэт"
+msgstr "Глубина"
 
-#: src/modplug/gui/interface.cxx:375 src/modplug/gui/interface.cxx:503
-#: src/modplug/gui/modplug.glade:635 src/modplug/gui/modplug.glade:1005
-#, fuzzy
+#: src/modplug/gui/interface.cxx:385 src/modplug/gui/interface.cxx:513
+#: src/modplug/gui/modplug.glade:655 src/modplug/gui/modplug.glade:1025
 msgid "Delay"
-msgstr "Задержка: (мс)"
+msgstr "Задержка"
 
-#: src/modplug/gui/interface.cxx:383 src/modplug/gui/modplug.glade:672
-#, fuzzy
+#: src/modplug/gui/interface.cxx:393 src/modplug/gui/modplug.glade:692
 msgid "Reverb"
-msgstr "реверберация"
+msgstr "Реверберация"
 
-#: src/modplug/gui/interface.cxx:429 src/modplug/gui/modplug.glade:786
-#, fuzzy
+#: src/modplug/gui/interface.cxx:439 src/modplug/gui/modplug.glade:806
 msgid "Amount"
-msgstr "О "
+msgstr "Величина"
 
-#: src/modplug/gui/interface.cxx:437 src/modplug/gui/modplug.glade:814
-#, fuzzy
+#: src/modplug/gui/interface.cxx:447 src/modplug/gui/modplug.glade:834
 msgid "Range"
-msgstr "Прямоугольник"
+msgstr "Диапазон"
 
-#: src/modplug/gui/interface.cxx:445 src/modplug/gui/modplug.glade:851
+#: src/modplug/gui/interface.cxx:455 src/modplug/gui/modplug.glade:871
 msgid "Bass Boost"
-msgstr ""
+msgstr "Усиление басов"
 
-#: src/modplug/gui/interface.cxx:511 src/modplug/gui/modplug.glade:1042
-#, fuzzy
+#: src/modplug/gui/interface.cxx:521 src/modplug/gui/modplug.glade:1062
 msgid "Surround"
-msgstr "Объёмное эхо"
+msgstr "Объёмное звучание"
 
-#: src/modplug/gui/interface.cxx:550 src/modplug/gui/modplug.glade:1163
+#: src/modplug/gui/interface.cxx:560 src/modplug/gui/modplug.glade:1183
 msgid ""
 "Note:  Setting the preamp\n"
 "too high may cause clipping\n"
 "(annoying clicks and pops)!"
 msgstr ""
+"Важно: Установка слишком большого значения\n"
+"предусиления может вызвать отсечение сигнала,\n"
+"и, как следствие, щелчки и треск!"
 
-#: src/modplug/gui/interface.cxx:556 src/modplug/gui/modplug.glade:1192
-#, fuzzy
+#: src/modplug/gui/interface.cxx:566 src/modplug/gui/modplug.glade:1212
 msgid "Preamp"
-msgstr "Предусиление:"
+msgstr "Предусиление"
 
-#: src/modplug/gui/interface.cxx:561 src/modplug/gui/modplug.glade:1235
+#: src/modplug/gui/interface.cxx:571 src/modplug/gui/modplug.glade:1255
 msgid "Effects"
-msgstr ""
+msgstr "Эффекты"
 
-#: src/modplug/gui/interface.cxx:590 src/modplug/gui/modplug.glade:1287
+#: src/modplug/gui/interface.cxx:600 src/modplug/gui/modplug.glade:1307
 msgid "Use Filename as Song Title"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:595 src/modplug/gui/modplug.glade:1306
+#: src/modplug/gui/interface.cxx:605 src/modplug/gui/modplug.glade:1326
 msgid "Fast Playlist Info"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:606 src/modplug/gui/modplug.glade:1338
+#: src/modplug/gui/interface.cxx:616 src/modplug/gui/modplug.glade:1358
 msgid "Noise Reduction"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:612 src/modplug/gui/modplug.glade:1357
+#: src/modplug/gui/interface.cxx:622 src/modplug/gui/modplug.glade:1377
 msgid "Play Amiga MOD"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:635 src/modplug/gui/modplug.glade:1430
+#: src/modplug/gui/interface.cxx:645 src/modplug/gui/modplug.glade:1450
 msgid "Don't loop"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:647 src/modplug/gui/modplug.glade:1455
+#: src/modplug/gui/interface.cxx:657 src/modplug/gui/modplug.glade:1475
 msgid "Loop"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:660 src/modplug/gui/modplug.glade:1493
+#: src/modplug/gui/interface.cxx:670 src/modplug/gui/modplug.glade:1513
 msgid "time(s)"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:666 src/modplug/gui/modplug.glade:1526
+#: src/modplug/gui/interface.cxx:676 src/modplug/gui/modplug.glade:1546
 msgid "Loop forever"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:673 src/modplug/gui/modplug.glade:1547
+#: src/modplug/gui/interface.cxx:683 src/modplug/gui/modplug.glade:1567
 msgid "Looping"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:847 src/modplug/gui/modplug.glade:1668
-#, fuzzy
+#: src/modplug/gui/interface.cxx:858 src/modplug/gui/modplug.glade:1688
 msgid "MOD Info"
-msgstr "Информация CD"
+msgstr "Информация MOD"
 
-#: src/modplug/gui/interface.cxx:866 src/modplug/gui/modplug.glade:1710
+#: src/modplug/gui/interface.cxx:877 src/modplug/gui/modplug.glade:1730
 msgid ""
 "Filename:\n"
 "Title:\n"
@@ -3563,7 +3467,7 @@ msgid ""
 "Channels:"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:871 src/modplug/gui/modplug.glade:1744
+#: src/modplug/gui/interface.cxx:882 src/modplug/gui/modplug.glade:1764
 msgid ""
 "---\n"
 "---\n"
@@ -3577,25 +3481,23 @@ msgid ""
 "---"
 msgstr ""
 
-#: src/modplug/gui/interface.cxx:901 src/modplug/gui/modplug.glade:1849
-#, fuzzy
+#: src/modplug/gui/interface.cxx:912 src/modplug/gui/modplug.glade:1869
 msgid "Samples"
-msgstr "Салса"
+msgstr "Сэмплы"
 
-#: src/modplug/gui/interface.cxx:926 src/modplug/gui/modplug.glade:1914
-#, fuzzy
+#: src/modplug/gui/interface.cxx:937 src/modplug/gui/modplug.glade:1934
 msgid "Instruments"
-msgstr "Инструментальный"
+msgstr "Инструменты"
 
-#: src/modplug/gui/interface.cxx:947 src/modplug/gui/modplug.glade:1971
+#: src/modplug/gui/interface.cxx:958 src/modplug/gui/modplug.glade:1991
 msgid "Message"
 msgstr ""
 
-#: src/modplug/gui/main.cxx:44
+#: src/modplug/gui/main.cxx:45
 msgid "Modplug Input Plugin for Audacious ver"
 msgstr ""
 
-#: src/modplug/gui/main.cxx:45
+#: src/modplug/gui/main.cxx:46
 msgid ""
 "\n"
 "Modplug sound engine written by Olivier Lapicque.\n"
@@ -3605,16 +3507,31 @@ msgid ""
 "Ported to BMP by Theofilos Intzoglou."
 msgstr ""
 
-#: src/modplug/gui/main.cxx:46
-#, fuzzy
+#: src/modplug/gui/main.cxx:49
 msgid "About Modplug"
-msgstr "О модуле Эхо"
+msgstr "О модуле Modplug"
 
-#: src/modplug/gui/support.cxx:88 src/modplug/gui/support.cxx:112
+#: src/modplug/gui/support.cxx:90 src/modplug/gui/support.cxx:114
 #: src/sid/xs_glade.c:90 src/sid/xs_glade.c:114
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr "Невозможно загрузить MIDI файл"
+msgstr "Не удалось найти файл изображения: %s"
+
+#: src/mtp_up/mtp.c:35
+msgid "Upload selected track(s)"
+msgstr ""
+
+#: src/mtp_up/mtp.c:296
+msgid "Upload in progress..."
+msgstr ""
+
+#: src/mtp_up/mtp.c:305
+msgid "MTP device handler"
+msgstr ""
+
+#: src/mtp_up/mtp.c:309
+msgid "Disconnect the device"
+msgstr ""
 
 #: src/musepack/libmpc.cxx:146
 msgid "Musepack Decoder Plugin 1.2"
@@ -3635,56 +3552,49 @@ msgid "Nevermind"
 msgstr ""
 
 #: src/musepack/libmpc.cxx:166
-#, fuzzy
 msgid "Musepack Decoder Configuration"
-msgstr "Настройка записи на диск"
+msgstr "Настройка декодера Musepack"
 
 #: src/musepack/libmpc.cxx:176
-#, fuzzy
 msgid "General Settings"
-msgstr "Настройки микшера:"
+msgstr "Общие параметры"
 
-#: src/musepack/libmpc.cxx:183 src/wavpack/ui.cxx:490
+#: src/musepack/libmpc.cxx:183 src/wavpack/ui.cxx:492
 msgid "Enable Dynamic Bitrate Display"
-msgstr ""
+msgstr "Включить динамическое отображение битрейта"
 
-#: src/musepack/libmpc.cxx:187 src/wavpack/ui.cxx:496
-#, fuzzy
+#: src/musepack/libmpc.cxx:187 src/wavpack/ui.cxx:498
 msgid "Plugin"
-msgstr "Модуль LIRC"
+msgstr "Модуль"
 
 #: src/musepack/libmpc.cxx:190
-#, fuzzy
 msgid "ReplayGain Settings"
-msgstr "Настройки ReplayGain:"
+msgstr "Настройки ReplayGain"
 
 #: src/musepack/libmpc.cxx:197 src/vorbis/configure.c:170
-#: src/wavpack/ui.cxx:508
+#: src/wavpack/ui.cxx:510
 msgid "Enable Clipping Prevention"
 msgstr "Включить предотвращение срезания"
 
 #: src/musepack/libmpc.cxx:202 src/vorbis/configure.c:175
-#: src/wavpack/ui.cxx:513
+#: src/wavpack/ui.cxx:515
 msgid "Enable ReplayGain"
 msgstr "Включить ReplayGain"
 
 #: src/musepack/libmpc.cxx:207
-#, fuzzy
 msgid "ReplayGain Type"
-msgstr "Тип ReplayGain:"
+msgstr "Тип ReplayGain"
 
 #: src/musepack/libmpc.cxx:215
-#, fuzzy
 msgid "Use Track Gain"
-msgstr "использовать Gain/Peak Дорожки"
+msgstr "Использовать Gain/Peak дорожки"
 
 #: src/musepack/libmpc.cxx:219
-#, fuzzy
 msgid "Use Album Gain"
-msgstr "использовать Gain/Peak Альбома"
+msgstr "Использовать Gain/Peak альбома"
 
 #: src/musepack/libmpc.cxx:491 src/sid/xmms-sid.glade:3144
-#: src/sid/xs_interface.c:1564 src/tta/libtta.c:302 src/wavpack/ui.cxx:150
+#: src/sid/xs_interface.c:1564 src/tta/libtta.c:304 src/wavpack/ui.cxx:152
 msgid "Filename:"
 msgstr "Имя файла:"
 
@@ -3692,17 +3602,40 @@ msgstr "Имя файла:"
 msgid "Musepack Tag"
 msgstr ""
 
+#: src/musepack/libmpc.cxx:514 src/tta/libtta.c:323 src/wavpack/ui.cxx:172
+msgid "Title:"
+msgstr "Название:"
+
+#: src/musepack/libmpc.cxx:518 src/tta/libtta.c:333 src/wavpack/ui.cxx:184
+msgid "Artist:"
+msgstr "Исполнитель:"
+
+#: src/musepack/libmpc.cxx:522 src/tta/libtta.c:344 src/wavpack/ui.cxx:196
+msgid "Album:"
+msgstr "Альбом:"
+
+#: src/musepack/libmpc.cxx:526 src/tta/libtta.c:355 src/wavpack/ui.cxx:208
+msgid "Comment:"
+msgstr "Комментарий:"
+
+#: src/musepack/libmpc.cxx:530 src/tta/libtta.c:366 src/wavpack/ui.cxx:221
+msgid "Year:"
+msgstr ""
+
 #: src/musepack/libmpc.cxx:535
-#, fuzzy
 msgid "Track:"
-msgstr "Усиление дорожки:"
+msgstr "Дорожка:"
+
+#: src/musepack/libmpc.cxx:540 src/tta/libtta.c:390 src/wavpack/ui.cxx:248
+msgid "Genre:"
+msgstr "Стиль:"
 
 #: src/musepack/libmpc.cxx:551 src/sid/xmms-sid.glade:1732
-#: src/sid/xs_interface.c:820 src/wavpack/ui.cxx:265
+#: src/sid/xs_interface.c:820 src/wavpack/ui.cxx:267
 msgid "Save"
 msgstr "Сохранить"
 
-#: src/musepack/libmpc.cxx:554 src/wavpack/ui.cxx:271
+#: src/musepack/libmpc.cxx:554 src/wavpack/ui.cxx:273
 msgid "Remove Tag"
 msgstr "Удалить тэг"
 
@@ -3741,43 +3674,45 @@ msgid "Channels: %d"
 msgstr "Каналы: %d"
 
 #: src/musepack/libmpc.cxx:601
-#, fuzzy, c-format
+#, c-format
 msgid "Length: %d:\\%.2d"
-msgstr ""
-"Сэмплов: %llu\n"
-"Длительность: %d:%.2d"
+msgstr "Длительность: %d:\\%.2d"
 
 #: src/musepack/libmpc.cxx:602
-#, fuzzy, c-format
+#, c-format
 msgid "File size: %d Bytes"
-msgstr "Размер файла: %ld Байт"
+msgstr "Размер файла: %d Байт"
 
 #: src/musepack/libmpc.cxx:603
-#, fuzzy, c-format
+#, c-format
 msgid "Track Peak: %5u"
-msgstr "Пик дорожки:"
+msgstr "Пик дорожки: %5u"
 
 #: src/musepack/libmpc.cxx:604
-#, fuzzy, c-format
+#, c-format
 msgid "Track Gain: %-+2.2f dB"
-msgstr "ReplayGain Усиление дорожки: %+2.2f дБ"
+msgstr "Усиление дорожки: %-+2.2f dB"
 
 #: src/musepack/libmpc.cxx:605
-#, fuzzy, c-format
+#, c-format
 msgid "Album Peak: %5u"
-msgstr "Пик альбома:"
+msgstr "Пик альбома: %5u"
 
 #: src/musepack/libmpc.cxx:606
-#, fuzzy, c-format
+#, c-format
 msgid "Album Gain: %-+5.2f dB"
-msgstr "ReplayGain Усиление альбома: %+2.2f дБ"
+msgstr "Усиление альбома: %-+5.2f dB"
+
+#: src/musepack/libmpc.cxx:634 src/tta/libtta.c:413 src/wavpack/ui.cxx:409
+#, c-format
+msgid "File Info - %s"
+msgstr "Инфрмация о файле - %s"
 
 #: src/null/null.c:61
 msgid "Null output plugin "
 msgstr "Модуль Ноль-вывод "
 
 #: src/null/null.c:62
-#, fuzzy
 msgid ""
 " by Christian Birchinger <joker@netswarm.net>\n"
 "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
@@ -3790,21 +3725,18 @@ msgid "About Null Output"
 msgstr "О модуле Ноль-вывод"
 
 #: src/null/null.c:94
-#, fuzzy
 msgid "Null output preferences"
-msgstr "Модуль Ноль-вывод "
+msgstr "Настройка Ноль-вывода"
 
 #: src/null/null.c:103
 msgid "Run in real time"
 msgstr ""
 
 #: src/OSS4/about.c:42
-#, fuzzy
 msgid "About OSSv4 Driver"
-msgstr "О драйвере OSS"
+msgstr "О драйвере OSSv4"
 
 #: src/OSS4/about.c:43
-#, fuzzy
 msgid ""
 "Audacious OSSv4 Driver\n"
 "\n"
@@ -3826,8 +3758,10 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Драйвер OSS для Audacious\n"
+"Драйвер OSSv4 для Audacious\n"
 "\n"
+"Основан на драйвере OSSv3,\n"
+"Портирование на OSSv4 VMIX: Cristi Magherusan <majeru@gentoo.ro>\n"
 " Эта программа - бесплатное программное обеспечение; вы можете "
 "распространять и/или модифицировать ее\n"
 "в соответствии с условиями Лицензии GNU, опубликованную\n"
@@ -3920,13 +3854,11 @@ msgstr ""
 msgid "Volume controls Master not PCM"
 msgstr "Громкость регулирует Мастер, а не PCM"
 
-#: src/pulse_audio/pulse_audio.c:676
-#, fuzzy
+#: src/pulse_audio/pulse_audio.c:696
 msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Модуль вывода звука CoreAudio"
+msgstr "О модуле вывода PulseAudio"
 
-#: src/pulse_audio/pulse_audio.c:677
-#, fuzzy
+#: src/pulse_audio/pulse_audio.c:697
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3945,7 +3877,7 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Драйвер ESounD для Audacious\n"
+"Модуль вывода PulseAudio для Audacious\n"
 "\n"
 " Эта программа - бесплатное программное обеспечение; вы можете "
 "распространять и/или модифицировать ее\n"
@@ -3991,6 +3923,10 @@ msgid ""
 "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
 "com>\n"
 msgstr ""
+"Модуль AudioScrobbler для Audacious\n"
+"\n"
+"Первоначальные создатели: Audun Hove <audun@nlc.no> и Pipian <pipian@pipian."
+"com>\n"
 
 #: src/scrobbler/gtkstuff.c:23
 msgid "About Scrobbler Plugin"
@@ -4007,9 +3943,8 @@ msgid ""
 msgstr ""
 
 #: src/scrobbler/gtkstuff.c:42
-#, fuzzy
 msgid "Scrobbler Error"
-msgstr "Модуль Scrobbler"
+msgstr "Ошибка Scrobbler"
 
 #: src/sid/xmms-sid.c:203
 msgid "Error initializing song-length database!\n"
@@ -4042,43 +3977,36 @@ msgid "Oversampling rate-conversion pass failed.\n"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:221
-#, fuzzy
 msgid "Audacious-SID configuration"
-msgstr "Настройка Audacious OSD"
+msgstr "Настройка Audacious-SID"
 
 #: src/sid/xmms-sid.glade:71 src/sid/xs_interface.c:257
-#, fuzzy
 msgid "8-bit"
 msgstr "8 бит"
 
 #: src/sid/xmms-sid.glade:90 src/sid/xs_interface.c:264
-#, fuzzy
 msgid "16-bit"
 msgstr "16 бит"
 
 #: src/sid/xmms-sid.glade:111 src/sid/xs_interface.c:271
-#, fuzzy
 msgid "Resolution:"
-msgstr "Разрешение"
+msgstr "Разрешение:"
 
 #: src/sid/xmms-sid.glade:196 src/sid/xs_interface.c:302
 msgid "Autopanning"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:217 src/sid/xs_interface.c:309
-#: src/vorbis/fileinfo.c:864 src/vorbis/fileinfo.c:921
 msgid "Channels:"
 msgstr "Каналы:"
 
 #: src/sid/xmms-sid.glade:384 src/sid/xs_interface.c:353
-#, fuzzy
 msgid "Samplerate:"
 msgstr "Частота:"
 
 #: src/sid/xmms-sid.glade:430 src/sid/xs_interface.c:370
-#, fuzzy
 msgid "Use oversampling"
-msgstr "Преобразование частоты"
+msgstr "Использовать оверсемплинг"
 
 #: src/sid/xmms-sid.glade:456 src/sid/xs_interface.c:381
 msgid "Factor:"
@@ -4089,9 +4017,8 @@ msgid "Large factors require more CPU-power"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:534 src/sid/xs_interface.c:399
-#, fuzzy
 msgid "Oversampling:"
-msgstr "Преобразование частоты"
+msgstr "Оверсемплинг"
 
 #: src/sid/xmms-sid.glade:570 src/sid/xs_interface.c:404
 msgid "Audio"
@@ -4130,9 +4057,8 @@ msgid "NTSC (60 Hz)"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:683 src/sid/xs_interface.c:454
-#, fuzzy
 msgid "Clock speed:"
-msgstr "Скорость воспроизведения"
+msgstr "Скорость часов:"
 
 #: src/sid/xmms-sid.glade:728 src/sid/xs_interface.c:475
 msgid ""
@@ -4142,9 +4068,8 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:730 src/sid/xs_interface.c:471
-#, fuzzy
 msgid "Force model"
-msgstr "Режим дорожки"
+msgstr "Принудительно задать модель"
 
 #: src/sid/xmms-sid.glade:748 src/sid/xs_interface.c:481
 msgid ""
@@ -4156,16 +4081,15 @@ msgstr ""
 
 #: src/sid/xmms-sid.glade:750 src/sid/xs_interface.c:477
 msgid "MOS 6581"
-msgstr ""
+msgstr "MOS 6581"
 
 #: src/sid/xmms-sid.glade:769 src/sid/xs_interface.c:485
 msgid "MOS 8580"
-msgstr ""
+msgstr "MOS 8580"
 
 #: src/sid/xmms-sid.glade:790 src/sid/xs_interface.c:492
-#, fuzzy
 msgid "SID model:"
-msgstr "Режим воспроизведения:"
+msgstr "Модель SID:"
 
 #: src/sid/xmms-sid.glade:842 src/sid/xs_interface.c:513
 msgid ""
@@ -4200,18 +4124,16 @@ msgid "Bank switching"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:972 src/sid/xs_interface.c:556
-#, fuzzy
 msgid "Transparent ROM"
-msgstr "Транспонирование: "
+msgstr "Прозрачное ПЗУ"
 
 #: src/sid/xmms-sid.glade:992 src/sid/xs_interface.c:563
 msgid "PlaySID environment"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1013 src/sid/xs_interface.c:570
-#, fuzzy
 msgid "Memory mode:"
-msgstr "Режим воспроизведения:"
+msgstr "Режим памяти:"
 
 #: src/sid/xmms-sid.glade:1049 src/sid/xs_interface.c:575
 msgid "Emu#1"
@@ -4277,14 +4199,12 @@ msgid "Linear interpolation"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1263 src/sid/xs_interface.c:660
-#, fuzzy
 msgid "Resampling (FIR)"
-msgstr "Преобразование частоты"
+msgstr "Преобразование частоты (КИХ)"
 
 #: src/sid/xmms-sid.glade:1284 src/sid/xs_interface.c:667
-#, fuzzy
 msgid "reSID sampling options:"
-msgstr "Преобразование частоты:"
+msgstr "Параметры reSID"
 
 #: src/sid/xmms-sid.glade:1320 src/sid/xs_interface.c:672
 msgid "Emu#2"
@@ -4323,28 +4243,24 @@ msgid "SIDPlay1"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1690 src/sid/xs_interface.c:804
-#, fuzzy
 msgid "Export"
-msgstr "Порт"
+msgstr "Экспорт"
 
 #: src/sid/xmms-sid.glade:1711 src/sid/xs_interface.c:812
 msgid "Use"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1753 src/sid/xs_interface.c:828
-#, fuzzy
 msgid "Import"
-msgstr "Порт"
+msgstr "Импорт"
 
 #: src/sid/xmms-sid.glade:1774 src/sid/xs_interface.c:836
-#, fuzzy
 msgid "Delete"
-msgstr "По умолчанию"
+msgstr "Удалить"
 
 #: src/sid/xmms-sid.glade:1819 src/sid/xs_interface.c:850
-#, fuzzy
 msgid "Filter curve:"
-msgstr "Размер файла:"
+msgstr "Кривая фильтра:"
 
 #: src/sid/xmms-sid.glade:1855 src/sid/xs_interface.c:855
 msgid "SIDPlay2"
@@ -4361,16 +4277,14 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:1937 src/sid/xs_interface.c:884
-#, fuzzy
 msgid "Play at least for specified time"
-msgstr "Воспроизводить на нормальной скорости"
+msgstr "Воспроизводить как минимум указанное время"
 
 #: src/sid/xmms-sid.glade:1962 src/sid/xmms-sid.glade:2133
 #: src/sid/xmms-sid.glade:2632 src/sid/xs_interface.c:895
 #: src/sid/xs_interface.c:949 src/sid/xs_interface.c:1109
-#, fuzzy
 msgid "Playtime:"
-msgstr "Режим воспроизведения:"
+msgstr "Время воспроизведения:"
 
 #: src/sid/xmms-sid.glade:2041 src/sid/xs_interface.c:915
 msgid "Minimum playtime:"
@@ -4411,9 +4325,8 @@ msgid "Use XSIDPLAY-compatible database"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2284 src/sid/xs_interface.c:997
-#, fuzzy
 msgid "DB-file:"
-msgstr "Файл устройства:"
+msgstr "DB-файл:"
 
 #: src/sid/xmms-sid.glade:2309 src/sid/xs_interface.c:1007
 msgid "Database path and filename"
@@ -4428,9 +4341,8 @@ msgid "Song length database:"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2392 src/sid/xs_interface.c:1021
-#, fuzzy
 msgid "Songlength"
-msgstr "Длительность песни по-умолчанию:"
+msgstr "Длительность"
 
 #: src/sid/xmms-sid.glade:2430 src/sid/xs_interface.c:1043
 msgid ""
@@ -4440,9 +4352,8 @@ msgid ""
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2432 src/sid/xs_interface.c:1039
-#, fuzzy
 msgid "Override generic Tuplez format string"
-msgstr "Не использовать стандартные названия"
+msgstr "Переопределить стандартную строку формата"
 
 #: src/sid/xmms-sid.glade:2457 src/sid/xs_interface.c:1054
 msgid "Tuplez format string for SID-files"
@@ -4453,7 +4364,6 @@ msgid "Descriptions of <i>SID-specific</i> Tuplez fields go here. <b>:D</b>"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2511 src/sid/xs_interface.c:1065
-#, fuzzy
 msgid "Song title format:"
 msgstr "Формат названия:"
 
@@ -4476,9 +4386,8 @@ msgid "Only tunes with specified minimum duration"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2710 src/sid/xs_interface.c:1129
-#, fuzzy
 msgid "Sub-tune handling:"
-msgstr "Регулятор громкости:"
+msgstr "Обработка под-дорожек:"
 
 #: src/sid/xmms-sid.glade:2755 src/sid/xs_interface.c:1150
 msgid ""
@@ -4492,9 +4401,8 @@ msgid "Use STIL database"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2782 src/sid/xs_interface.c:1157
-#, fuzzy
 msgid "STIL file:"
-msgstr "Файл темы:"
+msgstr "STIL файл:"
 
 #: src/sid/xmms-sid.glade:2819 src/sid/xs_interface.c:1173
 msgid ""
@@ -4533,11 +4441,8 @@ msgid "Cancel any changes"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:3102 src/sid/xs_interface.c:1543
-#, fuzzy
 msgid "Audacious-SID Fileinfo"
-msgstr ""
-"\n"
-"Audacious OSD "
+msgstr "Audacious-SID: Информация о файле"
 
 #: src/sid/xmms-sid.glade:3172 src/sid/xs_interface.c:1572
 msgid "Songname:"
@@ -4548,28 +4453,24 @@ msgid "Composer:"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:3228 src/sid/xs_interface.c:1588
-#: src/vorbis/fileinfo.c:720
 msgid "Copyright:"
 msgstr "Авторское право:"
 
 #: src/sid/xmms-sid.glade:3342 src/sid/xs_interface.c:1632
-#, fuzzy
 msgid "Song Information:"
-msgstr "Информация"
+msgstr "Информация о дорожке"
 
 #: src/sid/xmms-sid.glade:3416 src/sid/xs_interface.c:1667
 msgid "Author:"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:3514 src/sid/xs_interface.c:1701
-#, fuzzy
 msgid "Duration:"
-msgstr "Стиль"
+msgstr "Длительность:"
 
 #: src/sid/xmms-sid.glade:3608 src/sid/xs_interface.c:1735
-#, fuzzy
 msgid "Sub-tune Information:"
-msgstr "Информация"
+msgstr "Информация о под-дорожке:"
 
 #: src/sid/xmms-sid.glade:3662 src/sid/xs_interface.c:1796
 msgid "Select HVSC song length database"
@@ -4593,19 +4494,16 @@ msgstr ""
 
 #: src/sid/xmms-sid.glade:3871 src/sid/xmms-sid.glade:3953
 #: src/sid/xs_interface.c:2008 src/sid/xs_interface.c:2021
-#, fuzzy
 msgid "Confirm selected action"
-msgstr "Выбор внутреннего модуля"
+msgstr "Подтвердить выбранное действие"
 
 #: src/sid/xmms-sid.glade:3909 src/sid/xs_interface.c:2038
-#, fuzzy
 msgid "Yes"
-msgstr "да"
+msgstr "Да"
 
 #: src/sid/xmms-sid.glade:3921 src/sid/xs_interface.c:2044
-#, fuzzy
 msgid "No"
-msgstr "Нет"
+msgstr "No"
 
 #: src/sid/xs_about.c:84 src/wma/wma.c:130
 #, c-format
@@ -4621,9 +4519,8 @@ msgid "Warning: Could not set filter curve widget points!\n"
 msgstr ""
 
 #: src/sid/xs_fileinfo.c:232
-#, fuzzy
 msgid "General info"
-msgstr "Основной"
+msgstr "Основная информация"
 
 #: src/sid/xs_fileinfo.c:247
 #, c-format
@@ -4801,65 +4698,62 @@ msgid "Could not open STILDB '%s'\n"
 msgstr ""
 
 #: src/sndstretch/sndstretch_xmms.c:159
-#, fuzzy
 msgid "About SndStretch"
-msgstr "О драйвере OSS"
+msgstr "О модуле SndStretch"
 
 #: src/sndstretch/sndstretch_xmms.c:319
-#, fuzzy
 msgid "Volume corr."
-msgstr "Регулятор громкости:"
+msgstr "Коррекция громкости"
 
 #: src/sndstretch/sndstretch_xmms.c:320
 msgid "Short Overlap"
-msgstr ""
+msgstr "Короткое перекрытие"
 
 #: src/sndstretch/sndstretch_xmms.c:374
-#, fuzzy
 msgid "Speed"
-msgstr "Речь"
+msgstr "Скорость"
 
 #: src/sndstretch/sndstretch_xmms.c:375
 msgid "Pitch"
-msgstr ""
+msgstr "Смена высоты тона"
 
 #: src/sndstretch/sndstretch_xmms.c:376
-#, fuzzy
 msgid "Scale"
-msgstr "Сохранить"
+msgstr "Масштабирование"
 
 #: src/sndstretch/sndstretch_xmms.c:396
-#, fuzzy
 msgid "SndStretch - Configuration"
-msgstr "Настройка драйвера Sun"
+msgstr "SndStretch - Настройка"
 
-#: src/song_change/song_change.c:316
+#: src/song_change/song_change.c:312
 msgid "Commands"
 msgstr "Команды"
 
-#: src/song_change/song_change.c:323
+#: src/song_change/song_change.c:319
 msgid "Command to run when Audacious starts a new song."
 msgstr "Команда, запускаемая когда Audacious начинает новую песню."
 
-#: src/song_change/song_change.c:332 src/song_change/song_change.c:354
-#: src/song_change/song_change.c:375 src/song_change/song_change.c:396
+#: src/song_change/song_change.c:328 src/song_change/song_change.c:350
+#: src/song_change/song_change.c:371 src/song_change/song_change.c:392
 msgid "Command:"
 msgstr "Команда:"
 
-#: src/song_change/song_change.c:346
+#: src/song_change/song_change.c:342
 msgid "Command to run toward the end of a song."
 msgstr "Команда, запускаемая в конце песни."
 
-#: src/song_change/song_change.c:366
+#: src/song_change/song_change.c:362
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Команда, запускаемая когда Audacious достигает конца списка."
 
-#: src/song_change/song_change.c:387
+#: src/song_change/song_change.c:383
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
+"Команда, запускаемая, когда меняется только название (напр., в Интернет-"
+"потоках)."
 
-#: src/song_change/song_change.c:408
+#: src/song_change/song_change.c:404
 #, c-format
 msgid ""
 "You can use the following format strings which\n"
@@ -4888,7 +4782,7 @@ msgstr ""
 "%%t: Позиция песни в списке (%%02d)\n"
 "%%p: Играет сейчас (1 или 0)"
 
-#: src/song_change/song_change.c:433
+#: src/song_change/song_change.c:429
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -4908,11 +4802,11 @@ msgstr "Положение"
 msgid "The orientation of the tray"
 msgstr "Положение системного лотка"
 
-#: src/statusicon/si_ui.c:571
+#: src/statusicon/si_ui.c:587
 msgid "About Status Icon Plugin"
 msgstr "О модуле Status Icon"
 
-#: src/statusicon/si_ui.c:573
+#: src/statusicon/si_ui.c:589
 msgid ""
 "\n"
 "written by Giacomo Lozito < james@develia.org >\n"
@@ -4923,41 +4817,40 @@ msgstr ""
 "\n"
 "Автор Giacomo Lozito < james@develia.org >\n"
 "\n"
-"Этот модуль показывает значёк программы\n"
+"Этот модуль показывает значок программы\n"
 "в системном лотке.\n"
 
-#: src/statusicon/si_ui.c:645
-#, fuzzy
-msgid "Status Icon Plugin - Preferences"
-msgstr "О модуле Status Icon"
-
-#: src/statusicon/si_ui.c:656
-msgid "Right-Click Menu"
-msgstr ""
-
 #: src/statusicon/si_ui.c:661
+msgid "Status Icon Plugin - Preferences"
+msgstr "Настройка модуля Status Icon"
+
+#: src/statusicon/si_ui.c:672
+msgid "Right-Click Menu"
+msgstr "Меню вызываемое правой кнопкой мыши"
+
+#: src/statusicon/si_ui.c:677
 msgid "Audacious standard menu"
-msgstr ""
+msgstr "Стандартное меню Audacious"
 
-#: src/statusicon/si_ui.c:666
+#: src/statusicon/si_ui.c:682
 msgid "Small playback menu #1"
-msgstr ""
+msgstr "Уменьшенное меню #1"
 
-#: src/statusicon/si_ui.c:671
+#: src/statusicon/si_ui.c:687
 msgid "Small playback menu #2"
-msgstr ""
+msgstr "Уменьшенное меню #2"
 
-#: src/statusicon/si_ui.c:694
+#: src/statusicon/si_ui.c:710
 msgid "Mouse Scroll Action"
-msgstr ""
+msgstr "Реакция на колёсико прокрутки"
 
-#: src/statusicon/si_ui.c:699
+#: src/statusicon/si_ui.c:715
 msgid "Change volume"
-msgstr ""
+msgstr "Изменить громкость"
 
-#: src/statusicon/si_ui.c:704
+#: src/statusicon/si_ui.c:720
 msgid "Change playing song"
-msgstr ""
+msgstr "Сменить текущую дорожку"
 
 #: src/stereo_plugin/stereo.c:26
 msgid ""
@@ -5031,13 +4924,13 @@ msgstr "44100 Гц"
 
 #: src/timidity/interface.c:115
 msgid "Sample Width"
-msgstr "Длительность сэмпла"
+msgstr "Разрядность сэмпла"
 
 #: src/timidity/interface.c:181
 msgid "TiMidity Configuration File"
 msgstr "Конфигурационный файл TiMidity"
 
-#: src/timidity/xmms-timidity.c:115
+#: src/timidity/xmms-timidity.c:118
 msgid ""
 "TiMidity Plugin\n"
 "http://libtimidity.sourceforge.net\n"
@@ -5047,12 +4940,12 @@ msgstr ""
 "http://libtimidity.sourceforge.net\n"
 "Konstantin Korikov"
 
-#: src/timidity/xmms-timidity.c:116
+#: src/timidity/xmms-timidity.c:119
 #, c-format
 msgid "TiMidity Plugin %s"
 msgstr "Модуль TiMidity %s"
 
-#: src/timidity/xmms-timidity.c:333
+#: src/timidity/xmms-timidity.c:336
 msgid "Couldn't load MIDI file"
 msgstr "Невозможно загрузить MIDI файл"
 
@@ -5077,66 +4970,65 @@ msgstr ""
 #: src/tonegen/tonegen.c:168
 #, c-format
 msgid "%s %.1f Hz"
-msgstr ""
+msgstr "%s %.1f Гц"
 
 #: src/tonegen/tonegen.c:168
 msgid "Tone Generator: "
 msgstr "Генератор сигналов: "
 
-#: src/tta/libtta.c:128
+#: src/tta/libtta.c:130
 msgid "Can't open file\n"
-msgstr ""
+msgstr "Не могу открыть файл\n"
 
-#: src/tta/libtta.c:131
+#: src/tta/libtta.c:133
 msgid "Not supported file format\n"
-msgstr ""
+msgstr "Файл неподдерживаемого формата\n"
 
-#: src/tta/libtta.c:134
+#: src/tta/libtta.c:136
 msgid "File is corrupted\n"
-msgstr ""
+msgstr "Файл повреждён\n"
 
-#: src/tta/libtta.c:137
+#: src/tta/libtta.c:139
 msgid "Can't read from file\n"
-msgstr ""
+msgstr "Не могу прочитать файл\n"
 
-#: src/tta/libtta.c:140
+#: src/tta/libtta.c:142
 msgid "Insufficient memory available\n"
-msgstr ""
+msgstr "Не хватает памяти\n"
 
-#: src/tta/libtta.c:143
-#, fuzzy
+#: src/tta/libtta.c:145
 msgid "Output plugin error\n"
-msgstr "Модуль Ноль-вывод "
+msgstr "Ошибка модуля вывода\n"
 
-#: src/tta/libtta.c:146
-#, fuzzy
+#: src/tta/libtta.c:148
 msgid "Unknown error\n"
-msgstr "Неизвестная звуковая карта"
+msgstr "Неизвестная ошибка\n"
 
-#: src/tta/libtta.c:150
+#: src/tta/libtta.c:152
 msgid "TTA Decoder Error"
-msgstr ""
+msgstr "Ошибка декодера TTA"
 
-#: src/tta/libtta.c:259
-#, fuzzy
+#: src/tta/libtta.c:261
 msgid "TTA input plugin "
-msgstr "Модуль Ноль-вывод "
+msgstr "Модуль поддержки TTA"
 
-#: src/tta/libtta.c:260
+#: src/tta/libtta.c:262
 msgid ""
 " for BMP\n"
 "Copyright (c) 2004 True Audio Software\n"
 msgstr ""
 
-#: src/tta/libtta.c:263
-#, fuzzy
+#: src/tta/libtta.c:265
 msgid "About True Audio Plugin"
-msgstr "О модуле поддержки Ogg Vorbis"
+msgstr "О модуле поддержки True Audio"
 
-#: src/tta/libtta.c:314
-#, fuzzy
+#: src/tta/libtta.c:316
 msgid "ID3 Tag:"
-msgstr " ID3-тег "
+msgstr "Тег ID3:"
+
+#: src/tta/libtta.c:378 src/wavpack/ui.cxx:234
+msgid "Track number:"
+msgstr "Номер дорожки:"
 
 #: src/vorbis/configure.c:115
 msgid "Ogg Vorbis Audio Plugin Configuration"
@@ -5150,747 +5042,31 @@ msgstr "Теги Ogg Vorbis:"
 msgid "Title format:"
 msgstr "Формат названия:"
 
-#: src/vorbis/configure.c:162 src/wavpack/ui.cxx:500
+#: src/vorbis/configure.c:162 src/wavpack/ui.cxx:502
 msgid "ReplayGain Settings:"
 msgstr "Настройки ReplayGain:"
 
-#: src/vorbis/configure.c:180 src/wavpack/ui.cxx:518
+#: src/vorbis/configure.c:180 src/wavpack/ui.cxx:520
 msgid "ReplayGain Type:"
 msgstr "Тип ReplayGain:"
 
-#: src/vorbis/configure.c:191 src/wavpack/ui.cxx:529
+#: src/vorbis/configure.c:191 src/wavpack/ui.cxx:531
 msgid "use Track Gain/Peak"
 msgstr "использовать Gain/Peak Дорожки"
 
-#: src/vorbis/configure.c:201 src/wavpack/ui.cxx:537
+#: src/vorbis/configure.c:201 src/wavpack/ui.cxx:539
 msgid "use Album Gain/Peak"
 msgstr "использовать Gain/Peak Альбома"
 
 #: src/vorbis/configure.c:213
 msgid "Enable 6dB Boost + Hard Limiting"
-msgstr "Включить усиление на 6dB + тяжелое ограничение"
+msgstr "Включить усиление на 6dB + жёсткое ограничение"
 
-#: src/vorbis/fileinfo.c:80
-msgid "Blues"
-msgstr "Блюз"
-
-#: src/vorbis/fileinfo.c:80
-msgid "Classic Rock"
-msgstr "Классический рок"
-
-#: src/vorbis/fileinfo.c:80
-msgid "Country"
-msgstr "Кантри"
-
-#: src/vorbis/fileinfo.c:80
-msgid "Dance"
-msgstr "Дэнс"
-
-#: src/vorbis/fileinfo.c:81
-msgid "Disco"
-msgstr "Диско"
-
-#: src/vorbis/fileinfo.c:81
-msgid "Funk"
-msgstr "Фанк"
-
-#: src/vorbis/fileinfo.c:81
-msgid "Grunge"
-msgstr "Гранж"
-
-#: src/vorbis/fileinfo.c:81
-msgid "Hip-Hop"
-msgstr "Хип-Хоп"
-
-#: src/vorbis/fileinfo.c:82
-msgid "Jazz"
-msgstr "Джаз"
-
-#: src/vorbis/fileinfo.c:82
-msgid "Metal"
-msgstr "Метал"
-
-#: src/vorbis/fileinfo.c:82
-msgid "New Age"
-msgstr "Нью Эйдж"
-
-#: src/vorbis/fileinfo.c:82
-msgid "Oldies"
-msgstr "Ретро"
-
-#: src/vorbis/fileinfo.c:83
-msgid "Other"
-msgstr "Другое"
-
-#: src/vorbis/fileinfo.c:83
-msgid "Pop"
-msgstr "Поп"
-
-#: src/vorbis/fileinfo.c:83
-msgid "R&B"
-msgstr "R&B"
-
-#: src/vorbis/fileinfo.c:83
-msgid "Rap"
-msgstr "Рэп"
-
-#: src/vorbis/fileinfo.c:83
-msgid "Reggae"
-msgstr "Регги"
-
-#: src/vorbis/fileinfo.c:84
-msgid "Rock"
-msgstr "Рок"
-
-#: src/vorbis/fileinfo.c:84
-msgid "Techno"
-msgstr "Техно"
-
-#: src/vorbis/fileinfo.c:84
-msgid "Industrial"
-msgstr "Индустриальный"
-
-#: src/vorbis/fileinfo.c:84
-msgid "Alternative"
-msgstr "Альтернативный"
-
-#: src/vorbis/fileinfo.c:85
-msgid "Ska"
-msgstr "Ска"
-
-#: src/vorbis/fileinfo.c:85
-msgid "Death Metal"
-msgstr "Дэз метал"
-
-#: src/vorbis/fileinfo.c:85
-msgid "Pranks"
-msgstr "Шалость"
-
-#: src/vorbis/fileinfo.c:85
-msgid "Soundtrack"
-msgstr "Звуковая дорожка"
-
-#: src/vorbis/fileinfo.c:86
-msgid "Euro-Techno"
-msgstr "Евро-Техно"
-
-#: src/vorbis/fileinfo.c:86
-msgid "Ambient"
-msgstr "Окружающая среда"
-
-#: src/vorbis/fileinfo.c:86
-msgid "Trip-Hop"
-msgstr "Трип-Хоп"
-
-#: src/vorbis/fileinfo.c:86
-msgid "Vocal"
-msgstr "Вокал"
-
-#: src/vorbis/fileinfo.c:87
-msgid "Jazz+Funk"
-msgstr "Джаз+Фанк"
-
-#: src/vorbis/fileinfo.c:87
-msgid "Fusion"
-msgstr "Слияние"
-
-#: src/vorbis/fileinfo.c:87
-msgid "Trance"
-msgstr "Транс"
-
-#: src/vorbis/fileinfo.c:87
-msgid "Classical"
-msgstr "Классика"
-
-#: src/vorbis/fileinfo.c:88
-msgid "Instrumental"
-msgstr "Инструментальный"
-
-#: src/vorbis/fileinfo.c:88
-msgid "Acid"
-msgstr "Кислота"
-
-#: src/vorbis/fileinfo.c:88
-msgid "House"
-msgstr "Хаус"
-
-#: src/vorbis/fileinfo.c:88
-msgid "Game"
-msgstr "Игра"
-
-#: src/vorbis/fileinfo.c:89
-msgid "Sound Clip"
-msgstr "Музыкальный клип"
-
-#: src/vorbis/fileinfo.c:89
-msgid "Gospel"
-msgstr "Евангелие"
-
-#: src/vorbis/fileinfo.c:89
-msgid "Noise"
-msgstr "Шум"
-
-#: src/vorbis/fileinfo.c:89
-msgid "AlternRock"
-msgstr "Альтернативный рок"
-
-#: src/vorbis/fileinfo.c:90
-msgid "Bass"
-msgstr "Бас"
-
-#: src/vorbis/fileinfo.c:90
-msgid "Soul"
-msgstr "Душа"
-
-#: src/vorbis/fileinfo.c:90
-msgid "Punk"
-msgstr "Панк"
-
-#: src/vorbis/fileinfo.c:90
-msgid "Space"
-msgstr "Космос"
-
-#: src/vorbis/fileinfo.c:91
-msgid "Meditative"
-msgstr "Медитация"
-
-#: src/vorbis/fileinfo.c:91
-msgid "Instrumental Pop"
-msgstr "Иструментальный поп"
-
-#: src/vorbis/fileinfo.c:92
-msgid "Instrumental Rock"
-msgstr "Иструментальный рок"
-
-#: src/vorbis/fileinfo.c:92
-msgid "Ethnic"
-msgstr "Этнический"
-
-#: src/vorbis/fileinfo.c:92
-msgid "Gothic"
-msgstr "Готический"
-
-#: src/vorbis/fileinfo.c:93
-msgid "Darkwave"
-msgstr "Темная волна"
-
-#: src/vorbis/fileinfo.c:93
-msgid "Techno-Industrial"
-msgstr "Техноиндустриальный"
-
-#: src/vorbis/fileinfo.c:93
-msgid "Electronic"
-msgstr "Электронный"
-
-#: src/vorbis/fileinfo.c:94
-msgid "Pop-Folk"
-msgstr "Народный поп"
-
-#: src/vorbis/fileinfo.c:94
-msgid "Eurodance"
-msgstr "Евродэнс"
-
-#: src/vorbis/fileinfo.c:94
-msgid "Dream"
-msgstr "Сон"
-
-#: src/vorbis/fileinfo.c:95
-msgid "Southern Rock"
-msgstr "Южный рок"
-
-#: src/vorbis/fileinfo.c:95
-msgid "Comedy"
-msgstr "Комедия"
-
-#: src/vorbis/fileinfo.c:95
-msgid "Cult"
-msgstr "Культ"
-
-#: src/vorbis/fileinfo.c:96
-msgid "Gangsta Rap"
-msgstr "Черный рэп"
-
-#: src/vorbis/fileinfo.c:96
-msgid "Top 40"
-msgstr "Top 40"
-
-#: src/vorbis/fileinfo.c:96
-msgid "Christian Rap"
-msgstr "Христианский реп"
-
-#: src/vorbis/fileinfo.c:97
-msgid "Pop/Funk"
-msgstr "Поп/Фанк"
-
-#: src/vorbis/fileinfo.c:97
-msgid "Jungle"
-msgstr "Джангл"
-
-#: src/vorbis/fileinfo.c:97
-msgid "Native American"
-msgstr "Народная американская"
-
-#: src/vorbis/fileinfo.c:98
-msgid "Cabaret"
-msgstr "Кабаре"
-
-#: src/vorbis/fileinfo.c:98
-msgid "New Wave"
-msgstr "Новая волна"
-
-#: src/vorbis/fileinfo.c:98
-msgid "Psychedelic"
-msgstr "Психоделия"
-
-#: src/vorbis/fileinfo.c:98
-msgid "Rave"
-msgstr "Рэйв"
-
-#: src/vorbis/fileinfo.c:99
-msgid "Showtunes"
-msgstr "Импровизация"
-
-#: src/vorbis/fileinfo.c:99
-msgid "Trailer"
-msgstr "Анонс"
-
-#: src/vorbis/fileinfo.c:99
-msgid "Lo-Fi"
-msgstr "Lo-Fi"
-
-#: src/vorbis/fileinfo.c:99
-msgid "Tribal"
-msgstr "Семейное"
-
-#: src/vorbis/fileinfo.c:100
-msgid "Acid Punk"
-msgstr "Кислотный панк"
-
-#: src/vorbis/fileinfo.c:100
-msgid "Acid Jazz"
-msgstr "Кислотный джаз"
-
-#: src/vorbis/fileinfo.c:100
-msgid "Polka"
-msgstr "Полька"
-
-#: src/vorbis/fileinfo.c:100
-msgid "Retro"
-msgstr "Ретро"
-
-#: src/vorbis/fileinfo.c:101
-msgid "Musical"
-msgstr "Музыкальное"
-
-#: src/vorbis/fileinfo.c:101
-msgid "Rock & Roll"
-msgstr "Рок-н-рол"
-
-#: src/vorbis/fileinfo.c:101
-msgid "Hard Rock"
-msgstr "Тяжелый рок"
-
-#: src/vorbis/fileinfo.c:101
-msgid "Folk"
-msgstr "Фольк"
-
-#: src/vorbis/fileinfo.c:102
-msgid "Folk/Rock"
-msgstr "Фольк/Рок"
-
-#: src/vorbis/fileinfo.c:102
-msgid "National Folk"
-msgstr "Национальный фольк"
-
-#: src/vorbis/fileinfo.c:102
-msgid "Swing"
-msgstr "Свинг"
-
-#: src/vorbis/fileinfo.c:103
-msgid "Fast-Fusion"
-msgstr "Быстрое слияние"
-
-#: src/vorbis/fileinfo.c:103
-msgid "Bebob"
-msgstr "Бибоп"
-
-#: src/vorbis/fileinfo.c:103
-msgid "Latin"
-msgstr "Латиноамериканская"
-
-#: src/vorbis/fileinfo.c:103
-msgid "Revival"
-msgstr "Возрождение"
-
-#: src/vorbis/fileinfo.c:104
-msgid "Celtic"
-msgstr "Кельтская"
-
-#: src/vorbis/fileinfo.c:104
-msgid "Bluegrass"
-msgstr "Bluegrass"
-
-#: src/vorbis/fileinfo.c:104
-msgid "Avantgarde"
-msgstr "Авангард"
-
-#: src/vorbis/fileinfo.c:105
-msgid "Gothic Rock"
-msgstr "Готический рок"
-
-#: src/vorbis/fileinfo.c:105
-msgid "Progressive Rock"
-msgstr "Прогрессивный рок"
-
-#: src/vorbis/fileinfo.c:106
-msgid "Psychedelic Rock"
-msgstr "Психоделический рок"
-
-#: src/vorbis/fileinfo.c:106
-msgid "Symphonic Rock"
-msgstr "Симфонический рок"
-
-#: src/vorbis/fileinfo.c:106
-msgid "Slow Rock"
-msgstr "Медленный рок"
-
-#: src/vorbis/fileinfo.c:107
-msgid "Big Band"
-msgstr "Big Band"
-
-#: src/vorbis/fileinfo.c:107
-msgid "Chorus"
-msgstr "Хор"
-
-#: src/vorbis/fileinfo.c:107
-msgid "Easy Listening"
-msgstr "Easy Listening"
-
-#: src/vorbis/fileinfo.c:108
-msgid "Acoustic"
-msgstr "Акустическая"
-
-#: src/vorbis/fileinfo.c:108
-msgid "Humour"
-msgstr "Юмор"
-
-#: src/vorbis/fileinfo.c:108
-msgid "Speech"
-msgstr "Речь"
-
-#: src/vorbis/fileinfo.c:108
-msgid "Chanson"
-msgstr "Шансон"
-
-#: src/vorbis/fileinfo.c:109
-msgid "Opera"
-msgstr "Опера"
-
-#: src/vorbis/fileinfo.c:109
-msgid "Chamber Music"
-msgstr "Камерная музыка"
-
-#: src/vorbis/fileinfo.c:109
-msgid "Sonata"
-msgstr "Соната"
-
-#: src/vorbis/fileinfo.c:109
-msgid "Symphony"
-msgstr "Симфония"
-
-#: src/vorbis/fileinfo.c:110
-msgid "Booty Bass"
-msgstr "Booty Bass"
-
-#: src/vorbis/fileinfo.c:110
-msgid "Primus"
-msgstr "Прима"
-
-#: src/vorbis/fileinfo.c:110
-msgid "Porn Groove"
-msgstr "Порн грув"
-
-#: src/vorbis/fileinfo.c:111
-msgid "Satire"
-msgstr "Сатира"
-
-#: src/vorbis/fileinfo.c:111
-msgid "Slow Jam"
-msgstr "Медленный джэм"
-
-#: src/vorbis/fileinfo.c:111
-msgid "Club"
-msgstr "Клуб"
-
-#: src/vorbis/fileinfo.c:111
-msgid "Tango"
-msgstr "Танго"
-
-#: src/vorbis/fileinfo.c:112
-msgid "Samba"
-msgstr "Самба"
-
-#: src/vorbis/fileinfo.c:112
-msgid "Folklore"
-msgstr "Фольклор"
-
-#: src/vorbis/fileinfo.c:112
-msgid "Ballad"
-msgstr "Баллада"
-
-#: src/vorbis/fileinfo.c:112
-msgid "Power Ballad"
-msgstr "Сильная баллада"
-
-#: src/vorbis/fileinfo.c:113
-msgid "Rhythmic Soul"
-msgstr "Ритмичный соул"
-
-#: src/vorbis/fileinfo.c:113
-msgid "Freestyle"
-msgstr "Свободный стиль"
-
-#: src/vorbis/fileinfo.c:113
-msgid "Duet"
-msgstr "Дуэт"
-
-#: src/vorbis/fileinfo.c:114
-msgid "Punk Rock"
-msgstr "Панк рок"
-
-#: src/vorbis/fileinfo.c:114
-msgid "Drum Solo"
-msgstr "Ударное соло"
-
-#: src/vorbis/fileinfo.c:114
-msgid "A Cappella"
-msgstr "А Капелла"
-
-#: src/vorbis/fileinfo.c:115
-msgid "Euro-House"
-msgstr "Euro-House"
-
-#: src/vorbis/fileinfo.c:115
-msgid "Dance Hall"
-msgstr "Танцевальный зал"
-
-#: src/vorbis/fileinfo.c:115
-msgid "Goa"
-msgstr "Гоа"
-
-#: src/vorbis/fileinfo.c:116
-msgid "Drum & Bass"
-msgstr "Драм-н-бас"
-
-#: src/vorbis/fileinfo.c:116
-msgid "Club-House"
-msgstr "Клуб-хаус"
-
-#: src/vorbis/fileinfo.c:116
-msgid "Hardcore"
-msgstr "Хардкор"
-
-#: src/vorbis/fileinfo.c:117
-msgid "Terror"
-msgstr "Террор"
-
-#: src/vorbis/fileinfo.c:117
-msgid "Indie"
-msgstr "Indie"
-
-#: src/vorbis/fileinfo.c:117
-msgid "BritPop"
-msgstr "Бритпоп"
-
-#: src/vorbis/fileinfo.c:117
-msgid "Negerpunk"
-msgstr "Чёрный панк"
-
-#: src/vorbis/fileinfo.c:118
-msgid "Polsk Punk"
-msgstr "Польский панк"
-
-#: src/vorbis/fileinfo.c:118
-msgid "Beat"
-msgstr "Бит"
-
-#: src/vorbis/fileinfo.c:118
-msgid "Christian Gangsta Rap"
-msgstr "Черный христианский рэп"
-
-#: src/vorbis/fileinfo.c:119
-msgid "Heavy Metal"
-msgstr "Тяжелый метал"
-
-#: src/vorbis/fileinfo.c:119
-msgid "Black Metal"
-msgstr "Чёрный метал"
-
-#: src/vorbis/fileinfo.c:119
-msgid "Crossover"
-msgstr "Переходный"
-
-#: src/vorbis/fileinfo.c:120
-msgid "Contemporary Christian"
-msgstr "Современная христианская"
-
-#: src/vorbis/fileinfo.c:120
-msgid "Christian Rock"
-msgstr "Христианский рок"
-
-#: src/vorbis/fileinfo.c:121
-msgid "Merengue"
-msgstr "Меренга"
-
-#: src/vorbis/fileinfo.c:121
-msgid "Salsa"
-msgstr "Салса"
-
-#: src/vorbis/fileinfo.c:121
-msgid "Thrash Metal"
-msgstr "Трэш метал"
-
-#: src/vorbis/fileinfo.c:122
-msgid "Anime"
-msgstr "Аниме"
-
-#: src/vorbis/fileinfo.c:122
-msgid "JPop"
-msgstr "JPop"
-
-#: src/vorbis/fileinfo.c:122
-msgid "Synthpop"
-msgstr "Электронный поп"
-
-#: src/vorbis/fileinfo.c:207
-#, c-format
-msgid ""
-"An error occured:\n"
-"%s"
-msgstr ""
-"Произошла ошибка:\n"
-"%s"
-
-#: src/vorbis/fileinfo.c:209
-msgid "Error!"
-msgstr "Ошибка!"
-
-#: src/vorbis/fileinfo.c:241
-msgid "Failed to modify tag (open)"
-msgstr "Не удалось изменить тег (открыть)"
-
-#: src/vorbis/fileinfo.c:294
-msgid "Failed to modify tag (close)"
-msgstr "Не удалось изменить тег (закрыть)"
-
-#: src/vorbis/fileinfo.c:321 src/vorbis/fileinfo.c:330
-msgid "Failed to modify tag"
-msgstr "Не удалось изменить тег"
-
-#: src/vorbis/fileinfo.c:574
-msgid " Ogg Vorbis Tag "
-msgstr " Тег Ogg Vorbis "
-
-#: src/vorbis/fileinfo.c:626
-msgid "Date:"
-msgstr "Дата:"
-
-#: src/vorbis/fileinfo.c:668
-msgid "Description:"
-msgstr "Описание:"
-
-#: src/vorbis/fileinfo.c:678
-msgid "Location:"
-msgstr "Расположение:"
-
-#: src/vorbis/fileinfo.c:688
-msgid "Version:"
-msgstr "Версия:"
-
-#: src/vorbis/fileinfo.c:699
-msgid "ISRC number:"
-msgstr "Номер ISRC:"
-
-#: src/vorbis/fileinfo.c:710
-msgid "Organization:"
-msgstr "Организация:"
-
-#: src/vorbis/fileinfo.c:757
-msgid " Ogg Vorbis ReplayGain "
-msgstr " Ogg Vorbis ReplayGain "
-
-#: src/vorbis/fileinfo.c:763
-msgid "Track gain:"
-msgstr "Усиление дорожки:"
-
-#: src/vorbis/fileinfo.c:773
-msgid "Track peak:"
-msgstr "Пик дорожки:"
-
-#: src/vorbis/fileinfo.c:784
-msgid "Album gain:"
-msgstr "Усиление альбома:"
-
-#: src/vorbis/fileinfo.c:794
-msgid "Album peak:"
-msgstr "Пик альбома:"
-
-#: src/vorbis/fileinfo.c:823
-msgid " Ogg Vorbis Info "
-msgstr " Информация Ogg Vorbis "
-
-#: src/vorbis/fileinfo.c:838 src/vorbis/fileinfo.c:915
-msgid "Bit rate:"
-msgstr "Битрэйт:"
-
-#: src/vorbis/fileinfo.c:851 src/vorbis/fileinfo.c:918
-msgid "Sample rate:"
-msgstr "Частота:"
-
-#: src/vorbis/fileinfo.c:877 src/vorbis/fileinfo.c:924
-msgid "Length:"
-msgstr "Длина:"
-
-#: src/vorbis/fileinfo.c:890 src/vorbis/fileinfo.c:927
-msgid "File size:"
-msgstr "Размер файла:"
-
-#: src/vorbis/fileinfo.c:916 src/vorbis/fileinfo.c:919
-#: src/vorbis/fileinfo.c:922 src/vorbis/fileinfo.c:925
-#: src/vorbis/fileinfo.c:928
-msgid "N/A"
-msgstr "Н/Д"
-
-#: src/vorbis/fileinfo.c:958
-#, c-format
-msgid "%d KBit/s (nominal)"
-msgstr "%d КБит/с (номинал)"
-
-#: src/vorbis/fileinfo.c:960
-#, c-format
-msgid "%d"
-msgstr "%d"
-
-#: src/vorbis/fileinfo.c:962
-#, c-format
-msgid "%d:%.2d"
-msgstr "%d:%.2d"
-
-#: src/vorbis/fileinfo.c:964
-#, c-format
-msgid "%d Bytes"
-msgstr "%d байт"
-
-#: src/vorbis/fileinfo.c:1021
-#, c-format
-msgid "%s - Audacious"
-msgstr "%s - Audacious"
-
-#: src/vorbis/vorbis.c:845
+#: src/vorbis/vorbis.c:739
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "О модуле поддержки Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:851
+#: src/vorbis/vorbis.c:745
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5922,11 +5098,11 @@ msgstr ""
 "\n"
 "Посетите фонд Xiph.org по адресу http://www.xiph.org/\n"
 
-#: src/vtx/about.c:22
+#: src/vtx/about.c:23
 msgid "About Vortex Player"
 msgstr ""
 
-#: src/vtx/about.c:24
+#: src/vtx/about.c:25
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
@@ -5939,9 +5115,9 @@ msgid ""
 msgstr ""
 
 #: src/wavpack/ui.cxx:52
-#, fuzzy, c-format
+#, c-format
 msgid "Wavpack Decoder Plugin %s"
-msgstr "Модуль Эхо %s"
+msgstr "Модуль декодирования Wavpack %s"
 
 #: src/wavpack/ui.cxx:53
 msgid ""
@@ -5951,86 +5127,78 @@ msgid ""
 "Visit the Wavpack site at http://www.wavpack.com/\n"
 msgstr ""
 
-#: src/wavpack/ui.cxx:163
+#: src/wavpack/ui.cxx:165
 msgid "Ape2 Tag"
 msgstr ""
 
-#: src/wavpack/ui.cxx:286
+#: src/wavpack/ui.cxx:288
 msgid "Wavpack Info:"
 msgstr ""
 
-#: src/wavpack/ui.cxx:379
-#, fuzzy, c-format
+#: src/wavpack/ui.cxx:381
+#, c-format
 msgid "version %d"
-msgstr "Версия:"
+msgstr "версия: %d"
 
-#: src/wavpack/ui.cxx:380
+#: src/wavpack/ui.cxx:382
 #, c-format
 msgid "average bitrate: %6.1f kbps"
 msgstr ""
 
-#: src/wavpack/ui.cxx:381
-#, fuzzy, c-format
-msgid "samplerate: %d Hz"
-msgstr "Частота: %d Гц"
-
-#: src/wavpack/ui.cxx:382
-#, fuzzy, c-format
-msgid "bits per sample: %d"
-msgstr "Бит/Сэмпл: %d"
-
 #: src/wavpack/ui.cxx:383
-#, fuzzy, c-format
-msgid "channels: %d"
-msgstr "Каналы: %d"
+#, c-format
+msgid "samplerate: %d Hz"
+msgstr "частота: %d Гц"
 
 #: src/wavpack/ui.cxx:384
-#, fuzzy, c-format
-msgid "length: %d:%.2d"
-msgstr ""
-"\n"
-"Общая длительность: %d:%d\n"
+#, c-format
+msgid "bits per sample: %d"
+msgstr "бит / сэмпл: %d"
 
 #: src/wavpack/ui.cxx:385
-#, fuzzy, c-format
+#, c-format
+msgid "channels: %d"
+msgstr "каналы: %d"
+
+#: src/wavpack/ui.cxx:386
+#, c-format
+msgid "length: %d:%.2d"
+msgstr "длительность: %d:%.2d"
+
+#: src/wavpack/ui.cxx:387
+#, c-format
 msgid "file size: %d Bytes"
-msgstr "Размер файла: %ld Байт"
-
-#: src/wavpack/ui.cxx:392
-#, fuzzy
-msgid "Title Peak: ?"
-msgstr "Название:"
-
-#: src/wavpack/ui.cxx:393
-#, fuzzy
-msgid "Album Peak: ?"
-msgstr "Пик альбома:"
+msgstr "размер файла: %d Байт"
 
 #: src/wavpack/ui.cxx:394
-#, fuzzy
-msgid "Title Gain: ?"
-msgstr "Изменение названия"
+msgid "Title Peak: ?"
+msgstr "Пик дорожки: ?"
 
 #: src/wavpack/ui.cxx:395
-#, fuzzy
+msgid "Album Peak: ?"
+msgstr "Пик альбома: ?"
+
+#: src/wavpack/ui.cxx:396
+msgid "Title Gain: ?"
+msgstr "Усиление дорожки: ?"
+
+#: src/wavpack/ui.cxx:397
 msgid "Album Gain: ?"
-msgstr "Усиление альбома:"
+msgstr "Усиление альбома: ?"
 
-#: src/wavpack/ui.cxx:469
-#, fuzzy
+#: src/wavpack/ui.cxx:471
 msgid "Wavpack Configuration"
-msgstr "Настройка Flac"
+msgstr "Настройка Wavpack"
 
-#: src/wavpack/ui.cxx:482
-#, fuzzy
+#: src/wavpack/ui.cxx:484
 msgid "General Plugin Settings:"
-msgstr "Настройки ReplayGain:"
+msgstr "Основные настройки модуля"
 
-#: src/wav/wav-sndfile.c:526
+#: src/wav/wav-sndfile.c:562
 msgid "About sndfile WAV support"
 msgstr "О модуле поддержки WAV"
 
-#: src/wav/wav-sndfile.c:527
+#: src/wav/wav-sndfile.c:563
 msgid ""
 "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
 "from the xmms_sndfile plugin which is:\n"
@@ -6074,10 +5242,6 @@ msgstr ""
 "51 Franklin Street, Fifth Floor, \n"
 "Boston, MA 02111-1307, USA."
 
-#: src/wav/wav-sndfile.c:551
-msgid "sndfile WAV plugin"
-msgstr "модуль sndfile WAV"
-
 #: src/wma/wma.c:132
 msgid ""
 "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
@@ -6087,6 +5251,571 @@ msgid ""
 "<bogorodskiy@inbox.ru>.\n"
 "This plugin based on source code "
 msgstr ""
+
+#, fuzzy
+#~ msgid "Play/Pause:"
+#~ msgstr "Воспроизведение->Приостановить"
+
+#, fuzzy
+#~ msgid "File Info"
+#~ msgstr "Инфрмация о файле - %s"
+
+#, fuzzy
+#~ msgid "Couldn't open file!"
+#~ msgstr "Невозможно загрузить MIDI файл"
+
+#, fuzzy
+#~ msgid "<b>Name:</b>"
+#~ msgstr "<b>Название: </b>"
+
+#~ msgid " MPEG Info "
+#~ msgstr " Информация MPEG "
+
+#~ msgid " ID3 Tag "
+#~ msgstr " ID3-тег "
+
+#, fuzzy
+#~ msgid "Unknown"
+#~ msgstr "(неизвестно)"
+
+#, fuzzy
+#~ msgid "Layer %s"
+#~ msgstr "Проигрыватель WMA %s"
+
+#~ msgid "%d Hz"
+#~ msgstr "%d Гц"
+
+#~ msgid "Blues"
+#~ msgstr "Блюз"
+
+#~ msgid "Classic Rock"
+#~ msgstr "Классический рок"
+
+#~ msgid "Country"
+#~ msgstr "Кантри"
+
+#~ msgid "Dance"
+#~ msgstr "Дэнс"
+
+#~ msgid "Disco"
+#~ msgstr "Диско"
+
+#~ msgid "Funk"
+#~ msgstr "Фанк"
+
+#~ msgid "Grunge"
+#~ msgstr "Гранж"
+
+#~ msgid "Hip-Hop"
+#~ msgstr "Хип-Хоп"
+
+#~ msgid "Jazz"
+#~ msgstr "Джаз"
+
+#~ msgid "Metal"
+#~ msgstr "Метал"
+
+#~ msgid "New Age"
+#~ msgstr "Нью Эйдж"
+
+#~ msgid "Oldies"
+#~ msgstr "Ретро"
+
+#~ msgid "Other"
+#~ msgstr "Другое"
+
+#~ msgid "Pop"
+#~ msgstr "Поп"
+
+#~ msgid "R&B"
+#~ msgstr "R&B"
+
+#~ msgid "Rap"
+#~ msgstr "Рэп"
+
+#~ msgid "Reggae"
+#~ msgstr "Регги"
+
+#~ msgid "Rock"
+#~ msgstr "Рок"
+
+#~ msgid "Techno"
+#~ msgstr "Техно"
+
+#~ msgid "Industrial"
+#~ msgstr "Индустриальный"
+
+#~ msgid "Alternative"
+#~ msgstr "Альтернативный"
+
+#~ msgid "Ska"
+#~ msgstr "Ска"
+
+#~ msgid "Death Metal"
+#~ msgstr "Дэз метал"
+
+#~ msgid "Pranks"
+#~ msgstr "Шалость"
+
+#~ msgid "Soundtrack"
+#~ msgstr "Звуковая дорожка"
+
+#~ msgid "Euro-Techno"
+#~ msgstr "Евро-Техно"
+
+#~ msgid "Ambient"
+#~ msgstr "Окружающая среда"
+
+#~ msgid "Trip-Hop"
+#~ msgstr "Трип-Хоп"
+
+#~ msgid "Vocal"
+#~ msgstr "Вокал"
+
+#~ msgid "Jazz+Funk"
+#~ msgstr "Джаз+Фанк"
+
+#~ msgid "Fusion"
+#~ msgstr "Слияние"
+
+#~ msgid "Trance"
+#~ msgstr "Транс"
+
+#~ msgid "Classical"
+#~ msgstr "Классика"
+
+#~ msgid "Instrumental"
+#~ msgstr "Инструментальный"
+
+#~ msgid "Acid"
+#~ msgstr "Кислота"
+
+#~ msgid "House"
+#~ msgstr "Хаус"
+
+#~ msgid "Game"
+#~ msgstr "Игра"
+
+#~ msgid "Sound Clip"
+#~ msgstr "Музыкальный клип"
+
+#~ msgid "Gospel"
+#~ msgstr "Евангелие"
+
+#~ msgid "Noise"
+#~ msgstr "Шум"
+
+#~ msgid "AlternRock"
+#~ msgstr "Альтернативный рок"
+
+#~ msgid "Bass"
+#~ msgstr "Бас"
+
+#~ msgid "Soul"
+#~ msgstr "Душа"
+
+#~ msgid "Punk"
+#~ msgstr "Панк"
+
+#~ msgid "Space"
+#~ msgstr "Космос"
+
+#~ msgid "Meditative"
+#~ msgstr "Медитация"
+
+#~ msgid "Instrumental Pop"
+#~ msgstr "Иструментальный поп"
+
+#~ msgid "Instrumental Rock"
+#~ msgstr "Иструментальный рок"
+
+#~ msgid "Ethnic"
+#~ msgstr "Этнический"
+
+#~ msgid "Gothic"
+#~ msgstr "Готический"
+
+#~ msgid "Darkwave"
+#~ msgstr "Темная волна"
+
+#~ msgid "Techno-Industrial"
+#~ msgstr "Техноиндустриальный"
+
+#~ msgid "Electronic"
+#~ msgstr "Электронный"
+
+#~ msgid "Pop-Folk"
+#~ msgstr "Народный поп"
+
+#~ msgid "Eurodance"
+#~ msgstr "Евродэнс"
+
+#~ msgid "Dream"
+#~ msgstr "Сон"
+
+#~ msgid "Southern Rock"
+#~ msgstr "Южный рок"
+
+#~ msgid "Comedy"
+#~ msgstr "Комедия"
+
+#~ msgid "Cult"
+#~ msgstr "Культ"
+
+#~ msgid "Gangsta Rap"
+#~ msgstr "Черный рэп"
+
+#~ msgid "Top 40"
+#~ msgstr "Top 40"
+
+#~ msgid "Christian Rap"
+#~ msgstr "Христианский реп"
+
+#~ msgid "Pop/Funk"
+#~ msgstr "Поп/Фанк"
+
+#~ msgid "Jungle"
+#~ msgstr "Джангл"
+
+#~ msgid "Native American"
+#~ msgstr "Народная американская"
+
+#~ msgid "Cabaret"
+#~ msgstr "Кабаре"
+
+#~ msgid "New Wave"
+#~ msgstr "Новая волна"
+
+#~ msgid "Psychedelic"
+#~ msgstr "Психоделия"
+
+#~ msgid "Rave"
+#~ msgstr "Рэйв"
+
+#~ msgid "Showtunes"
+#~ msgstr "Импровизация"
+
+#~ msgid "Trailer"
+#~ msgstr "Анонс"
+
+#~ msgid "Lo-Fi"
+#~ msgstr "Lo-Fi"
+
+#~ msgid "Tribal"
+#~ msgstr "Семейное"
+
+#~ msgid "Acid Punk"
+#~ msgstr "Кислотный панк"
+
+#~ msgid "Acid Jazz"
+#~ msgstr "Кислотный джаз"
+
+#~ msgid "Polka"
+#~ msgstr "Полька"
+
+#~ msgid "Retro"
+#~ msgstr "Ретро"
+
+#~ msgid "Musical"
+#~ msgstr "Музыкальное"
+
+#~ msgid "Rock & Roll"
+#~ msgstr "Рок-н-рол"
+
+#~ msgid "Hard Rock"
+#~ msgstr "Тяжелый рок"
+
+#~ msgid "Folk"
+#~ msgstr "Фольк"
+
+#~ msgid "Folk/Rock"
+#~ msgstr "Фольк/Рок"
+
+#~ msgid "National Folk"
+#~ msgstr "Национальный фольк"
+
+#~ msgid "Swing"
+#~ msgstr "Свинг"
+
+#~ msgid "Fast-Fusion"
+#~ msgstr "Быстрое слияние"
+
+#~ msgid "Bebob"
+#~ msgstr "Бибоп"
+
+#~ msgid "Latin"
+#~ msgstr "Латиноамериканская"
+
+#~ msgid "Revival"
+#~ msgstr "Возрождение"
+
+#~ msgid "Celtic"
+#~ msgstr "Кельтская"
+
+#~ msgid "Bluegrass"
+#~ msgstr "Bluegrass"
+
+#~ msgid "Avantgarde"
+#~ msgstr "Авангард"
+
+#~ msgid "Gothic Rock"
+#~ msgstr "Готический рок"
+
+#~ msgid "Progressive Rock"
+#~ msgstr "Прогрессивный рок"
+
+#~ msgid "Psychedelic Rock"
+#~ msgstr "Психоделический рок"
+
+#~ msgid "Symphonic Rock"
+#~ msgstr "Симфонический рок"
+
+#~ msgid "Slow Rock"
+#~ msgstr "Медленный рок"
+
+#~ msgid "Big Band"
+#~ msgstr "Big Band"
+
+#~ msgid "Chorus"
+#~ msgstr "Хор"
+
+#~ msgid "Easy Listening"
+#~ msgstr "Easy Listening"
+
+#~ msgid "Acoustic"
+#~ msgstr "Акустическая"
+
+#~ msgid "Humour"
+#~ msgstr "Юмор"
+
+#~ msgid "Speech"
+#~ msgstr "Речь"
+
+#~ msgid "Chanson"
+#~ msgstr "Шансон"
+
+#~ msgid "Opera"
+#~ msgstr "Опера"
+
+#~ msgid "Chamber Music"
+#~ msgstr "Камерная музыка"
+
+#~ msgid "Sonata"
+#~ msgstr "Соната"
+
+#~ msgid "Symphony"
+#~ msgstr "Симфония"
+
+#~ msgid "Booty Bass"
+#~ msgstr "Booty Bass"
+
+#~ msgid "Primus"
+#~ msgstr "Прима"
+
+#~ msgid "Porn Groove"
+#~ msgstr "Порн грув"
+
+#~ msgid "Satire"
+#~ msgstr "Сатира"
+
+#~ msgid "Slow Jam"
+#~ msgstr "Медленный джэм"
+
+#~ msgid "Club"
+#~ msgstr "Клуб"
+
+#~ msgid "Tango"
+#~ msgstr "Танго"
+
+#~ msgid "Samba"
+#~ msgstr "Самба"
+
+#~ msgid "Folklore"
+#~ msgstr "Фольклор"
+
+#~ msgid "Ballad"
+#~ msgstr "Баллада"
+
+#~ msgid "Power Ballad"
+#~ msgstr "Сильная баллада"
+
+#~ msgid "Rhythmic Soul"
+#~ msgstr "Ритмичный соул"
+
+#~ msgid "Freestyle"
+#~ msgstr "Свободный стиль"
+
+#~ msgid "Duet"
+#~ msgstr "Дуэт"
+
+#~ msgid "Punk Rock"
+#~ msgstr "Панк рок"
+
+#~ msgid "Drum Solo"
+#~ msgstr "Ударное соло"
+
+#~ msgid "A Cappella"
+#~ msgstr "А Капелла"
+
+#~ msgid "Euro-House"
+#~ msgstr "Euro-House"
+
+#~ msgid "Dance Hall"
+#~ msgstr "Танцевальный зал"
+
+#~ msgid "Goa"
+#~ msgstr "Гоа"
+
+#~ msgid "Drum & Bass"
+#~ msgstr "Драм-н-бас"
+
+#~ msgid "Club-House"
+#~ msgstr "Клуб-хаус"
+
+#~ msgid "Hardcore"
+#~ msgstr "Хардкор"
+
+#~ msgid "Terror"
+#~ msgstr "Террор"
+
+#~ msgid "Indie"
+#~ msgstr "Indie"
+
+#~ msgid "BritPop"
+#~ msgstr "Бритпоп"
+
+#~ msgid "Negerpunk"
+#~ msgstr "Чёрный панк"
+
+#~ msgid "Polsk Punk"
+#~ msgstr "Польский панк"
+
+#~ msgid "Beat"
+#~ msgstr "Бит"
+
+#~ msgid "Christian Gangsta Rap"
+#~ msgstr "Черный христианский рэп"
+
+#~ msgid "Heavy Metal"
+#~ msgstr "Тяжелый метал"
+
+#~ msgid "Black Metal"
+#~ msgstr "Чёрный метал"
+
+#~ msgid "Crossover"
+#~ msgstr "Переходный"
+
+#~ msgid "Contemporary Christian"
+#~ msgstr "Современная христианская"
+
+#~ msgid "Christian Rock"
+#~ msgstr "Христианский рок"
+
+#~ msgid "Merengue"
+#~ msgstr "Меренга"
+
+#~ msgid "Salsa"
+#~ msgstr "Салса"
+
+#~ msgid "Thrash Metal"
+#~ msgstr "Трэш метал"
+
+#~ msgid "Anime"
+#~ msgstr "Аниме"
+
+#~ msgid "JPop"
+#~ msgstr "JPop"
+
+#~ msgid "Synthpop"
+#~ msgstr "Электронный поп"
+
+#~ msgid ""
+#~ "An error occured:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Произошла ошибка:\n"
+#~ "%s"
+
+#~ msgid "Error!"
+#~ msgstr "Ошибка!"
+
+#~ msgid "Failed to modify tag (open)"
+#~ msgstr "Не удалось изменить тег (открыть)"
+
+#~ msgid "Failed to modify tag (close)"
+#~ msgstr "Не удалось изменить тег (закрыть)"
+
+#~ msgid "Failed to modify tag"
+#~ msgstr "Не удалось изменить тег"
+
+#~ msgid " Ogg Vorbis Tag "
+#~ msgstr " Тег Ogg Vorbis "
+
+#~ msgid "Date:"
+#~ msgstr "Дата:"
+
+#~ msgid "Description:"
+#~ msgstr "Описание:"
+
+#~ msgid "Version:"
+#~ msgstr "Версия:"
+
+#~ msgid "ISRC number:"
+#~ msgstr "Номер ISRC:"
+
+#~ msgid "Organization:"
+#~ msgstr "Организация:"
+
+#~ msgid " Ogg Vorbis ReplayGain "
+#~ msgstr " Ogg Vorbis ReplayGain "
+
+#~ msgid "Track gain:"
+#~ msgstr "Усиление дорожки:"
+
+#~ msgid "Track peak:"
+#~ msgstr "Пик дорожки:"
+
+#~ msgid "Album gain:"
+#~ msgstr "Усиление альбома:"
+
+#~ msgid "Album peak:"
+#~ msgstr "Пик альбома:"
+
+#~ msgid " Ogg Vorbis Info "
+#~ msgstr " Информация Ogg Vorbis "
+
+#~ msgid "Bit rate:"
+#~ msgstr "Битрэйт:"
+
+#~ msgid "Sample rate:"
+#~ msgstr "Частота:"
+
+#~ msgid "Length:"
+#~ msgstr "Длина:"
+
+#~ msgid "File size:"
+#~ msgstr "Размер файла:"
+
+#~ msgid "N/A"
+#~ msgstr "Н/Д"
+
+#~ msgid "%d KBit/s (nominal)"
+#~ msgstr "%d КБит/с (номинал)"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "%d:%.2d"
+#~ msgstr "%d:%.2d"
+
+#~ msgid "%d Bytes"
+#~ msgstr "%d байт"
+
+#~ msgid "%s - Audacious"
+#~ msgstr "%s - Audacious"
+
+#~ msgid "sndfile WAV plugin"
+#~ msgstr "модуль sndfile WAV"
 
 #~ msgid "Use software volume control"
 #~ msgstr "Использовать программный регулятор громкости"

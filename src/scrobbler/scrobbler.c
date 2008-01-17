@@ -20,7 +20,7 @@
 #define SCROBBLER_HS_WAIT 1800
 #define SCROBBLER_SB_WAIT 10
 #define SCROBBLER_VERSION "1.2"
-#define SCROBBLER_IMPLEMENTATION "0.1"		/* This is the implementation, not the player version. */
+#define SCROBBLER_IMPLEMENTATION "0.2"		/* This is the implementation, not the player version. */
 #define SCROBBLER_SB_MAXLEN 1024
 #define CACHE_SIZE 1024
 
@@ -56,17 +56,12 @@ static void dump_queue();
 #define I_TITLE(i) i->title
 #define I_TIME(i) i->utctime
 #define I_LEN(i) i->len
-#define I_MB(i) i->mb
 #define I_ALBUM(i) i->album
 
 typedef struct {
-	char *artist,
-		*title,
-		*mb,
-		*album,
-		utctime[16],
-		track[16],
-		len[16];
+	char *artist, *title, *album;
+	int utctime, track, len;
+	int timeplayed;
 	int numtries;
 	void *next;
 } item_t;
@@ -74,6 +69,14 @@ typedef struct {
 static item_t *q_queue = NULL;
 static item_t *q_queue_last = NULL;
 static int q_nitems;
+
+/* isn't there better way for that? --desowin */
+gboolean sc_timeout(gpointer data) {
+    if (q_queue_last && audacious_drct_get_playing())
+        q_queue_last->timeplayed+=1;
+
+    return TRUE;
+}
 
 gchar *
 xmms_urldecode_plain(const gchar * encoded_path)
@@ -119,12 +122,11 @@ static void q_item_free(item_t *item)
 		return;
 	curl_free(item->artist);
 	curl_free(item->title);
-	curl_free(item->mb);
 	curl_free(item->album);
 	free(item);
 }
 
-static item_t *q_put(Tuple *tuple, int len)
+static item_t *q_put(Tuple *tuple, int t, int len)
 {
 	item_t *item;
 	const gchar *album;
@@ -133,24 +135,21 @@ static item_t *q_put(Tuple *tuple, int len)
 
 	item->artist = fmt_escape(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
 	item->title = fmt_escape(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
-	g_snprintf(item->utctime, sizeof(item->utctime), "%ld", time(NULL));
-	g_snprintf(item->len, sizeof(item->len), "%d", len);
-	g_snprintf(item->track, sizeof(item->track), "%d",
-		aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+	item->len = len;
+	item->track = aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+        if (t == -1) { /* now playing song */
+            item->timeplayed = 0;
+            item->utctime = time(NULL);
+        } else { /* item from queue */
+            item->timeplayed = len;
+            item->utctime = t;
+        }
 
-#ifdef NOTYET
-	if(tuple->mb == NULL)
-#endif
-		item->mb = fmt_escape("");
-#ifdef NOTYET
-	else
-		item->mb = fmt_escape((char*)tuple->mb);
-#endif
-
-	if((album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL)) != NULL)
-		item->album = fmt_escape("");
-	else
+	album = aud_tuple_get_string(tuple, FIELD_ALBUM, NULL);
+	if (album)
 		item->album = fmt_escape((char*) album);
+	else
+		item->album = fmt_escape("");
 
 	q_nitems++;
 
@@ -625,8 +624,8 @@ static int sc_generateentry(GString *submission)
 		 * don't submit queued tracks which don't yet meet audioscrobbler
 		 * requirements...
 		 */
-		if ((time(NULL) - atoi(item->utctime)) < (atoi(item->len) / 2) &&
-		    (time(NULL) - atoi(item->utctime)) < 240)
+		if ((item->timeplayed < (item->len / 2)) &&
+		    (item->timeplayed < 240))
 			continue;
 
 		if (!item)
@@ -634,20 +633,25 @@ static int sc_generateentry(GString *submission)
 
                 g_string_append(submission,sc_itemtag('a',i,I_ARTIST(item)));
                 g_string_append(submission,sc_itemtag('t',i,I_TITLE(item)));
-                g_string_append(submission,sc_itemtag('l',i,I_LEN(item)));
-                g_string_append(submission,sc_itemtag('i',i,I_TIME(item)));
-                g_string_append(submission,sc_itemtag('m',i,I_MB(item)));
+                gchar *tmp = g_strdup_printf("%d",I_LEN(item));
+                g_string_append(submission,sc_itemtag('l',i,tmp));
+                g_free(tmp);
+                tmp = g_strdup_printf("%d",I_TIME(item));
+                g_string_append(submission,sc_itemtag('i',i,tmp));
+                g_free(tmp);
+                g_string_append(submission,sc_itemtag('m',i,""));
                 g_string_append(submission,sc_itemtag('b',i,I_ALBUM(item)));
                 g_string_append(submission,sc_itemtag('o',i,"P"));
-                g_string_append(submission,sc_itemtag('n',i,item->track));
+                tmp = g_strdup_printf("%d",item->track);
+                g_string_append(submission,sc_itemtag('n',i,tmp));
+                g_free(tmp);
                 g_string_append(submission,sc_itemtag('r',i,""));
 
-		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
+		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
 				i, I_ARTIST(item),
 				i, I_TITLE(item),
 				i, I_LEN(item),
 				i, I_TIME(item),
-				i, I_MB(item),
 				i, I_ALBUM(item)), DEBUG);
 #ifdef ALLOW_MULTIPLE
 		i++;
@@ -833,146 +837,119 @@ static void sc_handlequeue(GMutex *mutex)
 
 static void read_cache(void)
 {
-	FILE *fd;
-	char buf[PATH_MAX], *cache = NULL, *ptr1, *ptr2;
-	int cachesize, written, i = 0;
-	item_t *item;
-	gchar* config_datadir;
+    FILE *fd;
+    char buf[PATH_MAX];
+    int i=0;
+    item_t *item;
+    gchar* config_datadir;
 
-	cachesize = written = 0;
+    config_datadir = audacious_get_localdir();
+    g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
+    g_free(config_datadir);
 
-	config_datadir = audacious_get_localdir();
-	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
-	g_free(config_datadir);
+    if (!(fd = fopen(buf, "r")))
+        return;
+    pdebug(fmt_vastr("Opening %s", buf), DEBUG);
+    fclose(fd);
 
-	if (!(fd = fopen(buf, "r")))
-		return;
-	pdebug(fmt_vastr("Opening %s", buf), DEBUG);
-	while(!feof(fd))
-	{
-		cachesize += CACHE_SIZE;
-		cache = realloc(cache, cachesize + 1);
-		written += fread(cache + written, 1, CACHE_SIZE, fd);
-		cache[written] = '\0';
-	}
-	fclose(fd);
-	ptr1 = cache;
-	while(ptr1 < cache + written - 1)
-	{
-		char *artist, *title, *len, *time, *album, *mb;
+    gchar* cache;
+    gchar** values;
+    gchar** entry;
+    g_file_get_contents(buf, &cache, NULL, NULL);
+    values = g_strsplit(cache, "\n", 0);
 
-		pdebug("Pushed:", DEBUG);
-		ptr2 = strchr(ptr1, ' ');
-		artist = calloc(1, ptr2 - ptr1 + 1);
-		strncpy(artist, ptr1, ptr2 - ptr1);
-		ptr1 = ptr2 + 1;
-		ptr2 = strchr(ptr1, ' ');
-		title = calloc(1, ptr2 - ptr1 + 1);
-		strncpy(title, ptr1, ptr2 - ptr1);
-		ptr1 = ptr2 + 1;
-		ptr2 = strchr(ptr1, ' ');
-		len = calloc(1, ptr2 - ptr1 + 1);
-		strncpy(len, ptr1, ptr2 - ptr1);
-		ptr1 = ptr2 + 1;
-		ptr2 = strchr(ptr1, ' ');
-		time = calloc(1, ptr2 - ptr1 + 1);
-		strncpy(time, ptr1, ptr2 - ptr1);
-		ptr1 = ptr2 + 1;
-		ptr2 = strchr(ptr1, ' ');
-		album = calloc(1, ptr2 - ptr1 + 1);
-		strncpy(album, ptr1, ptr2 - ptr1);
-		ptr1 = ptr2 + 1;
-		ptr2 = strchr(ptr1, '\n');
-		if(ptr2 != NULL)
-			*ptr2 = '\0';
-		mb = calloc(1, strlen(ptr1) + 1);
-		strncpy(mb, ptr1, strlen(ptr1));
-		if(ptr2 != NULL)
-			*ptr2 = '\n';
-		/* Why is our save printing out CR/LF? */
-		ptr1 = ptr2 + 1;
+    int x;
+    for (x=0; values[x] && strlen(values[x]); x++) {
+        entry = g_strsplit(values[x], "\t", 0);
+        if (entry[0] && entry[1] && entry[2] && entry[3] && entry[4] && entry[6]) {
+            char *artist, *title, *album;
+            int t, len, track;
 
-		{
-			Tuple *tuple = aud_tuple_new();
-			gchar* string_value;
+            artist = g_strdup(entry[0]);
+            album = g_strdup(entry[1]);
+            title = g_strdup(entry[2]);
+            track = atoi(entry[3]);
+            len = atoi(entry[4]);
+            t = atoi(entry[6]);
 
-			string_value = xmms_urldecode_plain(artist);
-			aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, string_value);
-			g_free(string_value);
+            if (!strncmp(entry[5], "L", 1)) {
+                Tuple *tuple = aud_tuple_new();
+                gchar* string_value;
+                string_value = xmms_urldecode_plain(artist);
+                aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, string_value);
+                g_free(string_value);
+                string_value = xmms_urldecode_plain(title);
+                aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, string_value);
+                g_free(string_value);
+                string_value = xmms_urldecode_plain(album);
+                aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, string_value);
+                g_free(string_value);
+                aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, track);
+                item = q_put(tuple, t, len);
 
-			string_value = xmms_urldecode_plain(title);
-			aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, string_value);
-			g_free(string_value);
+                aud_tuple_free(tuple);
 
-			string_value = xmms_urldecode_plain(album);
-			aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, string_value);
-			g_free(string_value);
+                pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%d i[%d]=%d b[%d]=%s",
+                                 i, I_ARTIST(item),
+                                 i, I_TITLE(item),
+                                 i, I_LEN(item),
+                                 i, I_TIME(item),
+                                 i, I_ALBUM(item)), DEBUG);
+            }
 
-			item = q_put(tuple, atoi(len));
-
-			aud_tuple_free(tuple);
-		}
-
-		pdebug(fmt_vastr("a[%d]=%s t[%d]=%s l[%d]=%s i[%d]=%s m[%d]=%s b[%d]=%s",
-				i, I_ARTIST(item),
-				i, I_TITLE(item),
-				i, I_LEN(item),
-				i, I_TIME(item),
-				i, I_MB(item),
-				i, I_ALBUM(item)), DEBUG);
-		free(artist);
-		free(title);
-		free(len);
-		free(time);
-		free(album);
-		free(mb);
-
-		i++;
-	}
-	pdebug("Done loading cache.", DEBUG);
-	free(cache);
+            free(artist);
+            free(title);
+            free(album);
+            g_free(entry);
+            i++;
+        }
+    }
+    g_free(values);
+    g_free(cache);
+    pdebug("Done loading cache.", DEBUG);
 }
 
 static void dump_queue(void)
 {
-	FILE *fd;
-	item_t *item;
-	char *home, buf[PATH_MAX];
-	gchar* config_datadir;
+    FILE *fd;
+    item_t *item;
+    char *home, buf[PATH_MAX];
+    gchar* config_datadir;
 
-	/*pdebug("Entering dump_queue();", DEBUG);*/
+    /*pdebug("Entering dump_queue();", DEBUG);*/
 
-	if (!(home = getenv("HOME")))
-	{
-		pdebug("No HOME directory found. Cannot dump queue.", DEBUG);
-		return;
-	}
+    if (!(home = getenv("HOME")))
+    {
+        pdebug("No HOME directory found. Cannot dump queue.", DEBUG);
+        return;
+    }
 
-	config_datadir = audacious_get_localdir();
-	g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
-	g_free(config_datadir);
+    config_datadir = audacious_get_localdir();
+    g_snprintf(buf, sizeof(buf), "%s/scrobblerqueue.txt", config_datadir);
+    g_free(config_datadir);
 
-	if (!(fd = fopen(buf, "w")))
-	{
-		pdebug(fmt_vastr("Failure opening %s", buf), DEBUG);
-		return;
-	}
+    if (!(fd = fopen(buf, "w")))
+    {
+        pdebug(fmt_vastr("Failure opening %s", buf), DEBUG);
+        return;
+    }
 
-	pdebug(fmt_vastr("Opening %s", buf), DEBUG);
+    pdebug(fmt_vastr("Opening %s", buf), DEBUG);
 
-	q_peekall(1);
+    q_peekall(1);
 
-	while ((item = q_peekall(0))) {
-		fprintf(fd, "%s %s %s %s %s %s\n",
-					I_ARTIST(item),
-					I_TITLE(item),
-					I_LEN(item),
-					I_TIME(item),
-					I_ALBUM(item),
-					I_MB(item));
-	}
+    while ((item = q_peekall(0))) {
+        fprintf(fd, "%s\t%s\t%s\t%d\t%d\t%s\t%d\n",
+                    I_ARTIST(item),
+                    I_ALBUM(item),
+                    I_TITLE(item),
+                    item->track,
+                    I_LEN(item),
+                    ((item->timeplayed > item->len/2) || (item->timeplayed > 240)) ? "L" : "S",
+                    I_TIME(item));
+    }
 
-	fclose(fd);
+    fclose(fd);
 }
 
 /* This was made public */
@@ -1050,7 +1027,7 @@ void sc_addentry(GMutex *mutex, Tuple *tuple, int len)
 	g_mutex_lock(mutex);
 
 	sc_submit_np(tuple);
-	q_put(tuple, len);
+	q_put(tuple, -1, len);
 
 	/*
 	 * This will help make sure the queue will be saved on a nasty

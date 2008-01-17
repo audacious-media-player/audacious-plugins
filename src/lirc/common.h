@@ -2,6 +2,7 @@ extern GtkWidget *lirc_cfg;
 
 extern gint b_enable_reconnect;
 extern gint reconnect_timeout;
+extern gchar *aosd_font;
 
 void load_cfg(void);
 void save_cfg(void);

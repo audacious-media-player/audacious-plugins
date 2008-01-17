@@ -11,6 +11,7 @@ GtkWidget *lirc_cfg = NULL;
 
 gint b_enable_reconnect;
 gint reconnect_timeout;
+gchar *aosd_font = NULL;
 
 void load_cfg(void)
 {
@@ -18,6 +19,8 @@ void load_cfg(void)
   db = aud_cfg_db_open();
   aud_cfg_db_get_int(db, "lirc", "enable_reconnect", &b_enable_reconnect);
   aud_cfg_db_get_int(db, "lirc", "reconnect_timeout", &reconnect_timeout);
+  if (!aud_cfg_db_get_string(db, "aosd", "text_fonts_name_0", &aosd_font))
+   aosd_font = g_strdup("Sans 26");
   if (!reconnect_timeout) reconnect_timeout = 5;
   aud_cfg_db_close(db);
 }
