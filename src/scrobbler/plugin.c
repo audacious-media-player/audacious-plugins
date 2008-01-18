@@ -23,6 +23,7 @@
 #include <wchar.h>
 #include <sys/time.h>
 
+#include "plugin.h"
 #include "scrobbler.h"
 #include "gerpok.h"
 #include "gtkstuff.h"
@@ -30,7 +31,6 @@
 #include "fmt.h"
 #include "configure.h"
 
-#define XS_CS xmms_scrobbler.xmms_session
 #define XS_SLEEP 1
 #define HS_SLEEP 10
 
@@ -222,6 +222,7 @@ static void init(void)
 static void cleanup(void)
 {
     stop();
+    configure_cleanup();
     aud_prefswin_page_destroy(cfgdlg);
 }
 
