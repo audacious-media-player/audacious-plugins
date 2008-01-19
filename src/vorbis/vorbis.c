@@ -2,6 +2,7 @@
  * Copyright (C) Tony Arcieri <bascule@inferno.tusculum.edu>
  * Copyright (C) 2001-2002  Haavard Kvaalen <havardk@xmms.org>
  * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
+ * Copyright (C) 2008 Cristi Măgherușan <majeru@gentoo.ro>
  *
  * ReplayGain processing Copyright (C) 2002 Gian-Carlo Pascutto <gcp@sjeng.org>
  *
@@ -230,95 +231,6 @@ do_seek(InputPlayback *playback)
     }
 }
 
-static int
-vorbis_process_data(InputPlayback *playback, int last_section, 
-		    gboolean use_rg, float rg_scale)
-{
-    char pcmout[4096];
-    int bytes;
-    float **pcm;
-
-    /*
-     * A vorbis physical bitstream may consist of many logical
-     * sections (information for each of which may be fetched from
-     * the vf structure).  This value is filled in by ov_read to
-     * alert us what section we're currently decoding in case we
-     * need to change playback settings at a section boundary
-     */
-    int current_section = last_section;
-
-    g_mutex_lock(vf_mutex);
-    if (use_rg) {
-        bytes =
-            ov_read_float(&vf, &pcm, sizeof(pcmout) / 2 / channels,
-                          &current_section);
-        if (bytes > 0)
-            bytes = vorbis_process_replaygain(pcm, bytes, channels,
-                                              pcmout, rg_scale);
-    }
-    else {
-        bytes = ov_read(&vf, pcmout, sizeof(pcmout),
-                        (int) (G_BYTE_ORDER == G_BIG_ENDIAN),
-                        2, 1, &current_section);
-    }
-
-    /*
-     * We got some sort of error. Bail.
-     */
-    if (bytes <= 0 && bytes != OV_HOLE) {
-        g_mutex_unlock(vf_mutex);
-        playback->playing = 0;
-        playback->output->buffer_free();
-        playback->output->buffer_free();
-        playback->eof = TRUE;
-        return last_section;
-    }
-
-    if (current_section != last_section) {
-        /*
-         * The info struct is different in each section.  vf
-         * holds them all for the given bitstream.  This
-         * requests the current one
-         */
-        vorbis_info *vi = ov_info(&vf, -1);
-
-        if (vi->channels > 2) {
-            playback->eof = TRUE;
-            g_mutex_unlock(vf_mutex);
-            return current_section;
-        }
-
-
-        if (vi->rate != samplerate || vi->channels != channels) {
-            samplerate = vi->rate;
-            channels = vi->channels;
-            playback->output->buffer_free();
-            playback->output->buffer_free();
-            playback->output->close_audio();
-            if (!playback->output->
-                open_audio(FMT_S16_NE, vi->rate, vi->channels)) {
-                playback->error = TRUE;
-                playback->eof = TRUE;
-                g_mutex_unlock(vf_mutex);
-                return current_section;
-            }
-            playback->output->flush(ov_time_tell(&vf) * 1000);
-        }
-    }
-
-    g_mutex_unlock(vf_mutex);
-
-    playback->pass_audio(playback, FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
-
-    if (!playback->playing)
-        return current_section;
-
-    if (seekneeded != -1)
-        do_seek(playback);
-
-    return current_section;
-}
-
 static gpointer
 vorbis_play_loop(gpointer arg)
 {
@@ -350,12 +262,23 @@ vorbis_play_loop(gpointer arg)
     fd->fd = stream;
     datasource = (void *) fd;
 
+    char pcmout[4096];
+    int bytes;
+    float **pcm;
+
     /*
      * The open function performs full stream detection and
      * machine initialization.  None of the rest of ov_xx() works
      * without it
+     *
+     * A vorbis physical bitstream may consist of many logical
+     * sections (information for each of which may be fetched from
+     * the vf structure).  This value is filled in by ov_read to
+     * alert us what section we're currently decoding in case we
+     * need to change playback settings at a section boundary
      */
-
+ 
+   
     g_mutex_lock(vf_mutex);
     if (ov_open_callbacks(datasource, &vf, NULL, 0, aud_vfs_is_streaming(fd->fd) ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
         vorbis_callbacks.close_func(datasource);
@@ -403,57 +326,146 @@ vorbis_play_loop(gpointer arg)
      */
 
     while (playback->playing) {
-        int current_section;
-
-        if (seekneeded != -1)
-            do_seek(playback);
-
+       
         if (playback->eof) {
             g_usleep(20000);
             continue;
         }
 
-        current_section = vorbis_process_data(playback, last_section, 
-					      use_rg, rg_scale);
+        if (seekneeded != -1)
+            do_seek(playback);
 
-        if (current_section != last_section) {
-            /*
-             * set total play time, bitrate, rate, and channels of
-             * current section
-             */
-            if (title)
-                g_free(title);
+        
+        int current_section = last_section;
 
-            g_mutex_lock(vf_mutex);
-            title = vorbis_generate_title(&vf, filename);
-            use_rg = vorbis_update_replaygain(&rg_scale);
-
-            if (time != -1)
-                time = ov_time_total(&vf, -1) * 1000;
-
-            g_mutex_unlock(vf_mutex);
-
-            playback->set_params(playback, title, time, br, samplerate, channels);
-            timercount = playback->output->output_time();
-
-            last_section = current_section;
+        g_mutex_lock(vf_mutex);
+        if (use_rg) {
+            bytes =
+                ov_read_float(&vf, &pcm, sizeof(pcmout) / 2 / channels,
+                        &current_section);
+            if (bytes > 0)
+                bytes = vorbis_process_replaygain(pcm, bytes, channels,
+                        pcmout, rg_scale);
         }
-    }
-    if (!playback->error)
-        playback->output->close_audio();
+        else {
+            bytes = ov_read(&vf, pcmout, sizeof(pcmout),
+                    (int) (G_BYTE_ORDER == G_BIG_ENDIAN),
+                    2, 1, &current_section);
+        }
+
+        /*
+         * We got some sort of error. Bail.
+         */
+        if (bytes <= 0 && bytes != OV_HOLE) {
+           /*
+            * EOF
+            */
+            playback->playing = 0;
+            playback->output->buffer_free();
+            playback->output->buffer_free();
+            playback->eof = TRUE;
+            current_section = last_section;
+        }
+
+        
+
+        if (current_section <= last_section) {
+            /*
+             * The info struct is different in each section.  vf
+             * holds them all for the given bitstream.  This
+             * requests the current one
+             */
+            vorbis_info *vi = ov_info(&vf, -1);
+
+            if (vi->channels > 2) {
+                playback->eof = TRUE;
+                g_mutex_unlock(vf_mutex);
+                goto stop_processing;
+            }
+
+
+            if (vi->rate != samplerate || vi->channels != channels) {
+                samplerate = vi->rate;
+                channels = vi->channels;
+                playback->output->buffer_free();
+                playback->output->buffer_free();
+                playback->output->close_audio();
+                if (!playback->output->
+                        open_audio(FMT_S16_NE, vi->rate, vi->channels)) {
+                    playback->error = TRUE;
+                    playback->eof = TRUE;
+                    g_mutex_unlock(vf_mutex);
+                    goto stop_processing;
+                }
+                playback->output->flush(ov_time_tell(&vf) * 1000);
+            }
+        }
+
+        g_mutex_unlock(vf_mutex);
+
+        playback->pass_audio(playback, FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
+
+        if (!playback->playing)
+            goto stop_processing;
+
+        if (seekneeded != -1)
+            do_seek(playback);
+
+        stop_processing:
+   
+        if (current_section <= last_section) {
+        /*
+         * set total play time, bitrate, rate, and channels of
+         * current section
+         */
+        if (title)
+            g_free(title);
+
+        g_mutex_lock(vf_mutex);
+        title = vorbis_generate_title(&vf, filename);
+        use_rg = vorbis_update_replaygain(&rg_scale);
+
+        if (time != -1)
+            time = ov_time_total(&vf, -1) * 1000;
+
+        g_mutex_unlock(vf_mutex);
+   
+        playback->set_params(playback, title, time, br, samplerate, channels);
+
+        timercount = playback->output->output_time();
+
+        last_section = current_section;
+         
+        }
+}
+
+
+
+if (!playback->error)
+    playback->output->close_audio();
     /* fall through intentional */
 
-  play_cleanup:
-    g_free(title);
-
-    /*
-     * ov_clear closes the stream if its open.  Safe to call on an
-     * uninitialized structure as long as we've zeroed it
+    /*this loop makes it not skip the last ~4 seconds, but the playback 
+     * timer isn't updated in this period, so it still needs a bit of work 
+     *
+     * majeru
      */
+while(playback->output->buffer_playing()&& playback->output->buffer_free())
+    g_usleep(50000);
+
+
+play_cleanup:
+g_free(title);
+
+/*
+ * ov_clear closes the stream if its open.  Safe to call on an
+ * uninitialized structure as long as we've zeroed it
+ */
     g_mutex_lock(vf_mutex);
     ov_clear(&vf);
     g_mutex_unlock(vf_mutex);
     playback->playing = 0;
+    playback->output->buffer_free();
     return NULL;
 }
 
@@ -886,7 +898,7 @@ ovcb_close(void *datasource)
     if (handle->probe == FALSE)
     {
         ret = aud_vfs_fclose(handle->fd);
-//        g_free(handle); // it causes double free. i'm not really sure that commenting out at here is correct. --yaz
+/*        g_free(handle);  it causes double free. i'm not really sure that commenting out at here is correct. --yaz*/
     }
 
     return ret;
