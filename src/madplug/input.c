@@ -169,9 +169,9 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
         ret = g_malloc0(1024);
     }
 
-    for(ptr = (id3_ucs4_t *)string; *ptr != 0 && ptr <= tail; ptr++) {
+    for(ptr = (id3_ucs4_t *)string; ptr <= tail && *ptr != 0; ptr++) {
         if(*ptr == '(') {
-            if(*(++ptr) == '(') { // escaped text like: ((something)
+            if(ptr < tail && *(++ptr) == '(') { // escaped text like: ((something)
                 for(end = ptr; *end != ')' && *end != 0;) { // copy "(something)"
                     end++;
                 }
@@ -181,7 +181,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
                 *(ret + ret_len) = 0; //terminate
                 ptr = end + 1;
             }
-            else {
+            else if (ptr <= tail && *ptr != 0) {
                 // reference to an id3v1 genre code
                 for(end = ptr; *end != ')' && *end != 0;) {
                     end++;
@@ -199,7 +199,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 
                 tmp_len = mad_ucs4len(genre);
 
-                memcpy(ret + BYTES(ret_len), genre, BYTES(tmp_len));
+                memcpy(ret + ret_len, genre, BYTES(tmp_len));
 
                 ret_len += tmp_len;
                 *(ret + ret_len) = 0; //terminate
@@ -219,6 +219,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
                 }
                 tp++;
             }
+
             if(is_num) {
                 AUDDBG("is_num!\n");
 
@@ -235,7 +236,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
 
                 tmp_len = mad_ucs4len(genre);
 
-                memcpy(ret + BYTES(ret_len), genre, BYTES(tmp_len));
+                memcpy(ret + ret_len, genre, BYTES(tmp_len));
 
                 ret_len += tmp_len;
                 *(ret + ret_len) = 0; //terminate
@@ -245,7 +246,7 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
                 AUDDBG("ret_len = %d\n", ret_len);
                 AUDDBG("end - ptr = %d\n", BYTES(end - ptr));
 
-                memcpy(ret + BYTES(ret_len), ptr, BYTES(end - ptr));
+                memcpy(ret + ret_len, ptr, BYTES(end - ptr));
                 ret_len = ret_len + (end - ptr);
                 *(ret + ret_len) = 0; //terminate
                 ptr += (end - ptr);
