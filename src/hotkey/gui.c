@@ -46,34 +46,39 @@
 #include "gui.h"
 #include "grab.h"
 
-
-typedef struct {
+typedef struct _KeyControls {
 	GtkWidget *keytext;
+	GtkWidget *table;
+	GtkWidget *button;
+	GtkWidget *combobox;
+
 	HotkeyConfiguration hotkey;
+	struct _KeyControls *next, *prev, *first;
 } KeyControls;
-
-typedef struct {
-	KeyControls play;
-	KeyControls stop;
-	KeyControls pause;
-	KeyControls prev_track;
-	KeyControls next_track;
-	KeyControls vol_up;
-	KeyControls vol_down;
-	KeyControls mute;
-	KeyControls jump_to_file;
-	KeyControls forward;
-	KeyControls backward;
-	KeyControls toggle_win;
-	KeyControls show_aosd;
-} ConfigurationControls;
-
 
 
 static void clear_keyboard (GtkWidget *widget, gpointer data);
+static void add_callback (GtkWidget *widget, gpointer data);
 static void cancel_callback (GtkWidget *widget, gpointer data);
 static void destroy_callback (GtkWidget *widget, gpointer data);
 static void ok_callback (GtkWidget *widget, gpointer data);
+
+
+static gchar* event_desc[EVENT_MAX] = {
+	[EVENT_PREV_TRACK] = N_("Previous Track"),
+	[EVENT_PLAY] = N_("Play"),
+	[EVENT_PAUSE] = N_("Pause/Resume"),
+	[EVENT_STOP] = N_("Stop"),
+	[EVENT_NEXT_TRACK] = N_("Next Track"),
+	[EVENT_FORWARD] = N_("Forward 5 Seconds"),
+	[EVENT_BACKWARD] = N_("Rewind 5 Seconds"),
+	[EVENT_MUTE] = N_("Mute"),
+	[EVENT_VOL_UP] = N_("Volume Up"),
+	[EVENT_VOL_DOWN] = N_("Volume Down"),
+	[EVENT_JUMP_TO_FILE] = N_("Jump to File"),
+	[EVENT_TOGGLE_WIN] = N_("Toggle Player Windows"),
+	[EVENT_SHOW_AOSD] = N_("Show On-Screen-Display")
+};
 
 
 static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
@@ -132,6 +137,15 @@ on_entry_key_press_event(GtkWidget * widget,
 	int mod;
 
 	if (event->keyval == GDK_Tab) return FALSE;
+	if (event->keyval == GDK_Escape && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
+	if (event->keyval == GDK_Return && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
+	if (event->keyval == GDK_ISO_Left_Tab)
+	{
+		set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
+		return FALSE;
+	}
+	if (event->keyval == GDK_Up && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
+	if (event->keyval == GDK_Down && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
 
 	mod = 0;
 	is_mod = 0;
@@ -155,7 +169,10 @@ on_entry_key_press_event(GtkWidget * widget,
 		controls->hotkey.key = event->hardware_keycode;
 		controls->hotkey.mask = mod;
 		controls->hotkey.type = TYPE_KEY;
-	} else controls->hotkey.key = 0;
+		if (controls->next == NULL)
+			add_callback (NULL, (gpointer) controls);
+		else gtk_widget_grab_focus(GTK_WIDGET(controls->next->keytext));
+	}
 
 	set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode, mod, TYPE_KEY);
 	return TRUE;
@@ -167,11 +184,9 @@ on_entry_key_release_event(GtkWidget * widget,
                            gpointer user_data)
 {
 	KeyControls *controls = (KeyControls*) user_data;
-	if (controls->hotkey.key == 0) {
-		controls->hotkey.mask = 0;
-		return TRUE;
-	}
+	if (!gtk_widget_is_focus(widget)) return FALSE;
 	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
+
 	return TRUE;
 }
 
@@ -221,6 +236,9 @@ on_entry_button_press_event(GtkWidget * widget,
 	controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_MOUSE;
 	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
+	if (controls->next == NULL) 
+		add_callback (NULL, (gpointer) controls);
+
 	return TRUE;
 }
 
@@ -263,37 +281,58 @@ on_entry_scroll_event(GtkWidget * widget,
 	controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_MOUSE;
 	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
+	if (controls->next == NULL)
+		add_callback (NULL, (gpointer) controls);
 	return TRUE;
 }
 
-static void add_event_controls(GtkWidget *table, 
-				KeyControls *controls, 
+KeyControls* add_event_controls(KeyControls* list,
+				GtkWidget *table, 
 				int row, 
-				char* descr,
-				char* tooltip,
-				HotkeyConfiguration hotkey)
+				HotkeyConfiguration *hotkey)
 {
-	GtkWidget *label;
-	GtkWidget *button;
+	KeyControls *controls;
+	int i;
 
-	controls->hotkey.key = hotkey.key;
-	controls->hotkey.mask = hotkey.mask;
-	controls->hotkey.type = hotkey.type;
-	if (controls->hotkey.key == 0)
+	controls = (KeyControls*) g_malloc(sizeof(KeyControls));
+	controls->next = NULL;
+	controls->prev = list;
+	controls->first = list->first;
+	controls->table = table;
+	list->next = controls;
+
+	if (hotkey)
+	{
+		controls->hotkey.key = hotkey->key;
+		controls->hotkey.mask = hotkey->mask;
+		controls->hotkey.type = hotkey->type;
+		controls->hotkey.event = hotkey->event;
+		if (controls->hotkey.key == 0)
+			controls->hotkey.mask = 0;
+	} else {
+		controls->hotkey.key = 0;
 		controls->hotkey.mask = 0;
+		controls->hotkey.type = TYPE_KEY;
+		controls->hotkey.event = 0;
+	}
 
-	label = gtk_label_new (_(descr));
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1, 
-			(GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-	gtk_misc_set_padding (GTK_MISC (label), 3, 3);
-	
+	controls->combobox = gtk_combo_box_new_text();
+	for (i=0;i<EVENT_MAX;i++)
+	{
+		gtk_combo_box_append_text( GTK_COMBO_BOX(controls->combobox), event_desc[i] );
+	}
+	gtk_combo_box_set_active( GTK_COMBO_BOX(controls->combobox), controls->hotkey.event);
+	gtk_table_attach (GTK_TABLE (table), controls->combobox, 0, 1, row, row+1, 
+			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
+
+
 	controls->keytext = gtk_entry_new ();
 	gtk_table_attach (GTK_TABLE (table), controls->keytext, 1, 2, row, row+1, 
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 	gtk_entry_set_editable (GTK_ENTRY (controls->keytext), FALSE);
 
-	set_keytext(controls->keytext, hotkey.key, hotkey.mask, hotkey.type);
+
+	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
 	g_signal_connect((gpointer)controls->keytext, "key_press_event",
                          G_CALLBACK(on_entry_key_press_event), controls);
 	g_signal_connect((gpointer)controls->keytext, "key_release_event",
@@ -303,25 +342,23 @@ static void add_event_controls(GtkWidget *table,
 	g_signal_connect((gpointer)controls->keytext, "scroll_event",
                          G_CALLBACK(on_entry_scroll_event), controls);
 
-	button = gtk_button_new_with_label (_("None"));
-	gtk_table_attach (GTK_TABLE (table), button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
-	g_signal_connect (G_OBJECT (button), "clicked",
+
+	controls->button = gtk_button_new();
+	gtk_button_set_image( GTK_BUTTON(controls->button),
+                        gtk_image_new_from_stock( GTK_STOCK_DELETE , GTK_ICON_SIZE_BUTTON));
+	gtk_table_attach (GTK_TABLE (table), controls->button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
+	g_signal_connect (G_OBJECT (controls->button), "clicked",
 			G_CALLBACK (clear_keyboard), controls);
 
-	if (tooltip != NULL) {
-		GtkTooltips *tip = gtk_tooltips_new();
-		gtk_tooltips_set_tip(tip, controls->keytext, tooltip, NULL);
-		gtk_tooltips_set_tip(tip, button, tooltip, NULL);
-		gtk_tooltips_set_tip(tip, label, tooltip, NULL);
-	}
+	gtk_widget_grab_focus(GTK_WIDGET(controls->keytext));
+	return controls;
 }
 
 void show_configure ()
 {
-	ConfigurationControls *controls;
+	KeyControls *first_controls, *current_controls;
 	GtkWidget *window;
-	GtkWidget *main_vbox, *vbox;
-	GtkWidget *hbox;
+	GtkWidget *main_vbox, *hbox;
 	GtkWidget *alignment;
 	GtkWidget *frame;
 	GtkWidget *label;
@@ -329,6 +366,8 @@ void show_configure ()
 	GtkWidget *table;
 	GtkWidget *button_box, *button;
 	PluginConfig* plugin_cfg;
+	HotkeyConfiguration *hotkey, temphotkey;
+	int i;
 	
 	load_config ( );
 
@@ -336,19 +375,11 @@ void show_configure ()
 
 	ungrab_keys();
 	
-	controls = (ConfigurationControls*)g_malloc(sizeof(ConfigurationControls));
-	if (!controls)
-	{
-		printf ("Faild to allocate memory for ConfigurationControls structure!\n"
-			"Aborting!");
-		return;
-	}
-	
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (window), _("Global Hotkey Plugin Configuration"));
-	gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER_ALWAYS);
+	gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 	gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+	gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
 	gtk_container_set_border_width (GTK_CONTAINER (window), 5);
 	
 	main_vbox = gtk_vbox_new (FALSE, 4);
@@ -361,156 +392,215 @@ void show_configure ()
 	gtk_container_add (GTK_CONTAINER (alignment), hbox);
 	image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG);
 	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, TRUE, 0);
-	label = gtk_label_new (_("Press a key combination inside a text field."));
+	label = gtk_label_new (_("Press a key combination inside a text field.\nYou can also bind mouse buttons."));
 	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 	
 	label = gtk_label_new (NULL);
-	gtk_label_set_markup (GTK_LABEL (label), _("<b>Playback:</b>"));
+	gtk_label_set_markup (GTK_LABEL (label), _("Hotkeys:"));
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
+	alignment = gtk_alignment_new (0, 0, 1, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 3, 3, 3, 3);
-	vbox = gtk_vbox_new (FALSE, 2);
-	gtk_container_add (GTK_CONTAINER (alignment), vbox);
+
+	table = gtk_table_new (1, 3, FALSE);
+	gtk_container_add (GTK_CONTAINER (alignment), table);
+
+	gtk_table_set_col_spacings (GTK_TABLE (table), 2);
+	gtk_table_set_row_spacings (GTK_TABLE (table), 0);
+
 	label = gtk_label_new (NULL);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
 	gtk_label_set_markup (GTK_LABEL (label), 
-			_("<i>Configure keys which controls Audacious playback.</i>"));
-	table = gtk_table_new (4, 3, FALSE);
-	gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
-	gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-
-	/* prev track */
-	add_event_controls(table, &controls->prev_track, 0, _("Previous Track:"), NULL, 
-			plugin_cfg->prev_track);
-
-	add_event_controls(table, &controls->play, 1, _("Play:"), NULL, 
-			plugin_cfg->play);
-
-	add_event_controls(table, &controls->pause, 2, _("Pause/Resume:"), NULL,
-			plugin_cfg->pause);
-
-	add_event_controls(table, &controls->stop, 3, _("Stop:"), NULL,
-			plugin_cfg->stop);
-
-	add_event_controls(table, &controls->next_track, 4, _("Next Track:"), NULL,
-			plugin_cfg->next_track);
-
-	add_event_controls(table, &controls->forward, 5, _("Forward 5 sec.:"), NULL,
-			plugin_cfg->forward);
-
-	add_event_controls(table, &controls->backward, 6, _("Rewind 5 sec.:"), NULL,
-			plugin_cfg->backward);
-
+			_("<b>Action:</b>"));
+	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, 
+			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 
 	label = gtk_label_new (NULL);
-	gtk_label_set_markup (GTK_LABEL (label), _("<b>Volume Control:</b>"));
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, TRUE, 0);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
-	gtk_container_add (GTK_CONTAINER (frame), alignment);
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 3, 3, 3, 3);
-	vbox = gtk_vbox_new (FALSE, 2);
-	gtk_container_add (GTK_CONTAINER (alignment), vbox);
-	label = gtk_label_new (NULL);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
 	gtk_label_set_markup (GTK_LABEL (label), 
-			_("<i>Configure keys which controls music volume.</i>"));
-	table = gtk_table_new (3, 3, FALSE);
-	gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
-	gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-
-	add_event_controls(table, &controls->mute, 0, _("Mute:"),NULL, 
-			plugin_cfg->mute);
-
-	add_event_controls(table, &controls->vol_up, 1, _("Volume Up:"), NULL,
-			plugin_cfg->vol_up);
-
-	add_event_controls(table, &controls->vol_down, 2, _("Volume Down:"), NULL,
-			plugin_cfg->vol_down);
+			_("<b>Key Binding:</b>"));
+	gtk_table_attach (GTK_TABLE (table), label, 1, 2, 0, 1, 
+			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 
 
-	label = gtk_label_new (NULL);
-	gtk_label_set_markup (GTK_LABEL (label), _("<b>Player:</b>"));
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-	gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, TRUE, 0);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
-	gtk_container_add (GTK_CONTAINER (frame), alignment);
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 3, 3, 3, 3);
-	vbox = gtk_vbox_new (FALSE, 2);
-	gtk_container_add (GTK_CONTAINER (alignment), vbox);
-	label = gtk_label_new (NULL);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
-	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
-	gtk_label_set_markup (GTK_LABEL (label), 
-			_("<i>Configure keys which control the player.</i>"));
-	table = gtk_table_new (3, 3, FALSE);
-	gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
-	gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
+	hotkey = &(plugin_cfg->first);
+	i = 1;
+	first_controls = (KeyControls*) g_malloc(sizeof(KeyControls));
+	first_controls->next = NULL;
+	first_controls->prev = NULL;
+	first_controls->table = table;
+	first_controls->button = NULL;
+	first_controls->combobox = NULL;
+	first_controls->keytext = NULL;
+	first_controls->first = first_controls;
+	first_controls->hotkey.key = 0;
+	first_controls->hotkey.mask = 0;
+	first_controls->hotkey.event = 0;
+	first_controls->hotkey.type = TYPE_KEY;
+	current_controls = first_controls;
+	if (hotkey -> key != 0)
+	{
+		while (hotkey)
+		{
+			current_controls = add_event_controls(current_controls, table, i, hotkey);
+			hotkey = hotkey->next;
+			i++;
+		}
+	}
+	temphotkey.key = 0;
+	temphotkey.mask = 0;
+	temphotkey.type = TYPE_KEY;
+	if (current_controls != first_controls)
+		temphotkey.event = current_controls->hotkey.event+1;
+	else temphotkey.event = 0;
+	if (temphotkey.event >= EVENT_MAX) temphotkey.event = 0;
+	add_event_controls(current_controls, table, i, &temphotkey);
 
-	add_event_controls(table, &controls->jump_to_file, 0, _("Jump to File:"), NULL,
-			plugin_cfg->jump_to_file);
 
-	add_event_controls(table, &controls->toggle_win, 1, _("Toggle Player Windows:"), NULL,
-			plugin_cfg->toggle_win);
 
-	add_event_controls(table, &controls->show_aosd, 2, _("Show On-Screen-Display:"), 
-			_("For this, the Audacious OSD plugin must be activated."),
-			plugin_cfg->show_aosd);
+	hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, TRUE, 0);
 
 	button_box = gtk_hbutton_box_new ( );
-	gtk_box_pack_start (GTK_BOX (main_vbox), button_box, FALSE, TRUE, 6);
+	gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, TRUE, 0);
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_START);
+	gtk_box_set_spacing (GTK_BOX (button_box), 4);
+
+	button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+	gtk_container_add (GTK_CONTAINER (button_box), button);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			G_CALLBACK (add_callback), first_controls);
+
+	button_box = gtk_hbutton_box_new ( );
+	gtk_box_pack_start (GTK_BOX (hbox), button_box, TRUE, TRUE, 0);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing (GTK_BOX (button_box), 4);
-	
+
 	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_container_add (GTK_CONTAINER (button_box), button);
 	g_signal_connect (G_OBJECT (button), "clicked",
-			G_CALLBACK (cancel_callback), controls);
-	
+			G_CALLBACK (cancel_callback), NULL);
+
 	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_container_add (GTK_CONTAINER (button_box), button);
 	g_signal_connect (G_OBJECT (button), "clicked",
-			G_CALLBACK (ok_callback), controls);
+			G_CALLBACK (ok_callback), first_controls);
 
 	g_signal_connect (G_OBJECT (window), "destroy",
-		G_CALLBACK (destroy_callback), controls);
+		G_CALLBACK (destroy_callback), first_controls);
 
 	gtk_widget_show_all (GTK_WIDGET (window));
 }
 
 static void clear_keyboard (GtkWidget *widget, gpointer data)
 {
-	KeyControls *spins = (KeyControls*)data;
-	spins->hotkey.key = 0;
-	spins->hotkey.mask = 0;
-	spins->hotkey.type = TYPE_KEY;
-	set_keytext(spins->keytext, 0, 0, TYPE_KEY);
+	KeyControls *controls= (KeyControls*)data;
+	if ((controls->next == NULL) && (controls->prev->keytext == NULL))
+	{
+		controls->hotkey.key = 0;
+		controls->hotkey.mask = 0;
+		controls->hotkey.type = TYPE_KEY;
+		set_keytext(controls->keytext, 0, 0, TYPE_KEY);
+		gtk_combo_box_set_active( GTK_COMBO_BOX(controls->combobox), 0);
+		return;
+	}
+
+	if (controls->prev)
+	{
+		KeyControls* c;
+		GtkWidget* table;
+		int row;
+
+		gtk_widget_destroy(GTK_WIDGET(controls->button));
+		gtk_widget_destroy(GTK_WIDGET(controls->keytext));
+		gtk_widget_destroy(GTK_WIDGET(controls->combobox)); 
+
+		row=0;
+		c = controls->first;
+		while (c) {
+			if (c == controls) break;
+			row++;
+			c = c->next;
+		}
+		c = controls->next;
+		controls->prev->next = controls->next;
+		if (controls->next)
+			controls->next->prev = controls->prev;
+		g_free(controls);
+		if (c) table = c->table; else table = NULL;
+		while (c)
+		{
+			g_object_ref(c->combobox);
+			g_object_ref(c->keytext);
+			g_object_ref(c->button);
+
+			gtk_container_remove( GTK_CONTAINER(c->table) , c->combobox);
+			gtk_container_remove( GTK_CONTAINER(c->table) , c->keytext);
+			gtk_container_remove( GTK_CONTAINER(c->table) , c->button);
+
+			gtk_table_attach (GTK_TABLE (c->table), c->combobox, 0, 1, row, row+1, 
+					(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
+			gtk_table_attach (GTK_TABLE (c->table), c->keytext, 1, 2, row, row+1, 
+					(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
+			gtk_table_attach (GTK_TABLE (c->table), c->button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
+
+			g_object_unref(c->combobox);
+			g_object_unref(c->keytext);
+			g_object_unref(c->button);
+
+			c = c->next;
+			row++;
+		}
+		if (table)
+			gtk_widget_show_all (GTK_WIDGET (table));
+
+		return;
+	}
+}
+
+void add_callback (GtkWidget *widget, gpointer data)
+{
+	KeyControls* controls = (KeyControls*)data;
+	HotkeyConfiguration temphotkey;
+	int count;
+	if (controls == NULL) return;
+	if ((controls->next == NULL)&&(controls->hotkey.event+1 == EVENT_MAX)) return;
+	controls = controls->first;
+	if (controls == NULL) return;
+	count = 1;
+	while (controls->next) {
+		controls = controls->next;
+		count = count + 1;
+	}
+	temphotkey.key = 0;
+	temphotkey.mask = 0;
+	temphotkey.type = TYPE_KEY;
+	temphotkey.event = controls->hotkey.event+1;
+	if (temphotkey.event >= EVENT_MAX) temphotkey.event = 0;
+	gtk_table_resize(GTK_TABLE(controls->table), count, 3);
+	add_event_controls(controls, controls->table, count, &temphotkey);
+	gtk_widget_show_all (GTK_WIDGET (controls->table));
 }
 
 void destroy_callback (GtkWidget *widget, gpointer data)
 {
+	KeyControls* controls = (KeyControls*)data;
 	if (is_loaded())
 	{
 		grab_keys ();
 	}
-	if (data) g_free(data);
+	while (controls) {
+		KeyControls *old;
+		old = controls;
+		controls = controls->next;
+		g_free(old);
+	}
 }
 
 void cancel_callback (GtkWidget *widget, gpointer data)
@@ -520,23 +610,42 @@ void cancel_callback (GtkWidget *widget, gpointer data)
 
 void ok_callback (GtkWidget *widget, gpointer data)
 {
-	ConfigurationControls *controls= (ConfigurationControls*)data;
+	KeyControls *controls = (KeyControls*)data;
 	PluginConfig* plugin_cfg = get_config();
-
-	plugin_cfg->play = controls->play.hotkey;
-	plugin_cfg->pause = controls->pause.hotkey;
-	plugin_cfg->stop= controls->stop.hotkey;
-	plugin_cfg->prev_track= controls->prev_track.hotkey;
-	plugin_cfg->next_track = controls->next_track.hotkey;
-	plugin_cfg->forward = controls->forward.hotkey;
-	plugin_cfg->backward = controls->backward.hotkey;
-	plugin_cfg->vol_up= controls->vol_up.hotkey;
-	plugin_cfg->vol_down = controls->vol_down.hotkey;
-	plugin_cfg->mute = controls->mute.hotkey;
-	plugin_cfg->jump_to_file= controls->jump_to_file.hotkey;
-	plugin_cfg->toggle_win = controls->toggle_win.hotkey;
-	plugin_cfg->show_aosd = controls->show_aosd.hotkey;
+	HotkeyConfiguration *hotkey;
 	
+	hotkey = &(plugin_cfg->first);
+	hotkey = hotkey->next;
+	while (hotkey)
+	{
+		HotkeyConfiguration * old;
+		old = hotkey;
+		hotkey = hotkey->next;
+		free(old);
+	}
+	plugin_cfg->first.next = NULL;
+	plugin_cfg->first.key = 0;
+	plugin_cfg->first.event = 0;
+	plugin_cfg->first.mask = 0;
+
+	hotkey = &(plugin_cfg->first);
+	while (controls)
+	{
+		if (controls->hotkey.key) {
+			if (hotkey->key) {
+				hotkey->next = (HotkeyConfiguration*)
+					malloc(sizeof (HotkeyConfiguration));
+				hotkey = hotkey->next;
+				hotkey->next = NULL;
+			}
+			hotkey->key = controls->hotkey.key;
+			hotkey->mask = controls->hotkey.mask;
+			hotkey->event = gtk_combo_box_get_active( GTK_COMBO_BOX(controls->combobox) );
+			hotkey->type = controls->hotkey.type;
+		}
+		controls = controls->next;
+	}
+
 	save_config ( );
 	
 	gtk_widget_destroy (gtk_widget_get_toplevel (GTK_WIDGET (widget)));

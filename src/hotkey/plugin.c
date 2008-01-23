@@ -94,7 +94,7 @@ static void init (void)
 }
 
 /* handle keys */
-gboolean handle_keyevent (int keycode, int state, int type)
+gboolean handle_keyevent (EVENT event)
 {
 	gint current_volume, old_volume;
 	static gint volume_static = 0;
@@ -116,7 +116,7 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 
 	/* mute the playback */
-	if ((keycode == plugin_cfg.mute.key) && (state == plugin_cfg.mute.mask) && (type == plugin_cfg.mute.type))
+	if (event == EVENT_MUTE)
 	{
 		if (!mute)
 		{
@@ -131,7 +131,7 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 	
 	/* decreace volume */
-	if ((keycode == plugin_cfg.vol_down.key) && (state == plugin_cfg.vol_down.mask) && (type == plugin_cfg.vol_down.type))
+	if (event == EVENT_VOL_DOWN)
 	{
 		if (mute)
 		{
@@ -155,7 +155,7 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 	
 	/* increase volume */
-	if ((keycode == plugin_cfg.vol_up.key) && (state == plugin_cfg.vol_up.mask) && (type == plugin_cfg.vol_up.type))
+	if (event == EVENT_VOL_UP)
 	{
 		if (mute)
 		{
@@ -179,14 +179,14 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 	
 	/* play */
-	if ((keycode == plugin_cfg.play.key) && (state == plugin_cfg.play.mask) && (type == plugin_cfg.play.type))
+	if (event == EVENT_PLAY)
 	{
 		audacious_drct_play ();
 		return TRUE;
 	}
 
 	/* pause */
-	if ((keycode == plugin_cfg.pause.key) && (state == plugin_cfg.pause.mask) && (type == plugin_cfg.pause.type))
+	if (event == EVENT_PAUSE)
 	{
 		if (!play) audacious_drct_play ();
 		else audacious_drct_pause ();
@@ -195,28 +195,28 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 	
 	/* stop */
-	if ((keycode == plugin_cfg.stop.key) && (state == plugin_cfg.stop.mask) && (type == plugin_cfg.stop.type))
+	if (event == EVENT_STOP)
 	{
 		audacious_drct_stop ();
 		return TRUE;
 	}
 	
 	/* prev track */	
-	if ((keycode == plugin_cfg.prev_track.key) && (state == plugin_cfg.prev_track.mask) && (type == plugin_cfg.prev_track.type))
+	if (event == EVENT_PREV_TRACK)
 	{
 		audacious_drct_playlist_prev ();
 		return TRUE;
 	}
 	
 	/* next track */
-	if ((keycode == plugin_cfg.next_track.key) && (state == plugin_cfg.next_track.mask) && (type == plugin_cfg.next_track.type))
+	if (event == EVENT_NEXT_TRACK)
 	{
 		audacious_drct_playlist_next ();
 		return TRUE;
 	}
 
 	/* forward */
-	if ((keycode == plugin_cfg.forward.key) && (state == plugin_cfg.forward.mask) && (type == plugin_cfg.forward.type))
+	if (event == EVENT_FORWARD)
 	{
 		gint time = audacious_drct_get_output_time();
 		time += 5000; /* Jump 5s into future */
@@ -225,7 +225,7 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 
 	/* backward */
-	if ((keycode == plugin_cfg.backward.key) && (state == plugin_cfg.backward.mask) && (type == plugin_cfg.backward.type))
+	if (event == EVENT_BACKWARD)
 	{
 		gint time = audacious_drct_get_output_time();
 		if (time > 5000) time -= 5000; /* Jump 5s back */
@@ -235,14 +235,14 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 
 	/* Open Jump-To-File dialog */
-	if ((keycode == plugin_cfg.jump_to_file.key) && (state == plugin_cfg.jump_to_file.mask) && (type == plugin_cfg.jump_to_file.type))
+	if (event == EVENT_JUMP_TO_FILE)
 	{
 		audacious_drct_show_jtf_box();
 		return TRUE;
 	}
 
 	/* Toggle Windows */
-	if ((keycode == plugin_cfg.toggle_win.key) && (state == plugin_cfg.toggle_win.mask) && (type == plugin_cfg.toggle_win.type))
+	if (event == EVENT_TOGGLE_WIN)
 	{
 		static gboolean is_main, is_eq, is_pl;
 		is_main = audacious_drct_main_win_is_visible();
@@ -262,7 +262,7 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	}
 
 	/* Show OSD through AOSD plugin*/
-	if ((keycode == plugin_cfg.show_aosd.key) && (state == plugin_cfg.show_aosd.mask) && (type == plugin_cfg.show_aosd.type))
+	if (event == EVENT_SHOW_AOSD)
 	{
 		aud_hook_call("aosd toggle", NULL);
 		return TRUE;
@@ -271,40 +271,106 @@ gboolean handle_keyevent (int keycode, int state, int type)
 	return FALSE;
 }
 
+void add_hotkey(HotkeyConfiguration** pphotkey, KeySym keysym, gint mask, gint type, EVENT event)
+{
+	KeyCode keycode;
+	HotkeyConfiguration *photkey;
+	if (keysym == 0) return;
+	if (pphotkey == NULL) return;
+	photkey = *pphotkey;
+	if (photkey == NULL) return;
+	keycode = XKeysymToKeycode(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), keysym);
+	if (keycode == 0) return;
+	if (photkey->key) {
+		photkey->next = (HotkeyConfiguration*)
+			malloc(sizeof (HotkeyConfiguration));
+		photkey = photkey->next;
+		*pphotkey = photkey;
+		photkey->next = NULL;
+	}
+	photkey->key = (gint)keycode;
+	photkey->mask = mask;
+	photkey->event = event;
+	photkey->type = type;
+}
+
+void load_defaults (void)
+{
+	HotkeyConfiguration* hotkey;
+
+	hotkey = &(plugin_cfg.first);
+
+	add_hotkey(&hotkey, XF86XK_AudioPrev, 0, TYPE_KEY, EVENT_PREV_TRACK);
+	add_hotkey(&hotkey, XF86XK_AudioPlay, 0, TYPE_KEY, EVENT_PLAY);
+	add_hotkey(&hotkey, XF86XK_AudioPause, 0, TYPE_KEY, EVENT_PAUSE);
+	add_hotkey(&hotkey, XF86XK_AudioStop, 0, TYPE_KEY, EVENT_STOP);
+	add_hotkey(&hotkey, XF86XK_AudioNext, 0, TYPE_KEY, EVENT_NEXT_TRACK);
+
+/*	add_hotkey(&hotkey, XF86XK_AudioRewind, 0, TYPE_KEY, EVENT_BACKWARD); */
+
+	add_hotkey(&hotkey, XF86XK_AudioMute, 0, TYPE_KEY, EVENT_MUTE);
+	add_hotkey(&hotkey, XF86XK_AudioRaiseVolume, 0, TYPE_KEY, EVENT_VOL_UP);
+	add_hotkey(&hotkey, XF86XK_AudioLowerVolume, 0, TYPE_KEY, EVENT_VOL_DOWN);
+
+/*	add_hotkey(&hotkey, XF86XK_AudioMedia, 0, TYPE_KEY, EVENT_JUMP_TO_FILE);
+	add_hotkey(&hotkey, XF86XK_Music, 0, TYPE_KEY, EVENT_TOGGLE_WIN); */
+}
+
 /* load plugin configuration */
 void load_config (void)
 {
 	ConfigDb *cfdb;
+	HotkeyConfiguration *hotkey;
+	int i,max;
 	
 	/* default volume level */
 	plugin_cfg.vol_increment = 4;
 	plugin_cfg.vol_decrement = 4;
 
-#define load_key(hotkey,default) \
-	plugin_cfg.hotkey.key = (default)?(XKeysymToKeycode(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), (default))):0; \
-	plugin_cfg.hotkey.mask = 0; \
-	plugin_cfg.hotkey.type = TYPE_KEY; \
-	aud_cfg_db_get_int (cfdb, "globalHotkey", #hotkey, &plugin_cfg.hotkey.key); \
-	aud_cfg_db_get_int (cfdb, "globalHotkey", #hotkey "_mask", &plugin_cfg.hotkey.mask); \
-	aud_cfg_db_get_int (cfdb, "globalHotkey", #hotkey "_type", &plugin_cfg.hotkey.type);
-
-
 	/* open configuration database */
 	cfdb = aud_cfg_db_open ( );
+	hotkey = &(plugin_cfg.first);
+	hotkey->next = NULL;
+	hotkey->key = 0;
+	hotkey->mask = 0;
+	hotkey->event = 0;
+	hotkey->type = TYPE_KEY;
+	max = 0;
+	aud_cfg_db_get_int (cfdb, "globalHotkey", "NumHotkeys", &max);
+	if (max == 0)
+		load_defaults();
+	else for (i=0; i<max; i++)
+	{
+		gchar *text = NULL;
+		gint value;
+		if (hotkey->key) {
+			hotkey->next = (HotkeyConfiguration*)
+				malloc(sizeof (HotkeyConfiguration));
+			hotkey = hotkey->next;
+			hotkey->next = NULL;
+			hotkey->key = 0;
+			hotkey->mask = 0;
+			hotkey->event = 0;
+			hotkey->type = TYPE_KEY;
+		}
+		text = g_strdup_printf("Hotkey_%d_key", i);
+		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &(hotkey->key));
+		g_free(text);
 
-	load_key(mute, XF86XK_AudioMute);
-	load_key(vol_down, XF86XK_AudioLowerVolume);
-	load_key(vol_up, XF86XK_AudioRaiseVolume);
-	load_key(play, XF86XK_AudioPlay);
-	load_key(pause, XF86XK_AudioPause);
-	load_key(stop, XF86XK_AudioStop);
-	load_key(prev_track, XF86XK_AudioPrev);
-	load_key(next_track, XF86XK_AudioNext);
-	load_key(jump_to_file, XF86XK_AudioMedia);
-	load_key(toggle_win, 0);
-	load_key(forward, 0);
-	load_key(backward, XF86XK_AudioRewind);
-	load_key(show_aosd, 0);
+		text = g_strdup_printf("Hotkey_%d_mask", i);
+		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &(hotkey->mask));
+		g_free(text);
+
+		text = g_strdup_printf("Hotkey_%d_type", i);
+		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &(hotkey->type));
+		g_free(text);
+
+		text = g_strdup_printf("Hotkey_%d_event", i);
+		value = (gint)hotkey->event;
+		aud_cfg_db_get_int (cfdb, "globalHotkey", text, &value);
+		hotkey->event = (EVENT) value;
+		g_free(text);
+	}
 
 	aud_cfg_db_close (cfdb);
 }
@@ -313,37 +379,60 @@ void load_config (void)
 void save_config (void)
 {
 	ConfigDb *cfdb;
+	int max;
+	HotkeyConfiguration *hotkey;
 
-#define save_key(hotkey) \
-	aud_cfg_db_set_int (cfdb, "globalHotkey", #hotkey, plugin_cfg.hotkey.key); \
-	aud_cfg_db_set_int (cfdb, "globalHotkey", #hotkey "_mask", plugin_cfg.hotkey.mask); \
-	aud_cfg_db_set_int (cfdb, "globalHotkey", #hotkey "_type", plugin_cfg.hotkey.type);
-	
 	/* open configuration database */
 	cfdb = aud_cfg_db_open ( );
-	
-	save_key(mute);
-	save_key(vol_up);
-	save_key(vol_down);
-	save_key(play);
-	save_key(pause);
-	save_key(stop);
-	save_key(prev_track);
-	save_key(next_track);
-	save_key(jump_to_file);
-	save_key(forward);
-	save_key(backward);
-	save_key(toggle_win);
-	save_key(show_aosd);
+	hotkey = &(plugin_cfg.first);
+	max = 0;
+	while (hotkey) {
+		gchar *text = NULL;
+		if (hotkey->key) {
+			text = g_strdup_printf("Hotkey_%d_key", max);
+			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->key);
+			g_free(text);
+
+			text = g_strdup_printf("Hotkey_%d_mask", max);
+			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->mask);
+			g_free(text);
+
+			text = g_strdup_printf("Hotkey_%d_type", max);
+			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->type);
+			g_free(text);
+
+			text = g_strdup_printf("Hotkey_%d_event", max);
+			aud_cfg_db_set_int (cfdb, "globalHotkey", text, hotkey->event);
+			g_free(text);
+			max++;
+		}
+
+		hotkey = hotkey->next;
+	}
+	aud_cfg_db_set_int (cfdb, "globalHotkey", "NumHotkeys", max);
 
 	aud_cfg_db_close (cfdb);
 }
 
 static void cleanup (void)
 {
+	HotkeyConfiguration* hotkey;
 	if (!loaded) return;
 	ungrab_keys ();
 	release_filter();
+	hotkey = &(plugin_cfg.first);
+	hotkey = hotkey->next;
+	while (hotkey)
+	{
+		HotkeyConfiguration * old;
+		old = hotkey;
+		hotkey = hotkey->next;
+		free(old);
+	}
+	plugin_cfg.first.next = NULL;
+	plugin_cfg.first.key = 0;
+	plugin_cfg.first.event = 0;
+	plugin_cfg.first.mask = 0;
 	loaded = FALSE;
 }
 
