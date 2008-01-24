@@ -191,11 +191,16 @@ static void grab_key(const HotkeyConfiguration *hotkey, Display *xdisplay, Windo
 
 void grab_keys ( )
 {
-	Display* xdisplay = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-	Window x_root_window = GDK_WINDOW_XID(gdk_get_default_root_window());
+	GdkDisplay* display;
+	Display* xdisplay;
+	GdkWindow *root_window;
+	int i;
 	PluginConfig* plugin_cfg = get_config();
 	HotkeyConfiguration *hotkey;
+
 	XErrorHandler old_handler = 0;
+	display = gdk_display_get_default();
+ 	xdisplay = GDK_DISPLAY_XDISPLAY(display);
 
 	if (grabbed) return;
 
@@ -207,7 +212,11 @@ void grab_keys ( )
 	hotkey = &(plugin_cfg->first);
 	while (hotkey)
 	{
-		grab_key(hotkey, xdisplay, x_root_window);
+		for (i=0;i<gdk_display_get_n_screens(display);i++)
+		{
+			root_window = gdk_screen_get_root_window(gdk_display_get_screen(display, i));
+			grab_key(hotkey, xdisplay, GDK_WINDOW_XID(root_window));
+		}
 		hotkey = hotkey->next;
 	}
 
@@ -286,11 +295,16 @@ static void ungrab_key(HotkeyConfiguration *hotkey, Display* xdisplay, Window x_
 
 void ungrab_keys ( )
 {
-	XErrorHandler old_handler = 0;
-	Display* xdisplay = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-	Window x_root_window = GDK_WINDOW_XID(gdk_get_default_root_window());
+	GdkDisplay* display;
+	Display* xdisplay;
+	GdkWindow *root_window;
+	int i;
 	PluginConfig* plugin_cfg = get_config();
 	HotkeyConfiguration *hotkey;
+
+	XErrorHandler old_handler = 0;
+	display = gdk_display_get_default();
+ 	xdisplay = GDK_DISPLAY_XDISPLAY(display);
 
 	if (!grabbed) return;
 	if (!xdisplay) return;
@@ -303,7 +317,11 @@ void ungrab_keys ( )
 	hotkey = &(plugin_cfg->first);
 	while (hotkey)
 	{
-		ungrab_key(hotkey, xdisplay, x_root_window);
+		for (i=0;i<gdk_display_get_n_screens(display);i++)
+		{
+			root_window = gdk_screen_get_root_window(gdk_display_get_screen(display, i));
+			ungrab_key(hotkey, xdisplay, GDK_WINDOW_XID(root_window));
+		}
 		hotkey = hotkey->next;
 	}
 
