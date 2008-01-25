@@ -191,16 +191,13 @@ static void grab_key(const HotkeyConfiguration *hotkey, Display *xdisplay, Windo
 
 void grab_keys ( )
 {
-	GdkDisplay* display;
 	Display* xdisplay;
-	GdkWindow *root_window;
-	int i;
+	int screen;
 	PluginConfig* plugin_cfg = get_config();
 	HotkeyConfiguration *hotkey;
 
 	XErrorHandler old_handler = 0;
-	display = gdk_display_get_default();
- 	xdisplay = GDK_DISPLAY_XDISPLAY(display);
+ 	xdisplay = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
 	if (grabbed) return;
 
@@ -212,10 +209,9 @@ void grab_keys ( )
 	hotkey = &(plugin_cfg->first);
 	while (hotkey)
 	{
-		for (i=0;i<gdk_display_get_n_screens(display);i++)
+		for (screen=0;screen<ScreenCount(xdisplay);screen++)
 		{
-			root_window = gdk_screen_get_root_window(gdk_display_get_screen(display, i));
-			grab_key(hotkey, xdisplay, GDK_WINDOW_XID(root_window));
+			grab_key(hotkey, xdisplay, RootWindow(xdisplay, screen));
 		}
 		hotkey = hotkey->next;
 	}
@@ -295,16 +291,13 @@ static void ungrab_key(HotkeyConfiguration *hotkey, Display* xdisplay, Window x_
 
 void ungrab_keys ( )
 {
-	GdkDisplay* display;
 	Display* xdisplay;
-	GdkWindow *root_window;
-	int i;
+	int screen;
 	PluginConfig* plugin_cfg = get_config();
 	HotkeyConfiguration *hotkey;
 
 	XErrorHandler old_handler = 0;
-	display = gdk_display_get_default();
- 	xdisplay = GDK_DISPLAY_XDISPLAY(display);
+ 	xdisplay = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
 	if (!grabbed) return;
 	if (!xdisplay) return;
@@ -317,10 +310,9 @@ void ungrab_keys ( )
 	hotkey = &(plugin_cfg->first);
 	while (hotkey)
 	{
-		for (i=0;i<gdk_display_get_n_screens(display);i++)
+		for (screen=0;screen<ScreenCount(xdisplay);screen++)
 		{
-			root_window = gdk_screen_get_root_window(gdk_display_get_screen(display, i));
-			ungrab_key(hotkey, xdisplay, GDK_WINDOW_XID(root_window));
+			ungrab_key(hotkey, xdisplay, RootWindow(xdisplay, screen));
 		}
 		hotkey = hotkey->next;
 	}
@@ -387,16 +379,32 @@ gdk_filter(GdkXEvent *xevent,
 
 gboolean setup_filter()
 {
-	gdk_window_add_filter(gdk_get_default_root_window(),
-				gdk_filter,
-				NULL);
+	GdkDisplay *display;
+	int screen;
+
+	display = gdk_display_get_default();
+
+	for (screen = 0; screen<gdk_display_get_n_screens(display); screen++)
+	{
+		gdk_window_add_filter(gdk_screen_get_root_window(gdk_display_get_screen(display, screen)),
+					gdk_filter,
+					NULL);
+	}
 
 	return TRUE;
 }
 
 void release_filter()
 {
-	gdk_window_remove_filter(gdk_get_default_root_window(),
-				gdk_filter,
-				NULL);
+	GdkDisplay *display;
+	int screen;
+
+	display = gdk_display_get_default();
+
+	for (screen = 0; screen<gdk_display_get_n_screens(display); screen++)
+	{
+		gdk_window_remove_filter(gdk_screen_get_root_window(gdk_display_get_screen(display, screen)),
+					gdk_filter,
+					NULL);
+	}
 }
