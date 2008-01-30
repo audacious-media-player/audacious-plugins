@@ -733,7 +733,6 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
 
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
     aud_tuple_associate_int(tuple, FIELD_BITRATE, NULL, myinfo.bitrate / 1000);
-    g_free(string);
 
     string = g_strdup_printf("MPEG-1 Audio Layer %d", myinfo.mpeg_layer);
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, string);

@@ -386,6 +386,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
     else if (info->vbr && xing_bitrate == 0 && bitrate_frames != 0) {
         info->bitrate = accum_bitrate / bitrate_frames;
     }
+    
+    aud_tuple_associate_int(info->tuple, FIELD_BITRATE, NULL, info->bitrate / 1000);
 
     mad_frame_finish(&frame);
     mad_header_finish(&header);
