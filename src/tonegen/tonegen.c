@@ -111,7 +111,7 @@ static void* play_loop(void *arg)
 					tone[j].t -= tone[j].period;
 				tone[j].t++;
 			}
-			data[i] = (sum_sines / (double)frequencies->len);
+			data[i] = (sum_sines * 0.999 / (double)frequencies->len); /* dithering can cause a little bit of clipping */
 		}
 		playback->pass_audio(playback, FMT_FLOAT, 1, BUF_BYTES, data, &going);
 	}
