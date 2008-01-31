@@ -73,13 +73,13 @@ static int tone_is_our_file(char *filename)
 }
 
 #define BUF_SAMPLES 512
-#define BUF_BYTES BUF_SAMPLES * 2
+#define BUF_BYTES BUF_SAMPLES * sizeof(float)
 
 static void* play_loop(void *arg)
 {
         InputPlayback *playback = arg;
 	GArray* frequencies = playback->data;
-	gint16 data[BUF_SAMPLES];
+	float data[BUF_SAMPLES];
 	gsize i;
 	struct {
 		double wd;
@@ -111,10 +111,9 @@ static void* play_loop(void *arg)
 					tone[j].t -= tone[j].period;
 				tone[j].t++;
 			}
-			data[i] = rint(((1 << 15) - 1) *
-				       (sum_sines / frequencies->len));
+			data[i] = (sum_sines / (double)frequencies->len);
 		}
-		playback->pass_audio(playback, FMT_S16_NE, 1, BUF_BYTES, data, &going);
+		playback->pass_audio(playback, FMT_FLOAT, 1, BUF_BYTES, data, &going);
 	}
 
 	g_array_free(frequencies, TRUE);
@@ -193,7 +192,7 @@ static void tone_play(InputPlayback *playback)
 
  	going = TRUE;
 	audio_error = FALSE;
-	if (playback->output->open_audio(FMT_S16_NE, OUTPUT_FREQ, 1) == 0)
+	if (playback->output->open_audio(FMT_FLOAT, OUTPUT_FREQ, 1) == 0)
 	{
 		audio_error = TRUE;
 		going = FALSE;
