@@ -45,7 +45,9 @@ static inline signed int
 scale(mad_fixed_t sample, struct mad_info_t *file_info)
 {
     gdouble scale = -1;
+#ifdef AUD_DEBUG
     static int i = 0;
+#endif
 
     if (audmad_config->replaygain.enable) {
         if (file_info->has_replaygain) {
@@ -63,8 +65,10 @@ scale(mad_fixed_t sample, struct mad_info_t *file_info)
             scale *= audmad_config->replaygain.preamp1_scale;
 
             if (audmad_config->replaygain.anti_clip) {
+#ifdef AUD_DEBUG
                 if(i%100000 == 0)
                     AUDDBG("track_peak = %f\n", file_info->replaygain_track_peak);
+#endif
                 if(scale * file_info->replaygain_track_peak >= 1.0)
                     scale = 1.0 / file_info->replaygain_track_peak;
             }
@@ -82,17 +86,20 @@ scale(mad_fixed_t sample, struct mad_info_t *file_info)
     if (audmad_config->replaygain.preamp0_scale != 1)
         scale = scale * audmad_config->replaygain.preamp0_scale;
 
+#ifdef AUD_DEBUG
     if(i%100000 == 0) {
         AUDDBG("scale = %f\n", scale);
     }
+#endif
 
     /* hard-limit (clipping-prevention) */
     if (audmad_config->replaygain.hard_limit) {
 
+#ifdef AUD_DEBUG
         if(i%100000 == 0) {
             AUDDBG("hard_limit\n");
         }
-
+#endif
         /* convert to double before computation, to avoid mad_fixed_t wrapping */
         double x = mad_f_todouble(sample) * scale;
         static const double k = 0.5;    // -6dBFS
@@ -104,15 +111,19 @@ scale(mad_fixed_t sample, struct mad_info_t *file_info)
         }
         sample = x * (MAD_F_ONE);
 
+#ifdef AUD_DEBUG
         if(i%100000 == 0) {
             AUDDBG("x = %f sample = %d\n", x, sample);
         }
+#endif
 
     }
     else
         sample *= scale;
 
+#ifdef AUD_DEBUG
     i++;
+#endif
 
     int n_bits_to_loose = MAD_F_FRACBITS + 1 - 16;
 
