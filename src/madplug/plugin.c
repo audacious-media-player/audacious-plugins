@@ -40,7 +40,7 @@
 /*
  * Global variables
  */
-struct audmad_config_t audmad_config;   /**< global configuration */
+audmad_config_t *audmad_config;   /**< global configuration */
 GMutex *mad_mutex;
 GMutex *pb_mutex;
 GCond *mad_cond;
@@ -79,7 +79,8 @@ static gint mp3_samplerate_table[4][4] = {
  *    filename has no extension.
  *
  */
-static gchar *extname(const char *filename)
+static gchar *
+extname(const char *filename)
 {
     gchar *ext = strrchr(filename, '.');
 
@@ -90,7 +91,8 @@ static gchar *extname(const char *filename)
 }
 
 
-void audmad_config_compute(struct audmad_config_t *config)
+void
+audmad_config_compute(audmad_config_t *config)
 {
     /* set some config parameters by parsing text fields
        (RG default gain, etc..)
@@ -98,64 +100,92 @@ void audmad_config_compute(struct audmad_config_t *config)
     const gchar *text;
     gdouble x;
 
-    text = config->pregain_db;
+    text = config->replaygain.preamp0_db;
     if ( text != NULL )
       x = g_strtod(text, NULL);
     else
       x = 0;
-    config->pregain_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-    AUDDBG("pregain=[%s] -> %g  -> %g\n", text, x, config->pregain_scale);
-    text = config->replaygain.default_db;
+    config->replaygain.preamp0_scale = (x != 0) ? pow(10.0, x / 20) : 1;
+    AUDDBG("RG.preamp0=[%s] -> %g  -> %g\n", text, x, config->preamp0_scale);
+
+    text = config->replaygain.preamp1_db;
     if ( text != NULL )
       x = g_strtod(text, NULL);
     else
       x = 0;
-    config->replaygain.default_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-    AUDDBG("RG.default=[%s] -> %g  -> %g\n", text, x,
-              config->replaygain.default_scale);
+    config->replaygain.preamp1_scale = (x != 0) ? pow(10.0, x / 20) : 1;
+    AUDDBG("RG.preamp1=[%s] -> %g  -> %g\n", text, x,
+              config->replaygain.preamp1_scale);
+
+    text = config->replaygain.preamp2_db;
+    if ( text != NULL )
+      x = g_strtod(text, NULL);
+    else
+      x = 0;
+    config->replaygain.preamp2_scale = (x != 0) ? pow(10.0, x / 20) : 1;
+    AUDDBG("RG.preamp2=[%s] -> %g  -> %g\n", text, x,
+              config->replaygain.preamp2_scale);
 }
 
-static void audmad_init()
+static void
+audmad_init()
 {
     ConfigDb *db = NULL;
 
-    audmad_config.fast_play_time_calc = TRUE;
-    audmad_config.use_xing = TRUE;
-    audmad_config.dither = TRUE;
-    audmad_config.sjis = FALSE;
-    audmad_config.hard_limit = FALSE;
-    audmad_config.replaygain.enable = TRUE;
-    audmad_config.replaygain.track_mode = FALSE;
-    audmad_config.title_override = FALSE;
-    audmad_config.show_avg_vbr_bitrate = TRUE;
-    audmad_config.force_reopen_audio = FALSE;
+    audmad_config = g_malloc0(sizeof(audmad_config_t));
+
+    audmad_config->dither = TRUE;
+    audmad_config->force_reopen_audio = FALSE;
+    audmad_config->fast_play_time_calc = TRUE;
+    audmad_config->use_xing = TRUE;
+    audmad_config->sjis = FALSE;
+    audmad_config->show_avg_vbr_bitrate = TRUE;
+    audmad_config->replaygain.enable = TRUE;
+    audmad_config->replaygain.track_mode = FALSE;
+    audmad_config->replaygain.anti_clip = FALSE;
+    audmad_config->replaygain.hard_limit = FALSE;
+    audmad_config->title_override = FALSE;
+
 
     db = aud_cfg_db_open();
     if (db) {
-        aud_cfg_db_get_bool(db, "MAD", "fast_play_time_calc",
-                            &audmad_config.fast_play_time_calc);
-        aud_cfg_db_get_bool(db, "MAD", "use_xing",
-                            &audmad_config.use_xing);
-        aud_cfg_db_get_bool(db, "MAD", "dither", &audmad_config.dither);
-        aud_cfg_db_get_bool(db, "MAD", "sjis", &audmad_config.sjis);
-        aud_cfg_db_get_bool(db, "MAD", "hard_limit",
-                            &audmad_config.hard_limit);
-        aud_cfg_db_get_string(db, "MAD", "pregain_db",
-                              &audmad_config.pregain_db);
-        aud_cfg_db_get_bool(db, "MAD", "RG.enable",
-                            &audmad_config.replaygain.enable);
-        aud_cfg_db_get_bool(db, "MAD", "RG.track_mode",
-                            &audmad_config.replaygain.track_mode);
-        aud_cfg_db_get_string(db, "MAD", "RG.default_db",
-                              &audmad_config.replaygain.default_db);
-        aud_cfg_db_get_bool(db, "MAD", "title_override",
-                            &audmad_config.title_override);
-        aud_cfg_db_get_string(db, "MAD", "id3_format",
-                              &audmad_config.id3_format);
-        aud_cfg_db_get_bool(db, "MAD", "show_avg_vbr_bitrate",
-                            &audmad_config.show_avg_vbr_bitrate);
+        //audio
+        aud_cfg_db_get_bool(db, "MAD", "dither", &audmad_config->dither);
         aud_cfg_db_get_bool(db, "MAD", "force_reopen_audio",
-                            &audmad_config.force_reopen_audio);
+                            &audmad_config->force_reopen_audio);
+
+        //metadata
+        aud_cfg_db_get_bool(db, "MAD", "fast_play_time_calc",
+                            &audmad_config->fast_play_time_calc);
+        aud_cfg_db_get_bool(db, "MAD", "use_xing",
+                            &audmad_config->use_xing);
+        aud_cfg_db_get_bool(db, "MAD", "sjis", &audmad_config->sjis);
+
+        //misc
+        aud_cfg_db_get_bool(db, "MAD", "show_avg_vbr_bitrate",
+                            &audmad_config->show_avg_vbr_bitrate);
+
+        //gain control
+        aud_cfg_db_get_string(db, "MAD", "RG.preamp0_db",
+                              &audmad_config->replaygain.preamp0_db);
+        aud_cfg_db_get_bool(db, "MAD", "RG.enable",
+                            &audmad_config->replaygain.enable);
+        aud_cfg_db_get_bool(db, "MAD", "RG.track_mode",
+                            &audmad_config->replaygain.track_mode);
+        aud_cfg_db_get_string(db, "MAD", "RG.preamp1_db",
+                              &audmad_config->replaygain.preamp1_db);
+        aud_cfg_db_get_string(db, "MAD", "RG.preamp2_db",
+                              &audmad_config->replaygain.preamp2_db);
+        aud_cfg_db_get_bool(db, "MAD", "RG.anti_clip",
+                            &audmad_config->replaygain.anti_clip);
+        aud_cfg_db_get_bool(db, "MAD", "RG.hard_limit",
+                            &audmad_config->replaygain.hard_limit);
+
+        //text
+        aud_cfg_db_get_bool(db, "MAD", "title_override",
+                            &audmad_config->title_override);
+        aud_cfg_db_get_string(db, "MAD", "id3_format",
+                              &audmad_config->id3_format);
 
         aud_cfg_db_close(db);
     }
@@ -163,38 +193,40 @@ static void audmad_init()
     mad_mutex = g_mutex_new();
     pb_mutex = g_mutex_new();
     mad_cond = g_cond_new();
-    audmad_config_compute(&audmad_config);
+    audmad_config_compute(audmad_config);
 
-    if (!audmad_config.pregain_db)
-        audmad_config.pregain_db = g_strdup("+0.00");
+    if (!audmad_config->replaygain.preamp0_db)
+        audmad_config->replaygain.preamp0_db = g_strdup("+0.00");
 
-    if (!audmad_config.replaygain.default_db)
-        audmad_config.replaygain.default_db = g_strdup("-9.00");
+    if (!audmad_config->replaygain.preamp1_db)
+        audmad_config->replaygain.preamp1_db = g_strdup("+6.00");
+    if (!audmad_config->replaygain.preamp2_db)
+        audmad_config->replaygain.preamp2_db = g_strdup("+0.00");
 
-    if (!audmad_config.id3_format)
-        audmad_config.id3_format = g_strdup("");
+    if (!audmad_config->id3_format)
+        audmad_config->id3_format = g_strdup("(none)");
 
     init_gen_rand(4357);
 
     aud_mime_set_plugin("audio/mpeg", mad_plugin);
 }
 
-static void audmad_cleanup()
+static void
+audmad_cleanup()
 {
-    g_free(audmad_config.pregain_db);
-    g_free(audmad_config.replaygain.default_db);
-    g_free(audmad_config.id3_format);
-
-    audmad_config.pregain_db = NULL;
-    audmad_config.replaygain.default_db = NULL;
-    audmad_config.id3_format = NULL;
-
+    g_free(audmad_config->replaygain.preamp0_db);
+    g_free(audmad_config->replaygain.preamp1_db);
+    g_free(audmad_config->replaygain.preamp2_db);
+    g_free(audmad_config->id3_format);
+    g_free(audmad_config);
+    
     g_cond_free(mad_cond);
     g_mutex_free(mad_mutex);
     g_mutex_free(pb_mutex);
 }
 
-static gboolean mp3_head_check(guint32 head, gint *frameSize)
+static gboolean
+mp3_head_check(guint32 head, gint *frameSize)
 {
     gint version, layer, bitIndex, bitRate, sampleIndex, sampleRate, padding;
 
@@ -282,7 +314,8 @@ static gboolean mp3_head_check(guint32 head, gint *frameSize)
     return TRUE;
 }
 
-static int mp3_head_convert(const guchar * hbuf)
+static int
+mp3_head_convert(const guchar * hbuf)
 {
     return ((unsigned long) hbuf[0] << 24) |
         ((unsigned long) hbuf[1] << 16) |
@@ -290,7 +323,8 @@ static int mp3_head_convert(const guchar * hbuf)
 }
 
 // audacious vfs fast version
-static int audmad_is_our_fd(char *filename, VFSFile *fin)
+static int
+audmad_is_our_fd(char *filename, VFSFile *fin)
 {
     guint32 check;
     gchar *ext = extname(filename);
@@ -376,7 +410,8 @@ static int audmad_is_our_fd(char *filename, VFSFile *fin)
 }
 
 // audacious vfs version
-static int audmad_is_our_file(char *filename)
+static int
+audmad_is_our_file(char *filename)
 {
     VFSFile *fin = NULL;
     gint rtn;
@@ -392,7 +427,8 @@ static int audmad_is_our_file(char *filename)
     return rtn;
 }
 
-static void audmad_stop(InputPlayback *playback)
+static void
+audmad_stop(InputPlayback *playback)
 {
     AUDDBG("f: audmad_stop\n");
     g_mutex_lock(mad_mutex);
@@ -417,7 +453,8 @@ static void audmad_stop(InputPlayback *playback)
     AUDDBG("e: audmad_stop\n");
 }
 
-static void audmad_play_file(InputPlayback *playback)
+static void
+audmad_play_file(InputPlayback *playback)
 {
     gboolean rtn;
     gchar *url = playback->filename;
@@ -436,7 +473,7 @@ static void audmad_play_file(InputPlayback *playback)
     }
 
     // remote access must use fast scan.
-    rtn = input_get_info(&info, aud_vfs_is_remote(url) ? TRUE : audmad_config.fast_play_time_calc);
+    rtn = input_get_info(&info, aud_vfs_is_remote(url) ? TRUE : audmad_config->fast_play_time_calc);
 
     if (rtn == FALSE) {
         g_message("error reading input info");
@@ -456,7 +493,8 @@ static void audmad_play_file(InputPlayback *playback)
     decode_loop(&info);
 }
 
-static void audmad_pause(InputPlayback *playback, short paused)
+static void
+audmad_pause(InputPlayback *playback, short paused)
 {
     g_mutex_lock(pb_mutex);
     info.playback = playback;
@@ -464,7 +502,8 @@ static void audmad_pause(InputPlayback *playback, short paused)
     playback->output->pause(paused);
 }
 
-static void audmad_mseek(InputPlayback *playback, gulong millisecond)
+static void
+audmad_mseek(InputPlayback *playback, gulong millisecond)
 {
     g_mutex_lock(pb_mutex);
     info.playback = playback;
@@ -472,7 +511,8 @@ static void audmad_mseek(InputPlayback *playback, gulong millisecond)
     g_mutex_unlock(pb_mutex);
 }
 
-static void audmad_seek(InputPlayback *playback, gint time)
+static void
+audmad_seek(InputPlayback *playback, gint time)
 {
     audmad_mseek(playback, time * 1000);
 }
@@ -496,7 +536,7 @@ audmad_get_song_info(char *url, char **title, int *length)
         return;
     }
 
-    if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config.fast_play_time_calc) == TRUE) {
+    if (input_get_info(&myinfo, info.remote ? TRUE : audmad_config->fast_play_time_calc) == TRUE) {
         if(aud_tuple_get_string(myinfo.tuple, -1, "track-name"))
             *title = g_strdup(aud_tuple_get_string(myinfo.tuple, -1, "track-name"));
         else
@@ -526,10 +566,11 @@ audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
     }
     
     info->fileinfo_request = FALSE; /* we don't need to read tuple again */
-    return input_get_info(info, aud_vfs_is_remote(fd->uri) ? TRUE : audmad_config.fast_play_time_calc);
+    return input_get_info(info, aud_vfs_is_remote(fd->uri) ? TRUE : audmad_config->fast_play_time_calc);
 }
 
-static void audmad_about()
+static void
+audmad_about()
 {
     static GtkWidget *aboutbox;
     gchar *scratch;
@@ -568,7 +609,8 @@ static void audmad_about()
  * Display a GTK box containing the given error message.
  * Taken from mpg123 plugin.
  */
-void audmad_error(char *error, ...)
+void
+audmad_error(char *error, ...)
 {
 #ifndef NOGUI
     if (!error_dialog) {
@@ -590,14 +632,16 @@ void audmad_error(char *error, ...)
 
 extern void audmad_configure();
 
-static void __set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
+static void
+__set_and_free(Tuple *tuple, gint nfield, gchar *name, gchar *value)
 {
     aud_tuple_associate_string(tuple, nfield, name, value);
     g_free(value);
 }
 
 // tuple stuff
-static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
+static Tuple *
+__audmad_get_song_tuple(char *filename, VFSFile *fd)
 {
     Tuple *tuple = NULL;
     gchar *string = NULL;
@@ -749,12 +793,14 @@ static Tuple *__audmad_get_song_tuple(char *filename, VFSFile *fd)
     return tuple;
 }
 
-static Tuple *audmad_get_song_tuple(char *filename)
+static Tuple *
+audmad_get_song_tuple(char *filename)
 {
     return __audmad_get_song_tuple(filename, NULL);
 }
 
-static Tuple *audmad_probe_for_tuple(char *filename, VFSFile *fd)
+static Tuple *
+audmad_probe_for_tuple(char *filename, VFSFile *fd)
 {
     if (!audmad_is_our_fd(filename, fd))
         return NULL;

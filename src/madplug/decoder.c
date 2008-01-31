@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/* #define AUD_DEBUG 1 */
+
 #include <math.h>
 #include <assert.h>
 #include <pthread.h>
@@ -42,27 +44,55 @@ extern int triangular_dither_noise(int nbits);
 static inline signed int
 scale(mad_fixed_t sample, struct mad_info_t *file_info)
 {
-    /* replayGain by SamKR */
     gdouble scale = -1;
-    if (audmad_config.replaygain.enable) {
+    static int i = 0;
+
+    if (audmad_config->replaygain.enable) {
         if (file_info->has_replaygain) {
-            scale = file_info->replaygain_track_scale;
-            if (file_info->replaygain_album_scale != -1
-                && (scale == -1 || !audmad_config.replaygain.track_mode))
-            {
+            // apply track gain if it is available and track mode is specified
+            if(file_info->replaygain_track_scale != -1) {
+                scale = file_info->replaygain_track_scale;
+            }
+            // apply album gain if available
+            if(!audmad_config->replaygain.track_mode &&
+               file_info->replaygain_album_scale != -1) {
                 scale = file_info->replaygain_album_scale;
             }
+
+            // apply preamp1
+            scale *= audmad_config->replaygain.preamp1_scale;
+
+            if (audmad_config->replaygain.anti_clip) {
+                if(i%100000 == 0)
+                    AUDDBG("track_peak = %f\n", file_info->replaygain_track_peak);
+                if(scale * file_info->replaygain_track_peak >= 1.0)
+                    scale = 1.0 / file_info->replaygain_track_peak;
+            }
         }
-        if (scale == -1)
-            scale = audmad_config.replaygain.default_scale;
+        else {
+            // apply preamp2 for files without RG info
+            scale = audmad_config->replaygain.preamp2_scale;
+        }
     }
-    if (scale == -1)
+    else {
         scale = 1.0;
-    if (audmad_config.pregain_scale != 1)
-        scale = scale * audmad_config.pregain_scale;
+    }
+
+    // apply global gain
+    if (audmad_config->replaygain.preamp0_scale != 1)
+        scale = scale * audmad_config->replaygain.preamp0_scale;
+
+    if(i%100000 == 0) {
+        AUDDBG("scale = %f\n", scale);
+    }
 
     /* hard-limit (clipping-prevention) */
-    if (audmad_config.hard_limit) {
+    if (audmad_config->replaygain.hard_limit) {
+
+        if(i%100000 == 0) {
+            AUDDBG("hard_limit\n");
+        }
+
         /* convert to double before computation, to avoid mad_fixed_t wrapping */
         double x = mad_f_todouble(sample) * scale;
         static const double k = 0.5;    // -6dBFS
@@ -73,9 +103,16 @@ scale(mad_fixed_t sample, struct mad_info_t *file_info)
             x = tanh((x + k) / (1 - k)) * (1 - k) - k;
         }
         sample = x * (MAD_F_ONE);
+
+        if(i%100000 == 0) {
+            AUDDBG("x = %f sample = %d\n", x, sample);
+        }
+
     }
     else
         sample *= scale;
+
+    i++;
 
     int n_bits_to_loose = MAD_F_FRACBITS + 1 - 16;
 
@@ -88,7 +125,7 @@ scale(mad_fixed_t sample, struct mad_info_t *file_info)
 #endif
 
     /* dither one bit of actual output */
-    if (audmad_config.dither) {
+    if (audmad_config->dither) {
         int dither = triangular_dither_noise(n_bits_to_loose + 1);
         sample += dither;
     }
@@ -166,7 +203,8 @@ write_output(struct mad_info_t *info, struct mad_pcm *pcm,
  * Decode all headers in the file and fill in stats
  * @return FALSE if scan failed.
  */
-gboolean scan_file(struct mad_info_t * info, gboolean fast)
+gboolean
+scan_file(struct mad_info_t * info, gboolean fast)
 {
     struct mad_stream stream;
     struct mad_header header;
@@ -277,7 +315,7 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
                 info->mpeg_layer = header.layer;
                 info->mode = header.mode;
 
-                if (audmad_config.use_xing) {
+                if (audmad_config->use_xing) {
                     frame.header = header;
                     if (mad_frame_decode(&frame, &stream) == -1) {
                         AUDDBG("xing frame decode failed\n");
@@ -401,7 +439,8 @@ gboolean scan_file(struct mad_info_t * info, gboolean fast)
 }
 
 /* sanity check for audio open parameters */
-static gboolean check_audio_param(struct mad_info_t *info)
+static gboolean
+check_audio_param(struct mad_info_t *info)
 {
     if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)
         return FALSE;
@@ -413,7 +452,8 @@ static gboolean check_audio_param(struct mad_info_t *info)
     return TRUE;
 }
 
-gpointer decode_loop(gpointer arg)
+gpointer
+decode_loop(gpointer arg)
 {
     unsigned char buffer[BUFFER_SIZE];
     int len;
@@ -461,8 +501,8 @@ gpointer decode_loop(gpointer arg)
     /* set mainwin title */
     if (info->title)
         g_free(info->title);
-    info->title = aud_tuple_formatter_make_title_string(info->tuple, audmad_config.title_override == TRUE ?
-                                       audmad_config.id3_format : aud_get_gentitle_format());
+    info->title = aud_tuple_formatter_make_title_string(info->tuple, audmad_config->title_override == TRUE ?
+                                       audmad_config->id3_format : aud_get_gentitle_format());
 
     tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
         info->playback->set_params(info->playback, info->title,
@@ -581,7 +621,7 @@ gpointer decode_loop(gpointer arg)
 
             info->bitrate = frame.header.bitrate;
 
-            if (!audmad_config.show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
+            if (!audmad_config->show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
 
 #ifdef DEBUG_INTENSIVELY
                 AUDDBG("decode vbr tlen = %d\n", tlen);
@@ -618,7 +658,7 @@ gpointer decode_loop(gpointer arg)
                 info->freq = frame.header.samplerate;
                 info->channels = MAD_NCHANNELS(&frame.header);
 
-                if(audmad_config.force_reopen_audio && check_audio_param(info)) {
+                if(audmad_config->force_reopen_audio && check_audio_param(info)) {
                     gint current_time = info->playback->output->output_time();
 
                     AUDDBG("re-opening audio due to change in audio type\n");
