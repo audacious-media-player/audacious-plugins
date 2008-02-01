@@ -3,6 +3,7 @@
  * Copyright (C) 2001-2002  Haavard Kvaalen <havardk@xmms.org>
  * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  * Copyright (C) 2008 Cristi Măgherușan <majeru@gentoo.ro>
+ * Copyright (C) 2008 Eugene Zagidullin <e.asphyx@gmail.com>
  *
  * ReplayGain processing Copyright (C) 2002 Gian-Carlo Pascutto <gcp@sjeng.org>
  *
@@ -73,9 +74,9 @@ static gchar *vorbis_generate_title(OggVorbis_File * vorbisfile, gchar * fn);
 static void vorbis_aboutbox(void);
 static void vorbis_init(void);
 static void vorbis_cleanup(void);
-static long vorbis_process_replaygain(float **pcm, int samples, int ch,
-                                      char *pcmout, float rg_scale);
-static gboolean vorbis_update_replaygain(float *scale);
+static long vorbis_interleave_buffer(float **pcm, int samples, int ch,
+                                     float *pcmout);
+static gboolean vorbis_update_replaygain(ReplayGainInfo *rg_info);
 
 static size_t ovcb_read(void *ptr, size_t size, size_t nmemb,
                         void *datasource);
@@ -231,6 +232,9 @@ do_seek(InputPlayback *playback)
     }
 }
 
+#define PCM_FRAMES 1024
+#define PCM_BUFSIZE PCM_FRAMES*2
+
 static gpointer
 vorbis_play_loop(gpointer arg)
 {
@@ -248,8 +252,10 @@ vorbis_play_loop(gpointer arg)
     VFSFile *stream = NULL;
     void *datasource = NULL;
 
-    gboolean use_rg;
-    float rg_scale = 1.0;
+    /*gboolean use_rg;
+    /float rg_scale = 1.0;*/
+
+    ReplayGainInfo rg_info;
 
     memset(&vf, 0, sizeof(vf));
 
@@ -262,7 +268,8 @@ vorbis_play_loop(gpointer arg)
     fd->fd = stream;
     datasource = (void *) fd;
 
-    char pcmout[4096];
+    /*char pcmout[4096];*/
+    float pcmout[PCM_BUFSIZE*sizeof(float)];
     int bytes;
     float **pcm;
 
@@ -300,8 +307,9 @@ vorbis_play_loop(gpointer arg)
     }
 
     title = vorbis_generate_title(&vf, filename);
-    use_rg = vorbis_update_replaygain(&rg_scale);
-
+    vorbis_update_replaygain(&rg_info);
+    playback->set_replaygain_info(playback, &rg_info);
+    
     vi = ov_info(&vf, -1);
 
     samplerate = vi->rate;
@@ -311,7 +319,7 @@ vorbis_play_loop(gpointer arg)
     g_mutex_unlock(vf_mutex);
 
     playback->set_params(playback, title, time, br, samplerate, channels);
-    if (!playback->output->open_audio(FMT_S16_NE, vi->rate, vi->channels)) {
+    if (!playback->output->open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
         playback->error = TRUE;
         goto play_cleanup;
     }
@@ -339,19 +347,11 @@ vorbis_play_loop(gpointer arg)
         int current_section = last_section;
 
         g_mutex_lock(vf_mutex);
-        if (use_rg) {
-            bytes =
-                ov_read_float(&vf, &pcm, sizeof(pcmout) / 2 / channels,
-                        &current_section);
-            if (bytes > 0)
-                bytes = vorbis_process_replaygain(pcm, bytes, channels,
-                        pcmout, rg_scale);
-        }
-        else {
-            bytes = ov_read(&vf, pcmout, sizeof(pcmout),
-                    (int) (G_BYTE_ORDER == G_BIG_ENDIAN),
-                    2, 1, &current_section);
-        }
+        
+        bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
+        
+        if (bytes > 0)
+            bytes = vorbis_interleave_buffer(pcm, bytes, channels, pcmout);
 
         /*
          * We got some sort of error. Bail.
@@ -391,19 +391,21 @@ vorbis_play_loop(gpointer arg)
                 playback->output->buffer_free();
                 playback->output->close_audio();
                 if (!playback->output->
-                        open_audio(FMT_S16_NE, vi->rate, vi->channels)) {
+                        open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
                     playback->error = TRUE;
                     playback->eof = TRUE;
                     g_mutex_unlock(vf_mutex);
                     goto stop_processing;
                 }
                 playback->output->flush(ov_time_tell(&vf) * 1000);
+                vorbis_update_replaygain(&rg_info);
+                playback->set_replaygain_info(playback, &rg_info); /* audio reopened */
             }
         }
 
         g_mutex_unlock(vf_mutex);
 
-        playback->pass_audio(playback, FMT_S16_NE, channels, bytes, pcmout, &playback->playing);
+        playback->pass_audio(playback, FMT_FLOAT, channels, bytes, pcmout, &playback->playing);
 
         if (!playback->playing)
             goto stop_processing;
@@ -414,35 +416,32 @@ vorbis_play_loop(gpointer arg)
         stop_processing:
    
         if (current_section <= last_section) {
-        /*
-         * set total play time, bitrate, rate, and channels of
-         * current section
-         */
-        if (title)
-            g_free(title);
+            /*
+            * set total play time, bitrate, rate, and channels of
+            * current section
+            */
+            if (title)
+                g_free(title);
 
-        g_mutex_lock(vf_mutex);
-        title = vorbis_generate_title(&vf, filename);
-        use_rg = vorbis_update_replaygain(&rg_scale);
+            g_mutex_lock(vf_mutex);
+            title = vorbis_generate_title(&vf, filename);
 
-        if (time != -1)
-            time = ov_time_total(&vf, -1) * 1000;
+            if (time != -1)
+                time = ov_time_total(&vf, -1) * 1000;
 
-        g_mutex_unlock(vf_mutex);
-   
-        playback->set_params(playback, title, time, br, samplerate, channels);
+            g_mutex_unlock(vf_mutex);
+        
+            playback->set_params(playback, title, time, br, samplerate, channels);
 
-        timercount = playback->output->output_time();
+            timercount = playback->output->output_time();
 
-        last_section = current_section;
+            last_section = current_section;
          
         }
-}
+    } /* main loop */
 
-
-
-if (!playback->error)
-    playback->output->close_audio();
+    if (!playback->error)
+        playback->output->close_audio();
     /* fall through intentional */
 
     /*this loop makes it not skip the last ~4 seconds, but the playback 
@@ -450,17 +449,17 @@ if (!playback->error)
      *
      * majeru
      */
-while(playback->output->buffer_playing()&& playback->output->buffer_free())
-    g_usleep(50000);
+    while(playback->output->buffer_playing()&& playback->output->buffer_free())
+        g_usleep(50000);
 
 
-play_cleanup:
-g_free(title);
+    play_cleanup:
+    g_free(title);
 
-/*
- * ov_clear closes the stream if its open.  Safe to call on an
- * uninitialized structure as long as we've zeroed it
- */
+    /*
+     * ov_clear closes the stream if its open.  Safe to call on an
+     * uninitialized structure as long as we've zeroed it
+     */
     g_mutex_lock(vf_mutex);
     ov_clear(&vf);
     g_mutex_unlock(vf_mutex);
@@ -506,112 +505,43 @@ vorbis_seek(InputPlayback *data, int time)
 }
 
 /* Make sure you've locked vf_mutex */
+
 static gboolean
-vorbis_update_replaygain(float *scale)
+vorbis_update_replaygain(ReplayGainInfo *rg_info)
 {
     vorbis_comment *comment;
-    char *rg_gain = NULL, *rg_peak_str = NULL;
-    float rg_peak;
+    char *rg_gain = NULL, *rg_peak = NULL;
 
-    if (!vorbis_cfg.use_replaygain && !vorbis_cfg.use_anticlip)
-        return FALSE;
-    if ((comment = ov_comment(&vf, -1)) == NULL)
+    if (rg_info == NULL || (comment = ov_comment(&vf, -1)) == NULL)
         return FALSE;
 
-    *scale = 1.0;
+    rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
+    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
+    rg_info->album_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
+    
+    rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
+    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
+    rg_info->track_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
+    
+    rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
+    rg_info->album_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
+    
+    rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
+    if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
+    rg_info->track_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
 
-    if (vorbis_cfg.use_replaygain) {
-        if (vorbis_cfg.replaygain_mode == REPLAYGAIN_MODE_ALBUM) {
-            rg_gain =
-                vorbis_comment_query(comment, "replaygain_album_gain", 0);
-            if (!rg_gain)
-                rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
-        }
-
-        if (!rg_gain)
-            rg_gain =
-                vorbis_comment_query(comment, "replaygain_track_gain", 0);
-        if (!rg_gain)
-            rg_gain = vorbis_comment_query(comment, "rg_radio", 0); /* Old */
-
-        /* FIXME: Make sure this string is the correct format first? */
-        if (rg_gain)
-            *scale = pow(10., atof(rg_gain) / 20);
-    }
-
-    if (vorbis_cfg.use_anticlip) {
-        if (vorbis_cfg.replaygain_mode == REPLAYGAIN_MODE_ALBUM)
-            rg_peak_str =
-                vorbis_comment_query(comment, "replaygain_album_peak", 0);
-
-        if (!rg_peak_str)
-            rg_peak_str =
-                vorbis_comment_query(comment, "replaygain_track_peak", 0);
-        if (!rg_peak_str)
-            rg_peak_str = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
-
-        if (rg_peak_str) {
-            rg_peak = atof(rg_peak_str);
-            rg_peak = rg_peak == 0.0 ? 1.0 : rg_peak; /* be aware of incorrect formatted strings --eugene */
-        }
-        else
-            rg_peak = 1;
-
-        if (*scale * rg_peak > 1.0)
-            *scale = 1.0 / rg_peak;
-    }
-
-    if (*scale != 1.0 || vorbis_cfg.use_booster) {
-        /* safety */
-        if (*scale > 15.0)
-            *scale = 15.0;
-
-        return TRUE;
-    }
-
-    return FALSE;
+    return TRUE;
 }
 
-#if (G_BYTE_ORDER == G_BIG_ENDIAN)
-#  define GET_BYTE1(val) ((val) >> 8)
-#  define GET_BYTE2(val) ((val) & 0xff)
-#else
-#  define GET_BYTE1(val) ((val) & 0xff)
-#  define GET_BYTE2(val) ((val) >> 8)
-#endif
-
 static long
-vorbis_process_replaygain(float **pcm, int samples, int ch,
-                          char *pcmout, float rg_scale)
+vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 {
     int i, j;
-    /* ReplayGain processing */
     for (i = 0; i < samples; i++)
-        for (j = 0; j < ch; j++) {
-            float sample = pcm[j][i] * rg_scale;
-            int value;
+        for (j = 0; j < ch; j++)
+            *pcmout++ = pcm[j][i];
 
-            if (vorbis_cfg.use_booster) {
-                sample *= 2;
-
-                /* hard 6dB limiting */
-                if (sample < -0.5)
-                    sample = tanh((sample + 0.5) / 0.5) * 0.5 - 0.5;
-                else if (sample > 0.5)
-                    sample = tanh((sample - 0.5) / 0.5) * 0.5 + 0.5;
-            }
-
-            value = sample * 32767;
-            if (value > 32767)
-                value = 32767;
-            else if (value < -32767)
-                value = -32767;
-
-            *pcmout++ = GET_BYTE1(value);
-            *pcmout++ = GET_BYTE2(value);
-        }
-
-    return 2 * ch * samples;
+    return ch * samples * sizeof(float);
 }
 
 static void _aud_tuple_associate_string(Tuple *tuple, const gint nfield, const gchar *field, const gchar *string)
@@ -764,7 +694,8 @@ vorbis_aboutbox(void)
                                         "Jack Moffitt <jack@icecast.org>\n"
                                         "Jorn Baayen <jorn@nl.linux.org>\n"
                                         "Haavard Kvaalen <havardk@xmms.org>\n"
-                                        "Gian-Carlo Pascutto <gcp@sjeng.org>\n\n"
+                                        "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+                                        "Eugene Zagidullin <e.asphyx@gmail.com>\n\n"
                                         "Visit the Xiph.org Foundation at http://www.xiph.org/\n"),
                                        _("Ok"), FALSE, NULL, NULL);
       g_signal_connect(G_OBJECT(about_window), "destroy",
@@ -788,10 +719,6 @@ vorbis_init(void)
     vorbis_cfg.proxy_pass = NULL;
     vorbis_cfg.tag_override = FALSE;
     vorbis_cfg.tag_format = NULL;
-    vorbis_cfg.use_anticlip = FALSE;
-    vorbis_cfg.use_replaygain = FALSE;
-    vorbis_cfg.replaygain_mode = REPLAYGAIN_MODE_TRACK;
-    vorbis_cfg.use_booster = FALSE;
 
     db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "vorbis", "http_buffer_size",
@@ -809,13 +736,6 @@ vorbis_init(void)
     if (!aud_cfg_db_get_string(db, "vorbis", "tag_format",
                                &vorbis_cfg.tag_format))
         vorbis_cfg.tag_format = g_strdup("%p - %t");
-    aud_cfg_db_get_bool(db, "vorbis", "use_anticlip",
-                        &vorbis_cfg.use_anticlip);
-    aud_cfg_db_get_bool(db, "vorbis", "use_replaygain",
-                        &vorbis_cfg.use_replaygain);
-    aud_cfg_db_get_int(db, "vorbis", "replaygain_mode",
-                       &vorbis_cfg.replaygain_mode);
-    aud_cfg_db_get_bool(db, "vorbis", "use_booster", &vorbis_cfg.use_booster);
 
     aud_cfg_db_get_bool(db, NULL, "use_proxy", &vorbis_cfg.use_proxy);
     aud_cfg_db_get_string(db, NULL, "proxy_host", &vorbis_cfg.proxy_host);

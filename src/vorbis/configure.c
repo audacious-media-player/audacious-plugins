@@ -15,12 +15,10 @@
 extern GMutex *vf_mutex;
 
 static GtkWidget *vorbis_configurewin = NULL;
-static GtkWidget *vbox, *notebook;
+static GtkWidget *vbox;
 
 static GtkWidget *title_tag_override, *title_tag_box, *title_tag_entry,
     *title_desc;
-static GtkWidget *rg_switch, *rg_clip_switch, *rg_booster_switch,
-    *rg_track_gain;
 
 vorbis_config_t vorbis_cfg;
 
@@ -37,30 +35,11 @@ vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
 
     tb = GTK_TOGGLE_BUTTON(title_tag_override);
     vorbis_cfg.tag_override = gtk_toggle_button_get_active(tb);
-    tb = GTK_TOGGLE_BUTTON(rg_switch);
-    vorbis_cfg.use_replaygain = gtk_toggle_button_get_active(tb);
-    tb = GTK_TOGGLE_BUTTON(rg_clip_switch);
-    vorbis_cfg.use_anticlip = gtk_toggle_button_get_active(tb);
-    tb = GTK_TOGGLE_BUTTON(rg_booster_switch);
-    vorbis_cfg.use_booster = gtk_toggle_button_get_active(tb);
-    tb = GTK_TOGGLE_BUTTON(rg_track_gain);
-    if (gtk_toggle_button_get_active(tb))
-        vorbis_cfg.replaygain_mode = REPLAYGAIN_MODE_TRACK;
-    else
-        vorbis_cfg.replaygain_mode = REPLAYGAIN_MODE_ALBUM;
 
     db = aud_cfg_db_open();
-
     aud_cfg_db_set_bool(db, "vorbis", "tag_override",
                         vorbis_cfg.tag_override);
     aud_cfg_db_set_string(db, "vorbis", "tag_format", vorbis_cfg.tag_format);
-    aud_cfg_db_set_bool(db, "vorbis", "use_anticlip",
-                        vorbis_cfg.use_anticlip);
-    aud_cfg_db_set_bool(db, "vorbis", "use_replaygain",
-                        vorbis_cfg.use_replaygain);
-    aud_cfg_db_set_int(db, "vorbis", "replaygain_mode",
-                       vorbis_cfg.replaygain_mode);
-    aud_cfg_db_set_bool(db, "vorbis", "use_booster", vorbis_cfg.use_booster);
     aud_cfg_db_close(db);
     gtk_widget_destroy(vorbis_configurewin);
 }
@@ -81,21 +60,11 @@ title_tag_override_cb(GtkWidget * w, gpointer data)
     gtk_widget_set_sensitive(title_desc, override);
 }
 
-static void
-rg_switch_cb(GtkWidget * w, gpointer data)
-{
-    gtk_widget_set_sensitive(GTK_WIDGET(data),
-                             gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                                          (w)));
-}
-
 void
 vorbis_configure(void)
 {
     GtkWidget *title_frame, *title_tag_vbox, *title_tag_label;
-    GtkWidget *rg_frame, *rg_vbox;
     GtkWidget *bbox, *ok, *cancel;
-    GtkWidget *rg_type_frame, *rg_type_vbox, *rg_album_gain;
 
     if (vorbis_configurewin != NULL) {
         gtk_window_present(GTK_WINDOW(vorbis_configurewin));
@@ -119,8 +88,6 @@ vorbis_configure(void)
     vbox = gtk_vbox_new(FALSE, 10);
     gtk_container_add(GTK_CONTAINER(vorbis_configurewin), vbox);
 
-    notebook = gtk_notebook_new();
-    gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
 
     /* Title config.. */
 
@@ -151,72 +118,9 @@ vorbis_configure(void)
 
     title_tag_entry = gtk_entry_new();
     gtk_entry_set_text(GTK_ENTRY(title_tag_entry), vorbis_cfg.tag_format);
-    gtk_box_pack_start(GTK_BOX(title_tag_box), title_tag_entry, TRUE, TRUE,
-                       0);
+    gtk_box_pack_start(GTK_BOX(title_tag_box), title_tag_entry, TRUE, TRUE, 0);
 
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), title_frame,
-                             gtk_label_new(_("Title")));
-
-    /* Replay Gain.. */
-
-    rg_frame = gtk_frame_new(_("ReplayGain Settings:"));
-    gtk_container_border_width(GTK_CONTAINER(rg_frame), 5);
-
-    rg_vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_border_width(GTK_CONTAINER(rg_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(rg_frame), rg_vbox);
-
-    rg_clip_switch =
-        gtk_check_button_new_with_label(_("Enable Clipping Prevention"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_clip_switch),
-                                 vorbis_cfg.use_anticlip);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_clip_switch, FALSE, FALSE, 0);
-
-    rg_switch = gtk_check_button_new_with_label(_("Enable ReplayGain"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_switch),
-                                 vorbis_cfg.use_replaygain);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_switch, FALSE, FALSE, 0);
-
-    rg_type_frame = gtk_frame_new(_("ReplayGain Type:"));
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_type_frame, FALSE, FALSE, 0);
-
-    g_signal_connect(G_OBJECT(rg_switch), "toggled",
-                     G_CALLBACK(rg_switch_cb), rg_type_frame);
-
-    rg_type_vbox = gtk_vbox_new(FALSE, 5);
-    gtk_container_set_border_width(GTK_CONTAINER(rg_type_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(rg_type_frame), rg_type_vbox);
-
-    rg_track_gain =
-        gtk_radio_button_new_with_label(NULL, _("use Track Gain/Peak"));
-    if (vorbis_cfg.replaygain_mode == REPLAYGAIN_MODE_TRACK)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_track_gain), TRUE);
-    else
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_track_gain), FALSE);
-    gtk_box_pack_start(GTK_BOX(rg_type_vbox), rg_track_gain, FALSE, FALSE, 0);
-
-    rg_album_gain =
-        gtk_radio_button_new_with_label(gtk_radio_button_group
-                                        (GTK_RADIO_BUTTON(rg_track_gain)),
-                                        _("use Album Gain/Peak"));
-    if (vorbis_cfg.replaygain_mode == REPLAYGAIN_MODE_ALBUM)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_album_gain), TRUE);
-    else
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_album_gain), FALSE);
-    gtk_box_pack_start(GTK_BOX(rg_type_vbox), rg_album_gain, FALSE, FALSE, 0);
-
-    if (!vorbis_cfg.use_replaygain)
-        gtk_widget_set_sensitive(rg_type_frame, FALSE);
-
-    rg_booster_switch =
-        gtk_check_button_new_with_label(_
-                                        ("Enable 6dB Boost + Hard Limiting"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_booster_switch),
-                                 vorbis_cfg.use_booster);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), rg_booster_switch, FALSE, FALSE, 0);
-
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), rg_frame,
-                             gtk_label_new(_("ReplayGain")));
+    gtk_box_pack_start(GTK_BOX(vbox), title_frame, TRUE, TRUE, 0);
 
     /* Buttons */
 
