@@ -143,7 +143,7 @@ audmad_init()
     audmad_config->replaygain.enable = TRUE;
     audmad_config->replaygain.track_mode = FALSE;
     audmad_config->replaygain.anti_clip = FALSE;
-    audmad_config->replaygain.hard_limit = FALSE;
+    audmad_config->replaygain.adaptive_scaler = FALSE;
     audmad_config->title_override = FALSE;
 
 
@@ -178,8 +178,8 @@ audmad_init()
                               &audmad_config->replaygain.preamp2_db);
         aud_cfg_db_get_bool(db, "MAD", "RG.anti_clip",
                             &audmad_config->replaygain.anti_clip);
-        aud_cfg_db_get_bool(db, "MAD", "RG.hard_limit",
-                            &audmad_config->replaygain.hard_limit);
+        aud_cfg_db_get_bool(db, "MAD", "RG.adaptive_scaler",
+                            &audmad_config->replaygain.adaptive_scaler);
 
         //text
         aud_cfg_db_get_bool(db, "MAD", "title_override",

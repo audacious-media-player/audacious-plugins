@@ -120,8 +120,8 @@ typedef struct audmad_config_t
         gdouble preamp1_scale;
         gchar *preamp2_db;      // preamp used without RG info.
         gdouble preamp2_scale;
-        gboolean hard_limit;
         gboolean anti_clip;
+        gboolean adaptive_scaler;
     } replaygain;
 
     gboolean title_override;

@@ -45,9 +45,8 @@ static inline signed int
 scale(mad_fixed_t sample, struct mad_info_t *file_info)
 {
     gdouble scale = -1;
-#ifdef AUD_DEBUG
-    static int i = 0;
-#endif
+    static double a_scale = -1;
+    static int iter = 0;
 
     if (audmad_config->replaygain.enable) {
         if (file_info->has_replaygain) {
@@ -66,7 +65,7 @@ scale(mad_fixed_t sample, struct mad_info_t *file_info)
 
             if (audmad_config->replaygain.anti_clip) {
 #ifdef AUD_DEBUG
-                if(i%100000 == 0)
+                if(iter % 100000 == 0)
                     AUDDBG("track_peak = %f\n", file_info->replaygain_track_peak);
 #endif
                 if(scale * file_info->replaygain_track_peak >= 1.0)
@@ -86,44 +85,37 @@ scale(mad_fixed_t sample, struct mad_info_t *file_info)
     if (audmad_config->replaygain.preamp0_scale != 1)
         scale = scale * audmad_config->replaygain.preamp0_scale;
 
-#ifdef AUD_DEBUG
-    if(i%100000 == 0) {
-        AUDDBG("scale = %f\n", scale);
-    }
-#endif
+    // adaptive scaler clip prevention
+    if (audmad_config->replaygain.adaptive_scaler) {
+        double x;
+        double a = 0.1;
+        int interval = 10000;
 
-    /* hard-limit (clipping-prevention) */
-    if (audmad_config->replaygain.hard_limit) {
+        if(a_scale == -1.0)
+            a_scale = scale;
 
-#ifdef AUD_DEBUG
-        if(i%100000 == 0) {
-            AUDDBG("hard_limit\n");
+        x = mad_f_todouble(sample) * a_scale;
+
+        // clippling avoidance
+        if(x > 1.0) {
+            a_scale = a_scale + a * (1.0 - x);
+            AUDDBG("down: x = %f a_scale = %f\n", x, a_scale);
         }
-#endif
-        /* convert to double before computation, to avoid mad_fixed_t wrapping */
-        double x = mad_f_todouble(sample) * scale;
-        static const double k = 0.5;    // -6dBFS
-        if (x > k) {
-            x = tanh((x - k) / (1 - k)) * (1 - k) + k;
+        // slowly go back to defined scale
+        else if(iter % interval == 0 && a_scale < scale){
+            a_scale = a_scale + 1.0e-4;
+            AUDDBG("up: a_scale = %f\n", a_scale);
         }
-        else if (x < -k) {
-            x = tanh((x + k) / (1 - k)) * (1 - k) - k;
-        }
+
+        x = mad_f_todouble(sample) * a_scale;
         sample = x * (MAD_F_ONE);
-
-#ifdef AUD_DEBUG
-        if(i%100000 == 0) {
-            AUDDBG("x = %f sample = %d\n", x, sample);
-        }
-#endif
-
     }
-    else
+    else {
+        a_scale = scale;
         sample *= scale;
+    }
 
-#ifdef AUD_DEBUG
-    i++;
-#endif
+    iter++;
 
     int n_bits_to_loose = MAD_F_FRACBITS + 1 - 16;
 

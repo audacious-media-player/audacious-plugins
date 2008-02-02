@@ -71,7 +71,7 @@ update_config(gpointer widgets)
     GtkWidget *preamp1 = g_object_get_data(widgets, "preamp1");
     GtkWidget *preamp2 = g_object_get_data(widgets, "preamp2");
     GtkWidget *trackMode = g_object_get_data(widgets, "trackMode");
-    GtkWidget *hard_limit = g_object_get_data(widgets, "hard_limit");
+    GtkWidget *adaptive_scaler = g_object_get_data(widgets, "adaptive_scaler");
     GtkWidget *anti_clip = g_object_get_data(widgets, "anti_clip");
     GtkWidget *title_override = g_object_get_data(widgets, "title_override");
     GtkWidget *title_id3_entry = g_object_get_data(widgets, "title_id3_entry");
@@ -135,8 +135,8 @@ update_config(gpointer widgets)
 
     audmad_config->replaygain.anti_clip =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(anti_clip));
-    audmad_config->replaygain.hard_limit =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(hard_limit));
+    audmad_config->replaygain.adaptive_scaler =
+        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(adaptive_scaler));
 
     //text
     audmad_config->title_override =
@@ -184,8 +184,8 @@ save_config(void)
                           audmad_config->replaygain.preamp2_db);
     aud_cfg_db_set_bool(db, "MAD", "RG.anti_clip",
                         audmad_config->replaygain.anti_clip);
-    aud_cfg_db_set_bool(db, "MAD", "RG.hard_limit",
-                        audmad_config->replaygain.hard_limit);
+    aud_cfg_db_set_bool(db, "MAD", "RG.adaptive_scaler",
+                        audmad_config->replaygain.adaptive_scaler);
 
     //text
     aud_cfg_db_set_bool(db, "MAD", "title_override", audmad_config->title_override);
@@ -301,7 +301,7 @@ audmad_configure(void)
 
     GtkWidget *fast_playback, *use_xing, *dither, *sjis, *show_avg, *reopen;
     GtkWidget *RG_enable, *type_vbox, *rg_vbox, *preamp0, *preamp1, *preamp2;
-    GtkWidget *trackMode, *albumMode, *hard_limit, *anti_clip;
+    GtkWidget *trackMode, *albumMode, *adaptive_scaler, *anti_clip;
     GtkWidget *title_override, *title_id3_entry;
     GtkWidget *rgtypeFrame, *replaygainFrame, *metadataFrame, *audioFrame, *miscFrame;
     GtkWidget *metadata_vbox, *audio_vbox, *misc_vbox;
@@ -527,7 +527,7 @@ audmad_configure(void)
 
 
     // clipping prevention
-    anti_clip = gtk_check_button_new_with_label(_("Enable clip prevention using peak info"));
+    anti_clip = gtk_check_button_new_with_label(_("Enable peak info clip prevention"));
     g_object_set_data(widgets, "anti_clip", anti_clip);
     gtk_box_pack_start(GTK_BOX(rg_vbox), anti_clip, TRUE, TRUE, 0);
 
@@ -548,14 +548,13 @@ audmad_configure(void)
     /* end of replaygainFrame */
 
 
-    // 6dB hard limit
-    hard_limit = gtk_check_button_new_with_label(_("Apply 6dB hard limit"));
-    g_object_set_data(widgets, "hard_limit", hard_limit);
-    gtk_box_pack_start(GTK_BOX(vbox2), hard_limit, TRUE, TRUE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(hard_limit),
-                                 audmad_config->replaygain.hard_limit);
-
-    g_signal_connect(G_OBJECT(hard_limit), "clicked",
+    // adaptive scale
+    adaptive_scaler = gtk_check_button_new_with_label(_("Enable adaptive scaler clip prevention"));
+    g_object_set_data(widgets, "adaptive_scaler", adaptive_scaler);
+    gtk_box_pack_start(GTK_BOX(vbox2), adaptive_scaler, TRUE, TRUE, 0);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(adaptive_scaler),
+                                 audmad_config->replaygain.adaptive_scaler);
+    g_signal_connect(G_OBJECT(adaptive_scaler), "clicked",
                      G_CALLBACK(simple_update_cb), widgets);
 
 
