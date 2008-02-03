@@ -408,7 +408,7 @@ input_read_tag(struct mad_info_t *info)
 
     // length
     string = input_id3_get_string(info->tag, "TLEN");
-    if (string) {
+    if (string && atoi(string)) {
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
         AUDDBG("input_read_tag: TLEN = %d\n", atoi(string));
         g_free(string);
