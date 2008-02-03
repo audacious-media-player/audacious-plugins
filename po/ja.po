@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2008-01-11 00:58+0300\n"
+"POT-Creation-Date: 2008-02-03 20:33+0200\n"
 "PO-Revision-Date: 2008-01-12 22:51+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -47,18 +47,18 @@ msgstr "MP4 AAC プレイヤプラグインについて"
 #: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:392
 #: src/echo_plugin/gui.c:26 src/echo_plugin/gui.c:137 src/esd/about.c:49
 #: src/filewriter/filewriter.c:183 src/jack/configure.c:141
-#: src/jack/jack.c:493 src/madplug/plugin.c:559 src/madplug/plugin.c:582
+#: src/jack/jack.c:493 src/madplug/plugin.c:600 src/madplug/plugin.c:624
 #: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:49
 #: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
 #: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
 #: src/paranormal/plugin.c:291 src/scrobbler/gtkstuff.c:25
-#: src/statusicon/si_ui.c:593 src/stereo_plugin/stereo.c:53
-#: src/stereo_plugin/stereo.c:116 src/sun/about.c:38 src/sun/configure.c:559
-#: src/timidity/interface.c:222 src/timidity/xmms-timidity.c:120
-#: src/tonegen/tonegen.c:62 src/tta/libtta.c:153 src/tta/libtta.c:267
-#: src/tta/libtta.c:402 src/vorbis/vorbis.c:757 src/vtx/about.c:32
+#: src/sndfile/plugin.c:565 src/statusicon/si_ui.c:593
+#: src/stereo_plugin/stereo.c:53 src/stereo_plugin/stereo.c:116
+#: src/sun/about.c:38 src/sun/configure.c:559 src/timidity/interface.c:222
+#: src/timidity/xmms-timidity.c:120 src/tonegen/tonegen.c:62
+#: src/tta/libtta.c:153 src/tta/libtta.c:267 src/tta/libtta.c:402
+#: src/vorbis/vorbis.c:769 src/vorbis/vorbis.c~:777 src/vtx/about.c:32
 #: src/vtx/info.c:43 src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
-#: src/wav/wav-sndfile.c:579
 msgid "Ok"
 msgstr "OK"
 
@@ -105,7 +105,7 @@ msgid "Cancel"
 msgstr "キャンセル"
 
 #: src/adplug/adplug-xmms.cc:291 src/console/Audacious_Config.cxx:145
-#: src/madplug/configure.c:190 src/modplug/gui/interface.cxx:628
+#: src/madplug/configure.c:421 src/modplug/gui/interface.cxx:628
 #: src/modplug/gui/interface.cxx:887 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
@@ -337,9 +337,9 @@ msgstr "目覚ましです."
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
 #: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:228
 #: src/flacng/plugin.c:747 src/gnomeshortcuts/gnomeshortcuts.c:292
-#: src/hotkey/plugin.c:1075 src/modplug/gui/interface.cxx:702
+#: src/hotkey/gui.c:671 src/modplug/gui/interface.cxx:702
 #: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:712
-#: src/scrobbler/gtkstuff.c:44 src/sid/xmms-sid.glade:3066
+#: src/scrobbler/gtkstuff.c:45 src/sid/xmms-sid.glade:3066
 #: src/sid/xs_interface.c:1243
 msgid "OK"
 msgstr "OK"
@@ -1555,7 +1555,7 @@ msgstr "角丸矩形"
 msgid "Concave Rectangle"
 msgstr "凹矩形"
 
-#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:870
+#: src/aosd/aosd_style.c:87
 msgid "None"
 msgstr "なし"
 
@@ -2017,7 +2017,7 @@ msgstr ""
 "\n"
 "これは Google Summer of Code 2007 のプロジェクトでした."
 
-#: src/cdaudio-ng/cdaudio-ng.c:850
+#: src/cdaudio-ng/cdaudio-ng.c:627
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
@@ -2470,7 +2470,7 @@ msgstr ""
 "デバイスが検出されていないため, バインディングウィンドウが開けません.\n"
 "デバイスが正しく接続されていることを確認してください."
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:582
+#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:624
 msgid "Error"
 msgstr "エラー"
 
@@ -2935,11 +2935,76 @@ msgstr ""
 "Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
-#: src/hotkey/plugin.c:649
+#: src/hotkey/gui.c:68
+#, fuzzy
+msgid "Previous Track"
+msgstr "次のトラック:"
+
+#: src/hotkey/gui.c:69
+#, fuzzy
+msgid "Play"
+msgstr "演奏開始:"
+
+#: src/hotkey/gui.c:70
+#, fuzzy
+msgid "Pause/Resume"
+msgstr "一時停止/再開:"
+
+#: src/hotkey/gui.c:71
+#, fuzzy
+msgid "Stop"
+msgstr "演奏停止:"
+
+#: src/hotkey/gui.c:72
+#, fuzzy
+msgid "Next Track"
+msgstr "次のトラック:"
+
+#: src/hotkey/gui.c:73
+#, fuzzy
+msgid "Forward 5 Seconds"
+msgstr "5秒進める:"
+
+#: src/hotkey/gui.c:74
+#, fuzzy
+msgid "Rewind 5 Seconds"
+msgstr "5秒戻す:"
+
+#: src/hotkey/gui.c:75
+#, fuzzy
+msgid "Mute"
+msgstr "無音:"
+
+#: src/hotkey/gui.c:76
+#, fuzzy
+msgid "Volume Up"
+msgstr "音量を上げる:"
+
+#: src/hotkey/gui.c:77
+#, fuzzy
+msgid "Volume Down"
+msgstr "音量を下げる:"
+
+#: src/hotkey/gui.c:78
+#, fuzzy
+msgid "Jump to File"
+msgstr "指定ファイルへ移動:"
+
+#: src/hotkey/gui.c:79
+#, fuzzy
+msgid "Toggle Player Windows"
+msgstr "プレイヤウィンドウを切り替える:"
+
+#: src/hotkey/gui.c:80
+#, fuzzy
+msgid "Show On-Screen-Display"
+msgstr "On-Screen-Display を表示する:"
+
+#: src/hotkey/gui.c:90
 msgid "(none)"
 msgstr "(なし)"
 
-#: src/hotkey/plugin.c:776
+#: src/hotkey/gui.c:227
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -2950,103 +3015,40 @@ msgstr ""
 "\n"
 "続けますか?"
 
-#: src/hotkey/plugin.c:778
+#: src/hotkey/gui.c:229
 msgid "Binding mouse buttons"
 msgstr "マウスボタン割り当て"
 
-#: src/hotkey/plugin.c:912
+#: src/hotkey/gui.c:379
 msgid "Global Hotkey Plugin Configuration"
 msgstr "グローバルホットキープラグイン設定"
 
-#: src/hotkey/plugin.c:928
-msgid "Press a key combination inside a text field."
+#: src/hotkey/gui.c:395
+#, fuzzy
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
 msgstr "テキストフィールド内でキーコンビネーションを押してください."
 
-#: src/hotkey/plugin.c:933
-msgid "<b>Playback:</b>"
-msgstr "<b>演奏:</b>"
+#: src/hotkey/gui.c:400
+#, fuzzy
+msgid "Hotkeys:"
+msgstr "ホスト名:"
 
-#: src/hotkey/plugin.c:948
-msgid "<i>Configure keys which controls Audacious playback.</i>"
-msgstr "<i>Audacious の演奏を制御するキーを設定します.</i>"
+#: src/hotkey/gui.c:419
+#, fuzzy
+msgid "<b>Action:</b>"
+msgstr "<b>Hatena</b>"
 
-#: src/hotkey/plugin.c:955
-msgid "Previous Track:"
-msgstr "次のトラック:"
+#: src/hotkey/gui.c:427
+msgid "<b>Key Binding:</b>"
+msgstr ""
 
-#: src/hotkey/plugin.c:958
-msgid "Play:"
-msgstr "演奏開始:"
-
-#: src/hotkey/plugin.c:961
-msgid "Pause/Resume:"
-msgstr "一時停止/再開:"
-
-#: src/hotkey/plugin.c:964
-msgid "Stop:"
-msgstr "演奏停止:"
-
-#: src/hotkey/plugin.c:967
-msgid "Next Track:"
-msgstr "次のトラック:"
-
-#: src/hotkey/plugin.c:970
-msgid "Forward 5 sec.:"
-msgstr "5秒進める:"
-
-#: src/hotkey/plugin.c:973
-msgid "Rewind 5 sec.:"
-msgstr "5秒戻す:"
-
-#: src/hotkey/plugin.c:978
-msgid "<b>Volume Control:</b>"
-msgstr "<b>音量コントロール:</b>"
-
-#: src/hotkey/plugin.c:993
-msgid "<i>Configure keys which controls music volume.</i>"
-msgstr "<i>曲の音量をコントロールするキーを設定します.</i>"
-
-#: src/hotkey/plugin.c:999
-msgid "Mute:"
-msgstr "無音:"
-
-#: src/hotkey/plugin.c:1002
-msgid "Volume Up:"
-msgstr "音量を上げる:"
-
-#: src/hotkey/plugin.c:1005
-msgid "Volume Down:"
-msgstr "音量を下げる:"
-
-#: src/hotkey/plugin.c:1010
-msgid "<b>Player:</b>"
-msgstr "<b>プレイヤ:</b>"
-
-#: src/hotkey/plugin.c:1025
-msgid "<i>Configure keys which control the player.</i>"
-msgstr "<i>プレイヤをコントロールするキーを設定します.</i>"
-
-#: src/hotkey/plugin.c:1031
-msgid "Jump to File:"
-msgstr "指定ファイルへ移動:"
-
-#: src/hotkey/plugin.c:1034
-msgid "Toggle Player Windows:"
-msgstr "プレイヤウィンドウを切り替える:"
-
-#: src/hotkey/plugin.c:1037
-msgid "Show On-Screen-Display:"
-msgstr "On-Screen-Display を表示する:"
-
-#: src/hotkey/plugin.c:1038
-msgid "For this, the Audacious OSD plugin must be activated."
-msgstr "Audacious OSD プラグインを有効にしなければ,利用できません."
-
-#: src/hotkey/plugin.c:1064
+#: src/hotkey/gui.c:660
 msgid "About Global Hotkey Plugin"
 msgstr "グローバルホットキープラグインについて"
 
-#: src/hotkey/plugin.c:1065
+#: src/hotkey/gui.c:661
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3247,12 +3249,12 @@ msgstr "再接続"
 msgid "Connection"
 msgstr "接続"
 
-#: src/lirc/lirc.c:78
+#: src/lirc/lirc.c:83
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: LIRC サポートを初期化できませんでした\n"
 
-#: src/lirc/lirc.c:86
+#: src/lirc/lirc.c:91
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -3263,93 +3265,132 @@ msgstr ""
 "%s: 正しい設定ファイルの作り方を知るには\n"
 "%s: LIRC のドキュメントを読んでください\n"
 
-#: src/lirc/lirc.c:111
+#: src/lirc/lirc.c:118
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr "%s: 再接続を試行中...\n"
 
-#: src/lirc/lirc.c:310
+#: src/lirc/lirc.c:339
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: 不明なコマンド \"%s\"\n"
 
-#: src/lirc/lirc.c:320
+#: src/lirc/lirc.c:349
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: LIRC から切断されました\n"
 
-#: src/lirc/lirc.c:324
+#: src/lirc/lirc.c:353
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: %d 秒ごとに再接続を試みます...\n"
 
-#: src/madplug/configure.c:147
+#: src/madplug/configure.c:332
 msgid "MPEG Audio Plugin Configuration"
 msgstr "MPEG オーディオ プラグインの設定"
 
-#: src/madplug/configure.c:160
+#: src/madplug/configure.c:349
+#, fuzzy
+msgid "Audio Settings"
+msgstr "アラーム設定"
+
+#: src/madplug/configure.c:358
 msgid "Dither output when rounding to 16-bit"
 msgstr "16ビットに丸めるとき出力をディザリングする"
 
-#: src/madplug/configure.c:166
-msgid "Enable fast play-length calculation"
-msgstr "高速演奏長計算を有効にする"
-
-#: src/madplug/configure.c:171
-msgid "Parse XING headers"
-msgstr "XING ヘッダをパースする"
-
-#: src/madplug/configure.c:176
-msgid "Use SJIS to write ID3 tags instead of UTF-8"
-msgstr "ID3 タグの書き込みに UTF-8 の代わりに SJIS を使う"
-
-#: src/madplug/configure.c:180
-msgid "Display average bitrate for VBR"
-msgstr "VBR の平均ビットレートを表示する"
-
-#: src/madplug/configure.c:185
+#: src/madplug/configure.c:365
 msgid "Force reopen audio when audio type changed"
 msgstr "オーディオタイプが変更されたとき強制的にオーディオを再オープンする"
 
-#: src/madplug/configure.c:195
+#: src/madplug/configure.c:374
+#, fuzzy
+msgid "Metadata Settings"
+msgstr "ミキサの設定:"
+
+#: src/madplug/configure.c:383
+msgid "Enable fast play-length calculation"
+msgstr "高速演奏長計算を有効にする"
+
+#: src/madplug/configure.c:390
+msgid "Parse XING headers"
+msgstr "XING ヘッダをパースする"
+
+#: src/madplug/configure.c:397
+#, fuzzy
+msgid "Use SJIS to write ID3 tags (not recommended)"
+msgstr "ID3 タグの書き込みに UTF-8 の代わりに SJIS を使う"
+
+#: src/madplug/configure.c:404
+#, fuzzy
+msgid "Miscellaneous Settings"
+msgstr "雑多なオプション:"
+
+#: src/madplug/configure.c:413
+msgid "Display average bitrate for VBR"
+msgstr "VBR の平均ビットレートを表示する"
+
+#: src/madplug/configure.c:432
+#, fuzzy
+msgid "Base gain (dB):"
+msgstr "デフォルトゲイン (dB):"
+
+#: src/madplug/configure.c:446 src/musepack/libmpc.cxx:190
+msgid "ReplayGain Settings"
+msgstr "リプレイゲインの設定"
+
+#: src/madplug/configure.c:457
 msgid "Enable ReplayGain processing"
 msgstr "リプレイゲイン処理を有効にする"
 
-#: src/madplug/configure.c:200
-msgid "Track mode"
-msgstr "トラックモード"
+#: src/madplug/configure.c:467 src/musepack/libmpc.cxx:207
+msgid "ReplayGain Type"
+msgstr "リプレイゲインの種類"
 
-#: src/madplug/configure.c:207
-msgid "6dB hard limiting"
-msgstr "6dB ハードリミット"
+#: src/madplug/configure.c:477 src/musepack/libmpc.cxx:215
+msgid "Use Track Gain"
+msgstr "トラックゲインを使用する"
 
-#: src/madplug/configure.c:212
-msgid "Default gain (dB):"
-msgstr "デフォルトゲイン (dB):"
+#: src/madplug/configure.c:485 src/musepack/libmpc.cxx:219
+msgid "Use Album Gain"
+msgstr "アルバムゲインを使用する"
 
-#: src/madplug/configure.c:223
-msgid "Preamp (dB):"
-msgstr "プリアンプ (dB):"
+#: src/madplug/configure.c:498
+msgid "Pre-gain with RG info (dB):"
+msgstr ""
 
-#: src/madplug/configure.c:232 src/musepack/libmpc.cxx:224
-#: src/vorbis/configure.c:219 src/wavpack/ui.cxx:547
-msgid "ReplayGain"
-msgstr "リプレイゲイン"
+#: src/madplug/configure.c:514
+msgid "Pre-gain without RG info (dB):"
+msgstr ""
 
-#: src/madplug/configure.c:237 src/vorbis/configure.c:135
+#: src/madplug/configure.c:530
+#, fuzzy
+msgid "Enable peak info clip prevention"
+msgstr "クリッピング回避機能を有効にする"
+
+#: src/madplug/configure.c:552
+#, fuzzy
+msgid "Enable adaptive scaler clip prevention"
+msgstr "クリッピング回避機能を有効にする"
+
+#: src/madplug/configure.c:561
+#, fuzzy
+msgid "Gain Control"
+msgstr "サブチューンコントロール:"
+
+#: src/madplug/configure.c:569 src/vorbis/configure.c:135
 msgid "Override generic titles"
 msgstr "オリジナルのタイトルを上書きする"
 
-#: src/madplug/configure.c:250
+#: src/madplug/configure.c:581
 msgid "ID3 format:"
 msgstr "ID3 の書式:"
 
-#: src/madplug/configure.c:260 src/sid/xmms-sid.glade:2540
+#: src/madplug/configure.c:593 src/sid/xmms-sid.glade:2540
 #: src/sid/xs_interface.c:1070 src/vorbis/configure.c:158
 msgid "Title"
 msgstr "タイトル"
 
-#: src/madplug/plugin.c:541
+#: src/madplug/plugin.c:582
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3380,7 +3421,7 @@ msgstr ""
 "リプレイゲインサポート:\n"
 "    Samuel Krempp"
 
-#: src/madplug/plugin.c:557
+#: src/madplug/plugin.c:598
 msgid "About MPEG Audio Plugin"
 msgstr "MPEG オーディオプラグインについて"
 
@@ -3708,10 +3749,6 @@ msgstr "動的ビットレート表示を有効にする"
 msgid "Plugin"
 msgstr "プラグイン"
 
-#: src/musepack/libmpc.cxx:190
-msgid "ReplayGain Settings"
-msgstr "リプレイゲインの設定"
-
 #: src/musepack/libmpc.cxx:197 src/vorbis/configure.c:170
 #: src/wavpack/ui.cxx:510
 msgid "Enable Clipping Prevention"
@@ -3722,17 +3759,10 @@ msgstr "クリッピング回避機能を有効にする"
 msgid "Enable ReplayGain"
 msgstr "リプレイゲインを有効にする"
 
-#: src/musepack/libmpc.cxx:207
-msgid "ReplayGain Type"
-msgstr "リプレイゲインの種類"
-
-#: src/musepack/libmpc.cxx:215
-msgid "Use Track Gain"
-msgstr "トラックゲインを使用する"
-
-#: src/musepack/libmpc.cxx:219
-msgid "Use Album Gain"
-msgstr "アルバムゲインを使用する"
+#: src/musepack/libmpc.cxx:224 src/vorbis/configure.c:219
+#: src/wavpack/ui.cxx:547
+msgid "ReplayGain"
+msgstr "リプレイゲイン"
 
 #: src/musepack/libmpc.cxx:491 src/sid/xmms-sid.glade:3144
 #: src/sid/xs_interface.c:1564 src/tta/libtta.c:304 src/wavpack/ui.cxx:152
@@ -4032,23 +4062,23 @@ msgstr ""
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA. まで請求して下さい."
 
-#: src/scrobbler/configure.c:99
+#: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
 msgstr "<b>サービス</b>"
 
-#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:161
+#: src/scrobbler/configure.c:160 src/scrobbler/configure.c:199
 msgid "Username:"
 msgstr "ユーザ名:"
 
-#: src/scrobbler/configure.c:127 src/scrobbler/configure.c:167
+#: src/scrobbler/configure.c:166 src/scrobbler/configure.c:205
 msgid "Password:"
 msgstr "パスワード:"
 
-#: src/scrobbler/configure.c:145
+#: src/scrobbler/configure.c:183
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:185
+#: src/scrobbler/configure.c:222
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
 
@@ -4083,7 +4113,7 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: src/scrobbler/gtkstuff.c:42
+#: src/scrobbler/gtkstuff.c:43
 msgid "Scrobbler Error"
 msgstr "Scrobbler エラー"
 
@@ -4895,6 +4925,53 @@ msgstr "SubTune 構造体の malloc に失敗しました!\n"
 msgid "Could not open STILDB '%s'\n"
 msgstr "STILDB '%s' を開けませんでした.\n"
 
+#: src/sndfile/plugin.c:548
+#, fuzzy
+msgid "About sndfile plugin"
+msgstr "sndfile WAV プラグイン"
+
+#: src/sndfile/plugin.c:549
+msgid ""
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the xmms_sndfile plugin which is:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"This program is free software ; you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation ; either version 2 of the License, or \n"
+"(at your option) any later version. \n"
+" \n"
+"This program is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+"See the GNU General Public License for more details. \n"
+"\n"
+"You should have received a copy of the GNU General Public \n"
+"License along with this program ; if not, write to \n"
+"the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA"
+msgstr ""
+"Tony Vroon <chainsaw@gentoo.org> による xmms_sndfile プラグインの\n"
+"Audacious への適応:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"このプログラムはフリーソフトウェアです;\n"
+"フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
+"の第二版, あるいはそれ以降の版が定める条項の下で\n"
+"本プログラムを再頒布または変更することができます.\n"
+"\n"
+"本プログラムは有用とは思いますが,\n"
+"頒布にあたっては, 市場性及び特定目的, 適合性についての\n"
+"暗黙の保証を含めて, いかなる保証も行ないません.\n"
+"詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
+"\n"
+"あなたは, 本プログラムと一緒に\n"
+"GNU 一般公有使用許諾契約書の写しを受け取っているはずです.\n"
+"そうでない場合は, the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA へ手紙を書いて下さい."
+
 #: src/sndstretch/sndstretch_xmms.c:159
 msgid "About SndStretch"
 msgstr "SndStretch について"
@@ -5261,11 +5338,11 @@ msgstr "アルバムのゲイン/ピークを使用する"
 msgid "Enable 6dB Boost + Hard Limiting"
 msgstr "6dB ブースト + ハードリミットを有効にする"
 
-#: src/vorbis/vorbis.c:739
+#: src/vorbis/vorbis.c:751 src/vorbis/vorbis.c~:759
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ プラグインについて"
 
-#: src/vorbis/vorbis.c:745
+#: src/vorbis/vorbis.c:757 src/vorbis/vorbis.c~:765
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5405,52 +5482,6 @@ msgstr "Wavpack 設定"
 msgid "General Plugin Settings:"
 msgstr "一般的なプラグイン設定:"
 
-#: src/wav/wav-sndfile.c:562
-msgid "About sndfile WAV support"
-msgstr "sndfile WAV サポートについて"
-
-#: src/wav/wav-sndfile.c:563
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
-"Tony Vroon <chainsaw@gentoo.org> による xmms_sndfile プラグインの\n"
-"Audacious への適応:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"このプログラムはフリーソフトウェアです;\n"
-"フリーソフトウェア財団が提供する GNU 一般公有使用許諾契約書\n"
-"の第二版, あるいはそれ以降の版が定める条項の下で\n"
-"本プログラムを再頒布または変更することができます.\n"
-"\n"
-"本プログラムは有用とは思いますが,\n"
-"頒布にあたっては, 市場性及び特定目的, 適合性についての\n"
-"暗黙の保証を含めて, いかなる保証も行ないません.\n"
-"詳細については GNU 一般公有使用許諾契約書をご覧下さい.\n"
-"\n"
-"あなたは, 本プログラムと一緒に\n"
-"GNU 一般公有使用許諾契約書の写しを受け取っているはずです.\n"
-"そうでない場合は, the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA へ手紙を書いて下さい."
-
 #: src/wma/wma.c:132
 msgid ""
 "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
@@ -5460,12 +5491,45 @@ msgid ""
 "<bogorodskiy@inbox.ru>.\n"
 "This plugin based on source code "
 msgstr ""
-"BEEP-WMA プラグイン (Copyright (C) 2004,2005 Mokrushin I.V. "
-"aka McMCC (mcmcc@mail.ru)) と \n"
-"BMP-WMA プラグイン (Copyright (C) 2004 Roman Bogorodskiy "
-"<bogorodskiy@inbox.ru>) の\n"
+"BEEP-WMA プラグイン (Copyright (C) 2004,2005 Mokrushin I.V. aka McMCC "
+"(mcmcc@mail.ru)) と \n"
+"BMP-WMA プラグイン (Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox."
+"ru>) の\n"
 "Tony Vroon <chainsaw@gentoo.org> による Audacious への適用.\n"
 "このプラグインは以下のソースコードを元とする: "
+
+#~ msgid "<b>Playback:</b>"
+#~ msgstr "<b>演奏:</b>"
+
+#~ msgid "<i>Configure keys which controls Audacious playback.</i>"
+#~ msgstr "<i>Audacious の演奏を制御するキーを設定します.</i>"
+
+#~ msgid "<b>Volume Control:</b>"
+#~ msgstr "<b>音量コントロール:</b>"
+
+#~ msgid "<i>Configure keys which controls music volume.</i>"
+#~ msgstr "<i>曲の音量をコントロールするキーを設定します.</i>"
+
+#~ msgid "<b>Player:</b>"
+#~ msgstr "<b>プレイヤ:</b>"
+
+#~ msgid "<i>Configure keys which control the player.</i>"
+#~ msgstr "<i>プレイヤをコントロールするキーを設定します.</i>"
+
+#~ msgid "For this, the Audacious OSD plugin must be activated."
+#~ msgstr "Audacious OSD プラグインを有効にしなければ,利用できません."
+
+#~ msgid "Track mode"
+#~ msgstr "トラックモード"
+
+#~ msgid "6dB hard limiting"
+#~ msgstr "6dB ハードリミット"
+
+#~ msgid "Preamp (dB):"
+#~ msgstr "プリアンプ (dB):"
+
+#~ msgid "About sndfile WAV support"
+#~ msgstr "sndfile WAV サポートについて"
 
 #~ msgid "Play/Pause:"
 #~ msgstr "演奏/一時停止:"
@@ -6056,9 +6120,6 @@ msgstr ""
 #~ msgid "%s - Audacious"
 #~ msgstr "%s - Audacious"
 
-#~ msgid "sndfile WAV plugin"
-#~ msgstr "sndfile WAV プラグイン"
-
 #~ msgid "Use software volume control"
 #~ msgstr "ソフトウェア音量コントロールを使う"
 
@@ -6074,9 +6135,6 @@ msgstr ""
 
 #~ msgid "Tune #%i"
 #~ msgstr "チューン #%i"
-
-#~ msgid "Subtune Control"
-#~ msgstr "サブチューンコントロール:"
 
 #~ msgid "6581 (reSID)"
 #~ msgstr "6581 (reSID)"
@@ -6189,9 +6247,6 @@ msgstr ""
 
 #~ msgid "Detect file by contents (slower)"
 #~ msgstr "内容でファイルタイプを決定 (遅い)"
-
-#~ msgid "Miscellaneous options:"
-#~ msgstr "雑多なオプション:"
 
 #~ msgid " < "
 #~ msgstr " < "
@@ -6381,9 +6436,6 @@ msgstr ""
 
 #~ msgid "eSound Output Plugin"
 #~ msgstr "eSound 出力プラグイン"
-
-#~ msgid "<b>Hatena</b>"
-#~ msgstr "<b>Hatena</b>"
 
 #~ msgid "Extra Stereo Plugin %s"
 #~ msgstr "エクストラステレオ プラグイン %s"

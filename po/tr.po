@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2008-01-11 00:58+0300\n"
+"POT-Creation-Date: 2008-02-03 20:33+0200\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -50,18 +50,18 @@ msgstr "MP4 AAC oynatıcı eklentisi hakkında"
 #: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:392
 #: src/echo_plugin/gui.c:26 src/echo_plugin/gui.c:137 src/esd/about.c:49
 #: src/filewriter/filewriter.c:183 src/jack/configure.c:141
-#: src/jack/jack.c:493 src/madplug/plugin.c:559 src/madplug/plugin.c:582
+#: src/jack/jack.c:493 src/madplug/plugin.c:600 src/madplug/plugin.c:624
 #: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:49
 #: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
 #: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
 #: src/paranormal/plugin.c:291 src/scrobbler/gtkstuff.c:25
-#: src/statusicon/si_ui.c:593 src/stereo_plugin/stereo.c:53
-#: src/stereo_plugin/stereo.c:116 src/sun/about.c:38 src/sun/configure.c:559
-#: src/timidity/interface.c:222 src/timidity/xmms-timidity.c:120
-#: src/tonegen/tonegen.c:62 src/tta/libtta.c:153 src/tta/libtta.c:267
-#: src/tta/libtta.c:402 src/vorbis/vorbis.c:757 src/vtx/about.c:32
+#: src/sndfile/plugin.c:565 src/statusicon/si_ui.c:593
+#: src/stereo_plugin/stereo.c:53 src/stereo_plugin/stereo.c:116
+#: src/sun/about.c:38 src/sun/configure.c:559 src/timidity/interface.c:222
+#: src/timidity/xmms-timidity.c:120 src/tonegen/tonegen.c:62
+#: src/tta/libtta.c:153 src/tta/libtta.c:267 src/tta/libtta.c:402
+#: src/vorbis/vorbis.c:769 src/vorbis/vorbis.c~:777 src/vtx/about.c:32
 #: src/vtx/info.c:43 src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
-#: src/wav/wav-sndfile.c:579
 msgid "Ok"
 msgstr "Tamam"
 
@@ -109,7 +109,7 @@ msgid "Cancel"
 msgstr "İptal"
 
 #: src/adplug/adplug-xmms.cc:291 src/console/Audacious_Config.cxx:145
-#: src/madplug/configure.c:190 src/modplug/gui/interface.cxx:628
+#: src/madplug/configure.c:421 src/modplug/gui/interface.cxx:628
 #: src/modplug/gui/interface.cxx:887 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
@@ -343,9 +343,9 @@ msgstr "Bu sizin uyandırma çağrınız."
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
 #: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:228
 #: src/flacng/plugin.c:747 src/gnomeshortcuts/gnomeshortcuts.c:292
-#: src/hotkey/plugin.c:1075 src/modplug/gui/interface.cxx:702
+#: src/hotkey/gui.c:671 src/modplug/gui/interface.cxx:702
 #: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:712
-#: src/scrobbler/gtkstuff.c:44 src/sid/xmms-sid.glade:3066
+#: src/scrobbler/gtkstuff.c:45 src/sid/xmms-sid.glade:3066
 #: src/sid/xs_interface.c:1243
 msgid "OK"
 msgstr "Tamam"
@@ -1553,7 +1553,7 @@ msgstr "Dairesel Dikdörtgen"
 msgid "Concave Rectangle"
 msgstr "İçbükey Dikdörtgen"
 
-#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:870
+#: src/aosd/aosd_style.c:87
 msgid "None"
 msgstr "Hiçbiri"
 
@@ -2021,7 +2021,7 @@ msgstr ""
 "\n"
 "Bu bir Google Summer of Code 2007 projesidir."
 
-#: src/cdaudio-ng/cdaudio-ng.c:850
+#: src/cdaudio-ng/cdaudio-ng.c:627
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
@@ -2469,7 +2469,7 @@ msgstr ""
 "Tanınmamış bir aygıt için ilişkilendirme penceresi açılamıyor.\n"
 "Aygıtın düzgün bir şekilde sisteme takılı olduğundan emin olun."
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:582
+#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:624
 msgid "Error"
 msgstr "Hata"
 
@@ -2939,11 +2939,75 @@ msgstr ""
 "Telif Hakkı (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
-#: src/hotkey/plugin.c:649
+#: src/hotkey/gui.c:68
+#, fuzzy
+msgid "Previous Track"
+msgstr "Önceki Parça:"
+
+#: src/hotkey/gui.c:69
+#, fuzzy
+msgid "Play"
+msgstr "Oynatma süresi:"
+
+#: src/hotkey/gui.c:70
+#, fuzzy
+msgid "Pause/Resume"
+msgstr "Beklet:"
+
+#: src/hotkey/gui.c:71
+#, fuzzy
+msgid "Stop"
+msgstr "Durdur:"
+
+#: src/hotkey/gui.c:72
+#, fuzzy
+msgid "Next Track"
+msgstr "Sonraki Parça:"
+
+#: src/hotkey/gui.c:73
+#, fuzzy
+msgid "Forward 5 Seconds"
+msgstr "5 sn ileri:"
+
+#: src/hotkey/gui.c:74
+#, fuzzy
+msgid "Rewind 5 Seconds"
+msgstr "5 sn geri:"
+
+#: src/hotkey/gui.c:75
+#, fuzzy
+msgid "Mute"
+msgstr "Sessiz:"
+
+#: src/hotkey/gui.c:76
+#, fuzzy
+msgid "Volume Up"
+msgstr "Sesi yükselt:"
+
+#: src/hotkey/gui.c:77
+#, fuzzy
+msgid "Volume Down"
+msgstr "Sesi alçalt:"
+
+#: src/hotkey/gui.c:78
+#, fuzzy
+msgid "Jump to File"
+msgstr "Dosyaya Atla:"
+
+#: src/hotkey/gui.c:79
+#, fuzzy
+msgid "Toggle Player Windows"
+msgstr "Oynatıcı Pencereleri Arasında Geçiş:"
+
+#: src/hotkey/gui.c:80
+msgid "Show On-Screen-Display"
+msgstr ""
+
+#: src/hotkey/gui.c:90
 msgid "(none)"
 msgstr "(hiçbiri)"
 
-#: src/hotkey/plugin.c:776
+#: src/hotkey/gui.c:227
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -2951,105 +3015,40 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/plugin.c:778
+#: src/hotkey/gui.c:229
 msgid "Binding mouse buttons"
 msgstr ""
 
-#: src/hotkey/plugin.c:912
+#: src/hotkey/gui.c:379
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Genel Kısayol Eklentisi Ayarları"
 
-#: src/hotkey/plugin.c:928
-msgid "Press a key combination inside a text field."
+#: src/hotkey/gui.c:395
+#, fuzzy
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
 msgstr "Metin alanı içinde bir tuş kombinasyonu girin"
 
-#: src/hotkey/plugin.c:933
-msgid "<b>Playback:</b>"
-msgstr "<b>Oynatma:</b>"
-
-#: src/hotkey/plugin.c:948
-msgid "<i>Configure keys which controls Audacious playback.</i>"
-msgstr "<i>Audacious'un çalma işlemlerini kontrol eden tuşları ayarlayın</i>"
-
-#: src/hotkey/plugin.c:955
-msgid "Previous Track:"
-msgstr "Önceki Parça:"
-
-#: src/hotkey/plugin.c:958
+#: src/hotkey/gui.c:400
 #, fuzzy
-msgid "Play:"
-msgstr "Oynatma süresi:"
+msgid "Hotkeys:"
+msgstr "Makine:"
 
-#: src/hotkey/plugin.c:961
+#: src/hotkey/gui.c:419
 #, fuzzy
-msgid "Pause/Resume:"
-msgstr "Beklet:"
+msgid "<b>Action:</b>"
+msgstr "<b>Dosya ismi: </b>"
 
-#: src/hotkey/plugin.c:964
-msgid "Stop:"
-msgstr "Durdur:"
-
-#: src/hotkey/plugin.c:967
-msgid "Next Track:"
-msgstr "Sonraki Parça:"
-
-#: src/hotkey/plugin.c:970
-msgid "Forward 5 sec.:"
-msgstr "5 sn ileri:"
-
-#: src/hotkey/plugin.c:973
-msgid "Rewind 5 sec.:"
-msgstr "5 sn geri:"
-
-#: src/hotkey/plugin.c:978
-msgid "<b>Volume Control:</b>"
-msgstr "<b>Ses Kontrolleri:</b>"
-
-#: src/hotkey/plugin.c:993
-msgid "<i>Configure keys which controls music volume.</i>"
-msgstr "<i>Müzik sesini kontrol eden tuşları ayarlayın</i>"
-
-#: src/hotkey/plugin.c:999
-msgid "Mute:"
-msgstr "Sessiz:"
-
-#: src/hotkey/plugin.c:1002
-msgid "Volume Up:"
-msgstr "Sesi yükselt:"
-
-#: src/hotkey/plugin.c:1005
-msgid "Volume Down:"
-msgstr "Sesi alçalt:"
-
-#: src/hotkey/plugin.c:1010
-msgid "<b>Player:</b>"
-msgstr "<b>Oynatıcı:</b>"
-
-#: src/hotkey/plugin.c:1025
-msgid "<i>Configure keys which control the player.</i>"
-msgstr "<i>Oynatıcıyı kontrol eden tuşları ayarlayın.</i>"
-
-#: src/hotkey/plugin.c:1031
-msgid "Jump to File:"
-msgstr "Dosyaya Atla:"
-
-#: src/hotkey/plugin.c:1034
-msgid "Toggle Player Windows:"
-msgstr "Oynatıcı Pencereleri Arasında Geçiş:"
-
-#: src/hotkey/plugin.c:1037
-msgid "Show On-Screen-Display:"
+#: src/hotkey/gui.c:427
+msgid "<b>Key Binding:</b>"
 msgstr ""
 
-#: src/hotkey/plugin.c:1038
-msgid "For this, the Audacious OSD plugin must be activated."
-msgstr ""
-
-#: src/hotkey/plugin.c:1064
+#: src/hotkey/gui.c:660
 msgid "About Global Hotkey Plugin"
 msgstr "Genel Kısayol Eklentisi Hakkında"
 
-#: src/hotkey/plugin.c:1065
+#: src/hotkey/gui.c:661
 #, fuzzy
 msgid ""
 "Global Hotkey Plugin\n"
@@ -3255,12 +3254,12 @@ msgstr ""
 msgid "Connection"
 msgstr "Bağlantı modu:"
 
-#: src/lirc/lirc.c:78
+#: src/lirc/lirc.c:83
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: LIRC desteği başlatılamadı\n"
 
-#: src/lirc/lirc.c:86
+#: src/lirc/lirc.c:91
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -3271,93 +3270,131 @@ msgstr ""
 "%s: lütfen LIRC belgelerini okuyun\n"
 "%s: uygun yapılandırma dosyası nasıl oluşturulur\n"
 
-#: src/lirc/lirc.c:111
+#: src/lirc/lirc.c:118
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr ""
 
-#: src/lirc/lirc.c:310
+#: src/lirc/lirc.c:339
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: bilinmeyen komut \"%s\"\n"
 
-#: src/lirc/lirc.c:320
+#: src/lirc/lirc.c:349
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: LIRC bağlantısı kesildi\n"
 
-#: src/lirc/lirc.c:324
+#: src/lirc/lirc.c:353
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
-#: src/madplug/configure.c:147
+#: src/madplug/configure.c:332
 msgid "MPEG Audio Plugin Configuration"
 msgstr "MPEG Ses Eklentisi Yapılandırması"
 
-#: src/madplug/configure.c:160
+#: src/madplug/configure.c:349
+#, fuzzy
+msgid "Audio Settings"
+msgstr "Alarm Ayarları"
+
+#: src/madplug/configure.c:358
 msgid "Dither output when rounding to 16-bit"
 msgstr "16 bite çevirirken kararlaştır"
 
-#: src/madplug/configure.c:166
-msgid "Enable fast play-length calculation"
-msgstr "Hızlı parça uzunluğu hesaplamayı etkinleştir"
-
-#: src/madplug/configure.c:171
-msgid "Parse XING headers"
-msgstr "XING başlıklarını işle"
-
-#: src/madplug/configure.c:176
-msgid "Use SJIS to write ID3 tags instead of UTF-8"
-msgstr "ID3 etiketini yazarken UTF-8 yerine SjIS kullan"
-
-#: src/madplug/configure.c:180
-msgid "Display average bitrate for VBR"
-msgstr "VBR için ortalama bitoranını göster"
-
-#: src/madplug/configure.c:185
+#: src/madplug/configure.c:365
 msgid "Force reopen audio when audio type changed"
 msgstr "Ses tipi değişince sesi tekrar yüklemeye zorla"
 
-#: src/madplug/configure.c:195
+#: src/madplug/configure.c:374
+#, fuzzy
+msgid "Metadata Settings"
+msgstr "Karıştırıcı Ayarları:"
+
+#: src/madplug/configure.c:383
+msgid "Enable fast play-length calculation"
+msgstr "Hızlı parça uzunluğu hesaplamayı etkinleştir"
+
+#: src/madplug/configure.c:390
+msgid "Parse XING headers"
+msgstr "XING başlıklarını işle"
+
+#: src/madplug/configure.c:397
+#, fuzzy
+msgid "Use SJIS to write ID3 tags (not recommended)"
+msgstr "ID3 etiketini yazarken UTF-8 yerine SjIS kullan"
+
+#: src/madplug/configure.c:404
+#, fuzzy
+msgid "Miscellaneous Settings"
+msgstr "Karıştırıcı Ayarları:"
+
+#: src/madplug/configure.c:413
+msgid "Display average bitrate for VBR"
+msgstr "VBR için ortalama bitoranını göster"
+
+#: src/madplug/configure.c:432
+#, fuzzy
+msgid "Base gain (dB):"
+msgstr "Varsayılan artış miktarı (dB):"
+
+#: src/madplug/configure.c:446 src/musepack/libmpc.cxx:190
+msgid "ReplayGain Settings"
+msgstr "ReplayGain Ayarları"
+
+#: src/madplug/configure.c:457
 msgid "Enable ReplayGain processing"
 msgstr "ReplayGain İşlemesini Etkinleştir"
 
-#: src/madplug/configure.c:200
-msgid "Track mode"
-msgstr "Çalma modu"
+#: src/madplug/configure.c:467 src/musepack/libmpc.cxx:207
+msgid "ReplayGain Type"
+msgstr "ReplayGain Türü"
 
-#: src/madplug/configure.c:207
-msgid "6dB hard limiting"
-msgstr "6dB hard sınırlaması"
+#: src/madplug/configure.c:477 src/musepack/libmpc.cxx:215
+msgid "Use Track Gain"
+msgstr "Parça Kazancı Kullan"
 
-#: src/madplug/configure.c:212
-msgid "Default gain (dB):"
-msgstr "Varsayılan artış miktarı (dB):"
+#: src/madplug/configure.c:485 src/musepack/libmpc.cxx:219
+msgid "Use Album Gain"
+msgstr "Albüm Kazancı Kullan"
 
-#: src/madplug/configure.c:223
-msgid "Preamp (dB):"
-msgstr "Ön anfi (dB)"
+#: src/madplug/configure.c:498
+msgid "Pre-gain with RG info (dB):"
+msgstr ""
 
-#: src/madplug/configure.c:232 src/musepack/libmpc.cxx:224
-#: src/vorbis/configure.c:219 src/wavpack/ui.cxx:547
-msgid "ReplayGain"
-msgstr "ReplayGain"
+#: src/madplug/configure.c:514
+msgid "Pre-gain without RG info (dB):"
+msgstr ""
 
-#: src/madplug/configure.c:237 src/vorbis/configure.c:135
+#: src/madplug/configure.c:530
+#, fuzzy
+msgid "Enable peak info clip prevention"
+msgstr " Çatlama Korumasını Etkinleştir"
+
+#: src/madplug/configure.c:552
+#, fuzzy
+msgid "Enable adaptive scaler clip prevention"
+msgstr " Çatlama Korumasını Etkinleştir"
+
+#: src/madplug/configure.c:561
+msgid "Gain Control"
+msgstr ""
+
+#: src/madplug/configure.c:569 src/vorbis/configure.c:135
 msgid "Override generic titles"
 msgstr "Genel başlıkları geçersiz kıl"
 
-#: src/madplug/configure.c:250
+#: src/madplug/configure.c:581
 msgid "ID3 format:"
 msgstr "ID3 biçimi:"
 
-#: src/madplug/configure.c:260 src/sid/xmms-sid.glade:2540
+#: src/madplug/configure.c:593 src/sid/xmms-sid.glade:2540
 #: src/sid/xs_interface.c:1070 src/vorbis/configure.c:158
 msgid "Title"
 msgstr "Başlık"
 
-#: src/madplug/plugin.c:541
+#: src/madplug/plugin.c:582
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3388,7 +3425,7 @@ msgstr ""
 "ReplayGain desteği:\n"
 "    Samuel Krempp"
 
-#: src/madplug/plugin.c:557
+#: src/madplug/plugin.c:598
 msgid "About MPEG Audio Plugin"
 msgstr "MPEG Ses Eklentisi Hakkında"
 
@@ -3717,10 +3754,6 @@ msgstr "Dinamik Bitoranı Görüntülemeyi Etkinleştir"
 msgid "Plugin"
 msgstr "Eklenti"
 
-#: src/musepack/libmpc.cxx:190
-msgid "ReplayGain Settings"
-msgstr "ReplayGain Ayarları"
-
 #: src/musepack/libmpc.cxx:197 src/vorbis/configure.c:170
 #: src/wavpack/ui.cxx:510
 msgid "Enable Clipping Prevention"
@@ -3731,17 +3764,10 @@ msgstr " Çatlama Korumasını Etkinleştir"
 msgid "Enable ReplayGain"
 msgstr "ReplayGain Etkinleştir"
 
-#: src/musepack/libmpc.cxx:207
-msgid "ReplayGain Type"
-msgstr "ReplayGain Türü"
-
-#: src/musepack/libmpc.cxx:215
-msgid "Use Track Gain"
-msgstr "Parça Kazancı Kullan"
-
-#: src/musepack/libmpc.cxx:219
-msgid "Use Album Gain"
-msgstr "Albüm Kazancı Kullan"
+#: src/musepack/libmpc.cxx:224 src/vorbis/configure.c:219
+#: src/wavpack/ui.cxx:547
+msgid "ReplayGain"
+msgstr "ReplayGain"
 
 #: src/musepack/libmpc.cxx:491 src/sid/xmms-sid.glade:3144
 #: src/sid/xs_interface.c:1564 src/tta/libtta.c:304 src/wavpack/ui.cxx:152
@@ -4044,23 +4070,23 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/scrobbler/configure.c:99
+#: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
 msgstr "<b>Hizmetler</b>"
 
-#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:161
+#: src/scrobbler/configure.c:160 src/scrobbler/configure.c:199
 msgid "Username:"
 msgstr "Kullanıcı adı:"
 
-#: src/scrobbler/configure.c:127 src/scrobbler/configure.c:167
+#: src/scrobbler/configure.c:166 src/scrobbler/configure.c:205
 msgid "Password:"
 msgstr "Şifre:"
 
-#: src/scrobbler/configure.c:145
+#: src/scrobbler/configure.c:183
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:185
+#: src/scrobbler/configure.c:222
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
 
@@ -4094,7 +4120,7 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: src/scrobbler/gtkstuff.c:42
+#: src/scrobbler/gtkstuff.c:43
 msgid "Scrobbler Error"
 msgstr "Scrobbler Hatası"
 
@@ -4911,6 +4937,54 @@ msgstr "SubTune yapısı için malloc başarısız!\n"
 msgid "Could not open STILDB '%s'\n"
 msgstr "STILDB '%s' açılamadı\n"
 
+#: src/sndfile/plugin.c:548
+#, fuzzy
+msgid "About sndfile plugin"
+msgstr "sndfile WAV eklentisi"
+
+#: src/sndfile/plugin.c:549
+msgid ""
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the xmms_sndfile plugin which is:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"This program is free software ; you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation ; either version 2 of the License, or \n"
+"(at your option) any later version. \n"
+" \n"
+"This program is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+"See the GNU General Public License for more details. \n"
+"\n"
+"You should have received a copy of the GNU General Public \n"
+"License along with this program ; if not, write to \n"
+"the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA"
+msgstr ""
+"Audacius'a uyarlayan Tony Vroon <chainsaw@gentoo.org>\n"
+"Xmms_sndfile eklentisi yazarı:.\n"
+"Tüm Hakkı Saklıdır (C)2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Bu bir özgür yazılımdır. Sizde bu programı GNU/GPL Genel Kamu Lisansı "
+"altında\n"
+"değiştirebilir veya düzenleyebilirsiniz. Genel Kamu Lisansı Özgür Yazılım "
+"Vakfı\n"
+"tarafından hazırlanmaktadır.\n"
+"\n"
+"Bu program kullanışlı olacağı umut edilerek tasarlanmış olup, çalışması\n"
+"konusunda bir garanti verilmemektedir. Garanti içeriği, çalışma şartları "
+"ve \n"
+"sağlanan destek konusunda GNU/GPL Genel Kamu Lisansını inceleyebilirsiniz.\n"
+"\n"
+"Bu programla birlikte GNU/GPL Genel Kamu Lisansının da bir kopyasını\n"
+"elde etmiş olursunuz. İstediğiniz bir değişiklik için aşağıdaki adrese "
+"yazın.\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
 #: src/sndstretch/sndstretch_xmms.c:159
 msgid "About SndStretch"
 msgstr "SndStretch Hakkında"
@@ -5277,11 +5351,11 @@ msgstr "Albümde Gain/Peak kullan"
 msgid "Enable 6dB Boost + Hard Limiting"
 msgstr "6dB artırma (kompresör) + sınırlayıcı (limitır) Aktif"
 
-#: src/vorbis/vorbis.c:739
+#: src/vorbis/vorbis.c:751 src/vorbis/vorbis.c~:759
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "OGG Vorbis Ses Eklentisi Hakkında"
 
-#: src/vorbis/vorbis.c:745
+#: src/vorbis/vorbis.c:757 src/vorbis/vorbis.c~:765
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5422,53 +5496,6 @@ msgstr "Wavpack Yapılandırması"
 msgid "General Plugin Settings:"
 msgstr "Genel Eklenti Ayarları:"
 
-#: src/wav/wav-sndfile.c:562
-msgid "About sndfile WAV support"
-msgstr "sndfile WAV desteği hakkında"
-
-#: src/wav/wav-sndfile.c:563
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
-"Audacius'a uyarlayan Tony Vroon <chainsaw@gentoo.org>\n"
-"Xmms_sndfile eklentisi yazarı:.\n"
-"Tüm Hakkı Saklıdır (C)2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"Bu bir özgür yazılımdır. Sizde bu programı GNU/GPL Genel Kamu Lisansı "
-"altında\n"
-"değiştirebilir veya düzenleyebilirsiniz. Genel Kamu Lisansı Özgür Yazılım "
-"Vakfı\n"
-"tarafından hazırlanmaktadır.\n"
-"\n"
-"Bu program kullanışlı olacağı umut edilerek tasarlanmış olup, çalışması\n"
-"konusunda bir garanti verilmemektedir. Garanti içeriği, çalışma şartları "
-"ve \n"
-"sağlanan destek konusunda GNU/GPL Genel Kamu Lisansını inceleyebilirsiniz.\n"
-"\n"
-"Bu programla birlikte GNU/GPL Genel Kamu Lisansının da bir kopyasını\n"
-"elde etmiş olursunuz. İstediğiniz bir değişiklik için aşağıdaki adrese "
-"yazın.\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-
 #: src/wma/wma.c:132
 msgid ""
 "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
@@ -5485,6 +5512,37 @@ msgstr ""
 "ve BMP-WMA eklentisi Copyright (C) 2004 Roman Bogorodskiy <bogorodskiy@inbox."
 "ru>. baz alınarak hazırlanmıştır\n"
 "Bu eklenti hazırlanırken kaynak kod baz alınmıştır"
+
+#~ msgid "<b>Playback:</b>"
+#~ msgstr "<b>Oynatma:</b>"
+
+#~ msgid "<i>Configure keys which controls Audacious playback.</i>"
+#~ msgstr ""
+#~ "<i>Audacious'un çalma işlemlerini kontrol eden tuşları ayarlayın</i>"
+
+#~ msgid "<b>Volume Control:</b>"
+#~ msgstr "<b>Ses Kontrolleri:</b>"
+
+#~ msgid "<i>Configure keys which controls music volume.</i>"
+#~ msgstr "<i>Müzik sesini kontrol eden tuşları ayarlayın</i>"
+
+#~ msgid "<b>Player:</b>"
+#~ msgstr "<b>Oynatıcı:</b>"
+
+#~ msgid "<i>Configure keys which control the player.</i>"
+#~ msgstr "<i>Oynatıcıyı kontrol eden tuşları ayarlayın.</i>"
+
+#~ msgid "Track mode"
+#~ msgstr "Çalma modu"
+
+#~ msgid "6dB hard limiting"
+#~ msgstr "6dB hard sınırlaması"
+
+#~ msgid "Preamp (dB):"
+#~ msgstr "Ön anfi (dB)"
+
+#~ msgid "About sndfile WAV support"
+#~ msgstr "sndfile WAV desteği hakkında"
 
 #~ msgid "Play/Pause:"
 #~ msgstr "Çal/Beklet:"
@@ -6074,6 +6132,3 @@ msgstr ""
 
 #~ msgid "%s - Audacious"
 #~ msgstr "%s - Audacious"
-
-#~ msgid "sndfile WAV plugin"
-#~ msgstr "sndfile WAV eklentisi"

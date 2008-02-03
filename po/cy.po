@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2008-01-11 00:58+0300\n"
+"POT-Creation-Date: 2008-02-03 20:33+0200\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
@@ -39,18 +39,18 @@ msgstr "Ynghylch Ategyn Sain MPEG"
 #: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:392
 #: src/echo_plugin/gui.c:26 src/echo_plugin/gui.c:137 src/esd/about.c:49
 #: src/filewriter/filewriter.c:183 src/jack/configure.c:141
-#: src/jack/jack.c:493 src/madplug/plugin.c:559 src/madplug/plugin.c:582
+#: src/jack/jack.c:493 src/madplug/plugin.c:600 src/madplug/plugin.c:624
 #: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:49
 #: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
 #: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
 #: src/paranormal/plugin.c:291 src/scrobbler/gtkstuff.c:25
-#: src/statusicon/si_ui.c:593 src/stereo_plugin/stereo.c:53
-#: src/stereo_plugin/stereo.c:116 src/sun/about.c:38 src/sun/configure.c:559
-#: src/timidity/interface.c:222 src/timidity/xmms-timidity.c:120
-#: src/tonegen/tonegen.c:62 src/tta/libtta.c:153 src/tta/libtta.c:267
-#: src/tta/libtta.c:402 src/vorbis/vorbis.c:757 src/vtx/about.c:32
+#: src/sndfile/plugin.c:565 src/statusicon/si_ui.c:593
+#: src/stereo_plugin/stereo.c:53 src/stereo_plugin/stereo.c:116
+#: src/sun/about.c:38 src/sun/configure.c:559 src/timidity/interface.c:222
+#: src/timidity/xmms-timidity.c:120 src/tonegen/tonegen.c:62
+#: src/tta/libtta.c:153 src/tta/libtta.c:267 src/tta/libtta.c:402
+#: src/vorbis/vorbis.c:769 src/vorbis/vorbis.c~:777 src/vtx/about.c:32
 #: src/vtx/info.c:43 src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
-#: src/wav/wav-sndfile.c:579
 msgid "Ok"
 msgstr "Iawn"
 
@@ -98,7 +98,7 @@ msgid "Cancel"
 msgstr "Dileu"
 
 #: src/adplug/adplug-xmms.cc:291 src/console/Audacious_Config.cxx:145
-#: src/madplug/configure.c:190 src/modplug/gui/interface.cxx:628
+#: src/madplug/configure.c:421 src/modplug/gui/interface.cxx:628
 #: src/modplug/gui/interface.cxx:887 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
@@ -328,9 +328,9 @@ msgstr ""
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
 #: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:228
 #: src/flacng/plugin.c:747 src/gnomeshortcuts/gnomeshortcuts.c:292
-#: src/hotkey/plugin.c:1075 src/modplug/gui/interface.cxx:702
+#: src/hotkey/gui.c:671 src/modplug/gui/interface.cxx:702
 #: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:712
-#: src/scrobbler/gtkstuff.c:44 src/sid/xmms-sid.glade:3066
+#: src/scrobbler/gtkstuff.c:45 src/sid/xmms-sid.glade:3066
 #: src/sid/xs_interface.c:1243
 msgid "OK"
 msgstr "Iawn"
@@ -1347,7 +1347,7 @@ msgstr "Cyfongl Cwmpas"
 msgid "Concave Rectangle"
 msgstr "Cyfongl Cafniog"
 
-#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:870
+#: src/aosd/aosd_style.c:87
 msgid "None"
 msgstr "Dim"
 
@@ -1799,7 +1799,7 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:850
+#: src/cdaudio-ng/cdaudio-ng.c:627
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
@@ -2227,7 +2227,7 @@ msgid ""
 "Ensure that the device has been correctly plugged in."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:582
+#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:624
 msgid "Error"
 msgstr "Gwall"
 
@@ -2681,12 +2681,71 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/hotkey/plugin.c:649
+#: src/hotkey/gui.c:68
+msgid "Previous Track"
+msgstr ""
+
+#: src/hotkey/gui.c:69
+#, fuzzy
+msgid "Play"
+msgstr "Modd chwarae:"
+
+#: src/hotkey/gui.c:70
+msgid "Pause/Resume"
+msgstr ""
+
+#: src/hotkey/gui.c:71
+#, fuzzy
+msgid "Stop"
+msgstr "Synthpop"
+
+#: src/hotkey/gui.c:72
+#, fuzzy
+msgid "Next Track"
+msgstr "Cynnydd trac:"
+
+#: src/hotkey/gui.c:73
+msgid "Forward 5 Seconds"
+msgstr ""
+
+#: src/hotkey/gui.c:74
+msgid "Rewind 5 Seconds"
+msgstr ""
+
+#: src/hotkey/gui.c:75
+#, fuzzy
+msgid "Mute"
+msgstr "Dyddiad!"
+
+#: src/hotkey/gui.c:76
+#, fuzzy
+msgid "Volume Up"
+msgstr "Sain:(%)"
+
+#: src/hotkey/gui.c:77
+#, fuzzy
+msgid "Volume Down"
+msgstr "Sain:(%)"
+
+#: src/hotkey/gui.c:78
+msgid "Jump to File"
+msgstr ""
+
+#: src/hotkey/gui.c:79
+#, fuzzy
+msgid "Toggle Player Windows"
+msgstr "/Toggle Decorations"
+
+#: src/hotkey/gui.c:80
+msgid "Show On-Screen-Display"
+msgstr ""
+
+#: src/hotkey/gui.c:90
 #, fuzzy
 msgid "(none)"
 msgstr "Dim"
 
-#: src/hotkey/plugin.c:776
+#: src/hotkey/gui.c:227
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -2694,114 +2753,41 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/plugin.c:778
+#: src/hotkey/gui.c:229
 msgid "Binding mouse buttons"
 msgstr ""
 
-#: src/hotkey/plugin.c:912
+#: src/hotkey/gui.c:379
 #, fuzzy
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Ffurfweddu Ategyn ESD"
 
-#: src/hotkey/plugin.c:928
-msgid "Press a key combination inside a text field."
+#: src/hotkey/gui.c:395
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
 msgstr ""
 
-#: src/hotkey/plugin.c:933
+#: src/hotkey/gui.c:400
 #, fuzzy
-msgid "<b>Playback:</b>"
-msgstr "Chwarae"
+msgid "Hotkeys:"
+msgstr "Gwesteiwr:"
 
-#: src/hotkey/plugin.c:948
-msgid "<i>Configure keys which controls Audacious playback.</i>"
-msgstr ""
-
-#: src/hotkey/plugin.c:955
-msgid "Previous Track:"
-msgstr ""
-
-#: src/hotkey/plugin.c:958
+#: src/hotkey/gui.c:419
 #, fuzzy
-msgid "Play:"
-msgstr "Modd chwarae:"
-
-#: src/hotkey/plugin.c:961
-msgid "Pause/Resume:"
-msgstr ""
-
-#: src/hotkey/plugin.c:964
-#, fuzzy
-msgid "Stop:"
-msgstr "Synthpop"
-
-#: src/hotkey/plugin.c:967
-#, fuzzy
-msgid "Next Track:"
-msgstr "Cynnydd trac:"
-
-#: src/hotkey/plugin.c:970
-msgid "Forward 5 sec.:"
-msgstr ""
-
-#: src/hotkey/plugin.c:973
-msgid "Rewind 5 sec.:"
-msgstr ""
-
-#: src/hotkey/plugin.c:978
-#, fuzzy
-msgid "<b>Volume Control:</b>"
-msgstr "Dyfais rheoli sain:"
-
-#: src/hotkey/plugin.c:993
-msgid "<i>Configure keys which controls music volume.</i>"
-msgstr ""
-
-#: src/hotkey/plugin.c:999
-#, fuzzy
-msgid "Mute:"
-msgstr "Dyddiad!"
-
-#: src/hotkey/plugin.c:1002
-#, fuzzy
-msgid "Volume Up:"
-msgstr "Sain:(%)"
-
-#: src/hotkey/plugin.c:1005
-#, fuzzy
-msgid "Volume Down:"
-msgstr "Sain:(%)"
-
-#: src/hotkey/plugin.c:1010
-#, fuzzy
-msgid "<b>Player:</b>"
+msgid "<b>Action:</b>"
 msgstr "<b>Hatena</b>"
 
-#: src/hotkey/plugin.c:1025
-msgid "<i>Configure keys which control the player.</i>"
+#: src/hotkey/gui.c:427
+msgid "<b>Key Binding:</b>"
 msgstr ""
 
-#: src/hotkey/plugin.c:1031
-msgid "Jump to File:"
-msgstr ""
-
-#: src/hotkey/plugin.c:1034
-msgid "Toggle Player Windows:"
-msgstr ""
-
-#: src/hotkey/plugin.c:1037
-msgid "Show On-Screen-Display:"
-msgstr ""
-
-#: src/hotkey/plugin.c:1038
-msgid "For this, the Audacious OSD plugin must be activated."
-msgstr ""
-
-#: src/hotkey/plugin.c:1064
+#: src/hotkey/gui.c:660
 #, fuzzy
 msgid "About Global Hotkey Plugin"
 msgstr "Ynghylch Ategyn Scrobbler"
 
-#: src/hotkey/plugin.c:1065
+#: src/hotkey/gui.c:661
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -2974,12 +2960,12 @@ msgstr ""
 msgid "Connection"
 msgstr "Lleoliad:"
 
-#: src/lirc/lirc.c:78
+#: src/lirc/lirc.c:83
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: methu â ymgychwyn LIRC ateg\n"
 
-#: src/lirc/lirc.c:86
+#: src/lirc/lirc.c:91
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -2990,97 +2976,136 @@ msgstr ""
 "%s: plesio darllen yn dogfennau am LIRC\n"
 "%s: pa at creu y addas ffurfweddiad ffeil\n"
 
-#: src/lirc/lirc.c:111
+#: src/lirc/lirc.c:118
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr ""
 
-#: src/lirc/lirc.c:310
+#: src/lirc/lirc.c:339
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: gorchymyn anhysbys \"%s\"\n"
 
-#: src/lirc/lirc.c:320
+#: src/lirc/lirc.c:349
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: datgysylltu am LIRC\n"
 
-#: src/lirc/lirc.c:324
+#: src/lirc/lirc.c:353
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
-#: src/madplug/configure.c:147
+#: src/madplug/configure.c:332
 msgid "MPEG Audio Plugin Configuration"
 msgstr "Ffurfweddiad Chwaraeydd MPEG Sain"
 
-#: src/madplug/configure.c:160
+#: src/madplug/configure.c:349
+#, fuzzy
+msgid "Audio Settings"
+msgstr "Gosodiadau Cymysgu"
+
+#: src/madplug/configure.c:358
 msgid "Dither output when rounding to 16-bit"
 msgstr ""
 
-#: src/madplug/configure.c:166
-msgid "Enable fast play-length calculation"
-msgstr ""
-
-#: src/madplug/configure.c:171
-msgid "Parse XING headers"
-msgstr ""
-
-#: src/madplug/configure.c:176
-msgid "Use SJIS to write ID3 tags instead of UTF-8"
-msgstr ""
-
-#: src/madplug/configure.c:180
-msgid "Display average bitrate for VBR"
-msgstr ""
-
-#: src/madplug/configure.c:185
+#: src/madplug/configure.c:365
 msgid "Force reopen audio when audio type changed"
 msgstr ""
 
-#: src/madplug/configure.c:195
+#: src/madplug/configure.c:374
+#, fuzzy
+msgid "Metadata Settings"
+msgstr "Gosodiadau Cymysgu"
+
+#: src/madplug/configure.c:383
+msgid "Enable fast play-length calculation"
+msgstr ""
+
+#: src/madplug/configure.c:390
+msgid "Parse XING headers"
+msgstr ""
+
+#: src/madplug/configure.c:397
+msgid "Use SJIS to write ID3 tags (not recommended)"
+msgstr ""
+
+#: src/madplug/configure.c:404
+#, fuzzy
+msgid "Miscellaneous Settings"
+msgstr "Gosodiadau Cymysgu"
+
+#: src/madplug/configure.c:413
+msgid "Display average bitrate for VBR"
+msgstr ""
+
+#: src/madplug/configure.c:432
+#, fuzzy
+msgid "Base gain (dB):"
+msgstr "Rhagosodedig (%s)"
+
+#: src/madplug/configure.c:446 src/musepack/libmpc.cxx:190
+#, fuzzy
+msgid "ReplayGain Settings"
+msgstr "Gosodiadau'r ReplayGain:"
+
+#: src/madplug/configure.c:457
 #, fuzzy
 msgid "Enable ReplayGain processing"
 msgstr "Galluogi ReplayGain"
 
-#: src/madplug/configure.c:200
+#: src/madplug/configure.c:467 src/musepack/libmpc.cxx:207
 #, fuzzy
-msgid "Track mode"
-msgstr "Enwau'r Traciau:"
+msgid "ReplayGain Type"
+msgstr "Math ReplayGain:"
 
-#: src/madplug/configure.c:207
+#: src/madplug/configure.c:477 src/musepack/libmpc.cxx:215
 #, fuzzy
-msgid "6dB hard limiting"
-msgstr "Galluogi Chwydd 6dB a Hard Limiting"
+msgid "Use Track Gain"
+msgstr "defnyddiwch Cynnydd/Brig Trac"
 
-#: src/madplug/configure.c:212
+#: src/madplug/configure.c:485 src/musepack/libmpc.cxx:219
 #, fuzzy
-msgid "Default gain (dB):"
-msgstr "Rhagosodedig (%s)"
+msgid "Use Album Gain"
+msgstr "defnyddio Cynnydd/Brig Albwm"
 
-#: src/madplug/configure.c:223
-msgid "Preamp (dB):"
+#: src/madplug/configure.c:498
+msgid "Pre-gain with RG info (dB):"
 msgstr ""
 
-#: src/madplug/configure.c:232 src/musepack/libmpc.cxx:224
-#: src/vorbis/configure.c:219 src/wavpack/ui.cxx:547
-msgid "ReplayGain"
-msgstr "ReplayGain"
+#: src/madplug/configure.c:514
+msgid "Pre-gain without RG info (dB):"
+msgstr ""
 
-#: src/madplug/configure.c:237 src/vorbis/configure.c:135
+#: src/madplug/configure.c:530
+#, fuzzy
+msgid "Enable peak info clip prevention"
+msgstr "Galluogi Atal Clipio"
+
+#: src/madplug/configure.c:552
+#, fuzzy
+msgid "Enable adaptive scaler clip prevention"
+msgstr "Galluogi Atal Clipio"
+
+#: src/madplug/configure.c:561
+#, fuzzy
+msgid "Gain Control"
+msgstr "Rheolwr sain"
+
+#: src/madplug/configure.c:569 src/vorbis/configure.c:135
 msgid "Override generic titles"
 msgstr "Diystyru'r teitlau cyffredinol"
 
-#: src/madplug/configure.c:250
+#: src/madplug/configure.c:581
 msgid "ID3 format:"
 msgstr "Fformat ID3:"
 
-#: src/madplug/configure.c:260 src/sid/xmms-sid.glade:2540
+#: src/madplug/configure.c:593 src/sid/xmms-sid.glade:2540
 #: src/sid/xs_interface.c:1070 src/vorbis/configure.c:158
 msgid "Title"
 msgstr "Teitl"
 
-#: src/madplug/plugin.c:541
+#: src/madplug/plugin.c:582
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3098,7 +3123,7 @@ msgid ""
 "    Samuel Krempp"
 msgstr ""
 
-#: src/madplug/plugin.c:557
+#: src/madplug/plugin.c:598
 msgid "About MPEG Audio Plugin"
 msgstr "Ynghylch Ategyn Sain MPEG"
 
@@ -3407,11 +3432,6 @@ msgstr ""
 msgid "Plugin"
 msgstr "Ategyn LIRC"
 
-#: src/musepack/libmpc.cxx:190
-#, fuzzy
-msgid "ReplayGain Settings"
-msgstr "Gosodiadau'r ReplayGain:"
-
 #: src/musepack/libmpc.cxx:197 src/vorbis/configure.c:170
 #: src/wavpack/ui.cxx:510
 msgid "Enable Clipping Prevention"
@@ -3422,20 +3442,10 @@ msgstr "Galluogi Atal Clipio"
 msgid "Enable ReplayGain"
 msgstr "Galluogi ReplayGain"
 
-#: src/musepack/libmpc.cxx:207
-#, fuzzy
-msgid "ReplayGain Type"
-msgstr "Math ReplayGain:"
-
-#: src/musepack/libmpc.cxx:215
-#, fuzzy
-msgid "Use Track Gain"
-msgstr "defnyddiwch Cynnydd/Brig Trac"
-
-#: src/musepack/libmpc.cxx:219
-#, fuzzy
-msgid "Use Album Gain"
-msgstr "defnyddio Cynnydd/Brig Albwm"
+#: src/musepack/libmpc.cxx:224 src/vorbis/configure.c:219
+#: src/wavpack/ui.cxx:547
+msgid "ReplayGain"
+msgstr "ReplayGain"
 
 #: src/musepack/libmpc.cxx:491 src/sid/xmms-sid.glade:3144
 #: src/sid/xs_interface.c:1564 src/tta/libtta.c:304 src/wavpack/ui.cxx:152
@@ -3744,23 +3754,23 @@ msgstr ""
 " MA 02111-1307,\n"
 "USA."
 
-#: src/scrobbler/configure.c:99
+#: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
 msgstr "<b>Gwasanaethau</b>"
 
-#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:161
+#: src/scrobbler/configure.c:160 src/scrobbler/configure.c:199
 msgid "Username:"
 msgstr "Enw Defnyddiwr:"
 
-#: src/scrobbler/configure.c:127 src/scrobbler/configure.c:167
+#: src/scrobbler/configure.c:166 src/scrobbler/configure.c:205
 msgid "Password:"
 msgstr "Cyfrinair:"
 
-#: src/scrobbler/configure.c:145
+#: src/scrobbler/configure.c:183
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:185
+#: src/scrobbler/configure.c:222
 msgid "<b>Gerpok</b>"
 msgstr "<b>Gerpok</b>"
 
@@ -3786,7 +3796,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/scrobbler/gtkstuff.c:42
+#: src/scrobbler/gtkstuff.c:43
 #, fuzzy
 msgid "Scrobbler Error"
 msgstr "Ategyn Scrobbler"
@@ -4574,6 +4584,52 @@ msgstr ""
 msgid "Could not open STILDB '%s'\n"
 msgstr ""
 
+#: src/sndfile/plugin.c:548
+#, fuzzy
+msgid "About sndfile plugin"
+msgstr "Ategyn Sain WAV (sndfile)"
+
+#: src/sndfile/plugin.c:549
+msgid ""
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the xmms_sndfile plugin which is:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"This program is free software ; you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation ; either version 2 of the License, or \n"
+"(at your option) any later version. \n"
+" \n"
+"This program is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+"See the GNU General Public License for more details. \n"
+"\n"
+"You should have received a copy of the GNU General Public \n"
+"License along with this program ; if not, write to \n"
+"the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA"
+msgstr ""
+"Tarddu gan Audacious am Tony Vroon <chainsaw@gentoo.org>\n"
+"Tarddu gan yr xmms_sndfile ategyn:\n"
+"Hawlfraint (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+" Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
+"ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
+"cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
+"drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
+"\n"
+"Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
+"yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
+"o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
+"BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
+"\n"
+"Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad cysylltwch\n"
+"â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, Boston,\n"
+" MA 02111-1307,\n"
+"USA."
+
 #: src/sndstretch/sndstretch_xmms.c:159
 #, fuzzy
 msgid "About SndStretch"
@@ -4938,11 +4994,11 @@ msgstr "defnyddio Cynnydd/Brig Albwm"
 msgid "Enable 6dB Boost + Hard Limiting"
 msgstr "Galluogi Chwydd 6dB a Hard Limiting"
 
-#: src/vorbis/vorbis.c:739
+#: src/vorbis/vorbis.c:751 src/vorbis/vorbis.c~:759
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ynghylch Ategyn Ogg Vorbis"
 
-#: src/vorbis/vorbis.c:745
+#: src/vorbis/vorbis.c:757 src/vorbis/vorbis.c~:765
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5078,51 +5134,6 @@ msgstr "Ffurfweddiad TiMidity"
 msgid "General Plugin Settings:"
 msgstr "Gosodiadau'r ReplayGain:"
 
-#: src/wav/wav-sndfile.c:562
-msgid "About sndfile WAV support"
-msgstr "Ynghylch ategyn sndfile-WAV"
-
-#: src/wav/wav-sndfile.c:563
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
-"Tarddu gan Audacious am Tony Vroon <chainsaw@gentoo.org>\n"
-"Tarddu gan yr xmms_sndfile ategyn:\n"
-"Hawlfraint (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-" Mae'r rhaglen hwn yn feddalwedd rhydd; cewch ei ailddosbarthu a/neu\n"
-"ei newid o dan amodau'r Drwydded Gyhoeddus Gyffredinol GNU fel y'i\n"
-"cyhoeddwyd gan y Free Software Foundation; un ai fersiwn 2 o'r\n"
-"drwydded neu yn ôl eich dewis) unrhyw fersiwn arall.\n"
-"\n"
-"Mae'r rhaglen yn cael ei ddosbarthu yn y gobaith y byddwch yn ei gael\n"
-"yn ddefnyddiol, on HEB UNRHYW WARANT; heb hyd yn oed awgrym\n"
-"o warant MASNACHOL neu ADDASRWYDD AR GYFER UNRHYW\n"
-"BWRPAS. Gw. y drwydded Gyhoeddus Gyffredin am ragor o wybodaeth.\n"
-"\n"
-"Dylech fod wedi derbyn copi o'r Drwydded gyda'r rhaglen; os nad cysylltwch\n"
-"â 'r Free Software Foundation, Inc.,  59 Temple Place - Suite 330, Boston,\n"
-" MA 02111-1307,\n"
-"USA."
-
 #: src/wma/wma.c:132
 msgid ""
 "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
@@ -5132,6 +5143,29 @@ msgid ""
 "<bogorodskiy@inbox.ru>.\n"
 "This plugin based on source code "
 msgstr ""
+
+#, fuzzy
+#~ msgid "<b>Playback:</b>"
+#~ msgstr "Chwarae"
+
+#, fuzzy
+#~ msgid "<b>Volume Control:</b>"
+#~ msgstr "Dyfais rheoli sain:"
+
+#, fuzzy
+#~ msgid "<b>Player:</b>"
+#~ msgstr "<b>Hatena</b>"
+
+#, fuzzy
+#~ msgid "Track mode"
+#~ msgstr "Enwau'r Traciau:"
+
+#, fuzzy
+#~ msgid "6dB hard limiting"
+#~ msgstr "Galluogi Chwydd 6dB a Hard Limiting"
+
+#~ msgid "About sndfile WAV support"
+#~ msgstr "Ynghylch ategyn sndfile-WAV"
 
 #, fuzzy
 #~ msgid "Play/Pause:"
@@ -5695,9 +5729,6 @@ msgstr ""
 #~ msgid "%s - Audacious"
 #~ msgstr "%s - Audacious"
 
-#~ msgid "sndfile WAV plugin"
-#~ msgstr "Ategyn Sain WAV (sndfile)"
-
 #~ msgid "Use software volume control"
 #~ msgstr "Defnyddio rheolwr sain meddalwedd"
 
@@ -5709,10 +5740,6 @@ msgstr ""
 #~ "Nid oes modd defnyddio ategyn Disk Writer\n"
 #~ "\n"
 #~ "pan fyddwch yn rhedeg ym modd realtime."
-
-#, fuzzy
-#~ msgid "Subtune Control"
-#~ msgstr "Rheolwr sain"
 
 #, fuzzy
 #~ msgid "Override generic XMMS titles"
@@ -5889,9 +5916,6 @@ msgstr ""
 
 #~ msgid "eSound Output Plugin"
 #~ msgstr "Ategyn Allbwn eSound"
-
-#~ msgid "<b>Hatena</b>"
-#~ msgstr "<b>Hatena</b>"
 
 #~ msgid "Extra Stereo Plugin %s"
 #~ msgstr "Ategyn Extra Stereo %s"
