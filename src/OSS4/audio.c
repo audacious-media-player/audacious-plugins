@@ -149,9 +149,64 @@ oss_get_format(AFormat fmt)
 #else
         format = AFMT_S16_LE;
 #endif
+        break;   
+#if 0  /* OSS currently doesn't support AFMT_U24_* */
+    case FMT_U24_LE:
+        format = AFMT_U24_LE;
+        break;
+    case FMT_U24_BE:
+        format = AFMT_U24_BE;
+        break;
+    case FMT_U24_NE:
+#if (G_BYTE_ORDER == G_BIG_ENDIAN)
+        format = AFMT_U24_BE;
+#else
+        format = AFMT_U24_LE;
+#endif
+        break;
+#endif
+    case FMT_S24_LE:
+        format = AFMT_S24_LE;
+        break;
+    case FMT_S24_BE:
+        format = AFMT_S24_BE;
+        break;
+    case FMT_S24_NE:
+#if (G_BYTE_ORDER == G_BIG_ENDIAN)
+        format = AFMT_S24_BE;
+#else
+        format = AFMT_S24_LE;
+#endif
+        break;
+#if 0  /* OSS currently doesn't support AFMT_U32_* */
+    case FMT_U32_LE:
+        format = AFMT_U32_LE;
+        break;
+    case FMT_U32_BE:
+        format = AFMT_U32_BE;
+        break;
+    case FMT_U32_NE:
+#if (G_BYTE_ORDER == G_BIG_ENDIAN)
+        format = AFMT_U32_BE;
+#else
+        format = AFMT_U32_LE;
+#endif
+        break;
+#endif
+    case FMT_S32_LE:
+        format = AFMT_S32_LE;
+        break;
+    case FMT_S32_BE:
+        format = AFMT_S32_BE;
+        break;
+    case FMT_S32_NE:
+#if (G_BYTE_ORDER == G_BIG_ENDIAN)
+        format = AFMT_S32_BE;
+#else
+        format = AFMT_S32_LE;
+#endif
         break;
     }
-
     return format;
 }
 
