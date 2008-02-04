@@ -14,7 +14,8 @@
 #include "SFMT.h"
 #include "SFMT.c"
 
-int triangular_dither_noise(int nbits)
+int
+triangular_dither_noise(int nbits)
 {
     // parameter nbits : the peak-to-peak amplitude desired (in bits)
     //  use with nbits set to    2 + nber of bits to be trimmed.

@@ -69,7 +69,7 @@ src/filewriter/mp3.c
 src/filewriter/vorbis.c
 src/flacng/plugin.c
 src/gnomeshortcuts/gnomeshortcuts.c
-src/hotkey/plugin.c
+src/hotkey/gui.c
 src/jack/bio2jack.c
 src/jack/configure.c
 src/jack/jack.c
@@ -112,6 +112,7 @@ src/sid/xs_sidplay1.cc
 src/sid/xs_sidplay2.cc
 src/sid/xs_slsup.c
 src/sid/xs_stil.c
+src/sndfile/plugin.c
 src/sndstretch/sndstretch_xmms.c
 src/song_change/song_change.c
 src/spectrum/spectrum.c
@@ -126,9 +127,9 @@ src/tonegen/tonegen.c
 src/tta/libtta.c
 src/vorbis/configure.c
 src/vorbis/vorbis.c
+src/vorbis/vorbis.c~
 src/vtx/about.c
 src/vtx/info.c
 src/wavpack/ui.cxx
-src/wav/wav-sndfile.c
 src/wma/libffwma/wmadec.c
 src/wma/wma.c

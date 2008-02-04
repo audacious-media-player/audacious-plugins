@@ -69,7 +69,8 @@ extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
 /**
  * init the mad_info_t struct.
  */
-gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
+gboolean
+input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 {
     AUDDBG("f: input_init\n");
 
@@ -119,7 +120,8 @@ gboolean input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 }
 
 /* return length in letters */
-size_t mad_ucs4len(id3_ucs4_t *ucs)
+size_t
+mad_ucs4len(id3_ucs4_t *ucs)
 {
     id3_ucs4_t *ptr = ucs;
     size_t len = 0;
@@ -131,7 +133,8 @@ size_t mad_ucs4len(id3_ucs4_t *ucs)
 }
 
 /* duplicate id3_ucs4_t string. new string will be terminated with 0. */
-id3_ucs4_t *mad_ucs4dup(id3_ucs4_t *org)
+id3_ucs4_t *
+mad_ucs4dup(id3_ucs4_t *org)
 {
     id3_ucs4_t *new = NULL;
     size_t len = mad_ucs4len(org);
@@ -145,7 +148,8 @@ id3_ucs4_t *mad_ucs4dup(id3_ucs4_t *org)
 
 #define BYTES(x) ((x) * sizeof(id3_ucs4_t))
 
-id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
+id3_ucs4_t *
+mad_parse_genre(const id3_ucs4_t *string)
 {
     id3_ucs4_t *ret = NULL;
     id3_ucs4_t *tmp = NULL;
@@ -256,7 +260,8 @@ id3_ucs4_t *mad_parse_genre(const id3_ucs4_t *string)
     return ret;
 }
 
-gchar *input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
+gchar *
+input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
 {
     gchar *rtn0 = NULL, *rtn = NULL;
     const id3_ucs4_t *string_const = NULL;
@@ -316,7 +321,8 @@ gchar *input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
     return rtn;
 }
 
-static void input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gchar *frame, const gint nfield)
+static void
+input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gchar *frame, const gint nfield)
 {
     gchar *scratch = input_id3_get_string(tag, frame);
 
@@ -326,7 +332,8 @@ static void input_set_and_free_tag(struct id3_tag *tag, Tuple *tuple, const gcha
     g_free(scratch);
 }
 
-static void input_alloc_tag(struct mad_info_t *info)
+static void
+input_alloc_tag(struct mad_info_t *info)
 {
     Tuple *tuple;
 
@@ -340,7 +347,8 @@ static void input_alloc_tag(struct mad_info_t *info)
 /**
  * read the ID3 tag 
  */
-static void input_read_tag(struct mad_info_t *info)
+static void
+input_read_tag(struct mad_info_t *info)
 {
     gchar *string = NULL;
     Tuple *tuple;
@@ -400,7 +408,7 @@ static void input_read_tag(struct mad_info_t *info)
 
     // length
     string = input_id3_get_string(info->tag, "TLEN");
-    if (string) {
+    if (string && atoi(string)) {
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
         AUDDBG("input_read_tag: TLEN = %d\n", atoi(string));
         g_free(string);
@@ -411,8 +419,8 @@ static void input_read_tag(struct mad_info_t *info)
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
-    info->title = aud_tuple_formatter_make_title_string(tuple, audmad_config.title_override == TRUE ?
-        audmad_config.id3_format : aud_get_gentitle_format());
+    info->title = aud_tuple_formatter_make_title_string(tuple, audmad_config->title_override == TRUE ?
+        audmad_config->id3_format : aud_get_gentitle_format());
 
     // for connection via proxy, we have to stop transfer once. I can't explain the reason.
     if (info->infile != NULL) {
@@ -423,7 +431,8 @@ static void input_read_tag(struct mad_info_t *info)
     AUDDBG("e: input_read_tag\n");
 }
 
-void input_process_remote_metadata(struct mad_info_t *info)
+void
+input_process_remote_metadata(struct mad_info_t *info)
 {
     gboolean metadata = FALSE;
 
@@ -497,7 +506,8 @@ void input_process_remote_metadata(struct mad_info_t *info)
  * Retrieve meta-information about URL.
  * For local files this means ID3 tag etc.
  */
-gboolean input_get_info(struct mad_info_t *info, gboolean fast_scan)
+gboolean
+input_get_info(struct mad_info_t *info, gboolean fast_scan)
 {
 #ifdef AUD_DEBUG
     gchar *tmp = g_filename_to_utf8(info->filename, -1, NULL, NULL, NULL);    
@@ -570,7 +580,8 @@ input_get_data(struct mad_info_t *info, guchar * buffer,
 /**
  * Free up all mad_info_t related resourses.
  */
-gboolean input_term(struct mad_info_t * info)
+gboolean
+input_term(struct mad_info_t * info)
 {
     AUDDBG("f: input_term\n");
 

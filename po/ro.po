@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2008-01-11 00:58+0300\n"
+"POT-Creation-Date: 2008-02-03 20:33+0200\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -45,18 +45,18 @@ msgstr "Despre plugin-ul decodor MP4·AAC"
 #: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:392
 #: src/echo_plugin/gui.c:26 src/echo_plugin/gui.c:137 src/esd/about.c:49
 #: src/filewriter/filewriter.c:183 src/jack/configure.c:141
-#: src/jack/jack.c:493 src/madplug/plugin.c:559 src/madplug/plugin.c:582
+#: src/jack/jack.c:493 src/madplug/plugin.c:600 src/madplug/plugin.c:624
 #: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:49
 #: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
 #: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
 #: src/paranormal/plugin.c:291 src/scrobbler/gtkstuff.c:25
-#: src/statusicon/si_ui.c:593 src/stereo_plugin/stereo.c:53
-#: src/stereo_plugin/stereo.c:116 src/sun/about.c:38 src/sun/configure.c:559
-#: src/timidity/interface.c:222 src/timidity/xmms-timidity.c:120
-#: src/tonegen/tonegen.c:62 src/tta/libtta.c:153 src/tta/libtta.c:267
-#: src/tta/libtta.c:402 src/vorbis/vorbis.c:757 src/vtx/about.c:32
+#: src/sndfile/plugin.c:565 src/statusicon/si_ui.c:593
+#: src/stereo_plugin/stereo.c:53 src/stereo_plugin/stereo.c:116
+#: src/sun/about.c:38 src/sun/configure.c:559 src/timidity/interface.c:222
+#: src/timidity/xmms-timidity.c:120 src/tonegen/tonegen.c:62
+#: src/tta/libtta.c:153 src/tta/libtta.c:267 src/tta/libtta.c:402
+#: src/vorbis/vorbis.c:769 src/vorbis/vorbis.c~:777 src/vtx/about.c:32
 #: src/vtx/info.c:43 src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
-#: src/wav/wav-sndfile.c:579
 msgid "Ok"
 msgstr "Ok"
 
@@ -103,7 +103,7 @@ msgid "Cancel"
 msgstr "Anulează"
 
 #: src/adplug/adplug-xmms.cc:291 src/console/Audacious_Config.cxx:145
-#: src/madplug/configure.c:190 src/modplug/gui/interface.cxx:628
+#: src/madplug/configure.c:421 src/modplug/gui/interface.cxx:628
 #: src/modplug/gui/interface.cxx:887 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
@@ -336,9 +336,9 @@ msgstr "Acesta este semnalul de deșteptare."
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
 #: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:228
 #: src/flacng/plugin.c:747 src/gnomeshortcuts/gnomeshortcuts.c:292
-#: src/hotkey/plugin.c:1075 src/modplug/gui/interface.cxx:702
+#: src/hotkey/gui.c:671 src/modplug/gui/interface.cxx:702
 #: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:712
-#: src/scrobbler/gtkstuff.c:44 src/sid/xmms-sid.glade:3066
+#: src/scrobbler/gtkstuff.c:45 src/sid/xmms-sid.glade:3066
 #: src/sid/xs_interface.c:1243
 msgid "OK"
 msgstr "Ok"
@@ -1464,7 +1464,7 @@ msgstr "Dreptunghi rotunjit"
 msgid "Concave Rectangle"
 msgstr "Dreptunghi concav"
 
-#: src/aosd/aosd_style.c:87 src/hotkey/plugin.c:870
+#: src/aosd/aosd_style.c:87
 #, fuzzy
 msgid "None"
 msgstr "Deselectează tot"
@@ -1921,7 +1921,7 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:850
+#: src/cdaudio-ng/cdaudio-ng.c:627
 #, fuzzy
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
@@ -2346,7 +2346,7 @@ msgid ""
 "Ensure that the device has been correctly plugged in."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:582
+#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:624
 #, fuzzy
 msgid "Error"
 msgstr "Eroare în Audacious"
@@ -2786,12 +2786,73 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/hotkey/plugin.c:649
+#: src/hotkey/gui.c:68
+msgid "Previous Track"
+msgstr ""
+
+#: src/hotkey/gui.c:69
+#, fuzzy
+msgid "Play"
+msgstr "Pauză pentru"
+
+#: src/hotkey/gui.c:70
+#, fuzzy
+msgid "Pause/Resume"
+msgstr "La încărcare"
+
+#: src/hotkey/gui.c:71
+#, fuzzy
+msgid "Stop"
+msgstr "Synthpop"
+
+#: src/hotkey/gui.c:72
+#, fuzzy
+msgid "Next Track"
+msgstr "Informații despre Track"
+
+#: src/hotkey/gui.c:73
+msgid "Forward 5 Seconds"
+msgstr ""
+
+#: src/hotkey/gui.c:74
+msgid "Rewind 5 Seconds"
+msgstr ""
+
+#: src/hotkey/gui.c:75
+#, fuzzy
+msgid "Mute"
+msgstr "Data:"
+
+#: src/hotkey/gui.c:76
+#, fuzzy
+msgid "Volume Up"
+msgstr "Volum: %d%%"
+
+#: src/hotkey/gui.c:77
+#, fuzzy
+msgid "Volume Down"
+msgstr "Schimbă volumul cu"
+
+#: src/hotkey/gui.c:78
+#, fuzzy
+msgid "Jump to File"
+msgstr "Fereastra de Preferințe"
+
+#: src/hotkey/gui.c:79
+#, fuzzy
+msgid "Toggle Player Windows"
+msgstr "Schimbă Coada"
+
+#: src/hotkey/gui.c:80
+msgid "Show On-Screen-Display"
+msgstr ""
+
+#: src/hotkey/gui.c:90
 #, fuzzy
 msgid "(none)"
 msgstr "Deselectează tot"
 
-#: src/hotkey/plugin.c:776
+#: src/hotkey/gui.c:227
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -2799,115 +2860,40 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/plugin.c:778
+#: src/hotkey/gui.c:229
 msgid "Binding mouse buttons"
 msgstr ""
 
-#: src/hotkey/plugin.c:912
+#: src/hotkey/gui.c:379
 #, fuzzy
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Lista plugin-urilor _Generale"
 
-#: src/hotkey/plugin.c:928
-msgid "Press a key combination inside a text field."
+#: src/hotkey/gui.c:395
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
 msgstr ""
 
-#: src/hotkey/plugin.c:933
+#: src/hotkey/gui.c:400
+msgid "Hotkeys:"
+msgstr ""
+
+#: src/hotkey/gui.c:419
 #, fuzzy
-msgid "<b>Playback:</b>"
-msgstr "Redare"
+msgid "<b>Action:</b>"
+msgstr "Numele Fișierului:"
 
-#: src/hotkey/plugin.c:948
-msgid "<i>Configure keys which controls Audacious playback.</i>"
+#: src/hotkey/gui.c:427
+msgid "<b>Key Binding:</b>"
 msgstr ""
 
-#: src/hotkey/plugin.c:955
-msgid "Previous Track:"
-msgstr ""
-
-#: src/hotkey/plugin.c:958
-#, fuzzy
-msgid "Play:"
-msgstr "Pauză pentru"
-
-#: src/hotkey/plugin.c:961
-#, fuzzy
-msgid "Pause/Resume:"
-msgstr "La încărcare"
-
-#: src/hotkey/plugin.c:964
-#, fuzzy
-msgid "Stop:"
-msgstr "Synthpop"
-
-#: src/hotkey/plugin.c:967
-#, fuzzy
-msgid "Next Track:"
-msgstr "Informații despre Track"
-
-#: src/hotkey/plugin.c:970
-msgid "Forward 5 sec.:"
-msgstr ""
-
-#: src/hotkey/plugin.c:973
-msgid "Rewind 5 sec.:"
-msgstr ""
-
-#: src/hotkey/plugin.c:978
-#, fuzzy
-msgid "<b>Volume Control:</b>"
-msgstr "Schimbă volumul cu"
-
-#: src/hotkey/plugin.c:993
-msgid "<i>Configure keys which controls music volume.</i>"
-msgstr ""
-
-#: src/hotkey/plugin.c:999
-#, fuzzy
-msgid "Mute:"
-msgstr "Data:"
-
-#: src/hotkey/plugin.c:1002
-#, fuzzy
-msgid "Volume Up:"
-msgstr "Volum: %d%%"
-
-#: src/hotkey/plugin.c:1005
-#, fuzzy
-msgid "Volume Down:"
-msgstr "Schimbă volumul cu"
-
-#: src/hotkey/plugin.c:1010
-#, fuzzy
-msgid "<b>Player:</b>"
-msgstr "Numele Instrumentului"
-
-#: src/hotkey/plugin.c:1025
-msgid "<i>Configure keys which control the player.</i>"
-msgstr ""
-
-#: src/hotkey/plugin.c:1031
-msgid "Jump to File:"
-msgstr ""
-
-#: src/hotkey/plugin.c:1034
-msgid "Toggle Player Windows:"
-msgstr ""
-
-#: src/hotkey/plugin.c:1037
-msgid "Show On-Screen-Display:"
-msgstr ""
-
-#: src/hotkey/plugin.c:1038
-msgid "For this, the Audacious OSD plugin must be activated."
-msgstr ""
-
-#: src/hotkey/plugin.c:1064
+#: src/hotkey/gui.c:660
 #, fuzzy
 msgid "About Global Hotkey Plugin"
 msgstr "Despre plugin-ul decodor MP4·AAC"
 
-#: src/hotkey/plugin.c:1065
+#: src/hotkey/gui.c:661
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3081,12 +3067,12 @@ msgstr ""
 msgid "Connection"
 msgstr "Mod de Vizualizare"
 
-#: src/lirc/lirc.c:78
+#: src/lirc/lirc.c:83
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr ""
 
-#: src/lirc/lirc.c:86
+#: src/lirc/lirc.c:91
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -3094,99 +3080,138 @@ msgid ""
 "%s: how to create a proper config file\n"
 msgstr ""
 
-#: src/lirc/lirc.c:111
+#: src/lirc/lirc.c:118
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr ""
 
-#: src/lirc/lirc.c:310
+#: src/lirc/lirc.c:339
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr ""
 
-#: src/lirc/lirc.c:320
+#: src/lirc/lirc.c:349
 #, fuzzy, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "Încarcă preset din fișier"
 
-#: src/lirc/lirc.c:324
+#: src/lirc/lirc.c:353
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
-#: src/madplug/configure.c:147
+#: src/madplug/configure.c:332
 #, fuzzy
 msgid "MPEG Audio Plugin Configuration"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
-#: src/madplug/configure.c:160
+#: src/madplug/configure.c:349
+#, fuzzy
+msgid "Audio Settings"
+msgstr "Opțiuni ale plugin-ului Alarm"
+
+#: src/madplug/configure.c:358
 msgid "Dither output when rounding to 16-bit"
 msgstr ""
 
-#: src/madplug/configure.c:166
-msgid "Enable fast play-length calculation"
-msgstr ""
-
-#: src/madplug/configure.c:171
-msgid "Parse XING headers"
-msgstr ""
-
-#: src/madplug/configure.c:176
-msgid "Use SJIS to write ID3 tags instead of UTF-8"
-msgstr ""
-
-#: src/madplug/configure.c:180
-msgid "Display average bitrate for VBR"
-msgstr ""
-
-#: src/madplug/configure.c:185
+#: src/madplug/configure.c:365
 msgid "Force reopen audio when audio type changed"
 msgstr ""
 
-#: src/madplug/configure.c:195
+#: src/madplug/configure.c:374
+#, fuzzy
+msgid "Metadata Settings"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
+
+#: src/madplug/configure.c:383
+msgid "Enable fast play-length calculation"
+msgstr ""
+
+#: src/madplug/configure.c:390
+msgid "Parse XING headers"
+msgstr ""
+
+#: src/madplug/configure.c:397
+msgid "Use SJIS to write ID3 tags (not recommended)"
+msgstr ""
+
+#: src/madplug/configure.c:404
+#, fuzzy
+msgid "Miscellaneous Settings"
+msgstr "Meniu de Opțiuni"
+
+#: src/madplug/configure.c:413
+msgid "Display average bitrate for VBR"
+msgstr ""
+
+#: src/madplug/configure.c:432
+#, fuzzy
+msgid "Base gain (dB):"
+msgstr "Salvează Lista Implicită"
+
+#: src/madplug/configure.c:446 src/musepack/libmpc.cxx:190
+#, fuzzy
+msgid "ReplayGain Settings"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
+
+#: src/madplug/configure.c:457
 #, fuzzy
 msgid "Enable ReplayGain processing"
 msgstr "Activează proxy"
 
-#: src/madplug/configure.c:200
+#: src/madplug/configure.c:467 src/musepack/libmpc.cxx:207
 #, fuzzy
-msgid "Track mode"
-msgstr "Mod de Vizualizare"
+msgid "ReplayGain Type"
+msgstr "Tipul Fișierului: "
 
-#: src/madplug/configure.c:207
-msgid "6dB hard limiting"
-msgstr ""
-
-#: src/madplug/configure.c:212
+#: src/madplug/configure.c:477 src/musepack/libmpc.cxx:215
 #, fuzzy
-msgid "Default gain (dB):"
-msgstr "Salvează Lista Implicită"
+msgid "Use Track Gain"
+msgstr "Fereastra cu informații despre Track"
 
-#: src/madplug/configure.c:223
-msgid "Preamp (dB):"
+#: src/madplug/configure.c:485 src/musepack/libmpc.cxx:219
+#, fuzzy
+msgid "Use Album Gain"
+msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
+
+#: src/madplug/configure.c:498
+msgid "Pre-gain with RG info (dB):"
 msgstr ""
 
-#: src/madplug/configure.c:232 src/musepack/libmpc.cxx:224
-#: src/vorbis/configure.c:219 src/wavpack/ui.cxx:547
-msgid "ReplayGain"
+#: src/madplug/configure.c:514
+msgid "Pre-gain without RG info (dB):"
 msgstr ""
 
-#: src/madplug/configure.c:237 src/vorbis/configure.c:135
+#: src/madplug/configure.c:530
+#, fuzzy
+msgid "Enable peak info clip prevention"
+msgstr "Activează proxy"
+
+#: src/madplug/configure.c:552
+#, fuzzy
+msgid "Enable adaptive scaler clip prevention"
+msgstr "Activează proxy"
+
+#: src/madplug/configure.c:561
+msgid "Gain Control"
+msgstr ""
+
+#: src/madplug/configure.c:569 src/vorbis/configure.c:135
 msgid "Override generic titles"
 msgstr ""
 
-#: src/madplug/configure.c:250
+#: src/madplug/configure.c:581
 #, fuzzy
 msgid "ID3 format:"
 msgstr "Selecția formatelor"
 
-#: src/madplug/configure.c:260 src/sid/xmms-sid.glade:2540
+#: src/madplug/configure.c:593 src/sid/xmms-sid.glade:2540
 #: src/sid/xs_interface.c:1070 src/vorbis/configure.c:158
 #, fuzzy
 msgid "Title"
 msgstr "Titlu"
 
-#: src/madplug/plugin.c:541
+#: src/madplug/plugin.c:582
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3204,7 +3229,7 @@ msgid ""
 "    Samuel Krempp"
 msgstr ""
 
-#: src/madplug/plugin.c:557
+#: src/madplug/plugin.c:598
 #, fuzzy
 msgid "About MPEG Audio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
@@ -3511,11 +3536,6 @@ msgstr ""
 msgid "Plugin"
 msgstr "Plugin de intrare: %s"
 
-#: src/musepack/libmpc.cxx:190
-#, fuzzy
-msgid "ReplayGain Settings"
-msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
-
 #: src/musepack/libmpc.cxx:197 src/vorbis/configure.c:170
 #: src/wavpack/ui.cxx:510
 #, fuzzy
@@ -3528,20 +3548,10 @@ msgstr "Activează proxy"
 msgid "Enable ReplayGain"
 msgstr "Activează modul 'Mărime Dublă'"
 
-#: src/musepack/libmpc.cxx:207
-#, fuzzy
-msgid "ReplayGain Type"
-msgstr "Tipul Fișierului: "
-
-#: src/musepack/libmpc.cxx:215
-#, fuzzy
-msgid "Use Track Gain"
-msgstr "Fereastra cu informații despre Track"
-
-#: src/musepack/libmpc.cxx:219
-#, fuzzy
-msgid "Use Album Gain"
-msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
+#: src/musepack/libmpc.cxx:224 src/vorbis/configure.c:219
+#: src/wavpack/ui.cxx:547
+msgid "ReplayGain"
+msgstr ""
 
 #: src/musepack/libmpc.cxx:491 src/sid/xmms-sid.glade:3144
 #: src/sid/xs_interface.c:1564 src/tta/libtta.c:304 src/wavpack/ui.cxx:152
@@ -3806,26 +3816,26 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/scrobbler/configure.c:99
+#: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
 msgstr ""
 
-#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:161
+#: src/scrobbler/configure.c:160 src/scrobbler/configure.c:199
 #, fuzzy
 msgid "Username:"
 msgstr "Utilizator:"
 
-#: src/scrobbler/configure.c:127 src/scrobbler/configure.c:167
+#: src/scrobbler/configure.c:166 src/scrobbler/configure.c:205
 #, fuzzy
 msgid "Password:"
 msgstr "Parolă:"
 
-#: src/scrobbler/configure.c:145
+#: src/scrobbler/configure.c:183
 #, fuzzy
 msgid "<b>Last.FM</b>"
 msgstr "Radio Last.fm"
 
-#: src/scrobbler/configure.c:185
+#: src/scrobbler/configure.c:222
 msgid "<b>Gerpok</b>"
 msgstr ""
 
@@ -3852,7 +3862,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/scrobbler/gtkstuff.c:42
+#: src/scrobbler/gtkstuff.c:43
 #, fuzzy
 msgid "Scrobbler Error"
 msgstr "Eroare în Audacious"
@@ -4639,6 +4649,34 @@ msgstr ""
 msgid "Could not open STILDB '%s'\n"
 msgstr "Nu s-a putut crea directorul (%s): %s\n"
 
+#: src/sndfile/plugin.c:548
+#, fuzzy
+msgid "About sndfile plugin"
+msgstr "Lista plugin-urilor _Generale"
+
+#: src/sndfile/plugin.c:549
+msgid ""
+"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+"from the xmms_sndfile plugin which is:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"This program is free software ; you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation ; either version 2 of the License, or \n"
+"(at your option) any later version. \n"
+" \n"
+"This program is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+"See the GNU General Public License for more details. \n"
+"\n"
+"You should have received a copy of the GNU General Public \n"
+"License along with this program ; if not, write to \n"
+"the Free Software Foundation, Inc., \n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA  02110-1301  USA"
+msgstr ""
+
 #: src/sndstretch/sndstretch_xmms.c:159
 #, fuzzy
 msgid "About SndStretch"
@@ -5001,12 +5039,12 @@ msgstr ""
 msgid "Enable 6dB Boost + Hard Limiting"
 msgstr ""
 
-#: src/vorbis/vorbis.c:739
+#: src/vorbis/vorbis.c:751 src/vorbis/vorbis.c~:759
 #, fuzzy
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
-#: src/vorbis/vorbis.c:745
+#: src/vorbis/vorbis.c:757 src/vorbis/vorbis.c~:765
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5128,33 +5166,6 @@ msgstr "AdPlug·::·Configurare"
 msgid "General Plugin Settings:"
 msgstr "Lista plugin-urilor _Generale"
 
-#: src/wav/wav-sndfile.c:562
-msgid "About sndfile WAV support"
-msgstr ""
-
-#: src/wav/wav-sndfile.c:563
-msgid ""
-"Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-"from the xmms_sndfile plugin which is:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"This program is free software ; you can redistribute it and/or modify \n"
-"it under the terms of the GNU General Public License as published by \n"
-"the Free Software Foundation ; either version 2 of the License, or \n"
-"(at your option) any later version. \n"
-" \n"
-"This program is distributed in the hope that it will be useful, \n"
-"but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-"See the GNU General Public License for more details. \n"
-"\n"
-"You should have received a copy of the GNU General Public \n"
-"License along with this program ; if not, write to \n"
-"the Free Software Foundation, Inc., \n"
-"51 Franklin Street, Fifth Floor, \n"
-"Boston, MA  02110-1301  USA"
-msgstr ""
-
 #: src/wma/wma.c:132
 msgid ""
 "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
@@ -5164,6 +5175,22 @@ msgid ""
 "<bogorodskiy@inbox.ru>.\n"
 "This plugin based on source code "
 msgstr ""
+
+#, fuzzy
+#~ msgid "<b>Playback:</b>"
+#~ msgstr "Redare"
+
+#, fuzzy
+#~ msgid "<b>Volume Control:</b>"
+#~ msgstr "Schimbă volumul cu"
+
+#, fuzzy
+#~ msgid "<b>Player:</b>"
+#~ msgstr "Numele Instrumentului"
+
+#, fuzzy
+#~ msgid "Track mode"
+#~ msgstr "Mod de Vizualizare"
 
 #, fuzzy
 #~ msgid "File Info"
@@ -5701,10 +5728,6 @@ msgstr ""
 #~ msgid "%s - Audacious"
 #~ msgstr "%s - Audacious"
 
-#, fuzzy
-#~ msgid "sndfile WAV plugin"
-#~ msgstr "Lista plugin-urilor _Generale"
-
 #~ msgid "Use software volume control"
 #~ msgstr "Folosește controlul de volum în software"
 
@@ -5723,10 +5746,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Detect file by contents (slower)"
 #~ msgstr "Detecția formatului după extensie."
-
-#, fuzzy
-#~ msgid "Miscellaneous options:"
-#~ msgstr "Meniu de Opțiuni"
 
 #~ msgid ":"
 #~ msgstr ":"

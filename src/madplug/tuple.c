@@ -161,13 +161,13 @@ audmad_update_song_tuple(Tuple *tuple, VFSFile *fd)
 
     id3_tag_options(id3tag, ID3_TAG_OPTION_ID3V1, ~0);    /* enables id3v1. TODO: make id3v1 optional */
     
-    update_id3_frame_from_tuple(id3tag, ID3_FRAME_TITLE, tuple, FIELD_TITLE, audmad_config.sjis);
-    update_id3_frame_from_tuple(id3tag, ID3_FRAME_ARTIST, tuple, FIELD_ARTIST, audmad_config.sjis);
-    update_id3_frame_from_tuple(id3tag, ID3_FRAME_ALBUM, tuple, FIELD_ALBUM, audmad_config.sjis);
-    update_id3_frame_from_tuple(id3tag, ID3_FRAME_YEAR, tuple, FIELD_YEAR, audmad_config.sjis);
-    update_id3_frame_from_tuple(id3tag, ID3_FRAME_COMMENT, tuple, FIELD_COMMENT, audmad_config.sjis);
-    update_id3_frame_from_tuple(id3tag, ID3_FRAME_TRACK, tuple, FIELD_TRACK_NUMBER, audmad_config.sjis);
-    update_id3_frame_from_tuple(id3tag, ID3_FRAME_GENRE, tuple, FIELD_GENRE, audmad_config.sjis);
+    update_id3_frame_from_tuple(id3tag, ID3_FRAME_TITLE, tuple, FIELD_TITLE, audmad_config->sjis);
+    update_id3_frame_from_tuple(id3tag, ID3_FRAME_ARTIST, tuple, FIELD_ARTIST, audmad_config->sjis);
+    update_id3_frame_from_tuple(id3tag, ID3_FRAME_ALBUM, tuple, FIELD_ALBUM, audmad_config->sjis);
+    update_id3_frame_from_tuple(id3tag, ID3_FRAME_YEAR, tuple, FIELD_YEAR, audmad_config->sjis);
+    update_id3_frame_from_tuple(id3tag, ID3_FRAME_COMMENT, tuple, FIELD_COMMENT, audmad_config->sjis);
+    update_id3_frame_from_tuple(id3tag, ID3_FRAME_TRACK, tuple, FIELD_TRACK_NUMBER, audmad_config->sjis);
+    update_id3_frame_from_tuple(id3tag, ID3_FRAME_GENRE, tuple, FIELD_GENRE, audmad_config->sjis);
 
     if(!id3_tag_findframe(id3tag, "TLEN", 0) && input_init(&songinfo, fd->uri, fd) && !songinfo.remote) {
         AUDDBG("update TLEN frame\n");

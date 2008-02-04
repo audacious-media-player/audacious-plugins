@@ -29,7 +29,8 @@
  * NAME:	xing->init()
  * DESCRIPTION:	initialize Xing structure
  */
-void xing_init(struct xing *xing)
+void
+xing_init(struct xing *xing)
 {
     xing->flags = 0;
     xing->frames = 0;
@@ -42,7 +43,8 @@ void xing_init(struct xing *xing)
  * NAME:	xing->parse()
  * DESCRIPTION:	parse a Xing VBR header
  */
-int xing_parse(struct xing *xing, struct mad_bitptr ptr,
+int
+xing_parse(struct xing *xing, struct mad_bitptr ptr,
                unsigned int bitlen)
 {
     if (bitlen < 64 || mad_bit_read(&ptr, 32) != XING_MAGIC)

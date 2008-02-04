@@ -27,14 +27,16 @@
 #include <assert.h>
 #include "replaygain.h"
 
-static unsigned long Read_LE_Uint32(const unsigned char *p)
+static unsigned long
+Read_LE_Uint32(const unsigned char *p)
 {
     return ((unsigned long) p[0] << 0) |
         ((unsigned long) p[1] << 8) |
         ((unsigned long) p[2] << 16) | ((unsigned long) p[3] << 24);
 }
 
-static int uncase_strcmp(const char *s1, const char *s2)
+static int
+uncase_strcmp(const char *s1, const char *s2)
 {
     int l1 = strlen(s1);
     int l2 = strlen(s2);
@@ -48,7 +50,8 @@ static int uncase_strcmp(const char *s1, const char *s2)
     return (l1 < l2) ? -1 : +1;
 }
 
-static gdouble strgain2double(gchar * s, int len)
+static gdouble
+strgain2double(gchar * s, int len)
 {
     gdouble res = g_strtod(s, NULL);    // gain, in dB.
     if (res == 0)
@@ -58,7 +61,8 @@ static gdouble strgain2double(gchar * s, int len)
 
 // Reads APE v2.0 tag ending at current pos in fp
 
-static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
+static int
+ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
 {
     unsigned long vsize;
     unsigned long isize;
@@ -164,7 +168,8 @@ static int ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
     return 0;
 }
 
-static int find_offset(VFSFile * fp)
+static int
+find_offset(VFSFile * fp)
 {
     static const char *key = "APETAGEX";
     char buff[20000];
@@ -196,7 +201,8 @@ static int find_offset(VFSFile * fp)
 /* Eugene Zagidullin:
  * Read ReplayGain info from foobar2000-style id3v2 frames */
 
-static int ReadId3v2TXXX(struct mad_info_t *file_info)
+static int
+ReadId3v2TXXX(struct mad_info_t *file_info)
 {
 	int i;
 	char *key;
@@ -250,7 +256,8 @@ static int ReadId3v2TXXX(struct mad_info_t *file_info)
 	return 0;
 }
 
-void read_replaygain(struct mad_info_t *file_info)
+void
+read_replaygain(struct mad_info_t *file_info)
 {
     VFSFile *fp;
     glong curpos = 0;
@@ -264,10 +271,10 @@ void read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_minmax = -77;
 
     if (ReadId3v2TXXX(file_info)) {
-#ifdef AUD_DEBUG
         AUDDBG("found ReplayGain info in id3v2 tag\n");
-
+#ifdef AUD_DEBUG
 	gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);
+
         AUDDBG("RG album scale= %g, RG track scale = %g, in %s\n",
 		  file_info->replaygain_album_scale,
 		  file_info->replaygain_track_scale, tmp);
@@ -316,10 +323,8 @@ void read_replaygain(struct mad_info_t *file_info)
                      offs, res);
             }
         }
-#ifdef AUD_DEBUG
         else 
             AUDDBG("replaygain: not found\n");
-#endif
     }
 #ifdef AUD_DEBUG
     if (res == 0) {             // got APE tags, show the result

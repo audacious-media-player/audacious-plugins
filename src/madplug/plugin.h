@@ -103,32 +103,36 @@ struct mad_info_t
 
 };
 
-struct audmad_config_t
+typedef struct audmad_config_t
 {
-    gint http_buffer_size;
     gboolean fast_play_time_calc;
     gboolean use_xing;
     gboolean dither;
     gboolean sjis;
-    gboolean hard_limit;
-    gchar *pregain_db;          // gain applied to samples at decoding stage.
-    gdouble pregain_scale;      // pow(10, pregain/20)
+
     struct
     {
+        gchar *preamp0_db;          // gain applied to samples at decoding stage.
+        gdouble preamp0_scale;      // pow(10, pregain/20)
         gboolean enable;
         gboolean track_mode;
-        gchar *default_db;      // gain used if no RG.
-        gdouble default_scale;
+        gchar *preamp1_db;      // preamp used with RG info.
+        gdouble preamp1_scale;
+        gchar *preamp2_db;      // preamp used without RG info.
+        gdouble preamp2_scale;
+        gboolean anti_clip;
+        gboolean adaptive_scaler;
     } replaygain;
+
     gboolean title_override;
     gchar *id3_format;
     gboolean show_avg_vbr_bitrate;
     gboolean force_reopen_audio;
-};
+} audmad_config_t;
 
 // global variables
 extern InputPlugin *mad_plugin;
-extern struct audmad_config_t audmad_config;
+extern audmad_config_t *audmad_config;
 
 // gcond
 extern GMutex *mad_mutex;
