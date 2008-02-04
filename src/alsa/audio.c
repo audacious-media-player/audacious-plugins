@@ -4,7 +4,7 @@
  *                           Thomas Nilsson and 4Front Technologies
  *  Copyright (C) 1999-2006  Haavard Kvaalen
  *  Copyright (C) 2005       Takashi Iwai
- *  Copyright (C) 2007       William Pitcock
+ *  Copyright (C) 2007-2008  William Pitcock
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -100,7 +100,20 @@ static const struct {
 	AFormat xmms;
 	snd_pcm_format_t alsa;
 } format_table[] =
-{{FMT_S16_LE, SND_PCM_FORMAT_S16_LE},
+{
+#if 0
+/* i don't know if we will ever do this --nenolod */
+ {FMT_S32_LE, SND_PCM_FORMAT_S32_LE},
+ {FMT_S32_BE, SND_PCM_FORMAT_S32_BE},
+ {FMT_S32_NE, SND_PCM_FORMAT_S32},
+#endif
+ {FMT_S24_LE, SND_PCM_FORMAT_S24_LE},
+ {FMT_S24_BE, SND_PCM_FORMAT_S24_BE},
+ {FMT_S24_NE, SND_PCM_FORMAT_S24},
+ {FMT_U24_LE, SND_PCM_FORMAT_U24_LE},
+ {FMT_U24_BE, SND_PCM_FORMAT_U24_BE},
+ {FMT_U24_NE, SND_PCM_FORMAT_U24},
+ {FMT_S16_LE, SND_PCM_FORMAT_S16_LE},
  {FMT_S16_BE, SND_PCM_FORMAT_S16_BE},
  {FMT_S16_NE, SND_PCM_FORMAT_S16},
  {FMT_U16_LE, SND_PCM_FORMAT_U16_LE},
@@ -789,6 +802,7 @@ static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int chann
 	for (i = 0; i < sizeof(format_table) / sizeof(format_table[0]); i++)
 		if (format_table[i].xmms == fmt)
 		{
+			printf("match!\n");
 			f->format = format_table[i].alsa;
 			break;
 		}
@@ -885,45 +899,13 @@ static int alsa_setup(struct snd_format *f)
 		return -1;
 	}
 
+	/* XXX: there is no down-dithering for 24bit yet --nenolod */
 	if ((err = snd_pcm_hw_params_set_format(alsa_pcm, hwparams, outputf->format)) < 0)
 	{
-		/*
-		 * Try if one of these format work (one of them should work
-		 * on almost all soundcards)
-		 */
-		snd_pcm_format_t formats[] = {SND_PCM_FORMAT_S16_LE,
-					      SND_PCM_FORMAT_S16_BE,
-					      SND_PCM_FORMAT_U8};
-		size_t i;
-
-		for (i = 0; i < sizeof(formats) / sizeof(formats[0]); i++)
-		{
-			if (snd_pcm_hw_params_set_format(alsa_pcm, hwparams,
-							 formats[i]) == 0)
-			{
-				outputf->format = formats[i];
-				break;
-			}
-		}
-		if (outputf->format != f->format)
-		{
-			outputf->xmms_format =
-				format_from_alsa(outputf->format);
-			debug("Converting format from %d to %d",
-			      f->xmms_format, outputf->xmms_format);
-			alsa_convert_func =
-				aud_convert_get_func(outputf->xmms_format,
-						      f->xmms_format);
-			if (alsa_convert_func == NULL)
-				return -1;
-		}
-		else
-		{
-			g_warning("alsa_setup(): Sample format not "
-				  "available for playback: %s",
-				  snd_strerror(err));
-			return -1;
-		}
+		g_warning("alsa_setup(): Sample format not "
+			  "available for playback: %s",
+			  snd_strerror(err));
+		return -1;
 	}
 
 	snd_pcm_hw_params_set_channels_near(alsa_pcm, hwparams, &outputf->channels);
