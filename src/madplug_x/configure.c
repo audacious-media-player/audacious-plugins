@@ -35,9 +35,6 @@ duplicate_config(audmad_config_t *orig)
 {
     audmad_config_t *copy = g_memdup(orig, sizeof(audmad_config_t));
 
-    copy->replaygain.preamp0_db = g_strdup(orig->replaygain.preamp0_db);
-    copy->replaygain.preamp1_db = g_strdup(orig->replaygain.preamp1_db);
-    copy->replaygain.preamp2_db = g_strdup(orig->replaygain.preamp2_db);
     copy->id3_format = g_strdup(orig->id3_format);
 
     return copy;
@@ -46,9 +43,6 @@ duplicate_config(audmad_config_t *orig)
 static void
 dispose_config(audmad_config_t *config)
 {
-    g_free(config->replaygain.preamp0_db);
-    g_free(config->replaygain.preamp1_db);
-    g_free(config->replaygain.preamp2_db);
     g_free(config->id3_format);
     g_free(config);
 }
@@ -60,25 +54,15 @@ update_config(gpointer widgets)
 
     AUDDBG("updating\n");
 
-    GtkWidget *dither = g_object_get_data(widgets, "dither");
     GtkWidget *reopen = g_object_get_data(widgets, "reopen");
     GtkWidget *fast_playback = g_object_get_data(widgets, "fast_playback");
     GtkWidget *use_xing = g_object_get_data(widgets, "use_xing");
     GtkWidget *sjis = g_object_get_data(widgets, "sjis");
     GtkWidget *show_avg = g_object_get_data(widgets, "show_avg");
-    GtkWidget *RG_enable = g_object_get_data(widgets, "RG_enable");
-    GtkWidget *preamp0 = g_object_get_data(widgets, "preamp0");
-    GtkWidget *preamp1 = g_object_get_data(widgets, "preamp1");
-    GtkWidget *preamp2 = g_object_get_data(widgets, "preamp2");
-    GtkWidget *trackMode = g_object_get_data(widgets, "trackMode");
-    GtkWidget *adaptive_scaler = g_object_get_data(widgets, "adaptive_scaler");
-    GtkWidget *anti_clip = g_object_get_data(widgets, "anti_clip");
     GtkWidget *title_override = g_object_get_data(widgets, "title_override");
     GtkWidget *title_id3_entry = g_object_get_data(widgets, "title_id3_entry");
 
     //audio
-    audmad_config->dither =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dither));
     audmad_config->force_reopen_audio =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(reopen));
 
@@ -93,50 +77,6 @@ update_config(gpointer widgets)
     //misc
     audmad_config->show_avg_vbr_bitrate =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(show_avg));
-
-    //gain control
-    text = gtk_entry_get_text(GTK_ENTRY(preamp0));
-    g_free(audmad_config->replaygain.preamp0_db);
-    if(atof(text) > 12.0)
-        audmad_config->replaygain.preamp0_db = g_strdup("+12.0");
-    else if(atof(text) < -12.0)
-        audmad_config->replaygain.preamp0_db = g_strdup("-12.0");
-    else
-        audmad_config->replaygain.preamp0_db = g_strdup(text);
-
-    gtk_entry_set_text(GTK_ENTRY(preamp0), audmad_config->replaygain.preamp0_db);
-
-    audmad_config->replaygain.enable =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(RG_enable));
-    audmad_config->replaygain.track_mode =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(trackMode));
-
-    text = gtk_entry_get_text(GTK_ENTRY(preamp1));
-    g_free(audmad_config->replaygain.preamp1_db);
-    if(atof(text) > 12.0)
-        audmad_config->replaygain.preamp1_db = g_strdup("+12.0");
-    else if(atof(text) < -12.0)
-        audmad_config->replaygain.preamp1_db = g_strdup("-12.0");
-    else
-        audmad_config->replaygain.preamp1_db = g_strdup(text);
-
-    gtk_entry_set_text(GTK_ENTRY(preamp1), audmad_config->replaygain.preamp1_db);
-
-    text = gtk_entry_get_text(GTK_ENTRY(preamp2));
-    g_free(audmad_config->replaygain.preamp2_db);
-    if(atof(text) > 12.0)
-        audmad_config->replaygain.preamp2_db = g_strdup("+12.0");
-    else if(atof(text) < -12.0)
-        audmad_config->replaygain.preamp2_db = g_strdup("-12.0");
-    else
-        audmad_config->replaygain.preamp2_db = g_strdup(text);
-
-    gtk_entry_set_text(GTK_ENTRY(preamp2), audmad_config->replaygain.preamp2_db);
-
-    audmad_config->replaygain.anti_clip =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(anti_clip));
-    audmad_config->replaygain.adaptive_scaler =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(adaptive_scaler));
 
     //text
     audmad_config->title_override =
@@ -155,10 +95,7 @@ save_config(void)
 
     AUDDBG("saving\n");
 
-    audmad_config_compute(audmad_config);
-
     //audio
-    aud_cfg_db_set_bool(db, "MAD", "dither", audmad_config->dither);
     aud_cfg_db_set_bool(db, "MAD", "force_reopen_audio",
                             audmad_config->force_reopen_audio);
     //metadata
@@ -170,22 +107,6 @@ save_config(void)
     //misc
     aud_cfg_db_set_bool(db, "MAD", "show_avg_vbr_bitrate",
                             audmad_config->show_avg_vbr_bitrate);
-
-    //gain control
-    aud_cfg_db_set_string(db, "MAD", "RG.preamp0_db",
-                          audmad_config->replaygain.preamp0_db);
-    aud_cfg_db_set_bool(db, "MAD", "RG.enable",
-                        audmad_config->replaygain.enable);
-    aud_cfg_db_set_bool(db, "MAD", "RG.track_mode",
-                        audmad_config->replaygain.track_mode);
-    aud_cfg_db_set_string(db, "MAD", "RG.preamp1_db",
-                          audmad_config->replaygain.preamp1_db);
-    aud_cfg_db_set_string(db, "MAD", "RG.preamp2_db",
-                          audmad_config->replaygain.preamp2_db);
-    aud_cfg_db_set_bool(db, "MAD", "RG.anti_clip",
-                        audmad_config->replaygain.anti_clip);
-    aud_cfg_db_set_bool(db, "MAD", "RG.adaptive_scaler",
-                        audmad_config->replaygain.adaptive_scaler);
 
     //text
     aud_cfg_db_set_bool(db, "MAD", "title_override", audmad_config->title_override);
@@ -224,46 +145,6 @@ configure_destroy(GtkWidget *w, gpointer data)
 }
 
 static void
-RG_enable_cb(GtkWidget *w, gpointer widgets)
-{
-    GtkWidget *type_vbox = g_object_get_data(widgets, "type_vbox");
-    GtkWidget *rgtypeSet = g_object_get_data(widgets, "rgtypeSet");
-    GtkWidget *preamp1_hbox = g_object_get_data(widgets, "preamp1_hbox");
-    GtkWidget *preamp2_hbox = g_object_get_data(widgets, "preamp2_hbox");
-    GtkWidget *anti_clip = g_object_get_data(widgets, "anti_clip");
-    gboolean enabled;
-
-    update_config(widgets);
-    save_config();
-
-    enabled = audmad_config->replaygain.enable;
-
-    gtk_widget_set_sensitive(type_vbox, enabled);
-    gtk_widget_set_sensitive(rgtypeSet, enabled);
-    gtk_widget_set_sensitive(preamp1_hbox, enabled);
-    gtk_widget_set_sensitive(preamp2_hbox, enabled);
-    gtk_widget_set_sensitive(anti_clip, enabled);
-}
-
-static void
-RG_type_track_cb(GtkWidget *w, gpointer widgets)
-{
-    GtkToggleButton *tb = GTK_TOGGLE_BUTTON(g_object_get_data(widgets, "trackMode"));
-
-    if (gtk_toggle_button_get_active(tb))
-        audmad_config->replaygain.track_mode = TRUE;
-}
-
-static void
-RG_type_album_cb(GtkWidget *w, gpointer widgets)
-{
-    GtkToggleButton *tb = GTK_TOGGLE_BUTTON(g_object_get_data(widgets, "albumMode"));
-
-    if (gtk_toggle_button_get_active(tb))
-        audmad_config->replaygain.track_mode = FALSE;
-}
-
-static void
 simple_update_cb(GtkWidget *w, gpointer widgets)
 {
     update_config(widgets);
@@ -296,14 +177,10 @@ audmad_configure(void)
 {
     GtkWidget *vbox;
     GtkWidget *bbox, *ok, *cancel;
-    GtkWidget *label, *preamp0_hbox, *preamp1_hbox, *preamp2_hbox;
     GtkWidget *notebook, *vbox2, *title_id3_label, *title_id3_box;
-
-    GtkWidget *fast_playback, *use_xing, *dither, *sjis, *show_avg, *reopen;
-    GtkWidget *RG_enable, *type_vbox, *rg_vbox, *preamp0, *preamp1, *preamp2;
-    GtkWidget *trackMode, *albumMode, *adaptive_scaler, *anti_clip;
+    GtkWidget *fast_playback, *use_xing, *sjis, *show_avg, *reopen;
     GtkWidget *title_override, *title_id3_entry;
-    GtkWidget *rgtypeFrame, *replaygainFrame, *metadataFrame, *audioFrame, *miscFrame;
+    GtkWidget *metadataFrame, *audioFrame, *miscFrame;
     GtkWidget *metadata_vbox, *audio_vbox, *misc_vbox;
 
     gpointer widgets = g_object_new(G_TYPE_OBJECT, NULL);
@@ -353,14 +230,6 @@ audmad_configure(void)
 
     gtk_container_add(GTK_CONTAINER(audioFrame), audio_vbox);
     gtk_container_add(GTK_CONTAINER(vbox2), audioFrame);
-
-    dither = gtk_check_button_new_with_label
-        (_("Dither output when rounding to 16-bit"));
-    g_object_set_data(widgets, "dither", dither);
-    gtk_box_pack_start(GTK_BOX(audio_vbox), dither, FALSE, FALSE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dither),
-                                 audmad_config->dither);
-    g_signal_connect(G_OBJECT(dither), "clicked", G_CALLBACK(simple_update_cb), widgets);
 
     reopen = gtk_check_button_new_with_label(_("Force reopen audio when audio type changed"));
     g_object_set_data(widgets, "reopen", reopen);
@@ -420,148 +289,6 @@ audmad_configure(void)
     // add to notebook
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("General")));
 
-
-
-    /*********************************************************************************/
-
-
-    vbox2 = gtk_vbox_new(FALSE, 10);
-    gtk_container_border_width(GTK_CONTAINER(vbox2), 5);
-
-    // overall preamp
-    label = gtk_label_new(_("Base gain (dB):"));
-    preamp0_hbox = gtk_hbox_new(FALSE, 5);
-    gtk_box_pack_start(GTK_BOX(vbox2), preamp0_hbox, TRUE, TRUE, 0);
-
-    preamp0 = gtk_entry_new();
-    g_object_set_data(widgets, "preamp0", preamp0);
-    gtk_widget_set_usize(preamp0, 80, -1);
-
-    gtk_entry_set_text(GTK_ENTRY(preamp0), audmad_config->replaygain.preamp0_db);
-    gtk_box_pack_start(GTK_BOX(preamp0_hbox), label, FALSE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(preamp0_hbox), preamp0, FALSE, TRUE, 0);
-    g_signal_connect(preamp0, "changed", G_CALLBACK(entry_changed_cb), widgets);
-
-    // replaygain frame
-    replaygainFrame = gtk_frame_new(_("ReplayGain Settings"));
-    gtk_container_border_width(GTK_CONTAINER(replaygainFrame), 5);
-    g_object_set_data(widgets, "replaygainFrame", replaygainFrame);    
-
-    rg_vbox = gtk_vbox_new(FALSE, 5);
-    g_object_set_data(widgets, "rg_vbox", rg_vbox);
-    gtk_container_add(GTK_CONTAINER(replaygainFrame), rg_vbox);
-    gtk_container_add(GTK_CONTAINER(vbox2), replaygainFrame);
-
-
-    // enable/disable replaygain
-    RG_enable = gtk_check_button_new_with_label(_("Enable ReplayGain processing"));
-    g_object_set_data(widgets, "RG_enable", RG_enable);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), RG_enable, TRUE, TRUE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(RG_enable),
-                                 audmad_config->replaygain.enable);
-
-    g_signal_connect(G_OBJECT(RG_enable), "clicked", G_CALLBACK(RG_enable_cb), widgets);
-
-
-    // replaygin type radio button
-    rgtypeFrame = gtk_frame_new(_("ReplayGain Type"));
-    g_object_set_data(widgets, "rgtypeFrame", rgtypeFrame);
-
-    type_vbox = gtk_vbox_new(FALSE, 5);
-    g_object_set_data(widgets, "type_vbox", type_vbox);
-
-    gtk_container_set_border_width(GTK_CONTAINER(type_vbox), 5);
-    gtk_container_add(GTK_CONTAINER(rgtypeFrame), type_vbox);
-    gtk_container_add(GTK_CONTAINER(rg_vbox), rgtypeFrame);
-
-    trackMode = gtk_radio_button_new_with_label(NULL, _("Use Track Gain"));
-    g_object_set_data(widgets, "trackMode", trackMode);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(trackMode), audmad_config->replaygain.track_mode);
-    gtk_box_pack_start(GTK_BOX(type_vbox), trackMode, FALSE, FALSE, 0);
-
-
-    albumMode =
-        gtk_radio_button_new_with_label(gtk_radio_button_group(GTK_RADIO_BUTTON(trackMode)),
-                                        _("Use Album Gain"));
-    g_object_set_data(widgets, "albumMode", albumMode);
-
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(albumMode), !audmad_config->replaygain.track_mode);
-    gtk_box_pack_start(GTK_BOX(type_vbox), albumMode, FALSE, FALSE, 0);
-
-    // xxx 
-    g_signal_connect(G_OBJECT(trackMode), "toggled", G_CALLBACK(RG_type_track_cb), widgets);
-    g_signal_connect(G_OBJECT(albumMode), "toggled", G_CALLBACK(RG_type_album_cb), widgets);
-
-
-
-    // preamp for the files with RG info
-    label = gtk_label_new(_("Pre-gain with RG info (dB):"));
-    preamp1_hbox = gtk_hbox_new(FALSE, 5);
-    g_object_set_data(widgets, "preamp1_hbox", preamp1_hbox);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), preamp1_hbox, TRUE, TRUE, 0);
-
-    preamp1 = gtk_entry_new();
-    g_object_set_data(widgets, "preamp1", preamp1);
-    gtk_widget_set_usize(preamp1, 80, -1);
-    gtk_entry_set_text(GTK_ENTRY(preamp1),
-                       audmad_config->replaygain.preamp1_db);
-    gtk_box_pack_start(GTK_BOX(preamp1_hbox), label, FALSE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(preamp1_hbox), preamp1, FALSE, TRUE, 0);
-    g_signal_connect(preamp1, "changed", G_CALLBACK(entry_changed_cb), widgets);
-
-
-    // preamp for the files without RG info
-    label = gtk_label_new(_("Pre-gain without RG info (dB):"));
-    preamp2_hbox = gtk_hbox_new(FALSE, 5);
-    g_object_set_data(widgets, "preamp2_hbox", preamp2_hbox);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), preamp2_hbox, TRUE, TRUE, 0);
-
-    preamp2 = gtk_entry_new();
-    g_object_set_data(widgets, "preamp2", preamp2);
-    gtk_widget_set_usize(preamp2, 80, -1);
-    gtk_entry_set_text(GTK_ENTRY(preamp2),
-                       audmad_config->replaygain.preamp2_db);
-    gtk_box_pack_start(GTK_BOX(preamp2_hbox), label, FALSE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(preamp2_hbox), preamp2, FALSE, TRUE, 0);
-    g_signal_connect(preamp2, "changed", G_CALLBACK(entry_changed_cb), widgets);
-
-
-    // clipping prevention
-    anti_clip = gtk_check_button_new_with_label(_("Enable peak info clip prevention"));
-    g_object_set_data(widgets, "anti_clip", anti_clip);
-    gtk_box_pack_start(GTK_BOX(rg_vbox), anti_clip, TRUE, TRUE, 0);
-
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(anti_clip),
-                                 audmad_config->replaygain.anti_clip);
-
-    g_signal_connect(G_OBJECT(anti_clip), "clicked",
-                     G_CALLBACK(simple_update_cb), widgets);
-
-    // sensitivity
-    if(!audmad_config->replaygain.enable) {
-        gtk_widget_set_sensitive(type_vbox, FALSE);
-        gtk_widget_set_sensitive(rgtypeFrame, FALSE);
-        gtk_widget_set_sensitive(preamp1_hbox, FALSE);
-        gtk_widget_set_sensitive(preamp2_hbox, FALSE);
-        gtk_widget_set_sensitive(anti_clip, FALSE);
-    }
-    /* end of replaygainFrame */
-
-
-    // adaptive scale
-    adaptive_scaler = gtk_check_button_new_with_label(_("Enable adaptive scaler clip prevention"));
-    g_object_set_data(widgets, "adaptive_scaler", adaptive_scaler);
-    gtk_box_pack_start(GTK_BOX(vbox2), adaptive_scaler, TRUE, TRUE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(adaptive_scaler),
-                                 audmad_config->replaygain.adaptive_scaler);
-    g_signal_connect(G_OBJECT(adaptive_scaler), "clicked",
-                     G_CALLBACK(simple_update_cb), widgets);
-
-
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("Gain Control")));
-
-
-    /*********************************************************************************/
 
 
     vbox2 = gtk_vbox_new(FALSE, 5);

@@ -76,7 +76,7 @@ input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
 
     memset(info, 0, sizeof(struct mad_info_t)); // all fields are cleared to 0 --yaz
 
-    info->fmt = FMT_S16_LE;
+    info->fmt = FMT_FIXED32;
     info->channels = -1;
     info->mpeg_layer = -1;
     info->size = -1;
