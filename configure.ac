@@ -377,6 +377,28 @@ else
 fi
 
 if test "$enable_mp3" = "yes"; then
+  AC_MSG_CHECKING(mad.h suitability)
+  ac_save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS $MAD_CFLAGS $AUDACIOUS_CFLAGS"
+  AC_TRY_RUN(
+      [
+          #include <mad.h>
+          #include <audacious/plugin.h>
+          int main()
+          {
+            return (MAD_F_FRACBITS == __AUDACIOUS_ASSUMED_MAD_F_FRACBITS__) ? 0 : 1;
+          }
+      ],
+      [AC_MSG_RESULT(yes)],
+      [
+        AC_MSG_RESULT(no)
+        enable_mp3=no
+      ],
+  )
+  CFLAGS="$ac_save_CFLAGS"
+fi
+
+if test "$enable_mp3" = "yes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS madplug"
 fi
 

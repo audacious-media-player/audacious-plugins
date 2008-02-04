@@ -44,6 +44,7 @@ AC_ARG_ENABLE(libmadtest, [  --disable-libmadtest   do not try to compile and ru
 dnl
 dnl Now check if the installed libmad is sufficiently new.
 dnl
+      AC_MSG_CHECKING(for libmad)
       rm -f conf.libmadtest
       AC_TRY_RUN([
 #include <stdio.h>
