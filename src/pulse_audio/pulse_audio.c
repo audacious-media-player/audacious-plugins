@@ -548,17 +548,43 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     g_assert(!stream);
     g_assert(!connected);
 
-    if (fmt == FMT_U8)
-        ss.format = PA_SAMPLE_U8;
-    else if (fmt == FMT_S16_LE)
-        ss.format = PA_SAMPLE_S16LE;
-    else if (fmt == FMT_S16_BE)
-        ss.format = PA_SAMPLE_S16BE;
-    else if (fmt == FMT_S16_NE)
-        ss.format = PA_SAMPLE_S16NE;
-    else
-        return FALSE;
-
+    switch(fmt)
+    {
+        case FMT_U8:
+            ss.format = PA_SAMPLE_U8;
+            break;
+        case FMT_S16_LE:
+            ss.format = PA_SAMPLE_S16LE;
+            break;
+        case FMT_S16_BE:
+            ss.format = PA_SAMPLE_S16BE;
+            break;
+        case FMT_S16_NE:
+            ss.format = PA_SAMPLE_S16NE;
+            break;
+#if 0 /* pulseaudio only handles 16 and 32bit formats*/
+        case FMT_S24_LE:
+            ss.format = PA_SAMPLE_S24LE;
+            break;
+        case FMT_S24_BE:
+            ss.format = PA_SAMPLE_S24BE;
+            break;
+        case FMT_S24_NE:
+            ss.format = PA_SAMPLE_S24NE;
+            break;
+#endif
+        case FMT_S32_LE:
+            ss.format = PA_SAMPLE_S32LE;
+            break;
+        case FMT_S32_BE:
+            ss.format = PA_SAMPLE_S32BE;
+            break;
+        case FMT_S32_NE:
+            ss.format = PA_SAMPLE_S32NE;
+            break;
+        default:
+            return FALSE;
+    }
     ss.rate = rate;
     ss.channels = nch;
 
