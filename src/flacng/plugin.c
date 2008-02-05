@@ -16,6 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+/* #define FLACNG_DEBUG */
 
 #include "flacng.h"
 #include <audacious/util.h>
@@ -216,9 +217,10 @@ gboolean flac_is_our_fd(gchar* filename, VFSFile* fd) {
         _LEAVE FALSE;
     }
 
-    if ((16 != test_info->stream.bits_per_sample) &&
+    if ((8  != test_info->stream.bits_per_sample) &&
+        (16 != test_info->stream.bits_per_sample) &&
         (24 != test_info->stream.bits_per_sample) &&
-        (8 != test_info->stream.bits_per_sample)) {
+        (32 != test_info->stream.bits_per_sample)) {
         _ERROR("This number of bits (%d) is currently not supported, stream not handled by this plugin",
             test_info->stream.bits_per_sample);
         INFO_UNLOCK(test_info);
@@ -264,12 +266,7 @@ gboolean flac_is_our_file(gchar* filename) {
 
 /* --- */
 
-void squeeze_audio(gint32* src, void* dst, guint count, guint src_res, guint dst_res) {
-
-    /*
-     * Changes the sample width of count samples in src from
-     * src_res to dst_res and places the result in dst
-     */
+void squeeze_audio(gint32* src, void* dst, guint count, guint res) {
 
     gint i;
     gint32* rp = src;
@@ -279,68 +276,25 @@ void squeeze_audio(gint32* src, void* dst, guint count, guint src_res, guint dst
 
     _ENTER;
 
-    _DEBUG("Converting %d samples %d->%d", count, src_res, dst_res);
+    _DEBUG("Converting %d samples to %d bit", count, res);
 
-    if ((src_res % 8 != 0) || (dst_res % 8 != 0)) {
-        _ERROR("Can not convert from %d bps to %d bps: not a multiple of 8",
-                src_res, dst_res);
+    if (res % 8 != 0) {
+        _ERROR("Can not convert to %d bps: not a multiple of 8", res);
         _LEAVE;
     }
 
-    if (16 == dst_res) {
-        if (8 == src_res) {
-            for (i=0; i<count; i++, wp2++, rp++) {
-                *wp2 = (*rp << 8) & 0xffff;
-            }
-        } else if (16 == src_res) {
-            for (i=0; i<count; i++, wp2++, rp++) {
-                *wp2 = *rp & 0xffff;
-            }
-        } else if (24 == src_res) {
-            for (i=0; i<count; i++, wp2++, rp++) {
-                *wp2 = (*rp >> 8) & 0xffff;
-            }
-        } else if (32 == src_res) {
-            for (i=0; i<count; i++, wp2++, rp++) {
-                *wp2 = (*rp >> 16) & 0xffff;
-            }
+    if (res == 8) {
+        for (i=0; i<count; i++, wp++, rp++) {
+            *wp = *rp & 0xff;
         }
-    } else if (8 == dst_res) {
-        if (8 == src_res) {
-            for (i=0; i<count; i++, wp++, rp++) {
-                *wp = *rp & 0xff;
-            }
-        } else if (16 == src_res) {
-            for (i=0; i<count; i++, wp++, rp++) {
-                *wp = (*rp >> 8) & 0xff;
-            }
-        } else if (24 == src_res) {
-            for (i=0; i<count; i++, wp++, rp++) {
-                *wp = (*rp >> 16) & 0xff;
-            }
-        } else if (32 == src_res) {
-            for (i=0; i<count; i++, wp++, rp++) {
-                *wp = (*rp >> 24) & 0xff;
-            }
+    } else if (res == 16) {
+        for (i=0; i<count; i++, wp2++, rp++) {
+            *wp2 = *rp & 0xffff;
         }
-    } else if (32 == dst_res) {
-        if (8 == src_res) {
-            for (i=0; i<count; i++, wp4++, rp++) {
-                *wp4 = (*rp << 24) & 0xffffffff;
-            }
-        } else if (16 == src_res) {
-            for (i=0; i<count; i++, wp4++, rp++) {
-                *wp4 = (*rp << 16) & 0xffffffff;
-            }
-        } else if (24 == src_res) {
-            for (i=0; i<count; i++, wp4++, rp++) {
-                *wp4 = (*rp << 8) & 0xffffffff;
-            }
-        } else if (32 == src_res) {
-            for (i=0; i<count; i++, wp4++, rp++) {
-                *wp4 = *rp;
-            }
-        }
+    } else if (res == 24 || res == 32) { /* 24bit value stored in lowest 3 bytes */
+       for (i=0; i<count; i++, wp4++, rp++) {
+           *wp4 = *rp;
+       }
     }
 
     _LEAVE;
@@ -377,9 +331,9 @@ static gpointer flac_play_loop(gpointer arg) {
     stream_info.channels = main_info->stream.channels;
     main_info->metadata_changed = FALSE;
 
-    if (!playback->output->open_audio(FMT_S16_NE,
-        main_info->stream.samplerate,
-        main_info->stream.channels)) {
+    if (!playback->output->open_audio(SAMPLE_FMT(main_info->stream.bits_per_sample),
+                                      main_info->stream.samplerate,
+                                      main_info->stream.channels)) {
         playback->playing = FALSE;
         _ERROR("Could not open output plugin!");
         _LEAVE NULL;
@@ -454,17 +408,16 @@ static gpointer flac_play_loop(gpointer arg) {
 
             sample_count = MIN(OUTPUT_BLOCK_SIZE, elements_left);
 
-            /*
-             * Convert the audio.
-             * Currently this is hardcoded to 16 bit.
-             * 8 and 24 bit are sampled up/down linear.
-             */
-            _DEBUG("Converting %d samples to FMT_S16_NE", sample_count);
-            squeeze_audio(read_pointer, play_buffer, sample_count, main_info->frame.bits_per_sample, 16);
+            squeeze_audio(read_pointer, play_buffer, sample_count, main_info->stream.bits_per_sample);
 
             _DEBUG("Copying %d samples to output plugin", sample_count);
 
-            playback->pass_audio(playback, FMT_S16_NE, main_info->frame.channels, sample_count * sizeof(gint16), play_buffer, NULL);
+            playback->pass_audio(playback,
+                                 SAMPLE_FMT(main_info->stream.bits_per_sample),
+                                 main_info->stream.channels,
+                                 sample_count * SAMPLE_SIZE(main_info->stream.bits_per_sample),
+                                 play_buffer,
+                                 NULL);
 
             read_pointer += sample_count;
             elements_left -= sample_count;

@@ -209,7 +209,8 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
 
     if ((frame->header.bits_per_sample != 8) &&
         (frame->header.bits_per_sample != 16) &&
-        (frame->header.bits_per_sample != 24)) {
+        (frame->header.bits_per_sample != 24) &&
+        (frame->header.bits_per_sample != 32)) {
         _ERROR("Unsupported bitrate found in stream: %d!", frame->header.bits_per_sample);
         _LEAVE FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
     }
