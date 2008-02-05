@@ -480,6 +480,41 @@ static void handle_headers(struct neon_handle* h) {
  * -----
  */
 
+static int neon_proxy_auth_cb(void *userdata, const char *realm, int attempt, char *username, char *password) {
+
+    ConfigDb *db;
+    gchar *value = NULL;
+
+    _ENTER;
+
+    if ((db = aud_cfg_db_open()) == NULL) {
+        _DEBUG("<%p> configdb failed to open!", userdata);
+        _LEAVE -1;
+    }
+
+    aud_cfg_db_get_string(db, NULL, "proxy_user", &value);
+    if (!value) {
+        _DEBUG("<%p> proxy_auth requested but no proxy_user", userdata);
+        _LEAVE -1;
+    }
+    g_strlcpy(username, value, NE_ABUFSIZ);
+    value = NULL;
+
+    aud_cfg_db_get_string(db, NULL, "proxy_pass", &value);
+    if (!value) {
+        _DEBUG("<%p> proxy_auth requested but no proxy_pass", userdata);
+        _LEAVE -1;
+    }
+    g_strlcpy(password, value, NE_ABUFSIZ);
+    value = NULL;
+
+    _LEAVE attempt;
+}
+
+/*
+ * -----
+ */
+
 static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
@@ -574,13 +609,17 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
     gchar* proxy_port_s;
     gchar* endptr;
     unsigned int proxy_port = 0;
-    gboolean use_proxy;
+    gboolean use_proxy, use_proxy_auth;
 
     _ENTER;
 
     db = aud_cfg_db_open();
     if (FALSE == aud_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy)) {
         use_proxy = FALSE;
+    }
+
+    if (FALSE == aud_cfg_db_get_bool(db, NULL, "use_proxy_auth", &use_proxy_auth)) {
+        use_proxy_auth = FALSE;
     }
 
     if (use_proxy) {
@@ -633,6 +672,10 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
         if (use_proxy) {
             _DEBUG("<%p> Using proxy: %s:%d", handle, proxy_host, proxy_port);
             ne_session_proxy(handle->session, proxy_host, proxy_port);
+
+            if (use_proxy_auth) {
+                ne_set_proxy_auth(handle->session, neon_proxy_auth_cb, handle);
+            }
         }
 
         _DEBUG("<%p> Creating request", handle);
