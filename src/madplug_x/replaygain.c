@@ -53,10 +53,10 @@ uncase_strcmp(const char *s1, const char *s2)
 static gdouble
 strgain2double(gchar * s, int len)
 {
+    gchar *strval = g_strndup(s, len);
     gdouble res = g_strtod(s, NULL);    // gain, in dB.
-    if (res == 0)
-        return 1;
-    return pow(10, res / 20);
+    g_free(strval);
+    return res;
 }
 
 // Reads APE v2.0 tag ending at current pos in fp
@@ -136,7 +136,7 @@ ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
                 str = &file_info->replaygain_album_peak_str;
             }
             if (str != NULL) {
-                *scale = g_strtod(p + isize + 1, NULL);
+                *scale = strgain2double(p + isize + 1, vsize);
                 *str = g_strndup(p + isize + 1, vsize);
             }
 
