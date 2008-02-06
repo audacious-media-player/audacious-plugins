@@ -4,7 +4,7 @@
  *  Copyright (c) 2007 - 2008  Sascha Hlusiak <contact@saschahlusiak.de>
  *  Name: gui.c
  *  Description: gui.c
- * 
+ *
  *  Part of this code is from itouch-ctrl plugin.
  *  Authors of itouch-ctrl are listed below:
  *
@@ -197,7 +197,7 @@ on_entry_button_press_event(GtkWidget * widget,
 {
 	KeyControls *controls = (KeyControls*) user_data;
 	int mod;
-	
+
 	if (!gtk_widget_is_focus(widget)) return FALSE;
 
 	mod = 0;
@@ -236,7 +236,7 @@ on_entry_button_press_event(GtkWidget * widget,
 	controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_MOUSE;
 	set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
-	if (controls->next == NULL) 
+	if (controls->next == NULL)
 		add_callback (NULL, (gpointer) controls);
 
 	return TRUE;
@@ -249,7 +249,7 @@ on_entry_scroll_event(GtkWidget * widget,
 {
 	KeyControls *controls = (KeyControls*) user_data;
 	int mod;
-	
+
 	if (!gtk_widget_is_focus(widget)) return FALSE;
 
 	mod = 0;
@@ -287,8 +287,8 @@ on_entry_scroll_event(GtkWidget * widget,
 }
 
 KeyControls* add_event_controls(KeyControls* list,
-				GtkWidget *table, 
-				int row, 
+				GtkWidget *table,
+				int row,
 				HotkeyConfiguration *hotkey)
 {
 	KeyControls *controls;
@@ -319,15 +319,15 @@ KeyControls* add_event_controls(KeyControls* list,
 	controls->combobox = gtk_combo_box_new_text();
 	for (i=0;i<EVENT_MAX;i++)
 	{
-		gtk_combo_box_append_text( GTK_COMBO_BOX(controls->combobox), event_desc[i] );
+		gtk_combo_box_append_text( GTK_COMBO_BOX(controls->combobox), _(event_desc[i]) );
 	}
 	gtk_combo_box_set_active( GTK_COMBO_BOX(controls->combobox), controls->hotkey.event);
-	gtk_table_attach (GTK_TABLE (table), controls->combobox, 0, 1, row, row+1, 
+	gtk_table_attach (GTK_TABLE (table), controls->combobox, 0, 1, row, row+1,
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 
 
 	controls->keytext = gtk_entry_new ();
-	gtk_table_attach (GTK_TABLE (table), controls->keytext, 1, 2, row, row+1, 
+	gtk_table_attach (GTK_TABLE (table), controls->keytext, 1, 2, row, row+1,
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 	gtk_entry_set_editable (GTK_ENTRY (controls->keytext), FALSE);
 
@@ -368,23 +368,23 @@ void show_configure ()
 	PluginConfig* plugin_cfg;
 	HotkeyConfiguration *hotkey, temphotkey;
 	int i;
-	
+
 	load_config ( );
 
 	plugin_cfg = get_config();
 
 	ungrab_keys();
-	
+
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (window), _("Global Hotkey Plugin Configuration"));
 	gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 	gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
 	gtk_container_set_border_width (GTK_CONTAINER (window), 5);
-	
+
 	main_vbox = gtk_vbox_new (FALSE, 4);
 	gtk_container_add (GTK_CONTAINER (window), main_vbox);
-	
+
 	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
 	gtk_box_pack_start (GTK_BOX (main_vbox), alignment, FALSE, TRUE, 0);
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 4, 0, 0, 0);
@@ -395,7 +395,7 @@ void show_configure ()
 	label = gtk_label_new (_("Press a key combination inside a text field.\nYou can also bind mouse buttons."));
 	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-	
+
 	label = gtk_label_new (NULL);
 	gtk_label_set_markup (GTK_LABEL (label), _("Hotkeys:"));
 	frame = gtk_frame_new (NULL);
@@ -415,17 +415,17 @@ void show_configure ()
 	label = gtk_label_new (NULL);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
-	gtk_label_set_markup (GTK_LABEL (label), 
+	gtk_label_set_markup (GTK_LABEL (label),
 			_("<b>Action:</b>"));
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, 
+	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 
 	label = gtk_label_new (NULL);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
-	gtk_label_set_markup (GTK_LABEL (label), 
+	gtk_label_set_markup (GTK_LABEL (label),
 			_("<b>Key Binding:</b>"));
-	gtk_table_attach (GTK_TABLE (table), label, 1, 2, 0, 1, 
+	gtk_table_attach (GTK_TABLE (table), label, 1, 2, 0, 1,
 			(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 
 
@@ -519,7 +519,7 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
 
 		gtk_widget_destroy(GTK_WIDGET(controls->button));
 		gtk_widget_destroy(GTK_WIDGET(controls->keytext));
-		gtk_widget_destroy(GTK_WIDGET(controls->combobox)); 
+		gtk_widget_destroy(GTK_WIDGET(controls->combobox));
 
 		row=0;
 		c = controls->first;
@@ -544,9 +544,9 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
 			gtk_container_remove( GTK_CONTAINER(c->table) , c->keytext);
 			gtk_container_remove( GTK_CONTAINER(c->table) , c->button);
 
-			gtk_table_attach (GTK_TABLE (c->table), c->combobox, 0, 1, row, row+1, 
+			gtk_table_attach (GTK_TABLE (c->table), c->combobox, 0, 1, row, row+1,
 					(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
-			gtk_table_attach (GTK_TABLE (c->table), c->keytext, 1, 2, row, row+1, 
+			gtk_table_attach (GTK_TABLE (c->table), c->keytext, 1, 2, row, row+1,
 					(GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
 			gtk_table_attach (GTK_TABLE (c->table), c->button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
 
@@ -613,7 +613,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
 	KeyControls *controls = (KeyControls*)data;
 	PluginConfig* plugin_cfg = get_config();
 	HotkeyConfiguration *hotkey;
-	
+
 	hotkey = &(plugin_cfg->first);
 	hotkey = hotkey->next;
 	while (hotkey)
@@ -647,7 +647,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
 	}
 
 	save_config ( );
-	
+
 	gtk_widget_destroy (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
 }
 
@@ -671,5 +671,5 @@ void show_about (void)
                          	_("OK"), TRUE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);						
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
 }
