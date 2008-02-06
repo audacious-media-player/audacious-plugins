@@ -247,12 +247,6 @@ ReadId3v2TXXX(struct mad_info_t *file_info)
 		free(value);
 	}
 
-	if (file_info->replaygain_track_scale != -1 || file_info->replaygain_album_scale != -1)
-	{
-		file_info->has_replaygain = TRUE;
-		return 1;
-	}
-
 	return 0;
 }
 
@@ -264,9 +258,10 @@ read_replaygain(struct mad_info_t *file_info)
 
     AUDDBG("f: read_replaygain\n");
 
-    file_info->has_replaygain = FALSE;
-    file_info->replaygain_album_scale = -1;
-    file_info->replaygain_track_scale = -1;
+    file_info->replaygain_track_peak = 0.0;
+    file_info->replaygain_track_scale = 0.0;
+    file_info->replaygain_album_peak = 0.0;
+    file_info->replaygain_album_scale = 0.0;
     file_info->mp3gain_undo = -77;
     file_info->mp3gain_minmax = -77;
 
@@ -335,10 +330,6 @@ read_replaygain(struct mad_info_t *file_info)
         g_free(tmp);
     }
 #endif
-
-    if (file_info->replaygain_album_scale != -1
-        || file_info->replaygain_track_scale != -1)
-        file_info->has_replaygain = TRUE;
 
     if (file_info->infile)
         aud_vfs_fseek(fp, curpos, SEEK_SET);

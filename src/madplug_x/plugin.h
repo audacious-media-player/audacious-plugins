@@ -77,13 +77,12 @@ struct mad_info_t
     gchar *prev_title;           /* used to optimize set_info calls */
 
     /* replay parameters */
-    gboolean has_replaygain;
-    double replaygain_album_scale;  // -1 if not set
+    double replaygain_album_scale;
     double replaygain_track_scale;
     gchar *replaygain_album_str;
     gchar *replaygain_track_str;
-    double replaygain_album_peak;   // -1 if not set
-    double replaygain_track_peak;
+    double replaygain_album_peak; /* 0 if gain/peak pair not set */
+    double replaygain_track_peak; /* 0 if gain/peak pair not set */
     gchar *replaygain_album_peak_str;
     gchar *replaygain_track_peak_str;
     double mp3gain_undo;        // -1 if not set

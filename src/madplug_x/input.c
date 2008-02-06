@@ -88,8 +88,10 @@ input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
     info->filename = g_strdup(url);
 
     // from input_read_replaygain()
-    info->replaygain_album_scale = -1;
-    info->replaygain_track_scale = -1;
+    info->replaygain_track_peak = 0.0;
+    info->replaygain_track_scale = 0.0;
+    info->replaygain_album_peak = 0.0;
+    info->replaygain_album_scale = 0.0;
     info->mp3gain_undo = -77;
     info->mp3gain_minmax = -77;
 
