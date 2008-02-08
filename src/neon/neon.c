@@ -130,7 +130,7 @@ static void handle_free(struct neon_handle* h) {
 
     _ENTER;
 
-    _DEBUG("<%p> freeing handle", handle);
+    _DEBUG("<%p> freeing handle", h);
 
     ne_uri_free(h->purl);
     destroy_rb(&h->rb);
@@ -683,7 +683,7 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
             ne_session_proxy(handle->session, proxy_host, proxy_port);
 
             if (use_proxy_auth) {
-                _DEBUG("<%p> Using proxy authentication");
+                _DEBUG("<%p> Using proxy authentication", handle);
                 ne_add_proxy_auth(handle->session, NE_AUTH_BASIC, neon_proxy_auth_cb, (void *)handle);
             }
         }
