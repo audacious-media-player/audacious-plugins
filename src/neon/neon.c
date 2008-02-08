@@ -559,6 +559,15 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
         ret = NE_REDIRECT;
     }
 
+    if ((NE_OK == ret) && (407 == status->code)) {
+        /*
+         * Proxy auth required. Reconnect to authenticate
+         */
+        _DEBUG("Reconnecting due to 407");
+        ne_end_request(handle->request);
+        ret = ne_begin_request(handle->request);
+    }
+
     switch (ret) {
         case NE_OK:
             /* URL opened OK */
