@@ -676,14 +676,15 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
             ne_set_connect_timeout(handle->session, 10);
 
         ne_set_read_timeout(handle->session, 10);
-        ne_set_useragent(handle->session, "Audacious/1.4.0");
+        ne_set_useragent(handle->session, "Audacious/1.5.0");
 
         if (use_proxy) {
             _DEBUG("<%p> Using proxy: %s:%d", handle, proxy_host, proxy_port);
             ne_session_proxy(handle->session, proxy_host, proxy_port);
 
             if (use_proxy_auth) {
-                ne_set_proxy_auth(handle->session, neon_proxy_auth_cb, handle);
+                _DEBUG("<%p> Using proxy authentication");
+                ne_add_proxy_auth(handle->session, NE_AUTH_BASIC, neon_proxy_auth_cb, (void *)handle);
             }
         }
 
