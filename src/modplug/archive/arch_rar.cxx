@@ -14,6 +14,8 @@
 #include "arch_rar.h"
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <cstring>
 	
 arch_Rar::arch_Rar(const string& aFileName)
 {

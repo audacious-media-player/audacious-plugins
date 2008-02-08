@@ -9,6 +9,7 @@
 
 #include "archive.h"
 #include <string>
+#include <cstring>
 
 class arch_Gzip: public Archive
 {
