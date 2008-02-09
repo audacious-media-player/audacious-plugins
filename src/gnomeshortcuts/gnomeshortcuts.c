@@ -2,7 +2,7 @@
 /*
  *  This file is part of audacious-gnome-shortcut plugin for audacious
  *
- *  Copyright (c) 2007        Sascha Hlusiak <contact@saschahlusiak.de>
+ *  Copyright (c) 2007-2008    Sascha Hlusiak <contact@saschahlusiak.de>
  *  Name: plugin.c
  *  Description: plugin.c
  * 
@@ -20,8 +20,6 @@
  *  along with audacious-gnome-shortcut; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
-#define DBUS_API_SUBJECT_TO_CHANGE
 
 #include <config.h>
 
@@ -253,9 +251,9 @@ void gnome_remote_init ()
 		g_warning ("Error connecting to DBus: %s", error->message);
 	} else {
 		media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
-			"org.gnome.SettingsDaemon", 
-			"/org/gnome/SettingsDaemon",
-			"org.gnome.SettingsDaemon");
+			"org.gnome.SettingsDaemon.MediaKeys", 
+			"/org/gnome/SettingsDaemon/MediaKeys",
+			"org.gnome.SettingsDaemon.MediaKeys");
 		if (media_player_keys_proxy == NULL) return;
 
 		dbus_g_proxy_call (media_player_keys_proxy,
@@ -265,8 +263,29 @@ void gnome_remote_init ()
 				G_TYPE_INVALID,
 				G_TYPE_INVALID);
 		if (error != NULL) {
-			g_warning ("Could not release media player keys: %s", error->message);
 			g_error_free (error);
+			error = NULL;
+			g_object_unref(media_player_keys_proxy);
+			media_player_keys_proxy = NULL;
+    			media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
+				"org.gnome.SettingsDaemon", 
+				"/org/gnome/SettingsDaemon",
+				"org.gnome.SettingsDaemon");
+			if (media_player_keys_proxy == NULL) return;
+
+			dbus_g_proxy_call (media_player_keys_proxy,
+					"GrabMediaPlayerKeys", &error,
+					G_TYPE_STRING, "Audacious",
+					G_TYPE_UINT, 0,
+					G_TYPE_INVALID,
+					G_TYPE_INVALID);
+			if (error != NULL) {
+				g_warning ("Could not grab media player keys: %s", error->message);
+				g_error_free (error);
+				g_object_unref(media_player_keys_proxy);
+				media_player_keys_proxy = NULL;
+				return;
+			}
 		}
 
 		dbus_g_object_register_marshaller (hotkey_marshal_VOID__STRING_STRING,
@@ -287,7 +306,7 @@ static void about (void)
 	dialog = audacious_info_dialog (_("About Gnome Shortcut Plugin"),
 				_("Gnome Shortcut Plugin\n"
 				"Let's you control the player with Gnome's shortcuts.\n\n"
-				"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
+				"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
                          	),
                          	_("OK"), TRUE, NULL, NULL);
 
