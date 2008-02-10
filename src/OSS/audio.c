@@ -149,6 +149,8 @@ oss_get_format(AFormat fmt)
         format = AFMT_S16_LE;
 #endif
         break;
+    default:
+        format = -1;
     }
 
     return format;
