@@ -1,6 +1,8 @@
 dnl
 dnl Copyright (c) 2007, Jonathan Schleifer <js-buildsys@webkeks.org>
 dnl
+dnl https://webkeks.org/hg/buildsys/
+dnl
 dnl Permission to use, copy, modify, and/or distribute this software for any
 dnl purpose with or without fee is hereby granted, provided that the above
 dnl copyright notice and this permission notice is present in all copies.
@@ -104,7 +106,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			AC_MSG_RESULT(POSIX)
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS='-fPIC'
-			LIB_LDFLAGS='-shared -fPIC -Wl,-soname=${LIB}.${LIB_MAJOR}.${LIB_MINOR}.0'
+			LIB_LDFLAGS='-shared -fPIC -Wl,-soname=${LIB}.${LIB_MAJOR}'
 			LIB_PREFIX='lib'
 			LIB_SUFFIX='.so'
 			PLUGIN_CPPFLAGS='-DPIC'
