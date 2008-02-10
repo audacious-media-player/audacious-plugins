@@ -34,8 +34,10 @@
  */
 
 #include "config.h"
-
+/*
+#define AUD_DEBUG
 #define DEBUG
+*/
 
 #define REMOVE_NONEXISTANT_TAG(x)   if (x != NULL && !*x) { x = NULL; }
 
@@ -360,14 +362,11 @@ vorbis_play_loop(gpointer arg)
            /*
             * EOF
             */
+            AUDDBG("EOF\n");
             playback->playing = 0;
-            playback->output->buffer_free();
-            playback->output->buffer_free();
             playback->eof = TRUE;
             current_section = last_section;
         }
-
-        
 
         if (current_section <= last_section) {
             /*
@@ -387,8 +386,7 @@ vorbis_play_loop(gpointer arg)
             if (vi->rate != samplerate || vi->channels != channels) {
                 samplerate = vi->rate;
                 channels = vi->channels;
-                playback->output->buffer_free();
-                playback->output->buffer_free();
+                while(playback->output->buffer_playing()) g_usleep(50000);
                 playback->output->close_audio();
                 if (!playback->output->
                         open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
@@ -440,17 +438,20 @@ vorbis_play_loop(gpointer arg)
         }
     } /* main loop */
 
-    if (!playback->error)
-        playback->output->close_audio();
-    /* fall through intentional */
+    if (!playback->error) {
+        /*this loop makes it not skip the last ~4 seconds, but the playback 
+         * timer isn't updated in this period, so it still needs a bit of work 
+         *
+         * majeru
+         */
+        if(playback->eof) /* do it only on EOF --asphyx */
+            while(playback->output->buffer_playing()) {
+                AUDDBG("waiting for empty output buffer\n");
+                g_usleep(50000);
+            }
 
-    /*this loop makes it not skip the last ~4 seconds, but the playback 
-     * timer isn't updated in this period, so it still needs a bit of work 
-     *
-     * majeru
-     */
-    while(playback->output->buffer_playing()&& playback->output->buffer_free())
-        g_usleep(50000);
+        playback->output->close_audio();
+    }
 
 
     play_cleanup:
@@ -464,7 +465,6 @@ vorbis_play_loop(gpointer arg)
     ov_clear(&vf);
     g_mutex_unlock(vf_mutex);
     playback->playing = 0;
-    playback->output->buffer_free();
     return NULL;
 }
 
@@ -485,7 +485,9 @@ vorbis_stop(InputPlayback *playback)
 {
     if (playback->playing) {
         playback->playing = 0;
+        AUDDBG("waiting for playback thread finished\n");
         g_thread_join(thread);
+        AUDDBG("playback finished\n");
     }
 }
 
