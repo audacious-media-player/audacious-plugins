@@ -29,6 +29,7 @@
  *	Many fixes and cleanups.
  */
 
+/*#define AUD_DEBUG*/
 
 #include "alsa.h"
 #include <ctype.h>
@@ -143,7 +144,10 @@ int alsa_playing(void)
 	if (!going || paused || alsa_pcm == NULL)
 		return FALSE;
 
-	return snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING;
+	return snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING &&
+               !paused &&
+               !prebuffer &&
+               get_thread_buffer_filled() > hw_period_size_in;
 }
 
 static int

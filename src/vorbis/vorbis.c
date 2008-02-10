@@ -34,10 +34,8 @@
  */
 
 #include "config.h"
-/*
-#define AUD_DEBUG
-#define DEBUG
-*/
+/*#define AUD_DEBUG
+#define DEBUG*/
 
 #define REMOVE_NONEXISTANT_TAG(x)   if (x != NULL && !*x) { x = NULL; }
 
