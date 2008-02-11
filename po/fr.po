@@ -3302,11 +3302,11 @@ msgstr "Pré-gain sans les informations de 'ReplaiGain' (dB) :"
 
 #: src/madplug/configure.c:530
 msgid "Enable peak info clip prevention"
-msgstr "Prévention de la saturation : utiliser les données relatives aux pics sonores"
+msgstr "Utiliser les données des pics sonores pour éviter la saturation"
 
 #: src/madplug/configure.c:552
 msgid "Enable adaptive scaler clip prevention"
-msgstr "Prévention de la saturation : activer le filtre dynamique"
+msgstr "Activer l'échelle dynamique de prévention de la saturation"
 
 #: src/madplug/configure.c:561
 msgid "Gain Control"
