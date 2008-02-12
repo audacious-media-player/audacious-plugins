@@ -214,6 +214,7 @@ Cd00Player::update ()
     }
 
     if (channel[c].levpuls != 0xff) // Levelpuls
+    {
       if (channel[c].frameskip)
         channel[c].frameskip--;
       else
@@ -232,6 +233,7 @@ Cd00Player::update ()
         channel[c].modvol &= 63;
         setvolume (c);
       }
+    }
   }
 
   // song handling

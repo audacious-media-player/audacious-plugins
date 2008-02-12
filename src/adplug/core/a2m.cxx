@@ -70,7 +70,7 @@ Ca2mLoader::load (VFSFile * fd, const CFileProvider & fp)
   char id[10];
   int i, j, k, t;
   unsigned int l;
-  unsigned char *org, *orgptr, flags = 0, numpats, version;
+  unsigned char *org = NULL, *orgptr, flags = 0, numpats, version;
   unsigned long crc, alength;
   unsigned short len[9], *secdata, *secptr;
   const unsigned char convfx[16] =
@@ -383,10 +383,12 @@ Ca2mLoader::updatefreq (unsigned short a, unsigned short b)
     freq[dad[a]] = freq[a] + freq[b];
     a = dad[a];
     if (a != ROOT)
+    {
       if (leftc[dad[a]] == a)
         b = rghtc[dad[a]];
       else
         b = leftc[dad[a]];
+    }
   } while (a != ROOT);
 
   if (freq[ROOT] == MAXFREQ)

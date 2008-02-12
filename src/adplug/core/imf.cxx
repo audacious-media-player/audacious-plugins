@@ -119,6 +119,7 @@ CimfPlayer::load (VFSFile * fd, const CFileProvider & fp)
 
   // read footer, if any
   if (fsize && (fsize < flsize - 2 - mfsize))
+  {
     if (f->readInt (1) == 0x1a)
     {
       // Adam Nielsen's footer format
@@ -135,6 +136,7 @@ CimfPlayer::load (VFSFile * fd, const CFileProvider & fp)
       f->readString (footer, footerlen);
       footer[footerlen] = '\0'; // Make ASCIIZ string
     }
+  }
 
   rate = getrate (fd->uri, fp, f);
   fp.close (f);

@@ -76,6 +76,7 @@ CmodPlayer::update ()
     oplchan = set_opl_chip (chan);
 
     if (arplist && arpcmd && inst[channel[chan].inst].arpstart) // special arpeggio
+    {
       if (channel[chan].arpspdcnt)
         channel[chan].arpspdcnt--;
       else if (arpcmd[channel[chan].arppos] != 255)
@@ -125,6 +126,7 @@ CmodPlayer::update ()
           channel[chan].arppos++;
         channel[chan].arpspdcnt = inst[channel[chan].inst].arpspeed - 1;
       }
+    }
 
     info1 = channel[chan].info1;
     info2 = channel[chan].info2;
@@ -759,10 +761,10 @@ CmodPlayer::setvolume_alt (unsigned char chan)
   unsigned char ivol1 = inst[channel[chan].inst].data[10] & 63;
 
   opl->write (0x40 + op_table[oplchan],
-              (((63 - channel[chan].vol2 & 63) + ivol2) >> 1) +
+              (((63 - (channel[chan].vol2 & 63)) + ivol2) >> 1) +
               (inst[channel[chan].inst].data[9] & 192));
   opl->write (0x43 + op_table[oplchan],
-              (((63 - channel[chan].vol1 & 63) + ivol1) >> 1) +
+              (((63 - (channel[chan].vol1 & 63)) + ivol1) >> 1) +
               (inst[channel[chan].inst].data[10] & 192));
 }
 
@@ -775,7 +777,7 @@ CmodPlayer::setfreq (unsigned char chan)
   if (channel[chan].key)
     opl->write (0xb0 + oplchan,
                 ((channel[chan].freq & 768) >> 8) +
-                (channel[chan].oct << 2) | 32);
+                ((channel[chan].oct << 2) | 32));
   else
     opl->write (0xb0 + oplchan,
                 ((channel[chan].freq & 768) >> 8) + (channel[chan].oct << 2));
@@ -818,6 +820,7 @@ void
 CmodPlayer::setnote (unsigned char chan, int note)
 {
   if (note > 96)
+  {
     if (note == 127)
     {                           // key off
       channel[chan].key = 0;
@@ -826,6 +829,7 @@ CmodPlayer::setnote (unsigned char chan, int note)
     }
     else
       note = 96;
+  }
 
   if (note < 13)
     channel[chan].freq = notetable[note - 1];
@@ -842,6 +846,7 @@ CmodPlayer::slide_down (unsigned char chan, int amount)
 {
   channel[chan].freq -= amount;
   if (channel[chan].freq <= 342)
+  {
     if (channel[chan].oct)
     {
       channel[chan].oct--;
@@ -849,6 +854,7 @@ CmodPlayer::slide_down (unsigned char chan, int amount)
     }
     else
       channel[chan].freq = 342;
+  }
 }
 
 void
@@ -856,6 +862,7 @@ CmodPlayer::slide_up (unsigned char chan, int amount)
 {
   channel[chan].freq += amount;
   if (channel[chan].freq >= 686)
+  {
     if (channel[chan].oct < 7)
     {
       channel[chan].oct++;
@@ -863,6 +870,7 @@ CmodPlayer::slide_up (unsigned char chan, int amount)
     }
     else
       channel[chan].freq = 686;
+  }
 }
 
 void
@@ -957,10 +965,12 @@ CmodPlayer::vol_up_alt (unsigned char chan, int amount)
   else
     channel[chan].vol1 = 63;
   if (inst[channel[chan].inst].data[0] & 1)
+  {
     if (channel[chan].vol2 + amount < 63)
       channel[chan].vol2 += amount;
     else
       channel[chan].vol2 = 63;
+  }
 }
 
 void
@@ -971,8 +981,10 @@ CmodPlayer::vol_down_alt (unsigned char chan, int amount)
   else
     channel[chan].vol1 = 0;
   if (inst[channel[chan].inst].data[0] & 1)
+  {
     if (channel[chan].vol2 - amount > 0)
       channel[chan].vol2 -= amount;
     else
       channel[chan].vol2 = 0;
+  }
 }

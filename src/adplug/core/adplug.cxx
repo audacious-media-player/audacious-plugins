@@ -151,6 +151,7 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
         AdPlug_LogWrite ("Trying direct hit: %s\n", (*i)->filetype.c_str ());
         aud_vfs_rewind (fd);
         if ((p = (*i)->factory (opl)))
+        {
           if (p->load (fd, fp))
           {
             AdPlug_LogWrite ("got it!\n");
@@ -159,6 +160,7 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
           }
           else
             delete p;
+        }
       }
 
 #if 0
