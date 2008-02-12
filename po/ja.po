@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2008-02-03 20:33+0200\n"
-"PO-Revision-Date: 2008-01-12 22:51+0900\n"
+"PO-Revision-Date: 2008-02-12 15:53+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2936,69 +2936,56 @@ msgstr ""
 "\n"
 
 #: src/hotkey/gui.c:68
-#, fuzzy
 msgid "Previous Track"
-msgstr "次のトラック:"
+msgstr "前のトラック"
 
 #: src/hotkey/gui.c:69
-#, fuzzy
 msgid "Play"
-msgstr "演奏開始:"
+msgstr "演奏開始"
 
 #: src/hotkey/gui.c:70
-#, fuzzy
 msgid "Pause/Resume"
-msgstr "一時停止/再開:"
+msgstr "一時停止/再開"
 
 #: src/hotkey/gui.c:71
-#, fuzzy
 msgid "Stop"
-msgstr "演奏停止:"
+msgstr "演奏停止"
 
 #: src/hotkey/gui.c:72
-#, fuzzy
 msgid "Next Track"
-msgstr "次のトラック:"
+msgstr "次のトラック"
 
 #: src/hotkey/gui.c:73
-#, fuzzy
 msgid "Forward 5 Seconds"
-msgstr "5秒進める:"
+msgstr "5秒進める"
 
 #: src/hotkey/gui.c:74
-#, fuzzy
 msgid "Rewind 5 Seconds"
-msgstr "5秒戻す:"
+msgstr "5秒戻す"
 
 #: src/hotkey/gui.c:75
-#, fuzzy
 msgid "Mute"
-msgstr "無音:"
+msgstr "無音"
 
 #: src/hotkey/gui.c:76
-#, fuzzy
 msgid "Volume Up"
-msgstr "音量を上げる:"
+msgstr "音量を上げる"
 
 #: src/hotkey/gui.c:77
-#, fuzzy
 msgid "Volume Down"
-msgstr "音量を下げる:"
+msgstr "音量を下げる"
 
 #: src/hotkey/gui.c:78
-#, fuzzy
 msgid "Jump to File"
-msgstr "指定ファイルへ移動:"
+msgstr "指定ファイルへ移動"
 
 #: src/hotkey/gui.c:79
-#, fuzzy
 msgid "Toggle Player Windows"
-msgstr "プレイヤウィンドウを切り替える:"
+msgstr "プレイヤウィンドウを切り替える"
 
 #: src/hotkey/gui.c:80
-#, fuzzy
 msgid "Show On-Screen-Display"
-msgstr "On-Screen-Display を表示する:"
+msgstr "On-Screen-Display を表示する"
 
 #: src/hotkey/gui.c:90
 msgid "(none)"
@@ -3024,25 +3011,24 @@ msgid "Global Hotkey Plugin Configuration"
 msgstr "グローバルホットキープラグイン設定"
 
 #: src/hotkey/gui.c:395
-#, fuzzy
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "テキストフィールド内でキーコンビネーションを押してください."
+msgstr ""
+"テキストフィールド内でキーコンビネーションを押してください.\n"
+"マウスボタンを組み合わせることもできます."
 
 #: src/hotkey/gui.c:400
-#, fuzzy
 msgid "Hotkeys:"
-msgstr "ホスト名:"
+msgstr "ホットキー:"
 
 #: src/hotkey/gui.c:419
-#, fuzzy
 msgid "<b>Action:</b>"
-msgstr "<b>Hatena</b>"
+msgstr "<b>動作:</b>"
 
 #: src/hotkey/gui.c:427
 msgid "<b>Key Binding:</b>"
-msgstr ""
+msgstr "<b>キーバインド:</b>"
 
 #: src/hotkey/gui.c:660
 msgid "About Global Hotkey Plugin"
@@ -3290,9 +3276,8 @@ msgid "MPEG Audio Plugin Configuration"
 msgstr "MPEG オーディオ プラグインの設定"
 
 #: src/madplug/configure.c:349
-#, fuzzy
 msgid "Audio Settings"
-msgstr "アラーム設定"
+msgstr "オーディオ設定"
 
 #: src/madplug/configure.c:358
 msgid "Dither output when rounding to 16-bit"
@@ -3303,9 +3288,8 @@ msgid "Force reopen audio when audio type changed"
 msgstr "オーディオタイプが変更されたとき強制的にオーディオを再オープンする"
 
 #: src/madplug/configure.c:374
-#, fuzzy
 msgid "Metadata Settings"
-msgstr "ミキサの設定:"
+msgstr "メタデータ設定"
 
 #: src/madplug/configure.c:383
 msgid "Enable fast play-length calculation"
@@ -3316,23 +3300,20 @@ msgid "Parse XING headers"
 msgstr "XING ヘッダをパースする"
 
 #: src/madplug/configure.c:397
-#, fuzzy
 msgid "Use SJIS to write ID3 tags (not recommended)"
-msgstr "ID3 タグの書き込みに UTF-8 の代わりに SJIS を使う"
+msgstr "ID3 タグの書き込みに SJIS を使う (非推奨)"
 
 #: src/madplug/configure.c:404
-#, fuzzy
 msgid "Miscellaneous Settings"
-msgstr "雑多なオプション:"
+msgstr "雑多な設定"
 
 #: src/madplug/configure.c:413
 msgid "Display average bitrate for VBR"
 msgstr "VBR の平均ビットレートを表示する"
 
 #: src/madplug/configure.c:432
-#, fuzzy
 msgid "Base gain (dB):"
-msgstr "デフォルトゲイン (dB):"
+msgstr "基本ゲイン (dB):"
 
 #: src/madplug/configure.c:446 src/musepack/libmpc.cxx:190
 msgid "ReplayGain Settings"
@@ -3356,26 +3337,23 @@ msgstr "アルバムゲインを使用する"
 
 #: src/madplug/configure.c:498
 msgid "Pre-gain with RG info (dB):"
-msgstr ""
+msgstr "リプレイゲイン情報ありのプリゲイン (dB):"
 
 #: src/madplug/configure.c:514
 msgid "Pre-gain without RG info (dB):"
-msgstr ""
+msgstr "リプレイゲイン情報なしのプリゲイン (dB):"
 
 #: src/madplug/configure.c:530
-#, fuzzy
 msgid "Enable peak info clip prevention"
-msgstr "クリッピング回避機能を有効にする"
+msgstr "クリッピング防止のためにピーク情報を有効にする"
 
 #: src/madplug/configure.c:552
-#, fuzzy
 msgid "Enable adaptive scaler clip prevention"
-msgstr "クリッピング回避機能を有効にする"
+msgstr "クリッピング防止に適応したスケーラを有効にする"
 
 #: src/madplug/configure.c:561
-#, fuzzy
 msgid "Gain Control"
-msgstr "サブチューンコントロール:"
+msgstr "ゲインコントロール"
 
 #: src/madplug/configure.c:569 src/vorbis/configure.c:135
 msgid "Override generic titles"
@@ -4926,9 +4904,8 @@ msgid "Could not open STILDB '%s'\n"
 msgstr "STILDB '%s' を開けませんでした.\n"
 
 #: src/sndfile/plugin.c:548
-#, fuzzy
 msgid "About sndfile plugin"
-msgstr "sndfile WAV プラグイン"
+msgstr "sndfile プラグインについて"
 
 #: src/sndfile/plugin.c:549
 msgid ""
