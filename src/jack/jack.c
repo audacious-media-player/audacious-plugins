@@ -55,11 +55,6 @@ static format_info_t input;
 static format_info_t effect;
 static format_info_t output;
 
-static convert_freq_func_t freq_convert; /* rate convert function */
-static struct xmms_convert_buffers *convertb; /* convert buffer */
-
-static int isXmmsFrequencyAvailable = 0;
-
 static gboolean output_opened; /* true if we have a connection to jack */
 
 static GtkWidget *dialog, *button, *label;
@@ -78,12 +73,6 @@ void jack_cleanup(void)
 
   if((errval = JACK_Close(driver)))
     ERR("error closing device, errval of %d\n", errval);
-
-  /* only clean this up if we have the function to call */
-  if(isXmmsFrequencyAvailable)
-  {
-    aud_convert_buffers_destroy(convertb); /* clean up the rate conversion buffers */
-  }
 
   return;
 }
@@ -227,15 +216,6 @@ void jack_init(void)
   /* set the port connection mode */
   jack_set_port_connection_mode();
 
-  isXmmsFrequencyAvailable = 1;
-
-  /* only initialize this stuff if we have the functions available */
-  if(isXmmsFrequencyAvailable)
-  {
-    convertb = aud_convert_buffers_new ();
-    freq_convert = aud_convert_get_frequency_func(FMT_S16_LE, 2);
-  }
-
   output_opened = FALSE;
 }
 
@@ -345,26 +325,9 @@ gint jack_open(AFormat fmt, gint sample_rate, gint num_channels)
   retval = JACK_Open(&driver, bits_per_sample, &rate, output.channels);
   output.frequency = rate; /* avoid compile warning as output.frequency differs in type
                               from what JACK_Open() wants for the type of the rate parameter */
-  if((retval == ERR_RATE_MISMATCH) && isXmmsFrequencyAvailable)
+  if((retval == ERR_RATE_MISMATCH))
   {
-    TRACE("xmms(input) wants rate of '%ld', jacks rate(output) is '%ld', opening at jack rate\n", input.frequency, output.frequency);
-
-    /* open the jack device with true jack's rate, return 0 upon failure */
-    retval = JACK_Open(&driver, bits_per_sample, &rate, output.channels);
-    output.frequency = rate; /* avoid compile warning as output.frequency differs in type
-                                from what JACK_Open() wants for the type of the rate parameter */
-    if(retval)
-    {
-      TRACE("failed to open jack with JACK_Open(), error %d\n", retval);
-      return 0;
-    }
-    TRACE("success!!\n");
-  } else if((retval == ERR_RATE_MISMATCH) && !isXmmsFrequencyAvailable)
-  {
-    TRACE("JACK_Open(), sample rate mismatch with no resampling routines available\n");
-
-    jack_sample_rate_error(); /* notify the user that we can't resample */
-
+    TRACE("set the resampling rate properly");
     return 0;
   } else if(retval != ERR_SUCCESS)
   {

@@ -91,12 +91,6 @@ static int get_thread_buffer_filled(void);
 
 static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int channels);
 
-static struct xmms_convert_buffers *convertb;
-
-static convert_func_t alsa_convert_func;
-static convert_channel_func_t alsa_stereo_convert_func;
-static convert_freq_func_t alsa_frequency_convert_func;
-
 static const struct {
 	AFormat xmms;
 	snd_pcm_format_t alsa;
@@ -292,8 +286,6 @@ void alsa_close(void)
 
 	alsa_cleanup_mixer();
 
-	aud_convert_buffers_destroy(convertb);
-	convertb = NULL;
 	g_free(inputf);
 	inputf = NULL;
 	g_free(effectf);
@@ -609,15 +601,6 @@ static void alsa_do_write(gpointer data, int length)
 	if (paused)
 		return;
 
-	if (alsa_convert_func != NULL)
-		length = alsa_convert_func(convertb, &data, length);
-	if (alsa_stereo_convert_func != NULL)
-		length = alsa_stereo_convert_func(convertb, &data, length);
-	if (alsa_frequency_convert_func != NULL)
-		length = alsa_frequency_convert_func(convertb, &data, length,
-						     effectf->rate,
-						     outputf->rate);
-
 	alsa_write_audio(data, length);
 }
 
@@ -765,8 +748,6 @@ int alsa_open(AFormat fmt, int rate, int nch)
 	if (!mixer)
 		alsa_setup_mixer();
 
-	convertb = aud_convert_buffers_new();
-
 	output_time_offset = 0;
 	alsa_total_written = alsa_hw_written = 0;
 	going = TRUE;
@@ -848,10 +829,6 @@ static int alsa_setup(struct snd_format *f)
 
 	debug("alsa_setup");
 
-	alsa_convert_func = NULL;
-	alsa_stereo_convert_func = NULL;
-	alsa_frequency_convert_func = NULL;
-
 	g_free(outputf);
 	outputf = snd_format_from_xmms(f->xmms_format, f->rate, f->channels);
 
@@ -914,16 +891,7 @@ static int alsa_setup(struct snd_format *f)
 
 	snd_pcm_hw_params_set_channels_near(alsa_pcm, hwparams, &outputf->channels);
 	if (outputf->channels != f->channels)
-	{
-		debug("Converting channels from %d to %d",
-		      f->channels, outputf->channels);
-		alsa_stereo_convert_func =
-			aud_convert_get_channel_func(outputf->xmms_format,
-						      outputf->channels,
-						      f->channels);
-		if (alsa_stereo_convert_func == NULL)
-			return -1;
-	}
+		return -1;
 
 	snd_pcm_hw_params_set_rate_near(alsa_pcm, hwparams, &outputf->rate, 0);
 	if (outputf->rate == 0)
@@ -932,15 +900,7 @@ static int alsa_setup(struct snd_format *f)
 		return -1;
 	}
 	if (outputf->rate != f->rate)
-	{
-		debug("Converting samplerate from %d to %d",
-		      f->rate, outputf->rate);
-		alsa_frequency_convert_func =
-			aud_convert_get_frequency_func(outputf->xmms_format,
-							outputf->channels);
-		if (alsa_frequency_convert_func == NULL)
-			return -1;
-	}
+		return -1;
 
 	outputf->sample_bits = snd_pcm_format_physical_width(outputf->format);
 	outputf->bps = (outputf->rate * outputf->sample_bits * outputf->channels) >> 3;
