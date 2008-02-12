@@ -48,15 +48,15 @@
 #include "configure.h"
 
 
-struct cdng_cfg_t			cdng_cfg;
-static gint					firsttrackno = -1;
-static gint					lasttrackno = -1;
+cdng_cfg_t				cdng_cfg;
+static gint				firsttrackno = -1;
+static gint				lasttrackno = -1;
 static CdIo_t				*pcdio = NULL;
 static trackinfo_t			*trackinfo = NULL;
 static gboolean				is_paused = FALSE;
-static gint					playing_track = -1;
+static gint				playing_track = -1;
 static dae_params_t			*pdae_params = NULL;
-static InputPlayback		*pglobalinputplayback = NULL;
+static InputPlayback			*pglobalinputplayback = NULL;
 static GtkWidget			*main_menu_item, *playlist_menu_item;
 static GThread				*scan_cd_thread = NULL;
 
@@ -73,11 +73,10 @@ static gint			cdaudio_get_volume(gint *l, gint *r);
 static gint			cdaudio_set_volume(gint l, gint r);
 static void			cdaudio_cleanup(void);
 static void			cdaudio_get_song_info(gchar *filename, gchar **title, gint *length);
-static Tuple		*cdaudio_get_song_tuple(gchar *filename);
+static Tuple			*cdaudio_get_song_tuple(gchar *filename);
 
 static void			menu_click(void);
-static Tuple		*create_tuple_from_trackinfo_and_filename(gchar *filename);
-static Tuple		*create_tuple_from_trackinfo(int trackno);
+static Tuple			*create_tuple_from_trackinfo_and_filename(gchar *filename);
 static void			dae_play_loop(dae_params_t *pdae_params);
 static void			*scan_cd(void *nothing);
 static void			scan_cd_threaded();
@@ -139,7 +138,20 @@ static void cdaudio_init()
 
 	debug("cdaudio_init()\n");
 
-	memset(&cdng_cfg, 0, sizeof(cdng_cfg));
+	cdng_cfg.use_dae = TRUE;
+	cdng_cfg.use_cdtext = TRUE;
+	cdng_cfg.use_cddb = TRUE;
+	cdng_cfg.debug = FALSE;
+	cdng_cfg.device = g_strdup("");
+	cdng_cfg.cddb_server = g_strdup(CDDA_DEFAULT_CDDB_SERVER);
+	cdng_cfg.cddb_port = CDDA_DEFAULT_CDDB_PORT;
+	cdng_cfg.cddb_http = FALSE;
+	cdng_cfg.limitspeed = CDDA_DEFAULT_LIMIT_SPEED;
+	cdng_cfg.use_proxy = FALSE;
+	cdng_cfg.proxy_host = g_strdup("");
+	cdng_cfg.proxy_port = CDDA_DEFAULT_PROXY_PORT;
+	cdng_cfg.proxy_username = g_strdup("");
+	cdng_cfg.proxy_password = g_strdup("");
 
 	if ((db = aud_cfg_db_open()) == NULL) {
 		cdaudio_error("Failed to read configuration.\n");
@@ -150,42 +162,26 @@ static void cdaudio_init()
 	if (!cdio_init()) {
 		cdaudio_error("Failed to initialize cdio subsystem.\n");
 		cleanup_on_error();
+		aud_cfg_db_close(db);
 		return;
 	}
 
 	libcddb_init();
 
-	/*
-	if (!aud_cfg_db_get_bool(db, "CDDA", "use_dae", &cdng_cfg.use_dae))
-	*/
-	cdng_cfg.use_dae = TRUE;
-
-	if (!aud_cfg_db_get_int(db, "CDDA", "limitspeed", &cdng_cfg.limitspeed))
-		cdng_cfg.limitspeed = 1;
-	if (!aud_cfg_db_get_bool(db, "CDDA", "use_cdtext", &cdng_cfg.use_cdtext))
-		cdng_cfg.use_cdtext = TRUE;
-	if (!aud_cfg_db_get_bool(db, "CDDA", "use_cddb", &cdng_cfg.use_cddb))
-		cdng_cfg.use_cddb = TRUE;
-	if (!aud_cfg_db_get_string(db, "CDDA", "cddbserver", &cdng_cfg.cddb_server))
-		cdng_cfg.cddb_server = g_strdup(CDDA_DEFAULT_CDDB_SERVER);
-	if (!aud_cfg_db_get_int(db, "CDDA", "cddbport", &cdng_cfg.cddb_port))
-		cdng_cfg.cddb_port = CDDA_DEFAULT_CDDB_PORT;
-	if (!aud_cfg_db_get_bool(db, "CDDA", "cddbhttp", &cdng_cfg.cddb_http))
-		cdng_cfg.cddb_port = FALSE;
-	if (!aud_cfg_db_get_string(db, "CDDA", "device", &cdng_cfg.device))
-		cdng_cfg.device = g_strdup("");
-	if (!aud_cfg_db_get_bool(db, "CDDA", "debug", &cdng_cfg.debug))
-		cdng_cfg.debug = FALSE;
-	if (!aud_cfg_db_get_bool(db, "audacious", "use_proxy", &cdng_cfg.use_proxy))
-		cdng_cfg.use_proxy = FALSE;
-	if (!aud_cfg_db_get_string(db, "audacious", "proxy_host", &cdng_cfg.proxy_host))
-		cdng_cfg.proxy_host = g_strdup("");
-	if (!aud_cfg_db_get_int(db, "audacious", "proxy_port", &cdng_cfg.proxy_port))
-		cdng_cfg.proxy_port = 8080;
-	if (!aud_cfg_db_get_string(db, "audacious", "proxy_user", &cdng_cfg.proxy_username))
-		cdng_cfg.proxy_username = g_strdup("");
-	if (!aud_cfg_db_get_string(db, "audacious", "proxy_pass", &cdng_cfg.proxy_password))
-		cdng_cfg.proxy_password = g_strdup("");
+	aud_cfg_db_get_bool(db, "CDDA", "use_dae", &cdng_cfg.use_dae);
+	aud_cfg_db_get_bool(db, "CDDA", "use_cdtext", &cdng_cfg.use_cdtext);
+	aud_cfg_db_get_bool(db, "CDDA", "use_cddb", &cdng_cfg.use_cddb);
+	aud_cfg_db_get_bool(db, "CDDA", "debug", &cdng_cfg.debug);
+	aud_cfg_db_get_string(db, "CDDA", "device", &cdng_cfg.device);
+	aud_cfg_db_get_string(db, "CDDA", "cddbserver", &cdng_cfg.cddb_server);
+	aud_cfg_db_get_int(db, "CDDA", "cddbport", &cdng_cfg.cddb_port);
+	aud_cfg_db_get_bool(db, "CDDA", "cddbhttp", &cdng_cfg.cddb_http);
+	aud_cfg_db_get_int(db, "CDDA", "limitspeed", &cdng_cfg.limitspeed);
+	aud_cfg_db_get_bool(db, "audacious", "use_proxy", &cdng_cfg.use_proxy);
+	aud_cfg_db_get_string(db, "audacious", "proxy_host", &cdng_cfg.proxy_host);
+	aud_cfg_db_get_int(db, "audacious", "proxy_port", &cdng_cfg.proxy_port);
+	aud_cfg_db_get_string(db, "audacious", "proxy_user", &cdng_cfg.proxy_username);
+	aud_cfg_db_get_string(db, "audacious", "proxy_pass", &cdng_cfg.proxy_password);
 
 	aud_cfg_db_close(db);
 
@@ -565,7 +561,7 @@ static void cdaudio_cleanup(void)
 	// todo: destroy the gui
 
 	ConfigDb *db = aud_cfg_db_open();
-	/*aud_cfg_db_set_bool(db, "CDDA", "use_dae", cdng_cfg.use_dae);*/
+	aud_cfg_db_set_bool(db, "CDDA", "use_dae", cdng_cfg.use_dae);
 	aud_cfg_db_set_int(db, "CDDA", "limitspeed", cdng_cfg.limitspeed);
 	aud_cfg_db_set_bool(db, "CDDA", "use_cdtext", cdng_cfg.use_cdtext);
 	aud_cfg_db_set_bool(db, "CDDA", "use_cddb", cdng_cfg.use_cddb);
@@ -644,40 +640,6 @@ static void menu_click()
 		gchar *pathname = g_build_filename(CDDA_DEFAULT, filename, NULL);
 		aud_playlist_add(aud_playlist_get_active(), pathname);
 	}
-}
-
-static Tuple *create_tuple_from_trackinfo(int trackno)
-{
-	Tuple *tuple = aud_tuple_new();
-
-	if (trackinfo == NULL)
-		return tuple;
-
-	if (trackno < firsttrackno || trackno > lasttrackno)
-		return tuple;
-
-	if(strlen(trackinfo[trackno].performer)) {
-		aud_tuple_associate_string(tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
-	}
-	if(strlen(trackinfo[0].name)) {
-		aud_tuple_associate_string(tuple, FIELD_ALBUM, NULL, trackinfo[0].name);
-	}
-	if(strlen(trackinfo[trackno].name)) {
-		aud_tuple_associate_string(tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
-	}
-
-	aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, trackno);
-	aud_tuple_associate_string(tuple, -1, "ext", "cda"); //XXX should do? --yaz
-
-	aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL,
-		calculate_track_length(trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
-
-	if(strlen(trackinfo[trackno].genre)) {
-		aud_tuple_associate_string(tuple, FIELD_GENRE, NULL,  trackinfo[trackno].genre);
-	}
-	//tuple->year = 0; todo: set the year
-
-	return tuple;
 }
 
 static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
@@ -955,6 +917,9 @@ static void *scan_cd(void *nothing)
 			else {
 				debug("getting CDDB info\n");
 
+				cddb_cache_enable(pcddb_conn);
+				//cddb_cache_set_dir(pcddb_conn, "~/.cddbslave");
+
 				if (cdng_cfg.use_proxy) {
 					cddb_http_proxy_enable(pcddb_conn);
 					cddb_set_http_proxy_server_name(pcddb_conn, cdng_cfg.proxy_host);
@@ -988,7 +953,7 @@ static void *scan_cd(void *nothing)
 				cddb_disc_set_length(pcddb_disc, cdio_audio_get_msf_seconds(&endmsf) - cdio_audio_get_msf_seconds(&startmsf));
 
 				cddb_disc_calc_discid(pcddb_disc);
-				int discid = cddb_disc_get_discid(pcddb_disc);
+				unsigned int discid = cddb_disc_get_discid(pcddb_disc);
 				debug("CDDB disc id = %x\n", discid);
 
 				gint matches;

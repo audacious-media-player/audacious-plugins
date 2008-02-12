@@ -2,7 +2,7 @@
 #define _CDNG_CONFIGURE_H
 #include <glib.h>
 
-extern struct cdng_cfg_t {
+typedef struct cdng_cfg_t {
 
 	gboolean	use_dae;
 	gboolean	use_cdtext;
@@ -19,7 +19,7 @@ extern struct cdng_cfg_t {
 	gchar		*proxy_username;
 	gchar		*proxy_password;
 
-} cdng_cfg;
+} cdng_cfg_t;
 
 
 void	configure_create_gui(void);

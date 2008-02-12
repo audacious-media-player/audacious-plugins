@@ -7,6 +7,7 @@
 
 #include "configure.h"
 
+extern cdng_cfg_t cdng_cfg;
 
 static GtkWidget *configwindow,
 		*okbutton,

@@ -24,8 +24,10 @@
 #define DEF_STRING_LEN				256
 #define CDDA_DEFAULT				"cdda://default"
 #define CDDA_DAE_FRAMES				8
+#define CDDA_DEFAULT_LIMIT_SPEED		1
 #define CDDA_DEFAULT_CDDB_SERVER	"freedb.org"
 #define CDDA_DEFAULT_CDDB_PORT		8880
+#define CDDA_DEFAULT_PROXY_PORT		8080
 
 
 typedef struct {
