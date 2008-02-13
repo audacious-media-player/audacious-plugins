@@ -251,7 +251,7 @@ void gnome_remote_init ()
 		g_warning ("Error connecting to DBus: %s", error->message);
 	} else {
 		media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
-			"org.gnome.SettingsDaemon.MediaKeys", 
+			"org.gnome.SettingsDaemon", 
 			"/org/gnome/SettingsDaemon/MediaKeys",
 			"org.gnome.SettingsDaemon.MediaKeys");
 		if (media_player_keys_proxy == NULL) return;
