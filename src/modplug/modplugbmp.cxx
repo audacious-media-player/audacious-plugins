@@ -548,7 +548,10 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
 	aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
 	
 	gchar *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
-	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps2);
+	// Chop any leading spaces off. They are annoying in the playlist.
+	gchar *tmps3 = tmps2; // Make another pointer so tmps2 can still be free()d
+	while ( *tmps3 == ' ' ) tmps3++ ;
+	aud_tuple_associate_string(ti, FIELD_TITLE, NULL, tmps3);
 	g_free(tmps2);
 	
 	//unload the file
