@@ -808,16 +808,6 @@ static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int chann
 	return f;
 }
 
-static int format_from_alsa(snd_pcm_format_t fmt)
-{
-	size_t i;
-	for (i = 0; i < sizeof(format_table) / sizeof(format_table[0]); i++)
-		if (format_table[i].alsa == fmt)
-			return format_table[i].xmms;
-	g_warning("Unsupported format: %s", snd_pcm_format_name(fmt));
-	return -1;
-}
-
 static int alsa_setup(struct snd_format *f)
 {
 	int err;
