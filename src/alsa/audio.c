@@ -80,7 +80,6 @@ struct snd_format {
 };
 
 static struct snd_format *inputf = NULL;
-static struct snd_format *effectf = NULL;
 static struct snd_format *outputf = NULL;
 
 static int alsa_setup(struct snd_format *f);
@@ -287,8 +286,6 @@ void alsa_close(void)
 
 	g_free(inputf);
 	inputf = NULL;
-	g_free(effectf);
-	effectf = NULL;
 	g_free(outputf);
 	outputf = NULL;
 
@@ -730,8 +727,7 @@ static void *alsa_loop(void *arg)
 int alsa_open(AFormat fmt, int rate, int nch)
 {
 	debug("Opening device");
-	inputf = snd_format_from_xmms(fmt, rate, nch);
-	effectf = snd_format_from_xmms(fmt, rate, nch);
+	if((inputf = snd_format_from_xmms(fmt, rate, nch)) == NULL) return 0;
 
 	if (alsa_cfg.debug)
 		snd_output_stdio_attach(&logs, stdout, 0);
@@ -779,6 +775,7 @@ static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int chann
 {
 	struct snd_format *f = g_malloc(sizeof(struct snd_format));
 	size_t i;
+        int found = 0;
 
 	f->xmms_format = fmt;
 	f->format = SND_PCM_FORMAT_UNKNOWN;
@@ -788,8 +785,14 @@ static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int chann
 		{
 			printf("match!\n");
 			f->format = format_table[i].alsa;
+                        found = 1;
 			break;
 		}
+
+        if(!found) {
+            g_free(f);
+            return NULL;
+        }
 
 	/* Get rid of _NE */
 	for (i = 0; i < sizeof(format_table) / sizeof(format_table[0]); i++)
@@ -820,6 +823,7 @@ static int alsa_setup(struct snd_format *f)
 
 	g_free(outputf);
 	outputf = snd_format_from_xmms(f->xmms_format, f->rate, f->channels);
+        if(outputf == NULL) return -1;
 
 	debug("Opening device: %s", alsa_cfg.pcm_device);
 	/* FIXME: Can snd_pcm_open() return EAGAIN? */
