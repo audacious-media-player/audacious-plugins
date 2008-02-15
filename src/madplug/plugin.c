@@ -755,7 +755,7 @@ audmad_probe_for_tuple(char *filename, VFSFile *fd)
 static gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
 
 InputPlugin mad_ip = {
-    .description = "MPEG Audio Plugin (experimental)",
+    .description = "MPEG Audio Plugin",
     .init = audmad_init,
     .about = audmad_about,
     .configure = audmad_configure,
