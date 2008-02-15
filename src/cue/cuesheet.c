@@ -17,7 +17,7 @@
 
 #include "config.h"
 
-/* #define DEBUG 1 */
+/* #define AUD_DEBUG 1 */
 
 #include <string.h>
 #include <stdlib.h>
@@ -117,9 +117,7 @@ static void cue_init(void)
     watchdog_state = STOP;
     g_mutex_unlock(cue_mutex);
     watchdog_thread = g_thread_create(watchdog_func, NULL, TRUE, NULL);
-#ifdef DEBUG
-    g_print("watchdog_thread = %p\n", watchdog_thread);
-#endif
+    AUDDBG("watchdog_thread = %p\n", watchdog_thread);
     aud_uri_set_plugin("cue://", &cue_ip);
 }
 
@@ -179,10 +177,8 @@ static void play(InputPlayback *data)
 {
     gchar *uri = g_strdup(data->filename);
 
-#ifdef DEBUG
-    g_print("play: playback = %p\n", data);
-    g_print("play: uri = %s\n", uri);
-#endif
+    AUDDBG("play: playback = %p\n", data);
+    AUDDBG("play: uri = %s\n", uri);
 
     caller_ip = data;
 	/* this isn't a cue:// uri? */
@@ -243,9 +239,9 @@ static Tuple *get_aud_tuple_uri(gchar *uri)
 
 	if (cue_file == NULL)
 		return NULL;
-#ifdef DEBUG    
-	g_print("cue_file = %s\n", cue_file);
-#endif
+
+	AUDDBG("cue_file = %s\n", cue_file);
+
 	pr = aud_input_check_file(cue_file, FALSE);
 	if (pr == NULL)
 		return NULL;
@@ -291,10 +287,8 @@ static void seek(InputPlayback * data, gint time)
     target_time = time * 1000;
     g_mutex_unlock(cue_target_time_mutex);
 
-#ifdef DEBUG
-    g_print("seek: playback = %p\n", data);
-    g_print("cue: seek: target_time = %d\n", target_time);
-#endif
+    AUDDBG("seek: playback = %p\n", data);
+    AUDDBG("cue: seek: target_time = %d\n", target_time);
 
 	if (real_ip != NULL) {
 		real_ip->plugin->seek(real_ip, time);
@@ -303,9 +297,7 @@ static void seek(InputPlayback * data, gint time)
 
 static void stop(InputPlayback * data)
 {
-#ifdef DEBUG
-    g_print("f: stop: playback = %p\n", data);
-#endif
+    AUDDBG("f: stop: playback = %p\n", data);
 
     if(play_thread) {
         if(real_play_thread) {
@@ -313,9 +305,9 @@ static void stop(InputPlayback * data)
 
             if (real_ip != NULL)
                 real_ip->plugin->stop(real_ip);
-#ifdef DEBUG
-            g_print("i: stop(real_ip) finished\n");
-#endif
+
+            AUDDBG("i: stop(real_ip) finished\n");
+
             real_play_thread = NULL;
 
             if (data != NULL)
@@ -343,24 +335,16 @@ static void stop(InputPlayback * data)
 
     } /*play_thread*/
 
-
-#ifdef DEBUG
-    g_print("e: stop\n");
-#endif
+    AUDDBG("e: stop\n");
 }
 
 static gboolean do_stop(gpointer data)
 {
-#ifdef DEBUG
-    g_print("f: do_stop\n");
-#endif
-
+    AUDDBG("f: do_stop\n");
     audacious_drct_stop();
+    AUDDBG("e: do_stop\n");
 
-#ifdef DEBUG
-    g_print("e: do_stop\n");
-#endif
-    return FALSE; //one-shot
+    return FALSE; //only once
 }
 
 static gboolean do_setpos(gpointer data)
@@ -373,9 +357,7 @@ static gboolean do_setpos(gpointer data)
     if(pos < 0)
         pos = 0;
 
-#ifdef DEBUG
-    g_print("do_setpos: pos = %d\n\n", pos);
-#endif
+    AUDDBG("do_setpos: pos = %d\n\n", pos);
 
     if (!playlist)
         return FALSE;
@@ -420,11 +402,9 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 	InputPlugin *real_ip_plugin;
     Tuple *tuple = NULL;
 
-#ifdef DEBUG
-    g_print("f: play_cue_uri\n");
-    g_print("play_cue_uri: playback = %p\n", data);
-    g_print("play_cue_uri: path2 = %s\n", path2);
-#endif
+    AUDDBG("f: play_cue_uri\n");
+    AUDDBG("play_cue_uri: playback = %p\n", data);
+    AUDDBG("play_cue_uri: path2 = %s\n", path2);
 
     /* stop watchdog thread */
     g_mutex_lock(cue_mutex);
@@ -468,9 +448,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		g_usleep(50000); // wait for 50msec while real input plugin is initializing.
 
 		if(real_ip->plugin->mseek) {
-#ifdef DEBUG
-            g_print("mseek\n");
-#endif
+            AUDDBG("mseek\n");
 			real_ip->plugin->mseek(real_ip, finetune_seek ? finetune_seek : cue_tracks[track].index);
 		}
 		else
@@ -479,9 +457,8 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
         g_mutex_lock(cue_target_time_mutex);
         target_time = finetune_seek ? finetune_seek : cue_tracks[track].index;
         g_mutex_unlock(cue_target_time_mutex);
-#ifdef DEBUG
-        g_print("cue: play_cue_uri: target_time = %d\n", target_time);
-#endif
+
+        AUDDBG("cue: play_cue_uri: target_time = %d\n", target_time);
 
         tuple = real_ip->plugin->get_song_tuple(cue_file);
         if(tuple) {
@@ -494,9 +471,9 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
         watchdog_state = RUN;
         g_mutex_unlock(cue_mutex);
         g_cond_signal(cue_cond);
-#ifdef DEBUG
-        g_print("watchdog activated\n");
-#endif
+
+        AUDDBG("watchdog activated\n");
+
         finetune_seek = 0;
         if(real_play_thread) {
             g_mutex_lock(cue_block_mutex);
@@ -505,9 +482,7 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
         }
 	}
 
-#ifdef DEBUG
-    g_print("e: play_cue_uri\n");
-#endif
+    AUDDBG("e: play_cue_uri\n");
 }
 
 /******************************************************* watchdog */
@@ -533,18 +508,14 @@ static gpointer watchdog_func(gpointer data)
     Playlist *playlist = NULL;
     GTimeVal sleep_time;
 
-#ifdef DEBUG
-    g_print("f: watchdog\n");
-#endif
+    AUDDBG("f: watchdog\n");
 
     while(1) {
 #if 0
-#if DEBUG
-        g_print("time = %d cur = %d cidx = %d nidx = %d last = %d\n",
+        AUDDBG("time = %d cur = %d cidx = %d nidx = %d last = %d\n",
                 time, cur_cue_track,
                 cue_tracks[cur_cue_track].index,
                 cue_tracks[cur_cue_track+1].index, last_cue_track);
-#endif
 #endif
         g_get_current_time(&sleep_time);
         g_time_val_add(&sleep_time, 10000); // interval is 10msec.
@@ -552,9 +523,7 @@ static gpointer watchdog_func(gpointer data)
         g_mutex_lock(cue_mutex);
         switch(watchdog_state) {
         case EXIT:
-#ifdef DEBUG
-            g_print("e: watchdog exit\n");
-#endif
+            AUDDBG("e: watchdog exit\n");
             g_mutex_unlock(cue_mutex); // stop() will lock cue_mutex.
             stop(real_ip); // need not to care about real_ip != NULL here.
             g_thread_exit(NULL);
@@ -565,9 +534,7 @@ static gpointer watchdog_func(gpointer data)
             g_cond_timed_wait(cue_cond, cue_mutex, &sleep_time);
             break;
         case STOP:
-#ifdef DEBUG
-            g_print("watchdog deactivated\n");
-#endif
+            AUDDBG("watchdog deactivated\n");
             g_cond_wait(cue_cond, cue_mutex);
             playlist = aud_playlist_get_active();
             break;
@@ -579,9 +546,7 @@ static gpointer watchdog_func(gpointer data)
 
         time = audacious_drct_get_output_time();
 #if 0
-#ifdef DEBUG
-        g_print("time = %d target_time = %d\n", time, target_time);
-#endif
+        AUDDBG("time = %d target_time = %d\n", time, target_time);
 #endif
         if(time == 0 || time <= target_time)
             continue;
@@ -591,30 +556,26 @@ static gpointer watchdog_func(gpointer data)
         {
             static gint incr = 0;
             gint oldpos = cur_cue_track;
-#ifdef DEBUG
-            g_print("i: watchdog prev\n");
-            g_print("time = %d cur = %d cidx = %d nidx = %d\n", time, cur_cue_track,
-                    cue_tracks[cur_cue_track].index,
-                    cue_tracks[cur_cue_track+1].index);
-#endif
+            AUDDBG("i: watchdog prev\n");
+            AUDDBG("time = %d cur = %d cidx = %d nidx = %d\n", time, cur_cue_track,
+                   cue_tracks[cur_cue_track].index,
+                   cue_tracks[cur_cue_track+1].index);
+
             while(time < cue_tracks[cur_cue_track].index) {
                 cur_cue_track--;
                 incr = cur_cue_track - oldpos; // relative position
                 if (time >= cue_tracks[cur_cue_track].index)
                     finetune_seek = time;
-#ifdef DEBUG
-                g_print("cue: prev_track: time = %d cue_tracks[cur_cue_track].index = %d\n",
+
+                AUDDBG("cue: prev_track: time = %d cue_tracks[cur_cue_track].index = %d\n",
                        time, cue_tracks[cur_cue_track].index);
-                g_print("cue: prev_track: finetune_seek = %d\n", finetune_seek);
-#endif
+                AUDDBG("cue: prev_track: finetune_seek = %d\n", finetune_seek);
             }
 
             g_mutex_lock(cue_target_time_mutex);
             target_time = finetune_seek ? finetune_seek : cue_tracks[cur_cue_track].index;
             g_mutex_unlock(cue_target_time_mutex);
-#ifdef DEBUG
-            g_print("cue: prev_track: target_time = %d\n", target_time);
-#endif
+            AUDDBG("cue: prev_track: target_time = %d\n", target_time);
             g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
             continue;
         }
@@ -624,31 +585,25 @@ static gpointer watchdog_func(gpointer data)
         {
             static gint incr = 0;
             gint oldpos = cur_cue_track;
-#ifdef DEBUG
-            g_print("i: watchdog next\n");
-            g_print("time = %d cur = %d cidx = %d nidx = %d last = %d lidx = %d\n", time, cur_cue_track,
+            AUDDBG("i: watchdog next\n");
+            AUDDBG("time = %d cur = %d cidx = %d nidx = %d last = %d lidx = %d\n", time, cur_cue_track,
                     cue_tracks[cur_cue_track].index,
                     cue_tracks[cur_cue_track+1].index,
                     last_cue_track, cue_tracks[last_cue_track].index);
-#endif
             while(time > cue_tracks[cur_cue_track + 1].index) {
                 cur_cue_track++;
                 incr = cur_cue_track - oldpos; // relative position
                 if (time >= cue_tracks[cur_cue_track].index)
                     finetune_seek = time;
-#ifdef DEBUG
-                g_print("cue: next_track: time = %d cue_tracks[cur_cue_track].index = %d\n",
+                AUDDBG("cue: next_track: time = %d cue_tracks[cur_cue_track].index = %d\n",
                        time, cue_tracks[cur_cue_track].index);
-                g_print("cue: next_track: finetune_seek = %d\n", finetune_seek);
-#endif
+                AUDDBG("cue: next_track: finetune_seek = %d\n", finetune_seek);
             }
 
             g_mutex_lock(cue_target_time_mutex);
             target_time = finetune_seek ? finetune_seek : cue_tracks[cur_cue_track].index;
             g_mutex_unlock(cue_target_time_mutex);
-#ifdef DEBUG
-            g_print("cue: next_track: target_time = %d\n", target_time);
-#endif
+            AUDDBG("cue: next_track: target_time = %d\n", target_time);
             if(aud_cfg->stopaftersong) {
                 g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
                 continue;
@@ -666,9 +621,7 @@ static gpointer watchdog_func(gpointer data)
             if(!real_ip->output->buffer_playing()) {
                 gint pos = aud_playlist_get_position(playlist);
                 if (pos + 1 == aud_playlist_get_length(playlist)) {
-#ifdef DEBUG
-                    g_print("i: watchdog eof reached\n\n");
-#endif
+                    AUDDBG("i: watchdog eof reached\n\n");
                     if(aud_cfg->repeat) {
                         static gint incr = 0;
                         incr = -pos;
@@ -685,9 +638,7 @@ static gpointer watchdog_func(gpointer data)
                         g_idle_add_full(G_PRIORITY_HIGH, do_stop, (void *)real_ip, NULL);
                         continue;
                     }
-#ifdef DEBUG
-                    g_print("i: watchdog end of cue, advance in playlist\n\n");
-#endif
+                    AUDDBG("i: watchdog end of cue, advance in playlist\n\n");
                     static gint incr = 1;
                     g_idle_add_full(G_PRIORITY_HIGH , do_setpos, &incr, NULL);
                     continue;
@@ -695,9 +646,7 @@ static gpointer watchdog_func(gpointer data)
             }
         }
     }
-#ifdef DEBUG
-    g_print("e: watchdog\n");
-#endif
+    AUDDBG("e: watchdog\n");
     return NULL; // dummy.
 }
 
@@ -718,9 +667,7 @@ static void free_cue_info(void)
 		g_free(cue_tracks[last_cue_track-1].title);
 		cue_tracks[last_cue_track-1].title = NULL;
 	}
-#ifdef DEBUG
-	g_print("free_cue_info: last_cue_track = %d\n", last_cue_track);
-#endif
+	AUDDBG("free_cue_info: last_cue_track = %d\n", last_cue_track);
 	last_cue_track = 0;
 }
 
