@@ -765,8 +765,7 @@ static void cache_cue_file(char *f)
 			for (q = p; line[q] && !isspace((int) line[q]); q++);
 
             if(sscanf(line+p, "%d:%d:%d", &min, &sec, &frac) == 3) {
-//                printf("%3d:%02d:%02d\n", min, sec, frac);
-                cue_tracks[last_cue_track-1].index = min * 60000 + sec * 1000 + frac * 10;
+                cue_tracks[last_cue_track-1].index = min * 60000 + sec * 1000 + frac * 1000 / 75;
             }
         }
     }
