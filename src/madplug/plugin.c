@@ -418,6 +418,11 @@ audmad_play_file(InputPlayback *playback)
     rg_info.track_peak = info.replaygain_track_peak;
     rg_info.album_gain = info.replaygain_album_scale;
     rg_info.album_peak = info.replaygain_album_peak;
+    AUDDBG("Replay Gain info:\n");
+    AUDDBG("* track gain:          %+f dB\n", rg_info.track_gain);
+    AUDDBG("* track peak:          %f\n",     rg_info.track_peak);
+    AUDDBG("* album gain:          %+f dB\n", rg_info.album_gain);
+    AUDDBG("* album peak:          %f\n",     rg_info.album_peak);
     playback->set_replaygain_info(playback, &rg_info);
 
     g_mutex_lock(pb_mutex);
