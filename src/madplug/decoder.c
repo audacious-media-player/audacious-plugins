@@ -36,169 +36,42 @@
 #define BUFFER_SIZE 16*1024
 #define N_AVERAGE_FRAMES 10
 
-extern int triangular_dither_noise(int nbits);
-
-/**
- * Scale PCM data
- */
-static inline signed int
-scale(mad_fixed_t sample, struct mad_info_t *file_info)
-{
-    gdouble scale = -1;
-    static double a_scale = -1;
-    static int iter = 0;
-
-    if (audmad_config->replaygain.enable) {
-        if (file_info->has_replaygain) {
-            // apply track gain if it is available and track mode is specified
-            if(file_info->replaygain_track_scale != -1) {
-                scale = file_info->replaygain_track_scale;
-            }
-            // apply album gain if available
-            if(!audmad_config->replaygain.track_mode &&
-               file_info->replaygain_album_scale != -1) {
-                scale = file_info->replaygain_album_scale;
-            }
-
-            // apply preamp1
-            scale *= audmad_config->replaygain.preamp1_scale;
-
-            if (audmad_config->replaygain.anti_clip) {
-#ifdef AUD_DEBUG
-                if(iter % 100000 == 0)
-                    AUDDBG("track_peak = %f\n", file_info->replaygain_track_peak);
-#endif
-                if(scale * file_info->replaygain_track_peak >= 1.0)
-                    scale = 1.0 / file_info->replaygain_track_peak;
-            }
-        }
-        else {
-            // apply preamp2 for files without RG info
-            scale = audmad_config->replaygain.preamp2_scale;
-        }
-    }
-    else {
-        scale = 1.0;
-    }
-
-    // apply global gain
-    if (audmad_config->replaygain.preamp0_scale != 1)
-        scale = scale * audmad_config->replaygain.preamp0_scale;
-
-    // adaptive scaler clip prevention
-    if (audmad_config->replaygain.adaptive_scaler) {
-        double x;
-        double a = 0.1;
-        int interval = 10000;
-
-        if(a_scale == -1.0)
-            a_scale = scale;
-
-        x = mad_f_todouble(sample) * a_scale;
-
-        // clippling avoidance
-        if(x > 1.0) {
-            a_scale = a_scale + a * (1.0 - x);
-            AUDDBG("down: x = %f a_scale = %f\n", x, a_scale);
-        }
-        // slowly go back to defined scale
-        else if(iter % interval == 0 && a_scale < scale){
-            a_scale = a_scale + 1.0e-4;
-            AUDDBG("up: a_scale = %f\n", a_scale);
-        }
-
-        x = mad_f_todouble(sample) * a_scale;
-        sample = x * (MAD_F_ONE);
-    }
-    else {
-        a_scale = scale;
-        sample *= scale;
-    }
-
-    iter++;
-
-    int n_bits_to_loose = MAD_F_FRACBITS + 1 - 16;
-
-    /* round */
-    /* add half of the bits_to_loose range to round */
-    sample += (1L << (n_bits_to_loose - 1));
-
-#ifdef DEBUG_DITHER
-    mad_fixed_t no_dither = sample;
-#endif
-
-    /* dither one bit of actual output */
-    if (audmad_config->dither) {
-        int dither = triangular_dither_noise(n_bits_to_loose + 1);
-        sample += dither;
-    }
-
-    /* clip */
-    /* make sure we are between -1 and 1 */
-    if (sample >= MAD_F_ONE) {
-        sample = MAD_F_ONE - 1;
-    }
-    else if (sample < -MAD_F_ONE) {
-        sample = -MAD_F_ONE;
-    }
-
-    /* quantize */
-    /*
-     * Turn our mad_fixed_t into an integer.
-     * Shift all but 16-bits of the fractional part
-     * off the right hand side and shift an extra place
-     * to get the sign bit.
-     */
-    sample >>= n_bits_to_loose;
-#ifdef DEBUG_DITHER
-    static int n_zeros = 0;
-    no_dither >>= n_bits_to_loose;
-    if (no_dither - sample == 0)
-        n_zeros++;
-    else {
-        g_message("dither: %d %d", n_zeros, no_dither - sample);
-        n_zeros = 0;
-    }
-#endif
-    return sample;
-}
-
 void
 write_output(struct mad_info_t *info, struct mad_pcm *pcm,
              struct mad_header *header)
 {
     unsigned int nsamples;
     mad_fixed_t const *left_ch, *right_ch;
-    char *output;
-    int olen = 0;
+    mad_fixed_t *output;
+    int outlen = 0;
+    int outbyte = 0;
     int pos = 0;
 
     nsamples = pcm->length;
     left_ch = pcm->samples[0];
     right_ch = pcm->samples[1];
-    olen = nsamples * MAD_NCHANNELS(header) * 2;
-    output = (char *) g_malloc(olen * sizeof(char));
+    outlen = nsamples * MAD_NCHANNELS(header);
+    outbyte = outlen * sizeof(mad_fixed_t);
+
+    output = (mad_fixed_t *) g_malloc(outbyte);
 
     while (nsamples--) {
-        signed int sample;
-        /* output sample(s) in 16-bit signed little-endian PCM */
-        sample = scale(*left_ch++, info);
-        output[pos++] = (sample >> 0) & 0xff;
-        output[pos++] = (sample >> 8) & 0xff;
+        output[pos++] = *left_ch++;
 
         if (MAD_NCHANNELS(header) == 2) {
-            sample = scale(*right_ch++, info);
-            output[pos++] = (sample >> 0) & 0xff;
-            output[pos++] = (sample >> 8) & 0xff;
+            output[pos++] = *right_ch++;
         }
     }
-    assert(pos == olen);
+
+    assert(pos == outlen);
     if (!info->playback->playing) {
         g_free(output);
         return;
     }
+
     info->playback->pass_audio(info->playback,
-                  FMT_S16_LE, MAD_NCHANNELS(header), olen, output, &(info->playback->playing));
+                               info->fmt, MAD_NCHANNELS(header), outbyte, output,
+                               &(info->playback->playing));
     g_free(output);
 }
 
@@ -445,7 +318,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
 static gboolean
 check_audio_param(struct mad_info_t *info)
 {
-    if(info->fmt < FMT_U8 || info->fmt > FMT_S16_NE)
+    if(info->fmt != FMT_FIXED32 && (info->fmt < FMT_U8 || info->fmt > FMT_S16_NE))
         return FALSE;
     if(info->freq < 0) // not sure about maximum frequency. --yaz
         return FALSE;
@@ -688,6 +561,7 @@ decode_loop(gpointer arg)
             mad_stream_sync(&stream);
 
             write_output(info, &synth.pcm, &frame.header);
+
             mad_timer_add(&info->pos, frame.header.duration);
         }
     }

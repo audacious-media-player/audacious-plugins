@@ -109,21 +109,6 @@ typedef struct audmad_config_t
     gboolean use_xing;
     gboolean dither;
     gboolean sjis;
-
-    struct
-    {
-        gchar *preamp0_db;          // gain applied to samples at decoding stage.
-        gdouble preamp0_scale;      // pow(10, pregain/20)
-        gboolean enable;
-        gboolean track_mode;
-        gchar *preamp1_db;      // preamp used with RG info.
-        gdouble preamp1_scale;
-        gchar *preamp2_db;      // preamp used without RG info.
-        gdouble preamp2_scale;
-        gboolean anti_clip;
-        gboolean adaptive_scaler;
-    } replaygain;
-
     gboolean title_override;
     gchar *id3_format;
     gboolean show_avg_vbr_bitrate;

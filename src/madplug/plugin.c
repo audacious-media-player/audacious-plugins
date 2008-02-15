@@ -34,7 +34,6 @@
 #include <fcntl.h>
 #include <audacious/vfs.h>
 #include <sys/stat.h>
-#include "SFMT.h"
 #include "tuple.h"
 
 /*
@@ -91,42 +90,6 @@ extname(const char *filename)
 }
 
 
-void
-audmad_config_compute(audmad_config_t *config)
-{
-    /* set some config parameters by parsing text fields
-       (RG default gain, etc..)
-     */
-    const gchar *text;
-    gdouble x;
-
-    text = config->replaygain.preamp0_db;
-    if ( text != NULL )
-      x = g_strtod(text, NULL);
-    else
-      x = 0;
-    config->replaygain.preamp0_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-    AUDDBG("RG.preamp0=[%s] -> %g  -> %g\n", text, x, config->preamp0_scale);
-
-    text = config->replaygain.preamp1_db;
-    if ( text != NULL )
-      x = g_strtod(text, NULL);
-    else
-      x = 0;
-    config->replaygain.preamp1_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-    AUDDBG("RG.preamp1=[%s] -> %g  -> %g\n", text, x,
-              config->replaygain.preamp1_scale);
-
-    text = config->replaygain.preamp2_db;
-    if ( text != NULL )
-      x = g_strtod(text, NULL);
-    else
-      x = 0;
-    config->replaygain.preamp2_scale = (x != 0) ? pow(10.0, x / 20) : 1;
-    AUDDBG("RG.preamp2=[%s] -> %g  -> %g\n", text, x,
-              config->replaygain.preamp2_scale);
-}
-
 static void
 audmad_init()
 {
@@ -140,10 +103,6 @@ audmad_init()
     audmad_config->use_xing = TRUE;
     audmad_config->sjis = FALSE;
     audmad_config->show_avg_vbr_bitrate = TRUE;
-    audmad_config->replaygain.enable = TRUE;
-    audmad_config->replaygain.track_mode = FALSE;
-    audmad_config->replaygain.anti_clip = FALSE;
-    audmad_config->replaygain.adaptive_scaler = FALSE;
     audmad_config->title_override = FALSE;
 
 
@@ -165,22 +124,6 @@ audmad_init()
         aud_cfg_db_get_bool(db, "MAD", "show_avg_vbr_bitrate",
                             &audmad_config->show_avg_vbr_bitrate);
 
-        //gain control
-        aud_cfg_db_get_string(db, "MAD", "RG.preamp0_db",
-                              &audmad_config->replaygain.preamp0_db);
-        aud_cfg_db_get_bool(db, "MAD", "RG.enable",
-                            &audmad_config->replaygain.enable);
-        aud_cfg_db_get_bool(db, "MAD", "RG.track_mode",
-                            &audmad_config->replaygain.track_mode);
-        aud_cfg_db_get_string(db, "MAD", "RG.preamp1_db",
-                              &audmad_config->replaygain.preamp1_db);
-        aud_cfg_db_get_string(db, "MAD", "RG.preamp2_db",
-                              &audmad_config->replaygain.preamp2_db);
-        aud_cfg_db_get_bool(db, "MAD", "RG.anti_clip",
-                            &audmad_config->replaygain.anti_clip);
-        aud_cfg_db_get_bool(db, "MAD", "RG.adaptive_scaler",
-                            &audmad_config->replaygain.adaptive_scaler);
-
         //text
         aud_cfg_db_get_bool(db, "MAD", "title_override",
                             &audmad_config->title_override);
@@ -193,20 +136,9 @@ audmad_init()
     mad_mutex = g_mutex_new();
     pb_mutex = g_mutex_new();
     mad_cond = g_cond_new();
-    audmad_config_compute(audmad_config);
-
-    if (!audmad_config->replaygain.preamp0_db)
-        audmad_config->replaygain.preamp0_db = g_strdup("+0.00");
-
-    if (!audmad_config->replaygain.preamp1_db)
-        audmad_config->replaygain.preamp1_db = g_strdup("+6.00");
-    if (!audmad_config->replaygain.preamp2_db)
-        audmad_config->replaygain.preamp2_db = g_strdup("+0.00");
 
     if (!audmad_config->id3_format)
         audmad_config->id3_format = g_strdup("(none)");
-
-    init_gen_rand(4357);
 
     aud_mime_set_plugin("audio/mpeg", mad_plugin);
 }
@@ -214,9 +146,6 @@ audmad_init()
 static void
 audmad_cleanup()
 {
-    g_free(audmad_config->replaygain.preamp0_db);
-    g_free(audmad_config->replaygain.preamp1_db);
-    g_free(audmad_config->replaygain.preamp2_db);
     g_free(audmad_config->id3_format);
     g_free(audmad_config);
     
@@ -458,6 +387,7 @@ audmad_play_file(InputPlayback *playback)
 {
     gboolean rtn;
     gchar *url = playback->filename;
+    ReplayGainInfo rg_info;
 
 #ifdef AUD_DEBUG
     {
@@ -483,6 +413,13 @@ audmad_play_file(InputPlayback *playback)
          * that used to work only for nenolod because of his fsck-ing lastfm subscription :p
         */
     }
+
+    rg_info.track_gain = info.replaygain_track_scale;
+    rg_info.track_peak = info.replaygain_track_peak;
+    rg_info.album_gain = info.replaygain_album_scale;
+    rg_info.album_peak = info.replaygain_album_peak;
+    playback->set_replaygain_info(playback, &rg_info);
+
     g_mutex_lock(pb_mutex);
     info.playback = playback;
     info.playback->playing = 1;
@@ -813,7 +750,7 @@ audmad_probe_for_tuple(char *filename, VFSFile *fd)
 static gchar *fmts[] = { "mp3", "mp2", "mpg", "bmu", NULL };
 
 InputPlugin mad_ip = {
-    .description = "MPEG Audio Plugin",
+    .description = "MPEG Audio Plugin (experimental)",
     .init = audmad_init,
     .about = audmad_about,
     .configure = audmad_configure,

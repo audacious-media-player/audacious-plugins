@@ -1,7 +1,6 @@
 PLUGIN = madplug${PLUGIN_SUFFIX}
 
 SRCS = configure.c	\
-       dither.c		\
        input.c		\
        replaygain.c	\
        decoder.c	\
