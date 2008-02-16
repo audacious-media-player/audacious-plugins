@@ -264,7 +264,7 @@ AC_ARG_ENABLE( pulse,
 )
 
 if test "$enable_pulse" = "yes"; then
-    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.3],
+    PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.9],
          [have_pulse=yes
           OUTPUT_PLUGINS="$OUTPUT_PLUGINS pulse_audio"],
          [have_pulse=no]
