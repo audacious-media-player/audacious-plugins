@@ -40,7 +40,7 @@ projectM_init(void)
 void
 projectM_cleanup(void)
 {
-
+    gtk_widget_destroy(window);
 }
 
 void

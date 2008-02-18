@@ -35,6 +35,7 @@ static void _gtk_projectm_realize_impl(GtkWidget *widget, gpointer data);
 static gboolean _gtk_projectm_redraw_impl(GtkWidget *widget);
 static gboolean _gtk_projectm_expose_impl(GtkWidget *widget, GdkEventExpose *event, gpointer data);
 static gboolean _gtk_projectm_configure_impl(GtkWidget *widget, GdkEventConfigure *event, gpointer data);
+static void _gtk_projectm_destroy_impl(GtkWidget *widget);
 
 struct _GtkProjectMPrivate {
     projectM *pm;
@@ -65,6 +66,8 @@ gtk_projectm_new(void)
                            G_CALLBACK(_gtk_projectm_realize_impl), priv);
     g_signal_connect(G_OBJECT(priv->drawing_area), "expose_event",
                      G_CALLBACK(_gtk_projectm_expose_impl), priv);
+    g_signal_connect(G_OBJECT(priv->drawing_area), "destroy",
+                     G_CALLBACK(_gtk_projectm_destroy_impl), priv);
 
     priv->timer = g_timer_new();
     priv->frames = 0;
@@ -162,6 +165,19 @@ _gtk_projectm_redraw_impl(GtkWidget *widget)
     gdk_window_invalidate_rect(widget->window, &widget->allocation, FALSE);
 
     return TRUE;
+}
+
+static void
+_gtk_projectm_destroy_impl(GtkWidget *widget)
+{
+    struct _GtkProjectMPrivate *priv = (struct _GtkProjectMPrivate *) g_object_get_data(G_OBJECT(widget), "GtkProjectMPrivate");
+
+    if (priv->idle_id)
+        g_source_remove(priv->idle_id);
+
+    delete priv->pm;
+    g_free(priv->timer);
+    g_slice_free(struct _GtkProjectMPrivate, priv);
 }
 
 /********************************************************************************
