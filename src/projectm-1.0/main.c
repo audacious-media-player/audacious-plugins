@@ -89,7 +89,10 @@ projectM_init(void)
 void
 projectM_cleanup(void)
 {
+    g_return_if_fail(window != NULL);
+
     gtk_widget_destroy(window);
+    window = NULL;
 }
 
 void
