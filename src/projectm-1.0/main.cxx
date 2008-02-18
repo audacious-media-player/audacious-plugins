@@ -224,7 +224,6 @@ static gboolean
 projectM_idle_func(GtkWidget *widget)
 {
     gdk_window_invalidate_rect(widget->window, &widget->allocation, FALSE);
-    gdk_window_process_updates(widget->window, FALSE);
 
     return TRUE;
 }
