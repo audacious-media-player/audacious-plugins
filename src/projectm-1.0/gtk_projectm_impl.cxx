@@ -103,7 +103,7 @@ _gtk_projectm_realize_impl(GtkWidget *widget, gpointer data)
     gdk_gl_drawable_gl_end(gldrawable);
 
     g_signal_connect(G_OBJECT(widget), "configure_event",
-                     G_CALLBACK(_gtk_projectm_configure_impl), NULL);
+                     G_CALLBACK(_gtk_projectm_configure_impl), priv);
 
     priv->idle_id = g_timeout_add (1000 / 30,
                                    (GSourceFunc) _gtk_projectm_redraw_impl,
