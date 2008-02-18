@@ -1,8 +1,7 @@
 PLUGIN = projectm-1.0${PLUGIN_SUFFIX}
 
-SRCS = main.cxx		\
-       ConfigFile.cxx   \
-       main_visplugin.c
+SRCS = gtk_projectm_impl.cxx \
+       main.c
 
 include ../../buildsys.mk
 include ../../extra.mk
