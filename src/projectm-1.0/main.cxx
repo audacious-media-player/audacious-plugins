@@ -13,8 +13,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_thread.h>
+#include <gtk/gtk.h>
+#include <gtk/gtkgl.h>
 
 extern "C"
 {
@@ -28,8 +28,6 @@ extern "C"
 #include "ConfigFile.h"
 
 #include <libprojectM/projectM.hpp>
-
-#include "sdltoprojectM.h"
 
 #include <GL/gl.h>
 #define CONFIG_FILE "/share/projectM/config.inp"
@@ -46,279 +44,151 @@ extern "C" VisPlugin projectM_vtable;
 int SDLThreadWrapper(void *);
 void handle_playback_trigger(void *, void *);
 
+static void
+projectM_draw_init(GtkWidget *widget,
+     void *data);
+
+static gboolean
+projectM_idle_func(GtkWidget *widget);
+
+static gboolean
+projectM_draw_impl(GtkWidget      *widget,
+      GdkEventExpose *event,
+      gpointer        data);
+
 class projectMPlugin
 {
-  private:
+  public:
     projectM *pm;
 
-    gint wvw, wvh, fvw, fvh;
-    gboolean fullscreen;
+    GdkGLConfig *glconfig;
+    GtkWidget *window;
+    GtkWidget *vbox;
+    GtkWidget *drawing_area;
+    gboolean is_sync;
     gboolean error;
+    gint idle_id;
 
-    SDL_Event event;
-    SDL_Surface *screen;
-    SDL_Thread *worker_thread;
-    SDL_sem *sem;
-
-  public:
     projectMPlugin()
     {
-        std::string configFile = read_config();
-        ConfigFile config(configFile);
+        gtk_gl_init(NULL, NULL);
 
-        this->wvw = config.read<int>("Window Width", 512);
-        this->wvh = config.read<int>("Window Height", 512);
+        this->pm = NULL;
 
-        this->fullscreen = FALSE;
-        if (config.read("Fullscreen", true))
-              this->fullscreen = TRUE;
-
-        /* initialise SDL */
-        if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        this->glconfig = gdk_gl_config_new_by_mode((GdkGLConfigMode) (GDK_GL_MODE_RGBA | GDK_GL_MODE_DEPTH | GDK_GL_MODE_DOUBLE));
+        if (!this->glconfig)
         {
             this->error++;
             return;
         }
 
-        SDL_WM_SetCaption("projectM", "audacious");
-        SDL_EnableUNICODE(1);
+        this->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_title(GTK_WINDOW(this->window), "ProjectM");
+        gtk_container_set_reallocate_redraws(GTK_CONTAINER(this->window), TRUE);
 
-        this->sem = SDL_CreateSemaphore(0);
+        this->vbox = gtk_vbox_new(FALSE, 0);
+        gtk_container_add(GTK_CONTAINER(this->window), this->vbox);
+        gtk_widget_show(this->vbox);
 
-        /* XXX */
-        aud_hook_associate("playback begin", handle_playback_trigger, NULL);
+        this->drawing_area = gtk_drawing_area_new();
+        gtk_widget_set_size_request(this->drawing_area, 512, 512);
+        gtk_widget_set_gl_capability(this->drawing_area, this->glconfig, NULL, TRUE, GDK_GL_RGBA_TYPE);
+        gtk_widget_add_events(this->drawing_area, GDK_VISIBILITY_NOTIFY_MASK);
+        gtk_box_pack_start(GTK_BOX(this->vbox), this->drawing_area, TRUE, TRUE, 0);
+
+        g_signal_connect(G_OBJECT(this->drawing_area), "realize",
+                          G_CALLBACK(projectM_draw_init), NULL);
+        g_signal_connect(G_OBJECT(this->drawing_area), "expose_event",
+                          G_CALLBACK(projectM_draw_impl), NULL);
     }
 
     ~projectMPlugin()
     {
-        if (!this->sem)
-            return;
-
-        SDL_SemWait(this->sem);
-
-        if (this->worker_thread)
-            SDL_WaitThread(this->worker_thread, NULL);
-
-        SDL_DestroySemaphore(this->sem);
-        SDL_Quit();
-
-        this->sem = 0;
-        this->worker_thread = 0;
-
         delete this->pm;
         this->pm = 0;
 
         aud_hook_dissociate("playback begin", handle_playback_trigger);
     }
 
-    int run(void *unused)
+    void initUI(void)
     {
-        if (error)
-            return -1;
+        gtk_widget_show(this->drawing_area);
+        gtk_widget_show(this->window);
 
-        std::string configFile = read_config();
-        this->initDisplay(this->wvw, this->wvh, &this->fvw, &this->fvh, this->fullscreen);
-        this->pm = new projectM(configFile);
-        this->pm->projectM_resetGL(this->wvw, this->wvh);
+        this->idle_id = g_idle_add_full (GDK_PRIORITY_REDRAW,
+                                         (GSourceFunc) projectM_idle_func,
+                                         this->drawing_area,
+                                         NULL);
 
-        SDL_SemPost(this->sem);
 
-        while (SDL_SemValue(this->sem) == 1)
-        {
-            projectMEvent evt;
-            projectMKeycode key;
-            projectMModifier mod;
-
-            SDL_Event event;
-            while (SDL_PollEvent(&event))
-            {
-                evt = sdl2pmEvent(event);
-
-                key = sdl2pmKeycode(event.key.keysym.sym);
-                mod = sdl2pmModifier(event.key.keysym.mod);
-
-                switch (evt)
-                {
-                  case PROJECTM_KEYDOWN:
-                      switch (key)
-                      {
-                        case PROJECTM_K_c:
-                            this->takeScreenshot();
-                            break;
-
-                        case PROJECTM_K_f:
-                            int w, h;
-                            if (fullscreen == 0)
-                            {
-                                w = fvw;
-                                h = fvh;
-                                fullscreen = 1;
-                            }
-                            else
-                            {
-                                w = wvw;
-                                h = wvh;
-                                fullscreen = 0;
-                            }
-
-                            this->resizeDisplay(w, h, fullscreen);
-                            this->pm->projectM_resetGL(w, h);
-
-                            break;
-
-                        default:
-                            this->pm->key_handler(evt, key, mod);
-                            break;
-                      }
-
-                      break;
-
-                  case PROJECTM_VIDEORESIZE:
-                      wvw = event.resize.w;
-                      wvh = event.resize.h;
-                      this->resizeDisplay(wvw, wvh, fullscreen);
-                      this->pm->projectM_resetGL(wvw, wvh);
-
-                      break;
-
-                  case PROJECTM_VIDEOQUIT:
-                      std::cerr << "XXX: PROJECTM_VIDEOQUIT is not implemented yet!" << std::endl;
-                      break;
-
-                  default:
-                      break;
-                }
-            }
-
-            this->pm->renderFrame();
-
-            SDL_GL_SwapBuffers();
-        }
-
-        return 0;
-    }
-
-    void launchThread()
-    {
-        /* SDL sucks and won't let you use C++ functors... */
-        this->worker_thread = SDL_CreateThread(SDLThreadWrapper, NULL);
+        /* XXX */
+        aud_hook_associate("playback begin", handle_playback_trigger, NULL);
     }
 
     void addPCMData(gint16 pcm_data[2][512])
     {
-        if (SDL_SemValue(this->sem) == 1)
+        if (this->pm)
             this->pm->pcm->addPCM16(pcm_data);
-    }
-
-    void initDisplay(gint width, gint height, gint *rwidth, gint *rheight, gboolean fullscreen)
-    {
-        this->wvw = width;
-        this->wvh = height;
-        this->fvw = *rwidth;
-        this->fvw = *rheight;
-        this->fullscreen = fullscreen;
-
-        const SDL_VideoInfo *info = NULL;
-        int bpp;
-        int flags;
-
-        info = SDL_GetVideoInfo();
-        if (!info)
-        {
-            this->error++;
-            return;
-        }
-
-        /* initialize fullscreen resolution to something "sane" */
-        *rwidth = width;
-        *rheight = height;
-
-        bpp = info->vfmt->BitsPerPixel;
-        SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-        if (this->fullscreen)
-            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_FULLSCREEN;
-        else
-            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_RESIZABLE;
-
-        this->screen = SDL_SetVideoMode(width, height, bpp, flags);
-        if (!this->screen)
-            this->error++;
-    }
-
-    void resizeDisplay(gint width, gint height, gboolean fullscreen)
-    {
-        this->fullscreen = fullscreen;
-
-        int flags;
-
-        if (this->fullscreen)
-            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_FULLSCREEN;
-        else
-            flags = SDL_OPENGL | SDL_HWSURFACE | SDL_RESIZABLE;
-
-        this->screen = SDL_SetVideoMode(width, height, 0, flags);
-        if (this->screen == 0)
-            return;
-
-        SDL_ShowCursor(this->fullscreen ? SDL_DISABLE : SDL_ENABLE);
     }
 
     void triggerPlaybackBegin(PlaylistEntry *entry)
     {
         std::string title(entry->title);
-        this->pm->projectM_setTitle(title);
-    }
 
-    void takeScreenshot(void)
-    {
-        static int frame = 1;
-
-        std::string dumpPath(g_get_home_dir());
-        dumpPath.append("/.projectM/");
-
-        gchar *frame_ = g_strdup_printf("%.8d.bmp", frame);
-        dumpPath.append(frame_);
-        g_free(frame_);
-
-        SDL_Surface *bitmap;
-
-        GLint viewport[4];
-        long bytewidth;
-        GLint width, height;
-        long bytes;
-
-        glReadBuffer(GL_FRONT);
-        glGetIntegerv(GL_VIEWPORT, viewport);
-
-        width = viewport[2];
-        height = viewport[3];
-
-        bytewidth = width * 4;
-        bytewidth = (bytewidth + 3) & ~3;
-        bytes = bytewidth * height;
-
-        bitmap = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, bitmap->pixels);
-
-        SDL_SaveBMP(bitmap, dumpPath.c_str());
-
-        SDL_FreeSurface(bitmap);
-
-        frame++;
+        if (this->pm)
+            this->pm->projectM_setTitle(title);
     }
 };
 
 /* glue to implementation section */
 projectMPlugin *thePlugin = 0;
 
-/* SDL sucks and won't let you use proper C++ functors. :( */
-int SDLThreadWrapper(void *unused)
+static void
+projectM_draw_init(GtkWidget *widget,
+     void *data)
 {
-    return thePlugin->run(unused);
+    GdkGLContext *glcontext = gtk_widget_get_gl_context(widget);
+    GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable(widget);
+
+    if (!gdk_gl_drawable_gl_begin(gldrawable, glcontext))
+        return;
+
+    std::string configFile = read_config();
+    thePlugin->pm = new projectM(configFile);
+    thePlugin->pm->projectM_resetGL(widget->allocation.width, widget->allocation.height);
+
+    gdk_gl_drawable_swap_buffers(gldrawable);
+    gdk_gl_drawable_gl_end(gldrawable);
 }
+
+static gboolean
+projectM_draw_impl(GtkWidget      *widget,
+      GdkEventExpose *event,
+      gpointer        data)
+{
+    GdkGLContext *glcontext = gtk_widget_get_gl_context(widget);
+    GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable(widget);
+
+    if (!gdk_gl_drawable_gl_begin(gldrawable, glcontext))
+        return FALSE;
+
+    thePlugin->pm->renderFrame();
+
+    gdk_gl_drawable_swap_buffers(gldrawable);
+    gdk_gl_drawable_gl_end(gldrawable);
+
+    return TRUE;
+}
+
+static gboolean
+projectM_idle_func(GtkWidget *widget)
+{
+    gdk_window_invalidate_rect(widget->window, &widget->allocation, FALSE);
+    gdk_window_process_updates(widget->window, FALSE);
+
+    return TRUE;
+}
+
 
 void handle_playback_trigger(gpointer plentry_p, gpointer unused)
 {
@@ -332,8 +202,11 @@ void handle_playback_trigger(gpointer plentry_p, gpointer unused)
 
 extern "C" void projectM_xmms_init(void)
 {
+    if (thePlugin)
+        return;
+
     thePlugin = new projectMPlugin;
-    thePlugin->launchThread();
+    thePlugin->initUI();
 }
 
 extern "C" void projectM_cleanup(void)
