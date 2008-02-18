@@ -1443,10 +1443,7 @@ AC_ARG_ENABLE(projectm-1.0,
 
 if test "$have_projectm1" = "yes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM1, libprojectM >= 1.0, [have_projectm1="yes"], [have_projectm1="no"])
-	AM_PATH_SDL(1.2.5, , [
-		AC_MSG_WARN([*** SDL is not installed. projectM will not be built. ***])
-		have_projectm1="no"
-	])
+	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0 >= 1.2.0], [have_projectm1="yes"], [have_projectm1="no"]
 	if test x$libprjM = xno; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
@@ -1459,6 +1456,8 @@ if test "$have_projectm1" = "yes"; then
 fi
 AC_SUBST(LIBPROJECTM1_LIBS)
 AC_SUBST(LIBPROJECTM1_CFLAGS)
+AC_SUBST(GTKGLEXT_LIBS)
+AC_SUBST(GTKGLEXT_CFLAGS)
 
 if test "$have_projectm1" = "yes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm-1.0"

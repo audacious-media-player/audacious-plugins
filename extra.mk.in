@@ -380,3 +380,5 @@ MOWGLI_CFLAGS ?= @MOWGLI_CFLAGS@
 MOWGLI_LIBS ?= @MOWGLI_LIBS@
 pluginlibdir = @plugindir@
 plugindir = ${pluginlibdir}
+GTKGLEXT_CFLAGS ?= @GTKGLEXT_CFLAGS@
+GTKGLEXT_LIBS ?= @GTKGLEXT_LIBS@
