@@ -21,6 +21,7 @@
 #include <math.h>
 
 #include <libprojectM/projectM.hpp>
+#include <libprojectM/event.h>
 
 #include <GL/gl.h>
 #define CONFIG_FILE "/share/projectM/config.inp"
@@ -86,6 +87,39 @@ gtk_projectm_add_pcm_data(GtkWidget *widget, gint16 pcm_data[2][512])
     g_return_if_fail(priv->pm != NULL);
 
     priv->pm->pcm->addPCM16(pcm_data);
+}
+
+extern "C" void
+gtk_projectm_toggle_preset_lock(GtkWidget *widget)
+{
+    struct _GtkProjectMPrivate *priv = (struct _GtkProjectMPrivate *) g_object_get_data(G_OBJECT(widget), "GtkProjectMPrivate");
+
+    g_return_if_fail(priv != NULL);
+    g_return_if_fail(priv->pm != NULL);
+
+    priv->pm->key_handler(PROJECTM_KEYDOWN, PROJECTM_K_l, PROJECTM_KMOD_LSHIFT);
+}
+
+extern "C" void
+gtk_projectm_preset_prev(GtkWidget *widget)
+{
+    struct _GtkProjectMPrivate *priv = (struct _GtkProjectMPrivate *) g_object_get_data(G_OBJECT(widget), "GtkProjectMPrivate");
+
+    g_return_if_fail(priv != NULL);
+    g_return_if_fail(priv->pm != NULL);
+
+    priv->pm->key_handler(PROJECTM_KEYDOWN, PROJECTM_K_p, PROJECTM_KMOD_LSHIFT);
+}
+
+extern "C" void
+gtk_projectm_preset_next(GtkWidget *widget)
+{
+    struct _GtkProjectMPrivate *priv = (struct _GtkProjectMPrivate *) g_object_get_data(G_OBJECT(widget), "GtkProjectMPrivate");
+
+    g_return_if_fail(priv != NULL);
+    g_return_if_fail(priv->pm != NULL);
+
+    priv->pm->key_handler(PROJECTM_KEYDOWN, PROJECTM_K_n, PROJECTM_KMOD_LSHIFT);
 }
 
 static void

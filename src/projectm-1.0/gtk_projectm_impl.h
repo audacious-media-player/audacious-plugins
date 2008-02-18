@@ -20,5 +20,8 @@ G_BEGIN_DECLS
 
 GtkWidget *gtk_projectm_new(void);
 void gtk_projectm_add_pcm_data(GtkWidget *widget, gint16 pcm_data[2][512]);
+void gtk_projectm_toggle_preset_lock(GtkWidget *widget);
+void gtk_projectm_preset_prev(GtkWidget *widget);
+void gtk_projectm_preset_next(GtkWidget *widget);
 
 G_END_DECLS
