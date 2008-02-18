@@ -56,6 +56,11 @@ projectM_draw_impl(GtkWidget      *widget,
       GdkEventExpose *event,
       gpointer        data);
 
+static gboolean
+projectM_reconfigure(GtkWidget         *widget,
+         GdkEventConfigure *event,
+         gpointer           data);
+
 class projectMPlugin
 {
   public:
@@ -68,6 +73,8 @@ class projectMPlugin
     gboolean is_sync;
     gboolean error;
     gint idle_id;
+    GTimer *timer;
+    gint frames;
 
     projectMPlugin()
     {
@@ -96,10 +103,13 @@ class projectMPlugin
         gtk_widget_add_events(this->drawing_area, GDK_VISIBILITY_NOTIFY_MASK);
         gtk_box_pack_start(GTK_BOX(this->vbox), this->drawing_area, TRUE, TRUE, 0);
 
-        g_signal_connect(G_OBJECT(this->drawing_area), "realize",
-                          G_CALLBACK(projectM_draw_init), NULL);
+        g_signal_connect_after(G_OBJECT(this->drawing_area), "realize",
+                         G_CALLBACK(projectM_draw_init), NULL);
         g_signal_connect(G_OBJECT(this->drawing_area), "expose_event",
-                          G_CALLBACK(projectM_draw_impl), NULL);
+                         G_CALLBACK(projectM_draw_impl), NULL);
+
+        this->timer = g_timer_new();
+        this->frames = 0;
     }
 
     ~projectMPlugin()
@@ -157,6 +167,28 @@ projectM_draw_init(GtkWidget *widget,
 
     gdk_gl_drawable_swap_buffers(gldrawable);
     gdk_gl_drawable_gl_end(gldrawable);
+
+    g_signal_connect(G_OBJECT(widget), "configure_event",
+                     G_CALLBACK(projectM_reconfigure), NULL);
+}
+
+static gboolean
+projectM_reconfigure(GtkWidget         *widget,
+      GdkEventConfigure *event,
+      gpointer           data)
+{
+    GdkGLContext *glcontext = gtk_widget_get_gl_context(widget);
+    GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable(widget);
+
+    if (!gdk_gl_drawable_gl_begin(gldrawable, glcontext))
+        return FALSE;
+
+    thePlugin->pm->projectM_resetGL(widget->allocation.width, widget->allocation.height);
+
+    gdk_gl_drawable_swap_buffers(gldrawable);
+    gdk_gl_drawable_gl_end(gldrawable);
+
+    return TRUE;
 }
 
 static gboolean
@@ -171,9 +203,19 @@ projectM_draw_impl(GtkWidget      *widget,
         return FALSE;
 
     thePlugin->pm->renderFrame();
+    thePlugin->frames++;
 
     gdk_gl_drawable_swap_buffers(gldrawable);
     gdk_gl_drawable_gl_end(gldrawable);
+
+    gdouble seconds = g_timer_elapsed (thePlugin->timer, NULL);
+    if (seconds >= 5.0)
+    {
+        gdouble fps = thePlugin->frames / seconds;
+        g_print ("%d frames in %6.3f seconds = %6.3f FPS\n", thePlugin->frames, seconds, fps);
+        g_timer_reset (thePlugin->timer);
+        thePlugin->frames = 0;
+    }
 
     return TRUE;
 }
@@ -186,7 +228,6 @@ projectM_idle_func(GtkWidget *widget)
 
     return TRUE;
 }
-
 
 void handle_playback_trigger(gpointer plentry_p, gpointer unused)
 {
