@@ -115,11 +115,9 @@ class projectMPlugin
         gtk_widget_show(this->drawing_area);
         gtk_widget_show(this->window);
 
-        this->idle_id = g_idle_add_full (GDK_PRIORITY_REDRAW,
-                                         (GSourceFunc) projectM_idle_func,
-                                         this->drawing_area,
-                                         NULL);
-
+        this->idle_id = g_timeout_add (1000 / 30,
+                                       (GSourceFunc) projectM_idle_func,
+                                       this->drawing_area);
 
         /* XXX */
         aud_hook_associate("playback begin", handle_playback_trigger, NULL);
