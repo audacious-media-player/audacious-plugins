@@ -614,8 +614,8 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
     ConfigDb* db;
-    gchar* proxy_host;
-    gchar* proxy_port_s;
+    gchar* proxy_host = NULL;
+    gchar* proxy_port_s = NULL;
     gchar* endptr;
     unsigned int proxy_port = 0;
     gboolean use_proxy, use_proxy_auth;
