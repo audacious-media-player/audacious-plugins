@@ -115,15 +115,10 @@ scan_file(struct mad_info_t * info, gboolean fast)
 
     while (1) {
         remainder = stream.bufend - stream.next_frame;
-	
-        /*
-           if (remainder >= BUFFER_SIZE)
-           {
-           printf("oh dear.. remainder = %d\n", remainder);
-           }
-         */
 
-        memcpy(buffer, stream.this_frame, remainder);
+        if(buffer != stream.this_frame && remainder)
+            memmove(buffer, stream.this_frame, remainder);
+
         len = input_get_data(info, buffer + remainder,
                              BUFFER_SIZE - remainder);
 
@@ -132,7 +127,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
             break;
         }
 
-        mad_stream_buffer(&stream, buffer, len + remainder);
+        mad_stream_buffer(&stream, buffer, remainder + len);
 
         while (!fast || (fast && info->frames < N_AVERAGE_FRAMES)) {
             if (mad_header_decode(&header, &stream) == -1) {
@@ -393,12 +388,15 @@ decode_loop(gpointer arg)
             AUDDBG("decode: stop signaled\n");
             break;
         }
+
         if (seek_skip)
             remainder = 0;
         else {
             remainder = stream.bufend - stream.next_frame;
-            memcpy(buffer, stream.this_frame, remainder);
+            if(buffer != stream.this_frame && remainder)
+                memmove(buffer, stream.this_frame, remainder);
         }
+
         len = input_get_data(info, buffer + remainder,
                              BUFFER_SIZE - remainder);
 
