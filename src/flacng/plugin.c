@@ -39,6 +39,7 @@ InputPlugin flac_ip = {
     .play_file = flac_play_file,
     .stop = flac_stop,
     .pause = flac_pause,
+    .mseek = flac_mseek,
     .seek = flac_seek,
     .get_song_info = flac_get_song_info,
     .get_song_tuple = flac_get_song_tuple,	// get a tuple
@@ -55,7 +56,7 @@ FLAC__StreamDecoder* main_decoder;
 callback_info* test_info;
 callback_info* main_info;
 gboolean plugin_initialized = FALSE;
-gint seek_to = -1;
+glong seek_to = -1;
 static GThread* thread = NULL;
 
 /* === */
@@ -436,9 +437,9 @@ static gpointer flac_play_loop(gpointer arg) {
          * Do we have to seek to somewhere?
          */
         if (-1 != seek_to) {
-            _DEBUG("Seek requested to %d seconds", seek_to);
+            _DEBUG("Seek requested to %d miliseconds", seek_to);
 
-            seek_sample = seek_to * main_info->stream.samplerate;
+            seek_sample = (unsigned long)((gint64)seek_to * (gint64) main_info->stream.samplerate / 1000L );
             _DEBUG("Seek requested to sample %d", seek_sample);
             if (FALSE == FLAC__stream_decoder_seek_absolute(main_decoder, seek_sample)) {
                 _ERROR("Could not seek to sample %d!", seek_sample);
@@ -446,7 +447,7 @@ static gpointer flac_play_loop(gpointer arg) {
                 /*
                  * Flush the buffers
                  */
-                flac_ip.output->flush(seek_to * 1000);
+                flac_ip.output->flush(seek_to);
             }
             seek_to = -1;
         }
@@ -574,7 +575,7 @@ void flac_pause(InputPlayback* input, gshort p) {
 
 /* --- */
 
-void flac_seek(InputPlayback* input, gint time) {
+void flac_mseek(InputPlayback* input, gulong milisecond) {
 
     _ENTER;
 
@@ -583,14 +584,19 @@ void flac_seek(InputPlayback* input, gint time) {
         _LEAVE;
     }
 
-    _DEBUG("Requesting seek to %d", time);
-    seek_to = time;
+    _DEBUG("Requesting seek to %d", milisecond);
+    seek_to = milisecond;
 
     while (-1 != seek_to) {
         g_usleep(10000);
     }
 
     _LEAVE;
+}
+
+void flac_seek(InputPlayback* input, gint time) {
+    gulong milisecond = time * 1000;
+    flac_mseek(input, milisecond);
 }
 
 /* --- */
