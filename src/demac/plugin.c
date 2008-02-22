@@ -326,11 +326,6 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     aud_vfs_rewind(vfd);
     ape_read_header(ctx, vfd, 1);
     aud_tuple_associate_int(tpl, FIELD_LENGTH, NULL, ctx->duration);
-    ape_read_close(ctx);
-    free(ctx);
-
-    if (tag) mowgli_dictionary_destroy(tag, destroy_cb, NULL);
-    
     g_sprintf(codec_string, "Monkey's Audio v%4.2f", (float)ctx->fileversion/1000.0);
 #ifdef DEBUG
     fprintf(stderr, "** demac: plugin.c: Codec: %s\n", codec_string);
@@ -338,6 +333,12 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     aud_tuple_associate_string(tpl, FIELD_CODEC, NULL, codec_string);
     aud_tuple_associate_string(tpl, FIELD_QUALITY, NULL, "lossless");
     aud_tuple_associate_string(tpl, FIELD_MIMETYPE, NULL, "audio/x-ape");
+
+    ape_read_close(ctx);
+    free(ctx);
+
+    if (tag) mowgli_dictionary_destroy(tag, destroy_cb, NULL);
+
     return tpl;
 }
 
