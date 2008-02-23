@@ -201,7 +201,7 @@ static void cdaudio_init()
 	playlist_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
 	gtk_widget_show(playlist_menu_item);
-	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST, playlist_menu_item);
+	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
 	g_signal_connect(G_OBJECT(playlist_menu_item), "button_press_event", G_CALLBACK(menu_click), NULL);
 
 	aud_uri_set_plugin("cdda://", &inputplugin);
@@ -634,6 +634,8 @@ static void menu_click()
 		return;
 	}
 
+	aud_playlist_clear(aud_playlist_get_active());
+
 	int trackno;
 	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 		g_snprintf(filename, DEF_STRING_LEN, "track%02u.cda", trackno);
@@ -909,6 +911,7 @@ static void *scan_cd(void *nothing)
 		cddb_conn_t *pcddb_conn = NULL;
 		cddb_disc_t *pcddb_disc = NULL;
 		cddb_track_t *pcddb_track = NULL;
+		lba_t lba; /* Logical Block Address */
 
 		if (cdng_cfg.use_cddb) {
 			pcddb_conn = cddb_new();
@@ -941,16 +944,15 @@ static void *scan_cd(void *nothing)
 					}
 
 				pcddb_disc = cddb_disc_new();
+
+				lba = cdio_get_track_lba(pcdio, CDIO_CDROM_LEADOUT_TRACK);
+				cddb_disc_set_length(pcddb_disc, FRAMES_TO_SECONDS(lba));
+
 				for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 					pcddb_track = cddb_track_new();
-					cddb_track_set_frame_offset(pcddb_track, trackinfo[trackno].startlsn);
+					cddb_track_set_frame_offset(pcddb_track, cdio_get_track_lba(pcdio, trackno));
 					cddb_disc_add_track(pcddb_disc, pcddb_track);
 				}
-
-				msf_t startmsf, endmsf;
-				cdio_get_track_msf(pcdio, 1, &startmsf);
-				cdio_get_track_msf(pcdio, CDIO_CDROM_LEADOUT_TRACK, &endmsf);
-				cddb_disc_set_length(pcddb_disc, cdio_audio_get_msf_seconds(&endmsf) - cdio_audio_get_msf_seconds(&startmsf));
 
 				cddb_disc_calc_discid(pcddb_disc);
 				unsigned int discid = cddb_disc_get_discid(pcddb_disc);
