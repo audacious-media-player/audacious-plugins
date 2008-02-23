@@ -437,7 +437,7 @@ static gpointer flac_play_loop(gpointer arg) {
          * Do we have to seek to somewhere?
          */
         if (-1 != seek_to) {
-            _DEBUG("Seek requested to %d miliseconds", seek_to);
+            _DEBUG("Seek requested to %d milliseconds", seek_to);
 
             seek_sample = (unsigned long)((gint64)seek_to * (gint64) main_info->stream.samplerate / 1000L );
             _DEBUG("Seek requested to sample %d", seek_sample);
@@ -575,7 +575,7 @@ void flac_pause(InputPlayback* input, gshort p) {
 
 /* --- */
 
-void flac_mseek(InputPlayback* input, gulong milisecond) {
+void flac_mseek(InputPlayback* input, gulong millisecond) {
 
     _ENTER;
 
@@ -584,8 +584,8 @@ void flac_mseek(InputPlayback* input, gulong milisecond) {
         _LEAVE;
     }
 
-    _DEBUG("Requesting seek to %d", milisecond);
-    seek_to = milisecond;
+    _DEBUG("Requesting seek to %d", millisecond);
+    seek_to = millisecond;
 
     while (-1 != seek_to) {
         g_usleep(10000);
@@ -595,8 +595,8 @@ void flac_mseek(InputPlayback* input, gulong milisecond) {
 }
 
 void flac_seek(InputPlayback* input, gint time) {
-    gulong milisecond = time * 1000;
-    flac_mseek(input, milisecond);
+    gulong millisecond = time * 1000;
+    flac_mseek(input, millisecond);
 }
 
 /* --- */
