@@ -47,13 +47,18 @@ playlist_load_pls(const gchar * filename, gint pos)
     gchar line_key[10], title_key[10];
     gchar *line, *title;
     Playlist *playlist = aud_playlist_get_active();
+    gchar *uri = NULL;
 
     g_return_if_fail(filename != NULL);
 
     if (!aud_str_has_suffix_nocase(filename, ".pls"))
         return;
 
-    INIFile *inifile = aud_open_ini_file(filename);
+    uri = g_filename_to_uri(filename, NULL, NULL);
+
+    INIFile *inifile = aud_open_ini_file(uri ? uri : filename);
+    g_free(uri); uri = NULL;
+
     if (!(line = aud_read_ini_string(inifile, "playlist", "NumberOfEntries")))
     {
         aud_close_ini_file(inifile);
