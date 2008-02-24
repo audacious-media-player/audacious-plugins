@@ -77,7 +77,10 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
   {
     case 1:
     {
-      si_audacious_toggle_visibility();
+      if (event->state & GDK_SHIFT_MASK)
+        audacious_drct_pl_next();
+      else
+        si_audacious_toggle_visibility();
       break;
     }
 
@@ -89,6 +92,9 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
 
     case 3:
     {
+      if (event->state & GDK_SHIFT_MASK)
+        audacious_drct_pl_prev();
+      else{
       switch ( si_cfg.rclick_menu )
       {
         case SI_CFG_RCLICK_MENU_SMALL1:
@@ -103,6 +109,7 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
           break;
       }
       break;
+      }
     }
   }
 
