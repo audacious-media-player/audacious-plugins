@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [1.5.0], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [1.9.49], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -130,9 +130,9 @@ TRANSPORT_PLUGINS="stdio"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.4.1],
-    [ADD_PC_REQUIRES([audacious >= 1.4.1])],
-    [AC_MSG_ERROR([Cannot find Audacious 1.4.1 or later, have you installed audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.9.49],
+    [ADD_PC_REQUIRES([audacious >= 1.9.49])],
+    [AC_MSG_ERROR([Cannot find Audacious 1.9.49 or later, have you installed audacious yet?])]
 )
 
 dnl Check for GTK/GLib/GThread/Pango/DBus
