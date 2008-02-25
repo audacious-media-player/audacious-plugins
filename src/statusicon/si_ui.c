@@ -127,7 +127,7 @@ si_ui_statusicon_cb_btscroll ( GtkWidget * evbox , GdkEventScroll * event )
       switch ( si_cfg.scroll_action )
       {
         case SI_CFG_SCROLL_ACTION_VOLUME:
-          si_audacious_volume_change( 5 );
+          si_audacious_volume_change( si_cfg.volume_delta );
           break;
         case SI_CFG_SCROLL_ACTION_SKIP:
           si_audacious_playback_skip( -1 );
@@ -141,7 +141,7 @@ si_ui_statusicon_cb_btscroll ( GtkWidget * evbox , GdkEventScroll * event )
       switch ( si_cfg.scroll_action )
       {
         case SI_CFG_SCROLL_ACTION_VOLUME:
-          si_audacious_volume_change( -5 );
+          si_audacious_volume_change( -si_cfg.volume_delta );
           break;
         case SI_CFG_SCROLL_ACTION_SKIP:
           si_audacious_playback_skip( 1 );

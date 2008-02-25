@@ -48,6 +48,9 @@ si_cfg_load ( void )
   if ( !aud_cfg_db_get_bool( cfgfile , "statusicon" ,
        "ew_visib_prevstatus" , &(si_cfg.ew_visib_prevstatus) ) )
     si_cfg.ew_visib_prevstatus = FALSE;
+  if ( !aud_cfg_db_get_int( cfgfile , "audacious" ,
+       "mouse_wheel_change" , &(si_cfg.volume_delta) ) )
+    si_cfg.volume_delta = 5;
 
   aud_cfg_db_close( cfgfile );
   return;

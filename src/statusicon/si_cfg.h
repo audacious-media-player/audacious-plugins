@@ -39,6 +39,7 @@ typedef struct
   gboolean mw_visib_prevstatus;
   gboolean pw_visib_prevstatus;
   gboolean ew_visib_prevstatus;
+  gint volume_delta;
 }
 si_cfg_t;
 
