@@ -23,7 +23,6 @@
 #include "si_cfg.h"
 #include "si_common.h"
 #include "gtktrayicon.h"
-#include "si.xpm"
 #include <audacious/playlist.h>
 #include <audacious/main.h>
 #include <audacious/ui_fileinfopopup.h>
@@ -355,8 +354,37 @@ si_ui_statusicon_image_update ( GtkWidget * image )
   }
   if ( ( size <= 1 || size > 22 ) && ( wmname != NULL ) && !strcmp("KWin",wmname) )
     size = 22;
-
-  si_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char**)si_xpm );
+	GtkIconTheme *theme;
+	GtkIconInfo *info;
+	int *array;
+	int i;
+	const gchar *path;
+	gboolean scalable = FALSE;
+	gboolean catch = FALSE;
+	
+	theme = gtk_icon_theme_get_default ();
+	array = gtk_icon_theme_get_icon_sizes (theme, "audacious");
+	if (array[0] != 0) {
+		for (i = 0; array[i] != 0; i++) {
+			if (array[i] == -1)
+				scalable = TRUE;
+			if (array[i] == 22)
+				catch = TRUE;
+		}
+	}
+	g_free (array);
+	if (catch) {
+		info = gtk_icon_theme_lookup_icon (theme, "audacious", 22, GTK_ICON_LOOKUP_NO_SVG);
+		path = gtk_icon_info_get_filename (info);
+		si_pixbuf = gdk_pixbuf_new_from_file (path, NULL);
+	} else if (scalable) {
+		info = gtk_icon_theme_lookup_icon (theme, "audacious", -1, GTK_ICON_LOOKUP_FORCE_SVG);
+		path = gtk_icon_info_get_filename (info);
+		si_pixbuf = gdk_pixbuf_new_from_file (path, NULL);
+		
+	} else {
+		si_pixbuf = gdk_pixbuf_new_from_file ("/usr/share/audacious/images/audacious_player.xpm", NULL);
+	}
   si_scaled_pixbuf = gdk_pixbuf_scale_simple( si_pixbuf , size , size , GDK_INTERP_BILINEAR );
   gtk_image_set_from_pixbuf( GTK_IMAGE(image) , si_scaled_pixbuf );
   g_object_unref( si_pixbuf );
