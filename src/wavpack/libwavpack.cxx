@@ -27,6 +27,8 @@ extern "C" {
 #endif
 
 #define BUFFER_SIZE 256 // read buffer size, in samples
+#define SAMPLE_SIZE(a) (a == 8 ? sizeof(guint8) : (a == 16 ? sizeof(guint16) : sizeof(guint32)))
+#define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
 static void wv_load_config();
 static int wv_is_our_fd(gchar *filename, VFSFile *file);
@@ -152,10 +154,11 @@ class WavpackDecoder
 {
 public:
     InputPlugin *mod;
-    int32_t *input;
-    int16_t *output;
-    int sample_rate;
-    int num_channels;
+    gint32 *input;
+    void *output;
+    gint sample_rate;
+    gint num_channels;
+    gint bits_per_sample;
     WavpackContext *ctx;
     char error_buff[4096]; // TODO: fixme!
     VFSFile *wv_Input, *wvc_Input;
@@ -236,8 +239,9 @@ public:
 
         sample_rate = WavpackGetSampleRate(ctx);
         num_channels = WavpackGetNumChannels(ctx);
-        input = (int32_t *)calloc(BUFFER_SIZE, num_channels * sizeof(int32_t));
-        output = (int16_t *)calloc(BUFFER_SIZE, num_channels * sizeof(int16_t));
+        bits_per_sample = WavpackGetBitsPerSample(ctx);
+        input = (gint32 *) malloc(BUFFER_SIZE * num_channels * sizeof(guint32));
+        output = malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));        
         playback->set_params(playback, generate_title(playback->filename, ctx),
                       (int) (WavpackGetNumSamples(ctx) / sample_rate) * 1000,
                       (int) WavpackGetAverageBitrate(ctx, num_channels),
@@ -247,18 +251,40 @@ public:
 
     bool open_audio()
     {
-        return mod->output->open_audio(FMT_S16_NE, sample_rate, num_channels);
+        return mod->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
     }
 
     void process_buffer(InputPlayback *playback, size_t num_samples)
     {
-        /* TODO: dithering */
-        for (unsigned int i = 0; i < num_samples * num_channels; i++)
-            output[i] = input[i];
+        gint i;
+        gint32* rp = input;
+        gint8* wp = reinterpret_cast<gint8*>(output);
+        gint16* wp2 = reinterpret_cast<gint16*>(output);
+        gint32* wp4 = reinterpret_cast<gint32*>(output);
 
-        playback->pass_audio(playback, FMT_S16_NE, 
+        AUDDBG("Converting %d samples to %d bit\n", (gint)num_samples * num_channels, bits_per_sample);
+
+        if (bits_per_sample % 8 != 0) {
+            AUDDBG("Can not convert to %d bps: not a multiple of 8\n", bits_per_sample);
+        }
+
+        if (bits_per_sample == 8) {
+            for (i=0; i<num_samples * num_channels; i++, wp++, rp++) {
+                *wp = *rp & 0xff;
+            }
+        } else if (bits_per_sample == 16) {
+            for (i=0; i<num_samples * num_channels; i++, wp2++, rp++) {
+                *wp2 = *rp & 0xffff;
+            }
+        } else if (bits_per_sample == 24 || bits_per_sample == 32) { /* 24bit value stored in lowest 3 bytes */
+           for (i=0; i<num_samples * num_channels; i++, wp4++, rp++) {
+               *wp4 = *rp;
+           }
+        }
+
+        playback->pass_audio(playback, SAMPLE_FMT(bits_per_sample), 
 		num_channels, 
-		num_samples * num_channels * sizeof(int16_t),
+		num_samples * num_channels * SAMPLE_SIZE(bits_per_sample),
 		output,
 		NULL);
     }
