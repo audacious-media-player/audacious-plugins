@@ -1,4 +1,4 @@
-// #define AUD_DEBUG 1
+//#define AUD_DEBUG
 
 #include <string>
 
@@ -31,26 +31,26 @@ extern "C" {
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
 static void wv_load_config();
-static int wv_is_our_fd(gchar *filename, VFSFile *file);
+static gint wv_is_our_fd(gchar *filename, VFSFile *file);
 static Tuple *wv_probe_for_tuple(gchar *filename, VFSFile *file);
 static void wv_play(InputPlayback *);
 static void wv_stop(InputPlayback *);
-static void wv_pause(InputPlayback *, short);
-static void wv_seek(InputPlayback *, int);
-static int wv_get_time(InputPlayback *);
-static void wv_get_song_info(char *, char **, int *);
-static char *generate_title(const char *, WavpackContext *ctx);
-static int isSeek;
-static short paused;
-static bool killDecodeThread;
-static bool AudioError;
+static void wv_pause(InputPlayback *, gshort);
+static void wv_seek(InputPlayback *, gint);
+static gint wv_get_time(InputPlayback *);
+static void wv_get_song_info(gchar *, gchar **, gint *);
+static gchar *generate_title(const gchar *, WavpackContext *ctx);
+static gint isSeek;
+static gshort paused;
+static gboolean killDecodeThread;
+static gboolean AudioError;
 static GThread *thread_handle;
-static Tuple *wv_get_song_tuple(char *);
+static Tuple *wv_get_song_tuple(gchar *);
 
-// in ui.cpp
+// in ui.cxx
 void wv_configure();
 void wv_about_box(void);
-void wv_file_info_box(char *);
+void wv_file_info_box(gchar *);
 extern gboolean clipPreventionEnabled;
 extern gboolean dynBitrateEnabled;
 extern gboolean replaygainEnabled;
@@ -59,7 +59,7 @@ extern gboolean openedAudio;
 
 const gchar *wv_fmts[] = { "wv", NULL };
 
-InputPlugin mod = {
+InputPlugin wvpack = {
     NULL,                       //handle
     NULL,                       //filename
     (gchar *)"WavPack Audio Plugin",
@@ -94,35 +94,35 @@ InputPlugin mod = {
     wv_probe_for_tuple		// probe for a tuple
 };
 
-int32_t read_bytes (void *id, void *data, int32_t bcount)
+gint32 read_bytes (void *id, void *data, gint32 bcount)
 {
     return aud_vfs_fread (data, 1, bcount, (VFSFile *) id);
 }
 
-uint32_t get_pos (void *id)
+guint32 get_pos (void *id)
 {
     return aud_vfs_ftell ((VFSFile *) id);
 }
 
-int set_pos_abs (void *id, uint32_t pos)
+gint set_pos_abs (void *id, guint32 pos)
 {
     return aud_vfs_fseek ((VFSFile *) id, pos, SEEK_SET);
 }
 
-int set_pos_rel (void *id, int32_t delta, int mode)
+gint set_pos_rel (void *id, gint32 delta, gint mode)
 {
     return aud_vfs_fseek ((VFSFile *) id, delta, mode);
 }
 
-int push_back_byte (void *id, int c)
+gint push_back_byte (void *id, gint c)
 {
     return aud_vfs_ungetc (c, (VFSFile *) id);
 }
 
-uint32_t get_length (void *id)
+guint32 get_length (void *id)
 {
     VFSFile *file = (VFSFile *) id;
-    uint32_t sz = 0;
+    guint32 sz = 0;
 
     if (file == NULL)
         return 0;
@@ -135,12 +135,12 @@ uint32_t get_length (void *id)
 }
 
 /* XXX streams?? */
-int can_seek (void *id)
+gint can_seek (void *id)
 {
     return 1;
 }
 
-int32_t write_bytes (void *id, void *data, int32_t bcount)
+gint32 write_bytes (void *id, void *data, gint32 bcount)
 {
     return aud_vfs_fwrite (data, 1, bcount, (VFSFile *) id);
 }
@@ -153,17 +153,19 @@ WavpackStreamReader reader = {
 class WavpackDecoder
 {
 public:
-    InputPlugin *mod;
+    InputPlugin *wvpack;
     gint32 *input;
     void *output;
     gint sample_rate;
     gint num_channels;
+    guint num_samples;
+    guint length;
     gint bits_per_sample;
     WavpackContext *ctx;
-    char error_buff[4096]; // TODO: fixme!
+    gchar error_buff[80]; //string space is allocated by the caller and must be at least 80 chars
     VFSFile *wv_Input, *wvc_Input;
 
-    WavpackDecoder(InputPlugin *mod) : mod(mod)
+    WavpackDecoder(InputPlugin *wvpack) : wvpack(wvpack)
     {
         ctx = NULL;
         input = NULL;
@@ -193,11 +195,11 @@ public:
         }
     }
 
-    bool attach(const char *filename)
+    gboolean attach(const gchar *filename)
     {
         wv_Input = aud_vfs_fopen(filename, "rb");
 
-        char *corrFilename = g_strconcat(filename, "c", NULL);
+        gchar *corrFilename = g_strconcat(filename, "c", NULL);
 
         wvc_Input = aud_vfs_fopen(corrFilename, "rb");
 
@@ -212,7 +214,7 @@ public:
         return true;
     }
 
-    bool attach(gchar *filename, VFSFile *wvi)
+    gboolean attach(gchar *filename, VFSFile *wvi)
     {
         ctx = WavpackOpenFileInputEx(&reader, wvi, NULL, error_buff, OPEN_TAGS, 0);
 
@@ -222,11 +224,11 @@ public:
         return true;
     }
 
-    bool attach_to_play(InputPlayback *playback)
+    gboolean attach_to_play(InputPlayback *playback)
     {
         wv_Input = aud_vfs_fopen(playback->filename, "rb");
 
-        char *corrFilename = g_strconcat(playback->filename, "c", NULL);
+        gchar *corrFilename = g_strconcat(playback->filename, "c", NULL);
 
         wvc_Input = aud_vfs_fopen(corrFilename, "rb");
 
@@ -240,29 +242,29 @@ public:
         sample_rate = WavpackGetSampleRate(ctx);
         num_channels = WavpackGetNumChannels(ctx);
         bits_per_sample = WavpackGetBitsPerSample(ctx);
+        num_samples = WavpackGetNumSamples(ctx);
+        length = num_samples / sample_rate;
         input = (gint32 *) malloc(BUFFER_SIZE * num_channels * sizeof(guint32));
         output = malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));        
         playback->set_params(playback, generate_title(playback->filename, ctx),
-                      (int) (WavpackGetNumSamples(ctx) / sample_rate) * 1000,
-                      (int) WavpackGetAverageBitrate(ctx, num_channels),
-                      (int) sample_rate, num_channels);
+                      length * 1000,
+                      (gint) WavpackGetAverageBitrate(ctx, num_channels),
+                      (gint) sample_rate, num_channels);
         return true;
     }
 
-    bool open_audio()
+    gboolean open_audio()
     {
-        return mod->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
+        return wvpack->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
     }
 
-    void process_buffer(InputPlayback *playback, size_t num_samples)
+    void process_buffer(InputPlayback *playback, guint32 num_samples)
     {
-        gint i;
+        guint32 i;
         gint32* rp = input;
         gint8* wp = reinterpret_cast<gint8*>(output);
         gint16* wp2 = reinterpret_cast<gint16*>(output);
         gint32* wp4 = reinterpret_cast<gint32*>(output);
-
-        AUDDBG("Converting %d samples to %d bit\n", (gint)num_samples * num_channels, bits_per_sample);
 
         if (bits_per_sample % 8 != 0) {
             AUDDBG("Can not convert to %d bps: not a multiple of 8\n", bits_per_sample);
@@ -290,14 +292,14 @@ public:
     }
 };
 
-InputPlugin *wv_iplist[] = { &mod, NULL };
+InputPlugin *wv_iplist[] = { &wvpack, NULL };
 
 DECLARE_PLUGIN(wavpack, NULL, NULL, wv_iplist, NULL, NULL, NULL, NULL,NULL);
 
-static int
+static gint
 wv_is_our_fd(gchar *filename, VFSFile *file)
 {
-    WavpackDecoder d(&mod);
+    WavpackDecoder d(&wvpack);
 
     if (d.attach(filename, file))
         return TRUE;
@@ -327,18 +329,16 @@ end_thread()
 static void *
 DecodeThread(InputPlayback *playback)
 {
-    int bps;
-#ifdef AUD_DEBUG
-    char *filename = playback->filename;
-#endif
-    WavpackDecoder d(&mod);
+    gint bps;
+    WavpackDecoder d(&wvpack);
 
     if (!d.attach_to_play(playback)) {
         killDecodeThread = true;
         return end_thread();
     }
     bps = WavpackGetBytesPerSample(d.ctx) * d.num_channels;
-    AUDDBG("reading %s at %d rate with %d channels\n", filename, d.sample_rate, d.num_channels);
+
+    AUDDBG("reading WavPack file, %dHz, %d channels and %dbits\n", d.sample_rate, d.num_channels, d.bits_per_sample);
 
     if (!d.open_audio()) {
         AUDDBG("error opening audio channel\n");
@@ -350,28 +350,25 @@ DecodeThread(InputPlayback *playback)
         AUDDBG("opened audio channel\n");
         openedAudio = true;
     }
-    unsigned status;
-#if 0
-    char *display = generate_title(filename, d.ctx);
-    int length = (int) (1000 * WavpackGetNumSamples(d.ctx));
-#endif
+    guint32 status;
+    guint samples_left;
+
     while (!killDecodeThread) {
         if (isSeek != -1) {
             AUDDBG("seeking to position %d\n", isSeek);
-            WavpackSeekSample(d.ctx, (int)(isSeek * d.sample_rate));
+            WavpackSeekSample(d.ctx, (gint)(isSeek * d.sample_rate));
             isSeek = -1;
         }
-        if (paused == 0
-            && (mod.output->buffer_free() >=
-                (1152 * 2 *
-                 (16 / 8)) << (mod.output->buffer_playing()? 1 : 0))) {
-            status =
-                WavpackUnpackSamples(d.ctx, d.input, BUFFER_SIZE);
-            if (status == (unsigned) (-1)) {
+
+        samples_left = d.num_samples-WavpackGetSampleIndex(d.ctx);
+        //AUDDBG("samples left: %d\n", samples_left);
+        if (paused == 0) {
+            status = WavpackUnpackSamples(d.ctx, d.input, BUFFER_SIZE);
+            if (status == (guint32) -1) {
                 printf("wavpack: Error decoding file.\n");
                 break;
             }
-            else if (status == 0) {
+            else if (samples_left == 0 && wvpack.output->buffer_playing() == 0) {
                 killDecodeThread = true;
                 break;
             }
@@ -414,11 +411,11 @@ WavpackPluginGetQualityString(WavpackContext *ctx)
 }
 
 static Tuple *
-aud_tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
+aud_tuple_from_WavpackContext(const gchar *fn, WavpackContext *ctx)
 {
     ape_tag tag;
     Tuple *ti;
-    int sample_rate = WavpackGetSampleRate(ctx);
+    gint sample_rate = WavpackGetSampleRate(ctx);
 
     ti = aud_tuple_new_from_filename(fn);
 
@@ -440,10 +437,10 @@ aud_tuple_from_WavpackContext(const char *fn, WavpackContext *ctx)
     return ti;
 }
 
-static char *
-generate_title(const char *fn, WavpackContext *ctx)
+static gchar *
+generate_title(const gchar *fn, WavpackContext *ctx)
 {
-    static char *displaytitle = NULL;
+    static gchar *displaytitle = NULL;
     Tuple *ti;
 
     ti = aud_tuple_from_WavpackContext(fn, ctx);
@@ -458,10 +455,10 @@ generate_title(const char *fn, WavpackContext *ctx)
 }
 
 static Tuple *
-wv_get_song_tuple(char *filename)
+wv_get_song_tuple(gchar *filename)
 {
     Tuple *ti;
-    WavpackDecoder d(&mod);
+    WavpackDecoder d(&wvpack);
 
     if (!d.attach(filename)) {
         printf("wavpack: Error opening file: \"%s\"\n", filename);
@@ -477,7 +474,7 @@ static Tuple *
 wv_probe_for_tuple(gchar *filename, VFSFile *file)
 {
     Tuple *ti;
-    WavpackDecoder d(&mod);
+    WavpackDecoder d(&wvpack);
 
     if (!d.attach(filename, file))
         return NULL;
@@ -488,28 +485,28 @@ wv_probe_for_tuple(gchar *filename, VFSFile *file)
 }
 
 static void
-wv_get_song_info(char *filename, char **title, int *length)
+wv_get_song_info(gchar *filename, gchar **title, gint *length)
 {
     assert(filename != NULL);
-    WavpackDecoder d(&mod);
+    WavpackDecoder d(&wvpack);
 
     if (!d.attach(filename)) {
         printf("wavpack: Error opening file: \"%s\"\n", filename);
         return;
     }
 
-    int sample_rate = WavpackGetSampleRate(d.ctx);
+    gint sample_rate = WavpackGetSampleRate(d.ctx);
 #ifdef AUD_DEBUG
-    int num_channels = WavpackGetNumChannels(d.ctx);
+    gint num_channels = WavpackGetNumChannels(d.ctx);
 #endif
     AUDDBG("reading %s at %d rate with %d channels\n", filename, sample_rate, num_channels);
 
-    *length = (int)(WavpackGetNumSamples(d.ctx) / sample_rate) * 1000,
+    *length = (gint)(WavpackGetNumSamples(d.ctx) / sample_rate) * 1000,
     *title = generate_title(filename, d.ctx);
     AUDDBG("title for %s = %s\n", filename, *title);
 }
 
-static int
+static gint
 wv_get_time(InputPlayback *data)
 {
     if (data->output == NULL)
@@ -522,14 +519,14 @@ wv_get_time(InputPlayback *data)
 }
 
 static void
-wv_seek(InputPlayback *data, int sec)
+wv_seek(InputPlayback *data, gint sec)
 {
     isSeek = sec;
-    data->output->flush((int) (1000 * isSeek));
+    data->output->flush((gint) (1000 * isSeek));
 }
 
 static void
-wv_pause(InputPlayback *data, short pause)
+wv_pause(InputPlayback *data, gshort pause)
 {
     data->output->pause(paused = pause);
 }
@@ -541,8 +538,8 @@ wv_stop(InputPlayback *data)
     if (thread_handle != 0) {
         g_thread_join(thread_handle);
         if (openedAudio) {
-            mod.output->buffer_free();
-            mod.output->close_audio();
+            wvpack.output->buffer_free();
+            wvpack.output->close_audio();
         }
         openedAudio = false;
         if (AudioError)
