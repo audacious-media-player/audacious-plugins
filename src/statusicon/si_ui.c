@@ -383,7 +383,7 @@ si_ui_statusicon_image_update ( GtkWidget * image )
 		si_pixbuf = gdk_pixbuf_new_from_file (path, NULL);
 		
 	} else {
-		si_pixbuf = gdk_pixbuf_new_from_file ("/usr/share/audacious/images/audacious_player.xpm", NULL);
+		si_pixbuf = gdk_pixbuf_new_from_file (DATA_DIR "/images/audacious_player.xpm", NULL);
 	}
   si_scaled_pixbuf = gdk_pixbuf_scale_simple( si_pixbuf , size , size , GDK_INTERP_BILINEAR );
   gtk_image_set_from_pixbuf( GTK_IMAGE(image) , si_scaled_pixbuf );
