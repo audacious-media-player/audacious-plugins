@@ -55,16 +55,11 @@ static int wma_seekpos = -1;
 static int wma_st_buff, wma_idx, wma_idx2;
 static GThread *wma_decode_thread;
 GStaticMutex wma_mutex = G_STATIC_MUTEX_INIT;
-static AVCodecContext *c = NULL;
-static AVFormatContext *ic = NULL;
-static AVCodecContext *c2 = NULL;
-static AVFormatContext *ic2 = NULL;
 static uint8_t *wma_outbuf, *wma_s_outbuf;
 
 char description[64];
 static void wma_about(void);
 static void wma_init(void);
-static int wma_is_our_file(char *filename);
 static int wma_is_our_fd(char *filename, VFSFile *fd);
 static void wma_play_file(InputPlayback *data);
 static void wma_stop(InputPlayback *data);
@@ -83,7 +78,6 @@ InputPlugin wma_ip =
     .description = "Windows Media Audio (WMA) Plugin",
     .init = wma_init,
     .about = wma_about,
-    .is_our_file = wma_is_our_file,
     .play_file = wma_play_file,
     .stop = wma_stop,
     .pause = wma_do_pause,
@@ -175,33 +169,11 @@ static void wma_init(void)
     av_register_all();
 }
 
-static int wma_is_our_file(char *filename)
-{
-    AVCodec *codec2;
-
-    if(av_open_input_file(&ic2, str_twenty_to_space(filename), NULL, 0, NULL) < 0) return 0;
-
-    for(wma_idx2 = 0; wma_idx2 < ic2->nb_streams; wma_idx2++) {
-        c2 = &ic2->streams[wma_idx2]->codec;
-        if(c2->codec_type == CODEC_TYPE_AUDIO) break;
-    }
-
-    av_find_stream_info(ic2);
-
-    codec2 = avcodec_find_decoder(c2->codec_id);
-
-    if(!codec2) {
-        av_close_input_file(ic2);
-        return 0;
-    }
-
-    av_close_input_file(ic2);
-    return 1;
-}
-
 static int wma_is_our_fd(char *filename, VFSFile *fd)
 {
     AVCodec *codec2;
+    AVCodecContext *c2 = NULL;
+    AVFormatContext *ic2 = NULL;
 
     if(av_open_input_vfsfile(&ic2, filename, fd, NULL, 0, NULL) < 0) return 0;
 
@@ -220,6 +192,7 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
     }
 
     av_close_input_vfsfile(ic2);
+
     return 1;
 }
 
@@ -317,7 +290,7 @@ static void wma_get_song_info(char *filename, char **title_real, int *len_real)
     (*title_real) = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 }
 
-static void wma_playbuff(InputPlayback *playback, int out_size)
+static void wma_playbuff(InputPlayback *playback, int channels, int out_size)
 {
     FifoBuffer f;
     int sst_buff;
@@ -329,19 +302,55 @@ static void wma_playbuff(InputPlayback *playback, int out_size)
         sst_buff = wma_st_buff;
         if(wma_pause) memset(wma_s_outbuf, 0, sst_buff);    
         playback->pass_audio(playback, FMT_S16_NE,
-                             c->channels, sst_buff, (short *)wma_s_outbuf, NULL);
+                             channels, sst_buff, (short *)wma_s_outbuf, NULL);
         memset(wma_s_outbuf, 0, sst_buff);
     }
     fifo_free(&f);
     return;
 }
 
-static void *wma_play_loop(void *arg)
+static void wma_play_file(InputPlayback *playback)
 {
-    InputPlayback *playback = arg;
+    AVCodec *codec;
+    AVCodecContext *c = NULL;
+    AVFormatContext *ic = NULL;
     uint8_t *inbuf_ptr;
     int out_size, size, len;
     AVPacket pkt;
+
+    if(av_open_input_file(&ic, playback->filename, NULL, 0, NULL) < 0) return;
+
+    for(wma_idx = 0; wma_idx < ic->nb_streams; wma_idx++) {
+        c = &ic->streams[wma_idx]->codec;
+        if(c->codec_type == CODEC_TYPE_AUDIO) break;
+    }
+
+    av_find_stream_info(ic);
+
+    codec = avcodec_find_decoder(c->codec_id);
+
+    if(!codec) return;
+
+    if(avcodec_open(c, codec) < 0) return;
+
+    wsong_title = get_song_title(ic, playback->filename);
+    wsong_time = get_song_time(ic);
+
+    if(playback->output->open_audio(FMT_S16_NE, c->sample_rate, c->channels) <= 0) return;
+
+    wma_st_buff  = ST_BUFF;
+
+    playback->set_params(playback, wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
+
+    /* av_malloc() will wrap posix_memalign() if necessary -nenolod */
+    wma_s_outbuf = av_malloc(wma_st_buff);
+    wma_outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
+
+    wma_seekpos = -1;
+    wma_decode = 1;
+    playback->playing = 1;
+    wma_decode_thread = g_thread_self();
+    playback->set_pb_ready(playback);
 
     g_static_mutex_lock(&wma_mutex);
     while(playback->playing)
@@ -367,7 +376,7 @@ static void *wma_play_loop(void *arg)
 
             if(out_size <= 0) continue;
 
-            wma_playbuff(playback, out_size);
+            wma_playbuff(playback, c->channels, out_size);
 
             size -= len;
             inbuf_ptr += len;
@@ -382,48 +391,6 @@ static void *wma_play_loop(void *arg)
     if(c) avcodec_close(c);
     if(ic) av_close_input_file(ic);
     g_static_mutex_unlock(&wma_mutex);
-    return(NULL);
-}
-
-static void wma_play_file(InputPlayback *playback)
-{
-    char *filename = playback->filename;
-    AVCodec *codec;
-
-    if(av_open_input_file(&ic, filename, NULL, 0, NULL) < 0) return;
-
-    for(wma_idx = 0; wma_idx < ic->nb_streams; wma_idx++) {
-        c = &ic->streams[wma_idx]->codec;
-        if(c->codec_type == CODEC_TYPE_AUDIO) break;
-    }
-
-    av_find_stream_info(ic);
-
-    codec = avcodec_find_decoder(c->codec_id);
-
-    if(!codec) return;
-
-    if(avcodec_open(c, codec) < 0) return;
-
-    wsong_title = get_song_title(ic, filename);
-    wsong_time = get_song_time(ic);
-
-    if(playback->output->open_audio(FMT_S16_NE, c->sample_rate, c->channels) <= 0) return;
-
-    wma_st_buff  = ST_BUFF;
-
-    playback->set_params(playback, wsong_title, wsong_time, c->bit_rate, c->sample_rate, c->channels);
-
-    /* av_malloc() will wrap posix_memalign() if necessary -nenolod */
-    wma_s_outbuf = av_malloc(wma_st_buff);
-    wma_outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
-
-    wma_seekpos = -1;
-    wma_decode = 1;
-    playback->playing = 1;
-    wma_decode_thread = g_thread_self();
-    playback->set_pb_ready(playback);
-    wma_play_loop(playback);
 }
 
 static void wma_stop(InputPlayback *playback) 

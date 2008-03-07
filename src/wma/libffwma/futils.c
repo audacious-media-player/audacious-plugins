@@ -1571,11 +1571,15 @@ void av_close_input_vfsfile(AVFormatContext *s)
     for(i=0;i<s->nb_streams;i++) {
         /* free all data in a stream component */
         st = s->streams[i];
+        if (st == NULL)
+            continue;
+
         if (st->parser) {
             av_parser_close(st->parser);
         }
         free(st->index_entries);
         free(st);
+        s->streams[i] = NULL;
     }
     flush_packet_queue(s);
     av_freep(&s->priv_data);
