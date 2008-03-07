@@ -52,10 +52,7 @@ static const int ST_BUFF = 1024;
 static int wma_decode = 0;
 static gboolean wma_pause = 0;
 static int wma_seekpos = -1;
-static int wma_st_buff, wma_idx, wma_idx2;
 static GThread *wma_decode_thread;
-GStaticMutex wma_mutex = G_STATIC_MUTEX_INIT;
-static uint8_t *wma_outbuf, *wma_s_outbuf;
 
 char description[64];
 static void wma_about(void);
@@ -298,6 +295,8 @@ static void wma_play_file(InputPlayback *playback)
     uint8_t *inbuf_ptr;
     int out_size, size, len;
     AVPacket pkt;
+    guint8 *wma_outbuf, *wma_s_outbuf;
+    int wma_st_buff, wma_idx, wma_idx2;
 
     if(av_open_input_file(&ic, playback->filename, NULL, 0, NULL) < 0) return;
 
@@ -333,7 +332,6 @@ static void wma_play_file(InputPlayback *playback)
     wma_decode_thread = g_thread_self();
     playback->set_pb_ready(playback);
 
-    g_static_mutex_lock(&wma_mutex);
     while(playback->playing)
     {
         if(wma_seekpos != -1)
@@ -387,7 +385,6 @@ static void wma_play_file(InputPlayback *playback)
     if(pkt.data) av_free_packet(&pkt);
     if(c) avcodec_close(c);
     if(ic) av_close_input_file(ic);
-    g_static_mutex_unlock(&wma_mutex);
 }
 
 static void wma_stop(InputPlayback *playback) 
