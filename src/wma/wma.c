@@ -297,7 +297,7 @@ static void wma_play_file(InputPlayback *playback)
     int out_size, size, len;
     AVPacket pkt;
     guint8 *wma_outbuf, *wma_s_outbuf;
-    int wma_st_buff, wma_idx, wma_idx2;
+    int wma_st_buff, wma_idx;
 
     if(av_open_input_file(&ic, playback->filename, NULL, 0, NULL) < 0) return;
 
