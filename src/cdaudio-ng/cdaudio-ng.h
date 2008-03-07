@@ -22,7 +22,7 @@
 
 
 #define DEF_STRING_LEN				256
-#define CDDA_DEFAULT				"cdda://default"
+#define CDDA_DUMMYPATH				"cdda://"
 #define CDDA_DAE_FRAMES				8
 #define CDDA_DEFAULT_LIMIT_SPEED		1
 #define CDDA_DEFAULT_CDDB_SERVER	"freedb.org"
