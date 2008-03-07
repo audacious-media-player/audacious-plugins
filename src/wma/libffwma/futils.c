@@ -1539,6 +1539,7 @@ void av_close_input_file(AVFormatContext *s)
         }
         free(st->index_entries);
         free(st);
+	s->streams[i] = NULL;
     }
     flush_packet_queue(s);
     must_open_file = 1;
@@ -1567,8 +1568,6 @@ void av_close_input_vfsfile(AVFormatContext *s)
     if (s->cur_st && s->cur_st->parser)
         av_free_packet(&s->cur_pkt); 
 
-    if (s->iformat->read_close)
-        s->iformat->read_close(s);
     for(i=0;i<s->nb_streams;i++) {
         /* free all data in a stream component */
         st = s->streams[i];
