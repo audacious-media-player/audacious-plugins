@@ -171,6 +171,7 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
     AVCodec *codec2;
     AVCodecContext *c2 = NULL;
     AVFormatContext *ic2 = NULL;
+    int wma_idx2;
 
     if(av_open_input_vfsfile(&ic2, filename, fd, NULL, 0, NULL) < 0) return 0;
 
