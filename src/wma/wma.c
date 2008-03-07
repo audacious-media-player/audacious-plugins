@@ -290,25 +290,6 @@ static void wma_get_song_info(char *filename, char **title_real, int *len_real)
     (*title_real) = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 }
 
-static void wma_playbuff(InputPlayback *playback, int channels, int out_size)
-{
-    FifoBuffer f;
-    int sst_buff;
-
-    fifo_init(&f, out_size*2);
-    fifo_write(&f, wma_outbuf, out_size, &f.wptr);
-    while(!fifo_read(&f, wma_s_outbuf, wma_st_buff, &f.rptr) && wma_decode)
-    {
-        sst_buff = wma_st_buff;
-        if(wma_pause) memset(wma_s_outbuf, 0, sst_buff);    
-        playback->pass_audio(playback, FMT_S16_NE,
-                             channels, sst_buff, (short *)wma_s_outbuf, NULL);
-        memset(wma_s_outbuf, 0, sst_buff);
-    }
-    fifo_free(&f);
-    return;
-}
-
 static void wma_play_file(InputPlayback *playback)
 {
     AVCodec *codec;
@@ -370,13 +351,29 @@ static void wma_play_file(InputPlayback *playback)
         if(size == 0) break;
 
         while(size > 0){
+            FifoBuffer f;
+            int sst_buff;
+
             len = avcodec_decode_audio(c, (short *)wma_outbuf, &out_size,
                                        inbuf_ptr, size);
             if(len < 0) break;
 
             if(out_size <= 0) continue;
 
-            wma_playbuff(playback, c->channels, out_size);
+            fifo_init(&f, out_size*2);
+            fifo_write(&f, wma_outbuf, out_size, &f.wptr);
+
+            while(!fifo_read(&f, wma_s_outbuf, wma_st_buff, &f.rptr) && wma_decode)
+            {
+                 sst_buff = wma_st_buff;
+                 if (wma_pause)
+                     memset(wma_s_outbuf, 0, sst_buff);    
+                 playback->pass_audio(playback, FMT_S16_NE,
+                                      c->channels, sst_buff, (short *)wma_s_outbuf, NULL);
+                 memset(wma_s_outbuf, 0, sst_buff);
+            }
+
+            fifo_free(&f);
 
             size -= len;
             inbuf_ptr += len;
