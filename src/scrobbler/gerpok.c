@@ -24,6 +24,7 @@
 #define SCROBBLER_IMPLEMENTATION "0.1"		/* This is the implementation, not the player version. */
 #define SCROBBLER_SB_MAXLEN 1024
 #define CACHE_SIZE 1024
+#define ALLOW_MULTIPLE
 
 /* Scrobblerbackend for xmms plugin, first draft */
 
