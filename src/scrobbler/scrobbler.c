@@ -947,11 +947,11 @@ static void read_cache(void)
             free(artist);
             free(title);
             free(album);
-            g_free(entry);
             i++;
         }
+        g_strfreev(entry);
     }
-    g_free(values);
+    g_strfreev(values);
     g_free(cache);
     pdebug("Done loading cache.", DEBUG);
 }
