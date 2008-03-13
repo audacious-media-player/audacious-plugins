@@ -139,17 +139,17 @@ dnl Check for GTK/GLib/GThread/Pango/DBus
 
 PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.14.0 gthread-2.0],
     [ADD_PC_REQUIRES([glib-2.0 >= 2.14.0])],
-    [AC_MSG_ERROR([Cannot find glib2 >= 2.14.0])]
+    [AC_MSG_ERROR([Cannot find Glib2 >= 2.14.0])]
 )
 
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.6.0],
-    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.6.0])],
-    [AC_MSG_ERROR([Cannot find gtk2 >= 2.6.0])]
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0],
+    [ADD_PC_REQUIRES([gtk+-2.0 >= 2.10.0])],
+    [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.10.0])]
 )
 
 PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [ADD_PC_REQUIRES([pango >= 1.8.0])],
-    [AC_MSG_ERROR([Cannot find pango >= 1.8.0])]
+    [AC_MSG_ERROR([Cannot find Pango >= 1.8.0])]
 )
 
 AC_ARG_ENABLE(dbus,
@@ -163,9 +163,12 @@ if test "x$enable_dbus" = "xyes"; then
 	])
 fi
 
-PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.2.0],
-    [ADD_PC_REQUIRES([libmowgli >= 0.2.0])],
-    [AC_MSG_ERROR([Cannot find libmowgli >= 0.2.0])]
+
+dnl Check for libmowgli.
+
+PKG_CHECK_MODULES(MOWGLI, [libmowgli >= 0.4.0],
+    [ADD_PC_REQUIRES([libmowgli >= 0.4.0])],
+    [AC_MSG_ERROR([Cannot find libmowgli >= 0.4.0, try http://www.atheme.org/projects/mowgli.shtml])]
 )
 
 dnl IPv6 support
