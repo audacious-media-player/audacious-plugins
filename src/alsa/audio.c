@@ -783,7 +783,6 @@ static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int chann
 	for (i = 0; i < sizeof(format_table) / sizeof(format_table[0]); i++)
 		if (format_table[i].xmms == fmt)
 		{
-			printf("match!\n");
 			f->format = format_table[i].alsa;
                         found = 1;
 			break;
