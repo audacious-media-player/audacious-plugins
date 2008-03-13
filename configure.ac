@@ -1449,7 +1449,7 @@ if test "$have_projectm1" = "yes"; then
 fi
 
 if test "$have_projectm1" = "yes"; then
-	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
+	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.0], [have_projectm1="yes"], [have_projectm1="no"])
 	if test x$libprjM = xno; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.

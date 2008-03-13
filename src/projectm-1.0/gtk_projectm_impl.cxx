@@ -86,7 +86,7 @@ gtk_projectm_add_pcm_data(GtkWidget *widget, gint16 pcm_data[2][512])
     g_return_if_fail(priv != NULL);
     g_return_if_fail(priv->pm != NULL);
 
-    priv->pm->pcm()->addPCM16(pcm_data);
+    priv->pm->pcm->addPCM16(pcm_data);
 }
 
 extern "C" void
