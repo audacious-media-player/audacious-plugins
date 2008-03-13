@@ -130,9 +130,9 @@ TRANSPORT_PLUGINS="stdio"
 
 dnl Check for Audacious
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.9.49],
-    [ADD_PC_REQUIRES([audacious >= 1.9.49])],
-    [AC_MSG_ERROR([Cannot find Audacious 1.9.49 or later, have you installed audacious yet?])]
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.5.0],
+    [ADD_PC_REQUIRES([audacious >= 1.5.0])],
+    [AC_MSG_ERROR([Cannot find Audacious 1.5.0 or later, have you installed audacious yet?])]
 )
 
 dnl Check for GTK/GLib/GThread/Pango/DBus
