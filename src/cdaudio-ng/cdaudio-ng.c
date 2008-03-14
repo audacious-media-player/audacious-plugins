@@ -67,8 +67,8 @@ static dae_params_t		*pdae_params = NULL;
 static InputPlayback    	*pglobalinputplayback = NULL;
 static GtkWidget		*main_menu_item, *playlist_menu_item;
 static GThread			*scan_cd_thread = NULL;
-static int			first_trackno_to_add_after_scan = -1;
-static int			last_trackno_to_add_after_scan = -1;
+static gint			first_trackno_to_add_after_scan = -1;
+static gint			last_trackno_to_add_after_scan = -1;
 
 static void			cdaudio_init(void);
 static void			cdaudio_about(void);
@@ -628,7 +628,7 @@ static void menu_click()
 		}
 	}
 	else {
-		int trackno;
+		gint trackno;
 		for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
 			append_track_to_playlist(trackno);
 	}
@@ -982,7 +982,7 @@ static void *scan_cd(void *nothing)
 				}
 
 				cddb_disc_calc_discid(pcddb_disc);
-				unsigned int discid = cddb_disc_get_discid(pcddb_disc);
+				guint discid = cddb_disc_get_discid(pcddb_disc);
 				debug("CDDB disc id = %x\n", discid);
 
 				gint matches;
@@ -1018,7 +1018,7 @@ static void *scan_cd(void *nothing)
 								cddb_disc_get_title(pcddb_disc),
 								cddb_disc_get_genre(pcddb_disc));
 
-							int trackno;
+							gint trackno;
 							for (trackno = firsttrackno; trackno <= lasttrackno; trackno++) {
 								cddb_track_t *pcddb_track = cddb_disc_get_track(pcddb_disc, trackno - 1);
 								cdaudio_set_strinfo(&trackinfo[trackno],
