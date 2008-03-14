@@ -23,7 +23,7 @@ if test -d "/usr/X11R6/include"; then
 fi
 
 dnl append audacious header path to CPPFLAGS when --prefix is specified.
-if test "$prefix" != "NONE" ; then
+if test "x$prefix" != "xNONE" ; then
    CPPFLAGS="$CPPFLAGS -I${includedir}"
 fi
 
@@ -41,7 +41,7 @@ AC_PROG_CXX
 AC_ISC_POSIX
 AC_C_BIGENDIAN
 
-if test x"$GCC" = x"yes"; then
+if test "x$GCC" = "xyes"; then
 	CFLAGS="$CFLAGS -pipe -Wall"
 	CXXFLAGS="$CXXFLAGS -pipe -Wall"
 fi
@@ -176,10 +176,10 @@ dnl ========================
 AC_ARG_ENABLE(ipv6,
 	[  --enable-ipv6		  enable IPv6 support (default=no)],
 			enable_ipv6=$enableval, enable_ipv6=no)
-if test "x$enable_ipv6" = xyes; then
+if test "x$enable_ipv6" = "xyes"; then
     AC_DEFINE(USE_IPV6,, [Define if building with IPv6 support] )
 fi
-AM_CONDITIONAL(USE_IPV6,test "x$enable_ipv6" = xyes)
+AM_CONDITIONAL(USE_IPV6,test "x$enable_ipv6" = "xyes")
 AC_SUBST(USE_IPV6)
 
 dnl chardet support
@@ -187,10 +187,10 @@ dnl ========================
 AC_ARG_ENABLE(chardet,
 	[  --enable-chardet	  enable character set detection support (default=no)],
 			enable_chardet=$enableval, enable_chardet=no)
-if test "x$enable_chardet" = xyes; then
+if test "x$enable_chardet" = "xyes"; then
     AC_DEFINE(USE_CHARDET, 1, [Define if character set detection enabled] )
 fi
-AM_CONDITIONAL(USE_CHARDET,test "x$enable_chardet" = xyes)
+AM_CONDITIONAL(USE_CHARDET,test "x$enable_chardet" = "xyes")
 AC_SUBST(USE_CHARDET)
 
 dnl plugin stuff
@@ -198,7 +198,7 @@ dnl ========================
 
 BUILDSYS_SHARED_LIB
 BUILDSYS_PROG_IMPLIB
-test x"$PROG_IMPLIB_NEEDED" = x"yes" && LIBS="$LIBS -L\${libdir} -laudacious.exe"
+test "x$PROG_IMPLIB_NEEDED" = "xyes" && LIBS="$LIBS -L\${libdir} -laudacious.exe"
 
 dnl Ok, first we find out what flags we need to use.
 AC_MSG_CHECKING([for what extension and flags to use for plugin compilation])
@@ -247,7 +247,7 @@ AC_ARG_ENABLE( esd,
     [enable_esd="yes"]
 )
 
-if test "$enable_esd" = "yes"; then
+if test "x$enable_esd" = "xyes"; then
     PKG_CHECK_MODULES(ESD, [esound >= 0.2],
         [have_esd=yes
          OUTPUT_PLUGINS="$OUTPUT_PLUGINS esd"],
@@ -266,7 +266,7 @@ AC_ARG_ENABLE( pulse,
     [enable_pulse="yes"]
 )
 
-if test "$enable_pulse" = "yes"; then
+if test "x$enable_pulse" = "xyes"; then
     PKG_CHECK_MODULES(PULSE, [libpulse >= 0.9.9],
          [have_pulse=yes
           OUTPUT_PLUGINS="$OUTPUT_PLUGINS pulse_audio"],
@@ -285,7 +285,7 @@ AC_ARG_ENABLE(coreaudio,
     [enable_coreaudio="yes"]
 )
 
-if test "$enable_coreaudio" = "yes"; then
+if test "x$enable_coreaudio" = "xyes"; then
 	AC_CHECK_HEADERS([CoreServices/CoreServices.h],
 		[have_coreaudio=yes
 		 OUTPUT_PLUGINS="$OUTPUT_PLUGINS CoreAudio"],
@@ -303,7 +303,7 @@ AC_ARG_ENABLE(dockalbumart,
     [enable_dockalbumart="yes"]
 )
 
-if test "$enable_dockalbumart" = "yes"; then
+if test "x$enable_dockalbumart" = "xyes"; then
 	AC_CHECK_HEADERS([Carbon/Carbon.h],
 		[have_dockalbumart=yes
 		 GENERAL_PLUGINS="$GENERAL_PLUGINS dockalbumart"],
@@ -369,7 +369,7 @@ AC_ARG_ENABLE(mp3,
     [enable_mp3=yes]
 )
 
-if test "$enable_mp3" = "yes"; then
+if test "x$enable_mp3" = "xyes"; then
     AM_PATH_LIBMAD([enable_mp3=yes], 
         [AC_MSG_WARN([*** Cannot find libmad, mp3 plugin will not be built ***])
          enable_mp3=no]
@@ -379,7 +379,7 @@ else
     enable_mp3=no
 fi
 
-if test "$enable_mp3" = "yes"; then
+if test "x$enable_mp3" = "xyes"; then
   AC_MSG_CHECKING(mad.h suitability)
   ac_save_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS $MAD_CFLAGS $AUDACIOUS_CFLAGS"
@@ -401,7 +401,7 @@ if test "$enable_mp3" = "yes"; then
   CFLAGS="$ac_save_CFLAGS"
 fi
 
-if test "$enable_mp3" = "yes"; then
+if test "x$enable_mp3" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS madplug"
 fi
 
@@ -416,7 +416,7 @@ AC_ARG_ENABLE(rocklight,
     [enable_rocklight="yes"]
 )
 
-if test "$enable_rocklight" = "yes"; then
+if test "x$enable_rocklight" = "xyes"; then
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS rocklight"
 fi
 
@@ -428,14 +428,14 @@ AC_ARG_ENABLE(lirc,
     [enable_lirc="yes"]
 )
 
-if test "$enable_lirc" = "yes"; then
+if test "x$enable_lirc" = "xyes"; then
     AC_CHECK_LIB([lirc_client],[lirc_init],[have_lirc=yes],[have_lirc=no])
 else
     AC_MSG_RESULT([*** LIRC plugin disabled per user request ***])
     have_lirc="no"
 fi
 
-if test "$have_lirc" = "yes"; then
+if test "x$have_lirc" = "xyes"; then
 	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
 fi
 
@@ -626,7 +626,7 @@ AC_ARG_ENABLE(adplug,
     [enable_adplug="yes"]
 )
 
-if test "$enable_adplug" = "yes"; then
+if test "x$enable_adplug" = "xyes"; then
     have_adplug="yes"
     PKG_CHECK_MODULES(BINIO,[libbinio >= 1.4],,[have_adplug=no])
 else
@@ -634,7 +634,7 @@ else
     have_adplug="no"
 fi
 
-if test "$have_adplug" = "yes"; then
+if test "x$have_adplug" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS adplug"
 	AC_SUBST(BINIO_CFLAGS)
 fi
@@ -647,7 +647,7 @@ AC_ARG_ENABLE(vorbis,
     [enable_vorbis="yes"]
 )
 
-if test "$enable_vorbis" = "yes"; then
+if test "x$enable_vorbis" = "xyes"; then
     PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.2 vorbisfile >= 1.2],
         [have_oggvorbis=yes],
         [AC_MSG_WARN([*** Cannot find libogg/libvorbis, Ogg Vorbis support will not be built ***])
@@ -658,7 +658,7 @@ else
     have_oggvorbis=no
 fi
 
-if test "$have_oggvorbis" = "yes"; then
+if test "x$have_oggvorbis" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS vorbis"
 fi
 
@@ -670,7 +670,7 @@ AC_ARG_ENABLE(flacng,
     [enable_flacng="yes"]
 )
 
-if test "$enable_flacng" = "yes"; then
+if test "x$enable_flacng" = "xyes"; then
     AM_PATH_LIBFLAC([have_flacng=yes], 
         [AC_MSG_WARN([*** Cannot find libFLAC, FLACng will not be built ***])
          have_flacng=no]
@@ -680,7 +680,7 @@ else
     have_flacng=no
 fi
 
-if test "$have_flacng" = "yes"; then
+if test "x$have_flacng" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS flacng"
 fi
 
@@ -692,7 +692,7 @@ AC_ARG_ENABLE(wavpack,
     [enable_wavpack="yes"]
 )
 
-if test "$enable_wavpack" = "yes"; then
+if test "x$enable_wavpack" = "xyes"; then
     PKG_CHECK_MODULES(WAVPACK, [wavpack >= 4.31],
         [have_wavpack=yes],
         [AC_MSG_WARN([*** Cannot find WavPack 4.31+, WavPack support will not be built ***])
@@ -703,7 +703,7 @@ else
     have_wavpack=no
 fi
 
-if test "$have_wavpack" = "yes"; then
+if test "x$have_wavpack" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS wavpack"
 fi
 
@@ -715,7 +715,7 @@ AC_ARG_ENABLE(aac,
     [enable_aac=yes]
 )
 
-if test "$enable_aac" = "yes"; then
+if test "x$enable_aac" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS aac"
 fi
 
@@ -727,7 +727,7 @@ AC_ARG_ENABLE(sndfile,
     [enable_sndfile=yes]
 )
 
-if test "$enable_sndfile" = "yes"; then
+if test "x$enable_sndfile" = "xyes"; then
     PKG_CHECK_MODULES(SNDFILE, [sndfile >= 0.19],
         [enable_sndfile=yes],
         [enable_sndfile=no]
@@ -737,7 +737,7 @@ else
     enable_sndfile=no
 fi
 
-if test "$enable_sndfile" = "yes"; then
+if test "x$enable_sndfile" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS sndfile"
 fi
 
@@ -749,7 +749,7 @@ AC_ARG_ENABLE(modplug,
     [enable_modplug="yes"]
 )
 
-if test "$enable_modplug" = "yes"; then
+if test "x$enable_modplug" = "xyes"; then
     INPUT_PLUGINS="$INPUT_PLUGINS modplug"
     have_modplug="yes"
 else
@@ -765,7 +765,7 @@ AC_ARG_ENABLE(musepack,
     [enable_musepack="yes"]
 )
 
-if test "$enable_musepack" = "yes"; then
+if test "x$enable_musepack" = "xyes"; then
     PKG_CHECK_MODULES(TAGLIB, [taglib >= 1.4], [ 
        AC_CHECK_HEADERS(mpcdec/config_types.h,, [
            enable_musepack=no
@@ -776,7 +776,7 @@ else
     enable_musepack=no
 fi
 
-if test "$enable_musepack" = "yes"; then
+if test "x$enable_musepack" = "xyes"; then
         INPUT_PLUGINS="$INPUT_PLUGINS musepack"
         AC_SUBST(TAGLIB_CFLAGS)
 fi
@@ -789,7 +789,7 @@ AC_ARG_ENABLE(wma,
     [enable_wma=yes]
 )
 
-if test "$enable_wma" = "yes"; then
+if test "x$enable_wma" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS wma"
 fi
 
@@ -801,7 +801,7 @@ AC_ARG_ENABLE(ape,
     [enable_ape=yes]
 )
 
-if test "$enable_ape" = "yes"; then
+if test "x$enable_ape" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS demac"
 fi
 
@@ -810,14 +810,14 @@ AC_ARG_ENABLE( jack,
 [  --disable-jack          disable jack output plugin (default=enabled)], [enable_jack=$enableval],
                 [enable_jack="yes"])
 
-if test "x$enable_jack" = xyes; then
+if test "x$enable_jack" = "xyes"; then
         AM_PATH_JACK(have_jack=yes, have_jack=no)
 else
         AC_MSG_RESULT([*** jack plugin disabled per user request ***])
         have_jack=no
 fi
 
-if test "$have_jack" = yes; then
+if test "x$have_jack" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack"
 fi
 
@@ -826,30 +826,30 @@ AC_ARG_ENABLE( arts,
 [  --disable-arts          disable arts output plugin (default=enabled)],,
                 enable_arts="yes")
 
-if test "x$enable_arts" = xyes; then
+if test "x$enable_arts" = "xyes"; then
         AM_PATH_ARTSC(0.9.5, have_arts=yes, have_arts=no)
 else
         AC_MSG_RESULT([*** arts plugin disabled per user request ***])
         have_arts=no
 fi
 
-if test "$have_arts" = yes; then
+if test "x$have_arts" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS arts"
 fi
 
 dnl *** sid
 AC_ARG_ENABLE( sid,
-[  --disable-sid           disable sid input plugin (default=enabled)],,
+[  --disable-sid           disable SID input plugin (default=enabled)],,
                 enable_sid="yes")
 
-if test "x$enable_sid" = xyes; then
+if test "x$enable_sid" = "xyes"; then
         AM_PATH_SIDPLAY(have_sidplay=yes, have_sidplay=no)
 else
-        AC_MSG_RESULT([*** sid plugin disabled per user request ***])
+        AC_MSG_RESULT([*** SID plugin disabled per user request ***])
         have_sidplay=no
 fi
 
-if test "$have_sidplay" = yes; then
+if test "x$have_sidplay" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS sid"
 fi
 
@@ -862,13 +862,13 @@ AC_ARG_ENABLE(oss,
 )
 
 have_oss=no
-if test "$enable_oss" = "yes"; then
+if test "x$enable_oss" = "xyes"; then
     AC_MSG_CHECKING(for OSS include dir)
     OSS_CFLAGS=""
     if test -f "/etc/oss.conf" ; then
         for i in `cat /etc/oss.conf`; do
             t=`echo $i | sed -e 's/OSSLIBDIR=//'`
-            if test "$i" != "$t" ; then
+            if test "x$i" != "x$t" ; then
                 if test -f "$t/include/sys/soundcard.h" -o -f "$i/include/soundcard.h" ; then
                     OSS_CFLAGS="-I$t/include"
                 fi
@@ -887,11 +887,11 @@ if test "$enable_oss" = "yes"; then
     AC_CHECK_HEADERS(machine/soundcard.h)
     CFLAGS=$CFLAGS_save
 
-    if test "${ac_cv_header_soundcard_h}" = "yes" || test "${ac_cv_header_sys_soundcard_h}" = "yes" || test "${ac_cv_header_machine_soundcard_h}" = "yes"; then
+    if test "x${ac_cv_header_soundcard_h}" = "xyes" || test "x${ac_cv_header_sys_soundcard_h}" = "xyes" || test "x${ac_cv_header_machine_soundcard_h}" = "xyes"; then
         have_oss=yes
     fi
 
-    if test "${have_oss}" = "yes"; then
+    if test "x${have_oss}" = "xyes"; then
 	AC_MSG_CHECKING(whether we need -lossaudio)
         AC_TRY_LINK([
 		#include <sys/ioctl.h>
@@ -910,13 +910,13 @@ if test "$enable_oss" = "yes"; then
    fi
 fi
 
-if test "$have_oss" = "yes"; then
+if test "x$have_oss" = "xyes"; then
     AC_DEFINE(HAVE_OSS, 1, [Define if the OSS output plugin should be built])
 else
     have_oss=no
 fi
 
-if test "$have_oss" = "yes"; then
+if test "x$have_oss" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS"
 fi
 
@@ -932,13 +932,13 @@ AC_ARG_ENABLE(oss4,
 )
 
 have_oss4=no
-if test "$enable_oss4" = "yes"; then
+if test "x$enable_oss4" = "xyes"; then
     AC_MSG_CHECKING(for OSS4 include dir)
     OSS4_CFLAGS=""
     if test -f "/etc/oss.conf" ; then
         for i in `cat /etc/oss.conf`; do
             t=`echo $i | sed -e 's/OSSLIBDIR=//'`
-            if test "$i" != "$t" ; then
+            if test "x$i" != "x$t" ; then
                 if test -f "$t/include/sys/soundcard.h" -o -f "$i/include/soundcard.h" ; then
                     OSS4_CFLAGS="-I$t/include"
                 fi
@@ -957,11 +957,11 @@ if test "$enable_oss4" = "yes"; then
     AC_CHECK_HEADERS(machine/soundcard.h)
     CFLAGS=$CFLAGS_save
 
-    if test "${ac_cv_header_soundcard_h}" = "yes" || test "${ac_cv_header_sys_soundcard_h}" = "yes" || test "${ac_cv_header_machine_soundcard_h}" = "yes"; then
+    if test "x${ac_cv_header_soundcard_h}" = "xyes" || test "x${ac_cv_header_sys_soundcard_h}" = "xyes" || test "x${ac_cv_header_machine_soundcard_h}" = "xyes"; then
         have_oss4=yes
     fi
 
-    if test "${have_oss4}" = "yes"; then
+    if test "x${have_oss4}" = "xyes"; then
 	AC_MSG_CHECKING(whether we need -lossaudio)
         AC_TRY_LINK([
 		#include <sys/ioctl.h>
@@ -980,13 +980,13 @@ if test "$enable_oss4" = "yes"; then
    fi
 fi
 
-if test "$have_oss4" = "yes"; then
+if test "x$have_oss4" = "xyes"; then
     AC_DEFINE(HAVE_OSS4, 1, [Define if the OSS4 output plugin should be built])
 else
     have_oss4=no
 fi
 
-if test "$have_oss4" = "yes"; then
+if test "x$have_oss4" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS4"
 fi
 
@@ -1000,7 +1000,7 @@ AC_ARG_ENABLE(alsa,
     [enable_alsa=yes]
 )
 
-if test "$enable_alsa" = "yes"; then
+if test "x$enable_alsa" = "xyes"; then
     PKG_CHECK_MODULES(ALSA, [alsa >= 1.0],
 [
 have_alsa=yes
@@ -1017,7 +1017,7 @@ else
     alsalib_available=check
 fi
 
-if test "$have_alsa" = "yes"; then
+if test "x$have_alsa" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa"
 fi
 
@@ -1158,7 +1158,7 @@ AC_ARG_ENABLE(timidity,
 ]
 )
 
-if test "$enable_timidity" = "yes"; then
+if test "x$enable_timidity" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS timidity"
 fi
 
@@ -1177,7 +1177,7 @@ AC_CACHE_CHECK(for FreeBSD newpcm driver, beep_cv_newpcm_driver,
     fi
 )
 
-if test "$beep_cv_newpcm_driver" = "yes"; then
+if test "x$beep_cv_newpcm_driver" = "xyes"; then
     AC_DEFINE(HAVE_NEWPCM, 1, [Define if you have the FreeBSD newpcm driver])
 fi
 
@@ -1400,11 +1400,11 @@ AM_PATH_XML2(2.0.0, , [
 	have_xspf="no"
 ])
 
-if test "$have_paranormal" = "yes"; then
+if test "x$have_paranormal" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS paranormal"
 fi
 
-if test "$have_xspf" = "yes"; then
+if test "x$have_xspf" = "xyes"; then
 	CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
 fi
 
@@ -1415,13 +1415,13 @@ AC_ARG_ENABLE(projectm,
 [have_projectm=$enableval],
 [have_projectm=yes])
 
-if test "$have_projectm" = "yes"; then
+if test "x$have_projectm" = "xyes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM, libprojectM < 1.0, [have_projectm="yes"], [have_projectm="no"])
 	AM_PATH_SDL(1.2.5, , [
 		AC_MSG_WARN([*** SDL is not installed. projectM will not be built. ***])
 		have_projectm="no"
 	])
-	if test x$libprjM = xno; then
+	if test "x$libprjM" = "xno"; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
 	                        You can download libprojectM at http://projectm.sf.net/])
@@ -1433,7 +1433,7 @@ fi
 AC_SUBST(LIBPROJECTM_LIBS)
 AC_SUBST(LIBPROJECTM_CFLAGS)
 
-if test "$have_projectm" = "yes"; then
+if test "x$have_projectm" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm"
 fi
 
@@ -1444,13 +1444,13 @@ AC_ARG_ENABLE(projectm-1.0,
 [have_projectm1=$enableval],
 [have_projectm1=yes])
 
-if test "$have_projectm1" = "yes"; then
+if test "x$have_projectm1" = "xyes"; then
 	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0 >= 1.2.0], [have_projectm1="yes"], [have_projectm1="no"])
 fi
 
-if test "$have_projectm1" = "yes"; then
+if test "x$have_projectm1" = "xyes"; then
 	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM < 1.1], [have_projectm1="yes"], [have_projectm1="no"])
-	if test x$libprjM = xno; then
+	if test "x$libprjM" = "xno"; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
 	                        You can download libprojectM at http://projectm.sf.net/])
@@ -1465,7 +1465,7 @@ AC_SUBST(LIBPROJECTM1_CFLAGS)
 AC_SUBST(GTKGLEXT_LIBS)
 AC_SUBST(GTKGLEXT_CFLAGS)
 
-if test "$have_projectm1" = "yes"; then
+if test "x$have_projectm1" = "xyes"; then
 	VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS projectm-1.0"
 fi
 
@@ -1477,7 +1477,7 @@ AC_ARG_ENABLE(tta,
     [enable_tta=yes]
 )
 
-if test "$enable_tta" = "yes"; then
+if test "x$enable_tta" = "xyes"; then
 	INPUT_PLUGINS="$INPUT_PLUGINS tta"
 fi
 
@@ -1489,7 +1489,7 @@ AC_ARG_ENABLE(filewriter,
     [enable_filewriter=yes]
 )
 
-if test "$enable_filewriter" = "yes"; then
+if test "x$enable_filewriter" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS filewriter"
 fi
 
@@ -1499,9 +1499,9 @@ AC_ARG_ENABLE(filewriter_mp3,
     [enable_filewriter_mp3=$enableval], [enable_filewriter_mp3=yes]
 )
 
-if test "$enable_filewriter_mp3" = "yes"; then
+if test "x$enable_filewriter_mp3" = "xyes"; then
    AC_CHECK_LIB(mp3lame -lm, lame_init, [have_lame=yes], [have_lame=no])
-   if test "$have_lame" = yes; then
+   if test "x$have_lame" = "xyes"; then
       AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS -lmp3lame"
    fi
@@ -1513,10 +1513,10 @@ AC_ARG_ENABLE(filewriter_vorbis,
     [enable_filewriter_vorbis=$enableval], [enable_filewriter_vorbis=yes]
 )
 
-if test "$enable_filewriter_vorbis" = "yes"; then
+if test "x$enable_filewriter_vorbis" = "xyes"; then
    PKG_CHECK_MODULES(OGG_VORBIS, [ogg >= 1.0 vorbis >= 1.0 vorbisfile >= 1.0],
    [have_vorbisenc=yes], [have_vorbisenc=no])
-   if test "$have_vorbisenc" = yes; then
+   if test "x$have_vorbisenc" = "xyes"; then
       AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
       FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags vorbisenc`"
       FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs vorbisenc`"
@@ -1529,18 +1529,18 @@ AC_ARG_ENABLE(filewriter_flac,
     [enable_filewriter_flac=$enableval], [enable_filewriter_flac=yes]
 )
 
-if test "$enable_filewriter_flac" = "yes"; then
+if test "x$enable_filewriter_flac" = "xyes"; then
    PKG_CHECK_MODULES(FLAC, [flac >= 1.1.2],
       [have_writer_flac=yes], [have_writer_flac=no]
    )
-   if test "$have_writer_flac" = yes; then
+   if test "x$have_writer_flac" = "xyes"; then
       AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
 	  FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags flac`"
 	  FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs flac`"
    fi
 fi
 
-if test "$enable_filewriter" != yes; then
+if test "x$enable_filewriter" != "xyes"; then
    have_lame=no
    have_vorbisenc=no
    have_writer_flac=no
@@ -1582,7 +1582,7 @@ AC_SUBST(TRANSPORT_PLUGIN_DIR)
 AC_SUBST(pluginsubs)
 
 dnl XXX Work around some autoconf bugs.
-if test "$prefix" = "NONE"; then
+if test "x$prefix" = "xNONE"; then
         prefix="${ac_default_prefix}"
 fi
 
@@ -1596,7 +1596,7 @@ AC_SUBST(localedir)
 BEEP_DEFINES="$CFLAGS -DDATA_DIR=\\\"$datadir/audacious\\\" -DPLUGIN_DIR=\\\"$plugindir\\\" -DPLUGINSUBS=$pluginsubs -DLOCALEDIR=\\\"$localedir\\\""
 CFLAGS="$CFLAGS $EXTRA_CFLAGS"
 
-if test "$enable_user_plugin_dir" = "no"; then
+if test "x$enable_user_plugin_dir" = "xno"; then
     AC_DEFINE(DISABLE_USER_PLUGIN_DIR,, [Define to disable per user plugin directory])
 fi
 
