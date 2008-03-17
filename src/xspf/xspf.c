@@ -367,7 +367,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     if (playlist->attribute & PLAYLIST_USE_RELATIVE) {
         /* prescan to determine base uri */
         for (node = playlist->entries; node != NULL; node = g_list_next(node)) {
-            gchar *ptr1, *ptr2;
+            gchar *ptr1, *ptr2, *ptrslash;
             PlaylistEntry *entry = PLAYLIST_ENTRY(node->data);
             gchar *tmp;
             gint tmplen = 0;
@@ -385,15 +385,18 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
             }
             
             ptr1 = base;
-            ptr2 = tmp;
+            ptrslash = ptr2 = tmp;
 
             while(ptr1 && ptr2 && *ptr1 && *ptr2 && *ptr1 == *ptr2) {
+                if (*ptr2 == '/') ptrslash = ptr2 + 1;
+
                 ptr1++;
                 ptr2++;
             }
             
-            *ptr2 = '\0';       //terminate
-            tmplen = ptr2 - tmp;
+            if (!(*ptrslash)) ptrslash--;
+            *ptrslash = '\0';       //terminate
+            tmplen = ptrslash - tmp;
 
             if (tmplen <= baselen) {
                 g_free(base);
