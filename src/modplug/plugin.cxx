@@ -4,6 +4,8 @@
  * This source code is public domain.
  */
 
+// #define AUD_DEBUG 1
+
 #include "modplug.h"
 #include "gui/main.h"
 extern "C" {
@@ -20,6 +22,7 @@ static void Init(void)
 
 static int CanPlayFileFromVFS(char* aFilename, VFSFile *VFSFile)
 {
+    AUDDBG("aFilename=%s\n", aFilename);
     if(gModplugXMMS.CanPlayFileFromVFS(aFilename, VFSFile))
         return 1;
     return 0;
@@ -27,7 +30,7 @@ static int CanPlayFileFromVFS(char* aFilename, VFSFile *VFSFile)
 
 static void PlayFile(InputPlayback *data)
 {
-        char* aFilename = data->filename;
+    char* aFilename = data->filename;
     gModplugXMMS.SetOutputPlugin(*data->output);
     gModplugXMMS.PlayFile(aFilename, data);
 }
@@ -81,7 +84,9 @@ void ShowFileInfoBox(char* aFilename)
 const gchar *fmts[] =
     { "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "j2b", "mt2",
       "mdz", "mdr", "mdgz", "mdbz", "mod", "s3z", "s3r", "s3gz", "s3m", "xmz", "xmr", "xmgz",
-      "itz", "itr", "itgz", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2", NULL };
+      "itz", "itr", "itgz", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2",
+      "zip", "gz", "bz2", "rar", "rb",
+      NULL };
 
 InputPlugin gModPlug =
 {

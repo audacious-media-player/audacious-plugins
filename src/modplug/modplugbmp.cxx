@@ -1,3 +1,4 @@
+#define AUD_DEBUG 1
 /* Modplug XMMS Plugin
  * Authors: Kenton Varda <temporal@gauge3d.org>
  *
@@ -237,6 +238,10 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	if (lExt == ".gz")
 		return ContainsMod(aFilename);
 	if (lExt == ".bz2")
+		return ContainsMod(aFilename);
+	if (lExt == ".rar")
+		return ContainsMod(aFilename);
+	if (lExt == ".rb")
 		return ContainsMod(aFilename);
 
 	return false;
