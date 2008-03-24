@@ -53,7 +53,8 @@ static int hw_buffer_size_in, hw_period_size_in;	/* in input bytes */
 static snd_mixer_elem_t *pcm_element;
 static snd_mixer_t *mixer;
 
-static gboolean going, paused, mixer_start = TRUE;
+static volatile gboolean going;
+static gboolean paused, mixer_start = TRUE;
 static gboolean prebuffer, remove_prebuffer;
 
 static gboolean alsa_can_pause;
@@ -64,7 +65,7 @@ static int thread_buffer_size;	 /* size of intermediate buffer in bytes */
 static char *thread_buffer;	 /* audio intermediate buffer */
 static int rd_index, wr_index;	 /* current read/write position in int-buffer */
 static gboolean pause_request;	 /* pause status currently requested */
-static int flush_request;	 /* flush status (time) currently requested */
+static volatile int flush_request;	 /* flush status (time) currently requested */
 static int prebuffer_size;
 GStaticMutex alsa_mutex = G_STATIC_MUTEX_INIT;
 
@@ -329,7 +330,7 @@ static void alsa_do_flush(int time)
 void alsa_flush(int time)
 {
 	flush_request = time;
-	while (flush_request != -1)
+	while ((flush_request != -1) && (going))
 		g_usleep(10000);
 }
 
