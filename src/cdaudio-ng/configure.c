@@ -9,29 +9,29 @@
 
 extern cdng_cfg_t cdng_cfg;
 
-static GtkWidget *configwindow,
-		*okbutton,
-		*cancelbutton,
-		*maintable,
-		*daeframe,
-		*titleinfoframe,
-		*miscframe,
-		*daetable,
-		*titleinfotable,
-		*misctable,
-		*limitcheckbutton,
-		*usecdtextcheckbutton,
-		*usecddbcheckbutton,
-		*cddbserverlabel,
-		*cddbportlabel,
-		*cddbserverentry,
-		*cddbportentry,
-		*cddbhttpcheckbutton,
-		*usedevicecheckbutton,
-		*buttonbox,
-		*limitspinbutton,
-		*deviceentry,
-		*debugcheckbutton;
+static GtkWidget *configwindow = NULL,
+                 *okbutton = NULL,
+                 *cancelbutton = NULL,
+                 *maintable = NULL,
+                 *daeframe = NULL,
+                 *titleinfoframe = NULL,
+                 *miscframe = NULL,
+                 *daetable = NULL,
+                 *titleinfotable = NULL,
+                 *misctable = NULL,
+                 *limitcheckbutton = NULL,
+                 *usecdtextcheckbutton = NULL,
+                 *usecddbcheckbutton = NULL,
+                 *cddbserverlabel = NULL,
+                 *cddbportlabel = NULL,
+                 *cddbserverentry = NULL,
+                 *cddbportentry = NULL,
+                 *cddbhttpcheckbutton = NULL,
+                 *usedevicecheckbutton = NULL,
+                 *buttonbox = NULL,
+                 *limitspinbutton = NULL,
+                 *deviceentry = NULL,
+                 *debugcheckbutton = NULL;
 
 
 static void configure_values_to_gui(void)
@@ -265,6 +265,9 @@ void configure_create_gui()
 
 void configure_show_gui(void)
 {
+    if (configwindow == NULL)
+        configure_create_gui();
+
 	configure_values_to_gui();
 	gtk_widget_show(configwindow);
 	gtk_window_present(GTK_WINDOW(configwindow));

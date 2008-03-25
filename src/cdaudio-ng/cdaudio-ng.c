@@ -200,8 +200,6 @@ static void cdaudio_init()
 		cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
 		cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);
 
-	configure_create_gui();
-
 	menu_item_text = _("Add CD");
 	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
