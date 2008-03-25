@@ -3,12 +3,7 @@
  *
  * This source code is public domain.
  */
-
-// stddefs.h: Standard defs to streamline coding style.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(__MODPLUGXMMS_STDDEFS_H__INCLUDED__)
+#ifndef __MODPLUGXMMS_STDDEFS_H__INCLUDED__
 #define __MODPLUGXMMS_STDDEFS_H__INCLUDED__
 
 #include <glib.h>
@@ -16,16 +11,12 @@
 #define MODPLUG_CFGID		"modplug"
 #define MODPLUG_CONVERT(X)	g_convert(X, -1, "UTF-8", "CP850", NULL, NULL, NULL)
 
-//Invalid pointer
+// Invalid pointer
 #ifndef NULL
 #define NULL 0
 #endif
 
-//Standard types. ----------------------------------------
-//These data types are provided because the standard types vary across
-// platforms.  For example, long is 64-bit on some 64-bit systems.
-//u = unsigned
-//# = size in bits
+// Standard types
 typedef guchar                 uchar;
 
 typedef gint8                  int8;
@@ -42,4 +33,4 @@ typedef float                  float32;
 typedef double                 float64;
 typedef long double            float128;
 
-#endif // included
+#endif
