@@ -198,7 +198,8 @@ static void mp3_init(void)
 
 static gint mp3_open(void)
 {
-    if ((gfp = lame_init()) == (void *)-1)
+    gfp = lame_init();
+    if (gfp == NULL)
         return 0;
 
     /* setup id3 data */
@@ -206,9 +207,6 @@ static gint mp3_open(void)
 
     if (tuple) {
         /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
-
-        AUDDBG("track_name = %s\n", aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
-
         lameid3.track_name = g_strdup(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
         id3tag_set_title(gfp, lameid3.track_name);
 
@@ -227,8 +225,15 @@ static gint mp3_open(void)
         lameid3.track_number = g_strdup_printf("%d", aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
         id3tag_set_track(gfp, lameid3.track_number);
 
-        //        id3tag_write_v1(gfp);
-        id3tag_add_v2(gfp);
+        if(force_v2_val) {
+            id3tag_add_v2(gfp);
+        }
+        if(only_v1_val) {
+            id3tag_v1_only(gfp);
+        }
+        if(only_v2_val) {
+            id3tag_v2_only(gfp);
+        }
     }
 
     /* input stream description */
@@ -309,9 +314,10 @@ static void mp3_close(void)
         encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
         aud_vfs_fwrite(encbuffer, 1, encout, output_file);
 
-        //        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag??
+//        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag??
 
         lame_close(gfp);
+        AUDDBG("lame_close() done\n");
 
         free_lameid3(&lameid3);
 
