@@ -119,7 +119,11 @@ InputPlugin gModPlug =
     NULL,
     NULL,
     CanPlayFileFromVFS, // vfs
-    (gchar **)fmts
+    (gchar **)fmts,
+    NULL,
+    NULL,
+    TRUE,   // subtune. to exclude .zip etc which doesn't contain any mod file --yaz
+    NULL
 };
 
 InputPlugin *modplug_iplist[] = { &gModPlug, NULL };
