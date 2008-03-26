@@ -98,7 +98,7 @@ audmad_init()
     audmad_config = g_malloc0(sizeof(audmad_config_t));
 
     audmad_config->dither = TRUE;
-    audmad_config->force_reopen_audio = FALSE;
+    audmad_config->force_reopen_audio = TRUE;
     audmad_config->fast_play_time_calc = TRUE;
     audmad_config->use_xing = TRUE;
     audmad_config->sjis = FALSE;
