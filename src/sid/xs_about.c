@@ -162,6 +162,7 @@ void xs_about(void)
 			"\n"
 			"(C) Copyright 1999-2007\n"
 			"\tTecnic Software productions (TNSP)\n"
+			"\tLicensed under GNU GPL v2\n"
 			"\n"
 			"Programming and design\n"
 			"\tMatti 'ccr' Hämäläinen\n"
