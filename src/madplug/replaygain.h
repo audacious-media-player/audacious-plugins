@@ -21,9 +21,6 @@
  */
 
 #include "plugin.h"
-#include "stdlib.h"
-#include "math.h"
-#include "ctype.h"
 
 #ifndef __replaygain_h__
 #define __replaygain_h__
