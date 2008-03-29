@@ -24,58 +24,6 @@
 #include <ctype.h>
 
 
-#ifndef __AUDACIOUS_NEWVFS__
-/* File handling
- */
-t_xs_file *xs_fopen(const gchar *path, const gchar *mode)
-{
-	return fopen(path, mode);
-}
-
-
-gint xs_fclose(t_xs_file *f)
-{
-	return fclose(f);
-}
-
-
-gint xs_fgetc(t_xs_file *f)
-{
-	return fgetc(f);
-}
-
-
-size_t xs_fread(void *p, size_t s, size_t n, t_xs_file *f)
-{
-	return fread(p, s, n, f);
-}
-
-
-gint xs_feof(t_xs_file *f)
-{
-	return feof(f);
-}
-
-
-gint xs_ferror(t_xs_file *f)
-{
-	return ferror(f);
-}
-
-
-glong xs_ftell(t_xs_file *f)
-{
-	return ftell(f);
-}
-
-
-gint xs_fseek(t_xs_file *f, glong o, gint w)
-{
-	return fseek(f, o, w);
-}
-#endif
-
-
 guint16 xs_fread_be16(t_xs_file *f)
 {
 	return (((guint16) xs_fgetc(f)) << 8) | ((guint16) xs_fgetc(f));
@@ -137,9 +85,6 @@ gint xs_fload_buffer(const gchar *pcFilename, guint8 **buf, size_t *bufSize)
 		return -4;
 	}
 }
-
-
-
 
 
 /* Copy a string

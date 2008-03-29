@@ -80,14 +80,14 @@ extern "C" {
 #define xs_fseek(a,b,c) aud_vfs_fseek(a,b,c)
 #else
 #define t_xs_file FILE
-t_xs_file *xs_fopen(const gchar *, const gchar *);
-gint	xs_fclose(t_xs_file *);
-gint	xs_fgetc(t_xs_file *);
-size_t	xs_fread(void *, size_t, size_t, t_xs_file *);
-gint	xs_feof(t_xs_file *);
-gint	xs_ferror(t_xs_file *);
-glong	xs_ftell(t_xs_file *);
-gint	xs_fseek(t_xs_file *, glong, gint);
+#define xs_fopen(a,b)fopen(a,b)
+#define xs_fclose(a) fclose(a)
+#define xs_fgetc(a) fgetc(a)
+#define xs_fread(a,b,c,d) fread(a,b,c,d)
+#define xs_feof(a) feof(a)
+#define xs_ferror(a) ferror(a)
+#define xs_ftell(a) ftell(a)
+#define xs_fseek(a,b,c) fseek(a,b,c)
 #endif
 guint16 xs_fread_be16(t_xs_file *);
 guint32 xs_fread_be32(t_xs_file *);
