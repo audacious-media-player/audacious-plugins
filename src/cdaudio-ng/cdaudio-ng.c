@@ -86,6 +86,7 @@ static void			cdaudio_get_song_info(gchar *filename, gchar **title, gint *length
 static Tuple            	*cdaudio_get_song_tuple(gchar *filename);
 
 static void			menu_click(void);
+static void			rescan_menu_click(void);
 static Tuple            	*create_tuple_from_trackinfo_and_filename(gchar *filename);
 static void			dae_play_loop(dae_params_t *pdae_params);
 static void			*scan_cd(void *nothing);
@@ -199,6 +200,13 @@ static void cdaudio_init()
 	debug("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
 		cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
 		cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);
+
+	menu_item_text = _("Rescan CD");
+	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_REFRESH, GTK_ICON_SIZE_MENU));
+	gtk_widget_show(main_menu_item);
+	audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
+	g_signal_connect(G_OBJECT(main_menu_item), "activate", G_CALLBACK(rescan_menu_click), NULL);
 
 	menu_item_text = _("Add CD");
 	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
@@ -612,7 +620,7 @@ static Tuple *cdaudio_get_song_tuple(gchar *filename)
 /*
  * auxiliar functions
  */
-static void menu_click()
+static void menu_click(void)
 {
 	debug("plugin services menu option selected\n");
 
@@ -630,6 +638,13 @@ static void menu_click()
 		for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
 			append_track_to_playlist(trackno);
 	}
+}
+
+static void rescan_menu_click(void)
+{
+	debug("plugin services rescan option selected\n");
+	
+	scan_cd_threaded(0, 0);
 }
 
 static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
