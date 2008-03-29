@@ -138,14 +138,14 @@ mad_ucs4len(id3_ucs4_t *ucs)
 id3_ucs4_t *
 mad_ucs4dup(id3_ucs4_t *org)
 {
-    id3_ucs4_t *new = NULL;
+    id3_ucs4_t *res = NULL;
     size_t len = mad_ucs4len(org);
 
-    new = g_malloc0((len + 1) * sizeof(id3_ucs4_t));
-    memcpy(new, org, len * sizeof(id3_ucs4_t));
-    *(new + len) = 0; //terminate
+    res = g_malloc0((len + 1) * sizeof(id3_ucs4_t));
+    memcpy(res, org, len * sizeof(id3_ucs4_t));
+    *(res + len) = 0; //terminate
 
-    return new;
+    return res;
 }
 
 #define BYTES(x) ((x) * sizeof(id3_ucs4_t))
