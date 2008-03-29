@@ -199,17 +199,16 @@ mad_parse_genre(const id3_ucs4_t *string)
                 *(tmp + tmp_len) = 0; //terminate
                 ptr += tmp_len;
 
+                /* id3_genre_name may, in some cases, return the given string
+                 * so we must free it after we're done, not before.
+                 */
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
 
-                g_free(tmp);
-                tmp = NULL;
-                
-                if (genre) {
-                    tmp_len = mad_ucs4len(genre);
-                    memcpy(ret + ret_len, genre, BYTES(tmp_len));
-                    ret_len += tmp_len;
-                }
+                tmp_len = mad_ucs4len(genre);
+                memcpy(ret + ret_len, genre, BYTES(tmp_len));
+                ret_len += tmp_len;
                 *(ret + ret_len) = 0; //terminate
+                g_free(tmp);
             }
         }
         else {
@@ -235,18 +234,17 @@ mad_parse_genre(const id3_ucs4_t *string)
                 *(tmp + tmp_len) = 0; //terminate
                 ptr += tmp_len;
 
+                /* id3_genre_name may, in some cases, return the given string
+                 * so we must free it after we're done, not before.
+                 */
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
                 AUDDBG("genre length = %d\n", mad_ucs4len(genre));
-
-                g_free(tmp);
-                tmp = NULL;
                 
-                if (genre) {
-                    tmp_len = mad_ucs4len(genre);
-                    memcpy(ret + ret_len, genre, BYTES(tmp_len));
-                    ret_len += tmp_len;
-                }
+                tmp_len = mad_ucs4len(genre);
+                memcpy(ret + ret_len, genre, BYTES(tmp_len));
+                ret_len += tmp_len;
                 *(ret + ret_len) = 0; //terminate
+                g_free(tmp);
             }
             else { // plain text
                 tmp_len = end - ptr;
