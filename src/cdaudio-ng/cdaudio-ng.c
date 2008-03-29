@@ -208,6 +208,12 @@ static void cdaudio_init()
 	audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
 	g_signal_connect(G_OBJECT(main_menu_item), "activate", G_CALLBACK(rescan_menu_click), NULL);
 
+	playlist_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+	gtk_widget_show(playlist_menu_item);
+	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
+	g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(menu_click), NULL);
+
 	menu_item_text = _("Add CD");
 	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
