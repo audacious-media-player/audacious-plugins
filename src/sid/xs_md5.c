@@ -12,9 +12,10 @@
 #include <glib.h>
 
 
-#ifndef WORDS_BIGENDIAN
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
 #define xs_md5_bytereverse(buf, len)	/* Nothing */
 #else
+#if G_BYTE_ORDER == G_BIG_ENDIAN
 void xs_md5_bytereverse(guint8 *buf, guint l)
 {
 	guint32 t;
@@ -24,6 +25,9 @@ void xs_md5_bytereverse(guint8 *buf, guint l)
 		buf += sizeof(guint32);
 	} while (--l);
 }
+#else
+#error Unsupported endianess!
+#endif
 #endif
 
 

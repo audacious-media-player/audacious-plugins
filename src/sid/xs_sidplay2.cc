@@ -173,10 +173,14 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 			break;
 
 		case FMT_U16_NE:
-#ifdef WORDS_BIGENDIAN
+#if G_BYTE_ORDER == G_BIG_ENDIAN
 			myEngine->currConfig.sampleFormat = SID2_BIG_UNSIGNED;
 #else
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
 			myEngine->currConfig.sampleFormat = SID2_LITTLE_UNSIGNED;
+#else
+#error Unsupported endianess!
+#endif
 #endif
 			break;
 
@@ -190,10 +194,14 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 
 		default:
 			myStatus->audioFormat = FMT_S16_NE;
-#ifdef WORDS_BIGENDIAN
+#if G_BYTE_ORDER == G_BIG_ENDIAN
 			myEngine->currConfig.sampleFormat = SID2_BIG_SIGNED;
 #else
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
 			myEngine->currConfig.sampleFormat = SID2_LITTLE_SIGNED;
+#else
+#error Unsupported endianess!
+#endif
 #endif
 			break;
 
