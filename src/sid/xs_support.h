@@ -105,12 +105,6 @@ void	xs_findnext(const gchar *, size_t *);
 void	xs_findeol(const gchar *, size_t *);
 void	xs_findnum(const gchar *, size_t *);
 
-#ifdef HAVE_MEMSET
-#define	xs_memset memset
-#else
-void	*xs_memset(void *, int, size_t);
-#endif
-
 #ifdef __cplusplus
 }
 #endif

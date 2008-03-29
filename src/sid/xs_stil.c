@@ -55,7 +55,7 @@ static gboolean xs_stildb_node_realloc(t_xs_stil_node *pNode, gint nsubTunes)
 			clearIndex = pNode->nsubTunes + 1;
 			clearLength = (nsubTunes - clearIndex + 1);
 		}
-		xs_memset(&(pNode->subTunes[clearIndex]), 0, clearLength * sizeof(t_xs_stil_subnode **));
+		memset(&(pNode->subTunes[clearIndex]), 0, clearLength * sizeof(t_xs_stil_subnode **));
 		
 		pNode->nsubTunes = nsubTunes;
 	}

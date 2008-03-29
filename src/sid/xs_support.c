@@ -298,16 +298,3 @@ void xs_findnum(const gchar *pcStr, size_t *piPos)
 		(*piPos)++;
 }
 
-
-#ifndef HAVE_MEMSET
-void *xs_memset(void *p, int c, size_t n)
-{
-	guint8 *dp;
-
-	dp = (guint8 *) p;
-	while (n--)
-		*(dp++) = c;
-
-	return p;
-}
-#endif

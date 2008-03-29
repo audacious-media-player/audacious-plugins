@@ -210,7 +210,7 @@ void xs_init_configuration(void)
 	XSDEBUG("initializing configuration ...\n");
 	XS_MUTEX_LOCK(xs_cfg);
 
-	xs_memset(&xs_cfg, 0, sizeof(xs_cfg));
+	memset(&xs_cfg, 0, sizeof(xs_cfg));
 	
 	/* Initialize values with sensible defaults */
 	xs_cfg.audioBitsPerSample = XS_RES_16BIT;

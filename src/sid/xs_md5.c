@@ -205,15 +205,15 @@ void xs_md5_finish(t_xs_md5state *ctx, t_xs_md5hash digest)
 	/* Pad out to 56 mod 64 */
 	if (count < 8) {
 		/* Two lots of padding:  Pad the first block to 64 bytes */
-		xs_memset(p, 0, count);
+		memset(p, 0, count);
 		xs_md5_bytereverse(ctx->in, 16);
 		xs_md5_transform(ctx->buf, (guint32 *) ctx->in);
 
 		/* Now fill the next block with 56 bytes */
-		xs_memset(ctx->in, 0, 56);
+		memset(ctx->in, 0, 56);
 	} else {
 		/* Pad block to 56 bytes */
-		xs_memset(p, 0, count - 8);
+		memset(p, 0, count - 8);
 	}
 	xs_md5_bytereverse(ctx->in, 14);
 
@@ -224,5 +224,5 @@ void xs_md5_finish(t_xs_md5state *ctx, t_xs_md5hash digest)
 	xs_md5_transform(ctx->buf, (guint32 *) ctx->in);
 	xs_md5_bytereverse((guint8 *) ctx->buf, 4);
 	memcpy(digest, ctx->buf, 16);
-	xs_memset(ctx, 0, sizeof(ctx));	/* In case it's sensitive */
+	memset(ctx, 0, sizeof(ctx));	/* In case it's sensitive */
 }

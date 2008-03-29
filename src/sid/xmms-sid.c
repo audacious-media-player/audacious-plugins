@@ -138,7 +138,7 @@ void xs_reinit(void)
 	XS_MUTEX_LOCK(xs_cfg);
 
 	/* Initialize status and sanitize configuration */
-	xs_memset(&xs_status, 0, sizeof(xs_status));
+	memset(&xs_status, 0, sizeof(xs_status));
 
 	if (xs_cfg.audioFrequency < 8000)
 		xs_cfg.audioFrequency = 8000;
