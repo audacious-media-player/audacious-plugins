@@ -189,25 +189,26 @@ mad_parse_genre(const id3_ucs4_t *string)
             }
             else if (ptr <= tail && *ptr != 0) {
                 // reference to an id3v1 genre code
-                for(end = ptr; *end != ')' && *end != 0;) {
+                for(tmp_len = 0, end = ptr; *end != ')' && *end != 0;) {
                     end++;
+                    tmp_len++;
                 }
 
-                tmp = g_malloc0(BYTES(end - ptr + 1));
-                memcpy(tmp, ptr, BYTES(end - ptr));
-                *(tmp + (end - ptr)) = 0; //terminate
-                ptr += end - ptr;
+                tmp = g_malloc0(BYTES(tmp_len + 1));
+                memcpy(tmp, ptr, BYTES(tmp_len));
+                *(tmp + tmp_len) = 0; //terminate
+                ptr += tmp_len;
 
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
 
                 g_free(tmp);
                 tmp = NULL;
-
-                tmp_len = mad_ucs4len(genre);
-
-                memcpy(ret + ret_len, genre, BYTES(tmp_len));
-
-                ret_len += tmp_len;
+                
+                if (genre) {
+                    tmp_len = mad_ucs4len(genre);
+                    memcpy(ret + ret_len, genre, BYTES(tmp_len));
+                    ret_len += tmp_len;
+                }
                 *(ret + ret_len) = 0; //terminate
             }
         }
@@ -228,34 +229,35 @@ mad_parse_genre(const id3_ucs4_t *string)
 
             if(is_num) {
                 AUDDBG("is_num!\n");
-
-                tmp = g_malloc0(BYTES(end - ptr + 1));
-                memcpy(tmp, ptr, BYTES(end - ptr));
-                *(tmp + (end - ptr)) = 0; //terminate
-                ptr += end - ptr;
+                tmp_len = end - ptr;
+                tmp = g_malloc0(BYTES(tmp_len + 1));
+                memcpy(tmp, ptr, BYTES(tmp_len));
+                *(tmp + tmp_len) = 0; //terminate
+                ptr += tmp_len;
 
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
                 AUDDBG("genre length = %d\n", mad_ucs4len(genre));
 
                 g_free(tmp);
                 tmp = NULL;
-
-                tmp_len = mad_ucs4len(genre);
-
-                memcpy(ret + ret_len, genre, BYTES(tmp_len));
-
-                ret_len += tmp_len;
+                
+                if (genre) {
+                    tmp_len = mad_ucs4len(genre);
+                    memcpy(ret + ret_len, genre, BYTES(tmp_len));
+                    ret_len += tmp_len;
+                }
                 *(ret + ret_len) = 0; //terminate
             }
             else { // plain text
+                tmp_len = end - ptr;
                 AUDDBG("plain!\n");
                 AUDDBG("ret_len = %d\n", ret_len);
-                AUDDBG("end - ptr = %d\n", BYTES(end - ptr));
+                AUDDBG("end - ptr = %d\n", BYTES(tmp_len));
 
-                memcpy(ret + ret_len, ptr, BYTES(end - ptr));
-                ret_len = ret_len + (end - ptr);
+                memcpy(ret + ret_len, ptr, BYTES(tmp_len));
+                ret_len = ret_len + tmp_len;
                 *(ret + ret_len) = 0; //terminate
-                ptr += (end - ptr);
+                ptr += tmp_len;
             }
         }
     }
