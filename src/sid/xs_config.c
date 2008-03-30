@@ -577,7 +577,7 @@ void xs_read_configuration(void)
 	if (xs_cfg.sid2NFilterPresets > 0) {
 		xs_cfg.sid2FilterPresets = g_malloc0(xs_cfg.sid2NFilterPresets * sizeof(t_xs_sid2_filter *));
 		if (!xs_cfg.sid2FilterPresets) {
-			xs_error(_("Allocation of sid2FilterPresets structure failed!\n"));
+			xs_error("Allocation of sid2FilterPresets structure failed!\n");
 		} else {
 			for (i = 0; i < xs_cfg.sid2NFilterPresets; i++) {
 				xs_cfg.sid2FilterPresets[i] = xs_filter_load(cfg, i);
@@ -735,7 +735,7 @@ void xs_cfg_ok(void)
 	/* Get filter settings */
 	/*
 	if (!xs_curve_get_points(XS_CURVE(LUW("")), &xs_cfg.sid2Filter.points, &xs_cfg.sid2Filter.npoints)) {
-		xs_error(_("Warning: Could not get filter curve widget points!\n"));
+		xs_error("Warning: Could not get filter curve widget points!\n");
 	}
 	*/
 
@@ -903,10 +903,9 @@ void xs_cfg_sp2_filter_update(XSCurve *curve, t_xs_sid2_filter *f)
 	
 	xs_curve_reset(curve);
 	xs_curve_set_range(curve, 0,0, XS_SIDPLAY2_NFPOINTS, XS_SIDPLAY2_FMAX);
-	if (!xs_curve_set_points(curve, f->points, f->npoints)) {
+	if (!xs_curve_set_points(curve, f->points, f->npoints))
 		// FIXME
-		xs_error(_("Warning: Could not set filter curve widget points!\n"));
-	}
+		xs_error("Warning: Could not set filter curve widget points!\n");
 }
 
 

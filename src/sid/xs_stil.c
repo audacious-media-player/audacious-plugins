@@ -43,7 +43,7 @@ static gboolean xs_stildb_node_realloc(t_xs_stil_node *pNode, gint nsubTunes)
 			(nsubTunes + 1) * sizeof(t_xs_stil_subnode **));
 
 		if (!pNode->subTunes) {
-			xs_error(_("SubTune pointer structure realloc failed.\n"));
+			xs_error("SubTune pointer structure realloc failed.\n");
 			return FALSE;
 		}
 		
@@ -66,7 +66,7 @@ static gboolean xs_stildb_node_realloc(t_xs_stil_node *pNode, gint nsubTunes)
 			g_malloc0(sizeof(t_xs_stil_subnode));
 		
 		if (!pNode->subTunes[nsubTunes]) {
-			xs_error(_("SubTune structure malloc failed!\n"));
+			xs_error("SubTune structure malloc failed!\n");
 			return FALSE;
 		}
 	}
@@ -173,8 +173,7 @@ gint xs_stildb_read(t_xs_stildb *db, gchar *dbFilename)
 
 	/* Try to open the file */
 	if ((inFile = fopen(dbFilename, "ra")) == NULL) {
-		xs_error(_("Could not open STILDB '%s'\n"),
-			dbFilename);
+		xs_error("Could not open STILDB '%s'\n", dbFilename);
 		return -1;
 	}
 

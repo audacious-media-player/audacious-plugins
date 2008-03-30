@@ -200,13 +200,13 @@ void xs_reinit(void)
 	/* Initialize song-length database */
 	xs_songlen_close();
 	if (xs_cfg.songlenDBEnable && (xs_songlen_init() != 0)) {
-		xs_error(_("Error initializing song-length database!\n"));
+		xs_error("Error initializing song-length database!\n");
 	}
 
 	/* Initialize STIL database */
 	xs_stil_close();
 	if (xs_cfg.stilDBEnable && (xs_stil_init() != 0)) {
-		xs_error(_("Error initializing STIL database!\n"));
+		xs_error("Error initializing STIL database!\n");
 	}
 
 }
@@ -344,7 +344,7 @@ void xs_play_file(InputPlayback *pb)
 	/* Allocate audio buffer */
 	audioBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE);
 	if (audioBuffer == NULL) {
-		xs_error(_("Couldn't allocate memory for audio data buffer!\n"));
+		xs_error("Couldn't allocate memory for audio data buffer!\n");
 		XS_MUTEX_UNLOCK(xs_status);
 		goto xs_err_exit;
 	}
@@ -352,7 +352,7 @@ void xs_play_file(InputPlayback *pb)
 	if (xs_status.oversampleEnable) {
 		oversampleBuffer = (gchar *) g_malloc(XS_AUDIOBUF_SIZE * xs_status.oversampleFactor);
 		if (oversampleBuffer == NULL) {
-			xs_error(_("Couldn't allocate memory for audio oversampling buffer!\n"));
+			xs_error("Couldn't allocate memory for audio oversampling buffer!\n");
 			XS_MUTEX_UNLOCK(xs_status);
 			goto xs_err_exit;
 		}
@@ -368,8 +368,8 @@ void xs_play_file(InputPlayback *pb)
 
 	/* Initialize song */
 	if (!xs_status.sidPlayer->plrInitSong(&xs_status)) {
-		xs_error(_("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"),
-		      tmpTune->sidFilename, xs_status.currSong);
+		xs_error("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
+			tmpTune->sidFilename, xs_status.currSong);
 		XS_MUTEX_UNLOCK(xs_status);
 		goto xs_err_exit;
 	}
@@ -379,7 +379,7 @@ void xs_play_file(InputPlayback *pb)
 		xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels);
 		
 	if (!pb->output->open_audio(xs_status.audioFormat, xs_status.audioFrequency, xs_status.audioChannels)) {
-		xs_error(_("Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"),
+		xs_error("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
 			xs_status.audioFormat,
 			xs_status.audioFrequency,
 			xs_status.audioChannels);
@@ -429,7 +429,7 @@ void xs_play_file(InputPlayback *pb)
 			/* Execute rate-conversion with filtering */
 			if (xs_filter_rateconv(audioBuffer, oversampleBuffer,
 				xs_status.audioFormat, xs_status.oversampleFactor, audioGot) < 0) {
-				xs_error(_("Oversampling rate-conversion pass failed.\n"));
+				xs_error("Oversampling rate-conversion pass failed.\n");
 				xs_status.isError = TRUE;
 				XS_MUTEX_UNLOCK(xs_status);
 				goto xs_err_exit;

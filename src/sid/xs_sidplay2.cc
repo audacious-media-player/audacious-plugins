@@ -98,7 +98,7 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 	/* Initialize the engine */
 	myEngine->currEng = new sidplay2;
 	if (!myEngine->currEng) {
-		xs_error(_("[SIDPlay2] Could not initialize emulation engine.\n"));
+		xs_error("[SIDPlay2] Could not initialize emulation engine.\n");
 		return FALSE;
 	}
 
@@ -213,7 +213,7 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 	f = &(xs_cfg.sid2Filter);
 	XSDEBUG("using filter '%s', %d points\n", f->name, f->npoints);
 	if (f->npoints > XS_SIDPLAY2_NFPOINTS) {
-		xs_error(_("[SIDPlay2] Invalid number of filter curve points (%d > %d)\n"),
+		xs_error("[SIDPlay2] Invalid number of filter curve points (%d > %d)\n",
 			f->npoints, XS_SIDPLAY2_NFPOINTS);
 		f->npoints = XS_SIDPLAY2_NFPOINTS;
 	}
@@ -234,13 +234,13 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 			/* Builder object created, initialize it */
 			rs->create((myEngine->currEng->info()).maxsids);
 			if (!*rs) {
-				xs_error(_("reSID->create() failed.\n"));
+				xs_error("reSID->create() failed.\n");
 				return FALSE;
 			}
 
 			rs->filter(xs_cfg.emulateFilters);
 			if (!*rs) {
-				xs_error(_("reSID->filter(%d) failed.\n"), xs_cfg.emulateFilters);
+				xs_error("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
 				return FALSE;
 			}
 
@@ -248,7 +248,7 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 			// ... WHEN/IF resid-builder+libsidplay2 gets fixed
 			rs->sampling(tmpFreq);
 			if (!*rs) {
-				xs_error(_("reSID->sampling(%d) failed.\n"), tmpFreq);
+				xs_error("reSID->sampling(%d) failed.\n", tmpFreq);
 				return FALSE;
 			}
 			
@@ -258,7 +258,7 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 				rs->filter((sid_filter_t *) NULL);
 			
 			if (!*rs) {
-				xs_error(_("reSID->filter(NULL) failed.\n"));
+				xs_error("reSID->filter(NULL) failed.\n");
 				return FALSE;
 			}
 		}
@@ -272,13 +272,13 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 			/* Builder object created, initialize it */
 			hs->create((myEngine->currEng->info()).maxsids);
 			if (!*hs) {
-				xs_error(_("hardSID->create() failed.\n"));
+				xs_error("hardSID->create() failed.\n");
 				return FALSE;
 			}
 
 			hs->filter(xs_cfg.emulateFilters);
 			if (!*hs) {
-				xs_error(_("hardSID->filter(%d) failed.\n"), xs_cfg.emulateFilters);
+				xs_error("hardSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
 				return FALSE;
 			}
 		}
@@ -286,7 +286,7 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 #endif
 
 	if (!myEngine->currBuilder) {
-		xs_error(_("[SIDPlay2] Could not initialize SIDBuilder object.\n"));
+		xs_error("[SIDPlay2] Could not initialize SIDBuilder object.\n");
 		return FALSE;
 	}
 
@@ -300,7 +300,7 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 		break;
 
 	default:
-		xs_error(_("[SIDPlay2] Invalid clockSpeed=%d, falling back to PAL.\n"),
+		xs_error("[SIDPlay2] Invalid clockSpeed=%d, falling back to PAL.\n",
 			xs_cfg.clockSpeed);
 
 	case XS_CLOCK_PAL:
@@ -324,7 +324,7 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 	if ((xs_cfg.sid2OptLevel >= 0) && (xs_cfg.sid2OptLevel <= SID2_MAX_OPTIMISATION))
 		myEngine->currConfig.optimisation = xs_cfg.sid2OptLevel;
 	else {
-		xs_error(_("Invalid sid2OptLevel=%d, falling back to %d.\n"),
+		xs_error("Invalid sid2OptLevel=%d, falling back to %d.\n",
 			xs_cfg.sid2OptLevel, SID2_DEFAULT_OPTIMISATION);
 		
 		xs_cfg.sid2OptLevel =
@@ -348,14 +348,14 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 
 	/* Now set the emulator configuration */
 	if (myEngine->currEng->config(myEngine->currConfig) < 0) {
-		xs_error(_("[SIDPlay2] Emulator engine configuration failed!\n"));
+		xs_error("[SIDPlay2] Emulator engine configuration failed!\n");
 		return FALSE;
 	}
 
 	/* Create the sidtune */
 	myEngine->currTune = new SidTune(0);
 	if (!myEngine->currTune) {
-		xs_error(_("[SIDPlay2] Could not initialize SIDTune object.\n"));
+		xs_error("[SIDPlay2] Could not initialize SIDTune object.\n");
 		return FALSE;
 	}
 
@@ -406,12 +406,12 @@ gboolean xs_sidplay2_initsong(t_xs_status * myStatus)
 	if (!myEngine) return FALSE;
 
 	if (!myEngine->currTune->selectSong(myStatus->currSong)) {
-		xs_error(_("[SIDPlay2] currTune->selectSong() failed\n"));
+		xs_error("[SIDPlay2] currTune->selectSong() failed\n");
 		return FALSE;
 	}
 
 	if (myEngine->currEng->load(myEngine->currTune) < 0) {
-		xs_error(_("[SIDPlay2] currEng->load() failed\n"));
+		xs_error("[SIDPlay2] currEng->load() failed\n");
 		return FALSE;
 	}
 	

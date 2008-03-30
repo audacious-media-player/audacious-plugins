@@ -93,14 +93,14 @@ gboolean xs_sidplay1_init(t_xs_status * myStatus)
 	/* Initialize engine */
 	myEngine->currEng = new emuEngine();
 	if (!myEngine->currEng) {
-		xs_error(_("[SIDPlay1] Could not initialize emulation engine.\n"));
+		xs_error("[SIDPlay1] Could not initialize emulation engine.\n");
 		g_free(myEngine);
 		return FALSE;
 	}
 
 	/* Verify endianess */
 	if (!myEngine->currEng->verifyEndianess()) {
-		xs_error(_("[SIDPlay1] Endianess verification failed.\n"));
+		xs_error("[SIDPlay1] Endianess verification failed.\n");
 		delete myEngine->currEng;
 		g_free(myEngine);
 		return FALSE;
@@ -235,14 +235,14 @@ gboolean xs_sidplay1_init(t_xs_status * myStatus)
 
 	/* Now set the emulator configuration */
 	if (!myEngine->currEng->setConfig(myEngine->currConfig)) {
-		xs_error(_("[SIDPlay1] Emulator engine configuration failed!\n"));
+		xs_error("[SIDPlay1] Emulator engine configuration failed!\n");
 		return FALSE;
 	}
 	
 	/* Create sidtune object */
 	myEngine->currTune = new sidTune(0);
 	if (!myEngine->currTune) {
-		xs_error(_("[SIDPlay1] Could not initialize SIDTune object.\n"));
+		xs_error("[SIDPlay1] Could not initialize SIDTune object.\n");
 		return FALSE;
 	}
 	
@@ -288,12 +288,12 @@ gboolean xs_sidplay1_initsong(t_xs_status * myStatus)
 	if (!myEngine) return FALSE;
 
 	if (!myEngine->currTune) {
-		xs_error(_("[SIDPlay1] SID-tune struct pointer was NULL. This should not happen, report to XMMS-SID author.\n"));
+		xs_error("[SIDPlay1] SID-tune struct pointer was NULL. This should not happen, report to XMMS-SID author.\n");
 		return FALSE;
 	}
 
 	if (!myEngine->currTune->getStatus()) {
-		xs_error(_("[SIDPlay1] SID-tune status check failed. This should not happen, report to XMMS-SID author.\n"));
+		xs_error("[SIDPlay1] SID-tune status check failed. This should not happen, report to XMMS-SID author.\n");
 		return FALSE;
 	}
 

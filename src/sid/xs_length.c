@@ -110,7 +110,7 @@ t_xs_sldb_node * xs_sldb_read_entry(gchar *inLine)
 	/* Allocate new node */
 	tmpNode = (t_xs_sldb_node *) g_malloc0(sizeof(t_xs_sldb_node));
 	if (!tmpNode) {
-		xs_error(_("Error allocating new node. Fatal error.\n"));
+		xs_error("Error allocating new node. Fatal error.\n");
 		return NULL;
 	}
 
@@ -125,7 +125,7 @@ t_xs_sldb_node * xs_sldb_read_entry(gchar *inLine)
 	/* Get playtimes */
 	if (inLine[linePos] != 0) {
 		if (inLine[linePos] != '=') {
-			xs_error(_("'=' expected on column #%d.\n"), linePos);
+			xs_error("'=' expected on column #%d.\n", linePos);
 			xs_sldb_node_free(tmpNode);
 			return NULL;
 		} else {
@@ -150,7 +150,7 @@ t_xs_sldb_node * xs_sldb_read_entry(gchar *inLine)
 			if (tmpNode->nLengths > 0) {
 				tmpNode->sLengths = (gint *) g_malloc0(tmpNode->nLengths * sizeof(gint));
 				if (!tmpNode->sLengths) {
-					xs_error(_("Could not allocate memory for node.\n"));
+					xs_error("Could not allocate memory for node.\n");
 					xs_sldb_node_free(tmpNode);
 					return NULL;
 				}
@@ -201,7 +201,7 @@ gint xs_sldb_read(t_xs_sldb *db, const gchar *dbFilename)
 
 	/* Try to open the file */
 	if ((inFile = fopen(dbFilename, "ra")) == NULL) {
-		xs_error(_("Could not open SongLengthDB '%s'\n"), dbFilename);
+		xs_error("Could not open SongLengthDB '%s'\n", dbFilename);
 		return -1;
 	}
 
@@ -221,19 +221,19 @@ gint xs_sldb_read(t_xs_sldb *db, const gchar *dbFilename)
 			for (hashLen = 0; inLine[linePos] && isxdigit(inLine[linePos]); hashLen++, linePos++);
 
 			if (hashLen != XS_MD5HASH_LENGTH_CH) {
-				xs_error(_("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n"),
+				xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n",
 					dbFilename, lineNum);
 			} else {
 				/* Parse and add node to db */
 				if ((tmpNode = xs_sldb_read_entry(inLine)) != NULL) {
 					xs_sldb_node_insert(db, tmpNode);
 				} else {
-					xs_error(_("Invalid entry in SongLengthDB file '%s' line #%d!\n"),
+					xs_error("Invalid entry in SongLengthDB file '%s' line #%d!\n",
 						dbFilename, lineNum);
 				}
 			}
 		} else if ((inLine[linePos] != ';') && (inLine[linePos] != '[') && (inLine[linePos] != 0)) {
-			xs_error(_("Invalid line in SongLengthDB file '%s' line #%d\n"),
+			xs_error("Invalid line in SongLengthDB file '%s' line #%d\n",
 				dbFilename, lineNum);
 		}
 
@@ -395,7 +395,7 @@ static gint xs_get_sid_hash(const gchar *pcFilename, t_xs_md5hash hash)
 	xs_fread(psidH.magicID, sizeof(psidH.magicID), 1, inFile);
 	if (strncmp(psidH.magicID, "PSID", 4) && strncmp(psidH.magicID, "RSID", 4)) {
 		xs_fclose(inFile);
-		xs_error(_("Not a PSID or RSID file '%s'\n"), pcFilename);
+		xs_error("Not a PSID or RSID file '%s'\n", pcFilename);
 		return -2;
 	}
 
@@ -414,7 +414,7 @@ static gint xs_get_sid_hash(const gchar *pcFilename, t_xs_md5hash hash)
 	
 	if (xs_feof(inFile) || xs_ferror(inFile)) {
 		xs_fclose(inFile);
-		xs_error(_("Error reading SID file header from '%s'\n"), pcFilename);
+		xs_error("Error reading SID file header from '%s'\n", pcFilename);
 		return -4;
 	}
 	
@@ -433,7 +433,7 @@ static gint xs_get_sid_hash(const gchar *pcFilename, t_xs_md5hash hash)
 	songData = (guint8 *) g_malloc(XS_SIDBUF_SIZE * sizeof(guint8));
 	if (!songData) {
 		xs_fclose(inFile);
-		xs_error(_("Error allocating temp data buffer for file '%s'\n"), pcFilename);
+		xs_error("Error allocating temp data buffer for file '%s'\n", pcFilename);
 		return -3;
 	}
 
