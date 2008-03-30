@@ -521,7 +521,7 @@ input_get_info(struct mad_info_t *info, gboolean fast_scan)
     input_read_tag(info);
 
     if(!info->remote) { // reduce startup delay
-        read_replaygain(info);
+        audmad_read_replaygain(info);
     }
 
     /* scan mp3 file, decoding headers */

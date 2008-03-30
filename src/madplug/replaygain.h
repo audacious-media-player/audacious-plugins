@@ -25,17 +25,6 @@
 #ifndef __replaygain_h__
 #define __replaygain_h__
 
-struct APETagFooterStruct
-{
-    unsigned char ID[8];
-    unsigned char Version[4];
-    unsigned char Length[4];
-    unsigned char TagCount[4];
-    unsigned char Flags[4];
-    unsigned char Reserved[8];
-};
-
-/* prototypes */
-void read_replaygain(struct mad_info_t *file_info);
+void audmad_read_replaygain(struct mad_info_t *file_info);
 
 #endif
