@@ -20,8 +20,6 @@
 #include "config.h"
 
 #include <audacious/util.h>
-#include <audacious/configdb.h>
-#include <audacious/main.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>

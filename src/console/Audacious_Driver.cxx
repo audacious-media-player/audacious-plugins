@@ -15,7 +15,6 @@ extern "C" {
 #include <audacious/plugin.h>
 #include <audacious/util.h>
 #include <audacious/output.h>
-#include <audacious/playlist.h>
 }
 #include <string.h>
 #include <stdlib.h>

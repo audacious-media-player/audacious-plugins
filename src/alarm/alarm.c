@@ -40,7 +40,6 @@
 #include <stdio.h>
 #include <audacious/plugin.h>
 #include <audacious/auddrct.h>
-#include <audacious/configdb.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <pthread.h>

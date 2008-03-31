@@ -17,12 +17,10 @@
 
 #include <audacious/plugin.h>
 #include <audacious/ui_preferences.h>
-#include <audacious/configdb.h>
 #include <audacious/auddrct.h>
 #include "formatter.h"
 #include <audacious/i18n.h>
 #include <audacious/hook.h>
-#include <audacious/playlist.h>
 
 static void init(void);
 static void cleanup(void);

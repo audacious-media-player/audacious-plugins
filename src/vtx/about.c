@@ -1,10 +1,6 @@
 #include <audacious/plugin.h>
-#include <audacious/util.h>
-#include <audacious/plugin.h>
-
 #include <audacious/output.h>
 #include <audacious/util.h>
-#include <audacious/vfs.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
 

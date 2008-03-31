@@ -26,7 +26,6 @@
 
 #include <glib.h>
 #include <mowgli.h>
-#include <audacious/vfs.h>
 #include <audacious/plugin.h> 
 
 #include "ape.h"

@@ -22,9 +22,9 @@
 #include "OSS4.h"
 
 #include <glib.h>
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <stdlib.h>
-#include <audacious/configdb.h>
 
 OutputPlugin oss_op = {
     .description = "OSS4 Output Plugin",                      /* Description */

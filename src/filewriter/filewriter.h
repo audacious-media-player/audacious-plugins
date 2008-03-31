@@ -29,13 +29,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <audacious/main.h>
 #include <audacious/plugin.h>
-#include <audacious/playlist.h>
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 #include <audacious/util.h>
-#include <audacious/vfs.h>
 
 struct format_info { 
     AFormat format;

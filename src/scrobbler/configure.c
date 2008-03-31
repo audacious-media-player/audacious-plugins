@@ -4,7 +4,6 @@
 
 #include <audacious/util.h>
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>

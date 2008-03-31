@@ -9,11 +9,8 @@
 
 #include <audacious/plugin.h>
 #include <audacious/ui_preferences.h>
-#include <audacious/playlist.h>
-#include <audacious/configdb.h>
 #include <audacious/hook.h>
 #include <audacious/strings.h>
-#include <audacious/main.h>
 
 #include <unistd.h>
 #include <stdio.h>

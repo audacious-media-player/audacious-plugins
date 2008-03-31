@@ -20,7 +20,6 @@
 #include <string.h>
 #include <FLAC/all.h>
 #include <glib.h>
-#include <audacious/vfs.h>
 #include "flacng.h"
 #include "tools.h"
 #include "seekable_stream_callbacks.h"

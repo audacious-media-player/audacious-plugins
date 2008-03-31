@@ -1,12 +1,9 @@
-#include <audacious/plugin.h>
-#include <audacious/util.h>
-#include <audacious/output.h>
-#include <audacious/vfs.h>
-#include <audacious/strings.h>
-#include <audacious/i18n.h>
-
 #include "ayemu.h"
 #include "vtx.h"
+#include <audacious/util.h>
+#include <audacious/output.h>
+#include <audacious/strings.h>
+#include <audacious/i18n.h>
 
 void vtx_file_info(gchar *filename)
 {
