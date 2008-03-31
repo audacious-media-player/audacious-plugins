@@ -18,9 +18,8 @@
  */
 
 #include "coreaudio.h"
-#include <audacious/configdb.h>
 #include <CoreAudio/CoreAudio.h>
-
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
 static GtkWidget *configure_win = NULL;

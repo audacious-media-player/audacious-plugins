@@ -23,9 +23,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <esd.h>
-
-#include <audacious/configdb.h>
-
+#include <audacious/plugin.h>
+#include <audacious/util.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -45,7 +44,6 @@
 # define OSS_AVAILABLE FALSE
 #endif
 
-#include <audacious/util.h>
 
 #define QUERY_PLAYER_ID_ATTEMPTS 5
 

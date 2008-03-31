@@ -22,7 +22,6 @@
 #include <sys/types.h>
 #include <libmtp.h>
 #include <audacious/plugin.h>
-#include <audacious/playlist.h>
 #include <audacious/ui_plugin_menu.h>
 #include <audacious/i18n.h>
 
