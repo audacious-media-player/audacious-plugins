@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
-"POT-Creation-Date: 2008-02-03 20:33+0200\n"
-"PO-Revision-Date: 2007-11-01 21:10+0100\n"
+"POT-Creation-Date: 2008-03-30 17:25+0200\n"
+"PO-Revision-Date: 2008-03-30 17:07+0100\n"
 "Last-Translator: Michael Färber <0102@gmx.at>\n"
 "Language-Team: german <0102@gmx.at>\n"
 "MIME-Version: 1.0\n"
@@ -33,22 +33,22 @@ msgstr "Über MP4-AAC-Player-Plugin"
 #: src/adplug/adplug-xmms.cc:265 src/adplug/adplug-xmms.cc:526
 #: src/alac/plugin.c:77 src/arts/arts.c:26 src/arts/configure.c:90
 #: src/audiocompress/audacious-glue.c:102
-#: src/audiocompress/audacious-glue.c:552 src/cdaudio-ng/configure.c:227
-#: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:392
+#: src/audiocompress/audacious-glue.c:552 src/cdaudio-ng/configure.c:228
+#: src/console/Audacious_Driver.cxx:449 src/demac/plugin.c:393
 #: src/echo_plugin/gui.c:26 src/echo_plugin/gui.c:137 src/esd/about.c:49
 #: src/filewriter/filewriter.c:183 src/jack/configure.c:141
-#: src/jack/jack.c:493 src/madplug/plugin.c:600 src/madplug/plugin.c:624
+#: src/jack/jack.c:456 src/madplug/plugin.c:542 src/madplug/plugin.c:566
 #: src/metronom/metronom.c:88 src/modplug/gui/main.cxx:49
 #: src/musepack/libmpc.cxx:232 src/null/null.c:67 src/null/null.c:110
 #: src/OSS4/about.c:59 src/OSS/about.c:54 src/paranormal-ng/plugin.c:283
 #: src/paranormal/plugin.c:291 src/scrobbler/gtkstuff.c:25
-#: src/sndfile/plugin.c:565 src/statusicon/si_ui.c:593
+#: src/sndfile/plugin.c:565 src/statusicon/si_ui.c:628
 #: src/stereo_plugin/stereo.c:53 src/stereo_plugin/stereo.c:116
 #: src/sun/about.c:38 src/sun/configure.c:559 src/timidity/interface.c:222
 #: src/timidity/xmms-timidity.c:120 src/tonegen/tonegen.c:62
 #: src/tta/libtta.c:153 src/tta/libtta.c:267 src/tta/libtta.c:402
-#: src/vorbis/vorbis.c:769 src/vorbis/vorbis.c~:777 src/vtx/about.c:32
-#: src/vtx/info.c:43 src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
+#: src/vorbis/vorbis.c:700 src/vtx/about.c:32 src/vtx/info.c:43
+#: src/wavpack/ui.cxx:56 src/wavpack/ui.cxx:556
 msgid "Ok"
 msgstr "OK"
 
@@ -85,7 +85,7 @@ msgstr "AdPlug :: Konfiguration"
 
 #: src/adplug/adplug-xmms.cc:275 src/alarm/interface.c:1398
 #: src/alsa/configure.c:389 src/arts/configure.c:91
-#: src/audiocompress/audacious-glue.c:557 src/cdaudio-ng/configure.c:231
+#: src/audiocompress/audacious-glue.c:557 src/cdaudio-ng/configure.c:232
 #: src/echo_plugin/gui.c:145 src/jack/configure.c:148
 #: src/modplug/gui/interface.cxx:714 src/modplug/gui/modplug.glade:1668
 #: src/musepack/libmpc.cxx:237 src/musepack/libmpc.cxx:557 src/null/null.c:111
@@ -96,7 +96,7 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: src/adplug/adplug-xmms.cc:291 src/console/Audacious_Config.cxx:145
-#: src/madplug/configure.c:421 src/modplug/gui/interface.cxx:628
+#: src/madplug/configure.c:290 src/modplug/gui/interface.cxx:628
 #: src/modplug/gui/interface.cxx:887 src/modplug/gui/modplug.glade:1404
 #: src/modplug/gui/modplug.glade:1804
 msgid "General"
@@ -124,13 +124,13 @@ msgstr "16 Bit"
 msgid "Channels"
 msgstr "Kanäle"
 
-#: src/adplug/adplug-xmms.cc:325 src/filewriter/mp3.c:894
+#: src/adplug/adplug-xmms.cc:325 src/filewriter/mp3.c:900
 #: src/sid/xmms-sid.glade:157 src/sid/xs_interface.c:288
 #: src/timidity/interface.c:165
 msgid "Mono"
 msgstr "Mono"
 
-#: src/adplug/adplug-xmms.cc:330 src/filewriter/mp3.c:889
+#: src/adplug/adplug-xmms.cc:330 src/filewriter/mp3.c:895
 #: src/modplug/gui/interface.cxx:204 src/modplug/gui/modplug.glade:159
 #: src/sid/xmms-sid.glade:176 src/sid/xs_interface.c:295
 #: src/timidity/interface.c:173
@@ -311,7 +311,7 @@ msgstr ""
 
 #: src/alarm/interface.c:71 src/lirc/about.c:115
 #: src/modplug/gui/interface.cxx:971 src/modplug/gui/modplug.glade:2030
-#: src/sid/xmms-sid.glade:3643 src/sid/xs_about.c:213
+#: src/sid/xmms-sid.glade:3643 src/sid/xs_about.c:214
 #: src/sid/xs_interface.c:1740
 msgid "Close"
 msgstr "Schließen"
@@ -325,10 +325,10 @@ msgid "This is your wakeup call."
 msgstr ""
 
 #: src/alarm/interface.c:124 src/alarm/interface.c:1389 src/alsa/about.c:46
-#: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:228
-#: src/flacng/plugin.c:747 src/gnomeshortcuts/gnomeshortcuts.c:292
+#: src/alsa/configure.c:383 src/cdaudio-ng/cdaudio-ng.c:247
+#: src/flacng/plugin.c:706 src/gnomeshortcuts/gnomeshortcuts.c:311
 #: src/hotkey/gui.c:671 src/modplug/gui/interface.cxx:702
-#: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:712
+#: src/modplug/gui/modplug.glade:1642 src/pulse_audio/pulse_audio.c:738
 #: src/scrobbler/gtkstuff.c:45 src/sid/xmms-sid.glade:3066
 #: src/sid/xs_interface.c:1243
 msgid "OK"
@@ -1601,7 +1601,7 @@ msgstr "Dekoration"
 msgid "Trigger"
 msgstr "Auslöser"
 
-#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:166
+#: src/aosd/aosd_ui.c:1076 src/cdaudio-ng/configure.c:167
 #: src/modplug/gui/interface.cxx:688 src/modplug/gui/modplug.glade:1603
 #: src/sid/xmms-sid.glade:3026 src/sid/xs_interface.c:1229
 msgid "Misc"
@@ -1789,15 +1789,19 @@ msgstr "Blur Scope: Farbauswahl"
 msgid "Options:"
 msgstr "Optionen:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:198
+#: src/cdaudio-ng/cdaudio-ng.c:204
+msgid "Rescan CD"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:217
 msgid "Add CD"
 msgstr "CD hinzufügen"
 
-#: src/cdaudio-ng/cdaudio-ng.c:223
+#: src/cdaudio-ng/cdaudio-ng.c:242
 msgid "About CD Audio Plugin NG"
 msgstr "Über CD-Audio-Plugin NG"
 
-#: src/cdaudio-ng/cdaudio-ng.c:224
+#: src/cdaudio-ng/cdaudio-ng.c:243
 msgid ""
 "Copyright (c) 2007, by Calin Crisan <ccrisan@gmail.com> and The Audacious "
 "Team.\n"
@@ -1820,7 +1824,7 @@ msgstr ""
 "\n"
 "Das war ein Google Summer of Code 2007 Projektt."
 
-#: src/cdaudio-ng/cdaudio-ng.c:627
+#: src/cdaudio-ng/cdaudio-ng.c:814
 msgid ""
 "<b><big>No playable CD found.</big></b>\n"
 "\n"
@@ -1830,47 +1834,47 @@ msgstr ""
 "\n"
 "Keine CD eingelegt, oder die eingelegte CD ist keine Audio-CD.\n"
 
-#: src/cdaudio-ng/configure.c:146
+#: src/cdaudio-ng/configure.c:147
 msgid "CD Audio Plugin Configuration"
 msgstr "CD-Audio-Plugin-Konfiguration"
 
-#: src/cdaudio-ng/configure.c:156
+#: src/cdaudio-ng/configure.c:157
 msgid "Digital audio extraction"
 msgstr "Digitale Audioextraktion"
 
-#: src/cdaudio-ng/configure.c:161
+#: src/cdaudio-ng/configure.c:162
 msgid "Title information"
 msgstr "Titelinformation"
 
-#: src/cdaudio-ng/configure.c:178
+#: src/cdaudio-ng/configure.c:179
 msgid "Limit read speed to: "
 msgstr "Lesegeschwindigkeit beschränken auf: "
 
-#: src/cdaudio-ng/configure.c:185
+#: src/cdaudio-ng/configure.c:186
 msgid "Use cd-text if available"
 msgstr "CD-Text benutzen, falls vorhanden"
 
-#: src/cdaudio-ng/configure.c:189
+#: src/cdaudio-ng/configure.c:190
 msgid "Use CDDB if available"
 msgstr "CDDB benutzen, falls vorhanden"
 
-#: src/cdaudio-ng/configure.c:193
+#: src/cdaudio-ng/configure.c:194
 msgid "Server: "
 msgstr "Server: "
 
-#: src/cdaudio-ng/configure.c:196
+#: src/cdaudio-ng/configure.c:197
 msgid "Port: "
 msgstr "Port: "
 
-#: src/cdaudio-ng/configure.c:202
+#: src/cdaudio-ng/configure.c:203
 msgid "Use HTTP instead of CDDBP"
 msgstr ""
 
-#: src/cdaudio-ng/configure.c:210
+#: src/cdaudio-ng/configure.c:211
 msgid "Override default device: "
 msgstr "Anderes Device verwenden: "
 
-#: src/cdaudio-ng/configure.c:217
+#: src/cdaudio-ng/configure.c:218
 msgid "Print debug information"
 msgstr "Debug-Informationen ausgeben"
 
@@ -1945,12 +1949,11 @@ msgstr ""
 "Implementierung für Audacious von: William Pitcock <nenolod@nenolod.net>, \n"
 "        Shay Green <gblargg@gmail.com>"
 
-#: src/demac/plugin.c:387
-#, fuzzy
-msgid "About Monkey's Audio Plugin"
-msgstr "Über MPEG-Audio-Plugin"
-
 #: src/demac/plugin.c:388
+msgid "About Monkey's Audio Plugin"
+msgstr "Über Monkey's Audio-Plugin"
+
+#: src/demac/plugin.c:389
 msgid ""
 "Copyright (C) 2007 Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "Based on ffape decoder, Copyright (C) 2007 Benjamin Zores\n"
@@ -2216,7 +2219,7 @@ msgid ""
 "Ensure that the device has been correctly plugged in."
 msgstr ""
 
-#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:624
+#: src/evdev-plug/ed_ui.c:319 src/madplug/plugin.c:566
 msgid "Error"
 msgstr "Fehler"
 
@@ -2414,15 +2417,15 @@ msgstr ""
 msgid "Prepend track number to filename"
 msgstr "Track-Nummer vor Dateinamen anhängen"
 
-#: src/filewriter/mp3.c:670
+#: src/filewriter/mp3.c:676
 msgid "MP3 Configuration"
 msgstr "MP3-Konfiguration"
 
-#: src/filewriter/mp3.c:697
+#: src/filewriter/mp3.c:703
 msgid "Algorithm Quality:"
 msgstr "Algorithmen-Qualität:"
 
-#: src/filewriter/mp3.c:719
+#: src/filewriter/mp3.c:725
 msgid ""
 "best/slowest:0;\n"
 "worst/fastest:9;\n"
@@ -2434,96 +2437,96 @@ msgstr ""
 "empfohlen:2;\n"
 "voreingestellt:5;"
 
-#: src/filewriter/mp3.c:727
+#: src/filewriter/mp3.c:733
 msgid "Output Samplerate:"
 msgstr "Ausgabe-Abtastfrequenz:"
 
-#: src/filewriter/mp3.c:738 src/filewriter/mp3.c:879
+#: src/filewriter/mp3.c:744 src/filewriter/mp3.c:885
 msgid "Auto"
 msgstr "Automatisch"
 
-#: src/filewriter/mp3.c:760
+#: src/filewriter/mp3.c:766
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:772
+#: src/filewriter/mp3.c:778
 msgid "Bitrate / Compression ratio:"
 msgstr "Bitrate / Kompressionsverhältnis:"
 
-#: src/filewriter/mp3.c:798
+#: src/filewriter/mp3.c:804
 msgid "Bitrate (kbps):"
 msgstr "Bitrate (kbps):"
 
-#: src/filewriter/mp3.c:839
+#: src/filewriter/mp3.c:845
 msgid "Compression ratio:"
 msgstr "Kompressionsverhältnis:"
 
-#: src/filewriter/mp3.c:869
+#: src/filewriter/mp3.c:875
 msgid "Audio Mode:"
 msgstr "Audio-Modus:"
 
-#: src/filewriter/mp3.c:884
+#: src/filewriter/mp3.c:890
 msgid "Joint-Stereo"
 msgstr "Joint-Stereo"
 
-#: src/filewriter/mp3.c:925
+#: src/filewriter/mp3.c:931
 msgid "auto-M/S mode"
 msgstr ""
 
-#: src/filewriter/mp3.c:937
+#: src/filewriter/mp3.c:943
 msgid "Misc:"
 msgstr "Verschiedenes:"
 
-#: src/filewriter/mp3.c:948
+#: src/filewriter/mp3.c:954
 msgid "Enforce strict ISO complience"
 msgstr "Strikte ISO-Erfüllung erzwingen"
 
-#: src/filewriter/mp3.c:959
+#: src/filewriter/mp3.c:965
 msgid "Error protection"
 msgstr "Fehlerschutz"
 
-#: src/filewriter/mp3.c:971
+#: src/filewriter/mp3.c:977
 msgid "Adds 16 bit checksum to every frame"
 msgstr "16-Bit-Prüfsumme zu jedem Frame hinzufügen"
 
-#: src/filewriter/mp3.c:976 src/filewriter/vorbis.c:274
+#: src/filewriter/mp3.c:982 src/filewriter/vorbis.c:274
 #: src/modplug/gui/interface.cxx:319 src/modplug/gui/modplug.glade:507
 msgid "Quality"
 msgstr "Qualität"
 
-#: src/filewriter/mp3.c:988
+#: src/filewriter/mp3.c:994
 msgid "Enable VBR/ABR"
 msgstr "VBR/ABR aktivieren"
 
-#: src/filewriter/mp3.c:1000
+#: src/filewriter/mp3.c:1006
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/filewriter/mp3.c:1011
+#: src/filewriter/mp3.c:1017
 msgid "Variable bitrate"
 msgstr "Variable Bitrate"
 
-#: src/filewriter/mp3.c:1023
+#: src/filewriter/mp3.c:1029
 msgid "Average bitrate"
 msgstr "Durchschnittliche Bitrate"
 
-#: src/filewriter/mp3.c:1037
+#: src/filewriter/mp3.c:1043
 msgid "VBR Options:"
 msgstr "VBR-Optionen:"
 
-#: src/filewriter/mp3.c:1053
+#: src/filewriter/mp3.c:1059
 msgid "Minimum bitrate (kbps):"
 msgstr "Minimale Bitrate (kbps):"
 
-#: src/filewriter/mp3.c:1089
+#: src/filewriter/mp3.c:1095
 msgid "Maximum bitrate (kbps):"
 msgstr "Maximale Bitrate (kbps):"
 
-#: src/filewriter/mp3.c:1121
+#: src/filewriter/mp3.c:1127
 msgid "Strictly enforce minimum bitrate"
 msgstr "Minimale Bitrate erzwingen"
 
-#: src/filewriter/mp3.c:1123
+#: src/filewriter/mp3.c:1129
 msgid ""
 "For use with players that do not support low bitrate mp3 (Apex AD600-A DVD/"
 "mp3 player)"
@@ -2531,19 +2534,19 @@ msgstr ""
 "Zur Benutzung mit Playern, die kein MP3 mit niedriger Bitrate unterstützen "
 "(Apex AD600-A DVD/MP3 player)"
 
-#: src/filewriter/mp3.c:1136
+#: src/filewriter/mp3.c:1142
 msgid "ABR Options:"
 msgstr "ABR-Optionen:"
 
-#: src/filewriter/mp3.c:1146
+#: src/filewriter/mp3.c:1152
 msgid "Average bitrate (kbps):"
 msgstr "Durchschnittliche Bitrate (kbps):"
 
-#: src/filewriter/mp3.c:1183
+#: src/filewriter/mp3.c:1189
 msgid "VBR quality level:"
 msgstr "VBR-Qualitätsstufe:"
 
-#: src/filewriter/mp3.c:1198
+#: src/filewriter/mp3.c:1204
 msgid ""
 "highest:0;\n"
 "lowest:9;\n"
@@ -2553,43 +2556,43 @@ msgstr ""
 "niedrigste:9;\n"
 "voreingestellt:4;"
 
-#: src/filewriter/mp3.c:1206
+#: src/filewriter/mp3.c:1212
 msgid "Don't write Xing VBR header"
 msgstr "Xing-VBR-Header nicht schreiben"
 
-#: src/filewriter/mp3.c:1221
+#: src/filewriter/mp3.c:1227
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1233
+#: src/filewriter/mp3.c:1239
 msgid "Frame params:"
 msgstr "Frame-Parameter:"
 
-#: src/filewriter/mp3.c:1245
+#: src/filewriter/mp3.c:1251
 msgid "Mark as copyright"
 msgstr "Als Copyright kennzeichnen"
 
-#: src/filewriter/mp3.c:1256
+#: src/filewriter/mp3.c:1262
 msgid "Mark as original"
 msgstr "Als Original kennzeichnen"
 
-#: src/filewriter/mp3.c:1268
+#: src/filewriter/mp3.c:1274
 msgid "ID3 params:"
 msgstr "ID3-Parameter:"
 
-#: src/filewriter/mp3.c:1279
+#: src/filewriter/mp3.c:1285
 msgid "Force addition of version 2 tag"
 msgstr "Hinzufügen von Version-2-Tags erzwingen"
 
-#: src/filewriter/mp3.c:1289
+#: src/filewriter/mp3.c:1295
 msgid "Only add v1 tag"
 msgstr "Nur v1-Tag hinzufügen"
 
-#: src/filewriter/mp3.c:1296
+#: src/filewriter/mp3.c:1302
 msgid "Only add v2 tag"
 msgstr "Nur v2-Tag hinzufügen"
 
-#: src/filewriter/mp3.c:1317
+#: src/filewriter/mp3.c:1323
 msgid "Tags"
 msgstr "Tags"
 
@@ -2601,11 +2604,11 @@ msgstr "Vorbis-Encoder-Konfiguration"
 msgid "Quality level (0 - 10):"
 msgstr "Qualitätsstufe (0 - 10):"
 
-#: src/flacng/plugin.c:739
+#: src/flacng/plugin.c:698
 msgid "FLAC Audio Plugin "
 msgstr "FLAC-Audio-Plugin "
 
-#: src/flacng/plugin.c:740
+#: src/flacng/plugin.c:699
 msgid ""
 "\n"
 "\n"
@@ -2621,87 +2624,75 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/flacng/plugin.c:745
+#: src/flacng/plugin.c:704
 msgid "About FLAC Audio Plugin"
 msgstr "Über FLAC-Audio-Plugin"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:287
+#: src/gnomeshortcuts/gnomeshortcuts.c:306
 msgid "About Gnome Shortcut Plugin"
 msgstr "Über das Gnome-Shortcut-Plugin"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:288
+#: src/gnomeshortcuts/gnomeshortcuts.c:307
 msgid ""
 "Gnome Shortcut Plugin\n"
 "Let's you control the player with Gnome's shortcuts.\n"
 "\n"
-"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 msgstr ""
 "Gnome-Shortcut-Plugin\n"
-"Ermöglicht die Kontrolle des Players mit den Tastaturkürzeln von GNOME.\n"
+"Ermöglicht die Kontrolle des Players mit GNOME-Tastaturkürzeln.\n"
 "\n"
-"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
 #: src/hotkey/gui.c:68
-#, fuzzy
 msgid "Previous Track"
-msgstr "Voriger Titel:"
+msgstr "Voriger Titel"
 
 #: src/hotkey/gui.c:69
-#, fuzzy
 msgid "Play"
-msgstr "Spielzeit:"
+msgstr "Wiedergeben"
 
 #: src/hotkey/gui.c:70
-#, fuzzy
 msgid "Pause/Resume"
-msgstr "Pause:"
+msgstr "Pause"
 
 #: src/hotkey/gui.c:71
-#, fuzzy
 msgid "Stop"
-msgstr "Stop:"
+msgstr "Stop"
 
 #: src/hotkey/gui.c:72
-#, fuzzy
 msgid "Next Track"
-msgstr "Nächster Titel:"
+msgstr "Nächster Titel"
 
 #: src/hotkey/gui.c:73
-#, fuzzy
 msgid "Forward 5 Seconds"
-msgstr "5 Sek. vorspulen:"
+msgstr "5 Sek. vorspulen"
 
 #: src/hotkey/gui.c:74
-#, fuzzy
 msgid "Rewind 5 Seconds"
-msgstr "5 Sek. zurückspulen:"
+msgstr "5 Sek. zurückspulen"
 
 #: src/hotkey/gui.c:75
-#, fuzzy
 msgid "Mute"
-msgstr "Stumm:"
+msgstr "Stumm"
 
 #: src/hotkey/gui.c:76
-#, fuzzy
 msgid "Volume Up"
-msgstr "Lautstärke erhöhen:"
+msgstr "Lautstärke erhöhen"
 
 #: src/hotkey/gui.c:77
-#, fuzzy
 msgid "Volume Down"
-msgstr "Lautstärke verringern:"
+msgstr "Lautstärke verringern"
 
 #: src/hotkey/gui.c:78
-#, fuzzy
 msgid "Jump to File"
-msgstr "Zu Datei springen:"
+msgstr "Zu Datei springen"
 
 #: src/hotkey/gui.c:79
-#, fuzzy
 msgid "Toggle Player Windows"
-msgstr "Player zeigen/verstecken:"
+msgstr "Player zeigen/verstecken"
 
 #: src/hotkey/gui.c:80
 msgid "Show On-Screen-Display"
@@ -2728,11 +2719,12 @@ msgid "Global Hotkey Plugin Configuration"
 msgstr "Global-Hotkey-Konfiguration"
 
 #: src/hotkey/gui.c:395
-#, fuzzy
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "Tastenkombination innerhalb eines Textfelds drücken."
+msgstr ""
+"Bitte eine Tastenkombination innerhalb eines Textfelds drücken.\n"
+"Es ist auch möglich, Maustasten zu verwenden."
 
 #: src/hotkey/gui.c:400
 #, fuzzy
@@ -2806,11 +2798,11 @@ msgstr ""
 msgid "Enable debug printing"
 msgstr ""
 
-#: src/jack/jack.c:95
+#: src/jack/jack.c:84
 msgid "Sample rate mismatch"
 msgstr ""
 
-#: src/jack/jack.c:98
+#: src/jack/jack.c:87
 msgid ""
 "Xmms is asking for a sample rate that differs from\n"
 " that of the jack server.  Xmms 1.2.8 or later\n"
@@ -2824,15 +2816,15 @@ msgid ""
 "Chris Morgan <cmorgan@alum.wpi.edu>\n"
 msgstr ""
 
-#: src/jack/jack.c:111 src/wma/wma.c:157
+#: src/jack/jack.c:100 src/wma/wma.c:148
 msgid " Close "
 msgstr " Schliessen"
 
-#: src/jack/jack.c:489
+#: src/jack/jack.c:452
 msgid "About JACK Output Plugin 0.17"
 msgstr ""
 
-#: src/jack/jack.c:490
+#: src/jack/jack.c:453
 msgid ""
 "XMMS jack Driver 0.17\n"
 "\n"
@@ -2917,9 +2909,8 @@ msgstr ""
 "http://fsinfo.cs.uni-sb.de/~columbus/lirc/index.html"
 
 #: src/lirc/interface.c:37
-#, fuzzy
 msgid "LIRC plugin settings"
-msgstr "LIRC-Plugin "
+msgstr "LIRC-Plugin-Einstellungen"
 
 #: src/lirc/interface.c:61
 msgid "Reconnect to LIRC server"
@@ -2934,9 +2925,8 @@ msgid "Reconnect"
 msgstr ""
 
 #: src/lirc/interface.c:79
-#, fuzzy
 msgid "Connection"
-msgstr "Ort:"
+msgstr "Verbindung"
 
 #: src/lirc/lirc.c:83
 #, c-format
@@ -2971,111 +2961,58 @@ msgstr ""
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
-#: src/madplug/configure.c:332
+#: src/madplug/configure.c:209
 msgid "MPEG Audio Plugin Configuration"
 msgstr "MPEG-Audio-Plugin-Konfiguration"
 
-#: src/madplug/configure.c:349
-#, fuzzy
+#: src/madplug/configure.c:226
 msgid "Audio Settings"
-msgstr "Alarm-Einstellungen"
+msgstr "Audio-Einstellungen"
 
-#: src/madplug/configure.c:358
-msgid "Dither output when rounding to 16-bit"
-msgstr "Ausgabe beim Runden auf 16-Bit dithern"
-
-#: src/madplug/configure.c:365
+#: src/madplug/configure.c:234
 msgid "Force reopen audio when audio type changed"
 msgstr "Neuöffnen von Audio bei Änderung des Audiotyps erzwingen"
 
-#: src/madplug/configure.c:374
+#: src/madplug/configure.c:243
 #, fuzzy
 msgid "Metadata Settings"
 msgstr "Mixer-Einstellungen:"
 
-#: src/madplug/configure.c:383
+#: src/madplug/configure.c:252
 msgid "Enable fast play-length calculation"
 msgstr "Schnelle Spieldauer-Berechnung aktivieren"
 
-#: src/madplug/configure.c:390
+#: src/madplug/configure.c:259
 msgid "Parse XING headers"
 msgstr "XING-Header parsen"
 
-#: src/madplug/configure.c:397
+#: src/madplug/configure.c:266
 #, fuzzy
 msgid "Use SJIS to write ID3 tags (not recommended)"
 msgstr "SJIS anstatt UTF-8 zum Schreiben von ID3-Tags benutzen"
 
-#: src/madplug/configure.c:404
-#, fuzzy
+#: src/madplug/configure.c:273
 msgid "Miscellaneous Settings"
-msgstr "Mixer-Einstellungen:"
+msgstr "Verschiedene Einstellungen"
 
-#: src/madplug/configure.c:413
+#: src/madplug/configure.c:282
 msgid "Display average bitrate for VBR"
 msgstr "Durchschnittliche Bitrate für VBR anzeigen"
 
-#: src/madplug/configure.c:432
-#, fuzzy
-msgid "Base gain (dB):"
-msgstr "Standard-Verstärkung (dB):"
-
-#: src/madplug/configure.c:446 src/musepack/libmpc.cxx:190
-msgid "ReplayGain Settings"
-msgstr "ReplayGain-Einstellungen"
-
-#: src/madplug/configure.c:457
-msgid "Enable ReplayGain processing"
-msgstr "ReplayGain-Bearbeitung aktivieren"
-
-#: src/madplug/configure.c:467 src/musepack/libmpc.cxx:207
-msgid "ReplayGain Type"
-msgstr "ReplayGain-Typ"
-
-#: src/madplug/configure.c:477 src/musepack/libmpc.cxx:215
-msgid "Use Track Gain"
-msgstr "Track Gain benutzen"
-
-#: src/madplug/configure.c:485 src/musepack/libmpc.cxx:219
-msgid "Use Album Gain"
-msgstr "Album Gain benutzen"
-
-#: src/madplug/configure.c:498
-msgid "Pre-gain with RG info (dB):"
-msgstr ""
-
-#: src/madplug/configure.c:514
-msgid "Pre-gain without RG info (dB):"
-msgstr ""
-
-#: src/madplug/configure.c:530
-#, fuzzy
-msgid "Enable peak info clip prevention"
-msgstr "Clipping-Verhinderung aktivieren"
-
-#: src/madplug/configure.c:552
-#, fuzzy
-msgid "Enable adaptive scaler clip prevention"
-msgstr "Clipping-Verhinderung aktivieren"
-
-#: src/madplug/configure.c:561
-msgid "Gain Control"
-msgstr ""
-
-#: src/madplug/configure.c:569 src/vorbis/configure.c:135
+#: src/madplug/configure.c:296 src/vorbis/configure.c:102
 msgid "Override generic titles"
 msgstr "Allgemeine Titel überschreiben"
 
-#: src/madplug/configure.c:581
+#: src/madplug/configure.c:308
 msgid "ID3 format:"
 msgstr "ID3-Format:"
 
-#: src/madplug/configure.c:593 src/sid/xmms-sid.glade:2540
-#: src/sid/xs_interface.c:1070 src/vorbis/configure.c:158
+#: src/madplug/configure.c:320 src/sid/xmms-sid.glade:2540
+#: src/sid/xs_interface.c:1070
 msgid "Title"
 msgstr "Titel"
 
-#: src/madplug/plugin.c:582
+#: src/madplug/plugin.c:524
 #, c-format
 msgid ""
 "Audacious MPEG Audio Plugin\n"
@@ -3106,7 +3043,7 @@ msgstr ""
 "ReplayGain-Unterstützung von:\n"
 "    Samuel Krempp"
 
-#: src/madplug/plugin.c:598
+#: src/madplug/plugin.c:540
 msgid "About MPEG Audio Plugin"
 msgstr "Über MPEG-Audio-Plugin"
 
@@ -3173,9 +3110,8 @@ msgid "8-tap Fir (extremely high quality)"
 msgstr "8-tap Fir (extrem hohe Qualität)"
 
 #: src/modplug/gui/interface.cxx:285 src/modplug/gui/modplug.glade:384
-#, fuzzy
 msgid "48 kHz"
-msgstr "44 kHz"
+msgstr "48 kHz"
 
 #: src/modplug/gui/interface.cxx:292 src/modplug/gui/modplug.glade:403
 msgid "44 kHz"
@@ -3424,18 +3360,31 @@ msgstr "Dynamische-Bitraten-Anzeige aktivieren"
 msgid "Plugin"
 msgstr "Plugin"
 
-#: src/musepack/libmpc.cxx:197 src/vorbis/configure.c:170
-#: src/wavpack/ui.cxx:510
+#: src/musepack/libmpc.cxx:190
+msgid "ReplayGain Settings"
+msgstr "ReplayGain-Einstellungen"
+
+#: src/musepack/libmpc.cxx:197 src/wavpack/ui.cxx:510
 msgid "Enable Clipping Prevention"
 msgstr "Clipping-Verhinderung aktivieren"
 
-#: src/musepack/libmpc.cxx:202 src/vorbis/configure.c:175
-#: src/wavpack/ui.cxx:515
+#: src/musepack/libmpc.cxx:202 src/wavpack/ui.cxx:515
 msgid "Enable ReplayGain"
 msgstr "ReplayGain aktivieren"
 
-#: src/musepack/libmpc.cxx:224 src/vorbis/configure.c:219
-#: src/wavpack/ui.cxx:547
+#: src/musepack/libmpc.cxx:207
+msgid "ReplayGain Type"
+msgstr "ReplayGain-Typ"
+
+#: src/musepack/libmpc.cxx:215
+msgid "Use Track Gain"
+msgstr "Track Gain benutzen"
+
+#: src/musepack/libmpc.cxx:219
+msgid "Use Album Gain"
+msgstr "Album Gain benutzen"
+
+#: src/musepack/libmpc.cxx:224 src/wavpack/ui.cxx:547
 msgid "ReplayGain"
 msgstr "ReplayGain"
 
@@ -3662,11 +3611,15 @@ msgstr ""
 msgid "Volume controls Master not PCM"
 msgstr ""
 
-#: src/pulse_audio/pulse_audio.c:696
+#: src/projectm-1.0/main.c:70
+msgid "_Random"
+msgstr ""
+
+#: src/pulse_audio/pulse_audio.c:722
 msgid "About Audacious PulseAudio Output Plugin"
 msgstr "Über Audacious-PulseAudio-Ausgabe-Plugin"
 
-#: src/pulse_audio/pulse_audio.c:697
+#: src/pulse_audio/pulse_audio.c:723
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3735,36 +3688,6 @@ msgstr ""
 #: src/scrobbler/gtkstuff.c:43
 msgid "Scrobbler Error"
 msgstr "Scrobbler-Fehler"
-
-#: src/sid/xmms-sid.c:203
-msgid "Error initializing song-length database!\n"
-msgstr ""
-
-#: src/sid/xmms-sid.c:209
-msgid "Error initializing STIL database!\n"
-msgstr "Fehler beim Initialisieren der STIL-Datenbank!\n"
-
-#: src/sid/xmms-sid.c:347
-msgid "Couldn't allocate memory for audio data buffer!\n"
-msgstr "Konnte keinen Speicher für den Audio-Daten-Buffer allozieren!\n"
-
-#: src/sid/xmms-sid.c:355
-msgid "Couldn't allocate memory for audio oversampling buffer!\n"
-msgstr "Konnte keinen Speicher für den Audio-Oversampling-Buffer allozieren!\n"
-
-#: src/sid/xmms-sid.c:371
-#, c-format
-msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
-msgstr "Konnte SID-Tune '%s' (Unter-Tune #%i) nicht initialisieren!\n"
-
-#: src/sid/xmms-sid.c:382
-#, c-format
-msgid "Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"
-msgstr ""
-
-#: src/sid/xmms-sid.c:432
-msgid "Oversampling rate-conversion pass failed.\n"
-msgstr ""
 
 #: src/sid/xmms-sid.glade:8 src/sid/xs_interface.c:221
 msgid "Audacious-SID configuration"
@@ -4157,7 +4080,6 @@ msgid "Descriptions of <i>SID-specific</i> Tuplez fields go here. <b>:D</b>"
 msgstr ""
 
 #: src/sid/xmms-sid.glade:2511 src/sid/xs_interface.c:1065
-#, fuzzy
 msgid "Song title format:"
 msgstr "Titelformat:"
 
@@ -4305,18 +4227,10 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: src/sid/xs_about.c:84 src/wma/wma.c:130
+#: src/sid/xs_about.c:84 src/wma/wma.c:121
 #, c-format
 msgid "About %s"
 msgstr "Über %s"
-
-#: src/sid/xs_config.c:580
-msgid "Allocation of sid2FilterPresets structure failed!\n"
-msgstr ""
-
-#: src/sid/xs_config.c:908
-msgid "Warning: Could not set filter curve widget points!\n"
-msgstr ""
 
 #: src/sid/xs_fileinfo.c:232
 msgid "General info"
@@ -4327,180 +4241,9 @@ msgstr ""
 msgid "Tune #%i: "
 msgstr ""
 
-#: src/sid/xs_length.c:113
-msgid "Error allocating new node. Fatal error.\n"
-msgstr ""
-
-#: src/sid/xs_length.c:128
-#, c-format
-msgid "'=' expected on column #%d.\n"
-msgstr ""
-
-#: src/sid/xs_length.c:153
-msgid "Could not allocate memory for node.\n"
-msgstr ""
-
-#: src/sid/xs_length.c:204
-#, c-format
-msgid "Could not open SongLengthDB '%s'\n"
-msgstr ""
-
-#: src/sid/xs_length.c:224
-#, c-format
-msgid "Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n"
-msgstr ""
-
-#: src/sid/xs_length.c:231
-#, c-format
-msgid "Invalid entry in SongLengthDB file '%s' line #%d!\n"
-msgstr ""
-
-#: src/sid/xs_length.c:236
-#, c-format
-msgid "Invalid line in SongLengthDB file '%s' line #%d\n"
-msgstr ""
-
-#: src/sid/xs_length.c:398
-#, c-format
-msgid "Not a PSID or RSID file '%s'\n"
-msgstr ""
-
-#: src/sid/xs_length.c:417
-#, c-format
-msgid "Error reading SID file header from '%s'\n"
-msgstr ""
-
-#: src/sid/xs_length.c:436
-#, c-format
-msgid "Error allocating temp data buffer for file '%s'\n"
-msgstr ""
-
-#: src/sid/xs_sidplay1.cc:96
-msgid "[SIDPlay1] Could not initialize emulation engine.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay1.cc:103
-msgid "[SIDPlay1] Endianess verification failed.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay1.cc:238
-msgid "[SIDPlay1] Emulator engine configuration failed!\n"
-msgstr ""
-
-#: src/sid/xs_sidplay1.cc:245
-msgid "[SIDPlay1] Could not initialize SIDTune object.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay1.cc:291
-msgid ""
-"[SIDPlay1] SID-tune struct pointer was NULL. This should not happen, report "
-"to XMMS-SID author.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay1.cc:296
-msgid ""
-"[SIDPlay1] SID-tune status check failed. This should not happen, report to "
-"XMMS-SID author.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:101
-msgid "[SIDPlay2] Could not initialize emulation engine.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:208
-#, c-format
-msgid "[SIDPlay2] Invalid number of filter curve points (%d > %d)\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:229
-msgid "reSID->create() failed.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:235
-#, c-format
-msgid "reSID->filter(%d) failed.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:243
-#, c-format
-msgid "reSID->sampling(%d) failed.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:253
-msgid "reSID->filter(NULL) failed.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:267
-msgid "hardSID->create() failed.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:273
-#, c-format
-msgid "hardSID->filter(%d) failed.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:281
-msgid "[SIDPlay2] Could not initialize SIDBuilder object.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:295
-#, c-format
-msgid "[SIDPlay2] Invalid clockSpeed=%d, falling back to PAL.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:319
-#, c-format
-msgid "Invalid sid2OptLevel=%d, falling back to %d.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:343
-msgid "[SIDPlay2] Emulator engine configuration failed!\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:350
-msgid "[SIDPlay2] Could not initialize SIDTune object.\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:401
-msgid "[SIDPlay2] currTune->selectSong() failed\n"
-msgstr ""
-
-#: src/sid/xs_sidplay2.cc:406
-msgid "[SIDPlay2] currEng->load() failed\n"
-msgstr ""
-
-#: src/sid/xs_slsup.c:217
-#, fuzzy, c-format
-msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
-msgstr "Konnte keinen Speicher für den Audio-Daten-Buffer allozieren!\n"
-
-#: src/sid/xs_slsup.c:224
-#, c-format
-msgid "Could not allocate sidFilename ('%s')\n"
-msgstr ""
-
-#: src/sid/xs_slsup.c:233
-#, fuzzy, c-format
-msgid "Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"
-msgstr "Konnte keinen Speicher für den Audio-Daten-Buffer allozieren!\n"
-
-#: src/sid/xs_stil.c:46
-msgid "SubTune pointer structure realloc failed.\n"
-msgstr ""
-
-#: src/sid/xs_stil.c:69
-msgid "SubTune structure malloc failed!\n"
-msgstr ""
-
-#: src/sid/xs_stil.c:176
-#, c-format
-msgid "Could not open STILDB '%s'\n"
-msgstr ""
-
 #: src/sndfile/plugin.c:548
-#, fuzzy
 msgid "About sndfile plugin"
-msgstr "sndfile-WAV-Plugin"
+msgstr "Über das sndfile-Plugin"
 
 #: src/sndfile/plugin.c:549
 msgid ""
@@ -4648,11 +4391,11 @@ msgstr "Orientierung"
 msgid "The orientation of the tray"
 msgstr "Die Ausrichtung des Trays"
 
-#: src/statusicon/si_ui.c:587
+#: src/statusicon/si_ui.c:622
 msgid "About Status Icon Plugin"
 msgstr "About Status-Icon-Plugin"
 
-#: src/statusicon/si_ui.c:589
+#: src/statusicon/si_ui.c:624
 msgid ""
 "\n"
 "written by Giacomo Lozito < james@develia.org >\n"
@@ -4666,35 +4409,35 @@ msgstr ""
 "Dieses Plugin stellt ein Status-Icon bereit, im\n"
 "System-Tray des Fenstermanagers.\n"
 
-#: src/statusicon/si_ui.c:661
+#: src/statusicon/si_ui.c:696
 msgid "Status Icon Plugin - Preferences"
 msgstr "Status-Icon-Plugin - Einstellungen"
 
-#: src/statusicon/si_ui.c:672
+#: src/statusicon/si_ui.c:707
 msgid "Right-Click Menu"
 msgstr "Rechtsklick-Menü"
 
-#: src/statusicon/si_ui.c:677
+#: src/statusicon/si_ui.c:712
 msgid "Audacious standard menu"
 msgstr "Audacious-Standard-Menü"
 
-#: src/statusicon/si_ui.c:682
+#: src/statusicon/si_ui.c:717
 msgid "Small playback menu #1"
 msgstr "Kleines Wiedergabe-Menü #1"
 
-#: src/statusicon/si_ui.c:687
+#: src/statusicon/si_ui.c:722
 msgid "Small playback menu #2"
 msgstr "Kleines Wiedergabe-Menü #2"
 
-#: src/statusicon/si_ui.c:710
+#: src/statusicon/si_ui.c:745
 msgid "Mouse Scroll Action"
 msgstr "Maus-Scroll-Aktion"
 
-#: src/statusicon/si_ui.c:715
+#: src/statusicon/si_ui.c:750
 msgid "Change volume"
 msgstr "Lautstärke ändern"
 
-#: src/statusicon/si_ui.c:720
+#: src/statusicon/si_ui.c:755
 msgid "Change playing song"
 msgstr "Aktiven Titel ändern"
 
@@ -4811,12 +4554,12 @@ msgstr ""
 "frequency3;...\n"
 "z.B. tone://2000;2005 für einen Ton mit 2000Hz und einen mit 2005Hz"
 
-#: src/tonegen/tonegen.c:168
+#: src/tonegen/tonegen.c:167
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:168
+#: src/tonegen/tonegen.c:167
 msgid "Tone Generator: "
 msgstr "Ton-Generator: "
 
@@ -4876,43 +4619,23 @@ msgstr "ID3-Tag:"
 msgid "Track number:"
 msgstr "Titelnummer:"
 
-#: src/vorbis/configure.c:115
+#: src/vorbis/configure.c:84
 msgid "Ogg Vorbis Audio Plugin Configuration"
 msgstr "Ogg-Vorbis-Audio-Plugin-Konfiguration"
 
-#: src/vorbis/configure.c:127
+#: src/vorbis/configure.c:94
 msgid "Ogg Vorbis Tags:"
 msgstr "Ogg-Vorbis-Tags:"
 
-#: src/vorbis/configure.c:148
+#: src/vorbis/configure.c:115
 msgid "Title format:"
 msgstr "Titelformat:"
 
-#: src/vorbis/configure.c:162 src/wavpack/ui.cxx:502
-msgid "ReplayGain Settings:"
-msgstr "ReplayGain-Einstellungen:"
-
-#: src/vorbis/configure.c:180 src/wavpack/ui.cxx:520
-msgid "ReplayGain Type:"
-msgstr "ReplayGain-Typ:"
-
-#: src/vorbis/configure.c:191 src/wavpack/ui.cxx:531
-msgid "use Track Gain/Peak"
-msgstr "Benutze Track Gain/Peak"
-
-#: src/vorbis/configure.c:201 src/wavpack/ui.cxx:539
-msgid "use Album Gain/Peak"
-msgstr "Benutze Album Gain/Peak"
-
-#: src/vorbis/configure.c:213
-msgid "Enable 6dB Boost + Hard Limiting"
-msgstr ""
-
-#: src/vorbis/vorbis.c:751 src/vorbis/vorbis.c~:759
+#: src/vorbis/vorbis.c:681
 msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Über Ogg-Vorbis-Audio-Plugin"
 
-#: src/vorbis/vorbis.c:757 src/vorbis/vorbis.c~:765
+#: src/vorbis/vorbis.c:687
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -4926,6 +4649,7 @@ msgid ""
 "Jorn Baayen <jorn@nl.linux.org>\n"
 "Haavard Kvaalen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
@@ -4941,8 +4665,9 @@ msgstr ""
 "Jorn Baayen <jorn@nl.linux.org>\n"
 "Haavard Kvaalen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "\n"
-"Die Xiph.org Foundation besuchen auf http://www.xiph.org/\n"
+"Xiph.org Foundation, http://www.xiph.org/\n"
 
 #: src/vtx/about.c:23
 msgid "About Vortex Player"
@@ -5053,7 +4778,23 @@ msgstr "Wavpack-Konfiguration"
 msgid "General Plugin Settings:"
 msgstr "Allgemeine Plugin-Einstellungen:"
 
-#: src/wma/wma.c:132
+#: src/wavpack/ui.cxx:502
+msgid "ReplayGain Settings:"
+msgstr "ReplayGain-Einstellungen:"
+
+#: src/wavpack/ui.cxx:520
+msgid "ReplayGain Type:"
+msgstr "ReplayGain-Typ:"
+
+#: src/wavpack/ui.cxx:531
+msgid "use Track Gain/Peak"
+msgstr "Benutze Track Gain/Peak"
+
+#: src/wavpack/ui.cxx:539
+msgid "use Album Gain/Peak"
+msgstr "Benutze Album Gain/Peak"
+
+#: src/wma/wma.c:123
 msgid ""
 "Adapted for use in Audacious by Tony Vroon (chainsaw@gentoo.org) from\n"
 "the BEEP-WMA plugin which is Copyright (C) 2004,2005 Mokrushin I.V. aka "
@@ -5062,6 +4803,45 @@ msgid ""
 "<bogorodskiy@inbox.ru>.\n"
 "This plugin based on source code "
 msgstr ""
+
+#~ msgid "Error initializing STIL database!\n"
+#~ msgstr "Fehler beim Initialisieren der STIL-Datenbank!\n"
+
+#~ msgid "Couldn't allocate memory for audio data buffer!\n"
+#~ msgstr "Konnte keinen Speicher für den Audio-Daten-Buffer allozieren!\n"
+
+#~ msgid "Couldn't allocate memory for audio oversampling buffer!\n"
+#~ msgstr ""
+#~ "Konnte keinen Speicher für den Audio-Oversampling-Buffer allozieren!\n"
+
+#~ msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
+#~ msgstr "Konnte SID-Tune '%s' (Unter-Tune #%i) nicht initialisieren!\n"
+
+#, fuzzy
+#~ msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
+#~ msgstr "Konnte keinen Speicher für den Audio-Daten-Buffer allozieren!\n"
+
+#, fuzzy
+#~ msgid "Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"
+#~ msgstr "Konnte keinen Speicher für den Audio-Daten-Buffer allozieren!\n"
+
+#~ msgid "Dither output when rounding to 16-bit"
+#~ msgstr "Ausgabe beim Runden auf 16-Bit dithern"
+
+#, fuzzy
+#~ msgid "Base gain (dB):"
+#~ msgstr "Standard-Verstärkung (dB):"
+
+#~ msgid "Enable ReplayGain processing"
+#~ msgstr "ReplayGain-Bearbeitung aktivieren"
+
+#, fuzzy
+#~ msgid "Enable peak info clip prevention"
+#~ msgstr "Clipping-Verhinderung aktivieren"
+
+#, fuzzy
+#~ msgid "Enable adaptive scaler clip prevention"
+#~ msgstr "Clipping-Verhinderung aktivieren"
 
 #~ msgid "<b>Playback:</b>"
 #~ msgstr "<b>Wiedergabe:</b>"
@@ -5128,450 +4908,6 @@ msgstr ""
 #~ msgid "%d:%02d (%d seconds)"
 #~ msgstr "%d:%02d (%d Sekunden)"
 
-#~ msgid "Blues"
-#~ msgstr "Blues"
-
-#~ msgid "Classic Rock"
-#~ msgstr "Classic Rock"
-
-#~ msgid "Country"
-#~ msgstr "Country"
-
-#~ msgid "Dance"
-#~ msgstr "Dance"
-
-#~ msgid "Disco"
-#~ msgstr "Disco"
-
-#~ msgid "Funk"
-#~ msgstr "Funk"
-
-#~ msgid "Grunge"
-#~ msgstr "Grunge"
-
-#~ msgid "Hip-Hop"
-#~ msgstr "Hip-Hop"
-
-#~ msgid "Jazz"
-#~ msgstr "Jazz"
-
-#~ msgid "Metal"
-#~ msgstr "Metal"
-
-#~ msgid "New Age"
-#~ msgstr "New Age"
-
-#~ msgid "Oldies"
-#~ msgstr "Oldies"
-
-#~ msgid "Other"
-#~ msgstr "Andere"
-
-#~ msgid "Pop"
-#~ msgstr "Pop"
-
-#~ msgid "R&B"
-#~ msgstr "R&B"
-
-#~ msgid "Rap"
-#~ msgstr "Rap"
-
-#~ msgid "Reggae"
-#~ msgstr "Reggae"
-
-#~ msgid "Rock"
-#~ msgstr "Rock"
-
-#~ msgid "Techno"
-#~ msgstr "Techno"
-
-#~ msgid "Industrial"
-#~ msgstr "Industrial"
-
-#~ msgid "Alternative"
-#~ msgstr "Alternative"
-
-#~ msgid "Ska"
-#~ msgstr "Ska"
-
-#~ msgid "Death Metal"
-#~ msgstr "Death Metal"
-
-#~ msgid "Pranks"
-#~ msgstr "Pranks"
-
-#~ msgid "Soundtrack"
-#~ msgstr "Soundtrack"
-
-#~ msgid "Euro-Techno"
-#~ msgstr "Euro-Techno"
-
-#~ msgid "Ambient"
-#~ msgstr "Ambient"
-
-#~ msgid "Trip-Hop"
-#~ msgstr "Trip-Hop"
-
-#~ msgid "Vocal"
-#~ msgstr "Vocal"
-
-#~ msgid "Jazz+Funk"
-#~ msgstr "Jazz+Funk"
-
-#~ msgid "Fusion"
-#~ msgstr "Fusion"
-
-#~ msgid "Trance"
-#~ msgstr "Trance"
-
-#~ msgid "Classical"
-#~ msgstr "Klassisch"
-
-#~ msgid "Instrumental"
-#~ msgstr "Instrumental"
-
-#~ msgid "Acid"
-#~ msgstr "Acid"
-
-#~ msgid "House"
-#~ msgstr "House"
-
-#~ msgid "Game"
-#~ msgstr "Spiel"
-
-#~ msgid "Sound Clip"
-#~ msgstr "Soundclip"
-
-#~ msgid "Gospel"
-#~ msgstr "Gospel"
-
-#~ msgid "Noise"
-#~ msgstr "Noise"
-
-#~ msgid "AlternRock"
-#~ msgstr "AlternRock"
-
-#~ msgid "Bass"
-#~ msgstr "Bass"
-
-#~ msgid "Soul"
-#~ msgstr "Soul"
-
-#~ msgid "Punk"
-#~ msgstr "Punk"
-
-#~ msgid "Space"
-#~ msgstr "Space"
-
-#~ msgid "Meditative"
-#~ msgstr "Meditative"
-
-#~ msgid "Instrumental Pop"
-#~ msgstr "Instrumental Pop"
-
-#~ msgid "Instrumental Rock"
-#~ msgstr "Instrumental Rock"
-
-#~ msgid "Ethnic"
-#~ msgstr "Ethnic"
-
-#~ msgid "Gothic"
-#~ msgstr "Gothic"
-
-#~ msgid "Darkwave"
-#~ msgstr "Darkwave"
-
-#~ msgid "Techno-Industrial"
-#~ msgstr "Techno-Industrial"
-
-#~ msgid "Electronic"
-#~ msgstr "Electronic"
-
-#~ msgid "Pop-Folk"
-#~ msgstr "Pop-Folk"
-
-#~ msgid "Eurodance"
-#~ msgstr "Eurodance"
-
-#~ msgid "Dream"
-#~ msgstr "Dream"
-
-#~ msgid "Southern Rock"
-#~ msgstr "Southern Rock"
-
-#~ msgid "Comedy"
-#~ msgstr "Komödie"
-
-#~ msgid "Cult"
-#~ msgstr "Cult"
-
-#~ msgid "Gangsta Rap"
-#~ msgstr "Gangsta Rap"
-
-#~ msgid "Top 40"
-#~ msgstr "Top 40"
-
-#~ msgid "Christian Rap"
-#~ msgstr "Christian Rap"
-
-#~ msgid "Pop/Funk"
-#~ msgstr "Pop/Funk"
-
-#~ msgid "Jungle"
-#~ msgstr "Jungle"
-
-#~ msgid "Native American"
-#~ msgstr "Native American"
-
-#~ msgid "Cabaret"
-#~ msgstr "Kabarett"
-
-#~ msgid "New Wave"
-#~ msgstr "New Wave"
-
-#~ msgid "Psychedelic"
-#~ msgstr "Psychedelic"
-
-#~ msgid "Rave"
-#~ msgstr "Rave"
-
-#~ msgid "Showtunes"
-#~ msgstr "Showtunes"
-
-#~ msgid "Trailer"
-#~ msgstr "Trailer"
-
-#~ msgid "Lo-Fi"
-#~ msgstr "Lo-Fi"
-
-#~ msgid "Tribal"
-#~ msgstr "Tribal"
-
-#~ msgid "Acid Punk"
-#~ msgstr "Acid Punk"
-
-#~ msgid "Acid Jazz"
-#~ msgstr "Acid Jazz"
-
-#~ msgid "Polka"
-#~ msgstr "Polka"
-
-#~ msgid "Retro"
-#~ msgstr "Retro"
-
-#~ msgid "Musical"
-#~ msgstr "Musical"
-
-#~ msgid "Rock & Roll"
-#~ msgstr "Rock & Roll"
-
-#~ msgid "Hard Rock"
-#~ msgstr "Hard Rock"
-
-#~ msgid "Folk"
-#~ msgstr "Folk"
-
-#~ msgid "Folk/Rock"
-#~ msgstr "Folk/Rock"
-
-#~ msgid "National Folk"
-#~ msgstr "National Folk"
-
-#~ msgid "Swing"
-#~ msgstr "Swing"
-
-#~ msgid "Fast-Fusion"
-#~ msgstr "Fast-Fusion"
-
-#~ msgid "Bebob"
-#~ msgstr "Bebob"
-
-#~ msgid "Latin"
-#~ msgstr "Latin"
-
-#~ msgid "Revival"
-#~ msgstr "Revival"
-
-#~ msgid "Celtic"
-#~ msgstr "Keltisch"
-
-#~ msgid "Bluegrass"
-#~ msgstr "Bluegrass"
-
-#~ msgid "Avantgarde"
-#~ msgstr "Avantgarde"
-
-#~ msgid "Gothic Rock"
-#~ msgstr "Gothic Rock"
-
-#~ msgid "Progressive Rock"
-#~ msgstr "Progressive Rock"
-
-#~ msgid "Psychedelic Rock"
-#~ msgstr "Psychedelic Rock"
-
-#~ msgid "Symphonic Rock"
-#~ msgstr "Symphonic Rock"
-
-#~ msgid "Slow Rock"
-#~ msgstr "Slow Rock"
-
-#~ msgid "Big Band"
-#~ msgstr "Big Band"
-
-#~ msgid "Chorus"
-#~ msgstr "Chor"
-
-#~ msgid "Easy Listening"
-#~ msgstr "Easy Listening"
-
-#~ msgid "Acoustic"
-#~ msgstr "Acoustic"
-
-#~ msgid "Humour"
-#~ msgstr "Humor"
-
-#~ msgid "Speech"
-#~ msgstr "Rede"
-
-#~ msgid "Chanson"
-#~ msgstr "Chanson"
-
-#~ msgid "Opera"
-#~ msgstr "Oper"
-
-#~ msgid "Chamber Music"
-#~ msgstr "Kammermusik"
-
-#~ msgid "Sonata"
-#~ msgstr "Sonate"
-
-#~ msgid "Symphony"
-#~ msgstr "Symphonie"
-
-#~ msgid "Booty Bass"
-#~ msgstr "Booty Bass"
-
-#~ msgid "Primus"
-#~ msgstr "Primus"
-
-#~ msgid "Porn Groove"
-#~ msgstr "Porn Groove"
-
-#~ msgid "Satire"
-#~ msgstr "Satire"
-
-#~ msgid "Slow Jam"
-#~ msgstr "Slow Jam"
-
-#~ msgid "Club"
-#~ msgstr "Club"
-
-#~ msgid "Tango"
-#~ msgstr "Tango"
-
-#~ msgid "Samba"
-#~ msgstr "Samba"
-
-#~ msgid "Folklore"
-#~ msgstr "Folklore"
-
-#~ msgid "Ballad"
-#~ msgstr "Ballad"
-
-#~ msgid "Power Ballad"
-#~ msgstr "Power Ballad"
-
-#~ msgid "Rhythmic Soul"
-#~ msgstr "Rhythmic Soul"
-
-#~ msgid "Freestyle"
-#~ msgstr "Freestyle"
-
-#~ msgid "Duet"
-#~ msgstr "Duett"
-
-#~ msgid "Punk Rock"
-#~ msgstr "Punk Rock"
-
-#~ msgid "Drum Solo"
-#~ msgstr "Schlagzeug-Solo"
-
-#~ msgid "A Cappella"
-#~ msgstr "A Cappella"
-
-#~ msgid "Euro-House"
-#~ msgstr "Euro-House"
-
-#~ msgid "Dance Hall"
-#~ msgstr "Dance Hall"
-
-#~ msgid "Goa"
-#~ msgstr "Goa"
-
-#~ msgid "Drum & Bass"
-#~ msgstr "Schlagzeug & Bass"
-
-#~ msgid "Club-House"
-#~ msgstr "Club-House"
-
-#~ msgid "Hardcore"
-#~ msgstr "Hardcore"
-
-#~ msgid "Terror"
-#~ msgstr "Terror"
-
-#~ msgid "Indie"
-#~ msgstr "Indie"
-
-#~ msgid "BritPop"
-#~ msgstr "BritPop"
-
-#~ msgid "Negerpunk"
-#~ msgstr "Negerpunk"
-
-#~ msgid "Polsk Punk"
-#~ msgstr "Polsk Punk"
-
-#~ msgid "Beat"
-#~ msgstr "Beat"
-
-#~ msgid "Christian Gangsta Rap"
-#~ msgstr "Christian Gangsta Rap"
-
-#~ msgid "Heavy Metal"
-#~ msgstr "Heavy Metal"
-
-#~ msgid "Black Metal"
-#~ msgstr "Black Metal"
-
-#~ msgid "Crossover"
-#~ msgstr "Crossover"
-
-#~ msgid "Contemporary Christian"
-#~ msgstr "Contemporary Christian"
-
-#~ msgid "Christian Rock"
-#~ msgstr "Christian Rock"
-
-#~ msgid "Merengue"
-#~ msgstr "Merengue"
-
-#~ msgid "Salsa"
-#~ msgstr "Salsa"
-
-#~ msgid "Thrash Metal"
-#~ msgstr "Thrash Metal"
-
-#~ msgid "Anime"
-#~ msgstr "Anime"
-
-#~ msgid "JPop"
-#~ msgstr "JPop"
-
-#~ msgid "Synthpop"
-#~ msgstr "Synthpop"
-
 #~ msgid ""
 #~ "An error occured:\n"
 #~ "%s"
@@ -5626,15 +4962,3 @@ msgstr ""
 
 #~ msgid "%d KBit/s (nominal)"
 #~ msgstr "%d KBit/s (nominell)"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "%d:%.2d"
-#~ msgstr "%d:%.2d"
-
-#~ msgid "%d Bytes"
-#~ msgstr "%d Bytes"
-
-#~ msgid "%s - Audacious"
-#~ msgstr "%s - Audacious"

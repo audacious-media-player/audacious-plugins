@@ -94,6 +94,7 @@ src/OSS/about.c
 src/OSS/configure.c
 src/paranormal-ng/plugin.c
 src/paranormal/plugin.c
+src/projectm-1.0/main.c
 src/pulse_audio/pulse_audio.c
 src/scrobbler/configure.c
 src/scrobbler/gerpok.c
@@ -127,7 +128,6 @@ src/tonegen/tonegen.c
 src/tta/libtta.c
 src/vorbis/configure.c
 src/vorbis/vorbis.c
-src/vorbis/vorbis.c~
 src/vtx/about.c
 src/vtx/info.c
 src/wavpack/ui.cxx

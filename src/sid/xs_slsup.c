@@ -214,14 +214,14 @@ t_xs_tuneinfo *xs_tuneinfo_new(const gchar * pcFilename,
 	/* Allocate structure */
 	pResult = (t_xs_tuneinfo *) g_malloc0(sizeof(t_xs_tuneinfo));
 	if (!pResult) {
-		xs_error(_("Could not allocate memory for t_xs_tuneinfo ('%s')\n"),
+		xs_error("Could not allocate memory for t_xs_tuneinfo ('%s')\n",
 			pcFilename);
 		return NULL;
 	}
 
 	pResult->sidFilename = XS_CS_FILENAME(pcFilename);
 	if (!pResult->sidFilename) {
-		xs_error(_("Could not allocate sidFilename ('%s')\n"),
+		xs_error("Could not allocate sidFilename ('%s')\n",
 			pcFilename);
 		g_free(pResult);
 		return NULL;
@@ -230,7 +230,7 @@ t_xs_tuneinfo *xs_tuneinfo_new(const gchar * pcFilename,
 	/* Allocate space for subtune information */
 	pResult->subTunes = g_malloc0(sizeof(t_xs_subtuneinfo) * (nsubTunes + 1));
 	if (!pResult->subTunes) {
-		xs_error(_("Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"),
+		xs_error("Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n",
 			pcFilename, nsubTunes);
 
 		g_free(pResult->sidFilename);
