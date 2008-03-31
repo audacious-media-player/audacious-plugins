@@ -23,13 +23,8 @@
 
 #include <math.h>
 #include <assert.h>
-#include <pthread.h>
-#include <signal.h>
 
 #include <audacious/plugin.h>
-#include <audacious/output.h>
-#include <audacious/util.h>
-#include <sys/time.h>
 #include "plugin.h"
 #include "input.h"
 
