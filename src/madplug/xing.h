@@ -20,15 +20,15 @@
 #ifndef XING_H
 #define XING_H
 
-#include "mad.h"
+#include <glib.h>
 
 struct xing
 {
-    long flags;                 /* valid fields (see below) */
-    unsigned long frames;       /* total number of frames */
-    unsigned long bytes;        /* total number of bytes */
-    unsigned char toc[100];     /* 100-point seek table */
-    long scale;                 /* ?? */
+    guint flags;        /* valid fields (see below) */
+    guint frames;       /* total number of frames */
+    guint bytes;        /* total number of bytes */
+    guchar toc[100];    /* 100-point seek table */
+    gulong scale;       /* ?? */
 };
 
 enum
