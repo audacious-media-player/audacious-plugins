@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugs.audacious-media-player.org\n"
 "POT-Creation-Date: 2008-03-30 17:25+0200\n"
-"PO-Revision-Date: 2008-02-12 15:53+0900\n"
+"PO-Revision-Date: 2008-03-31 15:01+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1989,7 +1989,7 @@ msgstr "オプション:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:204
 msgid "Rescan CD"
-msgstr ""
+msgstr "CD を再スキャン"
 
 #: src/cdaudio-ng/cdaudio-ng.c:217
 msgid "Add CD"
@@ -2926,7 +2926,6 @@ msgid "About Gnome Shortcut Plugin"
 msgstr "Gnome ショートカットプラグインについて"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:307
-#, fuzzy
 msgid ""
 "Gnome Shortcut Plugin\n"
 "Let's you control the player with Gnome's shortcuts.\n"
@@ -2937,7 +2936,7 @@ msgstr ""
 "Gnome ショートカットプラグイン\n"
 "Gnome ショートカットでプレイヤを操作しよう．\n"
 "\n"
-"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
 #: src/hotkey/gui.c:68
@@ -3972,7 +3971,7 @@ msgstr "音量の調整は PCM ではなくマスタを使用する"
 
 #: src/projectm-1.0/main.c:70
 msgid "_Random"
-msgstr ""
+msgstr "ランダム(R_)"
 
 #: src/pulse_audio/pulse_audio.c:722
 msgid "About Audacious PulseAudio Output Plugin"
@@ -5062,7 +5061,6 @@ msgid "About Ogg Vorbis Audio Plugin"
 msgstr "Ogg Vorbis オーディオ プラグインについて"
 
 #: src/vorbis/vorbis.c:687
-#, fuzzy
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -5080,11 +5078,11 @@ msgid ""
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
-"Ogg Vorbis プラグインの提供: Xiph.org Foundation\n"
+"Xiph.org Foundation による Ogg Vorbis プラグイン\n"
 "\n"
 "オリジナルのコード:\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Contributions from\n"
+"貢献者:\n"
 "Chris Montgomery <monty@xiph.org>\n"
 "Peter Alm <peter@xmms.org>\n"
 "Michael Smith <msmith@labyrinth.edu.au>\n"
@@ -5092,6 +5090,7 @@ msgstr ""
 "Jorn Baayen <jorn@nl.linux.org>\n"
 "Haavard Kvaalen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "\n"
 "Xiph.org Foundation <http://www.xiph.org/> もご覧下さい.\n"
 
