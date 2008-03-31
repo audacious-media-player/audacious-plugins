@@ -37,7 +37,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <audacious/plugin.h>
-#include <audacious/main.h>
 #include <audacious/util.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>

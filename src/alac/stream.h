@@ -14,7 +14,6 @@
 #endif
 
 #include <audacious/plugin.h>
-#include <audacious/vfs.h>
 
 typedef struct stream_tTAG stream_t;
 

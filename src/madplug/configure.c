@@ -25,7 +25,6 @@
 
 #include <gtk/gtk.h>
 #include <math.h>
-#include <audacious/configdb.h>
 
 static GtkWidget *configure_win = NULL;
 static audmad_config_t *oldconfig = NULL; // undo storage

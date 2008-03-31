@@ -28,7 +28,6 @@
 #include <string.h> 
 #include <assert.h> 
 
-#include <audacious/vfs.h>
 #include <audacious/plugin.h> 
 
 #include "ape.h"

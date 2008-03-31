@@ -5,7 +5,6 @@
 #define ABSTRACT_FILE_H
 
 #include <stdio.h>
-#include <audacious/vfs.h>
 
 // Supports reading and finding out how many bytes are remaining
 class Data_Reader {

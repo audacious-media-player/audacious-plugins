@@ -27,7 +27,6 @@
 #include <errno.h> 
 #include <string.h> 
 
-#include <audacious/vfs.h>
 #include <audacious/plugin.h> 
 
 #include "ape.h"
