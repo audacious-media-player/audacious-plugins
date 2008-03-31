@@ -21,7 +21,6 @@
 #include "si_cfg.h"
 #include "si_common.h"
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 
 si_cfg_t si_cfg;
 

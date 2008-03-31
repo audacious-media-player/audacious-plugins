@@ -25,7 +25,6 @@
 #include "FB_logo.xpm"
 
 #include "config.h"
-#include <audacious/configdb.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>

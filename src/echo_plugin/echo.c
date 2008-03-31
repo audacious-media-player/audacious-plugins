@@ -1,14 +1,12 @@
+#include "config.h"
 #include <audacious/plugin.h>
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
-#include <audacious/configdb.h>
 #include "echo.h"
 
-#include "../../config.h"
 
 static void init(void);
 static void cleanup(void);
