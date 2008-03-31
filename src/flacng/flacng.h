@@ -22,7 +22,6 @@
 #include "config.h"
 #include <glib.h>
 #include <audacious/plugin.h>
-#include <audacious/main.h>
 #include <audacious/i18n.h>
 
 #define OUTPUT_BLOCK_SIZE (1024u)

@@ -20,7 +20,6 @@
 #include "neon.h"
 
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 
 #include <ne_socket.h>
 #include <ne_utils.h>

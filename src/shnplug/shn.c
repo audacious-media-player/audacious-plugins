@@ -25,7 +25,6 @@
 #include <math.h>
 #include <glib.h>
 #include <audacious/util.h>
-#include <audacious/configdb.h>
 #include "shorten.h"
 
 #ifdef HAVE_CONFIG_H

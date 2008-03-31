@@ -23,7 +23,6 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 
 
 static gint
