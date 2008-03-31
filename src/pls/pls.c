@@ -33,10 +33,7 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
-#include <audacious/main.h>
 #include <audacious/util.h>
-#include <audacious/playlist.h>
-#include <audacious/playlist_container.h>
 #include <audacious/plugin.h>
 #include <audacious/strings.h>
 

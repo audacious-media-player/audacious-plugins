@@ -18,17 +18,13 @@
  */
 
 #include <audacious/plugin.h>
-
 #include <audacious/output.h>
 #include <audacious/util.h>
-#include <audacious/configdb.h>
-#include <audacious/vfs.h>
-#include <audacious/main.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
 
 #include "vtx.h"
-#include <ayemu.h>
+#include "ayemu.h"
 
 extern InputPlugin vtx_ip;
 

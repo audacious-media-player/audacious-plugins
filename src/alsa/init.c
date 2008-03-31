@@ -17,7 +17,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 #include <glib.h>
-#include <audacious/main.h>
 #include "alsa.h"
 #include <dlfcn.h>
 #include <ctype.h>

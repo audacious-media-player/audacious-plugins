@@ -40,7 +40,6 @@
 #include <audacious/util.h>
 #include <audacious/strings.h>
 #include <audacious/i18n.h>
-#include <audacious/main.h>
 
 #include "avcodec.h"
 #include "avformat.h"

@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 
 

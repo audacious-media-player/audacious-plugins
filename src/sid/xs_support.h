@@ -67,7 +67,6 @@ extern "C" {
 /* VFS replacement functions
  */
 #ifdef __AUDACIOUS_NEWVFS__
-#include <audacious/vfs.h>
 #define t_xs_file VFSFile
 #define xs_fopen(a,b) aud_vfs_fopen(a,b)
 #define xs_fclose(a) aud_vfs_fclose(a)
@@ -79,7 +78,7 @@ extern "C" {
 #define xs_fseek(a,b,c) aud_vfs_fseek(a,b,c)
 #else
 #define t_xs_file FILE
-#define xs_fopen(a,b)fopen(a,b)
+#define xs_fopen(a,b) fopen(a,b)
 #define xs_fclose(a) fclose(a)
 #define xs_fgetc(a) fgetc(a)
 #define xs_fread(a,b,c,d) fread(a,b,c,d)
