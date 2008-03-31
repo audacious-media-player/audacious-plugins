@@ -1448,9 +1448,9 @@ if test "x$have_projectm1" = "xyes"; then
 	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0 >= 1.2.0], [have_projectm1="yes"], [have_projectm1="no"])
 fi
 
-if test "x$have_projectm1" = "xyes"; then
-	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM < 1.1], [have_projectm1="yes"], [have_projectm1="no"])
-	if test "x$libprjM" = "xno"; then
+if test "$have_projectm1" = "yes"; then
+	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
+	if test x$libprjM = xno; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
 	                        You can download libprojectM at http://projectm.sf.net/])
