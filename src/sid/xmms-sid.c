@@ -27,8 +27,6 @@
 #endif
 
 #include <stdarg.h>
-#include <gdk/gdkkeysyms.h>
-
 #include "xs_config.h"
 #include "xs_length.h"
 #include "xs_stil.h"
@@ -54,7 +52,7 @@
 /*
  * List of players and links to their functions
  */
-t_xs_player xs_playerlist[] = {
+static const xs_player_t xs_playerlist[] = {
 #ifdef HAVE_SIDPLAY1
 	{XS_ENG_SIDPLAY1,
 	 xs_sidplay1_probe,
@@ -77,17 +75,17 @@ t_xs_player xs_playerlist[] = {
 #endif
 };
 
-const gint xs_nplayerlist = (sizeof(xs_playerlist) / sizeof(t_xs_player));
+static const gint xs_nplayerlist = (sizeof(xs_playerlist) / sizeof(xs_playerlist[0]));
 
 
 /*
  * Global variables
  */
-t_xs_status xs_status;
+xs_status_t xs_status;
 XS_MUTEX(xs_status);
 static XS_THREAD_T xs_decode_thread;
 
-static void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune);
+static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint subTune);
 
 /*
  * Error messages
@@ -120,7 +118,7 @@ void XSDEBUG(const char *fmt, ...)
  */
 void xs_reinit(void)
 {
-	gint iPlayer;
+	gint player;
 	gboolean isInitialized;
 
 	XSDEBUG("xs_reinit() thread = %p\n", g_thread_self());
@@ -161,31 +159,31 @@ void xs_reinit(void)
 	/* Try to initialize emulator engine */
 	XSDEBUG("initializing emulator engine #%i...\n", xs_cfg.playerEngine);
 
-	iPlayer = 0;
+	player = 0;
 	isInitialized = FALSE;
-	while ((iPlayer < xs_nplayerlist) && !isInitialized) {
-		if (xs_playerlist[iPlayer].plrIdent == xs_cfg.playerEngine) {
-			if (xs_playerlist[iPlayer].plrInit(&xs_status)) {
+	while ((player < xs_nplayerlist) && !isInitialized) {
+		if (xs_playerlist[player].plrIdent == xs_cfg.playerEngine) {
+			if (xs_playerlist[player].plrInit(&xs_status)) {
 				isInitialized = TRUE;
-				xs_status.sidPlayer = (t_xs_player *) & xs_playerlist[iPlayer];
+				xs_status.sidPlayer = (xs_player_t *) & xs_playerlist[player];
 			}
 		}
-		iPlayer++;
+		player++;
 	}
 
-	XSDEBUG("init#1: %s, %i\n", (isInitialized) ? "OK" : "FAILED", iPlayer);
+	XSDEBUG("init#1: %s, %i\n", (isInitialized) ? "OK" : "FAILED", player);
 
-	iPlayer = 0;
-	while ((iPlayer < xs_nplayerlist) && !isInitialized) {
-		if (xs_playerlist[iPlayer].plrInit(&xs_status)) {
+	player = 0;
+	while ((player < xs_nplayerlist) && !isInitialized) {
+		if (xs_playerlist[player].plrInit(&xs_status)) {
 			isInitialized = TRUE;
-			xs_status.sidPlayer = (t_xs_player *) & xs_playerlist[iPlayer];
-			xs_cfg.playerEngine = xs_playerlist[iPlayer].plrIdent;
+			xs_status.sidPlayer = (xs_player_t *) & xs_playerlist[player];
+			xs_cfg.playerEngine = xs_playerlist[player].plrIdent;
 		} else
-			iPlayer++;
+			player++;
 	}
 
-	XSDEBUG("init#2: %s, %i\n", (isInitialized) ? "OK" : "FAILED", iPlayer);
+	XSDEBUG("init#2: %s, %i\n", (isInitialized) ? "OK" : "FAILED", player);
 
 
 	/* Get settings back, in case the chosen emulator backend changed them */
@@ -255,28 +253,28 @@ void xs_close(void)
 /*
  * Check whether the given file is handled by this plugin
  */
-static gchar * xs_has_tracknumber(gchar *pcFilename)
+static gchar * xs_has_tracknumber(gchar *filename)
 {
-	gchar *tmpSep = xs_strrchr(pcFilename, '?');
-	if (tmpSep && g_ascii_isdigit(*(tmpSep + 1)))
-		return tmpSep;
+	gchar *sep = xs_strrchr(filename, '?');
+	if (sep && g_ascii_isdigit(*(sep + 1)))
+		return sep;
 	else
 		return NULL;
 }
 
-gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrack)
+gboolean xs_get_trackinfo(const gchar *filename, gchar **result, gint *track)
 {
-	gchar *tmpSep;
+	gchar *sep;
 
-	*pcResult = g_strdup(pcFilename);
-	tmpSep = xs_has_tracknumber(*pcResult);
+	*result = g_strdup(filename);
+	sep = xs_has_tracknumber(*result);
 
-	if (tmpSep) {
-		*tmpSep = '\0';
-		*pTrack = atoi(tmpSep + 1);
+	if (sep) {
+		*sep = '\0';
+		*track = atoi(sep + 1);
 		return TRUE;
 	} else {
-		*pTrack = -1;
+		*track = -1;
 		return FALSE;
 	}
 }
@@ -287,7 +285,7 @@ gboolean xs_get_trackinfo(const gchar *pcFilename, gchar **pcResult, gint *pTrac
  */
 void xs_play_file(InputPlayback *pb)
 {
-	t_xs_tuneinfo *tmpTune;
+	xs_tuneinfo_t *tmpTune;
 	gboolean audioOpen = FALSE;
 	gint audioGot, tmpLength, subTune;
 	gchar *tmpFilename, *audioBuffer = NULL, *oversampleBuffer = NULL, *tmpTitle;
@@ -591,7 +589,7 @@ gint xs_get_time(InputPlayback *pb)
 /*
  * Return song information Tuple
  */
-static void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint subTune)
+static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint subTune)
 {
 	gchar *tmpStr, tmpStr2[64];
 
@@ -646,18 +644,18 @@ static void xs_get_song_tuple_info(Tuple *pResult, t_xs_tuneinfo *pInfo, gint su
 }
 
 
-Tuple * xs_get_song_tuple(gchar *songFilename)
+Tuple * xs_get_song_tuple(gchar *filename)
 {
-	Tuple *tmpResult;
+	Tuple *result;
 	gchar *tmpFilename;
-	t_xs_tuneinfo *tmpInfo;
+	xs_tuneinfo_t *tmpInfo;
 	gint tmpTune;
 
 	/* Get information from URL */
-	xs_get_trackinfo(songFilename, &tmpFilename, &tmpTune);
+	xs_get_trackinfo(filename, &tmpFilename, &tmpTune);
 
-	tmpResult = aud_tuple_new_from_filename(tmpFilename);
-	if (!tmpResult) {
+	result = aud_tuple_new_from_filename(tmpFilename);
+	if (!result) {
 		g_free(tmpFilename);
 		return NULL;
 	}
@@ -669,25 +667,25 @@ Tuple * xs_get_song_tuple(gchar *songFilename)
 	g_free(tmpFilename);
 
 	if (!tmpInfo)
-		return tmpResult;
+		return result;
 	
-	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
+	xs_get_song_tuple_info(result, tmpInfo, tmpTune);
 	xs_tuneinfo_free(tmpInfo);
 
-	return tmpResult;
+	return result;
 }
 
 
-Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
+Tuple *xs_probe_for_tuple(gchar *filename, xs_file_t *fd)
 {
-	Tuple *tmpResult;
+	Tuple *result;
 	gchar *tmpFilename;
-	t_xs_tuneinfo *tmpInfo;
+	xs_tuneinfo_t *tmpInfo;
 	gint tmpTune;
 
 	assert(xs_status.sidPlayer);
 
-	if (songFilename == NULL)
+	if (filename == NULL)
 		return NULL;
 
 	XS_MUTEX_LOCK(xs_status);
@@ -699,9 +697,9 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 
 
 	/* Get information from URL */
-	xs_get_trackinfo(songFilename, &tmpFilename, &tmpTune);
-	tmpResult = aud_tuple_new_from_filename(tmpFilename);
-	if (!tmpResult) {
+	xs_get_trackinfo(filename, &tmpFilename, &tmpTune);
+	result = aud_tuple_new_from_filename(tmpFilename);
+	if (!result) {
 		g_free(tmpFilename);
 		return NULL;
 	}
@@ -713,14 +711,14 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 	g_free(tmpFilename);
 
 	if (!tmpInfo)
-		return tmpResult;
+		return result;
 	
-	xs_get_song_tuple_info(tmpResult, tmpInfo, tmpTune);
+	xs_get_song_tuple_info(result, tmpInfo, tmpTune);
 
 	/* Set subtunes */
 	if (xs_cfg.subAutoEnable && tmpInfo->nsubTunes > 1 && tmpTune < 0) {
 		gint i, n;
-		tmpResult->subtunes = g_new(gint, tmpInfo->nsubTunes);
+		result->subtunes = g_new(gint, tmpInfo->nsubTunes);
 		for (n = 0, i = 1; i <= tmpInfo->nsubTunes; i++) {
 			gboolean doAdd = FALSE;
 					
@@ -731,13 +729,13 @@ Tuple *xs_probe_for_tuple(gchar *songFilename, t_xs_file *fd)
 			} else
 				doAdd = TRUE;
 					
-			if (doAdd) tmpResult->subtunes[n++] = i;
+			if (doAdd) result->subtunes[n++] = i;
 		}
-		tmpResult->nsubtunes = n;
+		result->nsubtunes = n;
 	} else
-		tmpResult->nsubtunes = 0;
+		result->nsubtunes = 0;
 	
 	xs_tuneinfo_free(tmpInfo);
 
-	return tmpResult;
+	return result;
 }

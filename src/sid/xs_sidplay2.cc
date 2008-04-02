@@ -45,7 +45,7 @@ typedef struct {
 	SidTune *currTune;
 	guint8 *buf;
 	size_t bufSize;
-} t_xs_sidplay2;
+} xs_sidplay2_t;
 
 
 /* We need to 'export' all this pseudo-C++ crap */
@@ -58,13 +58,13 @@ extern "C" {
 #define TFUNCTION2	xs_sidplay2_updateinfo
 #define TTUNEINFO	SidTuneInfo
 #define TTUNE		SidTune
-#define TENGINE		t_xs_sidplay2
+#define TENGINE		xs_sidplay2_t
 #include "xs_sidplay.h"
 
 
 /* Check if we can play the given file
  */
-gboolean xs_sidplay2_probe(t_xs_file *f)
+gboolean xs_sidplay2_probe(xs_file_t *f)
 {
 	gchar tmpBuf[4];
 	
@@ -82,16 +82,16 @@ gboolean xs_sidplay2_probe(t_xs_file *f)
 
 /* Initialize SIDPlay2
  */
-gboolean xs_sidplay2_init(t_xs_status * myStatus)
+gboolean xs_sidplay2_init(xs_status_t * myStatus)
 {
 	gint tmpFreq, i;
-	t_xs_sidplay2 *myEngine;
+	xs_sidplay2_t *myEngine;
 	sid_filter_t tmpFilter;
 	t_xs_sid2_filter *f;
 	assert(myStatus);
 
 	/* Allocate internal structures */
-	myEngine = (t_xs_sidplay2 *) g_malloc0(sizeof(t_xs_sidplay2));
+	myEngine = (xs_sidplay2_t *) g_malloc0(sizeof(xs_sidplay2_t));
 	myStatus->sidEngine = myEngine;
 	if (!myEngine) return FALSE;
 
@@ -365,12 +365,12 @@ gboolean xs_sidplay2_init(t_xs_status * myStatus)
 
 /* Close SIDPlay2 engine
  */
-void xs_sidplay2_close(t_xs_status * myStatus)
+void xs_sidplay2_close(xs_status_t * myStatus)
 {
-	t_xs_sidplay2 *myEngine;
+	xs_sidplay2_t *myEngine;
 	assert(myStatus);
 
-	myEngine = (t_xs_sidplay2 *) myStatus->sidEngine;
+	myEngine = (xs_sidplay2_t *) myStatus->sidEngine;
 
 	/* Free internals */
 	if (myEngine->currBuilder) {
@@ -397,12 +397,12 @@ void xs_sidplay2_close(t_xs_status * myStatus)
 
 /* Initialize current song and sub-tune
  */
-gboolean xs_sidplay2_initsong(t_xs_status * myStatus)
+gboolean xs_sidplay2_initsong(xs_status_t * myStatus)
 {
-	t_xs_sidplay2 *myEngine;
+	xs_sidplay2_t *myEngine;
 	assert(myStatus);
 
-	myEngine = (t_xs_sidplay2 *) myStatus->sidEngine;
+	myEngine = (xs_sidplay2_t *) myStatus->sidEngine;
 	if (!myEngine) return FALSE;
 
 	if (!myEngine->currTune->selectSong(myStatus->currSong)) {
@@ -423,12 +423,12 @@ gboolean xs_sidplay2_initsong(t_xs_status * myStatus)
 
 /* Emulate and render audio data to given buffer
  */
-guint xs_sidplay2_fillbuffer(t_xs_status * myStatus, gchar * audioBuffer, guint audioBufSize)
+guint xs_sidplay2_fillbuffer(xs_status_t * myStatus, gchar * audioBuffer, guint audioBufSize)
 {
-	t_xs_sidplay2 *myEngine;
+	xs_sidplay2_t *myEngine;
 	assert(myStatus);
 
-	myEngine = (t_xs_sidplay2 *) myStatus->sidEngine;
+	myEngine = (xs_sidplay2_t *) myStatus->sidEngine;
 	if (!myEngine) return 0;
 
 	return myEngine->currEng->play(audioBuffer, audioBufSize);
@@ -437,13 +437,13 @@ guint xs_sidplay2_fillbuffer(t_xs_status * myStatus, gchar * audioBuffer, guint 
 
 /* Load a given SID-tune file
  */
-gboolean xs_sidplay2_load(t_xs_status * myStatus, gchar * pcFilename)
+gboolean xs_sidplay2_load(xs_status_t * myStatus, gchar * pcFilename)
 {
-	t_xs_sidplay2 *myEngine;
+	xs_sidplay2_t *myEngine;
 	assert(myStatus);
 	myStatus->isInitialized = FALSE;
 
-	myEngine = (t_xs_sidplay2 *) myStatus->sidEngine;
+	myEngine = (xs_sidplay2_t *) myStatus->sidEngine;
 	if (!myEngine) return FALSE;
 
 	/* Try to get the tune */
@@ -461,12 +461,12 @@ gboolean xs_sidplay2_load(t_xs_status * myStatus, gchar * pcFilename)
 
 /* Delete INTERNAL information
  */
-void xs_sidplay2_delete(t_xs_status * myStatus)
+void xs_sidplay2_delete(xs_status_t * myStatus)
 {
-	t_xs_sidplay2 *myEngine;
+	xs_sidplay2_t *myEngine;
 	assert(myStatus);
 
-	myEngine = (t_xs_sidplay2 *) myStatus->sidEngine;
+	myEngine = (xs_sidplay2_t *) myStatus->sidEngine;
 	if (!myEngine) return;
 	
 	g_free(myEngine->buf);
@@ -477,7 +477,7 @@ void xs_sidplay2_delete(t_xs_status * myStatus)
 
 /* Hardware backend flushing
  */
-void xs_sidplay2_flush(t_xs_status * myStatus)
+void xs_sidplay2_flush(xs_status_t * myStatus)
 {
 	assert(myStatus);
 

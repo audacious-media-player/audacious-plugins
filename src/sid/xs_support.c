@@ -24,13 +24,13 @@
 #include <ctype.h>
 
 
-guint16 xs_fread_be16(t_xs_file *f)
+guint16 xs_fread_be16(xs_file_t *f)
 {
 	return (((guint16) xs_fgetc(f)) << 8) | ((guint16) xs_fgetc(f));
 }
 
 
-guint32 xs_fread_be32(t_xs_file *f)
+guint32 xs_fread_be32(xs_file_t *f)
 {
 	return (((guint32) xs_fgetc(f)) << 24) |
 		(((guint32) xs_fgetc(f)) << 16) |
@@ -41,13 +41,13 @@ guint32 xs_fread_be32(t_xs_file *f)
 
 /* Load a file to a buffer, return 0 on success, negative value on error
  */
-gint xs_fload_buffer(const gchar *pcFilename, guint8 **buf, size_t *bufSize)
+gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
 {
-	t_xs_file *f;
+	xs_file_t *f;
 	glong seekPos;
 	
 	/* Open file, get file size */
-	if ((f = xs_fopen(pcFilename, "rb")) == NULL)
+	if ((f = xs_fopen(filename, "rb")) == NULL)
 		return -1;
 
 	xs_fseek(f, 0, SEEK_END);

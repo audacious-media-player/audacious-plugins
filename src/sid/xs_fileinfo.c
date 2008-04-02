@@ -33,7 +33,7 @@
 
 
 static GtkWidget *xs_fileinfowin = NULL;
-static t_xs_stil_node *xs_fileinfostil = NULL;
+static stil_node_t *xs_fileinfostil = NULL;
 XS_MUTEX(xs_fileinfowin);
 
 #define LUW(x)	lookup_widget(xs_fileinfowin, x)
@@ -120,7 +120,7 @@ gboolean xs_fileinfo_delete(GtkWidget * widget, GdkEvent * event, gpointer user_
 
 static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 {
-	t_xs_stil_subnode *tmpNode;
+	stil_subnode_t *tmpNode;
 	GtkWidget *tmpText;
 	gchar *subName, *subAuthor, *subInfo;
 
@@ -136,14 +136,14 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 #endif
 
 	/* Get subtune information */
-	tmpNode = (t_xs_stil_subnode *) data;
+	tmpNode = (stil_subnode_t *) data;
 	if (!tmpNode && xs_fileinfostil)
 		tmpNode = xs_fileinfostil->subTunes[0];
 	
 	if (tmpNode) {
-		subName = tmpNode->pName;
-		subAuthor = tmpNode->pAuthor;
-		subInfo = tmpNode->pInfo;
+		subName = tmpNode->name;
+		subAuthor = tmpNode->author;
+		subInfo = tmpNode->info;
 	} else {
 		subName = NULL;
 		subAuthor = NULL;
@@ -167,11 +167,11 @@ static void xs_fileinfo_subtune(GtkWidget * widget, void *data)
 }
 
 
-void xs_fileinfo(gchar * pcFilename)
+void xs_fileinfo(gchar * filename)
 {
 	GtkWidget *tmpMenuItem, *tmpMenu, *tmpOptionMenu;
-	t_xs_tuneinfo *tmpInfo;
-	t_xs_stil_subnode *tmpNode;
+	xs_tuneinfo_t *tmpInfo;
+	stil_subnode_t *tmpNode;
 	gchar tmpStr[256], *tmpFilename;
 	gint n;
 
@@ -179,9 +179,9 @@ void xs_fileinfo(gchar * pcFilename)
 	 * no information can be found for the new file. Hmm...
 	 */
 #ifdef AUDACIOUS_PLUGIN
-	xs_get_trackinfo(pcFilename, &tmpFilename, &n);
+	xs_get_trackinfo(filename, &tmpFilename, &n);
 #else
-	tmpFilename = pcFilename;
+	tmpFilename = filename;
 #endif	
 
 	/* Get new tune information */
@@ -220,7 +220,7 @@ void xs_fileinfo(gchar * pcFilename)
 
 
 	/* Set the generic song information */
-	tmpFilename = XS_CS_FILENAME(pcFilename);
+	tmpFilename = XS_CS_FILENAME(filename);
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_filename")), tmpFilename);
 	g_free(tmpFilename);
 	gtk_entry_set_text(GTK_ENTRY(LUW("fileinfo_songname")), tmpInfo->sidName);
@@ -246,18 +246,18 @@ void xs_fileinfo(gchar * pcFilename)
 			
 			g_snprintf(tmpStr, sizeof(tmpStr), _("Tune #%i: "), n);
 
-			if (tmpNode->pName) {
-				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->pName);
+			if (tmpNode->name) {
+				xs_pnstrcat(tmpStr, sizeof(tmpStr), tmpNode->name);
 				isSet = TRUE;
 			}
 
-			if (tmpNode->pTitle) {
+			if (tmpNode->title) {
 				xs_pnstrcat(tmpStr, sizeof(tmpStr),
-					isSet ? " [*]" : tmpNode->pTitle);
+					isSet ? " [*]" : tmpNode->title);
 				isSet = TRUE;
 			}
 
-			if (tmpNode->pInfo) {
+			if (tmpNode->info) {
 				xs_pnstrcat(tmpStr, sizeof(tmpStr), " [!]");
 				isSet = TRUE;
 			}

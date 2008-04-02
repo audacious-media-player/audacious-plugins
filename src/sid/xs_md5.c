@@ -16,7 +16,7 @@
 #define xs_md5_bytereverse(buf, len)	/* Nothing */
 #else
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-void xs_md5_bytereverse(guint8 *buf, guint l)
+static void xs_md5_bytereverse(guint8 *buf, guint l)
 {
 	guint32 t;
 	do {
@@ -34,7 +34,7 @@ void xs_md5_bytereverse(guint8 *buf, guint l)
 /* Start MD5 accumulation.  Set bit count to 0 and buffer to mysterious
  * initialization constants.
  */
-void xs_md5_init(t_xs_md5state *ctx)
+void xs_md5_init(xs_md5state_t *ctx)
 {
 	ctx->buf[0] = 0x67452301;
 	ctx->buf[1] = 0xefcdab89;
@@ -57,7 +57,7 @@ void xs_md5_init(t_xs_md5state *ctx)
 #define MD5STEP(f, w, x, y, z, data, s) \
 	( w += f(x, y, z) + data,  w = w<<s | w>>(32-s),  w += x )
 
-void xs_md5_transform(guint32 buf[4], guint32 const in[16])
+static void xs_md5_transform(guint32 buf[4], guint32 const in[16])
 {
 	register guint32 a, b, c, d;
 
@@ -144,7 +144,7 @@ void xs_md5_transform(guint32 buf[4], guint32 const in[16])
 /* Update context to reflect the concatenation of another buffer full
  * of bytes.
  */
-void xs_md5_append(t_xs_md5state *ctx, const guint8 *buf, guint len)
+void xs_md5_append(xs_md5state_t *ctx, const guint8 *buf, guint len)
 {
 	guint32 t;
 
@@ -157,7 +157,6 @@ void xs_md5_append(t_xs_md5state *ctx, const guint8 *buf, guint len)
 	t = (t >> 3) & 0x3f;	/* Bytes already in shsInfo->data */
 
 	/* Handle any leading odd-sized chunks */
-
 	if (t) {
 		guint8 *p = (guint8 *) ctx->in + t;
 
@@ -172,8 +171,8 @@ void xs_md5_append(t_xs_md5state *ctx, const guint8 *buf, guint len)
 		buf += t;
 		len -= t;
 	}
-	/* Process data in 64-byte chunks */
 
+	/* Process data in 64-byte chunks */
 	while (len >= 64) {
 		memcpy(ctx->in, buf, 64);
 		xs_md5_bytereverse(ctx->in, 16);
@@ -183,14 +182,13 @@ void xs_md5_append(t_xs_md5state *ctx, const guint8 *buf, guint len)
 	}
 
 	/* Handle any remaining bytes of data. */
-
 	memcpy(ctx->in, buf, len);
 }
 
 /* Final wrapup - pad to 64-byte boundary with the bit pattern 
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
-void xs_md5_finish(t_xs_md5state *ctx, t_xs_md5hash digest)
+void xs_md5_finish(xs_md5state_t *ctx, xs_md5hash_t digest)
 {
 	guint count;
 	guint8 *p;

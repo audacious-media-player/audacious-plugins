@@ -67,7 +67,7 @@ extern "C" {
 /* VFS replacement functions
  */
 #ifdef __AUDACIOUS_NEWVFS__
-#define t_xs_file VFSFile
+#define xs_file_t VFSFile
 #define xs_fopen(a,b) aud_vfs_fopen(a,b)
 #define xs_fclose(a) aud_vfs_fclose(a)
 #define xs_fgetc(a) aud_vfs_getc(a)
@@ -77,7 +77,7 @@ extern "C" {
 #define xs_ftell(a) aud_vfs_ftell(a)
 #define xs_fseek(a,b,c) aud_vfs_fseek(a,b,c)
 #else
-#define t_xs_file FILE
+#define xs_file_t FILE
 #define xs_fopen(a,b) fopen(a,b)
 #define xs_fclose(a) fclose(a)
 #define xs_fgetc(a) fgetc(a)
@@ -87,8 +87,8 @@ extern "C" {
 #define xs_ftell(a) ftell(a)
 #define xs_fseek(a,b,c) fseek(a,b,c)
 #endif
-guint16 xs_fread_be16(t_xs_file *);
-guint32 xs_fread_be32(t_xs_file *);
+guint16 xs_fread_be16(xs_file_t *);
+guint32 xs_fread_be32(xs_file_t *);
 gint	xs_fload_buffer(const gchar *, guint8 **, size_t *);
 
 

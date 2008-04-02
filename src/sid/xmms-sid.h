@@ -131,9 +131,9 @@ extern "C" {
 
 /* Shorthands for linked lists
  */
-#define LPREV	(pNode->pPrev)
-#define LTHIS	(pNode)
-#define LNEXT	(pNode->pNext)
+#define LPREV	(node->prev)
+#define LTHIS	(node)
+#define LNEXT	(node->next)
 
 
 /* Plugin-wide typedefs
@@ -142,7 +142,7 @@ typedef struct {
 	gint		tuneSpeed,
 			tuneLength;
 	gboolean	tunePlayed;
-} t_xs_subtuneinfo;
+} xs_subtuneinfo_t;
 
 
 typedef struct {
@@ -157,8 +157,8 @@ typedef struct {
 			dataFileLen,
 			sidModel;
 	gint		nsubTunes, startTune;
-	t_xs_subtuneinfo	*subTunes;
-} t_xs_tuneinfo;
+	xs_subtuneinfo_t	*subTunes;
+} xs_tuneinfo_t;
 
 
 /* Global variables
@@ -177,7 +177,7 @@ void	xs_pause(InputPlayback *, short);
 void	xs_seek(InputPlayback *, gint);
 gint	xs_get_time(InputPlayback *);
 Tuple *	xs_get_song_tuple(gchar *);
-Tuple *	xs_probe_for_tuple(gchar *, t_xs_file *);
+Tuple *	xs_probe_for_tuple(gchar *, xs_file_t *);
 void	xs_about(void);
 
 void	xs_error(const char *, ...);

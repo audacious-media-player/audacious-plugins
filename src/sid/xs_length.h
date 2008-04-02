@@ -10,27 +10,27 @@ extern "C" {
 
 /* Types
  */
-typedef struct _t_xs_sldb_node {
-	t_xs_md5hash	md5Hash;	/* 128-bit MD5 hash-digest */
-	gint		nLengths;	/* Number of lengths */
-	gint		*sLengths;	/* Lengths in seconds */
-	struct _t_xs_sldb_node *pPrev, *pNext;
-} t_xs_sldb_node;
+typedef struct _sldb_node_t {
+	xs_md5hash_t	md5Hash;	/* 128-bit MD5 hash-digest */
+	gint		nlengths;	/* Number of lengths */
+	gint		*lengths;	/* Lengths in seconds */
+	struct _sldb_node_t *prev, *next;
+} sldb_node_t;
 
 
 typedef struct {
-	t_xs_sldb_node	*pNodes,
-			**ppIndex;
+	sldb_node_t	*nodes,
+			**pindex;
 	size_t		n;
-} t_xs_sldb;
+} xs_sldb_t;
 
 
 /* Functions
  */
-gint			xs_sldb_read(t_xs_sldb *, const gchar *);
-gint			xs_sldb_index(t_xs_sldb *);
-void			xs_sldb_free(t_xs_sldb *);
-t_xs_sldb_node *	xs_sldb_get(t_xs_sldb *, const gchar *);
+gint		xs_sldb_read(xs_sldb_t *, const gchar *);
+gint		xs_sldb_index(xs_sldb_t *);
+void		xs_sldb_free(xs_sldb_t *);
+sldb_node_t *	xs_sldb_get(xs_sldb_t *, const gchar *);
 
 #ifdef __cplusplus
 }
