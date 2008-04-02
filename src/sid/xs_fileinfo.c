@@ -202,7 +202,7 @@ void xs_fileinfo(gchar * filename)
 
     /* Check if there already is an open fileinfo window */
     if (xs_fileinfowin)
-                gtk_window_present(GTK_WINDOW(xs_fileinfowin));
+        XS_WINDOW_PRESENT(xs_fileinfowin);
     else {
         xs_fileinfowin = create_xs_fileinfowin();
 #ifndef AUDACIOUS_PLUGIN

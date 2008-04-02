@@ -219,6 +219,8 @@ void xs_ ## ME (GtkButton *b, gpointer d) {        \
 #define XS_SIGNAL_CONNECT(SOBJ, SNAME, SFUNC, SDATA)        \
     g_signal_connect(G_OBJECT(SOBJ), SNAME, G_CALLBACK(SFUNC), SDATA)
 
+#define XS_WINDOW_PRESENT(XX) gtk_window_present(GTK_WINDOW( XX ))
+
 #ifdef __cplusplus
 }
 #endif

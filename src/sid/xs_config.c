@@ -775,7 +775,7 @@ void xs_cfg_sldb_browse(GtkButton * button, gpointer user_data)
     (void) user_data;
 
     if (xs_sldb_fileselector != NULL) {
-                gtk_window_present(GTK_WINDOW(xs_sldb_fileselector));
+        XS_WINDOW_PRESENT(xs_sldb_fileselector);
         return;
     }
 
@@ -813,7 +813,7 @@ void xs_cfg_stil_browse(GtkButton * button, gpointer user_data)
     (void) user_data;
 
     if (xs_stil_fileselector != NULL) {
-                gtk_window_present(GTK_WINDOW(xs_stil_fileselector));
+        XS_WINDOW_PRESENT(xs_stil_fileselector);
         return;
     }
 
@@ -852,7 +852,7 @@ void xs_cfg_hvsc_browse(GtkButton * button, gpointer user_data)
     (void) user_data;
 
     if (xs_hvsc_selector != NULL) {
-                gtk_window_present(GTK_WINDOW(xs_hvsc_selector));
+        XS_WINDOW_PRESENT(xs_hvsc_selector);
         return;
     }
 
@@ -903,9 +903,10 @@ void xs_cfg_sp2_filter_update(XSCurve *curve, t_xs_sid2_filter *f)
     
     xs_curve_reset(curve);
     xs_curve_set_range(curve, 0,0, XS_SIDPLAY2_NFPOINTS, XS_SIDPLAY2_FMAX);
-    if (!xs_curve_set_points(curve, f->points, f->npoints))
+    if (!xs_curve_set_points(curve, f->points, f->npoints)) {
         // FIXME
         xs_error("Warning: Could not set filter curve widget points!\n");
+    }
 }
 
 
@@ -1010,7 +1011,7 @@ void xs_cfg_sp2_filter_import(GtkButton *button, gpointer user_data)
     (void) user_data;
 
     if (xs_filt_importselector != NULL) {
-                gtk_window_present(GTK_WINDOW(xs_filt_importselector));
+        XS_WINDOW_PRESENT(xs_filt_importselector);
         return;
     }
 
@@ -1049,7 +1050,7 @@ void xs_cfg_sp2_filter_export(GtkButton *button, gpointer user_data)
     (void) user_data;
 
     if (xs_filt_exportselector != NULL) {
-                gtk_window_present(GTK_WINDOW(xs_filt_exportselector));
+        XS_WINDOW_PRESENT(xs_filt_exportselector);
         return;
     }
 
@@ -1259,7 +1260,7 @@ void xs_configure(void)
 
     /* Check if the window already exists */
     if (xs_configwin) {
-                gtk_window_present(GTK_WINDOW(xs_configwin));
+        XS_WINDOW_PRESENT(xs_configwin);
         return;
     }
 
