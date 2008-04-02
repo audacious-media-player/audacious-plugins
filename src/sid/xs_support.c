@@ -89,20 +89,20 @@ gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
 
 /* Copy a string
  */
-gchar *xs_strncpy(gchar *pDest, const gchar *pSource, size_t n)
+gchar *xs_strncpy(gchar *dest, const gchar *src, size_t n)
 {
     const gchar *s;
     gchar *d;
     size_t i;
 
     /* Check the string pointers */
-    if (!pSource || !pDest)
-        return pDest;
+    if (!src || !dest)
+        return dest;
 
     /* Copy to the destination */
     i = n;
-    s = pSource;
-    d = pDest;
+    s = src;
+    d = dest;
     while (*s && (i > 0)) {
         *(d++) = *(s++);
         i--;
@@ -115,52 +115,52 @@ gchar *xs_strncpy(gchar *pDest, const gchar *pSource, size_t n)
     }
 
     /* Ensure that last is always zero */
-    pDest[n - 1] = 0;
+    dest[n - 1] = 0;
 
-    return pDest;
+    return dest;
 }
 
 
-/* Copy a given string over in *ppResult.
+/* Copy a given string over in *result.
  */
-gint xs_pstrcpy(gchar **ppResult, const gchar *pStr)
+gint xs_pstrcpy(gchar **result, const gchar *str)
 {
     /* Check the string pointers */
-    if (!ppResult || !pStr)
+    if (!result || !str)
         return -1;
 
     /* Allocate memory for destination */
-    if (*ppResult)
-        g_free(*ppResult);
-    *ppResult = (gchar *) g_malloc(strlen(pStr) + 1);
-    if (!*ppResult)
+    if (*result)
+        g_free(*result);
+    *result = (gchar *) g_malloc(strlen(str) + 1);
+    if (!*result)
         return -2;
 
     /* Copy to the destination */
-    strcpy(*ppResult, pStr);
+    strcpy(*result, str);
 
     return 0;
 }
 
 
-/* Concatenates a given string into string pointed by *ppResult.
+/* Concatenates a given string into string pointed by *result.
  */
-gint xs_pstrcat(gchar **ppResult, const gchar *pStr)
+gint xs_pstrcat(gchar **result, const gchar *str)
 {
     /* Check the string pointers */
-    if (!ppResult || !pStr)
+    if (!result || !str)
         return -1;
 
-    if (*ppResult != NULL) {
-        *ppResult = (gchar *) g_realloc(*ppResult, strlen(*ppResult) + strlen(pStr) + 1);
-        if (*ppResult == NULL)
+    if (*result != NULL) {
+        *result = (gchar *) g_realloc(*result, strlen(*result) + strlen(str) + 1);
+        if (*result == NULL)
             return -1;
-        strcat(*ppResult, pStr);
+        strcat(*result, str);
     } else {
-        *ppResult = (gchar *) g_malloc(strlen(pStr) + 1);
-        if (*ppResult == NULL)
+        *result = (gchar *) g_malloc(strlen(str) + 1);
+        if (*result == NULL)
             return -1;
-        strcpy(*ppResult, pStr);
+        strcpy(*result, str);
     }
 
     return 0;
@@ -170,20 +170,20 @@ gint xs_pstrcat(gchar **ppResult, const gchar *pStr)
 /* Concatenate a given string up to given dest size or \n.
  * If size max is reached, change the end to "..."
  */
-void xs_pnstrcat(gchar *pDest, size_t iSize, const gchar *pStr)
+void xs_pnstrcat(gchar *dest, size_t iSize, const gchar *str)
 {
     size_t i, n;
     const gchar *s;
     gchar *d;
 
-    d = pDest;
+    d = dest;
     i = 0;
     while (*d && (i < iSize)) {
         i++;
         d++;
     }
 
-    s = pStr;
+    s = str;
     while (*s && (*s != '\n') && (i < iSize)) {
         *d = *s;
         d++;
@@ -209,37 +209,37 @@ void xs_pnstrcat(gchar *pDest, size_t iSize, const gchar *pStr)
 
 /* Locate character in string
  */
-gchar *xs_strrchr(gchar *pcStr, const gchar ch)
+gchar *xs_strrchr(gchar *str, const gchar ch)
 {
     gchar *lastPos = NULL;
 
-    while (*pcStr) {
-        if (*pcStr == ch)
-            lastPos = pcStr;
-        pcStr++;
+    while (*str) {
+        if (*str == ch)
+            lastPos = str;
+        str++;
     }
 
     return lastPos;
 }
 
 
-void xs_findnext(const gchar *pcStr, size_t *piPos)
+void xs_findnext(const gchar *str, size_t *pos)
 {
-    while (pcStr[*piPos] && isspace(pcStr[*piPos]))
-        (*piPos)++;
+    while (str[*pos] && isspace(str[*pos]))
+        (*pos)++;
 }
 
 
-void xs_findeol(const gchar *pcStr, size_t *piPos)
+void xs_findeol(const gchar *str, size_t *pos)
 {
-    while (pcStr[*piPos] && (pcStr[*piPos] != '\n') && (pcStr[*piPos] != '\r'))
-        (*piPos)++;
+    while (str[*pos] && (str[*pos] != '\n') && (str[*pos] != '\r'))
+        (*pos)++;
 }
 
 
-void xs_findnum(const gchar *pcStr, size_t *piPos)
+void xs_findnum(const gchar *str, size_t *pos)
 {
-    while (pcStr[*piPos] && isdigit(pcStr[*piPos]))
-        (*piPos)++;
+    while (str[*pos] && isdigit(str[*pos]))
+        (*pos)++;
 }
 
