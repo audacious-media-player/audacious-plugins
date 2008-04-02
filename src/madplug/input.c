@@ -587,37 +587,27 @@ input_term(struct mad_info_t * info)
 {
     AUDDBG("f: input_term\n");
 
-    if (info->title)
-        g_free(info->title);
-    if (info->url)
-        g_free(info->url);
-    if (info->filename)
-        g_free(info->filename);
+    g_free(info->title);
+    g_free(info->url);
+    g_free(info->filename);
     if (info->infile)
         aud_vfs_fclose(info->infile);
     if (info->id3file)
         id3_file_close(info->id3file);
 
-    if (info->replaygain_album_str)
-        g_free(info->replaygain_album_str);
-    if (info->replaygain_track_str)
-        g_free(info->replaygain_track_str);
-    if (info->replaygain_album_peak_str)
-        g_free(info->replaygain_album_peak_str);
-    if (info->replaygain_track_peak_str)
-        g_free(info->replaygain_track_peak_str);
-    if (info->mp3gain_undo_str)
-        g_free(info->mp3gain_undo_str);
-    if (info->mp3gain_minmax_str)
-        g_free(info->mp3gain_minmax_str);
+    g_free(info->replaygain_album_str);
+    g_free(info->replaygain_track_str);
+    g_free(info->replaygain_album_peak_str);
+    g_free(info->replaygain_track_peak_str);
+    g_free(info->mp3gain_undo_str);
+    g_free(info->mp3gain_minmax_str);
 
     if (info->tuple) {
         aud_tuple_free(info->tuple);
         info->tuple = NULL;
     }
 
-    if (info->prev_title)
-        g_free(info->prev_title);
+    g_free(info->prev_title);
 
     /* set everything to zero in case it gets used again. */
     memset(info, 0, sizeof(struct mad_info_t));
