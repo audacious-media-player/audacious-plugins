@@ -158,6 +158,9 @@ esdout_setup_format(AFormat fmt, gint rate, gint nch)
     case FMT_S16_NE:
         esd_format = ESD_BITS16;
         break;
+    default:
+        /* for warning suppression */
+        break;
     }
 
 #if (G_BYTE_ORDER == G_BIG_ENDIAN)
