@@ -25,60 +25,60 @@
 /* Let's do some preprocessor magic :) */
 #define XS_FVAR(T, P, K) g ## K ## int ## P *sp_ ## T ## P , *dp_ ## T ## P
 
-#define XS_FILTER1(T, P, K, Q)							\
-	dataSize /= sizeof(g ## K ## int ## P); 				\
-	sp_ ## T ## P = (g ## K ## int ## P *) srcBuf;				\
-	dp_ ## T ## P = (g ## K ## int ## P *) destBuf;				\
-	while (dataSize-- > 0) {						\
-		for (tmp = 0, i = 0; i < oversampleFactor; i++)			\
-			tmp += (gint32) ((gint ## P) (*(sp_ ## T ## P ++) Q));	\
-		xs_filter_mbn = (tmp + xs_filter_mbn) / (oversampleFactor + 1);	\
-		*(dp_ ## T ## P ++) = ((g ## K ## int ## P) xs_filter_mbn) Q ;	\
-		}
+#define XS_FILTER1(T, P, K, Q)                            \
+    dataSize /= sizeof(g ## K ## int ## P);                 \
+    sp_ ## T ## P = (g ## K ## int ## P *) srcBuf;                \
+    dp_ ## T ## P = (g ## K ## int ## P *) destBuf;                \
+    while (dataSize-- > 0) {                        \
+        for (tmp = 0, i = 0; i < oversampleFactor; i++)            \
+            tmp += (gint32) ((gint ## P) (*(sp_ ## T ## P ++) Q));    \
+        xs_filter_mbn = (tmp + xs_filter_mbn) / (oversampleFactor + 1);    \
+        *(dp_ ## T ## P ++) = ((g ## K ## int ## P) xs_filter_mbn) Q ;    \
+        }
 
 
 static gint32 xs_filter_mbn = 0;
 
 
 gint xs_filter_rateconv(void *destBuf, void *srcBuf, const AFormat audioFormat,
-			const gint oversampleFactor, const gint bufSize)
+            const gint oversampleFactor, const gint bufSize)
 {
-	static gint32 tmp;
-	XS_FVAR(s, 8,);
-	XS_FVAR(u, 8, u);
-	XS_FVAR(s, 16,);
-	XS_FVAR(u, 16, u);
-	gint i;
-	gint dataSize = bufSize;
+    static gint32 tmp;
+    XS_FVAR(s, 8,);
+    XS_FVAR(u, 8, u);
+    XS_FVAR(s, 16,);
+    XS_FVAR(u, 16, u);
+    gint i;
+    gint dataSize = bufSize;
 
-	if (dataSize <= 0)
-		return dataSize;
+    if (dataSize <= 0)
+        return dataSize;
 
-	switch (audioFormat) {
-	case FMT_U8:
-		XS_FILTER1(u, 8, u, ^0x80)
-		    break;
+    switch (audioFormat) {
+    case FMT_U8:
+        XS_FILTER1(u, 8, u, ^0x80)
+            break;
 
-	case FMT_S8:
-		XS_FILTER1(s, 8,,)
-		    break;
+    case FMT_S8:
+        XS_FILTER1(s, 8,,)
+            break;
 
 
-	case FMT_U16_BE:
-	case FMT_U16_LE:
-	case FMT_U16_NE:
-		XS_FILTER1(u, 16, u, ^0x8000)
-		    break;
+    case FMT_U16_BE:
+    case FMT_U16_LE:
+    case FMT_U16_NE:
+        XS_FILTER1(u, 16, u, ^0x8000)
+            break;
 
-	case FMT_S16_BE:
-	case FMT_S16_LE:
-	case FMT_S16_NE:
-		XS_FILTER1(s, 16,,)
-		    break;
+    case FMT_S16_BE:
+    case FMT_S16_LE:
+    case FMT_S16_NE:
+        XS_FILTER1(s, 16,,)
+            break;
 
-	default:
-		return -1;
-	}
+    default:
+        return -1;
+    }
 
-	return 0;
+    return 0;
 }

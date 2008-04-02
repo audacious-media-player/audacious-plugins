@@ -28,24 +28,24 @@ static gchar *xs_sid_fmts[] = { "sid", "psid", NULL };
 
 
 InputPlugin xs_plugin_ip = {
-	.description = XS_PACKAGE_STRING,	/* Plugin description */
-	.init = xs_init,			/* Initialization */
-	.cleanup = xs_close,			/* Cleanup */
-	.about = xs_about,			/* Show aboutbox */
-	.configure = xs_configure,		/* Show/edit configuration */
+    .description = XS_PACKAGE_STRING,    /* Plugin description */
+    .init = xs_init,            /* Initialization */
+    .cleanup = xs_close,            /* Cleanup */
+    .about = xs_about,            /* Show aboutbox */
+    .configure = xs_configure,        /* Show/edit configuration */
 
-	.play_file = xs_play_file,		/* Play given file */
-	.stop = xs_stop,			/* Stop playing */
-	.pause = xs_pause,			/* Pause playing */
-	.seek = xs_seek,			/* Seek time */
-	.get_time = xs_get_time,		/* Get playing time */
+    .play_file = xs_play_file,        /* Play given file */
+    .stop = xs_stop,            /* Stop playing */
+    .pause = xs_pause,            /* Pause playing */
+    .seek = xs_seek,            /* Seek time */
+    .get_time = xs_get_time,        /* Get playing time */
 
-	.file_info_box = xs_fileinfo,		/* Show file-information dialog */
+    .file_info_box = xs_fileinfo,        /* Show file-information dialog */
 
-	.get_song_tuple = xs_get_song_tuple,		/* Get Tuple */
-	.vfs_extensions = xs_sid_fmts,			/* File ext assist */
-	.probe_for_tuple = xs_probe_for_tuple,
-	.have_subtune = TRUE
+    .get_song_tuple = xs_get_song_tuple,        /* Get Tuple */
+    .vfs_extensions = xs_sid_fmts,            /* File ext assist */
+    .probe_for_tuple = xs_probe_for_tuple,
+    .have_subtune = TRUE
 };
 
 static InputPlugin *sid_iplist[] = { &xs_plugin_ip, NULL };

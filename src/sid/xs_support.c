@@ -26,16 +26,16 @@
 
 guint16 xs_fread_be16(xs_file_t *f)
 {
-	return (((guint16) xs_fgetc(f)) << 8) | ((guint16) xs_fgetc(f));
+    return (((guint16) xs_fgetc(f)) << 8) | ((guint16) xs_fgetc(f));
 }
 
 
 guint32 xs_fread_be32(xs_file_t *f)
 {
-	return (((guint32) xs_fgetc(f)) << 24) |
-		(((guint32) xs_fgetc(f)) << 16) |
-		(((guint32) xs_fgetc(f)) << 8) |
-		((guint32) xs_fgetc(f));
+    return (((guint32) xs_fgetc(f)) << 24) |
+        (((guint32) xs_fgetc(f)) << 16) |
+        (((guint32) xs_fgetc(f)) << 8) |
+        ((guint32) xs_fgetc(f));
 }
 
 
@@ -43,47 +43,47 @@ guint32 xs_fread_be32(xs_file_t *f)
  */
 gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
 {
-	xs_file_t *f;
-	glong seekPos;
-	
-	/* Open file, get file size */
-	if ((f = xs_fopen(filename, "rb")) == NULL)
-		return -1;
+    xs_file_t *f;
+    glong seekPos;
+    
+    /* Open file, get file size */
+    if ((f = xs_fopen(filename, "rb")) == NULL)
+        return -1;
 
-	xs_fseek(f, 0, SEEK_END);
-	seekPos = xs_ftell(f);
-	
-	if (seekPos > 0) {
-		size_t readSize = seekPos;
-		if (readSize >= *bufSize || *buf == NULL) {
-			/* Only re-allocate if the required size > current */
-			if (*buf != NULL) {
-				g_free(*buf);
-				*buf = NULL;
-			}
-	
-			*bufSize = seekPos;
-			
-			*buf = (guint8 *) g_malloc(*bufSize * sizeof(guint8));
-			if (*buf == NULL) {
-				xs_fclose(f);
-				return -2;
-			}
-		}
-		
-		/* Read data */	
-		xs_fseek(f, 0, SEEK_SET);
-		readSize = xs_fread(*buf, sizeof(guint8), *bufSize, f);
-		xs_fclose(f);
-		
-		if (readSize != *bufSize)
-			return -3;
-		else
-			return 0;
-	} else {
-		xs_fclose(f);
-		return -4;
-	}
+    xs_fseek(f, 0, SEEK_END);
+    seekPos = xs_ftell(f);
+    
+    if (seekPos > 0) {
+        size_t readSize = seekPos;
+        if (readSize >= *bufSize || *buf == NULL) {
+            /* Only re-allocate if the required size > current */
+            if (*buf != NULL) {
+                g_free(*buf);
+                *buf = NULL;
+            }
+    
+            *bufSize = seekPos;
+            
+            *buf = (guint8 *) g_malloc(*bufSize * sizeof(guint8));
+            if (*buf == NULL) {
+                xs_fclose(f);
+                return -2;
+            }
+        }
+        
+        /* Read data */    
+        xs_fseek(f, 0, SEEK_SET);
+        readSize = xs_fread(*buf, sizeof(guint8), *bufSize, f);
+        xs_fclose(f);
+        
+        if (readSize != *bufSize)
+            return -3;
+        else
+            return 0;
+    } else {
+        xs_fclose(f);
+        return -4;
+    }
 }
 
 
@@ -91,33 +91,33 @@ gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
  */
 gchar *xs_strncpy(gchar *pDest, const gchar *pSource, size_t n)
 {
-	const gchar *s;
-	gchar *d;
-	size_t i;
+    const gchar *s;
+    gchar *d;
+    size_t i;
 
-	/* Check the string pointers */
-	if (!pSource || !pDest)
-		return pDest;
+    /* Check the string pointers */
+    if (!pSource || !pDest)
+        return pDest;
 
-	/* Copy to the destination */
-	i = n;
-	s = pSource;
-	d = pDest;
-	while (*s && (i > 0)) {
-		*(d++) = *(s++);
-		i--;
-	}
+    /* Copy to the destination */
+    i = n;
+    s = pSource;
+    d = pDest;
+    while (*s && (i > 0)) {
+        *(d++) = *(s++);
+        i--;
+    }
 
-	/* Fill rest of space with zeros */
-	while (i > 0) {
-		*(d++) = 0;
-		i--;
-	}
+    /* Fill rest of space with zeros */
+    while (i > 0) {
+        *(d++) = 0;
+        i--;
+    }
 
-	/* Ensure that last is always zero */
-	pDest[n - 1] = 0;
+    /* Ensure that last is always zero */
+    pDest[n - 1] = 0;
 
-	return pDest;
+    return pDest;
 }
 
 
@@ -125,21 +125,21 @@ gchar *xs_strncpy(gchar *pDest, const gchar *pSource, size_t n)
  */
 gint xs_pstrcpy(gchar **ppResult, const gchar *pStr)
 {
-	/* Check the string pointers */
-	if (!ppResult || !pStr)
-		return -1;
+    /* Check the string pointers */
+    if (!ppResult || !pStr)
+        return -1;
 
-	/* Allocate memory for destination */
-	if (*ppResult)
-		g_free(*ppResult);
-	*ppResult = (gchar *) g_malloc(strlen(pStr) + 1);
-	if (!*ppResult)
-		return -2;
+    /* Allocate memory for destination */
+    if (*ppResult)
+        g_free(*ppResult);
+    *ppResult = (gchar *) g_malloc(strlen(pStr) + 1);
+    if (!*ppResult)
+        return -2;
 
-	/* Copy to the destination */
-	strcpy(*ppResult, pStr);
+    /* Copy to the destination */
+    strcpy(*ppResult, pStr);
 
-	return 0;
+    return 0;
 }
 
 
@@ -147,23 +147,23 @@ gint xs_pstrcpy(gchar **ppResult, const gchar *pStr)
  */
 gint xs_pstrcat(gchar **ppResult, const gchar *pStr)
 {
-	/* Check the string pointers */
-	if (!ppResult || !pStr)
-		return -1;
+    /* Check the string pointers */
+    if (!ppResult || !pStr)
+        return -1;
 
-	if (*ppResult != NULL) {
-		*ppResult = (gchar *) g_realloc(*ppResult, strlen(*ppResult) + strlen(pStr) + 1);
-		if (*ppResult == NULL)
-			return -1;
-		strcat(*ppResult, pStr);
-	} else {
-		*ppResult = (gchar *) g_malloc(strlen(pStr) + 1);
-		if (*ppResult == NULL)
-			return -1;
-		strcpy(*ppResult, pStr);
-	}
+    if (*ppResult != NULL) {
+        *ppResult = (gchar *) g_realloc(*ppResult, strlen(*ppResult) + strlen(pStr) + 1);
+        if (*ppResult == NULL)
+            return -1;
+        strcat(*ppResult, pStr);
+    } else {
+        *ppResult = (gchar *) g_malloc(strlen(pStr) + 1);
+        if (*ppResult == NULL)
+            return -1;
+        strcpy(*ppResult, pStr);
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -172,38 +172,38 @@ gint xs_pstrcat(gchar **ppResult, const gchar *pStr)
  */
 void xs_pnstrcat(gchar *pDest, size_t iSize, const gchar *pStr)
 {
-	size_t i, n;
-	const gchar *s;
-	gchar *d;
+    size_t i, n;
+    const gchar *s;
+    gchar *d;
 
-	d = pDest;
-	i = 0;
-	while (*d && (i < iSize)) {
-		i++;
-		d++;
-	}
+    d = pDest;
+    i = 0;
+    while (*d && (i < iSize)) {
+        i++;
+        d++;
+    }
 
-	s = pStr;
-	while (*s && (*s != '\n') && (i < iSize)) {
-		*d = *s;
-		d++;
-		s++;
-		i++;
-	}
+    s = pStr;
+    while (*s && (*s != '\n') && (i < iSize)) {
+        *d = *s;
+        d++;
+        s++;
+        i++;
+    }
 
-	*d = 0;
+    *d = 0;
 
-	if (i >= iSize) {
-		i--;
-		d--;
-		n = 3;
-		while ((i > 0) && (n > 0)) {
-			*d = '.';
-			d--;
-			i--;
-			n--;
-		}
-	}
+    if (i >= iSize) {
+        i--;
+        d--;
+        n = 3;
+        while ((i > 0) && (n > 0)) {
+            *d = '.';
+            d--;
+            i--;
+            n--;
+        }
+    }
 }
 
 
@@ -211,35 +211,35 @@ void xs_pnstrcat(gchar *pDest, size_t iSize, const gchar *pStr)
  */
 gchar *xs_strrchr(gchar *pcStr, const gchar ch)
 {
-	gchar *lastPos = NULL;
+    gchar *lastPos = NULL;
 
-	while (*pcStr) {
-		if (*pcStr == ch)
-			lastPos = pcStr;
-		pcStr++;
-	}
+    while (*pcStr) {
+        if (*pcStr == ch)
+            lastPos = pcStr;
+        pcStr++;
+    }
 
-	return lastPos;
+    return lastPos;
 }
 
 
 void xs_findnext(const gchar *pcStr, size_t *piPos)
 {
-	while (pcStr[*piPos] && isspace(pcStr[*piPos]))
-		(*piPos)++;
+    while (pcStr[*piPos] && isspace(pcStr[*piPos]))
+        (*piPos)++;
 }
 
 
 void xs_findeol(const gchar *pcStr, size_t *piPos)
 {
-	while (pcStr[*piPos] && (pcStr[*piPos] != '\n') && (pcStr[*piPos] != '\r'))
-		(*piPos)++;
+    while (pcStr[*piPos] && (pcStr[*piPos] != '\n') && (pcStr[*piPos] != '\r'))
+        (*piPos)++;
 }
 
 
 void xs_findnum(const gchar *pcStr, size_t *piPos)
 {
-	while (pcStr[*piPos] && isdigit(pcStr[*piPos]))
-		(*piPos)++;
+    while (pcStr[*piPos] && isdigit(pcStr[*piPos]))
+        (*piPos)++;
 }
 

@@ -10,13 +10,13 @@ extern "C" {
 /* Typedefs
  */
 typedef struct md5_state_s {
-	guint32 bits[2];	/* message length in bits, lsw first */
-	guint32 buf[4];		/* digest buffer */
-	guint8 in[64];		/* accumulate block */
+    guint32 bits[2];    /* message length in bits, lsw first */
+    guint32 buf[4];        /* digest buffer */
+    guint8 in[64];        /* accumulate block */
 } xs_md5state_t;
 
-#define XS_MD5HASH_LENGTH	(16)
-#define XS_MD5HASH_LENGTH_CH	(XS_MD5HASH_LENGTH * 2)
+#define XS_MD5HASH_LENGTH    (16)
+#define XS_MD5HASH_LENGTH_CH    (XS_MD5HASH_LENGTH * 2)
 
 typedef guint8 xs_md5hash_t[XS_MD5HASH_LENGTH];
 

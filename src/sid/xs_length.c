@@ -32,11 +32,11 @@
  */
 static void xs_sldb_node_free(sldb_node_t *node)
 {
-	if (node) {
-		/* Nothing much to do here ... */
-		g_free(node->lengths);
-		g_free(node);
-	}
+    if (node) {
+        /* Nothing much to do here ... */
+        g_free(node->lengths);
+        g_free(node);
+    }
 }
 
 
@@ -44,19 +44,19 @@ static void xs_sldb_node_free(sldb_node_t *node)
  */
 static void xs_sldb_node_insert(xs_sldb_t *db, sldb_node_t *node)
 {
-	assert(db);
+    assert(db);
 
-	if (db->nodes) {
-		/* The first node's prev points to last node */
-		LPREV = db->nodes->prev;	/* New node's prev = Previous last node */
-		db->nodes->prev->next = node;	/* Previous last node's next = New node */
-		db->nodes->prev = node;	/* New last node = New node */
-		LNEXT = NULL;	/* But next is NULL! */
-	} else {
-		db->nodes = node;	/* First node ... */
-		LPREV = node;	/* ... it's also last */
-		LNEXT = NULL;	/* But next is NULL! */
-	}
+    if (db->nodes) {
+        /* The first node's prev points to last node */
+        LPREV = db->nodes->prev;    /* New node's prev = Previous last node */
+        db->nodes->prev->next = node;    /* Previous last node's next = New node */
+        db->nodes->prev = node;    /* New last node = New node */
+        LNEXT = NULL;    /* But next is NULL! */
+    } else {
+        db->nodes = node;    /* First node ... */
+        LPREV = node;    /* ... it's also last */
+        LNEXT = NULL;    /* But next is NULL! */
+    }
 }
 
 
@@ -64,37 +64,37 @@ static void xs_sldb_node_insert(xs_sldb_t *db, sldb_node_t *node)
  */
 static gint xs_sldb_gettime(gchar *str, size_t *pos)
 {
-	gint result, tmp;
+    gint result, tmp;
 
-	/* Check if it starts with a digit */
-	if (isdigit(str[*pos])) {
-		/* Get minutes-field */
-		result = 0;
-		while (isdigit(str[*pos]))
-			result = (result * 10) + (str[(*pos)++] - '0');
+    /* Check if it starts with a digit */
+    if (isdigit(str[*pos])) {
+        /* Get minutes-field */
+        result = 0;
+        while (isdigit(str[*pos]))
+            result = (result * 10) + (str[(*pos)++] - '0');
 
-		result *= 60;
+        result *= 60;
 
-		/* Check the field separator char */
-		if (str[*pos] == ':') {
-			/* Get seconds-field */
-			(*pos)++;
-			tmp = 0;
-			while (isdigit(str[*pos])) {
-				tmp = (tmp * 10) + (str[(*pos)++] - '0');
-			}
+        /* Check the field separator char */
+        if (str[*pos] == ':') {
+            /* Get seconds-field */
+            (*pos)++;
+            tmp = 0;
+            while (isdigit(str[*pos])) {
+                tmp = (tmp * 10) + (str[(*pos)++] - '0');
+            }
 
-			result += tmp;
-		} else
-			result = -2;
-	} else
-		result = -1;
+            result += tmp;
+        } else
+            result = -2;
+    } else
+        result = -1;
 
-	/* Ignore and skip the possible attributes */
-	while (str[*pos] && !isspace(str[*pos]))
-		(*pos)++;
+    /* Ignore and skip the possible attributes */
+    while (str[*pos] && !isspace(str[*pos]))
+        (*pos)++;
 
-	return result;
+    return result;
 }
 
 
@@ -102,90 +102,90 @@ static gint xs_sldb_gettime(gchar *str, size_t *pos)
  */
 sldb_node_t * xs_sldb_read_entry(gchar *inLine)
 {
-	size_t linePos;
-	gint i;
-	gboolean isOK;
-	sldb_node_t *tmnode;
+    size_t linePos;
+    gint i;
+    gboolean isOK;
+    sldb_node_t *tmnode;
 
-	/* Allocate new node */
-	tmnode = (sldb_node_t *) g_malloc0(sizeof(sldb_node_t));
-	if (!tmnode) {
-		xs_error("Error allocating new node. Fatal error.\n");
-		return NULL;
-	}
+    /* Allocate new node */
+    tmnode = (sldb_node_t *) g_malloc0(sizeof(sldb_node_t));
+    if (!tmnode) {
+        xs_error("Error allocating new node. Fatal error.\n");
+        return NULL;
+    }
 
-	/* Get hash value */
-	linePos = 0;
-	for (i = 0; i < XS_MD5HASH_LENGTH; i++, linePos += 2) {
-		gint tmpu;
-		sscanf(&inLine[linePos], "%2x", &tmpu);
-		tmnode->md5Hash[i] = tmpu;
-	}
-		
-	/* Get playtimes */
-	if (inLine[linePos] != 0) {
-		if (inLine[linePos] != '=') {
-			xs_error("'=' expected on column #%d.\n", linePos);
-			xs_sldb_node_free(tmnode);
-			return NULL;
-		} else {
-			size_t tmpLen, savePos;
-			
-			/* First playtime is after '=' */
-			savePos = ++linePos;
-			tmpLen = strlen(inLine);
-						
-			/* Get number of sub-tune lengths */						
-			isOK = TRUE;
-			while ((linePos < tmpLen) && isOK) {
-				xs_findnext(inLine, &linePos);
+    /* Get hash value */
+    linePos = 0;
+    for (i = 0; i < XS_MD5HASH_LENGTH; i++, linePos += 2) {
+        gint tmpu;
+        sscanf(&inLine[linePos], "%2x", &tmpu);
+        tmnode->md5Hash[i] = tmpu;
+    }
+        
+    /* Get playtimes */
+    if (inLine[linePos] != 0) {
+        if (inLine[linePos] != '=') {
+            xs_error("'=' expected on column #%d.\n", linePos);
+            xs_sldb_node_free(tmnode);
+            return NULL;
+        } else {
+            size_t tmpLen, savePos;
+            
+            /* First playtime is after '=' */
+            savePos = ++linePos;
+            tmpLen = strlen(inLine);
+                        
+            /* Get number of sub-tune lengths */                        
+            isOK = TRUE;
+            while ((linePos < tmpLen) && isOK) {
+                xs_findnext(inLine, &linePos);
 
-				if (xs_sldb_gettime(inLine, &linePos) >= 0)
-					tmnode->nlengths++;
-				else
-					isOK = FALSE;
-			}
-			
-			/* Allocate memory for lengths */
-			if (tmnode->nlengths > 0) {
-				tmnode->lengths = (gint *) g_malloc0(tmnode->nlengths * sizeof(gint));
-				if (!tmnode->lengths) {
-					xs_error("Could not allocate memory for node.\n");
-					xs_sldb_node_free(tmnode);
-					return NULL;
-				}
-			} else {
-				xs_sldb_node_free(tmnode);
-				return NULL;
-			}
-			
-			/* Read lengths in */
-			i = 0;
-			linePos = savePos;
-			isOK = TRUE;
-			while ((linePos < tmpLen) && (i < tmnode->nlengths) && isOK) {
-				gint l;
-				
-				xs_findnext(inLine, &linePos);
+                if (xs_sldb_gettime(inLine, &linePos) >= 0)
+                    tmnode->nlengths++;
+                else
+                    isOK = FALSE;
+            }
+            
+            /* Allocate memory for lengths */
+            if (tmnode->nlengths > 0) {
+                tmnode->lengths = (gint *) g_malloc0(tmnode->nlengths * sizeof(gint));
+                if (!tmnode->lengths) {
+                    xs_error("Could not allocate memory for node.\n");
+                    xs_sldb_node_free(tmnode);
+                    return NULL;
+                }
+            } else {
+                xs_sldb_node_free(tmnode);
+                return NULL;
+            }
+            
+            /* Read lengths in */
+            i = 0;
+            linePos = savePos;
+            isOK = TRUE;
+            while ((linePos < tmpLen) && (i < tmnode->nlengths) && isOK) {
+                gint l;
+                
+                xs_findnext(inLine, &linePos);
 
-				l = xs_sldb_gettime(inLine, &linePos);
-				if (l >= 0)
-					tmnode->lengths[i] = l;
-				else
-					isOK = FALSE;
+                l = xs_sldb_gettime(inLine, &linePos);
+                if (l >= 0)
+                    tmnode->lengths[i] = l;
+                else
+                    isOK = FALSE;
 
-				i++;
-			}
+                i++;
+            }
 
-			if (!isOK) {
-				xs_sldb_node_free(tmnode);
-				return NULL;
-			} else
-				return tmnode;
-		}
-	}
+            if (!isOK) {
+                xs_sldb_node_free(tmnode);
+                return NULL;
+            } else
+                return tmnode;
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 
@@ -193,56 +193,56 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
  */
 gint xs_sldb_read(xs_sldb_t *db, const gchar *dbFilename)
 {
-	FILE *inFile;
-	gchar inLine[XS_BUF_SIZE];
-	size_t lineNum;
-	sldb_node_t *tmnode;
-	assert(db);
+    FILE *inFile;
+    gchar inLine[XS_BUF_SIZE];
+    size_t lineNum;
+    sldb_node_t *tmnode;
+    assert(db);
 
-	/* Try to open the file */
-	if ((inFile = fopen(dbFilename, "ra")) == NULL) {
-		xs_error("Could not open SongLengthDB '%s'\n", dbFilename);
-		return -1;
-	}
+    /* Try to open the file */
+    if ((inFile = fopen(dbFilename, "ra")) == NULL) {
+        xs_error("Could not open SongLengthDB '%s'\n", dbFilename);
+        return -1;
+    }
 
-	/* Read and parse the data */
-	lineNum = 0;
+    /* Read and parse the data */
+    lineNum = 0;
 
-	while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
-		size_t linePos = 0;
-		lineNum++;
-		
-		xs_findnext(inLine, &linePos);
+    while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
+        size_t linePos = 0;
+        lineNum++;
+        
+        xs_findnext(inLine, &linePos);
 
-		/* Check if it is datafield */
-		if (isxdigit(inLine[linePos])) {
-			/* Check the length of the hash */
-			gint hashLen;
-			for (hashLen = 0; inLine[linePos] && isxdigit(inLine[linePos]); hashLen++, linePos++);
+        /* Check if it is datafield */
+        if (isxdigit(inLine[linePos])) {
+            /* Check the length of the hash */
+            gint hashLen;
+            for (hashLen = 0; inLine[linePos] && isxdigit(inLine[linePos]); hashLen++, linePos++);
 
-			if (hashLen != XS_MD5HASH_LENGTH_CH) {
-				xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n",
-					dbFilename, lineNum);
-			} else {
-				/* Parse and add node to db */
-				if ((tmnode = xs_sldb_read_entry(inLine)) != NULL) {
-					xs_sldb_node_insert(db, tmnode);
-				} else {
-					xs_error("Invalid entry in SongLengthDB file '%s' line #%d!\n",
-						dbFilename, lineNum);
-				}
-			}
-		} else if ((inLine[linePos] != ';') && (inLine[linePos] != '[') && (inLine[linePos] != 0)) {
-			xs_error("Invalid line in SongLengthDB file '%s' line #%d\n",
-				dbFilename, lineNum);
-		}
+            if (hashLen != XS_MD5HASH_LENGTH_CH) {
+                xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n",
+                    dbFilename, lineNum);
+            } else {
+                /* Parse and add node to db */
+                if ((tmnode = xs_sldb_read_entry(inLine)) != NULL) {
+                    xs_sldb_node_insert(db, tmnode);
+                } else {
+                    xs_error("Invalid entry in SongLengthDB file '%s' line #%d!\n",
+                        dbFilename, lineNum);
+                }
+            }
+        } else if ((inLine[linePos] != ';') && (inLine[linePos] != '[') && (inLine[linePos] != 0)) {
+            xs_error("Invalid line in SongLengthDB file '%s' line #%d\n",
+                dbFilename, lineNum);
+        }
 
-	}
+    }
 
-	/* Close the file */
-	fclose(inFile);
+    /* Close the file */
+    fclose(inFile);
 
-	return 0;
+    return 0;
 }
 
 
@@ -253,13 +253,13 @@ gint xs_sldb_read(xs_sldb_t *db, const gchar *dbFilename)
  */
 static gint xs_sldb_cmphash(xs_md5hash_t testHash1, xs_md5hash_t testHash2)
 {
-	gint i, d;
+    gint i, d;
 
-	/* Compute difference of hashes */
-	for (i = 0, d = 0; (i < XS_MD5HASH_LENGTH) && !d; i++)
-		d = (testHash1[i] - testHash2[i]);
+    /* Compute difference of hashes */
+    for (i = 0, d = 0; (i < XS_MD5HASH_LENGTH) && !d; i++)
+        d = (testHash1[i] - testHash2[i]);
 
-	return d;
+    return d;
 }
 
 
@@ -267,10 +267,10 @@ static gint xs_sldb_cmphash(xs_md5hash_t testHash1, xs_md5hash_t testHash2)
  */
 static gint xs_sldb_cmp(const void *node1, const void *node2)
 {
-	/* We assume here that we never ever get NULL-pointers or similar */
-	return xs_sldb_cmphash(
-		(*(sldb_node_t **) node1)->md5Hash,
-		(*(sldb_node_t **) node2)->md5Hash);
+    /* We assume here that we never ever get NULL-pointers or similar */
+    return xs_sldb_cmphash(
+        (*(sldb_node_t **) node1)->md5Hash,
+        (*(sldb_node_t **) node2)->md5Hash);
 }
 
 
@@ -278,44 +278,44 @@ static gint xs_sldb_cmp(const void *node1, const void *node2)
  */
 gint xs_sldb_index(xs_sldb_t * db)
 {
-	sldb_node_t *pCurr;
-	size_t i;
-	assert(db);
+    sldb_node_t *pCurr;
+    size_t i;
+    assert(db);
 
-	/* Free old index */
-	if (db->pindex) {
-		g_free(db->pindex);
-		db->pindex = NULL;
-	}
+    /* Free old index */
+    if (db->pindex) {
+        g_free(db->pindex);
+        db->pindex = NULL;
+    }
 
-	/* Get size of db */
-	pCurr = db->nodes;
-	db->n = 0;
-	while (pCurr) {
-		db->n++;
-		pCurr = pCurr->next;
-	}
+    /* Get size of db */
+    pCurr = db->nodes;
+    db->n = 0;
+    while (pCurr) {
+        db->n++;
+        pCurr = pCurr->next;
+    }
 
-	/* Check number of nodes */
-	if (db->n > 0) {
-		/* Allocate memory for index-table */
-		db->pindex = (sldb_node_t **) g_malloc(sizeof(sldb_node_t *) * db->n);
-		if (!db->pindex)
-			return -1;
+    /* Check number of nodes */
+    if (db->n > 0) {
+        /* Allocate memory for index-table */
+        db->pindex = (sldb_node_t **) g_malloc(sizeof(sldb_node_t *) * db->n);
+        if (!db->pindex)
+            return -1;
 
-		/* Get node-pointers to table */
-		i = 0;
-		pCurr = db->nodes;
-		while (pCurr && (i < db->n)) {
-			db->pindex[i++] = pCurr;
-			pCurr = pCurr->next;
-		}
+        /* Get node-pointers to table */
+        i = 0;
+        pCurr = db->nodes;
+        while (pCurr && (i < db->n)) {
+            db->pindex[i++] = pCurr;
+            pCurr = pCurr->next;
+        }
 
-		/* Sort the indexes */
-		qsort(db->pindex, db->n, sizeof(sldb_node_t *), xs_sldb_cmp);
-	}
+        /* Sort the indexes */
+        qsort(db->pindex, db->n, sizeof(sldb_node_t *), xs_sldb_cmp);
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -323,172 +323,172 @@ gint xs_sldb_index(xs_sldb_t * db)
  */
 void xs_sldb_free(xs_sldb_t * db)
 {
-	sldb_node_t *pCurr, *next;
+    sldb_node_t *pCurr, *next;
 
-	if (!db)
-		return;
+    if (!db)
+        return;
 
-	/* Free the memory allocated for nodes */
-	pCurr = db->nodes;
-	while (pCurr) {
-		next = pCurr->next;
-		xs_sldb_node_free(pCurr);
-		pCurr = next;
-	}
+    /* Free the memory allocated for nodes */
+    pCurr = db->nodes;
+    while (pCurr) {
+        next = pCurr->next;
+        xs_sldb_node_free(pCurr);
+        pCurr = next;
+    }
 
-	db->nodes = NULL;
+    db->nodes = NULL;
 
-	/* Free memory allocated for index */
-	if (db->pindex) {
-		g_free(db->pindex);
-		db->pindex = NULL;
-	}
+    /* Free memory allocated for index */
+    if (db->pindex) {
+        g_free(db->pindex);
+        db->pindex = NULL;
+    }
 
-	/* Free structure */
-	db->n = 0;
-	g_free(db);
+    /* Free structure */
+    db->n = 0;
+    g_free(db);
 }
 
 
 /* Compute md5hash of given SID-file
  */
 typedef struct {
-	gchar magicID[4];	/* "PSID" / "RSID" magic identifier */
-	guint16 version,	/* Version number */
-		dataOffset,	/* Start of actual c64 data in file */
-		loadAddress,	/* Loading address */
-		initAddress,	/* Initialization address */
-		playAddress,	/* Play one frame */
-		nSongs,		/* Number of subsongs */
-		startSong;	/* Default starting song */
-	guint32 speed;		/* Speed */
-	gchar sidName[32];	/* Descriptive text-fields, ASCIIZ */
-	gchar sidAuthor[32];
-	gchar sidCopyright[32];
+    gchar magicID[4];    /* "PSID" / "RSID" magic identifier */
+    guint16 version,    /* Version number */
+        dataOffset,    /* Start of actual c64 data in file */
+        loadAddress,    /* Loading address */
+        initAddress,    /* Initialization address */
+        playAddress,    /* Play one frame */
+        nSongs,        /* Number of subsongs */
+        startSong;    /* Default starting song */
+    guint32 speed;        /* Speed */
+    gchar sidName[32];    /* Descriptive text-fields, ASCIIZ */
+    gchar sidAuthor[32];
+    gchar sidCopyright[32];
 } psidv1_header_t;
 
 
 typedef struct {
-	guint16 flags;		/* Flags */
-	guint8 startPage, pageLength;
-	guint16 reserved;
+    guint16 flags;        /* Flags */
+    guint8 startPage, pageLength;
+    guint16 reserved;
 } psidv2_header_t;
 
 
 static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
 {
-	xs_file_t *inFile;
-	xs_md5state_t inState;
-	psidv1_header_t psidH;
-	psidv2_header_t psidH2;
-	guint8 *songData;
-	guint8 ib8[2], i8;
-	gint index, result;
+    xs_file_t *inFile;
+    xs_md5state_t inState;
+    psidv1_header_t psidH;
+    psidv2_header_t psidH2;
+    guint8 *songData;
+    guint8 ib8[2], i8;
+    gint index, result;
 
-	/* Try to open the file */
-	if ((inFile = xs_fopen(filename, "rb")) == NULL)
-		return -1;
+    /* Try to open the file */
+    if ((inFile = xs_fopen(filename, "rb")) == NULL)
+        return -1;
 
-	/* Read PSID header in */
-	xs_fread(psidH.magicID, sizeof(psidH.magicID), 1, inFile);
-	if (strncmp(psidH.magicID, "PSID", 4) && strncmp(psidH.magicID, "RSID", 4)) {
-		xs_fclose(inFile);
-		xs_error("Not a PSID or RSID file '%s'\n", filename);
-		return -2;
-	}
+    /* Read PSID header in */
+    xs_fread(psidH.magicID, sizeof(psidH.magicID), 1, inFile);
+    if (strncmp(psidH.magicID, "PSID", 4) && strncmp(psidH.magicID, "RSID", 4)) {
+        xs_fclose(inFile);
+        xs_error("Not a PSID or RSID file '%s'\n", filename);
+        return -2;
+    }
 
-	psidH.version = xs_fread_be16(inFile);
-	psidH.dataOffset = xs_fread_be16(inFile);
-	psidH.loadAddress = xs_fread_be16(inFile);
-	psidH.initAddress = xs_fread_be16(inFile);
-	psidH.playAddress = xs_fread_be16(inFile);
-	psidH.nSongs = xs_fread_be16(inFile);
-	psidH.startSong = xs_fread_be16(inFile);
-	psidH.speed = xs_fread_be32(inFile);
+    psidH.version = xs_fread_be16(inFile);
+    psidH.dataOffset = xs_fread_be16(inFile);
+    psidH.loadAddress = xs_fread_be16(inFile);
+    psidH.initAddress = xs_fread_be16(inFile);
+    psidH.playAddress = xs_fread_be16(inFile);
+    psidH.nSongs = xs_fread_be16(inFile);
+    psidH.startSong = xs_fread_be16(inFile);
+    psidH.speed = xs_fread_be32(inFile);
 
-	xs_fread(psidH.sidName, sizeof(gchar), sizeof(psidH.sidName), inFile);
-	xs_fread(psidH.sidAuthor, sizeof(gchar), sizeof(psidH.sidAuthor), inFile);
-	xs_fread(psidH.sidCopyright, sizeof(gchar), sizeof(psidH.sidCopyright), inFile);
-	
-	if (xs_feof(inFile) || xs_ferror(inFile)) {
-		xs_fclose(inFile);
-		xs_error("Error reading SID file header from '%s'\n", filename);
-		return -4;
-	}
-	
-	/* Check if we need to load PSIDv2NG header ... */
-	psidH2.flags = 0;	/* Just silence a stupid gcc warning */
-	
-	if (psidH.version == 2) {
-		/* Yes, we need to */
-		psidH2.flags = xs_fread_be16(inFile);
-		psidH2.startPage = xs_fgetc(inFile);
-		psidH2.pageLength = xs_fgetc(inFile);
-		psidH2.reserved = xs_fread_be16(inFile);
-	}
+    xs_fread(psidH.sidName, sizeof(gchar), sizeof(psidH.sidName), inFile);
+    xs_fread(psidH.sidAuthor, sizeof(gchar), sizeof(psidH.sidAuthor), inFile);
+    xs_fread(psidH.sidCopyright, sizeof(gchar), sizeof(psidH.sidCopyright), inFile);
+    
+    if (xs_feof(inFile) || xs_ferror(inFile)) {
+        xs_fclose(inFile);
+        xs_error("Error reading SID file header from '%s'\n", filename);
+        return -4;
+    }
+    
+    /* Check if we need to load PSIDv2NG header ... */
+    psidH2.flags = 0;    /* Just silence a stupid gcc warning */
+    
+    if (psidH.version == 2) {
+        /* Yes, we need to */
+        psidH2.flags = xs_fread_be16(inFile);
+        psidH2.startPage = xs_fgetc(inFile);
+        psidH2.pageLength = xs_fgetc(inFile);
+        psidH2.reserved = xs_fread_be16(inFile);
+    }
 
-	/* Allocate buffer */
-	songData = (guint8 *) g_malloc(XS_SIDBUF_SIZE * sizeof(guint8));
-	if (!songData) {
-		xs_fclose(inFile);
-		xs_error("Error allocating temp data buffer for file '%s'\n", filename);
-		return -3;
-	}
+    /* Allocate buffer */
+    songData = (guint8 *) g_malloc(XS_SIDBUF_SIZE * sizeof(guint8));
+    if (!songData) {
+        xs_fclose(inFile);
+        xs_error("Error allocating temp data buffer for file '%s'\n", filename);
+        return -3;
+    }
 
-	/* Read data to buffer */
-	result = xs_fread(songData, sizeof(guint8), XS_SIDBUF_SIZE, inFile);
-	xs_fclose(inFile);
+    /* Read data to buffer */
+    result = xs_fread(songData, sizeof(guint8), XS_SIDBUF_SIZE, inFile);
+    xs_fclose(inFile);
 
-	/* Initialize and start MD5-hash calculation */
-	xs_md5_init(&inState);
+    /* Initialize and start MD5-hash calculation */
+    xs_md5_init(&inState);
 
-	if (psidH.loadAddress == 0) {
-		/* Strip load address (2 first bytes) */
-		xs_md5_append(&inState, &songData[2], result - 2);
-	} else {
-		/* Append "as is" */
-		xs_md5_append(&inState, songData, result);
-	}
+    if (psidH.loadAddress == 0) {
+        /* Strip load address (2 first bytes) */
+        xs_md5_append(&inState, &songData[2], result - 2);
+    } else {
+        /* Append "as is" */
+        xs_md5_append(&inState, songData, result);
+    }
 
-	/* Free buffer */
-	g_free(songData);
+    /* Free buffer */
+    g_free(songData);
 
-	/* Append header data to hash */
-#define XSADDHASH(QDATAB) do {					\
-	ib8[0] = (QDATAB & 0xff);				\
-	ib8[1] = (QDATAB >> 8);					\
-	xs_md5_append(&inState, (guint8 *) &ib8, sizeof(ib8));	\
-	} while (0)
+    /* Append header data to hash */
+#define XSADDHASH(QDATAB) do {                    \
+    ib8[0] = (QDATAB & 0xff);                \
+    ib8[1] = (QDATAB >> 8);                    \
+    xs_md5_append(&inState, (guint8 *) &ib8, sizeof(ib8));    \
+    } while (0)
 
-	XSADDHASH(psidH.initAddress);
-	XSADDHASH(psidH.playAddress);
-	XSADDHASH(psidH.nSongs);
+    XSADDHASH(psidH.initAddress);
+    XSADDHASH(psidH.playAddress);
+    XSADDHASH(psidH.nSongs);
 #undef XSADDHASH
 
-	/* Append song speed data to hash */
-	i8 = 0;
-	for (index = 0; (index < psidH.nSongs) && (index < 32); index++) {
-		i8 = (psidH.speed & (1 << index)) ? 60 : 0;
-		xs_md5_append(&inState, &i8, sizeof(i8));
-	}
+    /* Append song speed data to hash */
+    i8 = 0;
+    for (index = 0; (index < psidH.nSongs) && (index < 32); index++) {
+        i8 = (psidH.speed & (1 << index)) ? 60 : 0;
+        xs_md5_append(&inState, &i8, sizeof(i8));
+    }
 
-	/* Rest of songs (more than 32) */
-	for (index = 32; index < psidH.nSongs; index++) {
-		xs_md5_append(&inState, &i8, sizeof(i8));
-	}
+    /* Rest of songs (more than 32) */
+    for (index = 32; index < psidH.nSongs; index++) {
+        xs_md5_append(&inState, &i8, sizeof(i8));
+    }
 
-	/* PSIDv2NG specific */
-	if (psidH.version == 2) {
-		/* SEE SIDPLAY HEADERS FOR INFO */
-		i8 = (psidH2.flags >> 2) & 3;
-		if (i8 == 2)
-			xs_md5_append(&inState, &i8, sizeof(i8));
-	}
+    /* PSIDv2NG specific */
+    if (psidH.version == 2) {
+        /* SEE SIDPLAY HEADERS FOR INFO */
+        i8 = (psidH2.flags >> 2) & 3;
+        if (i8 == 2)
+            xs_md5_append(&inState, &i8, sizeof(i8));
+    }
 
-	/* Calculate the hash */
-	xs_md5_finish(&inState, hash);
+    /* Calculate the hash */
+    xs_md5_finish(&inState, hash);
 
-	return 0;
+    return 0;
 }
 
 
@@ -496,24 +496,24 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
  */
 sldb_node_t *xs_sldb_get(xs_sldb_t *db, const gchar *filename)
 {
-	sldb_node_t keyItem, *key, **item;
+    sldb_node_t keyItem, *key, **item;
 
-	/* Check the database pointers */
-	if (!db || !db->nodes || !db->pindex)
-		return NULL;
+    /* Check the database pointers */
+    if (!db || !db->nodes || !db->pindex)
+        return NULL;
 
-	/* Get the hash and then look up from db */
-	if (xs_get_sid_hash(filename, keyItem.md5Hash) == 0) {
-		key = &keyItem;
-		item = bsearch(&key, db->pindex, db->n,
-			sizeof(db->pindex[0]), xs_sldb_cmp);
-		
-		if (item)
-			return *item;
-		else
-			return NULL;
-	} else
-		return NULL;
+    /* Get the hash and then look up from db */
+    if (xs_get_sid_hash(filename, keyItem.md5Hash) == 0) {
+        key = &keyItem;
+        item = bsearch(&key, db->pindex, db->n,
+            sizeof(db->pindex[0]), xs_sldb_cmp);
+        
+        if (item)
+            return *item;
+        else
+            return NULL;
+    } else
+        return NULL;
 }
 
 
