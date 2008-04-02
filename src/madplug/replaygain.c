@@ -136,11 +136,6 @@ readAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
         if (*tmp != 0) break;
         tmp++;
         
-        fprintf(stderr, "wtf: vsize=%x, flags=%x, s=%s\n", vsize, flags, p);
-        if (vsize > end - tmp + 1) {
-            fprintf(stderr, "vsize > end - tmp + 1: %d > %d\n", vsize, (int)(end - tmp + 1));
-        }
-        
         if (isize > 0 && vsize > 0) {
             gdouble *scale = NULL;
             gchar **str = NULL;
