@@ -28,7 +28,7 @@
 #include "plugin.h"
 #include "input.h"
 
-#define BUFFER_SIZE 16*1024
+#define BUFFER_SIZE (16*1024)
 #define N_AVERAGE_FRAMES 10
 
 void
