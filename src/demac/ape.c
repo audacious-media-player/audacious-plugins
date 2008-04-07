@@ -22,6 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+/* #define DEBUG */
+
 #include <stdio.h>
 #include <stdlib.h> 
 #include <errno.h> 
@@ -151,32 +153,48 @@ static void ape_dumpinfo(APEContext * ape_ctx)
 #define ape_dumpinfo(a) ;
 #endif
 
+#define SEARCH_BUF_SZ 64*1024 /* search header in first 64k, it's enough for skipping id3v2 -- asphyx */
+static int
+find_header(VFSFile *pb, int16_t* ver)
+{
+    uint8_t sbuf[SEARCH_BUF_SZ];
+    unsigned i;
+    uint32_t tag;
+    uint8_t* s;
+
+    if (aud_vfs_fread(sbuf, 1, SEARCH_BUF_SZ, pb) < SEARCH_BUF_SZ) return -1;
+    for (i = 0; i < SEARCH_BUF_SZ - 6; i++) {
+        s = &(sbuf[i]);
+        tag = AV_RL32(s);
+        s += 4;
+        *ver = AV_RL16(s);
+        if (tag == MKTAG('M', 'A', 'C', ' ') &&
+            *ver >= APE_MIN_VERSION &&
+            *ver <= APE_MAX_VERSION) {
+            
+#ifdef DEBUG
+            fprintf(stderr, "found MAC header at offset 0x%0x, version %d.%d\n", i, *ver / 1000, (*ver % 1000) / 10);
+#endif
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 int ape_read_header(APEContext *ape, VFSFile *pb, int probe_only)
 {
-    /*ByteIOContext *pb = &s->pb;
-    APEContext *ape = s->priv_data;
-    AVStream *st;*/
-    uint32_t tag;
-    int i;
-    //int total_blocks;
-    //int64_t pts;
+    int i, header_offset;
 
-    /* TODO: Skip any leading junk such as id3v2 tags */
-    ape->junklength = 0;
-
-    tag = get_le32(pb);
-    if (tag != MKTAG('M', 'A', 'C', ' '))
-        return -1;
-
-    ape->fileversion = get_le16(pb);
-
-    if (ape->fileversion < APE_MIN_VERSION || ape->fileversion > APE_MAX_VERSION) {
+    if ((header_offset = find_header(pb, &(ape->fileversion))) < 0) {
 #ifdef DEBUG
-        fprintf(stderr, "ape.c: ape_read_header(): Unsupported file version - %d.%02d\n",
-	        ape->fileversion / 1000, (ape->fileversion % 1000) / 10);
+        fprintf(stderr, "ape.c: ape_read_header(): header not found or unsupported version\n");
 #endif
         return -1;
     }
+    
+    aud_vfs_fseek(pb, header_offset + 6, SEEK_SET);
+    ape->junklength = header_offset;
 
     if (ape->fileversion >= 3980) {
         ape->padding1             = get_le16(pb);
@@ -261,7 +279,7 @@ int ape_read_header(APEContext *ape, VFSFile *pb, int probe_only)
           return AVERROR_NOMEM;
     }
 
-    ape->firstframe   = ape->junklength + ape->descriptorlength + ape->headerlength + ape->seektablelength + ape->wavheaderlength;
+    ape->firstframe = ape->junklength + ape->descriptorlength + ape->headerlength + ape->seektablelength + ape->wavheaderlength;
     ape->currentframe = 0;
 
     ape->totalsamples = ape->finalframeblocks;
@@ -279,7 +297,7 @@ int ape_read_header(APEContext *ape, VFSFile *pb, int probe_only)
         ape->frames[0].nblocks = ape->blocksperframe;
         ape->frames[0].skip    = 0;
         for (i = 1; i < ape->totalframes; i++) {
-            ape->frames[i].pos      = ape->seektable[i]; //ape->frames[i-1].pos + ape->blocksperframe;
+            ape->frames[i].pos      = ape->seektable[i] + ape->junklength;
             ape->frames[i].nblocks  = ape->blocksperframe;
             ape->frames[i - 1].size = ape->frames[i].pos - ape->frames[i - 1].pos;
             ape->frames[i].skip     = (ape->frames[i].pos - ape->frames[0].pos) & 3;
@@ -295,17 +313,14 @@ int ape_read_header(APEContext *ape, VFSFile *pb, int probe_only)
                 ape->frames[i].size += ape->frames[i].skip;
             }
             ape->frames[i].size = (ape->frames[i].size + 3) & ~3;
-    	    // Eugene:
-    	    ape->max_packet_size = MAX(ape->max_packet_size, ape->frames[i].size + 8);
-    	    // why +8? look in ape_read_packet()
+    	    ape->max_packet_size = MAX(ape->max_packet_size, ape->frames[i].size + 8); /* simplifies future frame buffer allocation --asphyx */
+    	    /* why +8? look in ape_read_packet() */
         }
         ape_dumpinfo(ape);
 
-    } // !probe_only
+    } /* !probe_only */
 
-    //ape->total_blocks = (ape->totalframes == 0) ? 0 : ((ape->totalframes - 1) * ape->blocksperframe) + ape->finalframeblocks;
     ape->frame_size = MAC_SUBFRAME_SIZE;
-    //ape->duration = (uint64_t) total_blocks * AV_TIME_BASE / ape->samplerate;
     ape->duration = (uint64_t) ape->totalsamples * AV_TIME_BASE / ape->samplerate;
 
 #ifdef DEBUG
@@ -313,15 +328,6 @@ int ape_read_header(APEContext *ape, VFSFile *pb, int probe_only)
             ape->fileversion / 1000.0, ape->compressiontype, (unsigned long long)ape->duration,
 	    ape->totalframes, ape->blocksperframe, ape->channels == 2 ? "stereo" : "mono");
 #endif
-
-    //av_set_pts_info(st, 64, MAC_SUBFRAME_SIZE, ape->samplerate);
-
-    /*pts = 0;
-    for (i = 0; i < ape->totalframes; i++) {
-        ape->frames[i].pts = pts;
-        av_add_index_entry(st, ape->frames[i].pos, ape->frames[i].pts, 0, 0, AVINDEX_KEYFRAME);
-        pts += ape->blocksperframe / MAC_SUBFRAME_SIZE;
-    }*/
 
     return 0;
 }
@@ -346,20 +352,10 @@ int ape_read_packet(APEContext *ape, VFSFile *pb, uint8_t *pkt, int *pkt_size)
     else
         nblocks = ape->blocksperframe;
 
-    /*if (av_new_packet(pkt,  ape->frames[ape->currentframe].size + extra_size) < 0)
-        return AVERROR_NOMEM;*/
-
     AV_WL32(pkt    , nblocks);
     AV_WL32(pkt + 4, ape->frames[ape->currentframe].skip);
 
     ret = aud_vfs_fread(pkt + extra_size, 1, ape->frames[ape->currentframe].size, pb);
-
-    /*pkt->pts = ape->frames[ape->currentframe].pts;
-    pkt->stream_index = 0;*/
-
-    /* note: we need to modify the packet size here to handle the last
-       packet */
-    /*pkt->size = ret + extra_size;*/
 
     ape->currentframe++;
     *pkt_size = ape->frames[ape->currentframe].size + extra_size;
@@ -373,18 +369,3 @@ int ape_read_close(APEContext *ape)
     if(ape->seektable != NULL) free(ape->seektable);
     return 0;
 }
-
-/*
-static int ape_read_seek(AVFormatContext *s, int stream_index, int64_t timestamp, int flags)
-{
-    AVStream *st = s->streams[stream_index];
-    APEContext *ape = s->priv_data;
-    int index = av_index_search_timestamp(st, timestamp, flags);
-
-    if (index < 0)
-        return -1;
-
-    ape->currentframe = index;
-    return 0;
-}*/
-
