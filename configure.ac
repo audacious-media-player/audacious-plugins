@@ -1697,6 +1697,7 @@ echo "  Voice Removal:                          yes"
 echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
 echo "  SndStretch:                             yes"
+echo "  Crystalizer:                            yes"
 echo
 echo "  Visualization"
 echo "  -------------"
