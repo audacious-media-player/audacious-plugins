@@ -20,7 +20,6 @@
  */
 
 #include <mad.h>
-
 #include "xing.h"
 
 #define XING_MAGIC	(('X' << 24) | ('i' << 16) | ('n' << 8) | 'g')
@@ -44,8 +43,7 @@ xing_init(struct xing *xing)
  * DESCRIPTION:	parse a Xing VBR header
  */
 int
-xing_parse(struct xing *xing, struct mad_bitptr ptr,
-               unsigned int bitlen)
+xing_parse(struct xing *xing, struct mad_bitptr ptr, guint bitlen)
 {
     if (bitlen < 64 || mad_bit_read(&ptr, 32) != XING_MAGIC)
         goto fail;
@@ -70,14 +68,14 @@ xing_parse(struct xing *xing, struct mad_bitptr ptr,
     }
 
     if (xing->flags & XING_TOC) {
-        int i;
+        gint i;
 
         if (bitlen < 800)
             goto fail;
 
         for (i = 0; i < 100; ++i)
             xing->toc[i] = mad_bit_read(&ptr, 8);
-
+        
         bitlen -= 800;
     }
 

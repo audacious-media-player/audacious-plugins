@@ -22,11 +22,11 @@
 #include "esdout.h"
 
 #include <glib.h>
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-#include <audacious/configdb.h>
 
 
 static GtkWidget *configure_win;

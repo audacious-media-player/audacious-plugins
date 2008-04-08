@@ -44,9 +44,7 @@
 #include <audacious/i18n.h> 
 
 #include <audacious/plugin.h> 
-#include <audacious/main.h> 
 #include <audacious/output.h> 
-#include <audacious/vfs.h> 
 #include <audacious/util.h> 
 
 #include "ape.h"
@@ -69,7 +67,7 @@ static unsigned long seek_to_msec=(unsigned long)-1; /* -1 == not needed */
 static InputPlugin demac_ip;
 static GtkWidget *about_window = NULL;
 
-#ifdef DEBUG
+#ifdef AUD_DEBUG
 # include "crc.c"
 #endif
 
@@ -120,14 +118,12 @@ gpointer demac_decode_loop(InputPlayback *pb) {
     APEDecoderContext *dec = NULL;
     int decoded_bytes;
     int pkt_size, bytes_used;
-#ifdef DEBUG
+#ifdef AUD_DEBUG
     uint32_t frame_crc;
 #endif
     
     if ((vfd = aud_vfs_fopen(pb->filename, "r")) == NULL) {
-#ifdef DEBUG
-        fprintf(stderr, "** demac: plugin.c: Error opening URI: %s\n", pb->filename);
-#endif
+        AUDDBG("** demac: plugin.c: Error opening URI: %s\n", pb->filename);
         pb->error = TRUE;
         goto cleanup;
     }
@@ -135,32 +131,24 @@ gpointer demac_decode_loop(InputPlayback *pb) {
     ctx = calloc(sizeof(APEContext), 1);
     if(ape_read_header(ctx, vfd, 0) < 0) {
         pb->error = TRUE;
-#ifdef DEBUG
-        fprintf(stderr, "** demac: plugin.c: Cannot parse APE header or unsupported format: %s\n", pb->filename);
-#endif
+        AUDDBG("** demac: plugin.c: Cannot parse APE header or unsupported format: %s\n", pb->filename);
         goto cleanup;
     }
 
     dec = calloc(sizeof(APEDecoderContext), 1);
     if(ape_decode_init(dec, ctx) < 0) {
         pb->error = TRUE;
-#ifdef DEBUG
-        fprintf(stderr, "** demac: plugin.c: Error initializing decoder\n");
-#endif
+        AUDDBG("** demac: plugin.c: Error initializing decoder\n");
         goto cleanup;
     }
     
     frame_buf = malloc(ctx->max_packet_size);
    
-#ifdef DEBUG
-    fprintf(stderr, "** demac: plugin.c: Duration: %u msec\n", ctx->duration);
-#endif
+    AUDDBG("** demac: plugin.c: Duration: %u msec\n", ctx->duration);
 
     if(!pb->output->open_audio(FMT_S16_LE, ctx->samplerate, ctx->channels)) {
         pb->error = TRUE;
-#ifdef DEBUG
-        fprintf(stderr, "** demac: plugin.c: Cannot open audio.\n");
-#endif
+        AUDDBG("** demac: plugin.c: Cannot open audio.\n");
         goto cleanup;
     }
 
@@ -201,16 +189,11 @@ gpointer demac_decode_loop(InputPlayback *pb) {
 	}
 
         ape_read_packet(ctx, vfd, frame_buf, &pkt_size);
-#ifdef DEBUG
+#ifdef AUD_DEBUG
         assert(pkt_size <= ctx->max_packet_size);
 	frame_crc = ape_initcrc();
 #endif
 	bytes_used = 0;
-
-/*#ifdef DEBUG
-        fprintf(stderr, "frame %d, %d samples, offset %d, size %d\n", ctx->currentframe-1,
-	        *((uint32_t*)frame_buf), *((uint32_t*)(frame_buf+4)), pkt_size);
-#endif*/
 
         /* Decode the frame a chunk at a time */
         while (playing && (bytes_used != pkt_size) && (local_seek_to == -1))
@@ -232,17 +215,17 @@ gpointer demac_decode_loop(InputPlayback *pb) {
 
             /* Write audio data */
             pb->pass_audio(pb, FMT_S16_LE, ctx->channels, decoded_bytes, wav, &playing);
-#if DEBUG
+#ifdef AUD_DEBUG
             frame_crc = ape_updatecrc(wav, decoded_bytes, frame_crc);
 #endif
 
         }
 
-#if DEBUG
+#ifdef AUD_DEBUG
         frame_crc = ape_finishcrc(frame_crc);
 
         if (dec->CRC != frame_crc) {
-            fprintf(stderr, "** demac: plugin.c: CRC error in frame %d\n", ctx->currentframe-1);
+            AUDDBG("** demac: plugin.c: CRC error in frame %d\n", ctx->currentframe-1);
         }
 #endif
     }
@@ -261,9 +244,7 @@ cleanup:
     if(ctx) {ape_read_close(ctx); free(ctx);}
     if(vfd) aud_vfs_fclose(vfd);
 
-#ifdef DEBUG
-    fprintf(stderr, "** demac: plugin.c: decoding loop finished\n");
-#endif
+    AUDDBG("** demac: plugin.c: decoding loop finished\n");
 
     return NULL;
 }
@@ -278,15 +259,9 @@ static void demac_stop(InputPlayback *pb)
         g_mutex_lock(demac_mutex);
         pb->playing = 0;
         g_mutex_unlock(demac_mutex);
-#ifdef DEBUG
-        fprintf(stderr, "** demac: plugin.c: waiting for thread finished\n");
-#endif
-        //g_thread_join(pb->thread);
-	/* pb->thread is useless if input plugin initialized from **terrible** cue-sheet plugin */
+        AUDDBG("** demac: plugin.c: waiting for thread finished\n");
         g_thread_join(pb_thread);
-#ifdef DEBUG
-        fprintf(stderr, "** demac: plugin.c: thread finished\n");
-#endif
+        AUDDBG("** demac: plugin.c: thread finished\n");
     }
 }
 
@@ -299,9 +274,7 @@ static void destroy_cb(mowgli_dictionary_elem_t *delem, void *privdata) {
 }
 
 Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
-#ifdef DEBUG
-    fprintf(stderr, "** demac: plugin.c: demac_probe_for_tuple()\n");
-#endif
+    AUDDBG("** demac: plugin.c: demac_probe_for_tuple()\n");
     Tuple *tpl = aud_tuple_new_from_filename(uri);
     gchar codec_string[32];
 
@@ -327,9 +300,7 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     ape_read_header(ctx, vfd, 1);
     aud_tuple_associate_int(tpl, FIELD_LENGTH, NULL, ctx->duration);
     g_sprintf(codec_string, "Monkey's Audio v%4.2f", (float)ctx->fileversion/1000.0);
-#ifdef DEBUG
-    fprintf(stderr, "** demac: plugin.c: Codec: %s\n", codec_string);
-#endif
+    AUDDBG("** demac: plugin.c: Codec: %s\n", codec_string);
     aud_tuple_associate_string(tpl, FIELD_CODEC, NULL, codec_string);
     aud_tuple_associate_string(tpl, FIELD_QUALITY, NULL, "lossless");
     aud_tuple_associate_string(tpl, FIELD_MIMETYPE, NULL, "audio/x-ape");
@@ -343,9 +314,7 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
 }
 
 Tuple *demac_get_tuple(char *filename) {
-#ifdef DEBUG
-  fprintf(stderr, "** demac: plugin.c: demac_get_tuple()\n");
-#endif
+  AUDDBG("** demac: plugin.c: demac_get_tuple()\n");
   VFSFile *vfd;
 
   if ((vfd = aud_vfs_fopen(filename, "r")) == NULL) {
@@ -361,9 +330,7 @@ static void demac_mseek (InputPlayback *pb, gulong millisecond) {
   g_mutex_lock(demac_mutex);
   seek_to_msec = millisecond;
   g_mutex_unlock(demac_mutex);
-#ifdef DEBUG
-  fprintf(stderr, "** demac: plugin.c: seeking to %u msec\n", millisecond);
-#endif
+  AUDDBG("** demac: plugin.c: seeking to %u msec\n", millisecond);
 }
 
 static void demac_seek (InputPlayback *pb, gint time) {

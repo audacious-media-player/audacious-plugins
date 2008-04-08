@@ -1,8 +1,7 @@
 #include <string.h>
-#include <audacious/configdb.h>
-
-#include <rootvis.h>
-#include <config.h>
+#include <audacious/plugin.h>
+#include "rootvis.h"
+#include "config.h"
 
 extern void config_def_init(void);
 extern void config_frontend_init(void);

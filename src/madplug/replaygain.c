@@ -65,6 +65,9 @@ strgain2double(const gchar * s, const size_t len)
     return res;
 }
 
+/* Check for APE tag header in current file position, and read
+ * header data into given structure. Return 0 if OK.
+ */
 static gint checkAPEHeader(VFSFile * fp, ape_header_t *hdr)
 {
     /* Get magic id and check it */
@@ -90,7 +93,8 @@ static gint checkAPEHeader(VFSFile * fp, ape_header_t *hdr)
     return 0;
 }
 
-// Reads APE v2.0 tag ending at current pos in fp
+/* Reads APE v2.0 tag ending at current pos in fp
+ */
 static gint
 readAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
 {
@@ -131,11 +135,6 @@ readAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
         for (tmp = p, isize = 0; tmp < end && *tmp != 0; isize++, tmp++);
         if (*tmp != 0) break;
         tmp++;
-        
-        fprintf(stderr, "wtf: vsize=%x, flags=%x, s=%s\n", vsize, flags, p);
-        if (vsize > end - tmp + 1) {
-            fprintf(stderr, "vsize > end - tmp + 1: %d > %d\n", vsize, end - tmp + 1);
-        }
         
         if (isize > 0 && vsize > 0) {
             gdouble *scale = NULL;

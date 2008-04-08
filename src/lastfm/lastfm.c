@@ -39,9 +39,7 @@
  *              * Ordinary mp3 streams seem to share this behavior. Didnt tested if others do.
  */
 
-#include <audacious/vfs.h>
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 #include <libmowgli/mowgli_global_storage.h>
 #include <curl/curl.h>
 #include <glib.h>

@@ -15,7 +15,6 @@
 #include "stddefs.h"
 #include "archive/open.h"
 extern "C" {
-#include <audacious/configdb.h>
 #include <audacious/output.h>
 #include <audacious/strings.h>
 }

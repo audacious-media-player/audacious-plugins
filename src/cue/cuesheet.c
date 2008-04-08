@@ -25,10 +25,8 @@
 #include <ctype.h>
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/playlist.h>
 #include <audacious/util.h>
 #include <audacious/strings.h>
-#include <audacious/main.h>
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000
@@ -87,6 +85,8 @@ static gint finetune_seek = 0;
 
 static InputPlayback *real_ip = NULL;
 
+static gchar *cue_fmts[] = { "cue", NULL };
+
 InputPlugin cue_ip =
 {
 	.description = "Cuesheet Plugin",	/* description */
@@ -98,6 +98,7 @@ InputPlugin cue_ip =
 	.seek = seek,
 	.cleanup = cue_cleanup,		/* cleanup */
 	.get_song_tuple = get_tuple,
+	.vfs_extensions = cue_fmts,
 };
 
 InputPlugin *cue_iplist[] = { &cue_ip, NULL };

@@ -32,7 +32,6 @@
 #include <sys/stat.h>
 
 #include <audacious/plugin.h>
-#include <audacious/vfs.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

@@ -20,7 +20,6 @@
 #include <glib.h>
 
 #include "sun.h"
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 
 #include <errno.h>

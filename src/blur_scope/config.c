@@ -5,7 +5,6 @@
 #include <gtk/gtk.h>
 
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 #include "blur_scope.h"
 
 

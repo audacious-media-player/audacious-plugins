@@ -34,11 +34,8 @@
 #include <sys/errno.h>
 
 #include <audacious/plugin.h>
-#include <audacious/main.h>
 #include <audacious/util.h>
 #include <audacious/strings.h>
-#include <audacious/playlist.h>
-#include <audacious/playlist_container.h>
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>

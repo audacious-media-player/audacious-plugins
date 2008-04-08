@@ -3,7 +3,7 @@
 
 #include <glib.h>
 #include <inttypes.h>
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 #include "ayemu_8912.h"
 
 /* The following constants and data structure comes from

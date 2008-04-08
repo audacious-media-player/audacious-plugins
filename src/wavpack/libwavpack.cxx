@@ -11,10 +11,7 @@ extern "C" {
 #include <wavpack/wavpack.h>
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/configdb.h>
-#include <audacious/main.h>
 #include <audacious/util.h>
-#include <audacious/vfs.h>
 }
 #include <glib.h>
 #include <gtk/gtk.h>

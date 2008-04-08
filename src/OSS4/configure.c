@@ -25,9 +25,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <string.h>
-
-#include <audacious/configdb.h>
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
 

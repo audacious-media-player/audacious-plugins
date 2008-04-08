@@ -8,48 +8,48 @@
 extern "C" {
 #endif
 
-struct t_xs_status;
+struct xs_status_t;
 
 typedef struct {
-	gint		plrIdent;
-	gboolean	(*plrProbe)(t_xs_file *);
-	gboolean	(*plrInit)(struct t_xs_status *);
-	void		(*plrClose)(struct t_xs_status *);
-	gboolean	(*plrInitSong)(struct t_xs_status *);
-	guint		(*plrFillBuffer)(struct t_xs_status *, gchar *, guint);
-	gboolean	(*plrLoadSID)(struct t_xs_status *, gchar *);
-	void		(*plrDeleteSID)(struct t_xs_status *);
-	t_xs_tuneinfo*	(*plrGetSIDInfo)(const gchar *);
-	gboolean	(*plrUpdateSIDInfo)(struct t_xs_status *);
-	void		(*plrFlush)(struct t_xs_status *);
-} t_xs_player;
+    gint        plrIdent;
+    gboolean    (*plrProbe)(xs_file_t *);
+    gboolean    (*plrInit)(struct xs_status_t *);
+    void        (*plrClose)(struct xs_status_t *);
+    gboolean    (*plrInitSong)(struct xs_status_t *);
+    guint        (*plrFillBuffer)(struct xs_status_t *, gchar *, guint);
+    gboolean    (*plrLoadSID)(struct xs_status_t *, gchar *);
+    void        (*plrDeleteSID)(struct xs_status_t *);
+    xs_tuneinfo_t*    (*plrGetSIDInfo)(const gchar *);
+    gboolean    (*plrUpdateSIDInfo)(struct xs_status_t *);
+    void        (*plrFlush)(struct xs_status_t *);
+} xs_player_t;
 
 
-typedef struct t_xs_status {
-	gint		audioFrequency,		/* Audio settings */
-			audioChannels,
-			audioBitsPerSample,
-			oversampleFactor;	/* Factor of oversampling */
-	AFormat		audioFormat;
-	gboolean	oversampleEnable;	/* TRUE after sidEngine initialization,
-						if xs_cfg.oversampleEnable == TRUE and
-						emulation backend supports oversampling.
-						*/
-	void		*sidEngine;		/* SID-emulation internal engine data */
-	t_xs_player	*sidPlayer;		/* Selected player engine */
-	gboolean	isError, isPlaying, isInitialized;
-	gint		currSong,		/* Current sub-tune */
-			lastTime;
+typedef struct xs_status_t {
+    gint        audioFrequency,        /* Audio settings */
+            audioChannels,
+            audioBitsPerSample,
+            oversampleFactor;    /* Factor of oversampling */
+    AFormat        audioFormat;
+    gboolean    oversampleEnable;    /* TRUE after sidEngine initialization,
+                        if xs_cfg.oversampleEnable == TRUE and
+                        emulation backend supports oversampling.
+                        */
+    void        *sidEngine;        /* SID-emulation internal engine data */
+    xs_player_t    *sidPlayer;        /* Selected player engine */
+    gboolean    isError, isPlaying, isInitialized;
+    gint        currSong,        /* Current sub-tune */
+            lastTime;
 
-	t_xs_tuneinfo	*tuneInfo;
-} t_xs_status;
+    xs_tuneinfo_t    *tuneInfo;
+} xs_status_t;
 
 
 /* Global variables
  */
-extern InputPlugin	xs_plugin_ip;
+extern InputPlugin    xs_plugin_ip;
 
-extern t_xs_status	xs_status;
+extern xs_status_t    xs_status;
 XS_MUTEX_H(xs_status);
 
 

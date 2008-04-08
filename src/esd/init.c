@@ -18,9 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <esd.h>
-
-#include <audacious/configdb.h>
-
+#include <audacious/plugin.h>
 #include "esdout.h"
 
 

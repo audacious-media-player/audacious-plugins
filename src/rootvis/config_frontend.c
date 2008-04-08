@@ -1,9 +1,7 @@
 #include <stdarg.h>
 #include <string.h>
-
-#include <rootvis.h>
-
-#include <config_frontend.h>
+#include "rootvis.h"
+#include "config_frontend.h"
 
 extern GtkWidget *frontend_create_channel(int channel);
 extern GtkWidget *frontend_create_main(void);

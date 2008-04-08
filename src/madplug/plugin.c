@@ -29,10 +29,8 @@
 
 #include <gtk/gtk.h>
 #include <audacious/util.h>
-#include <audacious/configdb.h>
 #include <stdarg.h>
 #include <fcntl.h>
-#include <audacious/vfs.h>
 #include <sys/stat.h>
 #include "tuple.h"
 

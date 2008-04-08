@@ -17,14 +17,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "config.h"
+
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
 #include <audacious/util.h>
-
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
-
-#include "../../config.h"
 
 static void init(void);
 static void configure(void);

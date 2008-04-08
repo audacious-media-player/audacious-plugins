@@ -21,7 +21,7 @@
 
 #include <glib.h>
 #include <string.h>
-#include <audacious/configdb.h>
+#include <audacious/plugin.h>
 #include "OSS4.h"
 
 

@@ -48,7 +48,6 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <audacious/output.h>
-#include <audacious/playlist.h>
 #include <audacious/ui_plugin_menu.h>
 #include <audacious/util.h>
 

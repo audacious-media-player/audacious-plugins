@@ -4,7 +4,6 @@
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <audacious/util.h>
-#include <audacious/configdb.h>
 #include "echo.h"
 
 static const char *echo_about_text =

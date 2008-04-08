@@ -1,4 +1,4 @@
-#include <config.h>
+#include "config.h"
 
 #define VBOX  	1
 #define HBOX  	2

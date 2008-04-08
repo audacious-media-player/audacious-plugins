@@ -45,7 +45,6 @@
 #include <errno.h>
 
 #include <audacious/plugin.h>
-#include <audacious/vfs.h>
 
 #include "stream.h"
 

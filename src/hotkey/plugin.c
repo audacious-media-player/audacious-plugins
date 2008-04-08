@@ -41,7 +41,6 @@
 #include <gdk/gdkx.h>
 #include <audacious/plugin.h>
 #include <audacious/auddrct.h>
-#include <audacious/configdb.h>
 
 #include <audacious/i18n.h>
 

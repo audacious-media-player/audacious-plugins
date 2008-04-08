@@ -138,7 +138,7 @@ mad_ucs4len(id3_ucs4_t *ucs)
 id3_ucs4_t *
 mad_ucs4dup(id3_ucs4_t *org)
 {
-    id3_ucs4_t *res = NULL;
+    id3_ucs4_t *res;
     size_t len = mad_ucs4len(org);
 
     res = g_malloc0((len + 1) * sizeof(id3_ucs4_t));
@@ -352,7 +352,7 @@ input_alloc_tag(struct mad_info_t *info)
 static void
 input_read_tag(struct mad_info_t *info)
 {
-    gchar *string = NULL;
+    gchar *string;
     Tuple *tuple;
     glong curpos = 0;
 
@@ -360,7 +360,7 @@ input_read_tag(struct mad_info_t *info)
 
     if (info->tuple != NULL)
         aud_tuple_free(info->tuple);
-        
+    
     tuple = aud_tuple_new_from_filename(info->filename);
     info->tuple = tuple;
 
@@ -393,11 +393,9 @@ input_read_tag(struct mad_info_t *info)
     if (string) {
         aud_tuple_associate_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(string));
         g_free(string);
-        string = NULL;
     }
 
     // year
-    string = NULL;
     string = input_id3_get_string(info->tag, ID3_FRAME_YEAR);   //TDRC
     if (!string)
         string = input_id3_get_string(info->tag, "TYER");
@@ -405,7 +403,6 @@ input_read_tag(struct mad_info_t *info)
     if (string) {
         aud_tuple_associate_int(tuple, FIELD_YEAR, NULL, atoi(string));
         g_free(string);
-        string = NULL;
     }
 
     // length
@@ -414,7 +411,6 @@ input_read_tag(struct mad_info_t *info)
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, atoi(string));
         AUDDBG("input_read_tag: TLEN = %d\n", atoi(string));
         g_free(string);
-        string = NULL;
     } else
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
     
@@ -439,7 +435,7 @@ input_process_remote_metadata(struct mad_info_t *info)
     gboolean metadata = FALSE;
 
     if(info->remote && mad_timer_count(info->duration, MAD_UNITS_SECONDS) <= 0){
-        gchar *tmp = NULL;
+        gchar *tmp;
 
 #ifdef DEBUG_INTENSIVELY
         AUDDBG("process_remote_meta\n");
@@ -452,28 +448,20 @@ input_process_remote_metadata(struct mad_info_t *info)
         tmp = aud_vfs_get_metadata(info->infile, "track-name");
         if(tmp){
             metadata = TRUE;
-            gchar *scratch;
-
-            scratch = aud_str_to_utf8(tmp);
+            gchar *scratch = aud_str_to_utf8(tmp);
             aud_tuple_associate_string(info->tuple, FIELD_TITLE, NULL, scratch);
             g_free(scratch);
-
             g_free(tmp);
-            tmp = NULL;
         }
 
         tmp = aud_vfs_get_metadata(info->infile, "stream-name");
         if(tmp){
             metadata = TRUE;
-            gchar *scratch;
-
-            scratch = aud_str_to_utf8(tmp);
+            gchar *scratch = aud_str_to_utf8(tmp);
             aud_tuple_associate_string(info->tuple, FIELD_ALBUM, NULL, scratch);
             aud_tuple_associate_string(info->tuple, -1, "stream", scratch);
             g_free(scratch);
-
             g_free(tmp);
-            tmp = NULL;
         }
 
         if (metadata)
@@ -482,8 +470,8 @@ input_process_remote_metadata(struct mad_info_t *info)
             gchar *realfn = g_filename_from_uri(info->filename, NULL, NULL);
             gchar *tmp2 = g_path_get_basename(realfn ? realfn : info->filename); // info->filename is uri. --yaz
             tmp = aud_str_to_utf8(tmp2);
-            g_free(tmp2); tmp2 = NULL;
-            g_free(realfn); realfn = NULL;
+            g_free(tmp2);
+            g_free(realfn);
 //            tmp = g_strdup(g_basename(info->filename)); //XXX maybe ok. --yaz
         }
 
@@ -587,37 +575,27 @@ input_term(struct mad_info_t * info)
 {
     AUDDBG("f: input_term\n");
 
-    if (info->title)
-        g_free(info->title);
-    if (info->url)
-        g_free(info->url);
-    if (info->filename)
-        g_free(info->filename);
+    g_free(info->title);
+    g_free(info->url);
+    g_free(info->filename);
     if (info->infile)
         aud_vfs_fclose(info->infile);
     if (info->id3file)
         id3_file_close(info->id3file);
 
-    if (info->replaygain_album_str)
-        g_free(info->replaygain_album_str);
-    if (info->replaygain_track_str)
-        g_free(info->replaygain_track_str);
-    if (info->replaygain_album_peak_str)
-        g_free(info->replaygain_album_peak_str);
-    if (info->replaygain_track_peak_str)
-        g_free(info->replaygain_track_peak_str);
-    if (info->mp3gain_undo_str)
-        g_free(info->mp3gain_undo_str);
-    if (info->mp3gain_minmax_str)
-        g_free(info->mp3gain_minmax_str);
+    g_free(info->replaygain_album_str);
+    g_free(info->replaygain_track_str);
+    g_free(info->replaygain_album_peak_str);
+    g_free(info->replaygain_track_peak_str);
+    g_free(info->mp3gain_undo_str);
+    g_free(info->mp3gain_minmax_str);
 
     if (info->tuple) {
         aud_tuple_free(info->tuple);
         info->tuple = NULL;
     }
 
-    if (info->prev_title)
-        g_free(info->prev_title);
+    g_free(info->prev_title);
 
     /* set everything to zero in case it gets used again. */
     memset(info, 0, sizeof(struct mad_info_t));
