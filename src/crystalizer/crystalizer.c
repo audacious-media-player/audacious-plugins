@@ -52,6 +52,7 @@ static void init(void)
 	aud_cfg_db_close(db);
 }
 
+/* conf dialog stuff stolen from stereo plugin --nenolod */ 
 static void conf_ok_cb(GtkButton * button, gpointer data)
 {
 	ConfigDb *db;
@@ -83,7 +84,7 @@ static void configure(void)
 		return;
 
 	conf_dialog = gtk_dialog_new();
-	g_signal_connect_swapped(GTK_OBJECT(conf_dialog), "destroy",
+	g_signal_connect(GTK_OBJECT(conf_dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &conf_dialog);
 	gtk_window_set_title(GTK_WINDOW(conf_dialog), _("Configure Crystalizer"));
 
@@ -111,7 +112,7 @@ static void configure(void)
 	button = gtk_button_new_with_label(_("Ok"));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	g_signal_connect_swapped(GTK_OBJECT(button), "clicked",
+	g_signal_connect(GTK_OBJECT(button), "clicked",
 			   GTK_SIGNAL_FUNC(conf_ok_cb),
 			   &GTK_ADJUSTMENT(adjustment)->value);
 	gtk_widget_grab_default(button);
@@ -120,14 +121,14 @@ static void configure(void)
 	button = gtk_button_new_with_label(_("Cancel"));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	g_signal_connect_swapped(GTK_OBJECT(button), "clicked",
+	g_signal_connect(GTK_OBJECT(button), "clicked",
 			   GTK_SIGNAL_FUNC(conf_cancel_cb), NULL);
 	gtk_widget_show(button);
 
 	button = gtk_button_new_with_label(_("Apply"));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
-	g_signal_connect_swapped(GTK_OBJECT(button), "clicked",
+	g_signal_connect(GTK_OBJECT(button), "clicked",
 			   GTK_SIGNAL_FUNC(conf_apply_cb),
 			   &GTK_ADJUSTMENT(adjustment)->value);
 	gtk_widget_show(button);
@@ -154,6 +155,8 @@ static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint 
 	{
 		diff[0] = data[i] - prev[0];
 		diff[1] = data[i + 1] - prev[1];
+		prev[0] = data[i];
+		prev[1] = data[i + 1];
 
 		tmp = data[i] + (diff[0] * value);
 		if (tmp < -32768)
@@ -168,9 +171,6 @@ static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint 
 		if (tmp > 32767)
 			tmp = 32767;
 		data[i + 1] = tmp;
-
-		prev[0] = data[i];
-		prev[1] = data[i + 1];
 	}
 
 	return length;
