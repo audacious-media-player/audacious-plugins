@@ -28,28 +28,28 @@
 #define XS_CONFIG_OPEN        aud_cfg_db_open
 #define XS_CONFIG_FREE        aud_cfg_db_close
 
-#define XS_CFG_SET_STRING    aud_cfg_db_set_string
-#define XS_CFG_SET_FLOAT    aud_cfg_db_set_float
+#define XS_CFG_SET_STRING     aud_cfg_db_set_string
+#define XS_CFG_SET_FLOAT      aud_cfg_db_set_float
 #define XS_CFG_SET_INT        aud_cfg_db_set_int
-#define XS_CFG_SET_BOOL        aud_cfg_db_set_bool
-#define XS_CFG_GET_STRING    aud_cfg_db_get_string
-#define XS_CFG_GET_FLOAT    aud_cfg_db_get_float
+#define XS_CFG_SET_BOOL       aud_cfg_db_set_bool
+#define XS_CFG_GET_STRING     aud_cfg_db_get_string
+#define XS_CFG_GET_FLOAT      aud_cfg_db_get_float
 #define XS_CFG_GET_INT        aud_cfg_db_get_int
-#define XS_CFG_GET_BOOL        aud_cfg_db_get_bool
+#define XS_CFG_GET_BOOL       aud_cfg_db_get_bool
 #else
 #include <xmms/configfile.h>
 #define XS_CONFIG_FILE        ConfigFile
 #define XS_CONFIG_OPEN        xmms_cfg_open_default_file
 #define XS_CONFIG_FREE        xmms_cfg_free
 
-#define XS_CFG_SET_STRING    xmms_cfg_write_string
-#define XS_CFG_SET_FLOAT    xmms_cfg_write_float
+#define XS_CFG_SET_STRING     xmms_cfg_write_string
+#define XS_CFG_SET_FLOAT      xmms_cfg_write_float
 #define XS_CFG_SET_INT        xmms_cfg_write_int
-#define XS_CFG_SET_BOOL        xmms_cfg_write_boolean
-#define XS_CFG_GET_STRING    xmms_cfg_read_string
-#define XS_CFG_GET_FLOAT    xmms_cfg_read_float
+#define XS_CFG_SET_BOOL       xmms_cfg_write_boolean
+#define XS_CFG_GET_STRING     xmms_cfg_read_string
+#define XS_CFG_GET_FLOAT      xmms_cfg_read_float
 #define XS_CFG_GET_INT        xmms_cfg_read_int
-#define XS_CFG_GET_BOOL        xmms_cfg_read_boolean
+#define XS_CFG_GET_BOOL       xmms_cfg_read_boolean
 #endif
 #include <stdio.h>
 #include <ctype.h>
