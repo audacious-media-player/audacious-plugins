@@ -221,7 +221,7 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
 gint
 aosd_cfg_load ( aosd_cfg_t * cfg )
 {
-  ConfigDb *cfgfile = aud_cfg_db_open();
+  mcs_handle_t *cfgfile = aud_cfg_db_open();
   gint i = 0;
   gint max_numcol;
   gchar *trig_active_str;
@@ -369,7 +369,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
 gint
 aosd_cfg_save ( aosd_cfg_t * cfg )
 {
-  ConfigDb *cfgfile = aud_cfg_db_open();
+  mcs_handle_t *cfgfile = aud_cfg_db_open();
   gint i = 0;
   gint max_numcol;
   GString *string = g_string_new( "" );

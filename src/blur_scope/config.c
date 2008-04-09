@@ -16,7 +16,7 @@ static GtkWidget *bbox, *ok, *cancel;
 static void
 configure_ok(GtkWidget * w, gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     gdouble color[3];
 
     gtk_color_selection_get_color(GTK_COLOR_SELECTION(options_colorpicker),

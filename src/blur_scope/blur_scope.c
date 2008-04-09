@@ -94,7 +94,7 @@ draw_pixel_8(guchar * buffer, gint x, gint y, guchar c)
 void
 bscope_read_config(void)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     if (!config_read) {
         bscope_cfg.color = 0xFF3F7F;

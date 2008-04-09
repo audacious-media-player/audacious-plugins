@@ -24,7 +24,7 @@ extern float left_volume, right_volume;
 
 void osx_init(void)
 {
-	ConfigDb *cfgfile;
+	mcs_handle_t *cfgfile;
 
 	left_volume = 1.0;
 	right_volume = 1.0;

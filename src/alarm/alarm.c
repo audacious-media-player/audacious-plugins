@@ -172,7 +172,7 @@ static void alarm_warning(void)
 void alarm_save(GtkButton *w, gpointer data)
 {
    int daynum = 0;  // used to identify day number
-   ConfigDb *conf;
+   mcs_handle_t *conf;
 
    DEBUG("alarm_save\n");
 
@@ -291,7 +291,7 @@ void alarm_save(GtkButton *w, gpointer data)
 static void alarm_read_config()
 {
    int daynum = 0;   // used for day number
-   ConfigDb *conf;
+   mcs_handle_t *conf;
 
    DEBUG("alarm_read_config\n");
 

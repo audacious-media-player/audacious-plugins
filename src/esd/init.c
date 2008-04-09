@@ -30,7 +30,7 @@ esd_player_info_t *player_info;
 void
 esdout_init(void)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     char *env;
     int lp = 80 , rp = 80;
 

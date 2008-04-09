@@ -52,7 +52,7 @@ DECLARE_PLUGIN(OSS4, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL, NULL);
 
 void oss_cleanup(void)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, "OSS", "saved_volume", vol);
     aud_cfg_db_close(db);

@@ -90,7 +90,7 @@ update_config(gpointer widgets)
 static void
 save_config(void)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
 
     AUDDBG("saving\n");
 

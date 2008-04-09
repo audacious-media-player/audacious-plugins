@@ -25,7 +25,7 @@ struct alsa_config alsa_cfg;
 
 void alsa_init(void)
 {
-	ConfigDb *cfgfile;
+	mcs_handle_t *cfgfile;
 
 	memset(&alsa_cfg, 0, sizeof (alsa_cfg));
 	alsa_cfg.buffer_time = 500;

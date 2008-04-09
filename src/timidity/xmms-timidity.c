@@ -83,7 +83,7 @@ static GtkToggleButton
 	*xmmstimid_conf_channels_2;
 
 void xmmstimid_init(void) {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	xmmstimid_cfg.config_file = NULL;
 	xmmstimid_cfg.rate = 44100;
@@ -187,7 +187,7 @@ void xmmstimid_configure(void) {
 }
 
 void xmmstimid_conf_ok(GtkButton *button, gpointer user_data) {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	if (gtk_toggle_button_get_active(xmmstimid_conf_rate_11000))
 		xmmstimid_cfg.rate = 11000;

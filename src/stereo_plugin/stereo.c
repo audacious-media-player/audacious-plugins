@@ -33,7 +33,7 @@ DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL, NULL);
 
 static void init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	if (!aud_cfg_db_get_double(db, "extra_stereo", "intensity", &value))
 		value = 2.5;
@@ -57,7 +57,7 @@ static void about(void)
 
 static void conf_ok_cb(GtkButton * button, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	value = *(gdouble *) data;
 	

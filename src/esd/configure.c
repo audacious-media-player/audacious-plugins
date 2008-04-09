@@ -37,7 +37,7 @@ static GtkWidget *server_port_entry, *buffer_size_spin, *buffer_pre_spin;
 static void
 configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     esd_cfg.use_remote =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(server_use_remote));

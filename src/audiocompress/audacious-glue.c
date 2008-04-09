@@ -119,7 +119,7 @@ GtkWidget *create_prefs_dialog(CompressorPrefs * prefs);
 
 void initPrefs(CompressorPrefs * prefs)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 
@@ -158,7 +158,7 @@ void freePrefs(CompressorPrefs * prefs)
 
 void savePrefs(CompressorPrefs * prefs)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 

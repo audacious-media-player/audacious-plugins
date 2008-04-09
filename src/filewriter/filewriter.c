@@ -134,7 +134,7 @@ static void set_plugin(void)
 
 static void file_init(void)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     /*GtkWidget *menu_root;
 
     menu_root = gtk_menu_item_new_with_label(_("FileWriter"));
@@ -375,7 +375,7 @@ static gint file_get_output_time(void)
 
 static void configure_ok_cb(gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 

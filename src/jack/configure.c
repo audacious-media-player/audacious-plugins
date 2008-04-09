@@ -45,7 +45,7 @@ static GtkWidget *port_connection_mode_combo;
 
 static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-        ConfigDb *cfgfile;
+        mcs_handle_t *cfgfile;
 
         jack_cfg.isTraceEnabled = (gint) GTK_CHECK_BUTTON(GTK_isTraceEnabled)->toggle_button.active;
   jack_cfg.port_connection_mode = GET_CHARS(GTK_COMBO(port_connection_mode_combo)->entry);

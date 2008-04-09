@@ -14,7 +14,7 @@ gchar *aosd_font = NULL;
 
 void load_cfg(void)
 {
-  ConfigDb *db;
+  mcs_handle_t *db;
   db = aud_cfg_db_open();
   aud_cfg_db_get_int(db, "lirc", "enable_reconnect", &b_enable_reconnect);
   aud_cfg_db_get_int(db, "lirc", "reconnect_timeout", &reconnect_timeout);
@@ -26,7 +26,7 @@ void load_cfg(void)
 
 void save_cfg(void)
 {
-  ConfigDb *db;
+  mcs_handle_t *db;
   db = aud_cfg_db_open();
   aud_cfg_db_set_int(db, "lirc", "enable_reconnect", b_enable_reconnect);
   aud_cfg_db_set_int(db, "lirc", "reconnect_timeout", reconnect_timeout);

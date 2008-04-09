@@ -161,7 +161,7 @@ do_command(char *cmd, const char *current_file, int pos)
 
 static void read_config(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 	if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line", &cmd_line) )
@@ -205,7 +205,7 @@ static void cleanup(void)
 
 static void save_and_close(GtkWidget *w, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
 
 	cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_entry)));

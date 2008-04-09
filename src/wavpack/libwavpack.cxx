@@ -548,7 +548,7 @@ wv_stop(InputPlayback *data)
 static void
 wv_load_config()
 {
-    ConfigDb *cfg;
+    mcs_handle_t *cfg;
 
     cfg = aud_cfg_db_open();
 

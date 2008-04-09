@@ -1037,7 +1037,7 @@ static void
 adplug_init (void)
 {
   dbg_printf ("adplug_init(): open, ");
-  ConfigDb *db = aud_cfg_db_open ();
+  mcs_handle_t *db = aud_cfg_db_open ();
 
   // Read configuration
   dbg_printf ("read, ");
@@ -1089,7 +1089,7 @@ static void
 adplug_quit (void)
 {
   dbg_printf ("adplug_quit(): open, ");
-  ConfigDb *db = aud_cfg_db_open ();
+  mcs_handle_t *db = aud_cfg_db_open ();
 
   // Close database
   dbg_printf ("db, ");

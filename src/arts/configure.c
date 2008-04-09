@@ -18,7 +18,7 @@ static GtkWidget *buffer_size_spin;
 
 static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	artsxmms_cfg.buffer_size =
 		gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffer_size_spin));

@@ -160,7 +160,7 @@ static void lame_debugf(const char *format, va_list ap)
 
 static void mp3_init(void)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_on", &vbr_on);
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_type", &vbr_type);
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_min_val", &vbr_min_val);
@@ -615,7 +615,7 @@ static void id3_only_version(GtkToggleButton * togglebutton,
 
 static void configure_ok_cb(gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     if (vbr_min_val > vbr_max_val)
         vbr_max_val = vbr_min_val;

@@ -417,7 +417,7 @@ static GtkWidget *rg_switch, *rg_clip_switch, *rg_track_gain, *rg_dyn_bitrate;
 static void
 wv_configurewin_ok(GtkWidget * widget, gpointer data)
 {
-    ConfigDb *cfg;
+    mcs_handle_t *cfg;
     GtkToggleButton *tb;
 
     tb = GTK_TOGGLE_BUTTON(rg_switch);

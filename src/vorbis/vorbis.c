@@ -705,7 +705,7 @@ vorbis_aboutbox(void)
 static void
 vorbis_init(void)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     gchar *tmp = NULL;
 
     memset(&vorbis_cfg, 0, sizeof(vorbis_config_t));

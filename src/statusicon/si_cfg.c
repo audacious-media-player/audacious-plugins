@@ -28,7 +28,7 @@ si_cfg_t si_cfg;
 void
 si_cfg_load ( void )
 {
-  ConfigDb *cfgfile = aud_cfg_db_open();
+  mcs_handle_t *cfgfile = aud_cfg_db_open();
 
   if ( !aud_cfg_db_get_int( cfgfile , "statusicon" ,
        "rclick_menu" , &(si_cfg.rclick_menu) ) )
@@ -59,7 +59,7 @@ si_cfg_load ( void )
 void
 si_cfg_save ( void )
 {
-  ConfigDb *cfgfile = aud_cfg_db_open();
+  mcs_handle_t *cfgfile = aud_cfg_db_open();
 
   aud_cfg_db_set_int( cfgfile , "statusicon" ,
     "rclick_menu" , si_cfg.rclick_menu );

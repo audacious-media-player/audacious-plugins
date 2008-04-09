@@ -144,7 +144,7 @@ static void debug(const char *fmt, ...)
 
 static void cdaudio_init()
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	gchar *menu_item_text;
 
 	debug("cdaudio_init()\n");
@@ -583,7 +583,7 @@ static void cdaudio_cleanup(void)
 
 	// todo: destroy the gui
 
-	ConfigDb *db = aud_cfg_db_open();
+	mcs_handle_t *db = aud_cfg_db_open();
 	aud_cfg_db_set_bool(db, "CDDA", "use_dae", cdng_cfg.use_dae);
 	aud_cfg_db_set_int(db, "CDDA", "limitspeed", cdng_cfg.limitspeed);
 	aud_cfg_db_set_bool(db, "CDDA", "use_cdtext", cdng_cfg.use_cdtext);

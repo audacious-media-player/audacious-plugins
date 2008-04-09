@@ -45,7 +45,7 @@ static char *hexify(char *pass, int len)
 
 static void saveconfig(void)
 {
-    ConfigDb *cfgfile;
+    mcs_handle_t *cfgfile;
 
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
     const char *pwd = gtk_entry_get_text(GTK_ENTRY(entry2));
@@ -122,7 +122,7 @@ entry_changed(GtkWidget *widget, gpointer data)
 GtkWidget *
 create_cfgdlg(void)
 {
-  ConfigDb *db;
+  mcs_handle_t *db;
   GtkWidget *vbox2;
   GtkWidget *table1;
   GtkWidget *label3;

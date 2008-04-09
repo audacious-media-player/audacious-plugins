@@ -89,7 +89,7 @@ static gboolean audio_error = FALSE;
 
 static void shn_init()
 {
-	ConfigDb *cfg;
+	mcs_handle_t *cfg;
 
 	shn_cfg.error_output_method = ERROR_OUTPUT_DEVNULL;
 	shn_cfg.error_output_method_config_name = "error_output_method";

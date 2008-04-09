@@ -142,7 +142,7 @@ esdout_get_volume(int *l, int *r)
 void
 esdout_set_volume(int l, int r)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     lp = l;
     rp = r;
 

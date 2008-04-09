@@ -56,7 +56,7 @@ void artsxmms_tell_audio(AFormat * fmt, gint * srate, gint * nch)
 
 void artsxmms_init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	memset(&artsxmms_cfg, 0, sizeof (artsxmms_cfg));
 

@@ -46,7 +46,7 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 
 void alsa_save_config(void)
 {
-	ConfigDb *cfgfile = aud_cfg_db_open();
+	mcs_handle_t *cfgfile = aud_cfg_db_open();
 
 	aud_cfg_db_set_int(cfgfile, "ALSA", "buffer_time", alsa_cfg.buffer_time);
 	aud_cfg_db_set_int(cfgfile, "ALSA", "period_time", alsa_cfg.period_time);

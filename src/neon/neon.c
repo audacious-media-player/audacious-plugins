@@ -481,7 +481,7 @@ static void handle_headers(struct neon_handle* h) {
 
 static int neon_proxy_auth_cb(void *userdata, const char *realm, int attempt, char *username, char *password) {
 
-    ConfigDb *db;
+    mcs_handle_t *db;
     gchar *value = NULL;
 
     _ENTER;
@@ -612,7 +612,7 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
 static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
     int ret;
-    ConfigDb* db;
+    mcs_handle_t* db;
     gchar* proxy_host = NULL;
     gchar* proxy_port_s = NULL;
     gchar* endptr;

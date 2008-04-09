@@ -24,7 +24,7 @@
 
 #ifdef AUDACIOUS_PLUGIN
 #include <audacious/plugin.h>
-#define XS_CONFIG_FILE        ConfigDb
+#define XS_CONFIG_FILE        mcs_handle_t
 #define XS_CONFIG_OPEN        aud_cfg_db_open
 #define XS_CONFIG_FREE        aud_cfg_db_close
 

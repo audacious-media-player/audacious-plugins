@@ -29,7 +29,7 @@ OSSConfig oss_cfg;
 void
 oss_init(void)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     memset(&oss_cfg, 0, sizeof(OSSConfig));
 

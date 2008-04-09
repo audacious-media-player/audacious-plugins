@@ -56,7 +56,7 @@ static gchar *vtx_fmts[] = { "vtx", NULL };
 void
 vtx_init(void)
 {
-        ConfigDb *db;
+        mcs_handle_t *db;
         db = aud_cfg_db_open();
 
         aud_cfg_db_get_int(db, NULL, "src_rate", &freq);

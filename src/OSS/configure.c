@@ -38,7 +38,7 @@ static gint audio_device, mixer_device;
 static void
 configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     oss_cfg.audio_device = audio_device;
     oss_cfg.mixer_device = mixer_device;

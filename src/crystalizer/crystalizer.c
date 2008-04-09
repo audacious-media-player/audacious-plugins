@@ -45,7 +45,7 @@ DECLARE_PLUGIN(crystalizer, NULL, NULL, NULL, NULL, crystalizer_eplist, NULL, NU
 
 static void init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	if (!aud_cfg_db_get_double(db, "crystalizer", "intensity", &value))
 		value = 1.0;
@@ -55,7 +55,7 @@ static void init(void)
 /* conf dialog stuff stolen from stereo plugin --nenolod */ 
 static void conf_ok_cb(GtkButton * button, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	value = *(gdouble *) data;
 	

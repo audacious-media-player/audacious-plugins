@@ -100,7 +100,7 @@ static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 void start(void) {
 	char *username = NULL, *password = NULL;
 	char *ge_username = NULL, *ge_password = NULL;
-	ConfigDb *cfgfile;
+	mcs_handle_t *cfgfile;
 	sc_going = 1;
 	ge_going = 1;
 	GError **moo = NULL;

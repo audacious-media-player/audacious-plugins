@@ -63,7 +63,7 @@ static guint64 olen = 0;
 
 static void vorbis_init(void)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
 
     aud_cfg_db_get_float(db, "filewriter_vorbis", "base_quality", &v_base_quality);
 
@@ -245,7 +245,7 @@ static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
 
 static void configure_ok_cb(gpointer data)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
 
     aud_cfg_db_set_float(db, "filewrite_vorbis", "base_quality", v_base_quality);
 

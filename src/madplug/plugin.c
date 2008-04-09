@@ -91,7 +91,7 @@ extname(const char *filename)
 static void
 audmad_init()
 {
-    ConfigDb *db = NULL;
+    mcs_handle_t *db = NULL;
 
     audmad_config = g_malloc0(sizeof(audmad_config_t));
 

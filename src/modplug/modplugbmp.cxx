@@ -74,7 +74,7 @@ ModplugXMMS::Settings::Settings()
 
 void ModplugXMMS::Init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	
 	db = aud_cfg_db_open();
 
@@ -589,7 +589,7 @@ const char* ModplugXMMS::Bool2OnOff(bool aValue)
 
 void ModplugXMMS::SetModProps(const Settings& aModProps)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	mModProps = aModProps;
 
 	// [Reverb level 0(quiet)-100(loud)], [delay in ms, usually 40-200ms]

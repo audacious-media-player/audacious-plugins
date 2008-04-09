@@ -42,7 +42,7 @@ static struct {
 
 static void null_init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	aud_cfg_db_get_bool(db, "null", "real_time", &real_time);
 	aud_cfg_db_close(db);
@@ -71,7 +71,7 @@ static void null_about(void)
 
 static void null_configure_ok_cb(GtkButton *w, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 	real_time = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data));

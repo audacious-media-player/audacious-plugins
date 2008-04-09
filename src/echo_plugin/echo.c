@@ -40,7 +40,7 @@ DECLARE_PLUGIN(echo, NULL, NULL, NULL, NULL, echo_eplist, NULL, NULL, NULL);
 
 static void init(void)
 {
-	ConfigDb *cfg;
+	mcs_handle_t *cfg;
 	
 	if (sizeof(short) != sizeof(gint16))
 		abort();

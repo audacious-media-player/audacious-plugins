@@ -99,7 +99,7 @@ void shn_display_about(void)
 
 void shn_configurewin_save(void)
 {
-	ConfigDb *cfg;
+	mcs_handle_t *cfg;
 	gchar *filename;
 
 	shn_cfg.error_output_method = ERROR_OUTPUT_DEVNULL;
