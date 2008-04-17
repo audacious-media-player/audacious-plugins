@@ -919,7 +919,7 @@ fi
 if test "x$have_oss" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS"
 fi
-
+AC_SUBST(OSS_CFLAGS)
 AC_SUBST(OSS_LIBS)
 
 
