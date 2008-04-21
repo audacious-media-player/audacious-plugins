@@ -119,7 +119,7 @@ void XSDEBUG(const char *fmt, ...)
 void xs_reinit(void)
 {
     gint player;
-    gboolean isInitialized;
+    gboolean initialized;
 
     XSDEBUG("xs_reinit() thread = %p\n", g_thread_self());
 
@@ -160,30 +160,30 @@ void xs_reinit(void)
     XSDEBUG("initializing emulator engine #%i...\n", xs_cfg.playerEngine);
 
     player = 0;
-    isInitialized = FALSE;
-    while ((player < xs_nplayerlist) && !isInitialized) {
+    initialized = FALSE;
+    while ((player < xs_nplayerlist) && !initialized) {
         if (xs_playerlist[player].plrIdent == xs_cfg.playerEngine) {
             if (xs_playerlist[player].plrInit(&xs_status)) {
-                isInitialized = TRUE;
+                initialized = TRUE;
                 xs_status.sidPlayer = (xs_player_t *) & xs_playerlist[player];
             }
         }
         player++;
     }
 
-    XSDEBUG("init#1: %s, %i\n", (isInitialized) ? "OK" : "FAILED", player);
+    XSDEBUG("init#1: %s, %i\n", (initialized) ? "OK" : "FAILED", player);
 
     player = 0;
-    while ((player < xs_nplayerlist) && !isInitialized) {
+    while ((player < xs_nplayerlist) && !initialized) {
         if (xs_playerlist[player].plrInit(&xs_status)) {
-            isInitialized = TRUE;
+            initialized = TRUE;
             xs_status.sidPlayer = (xs_player_t *) & xs_playerlist[player];
             xs_cfg.playerEngine = xs_playerlist[player].plrIdent;
         } else
             player++;
     }
 
-    XSDEBUG("init#2: %s, %i\n", (isInitialized) ? "OK" : "FAILED", player);
+    XSDEBUG("init#2: %s, %i\n", (initialized) ? "OK" : "FAILED", player);
 
 
     /* Get settings back, in case the chosen emulator backend changed them */
