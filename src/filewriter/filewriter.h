@@ -52,9 +52,11 @@ extern Tuple *tuple;
 
 typedef struct _FileWriter FileWriter;
 
+typedef gint (*write_output_callback)(void *ptr, gint length);
+
 struct _FileWriter
 {
-    void (*init)(void);
+    void (*init)(write_output_callback write_output_func);
     void (*configure)(void);
     gint (*open)(void);
     void (*write)(void *ptr, gint length);

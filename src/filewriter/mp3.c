@@ -29,7 +29,7 @@
 #include <lame/lame.h>
 #define ENCBUFFER_SIZE 35000
 
-static void mp3_init(void);
+static void mp3_init(write_output_callback write_output_func);
 static void mp3_configure(void);
 static gint mp3_open(void);
 static void mp3_write(void *ptr, gint length);
@@ -37,6 +37,7 @@ static void mp3_close(void);
 static gint mp3_free(void);
 static gint mp3_playing(void);
 static gint mp3_get_written_time(void);
+static gint (*write_output)(void *ptr, gint length);
 
 FileWriter mp3_plugin =
 {
@@ -158,7 +159,7 @@ static void lame_debugf(const char *format, va_list ap)
     (void) vfprintf(stdout, format, ap);
 }
 
-static void mp3_init(void)
+static void mp3_init(write_output_callback write_output_func)
 {
     ConfigDb *db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_on", &vbr_on);
@@ -194,6 +195,8 @@ static void mp3_init(void)
     aud_cfg_db_get_int(db, "filewriter_mp3", "error_protect_val",
                        &error_protect_val);
     aud_cfg_db_close(db);
+    if (write_output_func)
+        write_output=write_output_func;
 }
 
 static gint mp3_open(void)
@@ -302,7 +305,7 @@ static void mp3_write(void *ptr, gint length)
                                            ENCBUFFER_SIZE);
     }
 
-    aud_vfs_fwrite(encbuffer, 1, encout, output_file);
+    write_output(encbuffer, encout);
     written += encout;
     olen += length;
 }
@@ -312,7 +315,7 @@ static void mp3_close(void)
     if (output_file)
     {
         encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
-        aud_vfs_fwrite(encbuffer, 1, encout, output_file);
+        write_output(encbuffer, encout);
 
 //        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag??
 

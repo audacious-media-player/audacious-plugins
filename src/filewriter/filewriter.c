@@ -77,10 +77,16 @@ static gboolean prependnumber = FALSE;
 
 static gchar *file_path = NULL;
 
+VFSFile *output_file = NULL;
+guint64 written = 0;
+guint64 offset = 0;
+Tuple *tuple = NULL;
+
 static void file_init(void);
 static void file_about(void);
 static gint file_open(AFormat fmt, gint rate, gint nch);
 static void file_write(void *ptr, gint length);
+static gint file_write_output(void *ptr, gint length);
 static void file_close(void);
 static void file_flush(gint time);
 static void file_pause(short p);
@@ -155,7 +161,7 @@ static void file_init(void)
 
     set_plugin();
     if (plugin.init)
-        plugin.init();
+        plugin.init(&file_write_output);
 }
 
 void file_about(void)
@@ -326,6 +332,11 @@ static void file_write(void *ptr, gint length)
     plugin.write(ptr, length);
 }
 
+static gint file_write_output(void *ptr, gint length)
+{
+    return aud_vfs_fwrite(ptr, 1, length, output_file);
+}
+
 static void file_close(void)
 {
     plugin.close();
@@ -407,6 +418,8 @@ static void fileext_cb(GtkWidget *combo, gpointer data)
 {
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
     set_plugin();
+    if (plugin.init)
+        plugin.init(&file_write_output);
 
     gtk_widget_set_sensitive(plugin_button, plugin.configure != NULL);
 }
@@ -630,8 +643,3 @@ static void file_configure(void)
         gtk_widget_show_all(configure_win);
     }
 }
-
-VFSFile *output_file = NULL;
-guint64 written = 0;
-guint64 offset = 0;
-Tuple *tuple = NULL;
