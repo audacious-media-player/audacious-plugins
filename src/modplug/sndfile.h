@@ -649,7 +649,6 @@ public:
 	BOOL ReadAMF(LPCBYTE lpStream, DWORD dwMemLength);
 	BOOL ReadMT2(LPCBYTE lpStream, DWORD dwMemLength);
 	BOOL ReadPSM(LPCBYTE lpStream, DWORD dwMemLength);
-	BOOL ReadJ2B(LPCBYTE lpStream, DWORD dwMemLength);
 	BOOL ReadUMX(LPCBYTE lpStream, DWORD dwMemLength);
 	BOOL ReadMID(LPCBYTE lpStream, DWORD dwMemLength);
 	// MOD Convert function
