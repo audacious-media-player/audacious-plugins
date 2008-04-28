@@ -6,7 +6,6 @@
 
 // #define AUD_DEBUG 1
 
-#include "modplug.h"
 #include "gui/main.h"
 extern "C" {
 #include <audacious/plugin.h>
