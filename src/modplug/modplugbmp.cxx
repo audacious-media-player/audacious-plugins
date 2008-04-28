@@ -198,8 +198,6 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 		return true;
 	if (lExt == ".ult")
 		return true;
-	if (lExt == ".j2b")
-		return true;
 	if (lExt == ".mt2")
 		return true;
 

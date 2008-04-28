@@ -32,7 +32,6 @@ SRCS = plugin.cxx		\
        load_ams.cxx		\
        load_amf.cxx		\
        load_669.cxx		\
-       load_j2b.cxx		\
        load_mt2.cxx		\
        load_psm.cxx		\
        archive/archive.cxx	\
