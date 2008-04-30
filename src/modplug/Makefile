@@ -22,7 +22,6 @@ SRCS = plugin.cxx		\
        load_mtm.cxx		\
        load_mod.cxx		\
        load_med.cxx		\
-       load_mid.cxx		\
        load_mdl.cxx		\
        load_it.cxx		\
        load_far.cxx		\
