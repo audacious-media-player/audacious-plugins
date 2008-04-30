@@ -89,6 +89,7 @@ const gchar *fmts[] =
 
 InputPlugin gModPlug =
 {
+    /* Common plugin fields */
     NULL,
     NULL,
     (gchar *)"ModPlug Audio Plugin",
@@ -97,6 +98,8 @@ InputPlugin gModPlug =
     ShowAboutBox,
     ShowConfigureBox,
     FALSE,
+
+    /* Input plugin fields */
     NULL,
     NULL,
     PlayFile,

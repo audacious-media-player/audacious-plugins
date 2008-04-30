@@ -165,7 +165,6 @@ BOOL CSoundFile::Create(LPCBYTE lpStream, DWORD dwMemLength)
 		 && (!ReadAMF(lpStream, dwMemLength))
 		 && (!ReadPSM(lpStream, dwMemLength))
 		 && (!ReadMT2(lpStream, dwMemLength))
-		 && (!ReadMID(lpStream, dwMemLength))
 		 && (!ReadMod(lpStream, dwMemLength))) m_nType = MOD_TYPE_NONE;
 #ifdef MMCMP_SUPPORT
 		if (bMMCmp)
