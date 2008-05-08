@@ -140,9 +140,8 @@ fill_song_tuple (gchar *filename, Tuple *ti)
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
-    guint lossy = 0;
-    gchar *codec = NULL, *format, *subformat = NULL;
-    GString *codec_gs = NULL;
+    gboolean lossy = FALSE;
+    gchar *codec, *format, *subformat;
 
     tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
     if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
@@ -159,10 +158,9 @@ fill_song_tuple (gchar *filename, Tuple *ti)
         return;
 
     close_sndfile (tmp_sndfile, vfsfile);
-    tmp_sndfile = NULL;
 
     if (tmp_sfinfo.samplerate > 0)
-        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
+        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, (gint) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
 
     switch (tmp_sfinfo.format & SF_FORMAT_TYPEMASK)
     {
@@ -255,76 +253,74 @@ fill_song_tuple (gchar *filename, Tuple *ti)
             break;
         case SF_FORMAT_ULAW:
             subformat = "U-Law";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_ALAW:
             subformat = "A-Law";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_IMA_ADPCM:
             subformat = "IMA ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_MS_ADPCM:
             subformat = "MS ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_GSM610:
             subformat = "GSM 6.10";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_VOX_ADPCM:
             subformat = "Oki Dialogic ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_G721_32:
             subformat = "32kbs G721 ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_G723_24:
             subformat = "24kbs G723 ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_G723_40:
             subformat = "40kbs G723 ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_12:
             subformat = "12 bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_16:
             subformat = "16 bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_24:
             subformat = "24 bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_N:
             subformat = "N bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DPCM_8:
             subformat = "8 bit differential PCM";
             break;
         case SF_FORMAT_DPCM_16:
             subformat = "16 bit differential PCM";
+            break;
+        default:
+            subformat = NULL;
     }
 
-    codec_gs = g_string_new("");
     if (subformat != NULL)
-        g_string_append_printf(codec_gs, "%s (%s)", format, subformat);
+        codec = g_strdup_printf("%s (%s)", format, subformat);
     else
-        g_string_append_printf(codec_gs, "%s", format);
-    codec = g_strdup(codec_gs->str);
-    g_string_free(codec_gs, TRUE);
+        codec = g_strdup_printf("%s", format);
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
+    g_free(codec);
 
-    if (lossy != 0)
-        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
-    else
-        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
+    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
 }
 
 static gchar *
