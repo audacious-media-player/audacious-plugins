@@ -539,12 +539,13 @@ static int is_our_file_from_vfs(char *filename, VFSFile *fin)
     return TRUE;
 }
 
+static GtkWidget *sndfile_about_box = NULL;
+
 static void plugin_about(void)
 {
-    static GtkWidget *box;
-    if (!box)
+    if (!sndfile_about_box)
     {
-        box = audacious_info_dialog(_("About sndfile plugin"),
+        sndfile_about_box = audacious_info_dialog(_("About sndfile plugin"),
                                     _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
                                       "from the xmms_sndfile plugin which is:\n"
                                       "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
@@ -562,8 +563,8 @@ static void plugin_about(void)
                                       "51 Franklin Street, Fifth Floor, \n"
                                       "Boston, MA  02110-1301  USA"),
                                     _("Ok"), FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(box), "destroy",
-                         (GCallback)gtk_widget_destroyed, &box);
+        g_signal_connect(G_OBJECT(sndfile_about_box), "destroy",
+                         (GCallback)gtk_widget_destroyed, &sndfile_about_box);
     }
 }
 
