@@ -226,8 +226,9 @@ fill_song_tuple (gchar *filename, Tuple *ti)
             format = "Core Audio File";
             break;
         default:
-            format = "unknown sndfile";
+            format = "Unknown sndfile";
     }
+    
     switch (tmp_sfinfo.format & SF_FORMAT_SUBMASK)
     {
         case SF_FORMAT_PCM_S8:
@@ -319,7 +320,7 @@ fill_song_tuple (gchar *filename, Tuple *ti)
         codec = g_strdup_printf("%s", format);
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
     g_free(codec);
-
+    
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
 }
 
@@ -352,9 +353,8 @@ is_our_file (gchar *filename)
     /* Have to open the file to see if libsndfile can handle it. */
     tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
 
-    if (!tmp_sndfile) {
+    if (!tmp_sndfile)
         return FALSE;
-    }
 
     /* It can so close file and return TRUE. */
     close_sndfile (tmp_sndfile, vfsfile);
@@ -502,7 +502,7 @@ play_stop (InputPlayback *playback)
 static void
 file_mseek (InputPlayback *playback, gulong millisecond)
 {
-    if (! sfinfo.seekable)
+    if (!sfinfo.seekable)
         return;
 
     seek_time = (glong)millisecond;
