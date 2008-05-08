@@ -366,7 +366,7 @@ is_our_file (gchar *filename)
 static gpointer
 play_loop (gpointer arg)
 {
-    static gshort buffer[BUFFER_SIZE];
+    gshort buffer[BUFFER_SIZE];
     gint samples;
     InputPlayback *playback = arg;
 
@@ -391,7 +391,7 @@ play_loop (gpointer arg)
             }
 
             playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels, 
-                                 samples * sizeof (short), buffer, &playback->playing);
+                                 samples * sizeof(buffer[0]), buffer, &playback->playing);
         }
         else {
             while(playback->output->buffer_playing()) {
@@ -454,7 +454,7 @@ play_start (InputPlayback *playback)
     bit_rate = sfinfo.samplerate * pcmbitwidth;
 
     if (sfinfo.samplerate > 0)
-        song_length = (int) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate);
+        song_length = (gint) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate);
     else
         song_length = 0;
 
