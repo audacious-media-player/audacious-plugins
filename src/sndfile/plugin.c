@@ -45,8 +45,8 @@
 static SNDFILE *sndfile = NULL;
 static SF_INFO sfinfo;
 
-static int song_length;
-static int bit_rate = 0;
+static gint song_length;
+static gint bit_rate = 0;
 static glong seek_time = -1;
 
 static GThread *decode_thread;
@@ -127,12 +127,12 @@ plugin_cleanup (void)
 }
 
 static void
-fill_song_tuple (char *filename, Tuple *ti)
+fill_song_tuple (gchar *filename, Tuple *ti)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
-    unsigned int lossy = 0;
+    guint lossy = 0;
     gchar *codec = NULL, *format, *subformat = NULL;
     GString *codec_gs = NULL;
 
@@ -319,7 +319,7 @@ fill_song_tuple (char *filename, Tuple *ti)
         aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
 }
 
-static gchar *get_title(char *filename)
+static gchar *get_title(gchar *filename)
 {
     Tuple *tuple;
     gchar *title;
@@ -337,8 +337,8 @@ static gchar *get_title(char *filename)
     return title;
 }
 
-static int
-is_our_file (char *filename)
+static gint
+is_our_file (gchar *filename)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
@@ -361,8 +361,8 @@ is_our_file (char *filename)
 static gpointer
 play_loop (gpointer arg)
 {
-    static short buffer [BUFFER_SIZE];
-    int samples;
+    static gshort buffer[BUFFER_SIZE];
+    gint samples;
     InputPlayback *playback = arg;
 
     for (;;)
@@ -432,7 +432,7 @@ static void
 play_start (InputPlayback *playback)
 {
     VFSFile *vfsfile = NULL;
-    int pcmbitwidth;
+    gint pcmbitwidth;
     gchar *song_title;
 
     if (sndfile) /* already opened */
@@ -521,7 +521,7 @@ get_song_tuple (gchar *filename)
     return ti;
 }
 
-static int is_our_file_from_vfs(char *filename, VFSFile *fin)
+static gint is_our_file_from_vfs(gchar *filename, VFSFile *fin)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
