@@ -54,28 +54,36 @@ static GMutex *decode_mutex;
 static GCond *decode_cond;
 
 
-
-
-static sf_count_t sf_get_filelen (void *user_data)
+static sf_count_t
+sf_get_filelen (void *user_data)
 {
     return aud_vfs_fsize (user_data);
 }
-static sf_count_t sf_vseek (sf_count_t offset, int whence, void *user_data)
+
+static sf_count_t
+sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
     return aud_vfs_fseek(user_data, offset, whence);
 }
-static sf_count_t sf_vread (void *ptr, sf_count_t count, void *user_data)
+
+static sf_count_t
+sf_vread (void *ptr, sf_count_t count, void *user_data)
 {
     return aud_vfs_fread(ptr, 1, count, user_data);
 }
-static sf_count_t sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
+
+static sf_count_t
+sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
 {
     return aud_vfs_fwrite(ptr, 1, count, user_data);
 }
-static sf_count_t sf_tell (void *user_data)
+
+static sf_count_t
+sf_tell (void *user_data)
 {
     return aud_vfs_ftell(user_data);
 }
+
 static SF_VIRTUAL_IO sf_virtual_io =
 {
     sf_get_filelen,
@@ -84,6 +92,7 @@ static SF_VIRTUAL_IO sf_virtual_io =
     sf_vwrite,
     sf_tell
 };
+
 
 static SNDFILE *
 open_sndfile_from_uri(gchar *filename, VFSFile *vfsfile, SF_INFO *tmp_sfinfo)
@@ -107,7 +116,6 @@ close_sndfile(SNDFILE *snd_file, VFSFile *vfsfile)
     sf_close(snd_file);
     aud_vfs_fclose(vfsfile);
 }
-
 
 
 static void
@@ -319,7 +327,8 @@ fill_song_tuple (gchar *filename, Tuple *ti)
         aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
 }
 
-static gchar *get_title(gchar *filename)
+static gchar *
+get_title(gchar *filename)
 {
     Tuple *tuple;
     gchar *title;
@@ -521,7 +530,8 @@ get_song_tuple (gchar *filename)
     return ti;
 }
 
-static gint is_our_file_from_vfs(gchar *filename, VFSFile *fin)
+static gint
+is_our_file_from_vfs(gchar *filename, VFSFile *fin)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
@@ -545,28 +555,30 @@ static void plugin_about(void)
 {
     if (!sndfile_about_box)
     {
-        sndfile_about_box = audacious_info_dialog(_("About sndfile plugin"),
-                                    _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-                                      "from the xmms_sndfile plugin which is:\n"
-                                      "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
-                                      "This program is free software ; you can redistribute it and/or modify \n"
-                                      "it under the terms of the GNU General Public License as published by \n"
-                                      "the Free Software Foundation ; either version 2 of the License, or \n"
-                                      "(at your option) any later version. \n \n"
-                                      "This program is distributed in the hope that it will be useful, \n"
-                                      "but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-                                      "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-                                      "See the GNU General Public License for more details. \n\n"
-                                      "You should have received a copy of the GNU General Public \n"
-                                      "License along with this program ; if not, write to \n"
-                                      "the Free Software Foundation, Inc., \n"
-                                      "51 Franklin Street, Fifth Floor, \n"
-                                      "Boston, MA  02110-1301  USA"),
-                                    _("Ok"), FALSE, NULL, NULL);
+        sndfile_about_box = audacious_info_dialog(
+        _("About sndfile plugin"),
+        _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+        "from the xmms_sndfile plugin which is:\n"
+        "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
+        "This program is free software ; you can redistribute it and/or modify \n"
+        "it under the terms of the GNU General Public License as published by \n"
+        "the Free Software Foundation ; either version 2 of the License, or \n"
+        "(at your option) any later version. \n \n"
+        "This program is distributed in the hope that it will be useful, \n"
+        "but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+        "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+        "See the GNU General Public License for more details. \n\n"
+        "You should have received a copy of the GNU General Public \n"
+        "License along with this program ; if not, write to \n"
+        "the Free Software Foundation, Inc., \n"
+        "51 Franklin Street, Fifth Floor, \n"
+        "Boston, MA  02110-1301  USA"),
+        _("Ok"), FALSE, NULL, NULL);
         g_signal_connect(G_OBJECT(sndfile_about_box), "destroy",
                          (GCallback)gtk_widget_destroyed, &sndfile_about_box);
     }
 }
+
 
 static gchar *fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
