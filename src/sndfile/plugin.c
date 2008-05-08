@@ -95,17 +95,17 @@ static SF_VIRTUAL_IO sf_virtual_io =
 
 
 static SNDFILE *
-open_sndfile_from_uri(gchar *filename, VFSFile *vfsfile, SF_INFO *tmp_sfinfo)
+open_sndfile_from_uri(gchar *filename, VFSFile **vfsfile, SF_INFO *tmp_sfinfo)
 {
     SNDFILE *snd_file = NULL;
-    vfsfile = aud_vfs_fopen(filename, "rb");
+    *vfsfile = aud_vfs_fopen(filename, "rb");
 
-    if (vfsfile == NULL)
+    if (*vfsfile == NULL)
         return NULL;
 
-    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, vfsfile);
+    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, *vfsfile);
     if (snd_file == NULL)
-        aud_vfs_fclose(vfsfile);
+        aud_vfs_fclose(*vfsfile);
 
     return snd_file;
 }
@@ -143,7 +143,7 @@ fill_song_tuple (gchar *filename, Tuple *ti)
     gboolean lossy = FALSE;
     gchar *codec, *format, *subformat;
 
-    tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
+    tmp_sndfile = open_sndfile_from_uri(filename, &vfsfile, &tmp_sfinfo);
     if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
         aud_tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
     else
@@ -351,7 +351,7 @@ is_our_file (gchar *filename)
     SF_INFO tmp_sfinfo;
 
     /* Have to open the file to see if libsndfile can handle it. */
-    tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
+    tmp_sndfile = open_sndfile_from_uri(filename, &vfsfile, &tmp_sfinfo);
 
     if (!tmp_sndfile)
         return FALSE;
@@ -446,7 +446,7 @@ play_start (InputPlayback *playback)
     pcmbitwidth = 32;
     song_title = get_title(playback->filename);
 
-    sndfile = open_sndfile_from_uri(playback->filename, vfsfile, &sfinfo);
+    sndfile = open_sndfile_from_uri(playback->filename, &vfsfile, &sfinfo);
 
     if (!sndfile)
         return;
