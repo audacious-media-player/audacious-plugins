@@ -155,6 +155,7 @@ static void cdaudio_init()
 	cdng_cfg.debug = FALSE;
 	cdng_cfg.device = g_strdup("");
 	cdng_cfg.cddb_server = g_strdup(CDDA_DEFAULT_CDDB_SERVER);
+	cdng_cfg.cddb_path = g_strdup("");
 	cdng_cfg.cddb_port = CDDA_DEFAULT_CDDB_PORT;
 	cdng_cfg.cddb_http = FALSE;
 	cdng_cfg.limitspeed = CDDA_DEFAULT_LIMIT_SPEED;
@@ -185,6 +186,7 @@ static void cdaudio_init()
 	aud_cfg_db_get_bool(db, "CDDA", "debug", &cdng_cfg.debug);
 	aud_cfg_db_get_string(db, "CDDA", "device", &cdng_cfg.device);
 	aud_cfg_db_get_string(db, "CDDA", "cddbserver", &cdng_cfg.cddb_server);
+	aud_cfg_db_get_string(db, "CDDA", "cddbpath", &cdng_cfg.cddb_path);
 	aud_cfg_db_get_int(db, "CDDA", "cddbport", &cdng_cfg.cddb_port);
 	aud_cfg_db_get_bool(db, "CDDA", "cddbhttp", &cdng_cfg.cddb_http);
 	aud_cfg_db_get_int(db, "CDDA", "limitspeed", &cdng_cfg.limitspeed);
@@ -196,9 +198,9 @@ static void cdaudio_init()
 
 	aud_cfg_db_close(db);
 
-	debug("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
+	debug("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbpath = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
 		cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
-		cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);
+          cdng_cfg.cddb_server, cdng_cfg.cddb_path, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);
 
 	menu_item_text = _("Rescan CD");
 	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
@@ -255,9 +257,9 @@ static void cdaudio_configure()
 
 	configure_show_gui();
 
-	debug("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
+	debug("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbpath = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
 		cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
-		cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);
+		cdng_cfg.cddb_server, cdng_cfg.cddb_path, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);
 }
 
 static gint cdaudio_is_our_file(gchar *filename)
@@ -589,6 +591,7 @@ static void cdaudio_cleanup(void)
 	aud_cfg_db_set_bool(db, "CDDA", "use_cdtext", cdng_cfg.use_cdtext);
 	aud_cfg_db_set_bool(db, "CDDA", "use_cddb", cdng_cfg.use_cddb);
 	aud_cfg_db_set_string(db, "CDDA", "cddbserver", cdng_cfg.cddb_server);
+	aud_cfg_db_set_string(db, "CDDA", "cddbpath", cdng_cfg.cddb_path);
 	aud_cfg_db_set_int(db, "CDDA", "cddbport", cdng_cfg.cddb_port);
 	aud_cfg_db_set_bool(db, "CDDA", "cddbhttp", cdng_cfg.cddb_http);
 	aud_cfg_db_set_string(db, "CDDA", "device", cdng_cfg.device);
@@ -982,6 +985,7 @@ static void *scan_cd(void *nothing)
 						cddb_http_enable(pcddb_conn);
 						cddb_set_server_name(pcddb_conn, cdng_cfg.cddb_server);
 						cddb_set_server_port(pcddb_conn, cdng_cfg.cddb_port);
+                        cddb_set_http_path_query(pcddb_conn, cdng_cfg.cddb_path);
 					}
 					else {
 						cddb_set_server_name(pcddb_conn, cdng_cfg.cddb_server);

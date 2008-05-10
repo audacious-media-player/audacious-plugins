@@ -10,6 +10,7 @@ typedef struct cdng_cfg_t {
 	gboolean	debug;
 	gchar		*device;
 	gchar		*cddb_server;
+	gchar		*cddb_path;
 	gint		cddb_port;
 	gboolean	cddb_http;
 	gint		limitspeed;
