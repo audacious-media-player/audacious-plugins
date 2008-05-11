@@ -1125,6 +1125,13 @@ adplug_quit (void)
 
 /***** Plugin (exported) *****/
 
+const gchar *fmts[] =
+    { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
+      "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
+      "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
+      "sng", "wlf", "xad", "xsm",
+      NULL };
+
 InputPlugin adplug_ip = {
   NULL,                         // handle (filled by XMMS)
   NULL,                         // filename (filled by XMMS)
@@ -1155,7 +1162,7 @@ InputPlugin adplug_ip = {
   NULL,
   NULL,
   adplug_is_our_fd,
-  NULL,
+  (gchar **)fmts,
 };
 
 InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };
