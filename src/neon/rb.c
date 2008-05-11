@@ -125,11 +125,11 @@ int init_rb(struct ringbuf* rb, unsigned int size) {
     }
     rb->size = size;
 
-    #ifdef _RB_USE_GLIB
+#ifdef _RB_USE_GLIB
     if (NULL == (rb->lock = g_mutex_new())) {
         _LEAVE -1;
     }
-    #else
+#else
     if (NULL == (rb->lock = malloc(sizeof(pthread_mutex_t)))) {
         _LEAVE -1;
     }
@@ -138,7 +138,7 @@ int init_rb(struct ringbuf* rb, unsigned int size) {
         free(rb->lock);
         _LEAVE -1;
     }
-    #endif
+#endif
     rb->_free_lock = 1;
 
     reset_rb(rb);
