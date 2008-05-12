@@ -20,7 +20,7 @@ UINT CSoundFile::m_nMaxMixChannels = 32;
 // Mixing Configuration (SetWaveConfig)
 DWORD CSoundFile::gdwSysInfo = 0;
 DWORD CSoundFile::gnChannels = 1;
-DWORD CSoundFile::gdwSoundSetup = 0;
+DWORD CSoundFile::gdwSoundSetup = SNDMIX_NOBACKWARDJUMPS; // Do not allow song to loop infinitely
 DWORD CSoundFile::gdwMixingFreq = 44100;
 DWORD CSoundFile::gnBitsPerSample = 16;
 // Mixing data initialized in
