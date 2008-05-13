@@ -530,7 +530,9 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
         handle->request = ne_request_create(handle->session, "GET", handle->purl->path);
     }
 
-    ne_print_request_header(handle->request, "Range", "bytes=%ld-", startbyte);
+    if (0 < startbyte) {
+        ne_print_request_header(handle->request, "Range", "bytes=%ld-", startbyte);
+    }
     ne_print_request_header(handle->request, "Icy-MetaData", "1");
 
     /*
