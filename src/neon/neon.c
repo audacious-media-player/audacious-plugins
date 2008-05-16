@@ -862,7 +862,6 @@ static gpointer reader_thread(void* data) {
  */
 
 VFSFile* neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode) {
-
     VFSFile* file;
     struct neon_handle* handle;
 
