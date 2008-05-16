@@ -1134,9 +1134,16 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
     /*
      * Signal the network thread to continue reading
      */
-    _DEBUG("<%p> Waking up reader thread", h);
     g_mutex_lock(h->reader_status.mutex);
-    g_cond_signal(h->reader_status.cond);
+    if (NEON_READER_EOF == h->reader_status.status) {
+        if (0 == free_rb_locked(&h->rb)) {
+            _DEBUG("<%p> stream EOF reached and buffer empty", h);
+            h->eof = TRUE;
+        }
+    } else {
+        _DEBUG("<%p> Waking up reader thread", h);
+        g_cond_signal(h->reader_status.cond);
+    }
     g_mutex_unlock(h->reader_status.mutex);
 
     h->pos += (relem*size);
