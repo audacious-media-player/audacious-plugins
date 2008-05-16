@@ -1021,7 +1021,7 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
                 }
                 h->reader_status.status = NEON_READER_RUN;
             } else {
-                _DEBUG("<%p> No reader thread needed (stream has reached EOF during fill", h);
+                _DEBUG("<%p> No reader thread needed (stream has reached EOF during fill)", h);
                 h->reader_status.reading = FALSE;
                 h->reader_status.status = NEON_READER_EOF;
             }
@@ -1229,6 +1229,8 @@ gboolean neon_aud_vfs_feof_impl(VFSFile* file) {
     struct neon_handle* h = (struct neon_handle*)file->handle;
 
     _ENTER;
+
+    _DEBUG("<%p> EOF status: %s", h, h->eof?"TRUE":"FALSE");
 
     _LEAVE h->eof;
 }
