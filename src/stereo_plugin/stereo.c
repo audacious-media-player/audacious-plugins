@@ -9,6 +9,7 @@ static void init(void);
 static void about(void);
 static void configure(void);
 static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch);
+static void query_format(AFormat * fmt, gint * rate, gint * nch);
 
 
 
@@ -18,7 +19,8 @@ EffectPlugin stereo_ep =
 	.init = init,
 	.about = about,
 	.configure = configure,
-	.mod_samples = mod_samples
+	.mod_samples = mod_samples,
+	.query_format = query_format
 };
 
 static const char *about_text = N_("Extra Stereo Plugin\n\n"
@@ -138,6 +140,17 @@ static void configure(void)
 	gtk_widget_show(bbox);
 
 	gtk_widget_show(conf_dialog);
+}
+
+static void query_format(AFormat * fmt, gint * rate, gint * nch)
+{
+	if (!(*fmt == FMT_S16_NE ||
+	      (*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
+	      (*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
+		*fmt = FMT_S16_NE;
+
+	if (*nch != 2)
+		*nch = 2;
 }
 
 static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch)
