@@ -57,7 +57,7 @@ void skins_init(void) {
     gtk_window_set_resizable(GTK_WINDOW(mainwin), FALSE);
 
 
-    init_skins("/usr/local/share/audacious/Skins/Default");
+    init_skins(config->skin);
     width = aud_active_skin->properties.mainwin_width;
     height = aud_active_skin->properties.mainwin_height;
 

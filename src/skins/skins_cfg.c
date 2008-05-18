@@ -27,12 +27,14 @@
 skins_cfg_t * skins_cfg_new(void) {
     skins_cfg_t *cfg = g_malloc0(sizeof(skins_cfg_t));
     cfg->set = FALSE;
+    cfg->skin = NULL;
     return cfg;
 }
 
 
 void skins_cfg_delete(skins_cfg_t * cfg) {
   if (cfg != NULL) {
+      if (cfg->skin) g_free(cfg->skin);
       g_free(cfg);
   }
 }
@@ -47,6 +49,9 @@ gint skins_cfg_load(skins_cfg_t * cfg) {
      if (!aud_cfg_db_get_bool(cfgfile, "skins", "field_name", &(cfg->where)))
          cfg->where = FALSE / TRUE;
   */
+
+  if (!aud_cfg_db_get_string(cfgfile, "skins", "skin", &(cfg->skin)))
+      cfg->skin = g_strdup("/usr/local/share/audacious/Skins/Default");
 
   aud_cfg_db_close( cfgfile );
 
@@ -67,6 +72,7 @@ gint skins_cfg_save(skins_cfg_t * cfg) {
     aud_cfg_db_set_string(cfgfile, "skins", "field_name", cfg->where);
     aud_cfg_db_set_bool(cfgfile, "skins", "field_name", cfg->where);
 */
+    aud_cfg_db_set_string(cfgfile, "skins", "skin", cfg->skin);
 
     aud_cfg_db_close(cfgfile);
 

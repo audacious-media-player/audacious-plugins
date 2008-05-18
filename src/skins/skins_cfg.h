@@ -26,6 +26,7 @@
 
 typedef struct {
   gboolean set;
+  gchar *skin;
 }
 skins_cfg_t;
 

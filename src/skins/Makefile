@@ -5,7 +5,8 @@ SRCS = plugin.c \
        pixbuf_effects.c \
        ui_skin.c \
        ui_skinned_window.c \
-       ui_dock.c
+       ui_dock.c \
+       util.c
 
 include ../../buildsys.mk
 include ../../extra.mk

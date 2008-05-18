@@ -39,6 +39,7 @@
 
 #include <audacious/plugin.h>
 #include "ui_skin.h"
+#include "util.h"
 #if 0
 #include "ui_equalizer.h"
 #include "ui_playlist.h"
@@ -79,102 +80,6 @@ typedef struct {
     gchar *match;
     gboolean found;
 } FindFileContext;
-
-typedef gboolean(*DirForeachFunc) (const gchar * path,
-                                   const gchar * basename,
-                                   gpointer user_data);
-
-gboolean
-dir_foreach(const gchar * path, DirForeachFunc function,
-            gpointer user_data, GError ** error)
-{
-    GError *error_out = NULL;
-    GDir *dir;
-    const gchar *entry;
-    gchar *entry_fullpath;
-
-    if (!(dir = g_dir_open(path, 0, &error_out))) {
-        g_propagate_error(error, error_out);
-        return FALSE;
-    }
-
-    while ((entry = g_dir_read_name(dir))) {
-        entry_fullpath = g_build_filename(path, entry, NULL);
-
-        if ((*function) (entry_fullpath, entry, user_data)) {
-            g_free(entry_fullpath);
-            break;
-        }
-
-        g_free(entry_fullpath);
-    }
-
-    g_dir_close(dir);
-
-    return TRUE;
-}
-
-static gboolean
-find_file_func(const gchar * path, const gchar * basename, gpointer data)
-{
-    FindFileContext *context = data;
-
-    if (strlen(path) > FILENAME_MAX) {
-        AUDDBG("Ignoring path: name too long (%s)\n", path);
-        return TRUE;
-    }
-
-    if (aud_vfs_file_test(path, G_FILE_TEST_IS_REGULAR)) {
-        if (!strcasecmp(basename, context->to_match)) {
-            context->match = g_strdup(path);
-            context->found = TRUE;
-            return TRUE;
-        }
-    }
-    else if (aud_vfs_file_test(path, G_FILE_TEST_IS_DIR)) {
-        dir_foreach(path, find_file_func, context, NULL);
-        if (context->found)
-            return TRUE;
-    }
-
-    return FALSE;
-}
-
-gchar *
-find_file_recursively(const gchar * path, const gchar * filename)
-{
-    FindFileContext context;
-    gchar *out = NULL;
-
-    context.to_match = filename;
-    context.match = NULL;
-    context.found = FALSE;
-
-    dir_foreach(path, find_file_func, &context, NULL);
-
-    if (context.match)
-    {
-        out = g_filename_to_uri(context.match, NULL, NULL);
-        g_free(context.match);
-    }
-
-    return out;
-}
-
-gchar *
-find_path_recursively(const gchar * path, const gchar * filename)
-{
-    FindFileContext context;
-
-    context.to_match = filename;
-    context.match = NULL;
-    context.found = FALSE;
-
-    dir_foreach(path, find_file_func, &context, NULL);
-
-    return context.match;
-}
-
 
 typedef struct _SkinPixmapIdMapping SkinPixmapIdMapping;
 typedef struct _SkinMaskInfo SkinMaskInfo;
@@ -1535,10 +1440,10 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
 
     if (filename)
         g_free(filename);
-#if 0
+
     skin_mask_create(skin, path, SKIN_MASK_MAIN, mainwin->window);
     skin_mask_create(skin, path, SKIN_MASK_MAIN_SHADE, mainwin->window);
-
+#if 0
     skin_mask_create(skin, path, SKIN_MASK_EQ, equalizerwin->window);
     skin_mask_create(skin, path, SKIN_MASK_EQ_SHADE, equalizerwin->window);
 
@@ -1609,7 +1514,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
         AUDDBG("skin %s already loaded\n", path);
         return FALSE;
     }
-#if 0
+
     if (file_is_archive(path)) {
         AUDDBG("Attempt to load archive\n");
         if (!(skin_path = archive_decompress(path))) {
@@ -1620,10 +1525,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     } else {
         skin_path = g_strdup(path);
     }
-#else
-skin_path = g_strdup(path);
-#endif
-#if 0
+
     // Check if skin path has all necessary files.
     if (!aud_cfg->allow_broken_skins && !skin_check_pixmaps(skin, skin_path)) {
         if(archive) del_directory(skin_path);
@@ -1631,7 +1533,7 @@ skin_path = g_strdup(path);
         AUDDBG("Skin path (%s) doesn't have all wanted pixmaps\n", skin_path);
         return FALSE;
     }
-#endif
+
     // skin_free() frees skin->path and variable path can actually be skin->path
     // and we want to get the path before possibly freeing it.
     newpath = g_strdup(path);
@@ -1646,9 +1548,7 @@ skin_path = g_strdup(path);
     skin_parse_hints(skin, skin_path);
 
     if (!skin_load_pixmaps(skin, skin_path)) {
-#if 0
         if(archive) del_directory(skin_path);
-#endif
         g_free(skin_path);
         AUDDBG("Skin loading failed\n");
         return FALSE;
@@ -1672,12 +1572,12 @@ skin_path = g_strdup(path);
         g_free(gtkrcpath);
     }
 #endif
-#if 0
+
     if(archive) del_directory(skin_path);
-#endif
     g_free(skin_path);
-#if 0
+
     gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + aud_cfg->player_shaded), 0, 0);
+#if 0
     gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + aud_cfg->equalizer_shaded), 0, 0);
 #endif
     return TRUE;
