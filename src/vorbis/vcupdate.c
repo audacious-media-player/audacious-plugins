@@ -33,8 +33,6 @@
 #include <unistd.h>
 
 #include <audacious/plugin.h>
-#include <audacious/strings.h>
-#include <audacious/util.h>
 #include <audacious/i18n.h>
 
 #include <mowgli.h>

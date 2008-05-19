@@ -34,8 +34,6 @@
 #include <sys/errno.h>
 
 #include <audacious/plugin.h>
-#include <audacious/util.h>
-#include <audacious/strings.h>
 
 static void
 parse_extm3u_info(const gchar * info, gchar ** title, gint * length)

@@ -34,8 +34,6 @@
 #include <sys/errno.h>
 
 #include <audacious/plugin.h>
-#include <audacious/util.h>
-#include <audacious/strings.h>
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>

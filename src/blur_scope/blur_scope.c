@@ -26,7 +26,6 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include "blur_scope.h"
 #include "bscope_logo.xpm"
 

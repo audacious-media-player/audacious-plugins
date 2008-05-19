@@ -45,7 +45,6 @@
 
 #include <audacious/plugin.h> 
 #include <audacious/output.h> 
-#include <audacious/util.h> 
 
 #include "ape.h"
 #include "apev2.h"

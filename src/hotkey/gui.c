@@ -40,7 +40,6 @@
 #include <gdk/gdkkeysyms.h>
 
 #include <audacious/i18n.h>
-#include <audacious/util.h>
 
 #include "plugin.h"
 #include "gui.h"

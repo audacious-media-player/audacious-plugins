@@ -24,7 +24,6 @@
 #include <string.h>
 #include <esd.h>
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>

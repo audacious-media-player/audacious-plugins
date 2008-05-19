@@ -13,7 +13,6 @@
 #include <gtk/gtk.h>
 extern "C" {
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include <audacious/output.h>
 }
 #include <string.h>

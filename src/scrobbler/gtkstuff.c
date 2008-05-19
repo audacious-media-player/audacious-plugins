@@ -1,4 +1,3 @@
-#include <audacious/util.h>
 
 #include <glib.h>
 #include <audacious/i18n.h>

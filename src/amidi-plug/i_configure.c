@@ -29,7 +29,6 @@
 #include "i_configure-dummy.h"
 #include "i_utils.h"
 #include <audacious/auddrct.h>
-#include <audacious/util.h>
 
 
 amidiplug_cfg_backend_t * amidiplug_cfg_backend;

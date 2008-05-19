@@ -15,7 +15,6 @@ extern "C" {
 #ifdef AUDACIOUS_PLUGIN
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/util.h>
 #else
 #include <xmms/plugin.h>
 #include <xmms/util.h>

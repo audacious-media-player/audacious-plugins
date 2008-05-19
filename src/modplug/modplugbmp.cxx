@@ -16,7 +16,6 @@
 #include "archive/open.h"
 extern "C" {
 #include <audacious/output.h>
-#include <audacious/strings.h>
 }
 
 static char* format_and_free_ti( Tuple* ti, int* length )
