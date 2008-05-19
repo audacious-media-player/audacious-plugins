@@ -49,8 +49,8 @@
 
 #include "platform/smartinclude.h"
 
-#if 0
 #include "ui_skinned_window.h"
+#if 0
 #include "ui_skinned_button.h"
 #include "ui_skinned_number.h"
 #include "ui_skinned_horizontal_slider.h"

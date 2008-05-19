@@ -22,6 +22,7 @@
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
+#include "ui_skinned_window.h"
 #include <audacious/i18n.h>
 #include <libintl.h>
 

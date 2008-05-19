@@ -6,7 +6,9 @@ SRCS = plugin.c \
        ui_skin.c \
        ui_skinned_window.c \
        ui_dock.c \
-       util.c
+       util.c \
+       ui_vis.c \
+       ui_svis.c
 
 include ../../buildsys.mk
 include ../../extra.mk

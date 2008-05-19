@@ -21,9 +21,6 @@
 #ifndef PLUGIN_SKINS_H
 #define PLUGIN_SKINS_H
 
-#define _(String) gettext(String)
-#define N_(String) (String)
-
 #include <glib.h>
 #include <audacious/plugin.h>
 
