@@ -28,7 +28,6 @@
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
 
-#include <audacious/util.h>
 
 
 void

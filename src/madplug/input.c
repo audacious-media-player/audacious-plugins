@@ -55,7 +55,6 @@
 
 #include <fcntl.h>
 #include <errno.h>
-#include <audacious/util.h>
 
 #include "input.h"
 #include "replaygain.h"

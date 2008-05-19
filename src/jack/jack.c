@@ -7,7 +7,6 @@
  */
 
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include <dlfcn.h>
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>

@@ -32,7 +32,6 @@
 #include <audacious/auddrct.h>
 
 #include <audacious/i18n.h>
-#include <audacious/util.h>
 
 
 static void init (void);

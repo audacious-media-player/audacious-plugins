@@ -17,8 +17,6 @@
 #include <gtk/gtk.h>
 #include <libintl.h>
 extern "C" {
-#include <audacious/util.h>
-#include <audacious/strings.h>
 }
 
 #include "interface.h"

@@ -28,15 +28,28 @@
 
 static int apply_effect (gpointer *d, gint length, AFormat afmt,
 			gint srate, gint nch);
+static void query_format (AFormat *fmt, gint *rate, gint *nch);
 
 static EffectPlugin xmms_plugin = {
 	.description = "Voice Removal Plugin",
 	.mod_samples = apply_effect,
+	.query_format = query_format
 };
 
 EffectPlugin *voice_eplist[] = { &xmms_plugin, NULL };
 
 DECLARE_PLUGIN(voice_removal, NULL, NULL, NULL, NULL, voice_eplist, NULL, NULL, NULL);
+
+static void query_format (AFormat *fmt, gint *rate, gint *nch)
+{
+	if (!((*fmt == FMT_S16_NE) ||
+		(*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
+		(*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
+		*fmt = FMT_S16_NE;
+
+	if (*nch != 2)
+		*nch = 2;
+}
 
 static int apply_effect (gpointer *d, gint length, AFormat afmt,
 			gint srate, gint nch) {

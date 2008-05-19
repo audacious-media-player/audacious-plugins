@@ -31,7 +31,6 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-#include <audacious/util.h>
 
 struct format_info { 
     AFormat format;

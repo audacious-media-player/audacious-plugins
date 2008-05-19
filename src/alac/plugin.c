@@ -47,7 +47,6 @@
 
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/util.h>
 
 #include "demux.h"
 #include "decomp.h"

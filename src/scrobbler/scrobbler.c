@@ -13,7 +13,6 @@
 #include <glib.h>
 
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 
 #define SCROBBLER_HS_URL "http://post.audioscrobbler.com"
 #define SCROBBLER_CLI_ID "aud"

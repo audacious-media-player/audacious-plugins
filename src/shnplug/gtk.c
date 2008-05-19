@@ -22,7 +22,6 @@
 
 #include <stdlib.h>
 #include <glib.h>
-#include <audacious/util.h>
 #include "shorten.h"
 
 #undef XMMS_SHN_LOAD_TEXTFILES

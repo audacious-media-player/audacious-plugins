@@ -24,7 +24,6 @@
 #include "ed_bindings_store.h"
 #include "ed_common.h"
 
-#include <audacious/util.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <linux/input.h>

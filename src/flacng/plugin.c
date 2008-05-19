@@ -19,7 +19,6 @@
 /* #define FLACNG_DEBUG */
 
 #include "flacng.h"
-#include <audacious/util.h>
 #include <audacious/output.h>
 #include <audacious/i18n.h>
 #include "tools.h"

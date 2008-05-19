@@ -2,7 +2,6 @@
 
 #include <config.h>
 
-#include <audacious/util.h>
 #include <audacious/plugin.h>
 
 #include <sys/types.h>

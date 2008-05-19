@@ -4,7 +4,6 @@
 #include <X11/Xatom.h>
 #include <X11/Xproto.h>
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 
 
 /* following values are used if there is no user configuration */

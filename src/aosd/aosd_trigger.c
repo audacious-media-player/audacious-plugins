@@ -25,7 +25,6 @@
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <audacious/playlist.h>
-#include <audacious/strings.h>
 #include <audacious/hook.h>
 #include <audacious/auddrct.h>
 

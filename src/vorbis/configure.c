@@ -8,7 +8,6 @@
 #include <string.h>
 
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include <audacious/i18n.h>
 
 extern GMutex *vf_mutex;
