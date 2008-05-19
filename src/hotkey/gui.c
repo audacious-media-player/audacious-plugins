@@ -39,6 +39,7 @@
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
 #include "plugin.h"
@@ -620,7 +621,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
 		HotkeyConfiguration * old;
 		old = hotkey;
 		hotkey = hotkey->next;
-		free(old);
+		g_free(old);
 	}
 	plugin_cfg->first.next = NULL;
 	plugin_cfg->first.key = 0;
@@ -632,8 +633,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
 	{
 		if (controls->hotkey.key) {
 			if (hotkey->key) {
-				hotkey->next = (HotkeyConfiguration*)
-					malloc(sizeof (HotkeyConfiguration));
+				hotkey->next = g_new(HotkeyConfiguration, 1);
 				hotkey = hotkey->next;
 				hotkey->next = NULL;
 			}
