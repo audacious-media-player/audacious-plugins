@@ -25,19 +25,22 @@
 
 
 typedef struct {
-  gboolean set;
-  gboolean scaled;
-  gboolean always_on_top;
-  gfloat scale_factor;
-  gboolean always_show_cb;
-  gchar *skin;
-}
-skins_cfg_t;
+    gboolean scaled;
+    gboolean always_on_top;
+    gfloat scale_factor;
+    gboolean always_show_cb;
+    gchar *skin;
+    gboolean player_shaded, equalizer_shaded, playlist_shaded;
+    gboolean dim_titlebar;
+    gboolean show_wm_decorations;
+    gboolean easy_move;
+} skins_cfg_t;
 
+extern skins_cfg_t config;
 
 skins_cfg_t * skins_cfg_new(void);
-void skins_cfg_delete(skins_cfg_t * cfg);
-gint skins_cfg_load(skins_cfg_t * cfg);
-gint skins_cfg_save(skins_cfg_t * cfg);
+void skins_cfg_free();
+void skins_cfg_load();
+void skins_cfg_save();
 
 #endif

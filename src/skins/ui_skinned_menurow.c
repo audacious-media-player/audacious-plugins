@@ -114,8 +114,8 @@ static void ui_skinned_menurow_class_init(UiSkinnedMenurowClass *klass) {
 }
 
 static void ui_skinned_menurow_init(UiSkinnedMenurow *menurow) {
-    menurow->scale_selected = config->scaled;
-    menurow->always_selected = config->always_on_top;
+    menurow->scale_selected = config.scaled;
+    menurow->always_selected = config.always_on_top;
 }
 
 GtkWidget* ui_skinned_menurow_new(GtkWidget *fixed, gint x, gint y, gint nx, gint ny, gint sx, gint sy, SkinPixmapId si) {
@@ -186,21 +186,21 @@ static void ui_skinned_menurow_realize(GtkWidget *widget) {
 static void ui_skinned_menurow_size_request(GtkWidget *widget, GtkRequisition *requisition) {
     UiSkinnedMenurow *menurow = UI_SKINNED_MENUROW(widget);
 
-    requisition->width = menurow->width*(menurow->scaled ? config->scale_factor : 1);
-    requisition->height = menurow->height*(menurow->scaled ? config->scale_factor : 1);
+    requisition->width = menurow->width*(menurow->scaled ? config.scale_factor : 1);
+    requisition->height = menurow->height*(menurow->scaled ? config.scale_factor : 1);
 }
 
 static void ui_skinned_menurow_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
     UiSkinnedMenurow *menurow = UI_SKINNED_MENUROW (widget);
 
     widget->allocation = *allocation;
-    widget->allocation.x *= (menurow->scaled ? config->scale_factor : 1);
-    widget->allocation.y *= (menurow->scaled ? config->scale_factor : 1);
+    widget->allocation.x *= (menurow->scaled ? config.scale_factor : 1);
+    widget->allocation.y *= (menurow->scaled ? config.scale_factor : 1);
     if (GTK_WIDGET_REALIZED (widget))
         gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
 
-    menurow->x = widget->allocation.x/(menurow->scaled ? config->scale_factor : 1);
-    menurow->y = widget->allocation.y/(menurow->scaled ? config->scale_factor : 1);
+    menurow->x = widget->allocation.x/(menurow->scaled ? config.scale_factor : 1);
+    menurow->y = widget->allocation.y/(menurow->scaled ? config.scale_factor : 1);
 }
 
 static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *event) {
@@ -215,7 +215,7 @@ static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *eve
     obj = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, menurow->width, menurow->height);
 
     if (menurow->selected == MENUROW_NONE) {
-        if (config->always_show_cb || menurow->pushed)
+        if (config.always_show_cb || menurow->pushed)
             skin_draw_pixbuf(widget, aud_active_skin, obj, menurow->skin_index,
                              menurow->nx, menurow->ny, 0, 0, 8, 43);
         else
@@ -227,7 +227,7 @@ static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *eve
                          menurow->sx + ((menurow->selected - 1) * 8),
                          menurow->sy, 0, 0, 8, 43);
     }
-    if (config->always_show_cb || menurow->pushed) {
+    if (config.always_show_cb || menurow->pushed) {
         if (menurow->always_selected)
             skin_draw_pixbuf(widget, aud_active_skin, obj, menurow->skin_index,
                              menurow->sx + 8, menurow->sy + 10, 0, 10, 8, 8);
@@ -246,8 +246,8 @@ static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *eve
 static MenuRowItem menurow_find_selected(UiSkinnedMenurow * mr, gint x, gint y) {
     MenuRowItem ret = MENUROW_NONE;
 
-    x = x/(mr->scaled ? config->scale_factor : 1);
-    y = y/(mr->scaled ? config->scale_factor : 1);
+    x = x/(mr->scaled ? config.scale_factor : 1);
+    y = y/(mr->scaled ? config.scale_factor : 1);
     if (x > 0 && x < 8) {
         if (y >= 0 && y <= 10)
             ret = MENUROW_OPTIONS;
@@ -325,8 +325,8 @@ static void ui_skinned_menurow_toggle_scaled(UiSkinnedMenurow *menurow) {
     GtkWidget *widget = GTK_WIDGET (menurow);
 
     menurow->scaled = !menurow->scaled;
-    gtk_widget_set_size_request(widget, menurow->width* (menurow->scaled ? config->scale_factor : 1),
-    menurow->height * (menurow->scaled ? config->scale_factor : 1));
+    gtk_widget_set_size_request(widget, menurow->width* (menurow->scaled ? config.scale_factor : 1),
+    menurow->height * (menurow->scaled ? config.scale_factor : 1));
 
     gtk_widget_queue_draw(GTK_WIDGET(menurow));
 }

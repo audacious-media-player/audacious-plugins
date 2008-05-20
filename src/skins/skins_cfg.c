@@ -25,23 +25,49 @@
 #include <stdlib.h>
 #include <audacious/plugin.h>
 
-skins_cfg_t * skins_cfg_new(void) {
-    skins_cfg_t *cfg = g_malloc0(sizeof(skins_cfg_t));
-    cfg->set = FALSE;
-    cfg->skin = NULL;
-    return cfg;
+skins_cfg_t config;
+
+skins_cfg_t skins_default_config = {
+    .scaled = FALSE,
+    .always_on_top = FALSE,
+    .scale_factor = 2.0,
+    .always_show_cb = TRUE,
+    .skin = NULL,
+    .player_shaded = FALSE,
+    .equalizer_shaded = FALSE,
+    .playlist_shaded = FALSE,
+    .dim_titlebar = TRUE,
+    .show_wm_decorations = FALSE,
+    .easy_move = TRUE,
+};
+
+typedef struct skins_cfg_boolent_t {
+    char const *be_vname;
+    gboolean *be_vloc;
+    gboolean be_wrt;
+} skins_cfg_boolent;
+
+static skins_cfg_boolent skins_boolents[] = {
+    {"always_show_cb", &config.always_show_cb, TRUE},
+    {"always_on_top", &config.always_on_top, TRUE},
+    {"always_show_cb", &config.always_show_cb, TRUE},
+    {"scaled", &config.scaled, TRUE},
+    {"player_shaded", &config.player_shaded, TRUE},
+    {"equalizer_shaded", &config.equalizer_shaded, TRUE},
+    {"playlist_shaded", &config.playlist_shaded, TRUE},
+    {"dim_titlebar", &config.dim_titlebar, TRUE},
+    {"show_wm_decorations", &config.show_wm_decorations, TRUE},
+    {"easy_move", &config.easy_move, TRUE},
+};
+
+static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
+
+void skins_cfg_free() {
+    if (config.skin) { g_free(config.skin); config.skin = NULL; }
 }
 
-
-void skins_cfg_delete(skins_cfg_t * cfg) {
-  if (cfg != NULL) {
-      if (cfg->skin) g_free(cfg->skin);
-      g_free(cfg);
-  }
-}
-
-gint skins_cfg_load(skins_cfg_t * cfg) {
-  mcs_handle_t *cfgfile = aud_cfg_db_open();
+void skins_cfg_load() {
+    mcs_handle_t *cfgfile = aud_cfg_db_open();
 
   /* if (!aud_cfg_db_get_int(cfgfile, "skins", "field_name", &(cfg->where)))
          cfg->where = default value
@@ -50,35 +76,28 @@ gint skins_cfg_load(skins_cfg_t * cfg) {
      if (!aud_cfg_db_get_bool(cfgfile, "skins", "field_name", &(cfg->where)))
          cfg->where = FALSE / TRUE;
   */
+  
+    memcpy(&config, &skins_default_config, sizeof(skins_cfg_t));
+    int i;
+    
+    for (i = 0; i < ncfgbent; ++i) {
+        aud_cfg_db_get_bool(cfgfile, "skins",
+                            skins_boolents[i].be_vname,
+                            skins_boolents[i].be_vloc);
+    }
 
-  if (!aud_cfg_db_get_string(cfgfile, "skins", "skin", &(cfg->skin)))
-      cfg->skin = g_strdup(BMP_DEFAULT_SKIN_PATH);
+    if (!aud_cfg_db_get_string(cfgfile, "skins", "skin", &(config.skin)))
+        config.skin = g_strdup(BMP_DEFAULT_SKIN_PATH);
 
-  if (!aud_cfg_db_get_bool(cfgfile, "skins", "scaled", &(cfg->scaled)))
-      cfg->scaled = FALSE;
+    if (!aud_cfg_db_get_float(cfgfile, "skins", "scale_factor", &(config.scale_factor)))
+        config.scale_factor = 2.0;
 
-  if (!aud_cfg_db_get_bool(cfgfile, "skins", "always_on_top", &(cfg->always_on_top)))
-      cfg->always_on_top = FALSE;
-
-  if (!aud_cfg_db_get_float(cfgfile, "skins", "scale_factor", &(cfg->scale_factor)))
-      cfg->scale_factor = 2.0;
-
-  if (!aud_cfg_db_get_bool(cfgfile, "skins", "always_show_cb", &(cfg->always_show_cb)))
-      cfg->always_show_cb = TRUE;
-
-  aud_cfg_db_close( cfgfile );
-
-  cfg->set = TRUE;
-
-  return 0;
+    aud_cfg_db_close(cfgfile);
 }
 
 
-gint skins_cfg_save(skins_cfg_t * cfg) {
+void skins_cfg_save(skins_cfg_t * cfg) {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
-
-    if (cfg->set == FALSE)
-        return -1;
 
 /*
     aud_cfg_db_set_int(cfgfile, "skins", "field_name", cfg->where);
@@ -87,7 +106,13 @@ gint skins_cfg_save(skins_cfg_t * cfg) {
 */
     aud_cfg_db_set_string(cfgfile, "skins", "skin", cfg->skin);
 
-    aud_cfg_db_close(cfgfile);
+    int i;
 
-    return 0;
+    for (i = 0; i < ncfgbent; ++i)
+        if (skins_boolents[i].be_wrt)
+            aud_cfg_db_set_bool(cfgfile, "skins",
+                                skins_boolents[i].be_vname,
+                                *skins_boolents[i].be_vloc);
+
+    aud_cfg_db_close(cfgfile);
 }

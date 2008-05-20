@@ -20,6 +20,7 @@
 
 #include "platform/smartinclude.h"
 #include "ui_skin.h"
+#include "skins_cfg.h"
 
 #include <gtk/gtkmain.h>
 #include <glib-object.h>
@@ -71,11 +72,11 @@ ui_skinned_window_map(GtkWidget *widget)
 
     SkinnedWindow *window = SKINNED_WINDOW(widget);
     if (window->type == WINDOW_MAIN)
-        gtk_widget_shape_combine_mask(widget, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + aud_cfg->player_shaded), 0, 0);
+        gtk_widget_shape_combine_mask(widget, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
     else if (window->type == WINDOW_EQ)
-        gtk_widget_shape_combine_mask(widget, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + aud_cfg->equalizer_shaded), 0, 0);
+        gtk_widget_shape_combine_mask(widget, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
 
-    gtk_window_set_keep_above(GTK_WINDOW(widget), aud_cfg->always_on_top);
+    gtk_window_set_keep_above(GTK_WINDOW(widget), config.always_on_top);
 }
 
 static gboolean
@@ -102,7 +103,7 @@ static gboolean ui_skinned_window_focus_out(GtkWidget *widget, GdkEventFocus *fo
 
 static gboolean ui_skinned_window_button_press(GtkWidget *widget, GdkEventButton *event) {
     if (event->button == 1 && event->type == GDK_BUTTON_PRESS &&
-        (aud_cfg->easy_move || aud_cfg->equalizer_shaded || (event->y / aud_cfg->scale_factor) < 14)) {
+        (config.easy_move || config.equalizer_shaded || (event->y / config.scale_factor) < 14)) {
          dock_move_press(get_dock_window_list(), GTK_WINDOW(widget),
                          event, SKINNED_WINDOW(widget)->type == WINDOW_MAIN ? TRUE : FALSE);
     }
@@ -129,8 +130,8 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
             height = aud_active_skin->properties.mainwin_height;
             break;
         case WINDOW_EQ:
-            width = 275 * (aud_cfg->scaled ? aud_cfg->scale_factor : 1);
-            height = 116 * (aud_cfg->scaled ? aud_cfg->scale_factor : 1) ;
+            width = 275 * (config.scaled ? config.scale_factor : 1);
+            height = 116 * (config.scaled ? config.scale_factor : 1) ;
             break;
         case WINDOW_PLAYLIST:
 #if 0
@@ -148,25 +149,25 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
     switch (window->type) {
         case WINDOW_MAIN:
             skin_draw_pixbuf(widget, aud_active_skin, obj,SKIN_MAIN, 0, 0, 0, 0, width, height);
-            skin_draw_mainwin_titlebar(aud_active_skin, obj, aud_cfg->player_shaded, focus || !aud_cfg->dim_titlebar);
+            skin_draw_mainwin_titlebar(aud_active_skin, obj, config.player_shaded, focus || !aud_cfg->dim_titlebar);
             break;
         case WINDOW_EQ:
             skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQMAIN, 0, 0, 0, 0, width, height);
-            if (focus || !aud_cfg->dim_titlebar) {
-                if (!aud_cfg->equalizer_shaded)
+            if (focus || !config.dim_titlebar) {
+                if (!config.equalizer_shaded)
                     skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQMAIN, 0, 134, 0, 0, width, 14);
                 else
                     skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQ_EX, 0, 0, 0, 0, width, 14);
             } else {
-                if (!aud_cfg->equalizer_shaded)
+                if (!config.equalizer_shaded)
                     skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQMAIN, 0, 149, 0, 0, width, 14);
                 else
                     skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQ_EX, 0, 15, 0, 0, width, 14);
             }
             break;
         case WINDOW_PLAYLIST:
-            focus |= !aud_cfg->dim_titlebar;
-            if (aud_cfg->playlist_shaded) {
+            focus |= !config.dim_titlebar;
+            if (config.playlist_shaded) {
                 skin_draw_playlistwin_shaded(aud_active_skin, obj, width, focus);
             } else {
                 skin_draw_playlistwin_frame(aud_active_skin, obj, width, aud_cfg->playlist_height, focus);
@@ -175,7 +176,7 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
     }
 
     ui_skinned_widget_draw(GTK_WIDGET(window), obj, width, height,
-                           window->type != WINDOW_PLAYLIST && aud_cfg->scaled);
+                           window->type != WINDOW_PLAYLIST && config.scaled);
 
     g_object_unref(obj);
 
@@ -247,7 +248,7 @@ ui_skinned_window_new(const gchar *wmclass_name)
 
     set_dock_window_list(dock_window_set_decorated(get_dock_window_list(),
                                                    GTK_WINDOW(widget),
-                                                   aud_cfg->show_wm_decorations));
+                                                   config.show_wm_decorations));
     gtk_widget_set_app_paintable(GTK_WIDGET(widget), TRUE);
     gdk_window_set_back_pixmap(widget->window, NULL, FALSE);
     gtk_widget_shape_combine_mask(widget, NULL, 0, 0);

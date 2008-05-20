@@ -40,15 +40,13 @@ GeneralPlugin skins_gp =
 GeneralPlugin *skins_gplist[] = { &skins_gp, NULL };
 SIMPLE_GENERAL_PLUGIN(skins, skins_gplist);
 GtkWidget *mainwin;
-skins_cfg_t * config = NULL;
 gboolean plugin_is_active = FALSE;
 
 void skins_init(void) {
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
-    config = skins_cfg_new();
-    skins_cfg_load(config);
+    skins_cfg_load();
 
     gint width, height;
 
@@ -58,7 +56,7 @@ void skins_init(void) {
     gtk_window_set_resizable(GTK_WINDOW(mainwin), FALSE);
 
 
-    init_skins(config->skin);
+    init_skins(config.skin);
     width = aud_active_skin->properties.mainwin_width;
     height = aud_active_skin->properties.mainwin_height;
 
@@ -70,11 +68,7 @@ void skins_init(void) {
 
 void skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
-
-        if (config != NULL) {
-            skins_cfg_delete(config);
-            config = NULL;
-        }
+        skins_cfg_free();
         gtk_widget_destroy(mainwin);
         skin_free(aud_active_skin);
         aud_active_skin = NULL;
