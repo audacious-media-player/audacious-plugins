@@ -26,6 +26,10 @@
 
 typedef struct {
   gboolean set;
+  gboolean scaled;
+  gboolean always_on_top;
+  gfloat scale_factor;
+  gboolean always_show_cb;
   gchar *skin;
 }
 skins_cfg_t;

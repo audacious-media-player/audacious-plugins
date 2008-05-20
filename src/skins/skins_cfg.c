@@ -20,6 +20,7 @@
 
 
 #include "skins_cfg.h"
+#include "ui_skin.h"
 #include <glib.h>
 #include <stdlib.h>
 #include <audacious/plugin.h>
@@ -51,7 +52,19 @@ gint skins_cfg_load(skins_cfg_t * cfg) {
   */
 
   if (!aud_cfg_db_get_string(cfgfile, "skins", "skin", &(cfg->skin)))
-      cfg->skin = g_strdup("/usr/local/share/audacious/Skins/Default");
+      cfg->skin = g_strdup(BMP_DEFAULT_SKIN_PATH);
+
+  if (!aud_cfg_db_get_bool(cfgfile, "skins", "scaled", &(cfg->scaled)))
+      cfg->scaled = FALSE;
+
+  if (!aud_cfg_db_get_bool(cfgfile, "skins", "always_on_top", &(cfg->always_on_top)))
+      cfg->always_on_top = FALSE;
+
+  if (!aud_cfg_db_get_float(cfgfile, "skins", "scale_factor", &(cfg->scale_factor)))
+      cfg->scale_factor = 2.0;
+
+  if (!aud_cfg_db_get_bool(cfgfile, "skins", "always_show_cb", &(cfg->always_show_cb)))
+      cfg->always_show_cb = TRUE;
 
   aud_cfg_db_close( cfgfile );
 

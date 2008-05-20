@@ -23,8 +23,10 @@
 
 #include <glib.h>
 #include <audacious/plugin.h>
+#include "skins_cfg.h"
 
 extern GtkWidget *mainwin;
+extern skins_cfg_t *config;
 
 void skins_init(void);
 void skins_cleanup(void);
