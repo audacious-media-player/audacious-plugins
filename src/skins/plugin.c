@@ -48,20 +48,9 @@ void skins_init(void) {
 
     skins_cfg_load();
 
-    gint width, height;
-
-    mainwin = ui_skinned_window_new("player");
-    gtk_window_set_title(GTK_WINDOW(mainwin), "Audacious");
-    gtk_window_set_role(GTK_WINDOW(mainwin), "player");
-    gtk_window_set_resizable(GTK_WINDOW(mainwin), FALSE);
-
-
     init_skins(config.skin);
-    width = aud_active_skin->properties.mainwin_width;
-    height = aud_active_skin->properties.mainwin_height;
 
-    gtk_widget_set_size_request(mainwin, width, height);
-    gtk_widget_show_all(mainwin);
+    mainwin_real_show();
 
     return;
 }

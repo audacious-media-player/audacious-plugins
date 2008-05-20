@@ -16,7 +16,8 @@ SRCS = plugin.c \
        ui_skinned_monostereo.c \
        ui_skinned_number.c \
        ui_skinned_horizontal_slider.c \
-       ui_skinned_equalizer_graph.c
+       ui_skinned_equalizer_graph.c \
+       ui_main.c
 
 include ../../buildsys.mk
 include ../../extra.mk

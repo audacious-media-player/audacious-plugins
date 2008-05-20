@@ -30,10 +30,14 @@ skins_cfg_t config;
 
 skins_cfg_t skins_default_config = {
     .scaled = FALSE,
+    .autoscroll = TRUE,
     .always_on_top = FALSE,
     .scale_factor = 2.0,
     .always_show_cb = TRUE,
     .skin = NULL,
+    .playlist_visible = FALSE,
+    .equalizer_visible = FALSE,
+    .player_visible = TRUE,
     .player_shaded = FALSE,
     .equalizer_shaded = FALSE,
     .playlist_shaded = FALSE,
@@ -41,6 +45,8 @@ skins_cfg_t skins_default_config = {
     .show_wm_decorations = FALSE,
     .easy_move = TRUE,
     .allow_broken_skins = FALSE,
+    .warn_about_broken_gtk_engines = TRUE,
+    .warn_about_win_visibility = TRUE,
     .disable_inline_gtk = FALSE,
     .timer_mode = 0,
     .vis_type = VIS_ANALYZER,
@@ -69,6 +75,7 @@ skins_cfg_t skins_default_config = {
     .save_window_position = TRUE,
     .analyzer_peaks = TRUE,
     .twoway_scroll = TRUE,             /* use back and forth scroll */
+    .mainwin_use_bitmapfont = TRUE,
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -82,6 +89,10 @@ static skins_cfg_boolent skins_boolents[] = {
     {"always_on_top", &config.always_on_top, TRUE},
     {"always_show_cb", &config.always_show_cb, TRUE},
     {"scaled", &config.scaled, TRUE},
+    {"autoscroll_songname", &config.autoscroll, TRUE},
+    {"equalizer_visible", &config.equalizer_visible, TRUE},
+    {"playlist_visible", &config.playlist_visible, TRUE},
+    {"player_visible", &config.player_visible, TRUE},
     {"player_shaded", &config.player_shaded, TRUE},
     {"equalizer_shaded", &config.equalizer_shaded, TRUE},
     {"playlist_shaded", &config.playlist_shaded, TRUE},
@@ -94,6 +105,9 @@ static skins_cfg_boolent skins_boolents[] = {
     {"save_window_positions", &config.save_window_position, TRUE},
     {"analyzer_peaks", &config.analyzer_peaks, TRUE},
     {"twoway_scroll", &config.twoway_scroll, TRUE},
+    {"warn_about_win_visibility", &config.warn_about_win_visibility, TRUE},
+    {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
+    {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);

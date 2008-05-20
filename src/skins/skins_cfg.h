@@ -40,11 +40,12 @@ typedef struct {
     gint playlist_width, playlist_height;
     gint snap_distance;
     gboolean snap_windows, save_window_position;
-    gboolean scaled;
+    gboolean scaled, autoscroll;
     gboolean always_on_top;
     gfloat scale_factor;
     gboolean always_show_cb;
     gchar *skin;
+    gboolean player_visible, equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
     gboolean dim_titlebar;
     gboolean show_wm_decorations;
@@ -64,6 +65,9 @@ typedef struct {
     gint mouse_change;
     gint colorize_r; gint colorize_g; gint colorize_b;
     gint scroll_pl_by;
+    gboolean warn_about_win_visibility;
+    gboolean warn_about_broken_gtk_engines;
+    gboolean mainwin_use_bitmapfont;
 } skins_cfg_t;
 
 extern skins_cfg_t config;
