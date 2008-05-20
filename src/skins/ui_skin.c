@@ -407,7 +407,7 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
 
     pm = &skin->pixmaps[id];
     GdkPixbuf *pix = gdk_pixbuf_new_from_file(filename, NULL);
-    pm->pixbuf = audacious_create_colorized_pixbuf(pix, aud_cfg->colorize_r, aud_cfg->colorize_g, aud_cfg->colorize_b);
+    pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r, aud_cfg->colorize_g, aud_cfg->colorize_b);
     g_object_unref(pix);
     pm->width = gdk_pixbuf_get_width(pm->pixbuf);
     pm->height = gdk_pixbuf_get_height(pm->pixbuf);
@@ -552,7 +552,7 @@ init_skins(const gchar * path)
         }
     }
 #if 0
-    if (aud_cfg->random_skin_on_play)
+    if (config.random_skin_on_play)
         skinlist_update();
 #endif
     return TRUE;
@@ -1305,10 +1305,10 @@ skin_create_transparent_mask(const gchar * path,
             gpoints = g_new(GdkPoint, g_array_index(num, gint, i));
             for (k = 0; k < g_array_index(num, gint, i); k++) {
                 gpoints[k].x =
-                    g_array_index(point, gint, j + k * 2) * (scale ? aud_cfg->scale_factor : 1 );
+                    g_array_index(point, gint, j + k * 2) * (scale ? config.scale_factor : 1 );
                 gpoints[k].y =
                     g_array_index(point, gint,
-                                  j + k * 2 + 1) * (scale ? aud_cfg->scale_factor : 1);
+                                  j + k * 2 + 1) * (scale ? config.scale_factor : 1);
             }
             j += k * 2;
             gdk_draw_polygon(mask, gc, TRUE, gpoints,
@@ -1411,7 +1411,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     AUDDBG("Loading pixmaps in %s\n", path);
 
     for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
-        if (!skin_load_pixmap_id(skin, i, path) && !aud_cfg->allow_broken_skins)
+        if (!skin_load_pixmap_id(skin, i, path) && !config.allow_broken_skins)
             return FALSE;
 
     text_pb = skin->pixmaps[SKIN_TEXT].pixbuf;
@@ -1527,7 +1527,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     }
 
     // Check if skin path has all necessary files.
-    if (!aud_cfg->allow_broken_skins && !skin_check_pixmaps(skin, skin_path)) {
+    if (!config.allow_broken_skins && !skin_check_pixmaps(skin, skin_path)) {
         if(archive) del_directory(skin_path);
         g_free(skin_path);
         AUDDBG("Skin path (%s) doesn't have all wanted pixmaps\n", skin_path);
@@ -1565,7 +1565,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     }
 
 #ifndef _WIN32
-    if (!aud_cfg->disable_inline_gtk && !archive) {
+    if (!config.disable_inline_gtk && !archive) {
         gtkrcpath = find_path_recursively(skin->path, "gtkrc");
         if (gtkrcpath != NULL)
             skin_set_gtk_theme(settings, skin);
@@ -1576,9 +1576,9 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     if(archive) del_directory(skin_path);
     g_free(skin_path);
 
-    gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + aud_cfg->player_shaded), 0, 0);
+    gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
 #if 0
-    gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + aud_cfg->equalizer_shaded), 0, 0);
+    gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
 #endif
     return TRUE;
 }
@@ -1683,7 +1683,7 @@ skin_get_mask(Skin * skin, SkinMaskId mi)
     g_return_val_if_fail(skin != NULL, NULL);
     g_return_val_if_fail(mi < SKIN_PIXMAP_COUNT, NULL);
 
-    masks = aud_cfg->scaled ? skin->scaled_masks : skin->masks;
+    masks = config.scaled ? skin->scaled_masks : skin->masks;
     return masks[mi];
 }
 
@@ -2056,8 +2056,8 @@ void ui_skinned_widget_draw(GtkWidget *widget, GdkPixbuf *obj, gint width, gint 
     g_return_if_fail(obj != NULL);
 
     if (scale) {
-        GdkPixbuf *image = gdk_pixbuf_scale_simple(obj, width * aud_cfg->scale_factor, height* aud_cfg->scale_factor, GDK_INTERP_NEAREST);
-        gdk_draw_pixbuf(widget->window, NULL, image, 0, 0, 0, 0, width * aud_cfg->scale_factor , height * aud_cfg->scale_factor, GDK_RGB_DITHER_NONE, 0, 0);
+        GdkPixbuf *image = gdk_pixbuf_scale_simple(obj, width * config.scale_factor, height* aud_cfg->scale_factor, GDK_INTERP_NEAREST);
+        gdk_draw_pixbuf(widget->window, NULL, image, 0, 0, 0, 0, width * config.scale_factor , height * aud_cfg->scale_factor, GDK_RGB_DITHER_NONE, 0, 0);
         g_object_unref(image);
     } else {
         gdk_draw_pixbuf(widget->window, NULL, obj, 0, 0, 0, 0, width, height, GDK_RGB_DITHER_NONE, 0, 0);

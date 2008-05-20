@@ -34,7 +34,7 @@
 
 
 typedef struct {
-	gint player_x, player_y;
+    gint player_x, player_y;
     gint equalizer_x, equalizer_y;
     gint playlist_x, playlist_y;
     gint playlist_width, playlist_height;
@@ -49,6 +49,9 @@ typedef struct {
     gboolean dim_titlebar;
     gboolean show_wm_decorations;
     gboolean easy_move;
+    gboolean allow_broken_skins;
+    gboolean disable_inline_gtk;
+    gboolean analyzer_peaks;
     gint timer_mode;
     gint vis_type;
     gint analyzer_mode, analyzer_type;

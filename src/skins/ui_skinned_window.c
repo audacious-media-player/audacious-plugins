@@ -136,7 +136,7 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
         case WINDOW_PLAYLIST:
 #if 0
             width = playlistwin_get_width();
-            height = aud_cfg->playlist_height;
+            height = config.playlist_height;
 #endif
             break;
         default:
@@ -149,7 +149,7 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
     switch (window->type) {
         case WINDOW_MAIN:
             skin_draw_pixbuf(widget, aud_active_skin, obj,SKIN_MAIN, 0, 0, 0, 0, width, height);
-            skin_draw_mainwin_titlebar(aud_active_skin, obj, config.player_shaded, focus || !aud_cfg->dim_titlebar);
+            skin_draw_mainwin_titlebar(aud_active_skin, obj, config.player_shaded, focus || !config.dim_titlebar);
             break;
         case WINDOW_EQ:
             skin_draw_pixbuf(widget, aud_active_skin, obj, SKIN_EQMAIN, 0, 0, 0, 0, width, height);
@@ -170,7 +170,7 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
             if (config.playlist_shaded) {
                 skin_draw_playlistwin_shaded(aud_active_skin, obj, width, focus);
             } else {
-                skin_draw_playlistwin_frame(aud_active_skin, obj, width, aud_cfg->playlist_height, focus);
+                skin_draw_playlistwin_frame(aud_active_skin, obj, width, config.playlist_height, focus);
             }
             break;
     }

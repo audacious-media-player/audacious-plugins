@@ -28,6 +28,7 @@
 #include "ui_svis.h"
 #include "ui_vis.h"
 #include "util.h"
+#include "skins_cfg.h"
 #include <audacious/plugin.h>
 #include <string.h>
 #include <ctype.h>
@@ -240,16 +241,16 @@ static void ui_svis_unmap (GtkWidget *widget)
 static void ui_svis_size_request(GtkWidget *widget, GtkRequisition *requisition) {
     UiSVis *svis = UI_SVIS(widget);
 
-    requisition->width = svis->width * (svis->scaled ? aud_cfg->scale_factor : 1);
-    requisition->height = svis->height*(svis->scaled ? aud_cfg->scale_factor : 1);
+    requisition->width = svis->width * (svis->scaled ? config.scale_factor : 1);
+    requisition->height = svis->height*(svis->scaled ? config.scale_factor : 1);
 }
 
 static void ui_svis_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
     UiSVis *svis = UI_SVIS (widget);
 
     widget->allocation = *allocation;
-    widget->allocation.x *= (svis->scaled ? aud_cfg->scale_factor : 1 );
-    widget->allocation.y *= (svis->scaled ? aud_cfg->scale_factor : 1);
+    widget->allocation.x *= (svis->scaled ? config.scale_factor : 1 );
+    widget->allocation.y *= (svis->scaled ? config.scale_factor : 1);
     if (GTK_WIDGET_REALIZED (widget))
     {
         if (svis->event_window != NULL)
@@ -258,8 +259,8 @@ static void ui_svis_size_allocate(GtkWidget *widget, GtkAllocation *allocation) 
             gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
     }
 
-    svis->x = widget->allocation.x/(svis->scaled ? aud_cfg->scale_factor : 1);
-    svis->y = widget->allocation.y/(svis->scaled ? aud_cfg->scale_factor : 1);
+    svis->x = widget->allocation.x/(svis->scaled ? config.scale_factor : 1);
+    svis->y = widget->allocation.y/(svis->scaled ? config.scale_factor : 1);
 }
 
 static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
@@ -288,11 +289,11 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
     }
     cmap = gdk_rgb_cmap_new(colors, 24);
 
-    if (!aud_cfg->scaled) {
+    if (!config.scaled) {
       memset(rgb_data, 0, SVIS_WIDTH * SVIS_HEIGHT);
-      if (aud_cfg->vis_type == VIS_ANALYZER  && !audacious_drct_get_paused() && audacious_drct_get_playing()){
+      if (config.vis_type == VIS_ANALYZER  && !audacious_drct_get_paused() && audacious_drct_get_playing()){
 	for(y=0; y < SVIS_HEIGHT; y++){
-	  if (aud_cfg->analyzer_type == ANALYZER_BARS){
+	  if (config.analyzer_type == ANALYZER_BARS){
 	    for(x=0;x< SVIS_WIDTH; x++){
 	      if(svis->data[x] > y << 1)
 		{
@@ -312,8 +313,8 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	  }
 	}
       }
-	else if (aud_cfg->vis_type == VIS_VOICEPRINT){
-	  switch (aud_cfg->vu_mode) {
+	else if (config.vis_type == VIS_VOICEPRINT){
+	  switch (config.vu_mode) {
 	  case VU_NORMAL:
 	    for (y = 0; y < 2; y++) {
 	      ptr = rgb_data + ((y * 3) * 38);
@@ -341,7 +342,7 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    break;
 	  }	  
 	}
-        else if (aud_cfg->vis_type == VIS_SCOPE) {
+        else if (config.vis_type == VIS_SCOPE) {
             for (x = 0; x < 38; x++) {
                 h = svis->data[x << 1] / 3;
                 ptr = rgb_data + ((4 - h) * 38) + x;
@@ -352,10 +353,10 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
     }
     else {            /*svis scaling, this needs some work, since a lot of stuff is hardcoded --majeru*/
 
-      memset(rgb_data, 0, SVIS_WIDTH * aud_cfg->scale_factor * SVIS_HEIGHT * aud_cfg->scale_factor);
-      if (aud_cfg->vis_type == VIS_ANALYZER && !audacious_drct_get_paused() && audacious_drct_get_playing()){
+      memset(rgb_data, 0, SVIS_WIDTH * config.scale_factor * SVIS_HEIGHT * aud_cfg->scale_factor);
+      if (config.vis_type == VIS_ANALYZER && !audacious_drct_get_paused() && audacious_drct_get_playing()){
 	  for(y=0; y < SVIS_HEIGHT; y++){
-            if (aud_cfg->analyzer_type == ANALYZER_BARS){
+            if (config.analyzer_type == ANALYZER_BARS){
               for(x=0;x< SVIS_WIDTH; x++){
                 if(svis->data[x] > y << 1)
                 {
@@ -376,8 +377,8 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
             }
 	  }
         }
-	else if (aud_cfg->vis_type == VIS_VOICEPRINT){
-	  switch (aud_cfg->vu_mode) {
+	else if (config.vis_type == VIS_VOICEPRINT){
+	  switch (config.vu_mode) {
 	  case VU_NORMAL:
 	    for (y = 0; y < 2; y++) {
 	      ptr = rgb_data + ((y * 3) * 152);
@@ -405,7 +406,7 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    break;
 	  }  
 	}
-        else if (aud_cfg->vis_type == VIS_SCOPE) {
+        else if (config.vis_type == VIS_SCOPE) {
             for (x = 0; x < 38; x++) {
                 h = svis->data[x << 1] / 3;
                 ptr = rgb_data + ((4 - h) * 152) + (x << 1);
@@ -421,8 +422,8 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
 
     GdkPixmap *obj = NULL;
     GdkGC *gc;
-    obj = gdk_pixmap_new(NULL, svis->width* ( svis->scaled ? aud_cfg->scale_factor : 1), 
-        svis->height*(svis->scaled ? aud_cfg->scale_factor : 1), gdk_rgb_get_visual()->depth);
+    obj = gdk_pixmap_new(NULL, svis->width* ( svis->scaled ? config.scale_factor : 1), 
+        svis->height*(svis->scaled ? config.scale_factor : 1), gdk_rgb_get_visual()->depth);
     gc = gdk_gc_new(obj);
 
     if (!svis->scaled) {
@@ -439,8 +440,8 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
 
     gdk_rgb_cmap_free(cmap);
     gdk_draw_drawable (widget->window, gc, obj, 0, 0, 0, 0,
-                       svis->width*(svis->scaled ? aud_cfg->scale_factor : 1), 
-                       svis->height*(svis->scaled ? aud_cfg->scale_factor : 1));
+                       svis->width*(svis->scaled ? config.scale_factor : 1), 
+                       svis->height*(svis->scaled ? config.scale_factor : 1));
     g_object_unref(obj);
     g_object_unref(gc);
 
@@ -451,7 +452,7 @@ static void ui_svis_toggle_scaled(UiSVis *svis) {
     GtkWidget *widget = GTK_WIDGET (svis);
     svis->scaled = !svis->scaled;
 
-    gtk_widget_set_size_request(widget, svis->width* aud_cfg->scale_factor, svis->height * aud_cfg->scale_factor);
+    gtk_widget_set_size_request(widget, svis->width* config.scale_factor, svis->height * aud_cfg->scale_factor);
 
     gtk_widget_queue_draw(widget);
 }
@@ -490,7 +491,7 @@ void ui_svis_clear_data(GtkWidget *widget) {
     UiSVis *svis = UI_SVIS (widget);
 
     for (i = 0; i < 75; i++) {
-        svis->data[i] = (aud_cfg->vis_type == VIS_SCOPE) ? 6 : 0;
+        svis->data[i] = (config.vis_type == VIS_SCOPE) ? 6 : 0;
     }
 }
 
@@ -512,7 +513,7 @@ void ui_svis_timeout_func(GtkWidget *widget, guchar * data) {
 
     }
 
-    if (aud_cfg->vis_type == VIS_VOICEPRINT) {
+    if (config.vis_type == VIS_VOICEPRINT) {
         if (micros > 14000)
             falloff = TRUE;
 
@@ -538,7 +539,7 @@ void ui_svis_timeout_func(GtkWidget *widget, guchar * data) {
     if (micros > 14000) {
         if (!svis->refresh_delay) {
             gtk_widget_queue_draw(widget);
-            svis->refresh_delay = svis_redraw_delays[aud_cfg->vis_refresh];
+            svis->refresh_delay = svis_redraw_delays[config.vis_refresh];
         }
         svis->refresh_delay--;
     }

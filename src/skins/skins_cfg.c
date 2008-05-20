@@ -40,6 +40,8 @@ skins_cfg_t skins_default_config = {
     .dim_titlebar = TRUE,
     .show_wm_decorations = FALSE,
     .easy_move = TRUE,
+    .allow_broken_skins = FALSE,
+    .disable_inline_gtk = FALSE,
     .timer_mode = 0,
     .vis_type = VIS_ANALYZER,
     .analyzer_mode = ANALYZER_NORMAL,
@@ -65,6 +67,7 @@ skins_cfg_t skins_default_config = {
     .snap_distance = 10,
     .snap_windows = TRUE,
     .save_window_position = TRUE,
+    .analyzer_peaks = TRUE,
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -84,8 +87,11 @@ static skins_cfg_boolent skins_boolents[] = {
     {"dim_titlebar", &config.dim_titlebar, TRUE},
     {"show_wm_decorations", &config.show_wm_decorations, TRUE},
     {"easy_move", &config.easy_move, TRUE},
+    {"allow_broken_skins", &config.allow_broken_skins, TRUE},
+    {"disable_inline_gtk", &config.disable_inline_gtk, TRUE},
     {"snap_windows", &config.snap_windows, TRUE},
     {"save_window_positions", &config.save_window_position, TRUE},
+    {"analyzer_peaks", &config.analyzer_peaks, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
