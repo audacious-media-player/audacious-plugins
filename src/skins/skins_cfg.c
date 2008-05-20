@@ -68,6 +68,7 @@ skins_cfg_t skins_default_config = {
     .snap_windows = TRUE,
     .save_window_position = TRUE,
     .analyzer_peaks = TRUE,
+    .twoway_scroll = TRUE,             /* use back and forth scroll */
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -92,6 +93,7 @@ static skins_cfg_boolent skins_boolents[] = {
     {"snap_windows", &config.snap_windows, TRUE},
     {"save_window_positions", &config.save_window_position, TRUE},
     {"analyzer_peaks", &config.analyzer_peaks, TRUE},
+    {"twoway_scroll", &config.twoway_scroll, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);

@@ -846,7 +846,7 @@ util_font_load(const gchar * name)
 
     return font;
 }
-#if 0
+
 /* text_get_extents() taken from The GIMP (C) Spencer Kimball, Peter
  * Mattis et al */
 gboolean
@@ -894,7 +894,7 @@ text_get_extents(const gchar * fontname,
 
     return TRUE;
 }
-#endif
+
 /* counts number of digits in a gint */
 guint
 gint_count_digits(gint n)

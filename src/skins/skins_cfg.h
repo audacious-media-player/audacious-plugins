@@ -52,6 +52,7 @@ typedef struct {
     gboolean allow_broken_skins;
     gboolean disable_inline_gtk;
     gboolean analyzer_peaks;
+    gboolean twoway_scroll;
     gint timer_mode;
     gint vis_type;
     gint analyzer_mode, analyzer_type;
