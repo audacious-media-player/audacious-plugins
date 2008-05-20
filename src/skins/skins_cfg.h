@@ -23,8 +23,23 @@
 
 #include <glib.h>
 
+#define MAINWIN_DEFAULT_POS_X    20
+#define MAINWIN_DEFAULT_POS_Y    20
+#define EQUALIZER_DEFAULT_POS_X  20
+#define EQUALIZER_DEFAULT_POS_Y  136
+#define PLAYLISTWIN_DEFAULT_WIDTH       275
+#define PLAYLISTWIN_DEFAULT_HEIGHT      232
+#define PLAYLISTWIN_DEFAULT_POS_X       295
+#define PLAYLISTWIN_DEFAULT_POS_Y       20
+
 
 typedef struct {
+	gint player_x, player_y;
+    gint equalizer_x, equalizer_y;
+    gint playlist_x, playlist_y;
+    gint playlist_width, playlist_height;
+    gint snap_distance;
+    gboolean snap_windows, save_window_position;
     gboolean scaled;
     gboolean always_on_top;
     gfloat scale_factor;
@@ -34,6 +49,17 @@ typedef struct {
     gboolean dim_titlebar;
     gboolean show_wm_decorations;
     gboolean easy_move;
+    gint timer_mode;
+    gint vis_type;
+    gint analyzer_mode, analyzer_type;
+    gint scope_mode;
+    gint voiceprint_mode;
+    gint vu_mode, vis_refresh;
+    gint analyzer_falloff, peaks_falloff;
+    gint playlist_position;
+    gint mouse_change;
+    gint colorize_r; gint colorize_g; gint colorize_b;
+    gint scroll_pl_by;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

@@ -24,7 +24,7 @@
  */
 
 #include "ui_dock.h"
-
+#include "skins_cfg.h"
 #include <gdk/gdk.h>
 #include <stdlib.h>
 #include <audacious/plugin.h>
@@ -54,7 +54,7 @@ static void
 snap_edge(gint * x, gint * y, gint w, gint h, gint bx, gint by,
           gint bw, gint bh)
 {
-    gint sd = aud_cfg->snap_distance;
+    gint sd = config.snap_distance;
 
     if ((*x + w > bx - sd) && (*x + w < bx + sd) &&
         (*y > by - h - sd) && (*y < by + bh + sd)) {
@@ -94,7 +94,7 @@ calc_snap_offset(GList * dlist, GList * wlist, gint x, gint y,
     *off_x = 0;
     *off_y = 0;
 
-    if (!aud_cfg->snap_windows)
+    if (!config.snap_windows)
         return;
 
     /*
@@ -109,13 +109,13 @@ calc_snap_offset(GList * dlist, GList * wlist, gint x, gint y,
         ny = dw->offset_y + *off_y + y;
 
         /* Snap to screen edges */
-        if (abs(nx) < aud_cfg->snap_distance)
+        if (abs(nx) < config.snap_distance)
             *off_x -= nx;
-        if (abs(ny) < aud_cfg->snap_distance)
+        if (abs(ny) < config.snap_distance)
             *off_y -= ny;
-        if (abs(nx + nw - gdk_screen_width()) < aud_cfg->snap_distance)
+        if (abs(nx + nw - gdk_screen_width()) < config.snap_distance)
             *off_x -= nx + nw - gdk_screen_width();
-        if (abs(ny + nh - gdk_screen_height()) < aud_cfg->snap_distance)
+        if (abs(ny + nh - gdk_screen_height()) < config.snap_distance)
             *off_y -= ny + nh - gdk_screen_height();
 
         /* Snap to other windows */
@@ -233,16 +233,16 @@ docked_list_move(GList * list, gint x, gint y)
             switch(window->type) {
 
             case WINDOW_MAIN:
-                aud_cfg->player_x = x + dw->offset_x;
-                aud_cfg->player_y = y + dw->offset_y;
+                config.player_x = x + dw->offset_x;
+                config.player_y = y + dw->offset_y;
                 break;
             case WINDOW_EQ:
-                aud_cfg->equalizer_x = x + dw->offset_x;
-                aud_cfg->equalizer_y = y + dw->offset_y;
+                config.equalizer_x = x + dw->offset_x;
+                config.equalizer_y = y + dw->offset_y;
                 break;
             case WINDOW_PLAYLIST:
-                aud_cfg->playlist_x = x + dw->offset_x;
-                aud_cfg->playlist_y = y + dw->offset_y;
+                config.playlist_x = x + dw->offset_x;
+                config.playlist_y = y + dw->offset_y;
                 break;
             }
 
@@ -338,7 +338,7 @@ dock_shade(GList * window_list, GtkWindow * widget, gint new_h)
     gtk_window_get_position(widget, &x, &y);
     gtk_window_get_size(widget, &w, &h);
 
-    if (aud_cfg->show_wm_decorations) {
+    if (config.show_wm_decorations) {
         dock_window_resize(widget, w, new_h, w, h);
         return;
     }
@@ -422,7 +422,7 @@ dock_move_press(GList * window_list, GtkWindow * w,
     gint mx, my;
     DockedWindow *dwin;
 
-    if (aud_cfg->show_wm_decorations)
+    if (config.show_wm_decorations)
         return;
 
     gtk_window_present(w);

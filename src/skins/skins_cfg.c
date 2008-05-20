@@ -21,6 +21,7 @@
 
 #include "skins_cfg.h"
 #include "ui_skin.h"
+#include "ui_vis.h"
 #include <glib.h>
 #include <stdlib.h>
 #include <audacious/plugin.h>
@@ -39,6 +40,31 @@ skins_cfg_t skins_default_config = {
     .dim_titlebar = TRUE,
     .show_wm_decorations = FALSE,
     .easy_move = TRUE,
+    .timer_mode = 0,
+    .vis_type = VIS_ANALYZER,
+    .analyzer_mode = ANALYZER_NORMAL,
+    .analyzer_type = ANALYZER_BARS,
+    .scope_mode = SCOPE_DOT,
+    .voiceprint_mode = VOICEPRINT_NORMAL,
+    .vu_mode = VU_SMOOTH,
+    .vis_refresh = REFRESH_FULL,
+    .analyzer_falloff = FALLOFF_FAST,
+    .peaks_falloff = FALLOFF_SLOW,
+    .player_x = MAINWIN_DEFAULT_POS_X,
+    .player_y = MAINWIN_DEFAULT_POS_Y,
+    .equalizer_x = EQUALIZER_DEFAULT_POS_X,
+    .equalizer_y = EQUALIZER_DEFAULT_POS_Y,
+    .playlist_x = PLAYLISTWIN_DEFAULT_POS_X,
+    .playlist_y = PLAYLISTWIN_DEFAULT_POS_Y,
+    .playlist_width = PLAYLISTWIN_DEFAULT_WIDTH,
+    .playlist_height = PLAYLISTWIN_DEFAULT_HEIGHT,
+    .playlist_position = 0,
+    .mouse_change = 8,                 /* mouse wheel scroll step */
+    .scroll_pl_by = 3,
+    .colorize_r = 255, .colorize_g = 255, .colorize_b = 255,
+    .snap_distance = 10,
+    .snap_windows = TRUE,
+    .save_window_position = TRUE,
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -58,9 +84,47 @@ static skins_cfg_boolent skins_boolents[] = {
     {"dim_titlebar", &config.dim_titlebar, TRUE},
     {"show_wm_decorations", &config.show_wm_decorations, TRUE},
     {"easy_move", &config.easy_move, TRUE},
+    {"snap_windows", &config.snap_windows, TRUE},
+    {"save_window_positions", &config.save_window_position, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
+
+typedef struct skins_cfg_nument_t {
+    char const *ie_vname;
+    gint *ie_vloc;
+    gboolean ie_wrt;
+} skins_cfg_nument;
+
+static skins_cfg_nument skins_numents[] = {
+    {"player_x", &config.player_x, TRUE},
+    {"player_y", &config.player_y, TRUE},
+    {"timer_mode", &config.timer_mode, TRUE},
+    {"vis_type", &config.vis_type, TRUE},
+    {"analyzer_mode", &config.analyzer_mode, TRUE},
+    {"analyzer_type", &config.analyzer_type, TRUE},
+    {"scope_mode", &config.scope_mode, TRUE},
+    {"vu_mode", &config.vu_mode, TRUE},
+    {"voiceprint_mode", &config.voiceprint_mode, TRUE},
+    {"vis_refresh_rate", &config.vis_refresh, TRUE},
+    {"analyzer_falloff", &config.analyzer_falloff, TRUE},
+    {"peaks_falloff", &config.peaks_falloff, TRUE},
+    {"playlist_x", &config.playlist_x, TRUE},
+    {"playlist_y", &config.playlist_y, TRUE},
+    {"playlist_width", &config.playlist_width, TRUE},
+    {"playlist_height", &config.playlist_height, TRUE},
+    {"playlist_position", &config.playlist_position, TRUE},
+    {"equalizer_x", &config.equalizer_x, TRUE},
+    {"equalizer_y", &config.equalizer_y, TRUE},
+    {"mouse_wheel_change", &config.mouse_change, TRUE},
+    {"scroll_pl_by", &config.scroll_pl_by, TRUE},
+    {"colorize_r", &config.colorize_r, TRUE},
+    {"colorize_g", &config.colorize_g, TRUE},
+    {"colorize_b", &config.colorize_b, TRUE},
+    {"snap_distance", &config.snap_distance, TRUE},
+};
+
+static gint ncfgient = G_N_ELEMENTS(skins_numents);
 
 void skins_cfg_free() {
     if (config.skin) { g_free(config.skin); config.skin = NULL; }
@@ -84,6 +148,12 @@ void skins_cfg_load() {
         aud_cfg_db_get_bool(cfgfile, "skins",
                             skins_boolents[i].be_vname,
                             skins_boolents[i].be_vloc);
+    }
+    
+    for (i = 0; i < ncfgient; ++i) {
+        aud_cfg_db_get_int(cfgfile, "skins",
+                           skins_numents[i].ie_vname,
+                           skins_numents[i].ie_vloc);
     }
 
     if (!aud_cfg_db_get_string(cfgfile, "skins", "skin", &(config.skin)))
@@ -113,6 +183,12 @@ void skins_cfg_save(skins_cfg_t * cfg) {
             aud_cfg_db_set_bool(cfgfile, "skins",
                                 skins_boolents[i].be_vname,
                                 *skins_boolents[i].be_vloc);
+
+    for (i = 0; i < ncfgient; ++i)
+        if (skins_numents[i].ie_wrt)
+            aud_cfg_db_set_int(cfgfile, "skins",
+                               skins_numents[i].ie_vname,
+                               *skins_numents[i].ie_vloc);
 
     aud_cfg_db_close(cfgfile);
 }
