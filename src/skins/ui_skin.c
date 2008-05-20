@@ -40,6 +40,7 @@
 #include <audacious/plugin.h>
 #include "ui_skin.h"
 #include "util.h"
+#include "ui_main.h"
 #if 0
 #include "ui_equalizer.h"
 #include "ui_playlist.h"
@@ -50,12 +51,11 @@
 #include "platform/smartinclude.h"
 
 #include "ui_skinned_window.h"
-#if 0
 #include "ui_skinned_button.h"
 #include "ui_skinned_number.h"
 #include "ui_skinned_horizontal_slider.h"
 #include "ui_skinned_playstatus.h"
-#endif
+
 #define EXTENSION_TARGETS 7
 
 static gchar *ext_targets[EXTENSION_TARGETS] =
@@ -188,12 +188,12 @@ aud_active_skin_load(const gchar * path)
     ui_skinned_window_draw_all(playlistwin);
 
     playlistwin_update_list(playlist_get_active());
-
+#endif
     SkinPixmap *pixmap;
     pixmap = &aud_active_skin->pixmaps[SKIN_POSBAR];
     /* last 59 pixels of SKIN_POSBAR are knobs (normal and selected) */
     gtk_widget_set_size_request(mainwin_position, pixmap->width - 59, pixmap->height);
-#endif
+
     return TRUE;
 }
 
@@ -529,15 +529,17 @@ init_skins(const gchar * path)
     aud_active_skin = skin_new();
 
     skin_parse_hints(aud_active_skin, NULL);
-#if 0
+
     /* create the windows if they haven't been created yet, needed for bootstrapping */
     if (mainwin == NULL)
     {
         mainwin_create();
+#if 0
         equalizerwin_create();
         playlistwin_create();
-    }
 #endif
+    }
+
     if (!aud_active_skin_load(path)) {
         if (path != NULL)
             AUDDBG("Unable to load skin (%s), trying default...\n", path);
@@ -1628,7 +1630,7 @@ skin_load(Skin * skin, const gchar * path)
         AUDDBG("loading failed\n");
         return FALSE; /* don't try to update anything if loading failed --asphyx */
     }
-#if 0
+
     SkinPixmap *pixmap = NULL;
     pixmap = skin_get_pixmap(skin, SKIN_NUMBERS);
     if (pixmap) {
@@ -1646,7 +1648,7 @@ skin_load(Skin * skin, const gchar * path)
     pixmap = skin_get_pixmap(skin, SKIN_PLAYPAUSE);
     if (pixmap)
         ui_skinned_playstatus_set_size(mainwin_playstatus, 11, pixmap->height);
-
+#if 0
     pixmap = skin_get_pixmap(skin, SKIN_EQMAIN);
     if (pixmap->height >= 313)
         gtk_widget_show(equalizerwin_graph);
@@ -2029,10 +2031,9 @@ skin_draw_mainwin_titlebar(Skin * skin, GdkPixbuf * pix,
         else
             y_offset = 15;
     }
-#if 0
+
     skin_draw_pixbuf(NULL, skin, pix, SKIN_TITLEBAR, 27, y_offset,
                      0, 0, aud_active_skin->properties.mainwin_width, MAINWIN_TITLEBAR_HEIGHT);
-#endif
 }
 
 
