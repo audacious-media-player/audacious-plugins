@@ -11,7 +11,9 @@ SRCS = plugin.c \
        ui_svis.c \
        ui_skinned_menurow.c \
        ui_skinned_button.c \
-       ui_skinned_textbox.c
+       ui_skinned_textbox.c \
+       ui_skinned_playstatus.c \
+       ui_skinned_monostereo.c
 
 include ../../buildsys.mk
 include ../../extra.mk
