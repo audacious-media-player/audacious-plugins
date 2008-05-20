@@ -9,7 +9,8 @@ SRCS = plugin.c \
        util.c \
        ui_vis.c \
        ui_svis.c \
-       ui_skinned_menurow.c
+       ui_skinned_menurow.c \
+       ui_skinned_button.c
 
 include ../../buildsys.mk
 include ../../extra.mk
