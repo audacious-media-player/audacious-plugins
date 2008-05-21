@@ -66,8 +66,11 @@ void skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
         skins_cfg_free();
         gtk_widget_destroy(mainwin);
-        skin_free(aud_active_skin);
+        gtk_widget_destroy(equalizerwin);
+        skin_destroy(aud_active_skin);
         aud_active_skin = NULL;
+        mainwin = NULL;
+        equalizerwin = NULL;
         plugin_is_active = FALSE;
     }
 

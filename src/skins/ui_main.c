@@ -352,7 +352,11 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 static void
 mainwin_destroy(GtkWidget * widget, gpointer data)
 {
+/* we should detect whether plugin got unloaded and when user indeed
+   wants to close audacious */
+#if 0
     mainwin_quit_cb();
+#endif
 }
 
 static gchar *mainwin_tb_old_text = NULL;
