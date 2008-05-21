@@ -44,7 +44,10 @@ typedef struct {
     gboolean always_on_top, sticky;
     gfloat scale_factor;
     gboolean always_show_cb;
+    gboolean close_dialog_open;
+    gboolean close_dialog_add;
     gchar *skin;
+    gchar *filesel_path;
     gboolean player_visible, equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
     gboolean dim_titlebar;
@@ -69,6 +72,7 @@ typedef struct {
     gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
     gboolean eq_scaled_linked;
+    gboolean use_xmms_style_fileselector;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

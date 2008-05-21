@@ -3,6 +3,7 @@ PLUGIN = skins${PLUGIN_SUFFIX}
 SRCS = plugin.c \
        skins_cfg.c \
        pixbuf_effects.c \
+       ui_fileopener.c \
        ui_skin.c \
        ui_skinned_window.c \
        ui_dock.c \

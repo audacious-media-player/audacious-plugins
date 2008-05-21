@@ -66,7 +66,6 @@
 #include "ui_credits.h"
 #include "ui_dock.h"
 #include "ui_fileinfo.h"
-#include "ui_fileopener.h"
 #include "ui_hints.h"
 #include "ui_jumptotrack.h"
 #include "ui_main_evlisteners.h"
@@ -77,6 +76,7 @@
 #include "util.h"
 #include "visualization.h"
 #endif
+#include "ui_fileopener.h"
 #include "ui_skinned_window.h"
 #include "ui_skinned_button.h"
 #include "ui_skinned_textbox.h"

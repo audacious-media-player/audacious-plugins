@@ -33,9 +33,9 @@
 #if 0
 #include "ui_credits.h"
 #include "ui_equalizer.h"
-#include "ui_fileopener.h"
 #include "ui_jumptotrack.h"
 #endif
+#include "ui_fileopener.h"
 #include "ui_main.h"
 #if 0
 #include "ui_playlist.h"
