@@ -41,8 +41,8 @@
 #include "ui_skin.h"
 #include "util.h"
 #include "ui_main.h"
-#if 0
 #include "ui_equalizer.h"
+#if 0
 #include "ui_playlist.h"
 #include "ui_skinselector.h"
 #endif
@@ -183,8 +183,8 @@ aud_active_skin_load(const gchar * path)
     }
 
     ui_skinned_window_draw_all(mainwin);
-#if 0
     ui_skinned_window_draw_all(equalizerwin);
+#if 0
     ui_skinned_window_draw_all(playlistwin);
 
     playlistwin_update_list(playlist_get_active());
@@ -534,8 +534,8 @@ init_skins(const gchar * path)
     if (mainwin == NULL)
     {
         mainwin_create();
-#if 0
         equalizerwin_create();
+#if 0
         playlistwin_create();
 #endif
     }
@@ -1445,10 +1445,10 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
 
     skin_mask_create(skin, path, SKIN_MASK_MAIN, mainwin->window);
     skin_mask_create(skin, path, SKIN_MASK_MAIN_SHADE, mainwin->window);
-#if 0
+
     skin_mask_create(skin, path, SKIN_MASK_EQ, equalizerwin->window);
     skin_mask_create(skin, path, SKIN_MASK_EQ_SHADE, equalizerwin->window);
-
+#if 0
     skin_load_viscolor(skin, path, "viscolor.txt");
 #endif
     return TRUE;
@@ -1579,9 +1579,8 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     g_free(skin_path);
 
     gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
-#if 0
     gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
-#endif
+
     return TRUE;
 }
 
@@ -1648,11 +1647,11 @@ skin_load(Skin * skin, const gchar * path)
     pixmap = skin_get_pixmap(skin, SKIN_PLAYPAUSE);
     if (pixmap)
         ui_skinned_playstatus_set_size(mainwin_playstatus, 11, pixmap->height);
-#if 0
+
     pixmap = skin_get_pixmap(skin, SKIN_EQMAIN);
     if (pixmap->height >= 313)
         gtk_widget_show(equalizerwin_graph);
-#endif
+
     return TRUE;
 }
 

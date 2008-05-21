@@ -599,12 +599,12 @@ ui_manager_init ( void )
   gtk_action_group_add_actions(
     action_group_playlist_sort, action_entries_playlist_sort,
     G_N_ELEMENTS(action_entries_playlist_sort), NULL );
-
+#endif
   action_group_equalizer = ui_manager_new_action_group("action_equalizer");
   gtk_action_group_add_actions(
     action_group_equalizer, action_entries_equalizer,
     G_N_ELEMENTS(action_entries_equalizer), NULL);
-#endif
+
   /* ui */
   ui_manager = gtk_ui_manager_new();
   gtk_ui_manager_insert_action_group( ui_manager , toggleaction_group_others , 0 );

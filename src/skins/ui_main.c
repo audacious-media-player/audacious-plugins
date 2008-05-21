@@ -1445,9 +1445,7 @@ void mainwin_playlist_pushed_cb(void) {
 void
 mainwin_eq_pushed(gboolean toggled)
 {
-#if 0
     equalizerwin_show(toggled);
-#endif
 }
 
 void

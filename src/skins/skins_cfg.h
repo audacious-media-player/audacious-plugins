@@ -68,6 +68,7 @@ typedef struct {
     gboolean warn_about_win_visibility;
     gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
+    gboolean eq_scaled_linked;
 } skins_cfg_t;
 
 extern skins_cfg_t config;
