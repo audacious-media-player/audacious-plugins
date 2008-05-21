@@ -41,7 +41,7 @@ typedef struct {
     gint snap_distance;
     gboolean snap_windows, save_window_position;
     gboolean scaled, autoscroll;
-    gboolean always_on_top;
+    gboolean always_on_top, sticky;
     gfloat scale_factor;
     gboolean always_show_cb;
     gchar *skin;

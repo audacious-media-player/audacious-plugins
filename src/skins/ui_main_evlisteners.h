@@ -1,6 +1,6 @@
 /*
- * Audacious - a cross-platform multimedia player
- * Copyright (c) 2008 Tomasz Moń
+ * Audacious
+ * Copyright (c) 2006-2007 Audacious development team.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,11 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#ifndef PLUGIN_SKINS_H
-#define PLUGIN_SKINS_H
-
 #include <glib.h>
-#include <audacious/plugin.h>
-#include "skins_cfg.h"
 
-#define PACKAGE_NAME "audacious-plugins"
-#define DATA_DIR "/usr/local/share/audacious/"
-extern GtkWidget *mainwin;
+#ifndef AUDACIOUS_UI_MAIN_EVLISTENERS_H
+#define AUDACIOUS_UI_MAIN_EVLISTENERS_H
 
-void skins_init(void);
-void skins_cleanup(void);
-void skins_configure(void);
-void skins_about(void);
+void ui_main_evlistener_init(void);
 
-#endif
+#endif /* AUDACIOUS_UI_MAIN_EVLISTENERS_H */

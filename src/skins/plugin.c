@@ -23,6 +23,8 @@
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_window.h"
+#include "ui_manager.h"
+#include "icons-stock.h"
 #include <audacious/i18n.h>
 #include <libintl.h>
 
@@ -47,6 +49,11 @@ void skins_init(void) {
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
     skins_cfg_load();
+
+    register_aud_stock_icons();
+    ui_manager_init();
+    ui_manager_create_menus();
+    mainwin_setup_menus();
 
     init_skins(config.skin);
 

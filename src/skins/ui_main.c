@@ -50,9 +50,10 @@
 
 #include "ui_main.h"
 #include "ui_dock.h"
-#if 0
 #include "icons-stock.h"
 #include "actions-mainwin.h"
+#include "ui_manager.h"
+#if 0
 #include "configdb.h"
 #include "dnd.h"
 #include "input.h"
@@ -69,7 +70,6 @@
 #include "ui_hints.h"
 #include "ui_jumptotrack.h"
 #include "ui_main_evlisteners.h"
-#include "ui_manager.h"
 #include "ui_playlist.h"
 #include "ui_preferences.h"
 #include "ui_skinselector.h"
@@ -175,21 +175,17 @@ mainwin_set_title_scroll(gboolean scroll)
 void
 mainwin_set_always_on_top(gboolean always)
 {
-#if 0
     GtkAction *action = gtk_action_group_get_action(toggleaction_group_others,
                                                     "view always on top");
     gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , always );
-#endif
 }
 
 static void
 mainwin_set_shade(gboolean shaded)
 {
-#if 0
     GtkAction *action = gtk_action_group_get_action(toggleaction_group_others,
                                                     "roll up player");
     gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , shaded );
-#endif
 }
 
 static void
@@ -245,7 +241,6 @@ mainwin_vis_set_analyzer_type(AnalyzerType mode)
 void
 mainwin_vis_set_type(VisType mode)
 {
-#if 0
     GtkAction *action;
 
     switch ( mode )
@@ -270,7 +265,6 @@ mainwin_vis_set_type(VisType mode)
     }
 
     gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , TRUE );
-#endif
 }
 
 static void
@@ -305,14 +299,12 @@ mainwin_vis_set_type_menu_cb(VisType mode)
 static void
 mainwin_menubtn_cb(void)
 {
-#if 0
     gint x, y;
     gtk_window_get_position(GTK_WINDOW(mainwin), &x, &y);
     ui_manager_popup_menu_show(GTK_MENU(mainwin_general_menu),
                                x + 6 * MAINWIN_SCALE_FACTOR ,
                                y + MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR,
                                1, GDK_CURRENT_TIME);
-#endif
 }
 
 void
@@ -350,11 +342,9 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 
         mainwin_vis_set_type(config.vis_type);
     } else if (event->button == 3) {
-#if 0
        ui_manager_popup_menu_show(GTK_MENU(mainwin_visualization_menu),
                                    event->x_root, event->y_root, 3,
                                    event->time);
-#endif
     }
     return TRUE;
 }
@@ -818,11 +808,11 @@ mainwin_mouse_button_press(GtkWidget * widget,
             mainwin_widget_contained(event, aud_active_skin->properties.mainwin_next_x,
                                      aud_active_skin->properties.mainwin_next_y, 23, 18))
         {
-#if 0
+
             ui_manager_popup_menu_show(GTK_MENU(mainwin_playback_menu),
                                        event->x_root,
                                        event->y_root, 3, event->time);
-#endif
+
         } else {
             /*
              * Pop up the main menu a few pixels down.
@@ -833,11 +823,11 @@ mainwin_mouse_button_press(GtkWidget * widget,
              ***MD I think the above is stupid, people don't expect this
              *
              */
-#if 0
+
             ui_manager_popup_menu_show(GTK_MENU(mainwin_general_menu),
                                        event->x_root,
                                        event->y_root, 3, event->time);
-#endif
+
         }
         return TRUE;
     }
@@ -1425,9 +1415,7 @@ mainwin_stop_pushed(void)
 void
 mainwin_shuffle_pushed(gboolean toggled)
 {
-#if 0
     check_set( toggleaction_group_others , "playback shuffle" , toggled );
-#endif
 }
 
 void mainwin_shuffle_pushed_cb(void) {
@@ -1710,9 +1698,9 @@ void
 mainwin_real_show(void)
 {
     config.player_visible = TRUE;
-#if 0
+
     check_set( toggleaction_group_others , "show player" , TRUE );
-#endif
+
     if (config.player_shaded)
         ui_vis_clear_data(mainwin_vis);
 
@@ -1734,9 +1722,9 @@ mainwin_real_show(void)
 void
 mainwin_real_hide(void)
 {
-#if 0
+
     check_set( toggleaction_group_others , "show player", FALSE);
-#endif
+
     if (config.player_shaded)
         ui_svis_clear_data(mainwin_svis);
 
@@ -1808,10 +1796,10 @@ mainwin_general_menu_callback(gpointer data,
                               guint action,
                               GtkWidget * item)
 {
-#if 0
     Playlist *playlist = aud_playlist_get_active();
 
     switch (action) {
+#if 0
         case MAINWIN_GENERAL_PREFS:
             show_prefs_window();
             break;
@@ -1845,6 +1833,7 @@ mainwin_general_menu_callback(gpointer data,
             else
                 equalizerwin_real_hide();
             break;
+#endif
         case MAINWIN_GENERAL_PREV:
             aud_playlist_prev(playlist);
             break;
@@ -1860,16 +1849,18 @@ mainwin_general_menu_callback(gpointer data,
         case MAINWIN_GENERAL_NEXT:
             aud_playlist_next(playlist);
             break;
+#if 0
         case MAINWIN_GENERAL_BACK5SEC:
             if (audacious_drct_get_playing()
                 && aud_playlist_get_current_length(playlist) != -1)
-                audacious_drct_seek_relative(-5);
+                playback_seek_relative(-5);
             break;
         case MAINWIN_GENERAL_FWD5SEC:
             if (audacious_drct_get_playing()
                 && aud_playlist_get_current_length(playlist) != -1)
-                audacious_drct_seek_relative(5);
+                playback_seek_relative(5);
             break;
+#endif
         case MAINWIN_GENERAL_START:
             aud_playlist_set_position(playlist, 0);
             break;
@@ -1877,7 +1868,9 @@ mainwin_general_menu_callback(gpointer data,
             mainwin_jump_to_time();
             break;
         case MAINWIN_GENERAL_JTF:
+#if 0
             ui_jump_to_track();
+#endif
             break;
         case MAINWIN_GENERAL_EXIT:
             mainwin_quit_cb();
@@ -1908,19 +1901,18 @@ mainwin_general_menu_callback(gpointer data,
             break;
         case MAINWIN_GENERAL_NEW_PL:
             {
-                Playlist *new_pl = playlist_new();
-                playlist_add_playlist(new_pl);
-                playlist_select_playlist(new_pl);
+                Playlist *new_pl = aud_playlist_new();
+                aud_playlist_add_playlist(new_pl);
+                aud_playlist_select_playlist(new_pl);
             }
             break;
         case MAINWIN_GENERAL_PREV_PL:
-            playlist_select_prev();
+            aud_playlist_select_prev();
             break;
         case MAINWIN_GENERAL_NEXT_PL:
-            playlist_select_next();
+            aud_playlist_select_next();
             break;
     }
-#endif
 }
 
 static void
@@ -1956,7 +1948,6 @@ mainwin_mr_change(GtkWidget *widget, MenuRowItem i)
 static void
 mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
 {
-#if 0
     switch (i) {
         case MENUROW_OPTIONS:
             ui_manager_popup_menu_show(GTK_MENU(mainwin_view_menu),
@@ -1970,7 +1961,9 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
                                          UI_SKINNED_MENUROW(mainwin_menurow)->always_selected );
             break;
         case MENUROW_FILEINFOBOX:
+#if 0
             ui_fileinfo_show_current(aud_playlist_get_active());
+#endif
             break;
         case MENUROW_SCALE:
             gtk_toggle_action_set_active(
@@ -1986,7 +1979,7 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
         case MENUROW_NONE:
             break;
     }
-#endif
+
     mainwin_release_info_text();
 }
 
@@ -2042,12 +2035,10 @@ ui_main_set_initial_volume(void)
 static void
 set_timer_mode(TimerMode mode)
 {
-#if 0
     if (mode == TIMER_ELAPSED)
         check_set(radioaction_group_viewtime, "view time elapsed", TRUE);
     else
         check_set(radioaction_group_viewtime, "view time remaining", TRUE);
-#endif
 }
 
 static void
@@ -2094,7 +2085,7 @@ mainwin_setup_menus(void)
     set_timer_mode(config.timer_mode);
 
     /* View menu */
-#if 0
+
     check_set(toggleaction_group_others, "view always on top", config.always_on_top);
     check_set(toggleaction_group_others, "view put on all workspaces", config.sticky);
     check_set(toggleaction_group_others, "roll up player", config.player_shaded);
@@ -2255,7 +2246,6 @@ mainwin_setup_menus(void)
             check_set(radioaction_group_peafoff, "peafoff slowest", TRUE);
             break;
     }
-#endif
 }
 
 static void mainwin_info_double_clicked_cb(void) {
@@ -2267,10 +2257,8 @@ static void mainwin_info_double_clicked_cb(void) {
 static void
 mainwin_info_right_clicked_cb(GtkWidget *widget, GdkEventButton *event)
 {
-#if 0
     ui_manager_popup_menu_show(GTK_MENU(mainwin_songname_menu),
                                event->x_root, event->y_root, 3, event->time);
-#endif
 }
 
 static void
@@ -2492,18 +2480,17 @@ mainwin_create_window(void)
 
     g_signal_connect(mainwin, "key_press_event",
                      G_CALLBACK(mainwin_keypress), NULL);
-
-    ui_main_evlistener_init();
 #endif
+    ui_main_evlistener_init();
 }
 
 void
 mainwin_create(void)
 {
     mainwin_create_window();
-#if 0
+
     gtk_window_add_accel_group( GTK_WINDOW(mainwin) , ui_manager_get_accel_group() );
-#endif
+
     mainwin_create_widgets();
 }
 
@@ -2966,10 +2953,8 @@ action_quit( void )
 void
 util_menu_main_show( gint x , gint y , guint button , guint time )
 {
-#if 0
     /* convenience function that shows the main popup menu wherever requested */
     ui_manager_popup_menu_show( GTK_MENU(mainwin_general_menu),
                                 x , y , button , time );
     return;
-#endif
 }

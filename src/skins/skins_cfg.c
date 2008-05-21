@@ -32,6 +32,7 @@ skins_cfg_t skins_default_config = {
     .scaled = FALSE,
     .autoscroll = TRUE,
     .always_on_top = FALSE,
+    .sticky = FALSE,
     .scale_factor = 2.0,
     .always_show_cb = TRUE,
     .skin = NULL,
@@ -87,6 +88,7 @@ typedef struct skins_cfg_boolent_t {
 static skins_cfg_boolent skins_boolents[] = {
     {"always_show_cb", &config.always_show_cb, TRUE},
     {"always_on_top", &config.always_on_top, TRUE},
+    {"sticky", &config.sticky, TRUE},
     {"always_show_cb", &config.always_show_cb, TRUE},
     {"scaled", &config.scaled, TRUE},
     {"autoscroll_songname", &config.autoscroll, TRUE},

@@ -17,13 +17,16 @@ SRCS = plugin.c \
        ui_skinned_number.c \
        ui_skinned_horizontal_slider.c \
        ui_skinned_equalizer_graph.c \
-       ui_main.c
+       ui_main.c \
+       ui_main_evlisteners.c \
+       ui_manager.c \
+       icons-stock.c
 
 include ../../buildsys.mk
 include ../../extra.mk
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS} -DDATA_DIR="/usr/local/share/audacious"
+CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${CAIRO_CFLAGS} ${PANGOCAIRO_CFLAGS} ${XRENDER_CFLAGS} ${XCOMPOSITE_CFLAGS} -I../..
 LIBS += ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} ${CAIRO_LIBS} ${PANGOCAIRO_LIBS} ${XRENDER_LIBS} ${XCOMPOSITE_LIBS}
