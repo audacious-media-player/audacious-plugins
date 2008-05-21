@@ -1396,24 +1396,19 @@ mainwin_play_pushed(void)
         audacious_drct_pause();
         return;
     }
-#if 0
-    if (playlist_get_length(aud_playlist_get_active()))
-        playback_initiate();
+
+    if (aud_playlist_get_length(aud_playlist_get_active()))
+        audacious_drct_initiate();
     else
         mainwin_eject_pushed();
-#endif
 }
 
 void
 mainwin_stop_pushed(void)
 {
-#if 0
-    ip_data.stop = TRUE;
     audacious_drct_stop();
     mainwin_clear_song_info();
     ab_position_a = ab_position_b = -1;
-    ip_data.stop = FALSE;
-#endif
 }
 
 void
