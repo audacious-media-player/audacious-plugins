@@ -35,12 +35,6 @@
 
 #include <gtk/gtk.h>
 
-#ifdef WORDS_BIGENDIAN
-# define IS_BIG_ENDIAN TRUE
-#else
-# define IS_BIG_ENDIAN FALSE
-#endif
-
 extern OutputPlugin op;
 
 struct alsa_config
