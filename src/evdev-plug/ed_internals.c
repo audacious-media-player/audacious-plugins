@@ -35,7 +35,7 @@
 #include <regex.h>
 /* for variadic */
 #include <stdarg.h>
-
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <glib.h>
 #include <glib/gstdio.h>
