@@ -2501,7 +2501,7 @@ mainwin_update_song_info(void)
         return FALSE;
 
     gint time = audacious_drct_get_time();
-    gint length = audacious_drct_pl_get_length();
+    gint length = audacious_drct_get_length();
     gint t;
     gchar stime_prefix;
 
