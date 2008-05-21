@@ -1535,7 +1535,7 @@ mainwin_position_release_cb(GtkWidget *widget, gint pos)
 {
     gint length, time;
 
-    length = aud_playlist_get_current_length(aud_playlist_get_active()) / 1000;
+    length = audacious_drct_get_length();
     time = (length * pos) / 219;
     audacious_drct_seek(time);
     mainwin_release_info_text();
