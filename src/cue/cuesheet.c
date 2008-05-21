@@ -25,8 +25,6 @@
 #include <ctype.h>
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/util.h>
-#include <audacious/strings.h>
 
 #define MAX_CUE_LINE_LENGTH 1000
 #define MAX_CUE_TRACKS 1000

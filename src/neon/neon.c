@@ -323,6 +323,10 @@ static void kill_reader(struct neon_handle* h) {
 
     _ENTER;
 
+    if (NULL == h) {
+        _LEAVE;
+    }
+
     _DEBUG("Signaling reader thread to terminate");
     g_mutex_lock(h->reader_status.mutex);
     h->reader_status.reading = FALSE;
@@ -333,6 +337,8 @@ static void kill_reader(struct neon_handle* h) {
     g_thread_join(h->reader);
     _DEBUG("Reader thread has died");
     h->reader = NULL;
+
+    _LEAVE;
 }
 
 /*
@@ -774,7 +780,7 @@ static int fill_buffer_limit(struct neon_handle* h, unsigned int maxfree) {
             /*
              * EOF while filling the buffer. Return what we have.
              */
-            _LEAVE 0;
+            _LEAVE 1;
         }
 
         bfree = free_rb(&h->rb);
@@ -856,7 +862,6 @@ static gpointer reader_thread(void* data) {
  */
 
 VFSFile* neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode) {
-
     VFSFile* file;
     struct neon_handle* handle;
 
@@ -982,36 +987,45 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
     }
 
     if (NULL == h->reader) {
-        /*
-         * There is no reader thread yet. Read the first bytes from
-         * the network ourselves, and then fire up the reader thread
-         * to keep the buffer filled up.
-         */
-        _DEBUG("<%p> Doing initial buffer fill", h);
-        ret = fill_buffer_limit(h, NBUFSIZ/2);
+        if (NEON_READER_EOF != h->reader_status.status) {
+            /*
+             * There is no reader thread yet. Read the first bytes from
+             * the network ourselves, and then fire up the reader thread
+             * to keep the buffer filled up.
+             */
+            _DEBUG("<%p> Doing initial buffer fill", h);
+            ret = fill_buffer_limit(h, NBUFSIZ/2);
 
-        if (-1 == ret) {
-            _ERROR("<%p> Error while reading from the network", h);
-            _LEAVE 0;
-        } else if (1 == ret) {
-            _ERROR("<%p> EOF during initial read", h);
-            _LEAVE 0;
-        }
+            if (-1 == ret) {
+                _ERROR("<%p> Error while reading from the network", h);
+                _LEAVE 0;
+            } else if (1 == ret) {
+                _DEBUG("<%p> EOF during initial read", h);
+            }
 
-        /*
-         * We have some data in the buffer now.
-         * Start the reader thread.
-         */
-        g_mutex_lock(h->reader_status.mutex);
-        h->reader_status.reading = TRUE;
-        if (NULL == (h->reader = g_thread_create(reader_thread, h, TRUE, NULL))) {
-            h->reader_status.reading = FALSE;
+            /*
+             * We have some data in the buffer now.
+             * Start the reader thread if we did not reach EOF during
+             * the initial fill
+             */
+            g_mutex_lock(h->reader_status.mutex);
+            if (0 == ret) {
+                h->reader_status.reading = TRUE;
+                _DEBUG("<%p> Starting reader thread", h);
+                if (NULL == (h->reader = g_thread_create(reader_thread, h, TRUE, NULL))) {
+                    h->reader_status.reading = FALSE;
+                    g_mutex_unlock(h->reader_status.mutex);
+                    _ERROR("<%p> Error creating reader thread!", h);
+                    _LEAVE 0;
+                }
+                h->reader_status.status = NEON_READER_RUN;
+            } else {
+                _DEBUG("<%p> No reader thread needed (stream has reached EOF during fill)", h);
+                h->reader_status.reading = FALSE;
+                h->reader_status.status = NEON_READER_EOF;
+            }
             g_mutex_unlock(h->reader_status.mutex);
-            _ERROR("<%p> Error creating reader thread!", h);
-            _LEAVE 0;
         }
-        h->reader_status.status = NEON_READER_RUN;
-        g_mutex_unlock(h->reader_status.mutex);
     } else {
         /*
          * There already is a reader thread. Look if it is in good
@@ -1119,9 +1133,16 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
     /*
      * Signal the network thread to continue reading
      */
-    _DEBUG("<%p> Waking up reader thread", h);
     g_mutex_lock(h->reader_status.mutex);
-    g_cond_signal(h->reader_status.cond);
+    if (NEON_READER_EOF == h->reader_status.status) {
+        if (0 == free_rb_locked(&h->rb)) {
+            _DEBUG("<%p> stream EOF reached and buffer empty", h);
+            h->eof = TRUE;
+        }
+    } else {
+        _DEBUG("<%p> Waking up reader thread", h);
+        g_cond_signal(h->reader_status.cond);
+    }
     g_mutex_unlock(h->reader_status.mutex);
 
     h->pos += (relem*size);
@@ -1214,6 +1235,8 @@ gboolean neon_aud_vfs_feof_impl(VFSFile* file) {
     struct neon_handle* h = (struct neon_handle*)file->handle;
 
     _ENTER;
+
+    _DEBUG("<%p> EOF status: %s", h, h->eof?"TRUE":"FALSE");
 
     _LEAVE h->eof;
 }

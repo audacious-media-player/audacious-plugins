@@ -22,7 +22,6 @@
 extern void close_mixer_device();
 
 #include <glib.h>
-#include <audacious/util.h>
 #include <string.h>
 
 #include <unistd.h>

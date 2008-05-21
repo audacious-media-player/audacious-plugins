@@ -81,54 +81,54 @@ extern struct t_xs_cfg {
     gint        audioFrequency;
 
     gboolean    oversampleEnable;
-    gint        oversampleFactor;    /* Factor of oversampling */
+    gint        oversampleFactor;   /* Factor of oversampling */
 
     /* Emulation settings */
-    gboolean    mos8580;        /* TRUE = 8580, FALSE = 6581 */
+    gboolean    mos8580;            /* TRUE = 8580, FALSE = 6581 */
     gboolean    forceModel;
-    gint        memoryMode;        /* See XS_MPU-constants */
-    gint        clockSpeed;        /* PAL (50Hz) or NTSC (60Hz) */
-    gboolean    forceSpeed;        /* TRUE = force to given clockspeed */
+    gint        memoryMode;         /* See XS_MPU-constants */
+    gint        clockSpeed;         /* PAL (50Hz) or NTSC (60Hz) */
+    gboolean    forceSpeed;         /* TRUE = force to given clockspeed */
 
-    gint        playerEngine;        /* Selected player engine */
+    gint        playerEngine;       /* Selected player engine */
 
     gboolean    emulateFilters;
-    gfloat        sid1FilterFs;
-    gfloat        sid1FilterFm;
-    gfloat        sid1FilterFt;
+    gfloat      sid1FilterFs;
+    gfloat      sid1FilterFm;
+    gfloat      sid1FilterFt;
 
-    gint        sid2OptLevel;        /* SIDPlay2 emulation optimization */
+    gint        sid2OptLevel;       /* SIDPlay2 emulation optimization */
     gint        sid2Builder;        /* SIDPlay2 "builder" aka SID-emu */
-    t_xs_sid2_filter    sid2Filter;    /* Current SIDPlay2 filter */
+    t_xs_sid2_filter    sid2Filter; /* Current SIDPlay2 filter */
     t_xs_sid2_filter    **sid2FilterPresets;
     gint        sid2NFilterPresets;
     
     
     /* Playing settings */
     gboolean    playMaxTimeEnable,
-            playMaxTimeUnknown;    /* Use max-time only when song-length is unknown */
+                playMaxTimeUnknown; /* Use max-time only when song-length is unknown */
     gint        playMaxTime;        /* MAX playtime in seconds */
 
     gboolean    playMinTimeEnable;
     gint        playMinTime;        /* MIN playtime in seconds */
 
     gboolean    songlenDBEnable;
-    gchar        *songlenDBPath;        /* Path to Songlengths.txt */
+    gchar       *songlenDBPath;     /* Path to Songlengths.txt */
 
 
     /* Miscellaneous settings */
     gboolean    stilDBEnable;
-    gchar        *stilDBPath;        /* Path to STIL.txt */
-    gchar        *hvscPath;        /* Path-prefix for HVSC */
+    gchar       *stilDBPath;        /* Path to STIL.txt */
+    gchar       *hvscPath;          /* Path-prefix for HVSC */
 
     gint        subsongControl;
     gboolean    detectMagic;
 
-    gboolean    titleOverride;        /* TRUE if XMMS titles are overriden */
-    gchar        *titleFormat;
+    gboolean    titleOverride;      /* TRUE if XMMS titles are overriden */
+    gchar       *titleFormat;
 
     gboolean    subAutoEnable,
-            subAutoMinOnly;
+                subAutoMinOnly;
     gint        subAutoMinTime;
 } xs_cfg;
 
@@ -155,16 +155,16 @@ enum {
 
 
 typedef struct {
-    gint    itemType;    /* Type of item (CTYPE_*) */
-    void    *itemData;    /* Pointer to variable */
-    gchar    *itemName;    /* Name of configuration item */
+    gint    itemType;   /* Type of item (CTYPE_*) */
+    void    *itemData;  /* Pointer to variable */
+    gchar   *itemName;  /* Name of configuration item */
 } t_xs_cfg_item;
 
 
 typedef struct {
     gint    widType;
     gint    itemType;
-    gchar    *widName;
+    gchar   *widName;
     void    *itemData;
     gint    itemSet;
 } t_xs_wid_item;

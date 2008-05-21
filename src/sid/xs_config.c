@@ -24,32 +24,32 @@
 
 #ifdef AUDACIOUS_PLUGIN
 #include <audacious/plugin.h>
-#define XS_CONFIG_FILE        mcs_handle_t
-#define XS_CONFIG_OPEN        aud_cfg_db_open
-#define XS_CONFIG_FREE        aud_cfg_db_close
+#define XS_CONFIG_FILE      ConfigDb
+#define XS_CONFIG_OPEN      aud_cfg_db_open
+#define XS_CONFIG_FREE      aud_cfg_db_close
 
-#define XS_CFG_SET_STRING     aud_cfg_db_set_string
-#define XS_CFG_SET_FLOAT      aud_cfg_db_set_float
-#define XS_CFG_SET_INT        aud_cfg_db_set_int
-#define XS_CFG_SET_BOOL       aud_cfg_db_set_bool
-#define XS_CFG_GET_STRING     aud_cfg_db_get_string
-#define XS_CFG_GET_FLOAT      aud_cfg_db_get_float
-#define XS_CFG_GET_INT        aud_cfg_db_get_int
-#define XS_CFG_GET_BOOL       aud_cfg_db_get_bool
+#define XS_CFG_SET_STRING   aud_cfg_db_set_string
+#define XS_CFG_SET_FLOAT    aud_cfg_db_set_float
+#define XS_CFG_SET_INT      aud_cfg_db_set_int
+#define XS_CFG_SET_BOOL     aud_cfg_db_set_bool
+#define XS_CFG_GET_STRING   aud_cfg_db_get_string
+#define XS_CFG_GET_FLOAT    aud_cfg_db_get_float
+#define XS_CFG_GET_INT      aud_cfg_db_get_int
+#define XS_CFG_GET_BOOL     aud_cfg_db_get_bool
 #else
 #include <xmms/configfile.h>
-#define XS_CONFIG_FILE        ConfigFile
-#define XS_CONFIG_OPEN        xmms_cfg_open_default_file
-#define XS_CONFIG_FREE        xmms_cfg_free
+#define XS_CONFIG_FILE      ConfigFile
+#define XS_CONFIG_OPEN      xmms_cfg_open_default_file
+#define XS_CONFIG_FREE      xmms_cfg_free
 
-#define XS_CFG_SET_STRING     xmms_cfg_write_string
-#define XS_CFG_SET_FLOAT      xmms_cfg_write_float
-#define XS_CFG_SET_INT        xmms_cfg_write_int
-#define XS_CFG_SET_BOOL       xmms_cfg_write_boolean
-#define XS_CFG_GET_STRING     xmms_cfg_read_string
-#define XS_CFG_GET_FLOAT      xmms_cfg_read_float
-#define XS_CFG_GET_INT        xmms_cfg_read_int
-#define XS_CFG_GET_BOOL       xmms_cfg_read_boolean
+#define XS_CFG_SET_STRING   xmms_cfg_write_string
+#define XS_CFG_SET_FLOAT    xmms_cfg_write_float
+#define XS_CFG_SET_INT      xmms_cfg_write_int
+#define XS_CFG_SET_BOOL     xmms_cfg_write_boolean
+#define XS_CFG_GET_STRING   xmms_cfg_read_string
+#define XS_CFG_GET_FLOAT    xmms_cfg_read_float
+#define XS_CFG_GET_INT      xmms_cfg_read_int
+#define XS_CFG_GET_BOOL     xmms_cfg_read_boolean
 #endif
 #include <stdio.h>
 #include <ctype.h>
@@ -87,116 +87,116 @@ XS_MUTEX(xs_cfg);
 struct t_xs_cfg xs_cfg;
 
 static t_xs_cfg_item xs_cfgtable[] = {
-{ CTYPE_INT,    &xs_cfg.audioBitsPerSample,    "audioBitsPerSample" },
-{ CTYPE_INT,    &xs_cfg.audioChannels,        "audioChannels" },
-{ CTYPE_INT,    &xs_cfg.audioFrequency,        "audioFrequency" },
+{ CTYPE_INT,    &xs_cfg.audioBitsPerSample,     "audioBitsPerSample" },
+{ CTYPE_INT,    &xs_cfg.audioChannels,          "audioChannels" },
+{ CTYPE_INT,    &xs_cfg.audioFrequency,         "audioFrequency" },
 
-{ CTYPE_BOOL,    &xs_cfg.mos8580,        "mos8580" },
-{ CTYPE_BOOL,    &xs_cfg.forceModel,        "forceModel" },
-{ CTYPE_BOOL,    &xs_cfg.emulateFilters,        "emulateFilters" },
-{ CTYPE_FLOAT,    &xs_cfg.sid1FilterFs,        "filterFs" },
-{ CTYPE_FLOAT,    &xs_cfg.sid1FilterFm,        "filterFm" },
-{ CTYPE_FLOAT,    &xs_cfg.sid1FilterFt,        "filterFt" },
-{ CTYPE_INT,    &xs_cfg.memoryMode,        "memoryMode" },
-{ CTYPE_INT,    &xs_cfg.clockSpeed,        "clockSpeed" },
-{ CTYPE_BOOL,    &xs_cfg.forceSpeed,        "forceSpeed" },
+{ CTYPE_BOOL,   &xs_cfg.mos8580,                "mos8580" },
+{ CTYPE_BOOL,   &xs_cfg.forceModel,             "forceModel" },
+{ CTYPE_BOOL,   &xs_cfg.emulateFilters,         "emulateFilters" },
+{ CTYPE_FLOAT,  &xs_cfg.sid1FilterFs,           "filterFs" },
+{ CTYPE_FLOAT,  &xs_cfg.sid1FilterFm,           "filterFm" },
+{ CTYPE_FLOAT,  &xs_cfg.sid1FilterFt,           "filterFt" },
+{ CTYPE_INT,    &xs_cfg.memoryMode,             "memoryMode" },
+{ CTYPE_INT,    &xs_cfg.clockSpeed,             "clockSpeed" },
+{ CTYPE_BOOL,   &xs_cfg.forceSpeed,             "forceSpeed" },
 
-{ CTYPE_INT,    &xs_cfg.playerEngine,        "playerEngine" },
+{ CTYPE_INT,    &xs_cfg.playerEngine,           "playerEngine" },
 
-{ CTYPE_INT,    &xs_cfg.sid2Builder,        "sid2Builder" },
-{ CTYPE_INT,    &xs_cfg.sid2OptLevel,        "sid2OptLevel" },
-{ CTYPE_INT,    &xs_cfg.sid2NFilterPresets,    "sid2NFilterPresets" },
+{ CTYPE_INT,    &xs_cfg.sid2Builder,            "sid2Builder" },
+{ CTYPE_INT,    &xs_cfg.sid2OptLevel,           "sid2OptLevel" },
+{ CTYPE_INT,    &xs_cfg.sid2NFilterPresets,     "sid2NFilterPresets" },
 
-{ CTYPE_BOOL,    &xs_cfg.oversampleEnable,    "oversampleEnable" },
-{ CTYPE_INT,    &xs_cfg.oversampleFactor,    "oversampleFactor" },
+{ CTYPE_BOOL,   &xs_cfg.oversampleEnable,       "oversampleEnable" },
+{ CTYPE_INT,    &xs_cfg.oversampleFactor,       "oversampleFactor" },
 
-{ CTYPE_BOOL,    &xs_cfg.playMaxTimeEnable,    "playMaxTimeEnable" },
-{ CTYPE_BOOL,    &xs_cfg.playMaxTimeUnknown,    "playMaxTimeUnknown" },
-{ CTYPE_INT,    &xs_cfg.playMaxTime,        "playMaxTime" },
-{ CTYPE_BOOL,    &xs_cfg.playMinTimeEnable,    "playMinTimeEnable" },
-{ CTYPE_INT,    &xs_cfg.playMinTime,        "playMinTime" },
-{ CTYPE_BOOL,    &xs_cfg.songlenDBEnable,    "songlenDBEnable" },
-{ CTYPE_STR,    &xs_cfg.songlenDBPath,        "songlenDBPath" },
+{ CTYPE_BOOL,   &xs_cfg.playMaxTimeEnable,      "playMaxTimeEnable" },
+{ CTYPE_BOOL,   &xs_cfg.playMaxTimeUnknown,     "playMaxTimeUnknown" },
+{ CTYPE_INT,    &xs_cfg.playMaxTime,            "playMaxTime" },
+{ CTYPE_BOOL,   &xs_cfg.playMinTimeEnable,      "playMinTimeEnable" },
+{ CTYPE_INT,    &xs_cfg.playMinTime,            "playMinTime" },
+{ CTYPE_BOOL,   &xs_cfg.songlenDBEnable,        "songlenDBEnable" },
+{ CTYPE_STR,    &xs_cfg.songlenDBPath,          "songlenDBPath" },
 
-{ CTYPE_BOOL,    &xs_cfg.stilDBEnable,        "stilDBEnable" },
-{ CTYPE_STR,    &xs_cfg.stilDBPath,        "stilDBPath" },
-{ CTYPE_STR,    &xs_cfg.hvscPath,        "hvscPath" },
+{ CTYPE_BOOL,   &xs_cfg.stilDBEnable,           "stilDBEnable" },
+{ CTYPE_STR,    &xs_cfg.stilDBPath,             "stilDBPath" },
+{ CTYPE_STR,    &xs_cfg.hvscPath,               "hvscPath" },
 
 #ifndef AUDACIOUS_PLUGIN
-{ CTYPE_INT,    &xs_cfg.subsongControl,        "subsongControl" },
-{ CTYPE_BOOL,    &xs_cfg.detectMagic,        "detectMagic" },
+{ CTYPE_INT,    &xs_cfg.subsongControl,         "subsongControl" },
+{ CTYPE_BOOL,   &xs_cfg.detectMagic,            "detectMagic" },
 #endif
 
-{ CTYPE_BOOL,    &xs_cfg.titleOverride,        "titleOverride" },
-{ CTYPE_STR,    &xs_cfg.titleFormat,        "titleFormat" },
+{ CTYPE_BOOL,   &xs_cfg.titleOverride,          "titleOverride" },
+{ CTYPE_STR,    &xs_cfg.titleFormat,            "titleFormat" },
 
-{ CTYPE_BOOL,    &xs_cfg.subAutoEnable,        "subAutoEnable" },
-{ CTYPE_BOOL,    &xs_cfg.subAutoMinOnly,        "subAutoMinOnly" },
-{ CTYPE_INT,    &xs_cfg.subAutoMinTime,        "subAutoMinTime" },
+{ CTYPE_BOOL,   &xs_cfg.subAutoEnable,          "subAutoEnable" },
+{ CTYPE_BOOL,   &xs_cfg.subAutoMinOnly,         "subAutoMinOnly" },
+{ CTYPE_INT,    &xs_cfg.subAutoMinTime,         "subAutoMinTime" },
 };
 
 static const gint xs_cfgtable_max = (sizeof(xs_cfgtable) / sizeof(t_xs_cfg_item));
 
 
 static t_xs_wid_item xs_widtable[] = {
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_res_16bit",    &xs_cfg.audioBitsPerSample,    XS_RES_16BIT },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_res_8bit",        &xs_cfg.audioBitsPerSample,    XS_RES_8BIT },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_chn_mono",        &xs_cfg.audioChannels,        XS_CHN_MONO },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_chn_stereo",    &xs_cfg.audioChannels,        XS_CHN_STEREO },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_chn_autopan",    &xs_cfg.audioChannels,        XS_CHN_AUTOPAN },
-{ WTYPE_COMBO,    CTYPE_INT,    "cfg_samplerate",    &xs_cfg.audioFrequency,        XS_AUDIO_FREQ },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_oversample",    &xs_cfg.oversampleEnable,    0 },
-{ WTYPE_SPIN,    CTYPE_INT,    "cfg_oversample_factor",&xs_cfg.oversampleFactor,    0 },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_res_16bit",        &xs_cfg.audioBitsPerSample,     XS_RES_16BIT },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_res_8bit",         &xs_cfg.audioBitsPerSample,     XS_RES_8BIT },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_chn_mono",         &xs_cfg.audioChannels,          XS_CHN_MONO },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_chn_stereo",       &xs_cfg.audioChannels,          XS_CHN_STEREO },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_chn_autopan",      &xs_cfg.audioChannels,          XS_CHN_AUTOPAN },
+{ WTYPE_COMBO,  CTYPE_INT,      "cfg_samplerate",       &xs_cfg.audioFrequency,         XS_AUDIO_FREQ },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_oversample",       &xs_cfg.oversampleEnable,       0 },
+{ WTYPE_SPIN,   CTYPE_INT,      "cfg_oversample_factor",&xs_cfg.oversampleFactor,       0 },
 
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_sidplay1",    &xs_cfg.playerEngine,        XS_ENG_SIDPLAY1 },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_sidplay2",    &xs_cfg.playerEngine,        XS_ENG_SIDPLAY2 },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_mem_real",    &xs_cfg.memoryMode,        XS_MPU_REAL },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_mem_banksw",    &xs_cfg.memoryMode,        XS_MPU_BANK_SWITCHING },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_mem_transrom",    &xs_cfg.memoryMode,        XS_MPU_TRANSPARENT_ROM },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_mem_playsid",    &xs_cfg.memoryMode,        XS_MPU_PLAYSID_ENVIRONMENT },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_sidplay1",     &xs_cfg.playerEngine,           XS_ENG_SIDPLAY1 },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_sidplay2",     &xs_cfg.playerEngine,           XS_ENG_SIDPLAY2 },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_mem_real",     &xs_cfg.memoryMode,             XS_MPU_REAL },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_mem_banksw",   &xs_cfg.memoryMode,             XS_MPU_BANK_SWITCHING },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_mem_transrom", &xs_cfg.memoryMode,             XS_MPU_TRANSPARENT_ROM },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_mem_playsid",  &xs_cfg.memoryMode,             XS_MPU_PLAYSID_ENVIRONMENT },
 
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_emu_mos8580",    &xs_cfg.mos8580,        0 },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_emu_sid_force",    &xs_cfg.forceModel,        0 },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_clock_ntsc",    &xs_cfg.clockSpeed,        XS_CLOCK_NTSC },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_clock_pal",    &xs_cfg.clockSpeed,        XS_CLOCK_PAL },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_emu_clock_force",    &xs_cfg.forceSpeed,        0 },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_emu_sp2_opt",    &xs_cfg.sid2OptLevel,        0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_emu_mos8580",      &xs_cfg.mos8580,                0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_emu_sid_force",    &xs_cfg.forceModel,             0 },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_clock_ntsc",   &xs_cfg.clockSpeed,             XS_CLOCK_NTSC },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_clock_pal",    &xs_cfg.clockSpeed,             XS_CLOCK_PAL },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_emu_clock_force",  &xs_cfg.forceSpeed,             0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_emu_sp2_opt",      &xs_cfg.sid2OptLevel,           0 },
 
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_sp2_resid",    &xs_cfg.sid2Builder,        XS_BLD_RESID },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_emu_sp2_hardsid",    &xs_cfg.sid2Builder,        XS_BLD_HARDSID },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_sp2_resid",    &xs_cfg.sid2Builder,            XS_BLD_RESID },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_sp2_hardsid",  &xs_cfg.sid2Builder,            XS_BLD_HARDSID },
 
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_emu_filters",    &xs_cfg.emulateFilters,        0 },
-{ WTYPE_SCALE,    CTYPE_FLOAT,    "cfg_sp1_filter_fs",    &xs_cfg.sid1FilterFs,        0 },
-{ WTYPE_SCALE,    CTYPE_FLOAT,    "cfg_sp1_filter_fm",    &xs_cfg.sid1FilterFm,        0 },
-{ WTYPE_SCALE,    CTYPE_FLOAT,    "cfg_sp1_filter_ft",    &xs_cfg.sid1FilterFt,        0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_emu_filters",      &xs_cfg.emulateFilters,         0 },
+{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_fs",    &xs_cfg.sid1FilterFs,           0 },
+{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_fm",    &xs_cfg.sid1FilterFm,           0 },
+{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_ft",    &xs_cfg.sid1FilterFt,           0 },
 
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_maxtime_enable",    &xs_cfg.playMaxTimeEnable,    0 },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_maxtime_unknown",    &xs_cfg.playMaxTimeUnknown,    0 },
-{ WTYPE_SPIN,    CTYPE_INT,    "cfg_maxtime",        &xs_cfg.playMaxTime,        0 },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_mintime_enable",    &xs_cfg.playMinTimeEnable,    0 },
-{ WTYPE_SPIN,    CTYPE_INT,    "cfg_mintime",        &xs_cfg.playMinTime,        0 },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_sld_enable",    &xs_cfg.songlenDBEnable,    0 },
-{ WTYPE_TEXT,    CTYPE_STR,    "cfg_sld_dbpath",    &xs_cfg.songlenDBPath,        0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_maxtime_enable",   &xs_cfg.playMaxTimeEnable,      0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_maxtime_unknown",  &xs_cfg.playMaxTimeUnknown,     0 },
+{ WTYPE_SPIN,   CTYPE_INT,      "cfg_maxtime",          &xs_cfg.playMaxTime,            0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_mintime_enable",   &xs_cfg.playMinTimeEnable,      0 },
+{ WTYPE_SPIN,   CTYPE_INT,      "cfg_mintime",          &xs_cfg.playMinTime,            0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_sld_enable",       &xs_cfg.songlenDBEnable,        0 },
+{ WTYPE_TEXT,   CTYPE_STR,      "cfg_sld_dbpath",       &xs_cfg.songlenDBPath,          0 },
 
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_stil_enable",    &xs_cfg.stilDBEnable,        0 },
-{ WTYPE_TEXT,    CTYPE_STR,    "cfg_stil_dbpath",    &xs_cfg.stilDBPath,        0 },
-{ WTYPE_TEXT,    CTYPE_STR,    "cfg_hvsc_path",    &xs_cfg.hvscPath,        0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_stil_enable",      &xs_cfg.stilDBEnable,           0 },
+{ WTYPE_TEXT,   CTYPE_STR,      "cfg_stil_dbpath",      &xs_cfg.stilDBPath,             0 },
+{ WTYPE_TEXT,   CTYPE_STR,      "cfg_hvsc_path",        &xs_cfg.hvscPath,               0 },
 
 #ifndef AUDACIOUS_PLUGIN
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_subctrl_none",    &xs_cfg.subsongControl,        XS_SSC_NONE },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_subctrl_seek",    &xs_cfg.subsongControl,        XS_SSC_SEEK },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_subctrl_popup",    &xs_cfg.subsongControl,        XS_SSC_POPUP },
-{ WTYPE_BGROUP,    CTYPE_INT,    "cfg_subctrl_patch",    &xs_cfg.subsongControl,        XS_SSC_PATCH },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_subctrl_none",     &xs_cfg.subsongControl,         XS_SSC_NONE },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_subctrl_seek",     &xs_cfg.subsongControl,         XS_SSC_SEEK },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_subctrl_popup",    &xs_cfg.subsongControl,         XS_SSC_POPUP },
+{ WTYPE_BGROUP, CTYPE_INT,      "cfg_subctrl_patch",    &xs_cfg.subsongControl,         XS_SSC_PATCH },
 
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_detectmagic",    &xs_cfg.detectMagic,        0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_detectmagic",      &xs_cfg.detectMagic,            0 },
 #endif
 
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_ftitle_override",    &xs_cfg.titleOverride,        0 },
-{ WTYPE_TEXT,    CTYPE_STR,    "cfg_ftitle_format",    &xs_cfg.titleFormat,        0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_ftitle_override",  &xs_cfg.titleOverride,          0 },
+{ WTYPE_TEXT,   CTYPE_STR,      "cfg_ftitle_format",    &xs_cfg.titleFormat,            0 },
 
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_subauto_enable",    &xs_cfg.subAutoEnable,        0 },
-{ WTYPE_BUTTON,    CTYPE_BOOL,    "cfg_subauto_min_only",    &xs_cfg.subAutoMinOnly,        0 },
-{ WTYPE_SPIN,    CTYPE_INT,    "cfg_subauto_mintime",    &xs_cfg.subAutoMinTime,        0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_subauto_enable",   &xs_cfg.subAutoEnable,          0 },
+{ WTYPE_BUTTON, CTYPE_BOOL,     "cfg_subauto_min_only", &xs_cfg.subAutoMinOnly,         0 },
+{ WTYPE_SPIN,   CTYPE_INT,      "cfg_subauto_mintime",  &xs_cfg.subAutoMinTime,         0 },
 };
 
 static const gint xs_widtable_max = (sizeof(xs_widtable) / sizeof(t_xs_wid_item));

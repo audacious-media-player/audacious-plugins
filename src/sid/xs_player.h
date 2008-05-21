@@ -16,7 +16,7 @@ typedef struct {
     gboolean    (*plrInit)(struct xs_status_t *);
     void        (*plrClose)(struct xs_status_t *);
     gboolean    (*plrInitSong)(struct xs_status_t *);
-    guint        (*plrFillBuffer)(struct xs_status_t *, gchar *, guint);
+    guint       (*plrFillBuffer)(struct xs_status_t *, gchar *, guint);
     gboolean    (*plrLoadSID)(struct xs_status_t *, gchar *);
     void        (*plrDeleteSID)(struct xs_status_t *);
     xs_tuneinfo_t*    (*plrGetSIDInfo)(const gchar *);
@@ -26,22 +26,24 @@ typedef struct {
 
 
 typedef struct xs_status_t {
-    gint        audioFrequency,        /* Audio settings */
-            audioChannels,
-            audioBitsPerSample,
-            oversampleFactor;    /* Factor of oversampling */
-    AFormat        audioFormat;
-    gboolean    oversampleEnable;    /* TRUE after sidEngine initialization,
-                        if xs_cfg.oversampleEnable == TRUE and
-                        emulation backend supports oversampling.
-                        */
-    void        *sidEngine;        /* SID-emulation internal engine data */
-    xs_player_t    *sidPlayer;        /* Selected player engine */
-    gboolean    isError, isPlaying, isInitialized;
-    gint        currSong,        /* Current sub-tune */
-            lastTime;
+    gint        audioFrequency,     /* Audio settings */
+                audioChannels,
+                audioBitsPerSample,
+                oversampleFactor;   /* Factor of oversampling */
+    AFormat     audioFormat;
+    gboolean    oversampleEnable;   /* TRUE after sidEngine initialization,
+                                    if xs_cfg.oversampleEnable == TRUE and
+                                    emulation backend supports oversampling.
+                                    */
+    void        *sidEngine;         /* SID-emulation internal engine data */
+    xs_player_t *sidPlayer;         /* Selected player engine */
+    gboolean    isError,
+                isPlaying,
+                isInitialized;
+    gint        currSong,           /* Current sub-tune */
+                lastTime;
 
-    xs_tuneinfo_t    *tuneInfo;
+    xs_tuneinfo_t *tuneInfo;
 } xs_status_t;
 
 

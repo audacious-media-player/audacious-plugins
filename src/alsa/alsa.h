@@ -25,7 +25,6 @@
 
 #include "config.h"
 
-#include <audacious/util.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 

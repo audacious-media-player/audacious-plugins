@@ -1,4 +1,3 @@
-#include <audacious/util.h>
 
 #include <glib.h>
 #include <audacious/i18n.h>
@@ -8,7 +7,6 @@
 #include <string.h>
 #include "settings.h"
 #include "config.h"
-#include "md5.h"
 
 void about_show(void)
 {

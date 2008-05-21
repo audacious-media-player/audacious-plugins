@@ -24,7 +24,6 @@
 #include <gtk/gtk.h>
 #include <math.h>
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include <audacious/i18n.h>
 
 #include "logo.xpm"
