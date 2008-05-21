@@ -35,7 +35,10 @@ skins_cfg_t skins_default_config = {
     .sticky = FALSE,
     .scale_factor = 2.0,
     .always_show_cb = TRUE,
+    .close_dialog_open = TRUE,
+    .close_dialog_add = TRUE,
     .skin = NULL,
+    .filesel_path = NULL,
     .playlist_visible = FALSE,
     .equalizer_visible = FALSE,
     .player_visible = TRUE,
@@ -78,6 +81,7 @@ skins_cfg_t skins_default_config = {
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
     .eq_scaled_linked = TRUE,
+    .use_xmms_style_fileselector = FALSE,
 };
 
 typedef struct skins_cfg_boolent_t {
