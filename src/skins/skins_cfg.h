@@ -73,6 +73,7 @@ typedef struct {
     gboolean mainwin_use_bitmapfont;
     gboolean eq_scaled_linked;
     gboolean use_xmms_style_fileselector;
+    gboolean show_numbers_in_pl, show_separator_in_pl;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

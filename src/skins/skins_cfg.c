@@ -82,6 +82,8 @@ skins_cfg_t skins_default_config = {
     .mainwin_use_bitmapfont = TRUE,
     .eq_scaled_linked = TRUE,
     .use_xmms_style_fileselector = FALSE,
+    .show_numbers_in_pl = TRUE,
+    .show_separator_in_pl = TRUE,
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -116,6 +118,8 @@ static skins_cfg_boolent skins_boolents[] = {
     {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
     {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
     {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
+    {"show_numbers_in_pl", &config.show_numbers_in_pl, TRUE},
+    {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);

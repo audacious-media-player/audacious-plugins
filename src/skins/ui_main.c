@@ -54,6 +54,7 @@
 #include "actions-mainwin.h"
 #include "ui_manager.h"
 #include "ui_equalizer.h"
+#include "ui_playlist.h"
 #if 0
 #include "configdb.h"
 #include "dnd.h"
@@ -69,7 +70,6 @@
 #include "ui_hints.h"
 #include "ui_jumptotrack.h"
 #include "ui_main_evlisteners.h"
-#include "ui_playlist.h"
 #include "ui_preferences.h"
 #include "ui_skinselector.h"
 #include "ui_urlopener.h"
@@ -85,9 +85,7 @@
 #include "ui_skinned_menurow.h"
 #include "ui_skinned_playstatus.h"
 #include "ui_skinned_monostereo.h"
-#if 0
 #include "ui_skinned_playlist.h"
-#endif
 #include <audacious/plugin.h>
 #include "skins_cfg.h"
 
@@ -893,14 +891,12 @@ mainwin_keypress(GtkWidget * grab_widget,
             mainwin_minimize_cb();
             break;
         case GDK_Tab:
-#if 0
             if (event->state & GDK_CONTROL_MASK) {
                 if (config.equalizer_visible)
                     gtk_window_present(GTK_WINDOW(equalizerwin));
                 else if (config.playlist_visible)
                     gtk_window_present(GTK_WINDOW(playlistwin));
             }
-#endif
             break;
         case GDK_c:
             if (event->state & GDK_CONTROL_MASK) {
@@ -1446,12 +1442,10 @@ mainwin_eq_pushed(gboolean toggled)
 void
 mainwin_pl_pushed(gboolean toggled)
 {
-#if 0
     if (toggled)
         playlistwin_show();
     else
         playlistwin_hide();
-#endif
 }
 
 gint
