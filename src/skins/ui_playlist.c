@@ -182,6 +182,7 @@ playlistwin_update_info(Playlist *playlist)
 static void
 playlistwin_update_sinfo(Playlist *playlist)
 {
+#if 0
     gchar *posstr, *timestr, *title, *info;
     gint pos, time;
 
@@ -217,6 +218,7 @@ playlistwin_update_sinfo(Playlist *playlist)
 
     ui_skinned_textbox_set_text(playlistwin_sinfo, info ? info : "");
     g_free(info);
+#endif
 }
 
 gboolean
