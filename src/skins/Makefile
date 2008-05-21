@@ -17,6 +17,7 @@ SRCS = plugin.c \
        ui_skinned_number.c \
        ui_skinned_horizontal_slider.c \
        ui_skinned_equalizer_graph.c \
+       ui_skinned_equalizer_slider.c \
        ui_main.c \
        ui_main_evlisteners.c \
        ui_manager.c \
