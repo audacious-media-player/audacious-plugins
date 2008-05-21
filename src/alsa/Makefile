@@ -3,8 +3,7 @@ PLUGIN = ALSA${PLUGIN_SUFFIX}
 SRCS = alsa.c		\
        about.c		\
        audio.c		\
-       configure.c	\
-       init.c
+       configure.c
 
 include ../../buildsys.mk
 include ../../extra.mk
