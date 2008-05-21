@@ -7,7 +7,6 @@
 #include <string.h>
 #include "settings.h"
 #include "config.h"
-#include "md5.h"
 
 void about_show(void)
 {

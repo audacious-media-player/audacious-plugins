@@ -3,7 +3,6 @@ PLUGIN = scrobbler${PLUGIN_SUFFIX}
 SRCS = fmt.c			\
        configure.c		\
        gtkstuff.c		\
-       md5.c			\
        scrobbler.c		\
        gerpok.c			\
        plugin.c
