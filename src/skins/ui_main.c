@@ -625,12 +625,9 @@ mainwin_set_song_info(gint bitrate,
                       gint frequency,
                       gint n_channels)
 {
-#if 0
     gchar *text;
     gchar *title;
     Playlist *playlist = aud_playlist_get_active();
-
-    playback_set_sample_params(bitrate, frequency, n_channels);
 
     GDK_THREADS_ENTER();
     if (bitrate != -1) {
@@ -676,11 +673,10 @@ mainwin_set_song_info(gint bitrate,
         g_free(text);
     }
 
-    title = playlist_get_info_text(playlist);
+    title = aud_playlist_get_info_text(playlist);
     mainwin_set_song_title(title);
     g_free(title);
     GDK_THREADS_LEAVE();
-#endif
 }
 
 void

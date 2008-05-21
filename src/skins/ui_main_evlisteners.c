@@ -107,14 +107,6 @@ ui_main_evlistener_volume_change(gpointer hook_data, gpointer user_data)
 }
 
 static void
-ui_main_evlistener_playback_initiate(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    playback_initiate();
-#endif
-}
-
-static void
 ui_main_evlistener_playback_begin(gpointer hook_data, gpointer user_data)
 {
 
@@ -324,24 +316,21 @@ ui_main_evlistener_config_save(gpointer hook_data, gpointer user_data)
 void
 ui_main_evlistener_init(void)
 {
-#if 0
     aud_hook_associate("title change", ui_main_evlistener_title_change, NULL);
     aud_hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
     aud_hook_associate("volume set", ui_main_evlistener_volume_change, NULL);
-    aud_hook_associate("playback initiate", ui_main_evlistener_playback_initiate, NULL);
-#endif
     aud_hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
     aud_hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     aud_hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     aud_hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     aud_hook_associate("playback seek", ui_main_evlistener_playback_seek, NULL);
-#if 0
     aud_hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     aud_hook_associate("playlist end reached", ui_main_evlistener_playlist_end_reached, NULL);
     aud_hook_associate("playlist info change", ui_main_evlistener_playlist_info_change, NULL);
     aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
+#if 0
     aud_hook_associate("prefswin show", ui_main_evlistener_prefswin_show, NULL);
     aud_hook_associate("aboutwin show", ui_main_evlistener_aboutwin_show, NULL);
     aud_hook_associate("ui jump to track show", ui_main_evlistener_ui_jump_to_track_show, NULL);
