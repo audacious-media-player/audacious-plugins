@@ -24,10 +24,11 @@
 #include <glib.h>
 #include <audacious/plugin.h>
 #include "skins_cfg.h"
+#include "ui_main.h"
+#include "ui_equalizer.h"
 
 #define PACKAGE_NAME "audacious-plugins"
 #define DATA_DIR "/usr/local/share/audacious/"
-extern GtkWidget *mainwin;
 
 void skins_init(void);
 void skins_cleanup(void);

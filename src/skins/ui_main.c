@@ -53,6 +53,7 @@
 #include "icons-stock.h"
 #include "actions-mainwin.h"
 #include "ui_manager.h"
+#include "ui_equalizer.h"
 #if 0
 #include "configdb.h"
 #include "dnd.h"
@@ -64,7 +65,6 @@
 #include "strings.h"
 #include "ui_credits.h"
 #include "ui_dock.h"
-#include "ui_equalizer.h"
 #include "ui_fileinfo.h"
 #include "ui_fileopener.h"
 #include "ui_hints.h"
@@ -352,7 +352,11 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 static void
 mainwin_destroy(GtkWidget * widget, gpointer data)
 {
+/* we should detect whether plugin got unloaded and when user indeed
+   wants to close audacious */
+#if 0
     mainwin_quit_cb();
+#endif
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -1445,9 +1449,7 @@ void mainwin_playlist_pushed_cb(void) {
 void
 mainwin_eq_pushed(gboolean toggled)
 {
-#if 0
     equalizerwin_show(toggled);
-#endif
 }
 
 void
@@ -1535,7 +1537,7 @@ mainwin_position_release_cb(GtkWidget *widget, gint pos)
 {
     gint length, time;
 
-    length = aud_playlist_get_current_length(aud_playlist_get_active()) / 1000;
+    length = audacious_drct_get_length();
     time = (length * pos) / 219;
     audacious_drct_seek(time);
     mainwin_release_info_text();
@@ -1619,9 +1621,7 @@ mainwin_volume_motion_cb(GtkWidget *widget, gint pos)
 
     gint vol = (pos * 100) / 51;
     mainwin_adjust_volume_motion(vol);
-#if 0
     equalizerwin_set_volume_slider(vol);
-#endif
 }
 
 gboolean
@@ -1642,9 +1642,7 @@ mainwin_balance_motion_cb(GtkWidget *widget, gint pos)
 {
     gint bal = ((pos - 12) * 100) / 12;
     mainwin_adjust_balance_motion(bal);
-#if 0
     equalizerwin_set_balance_slider(bal);
-#endif
 }
 
 void
@@ -1664,9 +1662,8 @@ mainwin_set_volume_diff(gint diff)
 
     mainwin_adjust_volume_motion(vol);
     mainwin_set_volume_slider(vol);
-#if 0
     equalizerwin_set_volume_slider(vol);
-#endif
+
     if (mainwin_volume_release_timeout)
         g_source_remove(mainwin_volume_release_timeout);
     mainwin_volume_release_timeout =
@@ -1680,9 +1677,7 @@ mainwin_set_balance_diff(gint diff)
     b = CLAMP(balance + diff, -100, 100);
     mainwin_adjust_balance_motion(b);
     mainwin_set_balance_slider(b);
-#if 0
     equalizerwin_set_balance_slider(b);
-#endif
 }
 
 void
@@ -1783,10 +1778,9 @@ set_scaled(gboolean scaled)
     config.scaled = scaled;
 
     mainwin_set_scaled(scaled);
-#if 0
+
     if (config.eq_scaled_linked)
         equalizerwin_set_scaled(scaled);
-#endif
 }
 
 
@@ -1827,13 +1821,14 @@ mainwin_general_menu_callback(gpointer data,
             else
                 playlistwin_hide();
             break;
+#endif
         case MAINWIN_GENERAL_SHOWEQWIN:
             if (GTK_CHECK_MENU_ITEM(item)->active)
                 equalizerwin_real_show();
             else
                 equalizerwin_real_hide();
             break;
-#endif
+
         case MAINWIN_GENERAL_PREV:
             aud_playlist_prev(playlist);
             break;
@@ -2023,13 +2018,9 @@ ui_main_set_initial_volume(void)
         b = 0;
 
     mainwin_set_volume_slider(v);
-#if 0
     equalizerwin_set_volume_slider(v);
-#endif
     mainwin_set_balance_slider(b);
-#if 0
     equalizerwin_set_balance_slider(b);
-#endif
 }
 
 static void
@@ -2701,9 +2692,7 @@ action_view_on_all_workspaces( GtkToggleAction * action )
 void
 action_roll_up_equalizer( GtkToggleAction * action )
 {
-#if 0
     equalizerwin_set_shade_menu_cb(gtk_toggle_action_get_active(action));
-#endif
 }
 
 void
@@ -2723,12 +2712,10 @@ action_roll_up_playlist_editor( GtkToggleAction * action )
 void
 action_show_equalizer( GtkToggleAction * action )
 {
-#if 0
     if (gtk_toggle_action_get_active(action))
         equalizerwin_real_show();
     else
         equalizerwin_real_hide();
-#endif
 }
 
 void

@@ -77,6 +77,7 @@ skins_cfg_t skins_default_config = {
     .analyzer_peaks = TRUE,
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
+    .eq_scaled_linked = TRUE,
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -110,6 +111,7 @@ static skins_cfg_boolent skins_boolents[] = {
     {"warn_about_win_visibility", &config.warn_about_win_visibility, TRUE},
     {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
     {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
+    {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
