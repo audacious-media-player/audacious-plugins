@@ -55,6 +55,7 @@
 #include "ui_manager.h"
 #include "ui_equalizer.h"
 #include "ui_playlist.h"
+#include "ui_hints.h"
 #if 0
 #include "configdb.h"
 #include "dnd.h"
@@ -67,7 +68,6 @@
 #include "ui_credits.h"
 #include "ui_dock.h"
 #include "ui_fileinfo.h"
-#include "ui_hints.h"
 #include "ui_jumptotrack.h"
 #include "ui_main_evlisteners.h"
 #include "ui_preferences.h"
@@ -2638,9 +2638,7 @@ action_view_always_on_top( GtkToggleAction * action )
     UI_SKINNED_MENUROW(mainwin_menurow)->always_selected = gtk_toggle_action_get_active( action );
     config.always_on_top = UI_SKINNED_MENUROW(mainwin_menurow)->always_selected;
     gtk_widget_queue_draw(mainwin_menurow);
-#if 0
     hint_set_always(config.always_on_top);
-#endif
 }
 
 void
@@ -2661,10 +2659,8 @@ action_view_easymove( GtkToggleAction * action )
 void
 action_view_on_all_workspaces( GtkToggleAction * action )
 {
-#if 0
     config.sticky = gtk_toggle_action_get_active( action );
     hint_set_sticky(config.sticky);
-#endif
 }
 
 void
@@ -2682,9 +2678,7 @@ action_roll_up_player( GtkToggleAction * action )
 void
 action_roll_up_playlist_editor( GtkToggleAction * action )
 {
-#if 0
     playlistwin_set_shade(gtk_toggle_action_get_active(action));
-#endif
 }
 
 void
@@ -2699,12 +2693,10 @@ action_show_equalizer( GtkToggleAction * action )
 void
 action_show_playlist_editor( GtkToggleAction * action )
 {
-#if 0
     if (gtk_toggle_action_get_active(action))
         playlistwin_show();
     else
         playlistwin_hide();
-#endif
 }
 
 void

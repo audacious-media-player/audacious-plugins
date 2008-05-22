@@ -27,6 +27,7 @@ SRCS = plugin.c \
        ui_main_evlisteners.c \
        ui_playlist_evlisteners.c \
        ui_manager.c \
+       ui_hints.c \
        icons-stock.c
 
 include ../../buildsys.mk
