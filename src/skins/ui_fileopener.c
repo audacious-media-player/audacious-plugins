@@ -28,9 +28,7 @@
 #include <audacious/playback.h>
 #include <audacious/playlist.h>
 #include <audacious/strings.h>
-#if 0
 #include "ui_playlist.h"
-#endif
 #include "skins_cfg.h"
 
 static void
@@ -48,14 +46,12 @@ filebrowser_add_files(GtkFileChooser * browser,
             aud_playlist_add_dir(playlist, filename ? filename : (const gchar *) cur->data);
         } else {
             aud_playlist_add(playlist, filename ? filename : (const gchar *) cur->data);
-        }       
+        }
 
         g_free(filename);
-    } 
+    }
 
-#if 0
     playlistwin_update_list(playlist);
-#endif
 
     ptr = gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(browser));
 
@@ -87,10 +83,8 @@ action_button_cb(GtkWidget *widget, gpointer data)
     g_slist_foreach(files, (GFunc) g_free, NULL);
     g_slist_free(files);
 
-#if 0
     if (play_button)
-        playback_initiate();
-#endif
+        audacious_drct_initiate();
 
     if (config.close_dialog_open)
         gtk_widget_destroy(window);
@@ -290,15 +284,12 @@ static void filebrowser_add_files_classic(gchar ** files,
     char *ptr;
     Playlist *playlist = aud_playlist_get_active();
 
-
     while (files[ctr] != NULL) {
         gchar *filename = g_filename_to_uri((const gchar *) files[ctr++], NULL, NULL);
         aud_playlist_add(playlist, filename);
         g_free(filename);
     }
-#if 0
     playlistwin_update_list(playlist);
-#endif
 
     gtk_label_get(GTK_LABEL(GTK_BIN(filesel->history_pulldown)->child),
           &ptr);
@@ -329,9 +320,8 @@ static void filebrowser_play_classic(GtkWidget * w, GtkWidget * filesel)
     files = gtk_file_selection_get_selections(GTK_FILE_SELECTION(filesel));
     filebrowser_add_files_classic(files, GTK_FILE_SELECTION(filesel));
     gtk_widget_destroy(filesel);
-#if 0
-    playback_initiate();
-#endif
+
+    audacious_drct_initiate();
 }
 
 static void filebrowser_add_selected_files_classic(GtkWidget * w, gpointer data)

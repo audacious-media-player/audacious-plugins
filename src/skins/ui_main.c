@@ -1117,15 +1117,14 @@ on_add_url_ok_clicked(GtkWidget * widget,
                       GtkWidget * entry)
 {
     Playlist *playlist = aud_playlist_get_active();
-#if 0
+
     const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
     if (text && *text)
     {
         aud_playlist_clear(playlist);
         aud_playlist_add_url(playlist, text);
-        playback_initiate();
+        audacious_drct_initiate();
     }
-#endif
 }
 
 static void
@@ -1289,9 +1288,7 @@ check_set( GtkActionGroup * action_group ,
 void
 mainwin_eject_pushed(void)
 {
-#if 0
     run_filebrowser(PLAY_BUTTON);
-#endif
 }
 
 void
@@ -1778,15 +1775,18 @@ mainwin_general_menu_callback(gpointer data,
         case MAINWIN_GENERAL_ABOUT:
             show_about_window();
             break;
+#endif
         case MAINWIN_GENERAL_PLAYFILE:
             run_filebrowser(NO_PLAY_BUTTON);
             break;
         case MAINWIN_GENERAL_PLAYLOCATION:
             mainwin_show_add_url_window();
             break;
+#if 0
         case MAINWIN_GENERAL_FILEINFO:
             ui_fileinfo_show_current(playlist);
             break;
+#endif
         case MAINWIN_GENERAL_FOCUSPLWIN:
             gtk_window_present(GTK_WINDOW(playlistwin));
             break;
@@ -1799,14 +1799,12 @@ mainwin_general_menu_callback(gpointer data,
             else
                 playlistwin_hide();
             break;
-#endif
         case MAINWIN_GENERAL_SHOWEQWIN:
             if (GTK_CHECK_MENU_ITEM(item)->active)
                 equalizerwin_real_show();
             else
                 equalizerwin_real_hide();
             break;
-
         case MAINWIN_GENERAL_PREV:
             aud_playlist_prev(playlist);
             break;
@@ -2598,9 +2596,7 @@ void
 action_autoscroll_songname( GtkToggleAction * action )
 {
     mainwin_set_title_scroll(gtk_toggle_action_get_active(action));
-#if 0
     playlistwin_set_sinfo_scroll(config.autoscroll); /* propagate scroll setting to playlistwin_sinfo */
-#endif
 }
 
 void
@@ -2782,9 +2778,7 @@ action_about_audacious( void )
 void
 action_play_file( void )
 {
-#if 0
     run_filebrowser(PLAY_BUTTON);
-#endif
 }
 
 void
