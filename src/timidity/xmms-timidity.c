@@ -19,7 +19,6 @@
 
 #include "config.h"
 
-#include <audacious/util.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>

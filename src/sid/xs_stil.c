@@ -228,7 +228,7 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *dbFilename)
                     if (subEntry < 1) {
                         XS_STILDB_ERR(lineNum, tmpLine,
                             "Number of subEntry (%i) for '%s' is invalid\n",
-                            subEntry, tmnode->filename);
+                            subEntry, tmnode ? tmnode->filename : "");
                         subEntry = 0;
                     }
                 } else {

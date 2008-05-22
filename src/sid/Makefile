@@ -4,7 +4,6 @@ SRCS = xs_init.c	\
        xs_about.c	\
        xs_support.c	\
        xs_config.c	\
-       xs_md5.c		\
        xs_length.c	\
        xs_genui.c	\
        xs_glade.c	\
@@ -26,4 +25,4 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -D_REENTRANT -I../.. -DAUDACIOUS_PLUGIN ${MOWGLI_CFLAGS} ${SIDPLAY1_CFLAGS} ${SIDPLAY2_CFLAGS} ${BUILDERS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}
-LIBS += ${BUILDERS_LDFLAGS} ${SIDPLAY1_LIBS} ${SIDPLAY2_LIBS} ${BUILDERS_LIBS} ${GTK_LIBS} ${GLIB_LIBS} -lstdc++
+LIBS += ${BUILDERS_LDFLAGS} ${SIDPLAY1_LIBS} ${SIDPLAY2_LIBS} ${BUILDERS_LIBS} ${GTK_LIBS} ${GLIB_LIBS} -lstdc++ -laudutil

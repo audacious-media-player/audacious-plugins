@@ -8,13 +8,11 @@
 #include <curl/curl.h>
 #include <stdio.h>
 #include "fmt.h"
-#include "md5.h"
 #include "scrobbler.h"
 #include "config.h"
 #include <glib.h>
-
 #include <audacious/plugin.h>
-#include <audacious/util.h>
+#include <audacious/audutil.h>
 
 #define SCROBBLER_HS_URL "http://post.gerpok.com"
 #define SCROBBLER_CLI_ID "aud"
@@ -446,17 +444,17 @@ static int gerpok_sc_handshake(void)
 	}
 
 	if (gerpok_sc_challenge_hash != NULL) {
-		md5_state_t md5state;
+		aud_md5state_t md5state;
 		unsigned char md5pword[16];
 		
-		md5_init(&md5state);
+		aud_md5_init(&md5state);
 		/*pdebug(fmt_vastr("Pass Hash: %s", gerpok_sc_password), DEBUG);*/
-		md5_append(&md5state, (unsigned const char *)gerpok_sc_password,
+		aud_md5_append(&md5state, (unsigned const char *)gerpok_sc_password,
 				strlen(gerpok_sc_password));
 		/*pdebug(fmt_vastr("Challenge Hash: %s", gerpok_sc_challenge_hash), DEBUG);*/
-		md5_append(&md5state, (unsigned const char *)gerpok_sc_challenge_hash,
+		aud_md5_append(&md5state, (unsigned const char *)gerpok_sc_challenge_hash,
 				strlen(gerpok_sc_challenge_hash));
-		md5_finish(&md5state, md5pword);
+		aud_md5_finish(&md5state, md5pword);
 		hexify((char*)md5pword, sizeof(md5pword));
 		/*pdebug(fmt_vastr("Response Hash: %s", gerpok_sc_response_hash), DEBUG);*/
 	}

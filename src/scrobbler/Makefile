@@ -3,7 +3,6 @@ PLUGIN = scrobbler${PLUGIN_SUFFIX}
 SRCS = fmt.c			\
        configure.c		\
        gtkstuff.c		\
-       md5.c			\
        scrobbler.c		\
        gerpok.c			\
        plugin.c
@@ -20,4 +19,4 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  ${BEEP_DEFINES} ${CURL_CFLAGS} -I../..
-LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${CURL_LIBS} ${MUSICBRAINZ_LIBS} ${MOWGLI_LIBS}
+LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${CURL_LIBS} ${MUSICBRAINZ_LIBS} ${MOWGLI_LIBS} -laudutil

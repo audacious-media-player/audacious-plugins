@@ -49,7 +49,6 @@
 #include <audacious/i18n.h>
 #include <audacious/output.h>
 #include <audacious/ui_plugin_menu.h>
-#include <audacious/util.h>
 
 #include "cdaudio-ng.h"
 #include "configure.h"

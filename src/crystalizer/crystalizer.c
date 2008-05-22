@@ -21,19 +21,20 @@
 
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
-#include <audacious/util.h>
 #include <audacious/plugin.h>
 
 static void init(void);
 static void configure(void);
 static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch);
+static void query_format(AFormat * fmt, gint * rate, gint * nch);
 
 EffectPlugin crystalizer_ep =
 {
 	.description = "Crystalizer", /* Description */
 	.init = init,
 	.configure = configure,
-	.mod_samples = mod_samples
+	.mod_samples = mod_samples,
+	.query_format = query_format
 };
 
 static GtkWidget *conf_dialog = NULL;
@@ -136,6 +137,14 @@ static void configure(void)
 	gtk_widget_show(bbox);
 
 	gtk_widget_show(conf_dialog);
+}
+
+static void query_format(AFormat * fmt, gint * rate, gint * nch)
+{
+	if (!(*fmt == FMT_S16_NE ||
+	      (*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
+	      (*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
+		*fmt = FMT_S16_NE;
 }
 
 static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch)

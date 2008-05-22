@@ -10,7 +10,6 @@
 #include <audacious/plugin.h>
 #include <audacious/ui_preferences.h>
 #include <audacious/hook.h>
-#include <audacious/strings.h>
 
 #include <unistd.h>
 #include <stdio.h>

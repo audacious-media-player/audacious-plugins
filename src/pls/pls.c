@@ -33,9 +33,7 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
-#include <audacious/util.h>
 #include <audacious/plugin.h>
-#include <audacious/strings.h>
 
 static void
 playlist_load_pls(const gchar * filename, gint pos)

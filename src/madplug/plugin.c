@@ -28,7 +28,6 @@
 #include <math.h>
 
 #include <gtk/gtk.h>
-#include <audacious/util.h>
 #include <stdarg.h>
 #include <fcntl.h>
 #include <sys/stat.h>

@@ -18,7 +18,6 @@
 
 #include "config.h"
 #include <audacious/plugin.h>
-#include <audacious/strings.h>
 #include <stdio.h>
 
 #include <unistd.h>

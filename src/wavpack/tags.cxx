@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <wchar.h>
-#include <audacious/util.h>
 #include <audacious/plugin.h>
 #include "tags.h"
 

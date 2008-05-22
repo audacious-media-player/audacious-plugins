@@ -20,7 +20,6 @@
 #include <glib.h>
 
 #include "sun.h"
-#include <audacious/util.h>
 #include <audacious/i18n.h>
 
 void sun_about(void)

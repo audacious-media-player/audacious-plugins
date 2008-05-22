@@ -3,7 +3,6 @@
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-#include <audacious/util.h>
 #include "echo.h"
 
 static const char *echo_about_text =
