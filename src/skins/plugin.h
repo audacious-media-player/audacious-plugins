@@ -28,7 +28,6 @@
 #include "ui_equalizer.h"
 
 #define PACKAGE_NAME "audacious-plugins"
-#define DATA_DIR "/usr/local/share/audacious/"
 
 void skins_init(void);
 void skins_cleanup(void);
