@@ -40,8 +40,8 @@
 #include <errno.h>
 
 #include "actions-playlist.h"
-#if 0
 #include "dnd.h"
+#if 0
 #include "input.h"
 #include "main.h"
 #include "playback.h"
@@ -1549,9 +1549,9 @@ playlistwin_create_window(void)
                      G_CALLBACK(playlistwin_scrolled), NULL);
     g_signal_connect(playlistwin, "motion_notify_event",
                      G_CALLBACK(playlistwin_motion), NULL);
-#if 0
+
     aud_drag_dest_set(playlistwin);
-#endif
+
     /* DnD stuff */
     g_signal_connect(playlistwin, "drag-leave",
                      G_CALLBACK(playlistwin_drag_end), NULL);

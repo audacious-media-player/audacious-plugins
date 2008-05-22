@@ -56,9 +56,9 @@
 #include "ui_equalizer.h"
 #include "ui_playlist.h"
 #include "ui_hints.h"
+#include "dnd.h"
 #if 0
 #include "configdb.h"
-#include "dnd.h"
 #include "input.h"
 #include "main.h"
 #include "playback.h"
@@ -901,8 +901,8 @@ mainwin_keypress(GtkWidget * grab_widget,
         case GDK_c:
             if (event->state & GDK_CONTROL_MASK) {
                 Playlist *playlist = aud_playlist_get_active();
-                gint pos = playlist_get_position(playlist);
-                gchar *title = playlist_get_songtitle(playlist, pos);
+                gint pos = aud_playlist_get_position(playlist);
+                gchar *title = aud_playlist_get_songtitle(playlist, pos);
 
                 if (title != NULL) {
                     GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
@@ -1065,12 +1065,11 @@ mainwin_drag_data_received(GtkWidget * widget,
                            guint time,
                            gpointer user_data)
 {
-#if 0
     Playlist *playlist = aud_playlist_get_active();
 
     g_return_if_fail(selection_data != NULL);
     g_return_if_fail(selection_data->data != NULL);
-
+#if 0
     if (aud_str_has_prefix_nocase((gchar *) selection_data->data, "fonts:///"))
     {
         gchar *path = (gchar *) selection_data->data;
@@ -1096,11 +1095,10 @@ mainwin_drag_data_received(GtkWidget * widget,
             return;
         }
     }
-
+#endif
     aud_playlist_clear(playlist);
     aud_playlist_add_url(playlist, (gchar *) selection_data->data);
-    playback_initiate();
-#endif
+    audacious_drct_initiate();
 }
 
 static void
@@ -2442,12 +2440,12 @@ mainwin_create_window(void)
                      G_CALLBACK(mainwin_scrolled), NULL);
     g_signal_connect(mainwin, "button_release_event",
                      G_CALLBACK(mainwin_mouse_button_release), NULL);
-#if 0
+
     aud_drag_dest_set(mainwin);
 
     g_signal_connect(mainwin, "key_press_event",
                      G_CALLBACK(mainwin_keypress), NULL);
-#endif
+
     ui_main_evlistener_init();
 }
 
