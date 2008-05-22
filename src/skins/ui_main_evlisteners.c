@@ -49,6 +49,12 @@
 static gint song_info_timeout_source = 0;
 static gint update_vis_timeout_source = 0;
 
+typedef struct {
+    gint bitrate;
+    gint samplerate;
+    gint channels;
+} PlaylistEventInfoChange;
+
 /* XXX: there has to be a better way than polling here! */
 /* also: where should this function go? should it stay here? --mf0102 */
 static gboolean
@@ -68,9 +74,7 @@ ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
     gchar *text = (gchar *) hook_data;
 
     ui_skinned_textbox_set_text(mainwin_info, text);
-#if 0
-    playlistwin_update_list(playlist_get_active());
-#endif
+    playlistwin_update_list(aud_playlist_get_active());
 }
 
 static void
@@ -96,13 +100,9 @@ ui_main_evlistener_volume_change(gpointer hook_data, gpointer user_data)
         b = 0;
 
     mainwin_set_volume_slider(v);
-#if 0
     equalizerwin_set_volume_slider(v);
-#endif
     mainwin_set_balance_slider(b);
-#if 0
     equalizerwin_set_balance_slider(b);
-#endif
 }
 
 static void
@@ -201,11 +201,9 @@ ui_main_evlistener_playlist_end_reached(gpointer hook_data, gpointer user_data)
 static void
 ui_main_evlistener_playlist_info_change(gpointer hook_data, gpointer user_data)
 {
-#if 0
     PlaylistEventInfoChange *msg = (PlaylistEventInfoChange *) hook_data;
 
     mainwin_set_song_info(msg->bitrate, msg->samplerate, msg->channels);
-#endif
 }
 
 static void
@@ -225,10 +223,8 @@ ui_main_evlistener_mainwin_show(gpointer hook_data, gpointer user_data)
 static void
 ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
 {
-#if 0
     gboolean *show = (gboolean*)hook_data;
     equalizerwin_show(*show);
-#endif
 }
 
 static void

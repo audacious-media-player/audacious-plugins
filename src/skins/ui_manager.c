@@ -202,7 +202,7 @@ static GtkActionEntry action_entries_visualization[] = {
 	{ "anafoff", NULL, N_("Analyzer Falloff") },
 	{ "peafoff", NULL, N_("Peaks Falloff") }
 };
-#if 0
+
 static GtkActionEntry action_entries_playlist[] = {
 
 	{ "playlist", NULL, N_("Playlist") },
@@ -376,7 +376,7 @@ static GtkActionEntry action_entries_playlist_sort[] = {
 	  N_("Sorts the list by playlist entry."),
 	  G_CALLBACK(action_playlist_sort_selected_by_playlist_entry) },
 };
-#endif
+
 static GtkActionEntry action_entries_others[] = {
 
 	{ "dummy", NULL, "dummy" },
@@ -559,17 +559,17 @@ ui_manager_init ( void )
     gtk_action_group_add_actions(
     action_group_playback , action_entries_playback ,
     G_N_ELEMENTS(action_entries_playback) , NULL );
-#if 0
+
   action_group_playlist = ui_manager_new_action_group("action_playlist");
     gtk_action_group_add_actions(
     action_group_playlist , action_entries_playlist ,
     G_N_ELEMENTS(action_entries_playlist) , NULL );
-#endif
+
   action_group_visualization = ui_manager_new_action_group("action_visualization");
     gtk_action_group_add_actions(
     action_group_visualization , action_entries_visualization ,
     G_N_ELEMENTS(action_entries_visualization) , NULL );
-#if 0
+
   action_group_view = ui_manager_new_action_group("action_view");
     gtk_action_group_add_actions(
     action_group_view , action_entries_view ,
@@ -599,7 +599,7 @@ ui_manager_init ( void )
   gtk_action_group_add_actions(
     action_group_playlist_sort, action_entries_playlist_sort,
     G_N_ELEMENTS(action_entries_playlist_sort), NULL );
-#endif
+
   action_group_equalizer = ui_manager_new_action_group("action_equalizer");
   gtk_action_group_add_actions(
     action_group_equalizer, action_entries_equalizer,

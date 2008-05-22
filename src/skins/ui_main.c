@@ -680,16 +680,16 @@ mainwin_set_song_info(gint bitrate,
 void
 mainwin_clear_song_info(void)
 {
-#if 0
     if (!mainwin)
         return;
 
     /* clear title */
     mainwin_set_song_title(NULL);
 
+#if 0
     /* clear sampling parameters */
     playback_set_sample_params(0, 0, 0);
-
+#endif
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_position)->pressed = FALSE;
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->pressed = FALSE;
 
@@ -704,7 +704,7 @@ mainwin_clear_song_info(void)
     mainwin_refresh_visible();
 
     playlistwin_hide_timer();
-#endif
+
     ui_vis_clear_data(mainwin_vis);
     ui_svis_clear_data(mainwin_svis);
 }
@@ -1006,16 +1006,15 @@ mainwin_jump_to_time(void)
 
     /* FIXME: Disable display of current track length. It's not
        updated when track changes */
-#if 0
+
     label = gtk_label_new(_("Track length:"));
     gtk_box_pack_start(GTK_BOX(hbox_total), label, FALSE, FALSE, 5);
 
-    len = aud_playlist_get_current_length() / 1000;
+    gint len = aud_playlist_get_current_length(aud_playlist_get_active()) / 1000;
     g_snprintf(time_str, sizeof(time_str), "%u:%2.2u", len / 60, len % 60);
     label = gtk_label_new(time_str);
 
     gtk_box_pack_start(GTK_BOX(hbox_total), label, FALSE, FALSE, 10);
-#endif
 
     bbox = gtk_hbutton_box_new();
     gtk_box_pack_start(GTK_BOX(vbox), bbox, TRUE, TRUE, 0);
@@ -1416,9 +1415,7 @@ void mainwin_shuffle_pushed_cb(void) {
 void
 mainwin_repeat_pushed(gboolean toggled)
 {
-#if 0
     check_set( toggleaction_group_others , "playback repeat" , toggled );
-#endif
 }
 
 void mainwin_repeat_pushed_cb(void) {
@@ -1718,18 +1715,14 @@ void
 mainwin_set_stopaftersong(gboolean stop)
 {
     aud_cfg->stopaftersong = stop;
-#if 0
     check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
-#endif
 }
 
 void
 mainwin_set_noplaylistadvance(gboolean no_advance)
 {
     aud_cfg->no_playlist_advance = no_advance;
-#if 0
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
-#endif
 }
 
 static void
