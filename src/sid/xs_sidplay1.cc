@@ -52,11 +52,11 @@ extern "C" {
 
 /* Return song information
  */
-#define    TFUNCTION    xs_sidplay1_getinfo
-#define    TFUNCTION2    xs_sidplay1_updateinfo
-#define    TTUNEINFO    sidTuneInfo
-#define    TTUNE        sidTune
-#define TENGINE        xs_sidplay1_t
+#define TFUNCTION   xs_sidplay1_getinfo
+#define TFUNCTION2  xs_sidplay1_updateinfo
+#define TTUNEINFO   sidTuneInfo
+#define TTUNE       sidTune
+#define TENGINE     xs_sidplay1_t
 #include "xs_sidplay.h"
 
 

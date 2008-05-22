@@ -30,22 +30,50 @@
 
 
 #include <sidplay/sidplay2.h>
-#ifdef HAVE_RESID_BUILDER
-#include <sidplay/builders/resid.h>
-#endif
-#ifdef HAVE_HARDSID_BUILDER
-#include <sidplay/builders/hardsid.h>
+#ifdef HAVE_SIDPLAY2_COMI
+#  include <sidplay/sidlazyiptr.h>
 #endif
 
 
-typedef struct {
+class xs_sidplay2_t {
+public:
+#ifdef HAVE_SIDPLAY2_COMI
+    SidIPtr<ISidplay2> currEng;
+    SidLazyIPtr<ISidUnknown> currBuilder;
+#else
     sidplay2 *currEng;
     sidbuilder *currBuilder;
+#endif
     sid2_config_t currConfig;
     SidTune *currTune;
     guint8 *buf;
     size_t bufSize;
-} xs_sidplay2_t;
+    
+    xs_sidplay2_t(void);
+    virtual ~xs_sidplay2_t(void) { ; }
+};
+
+
+#ifdef HAVE_RESID_BUILDER
+#  include <sidplay/builders/resid.h>
+#endif
+#ifdef HAVE_HARDSID_BUILDER
+#  include <sidplay/builders/hardsid.h>
+#endif
+
+
+xs_sidplay2_t::xs_sidplay2_t(void)
+#ifdef HAVE_SIDPLAY2_COMI
+:currEng(sidplay2::create())
+#else
+:currEng(NULL)
+#endif
+{
+    buf = NULL;
+    bufSize = 0;
+    currTune = NULL;
+    currBuilder = NULL;    
+}
 
 
 /* We need to 'export' all this pseudo-C++ crap */
@@ -54,11 +82,11 @@ extern "C" {
 
 /* Return song information
  */
-#define TFUNCTION    xs_sidplay2_getinfo
-#define TFUNCTION2    xs_sidplay2_updateinfo
-#define TTUNEINFO    SidTuneInfo
-#define TTUNE        SidTune
-#define TENGINE        xs_sidplay2_t
+#define TFUNCTION   xs_sidplay2_getinfo
+#define TFUNCTION2  xs_sidplay2_updateinfo
+#define TTUNEINFO   SidTuneInfo
+#define TTUNE       SidTune
+#define TENGINE     xs_sidplay2_t
 #include "xs_sidplay.h"
 
 
@@ -91,12 +119,14 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
     assert(myStatus);
 
     /* Allocate internal structures */
-    myEngine = (xs_sidplay2_t *) g_malloc0(sizeof(xs_sidplay2_t));
+    myEngine = new xs_sidplay2_t();
     myStatus->sidEngine = myEngine;
     if (!myEngine) return FALSE;
 
     /* Initialize the engine */
+#ifndef HAVE_SIDPLAY2_COMI
     myEngine->currEng = new sidplay2;
+#endif
     if (!myEngine->currEng) {
         xs_error("[SIDPlay2] Could not initialize emulation engine.\n");
         return FALSE;
@@ -228,9 +258,16 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
     XSDEBUG("init builder #%i, maxsids=%i\n", xs_cfg.sid2Builder, (myEngine->currEng->info()).maxsids);
 #ifdef HAVE_RESID_BUILDER
     if (xs_cfg.sid2Builder == XS_BLD_RESID) {
+#ifdef HAVE_SIDPLAY2_COMI
+        myEngine->currBuilder = ReSIDBuilderCreate("");
+        SidLazyIPtr<IReSIDBuilder> rs(myEngine->currBuilder);
+        if (rs) {
+            myEngine->currConfig.sidEmulation = rs->iaggregate();
+#else
         ReSIDBuilder *rs = new ReSIDBuilder("ReSID builder");
         myEngine->currBuilder = (sidbuilder *) rs;
         if (rs) {
+#endif
             /* Builder object created, initialize it */
             rs->create((myEngine->currEng->info()).maxsids);
             if (!*rs) {
@@ -266,9 +303,16 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
 #endif
 #ifdef HAVE_HARDSID_BUILDER
     if (xs_cfg.sid2Builder == XS_BLD_HARDSID) {
+#ifdef HAVE_SIDPLAY2_COMI
+        myEngine->currBuilder = HardSIDBuilderCreate("");
+        SidLazyIPtr<IHardSIDBuilder> hs(myEngine->currBuilder);
+        if (hs) {
+            myEngine->currConfig.sidEmulation = hs->iaggregate();
+#else
         HardSIDBuilder *hs = new HardSIDBuilder("HardSID builder");
         myEngine->currBuilder = (sidbuilder *) hs;
         if (hs) {
+#endif
             /* Builder object created, initialize it */
             hs->create((myEngine->currEng->info()).maxsids);
             if (!*hs) {
@@ -290,8 +334,10 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
         return FALSE;
     }
 
+#ifndef HAVE_SIDPLAY2_COMI
+    myEngine->currConfig.sidEmulation = myEngine->currBuilder;
     XSDEBUG("%s\n", myEngine->currBuilder->credits());
-
+#endif
 
     /* Clockspeed settings */
     switch (xs_cfg.clockSpeed) {
@@ -311,7 +357,6 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
 
 
     /* Configure rest of the emulation */
-    myEngine->currConfig.sidEmulation = myEngine->currBuilder;
     
     if (xs_cfg.forceSpeed) { 
         myEngine->currConfig.clockForced = true;
@@ -374,14 +419,18 @@ void xs_sidplay2_close(xs_status_t * myStatus)
 
     /* Free internals */
     if (myEngine->currBuilder) {
+#ifndef HAVE_SIDPLAY2_COMI
         delete myEngine->currBuilder;
+#endif
         myEngine->currBuilder = NULL;
     }
 
+#ifndef HAVE_SIDPLAY2_COMI
     if (myEngine->currEng) {
         delete myEngine->currEng;
         myEngine->currEng = NULL;
     }
+#endif
 
     if (myEngine->currTune) {
         delete myEngine->currTune;
@@ -390,7 +439,7 @@ void xs_sidplay2_close(xs_status_t * myStatus)
 
     xs_sidplay2_delete(myStatus);
 
-    g_free(myEngine);
+    delete myEngine;
     myStatus->sidEngine = NULL;
 }
 
