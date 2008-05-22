@@ -25,6 +25,8 @@
 #include "ui_skinned_window.h"
 #include "ui_manager.h"
 #include "icons-stock.h"
+#include "ui_main_evlisteners.h"
+#include "ui_playlist_evlisteners.h"
 #include <audacious/i18n.h>
 #include <libintl.h>
 
@@ -64,6 +66,8 @@ void skins_init(void) {
 
 void skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
+        ui_main_evlistener_dissociate();
+        ui_playlist_evlistener_dissociate();
         skins_cfg_free();
         gtk_widget_destroy(mainwin);
         gtk_widget_destroy(equalizerwin);

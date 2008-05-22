@@ -2402,12 +2402,6 @@ mainwin_create_widgets(void)
 
     mainwin_stime_sec = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 147, 4, 10, FALSE, SKIN_TEXT);
     g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
-
-
-    aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
-    aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
-
-    aud_hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
 }
 
 static void

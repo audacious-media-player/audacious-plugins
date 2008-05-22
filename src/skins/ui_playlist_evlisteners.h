@@ -22,5 +22,6 @@
 #define AUDACIOUS_UI_PLAYLIST_EVLISTENERS_H
 
 void ui_playlist_evlistener_init(void);
+void ui_playlist_evlistener_dissociate(void);
 
 #endif /* AUDACIOUS_UI_PLAYLIST_EVLISTENERS_H */

@@ -55,3 +55,10 @@ void ui_playlist_evlistener_init(void)
     aud_hook_associate("playlist update", ui_playlist_evlistener_playlist_update, NULL);
     aud_hook_associate("playlistwin show", ui_playlist_evlistener_playlistwin_show, NULL);
 }
+
+void ui_playlist_evlistener_dissociate(void)
+{
+    aud_hook_dissociate("playlist update", ui_playlist_evlistener_playlist_update);
+    aud_hook_dissociate("playlistwin show", ui_playlist_evlistener_playlistwin_show);
+}
+

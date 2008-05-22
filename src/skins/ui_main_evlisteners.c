@@ -332,5 +332,42 @@ ui_main_evlistener_init(void)
 #endif
     aud_hook_associate("visualization timeout", ui_main_evlistener_visualization_timeout, NULL);
     aud_hook_associate("config save", ui_main_evlistener_config_save, NULL);
+
+    aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
+    aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
+
+    aud_hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
 }
 
+void
+ui_main_evlistener_dissociate(void)
+{
+    aud_hook_dissociate("title change", ui_main_evlistener_title_change);
+    aud_hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
+    aud_hook_dissociate("volume set", ui_main_evlistener_volume_change);
+    aud_hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
+    aud_hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
+    aud_hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
+    aud_hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
+    aud_hook_dissociate("playback seek", ui_main_evlistener_playback_seek);
+    aud_hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
+    aud_hook_dissociate("playlist end reached", ui_main_evlistener_playlist_end_reached);
+    aud_hook_dissociate("playlist info change", ui_main_evlistener_playlist_info_change);
+    aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
+    aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
+    aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
+#if 0
+    aud_hook_dissociate("prefswin show", ui_main_evlistener_prefswin_show);
+    aud_hook_dissociate("aboutwin show", ui_main_evlistener_aboutwin_show);
+    aud_hook_dissociate("ui jump to track show", ui_main_evlistener_ui_jump_to_track_show);
+    aud_hook_dissociate("filebrowser show", ui_main_evlistener_filebrowser_show);
+    aud_hook_dissociate("filebrowser hide", ui_main_evlistener_filebrowser_hide);
+#endif
+    aud_hook_dissociate("visualization timeout", ui_main_evlistener_visualization_timeout);
+    aud_hook_dissociate("config save", ui_main_evlistener_config_save);
+
+    aud_hook_dissociate("playback audio error", (void *) mainwin_stop_pushed);
+    aud_hook_dissociate("playback audio error", (void *) run_no_output_device_dialog);
+
+    aud_hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
+}
