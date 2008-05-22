@@ -53,8 +53,8 @@
 #include "ui_equalizer.h"
 #if 0
 #include "ui_fileinfo.h"
-#include "ui_fileopener.h"
 #endif
+#include "ui_fileopener.h"
 #include "ui_main.h"
 #include "ui_manager.h"
 #include "ui_playlist_evlisteners.h"
@@ -138,7 +138,8 @@ playlistwin_get_height(void)
 static void
 playlistwin_update_info(Playlist *playlist)
 {
-#if 0
+    g_return_if_fail(playlist != NULL);
+
     gchar *text, *sel_text, *tot_text;
     gulong selection, total;
     gboolean selection_more, total_more;
@@ -176,13 +177,13 @@ playlistwin_update_info(Playlist *playlist)
     g_free(text);
     g_free(tot_text);
     g_free(sel_text);
-#endif
 }
 
 static void
 playlistwin_update_sinfo(Playlist *playlist)
 {
-#if 0
+    g_return_if_fail(playlist != NULL);
+
     gchar *posstr, *timestr, *title, *info;
     gint pos, time;
 
@@ -218,7 +219,6 @@ playlistwin_update_sinfo(Playlist *playlist)
 
     ui_skinned_textbox_set_text(playlistwin_sinfo, info ? info : "");
     g_free(info);
-#endif
 }
 
 gboolean
@@ -703,9 +703,7 @@ playlistwin_motion(GtkWidget * widget,
 static void
 playlistwin_show_filebrowser(void)
 {
-#if 0
     run_filebrowser(NO_PLAY_BUTTON);
-#endif
 }
 
 static void
@@ -1817,9 +1815,7 @@ action_playlist_remove_unselected(void)
 void
 action_playlist_add_files(void)
 {
-#if 0
     run_filebrowser(NO_PLAY_BUTTON);
-#endif
 }
 
 void
