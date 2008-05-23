@@ -210,6 +210,7 @@ gboolean skin_load(Skin * skin, const gchar * path);
 gboolean skin_reload_forced(void);
 void skin_reload(Skin * skin);
 void skin_free(Skin * skin);
+void skin_destroy(Skin * skin);
 
 GdkBitmap *skin_get_mask(Skin * skin, SkinMaskId mi);
 GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);

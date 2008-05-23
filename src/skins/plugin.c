@@ -78,6 +78,8 @@ void skins_cleanup(void) {
         aud_active_skin = NULL;
         mainwin = NULL;
         equalizerwin = NULL;
+        playlistwin = NULL;
+        mainwin_info = NULL;
         plugin_is_active = FALSE;
     }
 

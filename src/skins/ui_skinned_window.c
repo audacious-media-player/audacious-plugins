@@ -18,20 +18,20 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "platform/smartinclude.h"
-#include "ui_skin.h"
-#include "skins_cfg.h"
-
 #include <gtk/gtkmain.h>
 #include <glib-object.h>
 #include <glib/gmacros.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkwindow.h>
 #include <string.h>
-
 #include <audacious/plugin.h>
+#include "platform/smartinclude.h"
+#include "ui_skin.h"
+#include "skins_cfg.h"
 #include "ui_dock.h"
 #include "ui_skinned_window.h"
+#include "ui_main.h"
+#include "ui_playlist.h"
 
 static void ui_skinned_window_class_init(SkinnedWindowClass *klass);
 static void ui_skinned_window_init(GtkWidget *widget);
