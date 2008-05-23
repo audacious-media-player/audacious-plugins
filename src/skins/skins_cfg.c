@@ -195,6 +195,13 @@ void skins_cfg_load() {
 void skins_cfg_save() {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
 
+    if (aud_active_skin != NULL) {
+        if (aud_active_skin->path)
+            aud_cfg_db_set_string(cfgfile, "skins", "skin", aud_active_skin->path);
+        else
+            aud_cfg_db_unset_key(cfgfile, "skins", "skin");
+    }
+
     int i;
 
     for (i = 0; i < ncfgbent; ++i)
