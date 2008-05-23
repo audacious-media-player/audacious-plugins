@@ -106,16 +106,9 @@ ui_main_evlistener_volume_change(gpointer hook_data, gpointer user_data)
 static void
 ui_main_evlistener_playback_begin(gpointer hook_data, gpointer user_data)
 {
-
     PlaylistEntry *entry = (PlaylistEntry*)hook_data;
     g_return_if_fail(entry != NULL);
-#if 0
-    equalizerwin_load_auto_preset(entry->filename);
-    input_set_eq(cfg.equalizer_active, cfg.equalizer_preamp,
-                 cfg.equalizer_bands);
-    output_set_eq(cfg.equalizer_active, cfg.equalizer_preamp,
-                  cfg.equalizer_bands);
-#endif
+
     ui_vis_clear_data(mainwin_vis);
     ui_svis_clear_data(mainwin_svis);
     mainwin_disable_seekbar();
