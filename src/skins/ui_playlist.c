@@ -51,7 +51,6 @@
 #endif
 #include "ui_dock.h"
 #include "ui_equalizer.h"
-#include "ui_fileopener.h"
 #include "ui_main.h"
 #include "ui_manager.h"
 #include "ui_playlist_evlisteners.h"
@@ -700,7 +699,7 @@ playlistwin_motion(GtkWidget * widget,
 static void
 playlistwin_show_filebrowser(void)
 {
-    run_filebrowser(NO_PLAY_BUTTON);
+    action_playlist_add_files();
 }
 
 static void
@@ -1809,7 +1808,8 @@ action_playlist_remove_unselected(void)
 void
 action_playlist_add_files(void)
 {
-    run_filebrowser(NO_PLAY_BUTTON);
+    gboolean button = FALSE; /* FALSE = NO_PLAY_BUTTON */
+    aud_hook_call("filebrowser show", &button);
 }
 
 void

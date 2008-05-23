@@ -98,7 +98,6 @@ extern GtkWidget *err;
 extern gboolean mainwin_moving;
 extern gboolean mainwin_focus;
 
-extern GtkWidget *mainwin_jtf;
 extern GtkWidget *mainwin_eq, *mainwin_pl;
 extern GtkWidget *mainwin_info;
 

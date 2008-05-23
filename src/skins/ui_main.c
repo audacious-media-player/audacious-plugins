@@ -65,17 +65,13 @@
 #include "playlist.h"
 #include "pluginenum.h"
 #include "strings.h"
-#include "ui_credits.h"
 #include "ui_dock.h"
-#include "ui_jumptotrack.h"
 #include "ui_main_evlisteners.h"
-#include "ui_preferences.h"
 #include "ui_skinselector.h"
 #include "ui_urlopener.h"
 #include "util.h"
 #include "visualization.h"
 #endif
-#include "ui_fileopener.h"
 #include "ui_skinned_window.h"
 #include "ui_skinned_button.h"
 #include "ui_skinned_textbox.h"
@@ -874,9 +870,7 @@ mainwin_keypress(GtkWidget * grab_widget,
             aud_playlist_next(playlist);
             break;
         case GDK_KP_Insert:
-#if 0
-            ui_jump_to_track();
-#endif
+            audacious_drct_jtf_show();
             break;
         case GDK_Return:
         case GDK_KP_Enter:
@@ -1285,7 +1279,7 @@ check_set( GtkActionGroup * action_group ,
 void
 mainwin_eject_pushed(void)
 {
-    run_filebrowser(PLAY_BUTTON);
+    action_play_file();
 }
 
 void
@@ -1765,17 +1759,17 @@ mainwin_general_menu_callback(gpointer data,
     Playlist *playlist = aud_playlist_get_active();
 
     switch (action) {
-#if 0
         case MAINWIN_GENERAL_PREFS:
-            show_prefs_window();
+            action_preferences();
             break;
         case MAINWIN_GENERAL_ABOUT:
-            show_about_window();
+            action_about_audacious();
             break;
-#endif
-        case MAINWIN_GENERAL_PLAYFILE:
-            run_filebrowser(NO_PLAY_BUTTON);
+        case MAINWIN_GENERAL_PLAYFILE: {
+            gboolean button = FALSE; /* FALSE = NO_PLAY_BUTTON */
+            aud_hook_call("filebrowser show", &button);
             break;
+        }
         case MAINWIN_GENERAL_PLAYLOCATION:
             mainwin_show_add_url_window();
             break;
@@ -1834,9 +1828,7 @@ mainwin_general_menu_callback(gpointer data,
             mainwin_jump_to_time();
             break;
         case MAINWIN_GENERAL_JTF:
-#if 0
-            ui_jump_to_track();
-#endif
+            audacious_drct_jtf_show();
             break;
         case MAINWIN_GENERAL_EXIT:
             mainwin_quit_cb();
@@ -2370,9 +2362,8 @@ mainwin_create_widgets(void)
 
     mainwin_about = ui_skinned_button_new();
     ui_skinned_small_button_setup(mainwin_about, SKINNED_WINDOW(mainwin)->fixed, 247, 83, 20, 25);
-#if 0
-    g_signal_connect(mainwin_about, "clicked", show_about_window, NULL);
-#endif
+    g_signal_connect(mainwin_about, "clicked", G_CALLBACK(action_about_audacious), NULL);
+
     mainwin_vis = ui_vis_new(SKINNED_WINDOW(mainwin)->fixed, 24, 43, 76);
     g_signal_connect(mainwin_vis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
     mainwin_svis = ui_svis_new(SKINNED_WINDOW(mainwin)->fixed, 79, 5);
@@ -2755,15 +2746,15 @@ action_viewtime( GtkAction *action, GtkRadioAction *current )
 void
 action_about_audacious( void )
 {
-#if 0
-    show_about_window();
-#endif
+    gboolean show = TRUE;
+    aud_hook_call("aboutwin show", &show);
 }
 
 void
 action_play_file( void )
 {
-    run_filebrowser(PLAY_BUTTON);
+    gboolean button = TRUE; /* TRUE = PLAY_BUTTON */
+    aud_hook_call("filebrowser show", &button);
 }
 
 void
@@ -2820,9 +2811,7 @@ action_current_track_info( void )
 void
 action_jump_to_file( void )
 {
-#if 0
-    ui_jump_to_track();
-#endif
+    audacious_drct_jtf_show();
 }
 
 void
@@ -2873,9 +2862,8 @@ action_playback_stop( void )
 void
 action_preferences( void )
 {
-#if 0
-    show_prefs_window();
-#endif
+    gboolean show = TRUE;
+    aud_hook_call("prefswin show", &show);
 }
 
 void

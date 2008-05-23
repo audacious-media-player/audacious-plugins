@@ -4,7 +4,6 @@ SRCS = plugin.c \
        skins_cfg.c \
        pixbuf_effects.c \
        dnd.c \
-       ui_fileopener.c \
        ui_skin.c \
        ui_skinned_window.c \
        ui_dock.c \

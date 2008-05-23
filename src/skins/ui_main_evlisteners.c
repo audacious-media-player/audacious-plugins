@@ -32,13 +32,11 @@
 #include <audacious/plugin.h>
 #if 0
 #include "ui_credits.h"
-#include "ui_equalizer.h"
-#include "ui_jumptotrack.h"
 #endif
-#include "ui_fileopener.h"
+#include "ui_equalizer.h"
 #include "ui_main.h"
-#if 0
 #include "ui_playlist.h"
+#if 0
 #include "ui_preferences.h"
 #endif
 #include "ui_skinned_playstatus.h"
@@ -192,10 +190,9 @@ static void
 ui_main_evlistener_playlist_end_reached(gpointer hook_data, gpointer user_data)
 {
     mainwin_clear_song_info();
-#if 0
-    if (cfg.stopaftersong)
+
+    if (aud_cfg->stopaftersong)
         mainwin_set_stopaftersong(FALSE);
-#endif
 }
 
 static void
@@ -225,60 +222,6 @@ ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
 {
     gboolean *show = (gboolean*)hook_data;
     equalizerwin_show(*show);
-}
-
-static void
-ui_main_evlistener_prefswin_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *show = (gboolean*)hook_data;
-    if (*show == TRUE)
-        show_prefs_window();
-    else
-        hide_prefs_window();
-#endif
-}
-
-static void
-ui_main_evlistener_aboutwin_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *show = (gboolean*)hook_data;
-    if (*show == TRUE)
-        show_about_window();
-    else
-        hide_about_window();
-#endif
-}
-
-
-static void
-ui_main_evlistener_ui_jump_to_track_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *show = (gboolean*)hook_data;
-    if (*show == TRUE)
-        ui_jump_to_track();
-    else
-        ui_jump_to_track_hide();
-#endif
-}
-
-static void
-ui_main_evlistener_filebrowser_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *play_button = (gboolean*)hook_data;
-    run_filebrowser(*play_button);
-#endif
-}
-
-static void
-ui_main_evlistener_filebrowser_hide(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    hide_filebrowser();
-#endif
 }
 
 static void
@@ -323,13 +266,6 @@ ui_main_evlistener_init(void)
     aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
-#if 0
-    aud_hook_associate("prefswin show", ui_main_evlistener_prefswin_show, NULL);
-    aud_hook_associate("aboutwin show", ui_main_evlistener_aboutwin_show, NULL);
-    aud_hook_associate("ui jump to track show", ui_main_evlistener_ui_jump_to_track_show, NULL);
-    aud_hook_associate("filebrowser show", ui_main_evlistener_filebrowser_show, NULL);
-    aud_hook_associate("filebrowser hide", ui_main_evlistener_filebrowser_hide, NULL);
-#endif
     aud_hook_associate("visualization timeout", ui_main_evlistener_visualization_timeout, NULL);
     aud_hook_associate("config save", ui_main_evlistener_config_save, NULL);
 
@@ -360,8 +296,6 @@ ui_main_evlistener_dissociate(void)
     aud_hook_dissociate("prefswin show", ui_main_evlistener_prefswin_show);
     aud_hook_dissociate("aboutwin show", ui_main_evlistener_aboutwin_show);
     aud_hook_dissociate("ui jump to track show", ui_main_evlistener_ui_jump_to_track_show);
-    aud_hook_dissociate("filebrowser show", ui_main_evlistener_filebrowser_show);
-    aud_hook_dissociate("filebrowser hide", ui_main_evlistener_filebrowser_hide);
 #endif
     aud_hook_dissociate("visualization timeout", ui_main_evlistener_visualization_timeout);
     aud_hook_dissociate("config save", ui_main_evlistener_config_save);
