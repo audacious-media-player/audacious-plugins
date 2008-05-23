@@ -278,7 +278,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
     cmap = gdk_rgb_cmap_new(colors, 24);
 
     if (!vis->scaled) {
-      if(config.vis_type == VIS_VOICEPRINT /*&& aud_cfg->voiceprint_mode != VOICEPRINT_NORMAL*/){
+      if(config.vis_type == VIS_VOICEPRINT /*&& config.voiceprint_mode != VOICEPRINT_NORMAL*/){
 	memset(rgb_data, 0, 76 * 16 * 3);
       }
       else{
@@ -291,7 +291,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
       }
     }
     else{
-      if(config.vis_type == VIS_VOICEPRINT /*&& aud_cfg->voiceprint_mode != VOICEPRINT_NORMAL*/){
+      if(config.vis_type == VIS_VOICEPRINT /*&& config.voiceprint_mode != VOICEPRINT_NORMAL*/){
 	memset(rgb_data, 0, 3 * 4 * 16 * 76);
       }
       else{
@@ -333,7 +333,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    }
 	  }
 	  else{
-	    ptr = rgb_data + ((16 - h) * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * aud_cfg->scale_factor);
+	    ptr = rgb_data + ((16 - h) * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
 	    switch (config.analyzer_mode) {
 	    case ANALYZER_NORMAL:
 	      for (y = 0; y < h; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
@@ -376,7 +376,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	      rgb_data[(16 - h) * 76 + x] = 23;
 	    }
 	    else{
-	      ptr = rgb_data + (16 - h) * (guint)(76 * 4 * config.scale_factor) + (guint)(x * aud_cfg->scale_factor);
+	      ptr = rgb_data + (16 - h) * (guint)(76 * 4 * config.scale_factor) + (guint)(x * config.scale_factor);
 	      *ptr = 23;
 	      *(ptr + 1) = 23;
 	      *(ptr + (guint)(76 * config.scale_factor)) = 23;
@@ -450,7 +450,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 		rgb_data[x * 3 + y * 76*3+n] = voice_c[n];
 	    }
 	    else{
-	      ptr = rgb_data + (guint)(x * 3 * config.scale_factor) + (guint) (y * 76 * 3 * aud_cfg->scale_factor);
+	      ptr = rgb_data + (guint)(x * 3 * config.scale_factor) + (guint) (y * 76 * 3 * config.scale_factor);
 	      for(n=0;n<3;n++)
 		{
 		  *(ptr + n) = voice_c[n];
@@ -472,7 +472,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	  ptr = rgb_data + ((14 - h) * 76) + x;
 	    *ptr = vis_scope_colors[h + 1];
 	  }else{
-	    ptr = rgb_data + ((14 - h) * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * aud_cfg->scale_factor);
+	    ptr = rgb_data + ((14 - h) * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
 	    *ptr = vis_scope_colors[h + 1];
 	    *(ptr + 1) = vis_scope_colors[h + 1];
 	    *(ptr + (guint)(76 * config.scale_factor)) = vis_scope_colors[h + 1];
@@ -494,7 +494,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	      *ptr = vis_scope_colors[y - 2];
 	    }
 	    else{
-	      ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * aud_cfg->scale_factor);
+	      ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
 	      for (y = h; y <= h2; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
 		*ptr = vis_scope_colors[y - 2];
 		*(ptr + 1) = vis_scope_colors[y - 2];
@@ -509,7 +509,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	      ptr = rgb_data + (h * 76) + x;
 	      *ptr = vis_scope_colors[h + 1];
 	    }else{
-	      ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * aud_cfg->scale_factor);
+	      ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
 	      *ptr = vis_scope_colors[h + 1];
 	      *(ptr + 1) = vis_scope_colors[h + 1];
 	      *(ptr + (guint)(76 * config.scale_factor)) = vis_scope_colors[h + 1];
@@ -531,7 +531,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    for (y = h; y <= h2; y++, ptr += 76)
 	      *ptr = c;
 	  }else{
-	    ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * aud_cfg->scale_factor);
+	    ptr = rgb_data + (h * (guint)(76 * 4 * config.scale_factor)) + (guint)(x * config.scale_factor);
 	    for (y = h; y <= h2; y++, ptr += (guint)(76 * 4 * config.scale_factor)) {
 	      *ptr = c;
 	      *(ptr + 1) = c;
@@ -546,7 +546,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 
     GdkPixmap *obj = NULL;
     GdkGC *gc;
-    obj = gdk_pixmap_new(NULL, vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? aud_cfg->scale_factor : 1), gdk_rgb_get_visual()->depth);
+    obj = gdk_pixmap_new(NULL, vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? config.scale_factor : 1), gdk_rgb_get_visual()->depth);
     gc = gdk_gc_new(obj);
 
     if (!vis->scaled) {
@@ -574,7 +574,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
     }
 
     gdk_draw_drawable (widget->window, gc, obj, 0, 0, 0, 0,
-                       vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? aud_cfg->scale_factor : 1));
+                       vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? config.scale_factor : 1));
     g_object_unref(obj);
     g_object_unref(gc);
     gdk_rgb_cmap_free(cmap);
@@ -585,7 +585,7 @@ static void ui_vis_toggle_scaled(UiVis *vis) {
     GtkWidget *widget = GTK_WIDGET (vis);
     vis->scaled = !vis->scaled;
 
-    gtk_widget_set_size_request(widget, vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? aud_cfg->scale_factor : 1));
+    gtk_widget_set_size_request(widget, vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? config.scale_factor : 1));
 
     gtk_widget_queue_draw(GTK_WIDGET(vis));
 }

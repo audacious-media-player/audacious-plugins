@@ -74,6 +74,9 @@ typedef struct {
     gboolean eq_scaled_linked;
     gboolean use_xmms_style_fileselector;
     gboolean show_numbers_in_pl, show_separator_in_pl;
+    gchar *playlist_font, *mainwin_font;
+    gboolean show_filepopup_for_tuple;
+    gint filepopup_delay;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

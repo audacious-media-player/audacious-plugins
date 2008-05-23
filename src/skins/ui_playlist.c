@@ -340,7 +340,7 @@ playlistwin_set_shade(gboolean shaded)
     config.playlist_shaded = shaded;
 
     if (shaded) {
-        playlistwin_set_sinfo_font(aud_cfg->playlist_font);
+        playlistwin_set_sinfo_font(config.playlist_font);
         playlistwin_set_sinfo_scroll(config.autoscroll);
         gtk_widget_show(playlistwin_sinfo);
         ui_skinned_set_push_button_data(playlistwin_shade, 128, 45, 150, 42);
@@ -1379,7 +1379,7 @@ playlistwin_create_widgets(void)
     playlistwin_sinfo = ui_skinned_textbox_new(SKINNED_WINDOW(playlistwin)->fixed,
                                                4, 4, playlistwin_get_width() - 35, TRUE, SKIN_TEXT);
 
-    playlistwin_set_sinfo_font(aud_cfg->playlist_font);
+    playlistwin_set_sinfo_font(config.playlist_font);
 
     playlistwin_shade = ui_skinned_button_new();
     /* shade/unshade window push button */
@@ -1407,7 +1407,7 @@ playlistwin_create_widgets(void)
     playlistwin_list = ui_skinned_playlist_new(SKINNED_WINDOW(playlistwin)->fixed, 12, 20,
                              playlistwin_get_width() - 31,
                              config.playlist_height - 58);
-    ui_skinned_playlist_set_font(aud_cfg->playlist_font);
+    ui_skinned_playlist_set_font(config.playlist_font);
 
     /* playlist list box slider */
     playlistwin_slider = ui_skinned_playlist_slider_new(SKINNED_WINDOW(playlistwin)->fixed, playlistwin_get_width() - 15,

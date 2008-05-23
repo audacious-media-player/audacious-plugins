@@ -1071,8 +1071,8 @@ mainwin_drag_data_received(GtkWidget * widget,
         if (decoded == NULL)
             return;
 
-        aud_cfg->playlist_font = g_strconcat(decoded, strrchr(aud_cfg->playlist_font, ' '), NULL);
-        ui_skinned_playlist_set_font(aud_cfg->playlist_font);
+        config.playlist_font = g_strconcat(decoded, strrchr(config.playlist_font, ' '), NULL);
+        ui_skinned_playlist_set_font(config.playlist_font);
         playlistwin_update_list(playlist);
 
         g_free(decoded);
@@ -2315,7 +2315,7 @@ mainwin_create_widgets(void)
 
     mainwin_info = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 112, 27, 153, 1, SKIN_TEXT);
     ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
-    ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, aud_cfg->mainwin_font);
+    ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, config.mainwin_font);
     g_signal_connect(mainwin_info, "double-clicked", mainwin_info_double_clicked_cb, NULL);
     g_signal_connect(mainwin_info, "right-clicked", G_CALLBACK(mainwin_info_right_clicked_cb), NULL);
 
