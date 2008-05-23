@@ -2469,9 +2469,9 @@ mainwin_update_song_info(void)
 
     if (length == -1 && config.timer_mode == TIMER_REMAINING)
         config.timer_mode = TIMER_ELAPSED;
-#if 0
+
     playlistwin_set_time(time, length, config.timer_mode);
-#endif
+
     if (config.timer_mode == TIMER_REMAINING) {
         if (length != -1) {
             ui_skinned_number_set_number(mainwin_minus_num, 11);
