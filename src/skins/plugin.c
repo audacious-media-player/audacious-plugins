@@ -59,13 +59,16 @@ void skins_init(void) {
 
     init_skins(config.skin);
 
-    mainwin_real_show();
+    if (config.player_visible) mainwin_real_show();
+    if (config.equalizer_visible) equalizerwin_show(TRUE);
+    if (config.playlist_visible) playlistwin_show();
 
     return;
 }
 
 void skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
+        skins_cfg_save();
         ui_main_evlistener_dissociate();
         ui_playlist_evlistener_dissociate();
         skins_cfg_free();

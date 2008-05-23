@@ -26,6 +26,8 @@
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_equalizer.h"
+#include "ui_playlist.h"
+#include "ui_skin.h"
 
 #define PACKAGE_NAME "audacious-plugins"
 

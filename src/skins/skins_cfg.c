@@ -167,23 +167,15 @@ void skins_cfg_free() {
 void skins_cfg_load() {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
 
-  /* if (!aud_cfg_db_get_int(cfgfile, "skins", "field_name", &(cfg->where)))
-         cfg->where = default value
-     if (!aud_cfg_db_get_string(cfgfile, "skins", "field_name", &(cfg->where)))
-         cfg->where = g_strdup("defaul");
-     if (!aud_cfg_db_get_bool(cfgfile, "skins", "field_name", &(cfg->where)))
-         cfg->where = FALSE / TRUE;
-  */
-  
     memcpy(&config, &skins_default_config, sizeof(skins_cfg_t));
     int i;
-    
+
     for (i = 0; i < ncfgbent; ++i) {
         aud_cfg_db_get_bool(cfgfile, "skins",
                             skins_boolents[i].be_vname,
                             skins_boolents[i].be_vloc);
     }
-    
+
     for (i = 0; i < ncfgient; ++i) {
         aud_cfg_db_get_int(cfgfile, "skins",
                            skins_numents[i].ie_vname,
@@ -200,15 +192,8 @@ void skins_cfg_load() {
 }
 
 
-void skins_cfg_save(skins_cfg_t * cfg) {
+void skins_cfg_save() {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
-
-/*
-    aud_cfg_db_set_int(cfgfile, "skins", "field_name", cfg->where);
-    aud_cfg_db_set_string(cfgfile, "skins", "field_name", cfg->where);
-    aud_cfg_db_set_bool(cfgfile, "skins", "field_name", cfg->where);
-*/
-    aud_cfg_db_set_string(cfgfile, "skins", "skin", cfg->skin);
 
     int i;
 
