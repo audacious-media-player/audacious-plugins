@@ -51,9 +51,6 @@
 #endif
 #include "ui_dock.h"
 #include "ui_equalizer.h"
-#if 0
-#include "ui_fileinfo.h"
-#endif
 #include "ui_fileopener.h"
 #include "ui_main.h"
 #include "ui_manager.h"
@@ -709,20 +706,17 @@ playlistwin_show_filebrowser(void)
 static void
 playlistwin_fileinfo(void)
 {
-#if 0
     Playlist *playlist = aud_playlist_get_active();
 
     /* Show the first selected file, or the current file if nothing is
      * selected */
     GList *list = aud_playlist_get_selected(playlist);
     if (list) {
-        ui_fileinfo_show(playlist, GPOINTER_TO_INT(list->data));
+        aud_playlist_fileinfo(playlist, GPOINTER_TO_INT(list->data));
         g_list_free(list);
     }
     else
-
-  ui_fileinfo_show_current(playlist);
-#endif
+        aud_playlist_fileinfo_current(playlist);
 }
 
 static void

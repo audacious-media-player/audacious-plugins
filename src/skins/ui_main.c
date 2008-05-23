@@ -67,7 +67,6 @@
 #include "strings.h"
 #include "ui_credits.h"
 #include "ui_dock.h"
-#include "ui_fileinfo.h"
 #include "ui_jumptotrack.h"
 #include "ui_main_evlisteners.h"
 #include "ui_preferences.h"
@@ -1780,11 +1779,9 @@ mainwin_general_menu_callback(gpointer data,
         case MAINWIN_GENERAL_PLAYLOCATION:
             mainwin_show_add_url_window();
             break;
-#if 0
         case MAINWIN_GENERAL_FILEINFO:
-            ui_fileinfo_show_current(playlist);
+            aud_playlist_fileinfo_current(playlist);
             break;
-#endif
         case MAINWIN_GENERAL_FOCUSPLWIN:
             gtk_window_present(GTK_WINDOW(playlistwin));
             break;
@@ -1930,9 +1927,7 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
                                          UI_SKINNED_MENUROW(mainwin_menurow)->always_selected );
             break;
         case MENUROW_FILEINFOBOX:
-#if 0
-            ui_fileinfo_show_current(aud_playlist_get_active());
-#endif
+            aud_playlist_fileinfo_current(aud_playlist_get_active());
             break;
         case MENUROW_SCALE:
             gtk_toggle_action_set_active(
@@ -2214,9 +2209,7 @@ mainwin_setup_menus(void)
 }
 
 static void mainwin_info_double_clicked_cb(void) {
-#if 0
-    ui_fileinfo_show_current(aud_playlist_get_active());
-#endif
+    aud_playlist_fileinfo_current(aud_playlist_get_active());
 }
 
 static void
@@ -2821,9 +2814,7 @@ action_ab_clear( void )
 void
 action_current_track_info( void )
 {
-#if 0
-    ui_fileinfo_show_current(aud_playlist_get_active());
-#endif
+    aud_playlist_fileinfo_current(aud_playlist_get_active());
 }
 
 void
