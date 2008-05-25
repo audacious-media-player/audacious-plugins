@@ -28,7 +28,7 @@ void discover_devices(void);
 
 GeneralPlugin bluetooth_gp =
 {
-    .description = "Bluetooth audio suport",
+    .description = "Bluetooth audio support",
     .init = bluetooth_init,
     .about = bt_about,
     .configure = bt_cfg,
@@ -45,8 +45,10 @@ void bluetooth_init ( void )
 void bluetooth_cleanup ( void )
 {
     printf("bluetooth: exit\n");
-    dbus_g_connection_flush (bus);
-    dbus_g_connection_unref(bus);
+    if(discover_finish == 2) {
+        dbus_g_connection_flush (bus);
+        dbus_g_connection_unref(bus);
+    }
 
 }
 /*void bt_cfg( void )
@@ -61,7 +63,7 @@ void bt_about( void )
 
 
 void refresh_call(void){
-   if(discover_finish == 0)
+   if(discover_finish == 0 ||discover_finish== 2)
        discover_devices();
        else 
            printf("Scanning please wait!\n");
@@ -147,9 +149,7 @@ static void discovery_completed(DBusGProxy *object, gpointer user_data)
 {
     g_print("Signal: DiscoveryCompleted()\n");
     print_results();
-    discover_finish =0;
-
-
+    discover_finish =2;
 }
 
 
@@ -189,6 +189,6 @@ void discover_devices(void){
         g_error_free(error);
         exit(EXIT_FAILURE);
     }
-    // /  dbus_g_connection_flush (bus);
-    //    dbus_g_connection_unref(bus);
+      dbus_g_connection_flush (bus);
+      dbus_g_connection_unref(bus);
 }    

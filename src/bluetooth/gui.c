@@ -60,6 +60,8 @@ static GtkTreeModel * rebuild_model(void)
     gint dev_no=0;
     GList *dev;
     gchar *temp;
+    if(!window) 
+        return NULL;
    /* create list store */
     store = gtk_list_store_new(NUM_COLUMNS,
             G_TYPE_STRING);
@@ -102,6 +104,8 @@ static GtkTreeModel * rebuild_model(void)
 
 void refresh_tree()
 {
+    if(!window) 
+        return;
      model = rebuild_model();
      gtk_tree_view_set_model(GTK_TREE_VIEW(treeview),GTK_TREE_MODEL(model));
 }
