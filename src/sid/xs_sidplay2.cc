@@ -94,7 +94,7 @@ extern "C" {
  */
 gboolean xs_sidplay2_probe(xs_file_t *f)
 {
-    gchar tmpBuf[4];
+    gchar tmpBuf[5];
     
     if (!f) return FALSE;
     
@@ -115,7 +115,7 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
     gint tmpFreq, i;
     xs_sidplay2_t *myEngine;
     sid_filter_t tmpFilter;
-    t_xs_sid2_filter *f;
+    xs_sid2_filter_t *f;
     assert(myStatus);
 
     /* Allocate internal structures */
@@ -281,6 +281,7 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
                 return FALSE;
             }
 
+#ifndef HAVE_SIDPLAY2_DISTORTION
             // FIXME FIX ME: support other configurable parameters ...
             // ... WHEN/IF resid-builder+libsidplay2 gets fixed
             rs->sampling(tmpFreq);
@@ -288,6 +289,7 @@ gboolean xs_sidplay2_init(xs_status_t * myStatus)
                 xs_error("reSID->sampling(%d) failed.\n", tmpFreq);
                 return FALSE;
             }
+#endif
             
             if (tmpFilter.points > 0)
                 rs->filter((sid_filter_t *) &tmpFilter);

@@ -84,9 +84,9 @@ static const gint xs_nsamplerates_table = (sizeof(xs_samplerates_table) / sizeof
  * Configuration specific stuff
  */
 XS_MUTEX(xs_cfg);
-struct t_xs_cfg xs_cfg;
+struct xs_cfg_t xs_cfg;
 
-static t_xs_cfg_item xs_cfgtable[] = {
+static xs_cfg_item_t xs_cfgtable[] = {
 { CTYPE_INT,    &xs_cfg.audioBitsPerSample,     "audioBitsPerSample" },
 { CTYPE_INT,    &xs_cfg.audioChannels,          "audioChannels" },
 { CTYPE_INT,    &xs_cfg.audioFrequency,         "audioFrequency" },
@@ -135,10 +135,10 @@ static t_xs_cfg_item xs_cfgtable[] = {
 { CTYPE_INT,    &xs_cfg.subAutoMinTime,         "subAutoMinTime" },
 };
 
-static const gint xs_cfgtable_max = (sizeof(xs_cfgtable) / sizeof(t_xs_cfg_item));
+static const gint xs_cfgtable_max = (sizeof(xs_cfgtable) / sizeof(xs_cfgtable[0]));
 
 
-static t_xs_wid_item xs_widtable[] = {
+static xs_wid_item_t xs_widtable[] = {
 { WTYPE_BGROUP, CTYPE_INT,      "cfg_res_16bit",        &xs_cfg.audioBitsPerSample,     XS_RES_16BIT },
 { WTYPE_BGROUP, CTYPE_INT,      "cfg_res_8bit",         &xs_cfg.audioBitsPerSample,     XS_RES_8BIT },
 { WTYPE_BGROUP, CTYPE_INT,      "cfg_chn_mono",         &xs_cfg.audioChannels,          XS_CHN_MONO },
@@ -199,7 +199,7 @@ static t_xs_wid_item xs_widtable[] = {
 { WTYPE_SPIN,   CTYPE_INT,      "cfg_subauto_mintime",  &xs_cfg.subAutoMinTime,         0 },
 };
 
-static const gint xs_widtable_max = (sizeof(xs_widtable) / sizeof(t_xs_wid_item));
+static const gint xs_widtable_max = (sizeof(xs_widtable) / sizeof(xs_widtable[0]));
 
 
 /* Reset/initialize the configuration
@@ -304,7 +304,7 @@ void xs_init_configuration(void)
  */
 #define XS_FITEM (4 * 2)
 
-static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, t_xs_sid2_filter *pResult)
+static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, xs_sid2_filter_t *pResult)
 {
     gchar tmpKey[64], *tmpStr;
     gint i, j;
@@ -339,12 +339,12 @@ static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, t_xs_sid2
 }
 
 
-static t_xs_sid2_filter * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
+static xs_sid2_filter_t * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
 {
-    t_xs_sid2_filter *pResult;
+    xs_sid2_filter_t *pResult;
     
     /* Allocate filter struct */
-    if ((pResult = g_malloc0(sizeof(t_xs_sid2_filter))) == NULL)
+    if ((pResult = g_malloc0(sizeof(xs_sid2_filter_t))) == NULL)
         return NULL;
     
     if (!xs_filter_load_into(cfg, nFilter, pResult)) {
@@ -355,7 +355,7 @@ static t_xs_sid2_filter * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
 }
 
 #if 0
-static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, t_xs_sid2_filter *pFilter, gint nFilter)
+static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid2_filter_t *pFilter, gint nFilter)
 {
     gchar *tmpValue, tmpKey[64];
     gint i, j;
@@ -402,14 +402,14 @@ static gboolean xs_fgetitem(gchar *inLine, size_t *linePos, gchar sep, gchar *tm
     return (inLine[*linePos] == sep);
 }
 
-static gboolean xs_filters_import(const gchar *pcFilename, t_xs_sid2_filter **pFilters, gint *nFilters)
+static gboolean xs_filters_import(const gchar *pcFilename, xs_sid2_filter_t **pFilters, gint *nFilters)
 {
     FILE *inFile;
     gchar inLine[XS_BUF_SIZE], tmpStr[XS_BUF_SIZE];
     gchar *sectName = NULL;
     gboolean sectBegin;
     size_t lineNum, i;
-    t_xs_sid2_filter *tmpFilter;
+    xs_sid2_filter_t *tmpFilter;
 
 fprintf(stderr, "xs_filters_import(%s)\n", pcFilename);
 
@@ -446,7 +446,7 @@ fprintf(stderr, "importing...\n");
             if (sectBegin) {
                 /* Submit definition */
                 fprintf(stderr, "filter ends: %s\n", sectName);
-                if ((tmpFilter = g_malloc0(sizeof(t_xs_sid2_filter))) == NULL) {
+                if ((tmpFilter = g_malloc0(sizeof(xs_sid2_filter_t))) == NULL) {
                     fprintf(stderr, "could not allocate ..\n");
                 } else {
                     
@@ -478,10 +478,10 @@ fprintf(stderr, "importing...\n");
 }
 
 
-static gboolean xs_filters_export(const gchar *pcFilename, t_xs_sid2_filter **pFilters, gint nFilters)
+static gboolean xs_filters_export(const gchar *pcFilename, xs_sid2_filter_t **pFilters, gint nFilters)
 {
     FILE *outFile;
-    t_xs_sid2_filter *f;
+    xs_sid2_filter_t *f;
     gint n;
     
     /* Open/create the file */
@@ -575,7 +575,7 @@ void xs_read_configuration(void)
     xs_filter_load_into(cfg, 0, &xs_cfg.sid2Filter);
     
     if (xs_cfg.sid2NFilterPresets > 0) {
-        xs_cfg.sid2FilterPresets = g_malloc0(xs_cfg.sid2NFilterPresets * sizeof(t_xs_sid2_filter *));
+        xs_cfg.sid2FilterPresets = g_malloc0(xs_cfg.sid2NFilterPresets * sizeof(xs_sid2_filter_t *));
         if (!xs_cfg.sid2FilterPresets) {
             xs_error("Allocation of sid2FilterPresets structure failed!\n");
         } else {
@@ -896,7 +896,7 @@ void xs_cfg_sp1_filter_reset(GtkButton * button, gpointer user_data)
 }
 
 
-void xs_cfg_sp2_filter_update(XSCurve *curve, t_xs_sid2_filter *f)
+void xs_cfg_sp2_filter_update(XSCurve *curve, xs_sid2_filter_t *f)
 {
     assert(curve);
     assert(f);
