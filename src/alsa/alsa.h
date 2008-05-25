@@ -35,11 +35,7 @@
 
 #include <gtk/gtk.h>
 
-#ifdef WORDS_BIGENDIAN
-# define IS_BIG_ENDIAN TRUE
-#else
-# define IS_BIG_ENDIAN FALSE
-#endif
+#define ALSA_CFGID  "ALSA"
 
 extern OutputPlugin op;
 
@@ -59,8 +55,6 @@ struct alsa_config
 
 extern struct alsa_config alsa_cfg;
 
-void alsa_init(void);
-void alsa_cleanup(void);
 void alsa_about(void);
 void alsa_configure(void);
 int alsa_get_mixer(snd_mixer_t **mixer, int card);

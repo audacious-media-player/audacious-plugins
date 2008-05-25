@@ -22,6 +22,8 @@
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_vis.h"
+#include "ui_main.h"
+#include "ui_playlist.h"
 #include <glib.h>
 #include <stdlib.h>
 #include <audacious/plugin.h>
@@ -35,7 +37,10 @@ skins_cfg_t skins_default_config = {
     .sticky = FALSE,
     .scale_factor = 2.0,
     .always_show_cb = TRUE,
+    .close_dialog_open = TRUE,
+    .close_dialog_add = TRUE,
     .skin = NULL,
+    .filesel_path = NULL,
     .playlist_visible = FALSE,
     .equalizer_visible = FALSE,
     .player_visible = TRUE,
@@ -78,6 +83,13 @@ skins_cfg_t skins_default_config = {
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
     .eq_scaled_linked = TRUE,
+    .use_xmms_style_fileselector = FALSE,
+    .show_numbers_in_pl = TRUE,
+    .show_separator_in_pl = TRUE,
+    .playlist_font = NULL,
+    .mainwin_font = NULL,
+    .show_filepopup_for_tuple = TRUE,
+    .filepopup_delay = 20,             /* delay until the filepopup comes up */
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -112,6 +124,9 @@ static skins_cfg_boolent skins_boolents[] = {
     {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
     {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
     {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
+    {"show_numbers_in_pl", &config.show_numbers_in_pl, TRUE},
+    {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
+    {"show_filepopup_for_tuple", &config.show_filepopup_for_tuple, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
@@ -148,42 +163,64 @@ static skins_cfg_nument skins_numents[] = {
     {"colorize_g", &config.colorize_g, TRUE},
     {"colorize_b", &config.colorize_b, TRUE},
     {"snap_distance", &config.snap_distance, TRUE},
+    {"filepopup_delay", &config.filepopup_delay, TRUE},
 };
 
 static gint ncfgient = G_N_ELEMENTS(skins_numents);
 
+typedef struct skins_cfg_strent_t {
+    char const *se_vname;
+    char **se_vloc;
+    gboolean se_wrt;
+} skins_cfg_strent;
+
+static skins_cfg_strent skins_strents[] = {
+    {"playlist_font", &config.playlist_font, TRUE},
+    {"mainwin_font", &config.mainwin_font, TRUE},
+    {"skin", &config.skin, FALSE},
+};
+
+static gint ncfgsent = G_N_ELEMENTS(skins_strents);
+
 void skins_cfg_free() {
-    if (config.skin) { g_free(config.skin); config.skin = NULL; }
+    gint i;
+    for (i = 0; i < ncfgsent; ++i) {
+        if (*(skins_strents[i].se_vloc) != NULL) {
+            g_free( *(skins_strents[i].se_vloc) );
+            *(skins_strents[i].se_vloc) = NULL;
+        }
+    }
 }
 
 void skins_cfg_load() {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
 
-  /* if (!aud_cfg_db_get_int(cfgfile, "skins", "field_name", &(cfg->where)))
-         cfg->where = default value
-     if (!aud_cfg_db_get_string(cfgfile, "skins", "field_name", &(cfg->where)))
-         cfg->where = g_strdup("defaul");
-     if (!aud_cfg_db_get_bool(cfgfile, "skins", "field_name", &(cfg->where)))
-         cfg->where = FALSE / TRUE;
-  */
-  
     memcpy(&config, &skins_default_config, sizeof(skins_cfg_t));
     int i;
-    
+
     for (i = 0; i < ncfgbent; ++i) {
         aud_cfg_db_get_bool(cfgfile, "skins",
                             skins_boolents[i].be_vname,
                             skins_boolents[i].be_vloc);
     }
-    
+
     for (i = 0; i < ncfgient; ++i) {
         aud_cfg_db_get_int(cfgfile, "skins",
                            skins_numents[i].ie_vname,
                            skins_numents[i].ie_vloc);
     }
 
-    if (!aud_cfg_db_get_string(cfgfile, "skins", "skin", &(config.skin)))
-        config.skin = g_strdup(BMP_DEFAULT_SKIN_PATH);
+    for (i = 0; i < ncfgsent; ++i) {
+        aud_cfg_db_get_string(cfgfile, "skins",
+                              skins_strents[i].se_vname,
+                              skins_strents[i].se_vloc);
+    }
+
+    if (!config.mainwin_font)
+        config.mainwin_font = g_strdup(MAINWIN_DEFAULT_FONT);
+
+    if (!config.playlist_font)
+        config.playlist_font = g_strdup(PLAYLISTWIN_DEFAULT_FONT);
 
     if (!aud_cfg_db_get_float(cfgfile, "skins", "scale_factor", &(config.scale_factor)))
         config.scale_factor = 2.0;
@@ -192,17 +229,24 @@ void skins_cfg_load() {
 }
 
 
-void skins_cfg_save(skins_cfg_t * cfg) {
+void skins_cfg_save() {
     mcs_handle_t *cfgfile = aud_cfg_db_open();
 
-/*
-    aud_cfg_db_set_int(cfgfile, "skins", "field_name", cfg->where);
-    aud_cfg_db_set_string(cfgfile, "skins", "field_name", cfg->where);
-    aud_cfg_db_set_bool(cfgfile, "skins", "field_name", cfg->where);
-*/
-    aud_cfg_db_set_string(cfgfile, "skins", "skin", cfg->skin);
+    if (aud_active_skin != NULL) {
+        if (aud_active_skin->path)
+            aud_cfg_db_set_string(cfgfile, "skins", "skin", aud_active_skin->path);
+        else
+            aud_cfg_db_unset_key(cfgfile, "skins", "skin");
+    }
 
     int i;
+
+    for (i = 0; i < ncfgsent; ++i) {
+        if (skins_strents[i].se_wrt)
+            aud_cfg_db_set_string(cfgfile, "skins",
+                                  skins_strents[i].se_vname,
+                                  *skins_strents[i].se_vloc);
+    }
 
     for (i = 0; i < ncfgbent; ++i)
         if (skins_boolents[i].be_wrt)

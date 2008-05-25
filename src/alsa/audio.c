@@ -68,8 +68,6 @@ static int flush_request;	 /* flush status (time) currently requested */
 static int prebuffer_size;
 GStaticMutex alsa_mutex = G_STATIC_MUTEX_INIT;
 
-static guint mixer_timeout;
-
 struct snd_format {
 	unsigned int rate;
 	unsigned int channels;
@@ -463,20 +461,6 @@ static int alsa_setup_mixer(void)
 	return 0;
 }
 
-static int alsa_mixer_timeout(void *data)
-{
-	if (mixer)
-	{
-		snd_mixer_close(mixer);
-		mixer = NULL;
-		pcm_element = NULL;
-	}
-	mixer_timeout = 0;
-	mixer_start = TRUE;
-
-	return FALSE;
-}
-
 static void alsa_cleanup_mixer(void)
 {
 	pcm_element = NULL;
@@ -510,10 +494,6 @@ void alsa_get_volume(int *l, int *r)
 					    &lr);
 	*l = ll;
 	*r = lr;
-
-	if (mixer_timeout)
-		gtk_timeout_remove(mixer_timeout);
-	mixer_timeout = gtk_timeout_add(5000, alsa_mixer_timeout, NULL);
 }
 
 

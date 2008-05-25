@@ -22,9 +22,7 @@
  */
 
 #include "ui_skin.h"
-#if 0
 #include "ui_equalizer.h"
-#endif
 #include "ui_main.h"
 #include "skins_cfg.h"
 #include "ui_skinned_equalizer_slider.h"
@@ -259,9 +257,7 @@ static gboolean ui_skinned_equalizer_slider_button_press(GtkWidget *widget, GdkE
                     priv->position = 25;
 
                 priv->value = ((gfloat) (25 - priv->position) * EQUALIZER_MAX_GAIN / 25.0 );
-#if 0
                 equalizerwin_eq_changed();
-#endif
             }
 
             ui_skinned_equalizer_slider_set_mainwin_text(es);
@@ -305,9 +301,7 @@ static gboolean ui_skinned_equalizer_slider_motion_notify(GtkWidget *widget, Gdk
 
         priv->value = ((gfloat) (25 - priv->position) * EQUALIZER_MAX_GAIN / 25.0 );
         ui_skinned_equalizer_slider_set_mainwin_text(es);
-#if 0
         equalizerwin_eq_changed();
-#endif
         gtk_widget_queue_draw(widget);
     }
 
@@ -333,9 +327,7 @@ static gboolean ui_skinned_equalizer_slider_scroll(GtkWidget *widget, GdkEventSc
     }
 
     priv->value = ((gfloat) (25 - priv->position) * EQUALIZER_MAX_GAIN / 25.0 );
-#if 0
     equalizerwin_eq_changed();
-#endif
     gtk_widget_queue_draw(widget);
     return TRUE;
 }

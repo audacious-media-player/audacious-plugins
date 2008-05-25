@@ -54,24 +54,19 @@
 #include "actions-mainwin.h"
 #include "ui_manager.h"
 #include "ui_equalizer.h"
+#include "ui_playlist.h"
+#include "ui_hints.h"
+#include "dnd.h"
 #if 0
 #include "configdb.h"
-#include "dnd.h"
 #include "input.h"
 #include "main.h"
 #include "playback.h"
 #include "playlist.h"
 #include "pluginenum.h"
 #include "strings.h"
-#include "ui_credits.h"
 #include "ui_dock.h"
-#include "ui_fileinfo.h"
-#include "ui_fileopener.h"
-#include "ui_hints.h"
-#include "ui_jumptotrack.h"
 #include "ui_main_evlisteners.h"
-#include "ui_playlist.h"
-#include "ui_preferences.h"
 #include "ui_skinselector.h"
 #include "ui_urlopener.h"
 #include "util.h"
@@ -85,9 +80,7 @@
 #include "ui_skinned_menurow.h"
 #include "ui_skinned_playstatus.h"
 #include "ui_skinned_monostereo.h"
-#if 0
 #include "ui_skinned_playlist.h"
-#endif
 #include <audacious/plugin.h>
 #include "skins_cfg.h"
 
@@ -352,7 +345,11 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 static void
 mainwin_destroy(GtkWidget * widget, gpointer data)
 {
+/* we should detect whether plugin got unloaded and when user indeed
+   wants to close audacious */
+#if 0
     mainwin_quit_cb();
+#endif
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -621,12 +618,9 @@ mainwin_set_song_info(gint bitrate,
                       gint frequency,
                       gint n_channels)
 {
-#if 0
     gchar *text;
     gchar *title;
     Playlist *playlist = aud_playlist_get_active();
-
-    playback_set_sample_params(bitrate, frequency, n_channels);
 
     GDK_THREADS_ENTER();
     if (bitrate != -1) {
@@ -672,26 +666,25 @@ mainwin_set_song_info(gint bitrate,
         g_free(text);
     }
 
-    title = playlist_get_info_text(playlist);
+    title = aud_playlist_get_info_text(playlist);
     mainwin_set_song_title(title);
     g_free(title);
     GDK_THREADS_LEAVE();
-#endif
 }
 
 void
 mainwin_clear_song_info(void)
 {
-#if 0
     if (!mainwin)
         return;
 
     /* clear title */
     mainwin_set_song_title(NULL);
 
+#if 0
     /* clear sampling parameters */
     playback_set_sample_params(0, 0, 0);
-
+#endif
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_position)->pressed = FALSE;
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->pressed = FALSE;
 
@@ -706,7 +699,7 @@ mainwin_clear_song_info(void)
     mainwin_refresh_visible();
 
     playlistwin_hide_timer();
-#endif
+
     ui_vis_clear_data(mainwin_vis);
     ui_svis_clear_data(mainwin_svis);
 }
@@ -877,9 +870,7 @@ mainwin_keypress(GtkWidget * grab_widget,
             aud_playlist_next(playlist);
             break;
         case GDK_KP_Insert:
-#if 0
-            ui_jump_to_track();
-#endif
+            audacious_drct_jtf_show();
             break;
         case GDK_Return:
         case GDK_KP_Enter:
@@ -893,20 +884,18 @@ mainwin_keypress(GtkWidget * grab_widget,
             mainwin_minimize_cb();
             break;
         case GDK_Tab:
-#if 0
             if (event->state & GDK_CONTROL_MASK) {
                 if (config.equalizer_visible)
                     gtk_window_present(GTK_WINDOW(equalizerwin));
                 else if (config.playlist_visible)
                     gtk_window_present(GTK_WINDOW(playlistwin));
             }
-#endif
             break;
         case GDK_c:
             if (event->state & GDK_CONTROL_MASK) {
                 Playlist *playlist = aud_playlist_get_active();
-                gint pos = playlist_get_position(playlist);
-                gchar *title = playlist_get_songtitle(playlist, pos);
+                gint pos = aud_playlist_get_position(playlist);
+                gchar *title = aud_playlist_get_songtitle(playlist, pos);
 
                 if (title != NULL) {
                     GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
@@ -1010,16 +999,15 @@ mainwin_jump_to_time(void)
 
     /* FIXME: Disable display of current track length. It's not
        updated when track changes */
-#if 0
+
     label = gtk_label_new(_("Track length:"));
     gtk_box_pack_start(GTK_BOX(hbox_total), label, FALSE, FALSE, 5);
 
-    len = aud_playlist_get_current_length() / 1000;
+    gint len = aud_playlist_get_current_length(aud_playlist_get_active()) / 1000;
     g_snprintf(time_str, sizeof(time_str), "%u:%2.2u", len / 60, len % 60);
     label = gtk_label_new(time_str);
 
     gtk_box_pack_start(GTK_BOX(hbox_total), label, FALSE, FALSE, 10);
-#endif
 
     bbox = gtk_hbutton_box_new();
     gtk_box_pack_start(GTK_BOX(vbox), bbox, TRUE, TRUE, 0);
@@ -1070,12 +1058,11 @@ mainwin_drag_data_received(GtkWidget * widget,
                            guint time,
                            gpointer user_data)
 {
-#if 0
     Playlist *playlist = aud_playlist_get_active();
 
     g_return_if_fail(selection_data != NULL);
     g_return_if_fail(selection_data->data != NULL);
-
+#if 0
     if (aud_str_has_prefix_nocase((gchar *) selection_data->data, "fonts:///"))
     {
         gchar *path = (gchar *) selection_data->data;
@@ -1084,8 +1071,8 @@ mainwin_drag_data_received(GtkWidget * widget,
         if (decoded == NULL)
             return;
 
-        aud_cfg->playlist_font = g_strconcat(decoded, strrchr(aud_cfg->playlist_font, ' '), NULL);
-        ui_skinned_playlist_set_font(aud_cfg->playlist_font);
+        config.playlist_font = g_strconcat(decoded, strrchr(config.playlist_font, ' '), NULL);
+        ui_skinned_playlist_set_font(config.playlist_font);
         playlistwin_update_list(playlist);
 
         g_free(decoded);
@@ -1101,11 +1088,10 @@ mainwin_drag_data_received(GtkWidget * widget,
             return;
         }
     }
-
+#endif
     aud_playlist_clear(playlist);
     aud_playlist_add_url(playlist, (gchar *) selection_data->data);
-    playback_initiate();
-#endif
+    audacious_drct_initiate();
 }
 
 static void
@@ -1122,15 +1108,14 @@ on_add_url_ok_clicked(GtkWidget * widget,
                       GtkWidget * entry)
 {
     Playlist *playlist = aud_playlist_get_active();
-#if 0
+
     const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
     if (text && *text)
     {
         aud_playlist_clear(playlist);
         aud_playlist_add_url(playlist, text);
-        playback_initiate();
+        audacious_drct_initiate();
     }
-#endif
 }
 
 static void
@@ -1294,9 +1279,7 @@ check_set( GtkActionGroup * action_group ,
 void
 mainwin_eject_pushed(void)
 {
-#if 0
-    run_filebrowser(PLAY_BUTTON);
-#endif
+    action_play_file();
 }
 
 void
@@ -1392,24 +1375,19 @@ mainwin_play_pushed(void)
         audacious_drct_pause();
         return;
     }
-#if 0
-    if (playlist_get_length(aud_playlist_get_active()))
-        playback_initiate();
+
+    if (aud_playlist_get_length(aud_playlist_get_active()))
+        audacious_drct_initiate();
     else
         mainwin_eject_pushed();
-#endif
 }
 
 void
 mainwin_stop_pushed(void)
 {
-#if 0
-    ip_data.stop = TRUE;
     audacious_drct_stop();
     mainwin_clear_song_info();
     ab_position_a = ab_position_b = -1;
-    ip_data.stop = FALSE;
-#endif
 }
 
 void
@@ -1425,9 +1403,7 @@ void mainwin_shuffle_pushed_cb(void) {
 void
 mainwin_repeat_pushed(gboolean toggled)
 {
-#if 0
     check_set( toggleaction_group_others , "playback repeat" , toggled );
-#endif
 }
 
 void mainwin_repeat_pushed_cb(void) {
@@ -1451,12 +1427,10 @@ mainwin_eq_pushed(gboolean toggled)
 void
 mainwin_pl_pushed(gboolean toggled)
 {
-#if 0
     if (toggled)
         playlistwin_show();
     else
         playlistwin_hide();
-#endif
 }
 
 gint
@@ -1729,18 +1703,14 @@ void
 mainwin_set_stopaftersong(gboolean stop)
 {
     aud_cfg->stopaftersong = stop;
-#if 0
     check_set(toggleaction_group_others, "stop after current song", aud_cfg->stopaftersong);
-#endif
 }
 
 void
 mainwin_set_noplaylistadvance(gboolean no_advance)
 {
     aud_cfg->no_playlist_advance = no_advance;
-#if 0
     check_set(toggleaction_group_others, "playback no playlist advance", aud_cfg->no_playlist_advance);
-#endif
 }
 
 static void
@@ -1789,21 +1759,22 @@ mainwin_general_menu_callback(gpointer data,
     Playlist *playlist = aud_playlist_get_active();
 
     switch (action) {
-#if 0
         case MAINWIN_GENERAL_PREFS:
-            show_prefs_window();
+            action_preferences();
             break;
         case MAINWIN_GENERAL_ABOUT:
-            show_about_window();
+            action_about_audacious();
             break;
-        case MAINWIN_GENERAL_PLAYFILE:
-            run_filebrowser(NO_PLAY_BUTTON);
+        case MAINWIN_GENERAL_PLAYFILE: {
+            gboolean button = FALSE; /* FALSE = NO_PLAY_BUTTON */
+            aud_hook_call("filebrowser show", &button);
             break;
+        }
         case MAINWIN_GENERAL_PLAYLOCATION:
             mainwin_show_add_url_window();
             break;
         case MAINWIN_GENERAL_FILEINFO:
-            ui_fileinfo_show_current(playlist);
+            aud_playlist_fileinfo_current(playlist);
             break;
         case MAINWIN_GENERAL_FOCUSPLWIN:
             gtk_window_present(GTK_WINDOW(playlistwin));
@@ -1817,14 +1788,12 @@ mainwin_general_menu_callback(gpointer data,
             else
                 playlistwin_hide();
             break;
-#endif
         case MAINWIN_GENERAL_SHOWEQWIN:
             if (GTK_CHECK_MENU_ITEM(item)->active)
                 equalizerwin_real_show();
             else
                 equalizerwin_real_hide();
             break;
-
         case MAINWIN_GENERAL_PREV:
             aud_playlist_prev(playlist);
             break;
@@ -1859,9 +1828,7 @@ mainwin_general_menu_callback(gpointer data,
             mainwin_jump_to_time();
             break;
         case MAINWIN_GENERAL_JTF:
-#if 0
-            ui_jump_to_track();
-#endif
+            audacious_drct_jtf_show();
             break;
         case MAINWIN_GENERAL_EXIT:
             mainwin_quit_cb();
@@ -1952,9 +1919,7 @@ mainwin_mr_release(GtkWidget *widget, MenuRowItem i, GdkEventButton *event)
                                          UI_SKINNED_MENUROW(mainwin_menurow)->always_selected );
             break;
         case MENUROW_FILEINFOBOX:
-#if 0
-            ui_fileinfo_show_current(aud_playlist_get_active());
-#endif
+            aud_playlist_fileinfo_current(aud_playlist_get_active());
             break;
         case MENUROW_SCALE:
             gtk_toggle_action_set_active(
@@ -2236,9 +2201,7 @@ mainwin_setup_menus(void)
 }
 
 static void mainwin_info_double_clicked_cb(void) {
-#if 0
-    ui_fileinfo_show_current(aud_playlist_get_active());
-#endif
+    aud_playlist_fileinfo_current(aud_playlist_get_active());
 }
 
 static void
@@ -2352,7 +2315,7 @@ mainwin_create_widgets(void)
 
     mainwin_info = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 112, 27, 153, 1, SKIN_TEXT);
     ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
-    ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, aud_cfg->mainwin_font);
+    ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, config.mainwin_font);
     g_signal_connect(mainwin_info, "double-clicked", mainwin_info_double_clicked_cb, NULL);
     g_signal_connect(mainwin_info, "right-clicked", G_CALLBACK(mainwin_info_right_clicked_cb), NULL);
 
@@ -2399,9 +2362,8 @@ mainwin_create_widgets(void)
 
     mainwin_about = ui_skinned_button_new();
     ui_skinned_small_button_setup(mainwin_about, SKINNED_WINDOW(mainwin)->fixed, 247, 83, 20, 25);
-#if 0
-    g_signal_connect(mainwin_about, "clicked", show_about_window, NULL);
-#endif
+    g_signal_connect(mainwin_about, "clicked", G_CALLBACK(action_about_audacious), NULL);
+
     mainwin_vis = ui_vis_new(SKINNED_WINDOW(mainwin)->fixed, 24, 43, 76);
     g_signal_connect(mainwin_vis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
     mainwin_svis = ui_svis_new(SKINNED_WINDOW(mainwin)->fixed, 79, 5);
@@ -2424,12 +2386,6 @@ mainwin_create_widgets(void)
 
     mainwin_stime_sec = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 147, 4, 10, FALSE, SKIN_TEXT);
     g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
-
-
-    aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
-    aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
-
-    aud_hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
 }
 
 static void
@@ -2462,12 +2418,12 @@ mainwin_create_window(void)
                      G_CALLBACK(mainwin_scrolled), NULL);
     g_signal_connect(mainwin, "button_release_event",
                      G_CALLBACK(mainwin_mouse_button_release), NULL);
-#if 0
+
     aud_drag_dest_set(mainwin);
 
     g_signal_connect(mainwin, "key_press_event",
                      G_CALLBACK(mainwin_keypress), NULL);
-#endif
+
     ui_main_evlistener_init();
 }
 
@@ -2497,9 +2453,9 @@ mainwin_update_song_info(void)
 
     if (length == -1 && config.timer_mode == TIMER_REMAINING)
         config.timer_mode = TIMER_ELAPSED;
-#if 0
+
     playlistwin_set_time(time, length, config.timer_mode);
-#endif
+
     if (config.timer_mode == TIMER_REMAINING) {
         if (length != -1) {
             ui_skinned_number_set_number(mainwin_minus_num, 11);
@@ -2616,9 +2572,7 @@ void
 action_autoscroll_songname( GtkToggleAction * action )
 {
     mainwin_set_title_scroll(gtk_toggle_action_get_active(action));
-#if 0
     playlistwin_set_sinfo_scroll(config.autoscroll); /* propagate scroll setting to playlistwin_sinfo */
-#endif
 }
 
 void
@@ -2656,9 +2610,7 @@ action_view_always_on_top( GtkToggleAction * action )
     UI_SKINNED_MENUROW(mainwin_menurow)->always_selected = gtk_toggle_action_get_active( action );
     config.always_on_top = UI_SKINNED_MENUROW(mainwin_menurow)->always_selected;
     gtk_widget_queue_draw(mainwin_menurow);
-#if 0
     hint_set_always(config.always_on_top);
-#endif
 }
 
 void
@@ -2679,10 +2631,8 @@ action_view_easymove( GtkToggleAction * action )
 void
 action_view_on_all_workspaces( GtkToggleAction * action )
 {
-#if 0
     config.sticky = gtk_toggle_action_get_active( action );
     hint_set_sticky(config.sticky);
-#endif
 }
 
 void
@@ -2700,9 +2650,7 @@ action_roll_up_player( GtkToggleAction * action )
 void
 action_roll_up_playlist_editor( GtkToggleAction * action )
 {
-#if 0
     playlistwin_set_shade(gtk_toggle_action_get_active(action));
-#endif
 }
 
 void
@@ -2717,12 +2665,10 @@ action_show_equalizer( GtkToggleAction * action )
 void
 action_show_playlist_editor( GtkToggleAction * action )
 {
-#if 0
     if (gtk_toggle_action_get_active(action))
         playlistwin_show();
     else
         playlistwin_hide();
-#endif
 }
 
 void
@@ -2800,17 +2746,15 @@ action_viewtime( GtkAction *action, GtkRadioAction *current )
 void
 action_about_audacious( void )
 {
-#if 0
-    show_about_window();
-#endif
+    gboolean show = TRUE;
+    aud_hook_call("aboutwin show", &show);
 }
 
 void
 action_play_file( void )
 {
-#if 0
-    run_filebrowser(PLAY_BUTTON);
-#endif
+    gboolean button = TRUE; /* TRUE = PLAY_BUTTON */
+    aud_hook_call("filebrowser show", &button);
 }
 
 void
@@ -2861,17 +2805,13 @@ action_ab_clear( void )
 void
 action_current_track_info( void )
 {
-#if 0
-    ui_fileinfo_show_current(aud_playlist_get_active());
-#endif
+    aud_playlist_fileinfo_current(aud_playlist_get_active());
 }
 
 void
 action_jump_to_file( void )
 {
-#if 0
-    ui_jump_to_track();
-#endif
+    audacious_drct_jtf_show();
 }
 
 void
@@ -2922,9 +2862,8 @@ action_playback_stop( void )
 void
 action_preferences( void )
 {
-#if 0
-    show_prefs_window();
-#endif
+    gboolean show = TRUE;
+    aud_hook_call("prefswin show", &show);
 }
 
 void

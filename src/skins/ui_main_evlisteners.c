@@ -32,13 +32,11 @@
 #include <audacious/plugin.h>
 #if 0
 #include "ui_credits.h"
-#include "ui_equalizer.h"
-#include "ui_fileopener.h"
-#include "ui_jumptotrack.h"
 #endif
+#include "ui_equalizer.h"
 #include "ui_main.h"
-#if 0
 #include "ui_playlist.h"
+#if 0
 #include "ui_preferences.h"
 #endif
 #include "ui_skinned_playstatus.h"
@@ -48,6 +46,12 @@
 
 static gint song_info_timeout_source = 0;
 static gint update_vis_timeout_source = 0;
+
+typedef struct {
+    gint bitrate;
+    gint samplerate;
+    gint channels;
+} PlaylistEventInfoChange;
 
 /* XXX: there has to be a better way than polling here! */
 /* also: where should this function go? should it stay here? --mf0102 */
@@ -68,10 +72,7 @@ ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
     gchar *text = (gchar *) hook_data;
 
     ui_skinned_textbox_set_text(mainwin_info, text);
-#if 0
-    playlistwin_update_list(playlist_get_active());
-#endif
-    g_free(text);
+    playlistwin_update_list(aud_playlist_get_active());
 }
 
 static void
@@ -97,36 +98,17 @@ ui_main_evlistener_volume_change(gpointer hook_data, gpointer user_data)
         b = 0;
 
     mainwin_set_volume_slider(v);
-#if 0
     equalizerwin_set_volume_slider(v);
-#endif
     mainwin_set_balance_slider(b);
-#if 0
     equalizerwin_set_balance_slider(b);
-#endif
-}
-
-static void
-ui_main_evlistener_playback_initiate(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    playback_initiate();
-#endif
 }
 
 static void
 ui_main_evlistener_playback_begin(gpointer hook_data, gpointer user_data)
 {
-
     PlaylistEntry *entry = (PlaylistEntry*)hook_data;
     g_return_if_fail(entry != NULL);
-#if 0
-    equalizerwin_load_auto_preset(entry->filename);
-    input_set_eq(cfg.equalizer_active, cfg.equalizer_preamp,
-                 cfg.equalizer_bands);
-    output_set_eq(cfg.equalizer_active, cfg.equalizer_preamp,
-                  cfg.equalizer_bands);
-#endif
+
     ui_vis_clear_data(mainwin_vis);
     ui_svis_clear_data(mainwin_svis);
     mainwin_disable_seekbar();
@@ -201,22 +183,17 @@ static void
 ui_main_evlistener_playlist_end_reached(gpointer hook_data, gpointer user_data)
 {
     mainwin_clear_song_info();
-#if 0
-    if (cfg.stopaftersong)
+
+    if (aud_cfg->stopaftersong)
         mainwin_set_stopaftersong(FALSE);
-#endif
 }
 
 static void
 ui_main_evlistener_playlist_info_change(gpointer hook_data, gpointer user_data)
 {
-#if 0
     PlaylistEventInfoChange *msg = (PlaylistEventInfoChange *) hook_data;
 
     mainwin_set_song_info(msg->bitrate, msg->samplerate, msg->channels);
-
-    g_free(msg);
-#endif
 }
 
 static void
@@ -236,64 +213,8 @@ ui_main_evlistener_mainwin_show(gpointer hook_data, gpointer user_data)
 static void
 ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
 {
-#if 0
     gboolean *show = (gboolean*)hook_data;
     equalizerwin_show(*show);
-#endif
-}
-
-static void
-ui_main_evlistener_prefswin_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *show = (gboolean*)hook_data;
-    if (*show == TRUE)
-        show_prefs_window();
-    else
-        hide_prefs_window();
-#endif
-}
-
-static void
-ui_main_evlistener_aboutwin_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *show = (gboolean*)hook_data;
-    if (*show == TRUE)
-        show_about_window();
-    else
-        hide_about_window();
-#endif
-}
-
-
-static void
-ui_main_evlistener_ui_jump_to_track_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *show = (gboolean*)hook_data;
-    if (*show == TRUE)
-        ui_jump_to_track();
-    else
-        ui_jump_to_track_hide();
-#endif
-}
-
-static void
-ui_main_evlistener_filebrowser_show(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    gboolean *play_button = (gboolean*)hook_data;
-    run_filebrowser(*play_button);
-#endif
-}
-
-static void
-ui_main_evlistener_filebrowser_hide(gpointer hook_data, gpointer user_data)
-{
-#if 0
-    hide_filebrowser();
-#endif
 }
 
 static void
@@ -324,31 +245,56 @@ ui_main_evlistener_config_save(gpointer hook_data, gpointer user_data)
 void
 ui_main_evlistener_init(void)
 {
-#if 0
     aud_hook_associate("title change", ui_main_evlistener_title_change, NULL);
     aud_hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
     aud_hook_associate("volume set", ui_main_evlistener_volume_change, NULL);
-    aud_hook_associate("playback initiate", ui_main_evlistener_playback_initiate, NULL);
-#endif
     aud_hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
     aud_hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
     aud_hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     aud_hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     aud_hook_associate("playback seek", ui_main_evlistener_playback_seek, NULL);
-#if 0
     aud_hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     aud_hook_associate("playlist end reached", ui_main_evlistener_playlist_end_reached, NULL);
     aud_hook_associate("playlist info change", ui_main_evlistener_playlist_info_change, NULL);
     aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
-    aud_hook_associate("prefswin show", ui_main_evlistener_prefswin_show, NULL);
-    aud_hook_associate("aboutwin show", ui_main_evlistener_aboutwin_show, NULL);
-    aud_hook_associate("ui jump to track show", ui_main_evlistener_ui_jump_to_track_show, NULL);
-    aud_hook_associate("filebrowser show", ui_main_evlistener_filebrowser_show, NULL);
-    aud_hook_associate("filebrowser hide", ui_main_evlistener_filebrowser_hide, NULL);
-#endif
     aud_hook_associate("visualization timeout", ui_main_evlistener_visualization_timeout, NULL);
     aud_hook_associate("config save", ui_main_evlistener_config_save, NULL);
+
+    aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
+    aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
+
+    aud_hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
 }
 
+void
+ui_main_evlistener_dissociate(void)
+{
+    aud_hook_dissociate("title change", ui_main_evlistener_title_change);
+    aud_hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
+    aud_hook_dissociate("volume set", ui_main_evlistener_volume_change);
+    aud_hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
+    aud_hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
+    aud_hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
+    aud_hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
+    aud_hook_dissociate("playback seek", ui_main_evlistener_playback_seek);
+    aud_hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
+    aud_hook_dissociate("playlist end reached", ui_main_evlistener_playlist_end_reached);
+    aud_hook_dissociate("playlist info change", ui_main_evlistener_playlist_info_change);
+    aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
+    aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
+    aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
+#if 0
+    aud_hook_dissociate("prefswin show", ui_main_evlistener_prefswin_show);
+    aud_hook_dissociate("aboutwin show", ui_main_evlistener_aboutwin_show);
+    aud_hook_dissociate("ui jump to track show", ui_main_evlistener_ui_jump_to_track_show);
+#endif
+    aud_hook_dissociate("visualization timeout", ui_main_evlistener_visualization_timeout);
+    aud_hook_dissociate("config save", ui_main_evlistener_config_save);
+
+    aud_hook_dissociate("playback audio error", (void *) mainwin_stop_pushed);
+    aud_hook_dissociate("playback audio error", (void *) run_no_output_device_dialog);
+
+    aud_hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
+}

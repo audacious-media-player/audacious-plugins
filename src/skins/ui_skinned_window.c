@@ -18,20 +18,20 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "platform/smartinclude.h"
-#include "ui_skin.h"
-#include "skins_cfg.h"
-
 #include <gtk/gtkmain.h>
 #include <glib-object.h>
 #include <glib/gmacros.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkwindow.h>
 #include <string.h>
-
 #include <audacious/plugin.h>
+#include "platform/smartinclude.h"
+#include "ui_skin.h"
+#include "skins_cfg.h"
 #include "ui_dock.h"
 #include "ui_skinned_window.h"
+#include "ui_main.h"
+#include "ui_playlist.h"
 
 static void ui_skinned_window_class_init(SkinnedWindowClass *klass);
 static void ui_skinned_window_init(GtkWidget *widget);
@@ -134,10 +134,8 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
             height = 116 * (config.scaled ? config.scale_factor : 1) ;
             break;
         case WINDOW_PLAYLIST:
-#if 0
             width = playlistwin_get_width();
             height = config.playlist_height;
-#endif
             break;
         default:
             return FALSE;
@@ -275,10 +273,9 @@ ui_skinned_window_new(const gchar *wmclass_name)
 }
 
 void ui_skinned_window_draw_all(GtkWidget *widget) {
-#if 0
     if (SKINNED_WINDOW(widget)->type == WINDOW_MAIN)
         mainwin_refresh_hints();
-#endif
+
     gtk_widget_queue_draw(widget);
     GList *iter;
     for (iter = GTK_FIXED (SKINNED_WINDOW(widget)->fixed)->children; iter; iter = g_list_next (iter)) {

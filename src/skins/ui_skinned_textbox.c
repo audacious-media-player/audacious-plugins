@@ -707,6 +707,8 @@ static void textbox_generate_pixmap(UiSkinnedTextbox *textbox) {
 
 void ui_skinned_textbox_set_scroll(GtkWidget *widget, gboolean scroll) {
     g_return_if_fail(widget != NULL);
+    g_return_if_fail(UI_SKINNED_IS_TEXTBOX(widget));
+
     UiSkinnedTextbox *textbox = UI_SKINNED_TEXTBOX(widget);
     UiSkinnedTextboxPrivate *priv = UI_SKINNED_TEXTBOX_GET_PRIVATE(textbox);
 

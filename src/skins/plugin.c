@@ -25,6 +25,8 @@
 #include "ui_skinned_window.h"
 #include "ui_manager.h"
 #include "icons-stock.h"
+#include "ui_main_evlisteners.h"
+#include "ui_playlist_evlisteners.h"
 #include <audacious/i18n.h>
 #include <libintl.h>
 
@@ -57,17 +59,27 @@ void skins_init(void) {
 
     init_skins(config.skin);
 
-    mainwin_real_show();
+    if (config.player_visible) mainwin_real_show();
+    if (config.equalizer_visible) equalizerwin_show(TRUE);
+    if (config.playlist_visible) playlistwin_show();
 
     return;
 }
 
 void skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
+        skins_cfg_save();
+        ui_main_evlistener_dissociate();
+        ui_playlist_evlistener_dissociate();
         skins_cfg_free();
         gtk_widget_destroy(mainwin);
-        skin_free(aud_active_skin);
+        gtk_widget_destroy(equalizerwin);
+        skin_destroy(aud_active_skin);
         aud_active_skin = NULL;
+        mainwin = NULL;
+        equalizerwin = NULL;
+        playlistwin = NULL;
+        mainwin_info = NULL;
         plugin_is_active = FALSE;
     }
 

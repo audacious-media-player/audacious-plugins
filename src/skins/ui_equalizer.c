@@ -184,14 +184,8 @@ equalizerwin_eq_changed(void)
     aud_cfg->equalizer_preamp = ui_skinned_equalizer_slider_get_position(equalizerwin_preamp);
     for (i = 0; i < 10; i++)
         aud_cfg->equalizer_bands[i] = ui_skinned_equalizer_slider_get_position(equalizerwin_bands[i]);
-    /* um .. i think we need both of these for xmms compatibility ..
-       not sure. -larne */
-#if 0
-    input_set_eq(aud_cfg->equalizer_active, aud_cfg->equalizer_preamp,
-                 aud_cfg->equalizer_bands);
-    output_set_eq(aud_cfg->equalizer_active, aud_cfg->equalizer_preamp,
-                  aud_cfg->equalizer_bands);
-#endif
+
+    aud_hook_call("equalizer changed", NULL);
     gtk_widget_queue_draw(equalizerwin_graph);
 }
 

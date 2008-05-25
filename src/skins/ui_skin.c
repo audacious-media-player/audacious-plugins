@@ -42,8 +42,8 @@
 #include "util.h"
 #include "ui_main.h"
 #include "ui_equalizer.h"
-#if 0
 #include "ui_playlist.h"
+#if 0
 #include "ui_skinselector.h"
 #endif
 #include "debug.h"
@@ -184,11 +184,10 @@ aud_active_skin_load(const gchar * path)
 
     ui_skinned_window_draw_all(mainwin);
     ui_skinned_window_draw_all(equalizerwin);
-#if 0
     ui_skinned_window_draw_all(playlistwin);
 
-    playlistwin_update_list(playlist_get_active());
-#endif
+    playlistwin_update_list(aud_playlist_get_active());
+
     SkinPixmap *pixmap;
     pixmap = &aud_active_skin->pixmaps[SKIN_POSBAR];
     /* last 59 pixels of SKIN_POSBAR are knobs (normal and selected) */
@@ -407,7 +406,7 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
 
     pm = &skin->pixmaps[id];
     GdkPixbuf *pix = gdk_pixbuf_new_from_file(filename, NULL);
-    pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r, aud_cfg->colorize_g, aud_cfg->colorize_b);
+    pm->pixbuf = audacious_create_colorized_pixbuf(pix, config.colorize_r, config.colorize_g, config.colorize_b);
     g_object_unref(pix);
     pm->width = gdk_pixbuf_get_width(pm->pixbuf);
     pm->height = gdk_pixbuf_get_height(pm->pixbuf);
@@ -535,9 +534,7 @@ init_skins(const gchar * path)
     {
         mainwin_create();
         equalizerwin_create();
-#if 0
         playlistwin_create();
-#endif
     }
 
     if (!aud_active_skin_load(path)) {
@@ -1749,7 +1746,7 @@ skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
     pixmap = skin_get_pixmap(skin, pixmap_id);
     g_return_if_fail(pixmap != NULL);
     g_return_if_fail(pixmap->pixbuf != NULL);
-#if 0
+
     /* perhaps we should use transparency or resize widget? */
     if (xsrc+width > pixmap->width || ysrc+height > pixmap->height) {
         if (widget) {
@@ -1798,7 +1795,7 @@ skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
         } else
             return;
     }
-#endif
+
     width = MIN(width, pixmap->width - xsrc);
     height = MIN(height, pixmap->height - ysrc);
     gdk_pixbuf_copy_area(pixmap->pixbuf, xsrc, ysrc, width, height,
@@ -2056,8 +2053,8 @@ void ui_skinned_widget_draw(GtkWidget *widget, GdkPixbuf *obj, gint width, gint 
     g_return_if_fail(obj != NULL);
 
     if (scale) {
-        GdkPixbuf *image = gdk_pixbuf_scale_simple(obj, width * config.scale_factor, height* aud_cfg->scale_factor, GDK_INTERP_NEAREST);
-        gdk_draw_pixbuf(widget->window, NULL, image, 0, 0, 0, 0, width * config.scale_factor , height * aud_cfg->scale_factor, GDK_RGB_DITHER_NONE, 0, 0);
+        GdkPixbuf *image = gdk_pixbuf_scale_simple(obj, width * config.scale_factor, height* config.scale_factor, GDK_INTERP_NEAREST);
+        gdk_draw_pixbuf(widget->window, NULL, image, 0, 0, 0, 0, width * config.scale_factor , height * config.scale_factor, GDK_RGB_DITHER_NONE, 0, 0);
         g_object_unref(image);
     } else {
         gdk_draw_pixbuf(widget->window, NULL, obj, 0, 0, 0, 0, width, height, GDK_RGB_DITHER_NONE, 0, 0);

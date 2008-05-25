@@ -1300,7 +1300,7 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence) {
 	_LEAVE -1;
     }
 
-    if (newpos > content_length) {
+    if (newpos >= content_length) {
         _ERROR("<%p> Can not seek beyond end of stream", h);
         _LEAVE -1;
     }

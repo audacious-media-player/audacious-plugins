@@ -68,13 +68,14 @@ enum XS_SIDMODEL {
 
 
 typedef struct {
-    t_xs_int_point    points[XS_SIDPLAY2_NFPOINTS];
-    gint        npoints;
-    gchar        *name;
-} t_xs_sid2_filter;
+    gint            type;
+    xs_int_point_t  points[XS_SIDPLAY2_NFPOINTS];
+    gint            npoints;
+    gchar           *name;
+} xs_sid2_filter_t;
 
 
-extern struct t_xs_cfg {
+extern struct xs_cfg_t {
     /* General audio settings */
     gint        audioBitsPerSample;
     gint        audioChannels;
@@ -99,8 +100,8 @@ extern struct t_xs_cfg {
 
     gint        sid2OptLevel;       /* SIDPlay2 emulation optimization */
     gint        sid2Builder;        /* SIDPlay2 "builder" aka SID-emu */
-    t_xs_sid2_filter    sid2Filter; /* Current SIDPlay2 filter */
-    t_xs_sid2_filter    **sid2FilterPresets;
+    xs_sid2_filter_t    sid2Filter; /* Current SIDPlay2 filter */
+    xs_sid2_filter_t    **sid2FilterPresets;
     gint        sid2NFilterPresets;
     
     
@@ -158,7 +159,7 @@ typedef struct {
     gint    itemType;   /* Type of item (CTYPE_*) */
     void    *itemData;  /* Pointer to variable */
     gchar   *itemName;  /* Name of configuration item */
-} t_xs_cfg_item;
+} xs_cfg_item_t;
 
 
 typedef struct {
@@ -167,7 +168,7 @@ typedef struct {
     gchar   *widName;
     void    *itemData;
     gint    itemSet;
-} t_xs_wid_item;
+} xs_wid_item_t;
 
 
 /* Functions

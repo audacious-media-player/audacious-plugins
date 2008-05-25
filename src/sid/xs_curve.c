@@ -252,7 +252,7 @@ static void xs_curve_draw(XSCurve *curve, gint width, gint height)
     GtkStateType state;
     GtkStyle *style;
     gint i, ox = -1, oy = -1;
-    t_xs_point *p0, *p1, *p2, *p3;
+    xs_point_t *p0, *p1, *p2, *p3;
 
     if (!curve->pixmap)
         return;
@@ -624,7 +624,7 @@ gboolean xs_curve_realloc_data(XSCurve *curve, gint npoints)
 {
     if (npoints != curve->nctlpoints) {
         curve->nctlpoints = npoints;
-        curve->ctlpoints = (t_xs_point *) g_realloc(curve->ctlpoints,
+        curve->ctlpoints = (xs_point_t *) g_realloc(curve->ctlpoints,
             curve->nctlpoints * sizeof(*curve->ctlpoints));
 
         if (curve->ctlpoints == NULL)
@@ -635,14 +635,14 @@ gboolean xs_curve_realloc_data(XSCurve *curve, gint npoints)
 }
 
 
-void xs_curve_get_data(XSCurve *curve, t_xs_point ***points, gint **npoints)
+void xs_curve_get_data(XSCurve *curve, xs_point_t ***points, gint **npoints)
 {
     *points = &(curve->ctlpoints);
     *npoints = &(curve->nctlpoints);
 }
 
 
-gboolean xs_curve_set_points(XSCurve *curve, t_xs_int_point *points, gint npoints)
+gboolean xs_curve_set_points(XSCurve *curve, xs_int_point_t *points, gint npoints)
 {
     gint i;
 
@@ -669,13 +669,13 @@ gboolean xs_curve_set_points(XSCurve *curve, t_xs_int_point *points, gint npoint
 }
 
 
-gboolean xs_curve_get_points(XSCurve *curve, t_xs_int_point **points, gint *npoints)
+gboolean xs_curve_get_points(XSCurve *curve, xs_int_point_t **points, gint *npoints)
 {
     gint i, n;
     
     n = curve->nctlpoints - 4;
     
-    *points = g_malloc(n * sizeof(t_xs_int_point));
+    *points = g_malloc(n * sizeof(xs_int_point_t));
     if (*points == NULL)
         return FALSE;
     

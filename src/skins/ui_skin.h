@@ -30,14 +30,8 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
-#if 0
-#include "audconfig.h"
-
 #define BMP_DEFAULT_SKIN_PATH \
   DATA_DIR G_DIR_SEPARATOR_S "Skins" G_DIR_SEPARATOR_S "Default"
-#else
-#define BMP_DEFAULT_SKIN_PATH "/usr/local/share/audacious/Skins/Default"
-#endif
 
 typedef enum {
     SKIN_MAIN = 0,
@@ -216,6 +210,7 @@ gboolean skin_load(Skin * skin, const gchar * path);
 gboolean skin_reload_forced(void);
 void skin_reload(Skin * skin);
 void skin_free(Skin * skin);
+void skin_destroy(Skin * skin);
 
 GdkBitmap *skin_get_mask(Skin * skin, SkinMaskId mi);
 GdkColor *skin_get_color(Skin * skin, SkinColorId color_id);

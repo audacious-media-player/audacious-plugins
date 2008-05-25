@@ -353,7 +353,7 @@ static gboolean ui_svis_expose(GtkWidget *widget, GdkEventExpose *event) {
     }
     else {            /*svis scaling, this needs some work, since a lot of stuff is hardcoded --majeru*/
 
-      memset(rgb_data, 0, SVIS_WIDTH * config.scale_factor * SVIS_HEIGHT * aud_cfg->scale_factor);
+      memset(rgb_data, 0, SVIS_WIDTH * config.scale_factor * SVIS_HEIGHT * config.scale_factor);
       if (config.vis_type == VIS_ANALYZER && !audacious_drct_get_paused() && audacious_drct_get_playing()){
 	  for(y=0; y < SVIS_HEIGHT; y++){
             if (config.analyzer_type == ANALYZER_BARS){
@@ -452,7 +452,7 @@ static void ui_svis_toggle_scaled(UiSVis *svis) {
     GtkWidget *widget = GTK_WIDGET (svis);
     svis->scaled = !svis->scaled;
 
-    gtk_widget_set_size_request(widget, svis->width* config.scale_factor, svis->height * aud_cfg->scale_factor);
+    gtk_widget_set_size_request(widget, svis->width* config.scale_factor, svis->height * config.scale_factor);
 
     gtk_widget_queue_draw(widget);
 }

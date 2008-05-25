@@ -24,5 +24,6 @@
 #define AUDACIOUS_UI_MAIN_EVLISTENERS_H
 
 void ui_main_evlistener_init(void);
+void ui_main_evlistener_dissociate(void);
 
 #endif /* AUDACIOUS_UI_MAIN_EVLISTENERS_H */

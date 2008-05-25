@@ -40,7 +40,7 @@ arch_Bzip2::arch_Bzip2(const string& aFileName)
 		return;
 	}
 	
-	if(fscanf(f, "%u", &mSize) != 1); // this is the size.
+	if(fscanf(f, "%u", &mSize) != 1) // this is the size.
 	{
 		mSize = 0;
 		return;
