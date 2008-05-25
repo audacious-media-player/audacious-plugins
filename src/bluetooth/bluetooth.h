@@ -8,5 +8,15 @@
 #include <gtk/gtk.h>
 #include <audacious/util.h>
 #include "gui.h"
+typedef struct {
+    guint class;
+    gchar* address;
+    gchar* name;
+}DeviceData;
+
+
+
 void refresh_call(void);
 void connect_call(void);
+GList * audio_devices;
+
