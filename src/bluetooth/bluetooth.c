@@ -61,7 +61,10 @@ void bt_about( void )
 
 
 void refresh_call(void){
-    discover_devices()
+   if(discover_finish == 0)
+       discover_devices();
+       else 
+           printf("Scanning please wait!\n");
     printf("refresh function called\n");
 }
 
@@ -103,6 +106,7 @@ static void remote_device_found(DBusGProxy *object, char *address, const unsigne
 static void discovery_started(DBusGProxy *object, gpointer user_data)
 {
     g_print("Signal: DiscoveryStarted()\n");
+    discover_finish = 1;
 }
 
 static void remote_name_updated(DBusGProxy *object, const char *address,  char *name, gpointer user_data)
@@ -143,6 +147,7 @@ static void discovery_completed(DBusGProxy *object, gpointer user_data)
 {
     g_print("Signal: DiscoveryCompleted()\n");
     print_results();
+    discover_finish =0;
 
 
 }
