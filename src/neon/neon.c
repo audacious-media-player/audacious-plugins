@@ -32,6 +32,7 @@
 
 #define NBUFSIZ (128u*1024u)
 #define NETBLKSIZ (4096u)
+#define ICY_BUFSIZE (4096)
 
 DECLARE_PLUGIN(neon, init, fini)
 
@@ -156,7 +157,7 @@ static void handle_free(struct neon_handle* h) {
 
 static void init(void) {
 
-    int ret;
+    gint ret;
 
     _ENTER;
 
@@ -219,15 +220,15 @@ static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) {
  * -----
  */
 
-static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
+static void parse_icy(struct icy_metadata* m, gchar* metadata, gint len) {
 
     gchar* p;
     gchar* tstart;
     gchar* tend;
-    gchar name[4096];
-    gchar value[4096];
-    int state;
-    int pos;
+    gchar name[ICY_BUFSIZE];
+    gchar value[ICY_BUFSIZE];
+    gint state;
+    gint pos;
 
     _ENTER;
 
@@ -249,7 +250,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of tag name.
                      */
                     *p = '\0';
-                    g_strlcpy(name, tstart, 4096);
+                    g_strlcpy(name, tstart, ICY_BUFSIZE);
                     _DEBUG("Found tag name: %s", name);
                     state = 2;
                 } else {
@@ -278,7 +279,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                      * End of value
                      */
                     *p = '\0';
-                    g_strlcpy(value, tstart, 4096);
+                    g_strlcpy(value, tstart, ICY_BUFSIZE);
                     _DEBUG("Found tag value: %s", value);
                     add_icy(m, name, value);
                     state = 4;
@@ -619,14 +620,14 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
  * -----
  */
 
-static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
+static gint open_handle(struct neon_handle* handle, unsigned long startbyte) {
 
-    int ret;
+    gint ret;
     mcs_handle_t* db;
     gchar* proxy_host = NULL;
     gchar* proxy_port_s = NULL;
     gchar* endptr;
-    unsigned int proxy_port = 0;
+    guint proxy_port = 0;
     gboolean use_proxy, use_proxy_auth;
 
     _ENTER;
@@ -724,11 +725,11 @@ static int open_handle(struct neon_handle* handle, unsigned long startbyte) {
  * -----
  */
 
-static int fill_buffer(struct neon_handle* h) {
+static gint fill_buffer(struct neon_handle* h) {
 
-    ssize_t bsize;
-    char buffer[NETBLKSIZ];
-    ssize_t to_read;
+    gssize bsize;
+    gchar buffer[NETBLKSIZ];
+    gssize to_read;
 
     _ENTER;
 
@@ -763,8 +764,8 @@ static int fill_buffer(struct neon_handle* h) {
 
 static int fill_buffer_limit(struct neon_handle* h, unsigned int maxfree) {
 
-    ssize_t bfree;
-    int ret;
+    gssize bfree;
+    gint ret;
 
     _ENTER;
 
@@ -796,7 +797,7 @@ static int fill_buffer_limit(struct neon_handle* h, unsigned int maxfree) {
 static gpointer reader_thread(void* data) {
 
     struct neon_handle* h = (struct neon_handle*)data;
-    int ret;
+    gint ret;
 
     _ENTER;
 
@@ -933,14 +934,14 @@ gint neon_aud_vfs_fclose_impl(VFSFile* file) {
  * -----
  */
 
-size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* file) {
+gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* file) {
 
     struct neon_handle* h = (struct neon_handle*)file->handle;
-    int belem;
-    int relem;
-    int ret;
-    char icy_metadata[4096];
-    unsigned char icy_metalen;
+    gint belem;
+    gint relem;
+    gint ret;
+    gchar icy_metadata[ICY_BUFSIZE];
+    guchar icy_metalen;
 
     _ENTER;
 
@@ -1158,7 +1159,7 @@ size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile
  * -----
  */
 
-size_t neon_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile* file) {
+gsize neon_aud_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFile* file) {
 
     _ENTER;
 
