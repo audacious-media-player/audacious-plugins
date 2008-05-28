@@ -30,11 +30,25 @@
 #include "debug.h"
 #include "rb.h"
 
-#define NBUFSIZ (128u*1024u)
-#define NETBLKSIZ (4096u)
-#define ICY_BUFSIZE (4096)
+#define NEON_BUFSIZE        (128u*1024u)
+#define NEON_NETBLKSIZE     (4096u)
+#define NEON_ICY_BUFSIZE    (4096)
 
-DECLARE_PLUGIN(neon, init, fini)
+
+VFSFile *neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode);
+gint neon_aud_vfs_fclose_impl(VFSFile* file);
+gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* file);
+gsize neon_aud_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFile* file);
+gint neon_aud_vfs_getc_impl(VFSFile* file);
+gint neon_aud_vfs_ungetc_impl(gint c, VFSFile* file);
+void neon_aud_vfs_rewind_impl(VFSFile* file);
+glong neon_aud_vfs_ftell_impl(VFSFile* file);
+gboolean neon_aud_vfs_feof_impl(VFSFile* file);
+gint neon_aud_vfs_truncate_impl(VFSFile* file, glong size);
+gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence);
+gchar *neon_aud_vfs_metadata_impl(VFSFile* file, const gchar * field);
+off_t neon_aud_vfs_fsize_impl(VFSFile* file);
+
 
 VFSConstructor neon_http_const = {
     "http://",
@@ -72,63 +86,10 @@ VFSConstructor neon_https_const = {
 
 
 /*
- * ========
- */
-
-static struct neon_handle* handle_init(void) {
-
-    struct neon_handle* h;
-
-    _ENTER;
-
-    if (NULL == (h = g_new0(struct neon_handle, 1))) {
-        _ERROR("Could not allocate memory for handle");
-        _LEAVE NULL;
-    }
-
-    h->reader_status.mutex = g_mutex_new();
-    h->reader_status.cond = g_cond_new();
-    h->reader_status.reading = FALSE;
-    h->reader_status.status = NEON_READER_INIT;
-
-    if (0 != init_rb_with_lock(&(h->rb), NBUFSIZ, h->reader_status.mutex)) {
-        _ERROR("Could not initialize buffer");
-        g_free(h);
-        _LEAVE NULL;
-    }
-
-    h->purl = g_new0(ne_uri, 1);
-    h->content_length = -1;
-
-    _LEAVE h;
-}
-
-/*
- * -----
- */
-
-static void handle_free(struct neon_handle* h) {
-
-    _ENTER;
-
-    _DEBUG("<%p> freeing handle", h);
-
-    ne_uri_free(h->purl);
-    destroy_rb(&h->rb);
-    g_free(h->icy_metadata.stream_name);
-    g_free(h->icy_metadata.stream_title);
-    g_free(h->icy_metadata.stream_url);
-    g_free(h->icy_metadata.stream_contenttype);
-    g_free(h);
-
-    _LEAVE;
-}
-
-/*
  * ----
  */
 
-static void init(void) {
+static void neon_plugin_init(void) {
 
     gint ret;
 
@@ -153,11 +114,68 @@ static void init(void) {
  * -----
  */
 
-static void fini(void) {
+static void neon_plugin_fini(void) {
 
     _ENTER;
 
     ne_sock_exit();
+
+    _LEAVE;
+}
+
+DECLARE_PLUGIN(neon, neon_plugin_init, neon_plugin_fini)
+
+
+/*
+ * ========
+ */
+
+static struct neon_handle* handle_init(void) {
+
+    struct neon_handle* h;
+
+    _ENTER;
+
+    if (NULL == (h = g_new0(struct neon_handle, 1))) {
+        _ERROR("Could not allocate memory for handle");
+        _LEAVE NULL;
+    }
+
+    h->reader_status.mutex = g_mutex_new();
+    h->reader_status.cond = g_cond_new();
+    h->reader_status.reading = FALSE;
+    h->reader_status.status = NEON_READER_INIT;
+
+    if (0 != init_rb_with_lock(&(h->rb), NEON_BUFSIZE, h->reader_status.mutex)) {
+        _ERROR("Could not initialize buffer");
+        g_free(h);
+        _LEAVE NULL;
+    }
+
+    h->purl = g_new0(ne_uri, 1);
+    h->content_length = -1;
+
+    _LEAVE h;
+}
+
+/*
+ * -----
+ */
+
+static void handle_free(struct neon_handle* h) {
+
+    _ENTER;
+
+    _DEBUG("<%p> freeing handle", h);
+
+    ne_uri_free(h->purl);
+    g_free(h->purl);
+    destroy_rb(&h->rb);
+    g_free(h->icy_metadata.stream_name);
+    g_free(h->icy_metadata.stream_title);
+    g_free(h->icy_metadata.stream_url);
+    g_free(h->icy_metadata.stream_contenttype);
+    g_free(h);
 
     _LEAVE;
 }
@@ -194,8 +212,8 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gint len) {
     gchar* p;
     gchar* tstart;
     gchar* tend;
-    gchar name[ICY_BUFSIZE];
-    gchar value[ICY_BUFSIZE];
+    gchar name[NEON_ICY_BUFSIZE];
+    gchar value[NEON_ICY_BUFSIZE];
     gint state;
     gint pos;
 
@@ -219,7 +237,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gint len) {
                      * End of tag name.
                      */
                     *p = '\0';
-                    g_strlcpy(name, tstart, ICY_BUFSIZE);
+                    g_strlcpy(name, tstart, NEON_ICY_BUFSIZE);
                     _DEBUG("Found tag name: %s", name);
                     state = 2;
                 } else {
@@ -248,7 +266,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gint len) {
                      * End of value
                      */
                     *p = '\0';
-                    g_strlcpy(value, tstart, ICY_BUFSIZE);
+                    g_strlcpy(value, tstart, NEON_ICY_BUFSIZE);
                     _DEBUG("Found tag value: %s", value);
                     add_icy(m, name, value);
                     state = 4;
@@ -486,7 +504,7 @@ static int neon_proxy_auth_cb(void *userdata, const char *realm, int attempt, ch
  * -----
  */
 
-static int open_request(struct neon_handle* handle, unsigned long startbyte) {
+static int open_request(struct neon_handle* handle, gulong startbyte) {
 
     int ret;
     const ne_status* status;
@@ -585,7 +603,7 @@ static int open_request(struct neon_handle* handle, unsigned long startbyte) {
  * -----
  */
 
-static gint open_handle(struct neon_handle* handle, unsigned long startbyte) {
+static gint open_handle(struct neon_handle* handle, gulong startbyte) {
 
     gint ret;
     mcs_handle_t* db;
@@ -694,13 +712,13 @@ static gint open_handle(struct neon_handle* handle, unsigned long startbyte) {
 static gint fill_buffer(struct neon_handle* h) {
 
     gssize bsize;
-    gchar buffer[NETBLKSIZ];
+    gchar buffer[NEON_NETBLKSIZE];
     gssize to_read;
 
     _ENTER;
 
     bsize = free_rb(&h->rb);
-    to_read = MIN(bsize, NETBLKSIZ);
+    to_read = MIN(bsize, NEON_NETBLKSIZE);
 
     _DEBUG("<%p> %d bytes free in buffer, trying to read %d bytes max", h, bsize, to_read);
 
@@ -772,9 +790,9 @@ static gpointer reader_thread(void* data) {
     while(h->reader_status.reading) {
 
         /*
-         * Hit the network only if we have more than NETBLKSIZ of free buffer
+         * Hit the network only if we have more than NEON_NETBLKSIZE of free buffer
          */
-        if (NETBLKSIZ < free_rb_locked(&h->rb)) {
+        if (NEON_NETBLKSIZE < free_rb_locked(&h->rb)) {
             g_mutex_unlock(h->reader_status.mutex);
 
             _DEBUG("<%p> Filling buffer...", h);
@@ -906,7 +924,7 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
     gint belem;
     gint relem;
     gint ret;
-    gchar icy_metadata[ICY_BUFSIZE];
+    gchar icy_metadata[NEON_ICY_BUFSIZE];
     guchar icy_metalen;
 
     _ENTER;
@@ -961,7 +979,7 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
              * to keep the buffer filled up.
              */
             _DEBUG("<%p> Doing initial buffer fill", h);
-            ret = fill_buffer_limit(h, NBUFSIZ/2);
+            ret = fill_buffer_limit(h, NEON_BUFSIZE/2);
 
             if (-1 == ret) {
                 _ERROR("<%p> Error while reading from the network", h);
@@ -1358,3 +1376,6 @@ off_t neon_aud_vfs_fsize_impl(VFSFile* file) {
 
     _LEAVE (h->content_start + h->content_length);
 }
+
+
+
