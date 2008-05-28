@@ -851,7 +851,7 @@ static gboolean ui_skinned_playlist_button_press(GtkWidget *widget, GdkEventButt
 
     nr = ui_skinned_playlist_get_position(widget, event->x, event->y);
     if (nr == -1)
-        return FALSE;
+        return TRUE;
 
     if (event->button == 3) {
         ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu),
