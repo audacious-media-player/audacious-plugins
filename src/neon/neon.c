@@ -183,18 +183,23 @@ static void handle_free(struct neon_handle* h) {
 /*
  * -----
  */
+static gboolean neon_strcmp(const gchar *str, const gchar *cmp)
+{
+    return (g_ascii_strncasecmp(str, cmp, strlen(cmp)) == 0);
+}
+
 
 static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) { 
 
     _ENTER;
 
-    if (0 == g_ascii_strncasecmp(name, "StreamTitle", 11)) {
+    if (neon_strcmp(name, "StreamTitle")) {
         _DEBUG("Found StreamTitle: %s", value);
         g_free(m->stream_title);
         m->stream_title = g_strdup(value);
     }
 
-    if (0 == g_ascii_strncasecmp(name, "StreamUrl", 9)) {
+    if (neon_strcmp(name, "StreamUrl")) {
         _DEBUG("Found StreamUrl: %s", value);
         g_free(m->stream_url);
         m->stream_url = g_strdup(value);
@@ -390,7 +395,7 @@ static void handle_headers(struct neon_handle* h) {
     _DEBUG("Header responses:");
     while(NULL != (cursor = ne_response_header_iterate(h->request, cursor, &name, &value))) {
         _DEBUG("HEADER: %s: %s", name, value);
-        if (0 == g_ascii_strncasecmp("accept-ranges", name, 13)) {
+        if (neon_strcmp(name, "accept-ranges")) {
             /*
              * The server advertises range capability. we need "bytes"
              */
@@ -402,7 +407,7 @@ static void handle_headers(struct neon_handle* h) {
             continue;
         }
 
-        if (0 == g_ascii_strncasecmp("content-length", name, 14)) {
+        if (neon_strcmp(name, "content-length")) {
             /*
              * The server sent us the content length. Parse and store.
              */
@@ -420,7 +425,7 @@ static void handle_headers(struct neon_handle* h) {
             continue;
         }
 
-        if (0 == g_ascii_strncasecmp("content-type", name, 12)) {
+        if (neon_strcmp(name, "content-type")) {
             /*
              * The server sent us a content type. Save it for later
              */
@@ -431,7 +436,7 @@ static void handle_headers(struct neon_handle* h) {
             continue;
         }
 
-        if (0 == g_ascii_strncasecmp("icy-metaint", name, 11)) {
+        if (neon_strcmp(name, "icy-metaint")) {
             /*
              * The server sent us a ICY metaint header. Parse and store.
              */
@@ -450,7 +455,7 @@ static void handle_headers(struct neon_handle* h) {
             continue;
         }
 
-        if (0 == g_ascii_strncasecmp("icy-name", name, 8)) {
+        if (neon_strcmp(name, "icy-name")) {
             /*
              * The server sent us a ICY name. Save it for later
              */
@@ -1344,15 +1349,15 @@ gchar *neon_aud_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
     _DEBUG("<%p> Field name: %s", h, field);
 
-    if (0 == g_ascii_strncasecmp(field, "track-name", 10)) {
+    if (neon_strcmp(field, "track-name")) {
         _LEAVE g_strdup(h->icy_metadata.stream_title);
     }
 
-    if (0 == g_ascii_strncasecmp(field, "stream-name", 11)) {
+    if (neon_strcmp(field, "stream-name")) {
         _LEAVE g_strdup(h->icy_metadata.stream_name);
     }
 
-    if (0 == g_ascii_strncasecmp(field, "content-type", 12)) {
+    if (neon_strcmp(field, "content-type")) {
         _LEAVE g_strdup(h->icy_metadata.stream_contenttype);
     }
 
