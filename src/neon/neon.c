@@ -273,7 +273,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, int len) {
                 /*
                  * Reading value
                  */
-                if ('\'' == *p) {
+                if ('\'' == *p && ';' == *(p+1)) {
                     /*
                      * End of value
                      */
