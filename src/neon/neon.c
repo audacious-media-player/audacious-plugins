@@ -349,8 +349,8 @@ static int server_auth_callback(void* userdata, const char* realm, int attempt, 
         _LEAVE 1;
     }
 
-    strncpy(username, authtok[0], NE_ABUFSIZ);
-    strncpy(password, authtok[1], NE_ABUFSIZ);
+    g_strlcpy(username, authtok[0], NE_ABUFSIZ);
+    g_strlcpy(password, authtok[1], NE_ABUFSIZ);
 
     _DEBUG("Authenticating: Username: %s, Password: %s", username, password);
 
