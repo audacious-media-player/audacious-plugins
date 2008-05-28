@@ -85,12 +85,11 @@ static struct neon_handle* handle_init(void) {
 
     _ENTER;
 
-    if (NULL == (h = malloc(sizeof(struct neon_handle)))) {
+    if (NULL == (h = g_new0(struct neon_handle, 1))) {
         _ERROR("Could not allocate memory for handle");
         _LEAVE NULL;
     }
 
-    h->reader = NULL;
     h->reader_status.mutex = g_mutex_new();
     h->reader_status.cond = g_cond_new();
     h->reader_status.reading = FALSE;
@@ -98,26 +97,13 @@ static struct neon_handle* handle_init(void) {
 
     if (0 != init_rb_with_lock(&(h->rb), NBUFSIZ, h->reader_status.mutex)) {
         _ERROR("Could not initialize buffer");
-        free(h);
+        g_free(h);
         _LEAVE NULL;
     }
 
-    h->url = NULL;
     h->purl = &purl;
     memset(h->purl, 0, sizeof(ne_uri));
-    h->session = NULL;
-    h->request = NULL;
-    h->redircount = 0;
-    h->pos = 0;
     h->content_length = -1;
-    h->can_ranges = FALSE;
-    h->icy_metaint = 0;
-    h->icy_metaleft = 0;
-    h->icy_metadata.stream_name = NULL;
-    h->icy_metadata.stream_title = NULL;
-    h->icy_metadata.stream_url = NULL;
-    h->icy_metadata.stream_contenttype = NULL;
-    h->eof = FALSE;
 
     _LEAVE h;
 }
@@ -134,19 +120,11 @@ static void handle_free(struct neon_handle* h) {
 
     ne_uri_free(h->purl);
     destroy_rb(&h->rb);
-    if (NULL != h->icy_metadata.stream_name) {
-        free(h->icy_metadata.stream_name);
-    }
-    if (NULL != h->icy_metadata.stream_title) {
-        free(h->icy_metadata.stream_title);
-    }
-    if (NULL != h->icy_metadata.stream_url) {
-        free(h->icy_metadata.stream_url);
-    }
-    if (NULL != h->icy_metadata.stream_contenttype) {
-        free(h->icy_metadata.stream_contenttype);
-    }
-    free(h);
+    g_free(h->icy_metadata.stream_name);
+    g_free(h->icy_metadata.stream_title);
+    g_free(h->icy_metadata.stream_url);
+    g_free(h->icy_metadata.stream_contenttype);
+    g_free(h);
 
     _LEAVE;
 }
@@ -199,17 +177,13 @@ static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) {
 
     if (0 == g_ascii_strncasecmp(name, "StreamTitle", 11)) {
         _DEBUG("Found StreamTitle: %s", value);
-        if (NULL != m->stream_title) {
-            free(m->stream_title);
-        }
+        g_free(m->stream_title);
         m->stream_title = g_strdup(value);
     }
 
     if (0 == g_ascii_strncasecmp(name, "StreamUrl", 9)) {
         _DEBUG("Found StreamUrl: %s", value);
-        if (NULL != m->stream_url) {
-            free(m->stream_url);
-        }
+        g_free(m->stream_url);
         m->stream_url = g_strdup(value);
     }
 
@@ -371,7 +345,7 @@ static int server_auth_callback(void* userdata, const char* realm, int attempt, 
     if ((strlen(authtok[1]) > (NE_ABUFSIZ-1)) || (strlen(authtok[0]) > (NE_ABUFSIZ-1))) {
         _ERROR("Username/Password too long");
         g_strfreev(authtok);
-        free(authcpy);
+        g_free(authcpy);
         _LEAVE 1;
     }
 
@@ -381,7 +355,7 @@ static int server_auth_callback(void* userdata, const char* realm, int attempt, 
     _DEBUG("Authenticating: Username: %s, Password: %s", username, password);
 
     g_strfreev(authtok);
-    free(authcpy);
+    g_free(authcpy);
 
     _LEAVE attempt;
 }
@@ -438,9 +412,7 @@ static void handle_headers(struct neon_handle* h) {
              * The server sent us a content type. Save it for later
              */
             _DEBUG("Content-Type: %s", value);
-            if (NULL != h->icy_metadata.stream_contenttype) {
-                free(h->icy_metadata.stream_contenttype);
-            }
+            g_free(h->icy_metadata.stream_contenttype);
             h->icy_metadata.stream_contenttype = g_strdup(value);
 
             continue;
@@ -470,9 +442,7 @@ static void handle_headers(struct neon_handle* h) {
              * The server sent us a ICY name. Save it for later
              */
             _DEBUG("ICY stream name: %s", value);
-            if (NULL != h->icy_metadata.stream_name) {
-                free(h->icy_metadata.stream_name);
-            }
+            g_free(h->icy_metadata.stream_name);
             h->icy_metadata.stream_name = g_strdup(value);
         }
 
@@ -877,7 +847,7 @@ VFSFile* neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode) {
 
     if (NULL == (handle = handle_init())) {
         _ERROR("Could not allocate memory for neon handle");
-        free(file);
+        g_free(file);
         _LEAVE NULL;
     }
 
@@ -886,14 +856,14 @@ VFSFile* neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode) {
     if (NULL == (handle->url = strdup(path))) {
         _ERROR("<%p> Could not copy URL string", handle);
         handle_free(handle);
-        free(file);
+        g_free(file);
         _LEAVE NULL;
     }
 
     if (0 != open_handle(handle, 0)) {
         _ERROR("<%p> Could not open URL", handle);
         handle_free(handle);
-        free(file);
+        g_free(file);
         _LEAVE NULL;
     }
 
