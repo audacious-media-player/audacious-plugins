@@ -134,8 +134,10 @@ static void xspf_add_file(xmlNode *track, const gchar *filename,
             if (!xmlStrcmp(nptr->name, (xmlChar *)"location")) {
                 /* Location is a special case */
                 gchar *str = (gchar *)xmlNodeGetContent(nptr);
-
-                location = g_strdup_printf("%s%s", base ? base : "", str);
+                if (!strstr(str, "://") && base)
+                    location = g_strdup_printf("%s/%s", base, str);
+                else
+                    location = g_strdup(str);
                 xmlFree(str);
             } else {
                 /* Rest of the nodes are handled here */
@@ -260,7 +262,7 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
             
             base = (gchar *)xmlNodeGetBase(doc, nptr);
 
-            AUDDBG("base = %s\n", base);
+            AUDDBG("base #1 = %s\n", base);
             
             // if filename is specified as a base, ignore it.
             tmp = xmlURIUnescapeString(base, -1, NULL);
@@ -272,7 +274,12 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
                 g_free(tmp);
             }
             
-            AUDDBG("base = %s\n", base);
+            AUDDBG("base #2 = %s\n", base);
+            
+            if (!base)
+                base = g_path_get_dirname(filename);
+            
+            AUDDBG("base #3 = %s\n", base);
             
             for (nptr2 = nptr->children; nptr2 != NULL; nptr2 = nptr2->next) {
 
