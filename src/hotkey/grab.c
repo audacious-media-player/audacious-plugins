@@ -33,11 +33,13 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
-
+#ifdef HAVE_X11_KEYSYM_H
+#include <X11/keysym.h>
+#endif
 #include "grab.h"
 #include "plugin.h"
 
