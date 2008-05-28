@@ -47,8 +47,6 @@ gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence);
 gchar *neon_aud_vfs_metadata_impl(VFSFile* file, const gchar * field);
 off_t neon_aud_vfs_fsize_impl(VFSFile* file);
 
-ne_uri purl;
-
 typedef enum {
     NEON_READER_INIT=0,
     NEON_READER_RUN=1,

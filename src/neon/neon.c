@@ -101,8 +101,7 @@ static struct neon_handle* handle_init(void) {
         _LEAVE NULL;
     }
 
-    h->purl = &purl;
-    memset(h->purl, 0, sizeof(ne_uri));
+    h->purl = g_new0(ne_uri, 1);
     h->content_length = -1;
 
     _LEAVE h;
