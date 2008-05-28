@@ -28,6 +28,7 @@
 #include "i_configure-fluidsynth.h"
 #include "i_configure-dummy.h"
 #include "i_utils.h"
+#include <audacious/plugin.h>
 #include <audacious/auddrct.h>
 
 
