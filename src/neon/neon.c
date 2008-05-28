@@ -686,7 +686,7 @@ static gint open_handle(struct neon_handle* handle, unsigned long startbyte) {
             ne_set_connect_timeout(handle->session, 10);
 
         ne_set_read_timeout(handle->session, 10);
-        ne_set_useragent(handle->session, "Audacious/1.5.0");
+        ne_set_useragent(handle->session, "Audacious/" PACKAGE_VERSION );
 
         if (use_proxy) {
             _DEBUG("<%p> Using proxy: %s:%d", handle, proxy_host, proxy_port);
