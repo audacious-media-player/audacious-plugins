@@ -274,7 +274,6 @@ static void destroy_cb(mowgli_dictionary_elem_t *delem, void *privdata) {
 
 Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
     AUDDBG("** demac: plugin.c: demac_probe_for_tuple()\n");
-    Tuple *tpl = aud_tuple_new_from_filename(uri);
     gchar codec_string[32];
 
     if (aud_vfs_is_streaming(vfd)) {
@@ -282,6 +281,15 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
         return NULL;
     }
 
+    APEContext *ctx = calloc(sizeof(APEContext), 1);
+    aud_vfs_rewind(vfd);
+    if (ape_read_header(ctx, vfd, 1) < 0) {
+        free(ctx);
+        aud_vfs_rewind(vfd);
+        return NULL;
+    }
+
+    Tuple *tpl = aud_tuple_new_from_filename(uri);
     mowgli_dictionary_t *tag = NULL;
     gchar *item;
     if ((tag = parse_apev2_tag(vfd)) != NULL) {
@@ -294,11 +302,8 @@ Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd) {
         if((item = mowgli_dictionary_retrieve(tag, "Year")) != NULL) aud_tuple_associate_int(tpl, FIELD_YEAR, NULL, atoi(item));
     }
 
-    APEContext *ctx = calloc(sizeof(APEContext), 1);
-    aud_vfs_rewind(vfd);
-    ape_read_header(ctx, vfd, 1);
     aud_tuple_associate_int(tpl, FIELD_LENGTH, NULL, ctx->duration);
-    g_sprintf(codec_string, "Monkey's Audio v%4.2f", (float)ctx->fileversion/1000.0);
+    g_snprintf(codec_string, sizeof(codec_string), "Monkey's Audio v%4.2f", (float)ctx->fileversion/1000.0);
     AUDDBG("** demac: plugin.c: Codec: %s\n", codec_string);
     aud_tuple_associate_string(tpl, FIELD_CODEC, NULL, codec_string);
     aud_tuple_associate_string(tpl, FIELD_QUALITY, NULL, "lossless");
