@@ -2305,13 +2305,13 @@ mainwin_create_widgets(void)
     ui_skinned_toggle_button_setup(mainwin_eq, SKINNED_WINDOW(mainwin)->fixed,
                                    219, 58, 23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP);
     g_signal_connect(mainwin_eq, "clicked", mainwin_equalizer_pushed_cb, NULL);
-    UI_SKINNED_BUTTON(mainwin_eq)->inside = config.equalizer_visible;
+    ui_skinned_button_set_inside(mainwin_eq, config.equalizer_visible);
 
     mainwin_pl = ui_skinned_button_new();
     ui_skinned_toggle_button_setup(mainwin_pl, SKINNED_WINDOW(mainwin)->fixed,
                                    242, 58, 23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP);
     g_signal_connect(mainwin_pl, "clicked", mainwin_playlist_pushed_cb, NULL);
-    UI_SKINNED_BUTTON(mainwin_pl)->inside = config.playlist_visible;
+    ui_skinned_button_set_inside(mainwin_pl, config.playlist_visible);
 
     mainwin_info = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 112, 27, 153, 1, SKIN_TEXT);
     ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
@@ -2585,8 +2585,7 @@ void
 action_playback_repeat( GtkToggleAction * action )
 {
     aud_cfg->repeat = gtk_toggle_action_get_active( action );
-    UI_SKINNED_BUTTON(mainwin_repeat)->inside = aud_cfg->repeat;
-    gtk_widget_queue_draw(mainwin_repeat);
+    ui_skinned_button_set_inside(mainwin_repeat, aud_cfg->repeat);
 }
 
 void
@@ -2594,8 +2593,7 @@ action_playback_shuffle( GtkToggleAction * action )
 {
     aud_cfg->shuffle = gtk_toggle_action_get_active( action );
     aud_playlist_set_shuffle(aud_cfg->shuffle);
-    UI_SKINNED_BUTTON(mainwin_shuffle)->inside = aud_cfg->shuffle;
-    gtk_widget_queue_draw(mainwin_shuffle);
+    ui_skinned_button_set_inside(mainwin_shuffle, aud_cfg->shuffle);
 }
 
 void

@@ -430,13 +430,13 @@ equalizerwin_create_widgets(void)
     ui_skinned_toggle_button_setup(equalizerwin_on, SKINNED_WINDOW(equalizerwin)->fixed,
                                    14, 18, 25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN);
     g_signal_connect(equalizerwin_on, "clicked", equalizerwin_on_pushed, NULL);
-    UI_SKINNED_BUTTON(equalizerwin_on)->inside = aud_cfg->equalizer_active;
+    ui_skinned_button_set_inside(equalizerwin_on, aud_cfg->equalizer_active);
 
     equalizerwin_auto = ui_skinned_button_new();
     ui_skinned_toggle_button_setup(equalizerwin_auto, SKINNED_WINDOW(equalizerwin)->fixed,
                                    39, 18, 33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN);
     g_signal_connect(equalizerwin_auto, "clicked", equalizerwin_auto_pushed, NULL);
-    UI_SKINNED_BUTTON(equalizerwin_auto)->inside = aud_cfg->equalizer_autoload;
+    ui_skinned_button_set_inside(equalizerwin_auto, aud_cfg->equalizer_autoload);
 
     equalizerwin_presets = ui_skinned_button_new();
     ui_skinned_push_button_setup(equalizerwin_presets, SKINNED_WINDOW(equalizerwin)->fixed,
@@ -564,7 +564,7 @@ equalizerwin_real_show(void)
         gtk_widget_set_size_request(equalizerwin, 275,
                                     (config.equalizer_shaded ? 14 : 116));
     config.equalizer_visible = TRUE;
-    UI_SKINNED_BUTTON(mainwin_eq)->inside = TRUE;
+    ui_skinned_button_set_inside(mainwin_eq, TRUE);
     gtk_widget_show_all(equalizerwin);
 
     if (!config.equalizer_shaded) {
@@ -590,7 +590,7 @@ equalizerwin_real_hide(void)
      */
     gtk_widget_hide(equalizerwin);
     config.equalizer_visible = FALSE;
-    UI_SKINNED_BUTTON(mainwin_eq)->inside = FALSE;
+    ui_skinned_button_set_inside(mainwin_eq, FALSE);
     gtk_widget_queue_draw(mainwin_eq);
 }
 
@@ -1526,8 +1526,7 @@ void
 equalizer_activate(gboolean active)
 {
     aud_cfg->equalizer_active = active;
-    UI_SKINNED_BUTTON(equalizerwin_on)->inside = active;
-    gtk_widget_queue_draw(equalizerwin_on);
+    ui_skinned_button_set_inside(equalizerwin_on, active);
 
     equalizerwin_eq_changed();
 }

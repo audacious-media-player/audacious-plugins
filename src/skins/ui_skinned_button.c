@@ -534,3 +534,11 @@ void ui_skinned_button_move_relative(GtkWidget *button, gint x, gint y) {
     priv->move_x += x;
     priv->move_y += y;
 }
+
+void ui_skinned_button_set_inside(GtkWidget *widget, gboolean inside) {
+    g_return_if_fail(UI_SKINNED_IS_BUTTON(widget));
+
+    UiSkinnedButton *button = UI_SKINNED_BUTTON(widget);
+    button->inside = inside;
+    gtk_widget_queue_draw(widget);
+}

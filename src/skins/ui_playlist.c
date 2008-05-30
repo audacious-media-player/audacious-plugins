@@ -1581,8 +1581,7 @@ playlistwin_show(void)
     gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , TRUE );
 
     config.playlist_visible = TRUE;
-    UI_SKINNED_BUTTON(mainwin_pl)->inside = TRUE;
-    gtk_widget_queue_draw(mainwin_pl);
+    ui_skinned_button_set_inside(mainwin_pl, TRUE);
 
     playlistwin_set_toprow(0);
     aud_playlist_check_pos_current(aud_playlist_get_active());
@@ -1602,8 +1601,7 @@ playlistwin_hide(void)
 
     gtk_widget_hide(playlistwin);
     config.playlist_visible = FALSE;
-    UI_SKINNED_BUTTON(mainwin_pl)->inside = FALSE;
-    gtk_widget_queue_draw(mainwin_pl);
+    ui_skinned_button_set_inside(mainwin_pl, FALSE);
 
     if ( config.player_visible )
     {

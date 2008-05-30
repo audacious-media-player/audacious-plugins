@@ -70,5 +70,6 @@ void ui_skinned_button_set_skin_index(GtkWidget *button, SkinPixmapId si);
 void ui_skinned_button_set_skin_index1(GtkWidget *button, SkinPixmapId si);
 void ui_skinned_button_set_skin_index2(GtkWidget *button, SkinPixmapId si);
 void ui_skinned_button_move_relative(GtkWidget *button, gint x, gint y);
+void ui_skinned_button_set_inside(GtkWidget *widget, gboolean inside);
 
 #endif /* AUDACIOUS_UI_SKINNED_BUTTON_H */
