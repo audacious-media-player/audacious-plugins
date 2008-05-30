@@ -254,10 +254,7 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
 {
     guint32 check;
     gchar *ext = extname(filename);
-    gint cyc = 0, chkcount = 0, chksize = 4096;
     guchar buf[4];
-    guchar tmp[4096];
-    gint ret, i, frameSize;
 
     info.remote = aud_vfs_is_remote(filename);
 
@@ -271,14 +268,12 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
         return 0;
 
     if (fin == NULL) {
-        g_message("fin = NULL");
+        g_message("fin = NULL for %s", filename);
         return 0;
     }
 
-    if(aud_vfs_fread(buf, 1, 4, fin) == 0) {
-        gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-        g_message("aud_vfs_fread failed @1 %s", tmp);
-        g_free(tmp);
+    if (aud_vfs_fread(buf, 1, 4, fin) == 0) {
+        g_message("aud_vfs_fread failed @1 %s", filename);
         return 0;
     }
 
@@ -292,9 +287,7 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
     {
         aud_vfs_fseek(fin, 4, SEEK_CUR);
         if(aud_vfs_fread(buf, 1, 4, fin) == 0) {
-            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-            g_message("aud_vfs_fread failed @2 %s", tmp);
-            g_free(tmp);
+            g_message("aud_vfs_fread failed @2 %s", filename);
             return 0;
         }
 
@@ -302,37 +295,38 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
             return 1;
     }
 
-    // check data for frame header
-    while (!mp3_head_check(check, &frameSize))
+    /* Check stream data for frame header(s)
+     */
+    guchar chkbuf[2048];
+    gint chkret, i, framesize, cyc, chkcount, chksize = sizeof(chkbuf);
+    
+    for (cyc = chkcount = 0; cyc < 32; cyc++)
     {
-        if((ret = aud_vfs_fread(tmp, 1, chksize, fin)) == 0){
-            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-            g_message("aud_vfs_fread failed @3 %s", tmp);
-            g_free(tmp);
-            return 0;
-        }
-        for (i = 0; i < ret; i++)
+        if ((chkret = aud_vfs_fread(chkbuf, 1, chksize, fin)) == 0)
+            break;
+        
+        for (i = 0; i < chkret; i++)
         {
             check <<= 8;
-            check |= tmp[i];
+            check |= chkbuf[i];
 
-            if (mp3_head_check(check, &frameSize)) {
+            if (mp3_head_check(check, &framesize)) {
                 /* when the first matching frame header is found, we check for
                  * another frame by seeking to the approximate start of the
                  * next header ... also reduce the check size.
                  */
-                if (++chkcount >= 3) return 1;
-                aud_vfs_fseek(fin, frameSize-4, SEEK_CUR);
+                if (++chkcount >= 4) return 1;
+                aud_vfs_fseek(fin, framesize-8, SEEK_CUR);
                 check = 0;
-                chksize = 8;
+                chksize = 16;
+            } else {
+                aud_vfs_fseek(fin, chksize, SEEK_CUR);
             }
         }
-
-        if (++cyc > 32)
-            return 0;
     }
 
-    return 1;
+    g_message("Rejecting %s (not an MP3 file?)", filename);
+    return 0;
 }
 
 // audacious vfs version
