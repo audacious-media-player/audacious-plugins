@@ -670,7 +670,7 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
         ne_set_session_flag(handle->session, NE_SESSFLAG_ICYPROTO, 1);
         ne_set_session_flag(handle->session, NE_SESSFLAG_PERSIST, 0);
 
-#ifdef HAVE_NEON_027
+#ifdef HAVE_NE_SET_CONNECT_TIMEOUT
         ne_set_connect_timeout(handle->session, 10);
 #endif
 
