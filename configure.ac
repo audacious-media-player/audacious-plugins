@@ -1330,7 +1330,7 @@ if test "x$have_neon" = "xyes"; then
     PKG_CHECK_MODULES(NEON, [neon >= 0.26], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon" ], [have_neon="no"])
     NEON_LIBS=`pkg-config --libs neon`
     NEON_CFLAGS=`pkg-config --cflags neon`
-    AC_CHECK_LIB(neon, ne_set_connect_timeout, [AC_DEFINE(HAVE_NE_SET_CONNECT_TIMEOUT, 1, [Whether we have ne_set_connect_timeout], [], $NEON_LIBS)])
+    AC_CHECK_LIB(neon, ne_set_connect_timeout, [AC_DEFINE(HAVE_NE_SET_CONNECT_TIMEOUT, 1, [Whether we have ne_set_connect_timeout]), [], $NEON_LIBS)
 else
     have_neon=no
 fi
