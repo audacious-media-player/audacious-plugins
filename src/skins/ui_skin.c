@@ -548,10 +548,10 @@ init_skins(const gchar * path)
             return FALSE;
         }
     }
-#if 0
+
     if (config.random_skin_on_play)
         skinlist_update();
-#endif
+
     return TRUE;
 }
 
@@ -2030,7 +2030,6 @@ skin_draw_mainwin_titlebar(Skin * skin, GdkPixbuf * pix,
 void
 skin_set_random_skin(void)
 {
-#if 0
     SkinNode *node;
     guint32 randval;
 
@@ -2038,7 +2037,6 @@ skin_set_random_skin(void)
     randval = g_random_int_range(0, g_list_length(skinlist));
     node = g_list_nth(skinlist, randval)->data;
     aud_active_skin_load(node->path);
-#endif
 }
 
 

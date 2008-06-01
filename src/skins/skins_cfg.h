@@ -77,6 +77,7 @@ typedef struct {
     gchar *playlist_font, *mainwin_font;
     gboolean show_filepopup_for_tuple;
     gint filepopup_delay;
+    gboolean random_skin_on_play;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

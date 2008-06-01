@@ -90,6 +90,7 @@ skins_cfg_t skins_default_config = {
     .mainwin_font = NULL,
     .show_filepopup_for_tuple = TRUE,
     .filepopup_delay = 20,             /* delay until the filepopup comes up */
+    .random_skin_on_play = FALSE,
 };
 
 typedef struct skins_cfg_boolent_t {
@@ -127,6 +128,7 @@ static skins_cfg_boolent skins_boolents[] = {
     {"show_numbers_in_pl", &config.show_numbers_in_pl, TRUE},
     {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
     {"show_filepopup_for_tuple", &config.show_filepopup_for_tuple, TRUE},
+    {"random_skin_on_play", &config.random_skin_on_play, TRUE},
 };
 
 static gint ncfgbent = G_N_ELEMENTS(skins_boolents);
