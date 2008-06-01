@@ -43,9 +43,7 @@
 #include "ui_main.h"
 #include "ui_equalizer.h"
 #include "ui_playlist.h"
-#if 0
 #include "ui_skinselector.h"
-#endif
 #include "debug.h"
 
 #include "platform/smartinclude.h"
@@ -1330,7 +1328,6 @@ skin_create_transparent_mask(const gchar * path,
 void
 skin_load_viscolor(Skin * skin, const gchar * path, const gchar * basename)
 {
-#if 0
     VFSFile *file;
     gint i, c;
     gchar line[256], *filename;
@@ -1346,7 +1343,7 @@ skin_load_viscolor(Skin * skin, const gchar * path, const gchar * basename)
     if (!filename)
         return;
 
-    if (!(file = vfs_fopen(filename, "r"))) {
+    if (!(file = aud_vfs_fopen(filename, "r"))) {
         g_free(filename);
         return;
     }
@@ -1354,7 +1351,7 @@ skin_load_viscolor(Skin * skin, const gchar * path, const gchar * basename)
     g_free(filename);
 
     for (i = 0; i < 24; i++) {
-        if (vfs_fgets(line, 255, file)) {
+        if (aud_vfs_fgets(line, 255, file)) {
             a = string_to_garray(line);
             if (a->len > 2) {
                 for (c = 0; c < 3; c++)
@@ -1366,8 +1363,7 @@ skin_load_viscolor(Skin * skin, const gchar * path, const gchar * basename)
             break;
     }
 
-    vfs_fclose(file);
-#endif
+    aud_vfs_fclose(file);
 }
 
 static void
@@ -1445,9 +1441,9 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
 
     skin_mask_create(skin, path, SKIN_MASK_EQ, equalizerwin->window);
     skin_mask_create(skin, path, SKIN_MASK_EQ_SHADE, equalizerwin->window);
-#if 0
+
     skin_load_viscolor(skin, path, "viscolor.txt");
-#endif
+
     return TRUE;
 }
 
@@ -1584,19 +1580,17 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
 void
 skin_install_skin(const gchar * path)
 {
-#if 0
     gchar *command;
 
     g_return_if_fail(path != NULL);
 
     command = g_strdup_printf("cp %s %s",
-                              path, aud_paths[BMP_PATH_USER_SKIN_DIR]);
+                              path, skins_paths[SKINS_PATH_USER_SKIN_DIR]);
     if (system(command)) {
         AUDDBG("Unable to install skin (%s) into user directory (%s)\n",
-                  path, aud_paths[BMP_PATH_USER_SKIN_DIR]);
+                  path, aud_paths[SKINS_PATH_USER_SKIN_DIR]);
     }
     g_free(command);
-#endif
 }
 
 static SkinPixmap *

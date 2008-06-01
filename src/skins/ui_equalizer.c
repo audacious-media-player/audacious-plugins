@@ -241,7 +241,6 @@ equalizerwin_keypress(GtkWidget * widget,
                       GdkEventKey * event,
                       gpointer data)
 {
-#if 0
     if (event->keyval == GDK_Tab && event->state & GDK_CONTROL_MASK) {
         if (config.playlist_visible)
             gtk_window_present(GTK_WINDOW(playlistwin));
@@ -249,7 +248,6 @@ equalizerwin_keypress(GtkWidget * widget,
             gtk_window_present(GTK_WINDOW(mainwin));
         return TRUE;
     }
-#endif
     if (!config.equalizer_shaded) {
         gtk_widget_event(mainwin, (GdkEvent *) event);
         return TRUE;
