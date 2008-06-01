@@ -31,6 +31,14 @@
 
 #define PACKAGE_NAME "audacious-plugins"
 
+enum {
+    SKINS_PATH_USER_SKIN_DIR,
+    SKINS_PATH_SKIN_THUMB_DIR,
+    SKINS_PATH_COUNT
+};
+
+extern gchar *skins_paths[];
+
 void skins_init(void);
 void skins_cleanup(void);
 void skins_configure(void);

@@ -32,6 +32,8 @@
 
 #define PACKAGE "audacious-plugins"
 
+gchar *skins_paths[SKINS_PATH_COUNT] = {};
+
 GeneralPlugin skins_gp =
 {
     .description= "Audacious Skinned GUI",
@@ -46,10 +48,40 @@ SIMPLE_GENERAL_PLUGIN(skins, skins_gplist);
 GtkWidget *mainwin;
 gboolean plugin_is_active = FALSE;
 
+static void skins_free_paths(void) {
+    int i;
+
+    for (i = 0; i < BMP_PATH_COUNT; i++)  {
+        g_free(skins_paths[i]);
+        skins_paths[i] = 0;
+    }
+}
+
+static void skins_init_paths() {
+    char *xdg_data_home;
+    char *xdg_cache_home;
+
+    xdg_data_home = (getenv("XDG_DATA_HOME") == NULL
+        ? g_build_filename(g_get_home_dir(), ".local", "share", NULL)
+        : g_strdup(getenv("XDG_DATA_HOME")));
+    xdg_cache_home = (getenv("XDG_CACHE_HOME") == NULL
+        ? g_build_filename(g_get_home_dir(), ".cache", NULL)
+        : g_strdup(getenv("XDG_CACHE_HOME")));
+
+    skins_paths[SKINS_PATH_USER_SKIN_DIR] =
+        g_build_filename(xdg_data_home, "audacious", "Skins", NULL);
+    skins_paths[SKINS_PATH_SKIN_THUMB_DIR] =
+        g_build_filename(xdg_cache_home, "audacious", "thumbs", NULL);
+
+    g_free(xdg_data_home);
+    g_free(xdg_cache_home);
+}
+
 void skins_init(void) {
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
+    skins_init_paths();
     skins_cfg_load();
 
     register_aud_stock_icons();
@@ -69,6 +101,7 @@ void skins_init(void) {
 void skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
         skins_cfg_save();
+        skins_free_paths();
         ui_main_evlistener_dissociate();
         ui_playlist_evlistener_dissociate();
         skins_cfg_free();
