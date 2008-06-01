@@ -44,6 +44,7 @@
 #include "actions-equalizer.h"
 #include "util.h"
 #include "ui_main.h"
+#include "ui_playlist.h"
 #include <audacious/plugin.h>
 
 #include "images/audacious_eq.xpm"

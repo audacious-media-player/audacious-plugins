@@ -1588,7 +1588,7 @@ skin_install_skin(const gchar * path)
                               path, skins_paths[SKINS_PATH_USER_SKIN_DIR]);
     if (system(command)) {
         AUDDBG("Unable to install skin (%s) into user directory (%s)\n",
-                  path, aud_paths[SKINS_PATH_USER_SKIN_DIR]);
+                  path, skins_paths[SKINS_PATH_USER_SKIN_DIR]);
     }
     g_free(command);
 }
