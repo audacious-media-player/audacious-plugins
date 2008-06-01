@@ -875,3 +875,31 @@ menu_plugin_item_remove( gint menu_id , GtkWidget * item )
   }
   return -1; /* failure */
 }
+
+void
+ui_manager_destroy( void )
+{
+    g_object_unref((GObject*)toggleaction_group_others);
+    g_object_unref((GObject*)radioaction_group_anamode);
+    g_object_unref((GObject*)radioaction_group_anatype);
+    g_object_unref((GObject*)radioaction_group_scomode);
+    g_object_unref((GObject*)radioaction_group_vprmode);
+    g_object_unref((GObject*)radioaction_group_wshmode);
+    g_object_unref((GObject*)radioaction_group_refrate);
+    g_object_unref((GObject*)radioaction_group_anafoff);
+    g_object_unref((GObject*)radioaction_group_peafoff);
+    g_object_unref((GObject*)radioaction_group_vismode);
+    g_object_unref((GObject*)radioaction_group_viewtime);
+    g_object_unref((GObject*)action_group_playback);
+    g_object_unref((GObject*)action_group_playlist);
+    g_object_unref((GObject*)action_group_visualization);
+    g_object_unref((GObject*)action_group_view);
+    g_object_unref((GObject*)action_group_others);
+    g_object_unref((GObject*)action_group_playlist_add);
+    g_object_unref((GObject*)action_group_playlist_select);
+    g_object_unref((GObject*)action_group_playlist_delete);
+    g_object_unref((GObject*)action_group_playlist_sort);
+    g_object_unref((GObject*)action_group_equalizer);
+    g_object_unref((GObject*)ui_manager);
+}
+

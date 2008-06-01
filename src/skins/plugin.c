@@ -51,9 +51,9 @@ gboolean plugin_is_active = FALSE;
 static void skins_free_paths(void) {
     int i;
 
-    for (i = 0; i < BMP_PATH_COUNT; i++)  {
+    for (i = 0; i < SKINS_PATH_COUNT; i++)  {
         g_free(skins_paths[i]);
-        skins_paths[i] = 0;
+        skins_paths[i] = NULL;
     }
 }
 
@@ -107,6 +107,8 @@ void skins_cleanup(void) {
         skins_cfg_free();
         gtk_widget_destroy(mainwin);
         gtk_widget_destroy(equalizerwin);
+        gtk_widget_destroy(playlistwin);
+        ui_manager_destroy();
         skin_destroy(aud_active_skin);
         aud_active_skin = NULL;
         mainwin = NULL;

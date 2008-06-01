@@ -71,6 +71,7 @@ GtkAccelGroup * ui_manager_get_accel_group ( void );
 GtkWidget * ui_manager_get_popup_menu ( GtkUIManager * , const gchar * );
 void ui_manager_popup_menu_show( GtkMenu * , gint , gint , guint , guint );
 #define popup_menu_show(x1,x2,x3,x4,x5) ui_manager_popup_menu_show(x1,x2,x3,x4,x5)
+void ui_manager_destroy( void );
 
 G_END_DECLS
 
