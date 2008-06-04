@@ -83,7 +83,6 @@ skins_cfg_t skins_default_config = {
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
     .eq_scaled_linked = TRUE,
-    .use_xmms_style_fileselector = FALSE,
     .show_numbers_in_pl = TRUE,
     .show_separator_in_pl = TRUE,
     .playlist_font = NULL,

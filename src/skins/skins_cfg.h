@@ -72,7 +72,6 @@ typedef struct {
     gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
     gboolean eq_scaled_linked;
-    gboolean use_xmms_style_fileselector;
     gboolean show_numbers_in_pl, show_separator_in_pl;
     gchar *playlist_font, *mainwin_font;
     gboolean show_filepopup_for_tuple;
