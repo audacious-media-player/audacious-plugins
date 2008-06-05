@@ -36,7 +36,6 @@ $5]])
 
 dnl ** Simplifying wrapper
 AC_DEFUN([AUD_CONDITIONAL],
-dnl [AM_CONDITIONAL([$1],[test "x${$2}" = m4_ifval([$3], ["x$3"],["xyes"])])
 [if test "x${$2}" = m4_ifval([$3], ["x$3"],["xyes"]) ; then
     $1="yes"
 else
@@ -83,18 +82,18 @@ AC_DEFUN([AUD_TRY_COMPILE], [dnl
 
 dnl ** Check for GNU make
 AC_DEFUN([AUD_CHECK_GNU_MAKE],[
-    AC_CACHE_CHECK([for GNU make],aud_gnu_make_command,[
-    aud_gnu_make_command=""
+    AC_CACHE_CHECK([for GNU make],cv_gnu_make_command,[
+    cv_gnu_make_command=""
     for a in "$MAKE" make gmake gnumake; do
         test "x$a" = "x" && continue
         if ( sh -c "$a --version" 2>/dev/null | grep "GNU Make" >/dev/null ) ; then
-            aud_gnu_make_command="$a"
+            cv_gnu_make_command="$a"
             break
         fi
     done
     ])
-    if test "x$aud_gnu_make_command" != "x" ; then
-        MAKE="$aud_gnu_make_command"
+    if test "x$cv_gnu_make_command" != "x" ; then
+        MAKE="$cv_gnu_make_command"
     else
         AC_MSG_ERROR([** GNU make not found. If it is installed, try setting MAKE environment variable. **])
     fi
@@ -119,3 +118,55 @@ fi
 AC_SUBST(Name[]_PLUGIN_DIR)dnl
 define([aud_plugin_dirs_defined],[1])dnl
 ])dnl
+
+
+dnl ***
+dnl *** Common checks
+dnl ***
+AC_DEFUN([AUD_COMMON_PROGS], [
+
+dnl Check for C and C++ compilers
+dnl =============================
+AUD_CHECK_GNU_MAKE
+AC_PROG_CC
+AC_PROG_CXX
+AM_PROG_AS
+AC_ISC_POSIX
+AC_C_BIGENDIAN
+
+if test "x$GCC" = "xyes"; then
+    CFLAGS="$CFLAGS -Wall -pipe"
+    CXXFLAGS="$CXXFLAGS -pipe -Wall"
+fi
+
+dnl Checks for various programs
+dnl ===========================
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PATH_PROG([RM], [rm])
+AC_PATH_PROG([MV], [mv])
+AC_PATH_PROG([CP], [cp])
+AC_PATH_PROG([AR], [ar])
+AC_PATH_PROG([RANLIB], [ranlib])
+
+
+dnl Check for Gtk+/GLib and pals
+dnl ============================
+AUD_CHECK_MODULE([GLIB], [glib-2.0], [>= 2.14.0], [Glib2])
+AUD_CHECK_MODULE([GTHREAD], [gthread-2.0], [>= 2.14.0], [gthread-2.0])
+AUD_CHECK_MODULE([GTK], [gtk+-2.0], [>= 2.10.0], [Gtk+2])
+AUD_CHECK_MODULE([PANGO], [pango], [>= 1.8.0], [Pango])
+AUD_CHECK_MODULE([CAIRO], [cairo], [>= 1.2.4], [Cairo])
+
+
+dnl Check for libmowgli
+dnl ===================
+AUD_CHECK_MODULE([MOWGLI], [libmowgli], [>= 0.4.0], [libmowgli],
+    [http://www.atheme.org/projects/mowgli.shtml])
+
+
+dnl Check for libmcs
+dnl ================
+AUD_CHECK_MODULE([LIBMCS], [libmcs], [>= 0.7], [libmcs],
+    [http://www.atheme.org/projects/mcs.shtml])
+])
