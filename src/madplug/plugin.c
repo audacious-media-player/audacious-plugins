@@ -254,7 +254,7 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
 {
     guint32 check;
     gchar *ext = extname(filename);
-    guchar buf[4];
+    guchar buf[16];
 
     info.remote = aud_vfs_is_remote(filename);
 
@@ -272,7 +272,7 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
         return 0;
     }
 
-    if (aud_vfs_fread(buf, 1, 4, fin) == 0) {
+    if (aud_vfs_fread(buf, 1, sizeof(buf), fin) == 0) {
         g_message("aud_vfs_fread failed @1 %s", filename);
         return 0;
     }
