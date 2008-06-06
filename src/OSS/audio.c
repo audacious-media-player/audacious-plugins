@@ -48,9 +48,6 @@ static gchar *device_name;
 static GThread *buffer_thread;
 static gboolean select_works;
 
-static int (*oss_convert_func) (void **data, int length);
-static int (*oss_stereo_convert_func) (void **data, int length, int fmt);
-
 struct format_info {
     union {
         AFormat xmms;
@@ -67,13 +64,6 @@ struct format_info {
  * This will never change during a song. 
  */
 struct format_info input;
-
-/*
- * The format we get from the effect plugin.
- * This will be different from input if the effect plugin does
- * some kind of format conversion.
- */
-struct format_info effect;
 
 /*
  * The format of the data we actually send to the soundcard.
@@ -94,9 +84,6 @@ oss_calc_device_buffer_used(void)
             (buf_info.fragstotal * buf_info.fragsize) - buf_info.bytes;
 }
 
-
-static gint oss_downsample(gpointer ob, guint length, guint speed,
-                           guint espeed);
 
 static int
 oss_calc_bitrate(int oss_fmt, int rate, int channels)
@@ -158,18 +145,14 @@ oss_get_format(AFormat fmt)
 static void
 oss_setup_format(AFormat fmt, int rate, int nch)
 {
-    effect.format.xmms = fmt;
-    effect.frequency = rate;
-    effect.channels = nch;
-    effect.bps = oss_calc_bitrate(oss_get_format(fmt), rate, nch);
-
+    output.bps = oss_calc_bitrate(oss_get_format(fmt), rate, nch);
     output.format.oss = oss_get_format(fmt);
     output.frequency = rate;
     output.channels = nch;
 
 
     fragsize = 0;
-    while ((1L << fragsize) < effect.bps / 25)
+    while ((1L << fragsize) < output.bps / 25)
         fragsize++;
     fragsize--;
 
@@ -187,7 +170,7 @@ oss_get_written_time(void)
 {
     if (!going)
         return 0;
-    return (written * 1000) / effect.bps;
+    return (written * 1000) / output.bps;
 }
 
 gint
@@ -241,12 +224,12 @@ oss_free(void)
     return (buffer_size - (wr_index - rd_index)) - device_buffer_size - 1;
 }
 
-static inline ssize_t
-write_all(int fd, const void *buf, size_t count)
+static void
+oss_write_audio(gpointer data, size_t length)
 {
     size_t done = 0;
     do {
-        ssize_t n = write(fd, (gchar *) buf + done, count - done);
+        ssize_t n = write(fd, (gchar *) data + done, length - done);
         if (n == -1) {
             if (errno == EINTR)
                 continue;
@@ -254,161 +237,9 @@ write_all(int fd, const void *buf, size_t count)
                 break;
         }
         done += n;
-    } while (count > done);
+    } while (length > done);
 
-    return done;
-}
-
-static void
-oss_write_audio(gpointer data, int length)
-{
-    if (oss_convert_func != NULL)
-        length = oss_convert_func(&data, length);
-
-    if (oss_stereo_convert_func != NULL)
-        length = oss_stereo_convert_func(&data, length, output.format.oss);
-
-    if (effect.frequency == output.frequency)
-        output_bytes += write_all(fd, data, length);
-    else
-        output_bytes += oss_downsample(data, length,
-                                       effect.frequency, output.frequency);
-}
-
-static void
-swap_endian(guint16 * data, int length)
-{
-    int i;
-    for (i = 0; i < length; i += 2, data++)
-        *data = GUINT16_SWAP_LE_BE(*data);
-}
-
-#define NOT_NATIVE_ENDIAN ((IS_BIG_ENDIAN &&				\
-			   (output.format.oss == AFMT_S16_LE ||		\
-			    output.format.oss == AFMT_U16_LE)) ||	\
-			  (!IS_BIG_ENDIAN &&				\
-			   (output.format.oss == AFMT_S16_BE ||		\
-			    output.format.oss == AFMT_U16_BE)))
-
-
-#define RESAMPLE_STEREO(sample_type)				\
-do {								\
-	const gint shift = sizeof (sample_type);		\
-        gint i, in_samples, out_samples, x, delta;		\
-	sample_type *inptr = (sample_type *)ob, *outptr;	\
-	guint nlen = (((length >> shift) * espeed) / speed);	\
-	if (nlen == 0)						\
-		break;						\
-	nlen <<= shift;						\
-	if (NOT_NATIVE_ENDIAN)					\
-		swap_endian(ob, length);			\
-	if(nlen > nbuffer_size)					\
-	{							\
-		nbuffer = g_realloc(nbuffer, nlen);		\
-		nbuffer_size = nlen;				\
-	}							\
-	outptr = (sample_type *)nbuffer;			\
-	in_samples = length >> shift;				\
-        out_samples = nlen >> shift;				\
-	delta = (in_samples << 12) / out_samples;		\
-	for (x = 0, i = 0; i < out_samples; i++)		\
-	{							\
-		gint x1, frac;					\
-		x1 = (x >> 12) << 12;				\
-		frac = x - x1;					\
-		*outptr++ =					\
-			(sample_type)				\
-			((inptr[(x1 >> 12) << 1] *		\
-			  ((1<<12) - frac) +			\
-			  inptr[((x1 >> 12) + 1) << 1] *	\
-			  frac) >> 12);				\
-		*outptr++ =					\
-			(sample_type)				\
-			((inptr[((x1 >> 12) << 1) + 1] *	\
-			  ((1<<12) - frac) +			\
-			  inptr[(((x1 >> 12) + 1) << 1) + 1] *	\
-			  frac) >> 12);				\
-		x += delta;					\
-	}							\
-	if (NOT_NATIVE_ENDIAN)					\
-		swap_endian(nbuffer, nlen);			\
-	w = write_all(fd, nbuffer, nlen);			\
-} while (0)
-
-
-#define RESAMPLE_MONO(sample_type)				\
-do {								\
-	const gint shift = sizeof (sample_type) - 1;		\
-        gint i, x, delta, in_samples, out_samples;		\
-	sample_type *inptr = (sample_type *)ob, *outptr;	\
-	guint nlen = (((length >> shift) * espeed) / speed);	\
-	if (nlen == 0)						\
-		break;						\
-	nlen <<= shift;						\
-	if (NOT_NATIVE_ENDIAN)					\
-		swap_endian(ob, length);			\
-	if(nlen > nbuffer_size)					\
-	{							\
-		nbuffer = g_realloc(nbuffer, nlen);		\
-		nbuffer_size = nlen;				\
-	}							\
-	outptr = (sample_type *)nbuffer;			\
-	in_samples = length >> shift;				\
-        out_samples = nlen >> shift;				\
-	delta = ((length >> shift) << 12) / out_samples;	\
-	for (x = 0, i = 0; i < out_samples; i++)		\
-	{							\
-		gint x1, frac;					\
-		x1 = (x >> 12) << 12;				\
-		frac = x - x1;					\
-		*outptr++ =					\
-			(sample_type)				\
-			((inptr[x1 >> 12] * ((1<<12) - frac) +	\
-			  inptr[(x1 >> 12) + 1] * frac) >> 12);	\
-		x += delta;					\
-	}							\
-	if (NOT_NATIVE_ENDIAN)					\
-		swap_endian(nbuffer, nlen);			\
-	w = write_all(fd, nbuffer, nlen);			\
-} while (0)
-
-
-static gint
-oss_downsample(gpointer ob, guint length, guint speed, guint espeed)
-{
-    guint w = 0;
-    static gpointer nbuffer = NULL;
-    static guint nbuffer_size = 0;
-
-    switch (output.format.oss) {
-    case AFMT_S16_BE:
-    case AFMT_S16_LE:
-        if (output.channels == 2)
-            RESAMPLE_STEREO(gint16);
-        else
-            RESAMPLE_MONO(gint16);
-        break;
-    case AFMT_U16_BE:
-    case AFMT_U16_LE:
-        if (output.channels == 2)
-            RESAMPLE_STEREO(guint16);
-        else
-            RESAMPLE_MONO(guint16);
-        break;
-    case AFMT_S8:
-        if (output.channels == 2)
-            RESAMPLE_STEREO(gint8);
-        else
-            RESAMPLE_MONO(gint8);
-        break;
-    case AFMT_U8:
-        if (output.channels == 2)
-            RESAMPLE_STEREO(guint8);
-        else
-            RESAMPLE_MONO(guint8);
-        break;
-    }
-    return w;
+    output_bytes += done;
 }
 
 void
@@ -438,7 +269,6 @@ oss_close(void)
     g_thread_join(buffer_thread);
 
     g_free(device_name);
-    oss_free_convert_buffer();
     wr_index = 0;
     rd_index = 0;
 
@@ -554,18 +384,11 @@ oss_set_audio_params(void)
     ioctl(fd, SNDCTL_DSP_STEREO, &stereo);
     output.channels = stereo + 1;
 
-    oss_stereo_convert_func = oss_get_stereo_convert_func(output.channels,
-                                                          effect.channels);
-
     if (ioctl(fd, SNDCTL_DSP_SPEED, &output.frequency) == -1)
         g_warning("SNDCTL_DSP_SPEED ioctl failed: %s", strerror(errno));
 
     if (ioctl(fd, SNDCTL_DSP_GETBLKSIZE, &blk_size) == -1)
         blk_size = 1L << fragsize;
-
-    oss_convert_func =
-        oss_get_convert_func(output.format.oss,
-                             oss_get_format(effect.format.xmms));
 
     /*
      * Stupid hack to find out if the driver support selects, some

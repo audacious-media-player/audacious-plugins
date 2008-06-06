@@ -3,8 +3,7 @@ PLUGIN = OSS${PLUGIN_SUFFIX}
 SRCS = OSS.c		\
        mixer.c		\
        configure.c	\
-       audio.c		\
-       convert.c
+       audio.c
 
 include ../../buildsys.mk
 include ../../extra.mk
