@@ -1062,7 +1062,7 @@ mainwin_drag_data_received(GtkWidget * widget,
 
     g_return_if_fail(selection_data != NULL);
     g_return_if_fail(selection_data->data != NULL);
-#if 0
+
     if (aud_str_has_prefix_nocase((gchar *) selection_data->data, "fonts:///"))
     {
         gchar *path = (gchar *) selection_data->data;
@@ -1088,7 +1088,7 @@ mainwin_drag_data_received(GtkWidget * widget,
             return;
         }
     }
-#endif
+
     aud_playlist_clear(playlist);
     aud_playlist_add_url(playlist, (gchar *) selection_data->data);
     audacious_drct_initiate();

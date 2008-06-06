@@ -86,4 +86,6 @@ void skins_cfg_free();
 void skins_cfg_load();
 void skins_cfg_save();
 
+void skins_configure(void);
+
 #endif

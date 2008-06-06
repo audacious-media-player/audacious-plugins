@@ -29,6 +29,7 @@
 #include "ui_playlist.h"
 #include "ui_skin.h"
 
+#define PACKAGE "audacious-plugins"
 #define PACKAGE_NAME "audacious-plugins"
 
 enum {
@@ -41,7 +42,6 @@ extern gchar *skins_paths[];
 
 void skins_init(void);
 void skins_cleanup(void);
-void skins_configure(void);
 void skins_about(void);
 
 #endif
