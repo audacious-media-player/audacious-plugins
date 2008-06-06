@@ -1,10 +1,8 @@
 PLUGIN = OSS4${PLUGIN_SUFFIX}
 
 SRCS = OSS4.c		\
-       about.c		\
        configure.c	\
        audio.c		\
-       init.c		\
        convert.c
 
 include ../../buildsys.mk
