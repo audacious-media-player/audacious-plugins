@@ -27,7 +27,7 @@
 
 OSSConfig oss_cfg;
 
-void oss_about(void)
+static void oss_about(void)
 {
     static GtkWidget *dialog;
 
@@ -54,8 +54,7 @@ void oss_about(void)
                      G_CALLBACK(gtk_widget_destroyed), &dialog);
 }
 
-
-void oss_init(void)
+static void oss_init(void)
 {
     mcs_handle_t *db;
 
@@ -87,7 +86,7 @@ void oss_init(void)
     }
 }
 
-void oss_cleanup(void)
+static void oss_cleanup(void)
 {
     if (oss_cfg.alt_audio_device) {
         g_free(oss_cfg.alt_audio_device);
@@ -100,7 +99,7 @@ void oss_cleanup(void)
     }
 }
 
-OutputPlugin oss_op = {
+static OutputPlugin oss_op = {
     .description = "OSS Output Plugin",                       /* Description */
     .init = oss_init,
     .cleanup = oss_cleanup,
@@ -120,6 +119,6 @@ OutputPlugin oss_op = {
     .tell_audio = oss_tell
 };
 
-OutputPlugin *oss_oplist[] = { &oss_op, NULL };
+static OutputPlugin *oss_oplist[] = { &oss_op, NULL };
 
 DECLARE_PLUGIN(OSS, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL, NULL);
