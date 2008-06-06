@@ -329,24 +329,6 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
     return 0;
 }
 
-// audacious vfs version
-static int
-audmad_is_our_file(char *filename)
-{
-    VFSFile *fin = NULL;
-    gint rtn;
-
-    fin = aud_vfs_fopen(filename, "rb");
-
-    if (fin == NULL)
-        return 0;
-
-    rtn = audmad_is_our_fd(filename, fin);
-    aud_vfs_fclose(fin);
-
-    return rtn;
-}
-
 static void
 audmad_stop(InputPlayback *playback)
 {
@@ -750,7 +732,6 @@ InputPlugin mad_ip = {
     .init = audmad_init,
     .about = audmad_about,
     .configure = audmad_configure,
-    .is_our_file = audmad_is_our_file,
     .play_file = audmad_play_file,
     .stop = audmad_stop,
     .pause = audmad_pause,
