@@ -25,6 +25,81 @@
 #include <audacious/i18n.h>
 #include <stdlib.h>
 
+OSSConfig oss_cfg;
+
+void oss_about(void)
+{
+    static GtkWidget *dialog;
+
+    if (dialog != NULL)
+        return;
+
+    dialog = audacious_info_dialog(_("About OSS Driver"),
+                               _("Audacious OSS Driver\n\n "
+                                 "This program is free software; you can redistribute it and/or modify\n"
+                                 "it under the terms of the GNU General Public License as published by\n"
+                                 "the Free Software Foundation; either version 2 of the License, or\n"
+                                 "(at your option) any later version.\n"
+                                 "\n"
+                                 "This program is distributed in the hope that it will be useful,\n"
+                                 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+                                 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+                                 "GNU General Public License for more details.\n"
+                                 "\n"
+                                 "You should have received a copy of the GNU General Public License\n"
+                                 "along with this program; if not, write to the Free Software\n"
+                                 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+                                 "USA."), _("Ok"), FALSE, NULL, NULL);
+    g_signal_connect(G_OBJECT(dialog), "destroy",
+                     G_CALLBACK(gtk_widget_destroyed), &dialog);
+}
+
+
+void oss_init(void)
+{
+    mcs_handle_t *db;
+
+    memset(&oss_cfg, 0, sizeof(OSSConfig));
+
+    oss_cfg.audio_device = 0;
+    oss_cfg.mixer_device = 0;
+    oss_cfg.buffer_size = 3000;
+    oss_cfg.prebuffer = 25;
+    oss_cfg.use_alt_audio_device = FALSE;
+    oss_cfg.alt_audio_device = NULL;
+    oss_cfg.use_master = 0;
+
+    if ((db = aud_cfg_db_open())) {
+        aud_cfg_db_get_int(db, "OSS", "audio_device", &oss_cfg.audio_device);
+        aud_cfg_db_get_int(db, "OSS", "mixer_device", &oss_cfg.mixer_device);
+        aud_cfg_db_get_int(db, "OSS", "buffer_size", &oss_cfg.buffer_size);
+        aud_cfg_db_get_int(db, "OSS", "prebuffer", &oss_cfg.prebuffer);
+        aud_cfg_db_get_bool(db, "OSS", "use_master", &oss_cfg.use_master);
+        aud_cfg_db_get_bool(db, "OSS", "use_alt_audio_device",
+                            &oss_cfg.use_alt_audio_device);
+        aud_cfg_db_get_string(db, "OSS", "alt_audio_device",
+                              &oss_cfg.alt_audio_device);
+        aud_cfg_db_get_bool(db, "OSS", "use_alt_mixer_device",
+                            &oss_cfg.use_alt_mixer_device);
+        aud_cfg_db_get_string(db, "OSS", "alt_mixer_device",
+                              &oss_cfg.alt_mixer_device);
+        aud_cfg_db_close(db);
+    }
+}
+
+void oss_cleanup(void)
+{
+    if (oss_cfg.alt_audio_device) {
+        free(oss_cfg.alt_audio_device);
+        oss_cfg.alt_audio_device = NULL;
+    }
+
+    if (oss_cfg.alt_mixer_device) {
+        free(oss_cfg.alt_mixer_device);
+        oss_cfg.alt_mixer_device = NULL;
+    }
+}
+
 OutputPlugin oss_op = {
     .description = "OSS Output Plugin",                       /* Description */
     .init = oss_init,
@@ -48,16 +123,3 @@ OutputPlugin oss_op = {
 OutputPlugin *oss_oplist[] = { &oss_op, NULL };
 
 DECLARE_PLUGIN(OSS, NULL, NULL, NULL, oss_oplist, NULL, NULL, NULL, NULL);
-
-void oss_cleanup(void)
-{
-    if (oss_cfg.alt_audio_device) {
-        free(oss_cfg.alt_audio_device);
-        oss_cfg.alt_audio_device = NULL;
-    }
-
-    if (oss_cfg.alt_mixer_device) {
-        free(oss_cfg.alt_mixer_device);
-        oss_cfg.alt_mixer_device = NULL;
-    }
-}
