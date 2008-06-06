@@ -58,7 +58,7 @@ void oss_cleanup(void)
     aud_cfg_db_close(db);
 
     if (oss_cfg.alt_audio_device) {
-        free(oss_cfg.alt_audio_device);
+        g_free(oss_cfg.alt_audio_device);
         oss_cfg.alt_audio_device = NULL;
     }
    
