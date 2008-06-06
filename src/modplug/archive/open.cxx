@@ -19,8 +19,9 @@ Archive* OpenArchive(const string& aFileName) //aFilename is url --yaz
 	string lExt;
 	uint32 lPos;
 	// convert from uri to fs based filepath
-	gchar *filename;
-	filename = g_filename_from_uri(aFileName.c_str(), NULL, NULL);
+	gchar *filename = g_filename_from_uri(aFileName.c_str(), NULL, NULL);
+	if (filename == NULL)
+		return new arch_Raw(aFileName);
 	string lRealFileName(filename);
 	g_free(filename);
 
