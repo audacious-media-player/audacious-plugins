@@ -90,12 +90,12 @@ void oss_init(void)
 void oss_cleanup(void)
 {
     if (oss_cfg.alt_audio_device) {
-        free(oss_cfg.alt_audio_device);
+        g_free(oss_cfg.alt_audio_device);
         oss_cfg.alt_audio_device = NULL;
     }
 
     if (oss_cfg.alt_mixer_device) {
-        free(oss_cfg.alt_mixer_device);
+        g_free(oss_cfg.alt_mixer_device);
         oss_cfg.alt_mixer_device = NULL;
     }
 }
