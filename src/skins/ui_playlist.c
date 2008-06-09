@@ -658,12 +658,6 @@ playlistwin_resize(gint width, gint height)
 
     gtk_widget_set_size_request(playlistwin_sinfo, playlistwin_get_width() - 35,
                                 aud_active_skin->properties.textbox_bitmap_font_height);
-    GList *iter;
-    for (iter = GTK_FIXED (SKINNED_WINDOW(playlistwin)->fixed)->children; iter; iter = g_list_next (iter)) {
-         GtkFixedChild *child_data = (GtkFixedChild *) iter->data;
-         GtkWidget *child = child_data->widget;
-         g_signal_emit_by_name(child, "redraw");
-    }
     g_mutex_unlock(resize_mutex);
 }
 

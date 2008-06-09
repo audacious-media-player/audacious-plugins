@@ -30,7 +30,6 @@ enum {
     RELEASED,
     CLICKED,
     DOUBLED,
-    REDRAW,
     LAST_SIGNAL
 };
 
@@ -78,7 +77,6 @@ static void ui_skinned_button_toggle_scaled(UiSkinnedButton *button);
 
 static gint ui_skinned_button_enter_notify(GtkWidget *widget, GdkEventCrossing *event);
 static gint ui_skinned_button_leave_notify(GtkWidget *widget, GdkEventCrossing *event);
-static void ui_skinned_button_redraw(UiSkinnedButton *button);
 
 GType ui_skinned_button_get_type() {
     static GType button_type = 0;
@@ -128,7 +126,6 @@ static void ui_skinned_button_class_init (UiSkinnedButtonClass *klass) {
     klass->released = button_released;
     klass->clicked = NULL;
     klass->scaled = ui_skinned_button_toggle_scaled;
-    klass->redraw = ui_skinned_button_redraw;
 
     button_signals[PRESSED] = 
         g_signal_new ("pressed", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST,
@@ -148,11 +145,6 @@ static void ui_skinned_button_class_init (UiSkinnedButtonClass *klass) {
     button_signals[DOUBLED] = 
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedButtonClass, scaled), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
-
-    button_signals[REDRAW] = 
-        g_signal_new ("redraw", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-                      G_STRUCT_OFFSET (UiSkinnedButtonClass, redraw), NULL, NULL,
                       gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     g_type_class_add_private (gobject_class, sizeof (UiSkinnedButtonPrivate));
@@ -495,16 +487,6 @@ static void ui_skinned_button_toggle_scaled(UiSkinnedButton *button) {
     gtk_widget_queue_draw(widget);
 }
 
-static void ui_skinned_button_redraw(UiSkinnedButton *button) {
-    UiSkinnedButtonPrivate *priv = UI_SKINNED_BUTTON_GET_PRIVATE (button);
-    if (priv->move_x || priv->move_y)
-        gtk_fixed_move(GTK_FIXED(gtk_widget_get_parent(GTK_WIDGET(button))), GTK_WIDGET(button),
-                       button->x+priv->move_x, button->y+priv->move_y);
-
-    gtk_widget_queue_draw(GTK_WIDGET(button));
-}
-
-
 void ui_skinned_set_push_button_data(GtkWidget *button, gint nx, gint ny, gint px, gint py) {
     UiSkinnedButtonPrivate *priv = UI_SKINNED_BUTTON_GET_PRIVATE(button);
     if (nx > -1) priv->nx = nx;
@@ -529,10 +511,13 @@ void ui_skinned_button_set_skin_index2(GtkWidget *button, SkinPixmapId si) {
     priv->skin_index2 = si;
 }
 
-void ui_skinned_button_move_relative(GtkWidget *button, gint x, gint y) {
-    UiSkinnedButtonPrivate *priv = UI_SKINNED_BUTTON_GET_PRIVATE (button);
+void ui_skinned_button_move_relative(GtkWidget *widget, gint x, gint y) {
+    UiSkinnedButton *button = UI_SKINNED_BUTTON(widget);
+    UiSkinnedButtonPrivate *priv = UI_SKINNED_BUTTON_GET_PRIVATE(widget);
     priv->move_x += x;
     priv->move_y += y;
+    gtk_fixed_move(GTK_FIXED(gtk_widget_get_parent(widget)), widget,
+                   button->x+priv->move_x, button->y+priv->move_y);
 }
 
 void ui_skinned_button_set_inside(GtkWidget *widget, gboolean inside) {

@@ -63,11 +63,6 @@ static gint width_approx_digits, width_approx_digits_half;
 #define UI_SKINNED_PLAYLIST_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_playlist_get_type(), UiSkinnedPlaylistPrivate))
 typedef struct _UiSkinnedPlaylistPrivate UiSkinnedPlaylistPrivate;
 
-enum {
-    REDRAW,
-    LAST_SIGNAL
-};
-
 struct _UiSkinnedPlaylistPrivate {
     SkinPixmapId     skin_index;
     gint             width, height;
@@ -88,14 +83,12 @@ static gboolean ui_skinned_playlist_button_press   (GtkWidget *widget, GdkEventB
 static gboolean ui_skinned_playlist_button_release (GtkWidget *widget, GdkEventButton *event);
 static gboolean ui_skinned_playlist_motion_notify  (GtkWidget *widget, GdkEventMotion *event);
 static gboolean ui_skinned_playlist_leave_notify   (GtkWidget *widget, GdkEventCrossing *event);
-static void ui_skinned_playlist_redraw             (UiSkinnedPlaylist *playlist);
 static gboolean ui_skinned_playlist_popup_show     (gpointer data);
 static void ui_skinned_playlist_popup_hide         (GtkWidget *widget);
 static void ui_skinned_playlist_popup_timer_start  (GtkWidget *widget);
 static void ui_skinned_playlist_popup_timer_stop   (GtkWidget *widget);
 
 static GtkWidgetClass *parent_class = NULL;
-static guint playlist_signals[LAST_SIGNAL] = { 0 };
 
 GType ui_skinned_playlist_get_type() {
     static GType playlist_type = 0;
@@ -137,13 +130,6 @@ static void ui_skinned_playlist_class_init(UiSkinnedPlaylistClass *klass) {
     widget_class->button_release_event = ui_skinned_playlist_button_release;
     widget_class->motion_notify_event = ui_skinned_playlist_motion_notify;
     widget_class->leave_notify_event = ui_skinned_playlist_leave_notify;
-
-    klass->redraw = ui_skinned_playlist_redraw;
-
-    playlist_signals[REDRAW] = 
-        g_signal_new ("redraw", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-                      G_STRUCT_OFFSET (UiSkinnedPlaylistClass, redraw), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     g_type_class_add_private (gobject_class, sizeof (UiSkinnedPlaylistPrivate));
 }
@@ -991,15 +977,6 @@ static gboolean ui_skinned_playlist_leave_notify(GtkWidget *widget, GdkEventCros
     return FALSE;
 }
 
-static void ui_skinned_playlist_redraw(UiSkinnedPlaylist *playlist) {
-    UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(playlist);
-
-    if (priv->resize_height || priv->resize_width)
-        gtk_widget_set_size_request(GTK_WIDGET(playlist), priv->width+priv->resize_width, priv->height+priv->resize_height);
-
-    gtk_widget_queue_draw(GTK_WIDGET(playlist));
-}
-
 void ui_skinned_playlist_set_font(const gchar * font) {
     /* Welcome to bad hack central 2k3 */
     gchar *font_lower;
@@ -1052,6 +1029,7 @@ void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h) {
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(widget);
     priv->resize_width += w;
     priv->resize_height += h;
+    gtk_widget_set_size_request(widget, priv->width+priv->resize_width, priv->height+priv->resize_height);
 }
 
 static gboolean ui_skinned_playlist_popup_show(gpointer data) {

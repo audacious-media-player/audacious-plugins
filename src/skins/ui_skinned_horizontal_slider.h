@@ -53,7 +53,6 @@ struct _UiSkinnedHorizontalSliderClass {
     void (* motion)   (UiSkinnedHorizontalSlider *horizontal_slider);
     void (* release)  (UiSkinnedHorizontalSlider *horizontal_slider);
     void (* scaled)  (UiSkinnedHorizontalSlider *horizontal_slider);
-    void (* redraw)   (UiSkinnedHorizontalSlider *horizontal_slider);
 };
 GtkWidget* ui_skinned_horizontal_slider_new(GtkWidget *fixed, gint x, gint y, gint w, gint h, gint knx, gint kny,
                                             gint kpx, gint kpy, gint kw, gint kh, gint fh,
