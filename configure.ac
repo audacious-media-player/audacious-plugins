@@ -295,6 +295,8 @@ else
 	have_coreaudio=no
 fi
 
+dnl *** Icecast
+
 AC_ARG_ENABLE( icecast,
     [  --disable-icecast       disable Icecast output plugin (default=enabled)],
     [enable_icecast=$enableval],
@@ -312,6 +314,9 @@ else
     AC_MSG_RESULT([*** icecast output plugin disabled per user request ***])
     have_shout=no
 fi
+
+AC_SUBST(SHOUT_CFLAGS)
+AC_SUBST(SHOUT_LIBS)
 
 dnl *** Dock Album Art (MacOS)
 
