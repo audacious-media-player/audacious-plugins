@@ -37,8 +37,6 @@ InputPlugin MpcPlugin = {
     mpcFileInfoBox, //Show File Info Box        [CALLBACK]
     NULL,           //Output Plugin Handle      OutputPlugin output
     mpcGetSongTuple,//Acquire tuple for song    [CALLBACK]
-    NULL,
-    NULL,
     mpcIsOurFD,
     (gchar **)mpc_fmts
 };

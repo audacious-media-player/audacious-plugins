@@ -82,8 +82,6 @@ InputPlugin wvpack = {
     wv_file_info_box,           //info box
     NULL,                       //output
     wv_get_song_tuple,
-    NULL,
-    NULL,
     wv_is_our_fd,
     (gchar **)wv_fmts,
     NULL,			// high precision seeking

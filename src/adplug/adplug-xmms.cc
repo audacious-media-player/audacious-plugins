@@ -1158,8 +1158,6 @@ InputPlugin adplug_ip = {
   adplug_info_box,
   NULL,                         // output plugin (filled by XMMS)
   adplug_get_tuple,
-  NULL,
-  NULL,
   adplug_is_our_fd,
   (gchar **)fmts,
 };
