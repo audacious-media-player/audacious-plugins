@@ -22,12 +22,14 @@
 
 #include "../filewriter/filewriter.h"
 #include "../filewriter/plugins.h"
+#include <shout/shout.h>
 
 struct format_info input;
 
 static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *addr_hbox, *addr_label, *addr_entry;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
+static guint ice_tid=0;
 
 static GtkWidget *streamformat_hbox, *streamformat_label, *streamformat_combo, *plugin_button;
 
@@ -44,6 +46,16 @@ enum streamformat_t
 
 static gint streamformat = VORBIS;
 
+static unsigned int streamformat_shout[] =
+{
+#ifdef FILEWRITER_MP3
+    SHOUT_FORMAT_MP3,
+#endif
+#ifdef FILEWRITER_VORBIS
+    SHOUT_FORMAT_OGG
+#endif
+};
+
 static FileWriter plugin;
 
 static gchar *server_address = NULL;
@@ -52,8 +64,10 @@ VFSFile *output_file = NULL;
 guint64 written = 0;
 guint64 offset = 0;
 Tuple *tuple = NULL;
+static shout_t *shout = NULL;
 
 static void ice_init(void);
+static void ice_cleanup(void);
 static void ice_about(void);
 static gint ice_open(AFormat fmt, gint rate, gint nch);
 static void ice_write(void *ptr, gint length);
@@ -72,6 +86,7 @@ OutputPlugin ice_op =
 {
     .description = "Icecast Plugin",
     .init = ice_init,
+    .cleanup = ice_cleanup,
     .about = ice_about,
     .configure = ice_configure,
     .open_audio = ice_open,
@@ -118,6 +133,8 @@ static void ice_init(void)
 {
     ConfigDb *db;
     puts("ICE_INIT");
+    shout_init();
+    printf("Using libshout %s\n", shout_version(NULL, NULL, NULL));
 
     db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "icecast", "streamformat", &streamformat);
@@ -127,6 +144,11 @@ static void ice_init(void)
     set_plugin();
     if (plugin.init)
         plugin.init(&ice_write_output);
+}
+
+static void ice_cleanup(void)
+{
+    shout_shutdown();
 }
 
 void ice_about(void)
@@ -160,11 +182,70 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 {
     gint rv;
 
+    if (ice_tid)
+    {
+	g_source_remove(ice_tid);
+	ice_tid = 0;
+    }
+
+    if (shout) return 1;
+
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
 
     rv = (plugin.open)();
+
+    if (!(shout = shout_new()))
+	return 0;
+
+    if (shout_set_host(shout, server_address) != SHOUTERR_SUCCESS)
+    {
+	printf("Error setting hostname: %s\n", shout_get_error(shout));
+	return 0;
+    }
+
+    if (shout_set_protocol(shout, SHOUT_PROTOCOL_HTTP) != SHOUTERR_SUCCESS)
+    {
+	printf("Error setting protocol: %s\n", shout_get_error(shout));
+	return 0;
+    }
+
+    if (shout_set_port(shout, 8000) != SHOUTERR_SUCCESS)
+    {
+	printf("Error setting port: %s\n", shout_get_error(shout));
+	return 0;
+    }
+
+    if (shout_set_password(shout, "password") != SHOUTERR_SUCCESS)
+    {
+	printf("Error setting password: %s\n", shout_get_error(shout));
+	return 0;
+    }
+
+    if (shout_set_mount(shout, "/test") != SHOUTERR_SUCCESS)
+    {
+	printf("Error setting mount: %s\n", shout_get_error(shout));
+	return 0;
+    }
+
+    if (shout_set_user(shout, "source") != SHOUTERR_SUCCESS)
+    {
+	printf("Error setting user: %s\n", shout_get_error(shout));
+	return 0;
+    }
+
+    if (shout_set_format(shout, streamformat_shout[streamformat]) != SHOUTERR_SUCCESS)
+    {
+	printf("Error setting user: %s\n", shout_get_error(shout));
+	return 0;
+    }
+
+    if (shout_open(shout) != SHOUTERR_SUCCESS)
+    {
+	printf("Error connecting to server: %s\n", shout_get_error(shout));
+	return 0;
+    }
 
     puts("ICE_OPEN");
     return rv;
@@ -238,33 +319,43 @@ static void ice_write(void *ptr, gint length)
 
 static gint ice_write_output(void *ptr, gint length)
 {
-    int i;
-    printf("ice_write(");
-    for (i=0;(i<length)&&(i<16);i++) printf("%.2x",((char*)ptr)[i]);
+    int i, ret;
+    if (!shout) return 0;
+    ret = shout_send(shout, ptr, length);
+    shout_sync(shout);
+    printf("ice_write[%d:%d](", ret, length);
+    for (i=0;(i<length)&&(i<16);i++)   printf("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
     printf(")\n");
     return length;
 }
 
-static void ice_close(void)
+static gboolean ice_real_close(gpointer data)
 {
     plugin.close();
 
-    if (output_file)
+    if (shout)
     {
         written = 0;
-        aud_vfs_fclose(output_file);
+        shout_close(shout);
     }
-    output_file = NULL;
-    puts("ICE_CLOSE");
+    shout = NULL;
+    ice_tid=0;
+    puts("ICE_REAL_CLOSE");
+    return FALSE;
+}
+
+
+static void ice_close(void)
+{
+    if (ice_tid) g_source_remove(ice_tid);
+    ice_tid=g_timeout_add_seconds(3, ice_real_close, NULL);
+    puts("ICE_CLOSE: starting timer");
 }
 
 static void ice_flush(gint time)
 {
     if (time < 0)
         return;
-
-    ice_close();
-    ice_open(input.format, input.frequency, input.channels);
 
     offset = time;
 }
