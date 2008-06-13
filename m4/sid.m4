@@ -35,7 +35,7 @@ if test "x$xs_have_sidplay2" = "xyes"; then
 		[ISidUnknown *i;])
 	], [
 		xs_have_sidplay2_api="(new COMI style API)"
-		AC_DEFINE([HAVE_SIDPLAY2_COMI])
+		AC_DEFINE([HAVE_SIDPLAY2_COMI], [1], [Define if using new libSIDPlay2 with COM-style API.])
 	],[
 		xs_have_sidplay2_api="(broken version!)"
 	])
@@ -48,7 +48,7 @@ if test "x$xs_have_sidplay2" = "xyes"; then
 	AC_MSG_CHECKING([libSIDPlay2+reSID distortion patch])
 	AC_EGREP_HEADER([minimumfetresistance], [sidplay/sidtypes.h], [
 		xs_have_distortion="yes"
-		AC_DEFINE([HAVE_SIDPLAY2_DISTORTION])
+		AC_DEFINE([HAVE_SIDPLAY2_DISTORTION], [1], [Define if using libSIDPlay+reSID with Antti Lankila's distortion patches.])
 	],[
 		xs_have_distortion="no"
 	])
