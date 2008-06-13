@@ -31,11 +31,6 @@
 #define UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_playlist_slider_get_type(), UiSkinnedPlaylistSliderPrivate))
 typedef struct _UiSkinnedPlaylistSliderPrivate UiSkinnedPlaylistSliderPrivate;
 
-enum {
-    REDRAW,
-    LAST_SIGNAL
-};
-
 struct _UiSkinnedPlaylistSliderPrivate {
     SkinPixmapId     skin_index;
     gint             width, height;
@@ -57,10 +52,8 @@ static void ui_skinned_playlist_slider_set_position       (GtkWidget *widget, gi
 static gboolean ui_skinned_playlist_slider_button_press   (GtkWidget *widget, GdkEventButton *event);
 static gboolean ui_skinned_playlist_slider_button_release (GtkWidget *widget, GdkEventButton *event);
 static gboolean ui_skinned_playlist_slider_motion_notify  (GtkWidget *widget, GdkEventMotion *event);
-static void ui_skinned_playlist_slider_redraw             (UiSkinnedPlaylistSlider *playlist_slider);
 
 static GtkWidgetClass *parent_class = NULL;
-static guint playlist_slider_signals[LAST_SIGNAL] = { 0 };
 
 GType ui_skinned_playlist_slider_get_type() {
     static GType playlist_slider_type = 0;
@@ -101,13 +94,6 @@ static void ui_skinned_playlist_slider_class_init(UiSkinnedPlaylistSliderClass *
     widget_class->button_press_event = ui_skinned_playlist_slider_button_press;
     widget_class->button_release_event = ui_skinned_playlist_slider_button_release;
     widget_class->motion_notify_event = ui_skinned_playlist_slider_motion_notify;
-
-    klass->redraw = ui_skinned_playlist_slider_redraw;
-
-    playlist_slider_signals[REDRAW] = 
-        g_signal_new ("redraw", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-                      G_STRUCT_OFFSET (UiSkinnedPlaylistSliderClass, redraw), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     g_type_class_add_private (gobject_class, sizeof (UiSkinnedPlaylistSliderPrivate));
 }
@@ -314,24 +300,17 @@ static gboolean ui_skinned_playlist_slider_motion_notify(GtkWidget *widget, GdkE
     return TRUE;
 }
 
-static void ui_skinned_playlist_slider_redraw(UiSkinnedPlaylistSlider *playlist_slider) {
-    UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(playlist_slider);
-
-    if (priv->resize_height)
-        gtk_widget_set_size_request(GTK_WIDGET(playlist_slider), priv->width, priv->height+priv->resize_height);
-    if (priv->move_x)
-        gtk_fixed_move(GTK_FIXED(gtk_widget_get_parent(GTK_WIDGET(playlist_slider))), GTK_WIDGET(playlist_slider),
-                       playlist_slider->x+priv->move_x, playlist_slider->y);
-
-    gtk_widget_queue_draw(GTK_WIDGET(playlist_slider));
-}
-
 void ui_skinned_playlist_slider_move_relative(GtkWidget *widget, gint x) {
+    UiSkinnedPlaylistSlider *playlist_slider = UI_SKINNED_PLAYLIST_SLIDER(widget);
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(widget);
     priv->move_x += x;
+    gtk_fixed_move(GTK_FIXED(gtk_widget_get_parent(widget)), widget,
+                   playlist_slider->x+priv->move_x, playlist_slider->y);
 }
 
 void ui_skinned_playlist_slider_resize_relative(GtkWidget *widget, gint h) {
+    UiSkinnedPlaylistSlider *playlist_slider = UI_SKINNED_PLAYLIST_SLIDER(widget);
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(widget);
     priv->resize_height += h;
+    gtk_widget_set_size_request(GTK_WIDGET(playlist_slider), priv->width, priv->height+priv->resize_height);
 }

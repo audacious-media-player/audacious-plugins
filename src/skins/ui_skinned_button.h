@@ -57,7 +57,6 @@ struct _UiSkinnedButtonClass {
     void (* clicked)       (UiSkinnedButton *button);
     void (* right_clicked) (UiSkinnedButton *button);
     void (* scaled)        (UiSkinnedButton *button);
-    void (* redraw)        (UiSkinnedButton *button);
 };
 
 GType ui_skinned_button_get_type(void) G_GNUC_CONST;

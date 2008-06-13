@@ -54,7 +54,6 @@ struct _UiSkinnedTextboxClass {
     void (* double_clicked) (UiSkinnedTextbox *textbox);
     void (* right_clicked)  (UiSkinnedTextbox *textbox);
     void (* scaled)         (UiSkinnedTextbox *textbox);
-    void (* redraw)         (UiSkinnedTextbox *textbox);
 };
 
 GtkWidget* ui_skinned_textbox_new (GtkWidget *fixed, gint x, gint y, gint w, gboolean allow_scroll, SkinPixmapId si);

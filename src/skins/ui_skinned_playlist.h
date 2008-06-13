@@ -59,7 +59,6 @@ struct _UiSkinnedPlaylist {
 
 struct _UiSkinnedPlaylistClass {
     GtkWidgetClass    parent_class;
-    void (* redraw)   (UiSkinnedPlaylist *playlist);
 };
 
 GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gint h);

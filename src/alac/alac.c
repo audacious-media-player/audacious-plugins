@@ -263,7 +263,9 @@ static int count_leading_zeros(int32_t input)
     }
     return i;
 }
-#elif defined(__GNUC__) && (defined(_X86) || defined(__i386) || defined(i386))
+
+#elif defined(__GNUC__) && (defined(_X86) || defined(__i386) || defined(i386) \
+                        ||  defined(_X86_64) || defined(__x86_64__) || defined(x86_64))
 /* for some reason the unrolled version (below) is
  * actually faster than this. yay intel!
  */

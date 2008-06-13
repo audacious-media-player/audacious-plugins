@@ -118,8 +118,6 @@ InputPlugin gModPlug =
     ShowFileInfoBox,
     NULL,   // output
     GetSongTuple,
-    NULL,
-    NULL,
     CanPlayFileFromVFS, // vfs
     (gchar **)fmts,
     NULL,

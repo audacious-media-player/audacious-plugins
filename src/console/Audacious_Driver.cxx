@@ -483,8 +483,6 @@ InputPlugin console_ip =
 	NULL,
 	get_song_tuple,
 	NULL,
-	NULL,
-	NULL,
 	(gchar **)gme_fmts,
 	NULL,
 	probe_for_tuple,
