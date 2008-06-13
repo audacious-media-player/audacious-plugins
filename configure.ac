@@ -942,7 +942,7 @@ fi
 if test "x$have_oss" = "xyes"; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS OSS"
 fi
-
+AC_SUBST(OSS_CFLAGS)
 AC_SUBST(OSS_LIBS)
 
 
@@ -1351,13 +1351,12 @@ AC_ARG_ENABLE(neon,
 
 if test "x$have_neon" = "xyes"; then
     PKG_CHECK_MODULES(NEON, [neon >= 0.26], [TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon" ], [have_neon="no"])
-    NEON_LIBS=`pkg-config --libs neon`
-    NEON_CFLAGS=`pkg-config --cflags neon`
+    AC_CHECK_LIB([neon], [ne_set_connect_timeout], [AC_DEFINE(HAVE_NE_SET_CONNECT_TIMEOUT, 1, [Whether we have ne_set_connect_timeout])], [], [$NEON_LIBS])
 else
-    have_neon=no
+    have_neon="no"
 fi
-AC_SUBST(NEON_LIBS)
-AC_SUBST(NEON_CLFAGS)
+AC_SUBST([NEON_LIBS])
+AC_SUBST([NEON_CFLAGS])
 
 
 dnl *** MMS
@@ -1394,6 +1393,26 @@ else
 fi
 AC_SUBST(MTP_LIBS)
 AC_SUBST(MTP_CFLAGS)
+
+dnl *** Bluetooth audio suport 
+
+AC_ARG_ENABLE(bluetooth,
+[  --disable-bluetooth           disable bluetooth audio support. (default=enabled)],
+[have_bluetooth=$enableval],
+[have_bluetooth=yes])
+
+if test "x$have_bluetooth" = "xyes"; then
+    have_bluetooth=yes
+    PKG_CHECK_MODULES(BLUEZ, [bluez >= 2.22],
+    [GENERAL_PLUGINS="$GENERAL_PLUGINS bluetooth" ], [have_bluetooth="no"])
+    BLUEZ_LIBS=`pkg-config --libs bluez`
+    BLUEZ_CFLAGS=`pkg-config --cflags bluez`
+else
+    have_bluetooth=no
+    AC_MSG_RESULT([*** bluetooth audio suport plugin disabled by request ***])
+fi
+AC_SUBST(BLUEZ_LIBS)
+AC_SUBST(BLUEZ_CFLAGS)
 
 dnl *** libparanormal checks
 
@@ -1471,9 +1490,9 @@ if test "x$have_projectm1" = "xyes"; then
 	PKG_CHECK_MODULES(GTKGLEXT, [gtkglext-1.0 >= 1.2.0], [have_projectm1="yes"], [have_projectm1="no"])
 fi
 
-if test "x$have_projectm1" = "xyes"; then
-	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM < 1.1], [have_projectm1="yes"], [have_projectm1="no"])
-	if test "x$libprjM" = "xno"; then
+if test "$have_projectm1" = "yes"; then
+	PKG_CHECK_MODULES(LIBPROJECTM1, [libprojectM >= 1.1], [have_projectm1="yes"], [have_projectm1="no"])
+	if test x$libprjM = xno; then
 	        AC_MSG_WARN([*** libprojectM not found.
 	                        libprojectM is needed to build this package.
 	                        You can download libprojectM at http://projectm.sf.net/])
@@ -1711,6 +1730,7 @@ echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
+echo "  Bluetooth audio suport:                 $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
 echo
 echo "  Effect"
@@ -1721,6 +1741,7 @@ echo "  Voice Removal:                          yes"
 echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
 echo "  SndStretch:                             yes"
+echo "  Crystalizer:                            yes"
 echo
 echo "  Visualization"
 echo "  -------------"
