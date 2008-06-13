@@ -28,6 +28,7 @@
 
 static gint flac_open(void);
 static void flac_write(gpointer data, gint length);
+static void flac_flush(void);
 static void flac_close(void);
 static gint flac_free(void);
 static gint flac_playing(void);
@@ -39,6 +40,7 @@ FileWriter flac_plugin =
     NULL,
     flac_open,
     flac_write,
+    flac_flush,
     flac_close,
     flac_free,
     flac_playing,
@@ -170,6 +172,11 @@ static void flac_write(gpointer data, gint length)
 
     g_free(encbuffer);
 #endif
+}
+
+static void flac_flush(void)
+{
+    //should we do something here? --AOS
 }
 
 static void flac_close(void)

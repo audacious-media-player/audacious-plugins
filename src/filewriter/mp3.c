@@ -33,6 +33,7 @@ static void mp3_init(write_output_callback write_output_func);
 static void mp3_configure(void);
 static gint mp3_open(void);
 static void mp3_write(void *ptr, gint length);
+static void mp3_flush(void);
 static void mp3_close(void);
 static gint mp3_free(void);
 static gint mp3_playing(void);
@@ -45,6 +46,7 @@ FileWriter mp3_plugin =
     mp3_configure,
     mp3_open,
     mp3_write,
+    mp3_flush,
     mp3_close,
     mp3_free,
     mp3_playing,
@@ -310,6 +312,12 @@ static void mp3_write(void *ptr, gint length)
     olen += length;
 }
 
+static void mp3_flush(void)
+{
+    encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
+    write_output(encbuffer, encout);
+}
+
 static void mp3_close(void)
 {
     if (output_file)
@@ -319,13 +327,13 @@ static void mp3_close(void)
 
 //        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag??
 
-        lame_close(gfp);
-        AUDDBG("lame_close() done\n");
-
-        free_lameid3(&lameid3);
-
         olen = 0;
     }
+
+    lame_close(gfp);
+    AUDDBG("lame_close() done\n");
+
+    free_lameid3(&lameid3);
 }
 
 static gint mp3_free(void)

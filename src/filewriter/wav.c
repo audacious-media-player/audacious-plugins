@@ -24,6 +24,7 @@
 
 static gint wav_open(void);
 static void wav_write(void *ptr, gint length);
+static void wav_flush(void);
 static void wav_close(void);
 static gint wav_free(void);
 static gint wav_playing(void);
@@ -35,6 +36,7 @@ FileWriter wav_plugin =
     NULL,
     wav_open,
     wav_write,
+    wav_flush,
     wav_close,
     wav_free,
     wav_playing,
@@ -86,6 +88,11 @@ static gint wav_open(void)
 static void wav_write(void *ptr, gint length)
 {
     written += aud_vfs_fwrite(ptr, 1, length, output_file);
+}
+
+static void wav_flush(void)
+{
+    //nothing to do here yet. --AOS
 }
 
 static void wav_close(void)

@@ -60,6 +60,7 @@ struct _FileWriter
     void (*configure)(void);
     gint (*open)(void);
     void (*write)(void *ptr, gint length);
+    void (*flush)(void);
     void (*close)(void);
     gint (*free)(void);
     gint (*playing)(void);

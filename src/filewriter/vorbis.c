@@ -30,6 +30,7 @@ static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
 static gint vorbis_open(void);
 static void vorbis_write(gpointer data, gint length);
+static void vorbis_flush(void);
 static void vorbis_close(void);
 static gint vorbis_free(void);
 static gint vorbis_playing(void);
@@ -42,6 +43,7 @@ FileWriter vorbis_plugin =
     vorbis_configure,
     vorbis_open,
     vorbis_write,
+    vorbis_flush,
     vorbis_close,
     vorbis_free,
     vorbis_playing,
@@ -205,6 +207,11 @@ static void vorbis_write(gpointer data, gint length)
     }
 
     olen += length;
+}
+
+static void vorbis_flush(void)
+{
+    //nothing to do here yet. --AOS
 }
 
 static void vorbis_close(void)

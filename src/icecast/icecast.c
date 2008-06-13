@@ -148,6 +148,10 @@ static void ice_init(void)
 
 static void ice_cleanup(void)
 {
+    if (shout)
+    {
+        shout_close(shout);
+    }
     shout_shutdown();
 }
 
@@ -181,6 +185,8 @@ void ice_about(void)
 static gint ice_open(AFormat fmt, gint rate, gint nch)
 {
     gint rv;
+    gint pos;
+    Playlist *playlist;
 
     if (ice_tid)
     {
@@ -188,63 +194,86 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 	ice_tid = 0;
     }
 
-    if (shout) return 1;
-
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
 
-    rv = (plugin.open)();
+    playlist = aud_playlist_get_active();
+    if(!playlist)
+        return 0;
 
-    if (!(shout = shout_new()))
-	return 0;
+    pos = aud_playlist_get_position(playlist);
+    tuple = aud_playlist_get_tuple(playlist, pos);
 
-    if (shout_set_host(shout, server_address) != SHOUTERR_SUCCESS)
+    if (!shout)
     {
-	printf("Error setting hostname: %s\n", shout_get_error(shout));
-	return 0;
+        rv = (plugin.open)();
+
+        if (!(shout = shout_new()))
+            return 0;
+
+        if (shout_set_host(shout, server_address) != SHOUTERR_SUCCESS)
+        {
+            printf("Error setting hostname: %s\n", shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_protocol(shout, SHOUT_PROTOCOL_HTTP) != SHOUTERR_SUCCESS)
+        {
+            printf("Error setting protocol: %s\n", shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_port(shout, 8000) != SHOUTERR_SUCCESS)
+        {
+            printf("Error setting port: %s\n", shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_password(shout, "password") != SHOUTERR_SUCCESS)
+        {
+            printf("Error setting password: %s\n", shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_mount(shout, "/test") != SHOUTERR_SUCCESS)
+        {
+            printf("Error setting mount: %s\n", shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_user(shout, "source") != SHOUTERR_SUCCESS)
+        {
+            printf("Error setting user: %s\n", shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_format(shout, streamformat_shout[streamformat]) != SHOUTERR_SUCCESS)
+        {
+            printf("Error setting user: %s\n", shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_open(shout) != SHOUTERR_SUCCESS)
+        {
+            printf("Error connecting to server: %s\n", shout_get_error(shout));
+            return 0;
+        }
     }
+    else
+        rv = 1;
 
-    if (shout_set_protocol(shout, SHOUT_PROTOCOL_HTTP) != SHOUTERR_SUCCESS)
     {
-	printf("Error setting protocol: %s\n", shout_get_error(shout));
-	return 0;
-    }
-
-    if (shout_set_port(shout, 8000) != SHOUTERR_SUCCESS)
-    {
-	printf("Error setting port: %s\n", shout_get_error(shout));
-	return 0;
-    }
-
-    if (shout_set_password(shout, "password") != SHOUTERR_SUCCESS)
-    {
-	printf("Error setting password: %s\n", shout_get_error(shout));
-	return 0;
-    }
-
-    if (shout_set_mount(shout, "/test") != SHOUTERR_SUCCESS)
-    {
-	printf("Error setting mount: %s\n", shout_get_error(shout));
-	return 0;
-    }
-
-    if (shout_set_user(shout, "source") != SHOUTERR_SUCCESS)
-    {
-	printf("Error setting user: %s\n", shout_get_error(shout));
-	return 0;
-    }
-
-    if (shout_set_format(shout, streamformat_shout[streamformat]) != SHOUTERR_SUCCESS)
-    {
-	printf("Error setting user: %s\n", shout_get_error(shout));
-	return 0;
-    }
-
-    if (shout_open(shout) != SHOUTERR_SUCCESS)
-    {
-	printf("Error connecting to server: %s\n", shout_get_error(shout));
-	return 0;
+        shout_metadata_t *sm = NULL;
+        sm = shout_metadata_new();
+        if (sm)
+        {
+            shout_metadata_add(sm, "charset", "UTF-8");
+            shout_metadata_add(sm, "title", aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
+            shout_metadata_add(sm, "artist", aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
+            shout_set_metadata(shout, sm);
+            shout_metadata_free(sm);
+        }
     }
 
     puts("ICE_OPEN");
@@ -320,8 +349,9 @@ static void ice_write(void *ptr, gint length)
 static gint ice_write_output(void *ptr, gint length)
 {
     int i, ret;
-    if (!shout) return 0;
+    if ((!shout) || (!length)) return 0;
     ret = shout_send(shout, ptr, length);
+    //shout_send_raw(shout, ptr, length);
     shout_sync(shout);
     printf("ice_write[%d:%d](", ret, length);
     for (i=0;(i<length)&&(i<16);i++)   printf("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
@@ -356,6 +386,9 @@ static void ice_flush(gint time)
 {
     if (time < 0)
         return;
+
+    plugin.flush();
+    ice_open(input.format, input.frequency, input.channels);
 
     offset = time;
 }
