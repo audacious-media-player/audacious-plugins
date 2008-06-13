@@ -10,13 +10,50 @@ XS_ARG_WITH([sidplay2], [libSIDPlay2], [XS_PATH_LIBSIDPLAY2])
 if test "x$xs_have_sidplay2" = "xyes"; then
 	AC_DEFINE([HAVE_SIDPLAY2])
 	AC_LANG_PUSH([C++])
+	
 	XS_BUILDERS_CHECK
 	XS_BUILDERS_FIND([reSID], [resid-builder], [resid.h], [ReSIDBuilder])
 	XS_BUILDERS_FIND([HardSID], [hardsid-builder], [hardsid.h], [HardSID])
-	AC_LANG_POP([C++])
 	if test "x$xs_builders_available" = "xno"; then
 		AC_MSG_ERROR([No builder modules were found in the sidbuilders directory!]);
 	fi
+	
+	dnl *** Check for new COMI API
+	AC_MSG_CHECKING([libSIDPlay2 API style])
+	tmp_CPPFLAGS="$CPPFLAGS"
+	if test -d "$xs_sidplay2_includes"; then
+		CPPFLAGS="$CPPFLAGS -I${xs_sidplay2_includes}"
+	fi
+	AC_EGREP_HEADER([SIDIID], [sidplay/sidplay2.h],
+		[xs_have_sidplay2_api="yes"],
+		[xs_have_sidplay2_api="(old style API)"]
+	)
+	if test "x$xs_have_sidplay2_api" = "xyes"; then
+	AC_LINK_IFELSE([
+		AC_LANG_PROGRAM(
+		[#include <sidplay/sidunknown.h>],
+		[ISidUnknown *i;])
+	], [
+		xs_have_sidplay2_api="(new COMI style API)"
+		AC_DEFINE([HAVE_SIDPLAY2_COMI])
+	],[
+		xs_have_sidplay2_api="(broken version!)"
+	])
+	fi
+	AC_MSG_RESULT([$xs_have_sidplay2_api])
+	
+	AC_LANG_POP([C++])
+	
+	dnl *** Check for distortion patch
+	AC_MSG_CHECKING([libSIDPlay2+reSID distortion patch])
+	AC_EGREP_HEADER([minimumfetresistance], [sidplay/sidtypes.h], [
+		xs_have_distortion="yes"
+		AC_DEFINE([HAVE_SIDPLAY2_DISTORTION])
+	],[
+		xs_have_distortion="no"
+	])
+	AC_MSG_RESULT([$xs_have_distortion])
+	CPPFLAGS="$tmp_CPPFLAGS"
 fi
 
 if test "x$xs_have_sidplay1" = "xyes" || test "x$xs_have_sidplay2" = "xyes"; then
