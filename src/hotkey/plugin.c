@@ -41,7 +41,6 @@
 #include <gdk/gdkx.h>
 #include <audacious/plugin.h>
 #include <audacious/auddrct.h>
-#include <audacious/configdb.h>
 
 #include <audacious/i18n.h>
 
@@ -319,7 +318,7 @@ void load_defaults (void)
 /* load plugin configuration */
 void load_config (void)
 {
-	ConfigDb *cfdb;
+	mcs_handle_t *cfdb;
 	HotkeyConfiguration *hotkey;
 	int i,max;
 	
@@ -378,7 +377,7 @@ void load_config (void)
 /* save plugin configuration */
 void save_config (void)
 {
-	ConfigDb *cfdb;
+	mcs_handle_t *cfdb;
 	int max;
 	HotkeyConfiguration *hotkey;
 

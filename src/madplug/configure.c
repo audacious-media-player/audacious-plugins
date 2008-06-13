@@ -25,7 +25,6 @@
 
 #include <gtk/gtk.h>
 #include <math.h>
-#include <audacious/configdb.h>
 
 static GtkWidget *configure_win = NULL;
 static audmad_config_t *oldconfig = NULL; // undo storage
@@ -91,7 +90,7 @@ update_config(gpointer widgets)
 static void
 save_config(void)
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
 
     AUDDBG("saving\n");
 

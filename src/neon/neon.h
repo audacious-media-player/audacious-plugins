@@ -29,26 +29,6 @@
 #include <ne_uri.h>
 #include "rb.h"
 
-
-static void init(void);
-static void fini(void);
-
-VFSFile *neon_aud_vfs_fopen_impl(const gchar* path, const gchar* mode);
-gint neon_aud_vfs_fclose_impl(VFSFile* file);
-size_t neon_aud_vfs_fread_impl(gpointer ptr_, size_t size, size_t nmemb, VFSFile* file);
-size_t neon_aud_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile* file);
-gint neon_aud_vfs_getc_impl(VFSFile* file);
-gint neon_aud_vfs_ungetc_impl(gint c, VFSFile* file);
-void neon_aud_vfs_rewind_impl(VFSFile* file);
-glong neon_aud_vfs_ftell_impl(VFSFile* file);
-gboolean neon_aud_vfs_feof_impl(VFSFile* file);
-gint neon_aud_vfs_truncate_impl(VFSFile* file, glong size);
-gint neon_aud_vfs_fseek_impl(VFSFile* file, glong offset, gint whence);
-gchar *neon_aud_vfs_metadata_impl(VFSFile* file, const gchar * field);
-off_t neon_aud_vfs_fsize_impl(VFSFile* file);
-
-ne_uri purl;
-
 typedef enum {
     NEON_READER_INIT=0,
     NEON_READER_RUN=1,
@@ -75,13 +55,13 @@ struct neon_handle {
     gchar* url;                         /* The URL, as passed to us */
     ne_uri* purl;                       /* The URL, parsed into a structure */
     struct ringbuf rb;                  /* Ringbuffer for our data */
-    unsigned char redircount;           /* Redirect count for the opened URL */
+    guchar redircount;                  /* Redirect count for the opened URL */
     long pos;                           /* Current position in the stream (number of last byte delivered to the player) */
-    unsigned long content_start;        /* Start position in the stream */
+    gulong content_start;               /* Start position in the stream */
     long content_length;                /* Total content length, counting from content_start, if known. -1 if unknown */
     gboolean can_ranges;                /* TRUE if the webserver advertised accept-range: bytes */
-    unsigned long icy_metaint;          /* Interval in which the server will send metadata announcements. 0 if no announcments */
-    unsigned long icy_metaleft;         /* Bytes left until the next metadata block */
+    gulong icy_metaint;                 /* Interval in which the server will send metadata announcements. 0 if no announcments */
+    gulong icy_metaleft;                /* Bytes left until the next metadata block */
     struct icy_metadata icy_metadata;   /* Current ICY metadata */
     ne_session* session;
     ne_request* request;

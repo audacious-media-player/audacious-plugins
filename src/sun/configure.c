@@ -22,8 +22,6 @@
 #include <errno.h>
 
 #include "sun.h"
-#include <audacious/util.h>
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 
 #include "mixer.h"
@@ -40,7 +38,7 @@ static void configure_win_destroy();
 
 static void configure_win_ok_cb(GtkWidget *w, gpointer data)
 {
-	ConfigDb *cfgfile;
+	mcs_handle_t *cfgfile;
 
 	strcpy(audio.devaudio, gtk_entry_get_text(GTK_ENTRY(adevice_entry)));
 	strcpy(audio.devmixer, gtk_entry_get_text(GTK_ENTRY(mdevice_entry)));

@@ -22,8 +22,6 @@
 
 #include <stdlib.h>
 #include <glib.h>
-#include <audacious/util.h>
-#include <audacious/configdb.h>
 #include "shorten.h"
 
 #undef XMMS_SHN_LOAD_TEXTFILES
@@ -100,7 +98,7 @@ void shn_display_about(void)
 
 void shn_configurewin_save(void)
 {
-	ConfigDb *cfg;
+	mcs_handle_t *cfg;
 	gchar *filename;
 
 	shn_cfg.error_output_method = ERROR_OUTPUT_DEVNULL;

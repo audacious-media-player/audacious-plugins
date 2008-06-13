@@ -1,18 +1,17 @@
+#include "config.h"
 #include <audacious/plugin.h>
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
-#include <audacious/configdb.h>
 #include "echo.h"
 
-#include "../../config.h"
 
 static void init(void);
 static void cleanup(void);
 static int mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch);
+static void query_format(AFormat * fmt, gint * rate, gint * nch);
 
 #define MAX_SRATE 50000
 #define MAX_CHANNELS 2
@@ -29,6 +28,7 @@ EffectPlugin echo_ep =
 	.about = echo_about,
 	.configure = echo_configure,
 	.mod_samples = mod_samples,
+	.query_format = query_format,
 };
 
 static gint16 *buffer = NULL;
@@ -42,7 +42,7 @@ DECLARE_PLUGIN(echo, NULL, NULL, NULL, NULL, echo_eplist, NULL, NULL, NULL);
 
 static void init(void)
 {
-	ConfigDb *cfg;
+	mcs_handle_t *cfg;
 	
 	if (sizeof(short) != sizeof(gint16))
 		abort();
@@ -59,6 +59,14 @@ static void cleanup(void)
 {
 	g_free(buffer);
 	buffer = NULL;	
+}
+
+static void query_format(AFormat * fmt, gint * rate, gint * nch)
+{
+	if (!(*fmt == FMT_S16_NE ||
+	      (*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
+	      (*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
+		*fmt = FMT_S16_NE;
 }
 
 static int mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch)

@@ -33,18 +33,13 @@
 #include <sys/stat.h>
 #include <sys/errno.h>
 
-#include <audacious/main.h>
-#include <audacious/util.h>
-#include <audacious/playlist.h>
-#include <audacious/playlist_container.h>
 #include <audacious/plugin.h>
-#include <audacious/strings.h>
 
 static void
 playlist_load_pls(const gchar * filename, gint pos)
 {
     guint i, count, added_count = 0;
-    gchar line_key[10], title_key[10];
+    gchar line_key[16], title_key[16];
     gchar *line, *title;
     Playlist *playlist = aud_playlist_get_active();
     gchar *uri = NULL;

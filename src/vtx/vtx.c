@@ -18,17 +18,11 @@
  */
 
 #include <audacious/plugin.h>
-
 #include <audacious/output.h>
-#include <audacious/util.h>
-#include <audacious/configdb.h>
-#include <audacious/vfs.h>
-#include <audacious/main.h>
-#include <audacious/strings.h>
 #include <audacious/i18n.h>
 
 #include "vtx.h"
-#include <ayemu.h>
+#include "ayemu.h"
 
 extern InputPlugin vtx_ip;
 
@@ -60,7 +54,7 @@ static gchar *vtx_fmts[] = { "vtx", NULL };
 void
 vtx_init(void)
 {
-        ConfigDb *db;
+        mcs_handle_t *db;
         db = aud_cfg_db_open();
 
         aud_cfg_db_get_int(db, NULL, "src_rate", &freq);

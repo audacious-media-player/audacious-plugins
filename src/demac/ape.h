@@ -37,6 +37,12 @@
                                  ((uint64_t)e << 32) | ((uint64_t)f << 40) | ((uint64_t)g << 48) | ((uint64_t)h << 56))
 
 #define AV_TIME_BASE 1000
+#define AV_RL16(x) (((uint16_t)(((uint8_t*)(x))[1]) << 8) | (uint16_t)(((uint8_t*)(x))[0]))
+#define AV_RL32(x) (((uint32_t)(((uint8_t*)(x))[3]) << 24) | \
+                    ((uint32_t)(((uint8_t*)(x))[2]) << 16) | \
+                    ((uint32_t)(((uint8_t*)(x))[1]) <<  8) | \
+                     (uint32_t)(((uint8_t*)(x))[0]))
+
 #define AV_WL16(a,b) { \
           ((uint8_t*)(a))[0] =  (uint16_t)(b) & 0x00ff;        \
           ((uint8_t*)(a))[1] = ((uint16_t)(b) & 0xff00) >> 8; \

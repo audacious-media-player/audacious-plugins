@@ -35,9 +35,7 @@
 #include <math.h>
 
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include <audacious/i18n.h>
-#include <audacious/main.h>
 #include <audacious/output.h>
 #include "plugin.h"
 
@@ -46,8 +44,8 @@
 static SNDFILE *sndfile = NULL;
 static SF_INFO sfinfo;
 
-static int song_length;
-static int bit_rate = 0;
+static gint song_length;
+static gint bit_rate = 0;
 static glong seek_time = -1;
 
 static GThread *decode_thread;
@@ -55,28 +53,36 @@ static GMutex *decode_mutex;
 static GCond *decode_cond;
 
 
-
-
-static sf_count_t sf_get_filelen (void *user_data)
+static sf_count_t
+sf_get_filelen (void *user_data)
 {
     return aud_vfs_fsize (user_data);
 }
-static sf_count_t sf_vseek (sf_count_t offset, int whence, void *user_data)
+
+static sf_count_t
+sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
     return aud_vfs_fseek(user_data, offset, whence);
 }
-static sf_count_t sf_vread (void *ptr, sf_count_t count, void *user_data)
+
+static sf_count_t
+sf_vread (void *ptr, sf_count_t count, void *user_data)
 {
     return aud_vfs_fread(ptr, 1, count, user_data);
 }
-static sf_count_t sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
+
+static sf_count_t
+sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
 {
     return aud_vfs_fwrite(ptr, 1, count, user_data);
 }
-static sf_count_t sf_tell (void *user_data)
+
+static sf_count_t
+sf_tell (void *user_data)
 {
     return aud_vfs_ftell(user_data);
 }
+
 static SF_VIRTUAL_IO sf_virtual_io =
 {
     sf_get_filelen,
@@ -86,18 +92,19 @@ static SF_VIRTUAL_IO sf_virtual_io =
     sf_tell
 };
 
+
 static SNDFILE *
-open_sndfile_from_uri(gchar *filename, VFSFile *vfsfile, SF_INFO *tmp_sfinfo)
+open_sndfile_from_uri(gchar *filename, VFSFile **vfsfile, SF_INFO *tmp_sfinfo)
 {
     SNDFILE *snd_file = NULL;
-    vfsfile = aud_vfs_fopen(filename, "rb");
+    *vfsfile = aud_vfs_fopen(filename, "rb");
 
-    if (vfsfile == NULL)
+    if (*vfsfile == NULL)
         return NULL;
 
-    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, vfsfile);
+    snd_file = sf_open_virtual (&sf_virtual_io, SFM_READ, tmp_sfinfo, *vfsfile);
     if (snd_file == NULL)
-        aud_vfs_fclose(vfsfile);
+        aud_vfs_fclose(*vfsfile);
 
     return snd_file;
 }
@@ -108,7 +115,6 @@ close_sndfile(SNDFILE *snd_file, VFSFile *vfsfile)
     sf_close(snd_file);
     aud_vfs_fclose(vfsfile);
 }
-
 
 
 static void
@@ -128,16 +134,15 @@ plugin_cleanup (void)
 }
 
 static void
-fill_song_tuple (char *filename, Tuple *ti)
+fill_song_tuple (gchar *filename, Tuple *ti)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
-    unsigned int lossy = 0;
-    gchar *codec = NULL, *format, *subformat = NULL;
-    GString *codec_gs = NULL;
+    gboolean lossy = FALSE;
+    gchar *codec, *format, *subformat;
 
-    tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
+    tmp_sndfile = open_sndfile_from_uri(filename, &vfsfile, &tmp_sfinfo);
     if ( sf_get_string(tmp_sndfile, SF_STR_TITLE) == NULL)
         aud_tuple_associate_string(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
     else
@@ -152,10 +157,9 @@ fill_song_tuple (char *filename, Tuple *ti)
         return;
 
     close_sndfile (tmp_sndfile, vfsfile);
-    tmp_sndfile = NULL;
 
     if (tmp_sfinfo.samplerate > 0)
-        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, (int) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
+        aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, (gint) ceil (1000.0 * tmp_sfinfo.frames / tmp_sfinfo.samplerate));
 
     switch (tmp_sfinfo.format & SF_FORMAT_TYPEMASK)
     {
@@ -221,8 +225,9 @@ fill_song_tuple (char *filename, Tuple *ti)
             format = "Core Audio File";
             break;
         default:
-            format = "unknown sndfile";
+            format = "Unknown sndfile";
     }
+    
     switch (tmp_sfinfo.format & SF_FORMAT_SUBMASK)
     {
         case SF_FORMAT_PCM_S8:
@@ -248,79 +253,78 @@ fill_song_tuple (char *filename, Tuple *ti)
             break;
         case SF_FORMAT_ULAW:
             subformat = "U-Law";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_ALAW:
             subformat = "A-Law";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_IMA_ADPCM:
             subformat = "IMA ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_MS_ADPCM:
             subformat = "MS ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_GSM610:
             subformat = "GSM 6.10";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_VOX_ADPCM:
             subformat = "Oki Dialogic ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_G721_32:
             subformat = "32kbs G721 ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_G723_24:
             subformat = "24kbs G723 ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_G723_40:
             subformat = "40kbs G723 ADPCM";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_12:
             subformat = "12 bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_16:
             subformat = "16 bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_24:
             subformat = "24 bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DWVW_N:
             subformat = "N bit Delta Width Variable Word";
-            lossy = 1;
+            lossy = TRUE;
             break;
         case SF_FORMAT_DPCM_8:
             subformat = "8 bit differential PCM";
             break;
         case SF_FORMAT_DPCM_16:
             subformat = "16 bit differential PCM";
+            break;
+        default:
+            subformat = NULL;
     }
 
-    codec_gs = g_string_new("");
     if (subformat != NULL)
-        g_string_append_printf(codec_gs, "%s (%s)", format, subformat);
+        codec = g_strdup_printf("%s (%s)", format, subformat);
     else
-        g_string_append_printf(codec_gs, "%s", format);
-    codec = g_strdup(codec_gs->str);
-    g_string_free(codec_gs, TRUE);
+        codec = g_strdup_printf("%s", format);
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, codec);
-
-    if (lossy != 0)
-        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossy");
-    else
-        aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
+    g_free(codec);
+    
+    aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, lossy ? "lossy" : "lossless");
 }
 
-static gchar *get_title(char *filename)
+static gchar *
+get_title(gchar *filename)
 {
     Tuple *tuple;
     gchar *title;
@@ -338,19 +342,18 @@ static gchar *get_title(char *filename)
     return title;
 }
 
-static int
-is_our_file (char *filename)
+static gint
+is_our_file (gchar *filename)
 {
     VFSFile *vfsfile = NULL;
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
 
     /* Have to open the file to see if libsndfile can handle it. */
-    tmp_sndfile = open_sndfile_from_uri(filename, vfsfile, &tmp_sfinfo);
+    tmp_sndfile = open_sndfile_from_uri(filename, &vfsfile, &tmp_sfinfo);
 
-    if (!tmp_sndfile) {
+    if (!tmp_sndfile)
         return FALSE;
-    }
 
     /* It can so close file and return TRUE. */
     close_sndfile (tmp_sndfile, vfsfile);
@@ -362,8 +365,8 @@ is_our_file (char *filename)
 static gpointer
 play_loop (gpointer arg)
 {
-    static short buffer [BUFFER_SIZE];
-    int samples;
+    gshort buffer[BUFFER_SIZE];
+    gint samples;
     InputPlayback *playback = arg;
 
     for (;;)
@@ -387,7 +390,7 @@ play_loop (gpointer arg)
             }
 
             playback->pass_audio(playback, FMT_S16_NE, sfinfo.channels, 
-                                 samples * sizeof (short), buffer, &playback->playing);
+                                 samples * sizeof(buffer[0]), buffer, &playback->playing);
         }
         else {
             while(playback->output->buffer_playing()) {
@@ -433,7 +436,7 @@ static void
 play_start (InputPlayback *playback)
 {
     VFSFile *vfsfile = NULL;
-    int pcmbitwidth;
+    gint pcmbitwidth;
     gchar *song_title;
 
     if (sndfile) /* already opened */
@@ -442,7 +445,7 @@ play_start (InputPlayback *playback)
     pcmbitwidth = 32;
     song_title = get_title(playback->filename);
 
-    sndfile = open_sndfile_from_uri(playback->filename, vfsfile, &sfinfo);
+    sndfile = open_sndfile_from_uri(playback->filename, &vfsfile, &sfinfo);
 
     if (!sndfile)
         return;
@@ -450,7 +453,7 @@ play_start (InputPlayback *playback)
     bit_rate = sfinfo.samplerate * pcmbitwidth;
 
     if (sfinfo.samplerate > 0)
-        song_length = (int) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate);
+        song_length = (gint) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate);
     else
         song_length = 0;
 
@@ -498,7 +501,7 @@ play_stop (InputPlayback *playback)
 static void
 file_mseek (InputPlayback *playback, gulong millisecond)
 {
-    if (! sfinfo.seekable)
+    if (!sfinfo.seekable)
         return;
 
     seek_time = (glong)millisecond;
@@ -522,7 +525,8 @@ get_song_tuple (gchar *filename)
     return ti;
 }
 
-static int is_our_file_from_vfs(char *filename, VFSFile *fin)
+static gint
+is_our_file_from_vfs(gchar *filename, VFSFile *fin)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
@@ -540,33 +544,36 @@ static int is_our_file_from_vfs(char *filename, VFSFile *fin)
     return TRUE;
 }
 
+static GtkWidget *sndfile_about_box = NULL;
+
 static void plugin_about(void)
 {
-    static GtkWidget *box;
-    if (!box)
+    if (!sndfile_about_box)
     {
-        box = audacious_info_dialog(_("About sndfile plugin"),
-                                    _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
-                                      "from the xmms_sndfile plugin which is:\n"
-                                      "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
-                                      "This program is free software ; you can redistribute it and/or modify \n"
-                                      "it under the terms of the GNU General Public License as published by \n"
-                                      "the Free Software Foundation ; either version 2 of the License, or \n"
-                                      "(at your option) any later version. \n \n"
-                                      "This program is distributed in the hope that it will be useful, \n"
-                                      "but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
-                                      "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
-                                      "See the GNU General Public License for more details. \n\n"
-                                      "You should have received a copy of the GNU General Public \n"
-                                      "License along with this program ; if not, write to \n"
-                                      "the Free Software Foundation, Inc., \n"
-                                      "51 Franklin Street, Fifth Floor, \n"
-                                      "Boston, MA  02110-1301  USA"),
-                                    _("Ok"), FALSE, NULL, NULL);
-        g_signal_connect(G_OBJECT(box), "destroy",
-                         (GCallback)gtk_widget_destroyed, &box);
+        sndfile_about_box = audacious_info_dialog(
+        _("About sndfile plugin"),
+        _("Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
+        "from the xmms_sndfile plugin which is:\n"
+        "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
+        "This program is free software ; you can redistribute it and/or modify \n"
+        "it under the terms of the GNU General Public License as published by \n"
+        "the Free Software Foundation ; either version 2 of the License, or \n"
+        "(at your option) any later version. \n \n"
+        "This program is distributed in the hope that it will be useful, \n"
+        "but WITHOUT ANY WARRANTY ; without even the implied warranty of \n"
+        "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  \n"
+        "See the GNU General Public License for more details. \n\n"
+        "You should have received a copy of the GNU General Public \n"
+        "License along with this program ; if not, write to \n"
+        "the Free Software Foundation, Inc., \n"
+        "51 Franklin Street, Fifth Floor, \n"
+        "Boston, MA  02110-1301  USA"),
+        _("Ok"), FALSE, NULL, NULL);
+        g_signal_connect(G_OBJECT(sndfile_about_box), "destroy",
+                         (GCallback)gtk_widget_destroyed, &sndfile_about_box);
     }
 }
+
 
 static gchar *fmts[] = { "aiff", "au", "raw", "wav", NULL };
 

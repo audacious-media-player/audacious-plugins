@@ -28,11 +28,8 @@
 #include <math.h>
 
 #include <gtk/gtk.h>
-#include <audacious/util.h>
-#include <audacious/configdb.h>
 #include <stdarg.h>
 #include <fcntl.h>
-#include <audacious/vfs.h>
 #include <sys/stat.h>
 #include "tuple.h"
 
@@ -54,8 +51,6 @@ static struct mad_info_t info;   /**< info for current track */
 static GtkWidget *error_dialog = 0;
 #endif
 
-extern gboolean scan_file(struct mad_info_t *info, gboolean fast);
-
 static gint mp3_bitrate_table[5][16] = {
   { 0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, -1 }, /* MPEG1 L1 */
   { 0, 32, 48, 56,  64,  80,  96, 112, 128, 160, 192, 224, 256, 320, 384, -1 }, /* MPEG1 L2 */
@@ -70,6 +65,16 @@ static gint mp3_samplerate_table[4][4] = {
   { 22050, 24000, 16000, -1 },  /* MPEG2 */
   { 44100, 48000, 32000, -1 }   /* MPEG1 */
 };
+
+typedef struct {
+    gint version,
+         layer,
+         bitRate,
+         sampleRate,
+         size,
+         lsf;
+    gboolean hasCRC;
+} mp3_frame_t;
 
 /*
  * Function extname (filename)
@@ -93,7 +98,7 @@ extname(const char *filename)
 static void
 audmad_init()
 {
-    ConfigDb *db = NULL;
+    mcs_handle_t *db = NULL;
 
     audmad_config = g_malloc0(sizeof(audmad_config_t));
 
@@ -154,113 +159,161 @@ audmad_cleanup()
     g_mutex_free(pb_mutex);
 }
 
-static gboolean
-mp3_head_check(guint32 head, gint *frameSize)
+/* Validate a MPEG Audio header and extract some information from it.
+ * References used:
+ * http://www.mp3-tech.org/programmer/frame_header.html
+ * http://mpgedit.org/mpgedit/mpeg_format/mpeghdr.htm
+ */
+static gint
+mp3_head_validate(guint32 head, mp3_frame_t *frame)
 {
-    gint version, layer, bitIndex, bitRate, sampleIndex, sampleRate, padding;
+    gint bitIndex, sampleIndex, padding;
 
-    /* http://www.mp3-tech.org/programmer/frame_header.html
-     * Bits 21-31 must be set (frame sync)
-     */
+    /* bits 21-31 must be set (frame sync) */
     if ((head & 0xffe00000) != 0xffe00000)
-        return FALSE;
+        return -1;
 
+    /* check for LSF */
+    if ((head >> 20) & 1)
+        frame->lsf = ((head >> 19) & 1) ? 0 : 1;
+    else
+        frame->lsf = 1;
+    
     /* check if layer bits (17-18) are good */
-    layer = (head >> 17) & 0x3;
-    if (!layer)
-        return FALSE; /* 00 = reserved */
-    layer = 4 - layer;
+    frame->layer = (head >> 17) & 3;
+    if (frame->layer == 0)
+        return -2; /* 00 = reserved */
+    frame->layer = 4 - frame->layer;
 
+    /* check CRC bit. if set, a 16-bit CRC follows header (not counted in frameSize!) */
+    frame->hasCRC = (head >> 16) & 1;
+    
     /* check if bitrate index bits (12-15) are acceptable */
     bitIndex = (head >> 12) & 0xf;
 
     /* 1111 and 0000 are reserved values for all layers */
     if (bitIndex == 0xf || bitIndex == 0)
-        return FALSE;
+        return -3;
 
     /* check samplerate index bits (10-11) */
-    sampleIndex = (head >> 10) & 0x3;
-    if (sampleIndex == 0x3)
-        return FALSE;
+    sampleIndex = (head >> 10) & 3;
+    if (sampleIndex == 3)
+        return -4;
 
     /* check version bits (19-20) and get bitRate */
-    version = (head >> 19) & 0x03;
-    switch (version) {
+    frame->version = (head >> 19) & 0x03;
+    switch (frame->version) {
         case 0: /* 00 = MPEG Version 2.5 */
         case 2: /* 10 = MPEG Version 2 */
-            if (layer == 1)
-                bitRate = mp3_bitrate_table[3][bitIndex];
+            if (frame->layer == 1)
+                frame->bitRate = mp3_bitrate_table[3][bitIndex];
             else
-                bitRate = mp3_bitrate_table[4][bitIndex];
+                frame->bitRate = mp3_bitrate_table[4][bitIndex];
             break;
 
         case 1: /* 01 = reserved */
-            return FALSE;
+            return -5;
 
         case 3: /* 11 = MPEG Version 1 */
-            bitRate = mp3_bitrate_table[layer][bitIndex];
+            frame->bitRate = mp3_bitrate_table[frame->layer - 1][bitIndex];
             break;
 
         default:
-            return FALSE;
+            return -6;
     }
+    
+    if (frame->bitRate < 0)
+        return -7;
 
     /* check layer II restrictions vs. bitrate */
-    if (layer == 2) {
+    if (frame->layer == 2) {
         gint chanMode = (head >> 6) & 0x3;
 
         if (chanMode == 0x3) {
             /* single channel with bitrate > 192 */
-            if (bitRate > 192)
-                return FALSE;
+            if (frame->bitRate > 192)
+                return -8;
         } else {
             /* any other mode with bitrates 32-56 and 80.
              * NOTICE! this check is not entirely correct, but I think
              * it is sufficient in most cases.
              */
-            if (((bitRate >= 32 && bitRate <= 56) || bitRate == 80))
-                return FALSE;
+            if (((frame->bitRate >= 32 && frame->bitRate <= 56) || frame->bitRate == 80))
+                return -9;
         }
     }
 
     /* calculate approx. frame size */
     padding = (head >> 9) & 1;
-    sampleRate = mp3_samplerate_table[version][sampleIndex];
-    if (layer == 1)
-        *frameSize = ((12 * bitRate * 1000 / sampleRate) + padding) * 4;
-    else
-        *frameSize = (144 * bitRate * 1000) / (sampleRate + padding);
-
-    /* check if bits 16 - 19 are all set (MPEG 1 Layer I, not protected?) */
-    if (((head >> 19) & 1) == 1 &&
-        ((head >> 17) & 3) == 3 && ((head >> 16) & 1) == 1)
-        return FALSE;
-
-    /* not sure why we check this, but ok! */
-    if ((head & 0xffff0000) == 0xfffe0000)
-        return FALSE;
-
-    return TRUE;
+    frame->sampleRate = mp3_samplerate_table[frame->version][sampleIndex];
+    if (frame->sampleRate < 0)
+        return -10;
+    
+    switch (frame->layer) {
+        case 1:
+            frame->size = ((12 * 1000 * frame->bitRate) / frame->sampleRate + padding) * 4;
+            break;
+        
+        case 2:
+            frame->size = (144 * 1000 * frame->bitRate) / frame->sampleRate + padding;
+            break;
+        
+        case 3:
+        default:
+            frame->size = (144 * 1000 * frame->bitRate) / (frame->sampleRate << frame->lsf) + padding;
+            break;
+    }
+    
+    return 0;
 }
 
 static int
 mp3_head_convert(const guchar * hbuf)
 {
-    return ((unsigned long) hbuf[0] << 24) |
-        ((unsigned long) hbuf[1] << 16) |
-        ((unsigned long) hbuf[2] << 8) | (unsigned long) hbuf[3];
+    return
+        ((guint32) hbuf[0] << 24) |
+        ((guint32) hbuf[1] << 16) |
+        ((guint32) hbuf[2] << 8) |
+        ((guint32) hbuf[3]);
 }
+
+#if 0
+static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
+#define LULZ(...) do { fprintf(stderr, "madprobe: "); fprintf(stderr, __VA_ARGS__); } while (0)
+#define LOL(...) do { fprintf(stderr, __VA_ARGS__); } while (0)
+#else
+#define LULZ(...) do { } while(0)
+#define LOL(...) do { } while(0)
+#endif
 
 // audacious vfs fast version
 static int
-audmad_is_our_fd(char *filename, VFSFile *fin)
+audmad_is_our_fd(gchar *filename, VFSFile *fin)
 {
-    guint32 check;
     gchar *ext = extname(filename);
-    gint cyc = 0, chkcount = 0, chksize = 4096;
-    guchar buf[4];
-    guchar tmp[4096];
-    gint ret, i, frameSize;
+    guint32 head = 0;
+    guchar chkbuf[2048];
+    gint state,
+         next = -1,
+         tries = 0,
+         chksize = 0,
+         chkpos = 0,
+         chkcount = 0,
+         res, resync_max = -1,
+         skip = 0;
+    glong streampos = 0;
+    mp3_frame_t frame, prev;
+
+    enum {
+        STATE_HEADERS,
+        STATE_REBUFFER,
+        STATE_VALIDATE,
+        STATE_GOTO_NEXT,
+        STATE_GET_NEXT,
+        STATE_RESYNC,
+        STATE_RESYNC_DO,
+        STATE_FATAL
+    };
 
     info.remote = aud_vfs_is_remote(filename);
 
@@ -274,86 +327,170 @@ audmad_is_our_fd(char *filename, VFSFile *fin)
         return 0;
 
     if (fin == NULL) {
-        g_message("fin = NULL");
+        g_message("fin = NULL for %s", filename);
         return 0;
     }
 
-    if(aud_vfs_fread(buf, 1, 4, fin) == 0) {
-        gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-        g_message("aud_vfs_fread failed @1 %s", tmp);
-        g_free(tmp);
-        return 0;
-    }
+    state = STATE_REBUFFER;
+    next = STATE_HEADERS;
 
-    check = mp3_head_convert(buf);
-
-    if (memcmp(buf, "ID3", 3) == 0)
-        return 1;
-    else if (memcmp(buf, "OggS", 4) == 0)
-        return 0;
-    else if (memcmp(buf, "RIFF", 4) == 0)
-    {
-        aud_vfs_fseek(fin, 4, SEEK_CUR);
-        if(aud_vfs_fread(buf, 1, 4, fin) == 0) {
-            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-            g_message("aud_vfs_fread failed @2 %s", tmp);
-            g_free(tmp);
-            return 0;
-        }
-
-        if (memcmp(buf, "RMP3", 4) == 0)
-            return 1;
-    }
-
-    // check data for frame header
-    while (!mp3_head_check(check, &frameSize))
-    {
-        if((ret = aud_vfs_fread(tmp, 1, chksize, fin)) == 0){
-            gchar *tmp = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-            g_message("aud_vfs_fread failed @3 %s", tmp);
-            g_free(tmp);
-            return 0;
-        }
-        for (i = 0; i < ret; i++)
-        {
-            check <<= 8;
-            check |= tmp[i];
-
-            if (mp3_head_check(check, &frameSize)) {
-                /* when the first matching frame header is found, we check for
-                 * another frame by seeking to the approximate start of the
-                 * next header ... also reduce the check size.
-                 */
-                if (++chkcount >= 3) return 1;
-                aud_vfs_fseek(fin, frameSize-4, SEEK_CUR);
-                check = 0;
-                chksize = 8;
+    /* Check stream data for frame header(s). We employ a simple
+     * state-machine approach here to find number of sequential
+     * valid MPEG frame headers (with similar attributes).
+     */
+    do {
+        switch (state) {
+        case STATE_HEADERS:
+            LULZ("check headers\n");
+            /* Check read size */
+            if (chksize < 32) {
+                LULZ("headers check failed, not enough data!\n");
+                state = STATE_FATAL;
+            } else {
+                state = STATE_GET_NEXT;
+                
+                if (memcmp(&chkbuf[chkpos], "ID3", 3) == 0) {
+                    /* Skip ID3 header */
+                    guint tagsize = (chkbuf[chkpos+6] & 0x7f); tagsize <<= 7;
+                    tagsize |= (chkbuf[chkpos+7] & 0x7f); tagsize <<= 7;
+                    tagsize |= (chkbuf[chkpos+8] & 0x7f); tagsize <<= 7;
+                    tagsize |= (chkbuf[chkpos+9] & 0x7f);
+        
+                    LULZ("ID3 size = %08x\n", tagsize);
+                    state = STATE_GOTO_NEXT;
+                    skip = tagsize + 10;
+                } else
+                if (memcmp(&chkbuf[chkpos], "OggS", 4) == 0)
+                    return 0;
+                else
+                if (memcmp(&chkbuf[chkpos], "RIFF", 4) == 0 &&
+                    memcmp(&chkbuf[chkpos+8], "RMP3", 4) == 0)
+                    return 1;
             }
+            break;
+        
+        case STATE_REBUFFER:
+            streampos = aud_vfs_ftell(fin);
+            if ((chksize = aud_vfs_fread(chkbuf, 1, sizeof(chkbuf), fin)) == 0)
+                state = STATE_FATAL;
+            else {
+                chkpos = 0;
+                state = next;
+            }
+            LULZ("rebuffered = %d bytes\n", chksize);
+            break;
+        
+        case STATE_VALIDATE:
+            LULZ("validate %08x .. ", head);
+            /* Check for valid header */
+            if ((res = mp3_head_validate(head, &frame)) >= 0) {
+                LOL("[is MPEG%s/layer %d, %dHz, %dkbps]",
+                mp3_ver_table[frame.version], frame.layer, frame.sampleRate, frame.bitRate);
+                state = STATE_GOTO_NEXT;
+                skip = frame.size;
+                chkcount++;
+                if (chkcount > 1) {
+                    if (frame.sampleRate != prev.sampleRate ||
+                        frame.layer != prev.layer ||
+                        frame.version != prev.version) {
+                        /* Not similar frame... */
+                        LOL(" .. but does not match (%d)!\n", chkcount);
+                        state = STATE_RESYNC;
+                    } else if (chkcount >= 5) {
+                        /* Okay, accept this stream */
+                        LOL(" .. accepted as mp3!!!\n");
+                        return 1;
+                    } else {
+                        LOL(" .. match %d\n", chkcount);
+                    }
+                } else {
+                    /* First valid frame of sequence */
+                    memcpy(&prev, &frame, sizeof(mp3_frame_t));
+                    LOL(" .. first synced\n");
+                }
+            } else {
+                /* Nope, try (re)synchronizing */
+                if (chkcount > 1) {
+                    LOL("no (%d), trying quick resync ..\n", res);
+                    state = STATE_RESYNC_DO;
+                    resync_max = 32;
+                } else {
+                    LOL("no (%d)\n", res);
+                    state = STATE_RESYNC;
+                }
+            }
+            break;
+        
+        case STATE_GOTO_NEXT:
+            LULZ("goto next (%x :: %x < %x) ? ", chkpos, skip, chksize);
+            /* Check if we have the next possible header in buffer? */
+            gint tmppos = chkpos + skip + sizeof(guint32);
+            if (tmppos < chksize) {
+                LOL("[in buffer]\n");
+                chkpos += skip;
+                state = STATE_GET_NEXT;
+            } else {
+                /* No, re-fill buffer and try again .. */
+                LOL("[rebuffering: %x, %x]\n", skip, chkpos + skip - chksize);
+                aud_vfs_fseek(fin, chkpos + skip - chksize, SEEK_CUR);
+                next = STATE_GET_NEXT;
+                state = STATE_REBUFFER;
+            }
+            break;
+        
+        case STATE_GET_NEXT:
+            /* Get a header */
+            LULZ("get next @ bufpos=%08x, streampos=%08lx, realpos=%08lx\n", chkpos, streampos, streampos+chkpos);
+            head = mp3_head_convert(&chkbuf[chkpos]);
+            //chkpos += sizeof(guint32);
+            state = STATE_VALIDATE;
+            break;
+        
+        case STATE_RESYNC:
+            LULZ("resyncing try #%d ..\n", tries);
+            /* Re-synchronize aka try to find a valid header */
+            head = 0;
+            chkcount = 0;
+            resync_max = -1;
+            state = STATE_RESYNC_DO;
+            tries++;
+            break;
+        
+        case STATE_RESYNC_DO:
+            /* Scan for valid frame header */            
+            for (; chkpos < chksize; chkpos++) {
+                head <<= 8;
+                head |= chkbuf[chkpos];
+                
+                if (mp3_head_validate(head, &frame) >= 0) {
+                    /* Found, exit resync */
+                    chkpos -= 3;
+                    LULZ("resync found @ %x\n", chkpos);
+                    state = STATE_VALIDATE;
+                    break;
+                }
+                
+                /* Check for maximum bytes to search */
+                if (resync_max > 0) {
+                    resync_max--;
+                    if (resync_max == 0) {
+                        state = STATE_RESYNC;
+                        break;
+                    }
+                }
+            }
+            if (state == STATE_RESYNC_DO) {
+                /* Not found, refill buffer */
+                next = state;
+                state = STATE_REBUFFER;
+            }
+            break;
         }
+    } while (state != STATE_FATAL && tries < 16);
+    /* Give up after 16 failed resync attempts or fatal errors */
 
-        if (++cyc > 32)
-            return 0;
-    }
-
-    return 1;
-}
-
-// audacious vfs version
-static int
-audmad_is_our_file(char *filename)
-{
-    VFSFile *fin = NULL;
-    gint rtn;
-
-    fin = aud_vfs_fopen(filename, "rb");
-
-    if (fin == NULL)
-        return 0;
-
-    rtn = audmad_is_our_fd(filename, fin);
-    aud_vfs_fclose(fin);
-
-    return rtn;
+    g_message("Rejecting %s (not an MP3 file?)", filename);
+    return 0;
 }
 
 static void
@@ -759,7 +896,6 @@ InputPlugin mad_ip = {
     .init = audmad_init,
     .about = audmad_about,
     .configure = audmad_configure,
-    .is_our_file = audmad_is_our_file,
     .play_file = audmad_play_file,
     .stop = audmad_stop,
     .pause = audmad_pause,

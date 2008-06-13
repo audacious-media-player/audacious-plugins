@@ -8,10 +8,7 @@
 
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/util.h>
 #include <audacious/i18n.h>
-#include <audacious/strings.h>
-#include <audacious/main.h>
 
 #define MP4_VERSION VERSION
 #define SBR_DEC

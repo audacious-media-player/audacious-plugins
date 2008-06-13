@@ -27,31 +27,37 @@
 #include <assert.h>
 #include "replaygain.h"
 
-static unsigned long
-Read_LE_Uint32(const unsigned char *p)
-{
-    return ((unsigned long) p[0] << 0) |
-        ((unsigned long) p[1] << 8) |
-        ((unsigned long) p[2] << 16) | ((unsigned long) p[3] << 24);
-}
+#define APE_MATCH_BUF (20000)
+#define APE_HEADER_SIZE (32)
+static const gchar *ape_header_magic_id = "APETAGEX";
 
-static int
-uncase_strcmp(const char *s1, const char *s2)
+typedef struct {
+    guchar id[8];
+    guint32 version;
+    guint32 length;
+    guint32 tagCount;
+    guint32 flags;
+    guchar reserved[8];
+} ape_header_t;
+
+
+static gboolean
+fetchLE32(guint32 *res, gchar **ptr, const gchar *end)
 {
-    int l1 = strlen(s1);
-    int l2 = strlen(s2);
-    int i;
-    for (i = 0; i < l1 && i < l2; ++i) {
-        if (toupper(s1[i]) < toupper(s2[i]))
-            return -1;
+    if (*ptr + sizeof(guint32) > end)
+        return FALSE;
+    else {
+        *res = ((guint32) (*ptr)[0] ) |
+               ((guint32) (*ptr)[1] << 8) |
+               ((guint32) (*ptr)[2] << 16) |
+               ((guint32) (*ptr)[3] << 24);
+        (*ptr) += sizeof(guint32);
+        return TRUE;
     }
-    if (l1 == l2)
-        return 0;
-    return (l1 < l2) ? -1 : +1;
 }
 
 static gdouble
-strgain2double(gchar * s, int len)
+strgain2double(const gchar * s, const size_t len)
 {
     gchar *strval = g_strndup(s, len);
     gdouble res = g_strtod(s, NULL);    // gain, in dB.
@@ -59,85 +65,106 @@ strgain2double(gchar * s, int len)
     return res;
 }
 
-// Reads APE v2.0 tag ending at current pos in fp
-
-static int
-ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
+/* Check for APE tag header in current file position, and read
+ * header data into given structure. Return 0 if OK.
+ */
+static gint checkAPEHeader(VFSFile * fp, ape_header_t *hdr)
 {
-    unsigned long vsize;
-    unsigned long isize;
-    unsigned long flags;
-    char *buff;
-    char *p;
-    char *end;
-    struct APETagFooterStruct T, *tp;
-    unsigned long TagLen;
-    unsigned long TagCount;
-
-    tp = &T;
-
-    if (aud_vfs_fseek(fp, -sizeof(T), SEEK_CUR) != 0)
-        return 18;
-    if (aud_vfs_fread(tp, 1, sizeof(T), fp) != sizeof T)
+    /* Get magic id and check it */
+    if (aud_vfs_fread(&hdr->id, sizeof(hdr->id), 1, fp) != 1)
         return 2;
-    if (memcmp(tp->ID, "APETAGEX", sizeof(tp->ID)) != 0)
+    
+    if (memcmp(hdr->id, ape_header_magic_id, sizeof(hdr->id)) != 0)
         return 3;
-    if (Read_LE_Uint32(tp->Version) != 2000)
+    
+    /* Currently we only support APEv2 */
+    if (!aud_vfs_fget_le32(&hdr->version, fp) || hdr->version != 2000)
         return 4;
-    TagLen = Read_LE_Uint32(tp->Length);
-    if (TagLen < sizeof(T))
+    
+    /* Validate header length */
+    if (!aud_vfs_fget_le32(&hdr->length, fp) || hdr->length < APE_HEADER_SIZE)
         return 5;
-    if (aud_vfs_fseek(fp, -TagLen, SEEK_CUR) != 0)
+    
+    /* Get other data */
+    if (!aud_vfs_fget_le32(&hdr->tagCount, fp) || !aud_vfs_fget_le32(&hdr->flags, fp) ||
+        aud_vfs_fread(&hdr->reserved, sizeof(hdr->reserved), 1, fp) != 1)
         return 6;
-    if ((buff = (char *) malloc(TagLen)) == NULL) {
+    
+    return 0;
+}
+
+/* Reads APE v2.0 tag ending at current pos in fp
+ */
+static gint
+readAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
+{
+    gchar *buff, *p, *end;
+    gint res;
+    ape_header_t hdr;
+    
+    if (aud_vfs_fseek(fp, -APE_HEADER_SIZE, SEEK_CUR) != 0)
+        return 18;
+    
+    if ((res = checkAPEHeader(fp, &hdr)) != 0)
+        return res;
+    
+    if (aud_vfs_fseek(fp, -hdr.length, SEEK_CUR) != 0)
         return 7;
-    }
-    if (aud_vfs_fread(buff, 1, TagLen - sizeof(T), fp) != TagLen - sizeof(T)) {
-        free(buff);
+    
+    if ((buff = (gchar *) g_malloc(hdr.length)) == NULL)
         return 8;
+    
+    if (aud_vfs_fread(buff, hdr.length - APE_HEADER_SIZE, 1, fp) != 1) {
+        g_free(buff);
+        return 9;
     }
 
-    AUDDBG("ver = %ld\n", Read_LE_Uint32(tp->Version));
-    AUDDBG("taglen = %ld\n", TagLen);
+    AUDDBG("ver = %ld\n", hdr.version);
+    AUDDBG("taglen = %ld\n", hdr.length);
 
-    TagCount = Read_LE_Uint32(tp->TagCount);
-    end = buff + TagLen - sizeof(T);
-    for (p = buff; p < end && TagCount--;) {
-        vsize = Read_LE_Uint32((unsigned char *)p);
-        p += 4;
-        flags = Read_LE_Uint32((unsigned char *)p);
-        p += 4;
-        isize = strlen((char *) p);
-
+    end = buff + hdr.length - APE_HEADER_SIZE;
+    
+    for (p = buff; p < end && hdr.tagCount--;) {
+        guint32 vsize, flags;
+        size_t isize;
+        gchar *tmp;
+        
+        /* Get and check size and string */
+        if (!fetchLE32(&vsize, &p, end)) break;
+        if (!fetchLE32(&flags, &p, end)) break;
+        for (tmp = p, isize = 0; tmp < end && *tmp != 0; isize++, tmp++);
+        if (*tmp != 0) break;
+        tmp++;
+        
         if (isize > 0 && vsize > 0) {
             gdouble *scale = NULL;
             gchar **str = NULL;
-            if (uncase_strcmp(p, "REPLAYGAIN_ALBUM_GAIN") == 0) {
+            if (g_ascii_strcasecmp(p, "REPLAYGAIN_ALBUM_GAIN") == 0) {
                 scale = &file_info->replaygain_album_scale;
                 str = &file_info->replaygain_album_str;
-            }
-            if (uncase_strcmp(p, "REPLAYGAIN_TRACK_GAIN") == 0) {
+            } else
+            if (g_ascii_strcasecmp(p, "REPLAYGAIN_TRACK_GAIN") == 0) {
                 scale = &file_info->replaygain_track_scale;
                 str = &file_info->replaygain_track_str;
             }
             if (str != NULL) {
                 assert(scale != NULL);
-                *scale = strgain2double(p + isize + 1, vsize);
-                *str = g_strndup(p + isize + 1, vsize);
+                *scale = strgain2double(tmp, vsize);
+                *str = g_strndup(tmp, vsize);
             }
-            //* case of peak info tags : */
+            /* case of peak info tags : */
             str = NULL;
-            if (uncase_strcmp(p, "REPLAYGAIN_TRACK_PEAK") == 0) {
+            if (g_ascii_strcasecmp(p, "REPLAYGAIN_TRACK_PEAK") == 0) {
                 scale = &file_info->replaygain_track_peak;
                 str = &file_info->replaygain_track_peak_str;
-            }
-            if (uncase_strcmp(p, "REPLAYGAIN_ALBUM_PEAK") == 0) {
+            } else
+            if (g_ascii_strcasecmp(p, "REPLAYGAIN_ALBUM_PEAK") == 0) {
                 scale = &file_info->replaygain_album_peak;
                 str = &file_info->replaygain_album_peak_str;
             }
             if (str != NULL) {
-                *scale = strgain2double(p + isize + 1, vsize);
-                *str = g_strndup(p + isize + 1, vsize);
+                *scale = strgain2double(tmp, vsize);
+                *str = g_strndup(tmp, vsize);
             }
 
             /* mp3gain additional tags : 
@@ -145,14 +172,14 @@ ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
                i.e., in dB : 20*log(2)/log(10)*gain/4
                -> 1.501*gain dB
              */
-            if (uncase_strcmp(p, "MP3GAIN_UNDO") == 0) {
+            if (g_ascii_strcasecmp(p, "MP3GAIN_UNDO") == 0) {
                 str = &file_info->mp3gain_undo_str;
                 scale = &file_info->mp3gain_undo;
                 assert(4 < vsize);  /* this tag is +left,+right */
                 *str = g_strndup(p + isize + 1, vsize);
                 *scale = 1.50515 * atoi(*str);
-            }
-            if (uncase_strcmp(p, "MP3GAIN_MINMAX") == 0) {
+            } else
+            if (g_ascii_strcasecmp(p, "MP3GAIN_MINMAX") == 0) {
                 str = &file_info->mp3gain_minmax_str;
                 scale = &file_info->mp3gain_minmax;
                 *str = g_strndup(p + isize + 1, vsize);
@@ -160,27 +187,28 @@ ReadAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
                 *scale = 1.50515 * (atoi((*str) + 4) - atoi(*str));
             }
         }
-        p += isize + 1 + vsize;
+        
+        p = tmp;
     }
 
-    free(buff);
+    g_free(buff);
 
     return 0;
 }
 
-static int
-find_offset(VFSFile * fp)
+static gint
+findOffset(VFSFile * fp)
 {
-    static const char *key = "APETAGEX";
-    char buff[20000];
-    int N = 0;
-    if (aud_vfs_fseek(fp, -20000, SEEK_CUR) != 0);
-    if ((N = aud_vfs_fread(buff, 1, 20000, fp)) < 16)
+    gchar buff[APE_MATCH_BUF];
+    gint matched = 0, last_match = -1;
+    size_t N = 0, i;
+    
+    if (aud_vfs_fseek(fp, - APE_MATCH_BUF, SEEK_CUR) != 0);
+    if ((N = aud_vfs_fread(buff, sizeof(gchar), APE_MATCH_BUF, fp)) < 16)
         return 1;
-    int matched = 0;
-    int i, last_match = -1;
+    
     for (i = 0; i < N; ++i) {
-        if (buff[i] == key[matched])
+        if (buff[i] == ape_header_magic_id[matched])
             ++matched;
         else {
             if (matched == 5 && buff[i] == 'P')
@@ -195,18 +223,18 @@ find_offset(VFSFile * fp)
     }
     if (last_match == -1)
         return 1;
-    return last_match + 1 - 8 + sizeof(struct APETagFooterStruct) - N;
+    return last_match + 1 - 8 + APE_HEADER_SIZE - N;
 }
 
 /* Eugene Zagidullin:
- * Read ReplayGain info from foobar2000-style id3v2 frames */
-
-static int
-ReadId3v2TXXX(struct mad_info_t *file_info)
+ * Read ReplayGain info from foobar2000-style id3v2 frames.
+ */
+static gint
+readId3v2TXXX(struct mad_info_t *file_info)
 {
-	int i;
-	char *key;
-	char *value;
+	gint i;
+	gchar *key;
+	gchar *value;
 	struct id3_frame *frame;
 
 	AUDDBG("f: ReadId3v2TXXX\n");
@@ -214,7 +242,7 @@ ReadId3v2TXXX(struct mad_info_t *file_info)
 	/* tag must be read before! */
 	if (! file_info->tag ) {
 		AUDDBG("id3v2 not found\n");
-		return 0;
+		return FALSE;
 	}
 
 	/* Partially based on code from MPD (http://www.musicpd.org/) */
@@ -222,18 +250,14 @@ ReadId3v2TXXX(struct mad_info_t *file_info)
 		if (frame->nfields < 3)
 			continue;
 
-		key = (char *)
-		    id3_ucs4_latin1duplicate(id3_field_getstring
-					     (&frame->fields[1]));
-		value = (char *)
-		    id3_ucs4_latin1duplicate(id3_field_getstring
-					     (&frame->fields[2]));
+		key = (gchar *) id3_ucs4_latin1duplicate(id3_field_getstring(&frame->fields[1]));
+		value = (gchar *) id3_ucs4_latin1duplicate(id3_field_getstring(&frame->fields[2]));
 
 		if (strcasecmp(key, "replaygain_track_gain") == 0) {
-			file_info->replaygain_track_scale = strgain2double(value, strlen(value));
+			file_info->replaygain_track_scale = g_strtod(value, NULL);
 			file_info->replaygain_track_str = g_strdup(value);
 		} else if (strcasecmp(key, "replaygain_album_gain") == 0) {
-			file_info->replaygain_album_scale = strgain2double(value, strlen(value));
+			file_info->replaygain_album_scale = g_strtod(value, NULL);
 			file_info->replaygain_album_str = g_strdup(value);
 		} else if (strcasecmp(key, "replaygain_track_peak") == 0) {
 			file_info->replaygain_track_peak = g_strtod(value, NULL);
@@ -245,13 +269,14 @@ ReadId3v2TXXX(struct mad_info_t *file_info)
 
 		free(key);
 		free(value);
+		return TRUE;
 	}
 
-	return 0;
+	return FALSE;
 }
 
 void
-read_replaygain(struct mad_info_t *file_info)
+audmad_read_replaygain(struct mad_info_t *file_info)
 {
     VFSFile *fp;
     glong curpos = 0;
@@ -265,7 +290,7 @@ read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_undo = -77;
     file_info->mp3gain_minmax = -77;
 
-    if (ReadId3v2TXXX(file_info)) {
+    if (readId3v2TXXX(file_info)) {
         AUDDBG("found ReplayGain info in id3v2 tag\n");
 #ifdef AUD_DEBUG
 	gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);
@@ -294,24 +319,23 @@ read_replaygain(struct mad_info_t *file_info)
         return;
     }
     
-    long pos = aud_vfs_ftell(fp);
-    int res = -1;
-    int try = 0;
-    while (res != 0 && try < 10) {
+    glong pos = aud_vfs_ftell(fp);
+    gint res = -1, try_pos = 0;
+    while (res != 0 && try_pos < 10) {
         // try skipping an id3 tag
         aud_vfs_fseek(fp, pos, SEEK_SET);
-        aud_vfs_fseek(fp, try * -128, SEEK_CUR);
-        res = ReadAPE2Tag(fp, file_info);
-        ++try;
+        aud_vfs_fseek(fp, try_pos * -128, SEEK_CUR);
+        res = readAPE2Tag(fp, file_info);
+        ++try_pos;
     }
     if (res != 0) {
         // try brute search (don't want to parse all possible kinds of tags..)
         aud_vfs_fseek(fp, pos, SEEK_SET);
-        int offs = find_offset(fp);
+        gint offs = findOffset(fp);
         if (offs <= 0) {        // found !
             aud_vfs_fseek(fp, pos, SEEK_SET);
             aud_vfs_fseek(fp, offs, SEEK_CUR);
-            res = ReadAPE2Tag(fp, file_info);
+            res = readAPE2Tag(fp, file_info);
             if (res != 0) {
                 g_message
                     ("hmpf, was supposed to find a tag.. offs=%d, res=%d",

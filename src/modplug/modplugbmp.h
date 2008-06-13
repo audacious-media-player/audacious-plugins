@@ -9,10 +9,7 @@
 
 #include <string>
 #include <glib.h>
-
-#ifndef __MODPLUGXMMS_STDDEFS_H__INCLUDED__
 #include "stddefs.h"
-#endif
 
 extern "C" {
 #include <audacious/plugin.h>

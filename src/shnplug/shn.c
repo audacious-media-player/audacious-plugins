@@ -24,8 +24,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <glib.h>
-#include <audacious/util.h>
-#include <audacious/configdb.h>
 #include "shorten.h"
 
 #ifdef HAVE_CONFIG_H
@@ -90,7 +88,7 @@ static gboolean audio_error = FALSE;
 
 static void shn_init()
 {
-	ConfigDb *cfg;
+	mcs_handle_t *cfg;
 
 	shn_cfg.error_output_method = ERROR_OUTPUT_DEVNULL;
 	shn_cfg.error_output_method_config_name = "error_output_method";

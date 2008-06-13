@@ -23,9 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <esd.h>
-
-#include <audacious/configdb.h>
-
+#include <audacious/plugin.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -45,7 +43,6 @@
 # define OSS_AVAILABLE FALSE
 #endif
 
-#include <audacious/util.h>
 
 #define QUERY_PLAYER_ID_ATTEMPTS 5
 
@@ -144,7 +141,7 @@ esdout_get_volume(int *l, int *r)
 void
 esdout_set_volume(int l, int r)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     lp = l;
     rp = r;
 

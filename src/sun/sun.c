@@ -20,7 +20,6 @@
 #include <glib.h>
 
 #include "sun.h"
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 
 #include <errno.h>
@@ -53,7 +52,7 @@ DECLARE_PLUGIN(sun, NULL, NULL, NULL, sun_oplist, NULL, NULL, NULL, NULL);
 
 void sun_init(void)
 {
-	ConfigDb *cfgfile;
+	mcs_handle_t *cfgfile;
 	char *s;
 
 	memset(&audio, 0, sizeof(struct sun_audio));

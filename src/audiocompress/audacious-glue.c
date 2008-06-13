@@ -10,8 +10,6 @@
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
-#include <audacious/util.h>
-#include <audacious/configdb.h>
 
 #include "audiocompress_config.h"
 #include "compress.h"
@@ -38,6 +36,7 @@ static void myAbout(void);
 static void myPrefs(void);
 static int myModify(gpointer * data, gint length, AFormat fmt,
 		    gint srate, gint nch);
+static void myQueryFormat(AFormat * fmt, gint * rate, gint * nch);
 
 static int inited = 0;
 
@@ -49,6 +48,7 @@ static EffectPlugin xmms_plugin = {
 	.about = myAbout,
 	.configure = myPrefs,
 	.mod_samples = myModify,
+	.query_format = myQueryFormat,
 };
 
 EffectPlugin *audiocompress_eplist[] = { &xmms_plugin, NULL };
@@ -75,6 +75,14 @@ void myCleanup(void)
 	freePrefs(&prefs);
 	CompressFree();
         inited = 0;
+}
+
+void myQueryFormat(AFormat * fmt, gint * rate, gint * nch)
+{
+	if ((*fmt != FMT_S16_NE) ||
+	    (*fmt != FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
+	    (*fmt != FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN))
+		*fmt = FMT_S16_NE;
 }
 
 int myModify(gpointer * data, gint length, AFormat fmt, gint srate, gint nch)
@@ -120,7 +128,7 @@ GtkWidget *create_prefs_dialog(CompressorPrefs * prefs);
 
 void initPrefs(CompressorPrefs * prefs)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 
@@ -159,7 +167,7 @@ void freePrefs(CompressorPrefs * prefs)
 
 void savePrefs(CompressorPrefs * prefs)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 

@@ -6,7 +6,6 @@
 
 // #define AUD_DEBUG 1
 
-#include "modplug.h"
 #include "gui/main.h"
 extern "C" {
 #include <audacious/plugin.h>
@@ -82,7 +81,7 @@ void ShowFileInfoBox(char* aFilename)
 }
 
 const gchar *fmts[] =
-    { "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "j2b", "mt2",
+    { "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "mt2",
       "mdz", "mdr", "mdgz", "mdbz", "mod", "s3z", "s3r", "s3gz", "s3m", "xmz", "xmr", "xmgz",
       "itz", "itr", "itgz", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2",
       "zip", "gz", "bz2", "rar", "rb",
@@ -90,6 +89,7 @@ const gchar *fmts[] =
 
 InputPlugin gModPlug =
 {
+    /* Common plugin fields */
     NULL,
     NULL,
     (gchar *)"ModPlug Audio Plugin",
@@ -98,6 +98,8 @@ InputPlugin gModPlug =
     ShowAboutBox,
     ShowConfigureBox,
     FALSE,
+
+    /* Input plugin fields */
     NULL,
     NULL,
     PlayFile,
@@ -116,8 +118,6 @@ InputPlugin gModPlug =
     ShowFileInfoBox,
     NULL,   // output
     GetSongTuple,
-    NULL,
-    NULL,
     CanPlayFileFromVFS, // vfs
     (gchar **)fmts,
     NULL,

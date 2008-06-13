@@ -8,9 +8,9 @@ extern "C" {
 #endif
 
 #ifndef AUDACIOUS_PLUGIN
-void	xs_fileinfo_update(void);
+void    xs_fileinfo_update(void);
 #endif
-void	xs_fileinfo(gchar *);
+void    xs_fileinfo(gchar *);
 
 #ifdef __cplusplus
 }

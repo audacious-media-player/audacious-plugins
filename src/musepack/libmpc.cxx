@@ -37,8 +37,6 @@ InputPlugin MpcPlugin = {
     mpcFileInfoBox, //Show File Info Box        [CALLBACK]
     NULL,           //Output Plugin Handle      OutputPlugin output
     mpcGetSongTuple,//Acquire tuple for song    [CALLBACK]
-    NULL,
-    NULL,
     mpcIsOurFD,
     (gchar **)mpc_fmts
 };
@@ -127,7 +125,7 @@ mpc_reader_setup_file_vfs(mpc_reader_file *p_reader, VFSFile *input)
 
 static void mpcOpenPlugin()
 {
-    ConfigDb *cfg;
+    mcs_handle_t *cfg;
     cfg = aud_cfg_db_open();
     aud_cfg_db_get_bool(cfg, "musepack", "clipPrevention", &pluginConfig.clipPrevention);
     aud_cfg_db_get_bool(cfg, "musepack", "albumGain",      &pluginConfig.albumGain);
@@ -251,7 +249,7 @@ static void toggleSwitch(GtkWidget* p_Widget, gpointer p_Data)
 
 static void saveConfigBox(GtkWidget* p_Widget, gpointer p_Data)
 {
-    ConfigDb* cfg;
+    mcs_handle_t* cfg;
     GtkToggleButton* tb;
 
     tb = GTK_TOGGLE_BUTTON(widgets.replaygainCheck);

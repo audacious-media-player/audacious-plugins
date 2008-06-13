@@ -5,11 +5,18 @@
 
 #include <config.h>
 
+#include "../stddefs.h"
+#include "../stdafx.h"
+#include "../sndfile.h"
+#include "../archive/open.h"
+
+// Order of #include is important - UINT is redefined to unsigned long instead of unsigned int 
+// somewhere in the following headers, which leads to unresolved symbol - 
+// linking is okay, error pops up when starting Audacious.
+
 #include <gtk/gtk.h>
 #include <libintl.h>
 extern "C" {
-#include <audacious/util.h>
-#include <audacious/strings.h>
 }
 
 #include "interface.h"
@@ -26,10 +33,6 @@ extern "C" {
 #include <sys/mman.h>
 #include <fstream>
 
-#include "../stddefs.h"
-#include "../stdafx.h"
-#include "../sndfile.h"
-#include "../archive/open.h"
 
 #define MAX_MESSAGE_LENGTH 4000
 

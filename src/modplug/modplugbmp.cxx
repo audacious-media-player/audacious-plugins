@@ -15,9 +15,7 @@
 #include "stddefs.h"
 #include "archive/open.h"
 extern "C" {
-#include <audacious/configdb.h>
 #include <audacious/output.h>
-#include <audacious/strings.h>
 }
 
 static char* format_and_free_ti( Tuple* ti, int* length )
@@ -75,7 +73,7 @@ ModplugXMMS::Settings::Settings()
 
 void ModplugXMMS::Init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	
 	db = aud_cfg_db_open();
 
@@ -198,8 +196,6 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
 	if (lExt == ".stm")
 		return true;
 	if (lExt == ".ult")
-		return true;
-	if (lExt == ".j2b")
 		return true;
 	if (lExt == ".mt2")
 		return true;
@@ -590,7 +586,7 @@ const char* ModplugXMMS::Bool2OnOff(bool aValue)
 
 void ModplugXMMS::SetModProps(const Settings& aModProps)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	mModProps = aModProps;
 
 	// [Reverb level 0(quiet)-100(loud)], [delay in ms, usually 40-200ms]

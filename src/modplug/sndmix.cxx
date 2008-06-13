@@ -20,7 +20,7 @@ UINT CSoundFile::m_nMaxMixChannels = 32;
 // Mixing Configuration (SetWaveConfig)
 DWORD CSoundFile::gdwSysInfo = 0;
 DWORD CSoundFile::gnChannels = 1;
-DWORD CSoundFile::gdwSoundSetup = 0;
+DWORD CSoundFile::gdwSoundSetup = SNDMIX_NOBACKWARDJUMPS; // Do not allow song to loop infinitely
 DWORD CSoundFile::gdwMixingFreq = 44100;
 DWORD CSoundFile::gnBitsPerSample = 16;
 // Mixing data initialized in
@@ -275,75 +275,77 @@ BOOL CSoundFile::ProcessRow()
 //---------------------------
 {
 	if (++m_nTickCount >= m_nMusicSpeed * (m_nPatternDelay+1) + m_nFrameDelay)
-        {
+	{
 		m_nPatternDelay = 0;
 		m_nFrameDelay = 0;
 		m_nTickCount = 0;
 		m_nRow = m_nNextRow;
-		
 		// Reset Pattern Loop Effect
-		if (m_nCurrentPattern != m_nNextPattern) {
-			if (m_nLockedPattern < MAX_ORDERS) {
-				m_nCurrentPattern = m_nLockedPattern;
-				if (!(m_dwSongFlags & SONG_ORDERLOCKED))
-					m_nLockedPattern = MAX_ORDERS;
-			} else {
-				m_nCurrentPattern = m_nNextPattern;
-			}
-
-			// Check if pattern is valid
-			if (!(m_dwSongFlags & SONG_PATTERNLOOP))
+		if (m_nCurrentPattern != m_nNextPattern) m_nCurrentPattern = m_nNextPattern;
+		// Check if pattern is valid
+		if (!(m_dwSongFlags & SONG_PATTERNLOOP))
+		{
+			m_nPattern = (m_nCurrentPattern < MAX_ORDERS) ? Order[m_nCurrentPattern] : 0xFF;
+			if ((m_nPattern < MAX_PATTERNS) && (!Patterns[m_nPattern])) m_nPattern = 0xFE;
+			while (m_nPattern >= MAX_PATTERNS)
 			{
+				// End of song ?
+				if ((m_nPattern == 0xFF) || (m_nCurrentPattern >= MAX_ORDERS))
+				{
+					//if (!m_nRepeatCount)
+						return FALSE;     //never repeat entire song
+					if (!m_nRestartPos)
+					{
+						m_nMusicSpeed = m_nDefaultSpeed;
+						m_nMusicTempo = m_nDefaultTempo;
+						m_nGlobalVolume = m_nDefaultGlobalVolume;
+						for (UINT i=0; i<MAX_CHANNELS; i++)
+						{
+							Chn[i].dwFlags |= CHN_NOTEFADE | CHN_KEYOFF;
+							Chn[i].nFadeOutVol = 0;
+							if (i < m_nChannels)
+							{
+								Chn[i].nGlobalVol = ChnSettings[i].nVolume;
+								Chn[i].nVolume = ChnSettings[i].nVolume;
+								Chn[i].nPan = ChnSettings[i].nPan;
+								Chn[i].nPanSwing = Chn[i].nVolSwing = 0;
+								Chn[i].nOldVolParam = 0;
+								Chn[i].nOldOffset = 0;
+								Chn[i].nOldHiOffset = 0;
+								Chn[i].nPortamentoDest = 0;
+								if (!Chn[i].nLength)
+								{
+									Chn[i].dwFlags = ChnSettings[i].dwFlags;
+									Chn[i].nLoopStart = 0;
+									Chn[i].nLoopEnd = 0;
+									Chn[i].pHeader = NULL;
+									Chn[i].pSample = NULL;
+									Chn[i].pInstrument = NULL;
+								}
+							}
+						}
+					}
+//					if (m_nRepeatCount > 0) m_nRepeatCount--;
+					m_nCurrentPattern = m_nRestartPos;
+					m_nRow = 0;
+					if ((Order[m_nCurrentPattern] >= MAX_PATTERNS) || (!Patterns[Order[m_nCurrentPattern]])) return FALSE;
+				} else
+				{
+					m_nCurrentPattern++;
+				}
 				m_nPattern = (m_nCurrentPattern < MAX_ORDERS) ? Order[m_nCurrentPattern] : 0xFF;
 				if ((m_nPattern < MAX_PATTERNS) && (!Patterns[m_nPattern])) m_nPattern = 0xFE;
-				while (m_nPattern >= MAX_PATTERNS)
-				{
-					// End of song ?
-					if ((m_nPattern == 0xFF) || (m_nCurrentPattern >= MAX_ORDERS))
-					{
-						if (m_nRepeatCount > 0) m_nRepeatCount--;
-						if (!m_nRepeatCount) return FALSE;
-						m_nCurrentPattern = m_nRestartPos;
-						if ((Order[m_nCurrentPattern] >= MAX_PATTERNS)
-						    || (!Patterns[Order[m_nCurrentPattern]]))
-							return FALSE;
-					} else {
-						m_nCurrentPattern++;
-					}
-					m_nPattern = (m_nCurrentPattern < MAX_ORDERS) ? Order[m_nCurrentPattern] : 0xFF;
-					if ((m_nPattern < MAX_PATTERNS) && (!Patterns[m_nPattern])) m_nPattern = 0xFE;
-				}
-				m_nNextPattern = m_nCurrentPattern;
-			} else if (m_nCurrentPattern < 255) {
-				if (m_nRepeatCount > 0) m_nRepeatCount--;
-				if (!m_nRepeatCount) return FALSE;
 			}
-		}
-#ifdef MODPLUG_TRACKER
-		if (m_dwSongFlags & SONG_STEP)
-		{
-			m_dwSongFlags &= ~SONG_STEP;
-			m_dwSongFlags |= SONG_PAUSED;
-		}
-#endif // MODPLUG_TRACKER
-		if (!PatternSize[m_nPattern] || !Patterns[m_nPattern]) {
-			/* okay, this is wrong. allocate the pattern _NOW_ */
-			Patterns[m_nPattern] = AllocatePattern(64,64);
-			PatternSize[m_nPattern] = 64;
-			PatternAllocSize[m_nPattern] = 64;
+			m_nNextPattern = m_nCurrentPattern;
 		}
 		// Weird stuff?
-		if (m_nPattern >= MAX_PATTERNS) return FALSE;
+		if ((m_nPattern >= MAX_PATTERNS) || (!Patterns[m_nPattern])) return FALSE;
 		// Should never happen
-		// ... sure it should: suppose there's a C70 effect before a 64-row pattern.
-		// It's in fact very easy to make this happen ;)
-		//       - chisel
 		if (m_nRow >= PatternSize[m_nPattern]) m_nRow = 0;
-                m_nNextRow = m_nRow + 1;
+		m_nNextRow = m_nRow + 1;
 		if (m_nNextRow >= PatternSize[m_nPattern])
 		{
 			if (!(m_dwSongFlags & SONG_PATTERNLOOP)) m_nNextPattern = m_nCurrentPattern + 1;
-			else if (m_nRepeatCount > 0) return FALSE;
 			m_nNextRow = 0;
 		}
 		// Reset channel values
@@ -351,18 +353,7 @@ BOOL CSoundFile::ProcessRow()
 		MODCOMMAND *m = Patterns[m_nPattern] + m_nRow * m_nChannels;
 		for (UINT nChn=0; nChn<m_nChannels; pChn++, nChn++, m++)
 		{
-			/* skip realtime copyin */
-			if (pChn->nRealtime) continue;
-
-			// this is where we're going to spit out our midi
-			// commands... ALL WE DO is dump raw midi data to
-			// our super-secret "midi buffer"
-			// -mrsb
-			if (_midi_out_note)
-				_midi_out_note(nChn, m);
-
 			pChn->nRowNote = m->note;
-			if (m->instr) pChn->nLastInstr = m->instr;
 			pChn->nRowInstr = m->instr;
 			pChn->nRowVolCmd = m->volcmd;
 			pChn->nRowVolume = m->vol;
@@ -373,14 +364,6 @@ BOOL CSoundFile::ProcessRow()
 			pChn->nRightVol = pChn->nNewRightVol;
 			pChn->dwFlags &= ~(CHN_PORTAMENTO | CHN_VIBRATO | CHN_TREMOLO | CHN_PANBRELLO);
 			pChn->nCommand = 0;
-		}
-				
-	} else if (_midi_out_note) {
-		MODCOMMAND *m = Patterns[m_nPattern] + m_nRow * m_nChannels;
-		for (UINT nChn=0; nChn<m_nChannels; nChn++, m++)
-		{
-			/* m==NULL allows schism to receive notification of SDx and Scx commands */
-			_midi_out_note(nChn, 0);
 		}
 	}
 	// Should we process tick0 effects?

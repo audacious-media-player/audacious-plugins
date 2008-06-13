@@ -10,7 +10,6 @@
  */
 
 #include "arts.h"
-#include <audacious/util.h>
 
 static void about(void)
 {

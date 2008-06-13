@@ -171,6 +171,10 @@ create_xs_configwin (void)
   GtkWidget *cfg_sld_label1;
   GtkWidget *cfg_sld_dbpath;
   GtkWidget *cfg_sld_dbbrowse;
+  GtkWidget *alignment1;
+  GtkWidget *hbox1;
+  GtkWidget *image1;
+  GtkWidget *label30;
   GtkWidget *label17;
   GtkWidget *w_label26;
   GtkWidget *frame1;
@@ -201,12 +205,20 @@ create_xs_configwin (void)
   GtkWidget *cfg_stil_dbpath;
   GtkWidget *w_alignment1;
   GtkWidget *cfg_stil_browse;
+  GtkWidget *alignment2;
+  GtkWidget *hbox2;
+  GtkWidget *image2;
+  GtkWidget *label31;
   GtkWidget *cfg_stil_box2;
   GtkWidget *cfg_hvsc_label1;
   GtkWidget *w_alignment6;
   GtkWidget *cfg_hvsc_path;
   GtkWidget *w_alignment7;
   GtkWidget *cfg_hvsc_browse;
+  GtkWidget *alignment3;
+  GtkWidget *hbox3;
+  GtkWidget *image3;
+  GtkWidget *label32;
   GtkWidget *label18;
   GtkWidget *w_label3;
   GtkWidget *hbuttonbox1;
@@ -1007,11 +1019,31 @@ create_xs_configwin (void)
   gtk_tooltips_set_tip (tooltips, cfg_sld_dbpath, _("Database path and filename"), NULL);
   gtk_entry_set_invisible_char (GTK_ENTRY (cfg_sld_dbpath), 9679);
 
-  cfg_sld_dbbrowse = gtk_button_new_with_mnemonic (_("Browse"));
+  cfg_sld_dbbrowse = gtk_button_new ();
   gtk_widget_set_name (cfg_sld_dbbrowse, "cfg_sld_dbbrowse");
   gtk_widget_show (cfg_sld_dbbrowse);
   gtk_box_pack_start (GTK_BOX (cfg_sld_box), cfg_sld_dbbrowse, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, cfg_sld_dbbrowse, _("Browse for song length-database file"), NULL);
+
+  alignment1 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_set_name (alignment1, "alignment1");
+  gtk_widget_show (alignment1);
+  gtk_container_add (GTK_CONTAINER (cfg_sld_dbbrowse), alignment1);
+
+  hbox1 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_set_name (hbox1, "hbox1");
+  gtk_widget_show (hbox1);
+  gtk_container_add (GTK_CONTAINER (alignment1), hbox1);
+
+  image1 = gtk_image_new_from_stock ("gtk-open", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_set_name (image1, "image1");
+  gtk_widget_show (image1);
+  gtk_box_pack_start (GTK_BOX (hbox1), image1, FALSE, FALSE, 0);
+
+  label30 = gtk_label_new_with_mnemonic (_("Browse"));
+  gtk_widget_set_name (label30, "label30");
+  gtk_widget_show (label30);
+  gtk_box_pack_start (GTK_BOX (hbox1), label30, FALSE, FALSE, 0);
 
   label17 = gtk_label_new (_("Song length database:"));
   gtk_widget_set_name (label17, "label17");
@@ -1054,12 +1086,12 @@ create_xs_configwin (void)
   gtk_tooltips_set_tip (tooltips, cfg_ftitle_format, _("Tuplez format string for SID-files"), NULL);
   gtk_entry_set_invisible_char (GTK_ENTRY (cfg_ftitle_format), 9679);
 
-  cfg_ftitle_descs = gtk_label_new (_("Descriptions of <i>SID-specific</i> Tuplez fields go here. <b>:D</b>"));
+  cfg_ftitle_descs = gtk_label_new (_("<u>SID-specific Tuplez fields:</u>\n\n<b>sid-format</b>\t\t- Specific fileformat\n<b>sid-model</b>\t\t- 6581 or 8580\n<b>sid-speed</b>\t\t- Timing or speed: PAL/NTSC/etc.\n\n<u>Other \"special\" fields set:</u>\n\n<b>subsong-num, subsong-id</b>"));
   gtk_widget_set_name (cfg_ftitle_descs, "cfg_ftitle_descs");
   gtk_widget_show (cfg_ftitle_descs);
   gtk_box_pack_start (GTK_BOX (cfg_ftitle_box), cfg_ftitle_descs, TRUE, TRUE, 0);
   gtk_label_set_use_markup (GTK_LABEL (cfg_ftitle_descs), TRUE);
-  gtk_label_set_line_wrap (GTK_LABEL (cfg_ftitle_descs), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (cfg_ftitle_descs), 0, 0);
   gtk_misc_set_padding (GTK_MISC (cfg_ftitle_descs), 8, 8);
 
   label29 = gtk_label_new (_("Song title format:"));
@@ -1179,11 +1211,31 @@ create_xs_configwin (void)
   gtk_box_pack_end (GTK_BOX (cfg_stil_box1), w_alignment1, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_alignment1), 4);
 
-  cfg_stil_browse = gtk_button_new_with_mnemonic (_("Browse"));
+  cfg_stil_browse = gtk_button_new ();
   gtk_widget_set_name (cfg_stil_browse, "cfg_stil_browse");
   gtk_widget_show (cfg_stil_browse);
   gtk_container_add (GTK_CONTAINER (w_alignment1), cfg_stil_browse);
   gtk_tooltips_set_tip (tooltips, cfg_stil_browse, _("Browse for STIL-database file"), NULL);
+
+  alignment2 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_set_name (alignment2, "alignment2");
+  gtk_widget_show (alignment2);
+  gtk_container_add (GTK_CONTAINER (cfg_stil_browse), alignment2);
+
+  hbox2 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_set_name (hbox2, "hbox2");
+  gtk_widget_show (hbox2);
+  gtk_container_add (GTK_CONTAINER (alignment2), hbox2);
+
+  image2 = gtk_image_new_from_stock ("gtk-open", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_set_name (image2, "image2");
+  gtk_widget_show (image2);
+  gtk_box_pack_start (GTK_BOX (hbox2), image2, FALSE, FALSE, 0);
+
+  label31 = gtk_label_new_with_mnemonic (_("Browse"));
+  gtk_widget_set_name (label31, "label31");
+  gtk_widget_show (label31);
+  gtk_box_pack_start (GTK_BOX (hbox2), label31, FALSE, FALSE, 0);
 
   cfg_stil_box2 = gtk_hbox_new (FALSE, 0);
   gtk_widget_set_name (cfg_stil_box2, "cfg_stil_box2");
@@ -1215,11 +1267,31 @@ create_xs_configwin (void)
   gtk_box_pack_end (GTK_BOX (cfg_stil_box2), w_alignment7, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (w_alignment7), 4);
 
-  cfg_hvsc_browse = gtk_button_new_with_mnemonic (_("Browse"));
+  cfg_hvsc_browse = gtk_button_new ();
   gtk_widget_set_name (cfg_hvsc_browse, "cfg_hvsc_browse");
   gtk_widget_show (cfg_hvsc_browse);
   gtk_container_add (GTK_CONTAINER (w_alignment7), cfg_hvsc_browse);
   gtk_tooltips_set_tip (tooltips, cfg_hvsc_browse, _("Browse for HVSC path"), NULL);
+
+  alignment3 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_set_name (alignment3, "alignment3");
+  gtk_widget_show (alignment3);
+  gtk_container_add (GTK_CONTAINER (cfg_hvsc_browse), alignment3);
+
+  hbox3 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_set_name (hbox3, "hbox3");
+  gtk_widget_show (hbox3);
+  gtk_container_add (GTK_CONTAINER (alignment3), hbox3);
+
+  image3 = gtk_image_new_from_stock ("gtk-open", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_set_name (image3, "image3");
+  gtk_widget_show (image3);
+  gtk_box_pack_start (GTK_BOX (hbox3), image3, FALSE, FALSE, 0);
+
+  label32 = gtk_label_new_with_mnemonic (_("Browse"));
+  gtk_widget_set_name (label32, "label32");
+  gtk_widget_show (label32);
+  gtk_box_pack_start (GTK_BOX (hbox3), label32, FALSE, FALSE, 0);
 
   label18 = gtk_label_new (_("SID Tune Information List (STIL) database:"));
   gtk_widget_set_name (label18, "label18");
@@ -1240,14 +1312,14 @@ create_xs_configwin (void)
   gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox1), GTK_BUTTONBOX_END);
   gtk_box_set_spacing (GTK_BOX (hbuttonbox1), 8);
 
-  cfg_ok = gtk_button_new_with_mnemonic (_("OK"));
+  cfg_ok = gtk_button_new_from_stock ("gtk-ok");
   gtk_widget_set_name (cfg_ok, "cfg_ok");
   gtk_widget_show (cfg_ok);
   gtk_container_add (GTK_CONTAINER (hbuttonbox1), cfg_ok);
   GTK_WIDGET_SET_FLAGS (cfg_ok, GTK_CAN_DEFAULT);
   gtk_tooltips_set_tip (tooltips, cfg_ok, _("Accept and update changes"), NULL);
 
-  cfg_cancel = gtk_button_new_with_mnemonic (_("Cancel"));
+  cfg_cancel = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_set_name (cfg_cancel, "cfg_cancel");
   gtk_widget_show (cfg_cancel);
   gtk_container_add (GTK_CONTAINER (hbuttonbox1), cfg_cancel);
@@ -1460,6 +1532,10 @@ create_xs_configwin (void)
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_sld_label1, "cfg_sld_label1");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_sld_dbpath, "cfg_sld_dbpath");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_sld_dbbrowse, "cfg_sld_dbbrowse");
+  GLADE_HOOKUP_OBJECT (xs_configwin, alignment1, "alignment1");
+  GLADE_HOOKUP_OBJECT (xs_configwin, hbox1, "hbox1");
+  GLADE_HOOKUP_OBJECT (xs_configwin, image1, "image1");
+  GLADE_HOOKUP_OBJECT (xs_configwin, label30, "label30");
   GLADE_HOOKUP_OBJECT (xs_configwin, label17, "label17");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_label26, "w_label26");
   GLADE_HOOKUP_OBJECT (xs_configwin, frame1, "frame1");
@@ -1489,12 +1565,20 @@ create_xs_configwin (void)
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_stil_dbpath, "cfg_stil_dbpath");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_alignment1, "w_alignment1");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_stil_browse, "cfg_stil_browse");
+  GLADE_HOOKUP_OBJECT (xs_configwin, alignment2, "alignment2");
+  GLADE_HOOKUP_OBJECT (xs_configwin, hbox2, "hbox2");
+  GLADE_HOOKUP_OBJECT (xs_configwin, image2, "image2");
+  GLADE_HOOKUP_OBJECT (xs_configwin, label31, "label31");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_stil_box2, "cfg_stil_box2");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_hvsc_label1, "cfg_hvsc_label1");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_alignment6, "w_alignment6");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_hvsc_path, "cfg_hvsc_path");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_alignment7, "w_alignment7");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_hvsc_browse, "cfg_hvsc_browse");
+  GLADE_HOOKUP_OBJECT (xs_configwin, alignment3, "alignment3");
+  GLADE_HOOKUP_OBJECT (xs_configwin, hbox3, "hbox3");
+  GLADE_HOOKUP_OBJECT (xs_configwin, image3, "image3");
+  GLADE_HOOKUP_OBJECT (xs_configwin, label32, "label32");
   GLADE_HOOKUP_OBJECT (xs_configwin, label18, "label18");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_label3, "w_label3");
   GLADE_HOOKUP_OBJECT (xs_configwin, hbuttonbox1, "hbuttonbox1");

@@ -13,9 +13,7 @@
 #include <gtk/gtk.h>
 extern "C" {
 #include <audacious/plugin.h>
-#include <audacious/util.h>
 #include <audacious/output.h>
-#include <audacious/playlist.h>
 }
 #include <string.h>
 #include <stdlib.h>
@@ -484,8 +482,6 @@ InputPlugin console_ip =
 	NULL,
 	NULL,
 	get_song_tuple,
-	NULL,
-	NULL,
 	NULL,
 	(gchar **)gme_fmts,
 	NULL,

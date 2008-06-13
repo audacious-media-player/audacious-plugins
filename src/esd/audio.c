@@ -25,7 +25,6 @@
 #include <esd.h>
 
 #include <unistd.h>
-#include <audacious/util.h>
 
 #include "esdout.h"
 
@@ -157,6 +156,9 @@ esdout_setup_format(AFormat fmt, gint rate, gint nch)
     case FMT_S16_BE:
     case FMT_S16_NE:
         esd_format = ESD_BITS16;
+        break;
+    default:
+        /* for warning suppression */
         break;
     }
 

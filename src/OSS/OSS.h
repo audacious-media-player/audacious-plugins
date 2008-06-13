@@ -50,9 +50,6 @@ typedef struct {
 
 extern OSSConfig oss_cfg;
 
-void oss_init(void);
-void oss_cleanup(void);
-void oss_about(void);
 void oss_configure(void);
 
 void oss_get_volume(int *l, int *r);
@@ -68,12 +65,6 @@ int oss_open(AFormat fmt, int rate, int nch);
 int oss_get_output_time(void);
 int oss_get_written_time(void);
 void oss_set_audio_params(void);
-
-void oss_free_convert_buffer(void);
-int (*oss_get_convert_func(int output, int input)) (void **, int);
-int (*oss_get_stereo_convert_func(int output, int input)) (void **, int,
-                                                           int);
-
 void oss_tell(AFormat * fmt, gint * rate, gint * nch);
 
 #endif

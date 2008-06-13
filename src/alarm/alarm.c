@@ -40,7 +40,6 @@
 #include <stdio.h>
 #include <audacious/plugin.h>
 #include <audacious/auddrct.h>
-#include <audacious/configdb.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <pthread.h>
@@ -173,7 +172,7 @@ static void alarm_warning(void)
 void alarm_save(GtkButton *w, gpointer data)
 {
    int daynum = 0;  // used to identify day number
-   ConfigDb *conf;
+   mcs_handle_t *conf;
 
    DEBUG("alarm_save\n");
 
@@ -292,7 +291,7 @@ void alarm_save(GtkButton *w, gpointer data)
 static void alarm_read_config()
 {
    int daynum = 0;   // used for day number
-   ConfigDb *conf;
+   mcs_handle_t *conf;
 
    DEBUG("alarm_read_config\n");
 

@@ -17,12 +17,10 @@
 
 #include <audacious/plugin.h>
 #include <audacious/ui_preferences.h>
-#include <audacious/configdb.h>
 #include <audacious/auddrct.h>
-#include <audacious/formatter.h>
+#include "formatter.h"
 #include <audacious/i18n.h>
 #include <audacious/hook.h>
-#include <audacious/playlist.h>
 
 static void init(void);
 static void cleanup(void);
@@ -99,58 +97,58 @@ static void
 do_command(char *cmd, const char *current_file, int pos)
 {
 	int length, rate, freq, nch;
-	char *str, *shstring = NULL, *temp, numbuf[16];
+	char *str, *shstring = NULL, *temp, numbuf[32];
 	gboolean playing;
 	Formatter *formatter;
 
 	if (cmd && strlen(cmd) > 0)
 	{
-		formatter = aud_formatter_new();
+		formatter = formatter_new();
 		str = audacious_drct_pl_get_title(pos);
 		if (str)
 		{
 			temp = aud_escape_shell_chars(str);
-			aud_formatter_associate(formatter, 's', temp);
-			aud_formatter_associate(formatter, 'n', temp);
+			formatter_associate(formatter, 's', temp);
+			formatter_associate(formatter, 'n', temp);
 			g_free(str);
 			g_free(temp);
 		}
 		else
 		{
-			aud_formatter_associate(formatter, 's', "");
-			aud_formatter_associate(formatter, 'n', "");
+			formatter_associate(formatter, 's', "");
+			formatter_associate(formatter, 'n', "");
 		}
 
 		if (current_file)
 		{
 			temp = aud_escape_shell_chars(current_file);
-			aud_formatter_associate(formatter, 'f', temp);
+			formatter_associate(formatter, 'f', temp);
 			g_free(temp);
 		}
 		else
-			aud_formatter_associate(formatter, 'f', "");
-		sprintf(numbuf, "%02d", pos + 1);
-		aud_formatter_associate(formatter, 't', numbuf);
+			formatter_associate(formatter, 'f', "");
+		g_snprintf(numbuf, sizeof(numbuf), "%02d", pos + 1);
+		formatter_associate(formatter, 't', numbuf);
 		length = audacious_drct_pl_get_time(pos);
 		if (length != -1)
 		{
-			sprintf(numbuf, "%d", length);
-			aud_formatter_associate(formatter, 'l', numbuf);
+			g_snprintf(numbuf, sizeof(numbuf), "%d", length);
+			formatter_associate(formatter, 'l', numbuf);
 		}
 		else
-			aud_formatter_associate(formatter, 'l', "0");
+			formatter_associate(formatter, 'l', "0");
 		audacious_drct_get_info(&rate, &freq, &nch);
-		sprintf(numbuf, "%d", rate);
-		aud_formatter_associate(formatter, 'r', numbuf);
-		sprintf(numbuf, "%d", freq);
-		aud_formatter_associate(formatter, 'F', numbuf);
-		sprintf(numbuf, "%d", nch);
-		aud_formatter_associate(formatter, 'c', numbuf);
+		g_snprintf(numbuf, sizeof(numbuf), "%d", rate);
+		formatter_associate(formatter, 'r', numbuf);
+		g_snprintf(numbuf, sizeof(numbuf), "%d", freq);
+		formatter_associate(formatter, 'F', numbuf);
+		g_snprintf(numbuf, sizeof(numbuf), "%d", nch);
+		formatter_associate(formatter, 'c', numbuf);
 		playing = audacious_drct_get_playing();
-		sprintf(numbuf, "%d", playing);
-		aud_formatter_associate(formatter, 'p', numbuf);
-		shstring = aud_formatter_format(formatter, cmd);
-		aud_formatter_destroy(formatter);
+		g_snprintf(numbuf, sizeof(numbuf), "%d", playing);
+		formatter_associate(formatter, 'p', numbuf);
+		shstring = formatter_format(formatter, cmd);
+		formatter_destroy(formatter);
 
 		if (shstring)
 		{
@@ -163,7 +161,7 @@ do_command(char *cmd, const char *current_file, int pos)
 
 static void read_config(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 	if ( !aud_cfg_db_get_string(db, "song_change", "cmd_line", &cmd_line) )
@@ -207,7 +205,7 @@ static void cleanup(void)
 
 static void save_and_close(GtkWidget *w, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
 
 	cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(cmd_entry)));
@@ -538,8 +536,8 @@ songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
 static void
 songchange_playlist_eof(gpointer unused, gpointer unused2)
 {
-	int pos;
-	char *current_file;
+	gint pos;
+	gchar *current_file;
 
 	pos = audacious_drct_pl_get_pos();
 	current_file = audacious_drct_pl_get_file(pos);

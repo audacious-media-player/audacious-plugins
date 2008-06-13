@@ -18,8 +18,6 @@
 
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/main.h>
-#include <audacious/util.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

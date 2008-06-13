@@ -33,9 +33,7 @@
 extern "C"
 {
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 #include <audacious/output.h>
-#include <audacious/util.h>
 }
 
 
@@ -1038,7 +1036,7 @@ static void
 adplug_init (void)
 {
   dbg_printf ("adplug_init(): open, ");
-  ConfigDb *db = aud_cfg_db_open ();
+  mcs_handle_t *db = aud_cfg_db_open ();
 
   // Read configuration
   dbg_printf ("read, ");
@@ -1090,7 +1088,7 @@ static void
 adplug_quit (void)
 {
   dbg_printf ("adplug_quit(): open, ");
-  ConfigDb *db = aud_cfg_db_open ();
+  mcs_handle_t *db = aud_cfg_db_open ();
 
   // Close database
   dbg_printf ("db, ");
@@ -1126,6 +1124,13 @@ adplug_quit (void)
 
 /***** Plugin (exported) *****/
 
+const gchar *fmts[] =
+    { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
+      "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
+      "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
+      "sng", "wlf", "xad", "xsm",
+      NULL };
+
 InputPlugin adplug_ip = {
   NULL,                         // handle (filled by XMMS)
   NULL,                         // filename (filled by XMMS)
@@ -1153,10 +1158,8 @@ InputPlugin adplug_ip = {
   adplug_info_box,
   NULL,                         // output plugin (filled by XMMS)
   adplug_get_tuple,
-  NULL,
-  NULL,
   adplug_is_our_fd,
-  NULL,
+  (gchar **)fmts,
 };
 
 InputPlugin *adplug_iplist[] = { &adplug_ip, NULL };

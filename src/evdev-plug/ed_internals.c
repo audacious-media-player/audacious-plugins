@@ -24,7 +24,6 @@
 #include "ed_bindings_store.h"
 #include "ed_common.h"
 
-#include <audacious/util.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <linux/input.h>
@@ -36,7 +35,7 @@
 #include <regex.h>
 /* for variadic */
 #include <stdarg.h>
-
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <glib.h>
 #include <glib/gstdio.h>

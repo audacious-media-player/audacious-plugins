@@ -8,8 +8,6 @@
 #include <string.h>
 
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
-#include <audacious/util.h>
 #include <audacious/i18n.h>
 
 extern GMutex *vf_mutex;
@@ -25,7 +23,7 @@ vorbis_config_t vorbis_cfg;
 static void
 vorbis_configurewin_ok(GtkWidget * widget, gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
     GtkToggleButton *tb;
 
 	if (vorbis_cfg.tag_format != NULL)

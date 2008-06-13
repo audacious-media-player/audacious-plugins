@@ -48,9 +48,6 @@ typedef struct {
 
 extern OSSConfig oss_cfg;
 int vol;
-void oss_init(void);
-void oss_cleanup(void);
-void oss_about(void);
 void oss_configure(void);
 
 void oss_get_volume(int *l, int *r);

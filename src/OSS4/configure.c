@@ -25,9 +25,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <string.h>
-
-#include <audacious/configdb.h>
-#include <audacious/vfs.h>
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
 
@@ -39,7 +37,7 @@ static gint audio_device;
 static void
 configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-    ConfigDb *db;
+    mcs_handle_t *db;
 
     oss_cfg.audio_device = audio_device;
     oss_cfg.buffer_size =

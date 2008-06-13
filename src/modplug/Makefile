@@ -22,7 +22,6 @@ SRCS = plugin.cxx		\
        load_mtm.cxx		\
        load_mod.cxx		\
        load_med.cxx		\
-       load_mid.cxx		\
        load_mdl.cxx		\
        load_it.cxx		\
        load_far.cxx		\
@@ -32,7 +31,6 @@ SRCS = plugin.cxx		\
        load_ams.cxx		\
        load_amf.cxx		\
        load_669.cxx		\
-       load_j2b.cxx		\
        load_mt2.cxx		\
        load_psm.cxx		\
        archive/archive.cxx	\
@@ -54,5 +52,5 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${DBUS_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} -I.. -I../.. -I../../intl
-LIBS += ${MOWGLI_LIBS} ${DBUS_LIBS} ${GTK_LIBS} ${GLIB_LIBS} ${PANGO_LIBS} -lstdc++
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS}  ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I.. -I../.. -I../../intl
+LIBS += ${MOWGLI_LIBS}  ${GTK_LIBS} ${GLIB_LIBS}  -lstdc++

@@ -46,15 +46,15 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 
 void alsa_save_config(void)
 {
-	ConfigDb *cfgfile = aud_cfg_db_open();
+	mcs_handle_t *cfgfile = aud_cfg_db_open();
 
-	aud_cfg_db_set_int(cfgfile, "ALSA", "buffer_time", alsa_cfg.buffer_time);
-	aud_cfg_db_set_int(cfgfile, "ALSA", "period_time", alsa_cfg.period_time);
-	aud_cfg_db_set_string(cfgfile,"ALSA","pcm_device", alsa_cfg.pcm_device);
-	aud_cfg_db_set_int(cfgfile, "ALSA", "mixer_card", alsa_cfg.mixer_card);
-	aud_cfg_db_set_string(cfgfile,"ALSA","mixer_device", alsa_cfg.mixer_device);
-	aud_cfg_db_set_int(cfgfile, "ALSA", "volume_left", alsa_cfg.vol.left);
-	aud_cfg_db_set_int(cfgfile, "ALSA", "volume_right", alsa_cfg.vol.right);
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "buffer_time", alsa_cfg.buffer_time);
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "period_time", alsa_cfg.period_time);
+	aud_cfg_db_set_string(cfgfile,ALSA_CFGID,"pcm_device", alsa_cfg.pcm_device);
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "mixer_card", alsa_cfg.mixer_card);
+	aud_cfg_db_set_string(cfgfile,ALSA_CFGID,"mixer_device", alsa_cfg.mixer_device);
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "volume_left", alsa_cfg.vol.left);
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "volume_right", alsa_cfg.vol.right);
 	aud_cfg_db_close(cfgfile);
 }
 

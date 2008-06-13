@@ -31,7 +31,6 @@
 #include <glib.h> 
 #include <glib/gprintf.h>
 
-#include <audacious/util.h>
 #include <audacious/plugin.h>
 #include <audacious/id3tag.h>
 

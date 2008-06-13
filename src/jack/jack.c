@@ -7,8 +7,6 @@
  */
 
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
-#include <audacious/util.h>
 #include <dlfcn.h>
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
@@ -183,7 +181,7 @@ void jack_set_port_connection_mode()
 void jack_init(void)
 {
   /* read the isTraceEnabled setting from the config file */
-  ConfigDb *cfgfile;
+  mcs_handle_t *cfgfile;
 
   cfgfile = aud_cfg_db_open();
   if (!cfgfile)
@@ -252,7 +250,7 @@ gint jack_free(void)
 /* Close the device */
 void jack_close(void)
 {
-  ConfigDb *cfgfile;
+  mcs_handle_t *cfgfile;
 
   cfgfile = aud_cfg_db_open();
   aud_cfg_db_set_int(cfgfile, "jack", "volume_left", jack_cfg.volume_left); /* stores the volume setting */

@@ -9,15 +9,15 @@
 extern "C" {
 #endif
 
-gboolean	xs_sidplay1_probe(t_xs_file *);
-void		xs_sidplay1_close(t_xs_status *);
-gboolean	xs_sidplay1_init(t_xs_status *);
-gboolean	xs_sidplay1_initsong(t_xs_status *);
-guint		xs_sidplay1_fillbuffer(t_xs_status *, gchar *, guint);
-gboolean	xs_sidplay1_load(t_xs_status *, gchar *);
-void		xs_sidplay1_delete(t_xs_status *);
-t_xs_tuneinfo*	xs_sidplay1_getinfo(const gchar *);
-gboolean	xs_sidplay1_updateinfo(t_xs_status *);
+gboolean    xs_sidplay1_probe(xs_file_t *);
+void        xs_sidplay1_close(xs_status_t *);
+gboolean    xs_sidplay1_init(xs_status_t *);
+gboolean    xs_sidplay1_initsong(xs_status_t *);
+guint        xs_sidplay1_fillbuffer(xs_status_t *, gchar *, guint);
+gboolean    xs_sidplay1_load(xs_status_t *, gchar *);
+void        xs_sidplay1_delete(xs_status_t *);
+xs_tuneinfo_t*    xs_sidplay1_getinfo(const gchar *);
+gboolean    xs_sidplay1_updateinfo(xs_status_t *);
 
 #ifdef __cplusplus
 }

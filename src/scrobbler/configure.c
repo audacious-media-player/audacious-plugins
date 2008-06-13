@@ -1,10 +1,6 @@
 #include "settings.h"
 
-#include <config.h>
-
-#include <audacious/util.h>
-#include <audacious/plugin.h>
-#include <audacious/configdb.h>
+#include "config.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -12,9 +8,9 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "md5.h"
-
 #include <glib.h>
+#include <audacious/plugin.h>
+#include <audacious/audutil.h>
 #include <audacious/i18n.h>
 
 #include <gdk/gdkkeysyms.h>
@@ -46,7 +42,7 @@ static char *hexify(char *pass, int len)
 
 static void saveconfig(void)
 {
-    ConfigDb *cfgfile;
+    mcs_handle_t *cfgfile;
 
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
     const char *pwd = gtk_entry_get_text(GTK_ENTRY(entry2));
@@ -54,16 +50,16 @@ static void saveconfig(void)
     const char *ge_pwd = gtk_entry_get_text(GTK_ENTRY(ge_entry2));
 
     if ((cfgfile = aud_cfg_db_open())) {
-        md5_state_t md5state;
+        aud_md5state_t md5state;
         unsigned char md5pword[16], ge_md5pword[16];
 
         if (uid != NULL && uid[0] != '\0' && strlen(uid) &&
             pwd != NULL && pwd[0] != '\0' && strlen(pwd))
         {
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (char *)uid);
-            md5_init(&md5state);
-            md5_append(&md5state, (unsigned const char *)pwd, strlen(pwd));
-            md5_finish(&md5state, md5pword);
+            aud_md5_init(&md5state);
+            aud_md5_append(&md5state, (unsigned const char *)pwd, strlen(pwd));
+            aud_md5_finish(&md5state, md5pword);
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password",
                                  hexify((char*)md5pword, sizeof(md5pword)));
         } else if (!uid || uid[0] == '\0') {
@@ -75,9 +71,9 @@ static void saveconfig(void)
             ge_pwd != NULL && ge_pwd[0] != '\0' && strlen(ge_pwd))
         {
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (char *)ge_uid);
-            md5_init(&md5state);
-            md5_append(&md5state, (unsigned const char *)ge_pwd, strlen(ge_pwd));
-            md5_finish(&md5state, ge_md5pword);
+            aud_md5_init(&md5state);
+            aud_md5_append(&md5state, (unsigned const char *)ge_pwd, strlen(ge_pwd));
+            aud_md5_finish(&md5state, ge_md5pword);
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_password",
                                   hexify((char*)ge_md5pword, sizeof(ge_md5pword)));
         } else if (!ge_uid || ge_uid[0] == '\0') {
@@ -123,7 +119,7 @@ entry_changed(GtkWidget *widget, gpointer data)
 GtkWidget *
 create_cfgdlg(void)
 {
-  ConfigDb *db;
+  mcs_handle_t *db;
   GtkWidget *vbox2;
   GtkWidget *table1;
   GtkWidget *label3;

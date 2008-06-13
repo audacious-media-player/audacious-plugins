@@ -368,7 +368,7 @@ load_sel_cb (GtkButton *button, GtkFileSelection *selector)
       static const char *fname;
       struct pn_actuator *a;
       GtkCTreeNode *root;
-      ConfigDb *db;
+      mcs_handle_t *db;
 
       db = aud_cfg_db_open();
       fname = (char *) gtk_file_selection_get_filename (selector);
@@ -392,7 +392,7 @@ static void
 load_button_cb (GtkButton *button, gpointer data)
 {
   GtkWidget *selector;
-  ConfigDb *db;
+  mcs_handle_t *db;
   gchar *last_path;
 
   db = aud_cfg_db_open();

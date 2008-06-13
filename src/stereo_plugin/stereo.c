@@ -1,16 +1,14 @@
+#include "config.h"
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
-#include <audacious/util.h>
-
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 
-#include "../../config.h"
 
 static void init(void);
 static void about(void);
 static void configure(void);
 static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch);
+static void query_format(AFormat * fmt, gint * rate, gint * nch);
 
 
 
@@ -20,7 +18,8 @@ EffectPlugin stereo_ep =
 	.init = init,
 	.about = about,
 	.configure = configure,
-	.mod_samples = mod_samples
+	.mod_samples = mod_samples,
+	.query_format = query_format
 };
 
 static const char *about_text = N_("Extra Stereo Plugin\n\n"
@@ -35,7 +34,7 @@ DECLARE_PLUGIN(stereo, NULL, NULL, NULL, NULL, stereo_eplist, NULL, NULL, NULL);
 
 static void init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	if (!aud_cfg_db_get_double(db, "extra_stereo", "intensity", &value))
 		value = 2.5;
@@ -59,7 +58,7 @@ static void about(void)
 
 static void conf_ok_cb(GtkButton * button, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	value = *(gdouble *) data;
 	
@@ -140,6 +139,17 @@ static void configure(void)
 	gtk_widget_show(bbox);
 
 	gtk_widget_show(conf_dialog);
+}
+
+static void query_format(AFormat * fmt, gint * rate, gint * nch)
+{
+	if (!(*fmt == FMT_S16_NE ||
+	      (*fmt == FMT_S16_LE && G_BYTE_ORDER == G_LITTLE_ENDIAN) ||
+	      (*fmt == FMT_S16_BE && G_BYTE_ORDER == G_BIG_ENDIAN)))
+		*fmt = FMT_S16_NE;
+
+	if (*nch != 2)
+		*nch = 2;
 }
 
 static int mod_samples(gpointer *d, gint length, AFormat afmt, gint srate, gint nch)

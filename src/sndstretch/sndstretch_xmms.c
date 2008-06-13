@@ -25,7 +25,6 @@
 #include "FB_logo.xpm"
 
 #include "config.h"
-#include <audacious/configdb.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <gtk/gtk.h>
@@ -257,7 +256,7 @@ static void sndstretch_config_logobutton_cb(GtkButton * button, gpointer data)
 
 static gint sndstretch_config_destroy_cb(GtkWidget * w, GdkEventAny * e, gpointer data)
 {
-	ConfigDb *db = aud_cfg_db_open();
+	mcs_handle_t *db = aud_cfg_db_open();
 
 	aud_cfg_db_set_double(db, "sndstretch", "pitch", SS.pitch);
 	aud_cfg_db_set_double(db, "sndstretch", "speed", SS.speed);
@@ -403,7 +402,7 @@ void sndstretch_config(void)
 
 void sndstretch_init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 

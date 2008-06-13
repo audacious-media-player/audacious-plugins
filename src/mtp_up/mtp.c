@@ -22,12 +22,10 @@
 #include <sys/types.h>
 #include <libmtp.h>
 #include <audacious/plugin.h>
-#include <audacious/playlist.h>
 #include <audacious/ui_plugin_menu.h>
 #include <audacious/i18n.h>
 
 #include <gtk/gtk.h>
-#include <audacious/util.h>
 #include "filetype.h"
 
 #define DEBUG 1

@@ -1,8 +1,7 @@
 #include <string.h>
-#include <audacious/configdb.h>
-
-#include <rootvis.h>
-#include <config.h>
+#include <audacious/plugin.h>
+#include "rootvis.h"
+#include "config.h"
 
 extern void config_def_init(void);
 extern void config_frontend_init(void);
@@ -37,7 +36,7 @@ void cval_setdefault(struct config_value val)
 	}
 }
 
-void cval_writefile(struct config_value val, ConfigDb *fp, char* sect)
+void cval_writefile(struct config_value val, mcs_handle_t *fp, char* sect)
 {
 	switch (val.type)
 	{
@@ -60,7 +59,7 @@ void cval_writefile(struct config_value val, ConfigDb *fp, char* sect)
 	}
 }
 
-void cval_readfile(struct config_value val, ConfigDb *fp, char* sect)
+void cval_readfile(struct config_value val, mcs_handle_t *fp, char* sect)
 {
 	switch (val.type)
 	{
@@ -93,7 +92,7 @@ void cval_readfile(struct config_value val, ConfigDb *fp, char* sect)
 // after the configuration dialogue is finished, this won't be necessary any more
 void config_read(int number) {
 	int i, j;
-	ConfigDb *fp;
+	mcs_handle_t *fp;
 
 	fp = aud_cfg_db_open();
 
@@ -120,7 +119,7 @@ void config_read(int number) {
 
 void config_write(int number) {
 	int i, j;
-	ConfigDb *fp;
+	mcs_handle_t *fp;
 
 	print_status("Writing configuration");
 	fp = aud_cfg_db_open();

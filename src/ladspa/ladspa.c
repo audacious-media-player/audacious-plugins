@@ -30,7 +30,6 @@
 #include <gtk/gtk.h>
 
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 #include <audacious/i18n.h>
 
 #include "ladspa.h"
@@ -141,7 +140,7 @@ static void start (void)
 
 static void restore (void)
 {
-  ConfigDb *db;
+  mcs_handle_t *db;
   gint k, plugins= 0;
 
   db = aud_cfg_db_open();
@@ -254,7 +253,7 @@ static void unload (plugin_instance * instance)
 static void stop (void)
 {
   GSList *list;
-  ConfigDb *db;
+  mcs_handle_t *db;
   gint plugins = 0;
 
   if (state.running == FALSE) {

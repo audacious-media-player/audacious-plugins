@@ -46,10 +46,7 @@
 #include <audacious/i18n.h>
 
 #include <audacious/plugin.h>
-#include <audacious/main.h>
 #include <audacious/output.h>
-#include <audacious/vfs.h>
-#include <audacious/util.h>
 
 #include "demux.h"
 #include "decomp.h"

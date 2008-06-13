@@ -3,8 +3,6 @@
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-#include <audacious/util.h>
-#include <audacious/configdb.h>
 #include "echo.h"
 
 static const char *echo_about_text =
@@ -32,7 +30,7 @@ void echo_about(void)
 
 static void apply_changes(void)
 {
-	ConfigDb *cfg;
+	mcs_handle_t *cfg;
 	echo_delay = GTK_ADJUSTMENT(echo_delay_adj)->value;
 	echo_feedback = GTK_ADJUSTMENT(echo_feedback_adj)->value;
 	echo_volume = GTK_ADJUSTMENT(echo_volume_adj)->value;

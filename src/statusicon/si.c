@@ -24,7 +24,6 @@
 #include "si_cfg.h"
 #include "si_common.h"
 #include <audacious/auddrct.h>
-#include <audacious/playlist.h>
 
 
 GeneralPlugin *statusicon_gplist[] = { &si_gp, NULL };

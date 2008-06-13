@@ -10,35 +10,34 @@ extern "C" {
 /* Types
  */
 typedef struct {
-	gchar	*pName,
-		*pAuthor,
-		*pTitle,
-		*pInfo;
-} t_xs_stil_subnode;
+    gchar *name,
+          *author,
+          *title,
+          *info;
+} stil_subnode_t;
 
 
-typedef struct _t_xs_stil_node {
-	gchar			*pcFilename;
-	gint			nsubTunes;
-	t_xs_stil_subnode	**subTunes;
-	
-	struct _t_xs_stil_node	*pPrev, *pNext;
-} t_xs_stil_node;
+typedef struct _stil_node_t {
+    gchar               *filename;
+    gint                nsubTunes;
+    stil_subnode_t      **subTunes;
+    struct _stil_node_t *prev, *next;
+} stil_node_t;
 
 
 typedef struct {
-	t_xs_stil_node	*pNodes,
-			**ppIndex;
-	size_t		n;
-} t_xs_stildb;
+    stil_node_t *nodes,
+                **pindex;
+    size_t      n;
+} xs_stildb_t;
 
 
 /* Functions
  */
-gint			xs_stildb_read(t_xs_stildb *, gchar *);
-gint			xs_stildb_index(t_xs_stildb *);
-void			xs_stildb_free(t_xs_stildb *);
-t_xs_stil_node *	xs_stildb_get_node(t_xs_stildb *, gchar *);
+gint            xs_stildb_read(xs_stildb_t *, gchar *);
+gint            xs_stildb_index(xs_stildb_t *);
+void            xs_stildb_free(xs_stildb_t *);
+stil_node_t *   xs_stildb_get_node(xs_stildb_t *, gchar *);
 
 #ifdef __cplusplus
 }

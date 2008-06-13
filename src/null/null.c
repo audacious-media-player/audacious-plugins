@@ -19,14 +19,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
+#include "config.h"
 #include <glib.h>
-#include <audacious/i18n.h>
 #include <gtk/gtk.h>
 #include <audacious/plugin.h>
-#include <audacious/util.h>
-#include <audacious/configdb.h>
-#include "../../config.h"
+#include <audacious/i18n.h>
 
 static GTimer *timer;
 static gulong offset_time, written;
@@ -44,7 +41,7 @@ static struct {
 
 static void null_init(void)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	aud_cfg_db_get_bool(db, "null", "real_time", &real_time);
 	aud_cfg_db_close(db);
@@ -73,7 +70,7 @@ static void null_about(void)
 
 static void null_configure_ok_cb(GtkButton *w, gpointer data)
 {
-	ConfigDb *db;
+	mcs_handle_t *db;
 
 	db = aud_cfg_db_open();
 	real_time = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data));

@@ -39,9 +39,7 @@
  *              * Ordinary mp3 streams seem to share this behavior. Didnt tested if others do.
  */
 
-#include <audacious/vfs.h>
 #include <audacious/plugin.h>
-#include <audacious/configdb.h>
 #include <libmowgli/mowgli_global_storage.h>
 #include <curl/curl.h>
 #include <glib.h>
@@ -108,7 +106,7 @@ static void show_login_error_dialog(void)
 
 gchar* lastfm_get_login_uri()  /* reads the audioscrobbler login data from the config */
 {                              /* and then uses them to create a login URL*/
-        ConfigDb *cfg = NULL;
+        mcs_handle_t *cfg = NULL;
         gchar   *buf=NULL,
                 *username = NULL, 
                 *password = NULL;

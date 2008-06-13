@@ -14,14 +14,13 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <gtk/gtk.h>
-#include <audacious/configdb.h>
 #include "Audacious_Config.h"
 
 // TODO: add UI for echo
 
 void console_cfg_load( void )
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "console", "loop_length", &audcfg.loop_length);
     aud_cfg_db_get_bool(db, "console", "resample", &audcfg.resample);
     aud_cfg_db_get_int(db, "console", "resample_rate", &audcfg.resample_rate);
@@ -36,7 +35,7 @@ void console_cfg_load( void )
 
 void console_cfg_save( void )
 {
-    ConfigDb *db = aud_cfg_db_open();
+    mcs_handle_t *db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, "console", "loop_length", audcfg.loop_length);
     aud_cfg_db_set_bool(db, "console", "resample", audcfg.resample);
     aud_cfg_db_set_int(db, "console", "resample_rate", audcfg.resample_rate);

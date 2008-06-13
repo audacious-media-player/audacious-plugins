@@ -18,9 +18,8 @@
  */
 
 #include "coreaudio.h"
-#include <audacious/configdb.h>
 #include <CoreAudio/CoreAudio.h>
-
+#include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
 static GtkWidget *configure_win = NULL;
@@ -31,7 +30,7 @@ static gint audio_device, mixer_device;
 
 static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 {
-	ConfigDb *cfgfile;
+	mcs_handle_t *cfgfile;
 
 	osx_cfg.audio_device = audio_device;
 	osx_cfg.mixer_device = mixer_device;

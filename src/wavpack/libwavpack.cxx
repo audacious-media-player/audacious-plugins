@@ -11,10 +11,6 @@ extern "C" {
 #include <wavpack/wavpack.h>
 #include <audacious/plugin.h>
 #include <audacious/output.h>
-#include <audacious/configdb.h>
-#include <audacious/main.h>
-#include <audacious/util.h>
-#include <audacious/vfs.h>
 }
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -86,8 +82,6 @@ InputPlugin wvpack = {
     wv_file_info_box,           //info box
     NULL,                       //output
     wv_get_song_tuple,
-    NULL,
-    NULL,
     wv_is_our_fd,
     (gchar **)wv_fmts,
     NULL,			// high precision seeking
@@ -551,7 +545,7 @@ wv_stop(InputPlayback *data)
 static void
 wv_load_config()
 {
-    ConfigDb *cfg;
+    mcs_handle_t *cfg;
 
     cfg = aud_cfg_db_open();
 
