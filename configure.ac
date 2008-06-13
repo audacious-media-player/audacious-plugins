@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([audacious-plugins], [1.5.0], [bugs+audacious-plugins@atheme.org])
+AC_INIT([audacious-plugins], [1.9.0], [bugs+audacious-plugins@atheme.org])
 AC_PREREQ([2.59])
 
 AC_CANONICAL_HOST
@@ -122,7 +122,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console sexypsf cue alac metronom vtx"
 OUTPUT_PLUGINS="null"
-EFFECT_PLUGINS="audiocompress ladspa voice_removal sndstretch stereo_plugin echo_plugin"
+EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
