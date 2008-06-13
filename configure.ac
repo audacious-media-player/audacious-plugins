@@ -306,8 +306,7 @@ AC_ARG_ENABLE( icecast,
 if test "x$enable_icecast" = "xyes"; then
     PKG_CHECK_MODULES(SHOUT, [shout >= 2.0],
          [have_shout=yes
-	  enable_filewriter=yes
-          OUTPUT_PLUGINS="$OUTPUT_PLUGINS icecast"],
+	  enable_filewriter=yes],
          [have_shout=no]
     )
 else
@@ -1591,6 +1590,10 @@ fi
 AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
 
+if test "x$have_shout" = "xyes"; then
+   OUTPUT_PLUGINS="$OUTPUT_PLUGINS icecast"
+fi
+
 dnl *** End of all plugin checks ***
 
 AC_SUBST(ARCH_DEFINES)
@@ -1730,7 +1733,7 @@ echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
-echo "  Bluetooth audio suport:                 $have_bluetooth"
+echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
 echo
 echo "  Effect"
