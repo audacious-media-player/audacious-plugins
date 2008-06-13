@@ -45,9 +45,7 @@ struct _SkinnedWindow
 {
   GtkWindow window;
 
-  GtkWidget *canvas;
   gint x,y;
-
   gint type;
   GtkWidget *fixed;
 };
