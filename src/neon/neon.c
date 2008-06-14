@@ -212,7 +212,7 @@ static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) {
  * -----
  */
 
-static void parse_icy(struct icy_metadata* m, gchar* metadata, gint len) {
+static void parse_icy(struct icy_metadata* m, gchar* metadata, gsize len) {
 
     gchar* p;
     gchar* tstart;
@@ -220,7 +220,7 @@ static void parse_icy(struct icy_metadata* m, gchar* metadata, gint len) {
     gchar name[NEON_ICY_BUFSIZE];
     gchar value[NEON_ICY_BUFSIZE];
     gint state;
-    gint pos;
+    gsize pos;
 
     _ENTER;
 
