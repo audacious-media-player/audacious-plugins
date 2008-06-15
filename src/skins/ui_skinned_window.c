@@ -119,7 +119,7 @@ static gboolean ui_skinned_window_button_release(GtkWidget *widget, GdkEventButt
 }
 
 static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *event) {
-    SkinnedWindow *window = SKINNED_WINDOW(widget);
+    SkinnedWindow *window = SKINNED_WINDOW(gtk_widget_get_parent(widget));
 
     GdkPixbuf *obj = NULL;
 
@@ -142,7 +142,7 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
     }
     obj = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, width, height);
 
-    gboolean focus = gtk_window_has_toplevel_focus(GTK_WINDOW(widget));
+    gboolean focus = gtk_window_has_toplevel_focus(GTK_WINDOW(window));
 
     switch (window->type) {
         case WINDOW_MAIN:
@@ -173,7 +173,7 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
             break;
     }
 
-    ui_skinned_widget_draw(GTK_WIDGET(window), obj, width, height,
+    ui_skinned_widget_draw(widget, obj, width, height,
                            window->type != WINDOW_PLAYLIST && config.scaled);
 
     g_object_unref(obj);
@@ -191,7 +191,6 @@ ui_skinned_window_class_init(SkinnedWindowClass *klass)
     parent = gtk_type_class(gtk_window_get_type());
 
     widget_class->motion_notify_event = ui_skinned_window_motion_notify_event;
-    widget_class->expose_event = ui_skinned_window_expose;
     widget_class->focus_in_event = ui_skinned_window_focus_in;
     widget_class->focus_out_event = ui_skinned_window_focus_out;
     widget_class->button_press_event = ui_skinned_window_button_press;
@@ -258,17 +257,16 @@ ui_skinned_window_new(const gchar *wmclass_name)
     if (!strcmp(wmclass_name, "playlist"))
         SKINNED_WINDOW(widget)->type = WINDOW_PLAYLIST;
 
-    /* GtkFixed hasn't got its GdkWindow, this means that it can be used to
-       display widgets while the logo below will be displayed anyway;
-       however fixed positions are not that great, cause the button sizes may (will)
-       vary depending on the gtk style used, so it's not possible to center
-       them unless a fixed width and heigth is forced (and this may bring to cutted
-       text if someone, i.e., uses a big font for gtk widgets);
-       other types of container most likely have their GdkWindow, this simply
-       means that the logo must be drawn on the container widget, instead of the
-       window; otherwise, it won't be displayed correctly */
     SKINNED_WINDOW(widget)->fixed = gtk_fixed_new();
+    gtk_fixed_set_has_window(GTK_FIXED(SKINNED_WINDOW(widget)->fixed), TRUE);
+    gtk_widget_add_events(SKINNED_WINDOW(widget)->fixed, GDK_ALL_EVENTS_MASK);
+
     gtk_container_add(GTK_CONTAINER(widget), GTK_WIDGET(SKINNED_WINDOW(widget)->fixed));
+
+    gtk_widget_realize(widget);
+    gtk_widget_realize(SKINNED_WINDOW(widget)->fixed);
+    g_signal_connect(SKINNED_WINDOW(widget)->fixed, "expose-event", G_CALLBACK(ui_skinned_window_expose), NULL);
+
     return widget;
 }
 
@@ -277,10 +275,4 @@ void ui_skinned_window_draw_all(GtkWidget *widget) {
         mainwin_refresh_hints();
 
     gtk_widget_queue_draw(widget);
-    GList *iter;
-    for (iter = GTK_FIXED (SKINNED_WINDOW(widget)->fixed)->children; iter; iter = g_list_next (iter)) {
-         GtkFixedChild *child_data = (GtkFixedChild *) iter->data;
-         GtkWidget *child = child_data->widget;
-         gtk_widget_queue_draw(child);
-    }
 }
