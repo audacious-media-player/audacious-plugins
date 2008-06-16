@@ -446,7 +446,7 @@ static gpointer flac_play_loop(gpointer arg) {
                 /*
                  * Flush the buffers
                  */
-                flac_ip.output->flush(seek_to);
+                playback->output->flush(seek_to);
             }
             seek_to = -1;
         }
@@ -462,7 +462,7 @@ static gpointer flac_play_loop(gpointer arg) {
 
             _DEBUG("End of stream reached, draining output buffer");
 
-            while((-1 == seek_to) && flac_ip.output->buffer_playing() && playback->playing == TRUE) {
+            while((-1 == seek_to) && playback->output->buffer_playing() && playback->playing == TRUE) {
                 g_usleep(40000);
             }
 
@@ -478,7 +478,7 @@ static gpointer flac_play_loop(gpointer arg) {
      */
     playback->playing = FALSE;
     _DEBUG("Closing audio device");
-    flac_ip.output->close_audio();
+    playback->output->close_audio();
     _DEBUG("Audio device closed");
 
     free(play_buffer);

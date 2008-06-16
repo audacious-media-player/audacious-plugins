@@ -323,7 +323,6 @@ static void stop(InputPlayback * data)
 
             if (real_ip != NULL) {
                 real_ip->plugin->set_info = cue_ip.set_info;
-                real_ip->plugin->output = NULL;
                 g_free(real_ip);
                 real_ip = NULL;
             }
@@ -438,7 +437,6 @@ static void play_cue_uri(InputPlayback * data, gchar *uri)
 		real_ip = (InputPlayback *)g_memdup(data, sizeof(InputPlayback));
 		real_ip->plugin = real_ip_plugin;
 		real_ip->plugin->set_info = set_info_override;
-		real_ip->plugin->output = cue_ip.output;
 		real_ip->filename = cue_file;
 
 		data->playing = 1;

@@ -35,7 +35,6 @@ InputPlugin MpcPlugin = {
     NULL,           //set Info Text             set_info_text(char* text)
     mpcGetSongInfo, //Get Title String callback [CALLBACK]
     mpcFileInfoBox, //Show File Info Box        [CALLBACK]
-    NULL,           //Output Plugin Handle      OutputPlugin output
     mpcGetSongTuple,//Acquire tuple for song    [CALLBACK]
     mpcIsOurFD,
     (gchar **)mpc_fmts
@@ -51,7 +50,7 @@ static MpcDecoder   mpcDecoder   = {0};
 static TrackInfo    track        = {0};
 
 static GThread            *threadHandle;
-GStaticMutex threadMutex = G_STATIC_MUTEX_INIT;
+static GStaticMutex threadMutex = G_STATIC_MUTEX_INIT;
 
 /*
  * VFS callback implementation, adapted from mpc_reader.c.
@@ -812,7 +811,7 @@ static void* decodeStream(InputPlayback *data)
     MPC_SAMPLE_FORMAT sampleBuffer[MPC_DECODER_BUFFER_LENGTH];
     char xmmsBuffer[MPC_DECODER_BUFFER_LENGTH * 4];
 
-    if (!MpcPlugin.output->open_audio(FMT_S16_LE, track.sampleFreq, track.channels))
+    if (!data->output->open_audio(FMT_S16_LE, track.sampleFreq, track.channels))
     {
         mpcDecoder.isError = g_strdup_printf("[xmms-musepack] decodeStream is unable to open an audio output");
         return endThread(filename, input, true);
@@ -834,9 +833,9 @@ static void* decodeStream(InputPlayback *data)
         }
 
         lockAcquire();
-        short iPlaying = MpcPlugin.output->buffer_playing()? 1 : 0;
-        gint iFree = MpcPlugin.output->buffer_free();
-        if (!mpcDecoder.isPause &&  iFree >= ((1152 * 4) << iPlaying))
+        short iPlaying = data->output->buffer_playing()? 1 : 0;
+        gint iFree = data->output->buffer_free();
+        if (!mpcDecoder.isPause && iFree >= ((1152 * 4) << iPlaying))
         {
             unsigned status = processBuffer(data, sampleBuffer, xmmsBuffer, decoder);
             if (status == (unsigned) (-1))

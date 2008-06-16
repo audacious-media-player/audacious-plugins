@@ -480,7 +480,6 @@ InputPlugin console_ip =
 	NULL,
 	NULL,
 	NULL,
-	NULL,
 	get_song_tuple,
 	NULL,
 	(gchar **)gme_fmts,
