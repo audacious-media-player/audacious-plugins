@@ -8,10 +8,21 @@ AC_DEFUN([AM_PATH_LIBMAD],
 [dnl 
 dnl Get the cflags and libraries
 dnl
-AC_ARG_WITH(libmad,[  --with-libmad=PFX   Prefix where libmad is installed (optional)], libmad_prefix="$withval", libmad_prefix="")
-AC_ARG_WITH(libmad-libraries,[  --with-libmad-libraries=DIR   Directory where libmad library is installed (optional)], libmad_libraries="$withval", libmad_libraries="")
-AC_ARG_WITH(libmad-includes,[  --with-libmad-includes=DIR   Directory where libmad header files are installed (optional)], libmad_includes="$withval", libmad_includes="")
-AC_ARG_ENABLE(libmadtest, [  --disable-libmadtest   do not try to compile and run a test libmad program],, enable_libmadtest=yes)
+AC_ARG_WITH([libmad],
+[AS_HELP_STRING([--with-libmad=PFX], [Prefix where libmad is installed])],
+[libmad_prefix="$withval"], [libmad_prefix=""])
+
+AC_ARG_WITH([libmad-libraries],
+[AS_HELP_STRING([--with-libmad-libraries=DIR], [Directory where libmad library is installed])],
+[libmad_libraries="$withval"], [libmad_libraries=""])
+
+AC_ARG_WITH([libmad-includes],
+[AS_HELP_STRING([--with-libmad-includes=DIR], [Directory where libmad header files are installed])],
+[libmad_includes="$withval"], [libmad_includes=""])
+
+AC_ARG_ENABLE([libmadtest],
+[AS_HELP_STRING([--disable-libmadtest], [Do not try to compile and run a test libmad program])],,
+[enable_libmadtest="yes"])
 
   if test "x$libmad_libraries" != "x" ; then
     MAD_LIBS="-L$libmad_libraries"
@@ -44,7 +55,7 @@ AC_ARG_ENABLE(libmadtest, [  --disable-libmadtest   do not try to compile and ru
 dnl
 dnl Now check if the installed libmad is sufficiently new.
 dnl
-      AC_MSG_CHECKING(for libmad)
+      AC_MSG_CHECKING([for libmad])
       rm -f conf.libmadtest
       AC_TRY_RUN([
 #include <stdio.h>
@@ -60,16 +71,16 @@ int main ()
   return 0;
 }
 
-],, no_libmad=yes,[echo $ac_n "cross compiling; assumed OK... $ac_c"])
+],, [no_libmad="yes"],[echo $ac_n "cross compiling; assumed OK... $ac_c"])
        CFLAGS="$ac_save_CFLAGS"
        LIBS="$ac_save_LIBS"
   fi
 
   if test "x$no_libmad" = "x" ; then
-     AC_MSG_RESULT(yes)
+     AC_MSG_RESULT([yes])
      ifelse([$1], , :, [$1])     
   else
-     AC_MSG_RESULT(no)
+     AC_MSG_RESULT([no])
      if test -f conf.libmadtest ; then
        :
      else
@@ -99,7 +110,7 @@ int main ()
      MAD_LIBS=""
      ifelse([$2], , :, [$2])
   fi
-  AC_SUBST(MAD_CFLAGS)
-  AC_SUBST(MAD_LIBS)
+  AC_SUBST([MAD_CFLAGS])
+  AC_SUBST([MAD_LIBS])
   rm -f conf.libmadtest
 ])
