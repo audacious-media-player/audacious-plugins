@@ -74,9 +74,10 @@ AC_DEFUN([XS_PROG_PKGCONFIG],
 AC_DEFUN([XS_ARG_WITH], [dnl
 # xs_arg_with ( $1:$2:$3 )
     define([Name], [translit([$1], [a-z], [A-Z])])dnl
+    define([roflCopter], [Enable $2 with install-PREFIX])dnl
     AH_TEMPLATE(HAVE_[]Name, [Define if you have and want to use $2])dnl
     AC_ARG_WITH([$1],
-        [  --with-$1=PREFIX   Enable $2 with install-PREFIX], [dnl
+        [AS_HELP_STRING([--with-$1=PREFIX], roflCopter)], [dnl
         if test "x$withval" = "xyes"; then
             xs_use_$1="yes"
             xs_$1_library=""
@@ -95,11 +96,13 @@ AC_DEFUN([XS_ARG_WITH], [dnl
         xs_$1_library=""
         xs_$1_includes=""
     ])dnl
+    define([roflCopter], [Where the $2 headers are located])dnl
     AC_ARG_WITH([$1-inc],
-    [  --with-$1-inc=DIR    Where the $2 headers are located],
+    [AS_HELP_STRING([--with-$1-inc=DIR], roflCopter)],
     [xs_$1_includes="$withval"])dnl
+    define([roflCopter], [Where the $2 library is installed])dnl
     AC_ARG_WITH([$1-lib],
-    [  --with-$1-lib=DIR    Where the $2 library is installed],
+    [AS_HELP_STRING([--with-$1-lib=DIR], roflCopter)],
     [xs_$1_library="$withval"])dnl
 
     dnl Okay, handle this
@@ -327,16 +330,16 @@ AC_DEFUN([XS_BUILDERS_CHECK],
     fi
 
     AC_ARG_WITH([sidbuilders],
-        [  --with-sidbuilders=DIR  what the SIDPlay2 builders install PREFIX is],
+        [AS_HELP_STRING([--with-sidbuilders=DIR], [What the SIDPlay2 builders install PREFIX is])],
         [builders_includedir="$withval/include"
          builders_libdir="$withval/lib/sidplay/builders"])
 
     AC_ARG_WITH([builders-inc],
-        [  --with-builders-inc=DIR where the SIDPlay2 builders headers are located],
+        [AS_HELP_STRING([--with-builders-inc=DIR], [Where the SIDPlay2 builders headers are located])],
         [builders_includedir="$withval"])
 
     AC_ARG_WITH([builders-lib],
-        [  --with-builders-lib=DIR where the SIDPlay2 builders libraries are installed],
+        [AS_HELP_STRING([--with-builders-lib=DIR], [Where the SIDPlay2 builders libraries are installed])],
         [builders_libdir="$withval"])
     
     if test "x$builders_includedir" != "x"; then
