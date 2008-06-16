@@ -246,9 +246,9 @@ public:
         return true;
     }
 
-    gboolean open_audio()
+    gboolean open_audio(InputPlayback *playback)
     {
-        return wvpack->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
+        return playback->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
     }
 
     void process_buffer(InputPlayback *playback, guint32 num_samples)
@@ -333,7 +333,7 @@ DecodeThread(InputPlayback *playback)
 
     AUDDBG("reading WavPack file, %dHz, %d channels and %dbits\n", d.sample_rate, d.num_channels, d.bits_per_sample);
 
-    if (!d.open_audio()) {
+    if (!d.open_audio(playback)) {
         AUDDBG("error opening audio channel\n");
         killDecodeThread = true;
         AudioError = true;
@@ -361,7 +361,7 @@ DecodeThread(InputPlayback *playback)
                 printf("wavpack: Error decoding file.\n");
                 break;
             }
-            else if (samples_left == 0 && wvpack.output->buffer_playing() == 0) {
+            else if (samples_left == 0 && playback->output->buffer_playing() == 0) {
                 killDecodeThread = true;
                 break;
             }
@@ -531,8 +531,8 @@ wv_stop(InputPlayback *data)
     if (thread_handle != 0) {
         g_thread_join(thread_handle);
         if (openedAudio) {
-            wvpack.output->buffer_free();
-            wvpack.output->close_audio();
+            data->output->buffer_free();
+            data->output->close_audio();
         }
         openedAudio = false;
         if (AudioError)
