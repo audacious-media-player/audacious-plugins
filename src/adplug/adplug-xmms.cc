@@ -1146,7 +1146,6 @@ InputPlugin adplug_ip = {
   adplug_stop,
   adplug_pause,
   adplug_seek,
-  NULL,                         // set_eq
   adplug_get_time,
   NULL,                         // get_volume (handled by output plugin)
   NULL,                         // set_volume (...)

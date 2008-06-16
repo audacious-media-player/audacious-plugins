@@ -106,7 +106,6 @@ InputPlugin gModPlug =
     Stop,
     Pause,
     Seek,
-    NULL,
     GetTime,
     NULL,
     NULL,

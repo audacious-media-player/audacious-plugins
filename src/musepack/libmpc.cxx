@@ -25,7 +25,6 @@ InputPlugin MpcPlugin = {
     mpcStop,        //Stop                      [CALLBACK]
     mpcPause,       //Pause                     [CALLBACK]
     mpcSeek,        //Seek                      [CALLBACK]
-    NULL,           //Set EQ                    [CALLBACK]
     mpcGetTime,     //Get Time                  [CALLBACK]
     NULL,           //Get Volume                [UNUSED]
     NULL,           //Set Volume                [UNUSED]

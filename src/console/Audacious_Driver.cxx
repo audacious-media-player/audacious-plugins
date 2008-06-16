@@ -470,7 +470,6 @@ InputPlugin console_ip =
 	console_stop,
 	console_pause,
 	seek,
-	NULL,
 	get_time,
 	NULL,
 	NULL,   

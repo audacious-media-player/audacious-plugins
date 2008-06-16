@@ -70,7 +70,6 @@ InputPlugin wvpack = {
     wv_stop,
     wv_pause,
     wv_seek,
-    NULL,                       //set eq
     wv_get_time,
     NULL,                       //get volume
     NULL,                       //set volume
