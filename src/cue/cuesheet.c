@@ -158,10 +158,9 @@ static int is_our_file(gchar *filename)
 
 		for (i = 0; i < last_cue_track; i++)
 		{
-			gchar _buf[65535];
-
-			g_snprintf(_buf, 65535, "cue://%s?%d", filename, i);
-			aud_playlist_add_url(aud_playlist_get_active(), _buf);
+			gchar *tmp = g_strdup_printf("cue://%s?%d", filename, i);
+			aud_playlist_add_url(aud_playlist_get_active(), tmp);
+			g_free(tmp);
 		}
 
 		free_cue_info();
@@ -190,7 +189,7 @@ static void play(InputPlayback *data)
 	play_thread = g_thread_self();
 	data->set_pb_ready(data); // it should be done in real input plugin? --yaz
 	play_cue_uri(data, uri);
-	g_free(uri); uri = NULL;
+	g_free(uri);
 }
 
 static Tuple *get_tuple(gchar *uri)
