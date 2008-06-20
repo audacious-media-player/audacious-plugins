@@ -1753,9 +1753,9 @@ skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
             x = -1;
             y = -1;
 
-            if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(mainwin)->fixed) {
+            if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(mainwin)->normal) {
                 GList *iter;
-                for (iter = GTK_FIXED (SKINNED_WINDOW(mainwin)->fixed)->children; iter; iter = g_list_next (iter)) {
+                for (iter = GTK_FIXED (SKINNED_WINDOW(mainwin)->normal)->children; iter; iter = g_list_next (iter)) {
                      GtkFixedChild *child_data = (GtkFixedChild *) iter->data;
                      if (child_data->widget == widget) {
                          x = child_data->x;
@@ -1779,10 +1779,10 @@ skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
                     if (pixmap_id == SKIN_MONOSTEREO)
                         height = pixmap->height/2;
                 }
-            } else if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(equalizerwin)->fixed) {
+            } else if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(equalizerwin)->normal) {
                    if (!(pixmap_id == SKIN_EQMAIN && ysrc == 314)) /* equalizer preamp on equalizer graph */
                          gtk_widget_hide(widget);
-            } else if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(playlistwin)->fixed) {
+            } else if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(playlistwin)->normal) {
                    /* I haven't seen any skin with substandard playlist */
                    gtk_widget_hide(widget);
             }

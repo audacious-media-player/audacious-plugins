@@ -102,8 +102,8 @@ static GtkWidget *mainwin_jtt = NULL;
 static gint seek_state = MAINWIN_SEEK_NIL;
 static gint seek_initial_pos = 0;
 
-static GtkWidget *mainwin_menubtn;
-static GtkWidget *mainwin_minimize, *mainwin_shade, *mainwin_close;
+static GtkWidget *mainwin_menubtn, *mainwin_minimize, *mainwin_shade, *mainwin_close;
+static GtkWidget *mainwin_shaded_menubtn, *mainwin_shaded_minimize, *mainwin_shaded_shade, *mainwin_shaded_close;
 
 static GtkWidget *mainwin_rew, *mainwin_fwd;
 static GtkWidget *mainwin_eject;
@@ -185,6 +185,7 @@ static void
 mainwin_set_shade_menu_cb(gboolean shaded)
 {
     config.player_shaded = shaded;
+    ui_skinned_window_set_shade(mainwin, shaded);
 
     if (shaded) {
         dock_shade(get_dock_window_list(), GTK_WINDOW(mainwin),
@@ -197,7 +198,6 @@ mainwin_set_shade_menu_cb(gboolean shaded)
     }
 
     mainwin_refresh_hints();
-    ui_skinned_set_push_button_data(mainwin_shade, 0, config.player_shaded ? 27 : 18, 9, config.player_shaded ? 27 : 18);
     gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
 }
 
@@ -461,16 +461,6 @@ mainwin_refresh_visible(void)
             gtk_widget_hide(mainwin_stime_sec);
         }
     } else {
-        gtk_widget_hide(mainwin_srew);
-        gtk_widget_hide(mainwin_splay);
-        gtk_widget_hide(mainwin_spause);
-        gtk_widget_hide(mainwin_sstop);
-        gtk_widget_hide(mainwin_sfwd);
-        gtk_widget_hide(mainwin_seject);
-        gtk_widget_hide(mainwin_stime_min);
-        gtk_widget_hide(mainwin_stime_sec);
-        gtk_widget_hide(mainwin_svis);
-        gtk_widget_hide(mainwin_sposition);
         ui_vis_clear_data(mainwin_vis);
         if (config.vis_type != VIS_OFF)
             ui_vis_set_visible(mainwin_vis, TRUE);
@@ -486,7 +476,7 @@ mainwin_refresh_hints(void)
 {
     /* positioning and size attributes */
     if (aud_active_skin->properties.mainwin_vis_x && aud_active_skin->properties.mainwin_vis_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_vis), aud_active_skin->properties.mainwin_vis_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_vis), aud_active_skin->properties.mainwin_vis_x,
                        aud_active_skin->properties.mainwin_vis_y);
 
     if (aud_active_skin->properties.mainwin_vis_width)
@@ -494,7 +484,7 @@ mainwin_refresh_hints(void)
                                     UI_VIS(mainwin_vis)->height* MAINWIN_SCALE_FACTOR);
 
     if (aud_active_skin->properties.mainwin_text_x && aud_active_skin->properties.mainwin_text_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_info), aud_active_skin->properties.mainwin_text_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_info), aud_active_skin->properties.mainwin_text_x,
                        aud_active_skin->properties.mainwin_text_y);
 
     if (aud_active_skin->properties.mainwin_text_width) {
@@ -504,100 +494,100 @@ mainwin_refresh_hints(void)
     }
 
     if (aud_active_skin->properties.mainwin_infobar_x && aud_active_skin->properties.mainwin_infobar_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_othertext), aud_active_skin->properties.mainwin_infobar_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_othertext), aud_active_skin->properties.mainwin_infobar_x,
                        aud_active_skin->properties.mainwin_infobar_y);
 
     if (aud_active_skin->properties.mainwin_number_0_x && aud_active_skin->properties.mainwin_number_0_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_minus_num), aud_active_skin->properties.mainwin_number_0_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_minus_num), aud_active_skin->properties.mainwin_number_0_x,
                        aud_active_skin->properties.mainwin_number_0_y);
 
     if (aud_active_skin->properties.mainwin_number_1_x && aud_active_skin->properties.mainwin_number_1_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_10min_num), aud_active_skin->properties.mainwin_number_1_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_10min_num), aud_active_skin->properties.mainwin_number_1_x,
                        aud_active_skin->properties.mainwin_number_1_y);
 
     if (aud_active_skin->properties.mainwin_number_2_x && aud_active_skin->properties.mainwin_number_2_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_min_num), aud_active_skin->properties.mainwin_number_2_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_min_num), aud_active_skin->properties.mainwin_number_2_x,
                        aud_active_skin->properties.mainwin_number_2_y);
 
     if (aud_active_skin->properties.mainwin_number_3_x && aud_active_skin->properties.mainwin_number_3_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_10sec_num), aud_active_skin->properties.mainwin_number_3_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_10sec_num), aud_active_skin->properties.mainwin_number_3_x,
                        aud_active_skin->properties.mainwin_number_3_y);
 
     if (aud_active_skin->properties.mainwin_number_4_x && aud_active_skin->properties.mainwin_number_4_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_sec_num), aud_active_skin->properties.mainwin_number_4_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_sec_num), aud_active_skin->properties.mainwin_number_4_x,
                        aud_active_skin->properties.mainwin_number_4_y);
 
     if (aud_active_skin->properties.mainwin_playstatus_x && aud_active_skin->properties.mainwin_playstatus_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), mainwin_playstatus, aud_active_skin->properties.mainwin_playstatus_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), mainwin_playstatus, aud_active_skin->properties.mainwin_playstatus_x,
                        aud_active_skin->properties.mainwin_playstatus_y);
 
     if (aud_active_skin->properties.mainwin_volume_x && aud_active_skin->properties.mainwin_volume_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_volume), aud_active_skin->properties.mainwin_volume_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_volume), aud_active_skin->properties.mainwin_volume_x,
                        aud_active_skin->properties.mainwin_volume_y);
 
     if (aud_active_skin->properties.mainwin_balance_x && aud_active_skin->properties.mainwin_balance_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_balance), aud_active_skin->properties.mainwin_balance_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_balance), aud_active_skin->properties.mainwin_balance_x,
                        aud_active_skin->properties.mainwin_balance_y);
 
     if (aud_active_skin->properties.mainwin_position_x && aud_active_skin->properties.mainwin_position_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_position), aud_active_skin->properties.mainwin_position_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_position), aud_active_skin->properties.mainwin_position_x,
                        aud_active_skin->properties.mainwin_position_y);
 
     if (aud_active_skin->properties.mainwin_previous_x && aud_active_skin->properties.mainwin_previous_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), mainwin_rew, aud_active_skin->properties.mainwin_previous_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), mainwin_rew, aud_active_skin->properties.mainwin_previous_x,
                        aud_active_skin->properties.mainwin_previous_y);
 
     if (aud_active_skin->properties.mainwin_play_x && aud_active_skin->properties.mainwin_play_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_play), aud_active_skin->properties.mainwin_play_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_play), aud_active_skin->properties.mainwin_play_x,
                        aud_active_skin->properties.mainwin_play_y);
 
     if (aud_active_skin->properties.mainwin_pause_x && aud_active_skin->properties.mainwin_pause_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_pause), aud_active_skin->properties.mainwin_pause_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_pause), aud_active_skin->properties.mainwin_pause_x,
                        aud_active_skin->properties.mainwin_pause_y);
 
     if (aud_active_skin->properties.mainwin_stop_x && aud_active_skin->properties.mainwin_stop_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_stop), aud_active_skin->properties.mainwin_stop_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_stop), aud_active_skin->properties.mainwin_stop_x,
                        aud_active_skin->properties.mainwin_stop_y);
 
     if (aud_active_skin->properties.mainwin_next_x && aud_active_skin->properties.mainwin_next_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_fwd), aud_active_skin->properties.mainwin_next_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_fwd), aud_active_skin->properties.mainwin_next_x,
                        aud_active_skin->properties.mainwin_next_y);
 
     if (aud_active_skin->properties.mainwin_eject_x && aud_active_skin->properties.mainwin_eject_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_eject), aud_active_skin->properties.mainwin_eject_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_eject), aud_active_skin->properties.mainwin_eject_x,
                        aud_active_skin->properties.mainwin_eject_y);
 
     if (aud_active_skin->properties.mainwin_eqbutton_x && aud_active_skin->properties.mainwin_eqbutton_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_eq), aud_active_skin->properties.mainwin_eqbutton_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_eq), aud_active_skin->properties.mainwin_eqbutton_x,
                        aud_active_skin->properties.mainwin_eqbutton_y);
 
     if (aud_active_skin->properties.mainwin_plbutton_x && aud_active_skin->properties.mainwin_plbutton_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_pl), aud_active_skin->properties.mainwin_plbutton_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_pl), aud_active_skin->properties.mainwin_plbutton_x,
                        aud_active_skin->properties.mainwin_plbutton_y);
 
     if (aud_active_skin->properties.mainwin_shuffle_x && aud_active_skin->properties.mainwin_shuffle_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_shuffle), aud_active_skin->properties.mainwin_shuffle_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_shuffle), aud_active_skin->properties.mainwin_shuffle_x,
                        aud_active_skin->properties.mainwin_shuffle_y);
 
     if (aud_active_skin->properties.mainwin_repeat_x && aud_active_skin->properties.mainwin_repeat_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_repeat), aud_active_skin->properties.mainwin_repeat_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_repeat), aud_active_skin->properties.mainwin_repeat_x,
                        aud_active_skin->properties.mainwin_repeat_y);
 
     if (aud_active_skin->properties.mainwin_about_x && aud_active_skin->properties.mainwin_about_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_about), aud_active_skin->properties.mainwin_about_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_about), aud_active_skin->properties.mainwin_about_x,
                        aud_active_skin->properties.mainwin_about_y);
 
     if (aud_active_skin->properties.mainwin_minimize_x && aud_active_skin->properties.mainwin_minimize_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_minimize), config.player_shaded ? 244 : aud_active_skin->properties.mainwin_minimize_x,
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_minimize), config.player_shaded ? 244 : aud_active_skin->properties.mainwin_minimize_x,
                        config.player_shaded ? 3 : aud_active_skin->properties.mainwin_minimize_y);
 
     if (aud_active_skin->properties.mainwin_shade_x && aud_active_skin->properties.mainwin_shade_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_shade), config.player_shaded ? 254 : aud_active_skin->properties.mainwin_shade_x,
-                       config.player_shaded ? 3 : aud_active_skin->properties.mainwin_shade_y);
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_shade), aud_active_skin->properties.mainwin_shade_x,
+                       aud_active_skin->properties.mainwin_shade_y);
 
     if (aud_active_skin->properties.mainwin_close_x && aud_active_skin->properties.mainwin_close_y)
-        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->fixed), GTK_WIDGET(mainwin_close), config.player_shaded ? 264 : aud_active_skin->properties.mainwin_close_x,
-                       config.player_shaded ? 3 : aud_active_skin->properties.mainwin_close_y);
+        gtk_fixed_move(GTK_FIXED(SKINNED_WINDOW(mainwin)->normal), GTK_WIDGET(mainwin_close), aud_active_skin->properties.mainwin_close_x,
+                       aud_active_skin->properties.mainwin_close_y);
 
     mainwin_refresh_visible();
 
@@ -1482,7 +1472,7 @@ mainwin_spos_motion_cb(GtkWidget *widget, gint pos)
 void
 mainwin_spos_release_cb(GtkWidget *widget, gint pos)
 {
-    audacious_drct_seek(((aud_playlist_get_current_length(aud_playlist_get_active()) / 1000) *
+    audacious_drct_seek(((aud_playlist_get_current_length(aud_playlist_get_active())) *
                    (pos - 1)) / 12);
 }
 
@@ -1728,7 +1718,7 @@ mainwin_set_scaled(gboolean scaled)
                        aud_active_skin->properties.mainwin_width * config.scale_factor , aud_active_skin->properties.mainwin_height * config.scale_factor);
 
     GList *iter;
-    for (iter = GTK_FIXED (SKINNED_WINDOW(mainwin)->fixed)->children; iter; iter = g_list_next (iter)) {
+    for (iter = GTK_FIXED (SKINNED_WINDOW(mainwin)->normal)->children; iter; iter = g_list_next (iter)) {
         GtkFixedChild *child_data = (GtkFixedChild *) iter->data;
         GtkWidget *child = child_data->widget;
         g_signal_emit_by_name(child, "toggle-scaled");
@@ -2215,176 +2205,198 @@ static void
 mainwin_create_widgets(void)
 {
     mainwin_menubtn = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_menubtn, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_menubtn, SKINNED_WINDOW(mainwin)->normal,
                                  6, 3, 9, 9, 0, 0, 0, 9, SKIN_TITLEBAR);
     g_signal_connect(mainwin_menubtn, "clicked", mainwin_menubtn_cb, NULL );
 
     mainwin_minimize = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_minimize, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_minimize, SKINNED_WINDOW(mainwin)->normal,
                                  244, 3, 9, 9, 9, 0, 9, 9, SKIN_TITLEBAR);
     g_signal_connect(mainwin_minimize, "clicked", mainwin_minimize_cb, NULL );
 
     mainwin_shade = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_shade, SKINNED_WINDOW(mainwin)->fixed,
-                                 254, 3, 9, 9, 0,
-                                 config.player_shaded ? 27 : 18, 9, config.player_shaded ? 27 : 18, SKIN_TITLEBAR);
+    ui_skinned_push_button_setup(mainwin_shade, SKINNED_WINDOW(mainwin)->normal,
+                                 254, 3, 9, 9, 0, 18, 9, 18, SKIN_TITLEBAR);
     g_signal_connect(mainwin_shade, "clicked", mainwin_shade_toggle, NULL );
 
     mainwin_close = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_close, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_close, SKINNED_WINDOW(mainwin)->normal,
                                  264, 3, 9, 9, 18, 0, 18, 9, SKIN_TITLEBAR);
     g_signal_connect(mainwin_close, "clicked", mainwin_quit_cb, NULL );
 
     mainwin_rew = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_rew, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_rew, SKINNED_WINDOW(mainwin)->normal,
                                  16, 88, 23, 18, 0, 0, 0, 18, SKIN_CBUTTONS);
     g_signal_connect(mainwin_rew, "pressed", mainwin_rev_pushed, NULL);
     g_signal_connect(mainwin_rew, "released", mainwin_rev_release, NULL);
 
     mainwin_fwd = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_fwd, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_fwd, SKINNED_WINDOW(mainwin)->normal,
                                  108, 88, 22, 18, 92, 0, 92, 18, SKIN_CBUTTONS);
     g_signal_connect(mainwin_fwd, "pressed", mainwin_fwd_pushed, NULL);
     g_signal_connect(mainwin_fwd, "released", mainwin_fwd_release, NULL);
 
     mainwin_play = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_play, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_play, SKINNED_WINDOW(mainwin)->normal,
                                  39, 88, 23, 18, 23, 0, 23, 18, SKIN_CBUTTONS);
     g_signal_connect(mainwin_play, "clicked", mainwin_play_pushed, NULL );
 
     mainwin_pause = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_pause, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_pause, SKINNED_WINDOW(mainwin)->normal,
                                  62, 88, 23, 18, 46, 0, 46, 18, SKIN_CBUTTONS);
     g_signal_connect(mainwin_pause, "clicked", audacious_drct_pause, NULL );
 
     mainwin_stop = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_stop, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_stop, SKINNED_WINDOW(mainwin)->normal,
                                  85, 88, 23, 18, 69, 0, 69, 18, SKIN_CBUTTONS);
     g_signal_connect(mainwin_stop, "clicked", mainwin_stop_pushed, NULL );
 
     mainwin_eject = ui_skinned_button_new();
-    ui_skinned_push_button_setup(mainwin_eject, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_push_button_setup(mainwin_eject, SKINNED_WINDOW(mainwin)->normal,
                                  136, 89, 22, 16, 114, 0, 114, 16, SKIN_CBUTTONS);
     g_signal_connect(mainwin_eject, "clicked", mainwin_eject_pushed, NULL);
 
-    mainwin_srew = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_srew, SKINNED_WINDOW(mainwin)->fixed, 169, 4, 8, 7);
-    g_signal_connect(mainwin_srew, "clicked", mainwin_aud_playlist_prev, NULL);
-
-    mainwin_splay = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_splay, SKINNED_WINDOW(mainwin)->fixed, 177, 4, 10, 7);
-    g_signal_connect(mainwin_splay, "clicked", mainwin_play_pushed, NULL);
-
-    mainwin_spause = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_spause, SKINNED_WINDOW(mainwin)->fixed, 187, 4, 10, 7);
-    g_signal_connect(mainwin_spause, "clicked", audacious_drct_pause, NULL);
-
-    mainwin_sstop = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_sstop, SKINNED_WINDOW(mainwin)->fixed, 197, 4, 9, 7);
-    g_signal_connect(mainwin_sstop, "clicked", mainwin_stop_pushed, NULL);
-
-    mainwin_sfwd = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_sfwd, SKINNED_WINDOW(mainwin)->fixed, 206, 4, 8, 7);
-    g_signal_connect(mainwin_sfwd, "clicked", mainwin_aud_playlist_next, NULL);
-
-    mainwin_seject = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_seject, SKINNED_WINDOW(mainwin)->fixed, 216, 4, 9, 7);
-    g_signal_connect(mainwin_seject, "clicked", mainwin_eject_pushed, NULL);
-
     mainwin_shuffle = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_shuffle, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_toggle_button_setup(mainwin_shuffle, SKINNED_WINDOW(mainwin)->normal,
                                    164, 89, 46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP);
     g_signal_connect(mainwin_shuffle, "clicked", mainwin_shuffle_pushed_cb, NULL);
 
     mainwin_repeat = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_repeat, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_toggle_button_setup(mainwin_repeat, SKINNED_WINDOW(mainwin)->normal,
                                    210, 89, 28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP);
     g_signal_connect(mainwin_repeat, "clicked", mainwin_repeat_pushed_cb, NULL);
 
     mainwin_eq = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_eq, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_toggle_button_setup(mainwin_eq, SKINNED_WINDOW(mainwin)->normal,
                                    219, 58, 23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP);
     g_signal_connect(mainwin_eq, "clicked", mainwin_equalizer_pushed_cb, NULL);
     ui_skinned_button_set_inside(mainwin_eq, config.equalizer_visible);
 
     mainwin_pl = ui_skinned_button_new();
-    ui_skinned_toggle_button_setup(mainwin_pl, SKINNED_WINDOW(mainwin)->fixed,
+    ui_skinned_toggle_button_setup(mainwin_pl, SKINNED_WINDOW(mainwin)->normal,
                                    242, 58, 23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP);
     g_signal_connect(mainwin_pl, "clicked", mainwin_playlist_pushed_cb, NULL);
     ui_skinned_button_set_inside(mainwin_pl, config.playlist_visible);
 
-    mainwin_info = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 112, 27, 153, 1, SKIN_TEXT);
+    mainwin_info = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->normal, 112, 27, 153, 1, SKIN_TEXT);
     ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
     ui_skinned_textbox_set_xfont(mainwin_info, !config.mainwin_use_bitmapfont, config.mainwin_font);
     g_signal_connect(mainwin_info, "double-clicked", mainwin_info_double_clicked_cb, NULL);
     g_signal_connect(mainwin_info, "right-clicked", G_CALLBACK(mainwin_info_right_clicked_cb), NULL);
 
-    mainwin_othertext = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 112, 43, 153, 1, SKIN_TEXT);
+    mainwin_othertext = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->normal, 112, 43, 153, 1, SKIN_TEXT);
 
-    mainwin_rate_text = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 111, 43, 15, 0, SKIN_TEXT);
+    mainwin_rate_text = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->normal, 111, 43, 15, 0, SKIN_TEXT);
 
-    mainwin_freq_text = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 156, 43, 10, 0, SKIN_TEXT);
+    mainwin_freq_text = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->normal, 156, 43, 10, 0, SKIN_TEXT);
 
-    mainwin_menurow = ui_skinned_menurow_new(SKINNED_WINDOW(mainwin)->fixed, 10, 22, 304, 0, 304, 44,  SKIN_TITLEBAR);
+    mainwin_menurow = ui_skinned_menurow_new(SKINNED_WINDOW(mainwin)->normal, 10, 22, 304, 0, 304, 44,  SKIN_TITLEBAR);
     g_signal_connect(mainwin_menurow, "change", G_CALLBACK(mainwin_mr_change), NULL);
     g_signal_connect(mainwin_menurow, "release", G_CALLBACK(mainwin_mr_release), NULL);
 
-    mainwin_volume = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->fixed, 107, 57, 68,
+    mainwin_volume = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 107, 57, 68,
                                                       13, 15, 422, 0, 422, 14, 11, 15, 0, 0, 51,
                                                       mainwin_volume_frame_cb, SKIN_VOLUME);
     g_signal_connect(mainwin_volume, "motion", G_CALLBACK(mainwin_volume_motion_cb), NULL);
     g_signal_connect(mainwin_volume, "release", G_CALLBACK(mainwin_volume_release_cb), NULL);
 
-    mainwin_balance = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->fixed, 177, 57, 38,
+    mainwin_balance = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 177, 57, 38,
                                                        13, 15, 422, 0, 422, 14, 11, 15, 9, 0, 24,
                                                        mainwin_balance_frame_cb, SKIN_BALANCE);
     g_signal_connect(mainwin_balance, "motion", G_CALLBACK(mainwin_balance_motion_cb), NULL);
     g_signal_connect(mainwin_balance, "release", G_CALLBACK(mainwin_balance_release_cb), NULL);
 
-    mainwin_monostereo = ui_skinned_monostereo_new(SKINNED_WINDOW(mainwin)->fixed, 212, 41, SKIN_MONOSTEREO);
+    mainwin_monostereo = ui_skinned_monostereo_new(SKINNED_WINDOW(mainwin)->normal, 212, 41, SKIN_MONOSTEREO);
 
-    mainwin_playstatus = ui_skinned_playstatus_new(SKINNED_WINDOW(mainwin)->fixed, 24, 28);
+    mainwin_playstatus = ui_skinned_playstatus_new(SKINNED_WINDOW(mainwin)->normal, 24, 28);
 
-    mainwin_minus_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->fixed, 36, 26, SKIN_NUMBERS);
+    mainwin_minus_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->normal, 36, 26, SKIN_NUMBERS);
     g_signal_connect(mainwin_minus_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
-    mainwin_10min_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->fixed, 48, 26, SKIN_NUMBERS);
+    mainwin_10min_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->normal, 48, 26, SKIN_NUMBERS);
     g_signal_connect(mainwin_10min_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
-    mainwin_min_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->fixed, 60, 26, SKIN_NUMBERS);
+    mainwin_min_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->normal, 60, 26, SKIN_NUMBERS);
     g_signal_connect(mainwin_min_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
-    mainwin_10sec_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->fixed, 78, 26, SKIN_NUMBERS);
+    mainwin_10sec_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->normal, 78, 26, SKIN_NUMBERS);
     g_signal_connect(mainwin_10sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
-    mainwin_sec_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->fixed, 90, 26, SKIN_NUMBERS);
+    mainwin_sec_num = ui_skinned_number_new(SKINNED_WINDOW(mainwin)->normal, 90, 26, SKIN_NUMBERS);
     g_signal_connect(mainwin_sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
     mainwin_about = ui_skinned_button_new();
-    ui_skinned_small_button_setup(mainwin_about, SKINNED_WINDOW(mainwin)->fixed, 247, 83, 20, 25);
+    ui_skinned_small_button_setup(mainwin_about, SKINNED_WINDOW(mainwin)->normal, 247, 83, 20, 25);
     g_signal_connect(mainwin_about, "clicked", G_CALLBACK(action_about_audacious), NULL);
 
-    mainwin_vis = ui_vis_new(SKINNED_WINDOW(mainwin)->fixed, 24, 43, 76);
+    mainwin_vis = ui_vis_new(SKINNED_WINDOW(mainwin)->normal, 24, 43, 76);
     g_signal_connect(mainwin_vis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
-    mainwin_svis = ui_svis_new(SKINNED_WINDOW(mainwin)->fixed, 79, 5);
-    g_signal_connect(mainwin_svis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
 
-    mainwin_position = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->fixed, 16, 72, 248,
+    mainwin_position = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->normal, 16, 72, 248,
                                                         10, 248, 0, 278, 0, 29, 10, 10, 0, 0, 219,
                                                         NULL, SKIN_POSBAR);
     g_signal_connect(mainwin_position, "motion", G_CALLBACK(mainwin_position_motion_cb), NULL);
     g_signal_connect(mainwin_position, "release", G_CALLBACK(mainwin_position_release_cb), NULL);
 
-    mainwin_sposition = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->fixed, 226, 4, 17,
+    /* shaded */
+
+    mainwin_shaded_menubtn = ui_skinned_button_new();
+    ui_skinned_push_button_setup(mainwin_shaded_menubtn, SKINNED_WINDOW(mainwin)->shaded,
+                                 6, 3, 9, 9, 0, 0, 0, 9, SKIN_TITLEBAR);
+    g_signal_connect(mainwin_shaded_menubtn, "clicked", mainwin_menubtn_cb, NULL );
+
+    mainwin_shaded_minimize = ui_skinned_button_new();
+    ui_skinned_push_button_setup(mainwin_shaded_minimize, SKINNED_WINDOW(mainwin)->shaded,
+                                 244, 3, 9, 9, 9, 0, 9, 9, SKIN_TITLEBAR);
+    g_signal_connect(mainwin_shaded_minimize, "clicked", mainwin_minimize_cb, NULL );
+
+    mainwin_shaded_shade = ui_skinned_button_new();
+    ui_skinned_push_button_setup(mainwin_shaded_shade, SKINNED_WINDOW(mainwin)->shaded,
+                                 254, 3, 9, 9, 0, 27, 9, 27, SKIN_TITLEBAR);
+    g_signal_connect(mainwin_shaded_shade, "clicked", mainwin_shade_toggle, NULL );
+
+    mainwin_shaded_close = ui_skinned_button_new();
+    ui_skinned_push_button_setup(mainwin_shaded_close, SKINNED_WINDOW(mainwin)->shaded,
+                                 264, 3, 9, 9, 18, 0, 18, 9, SKIN_TITLEBAR);
+    g_signal_connect(mainwin_shaded_close, "clicked", mainwin_quit_cb, NULL );
+
+    mainwin_srew = ui_skinned_button_new();
+    ui_skinned_small_button_setup(mainwin_srew, SKINNED_WINDOW(mainwin)->shaded, 169, 4, 8, 7);
+    g_signal_connect(mainwin_srew, "clicked", mainwin_aud_playlist_prev, NULL);
+
+    mainwin_splay = ui_skinned_button_new();
+    ui_skinned_small_button_setup(mainwin_splay, SKINNED_WINDOW(mainwin)->shaded, 177, 4, 10, 7);
+    g_signal_connect(mainwin_splay, "clicked", mainwin_play_pushed, NULL);
+
+    mainwin_spause = ui_skinned_button_new();
+    ui_skinned_small_button_setup(mainwin_spause, SKINNED_WINDOW(mainwin)->shaded, 187, 4, 10, 7);
+    g_signal_connect(mainwin_spause, "clicked", audacious_drct_pause, NULL);
+
+    mainwin_sstop = ui_skinned_button_new();
+    ui_skinned_small_button_setup(mainwin_sstop, SKINNED_WINDOW(mainwin)->shaded, 197, 4, 9, 7);
+    g_signal_connect(mainwin_sstop, "clicked", mainwin_stop_pushed, NULL);
+
+    mainwin_sfwd = ui_skinned_button_new();
+    ui_skinned_small_button_setup(mainwin_sfwd, SKINNED_WINDOW(mainwin)->shaded, 206, 4, 8, 7);
+    g_signal_connect(mainwin_sfwd, "clicked", mainwin_aud_playlist_next, NULL);
+
+    mainwin_seject = ui_skinned_button_new();
+    ui_skinned_small_button_setup(mainwin_seject, SKINNED_WINDOW(mainwin)->shaded, 216, 4, 9, 7);
+    g_signal_connect(mainwin_seject, "clicked", mainwin_eject_pushed, NULL);
+
+    mainwin_svis = ui_svis_new(SKINNED_WINDOW(mainwin)->shaded, 79, 5);
+    g_signal_connect(mainwin_svis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
+
+    mainwin_sposition = ui_skinned_horizontal_slider_new(SKINNED_WINDOW(mainwin)->shaded, 226, 4, 17,
                                                          7, 17, 36, 17, 36, 3, 7, 36, 0, 1, 13,
                                                          mainwin_spos_frame_cb, SKIN_TITLEBAR);
     g_signal_connect(mainwin_sposition, "motion", G_CALLBACK(mainwin_spos_motion_cb), NULL);
     g_signal_connect(mainwin_sposition, "release", G_CALLBACK(mainwin_spos_release_cb), NULL);
 
-    mainwin_stime_min = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 130, 4, 15, FALSE, SKIN_TEXT);
+    mainwin_stime_min = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->shaded, 130, 4, 15, FALSE, SKIN_TEXT);
     g_signal_connect(mainwin_stime_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 
-    mainwin_stime_sec = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->fixed, 147, 4, 10, FALSE, SKIN_TEXT);
+    mainwin_stime_sec = ui_skinned_textbox_new(SKINNED_WINDOW(mainwin)->shaded, 147, 4, 10, FALSE, SKIN_TEXT);
     g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 }
 
