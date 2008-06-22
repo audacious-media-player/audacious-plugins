@@ -398,8 +398,8 @@ static void button_pressed(UiSkinnedButton *button) {
 }
 
 static void button_released(UiSkinnedButton *button) {
+    if(button->hover && button->button_down) ui_skinned_button_clicked(button);
     button->button_down = FALSE;
-    if(button->hover) ui_skinned_button_clicked(button);
     ui_skinned_button_update_state(button);
 }
 
