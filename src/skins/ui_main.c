@@ -704,18 +704,6 @@ mainwin_disable_seekbar(void)
     gtk_widget_hide(mainwin_sposition);
 }
 
-static gboolean
-mainwin_mouse_button_release(GtkWidget * widget,
-                             GdkEventButton * event,
-                             gpointer callback_data)
-{
-    if (dock_is_moving(GTK_WINDOW(mainwin))) {
-        dock_move_release(GTK_WINDOW(mainwin));
-    }
-
-    return FALSE;
-}
-
 void
 mainwin_scrolled(GtkWidget *widget, GdkEventScroll *event,
                  gpointer callback_data)
@@ -2428,8 +2416,6 @@ mainwin_create_window(void)
                      G_CALLBACK(mainwin_mouse_button_press), NULL);
     g_signal_connect(mainwin, "scroll_event",
                      G_CALLBACK(mainwin_scrolled), NULL);
-    g_signal_connect(mainwin, "button_release_event",
-                     G_CALLBACK(mainwin_mouse_button_release), NULL);
 
     aud_drag_dest_set(mainwin);
 
