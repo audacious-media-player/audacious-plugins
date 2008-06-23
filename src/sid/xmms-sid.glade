@@ -3252,20 +3252,6 @@
 	  <property name="spacing">8</property>
 
 	  <child>
-	    <widget class="GtkButton" id="cfg_ok">
-	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Accept and update changes</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-ok</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="focus_on_click">True</property>
-	      <signal name="clicked" handler="xs_cfg_ok"/>
-	    </widget>
-	  </child>
-
-	  <child>
 	    <widget class="GtkButton" id="cfg_cancel">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Cancel any changes</property>
@@ -3276,6 +3262,20 @@
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
 	      <signal name="clicked" handler="xs_cfg_cancel"/>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="cfg_ok">
+	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Accept and update changes</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-ok</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
+	      <signal name="clicked" handler="xs_cfg_ok"/>
 	    </widget>
 	  </child>
 	</widget>

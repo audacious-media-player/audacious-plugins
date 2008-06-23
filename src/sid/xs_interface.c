@@ -222,8 +222,8 @@ create_xs_configwin (void)
   GtkWidget *label18;
   GtkWidget *w_label3;
   GtkWidget *hbuttonbox1;
-  GtkWidget *cfg_ok;
   GtkWidget *cfg_cancel;
+  GtkWidget *cfg_ok;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
@@ -1312,19 +1312,19 @@ create_xs_configwin (void)
   gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox1), GTK_BUTTONBOX_END);
   gtk_box_set_spacing (GTK_BOX (hbuttonbox1), 8);
 
-  cfg_ok = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_set_name (cfg_ok, "cfg_ok");
-  gtk_widget_show (cfg_ok);
-  gtk_container_add (GTK_CONTAINER (hbuttonbox1), cfg_ok);
-  GTK_WIDGET_SET_FLAGS (cfg_ok, GTK_CAN_DEFAULT);
-  gtk_tooltips_set_tip (tooltips, cfg_ok, _("Accept and update changes"), NULL);
-
   cfg_cancel = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_set_name (cfg_cancel, "cfg_cancel");
   gtk_widget_show (cfg_cancel);
   gtk_container_add (GTK_CONTAINER (hbuttonbox1), cfg_cancel);
   GTK_WIDGET_SET_FLAGS (cfg_cancel, GTK_CAN_DEFAULT);
   gtk_tooltips_set_tip (tooltips, cfg_cancel, _("Cancel any changes"), NULL);
+
+  cfg_ok = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_set_name (cfg_ok, "cfg_ok");
+  gtk_widget_show (cfg_ok);
+  gtk_container_add (GTK_CONTAINER (hbuttonbox1), cfg_ok);
+  GTK_WIDGET_SET_FLAGS (cfg_ok, GTK_CAN_DEFAULT);
+  gtk_tooltips_set_tip (tooltips, cfg_ok, _("Accept and update changes"), NULL);
 
   g_signal_connect ((gpointer) xs_configwin, "delete_event",
                     G_CALLBACK (xs_configwin_delete),
@@ -1395,11 +1395,11 @@ create_xs_configwin (void)
   g_signal_connect ((gpointer) cfg_hvsc_browse, "clicked",
                     G_CALLBACK (xs_cfg_hvsc_browse),
                     NULL);
-  g_signal_connect ((gpointer) cfg_ok, "clicked",
-                    G_CALLBACK (xs_cfg_ok),
-                    NULL);
   g_signal_connect ((gpointer) cfg_cancel, "clicked",
                     G_CALLBACK (xs_cfg_cancel),
+                    NULL);
+  g_signal_connect ((gpointer) cfg_ok, "clicked",
+                    G_CALLBACK (xs_cfg_ok),
                     NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
@@ -1582,8 +1582,8 @@ create_xs_configwin (void)
   GLADE_HOOKUP_OBJECT (xs_configwin, label18, "label18");
   GLADE_HOOKUP_OBJECT (xs_configwin, w_label3, "w_label3");
   GLADE_HOOKUP_OBJECT (xs_configwin, hbuttonbox1, "hbuttonbox1");
-  GLADE_HOOKUP_OBJECT (xs_configwin, cfg_ok, "cfg_ok");
   GLADE_HOOKUP_OBJECT (xs_configwin, cfg_cancel, "cfg_cancel");
+  GLADE_HOOKUP_OBJECT (xs_configwin, cfg_ok, "cfg_ok");
   GLADE_HOOKUP_OBJECT_NO_REF (xs_configwin, tooltips, "tooltips");
 
   return xs_configwin;

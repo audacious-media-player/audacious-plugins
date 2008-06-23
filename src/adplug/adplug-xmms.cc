@@ -913,29 +913,6 @@ adplug_is_our_fd (gchar * filename, VFSFile * fd)
 }
 
 static int
-adplug_is_our_file (char *filename)
-{
-  CSilentopl tmpopl;
-  VFSFile *fd = aud_vfs_buffered_file_new_from_uri (filename);
-  if (!fd)
-    return FALSE;
-
-  CPlayer *p = factory (fd, &tmpopl);
-
-  dbg_printf ("adplug_is_our_file(\"%s\"): returned ", filename);
-
-  if (p)
-  {
-    delete p;
-    dbg_printf ("TRUE\n");
-    return TRUE;
-  }
-
-  dbg_printf ("FALSE\n");
-  return FALSE;
-}
-
-static int
 adplug_get_time (InputPlayback * data)
 {
   if (audio_error)
@@ -1140,8 +1117,8 @@ InputPlugin adplug_ip = {
   adplug_about,
   adplug_config,
   FALSE,
-  adplug_is_our_file,
-  NULL,                         // scan_dir (look in Input/cdaudio/cdaudio.c)
+  NULL,
+  NULL,
   adplug_play,
   adplug_stop,
   adplug_pause,
