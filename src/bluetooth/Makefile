@@ -1,6 +1,6 @@
 PLUGIN = bluetooth${PLUGIN_SUFFIX}
 
-SRCS = bluetooth.c gui.c marshal.c
+SRCS = bluetooth.c gui.c marshal.c scan_gui.c
 include ../../buildsys.mk
 include ../../extra.mk
 

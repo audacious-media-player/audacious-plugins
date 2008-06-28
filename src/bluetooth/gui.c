@@ -3,101 +3,110 @@
 
 static GtkWidget *window = NULL;
 static GtkTreeModel *model;
-GtkWidget *mainbox;
-GtkWidget *hbox_top;
-GtkWidget *hbox_bottom;
-GtkWidget *box_about;
-GtkWidget *box_about_left;
-GtkWidget *box_about_right;
-GtkWidget *headset_frame;
-GtkWidget *about_frame;
-GtkWidget *refresh;
-GtkWidget *connect_button;
-GtkWidget *close_button;   
-GtkWidget *treeview;
-GtkWidget *label_p;
-GtkWidget *label_c;
-GtkWidget *label_a;
-GtkWidget *label_prod;
-GtkWidget *label_class;
-GtkWidget *label_address;
-GList * dev = NULL;
+static GtkWidget *mainbox;
+static GtkWidget *hbox_top;
+static GtkWidget *hbox_bottom;
+static GtkWidget *box_about;
+static GtkWidget *box_about_left;
+static GtkWidget *box_about_right;
+static GtkWidget *headset_frame;
+static GtkWidget *about_frame;
+static GtkWidget *refresh;
+static GtkWidget *connect_button;
+static GtkWidget *close_button;   
+static GtkWidget *treeview;
+static GtkWidget *label_p;
+static GtkWidget *label_c;
+static GtkWidget *label_a;
+static GtkWidget *label_prod;
+static GtkWidget *label_class;
+static GtkWidget *label_address;
+static GList * dev = NULL;
+gchar *status = NULL;
 enum{
     COLUMN_PRODUCER,
     NUM_COLUMNS
 };
-static DeviceData test_data[]=
-{
-    {0,"00:00:00:00:00","Scanning"}
-};
-
 
 static GtkTreeModel * create_model(void)
 {
     GtkListStore *store;
     GtkTreeIter iter;
-    gint i=0;
-   /* create list store */
+    /* create list store */
     store = gtk_list_store_new(NUM_COLUMNS,
             G_TYPE_STRING);
-         
-    /* add data to the list store */
-    for(i = 0;i<G_N_ELEMENTS(test_data);i++)
+    dev = audio_devices;
+    if(dev == NULL) {
+        /*if we are scanning for devices now then print the Scanning message,
+         * else we print the "no devices found message */
+        if(discover_finish == 1) 
+            /*we are scanning*/
+             status = g_strdup_printf("Scanning"); 
+             else 
+                status = g_strdup_printf("No devices found!");
+       /* add the status to the list */
+        gtk_list_store_append(store,&iter);
+        gtk_list_store_set(store,&iter, COLUMN_PRODUCER,status,-1);
+        return GTK_TREE_MODEL(store);    
+     } 
+    while(dev != NULL)
     {
         gtk_list_store_append(store,&iter);
-        gtk_list_store_set(store,&iter,
-                COLUMN_PRODUCER, test_data[i].name,-1);
+        gtk_list_store_set(store,&iter, COLUMN_PRODUCER, 
+                          ((DeviceData*)(dev->data))-> name,-1);
+        dev = g_list_next(dev);
     }
 
-        return GTK_TREE_MODEL(store);                       
+    return GTK_TREE_MODEL(store);                       
 }
 static GtkTreeModel * rebuild_model(void)
 {
 
     GtkListStore *store;
     GtkTreeIter iter;
-    gint i=0;
     gint dev_no=0;
     GList *dev;
     gchar *temp;
     if(!window) 
         return NULL;
-   /* create list store */
+    /* create list store */
     store = gtk_list_store_new(NUM_COLUMNS,
             G_TYPE_STRING);
-         
+
     /*add inf to test_data from audio_devices */
     dev_no = g_list_length(audio_devices);
     dev = audio_devices;
+     if(dev == NULL || discover_finish == 0) {
+        /*if we are scanning for devices now then print the Scanning message,
+         * else we print the "no devices found message */
+        printf("discover: %d\n",discover_finish);
+        if(discover_finish == 1) {
+            /*we are scanning*/
+             status = g_strdup_printf("Scanning"); 
+        } else 
+                status = g_strdup_printf("No devices found!");
+       /* add the status to the list */
+        gtk_list_store_append(store,&iter);
+        gtk_list_store_set(store,&iter, COLUMN_PRODUCER,status,-1);
+        gtk_label_set_text(GTK_LABEL(label_prod),status);
+        return GTK_TREE_MODEL(store);    
+     } 
+    
+    /* add data to the list store */
     while(dev != NULL)
     {
-        test_data[i].name = ((DeviceData*)(dev->data))-> name;
-        test_data[i].class = ((DeviceData*)(dev->data))-> class;
-        test_data[i].address = ((DeviceData*)(dev->data))-> address;
-        i++;
-        dev=g_list_next(dev);
-    }
-    if (dev_no == 0) 
-    {
-        test_data[0].name = "No devices found!";
-        test_data[0].class = 0;
-        test_data[0].address = "00:00:00:00:00";
-    }
-
-    /* add data to the list store */
-    for(i = 0;i<G_N_ELEMENTS(test_data);i++)
-    {
         gtk_list_store_append(store,&iter);
-        gtk_list_store_set(store,&iter,
-        COLUMN_PRODUCER, test_data[i].name,-1);
+        gtk_list_store_set(store,&iter, COLUMN_PRODUCER, 
+                          ((DeviceData*)(dev->data))-> name,-1);
+        dev = g_list_next(dev);
     }
-        //set the labels
-         temp = g_strdup_printf("0x%x",test_data[0].class);
-         gtk_label_set_text(GTK_LABEL(label_prod),test_data[0].name);
-         gtk_label_set_text(GTK_LABEL(label_class),temp);
-         gtk_label_set_text(GTK_LABEL(label_address),test_data[0].address);
-
-        return GTK_TREE_MODEL(store);          
+    //set the labels
+ //   temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+    gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
+//    gtk_label_set_text(GTK_LABEL(label_class),temp);
+    gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
+    g_free(temp);
+    return GTK_TREE_MODEL(store);          
 
 }
 
@@ -106,8 +115,8 @@ void refresh_tree()
 {
     if(!window) 
         return;
-     model = rebuild_model();
-     gtk_tree_view_set_model(GTK_TREE_VIEW(treeview),GTK_TREE_MODEL(model));
+    model = rebuild_model();
+    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview),GTK_TREE_MODEL(model));
 }
 
 
@@ -139,6 +148,7 @@ void select_row(GtkWidget *treeview){
     GtkTreeIter iter;
     gint sel;
     gchar *temp;
+    gint i;
     printf("select\n");
     GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(treeview)); 
     if(gtk_tree_selection_get_selected (selection, NULL,&iter)){
@@ -146,21 +156,26 @@ void select_row(GtkWidget *treeview){
         path = gtk_tree_model_get_path (model, &iter);
         sel = gtk_tree_path_get_indices (path)[0];
         printf("i=%d\n",sel);
-        temp = g_strdup_printf("0x%x",test_data[sel].class);
-        gtk_label_set_text(GTK_LABEL(label_prod),test_data[sel].name);
+        dev = audio_devices;
+        for(i=0;i<sel;i++) 
+            dev = g_list_next(dev);
+        if(dev != NULL) {
+        temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+        gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
         gtk_label_set_text(GTK_LABEL(label_class),temp);
-        gtk_label_set_text(GTK_LABEL(label_address),test_data[sel].address);
+        gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
         gtk_tree_path_free (path);
         g_free(temp);
-
+        }else 
+            gtk_label_set_text(GTK_LABEL(label_prod),status);
+        g_free(status);
+   
     }
-
-
-
 }
-void bt_cfg()
-{
 
+void results_ui()
+{
+     gchar *temp;
     if (!window)
     {
         window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -206,7 +221,7 @@ void bt_cfg()
         gtk_container_add (GTK_CONTAINER (headset_frame), treeview);
         /* add columns to the tree view */
         add_columns (GTK_TREE_VIEW (treeview));
-        
+
         g_signal_connect(treeview,"cursor-changed",G_CALLBACK(select_row),treeview);
 
 
@@ -238,7 +253,7 @@ void bt_cfg()
 
 
         /*right labels */
-        label_prod = gtk_label_new("Scanning");
+        label_prod = gtk_label_new("  ");
         gtk_container_add(GTK_CONTAINER(box_about_right),label_prod);
 
         label_class = gtk_label_new("  ");
@@ -248,7 +263,16 @@ void bt_cfg()
         label_address = gtk_label_new("   ");
         gtk_container_add(GTK_CONTAINER(box_about_right),label_address);
 
-        gtk_window_set_default_size (GTK_WINDOW (window), 480, 180);
+        dev = audio_devices;
+        if(dev != NULL) {
+        temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+        gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
+        gtk_label_set_text(GTK_LABEL(label_class),temp);
+        gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
+        g_free(temp);
+        }
+
+        gtk_window_set_default_size (GTK_WINDOW (window), 460, 150);
         if (!GTK_WIDGET_VISIBLE (window))
             gtk_widget_show_all (window);
         else
