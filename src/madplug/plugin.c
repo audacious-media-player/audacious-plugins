@@ -277,7 +277,9 @@ mp3_head_convert(const guchar * hbuf)
         ((guint32) hbuf[3]);
 }
 
-#if 1
+#undef MADPROBE_DEBUG
+
+#ifdef MADPROBE_DEBUG
 static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
 #define LULZ(...) do { fprintf(stderr, "madprobe: "); fprintf(stderr, __VA_ARGS__); } while (0)
 #define LOL(...) do { fprintf(stderr, __VA_ARGS__); } while (0)
