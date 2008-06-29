@@ -41,19 +41,19 @@ static GtkTreeModel * create_model(void)
          * else we print the "no devices found message */
         if(discover_finish == 1) 
             /*we are scanning*/
-             status = g_strdup_printf("Scanning"); 
-             else 
-                status = g_strdup_printf("No devices found!");
-       /* add the status to the list */
+            status = g_strdup_printf("Scanning"); 
+        else 
+            status = g_strdup_printf("No devices found!");
+        /* add the status to the list */
         gtk_list_store_append(store,&iter);
         gtk_list_store_set(store,&iter, COLUMN_PRODUCER,status,-1);
         return GTK_TREE_MODEL(store);    
-     } 
+    } 
     while(dev != NULL)
     {
         gtk_list_store_append(store,&iter);
         gtk_list_store_set(store,&iter, COLUMN_PRODUCER, 
-                          ((DeviceData*)(dev->data))-> name,-1);
+                ((DeviceData*)(dev->data))-> name,-1);
         dev = g_list_next(dev);
     }
 
@@ -76,34 +76,34 @@ static GtkTreeModel * rebuild_model(void)
     /*add inf to test_data from audio_devices */
     dev_no = g_list_length(audio_devices);
     dev = audio_devices;
-     if(dev == NULL || discover_finish == 0) {
+    if(dev == NULL || discover_finish == 0) {
         /*if we are scanning for devices now then print the Scanning message,
          * else we print the "no devices found message */
         printf("discover: %d\n",discover_finish);
         if(discover_finish == 1) {
             /*we are scanning*/
-             status = g_strdup_printf("Scanning"); 
+            status = g_strdup_printf("Scanning"); 
         } else 
-                status = g_strdup_printf("No devices found!");
-       /* add the status to the list */
+            status = g_strdup_printf("No devices found!");
+        /* add the status to the list */
         gtk_list_store_append(store,&iter);
         gtk_list_store_set(store,&iter, COLUMN_PRODUCER,status,-1);
         gtk_label_set_text(GTK_LABEL(label_prod),status);
         return GTK_TREE_MODEL(store);    
-     } 
-    
+    } 
+
     /* add data to the list store */
     while(dev != NULL)
     {
         gtk_list_store_append(store,&iter);
         gtk_list_store_set(store,&iter, COLUMN_PRODUCER, 
-                          ((DeviceData*)(dev->data))-> name,-1);
+                ((DeviceData*)(dev->data))-> name,-1);
         dev = g_list_next(dev);
     }
     //set the labels
- //   temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+    //   temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
     gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
-//    gtk_label_set_text(GTK_LABEL(label_class),temp);
+    //    gtk_label_set_text(GTK_LABEL(label_class),temp);
     gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
     g_free(temp);
     return GTK_TREE_MODEL(store);          
@@ -160,22 +160,22 @@ void select_row(GtkWidget *treeview){
         for(i=0;i<sel;i++) 
             dev = g_list_next(dev);
         if(dev != NULL) {
-        temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
-        gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
-        gtk_label_set_text(GTK_LABEL(label_class),temp);
-        gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
-        gtk_tree_path_free (path);
-        g_free(temp);
+            temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+            gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
+            gtk_label_set_text(GTK_LABEL(label_class),temp);
+            gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
+            gtk_tree_path_free (path);
+            g_free(temp);
         }else 
             gtk_label_set_text(GTK_LABEL(label_prod),status);
         g_free(status);
-   
+
     }
 }
 
 void results_ui()
 {
-     gchar *temp;
+    gchar *temp;
     if (!window)
     {
         window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -265,11 +265,11 @@ void results_ui()
 
         dev = audio_devices;
         if(dev != NULL) {
-        temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
-        gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
-        gtk_label_set_text(GTK_LABEL(label_class),temp);
-        gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
-        g_free(temp);
+            temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+            gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
+            gtk_label_set_text(GTK_LABEL(label_class),temp);
+            gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
+            g_free(temp);
         }
 
         gtk_window_set_default_size (GTK_WINDOW (window), 460, 150);
