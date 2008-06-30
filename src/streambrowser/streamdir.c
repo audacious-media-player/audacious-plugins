@@ -20,7 +20,7 @@ void streamdir_delete(streamdir_t *streamdir)
 	GList *iterator;
 	category_t *category;
 
-	for (iterator = g_list_first(streamdir->category_list); iterator != NULL; iterator = g_list_next(streamdir->category_list)) {
+	for (iterator = g_list_first(streamdir->category_list); iterator != NULL; iterator = g_list_next(iterator)) {
 		category = iterator->data;		
 		category_delete(category);
 	}
@@ -44,7 +44,7 @@ void category_delete(category_t *category)
 	GList *iterator;
 	streaminfo_t *streaminfo;
 	
-	for (iterator = g_list_first(category->streaminfo_list); iterator != NULL; iterator = g_list_next(category->streaminfo_list)) {
+	for (iterator = g_list_first(category->streaminfo_list); iterator != NULL; iterator = g_list_next(iterator)) {
 		streaminfo = iterator->data;
 		streaminfo_delete(streaminfo);
 	}
@@ -73,9 +73,9 @@ category_t* category_get_by_name(streamdir_t *streamdir, gchar *name)
 	GList *iterator;
 	category_t *category;
 	
-	for (iterator = g_list_first(streamdir->category_list); iterator != NULL; iterator = g_list_next(streamdir->category_list)) {
+	for (iterator = g_list_first(streamdir->category_list); iterator != NULL; iterator = g_list_next(iterator)) {
 		category = iterator->data;
-		if (!strncasecmp(category->name, name, DEF_STRING_LEN))
+		if (strncasecmp(category->name, name, DEF_STRING_LEN) == 0)
 			return category;
 	}
 	
@@ -87,13 +87,19 @@ gint category_get_count(streamdir_t *streamdir)
 	return g_list_length(streamdir->category_list);
 }
 
+gint category_get_index(streamdir_t *streamdir, category_t *category)
+{
+	return g_list_index(streamdir->category_list, category);
+}
 
-streaminfo_t* streaminfo_new(gchar *name, gchar *url)
+
+streaminfo_t* streaminfo_new(gchar *name, gchar *playlist_url, gchar *current_track)
 {
 	streaminfo_t *streaminfo = (streaminfo_t*) g_malloc(sizeof(streaminfo_t));
 	strncpy(streaminfo->name, name, DEF_STRING_LEN);
-	strncpy(streaminfo->url, url, DEF_STRING_LEN);
-	
+	strncpy(streaminfo->playlist_url, playlist_url, DEF_STRING_LEN);
+	strncpy(streaminfo->current_track, current_track, DEF_STRING_LEN);
+
 	return streaminfo;
 }
 
@@ -122,9 +128,9 @@ streaminfo_t* streaminfo_get_by_name(category_t *category, gchar *name)
 	GList *iterator;
 	streaminfo_t *streaminfo;
 	
-	for (iterator = g_list_first(category->streaminfo_list); iterator != NULL; iterator = g_list_next(category->streaminfo_list)) {
+	for (iterator = g_list_first(category->streaminfo_list); iterator != NULL; iterator = g_list_next(iterator)) {
 		streaminfo = iterator->data;
-		if (!strncasecmp(streaminfo->name, name, DEF_STRING_LEN))
+		if (strncasecmp(streaminfo->name, name, DEF_STRING_LEN) == 0)
 			return streaminfo;
 	}
 	
@@ -135,4 +141,10 @@ gint streaminfo_get_count(category_t *category)
 {
 	return g_list_length(category->streaminfo_list);
 }
+
+gint streaminfo_get_index(category_t *category, streaminfo_t *streaminfo)
+{
+	return g_list_index(category->streaminfo_list, streaminfo);
+}
+
 
