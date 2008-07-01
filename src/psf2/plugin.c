@@ -178,6 +178,12 @@ void psf2_play(InputPlayback *data)
 
 		if (seek)
 		{
+			data->eof = FALSE;
+			data->output->flush(seek);
+
+			psf2_command(COMMAND_RESTART, 0);
+			psf2_seek(seek);
+
 			seek = 0;
 			continue;
 		}
@@ -230,23 +236,19 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 		buffer += t;
 	}
 
-#if 0
-    if (seek)
-    {
-        if(sexypsf_seek(seek))
-        {
-            playback->output->flush(seek);
-            seek = 0;
-        }
-        else  // negative time - must make a C time machine
-        {
-            sexypsf_stop();
-            return;
-        }
-    }
-    if (stop)
-        sexypsf_stop();
-#endif
+	if (seek)
+	{
+		if (psf2_seek(seek))
+		{
+			playback->output->flush(seek);
+			seek = 0;
+		}
+		else
+		{
+			playback->eof = TRUE;
+			return;
+		}
+	}
 }
 
 void psf2_Stop(InputPlayback *playback)
@@ -270,21 +272,23 @@ int psf2_is_our_fd(gchar *filename, VFSFile *file)
 	return 0;
 }
 
+void psf2_Seek(InputPlayback *playback, int time)
+{
+	seek = time * 1000;
+}
+
 gchar *psf2_fmts[] = { "psf2", "minipsf2", NULL };
 
 InputPlugin psf2_ip =
 {
-    .description = "PSF2 Audio Plugin",
-    .play_file = psf2_play,
-    .stop = psf2_Stop,
-    .pause = psf2_pause,
-#if 0
-    .seek = sexypsf_xmms_seek,
-    .get_song_info = sexypsf_xmms_getsonginfo,
-#endif
-    .get_song_tuple = psf2_tuple,
-    .is_our_file_from_vfs = psf2_is_our_fd,
-    .vfs_extensions = psf2_fmts,
+	.description = "PSF2 Audio Plugin",
+	.play_file = psf2_play,
+	.stop = psf2_Stop,
+	.pause = psf2_pause,
+	.seek = psf2_Seek,
+	.get_song_tuple = psf2_tuple,
+	.is_our_file_from_vfs = psf2_is_our_fd,
+	.vfs_extensions = psf2_fmts,
 };
 
 InputPlugin *psf2_iplist[] = { &psf2_ip, NULL };

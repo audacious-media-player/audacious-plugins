@@ -36,4 +36,4 @@ EXPORT_GCC long CALLBACK SPU2init(void);
 EXPORT_GCC long CALLBACK SPU2open(void *pDsp);
 EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle, void *);
 EXPORT_GCC void CALLBACK SPU2close(void);
-
+EXPORT_GCC int  CALLBACK psf2_seek(u32 t);

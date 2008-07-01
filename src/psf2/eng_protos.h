@@ -16,4 +16,4 @@ int32 psf2_execute(InputPlayback *playback);
 int32 psf2_stop(void);
 int32 psf2_command(int32, int32);
 int32 psf2_fill_info(Tuple *);
-
+int   psf2_seek(uint32);

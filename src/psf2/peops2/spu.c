@@ -332,9 +332,18 @@ static u32 sampcount;
 static u32 decaybegin;
 static u32 decayend;
 
+static u32 seektime;
+int psf2_seek(u32 t)
+{
+ seektime=t*441/10;
+ if(seektime>sampcount) return(1);
+ return(0);
+}
+
 // Counting to 65536 results in full volume offage.
 void setlength2(s32 stop, s32 fade)
 {
+ seektime = 0;
  if(stop==~0)
  {
   decaybegin=~0;
@@ -739,7 +748,7 @@ ENDX:   ;
 	if(decaybegin!=~0) // Is anyone REALLY going to be playing a song
 		      // for 13 hours?
     	{
-		if(sampcount>=decayend) 
+		if(sampcount>=decayend)
 		{
 			psf2_update(NULL, 0, data);
 		        return(0);
@@ -760,7 +769,11 @@ ENDX:   ;
   //////////////////////////////////////////////////////                   
   // feed the sound
   // wanna have around 1/60 sec (16.666 ms) updates
-	if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
+	if (seektime != 0 && sampcount < seektime)
+	{
+		pS=(short *)pSpuBuffer;
+	}
+	else if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
 	{
 	    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
 	        pS=(short *)pSpuBuffer;					  
