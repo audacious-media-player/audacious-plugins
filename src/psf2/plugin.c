@@ -174,14 +174,31 @@ void psf2_play(InputPlayback *data)
 		psf2_execute(data);
 	}	
 
+	psf2_stop();
+
+	data->output->buffer_free();
+	data->output->buffer_free();
+
+	data->output->close_audio();
+
 	g_free(buffer);
 	g_free(path);
         g_free(title);
+
+	data->playing = FALSE;
 }
 
 void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 {
 	const int mask = ~((((16 / 8) * 2)) - 1);
+
+	if (buffer == NULL)
+	{
+		playback->playing = FALSE;
+		playback->eof = TRUE;
+
+		return;
+	}
 
 	while (count > 0)
 	{

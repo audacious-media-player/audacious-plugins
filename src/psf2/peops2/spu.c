@@ -741,7 +741,7 @@ ENDX:   ;
     	{
 		if(sampcount>=decayend) 
 		{
-//		       	ao_song_done = 1;
+			psf2_update(NULL, 0, data);
 		        return(0);
 		}
 

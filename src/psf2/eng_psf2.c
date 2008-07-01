@@ -590,14 +590,17 @@ int32 psf2_execute(InputPlayback *playback)
 {	
 	int i;
 
-	for (i = 0; i < 44100 / 60; i++)
+	while (playback->playing && !playback->eof)
 	{
-		SPU2async(1, playback);
-		ps2_hw_slice();
+		for (i = 0; i < 44100 / 60; i++)
+		{
+			SPU2async(1, playback);
+			ps2_hw_slice();
+		}
+
+		ps2_hw_frame();
 	}
 
-	ps2_hw_frame();
-	
 	return AO_SUCCESS;
 }
 
