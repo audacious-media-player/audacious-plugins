@@ -48,16 +48,16 @@ void bluetooth_init ( void )
 void bluetooth_cleanup ( void )
 {
     printf("bluetooth: exit\n");
-        if (config ==1 ){
-            destroy_scan_window();
-            config =0;
-        }
-        if(discover_finish == 2) {
+    if (config ==1 ){
+        destroy_scan_window();
+        config =0;
+    }
+    if(discover_finish == 2) {
         dbus_g_connection_flush (bus);
         dbus_g_connection_unref(bus);
-    }
-    disconnect_dbus_signals();
+        disconnect_dbus_signals();
 
+    }
 }
 
 void bt_about( void )
@@ -67,7 +67,9 @@ void bt_about( void )
 }
 
 void bt_cfg(void)
-{   config =1;
+{   
+    printf("bt_cfg\n");
+    config =1;
     if(discover_finish == 2){
         if (devices_no == 0){
             printf("no devs!\n");
@@ -77,10 +79,11 @@ void bt_cfg(void)
             results_ui();
     }
     else show_scan();    
+    printf("end of bt_cfg\n");
 }
 
-void disconnect_dbus_signals(){
-
+void disconnect_dbus_signals()
+{
     dbus_g_proxy_disconnect_signal(obj, "RemoteDeviceFound", G_CALLBACK(remote_device_found), bus);
     dbus_g_proxy_disconnect_signal(obj, "DiscoveryStarted", G_CALLBACK(discovery_started), bus);
     dbus_g_proxy_disconnect_signal(obj, "DiscoveryCompleted", G_CALLBACK(discovery_completed), bus);
@@ -89,7 +92,8 @@ void disconnect_dbus_signals(){
 }
 
 
-void refresh_call(void){
+void refresh_call(void)
+{
     printf("refresh function called\n");
     disconnect_dbus_signals();
     if(discover_finish == 0 ||discover_finish== 2){
@@ -100,7 +104,8 @@ void refresh_call(void){
         printf("Scanning please wait!\n");
 }
 
-void connect_call(void){
+void connect_call(void)
+{
     printf("connect function \n");
 }
 
@@ -154,6 +159,7 @@ static void remote_name_updated(DBusGProxy *object, const char *address,  char *
     }
     g_static_mutex_unlock(&mutex);
 }
+
 static void print_results()
 {
     int i=0;
@@ -173,10 +179,10 @@ static void print_results()
             current_device=g_list_next(current_device);
         }
         destroy_scan_window();
-      if(config==1) {
-          destroy_scan_window();
-          results_ui();
-      }
+        if(config==1) {
+            destroy_scan_window();
+            results_ui();
+        }
         //   refresh_tree();
     }
 }
@@ -192,7 +198,8 @@ static void discovery_completed(DBusGProxy *object, gpointer user_data)
 
 
 
-void discover_devices(void){
+void discover_devices(void)
+{
     GError *error = NULL;
     //  g_type_init();
     g_log_set_always_fatal (G_LOG_LEVEL_WARNING);

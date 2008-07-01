@@ -10,20 +10,25 @@ static GtkWidget *progress_bar;
 
 gpointer progress() {
 
-for(;;){
-    gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress_bar));
-    printf("threadfunction\n");
-    sleep(1);
-    if(discover_finish == 2 ) {            
-            gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
+    for(;;){
+        if(window){
+            gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress_bar));
+        }
+        sleep(1);
+        if(discover_finish == 2 ) {            
+            if(window){
+                gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
+            }
             return 0;
         }
     }
-return 0;
+    return 0;
 }
 
 void show_no_devices(){
-    gtk_label_set_text(GTK_LABEL(scan_label),"No devices found!");
+    if(window ){
+        gtk_label_set_text(GTK_LABEL(scan_label),"No devices found!");
+    }
 }
 void destroy_scan_window(){
     gtk_widget_hide(window);
@@ -68,12 +73,12 @@ void show_scan()
         if (!GTK_WIDGET_VISIBLE (window))
             gtk_widget_show_all (window);
         else
-        {
+        {   
             gtk_widget_destroy (window);
             g_free(filename);
             window = NULL;
         }
 
-     }
+    }
 
 }

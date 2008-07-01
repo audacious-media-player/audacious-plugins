@@ -7,6 +7,17 @@
 #include "streambrowser.h"
 #include "streamdir.h"
 #include "shoutcast.h"
+#include "gui/streambrowser_win.h"
+#include "gui/about_win.h"
+
+
+typedef struct {
+
+	streamdir_t*		streamdir;
+	category_t*		category;
+	streaminfo_t*		streaminfo;	
+	
+} update_thread_data_t;
 
 
 static void			sb_init();
@@ -14,9 +25,24 @@ static void 			sb_about();
 static void 			sb_configure();
 static void 			sb_cleanup();
 
-static void 			menu_click();
-static void 			add_plugin_services_menu_item();
+static void 			gui_init();
+static void			gui_done();
+static void			config_load();
+static void			config_save();
 
+static void			streamdir_update(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo);
+static gpointer			update_thread_core(update_thread_data_t *data);
+static void			streaminfo_add_to_playlist(streaminfo_t *streaminfo);
+static void 			on_plugin_services_menu_item_click();
+
+static GtkWidget*		playlist_menu_item;
+static GtkWidget*		main_menu_item;
+static update_thread_data_t	update_thread_data_queue[MAX_UPDATE_THREADS];
+static gint			update_thread_count = 0;
+static GMutex*			update_thread_mutex;
+
+
+streambrowser_cfg_t		streambrowser_cfg;
 
 static GeneralPlugin sb_plugin = 
 {
@@ -38,8 +64,7 @@ SIMPLE_GENERAL_PLUGIN(streambrowser, sb_gplist);
 
 void debug(const char *fmt, ...)
 {
-	// todo: replace with config->debug
-	if (TRUE) {
+	if (streambrowser_cfg.debug) {
 		va_list ap;
 		fprintf(stderr, "* streambrowser: ");
 		va_start(ap, fmt);
@@ -48,7 +73,7 @@ void debug(const char *fmt, ...)
 	}
 }
 
-void error(const char *fmt, ...)
+void failure(const char *fmt, ...)
 {
 	va_list ap;
 	fprintf(stderr, "! streambrowser: ");
@@ -57,12 +82,58 @@ void error(const char *fmt, ...)
 	va_end(ap);
 }
 
+gboolean fetch_remote_to_local_file(gchar *remote_url, gchar *local_url)
+{
+	VFSFile *remote_file = aud_vfs_fopen(remote_url, "r");
+	if (remote_file == NULL) {
+		failure("failed to fetch file '%s'\n", remote_url);
+		return FALSE;
+	}
+		
+	VFSFile *local_file = aud_vfs_fopen(local_url, "w");
+	if (local_file == NULL) {
+		aud_vfs_fclose(remote_file);
+	
+		failure("failed to create local file '%s'\n", local_file);
+		return FALSE;
+	}
+	
+	unsigned char buff[DEF_BUFFER_SIZE];
+	int size;
+	while (!aud_vfs_feof(remote_file)) {
+		size = aud_vfs_fread(buff, 1, DEF_BUFFER_SIZE, remote_file);
+
+		// i don't know why aud_vfs_feof() doesn't ever return TRUE
+		// so this is a workaround to properly end the loop
+		if (size == 0)
+			break;
+		
+		size = aud_vfs_fwrite(buff, 1, size, local_file);
+		if (size == 0) {
+			aud_vfs_fclose(local_file);
+			aud_vfs_fclose(remote_file);
+
+			failure("failed to write to local file '%s'\n", local_file);
+			return FALSE;
+		}
+	}
+
+	aud_vfs_fclose(local_file);
+	aud_vfs_fclose(remote_file);
+	
+	return TRUE;
+}
+
 
 static void sb_init()
 {
+	/* workaround to print sb_init() */
+	streambrowser_cfg.debug = TRUE;
 	debug("sb_init()\n");
+	streambrowser_cfg.debug = FALSE;
 
-	//shoutcast_streamdir_fetch();	
+	config_load();
+	gui_init();
 }
 
 static void sb_about()
@@ -78,23 +149,199 @@ static void sb_configure()
 static void sb_cleanup()
 {
 	debug("sb_cleanup()\n");
+	
+	gui_done();
+	config_save();
 }
 
-static void menu_click()
+static void gui_init()
 {
-	debug("menu_click()\n");
+	/* the plugin services menu */
+	playlist_menu_item = gtk_image_menu_item_new_with_label("Streambrowser");
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+	gtk_widget_show(playlist_menu_item);
+	g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(on_plugin_services_menu_item_click), NULL);
+	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
+
+	main_menu_item = gtk_image_menu_item_new_with_label("Streambrowser");
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+	gtk_widget_show(main_menu_item);
+	g_signal_connect(G_OBJECT(main_menu_item), "activate", G_CALLBACK(on_plugin_services_menu_item_click), NULL);
+	audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
+
+	/* main streambrowser window */
+	streambrowser_win_init();
+	streambrowser_win_set_update_function(streamdir_update);
+	update_thread_mutex = g_mutex_new();
+
+	debug("gui initialized\n");
 }
 
-static void add_plugin_services_menu_item()
+static void gui_done()
 {
-	/*
-	GtkWidget *menu_item;
+	/* the plugin services menu */
+	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
+	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_MAIN, main_menu_item);
 
-	menu_item = gtk_image_menu_item_new_with_label("SB Test");
-	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-	gtk_widget_show(menu_item);
-	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, menu_item);
-	g_signal_connect(G_OBJECT(menu_item), "activate", G_CALLBACK(menu_click), NULL);
-	*/
+	/* main streambrowser window */
+	streambrowser_win_hide();
+	streambrowser_win_done();
+
+	debug("gui destroied\n");
+}
+
+static void config_load()
+{
+	streambrowser_cfg.debug = FALSE;
+	
+	mcs_handle_t *db;	
+	if ((db = aud_cfg_db_open()) == NULL) {
+		failure("failed to load configuration\n");
+		return;
+	}
+	
+	aud_cfg_db_get_bool(db, "streambrowser", "debug", &streambrowser_cfg.debug);
+
+	aud_cfg_db_close(db);
+
+	debug("configuration loaded\n");
+	debug("debug = %d\n", streambrowser_cfg.debug);
+}
+
+static void config_save()
+{
+	mcs_handle_t *db;	
+	if ((db = aud_cfg_db_open()) == NULL) {
+		failure("failed to save configuration\n");
+		return;
+	}
+
+	aud_cfg_db_set_bool(db, "streambrowser", "debug", streambrowser_cfg.debug);
+	
+	aud_cfg_db_close(db);
+
+	debug("configuration saved\n");
+}
+
+static void streamdir_update(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo)
+{
+	debug("requested streamdir update (streamdir = '%s', category = '%s', streaminfo = '%s')\n", 
+		streamdir == NULL ? "" : streamdir->name, 
+		category == NULL ? "" : category->name,
+		streaminfo == NULL ? "" : streaminfo->name);
+
+	if (update_thread_count >= MAX_UPDATE_THREADS) {
+		debug("another %d streamdir updates are pending, this request will be dropped\n", update_thread_count);
+	}
+	else
+		if (update_thread_count > 0) {
+			debug("another %d streamdir updates are pending, this request will be queued\n", update_thread_count);
+			
+			g_mutex_lock(update_thread_mutex);
+			update_thread_data_queue[update_thread_count].streamdir = streamdir;
+			update_thread_data_queue[update_thread_count].category = category;
+			update_thread_data_queue[update_thread_count].streaminfo = streaminfo;
+			
+			update_thread_count++;
+			g_mutex_unlock(update_thread_mutex);
+		}
+		else {
+			update_thread_data_t *data = g_malloc(sizeof(update_thread_data_t));
+			
+			data->streamdir = streamdir;
+			data->category = category;
+			data->streaminfo = streaminfo;
+
+			g_thread_create((GThreadFunc) update_thread_core, data, TRUE, NULL);
+		}
+}
+
+static gpointer update_thread_core(update_thread_data_t *data)
+{
+	/* update a streaminfo - that is - add this streaminfo to playlist */
+	if (data->streaminfo != NULL) {
+		 streaminfo_add_to_playlist(data->streaminfo);
+	}
+	/* update a category */
+	else if (data->category != NULL) {
+		/* shoutcast */
+		if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
+			shoutcast_category_fetch(data->category);
+			
+			gdk_threads_enter();
+			streambrowser_win_set_category(data->streamdir, data->category);
+			gdk_threads_leave();
+		}
+	}
+	/* update a streamdir */
+	else if (data->streamdir != NULL) {
+		/* shoutcast */
+		if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
+			streamdir_t *streamdir = shoutcast_streamdir_fetch();
+			if (streamdir != NULL) {
+				gdk_threads_enter();
+				streambrowser_win_set_streamdir(streamdir, SHOUTCAST_ICON);
+				gdk_threads_leave();
+			}
+		}
+	}
+	/* update all streamdirs */
+	else {
+		/* shoutcast */
+		streamdir_t *shoutcast_streamdir = shoutcast_streamdir_fetch();
+		if (shoutcast_streamdir != NULL) {
+			gdk_threads_enter();
+			streambrowser_win_set_streamdir(shoutcast_streamdir, SHOUTCAST_ICON);
+			gdk_threads_leave();
+		}
+	}
+	
+	g_free(data);
+
+	/* check to see if there are pending update requests */
+	
+	data = NULL;
+	g_mutex_lock(update_thread_mutex);
+	if (update_thread_count > 0) {
+		data = g_malloc(sizeof(update_thread_data_t));
+		data->streamdir = update_thread_data_queue[0].streamdir;
+		data->category = update_thread_data_queue[0].category;
+		data->streaminfo = update_thread_data_queue[0].streaminfo;
+
+		int i;
+		for (i = 0; i < update_thread_count; i++) {
+			update_thread_data_queue[i].streamdir = update_thread_data_queue[i + 1].streamdir;
+			update_thread_data_queue[i].category = update_thread_data_queue[i + 1].category;
+			update_thread_data_queue[i].streaminfo = update_thread_data_queue[i + 1].streaminfo;
+		}
+		
+		update_thread_count--;
+	}
+	g_mutex_unlock(update_thread_mutex);
+
+	if (data != NULL)
+		update_thread_core(data);
+
+	return NULL;
+}
+
+static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
+{
+	debug("fetching stream playlist for station '%s' from '%s'\n", streaminfo->name, streaminfo->playlist_url);
+	if (!fetch_remote_to_local_file(streaminfo->playlist_url, PLAYLIST_TEMP_FILE)) {
+		failure("shoutcast: stream playlist '%s' could not be downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
+		return;
+	}
+	debug("stream playlist '%s' successfuly downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
+	
+	aud_playlist_add(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
+}
+
+static void on_plugin_services_menu_item_click()
+{
+	debug("on_plugin_services_menu_item_click()\n");
+	
+	streambrowser_win_show();
+	streamdir_update(NULL, NULL, NULL);
 }
 
