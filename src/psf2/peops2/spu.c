@@ -168,7 +168,7 @@ static int lastch=-1;      // last channel processed on spu irq in timer mode
 static int lastns=0;       // last ns pos
 static int iSecureStart=0; // secure start counter
 
-extern void ps2_update(unsigned char *samples, long lBytes);
+extern void psf2_update(unsigned char *samples, long lBytes, void *data);
 
 ////////////////////////////////////////////////////////////////////////
 // CODE AREA
@@ -359,7 +359,7 @@ void setlength2(s32 stop, s32 fade)
 
 int iSpuAsyncWait=0;
 
-static void *MAINThread(int samp2run)
+static void *MAINThread(int samp2run, void *data)
 {
  int s_1,s_2,fa,voldiv=iVolume;
  unsigned char * start;unsigned int nSample;
@@ -762,7 +762,7 @@ ENDX:   ;
   // wanna have around 1/60 sec (16.666 ms) updates
 	if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
 	{
-	    	ps2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
+	    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
 	        pS=(short *)pSpuBuffer;					  
 	}
  }
@@ -783,7 +783,7 @@ ENDX:   ;
 //  1 time every 'cycle' cycles... harhar
 ////////////////////////////////////////////////////////////////////////
 
-EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle)
+EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle, void *data)
 {
  if(iSpuAsyncWait)
   {
@@ -792,7 +792,7 @@ EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle)
    iSpuAsyncWait=0;
   }
 
-   MAINThread(0);                                      // -> linux high-compat mode
+ MAINThread(0, data);                                      // -> linux high-compat mode
 }
 
 ////////////////////////////////////////////////////////////////////////

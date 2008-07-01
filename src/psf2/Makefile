@@ -1,9 +1,7 @@
-PROG = psf2
-#PLUGIN = psf2${PLUGIN_SUFFIX}
+PLUGIN = psf2${PLUGIN_SUFFIX}
 
 SRCS = corlett.c \
        plugin.c \
-       oss.c \
        psx.c \
        psx_hw.c \
        eng_psf.c \

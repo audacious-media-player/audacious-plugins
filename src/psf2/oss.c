@@ -53,7 +53,7 @@ unsigned long cbUserData;
 static int hw_present;
 
 static INT32 is_broken_driver;
-int nDSoundSegLen = 0;
+int nDSoundSegLen = 44100 / 60;
 int oss_nw = 0;
 
 int audiofd;

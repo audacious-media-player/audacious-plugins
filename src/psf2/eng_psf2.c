@@ -586,20 +586,13 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	return AO_SUCCESS;
 }
 
-void ps2_update(unsigned char *pSound, long lBytes)
-{
-	memcpy(spu_pOutput, pSound, lBytes);	// (for direct 44.1kHz output)
-}
-
-int32 psf2_gen(int16 *buffer, uint32 samples)
+int32 psf2_execute(InputPlayback *playback)
 {	
 	int i;
 
-	spu_pOutput = (char *)buffer;
-
-	for (i = 0; i < samples; i++)
+	for (i = 0; i < 44100 / 60; i++)
 	{
-		SPU2async(1);
+		SPU2async(1, playback);
 		ps2_hw_slice();
 	}
 

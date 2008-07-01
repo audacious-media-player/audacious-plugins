@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <audacious/plugin.h>
+
 #include "ao.h"
 #include "eng_protos.h"
 
@@ -39,14 +41,13 @@ static struct
 	uint32 sig; 
 	char *name; 
 	int32 (*start)(uint8 *, uint32); 
-	int32 (*gen)(int16 *, uint32); 
 	int32 (*stop)(void); 
 	int32 (*command)(int32, int32); 
 	uint32 rate; 
 	int32 (*fillinfo)(ao_display_info *); 
 } types[] = {
-	{ 0x50534602, "Sony PlayStation 2 (.psf2)", psf2_start, psf2_gen, psf2_stop, psf2_command, 60, psf2_fill_info },
-	{ 0xffffffff, "", NULL, NULL, NULL, NULL, 0, NULL }
+	{ 0x50534602, "Sony PlayStation 2 (.psf2)", psf2_start, psf2_stop, psf2_command, 60, psf2_fill_info },
+	{ 0xffffffff, "", NULL, NULL, NULL, 0, NULL }
 };
 
 static char *path;
@@ -56,14 +57,14 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 {
 	uint8 *filebuf;
 	uint32 size;
-	FILE *auxfile;
+	VFSFile *auxfile;
 
-	auxfile = fopen(filename, "rb");
+	auxfile = aud_vfs_fopen(filename, "rb");
 	if (!auxfile)
 	{
 		char buf[PATH_MAX];
 		snprintf(buf, PATH_MAX, "%s/%s", dirname(path), filename);
-		auxfile = fopen(buf, "rb");
+		auxfile = aud_vfs_fopen(buf, "rb");
 
 		if (!auxfile)
 		{
@@ -72,21 +73,21 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 		}
 	}
 
-	fseek(auxfile, 0, SEEK_END);
-	size = ftell(auxfile);
-	fseek(auxfile, 0, SEEK_SET);
+	aud_vfs_fseek(auxfile, 0, SEEK_END);
+	size = aud_vfs_ftell(auxfile);
+	aud_vfs_fseek(auxfile, 0, SEEK_SET);
 
 	filebuf = malloc(size);
 
 	if (!filebuf)
 	{
-		fclose(auxfile);
+		aud_vfs_fclose(auxfile);
 		printf("ERROR: could not allocate %d bytes of memory\n", size);
 		return AO_FAIL;
 	}
 
-	fread(filebuf, size, 1, auxfile);
-	fclose(auxfile);
+	aud_vfs_fread(filebuf, size, 1, auxfile);
+	aud_vfs_fclose(auxfile);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
@@ -94,39 +95,37 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 	return AO_SUCCESS;
 }
 
-int main(int argv, char *argc[])
+void psf2_play(InputPlayback *data)
 {
-	FILE *file;
+	VFSFile *file;
 	uint8 *buffer;
 	uint32 size, filesig;
 
-	path = strdup(argc[1]);
-	file = fopen(argc[1], "rb");
+	path = strdup(data->filename);
+	file = aud_vfs_fopen(data->filename, "rb");
 
 	if (!file)
 	{
-		printf("ERROR: could not open file %s\n", argc[1]);
-		return -1;
+		printf("ERROR: could not open file %s\n", data->filename);
+		return;
 	}
 
-	// get the length of the file by seeking to the end then reading the current position
-	fseek(file, 0, SEEK_END);
-	size = ftell(file);
-	// reset the pointer
-	fseek(file, 0, SEEK_SET);
+	aud_vfs_fseek(file, 0, SEEK_END);
+	size = aud_vfs_ftell(file);
+	aud_vfs_fseek(file, 0, SEEK_SET);
 
 	buffer = malloc(size);
 
 	if (!buffer)
 	{
-		fclose(file);
+		aud_vfs_fclose(file);
 		printf("ERROR: could not allocate %d bytes of memory\n", size);
-		return -1;
+		return;
 	}
 
 	// read the file
-	fread(buffer, size, 1, file);
-	fclose(file);
+	aud_vfs_fread(buffer, size, 1, file);
+	aud_vfs_fclose(file);
 
 	// now try to identify the file
 	type = 0;
@@ -148,26 +147,107 @@ int main(int argv, char *argc[])
 	{
 		printf("ERROR: File is unknown, signature bytes are %02x %02x %02x %02x\n", buffer[0], buffer[1], buffer[2], buffer[3]);
 		free(buffer);
-		return -1;
+		return;
 	}
 
 	if (psf2_start(buffer, size) != AO_SUCCESS)
 	{
 		free(buffer);
 		printf("ERROR: Engine rejected file!\n");
-		return -1;
+		return;
 	}
 	
-	m1sdr_Init(44100);
-	m1sdr_SetCallback(psf2_gen);
+	data->output->open_audio(FMT_S16_NE, 44100, 2);
 
-	while (1)
+	data->playing = TRUE;
+	data->set_pb_ready(data);
+	while (data->playing)
 	{
-		m1sdr_TimeCheck();
-	}		
+		psf2_execute(data);
+	}	
 
 	free(buffer);
-
-	return 1;
 }
+
+void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
+{
+	const int mask = ~((((16 / 8) * 2)) - 1);
+
+	while (count > 0)
+	{
+		int t = playback->output->buffer_free() & mask;
+		if (t > count)
+			playback->pass_audio(playback, FMT_S16_NE, 2, count, buffer, NULL);
+		else
+		{
+			if (t)
+				playback->pass_audio(playback, FMT_S16_NE, 2, t, buffer, NULL);
+
+			g_usleep((count-t)*1000*5/441/2);
+		}
+		count -= t;
+		buffer += t;
+	}
+
+#if 0
+    if (seek)
+    {
+        if(sexypsf_seek(seek))
+        {
+            playback->output->flush(seek);
+            seek = 0;
+        }
+        else  // negative time - must make a C time machine
+        {
+            sexypsf_stop();
+            return;
+        }
+    }
+    if (stop)
+        sexypsf_stop();
+#endif
+}
+
+void psf2_Stop(InputPlayback *playback)
+{
+	playback->playing = FALSE;
+}
+
+void psf2_pause(InputPlayback *playback, short p)
+{
+	playback->output->pause(p);
+}
+
+static int
+is_our_fd(gchar *filename, VFSFile *file)
+{
+	gchar magic[4];
+	aud_vfs_fread(magic, 1, 4, file);
+
+	if (!memcmp(magic, "PSF\x02", 4))
+		return 1;
+
+	return 0;
+}
+
+gchar *psf2_fmts[] = { "psf2", "minipsf2", NULL };
+
+InputPlugin psf2_ip =
+{
+    .description = "PSF2 Audio Plugin",
+    .play_file = psf2_play,
+    .stop = psf2_Stop,
+    .pause = psf2_pause,
+#if 0
+    .seek = sexypsf_xmms_seek,
+    .get_song_info = sexypsf_xmms_getsonginfo,
+    .get_song_tuple = get_aud_tuple_psf,
+#endif
+    .is_our_file_from_vfs = is_our_fd,
+    .vfs_extensions = psf2_fmts,
+};
+
+InputPlugin *psf2_iplist[] = { &psf2_ip, NULL };
+
+DECLARE_PLUGIN(psf2, NULL, NULL, psf2_iplist, NULL, NULL, NULL, NULL, NULL);
 
