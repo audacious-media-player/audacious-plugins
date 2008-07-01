@@ -69,6 +69,8 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 	return AO_SUCCESS;
 }
 
+static gint seek = 0;
+
 Tuple *psf2_tuple(gchar *filename)
 {
 	Tuple *t;
@@ -169,17 +171,29 @@ void psf2_play(InputPlayback *data)
 
 	data->playing = TRUE;
 	data->set_pb_ready(data);
-	while (data->playing)
+
+	for (;;)
 	{
 		psf2_execute(data);
+
+		if (seek)
+		{
+			seek = 0;
+			continue;
+		}
+
+		psf2_stop();
+
+		data->output->buffer_free();
+		data->output->buffer_free();
+
+		while (data->eof && data->output->buffer_playing())
+			g_usleep(10000);
+
+		data->output->close_audio();
+
+		break;
 	}	
-
-	psf2_stop();
-
-	data->output->buffer_free();
-	data->output->buffer_free();
-
-	data->output->close_audio();
 
 	g_free(buffer);
 	g_free(path);
