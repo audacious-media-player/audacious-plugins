@@ -69,11 +69,66 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 	return AO_SUCCESS;
 }
 
+Tuple *psf2_tuple(gchar *filename)
+{
+	Tuple *t;
+	corlett_t *c;
+	guchar *buf;
+	gsize sz;
+
+	aud_vfs_file_get_contents(filename, (gchar **) &buf, &sz);
+
+	if (!buf)
+		return NULL;
+
+	if (corlett_decode(buf, sz, NULL, NULL, &c) != AO_SUCCESS)
+		return NULL;	
+
+	t = aud_tuple_new_from_filename(filename);
+
+	aud_tuple_associate_int(t, FIELD_LENGTH, NULL, psfTimeToMS(c->inf_length));
+	aud_tuple_associate_string(t, FIELD_ARTIST, NULL, c->inf_artist);
+	aud_tuple_associate_string(t, FIELD_ALBUM, NULL, c->inf_game);
+	aud_tuple_associate_string(t, -1, "game", c->inf_game);
+	aud_tuple_associate_string(t, FIELD_TITLE, NULL, c->inf_title);
+	aud_tuple_associate_string(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
+	aud_tuple_associate_string(t, FIELD_QUALITY, NULL, "sequenced");
+	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "PlayStation2 Audio");
+	aud_tuple_associate_string(t, -1, "console", "PlayStation 2");
+
+	free(c);
+	g_free(buf);
+
+	return t;
+}
+
+gchar *psf2_title(gchar *filename, gint *length)
+{
+	gchar *title = NULL;
+	Tuple *tuple = psf2_tuple(filename);
+
+	if (tuple != NULL)
+	{
+		title = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
+		*length = aud_tuple_get_int(tuple, FIELD_LENGTH, NULL);
+		aud_tuple_free(tuple);
+	}
+	else
+	{
+		title = g_path_get_basename(filename);
+		*length = -1;
+	}
+
+	return title;
+}
+
 void psf2_play(InputPlayback *data)
 {
 	guchar *buffer;
 	gsize size;
 	uint32 filesig;
+	gint length;
+	gchar *title = psf2_title(data->filename, &length);
 
 	path = g_strdup(data->filename);
 	aud_vfs_file_get_contents(data->filename, (gchar **) &buffer, &size);
@@ -110,6 +165,8 @@ void psf2_play(InputPlayback *data)
 	
 	data->output->open_audio(FMT_S16_NE, 44100, 2);
 
+        data->set_params(data, title, length, 44100*2*2*8, 44100, 2);
+
 	data->playing = TRUE;
 	data->set_pb_ready(data);
 	while (data->playing)
@@ -119,6 +176,7 @@ void psf2_play(InputPlayback *data)
 
 	g_free(buffer);
 	g_free(path);
+        g_free(title);
 }
 
 void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
@@ -170,7 +228,7 @@ void psf2_pause(InputPlayback *playback, short p)
 	playback->output->pause(p);
 }
 
-static int psf2_is_our_fd(gchar *filename, VFSFile *file)
+int psf2_is_our_fd(gchar *filename, VFSFile *file)
 {
 	gchar magic[4];
 	aud_vfs_fread(magic, 1, 4, file);
@@ -179,39 +237,6 @@ static int psf2_is_our_fd(gchar *filename, VFSFile *file)
 		return 1;
 
 	return 0;
-}
-
-static Tuple *psf2_tuple(gchar *filename)
-{
-	Tuple *t;
-	corlett_t *c;
-	guchar *buf;
-	gsize sz;
-
-	aud_vfs_file_get_contents(filename, (gchar **) &buf, &sz);
-
-	if (!buf)
-		return NULL;
-
-	if (corlett_decode(buf, sz, NULL, NULL, &c) != AO_SUCCESS)
-		return NULL;	
-
-	t = aud_tuple_new_from_filename(filename);
-
-	aud_tuple_associate_int(t, FIELD_LENGTH, NULL, psfTimeToMS(c->inf_length));
-	aud_tuple_associate_string(t, FIELD_ARTIST, NULL, c->inf_artist);
-	aud_tuple_associate_string(t, FIELD_ALBUM, NULL, c->inf_game);
-	aud_tuple_associate_string(t, -1, "game", c->inf_game);
-	aud_tuple_associate_string(t, FIELD_TITLE, NULL, c->inf_title);
-	aud_tuple_associate_string(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
-	aud_tuple_associate_string(t, FIELD_QUALITY, NULL, "sequenced");
-	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "PlayStation2 Audio");
-	aud_tuple_associate_string(t, -1, "console", "PlayStation 2");
-
-	free(c);
-	g_free(buf);
-
-	return t;
 }
 
 gchar *psf2_fmts[] = { "psf2", "minipsf2", NULL };
