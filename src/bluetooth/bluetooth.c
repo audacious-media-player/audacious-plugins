@@ -49,7 +49,7 @@ void bluetooth_cleanup ( void )
 {
     printf("bluetooth: exit\n");
     if (config ==1 ){
-        destroy_scan_window();
+        close_window();
         config =0;
     }
     if(discover_finish == 2) {
@@ -91,14 +91,25 @@ void disconnect_dbus_signals()
 
 }
 
+void clean_devices_list(){
+    g_list_free(audio_devices);
+    dbus_g_connection_flush (bus);
+    dbus_g_connection_unref(bus);
+    audio_devices = NULL;
+    //g_list_free(current_device);
+}
 
 void refresh_call(void)
 {
     printf("refresh function called\n");
     disconnect_dbus_signals();
+    clean_devices_list();
     if(discover_finish == 0 ||discover_finish== 2){
         discover_finish = 0;
+
         discover_devices();
+        close_window();
+        show_scan();
     }
     else 
         printf("Scanning please wait!\n");

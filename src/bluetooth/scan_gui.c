@@ -3,11 +3,13 @@
 static GtkWidget *window = NULL;
 static GtkWidget *winbox;
 static GtkWidget *scanbox;
+static GtkWidget *buttonsbox;
 static GtkWidget *progressbox;
 static GtkWidget *bluetooth_img;
 static GtkWidget *scan_label;
 static GtkWidget *progress_bar;
-
+static GtkWidget *rescan_buttton;
+static GtkWidget *close_button;
 gpointer progress() {
 
     for(;;){
@@ -33,6 +35,12 @@ void show_no_devices(){
 void destroy_scan_window(){
     gtk_widget_hide(window);
 }
+void close_window(void){
+    printf("scan_gui close callback \n");
+    gtk_widget_destroy (window);
+    window = NULL;
+}
+
 
 void show_scan()
 {
@@ -69,7 +77,19 @@ void show_scan()
         /* I have to add a button for Rescan when there are
          * no devices found and not currently scanning
          */
-        gtk_window_set_default_size (GTK_WINDOW (window), 50, 40);
+        buttonsbox = gtk_hbox_new(FALSE,2);
+        gtk_container_set_border_width(GTK_CONTAINER(buttonsbox),2);
+        gtk_container_add(GTK_CONTAINER(progressbox),buttonsbox);
+        rescan_buttton = gtk_button_new_with_mnemonic("Rescan");
+        g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (refresh_call),NULL);
+
+        close_button = gtk_button_new_with_mnemonic("Close");
+        gtk_container_add(GTK_CONTAINER(buttonsbox),rescan_buttton);
+        gtk_container_add(GTK_CONTAINER(buttonsbox),close_button);
+        g_signal_connect(close_button,"clicked",G_CALLBACK (close_window),NULL);
+
+        gtk_window_set_default_size (GTK_WINDOW (window), 60, 40);
+        gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
         if (!GTK_WIDGET_VISIBLE (window))
             gtk_widget_show_all (window);
         else

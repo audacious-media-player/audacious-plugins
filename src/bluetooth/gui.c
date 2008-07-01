@@ -173,6 +173,13 @@ void select_row(GtkWidget *treeview){
     }
 }
 
+void refresh_resultsui(){
+  gtk_widget_destroy (window);
+  window = NULL;
+  refresh_call();
+}
+   
+
 void results_ui()
 {
     gchar *temp;
@@ -200,7 +207,7 @@ void results_ui()
         gtk_container_add(GTK_CONTAINER(hbox_top),about_frame);
 
         refresh = gtk_button_new_with_mnemonic ("_Refresh");
-        g_signal_connect (refresh, "clicked",G_CALLBACK (refresh_call), NULL);
+        g_signal_connect (refresh, "clicked",G_CALLBACK (refresh_resultsui), NULL);
         gtk_container_add(GTK_CONTAINER(hbox_bottom),refresh);
 
         connect_button = gtk_button_new_with_mnemonic("_Connect");
