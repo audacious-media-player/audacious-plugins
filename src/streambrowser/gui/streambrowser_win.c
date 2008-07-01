@@ -202,20 +202,20 @@ static GtkWidget* gtk_label_new_with_icon(gchar *icon_filename, gchar *label_tex
 static GtkWidget *gtk_streamdir_tree_view_new()
 {
 	GtkWidget *tree_view = gtk_tree_view_new();
-	
+
 	GtkTreeStore *store = gtk_tree_store_new(3, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(store));
 
 	// todo: why doesn't the tree view allow to be resized?
-	//gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tree_view), FALSE);
+	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tree_view), TRUE);
 	gtk_tree_view_set_headers_clickable(GTK_TREE_VIEW(tree_view), TRUE);
-	//gtk_tree_view_set_reorderable(GTK_TREE_VIEW(tree_view), TRUE);
+	gtk_tree_view_set_reorderable(GTK_TREE_VIEW(tree_view), TRUE);
 	gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(tree_view), FALSE);
 
 	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "", cell_renderer_pixbuf, "pixbuf", 0, NULL);
 	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "Stream name", cell_renderer_text, "text", 1, NULL);
 	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "Now playing", cell_renderer_text, "text", 2, NULL);
-	
+
 	g_signal_connect(G_OBJECT(tree_view), "cursor-changed", G_CALLBACK(on_tree_view_cursor_changed), NULL);
 
 	return tree_view;
@@ -238,8 +238,14 @@ static gboolean on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *
 		return FALSE;
 
 	/* update the current selected stream */
+
+	/*
 	streamdir_gui_t *streamdir_gui = g_list_nth_data(streamdir_gui_list, page_num);
 	update_function(streamdir_gui->streamdir, NULL, NULL);
+	*/
+
+	/* clear the search box */
+	gtk_entry_set_text(GTK_ENTRY(search_entry), "");
 
 	return TRUE;
 }
@@ -249,11 +255,12 @@ static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer dat
 	GtkTreePath *path;
 	GtkTreeViewColumn *focus_column;
 
+	/* obtain the current category */
 	gtk_tree_view_get_cursor(tree_view, &path, &focus_column);
 	
 	if (path == NULL)
 		return TRUE;
-		
+	
 	gint *indices = gtk_tree_path_get_indices(path);
 	if (gtk_tree_path_get_depth(path) != 1) {
 		gtk_tree_path_free(path);
@@ -267,8 +274,12 @@ static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer dat
 	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_tree_view(tree_view);
 	if (streamdir_gui == NULL)
 		return TRUE;
-		
+	
+	/* issue an update on the current category */	
 	update_function(streamdir_gui->streamdir, category_get_by_index(streamdir_gui->streamdir, category_index), NULL);
+	
+	/* clear the search box */
+	gtk_entry_set_text(GTK_ENTRY(search_entry), "");
 
 	return TRUE;
 }

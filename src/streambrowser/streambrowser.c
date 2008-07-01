@@ -37,7 +37,7 @@ static void 			on_plugin_services_menu_item_click();
 
 static GtkWidget*		playlist_menu_item;
 static GtkWidget*		main_menu_item;
-static update_thread_data_t	update_thread_data_queue[MAX_UPDATE_THREADS];
+static GQueue*			update_thread_data_queue;
 static gint			update_thread_count = 0;
 static GMutex*			update_thread_mutex;
 
@@ -172,7 +172,10 @@ static void gui_init()
 	/* main streambrowser window */
 	streambrowser_win_init();
 	streambrowser_win_set_update_function(streamdir_update);
+	
+	/* others */
 	update_thread_mutex = g_mutex_new();
+	update_thread_data_queue = g_queue_new();
 
 	debug("gui initialized\n");
 }
@@ -186,6 +189,10 @@ static void gui_done()
 	/* main streambrowser window */
 	streambrowser_win_hide();
 	streambrowser_win_done();
+	
+	/* others */
+	g_mutex_free(update_thread_mutex);
+	g_queue_free(update_thread_data_queue);
 
 	debug("gui destroied\n");
 }
@@ -238,11 +245,16 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
 			debug("another %d streamdir updates are pending, this request will be queued\n", update_thread_count);
 			
 			g_mutex_lock(update_thread_mutex);
-			update_thread_data_queue[update_thread_count].streamdir = streamdir;
-			update_thread_data_queue[update_thread_count].category = category;
-			update_thread_data_queue[update_thread_count].streaminfo = streaminfo;
+			
+			update_thread_data_t *update_thread_data = g_malloc(sizeof(update_thread_data_t));
+			
+			update_thread_data->streamdir = streamdir;
+			update_thread_data->category = category;
+			update_thread_data->streaminfo = streaminfo;
+			g_queue_push_tail(update_thread_data_queue, update_thread_data);
 			
 			update_thread_count++;
+
 			g_mutex_unlock(update_thread_mutex);
 		}
 		else {
@@ -258,6 +270,10 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
 
 static gpointer update_thread_core(update_thread_data_t *data)
 {
+	g_mutex_lock(update_thread_mutex);
+	update_thread_count++;
+	g_mutex_unlock(update_thread_mutex);
+
 	/* update a streaminfo - that is - add this streaminfo to playlist */
 	if (data->streaminfo != NULL) {
 		 streaminfo_add_to_playlist(data->streaminfo);
@@ -302,18 +318,10 @@ static gpointer update_thread_core(update_thread_data_t *data)
 	
 	data = NULL;
 	g_mutex_lock(update_thread_mutex);
-	if (update_thread_count > 0) {
-		data = g_malloc(sizeof(update_thread_data_t));
-		data->streamdir = update_thread_data_queue[0].streamdir;
-		data->category = update_thread_data_queue[0].category;
-		data->streaminfo = update_thread_data_queue[0].streaminfo;
+	update_thread_count--;
 
-		int i;
-		for (i = 0; i < update_thread_count; i++) {
-			update_thread_data_queue[i].streamdir = update_thread_data_queue[i + 1].streamdir;
-			update_thread_data_queue[i].category = update_thread_data_queue[i + 1].category;
-			update_thread_data_queue[i].streaminfo = update_thread_data_queue[i + 1].streaminfo;
-		}
+	if (update_thread_count > 0) {
+		data = g_queue_pop_head(update_thread_data_queue);
 		
 		update_thread_count--;
 	}
