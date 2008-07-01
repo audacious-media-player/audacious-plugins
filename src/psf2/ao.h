@@ -83,12 +83,6 @@ typedef unsigned char ao_bool;
 #define PATH_MAX	2048
 #endif
 
-typedef struct
-{
-	char title[9][MAX_DISP_INFO_LENGTH];
-	char info[9][MAX_DISP_INFO_LENGTH];
-} ao_display_info;
-
 typedef unsigned char		uint8;
 typedef unsigned char		UINT8;
 typedef signed char			int8;

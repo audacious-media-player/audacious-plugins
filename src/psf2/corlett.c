@@ -152,9 +152,14 @@ int corlett_decode(uint8 *input, uint32 input_len, uint8 **output, uint64 *size,
 	(*c)->res_size = res_area;
 	
 	// Return it
-	*output = decomp_dat;
-	*size = decomp_length;
-		
+	if (output != NULL && size != NULL)
+	{
+		*output = decomp_dat;
+		*size = decomp_length;
+	}
+	else
+		free(decomp_dat);
+
 	// Next check for tags
 	input_len -= (comp_length + 16 + res_area);
 	if (input_len < 5)
