@@ -144,18 +144,14 @@ int main(int argv, char *argc[])
 	}
 
 	// now did we identify it above or just fall through?
-	if (types[type].sig != 0xffffffff)
-	{
-		printf("File identified as %s\n", types[type].name);
-	}
-	else
+	if (types[type].sig == 0xffffffff)
 	{
 		printf("ERROR: File is unknown, signature bytes are %02x %02x %02x %02x\n", buffer[0], buffer[1], buffer[2], buffer[3]);
 		free(buffer);
 		return -1;
 	}
 
-	if ((*types[type].start)(buffer, size) != AO_SUCCESS)
+	if (psf2_start(buffer, size) != AO_SUCCESS)
 	{
 		free(buffer);
 		printf("ERROR: Engine rejected file!\n");
@@ -165,8 +161,6 @@ int main(int argv, char *argc[])
 	m1sdr_Init(44100);
 	m1sdr_SetCallback(psf2_gen);
 	m1sdr_PlayStart();
-
-	printf("\n\nPlaying.  Press CTRL-C to stop.\n");
 
 	while (1)
 	{

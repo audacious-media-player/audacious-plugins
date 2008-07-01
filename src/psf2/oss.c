@@ -47,7 +47,7 @@ static INT32 num_frags;
 
 // local variables
 
-void  (*m1sdr_Callback)(unsigned long dwNumSamples, signed short *data);
+void  (*m1sdr_Callback)(signed short *data, unsigned long dwNumSamples);
 unsigned long cbUserData;
 
 static int hw_present;
@@ -81,7 +81,7 @@ void m1sdr_Update(void)
 
 	if (m1sdr_Callback)
 	{
-		m1sdr_Callback(nDSoundSegLen, (INT16 *)samples);
+		m1sdr_Callback(samples, nDSoundSegLen);
 	}
 }
 // checks the play position to see if we should trigger another update

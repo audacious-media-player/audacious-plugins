@@ -3,6 +3,7 @@ PROG = psf2
 
 SRCS = corlett.c \
        plugin.c \
+       oss.c \
        psx.c \
        psx_hw.c \
        eng_psf.c \
@@ -18,6 +19,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS} -O0
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MOWGLI_CFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../.. -Ispu/ -I.
 LIBS += ${GTK_LIBS} ${GLIB_LIBS}  ${MOWGLI_LIBS} -lz

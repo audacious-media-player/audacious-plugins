@@ -2,7 +2,6 @@
 #define _OSS_H_
 
 extern int audiofd;
-extern void (*m1sdr_Callback)(unsigned long dwUser, signed short *smp);
 extern unsigned long cbUserData;
 
 // function protos
