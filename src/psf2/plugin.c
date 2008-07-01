@@ -31,6 +31,7 @@
 #include <audacious/plugin.h>
 
 #include "ao.h"
+#include "corlett.h"
 #include "eng_protos.h"
 
 /* file types */
@@ -44,10 +45,9 @@ static struct
 	int32 (*stop)(void); 
 	int32 (*command)(int32, int32); 
 	uint32 rate; 
-	int32 (*fillinfo)(ao_display_info *); 
 } types[] = {
-	{ 0x50534602, "Sony PlayStation 2 (.psf2)", psf2_start, psf2_stop, psf2_command, 60, psf2_fill_info },
-	{ 0xffffffff, "", NULL, NULL, NULL, 0, NULL }
+	{ 0x50534602, "Sony PlayStation 2 (.psf2)", psf2_start, psf2_stop, psf2_command, 60 },
+	{ 0xffffffff, "", NULL, NULL, NULL, 0 }
 };
 
 static char *path;
@@ -218,8 +218,7 @@ void psf2_pause(InputPlayback *playback, short p)
 	playback->output->pause(p);
 }
 
-static int
-is_our_fd(gchar *filename, VFSFile *file)
+static int psf2_is_our_fd(gchar *filename, VFSFile *file)
 {
 	gchar magic[4];
 	aud_vfs_fread(magic, 1, 4, file);
@@ -228,6 +227,38 @@ is_our_fd(gchar *filename, VFSFile *file)
 		return 1;
 
 	return 0;
+}
+
+static Tuple *psf2_tuple(gchar *filename)
+{
+	Tuple *t;
+	corlett_t *c;
+	guchar *buf;
+	gsize sz;
+
+	aud_vfs_file_get_contents(filename, (gchar **) &buf, &sz);
+
+	if (!buf)
+		return NULL;
+
+	if (corlett_decode(buf, sz, NULL, NULL, &c) != AO_SUCCESS)
+		return NULL;	
+
+	t = aud_tuple_new_from_filename(filename);
+
+	aud_tuple_associate_int(t, FIELD_LENGTH, NULL, psfTimeToMS(c->inf_length));
+	aud_tuple_associate_string(t, FIELD_ARTIST, NULL, c->inf_artist);
+	aud_tuple_associate_string(t, FIELD_ALBUM, NULL, c->inf_game);
+	aud_tuple_associate_string(t, -1, "game", c->inf_game);
+	aud_tuple_associate_string(t, FIELD_TITLE, NULL, c->inf_title);
+	aud_tuple_associate_string(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
+	aud_tuple_associate_string(t, FIELD_QUALITY, NULL, "sequenced");
+	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "PlayStation2 Audio");
+	aud_tuple_associate_string(t, -1, "console", "PlayStation 2");
+
+	free(c);
+
+	return t;
 }
 
 gchar *psf2_fmts[] = { "psf2", "minipsf2", NULL };
@@ -241,9 +272,9 @@ InputPlugin psf2_ip =
 #if 0
     .seek = sexypsf_xmms_seek,
     .get_song_info = sexypsf_xmms_getsonginfo,
-    .get_song_tuple = get_aud_tuple_psf,
 #endif
-    .is_our_file_from_vfs = is_our_fd,
+    .get_song_tuple = psf2_tuple,
+    .is_our_file_from_vfs = psf2_is_our_fd,
     .vfs_extensions = psf2_fmts,
 };
 
