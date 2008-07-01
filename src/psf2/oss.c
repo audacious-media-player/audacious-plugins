@@ -67,25 +67,6 @@ static INT16 samples[44100*2];
 
 
 // set # of samples per update
-
-void m1sdr_SetSamplesPerTick(UINT32 spf)
-{
-	nDSoundSegLen = spf;
-}
-
-// m1sdr_Update - timer callback routine: runs sequencer and mixes sound
-
-void m1sdr_Update(void)
-{	
-	if (!hw_present) return;
-
-	if (m1sdr_Callback)
-	{
-		m1sdr_Callback(samples, nDSoundSegLen);
-	}
-}
-// checks the play position to see if we should trigger another update
-
 void m1sdr_TimeCheck(void)
 {
 #if VALGRIND
@@ -99,7 +80,7 @@ void m1sdr_TimeCheck(void)
 	{
 		int err;
 
-		m1sdr_Update();
+		psf2_gen(samples, nDSoundSegLen);
 		playtime++;
 
 		// output the generated samples
@@ -117,7 +98,7 @@ void m1sdr_TimeCheck(void)
 	{
 	    	while (info.bytes >= (nDSoundSegLen * 4))
 		{
-			m1sdr_Update();
+			psf2_gen(samples, nDSoundSegLen);
 			playtime++;
 
 			// output the generated samples

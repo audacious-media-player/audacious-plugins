@@ -1,0 +1,19 @@
+psf2 plugin
+-----------
+
+What is this?
+
+It's a PSF2 plugin based on:
+
+ * UPSE
+ * Audio Overload
+ * Highly Experimental
+
+It's under the BSD license, mostly, but it uses code from PeOPS, so it's
+probably GPL.
+
+Does it work?
+
+Not as a plugin yet. But that's coming.
+
+
