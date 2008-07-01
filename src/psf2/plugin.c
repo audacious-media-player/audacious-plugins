@@ -88,7 +88,7 @@ Tuple *psf2_tuple(gchar *filename)
 
 	t = aud_tuple_new_from_filename(filename);
 
-	aud_tuple_associate_int(t, FIELD_LENGTH, NULL, psfTimeToMS(c->inf_length));
+	aud_tuple_associate_int(t, FIELD_LENGTH, NULL, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
 	aud_tuple_associate_string(t, FIELD_ARTIST, NULL, c->inf_artist);
 	aud_tuple_associate_string(t, FIELD_ALBUM, NULL, c->inf_game);
 	aud_tuple_associate_string(t, -1, "game", c->inf_game);
