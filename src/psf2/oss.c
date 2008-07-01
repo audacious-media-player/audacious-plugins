@@ -230,36 +230,3 @@ INT32 m1sdr_HwPresent(void)
 {
 	return hw_present;
 }
-
-// unused stubs for this driver, but the Win32 driver needs them
-void m1sdr_PlayStart(void)
-{
-	playtime = 0;
-}
-
-void m1sdr_PlayStop(void)
-{
-}
-
-void m1sdr_FlushAudio(void)
-{
-	memset(samples, 0, nDSoundSegLen * 4);
-	write(audiofd, samples, nDSoundSegLen * 4);
-	write(audiofd, samples, nDSoundSegLen * 4);
-}
-
-void m1sdr_SetNoWait(int nw)
-{
-	oss_nw = nw;
-}
-
-short *m1sdr_GetSamples(void)
-{
-	return samples;
-}
-
-int m1sdr_GetPlayTime(void)
-{
-	return playtime;
-}
-

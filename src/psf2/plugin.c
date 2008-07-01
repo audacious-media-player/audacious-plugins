@@ -160,7 +160,6 @@ int main(int argv, char *argc[])
 	
 	m1sdr_Init(44100);
 	m1sdr_SetCallback(psf2_gen);
-	m1sdr_PlayStart();
 
 	while (1)
 	{
