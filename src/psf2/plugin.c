@@ -117,7 +117,7 @@ void psf2_play(InputPlayback *data)
 		psf2_execute(data);
 	}	
 
-	free(buffer);
+	g_free(buffer);
 	g_free(path);
 }
 
@@ -209,6 +209,7 @@ static Tuple *psf2_tuple(gchar *filename)
 	aud_tuple_associate_string(t, -1, "console", "PlayStation 2");
 
 	free(c);
+	g_free(buf);
 
 	return t;
 }
