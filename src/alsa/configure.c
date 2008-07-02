@@ -24,7 +24,7 @@ static GtkWidget *buffer_time_spin, *period_time_spin;
 
 static GtkWidget *devices_combo, *mixer_devices_combo;
 
-static int current_mixer_card;
+static gint current_mixer_card;
 
 #define GET_SPIN_INT(spin) \
 	gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin))
@@ -58,10 +58,10 @@ void alsa_save_config(void)
 	aud_cfg_db_close(cfgfile);
 }
 
-static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
+static gint get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, gint active)
 {
 	GtkWidget *menu, *item;
-	int card = -1, err, set = 0, curr = -1;
+	gint card = -1, err, set = 0, curr = -1;
 
 	menu = gtk_menu_new();
 	if ((err = snd_card_next(&card)) != 0)
@@ -69,7 +69,7 @@ static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
 
 	while (card > -1)
 	{
-		char *label;
+		gchar *label;
 
 		curr++;
 		if (card == active)
@@ -98,10 +98,10 @@ static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
 	return set;
 }
 
-static int get_mixer_devices(GtkCombo *combo, int card)
+static gint get_mixer_devices(GtkCombo *combo, gint card)
 {
 	GList *items = NULL;
-	int err;
+	gint err;
 	snd_mixer_t *mixer;
 	snd_mixer_elem_t *current;
 
@@ -115,8 +115,8 @@ static int get_mixer_devices(GtkCombo *combo, int card)
 		if (snd_mixer_selem_is_active(current) &&
 		    snd_mixer_selem_has_playback_volume(current))
 		{
-			const char *sname = snd_mixer_selem_get_name(current);
-			int index = snd_mixer_selem_get_index(current);
+			const gchar *sname = snd_mixer_selem_get_name(current);
+			gint index = snd_mixer_selem_get_index(current);
 			if (index)
 				items = g_list_append(items, g_strdup_printf("%s,%d", sname, index));
 			else
@@ -130,13 +130,13 @@ static int get_mixer_devices(GtkCombo *combo, int card)
 	return 0;
 }
 
-static void get_devices_for_card(GtkCombo *combo, int card)
+static void get_devices_for_card(GtkCombo *combo, gint card)
 {
 	GtkWidget *item;
-	int pcm_device = -1, err;
+	gint pcm_device = -1, err;
 	snd_pcm_info_t *pcm_info = NULL;
 	snd_ctl_t *ctl;
-	char dev[64], *card_name;
+	gchar dev[64], *card_name;
 
 	sprintf(dev, "hw:%i", card);
 
@@ -200,9 +200,9 @@ static void get_devices_for_card(GtkCombo *combo, int card)
 static void get_devices(GtkCombo *combo)
 {
 	GtkWidget *item;
-	int card = -1;
-	int err = 0;
-	char *descr;
+	gint card = -1;
+	gint err = 0;
+	gchar *descr;
 
 	descr = g_strdup_printf(_("Default PCM device (%s)"), "default");
 	item = gtk_list_item_new_with_label(descr);
@@ -250,7 +250,7 @@ void alsa_configure(void)
 	GtkObject *buffer_time_adj, *period_time_adj;
 	GtkWidget *bbox, *ok, *cancel;
 
-	int mset;
+	gint mset;
 
 	if (configure_win)
 	{
