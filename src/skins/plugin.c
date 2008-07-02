@@ -31,17 +31,15 @@
 
 gchar *skins_paths[SKINS_PATH_COUNT] = {};
 
-GeneralPlugin skins_gp =
+static Interface skins_gp =
 {
-    .description= "Audacious Skinned GUI",
+    .id = "skinned",
+    .desc = "Audacious Skinned GUI",
     .init = skins_init,
-    .about = skins_about,
-    .configure = skins_configure,
-    .cleanup = skins_cleanup
+    .fini = skins_cleanup
 };
 
-GeneralPlugin *skins_gplist[] = { &skins_gp, NULL };
-SIMPLE_GENERAL_PLUGIN(skins, skins_gplist);
+SIMPLE_INTERFACE_PLUGIN("skinned", &skins_gp);
 gboolean plugin_is_active = FALSE;
 
 static void skins_free_paths(void) {
@@ -73,7 +71,7 @@ static void skins_init_paths() {
     g_free(xdg_cache_home);
 }
 
-void skins_init(void) {
+gboolean skins_init(void) {
     plugin_is_active = TRUE;
     g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
 
@@ -91,10 +89,13 @@ void skins_init(void) {
     if (config.equalizer_visible) equalizerwin_show(TRUE);
     if (config.playlist_visible) playlistwin_show();
 
-    return;
+    g_message("Entering Gtk+ main loop!");
+    gtk_main();
+
+    return TRUE;
 }
 
-void skins_cleanup(void) {
+gboolean skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
         skins_cfg_save();
         skins_free_paths();
@@ -114,7 +115,9 @@ void skins_cleanup(void) {
         plugin_is_active = FALSE;
     }
 
-    return;
+    gtk_main_quit();
+
+    return TRUE;
 }
 
 void skins_about(void) {

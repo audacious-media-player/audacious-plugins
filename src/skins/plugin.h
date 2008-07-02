@@ -40,8 +40,8 @@ enum {
 
 extern gchar *skins_paths[];
 
-void skins_init(void);
-void skins_cleanup(void);
+gboolean skins_init(void);
+gboolean skins_cleanup(void);
 void skins_about(void);
 
 #endif
