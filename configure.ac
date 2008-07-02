@@ -1237,6 +1237,16 @@ if test "$enable_cdaudio_ng" = "yes"; then
 )
 fi
 
+AC_ARG_ENABLE(streambrowser,
+    [  --disable-streambrowser       disable streambrowser general plugin (default=enabled) ],
+    [enable_streambrowser=$enableval],
+    [enable_streambrowser=yes]
+)
+
+if test "$enable_streambrowser" = "yes"; then
+   GENERAL_PLUGINS="$GENERAL_PLUGINS streambrowser"
+fi
+
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
 
@@ -1712,6 +1722,7 @@ echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
 echo "  Bluetooth audio suport:                 $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
+echo "  Streambrowser:                          $enable_streambrowser"
 echo
 echo "  Effect"
 echo "  ------"
