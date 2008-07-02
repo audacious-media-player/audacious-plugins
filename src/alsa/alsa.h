@@ -41,15 +41,15 @@ extern OutputPlugin op;
 
 struct alsa_config
 {
-	char *pcm_device;
-	int mixer_card;
-	char *mixer_device;
-	int buffer_time;
-	int period_time;
+	gchar *pcm_device;
+	gint mixer_card;
+	gchar *mixer_device;
+	gint buffer_time;
+	gint period_time;
 	gboolean debug;
 	struct
 	{
-		int left, right;
+		gint left, right;
 	} vol;
 };
 
@@ -57,21 +57,21 @@ extern struct alsa_config alsa_cfg;
 
 void alsa_about(void);
 void alsa_configure(void);
-int alsa_get_mixer(snd_mixer_t **mixer, int card);
+gint alsa_get_mixer(snd_mixer_t **mixer, gint card);
 void alsa_save_config(void);
 
-void alsa_get_volume(int *l, int *r);
-void alsa_set_volume(int l, int r);
+void alsa_get_volume(gint *l, gint *r);
+void alsa_set_volume(gint l, gint r);
 
-int alsa_playing(void);
-int alsa_free(void);
-void alsa_write(void *ptr, int length);
+gint alsa_playing(void);
+gint alsa_free(void);
+void alsa_write(void *ptr, gint length);
 void alsa_close(void);
-void alsa_flush(int time);
-void alsa_pause(short p);
-int alsa_open(AFormat fmt, int rate, int nch);
-int alsa_get_output_time(void);
-int alsa_get_written_time(void);
+void alsa_flush(gint time);
+void alsa_pause(gshort p);
+gint alsa_open(AFormat fmt, gint rate, gint nch);
+gint alsa_get_output_time(void);
+gint alsa_get_written_time(void);
 void alsa_tell(AFormat * fmt, gint * rate, gint * nch);
 
 extern GStaticMutex alsa_mutex;

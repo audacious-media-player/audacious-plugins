@@ -46,8 +46,8 @@ static guint64 alsa_hw_written;
 static guint64 output_time_offset;
 
 /* device buffer/period sizes in bytes */
-static int hw_buffer_size, hw_period_size;		/* in output bytes */
-static int hw_buffer_size_in, hw_period_size_in;	/* in input bytes */
+static gint hw_buffer_size, hw_period_size;		/* in output bytes */
+static gint hw_buffer_size_in, hw_period_size_in;	/* in input bytes */
 
 /* Set/Get volume */
 static snd_mixer_elem_t *pcm_element;
@@ -60,32 +60,32 @@ static gboolean alsa_can_pause;
 
 /* for audio thread */
 static GThread *audio_thread;	 /* audio loop thread */
-static int thread_buffer_size;	 /* size of intermediate buffer in bytes */
-static char *thread_buffer;	 /* audio intermediate buffer */
-static int rd_index, wr_index;	 /* current read/write position in int-buffer */
+static gint thread_buffer_size;	 /* size of intermediate buffer in bytes */
+static gchar *thread_buffer;	 /* audio intermediate buffer */
+static gint rd_index, wr_index;	 /* current read/write position in int-buffer */
 static gboolean pause_request;	 /* pause status currently requested */
-static int flush_request;	 /* flush status (time) currently requested */
-static int prebuffer_size;
+static gint flush_request;	 /* flush status (time) currently requested */
+static gint prebuffer_size;
 GStaticMutex alsa_mutex = G_STATIC_MUTEX_INIT;
 
 struct snd_format {
-	unsigned int rate;
-	unsigned int channels;
+	guint rate;
+	guint channels;
 	snd_pcm_format_t format;
 	AFormat xmms_format;
-	int sample_bits;
-	int bps;
+	gint sample_bits;
+	gint bps;
 };
 
 static struct snd_format *inputf = NULL;
 static struct snd_format *outputf = NULL;
 
-static int alsa_setup(struct snd_format *f);
-static void alsa_write_audio(char *data, int length);
+static gint alsa_setup(struct snd_format *f);
+static void alsa_write_audio(gchar *data, gint length);
 static void alsa_cleanup_mixer(void);
-static int get_thread_buffer_filled(void);
+static gint get_thread_buffer_filled(void);
 
-static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int channels);
+static struct snd_format * snd_format_from_xmms(AFormat fmt, gint rate, gint channels);
 
 static const struct {
 	AFormat xmms;
@@ -115,9 +115,9 @@ static const struct {
 };
 
 
-static void debug(char *str, ...) G_GNUC_PRINTF(1, 2);
+static void debug(gchar *str, ...) G_GNUC_PRINTF(1, 2);
 
-static void debug(char *str, ...)
+static void debug(gchar *str, ...)
 {
 	va_list args;
 
@@ -140,10 +140,10 @@ int alsa_playing(void)
                get_thread_buffer_filled() > hw_period_size_in;
 }
 
-static int
-alsa_recovery(int err)
+static gint
+alsa_recovery(gint err)
 {
-	int err2;
+	gint err2;
 
 	/* if debug mode is enabled, dump ALSA state to console */
 	if (alsa_cfg.debug)
@@ -298,7 +298,7 @@ void alsa_close(void)
 
 /* reopen ALSA PCM */
 #if 0
-static int alsa_reopen(struct snd_format *f)
+static gint alsa_reopen(struct snd_format *f)
 {
 	/* remember the current position */
 	output_time_offset += (alsa_hw_written * 1000) / outputf->bps;
@@ -311,7 +311,7 @@ static int alsa_reopen(struct snd_format *f)
 #endif
 
 /* do flush (drop) operation */
-static void alsa_do_flush(int time)
+static void alsa_do_flush(gint time)
 {
 	if (alsa_pcm)
 	{
@@ -324,16 +324,16 @@ static void alsa_do_flush(int time)
 	rd_index = wr_index = alsa_hw_written = 0;
 }
 
-void alsa_flush(int time)
+void alsa_flush(gint time)
 {
 	flush_request = time;
 	while ((flush_request != -1) && (going))
 		g_usleep(10000);
 }
 
-static void parse_mixer_name(char *str, char **name, int *index)
+static void parse_mixer_name(gchar *str, gchar **name, gint *index)
 {
-	char *end;
+	gchar *end;
 
 	while (isspace(*str))
 		str++;
@@ -351,10 +351,10 @@ static void parse_mixer_name(char *str, char **name, int *index)
 	}
 }
 
-int alsa_get_mixer(snd_mixer_t **mixer, int card)
+gint alsa_get_mixer(snd_mixer_t **mixer, gint card)
 {
-	char *dev;
-	int err;
+	gchar *dev;
+	gint err;
 
 	debug("alsa_get_mixer");
 
@@ -393,7 +393,7 @@ int alsa_get_mixer(snd_mixer_t **mixer, int card)
 }
 
 
-static snd_mixer_elem_t* alsa_get_mixer_elem(snd_mixer_t *mixer, char *name, int index)
+static snd_mixer_elem_t* alsa_get_mixer_elem(snd_mixer_t *mixer, gchar *name, gint index)
 {
 	snd_mixer_selem_id_t *selem_id;
 	snd_mixer_elem_t* elem;
@@ -411,10 +411,10 @@ static snd_mixer_elem_t* alsa_get_mixer_elem(snd_mixer_t *mixer, char *name, int
 
 static int alsa_setup_mixer(void)
 {
-	char *name;
-	long int a, b;
-	long alsa_min_vol, alsa_max_vol;
-	int err, index;
+	gchar *name;
+	glong a, b;
+	glong alsa_min_vol, alsa_max_vol;
+	gint err, index;
 
 	debug("alsa_setup_mixer");
 
@@ -471,9 +471,9 @@ static void alsa_cleanup_mixer(void)
 	}
 }
 
-void alsa_get_volume(int *l, int *r)
+void alsa_get_volume(gint *l, gint *r)
 {
-	long ll = *l, lr = *r;
+	glong ll = *l, lr = *r;
 
 	if (mixer_start)
 	{
@@ -497,7 +497,7 @@ void alsa_get_volume(int *l, int *r)
 }
 
 
-void alsa_set_volume(int l, int r)
+void alsa_set_volume(gint l, gint r)
 {
 	if (!pcm_element)
 		return;
@@ -541,7 +541,7 @@ static int get_thread_buffer_filled(void)
 	return thread_buffer_size - (rd_index - wr_index);
 }
 
-int alsa_get_output_time(void)
+gint alsa_get_output_time(void)
 {
 	snd_pcm_sframes_t delay;
 	guint64 bytes = alsa_hw_written;
@@ -560,7 +560,7 @@ int alsa_get_output_time(void)
 	return output_time_offset + (bytes * 1000) / outputf->bps;
 }
 
-int alsa_get_written_time(void)
+gint alsa_get_written_time(void)
 {
 	if (!going)
 		return 0;
@@ -581,10 +581,10 @@ static void alsa_do_write(gpointer data, int length)
 }
 
 /* write callback */
-void alsa_write(gpointer data, int length)
+void alsa_write(gpointer data, gint length)
 {
-	int cnt;
-	char *src = (char *)data;
+	gint cnt;
+	gchar *src = (gchar *)data;
 	
 	remove_prebuffer = FALSE;
 	
@@ -602,7 +602,7 @@ void alsa_write(gpointer data, int length)
 }
 
 /* transfer data to audio h/w via normal write */
-static void alsa_write_audio(char *data, int length)
+static void alsa_write_audio(gchar *data, gint length)
 {
 	snd_pcm_sframes_t written_frames;
 
@@ -655,8 +655,8 @@ static void alsa_write_out_thread_data(void)
 /* FIXME: proper lock? */
 static void *alsa_loop(void *arg)
 {
-	int npfds = snd_pcm_poll_descriptors_count(alsa_pcm);
-	int wr = 0;
+	gint npfds = snd_pcm_poll_descriptors_count(alsa_pcm);
+	gint wr = 0;
 
 	g_static_mutex_lock(&alsa_mutex);
 
@@ -704,7 +704,7 @@ static void *alsa_loop(void *arg)
 }
 
 /* open callback */
-int alsa_open(AFormat fmt, int rate, int nch)
+gint alsa_open(AFormat fmt, gint rate, gint nch)
 {
 	debug("Opening device");
 	if((inputf = snd_format_from_xmms(fmt, rate, nch)) == NULL) return 0;
@@ -751,11 +751,11 @@ int alsa_open(AFormat fmt, int rate, int nch)
 	return 1;
 }
 
-static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int channels)
+static struct snd_format * snd_format_from_xmms(AFormat fmt, gint rate, gint channels)
 {
 	struct snd_format *f = g_malloc(sizeof(struct snd_format));
 	size_t i;
-        int found = 0;
+    gint found = 0;
 
 	f->xmms_format = fmt;
 	f->format = SND_PCM_FORMAT_UNKNOWN;
@@ -790,12 +790,12 @@ static struct snd_format * snd_format_from_xmms(AFormat fmt, int rate, int chann
 	return f;
 }
 
-static int alsa_setup(struct snd_format *f)
+static gint alsa_setup(struct snd_format *f)
 {
-	int err;
+	gint err;
 	snd_pcm_hw_params_t *hwparams = NULL;
 	snd_pcm_sw_params_t *swparams = NULL;
-	unsigned int alsa_buffer_time, alsa_period_time;
+	guint alsa_buffer_time, alsa_period_time;
 	snd_pcm_uframes_t alsa_buffer_size, alsa_period_size;
 
 	debug("alsa_setup");
