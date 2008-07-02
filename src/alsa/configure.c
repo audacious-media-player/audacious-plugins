@@ -112,10 +112,16 @@ static int get_mixer_devices(GtkCombo *combo, int card)
 
 	while (current)
 	{
-		const char *sname = snd_mixer_selem_get_name(current);
 		if (snd_mixer_selem_is_active(current) &&
 		    snd_mixer_selem_has_playback_volume(current))
-			items = g_list_append(items, g_strdup(sname));
+		{
+			const char *sname = snd_mixer_selem_get_name(current);
+			int index = snd_mixer_selem_get_index(current);
+			if (index)
+				items = g_list_append(items, g_strdup_printf("%s,%d", sname, index));
+			else
+				items = g_list_append(items, g_strdup(sname));
+		}
 		current = snd_mixer_elem_next(current);
 	}
 
