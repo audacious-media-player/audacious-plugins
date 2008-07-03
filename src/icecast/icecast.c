@@ -27,13 +27,13 @@
 struct format_info input;
 
 static GtkWidget *configure_win = NULL, *configure_vbox;
-static GtkWidget *addr_hbox, *addr_label, *addr_entry, *port_spin;
+static GtkWidget *addr_entry, *port_spin, *timeout_spin, *buffersize_spin, *bufferflush_spin;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
 static guint ice_tid=0;
 
 static gint ice_close_timeout;
 
-static GtkWidget *streamformat_hbox, *streamformat_label, *streamformat_combo, *plugin_button;
+static GtkWidget *streamformat_combo, *plugin_button;
 
 enum streamformat_t
 {
@@ -59,8 +59,11 @@ static unsigned int streamformat_shout[] =
 };
 
 static FileWriter plugin;
-static uint8_t outputbuffer[4096];
+static uint8_t *outputbuffer = NULL;
 static guint outputlength=0;
+static gint buffersize;
+static gint bufferflush;
+static gdouble bufferflushperc;
 static gchar *server_address = NULL;
 static gint server_port=8000;
 
@@ -69,6 +72,7 @@ guint64 written = 0;
 guint64 offset = 0;
 Tuple *tuple = NULL;
 static shout_t *shout = NULL;
+gboolean paused = FALSE;
 
 static void ice_init(void);
 static void ice_cleanup(void);
@@ -147,7 +151,14 @@ static void ice_init(void)
     if (!server_port) server_port=8000;
     aud_cfg_db_get_int(db, "icecast", "timeout", &ice_close_timeout);
     if (!ice_close_timeout) ice_close_timeout=5;
+    aud_cfg_db_get_int(db, "icecast", "buffersize", &buffersize);
+    if (!buffersize) buffersize=8192;
+    aud_cfg_db_get_double(db, "icecast", "bufferflush", &bufferflushperc);
+    if (!bufferflushperc) bufferflushperc=80.0;
+    bufferflush=(gint)(buffersize*bufferflushperc);
     aud_cfg_db_close(db);
+
+    outputbuffer=g_try_malloc(buffersize);
 
     set_plugin();
     if (plugin.init)
@@ -160,6 +171,8 @@ static void ice_cleanup(void)
     {
         shout_close(shout);
     }
+    if (outputbuffer)
+        g_free(outputbuffer);
     shout_shutdown();
 }
 
@@ -195,6 +208,9 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
     gint rv;
     gint pos;
     Playlist *playlist;
+
+    if (!outputbuffer)
+        return 0;
 
     if (ice_tid)
     {
@@ -375,13 +391,13 @@ static gint ice_write_output(void *ptr, gint length)
 {
     if ((!shout) || (!length)) return 0;
     printf("outputlength=%d, length=%d...",outputlength, length);
-    if ((outputlength>4000)||((outputlength+length)>4096))
+    if ((outputlength>bufferflush)||((outputlength+length)>buffersize))
     {
         printf("flushing\n");
         outputlength=ice_real_write(outputbuffer, outputlength);
     }
     {
-        if (length>4096)
+        if (length>buffersize)
         {
             printf("data too long, flushing\n");
             ice_real_write(ptr, length);
@@ -432,16 +448,17 @@ static void ice_flush(gint time)
 
 static void ice_pause(short p)
 {
+    paused = p;
 }
 
 static gint ice_free(void)
 {
-    return plugin.free();
+    return paused?0:plugin.free();
 }
 
 static gint ice_playing(void)
 {
-    return plugin.playing();
+    return plugin.playing() && (!paused);
 }
 
 static gint ice_get_written_time(void)
@@ -465,11 +482,20 @@ static void configure_ok_cb(gpointer data)
 
     server_port = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(port_spin));
 
+    ice_close_timeout = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(timeout_spin));
+
+    buffersize = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffersize_spin));
+
+    bufferflushperc = gtk_spin_button_get_value(GTK_SPIN_BUTTON(bufferflush_spin));
+    bufferflush=(gint)(buffersize*bufferflushperc);
+
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, "icecast", "streamformat", streamformat);
     aud_cfg_db_set_string(db, "icecast", "server_address", server_address);
     aud_cfg_db_set_int(db, "icecast", "server_port", server_port);
     aud_cfg_db_set_int(db, "icecast", "timeout", ice_close_timeout);
+    aud_cfg_db_set_int(db, "icecast", "buffersize", buffersize);
+    aud_cfg_db_set_double(db, "icecast", "bufferflush", bufferflushperc);
 
     aud_cfg_db_close(db);
 
@@ -500,6 +526,9 @@ static void ice_configure(void)
 {
     if (!configure_win)
     {
+        GtkWidget * hbox;
+        GtkWidget * label;
+
         configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
         gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
@@ -517,12 +546,11 @@ static void ice_configure(void)
         configure_vbox = gtk_vbox_new(FALSE, 10);
         gtk_container_add(GTK_CONTAINER(configure_win), configure_vbox);
 
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
 
-        streamformat_hbox = gtk_hbox_new(FALSE, 5);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), streamformat_hbox, FALSE, FALSE, 0);
-
-        streamformat_label = gtk_label_new(_("Output stream format:"));
-        gtk_box_pack_start(GTK_BOX(streamformat_hbox), streamformat_label, FALSE, FALSE, 0);
+        label = gtk_label_new(_("Output stream format:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
         streamformat_combo = gtk_combo_box_new_text();
 #ifdef FILEWRITER_MP3
@@ -531,31 +559,31 @@ static void ice_configure(void)
 #ifdef FILEWRITER_VORBIS
         gtk_combo_box_append_text(GTK_COMBO_BOX(streamformat_combo), "Vorbis");
 #endif
-        gtk_box_pack_start(GTK_BOX(streamformat_hbox), streamformat_combo, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(hbox), streamformat_combo, FALSE, FALSE, 0);
         gtk_combo_box_set_active(GTK_COMBO_BOX(streamformat_combo), streamformat);
         g_signal_connect(G_OBJECT(streamformat_combo), "changed", G_CALLBACK(streamformat_cb), NULL);
 
         plugin_button = gtk_button_new_with_label(_("Configure"));
         gtk_widget_set_sensitive(plugin_button, plugin.configure != NULL);
         g_signal_connect(G_OBJECT(plugin_button), "clicked", G_CALLBACK(plugin_configure_cb), NULL);
-        gtk_box_pack_end(GTK_BOX(streamformat_hbox), plugin_button, FALSE, FALSE, 0);
+        gtk_box_pack_end(GTK_BOX(hbox), plugin_button, FALSE, FALSE, 0);
 
 
 
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
-        addr_hbox = gtk_hbox_new(FALSE, 5);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), addr_hbox, FALSE, FALSE, 0);
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
 
-        addr_label = gtk_label_new(_("Server address:"));
-        gtk_box_pack_start(GTK_BOX(addr_hbox), addr_label, FALSE, FALSE, 0);
+        label = gtk_label_new(_("Server address:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
         addr_entry = gtk_entry_new();
 
 	gtk_entry_set_text(GTK_ENTRY(addr_entry), server_address);
 
-        gtk_box_pack_start(GTK_BOX(addr_hbox), addr_entry, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(hbox), addr_entry, TRUE, TRUE, 0);
 
         port_spin = gtk_spin_button_new_with_range(0.0, 65535.0, 1.0);
 
@@ -563,7 +591,56 @@ static void ice_configure(void)
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(port_spin), (gdouble)server_port);
 
-        gtk_box_pack_start(GTK_BOX(addr_hbox), port_spin, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(hbox), port_spin, TRUE, TRUE, 0);
+
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Connection timeout (seconds):"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        timeout_spin = gtk_spin_button_new_with_range(1.0, 65535.0, 1.0);
+
+        gtk_spin_button_set_digits(GTK_SPIN_BUTTON(timeout_spin), 0);
+
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(timeout_spin), (gdouble)ice_close_timeout);
+
+        gtk_box_pack_start(GTK_BOX(hbox), timeout_spin, TRUE, TRUE, 0);
+
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Buffer size (bytes):"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        buffersize_spin = gtk_spin_button_new_with_range(1.0, 65535.0, 1.0);
+
+        gtk_spin_button_set_digits(GTK_SPIN_BUTTON(buffersize_spin), 0);
+
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(buffersize_spin), (gdouble)buffersize);
+
+        gtk_box_pack_start(GTK_BOX(hbox), buffersize_spin, TRUE, TRUE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Flush buffer if "));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        bufferflush_spin = gtk_spin_button_new_with_range(1.0, 65535.0, 1.0);
+
+        gtk_spin_button_set_digits(GTK_SPIN_BUTTON(bufferflush_spin), 0);
+
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(bufferflush_spin), bufferflushperc);
+
+        gtk_box_pack_start(GTK_BOX(hbox), bufferflush_spin, TRUE, TRUE, 0);
+
+        label = gtk_label_new(_("percents are filled"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
