@@ -81,9 +81,9 @@ gboolean skins_init(void) {
     register_aud_stock_icons();
     ui_manager_init();
     ui_manager_create_menus();
-    mainwin_setup_menus();
 
     init_skins(config.skin);
+    mainwin_setup_menus();
 
     if (config.player_visible) mainwin_real_show();
     if (config.equalizer_visible) equalizerwin_show(TRUE);
