@@ -27,9 +27,11 @@
 struct format_info input;
 
 static GtkWidget *configure_win = NULL, *configure_vbox;
-static GtkWidget *addr_hbox, *addr_label, *addr_entry;
+static GtkWidget *addr_hbox, *addr_label, *addr_entry, *port_spin;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
 static guint ice_tid=0;
+
+static gint ice_close_timeout;
 
 static GtkWidget *streamformat_hbox, *streamformat_label, *streamformat_combo, *plugin_button;
 
@@ -57,8 +59,10 @@ static unsigned int streamformat_shout[] =
 };
 
 static FileWriter plugin;
-
+static uint8_t outputbuffer[4096];
+static guint outputlength=0;
 static gchar *server_address = NULL;
+static gint server_port=8000;
 
 VFSFile *output_file = NULL;
 guint64 written = 0;
@@ -139,6 +143,10 @@ static void ice_init(void)
     db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "icecast", "streamformat", &streamformat);
     aud_cfg_db_get_string(db, "icecast", "server_address", &server_address);
+    aud_cfg_db_get_int(db, "icecast", "server_port", &server_port);
+    if (!server_port) server_port=8000;
+    aud_cfg_db_get_int(db, "icecast", "timeout", &ice_close_timeout);
+    if (!ice_close_timeout) ice_close_timeout=5;
     aud_cfg_db_close(db);
 
     set_plugin();
@@ -224,7 +232,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
             return 0;
         }
 
-        if (shout_set_port(shout, 8000) != SHOUTERR_SUCCESS)
+        if (shout_set_port(shout, server_port) != SHOUTERR_SUCCESS)
         {
             printf("Error setting port: %s\n", shout_get_error(shout));
             return 0;
@@ -346,16 +354,45 @@ static void ice_write(void *ptr, gint length)
     plugin.write(ptr, length);
 }
 
-static gint ice_write_output(void *ptr, gint length)
+static gint ice_real_write(void* ptr, gint length)
 {
-    int i, ret;
-    if ((!shout) || (!length)) return 0;
+    int ret;
+    if (!length) return length;
     ret = shout_send(shout, ptr, length);
     //shout_send_raw(shout, ptr, length);
     shout_sync(shout);
     printf("ice_write[%d:%d](", ret, length);
-    for (i=0;(i<length)&&(i<16);i++)   printf("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
+    {
+        int i;
+        for (i=0;(i<length)&&(i<16);i++)   printf("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
+    }
     printf(")\n");
+    return 0;
+    //return ret;
+}
+
+static gint ice_write_output(void *ptr, gint length)
+{
+    if ((!shout) || (!length)) return 0;
+    printf("outputlength=%d, length=%d...",outputlength, length);
+    if ((outputlength>4000)||((outputlength+length)>4096))
+    {
+        printf("flushing\n");
+        outputlength=ice_real_write(outputbuffer, outputlength);
+    }
+    {
+        if (length>4096)
+        {
+            printf("data too long, flushing\n");
+            ice_real_write(ptr, length);
+        }
+        else
+        {
+            printf("adding\n");
+            memcpy(&(outputbuffer[outputlength]), ptr, length);
+            outputlength+=length;
+        }
+    }
     return length;
 }
 
@@ -426,9 +463,13 @@ static void configure_ok_cb(gpointer data)
     g_free(server_address);
     server_address = g_strdup(gtk_entry_get_text(GTK_ENTRY(addr_entry)));
 
+    server_port = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(port_spin));
+
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, "icecast", "streamformat", streamformat);
     aud_cfg_db_set_string(db, "icecast", "server_address", server_address);
+    aud_cfg_db_set_int(db, "icecast", "server_port", server_port);
+    aud_cfg_db_set_int(db, "icecast", "timeout", ice_close_timeout);
 
     aud_cfg_db_close(db);
 
@@ -515,6 +556,14 @@ static void ice_configure(void)
 	gtk_entry_set_text(GTK_ENTRY(addr_entry), server_address);
 
         gtk_box_pack_start(GTK_BOX(addr_hbox), addr_entry, TRUE, TRUE, 0);
+
+        port_spin = gtk_spin_button_new_with_range(0.0, 65535.0, 1.0);
+
+        gtk_spin_button_set_digits(GTK_SPIN_BUTTON(port_spin), 0);
+
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(port_spin), (gdouble)server_port);
+
+        gtk_box_pack_start(GTK_BOX(addr_hbox), port_spin, TRUE, TRUE, 0);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
