@@ -209,18 +209,18 @@ cfg_device_lv_celldatafunc_isavailable( GtkTreeViewColumn * col , GtkCellRendere
   switch (is_available)
   {
     case DEVLIST_ISAVAILABLE_DET:
-      g_object_set( renderer , "text" , "Detected" ,
+      g_object_set( renderer , "text" , _("Detected") ,
         "foreground" , "Green" , "foreground-set" , TRUE ,
         "background" , "Black" , "background-set" , TRUE , NULL );
       break;
     case DEVLIST_ISAVAILABLE_CUSTOM:
-      g_object_set( renderer , "text" , "Custom" ,
+      g_object_set( renderer , "text" , _("Custom") ,
         "foreground" , "Yellow" , "foreground-set" , TRUE ,
         "background" , "Black" , "background-set" , TRUE , NULL );
       break;
     case DEVLIST_ISAVAILABLE_NOTDET:
     default:
-      g_object_set( renderer , "text" , "Not Detected" ,
+      g_object_set( renderer , "text" , _("Not Detected") ,
         "foreground" , "Orange" , "foreground-set" , TRUE ,
         "background" , "Black" , "background-set" , TRUE , NULL );
       break;
@@ -401,7 +401,7 @@ cfg_config_cb_addcustom_show ( gpointer cfg_device_lv )
           DEVLIST_COL_ISACTIVE , FALSE ,
           DEVLIST_COL_NAME , name ,
           DEVLIST_COL_FILENAME , file ,
-          DEVLIST_COL_PHYS , "(custom)" ,
+          DEVLIST_COL_PHYS , _("(custom)") ,
           DEVLIST_COL_ISAVAILABLE , DEVLIST_ISAVAILABLE_CUSTOM ,
           DEVLIST_COL_BINDINGS , NULL , -1 );
         task_done = TRUE;

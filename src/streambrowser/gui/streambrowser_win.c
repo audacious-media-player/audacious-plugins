@@ -47,7 +47,7 @@ void streambrowser_win_init()
 	g_signal_connect(G_OBJECT(notebook), "switch-page", G_CALLBACK(on_notebook_switch_page), NULL);
 	gtk_widget_show(notebook);
 
-	GtkWidget *search_label = gtk_label_new("Search:");
+	GtkWidget *search_label = gtk_label_new(_("Search:"));
 	gtk_widget_show(search_label);
 
 	/* search entry */
@@ -72,7 +72,7 @@ void streambrowser_win_init()
 
 	/* streambrowser window */
 	streambrowser_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(streambrowser_window), "Stream browser");
+	gtk_window_set_title(GTK_WINDOW(streambrowser_window), _("Stream browser"));
 	gtk_window_set_position(GTK_WINDOW(streambrowser_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(streambrowser_window), 700, 400);
 	g_signal_connect(G_OBJECT(streambrowser_window), "delete-event", G_CALLBACK(gtk_widget_hide_on_delete), streambrowser_window);
@@ -213,8 +213,8 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(tree_view), FALSE);
 
 	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "", cell_renderer_pixbuf, "pixbuf", 0, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "Stream name", cell_renderer_text, "text", 1, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "Now playing", cell_renderer_text, "text", 2, NULL);
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, _("Stream name"), cell_renderer_text, "text", 1, NULL);
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, _("Now playing"), cell_renderer_text, "text", 2, NULL);
 
 	g_signal_connect(G_OBJECT(tree_view), "cursor-changed", G_CALLBACK(on_tree_view_cursor_changed), NULL);
 

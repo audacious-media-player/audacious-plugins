@@ -128,7 +128,7 @@ static void add_columns(GtkTreeView *treeview)
 
     /* column for producer */
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes ("Producer",
+    column = gtk_tree_view_column_new_with_attributes (_("Producer"),
             renderer,
             "text",
             COLUMN_PRODUCER,
@@ -200,21 +200,21 @@ void results_ui()
         gtk_container_set_border_width (GTK_CONTAINER (hbox_bottom), 4); 
         gtk_container_add (GTK_CONTAINER (mainbox), hbox_bottom);
 
-        headset_frame = gtk_frame_new("Available Headsets");
+        headset_frame = gtk_frame_new(_("Available Headsets"));
         gtk_container_add (GTK_CONTAINER (hbox_top), headset_frame);
 
-        about_frame = gtk_frame_new("Current Headset");
+        about_frame = gtk_frame_new(_("Current Headset"));
         gtk_container_add(GTK_CONTAINER(hbox_top),about_frame);
 
-        refresh = gtk_button_new_with_mnemonic ("_Refresh");
+        refresh = gtk_button_new_with_mnemonic (_("_Refresh"));
         g_signal_connect (refresh, "clicked",G_CALLBACK (refresh_resultsui), NULL);
         gtk_container_add(GTK_CONTAINER(hbox_bottom),refresh);
 
-        connect_button = gtk_button_new_with_mnemonic("_Connect");
+        connect_button = gtk_button_new_with_mnemonic(_("_Connect"));
         g_signal_connect(connect_button,"clicked",G_CALLBACK (connect_call), NULL);
         gtk_container_add(GTK_CONTAINER(hbox_bottom),connect_button);
 
-        close_button = gtk_button_new_with_mnemonic("_Close");
+        close_button = gtk_button_new_with_mnemonic(_("_Close"));
         g_signal_connect(close_button,"clicked",G_CALLBACK (close_call),NULL);
         gtk_container_add(GTK_CONTAINER(hbox_bottom),close_button);
         /* create tree model */
@@ -248,14 +248,14 @@ void results_ui()
         gtk_container_add (GTK_CONTAINER (box_about), box_about_right);
 
         /* Left labels  */
-        label_p = gtk_label_new("Name:");
+        label_p = gtk_label_new(_("Name:"));
         gtk_container_add(GTK_CONTAINER(box_about_left),label_p);
 
-        label_c = gtk_label_new("Class");
+        label_c = gtk_label_new(_("Class"));
         gtk_container_add(GTK_CONTAINER(box_about_left),label_c);
 
 
-        label_a = gtk_label_new("Address:");
+        label_a = gtk_label_new(_("Address:"));
         gtk_container_add(GTK_CONTAINER(box_about_left),label_a);
 
 

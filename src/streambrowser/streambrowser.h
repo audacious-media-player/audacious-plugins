@@ -4,6 +4,9 @@
 
 #include <glib.h>
 
+#include <config.h>
+#include <audacious/i18n.h>
+
 #define DEF_STRING_LEN		1024
 #define DEF_BUFFER_SIZE		512
 #define MAX_UPDATE_THREADS	4

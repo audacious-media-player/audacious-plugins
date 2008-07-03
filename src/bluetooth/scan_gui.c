@@ -29,7 +29,7 @@ gpointer progress() {
 
 void show_no_devices(){
     if(window ){
-        gtk_label_set_text(GTK_LABEL(scan_label),"No devices found!");
+        gtk_label_set_text(GTK_LABEL(scan_label),_("No devices found!"));
     }
 }
 void destroy_scan_window(){
@@ -67,7 +67,7 @@ void show_scan()
         gtk_image_set_pixel_size(GTK_IMAGE(bluetooth_img),-1);
         gtk_container_add(GTK_CONTAINER(scanbox),bluetooth_img);
 
-        scan_label = gtk_label_new_with_mnemonic("Scanning...");
+        scan_label = gtk_label_new_with_mnemonic(_("Scanning..."));
         gtk_container_add(GTK_CONTAINER(scanbox),scan_label);
 
         progress_bar = gtk_progress_bar_new();
@@ -80,10 +80,10 @@ void show_scan()
         buttonsbox = gtk_hbox_new(FALSE,2);
         gtk_container_set_border_width(GTK_CONTAINER(buttonsbox),2);
         gtk_container_add(GTK_CONTAINER(progressbox),buttonsbox);
-        rescan_buttton = gtk_button_new_with_mnemonic("Rescan");
+        rescan_buttton = gtk_button_new_with_mnemonic(_("Rescan"));
         g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (refresh_call),NULL);
 
-        close_button = gtk_button_new_with_mnemonic("Close");
+        close_button = gtk_button_new_with_mnemonic(_("Close"));
         gtk_container_add(GTK_CONTAINER(buttonsbox),rescan_buttton);
         gtk_container_add(GTK_CONTAINER(buttonsbox),close_button);
         g_signal_connect(close_button,"clicked",G_CALLBACK (close_window),NULL);
