@@ -29,8 +29,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <audacious/main.h>
 #include <audacious/plugin.h>
+#include <audacious/playlist.h>
+#include <audacious/configdb.h>
 #include <audacious/i18n.h>
+#include <audacious/util.h>
+#include <audacious/vfs.h>
 
 struct format_info { 
     AFormat format;
@@ -47,12 +52,15 @@ extern Tuple *tuple;
 
 typedef struct _FileWriter FileWriter;
 
+typedef gint (*write_output_callback)(void *ptr, gint length);
+
 struct _FileWriter
 {
-    void (*init)(void);
+    void (*init)(write_output_callback write_output_func);
     void (*configure)(void);
     gint (*open)(void);
     void (*write)(void *ptr, gint length);
+    void (*flush)(void);
     void (*close)(void);
     gint (*free)(void);
     gint (*playing)(void);

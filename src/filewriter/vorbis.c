@@ -26,14 +26,16 @@
 #include <vorbis/vorbisenc.h>
 #include <stdlib.h>
 
-static void vorbis_init(void);
+static void vorbis_init(write_output_callback write_output_func);
 static void vorbis_configure(void);
 static gint vorbis_open(void);
 static void vorbis_write(gpointer data, gint length);
+static void vorbis_flush(void);
 static void vorbis_close(void);
 static gint vorbis_free(void);
 static gint vorbis_playing(void);
 static gint vorbis_get_written_time(void);
+static gint (*write_output)(void *ptr, gint length);
 
 FileWriter vorbis_plugin =
 {
@@ -41,6 +43,7 @@ FileWriter vorbis_plugin =
     vorbis_configure,
     vorbis_open,
     vorbis_write,
+    vorbis_flush,
     vorbis_close,
     vorbis_free,
     vorbis_playing,
@@ -61,13 +64,16 @@ static vorbis_comment vc;
 static float **encbuffer;
 static guint64 olen = 0;
 
-static void vorbis_init(void)
+static void vorbis_init(write_output_callback write_output_func)
 {
-    mcs_handle_t *db = aud_cfg_db_open();
+    ConfigDb *db = aud_cfg_db_open();
 
     aud_cfg_db_get_float(db, "filewriter_vorbis", "base_quality", &v_base_quality);
 
     aud_cfg_db_close(db);
+
+    if (write_output_func)
+        write_output=write_output_func;
 }
 
 static gint vorbis_open(void)
@@ -77,7 +83,7 @@ static gint vorbis_open(void)
     ogg_packet header_comm;
     ogg_packet header_code;
 
-    vorbis_init();
+    vorbis_init(NULL);
 
     written = 0;
     olen = 0;
@@ -140,8 +146,8 @@ static gint vorbis_open(void)
         if (result == 0)
             break;
 
-        written += aud_vfs_fwrite(og.header, 1, og.header_len, output_file);
-        written += aud_vfs_fwrite(og.body, 1, og.body_len, output_file);
+        written += write_output(og.header, og.header_len);
+        written += write_output(og.body, og.body_len);
     }
 
     return 1;
@@ -194,13 +200,18 @@ static void vorbis_write(gpointer data, gint length)
                 if (result == 0)
                     break;
 
-                written += aud_vfs_fwrite(og.header, 1, og.header_len, output_file);
-                written += aud_vfs_fwrite(og.body, 1, og.body_len, output_file);
+                written += write_output(og.header, og.header_len);
+                written += write_output(og.body, og.body_len);
             }
         }
     }
 
     olen += length;
+}
+
+static void vorbis_flush(void)
+{
+    //nothing to do here yet. --AOS
 }
 
 static void vorbis_close(void)
@@ -245,7 +256,7 @@ static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
 
 static void configure_ok_cb(gpointer data)
 {
-    mcs_handle_t *db = aud_cfg_db_open();
+    ConfigDb *db = aud_cfg_db_open();
 
     aud_cfg_db_set_float(db, "filewrite_vorbis", "base_quality", v_base_quality);
 

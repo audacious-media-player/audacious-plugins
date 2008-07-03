@@ -29,14 +29,16 @@
 #include <lame/lame.h>
 #define ENCBUFFER_SIZE 35000
 
-static void mp3_init(void);
+static void mp3_init(write_output_callback write_output_func);
 static void mp3_configure(void);
 static gint mp3_open(void);
 static void mp3_write(void *ptr, gint length);
+static void mp3_flush(void);
 static void mp3_close(void);
 static gint mp3_free(void);
 static gint mp3_playing(void);
 static gint mp3_get_written_time(void);
+static gint (*write_output)(void *ptr, gint length);
 
 FileWriter mp3_plugin =
 {
@@ -44,6 +46,7 @@ FileWriter mp3_plugin =
     mp3_configure,
     mp3_open,
     mp3_write,
+    mp3_flush,
     mp3_close,
     mp3_free,
     mp3_playing,
@@ -158,9 +161,9 @@ static void lame_debugf(const char *format, va_list ap)
     (void) vfprintf(stdout, format, ap);
 }
 
-static void mp3_init(void)
+static void mp3_init(write_output_callback write_output_func)
 {
-    mcs_handle_t *db = aud_cfg_db_open();
+    ConfigDb *db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_on", &vbr_on);
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_type", &vbr_type);
     aud_cfg_db_get_int(db, "filewriter_mp3", "vbr_min_val", &vbr_min_val);
@@ -194,6 +197,8 @@ static void mp3_init(void)
     aud_cfg_db_get_int(db, "filewriter_mp3", "error_protect_val",
                        &error_protect_val);
     aud_cfg_db_close(db);
+    if (write_output_func)
+        write_output=write_output_func;
 }
 
 static gint mp3_open(void)
@@ -302,9 +307,15 @@ static void mp3_write(void *ptr, gint length)
                                            ENCBUFFER_SIZE);
     }
 
-    aud_vfs_fwrite(encbuffer, 1, encout, output_file);
+    write_output(encbuffer, encout);
     written += encout;
     olen += length;
+}
+
+static void mp3_flush(void)
+{
+    encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
+    write_output(encbuffer, encout);
 }
 
 static void mp3_close(void)
@@ -312,17 +323,17 @@ static void mp3_close(void)
     if (output_file)
     {
         encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
-        aud_vfs_fwrite(encbuffer, 1, encout, output_file);
+        write_output(encbuffer, encout);
 
 //        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag??
 
-        lame_close(gfp);
-        AUDDBG("lame_close() done\n");
-
-        free_lameid3(&lameid3);
-
         olen = 0;
     }
+
+    lame_close(gfp);
+    AUDDBG("lame_close() done\n");
+
+    free_lameid3(&lameid3);
 }
 
 static gint mp3_free(void)
@@ -615,7 +626,7 @@ static void id3_only_version(GtkToggleButton * togglebutton,
 
 static void configure_ok_cb(gpointer data)
 {
-    mcs_handle_t *db;
+    ConfigDb *db;
 
     if (vbr_min_val > vbr_max_val)
         vbr_max_val = vbr_min_val;

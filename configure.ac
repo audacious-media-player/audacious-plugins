@@ -242,7 +242,7 @@ esac
 dnl Check for esound
 
 AC_ARG_ENABLE( esd,
-    [  --disable-esd           disable esound output plugin [default=enabled]],
+    [  --disable-esd           disable esound output plugin (default=enabled)],
     [enable_esd=$enableval],
     [enable_esd="yes"]
 )
@@ -261,7 +261,7 @@ fi
 dnl Check for PulseAudio
 
 AC_ARG_ENABLE( pulse,
-    [  --disable-pulse         disable PulseAudio output plugin [default=enabled]],
+    [  --disable-pulse         disable PulseAudio output plugin (default=enabled)],
     [enable_pulse=$enableval],
     [enable_pulse="yes"]
 )
@@ -294,6 +294,28 @@ else
 	AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
 	have_coreaudio=no
 fi
+
+dnl *** Icecast
+
+AC_ARG_ENABLE( icecast,
+    [  --disable-icecast       disable Icecast output plugin (default=enabled)],
+    [enable_icecast=$enableval],
+    [enable_icecast="yes"]
+)
+
+if test "x$enable_icecast" = "xyes"; then
+    PKG_CHECK_MODULES(SHOUT, [shout >= 2.0],
+         [have_shout=yes
+	  enable_filewriter=yes],
+         [have_shout=no]
+    )
+else
+    AC_MSG_RESULT([*** icecast output plugin disabled per user request ***])
+    have_shout=no
+fi
+
+AC_SUBST(SHOUT_CFLAGS)
+AC_SUBST(SHOUT_LIBS)
 
 dnl *** Dock Album Art (MacOS)
 
@@ -1578,6 +1600,10 @@ fi
 AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
 
+if test "x$have_shout" = "xyes"; then
+   OUTPUT_PLUGINS="$OUTPUT_PLUGINS icecast"
+fi
+
 dnl *** End of all plugin checks ***
 
 AC_SUBST(ARCH_DEFINES)
@@ -1674,6 +1700,7 @@ echo "  FileWriter:                             $enable_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
 echo "    -> FileWriter FLAC output part:       $have_writer_flac"
+echo "  Icecast audio output (icecast):         $have_shout"
 echo "  Null Audio output (null):               yes"
 echo
 echo "  Input Plugins"
@@ -1720,7 +1747,7 @@ echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  LIRC:                                   $have_lirc"
 echo "  AudioScrobbler Client:                  $scrobbler"
 echo "  Upload to MTP device:                   $have_mtp_up"
-echo "  Bluetooth audio suport:                 $have_bluetooth"
+echo "  Bluetooth audio support:                $have_bluetooth"
 echo "  MacOS Dock Album Art plugin:            $have_dockalbumart"
 echo "  Streambrowser:                          $enable_streambrowser"
 echo

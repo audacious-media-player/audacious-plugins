@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
 #include "filewriter.h"
@@ -77,10 +77,16 @@ static gboolean prependnumber = FALSE;
 
 static gchar *file_path = NULL;
 
+VFSFile *output_file = NULL;
+guint64 written = 0;
+guint64 offset = 0;
+Tuple *tuple = NULL;
+
 static void file_init(void);
 static void file_about(void);
 static gint file_open(AFormat fmt, gint rate, gint nch);
 static void file_write(void *ptr, gint length);
+static gint file_write_output(void *ptr, gint length);
 static void file_close(void);
 static void file_flush(gint time);
 static void file_pause(short p);
@@ -134,7 +140,7 @@ static void set_plugin(void)
 
 static void file_init(void)
 {
-    mcs_handle_t *db;
+    ConfigDb *db;
     /*GtkWidget *menu_root;
 
     menu_root = gtk_menu_item_new_with_label(_("FileWriter"));
@@ -155,7 +161,7 @@ static void file_init(void)
 
     set_plugin();
     if (plugin.init)
-        plugin.init();
+        plugin.init(&file_write_output);
 }
 
 void file_about(void)
@@ -179,7 +185,7 @@ void file_about(void)
                                "\n"
                                "You should have received a copy of the GNU General Public License\n"
                                "along with this program; if not, write to the Free Software\n"
-                               "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+                               "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
                                "USA."), _("Ok"), FALSE, NULL, NULL);
     gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
                        GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
@@ -326,6 +332,11 @@ static void file_write(void *ptr, gint length)
     plugin.write(ptr, length);
 }
 
+static gint file_write_output(void *ptr, gint length)
+{
+    return aud_vfs_fwrite(ptr, 1, length, output_file);
+}
+
 static void file_close(void)
 {
     plugin.close();
@@ -375,7 +386,7 @@ static gint file_get_output_time(void)
 
 static void configure_ok_cb(gpointer data)
 {
-    mcs_handle_t *db;
+    ConfigDb *db;
 
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 
@@ -407,6 +418,8 @@ static void fileext_cb(GtkWidget *combo, gpointer data)
 {
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
     set_plugin();
+    if (plugin.init)
+        plugin.init(&file_write_output);
 
     gtk_widget_set_sensitive(plugin_button, plugin.configure != NULL);
 }
@@ -630,8 +643,3 @@ static void file_configure(void)
         gtk_widget_show_all(configure_win);
     }
 }
-
-VFSFile *output_file = NULL;
-guint64 written = 0;
-guint64 offset = 0;
-Tuple *tuple = NULL;
