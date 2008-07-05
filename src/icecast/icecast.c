@@ -63,6 +63,8 @@ static uint8_t *outputbuffer = NULL;
 static guint outputlength=0;
 static gint buffersize;
 static gint bufferflush;
+static gint buffersize_new;
+static gint bufferflush_new;
 static gdouble bufferflushperc;
 static gchar *server_address = NULL;
 static gint server_port=8000;
@@ -153,9 +155,11 @@ static void ice_init(void)
     if (!ice_close_timeout) ice_close_timeout=5;
     aud_cfg_db_get_int(db, "icecast", "buffersize", &buffersize);
     if (!buffersize) buffersize=8192;
+    buffersize_new=buffersize;
     aud_cfg_db_get_double(db, "icecast", "bufferflush", &bufferflushperc);
     if (!bufferflushperc) bufferflushperc=80.0;
     bufferflush=(gint)(buffersize*bufferflushperc);
+    bufferflush_new=bufferflush;
     aud_cfg_db_close(db);
 
     outputbuffer=g_try_malloc(buffersize);
@@ -209,6 +213,15 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
     gint pos;
     Playlist *playlist;
 
+    if (buffersize!=buffersize_new)
+    {
+        buffersize=buffersize_new;
+        outputbuffer=g_try_realloc(outputbuffer, buffersize);
+    }
+
+    if (bufferflush!=bufferflush_new)
+        bufferflush=bufferflush_new;
+
     if (!outputbuffer)
         return 0;
 
@@ -223,7 +236,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
     input.channels = nch;
 
     playlist = aud_playlist_get_active();
-    if(!playlist)
+    if (!playlist)
         return 0;
 
     pos = aud_playlist_get_position(playlist);
@@ -375,7 +388,6 @@ static gint ice_real_write(void* ptr, gint length)
     int ret;
     if (!length) return length;
     ret = shout_send(shout, ptr, length);
-    //shout_send_raw(shout, ptr, length);
     shout_sync(shout);
     printf("ice_write[%d:%d](", ret, length);
     {
@@ -384,7 +396,6 @@ static gint ice_real_write(void* ptr, gint length)
     }
     printf(")\n");
     return 0;
-    //return ret;
 }
 
 static gint ice_write_output(void *ptr, gint length)
@@ -484,17 +495,17 @@ static void configure_ok_cb(gpointer data)
 
     ice_close_timeout = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(timeout_spin));
 
-    buffersize = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffersize_spin));
+    buffersize_new = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffersize_spin));
 
     bufferflushperc = gtk_spin_button_get_value(GTK_SPIN_BUTTON(bufferflush_spin));
-    bufferflush=(gint)(buffersize*bufferflushperc);
+    bufferflush_new=(gint)(buffersize*bufferflushperc);
 
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, "icecast", "streamformat", streamformat);
     aud_cfg_db_set_string(db, "icecast", "server_address", server_address);
     aud_cfg_db_set_int(db, "icecast", "server_port", server_port);
     aud_cfg_db_set_int(db, "icecast", "timeout", ice_close_timeout);
-    aud_cfg_db_set_int(db, "icecast", "buffersize", buffersize);
+    aud_cfg_db_set_int(db, "icecast", "buffersize", buffersize_new);
     aud_cfg_db_set_double(db, "icecast", "bufferflush", bufferflushperc);
 
     aud_cfg_db_close(db);
