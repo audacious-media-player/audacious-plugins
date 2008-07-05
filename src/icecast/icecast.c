@@ -28,6 +28,7 @@ struct format_info input;
 
 static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *addr_entry, *port_spin, *timeout_spin, *buffersize_spin, *bufferflush_spin;
+static GtkWidget *user_entry, *password_entry;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
 static guint ice_tid=0;
 
@@ -68,6 +69,9 @@ static gint bufferflush_new;
 static gdouble bufferflushperc;
 static gchar *server_address = NULL;
 static gint server_port=8000;
+
+static gchar *server_user = NULL;
+static gchar *server_password = NULL;
 
 VFSFile *output_file = NULL;
 guint64 written = 0;
@@ -160,6 +164,8 @@ static void ice_init(void)
     if (!bufferflushperc) bufferflushperc=80.0;
     bufferflush=(gint)(buffersize*bufferflushperc);
     bufferflush_new=bufferflush;
+    aud_cfg_db_get_string(db, "icecast", "server_user", &server_user);
+    aud_cfg_db_get_string(db, "icecast", "server_password", &server_password);
     aud_cfg_db_close(db);
 
     outputbuffer=g_try_malloc(buffersize);
@@ -491,6 +497,12 @@ static void configure_ok_cb(gpointer data)
     g_free(server_address);
     server_address = g_strdup(gtk_entry_get_text(GTK_ENTRY(addr_entry)));
 
+    g_free(server_user);
+    server_user = g_strdup(gtk_entry_get_text(GTK_ENTRY(user_entry)));
+
+    g_free(server_password);
+    server_password = g_strdup(gtk_entry_get_text(GTK_ENTRY(password_entry)));
+
     server_port = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(port_spin));
 
     ice_close_timeout = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(timeout_spin));
@@ -503,6 +515,8 @@ static void configure_ok_cb(gpointer data)
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, "icecast", "streamformat", streamformat);
     aud_cfg_db_set_string(db, "icecast", "server_address", server_address);
+    aud_cfg_db_set_string(db, "icecast", "server_user", server_user);
+    aud_cfg_db_set_string(db, "icecast", "server_password", server_password);
     aud_cfg_db_set_int(db, "icecast", "server_port", server_port);
     aud_cfg_db_set_int(db, "icecast", "timeout", ice_close_timeout);
     aud_cfg_db_set_int(db, "icecast", "buffersize", buffersize_new);
@@ -603,6 +617,31 @@ static void ice_configure(void)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(port_spin), (gdouble)server_port);
 
         gtk_box_pack_start(GTK_BOX(hbox), port_spin, TRUE, TRUE, 0);
+
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("User name:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        user_entry = gtk_entry_new();
+
+	gtk_entry_set_text(GTK_ENTRY(user_entry), server_user);
+
+        gtk_box_pack_start(GTK_BOX(hbox), user_entry, TRUE, TRUE, 0);
+
+        label = gtk_label_new(_("Password:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        password_entry = gtk_entry_new();
+
+	gtk_entry_set_text(GTK_ENTRY(password_entry), server_password);
+
+        gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
+
+        gtk_box_pack_start(GTK_BOX(hbox), password_entry, TRUE, TRUE, 0);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
