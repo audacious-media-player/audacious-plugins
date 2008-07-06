@@ -211,18 +211,30 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	GtkTreeStore *store = gtk_tree_store_new(3, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(store));
 
-	// todo: why doesn't the tree view allow to be resized?
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tree_view), TRUE);
-	gtk_tree_view_set_headers_clickable(GTK_TREE_VIEW(tree_view), TRUE);
-	gtk_tree_view_set_reorderable(GTK_TREE_VIEW(tree_view), TRUE);
-	gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(tree_view), FALSE);
 	gtk_tree_view_set_search_entry(GTK_TREE_VIEW(tree_view), GTK_ENTRY(search_entry));
 	gtk_tree_view_set_search_equal_func(GTK_TREE_VIEW(tree_view), tree_view_search_equal_func, NULL, NULL);
 	g_signal_connect(G_OBJECT(tree_view), "key-press-event", G_CALLBACK(on_tree_view_key_pressed), NULL);
 
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "", cell_renderer_pixbuf, "pixbuf", 0, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, _("Stream name"), cell_renderer_text, "text", 1, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, _("Now playing"), cell_renderer_text, "text", 2, NULL);
+	GtkTreeViewColumn *column = gtk_tree_view_column_new();
+	gtk_tree_view_column_pack_start(column, cell_renderer_pixbuf, TRUE);
+	gtk_tree_view_column_add_attribute(column, cell_renderer_pixbuf, "pixbuf", 0);
+	gtk_tree_view_column_set_resizable(column, TRUE);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
+	
+	column = gtk_tree_view_column_new();
+	gtk_tree_view_column_pack_start(column, cell_renderer_text, TRUE);
+	gtk_tree_view_column_add_attribute(column, cell_renderer_text, "text", 1);
+	gtk_tree_view_column_set_resizable(column, TRUE);
+	gtk_tree_view_column_set_title(column, _("Stream name"));
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
+
+	column = gtk_tree_view_column_new();
+	gtk_tree_view_column_pack_start(column, cell_renderer_text, TRUE);
+	gtk_tree_view_column_add_attribute(column, cell_renderer_text, "text", 2);
+	gtk_tree_view_column_set_resizable(column, TRUE);
+	gtk_tree_view_column_set_title(column, _("Now playing"));
+	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
 
 	g_signal_connect(G_OBJECT(tree_view), "cursor-changed", G_CALLBACK(on_tree_view_cursor_changed), NULL);
 
