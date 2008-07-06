@@ -2,6 +2,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "../streambrowser.h"
 #include "streambrowser_win.h"
@@ -25,10 +26,13 @@ static GtkWidget*		gtk_streamdir_table_new(GtkWidget *tree_view);
 static gboolean			on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer data);
 static gboolean			on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer data);
 static gboolean			on_add_button_clicked(GtkButton *button, gpointer data);
+static gboolean			on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
+static gboolean			on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
 
 static streamdir_gui_t*		find_streamdir_gui_by_name(gchar *name);
 static streamdir_gui_t*		find_streamdir_gui_by_tree_view(GtkTreeView *tree_view);
 static streamdir_gui_t*		find_streamdir_gui_by_table(GtkTable *table);
+static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data);
 
 
 static GtkWidget*		notebook;
@@ -52,6 +56,7 @@ void streambrowser_win_init()
 
 	/* search entry */
 	search_entry = gtk_entry_new();
+	g_signal_connect(G_OBJECT(search_entry), "key-press-event", G_CALLBACK(on_search_entry_key_pressed), NULL);
 	gtk_widget_show(search_entry);
 	
 	GtkWidget *hbox1 = gtk_hbox_new(FALSE, 0);
@@ -211,6 +216,9 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	gtk_tree_view_set_headers_clickable(GTK_TREE_VIEW(tree_view), TRUE);
 	gtk_tree_view_set_reorderable(GTK_TREE_VIEW(tree_view), TRUE);
 	gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(tree_view), FALSE);
+	gtk_tree_view_set_search_entry(GTK_TREE_VIEW(tree_view), GTK_ENTRY(search_entry));
+	gtk_tree_view_set_search_equal_func(GTK_TREE_VIEW(tree_view), tree_view_search_equal_func, NULL, NULL);
+	g_signal_connect(G_OBJECT(tree_view), "key-press-event", G_CALLBACK(on_tree_view_key_pressed), NULL);
 
 	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "", cell_renderer_pixbuf, "pixbuf", 0, NULL);
 	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, _("Stream name"), cell_renderer_text, "text", 1, NULL);
@@ -263,6 +271,11 @@ static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer dat
 	
 	gint *indices = gtk_tree_path_get_indices(path);
 	if (gtk_tree_path_get_depth(path) != 1) {
+		gtk_tree_path_free(path);
+		return TRUE;
+	}
+	
+	if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(tree_view), path)) {
 		gtk_tree_path_free(path);
 		return TRUE;
 	}
@@ -321,6 +334,53 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 	return TRUE;
 }
 
+static gboolean on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
+	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter)
+		on_add_button_clicked(GTK_BUTTON(add_button), NULL);
+	
+	/* todo: remove this
+	GtkWidget *table = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
+	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_table(GTK_TABLE(table));
+	if (streamdir_gui == NULL)
+		return FALSE;
+
+	GtkWidget *tree_view = streamdir_gui->tree_view;
+	GtkTreeIter iter;
+	gboolean is_expanded = FALSE;
+	GtkTreeStore *store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(tree_view)));
+	GtkTreePath *path;
+	if (!gtk_tree_model_get_iter_first(GTK_TREE_MODEL(store), &iter))
+		return FALSE;
+		
+	while (gtk_tree_model_iter_next(GTK_TREE_MODEL(store), &iter)) {
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(store), &iter);
+		
+		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(tree_view), path)) {
+			is_expanded = TRUE;
+			break;
+		}
+		
+		gtk_tree_path_free(path);
+	}
+
+	if (!is_expanded)
+		gtk_tree_view_set_search_column(GTK_TREE_VIEW(tree_view), );
+	else
+		gtk_tree_view_set_search_column(GTK_TREE_VIEW(tree_view), 1);
+	*/
+	
+	return FALSE;
+}
+
+static gboolean on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
+	gtk_widget_grab_focus(search_entry);
+	on_search_entry_key_pressed(widget, event, data);
+
+	return FALSE;
+}
+
 static streamdir_gui_t *find_streamdir_gui_by_name(gchar *name)
 {
 	GList *iterator;
@@ -364,5 +424,21 @@ static streamdir_gui_t *find_streamdir_gui_by_table(GtkTable *table)
 	}
 	
 	return NULL;
+}
+
+static gboolean tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data)
+{
+	GValue value = {0, };
+	gboolean ret;
+	
+	gtk_tree_model_get_value(model, iter, column, &value);
+	const gchar *string = g_value_get_string(&value);
+	
+	// todo: why do I get "warning: implicit declaration" for strcasestr !?
+	ret = ((char *) strcasestr(string, key) == NULL);
+	
+	g_value_unset(&value);
+
+	return ret;
 }
 

@@ -242,20 +242,41 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
 	}
 	else
 		if (update_thread_count > 0) {
-			debug("another %d streamdir updates are pending, this request will be queued\n", update_thread_count);
+			int i;
+			gboolean exists = FALSE;
+			update_thread_data_t *update_thread_data;
 			
 			g_mutex_lock(update_thread_mutex);
-			
-			update_thread_data_t *update_thread_data = g_malloc(sizeof(update_thread_data_t));
-			
-			update_thread_data->streamdir = streamdir;
-			update_thread_data->category = category;
-			update_thread_data->streaminfo = streaminfo;
-			g_queue_push_tail(update_thread_data_queue, update_thread_data);
-			
-			update_thread_count++;
-
+			for (i = 0; i < g_queue_get_length(update_thread_data_queue); i++) {
+				update_thread_data = g_queue_peek_nth(update_thread_data_queue, i);
+				if (update_thread_data->streamdir == streamdir &&
+						update_thread_data->category == category &&
+						update_thread_data->streaminfo == streaminfo) {
+					exists = TRUE;
+					break;
+				}
+			}
 			g_mutex_unlock(update_thread_mutex);
+
+			if (!exists) {
+				debug("another %d streamdir updates are pending, this request will be queued\n", update_thread_count);
+			
+				g_mutex_lock(update_thread_mutex);
+			
+				update_thread_data = g_malloc(sizeof(update_thread_data_t));
+			
+				update_thread_data->streamdir = streamdir;
+				update_thread_data->category = category;
+				update_thread_data->streaminfo = streaminfo;
+				g_queue_push_tail(update_thread_data_queue, update_thread_data);
+			
+				update_thread_count++;
+
+				g_mutex_unlock(update_thread_mutex);
+			}
+			else {
+				debug("this request is already present in the queue, dropping\n");			
+			}
 		}
 		else {
 			update_thread_data_t *data = g_malloc(sizeof(update_thread_data_t));
@@ -264,7 +285,7 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
 			data->category = category;
 			data->streaminfo = streaminfo;
 
-			g_thread_create((GThreadFunc) update_thread_core, data, TRUE, NULL);
+			g_thread_create((GThreadFunc) update_thread_core, data, FALSE, NULL);
 		}
 }
 
@@ -276,7 +297,7 @@ static gpointer update_thread_core(update_thread_data_t *data)
 
 	/* update a streaminfo - that is - add this streaminfo to playlist */
 	if (data->streaminfo != NULL) {
-		 streaminfo_add_to_playlist(data->streaminfo);
+		streaminfo_add_to_playlist(data->streaminfo);
 	}
 	/* update a category */
 	else if (data->category != NULL) {
@@ -342,7 +363,7 @@ static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
 	}
 	debug("stream playlist '%s' successfuly downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
 	
-	aud_playlist_add(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
+	aud_playlist_add_url(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
 }
 
 static void on_plugin_services_menu_item_click()
