@@ -22,6 +22,7 @@
 #define SKINS_CFG_H
 
 #include <glib.h>
+#include <gtk/gtk.h>
 
 #define MAINWIN_DEFAULT_POS_X    20
 #define MAINWIN_DEFAULT_POS_Y    20
@@ -86,6 +87,6 @@ void skins_cfg_free();
 void skins_cfg_load();
 void skins_cfg_save();
 
-void skins_configure(void);
+GtkWidget* skins_configure(void);
 
 #endif

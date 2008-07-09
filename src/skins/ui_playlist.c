@@ -1199,7 +1199,7 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
         break;
     case GDK_Insert:
         if (event->state & GDK_MOD1_MASK)
-            mainwin_show_add_url_window();
+            action_playlist_add_url();
         else
             playlistwin_show_filebrowser();
         break;
@@ -1800,7 +1800,7 @@ action_playlist_add_files(void)
 void
 action_playlist_add_url(void)
 {
-    mainwin_show_add_url_window();
+    aud_hook_call("urlopener show", NULL);
 }
 
 void

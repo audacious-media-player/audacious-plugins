@@ -547,7 +547,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
     }
 }
 
-void skins_configure(void) {
+GtkWidget* skins_configure(void) {
     GtkWidget *appearance_page_vbox;
     GtkWidget *vbox37;
     GtkWidget *vbox38;
@@ -561,21 +561,7 @@ void skins_configure(void) {
     GtkWidget *alignment95;
     GtkWidget *skin_view_scrolled_window;
 
-    if (cfg_win != NULL) {
-        gtk_window_present(GTK_WINDOW(cfg_win));
-        return;
-    }
-
-    cfg_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint(GTK_WINDOW(cfg_win), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_title(GTK_WINDOW(cfg_win), _("Audacious Skinned GUI Configuration"));
-    gtk_container_set_border_width(GTK_CONTAINER(cfg_win), 10);
-    g_signal_connect(G_OBJECT(cfg_win), "destroy" ,
-                     G_CALLBACK(gtk_widget_destroyed), &cfg_win);
-    gtk_widget_set_size_request(cfg_win, 500, -1);
-
     appearance_page_vbox = gtk_vbox_new (FALSE, 0);
-    gtk_container_add(GTK_CONTAINER(cfg_win), appearance_page_vbox);
 
     vbox37 = gtk_vbox_new (FALSE, 0);
     gtk_box_pack_start (GTK_BOX (appearance_page_vbox), vbox37, TRUE, TRUE, 0);
@@ -658,5 +644,5 @@ void skins_configure(void) {
 
     gtk_window_present(GTK_WINDOW(cfg_win));
 
-    return;
+    return appearance_page_vbox;
 }
