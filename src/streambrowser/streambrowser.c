@@ -37,9 +37,9 @@ static void 			on_plugin_services_menu_item_click();
 
 static GtkWidget*		playlist_menu_item;
 static GtkWidget*		main_menu_item;
-static GQueue*			update_thread_data_queue;
+static GQueue*			update_thread_data_queue = NULL;
 static gint			update_thread_count = 0;
-static GMutex*			update_thread_mutex;
+static GMutex*			update_thread_mutex = NULL;
 
 
 streambrowser_cfg_t		streambrowser_cfg;
@@ -191,10 +191,14 @@ static void gui_done()
 	streambrowser_win_done();
 	
 	/* others */
-	g_mutex_free(update_thread_mutex);
-	g_queue_free(update_thread_data_queue);
+	if (update_thread_mutex)
+		g_mutex_free(update_thread_mutex);
+	update_thread_mutex = NULL;
+	if (update_thread_data_queue)
+		g_queue_free(update_thread_data_queue);
+	update_thread_data_queue = NULL;
 
-	debug("gui destroied\n");
+	debug("gui destroyed\n");
 }
 
 static void config_load()
