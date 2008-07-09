@@ -1,5 +1,7 @@
 
+#include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -10,14 +12,14 @@
 
 typedef struct {
 
-	streamdir_t*		streamdir;
+	streamdir_t*	streamdir;
 	GtkWidget*		table;
 	GtkWidget*		tree_view;
 
 } streamdir_gui_t;
 
 
-void				(* update_function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo);
+void					(* update_function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo);
 
 static GtkWidget*		gtk_label_new_with_icon(gchar *icon_filename, gchar *label_text);
 static GtkWidget*		gtk_streamdir_tree_view_new();
@@ -29,11 +31,13 @@ static gboolean			on_add_button_clicked(GtkButton *button, gpointer data);
 static gboolean			on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
 static gboolean			on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
 
-static streamdir_gui_t*		find_streamdir_gui_by_name(gchar *name);
-static streamdir_gui_t*		find_streamdir_gui_by_tree_view(GtkTreeView *tree_view);
-static streamdir_gui_t*		find_streamdir_gui_by_table(GtkTable *table);
-static streamdir_gui_t*		find_streamdir_gui_by_streamdir(streamdir_t *streamdir);
+static streamdir_gui_t*	find_streamdir_gui_by_name(gchar *name);
+static streamdir_gui_t*	find_streamdir_gui_by_tree_view(GtkTreeView *tree_view);
+static streamdir_gui_t*	find_streamdir_gui_by_table(GtkTable *table);
+static streamdir_gui_t*	find_streamdir_gui_by_streamdir(streamdir_t *streamdir);
 static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data);
+
+static gboolean			mystrcasestr(const char *haystack, const char *needle);
 
 
 static GtkWidget*		notebook;
@@ -41,8 +45,8 @@ static GtkWidget*		search_entry;
 static GtkWidget*		add_button;
 static GtkWidget*		streambrowser_window;
 static GList*			streamdir_gui_list;
-static GtkCellRenderer*		cell_renderer_pixbuf;
-static GtkCellRenderer*		cell_renderer_text;
+static GtkCellRenderer*	cell_renderer_pixbuf;
+static GtkCellRenderer*	cell_renderer_text;
 
 
 void streambrowser_win_init()
@@ -238,7 +242,9 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tree_view), TRUE);
 	gtk_tree_view_set_search_entry(GTK_TREE_VIEW(tree_view), GTK_ENTRY(search_entry));
 	gtk_tree_view_set_search_equal_func(GTK_TREE_VIEW(tree_view), tree_view_search_equal_func, NULL, NULL);
+	gtk_tree_view_set_search_column(GTK_TREE_VIEW(tree_view), 1);
 	g_signal_connect(G_OBJECT(tree_view), "key-press-event", G_CALLBACK(on_tree_view_key_pressed), NULL);
+	g_signal_connect(G_OBJECT(tree_view), "cursor-changed", G_CALLBACK(on_tree_view_cursor_changed), NULL);
 
 	GtkTreeViewColumn *column = gtk_tree_view_column_new();
 	gtk_tree_view_column_pack_start(column, cell_renderer_pixbuf, TRUE);
@@ -259,8 +265,6 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_column_set_title(column, _("Now playing"));
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
-
-	g_signal_connect(G_OBJECT(tree_view), "cursor-changed", G_CALLBACK(on_tree_view_cursor_changed), NULL);
 
 	return tree_view;
 }
@@ -297,10 +301,11 @@ static gboolean on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *
 static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer data)
 {
 	GtkTreePath *path;
-	GtkTreeViewColumn *focus_column;
+	GtkTreeIter iter;
+	GtkTreeModel *model;
 
 	/* obtain the current category */
-	gtk_tree_view_get_cursor(tree_view, &path, &focus_column);
+	gtk_tree_view_get_cursor(tree_view, &path, NULL);
 	
 	if (path == NULL)
 		return TRUE;
@@ -311,7 +316,10 @@ static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer dat
 		return TRUE;
 	}
 	
-	if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(tree_view), path)) {
+	model = gtk_tree_view_get_model(tree_view);
+	gtk_tree_model_get_iter(model, &iter, path);
+	
+	if (gtk_tree_model_iter_has_child(model, &iter)) {
 		gtk_tree_path_free(path);
 		return TRUE;
 	}
@@ -327,9 +335,6 @@ static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer dat
 	/* issue an update on the current category */	
 	update_function(streamdir_gui->streamdir, category_get_by_index(streamdir_gui->streamdir, category_index), NULL);
 	
-	/* clear the search box */
-	gtk_entry_set_text(GTK_ENTRY(search_entry), "");
-
 	return TRUE;
 }
 
@@ -365,6 +370,7 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 	category_t *category = category_get_by_index(streamdir_gui->streamdir, category_index);
 	streaminfo_t *streaminfo = streaminfo_get_by_index(category, streaminfo_index);
 	
+	gtk_entry_set_text(GTK_ENTRY(search_entry), "");
 	update_function(streamdir, category, streaminfo);
 
 	return TRUE;
@@ -372,40 +378,51 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 
 static gboolean on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
-	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter)
+	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter) {
 		on_add_button_clicked(GTK_BUTTON(add_button), NULL);
+		return FALSE;
+	}
+
+	if (event->keyval == GDK_Escape) {
+		gtk_entry_set_text(GTK_ENTRY(search_entry), "");
+		return FALSE;
+	}
 	
-	/* todo: remove this
+	/* todo : remove this
 	GtkWidget *table = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
 	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_table(GTK_TABLE(table));
 	if (streamdir_gui == NULL)
 		return FALSE;
 
-	GtkWidget *tree_view = streamdir_gui->tree_view;
+	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
+	GtkTreeModel *model = gtk_tree_view_get_model(tree_view);
 	GtkTreeIter iter;
-	gboolean is_expanded = FALSE;
-	GtkTreeStore *store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(tree_view)));
 	GtkTreePath *path;
-	if (!gtk_tree_model_get_iter_first(GTK_TREE_MODEL(store), &iter))
+	const gchar *key = gtk_entry_get_text(GTK_ENTRY(search_entry));
+	
+	if (!gtk_tree_model_get_iter_first(model, &iter))
 		return FALSE;
 		
-	while (gtk_tree_model_iter_next(GTK_TREE_MODEL(store), &iter)) {
-		path = gtk_tree_model_get_path(GTK_TREE_MODEL(store), &iter);
-		
-		if (gtk_tree_view_row_expanded(GTK_TREE_VIEW(tree_view), path)) {
-			is_expanded = TRUE;
-			break;
-		}
-		
-		gtk_tree_path_free(path);
-	}
+	while (gtk_tree_model_iter_next(model, &iter)) {
+		GValue value = {0, };
 
-	if (!is_expanded)
-		gtk_tree_view_set_search_column(GTK_TREE_VIEW(tree_view), );
-	else
-		gtk_tree_view_set_search_column(GTK_TREE_VIEW(tree_view), 1);
-	*/
+		gtk_tree_model_get_value(model, &iter, 1, &value);
+		const gchar *string = g_value_get_string(&value);
 	
+		if (string == NULL || string[0] == '\0' || key == NULL || key[0] == '\0')
+			return FALSE;
+
+		if (mystrcasestr(string, key)) {		gtk_entry_set_text(GTK_ENTRY(search_entry), "");
+
+			path = gtk_tree_model_get_path(model, &iter);	
+			gtk_tree_view_set_cursor(tree_view, path, NULL, FALSE);
+			gtk_tree_path_free(path);
+		}
+
+		g_value_unset(&value);		
+	}
+	*/
+
 	return FALSE;
 }
 
@@ -485,11 +502,35 @@ static gboolean tree_view_search_equal_func(GtkTreeModel *model, gint column, co
 	gtk_tree_model_get_value(model, iter, column, &value);
 	const gchar *string = g_value_get_string(&value);
 	
-	// todo: why do I get "warning: implicit declaration" for strcasestr !?
-	ret = ((char *) strcasestr(string, key) == NULL);
+	if (string == NULL || string[0] == '\0' || key == NULL || key[0] == '\0')
+		ret = TRUE;
+
+	ret = !mystrcasestr(string, key);
 	
 	g_value_unset(&value);
 
 	return ret;
+}
+
+static gboolean mystrcasestr(const char *haystack, const char *needle)
+{
+	int len_h = strlen(haystack) + 1;
+	int len_n = strlen(needle) + 1;
+	int i;
+	
+	char *upper_h = malloc(len_h);
+	char *upper_n = malloc(len_n);
+	
+	for (i = 0; i < len_h; i++)
+		upper_h[i] = toupper(haystack[i]);
+	for (i = 0; i < len_n; i++)
+		upper_n[i] = toupper(needle[i]);
+	
+	char *p = strstr(upper_h, upper_n);
+
+	free(upper_h);
+	free(upper_n);
+	
+	return (gboolean) p;
 }
 
