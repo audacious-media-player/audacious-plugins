@@ -36,7 +36,8 @@ static Interface skins_gp =
     .id = "skinned",
     .desc = "Audacious Skinned GUI",
     .init = skins_init,
-    .fini = skins_cleanup
+    .fini = skins_cleanup,
+    .conf = skins_configure
 };
 
 SIMPLE_INTERFACE_PLUGIN("skinned", &skins_gp);
@@ -84,6 +85,8 @@ gboolean skins_init(void) {
 
     init_skins(config.skin);
     mainwin_setup_menus();
+
+    aud_hook_call("create prefswin", NULL);
 
     if (config.player_visible) mainwin_real_show();
     if (config.equalizer_visible) equalizerwin_show(TRUE);
