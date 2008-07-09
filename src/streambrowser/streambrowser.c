@@ -29,7 +29,7 @@ static void config_load();
 static void config_save();
 
 static void streamdir_update(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo);
-static gpointer update_thread_core(update_thread_data_t *data);
+static gpointer update_thread_core(gpointer user_data);
 static void streaminfo_add_to_playlist(streaminfo_t *streaminfo);
 static void on_plugin_services_menu_item_click();
 
@@ -241,13 +241,16 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
     if (update_thread_count >= MAX_UPDATE_THREADS) {
         debug("another %d streamdir updates are pending, this request will be dropped\n", update_thread_count);
     }
-    else
+    else {
+        g_mutex_lock(update_thread_mutex);
+            
+    	/* do we have a running thread? */
         if (update_thread_count > 0) {
             int i;
             gboolean exists = FALSE;
             update_thread_data_t *update_thread_data;
 
-            g_mutex_lock(update_thread_mutex);
+            /* search for another identic update request */
             for (i = 0; i < g_queue_get_length(update_thread_data_queue); i++) {
                 update_thread_data = g_queue_peek_nth(update_thread_data_queue, i);
                 if (update_thread_data->streamdir == streamdir &&
@@ -257,105 +260,115 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
                     break;
                 }
             }
-            g_mutex_unlock(update_thread_mutex);
-
+            
+            /* if no other similar request exists, we enqueue it */
             if (!exists) {
                 debug("another %d streamdir updates are pending, this request will be queued\n", update_thread_count);
-
-                g_mutex_lock(update_thread_mutex);
 
                 update_thread_data = g_malloc(sizeof(update_thread_data_t));
 
                 update_thread_data->streamdir = streamdir;
                 update_thread_data->category = category;
                 update_thread_data->streaminfo = streaminfo;
+ 
                 g_queue_push_tail(update_thread_data_queue, update_thread_data);
-
                 update_thread_count++;
-
-                g_mutex_unlock(update_thread_mutex);
             }
             else {
                 debug("this request is already present in the queue, dropping\n");          
             }
         }
+        /* no thread is currently running, we start one */
         else {
+        	debug("no other streamdir updates are pending, starting to process this request immediately\n");
+        
             update_thread_data_t *data = g_malloc(sizeof(update_thread_data_t));
 
             data->streamdir = streamdir;
             data->category = category;
             data->streaminfo = streaminfo;
+ 
+            g_queue_push_tail(update_thread_data_queue, data);
+            update_thread_count++;
 
-            g_thread_create((GThreadFunc) update_thread_core, data, FALSE, NULL);
+			g_thread_create((GThreadFunc) update_thread_core, NULL, FALSE, NULL);
         }
+
+        g_mutex_unlock(update_thread_mutex);
+    }
 }
 
-static gpointer update_thread_core(update_thread_data_t *data)
+static gpointer update_thread_core(gpointer user_data)
 {
-    g_mutex_lock(update_thread_mutex);
-    update_thread_count++;
-    g_mutex_unlock(update_thread_mutex);
+	debug("entering update thread core\n");
 
-    /* update a streaminfo - that is - add this streaminfo to playlist */
-    if (data->streaminfo != NULL) {
-        streaminfo_add_to_playlist(data->streaminfo);
-    }
-    /* update a category */
-    else if (data->category != NULL) {
-        /* shoutcast */
-        if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
-        	gdk_threads_enter();
-			streambrowser_win_set_category_state(data->streamdir, data->category, TRUE);
-        	gdk_threads_leave();
-        	
-            shoutcast_category_fetch(data->category);
+	/* try to get the last item in the queue */
+	g_mutex_lock(update_thread_mutex);
+	update_thread_data_t *data = NULL;
+	if (update_thread_count > 0) {
+		data = g_queue_pop_head(update_thread_data_queue);
+	}
+	g_mutex_unlock(update_thread_mutex);
 
-            gdk_threads_enter();
-            streambrowser_win_set_category(data->streamdir, data->category);
-			streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
-            gdk_threads_leave();
-        }
-    }
-    /* update a streamdir */
-    else if (data->streamdir != NULL) {
-        /* shoutcast */
-        if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
-            streamdir_t *streamdir = shoutcast_streamdir_fetch();
-            if (streamdir != NULL) {
-                gdk_threads_enter();
-                streambrowser_win_set_streamdir(streamdir, SHOUTCAST_ICON);
-                gdk_threads_leave();
-            }
-        }
-    }
-    /* update all streamdirs */
-    else {
-        /* shoutcast */
-        streamdir_t *shoutcast_streamdir = shoutcast_streamdir_fetch();
-        if (shoutcast_streamdir != NULL) {
-            gdk_threads_enter();
-            streambrowser_win_set_streamdir(shoutcast_streamdir, SHOUTCAST_ICON);
-            gdk_threads_leave();
-        }
-    }
+	/* repetitively process the queue elements, until queue is empty */
+	while (data != NULL && update_thread_count > 0) {
+	    /* update a streaminfo - that is - add this streaminfo to playlist */
+		if (data->streaminfo != NULL) {
+		    streaminfo_add_to_playlist(data->streaminfo);
+		}
+		/* update a category */
+		else if (data->category != NULL) {
+		    /* shoutcast */
+		    if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
+		    	gdk_threads_enter();
+				streambrowser_win_set_category_state(data->streamdir, data->category, TRUE);
+		    	gdk_threads_leave();
+		    	
+		        shoutcast_category_fetch(data->category);
 
-    g_free(data);
+		        gdk_threads_enter();
+		        streambrowser_win_set_category(data->streamdir, data->category);
+				streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
+		        gdk_threads_leave();
+		    }
+		}
+		/* update a streamdir */
+		else if (data->streamdir != NULL) {
+		    /* shoutcast */
+		    if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
+		        streamdir_t *streamdir = shoutcast_streamdir_fetch();
+		        if (streamdir != NULL) {
+		            gdk_threads_enter();
+		            streambrowser_win_set_streamdir(streamdir, SHOUTCAST_ICON);
+		            gdk_threads_leave();
+		        }
+		    }
+		}
+		/* update all streamdirs */
+		else {
+		    /* shoutcast */
+		    streamdir_t *shoutcast_streamdir = shoutcast_streamdir_fetch();
+		    if (shoutcast_streamdir != NULL) {
+		        gdk_threads_enter();
+		        streambrowser_win_set_streamdir(shoutcast_streamdir, SHOUTCAST_ICON);
+		        gdk_threads_leave();
+		    }
+		}
 
-    /* check to see if there are queued update requests */
+		g_free(data);
 
-    data = NULL;
-    g_mutex_lock(update_thread_mutex);
-    update_thread_count--;
+		g_mutex_lock(update_thread_mutex);
+		update_thread_count--;	
 
-    if (update_thread_count > 0) {
-        data = g_queue_pop_head(update_thread_data_queue);
+		/* try to get the last item in the queue */
+		if (update_thread_count > 0)
+			data = g_queue_pop_head(update_thread_data_queue);
+		else
+			data = NULL;
+		g_mutex_unlock(update_thread_mutex);
+	}
 
-        update_thread_count--;
-    }
-    g_mutex_unlock(update_thread_mutex);
-
-    if (data != NULL)
-        update_thread_core(data);
+	debug("leaving update thread core\n");
 
     return NULL;
 }
