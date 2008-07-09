@@ -32,6 +32,7 @@ static gboolean			on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event
 static streamdir_gui_t*		find_streamdir_gui_by_name(gchar *name);
 static streamdir_gui_t*		find_streamdir_gui_by_tree_view(GtkTreeView *tree_view);
 static streamdir_gui_t*		find_streamdir_gui_by_table(GtkTable *table);
+static streamdir_gui_t*		find_streamdir_gui_by_streamdir(streamdir_t *streamdir);
 static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data);
 
 
@@ -85,7 +86,6 @@ void streambrowser_win_init()
 
 	/* others */
 	cell_renderer_pixbuf = gtk_cell_renderer_pixbuf_new();
-	g_object_set(G_OBJECT(cell_renderer_pixbuf), "stock-id", "gtk-directory", NULL);
 	cell_renderer_text = gtk_cell_renderer_text_new();
 }
 
@@ -147,7 +147,7 @@ void streambrowser_win_set_streamdir(streamdir_t *streamdir, gchar *icon_filenam
 		category = category_get_by_index(streamdir, i);
 
 		gtk_tree_store_append(store, &iter, NULL);
-		gtk_tree_store_set(store, &iter, 0, NULL, 1, category->name, 2, "", -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, category->name, 2, "", -1);
 	}
 }
 
@@ -183,13 +183,36 @@ void streambrowser_win_set_category(streamdir_t *streamdir, category_t *category
 		streaminfo = streaminfo_get_by_index(category, i);
 
 		gtk_tree_store_append(store, &new_iter, &iter);
-		gtk_tree_store_set(store, &new_iter, 0, NULL, 1, streaminfo->name, 2, streaminfo->current_track, -1);
+		gtk_tree_store_set(store, &new_iter, 0, "gtk-directory", 1, streaminfo->name, 2, streaminfo->current_track, -1);
 	}
 }
 
 void streambrowser_win_set_update_function(void (*function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo))
 {
 	update_function = function;
+}
+
+void streambrowser_win_set_category_state(streamdir_t *streamdir, category_t *category, gboolean fetching)
+{
+	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_streamdir(streamdir);
+	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
+	GtkTreeStore *store = GTK_TREE_STORE(gtk_tree_view_get_model(tree_view));
+	GtkTreePath *path;
+	GtkTreeIter iter;
+	
+	/* find the corresponding category tree iter */
+	path = gtk_tree_path_new_from_indices(category_get_index(streamdir, category), -1);
+	if (!gtk_tree_model_get_iter(GTK_TREE_MODEL(store), &iter, path))
+		return;
+	
+	if (fetching) {
+		gchar temp[DEF_STRING_LEN];
+		sprintf(temp, "<span style='italic' weight='heavy'>%s</span>", category->name);
+		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, "", -1);
+	}
+	else {
+		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, category->name, 2, "", -1);
+	}
 }
 
 static GtkWidget* gtk_label_new_with_icon(gchar *icon_filename, gchar *label_text)
@@ -208,7 +231,7 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 {
 	GtkWidget *tree_view = gtk_tree_view_new();
 
-	GtkTreeStore *store = gtk_tree_store_new(3, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING);
+	GtkTreeStore *store = gtk_tree_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(store));
 
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tree_view), TRUE);
@@ -218,13 +241,13 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 
 	GtkTreeViewColumn *column = gtk_tree_view_column_new();
 	gtk_tree_view_column_pack_start(column, cell_renderer_pixbuf, TRUE);
-	gtk_tree_view_column_add_attribute(column, cell_renderer_pixbuf, "pixbuf", 0);
+	gtk_tree_view_column_add_attribute(column, cell_renderer_pixbuf, "stock-id", 0);
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
 	
 	column = gtk_tree_view_column_new();
 	gtk_tree_view_column_pack_start(column, cell_renderer_text, TRUE);
-	gtk_tree_view_column_add_attribute(column, cell_renderer_text, "text", 1);
+	gtk_tree_view_column_add_attribute(column, cell_renderer_text, "markup", 1);
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_column_set_title(column, _("Stream name"));
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
@@ -432,6 +455,21 @@ static streamdir_gui_t *find_streamdir_gui_by_table(GtkTable *table)
 		streamdir_gui = iterator->data;
 
 		if ((void *) streamdir_gui->table == (void *) table)
+			return streamdir_gui;
+	}
+	
+	return NULL;
+}
+
+static streamdir_gui_t* find_streamdir_gui_by_streamdir(streamdir_t *streamdir)
+{
+	GList *iterator;
+	streamdir_gui_t *streamdir_gui;
+
+	for (iterator = g_list_first(streamdir_gui_list); iterator != NULL; iterator = g_list_next(iterator)) {
+		streamdir_gui = iterator->data;
+
+		if ((void *) streamdir_gui->streamdir == (void *) streamdir)
 			return streamdir_gui;
 	}
 	

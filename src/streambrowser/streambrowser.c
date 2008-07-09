@@ -154,13 +154,13 @@ static void sb_cleanup()
 static void gui_init()
 {
     /* the plugin services menu */
-    playlist_menu_item = gtk_image_menu_item_new_with_label("Streambrowser");
+    playlist_menu_item = gtk_image_menu_item_new_with_label(_("Streambrowser"));
     gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
     gtk_widget_show(playlist_menu_item);
     g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(on_plugin_services_menu_item_click), NULL);
     audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
 
-    main_menu_item = gtk_image_menu_item_new_with_label("Streambrowser");
+    main_menu_item = gtk_image_menu_item_new_with_label(_("Streambrowser"));
     gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
     gtk_widget_show(main_menu_item);
     g_signal_connect(G_OBJECT(main_menu_item), "activate", G_CALLBACK(on_plugin_services_menu_item_click), NULL);
@@ -304,10 +304,15 @@ static gpointer update_thread_core(update_thread_data_t *data)
     else if (data->category != NULL) {
         /* shoutcast */
         if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
+        	gdk_threads_enter();
+			streambrowser_win_set_category_state(data->streamdir, data->category, TRUE);
+        	gdk_threads_leave();
+        	
             shoutcast_category_fetch(data->category);
 
             gdk_threads_enter();
             streambrowser_win_set_category(data->streamdir, data->category);
+			streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
             gdk_threads_leave();
         }
     }
@@ -336,7 +341,7 @@ static gpointer update_thread_core(update_thread_data_t *data)
 
     g_free(data);
 
-    /* check to see if there are pending update requests */
+    /* check to see if there are queued update requests */
 
     data = NULL;
     g_mutex_lock(update_thread_mutex);
