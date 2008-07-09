@@ -54,9 +54,7 @@
 #include "ui_main.h"
 #include "ui_manager.h"
 #include "ui_playlist_evlisteners.h"
-#if 0
 #include "ui_playlist_manager.h"
-#endif
 #include "util.h"
 
 #include "ui_skinned_window.h"
@@ -1869,9 +1867,7 @@ action_playlist_refresh_list(void)
 void
 action_open_list_manager(void)
 {
-#if 0
     playlist_manager_ui_show();
-#endif
 }
 
 void
