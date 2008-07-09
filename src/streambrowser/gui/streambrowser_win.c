@@ -81,6 +81,7 @@ void streambrowser_win_init()
 	gtk_window_set_title(GTK_WINDOW(streambrowser_window), _("Stream browser"));
 	gtk_window_set_position(GTK_WINDOW(streambrowser_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(streambrowser_window), 700, 400);
+	gtk_window_set_icon_from_file(GTK_WINDOW(streambrowser_window), STREAMBROWSER_ICON, NULL);
 	g_signal_connect(G_OBJECT(streambrowser_window), "delete-event", G_CALLBACK(gtk_widget_hide_on_delete), streambrowser_window);
 	gtk_container_add(GTK_CONTAINER(streambrowser_window), vbox1);
 

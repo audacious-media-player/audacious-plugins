@@ -6,7 +6,9 @@ SRCS = streambrowser.c	\
        gui/about_win.c \
        gui/streambrowser_win.c
 
-DATA = images/shoutcast.png
+DATA = images/shoutcast.png \
+       images/streambrowser-16x16.png \
+       images/streambrowser-64x64.png
 
 include ../../buildsys.mk
 include ../../extra.mk

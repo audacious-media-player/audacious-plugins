@@ -155,13 +155,13 @@ static void gui_init()
 {
     /* the plugin services menu */
     playlist_menu_item = gtk_image_menu_item_new_with_label(_("Streambrowser"));
-    gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+    gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_file(STREAMBROWSER_ICON_SMALL));
     gtk_widget_show(playlist_menu_item);
     g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(on_plugin_services_menu_item_click), NULL);
     audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
 
     main_menu_item = gtk_image_menu_item_new_with_label(_("Streambrowser"));
-    gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+    gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_file(STREAMBROWSER_ICON_SMALL));
     gtk_widget_show(main_menu_item);
     g_signal_connect(G_OBJECT(main_menu_item), "activate", G_CALLBACK(on_plugin_services_menu_item_click), NULL);
     audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
