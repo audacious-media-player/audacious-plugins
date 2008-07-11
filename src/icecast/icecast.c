@@ -1,5 +1,7 @@
 /*  Icecast-Plugin
- *  (C) copyright 2008 based of FileWriter-plugin
+ *  (C) copyright 2008 Andrew O. Shadoura
+ *  Based on FileWriter-plugin
+ *  (C) copyright 2007 merging of Disk Writer and Out-Lame by Michael Färber
  *
  *  Original Out-Lame-Plugin:
  *  (C) copyright 2002 Lars Siebold <khandha5@gmx.net>
@@ -78,7 +80,7 @@ guint64 written = 0;
 guint64 offset = 0;
 Tuple *tuple = NULL;
 static shout_t *shout = NULL;
-gboolean paused = FALSE;
+static gboolean paused = FALSE;
 
 static void ice_init(void);
 static void ice_cleanup(void);
@@ -146,26 +148,26 @@ static void set_plugin(void)
 static void ice_init(void)
 {
     ConfigDb *db;
-    puts("ICE_INIT");
+    g_debug("ICE_INIT\n");
     shout_init();
-    printf("Using libshout %s\n", shout_version(NULL, NULL, NULL));
+    g_message("Using libshout %s\n", shout_version(NULL, NULL, NULL));
 
     db = aud_cfg_db_open();
-    aud_cfg_db_get_int(db, "icecast", "streamformat", &streamformat);
-    aud_cfg_db_get_string(db, "icecast", "server_address", &server_address);
-    aud_cfg_db_get_int(db, "icecast", "server_port", &server_port);
+    aud_cfg_db_get_int(db, ICECAST_CFGID, "streamformat", &streamformat);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "server_address", &server_address);
+    aud_cfg_db_get_int(db, ICECAST_CFGID, "server_port", &server_port);
     if (!server_port) server_port=8000;
-    aud_cfg_db_get_int(db, "icecast", "timeout", &ice_close_timeout);
+    aud_cfg_db_get_int(db, ICECAST_CFGID, "timeout", &ice_close_timeout);
     if (!ice_close_timeout) ice_close_timeout=5;
-    aud_cfg_db_get_int(db, "icecast", "buffersize", &buffersize);
+    aud_cfg_db_get_int(db, ICECAST_CFGID, "buffersize", &buffersize);
     if (!buffersize) buffersize=8192;
     buffersize_new=buffersize;
-    aud_cfg_db_get_double(db, "icecast", "bufferflush", &bufferflushperc);
+    aud_cfg_db_get_double(db, ICECAST_CFGID, "bufferflush", &bufferflushperc);
     if (!bufferflushperc) bufferflushperc=80.0;
     bufferflush=(gint)(buffersize*bufferflushperc);
     bufferflush_new=bufferflush;
-    aud_cfg_db_get_string(db, "icecast", "server_user", &server_user);
-    aud_cfg_db_get_string(db, "icecast", "server_password", &server_password);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "server_user", &server_user);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "server_password", &server_password);
     aud_cfg_db_close(db);
 
     outputbuffer=g_try_malloc(buffersize);
@@ -257,49 +259,49 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
         if (shout_set_host(shout, server_address) != SHOUTERR_SUCCESS)
         {
-            printf("Error setting hostname: %s\n", shout_get_error(shout));
+            g_warning("Error setting hostname: %s\n", shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_protocol(shout, SHOUT_PROTOCOL_HTTP) != SHOUTERR_SUCCESS)
         {
-            printf("Error setting protocol: %s\n", shout_get_error(shout));
+            g_warning("Error setting protocol: %s\n", shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_port(shout, server_port) != SHOUTERR_SUCCESS)
         {
-            printf("Error setting port: %s\n", shout_get_error(shout));
+            g_warning("Error setting port: %s\n", shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_password(shout, "password") != SHOUTERR_SUCCESS)
         {
-            printf("Error setting password: %s\n", shout_get_error(shout));
+            g_warning("Error setting password: %s\n", shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_mount(shout, "/test") != SHOUTERR_SUCCESS)
         {
-            printf("Error setting mount: %s\n", shout_get_error(shout));
+            g_warning("Error setting mount: %s\n", shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_user(shout, "source") != SHOUTERR_SUCCESS)
         {
-            printf("Error setting user: %s\n", shout_get_error(shout));
+            g_warning("Error setting user: %s\n", shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_format(shout, streamformat_shout[streamformat]) != SHOUTERR_SUCCESS)
         {
-            printf("Error setting user: %s\n", shout_get_error(shout));
+            g_warning("Error setting user: %s\n", shout_get_error(shout));
             return 0;
         }
 
         if (shout_open(shout) != SHOUTERR_SUCCESS)
         {
-            printf("Error connecting to server: %s\n", shout_get_error(shout));
+            g_warning("Error connecting to server: %s\n", shout_get_error(shout));
             return 0;
         }
     }
@@ -391,37 +393,37 @@ static void ice_write(void *ptr, gint length)
 
 static gint ice_real_write(void* ptr, gint length)
 {
-    int ret;
+    gint ret;
     if (!length) return length;
     ret = shout_send(shout, ptr, length);
     shout_sync(shout);
-    printf("ice_write[%d:%d](", ret, length);
+    g_debug("ice_write[%d:%d](", ret, length);
     {
-        int i;
-        for (i=0;(i<length)&&(i<16);i++)   printf("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
+        gint i;
+        for (i=0;(i<length)&&(i<16);i++) g_debug("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
     }
-    printf(")\n");
+    g_debug(")\n");
     return 0;
 }
 
 static gint ice_write_output(void *ptr, gint length)
 {
     if ((!shout) || (!length)) return 0;
-    printf("outputlength=%d, length=%d...",outputlength, length);
+    g_debug("outputlength=%d, length=%d...",outputlength, length);
     if ((outputlength>bufferflush)||((outputlength+length)>buffersize))
     {
-        printf("flushing\n");
+        g_debug("flushing\n");
         outputlength=ice_real_write(outputbuffer, outputlength);
     }
     {
         if (length>buffersize)
         {
-            printf("data too long, flushing\n");
+            g_debug("data too long, flushing\n");
             ice_real_write(ptr, length);
         }
         else
         {
-            printf("adding\n");
+            g_debug("adding\n");
             memcpy(&(outputbuffer[outputlength]), ptr, length);
             outputlength+=length;
         }
@@ -440,7 +442,7 @@ static gboolean ice_real_close(gpointer data)
     }
     shout = NULL;
     ice_tid=0;
-    puts("ICE_REAL_CLOSE");
+    g_debug("ICE_REAL_CLOSE\n");
     return FALSE;
 }
 
@@ -449,7 +451,7 @@ static void ice_close(void)
 {
     if (ice_tid) g_source_remove(ice_tid);
     ice_tid=g_timeout_add_seconds(3, ice_real_close, NULL);
-    puts("ICE_CLOSE: starting timer");
+    g_debug("ICE_CLOSE: starting timer\n");
 }
 
 static void ice_flush(gint time)
@@ -513,14 +515,14 @@ static void configure_ok_cb(gpointer data)
     bufferflush_new=(gint)(buffersize*bufferflushperc);
 
     db = aud_cfg_db_open();
-    aud_cfg_db_set_int(db, "icecast", "streamformat", streamformat);
-    aud_cfg_db_set_string(db, "icecast", "server_address", server_address);
-    aud_cfg_db_set_string(db, "icecast", "server_user", server_user);
-    aud_cfg_db_set_string(db, "icecast", "server_password", server_password);
-    aud_cfg_db_set_int(db, "icecast", "server_port", server_port);
-    aud_cfg_db_set_int(db, "icecast", "timeout", ice_close_timeout);
-    aud_cfg_db_set_int(db, "icecast", "buffersize", buffersize_new);
-    aud_cfg_db_set_double(db, "icecast", "bufferflush", bufferflushperc);
+    aud_cfg_db_set_int(db, ICECAST_CFGID, "streamformat", streamformat);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "server_address", server_address);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "server_user", server_user);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "server_password", server_password);
+    aud_cfg_db_set_int(db, ICECAST_CFGID, "server_port", server_port);
+    aud_cfg_db_set_int(db, ICECAST_CFGID, "timeout", ice_close_timeout);
+    aud_cfg_db_set_int(db, ICECAST_CFGID, "buffersize", buffersize_new);
+    aud_cfg_db_set_double(db, ICECAST_CFGID, "bufferflush", bufferflushperc);
 
     aud_cfg_db_close(db);
 
