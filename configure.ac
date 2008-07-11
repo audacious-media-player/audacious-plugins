@@ -93,6 +93,7 @@ AC_PATH_PROG(RM, rm)
 AC_PATH_PROG(MV, mv)
 AC_PATH_PROG(CP, cp)
 AC_PATH_PROG(AR, ar)
+AC_PATH_PROG(TR, tr)
 AC_PATH_PROG(RANLIB, ranlib)
 
 dnl Gettext -nenolod
