@@ -314,7 +314,15 @@ static gpointer update_thread_core(gpointer user_data)
 	while (data != NULL && update_thread_count > 0) {
 	    /* update a streaminfo - that is - add this streaminfo to playlist */
 		if (data->streaminfo != NULL) {
+	    	gdk_threads_enter();
+			streambrowser_win_set_streaminfo_state(data->streamdir, data->category, data->streaminfo, TRUE);
+	    	gdk_threads_leave();
+
 		    streaminfo_add_to_playlist(data->streaminfo);
+
+	        gdk_threads_enter();
+			streambrowser_win_set_streaminfo_state(data->streamdir, data->category, data->streaminfo, FALSE);
+	        gdk_threads_leave();
 		}
 		/* update a category */
 		else if (data->category != NULL) {

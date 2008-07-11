@@ -14,6 +14,7 @@ void			streambrowser_win_set_streamdir(streamdir_t *streamdir, gchar *icon_filen
 void			streambrowser_win_set_category(streamdir_t *streamdir, category_t *category);
 void			streambrowser_win_set_update_function(void (* update_function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo));
 void			streambrowser_win_set_category_state(streamdir_t *streamdir, category_t *category, gboolean fetching);
+void			streambrowser_win_set_streaminfo_state(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo, gboolean fetching);
 
 
 #endif	// STREAMBROWSER_WIN_H

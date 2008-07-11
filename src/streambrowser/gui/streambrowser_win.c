@@ -30,6 +30,7 @@ static gboolean			on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer d
 static gboolean			on_add_button_clicked(GtkButton *button, gpointer data);
 static gboolean			on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
 static gboolean			on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
+static gboolean			on_tree_view_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer data);
 
 static streamdir_gui_t*	find_streamdir_gui_by_name(gchar *name);
 static streamdir_gui_t*	find_streamdir_gui_by_tree_view(GtkTreeView *tree_view);
@@ -220,6 +221,29 @@ void streambrowser_win_set_category_state(streamdir_t *streamdir, category_t *ca
 	}
 }
 
+void streambrowser_win_set_streaminfo_state(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo, gboolean fetching)
+{
+	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_streamdir(streamdir);
+	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
+	GtkTreeStore *store = GTK_TREE_STORE(gtk_tree_view_get_model(tree_view));
+	GtkTreePath *path;
+	GtkTreeIter iter;
+	
+	/* find the corresponding category tree iter */
+	path = gtk_tree_path_new_from_indices(category_get_index(streamdir, category), streaminfo_get_index(category, streaminfo), -1);
+	if (!gtk_tree_model_get_iter(GTK_TREE_MODEL(store), &iter, path))
+		return;
+	
+	if (fetching) {
+		gchar temp[DEF_STRING_LEN];
+		sprintf(temp, "<span style='italic' weight='heavy'>%s</span>", streaminfo->name);
+		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, "", -1);
+	}
+	else {
+		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, streaminfo->name, 2, "", -1);
+	}
+}
+
 static GtkWidget* gtk_label_new_with_icon(gchar *icon_filename, gchar *label_text)
 {
 	GtkWidget *hbox = gtk_hbox_new(FALSE, 1);
@@ -245,6 +269,7 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	gtk_tree_view_set_search_column(GTK_TREE_VIEW(tree_view), 1);
 	g_signal_connect(G_OBJECT(tree_view), "key-press-event", G_CALLBACK(on_tree_view_key_pressed), NULL);
 	g_signal_connect(G_OBJECT(tree_view), "cursor-changed", G_CALLBACK(on_tree_view_cursor_changed), NULL);
+	g_signal_connect(G_OBJECT(tree_view), "button-press-event", G_CALLBACK(on_tree_view_button_pressed), NULL);
 
 	GtkTreeViewColumn *column = gtk_tree_view_column_new();
 	gtk_tree_view_column_pack_start(column, cell_renderer_pixbuf, TRUE);
@@ -338,6 +363,16 @@ static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer dat
 	return TRUE;
 }
 
+static gboolean on_tree_view_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer data)
+{
+	/* double click adds the currently selected stream to the playlist */
+	if (event->type == GDK_2BUTTON_PRESS) {
+		on_add_button_clicked(NULL, NULL);
+	}
+	
+	return FALSE;
+}
+
 static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 {
 	GtkTreePath *path;
@@ -348,15 +383,20 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 	if (streamdir_gui == NULL)
 		return TRUE;
 
-	GtkWidget *tree_view = streamdir_gui->tree_view;
+	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
 	
-	gtk_tree_view_get_cursor(GTK_TREE_VIEW(tree_view), &path, &focus_column);
+	gtk_tree_view_get_cursor(tree_view, &path, &focus_column);
 	
 	if (path == NULL)
 		return TRUE;
 
 	gint *indices = gtk_tree_path_get_indices(path);
-	if (gtk_tree_path_get_depth(path) != 2) {
+	if (gtk_tree_path_get_depth(path) == 1) {
+		if (gtk_tree_view_row_expanded(tree_view, path))
+			gtk_tree_view_collapse_row(tree_view, path);
+		else
+			gtk_tree_view_expand_row(tree_view, path, FALSE);
+	
 		gtk_tree_path_free(path);
 		return TRUE;
 	}
