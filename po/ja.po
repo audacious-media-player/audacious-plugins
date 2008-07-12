@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
 "POT-Creation-Date: 2008-06-21 08:27+0300\n"
-"PO-Revision-Date: 2008-03-31 15:01+0900\n"
+"PO-Revision-Date: 2008-07-08 13:10+0900\n"
 "Last-Translator: dai <d+po@vdr.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1483,7 +1483,7 @@ msgstr "* MIDI ファイル中に有効な歌詞がありません *"
 
 #: src/amidi-plug/i_fileinfo.c:349
 msgid "  (invalid UTF-8)"
-msgstr "  (無効な UTF-8)"
+msgstr "  (不正な UTF-8)"
 
 #: src/amidi-plug/i_utils.c:43
 msgid "AMIDI-Plug - about"
@@ -2027,9 +2027,9 @@ msgid ""
 "\n"
 "No CD inserted, or inserted CD is not an audio CD.\n"
 msgstr ""
-"<b><big>演奏可能な CD が見つかりません.</big></b>\n"
+"<b><big>演奏できる CD が見つかりませんでした.</big></b>\n"
 "\n"
-"CD が挿入されていないか, オーディオ CD ではありません.\n"
+"CD が挿入されていないか, 挿入された CD はオーディオ CD ではありません.\n"
 
 #: src/cdaudio-ng/configure.c:155
 msgid "CD Audio Plugin Configuration"
@@ -2060,9 +2060,8 @@ msgid "Server: "
 msgstr "サーバ: "
 
 #: src/cdaudio-ng/configure.c:205
-#, fuzzy
 msgid "Path: "
-msgstr "パターン: "
+msgstr "パス: "
 
 #: src/cdaudio-ng/configure.c:208
 msgid "Port: "
@@ -2154,9 +2153,8 @@ msgstr ""
 "Shay Green <hotpop.com@blargg> によります."
 
 #: src/crystalizer/crystalizer.c:90
-#, fuzzy
 msgid "Configure Crystalizer"
-msgstr "エクストラステレオの設定"
+msgstr "Crystalizer の設定"
 
 #: src/crystalizer/crystalizer.c:92 src/stereo_plugin/stereo.c:94
 msgid "Effect intensity:"
@@ -2799,7 +2797,7 @@ msgstr "すべてのフレームに 16 ビットチェックサムを付加す�
 #: src/filewriter/mp3.c:982 src/filewriter/vorbis.c:274
 #: src/modplug/gui/interface.cxx:319 src/modplug/gui/modplug.glade:507
 msgid "Quality"
-msgstr "品質"
+msgstr "音質"
 
 #: src/filewriter/mp3.c:994
 msgid "Enable VBR/ABR"
@@ -2959,7 +2957,7 @@ msgstr "前のトラック"
 
 #: src/hotkey/gui.c:69 src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
 msgid "Play"
-msgstr "演奏開始"
+msgstr "演奏"
 
 #: src/hotkey/gui.c:70
 msgid "Pause/Resume"
@@ -2967,7 +2965,7 @@ msgstr "一時停止/再開"
 
 #: src/hotkey/gui.c:71 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
 msgid "Stop"
-msgstr "演奏停止"
+msgstr "停止"
 
 #: src/hotkey/gui.c:72
 msgid "Next Track"
@@ -2995,7 +2993,7 @@ msgstr "音量を下げる"
 
 #: src/hotkey/gui.c:78 src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
 msgid "Jump to File"
-msgstr "指定ファイルへ移動"
+msgstr "指定したファイルへ移動"
 
 #: src/hotkey/gui.c:79
 msgid "Toggle Player Windows"
@@ -4524,6 +4522,15 @@ msgid ""
 "\n"
 "<b>subsong-num, subsong-id</b>"
 msgstr ""
+"<u>SID 特有のタプルフィールド:</u>\n"
+"\n"
+"<b>sid-format</b>\t\t- 特有のファイルフォーマット\n"
+"<b>sid-model</b>\t\t- 6581 か 8580\n"
+"<b>sid-speed</b>\t\t- タイミングか速さ: PAL/NTSC/etc.\n"
+"\n"
+"<u>他の \"特別な\" フィールド:</u>\n"
+"\n"
+"<b>subsong-num, subsong-id</b>"
 
 #: src/sid/xmms-sid.glade:2581 src/sid/xs_interface.c:1097
 msgid "Song title format:"
@@ -4692,140 +4699,138 @@ msgstr "チューン #%i:"
 
 #: src/skins/plugin.c:128
 msgid "About Skinned GUI"
-msgstr ""
+msgstr "スキン GUI について"
 
 #: src/skins/plugin.c:129
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
+"Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
+"\n"
 
 #: src/skins/skins_cfg.c:329
-#, fuzzy
 msgid "<b>_Fonts</b>"
-msgstr "<b>動作:</b>"
+msgstr "<b>フォント(_F)</b>"
 
 #: src/skins/skins_cfg.c:330
-#, fuzzy
 msgid "_Player:"
-msgstr "演奏時間:"
+msgstr "プレイヤ(_P):"
 
 #: src/skins/skins_cfg.c:330
 msgid "Select main player window font:"
-msgstr ""
+msgstr "メインウィンドウで使用するフォントの選択"
 
 #: src/skins/skins_cfg.c:331
-#, fuzzy
 msgid "_Playlist:"
-msgstr "プレイリストの選択"
+msgstr "プレイリスト(_P):"
 
 #: src/skins/skins_cfg.c:331
-#, fuzzy
 msgid "Select playlist font:"
-msgstr "プレイリストの選択"
+msgstr "プレイリストで使用するフォントの選択"
 
 #: src/skins/skins_cfg.c:332
-#, fuzzy
 msgid "Use Bitmap fonts if available"
-msgstr "有効ならば CDDB を使う"
+msgstr "可能ならばビットマップフォントを使用"
 
 #: src/skins/skins_cfg.c:332
 msgid ""
 "Use bitmap fonts if they are available. Bitmap fonts do not support Unicode "
 "strings."
 msgstr ""
+"可能ならばビットマップフォントを使用します. ビットマップフォントは Unicode 文"
+"字列をサポートしていません."
 
 #: src/skins/skins_cfg.c:333
-#, fuzzy
 msgid "<b>_Miscellaneous</b>"
-msgstr "<b>サービス</b>"
+msgstr "<b>その他(_M)</b>"
 
 #: src/skins/skins_cfg.c:334
 msgid "Show track numbers in playlist"
-msgstr ""
+msgstr "プレイリストにトラック番号を表示する"
 
 #: src/skins/skins_cfg.c:336
 msgid "Show separators in playlist"
-msgstr ""
+msgstr "プレイリストの区切り線を表示する"
 
 #: src/skins/skins_cfg.c:338
 msgid "Show window manager decoration"
-msgstr ""
+msgstr "ウィンドウマネージャ装飾を表示する"
 
 #: src/skins/skins_cfg.c:339
 msgid "This enables the window manager to show decorations for windows."
-msgstr ""
+msgstr "ウィンドウマネージャによるウィンドウ装飾を有効にします."
 
 #: src/skins/skins_cfg.c:340
 msgid "Use two-way text scroller"
-msgstr ""
+msgstr "双方向テキストスクロールを使う"
 
 #: src/skins/skins_cfg.c:341
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
 msgstr ""
+"これを使うと，メインウィンドウのファイル情報テキストが前後にスクロールしま"
+"す．そうでなければ，テキストは一方向のみにスクロールします．"
 
 #: src/skins/skins_cfg.c:342
 msgid "Disable inline gtk theme"
-msgstr ""
+msgstr "インライン GTK テーマを無効にする"
 
 #: src/skins/skins_cfg.c:343
 msgid "Allow loading incomplete skins"
-msgstr ""
+msgstr "不完全なスキンの読み込みを許可する"
 
 #: src/skins/skins_cfg.c:344
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
 msgstr ""
+"これを使うと，audacious は壊れたスキンの読み込みを拒絶しません．お気に入りの"
+"スキンが動かないときだけ使用してください．"
 
 #: src/skins/skins_cfg.c:410
 msgid "Color Adjustment"
-msgstr ""
+msgstr "色補正"
 
 #: src/skins/skins_cfg.c:417
 msgid ""
 "Audacious allows you to alter the color balance of the skinned UI. The "
 "sliders below will allow you to do this."
-msgstr ""
+msgstr "以下のスライダを用いてスキン UI の色合いの変更ができます."
 
 #: src/skins/skins_cfg.c:427
-#, fuzzy
 msgid "Blue"
-msgstr "ブルース"
+msgstr "青"
 
 #: src/skins/skins_cfg.c:434
 msgid "Green"
-msgstr ""
+msgstr "緑"
 
 #: src/skins/skins_cfg.c:441
 msgid "Red"
-msgstr ""
+msgstr "赤"
 
 #: src/skins/skins_cfg.c:571
-#, fuzzy
 msgid "Audacious Skinned GUI Configuration"
-msgstr "Audacious OSD - 設定"
+msgstr "Audacious スキン GUI 設定"
 
 #: src/skins/skins_cfg.c:596
-#, fuzzy
 msgid "<b>_Skin</b>"
-msgstr "<b>動作:</b>"
+msgstr "<b>スキン(_S)</b>"
 
 #: src/skins/ui_equalizer.c:494
-#, fuzzy
 msgid "Audacious Equalizer"
-msgstr "ウィンドウ->イコライザー"
+msgstr "Audacious イコライザ"
 
 #: src/skins/ui_equalizer.c:794
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing Winamp EQF file '%s'"
-msgstr "pixmap ファイルの読み込みエラー: %s"
+msgstr "Winamp EQF ファイル '%s' のインポートエラー"
 
 #: src/skins/ui_equalizer.c:1172
 msgid "Presets"
-msgstr ""
+msgstr "プリセット"
 
 #: src/skins/ui_main.c:392
 #, c-format
@@ -4833,57 +4838,49 @@ msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
 #: src/skins/ui_main.c:394 src/skins/ui_main.c:2397
-#, fuzzy
 msgid "Audacious"
-msgstr "%s - Audacious"
+msgstr "Audacious"
 
 #: src/skins/ui_main.c:641
-#, fuzzy
 msgid "VBR"
-msgstr "VBR/ABR"
+msgstr "VBR"
 
 #: src/skins/ui_main.c:659 src/skins/ui_main.c:663
-#, fuzzy
 msgid "stereo"
 msgstr "ステレオ"
 
 #: src/skins/ui_main.c:659 src/skins/ui_main.c:663
-#, fuzzy
 msgid "mono"
 msgstr "モノラル"
 
 #: src/skins/ui_main.c:957
 msgid "Can't jump to time when no track is being played.\n"
-msgstr ""
+msgstr "再生されるトラックがない時間へは移動できません.\n"
 
 #: src/skins/ui_main.c:972 src/skins/ui_manager.c:425
 #: src/skins/ui_manager.c:426
-#, fuzzy
 msgid "Jump to Time"
-msgstr "指定ファイルへ移動"
+msgstr "指定した時間へ移動"
 
 #: src/skins/ui_main.c:993
-#, fuzzy
 msgid "minutes:seconds"
-msgstr "分"
+msgstr "分:秒"
 
 #: src/skins/ui_main.c:1003
-#, fuzzy
 msgid "Track length:"
-msgstr "トラックのゲイン:"
+msgstr "トラックの合計時間:"
 
 #: src/skins/ui_main.c:1149
 msgid "Audacious - visibility warning"
-msgstr ""
+msgstr "Audacious - 可視警告"
 
 #: src/skins/ui_main.c:1152
-#, fuzzy
 msgid "Show main player window"
-msgstr "ネットワークウィンドウの表示"
+msgstr "メインウィンドウを表示する"
 
 #: src/skins/ui_main.c:1153
 msgid "Ignore"
-msgstr ""
+msgstr "無視"
 
 #: src/skins/ui_main.c:1159
 msgid ""
@@ -4892,14 +4889,18 @@ msgid ""
 "otherwise, you'll have to control it remotely via audtool or enabled plugins "
 "(such as the statusicon plugin)."
 msgstr ""
+"Audacious はすべてのウィンドウが隠された状態で開始されました．\n"
+"再度プレイヤウィンドウを表示するか，そのまま Audacious を操作するためには，"
+"audtool を用いるか statusicon のようなプラグインを有効にすることで遠隔操作し"
+"てください．"
 
 #: src/skins/ui_main.c:1165
 msgid "Always ignore, show/hide is controlled remotely"
-msgstr ""
+msgstr "常に無視し，表示する/隠す は遠隔操作する"
 
 #: src/skins/ui_main.c:1210
 msgid "Audacious - broken GTK engine usage warning"
-msgstr ""
+msgstr "Audacious - 壊れた GTK エンジンの使用警告"
 
 #: src/skins/ui_main.c:1218
 #, c-format
@@ -4914,69 +4915,75 @@ msgid ""
 "\n"
 "To use these features, please consider using a different GTK theme engine."
 msgstr ""
+"<big><b>壊れた GTK エンジンが使われています</b></big>\n"
+"\n"
+"Audacious は GTK エンジンが使われていることを検出しました.\n"
+"\n"
+"テーマエンジン <i>%s</i> は最近のスキンで用いられている特徴と非互換です.非互"
+"換な特徴はこのセッションでは無効にされました.\n"
+"\n"
+"これらの特徴を用いるには, 他の GTK テーマエンジンを使うことを考慮してくださ"
+"い."
 
 #: src/skins/ui_main.c:1229
 msgid "Do not display this warning again"
-msgstr ""
+msgstr "次回からこの警告を表示しない"
 
 #: src/skins/ui_main.c:1253
 msgid "Enter location to play:"
-msgstr ""
+msgstr "演奏する位置の入力:"
 
 #: src/skins/ui_main.c:1497
 #, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
-msgstr ""
+msgstr "移動先: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
 #: src/skins/ui_main.c:1527
-#, fuzzy, c-format
+#, c-format
 msgid "Volume: %d%%"
-msgstr "音量: (%)"
+msgstr "音量: %d%%"
 
 #: src/skins/ui_main.c:1555
 #, c-format
 msgid "Balance: %d%% left"
-msgstr ""
+msgstr "バランス: %d%% 左"
 
 #: src/skins/ui_main.c:1559
 msgid "Balance: center"
-msgstr ""
+msgstr "バランス: 中央"
 
 #: src/skins/ui_main.c:1563
 #, c-format
 msgid "Balance: %d%% right"
-msgstr ""
+msgstr "バランス: %d%% 右"
 
 #: src/skins/ui_main.c:1881
-#, fuzzy
 msgid "Options Menu"
-msgstr "オプション"
+msgstr "オプションメニュー"
 
 #: src/skins/ui_main.c:1885
 msgid "Disable 'Always On Top'"
-msgstr ""
+msgstr "「常に最前面に配置」無効"
 
 #: src/skins/ui_main.c:1887
 msgid "Enable 'Always On Top'"
-msgstr ""
+msgstr "「常に最前面に配置」有効"
 
 #: src/skins/ui_main.c:1890
-#, fuzzy
 msgid "File Info Box"
-msgstr "ファイル情報"
+msgstr "ファイル情報ボックス"
 
 #: src/skins/ui_main.c:1894
 msgid "Disable 'GUI Scaling'"
-msgstr ""
+msgstr "「GUI スケーリング」無効"
 
 #: src/skins/ui_main.c:1896
-#, fuzzy
 msgid "Enable 'GUI Scaling'"
-msgstr "オーディオリサンプリングを有効にする"
+msgstr "「GUI スケーリング」有効"
 
 #: src/skins/ui_main.c:1899
 msgid "Visualization Menu"
-msgstr ""
+msgstr "視覚化メニュー"
 
 #: src/skins/ui_main.c:1946
 msgid ""
@@ -4987,65 +4994,68 @@ msgid ""
 "2. No other programs is blocking the soundcard.\n"
 "3. Your soundcard is configured properly.\n"
 msgstr ""
+"<b><big>オーディオデバイスを開けませんでした.</big></b>\n"
+"\n"
+"以下をチェックして下さい:\n"
+"1. 現在選択している出力プラグインが正しいか.\n"
+"2. お使いのサウンドカードをブロックしているアプリが他に存在しないか.\n"
+"3. お使いのサウンドカードが正しく設定されているか.\n"
 
 #: src/skins/ui_manager.c:53 src/skins/ui_manager.c:54
 msgid "Autoscroll Songname"
-msgstr ""
+msgstr "曲名の自動スクロール"
 
 #: src/skins/ui_manager.c:56 src/skins/ui_manager.c:57
 msgid "Stop after Current Song"
-msgstr ""
+msgstr "現在の曲の後に停止する"
 
 #: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
-#, fuzzy
 msgid "Peaks"
-msgstr "プランク"
+msgstr "ピーク"
 
 #: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
-#, fuzzy
 msgid "Repeat"
-msgstr "ビート"
+msgstr "リピート"
 
 #: src/skins/ui_manager.c:65 src/skins/ui_manager.c:66
 msgid "Shuffle"
-msgstr ""
+msgstr "シャッフル"
 
 #: src/skins/ui_manager.c:68 src/skins/ui_manager.c:69
 msgid "No Playlist Advance"
-msgstr ""
+msgstr "次の曲に進まない"
 
 #: src/skins/ui_manager.c:71 src/skins/ui_manager.c:72
 msgid "Show Player"
-msgstr ""
+msgstr "プレイヤを表示する"
 
 #: src/skins/ui_manager.c:74 src/skins/ui_manager.c:75
 msgid "Show Playlist Editor"
-msgstr ""
+msgstr "プレイリストエディタを表示する"
 
 #: src/skins/ui_manager.c:77 src/skins/ui_manager.c:78
-#, fuzzy
 msgid "Show Equalizer"
-msgstr "ウィンドウ->イコライザー"
+msgstr "イコライザを表示する"
 
 #: src/skins/ui_manager.c:80 src/skins/ui_manager.c:81
 msgid "Always on Top"
-msgstr ""
+msgstr "常に最前面に配置する"
 
 #: src/skins/ui_manager.c:83 src/skins/ui_manager.c:84
 msgid "Put on All Workspaces"
-msgstr ""
+msgstr "全ワークスペースに配置する"
 
 #: src/skins/ui_manager.c:86 src/skins/ui_manager.c:87
 msgid "Roll up Player"
-msgstr ""
+msgstr "プレイヤを巻き上げる"
 
 #: src/skins/ui_manager.c:89 src/skins/ui_manager.c:90
 msgid "Roll up Playlist Editor"
-msgstr ""
+msgstr "プレイリストエディタを巻き上げる"
 
 #: src/skins/ui_manager.c:92 src/skins/ui_manager.c:93
 msgid "Roll up Equalizer"
-msgstr ""
+msgstr "イコライザを巻き上げる"
 
 #: src/skins/ui_manager.c:95 src/sndstretch/sndstretch_xmms.c:375
 msgid "Scale"
@@ -5053,537 +5063,489 @@ msgstr "スケール"
 
 #: src/skins/ui_manager.c:96
 msgid "DoubleSize"
-msgstr ""
+msgstr "ダブルサイズ"
 
 #: src/skins/ui_manager.c:98 src/skins/ui_manager.c:99
 msgid "Easy Move"
-msgstr ""
+msgstr "簡単移動"
 
 #: src/skins/ui_manager.c:107
-#, fuzzy
 msgid "Analyzer"
-msgstr "スペクトラムアナライザ"
+msgstr "アナライザ"
 
 #: src/skins/ui_manager.c:108
-#, fuzzy
 msgid "Scope"
-msgstr "演奏停止"
+msgstr "スコープ"
 
 #: src/skins/ui_manager.c:109
 msgid "Voiceprint"
-msgstr ""
+msgstr "声紋"
 
 #: src/skins/ui_manager.c:110
 msgid "Off"
-msgstr ""
+msgstr "オフ"
 
 #: src/skins/ui_manager.c:114 src/skins/ui_manager.c:131
 #: src/skins/ui_manager.c:137
-#, fuzzy
 msgid "Normal"
-msgstr "フォーマット"
+msgstr "標準"
 
 #: src/skins/ui_manager.c:115 src/skins/ui_manager.c:132
-#, fuzzy
 msgid "Fire"
-msgstr "サティア"
+msgstr "ファイア"
 
 #: src/skins/ui_manager.c:116
 msgid "Vertical Lines"
-msgstr ""
+msgstr "垂直ライン"
 
 #: src/skins/ui_manager.c:120
-#, fuzzy
 msgid "Lines"
-msgstr "分"
+msgstr "ライン"
 
 #: src/skins/ui_manager.c:121
-#, fuzzy
 msgid "Bars"
-msgstr "ベース"
+msgstr "バー"
 
 #: src/skins/ui_manager.c:125
-#, fuzzy
 msgid "Dot Scope"
-msgstr "ループしない"
+msgstr "ドット"
 
 #: src/skins/ui_manager.c:126
 msgid "Line Scope"
-msgstr ""
+msgstr "ライン"
 
 #: src/skins/ui_manager.c:127
 msgid "Solid Scope"
-msgstr ""
+msgstr "ソリッド"
 
 #: src/skins/ui_manager.c:133
 msgid "Ice"
-msgstr ""
+msgstr "アイス"
 
 #: src/skins/ui_manager.c:138
 msgid "Smooth"
-msgstr ""
+msgstr "スムーズ"
 
 #: src/skins/ui_manager.c:142
 msgid "Full (~50 fps)"
-msgstr ""
+msgstr "1:1 (〜50 fps)"
 
 #: src/skins/ui_manager.c:143
 msgid "Half (~25 fps)"
-msgstr ""
+msgstr "1:2 (〜25 fps)"
 
 #: src/skins/ui_manager.c:144
 msgid "Quarter (~13 fps)"
-msgstr ""
+msgstr "1:4 (〜13 fps)"
 
 #: src/skins/ui_manager.c:145
 msgid "Eighth (~6 fps)"
-msgstr ""
+msgstr "1:8 (〜6 fps)"
 
 #: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
-#, fuzzy
 msgid "Slowest"
-msgstr "ショーチューン"
+msgstr "最も遅い"
 
 #: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
-#, fuzzy
 msgid "Slow"
-msgstr "低"
+msgstr "遅い"
 
 #: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
-#, fuzzy
 msgid "Medium"
 msgstr "中"
 
 #: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
-#, fuzzy
 msgid "Fast"
-msgstr "フォーマット"
+msgstr "早い"
 
 #: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 msgid "Fastest"
-msgstr ""
+msgstr "最も早い"
 
 #: src/skins/ui_manager.c:165
 msgid "Time Elapsed"
-msgstr ""
+msgstr "経過時間を表示する"
 
 #: src/skins/ui_manager.c:166
 msgid "Time Remaining"
-msgstr ""
+msgstr "残り時間を表示する"
 
 #: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
-#, fuzzy
 msgid "Pause"
-msgstr "演奏停止"
+msgstr "一時停止"
 
 #: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
-#, fuzzy
 msgid "Previous"
-msgstr "前のトラック"
+msgstr "前の曲"
 
 #: src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
-#, fuzzy
 msgid "Next"
-msgstr "文字"
+msgstr "次の曲"
 
 #: src/skins/ui_manager.c:195
-#, fuzzy
 msgid "Visualization"
-msgstr "組織:"
+msgstr "視覚化"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization Mode"
-msgstr ""
+msgstr "視覚化モード"
 
 #: src/skins/ui_manager.c:197
 msgid "Analyzer Mode"
-msgstr ""
+msgstr "アナライザモード"
 
 #: src/skins/ui_manager.c:198
 msgid "Scope Mode"
-msgstr ""
+msgstr "スコープモード"
 
 #: src/skins/ui_manager.c:199
 msgid "Voiceprint Mode"
-msgstr ""
+msgstr "声紋モード"
 
 #: src/skins/ui_manager.c:200
 msgid "WindowShade VU Mode"
-msgstr ""
+msgstr "WindowShade VU モード"
 
 #: src/skins/ui_manager.c:201
 msgid "Refresh Rate"
-msgstr ""
+msgstr "リフレッシュレート"
 
 #: src/skins/ui_manager.c:202
 msgid "Analyzer Falloff"
-msgstr ""
+msgstr "アナライザ フォールオフ"
 
 #: src/skins/ui_manager.c:203
 msgid "Peaks Falloff"
-msgstr ""
+msgstr "ピーク フォールオフ"
 
 #: src/skins/ui_manager.c:208
-#, fuzzy
 msgid "Playlist"
-msgstr "プレイリストの選択"
+msgstr "プレイリスト"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "New Playlist"
-msgstr "プレイリストの選択"
+msgstr "新しいプレイリスト"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
-#, fuzzy
 msgid "Select Next Playlist"
-msgstr "プレイリストの選択"
+msgstr "次のプレイリストを選択"
 
 #: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
-#, fuzzy
 msgid "Select Previous Playlist"
-msgstr "プレイリストの選択"
+msgstr "前のプレイリストを選択"
 
 #: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
-#, fuzzy
 msgid "Delete Playlist"
-msgstr "プレイリストの選択"
+msgstr "プレイリストの削除"
 
 #: src/skins/ui_manager.c:222
-#, fuzzy
 msgid "Load List"
-msgstr "読み込み"
+msgstr "プレイリストの読み込み"
 
 #: src/skins/ui_manager.c:223
 msgid "Loads a playlist file into the selected playlist."
-msgstr ""
+msgstr "選択したプレイリストにプレイリストファイルを読み込みます."
 
 #: src/skins/ui_manager.c:225
-#, fuzzy
 msgid "Save List"
-msgstr "保存"
+msgstr "プレイリストの保存"
 
 #: src/skins/ui_manager.c:226
-#, fuzzy
 msgid "Saves the selected playlist."
-msgstr "プレイリストの選択"
+msgstr "選択したプレイリストを保存します."
 
 #: src/skins/ui_manager.c:228
-#, fuzzy
 msgid "Save Default List"
-msgstr "デフォルト (%s)"
+msgstr "デフォルトのプレイリストの保存"
 
 #: src/skins/ui_manager.c:229
 msgid "Saves the selected playlist to the default location."
-msgstr ""
+msgstr "選択したプレイリストをデフォルト位置に保存します."
 
 #: src/skins/ui_manager.c:232
 msgid "Refresh List"
-msgstr ""
+msgstr "プレイリストの更新"
 
 #: src/skins/ui_manager.c:233
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr ""
+msgstr "プレイリストのエントリに関連付けられたメタデータを更新します."
 
 #: src/skins/ui_manager.c:236
 msgid "List Manager"
-msgstr ""
+msgstr "プレイリストマネージャ"
 
 #: src/skins/ui_manager.c:237
 msgid "Opens the playlist manager."
-msgstr ""
+msgstr "プレイリストマネージャを開きます."
 
 #: src/skins/ui_manager.c:243
 msgid "View"
-msgstr ""
+msgstr "表示"
 
 #: src/skins/ui_manager.c:247
 msgid "Add Internet Address..."
-msgstr ""
+msgstr "インターネットアドレスの追加..."
 
 #: src/skins/ui_manager.c:248
 msgid "Adds a remote track to the playlist."
-msgstr ""
+msgstr "リモートトラックをプレイリストに追加します."
 
 #: src/skins/ui_manager.c:251
 msgid "Add Files..."
-msgstr ""
+msgstr "ファイルの追加..."
 
 #: src/skins/ui_manager.c:252
-#, fuzzy
 msgid "Adds files to the playlist."
-msgstr "サブチューンをプレイリストに追加"
+msgstr "ファイルをプレイリストに追加します."
 
 #: src/skins/ui_manager.c:257
 msgid "Search and Select"
-msgstr ""
+msgstr "検索と選択"
 
 #: src/skins/ui_manager.c:258
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr ""
+msgstr "プレイリストを検索し, 特定の判定基準に基いて選択します."
 
 #: src/skins/ui_manager.c:261
-#, fuzzy
 msgid "Invert Selection"
-msgstr "フォーマット選択"
+msgstr "選択範囲の反転"
 
 #: src/skins/ui_manager.c:262
 msgid "Inverts the selected and unselected entries."
-msgstr ""
+msgstr "エントリの選択と未選択を反転します."
 
 #: src/skins/ui_manager.c:265
-#, fuzzy
 msgid "Select All"
-msgstr "プレイリストの選択"
+msgstr "全て選択"
 
 #: src/skins/ui_manager.c:266
 msgid "Selects all of the playlist entries."
-msgstr ""
+msgstr "プレイリストの全てのエントリを選択します."
 
 #: src/skins/ui_manager.c:269
-#, fuzzy
 msgid "Select None"
-msgstr "スキンファイル選択"
+msgstr "未選択にする"
 
 #: src/skins/ui_manager.c:270
 msgid "Deselects all of the playlist entries."
-msgstr ""
+msgstr "プレイリストの全てのエントリを未選択にします."
 
 #: src/skins/ui_manager.c:275
-#, fuzzy
 msgid "Remove All"
-msgstr "削除"
+msgstr "全て削除"
 
 #: src/skins/ui_manager.c:276
 msgid "Removes all entries from the playlist."
-msgstr ""
+msgstr "全てのエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:279
 msgid "Clear Queue"
-msgstr ""
+msgstr "キューのクリア"
 
 #: src/skins/ui_manager.c:280
 msgid "Clears the queue associated with this playlist."
-msgstr ""
+msgstr "プレイリストに関連付けられたキューをクリアします."
 
 #: src/skins/ui_manager.c:283
 msgid "Remove Unavailable Files"
-msgstr ""
+msgstr "利用不可ファイルの削除"
 
 #: src/skins/ui_manager.c:284
 msgid "Removes unavailable files from the playlist."
-msgstr ""
+msgstr "利用不可ファイルをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:287
-#, fuzzy
 msgid "Remove Duplicates"
-msgstr "ドライブの削除"
+msgstr "重複エントリの削除"
 
 #: src/skins/ui_manager.c:289 src/skins/ui_manager.c:321
 #: src/skins/ui_manager.c:351
-#, fuzzy
 msgid "By Title"
 msgstr "タイトル"
 
 #: src/skins/ui_manager.c:290
 msgid "Removes duplicate entries from the playlist by title."
-msgstr ""
+msgstr "重複するタイトルのエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:293 src/skins/ui_manager.c:329
 #: src/skins/ui_manager.c:359
-#, fuzzy
 msgid "By Filename"
 msgstr "ファイル名"
 
 #: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
+msgstr "重複するファイル名のエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:297 src/skins/ui_manager.c:333
 #: src/skins/ui_manager.c:363
-#, fuzzy
 msgid "By Path + Filename"
-msgstr "ファイル名"
+msgstr "パス名とファイル名"
 
 #: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
+msgstr "重複するパス名とファイル名のエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:301
 msgid "Remove Unselected"
-msgstr ""
+msgstr "選択していないエントリの削除"
 
 #: src/skins/ui_manager.c:302
 msgid "Remove unselected entries from the playlist."
-msgstr ""
+msgstr "選択していないエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:305
 msgid "Remove Selected"
-msgstr ""
+msgstr "選択したエントリの削除"
 
 #: src/skins/ui_manager.c:306
 msgid "Remove selected entries from the playlist."
-msgstr ""
+msgstr "選択したエントリをプレイリストから削除します."
 
 #: src/skins/ui_manager.c:311
 msgid "Randomize List"
-msgstr ""
+msgstr "プレイリストをランダムにする"
 
 #: src/skins/ui_manager.c:312
 msgid "Randomizes the playlist."
-msgstr ""
+msgstr "プレイリストの順序をランダムにします."
 
 #: src/skins/ui_manager.c:315
 msgid "Reverse List"
-msgstr ""
+msgstr "プレイリストを逆順にする"
 
 #: src/skins/ui_manager.c:316
 msgid "Reverses the playlist."
-msgstr ""
+msgstr "プレイリストの順序を逆順にします."
 
 #: src/skins/ui_manager.c:319
-#, fuzzy
 msgid "Sort List"
-msgstr "アーティスト:"
+msgstr "プレイリストのソート"
 
 #: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
 msgid "Sorts the list by title."
-msgstr ""
+msgstr "タイトル順でプレイリストをソートします."
 
 #: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
-#, fuzzy
 msgid "By Artist"
-msgstr "アーティスト:"
+msgstr "アーティスト"
 
 #: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by artist."
-msgstr ""
+msgstr "アーティスト順でプレイリストをソートします."
 
 #: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by filename."
-msgstr ""
+msgstr "ファイル名順でプレイリストをソートします."
 
 #: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by full pathname."
-msgstr ""
+msgstr "ファイルのパス名でプレイリストをソートします."
 
 #: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
-#, fuzzy
 msgid "By Date"
-msgstr "日付:"
+msgstr "日付"
 
 #: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by modification time."
-msgstr ""
+msgstr "変更時間でプレイリストをソートします."
 
 #: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
-#, fuzzy
 msgid "By Track Number"
-msgstr "トラック番号:"
+msgstr "トラック番号"
 
 #: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by track number."
-msgstr ""
+msgstr "トラック番号順でプレイリストをソートします."
 
 #: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
-#, fuzzy
 msgid "By Playlist Entry"
-msgstr "高速なプレイリスト情報"
+msgstr "プレイリストのエントリ"
 
 #: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
 msgid "Sorts the list by playlist entry."
-msgstr ""
+msgstr "プレイリストのエントリ順でソートします."
 
 #: src/skins/ui_manager.c:349
-#, fuzzy
 msgid "Sort Selected"
-msgstr "フォーマット選択"
+msgstr "選択範囲のソート"
 
 #: src/skins/ui_manager.c:385
-#, fuzzy
 msgid "File"
-msgstr "フィルタ"
+msgstr "ファイル"
 
 #: src/skins/ui_manager.c:388
 msgid "Plugin Services"
-msgstr ""
+msgstr "プラグインサービス"
 
 #: src/skins/ui_manager.c:390 src/skins/ui_manager.c:393
-#, fuzzy
 msgid "View Track Details"
-msgstr "トラックゲインを使用する"
+msgstr "トラックの詳細"
 
 #: src/skins/ui_manager.c:391 src/skins/ui_manager.c:394
 msgid "View track details"
-msgstr ""
+msgstr "トラックの詳細"
 
 #: src/skins/ui_manager.c:396 src/skins/ui_manager.c:397
-#, fuzzy
 msgid "About Audacious"
-msgstr "LIRC Audacious プラグインについて"
+msgstr "Audacious について"
 
 #: src/skins/ui_manager.c:399
-#, fuzzy
 msgid "Play File"
-msgstr "演奏時間:"
+msgstr "ファイルを演奏"
 
 #: src/skins/ui_manager.c:400
-#, fuzzy
 msgid "Load and play a file"
-msgstr "プレイヤ起動時に SF を読み込む"
+msgstr "ファイルを読み込んで演奏"
 
 #: src/skins/ui_manager.c:402
-#, fuzzy
 msgid "Play Location"
-msgstr "場所:"
+msgstr "場所を演奏"
 
 #: src/skins/ui_manager.c:403
-#, fuzzy
 msgid "Play media from the selected location"
-msgstr "選択されたアクションの確認"
+msgstr "選択した場所からメディアを演奏"
 
 #: src/skins/ui_manager.c:405
 msgid "Plugin services"
-msgstr ""
+msgstr "プラグインサービス"
 
 #: src/skins/ui_manager.c:407
 msgid "Preferences"
-msgstr ""
+msgstr "設定"
 
 #: src/skins/ui_manager.c:408
 msgid "Open preferences window"
-msgstr ""
+msgstr "設定ウィンドウを開く"
 
 #: src/skins/ui_manager.c:410
-#, fuzzy
 msgid "_Quit"
-msgstr "品質"
+msgstr "終了(_Q)"
 
 #: src/skins/ui_manager.c:411
-#, fuzzy
 msgid "Quit Audacious"
-msgstr "%s - Audacious"
+msgstr "Audacious を終了する"
 
 #: src/skins/ui_manager.c:413 src/skins/ui_manager.c:414
 msgid "Set A-B"
-msgstr ""
+msgstr "A-B をセット"
 
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Clear A-B"
-msgstr ""
+msgstr "A-B をクリア"
 
 #: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
 msgid "Jump to Playlist Start"
-msgstr ""
+msgstr "最初の曲へ移動"
 
 #: src/skins/ui_manager.c:428
 msgid "Queue Toggle"
-msgstr ""
+msgstr "キューを切り替える"
 
 #: src/skins/ui_manager.c:429
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr ""
+msgstr "プレイリストのキューに入っているエントリの有効/無効を切り替えます."
 
 #: src/skins/ui_manager.c:436
 msgid "Load"
@@ -5591,105 +5553,97 @@ msgstr "読み込み"
 
 #: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
 #: src/skins/ui_manager.c:477
-#, fuzzy
 msgid "Preset"
-msgstr "ポート"
+msgstr "プリセット"
 
 #: src/skins/ui_manager.c:442
 msgid "Load preset"
-msgstr ""
+msgstr "プリセットの読み込み"
 
 #: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
 #: src/skins/ui_manager.c:480
 msgid "Auto-load preset"
-msgstr ""
+msgstr "自動読み込みのプリセット"
 
 #: src/skins/ui_manager.c:445
 msgid "Load auto-load preset"
-msgstr ""
+msgstr "自動読み込みのプリセット"
 
 #: src/skins/ui_manager.c:448
-#, fuzzy
 msgid "Load default preset into equalizer"
-msgstr "デフォルト値を読み込む"
+msgstr "イコライザにデフォルトプリセットを読み込む"
 
 #: src/skins/ui_manager.c:450
-#, fuzzy
 msgid "Zero"
-msgstr "レトロ"
+msgstr "ゼロ"
 
 #: src/skins/ui_manager.c:451
 msgid "Set equalizer preset levels to zero"
-msgstr ""
+msgstr "イコライザプリセットレベルをゼロにセット"
 
 #: src/skins/ui_manager.c:453
-#, fuzzy
 msgid "From file"
-msgstr "プロファイル: %s"
+msgstr "ファイル"
 
 #: src/skins/ui_manager.c:454
-#, fuzzy
 msgid "Load preset from file"
-msgstr "ファイルから読み込めません\n"
+msgstr "ファイルからプリセットを読み込み"
 
 #: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
-msgstr ""
+msgstr "WinAMP EQF ファイル"
 
 #: src/skins/ui_manager.c:457
 msgid "Load preset from WinAMP EQF file"
-msgstr ""
+msgstr "WinAMP EQF ファイルからプリセットを読み込み"
 
 #: src/skins/ui_manager.c:459
 msgid "WinAMP Presets"
-msgstr ""
+msgstr "WinAMP プリセット"
 
 #: src/skins/ui_manager.c:460
 msgid "Import WinAMP presets"
-msgstr ""
+msgstr "WinAMP プリセット"
 
 #: src/skins/ui_manager.c:463
 msgid "Save preset"
-msgstr ""
+msgstr "プリセットの保存"
 
 #: src/skins/ui_manager.c:466
 msgid "Save auto-load preset"
-msgstr ""
+msgstr "自動読み込みのプリセットの保存"
 
 #: src/skins/ui_manager.c:469
-#, fuzzy
 msgid "Save default preset"
-msgstr "デフォルト値を読み込む"
+msgstr "デフォルトプリセットの保存"
 
 #: src/skins/ui_manager.c:471
-#, fuzzy
 msgid "To file"
-msgstr "STIL ファイル:"
+msgstr "ファイル"
 
 #: src/skins/ui_manager.c:472
 msgid "Save preset to file"
-msgstr ""
+msgstr "プリセットをファイルへ保存"
 
 #: src/skins/ui_manager.c:474
 msgid "To WinAMP EQF file"
-msgstr ""
+msgstr "WinAMP EQF ファイル"
 
 #: src/skins/ui_manager.c:475
 msgid "Save preset to WinAMP EQF file"
-msgstr ""
+msgstr "プリセットを WinAMP EQF ファイルへ保存"
 
 #: src/skins/ui_manager.c:478
-#, fuzzy
 msgid "Delete preset"
-msgstr "削除"
+msgstr "プリセットの削除"
 
 #: src/skins/ui_manager.c:481
 msgid "Delete auto-load preset"
-msgstr ""
+msgstr "自動読み込みのプリセットの削除"
 
 #: src/skins/ui_playlist.c:454
 msgid "Search entries in active playlist"
-msgstr ""
+msgstr "有効になっているプレイリストのエントリを検索"
 
 #: src/skins/ui_playlist.c:462
 msgid ""
@@ -5698,43 +5652,43 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
+"1つ以上の項目を埋めることによって, プレイリストのエントリを選択します. 項目は"
+"正規表現が使え, 大文字と小文字を区別しません. 正規表現がどのように動作するか"
+"わからない場合は, 単純に検索しようとしているものの文字を入力します."
 
 #: src/skins/ui_playlist.c:477
-#, fuzzy
 msgid "Album: "
-msgstr "アルバム名:"
+msgstr "アルバム名: "
 
 #: src/skins/ui_playlist.c:484
-#, fuzzy
 msgid "Artist: "
-msgstr "アーティスト:"
+msgstr "アーティスト: "
 
 #: src/skins/ui_playlist.c:491
-#, fuzzy
 msgid "Filename: "
-msgstr "ファイル名:"
+msgstr "ファイル名: "
 
 #: src/skins/ui_playlist.c:499
 msgid "Clear previous selection before searching"
-msgstr ""
+msgstr "検索前に以前の選択をクリア"
 
 #: src/skins/ui_playlist.c:502
 msgid "Automatically toggle queue for matching entries"
-msgstr ""
+msgstr "マッチしたエントリのキューを自動的にトグル"
 
 #: src/skins/ui_playlist.c:505
 msgid "Create a new playlist with matching entries"
-msgstr ""
+msgstr "マッチしたエントリで新しいプレイリストを作成"
 
 #: src/skins/ui_playlist.c:724
 #, c-format
 msgid "Error writing playlist \"%s\": %s"
-msgstr ""
+msgstr "プレイリスト \"%s\" を書き込む際にエラー: %s"
 
 #: src/skins/ui_playlist.c:746
 #, c-format
 msgid "%s already exist. Continue?"
-msgstr ""
+msgstr "%s は既に存在しています. 続行しますか？"
 
 #: src/skins/ui_playlist.c:761
 #, c-format
@@ -5743,88 +5697,86 @@ msgid ""
 "\n"
 "Unknown file type for '%s'.\n"
 msgstr ""
+"<b><big>プレイリストを保存できません!</big></b>\n"
+"\n"
+"%s のファイルの種類が不明です.\n"
 
 #: src/skins/ui_playlist.c:887
-#, fuzzy
 msgid "Save as Static Playlist"
-msgstr "プレイリストの選択"
+msgstr "スタティックプレイリストとして保存"
 
 #: src/skins/ui_playlist.c:894
 msgid "Use Relative Path"
-msgstr ""
+msgstr "相対パスを使う"
 
 #: src/skins/ui_playlist.c:916
-#, fuzzy
 msgid "Load Playlist"
-msgstr "高速なプレイリスト情報"
+msgstr "プレイリストの読み込み"
 
 #: src/skins/ui_playlist.c:929
-#, fuzzy
 msgid "Save Playlist"
-msgstr "プレイリストの選択"
+msgstr "プレイリストの保存"
 
 #: src/skins/ui_playlist.c:1497
-#, fuzzy
 msgid "Audacious Playlist Editor"
-msgstr "高速なプレイリスト情報"
+msgstr "Audacious プレイリストエディタ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:377
 msgid "PREAMP"
-msgstr ""
+msgstr "プリアンプ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:377
 msgid "60HZ"
-msgstr ""
+msgstr "60HZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:377
 msgid "170HZ"
-msgstr ""
+msgstr "170HZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:378
 msgid "310HZ"
-msgstr ""
+msgstr "310HZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:378
-#, fuzzy
 msgid "600HZ"
-msgstr "11000 Hz"
+msgstr "600HZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:378
 msgid "1KHZ"
-msgstr ""
+msgstr "1KHZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:379
 msgid "3KHZ"
-msgstr ""
+msgstr "3KHZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:379
 msgid "6KHZ"
-msgstr ""
+msgstr "6KHZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:379
 msgid "12KHZ"
-msgstr ""
+msgstr "12KHZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:380
 msgid "14KHZ"
-msgstr ""
+msgstr "14KHZ"
 
 #: src/skins/ui_skinned_equalizer_slider.c:380
 msgid "16KHZ"
-msgstr ""
+msgstr "16KHZ"
 
 #: src/skins/ui_skinselector.c:178
 msgid "Archived Winamp 2.x skin"
-msgstr ""
+msgstr "Archived Winamp 2.x スキン"
 
 #: src/skins/ui_skinselector.c:183
 msgid "Unarchived Winamp 2.x skin"
-msgstr ""
+msgstr "Unarchived Winamp 2.x スキン"
 
 #: src/skins/util.c:1132
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "sidFilename ('%s') を割り当てられませんでした\n"
+msgstr "ディレクトリ (%s) を作成できませんでした: %s\n"
 
 #: src/sndfile/plugin.c:554
 msgid "About sndfile plugin"
@@ -6387,1428 +6339,3 @@ msgstr ""
 "ru>) の\n"
 "Tony Vroon <chainsaw@gentoo.org> による Audacious への適用.\n"
 "このプラグインは以下のソースコードを元とする: "
-
-#~ msgid "Descriptions of <i>SID-specific</i> Tuplez fields go here. <b>:D</b>"
-#~ msgstr "<i>SID 特有</i>のタプルフィールドはここに記載されます．<b>:D</b>"
-
-#~ msgid "Error initializing song-length database!\n"
-#~ msgstr "曲の長さデータベース初期化エラー!\n"
-
-#~ msgid "Error initializing STIL database!\n"
-#~ msgstr "STIL データベース初期化エラー!\n"
-
-#~ msgid "Couldn't allocate memory for audio data buffer!\n"
-#~ msgstr "オーディオデータバッファのメモリを割り当てられませんでした!\n"
-
-#~ msgid "Couldn't allocate memory for audio oversampling buffer!\n"
-#~ msgstr "オーバーサンプリングバッファのメモリを割り当てられませんでした!\n"
-
-#~ msgid "Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n"
-#~ msgstr "SID-tune '%s' (サブチューン #%i)を初期化できませんでした!\n"
-
-#~ msgid "Couldn't open XMMS audio output (fmt=%x, freq=%i, nchan=%i)!\n"
-#~ msgstr ""
-#~ "XMMS オーディオ出力 (fmt=%x, freq=%i, nchan=%i) を開けませんでした!\n"
-
-#~ msgid "Oversampling rate-conversion pass failed.\n"
-#~ msgstr "オーバーサンプリングレート変換パスに失敗しました.\n"
-
-#~ msgid "Allocation of sid2FilterPresets structure failed!\n"
-#~ msgstr "sid2FilterPresets 構造体の割り当てに失敗しました!\n"
-
-#~ msgid "Warning: Could not set filter curve widget points!\n"
-#~ msgstr "警告: フィルタ曲線の分点がセットできませんでした!\n"
-
-#~ msgid "Error allocating new node. Fatal error.\n"
-#~ msgstr "新しいノードの割り当てに失敗. 致命的エラー.\n"
-
-#~ msgid "'=' expected on column #%d.\n"
-#~ msgstr "'=' は #%d 列にあることを期待されます.\n"
-
-#~ msgid "Could not allocate memory for node.\n"
-#~ msgstr "ノードにメモリを割り当てられませんでした.\n"
-
-#~ msgid "Could not open SongLengthDB '%s'\n"
-#~ msgstr "曲の長さ DB '%s' を開けませんでした.\n"
-
-#~ msgid "Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n"
-#~ msgstr "曲の長さ DB ファイル '%s' の #%d 行の MD5 ハッシュが無効です!\n"
-
-#~ msgid "Invalid entry in SongLengthDB file '%s' line #%d!\n"
-#~ msgstr "曲の長さ DB ファイル '%s' の #%d 行のエントリが無効です!\n"
-
-#~ msgid "Invalid line in SongLengthDB file '%s' line #%d\n"
-#~ msgstr "曲の長さ DB ファイル '%s' の #%d 行が無効です!\n"
-
-#~ msgid "Not a PSID or RSID file '%s'\n"
-#~ msgstr "ファイル '%s' は PSID でも RSID でもありません.\n"
-
-#~ msgid "Error reading SID file header from '%s'\n"
-#~ msgstr "'%s' からの SID ファイルヘッダ読み込みでエラーが発生しました.\n"
-
-#~ msgid "Error allocating temp data buffer for file '%s'\n"
-#~ msgstr ""
-#~ "ファイル '%s' の一時データバッファの割り当てでエラーが発生しました.\n"
-
-#~ msgid "[SIDPlay1] Could not initialize emulation engine.\n"
-#~ msgstr "[SIDPlay1] エミュレーションエンジンを初期化できませんでした.\n"
-
-#~ msgid "[SIDPlay1] Endianess verification failed.\n"
-#~ msgstr "[SIDPlay1] エンディアンの検証に失敗しました.\n"
-
-#~ msgid "[SIDPlay1] Emulator engine configuration failed!\n"
-#~ msgstr "[SIDPlay1] エミュレータエンジンの設定に失敗しました!\n"
-
-#~ msgid "[SIDPlay1] Could not initialize SIDTune object.\n"
-#~ msgstr "[SIDPlay1] SIDTune オブジェクトを初期化できませんでした.\n"
-
-#~ msgid ""
-#~ "[SIDPlay1] SID-tune struct pointer was NULL. This should not happen, "
-#~ "report to XMMS-SID author.\n"
-#~ msgstr ""
-#~ "[SIDPlay1] SID-tune 構造体ポインタが NULL でした. これは発生しないはずなの"
-#~ "で, XMMS-SID 作者に報告してください.\n"
-
-#~ msgid ""
-#~ "[SIDPlay1] SID-tune status check failed. This should not happen, report "
-#~ "to XMMS-SID author.\n"
-#~ msgstr ""
-#~ "[SIDPlay1] SID-tune 状態確認に失敗しました. これは発生しないはずなので, "
-#~ "XMMS-SID 作者に報告してください.\n"
-
-#~ msgid "[SIDPlay2] Could not initialize emulation engine.\n"
-#~ msgstr "[SIDPlay2] エミュレーションエンジンを初期化できませんでした.\n"
-
-#~ msgid "[SIDPlay2] Invalid number of filter curve points (%d > %d)\n"
-#~ msgstr "[SIDPlay2] フィルタ曲線の分点の数が不正です (%d > %d)\n"
-
-#~ msgid "reSID->create() failed.\n"
-#~ msgstr "reSID->create() に失敗しました.\n"
-
-#~ msgid "reSID->filter(%d) failed.\n"
-#~ msgstr "reSID->filter(%d) に失敗しました.\n"
-
-#~ msgid "reSID->sampling(%d) failed.\n"
-#~ msgstr "reSID->sampling(%d) に失敗しました.\n"
-
-#~ msgid "reSID->filter(NULL) failed.\n"
-#~ msgstr "reSID->filter(NULL) に失敗しました.\n"
-
-#~ msgid "hardSID->create() failed.\n"
-#~ msgstr "hardSID->create() に失敗しました.\n"
-
-#~ msgid "hardSID->filter(%d) failed.\n"
-#~ msgstr "hardSID->filter(%d) に失敗しました.\n"
-
-#~ msgid "[SIDPlay2] Could not initialize SIDBuilder object.\n"
-#~ msgstr "[SIDPlay2] SIDBuilder オブジェクトを初期化できませんでした.\n"
-
-#~ msgid "[SIDPlay2] Invalid clockSpeed=%d, falling back to PAL.\n"
-#~ msgstr "[SIDPlay2] clockSpeed=%d は無効です. PAL にフォールバックします.\n"
-
-#~ msgid "Invalid sid2OptLevel=%d, falling back to %d.\n"
-#~ msgstr "sid2OptLevel %d は無効です. %d にフォールバックします.\n"
-
-#~ msgid "[SIDPlay2] Emulator engine configuration failed!\n"
-#~ msgstr "[SIDPlay2] エミュレーションエンジンの設定に失敗しました!\n"
-
-#~ msgid "[SIDPlay2] Could not initialize SIDTune object.\n"
-#~ msgstr "[SIDPlay2] SIDTune オブジェクトを初期化できませんでした.\n"
-
-#~ msgid "[SIDPlay2] currTune->selectSong() failed\n"
-#~ msgstr "[SIDPlay2] currTune->selectSong() に失敗しました.\n"
-
-#~ msgid "[SIDPlay2] currEng->load() failed\n"
-#~ msgstr "[SIDPlay2] currEng->load() に失敗しました.\n"
-
-#~ msgid "Could not allocate memory for t_xs_tuneinfo ('%s')\n"
-#~ msgstr "t_xs_tuneinfo ('%s') のメモリを割り当てられませんでした\n"
-
-#~ msgid "Could not allocate memory for t_xs_subtuneinfo ('%s', %i)\n"
-#~ msgstr "t_xs_subtuneinfo ('%s', %i) のメモリを割り当てられませんでした\n"
-
-#~ msgid "SubTune pointer structure realloc failed.\n"
-#~ msgstr "SubTune ポインタ構造体の realloc に失敗しました.\n"
-
-#~ msgid "SubTune structure malloc failed!\n"
-#~ msgstr "SubTune 構造体の malloc に失敗しました!\n"
-
-#~ msgid "Could not open STILDB '%s'\n"
-#~ msgstr "STILDB '%s' を開けませんでした.\n"
-
-#~ msgid "Dither output when rounding to 16-bit"
-#~ msgstr "16ビットに丸めるとき出力をディザリングする"
-
-#~ msgid "Base gain (dB):"
-#~ msgstr "基本ゲイン (dB):"
-
-#~ msgid "Enable ReplayGain processing"
-#~ msgstr "リプレイゲイン処理を有効にする"
-
-#~ msgid "Pre-gain with RG info (dB):"
-#~ msgstr "リプレイゲイン情報ありのプリゲイン (dB):"
-
-#~ msgid "Pre-gain without RG info (dB):"
-#~ msgstr "リプレイゲイン情報なしのプリゲイン (dB):"
-
-#~ msgid "Enable peak info clip prevention"
-#~ msgstr "クリッピング防止のためにピーク情報を有効にする"
-
-#~ msgid "Enable adaptive scaler clip prevention"
-#~ msgstr "クリッピング防止に適応したスケーラを有効にする"
-
-#~ msgid "Gain Control"
-#~ msgstr "ゲインコントロール"
-
-#~ msgid "Enable 6dB Boost + Hard Limiting"
-#~ msgstr "6dB ブースト + ハードリミットを有効にする"
-
-#~ msgid "<b>Playback:</b>"
-#~ msgstr "<b>演奏:</b>"
-
-#~ msgid "<i>Configure keys which controls Audacious playback.</i>"
-#~ msgstr "<i>Audacious の演奏を制御するキーを設定します.</i>"
-
-#~ msgid "<b>Volume Control:</b>"
-#~ msgstr "<b>音量コントロール:</b>"
-
-#~ msgid "<i>Configure keys which controls music volume.</i>"
-#~ msgstr "<i>曲の音量をコントロールするキーを設定します.</i>"
-
-#~ msgid "<b>Player:</b>"
-#~ msgstr "<b>プレイヤ:</b>"
-
-#~ msgid "<i>Configure keys which control the player.</i>"
-#~ msgstr "<i>プレイヤをコントロールするキーを設定します.</i>"
-
-#~ msgid "For this, the Audacious OSD plugin must be activated."
-#~ msgstr "Audacious OSD プラグインを有効にしなければ,利用できません."
-
-#~ msgid "Track mode"
-#~ msgstr "トラックモード"
-
-#~ msgid "6dB hard limiting"
-#~ msgstr "6dB ハードリミット"
-
-#~ msgid "Preamp (dB):"
-#~ msgstr "プリアンプ (dB):"
-
-#~ msgid "About sndfile WAV support"
-#~ msgstr "sndfile WAV サポートについて"
-
-#~ msgid "Play/Pause:"
-#~ msgstr "演奏/一時停止:"
-
-#~ msgid "Couldn't open file!"
-#~ msgstr "ファイルを開けませんでした!"
-
-#~ msgid "Couldn't write tag!"
-#~ msgstr "タグを書き込めませんでした!"
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>名前:</b>"
-
-#~ msgid " MPEG Info "
-#~ msgstr " MPEG 情報 "
-
-#~ msgid " ID3 Tag "
-#~ msgstr " ID3 タグ "
-
-#~ msgid "Unknown"
-#~ msgstr "不明"
-
-#~ msgid "Layer %s"
-#~ msgstr "レイヤー %s"
-
-#~ msgid "VBR (avg. %d kbps)"
-#~ msgstr "可変ビットレート (平均 %d kbps)"
-
-#~ msgid "%d Hz"
-#~ msgstr "%d Hz"
-
-#~ msgid "%d frames"
-#~ msgstr "%d フレーム"
-
-#~ msgid "%d:%02d (%d seconds)"
-#~ msgstr "%d:%02d (%d 秒)"
-
-#~ msgid "RG_album=%4s (x%4.2f)"
-#~ msgstr "RGアルバム=%4s (x%4.2f)"
-
-#~ msgid "RG_track=%4s (x%4.2f)"
-#~ msgstr "RGトラック=%4s (x%4.2f)"
-
-#~ msgid "Peak album=%4s (%+5.3fdBFS)"
-#~ msgstr "ピークアルバム=%4s (%+5.3fdBFS)"
-
-#~ msgid "Peak track=%4s (%+5.3fdBFS)"
-#~ msgstr "ピークトラック=%4s (%+5.3fdBFS)"
-
-#~ msgid "mp3gain undo=%4s (%+5.3fdB)"
-#~ msgstr "mp3ゲイン アンドゥ=%4s (%+5.3fdB)"
-
-#~ msgid "mp3gain minmax=%4s (max-min=%+6.3fdB)"
-#~ msgstr "mp3ゲイン minmax=%4s (max-min=%+6.3fdB)"
-
-#~ msgid "Classic Rock"
-#~ msgstr "クラシックロック"
-
-#~ msgid "Country"
-#~ msgstr "カントリー"
-
-#~ msgid "Dance"
-#~ msgstr "ダンス"
-
-#~ msgid "Disco"
-#~ msgstr "ディスコ"
-
-#~ msgid "Funk"
-#~ msgstr "ファンキー"
-
-#~ msgid "Grunge"
-#~ msgstr "グランジ"
-
-#~ msgid "Hip-Hop"
-#~ msgstr "ヒップホップ"
-
-#~ msgid "Jazz"
-#~ msgstr "ジャズ"
-
-#~ msgid "Metal"
-#~ msgstr "メタル"
-
-#~ msgid "New Age"
-#~ msgstr "ニューエイジ"
-
-#~ msgid "Oldies"
-#~ msgstr "オールディーズ"
-
-#~ msgid "Other"
-#~ msgstr "その他"
-
-#~ msgid "Pop"
-#~ msgstr "ポップ"
-
-#~ msgid "R&B"
-#~ msgstr "Ｒ＆Ｂ"
-
-#~ msgid "Rap"
-#~ msgstr "ラップ"
-
-#~ msgid "Reggae"
-#~ msgstr "レゲェ"
-
-#~ msgid "Rock"
-#~ msgstr "ロック"
-
-#~ msgid "Techno"
-#~ msgstr "テクノ"
-
-#~ msgid "Industrial"
-#~ msgstr "インダストリアル"
-
-#~ msgid "Alternative"
-#~ msgstr "オルタナティヴ"
-
-#~ msgid "Ska"
-#~ msgstr "スカ"
-
-#~ msgid "Death Metal"
-#~ msgstr "デスメタル"
-
-#~ msgid "Soundtrack"
-#~ msgstr "サウンドトラック"
-
-#~ msgid "Euro-Techno"
-#~ msgstr "ユーロテクノ"
-
-#~ msgid "Ambient"
-#~ msgstr "アンビエント"
-
-#~ msgid "Trip-Hop"
-#~ msgstr "トリップホップ"
-
-#~ msgid "Vocal"
-#~ msgstr "ヴォーカル"
-
-#~ msgid "Jazz+Funk"
-#~ msgstr "ジャズ+ファンク"
-
-#~ msgid "Fusion"
-#~ msgstr "フュージョン"
-
-#~ msgid "Trance"
-#~ msgstr "トランス"
-
-#~ msgid "Classical"
-#~ msgstr "クラシカル"
-
-#~ msgid "Instrumental"
-#~ msgstr "インストゥルメンタル"
-
-#~ msgid "Acid"
-#~ msgstr "アシッド"
-
-#~ msgid "House"
-#~ msgstr "ハウス"
-
-#~ msgid "Game"
-#~ msgstr "ゲーム"
-
-#~ msgid "Sound Clip"
-#~ msgstr "サウンドクリップ"
-
-#~ msgid "Gospel"
-#~ msgstr "ゴスペル"
-
-#~ msgid "Noise"
-#~ msgstr "ノイズ"
-
-#~ msgid "AlternRock"
-#~ msgstr "オルタナロック"
-
-#~ msgid "Soul"
-#~ msgstr "ソウル"
-
-#~ msgid "Punk"
-#~ msgstr "パンク"
-
-#~ msgid "Space"
-#~ msgstr "スペース"
-
-#~ msgid "Meditative"
-#~ msgstr "教会音楽"
-
-#~ msgid "Instrumental Pop"
-#~ msgstr "インストゥルメンタルポップ"
-
-#~ msgid "Instrumental Rock"
-#~ msgstr "インストゥルメンタルロック"
-
-#~ msgid "Ethnic"
-#~ msgstr "エスニック"
-
-#~ msgid "Gothic"
-#~ msgstr "ゴシック"
-
-#~ msgid "Darkwave"
-#~ msgstr "ダークウェーヴ"
-
-#~ msgid "Techno-Industrial"
-#~ msgstr "テクノインスツルメント"
-
-#~ msgid "Electronic"
-#~ msgstr "エレクトロニック"
-
-#~ msgid "Pop-Folk"
-#~ msgstr "ポップフォーク"
-
-#~ msgid "Eurodance"
-#~ msgstr "ユーロダンス"
-
-#~ msgid "Dream"
-#~ msgstr "ドリーム"
-
-#~ msgid "Southern Rock"
-#~ msgstr "サザンロック"
-
-#~ msgid "Comedy"
-#~ msgstr "コメディ"
-
-#~ msgid "Cult"
-#~ msgstr "カルト"
-
-#~ msgid "Gangsta Rap"
-#~ msgstr "ギャングスタラップ"
-
-#~ msgid "Top 40"
-#~ msgstr "トップ 40"
-
-#~ msgid "Christian Rap"
-#~ msgstr "クリスチャンラップ"
-
-#~ msgid "Pop/Funk"
-#~ msgstr "ポップ/ファンキー"
-
-#~ msgid "Jungle"
-#~ msgstr "ジャングル"
-
-#~ msgid "Native American"
-#~ msgstr "ネイティヴアメリカン"
-
-#~ msgid "Cabaret"
-#~ msgstr "キャバレー"
-
-#~ msgid "New Wave"
-#~ msgstr "ニューウェーブ"
-
-#~ msgid "Psychedelic"
-#~ msgstr "サイケデリック"
-
-#~ msgid "Rave"
-#~ msgstr "レイブ"
-
-#~ msgid "Trailer"
-#~ msgstr "トレイラー"
-
-#~ msgid "Lo-Fi"
-#~ msgstr "ローファイ"
-
-#~ msgid "Tribal"
-#~ msgstr "トリバル"
-
-#~ msgid "Acid Punk"
-#~ msgstr "アシッドパンク"
-
-#~ msgid "Acid Jazz"
-#~ msgstr "アシッドジャズ"
-
-#~ msgid "Polka"
-#~ msgstr "ポルカ"
-
-#~ msgid "Musical"
-#~ msgstr "ミュージカル"
-
-#~ msgid "Rock & Roll"
-#~ msgstr "ロックンロール"
-
-#~ msgid "Hard Rock"
-#~ msgstr "ハードロック"
-
-#~ msgid "Folk"
-#~ msgstr "フォーク"
-
-#~ msgid "Folk/Rock"
-#~ msgstr "フォーク/ロック"
-
-#~ msgid "National Folk"
-#~ msgstr "ナショナルフォーク"
-
-#~ msgid "Swing"
-#~ msgstr "スウィング"
-
-#~ msgid "Fast-Fusion"
-#~ msgstr "ファストフュージョン"
-
-#~ msgid "Bebob"
-#~ msgstr "Bebob"
-
-#~ msgid "Latin"
-#~ msgstr "ラテン"
-
-#~ msgid "Revival"
-#~ msgstr "リバイバル"
-
-#~ msgid "Celtic"
-#~ msgstr "セルティック"
-
-#~ msgid "Bluegrass"
-#~ msgstr "ブルーグラス"
-
-#~ msgid "Avantgarde"
-#~ msgstr "アバンギャルド"
-
-#~ msgid "Gothic Rock"
-#~ msgstr "ゴシックロック"
-
-#~ msgid "Progressive Rock"
-#~ msgstr "プログレッシヴロック"
-
-#~ msgid "Psychedelic Rock"
-#~ msgstr "サイケデリックロック"
-
-#~ msgid "Symphonic Rock"
-#~ msgstr "シンフォニックロック"
-
-#~ msgid "Slow Rock"
-#~ msgstr "スローロック"
-
-#~ msgid "Big Band"
-#~ msgstr "ビッグバンド"
-
-#~ msgid "Chorus"
-#~ msgstr "コーラス"
-
-#~ msgid "Easy Listening"
-#~ msgstr "イージーリスニング"
-
-#~ msgid "Acoustic"
-#~ msgstr "アコースティック"
-
-#~ msgid "Humour"
-#~ msgstr "ユーモア"
-
-#~ msgid "Speech"
-#~ msgstr "スピーチ"
-
-#~ msgid "Chanson"
-#~ msgstr "シャンソン"
-
-#~ msgid "Opera"
-#~ msgstr "オペラ"
-
-#~ msgid "Chamber Music"
-#~ msgstr "チャンバーミュージック"
-
-#~ msgid "Sonata"
-#~ msgstr "ソナタ"
-
-#~ msgid "Symphony"
-#~ msgstr "シンフォニー"
-
-#~ msgid "Booty Bass"
-#~ msgstr "ブーティベース"
-
-#~ msgid "Primus"
-#~ msgstr "プリマス"
-
-#~ msgid "Porn Groove"
-#~ msgstr "ポルノグルーヴ"
-
-#~ msgid "Slow Jam"
-#~ msgstr "スロージャム"
-
-#~ msgid "Club"
-#~ msgstr "クラブ"
-
-#~ msgid "Tango"
-#~ msgstr "タンゴ"
-
-#~ msgid "Samba"
-#~ msgstr "サンバ"
-
-#~ msgid "Folklore"
-#~ msgstr "フォークロア"
-
-#~ msgid "Ballad"
-#~ msgstr "バラード"
-
-#~ msgid "Power Ballad"
-#~ msgstr "パワーバラード"
-
-#~ msgid "Rhythmic Soul"
-#~ msgstr "リズミックソウル"
-
-#~ msgid "Freestyle"
-#~ msgstr "フリースタイル"
-
-#~ msgid "Duet"
-#~ msgstr "デュエット"
-
-#~ msgid "Punk Rock"
-#~ msgstr "パンクロック"
-
-#~ msgid "Drum Solo"
-#~ msgstr "ドラムソロ"
-
-#~ msgid "A Cappella"
-#~ msgstr "ア・カペラ"
-
-#~ msgid "Euro-House"
-#~ msgstr "ユーロハウス"
-
-#~ msgid "Dance Hall"
-#~ msgstr "ダンスホール"
-
-#~ msgid "Goa"
-#~ msgstr "ゴア"
-
-#~ msgid "Drum & Bass"
-#~ msgstr "ドラム＆バス"
-
-#~ msgid "Club-House"
-#~ msgstr "クラブハウス"
-
-#~ msgid "Hardcore"
-#~ msgstr "ハードコア"
-
-#~ msgid "Terror"
-#~ msgstr "テラー"
-
-#~ msgid "Indie"
-#~ msgstr "インディーズ"
-
-#~ msgid "BritPop"
-#~ msgstr "ブリットポップ"
-
-#~ msgid "Negerpunk"
-#~ msgstr "ニガーパンク"
-
-#~ msgid "Polsk Punk"
-#~ msgstr "ポルスクパンク"
-
-#~ msgid "Christian Gangsta Rap"
-#~ msgstr "クリスチャンギャングスタラップ"
-
-#~ msgid "Heavy Metal"
-#~ msgstr "ヘヴィーメタル"
-
-#~ msgid "Black Metal"
-#~ msgstr "ブラックメタル"
-
-#~ msgid "Crossover"
-#~ msgstr "クロスオーバー"
-
-#~ msgid "Contemporary Christian"
-#~ msgstr "コンテンポラリクリスチャン"
-
-#~ msgid "Christian Rock"
-#~ msgstr "クリスチャンロック"
-
-#~ msgid "Merengue"
-#~ msgstr "メレンゲ"
-
-#~ msgid "Salsa"
-#~ msgstr "サルサ"
-
-#~ msgid "Thrash Metal"
-#~ msgstr "トラッシュメタル"
-
-#~ msgid "Anime"
-#~ msgstr "アニメ"
-
-#~ msgid "JPop"
-#~ msgstr "Jポップ"
-
-#~ msgid "Synthpop"
-#~ msgstr "シンセポップ"
-
-#~ msgid ""
-#~ "An error occured:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "エラー発生:\n"
-#~ "%s"
-
-#~ msgid "Error!"
-#~ msgstr "エラー！"
-
-#~ msgid "Failed to modify tag (open)"
-#~ msgstr "タグの修正に失敗しました (open)"
-
-#~ msgid "Failed to modify tag (close)"
-#~ msgstr "タグの修正に失敗しました (close)"
-
-#~ msgid "Failed to modify tag"
-#~ msgstr "タグの修正に失敗"
-
-#~ msgid " Ogg Vorbis Tag "
-#~ msgstr " Ogg Vorbis タグ "
-
-#~ msgid "Description:"
-#~ msgstr "詳細:"
-
-#~ msgid "Version:"
-#~ msgstr "バージョン:"
-
-#~ msgid "ISRC number:"
-#~ msgstr "ISRC 番号:"
-
-#~ msgid " Ogg Vorbis ReplayGain "
-#~ msgstr " Ogg Vorbis リプレイゲイン "
-
-#~ msgid "Track peak:"
-#~ msgstr "トラックのピーク:"
-
-#~ msgid "Album gain:"
-#~ msgstr "アルバムのゲイン:"
-
-#~ msgid "Album peak:"
-#~ msgstr "アルバムのピーク:"
-
-#~ msgid " Ogg Vorbis Info "
-#~ msgstr " Ogg Vorbis 情報 "
-
-#~ msgid "Bit rate:"
-#~ msgstr "ビットレート:"
-
-#~ msgid "Sample rate:"
-#~ msgstr "サンプリングレート:"
-
-#~ msgid "Length:"
-#~ msgstr "演奏時間:"
-
-#~ msgid "File size:"
-#~ msgstr "ファイルサイズ:"
-
-#~ msgid "N/A"
-#~ msgstr "N/A"
-
-#~ msgid "%d KBit/s (nominal)"
-#~ msgstr "%d Kビット/秒 (ノーマル)"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "%d:%.2d"
-#~ msgstr "%d:%.2d"
-
-#~ msgid "%d Bytes"
-#~ msgstr "%d バイト"
-
-#~ msgid "Use software volume control"
-#~ msgstr "ソフトウェア音量コントロールを使う"
-
-#~ msgid ""
-#~ "You cannot use the FileWriter plugin\n"
-#~ "when you're running in realtime mode."
-#~ msgstr ""
-#~ "リアルタイムモードで実行しているとき\n"
-#~ "ファイルライタ プラグインは利用できません."
-
-#~ msgid "Tune #%i"
-#~ msgstr "チューン #%i"
-
-#~ msgid "6581 (reSID)"
-#~ msgstr "6581 (reSID)"
-
-#~ msgid "8580 (reSID)"
-#~ msgstr "8580 (reSID)"
-
-#~ msgid "6581R1 (alankila)"
-#~ msgstr "6581R1 (alankila)"
-
-#~ msgid "6581R4 (alankila)"
-#~ msgstr "6581R4 (alankila)"
-
-#~ msgid ""
-#~ "XMMS v1.2.5 and later support generic titlestring formatting (see XMMS "
-#~ "preferences). This option can be enabled to override those generic titles "
-#~ "with Audacious-SID specific ones. Formatting mnemonics are explained "
-#~ "briefly below."
-#~ msgstr ""
-#~ "XMMS v1.2.5 以降は一般的なタイトル文字フォーマットをサポートしています "
-#~ "(XMMS 設定をご覧ください). 有効ならば, Audacious-SID で指定したものを上書"
-#~ "きします. フォーマットルールは以下に説明があります."
-
-#~ msgid "Override generic XMMS titles"
-#~ msgstr "一般的な XMMS のタイトルを上書きする"
-
-#~ msgid ""
-#~ "%% - '%' character\n"
-#~ "%p - Performer/composer\n"
-#~ "%t - Song name (title)\n"
-#~ "%c - Copyright\n"
-#~ "%s - File type\n"
-#~ "%m - SID model"
-#~ msgstr ""
-#~ "%% - '%' 文字\n"
-#~ "%p - 演奏者/作曲者\n"
-#~ "%t - 曲名 (タイトル)\n"
-#~ "%c - 著作権\n"
-#~ "%s - ファイル形式\n"
-#~ "%m - SID モデル"
-
-#~ msgid ""
-#~ "%C - Speed/clock (PAL/NTSC)\n"
-#~ "%n - Subtune\n"
-#~ "%N - Number of subtunes\n"
-#~ "%f - Filename\n"
-#~ "%F - File path\n"
-#~ "%e - File extension"
-#~ msgstr ""
-#~ "%C - 速度/クロック (PAL/NTSC)\n"
-#~ "%n - サブチューン\n"
-#~ "%N - サブチューン数\n"
-#~ "%f - ファイル名\n"
-#~ "%F - ファイルパス\n"
-#~ "%e - ファイル拡張子"
-
-#~ msgid "No sub-tune control."
-#~ msgstr "サブチューンコントロールがありません."
-
-#~ msgid "Disabled"
-#~ msgstr "無効"
-
-#~ msgid ""
-#~ "Seeking backwards/forwards selects previous/next sub-tune, similar to "
-#~ "selector used in XMMS-SidPlay."
-#~ msgstr ""
-#~ "後方/前方のシークは, XMMS-SidPlay で用いられるセレクタのように, 以前/以後"
-#~ "のサブチューンを選択します. "
-
-#~ msgid "Seek back/forward changes sub-tune"
-#~ msgstr "後方/前方のシークでサブチューンを変更"
-
-#~ msgid ""
-#~ "By pressing the seekbar a sub-tune control window pops up, in style of "
-#~ "UADE (Unix Amiga Delitracker Emulator)"
-#~ msgstr ""
-#~ "シークバーを押すことで, UADE (Unix Amiga Delitracker Emulator) のようにサ"
-#~ "ブチューンコントロールウィンドウがポップアップします."
-
-#~ msgid "Pop-up via seekbar (UADE-style)"
-#~ msgstr "シークバー経由でポップアップ (UADE-style)"
-
-#~ msgid ""
-#~ "Seekbar works as a sub-tune selector (Best option if you have patched "
-#~ "your XMMS with the song-position patch.)"
-#~ msgstr ""
-#~ "シークバーがサブチューンセレクタとして動作します (XMMS に曲位置パッチを当"
-#~ "てているなら最上のオプションです)."
-
-#~ msgid "Song-position patch"
-#~ msgstr "曲位置パッチ"
-
-#~ msgid "Go through all sub-tunes in file"
-#~ msgstr "ファイル中のサブチューンを一通り用いる"
-
-#~ msgid "Automatic sub-tune changes:"
-#~ msgstr "自動サブチューン変更:"
-
-#~ msgid ""
-#~ "Determine if file is a SID-tune by checking the file contents. If NOT "
-#~ "selected, filetype is determined by checking filename extension (.sid, ."
-#~ "dat, ...)"
-#~ msgstr ""
-#~ "ファイルの内容を確認してファイルが SID-tune かどうかを決定します. 選択され"
-#~ "ていなければ, .sid や .dat などのファイル拡張子でファイルタイプを決定しま"
-#~ "す."
-
-#~ msgid "Detect file by contents (slower)"
-#~ msgstr "内容でファイルタイプを決定 (遅い)"
-
-#~ msgid " < "
-#~ msgstr " < "
-
-#~ msgid " > "
-#~ msgstr " > "
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "#"
-#~ msgstr "#"
-
-#~ msgid " / "
-#~ msgstr " / "
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid "8000"
-#~ msgstr "8000"
-
-#~ msgid "11025"
-#~ msgstr "11025"
-
-#, fuzzy
-#~ msgid "22050"
-#~ msgstr "22000 Hz"
-
-#, fuzzy
-#~ msgid "44100"
-#~ msgstr "44100 Hz"
-
-#, fuzzy
-#~ msgid "12000"
-#~ msgstr "11000 Hz"
-
-#, fuzzy
-#~ msgid "24000"
-#~ msgstr "22000 Hz"
-
-#, fuzzy
-#~ msgid "32000"
-#~ msgstr "22000 Hz"
-
-#~ msgid "OSS Output Plugin"
-#~ msgstr "OSS 出力プラグイン"
-
-#~ msgid "Drive %d"
-#~ msgstr "ドライブ %d"
-
-#~ msgid ""
-#~ "Failed to open device %s\n"
-#~ "Error: %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "デバイス %s のオープンに失敗しました.\n"
-#~ "[ERROR] %s\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Failed to read \"Table of Contents\"\n"
-#~ "Maybe no disc in the drive?\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\"目次\" の読み込みに失敗しました.\n"
-#~ "ドライブにディスクが入っていないかも？\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Device %s OK.\n"
-#~ "Disc has %d tracks"
-#~ msgstr ""
-#~ "デバイス %s は OK です.\n"
-#~ "ディスクには %d 個のトラックがあります."
-
-#~ msgid " (%d data tracks)"
-#~ msgstr " (%d 個のデータトラック)"
-
-#~ msgid ""
-#~ "Digital audio extraction not tested as the disc has no audio tracks\n"
-#~ msgstr ""
-#~ "ディスクにオーディオトラックが無いので, ディジタルオーディオ抽出のテストは"
-#~ "行いません.\n"
-
-#~ msgid ""
-#~ "Digital audio extraction test: OK\n"
-#~ "\n"
-#~ msgstr "ディジタルオーディオ抽出のテスト: OK\n"
-
-#~ msgid ""
-#~ "Digital audio extraction test failed: %s\n"
-#~ "\n"
-#~ msgstr "ディジタルオーディオ抽出のテスト: 失敗 (%s)\n"
-
-#~ msgid ""
-#~ "Failed to check directory %s\n"
-#~ "Error: %s"
-#~ msgstr ""
-#~ "ディレクトリ %s のチェックに失敗しました.\n"
-#~ "[ERROR] %s"
-
-#~ msgid "Error: %s exist, but is not a directory"
-#~ msgstr "[ERROR] %s は存在していますが, ディレクトリではありません."
-
-#~ msgid "Directory %s OK."
-#~ msgstr "ディレクトリ %s: OK"
-
-#~ msgid "Device:"
-#~ msgstr "デバイス:"
-
-#~ msgid "_Device:"
-#~ msgstr "デバイス(_D):"
-
-#~ msgid "Dir_ectory:"
-#~ msgstr "ディレクトリ(_E):"
-
-#~ msgid "Analog"
-#~ msgstr "アナログ"
-
-#~ msgid "No mixer"
-#~ msgstr "ミキサなし"
-
-#~ msgid "CDROM drive"
-#~ msgstr "CD-ROM ドライブ"
-
-#~ msgid "OSS mixer"
-#~ msgstr "OSS ミキサ"
-
-#~ msgid "Check drive..."
-#~ msgstr "ドライブのチェック..."
-
-#~ msgid "CD Audio Player Configuration"
-#~ msgstr "CD オーディオプレイヤの設定"
-
-#~ msgid "Add drive"
-#~ msgstr "ドライブの追加"
-
-#~ msgid "Device"
-#~ msgstr "デバイス"
-
-#~ msgid "CDDB:"
-#~ msgstr "CDDB:"
-
-#~ msgid "Use CDDB"
-#~ msgstr "CDDB を利用する"
-
-#~ msgid "Get server list"
-#~ msgstr "サーバリストの取得"
-
-#~ msgid "CDDB server:"
-#~ msgstr "CDDB サーバ:"
-
-#~ msgid "Track names:"
-#~ msgstr "トラック名:"
-
-#~ msgid "Name format:"
-#~ msgstr "名前の書式:"
-
-#~ msgid "CD Audio Plugin"
-#~ msgstr "CD オーディオ プラグイン"
-
-#~ msgid "CD Audio Track %02u"
-#~ msgstr "CD オーディオトラック %02u"
-
-#~ msgid "Game console audio module decoder"
-#~ msgstr "ゲームコンソールオーディオモジュールデコーダ"
-
-#~ msgid "NSF/NSFE"
-#~ msgstr "NSF/NSFE"
-
-#~ msgid "Use optional NSFE playlist"
-#~ msgstr "オプションの NSFE プレイリストを使う"
-
-#~ msgid "Disk Writer Plugin %s"
-#~ msgstr "ディスクライター プラグイン %s"
-
-#~ msgid "eSound Output Plugin"
-#~ msgstr "eSound 出力プラグイン"
-
-#~ msgid "Extra Stereo Plugin %s"
-#~ msgstr "エクストラステレオ プラグイン %s"
-
-#~ msgid "BSD Sun Driver %s"
-#~ msgstr "BSD Sub ドライバ %s"
-
-#~ msgid "TiMidity Player %s"
-#~ msgstr "TiMidity プレイヤー %s"
-
-#~ msgid "Tone Generator %s"
-#~ msgstr "トーンジェネレータ %s"
-
-#~ msgid "Ogg Vorbis Audio Plugin"
-#~ msgstr "Ogg Vorbis オーディオ プラグイン"
-
-#~ msgid "WAV Audio Plugin"
-#~ msgstr "WAV オーディオ プラグイン"
-
-#~ msgid "ALSA %s output plugin"
-#~ msgstr "ALSA %s 出力プラグイン"
-
-#~ msgid "AMIDI-Plug %s (MIDI Player)"
-#~ msgstr "AMIDI-Plug %s (MIDI プレイヤ)"
-
-#~ msgid "AMIDI-Plug - warning"
-#~ msgstr "AMIDI-Plug - 警告"
-
-#~ msgid ""
-#~ "No sequencer backend has been selected!\n"
-#~ "Please configure AMIDI-Plug before playing."
-#~ msgstr ""
-#~ "シーケンサバックエンドが選択されていません!\n"
-#~ "演奏前に AMIDI-Plug を設定してください."
-
-#~ msgid ""
-#~ "\n"
-#~ "EvDev-Plug "
-#~ msgstr ""
-#~ "\n"
-#~ "EvDev-Plug "
-
-#~ msgid "Arabic (IBM-864)"
-#~ msgstr "アラビア語 (IBM-864)"
-
-#~ msgid "Arabic (ISO-8859-6)"
-#~ msgstr "アラビア語 (ISO-8859-6)"
-
-#~ msgid "Arabic (Windows-1256)"
-#~ msgstr "アラビア語 (Windows-1256)"
-
-#~ msgid "Baltic (ISO-8859-13)"
-#~ msgstr "バルト諸語 (ISO-8859-13)"
-
-#~ msgid "Baltic (ISO-8859-4)"
-#~ msgstr "バルト諸語 (ISO-8859-4)"
-
-#~ msgid "Baltic (Windows-1257)"
-#~ msgstr "バルト諸語 (Windows-1257)"
-
-#~ msgid "Celtic (ISO-8859-14)"
-#~ msgstr "ケルト語 (ISO-8859-14)"
-
-#~ msgid "Central European (IBM-852)"
-#~ msgstr "中欧諸語 (IBM-852)"
-
-#~ msgid "Central European (ISO-8859-2)"
-#~ msgstr "中欧諸語 (ISO-8859-2)"
-
-#~ msgid "Central European (Windows-1250)"
-#~ msgstr "中欧諸語 (Windows-1250)"
-
-#~ msgid "Chinese Simplified (GB18030)"
-#~ msgstr "簡体字中国語 (GB18030)"
-
-#~ msgid "Chinese Simplified (GB2312)"
-#~ msgstr "簡体字中国語 (GB2312)"
-
-#~ msgid "Chinese Traditional (Big5)"
-#~ msgstr "繁体字中国語 (Big5)"
-
-#~ msgid "Chinese Traditional (Big5-HKSCS)"
-#~ msgstr "繁体字中国語 (Big5-HKSCS)"
-
-#~ msgid "Cyrillic (IBM-855)"
-#~ msgstr "キリル文字 (IBM-855)"
-
-#~ msgid "Cyrillic (ISO-8859-5)"
-#~ msgstr "キリル文字 (ISO-8859-5)"
-
-#~ msgid "Cyrillic (ISO-IR-111)"
-#~ msgstr "キリル文字 (ISO-IR-111)"
-
-#~ msgid "Cyrillic (KOI8-R)"
-#~ msgstr "キリル文字 (KOI8-R)"
-
-#~ msgid "Cyrillic (Windows-1251)"
-#~ msgstr "キリル文字 (Windows-1251)"
-
-#~ msgid "Cyrillic/Russian (CP-866)"
-#~ msgstr "キリル文字/ロシア語 (CP-866)"
-
-#~ msgid "Cyrillic/Ukrainian (KOI8-U)"
-#~ msgstr "キリル文字/ウクライナ語 (KOI8-U)"
-
-#~ msgid "English (US-ASCII)"
-#~ msgstr "英語 (US-ASCII)"
-
-#~ msgid "Greek (ISO-8859-7)"
-#~ msgstr "ギリシャ語 (ISO-8859-7)"
-
-#~ msgid "Greek (Windows-1253)"
-#~ msgstr "ギリシャ語 (Windows-1253)"
-
-#~ msgid "Hebrew (IBM-862)"
-#~ msgstr "ヘブライ語 (IBM-862)"
-
-#~ msgid "Hebrew (Windows-1255)"
-#~ msgstr "ヘブライ語 (Windows-1255)"
-
-#~ msgid "Japanese (EUC-JP)"
-#~ msgstr "日本語 (EUC-JP)"
-
-#~ msgid "Japanese (ISO-2022-JP)"
-#~ msgstr "日本語 (ISO-2022-JP)"
-
-#~ msgid "Japanese (Shift_JIS)"
-#~ msgstr "日本語 (Shift_JIS)"
-
-#~ msgid "Korean (EUC-KR)"
-#~ msgstr "韓国語 (EUC-KR)"
-
-#~ msgid "Nordic (ISO-8859-10)"
-#~ msgstr "北欧諸語 (ISO-8859-10)"
-
-#~ msgid "South European (ISO-8859-3)"
-#~ msgstr "南欧諸語 (ISO-8859-3)"
-
-#~ msgid "Thai (TIS-620)"
-#~ msgstr "タイ語 (TIS-620)"
-
-#~ msgid "Turkish (IBM-857)"
-#~ msgstr "トルコ語 (IBM-857)"
-
-#~ msgid "Turkish (ISO-8859-9)"
-#~ msgstr "トルコ語 (ISO-8859-9)"
-
-#~ msgid "Turkish (Windows-1254)"
-#~ msgstr "トルコ語 (Windows-1254)"
-
-#~ msgid "Unicode (UTF-7)"
-#~ msgstr "Unicode (UTF-7)"
-
-#~ msgid "Unicode (UTF-8)"
-#~ msgstr "Unicode (UTF-8)"
-
-#~ msgid "Unicode (UTF-16BE)"
-#~ msgstr "Unicode (UTF-16BE)"
-
-#~ msgid "Unicode (UTF-16LE)"
-#~ msgstr "Unicode (UTF-16LE)"
-
-#~ msgid "Unicode (UTF-32BE)"
-#~ msgstr "Unicode (UTF-32BE)"
-
-#~ msgid "Unicode (UTF-32LE)"
-#~ msgstr "Unicode (UTF-32LE)"
-
-#~ msgid "Vietnamese (VISCII)"
-#~ msgstr "ヴェトナム語 (VISCII)"
-
-#~ msgid "Vietnamese (Windows-1258)"
-#~ msgstr "ヴェトナム語 (Windows-1258)"
-
-#~ msgid "Visual Hebrew (ISO-8859-8)"
-#~ msgstr "ヘブライ語(表示用) (ISO-8859-8)"
-
-#~ msgid "Western (IBM-850)"
-#~ msgstr "西欧諸語 (IBM-850)"
-
-#~ msgid "Western (ISO-8859-1)"
-#~ msgstr "西欧諸語 (ISO-8859-1)"
-
-#~ msgid "Western (ISO-8859-15)"
-#~ msgstr "西欧諸語 (ISO-8859-15)"
-
-#~ msgid "Western (Windows-1252)"
-#~ msgstr "西欧諸語 (Windows-1252)"
-
-#~ msgid "Arabic (IBM-864-I)"
-#~ msgstr "アラビア語 (IBM-864-I)"
-
-#~ msgid "Arabic (ISO-8859-6-E)"
-#~ msgstr "アラビア語 (ISO-8859-6-E)"
-
-#~ msgid "Arabic (ISO-8859-6-I)"
-#~ msgstr "アラビア語 (ISO-8859-6-I)"
-
-#~ msgid "Arabic (MacArabic)"
-#~ msgstr "アラビア語 (MacArabic)"
-
-#~ msgid "Armenian (ARMSCII-8)"
-#~ msgstr "アルメニア語 (ARMSCII-8)"
-
-#~ msgid "Central European (MacCE)"
-#~ msgstr "中欧諸語 (MacCE)"
-
-#~ msgid "Chinese Simplified (GBK)"
-#~ msgstr "簡体字中国語 (GBK)"
-
-#~ msgid "Chinese Simplified (HZ)"
-#~ msgstr "簡体字中国語 (HZ)"
-
-#~ msgid "Chinese Traditional (EUC-TW)"
-#~ msgstr "繁体字中国語 (EUC-TW)"
-
-#~ msgid "Croatian (MacCroatian)"
-#~ msgstr "クロアチア語 (MacCroatian)"
-
-#~ msgid "Cyrillic (MacCyrillic)"
-#~ msgstr "キリル文字 (MacCyrillic)"
-
-#~ msgid "Cyrillic/Ukrainian (MacUkrainian)"
-#~ msgstr "キリル文字/ウクライナ語 (MacUkrainian)"
-
-#~ msgid "Farsi (MacFarsi)"
-#~ msgstr "ペルシャ語 (MacFarsi)"
-
-#~ msgid "Greek (MacGreek)"
-#~ msgstr "ギリシャ語 (MacGreek)"
-
-#~ msgid "Gujarati (MacGujarati)"
-#~ msgstr "グジャラート語 (MacGujarati)"
-
-#~ msgid "Gurmukhi (MacGurmukhi)"
-#~ msgstr "グルムキー文字 (MacGurmukhi)"
-
-#~ msgid "Hebrew (ISO-8859-8-E)"
-#~ msgstr "ヘブライ語 (ISO-8859-8-E)"
-
-#~ msgid "Hebrew (ISO-8859-8-I)"
-#~ msgstr "ヘブライ語 (ISO-8859-8-I)"
-
-#~ msgid "Hebrew (MacHebrew)"
-#~ msgstr "ヘブライ語 (MacHebrew)"
-
-#~ msgid "Hindi (MacDevanagari)"
-#~ msgstr "ヒンディ語 (MacDevanagari)"
-
-#~ msgid "Icelandic (MacIcelandic)"
-#~ msgstr "アイスランド語 (MacIcelandic)"
-
-#~ msgid "Korean (JOHAB)"
-#~ msgstr "朝鮮語 (JOHAB)"
-
-#~ msgid "Korean (UHC)"
-#~ msgstr "朝鮮語 (UHC)"
-
-#~ msgid "Romanian (MacRomanian)"
-#~ msgstr "ルーマニア語 (MacRomanian)"
-
-#~ msgid "Turkish (MacTurkish)"
-#~ msgstr "トルコ語 (MacTurkish)"
-
-#~ msgid "Vietnamese (TCVN)"
-#~ msgstr "ヴェトナム語 (TCVN)"
-
-#~ msgid "Vietnamese (VPS)"
-#~ msgstr "ヴェトナム語 (VPS)"
-
-#~ msgid "Western (MacRoman)"
-#~ msgstr "西欧諸語 (MacRoman)"
-
-#~ msgid "Tag Handling"
-#~ msgstr "タグの取扱"
-
-#~ msgid "Convert Character Set"
-#~ msgstr "キャラクタセット変換"
-
-#~ msgid "Convert character set from :"
-#~ msgstr "キャラクタセットを変換する"
-
-#~ msgid "Disable bitrate update during playback (saves cpu usage)"
-#~ msgstr "演奏中のビットレート更新を無効にする (CPU 利用を節約)"
-
-#~ msgid "Album mode"
-#~ msgstr "アルバムモード"
-
-#~ msgid "0 dB"
-#~ msgstr "0 dB"
-
-#~ msgid "Without ReplayGain"
-#~ msgstr "リプレイゲインなし"
-
-#~ msgid "Dither 24bps to 16bps"
-#~ msgstr "24bps から 16bps へディザリング"
-
-#~ msgid "With ReplayGain"
-#~ msgstr "リプレイゲインあり"
-
-#~ msgid "Noise shaping"
-#~ msgstr "ノイズシェーピング"
-
-#~ msgid "high"
-#~ msgstr "高"
-
-#~ msgid "Dither to"
-#~ msgstr "ディザリング"
-
-#~ msgid "16 bps"
-#~ msgstr "16 bps"
-
-#~ msgid "24 bps"
-#~ msgstr "24 bps"
-
-#~ msgid "Output"
-#~ msgstr "出力"
-
-#~ msgid ""
-#~ "Flac Plugin by Josh Coalson\n"
-#~ "contributions by\n"
-#~ "......\n"
-#~ "......\n"
-#~ "and\n"
-#~ "Daisuke Shimamura\n"
-#~ "Visit http://flac.sourceforge.net/\n"
-#~ "\n"
-#~ "Audacious Team port"
-#~ msgstr ""
-#~ "Josh Coalson による Flac プラグイン\n"
-#~ "貢献者\n"
-#~ "......\n"
-#~ "......\n"
-#~ "と\n"
-#~ "Daisuke Shimamura\n"
-#~ "http://flac.sourceforge.net/ を訪れてください\n"
-#~ "\n"
-#~ "Audacious Team port"
-
-#~ msgid "Alt"
-#~ msgstr "Alt"
-
-#~ msgid "Blocksize: %d"
-#~ msgstr "ブロックサイズ: %d"
-
-#~ msgid ""
-#~ "Blocksize: variable\n"
-#~ "  min/max: %d/%d"
-#~ msgstr ""
-#~ "ブロックサイズ: 可変\n"
-#~ "     最小/最大: %d/%d"
-
-#~ msgid "FLAC Info:"
-#~ msgstr "FLAC 情報:"
-
-#~ msgid "Filesize: %lld B"
-#~ msgstr "ファイルサイズ: %lld B"
-
-#~ msgid "ReplayGain Reference Loudness: %2.1f dB"
-#~ msgstr "リプレイゲイン リファレンスラウドネス: %2.1f dB"
-
-#~ msgid "ReplayGain Track Peak: %1.8f"
-#~ msgstr "リプレイゲイン トラック ピーク: %1.8f"
-
-#~ msgid "ReplayGain Album Peak: %1.8f"
-#~ msgstr "リプレイゲイン アルバム ピーク: %1.8f"

@@ -54,9 +54,7 @@
 #include "ui_main.h"
 #include "ui_manager.h"
 #include "ui_playlist_evlisteners.h"
-#if 0
 #include "ui_playlist_manager.h"
-#endif
 #include "util.h"
 
 #include "ui_skinned_window.h"
@@ -1201,7 +1199,7 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
         break;
     case GDK_Insert:
         if (event->state & GDK_MOD1_MASK)
-            mainwin_show_add_url_window();
+            action_playlist_add_url();
         else
             playlistwin_show_filebrowser();
         break;
@@ -1802,7 +1800,7 @@ action_playlist_add_files(void)
 void
 action_playlist_add_url(void)
 {
-    mainwin_show_add_url_window();
+    aud_hook_call("urlopener show", NULL);
 }
 
 void
@@ -1869,9 +1867,7 @@ action_playlist_refresh_list(void)
 void
 action_open_list_manager(void)
 {
-#if 0
     playlist_manager_ui_show();
-#endif
 }
 
 void
