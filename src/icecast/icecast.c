@@ -321,7 +321,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
         }
     }
 
-    puts("ICE_OPEN");
+    g_debug("ICE_OPEN\n");
     return rv;
 }
 
