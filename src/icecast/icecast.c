@@ -148,9 +148,9 @@ static void set_plugin(void)
 static void ice_init(void)
 {
     ConfigDb *db;
-    g_debug("ICE_INIT\n");
+    g_debug("ICE_INIT");
     shout_init();
-    g_message("Using libshout %s\n", shout_version(NULL, NULL, NULL));
+    g_message("Using libshout %s", shout_version(NULL, NULL, NULL));
 
     db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, ICECAST_CFGID, "streamformat", &streamformat);
@@ -321,7 +321,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
         }
     }
 
-    g_debug("ICE_OPEN\n");
+    g_debug("ICE_OPEN");
     return rv;
 }
 
@@ -402,7 +402,7 @@ static gint ice_real_write(void* ptr, gint length)
         gint i;
         for (i=0;(i<length)&&(i<16);i++) g_debug("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
     }
-    g_debug(")\n");
+    g_debug(")");
     return 0;
 }
 
@@ -412,18 +412,18 @@ static gint ice_write_output(void *ptr, gint length)
     g_debug("outputlength=%d, length=%d...",outputlength, length);
     if ((outputlength>bufferflush)||((outputlength+length)>buffersize))
     {
-        g_debug("flushing\n");
+        g_debug("flushing");
         outputlength=ice_real_write(outputbuffer, outputlength);
     }
     {
         if (length>buffersize)
         {
-            g_debug("data too long, flushing\n");
+            g_debug("data too long, flushing");
             ice_real_write(ptr, length);
         }
         else
         {
-            g_debug("adding\n");
+            g_debug("adding");
             memcpy(&(outputbuffer[outputlength]), ptr, length);
             outputlength+=length;
         }
@@ -442,7 +442,7 @@ static gboolean ice_real_close(gpointer data)
     }
     shout = NULL;
     ice_tid=0;
-    g_debug("ICE_REAL_CLOSE\n");
+    g_debug("ICE_REAL_CLOSE");
     return FALSE;
 }
 
@@ -451,7 +451,7 @@ static void ice_close(void)
 {
     if (ice_tid) g_source_remove(ice_tid);
     ice_tid=g_timeout_add_seconds(3, ice_real_close, NULL);
-    g_debug("ICE_CLOSE: starting timer\n");
+    g_debug("ICE_CLOSE: starting timer");
 }
 
 static void ice_flush(gint time)
