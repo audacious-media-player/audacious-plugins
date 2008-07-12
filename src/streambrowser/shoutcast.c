@@ -23,11 +23,11 @@ gboolean shoutcast_category_fetch(category_t *category)
 
 	char temp_pathname[DEF_STRING_LEN];
 	sprintf(temp_pathname, "file://%s", temp_filename);
-	free(temp_filename);
 
 	debug("shoutcast: fetching category file '%s'\n", url);
 	if (!fetch_remote_to_local_file(url, temp_pathname))  {
 		failure("shoutcast: category file '%s' could not be downloaded to '%s'\n", url, temp_pathname);
+		free(temp_filename);
 		return FALSE;
 	}
 	debug("shoutcast: category file '%s' successfuly downloaded to '%s'\n", url, temp_pathname);
@@ -35,6 +35,7 @@ gboolean shoutcast_category_fetch(category_t *category)
 	xmlDoc *doc = xmlReadFile(temp_pathname, NULL, 0);
 	if (doc == NULL) {
 		failure("shoutcast: failed to read '%s' category file\n", category->name);
+		free(temp_filename);
 		return FALSE;
 	}
 	
@@ -65,8 +66,11 @@ gboolean shoutcast_category_fetch(category_t *category)
 		}
 	}
 	
-	remove(temp_filename);
-	// todo: free the mallocs()
+	if (remove(temp_filename) != 0) {
+		failure("shoutcast: cannot remove the temporary file: %s\n", strerror(errno));
+	}
+	free(temp_filename);
+	// todo: free the xml mallocs()
 	
 	return TRUE;
 }
@@ -85,11 +89,11 @@ streamdir_t* shoutcast_streamdir_fetch()
 	
 	char temp_pathname[DEF_STRING_LEN];
 	sprintf(temp_pathname, "file://%s", temp_filename);
-	free(temp_filename);
 	
 	debug("shoutcast: fetching streaming directory file '%s'\n", SHOUTCAST_STREAMDIR_URL);
 	if (!fetch_remote_to_local_file(SHOUTCAST_STREAMDIR_URL, temp_pathname)) {
 		failure("shoutcast: stream directory file '%s' could not be downloaded to '%s'\n", SHOUTCAST_STREAMDIR_URL, temp_pathname);
+		free(temp_filename);
 		return NULL;
 	}
 	debug("shoutcast: stream directory file '%s' successfuly downloaded to '%s'\n", SHOUTCAST_STREAMDIR_URL, temp_pathname);
@@ -97,6 +101,7 @@ streamdir_t* shoutcast_streamdir_fetch()
 	xmlDoc *doc = xmlReadFile(temp_pathname, NULL, 0);
 	if (doc == NULL) {
 		failure("shoutcast: failed to read stream directory file\n");
+		free(temp_filename);
 		return NULL;
 	}
 	
@@ -120,9 +125,13 @@ streamdir_t* shoutcast_streamdir_fetch()
 		}
 	}
 
-	// todo: free the mallocs()
+	// todo: free the xml mallocs()
 	
-	remove(temp_filename);
+	if (remove(temp_filename) != 0) {
+		failure("shoutcast: cannot remove the temporary file: %s\n", strerror(errno));
+	}
+	free(temp_filename);
+	
 	debug("shoutcast: streaming directory successfuly loaded\n");
 
 	return streamdir;
