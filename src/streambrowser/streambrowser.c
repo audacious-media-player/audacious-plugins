@@ -390,7 +390,7 @@ static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
     }
     debug("stream playlist '%s' successfuly downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
 
-    aud_playlist_add_url(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
+   	aud_playlist_add_url(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
 }
 
 static void on_plugin_services_menu_item_click()
