@@ -62,6 +62,7 @@ static unsigned int streamformat_shout[] =
 };
 
 static FileWriter plugin;
+static FileWriter plugin_new;
 static uint8_t *outputbuffer = NULL;
 static guint outputlength=0;
 static gint buffersize;
@@ -138,11 +139,11 @@ static void set_plugin(void)
 
 #ifdef FILEWRITER_MP3
     if (streamformat == MP3)
-        plugin = mp3_plugin;
+        plugin_new = mp3_plugin;
 #endif
 #ifdef FILEWRITER_VORBIS
     if (streamformat == VORBIS)
-        plugin = vorbis_plugin;
+        plugin_new = vorbis_plugin;
 #endif
 }
 
@@ -175,6 +176,7 @@ static void ice_init(void)
     outputbuffer=g_try_malloc(buffersize);
 
     set_plugin();
+    plugin=plugin_new;
     if (plugin.init)
         plugin.init(&ice_write_output);
 }
@@ -251,6 +253,8 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     pos = aud_playlist_get_position(playlist);
     tuple = aud_playlist_get_tuple(playlist, pos);
+
+    plugin = plugin_new;
 
     if (!shout)
     {
@@ -539,16 +543,16 @@ static void streamformat_cb(GtkWidget *combo, gpointer data)
 {
     streamformat = gtk_combo_box_get_active(GTK_COMBO_BOX(streamformat_combo));
     set_plugin();
-    if (plugin.init)
-        plugin.init(&ice_write_output);
+    if (plugin_new.init)
+        plugin_new.init(&ice_write_output);
 
-    gtk_widget_set_sensitive(plugin_button, plugin.configure != NULL);
+    gtk_widget_set_sensitive(plugin_button, plugin_new.configure != NULL);
 }
 
 static void plugin_configure_cb(GtkWidget *button, gpointer data)
 {
-    if (plugin.configure)
-        plugin.configure();
+    if (plugin_new.configure)
+        plugin_new.configure();
 }
 
 static void configure_destroy(void)
@@ -561,6 +565,8 @@ static void ice_configure(void)
     {
         GtkWidget * hbox;
         GtkWidget * label;
+
+        plugin_new = plugin;
 
         configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -597,12 +603,9 @@ static void ice_configure(void)
         g_signal_connect(G_OBJECT(streamformat_combo), "changed", G_CALLBACK(streamformat_cb), NULL);
 
         plugin_button = gtk_button_new_with_label(_("Configure"));
-        gtk_widget_set_sensitive(plugin_button, plugin.configure != NULL);
+        gtk_widget_set_sensitive(plugin_button, plugin_new.configure != NULL);
         g_signal_connect(G_OBJECT(plugin_button), "clicked", G_CALLBACK(plugin_configure_cb), NULL);
         gtk_box_pack_end(GTK_BOX(hbox), plugin_button, FALSE, FALSE, 0);
-
-
-
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
