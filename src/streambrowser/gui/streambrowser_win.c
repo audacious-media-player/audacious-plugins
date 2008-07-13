@@ -440,10 +440,13 @@ static gboolean on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *even
 
 static gboolean on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
+	if (event->keyval == GDK_Down || event->keyval == GDK_Up)
+		return FALSE;
+
 	gtk_widget_grab_focus(search_entry);
 	on_search_entry_key_pressed(widget, event, data);
 
-	return FALSE;
+	return TRUE;
 }
 
 static streamdir_gui_t *find_streamdir_gui_by_name(gchar *name)
