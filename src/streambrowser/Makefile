@@ -3,6 +3,7 @@ PLUGIN = streambrowser${PLUGIN_SUFFIX}
 SRCS = streambrowser.c	\
        streamdir.c \
        shoutcast.c \
+       xiph.c \
        gui/about_win.c \
        gui/streambrowser_win.c
 
