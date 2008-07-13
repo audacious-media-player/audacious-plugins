@@ -236,10 +236,11 @@ void streambrowser_win_set_streaminfo_state(streamdir_t *streamdir, category_t *
 	if (fetching) {
 		gchar temp[DEF_STRING_LEN];
 		sprintf(temp, "<span style='italic' weight='heavy'>%s</span>", streaminfo->name);
-		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, "", -1);
+		
+		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, streaminfo->current_track, -1);
 	}
 	else {
-		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, streaminfo->name, 2, "", -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, streaminfo->name, 2, streaminfo->current_track, -1);
 	}
 }
 
