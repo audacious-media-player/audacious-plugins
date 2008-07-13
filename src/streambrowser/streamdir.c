@@ -111,11 +111,12 @@ gint category_get_index(streamdir_t *streamdir, category_t *category)
 }
 
 
-streaminfo_t* streaminfo_new(gchar *name, gchar *playlist_url, gchar *current_track)
+streaminfo_t* streaminfo_new(gchar *name, gchar *playlist_url, gchar *url, gchar *current_track)
 {
 	streaminfo_t *streaminfo = (streaminfo_t*) g_malloc(sizeof(streaminfo_t));
 	strncpy(streaminfo->name, name, DEF_STRING_LEN);
 	strncpy(streaminfo->playlist_url, playlist_url, DEF_STRING_LEN);
+	strncpy(streaminfo->url, url, DEF_STRING_LEN);
 	strncpy(streaminfo->current_track, current_track, DEF_STRING_LEN);
 
 	return streaminfo;

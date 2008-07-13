@@ -57,6 +57,10 @@ gboolean shoutcast_category_fetch(category_t *category)
 		return FALSE;
 	}
 	
+	/* free/remove any existing streaminfos in this category */
+	while (streaminfo_get_count(category) > 0)
+		streaminfo_remove(category, streaminfo_get_by_index(category, 0));
+	
 	xmlNode *root_node = xmlDocGetRootElement(doc);
 	xmlNode *node;
 	
@@ -73,7 +77,7 @@ gboolean shoutcast_category_fetch(category_t *category)
 
 			debug("shoutcast: fetching stream info for '%s/%d' from '%s'\n", streaminfo_name, streaminfo_id, url);
 
-			streaminfo_t *streaminfo = streaminfo_new(streaminfo_name, streaminfo_playlist_url, streaminfo_current_track);
+			streaminfo_t *streaminfo = streaminfo_new(streaminfo_name, streaminfo_playlist_url, "", streaminfo_current_track);
 			streaminfo_add(category, streaminfo);
 			
 			xmlFree(streaminfo_name);
@@ -84,12 +88,13 @@ gboolean shoutcast_category_fetch(category_t *category)
 		}
 	}
 	
+	xmlFreeDoc(doc);
+	
 	if (remove(temp_filename) != 0) {
 		failure("shoutcast: cannot remove the temporary file: %s\n", strerror(errno));
 	}
 	free(temp_filename);
-	// todo: free the xml mallocs()
-	
+
 	return TRUE;
 }
 
@@ -143,7 +148,7 @@ streamdir_t* shoutcast_streamdir_fetch()
 		}
 	}
 
-	// todo: free the xml mallocs()
+	xmlFreeDoc(doc);
 	
 	if (remove(temp_filename) != 0) {
 		failure("shoutcast: cannot remove the temporary file: %s\n", strerror(errno));

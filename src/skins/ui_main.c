@@ -57,6 +57,7 @@
 #include "ui_playlist.h"
 #include "ui_hints.h"
 #include "dnd.h"
+#include "plugin.h"
 #if 0
 #include "configdb.h"
 #include "input.h"
@@ -1697,8 +1698,7 @@ mainwin_general_menu_callback(gpointer data,
             action_about_audacious();
             break;
         case MAINWIN_GENERAL_PLAYFILE: {
-            gboolean button = FALSE; /* FALSE = NO_PLAY_BUTTON */
-            aud_hook_call("filebrowser show", &button);
+            skins_interface.ops->filebrowser_show(FALSE); /* FALSE = NO_PLAY_BUTTON */
             break;
         }
         case MAINWIN_GENERAL_PLAYLOCATION:
@@ -2702,14 +2702,13 @@ action_about_audacious( void )
 void
 action_play_file( void )
 {
-    gboolean button = TRUE; /* TRUE = PLAY_BUTTON */
-    aud_hook_call("filebrowser show", &button);
+    skins_interface.ops->filebrowser_show(TRUE); /* TRUE = PLAY_BUTTON */
 }
 
 void
 action_play_location( void )
 {
-    aud_hook_call("urlopener show", NULL);
+    skins_interface.ops->urlopener_show();
 }
 
 void
@@ -2811,8 +2810,7 @@ action_playback_stop( void )
 void
 action_preferences( void )
 {
-    gboolean show = TRUE;
-    aud_hook_call("prefswin show", &show);
+    skins_interface.ops->show_prefs_window();
 }
 
 void

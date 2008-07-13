@@ -41,6 +41,7 @@
 
 #include "actions-playlist.h"
 #include "dnd.h"
+#include "plugin.h"
 #if 0
 #include "input.h"
 #include "main.h"
@@ -1793,14 +1794,13 @@ action_playlist_remove_unselected(void)
 void
 action_playlist_add_files(void)
 {
-    gboolean button = FALSE; /* FALSE = NO_PLAY_BUTTON */
-    aud_hook_call("filebrowser show", &button);
+    skins_interface.ops->filebrowser_show(FALSE); /* FALSE = NO_PLAY_BUTTON */
 }
 
 void
 action_playlist_add_url(void)
 {
-    aud_hook_call("urlopener show", NULL);
+    skins_interface.ops->urlopener_show();
 }
 
 void

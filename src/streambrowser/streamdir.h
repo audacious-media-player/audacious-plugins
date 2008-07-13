@@ -29,6 +29,7 @@ typedef struct {
 
 	gchar			name[DEF_STRING_LEN];
 	gchar			playlist_url[DEF_STRING_LEN];
+	gchar			url[DEF_STRING_LEN];
 	gchar			current_track[DEF_STRING_LEN];
 
 } streaminfo_t;
@@ -60,7 +61,7 @@ category_t*			category_get_by_name(streamdir_t *streamdir, gchar *name);
 gint				category_get_count(streamdir_t *streamdir);
 gint				category_get_index(streamdir_t *streamdir, category_t *category);
 
-streaminfo_t*		streaminfo_new(gchar *name, gchar *playlist_url, gchar *current_track);
+streaminfo_t*		streaminfo_new(gchar *name, gchar *playlist_url, gchar *url, gchar *current_track);
 void				streaminfo_delete(streaminfo_t *streaminfo);
 void				streaminfo_free(streaminfo_t *streaminfo);
 void				streaminfo_add(category_t *category, streaminfo_t *streaminfo);

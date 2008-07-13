@@ -3,10 +3,12 @@ PLUGIN = streambrowser${PLUGIN_SUFFIX}
 SRCS = streambrowser.c	\
        streamdir.c \
        shoutcast.c \
+       xiph.c \
        gui/about_win.c \
        gui/streambrowser_win.c
 
 DATA = images/shoutcast.png \
+       images/xiph.png \
        images/streambrowser-16x16.png \
        images/streambrowser-64x64.png
 
