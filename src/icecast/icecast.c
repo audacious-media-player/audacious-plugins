@@ -260,8 +260,6 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     plugin = plugin_new;
 
-    rv = (plugin.open)();
-
     if (!shout)
     {
         if (!(shout = shout_new()))
@@ -327,6 +325,8 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
             shout_metadata_free(sm);
         }
     }
+
+    rv = (plugin.open)();
 
     g_debug("ICE_OPEN");
     return rv;
