@@ -191,8 +191,7 @@ static void ice_cleanup(void)
     {
         shout_close(shout);
     }
-    if (outputbuffer)
-        g_free(outputbuffer);
+    g_free(outputbuffer);
     shout_shutdown();
 }
 
@@ -404,13 +403,7 @@ static gint ice_real_write(void* ptr, gint length)
     if (!length) return length;
     ret = shout_send(shout, ptr, length);
     shout_sync(shout);
-    g_debug("ice_write[%d:%d](", ret, length);
-    {
-        gint i;
-        for (i = 0; (i < length) && (i < 16); i++)
-            g_debug("%c", g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
-    }
-    g_debug(")");
+    g_debug("ice_write[%d:%d]", ret, length);
     return 0;
 }
 
