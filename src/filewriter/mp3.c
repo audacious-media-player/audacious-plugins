@@ -203,6 +203,8 @@ static void mp3_init(write_output_callback write_output_func)
 
 static gint mp3_open(void)
 {
+    olen = 0;
+
     gfp = lame_init();
     if (gfp == NULL)
         return 0;

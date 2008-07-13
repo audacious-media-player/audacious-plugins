@@ -260,10 +260,10 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     plugin = plugin_new;
 
+    rv = (plugin.open)();
+
     if (!shout)
     {
-        rv = (plugin.open)();
-
         if (!(shout = shout_new()))
             return 0;
 
@@ -315,9 +315,6 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
             return 0;
         }
     }
-    else
-        rv = 1;
-
     {
         shout_metadata_t *sm = NULL;
         sm = shout_metadata_new();
@@ -489,7 +486,7 @@ static gint ice_free(void)
 
 static gint ice_playing(void)
 {
-    return !paused;
+    return 0 && !paused;
 }
 
 static gint ice_get_written_time(void)
