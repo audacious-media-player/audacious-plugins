@@ -488,8 +488,8 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
             }
             break;
         }
-    } while (state != STATE_FATAL && tries < 16);
-    /* Give up after 16 failed resync attempts or fatal errors */
+    } while (state != STATE_FATAL && tries < 256);
+    /* Give up after 256 failed resync attempts or fatal errors */
 
     g_message("Rejecting %s (not an MP3 file?)", filename);
     return 0;

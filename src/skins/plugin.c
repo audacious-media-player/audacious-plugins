@@ -31,17 +31,17 @@
 
 gchar *skins_paths[SKINS_PATH_COUNT] = {};
 
-static Interface skins_gp =
+Interface skins_interface =
 {
     .id = "skinned",
     .desc = "Audacious Skinned GUI",
     .init = skins_init,
-    .fini = skins_cleanup,
-    .conf = skins_configure
+    .fini = skins_cleanup
 };
 
-SIMPLE_INTERFACE_PLUGIN("skinned", &skins_gp);
+SIMPLE_INTERFACE_PLUGIN("skinned", &skins_interface);
 gboolean plugin_is_active = FALSE;
+static GtkWidget *cfgdlg;
 
 static void skins_free_paths(void) {
     int i;
@@ -85,6 +85,10 @@ gboolean skins_init(void) {
 
     init_skins(config.skin);
     mainwin_setup_menus();
+
+    skins_interface.ops->create_prefs_window();
+    cfgdlg = skins_configure();
+    aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
 
     aud_hook_call("create prefswin", NULL);
 

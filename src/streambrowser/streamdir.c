@@ -1,3 +1,21 @@
+/*
+ * Audacious Streambrowser Plugin
+ *
+ * Copyright (c) 2008 Calin Crisan <ccrisan@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; under version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses>.
+ */
+
 
 #include <string.h>
 #include <glib.h>
@@ -93,11 +111,23 @@ gint category_get_index(streamdir_t *streamdir, category_t *category)
 }
 
 
-streaminfo_t* streaminfo_new(gchar *name, gchar *playlist_url, gchar *current_track)
+streaminfo_t* streaminfo_new(gchar *name, gchar *playlist_url, gchar *url, gchar *current_track)
 {
+	/* replace ampersands with slashes, to avoit gtk/pango markup confusions */
+	int i, count = strlen(name);
+	for (i = 0; i < count; i++)
+		if (name[i] == '&')
+			name[i] = '/';
+
+	count = strlen(current_track);
+	for (i = 0; i < count; i++)
+		if (current_track[i] == '&')
+			current_track[i] = '/';
+
 	streaminfo_t *streaminfo = (streaminfo_t*) g_malloc(sizeof(streaminfo_t));
 	strncpy(streaminfo->name, name, DEF_STRING_LEN);
 	strncpy(streaminfo->playlist_url, playlist_url, DEF_STRING_LEN);
+	strncpy(streaminfo->url, url, DEF_STRING_LEN);
 	strncpy(streaminfo->current_track, current_track, DEF_STRING_LEN);
 
 	return streaminfo;

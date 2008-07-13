@@ -39,6 +39,7 @@ enum {
 };
 
 extern gchar *skins_paths[];
+extern Interface skins_interface;
 
 gboolean skins_init(void);
 gboolean skins_cleanup(void);

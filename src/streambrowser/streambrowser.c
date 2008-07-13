@@ -1,3 +1,21 @@
+/*
+ * Audacious Streambrowser Plugin
+ *
+ * Copyright (c) 2008 Calin Crisan <ccrisan@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; under version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses>.
+ */
+
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
@@ -7,6 +25,7 @@
 #include "streambrowser.h"
 #include "streamdir.h"
 #include "shoutcast.h"
+#include "xiph.h"
 #include "gui/streambrowser_win.h"
 #include "gui/about_win.h"
 
@@ -37,7 +56,6 @@ static GtkWidget *playlist_menu_item;
 static GtkWidget *main_menu_item;
 static GQueue *update_thread_data_queue = NULL;
 static GMutex *update_thread_mutex = NULL;
-static gint update_thread_count = 0;
 
 streambrowser_cfg_t streambrowser_cfg;
 
@@ -119,6 +137,28 @@ gboolean fetch_remote_to_local_file(gchar *remote_url, gchar *local_url)
     aud_vfs_fclose(remote_file);
 
     return TRUE;
+}
+
+gboolean mystrcasestr(const char *haystack, const char *needle)
+{
+	int len_h = strlen(haystack) + 1;
+	int len_n = strlen(needle) + 1;
+	int i;
+	
+	char *upper_h = malloc(len_h);
+	char *upper_n = malloc(len_n);
+	
+	for (i = 0; i < len_h; i++)
+		upper_h[i] = toupper(haystack[i]);
+	for (i = 0; i < len_n; i++)
+		upper_n[i] = toupper(needle[i]);
+	
+	char *p = strstr(upper_h, upper_n);
+
+	free(upper_h);
+	free(upper_n);
+	
+	return (gboolean) p;
 }
 
 
@@ -238,14 +278,14 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
           category == NULL ? "" : category->name,
           streaminfo == NULL ? "" : streaminfo->name);
 
-    if (update_thread_count >= MAX_UPDATE_THREADS) {
-        debug("another %d streamdir updates are pending, this request will be dropped\n", update_thread_count);
+    if (g_queue_get_length(update_thread_data_queue) >= MAX_UPDATE_THREADS) {
+        debug("another %d streamdir updates are pending, this request will be dropped\n", g_queue_get_length(update_thread_data_queue));
     }
     else {
         g_mutex_lock(update_thread_mutex);
-            
+        
     	/* do we have a running thread? */
-        if (update_thread_count > 0) {
+        if (g_queue_get_length(update_thread_data_queue) > 0) {
             int i;
             gboolean exists = FALSE;
             update_thread_data_t *update_thread_data;
@@ -263,7 +303,7 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
             
             /* if no other similar request exists, we enqueue it */
             if (!exists) {
-                debug("another %d streamdir updates are pending, this request will be queued\n", update_thread_count);
+                debug("another %d streamdir updates are pending, this request will be queued\n", g_queue_get_length(update_thread_data_queue));
 
                 update_thread_data = g_malloc(sizeof(update_thread_data_t));
 
@@ -272,7 +312,6 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
                 update_thread_data->streaminfo = streaminfo;
  
                 g_queue_push_tail(update_thread_data_queue, update_thread_data);
-                update_thread_count++;
             }
             else {
                 debug("this request is already present in the queue, dropping\n");          
@@ -289,7 +328,6 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
             data->streaminfo = streaminfo;
  
             g_queue_push_tail(update_thread_data_queue, data);
-            update_thread_count++;
 
 			g_thread_create((GThreadFunc) update_thread_core, NULL, FALSE, NULL);
         }
@@ -302,16 +340,16 @@ static gpointer update_thread_core(gpointer user_data)
 {
 	debug("entering update thread core\n");
 
-	/* try to get the last item in the queue */
+	/* try to get the last item in the queue, but don't remove it */
 	g_mutex_lock(update_thread_mutex);
 	update_thread_data_t *data = NULL;
-	if (update_thread_count > 0) {
-		data = g_queue_pop_head(update_thread_data_queue);
+	if (g_queue_get_length(update_thread_data_queue) > 0) {
+		data = g_queue_peek_head(update_thread_data_queue);
 	}
 	g_mutex_unlock(update_thread_mutex);
 
 	/* repetitively process the queue elements, until queue is empty */
-	while (data != NULL && update_thread_count > 0) {
+	while (data != NULL && g_queue_get_length(update_thread_data_queue) > 0) {
 	    /* update a streaminfo - that is - add this streaminfo to playlist */
 		if (data->streaminfo != NULL) {
 	    	gdk_threads_enter();
@@ -339,6 +377,19 @@ static gpointer update_thread_core(gpointer user_data)
 				streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
 		        gdk_threads_leave();
 		    }
+		    /* xiph */
+		    else if (strncmp(data->streamdir->name, XIPH_NAME, strlen(XIPH_NAME)) == 0) {
+		    	gdk_threads_enter();
+				streambrowser_win_set_category_state(data->streamdir, data->category, TRUE);
+		    	gdk_threads_leave();
+		    	
+		        xiph_category_fetch(data->category);
+
+		        gdk_threads_enter();
+		        streambrowser_win_set_category(data->streamdir, data->category);
+				streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
+		        gdk_threads_leave();
+		    }
 		}
 		/* update a streamdir */
 		else if (data->streamdir != NULL) {
@@ -351,14 +402,30 @@ static gpointer update_thread_core(gpointer user_data)
 		            gdk_threads_leave();
 		        }
 		    }
+		    /* xiph */
+		    else if (strncmp(data->streamdir->name, XIPH_NAME, strlen(XIPH_NAME)) == 0) {
+		        streamdir_t *streamdir = xiph_streamdir_fetch();
+		        if (streamdir != NULL) {
+		            gdk_threads_enter();
+		            streambrowser_win_set_streamdir(streamdir, XIPH_ICON);
+		            gdk_threads_leave();
+		        }
+		    }
 		}
 		/* update all streamdirs */
 		else {
 		    /* shoutcast */
-		    streamdir_t *shoutcast_streamdir = shoutcast_streamdir_fetch();
-		    if (shoutcast_streamdir != NULL) {
+		    streamdir_t *streamdir = shoutcast_streamdir_fetch();
+		    if (streamdir != NULL) {
 		        gdk_threads_enter();
-		        streambrowser_win_set_streamdir(shoutcast_streamdir, SHOUTCAST_ICON);
+		        streambrowser_win_set_streamdir(streamdir, SHOUTCAST_ICON);
+		        gdk_threads_leave();
+		    }
+		    /* xiph */
+		    streamdir = xiph_streamdir_fetch();
+		    if (streamdir != NULL) {
+		        gdk_threads_enter();
+		        streambrowser_win_set_streamdir(streamdir, XIPH_ICON);
 		        gdk_threads_leave();
 		    }
 		}
@@ -366,13 +433,16 @@ static gpointer update_thread_core(gpointer user_data)
 		g_free(data);
 
 		g_mutex_lock(update_thread_mutex);
-		update_thread_count--;	
+
+		/* remove the just processed data from the queue */
+		g_queue_pop_head(update_thread_data_queue);
 
 		/* try to get the last item in the queue */
-		if (update_thread_count > 0)
-			data = g_queue_pop_head(update_thread_data_queue);
+		if (g_queue_get_length(update_thread_data_queue) > 0)
+			data = g_queue_peek_head(update_thread_data_queue);
 		else
 			data = NULL;
+
 		g_mutex_unlock(update_thread_mutex);
 	}
 
@@ -383,14 +453,22 @@ static gpointer update_thread_core(gpointer user_data)
 
 static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
 {
-    debug("fetching stream playlist for station '%s' from '%s'\n", streaminfo->name, streaminfo->playlist_url);
-    if (!fetch_remote_to_local_file(streaminfo->playlist_url, PLAYLIST_TEMP_FILE)) {
-        failure("shoutcast: stream playlist '%s' could not be downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
-        return;
-    }
-    debug("stream playlist '%s' successfuly downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
+    if (strlen(streaminfo->playlist_url) > 0) {
+		debug("fetching stream playlist for station '%s' from '%s'\n", streaminfo->name, streaminfo->playlist_url);
+		if (!fetch_remote_to_local_file(streaminfo->playlist_url, PLAYLIST_TEMP_FILE)) {
+		    failure("shoutcast: stream playlist '%s' could not be downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
+		    return;
+		}
+		debug("stream playlist '%s' successfuly downloaded to '%s'\n", streaminfo->playlist_url, PLAYLIST_TEMP_FILE);
 
-    aud_playlist_add_url(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
+	   	aud_playlist_add(aud_playlist_get_active(), PLAYLIST_TEMP_FILE);
+		debug("stream playlist '%s' added\n", streaminfo->playlist_url);
+	}
+
+	if (strlen(streaminfo->url) > 0) {
+	   	aud_playlist_add(aud_playlist_get_active(), streaminfo->url);
+		debug("stream '%s' added\n", streaminfo->url);
+	}
 }
 
 static void on_plugin_services_menu_item_click()

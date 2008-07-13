@@ -292,7 +292,7 @@ void xs_play_file(InputPlayback *pb)
     Tuple *tmpTuple;
 
     assert(pb);
-    assert(xs_status.sidPlayer);
+    assert(xs_status.sidPlayer != NULL);
     
     XSDEBUG("play '%s'\n", pb->filename);
 
@@ -683,7 +683,7 @@ Tuple *xs_probe_for_tuple(gchar *filename, xs_file_t *fd)
     xs_tuneinfo_t *tmpInfo;
     gint tmpTune;
 
-    assert(xs_status.sidPlayer);
+    assert(xs_status.sidPlayer != NULL);
 
     if (filename == NULL)
         return NULL;
