@@ -30,7 +30,7 @@ struct format_info input;
 
 static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *addr_entry, *port_spin, *timeout_spin, *buffersize_spin, *bufferflush_spin;
-static GtkWidget *user_entry, *password_entry;
+static GtkWidget *user_entry, *password_entry, *mount_entry;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
 static guint ice_tid=0;
 
@@ -74,6 +74,7 @@ static gint server_port=8000;
 
 static gchar *server_user = NULL;
 static gchar *server_password = NULL;
+static gchar *mountpoint = NULL;
 
 VFSFile *output_file = NULL;
 guint64 written = 0;
@@ -168,6 +169,7 @@ static void ice_init(void)
     bufferflush_new=bufferflush;
     aud_cfg_db_get_string(db, ICECAST_CFGID, "server_user", &server_user);
     aud_cfg_db_get_string(db, ICECAST_CFGID, "server_password", &server_password);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "mountpoint", &mountpoint);
     aud_cfg_db_close(db);
 
     outputbuffer=g_try_malloc(buffersize);
@@ -196,23 +198,23 @@ void ice_about(void)
         return;
 
     dialog = audacious_info_dialog(_("About Icecast-Plugin"),
-                               _("Icecast-Plugin\n\n"
-                               "This program is free software; you can redistribute it and/or modify\n"
-                               "it under the terms of the GNU General Public License as published by\n"
-                               "the Free Software Foundation; either version 2 of the License, or\n"
-                               "(at your option) any later version.\n"
-                               "\n"
-                               "This program is distributed in the hope that it will be useful,\n"
-                               "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-                               "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-                               "GNU General Public License for more details.\n"
-                               "\n"
-                               "You should have received a copy of the GNU General Public License\n"
-                               "along with this program; if not, write to the Free Software\n"
-                               "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-                               "USA."), _("Ok"), FALSE, NULL, NULL);
+        _("Icecast-Plugin\n\n"
+        "This program is free software; you can redistribute it and/or modify\n"
+        "it under the terms of the GNU General Public License as published by\n"
+        "the Free Software Foundation; either version 2 of the License, or\n"
+        "(at your option) any later version.\n"
+        "\n"
+        "This program is distributed in the hope that it will be useful,\n"
+        "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+        "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+        "GNU General Public License for more details.\n"
+        "\n"
+        "You should have received a copy of the GNU General Public License\n"
+        "along with this program; if not, write to the Free Software\n"
+        "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+        "USA."), _("Ok"), FALSE, NULL, NULL);
     gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
-                       GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
+        GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
 }
 
 static gint ice_open(AFormat fmt, gint rate, gint nch)
@@ -275,19 +277,19 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
             return 0;
         }
 
-        if (shout_set_password(shout, "password") != SHOUTERR_SUCCESS)
+        if (shout_set_password(shout, server_password) != SHOUTERR_SUCCESS)
         {
             g_warning("Error setting password: %s\n", shout_get_error(shout));
             return 0;
         }
 
-        if (shout_set_mount(shout, "/test") != SHOUTERR_SUCCESS)
+        if (shout_set_mount(shout, mountpoint) != SHOUTERR_SUCCESS)
         {
             g_warning("Error setting mount: %s\n", shout_get_error(shout));
             return 0;
         }
 
-        if (shout_set_user(shout, "source") != SHOUTERR_SUCCESS)
+        if (shout_set_user(shout, server_user) != SHOUTERR_SUCCESS)
         {
             g_warning("Error setting user: %s\n", shout_get_error(shout));
             return 0;
@@ -477,7 +479,7 @@ static gint ice_free(void)
 
 static gint ice_playing(void)
 {
-    return plugin.playing() && (!paused);
+    return !paused;
 }
 
 static gint ice_get_written_time(void)
@@ -514,6 +516,9 @@ static void configure_ok_cb(gpointer data)
     bufferflushperc = gtk_spin_button_get_value(GTK_SPIN_BUTTON(bufferflush_spin));
     bufferflush_new=(gint)(buffersize*bufferflushperc);
 
+    g_free(mountpoint);
+    mountpoint = g_strdup(gtk_entry_get_text(GTK_ENTRY(mount_entry)));
+
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, ICECAST_CFGID, "streamformat", streamformat);
     aud_cfg_db_set_string(db, ICECAST_CFGID, "server_address", server_address);
@@ -523,6 +528,7 @@ static void configure_ok_cb(gpointer data)
     aud_cfg_db_set_int(db, ICECAST_CFGID, "timeout", ice_close_timeout);
     aud_cfg_db_set_int(db, ICECAST_CFGID, "buffersize", buffersize_new);
     aud_cfg_db_set_double(db, ICECAST_CFGID, "bufferflush", bufferflushperc);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "mountpoint", mountpoint);
 
     aud_cfg_db_close(db);
 
@@ -619,6 +625,20 @@ static void ice_configure(void)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(port_spin), (gdouble)server_port);
 
         gtk_box_pack_start(GTK_BOX(hbox), port_spin, TRUE, TRUE, 0);
+
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Mount point:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        mount_entry = gtk_entry_new();
+
+	gtk_entry_set_text(GTK_ENTRY(mount_entry), mountpoint);
+
+        gtk_box_pack_start(GTK_BOX(hbox), mount_entry, TRUE, TRUE, 0);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
