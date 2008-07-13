@@ -38,9 +38,6 @@ static streamdir_gui_t*	find_streamdir_gui_by_table(GtkTable *table);
 static streamdir_gui_t*	find_streamdir_gui_by_streamdir(streamdir_t *streamdir);
 static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data);
 
-static gboolean			mystrcasestr(const char *haystack, const char *needle);
-
-
 static GtkWidget*		notebook;
 static GtkWidget*		search_entry;
 static GtkWidget*		add_button;
@@ -191,6 +188,8 @@ void streambrowser_win_set_category(streamdir_t *streamdir, category_t *category
 		gtk_tree_store_append(store, &new_iter, &iter);
 		gtk_tree_store_set(store, &new_iter, 0, "gtk-directory", 1, streaminfo->name, 2, streaminfo->current_track, -1);
 	}
+	
+	gtk_tree_path_free(path);
 }
 
 void streambrowser_win_set_update_function(void (*function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo))
@@ -237,10 +236,11 @@ void streambrowser_win_set_streaminfo_state(streamdir_t *streamdir, category_t *
 	if (fetching) {
 		gchar temp[DEF_STRING_LEN];
 		sprintf(temp, "<span style='italic' weight='heavy'>%s</span>", streaminfo->name);
-		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, "", -1);
+		
+		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, streaminfo->current_track, -1);
 	}
 	else {
-		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, streaminfo->name, 2, "", -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, streaminfo->name, 2, streaminfo->current_track, -1);
 	}
 }
 
@@ -309,13 +309,20 @@ static gboolean on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *
 {
 	if (page_num < 0)
 		return FALSE;
+		
+	/* only enable searching in the current tree (tab) */
 
-	/* update the current selected stream */
+	streamdir_gui_t *streamdir_gui;
+	int i;
 
-	/*
-	streamdir_gui_t *streamdir_gui = g_list_nth_data(streamdir_gui_list, page_num);
-	update_function(streamdir_gui->streamdir, NULL, NULL);
-	*/
+	for (i = 0; i < g_list_length(streamdir_gui_list); i++) {
+		streamdir_gui = g_list_nth_data(streamdir_gui_list, i);
+
+		if (i == page_num) 
+			gtk_tree_view_set_search_column(GTK_TREE_VIEW(streamdir_gui->tree_view), 1);
+		else
+			gtk_tree_view_set_search_column(GTK_TREE_VIEW(streamdir_gui->tree_view), -1);
+	}
 
 	/* clear the search box */
 	gtk_entry_set_text(GTK_ENTRY(search_entry), "");
@@ -344,6 +351,7 @@ static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer dat
 	model = gtk_tree_view_get_model(tree_view);
 	gtk_tree_model_get_iter(model, &iter, path);
 	
+	/* don't fetch a category that has been already fetched */
 	if (gtk_tree_model_iter_has_child(model, &iter)) {
 		gtk_tree_path_free(path);
 		return TRUE;
@@ -420,7 +428,7 @@ static gboolean on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *even
 {
 	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter) {
 		on_add_button_clicked(GTK_BUTTON(add_button), NULL);
-		return FALSE;
+		return TRUE;
 	}
 
 	if (event->keyval == GDK_Escape) {
@@ -428,50 +436,23 @@ static gboolean on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *even
 		return FALSE;
 	}
 	
-	/* todo : remove this
-	GtkWidget *table = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
-	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_table(GTK_TABLE(table));
-	if (streamdir_gui == NULL)
-		return FALSE;
-
-	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
-	GtkTreeModel *model = gtk_tree_view_get_model(tree_view);
-	GtkTreeIter iter;
-	GtkTreePath *path;
-	const gchar *key = gtk_entry_get_text(GTK_ENTRY(search_entry));
-	
-	if (!gtk_tree_model_get_iter_first(model, &iter))
-		return FALSE;
-		
-	while (gtk_tree_model_iter_next(model, &iter)) {
-		GValue value = {0, };
-
-		gtk_tree_model_get_value(model, &iter, 1, &value);
-		const gchar *string = g_value_get_string(&value);
-	
-		if (string == NULL || string[0] == '\0' || key == NULL || key[0] == '\0')
-			return FALSE;
-
-		if (mystrcasestr(string, key)) {		gtk_entry_set_text(GTK_ENTRY(search_entry), "");
-
-			path = gtk_tree_model_get_path(model, &iter);	
-			gtk_tree_view_set_cursor(tree_view, path, NULL, FALSE);
-			gtk_tree_path_free(path);
-		}
-
-		g_value_unset(&value);		
-	}
-	*/
-
 	return FALSE;
 }
 
 static gboolean on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
+	if (event->keyval == GDK_Down || event->keyval == GDK_Up)
+		return FALSE;
+	else
+		if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter) {
+			on_add_button_clicked(GTK_BUTTON(add_button), NULL);
+			return FALSE;
+		}
+
 	gtk_widget_grab_focus(search_entry);
 	on_search_entry_key_pressed(widget, event, data);
 
-	return FALSE;
+	return TRUE;
 }
 
 static streamdir_gui_t *find_streamdir_gui_by_name(gchar *name)
@@ -536,6 +517,9 @@ static streamdir_gui_t* find_streamdir_gui_by_streamdir(streamdir_t *streamdir)
 
 static gboolean tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data)
 {
+	if (column == -1)
+		return TRUE;
+
 	GValue value = {0, };
 	gboolean ret;
 	
@@ -550,27 +534,5 @@ static gboolean tree_view_search_equal_func(GtkTreeModel *model, gint column, co
 	g_value_unset(&value);
 
 	return ret;
-}
-
-static gboolean mystrcasestr(const char *haystack, const char *needle)
-{
-	int len_h = strlen(haystack) + 1;
-	int len_n = strlen(needle) + 1;
-	int i;
-	
-	char *upper_h = malloc(len_h);
-	char *upper_n = malloc(len_n);
-	
-	for (i = 0; i < len_h; i++)
-		upper_h[i] = toupper(haystack[i]);
-	for (i = 0; i < len_n; i++)
-		upper_n[i] = toupper(needle[i]);
-	
-	char *p = strstr(upper_h, upper_n);
-
-	free(upper_h);
-	free(upper_n);
-	
-	return (gboolean) p;
 }
 

@@ -46,6 +46,9 @@ void				debug(const char *fmt, ...);
 void				failure(const char *fmt, ...);
 gboolean			fetch_remote_to_local_file(gchar *remote_url, gchar *local_url);
 
+	/* returns true if the substring has been found, false otherwise */
+gboolean			mystrcasestr(const char *haystack, const char *needle);
+
 
 #endif	// STREAMBROWSER_H
 
