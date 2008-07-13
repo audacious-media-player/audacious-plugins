@@ -56,7 +56,6 @@ static GtkWidget *playlist_menu_item;
 static GtkWidget *main_menu_item;
 static GQueue *update_thread_data_queue = NULL;
 static GMutex *update_thread_mutex = NULL;
-static gint update_thread_count = 0;
 
 streambrowser_cfg_t streambrowser_cfg;
 
@@ -279,14 +278,14 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
           category == NULL ? "" : category->name,
           streaminfo == NULL ? "" : streaminfo->name);
 
-    if (update_thread_count >= MAX_UPDATE_THREADS) {
-        debug("another %d streamdir updates are pending, this request will be dropped\n", update_thread_count);
+    if (g_queue_get_length(update_thread_data_queue) >= MAX_UPDATE_THREADS) {
+        debug("another %d streamdir updates are pending, this request will be dropped\n", g_queue_get_length(update_thread_data_queue));
     }
     else {
         g_mutex_lock(update_thread_mutex);
         
     	/* do we have a running thread? */
-        if (update_thread_count > 0) {
+        if (g_queue_get_length(update_thread_data_queue) > 0) {
             int i;
             gboolean exists = FALSE;
             update_thread_data_t *update_thread_data;
@@ -304,7 +303,7 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
             
             /* if no other similar request exists, we enqueue it */
             if (!exists) {
-                debug("another %d streamdir updates are pending, this request will be queued\n", update_thread_count);
+                debug("another %d streamdir updates are pending, this request will be queued\n", g_queue_get_length(update_thread_data_queue));
 
                 update_thread_data = g_malloc(sizeof(update_thread_data_t));
 
@@ -313,7 +312,6 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
                 update_thread_data->streaminfo = streaminfo;
  
                 g_queue_push_tail(update_thread_data_queue, update_thread_data);
-                update_thread_count++;
             }
             else {
                 debug("this request is already present in the queue, dropping\n");          
@@ -330,7 +328,6 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
             data->streaminfo = streaminfo;
  
             g_queue_push_tail(update_thread_data_queue, data);
-            update_thread_count++;
 
 			g_thread_create((GThreadFunc) update_thread_core, NULL, FALSE, NULL);
         }
@@ -346,13 +343,13 @@ static gpointer update_thread_core(gpointer user_data)
 	/* try to get the last item in the queue, but don't remove it */
 	g_mutex_lock(update_thread_mutex);
 	update_thread_data_t *data = NULL;
-	if (update_thread_count > 0) {
+	if (g_queue_get_length(update_thread_data_queue) > 0) {
 		data = g_queue_peek_head(update_thread_data_queue);
 	}
 	g_mutex_unlock(update_thread_mutex);
 
 	/* repetitively process the queue elements, until queue is empty */
-	while (data != NULL && update_thread_count > 0) {
+	while (data != NULL && g_queue_get_length(update_thread_data_queue) > 0) {
 	    /* update a streaminfo - that is - add this streaminfo to playlist */
 		if (data->streaminfo != NULL) {
 	    	gdk_threads_enter();
@@ -439,13 +436,13 @@ static gpointer update_thread_core(gpointer user_data)
 
 		/* remove the just processed data from the queue */
 		g_queue_pop_head(update_thread_data_queue);
-		update_thread_count--;	
 
 		/* try to get the last item in the queue */
-		if (update_thread_count > 0)
-			data = g_queue_pop_head(update_thread_data_queue);
+		if (g_queue_get_length(update_thread_data_queue) > 0)
+			data = g_queue_peek_head(update_thread_data_queue);
 		else
 			data = NULL;
+
 		g_mutex_unlock(update_thread_mutex);
 	}
 
