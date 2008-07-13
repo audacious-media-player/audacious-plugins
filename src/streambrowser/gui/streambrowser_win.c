@@ -428,7 +428,7 @@ static gboolean on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *even
 {
 	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter) {
 		on_add_button_clicked(GTK_BUTTON(add_button), NULL);
-		return FALSE;
+		return TRUE;
 	}
 
 	if (event->keyval == GDK_Escape) {
@@ -443,6 +443,11 @@ static gboolean on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, 
 {
 	if (event->keyval == GDK_Down || event->keyval == GDK_Up)
 		return FALSE;
+	else
+		if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter) {
+			on_add_button_clicked(GTK_BUTTON(add_button), NULL);
+			return FALSE;
+		}
 
 	gtk_widget_grab_focus(search_entry);
 	on_search_entry_key_pressed(widget, event, data);

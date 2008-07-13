@@ -113,6 +113,17 @@ gint category_get_index(streamdir_t *streamdir, category_t *category)
 
 streaminfo_t* streaminfo_new(gchar *name, gchar *playlist_url, gchar *url, gchar *current_track)
 {
+	/* replace ampersands with slashes, to avoit gtk/pango markup confusions */
+	int i, count = strlen(name);
+	for (i = 0; i < count; i++)
+		if (name[i] == '&')
+			name[i] = '/';
+
+	count = strlen(current_track);
+	for (i = 0; i < count; i++)
+		if (current_track[i] == '&')
+			current_track[i] = '/';
+
 	streaminfo_t *streaminfo = (streaminfo_t*) g_malloc(sizeof(streaminfo_t));
 	strncpy(streaminfo->name, name, DEF_STRING_LEN);
 	strncpy(streaminfo->playlist_url, playlist_url, DEF_STRING_LEN);

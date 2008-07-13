@@ -37,34 +37,86 @@ typedef struct {
 
 static xiph_entry_t *xiph_entries = NULL;
 static int xiph_entry_count = 0;
-static gchar *categories[] = {
-	// todo: complete this list
-	"alternative",
-	"dance",
-	"techno",
-	"rock",
-	"pop"
+
+typedef struct {
+	gchar *name;
+	gchar *match_string;
+} xiph_category_t;
+
+/* inspired from streamtuner's xiph plugin */
+static xiph_category_t xiph_categories[] = {
+	{ "Alternative", "alternative indie goth college industrial punk hardcore ska" },
+	{ "Electronic", "electronic ambient drum trance techno house downtempo breakbeat jungle garage" },
+	{ "Classical", "classical opera symphonic" },
+	{ "Country", "country swing" },
+	{ "Hip-Hop/Rap", "hip hop rap turntable" },
+	{ "Jazz", "jazz swing" },
+	{ "Oldies", "oldies disco 50s 60s 70s 80s 90s" },
+	{ "Rop", "top pop" },
+	{ "Rock", "rock metal" },
+	{ "R&amp;B/Soul", "r&b funk soul urban" },
+	{ "Spiritual", "spiritual gospel christian muslim jewish religio" },
+	{ "Spoken", "spoken talk comedy" },
+	{ "World", "world reggae island african european east asia" },
+	{ "Other", "various mixed misc eclectic film show instrumental" }
 };
 
 
-void refresh_streamdir();
-
+// todo: call refresh_streamdir() more often to refresh the current track
+static void refresh_streamdir();
+	/* returns true if any of the words in string1 is present in string2 */
+static gboolean genre_match(gchar *string1, gchar *string2);
 
 
 gboolean xiph_category_fetch(category_t *category)
 {
-	int entryno;
+	int entryno, categoryno;
+	int xiph_category_count = sizeof(xiph_categories) / sizeof(xiph_category_t);
+	xiph_category_t *xiph_category = NULL;
+	
+	for (categoryno = 0; categoryno < xiph_category_count; categoryno++)
+		if (strcmp(xiph_categories[categoryno].name, category->name) == 0) {
+			xiph_category = xiph_categories + categoryno;
+			break;
+		}
+	
+	/* somehow we've got an invalid/unrecognized category */
+	if (xiph_category == NULL) {
+		failure("xiph: got an unrecognized category: '%s'\n", category->name);
+		return FALSE;
+	}
+	
+	/* free/remove any existing streaminfos in this category */
+	while (streaminfo_get_count(category) > 0)
+		streaminfo_remove(category, streaminfo_get_by_index(category, 0));	
 	
 	/* see what entries match this category */
 	for (entryno = 0; entryno < xiph_entry_count; entryno++) {
-
-		if (mystrcasestr(xiph_entries[entryno].genre, category->name)) {
+		if (genre_match(xiph_category->match_string, xiph_entries[entryno].genre)) {
 			streaminfo_t *streaminfo = streaminfo_new(xiph_entries[entryno].name, "", xiph_entries[entryno].url, xiph_entries[entryno].current_song);
 			streaminfo_add(category, streaminfo);
 		}
-	
 	}
 	
+	/* if the requested category is the last one in the list ("other"), 
+	   we fill it with all the entries that don't match the rest of categories */
+	if (xiph_category == &xiph_categories[xiph_category_count - 1]) {
+		for (entryno = 0; entryno < xiph_entry_count; entryno++) {
+			gboolean matched = FALSE;
+			
+			for (categoryno = 0; categoryno < xiph_category_count; categoryno++)
+				if (genre_match(xiph_entries[entryno].genre, xiph_categories[categoryno].match_string)) {
+					matched = TRUE;
+					break;
+				}
+			
+			if (!matched) {
+				streaminfo_t *streaminfo = streaminfo_new(xiph_entries[entryno].name, "", xiph_entries[entryno].url, xiph_entries[entryno].current_song);
+				streaminfo_add(category, streaminfo);
+			}
+		}
+	}
+
 	return TRUE;
 }
 
@@ -76,15 +128,15 @@ streamdir_t* xiph_streamdir_fetch()
 	
 	refresh_streamdir();
 	
-	for (categno = 0; categno < sizeof(categories) / sizeof(gchar *); categno++) {
-		category_t *category = category_new(categories[categno]);
+	for (categno = 0; categno < sizeof(xiph_categories) / sizeof(xiph_category_t); categno++) {
+		category_t *category = category_new(xiph_categories[categno].name);
 		category_add(streamdir, category);
 	}
 
 	return streamdir;
 }
 
-void refresh_streamdir()
+static void refresh_streamdir()
 {
 	/* free any previously fetched streamdir data */
 	if (xiph_entries != NULL)
@@ -144,5 +196,28 @@ void refresh_streamdir()
 	xmlFreeDoc(doc);
 	
 	debug("xiph: streaming directory successfuly loaded\n");
+}
+
+static gboolean genre_match(gchar *string1, gchar *string2)
+{
+	char *saveptr = NULL;
+	char *token;
+	gboolean matched = FALSE;
+	char temp1[strlen(string1) + 1];
+	char temp2[strlen(string2) + 1];
+
+	/* these are required for strtok_r to work properly */	
+	strcpy(temp1, string1);
+	strcpy(temp2, string2);
+	
+	token = strtok_r(temp1, " ", &saveptr);
+	while (token != NULL) {
+		if (mystrcasestr(temp2, token))
+			matched = TRUE;
+			
+		token = strtok_r(NULL, " ", &saveptr);
+	}
+	
+	return matched;
 }
 
