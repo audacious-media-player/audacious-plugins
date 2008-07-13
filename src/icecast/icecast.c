@@ -32,7 +32,7 @@ static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *addr_entry, *port_spin, *timeout_spin, *buffersize_spin, *bufferflush_spin;
 static GtkWidget *user_entry, *password_entry, *mount_entry;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
-static guint ice_tid=0;
+static guint ice_tid = 0;
 
 static gint ice_close_timeout;
 
@@ -64,14 +64,14 @@ static unsigned int streamformat_shout[] =
 static FileWriter plugin;
 static FileWriter plugin_new;
 static uint8_t *outputbuffer = NULL;
-static guint outputlength=0;
+static guint outputlength = 0;
 static gint buffersize;
 static gint bufferflush;
 static gint buffersize_new;
 static gint bufferflush_new;
 static gdouble bufferflushperc;
 static gchar *server_address = NULL;
-static gint server_port=8000;
+static gint server_port = 8000;
 
 static gchar *server_user = NULL;
 static gchar *server_password = NULL;
@@ -158,25 +158,29 @@ static void ice_init(void)
     aud_cfg_db_get_int(db, ICECAST_CFGID, "streamformat", &streamformat);
     aud_cfg_db_get_string(db, ICECAST_CFGID, "server_address", &server_address);
     aud_cfg_db_get_int(db, ICECAST_CFGID, "server_port", &server_port);
-    if (!server_port) server_port=8000;
+    if (!server_port)
+        server_port = 8000;
     aud_cfg_db_get_int(db, ICECAST_CFGID, "timeout", &ice_close_timeout);
-    if (!ice_close_timeout) ice_close_timeout=5;
+    if (!ice_close_timeout)
+        ice_close_timeout = 5;
     aud_cfg_db_get_int(db, ICECAST_CFGID, "buffersize", &buffersize);
-    if (!buffersize) buffersize=8192;
-    buffersize_new=buffersize;
+    if (!buffersize)
+        buffersize = 8192;
+    buffersize_new = buffersize;
     aud_cfg_db_get_double(db, ICECAST_CFGID, "bufferflush", &bufferflushperc);
-    if (!bufferflushperc) bufferflushperc=80.0;
-    bufferflush=(gint)(buffersize*bufferflushperc);
-    bufferflush_new=bufferflush;
+    if (!bufferflushperc)
+        bufferflushperc = 80.0;
+    bufferflush = (gint)(buffersize*bufferflushperc);
+    bufferflush_new = bufferflush;
     aud_cfg_db_get_string(db, ICECAST_CFGID, "server_user", &server_user);
     aud_cfg_db_get_string(db, ICECAST_CFGID, "server_password", &server_password);
     aud_cfg_db_get_string(db, ICECAST_CFGID, "mountpoint", &mountpoint);
     aud_cfg_db_close(db);
 
-    outputbuffer=g_try_malloc(buffersize);
+    outputbuffer = g_try_malloc(buffersize);
 
     set_plugin();
-    plugin=plugin_new;
+    plugin = plugin_new;
     if (plugin.init)
         plugin.init(&ice_write_output);
 }
@@ -225,14 +229,14 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
     gint pos;
     Playlist *playlist;
 
-    if (buffersize!=buffersize_new)
+    if (buffersize != buffersize_new)
     {
-        buffersize=buffersize_new;
-        outputbuffer=g_try_realloc(outputbuffer, buffersize);
+        buffersize = buffersize_new;
+        outputbuffer = g_try_realloc(outputbuffer, buffersize);
     }
 
-    if (bufferflush!=bufferflush_new)
-        bufferflush=bufferflush_new;
+    if (bufferflush != bufferflush_new)
+        bufferflush = bufferflush_new;
 
     if (!outputbuffer)
         return 0;
@@ -406,7 +410,8 @@ static gint ice_real_write(void* ptr, gint length)
     g_debug("ice_write[%d:%d](", ret, length);
     {
         gint i;
-        for (i=0;(i<length)&&(i<16);i++) g_debug("%c",g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
+        for (i = 0; (i < length) && (i < 16); i++)
+            g_debug("%c", g_ascii_isprint(((char*)ptr)[i])?(((char*)ptr)[i]):'.');
     }
     g_debug(")");
     return 0;
@@ -415,14 +420,14 @@ static gint ice_real_write(void* ptr, gint length)
 static gint ice_write_output(void *ptr, gint length)
 {
     if ((!shout) || (!length)) return 0;
-    g_debug("outputlength=%d, length=%d...",outputlength, length);
-    if ((outputlength>bufferflush)||((outputlength+length)>buffersize))
+    g_debug("outputlength=%d, length=%d...", outputlength, length);
+    if ((outputlength > bufferflush) || ((outputlength+length) > buffersize))
     {
         g_debug("flushing");
-        outputlength=ice_real_write(outputbuffer, outputlength);
+        outputlength = ice_real_write(outputbuffer, outputlength);
     }
     {
-        if (length>buffersize)
+        if (length > buffersize)
         {
             g_debug("data too long, flushing");
             ice_real_write(ptr, length);
@@ -431,7 +436,7 @@ static gint ice_write_output(void *ptr, gint length)
         {
             g_debug("adding");
             memcpy(&(outputbuffer[outputlength]), ptr, length);
-            outputlength+=length;
+            outputlength += length;
         }
     }
     return length;
@@ -447,7 +452,7 @@ static gboolean ice_real_close(gpointer data)
         shout_close(shout);
     }
     shout = NULL;
-    ice_tid=0;
+    ice_tid = 0;
     g_debug("ICE_REAL_CLOSE");
     return FALSE;
 }
@@ -455,8 +460,9 @@ static gboolean ice_real_close(gpointer data)
 
 static void ice_close(void)
 {
-    if (ice_tid) g_source_remove(ice_tid);
-    ice_tid=g_timeout_add_seconds(3, ice_real_close, NULL);
+    if (ice_tid)
+        g_source_remove(ice_tid);
+    ice_tid = g_timeout_add_seconds(3, ice_real_close, NULL);
     g_debug("ICE_CLOSE: starting timer");
 }
 
@@ -478,7 +484,7 @@ static void ice_pause(short p)
 
 static gint ice_free(void)
 {
-    return paused?0:plugin.free();
+    return paused ? 0 : plugin.free();
 }
 
 static gint ice_playing(void)
@@ -518,7 +524,7 @@ static void configure_ok_cb(gpointer data)
     buffersize_new = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(buffersize_spin));
 
     bufferflushperc = gtk_spin_button_get_value(GTK_SPIN_BUTTON(bufferflush_spin));
-    bufferflush_new=(gint)(buffersize*bufferflushperc);
+    bufferflush_new = (gint)(buffersize*bufferflushperc);
 
     g_free(mountpoint);
     mountpoint = g_strdup(gtk_entry_get_text(GTK_ENTRY(mount_entry)));
