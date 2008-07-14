@@ -185,11 +185,18 @@ GtkWidget* ui_skinned_textbox_new(GtkWidget *fixed, gint x, gint y, gint w, gboo
 
 static void ui_skinned_textbox_destroy(GtkObject *object) {
     UiSkinnedTextbox *textbox;
+    UiSkinnedTextboxPrivate *priv;
 
     g_return_if_fail (object != NULL);
     g_return_if_fail (UI_SKINNED_IS_TEXTBOX (object));
 
     textbox = UI_SKINNED_TEXTBOX (object);
+    priv = UI_SKINNED_TEXTBOX_GET_PRIVATE(object);
+
+    if (priv->scroll_timeout) {
+        g_source_remove(priv->scroll_timeout);
+        priv->scroll_timeout = 0;
+    }
 
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
