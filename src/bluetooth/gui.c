@@ -156,14 +156,14 @@ void select_row(GtkWidget *treeview){
         path = gtk_tree_model_get_path (model, &iter);
         sel = gtk_tree_path_get_indices (path)[0];
         printf("i=%d\n",sel);
-        dev = audio_devices;
+        selected_dev = audio_devices;
         for(i=0;i<sel;i++) 
-            dev = g_list_next(dev);
+           selected_dev = g_list_next(dev);
         if(dev != NULL) {
-            temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
-            gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
+            temp = g_strdup_printf("0x%x",((DeviceData*)(selected_dev->data))->class);
+            gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(selected_dev->data))->name);
             gtk_label_set_text(GTK_LABEL(label_class),temp);
-            gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
+            gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(selected_dev->data))->address);
             gtk_tree_path_free (path);
             g_free(temp);
         }else 
@@ -174,11 +174,12 @@ void select_row(GtkWidget *treeview){
 }
 
 void refresh_resultsui(){
-  gtk_widget_destroy (window);
-  window = NULL;
-  refresh_call();
+    gtk_widget_destroy (window);
+    window = NULL;
+    selected_dev = NULL;
+    refresh_call();
 }
-   
+
 
 void results_ui()
 {

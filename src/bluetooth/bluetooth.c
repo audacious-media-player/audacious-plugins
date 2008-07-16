@@ -1,16 +1,11 @@
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#include <glib-object.h>
-#include <stdio.h>
 #include "bluetooth.h"
 #include "marshal.h"
 #include "gui.h"
 #include "scan_gui.h"
+#include "agent.h"
 #define DEBUG 1
 static gboolean plugin_active = FALSE,exiting=FALSE;
 GList * current_device = NULL;
-DBusGConnection * bus = NULL;
-DBusGProxy * obj = NULL;
 gint config = 0;
 gint devices_no = 0;
 GStaticMutex mutex = G_STATIC_MUTEX_INIT;
@@ -42,6 +37,8 @@ DECLARE_PLUGIN(bluetooth_gp, NULL, NULL, NULL, NULL, NULL, bluetooth_gplist, NUL
 void bluetooth_init ( void )
 {
     audio_devices = NULL;
+    bus = NULL;
+    obj = NULL;
     discover_devices();
 }
 
@@ -63,7 +60,7 @@ void bluetooth_cleanup ( void )
 void bt_about( void )
 {
     printf("about call\n");
-    show_scan();
+    run_agent();
 }
 
 void bt_cfg(void)
@@ -115,9 +112,35 @@ void refresh_call(void)
         printf("Scanning please wait!\n");
 }
 
+void bounding_created(gchar* address)
+{
+    printf("Signal BoundingCreated : %s\n",address);
+
+}
+
+void bounding_removed(gchar* address)
+{
+    printf("Signal: BoundingRemoved: %s\n",address);
+
+}
+
+
 void connect_call(void)
 {
-    printf("connect function \n");
+   
+   //I will have to enable the audio service if necessary 
+
+ /* dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal(obj, "BondingCreated", G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_connect_signal(obj, "BondingCreated", G_CALLBACK(bounding_created), bus, NULL);
+
+    dbus_g_proxy_add_signal(obj, "BondingRemoved", G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_connect_signal(obj, "BondingRemoved", G_CALLBACK(bounding_removed), bus, NULL);
+   */ 
+    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,"00:0D:3C:B1:1C:7A",G_TYPE_INVALID,G_TYPE_INVALID);  
+
+
+
 }
 
 
