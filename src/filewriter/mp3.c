@@ -50,7 +50,8 @@ FileWriter mp3_plugin =
     mp3_close,
     mp3_free,
     mp3_playing,
-    mp3_get_written_time
+    mp3_get_written_time,
+    FMT_S16_NE
 };
 
 static GtkWidget *configure_win = NULL;

@@ -341,21 +341,21 @@ static void convert_buffer(gpointer buffer, gint length)
         gint8 *ptr2 = buffer;
 
         for (i = 0; i < length; i++)
-            *(ptr1++) = *(ptr2++) ^ 128;
+            *(ptr1++) = *(ptr2++) + 128;
     }
     if (input.format == FMT_S16_BE)
     {
         gint16 *ptr = buffer;
 
         for (i = 0; i < length >> 1; i++, ptr++)
-            *ptr = GUINT16_SWAP_LE_BE(*ptr);
+            *ptr = GINT16_FROM_BE(*ptr);
     }
-    if (input.format == FMT_S16_NE)
+    if (input.format == FMT_S16_LE)
     {
         gint16 *ptr = buffer;
 
         for (i = 0; i < length >> 1; i++, ptr++)
-            *ptr = GINT16_TO_LE(*ptr);
+            *ptr = GINT16_FROM_LE(*ptr);
     }
     if (input.format == FMT_U16_BE)
     {
@@ -363,7 +363,7 @@ static void convert_buffer(gpointer buffer, gint length)
         guint16 *ptr2 = buffer;
 
         for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = GINT16_TO_LE(GUINT16_FROM_BE(*ptr2) ^ 32768);
+            *(ptr1++) = GUINT16_FROM_BE(*ptr2) - 32768;
     }
     if (input.format == FMT_U16_LE)
     {
@@ -371,7 +371,7 @@ static void convert_buffer(gpointer buffer, gint length)
         guint16 *ptr2 = buffer;
 
         for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = GINT16_TO_LE(GUINT16_FROM_LE(*ptr2) ^ 32768);
+            *(ptr1++) = GUINT16_FROM_LE(*ptr2) - 32768;
     }
     if (input.format == FMT_U16_NE)
     {
@@ -379,18 +379,20 @@ static void convert_buffer(gpointer buffer, gint length)
         guint16 *ptr2 = buffer;
 
         for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = GINT16_TO_LE((*ptr2) ^ 32768);
+            *(ptr1++) = (*ptr2) - 32768;
     }
 }
 
 static void ice_write(void *ptr, gint length)
 {
-    if (input.format == FMT_S8 || input.format == FMT_S16_BE ||
-        input.format == FMT_U16_LE || input.format == FMT_U16_BE ||
-        input.format == FMT_U16_NE)
+    if (input.format == FMT_S8 || input.format == FMT_U16_NE ||
+        input.format == FMT_U16_LE || input.format == FMT_U16_BE)
         convert_buffer(ptr, length);
 #ifdef WORDS_BIGENDIAN
-    if (input.format == FMT_S16_NE)
+    if (input.format == FMT_S16_LE)
+        convert_buffer(ptr, length);
+#else
+    if (input.format == FMT_S16_BE)
         convert_buffer(ptr, length);
 #endif
 

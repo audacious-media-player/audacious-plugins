@@ -65,6 +65,7 @@ struct _FileWriter
     gint (*free)(void);
     gint (*playing)(void);
     gint (*get_written_time)(void);
+    AFormat format_required;
 };
 
 #endif

@@ -44,7 +44,8 @@ FileWriter flac_plugin =
     flac_close,
     flac_free,
     flac_playing,
-    flac_get_written_time
+    flac_get_written_time,
+    FMT_S16_NE
 };
 
 static FLAC__StreamEncoder *flac_encoder;

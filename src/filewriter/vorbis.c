@@ -47,7 +47,8 @@ FileWriter vorbis_plugin =
     vorbis_close,
     vorbis_free,
     vorbis_playing,
-    vorbis_get_written_time
+    vorbis_get_written_time,
+    FMT_S16_NE
 };
 
 static float v_base_quality = 0.5;

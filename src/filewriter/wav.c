@@ -40,7 +40,8 @@ FileWriter wav_plugin =
     wav_close,
     wav_free,
     wav_playing,
-    wav_get_written_time
+    wav_get_written_time,
+    FMT_S16_LE
 };
 
 
