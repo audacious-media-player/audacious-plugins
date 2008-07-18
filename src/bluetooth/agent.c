@@ -54,7 +54,7 @@ void cancel_button_call()
     agent_window = NULL;
 }
 
-void run_agent()
+void gui_agent()
 {
     if (!agent_window)
     {
@@ -280,6 +280,8 @@ static void passkey_dialog(const char *path, const char *address,
 
 	enable_blinking();
 */
+printf("passkey callback\n");
+passkey_callback(GTK_RESPONSE_ACCEPT,input);
 }
 
 static void confirm_dialog(const char *path, const char *address,
@@ -362,6 +364,7 @@ static void passkey_agent_finalize(GObject *obj)
 
 static void passkey_agent_init(PasskeyAgent *obj)
 {
+g_printf("passkeyagent init\n");
 }
 
 static void passkey_agent_class_init(PasskeyAgentClass *klass)
@@ -381,7 +384,7 @@ static PasskeyAgent *passkey_agent_new(const char *path)
 	agent = g_object_new(PASSKEY_AGENT_OBJECT_TYPE, NULL);
 
 	dbus_g_connection_register_g_object(connection, path, G_OBJECT(agent));
-
+    g_printf("new passkey agent \n");
 	return agent;
 }
 
@@ -391,7 +394,8 @@ static gboolean passkey_agent_request(PasskeyAgent *agent,
 				const char *path, const char *address,
 					DBusGMethodInvocation *context)
 {
-	DBusGProxy *object;
+    printf("passkey_agent request\n");
+    DBusGProxy *object;
 	const char *adapter = NULL, *name = NULL;
 	gchar *device, *line;
 
@@ -414,7 +418,7 @@ static gboolean passkey_agent_request(PasskeyAgent *agent,
 		device = g_strdup(address);
 
 	passkey_dialog(path, address, device, context);
-
+    printf ("pairing request for device :%s",address);
 	/* translators: this is a popup telling you a particular device
 	 * has asked for pairing */
 	line = g_strdup_printf(_("Pairing request for '%s'"), device);
@@ -730,7 +734,7 @@ int setup_agents(DBusGConnection *conn)
 
 	agent = auth_agent_new(AUTH_AGENT_PATH);
 
-	return 0;
+ 	return 0;
 }
 
 void cleanup_agents(void)
@@ -742,7 +746,8 @@ void cleanup_agents(void)
 
 void show_agents(void)
 {
-	//close_notification();
+printf("show_agents\n");
+//close_notification();
 
 //	g_list_foreach(input_list, show_dialog, NULL);
 
@@ -753,3 +758,11 @@ void set_auto_authorize(gboolean value)
 {
 	auto_authorize = value;
 }
+void run_agents()
+{
+    setup_agents(bus);
+
+    register_agents();
+ 
+}
+

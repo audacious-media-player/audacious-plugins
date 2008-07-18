@@ -78,7 +78,6 @@ void bluetooth_cleanup ( void )
 void bt_about( void )
 {
     printf("about call\n");
-    run_agent();
 }
 
 void bt_cfg(void)
@@ -155,9 +154,9 @@ void connect_call(void)
     dbus_g_proxy_add_signal(obj, "BondingRemoved", G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_connect_signal(obj, "BondingRemoved", G_CALLBACK(bounding_removed), bus, NULL);
    */ 
+     run_agents();
     dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,"00:0D:3C:B1:1C:7A",G_TYPE_INVALID,G_TYPE_INVALID);  
-
-
+   
 
 }
 
