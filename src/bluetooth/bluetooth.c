@@ -155,7 +155,7 @@ void connect_call(void)
        dbus_g_proxy_connect_signal(obj, "BondingRemoved", G_CALLBACK(bounding_removed), bus, NULL);
        */ 
     run_agents();
-    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,"00:0D:3C:B1:1C:7A",G_TYPE_INVALID,G_TYPE_INVALID);  
+    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,((DeviceData*)(selected_dev->data))->address,G_TYPE_INVALID,G_TYPE_INVALID);  
 
 
 }
