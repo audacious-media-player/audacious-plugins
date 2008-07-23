@@ -79,6 +79,8 @@ gboolean skins_init(void) {
     skins_init_paths();
     skins_cfg_load();
 
+    ui_main_check_theme_engine();
+
     register_aud_stock_icons();
     ui_manager_init();
     ui_manager_create_menus();

@@ -58,20 +58,6 @@
 #include "ui_hints.h"
 #include "dnd.h"
 #include "plugin.h"
-#if 0
-#include "configdb.h"
-#include "input.h"
-#include "main.h"
-#include "playback.h"
-#include "playlist.h"
-#include "pluginenum.h"
-#include "strings.h"
-#include "ui_dock.h"
-#include "ui_main_evlisteners.h"
-#include "ui_skinselector.h"
-#include "util.h"
-#include "visualization.h"
-#endif
 #include "ui_skinned_window.h"
 #include "ui_skinned_button.h"
 #include "ui_skinned_textbox.h"
@@ -346,11 +332,7 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 static void
 mainwin_destroy(GtkWidget * widget, gpointer data)
 {
-/* we should detect whether plugin got unloaded and when user indeed
-   wants to close audacious */
-#if 0
     mainwin_quit_cb();
-#endif
 }
 
 static gchar *mainwin_tb_old_text = NULL;

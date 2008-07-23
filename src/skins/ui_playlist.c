@@ -42,14 +42,6 @@
 #include "actions-playlist.h"
 #include "dnd.h"
 #include "plugin.h"
-#if 0
-#include "input.h"
-#include "main.h"
-#include "playback.h"
-#include "playlist.h"
-#include "playlist_container.h"
-#include "strings.h"
-#endif
 #include "ui_dock.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
