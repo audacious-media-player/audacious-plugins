@@ -27,7 +27,7 @@ GList * current_device = NULL;
 gint config = 0;
 gint devices_no = 0;
 GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-
+static GThread *connect_th;
 void bluetooth_init ( void );
 void bluetooth_cleanup ( void );
 void bt_cfg(void);
@@ -142,22 +142,24 @@ void bounding_removed(gchar* address)
 }
 
 
-void connect_call(void)
+gpointer connect_call_th(void)
 {
 
     //I will have to enable the audio service if necessary 
 
-    /* dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-       dbus_g_proxy_add_signal(obj, "BondingCreated", G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-       dbus_g_proxy_connect_signal(obj, "BondingCreated", G_CALLBACK(bounding_created), bus, NULL);
+    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal(obj, "BondingCreated", G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_connect_signal(obj, "BondingCreated", G_CALLBACK(bounding_created), bus, NULL);
 
-       dbus_g_proxy_add_signal(obj, "BondingRemoved", G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-       dbus_g_proxy_connect_signal(obj, "BondingRemoved", G_CALLBACK(bounding_removed), bus, NULL);
-       */ 
+    dbus_g_proxy_add_signal(obj, "BondingRemoved", G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_connect_signal(obj, "BondingRemoved", G_CALLBACK(bounding_removed), bus, NULL);
     run_agents();
-    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,((DeviceData*)(selected_dev->data))->address,G_TYPE_INVALID,G_TYPE_INVALID);  
-
-
+    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,((DeviceData*)(selected_dev->data))->address,G_TYPE_INVALID,G_TYPE_INVALID); 
+     
+}
+void connect_call(void)
+{
+ connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ;  
 }
 
 
