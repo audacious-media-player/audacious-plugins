@@ -40,8 +40,17 @@ static GtkWidget *passkey_entry = NULL;
 static GtkWidget *ok_button = NULL;
 static GtkWidget *cancel_button = NULL;
 static char* passkey;
+static GList *adapter_list = NULL;
 DBusGProxy *pair_obj = NULL;
+static gint bonding_finish=0;
 static DBusGConnection *connection;
+
+struct adapter_data {
+	char *path;
+	int attached;
+	char *old_mode;
+};
+
 void ok_button_call()
 {
     passkey = gtk_entry_get_text(GTK_ENTRY(passkey_entry));
@@ -282,6 +291,8 @@ static void passkey_dialog(const char *path, const char *address,
        */
     printf("passkey callback\n");
     passkey_callback(GTK_RESPONSE_ACCEPT,input);
+
+
 }
 
 static void confirm_dialog(const char *path, const char *address,
@@ -299,7 +310,7 @@ static void confirm_dialog(const char *path, const char *address,
 
     input->context = context;
 
-
+printf("confirm dialog\n");
     //	g_signal_connect(G_OBJECT(dialog), "response",
     //				G_CALLBACK(confirm_callback), input);
 
@@ -310,13 +321,6 @@ static void auth_dialog(const char *path, const char *address,
         const char *service, const char *uuid, const gchar *device,
         const gchar *profile, DBusGMethodInvocation *context)
 {
-    GtkWidget *dialog;
-    GtkWidget *button;
-    GtkWidget *image;
-    GtkWidget *label;
-    GtkWidget *table;
-    GtkWidget *vbox;
-    gchar *markup, *text;
     struct input_data *input;
 
     input = g_try_malloc0(sizeof(*input));
@@ -418,7 +422,6 @@ static gboolean passkey_agent_request(PasskeyAgent *agent,
         device = g_strdup(address);
 
     passkey_dialog(path, address, device, context);
-    printf ("pairing request for device :%s",address);
     /* translators: this is a popup telling you a particular device
      * has asked for pairing */
     line = g_strdup_printf(_("Pairing request for '%s'"), device);
@@ -758,11 +761,322 @@ void set_auto_authorize(gboolean value)
 {
     auto_authorize = value;
 }
+
+static void bonding_created(DBusGProxy *object,
+				const char *address, gpointer user_data)
+{
+	const char *adapter = NULL, *name = NULL;
+	gchar *device, *text;
+
+	dbus_g_proxy_call(object, "GetName", NULL, G_TYPE_INVALID,
+				G_TYPE_STRING, &adapter, G_TYPE_INVALID);
+
+	dbus_g_proxy_call(object, "GetRemoteName", NULL,
+				G_TYPE_STRING, address, G_TYPE_INVALID,
+				G_TYPE_STRING, &name, G_TYPE_INVALID);
+
+	if (name) {
+		if (g_strrstr(name, address))
+			device = g_strdup(name);
+		else
+			device = g_strdup_printf("%s (%s)", name, address);
+	} else
+		device = g_strdup(address);
+
+	text = g_strdup_printf(_("Created bonding with %s"), device);
+    bonding_finish = 1;
+	g_free(device);
+
+	g_printf("%s\n",text);
+	g_free(text);
+}
+
+static void bonding_removed(DBusGProxy *object,
+				const char *address, gpointer user_data)
+{
+	const char *adapter = NULL, *name = NULL;
+	gchar *device, *text;
+
+	dbus_g_proxy_call(object, "GetName", NULL, G_TYPE_INVALID,
+				G_TYPE_STRING, &adapter, G_TYPE_INVALID);
+
+	dbus_g_proxy_call(object, "GetRemoteName", NULL,
+				G_TYPE_STRING, address, G_TYPE_INVALID,
+				G_TYPE_STRING, &name, G_TYPE_INVALID);
+
+	if (name) {
+		if (g_strrstr(name, address))
+			device = g_strdup(name);
+		else
+			device = g_strdup_printf("%s (%s)", name, address);
+	} else
+		device = g_strdup(address);
+
+	text = g_strdup_printf(_("Removed bonding with %s"), device);
+
+	g_free(device);
+
+//	show_notification(adapter ? adapter : _("Bluetooth device"),
+//						text, NULL, 6000, NULL);
+
+	g_free(text);
+    bonding_finish =0;
+}
+
+
+static void trust_added(DBusGProxy *object,
+				const char *address, gpointer user_data)
+{
+}
+
+static void trust_removed(DBusGProxy *object,
+				const char *address, gpointer user_data)
+{
+}
+
+static void set_new_mode(struct adapter_data *adapter, const char *mode)
+{
+	g_free(adapter->old_mode);
+
+	adapter->old_mode = g_strdup(mode);
+}
+
+static void mode_changed(DBusGProxy *object,
+				const char *mode, gpointer user_data)
+{
+	struct adapter_data *adapter = (struct adapter_data *) user_data;
+	const char *adapter_name = NULL;
+	const char *text;
+
+		if (g_str_equal(mode, "off") == TRUE) {
+			set_new_mode(adapter, mode);
+			return;
+		}
+		if (g_str_equal(adapter->old_mode, "off")
+				&& g_str_equal(mode, "connectable")) {
+			set_new_mode(adapter, mode);
+			return;
+		}
+	
+
+	if (g_str_equal(mode, "off") != FALSE) {
+		text = N_("Device has been switched off");
+	} else if (g_str_equal(mode, "connectable") != FALSE
+		   && g_str_equal(adapter->old_mode, "discoverable") != FALSE) {
+		text = N_("Device has been made non-discoverable");
+	} else if (g_str_equal(mode, "connectable") != FALSE) {
+		text = N_("Device has been made connectable");
+	} else if (g_str_equal (mode, "discoverable") != FALSE) {
+		text = N_("Device has been made discoverable");
+	} else if (g_str_equal(mode, "limited") != FALSE) {
+		text = N_("Device has been made limited discoverable");
+	} else if (g_str_equal(mode, "pairing") != FALSE) {
+		text = N_("Device has been switched into pairing mode");
+	} else {
+		set_new_mode(adapter, mode);
+		return;
+	}
+
+	dbus_g_proxy_call(object, "GetName", NULL, G_TYPE_INVALID,
+				G_TYPE_STRING, &adapter_name, G_TYPE_INVALID);
+
+	/*show_notification(adapter_name ? adapter_name : _("Bluetooth device"),
+							_(text), NULL, 3000, NULL);
+    */
+
+	set_new_mode(adapter, mode);
+}
+
+static void adapter_free(gpointer data, gpointer user_data)
+{
+	struct adapter_data *adapter = data;
+
+	adapter_list = g_list_remove(adapter_list, adapter);
+
+	g_free(adapter->path);
+	g_free(adapter->old_mode);
+	g_free(adapter);
+}
+
+static void adapter_disable(gpointer data, gpointer user_data)
+{
+	struct adapter_data *adapter = data;
+
+	adapter->attached = 0;
+}
+
+static gint adapter_compare(gconstpointer a, gconstpointer b)
+{
+	const struct adapter_data *adapter = a;
+	const char *path = b;
+
+	return g_ascii_strcasecmp(adapter->path, path);
+}
+
+static void adapter_count(gpointer data, gpointer user_data)
+{
+	struct adapter_data *adapter = data;
+	int *count = user_data;
+
+	if (adapter->attached)
+		(*count)++;
+}
+
+
+
+
+void add_bonding(){
+    DBusGProxy *object;
+    
+	object = dbus_g_proxy_new_for_name(bus, "org.bluez",
+						"/org/bluez/passkey", "org.bluez.Adapter");
+
+    dbus_g_proxy_add_signal(object, "BondingCreated",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "BondingCreated",
+				G_CALLBACK(bonding_created), NULL, NULL);
+
+	dbus_g_proxy_add_signal(object, "BondingRemoved",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "BondingRemoved",
+				G_CALLBACK(bonding_removed), NULL, NULL);
+}
+static void add_adapter(const char *path)
+{
+	GList *list;
+	DBusGProxy *object;
+	struct adapter_data *adapter;
+	const char *old_mode;
+
+	list = g_list_find_custom(adapter_list, path, adapter_compare);
+	if (list && list->data) {
+		struct adapter_data *adapter = list->data;
+
+		adapter->attached = 1;
+		return;
+	}
+
+	adapter = g_try_malloc0(sizeof(*adapter));
+	if (!adapter)
+		return;
+
+	adapter->path = g_strdup(path);
+	adapter->attached = 1;
+
+	adapter_list = g_list_append(adapter_list, adapter);
+
+
+	object = dbus_g_proxy_new_for_name(bus, "org.bluez",
+						path, "org.bluez.Adapter");
+
+	dbus_g_proxy_add_signal(object, "ModeChanged",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "ModeChanged",
+				G_CALLBACK(mode_changed), adapter, NULL);
+
+	dbus_g_proxy_add_signal(object, "BondingCreated",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "BondingCreated",
+				G_CALLBACK(bonding_created), NULL, NULL);
+
+	dbus_g_proxy_add_signal(object, "BondingRemoved",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "BondingRemoved",
+				G_CALLBACK(bonding_removed), NULL, NULL);
+
+	dbus_g_proxy_add_signal(object, "TrustAdded",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "TrustAdded",
+				G_CALLBACK(trust_added), NULL, NULL);
+
+	dbus_g_proxy_add_signal(object, "TrustRemoved",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "TrustRemoved",
+				G_CALLBACK(trust_removed), NULL, NULL);
+
+	old_mode = NULL;
+	dbus_g_proxy_call(object, "GetMode", NULL,
+			  G_TYPE_INVALID, G_TYPE_STRING,
+			  &old_mode, G_TYPE_INVALID);
+	if (old_mode != NULL)
+		set_new_mode(adapter, old_mode);
+        register_agents();
+}
+
+static void adapter_added(DBusGProxy *object,
+				const char *path, gpointer user_data)
+{
+	printf("adapter added\n");
+    register_agents();
+
+	add_adapter(path);
+}
+
+static void adapter_removed(DBusGProxy *object,
+				const char *path, gpointer user_data)
+{
+	GList *list;
+
+	list = g_list_find_custom(adapter_list, path, adapter_compare);
+	if (list && list->data) {
+		struct adapter_data *adapter = list->data;
+
+		adapter->attached = 0;
+	}
+
+}
+
+
+static int setup_manager(void)
+{
+	DBusGProxy *object;
+	GError *error = NULL;
+	const gchar **array = NULL;
+
+	object = dbus_g_proxy_new_for_name(bus, "org.bluez",
+					"/org/bluez", "org.bluez.Manager");
+
+	dbus_g_proxy_add_signal(object, "AdapterAdded",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "AdapterAdded",
+				G_CALLBACK(adapter_added), NULL, NULL);
+
+	dbus_g_proxy_add_signal(object, "AdapterRemoved",
+					G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal(object, "AdapterRemoved",
+				G_CALLBACK(adapter_removed), NULL, NULL);
+
+	dbus_g_proxy_call(object, "ListAdapters", &error,
+			G_TYPE_INVALID,	G_TYPE_STRV, &array, G_TYPE_INVALID);
+
+	if (error == NULL) {
+		while (*array) {
+            printf("add adapter\n");
+			add_adapter(*array);
+			array++;
+		}
+	} else
+		g_error_free(error);
+
+	return 0;
+}
+
+
 void run_agents()
 {
     setup_agents(bus);
-
-    register_agents();
+    //to add the bounding signals 
+//    register_agents();
+    setup_manager();
 
 }
 
