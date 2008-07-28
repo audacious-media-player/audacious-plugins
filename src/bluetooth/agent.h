@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <dbus/dbus-glib.h>
+gint bonding_finish;
 void run_agents(void);
 int setup_agents(DBusGConnection *conn);
 void cleanup_agents(void);

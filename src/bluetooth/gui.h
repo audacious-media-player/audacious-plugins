@@ -22,5 +22,6 @@
 GList *selected_dev ;
 void refresh_tree(void);
 void results_ui();
+void close_call(void);
 
 
