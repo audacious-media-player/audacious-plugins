@@ -366,12 +366,11 @@ static gpointer update_thread_core(gpointer user_data)
 			else {
 				/* shoutcast */
 				if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
-					printf("DAAAA!\n");
 				    shoutcast_streaminfo_fetch(data->category, data->streaminfo);
 				}
 				/* xiph */
 				else if (strncmp(data->streamdir->name, XIPH_NAME, strlen(XIPH_NAME)) == 0) {
-				    //xiph_category_fetch(data->category);
+					xiph_streaminfo_fetch(data->category, data->streaminfo);
 				}
 			}
 
@@ -476,7 +475,7 @@ static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
 	}
 
 	if (strlen(streaminfo->url) > 0) {
-	   	aud_playlist_add(aud_playlist_get_active(), streaminfo->url);
+		aud_playlist_add(aud_playlist_get_active(), streaminfo->url);
 		debug("stream '%s' added\n", streaminfo->url);
 	}
 }

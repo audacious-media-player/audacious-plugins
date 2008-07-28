@@ -420,9 +420,9 @@ static gboolean on_tree_view_button_pressed(GtkWidget *widget, GdkEventButton *e
 	}
 	/* single click triggers a refresh of the selected item */
 	else {
+		// todo: separate single from double click somehow
 		tree_view_button_pressed = TRUE;
-	}
-	
+	}	
 	
 	return FALSE;
 }
