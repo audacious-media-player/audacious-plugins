@@ -18,6 +18,7 @@
 
 #include "scan_gui.h"
 #include "bluetooth.h"
+#include "agent.h"
 static GtkWidget *window = NULL;
 static GtkWidget *winbox;
 static GtkWidget *scanbox;
@@ -28,6 +29,8 @@ static GtkWidget *scan_label;
 static GtkWidget *progress_bar;
 static GtkWidget *rescan_buttton;
 static GtkWidget *close_button;
+static gint usage=0;
+
 gpointer progress() {
 
     for(;;){
@@ -35,14 +38,32 @@ gpointer progress() {
             gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress_bar));
         }
         sleep(1);
-        if(discover_finish == 2 ) {            
+       if(usage == 0){
+       if(discover_finish == 2 ) {            
             if(window){
                 gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
             }
             return 0;
         }
+       }else 
+           {
+                if(bonding_finish == 1 ) {            
+                    if(window){
+                        gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
+                        show_pairing_ok();
+                    }
+                return 0;
+                }
+           }
     }
     return 0;
+}
+
+void show_pairing_ok()
+{
+ if(window ){
+        gtk_label_set_text(GTK_LABEL(scan_label),_("Bonding finish!"));
+    }
 }
 
 void show_no_devices(){
@@ -60,10 +81,15 @@ void close_window(void){
 }
 
 
-void show_scan()
+void show_scan(gint use)
 {
     GThread *th1;
     gchar *filename;
+    usage = use;
+    /*
+     * 0 - discovery 
+     * 1 - pairing 
+     */
     if (!window)
     {
         window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -84,20 +110,25 @@ void show_scan()
         bluetooth_img = gtk_image_new_from_file(filename);
         gtk_image_set_pixel_size(GTK_IMAGE(bluetooth_img),-1);
         gtk_container_add(GTK_CONTAINER(scanbox),bluetooth_img);
+        if(usage == 0){
+            scan_label = gtk_label_new_with_mnemonic(_("Scanning..."));
+        }else
+            {
+                scan_label = gtk_label_new_with_mnemonic(_("Pairing..."));
+            }
 
-        scan_label = gtk_label_new_with_mnemonic(_("Scanning..."));
         gtk_container_add(GTK_CONTAINER(scanbox),scan_label);
 
         progress_bar = gtk_progress_bar_new();
         gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress_bar));
         gtk_container_add(GTK_CONTAINER(progressbox),progress_bar);
         th1 =  g_thread_create((GThreadFunc)progress, NULL,TRUE,NULL);
-        /* I have to add a button for Rescan when there are
-         * no devices found and not currently scanning
-         */
         buttonsbox = gtk_hbox_new(FALSE,2);
         gtk_container_set_border_width(GTK_CONTAINER(buttonsbox),2);
         gtk_container_add(GTK_CONTAINER(progressbox),buttonsbox);
+        /* I have to modify the rescan button with a play one 
+         * and treat the case when the bounding is not ok
+         */
         rescan_buttton = gtk_button_new_with_mnemonic(_("Rescan"));
         g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (refresh_call),NULL);
 

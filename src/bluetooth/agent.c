@@ -24,6 +24,7 @@
 
 #include <glib/gprintf.h>
 #include "bluetooth.h"
+#include "agent.h"
 #include "gui.h"
 
 #define PASSKEY_AGENT_PATH	"/org/bluez/audacious_passkey"
@@ -42,7 +43,7 @@ static GtkWidget *cancel_button = NULL;
 static char* passkey;
 static GList *adapter_list = NULL;
 DBusGProxy *pair_obj = NULL;
-static gint bonding_finish=0;
+
 static DBusGConnection *connection;
 
 struct adapter_data {
@@ -1073,6 +1074,7 @@ static int setup_manager(void)
 
 void run_agents()
 {
+    bonding_finish =0;
     setup_agents(bus);
     //to add the bounding signals 
 //    register_agents();

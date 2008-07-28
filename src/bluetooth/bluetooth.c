@@ -87,12 +87,12 @@ void bt_cfg(void)
     if(discover_finish == 2){
         if (devices_no == 0){
             printf("no devs!\n");
-            show_scan();
+            show_scan(0);
             show_no_devices();
         }else 
             results_ui();
     }
-    else show_scan();    
+    else show_scan(0);    
     printf("end of bt_cfg\n");
 }
 
@@ -123,24 +123,11 @@ void refresh_call(void)
 
         discover_devices();
         close_window();
-        show_scan();
+        show_scan(0);
     }
     else 
         printf("Scanning please wait!\n");
 }
-
-void bounding_created(gchar* address)
-{
-    printf("Signal BoundingCreated : %s\n",address);
-
-}
-
-void bounding_removed(gchar* address)
-{
-    printf("Signal: BoundingRemoved: %s\n",address);
-
-}
-
 
 gpointer connect_call_th(void)
 {
@@ -154,7 +141,10 @@ gpointer connect_call_th(void)
 }
 void connect_call(void)
 {
- connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ;  
+ connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
+ close_call();
+ close_window();
+ show_scan(1);
 }
 
 
