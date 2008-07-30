@@ -83,11 +83,6 @@ void close_window(void)
     gtk_widget_destroy (window);
     window = NULL;
 }
-void retry_call(void)
-{
-    printf("retry callback\n");
-}
-
 void show_scan(gint use)
 {
     GThread *th1;
@@ -140,8 +135,8 @@ void show_scan(gint use)
             rescan_buttton = gtk_button_new_with_mnemonic(_("Rescan"));
             g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (refresh_call),NULL);
         }else{
-            rescan_buttton = gtk_button_new_with_mnemonic(_("Retry"));
-            g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (retry_call),NULL);
+            rescan_buttton = gtk_button_new_with_mnemonic(_("Play"));
+            g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (play_call),NULL);
         }
 
 

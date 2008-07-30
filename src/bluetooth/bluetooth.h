@@ -40,6 +40,7 @@ typedef struct {
 
 void refresh_call(void);
 void connect_call(void);
+void play_call(void);
 GList * audio_devices;
 gint discover_finish ;
 DBusGConnection * bus;

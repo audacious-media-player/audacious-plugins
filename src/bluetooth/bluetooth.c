@@ -21,6 +21,7 @@
 #include "gui.h"
 #include "scan_gui.h"
 #include "agent.h"
+#include "../alsa/alsa.h"
 #define DEBUG 1
 static gboolean plugin_active = FALSE,exiting=FALSE;
 GList * current_device = NULL;
@@ -145,6 +146,29 @@ void connect_call(void)
  close_call();
  close_window();
  show_scan(1);
+}
+
+
+void play_call()
+{
+//    static GFile *asoundrc;
+     
+
+
+  	mcs_handle_t *cfgfile = aud_cfg_db_open();
+
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "buffer_time", 500);
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "period_time", 100);
+	aud_cfg_db_set_string(cfgfile,ALSA_CFGID,"pcm_device", "bt");
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "mixer_card", 0);
+	aud_cfg_db_set_string(cfgfile,ALSA_CFGID,"mixer_device", "PCM");
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "volume_left", 100);
+	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "volume_right", 100);
+	aud_cfg_db_close(cfgfile);
+
+  printf("play callback\n");
+
+
 }
 
 
