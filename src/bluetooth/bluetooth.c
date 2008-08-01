@@ -43,7 +43,7 @@ static void print_results(void);
 static void discovery_completed(DBusGProxy *object, gpointer user_data);
 void discover_devices(void);
 void disconnect_dbus_signals(void);
-
+static void show_restart_dialog(void);
 
 GeneralPlugin bluetooth_gp =
 {
@@ -212,10 +212,23 @@ void play_call()
     aud_cfg_db_close(cfgfile);
 
     printf("play callback\n");
+    close_window();
+    show_restart_dialog();
 
 
 }
-
+static void show_restart_dialog()
+{
+static GtkWidget *window = NULL;
+ GtkWidget *dialog;
+  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
+				   GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+				   GTK_MESSAGE_INFO,
+				   GTK_BUTTONS_OK,
+				   "Please restart the player to apply the bluetooth audio settings!");
+   gtk_dialog_run (GTK_DIALOG (dialog));
+   gtk_widget_destroy (dialog);
+}
 
 static void remote_device_found(DBusGProxy *object, char *address, const unsigned int class, const int rssi, gpointer user_data)
 {
