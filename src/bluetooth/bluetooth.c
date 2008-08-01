@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
+#include <glib/gstdio.h>
+#include <errno.h>
+#include <string.h>
 #include "bluetooth.h"
 #include "marshal.h"
 #include "gui.h"
@@ -27,6 +30,7 @@ GList * current_device = NULL;
 gint config = 0;
 gint devices_no = 0;
 GStaticMutex mutex = G_STATIC_MUTEX_INIT;
+static gchar *current_address=NULL;
 static GThread *connect_th;
 void bluetooth_init ( void );
 void bluetooth_cleanup ( void );
@@ -63,7 +67,8 @@ void bluetooth_init ( void )
 void bluetooth_cleanup ( void )
 {
     printf("bluetooth: exit\n");
-    if (config ==1 ){
+    if (config ==1 )
+    {
         close_window();
         config =0;
     }
@@ -105,7 +110,8 @@ void disconnect_dbus_signals()
 
 }
 
-void clean_devices_list(){
+void clean_devices_list()
+{
     g_list_free(audio_devices);
     dbus_g_connection_flush (bus);
     dbus_g_connection_unref(bus);
@@ -136,15 +142,78 @@ gpointer connect_call_th(void)
 
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
     run_agents();
-    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,((DeviceData*)(selected_dev->data))->address,G_TYPE_INVALID,G_TYPE_INVALID); 
-     
+    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID); 
+
 }
 void connect_call(void)
 {
- connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
- close_call();
- close_window();
- show_scan(1);
+    current_address = g_strdup(((DeviceData*)(selected_dev->data))->address);
+    connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
+    close_call();
+    close_window();
+    show_scan(1);
+}
+
+
+void play_call()
+{
+
+    FILE *file;
+    FILE *temp_file;
+    gint prev=0;
+    char line[128];
+    gchar *home;
+    gchar *device_line;
+    gchar *file_name="";
+    gchar *temp_file_name;
+    int ret = EOF+1;
+    home = g_get_home_dir();
+    file_name = g_strconcat(home,"/.asoundrc",NULL);
+    temp_file_name = g_strconcat(home,"/temp_bt",NULL);
+    file = fopen(file_name,"r");
+    temp_file = fopen(temp_file_name,"w");
+    /* hardcoded address TO REMOVE after testing */
+    //   current_address = "00:0D:3C:B1:1C:7A";
+    device_line = g_strdup_printf("device %s\n",current_address);
+    if ( file != NULL )
+    {
+        while ( fgets ( line, sizeof line, file ) != NULL )
+        {
+            if(!(strcmp(line,"pcm.audacious_bt {\n"))){
+                fputs(line,temp_file);
+                fgets ( line, sizeof line, file ); /* type bluetooth */
+                fputs(line,temp_file);
+                fgets ( line, sizeof line, file ); /* device MAC */
+                fputs(device_line,temp_file);
+                prev = 1;
+            } else 
+                fputs(line,temp_file);
+        }
+
+        fclose (file);
+    }
+    if(!prev){
+        fputs("pcm.audacious_bt{\n",temp_file);
+        fputs("type bluetooth\n",temp_file);
+        fputs(device_line,temp_file);
+        fputs("}\n",temp_file);
+        prev = 0;
+    }
+
+    fclose(temp_file);
+    int err = rename(temp_file_name,file_name);
+    printf("rename error : %d",err);
+    perror("zz");
+    g_free(device_line);
+    g_free(file_name);
+    g_free(temp_file_name);
+    mcs_handle_t *cfgfile = aud_cfg_db_open();
+    aud_cfg_db_set_string(cfgfile,"ALSA","pcm_device", "audacious_bt");
+    aud_cfg_db_close(cfgfile);
+
+    printf("play callback\n");
+
+
 }
 
 
