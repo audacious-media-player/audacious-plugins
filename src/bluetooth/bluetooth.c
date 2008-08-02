@@ -179,7 +179,7 @@ void play_call()
     {
         while ( fgets ( line, sizeof line, file ) != NULL )
         {
-            if(!(strcmp(line,"pcm.audacious_bt {\n"))){
+            if(!(strcmp(line,"pcm.audacious_bt{\n"))){
                 fputs(line,temp_file);
                 fgets ( line, sizeof line, file ); /* type bluetooth */
                 fputs(line,temp_file);
