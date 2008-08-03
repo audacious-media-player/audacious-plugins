@@ -107,6 +107,7 @@ gboolean skins_init(void) {
 gboolean skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
         skins_cfg_save();
+        cleanup_skins();
         skins_free_paths();
         ui_main_evlistener_dissociate();
         ui_playlist_evlistener_dissociate();
@@ -115,8 +116,6 @@ gboolean skins_cleanup(void) {
         gtk_widget_destroy(equalizerwin);
         gtk_widget_destroy(playlistwin);
         ui_manager_destroy();
-        skin_destroy(aud_active_skin);
-        aud_active_skin = NULL;
         mainwin = NULL;
         equalizerwin = NULL;
         playlistwin = NULL;
