@@ -188,7 +188,8 @@ static void ui_skinned_button_realize (GtkWidget *widget) {
     attributes.y = widget->allocation.y;
     attributes.width = widget->allocation.width;
     attributes.height = widget->allocation.height;
-    attributes.window_type = GDK_INPUT_ONLY;
+    attributes.wclass = GDK_INPUT_ONLY;
+    attributes.window_type = GDK_WINDOW_CHILD;
     attributes.event_mask = gtk_widget_get_events(widget);
     attributes.event_mask |= GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK;
 
