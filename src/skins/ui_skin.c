@@ -1749,42 +1749,25 @@ skin_draw_pixbuf(GtkWidget *widget, Skin * skin, GdkPixbuf * pix,
                 gtk_widget_hide(widget);
                 return;
             }
-            gint x, y;
-            x = -1;
-            y = -1;
 
-            if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(mainwin)->normal) {
-                GList *iter;
-                for (iter = GTK_FIXED (SKINNED_WINDOW(mainwin)->normal)->children; iter; iter = g_list_next (iter)) {
-                     GtkFixedChild *child_data = (GtkFixedChild *) iter->data;
-                     if (child_data->widget == widget) {
-                         x = child_data->x;
-                         y = child_data->y;
-                         break;
-                     }
-                }
+            /* Some skins include SKIN_VOLUME and/or SKIN_BALANCE without knobs */
+            if (pixmap_id == SKIN_VOLUME || pixmap_id == SKIN_BALANCE) {
+                if (ysrc+height > 421 && xsrc+width <= pixmap->width)
+                    return;
+            }
 
-                if (x != -1 && y != -1) {
-                    /* Some skins include SKIN_VOLUME and/or SKIN_BALANCE
-                       without knobs */
-                    if (pixmap_id == SKIN_VOLUME || pixmap_id == SKIN_BALANCE) {
-                        if (ysrc+height > 421 && xsrc+width <= pixmap->width)
-                            return;
-                    }
-                    /* let's copy what's under widget */
-                    gdk_pixbuf_copy_area(skin_get_pixmap(aud_active_skin, SKIN_MAIN)->pixbuf,
-                                         x, y, width, height, pix, xdest, ydest);
+            /* XMMS skins seems to have SKIN_MONOSTEREO with size 58x20 instead of 58x24 */
+            if (pixmap_id == SKIN_MONOSTEREO)
+                height = pixmap->height/2;
 
-                    /* XMMS skins seems to have SKIN_MONOSTEREO with size 58x20 instead of 58x24 */
-                    if (pixmap_id == SKIN_MONOSTEREO)
-                        height = pixmap->height/2;
-                }
-            } else if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(equalizerwin)->normal) {
-                   if (!(pixmap_id == SKIN_EQMAIN && ysrc == 314)) /* equalizer preamp on equalizer graph */
-                         gtk_widget_hide(widget);
-            } else if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(playlistwin)->normal) {
-                   /* I haven't seen any skin with substandard playlist */
-                   gtk_widget_hide(widget);
+            if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(equalizerwin)->normal) {
+                if (!(pixmap_id == SKIN_EQMAIN && ysrc == 314)) /* equalizer preamp on equalizer graph */
+                    gtk_widget_hide(widget);
+            }
+
+            if (gtk_widget_get_parent(widget) == SKINNED_WINDOW(playlistwin)->normal) {
+                /* I haven't seen any skin with substandard playlist */
+                gtk_widget_hide(widget);
             }
         } else
             return;
@@ -2039,16 +2022,19 @@ skin_set_random_skin(void)
     aud_active_skin_load(node->path);
 }
 
-
-void ui_skinned_widget_draw(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gboolean scale) {
+void ui_skinned_widget_draw_with_coordinates(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gint destx, gint desty, gboolean scale) {
     g_return_if_fail(widget != NULL);
     g_return_if_fail(obj != NULL);
 
     if (scale) {
         GdkPixbuf *image = gdk_pixbuf_scale_simple(obj, width * config.scale_factor, height* config.scale_factor, GDK_INTERP_NEAREST);
-        gdk_draw_pixbuf(widget->window, NULL, image, 0, 0, 0, 0, width * config.scale_factor , height * config.scale_factor, GDK_RGB_DITHER_NONE, 0, 0);
+        gdk_draw_pixbuf(widget->window, NULL, image, 0, 0, destx, desty, width * config.scale_factor , height * config.scale_factor, GDK_RGB_DITHER_NONE, 0, 0);
         g_object_unref(image);
     } else {
-        gdk_draw_pixbuf(widget->window, NULL, obj, 0, 0, 0, 0, width, height, GDK_RGB_DITHER_NONE, 0, 0);
+        gdk_draw_pixbuf(widget->window, NULL, obj, 0, 0, destx, desty, width, height, GDK_RGB_DITHER_NONE, 0, 0);
     }
+}
+
+void ui_skinned_widget_draw(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gboolean scale) {
+    ui_skinned_widget_draw_with_coordinates(widget, obj, width, height, 0, 0, scale);
 }

@@ -157,6 +157,8 @@ static void ui_skinned_button_init (UiSkinnedButton *button) {
     priv->move_x = 0;
     priv->move_y = 0;
     button->event_window = NULL;
+
+    GTK_WIDGET_SET_FLAGS (button, GTK_NO_WINDOW);
 }
 
 static void ui_skinned_button_destroy (GtkObject *object) {
@@ -174,38 +176,28 @@ static void ui_skinned_button_destroy (GtkObject *object) {
 static void ui_skinned_button_realize (GtkWidget *widget) {
     g_return_if_fail (widget != NULL);
     g_return_if_fail (UI_SKINNED_IS_BUTTON(widget));
+
+    if (GTK_WIDGET_CLASS (parent_class)->realize)
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
+
     UiSkinnedButton *button = UI_SKINNED_BUTTON (widget);
     GdkWindowAttr attributes;
     gint attributes_mask;
-
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
 
     attributes.x = widget->allocation.x;
     attributes.y = widget->allocation.y;
     attributes.width = widget->allocation.width;
     attributes.height = widget->allocation.height;
+    attributes.wclass = GDK_INPUT_ONLY;
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.event_mask = gtk_widget_get_events(widget);
     attributes.event_mask |= GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK;
 
-    if (button->type == TYPE_SMALL || button->type == TYPE_NOT_SET) {
-        widget->window = gtk_widget_get_parent_window (widget);
-        g_object_ref (widget->window);
-        attributes.wclass = GDK_INPUT_ONLY;
-        attributes_mask = GDK_WA_X | GDK_WA_Y;
-        button->event_window = gdk_window_new (widget->window, &attributes, attributes_mask);
-        GTK_WIDGET_SET_FLAGS (widget, GTK_NO_WINDOW);
-        gdk_window_set_user_data(button->event_window, widget);
-    } else {
-        attributes.visual = gtk_widget_get_visual(widget);
-        attributes.colormap = gtk_widget_get_colormap(widget);
-        attributes.wclass = GDK_INPUT_OUTPUT;
-        attributes.event_mask |= GDK_EXPOSURE_MASK;
-        attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-        widget->window = gdk_window_new(widget->parent->window, &attributes, attributes_mask);
-        GTK_WIDGET_UNSET_FLAGS (widget, GTK_NO_WINDOW);
-        gdk_window_set_user_data(widget->window, widget);
-    }
+    attributes.wclass = GDK_INPUT_ONLY;
+    attributes_mask = GDK_WA_X | GDK_WA_Y;
+    button->event_window = gdk_window_new (widget->window, &attributes, attributes_mask);
+
+    gdk_window_set_user_data(button->event_window, widget);
 
     widget->style = gtk_style_attach(widget->style, widget->window);
 }
@@ -289,12 +281,9 @@ static gboolean ui_skinned_button_expose(GtkWidget *widget, GdkEventExpose *even
     if (button->type == TYPE_SMALL || button->type == TYPE_NOT_SET)
         return FALSE;
 
-    /* paranoia */
-    if (button->event_window != NULL)
-        return FALSE;
-
     GdkPixbuf *obj;
     obj = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, priv->w, priv->h);
+    gdk_pixbuf_fill(obj, 0x00000000); /* fill with alpha */
 
     switch (button->type) {
         case TYPE_PUSH:
@@ -322,7 +311,10 @@ static gboolean ui_skinned_button_expose(GtkWidget *widget, GdkEventExpose *even
             break;
     }
 
-    ui_skinned_widget_draw(widget, obj, priv->w, priv->h, priv->scaled);
+    ui_skinned_widget_draw_with_coordinates(widget, obj, priv->w, priv->h,
+                                            widget->allocation.x,
+                                            widget->allocation.y,
+                                            priv->scaled);
     g_object_unref(obj);
 
     return FALSE;

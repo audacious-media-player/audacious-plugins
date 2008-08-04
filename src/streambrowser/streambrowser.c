@@ -34,7 +34,6 @@ typedef struct {
     streamdir_t *streamdir;
     category_t *category;
     streaminfo_t *streaminfo;
-    gboolean add_to_playlist;
 } update_thread_data_t;
 
 
@@ -48,7 +47,7 @@ static void gui_done();
 static void config_load();
 static void config_save();
 
-static void streamdir_update(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo, gboolean add_to_playlist);
+static void streamdir_update(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo);
 static gpointer update_thread_core(gpointer user_data);
 static void streaminfo_add_to_playlist(streaminfo_t *streaminfo);
 static void on_plugin_services_menu_item_click();
@@ -272,13 +271,12 @@ static void config_save()
     debug("configuration saved\n");
 }
 
-static void streamdir_update(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo, gboolean add_to_playlist)
+static void streamdir_update(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo)
 {
-    debug("requested streamdir update (streamdir = '%s', category = '%s', streaminfo = '%s', add_to_playlist = %d)\n", 
+    debug("requested streamdir update (streamdir = '%s', category = '%s', streaminfo = '%s')\n", 
           streamdir == NULL ? "" : streamdir->name, 
           category == NULL ? "" : category->name,
-          streaminfo == NULL ? "" : streaminfo->name,
-          add_to_playlist);
+          streaminfo == NULL ? "" : streaminfo->name);
 
     if (g_queue_get_length(update_thread_data_queue) >= MAX_UPDATE_THREADS) {
         debug("another %d streamdir updates are pending, this request will be dropped\n", g_queue_get_length(update_thread_data_queue));
@@ -297,8 +295,7 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
                 update_thread_data = g_queue_peek_nth(update_thread_data_queue, i);
                 if (update_thread_data->streamdir == streamdir &&
                     update_thread_data->category == category &&
-                    update_thread_data->streaminfo == streaminfo &&
-                    update_thread_data->add_to_playlist == add_to_playlist) {
+                    update_thread_data->streaminfo == streaminfo) {
                     exists = TRUE;
                     break;
                 }
@@ -313,7 +310,6 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
                 update_thread_data->streamdir = streamdir;
                 update_thread_data->category = category;
                 update_thread_data->streaminfo = streaminfo;
-                update_thread_data->add_to_playlist = add_to_playlist;
  
                 g_queue_push_tail(update_thread_data_queue, update_thread_data);
             }
@@ -330,7 +326,6 @@ static void streamdir_update(streamdir_t *streamdir, category_t *category, strea
             data->streamdir = streamdir;
             data->category = category;
             data->streaminfo = streaminfo;
-            data->add_to_playlist = add_to_playlist;
  
             g_queue_push_tail(update_thread_data_queue, data);
 
@@ -355,50 +350,46 @@ static gpointer update_thread_core(gpointer user_data)
 
 	/* repetitively process the queue elements, until queue is empty */
 	while (data != NULL && g_queue_get_length(update_thread_data_queue) > 0) {
-	    /* update a streaminfo */
+	    /* update a streaminfo - that is - add this streaminfo to playlist */
 		if (data->streaminfo != NULL) {
 	    	gdk_threads_enter();
 			streambrowser_win_set_streaminfo_state(data->streamdir, data->category, data->streaminfo, TRUE);
 	    	gdk_threads_leave();
 
-			if (data->add_to_playlist)
-			    streaminfo_add_to_playlist(data->streaminfo);
-			else {
-				/* shoutcast */
-				if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
-				    shoutcast_streaminfo_fetch(data->category, data->streaminfo);
-				}
-				/* xiph */
-				else if (strncmp(data->streamdir->name, XIPH_NAME, strlen(XIPH_NAME)) == 0) {
-					xiph_streaminfo_fetch(data->category, data->streaminfo);
-				}
-			}
+		    streaminfo_add_to_playlist(data->streaminfo);
 
 	        gdk_threads_enter();
-	        if (!data->add_to_playlist)
-		        streambrowser_win_set_streaminfo(data->streamdir, data->category, data->streaminfo);
 			streambrowser_win_set_streaminfo_state(data->streamdir, data->category, data->streaminfo, FALSE);
 	        gdk_threads_leave();
 		}
 		/* update a category */
 		else if (data->category != NULL) {
-	    	gdk_threads_enter();
-			streambrowser_win_set_category_state(data->streamdir, data->category, TRUE);
-	    	gdk_threads_leave();
-	    	
 		    /* shoutcast */
 		    if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
+		    	gdk_threads_enter();
+				streambrowser_win_set_category_state(data->streamdir, data->category, TRUE);
+		    	gdk_threads_leave();
+		    	
 		        shoutcast_category_fetch(data->category);
+
+		        gdk_threads_enter();
+		        streambrowser_win_set_category(data->streamdir, data->category);
+				streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
+		        gdk_threads_leave();
 		    }
 		    /* xiph */
 		    else if (strncmp(data->streamdir->name, XIPH_NAME, strlen(XIPH_NAME)) == 0) {
+		    	gdk_threads_enter();
+				streambrowser_win_set_category_state(data->streamdir, data->category, TRUE);
+		    	gdk_threads_leave();
+		    	
 		        xiph_category_fetch(data->category);
-		    }
 
-	        gdk_threads_enter();
-	        streambrowser_win_set_category(data->streamdir, data->category);
-			streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
-	        gdk_threads_leave();
+		        gdk_threads_enter();
+		        streambrowser_win_set_category(data->streamdir, data->category);
+				streambrowser_win_set_category_state(data->streamdir, data->category, FALSE);
+		        gdk_threads_leave();
+		    }
 		}
 		/* update a streamdir */
 		else if (data->streamdir != NULL) {
@@ -475,7 +466,7 @@ static void streaminfo_add_to_playlist(streaminfo_t *streaminfo)
 	}
 
 	if (strlen(streaminfo->url) > 0) {
-		aud_playlist_add(aud_playlist_get_active(), streaminfo->url);
+	   	aud_playlist_add(aud_playlist_get_active(), streaminfo->url);
 		debug("stream '%s' added\n", streaminfo->url);
 	}
 }
@@ -485,6 +476,6 @@ static void on_plugin_services_menu_item_click()
     debug("on_plugin_services_menu_item_click()\n");
 
     streambrowser_win_show();
-    streamdir_update(NULL, NULL, NULL, FALSE);
+    streamdir_update(NULL, NULL, NULL);
 }
 
