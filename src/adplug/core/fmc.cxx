@@ -130,6 +130,7 @@ CfmcLoader::load (VFSFile * fd, const CFileProvider & fp)
         if (tracks[t][k].command == 0x0E)   // 0x0E (14): Retrig
           tracks[t][k].param1 = 3;
         if (tracks[t][k].command == 0x1A)   // 0x1A (26): Volume Slide
+        {
           if (tracks[t][k].param1 > tracks[t][k].param2)
           {
             tracks[t][k].param1 -= tracks[t][k].param2;
@@ -140,6 +141,7 @@ CfmcLoader::load (VFSFile * fd, const CFileProvider & fp)
             tracks[t][k].param2 -= tracks[t][k].param1;
             tracks[t][k].param1 = 0;
           }
+        }
       }
 
       t++;
