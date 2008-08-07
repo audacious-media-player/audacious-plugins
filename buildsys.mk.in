@@ -102,7 +102,7 @@ depend: pre-depend ${SRCS}
 		case $$i in \
 			*.o) \
 				test $$i -nt .deps && regen=1; \
-				deps="$${deps%.o}.dep $$i"; \
+				deps="$${deps} $${i%.o}.dep"; \
 				;; \
 		esac; \
 	done; \
