@@ -84,8 +84,7 @@ static GtkTreeModel * rebuild_model(void)
     GtkTreeIter iter;
     gint dev_no=0;
     GList *dev;
-    gchar *temp;
-    if(!window) 
+      if(!window) 
         return NULL;
     /* create list store */
     store = gtk_list_store_new(NUM_COLUMNS,
@@ -118,12 +117,12 @@ static GtkTreeModel * rebuild_model(void)
                 ((DeviceData*)(dev->data))-> name,-1);
         dev = g_list_next(dev);
     }
-    //set the labels
-    //   temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+    /*set the labels */
+    /*   temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class); */
     gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
-    //    gtk_label_set_text(GTK_LABEL(label_class),temp);
+    /*    gtk_label_set_text(GTK_LABEL(label_class),temp); */
     gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
-    g_free(temp);
+   /* g_free(temp); */
     return GTK_TREE_MODEL(store);          
 
 }

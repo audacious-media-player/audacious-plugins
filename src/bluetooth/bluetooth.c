@@ -26,7 +26,6 @@
 #include "agent.h"
 #include <audacious/plugin.h>
 #define DEBUG 1
-static gboolean plugin_active = FALSE,exiting=FALSE;
 GList * current_device = NULL;
 gint config = 0;
 gint devices_no = 0;
@@ -44,7 +43,7 @@ static void print_results(void);
 static void discovery_completed(DBusGProxy *object, gpointer user_data);
 void discover_devices(void);
 void disconnect_dbus_signals(void);
-static void show_restart_dialog(void);
+/*static void show_restart_dialog(void); */
 static void remove_bonding();
 GeneralPlugin bluetooth_gp =
 {
@@ -155,7 +154,7 @@ gpointer connect_call_th(void)
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
     run_agents();
     dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID); 
-
+    return NULL;
 }
 void connect_call(void)
 {
@@ -174,11 +173,10 @@ void play_call()
     FILE *temp_file;
     gint prev=0;
     char line[128];
-    gchar *home;
+    const gchar *home;
     gchar *device_line;
     gchar *file_name="";
     gchar *temp_file_name;
-    int ret = EOF+1;
     home = g_get_home_dir();
     file_name = g_strconcat(home,"/.asoundrc",NULL);
     temp_file_name = g_strconcat(home,"/temp_bt",NULL);
@@ -229,7 +227,7 @@ void play_call()
 
 
 }
-static void show_restart_dialog()
+/*static void show_restart_dialog()
 {
     static GtkWidget *window = NULL;
     GtkWidget *dialog;
@@ -241,7 +239,7 @@ static void show_restart_dialog()
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
 }
-
+*/
 static void remote_device_found(DBusGProxy *object, char *address, const unsigned int class, const int rssi, gpointer user_data)
 {
     int found_in_list=FALSE; 

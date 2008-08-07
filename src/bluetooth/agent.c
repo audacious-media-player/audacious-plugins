@@ -40,7 +40,7 @@ static GtkWidget *device_label = NULL;
 static GtkWidget *passkey_entry = NULL;
 static GtkWidget *ok_button = NULL;
 static GtkWidget *cancel_button = NULL;
-static char* passkey;
+static const char* passkey;
 static GList *adapter_list = NULL;
 DBusGProxy *pair_obj = NULL;
 
@@ -206,7 +206,7 @@ static void passkey_callback(gint response, gpointer user_data)
     input_free(input);
 }
 
-static void confirm_callback(gint response, gpointer user_data)
+/*static void confirm_callback(gint response, gpointer user_data)
 {
     struct input_data *input = user_data;
 
@@ -220,12 +220,11 @@ static void confirm_callback(gint response, gpointer user_data)
 
     input_free(input);
 }
-
+*/
+/*
 static void set_trusted(struct input_data *input)
 {
     DBusGProxy *object;
-    gboolean active;
-
     //aways set trusted -- we dont have yet an active button -
     //maybe I'll add one	
     object = dbus_g_proxy_new_for_name(connection, "org.bluez",
@@ -235,13 +234,11 @@ static void set_trusted(struct input_data *input)
             G_TYPE_STRING, input->address, G_TYPE_INVALID,
             G_TYPE_INVALID);
 }
-
+*/
+/*
 static void auth_callback(gint response, gpointer user_data)
 {
 
-    /* I must call this function with the alway allow option and 
-     * don't boder to aks the user - to many questions 
-     */
     struct input_data *input = user_data;
 
     if (response == GTK_RESPONSE_YES) {
@@ -256,7 +253,7 @@ static void auth_callback(gint response, gpointer user_data)
 
     input_free(input);
 }
-
+*/
 
 static void passkey_dialog(const char *path, const char *address,
         const gchar *device, DBusGMethodInvocation *context)
@@ -887,7 +884,7 @@ static void mode_changed(DBusGProxy *object,
 
 	set_new_mode(adapter, mode);
 }
-
+/*
 static void adapter_free(gpointer data, gpointer user_data)
 {
 	struct adapter_data *adapter = data;
@@ -905,6 +902,7 @@ static void adapter_disable(gpointer data, gpointer user_data)
 
 	adapter->attached = 0;
 }
+*/
 
 static gint adapter_compare(gconstpointer a, gconstpointer b)
 {
@@ -913,7 +911,7 @@ static gint adapter_compare(gconstpointer a, gconstpointer b)
 
 	return g_ascii_strcasecmp(adapter->path, path);
 }
-
+/*
 static void adapter_count(gpointer data, gpointer user_data)
 {
 	struct adapter_data *adapter = data;
@@ -923,7 +921,7 @@ static void adapter_count(gpointer data, gpointer user_data)
 		(*count)++;
 }
 
-
+*/
 
 
 void add_bonding(){

@@ -30,7 +30,7 @@ static GtkWidget *progress_bar;
 static GtkWidget *rescan_buttton;
 static GtkWidget *close_button;
 static gint usage=0;
-
+void show_pairing_ok(void);
 gpointer progress()
 {
 
