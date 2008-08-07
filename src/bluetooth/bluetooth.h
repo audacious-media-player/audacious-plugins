@@ -28,7 +28,9 @@
 #include <dbus/dbus-glib.h>
 #include <glib-object.h>
 #include <stdio.h>
-
+#include <audacious/configdb.h>
+#include <audacious/i18n.h>
+#include <audacious/util.h>
 #include "gui.h"
 typedef struct {
     guint class;
