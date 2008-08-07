@@ -199,6 +199,7 @@ static void passkey_callback(gint response, gpointer user_data)
         GError *error;
         error = g_error_new(AGENT_ERROR, AGENT_ERROR_REJECT,
                 "Pairing request rejected");
+        printf("passkey error\n");
         dbus_g_method_return_error(input->context, error);
     }
 
@@ -339,10 +340,11 @@ static void auth_dialog(const char *path, const char *address,
     /* translators: Whether to grant access to a particular service
      * to the device mentioned */
 
-    //	g_signal_connect(G_OBJECT(dialog), "response",
-    //				G_CALLBACK(auth_callback), input);
+   /* 	g_signal_connect(G_OBJECT(dialog), "response",
+    				G_CALLBACK(auth_callback), input);
 
-    //enable_blinking();
+    enable_blinking();
+    */
 }
 
 typedef struct {
@@ -392,9 +394,6 @@ static PasskeyAgent *passkey_agent_new(const char *path)
     g_printf("new passkey agent \n");
     return agent;
 }
-
-
-
 static gboolean passkey_agent_request(PasskeyAgent *agent,
         const char *path, const char *address,
         DBusGMethodInvocation *context)
@@ -816,6 +815,7 @@ static void bonding_removed(DBusGProxy *object,
 	text = g_strdup_printf(_("Removed bonding with %s"), device);
 
 	g_free(device);
+    printf("bonding removed");
 
 //	show_notification(adapter ? adapter : _("Bluetooth device"),
 //						text, NULL, 6000, NULL);

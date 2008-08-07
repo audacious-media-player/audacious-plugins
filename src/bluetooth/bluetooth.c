@@ -24,6 +24,7 @@
 #include "gui.h"
 #include "scan_gui.h"
 #include "agent.h"
+#include <audacious/plugin.h>
 #define DEBUG 1
 static gboolean plugin_active = FALSE,exiting=FALSE;
 GList * current_device = NULL;
@@ -44,7 +45,7 @@ static void discovery_completed(DBusGProxy *object, gpointer user_data);
 void discover_devices(void);
 void disconnect_dbus_signals(void);
 static void show_restart_dialog(void);
-
+static void remove_bonding();
 GeneralPlugin bluetooth_gp =
 {
     .description = "Bluetooth audio support",
@@ -72,6 +73,7 @@ void bluetooth_cleanup ( void )
         close_window();
         config =0;
     }
+    remove_bonding();
     if(discover_finish == 2) {
         dbus_g_connection_flush (bus);
         dbus_g_connection_unref(bus);
@@ -118,7 +120,12 @@ void clean_devices_list()
     audio_devices = NULL;
     //g_list_free(current_device);
 }
+static void remove_bonding()
+{
+    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,"00:0D:3C:B1:1C:7A",G_TYPE_INVALID,G_TYPE_INVALID); 
 
+}
 void refresh_call(void)
 {
     printf("refresh function called\n");
@@ -172,8 +179,6 @@ void play_call()
     temp_file_name = g_strconcat(home,"/temp_bt",NULL);
     file = fopen(file_name,"r");
     temp_file = fopen(temp_file_name,"w");
-    /* hardcoded address TO REMOVE after testing */
-    //   current_address = "00:0D:3C:B1:1C:7A";
     device_line = g_strdup_printf("device %s\n",current_address);
     if ( file != NULL )
     {
@@ -219,15 +224,15 @@ void play_call()
 }
 static void show_restart_dialog()
 {
-static GtkWidget *window = NULL;
- GtkWidget *dialog;
-  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-				   GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-				   GTK_MESSAGE_INFO,
-				   GTK_BUTTONS_OK,
-				   "Please restart the player to apply the bluetooth audio settings!");
-   gtk_dialog_run (GTK_DIALOG (dialog));
-   gtk_widget_destroy (dialog);
+    static GtkWidget *window = NULL;
+    GtkWidget *dialog;
+    dialog = gtk_message_dialog_new (GTK_WINDOW (window),
+            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_INFO,
+            GTK_BUTTONS_OK,
+            "Please restart the player to apply the bluetooth audio settings!");
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
 }
 
 static void remote_device_found(DBusGProxy *object, char *address, const unsigned int class, const int rssi, gpointer user_data)
