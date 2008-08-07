@@ -1,0 +1,14 @@
+#ifndef CONVERT_H
+#define CONVERT_H
+
+#include "filewriter.h"
+
+gpointer convert_output;
+
+gboolean convert_init(AFormat input_fmt, AFormat output_fmt, gint channels);
+
+gint convert_process(gpointer ptr, gint length);
+
+void convert_free(void);
+
+#endif

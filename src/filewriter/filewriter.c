@@ -22,6 +22,7 @@
 
 #include "filewriter.h"
 #include "plugins.h"
+#include "convert.h"
 
 struct format_info input;
 
@@ -261,77 +262,20 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     if (!output_file)
         return 0;
 
+    convert_init(fmt, plugin.format_required, nch);
+
     rv = (plugin.open)();
 
     return rv;
 }
 
-static void convert_buffer(gpointer buffer, gint length)
-{
-    gint i;
-
-    if (input.format == FMT_S8)
-    {
-        guint8 *ptr1 = buffer;
-        gint8 *ptr2 = buffer;
-
-        for (i = 0; i < length; i++)
-            *(ptr1++) = *(ptr2++) + 128;
-    }
-    if (input.format == FMT_S16_BE)
-    {
-        gint16 *ptr = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr++)
-            *ptr = GINT16_FROM_BE(*ptr);
-    }
-    if (input.format == FMT_S16_LE)
-    {
-        gint16 *ptr = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr++)
-            *ptr = GINT16_FROM_LE(*ptr);
-    }
-    if (input.format == FMT_U16_BE)
-    {
-        gint16 *ptr1 = buffer;
-        guint16 *ptr2 = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = GUINT16_FROM_BE(*ptr2) - 32768;
-    }
-    if (input.format == FMT_U16_LE)
-    {
-        gint16 *ptr1 = buffer;
-        guint16 *ptr2 = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = GUINT16_FROM_LE(*ptr2) - 32768;
-    }
-    if (input.format == FMT_U16_NE)
-    {
-        gint16 *ptr1 = buffer;
-        guint16 *ptr2 = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = (*ptr2) - 32768;
-    }
-}
-
 static void file_write(void *ptr, gint length)
 {
-    if (input.format == FMT_S8 || input.format == FMT_U16_NE ||
-        input.format == FMT_U16_LE || input.format == FMT_U16_BE)
-        convert_buffer(ptr, length);
-#ifdef WORDS_BIGENDIAN
-    if (input.format == FMT_S16_LE)
-        convert_buffer(ptr, length);
-#else
-    if (input.format == FMT_S16_BE)
-        convert_buffer(ptr, length);
-#endif
+    int len;
 
-    plugin.write(ptr, length);
+    len = convert_process(ptr, length);
+
+    plugin.write(convert_output, len);
 }
 
 static gint file_write_output(void *ptr, gint length)
@@ -342,6 +286,7 @@ static gint file_write_output(void *ptr, gint length)
 static void file_close(void)
 {
     plugin.close();
+    convert_free();
 
     if (output_file)
     {

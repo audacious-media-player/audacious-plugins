@@ -37,6 +37,8 @@
 #include <audacious/util.h>
 #include <audacious/vfs.h>
 
+#include <libSAD/libSAD.h>
+
 struct format_info { 
     AFormat format;
     int frequency;
