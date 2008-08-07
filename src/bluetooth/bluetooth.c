@@ -153,6 +153,9 @@ gpointer connect_call_th(void)
 
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
     run_agents();
+    close_call();
+    show_scan(1);
+
     dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID); 
     return NULL;
 }
