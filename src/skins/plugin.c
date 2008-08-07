@@ -106,15 +106,15 @@ gboolean skins_init(void) {
 
 gboolean skins_cleanup(void) {
     if (plugin_is_active == TRUE) {
+        gtk_widget_hide(mainwin);
+        gtk_widget_hide(equalizerwin);
+        gtk_widget_hide(playlistwin);
         skins_cfg_save();
         cleanup_skins();
         skins_free_paths();
         ui_main_evlistener_dissociate();
         ui_playlist_evlistener_dissociate();
         skins_cfg_free();
-        gtk_widget_destroy(mainwin);
-        gtk_widget_destroy(equalizerwin);
-        gtk_widget_destroy(playlistwin);
         ui_manager_destroy();
         mainwin = NULL;
         equalizerwin = NULL;
