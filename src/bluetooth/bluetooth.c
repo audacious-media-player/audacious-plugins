@@ -218,7 +218,9 @@ void play_call()
 
     printf("play callback\n");
     close_window();
-    show_restart_dialog();
+    aud_output_plugin_cleanup();
+    audacious_drct_stop();
+    audacious_drct_play();
 
 
 }
