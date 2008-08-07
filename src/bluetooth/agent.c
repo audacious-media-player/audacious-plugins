@@ -762,6 +762,8 @@ void set_auto_authorize(gboolean value)
 static void bonding_created(DBusGProxy *object,
 				const char *address, gpointer user_data)
 {
+    bonded_dev_mutex = g_mutex_new (); 
+
 	const char *adapter = NULL, *name = NULL;
 	gchar *device, *text;
 
@@ -779,6 +781,10 @@ static void bonding_created(DBusGProxy *object,
 			device = g_strdup_printf("%s (%s)", name, address);
 	} else
 		device = g_strdup(address);
+    
+    g_mutex_lock(bonded_dev_mutex);
+    bonded_dev = g_strdup_printf(address);
+    g_mutex_unlock(bonded_dev_mutex);
 
 	text = g_strdup_printf(_("Created bonding with %s"), device);
     bonding_finish = 1;

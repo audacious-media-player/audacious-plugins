@@ -89,6 +89,9 @@ void bluetooth_cleanup ( void )
 void bt_about( void )
 {
     printf("about call\n");
+    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);    
+    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,((DeviceData*)(current_device->data))->address,G_TYPE_INVALID,G_TYPE_INVALID); 
+
 }
 
 void bt_cfg(void)
@@ -127,7 +130,9 @@ void clean_devices_list()
 static void remove_bonding()
 {
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,"00:0D:3C:B1:1C:7A",G_TYPE_INVALID,G_TYPE_INVALID); 
+    g_mutex_lock(bonded_dev_mutex);
+    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,bonded_dev,G_TYPE_INVALID,G_TYPE_INVALID); 
+    g_mutex_unlock(bonded_dev_mutex);
 
 }
 void refresh_call(void)

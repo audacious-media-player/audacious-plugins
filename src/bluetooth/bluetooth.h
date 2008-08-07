@@ -47,5 +47,6 @@ GList * audio_devices;
 gint discover_finish ;
 DBusGConnection * bus;
 DBusGProxy * obj;
-
+gchar *bonded_dev;
+GMutex *bonded_dev_mutex;
 
