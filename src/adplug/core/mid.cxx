@@ -328,11 +328,13 @@ CmidPlayer::load (VFSFile * fd, const CFileProvider & fp)
     break;
   case 0x84:
     if (s[1] == 0x00 && load_sierra_ins (filename, fp))
+    {
       if (s[2] == 0xf0)
         good = FILE_ADVSIERRA;
       else
         good = FILE_SIERRA;
     break;
+    }
   default:
     if (s[4] == 'A' && s[5] == 'D')
       good = FILE_OLDLUCAS;
@@ -900,10 +902,12 @@ CmidPlayer::update ()
   midiprintf ("\n");
   for (i = 0; i < 16; i++)
     if (track[i].on)
+    {
       if (track[i].pos < track[i].tend)
         midiprintf ("<%d>", track[i].iwait);
       else
         midiprintf ("stop");
+    }
 
   /*
      if (ret==0 && type==FILE_ADVSIERRA)

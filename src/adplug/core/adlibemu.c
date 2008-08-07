@@ -144,7 +144,7 @@ void docell2 (void *c, float modulator)
 
     ftol(ctc->t+modulator,&i);
 
-    if (*(long *)&ctc->amp <= 0x37800000)
+    if ((long)ctc->amp <= 0x37800000)
     {
 	ctc->amp = 0;
 	ctc->cellfunc = docell4;
@@ -160,7 +160,7 @@ void docell1 (void *c, float modulator)
 
     ftol(ctc->t+modulator,&i);
 
-    if ((*(long *)&ctc->amp) <= (*(long *)&ctc->sustain))
+    if ((long)ctc->amp <= (long)ctc->sustain)
     {
 	if (ctc->flags&32)
 	{
@@ -183,7 +183,7 @@ void docell0 (void *c, float modulator)
     ftol(ctc->t+modulator,&i);
 
     ctc->amp = ((ctc->a3*ctc->amp + ctc->a2)*ctc->amp + ctc->a1)*ctc->amp + ctc->a0;
-    if ((*(long *)&ctc->amp) > 0x3f800000)
+    if ((long)ctc->amp > 0x3f800000)
     {
 	ctc->amp = 1;
 	ctc->cellfunc = docell1;

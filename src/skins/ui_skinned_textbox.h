@@ -44,6 +44,7 @@ typedef struct _UiSkinnedTextboxClass   UiSkinnedTextboxClass;
 struct _UiSkinnedTextbox {
     GtkWidget        widget;
 
+    GdkWindow        *event_window;
     gint             x, y, width, height;
     gchar            *text;
 };

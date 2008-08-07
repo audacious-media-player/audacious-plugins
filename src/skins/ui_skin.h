@@ -239,7 +239,7 @@ void skin_parse_hints(Skin * skin, gchar *path_p);
 
 void skin_set_random_skin(void);
 
-
+void ui_skinned_widget_draw_with_coordinates(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gint destx, gint desty, gboolean scale);
 void ui_skinned_widget_draw(GtkWidget *widget, GdkPixbuf *obj, gint width, gint height, gboolean scale);
 
 #endif

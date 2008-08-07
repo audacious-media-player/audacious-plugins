@@ -72,6 +72,7 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
         if (oss_cfg.alt_mixer_device[0] != '/')
             oss_cfg.use_alt_mixer_device = FALSE;
 
+    /* Save configuration */
     db = aud_cfg_db_open();
 
     aud_cfg_db_set_int(db, "OSS", "audio_device", oss_cfg.audio_device);

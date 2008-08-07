@@ -212,15 +212,19 @@ Cs3mPlayer::update ()
         tone_portamento (realchan, channel[realchan].dualinfo);
     case 4:
       if (info <= 0x0f)         // volume slide down
+      {
         if (channel[realchan].vol - info >= 0)
           channel[realchan].vol -= info;
         else
           channel[realchan].vol = 0;
+      }
       if ((info & 0x0f) == 0)   // volume slide up
+      {
         if (channel[realchan].vol + (info >> 4) <= 63)
           channel[realchan].vol += info >> 4;
         else
           channel[realchan].vol = 63;
+      }
       setvolume (realchan);
       break;
     case 5:
@@ -323,6 +327,7 @@ Cs3mPlayer::update ()
       // set channel values
       donote = 0;
       if (pattern[pattnr][row][chan].note < 14)
+      {
         // tone portamento
         if (pattern[pattnr][row][chan].command == 7
             || pattern[pattnr][row][chan].command == 12)
@@ -339,6 +344,7 @@ Cs3mPlayer::update ()
           channel[realchan].key = 1;
           donote = 1;
         }
+      }
       if (pattern[pattnr][row][chan].note == 14)
       {                         // key off (is 14 here, cause note is only first 4 bits)
         channel[realchan].key = 0;
@@ -371,10 +377,12 @@ Cs3mPlayer::update ()
           donote = 1;
       }
       if (pattern[pattnr][row][chan].volume != 255)
+      {
         if (pattern[pattnr][row][chan].volume < 64) // set volume
           channel[realchan].vol = pattern[pattnr][row][chan].volume;
         else
           channel[realchan].vol = 63;
+      }
       channel[realchan].fx = pattern[pattnr][row][chan].command;    // set command
       if (pattern[pattnr][row][chan].info)  // set infobyte
         channel[realchan].info = pattern[pattnr][row][chan].info;
@@ -420,15 +428,19 @@ Cs3mPlayer::update ()
         break;                  // pattern break
       case 4:
         if (info > 0xf0)        // fine volume down
+        {
           if (channel[realchan].vol - (info & 0x0f) >= 0)
             channel[realchan].vol -= info & 0x0f;
           else
             channel[realchan].vol = 0;
+        }
         if ((info & 0x0f) == 0x0f && info >= 0x1f)  // fine volume up
+        {
           if (channel[realchan].vol + ((info & 0xf0) >> 4) <= 63)
             channel[realchan].vol += (info & 0xf0) >> 4;
           else
             channel[realchan].vol = 63;
+        }
         setvolume (realchan);
         break;
       case 5:
@@ -468,6 +480,7 @@ Cs3mPlayer::update ()
         if (info == 0xb0)       // set loop start
           loopstart = row;
         if (info > 0xb0 && info <= 0xbf)    // pattern loop
+        {
           if (!loopcnt)
           {
             loopcnt = info & 0x0f;
@@ -479,6 +492,7 @@ Cs3mPlayer::update ()
             crow = loopstart;
             pattbreak = 1;
           }
+        }
         if ((info & 0xf0) == 0xe0)  // patterndelay
           del = speed * (info & 0x0f) - 1;
         break;

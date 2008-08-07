@@ -58,20 +58,6 @@
 #include "ui_hints.h"
 #include "dnd.h"
 #include "plugin.h"
-#if 0
-#include "configdb.h"
-#include "input.h"
-#include "main.h"
-#include "playback.h"
-#include "playlist.h"
-#include "pluginenum.h"
-#include "strings.h"
-#include "ui_dock.h"
-#include "ui_main_evlisteners.h"
-#include "ui_skinselector.h"
-#include "util.h"
-#include "visualization.h"
-#endif
 #include "ui_skinned_window.h"
 #include "ui_skinned_button.h"
 #include "ui_skinned_textbox.h"
@@ -81,6 +67,7 @@
 #include "ui_skinned_playstatus.h"
 #include "ui_skinned_monostereo.h"
 #include "ui_skinned_playlist.h"
+#include "ui_main_evlisteners.h"
 #include <audacious/plugin.h>
 #include "skins_cfg.h"
 
@@ -345,11 +332,7 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 static void
 mainwin_destroy(GtkWidget * widget, gpointer data)
 {
-/* we should detect whether plugin got unloaded and when user indeed
-   wants to close audacious */
-#if 0
     mainwin_quit_cb();
-#endif
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -848,7 +831,7 @@ mainwin_keypress(GtkWidget * grab_widget,
             aud_playlist_next(playlist);
             break;
         case GDK_KP_Insert:
-            audacious_drct_jtf_show();
+            action_jump_to_file();
             break;
         case GDK_Return:
         case GDK_KP_Enter:
@@ -1060,8 +1043,8 @@ mainwin_drag_data_received(GtkWidget * widget,
 
     /* perhaps make suffix check case-insensitive -- desowin */
     if (aud_str_has_prefix_nocase((char*)selection_data->data, "file:///")) {
-        if (str_has_suffix_nocase((char*)selection_data->data, ".wsz\r\n") ||
-            str_has_suffix_nocase((char*)selection_data->data, ".zip\r\n")) {
+        if (aud_str_has_suffix_nocase((char*)selection_data->data, ".wsz\r\n") ||
+            aud_str_has_suffix_nocase((char*)selection_data->data, ".zip\r\n")) {
             on_skin_view_drag_data_received(GTK_WIDGET(user_data), context, x, y, selection_data, info, time, NULL);
             return;
         }
@@ -1759,7 +1742,7 @@ mainwin_general_menu_callback(gpointer data,
             mainwin_jump_to_time();
             break;
         case MAINWIN_GENERAL_JTF:
-            audacious_drct_jtf_show();
+            action_jump_to_file();
             break;
         case MAINWIN_GENERAL_EXIT:
             mainwin_quit_cb();
@@ -2695,8 +2678,7 @@ action_viewtime( GtkAction *action, GtkRadioAction *current )
 void
 action_about_audacious( void )
 {
-    gboolean show = TRUE;
-    aud_hook_call("aboutwin show", &show);
+    skins_interface.ops->aboutwin_show();
 }
 
 void
@@ -2759,7 +2741,7 @@ action_current_track_info( void )
 void
 action_jump_to_file( void )
 {
-    audacious_drct_jtf_show();
+    skins_interface.ops->jump_to_track_show();
 }
 
 void

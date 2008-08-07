@@ -1,20 +1,37 @@
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#include <glib-object.h>
-#include <stdio.h>
+/*
+ * Audacious Bluetooth headset suport plugin
+ *
+ * Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; under version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses>.
+ */
+
+#include <glib/gstdio.h>
+#include <errno.h>
+#include <string.h>
 #include "bluetooth.h"
 #include "marshal.h"
 #include "gui.h"
 #include "scan_gui.h"
+#include "agent.h"
+#include <audacious/plugin.h>
 #define DEBUG 1
-static gboolean plugin_active = FALSE,exiting=FALSE;
 GList * current_device = NULL;
-DBusGConnection * bus = NULL;
-DBusGProxy * obj = NULL;
 gint config = 0;
 gint devices_no = 0;
 GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-
+static gchar *current_address=NULL;
+static GThread *connect_th;
 void bluetooth_init ( void );
 void bluetooth_cleanup ( void );
 void bt_cfg(void);
@@ -26,8 +43,8 @@ static void print_results(void);
 static void discovery_completed(DBusGProxy *object, gpointer user_data);
 void discover_devices(void);
 void disconnect_dbus_signals(void);
-
-
+/*static void show_restart_dialog(void); */
+static void remove_bonding();
 GeneralPlugin bluetooth_gp =
 {
     .description = "Bluetooth audio support",
@@ -42,28 +59,36 @@ DECLARE_PLUGIN(bluetooth_gp, NULL, NULL, NULL, NULL, NULL, bluetooth_gplist, NUL
 void bluetooth_init ( void )
 {
     audio_devices = NULL;
+    bus = NULL;
+    obj = NULL;
     discover_devices();
 }
 
 void bluetooth_cleanup ( void )
 {
     printf("bluetooth: exit\n");
-    if (config ==1 ){
+    if (config ==1 )
+    {
         close_window();
         config =0;
     }
+    remove_bonding();
     if(discover_finish == 2) {
         dbus_g_connection_flush (bus);
         dbus_g_connection_unref(bus);
         disconnect_dbus_signals();
 
     }
+    /* switching back to default pcm device at cleanup */
+    mcs_handle_t *cfgfile = aud_cfg_db_open();
+    aud_cfg_db_set_string(cfgfile,"ALSA","pcm_device", "default");
+    aud_cfg_db_close(cfgfile);
+
 }
 
 void bt_about( void )
 {
     printf("about call\n");
-    show_scan();
 }
 
 void bt_cfg(void)
@@ -73,12 +98,12 @@ void bt_cfg(void)
     if(discover_finish == 2){
         if (devices_no == 0){
             printf("no devs!\n");
-            show_scan();
+            show_scan(0);
             show_no_devices();
         }else 
             results_ui();
     }
-    else show_scan();    
+    else show_scan(0);    
     printf("end of bt_cfg\n");
 }
 
@@ -91,14 +116,20 @@ void disconnect_dbus_signals()
 
 }
 
-void clean_devices_list(){
+void clean_devices_list()
+{
     g_list_free(audio_devices);
     dbus_g_connection_flush (bus);
     dbus_g_connection_unref(bus);
     audio_devices = NULL;
     //g_list_free(current_device);
 }
+static void remove_bonding()
+{
+    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,"00:0D:3C:B1:1C:7A",G_TYPE_INVALID,G_TYPE_INVALID); 
 
+}
 void refresh_call(void)
 {
     printf("refresh function called\n");
@@ -109,18 +140,106 @@ void refresh_call(void)
 
         discover_devices();
         close_window();
-        show_scan();
+        show_scan(0);
     }
     else 
         printf("Scanning please wait!\n");
 }
 
+gpointer connect_call_th(void)
+{
+
+    //I will have to enable the audio service if necessary 
+
+    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
+    run_agents();
+    dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID); 
+    return NULL;
+}
 void connect_call(void)
 {
-    printf("connect function \n");
+    current_address = g_strdup(((DeviceData*)(selected_dev->data))->address);
+    connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
+    close_call();
+    close_window();
+    show_scan(1);
 }
 
 
+void play_call()
+{
+
+    FILE *file;
+    FILE *temp_file;
+    gint prev=0;
+    char line[128];
+    const gchar *home;
+    gchar *device_line;
+    gchar *file_name="";
+    gchar *temp_file_name;
+    home = g_get_home_dir();
+    file_name = g_strconcat(home,"/.asoundrc",NULL);
+    temp_file_name = g_strconcat(home,"/temp_bt",NULL);
+    file = fopen(file_name,"r");
+    temp_file = fopen(temp_file_name,"w");
+    device_line = g_strdup_printf("device %s\n",current_address);
+    if ( file != NULL )
+    {
+        while ( fgets ( line, sizeof line, file ) != NULL )
+        {
+            if(!(strcmp(line,"pcm.audacious_bt{\n"))){
+                fputs(line,temp_file);
+                fgets ( line, sizeof line, file ); /* type bluetooth */
+                fputs(line,temp_file);
+                fgets ( line, sizeof line, file ); /* device MAC */
+                fputs(device_line,temp_file);
+                prev = 1;
+            } else 
+                fputs(line,temp_file);
+        }
+
+        fclose (file);
+    }
+    if(!prev){
+        fputs("pcm.audacious_bt{\n",temp_file);
+        fputs("type bluetooth\n",temp_file);
+        fputs(device_line,temp_file);
+        fputs("}\n",temp_file);
+        prev = 0;
+    }
+
+    fclose(temp_file);
+    int err = rename(temp_file_name,file_name);
+    printf("rename error : %d",err);
+    perror("zz");
+    g_free(device_line);
+    g_free(file_name);
+    g_free(temp_file_name);
+    mcs_handle_t *cfgfile = aud_cfg_db_open();
+    aud_cfg_db_set_string(cfgfile,"ALSA","pcm_device", "audacious_bt");
+    aud_cfg_db_close(cfgfile);
+
+    printf("play callback\n");
+    close_window();
+    aud_output_plugin_cleanup();
+    audacious_drct_stop();
+    audacious_drct_play();
+
+
+}
+/*static void show_restart_dialog()
+{
+    static GtkWidget *window = NULL;
+    GtkWidget *dialog;
+    dialog = gtk_message_dialog_new (GTK_WINDOW (window),
+            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_INFO,
+            GTK_BUTTONS_OK,
+            "Please restart the player to apply the bluetooth audio settings!");
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+}
+*/
 static void remote_device_found(DBusGProxy *object, char *address, const unsigned int class, const int rssi, gpointer user_data)
 {
     int found_in_list=FALSE; 

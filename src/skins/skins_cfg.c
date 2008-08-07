@@ -511,7 +511,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
                                 gint x, gint y,
                                 GtkSelectionData * selection_data,
                                 guint info, guint time,
-                                gpointer user_data) 
+                                gpointer user_data)
 {
     mcs_handle_t *db;
     gchar *path;

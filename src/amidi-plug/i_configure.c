@@ -30,6 +30,7 @@
 #include "i_utils.h"
 #include <audacious/plugin.h>
 #include <audacious/auddrct.h>
+#include <audacious/plugin.h>
 
 
 amidiplug_cfg_backend_t * amidiplug_cfg_backend;

@@ -1,3 +1,21 @@
+/*
+ * Audacious Bluetooth headset suport plugin
+ *
+ * Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; under version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses>.
+ */
+
 #include "gui.h"
 #include "bluetooth.h"
 
@@ -66,8 +84,7 @@ static GtkTreeModel * rebuild_model(void)
     GtkTreeIter iter;
     gint dev_no=0;
     GList *dev;
-    gchar *temp;
-    if(!window) 
+      if(!window) 
         return NULL;
     /* create list store */
     store = gtk_list_store_new(NUM_COLUMNS,
@@ -100,12 +117,12 @@ static GtkTreeModel * rebuild_model(void)
                 ((DeviceData*)(dev->data))-> name,-1);
         dev = g_list_next(dev);
     }
-    //set the labels
-    //   temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
+    /*set the labels */
+    /*   temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class); */
     gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
-    //    gtk_label_set_text(GTK_LABEL(label_class),temp);
+    /*    gtk_label_set_text(GTK_LABEL(label_class),temp); */
     gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
-    g_free(temp);
+   /* g_free(temp); */
     return GTK_TREE_MODEL(store);          
 
 }
@@ -156,14 +173,14 @@ void select_row(GtkWidget *treeview){
         path = gtk_tree_model_get_path (model, &iter);
         sel = gtk_tree_path_get_indices (path)[0];
         printf("i=%d\n",sel);
-        dev = audio_devices;
+        selected_dev = audio_devices;
         for(i=0;i<sel;i++) 
-            dev = g_list_next(dev);
+           selected_dev = g_list_next(dev);
         if(dev != NULL) {
-            temp = g_strdup_printf("0x%x",((DeviceData*)(dev->data))->class);
-            gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(dev->data))->name);
+            temp = g_strdup_printf("0x%x",((DeviceData*)(selected_dev->data))->class);
+            gtk_label_set_text(GTK_LABEL(label_prod),((DeviceData*)(selected_dev->data))->name);
             gtk_label_set_text(GTK_LABEL(label_class),temp);
-            gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(dev->data))->address);
+            gtk_label_set_text(GTK_LABEL(label_address),((DeviceData*)(selected_dev->data))->address);
             gtk_tree_path_free (path);
             g_free(temp);
         }else 
@@ -174,11 +191,12 @@ void select_row(GtkWidget *treeview){
 }
 
 void refresh_resultsui(){
-  gtk_widget_destroy (window);
-  window = NULL;
-  refresh_call();
+    gtk_widget_destroy (window);
+    window = NULL;
+    selected_dev = NULL;
+    refresh_call();
 }
-   
+
 
 void results_ui()
 {
