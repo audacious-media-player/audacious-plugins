@@ -24,6 +24,7 @@
 
 #include "../filewriter/filewriter.h"
 #include "../filewriter/plugins.h"
+#include "../filewriter/convert.h"
 #include <shout/shout.h>
 
 struct format_info input;
@@ -325,78 +326,21 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
         }
     }
 
+    convert_init(fmt, plugin.format_required, nch);
+
     rv = (plugin.open)();
 
     g_debug("ICE_OPEN");
     return rv;
 }
 
-static void convert_buffer(gpointer buffer, gint length)
-{
-    gint i;
-
-    if (input.format == FMT_S8)
-    {
-        guint8 *ptr1 = buffer;
-        gint8 *ptr2 = buffer;
-
-        for (i = 0; i < length; i++)
-            *(ptr1++) = *(ptr2++) + 128;
-    }
-    if (input.format == FMT_S16_BE)
-    {
-        gint16 *ptr = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr++)
-            *ptr = GINT16_FROM_BE(*ptr);
-    }
-    if (input.format == FMT_S16_LE)
-    {
-        gint16 *ptr = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr++)
-            *ptr = GINT16_FROM_LE(*ptr);
-    }
-    if (input.format == FMT_U16_BE)
-    {
-        gint16 *ptr1 = buffer;
-        guint16 *ptr2 = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = GUINT16_FROM_BE(*ptr2) - 32768;
-    }
-    if (input.format == FMT_U16_LE)
-    {
-        gint16 *ptr1 = buffer;
-        guint16 *ptr2 = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = GUINT16_FROM_LE(*ptr2) - 32768;
-    }
-    if (input.format == FMT_U16_NE)
-    {
-        gint16 *ptr1 = buffer;
-        guint16 *ptr2 = buffer;
-
-        for (i = 0; i < length >> 1; i++, ptr2++)
-            *(ptr1++) = (*ptr2) - 32768;
-    }
-}
-
 static void ice_write(void *ptr, gint length)
 {
-    if (input.format == FMT_S8 || input.format == FMT_U16_NE ||
-        input.format == FMT_U16_LE || input.format == FMT_U16_BE)
-        convert_buffer(ptr, length);
-#ifdef WORDS_BIGENDIAN
-    if (input.format == FMT_S16_LE)
-        convert_buffer(ptr, length);
-#else
-    if (input.format == FMT_S16_BE)
-        convert_buffer(ptr, length);
-#endif
+    int len;
 
-    plugin.write(ptr, length);
+    len = convert_process(ptr, length);
+
+    plugin.write(convert_output, length);
 }
 
 static gint ice_real_write(void* ptr, gint length)
@@ -437,6 +381,7 @@ static gint ice_write_output(void *ptr, gint length)
 static gboolean ice_real_close(gpointer data)
 {
     plugin.close();
+    convert_free();
 
     if (shout)
     {

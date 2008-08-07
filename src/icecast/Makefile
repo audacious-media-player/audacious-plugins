@@ -2,7 +2,8 @@ PLUGIN = icecast${PLUGIN_SUFFIX}
 
 SRCS = icecast.c		\
        ../filewriter/mp3.o	\
-       ../filewriter/vorbis.o
+       ../filewriter/vorbis.o	\
+       ../filewriter/convert.o
 
 include ../../buildsys.mk
 include ../../extra.mk
