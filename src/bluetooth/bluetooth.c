@@ -80,6 +80,11 @@ void bluetooth_cleanup ( void )
         disconnect_dbus_signals();
 
     }
+    /* switching back to default pcm device at cleanup */
+    mcs_handle_t *cfgfile = aud_cfg_db_open();
+    aud_cfg_db_set_string(cfgfile,"ALSA","pcm_device", "default");
+    aud_cfg_db_close(cfgfile);
+
 }
 
 void bt_about( void )
