@@ -52,6 +52,8 @@ gpointer progress()
                 if(window){
                     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
                     show_pairing_ok();
+                    gtk_widget_set_sensitive(rescan_buttton,TRUE);
+
                 }
                 return 0;
             }
@@ -137,6 +139,7 @@ void show_scan(gint use)
         }else{
             rescan_buttton = gtk_button_new_with_mnemonic(_("Play"));
             g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (play_call),NULL);
+            gtk_widget_set_sensitive(rescan_buttton,FALSE);
         }
 
 

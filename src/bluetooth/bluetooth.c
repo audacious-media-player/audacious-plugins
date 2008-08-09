@@ -130,9 +130,7 @@ void clean_devices_list()
 static void remove_bonding()
 {
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-    g_mutex_lock(bonded_dev_mutex);
     dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,bonded_dev,G_TYPE_INVALID,G_TYPE_INVALID); 
-    g_mutex_unlock(bonded_dev_mutex);
 
 }
 void refresh_call(void)

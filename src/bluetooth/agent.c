@@ -27,8 +27,8 @@
 #include "agent.h"
 #include "gui.h"
 
-#define PASSKEY_AGENT_PATH	"/org/bluez/audacious_passkey"
-#define AUTH_AGENT_PATH		"/org/bluez/audacious_auth"
+#define PASSKEY_AGENT_PATH	"/org/bluez/passkey_agent"
+#define AUTH_AGENT_PATH		"/org/bluez/auth_agent"
 
 static GtkWidget *agent_window = NULL;
 static GtkWidget *window_box = NULL;
@@ -204,56 +204,9 @@ static void passkey_callback(gint response, gpointer user_data)
     }
 
     input_free(input);
-}
+    printf("return\n");
+ }
 
-/*static void confirm_callback(gint response, gpointer user_data)
-{
-    struct input_data *input = user_data;
-
-    if (response != GTK_RESPONSE_YES) {
-        GError *error;
-        error = g_error_new(AGENT_ERROR, AGENT_ERROR_REJECT,
-                "Confirmation request rejected");
-        dbus_g_method_return_error(input->context, error);
-    } else
-        dbus_g_method_return(input->context);
-
-    input_free(input);
-}
-*/
-/*
-static void set_trusted(struct input_data *input)
-{
-    DBusGProxy *object;
-    //aways set trusted -- we dont have yet an active button -
-    //maybe I'll add one	
-    object = dbus_g_proxy_new_for_name(connection, "org.bluez",
-            input->path, "org.bluez.Adapter");
-
-    dbus_g_proxy_call(object, "SetTrusted", NULL,
-            G_TYPE_STRING, input->address, G_TYPE_INVALID,
-            G_TYPE_INVALID);
-}
-*/
-/*
-static void auth_callback(gint response, gpointer user_data)
-{
-
-    struct input_data *input = user_data;
-
-    if (response == GTK_RESPONSE_YES) {
-        set_trusted(input);
-        dbus_g_method_return(input->context);
-    } else {
-        GError *error;
-        error = g_error_new(AGENT_ERROR, AGENT_ERROR_REJECT,
-                "Authorization request rejected");
-        dbus_g_method_return_error(input->context, error);
-    }
-
-    input_free(input);
-}
-*/
 
 static void passkey_dialog(const char *path, const char *address,
         const gchar *device, DBusGMethodInvocation *context)
@@ -269,26 +222,6 @@ static void passkey_dialog(const char *path, const char *address,
 
     input->context = context;
 
-
-
-    /*
-       g_signal_connect(G_OBJECT(entry), "changed",
-       G_CALLBACK(changed_callback), input);
-
-
-       g_signal_connect(G_OBJECT(button), "toggled",
-       G_CALLBACK(toggled_callback), input);
-
-       gtk_container_add(GTK_CONTAINER(vbox), button);
-
-       input_list = g_list_append(input_list, input);
-
-       g_signal_connect(G_OBJECT(dialog), "response",
-       G_CALLBACK(passkey_callback), input);
-
-       enable_blinking();
-       */
-    printf("passkey callback\n");
     passkey_callback(GTK_RESPONSE_ACCEPT,input);
 
 
@@ -298,7 +231,8 @@ static void confirm_dialog(const char *path, const char *address,
         const char *value, const gchar *device,
         DBusGMethodInvocation *context)
 {
-    struct input_data *input;
+   printf("confirm dialog \n");
+   struct input_data *input;
 
     input = g_try_malloc0(sizeof(*input));
     if (!input)
@@ -308,8 +242,6 @@ static void confirm_dialog(const char *path, const char *address,
     input->address = g_strdup(address);
 
     input->context = context;
-
-printf("confirm dialog\n");
     //	g_signal_connect(G_OBJECT(dialog), "response",
     //				G_CALLBACK(confirm_callback), input);
 
@@ -437,6 +369,7 @@ static gboolean passkey_agent_confirm(PasskeyAgent *agent,
         const char *path, const char *address,
         const char *value, DBusGMethodInvocation *context)
 {
+    printf("passkey agent confirm \n");
     DBusGProxy *object;
     const char *adapter = NULL, *name = NULL;
     gchar *device, *line;
@@ -476,6 +409,7 @@ static gboolean passkey_agent_confirm(PasskeyAgent *agent,
 static gboolean passkey_agent_cancel(PasskeyAgent *agent,
         const char *path, const char *address, GError **error)
 {
+    printf("passkey agent cancel \n");
     GList *list;
     GError *result;
     struct input_data *input;
@@ -512,6 +446,7 @@ static gboolean passkey_agent_cancel(PasskeyAgent *agent,
 
 static gboolean passkey_agent_release(PasskeyAgent *agent, GError **error)
 {
+    printf("pass agent release \n");
     registered_passkey = 0;
 
     return TRUE;
@@ -570,6 +505,7 @@ static gboolean auth_agent_authorize(PasskeyAgent *agent,
         const char *path, const char *address, const char *service,
         const char *uuid, DBusGMethodInvocation *context)
 {
+    printf("auth agent authorize \n");
     DBusGProxy *object;
     const char *adapter = NULL, *name = NULL;
     gchar *device, *profile, *line;
@@ -717,6 +653,7 @@ void unregister_agents(void)
 
 int setup_agents(DBusGConnection *conn)
 {
+    printf("setup agents\n");
     void *agent;
 
     connection = dbus_g_connection_ref(conn);
@@ -739,6 +676,7 @@ int setup_agents(DBusGConnection *conn)
 
 void cleanup_agents(void)
 {
+    printf("clean up agents \n");
     unregister_agents();
 
     dbus_g_connection_unref(connection);
