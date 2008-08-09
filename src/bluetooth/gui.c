@@ -186,14 +186,14 @@ void select_row(GtkWidget *treeview){
         }else 
             gtk_label_set_text(GTK_LABEL(label_prod),status);
         g_free(status);
-
+        gtk_widget_set_sensitive(connect_button,TRUE);
     }
 }
 
 void refresh_resultsui(){
     gtk_widget_destroy (window);
     window = NULL;
-    selected_dev = NULL;
+selected_dev = NULL;
     refresh_call();
 }
 
@@ -231,6 +231,8 @@ void results_ui()
         connect_button = gtk_button_new_with_mnemonic(_("_Connect"));
         g_signal_connect(connect_button,"clicked",G_CALLBACK (connect_call), NULL);
         gtk_container_add(GTK_CONTAINER(hbox_bottom),connect_button);
+        gtk_widget_set_sensitive(connect_button,FALSE);
+
 
         close_button = gtk_button_new_with_mnemonic(_("_Close"));
         g_signal_connect(close_button,"clicked",G_CALLBACK (close_call),NULL);
