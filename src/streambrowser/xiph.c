@@ -66,13 +66,13 @@ static xiph_category_t xiph_categories[] = {
 };
 
 
-static void refresh_streamdir();
+static void refresh_streamdir(void);
 	/* returns true if any of the words in string1 is present in string2 */
 static gboolean genre_match(gchar *string1, gchar *string2);
 
 gboolean xiph_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo)
 {
-	int entryno;
+	gint entryno;
 	
 	refresh_streamdir();
 	
@@ -94,8 +94,8 @@ gboolean xiph_category_fetch(streamdir_t *streamdir, category_t *category)
 {
 	refresh_streamdir();
 
-	int entryno, categoryno;
-	int xiph_category_count = sizeof(xiph_categories) / sizeof(xiph_category_t);
+	gint entryno, categoryno;
+	gint xiph_category_count = sizeof(xiph_categories) / sizeof(xiph_category_t);
 	xiph_category_t *xiph_category = NULL;
 	
 	for (categoryno = 0; categoryno < xiph_category_count; categoryno++)
@@ -145,10 +145,10 @@ gboolean xiph_category_fetch(streamdir_t *streamdir, category_t *category)
 }
 
 
-streamdir_t* xiph_streamdir_fetch()
+streamdir_t* xiph_streamdir_fetch(void)
 {
 	streamdir_t *streamdir = streamdir_new(XIPH_NAME);
-	int categno;
+	gint categno;
 	
 	refresh_streamdir();
 	
@@ -160,7 +160,7 @@ streamdir_t* xiph_streamdir_fetch()
 	return streamdir;
 }
 
-static void refresh_streamdir()
+static void refresh_streamdir(void)
 {
 	/* free any previously fetched streamdir data */
 	if (xiph_entries != NULL) {
