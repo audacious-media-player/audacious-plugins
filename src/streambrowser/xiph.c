@@ -28,10 +28,12 @@
 
 
 typedef struct {
+
 	gchar name[DEF_STRING_LEN];
 	gchar url[DEF_STRING_LEN];
 	gchar current_song[DEF_STRING_LEN];
 	gchar genre[DEF_STRING_LEN];
+
 } xiph_entry_t;
 
 
@@ -39,8 +41,10 @@ static xiph_entry_t *xiph_entries = NULL;
 static int xiph_entry_count = 0;
 
 typedef struct {
+
 	gchar *name;
 	gchar *match_string;
+	
 } xiph_category_t;
 
 /* inspired from streamtuner's xiph plugin */
@@ -62,14 +66,34 @@ static xiph_category_t xiph_categories[] = {
 };
 
 
-// todo: call refresh_streamdir() more often to refresh the current track
 static void refresh_streamdir();
 	/* returns true if any of the words in string1 is present in string2 */
 static gboolean genre_match(gchar *string1, gchar *string2);
 
+gboolean xiph_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo)
+{
+	int entryno;
+	
+	refresh_streamdir();
+	
+	/* find the corresponding xiph entry */
+	for (entryno = 0; entryno < xiph_entry_count; entryno++) {
+		if (strcmp(xiph_entries[entryno].name, streaminfo->name) == 0) {
+			strcpy(streaminfo->name, xiph_entries[entryno].name);
+			strcpy(streaminfo->url, xiph_entries[entryno].url);
+			strcpy(streaminfo->current_track, xiph_entries[entryno].current_song);
+
+			break;
+		}
+	}
+	
+	return TRUE;
+}
 
 gboolean xiph_category_fetch(category_t *category)
 {
+	refresh_streamdir();
+
 	int entryno, categoryno;
 	int xiph_category_count = sizeof(xiph_categories) / sizeof(xiph_category_t);
 	xiph_category_t *xiph_category = NULL;
@@ -139,8 +163,10 @@ streamdir_t* xiph_streamdir_fetch()
 static void refresh_streamdir()
 {
 	/* free any previously fetched streamdir data */
-	if (xiph_entries != NULL)
+	if (xiph_entries != NULL) {
 		free(xiph_entries);
+		xiph_entries = NULL;
+	}
 	xiph_entry_count = 0;
 
 	debug("xiph: fetching streaming directory file '%s'\n", XIPH_STREAMDIR_URL);

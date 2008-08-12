@@ -19,7 +19,7 @@ typedef struct {
 } streamdir_gui_t;
 
 
-void					(* update_function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo);
+void					(* update_function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo, gboolean add_to_playlist);
 
 static GtkWidget*		gtk_label_new_with_icon(gchar *icon_filename, gchar *label_text);
 static GtkWidget*		gtk_streamdir_tree_view_new();
@@ -33,7 +33,7 @@ static gboolean			on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event
 static gboolean			on_tree_view_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer data);
 
 static streamdir_gui_t*	find_streamdir_gui_by_name(gchar *name);
-static streamdir_gui_t*	find_streamdir_gui_by_tree_view(GtkTreeView *tree_view);
+//static streamdir_gui_t*	find_streamdir_gui_by_tree_view(GtkTreeView *tree_view); todo: remove this
 static streamdir_gui_t*	find_streamdir_gui_by_table(GtkTable *table);
 static streamdir_gui_t*	find_streamdir_gui_by_streamdir(streamdir_t *streamdir);
 static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data);
@@ -45,6 +45,9 @@ static GtkWidget*		streambrowser_window;
 static GList*			streamdir_gui_list;
 static GtkCellRenderer*	cell_renderer_pixbuf;
 static GtkCellRenderer*	cell_renderer_text;
+
+static gboolean			tree_view_button_pressed = FALSE;
+
 
 
 void streambrowser_win_init()
@@ -186,13 +189,37 @@ void streambrowser_win_set_category(streamdir_t *streamdir, category_t *category
 		streaminfo = streaminfo_get_by_index(category, i);
 
 		gtk_tree_store_append(store, &new_iter, &iter);
-		gtk_tree_store_set(store, &new_iter, 0, "gtk-directory", 1, streaminfo->name, 2, streaminfo->current_track, -1);
+		gtk_tree_store_set(store, &new_iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, -1);
 	}
 	
 	gtk_tree_path_free(path);
 }
 
-void streambrowser_win_set_update_function(void (*function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo))
+void streambrowser_win_set_streaminfo(streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo)
+{
+	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_name(streamdir->name);
+	if (streamdir_gui == NULL) {
+		failure("gui: streambrowser_win_set_category() called with non-existent streamdir\n");
+		return;
+	}
+	
+	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
+	GtkTreeStore *store = GTK_TREE_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(tree_view)));
+	GtkTreePath *path;
+	GtkTreeIter iter, new_iter;
+	
+	/* find the corresponding streaminfo tree iter */
+	path = gtk_tree_path_new_from_indices(category_get_index(streamdir, category), streaminfo_get_index(category, streaminfo), -1);
+	if (!gtk_tree_model_get_iter(GTK_TREE_MODEL(store), &iter, path))
+		return;
+	
+	/* update the streaminfo*/
+	gtk_tree_store_set(store, &new_iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, -1);
+	
+	gtk_tree_path_free(path);
+}
+
+void streambrowser_win_set_update_function(void (*function) (streamdir_t *streamdir, category_t *category, streaminfo_t *streaminfo, gboolean add_to_playlist))
 {
 	update_function = function;
 }
@@ -240,7 +267,7 @@ void streambrowser_win_set_streaminfo_state(streamdir_t *streamdir, category_t *
 		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, streaminfo->current_track, -1);
 	}
 	else {
-		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, streaminfo->name, 2, streaminfo->current_track, -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, -1);
 	}
 }
 
@@ -330,53 +357,72 @@ static gboolean on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *
 	return TRUE;
 }
 
+
 static gboolean on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer data)
 {
-	GtkTreePath *path;
-	GtkTreeIter iter;
-	GtkTreeModel *model;
+	/* only do the refresh if this cursor change occured due to a mouse click */
+	if (!tree_view_button_pressed)
+		return FALSE;
 
-	/* obtain the current category */
-	gtk_tree_view_get_cursor(tree_view, &path, NULL);
-	
-	if (path == NULL)
-		return TRUE;
-	
-	gint *indices = gtk_tree_path_get_indices(path);
-	if (gtk_tree_path_get_depth(path) != 1) {
-		gtk_tree_path_free(path);
-		return TRUE;
-	}
-	
-	model = gtk_tree_view_get_model(tree_view);
-	gtk_tree_model_get_iter(model, &iter, path);
-	
-	/* don't fetch a category that has been already fetched */
-	if (gtk_tree_model_iter_has_child(model, &iter)) {
-		gtk_tree_path_free(path);
-		return TRUE;
-	}
-	
-	int category_index = indices[0];
-	
-	gtk_tree_path_free(path);
-	
-	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_tree_view(tree_view);
+	tree_view_button_pressed = FALSE;
+
+	GtkTreePath *path;
+	GtkTreeViewColumn *focus_column;
+
+	/* get the currently selected tree view */
+	GtkWidget *table = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
+	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_table(GTK_TABLE(table));
 	if (streamdir_gui == NULL)
-		return TRUE;
+		return FALSE;
+
+	/* get the currently selected path in the tree */
+	gtk_tree_view_get_cursor(tree_view, &path, &focus_column);
+
+	if (path == NULL || gtk_tree_path_get_depth(path) == 0)
+		return FALSE;
+
+	gint *indices = gtk_tree_path_get_indices(path);
+	int category_index = indices[0];
+	streamdir_t *streamdir = streamdir_gui->streamdir;
+	category_t *category = category_get_by_index(streamdir_gui->streamdir, category_index);
+
+	/* if the selected item is a category */
+	if (gtk_tree_path_get_depth(path) == 1) {
+		if (!gtk_tree_view_row_expanded(tree_view, path)) {
+			gtk_entry_set_text(GTK_ENTRY(search_entry), "");
+			update_function(streamdir, category, NULL, FALSE);
+		}
+
+		gtk_tree_path_free(path);
+	}
+	/* if the selected item is a streaminfo */
+	else {
+		int streaminfo_index = indices[1];
+
+		gtk_tree_path_free(path);
+
+		/* get the currently selected stream (info) */
+		streaminfo_t *streaminfo = streaminfo_get_by_index(category, streaminfo_index);
+		
+		gtk_entry_set_text(GTK_ENTRY(search_entry), "");
+		update_function(streamdir, category, streaminfo, FALSE);
+	}
 	
-	/* issue an update on the current category */	
-	update_function(streamdir_gui->streamdir, category_get_by_index(streamdir_gui->streamdir, category_index), NULL);
-	
-	return TRUE;
+	return FALSE;
 }
 
 static gboolean on_tree_view_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
 	/* double click adds the currently selected stream to the playlist */
 	if (event->type == GDK_2BUTTON_PRESS) {
+		tree_view_button_pressed = FALSE;
 		on_add_button_clicked(NULL, NULL);
 	}
+	/* single click triggers a refresh of the selected item */
+	else {
+		// todo: separate single from double click somehow
+		tree_view_button_pressed = TRUE;
+	}	
 	
 	return FALSE;
 }
@@ -386,6 +432,7 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 	GtkTreePath *path;
 	GtkTreeViewColumn *focus_column;
 
+	/* get the currently selected tree view */
 	GtkWidget *table = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
 	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_table(GTK_TABLE(table));
 	if (streamdir_gui == NULL)
@@ -393,6 +440,7 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 
 	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
 	
+	/* get the currently selected path in the tree */
 	gtk_tree_view_get_cursor(tree_view, &path, &focus_column);
 	
 	if (path == NULL)
@@ -414,12 +462,13 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 	
 	gtk_tree_path_free(path);
 	
+	/* get the currently selected stream (info) */
 	streamdir_t *streamdir = streamdir_gui->streamdir;
 	category_t *category = category_get_by_index(streamdir_gui->streamdir, category_index);
 	streaminfo_t *streaminfo = streaminfo_get_by_index(category, streaminfo_index);
 	
 	gtk_entry_set_text(GTK_ENTRY(search_entry), "");
-	update_function(streamdir, category, streaminfo);
+	update_function(streamdir, category, streaminfo, TRUE);
 
 	return TRUE;
 }
@@ -470,6 +519,7 @@ static streamdir_gui_t *find_streamdir_gui_by_name(gchar *name)
 	return NULL;
 }
 
+/* todo: remove this
 static streamdir_gui_t *find_streamdir_gui_by_tree_view(GtkTreeView *tree_view)
 {
 	GList *iterator;
@@ -484,6 +534,7 @@ static streamdir_gui_t *find_streamdir_gui_by_tree_view(GtkTreeView *tree_view)
 	
 	return NULL;
 }
+*/
 
 static streamdir_gui_t *find_streamdir_gui_by_table(GtkTable *table)
 {

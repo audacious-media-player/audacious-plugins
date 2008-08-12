@@ -29,6 +29,7 @@
 #define XIPH_TEMP_FILENAME		"file:///tmp/xiph_yp.xml"
 
 
+gboolean							xiph_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
 gboolean							xiph_category_fetch(category_t *category);
 streamdir_t*						xiph_streamdir_fetch();
 

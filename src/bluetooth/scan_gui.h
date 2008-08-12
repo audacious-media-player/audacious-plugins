@@ -18,12 +18,6 @@
 
 #include <gtk/gtk.h>
 #include <glib.h>
-#include <alsa/asoundlib.h>
-#include <alsa/pcm_plugin.h>
-#include <audacious/plugin.h>
-#include <audacious/i18n.h>
-
-
 void show_scan(gint use);
 void show_no_devices();
 void destroy_scan_window();

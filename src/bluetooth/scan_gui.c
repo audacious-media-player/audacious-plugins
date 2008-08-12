@@ -31,58 +31,56 @@ static GtkWidget *rescan_buttton;
 static GtkWidget *close_button;
 static gint usage=0;
 
-gpointer progress()
-{
+gpointer progress() {
 
     for(;;){
         if(window){
             gtk_progress_bar_pulse(GTK_PROGRESS_BAR(progress_bar));
         }
         sleep(1);
-        if(usage == 0){
-            if(discover_finish == 2 ) {            
-                if(window){
-                    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
-                }
-                return 0;
+       if(usage == 0){
+       if(discover_finish == 2 ) {            
+            if(window){
+                gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
             }
-        }else 
-        {
-            if(bonding_finish == 1 ) {            
-                if(window){
-                    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
-                    show_pairing_ok();
-                }
-                return 0;
-            }
+            return 0;
         }
+       }else 
+           {
+                if(bonding_finish == 1 ) {            
+                    if(window){
+                        gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar),1);
+                        show_pairing_ok();
+                    }
+                return 0;
+                }
+           }
     }
     return 0;
 }
 
 void show_pairing_ok()
 {
-    if(window ){
+ if(window ){
         gtk_label_set_text(GTK_LABEL(scan_label),_("Bonding finish!"));
     }
 }
 
-void show_no_devices()
-{
+void show_no_devices(){
     if(window ){
         gtk_label_set_text(GTK_LABEL(scan_label),_("No devices found!"));
     }
 }
-void destroy_scan_window()
-{
+void destroy_scan_window(){
     gtk_widget_hide(window);
 }
-void close_window(void)
-{
+void close_window(void){
     printf("scan_gui close callback \n");
     gtk_widget_destroy (window);
     window = NULL;
 }
+
+
 void show_scan(gint use)
 {
     GThread *th1;
@@ -115,9 +113,9 @@ void show_scan(gint use)
         if(usage == 0){
             scan_label = gtk_label_new_with_mnemonic(_("Scanning..."));
         }else
-        {
-            scan_label = gtk_label_new_with_mnemonic(_("Pairing..."));
-        }
+            {
+                scan_label = gtk_label_new_with_mnemonic(_("Pairing..."));
+            }
 
         gtk_container_add(GTK_CONTAINER(scanbox),scan_label);
 
@@ -131,15 +129,8 @@ void show_scan(gint use)
         /* I have to modify the rescan button with a play one 
          * and treat the case when the bounding is not ok
          */
-        if(usage == 0){
-            rescan_buttton = gtk_button_new_with_mnemonic(_("Rescan"));
-            g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (refresh_call),NULL);
-        }else{
-            rescan_buttton = gtk_button_new_with_mnemonic(_("Play"));
-            g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (play_call),NULL);
-        }
-
-
+        rescan_buttton = gtk_button_new_with_mnemonic(_("Rescan"));
+        g_signal_connect(rescan_buttton,"clicked",G_CALLBACK (refresh_call),NULL);
 
         close_button = gtk_button_new_with_mnemonic(_("Close"));
         gtk_container_add(GTK_CONTAINER(buttonsbox),rescan_buttton);
