@@ -31,7 +31,7 @@
 
 
 gboolean							shoutcast_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
-gboolean							shoutcast_category_fetch(category_t *category);
+gboolean							shoutcast_category_fetch(streamdir_t *streamdir, category_t *category);
 streamdir_t*						shoutcast_streamdir_fetch();
 
 

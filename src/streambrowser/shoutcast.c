@@ -99,7 +99,7 @@ gboolean shoutcast_streaminfo_fetch(category_t *category, streaminfo_t *streamin
 	return TRUE;
 }
 
-gboolean shoutcast_category_fetch(category_t *category)
+gboolean shoutcast_category_fetch(streamdir_t *streamdir, category_t *category)
 {
 	gchar url[DEF_STRING_LEN];
 	g_snprintf(url, DEF_STRING_LEN, SHOUTCAST_CATEGORY_URL, category->name);

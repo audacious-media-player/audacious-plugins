@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <glib.h>
 #include <audacious/plugin.h>
 #include <audacious/ui_plugin_menu.h>
 
@@ -26,15 +27,26 @@
 #include "streamdir.h"
 #include "shoutcast.h"
 #include "xiph.h"
+#include "bookmarks.h"
 #include "gui/streambrowser_win.h"
 #include "gui/about_win.h"
 
 
 typedef struct {
+
+	gboolean		debug;
+	bookmark_t		*bookmarks;
+	int				bookmarks_count;
+
+} streambrowser_cfg_t;
+
+typedef struct {
+
     streamdir_t *streamdir;
     category_t *category;
     streaminfo_t *streaminfo;
     gboolean add_to_playlist;
+
 } update_thread_data_t;
 
 
@@ -249,12 +261,47 @@ static void config_load()
         return;
     }
 
-    aud_cfg_db_get_bool(db, "streambrowser", "debug", &streambrowser_cfg.debug);
+	aud_cfg_db_get_bool(db, "streambrowser", "debug", &streambrowser_cfg.debug);
+	aud_cfg_db_get_int(db, "streambrowser", "bookmarks_count", &streambrowser_cfg.bookmarks_count);
+	
+	streambrowser_cfg.bookmarks = g_malloc(sizeof(bookmark_t) * streambrowser_cfg.bookmarks_count);
+
+    int i;
+	gchar item[DEF_STRING_LEN];
+	gchar *value;
+	for (i = 0; i < streambrowser_cfg.bookmarks_count; i++) {
+		g_snprintf(item, DEF_STRING_LEN, "bookmark%d_streamdir_name", i);
+		aud_cfg_db_get_string(db, "streambrowser", item, &value);
+		strncpy(streambrowser_cfg.bookmarks[i].streamdir_name, value, DEF_STRING_LEN);
+		g_free(value);
+
+		g_snprintf(item, DEF_STRING_LEN, "bookmark%d_category_name", i);
+		aud_cfg_db_get_string(db, "streambrowser", item, &value);
+		strncpy(streambrowser_cfg.bookmarks[i].category_name, value, DEF_STRING_LEN);
+		g_free(value);
+
+		g_snprintf(item, DEF_STRING_LEN, "bookmark%d_name", i);
+		aud_cfg_db_get_string(db, "streambrowser", item, &value);
+		strncpy(streambrowser_cfg.bookmarks[i].name, value, DEF_STRING_LEN);
+		g_free(value);
+
+		g_snprintf(item, DEF_STRING_LEN, "bookmark%d_playlist_url", i);
+		aud_cfg_db_get_string(db, "streambrowser", item, &value);
+		strncpy(streambrowser_cfg.bookmarks[i].playlist_url, value, DEF_STRING_LEN);
+		g_free(value);
+
+		g_snprintf(item, DEF_STRING_LEN, "bookmark%d_url", i);
+		aud_cfg_db_get_string(db, "streambrowser", item, &value);
+		strncpy(streambrowser_cfg.bookmarks[i].url, value, DEF_STRING_LEN);
+		g_free(value);
+	}
 
     aud_cfg_db_close(db);
 
     debug("configuration loaded\n");
     debug("debug = %d\n", streambrowser_cfg.debug);
+    
+	// todo: write all other config options to the console
 }
 
 static void config_save()
@@ -266,6 +313,45 @@ static void config_save()
     }
 
     aud_cfg_db_set_bool(db, "streambrowser", "debug", streambrowser_cfg.debug);
+    
+    int old_bookmarks_count, i;
+    gchar item[DEF_STRING_LEN];
+    aud_cfg_db_get_int(db, "streambrowser", "bookmarks_count", &old_bookmarks_count);
+	aud_cfg_db_set_int(db, "streambrowser", "bookmarks_count", streambrowser_cfg.bookmarks_count);
+    
+    for (i = 0; i < streambrowser_cfg.bookmarks_count; i++) {
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_streamdir_name", i);
+		aud_cfg_db_set_string(db, "streambrowser", item, streambrowser_cfg.bookmarks[i].streamdir_name);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_category_name", i);
+		aud_cfg_db_set_string(db, "streambrowser", item, streambrowser_cfg.bookmarks[i].category_name);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_name", i);
+		aud_cfg_db_set_string(db, "streambrowser", item, streambrowser_cfg.bookmarks[i].name);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_playlist_url", i);
+		aud_cfg_db_set_string(db, "streambrowser", item, streambrowser_cfg.bookmarks[i].playlist_url);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_url", i);
+		aud_cfg_db_set_string(db, "streambrowser", item, streambrowser_cfg.bookmarks[i].url);
+    }
+    
+    for (i = streambrowser_cfg.bookmarks_count; i < old_bookmarks_count; i++) {
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_streamdir_name", i);
+		aud_cfg_db_unset_key(db, "streambrowser", item);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_category_name", i);
+		aud_cfg_db_unset_key(db, "streambrowser", item);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_name", i);
+		aud_cfg_db_unset_key(db, "streambrowser", item);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_playlist_url", i);
+		aud_cfg_db_unset_key(db, "streambrowser", item);
+
+    	g_snprintf(item, DEF_STRING_LEN, "bookmark%d_url", i);
+		aud_cfg_db_unset_key(db, "streambrowser", item);
+	}
 
     aud_cfg_db_close(db);
 
@@ -372,6 +458,10 @@ static gpointer update_thread_core(gpointer user_data)
 				else if (strncmp(data->streamdir->name, XIPH_NAME, strlen(XIPH_NAME)) == 0) {
 					xiph_streaminfo_fetch(data->category, data->streaminfo);
 				}
+				/* bookmarks */
+				else if (strncmp(data->streamdir->name, BOOKMARKS_NAME, strlen(BOOKMARKS_NAME)) == 0) {
+					bookmarks_streaminfo_fetch(data->category, data->streaminfo);
+				}
 			}
 
 	        gdk_threads_enter();
@@ -388,11 +478,15 @@ static gpointer update_thread_core(gpointer user_data)
 	    	
 		    /* shoutcast */
 		    if (strncmp(data->streamdir->name, SHOUTCAST_NAME, strlen(SHOUTCAST_NAME)) == 0) {
-		        shoutcast_category_fetch(data->category);
+		        shoutcast_category_fetch(data->streamdir, data->category);
 		    }
 		    /* xiph */
 		    else if (strncmp(data->streamdir->name, XIPH_NAME, strlen(XIPH_NAME)) == 0) {
-		        xiph_category_fetch(data->category);
+		        xiph_category_fetch(data->streamdir, data->category);
+		    }
+		    /* bookmarks */
+		    else if (strncmp(data->streamdir->name, BOOKMARKS_NAME, strlen(BOOKMARKS_NAME)) == 0) {
+		        bookmarks_category_fetch(data->streamdir, data->category);
 		    }
 
 	        gdk_threads_enter();
@@ -420,6 +514,15 @@ static gpointer update_thread_core(gpointer user_data)
 		            gdk_threads_leave();
 		        }
 		    }
+		    /* bookmarks */
+		    else if (strncmp(data->streamdir->name, BOOKMARKS_NAME, strlen(BOOKMARKS_NAME)) == 0) {
+		        streamdir_t *streamdir = bookmarks_streamdir_fetch(streambrowser_cfg.bookmarks, streambrowser_cfg.bookmarks_count);
+		        if (streamdir != NULL) {
+		            gdk_threads_enter();
+		            streambrowser_win_set_streamdir(streamdir, BOOKMARKS_ICON);
+		            gdk_threads_leave();
+		        }
+		    }
 		}
 		/* update all streamdirs */
 		else {
@@ -435,6 +538,13 @@ static gpointer update_thread_core(gpointer user_data)
 		    if (streamdir != NULL) {
 		        gdk_threads_enter();
 		        streambrowser_win_set_streamdir(streamdir, XIPH_ICON);
+		        gdk_threads_leave();
+		    }
+		    /* bookmarks */
+		    streamdir = bookmarks_streamdir_fetch(streambrowser_cfg.bookmarks, streambrowser_cfg.bookmarks_count);
+		    if (streamdir != NULL) {
+		        gdk_threads_enter();
+		        streambrowser_win_set_streamdir(streamdir, BOOKMARKS_ICON);
 		        gdk_threads_leave();
 		    }
 		}

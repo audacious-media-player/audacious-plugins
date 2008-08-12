@@ -17,22 +17,32 @@
  */
 
 
-#ifndef XIPH_H
-#define XIPH_H
+#ifndef BOOKMARKS_H
+#define BOOKMARKS_H
 
 #include "streambrowser.h"
 #include "streamdir.h"
 
-#define XIPH_NAME				"Xiph"
-#define XIPH_ICON				DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "xiph.png"
-#define XIPH_STREAMDIR_URL		"http://dir.xiph.org/yp.xml"
-#define XIPH_TEMP_FILENAME		"file:///tmp/xiph_yp.xml"
+#define BOOKMARKS_NAME				"Bookmarks"
+#define BOOKMARKS_ICON				DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "bookmarks.png"
 
 
-gboolean							xiph_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
-gboolean							xiph_category_fetch(streamdir_t *streamdir, category_t *category);
-streamdir_t*						xiph_streamdir_fetch();
+typedef struct {
+	
+	gchar			streamdir_name[DEF_STRING_LEN];
+	gchar			category_name[DEF_STRING_LEN];
+	
+	gchar			name[DEF_STRING_LEN];
+	gchar			playlist_url[DEF_STRING_LEN];
+	gchar			url[DEF_STRING_LEN];
+	
+} bookmark_t;
 
 
-#endif	// SHOUTCAST_H
+gboolean							bookmarks_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
+gboolean							bookmarks_category_fetch(streamdir_t *streamdir, category_t *category);
+streamdir_t*						bookmarks_streamdir_fetch(bookmark_t *bms, int count);
+
+
+#endif	// BOOKMARKS_H
 

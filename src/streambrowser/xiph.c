@@ -90,7 +90,7 @@ gboolean xiph_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo)
 	return TRUE;
 }
 
-gboolean xiph_category_fetch(category_t *category)
+gboolean xiph_category_fetch(streamdir_t *streamdir, category_t *category)
 {
 	refresh_streamdir();
 
