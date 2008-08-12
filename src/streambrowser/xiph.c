@@ -226,21 +226,16 @@ static void refresh_streamdir()
 
 static gboolean genre_match(gchar *string1, gchar *string2)
 {
-	char *saveptr = NULL;
-	char *token;
+	gchar *saveptr = NULL, *token;
 	gboolean matched = FALSE;
-	char temp1[strlen(string1) + 1];
-	char temp2[strlen(string2) + 1];
+	gchar *temp1 = g_strdup(string1),
+		*temp2 = g_strdup(string2);
 
-	/* these are required for strtok_r to work properly */	
-	strcpy(temp1, string1);
-	strcpy(temp2, string2);
-	
 	token = strtok_r(temp1, " ", &saveptr);
 	while (token != NULL) {
 		if (mystrcasestr(temp2, token))
 			matched = TRUE;
-			
+		
 		token = strtok_r(NULL, " ", &saveptr);
 	}
 	
