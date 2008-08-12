@@ -51,6 +51,9 @@ static void ui_skinned_equalizer_slider_class_init         (UiSkinnedEqualizerSl
 static void ui_skinned_equalizer_slider_init               (UiSkinnedEqualizerSlider *equalizer_slider);
 static void ui_skinned_equalizer_slider_destroy            (GtkObject *object);
 static void ui_skinned_equalizer_slider_realize            (GtkWidget *widget);
+static void ui_skinned_equalizer_slider_unrealize          (GtkWidget *widget);
+static void ui_skinned_equalizer_slider_map                (GtkWidget *widget);
+static void ui_skinned_equalizer_slider_unmap              (GtkWidget *widget); 
 static void ui_skinned_equalizer_slider_size_request       (GtkWidget *widget, GtkRequisition *requisition);
 static void ui_skinned_equalizer_slider_size_allocate      (GtkWidget *widget, GtkAllocation *allocation);
 static gboolean ui_skinned_equalizer_slider_expose         (GtkWidget *widget, GdkEventExpose *event);
@@ -97,6 +100,9 @@ static void ui_skinned_equalizer_slider_class_init(UiSkinnedEqualizerSliderClass
     object_class->destroy = ui_skinned_equalizer_slider_destroy;
 
     widget_class->realize = ui_skinned_equalizer_slider_realize;
+    widget_class->unrealize = ui_skinned_equalizer_slider_unrealize;
+    widget_class->map = ui_skinned_equalizer_slider_map;
+    widget_class->unmap = ui_skinned_equalizer_slider_unmap; 
     widget_class->expose_event = ui_skinned_equalizer_slider_expose;
     widget_class->size_request = ui_skinned_equalizer_slider_size_request;
     widget_class->size_allocate = ui_skinned_equalizer_slider_size_allocate;
@@ -118,6 +124,9 @@ static void ui_skinned_equalizer_slider_class_init(UiSkinnedEqualizerSliderClass
 static void ui_skinned_equalizer_slider_init(UiSkinnedEqualizerSlider *equalizer_slider) {
     UiSkinnedEqualizerSliderPrivate *priv = UI_SKINNED_EQUALIZER_SLIDER_GET_PRIVATE(equalizer_slider);
     priv->pressed = FALSE;
+
+    equalizer_slider->event_window = NULL;
+    GTK_WIDGET_SET_FLAGS(equalizer_slider, GTK_NO_WINDOW);
 }
 
 GtkWidget* ui_skinned_equalizer_slider_new(GtkWidget *fixed, gint x, gint y) {
@@ -155,26 +164,60 @@ static void ui_skinned_equalizer_slider_realize(GtkWidget *widget) {
     g_return_if_fail (widget != NULL);
     g_return_if_fail (UI_SKINNED_IS_EQUALIZER_SLIDER(widget));
 
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
+    if (GTK_WIDGET_CLASS (parent_class)->realize)
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
     equalizer_slider = UI_SKINNED_EQUALIZER_SLIDER(widget);
 
     attributes.x = widget->allocation.x;
     attributes.y = widget->allocation.y;
     attributes.width = widget->allocation.width;
     attributes.height = widget->allocation.height;
-    attributes.wclass = GDK_INPUT_OUTPUT;
+    attributes.wclass = GDK_INPUT_ONLY;
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+    attributes.event_mask |= GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
                              GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK;
-    attributes.visual = gtk_widget_get_visual(widget);
-    attributes.colormap = gtk_widget_get_colormap(widget);
 
-    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-    widget->window = gdk_window_new(widget->parent->window, &attributes, attributes_mask);
+    attributes_mask = GDK_WA_X | GDK_WA_Y;
+    equalizer_slider->event_window = gdk_window_new(widget->parent->window, &attributes, attributes_mask);
 
-    widget->style = gtk_style_attach(widget->style, widget->window);
-    gdk_window_set_user_data(widget->window, widget);
+    gdk_window_set_user_data(equalizer_slider->event_window, widget);
+}
+
+static void ui_skinned_equalizer_slider_unrealize(GtkWidget *widget) {
+    UiSkinnedEqualizerSlider *equalizer_slider = UI_SKINNED_EQUALIZER_SLIDER(widget);
+
+    if ( equalizer_slider->event_window != NULL )
+    {
+        gdk_window_set_user_data( equalizer_slider->event_window , NULL );
+        gdk_window_destroy( equalizer_slider->event_window );
+        equalizer_slider->event_window = NULL;
+    }
+
+    if (GTK_WIDGET_CLASS (parent_class)->unrealize)
+        (* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+}
+
+static void ui_skinned_equalizer_slider_map (GtkWidget *widget)
+{
+    UiSkinnedEqualizerSlider *equalizer_slider = UI_SKINNED_EQUALIZER_SLIDER(widget);
+
+    if (equalizer_slider->event_window != NULL)
+        gdk_window_show (equalizer_slider->event_window);
+
+    if (GTK_WIDGET_CLASS (parent_class)->map)
+        (* GTK_WIDGET_CLASS (parent_class)->map) (widget);
+}
+
+static void ui_skinned_equalizer_slider_unmap (GtkWidget *widget)
+{
+    UiSkinnedEqualizerSlider *equalizer_slider = UI_SKINNED_EQUALIZER_SLIDER(widget);
+
+    if (equalizer_slider->event_window != NULL)
+        gdk_window_hide (equalizer_slider->event_window);
+
+    if (GTK_WIDGET_CLASS (parent_class)->unmap)
+        (* GTK_WIDGET_CLASS (parent_class)->unmap) (widget);
 }
 
 static void ui_skinned_equalizer_slider_size_request(GtkWidget *widget, GtkRequisition *requisition) {
@@ -192,7 +235,8 @@ static void ui_skinned_equalizer_slider_size_allocate(GtkWidget *widget, GtkAllo
     widget->allocation.x *= (priv->scaled ? config.scale_factor : 1);
     widget->allocation.y *= (priv->scaled ? config.scale_factor : 1);
     if (GTK_WIDGET_REALIZED (widget))
-        gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
+        if (equalizer_slider->event_window)
+            gdk_window_move_resize(equalizer_slider->event_window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
 
     equalizer_slider->x = widget->allocation.x/(priv->scaled ? config.scale_factor : 1);
     equalizer_slider->y = widget->allocation.y/(priv->scaled ? config.scale_factor : 1);
@@ -222,7 +266,10 @@ static gboolean ui_skinned_equalizer_slider_expose(GtkWidget *widget, GdkEventEx
     else
         skin_draw_pixbuf(widget, aud_active_skin, obj, priv->skin_index, 0, 164, 1, priv->position, 11, 11);
 
-    ui_skinned_widget_draw(widget, obj, priv->width, priv->height, priv->scaled);
+    ui_skinned_widget_draw_with_coordinates(widget, obj, priv->width, priv->height,
+                                            widget->allocation.x,
+                                            widget->allocation.y,
+                                            priv->scaled);
 
     g_object_unref(obj);
 

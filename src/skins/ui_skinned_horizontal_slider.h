@@ -43,6 +43,7 @@ typedef struct _UiSkinnedHorizontalSliderClass   UiSkinnedHorizontalSliderClass;
 
 struct _UiSkinnedHorizontalSlider {
     GtkWidget   widget;
+    GdkWindow   *event_window;
     gboolean    pressed;
     gint        x, y;
     gint        knob_nx, knob_ny, knob_px, knob_py;

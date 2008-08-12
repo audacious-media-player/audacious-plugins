@@ -93,6 +93,8 @@ static void ui_skinned_equalizer_graph_class_init(UiSkinnedEqualizerGraphClass *
 static void ui_skinned_equalizer_graph_init(UiSkinnedEqualizerGraph *equalizer_graph) {
     equalizer_graph->width = 113;
     equalizer_graph->height = 19;
+
+    GTK_WIDGET_SET_FLAGS(equalizer_graph, GTK_NO_WINDOW);
 }
 
 GtkWidget* ui_skinned_equalizer_graph_new(GtkWidget *fixed, gint x, gint y) {
@@ -121,33 +123,8 @@ static void ui_skinned_equalizer_graph_destroy(GtkObject *object) {
 }
 
 static void ui_skinned_equalizer_graph_realize(GtkWidget *widget) {
-    UiSkinnedEqualizerGraph *equalizer_graph;
-    GdkWindowAttr attributes;
-    gint attributes_mask;
-
-    g_return_if_fail (widget != NULL);
-    g_return_if_fail (UI_SKINNED_IS_EQUALIZER_GRAPH(widget));
-
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
-    equalizer_graph = UI_SKINNED_EQUALIZER_GRAPH(widget);
-
-    attributes.x = widget->allocation.x;
-    attributes.y = widget->allocation.y;
-    attributes.width = widget->allocation.width;
-    attributes.height = widget->allocation.height;
-    attributes.wclass = GDK_INPUT_OUTPUT;
-    attributes.window_type = GDK_WINDOW_CHILD;
-    attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_EXPOSURE_MASK;
-    attributes.visual = gtk_widget_get_visual(widget);
-    attributes.colormap = gtk_widget_get_colormap(widget);
-
-    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-    widget->window = gdk_window_new(widget->parent->window, &attributes, attributes_mask);
-
-    widget->style = gtk_style_attach(widget->style, widget->window);
-
-    gdk_window_set_user_data(widget->window, widget);
+    if (GTK_WIDGET_CLASS (parent_class)->realize)
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 }
 
 static void ui_skinned_equalizer_graph_size_request(GtkWidget *widget, GtkRequisition *requisition) {
@@ -163,8 +140,6 @@ static void ui_skinned_equalizer_graph_size_allocate(GtkWidget *widget, GtkAlloc
     widget->allocation = *allocation;
     widget->allocation.x *= (equalizer_graph->scaled ? config.scale_factor : 1);
     widget->allocation.y *= (equalizer_graph->scaled ? config.scale_factor : 1);
-    if (GTK_WIDGET_REALIZED (widget))
-        gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
 
     equalizer_graph->x = widget->allocation.x/(equalizer_graph->scaled ? config.scale_factor : 1);
     equalizer_graph->y = widget->allocation.y/(equalizer_graph->scaled ? config.scale_factor : 1);
@@ -289,7 +264,10 @@ static gboolean ui_skinned_equalizer_graph_expose(GtkWidget *widget, GdkEventExp
         }
     }
 
-    ui_skinned_widget_draw(widget, obj, equalizer_graph->width, equalizer_graph->height, equalizer_graph->scaled);
+    ui_skinned_widget_draw_with_coordinates(widget, obj, equalizer_graph->width, equalizer_graph->height,
+                                            widget->allocation.x,
+                                            widget->allocation.y,
+                                            equalizer_graph->scaled);
 
     g_object_unref(obj);
 

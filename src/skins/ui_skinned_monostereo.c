@@ -93,6 +93,8 @@ static void ui_skinned_monostereo_class_init(UiSkinnedMonoStereoClass *klass) {
 static void ui_skinned_monostereo_init(UiSkinnedMonoStereo *monostereo) {
     monostereo->width = 56;
     monostereo->height = 12;
+
+    GTK_WIDGET_SET_FLAGS(monostereo, GTK_NO_WINDOW);
 }
 
 GtkWidget* ui_skinned_monostereo_new(GtkWidget *fixed, gint x, gint y, SkinPixmapId si) {
@@ -121,33 +123,8 @@ static void ui_skinned_monostereo_destroy(GtkObject *object) {
 }
 
 static void ui_skinned_monostereo_realize(GtkWidget *widget) {
-    UiSkinnedMonoStereo *monostereo;
-    GdkWindowAttr attributes;
-    gint attributes_mask;
-
-    g_return_if_fail (widget != NULL);
-    g_return_if_fail (UI_SKINNED_IS_MONOSTEREO(widget));
-
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
-    monostereo = UI_SKINNED_MONOSTEREO(widget);
-
-    attributes.x = widget->allocation.x;
-    attributes.y = widget->allocation.y;
-    attributes.width = widget->allocation.width;
-    attributes.height = widget->allocation.height;
-    attributes.wclass = GDK_INPUT_OUTPUT;
-    attributes.window_type = GDK_WINDOW_CHILD;
-    attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_EXPOSURE_MASK;
-    attributes.visual = gtk_widget_get_visual(widget);
-    attributes.colormap = gtk_widget_get_colormap(widget);
-
-    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-    widget->window = gdk_window_new(widget->parent->window, &attributes, attributes_mask);
-
-    widget->style = gtk_style_attach(widget->style, widget->window);
-
-    gdk_window_set_user_data(widget->window, widget);
+    if (GTK_WIDGET_CLASS (parent_class)->realize)
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget); 
 }
 
 static void ui_skinned_monostereo_size_request(GtkWidget *widget, GtkRequisition *requisition) {
@@ -163,8 +140,6 @@ static void ui_skinned_monostereo_size_allocate(GtkWidget *widget, GtkAllocation
     widget->allocation = *allocation;
     widget->allocation.x *= (monostereo->scaled ? config.scale_factor : 1);
     widget->allocation.y *= (monostereo->scaled ? config.scale_factor : 1);
-    if (GTK_WIDGET_REALIZED (widget))
-        gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
 
     monostereo->x = widget->allocation.x/(monostereo->scaled ? config.scale_factor : 1);
     monostereo->y = widget->allocation.y/(monostereo->scaled ? config.scale_factor : 1);
@@ -197,7 +172,10 @@ static gboolean ui_skinned_monostereo_expose(GtkWidget *widget, GdkEventExpose *
         break;
     }
 
-    ui_skinned_widget_draw(widget, obj, monostereo->width, monostereo->height, monostereo->scaled);
+    ui_skinned_widget_draw_with_coordinates(widget, obj, monostereo->width, monostereo->height,
+                                            widget->allocation.x,
+                                            widget->allocation.y, 
+                                            monostereo->scaled);
 
     g_object_unref(obj);
 

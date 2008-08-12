@@ -42,6 +42,7 @@ typedef struct _UiSkinnedEqualizerSliderClass   UiSkinnedEqualizerSliderClass;
 
 struct _UiSkinnedEqualizerSlider {
     GtkWidget   widget;
+    GdkWindow   *event_window;
     gint        x, y;
 };
 

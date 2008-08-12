@@ -198,8 +198,6 @@ static void ui_skinned_button_realize (GtkWidget *widget) {
     button->event_window = gdk_window_new (widget->window, &attributes, attributes_mask);
 
     gdk_window_set_user_data(button->event_window, widget);
-
-    widget->style = gtk_style_attach(widget->style, widget->window);
 }
 
 static void ui_skinned_button_unrealize (GtkWidget *widget) {

@@ -95,6 +95,8 @@ static void ui_skinned_playstatus_class_init(UiSkinnedPlaystatusClass *klass) {
 static void ui_skinned_playstatus_init(UiSkinnedPlaystatus *playstatus) {
     playstatus->width = 11;
     playstatus->height = 9;
+
+    GTK_WIDGET_SET_FLAGS(playstatus, GTK_NO_WINDOW);
 }
 
 GtkWidget* ui_skinned_playstatus_new(GtkWidget *fixed, gint x, gint y) {
@@ -123,33 +125,8 @@ static void ui_skinned_playstatus_destroy(GtkObject *object) {
 }
 
 static void ui_skinned_playstatus_realize(GtkWidget *widget) {
-    UiSkinnedPlaystatus *playstatus;
-    GdkWindowAttr attributes;
-    gint attributes_mask;
-
-    g_return_if_fail (widget != NULL);
-    g_return_if_fail (UI_SKINNED_IS_PLAYSTATUS(widget));
-
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
-    playstatus = UI_SKINNED_PLAYSTATUS(widget);
-
-    attributes.x = widget->allocation.x;
-    attributes.y = widget->allocation.y;
-    attributes.width = widget->allocation.width;
-    attributes.height = widget->allocation.height;
-    attributes.wclass = GDK_INPUT_OUTPUT;
-    attributes.window_type = GDK_WINDOW_CHILD;
-    attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_EXPOSURE_MASK;
-    attributes.visual = gtk_widget_get_visual(widget);
-    attributes.colormap = gtk_widget_get_colormap(widget);
-
-    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-    widget->window = gdk_window_new(widget->parent->window, &attributes, attributes_mask);
-
-    widget->style = gtk_style_attach(widget->style, widget->window);
-
-    gdk_window_set_user_data(widget->window, widget);
+    if (GTK_WIDGET_CLASS (parent_class)->realize)
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 }
 
 static void ui_skinned_playstatus_size_request(GtkWidget *widget, GtkRequisition *requisition) {
@@ -165,8 +142,6 @@ static void ui_skinned_playstatus_size_allocate(GtkWidget *widget, GtkAllocation
     widget->allocation = *allocation;
     widget->allocation.x *= (playstatus->scaled ? config.scale_factor : 1);
     widget->allocation.y *= (playstatus->scaled ? config.scale_factor : 1);
-    if (GTK_WIDGET_REALIZED (widget))
-        gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
 
     playstatus->x = widget->allocation.x/(playstatus->scaled ? config.scale_factor : 1);
     playstatus->y = widget->allocation.y/(playstatus->scaled ? config.scale_factor : 1);
@@ -203,7 +178,10 @@ static gboolean ui_skinned_playstatus_expose(GtkWidget *widget, GdkEventExpose *
         break;
     }
 
-    ui_skinned_widget_draw(widget, obj, playstatus->width, playstatus->height, playstatus->scaled);
+    ui_skinned_widget_draw_with_coordinates(widget, obj, playstatus->width, playstatus->height,
+                                            widget->allocation.x,
+                                            widget->allocation.y,
+                                            playstatus->scaled);
 
     g_object_unref(obj);
 

@@ -38,6 +38,7 @@ typedef struct _UiSkinnedNumberClass   UiSkinnedNumberClass;
 struct _UiSkinnedNumber {
     GtkWidget        widget;
 
+    GdkWindow        *event_window;
     gint             x, y, width, height;
     gint             num;
     gboolean         scaled;

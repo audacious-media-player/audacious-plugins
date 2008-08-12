@@ -49,6 +49,7 @@ typedef enum {
 struct _UiSkinnedMenurow {
     GtkWidget        widget;
 
+    GdkWindow        *event_window;
     gint             x, y, width, height;
     gboolean         scaled;
     gint             nx, ny;
