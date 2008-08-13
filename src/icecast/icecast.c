@@ -518,7 +518,7 @@ static void configure_ok_cb(gpointer data)
     stream_genre = g_strdup(gtk_entry_get_text(GTK_ENTRY(genre_entry)));
 
     g_free(stream_description);
-    stream_description = g_strdup(gtk_entry_get_text(GTK_ENTRY(genre_entry)));
+    stream_description = g_strdup(gtk_entry_get_text(GTK_ENTRY(description_entry)));
 
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, ICECAST_CFGID, "streamformat", streamformat);
@@ -718,6 +718,65 @@ static void ice_configure(void)
 
         label = gtk_label_new(_("percents are filled"));
         gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        public_check = gtk_check_button_new_with_label(_("Stream is public"));
+
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(public_check), stream_is_public?TRUE:FALSE);
+
+        gtk_box_pack_start(GTK_BOX(hbox), public_check, TRUE, TRUE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Stream name:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        name_entry = gtk_entry_new();
+
+	gtk_entry_set_text(GTK_ENTRY(name_entry), stream_name);
+
+        gtk_box_pack_start(GTK_BOX(hbox), name_entry, TRUE, TRUE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Stream URL:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        url_entry = gtk_entry_new();
+
+	gtk_entry_set_text(GTK_ENTRY(url_entry), stream_url);
+
+        gtk_box_pack_start(GTK_BOX(hbox), url_entry, TRUE, TRUE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Stream genre:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        genre_entry = gtk_entry_new();
+
+	gtk_entry_set_text(GTK_ENTRY(genre_entry), stream_genre);
+
+        gtk_box_pack_start(GTK_BOX(hbox), genre_entry, TRUE, TRUE, 0);
+
+        hbox = gtk_hbox_new(FALSE, 5);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
+
+        label = gtk_label_new(_("Stream description:"));
+        gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+        description_entry = gtk_entry_new();
+
+	gtk_entry_set_text(GTK_ENTRY(description_entry), stream_description);
+
+        gtk_box_pack_start(GTK_BOX(hbox), description_entry, TRUE, TRUE, 0);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
