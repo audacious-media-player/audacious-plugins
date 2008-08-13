@@ -166,7 +166,7 @@ static void set_plugin(void)
 static void ice_init(void)
 {
     ConfigDb *db;
-    /*g_debug("ICE_INIT");*/
+    g_debug("ICE_INIT");
     if (initialized==TRUE) return;
     shout_init();
     g_message("Using libshout %s", shout_version(NULL, NULL, NULL));
@@ -387,7 +387,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     rv = (plugin.open)();
 
-    /*g_debug("ICE_OPEN");*/
+    g_debug("ICE_OPEN");
     return rv;
 }
 
@@ -407,17 +407,15 @@ static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, 
 
     if (!shout)
     {
-        if (ice_open(afmt, srate, nch))
-        {
-            if (shout)
-            {
-                int len;
-                ep_playing = TRUE;
-                len = convert_process(d, length);
-                plugin.write(convert_output, length);
-                ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);            
-            }
-        }
+        ice_open(afmt, srate, nch);
+    }
+    if (shout)
+    {
+        int len;
+        ep_playing = TRUE;
+        len = convert_process(d, length);
+        plugin.write(convert_output, length);
+        ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);            
     }
     return length;
 }
@@ -428,7 +426,7 @@ static gint ice_real_write(void* ptr, gint length)
     if (!length) return length;
     ret = shout_send(shout, ptr, length);
     shout_sync(shout);
-    /*g_debug("ice_write[%d:%d]", ret, length);*/
+    g_debug("ice_write[%d:%d]", ret, length);
     return 0;
 }
 
@@ -469,7 +467,7 @@ static gboolean ice_real_close(gpointer data)
     }
     shout = NULL;
     ice_tid = 0;
-    /*g_debug("ICE_REAL_CLOSE");*/
+    g_debug("ICE_REAL_CLOSE");
     return FALSE;
 }
 
@@ -479,7 +477,7 @@ static void ice_close(void)
     if (ice_tid)
         g_source_remove(ice_tid);
     ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);
-    /*g_debug("ICE_CLOSE: starting timer");*/
+    g_debug("ICE_CLOSE: starting timer");
 }
 
 static void ice_flush(gint time)
