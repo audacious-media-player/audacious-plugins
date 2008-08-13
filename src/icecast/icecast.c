@@ -78,6 +78,12 @@ static gchar *server_user = NULL;
 static gchar *server_password = NULL;
 static gchar *mountpoint = NULL;
 
+static gint *stream_is_public = 0;
+static gchar *stream_name = NULL;
+static gchar *stream_url = NULL;
+static gchar *stream_genre = NULL;
+static gchar *stream_description = NULL;
+
 VFSFile *output_file = NULL;
 guint64 written = 0;
 guint64 offset = 0;
@@ -176,6 +182,11 @@ static void ice_init(void)
     aud_cfg_db_get_string(db, ICECAST_CFGID, "server_user", &server_user);
     aud_cfg_db_get_string(db, ICECAST_CFGID, "server_password", &server_password);
     aud_cfg_db_get_string(db, ICECAST_CFGID, "mountpoint", &mountpoint);
+    aud_cfg_db_get_int(db, ICECAST_CFGID, "stream_is_public", &stream_is_public);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "stream_name", &stream_name);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "stream_url", &stream_url);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "stream_genre", &stream_genre);
+    aud_cfg_db_get_string(db, ICECAST_CFGID, "stream_description", &stream_description);
     aud_cfg_db_close(db);
 
     outputbuffer = g_try_malloc(buffersize);
@@ -267,49 +278,79 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
         if (shout_set_host(shout, server_address) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error setting hostname: %s\n", shout_get_error(shout));
+            g_warning(_("Error setting hostname: %s\n"), shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_protocol(shout, SHOUT_PROTOCOL_HTTP) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error setting protocol: %s\n", shout_get_error(shout));
+            g_warning(_("Error setting protocol: %s\n"), shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_port(shout, server_port) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error setting port: %s\n", shout_get_error(shout));
+            g_warning(_("Error setting port: %s\n"), shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_password(shout, server_password) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error setting password: %s\n", shout_get_error(shout));
+            g_warning(_("Error setting password: %s\n"), shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_mount(shout, mountpoint) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error setting mount: %s\n", shout_get_error(shout));
+            g_warning(_("Error setting mount: %s\n"), shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_public(shout, stream_is_public) != SHOUTERR_SUCCESS)
+        {
+            g_warning(_("Error setting stream %s: %s\n"), stream_is_public?_("public"):_("private"), shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_name(shout, stream_name) != SHOUTERR_SUCCESS)
+        {
+            g_warning(_("Error setting stream name: %s\n"), shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_genre(shout, stream_genre) != SHOUTERR_SUCCESS)
+        {
+            g_warning(_("Error setting stream genre: %s\n"), shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_url(shout, stream_url) != SHOUTERR_SUCCESS)
+        {
+            g_warning(_("Error setting stream URL: %s\n"), shout_get_error(shout));
+            return 0;
+        }
+
+        if (shout_set_description(shout, stream_description) != SHOUTERR_SUCCESS)
+        {
+            g_warning(_("Error setting stream description: %s\n"), shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_user(shout, server_user) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error setting user: %s\n", shout_get_error(shout));
+            g_warning(_("Error setting user: %s\n"), shout_get_error(shout));
             return 0;
         }
 
         if (shout_set_format(shout, streamformat_shout[streamformat]) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error setting user: %s\n", shout_get_error(shout));
+            g_warning(_("Error setting user: %s\n"), shout_get_error(shout));
             return 0;
         }
 
         if (shout_open(shout) != SHOUTERR_SUCCESS)
         {
-            g_warning("Error connecting to server: %s\n", shout_get_error(shout));
+            g_warning(_("Error connecting to server: %s\n"), shout_get_error(shout));
             return 0;
         }
     }
@@ -466,6 +507,18 @@ static void configure_ok_cb(gpointer data)
     g_free(mountpoint);
     mountpoint = g_strdup(gtk_entry_get_text(GTK_ENTRY(mount_entry)));
 
+    g_free(stream_name);
+    stream_name = g_strdup(gtk_entry_get_text(GTK_ENTRY(name_entry)));
+
+    g_free(stream_url);
+    stream_url = g_strdup(gtk_entry_get_text(GTK_ENTRY(url_entry)));
+
+    g_free(stream_genre);
+    stream_genre = g_strdup(gtk_entry_get_text(GTK_ENTRY(genre_entry)));
+
+    g_free(stream_description);
+    stream_description = g_strdup(gtk_entry_get_text(GTK_ENTRY(genre_entry)));
+
     db = aud_cfg_db_open();
     aud_cfg_db_set_int(db, ICECAST_CFGID, "streamformat", streamformat);
     aud_cfg_db_set_string(db, ICECAST_CFGID, "server_address", server_address);
@@ -476,6 +529,11 @@ static void configure_ok_cb(gpointer data)
     aud_cfg_db_set_int(db, ICECAST_CFGID, "buffersize", buffersize_new);
     aud_cfg_db_set_double(db, ICECAST_CFGID, "bufferflush", bufferflushperc);
     aud_cfg_db_set_string(db, ICECAST_CFGID, "mountpoint", mountpoint);
+    aud_cfg_db_get_int(db, ICECAST_CFGID, "stream_is_public", &stream_is_public);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "stream_name", stream_name);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "stream_url", stream_url);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "stream_genre", stream_genre);
+    aud_cfg_db_set_string(db, ICECAST_CFGID, "stream_description", stream_description);
 
     aud_cfg_db_close(db);
 
