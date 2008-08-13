@@ -19,6 +19,8 @@
 #include <wchar.h>
 #include <sys/time.h>
 
+#include <curl/curl.h>
+
 #include "plugin.h"
 #include "scrobbler.h"
 #include "gerpok.h"
@@ -336,6 +338,39 @@ static void *hs_thread(void *data __attribute__((unused)))
 	g_thread_exit(NULL);
 
 	return NULL;
+}
+
+void setup_proxy(CURL *curl)
+{
+    mcs_handle_t *db;
+    gboolean use_proxy;
+
+    db = aud_cfg_db_open();
+    aud_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy);
+    if (use_proxy == FALSE)
+    {
+        curl_easy_setopt(curl, CURLOPT_PROXY, "");
+    }
+    else
+    {
+        gchar *proxy_host, *proxy_port;
+        gboolean proxy_use_auth;
+        aud_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host);
+        aud_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port);
+        curl_easy_setopt(curl, CURLOPT_PROXY, proxy_host);
+        curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxy_port);
+        aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &proxy_use_auth);
+        if (proxy_use_auth != FALSE)
+        {
+            gchar *userpwd, *user, *pass;
+            aud_cfg_db_get_string(db, NULL, "proxy_user", &user);
+            aud_cfg_db_get_string(db, NULL, "proxy_pass", &pass);
+            userpwd = g_strdup_printf("%s:%s", user, pass);
+            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, userpwd);
+            g_free(userpwd);
+        }
+    }
+    aud_cfg_db_close(db);
 }
 
 GeneralPlugin *scrobbler_gplist[] = { &scrobbler_gp, NULL };

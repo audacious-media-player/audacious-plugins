@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include <curl/curl.h>
 #include <stdio.h>
 #include "fmt.h"
+#include "plugin.h"
 #include "scrobbler.h"
 #include "config.h"
 #include "settings.h"
@@ -489,6 +489,7 @@ static int sc_handshake(void)
     g_free(auth_tmp);
 
     curl = curl_easy_init();
+    setup_proxy(curl);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
     curl_easy_setopt(curl, CURLOPT_URL, buf);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, 
@@ -704,6 +705,7 @@ static int sc_submit_np(Tuple *tuple)
     gchar *entry;
 
     curl = curl_easy_init();
+    setup_proxy(curl);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
     curl_easy_setopt(curl, CURLOPT_URL, sc_np_url);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
@@ -763,6 +765,7 @@ static int sc_submitentry(gchar *entry)
         GString *submission;
 
     curl = curl_easy_init();
+    setup_proxy(curl);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
     curl_easy_setopt(curl, CURLOPT_URL, sc_submit_url);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
