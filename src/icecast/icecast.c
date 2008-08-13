@@ -79,7 +79,7 @@ static gchar *server_user = NULL;
 static gchar *server_password = NULL;
 static gchar *mountpoint = NULL;
 
-static gint *stream_is_public = 0;
+static gint stream_is_public = 0;
 static gchar *stream_name = NULL;
 static gchar *stream_url = NULL;
 static gchar *stream_genre = NULL;
