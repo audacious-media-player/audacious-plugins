@@ -156,19 +156,17 @@ gpointer connect_call_th(void)
 
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
     run_agents();
-    close_call();
-    show_scan(1);
-
     dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID); 
     return NULL;
 }
 void connect_call(void)
-{
-    current_address = g_strdup(((DeviceData*)(selected_dev->data))->address);
-    connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
-    close_call();
+{   close_call();
     close_window();
     show_scan(1);
+    remove_bonding();
+    current_address = g_strdup(((DeviceData*)(selected_dev->data))->address);
+    connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
+
 }
 
 
