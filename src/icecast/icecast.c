@@ -32,6 +32,7 @@ struct format_info input;
 static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *addr_entry, *port_spin, *timeout_spin, *buffersize_spin, *bufferflush_spin;
 static GtkWidget *user_entry, *password_entry, *mount_entry;
+static GtkWidget *public_check, *name_entry, *url_entry, *genre_entry, *description_entry;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
 static guint ice_tid = 0;
 
