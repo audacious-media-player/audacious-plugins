@@ -144,9 +144,7 @@ OutputPlugin *ice_oplist[] = { &ice_op, NULL };
 
 EffectPlugin *ice_eplist[] = { &ice_ep, NULL };
 
-/*SIMPLE_OUTPUT_PLUGIN(icecast, ice_oplist);*/
 DECLARE_PLUGIN(icecast, NULL, NULL, NULL, ice_oplist, ice_eplist, NULL, NULL, NULL, NULL)
-/*SIMPLE_EFFECT_PLUGIN(icecast, ice_eplist);*/
 
 static void set_plugin(void)
 {
@@ -387,7 +385,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     rv = (plugin.open)();
 
-    g_debug("ICE_OPEN");
+    g_debug("ICE_OPEN[%d:%d:%d]", fmt, rate, nch);
     return rv;
 }
 
@@ -413,7 +411,7 @@ static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, 
     {
         int len;
         ep_playing = TRUE;
-        len = convert_process(d, length);
+        len = convert_process(*d, length);
         plugin.write(convert_output, length);
         ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);            
     }
