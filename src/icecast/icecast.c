@@ -255,8 +255,8 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     if (ice_tid)
     {
-	g_source_remove(ice_tid);
-	ice_tid = 0;
+        g_source_remove(ice_tid);
+        ice_tid = 0;
     }
 
     input.format = fmt;
@@ -619,7 +619,7 @@ static void ice_configure(void)
 
         addr_entry = gtk_entry_new();
 
-	gtk_entry_set_text(GTK_ENTRY(addr_entry), server_address);
+        gtk_entry_set_text(GTK_ENTRY(addr_entry), server_address);
         gtk_widget_set_tooltip_text(addr_entry, _("Server hostname or IP address"));
 
         gtk_box_pack_start(GTK_BOX(hbox), addr_entry, TRUE, TRUE, 0);
@@ -629,7 +629,7 @@ static void ice_configure(void)
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(port_spin), 0);
 
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(port_spin), (gdouble)server_port);
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(port_spin), (gdouble)server_port);
 
         gtk_box_pack_start(GTK_BOX(hbox), port_spin, TRUE, TRUE, 0);
 
@@ -643,7 +643,7 @@ static void ice_configure(void)
 
         mount_entry = gtk_entry_new();
 
-	gtk_entry_set_text(GTK_ENTRY(mount_entry), mountpoint);
+        gtk_entry_set_text(GTK_ENTRY(mount_entry), mountpoint);
         gtk_widget_set_tooltip_text(mount_entry, _("Mount point for the stream"));
 
         gtk_box_pack_start(GTK_BOX(hbox), mount_entry, TRUE, TRUE, 0);
@@ -658,7 +658,7 @@ static void ice_configure(void)
 
         user_entry = gtk_entry_new();
 
-	gtk_entry_set_text(GTK_ENTRY(user_entry), server_user);
+        gtk_entry_set_text(GTK_ENTRY(user_entry), server_user);
         gtk_widget_set_tooltip_text(user_entry, _("Icecast source user name for the stream; depends on your server settings.\nThe default value is \"source\""));
 
         gtk_box_pack_start(GTK_BOX(hbox), user_entry, TRUE, TRUE, 0);
@@ -688,7 +688,7 @@ static void ice_configure(void)
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(timeout_spin), 0);
 
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(timeout_spin), (gdouble)ice_close_timeout);
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(timeout_spin), (gdouble)ice_close_timeout);
 
         gtk_box_pack_start(GTK_BOX(hbox), timeout_spin, TRUE, TRUE, 0);
 
@@ -705,7 +705,7 @@ static void ice_configure(void)
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(buffersize_spin), 0);
 
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(buffersize_spin), (gdouble)buffersize);
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(buffersize_spin), (gdouble)buffersize);
 
         gtk_box_pack_start(GTK_BOX(hbox), buffersize_spin, TRUE, TRUE, 0);
 
@@ -720,7 +720,7 @@ static void ice_configure(void)
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(bufferflush_spin), 0);
 
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(bufferflush_spin), bufferflushperc);
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(bufferflush_spin), bufferflushperc);
 
         gtk_box_pack_start(GTK_BOX(hbox), bufferflush_spin, TRUE, TRUE, 0);
 
@@ -747,7 +747,7 @@ static void ice_configure(void)
 
         name_entry = gtk_entry_new();
 
-	gtk_entry_set_text(GTK_ENTRY(name_entry), stream_name);
+        gtk_entry_set_text(GTK_ENTRY(name_entry), stream_name);
 
         gtk_box_pack_start(GTK_BOX(hbox), name_entry, TRUE, TRUE, 0);
 
@@ -759,7 +759,7 @@ static void ice_configure(void)
 
         url_entry = gtk_entry_new();
 
-	gtk_entry_set_text(GTK_ENTRY(url_entry), stream_url);
+        gtk_entry_set_text(GTK_ENTRY(url_entry), stream_url);
         gtk_widget_set_tooltip_text(url_entry, _("The URL of a site about this stream"));
 
         gtk_box_pack_start(GTK_BOX(hbox), url_entry, TRUE, TRUE, 0);
@@ -772,7 +772,7 @@ static void ice_configure(void)
 
         genre_entry = gtk_entry_new();
 
-	gtk_entry_set_text(GTK_ENTRY(genre_entry), stream_genre);
+        gtk_entry_set_text(GTK_ENTRY(genre_entry), stream_genre);
         gtk_widget_set_tooltip_text(genre_entry, _("The genre (or genres) of the stream. This is usually a keyword list, eg \"pop rock rap\""));
 
         gtk_box_pack_start(GTK_BOX(hbox), genre_entry, TRUE, TRUE, 0);
@@ -785,7 +785,7 @@ static void ice_configure(void)
 
         description_entry = gtk_entry_new();
 
-	gtk_entry_set_text(GTK_ENTRY(description_entry), stream_description);
+        gtk_entry_set_text(GTK_ENTRY(description_entry), stream_description);
 
         gtk_box_pack_start(GTK_BOX(hbox), description_entry, TRUE, TRUE, 0);
 
