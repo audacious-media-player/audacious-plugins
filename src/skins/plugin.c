@@ -88,6 +88,10 @@ gboolean skins_init(void) {
     init_skins(config.skin);
     mainwin_setup_menus();
 
+    gint h_vol[2];
+    aud_input_get_volume(&h_vol[0], &h_vol[1]);
+    aud_hook_call("volume set", h_vol);
+
     skins_interface.ops->create_prefs_window();
     cfgdlg = skins_configure();
     aud_prefswin_page_new(cfgdlg, N_("Skinned Interface"), DATA_DIR "/images/appearance.png");
