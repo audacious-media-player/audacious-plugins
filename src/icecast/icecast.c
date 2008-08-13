@@ -114,7 +114,7 @@ static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, 
 
 OutputPlugin ice_op =
 {
-    .description = "Icecast Plugin",
+    .description = "Icecast Plugin (output)",
     .init = ice_init,
     .cleanup = ice_cleanup,
     .about = ice_about,
@@ -132,9 +132,9 @@ OutputPlugin ice_op =
 
 EffectPlugin ice_ep =
 {
-        .description = "Icecast Plugin",
-        .init = ice_init,
-        .cleanup = ice_cleanup,
+        .description = "Icecast Plugin (effect)",
+        .init = NULL,
+        .cleanup = NULL,
         .about = ice_about,
         .configure = ice_configure,
         .mod_samples = ice_mod_samples,
@@ -145,7 +145,7 @@ OutputPlugin *ice_oplist[] = { &ice_op, NULL };
 EffectPlugin *ice_eplist[] = { &ice_ep, NULL };
 
 /*SIMPLE_OUTPUT_PLUGIN(icecast, ice_oplist);*/
-DECLARE_PLUGIN(icecast, NULL, NULL, NULL, ice_oplist, ice_eplist);
+DECLARE_PLUGIN(icecast, NULL, NULL, NULL, ice_oplist, ice_eplist, NULL, NULL, NULL, NULL)
 /*SIMPLE_EFFECT_PLUGIN(icecast, ice_eplist);*/
 
 static void set_plugin(void)
