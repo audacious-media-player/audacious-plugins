@@ -85,6 +85,9 @@ static gchar *stream_url = NULL;
 static gchar *stream_genre = NULL;
 static gchar *stream_description = NULL;
 
+static gboolean initialized = FALSE;
+static gboolean ep_playing = FALSE;
+
 VFSFile *output_file = NULL;
 guint64 written = 0;
 guint64 offset = 0;
@@ -99,6 +102,7 @@ static gint ice_open(AFormat fmt, gint rate, gint nch);
 static void ice_write(void *ptr, gint length);
 static gint ice_write_output(void *ptr, gint length);
 static void ice_close(void);
+static gboolean ice_real_close(gpointer data);
 static void ice_flush(gint time);
 static void ice_pause(short p);
 static gint ice_free(void);
@@ -106,7 +110,7 @@ static gint ice_playing(void);
 static gint ice_get_written_time(void);
 static gint ice_get_output_time(void);
 static void ice_configure(void);
-/*static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch);*/
+static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch);
 
 OutputPlugin ice_op =
 {
@@ -125,7 +129,7 @@ OutputPlugin ice_op =
     .output_time = ice_get_output_time,
     .written_time = ice_get_written_time
 };
-/*
+
 EffectPlugin ice_ep =
 {
         .description = "Icecast Plugin",
@@ -135,10 +139,14 @@ EffectPlugin ice_ep =
         .configure = ice_configure,
         .mod_samples = ice_mod_samples,
 };
-*/
+
 OutputPlugin *ice_oplist[] = { &ice_op, NULL };
 
-SIMPLE_OUTPUT_PLUGIN(icecast, ice_oplist);
+EffectPlugin *ice_eplist[] = { &ice_ep, NULL };
+
+/*SIMPLE_OUTPUT_PLUGIN(icecast, ice_oplist);*/
+DECLARE_PLUGIN(icecast, NULL, NULL, NULL, ice_oplist, ice_eplist);
+/*SIMPLE_EFFECT_PLUGIN(icecast, ice_eplist);*/
 
 static void set_plugin(void)
 {
@@ -159,6 +167,7 @@ static void ice_init(void)
 {
     ConfigDb *db;
     /*g_debug("ICE_INIT");*/
+    if (initialized==TRUE) return;
     shout_init();
     g_message("Using libshout %s", shout_version(NULL, NULL, NULL));
 
@@ -196,10 +205,13 @@ static void ice_init(void)
     plugin = plugin_new;
     if (plugin.init)
         plugin.init(&ice_write_output);
+
+    initialized = TRUE;
 }
 
 static void ice_cleanup(void)
 {
+    if (initialized==FALSE) return;
     if (shout)
     {
         shout_close(shout);
@@ -240,6 +252,9 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
     gint rv;
     gint pos;
     Playlist *playlist;
+
+    if (ep_playing == TRUE)
+        return 0;
 
     if (buffersize != buffersize_new)
     {
@@ -385,6 +400,28 @@ static void ice_write(void *ptr, gint length)
     plugin.write(convert_output, length);
 }
 
+static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch)
+{
+    if (ice_tid)
+        g_source_remove(ice_tid);
+
+    if (!shout)
+    {
+        if (ice_open(afmt, srate, nch))
+        {
+            if (shout)
+            {
+                int len;
+                ep_playing = TRUE;
+                len = convert_process(d, length);
+                plugin.write(convert_output, length);
+                ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);            
+            }
+        }
+    }
+    return length;
+}
+
 static gint ice_real_write(void* ptr, gint length)
 {
     gint ret;
@@ -441,7 +478,7 @@ static void ice_close(void)
 {
     if (ice_tid)
         g_source_remove(ice_tid);
-    ice_tid = g_timeout_add_seconds(3, ice_real_close, NULL);
+    ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);
     /*g_debug("ICE_CLOSE: starting timer");*/
 }
 
