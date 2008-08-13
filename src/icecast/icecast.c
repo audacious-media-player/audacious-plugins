@@ -620,10 +620,12 @@ static void ice_configure(void)
         addr_entry = gtk_entry_new();
 
 	gtk_entry_set_text(GTK_ENTRY(addr_entry), server_address);
+        gtk_widget_set_tooltip_text(addr_entry, _("Server hostname or IP address"));
 
         gtk_box_pack_start(GTK_BOX(hbox), addr_entry, TRUE, TRUE, 0);
 
         port_spin = gtk_spin_button_new_with_range(0.0, 65535.0, 1.0);
+        gtk_widget_set_tooltip_text(port_spin, _("Server port number"));
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(port_spin), 0);
 
@@ -642,6 +644,7 @@ static void ice_configure(void)
         mount_entry = gtk_entry_new();
 
 	gtk_entry_set_text(GTK_ENTRY(mount_entry), mountpoint);
+        gtk_widget_set_tooltip_text(mount_entry, _("Mount point for the stream"));
 
         gtk_box_pack_start(GTK_BOX(hbox), mount_entry, TRUE, TRUE, 0);
 
@@ -656,6 +659,7 @@ static void ice_configure(void)
         user_entry = gtk_entry_new();
 
 	gtk_entry_set_text(GTK_ENTRY(user_entry), server_user);
+        gtk_widget_set_tooltip_text(user_entry, _("Icecast source user name for the stream; depends on your server settings.\nThe default value is \"source\""));
 
         gtk_box_pack_start(GTK_BOX(hbox), user_entry, TRUE, TRUE, 0);
 
@@ -663,8 +667,9 @@ static void ice_configure(void)
         gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
         password_entry = gtk_entry_new();
-
-	gtk_entry_set_text(GTK_ENTRY(password_entry), server_password);
+        
+        gtk_entry_set_text(GTK_ENTRY(password_entry), server_password);
+        gtk_widget_set_tooltip_text(password_entry, _("Icecast source user password"));
 
         gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
 
@@ -679,6 +684,7 @@ static void ice_configure(void)
         gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
         timeout_spin = gtk_spin_button_new_with_range(1.0, 65535.0, 1.0);
+        gtk_widget_set_tooltip_text(timeout_spin, _("Amount of time before plugin closes connection to server when no audio data available"));
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(timeout_spin), 0);
 
@@ -695,6 +701,7 @@ static void ice_configure(void)
         gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
         buffersize_spin = gtk_spin_button_new_with_range(1.0, 65535.0, 1.0);
+        gtk_widget_set_tooltip_text(buffersize_spin, _("Internal buffer size\nTry to increase this if you are experiencing audio skipping on client side"));
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(buffersize_spin), 0);
 
@@ -709,6 +716,7 @@ static void ice_configure(void)
         gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
         bufferflush_spin = gtk_spin_button_new_with_range(1.0, 65535.0, 1.0);
+        gtk_widget_set_tooltip_text(bufferflush_spin, _("Determines when to flush internal buffer to prevent its overflow"));
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(bufferflush_spin), 0);
 
@@ -725,6 +733,7 @@ static void ice_configure(void)
         gtk_box_pack_start(GTK_BOX(configure_vbox), hbox, FALSE, FALSE, 0);
 
         public_check = gtk_check_button_new_with_label(_("Stream is public"));
+        gtk_widget_set_tooltip_text(public_check, _("Setting this asks the server to list the stream in any directories it knows about"));
 
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(public_check), stream_is_public?TRUE:FALSE);
 
@@ -751,6 +760,7 @@ static void ice_configure(void)
         url_entry = gtk_entry_new();
 
 	gtk_entry_set_text(GTK_ENTRY(url_entry), stream_url);
+        gtk_widget_set_tooltip_text(url_entry, _("The URL of a site about this stream"));
 
         gtk_box_pack_start(GTK_BOX(hbox), url_entry, TRUE, TRUE, 0);
 
@@ -763,6 +773,7 @@ static void ice_configure(void)
         genre_entry = gtk_entry_new();
 
 	gtk_entry_set_text(GTK_ENTRY(genre_entry), stream_genre);
+        gtk_widget_set_tooltip_text(genre_entry, _("The genre (or genres) of the stream. This is usually a keyword list, eg \"pop rock rap\""));
 
         gtk_box_pack_start(GTK_BOX(hbox), genre_entry, TRUE, TRUE, 0);
 
