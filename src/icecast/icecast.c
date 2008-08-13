@@ -467,6 +467,7 @@ static gboolean ice_real_close(gpointer data)
     }
     shout = NULL;
     ice_tid = 0;
+    ep_playing = FALSE;
     g_debug("ICE_REAL_CLOSE");
     return FALSE;
 }
