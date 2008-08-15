@@ -5,7 +5,6 @@ SRCS = streambrowser.c	\
        shoutcast.c \
        xiph.c \
        bookmarks.c \
-       gui/about_win.c \
        gui/streambrowser_win.c
 
 DATA = images/shoutcast.png \
