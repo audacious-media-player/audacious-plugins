@@ -72,7 +72,7 @@ gboolean shoutcast_streaminfo_fetch(category_t *category, streaminfo_t *streamin
 			g_snprintf(streaminfo_playlist_url, DEF_STRING_LEN, SHOUTCAST_STREAMINFO_URL, streaminfo_id);
 			
 			if (strncmp(streaminfo_playlist_url, streaminfo->playlist_url, DEF_STRING_LEN) == 0) {
-				debug("shoutcast: updating stream info for '%s/%d' from '%s'\n", streaminfo_name, streaminfo_id, url);
+				debug("shoutcast: updating stream info for '%s' with id %s from '%s'\n", streaminfo_name, streaminfo_id, url);
 
 				strcpy(streaminfo->name, streaminfo_name);
 				strcpy(streaminfo->playlist_url, streaminfo_playlist_url);

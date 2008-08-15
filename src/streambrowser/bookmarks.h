@@ -30,7 +30,6 @@
 typedef struct {
 	
 	gchar			streamdir_name[DEF_STRING_LEN];
-	gchar			category_name[DEF_STRING_LEN];
 	
 	gchar			name[DEF_STRING_LEN];
 	gchar			playlist_url[DEF_STRING_LEN];
@@ -41,7 +40,10 @@ typedef struct {
 
 gboolean							bookmarks_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
 gboolean							bookmarks_category_fetch(streamdir_t *streamdir, category_t *category);
-streamdir_t*						bookmarks_streamdir_fetch(bookmark_t *bms, int count);
+streamdir_t*						bookmarks_streamdir_fetch(bookmark_t **p_bookmarks, int *p_bookmarks_count);
+
+void								bookmark_add(bookmark_t *bookmark);
+void								bookmark_remove(gchar *name);
 
 
 #endif	// BOOKMARKS_H
