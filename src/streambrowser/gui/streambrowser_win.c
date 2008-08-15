@@ -8,6 +8,7 @@
 
 #include "../streambrowser.h"
 #include "streambrowser_win.h"
+#include "../bookmarks.h"
 
 
 typedef struct {
@@ -28,12 +29,12 @@ static GtkWidget*		gtk_streamdir_table_new(GtkWidget *tree_view);
 static gboolean			on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer data);
 static gboolean			on_tree_view_cursor_changed(GtkTreeView *tree_view, gpointer data);
 static gboolean			on_add_button_clicked(GtkButton *button, gpointer data);
+static gboolean			on_bookmark_button_clicked(GtkButton *button, gpointer data);
 static gboolean			on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
 static gboolean			on_tree_view_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data);
 static gboolean			on_tree_view_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer data);
 
 static streamdir_gui_t*	find_streamdir_gui_by_name(gchar *name);
-//static streamdir_gui_t*	find_streamdir_gui_by_tree_view(GtkTreeView *tree_view); todo: remove this
 static streamdir_gui_t*	find_streamdir_gui_by_table(GtkTable *table);
 static streamdir_gui_t*	find_streamdir_gui_by_streamdir(streamdir_t *streamdir);
 static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, const gchar *key, GtkTreeIter *iter, gpointer data);
@@ -41,6 +42,7 @@ static gboolean			tree_view_search_equal_func(GtkTreeModel *model, gint column, 
 static GtkWidget*		notebook;
 static GtkWidget*		search_entry;
 static GtkWidget*		add_button;
+static GtkWidget*		bookmark_button;
 static GtkWidget*		streambrowser_window;
 static GList*			streamdir_gui_list;
 static GtkCellRenderer*	cell_renderer_pixbuf;
@@ -75,17 +77,24 @@ void streambrowser_win_init()
 	g_signal_connect(G_OBJECT(add_button), "clicked", G_CALLBACK(on_add_button_clicked), NULL);
 	gtk_widget_show(add_button);
 
-	GtkWidget *vbox1 = gtk_vbox_new(FALSE, 3);
+	/* bookmark button */
+	bookmark_button = gtk_button_new_with_label(_("Add Bookmark"));
+	gtk_button_set_image(GTK_BUTTON(bookmark_button), gtk_image_new_from_file(BOOKMARKS_ICON));
+	g_signal_connect(G_OBJECT(bookmark_button), "clicked", G_CALLBACK(on_bookmark_button_clicked), NULL);
+	gtk_widget_show(bookmark_button);
+
+	GtkWidget *vbox1 = gtk_vbox_new(FALSE, 4);
 	gtk_box_pack_start(GTK_BOX(vbox1), notebook, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox1), hbox1, FALSE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox1), add_button, FALSE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox1), bookmark_button, FALSE, TRUE, 0);
 	gtk_widget_show(vbox1);
 
 	/* streambrowser window */
 	streambrowser_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(streambrowser_window), _("Stream browser"));
 	gtk_window_set_position(GTK_WINDOW(streambrowser_window), GTK_WIN_POS_CENTER);
-	gtk_window_set_default_size(GTK_WINDOW(streambrowser_window), 700, 400);
+	gtk_window_set_default_size(GTK_WINDOW(streambrowser_window), 1000, 700);
 	gtk_window_set_icon_from_file(GTK_WINDOW(streambrowser_window), STREAMBROWSER_ICON, NULL);
 	g_signal_connect(G_OBJECT(streambrowser_window), "delete-event", G_CALLBACK(gtk_widget_hide_on_delete), streambrowser_window);
 	gtk_container_add(GTK_CONTAINER(streambrowser_window), vbox1);
@@ -153,7 +162,7 @@ void streambrowser_win_set_streamdir(streamdir_t *streamdir, gchar *icon_filenam
 		category = category_get_by_index(streamdir, i);
 
 		gtk_tree_store_append(store, &iter, NULL);
-		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, category->name, 2, "", -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, category->name, 2, "", 3, PANGO_WEIGHT_NORMAL, -1);
 	}
 }
 
@@ -189,7 +198,7 @@ void streambrowser_win_set_category(streamdir_t *streamdir, category_t *category
 		streaminfo = streaminfo_get_by_index(category, i);
 
 		gtk_tree_store_append(store, &new_iter, &iter);
-		gtk_tree_store_set(store, &new_iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, -1);
+		gtk_tree_store_set(store, &new_iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, 3, PANGO_WEIGHT_NORMAL, -1);
 	}
 	
 	gtk_tree_path_free(path);
@@ -214,7 +223,7 @@ void streambrowser_win_set_streaminfo(streamdir_t *streamdir, category_t *catego
 		return;
 	
 	/* update the streaminfo*/
-	gtk_tree_store_set(store, &new_iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, -1);
+	gtk_tree_store_set(store, &new_iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, 3, PANGO_WEIGHT_NORMAL -1);
 	
 	gtk_tree_path_free(path);
 }
@@ -238,12 +247,13 @@ void streambrowser_win_set_category_state(streamdir_t *streamdir, category_t *ca
 		return;
 	
 	if (fetching) {
-		gchar temp[DEF_STRING_LEN];
-		sprintf(temp, "<span style='italic' weight='heavy'>%s</span>", category->name);
-		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, "", -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, category->name, 2, "", 3, PANGO_WEIGHT_BOLD, -1);
 	}
 	else {
-		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, category->name, 2, "", -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-directory", 1, category->name, 2, "", 3, PANGO_WEIGHT_NORMAL, -1);
+		
+		/* we also expand the corresponding category tree element in the treeview */
+		gtk_tree_view_expand_row(tree_view, path, FALSE);
 	}
 }
 
@@ -261,13 +271,10 @@ void streambrowser_win_set_streaminfo_state(streamdir_t *streamdir, category_t *
 		return;
 	
 	if (fetching) {
-		gchar temp[DEF_STRING_LEN];
-		sprintf(temp, "<span style='italic' weight='heavy'>%s</span>", streaminfo->name);
-		
-		gtk_tree_store_set(store, &iter, 0, "gtk-refresh", 1, temp, 2, streaminfo->current_track, -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, 3, PANGO_WEIGHT_BOLD, -1);
 	}
 	else {
-		gtk_tree_store_set(store, &iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, -1);
+		gtk_tree_store_set(store, &iter, 0, "gtk-media-play", 1, streaminfo->name, 2, streaminfo->current_track, 3, PANGO_WEIGHT_NORMAL, -1);
 	}
 }
 
@@ -287,7 +294,7 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 {
 	GtkWidget *tree_view = gtk_tree_view_new();
 
-	GtkTreeStore *store = gtk_tree_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+	GtkTreeStore *store = gtk_tree_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(store));
 
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tree_view), TRUE);
@@ -306,7 +313,8 @@ static GtkWidget *gtk_streamdir_tree_view_new()
 	
 	column = gtk_tree_view_column_new();
 	gtk_tree_view_column_pack_start(column, cell_renderer_text, TRUE);
-	gtk_tree_view_column_add_attribute(column, cell_renderer_text, "markup", 1);
+	gtk_tree_view_column_add_attribute(column, cell_renderer_text, "text", 1);
+	gtk_tree_view_column_add_attribute(column, cell_renderer_text, "weight", 3);
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_column_set_title(column, _("Stream name"));
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree_view), column);
@@ -353,6 +361,14 @@ static gboolean on_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *
 
 	/* clear the search box */
 	gtk_entry_set_text(GTK_ENTRY(search_entry), "");
+	
+	/* if this is the last page, aka the bookmarks page, bookmark button has to say "Remove bookmark", instead of "Add bookmark"0 */
+	if (page_num == gtk_notebook_get_n_pages(notebook) - 1) {
+		gtk_button_set_label(GTK_BUTTON(bookmark_button), _("Remove Bookmark"));
+	}
+	else {
+		gtk_button_set_label(GTK_BUTTON(bookmark_button), _("Add Bookmark"));
+	}
 
 	return TRUE;
 }
@@ -420,7 +436,6 @@ static gboolean on_tree_view_button_pressed(GtkWidget *widget, GdkEventButton *e
 	}
 	/* single click triggers a refresh of the selected item */
 	else {
-		// todo: separate single from double click somehow
 		tree_view_button_pressed = TRUE;
 	}	
 	
@@ -473,6 +488,66 @@ static gboolean on_add_button_clicked(GtkButton *button, gpointer data)
 	return TRUE;
 }
 
+static gboolean on_bookmark_button_clicked(GtkButton *button, gpointer data)
+{
+	GtkTreePath *path;
+	GtkTreeViewColumn *focus_column;
+
+	/* get the currently selected tree view */
+	GtkWidget *table = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
+	streamdir_gui_t *streamdir_gui = find_streamdir_gui_by_table(GTK_TABLE(table));
+	if (streamdir_gui == NULL)
+		return TRUE;
+
+	GtkTreeView *tree_view = GTK_TREE_VIEW(streamdir_gui->tree_view);
+	
+	/* get the currently selected path in the tree */
+	gtk_tree_view_get_cursor(tree_view, &path, &focus_column);
+	
+	if (path == NULL)
+		return TRUE;
+
+	gint *indices = gtk_tree_path_get_indices(path);
+	if (gtk_tree_path_get_depth(path) == 1) {
+		gtk_tree_path_free(path);
+		return TRUE;
+	}
+	
+	int category_index = indices[0];
+	int streaminfo_index = indices[1];
+	
+	gtk_tree_path_free(path);
+	
+	/* get the currently selected stream (info) */
+	streamdir_t *streamdir = streamdir_gui->streamdir;
+	category_t *category = category_get_by_index(streamdir_gui->streamdir, category_index);
+	streaminfo_t *streaminfo = streaminfo_get_by_index(category, streaminfo_index);
+	
+	/* if we have the bookmarks tab focused, we remove the stream, rather than add it. otherwise we simply add it */
+	if (strcmp(streamdir->name, BOOKMARKS_NAME) == 0) {
+		bookmark_remove(streaminfo->name);
+		
+		update_function(streamdir, category, NULL, FALSE);
+	}
+	else {
+		bookmark_t bookmark;
+		strncpy(bookmark.streamdir_name, streamdir->name, DEF_STRING_LEN);
+		strncpy(bookmark.name, streaminfo->name, DEF_STRING_LEN);
+		strncpy(bookmark.playlist_url, streaminfo->playlist_url, DEF_STRING_LEN);
+		strncpy(bookmark.url, streaminfo->url, DEF_STRING_LEN);
+	
+		bookmark_add(&bookmark);
+		
+		/* find the corresponding category (having the current streamdir name) in the bookmarks */
+		streamdir_t *bookmarks_streamdir = find_streamdir_gui_by_name(BOOKMARKS_NAME)->streamdir;
+		category_t *bookmarks_category = category_get_by_name(bookmarks_streamdir, streamdir->name);
+		
+		update_function(bookmarks_streamdir, bookmarks_category, NULL, FALSE);
+	}
+	
+	return TRUE;
+}
+
 static gboolean on_search_entry_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
 	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter) {
@@ -518,23 +593,6 @@ static streamdir_gui_t *find_streamdir_gui_by_name(gchar *name)
 	
 	return NULL;
 }
-
-/* todo: remove this
-static streamdir_gui_t *find_streamdir_gui_by_tree_view(GtkTreeView *tree_view)
-{
-	GList *iterator;
-	streamdir_gui_t *streamdir_gui;
-
-	for (iterator = g_list_first(streamdir_gui_list); iterator != NULL; iterator = g_list_next(iterator)) {
-		streamdir_gui = iterator->data;
-
-		if ((void *) streamdir_gui->tree_view == (void *) tree_view)
-			return streamdir_gui;
-	}
-	
-	return NULL;
-}
-*/
 
 static streamdir_gui_t *find_streamdir_gui_by_table(GtkTable *table)
 {
