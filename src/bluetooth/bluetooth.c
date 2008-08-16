@@ -44,7 +44,7 @@ static void discovery_completed(DBusGProxy *object, gpointer user_data);
 void discover_devices(void);
 void disconnect_dbus_signals(void);
 /*static void show_restart_dialog(void); */
-static void remove_bonding();
+static void remove_bonding(gchar* device);
 GeneralPlugin bluetooth_gp =
 {
     .description = "Bluetooth audio support",
@@ -61,7 +61,19 @@ void bluetooth_init ( void )
     audio_devices = NULL;
     bus = NULL;
     obj = NULL;
+    gchar* bonded_addr="zz";
     discover_devices();
+    mcs_handle_t *cfgfile ;
+    cfgfile = aud_cfg_db_open();
+    if(!aud_cfg_db_get_string(cfgfile, "BLUETOOTH_PLUGIN", "bonded",
+				  &bonded_addr))
+        return;
+    if(bonded_addr!=NULL && g_strcmp0(bonded_addr,"no")!=0)
+        {
+             remove_bonding(bonded_addr);
+        }
+    aud_cfg_db_close(cfgfile);
+
 }
 
 void bluetooth_cleanup ( void )
@@ -72,7 +84,7 @@ void bluetooth_cleanup ( void )
         close_window();
         config =0;
     }
-    remove_bonding();
+    remove_bonding(bonded_dev);
     if(discover_finish == 2) {
         dbus_g_connection_flush (bus);
         dbus_g_connection_unref(bus);
@@ -127,10 +139,11 @@ void clean_devices_list()
     audio_devices = NULL;
     //g_list_free(current_device);
 }
-static void remove_bonding()
+static void remove_bonding(gchar *device)
 {
+    printf("remove_bonding call\n");
     dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
-    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,bonded_dev,G_TYPE_INVALID,G_TYPE_INVALID); 
+    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,device,G_TYPE_INVALID,G_TYPE_INVALID); 
 
 }
 void refresh_call(void)
@@ -151,22 +164,21 @@ void refresh_call(void)
 
 gpointer connect_call_th(void)
 {
-
     //I will have to enable the audio service if necessary 
-
-    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
     run_agents();
+    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_call(obj,"CreateBonding",NULL,G_TYPE_STRING,current_address,G_TYPE_INVALID,G_TYPE_INVALID); 
-    return NULL;
+
+return NULL;
 }
+
 void connect_call(void)
-{   close_call();
+{ 
+    close_call();
     close_window();
     show_scan(1);
-    remove_bonding();
     current_address = g_strdup(((DeviceData*)(selected_dev->data))->address);
     connect_th = g_thread_create((GThreadFunc)connect_call_th,NULL,TRUE,NULL) ; 
-
 }
 
 
@@ -226,7 +238,7 @@ void play_call()
     printf("play callback\n");
     close_window();
     aud_output_plugin_cleanup();
-    audacious_drct_stop();
+//    audacious_drct_stop();
     audacious_drct_play();
 
 

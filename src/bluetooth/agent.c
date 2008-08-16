@@ -711,6 +711,9 @@ static void bonding_created(DBusGProxy *object,
 	dbus_g_proxy_call(object, "GetRemoteName", NULL,
 				G_TYPE_STRING, address, G_TYPE_INVALID,
 				G_TYPE_STRING, &name, G_TYPE_INVALID);
+     mcs_handle_t *cfgfile = aud_cfg_db_open();
+    aud_cfg_db_set_string(cfgfile,"BLUETOOTH_PLUGIN","bonded", address);
+    aud_cfg_db_close(cfgfile);
 
 	if (name) {
 		if (g_strrstr(name, address))
@@ -735,8 +738,7 @@ static void bonding_removed(DBusGProxy *object,
 {
 	const char *adapter = NULL, *name = NULL;
 	gchar *device, *text;
-
-	dbus_g_proxy_call(object, "GetName", NULL, G_TYPE_INVALID,
+ 	dbus_g_proxy_call(object, "GetName", NULL, G_TYPE_INVALID,
 				G_TYPE_STRING, &adapter, G_TYPE_INVALID);
 
 	dbus_g_proxy_call(object, "GetRemoteName", NULL,
@@ -752,6 +754,9 @@ static void bonding_removed(DBusGProxy *object,
 		device = g_strdup(address);
 
 	text = g_strdup_printf(_("Removed bonding with %s"), device);
+    mcs_handle_t *cfgfile = aud_cfg_db_open();
+    aud_cfg_db_set_string(cfgfile,"BLUETOOTH_PLUGIN","bonded","no");
+    aud_cfg_db_close(cfgfile);
 
 	g_free(device);
     printf("bonding removed\n");
