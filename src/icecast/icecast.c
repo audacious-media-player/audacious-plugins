@@ -164,7 +164,6 @@ static void set_plugin(void)
 static void ice_init(void)
 {
     ConfigDb *db;
-    g_debug("ICE_INIT");
     if (initialized==TRUE) return;
     shout_init();
     g_message("Using libshout %s", shout_version(NULL, NULL, NULL));
@@ -385,7 +384,6 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
 
     rv = (plugin.open)();
 
-    g_debug("ICE_OPEN[%d:%d:%d]", fmt, rate, nch);
     return rv;
 }
 
@@ -424,28 +422,23 @@ static gint ice_real_write(void* ptr, gint length)
     if (!length) return length;
     ret = shout_send(shout, ptr, length);
     shout_sync(shout);
-    g_debug("ice_write[%d:%d]", ret, length);
     return 0;
 }
 
 static gint ice_write_output(void *ptr, gint length)
 {
     if ((!shout) || (!length)) return 0;
-    /*g_debug("outputlength=%d, length=%d...", outputlength, length);*/
     if ((outputlength > bufferflush) || ((outputlength+length) > buffersize))
     {
-        /*g_debug("flushing");*/
         outputlength = ice_real_write(outputbuffer, outputlength);
     }
     {
         if (length > buffersize)
         {
-            /*g_debug("data too long, flushing");*/
             ice_real_write(ptr, length);
         }
         else
         {
-            /*g_debug("adding");*/
             memcpy(&(outputbuffer[outputlength]), ptr, length);
             outputlength += length;
         }
@@ -466,7 +459,6 @@ static gboolean ice_real_close(gpointer data)
     shout = NULL;
     ice_tid = 0;
     ep_playing = FALSE;
-    g_debug("ICE_REAL_CLOSE");
     return FALSE;
 }
 
@@ -476,7 +468,6 @@ static void ice_close(void)
     if (ice_tid)
         g_source_remove(ice_tid);
     ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);
-    g_debug("ICE_CLOSE: starting timer");
 }
 
 static void ice_flush(gint time)
