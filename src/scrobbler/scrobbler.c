@@ -479,12 +479,12 @@ static int sc_handshake(void)
     auth_tmp = g_strdup_printf("%s%ld", sc_password, ts);
     auth = (char *)md5_string(auth_tmp, strlen(auth_tmp));
     g_free(auth_tmp);
-    hexify(auth, strlen(auth));
+    hexify(auth, 16);
     auth_tmp = g_strdup(sc_response_hash);
 
     g_snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s&t=%ld&a=%s",
             SCROBBLER_HS_URL, SCROBBLER_VERSION,
-            SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, time(NULL),
+            SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, ts,
             auth_tmp);
     g_free(auth_tmp);
 
