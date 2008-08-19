@@ -1761,6 +1761,7 @@ echo "  Extra Stereo:                           yes"
 echo "  Echo/Surround:                          yes"
 echo "  SndStretch:                             yes"
 echo "  Crystalizer:                            yes"
+echo "  Icecast effect plugin (icecast):        $have_shout"
 echo
 echo "  Visualization"
 echo "  -------------"
