@@ -64,7 +64,7 @@ Mount point is a path on Icecast server, where your stream will be available.
 I.e., if you have server at your local machine on default port, and mountpoint 
 is "/test", the whole URL of your stream would be
 
-  http://127.1:8000/test
+  http://127.0.0.1:8000/test
 
 If you don't specify mount point, mount point is set to "/". Don't do this.
 
