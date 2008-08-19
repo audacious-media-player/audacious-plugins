@@ -85,7 +85,6 @@ static gchar *stream_url = NULL;
 static gchar *stream_genre = NULL;
 static gchar *stream_description = NULL;
 
-static gboolean initialized = FALSE;
 static gboolean ep_playing = FALSE;
 
 VFSFile *output_file = NULL;
@@ -164,7 +163,6 @@ static void set_plugin(void)
 static void ice_init(void)
 {
     ConfigDb *db;
-    if (initialized==TRUE) return;
     shout_init();
     g_message("Using libshout %s", shout_version(NULL, NULL, NULL));
 
@@ -202,13 +200,10 @@ static void ice_init(void)
     plugin = plugin_new;
     if (plugin.init)
         plugin.init(&ice_write_output);
-
-    initialized = TRUE;
 }
 
 static void ice_cleanup(void)
 {
-    if (initialized==FALSE) return;
     if (shout)
     {
         shout_close(shout);
