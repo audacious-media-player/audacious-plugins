@@ -100,9 +100,21 @@ void bluetooth_cleanup ( void )
 
 void bt_about( void )
 {
-    printf("about call\n");
-    dbus_g_object_register_marshaller(marshal_VOID__STRING_UINT_INT, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_UINT, G_TYPE_INT, G_TYPE_INVALID);    
-    dbus_g_proxy_call(obj,"RemoveBonding",NULL,G_TYPE_STRING,((DeviceData*)(selected_dev->data))->address,G_TYPE_INVALID,G_TYPE_INVALID); 
+  	static GtkWidget *dialog;
+
+	dialog = audacious_info_dialog (_("Bluetooth headset support plugin"),
+				_("Bluetooth headset support\n"
+				"Copyright (c) 2008 Paula Stanciu paula.stanciu@gmail.com\n"
+				"This was a GSoC 2008 Project - Many thanks to my mentor Tony Vroon and the Audacious team\n \n"
+                "In order to use the AVRCP you need the uinput module loaded into the kernel\n"
+                "The headset keys will be recognized as normal mutimedia keys and \n"
+                "can be configured using the Audacious Global Hotkey plugin or ohter tools \n"
+                "provided by your window manager\n"
+                ),
+                         	_("OK"), TRUE, NULL, NULL);
+
+	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &dialog);
 
 }
 
