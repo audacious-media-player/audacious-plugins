@@ -343,7 +343,7 @@ static void *hs_thread(void *data __attribute__((unused)))
 void setup_proxy(CURL *curl)
 {
     mcs_handle_t *db;
-    gboolean use_proxy;
+    gboolean use_proxy = FALSE;
 
     db = aud_cfg_db_open();
     aud_cfg_db_get_bool(db, NULL, "use_proxy", &use_proxy);
@@ -353,8 +353,8 @@ void setup_proxy(CURL *curl)
     }
     else
     {
-        gchar *proxy_host, *proxy_port;
-        gboolean proxy_use_auth;
+        gchar *proxy_host = NULL, *proxy_port = NULL;
+        gboolean proxy_use_auth = FALSE;
         aud_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host);
         aud_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port);
         curl_easy_setopt(curl, CURLOPT_PROXY, proxy_host);
@@ -362,7 +362,7 @@ void setup_proxy(CURL *curl)
         aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &proxy_use_auth);
         if (proxy_use_auth != FALSE)
         {
-            gchar *userpwd, *user, *pass;
+            gchar *userpwd = NULL, *user = NULL, *pass = NULL;
             aud_cfg_db_get_string(db, NULL, "proxy_user", &user);
             aud_cfg_db_get_string(db, NULL, "proxy_pass", &pass);
             userpwd = g_strdup_printf("%s:%s", user, pass);
