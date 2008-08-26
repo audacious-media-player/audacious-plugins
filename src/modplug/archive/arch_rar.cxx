@@ -135,11 +135,10 @@ arch_Rar::~arch_Rar()
 bool arch_Rar::ContainsMod(const string& aFileName)
 {
 	//check if file exists
+	const uint32 LBUFFER_SIZE = 350;
 	string lName;
 	int lFileDesc = open(aFileName.c_str(), O_RDONLY);
-	char lBuffer[350];
-	uint32 lLength;
-	uint32 lCount;
+	char lBuffer[LBUFFER_SIZE];
 
 	if(lFileDesc == -1)
 		return false;
@@ -167,14 +166,15 @@ bool arch_Rar::ContainsMod(const string& aFileName)
 	bool eof = false;
 	while(!eof)
 	{
-		if(fgets(lBuffer, 350, f) || f <= 0)
-			if(f <= 0)
-			break;
-		if (strlen(lBuffer) > 1)
-			lBuffer[strlen(lBuffer)-1] = 0;
+		if(fgets(lBuffer, LBUFFER_SIZE, f) == NULL)
+			break; // End of file or read error
+		uint32 lLength = strnlen(lBuffer, LBUFFER_SIZE);
+		if (lLength > 1)
+			lBuffer[lLength-1] = 0;
 		
-		lLength = strlen(lBuffer);
-		lCount = 0;
+		uint32 lCount = 0;
+		// Remove non-filename related data from the end of the each
+		// filename line (9 fields separated by a space)
 		for(uint32 i = lLength - 1; i > 0; i--)
 		{
 			if(lBuffer[i] == ' ')
@@ -197,6 +197,6 @@ bool arch_Rar::ContainsMod(const string& aFileName)
 		}
 	}
 
-	pclose(f);	
+	pclose(f);
 	return false;
 }
