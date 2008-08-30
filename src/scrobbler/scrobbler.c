@@ -604,6 +604,15 @@ static int sc_parse_sb_res(void)
         return -1;
     }
 
+    if(!strncmp(sc_srv_res, "BADSESSION", 10)) {
+        pdebug("Invalid session, re-handshaking", DEBUG);
+
+        sc_free_res();
+        sc_handshake();
+
+        return -1;
+    }
+
     if (!strncmp(sc_srv_res, "FAILED", 6))  {
         if ((ch = strstr(sc_srv_res, "INTERVAL"))) {
             sc_submit_interval = strtol(ch + 8, NULL, 10);
