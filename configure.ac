@@ -1397,6 +1397,11 @@ if test "x$have_mtp_up" = "xyes"; then
     PKG_CHECK_MODULES(MTP, [libmtp >= 0.1.3], [GENERAL_PLUGINS="$GENERAL_PLUGINS mtp_up" ], [have_mtp_up="no"])
     MTP_LIBS=`pkg-config --libs libmtp`
     MTP_CFLAGS=`pkg-config --cflags libmtp`
+    dnl Check for libmtp 0.3.0+
+    PKG_CHECK_EXISTS(libmtp >= 0.3.0, libmtp_030_pkg=yes, libmtp_030_pkg=no)
+    if test x"$libmtp_030_pkg" = "xyes" ; then
+       AC_DEFINE([HAVE_LIBMTP_030], 1, [indidaces if libmtp 0.3.0 is installed])
+    fi
 else
     have_mtp_up=no
     AC_MSG_RESULT([*** mtp upload plugin disabled by request ***])
