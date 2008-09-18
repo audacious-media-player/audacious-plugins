@@ -1024,20 +1024,10 @@ AC_ARG_ENABLE(alsa,
 )
 
 if test "x$enable_alsa" = "xyes"; then
-    PKG_CHECK_MODULES(ALSA, [alsa >= 1.0],
-[
-have_alsa=yes
-alsalib_available=yes
-],
-[
-have_alsa=no
-alsalib_available=no
-]
-    )
+    PKG_CHECK_MODULES([ALSA], [alsa >= 1.0], [have_alsa=yes], [have_alsa=no])
 else
     AC_MSG_RESULT([*** ALSA output plugin disabled per user request ***])
     have_alsa=no
-    alsalib_available=check
 fi
 
 if test "x$have_alsa" = "xyes"; then
@@ -1085,13 +1075,17 @@ else
   fi
 fi
 
+if test "x$have_alsa" = "xyes"; then
+  AUD_TRY_COMPILE([ALSA MIDI support], [alsalib_hasmidi],
+[#include <alsa/asoundlib.h>],
+[snd_seq_t *seq = NULL;],
+  [alsalib_midi=yes], [alsalib_midi=no])
+fi
+
+
 if test "x$enable_amidiplug" = "xcheck"; then
-  if test "x$alsalib_available" = "xcheck"; then
-    PKG_CHECK_MODULES(ALSA, [alsa >= 1.0],
-      [alsalib_available=yes],[alsalib_available=no])
-  fi
-  if test "x$alsalib_available" = "xyes"; then
-    AM_PATH_AMIDIPLUG_HWSYNTH(ap_have_hwsynth=yes, ap_have_hwsynth=no)
+  if test "x$alsalib_midi" = "xyes"; then
+    AM_PATH_AMIDIPLUG_HWSYNTH([ap_have_hwsynth=yes], [ap_have_hwsynth=no])
     if test "x$ap_have_hwsynth" = "xyes"; then
       enable_amidiplug=yes
       ap_disable_timidity=yes
@@ -1126,11 +1120,7 @@ if test "x$enable_amidiplug" = "xyes"; then
   AMIDIPLUG_BACKEND_DIR=amidi-plug
   AC_SUBST(AMIDIPLUG_BACKEND_DIR)
   if test "x$enable_amidiplug_alsa" = "xauto" -o "x$enable_amidiplug_alsa" = "xyes"; then
-    if test "x$alsalib_available" = "xcheck"; then
-      PKG_CHECK_MODULES(ALSA, [alsa >= 1.0],
-        [alsalib_available=yes],[alsalib_available=no])
-    fi
-    if test "x$alsalib_available" = "xyes"; then
+    if test "x$alsalib_midi" = "xyes"; then
       AMIDIPLUG_BACKENDS="$AMIDIPLUG_BACKENDS backend-alsa"
       enable_amidiplug_alsa=yes
     else
