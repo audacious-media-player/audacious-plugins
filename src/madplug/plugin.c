@@ -267,7 +267,7 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
     return 0;
 }
 
-static int
+static guint32
 mp3_head_convert(const guchar * hbuf)
 {
     return
@@ -278,6 +278,7 @@ mp3_head_convert(const guchar * hbuf)
 }
 
 #undef MADPROBE_DEBUG
+//#define MADPROBE_DEBUG
 
 #ifdef MADPROBE_DEBUG
 static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
@@ -289,12 +290,13 @@ static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
 #endif
 
 // audacious vfs fast version
-static int
+static gint
 audmad_is_our_fd(gchar *filename, VFSFile *fin)
 {
     gchar *ext = extname(filename);
+    const gint max_resync_bytes = 32, max_resync_tries = 8;
     guint32 head = 0;
-    guchar chkbuf[2048];
+    guchar chkbuf[1024];
     gint state,
          next = -1,
          tries = 0,
@@ -335,7 +337,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
 
     state = STATE_REBUFFER;
     next = STATE_HEADERS;
-
+    
     /* Check stream data for frame header(s). We employ a simple
      * state-machine approach here to find number of sequential
      * valid MPEG frame headers (with similar attributes).
@@ -343,9 +345,9 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
     do {
         switch (state) {
         case STATE_HEADERS:
-            LULZ("check headers\n");
+            LULZ("check headers (size=%d, pos=%d)\n",  chksize, chkpos);
             /* Check read size */
-            if (chksize < 32) {
+            if (chksize - chkpos < 16) {
                 LULZ("headers check failed, not enough data!\n");
                 state = STATE_FATAL;
             } else {
@@ -358,7 +360,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                     tagsize |= (chkbuf[chkpos+8] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+9] & 0x7f);
         
-                    LULZ("ID3 size = %08x\n", tagsize);
+                    LULZ("ID3 size = %d\n", tagsize);
                     state = STATE_GOTO_NEXT;
                     skip = tagsize + 10;
                 } else
@@ -373,13 +375,14 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
         
         case STATE_REBUFFER:
             streampos = aud_vfs_ftell(fin);
-            if ((chksize = aud_vfs_fread(chkbuf, 1, sizeof(chkbuf), fin)) == 0)
+            if ((chksize = aud_vfs_fread(chkbuf, 1, sizeof(chkbuf), fin)) == 0) {
                 state = STATE_FATAL;
-            else {
+                LULZ("fatal error rebuffering @ %08lx!\n", streampos);
+            } else {
                 chkpos = 0;
                 state = next;
+                LULZ("rebuffered = %d bytes @ %08lx\n", chksize, streampos);
             }
-            LULZ("rebuffered = %d bytes\n", chksize);
             break;
         
         case STATE_VALIDATE:
@@ -415,7 +418,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 if (chkcount > 1) {
                     LOL("no (%d), trying quick resync ..\n", res);
                     state = STATE_RESYNC_DO;
-                    resync_max = 32;
+                    resync_max = max_resync_bytes;
                 } else {
                     LOL("no (%d)\n", res);
                     state = STATE_RESYNC;
@@ -424,17 +427,18 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
             break;
         
         case STATE_GOTO_NEXT:
-            LULZ("goto next (%x :: %x < %x) ? ", chkpos, skip, chksize);
+            LULZ("goto next (cpos=%x, csiz=%d :: skip=%d :: fpos=%lx) ? ", chkpos, chksize, skip, aud_vfs_ftell(fin));
             /* Check if we have the next possible header in buffer? */
-            gint tmppos = chkpos + skip + sizeof(guint32);
+            gint tmppos = chkpos + skip + 16;
             if (tmppos < chksize) {
                 LOL("[in buffer]\n");
                 chkpos += skip;
                 state = STATE_GET_NEXT;
             } else {
                 /* No, re-fill buffer and try again .. */
-                LOL("[rebuffering: %x, %x]\n", skip, chkpos + skip - chksize);
-                aud_vfs_fseek(fin, chkpos + skip - chksize, SEEK_CUR);
+                glong tmppos = skip - (chksize - chkpos);
+                gint tmpres = aud_vfs_fseek(fin, tmppos, SEEK_CUR);
+                LOL("[skipping: %ld -> %d]\n", tmppos, tmpres);
                 next = STATE_GET_NEXT;
                 state = STATE_REBUFFER;
             }
@@ -442,9 +446,8 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
         
         case STATE_GET_NEXT:
             /* Get a header */
-            LULZ("get next @ bufpos=%08x, streampos=%08lx, realpos=%08lx\n", chkpos, streampos, streampos+chkpos);
+            LULZ("get next @ chkpos=%08x, realpos=%08lx\n", chkpos, streampos+chkpos);
             head = mp3_head_convert(&chkbuf[chkpos]);
-            //chkpos += sizeof(guint32);
             state = STATE_VALIDATE;
             break;
         
@@ -467,7 +470,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 if (mp3_head_validate(head, &frame) >= 0) {
                     /* Found, exit resync */
                     chkpos -= 3;
-                    LULZ("resync found @ %x\n", chkpos);
+                    LULZ("resync found @ %x (%lx)\n", chkpos, streampos + chkpos);
                     state = STATE_VALIDATE;
                     break;
                 }
@@ -488,8 +491,8 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
             }
             break;
         }
-    } while (state != STATE_FATAL && tries < 16);
-    /* Give up after 16 failed resync attempts or fatal errors */
+    } while (state != STATE_FATAL && tries < max_resync_tries);
+    /* Give up after given number of failed resync attempts or fatal error */
 
     g_message("Rejecting %s (not an MP3 file?)", filename);
     return 0;
