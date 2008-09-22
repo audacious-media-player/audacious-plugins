@@ -77,7 +77,7 @@ stdio_aud_vfs_fopen_impl(const gchar * path,
     gchar *decpath;
 
     if (!path || !mode)
-	return NULL;
+	    return NULL;
 
     decpath = aud_vfs_stdio_urldecode_path(path);
 
@@ -85,8 +85,7 @@ stdio_aud_vfs_fopen_impl(const gchar * path,
 
     file->handle = fopen(decpath != NULL ? decpath : path, mode);
 
-    if (decpath != NULL)
-        g_free(decpath);
+    g_free(decpath);
 
     if (file->handle == NULL) {
         g_free(file);
@@ -157,11 +156,16 @@ stdio_aud_vfs_getc_impl(VFSFile *stream)
 }
 
 gint
-stdio_aud_vfs_ungetc_impl(gint c, VFSFile *stream)
+stdio_aud_vfs_ungetc_impl(gint c, VFSFile * file)
 {
-  FILE *handle = (FILE *) stream->handle;
-
-  return ungetc( c , handle );
+    FILE *handle;
+    
+    if (file == NULL)
+        return -1;
+	
+	handle = (FILE *) file->handle;
+	
+    return ungetc(c, handle);
 }
 
 gint
@@ -242,7 +246,7 @@ stdio_aud_vfs_fsize_impl(VFSFile * file)
 
     handle = (FILE *) file->handle;
 
-    if (-1 == fstat(fileno(handle), &s))
+    if (fstat(fileno(handle), &s) == -1)
         return -1;
 
     return s.st_size;
