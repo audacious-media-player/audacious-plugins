@@ -13,7 +13,6 @@ extern "C" {
 }
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <iconv.h>
 #include <math.h>
 #include "tags.h"
 #include "../../config.h"
