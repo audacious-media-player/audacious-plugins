@@ -278,7 +278,7 @@ create_cfgdlg(void)
   gtk_misc_set_alignment (GTK_MISC (himage1), 1, 0.5);
 
 	gtk_entry_set_text(GTK_ENTRY(entry1), "");
-	gtk_entry_set_text(GTK_ENTRY(ge_entry), "");
+	gtk_entry_set_text(GTK_ENTRY(ge_entry1), "");
 
         if ((db = aud_cfg_db_open())) {
                 gchar *username = NULL;
