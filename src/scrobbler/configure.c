@@ -139,7 +139,7 @@ static void entry_focus_out(GtkWidget *widget, gpointer data)
     ge_pwd = g_strdup(gtk_entry_get_text(GTK_ENTRY(ge_entry2)));
   }
   entry_changed(widget, data);
-  gtk_entry_set_text(GTK_ENTRY(widget), "Change password");
+  gtk_entry_set_text(GTK_ENTRY(widget), _("Change password"));
   gtk_widget_modify_text(widget, GTK_STATE_NORMAL, &disabled_color);
   gtk_entry_set_visibility(GTK_ENTRY(widget), TRUE);
 }
@@ -207,7 +207,7 @@ create_cfgdlg(void)
   memcpy(&disabled_color, &(style->text[GTK_STATE_INSENSITIVE]), sizeof(GdkColor));
   gtk_widget_modify_text(entry2, GTK_STATE_NORMAL, &disabled_color);
 
-  gtk_entry_set_text(GTK_ENTRY(entry2), "Change password");
+  gtk_entry_set_text(GTK_ENTRY(entry2), _("Change password"));
   g_signal_connect(G_OBJECT(entry2), "focus-in-event",
                    G_CALLBACK(entry_focus_in),
                    NULL);
