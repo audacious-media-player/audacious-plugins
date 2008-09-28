@@ -34,6 +34,7 @@ static GtkWidget *addr_entry, *port_spin, *timeout_spin, *buffersize_spin, *buff
 static GtkWidget *user_entry, *password_entry, *mount_entry;
 static GtkWidget *public_check, *name_entry, *url_entry, *genre_entry, *description_entry;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
+static GdkColor disabled_color;
 static guint ice_tid = 0;
 
 static gint ice_close_timeout;
@@ -501,6 +502,22 @@ static gint ice_get_output_time(void)
     return ice_get_written_time();
 }
 
+void entry_focus_in(GtkWidget *widget, gpointer data)
+{
+    gtk_entry_set_text(GTK_ENTRY(password_entry), "");
+    gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
+    gtk_widget_modify_text(password_entry, GTK_STATE_NORMAL, NULL);
+}
+
+void entry_focus_out(GtkWidget *widget, gpointer data)
+{
+    g_free(server_password);
+    server_password = g_strdup(gtk_entry_get_text(GTK_ENTRY(password_entry)));
+    gtk_entry_set_text(GTK_ENTRY(password_entry), _("Change password"));
+    gtk_widget_modify_text(password_entry, GTK_STATE_NORMAL, &disabled_color);
+    gtk_entry_set_visibility(GTK_ENTRY(password_entry), TRUE);
+}
+
 static void configure_ok_cb(gpointer data)
 {
     ConfigDb *db;
@@ -512,9 +529,6 @@ static void configure_ok_cb(gpointer data)
 
     g_free(server_user);
     server_user = g_strdup(gtk_entry_get_text(GTK_ENTRY(user_entry)));
-
-    g_free(server_password);
-    server_password = g_strdup(gtk_entry_get_text(GTK_ENTRY(password_entry)));
 
     server_port = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(port_spin));
 
@@ -587,6 +601,7 @@ static void ice_configure(void)
     {
         GtkWidget * hbox;
         GtkWidget * label;
+        GtkStyle * style;
 
         plugin_new = plugin;
 
@@ -688,10 +703,19 @@ static void ice_configure(void)
 
         password_entry = gtk_entry_new();
         
-        gtk_entry_set_text(GTK_ENTRY(password_entry), server_password);
         gtk_widget_set_tooltip_text(password_entry, _("Icecast source user password"));
 
-        gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
+        style = gtk_widget_get_style(password_entry);
+        memcpy(&disabled_color, &(style->text[GTK_STATE_INSENSITIVE]), sizeof(GdkColor));
+        gtk_widget_modify_text(password_entry, GTK_STATE_NORMAL, &disabled_color);
+
+        gtk_entry_set_text(GTK_ENTRY(password_entry), _("Change password"));
+        g_signal_connect(G_OBJECT(password_entry), "focus-in-event",
+                         G_CALLBACK(entry_focus_in),
+                         NULL);
+        g_signal_connect(G_OBJECT(password_entry), "focus-out-event",
+                         G_CALLBACK(entry_focus_out),
+                         NULL);
 
         gtk_box_pack_start(GTK_BOX(hbox), password_entry, TRUE, TRUE, 0);
 
