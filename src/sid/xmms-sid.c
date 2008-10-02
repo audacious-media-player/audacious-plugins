@@ -94,7 +94,7 @@ void xs_error(const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    g_logv("AUD-SID", G_LOG_LEVEL_ERROR, ap);
+    g_logv("AUD-SID", G_LOG_LEVEL_ERROR, fmt, ap);
     va_end(ap);
 }
 
@@ -103,7 +103,7 @@ void XSDEBUG(const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    g_logv("AUD-SID", G_LOG_LEVEL_DEBUG, ap);
+    g_logv("AUD-SID", G_LOG_LEVEL_DEBUG, fmt, ap);
     va_end(ap);
 }
 #endif
