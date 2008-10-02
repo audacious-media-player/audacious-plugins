@@ -34,15 +34,9 @@ extern "C" {
  * Some constants and defines
  */
 /* #define to enable spurious debugging messages for development
- * purposes. Output goes to stderr. See also DEBUG_NP below.
+ * purposes. Output through g_logv().
  */
 #undef DEBUG
-
-/* Define to ISO C99 macro for debugging instead of varargs function.
- * This provides more useful information, but is incompatible with
- * older standards. If #undef'd, a varargs function is used instead.
- */
-#define DEBUG_NP
 
 /* Define to enable non-portable thread and mutex debugging code.
  * You need to #define DEBUG also to make this useful.
@@ -186,14 +180,10 @@ gboolean xs_get_trackinfo(const gchar *, gchar **, gint *);
 
 /* Debugging
  */
-#ifndef DEBUG_NP
+#ifdef DEBUG
 void    XSDEBUG(const char *, ...);
 #else
-#  ifdef DEBUG
-#    define XSDEBUG(...) { fprintf(stderr, "XS[%s:%s:%d]: ", __FILE__, __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
-#  else
-#    define XSDEBUG(...) /* stub */
-#  endif
+#  define XSDEBUG(...) /* stub */
 #endif
 
 
