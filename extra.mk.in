@@ -386,3 +386,6 @@ pluginlibdir = @plugindir@
 plugindir = ${pluginlibdir}
 GTKGLEXT_CFLAGS ?= @GTKGLEXT_CFLAGS@
 GTKGLEXT_LIBS ?= @GTKGLEXT_LIBS@
+TR = @TR@
+PLUGIN_DEFNAME := `echo ${subst ${PLUGIN_SUFFIX},,${PLUGIN}} | tr '[:lower:]' '[:upper:]' | tr '-' '_'`
+PLUGIN_CPPFLAGS += -D${PLUGIN_DEFNAME}_CFGID="\"${subst ${PLUGIN_SUFFIX},,${PLUGIN}}\""
