@@ -99,6 +99,8 @@ AC_PATH_PROG(RANLIB, ranlib)
 dnl Gettext -nenolod
 AM_GNU_GETTEXT([external])
 
+AC_CHECK_FUNC(strnlen, [AC_DEFINE(HAVE_STRNLEN, 1, [Whether we have strnlen])],)
+
 dnl Path settings
 
 AC_ARG_WITH(dev-dsp,

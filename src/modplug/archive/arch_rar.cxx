@@ -16,6 +16,19 @@
 #include <vector>
 #include <cstdlib>
 #include <cstring>
+
+#ifndef HAVE_STRNLEN
+size_t
+strnlen(const char *s, size_t maxlen)
+{
+	size_t i = 0;
+
+	while (i < maxlen && (*s++))
+		i++;
+
+	return i;
+}
+#endif
 	
 arch_Rar::arch_Rar(const string& aFileName)
 {
