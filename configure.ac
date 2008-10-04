@@ -1408,7 +1408,7 @@ AC_ARG_ENABLE(bluetooth,
 [have_bluetooth=$enableval],
 [have_bluetooth=yes])
 
-if test "x$have_bluetooth" = "xyes"; then
+if test "x$have_bluetooth" = "xyes" -a "x$have_alsa" = "xyes"; then
     have_bluetooth=yes
     PKG_CHECK_MODULES(BLUEZ, [bluez >= 2.22],
     [GENERAL_PLUGINS="$GENERAL_PLUGINS bluetooth" ], [have_bluetooth="no"])
