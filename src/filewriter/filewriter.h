@@ -39,7 +39,7 @@
 
 #include <libSAD/libSAD.h>
 
-struct format_info { 
+struct format_info {
     AFormat format;
     int frequency;
     int channels;
@@ -48,15 +48,12 @@ struct format_info {
 extern struct format_info input;
 
 extern VFSFile *output_file;
-extern guint64 written;
 extern guint64 offset;
 extern Tuple *tuple;
 
-typedef struct _FileWriter FileWriter;
-
 typedef gint (*write_output_callback)(void *ptr, gint length);
 
-struct _FileWriter
+typedef struct _FileWriter
 {
     void (*init)(write_output_callback write_output_func);
     void (*configure)(void);
@@ -68,6 +65,6 @@ struct _FileWriter
     gint (*playing)(void);
     gint (*get_written_time)(void);
     AFormat format_required;
-};
+} FileWriter;
 
 #endif

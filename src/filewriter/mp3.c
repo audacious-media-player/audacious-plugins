@@ -27,7 +27,6 @@
 #ifdef FILEWRITER_MP3
 
 #include <lame/lame.h>
-#define ENCBUFFER_SIZE 35000
 
 static void mp3_init(write_output_callback write_output_func);
 static void mp3_configure(void);
@@ -67,7 +66,7 @@ static GtkWidget *enc_radio1, *enc_radio2, *bitrate_option_menu, *bitrate_menu,
 static GtkWidget *compression_spin;
 static GtkObject *compression_adj;
 static GtkWidget *mode_hbox, *mode_option_menu, *mode_menu, *mode_frame,
-                 *mode_menu_item, *ms_mode_toggle;
+                 *mode_menu_item;
 static GtkWidget *samplerate_hbox, *samplerate_option_menu, *samplerate_menu,
                  *samplerate_label, *samplerate_frame, *samplerate_menu_item;
 static GtkWidget *misc_frame, *misc_vbox, *enforce_iso_toggle,
@@ -93,6 +92,7 @@ static GtkWidget *tags_id3_frame, *tags_id3_vbox, *tags_id3_hbox,
 static GtkWidget *enc_quality_vbox, *hbox1, *hbox2;
 
 static guint64 olen = 0;
+static unsigned long numsamples = 0;
 static int inside;
 
 static gint vbr_on = 0;
@@ -114,7 +114,6 @@ static gint bitrate_val = 128;
 static gfloat compression_val = 11;
 static gint enc_toggle_val = 0;
 static gint audio_mode_val = 4;
-static gint auto_ms_val = 0;
 static gint enforce_iso_val = 0;
 static gint error_protect_val = 0;
 
@@ -137,7 +136,8 @@ static lameid3_t lameid3;
 
 static lame_global_flags *gfp;
 static int encout;
-static unsigned char encbuffer[ENCBUFFER_SIZE];
+static unsigned char encbuffer[LAME_MAXMP3BUFFER];
+static int id3v2_size;
 
 static void free_lameid3(lameid3_t *p)
 {
@@ -192,7 +192,6 @@ static void mp3_init(write_output_callback write_output_func)
                          &compression_val);
     aud_cfg_db_get_int(db, "filewriter_mp3", "enc_toggle_val", &enc_toggle_val);
     aud_cfg_db_get_int(db, "filewriter_mp3", "audio_mode_val", &audio_mode_val);
-    aud_cfg_db_get_int(db, "filewriter_mp3", "auto_ms_val", &auto_ms_val);
     aud_cfg_db_get_int(db, "filewriter_mp3", "enforce_iso_val",
                        &enforce_iso_val);
     aud_cfg_db_get_int(db, "filewriter_mp3", "error_protect_val",
@@ -204,6 +203,8 @@ static void mp3_init(write_output_callback write_output_func)
 
 static gint mp3_open(void)
 {
+    int imp3;
+
     olen = 0;
 
     gfp = lame_init();
@@ -215,31 +216,37 @@ static gint mp3_open(void)
 
     if (tuple) {
         /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
-        lameid3.track_name = g_strdup(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
+        lameid3.track_name =
+            g_strdup(aud_tuple_get_string(tuple, FIELD_TITLE, NULL));
         id3tag_set_title(gfp, lameid3.track_name);
 
-        lameid3.performer = g_strdup(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
+        lameid3.performer =
+            g_strdup(aud_tuple_get_string(tuple, FIELD_ARTIST, NULL));
         id3tag_set_artist(gfp, lameid3.performer);
 
-        lameid3.album_name = g_strdup(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL));
+        lameid3.album_name =
+            g_strdup(aud_tuple_get_string(tuple, FIELD_ALBUM, NULL));
         id3tag_set_album(gfp, lameid3.album_name);
 
-        lameid3.genre = g_strdup(aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
+        lameid3.genre =
+            g_strdup(aud_tuple_get_string(tuple, FIELD_GENRE, NULL));
         id3tag_set_genre(gfp, lameid3.genre);
 
-        lameid3.year = g_strdup_printf("%d", aud_tuple_get_int(tuple, FIELD_YEAR, NULL));
+        lameid3.year =
+            g_strdup_printf("%d", aud_tuple_get_int(tuple, FIELD_YEAR, NULL));
         id3tag_set_year(gfp, lameid3.year);
 
-        lameid3.track_number = g_strdup_printf("%d", aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
+        lameid3.track_number =
+            g_strdup_printf("%d", aud_tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
         id3tag_set_track(gfp, lameid3.track_number);
 
-        if(force_v2_val) {
+        if (force_v2_val) {
             id3tag_add_v2(gfp);
         }
-        if(only_v1_val) {
+        if (only_v1_val) {
             id3tag_v1_only(gfp);
         }
-        if(only_v2_val) {
+        if (only_v2_val) {
             id3tag_v2_only(gfp);
         }
     }
@@ -260,8 +267,6 @@ static gint mp3_open(void)
         AUDDBG("set mode to %d\n", audio_mode_val);
         lame_set_mode(gfp, audio_mode_val);
     }
-    if(auto_ms_val)
-        lame_set_mode_automs(gfp, auto_ms_val); // this forces to use joint stereo!! --yaz.
 
     lame_set_errorf(gfp, lame_debugf);
     lame_set_debugf(gfp, lame_debugf);
@@ -291,8 +296,22 @@ static gint mp3_open(void)
         lame_set_VBR_hard_min(gfp, enforce_min_val);
     }
 
+    /* not to write id3 tag automatically. */
+    lame_set_write_id3tag_automatic(gfp, 0);
+
     if (lame_init_params(gfp) == -1)
         return 0;
+
+    /* write id3v2 header */
+    imp3 = lame_get_id3v2_tag(gfp, encbuffer, sizeof(encbuffer));
+
+    if (imp3 > 0) {
+        write_output(encbuffer, imp3);
+        id3v2_size = imp3;
+    }
+    else {
+        id3v2_size = 0;
+    }
 
     return 1;
 }
@@ -302,46 +321,77 @@ static void mp3_write(void *ptr, gint length)
     if (input.channels == 1) {
         encout =
             lame_encode_buffer(gfp, ptr, ptr, length / 2, encbuffer,
-                               ENCBUFFER_SIZE);
+                               LAME_MAXMP3BUFFER);
+        numsamples += length / 2;
     }
     else {
         encout =
             lame_encode_buffer_interleaved(gfp, ptr, length / 4, encbuffer,
-                                           ENCBUFFER_SIZE);
+                                           LAME_MAXMP3BUFFER);
+        numsamples += length / 4;
     }
 
     write_output(encbuffer, encout);
-    written += encout;
     olen += length;
 }
 
 static void mp3_flush(void)
 {
-    encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
+    encout = lame_encode_flush_nogap(gfp, encbuffer, LAME_MAXMP3BUFFER);
     write_output(encbuffer, encout);
 }
 
 static void mp3_close(void)
 {
-    if (output_file)
-    {
-        encout = lame_encode_flush_nogap(gfp, encbuffer, ENCBUFFER_SIZE);
+    if (output_file) {
+        int imp3;
+
+        /* write remaining mp3 data */
+        encout = lame_encode_flush_nogap(gfp, encbuffer, LAME_MAXMP3BUFFER);
         write_output(encbuffer, encout);
 
-//        lame_mp3_tags_fid(gfp, output_file); // will erase id3v2 tag??
+        /* set gfp->num_samples for valid TLEN tag */
+        lame_set_num_samples(gfp, numsamples);
 
-        olen = 0;
+        /* append v1 tag */
+        imp3 = lame_get_id3v1_tag(gfp, encbuffer, sizeof(encbuffer));
+        if (imp3 > 0)
+            write_output(encbuffer, imp3);
+
+        /* update v2 tag */
+        imp3 = lame_get_id3v2_tag(gfp, encbuffer, sizeof(encbuffer));
+        if (imp3 > 0) {
+            if (aud_vfs_fseek(output_file, 0, SEEK_SET) != 0) {
+                AUDDBG("can't rewind\n");
+            }
+            else {
+                write_output(encbuffer, imp3);
+            }
+        }
+
+        /* update lame tag */
+        if (id3v2_size) {
+            if (aud_vfs_fseek(output_file, id3v2_size, SEEK_SET) != 0) {
+                AUDDBG("fatal error: can't update LAME-tag frame!\n");
+            }
+            else {
+                imp3 = lame_get_lametag_frame(gfp, encbuffer, sizeof(encbuffer));
+                write_output(encbuffer, imp3);
+            }
+        }
     }
 
     lame_close(gfp);
     AUDDBG("lame_close() done\n");
 
     free_lameid3(&lameid3);
+    numsamples = 0;
+    olen = 0;
 }
 
 static gint mp3_free(void)
 {
-    return ENCBUFFER_SIZE - encout;
+    return LAME_MAXMP3BUFFER - encout;
 }
 
 static gint mp3_playing(void)
@@ -411,18 +461,6 @@ static void mode_activate(GtkMenuItem * menuitem, gpointer user_data)
 {
 
     audio_mode_val = GPOINTER_TO_INT(user_data);
-
-}
-
-static void toggle_auto_ms(GtkToggleButton * togglebutton,
-                           gpointer user_data)
-{
-
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ms_mode_toggle)) ==
-        TRUE)
-        auto_ms_val = 1;
-    else
-        auto_ms_val = 0;
 
 }
 
@@ -660,7 +698,6 @@ static void configure_ok_cb(gpointer data)
                          compression_val);
     aud_cfg_db_set_int(db, "filewriter_mp3", "enc_toggle_val", enc_toggle_val);
     aud_cfg_db_set_int(db, "filewriter_mp3", "audio_mode_val", audio_mode_val);
-    aud_cfg_db_set_int(db, "filewriter_mp3", "auto_ms_val", auto_ms_val);
     aud_cfg_db_set_int(db, "filewriter_mp3", "enforce_iso_val", enforce_iso_val);
     aud_cfg_db_set_int(db, "filewriter_mp3", "error_protect_val",
                        error_protect_val);
@@ -942,16 +979,6 @@ static void mp3_configure(void)
                 break;
         }
 
-        ms_mode_toggle = gtk_check_button_new_with_label(_("auto-M/S mode"));
-        gtk_box_pack_start(GTK_BOX(mode_hbox), ms_mode_toggle, TRUE, TRUE,
-                           5);
-        gtk_signal_connect(GTK_OBJECT(ms_mode_toggle), "toggled",
-                           GTK_SIGNAL_FUNC(toggle_auto_ms), NULL);
-
-        if (auto_ms_val == 1)
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ms_mode_toggle),
-                                         TRUE);
-
         /* Misc */
 
         misc_frame = gtk_frame_new(_("Misc:"));
@@ -1232,7 +1259,6 @@ static void mp3_configure(void)
         if (toggle_xing_val == 0)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
                                          (xing_header_toggle), TRUE);
-
 
 
         /* Add the Notebook */
