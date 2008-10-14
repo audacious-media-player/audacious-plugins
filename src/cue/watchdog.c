@@ -3,9 +3,9 @@
 gboolean
 do_stop(gpointer data)
 {
-    AUDDBG("f: do_stop\n");
+    AUDDBG("f:\n");
     audacious_drct_stop();
-    AUDDBG("e: do_stop\n");
+    AUDDBG("e:\n");
 
     return FALSE; /* only once */
 }
@@ -24,7 +24,7 @@ do_setpos(gpointer data)
     if(pos < 0)
         pos = 0;
 
-    AUDDBG("do_setpos: pos = %d\n\n", pos);
+    AUDDBG("pos = %d\n\n", pos);
 
     if (!playlist)
         return FALSE;
@@ -87,7 +87,7 @@ watchdog_func(gpointer data)
         time = real_ip->output->output_time();
 
 #if 0
-        AUDDBG("time = %d target_time = %lu durattion = %d\n",
+        AUDDBG("time = %d target_time = %lu duration = %d\n",
                time,
                target_time,
                cue_tracks[cur_cue_track].duration);

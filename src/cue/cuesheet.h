@@ -3,7 +3,7 @@
 
 #include "config.h"
 
-#define AUD_DEBUG 1
+/* #define AUD_DEBUG 1 */
 
 #include <string.h>
 #include <stdlib.h>
@@ -35,6 +35,7 @@ typedef struct cue_tracks {
     gchar *title;
     gchar *performer;
     gint index;
+    gint index00;
     gint duration;
 } cue_tracks_t;
 

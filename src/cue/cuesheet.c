@@ -17,8 +17,6 @@
 
 #include "cuesheet.h"
 
-#define USE_WATCHDOG 1
-
 static GThread *watchdog_thread = NULL;
 static GThread *play_thread = NULL;
 static GThread *real_play_thread = NULL;
@@ -84,27 +82,24 @@ cue_init(void)
     cue_block_cond = g_cond_new();
     cue_target_time_mutex = g_mutex_new();
 
-#if USE_WATCHDOG
     /* create watchdog thread */
     g_mutex_lock(cue_mutex);
     watchdog_state = STOP;
     g_mutex_unlock(cue_mutex);
     watchdog_thread = g_thread_create(watchdog_func, NULL, TRUE, NULL);
     AUDDBG("watchdog_thread = %p\n", watchdog_thread);
-#endif
 }
 
 void
 cue_cleanup(void)
 {
-#if USE_WATCHDOG
     g_mutex_lock(cue_mutex);
     watchdog_state = EXIT;
     g_mutex_unlock(cue_mutex);
     g_cond_broadcast(cue_cond);
 
     g_thread_join(watchdog_thread);
-#endif
+
     g_cond_free(cue_cond);
     g_mutex_free(cue_mutex);
     g_cond_free(cue_block_cond);
@@ -122,9 +117,15 @@ probe_for_tuple(gchar *uri, VFSFile *fd)
     if(!is_our_file(uri))
         return NULL;
 
-	/* Get subtune information */
-	tuple = get_song_tuple(uri);
-	return tuple;
+    /* invalidate cache */
+    free_cue_info();
+
+    /* cache cue info */
+    cache_cue_file(uri);
+
+    /* Get subtune information */
+    tuple = get_song_tuple(uri);
+    return tuple;
 }
 
 
@@ -161,8 +162,7 @@ play(InputPlayback *data)
 {
     gchar *uri = g_strdup(data->filename);
 
-    AUDDBG("play: playback = %p\n", data);
-    AUDDBG("play: uri = %s\n", uri);
+    AUDDBG("playback = %p uri = %s\n", data, uri);
 
     caller_ip = data;
 
@@ -204,7 +204,9 @@ get_song_tuple(gchar *uri) /* *.cue or *.cue?1- */
     }
 
     /* parse file of uri and find actual file to play */
-    cache_cue_file(path2);
+    if(!cue_file)
+        cache_cue_file(path2);
+    g_free(path2);
 
     /* obtain probe result for actual file */
     pr = aud_input_check_file(cue_file, FALSE);
@@ -220,7 +222,6 @@ get_song_tuple(gchar *uri) /* *.cue or *.cue?1- */
 
     if(!phys_tuple)
         return NULL;
-
 
     /* build tuple to be returned */
     gchar *realfn = g_filename_from_uri(cue_file, NULL, NULL);
@@ -274,13 +275,11 @@ get_song_tuple(gchar *uri) /* *.cue or *.cue?1- */
 void
 mseek(InputPlayback *input, gulong time)
 {
-    AUDDBG("cur_cue_track=%d\n",cur_cue_track);
-
     g_mutex_lock(cue_target_time_mutex);
     target_time = time + cue_tracks[cur_cue_track].index;
     g_mutex_unlock(cue_target_time_mutex);
 
-    AUDDBG("cue: mseek: target_time = %lu\n", target_time);
+    AUDDBG("cur_cue_track=%d target_time = %lu\n", cur_cue_track, target_time);
 
     if (real_ip != NULL) {
         if(real_ip->plugin->mseek)
@@ -300,7 +299,7 @@ seek(InputPlayback *input, gint time)
 void
 stop(InputPlayback * data)
 {
-    AUDDBG("f: stop: playback = %p\n", data);
+    AUDDBG("f: playback = %p\n", data);
 
     if(play_thread) {
         if(real_play_thread) {
@@ -318,13 +317,10 @@ stop(InputPlayback * data)
             if (caller_ip != NULL)
                 caller_ip->playing = 0;
 
-#if USE_WATCHDOG
             g_mutex_lock(cue_mutex);
             watchdog_state = STOP;
             g_mutex_unlock(cue_mutex);
             g_cond_signal(cue_cond);
-#endif
-            free_cue_info();
 
             if (real_ip != NULL) {
                 real_ip->plugin->set_info = cue_ip.set_info;
@@ -337,7 +333,6 @@ stop(InputPlayback * data)
         play_thread = NULL;
 
     } /*play_thread*/
-
 
     AUDDBG("e: stop\n");
 }
@@ -381,27 +376,26 @@ play_cue_uri(InputPlayback * data, gchar *uri)
     InputPlugin *real_ip_plugin;
     Tuple *tuple = NULL;
 
-    AUDDBG("f: play_cue_uri\n");
-    AUDDBG("play_cue_uri: playback = %p\n", data);
-    AUDDBG("play_cue_uri: path2 = %s\n", path2);
+    AUDDBG("playback = %p path2 = %s\n", data, path2);
 
     /* stop watchdog thread */
-#if USE_WATCHDOG
     g_mutex_lock(cue_mutex);
     watchdog_state = STOP;
     g_mutex_unlock(cue_mutex);
     g_cond_signal(cue_cond);
-#endif
 
     if (_path != NULL && *_path == '?')
     {
         *_path = '\0';
         _path++;
         track = atoi(_path) - 1;
-        AUDDBG("track=%d\n",track);
+        AUDDBG("track = %d\n", track);
     }
     cur_cue_track = track;
-    cache_cue_file(path2); /* path2 should be uri. */
+
+    if(!cue_file)
+        cache_cue_file(path2);
+    g_free(path2);
 
     if (cue_file == NULL || !aud_vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
         return;
@@ -445,7 +439,7 @@ play_cue_uri(InputPlayback * data, gchar *uri)
         target_time = finetune_seek ? finetune_seek : cue_tracks[track].index;
         g_mutex_unlock(cue_target_time_mutex);
 
-        AUDDBG("cue: play_cue_uri: target_time = %lu\n", target_time);
+        AUDDBG("target_time = %lu\n", target_time);
 
         tuple = real_ip->plugin->get_song_tuple(cue_file);
         if(tuple) {
@@ -455,14 +449,12 @@ play_cue_uri(InputPlayback * data, gchar *uri)
         }
 
         /* kick watchdog thread */
-#if USE_WATCHDOG
         g_mutex_lock(cue_mutex);
         watchdog_state = RUN;
         g_mutex_unlock(cue_mutex);
         g_cond_signal(cue_cond);
-
         AUDDBG("watchdog activated\n");
-#endif
+
         finetune_seek = 0;
         if(real_play_thread) {
             g_mutex_lock(cue_block_mutex);
@@ -489,13 +481,38 @@ free_cue_info(void)
     g_free(cue_track);    cue_track = NULL;
 
     for (; last_cue_track > 0; last_cue_track--) {
-        g_free(cue_tracks[last_cue_track-1].performer);
-        cue_tracks[last_cue_track-1].performer = NULL;
         g_free(cue_tracks[last_cue_track-1].title);
         cue_tracks[last_cue_track-1].title = NULL;
+        g_free(cue_tracks[last_cue_track-1].performer);
+        cue_tracks[last_cue_track-1].performer = NULL;
+        cue_tracks[last_cue_track-1].index = 0;
+        cue_tracks[last_cue_track-1].index00 = 0;
     }
     AUDDBG("free_cue_info: last_cue_track = %d\n", last_cue_track);
     last_cue_track = 0;
+}
+
+void
+get_full_length(gchar *cue_file)
+{
+    Tuple *phys_tuple = NULL;
+    ProbeResult *pr = NULL;
+    InputPlugin *dec = NULL;
+
+    /* obtain probe result for actual file */
+    pr = aud_input_check_file(cue_file, FALSE);
+    if (pr == NULL)
+        return;
+    dec = pr->ip;
+    if (dec == NULL)
+        return;
+
+    /* get tuple for actual file */
+    if (dec->get_song_tuple)
+        phys_tuple = dec->get_song_tuple(cue_file);
+
+    full_length = aud_tuple_get_int(phys_tuple, FIELD_LENGTH, NULL);
+    aud_tuple_free(phys_tuple);
 }
 
 void
@@ -507,13 +524,19 @@ cache_cue_file(char *f)
     if(!file)
         return;
 
-    while (TRUE) {
+    while (1) {
         gint p, q;
 
         if (aud_vfs_fgets(line, MAX_CUE_LINE_LENGTH+1, file) == NULL) {
             aud_vfs_fclose(file);
             cue_tracks[last_cue_track-1].duration =
                 full_length - cue_tracks[last_cue_track-1].index;
+
+            AUDDBG("last_cue_track = %d full_length = %d duration=%d\n",
+                   last_cue_track,
+                   full_length,
+                   cue_tracks[last_cue_track-1].duration);
+
             return;
         }
 
@@ -553,12 +576,14 @@ cache_cue_file(char *f)
             if (last_cue_track == 0)
                 cue_performer = aud_str_to_utf8(line + q);
             else
-                cue_tracks[last_cue_track - 1].performer = aud_str_to_utf8(line + q);
+                cue_tracks[last_cue_track - 1].performer =
+                    aud_str_to_utf8(line + q);
         }
         else if (strcasecmp(line+p, "FILE") == 0) {
             gchar *tmp = g_path_get_dirname(f);
             fix_cue_argument(line+q);
             cue_file = g_strdup_printf("%s/%s", tmp, line+q);
+            get_full_length(cue_file);
             g_free(tmp);
         }
         else if (strcasecmp(line+p, "TITLE") == 0) {
@@ -566,7 +591,8 @@ cache_cue_file(char *f)
             if (last_cue_track == 0)
                 cue_title = aud_str_to_utf8(line + q);
             else
-                cue_tracks[last_cue_track-1].title = aud_str_to_utf8(line + q);
+                cue_tracks[last_cue_track-1].title =
+                    aud_str_to_utf8(line + q);
         }
         else if (strcasecmp(line+p, "TRACK") == 0) {
             gint track;
@@ -581,9 +607,11 @@ cache_cue_file(char *f)
             if (track >= MAX_CUE_TRACKS)
                 continue;
             last_cue_track = track;
-            cue_tracks[last_cue_track-1].index = 0;
-            cue_tracks[last_cue_track-1].performer = NULL;
             cue_tracks[last_cue_track-1].title = NULL;
+            cue_tracks[last_cue_track-1].performer = NULL;
+            cue_tracks[last_cue_track-1].index = 0;
+            cue_tracks[last_cue_track-1].index00 = 0;
+            cue_tracks[last_cue_track-1].duration = 0;
         }
         else if (strcasecmp(line+p, "INDEX") == 0) {
             gint min, sec, frac;
@@ -591,24 +619,45 @@ cache_cue_file(char *f)
             if (!line[p])
                 continue;
             line[p] = '\0';
+
             for (p++; line[p] && isspace((int) line[p]); p++);
+            /* start */
             if(strcasecmp(line+q, "01") == 0) {
                 fix_cue_argument(line+p);
                 if(sscanf(line+p, "%d:%d:%d", &min, &sec, &frac) == 3) {
-                    cue_tracks[last_cue_track-1].index =
+                    gint index01 =
                         min * 60000 + sec * 1000 + frac * 1000 / 75;
+
+                    cue_tracks[last_cue_track-1].index = index01;
+
+                    if(last_cue_track-2 >= 0) {
+                        gint index00 = cue_tracks[last_cue_track-1].index00;
+
+                        if(index00 > 0) {
+                            cue_tracks[last_cue_track-2].duration =
+                                index00 - cue_tracks[last_cue_track-2].index;
+                        }
+                        else {
+                            cue_tracks[last_cue_track-2].duration =
+                            index01 - cue_tracks[last_cue_track-2].index;
+                        }
+
+                        AUDDBG("duration=%d\n",
+                               cue_tracks[last_cue_track-2].duration);
+                    }
                 }
             }
+            /* pregap */
             else if(strcasecmp(line+q, "00") == 0) {
                 if(sscanf(line+p, "%d:%d:%d", &min, &sec, &frac) == 3) {
-                    gint index0 = min * 60000 + sec * 1000 + frac * 10;
-                    cue_tracks[last_cue_track-2].duration =
-                        index0 - cue_tracks[last_cue_track-2].index;
+                    gint index00 =
+                        min * 60000 + sec * 1000 + frac * 1000 / 75;
+
+                    cue_tracks[last_cue_track-2].index00 = index00;
                 }
             }
         }
     }
-
     aud_vfs_fclose(file);
 }
 
