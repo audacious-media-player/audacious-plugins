@@ -236,6 +236,10 @@ static uint32 dma7_madr, dma7_bcr, dma7_chcr, dma7_delay;
 static uint32 dma4_cb, dma7_cb, dma4_fval, dma4_flag, dma7_fval, dma7_flag;
 static uint32 irq9_cb, irq9_fval, irq9_flag;
 
+#if DEBUG_THREADING
+static int wakecount = 0;
+#endif
+
 // take a snapshot of the CPU state for a thread
 static void FreezeThread(int32 iThread, int flag)
 {
@@ -277,8 +281,6 @@ static void FreezeThread(int32 iThread, int flag)
 	{
 		char buffer[256];
 
-		DasmMIPS(buffer, mipsinfo.i, &psx_ram[(mipsinfo.i & 0x7fffffff)/4]);
-
 		printf("IOP: FreezeThread(%d) => %08x  [%s]\n", iThread, threads[iThread].save_regs[34], buffer);
 	}
 	#endif
@@ -318,7 +320,6 @@ static void ThawThread(int32 iThread)
 		char buffer[256];
 
 		mips_get_info(CPUINFO_INT_PC, &mipsinfo);
-		DasmMIPS(buffer, mipsinfo.i, &psx_ram[(mipsinfo.i & 0x7fffffff)/4]);
 
 		printf("IOP: ThawThread(%d) => %08x  [%s] (wake %d)\n", iThread, threads[iThread].save_regs[34], buffer, wakecount);
 	}
