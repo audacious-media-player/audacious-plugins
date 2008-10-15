@@ -410,6 +410,7 @@ int mips_execute( int cycles )
 	
 		mipscpu.op = cpu_readop32( mipscpu.pc );
 
+#if 0
 		while (mipscpu.prevpc == mipscpu.pc)
 		{
 			psx_hw_runcounters();
@@ -417,13 +418,13 @@ int mips_execute( int cycles )
 
 			if (mips_ICount == 0) return cycles;
 		}
-
+#endif
 		// if we're not in a delay slot, update
 		// if we're in a delay slot and the delay instruction is not NOP, update
 		if (( mipscpu.delayr == 0 ) || ((mipscpu.delayr != 0) && (mipscpu.op != 0)))
 		{
 			mipscpu.prevpc = mipscpu.pc;
-		}	
+		}
 #if 0
 		if (1) //psxcpu_verbose)
 		{
