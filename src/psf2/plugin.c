@@ -34,25 +34,9 @@
 #include "corlett.h"
 #include "eng_protos.h"
 
-/* file types */
-static uint32 type;
-
-static struct 
-{ 
-	uint32 sig; 
-	char *name; 
-	int32 (*start)(uint8 *, uint32); 
-	int32 (*stop)(void); 
-	int32 (*command)(int32, int32); 
-	uint32 rate; 
-} types[] = {
-	{ 0x50534602, "Sony PlayStation 2 (.psf2)", psf2_start, psf2_stop, psf2_command, 60 },
-	{ 0xffffffff, "", NULL, NULL, NULL, 0 }
-};
-
-static char *path;
-
 /* ao_get_lib: called to load secondary files */
+static gchar *path;
+
 int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 {
 	guchar *filebuf;
@@ -128,40 +112,15 @@ void psf2_play(InputPlayback *data)
 {
 	guchar *buffer;
 	gsize size;
-	uint32 filesig;
 	gint length;
 	gchar *title = psf2_title(data->filename, &length);
 
 	path = g_strdup(data->filename);
 	aud_vfs_file_get_contents(data->filename, (gchar **) &buffer, &size);
 
-	// now try to identify the file
-	type = 0;
-	filesig = buffer[0]<<24 | buffer[1]<<16 | buffer[2]<<8 | buffer[3];
-	while (types[type].sig != 0xffffffff)
-	{
-		if (filesig == types[type].sig)
-		{
-			break;
-		}
-		else
-		{
-			type++;
-		}
-	}
-
-	// now did we identify it above or just fall through?
-	if (types[type].sig == 0xffffffff)
-	{
-		printf("ERROR: File is unknown, signature bytes are %02x %02x %02x %02x\n", buffer[0], buffer[1], buffer[2], buffer[3]);
-		free(buffer);
-		return;
-	}
-
 	if (psf2_start(buffer, size) != AO_SUCCESS)
 	{
 		free(buffer);
-		printf("ERROR: Engine rejected file!\n");
 		return;
 	}
 	
@@ -181,11 +140,19 @@ void psf2_play(InputPlayback *data)
 			data->eof = FALSE;
 			data->output->flush(seek);
 
-			psf2_command(COMMAND_RESTART, 0);
-			psf2_seek(seek);
+			psf2_stop();
 
-			seek = 0;
-			continue;
+			if (psf2_start(buffer, size) == AO_SUCCESS)
+			{
+				psf2_seek(seek);
+				seek = 0;
+				continue;
+			}
+			else
+			{
+				data->output->close_audio();
+				break;
+			}
 		}
 
 		psf2_stop();
