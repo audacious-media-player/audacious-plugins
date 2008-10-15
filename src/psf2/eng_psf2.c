@@ -68,8 +68,6 @@
 #define ELF32_R_TYPE(val)               ((val) & 0xff)
 
 static corlett_t	*c = NULL;
-static char 		psfby[256];
-static char		*spu_pOutput;
 
 // main RAM
 extern uint32 psx_ram[(2*1024*1024)/4];
@@ -90,21 +88,6 @@ extern void psx_hw_init(void);
 extern void ps2_hw_slice(void);
 extern void ps2_hw_frame(void);
 extern void setlength2(int32 stop, int32 fade);
-
-static uint32 secname(uint8 *start, uint32 strndx, uint32 shoff, uint32 shentsize, uint32 name)
-{
-	uint32 offset, shent;
-
-	// get string table section
-	shent = shoff + (shentsize * strndx);
-
-	// find the offset to the section
-	offset = start[shent+16] | start[shent+17]<<8 | start[shent+18]<<16 | start[shent+19]<<24; 
-
-	offset += name;
-	
-	return offset;	
-}
 
 static void do_iopmod(uint8 *start, uint32 offset)
 {
@@ -341,7 +324,7 @@ static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uin
 				uerr = uncompress(&buf[uofs], &dlength, &top[cofs], usize);
 				if (uerr != Z_OK)
 				{
-					printf("Decompress fail: %x %d!\n", dlength, uerr);
+					printf("Decompress fail: %lx %d!\n", dlength, uerr);
 					return 0xffffffff;
 				}
 
@@ -477,7 +460,7 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 		return AO_FAIL;
 	}
 
-	if (file_len > 0) printf("ERROR: PSF2 can't have a program section!  ps %08x\n", file_len);
+	if (file_len > 0) printf("ERROR: PSF2 can't have a program section!  ps %llx\n", file_len);
 
 	#if DEBUG_LOADER
 	printf("FS section: size %x\n", c->res_size);

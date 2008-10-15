@@ -73,8 +73,6 @@ void mips_set_icount(int count);
 
 extern int psf_refresh;
 
-static int skipyet = 0;
-
 // SPU2
 extern void SPU2write(unsigned long reg, unsigned short val);
 extern unsigned short SPU2read(unsigned long reg);
@@ -1847,8 +1845,7 @@ void psx_bios_hle(uint32 pc)
 
 void psx_hw_runcounters(void)
 {
-	int i, j;
-	union cpuinfo mipsinfo;
+	int i;
 
 	// don't process any IRQ sources when interrupts are suspended
 	if (!intr_susp)
@@ -1983,6 +1980,8 @@ uint8 program_read_byte_32le(offs_t address)
 			return psx_hw_read(address, 0x00ffffff)>>24;
 			break;
 	}
+
+	return psx_hw_read(address, 0xffffff00);
 }
 
 uint16 program_read_word_32le(offs_t address)
@@ -2034,7 +2033,7 @@ void program_write_dword_32le(offs_t address, uint32 data)
 }
 
 // sprintf replacement
-static iop_sprintf(char *out, char *fmt, uint32 pstart)
+static void iop_sprintf(char *out, char *fmt, uint32 pstart)
 {
 	char temp[64], tfmt[64];
 	char *cf, *pstr;
@@ -2133,7 +2132,7 @@ static iop_sprintf(char *out, char *fmt, uint32 pstart)
 void psx_iop_call(uint32 pc, uint32 callnum)
 {
 	uint32 scan;
-	char *mname, *str1, *str2, *str3, name[9], out[512];
+	char *mname, *str1, name[9], out[512];
 	uint32 a0, a1, a2, a3;
 	union cpuinfo mipsinfo;
 	int i;
@@ -2333,7 +2332,6 @@ void psx_iop_call(uint32 pc, uint32 callnum)
 			case 33:// DelayThread
 				{
 					double dTicks;
-					int i;
 
 					#if DEBUG_THREADING
 					mips_get_info(CPUINFO_INT_REGISTER + MIPS_R31, &mipsinfo);

@@ -165,7 +165,6 @@ int iCycle=0;
 short * pS;
 
 static int lastch=-1;      // last channel processed on spu irq in timer mode
-static int lastns=0;       // last ns pos
 static int iSecureStart=0; // secure start counter
 
 extern void psf2_update(unsigned char *samples, long lBytes, void *data);
@@ -549,7 +548,7 @@ static void *MAINThread(int samp2run, void *data)
                  lastch=ch; 
 //                 lastns=ns;	// changemeback
 
-                 return;
+                 return NULL;
                 }
               }
 

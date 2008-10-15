@@ -44,6 +44,9 @@ extern int SPUinit(void);
 extern int SPUopen(void);
 extern int SPUclose(void);
 extern void SPUinjectRAMImage(unsigned short *source);
+extern void SPUwriteRegister(uint32 reg, uint16 val);
+extern uint16 SPUreadRegister(uint32 reg);
+extern void setlength(int32 stop, int32 fade);
 
 static uint8 *start_of_file, *song_ptr;
 static uint32 cur_tick, cur_event, num_events, next_tick, end_tick;

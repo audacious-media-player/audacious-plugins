@@ -87,6 +87,8 @@
 
 void SPUirq(void) ;
 
+void spu_update(unsigned char* pSound,long lBytes);
+
 //#include "PsxMem.h"
 //#include "driver.h"
 
