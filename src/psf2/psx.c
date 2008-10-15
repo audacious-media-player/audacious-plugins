@@ -410,7 +410,6 @@ int mips_execute( int cycles )
 	
 		mipscpu.op = cpu_readop32( mipscpu.pc );
 
-#if 0
 		while (mipscpu.prevpc == mipscpu.pc)
 		{
 			psx_hw_runcounters();
@@ -425,7 +424,6 @@ int mips_execute( int cycles )
 		{
 			mipscpu.prevpc = mipscpu.pc;
 		}	
-#endif
 #if 0
 		if (1) //psxcpu_verbose)
 		{
