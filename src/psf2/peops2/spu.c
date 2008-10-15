@@ -773,7 +773,21 @@ ENDX:   ;
 	}
 	else if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
 	{
-	    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
+		short *pSilenceIter = (short *)pSpuBuffer;
+		int iSilenceCount = 0;
+
+		for (; pSilenceIter < pS; pSilenceIter++)
+		{
+			if (*pSilenceIter == 0)
+				iSilenceCount++;
+
+			if (iSilenceCount > 20)
+				break;
+		}
+
+		if (iSilenceCount < 20)
+		    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
+
 	        pS=(short *)pSpuBuffer;					  
 	}
  }
