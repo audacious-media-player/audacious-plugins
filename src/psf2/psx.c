@@ -410,28 +410,13 @@ int mips_execute( int cycles )
 	
 		mipscpu.op = cpu_readop32( mipscpu.pc );
 
-#if 0
-		while (mipscpu.prevpc == mipscpu.pc)
-		{
-			psx_hw_runcounters();
-			mips_ICount--;
-
-			if (mips_ICount == 0) return cycles;
-		}
-#endif
 		// if we're not in a delay slot, update
 		// if we're in a delay slot and the delay instruction is not NOP, update
 		if (( mipscpu.delayr == 0 ) || ((mipscpu.delayr != 0) && (mipscpu.op != 0)))
 		{
 			mipscpu.prevpc = mipscpu.pc;
 		}
-#if 0
-		if (1) //psxcpu_verbose)
-		{
-			printf("[%08x: %08x] [SP %08x RA %08x V0 %08x V1 %08x A0 %08x S0 %08x S1 %08x]\n", mipscpu.pc, mipscpu.op, mipscpu.r[29], mipscpu.r[31], mipscpu.r[2], mipscpu.r[3], mipscpu.r[4], mipscpu.r[ 16 ], mipscpu.r[ 17 ]);
-//			psxcpu_verbose--;
-		}
-#endif
+
 		switch( INS_OP( mipscpu.op ) )
 		{
 		case OP_SPECIAL:
@@ -1168,7 +1153,7 @@ int mips_execute( int cycles )
 			{
 				UINT32 n_adr;
 				n_adr = mipscpu.r[ INS_RS( mipscpu.op ) ] + MIPS_WORD_EXTEND( INS_IMMEDIATE( mipscpu.op ) );
-#if 0
+
 				if( ( n_adr & ( ( ( mipscpu.cp0r[ CP0_SR ] & SR_KUC ) << 30 ) | 3 ) ) != 0 )
 				{
 					printf("ADEL\n");
@@ -1176,7 +1161,6 @@ int mips_execute( int cycles )
 					mips_set_cp0r( CP0_BADVADDR, n_adr );
 				}
 				else
-#endif
 				{
 					mips_delayed_load( INS_RT( mipscpu.op ), program_read_dword_32le( n_adr ) );
 				}
