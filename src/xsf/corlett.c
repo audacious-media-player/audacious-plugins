@@ -165,7 +165,7 @@ int corlett_decode(uint8 *input, uint32 input_len, uint8 **output, uint64 *size,
 	if (input_len < 5)
 		return AO_SUCCESS;
 		
-	printf("\n\nNew corlett: input len %d comp length %d res area %d\n", input_len, comp_length, res_area);
+//	printf("\n\nNew corlett: input len %d comp length %d res area %d\n", input_len, comp_length, res_area);
 	
 	tag_dec = input + (comp_length + res_area + 16);
 	if ((tag_dec[0] == '[') && (tag_dec[1] == 'T') && (tag_dec[2] == 'A') && (tag_dec[3] == 'G') && (tag_dec[4] == ']'))
