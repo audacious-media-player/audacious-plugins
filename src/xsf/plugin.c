@@ -135,12 +135,12 @@ void xsf_play(InputPlayback *data)
 
 	for (;;)
 	{
-		while (data->playing && !seek)
+		while (data->playing && !seek && !data->eof)
 		{
 			xsf_gen(samples, seglen);
 			xsf_update(samples, seglen * 4, data);
 
-			if (data->output->written_time() > (length / 1000))
+			if (data->output->output_time() > length)
 				data->eof = TRUE;
 		}
 
