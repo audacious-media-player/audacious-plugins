@@ -140,7 +140,7 @@ void xsf_play(InputPlayback *data)
 			xsf_gen(samples, seglen);
 			xsf_update(samples, seglen * 4, data);
 
-			if (data->output->written_time() > length)
+			if (data->output->written_time() > (length / 1000))
 				data->eof = TRUE;
 		}
 
