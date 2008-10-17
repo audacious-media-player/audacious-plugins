@@ -9,6 +9,7 @@
 #include "desmume/cp15.h"
 
 #include <zlib.h>
+#include <glib.h>
 #include "tagget.h"
 #include "vio2sf.h"
 
@@ -248,8 +249,10 @@ static int load_psfcb(void *pWork, const char *pNameTop, const char *pNameEnd, c
 				if (!load_libs(pwork->level + 1, libbuf, libsize) || !load_psf_one(libbuf, libsize))				
 					ret = xsf_tagenum_callback_returnvaluebreak;
 				else
+				{
 					pwork->found++;
-				free(libbuf);
+					free(libbuf);
+				}
 			}
 			free(lib);
 		}
@@ -631,8 +634,10 @@ int xsf_start(void *pfile, unsigned bytes)
 	sndifwork.arm7_clockdown_level = xsf_tagget_int("_vio2sf_arm7_clockdown_level", pfile, bytes, clockdown);
 	
 	sndifwork.xfs_load = 0;
+	printf("load_psf... ");
 	if (!load_psf(pfile, bytes))
 		return XSF_FALSE;
+	printf("ok!\n");
 
 #ifdef GDB_STUB
 	if (NDS_Init(&arm9_base_memory_iface, &arm9_ctrl_iface, &arm7_base_memory_iface, &arm7_ctrl_iface))

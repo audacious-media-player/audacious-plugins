@@ -116,6 +116,7 @@ void xsf_play(InputPlayback *data)
 	gchar *title = xsf_title(data->filename, &length);
 	gint16 samples[44100*2];
 	gint seglen = 44100 / 60;
+	gfloat pos;
 
 	path = g_strdup(data->filename);
 	aud_vfs_file_get_contents(data->filename, (gchar **) &buffer, &size);
@@ -146,21 +147,57 @@ void xsf_play(InputPlayback *data)
 
 		if (seek)
 		{
-			data->eof = FALSE;
-			data->output->flush(seek);
-
-			xsf_term();
-
-			if (xsf_start(buffer, size) == AO_SUCCESS)
+			if (seek > data->output->output_time())
 			{
-				//xsf_seek(seek);
+				pos = data->output->output_time();
+				while (pos < seek)
+				{
+					xsf_gen(samples, seglen);
+					pos += 16.666;
+				}
+
+				data->output->flush(seek);
 				seek = 0;
+
 				continue;
 			}
-			else
+			else if (seek < data->output->output_time())
 			{
-				data->output->close_audio();
-				break;
+				data->eof = FALSE;
+
+				g_print("xsf_term\n");
+				xsf_term();
+
+				g_print("xsf_start... ");
+				if (xsf_start(buffer, size) == AO_SUCCESS)
+				{
+					g_print("ok!\n");
+					pos = 0;
+					while (pos < seek)
+					{
+						xsf_gen(samples, seglen);
+						pos += 16.666; /* each segment is 16.666ms */
+					}
+
+					data->output->flush(seek);
+					seek = 0;
+
+					continue;
+				}
+				else
+				{
+					g_print("fail :(\n");
+
+					data->output->close_audio();
+
+					g_free(buffer);
+					g_free(path);
+				        g_free(title);
+
+					data->playing = FALSE;
+
+					return;
+				}
 			}
 		}
 
@@ -211,22 +248,6 @@ void xsf_update(unsigned char *buffer, long count, InputPlayback *playback)
 		count -= t;
 		buffer += t;
 	}
-
-#if 0
-	if (seek)
-	{
-		if (xsf_seek(seek))
-		{
-			playback->output->flush(seek);
-			seek = 0;
-		}
-		else
-		{
-			playback->eof = TRUE;
-			return;
-		}
-	}
-#endif
 }
 
 void xsf_Stop(InputPlayback *playback)
