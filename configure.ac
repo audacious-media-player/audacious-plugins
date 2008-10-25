@@ -203,34 +203,6 @@ BUILDSYS_SHARED_LIB
 BUILDSYS_PROG_IMPLIB
 test "x$PROG_IMPLIB_NEEDED" = "xyes" && LIBS="$LIBS -L\${libdir} -laudacious.exe"
 
-dnl Ok, first we find out what flags we need to use.
-AC_MSG_CHECKING([for what extension and flags to use for plugin compilation])
-case "$target" in
-	*-apple-*)
-		AC_MSG_RESULT([Mac OS X: -fPIC -bundle -fno-common -flat_namespace -undefined suppress, .dylib])
-		PICFLAGS="-DPIC -fno-common"
-		PICLDFLAGS="-DPIC -bundle -fno-common -flat_namespace -undefined suppress -single_module"
-		LIBLDFLAGS="-dynamiclib -single_module"
-		AUDLDFLAGS=""
-		SHARED_SUFFIX=".dylib"
-		;;
-	*)
-		AC_MSG_RESULT([libdl-compatible: -fPIC -DPIC -shared, .so])
-		PICFLAGS="-fPIC -DPIC"
-		PICLDFLAGS="-fPIC -DPIC -shared"
-		LIBLDFLAGS="-fPIC -DPIC -shared"
-		AUDLDFLAGS="-L \${libdir} -Wl,-export-dynamic -Wl,-rpath,${libdir}"
-		SHARED_SUFFIX=".so"
-		;;
-esac
-AC_SUBST(PICFLAGS)
-AC_SUBST(PICLDFLAGS)
-AC_SUBST(LIBLDFLAGS)
-AC_SUBST(AUDLDFLAGS)
-AC_SUBST(SHARED_SUFFIX)
-AC_DEFINE_UNQUOTED(SHARED_SUFFIX, "${SHARED_SUFFIX}",
-	[Define the shared module suffix extension on your platform.])
-
 AC_MSG_CHECKING([if you are running Apple-GCC])
 case "$target" in
 	*-apple-*)
