@@ -1237,8 +1237,7 @@ fi
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
 
-CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
-CXXFLAGS="$CXXFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
+CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
 
 AC_MSG_CHECKING(if __ELF__ is defined)
 AC_EGREP_CPP(yes,
