@@ -1,7 +1,7 @@
 #ifndef NET_H
 #define NET_H 1
 
-#include <audacious/tuple.h>
+#include <libaudcore/tuple.h>
 
 #define SC_CURL_TIMEOUT 5
 
