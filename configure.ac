@@ -1050,7 +1050,7 @@ else
 fi
 
 if test "x$have_alsa" = "xyes"; then
-  AUD_TRY_COMPILE([ALSA MIDI support], [alsalib_hasmidi],
+  AUD_TRY_COMPILE([ALSA MIDI support], [alsalib_cv_hasmidi],
 [#include <alsa/asoundlib.h>],
 [snd_seq_t *seq = NULL;],
   [alsalib_midi=yes], [alsalib_midi=no])
