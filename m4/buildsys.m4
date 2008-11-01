@@ -137,7 +137,7 @@ AC_DEFUN([BUILDSYS_TOUCH_DEPS], [
 	${as_echo:="echo"} "${as_me:="configure"}: touching .deps files"
 	for i in $(find . -name Makefile); do
 		DEPSFILE="$(dirname $i)/.deps"
-		rm "$DEPSFILE"
+		test -f "$DEPSFILE" && rm "$DEPSFILE"
 		touch -t 0001010000 "$DEPSFILE"
 	done
 ])
