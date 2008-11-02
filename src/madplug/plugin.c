@@ -437,7 +437,11 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
             } else {
                 /* No, re-fill buffer and try again .. */
                 glong tmppos = skip - (chksize - chkpos);
+#ifdef MADPROBE_DEBUG
                 gint tmpres = aud_vfs_fseek(fin, tmppos, SEEK_CUR);
+#else
+		aud_vfs_fseek(fin, tmppos, SEEK_CUR);
+#endif
                 LOL("[skipping: %ld -> %d]\n", tmppos, tmpres);
                 next = STATE_GET_NEXT;
                 state = STATE_REBUFFER;
