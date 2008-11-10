@@ -1,7 +1,7 @@
 #ifndef AVIO_H
 #define AVIO_H
 
-#include <audacious/vfs.h>
+#include <libaudcore/vfs.h>
 
 /* output byte stream handling */
 

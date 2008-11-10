@@ -123,7 +123,7 @@ AC_DEFINE_UNQUOTED(DEV_MIXER, "$dev_mixer",
 
 dnl These plugins are always built.
 
-INPUT_PLUGINS="tonegen console sexypsf psf2 cue alac metronom vtx"
+INPUT_PLUGINS="tonegen console sexypsf psf2 xsf cue alac metronom vtx"
 OUTPUT_PLUGINS="null"
 EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins"
@@ -202,34 +202,6 @@ dnl ========================
 BUILDSYS_SHARED_LIB
 BUILDSYS_PROG_IMPLIB
 test "x$PROG_IMPLIB_NEEDED" = "xyes" && LIBS="$LIBS -L\${libdir} -laudacious.exe"
-
-dnl Ok, first we find out what flags we need to use.
-AC_MSG_CHECKING([for what extension and flags to use for plugin compilation])
-case "$target" in
-	*-apple-*)
-		AC_MSG_RESULT([Mac OS X: -fPIC -bundle -fno-common -flat_namespace -undefined suppress, .dylib])
-		PICFLAGS="-DPIC -fno-common"
-		PICLDFLAGS="-DPIC -bundle -fno-common -flat_namespace -undefined suppress -single_module"
-		LIBLDFLAGS="-dynamiclib -single_module"
-		AUDLDFLAGS=""
-		SHARED_SUFFIX=".dylib"
-		;;
-	*)
-		AC_MSG_RESULT([libdl-compatible: -fPIC -DPIC -shared, .so])
-		PICFLAGS="-fPIC -DPIC"
-		PICLDFLAGS="-fPIC -DPIC -shared"
-		LIBLDFLAGS="-fPIC -DPIC -shared"
-		AUDLDFLAGS="-L \${libdir} -Wl,-export-dynamic -Wl,-rpath,${libdir}"
-		SHARED_SUFFIX=".so"
-		;;
-esac
-AC_SUBST(PICFLAGS)
-AC_SUBST(PICLDFLAGS)
-AC_SUBST(LIBLDFLAGS)
-AC_SUBST(AUDLDFLAGS)
-AC_SUBST(SHARED_SUFFIX)
-AC_DEFINE_UNQUOTED(SHARED_SUFFIX, "${SHARED_SUFFIX}",
-	[Define the shared module suffix extension on your platform.])
 
 AC_MSG_CHECKING([if you are running Apple-GCC])
 case "$target" in
@@ -1078,7 +1050,7 @@ else
 fi
 
 if test "x$have_alsa" = "xyes"; then
-  AUD_TRY_COMPILE([ALSA MIDI support], [alsalib_hasmidi],
+  AUD_TRY_COMPILE([ALSA MIDI support], [alsalib_cv_hasmidi],
 [#include <alsa/asoundlib.h>],
 [snd_seq_t *seq = NULL;],
   [alsalib_midi=yes], [alsalib_midi=no])
@@ -1265,8 +1237,7 @@ fi
 AM_CONDITIONAL(HAVE_CDROM, test "${ac_cv_header_linux_cdrom_h}" = "yes" || test "${ac_cv_header_sys_cdio_h}" = "yes")
 AM_CONDITIONAL(HAVE_LINUX_JOYSTICK,test "${ac_cv_header_linux_joystick_h}" = "yes")
 
-CFLAGS="$CFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
-CXXFLAGS="$CXXFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
+CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS $DBUS_CFLAGS"
 
 AC_MSG_CHECKING(if __ELF__ is defined)
 AC_EGREP_CPP(yes,
@@ -1675,8 +1646,8 @@ AC_CONFIG_FILES([
 	po/Makefile.in
 ])
 
+BUILDSYS_TOUCH_DEPS
 AC_OUTPUT
-
 
 echo
 echo "Configuration:"
@@ -1725,6 +1696,7 @@ echo "    -> distortion patched libSIDPlay2:    $xs_have_distortion"
 echo "  Game music (spc, nsf & gbs):            yes"
 echo "  PlayStation audio (sexypsf):            yes"
 echo "  PlayStation2 audio (psf2):              yes"
+echo "  Nintendo DS audio (xsf):                yes [experimental]"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Apple Lossless Audio Codec (alac):      yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
