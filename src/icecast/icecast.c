@@ -318,31 +318,31 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
         if (shout_set_public(shout, stream_is_public) != SHOUTERR_SUCCESS)
         {
             g_warning(_("Error setting stream %s: %s\n"), stream_is_public?_("public"):_("private"), shout_get_error(shout));
-            return 0;
+            /* return 0; */
         }
 
         if (shout_set_name(shout, stream_name) != SHOUTERR_SUCCESS)
         {
             g_warning(_("Error setting stream name: %s\n"), shout_get_error(shout));
-            return 0;
+            /* return 0; */
         }
 
         if (shout_set_genre(shout, stream_genre) != SHOUTERR_SUCCESS)
         {
             g_warning(_("Error setting stream genre: %s\n"), shout_get_error(shout));
-            return 0;
+            /* return 0; */
         }
 
         if (shout_set_url(shout, stream_url) != SHOUTERR_SUCCESS)
         {
             g_warning(_("Error setting stream URL: %s\n"), shout_get_error(shout));
-            return 0;
+            /* return 0; */
         }
 
         if (shout_set_description(shout, stream_description) != SHOUTERR_SUCCESS)
         {
             g_warning(_("Error setting stream description: %s\n"), shout_get_error(shout));
-            return 0;
+            /* return 0; */
         }
 
         if (shout_set_user(shout, server_user) != SHOUTERR_SUCCESS)
