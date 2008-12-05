@@ -277,8 +277,8 @@ mp3_head_convert(const guchar * hbuf)
         ((guint32) hbuf[3]);
 }
 
-#undef MADPROBE_DEBUG
-//#define MADPROBE_DEBUG
+//#undef MADPROBE_DEBUG
+#define MADPROBE_DEBUG
 
 #ifdef MADPROBE_DEBUG
 static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
@@ -401,7 +401,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                         /* Not similar frame... */
                         LOL(" .. but does not match (%d)!\n", chkcount);
                         state = STATE_RESYNC;
-                    } else if (chkcount >= 3) {
+                    } else if (chkcount >= info.remote ? 2 : 3) {
                         /* Okay, accept this stream */
                         LOL(" .. accepted as mp3!!!\n");
                         return 1;

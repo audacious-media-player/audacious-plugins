@@ -807,8 +807,7 @@ static gint alsa_setup(struct snd_format *f)
 	debug("Opening device: %s", alsa_cfg.pcm_device);
 	/* FIXME: Can snd_pcm_open() return EAGAIN? */
 	if ((err = snd_pcm_open(&alsa_pcm, alsa_cfg.pcm_device,
-				SND_PCM_STREAM_PLAYBACK,
-				SND_PCM_NONBLOCK)) < 0)
+				SND_PCM_STREAM_PLAYBACK, 0)) < 0)
 	{
 		g_warning("alsa_setup(): Failed to open pcm device (%s): %s",
 			  alsa_cfg.pcm_device, snd_strerror(err));
