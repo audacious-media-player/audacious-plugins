@@ -27,6 +27,11 @@ extern JSBool kanashi_js_set_colormap_gradient(JSContext *cx_, JSObject *obj, ui
 
 extern JSBool kanashi_js_render_horizontal_waveform(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 extern JSBool kanashi_js_render_vertical_waveform(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+extern JSBool kanashi_js_render_line(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+extern JSBool kanashi_js_render_dot(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 
 extern JSBool kanashi_js_is_beat(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+
+extern JSBool kanashi_js_get_canvas_width(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
+extern JSBool kanashi_js_get_canvas_height(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval);
 

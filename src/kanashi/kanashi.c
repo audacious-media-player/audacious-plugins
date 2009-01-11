@@ -269,7 +269,11 @@ static JSFunctionSpec js_global_functions[] = {
     JS_FS("set_colormap_gradient",      kanashi_js_set_colormap_gradient,      5,      0,      0),
     JS_FS("render_horizontal_waveform", kanashi_js_render_horizontal_waveform, 2,      0,      0),
     JS_FS("render_vertical_waveform",   kanashi_js_render_vertical_waveform,   2,      0,      0),
+    JS_FS("render_line",                kanashi_js_render_line,                5,      0,      0),
+    JS_FS("render_dot",                 kanashi_js_render_dot,                 3,      0,      0),
     JS_FS("is_beat",                    kanashi_js_is_beat,                    0,      0,      0),
+    JS_FS("get_canvas_width",           kanashi_js_get_canvas_width,           0,      0,      0),
+    JS_FS("get_canvas_height",          kanashi_js_get_canvas_height,          0,      0,      0),
     JS_FS_END
 };
 

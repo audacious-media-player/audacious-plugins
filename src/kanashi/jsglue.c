@@ -18,6 +18,7 @@
 
 #include "kanashi.h"
 #include "kanashi_utils.h"
+#include "drawing.h"
 
 JSBool
 kanashi_js_fade(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
@@ -131,5 +132,47 @@ kanashi_js_is_beat(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval
     else
         *rval = JSVAL_FALSE;
 
+    return JS_TRUE;
+}
+
+JSBool
+kanashi_js_render_line(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+    gint x1, y1, x2, y2, value;
+
+    if (!JS_ConvertArguments(cx_, argc, argv, "iiiii", &x1, &y1, &x2, &y2, &value))
+        return JS_FALSE;
+
+    kanashi_draw_line(x1, y1, x2, y2, value);
+
+    *rval = JSVAL_VOID;
+    return JS_TRUE;
+}
+
+JSBool
+kanashi_js_render_dot(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+    gint x1, y1, value;
+
+    if (!JS_ConvertArguments(cx_, argc, argv, "iii", &x1, &y1, &value))
+        return JS_FALSE;
+
+    kanashi_draw_dot(x1, y1, value);
+
+    *rval = JSVAL_VOID;
+    return JS_TRUE;
+}
+
+JSBool
+kanashi_js_get_canvas_width(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+    *rval = INT_TO_JSVAL(kanashi_image_data->width);
+    return JS_TRUE;
+}
+
+JSBool
+kanashi_js_get_canvas_height(JSContext *cx_, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+    *rval = INT_TO_JSVAL(kanashi_image_data->height);
     return JS_TRUE;
 }
