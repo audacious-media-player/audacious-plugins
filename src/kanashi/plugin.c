@@ -92,6 +92,30 @@ VisPlugin *kanashi_vplist[] = { &kanashi_vp, NULL };
 
 DECLARE_PLUGIN(kanashi, NULL, NULL, NULL, NULL, NULL, NULL, kanashi_vplist,NULL);
 
+static guint framerate = 60, lastticks = 0, framecount = 0;
+
+static void
+kanashi_framerate_delay(void)
+{
+  guint current, target, delay;
+
+  framecount++;
+
+  current = SDL_GetTicks();
+  target = lastticks + ((float) framecount * (1000.0 / framerate));
+
+  if (current <= target)
+    {
+      delay = target - current;
+      SDL_Delay(delay);
+    }
+  else
+    {
+      lastticks = current;
+      framecount = 0;
+    }
+}
+
 static int
 draw_thread_fn (gpointer data)
 {
@@ -121,6 +145,7 @@ draw_thread_fn (gpointer data)
 	}
       SDL_mutexV (sound_data_mutex);
       SDL_mutexP (config_mutex);
+      kanashi_framerate_delay ();
       kanashi_render ();
       SDL_mutexV (config_mutex);
 

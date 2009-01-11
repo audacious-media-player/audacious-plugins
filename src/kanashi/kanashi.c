@@ -58,23 +58,20 @@ blit_to_screen (void)
 {
   int j;
 
-  SDL_LockSurface (screen);
+  SDL_LockSurface(screen);
 
-  /* FIXME: add scaling support */
-
-  SDL_SetPalette (screen, SDL_LOGPAL|SDL_PHYSPAL,
-		  (SDL_Color*)kanashi_image_data->cmap, 0, 256);
-  SDL_SetAlpha (screen, 0, 255);
+  SDL_SetPalette(screen, SDL_LOGPAL|SDL_PHYSPAL,
+		 (SDL_Color*)kanashi_image_data->cmap, 0, 256);
+  SDL_SetAlpha(screen, 0, 255);
 
   for (j=0; j<kanashi_image_data->height; j++)
-      memcpy (screen->pixels + j*screen->pitch,
-	      kanashi_image_data->surface[0] + j*kanashi_image_data->width,
-	      kanashi_image_data->width);
+      memcpy(screen->pixels + j*screen->pitch,
+	     kanashi_image_data->surface[0] + j*kanashi_image_data->width,
+	     kanashi_image_data->width);
 
+  SDL_UnlockSurface(screen);
 
-  SDL_UnlockSurface (screen);
-
-  SDL_UpdateRect (screen, 0, 0, 0, 0);
+  SDL_Flip(screen);
 }
 
 static void
@@ -92,7 +89,7 @@ resize_video (guint w, guint h)
   kanashi_image_data->surface[1] = g_malloc0 (w * h);
 
   screen = SDL_SetVideoMode (w, h, 8, SDL_HWSURFACE |
-			     SDL_HWPALETTE | SDL_RESIZABLE);
+			     SDL_HWPALETTE | SDL_RESIZABLE | SDL_DOUBLEBUF);
   if (! screen)
     kanashi_fatal_error ("Unable to create a new SDL window: %s",
 		    SDL_GetError ());
