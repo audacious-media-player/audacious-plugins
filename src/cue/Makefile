@@ -1,6 +1,6 @@
-PLUGIN = cuesheet${PLUGIN_SUFFIX}
+PLUGIN = cuesheet_ng${PLUGIN_SUFFIX}
 
-SRCS = cuesheet.c
+SRCS = cuesheet.c watchdog.c
 
 include ../../buildsys.mk
 include ../../extra.mk

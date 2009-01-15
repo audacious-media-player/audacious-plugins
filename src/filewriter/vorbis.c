@@ -86,7 +86,6 @@ static gint vorbis_open(void)
 
     vorbis_init(NULL);
 
-    written = 0;
     olen = 0;
 
     vorbis_info_init(&vi);
@@ -147,8 +146,8 @@ static gint vorbis_open(void)
         if (result == 0)
             break;
 
-        written += write_output(og.header, og.header_len);
-        written += write_output(og.body, og.body_len);
+        write_output(og.header, og.header_len);
+        write_output(og.body, og.body_len);
     }
 
     return 1;
@@ -201,8 +200,8 @@ static void vorbis_write(gpointer data, gint length)
                 if (result == 0)
                     break;
 
-                written += write_output(og.header, og.header_len);
-                written += write_output(og.body, og.body_len);
+                write_output(og.header, og.header_len);
+                write_output(og.body, og.body_len);
             }
         }
     }

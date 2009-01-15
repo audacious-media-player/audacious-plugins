@@ -118,7 +118,6 @@ unsigned char * pSpuBuffer;
 // user settings          
 
 int             iUseXA=0;
-int             iVolume=3;
 int             iXAPitch=1;
 int             iUseTimer=2;
 int             iSPUIRQWait=1;
@@ -165,7 +164,6 @@ int iCycle=0;
 short * pS;
 
 static int lastch=-1;      // last channel processed on spu irq in timer mode
-static int lastns=0;       // last ns pos
 static int iSecureStart=0; // secure start counter
 
 extern void psf2_update(unsigned char *samples, long lBytes, void *data);
@@ -370,7 +368,7 @@ int iSpuAsyncWait=0;
 
 static void *MAINThread(int samp2run, void *data)
 {
- int s_1,s_2,fa,voldiv=iVolume;
+ int s_1,s_2,fa;
  unsigned char * start;unsigned int nSample;
  int ch,predict_nr,shift_factor,flags,d,d2,s;
  int gpos,bIRQReturn=0;
@@ -549,7 +547,7 @@ static void *MAINThread(int samp2run, void *data)
                  lastch=ch; 
 //                 lastns=ns;	// changemeback
 
-                 return;
+                 return NULL;
                 }
               }
 
@@ -736,8 +734,8 @@ ENDX:   ;
     SSumR[0]+=MixREVERBRight(0);
     SSumR[0]+=MixREVERBRight(1);
                                               
-    d=SSumL[0]/voldiv;SSumL[0]=0;
-    d2=SSumR[0]/voldiv;SSumR[0]=0;
+    d=SSumL[0];SSumL[0]=0;
+    d2=SSumR[0];SSumR[0]=0;
 
     if(d<-32767) d=-32767;if(d>32767) d=32767;
     if(d2<-32767) d2=-32767;if(d2>32767) d2=32767;
@@ -775,7 +773,21 @@ ENDX:   ;
 	}
 	else if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
 	{
-	    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
+		short *pSilenceIter = (short *)pSpuBuffer;
+		int iSilenceCount = 0;
+
+		for (; pSilenceIter < pS; pSilenceIter++)
+		{
+			if (*pSilenceIter == 0)
+				iSilenceCount++;
+
+			if (iSilenceCount > 20)
+				break;
+		}
+
+		if (iSilenceCount < 20)
+		    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
+
 	        pS=(short *)pSpuBuffer;					  
 	}
  }
@@ -926,7 +938,6 @@ EXPORT_GCC long CALLBACK SPU2open(void *pDsp)
  if(bSPUIsOpen) return 0;                              // security for some stupid main emus
 
  iUseXA=0;                                             // just small setup
- iVolume=3;
  bEndThread=0;
  bThreadEnded=0;
  spuMemC=(unsigned char *)spuMem;      

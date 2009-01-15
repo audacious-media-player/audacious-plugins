@@ -1,5 +1,5 @@
 dnl
-dnl Copyright (c) 2007, Jonathan Schleifer <js-buildsys@webkeks.org>
+dnl Copyright (c) 2007 - 2008, Jonathan Schleifer <js-buildsys@webkeks.org>
 dnl
 dnl https://webkeks.org/hg/buildsys/
 dnl
@@ -103,7 +103,7 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 			CLEAN_LIB='${LIB}.a'
 			;;
 		*)
-			AC_MSG_RESULT(POSIX)
+			AC_MSG_RESULT(GNU)
 			LIB_CPPFLAGS='-DPIC'
 			LIB_CFLAGS='-fPIC'
 			LIB_LDFLAGS='-shared -fPIC -Wl,-soname=${LIB}.${LIB_MAJOR}'
@@ -131,4 +131,13 @@ AC_DEFUN([BUILDSYS_SHARED_LIB], [
 	AC_SUBST(INSTALL_LIB)
 	AC_SUBST(UNINSTALL_LIB)
 	AC_SUBST(CLEAN_LIB)
+])
+
+AC_DEFUN([BUILDSYS_TOUCH_DEPS], [
+	${as_echo:="echo"} "${as_me:="configure"}: touching .deps files"
+	for i in $(find . -name Makefile); do
+		DEPSFILE="$(dirname $i)/.deps"
+		test -f "$DEPSFILE" && rm "$DEPSFILE"
+		touch -t 0001010000 "$DEPSFILE"
+	done
 ])

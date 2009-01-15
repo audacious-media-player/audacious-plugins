@@ -571,28 +571,36 @@ void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
 	     bptr += 4;
              break;
         case MAKEFOURCC('d','a','t','a'):
+	     /* Don't compare to NULL in the following ifs!
+	      * NULL may be -1 on some system, but we used memset to set it
+	      * to 0!
+	      */
              switch(udta_tgt)
              {
              case UDTA_NAM:
-                 qtmovie->res->tuple.nam = g_strdup(bptr + 12);
-                 break;
+		 if (qtmovie->res->tuple.nam == 0)
+		     qtmovie->res->tuple.nam = g_strdup(bptr + 12);
+		 break;
              case UDTA_ART:
-                 qtmovie->res->tuple.art = g_strdup(bptr + 12);
-                 break;
+		 if (qtmovie->res->tuple.art == 0)
+                     qtmovie->res->tuple.art = g_strdup(bptr + 12);
+		 break;
              case UDTA_ALB:
-                 qtmovie->res->tuple.alb = g_strdup(bptr + 12);
-                 break;
+		 if (qtmovie->res->tuple.alb == 0)
+                     qtmovie->res->tuple.alb = g_strdup(bptr + 12);
+		 break;
              case UDTA_DAY:
-                 qtmovie->res->tuple.day = g_strdup(bptr + 12);
-                 break;
+		 if (qtmovie->res->tuple.day == 0)
+                     qtmovie->res->tuple.day = g_strdup(bptr + 12);
+		 break;
              case UDTA_CMT:
-                 qtmovie->res->tuple.cmt = g_strdup(bptr + 12);
-                 break;
+		 if (qtmovie->res->tuple.cmt == 0)
+                     qtmovie->res->tuple.cmt = g_strdup(bptr + 12);
+		 break;
              case UDTA_GEN:
-                 qtmovie->res->tuple.gen = g_strdup(bptr + 12);
-                 break;
-             default:
-	         break;
+		 if (qtmovie->res->tuple.gen == 0)
+                     qtmovie->res->tuple.gen = g_strdup(bptr + 12);
+		 break;
              }
 
              bptr += 12;

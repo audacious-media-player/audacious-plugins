@@ -1,7 +1,7 @@
 #ifndef G_NET_H
 #define G_NET_H 1
 
-#include <audacious/tuple.h>
+#include <libaudcore/tuple.h>
 
 int gerpok_sc_idle(GMutex *);
 void gerpok_sc_init(char *, char *);

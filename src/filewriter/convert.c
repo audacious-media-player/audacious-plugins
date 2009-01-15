@@ -47,7 +47,7 @@ gint convert_process(gpointer ptr, gint length)
     gint frames, len;
     frames = length / nch / FMT_SIZEOF(in_fmt);
     len = frames * nch * FMT_SIZEOF(out_fmt);
-    
+
     if (convert_output == NULL || convert_output_length < len)
     {
         convert_output_length = len;

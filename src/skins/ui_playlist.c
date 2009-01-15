@@ -1559,16 +1559,16 @@ playlistwin_create(void)
 void
 playlistwin_show(void)
 {
-    gtk_window_move(GTK_WINDOW(playlistwin), config.playlist_x, config.playlist_y);
     GtkAction *action = gtk_action_group_get_action(
       toggleaction_group_others , "show playlist editor" );
+
+    gtk_window_move(GTK_WINDOW(playlistwin), config.playlist_x, config.playlist_y);
     gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , TRUE );
 
     config.playlist_visible = TRUE;
     ui_skinned_button_set_inside(mainwin_pl, TRUE);
 
     playlistwin_set_toprow(0);
-    aud_playlist_check_pos_current(aud_playlist_get_active());
 
     gtk_widget_show_all(playlistwin);
     if (!config.playlist_shaded)

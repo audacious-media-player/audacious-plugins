@@ -79,7 +79,6 @@ static gboolean prependnumber = FALSE;
 static gchar *file_path = NULL;
 
 VFSFile *output_file = NULL;
-guint64 written = 0;
 guint64 offset = 0;
 Tuple *tuple = NULL;
 
@@ -217,7 +216,7 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     {
         gchar *utf8 = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 
-        g_strchomp(utf8); //chop trailing ^J --yaz
+        g_strchomp(utf8); /* chop trailing ^J --yaz */
 
         filename = g_locale_from_utf8(utf8, -1, NULL, NULL, NULL);
         g_free(utf8);
@@ -290,7 +289,6 @@ static void file_close(void)
 
     if (output_file)
     {
-        written = 0;
         aud_vfs_fclose(output_file);
     }
     output_file = NULL;

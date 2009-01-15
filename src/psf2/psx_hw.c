@@ -59,10 +59,6 @@
 extern void mips_get_info(UINT32 state, union cpuinfo *info);
 extern void mips_set_info(UINT32 state, union cpuinfo *info);
 extern int psxcpu_verbose;
-extern uint16 SPUreadRegister(uint32 reg);
-extern void SPUwriteRegister(uint32 reg, uint16 val);
-extern void SPUwriteDMAMem(uint32 usPSXMem,int iSize);
-extern void SPUreadDMAMem(uint32 usPSXMem,int iSize);
 extern void mips_shorten_frame(void);
 extern int mips_execute( int cycles );
 extern uint32 psf2_load_file(char *file, uint8 *buf, uint32 buflen);
@@ -70,10 +66,6 @@ extern uint32 psf2_load_elf(uint8 *start, uint32 len);
 void psx_hw_runcounters(void);
 int mips_get_icount(void);
 void mips_set_icount(int count);
-
-extern int psf_refresh;
-
-static int skipyet = 0;
 
 // SPU2
 extern void SPU2write(unsigned long reg, unsigned short val);
@@ -244,6 +236,10 @@ static uint32 dma7_madr, dma7_bcr, dma7_chcr, dma7_delay;
 static uint32 dma4_cb, dma7_cb, dma4_fval, dma4_flag, dma7_fval, dma7_flag;
 static uint32 irq9_cb, irq9_fval, irq9_flag;
 
+#if DEBUG_THREADING
+static int wakecount = 0;
+#endif
+
 // take a snapshot of the CPU state for a thread
 static void FreezeThread(int32 iThread, int flag)
 {
@@ -285,8 +281,6 @@ static void FreezeThread(int32 iThread, int flag)
 	{
 		char buffer[256];
 
-		DasmMIPS(buffer, mipsinfo.i, &psx_ram[(mipsinfo.i & 0x7fffffff)/4]);
-
 		printf("IOP: FreezeThread(%d) => %08x  [%s]\n", iThread, threads[iThread].save_regs[34], buffer);
 	}
 	#endif
@@ -326,7 +320,6 @@ static void ThawThread(int32 iThread)
 		char buffer[256];
 
 		mips_get_info(CPUINFO_INT_PC, &mipsinfo);
-		DasmMIPS(buffer, mipsinfo.i, &psx_ram[(mipsinfo.i & 0x7fffffff)/4]);
 
 		printf("IOP: ThawThread(%d) => %08x  [%s] (wake %d)\n", iThread, threads[iThread].save_regs[34], buffer, wakecount);
 	}
@@ -508,19 +501,6 @@ uint32 psx_hw_read(offs_t offset, uint32 mem_mask)
 		return gpu_stat;
 	}
 
-	if (offset >= 0x1f801c00 && offset <= 0x1f801dff)
-	{
-		if ((mem_mask == 0xffff0000) || (mem_mask == 0xffffff00))
-		{
-			return SPUreadRegister(offset) & ~mem_mask;
-		}
-		else if (mem_mask == 0x0000ffff)
-		{
-			return SPUreadRegister(offset)<<16;
-		}
-		else printf("SPU: read unknown mask %08x\n", mem_mask);
-	}
-
 	if (offset >= 0xbf900000 && offset <= 0xbf9007ff)
 	{
 		if ((mem_mask == 0xffff0000) || (mem_mask == 0xffffff00))
@@ -594,22 +574,6 @@ uint32 psx_hw_read(offs_t offset, uint32 mem_mask)
 	}
 	#endif
 	return 0;
-}
-
-static void psx_dma4(uint32 madr, uint32 bcr, uint32 chcr)
-{
-	if (chcr == 0x01000201)	// cpu to SPU
-	{
-//		printf("DMA4: RAM %08x to SPU\n", madr);
-		bcr = (bcr>>16) * (bcr & 0xffff) * 2;
-		SPUwriteDMAMem(madr&0x1fffff, bcr);
-	}
-	else
-	{
-//		printf("DMA4: SPU to RAM %08x\n", madr);
-		bcr = (bcr>>16) * (bcr & 0xffff) * 2;
-		SPUreadDMAMem(madr&0x1fffff, bcr);
-	}
 }
 
 static void ps2_dma4(uint32 madr, uint32 bcr, uint32 chcr)
@@ -689,6 +653,7 @@ void psx_hw_write(offs_t offset, uint32 data, uint32 mem_mask)
 		return;
 	}
 
+#if 0
 	if (offset >= 0x1f801c00 && offset <= 0x1f801dff)
 	{
 	  //		printf("SPU2 wrote %x to SPU1 address %x!\n", data, offset);
@@ -704,6 +669,7 @@ void psx_hw_write(offs_t offset, uint32 data, uint32 mem_mask)
 		}
 		else printf("SPU: write unknown mask %08x\n", mem_mask);
 	}
+#endif
 
 	if (offset >= 0xbf900000 && offset <= 0xbf9007ff)
 	{
@@ -746,56 +712,6 @@ void psx_hw_write(offs_t offset, uint32 data, uint32 mem_mask)
 				break;
 		}
 
-		return;
-	}
-
-	// DMA4
-	if (offset == 0x1f8010c0)
-	{
-		dma4_madr = data;
-		return;
-	}
-	else if (offset == 0x1f8010c4)
-	{
-		dma4_bcr = data;
-		return;
-	}
-	else if (offset == 0x1f8010c8)
-	{
-		dma4_chcr = data;
-		psx_dma4(dma4_madr, dma4_bcr, dma4_chcr);
-
-		if (dma_icr & (1 << (16+4)))
-		{
-			dma_timer = 3;
-		}
-		return;
-	}
-	else if (offset == 0x1f8010f4)
-	{
-		dma_icr = ( dma_icr & mem_mask ) |
-			  ( ~mem_mask & 0x80000000 & dma_icr) |
-			  ( ~data & ~mem_mask & 0x7f000000 & dma_icr) |
-			  ( data & ~mem_mask & 0x00ffffff);
-
-		if ((dma_icr & 0x7f000000) != 0)
-		{
-			dma_icr &= ~0x80000000;
-		}
-
-		return;
-	}
-	else if (offset == 0x1f801070)
-	{
-		irq_data = (irq_data & mem_mask) | (irq_data & irq_mask & data);
-		psx_irq_update();
-		return;
-	}
-	else if (offset == 0x1f801074)
-	{
-		irq_mask &= mem_mask;
-		irq_mask |= data;
-		psx_irq_update();
 		return;
 	}
 
@@ -896,29 +812,6 @@ void ps2_hw_slice(void)
 				i = (836/CLOCK_DIV);
 			}
 		}
-	}
-}
-
-static int fcnt = 0;
-
-void psx_hw_frame(void)
-{
-	if (psf_refresh == 50)
-	{
-		fcnt++;;
-
-		if (fcnt < 6)
-		{
-			psx_irq_set(1);
-		}
-		else
-		{
-			fcnt = 0;
-		}
-	}
-	else	// NTSC
-	{
-		psx_irq_set(1);
 	}
 }
 
@@ -1847,8 +1740,7 @@ void psx_bios_hle(uint32 pc)
 
 void psx_hw_runcounters(void)
 {
-	int i, j;
-	union cpuinfo mipsinfo;
+	int i;
 
 	// don't process any IRQ sources when interrupts are suspended
 	if (!intr_susp)
@@ -1983,6 +1875,8 @@ uint8 program_read_byte_32le(offs_t address)
 			return psx_hw_read(address, 0x00ffffff)>>24;
 			break;
 	}
+
+	return psx_hw_read(address, 0xffffff00);
 }
 
 uint16 program_read_word_32le(offs_t address)
@@ -2034,7 +1928,7 @@ void program_write_dword_32le(offs_t address, uint32 data)
 }
 
 // sprintf replacement
-static iop_sprintf(char *out, char *fmt, uint32 pstart)
+static void iop_sprintf(char *out, char *fmt, uint32 pstart)
 {
 	char temp[64], tfmt[64];
 	char *cf, *pstr;
@@ -2133,7 +2027,7 @@ static iop_sprintf(char *out, char *fmt, uint32 pstart)
 void psx_iop_call(uint32 pc, uint32 callnum)
 {
 	uint32 scan;
-	char *mname, *str1, *str2, *str3, name[9], out[512];
+	char *mname, *str1, name[9], out[512];
 	uint32 a0, a1, a2, a3;
 	union cpuinfo mipsinfo;
 	int i;
@@ -2333,7 +2227,6 @@ void psx_iop_call(uint32 pc, uint32 callnum)
 			case 33:// DelayThread
 				{
 					double dTicks;
-					int i;
 
 					#if DEBUG_THREADING
 					mips_get_info(CPUINFO_INT_REGISTER + MIPS_R31, &mipsinfo);

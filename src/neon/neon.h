@@ -23,7 +23,7 @@
 #include "config.h"
 
 #include <glib.h>
-#include <audacious/vfs.h>
+#include <libaudcore/vfs.h>
 #include <ne_session.h>
 #include <ne_request.h>
 #include <ne_uri.h>

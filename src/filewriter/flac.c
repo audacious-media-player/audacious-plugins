@@ -54,7 +54,7 @@ static guint64 olen = 0;
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
     const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
 {
-    written += aud_vfs_fwrite(buffer, bytes, 1, (VFSFile *) data);
+    aud_vfs_fwrite(buffer, bytes, 1, (VFSFile *) data);
 
     return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
 }
@@ -93,7 +93,6 @@ static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *enc
 
 static gint flac_open(void)
 {
-    written = 0;
     olen = 0;
 
     flac_encoder = FLAC__stream_encoder_new();

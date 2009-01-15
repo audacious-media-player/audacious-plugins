@@ -63,6 +63,8 @@ struct wavhead
 };
 static struct wavhead header;
 
+static guint64 written;
+
 static gint wav_open(void)
 {
     memcpy(&header.main_chunk, "RIFF", 4);
