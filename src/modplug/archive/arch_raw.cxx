@@ -11,6 +11,7 @@
 //mmap()
 #include <unistd.h>
 #include <sys/mman.h>
+#include <cstdlib>
 
 #include "arch_raw.h"
 

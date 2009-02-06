@@ -22,6 +22,7 @@
 
 #include "rix.h"
 #include "debug.h"
+#include <cstdlib>
 
 const unsigned char
 CrixPlayer::adflag[] =
