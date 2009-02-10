@@ -331,6 +331,9 @@ static gpointer flac_play_loop(gpointer arg) {
     stream_info.channels = main_info->stream.channels;
     main_info->metadata_changed = FALSE;
 
+    ReplayGainInfo rg_info = get_replay_gain(main_info);
+    playback->set_replaygain_info(playback, &rg_info);
+
     if (!playback->output->open_audio(SAMPLE_FMT(main_info->stream.bits_per_sample),
                                       main_info->stream.samplerate,
                                       main_info->stream.channels)) {

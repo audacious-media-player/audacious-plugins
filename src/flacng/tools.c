@@ -400,3 +400,32 @@ void add_comment(callback_info* info, gchar* key, gchar* value) {
 
     _LEAVE;
 }
+
+/* --- */
+
+ReplayGainInfo get_replay_gain(callback_info *info) {
+
+    ReplayGainInfo rg;
+    
+    if (info->replaygain.has_rg) {
+	rg.track_gain = (info->replaygain.track_gain
+			 ? atof(info->replaygain.track_gain)
+			 : 0.0);
+	rg.track_peak = (info->replaygain.track_peak
+			 ? atof(info->replaygain.track_peak)
+			 : 0.0);
+	rg.album_gain = (info->replaygain.album_gain
+			 ? atof(info->replaygain.album_gain)
+			 : 0.0);
+	rg.album_peak = (info->replaygain.album_peak
+			 ? atof(info->replaygain.album_peak)
+			 : 0.0);
+    } else {
+	rg.track_gain = 0.0;
+	rg.track_peak = 0.0;
+	rg.album_gain = 0.0;
+	rg.album_peak = 0.0;
+    }
+
+    return rg;
+}

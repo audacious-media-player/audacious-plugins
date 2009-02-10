@@ -46,5 +46,6 @@ gchar* get_title(const gchar* filename, callback_info* info);
 Tuple *get_tuple(const gchar *filename, callback_info* info);
 void add_comment(callback_info* info, gchar* key, gchar* value);
 gboolean read_metadata(VFSFile* fd, FLAC__StreamDecoder* decoder, callback_info* info);
+ReplayGainInfo get_replay_gain(callback_info *info);
 
 #endif
