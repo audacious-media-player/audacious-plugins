@@ -129,6 +129,16 @@ static void debug(gchar *str, ...)
 	}
 }
 
+int alsa_hardware_present(void)
+{
+	gint card = -1, err;
+
+        if ((err = snd_card_next(&card)) != 0)
+                return 0;
+
+        return 1;
+}
+
 int alsa_playing(void)
 {
 	if (!going || paused || alsa_pcm == NULL)

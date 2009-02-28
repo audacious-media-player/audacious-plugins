@@ -57,6 +57,7 @@ extern struct alsa_config alsa_cfg;
 
 void alsa_about(void);
 void alsa_configure(void);
+gint alsa_hardware_present(void);
 gint alsa_get_mixer(snd_mixer_t **mixer, gint card);
 void alsa_save_config(void);
 

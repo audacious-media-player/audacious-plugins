@@ -39,8 +39,14 @@ static void alsa_cleanup(void)
 }
 
 
-static void alsa_init(void)
+static OutputPluginInitStatus alsa_init(void)
 {
+	if (dlopen("libasound.so.2", RTLD_NOW | RTLD_GLOBAL) == NULL)
+	{
+		g_message("Cannot load alsa library: %s", dlerror());
+		return OUTPUT_PLUGIN_INIT_FAIL;
+	}
+
 	mcs_handle_t *cfgfile;
 
 	memset(&alsa_cfg, 0, sizeof (alsa_cfg));
@@ -66,10 +72,11 @@ static void alsa_init(void)
 	aud_cfg_db_get_bool(cfgfile, ALSA_CFGID, "debug", &alsa_cfg.debug);
 	aud_cfg_db_close(cfgfile);
 
-	if (dlopen("libasound.so.2", RTLD_NOW | RTLD_GLOBAL) == NULL)
+	if (!alsa_hardware_present())
 	{
-		g_message("Cannot load alsa library: %s", dlerror());
-		/* FIXME, this plugin wont work... */
+		return OUTPUT_PLUGIN_INIT_NO_DEVICES;
+	} else {
+		return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 	}
 }
 
@@ -77,6 +84,7 @@ static void alsa_init(void)
 static OutputPlugin alsa_op =
 {
 	.description = "ALSA Output Plugin",
+	.probe_priority = 1,
 	.init = alsa_init,
 	.cleanup = alsa_cleanup,
 	.about = alsa_about,
