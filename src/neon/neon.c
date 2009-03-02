@@ -517,6 +517,9 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
 
     _ENTER;
 
+    g_return_val_if_fail(handle != NULL, -1);
+    g_return_val_if_fail(handle->purl != NULL, -1);
+
     if (handle->purl->query && *(handle->purl->query)) {
         gchar *tmp = g_strdup_printf("%s?%s", handle->purl->path, handle->purl->query);
         handle->request = ne_request_create(handle->session, "GET", tmp);
