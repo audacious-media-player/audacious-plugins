@@ -94,7 +94,7 @@ ov_callbacks vorbis_callbacks_stream = {
     NULL
 };
 
-gchar *vorbis_fmts[] = { "ogg", "ogm", NULL };
+gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
 
 InputPlugin vorbis_ip = {
     .description = "Ogg Vorbis Audio Plugin",  /* description */
