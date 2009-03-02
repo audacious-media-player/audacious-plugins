@@ -102,7 +102,8 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
           break;
         case SI_CFG_RCLICK_MENU_AUD:
         default:
-          audacious_menu_main_show( event->x_root , event->y_root , 3 , event->time );
+          if(audacious_menu_main_show != NULL)
+              audacious_menu_main_show ( event->x_root , event->y_root , 3 , event->time );
           break;
       }
       break;
