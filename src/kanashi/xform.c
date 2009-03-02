@@ -31,8 +31,6 @@
 #include "kanashi.h"
 #include "kanashi_utils.h"
 
-#include "libcalc/calc.h"
-
 struct xform_vector
 {
   gint32 offset; /* the offset of the top left pixel */

@@ -26,8 +26,6 @@
 
 #include "drawing.h"
 
-#include "libcalc/calc.h"
-
 /* **************** wave_horizontal **************** */
 void
 kanashi_render_horizontal_waveform(gint channels, guchar value)
