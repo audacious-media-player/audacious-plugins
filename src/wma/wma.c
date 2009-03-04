@@ -194,15 +194,12 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
 static void wma_do_pause(InputPlayback *playback, short p)
 {
     wma_pause = p;
-    playback->output->pause(wma_pause);
 }
 
 static void wma_seek(InputPlayback *playback, int time) 
 {
     wma_seekpos = time;
-    if(wma_pause) playback->output->pause(0);
     while(wma_decode && wma_seekpos!=-1) g_usleep(10000);
-    if(wma_pause) playback->output->pause(1);
 }
 
 static void _assoc_string(Tuple *tuple, const gint nfield, const gchar *str)
@@ -285,6 +282,22 @@ static void wma_get_song_info(char *filename, char **title_real, int *len_real)
     (*title_real) = aud_tuple_formatter_make_title_string(tuple, aud_get_gentitle_format());
 }
 
+static void do_seek (InputPlayback * playback, AVFormatContext * context, int index) {
+   playback->output->flush (wma_seekpos * 1000);
+   av_seek_frame (context, index, (long long) wma_seekpos * 1000000);
+   wma_seekpos = -1;
+}
+
+static void do_pause (InputPlayback * playback, AVFormatContext * context, int index) {
+   playback->output->pause (1);
+   while (wma_pause) {
+      if (wma_seekpos != -1)
+         do_seek (playback, context, index);
+      g_usleep(50000);
+   }
+   playback->output->pause (0);
+}
+
 static void wma_play_file(InputPlayback *playback)
 {
     AVCodec *codec;
@@ -333,11 +346,9 @@ static void wma_play_file(InputPlayback *playback)
     while(playback->playing)
     {
         if(wma_seekpos != -1)
-        {
-            av_seek_frame(ic, wma_idx, wma_seekpos * 1000000LL);
-            playback->output->flush(wma_seekpos * 1000);
-            wma_seekpos = -1;
-        }
+           do_seek (playback, ic, wma_idx);
+        if (wma_pause)
+           do_pause (playback, ic, wma_idx);
 
         if(av_read_frame(ic, &pkt) < 0) break;
 
