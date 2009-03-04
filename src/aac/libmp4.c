@@ -76,6 +76,7 @@ static Mp4Config mp4cfg;
 static GThread   *decodeThread;
 GStaticMutex     mutex = G_STATIC_MUTEX_INIT;
 static int       seekPosition = -1;
+static volatile char pause_flag;
 
 void getMP4info(char*);
 int getAACTrack(mp4ff_t *);
@@ -100,6 +101,7 @@ static void mp4_init(void)
 {
     mp4cfg.file_type = FILE_UNKNOWN;
     seekPosition = -1;
+    pause_flag = 0;
     return;
 }
 
@@ -296,7 +298,7 @@ static void mp4_about(void)
 
 static void mp4_pause(InputPlayback *playback, short flag)
 {
-    playback->output->pause(flag);
+   pause_flag = flag;
 }
 
 static void mp4_seek(InputPlayback *data, int time)
@@ -540,6 +542,19 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
             sampleID =  (float)seekPosition*(float)samplerate/(float)(framesize - 1.0);
             playback->output->flush(seekPosition*1000);
             seekPosition = -1;
+        }
+
+        if (pause_flag) {
+           playback->output->pause (1);
+           while (pause_flag) {
+              if (seekPosition != -1) {
+                 playback->output->flush (seekPosition * 1000);
+                 sampleID = (long long) seekPosition * samplerate / (framesize - 1);
+                 seekPosition = -1;
+              }
+              g_usleep(50000);
+           }
+           playback->output->pause (0);
         }
 
         /* Otherwise continue playing */
