@@ -56,6 +56,7 @@ callback_info* test_info;
 callback_info* main_info;
 gboolean plugin_initialized = FALSE;
 glong seek_to = -1;
+static volatile char pause_flag = 0;
 static GThread* thread = NULL;
 
 /* === */
@@ -302,6 +303,22 @@ void squeeze_audio(gint32* src, void* dst, guint count, guint res) {
 
 /* --- */
 
+static void do_seek (InputPlayback * playback) {
+   playback->output->flush (seek_to);
+   FLAC__stream_decoder_seek_absolute (main_decoder, (long long) seek_to * main_info->stream.samplerate / 1000);
+   seek_to = -1;
+}
+
+static void do_pause (InputPlayback * playback) {
+   playback->output->pause (1);
+   while (pause_flag) {
+      if (seek_to != -1)
+         do_seek (playback);
+      g_usleep(50000);
+   }
+   playback->output->pause (0);
+}
+
 static gpointer flac_play_loop(gpointer arg) {
 
     /*
@@ -312,7 +329,6 @@ static gpointer flac_play_loop(gpointer arg) {
 
     gint32* read_pointer;
     gint elements_left;
-    gint seek_sample;
     FLAC__StreamDecoderState state;
     struct stream_info stream_info;
     guint sample_count;
@@ -435,24 +451,10 @@ static gpointer flac_play_loop(gpointer arg) {
         main_info->buffer_free = BUFFER_SIZE_SAMP;
         main_info->buffer_used = 0;
 
-        /*
-         * Do we have to seek to somewhere?
-         */
-        if (-1 != seek_to) {
-            _DEBUG("Seek requested to %d milliseconds", seek_to);
-
-            seek_sample = (unsigned long)((gint64)seek_to * (gint64) main_info->stream.samplerate / 1000L );
-            _DEBUG("Seek requested to sample %d", seek_sample);
-            if (FALSE == FLAC__stream_decoder_seek_absolute(main_decoder, seek_sample)) {
-                _ERROR("Could not seek to sample %d!", seek_sample);
-            } else {
-                /*
-                 * Flush the buffers
-                 */
-                playback->output->flush(seek_to);
-            }
-            seek_to = -1;
-        }
+        if (seek_to != -1)
+	    do_seek (playback);
+        if (pause_flag)
+            do_pause (playback);
 
         /*
          * Have we reached the end of the stream?
@@ -567,12 +569,7 @@ void flac_stop(InputPlayback* input) {
 /* --- */
 
 void flac_pause(InputPlayback* input, gshort p) {
-
-    _ENTER;
-
-    input->output->pause(p);
-
-    _LEAVE;
+   pause_flag = p;
 }
 
 /* --- */
