@@ -120,6 +120,7 @@ static OggVorbis_File vf;
 
 static GThread *thread;
 static volatile int seekneeded = -1;
+static volatile char pause_flag;
 static int samplerate, channels;
 GMutex *vf_mutex;
 
@@ -226,6 +227,16 @@ do_seek(InputPlayback *playback)
         seekneeded = -1;
         playback->eof = FALSE;
     }
+}
+
+static void do_pause (InputPlayback * playback) {
+   playback->output->pause (1);
+   while (pause_flag) {
+      if (seekneeded != -1)
+         do_seek (playback);
+      g_usleep(50000);
+   }
+   playback->output->pause (0);
 }
 
 #define PCM_FRAMES 1024
@@ -338,6 +349,8 @@ vorbis_play_loop(gpointer arg)
 
         if (seekneeded != -1)
             do_seek(playback);
+        if (pause_flag)
+            do_pause (playback);
 
         
         int current_section = last_section;
@@ -488,7 +501,7 @@ vorbis_stop(InputPlayback *playback)
 static void
 vorbis_pause(InputPlayback *playback, short p)
 {
-    playback->output->pause(p);
+    pause_flag = p;
 }
 
 static void
