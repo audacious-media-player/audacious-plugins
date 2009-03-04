@@ -690,6 +690,23 @@ static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
 	return tuple;
 }
 
+static void do_seek (dae_params_t * pdae_params) {
+	pdae_params->pplayback->output->flush(pdae_params->seektime);
+	pdae_params->currlsn = pdae_params->startlsn + (pdae_params->seektime * 75 / 1000);
+	cdio_lseek(pcdio, pdae_params->currlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
+	pdae_params->seektime = -1;
+}
+
+static void do_pause (dae_params_t * pdae_params) {
+	pdae_params->pplayback->output->pause (1);
+	while (is_paused) {
+		if (pdae_params->seektime != -1)
+			do_seek (pdae_params);
+		g_usleep(50000);
+	}
+	pdae_params->pplayback->output->pause (0);
+}
+
 static void dae_play_loop(dae_params_t *pdae_params)
 {
 	guchar *buffer = g_new(guchar, CDDA_DAE_FRAMES * CDIO_CD_FRAMESIZE_RAW);
@@ -697,39 +714,15 @@ static void dae_play_loop(dae_params_t *pdae_params)
 	debug("dae started\n");
 	cdio_lseek(pcdio, pdae_params->startlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 
-	gboolean output_paused = FALSE;
 	gint read_error_counter = 0;
 
 	//pdae_params->endlsn += 75 * 3;
 
 	while (pdae_params->pplayback->playing) {
-		/* handle pause status */
-		if (is_paused) {
-			if (!output_paused) {
-				debug("playback was not paused, pausing\n");
-				pdae_params->pplayback->output->pause(TRUE);
-				output_paused = TRUE;
-			}
-			g_usleep(1000);
-			continue;
-		}
-		else {
-			if (output_paused) {
-				debug("playback was paused, resuming\n");
-				pdae_params->pplayback->output->pause(FALSE);
-				output_paused = FALSE;
-			}
-		}
-
-		/* check if we have to seek */
-		if (pdae_params->seektime != -1) {
-			debug("requested seek to %d ms\n", pdae_params->seektime);
-			gint newlsn = pdae_params->startlsn + ((pdae_params->seektime * 75) / 1000);
-			cdio_lseek(pcdio, newlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
-			pdae_params->pplayback->output->flush(pdae_params->seektime);
-			pdae_params->currlsn = newlsn;
-			pdae_params->seektime = -1;
-		}
+		if (pdae_params->seektime != -1)
+			do_seek (pdae_params);
+		if (is_paused)
+			do_pause (pdae_params);
 
 		/* compute the actual number of sectors to read */
 		gint lsncount = CDDA_DAE_FRAMES <= (pdae_params->endlsn - pdae_params->currlsn + 1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn - pdae_params->currlsn + 1);
