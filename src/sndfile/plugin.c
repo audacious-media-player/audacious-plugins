@@ -47,6 +47,7 @@ static SF_INFO sfinfo;
 static gint song_length;
 static gint bit_rate = 0;
 static glong seek_time = -1;
+static volatile char pause_flag;
 
 static GThread *decode_thread;
 static GMutex *decode_mutex;
@@ -121,6 +122,7 @@ static void
 plugin_init (void)
 {
     seek_time = -1;
+    pause_flag = 0;
 
     decode_mutex = g_mutex_new();
     decode_cond = g_cond_new();
@@ -362,6 +364,22 @@ is_our_file (gchar *filename)
     return TRUE;
 }
 
+static void do_seek (InputPlayback * playback) {
+   playback->output->flush (seek_time);
+   sf_seek (sndfile, (long long) seek_time * sfinfo.samplerate / 1000, SEEK_SET);
+   seek_time = -1;
+}
+
+static void do_pause (InputPlayback * playback) {
+   playback->output->pause (1);
+   while (pause_flag) {
+      if (seek_time != -1)
+         do_seek (playback);
+      g_usleep(50000);
+   }
+   playback->output->pause (0);
+}
+
 static gpointer
 play_loop (gpointer arg)
 {
@@ -411,13 +429,10 @@ play_loop (gpointer arg)
             break;
         }
 
-        /* Do seek if seek_time is valid. */
-        if (seek_time >= 0) {
-            sf_seek (sndfile, (sf_count_t)((gint64)seek_time * (gint64)sfinfo.samplerate / 1000L),
-                     SEEK_SET);
-            playback->output->flush (seek_time);
-            seek_time = -1;
-        }
+        if (seek_time != -1)
+           do_seek (playback);
+        if (pause_flag)
+           do_pause (playback);
 
         if (playback->playing == FALSE)
             break;
@@ -477,7 +492,7 @@ play_start (InputPlayback *playback)
 static void
 play_pause (InputPlayback *playback, gshort p)
 {
-    playback->output->pause(p);
+   pause_flag = p;
 }
 
 static void
