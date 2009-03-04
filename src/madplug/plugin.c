@@ -597,6 +597,7 @@ audmad_mseek(InputPlayback *playback, gulong millisecond)
     info.playback = playback;
     info.seek = millisecond;
     g_mutex_unlock(pb_mutex);
+    playback->output->flush (millisecond);
 }
 
 static void
