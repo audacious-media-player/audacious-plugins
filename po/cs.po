@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the audacious-plugins
 # package.
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
-# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008.
+# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins hg-2287\n"
+"Project-Id-Version: audacious-plugins 7db0ff833754\n"
 "Report-Msgid-Bugs-To: http://bugzilla.atheme.org/\n"
 "POT-Creation-Date: 2008-06-21 08:27+0300\n"
-"PO-Revision-Date: 2008-01-09 18:56+0100\n"
+"PO-Revision-Date: 2009-03-29 20:21+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1572,7 +1572,7 @@ msgstr "Zahájení přehrávání"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Spustí OSD, když se začne přehrávay skladba."
+msgstr "Spustí OSD, když se začne přehrávat skladba."
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
@@ -1998,7 +1998,7 @@ msgstr "Volby:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:204
 msgid "Rescan CD"
-msgstr ""
+msgstr "Znovu prohlédnout CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:217
 msgid "Add CD"
@@ -2068,9 +2068,8 @@ msgid "Server: "
 msgstr "Server: "
 
 #: src/cdaudio-ng/configure.c:205
-#, fuzzy
 msgid "Path: "
-msgstr "Vzorek: "
+msgstr "Cesta: "
 
 #: src/cdaudio-ng/configure.c:208
 msgid "Port: "
@@ -2160,9 +2159,8 @@ msgstr ""
 "        Shay Green <gblargg@gmail.com>"
 
 #: src/crystalizer/crystalizer.c:90
-#, fuzzy
 msgid "Configure Crystalizer"
-msgstr "Nastavit Extra sterou"
+msgstr "Nastavit krystalizér"
 
 #: src/crystalizer/crystalizer.c:92 src/stereo_plugin/stereo.c:94
 msgid "Effect intensity:"
@@ -2941,7 +2939,6 @@ msgid "About Gnome Shortcut Plugin"
 msgstr "O modulu pro zkratky Gnome"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:306
-#, fuzzy
 msgid ""
 "Gnome Shortcut Plugin\n"
 "Let's you control the player with Gnome's shortcuts.\n"
@@ -2952,72 +2949,60 @@ msgstr ""
 "Modul pro zkratky Gnome\n"
 "Ovládejte přehrávač promocí zkratek z Gnome.\n"
 "\n"
-"Copyright © 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Copyright © 2007–2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
 
 #: src/hotkey/gui.c:68
-#, fuzzy
 msgid "Previous Track"
-msgstr "Předchozí stopa:"
+msgstr "Předchozí stopa"
 
 #: src/hotkey/gui.c:69 src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
-#, fuzzy
 msgid "Play"
-msgstr "Hrát:"
+msgstr "Hrát"
 
 #: src/hotkey/gui.c:70
-#, fuzzy
 msgid "Pause/Resume"
-msgstr "Pozastavit/Pokračovat:"
+msgstr "Pozastavit/Pokračovat"
 
 #: src/hotkey/gui.c:71 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
-#, fuzzy
 msgid "Stop"
-msgstr "Zastavit:"
+msgstr "Zastavit"
 
 #: src/hotkey/gui.c:72
-#, fuzzy
 msgid "Next Track"
-msgstr "Další stopa:"
+msgstr "Další stopa"
 
 #: src/hotkey/gui.c:73
-#, fuzzy
 msgid "Forward 5 Seconds"
-msgstr "5 s vpřed:"
+msgstr "O 5 sekund vpřed"
 
 #: src/hotkey/gui.c:74
-#, fuzzy
 msgid "Rewind 5 Seconds"
-msgstr "5 s zpět:"
+msgstr "O 5 sekund zpět"
 
 #: src/hotkey/gui.c:75
-#, fuzzy
 msgid "Mute"
-msgstr "Vypnout zvuk:"
+msgstr "Vypnout zvuk"
 
 #: src/hotkey/gui.c:76
-#, fuzzy
 msgid "Volume Up"
-msgstr "Zesílit:"
+msgstr "Zesílit"
 
 #: src/hotkey/gui.c:77
-#, fuzzy
 msgid "Volume Down"
-msgstr "Ztišit:"
+msgstr "Ztišit"
 
 #: src/hotkey/gui.c:78 src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
-#, fuzzy
 msgid "Jump to File"
-msgstr "Přeskočit na soubor:"
+msgstr "Přejít na soubor"
 
 #: src/hotkey/gui.c:79
-#, fuzzy
 msgid "Toggle Player Windows"
-msgstr "Přepnout okna přehrávače:"
+msgstr "Přepnout okna přehrávače"
 
 #: src/hotkey/gui.c:80
 msgid "Show On-Screen-Display"
-msgstr ""
+msgstr "Zobrazit OSD (nápis na obrazovce)"
 
 #: src/hotkey/gui.c:90
 msgid "(none)"
@@ -3043,25 +3028,24 @@ msgid "Global Hotkey Plugin Configuration"
 msgstr "Hlavní nastavení modulu pro horké klávesy"
 
 #: src/hotkey/gui.c:395
-#, fuzzy
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "Uvnitř textového pole stiskněte kombinaci kláves."
+msgstr ""
+"Uvnitř textového pole stiskněte kombinaci kláves.\n"
+"Navázat lze také tlačítka myši."
 
 #: src/hotkey/gui.c:400
-#, fuzzy
 msgid "Hotkeys:"
-msgstr "Adresa:"
+msgstr "Horké klávesy:"
 
 #: src/hotkey/gui.c:419
-#, fuzzy
 msgid "<b>Action:</b>"
-msgstr "<b>Hatena</b>"
+msgstr "<b>Akce</b>"
 
 #: src/hotkey/gui.c:427
 msgid "<b>Key Binding:</b>"
-msgstr ""
+msgstr "<b>Navázání kláves:</b>"
 
 #: src/hotkey/gui.c:659
 msgid "About Global Hotkey Plugin"
@@ -3311,18 +3295,16 @@ msgid "MPEG Audio Plugin Configuration"
 msgstr "Nastavení modulu MPEG Audio"
 
 #: src/madplug/configure.c:225
-#, fuzzy
 msgid "Audio Settings"
-msgstr "Nastavení budíku"
+msgstr "Nastavení zvuku"
 
 #: src/madplug/configure.c:233
 msgid "Force reopen audio when audio type changed"
 msgstr "Vynutit znovuotevření zvuku, když se typ zvuku změní"
 
 #: src/madplug/configure.c:242
-#, fuzzy
 msgid "Metadata Settings"
-msgstr "Nastavení mixéru:"
+msgstr "Nastavení metadat"
 
 #: src/madplug/configure.c:251
 msgid "Enable fast play-length calculation"
@@ -3333,14 +3315,12 @@ msgid "Parse XING headers"
 msgstr "Rozebrat hlavičku XING"
 
 #: src/madplug/configure.c:265
-#, fuzzy
 msgid "Use SJIS to write ID3 tags (not recommended)"
-msgstr "Pro zápis ID3 tagů použít SJIS na místo UTF-8"
+msgstr "Pro zápis ID3 tagů použít SJIS (nedoporučuje se)"
 
 #: src/madplug/configure.c:272
-#, fuzzy
 msgid "Miscellaneous Settings"
-msgstr "Nastavení mixéru:"
+msgstr "Ostatní nastavení"
 
 #: src/madplug/configure.c:281
 msgid "Display average bitrate for VBR"
@@ -4001,9 +3981,11 @@ msgstr ""
 "nestalo, obraťte se na Free Software Foundation, Inc.,\n"
 "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
+# Don't know what is it
 #: src/projectm-1.0/main.c:70
+#, fuzzy
 msgid "_Random"
-msgstr ""
+msgstr "_Náhodný"
 
 #: src/pulse_audio/pulse_audio.c:720
 msgid "About Audacious PulseAudio Output Plugin"
@@ -4478,7 +4460,7 @@ msgstr "Jen není-li délka skladby známa"
 
 #: src/sid/xmms-sid.glade:2212 src/sid/xs_interface.c:981
 msgid "Maximum playtime:"
-msgstr "Maximálné doba přehrávání"
+msgstr "Maximální doba přehrávání:"
 
 #: src/sid/xmms-sid.glade:2257 src/sid/xs_interface.c:1002
 msgid ""
@@ -4486,7 +4468,7 @@ msgid ""
 "(Refer to Audacious-SID documentation for more information)"
 msgstr ""
 "Tato volba zapíná použití databáze délek skladeb kompatibilní "
-"s XSIDPLAY. (Podrobnosti nalezenete v dokumentaci k Audacious-SID modulu.)"
+"s XSIDPLAY. (Podrobnosti naleznete v dokumentaci k Audacious-SID modulu.)"
 
 #: src/sid/xmms-sid.glade:2259 src/sid/xs_interface.c:998
 msgid "Use XSIDPLAY-compatible database"
@@ -4541,6 +4523,15 @@ msgid ""
 "\n"
 "<b>subsong-num, subsong-id</b>"
 msgstr ""
+"<u>SIDové položky Tuplez:</u>\n"
+"\n"
+"<b>sid-format</b>\t\t– Výslovný formát souboru\n"
+"<b>sid-model</b>\t\t– 6581 nebo 8580\n"
+"<b>sid-speed</b>\t\t– Časování nebo rychlost: PAL/NTSC atd..\n"
+"\n"
+"<u>Další „zvláštní“ sady položek:</u>\n"
+"\n"
+"<b>subsong-num, subsong-id</b>"
 
 #: src/sid/xmms-sid.glade:2581 src/sid/xs_interface.c:1097
 msgid "Song title format:"
@@ -4709,22 +4700,23 @@ msgstr "Skladba č. %i:"
 
 #: src/skins/plugin.c:128
 msgid "About Skinned GUI"
-msgstr ""
+msgstr "O GUI s měnitelným vzhledem"
 
 #: src/skins/plugin.c:129
 msgid ""
 "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
 "\n"
 msgstr ""
+"Copyright © 2008, Tomasz Moń <desowin@gmail.com>\n"
+"\n"
 
 #: src/skins/skins_cfg.c:329
 msgid "<b>_Fonts</b>"
 msgstr "<b>_Fonty</b>"
 
 #: src/skins/skins_cfg.c:330
-#, fuzzy
 msgid "_Player:"
-msgstr "Doba přehrávání:"
+msgstr "_Přehrávač:"
 
 #: src/skins/skins_cfg.c:330
 msgid "Select main player window font:"
@@ -4732,17 +4724,15 @@ msgstr "Font v hlavním okně přehrávače:"
 
 #: src/skins/skins_cfg.c:331
 msgid "_Playlist:"
-msgstr "V seznamu sklade_b:"
+msgstr "_Seznamu skladeb:"
 
 #: src/skins/skins_cfg.c:331
-#, fuzzy
 msgid "Select playlist font:"
-msgstr "Vybrat seznam skladeb"
+msgstr "Vybrte font pro seznam skladeb:"
 
 #: src/skins/skins_cfg.c:332
-#, fuzzy
 msgid "Use Bitmap fonts if available"
-msgstr "Pokud možno, použít CDDB"
+msgstr "Pokud možno, používat bitmapové fonty"
 
 #: src/skins/skins_cfg.c:332
 msgid ""
@@ -4775,27 +4765,31 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:340
 msgid "Use two-way text scroller"
-msgstr ""
+msgstr "Pohybovat textem v obou směrech"
 
 #: src/skins/skins_cfg.c:341
 msgid ""
 "If selected, the file information text in the main window will scroll back "
 "and forth. If not selected, the text will only scroll in one direction."
 msgstr ""
+"Bude-li vybráno, text s informacemi v hlavním okně bude běhat tam a zpět. "
+"Nebude-li vybráno, text se bude pohybovat jen jedním směrem."
 
 #: src/skins/skins_cfg.c:342
 msgid "Disable inline gtk theme"
-msgstr ""
+msgstr "Zakázat vnitřní téma GTK"
 
 #: src/skins/skins_cfg.c:343
 msgid "Allow loading incomplete skins"
-msgstr ""
+msgstr "Povolit načítání neúplných vzhledů"
 
 #: src/skins/skins_cfg.c:344
 msgid ""
 "If selected, audacious won't refuse loading broken skins. Use only if your "
 "favourite skin doesn't work"
 msgstr ""
+"Je-li vybráno, Audacious neodmítne nahrát rozbitý vzhled. Použijte jen, když "
+"váš oblíbený vzhled nefunguje."
 
 #: src/skins/skins_cfg.c:410
 msgid "Color Adjustment"
@@ -4810,9 +4804,8 @@ msgstr ""
 "rozhraní pomocí následujících jezdců."
 
 #: src/skins/skins_cfg.c:427
-#, fuzzy
 msgid "Blue"
-msgstr "Blues"
+msgstr "Modrá"
 
 #: src/skins/skins_cfg.c:434
 msgid "Green"
@@ -4823,14 +4816,12 @@ msgid "Red"
 msgstr "Červená"
 
 #: src/skins/skins_cfg.c:571
-#, fuzzy
 msgid "Audacious Skinned GUI Configuration"
-msgstr "OSD pro Audacious – nastavení"
+msgstr "Nastavení GUI Audacious s měnitelným vzhledem"
 
 #: src/skins/skins_cfg.c:596
-#, fuzzy
 msgid "<b>_Skin</b>"
-msgstr "<b>_Fonty</b>"
+msgstr "<b>_Vzhled</b>"
 
 #: src/skins/ui_equalizer.c:494
 msgid "Audacious Equalizer"
@@ -4839,7 +4830,7 @@ msgstr "Ekvalizér"
 #: src/skins/ui_equalizer.c:794
 #, c-format
 msgid "Error importing Winamp EQF file '%s'"
-msgstr ""
+msgstr "Chyba při importování winampového EQF souboru „%s“"
 
 #: src/skins/ui_equalizer.c:1172
 msgid "Presets"
@@ -4851,33 +4842,29 @@ msgid "%s - Audacious"
 msgstr "%s – Audacious"
 
 #: src/skins/ui_main.c:394 src/skins/ui_main.c:2397
-#, fuzzy
 msgid "Audacious"
-msgstr "Audacious:"
+msgstr "Audacious"
 
 #: src/skins/ui_main.c:641
-#, fuzzy
 msgid "VBR"
-msgstr "VBR/ABR"
+msgstr "VBR"
 
 #: src/skins/ui_main.c:659 src/skins/ui_main.c:663
 msgid "stereo"
 msgstr "stereo"
 
 #: src/skins/ui_main.c:659 src/skins/ui_main.c:663
-#, fuzzy
 msgid "mono"
-msgstr "Mono"
+msgstr "mono"
 
 #: src/skins/ui_main.c:957
 msgid "Can't jump to time when no track is being played.\n"
-msgstr ""
+msgstr "Když nehraje žádná skladba, nelze přejít na čas.\n"
 
 #: src/skins/ui_main.c:972 src/skins/ui_manager.c:425
 #: src/skins/ui_manager.c:426
-#, fuzzy
 msgid "Jump to Time"
-msgstr "/Přejít na čas"
+msgstr "Přejít na čas"
 
 #: src/skins/ui_main.c:993
 msgid "minutes:seconds"
@@ -4889,16 +4876,15 @@ msgstr "Délka stopy:"
 
 #: src/skins/ui_main.c:1149
 msgid "Audacious - visibility warning"
-msgstr ""
+msgstr "Audacious – varování o viditelnosti"
 
 #: src/skins/ui_main.c:1152
-#, fuzzy
 msgid "Show main player window"
-msgstr "Font v hlavním okně přehrávače:"
+msgstr "Zobrazit hlavním okno přehrávače"
 
 #: src/skins/ui_main.c:1153
 msgid "Ignore"
-msgstr ""
+msgstr "Ignorovat"
 
 #: src/skins/ui_main.c:1159
 msgid ""
@@ -4907,14 +4893,18 @@ msgid ""
 "otherwise, you'll have to control it remotely via audtool or enabled plugins "
 "(such as the statusicon plugin)."
 msgstr ""
+"Audacious byl spuštěn se všemi svými okny skrytými.\n"
+"Asi budete chtít opět zobrazit okno přehrávače, abyste mohli Audacious "
+"ovládat. V opačném případě si budete muset vystačit se vzdáleným ovládáním "
+"přes audtool nebo povolený zásuvný modul (např. modul statusicon)."
 
 #: src/skins/ui_main.c:1165
 msgid "Always ignore, show/hide is controlled remotely"
-msgstr ""
+msgstr "Vždy ignorovat, zobrazit/skrýt se ovládá vzdáleně"
 
 #: src/skins/ui_main.c:1210
 msgid "Audacious - broken GTK engine usage warning"
-msgstr ""
+msgstr "Audacious – varování o rozbitém jádru GTK"
 
 #: src/skins/ui_main.c:1218
 #, c-format
@@ -4929,74 +4919,76 @@ msgid ""
 "\n"
 "To use these features, please consider using a different GTK theme engine."
 msgstr ""
+"<big><b>Používá se rozbité jádro GTK</b></big>\n"
+"\n"
+"Audacious zjistil, že používáte GTK s rozbitým jádrem.\n"
+"\n"
+"Jádro pro zpracování témat, které používáte (<i>%s</i>), není slučitelné "
+"s některými funkcemi používanými moderními vzhledy. Pro tuto relaci byly "
+"problematické funkce vypnuty.\n"
+" \n"
+"Abyste mohli využít těchto funkcí, zvažte použití jiného tématického jádra "
+"GTK."
 
 #: src/skins/ui_main.c:1229
-#, fuzzy
 msgid "Do not display this warning again"
-msgstr "Příště již nevarovat"
+msgstr "Toto varování již příště nezobrazovat"
 
 #: src/skins/ui_main.c:1253
 msgid "Enter location to play:"
 msgstr "Zadejte adresu, z které se má hrát:"
 
 #: src/skins/ui_main.c:1497
-#, fuzzy, c-format
+#, c-format
 msgid "Seek to: %d:%-2.2d/%d:%-2.2d (%d%%)"
-msgstr "PŘEJÍT NA %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgstr "Přejít na: %d:%-2.2d/%d:%-2.2d (%d %%)"
 
 #: src/skins/ui_main.c:1527
-#, fuzzy, c-format
+#, c-format
 msgid "Volume: %d%%"
-msgstr "Hlasitost: (%)"
+msgstr "Hlasitost: %d %%"
 
 #: src/skins/ui_main.c:1555
 #, c-format
 msgid "Balance: %d%% left"
-msgstr ""
+msgstr "Vyvážení: %d %% vlevo"
 
 #: src/skins/ui_main.c:1559
 msgid "Balance: center"
-msgstr ""
+msgstr "Vyvážení: střed"
 
 #: src/skins/ui_main.c:1563
 #, c-format
 msgid "Balance: %d%% right"
-msgstr ""
+msgstr "Vyvážení: %d %% vpravo"
 
 #: src/skins/ui_main.c:1881
-#, fuzzy
 msgid "Options Menu"
-msgstr "Nastavení"
+msgstr "Nabídka nastavení"
 
 #: src/skins/ui_main.c:1885
-#, fuzzy
 msgid "Disable 'Always On Top'"
-msgstr "Vždy na vrchu"
+msgstr "Vypnout „Vždy na vrchu“"
 
 #: src/skins/ui_main.c:1887
-#, fuzzy
 msgid "Enable 'Always On Top'"
-msgstr "Vždy na vrchu"
+msgstr "Zapnout „Vždy na vrchu“"
 
 #: src/skins/ui_main.c:1890
-#, fuzzy
 msgid "File Info Box"
 msgstr "Informace o souboru"
 
 #: src/skins/ui_main.c:1894
-#, fuzzy
 msgid "Disable 'GUI Scaling'"
-msgstr "Zakázat ID3v2 tagy"
+msgstr "Zakázat „Škálovat GUI“"
 
 #: src/skins/ui_main.c:1896
-#, fuzzy
 msgid "Enable 'GUI Scaling'"
-msgstr "Povolit převzorkování zvuku"
+msgstr "Povolit „škálovat GUI“"
 
 #: src/skins/ui_main.c:1899
-#, fuzzy
 msgid "Visualization Menu"
-msgstr "Typ znázornění"
+msgstr "Nabídka znázornění"
 
 #: src/skins/ui_main.c:1946
 msgid ""
@@ -5023,9 +5015,8 @@ msgid "Stop after Current Song"
 msgstr "Zastavit po současné skladbě"
 
 #: src/skins/ui_manager.c:59 src/skins/ui_manager.c:60
-#, fuzzy
 msgid "Peaks"
-msgstr "Žerty"
+msgstr "Vrcholky"
 
 #: src/skins/ui_manager.c:62 src/skins/ui_manager.c:63
 msgid "Repeat"
@@ -5048,9 +5039,8 @@ msgid "Show Playlist Editor"
 msgstr "Zobrazit editor seznamu skladeb"
 
 #: src/skins/ui_manager.c:77 src/skins/ui_manager.c:78
-#, fuzzy
 msgid "Show Equalizer"
-msgstr "Ekvalizér"
+msgstr "Ukázat ekvalizér"
 
 #: src/skins/ui_manager.c:80 src/skins/ui_manager.c:81
 msgid "Always on Top"
@@ -5085,9 +5075,8 @@ msgid "Easy Move"
 msgstr "Snadný pohyb"
 
 #: src/skins/ui_manager.c:107
-#, fuzzy
 msgid "Analyzer"
-msgstr "Typ sloupců"
+msgstr "Analyzátor"
 
 #: src/skins/ui_manager.c:108
 msgid "Scope"
@@ -5115,19 +5104,16 @@ msgid "Vertical Lines"
 msgstr "Svislé čáry"
 
 #: src/skins/ui_manager.c:120
-#, fuzzy
 msgid "Lines"
-msgstr "řádek."
+msgstr "Čáry"
 
 #: src/skins/ui_manager.c:121
-#, fuzzy
 msgid "Bars"
-msgstr "Bass"
+msgstr "Sloupce"
 
 #: src/skins/ui_manager.c:125
-#, fuzzy
 msgid "Dot Scope"
-msgstr "Vlnovka"
+msgstr "Tečková vlnovka"
 
 #: src/skins/ui_manager.c:126
 msgid "Line Scope"
@@ -5162,19 +5148,16 @@ msgid "Eighth (~6 fps)"
 msgstr "Osminová (~6 Hz)"
 
 #: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
-#, fuzzy
 msgid "Slowest"
-msgstr "Showtunes"
+msgstr "Nejpomalejší"
 
 #: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
-#, fuzzy
 msgid "Slow"
-msgstr "nízké"
+msgstr "Pomalé"
 
 #: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
-#, fuzzy
 msgid "Medium"
-msgstr "střední"
+msgstr "Střední"
 
 #: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Fast"
@@ -5193,19 +5176,16 @@ msgid "Time Remaining"
 msgstr "Zbývající čas"
 
 #: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
-#, fuzzy
 msgid "Pause"
-msgstr "Pozastavení"
+msgstr "Pozastavit"
 
 #: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
-#, fuzzy
 msgid "Previous"
-msgstr "Předchozí stopa:"
+msgstr "Předchozí"
 
 #: src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
-#, fuzzy
 msgid "Next"
-msgstr "Text"
+msgstr "Další"
 
 #: src/skins/ui_manager.c:195
 msgid "Visualization"
@@ -5217,7 +5197,7 @@ msgstr "Typ znázornění"
 
 #: src/skins/ui_manager.c:197
 msgid "Analyzer Mode"
-msgstr "Typ sloupců"
+msgstr "Režim analyzátoru"
 
 #: src/skins/ui_manager.c:198
 msgid "Scope Mode"
@@ -5244,9 +5224,8 @@ msgid "Peaks Falloff"
 msgstr "Klesání vrcholků"
 
 #: src/skins/ui_manager.c:208
-#, fuzzy
 msgid "Playlist"
-msgstr "V seznamu sklade_b:"
+msgstr "Seznam skladeb"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "New Playlist"
@@ -5261,9 +5240,8 @@ msgid "Select Previous Playlist"
 msgstr "Vybrat předchozí seznam skladeb"
 
 #: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
-#, fuzzy
 msgid "Delete Playlist"
-msgstr "Vybrat seznam skladeb"
+msgstr "Smazat seznam skladeb"
 
 #: src/skins/ui_manager.c:222
 msgid "Load List"
@@ -5322,9 +5300,8 @@ msgid "Add Files..."
 msgstr "Přidat soubory…"
 
 #: src/skins/ui_manager.c:252
-#, fuzzy
 msgid "Adds files to the playlist."
-msgstr "Přidá CD do seznamu skladeb"
+msgstr "Přidá soubory do seznamu skladeb."
 
 #: src/skins/ui_manager.c:257
 msgid "Search and Select"
@@ -5338,9 +5315,8 @@ msgstr ""
 "Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
 
 #: src/skins/ui_manager.c:261
-#, fuzzy
 msgid "Invert Selection"
-msgstr "Výběr formátu"
+msgstr "Invertovat výběr"
 
 #: src/skins/ui_manager.c:262
 msgid "Inverts the selected and unselected entries."
@@ -5355,9 +5331,8 @@ msgid "Selects all of the playlist entries."
 msgstr "Vybere všechny skladby v seznamu."
 
 #: src/skins/ui_manager.c:269
-#, fuzzy
 msgid "Select None"
-msgstr "Vyberte soubor se skinem"
+msgstr "Nevybrat žádné"
 
 #: src/skins/ui_manager.c:270
 msgid "Deselects all of the playlist entries."
@@ -5503,13 +5478,12 @@ msgid "Sort Selected"
 msgstr "Seřadit vybrané"
 
 #: src/skins/ui_manager.c:385
-#, fuzzy
 msgid "File"
-msgstr "Oheň"
+msgstr "Soubor"
 
 #: src/skins/ui_manager.c:388
 msgid "Plugin Services"
-msgstr ""
+msgstr "Služby modulů"
 
 #: src/skins/ui_manager.c:390 src/skins/ui_manager.c:393
 msgid "View Track Details"
@@ -5520,32 +5494,28 @@ msgid "View track details"
 msgstr "Zobrazit inforamce o skladbě"
 
 #: src/skins/ui_manager.c:396 src/skins/ui_manager.c:397
-#, fuzzy
 msgid "About Audacious"
-msgstr "/O Audacious"
+msgstr "O Audacious"
 
 #: src/skins/ui_manager.c:399
 msgid "Play File"
 msgstr "Přehrát soubor"
 
 #: src/skins/ui_manager.c:400
-#, fuzzy
 msgid "Load and play a file"
-msgstr "Načíst metadata ze seznamů skladeb a souborů"
+msgstr "Načíst a přehrát soubor"
 
 #: src/skins/ui_manager.c:402
-#, fuzzy
 msgid "Play Location"
-msgstr "Umístění:"
+msgstr "Hrát z adresy"
 
 #: src/skins/ui_manager.c:403
-#, fuzzy
 msgid "Play media from the selected location"
-msgstr "Potvrdit vybrané akce"
+msgstr "Hrát média z vybraného místa"
 
 #: src/skins/ui_manager.c:405
 msgid "Plugin services"
-msgstr ""
+msgstr "Služby modulů"
 
 #: src/skins/ui_manager.c:407
 msgid "Preferences"
@@ -5589,7 +5559,6 @@ msgstr "Načíst"
 
 #: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
 #: src/skins/ui_manager.c:477
-#, fuzzy
 msgid "Preset"
 msgstr "Předvolby"
 
@@ -5611,23 +5580,20 @@ msgid "Load default preset into equalizer"
 msgstr "Načíst standardní předvolbu do ekvalizéru"
 
 #: src/skins/ui_manager.c:450
-#, fuzzy
 msgid "Zero"
-msgstr "Retro"
+msgstr "Vynulovat"
 
 #: src/skins/ui_manager.c:451
 msgid "Set equalizer preset levels to zero"
 msgstr "Vynulovat předvolby ekvalizéru"
 
 #: src/skins/ui_manager.c:453
-#, fuzzy
 msgid "From file"
-msgstr "shodný soubor"
+msgstr "Ze souboru"
 
 #: src/skins/ui_manager.c:454
-#, fuzzy
 msgid "Load preset from file"
-msgstr "Načíst předvolbu ze souboru WinAMP EQF"
+msgstr "Načíst předvolbu ze souboru"
 
 #: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
@@ -5654,14 +5620,12 @@ msgid "Save auto-load preset"
 msgstr "Uložit souborovou předvolbu"
 
 #: src/skins/ui_manager.c:469
-#, fuzzy
 msgid "Save default preset"
-msgstr "Uložit standardní seznam"
+msgstr "Uložit standardní předvolbu"
 
 #: src/skins/ui_manager.c:471
-#, fuzzy
 msgid "To file"
-msgstr "Soubor STIL:"
+msgstr "Do souboru"
 
 #: src/skins/ui_manager.c:472
 msgid "Save preset to file"
@@ -5700,14 +5664,12 @@ msgstr ""
 "vyhledat."
 
 #: src/skins/ui_playlist.c:477
-#, fuzzy
 msgid "Album: "
-msgstr "Album:"
+msgstr "Album: "
 
 #: src/skins/ui_playlist.c:484
-#, fuzzy
 msgid "Artist: "
-msgstr "Umělec:"
+msgstr "Umělec: "
 
 #: src/skins/ui_playlist.c:491
 msgid "Filename: "
@@ -5747,18 +5709,16 @@ msgstr ""
 "Neznámý typ souboru %s.\n"
 
 #: src/skins/ui_playlist.c:887
-#, fuzzy
 msgid "Save as Static Playlist"
-msgstr "Uložit seznam skladeb"
+msgstr "Uložit jako statický seznam skladeb"
 
 #: src/skins/ui_playlist.c:894
 msgid "Use Relative Path"
-msgstr ""
+msgstr "Použít relativní cestu"
 
 #: src/skins/ui_playlist.c:916
-#, fuzzy
 msgid "Load Playlist"
-msgstr "Uložit seznam skladeb"
+msgstr "Načíst seznam skladeb"
 
 #: src/skins/ui_playlist.c:929
 msgid "Save Playlist"
@@ -5821,14 +5781,13 @@ msgid "Unarchived Winamp 2.x skin"
 msgstr "Nezabalený skin Winampu 2.x"
 
 #: src/skins/util.c:1132
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "sidFilename („%s“) nelze alokovat\n"
+msgstr "Adresář („%s“) nebylo možné vytvořit: %s\n"
 
 #: src/sndfile/plugin.c:554
-#, fuzzy
 msgid "About sndfile plugin"
-msgstr "Modul sndfile WAV"
+msgstr "O modulu sndfile"
 
 #: src/sndfile/plugin.c:555
 msgid ""
@@ -6216,7 +6175,6 @@ msgid "About Ogg Vorbis Audio Plugin"
 msgstr "O modulu Ogg Vorbis Audio"
 
 #: src/vorbis/vorbis.c:683
-#, fuzzy
 msgid ""
 "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
@@ -6234,7 +6192,7 @@ msgid ""
 "\n"
 "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
-"Modul Ogg Vorbis od „Xiph.org Foundation“\n"
+"Modul Ogg Vorbis od Xiph.org Foundation\n"
 "\n"
 "Původní kód napsal\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
@@ -6246,8 +6204,9 @@ msgstr ""
 "Jorn Baayen <jorn@nl.linux.org>\n"
 "Haavard Kvaalen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>\n"
 "\n"
-"Navštivte stránky „Xiph.org Foundation“: http://www.xiph.org/\n"
+"Navštivte stránky Xiph.org Foundation na http://www.xiph.org/.\n"
 
 #: src/vtx/about.c:17
 msgid "About Vortex Player"
@@ -6540,20 +6499,17 @@ msgstr ""
 #~ msgid "Dither output when rounding to 16-bit"
 #~ msgstr "Diterovat výstup při zaokrouhlování na 16 bitů"
 
-#, fuzzy
 #~ msgid "Base gain (dB):"
-#~ msgstr "Implicitní zesílení (dB):"
+#~ msgstr "Základní zesílení (dB):"
 
 #~ msgid "Enable ReplayGain processing"
 #~ msgstr "Zapnout zesílení pro přehrávání"
 
-#, fuzzy
 #~ msgid "Enable peak info clip prevention"
-#~ msgstr "Povolit prevenci před oříznutím"
+#~ msgstr "Povolit info prevence před oříznutím"
 
-#, fuzzy
 #~ msgid "Enable adaptive scaler clip prevention"
-#~ msgstr "Povolit prevenci před oříznutím"
+#~ msgstr "Povolit prevenci před oříznutím přizpůsobivým měničem rozsahu"
 
 #~ msgid "Enable 6dB Boost + Hard Limiting"
 #~ msgstr "Povolit 6dB zesílení + tvrdé omezení"
@@ -9342,3 +9298,12 @@ msgstr ""
 
 #~ msgid "/By extension"
 #~ msgstr "/Podle přípony"
+
+#~ msgid "Pre-gain with RG info (dB):"
+#~ msgstr "Předzesílení podle RG infa (dB):"
+
+#~ msgid "Pre-gain without RG info (dB):"
+#~ msgstr "Předzesílení bez RG infa (dB):"
+
+#~ msgid "Gain Control"
+#~ msgstr "Řízení zesílení"
