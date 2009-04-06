@@ -44,6 +44,7 @@ static void
 ui_playlist_evlistener_playlistwin_show(gpointer hook_data, gpointer user_data)
 {
     gboolean *show = (gboolean*)hook_data;
+    aud_cfg->playlist_visible = *show;
     if (*show == TRUE)
         playlistwin_show();
     else
