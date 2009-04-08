@@ -217,7 +217,7 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hDecoder,
                               unsigned char *channels);
 
 /* Init the library using a DecoderSpecificInfo */
-char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hDecoder,
+signed char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hDecoder,
                                unsigned char *pBuffer,
                                unsigned long SizeOfDecoderSpecificInfo,
                                unsigned long *samplerate,
@@ -243,7 +243,7 @@ void* NEAACDECAPI NeAACDecDecode2(NeAACDecHandle hDecoder,
                                   void **sample_buffer,
                                   unsigned long sample_buffer_size);
 
-char NEAACDECAPI NeAACDecAudioSpecificConfig(unsigned char *pBuffer,
+signed char NEAACDECAPI NeAACDecAudioSpecificConfig(unsigned char *pBuffer,
                                              unsigned long buffer_size,
                                              mp4AudioSpecificConfig *mp4ASC);
 
