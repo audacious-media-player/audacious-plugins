@@ -366,7 +366,7 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
 }
 
 /* Init the library using a DecoderSpecificInfo */
-char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hpDecoder,
+signed char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hpDecoder,
                                unsigned char *pBuffer,
                                unsigned long SizeOfDecoderSpecificInfo,
                                unsigned long *samplerate,

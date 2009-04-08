@@ -1,28 +1,31 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
-**
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+**  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-**
+** 
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-**
+** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** The "appropriate copyright message" mentioned in section 2c of the GPLv2
+** must read: "Code from FAAD2 is copyright (c) Nero AG, www.nero.com"
 **
-** $Id: mp4ff.c,v 1.15 2004/01/11 15:52:18 menno Exp $
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: mp4ff.c,v 1.22 2009/01/26 23:01:40 menno Exp $
 **/
 
 #include <stdlib.h>
@@ -37,7 +40,20 @@ mp4ff_t *mp4ff_open_read(mp4ff_callback_t *f)
 
     ff->stream = f;
 
-    parse_atoms(ff);
+    parse_atoms(ff,0);
+
+    return ff;
+}
+
+mp4ff_t *mp4ff_open_read_metaonly(mp4ff_callback_t *f)
+{
+    mp4ff_t *ff = malloc(sizeof(mp4ff_t));
+
+    memset(ff, 0, sizeof(mp4ff_t));
+
+    ff->stream = f;
+
+    parse_atoms(ff,1);
 
     return ff;
 }
@@ -70,6 +86,10 @@ void mp4ff_close(mp4ff_t *ff)
 				free(ff->track[i]->ctts_sample_count);
 			if (ff->track[i]->ctts_sample_offset)
 				free(ff->track[i]->ctts_sample_offset);
+#ifdef ITUNES_DRM
+            if (ff->track[i]->p_drms)
+                drms_free(ff->track[i]->p_drms);
+#endif
             free(ff->track[i]);
         }
     }
@@ -90,8 +110,35 @@ void mp4ff_track_add(mp4ff_t *f)
     memset(f->track[f->total_tracks - 1], 0, sizeof(mp4ff_track_t));
 }
 
+static int need_parse_when_meta_only(uint8_t atom_type)
+{
+	switch(atom_type)
+	{
+	case ATOM_EDTS:
+//	case ATOM_MDIA:
+//	case ATOM_MINF:
+	case ATOM_DRMS:
+	case ATOM_SINF:
+	case ATOM_SCHI:
+//	case ATOM_STBL:
+//	case ATOM_STSD:
+	case ATOM_STTS:
+	case ATOM_STSZ:
+	case ATOM_STZ2:
+	case ATOM_STCO:
+	case ATOM_STSC:
+//	case ATOM_CTTS:
+	case ATOM_FRMA:
+	case ATOM_IVIV:
+	case ATOM_PRIV:
+		return 0;
+	default:
+		return 1;
+	}
+}
+
 /* parse atoms that are sub atoms of other atoms */
-int32_t parse_sub_atoms(mp4ff_t *f, const uint64_t total_size)
+int32_t parse_sub_atoms(mp4ff_t *f, const uint64_t total_size,int meta_only)
 {
     uint64_t size;
     uint8_t atom_type = 0;
@@ -116,9 +163,12 @@ int32_t parse_sub_atoms(mp4ff_t *f, const uint64_t total_size)
         }
 
         /* parse subatoms */
-        if (atom_type < SUBATOMIC)
+		if (meta_only && !need_parse_when_meta_only(atom_type))
+		{
+			mp4ff_set_position(f, mp4ff_position(f)+size-header_size);
+		} else if (atom_type < SUBATOMIC)
         {
-            parse_sub_atoms(f, size-header_size);
+            parse_sub_atoms(f, size-header_size,meta_only);
         } else {
             mp4ff_atom_read(f, (uint32_t)size, atom_type);
         }
@@ -128,7 +178,7 @@ int32_t parse_sub_atoms(mp4ff_t *f, const uint64_t total_size)
 }
 
 /* parse root atoms */
-int32_t parse_atoms(mp4ff_t *f)
+int32_t parse_atoms(mp4ff_t *f,int meta_only)
 {
     uint64_t size;
     uint8_t atom_type = 0;
@@ -141,6 +191,13 @@ int32_t parse_atoms(mp4ff_t *f)
         f->file_size += size;
         f->last_atom = atom_type;
 
+        if (atom_type == ATOM_MDAT && f->moov_read)
+        {
+            /* moov atom is before mdat, we can stop reading when mdat is encountered */
+            /* file position will stay at beginning of mdat data */
+//            break;
+        }
+
         if (atom_type == ATOM_MOOV && size > header_size)
         {
             f->moov_read = 1;
@@ -149,9 +206,12 @@ int32_t parse_atoms(mp4ff_t *f)
         }
 
         /* parse subatoms */
-        if (atom_type < SUBATOMIC)
+		if (meta_only && !need_parse_when_meta_only(atom_type))
+		{
+			mp4ff_set_position(f, mp4ff_position(f)+size-header_size);
+		} else if (atom_type < SUBATOMIC)
         {
-            parse_sub_atoms(f, size-header_size);
+            parse_sub_atoms(f, size-header_size,meta_only);
         } else {
             /* skip this atom */
             mp4ff_set_position(f, mp4ff_position(f)+size-header_size);
@@ -164,7 +224,7 @@ int32_t parse_atoms(mp4ff_t *f)
 int32_t mp4ff_get_decoder_config(const mp4ff_t *f, const int32_t track,
                                  uint8_t** ppBuf, uint32_t* pBufSize)
 {
-    if (track < 0 || track >= f->total_tracks)
+    if (track >= f->total_tracks)
     {
         *ppBuf = NULL;
         *pBufSize = 0;
@@ -191,10 +251,7 @@ int32_t mp4ff_get_decoder_config(const mp4ff_t *f, const int32_t track,
 
 int32_t mp4ff_get_track_type(const mp4ff_t *f, const int track)
 {
-    if (track < 0)
-	return -1;
-
-    return f->track[track]->type;
+	return f->track[track]->type;
 }
 
 int32_t mp4ff_total_tracks(const mp4ff_t *f)
@@ -204,34 +261,22 @@ int32_t mp4ff_total_tracks(const mp4ff_t *f)
 
 int32_t mp4ff_time_scale(const mp4ff_t *f, const int32_t track)
 {
-    if (track < 0)
-	return -1;
-
     return f->track[track]->timeScale;
 }
 
 uint32_t mp4ff_get_avg_bitrate(const mp4ff_t *f, const int32_t track)
 {
-    if (track < 0)
-	return -1;
-
 	return f->track[track]->avgBitrate;
 }
 
 uint32_t mp4ff_get_max_bitrate(const mp4ff_t *f, const int32_t track)
 {
-    if (track < 0)
-	return -1;
-
 	return f->track[track]->maxBitrate;
 }
 
 int64_t mp4ff_get_track_duration(const mp4ff_t *f, const int32_t track)
 {
-    if (track < 0)
-	return -1;
-
-    return f->track[track]->duration;
+	return f->track[track]->duration;
 }
 
 int64_t mp4ff_get_track_duration_use_offsets(const mp4ff_t *f, const int32_t track)
@@ -251,9 +296,6 @@ int32_t mp4ff_num_samples(const mp4ff_t *f, const int32_t track)
 {
     int32_t i;
     int32_t total = 0;
-
-    if (track < 0)
-	return -1;
 
     for (i = 0; i < f->track[track]->stts_entry_count; i++)
     {
@@ -396,6 +438,12 @@ int32_t mp4ff_read_sample(mp4ff_t *f, const int32_t track, const int32_t sample,
         return 0;
 	}
 
+#ifdef ITUNES_DRM
+    if (f->track[track]->p_drms != NULL)
+    {
+        drms_decrypt(f->track[track]->p_drms, (uint32_t*)*audio_buffer, *bytes);
+    }
+#endif
 
     return *bytes;
 }
@@ -408,6 +456,13 @@ int32_t mp4ff_read_sample_v2(mp4ff_t *f, const int track, const int sample,unsig
 	if (size<=0) return 0;
 	mp4ff_set_sample_position(f, track, sample);
 	result = mp4ff_read_data(f,buffer,size);
+
+#ifdef ITUNES_DRM
+    if (f->track[track]->p_drms != NULL)
+    {
+        drms_decrypt(f->track[track]->p_drms, (uint32_t*)buffer, size);
+    }
+#endif
 
     return result;
 }

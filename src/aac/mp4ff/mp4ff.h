@@ -1,28 +1,31 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
-**
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+**  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-**
+** 
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-**
+** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** The "appropriate copyright message" mentioned in section 2c of the GPLv2
+** must read: "Code from FAAD2 is copyright (c) Nero AG, www.nero.com"
 **
-** $Id: mp4ff.h,v 1.19 2004/01/11 15:52:18 menno Exp $
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: mp4ff.h,v 1.27 2009/01/29 00:41:08 menno Exp $
 **/
 
 #ifndef MP4FF_H
@@ -32,7 +35,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#else
 #include "mp4ff_int_types.h"
+#endif
 
 /* file callback structure */
 typedef struct
@@ -51,6 +58,7 @@ typedef void* mp4ff_t;
 /* API */
 
 mp4ff_t *mp4ff_open_read(mp4ff_callback_t *f);
+mp4ff_t *mp4ff_open_read_metaonly(mp4ff_callback_t *f);
 void mp4ff_close(mp4ff_t *f);
 int32_t mp4ff_get_sample_duration(const mp4ff_t *f, const int32_t track, const int32_t sample);
 int32_t mp4ff_get_sample_duration_use_offsets(const mp4ff_t *f, const int32_t track, const int32_t sample);
@@ -87,7 +95,6 @@ uint32_t mp4ff_get_audio_type(const mp4ff_t * f,const int32_t track);
 int mp4ff_meta_get_num_items(const mp4ff_t *f);
 int mp4ff_meta_get_by_index(const mp4ff_t *f, unsigned int index,
                             char **item, char **value);
-int mp4ff_meta_find_by_name(const mp4ff_t *f, const char *item, char **value);
 int mp4ff_meta_get_title(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_artist(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_writer(const mp4ff_t *f, char **value);
@@ -98,6 +105,8 @@ int mp4ff_meta_get_comment(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_genre(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_track(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_disc(const mp4ff_t *f, char **value);
+int mp4ff_meta_get_totaltracks(const mp4ff_t *f, char **value);
+int mp4ff_meta_get_totaldiscs(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_compilation(const mp4ff_t *f, char **value);
 int mp4ff_meta_get_tempo(const mp4ff_t *f, char **value);
 int32_t mp4ff_meta_get_coverart(const mp4ff_t *f, char **value);
@@ -108,7 +117,6 @@ typedef struct
 {
     char *item;
     char *value;
-    uint32_t value_length;
 } mp4ff_tag_t;
 
 /* metadata list structure */
@@ -128,4 +136,3 @@ int32_t mp4ff_meta_update(mp4ff_callback_t *f,const mp4ff_metadata_t * data);
 #endif /* __cplusplus */
 
 #endif
-

@@ -2,7 +2,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
-#include "faad.h"
+#include "neaacdec.h"
 #include "mp4ff.h"
 #include "tagging.h"
 
@@ -26,7 +26,9 @@
 #define AAC_MAGIC     (unsigned char [4]) { 0xFF, 0xF9, 0x5C, 0x80 }
 
 static void        mp4_init(void);
+/*
 static void        mp4_about(void);
+*/
 static int         mp4_is_our_file(char *);
 static void        mp4_play(InputPlayback *);
 static void        mp4_stop(InputPlayback *);
@@ -47,7 +49,9 @@ InputPlugin mp4_ip =
 {
     .description = "MP4 Audio Plugin",
     .init = mp4_init,
+/*
     .about = mp4_about,
+*/
     .is_our_file = mp4_is_our_file,
     .play_file = mp4_play,
     .stop = mp4_stop,
@@ -277,9 +281,10 @@ static int mp4_is_our_fd(char *filename, VFSFile* file)
   return 0;
 }
 
+/* XXX TODO: Figure out cause of freaky symbol collision and resurrect
 static void mp4_about(void)
 {
-    static GtkWidget *aboutbox = NULL;
+    static GtkWidget aboutbox = NULL;
     gchar *about_text;
 
     about_text = g_strjoin ("", _("Using libfaad2-"), FAAD2_VERSION,
@@ -295,6 +300,7 @@ static void mp4_about(void)
                      G_CALLBACK(gtk_widget_destroyed), &aboutbox);
     g_free(about_text);
 }
+*/
 
 static void mp4_pause(InputPlayback *playback, short flag)
 {
