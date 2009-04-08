@@ -352,7 +352,7 @@ static Tuple *mp4_get_song_tuple_base(char *filename, VFSFile *mp4fh)
         gint mp4track= getAACTrack(mp4file);
         gint numSamples = mp4ff_num_samples(mp4file, mp4track);
         guint framesize = 1024;
-        guint samplerate = 0;
+        gulong samplerate = 0;
         guchar channels = 0;
         gint msDuration;
         mp4AudioSpecificConfig mp4ASC;
@@ -486,7 +486,7 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
     mp4AudioSpecificConfig mp4ASC;
     guchar      *buffer = NULL;
     guint       bufferSize = 0;
-    guint       samplerate = 0;
+    gulong      samplerate = 0;
     guchar      channels = 0;
     gulong      msDuration;
     guint       numSamples;
