@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -13,16 +13,19 @@
 ** GNU General Public License for more details.
 ** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** The "appropriate copyright message" mentioned in section 2c of the GPLv2
+** must read: "Code from FAAD2 is copyright (c) Nero AG, www.nero.com"
 **
-** $Id: sbr_e_nf.c,v 1.17 2004/09/04 14:56:28 menno Exp $
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: sbr_e_nf.c,v 1.22 2008/03/23 23:03:29 menno Exp $
 **/
 
 #include "common.h"
@@ -231,7 +234,7 @@ static const real_t Q_div_tab_right[31][13] = {
 
 /* calculates 1/(1+Q) */
 /* [0..1] */
-real_t calc_Q_div(sbr_info *sbr, uint8_t ch, uint8_t m, uint8_t l)
+static real_t calc_Q_div(sbr_info *sbr, uint8_t ch, uint8_t m, uint8_t l)
 {
     if (sbr->bs_coupling)
     {
@@ -350,7 +353,7 @@ static const real_t Q_div2_tab_right[31][13] = {
 
 /* calculates Q/(1+Q) */
 /* [0..1] */
-real_t calc_Q_div2(sbr_info *sbr, uint8_t ch, uint8_t m, uint8_t l)
+static real_t calc_Q_div2(sbr_info *sbr, uint8_t ch, uint8_t m, uint8_t l)
 {
     if (sbr->bs_coupling)
     {

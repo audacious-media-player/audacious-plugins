@@ -1,31 +1,31 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
-**
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
+**  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-**
+** 
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-**
+** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** The "appropriate copyright message" mentioned in section 2c of the GPLv2
+** must read: "Code from FAAD2 is copyright (c) Nero AG, www.nero.com"
 **
-** Initially modified for use with MPlayer by Arpad Gereöffy on 2003/08/30
-** $Id: common.h 18786 2006-06-22 13:34:00Z diego $
-** detailed changelog at http://svn.mplayerhq.hu/mplayer/trunk/
-** local_changes.diff contains the exact changes to this file.
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: common.h,v 1.77 2009/02/05 00:51:03 menno Exp $
 **/
 
 #ifndef __COMMON_H__
@@ -41,6 +41,7 @@ extern "C" {
 #endif
 
 #include "config.h"
+#include "neaacdec.h"
 
 #define INLINE __inline
 #if 0 //defined(_WIN32) && !defined(_WIN32_WCE)
@@ -83,8 +84,6 @@ extern "C" {
 #define LTP_DEC
 /* Allow decoding of LD profile AAC */
 #define LD_DEC
-/* Allow decoding of scalable profiles */
-//#define SCALABLE_DEC
 /* Allow decoding of Digital Radio Mondiale (DRM) */
 //#define DRM
 //#define DRM_PS
@@ -118,20 +117,25 @@ extern "C" {
 //#define SBR_LOW_POWER
 #define PS_DEC
 
+#ifdef SBR_LOW_POWER
+#undef PS_DEC
+#endif
+
 /* FIXED POINT: No MAIN decoding */
 #ifdef FIXED_POINT
 # ifdef MAIN_DEC
 #  undef MAIN_DEC
 # endif
-# ifdef SBR_DEC
-#  undef SBR_DEC
-# endif
 #endif // FIXED_POINT
 
 #ifdef DRM
-# ifndef SCALABLE_DEC
-#  define SCALABLE_DEC
+# ifndef ALLOW_SMALL_FRAMELENGTH
+#  define ALLOW_SMALL_FRAMELENGTH
 # endif
+# undef LD_DEC
+# undef LTP_DEC
+# undef MAIN_DEC
+# undef SSR_DEC
 #endif
 
 
@@ -368,7 +372,7 @@ char *strchr(), *strrchr();
 #  define __USE_ISOC99   1
 #endif
 
-#include <math.h>
+    #include <math.h>
 
 #ifdef HAVE_SINF
 #  define sin sinf
@@ -409,9 +413,7 @@ typedef real_t complex_t[2];
 
 /* common functions */
 uint8_t cpu_has_sse(void);
-uint32_t random_int(void);
-uint32_t ones32(uint32_t x);
-uint32_t floor_log2(uint32_t x);
+uint32_t ne_rng(uint32_t *__r1, uint32_t *__r2);
 uint32_t wl_min_lzc(uint32_t x);
 #ifdef FIXED_POINT
 #define LOG2_MIN_INF REAL_CONST(-10000)

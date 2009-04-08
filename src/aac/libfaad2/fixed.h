@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -13,16 +13,19 @@
 ** GNU General Public License for more details.
 ** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** The "appropriate copyright message" mentioned in section 2c of the GPLv2
+** must read: "Code from FAAD2 is copyright (c) Nero AG, www.nero.com"
 **
-** $Id: fixed.h,v 1.26 2004/09/04 14:56:28 menno Exp $
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: fixed.h,v 1.32 2007/11/01 12:33:30 menno Exp $
 **/
 
 #ifndef __FIXED_H__
@@ -35,6 +38,7 @@ extern "C" {
 #if defined(_WIN32_WCE) && defined(_ARM_)
 #include <cmnintrin.h>
 #endif
+
 
 #define COEF_BITS 28
 #define COEF_PRECISION (1 << COEF_BITS)
@@ -240,8 +244,26 @@ static INLINE void ComplexMult(real_t *y1, real_t *y2,
       return _MulHigh(A,B) << (32-FRAC_BITS);
   }
 #else
+#ifdef __BFIN__
+#define _MulHigh(X,Y) ({ int __xxo;                      \
+     asm (                                               \
+         "a1 = %2.H * %1.L (IS,M);\n\t"                  \
+         "a0 = %1.H * %2.H, a1+= %1.H * %2.L (IS,M);\n\t"\
+         "a1 = a1 >>> 16;\n\t"                           \
+         "%0 = (a0 += a1);\n\t"                          \
+         : "=d" (__xxo) : "d" (X), "d" (Y) : "A0","A1"); __xxo; })
+
+#define MUL_F(X,Y) ({ int __xxo;                         \
+     asm (                                               \
+         "a1 = %2.H * %1.L (M);\n\t"                     \
+         "a0 = %1.H * %2.H, a1+= %1.H * %2.L (M);\n\t"   \
+         "a1 = a1 >>> 16;\n\t"                           \
+         "%0 = (a0 += a1);\n\t"                          \
+         : "=d" (__xxo) : "d" (X), "d" (Y) : "A0","A1"); __xxo; })
+#else
   #define _MulHigh(A,B) (real_t)(((int64_t)(A)*(int64_t)(B)+(1 << (FRAC_SIZE-1))) >> FRAC_SIZE)
   #define MUL_F(A,B) (real_t)(((int64_t)(A)*(int64_t)(B)+(1 << (FRAC_BITS-1))) >> FRAC_BITS)
+#endif
 #endif
   #define MUL_Q2(A,B) (real_t)(((int64_t)(A)*(int64_t)(B)+(1 << (Q2_BITS-1))) >> Q2_BITS)
   #define MUL_SHIFT6(A,B) (real_t)(((int64_t)(A)*(int64_t)(B)+(1 << (6-1))) >> 6)

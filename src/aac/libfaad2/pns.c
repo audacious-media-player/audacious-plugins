@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2004 M. Bakker, Ahead Software AG, http://www.nero.com
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -13,16 +13,19 @@
 ** GNU General Public License for more details.
 ** 
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+** along with this program; if not, write to the Free Software 
+** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** The "appropriate copyright message" mentioned in section 2c of the GPLv2
+** must read: "Code from FAAD2 is copyright (c) Nero AG, www.nero.com"
 **
-** $Id: pns.c,v 1.34 2004/09/04 14:56:28 menno Exp $
+** Commercial non-GPL licensing of this software is possible.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
+**
+** $Id: pns.c,v 1.38 2007/11/01 12:33:32 menno Exp $
 **/
 
 #include "common.h"
@@ -33,7 +36,8 @@
 
 /* static function declarations */
 static void gen_rand_vector(real_t *spec, int16_t scale_factor, uint16_t size,
-                            uint8_t sub);
+                            uint8_t sub,
+                            /* RNG states */ uint32_t *__r1, uint32_t *__r2);
 
 
 #ifdef FIXED_POINT
@@ -68,7 +72,7 @@ real_t fp_sqrt(real_t value)
     return root;
 }
 
-static real_t pow2_table[] =
+static real_t const pow2_table[] =
 {
     COEF_CONST(1.0),
     COEF_CONST(1.18920711500272),
@@ -83,7 +87,8 @@ static real_t pow2_table[] =
    multiplication/accumulation per random value.
 */
 static INLINE void gen_rand_vector(real_t *spec, int16_t scale_factor, uint16_t size,
-                                   uint8_t sub)
+                                   uint8_t sub,
+                                   /* RNG states */ uint32_t *__r1, uint32_t *__r2)
 {
 #ifndef FIXED_POINT
     uint16_t i;
@@ -93,7 +98,7 @@ static INLINE void gen_rand_vector(real_t *spec, int16_t scale_factor, uint16_t 
 
     for (i = 0; i < size; i++)
     {
-        real_t tmp = scale*(real_t)(int32_t)random_int();
+        real_t tmp = scale*(real_t)(int32_t)ne_rng(__r1, __r2);
         spec[i] = tmp;
         energy += tmp*tmp;
     }
@@ -112,7 +117,7 @@ static INLINE void gen_rand_vector(real_t *spec, int16_t scale_factor, uint16_t 
     for (i = 0; i < size; i++)
     {
         /* this can be replaced by a 16 bit random generator!!!! */
-        real_t tmp = (int32_t)random_int();
+        real_t tmp = (int32_t)ne_rng(__r1, __r2);
         if (tmp < 0)
             tmp = -(tmp & ((1<<(REAL_BITS-1))-1));
         else
@@ -152,7 +157,8 @@ static INLINE void gen_rand_vector(real_t *spec, int16_t scale_factor, uint16_t 
 
 void pns_decode(ic_stream *ics_left, ic_stream *ics_right,
                 real_t *spec_left, real_t *spec_right, uint16_t frame_len,
-                uint8_t channel_pair, uint8_t object_type)
+                uint8_t channel_pair, uint8_t object_type,
+                /* RNG states */ uint32_t *__r1, uint32_t *__r2)
 {
     uint8_t g, sfb, b;
     uint16_t size, offs;
@@ -202,11 +208,11 @@ void pns_decode(ic_stream *ics_left, ic_stream *ics_right,
 #endif
 
                     offs = ics_left->swb_offset[sfb];
-                    size = ics_left->swb_offset[sfb+1] - offs;
+                    size = min(ics_left->swb_offset[sfb+1], ics_left->swb_offset_max) - offs;
 
                     /* Generate random vector */
                     gen_rand_vector(&spec_left[(group*nshort)+offs],
-                        ics_left->scale_factors[g][sfb], size, sub);
+                        ics_left->scale_factors[g][sfb], size, sub, __r1, __r2);
                 }
 
 /* From the spec:
@@ -233,7 +239,7 @@ void pns_decode(ic_stream *ics_left, ic_stream *ics_right,
                             uint16_t c;
 
                             offs = ics_right->swb_offset[sfb];
-                            size = ics_right->swb_offset[sfb+1] - offs;
+                            size = min(ics_right->swb_offset[sfb+1], ics_right->swb_offset_max) - offs;
 
                             for (c = 0; c < size; c++)
                             {
@@ -250,11 +256,11 @@ void pns_decode(ic_stream *ics_left, ic_stream *ics_right,
 #endif
 
                             offs = ics_right->swb_offset[sfb];
-                            size = ics_right->swb_offset[sfb+1] - offs;
+                            size = min(ics_right->swb_offset[sfb+1], ics_right->swb_offset_max) - offs;
 
                             /* Generate random vector */
                             gen_rand_vector(&spec_right[(group*nshort)+offs],
-                                ics_right->scale_factors[g][sfb], size, sub);
+                                ics_right->scale_factors[g][sfb], size, sub, __r1, __r2);
                         }
                     }
                 }
