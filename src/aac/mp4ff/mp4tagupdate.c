@@ -20,6 +20,7 @@ static uint32_t fix_byte_order_32(uint32_t src)
     return (uint32_t)result;
 }
 
+/* GCC4 says: unused!
 static uint16_t fix_byte_order_16(uint16_t src)
 {
     uint16_t result;
@@ -33,7 +34,7 @@ static uint16_t fix_byte_order_16(uint16_t src)
     result = (a<<8) | b;
     return (uint16_t)result;
 }
-
+*/
 
 typedef struct
 {

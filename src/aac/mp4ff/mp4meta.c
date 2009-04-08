@@ -66,6 +66,7 @@ static int32_t mp4ff_tag_add_field(mp4ff_metadata_t *tags, const char *item, con
     }
 }
 
+/* GCC 4 says: unused!
 static int32_t mp4ff_tag_set_field(mp4ff_metadata_t *tags, const char *item, const char *value)
 {
     unsigned int i;
@@ -84,6 +85,7 @@ static int32_t mp4ff_tag_set_field(mp4ff_metadata_t *tags, const char *item, con
 
     return mp4ff_tag_add_field(tags, item, value);
 }
+*/
 
 int32_t mp4ff_tag_delete(mp4ff_metadata_t *tags)
 {
@@ -154,7 +156,7 @@ const char * mp4ff_meta_index_to_genre(uint32_t idx)
 	}
 }
 
-
+/* GCC4 says: unused!
 static int32_t TrackToString(char** str, const uint16_t track, const uint16_t totalTracks)
 {
 	char temp[32];
@@ -162,6 +164,7 @@ static int32_t TrackToString(char** str, const uint16_t track, const uint16_t to
 	*str = strdup(temp);
     return 0;
 }
+*/
 
 static int32_t mp4ff_set_metadata_name(mp4ff_t *f, const uint8_t atom_type, char **name)
 {
