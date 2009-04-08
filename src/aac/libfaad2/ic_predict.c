@@ -55,9 +55,9 @@ static void flt_round(float32_t *pf)
         tmp2 = tmp;                             /* add 1 lsb and elided one */
         tmp &= (uint32_t)0xff800000;       /* extract exponent and sign */
         
-        *pf = *(float32_t*)&tmp1 + *(float32_t*)&tmp2 - *(float32_t*)&tmp;
+        *pf = (float32_t)tmp1 + (float32_t)tmp2 - (float32_t)tmp;
     } else {
-        *pf = *(float32_t*)&tmp;
+        *pf = (float32_t)tmp;
     }
 }
 
