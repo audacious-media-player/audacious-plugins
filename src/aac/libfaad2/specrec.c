@@ -426,7 +426,7 @@ uint8_t window_grouping_info(NeAACDecStruct *hDecoder, ic_stream *ics)
 }
 
 /* iquant() *
-/* output = sign(input)*abs(input)^(4/3) */
+ * output = sign(input)*abs(input)^(4/3) */
 /**/
 static INLINE real_t iquant(int16_t q, const real_t *tab, uint8_t *error)
 {
