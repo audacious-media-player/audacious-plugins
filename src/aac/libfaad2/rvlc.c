@@ -70,6 +70,24 @@ static int8_t rvlc_huffman_sf(bitfile *ld_sf, bitfile *ld_esc,
                               int8_t direction);
 static int8_t rvlc_huffman_esc(bitfile *ld_esc, int8_t direction);
 
+static /*INLINE*/ uint32_t faad_getbits_rev(bitfile *ld, uint32_t n
+                                        DEBUGDEC)
+{
+    uint32_t ret;
+
+    if (n == 0)
+        return 0;
+
+    ret = faad_showbits_rev(ld, n);
+    faad_flushbits_rev(ld, n);
+
+#ifdef ANALYSIS
+    if (print)
+        fprintf(stdout, "%4d %2d bits, val: %4d, variable: %d %s\n", dbg_count++, n, ret, var, dbg);
+#endif
+
+    return ret;
+}
 
 uint8_t rvlc_scale_factor_data(ic_stream *ics, bitfile *ld)
 {
