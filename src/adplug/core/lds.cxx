@@ -205,6 +205,7 @@ CldsPlayer::update ()
 
   // handle fading
   if (fadeonoff)
+  {
     if (fadeonoff <= 128)
     {
       if (allvolume > fadeonoff || allvolume == 0)
@@ -231,6 +232,7 @@ CldsPlayer::update ()
       allvolume = mainvolume;
       fadeonoff = 0;
     }
+  }
 
   // handle channel delay
   for (chan = 0; chan < 9; chan++)
