@@ -226,8 +226,7 @@ Cu6mPlayer::lzw_decompress (Cu6mPlayer::data_block source,
 
   long bytes_written = 0;
 
-  int cW;
-  int pW;
+  int cW, pW = 0;
   unsigned char C;
 
   while (!end_marker_reached)
