@@ -97,7 +97,7 @@ static void ui_skinned_number_class_init(UiSkinnedNumberClass *klass) {
     number_signals[DOUBLED] = 
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedNumberClass, scaled), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 }
 
 static void ui_skinned_number_init(UiSkinnedNumber *number) {

@@ -27,9 +27,9 @@
 extern "C" {
 #endif
 
-#define UI_VIS(obj)          GTK_CHECK_CAST (obj, ui_vis_get_type (), UiVis)
-#define UI_VIS_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_vis_get_type (), UiVisClass)
-#define UI_IS_VIS(obj)       GTK_CHECK_TYPE (obj, ui_vis_get_type ())
+#define UI_VIS(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_vis_get_type (), UiVis)
+#define UI_VIS_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_vis_get_type (), UiVisClass)
+#define UI_IS_VIS(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_vis_get_type ())
 
 typedef enum {
     VIS_ANALYZER, VIS_SCOPE, VIS_VOICEPRINT, VIS_OFF
@@ -85,7 +85,7 @@ struct _UiVisClass {
 };
 
 GtkWidget* ui_vis_new (GtkWidget *fixed, gint x, gint y, gint width);
-GtkType ui_vis_get_type(void);
+GType ui_vis_get_type(void);
 void ui_vis_set_vis(GtkWidget *widget, gint num);
 void ui_vis_clear_data(GtkWidget *widget);
 void ui_vis_timeout_func(GtkWidget *widget, guchar * data);

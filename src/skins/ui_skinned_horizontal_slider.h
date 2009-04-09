@@ -34,9 +34,9 @@
 extern "C" {
 #endif
 
-#define UI_SKINNED_HORIZONTAL_SLIDER(obj)          GTK_CHECK_CAST (obj, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSlider)
-#define UI_SKINNED_HORIZONTAL_SLIDER_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSliderClass)
-#define UI_SKINNED_IS_HORIZONTAL_SLIDER(obj)       GTK_CHECK_TYPE (obj, ui_skinned_horizontal_slider_get_type ())
+#define UI_SKINNED_HORIZONTAL_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSlider)
+#define UI_SKINNED_HORIZONTAL_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_horizontal_slider_get_type (), UiSkinnedHorizontalSliderClass)
+#define UI_SKINNED_IS_HORIZONTAL_SLIDER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_horizontal_slider_get_type ())
 
 typedef struct _UiSkinnedHorizontalSlider        UiSkinnedHorizontalSlider;
 typedef struct _UiSkinnedHorizontalSliderClass   UiSkinnedHorizontalSliderClass;
@@ -58,7 +58,7 @@ struct _UiSkinnedHorizontalSliderClass {
 GtkWidget* ui_skinned_horizontal_slider_new(GtkWidget *fixed, gint x, gint y, gint w, gint h, gint knx, gint kny,
                                             gint kpx, gint kpy, gint kw, gint kh, gint fh,
                                             gint fo, gint min, gint max, gint(*fcb) (gint), SkinPixmapId si);
-GtkType ui_skinned_horizontal_slider_get_type(void);
+GType ui_skinned_horizontal_slider_get_type(void);
 void ui_skinned_horizontal_slider_set_position(GtkWidget *widget, gint pos);
 gint ui_skinned_horizontal_slider_get_position(GtkWidget *widget);
 

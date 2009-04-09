@@ -38,9 +38,9 @@
 extern "C" {
 #endif
 
-#define UI_SKINNED_PLAYLIST(obj)          GTK_CHECK_CAST (obj, ui_skinned_playlist_get_type (), UiSkinnedPlaylist)
-#define UI_SKINNED_PLAYLIST_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_playlist_get_type (), UiSkinnedPlaylistClass)
-#define UI_SKINNED_IS_PLAYLIST(obj)       GTK_CHECK_TYPE (obj, ui_skinned_playlist_get_type ())
+#define UI_SKINNED_PLAYLIST(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_playlist_get_type (), UiSkinnedPlaylist)
+#define UI_SKINNED_PLAYLIST_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_playlist_get_type (), UiSkinnedPlaylistClass)
+#define UI_SKINNED_IS_PLAYLIST(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_playlist_get_type ())
 
 typedef struct _UiSkinnedPlaylist        UiSkinnedPlaylist;
 typedef struct _UiSkinnedPlaylistClass   UiSkinnedPlaylistClass;
@@ -62,7 +62,7 @@ struct _UiSkinnedPlaylistClass {
 };
 
 GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gint h);
-GtkType ui_skinned_playlist_get_type(void);
+GType ui_skinned_playlist_get_type(void);
 void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h);
 void ui_skinned_playlist_set_font(const gchar * font);
 void ui_skinned_playlist_move_up(UiSkinnedPlaylist *pl);

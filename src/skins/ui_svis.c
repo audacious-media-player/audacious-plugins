@@ -116,7 +116,7 @@ static void ui_svis_class_init(UiSVisClass *klass) {
     vis_signals[DOUBLED] = 
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSVisClass, scaled), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 }
 
 static void ui_svis_init(UiSVis *svis) {

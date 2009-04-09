@@ -116,17 +116,17 @@ static void ui_skinned_horizontal_slider_class_init(UiSkinnedHorizontalSliderCla
     horizontal_slider_signals[MOTION] = 
         g_signal_new ("motion", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedHorizontalSliderClass, motion), NULL, NULL,
-                      gtk_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+                      g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
 
     horizontal_slider_signals[RELEASE] = 
         g_signal_new ("release", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedHorizontalSliderClass, release), NULL, NULL,
-                      gtk_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+                      g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
 
     horizontal_slider_signals[DOUBLED] = 
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedHorizontalSliderClass, scaled), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     g_type_class_add_private (gobject_class, sizeof (UiSkinnedHorizontalSliderPrivate));
 }

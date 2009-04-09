@@ -33,9 +33,9 @@ extern "C" {
 
 #define EQUALIZER_MAX_GAIN 12.0
 
-#define UI_SKINNED_EQUALIZER_SLIDER(obj)          GTK_CHECK_CAST (obj, ui_skinned_equalizer_slider_get_type (), UiSkinnedEqualizerSlider)
-#define UI_SKINNED_EQUALIZER_SLIDER_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_slider_get_type (),  UiSkinnedEqualizerSliderClass)
-#define UI_SKINNED_IS_EQUALIZER_SLIDER(obj)       GTK_CHECK_TYPE (obj, ui_skinned_equalizer_slider_get_type ())
+#define UI_SKINNED_EQUALIZER_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_equalizer_slider_get_type (), UiSkinnedEqualizerSlider)
+#define UI_SKINNED_EQUALIZER_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_slider_get_type (),  UiSkinnedEqualizerSliderClass)
+#define UI_SKINNED_IS_EQUALIZER_SLIDER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_equalizer_slider_get_type ())
 
 typedef struct _UiSkinnedEqualizerSlider        UiSkinnedEqualizerSlider;
 typedef struct _UiSkinnedEqualizerSliderClass   UiSkinnedEqualizerSliderClass;
@@ -52,7 +52,7 @@ struct _UiSkinnedEqualizerSliderClass {
 };
 
 GtkWidget* ui_skinned_equalizer_slider_new(GtkWidget *fixed, gint x, gint y);
-GtkType ui_skinned_equalizer_slider_get_type(void);
+GType ui_skinned_equalizer_slider_get_type(void);
 void ui_skinned_equalizer_slider_set_position(GtkWidget *widget, gfloat pos);
 gfloat ui_skinned_equalizer_slider_get_position(GtkWidget *widget);
 

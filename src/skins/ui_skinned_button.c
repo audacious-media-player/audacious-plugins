@@ -130,22 +130,22 @@ static void ui_skinned_button_class_init (UiSkinnedButtonClass *klass) {
     button_signals[PRESSED] = 
         g_signal_new ("pressed", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (UiSkinnedButtonClass, pressed), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     button_signals[RELEASED] = 
         g_signal_new ("released", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (UiSkinnedButtonClass, released), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     button_signals[CLICKED] = 
         g_signal_new ("clicked", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedButtonClass, clicked), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     button_signals[DOUBLED] = 
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedButtonClass, scaled), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     g_type_class_add_private (gobject_class, sizeof (UiSkinnedButtonPrivate));
 }

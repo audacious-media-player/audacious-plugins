@@ -28,9 +28,9 @@
 extern "C" {
 #endif
 
-#define UI_SKINNED_NUMBER(obj)          GTK_CHECK_CAST (obj, ui_skinned_number_get_type (), UiSkinnedNumber)
-#define UI_SKINNED_NUMBER_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_number_get_type (), UiSkinnedNumberClass)
-#define UI_SKINNED_IS_NUMBER(obj)       GTK_CHECK_TYPE (obj, ui_skinned_number_get_type ())
+#define UI_SKINNED_NUMBER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_number_get_type (), UiSkinnedNumber)
+#define UI_SKINNED_NUMBER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_number_get_type (), UiSkinnedNumberClass)
+#define UI_SKINNED_IS_NUMBER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_number_get_type ())
 
 typedef struct _UiSkinnedNumber        UiSkinnedNumber;
 typedef struct _UiSkinnedNumberClass   UiSkinnedNumberClass;
@@ -51,7 +51,7 @@ struct _UiSkinnedNumberClass {
 };
 
 GtkWidget* ui_skinned_number_new (GtkWidget *fixed, gint x, gint y, SkinPixmapId si);
-GtkType ui_skinned_number_get_type(void);
+GType ui_skinned_number_get_type(void);
 void ui_skinned_number_set_number(GtkWidget *widget, gint num);
 void ui_skinned_number_set_size(GtkWidget *widget, gint width, gint height);
 

@@ -116,7 +116,7 @@ static void ui_skinned_equalizer_slider_class_init(UiSkinnedEqualizerSliderClass
     equalizer_slider_signals[DOUBLED] = 
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedEqualizerSliderClass, scaled), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
     g_type_class_add_private (gobject_class, sizeof (UiSkinnedEqualizerSliderPrivate));
 }

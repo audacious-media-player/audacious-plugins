@@ -36,9 +36,9 @@ extern "C" {
 
 #define EQUALIZER_MAX_GAIN 12.0
 
-#define UI_SKINNED_EQUALIZER_GRAPH(obj)          GTK_CHECK_CAST (obj, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraph)
-#define UI_SKINNED_EQUALIZER_GRAPH_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraphClass)
-#define UI_SKINNED_IS_EQUALIZER_GRAPH(obj)       GTK_CHECK_TYPE (obj, ui_skinned_equalizer_graph_get_type ())
+#define UI_SKINNED_EQUALIZER_GRAPH(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraph)
+#define UI_SKINNED_EQUALIZER_GRAPH_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_equalizer_graph_get_type (), UiSkinnedEqualizerGraphClass)
+#define UI_SKINNED_IS_EQUALIZER_GRAPH(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_equalizer_graph_get_type ())
 
 typedef struct _UiSkinnedEqualizerGraph        UiSkinnedEqualizerGraph;
 typedef struct _UiSkinnedEqualizerGraphClass   UiSkinnedEqualizerGraphClass;

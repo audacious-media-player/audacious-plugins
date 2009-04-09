@@ -87,7 +87,7 @@ static void ui_skinned_equalizer_graph_class_init(UiSkinnedEqualizerGraphClass *
     equalizer_graph_signals[DOUBLED] = 
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedEqualizerGraphClass, scaled), NULL, NULL,
-                      gtk_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 }
 
 static void ui_skinned_equalizer_graph_init(UiSkinnedEqualizerGraph *equalizer_graph) {

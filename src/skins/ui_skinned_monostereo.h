@@ -34,9 +34,9 @@
 extern "C" {
 #endif
 
-#define UI_SKINNED_MONOSTEREO(obj)          GTK_CHECK_CAST (obj, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereo)
-#define UI_SKINNED_MONOSTEREO_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereoClass)
-#define UI_SKINNED_IS_MONOSTEREO(obj)       GTK_CHECK_TYPE (obj, ui_skinned_monostereo_get_type ())
+#define UI_SKINNED_MONOSTEREO(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereo)
+#define UI_SKINNED_MONOSTEREO_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_monostereo_get_type (), UiSkinnedMonoStereoClass)
+#define UI_SKINNED_IS_MONOSTEREO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_monostereo_get_type ())
 
 typedef struct _UiSkinnedMonoStereo        UiSkinnedMonoStereo;
 typedef struct _UiSkinnedMonoStereoClass   UiSkinnedMonoStereoClass;
@@ -56,7 +56,7 @@ struct _UiSkinnedMonoStereoClass {
 };
 
 GtkWidget* ui_skinned_monostereo_new (GtkWidget *fixed, gint x, gint y, SkinPixmapId si);
-GtkType ui_skinned_monostereo_get_type(void);
+GType ui_skinned_monostereo_get_type(void);
 void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, gint nch);
 
 #ifdef __cplusplus

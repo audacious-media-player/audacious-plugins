@@ -34,9 +34,9 @@
 extern "C" {
 #endif
 
-#define UI_SKINNED_MENUROW(obj)          GTK_CHECK_CAST (obj, ui_skinned_menurow_get_type (), UiSkinnedMenurow)
-#define UI_SKINNED_MENUROW_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_menurow_get_type (), UiSkinnedMenurowClass)
-#define UI_SKINNED_IS_MENUROW(obj)       GTK_CHECK_TYPE (obj, ui_skinned_menurow_get_type ())
+#define UI_SKINNED_MENUROW(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_menurow_get_type (), UiSkinnedMenurow)
+#define UI_SKINNED_MENUROW_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_menurow_get_type (), UiSkinnedMenurowClass)
+#define UI_SKINNED_IS_MENUROW(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_menurow_get_type ())
 
 typedef struct _UiSkinnedMenurow        UiSkinnedMenurow;
 typedef struct _UiSkinnedMenurowClass   UiSkinnedMenurowClass;
@@ -69,7 +69,7 @@ struct _UiSkinnedMenurowClass {
 };
 
 GtkWidget* ui_skinned_menurow_new (GtkWidget *fixed, gint x, gint y, gint nx, gint ny, gint sx, gint sy, SkinPixmapId si);
-GtkType ui_skinned_menurow_get_type(void);
+GType ui_skinned_menurow_get_type(void);
 
 #ifdef __cplusplus
 }

@@ -27,9 +27,9 @@
 extern "C" {
 #endif
 
-#define UI_SVIS(obj)          GTK_CHECK_CAST (obj, ui_svis_get_type (), UiSVis)
-#define UI_SVIS_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_svis_get_type (), UiSVisClass)
-#define UI_IS_SVIS(obj)       GTK_CHECK_TYPE (obj, ui_svis_get_type ())
+#define UI_SVIS(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_svis_get_type (), UiSVis)
+#define UI_SVIS_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_svis_get_type (), UiSVisClass)
+#define UI_IS_SVIS(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_svis_get_type ())
 
 typedef struct _UiSVis        UiSVis;
 typedef struct _UiSVisClass   UiSVisClass;
@@ -52,7 +52,7 @@ struct _UiSVisClass {
 };
 
 GtkWidget* ui_svis_new (GtkWidget *fixed, gint x, gint y);
-GtkType ui_svis_get_type(void);
+GType ui_svis_get_type(void);
 void ui_svis_clear_data(GtkWidget *widget);
 void ui_svis_timeout_func(GtkWidget *widget, guchar * data);
 void ui_svis_set_visible(GtkWidget *widget, gboolean window_is_visible);

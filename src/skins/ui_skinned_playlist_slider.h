@@ -33,9 +33,9 @@
 extern "C" {
 #endif
 
-#define UI_SKINNED_PLAYLIST_SLIDER(obj)          GTK_CHECK_CAST (obj, ui_skinned_playlist_slider_get_type (), UiSkinnedPlaylistSlider)
-#define UI_SKINNED_PLAYLIST_SLIDER_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_playlist_slider_get_type (), UiSkinnedPlaylistSliderClass)
-#define UI_SKINNED_IS_PLAYLIST_SLIDER(obj)       GTK_CHECK_TYPE (obj, ui_skinned_playlist_slider_get_type ())
+#define UI_SKINNED_PLAYLIST_SLIDER(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_playlist_slider_get_type (), UiSkinnedPlaylistSlider)
+#define UI_SKINNED_PLAYLIST_SLIDER_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_playlist_slider_get_type (), UiSkinnedPlaylistSliderClass)
+#define UI_SKINNED_IS_PLAYLIST_SLIDER(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_playlist_slider_get_type ())
 
 typedef struct _UiSkinnedPlaylistSlider        UiSkinnedPlaylistSlider;
 typedef struct _UiSkinnedPlaylistSliderClass   UiSkinnedPlaylistSliderClass;
@@ -51,7 +51,7 @@ struct _UiSkinnedPlaylistSliderClass {
 };
 
 GtkWidget* ui_skinned_playlist_slider_new(GtkWidget *fixed, gint x, gint y, gint h);
-GtkType ui_skinned_playlist_slider_get_type(void);
+GType ui_skinned_playlist_slider_get_type(void);
 void ui_skinned_playlist_slider_move_relative(GtkWidget *widget, gint x);
 void ui_skinned_playlist_slider_resize_relative(GtkWidget *widget, gint h);
 

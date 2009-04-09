@@ -34,9 +34,9 @@
 extern "C" {
 #endif
 
-#define UI_SKINNED_TEXTBOX(obj)          GTK_CHECK_CAST (obj, ui_skinned_textbox_get_type (), UiSkinnedTextbox)
-#define UI_SKINNED_TEXTBOX_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_textbox_get_type (), UiSkinnedTextboxClass)
-#define UI_SKINNED_IS_TEXTBOX(obj)       GTK_CHECK_TYPE (obj, ui_skinned_textbox_get_type ())
+#define UI_SKINNED_TEXTBOX(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_textbox_get_type (), UiSkinnedTextbox)
+#define UI_SKINNED_TEXTBOX_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_textbox_get_type (), UiSkinnedTextboxClass)
+#define UI_SKINNED_IS_TEXTBOX(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_textbox_get_type ())
 
 typedef struct _UiSkinnedTextbox        UiSkinnedTextbox;
 typedef struct _UiSkinnedTextboxClass   UiSkinnedTextboxClass;
@@ -58,7 +58,7 @@ struct _UiSkinnedTextboxClass {
 };
 
 GtkWidget* ui_skinned_textbox_new (GtkWidget *fixed, gint x, gint y, gint w, gboolean allow_scroll, SkinPixmapId si);
-GtkType ui_skinned_textbox_get_type(void);
+GType ui_skinned_textbox_get_type(void);
 void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const gchar * fontname);
 void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text);
 void ui_skinned_textbox_set_scroll(GtkWidget *widget, gboolean scroll);

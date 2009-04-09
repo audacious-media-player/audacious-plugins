@@ -21,9 +21,9 @@
 #ifndef UI_SKINNED_WINDOW_H
 #define UI_SKINNED_WINDOW_H
 
-#define SKINNED_WINDOW(obj)          GTK_CHECK_CAST (obj, ui_skinned_window_get_type (), SkinnedWindow)
-#define SKINNED_WINDOW_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, ui_skinned_window_get_type (), SkinnedWindowClass)
-#define SKINNED_CHECK_WINDOW(obj)    GTK_CHECK_TYPE (obj, ui_skinned_window_get_type ())
+#define SKINNED_WINDOW(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, ui_skinned_window_get_type (), SkinnedWindow)
+#define SKINNED_WINDOW_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, ui_skinned_window_get_type (), SkinnedWindowClass)
+#define SKINNED_CHECK_WINDOW(obj)    G_TYPE_CHECK_INSTANCE_TYPE (obj, ui_skinned_window_get_type ())
 #define SKINNED_TYPE_WINDOW          (ui_skinned_window_get_type())
 
 #ifdef GDK_WINDOWING_QUARTZ
