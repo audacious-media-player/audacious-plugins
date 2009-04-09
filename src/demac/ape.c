@@ -357,8 +357,8 @@ int ape_read_packet(APEContext *ape, VFSFile *pb, uint8_t *pkt, int *pkt_size)
 
     ret = aud_vfs_fread(pkt + extra_size, 1, ape->frames[ape->currentframe].size, pb);
 
-    ape->currentframe++;
     *pkt_size = ape->frames[ape->currentframe].size + extra_size;
+    ape->currentframe++;
 
     return 0;
 }

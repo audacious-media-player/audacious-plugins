@@ -206,6 +206,7 @@ typedef struct APEDecoderContext {
     uint8_t *last_ptr;                       ///< position where last 4608-sample block ended
     /*Eugene:*/
     unsigned int max_packet_size;            // Avoid multiply realloc calls
+    char broken_frame;
 } APEDecoderContext;
 
 

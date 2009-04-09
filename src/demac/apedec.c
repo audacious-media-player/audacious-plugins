@@ -166,16 +166,15 @@ static inline void range_start_decoding(APEDecoderContext * ctx)
 }
 
 /** Perform normalization */
-static inline void range_dec_normalize(APEDecoderContext * ctx)
-{
-    while (ctx->rc.range <= BOTTOM_VALUE) {
-#ifdef DEBUG
-    assert(ctx->ptr < ctx->data_end);
-#endif
-        ctx->rc.buffer = (ctx->rc.buffer << 8) | bytestream_get_byte(&ctx->ptr);
-        ctx->rc.low    = (ctx->rc.low << 8)    | ((ctx->rc.buffer >> 1) & 0xFF);
-        ctx->rc.range  <<= 8;
-    }
+static inline char range_dec_normalize (APEDecoderContext * ctx) {
+   while (ctx->rc.range <= BOTTOM_VALUE) {
+      if (ctx->ptr + 1 > ctx->data_end)
+         return 0;
+      ctx->rc.buffer = (ctx->rc.buffer << 8) | * ctx->ptr ++;
+      ctx->rc.low = (ctx->rc.low << 8) | ((ctx->rc.buffer >> 1) & 0xff);
+      ctx->rc.range <<= 8;
+   }
+   return 1;
 }
 
 /**
@@ -183,22 +182,26 @@ static inline void range_dec_normalize(APEDecoderContext * ctx)
  * @param tot_f is the total frequency or (code_value)1<<shift
  * @return the culmulative frequency
  */
-static inline int range_decode_culfreq(APEDecoderContext * ctx, int tot_f)
-{
-    range_dec_normalize(ctx);
+static inline char range_decode_culfreq (APEDecoderContext * ctx, int tot_f,
+ int * result) {
+    if (! range_dec_normalize (ctx))
+       return 0;
     ctx->rc.help = ctx->rc.range / tot_f;
-    return ctx->rc.low / ctx->rc.help;
+    * result = ctx->rc.low / ctx->rc.help;
+    return 1;
 }
 
 /**
  * Decode value with given size in bits
  * @param shift number of bits to decode
  */
-static inline int range_decode_culshift(APEDecoderContext * ctx, int shift)
-{
-    range_dec_normalize(ctx);
-    ctx->rc.help = ctx->rc.range >> shift;
-    return ctx->rc.low / ctx->rc.help;
+static inline char range_decode_culshift (APEDecoderContext * ctx, int shift,
+ int * result) {
+   if (! range_dec_normalize (ctx))
+      return 0;
+   ctx->rc.help = ctx->rc.range >> shift;
+   * result = ctx->rc.low / ctx->rc.help;
+   return 1;
 }
 
 
@@ -214,11 +217,12 @@ static inline void range_decode_update(APEDecoderContext * ctx, int sy_f, int lt
 }
 
 /** Decode n bits (n <= 16) without modelling */
-static inline int range_decode_bits(APEDecoderContext * ctx, int n)
-{
-    int sym = range_decode_culshift(ctx, n);
-    range_decode_update(ctx, 1, sym);
-    return sym;
+static inline char range_decode_bits (APEDecoderContext * ctx, int n,
+ int * result) {
+   if (! range_decode_culshift (ctx, n, result))
+      return 0;
+   range_decode_update (ctx, 1, * result);
+   return 1;
 }
 
 
@@ -287,20 +291,19 @@ static const uint16_t counts_diff_3980[64] = {
  * @param counts probability range start position
  * @param count_diffs probability range widths
  */
-static inline int range_get_symbol(APEDecoderContext * ctx,
-                                   const uint32_t counts[],
-                                   const uint16_t counts_diff[])
-{
-    int symbol, cf;
-
-    cf = range_decode_culshift(ctx, 16);
+static inline char range_get_symbol (APEDecoderContext * ctx,
+ const uint32_t * counts, const uint16_t * counts_diff, int * result) {
+  int symbol, cf;
+    if (! range_decode_culshift (ctx, 16, & cf))
+       return 0;
 
     /* figure out the symbol inefficiently; a binary search would be much better */
     for (symbol = 0; counts[symbol + 1] <= cf; symbol++);
 
     range_decode_update(ctx, counts_diff[symbol], counts[symbol]);
 
-    return symbol;
+    * result = symbol;
+    return 1;
 }
 /** @} */ // group rangecoder
 
@@ -308,34 +311,38 @@ static inline void update_rice(APERice *rice, int x)
 {
     rice->ksum += ((x + 1) / 2) - ((rice->ksum + 16) >> 5);
 
-    if (rice->k == 0)
-        rice->k = 1;
-    else if (rice->ksum < (1 << (rice->k + 4)))
+    if (rice->ksum < (rice->k ? (1 << (rice->k + 4)) : 0))
         rice->k--;
     else if (rice->ksum >= (1 << (rice->k + 5)))
         rice->k++;
 }
 
-static inline int ape_decode_value(APEDecoderContext * ctx, APERice *rice)
-{
-    int x, overflow;
+static inline char ape_decode_value (APEDecoderContext * ctx, APERice * rice,
+ int * result) {
+  int x, overflow, or;
 
     if (ctx->fileversion < 3980) {
         int tmpk;
 
-        overflow = range_get_symbol(ctx, counts_3970, counts_diff_3970);
+        if (! range_get_symbol (ctx, counts_3970, counts_diff_3970, & overflow))
+           return 0;
 
         if (overflow == (MODEL_ELEMENTS - 1)) {
-            tmpk = range_decode_bits(ctx, 5);
+            if (! range_decode_bits (ctx, 5, & tmpk))
+               return 0;
             overflow = 0;
         } else
             tmpk = (rice->k < 1) ? 0 : rice->k - 1;
 
-        if (tmpk <= 16)
-            x = range_decode_bits(ctx, tmpk);
-        else {
-            x = range_decode_bits(ctx, 16);
-            x |= (range_decode_bits(ctx, tmpk - 16) << 16);
+        if (tmpk <= 16) {
+           if (! range_decode_bits (ctx, tmpk, & x))
+              return 0;
+        } else {
+           if (! range_decode_bits (ctx, 16, & x))
+              return 0;
+           if (! range_decode_bits (ctx, tmpk - 16, & or))
+              return 0;
+           x |= or << 16;
         }
         x += overflow << tmpk;
     } else {
@@ -345,14 +352,19 @@ static inline int ape_decode_value(APEDecoderContext * ctx, APERice *rice)
         if (pivot == 0)
             pivot = 1;
 
-        overflow = range_get_symbol(ctx, counts_3980, counts_diff_3980);
+        if (! range_get_symbol (ctx, counts_3980, counts_diff_3980, & overflow))
+           return 0;
 
         if (overflow == (MODEL_ELEMENTS - 1)) {
-            overflow  = range_decode_bits(ctx, 16) << 16;
-            overflow |= range_decode_bits(ctx, 16);
+           if (! range_decode_bits (ctx, 16, & or))
+              return 0;
+           if (! range_decode_bits (ctx, 16, & overflow))
+              return 0;
+           overflow |= or << 16;
         }
 
-        base = range_decode_culfreq(ctx, pivot);
+        if (! range_decode_culfreq (ctx, pivot, & base))
+           return 0;
         range_decode_update(ctx, 1, base);
 
         x = base + overflow * pivot;
@@ -362,13 +374,14 @@ static inline int ape_decode_value(APEDecoderContext * ctx, APERice *rice)
 
     /* Convert to signed */
     if (x & 1)
-        return (x >> 1) + 1;
+       * result = (x >> 1) + 1;
     else
-        return -(x >> 1);
+       * result = -(x >> 1);
+    return 1;
 }
 
-static void entropy_decode(APEDecoderContext * ctx, int blockstodecode, int stereo)
-{
+static char entropy_decode (APEDecoderContext * ctx, int blockstodecode,
+ char stereo) {
     int32_t *decoded0 = ctx->decoded0;
     int32_t *decoded1 = ctx->decoded1;
 
@@ -380,14 +393,16 @@ static void entropy_decode(APEDecoderContext * ctx, int blockstodecode, int ster
         memset(decoded1, 0, blockstodecode * sizeof(int32_t));
     } else {
         while (blockstodecode--) {
-            *decoded0++ = ape_decode_value(ctx, &ctx->riceY);
-            if (stereo)
-                *decoded1++ = ape_decode_value(ctx, &ctx->riceX);
+           if (! ape_decode_value (ctx, & ctx->riceY, decoded0 ++))
+              return 0;
+           if (stereo && ! ape_decode_value (ctx, & ctx->riceX, decoded1 ++))
+              return 0;
         }
     }
 
     if (ctx->blocksdecoded == ctx->currentframeblocks)
         range_dec_normalize(ctx);   /* normalize to use up all bytes */
+    return 1;
 }
 
 static void init_entropy_decoder(APEDecoderContext * ctx)
@@ -692,20 +707,21 @@ static void init_frame_decoder(APEDecoderContext * ctx)
     }
 }
 
-static void ape_unpack_mono(APEDecoderContext * ctx, int count)
-{
+static char ape_unpack_mono (APEDecoderContext * ctx, int count) {
     int32_t left;
     int32_t *decoded0 = ctx->decoded0;
     int32_t *decoded1 = ctx->decoded1;
 
     if (ctx->frameflags & APE_FRAMECODE_STEREO_SILENCE) {
-        entropy_decode(ctx, count, 0);
+        if (! entropy_decode (ctx, count, 0))
+           return 0;
         /* We are pure silence, so we're done. */
         av_log(ctx->avctx, AV_LOG_DEBUG, "pure silence mono\n");
-        return;
+        return 1;
     }
 
-    entropy_decode(ctx, count, 0);
+    if (! entropy_decode (ctx, count, 0))
+       return 0;
     ape_apply_filters(ctx, decoded0, NULL, count);
 
     /* Now apply the predictor decoding */
@@ -718,10 +734,10 @@ static void ape_unpack_mono(APEDecoderContext * ctx, int count)
             *(decoded1++) = *(decoded0++) = left;
         }
     }
+    return 1;
 }
 
-static void ape_unpack_stereo(APEDecoderContext * ctx, int count)
-{
+static char ape_unpack_stereo (APEDecoderContext * ctx, int count) {
     int32_t left, right;
     int32_t *decoded0 = ctx->decoded0;
     int32_t *decoded1 = ctx->decoded1;
@@ -729,10 +745,11 @@ static void ape_unpack_stereo(APEDecoderContext * ctx, int count)
     if (ctx->frameflags & APE_FRAMECODE_STEREO_SILENCE) {
         /* We are pure silence, so we're done. */
         av_log(ctx->avctx, AV_LOG_DEBUG, "pure silence stereo\n");
-        return;
+        return 1;
     }
 
-    entropy_decode(ctx, count, 1);
+    if (! entropy_decode (ctx, count, 1))
+       return 0;
     ape_apply_filters(ctx, decoded0, decoded1, count);
 
     /* Now apply the predictor decoding */
@@ -746,6 +763,7 @@ static void ape_unpack_stereo(APEDecoderContext * ctx, int count)
         *(decoded0++) = left;
         *(decoded1++) = right;
     }
+    return 1;
 }
 
 int ape_decode_frame(APEDecoderContext *s,
@@ -757,7 +775,6 @@ int ape_decode_frame(APEDecoderContext *s,
     int i, n;
     int blockstodecode;
     int bytes_used;
-    int aligned_size;
 
     if (buf_size == 0 && !s->samples) {
         *data_size = 0;
@@ -774,13 +791,10 @@ int ape_decode_frame(APEDecoderContext *s,
 #ifdef DEBUG
         //fprintf(stderr, "apedec.c: ape_decode_frame(): initializing frame decoder\n");
 #endif
-        //s->data = realloc(s->data, (buf_size + 3) & ~3);
-	aligned_size = (s->max_packet_size + 3) & ~3;
-        if(s->data == NULL) s->data = malloc(aligned_size);
-        bswap_buf((uint32_t*)s->data, (uint32_t*)buf, aligned_size >> 2);
-        s->ptr = s->last_ptr = s->data;
-        //s->data_end = s->data + buf_size;
-        s->data_end = s->data + aligned_size; // ??? it works ... Eugene
+       s->data = realloc (s->data, buf_size);
+       bswap_buf ((uint32_t *) s->data, (uint32_t *) buf, buf_size >> 2);
+       s->ptr = s->last_ptr = s->data;
+       s->data_end = s->data + buf_size;
 
         nblocks = s->samples = bytestream_get_be32(&s->ptr);
         n =  bytestream_get_be32(&s->ptr);
@@ -803,6 +817,7 @@ int ape_decode_frame(APEDecoderContext *s,
 
         /* Initialize the frame decoder */
         init_frame_decoder(s);
+        s->broken_frame = 0;
     }
 
     if (!s->data) {
@@ -816,15 +831,26 @@ int ape_decode_frame(APEDecoderContext *s,
     nblocks = s->samples;
     blockstodecode = FFMIN(BLOCKS_PER_LOOP, nblocks);
 
-    if ((s->channels == 1) || (s->frameflags & APE_FRAMECODE_PSEUDO_STEREO))
-        ape_unpack_mono(s, blockstodecode);
-    else
-        ape_unpack_stereo(s, blockstodecode);
+    if ((s->channels == 1) || (s->frameflags & APE_FRAMECODE_PSEUDO_STEREO)) {
+       if (! s->broken_frame && ! ape_unpack_mono (s, blockstodecode)) {
+          fprintf (stderr, "ape: error decoding frame\n");
+          s->broken_frame = 1;
+       }
+    } else {
+       if (! s->broken_frame && ! ape_unpack_stereo (s, blockstodecode)) {
+          fprintf (stderr, "ape: error decoding frame\n");
+          s->broken_frame = 1;
+       }
+    }
 
-    for (i = 0; i < blockstodecode; i++) {
-        *samples++ = s->decoded0[i];
-        if(s->channels == 2)
-            *samples++ = s->decoded1[i];
+    if (s->broken_frame)
+       memset (samples, 0, sizeof samples [0] * s->channels * blockstodecode);
+    else {
+       for (i = 0; i < blockstodecode; i ++) {
+          * samples ++ = s->decoded0 [i];
+          if (s->channels == 2)
+             * samples ++ = s->decoded1 [i];
+       }
     }
 
     s->samples -= blockstodecode;
