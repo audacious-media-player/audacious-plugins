@@ -82,7 +82,7 @@ VFSFile *output_file = NULL;
 guint64 offset = 0;
 Tuple *tuple = NULL;
 
-static void file_init(void);
+static OutputPluginInitStatus file_init(void);
 static void file_about(void);
 static gint file_open(AFormat fmt, gint rate, gint nch);
 static void file_write(void *ptr, gint length);
@@ -99,6 +99,7 @@ static void file_configure(void);
 OutputPlugin file_op =
 {
     .description = "FileWriter Plugin",
+    .probe_priority = 0,
     .init = file_init,
     .about = file_about,
     .configure = file_configure,
@@ -138,14 +139,9 @@ static void set_plugin(void)
 #endif
 }
 
-static void file_init(void)
+static OutputPluginInitStatus file_init(void)
 {
     ConfigDb *db;
-    /*GtkWidget *menu_root;
-
-    menu_root = gtk_menu_item_new_with_label(_("FileWriter"));
-    gtk_widget_show(menu_root);
-    audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, menu_root);*/
 
     db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, FILEWRITER_CFGID, "fileext", &fileext);
@@ -162,6 +158,8 @@ static void file_init(void)
     set_plugin();
     if (plugin.init)
         plugin.init(&file_write_output);
+
+    return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }
 
 void file_about(void)
