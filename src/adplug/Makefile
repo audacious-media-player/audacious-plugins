@@ -6,7 +6,6 @@ SRCS = adplug-xmms.cc		\
        core/adlibemu.c		\
        core/adplug.cxx		\
        core/emuopl.cxx		\
-       core/diskopl.cxx		\
        core/fprovide.cxx	\
        core/player.cxx		\
        core/database.cxx	\
