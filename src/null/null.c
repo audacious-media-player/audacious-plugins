@@ -39,12 +39,13 @@ static struct {
 
 #define ELAPSED_TIME (offset_time + g_timer_elapsed(timer, NULL) * 1000)
 
-static void null_init(void)
+static OutputPluginInitStatus null_init(void)
 {
 	mcs_handle_t *db;
 	db = aud_cfg_db_open();
 	aud_cfg_db_get_bool(db, "null", "real_time", &real_time);
 	aud_cfg_db_close(db);
+	return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }
 
 static void null_about(void)
@@ -228,6 +229,7 @@ static int null_get_output_time(void)
 OutputPlugin null_op =
 {
 	.description = "Null Output Plugin",
+	.probe_priority = 0,
 	.init = null_init,
 	.about = null_about,
 	.configure = null_configure,
