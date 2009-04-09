@@ -59,6 +59,7 @@ callback_info* init_callback_info(gchar* name) {
     info->comment.tracknumber = NULL;
     info->comment.genre = NULL;
     info->comment.date = NULL;
+    info->comment.comment = NULL;
     info->replaygain.ref_loud = NULL;
     info->replaygain.track_gain = NULL;
     info->replaygain.track_peak = NULL;
@@ -139,6 +140,11 @@ void reset_info(callback_info* info, gboolean close_fd) {
     if (NULL != info->comment.genre) {
         free(info->comment.genre);
         info->comment.genre = NULL;
+    }
+
+    if (NULL != info->comment.comment) {
+        free(info->comment.comment);
+        info->comment.comment = NULL;
     }
 
     if (NULL != info->replaygain.ref_loud) {
@@ -257,6 +263,7 @@ Tuple* get_tuple(const gchar* filename, callback_info* info) {
     aud_tuple_associate_string(out, FIELD_TITLE, NULL, info->comment.title);
     aud_tuple_associate_string(out, FIELD_ALBUM, NULL, info->comment.album);
     aud_tuple_associate_string(out, FIELD_GENRE, NULL, info->comment.genre);
+    aud_tuple_associate_string(out, FIELD_COMMENT, NULL, info->comment.comment);
 
     if (info->comment.tracknumber != NULL)
         aud_tuple_associate_int(out, FIELD_TRACK_NUMBER, NULL, atoi(info->comment.tracknumber));
@@ -341,6 +348,11 @@ void add_comment(callback_info* info, gchar* key, gchar* value) {
     if (0 == strcasecmp(key, "TRACKNUMBER")) {
         _DEBUG("Found key TRACKNUMBER");
         destination = &(info->comment.tracknumber);
+    }
+
+    if (0 == strcasecmp(key, "DESCRIPTION")) {
+        _DEBUG("Found key DESCRIPTION");
+        destination = &(info->comment.comment);
     }
 
     if (0 == strcasecmp(key, "REPLAYGAIN_REFERENCE_LOUDNESS")) {

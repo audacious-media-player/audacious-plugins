@@ -65,6 +65,7 @@ struct stream_comment {
     gchar* tracknumber;
     gchar* genre;
     gchar* date;
+    gchar* comment;
 };
 
 /*
