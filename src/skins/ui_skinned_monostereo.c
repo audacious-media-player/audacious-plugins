@@ -73,7 +73,7 @@ static void ui_skinned_monostereo_class_init(UiSkinnedMonoStereoClass *klass) {
     gobject_class = G_OBJECT_CLASS(klass);
     object_class = (GtkObjectClass*) klass;
     widget_class = (GtkWidgetClass*) klass;
-    parent_class = gtk_type_class (gtk_widget_get_type ());
+    parent_class = g_type_class_peek_parent(klass);
 
     object_class->destroy = ui_skinned_monostereo_destroy;
 

@@ -188,7 +188,7 @@ ui_skinned_window_class_init(SkinnedWindowClass *klass)
 
     widget_class = (GtkWidgetClass*) klass;
 
-    parent = gtk_type_class(gtk_window_get_type());
+    parent = g_type_class_peek_parent(klass);
 
     widget_class->motion_notify_event = ui_skinned_window_motion_notify_event;
     widget_class->focus_in_event = ui_skinned_window_focus_in;
