@@ -61,7 +61,8 @@ static Tuple *demac_get_tuple(char *filename);
 static Tuple *demac_probe_for_tuple (gchar *uri, VFSFile *vfd);
 
 static GMutex *demac_mutex;
-static unsigned long seek_to_msec=(unsigned long)-1; /* -1 == not needed */
+static volatile int seek_to_msec = -1;
+static volatile char pause_flag = 0;
 
 static InputPlugin demac_ip;
 static GtkWidget *about_window = NULL;
@@ -93,14 +94,17 @@ static void demac_play(InputPlayback *pb) {
     pb->error = FALSE;
     pb_thread = g_thread_self();
     pb->set_pb_ready(pb);
-    
+
     demac_decode_loop(pb);
 }
 
-static void demac_do_mseek(APEContext *ctx, unsigned long msec) {
+static void demac_do_mseek (APEContext * ctx, InputPlayback * playback) {
   if(ctx->seektable) {
-    unsigned int framecount = msec * ((unsigned long long)ctx->totalframes - 1L) / ctx->duration;
-    ctx->currentframe = framecount;
+     ctx->currentframe = (ctx->totalframes - 1) * (long long) seek_to_msec
+      / ctx->duration;
+     playback->output->flush (ctx->duration * (long long) ctx->currentframe
+      / (ctx->totalframes - 1));
+     seek_to_msec = -1;
   }
 }
 
@@ -112,7 +116,7 @@ gpointer demac_decode_loop(InputPlayback *pb) {
     gchar *title = NULL;
     int audio_opened = 0;
     int playing;
-    unsigned long local_seek_to;
+    char paused = 0;
     APEContext *ctx = NULL;
     APEDecoderContext *dec = NULL;
     int decoded_bytes;
@@ -170,19 +174,9 @@ gpointer demac_decode_loop(InputPlayback *pb) {
     {
         g_mutex_lock(demac_mutex);
         playing = pb->playing;
-        local_seek_to = seek_to_msec;
         g_mutex_unlock(demac_mutex);
-        
-        /* do seeking */
-        if (local_seek_to != -1) {
-            demac_do_mseek(ctx, local_seek_to);
-            pb->output->flush(local_seek_to);
-	    
-	    local_seek_to = -1;
-            g_mutex_lock(demac_mutex);
-	    seek_to_msec = -1;
-            g_mutex_unlock(demac_mutex);
-
+        if (seek_to_msec != -1) {
+            demac_do_mseek (ctx, pb);
 	    /* reset decoder */
 	    dec->samples = 0;
 	}
@@ -195,13 +189,25 @@ gpointer demac_decode_loop(InputPlayback *pb) {
 	bytes_used = 0;
 
         /* Decode the frame a chunk at a time */
-        while (playing && (bytes_used != pkt_size) && (local_seek_to == -1))
-        {
+        while (playing && (bytes_used != pkt_size)) {
+            if (pause_flag) {
+               if (! paused) {
+                  pb->output->pause (1);
+                  paused = 1;
+               }
+               while (pause_flag && seek_to_msec == -1)
+                  g_usleep (50000);
+            }
+            if (paused && ! pause_flag) {
+               pb->output->pause (0);
+               paused = 0;
+            }
+            if (seek_to_msec != -1)
+               break;
             g_mutex_lock(demac_mutex);
             playing = pb->playing;
-            local_seek_to = seek_to_msec;
             g_mutex_unlock(demac_mutex);
-	    
+
 	    decoded_bytes = wav_buffer_size;
             bytes_used = ape_decode_frame(dec, wav, &decoded_bytes, frame_buf, pkt_size);
 	    if(bytes_used < 0) {
@@ -209,9 +215,6 @@ gpointer demac_decode_loop(InputPlayback *pb) {
 		dec->samples = 0;
 		break;
 	    }
-	    
-	    if(local_seek_to != -1) break;
-
             /* Write audio data */
             pb->pass_audio(pb, FMT_S16_LE, ctx->channels, decoded_bytes, wav, &playing);
 #ifdef AUD_DEBUG
@@ -265,7 +268,7 @@ static void demac_stop(InputPlayback *pb)
 }
 
 static void demac_pause(InputPlayback *pb, short paused) {
-    pb->output->pause(paused);
+   pause_flag = paused;
 }
 
 static void destroy_cb(mowgli_dictionary_elem_t *delem, void *privdata) {
@@ -331,10 +334,9 @@ Tuple *demac_get_tuple(char *filename) {
 }
 
 static void demac_mseek (InputPlayback *pb, gulong millisecond) {
-  g_mutex_lock(demac_mutex);
   seek_to_msec = millisecond;
-  g_mutex_unlock(demac_mutex);
-  AUDDBG("** demac: plugin.c: seeking to %u msec\n", millisecond);
+  while (seek_to_msec != -1)
+     g_usleep (50000);
 }
 
 static void demac_seek (InputPlayback *pb, gint time) {
