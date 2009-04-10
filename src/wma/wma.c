@@ -136,8 +136,8 @@ static void wma_about(void)
     g_signal_connect(G_OBJECT(dialog1), "destroy",
                      G_CALLBACK(gtk_widget_destroyed), &dialog1);
     gtk_window_set_title(GTK_WINDOW(dialog1), title);
-    gtk_window_set_policy(GTK_WINDOW(dialog1), FALSE, FALSE, FALSE);
-    gtk_container_border_width(GTK_CONTAINER(dialog1), 5);
+    gtk_window_set_resizable(GTK_WINDOW(dialog1), FALSE);
+    gtk_container_set_border_width(GTK_CONTAINER(dialog1), 5);
     label1 = gtk_label_new(message);
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog1)->vbox), label1, TRUE, TRUE, 0);
     gtk_widget_show(label1);

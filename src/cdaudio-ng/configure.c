@@ -235,8 +235,8 @@ void configure_create_gui()
 
 
 	buttonbox = gtk_hbutton_box_new();
-	gtk_hbutton_box_set_layout_default(GTK_BUTTONBOX_END);
-	gtk_hbutton_box_set_spacing_default(10);
+        gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonbox), GTK_BUTTONBOX_END);
+        gtk_box_set_spacing(GTK_BOX(buttonbox), 10);
 	gtk_table_attach_defaults(GTK_TABLE(maintable), buttonbox, 0, 2, 3, 4);
 
 	okbutton = gtk_button_new_with_label(_("Ok"));

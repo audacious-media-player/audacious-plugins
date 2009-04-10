@@ -50,8 +50,8 @@ void ShowAboutWindow()
 			NULL);
 		
 		AboutWin = audacious_info_dialog(_("About Modplug"), about_text, _("Ok"), FALSE, NULL, NULL);
-		gtk_signal_connect(GTK_OBJECT(AboutWin), "destroy",
-			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &AboutWin);
+		g_signal_connect(G_OBJECT(AboutWin), "destroy",
+			         G_CALLBACK(gtk_widget_destroyed), &AboutWin);
 		g_free(about_text);
 	}
 	gtk_widget_show(AboutWin);

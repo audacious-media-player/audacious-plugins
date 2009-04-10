@@ -114,7 +114,6 @@ void console_cfg_ui( void )
     GtkWidget *configwin_spc_ignorespclen_cbt, *configwin_spc_increverb_cbt;
     GtkWidget /* *hseparator, */ *hbuttonbox, *button_ok, *button_cancel;
     GtkWidget *configwin_notebook;
-    GtkTooltips *tips;
 
     if ( configwin != NULL )
         return;
@@ -129,9 +128,6 @@ void console_cfg_ui( void )
 
     configwin_vbox = gtk_vbox_new( FALSE , 6 );
     gtk_container_add( GTK_CONTAINER(configwin) , configwin_vbox );
-
-    tips = gtk_tooltips_new();
-    g_object_set_data_full( G_OBJECT(configwin) , "tt" , tips , g_object_unref );
 
     configwin_notebook = gtk_notebook_new();
     gtk_notebook_set_tab_pos( GTK_NOTEBOOK(configwin_notebook) , GTK_POS_TOP );
@@ -258,9 +254,9 @@ void console_cfg_ui( void )
     gtk_container_add( GTK_CONTAINER(hbuttonbox) , button_ok );
     gtk_box_pack_start( GTK_BOX(configwin_vbox) , hbuttonbox , FALSE , FALSE , 0 );
 
-    gtk_tooltips_set_tip( GTK_TOOLTIPS(tips) , configwin_gen_playback_deflen_spbt ,
-                          _("The default song length, expressed in seconds, is used for songs "
-                            "that do not provide length information (i.e. looping tracks).") , "" );
+    gtk_widget_set_tooltip_text( configwin_gen_playback_deflen_spbt ,
+                                 _("The default song length, expressed in seconds, is used for songs "
+                                 "that do not provide length information (i.e. looping tracks)."));
 
     gtk_widget_show_all( configwin );
 }

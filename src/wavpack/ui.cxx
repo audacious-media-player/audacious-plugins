@@ -51,8 +51,8 @@ wv_about_box()
                            "Some of the plugin code was by Miles Egan\n"
                            "Visit the Wavpack site at http://www.wavpack.com/\n")),
                           (_("Ok")), FALSE, NULL, NULL);
-    gtk_signal_connect(GTK_OBJECT(about_window), "destroy",
-                       GTK_SIGNAL_FUNC(gtk_widget_destroyed), &about_window);
+    g_signal_connect(G_OBJECT(about_window), "destroy",
+                     G_CALLBACK(gtk_widget_destroyed), &about_window);
 }
 
 static void
@@ -135,9 +135,9 @@ wv_file_info_box(char *fn)
         GtkWidget *save_button, *remove_button;
 
         window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
-        gtk_signal_connect(GTK_OBJECT(window), "destroy",
-                           GTK_SIGNAL_FUNC(gtk_widget_destroyed), &window);
+        gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+        g_signal_connect(G_OBJECT(window), "destroy",
+                         G_CALLBACK(gtk_widget_destroyed), &window);
         gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
         vbox = gtk_vbox_new(FALSE, 10);
@@ -221,7 +221,7 @@ wv_file_info_box(char *fn)
                          GTK_FILL, GTK_FILL, 5, 5);
 
         date_entry = gtk_entry_new();
-        gtk_widget_set_usize(date_entry, 60, -1);
+        gtk_widget_set_size_request(date_entry, 60, -1);
         gtk_table_attach(GTK_TABLE(table), date_entry, 1, 2, 4, 5,
                          (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
                                              GTK_SHRINK),
@@ -233,8 +233,9 @@ wv_file_info_box(char *fn)
         gtk_table_attach(GTK_TABLE(table), label, 2, 3, 4, 5,
                          GTK_FILL, GTK_FILL, 5, 5);
 
-        tracknumber_entry = gtk_entry_new_with_max_length(4);
-        gtk_widget_set_usize(tracknumber_entry, 20, -1);
+        tracknumber_entry = gtk_entry_new();
+        gtk_entry_set_max_length(GTK_ENTRY(tracknumber_entry), 4);
+        gtk_widget_set_size_request(tracknumber_entry, 20, -1);
         gtk_table_attach(GTK_TABLE(table), tracknumber_entry, 3, 4, 4,
                          5,
                          (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
@@ -248,7 +249,7 @@ wv_file_info_box(char *fn)
                          GTK_FILL, GTK_FILL, 5, 5);
 
         genre_entry = gtk_entry_new();
-        gtk_widget_set_usize(genre_entry, 20, -1);
+        gtk_widget_set_size_request(genre_entry, 20, -1);
         gtk_table_attach(GTK_TABLE(table), genre_entry, 1, 4, 5,
                          6,
                          (GtkAttachOptions) (GTK_FILL | GTK_EXPAND |
@@ -258,26 +259,24 @@ wv_file_info_box(char *fn)
 
         bbox = gtk_hbutton_box_new();
         gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-        gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+        gtk_box_set_spacing(GTK_BOX(bbox), 5);
         gtk_box_pack_start(GTK_BOX(left_vbox), bbox, FALSE, FALSE, 0);
 
         save_button = gtk_button_new_with_label(_("Save"));
-        gtk_signal_connect(GTK_OBJECT(save_button), "clicked",
-                           GTK_SIGNAL_FUNC(save_cb), NULL);
+        g_signal_connect(G_OBJECT(save_button), "clicked",
+                         G_CALLBACK(save_cb), NULL);
         GTK_WIDGET_SET_FLAGS(save_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), save_button, TRUE, TRUE, 0);
 
         remove_button = gtk_button_new_with_label(_("Remove Tag"));
-        gtk_signal_connect_object(GTK_OBJECT(remove_button),
-                                  "clicked",
-                                  GTK_SIGNAL_FUNC(remove_cb), NULL);
+        g_signal_connect_swapped(G_OBJECT(remove_button), "clicked",
+                                 G_CALLBACK(remove_cb), NULL);
         GTK_WIDGET_SET_FLAGS(remove_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), remove_button, TRUE, TRUE, 0);
 
         cancel_button = gtk_button_new_with_label(_("Cancel"));
-        gtk_signal_connect_object(GTK_OBJECT(cancel_button),
-                                  "clicked",
-                                  GTK_SIGNAL_FUNC(close_window), NULL);
+        g_signal_connect_swapped(G_OBJECT(cancel_button), "clicked",
+                                 G_CALLBACK(close_window), NULL);
         GTK_WIDGET_SET_FLAGS(cancel_button, GTK_CAN_DEFAULT);
         gtk_box_pack_start(GTK_BOX(bbox), cancel_button, TRUE, TRUE, 0);
         gtk_widget_grab_default(cancel_button);
@@ -461,13 +460,13 @@ wv_configure(void)
     }
 
     wv_configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_signal_connect(GTK_OBJECT(wv_configurewin), "destroy",
-                       GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-                       &wv_configurewin);
+    g_signal_connect(G_OBJECT(wv_configurewin), "destroy",
+                     G_CALLBACK(gtk_widget_destroyed),
+                     &wv_configurewin);
     gtk_window_set_title(GTK_WINDOW(wv_configurewin),
                          _("Wavpack Configuration"));
-    gtk_window_set_policy(GTK_WINDOW(wv_configurewin), FALSE, FALSE, FALSE);
-    gtk_container_border_width(GTK_CONTAINER(wv_configurewin), 10);
+    gtk_window_set_resizable(GTK_WINDOW(wv_configurewin), FALSE);
+    gtk_container_set_border_width(GTK_CONTAINER(wv_configurewin), 10);
 
     vbox = gtk_vbox_new(FALSE, 10);
     gtk_container_add(GTK_CONTAINER(wv_configurewin), vbox);
@@ -479,10 +478,10 @@ wv_configure(void)
     /* Plugin Settings */
 
     rg_frame = gtk_frame_new(_("General Plugin Settings:"));
-    gtk_container_border_width(GTK_CONTAINER(rg_frame), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(rg_frame), 5);
 
     rg_vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_border_width(GTK_CONTAINER(rg_vbox), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(rg_vbox), 5);
     gtk_container_add(GTK_CONTAINER(rg_frame), rg_vbox);
 
     rg_dyn_bitrate =
@@ -497,10 +496,10 @@ wv_configure(void)
     /* Replay Gain.. */
 
     rg_frame = gtk_frame_new(_("ReplayGain Settings:"));
-    gtk_container_border_width(GTK_CONTAINER(rg_frame), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(rg_frame), 5);
 
     rg_vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_border_width(GTK_CONTAINER(rg_vbox), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(rg_vbox), 5);
     gtk_container_add(GTK_CONTAINER(rg_frame), rg_vbox);
 
     rg_clip_switch =
@@ -517,8 +516,8 @@ wv_configure(void)
     rg_type_frame = gtk_frame_new(_("ReplayGain Type:"));
     gtk_box_pack_start(GTK_BOX(rg_vbox), rg_type_frame, FALSE, FALSE, 0);
 
-    gtk_signal_connect(GTK_OBJECT(rg_switch), "toggled",
-                       GTK_SIGNAL_FUNC(rg_switch_cb), rg_type_frame);
+    g_signal_connect(G_OBJECT(rg_switch), "toggled",
+                     G_CALLBACK(rg_switch_cb), rg_type_frame);
 
     rg_type_vbox = gtk_vbox_new(FALSE, 5);
     gtk_container_set_border_width(GTK_CONTAINER(rg_type_vbox), 5);
@@ -531,7 +530,7 @@ wv_configure(void)
     gtk_box_pack_start(GTK_BOX(rg_type_vbox), rg_track_gain, FALSE, FALSE, 0);
 
     rg_album_gain =
-        gtk_radio_button_new_with_label(gtk_radio_button_group
+        gtk_radio_button_new_with_label(gtk_radio_button_get_group
                                         (GTK_RADIO_BUTTON(rg_track_gain)),
                                         _("use Album Gain/Peak"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_album_gain),
@@ -547,20 +546,20 @@ wv_configure(void)
 
     bbox = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+    gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
     ok = gtk_button_new_with_label(_("Ok"));
-    gtk_signal_connect(GTK_OBJECT(ok), "clicked",
-                       GTK_SIGNAL_FUNC(wv_configurewin_ok), NULL);
+    g_signal_connect(G_OBJECT(ok), "clicked",
+                     G_CALLBACK(wv_configurewin_ok), NULL);
     GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
     gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
     gtk_widget_grab_default(ok);
 
     cancel = gtk_button_new_with_label(_("Cancel"));
-    gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-                              GTK_SIGNAL_FUNC(gtk_widget_destroy),
-                              GTK_OBJECT(wv_configurewin));
+    g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+                             G_CALLBACK(gtk_widget_destroy),
+                             G_OBJECT(wv_configurewin));
     GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
     gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 

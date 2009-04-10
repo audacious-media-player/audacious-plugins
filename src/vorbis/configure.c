@@ -81,7 +81,7 @@ vorbis_configure(void)
     gtk_window_set_title(GTK_WINDOW(vorbis_configurewin),
                          _("Ogg Vorbis Audio Plugin Configuration"));
     gtk_window_set_resizable(GTK_WINDOW(vorbis_configurewin), FALSE);
-    gtk_container_border_width(GTK_CONTAINER(vorbis_configurewin), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(vorbis_configurewin), 10);
 
     vbox = gtk_vbox_new(FALSE, 10);
     gtk_container_add(GTK_CONTAINER(vorbis_configurewin), vbox);
@@ -90,10 +90,10 @@ vorbis_configure(void)
     /* Title config.. */
 
     title_frame = gtk_frame_new(_("Ogg Vorbis Tags:"));
-    gtk_container_border_width(GTK_CONTAINER(title_frame), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(title_frame), 5);
 
     title_tag_vbox = gtk_vbox_new(FALSE, 10);
-    gtk_container_border_width(GTK_CONTAINER(title_tag_vbox), 5);
+    gtk_container_set_border_width(GTK_CONTAINER(title_tag_vbox), 5);
     gtk_container_add(GTK_CONTAINER(title_frame), title_tag_vbox);
 
     title_tag_override =
@@ -124,7 +124,7 @@ vorbis_configure(void)
 
     bbox = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+    gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
     cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);

@@ -160,8 +160,8 @@ static void mpcConfigBox()
         widgets.configBox = configBox;
         g_signal_connect(G_OBJECT(configBox), "destroy", G_CALLBACK(gtk_widget_destroyed), &widgets.configBox);
         gtk_window_set_title(GTK_WINDOW(configBox), _("Musepack Decoder Configuration"));
-        gtk_window_set_policy(GTK_WINDOW(configBox), FALSE, FALSE, FALSE);
-        gtk_container_border_width(GTK_CONTAINER(configBox), 10);
+        gtk_window_set_resizable(GTK_WINDOW(configBox), FALSE);
+        gtk_container_set_border_width(GTK_CONTAINER(configBox), 10);
 
         GtkWidget* notebook = gtk_notebook_new();
         GtkWidget* vbox = gtk_vbox_new(FALSE, 10);
@@ -170,10 +170,10 @@ static void mpcConfigBox()
 
         //General Settings Tab
         GtkWidget* generalSet = gtk_frame_new(_("General Settings"));
-        gtk_container_border_width(GTK_CONTAINER(generalSet), 5);
+        gtk_container_set_border_width(GTK_CONTAINER(generalSet), 5);
 
         GtkWidget* gSvbox = gtk_vbox_new(FALSE, 10);
-        gtk_container_border_width(GTK_CONTAINER(gSvbox), 5);
+        gtk_container_set_border_width(GTK_CONTAINER(gSvbox), 5);
         gtk_container_add(GTK_CONTAINER(generalSet), gSvbox);
 
         GtkWidget* bitrateCheck = gtk_check_button_new_with_label(_("Enable Dynamic Bitrate Display"));
@@ -184,10 +184,10 @@ static void mpcConfigBox()
 
         //ReplayGain Settings Tab
         GtkWidget* replaygainSet = gtk_frame_new(_("ReplayGain Settings"));
-        gtk_container_border_width(GTK_CONTAINER(replaygainSet), 5);
+        gtk_container_set_border_width(GTK_CONTAINER(replaygainSet), 5);
 
         GtkWidget* rSVbox = gtk_vbox_new(FALSE, 10);
-        gtk_container_border_width(GTK_CONTAINER(rSVbox), 5);
+        gtk_container_set_border_width(GTK_CONTAINER(rSVbox), 5);
         gtk_container_add(GTK_CONTAINER(replaygainSet), rSVbox);
 
         GtkWidget* clippingCheck = gtk_check_button_new_with_label(_("Enable Clipping Prevention"));
@@ -212,7 +212,7 @@ static void mpcConfigBox()
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(trackCheck), !pluginConfig.albumGain);
         gtk_box_pack_start(GTK_BOX(rgVbox), trackCheck, FALSE, FALSE, 0);
 
-        GtkWidget* albumCheck = gtk_radio_button_new_with_label(gtk_radio_button_group(GTK_RADIO_BUTTON(trackCheck)), _("Use Album Gain"));
+        GtkWidget* albumCheck = gtk_radio_button_new_with_label(gtk_radio_button_get_group(GTK_RADIO_BUTTON(trackCheck)), _("Use Album Gain"));
         widgets.albumCheck = albumCheck;
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(albumCheck), pluginConfig.albumGain);
         gtk_box_pack_start(GTK_BOX(rgVbox), albumCheck, FALSE, FALSE, 0);
@@ -222,7 +222,7 @@ static void mpcConfigBox()
         //Buttons
         GtkWidget* buttonBox = gtk_hbutton_box_new();
         gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_END);
-        gtk_button_box_set_spacing(GTK_BUTTON_BOX(buttonBox), 5);
+        gtk_box_set_spacing(GTK_BOX(buttonBox), 5);
         gtk_box_pack_start(GTK_BOX(vbox), buttonBox, FALSE, FALSE, 0);
 
         GtkWidget* okButton = gtk_button_new_with_label(_("Ok"));
@@ -474,7 +474,7 @@ static void mpcFileInfoBox(char* p_Filename)
         infoBox = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_type_hint(GTK_WINDOW(infoBox), GDK_WINDOW_TYPE_HINT_DIALOG);
         widgets.infoBox = infoBox;
-        gtk_window_set_policy(GTK_WINDOW(infoBox), FALSE, FALSE, FALSE);
+        gtk_window_set_resizable(GTK_WINDOW(infoBox), FALSE);
         g_signal_connect(G_OBJECT(infoBox), "destroy", G_CALLBACK(closeInfoBox), NULL);
         gtk_container_set_border_width(GTK_CONTAINER(infoBox), 10);
 
@@ -526,22 +526,22 @@ static void mpcFileInfoBox(char* p_Filename)
         mpcGtkTagLabel(_("Year:"), 0, 1, 4, 5, iTable);
         GtkWidget* yearEntry = mpcGtkTagEntry(1, 2, 4, 5, 4, iTable);
         widgets.yearEntry = yearEntry;
-        gtk_widget_set_usize(yearEntry, 4, -1);
+        gtk_widget_set_size_request(yearEntry, 4, -1);
 
         mpcGtkTagLabel(_("Track:"), 2, 3, 4, 5, iTable);
         GtkWidget* trackEntry = mpcGtkTagEntry(3, 4, 4, 5, 4, iTable);
         widgets.trackEntry = trackEntry;
-        gtk_widget_set_usize(trackEntry, 3, -1);
+        gtk_widget_set_size_request(trackEntry, 3, -1);
 
         mpcGtkTagLabel(_("Genre:"), 0, 1, 5, 6, iTable);
         GtkWidget* genreEntry = mpcGtkTagEntry(1, 4, 5, 6, 0, iTable);
         widgets.genreEntry = genreEntry;
-        gtk_widget_set_usize(genreEntry, 20, -1);
+        gtk_widget_set_size_request(genreEntry, 20, -1);
 
         //Buttons
         GtkWidget* buttonBox = gtk_hbutton_box_new();
         gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_END);
-        gtk_button_box_set_spacing(GTK_BUTTON_BOX(buttonBox), 5);
+        gtk_box_set_spacing(GTK_BOX(buttonBox), 5);
         gtk_box_pack_start(GTK_BOX(leftBox), buttonBox, FALSE, FALSE, 0);
 
         GtkWidget* saveButton = mpcGtkButton(_("Save"), buttonBox);
@@ -659,10 +659,10 @@ static GtkWidget* mpcGtkTagLabel(const char* p_Text, int a, int b, int c, int d,
 static GtkWidget* mpcGtkTagEntry(int a, int b, int c, int d, int p_Size, GtkWidget* p_Box)
 {
     GtkWidget* entry;
-    if(p_Size == 0)
-        entry = gtk_entry_new();
-    else
-        entry = gtk_entry_new_with_max_length(p_Size);
+    entry = gtk_entry_new();
+    if(p_Size)
+        gtk_entry_set_max_length(GTK_ENTRY(entry), p_Size);
+
     gtk_table_attach(GTK_TABLE(p_Box), entry, a, b, c, d,
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND | GTK_SHRINK), 0, 5);

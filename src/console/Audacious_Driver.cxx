@@ -446,8 +446,8 @@ void console_aboutbox(void)
 						"        Shay Green <gblargg@gmail.com>"),
 						_("Ok"),
 						FALSE, NULL, NULL);
-		gtk_signal_connect(GTK_OBJECT(aboutbox), "destroy",
-					(GCallback)gtk_widget_destroyed, &aboutbox);
+		g_signal_connect(G_OBJECT(aboutbox), "destroy",
+				G_CALLBACK(gtk_widget_destroyed), &aboutbox);
 	}
 }
 
