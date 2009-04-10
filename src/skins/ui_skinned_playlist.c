@@ -957,13 +957,15 @@ static gboolean ui_skinned_playlist_motion_notify(GtkWidget *widget, GdkEventMot
         priv->drag_pos = nr;
     } else if (config.show_filepopup_for_tuple) {
         gint pos = ui_skinned_playlist_get_position(widget, event->x, event->y);
-        gint cur_pos = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "popup_position"));
-        if (pos != cur_pos) {
-            g_object_set_data(G_OBJECT(widget), "popup_position", GINT_TO_POINTER(pos));
-            ui_skinned_playlist_popup_hide(widget);
-            ui_skinned_playlist_popup_timer_stop(widget);
-            if (pos != -1)
-                ui_skinned_playlist_popup_timer_start(widget);
+        if (pos == -1) {
+           ui_skinned_playlist_popup_hide (widget);
+           ui_skinned_playlist_popup_timer_stop (widget);
+        } else if (! g_object_get_data ((GObject *) widget, "popup_active") ||
+         pos != (int) g_object_get_data ((GObject *) widget, "popup_position")) {
+           ui_skinned_playlist_popup_hide (widget);
+           ui_skinned_playlist_popup_timer_stop (widget);
+           g_object_set_data ((GObject *) widget, "popup_position", (void *) pos);
+           ui_skinned_playlist_popup_timer_start (widget);
         }
     }
 
