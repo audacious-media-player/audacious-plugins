@@ -960,11 +960,11 @@ static gboolean ui_skinned_playlist_motion_notify(GtkWidget *widget, GdkEventMot
         if (pos == -1) {
            ui_skinned_playlist_popup_hide (widget);
            ui_skinned_playlist_popup_timer_stop (widget);
-        } else if (! g_object_get_data ((GObject *) widget, "popup_active") ||
-         pos != (int) g_object_get_data ((GObject *) widget, "popup_position")) {
+        } else if (GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "popup_active") == 0) ||
+         pos != GPOINTER_TO_INT(g_object_get_data (G_OBJECT(widget), "popup_position"))) {
            ui_skinned_playlist_popup_hide (widget);
            ui_skinned_playlist_popup_timer_stop (widget);
-           g_object_set_data ((GObject *) widget, "popup_position", (void *) pos);
+           g_object_set_data (G_OBJECT(widget), "popup_position", GINT_TO_POINTER(pos));
            ui_skinned_playlist_popup_timer_start (widget);
         }
     }
