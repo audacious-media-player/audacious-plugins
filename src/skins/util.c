@@ -835,18 +835,6 @@ glist_moveup(GList * list)
     }
 }
 
-GdkFont *
-util_font_load(const gchar * name)
-{
-    GdkFont *font;
-    PangoFontDescription *desc;
-
-    desc = pango_font_description_from_string(name);
-    font = gdk_font_from_description(desc);
-
-    return font;
-}
-
 /* text_get_extents() taken from The GIMP (C) Spencer Kimball, Peter
  * Mattis et al */
 gboolean

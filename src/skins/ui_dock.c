@@ -320,12 +320,15 @@ find_shade_list(GtkWindow * widget, GList * winlist, GList * shade_list)
 void
 dock_window_resize(GtkWindow * widget, gint new_w, gint new_h, gint w, gint h)
 {
-    gdk_window_set_hints(GTK_WIDGET(widget)->window, 0, 0, MIN(w, new_w),
-                         MIN(h, new_h), MAX(w, new_w), MAX(h, new_h),
-                         GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
+    GdkGeometry hints;
+    hints.min_width = new_w;
+    hints.min_height = new_h;
+    hints.max_width = new_w;
+    hints.max_height = new_h;
+
     gdk_window_resize(GTK_WIDGET(widget)->window, new_w, new_h);
-    gdk_window_set_hints(GTK_WIDGET(widget)->window, 0, 0, new_w, new_h,
-                         new_w, new_h, GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
+    gdk_window_set_geometry_hints(GTK_WIDGET(widget)->window, &hints,
+                                  GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 }
 
 void
