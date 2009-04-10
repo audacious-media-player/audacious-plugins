@@ -71,7 +71,7 @@
 #include <audacious/plugin.h>
 #include "skins_cfg.h"
 
-static GTimeVal cb_time; 
+static GTimeVal cb_time;
 static const int TRISTATE_THRESHOLD = 200;
 
 enum {
@@ -1169,7 +1169,7 @@ ui_main_check_theme_engine(void)
         g_signal_connect( G_OBJECT(checkbt) , "toggled" ,
                           G_CALLBACK(on_broken_gtk_engine_warning_toggle) , NULL );
         g_signal_connect( G_OBJECT(warning_dlg) , "response" ,
-                          G_CALLBACK(gtk_widget_destroy) , NULL );        
+                          G_CALLBACK(gtk_widget_destroy) , NULL );
         gtk_widget_show_all(warning_dlg);
         gtk_window_stick(GTK_WINDOW(warning_dlg));
     }
@@ -2384,9 +2384,6 @@ mainwin_update_song_info(void)
 
     if (ab_position_a != -1 && ab_position_b != -1 && time > ab_position_b)
         audacious_drct_seek(ab_position_a/1000);
-
-    if (length == -1 && config.timer_mode == TIMER_REMAINING)
-        config.timer_mode = TIMER_ELAPSED;
 
     playlistwin_set_time(time, length, config.timer_mode);
 
