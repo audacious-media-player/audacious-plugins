@@ -472,8 +472,8 @@ mainwin_refresh_hints(void)
 
     if (aud_active_skin->properties.mainwin_text_width) {
         UI_SKINNED_TEXTBOX(mainwin_info)->width = aud_active_skin->properties.mainwin_text_width;
-        gtk_widget_set_size_request(mainwin_info, aud_active_skin->properties.mainwin_text_width * MAINWIN_SCALE_FACTOR,
-                                    UI_SKINNED_TEXTBOX(mainwin_info)->height * MAINWIN_SCALE_FACTOR );
+        gtk_widget_set_size_request (mainwin_info, aud_active_skin->properties.
+         mainwin_text_width * MAINWIN_SCALE_FACTOR, -1);
     }
 
     if (aud_active_skin->properties.mainwin_infobar_x && aud_active_skin->properties.mainwin_infobar_y)

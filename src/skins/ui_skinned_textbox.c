@@ -136,22 +136,22 @@ static void ui_skinned_textbox_class_init(UiSkinnedTextboxClass *klass) {
     klass->right_clicked = NULL;
     klass->scaled = ui_skinned_textbox_toggle_scaled;
 
-    textbox_signals[CLICKED] = 
+    textbox_signals[CLICKED] =
         g_signal_new ("clicked", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedTextboxClass, clicked), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-    textbox_signals[DOUBLE_CLICKED] = 
+    textbox_signals[DOUBLE_CLICKED] =
         g_signal_new ("double-clicked", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedTextboxClass, double_clicked), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-    textbox_signals[RIGHT_CLICKED] = 
+    textbox_signals[RIGHT_CLICKED] =
         g_signal_new ("right-clicked", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedTextboxClass, right_clicked), NULL, NULL,
                       g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1, G_TYPE_POINTER);
 
-    textbox_signals[DOUBLED] = 
+    textbox_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedTextboxClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -453,7 +453,7 @@ static void ui_skinned_textbox_toggle_scaled(UiSkinnedTextbox *textbox) {
 
     priv->scaled = !priv->scaled;
 
-    gtk_widget_set_size_request(widget, textbox->width*(priv->scaled ? config.scale_factor : 1 ), 
+    gtk_widget_set_size_request(widget, textbox->width*(priv->scaled ? config.scale_factor : 1 ),
     textbox->height*(priv->scaled ? config.scale_factor : 1 ));
 
     gtk_widget_queue_draw(GTK_WIDGET(textbox));
@@ -488,6 +488,8 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
     gint ascent, descent;
 
     g_return_if_fail(textbox != NULL);
+    gtk_widget_queue_resize (widget);
+    gtk_widget_queue_draw (widget);
 
     if (priv->font) {
         pango_font_description_free(priv->font);
@@ -519,11 +521,9 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
     if (priv->font == NULL)
         return;
 
-    textbox->height = priv->font_ascent;
-    if (textbox->height > priv->nominal_height)
-        textbox->y -= (textbox->height - priv->nominal_height) / 2;
-    else
-        textbox->height = priv->nominal_height;
+    textbox->height = priv->font_ascent; /* The real height of the text is
+     ascent - descent (descent is negative), but we cut off descent pixels from
+     the top to make it fit better. See textbox_generate_xfont_pixmap. */
 }
 
 void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
@@ -586,7 +586,8 @@ static void textbox_generate_xfont_pixmap(UiSkinnedTextbox *textbox, const gchar
     layout = gtk_widget_create_pango_layout(mainwin, pixmaptext);
     pango_layout_set_font_description(layout, priv->font);
 
-    gdk_draw_layout(pixmap, gc, 0, (priv->font_descent / 2), layout);
+    gdk_draw_layout (pixmap, gc, 0, priv->font_descent, layout); /* See
+     explanation in ui_skinned_textbox_set_xfont. */
     g_object_unref(layout);
 
     g_object_unref(maskgc);
@@ -736,7 +737,7 @@ static void textbox_generate_pixmap(UiSkinnedTextbox *textbox) {
         skin_draw_pixbuf(GTK_WIDGET(textbox), aud_active_skin,
                          priv->pixbuf, priv->skin_index,
                          x, y, i * aud_active_skin->properties.textbox_bitmap_font_width, 0,
-                         aud_active_skin->properties.textbox_bitmap_font_width, 
+                         aud_active_skin->properties.textbox_bitmap_font_width,
                          aud_active_skin->properties.textbox_bitmap_font_height);
     }
     g_free(stxt);
