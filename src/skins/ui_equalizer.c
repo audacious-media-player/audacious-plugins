@@ -114,7 +114,7 @@ equalizerwin_set_scaled(gboolean ds)
         height = 116;
 
     if (config.scaled) {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275 * config.scale_factor, 
+        dock_window_resize(GTK_WINDOW(equalizerwin), 275 * config.scale_factor,
             height * config.scale_factor, 275 * config.scale_factor, height * config.scale_factor);
     } else {
         dock_window_resize(GTK_WINDOW(equalizerwin), 275, height, 275, height);
@@ -371,7 +371,7 @@ equalizerwin_create_widgets(void)
     ui_skinned_toggle_button_setup(equalizerwin_on, SKINNED_WINDOW(equalizerwin)->normal,
                                    14, 18, 25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN);
     g_signal_connect(equalizerwin_on, "clicked", equalizerwin_on_pushed, NULL);
-    equalizerwin_activate(aud_cfg->equalizer_active);
+    ui_skinned_button_set_inside (equalizerwin_on, aud_cfg->equalizer_active);
 
     equalizerwin_auto = ui_skinned_button_new();
     ui_skinned_toggle_button_setup(equalizerwin_auto, SKINNED_WINDOW(equalizerwin)->normal,
@@ -408,12 +408,14 @@ equalizerwin_create_widgets(void)
     equalizerwin_graph = ui_skinned_equalizer_graph_new(SKINNED_WINDOW(equalizerwin)->normal, 86, 17);
 
     equalizerwin_preamp = ui_skinned_equalizer_slider_new(SKINNED_WINDOW(equalizerwin)->normal, 21, 38);
-    equalizerwin_set_preamp(aud_cfg->equalizer_preamp);
+    ui_skinned_equalizer_slider_set_position (equalizerwin_preamp,
+     aud_cfg->equalizer_preamp);
 
     for (i = 0; i < AUD_EQUALIZER_NBANDS; i++) {
         equalizerwin_bands[i] =
             ui_skinned_equalizer_slider_new(SKINNED_WINDOW(equalizerwin)->normal, 78 + (i * 18), 38);
-        equalizerwin_set_band(i, aud_cfg->equalizer_bands[i]);
+        ui_skinned_equalizer_slider_set_position (equalizerwin_bands [i],
+         aud_cfg->equalizer_bands [i]);
     }
 
     equalizerwin_volume =
@@ -1007,7 +1009,7 @@ equalizerwin_create_list_window(GList *preset_list,
     if (select_row_func)
         g_signal_connect(view, "row-activated", G_CALLBACK(select_row_func), NULL);
 
-        
+
     gtk_box_pack_start(GTK_BOX(bbox), button_action, TRUE, TRUE, 0);
 
     gtk_widget_grab_default(button_action);
@@ -1069,6 +1071,7 @@ equalizerwin_set_band(gint band, gfloat value)
 {
     g_return_if_fail(band >= 0 && band < AUD_EQUALIZER_NBANDS);
     ui_skinned_equalizer_slider_set_position(equalizerwin_bands[band], value);
+    equalizerwin_eq_changed();
 }
 
 gfloat
@@ -1191,7 +1194,7 @@ action_equ_save_preset(void)
         gtk_window_present(GTK_WINDOW(equalizerwin_save_window));
         return;
     }
-     
+
     equalizerwin_create_list_window(equalizer_presets,
                                     Q_("Save preset"),
                                     &equalizerwin_save_window,
@@ -1294,7 +1297,7 @@ action_equ_delete_preset(void)
         gtk_window_present(GTK_WINDOW(equalizerwin_delete_window));
         return;
     }
-    
+
     equalizerwin_create_list_window(equalizer_presets,
                                     Q_("Delete preset"),
                                     &equalizerwin_delete_window,
@@ -1311,7 +1314,7 @@ action_equ_delete_auto_preset(void)
         gtk_window_present(GTK_WINDOW(equalizerwin_delete_auto_window));
         return;
     }
-    
+
     equalizerwin_create_list_window(equalizer_auto_presets,
                                     Q_("Delete auto-preset"),
                                     &equalizerwin_delete_auto_window,
