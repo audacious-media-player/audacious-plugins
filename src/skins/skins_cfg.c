@@ -340,6 +340,7 @@ static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_CHK_BTN, N_("Use two-way text scroller"), &config.twoway_scroll, NULL,
         N_("If selected, the file information text in the main window will scroll back and forth. If not selected, the text will only scroll in one direction."), FALSE},
     {WIDGET_CHK_BTN, N_("Disable inline gtk theme"), &config.disable_inline_gtk, NULL, NULL, FALSE},
+    {WIDGET_CHK_BTN, N_("Random skin on play"), &config.random_skin_on_play, NULL, NULL, FALSE},
     {WIDGET_CHK_BTN, N_("Allow loading incomplete skins"), &config.allow_broken_skins, NULL,
         N_("If selected, audacious won't refuse loading broken skins. Use only if your favourite skin doesn't work"), FALSE},
 };
