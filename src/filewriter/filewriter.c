@@ -118,25 +118,25 @@ OutputPlugin *file_oplist[] = { &file_op, NULL };
 
 SIMPLE_OUTPUT_PLUGIN(filewriter, file_oplist);
 
+FileWriter *plugins[FILEEXT_MAX] = {
+    &wav_plugin,
+#ifdef FILEWRITER_MP3
+    &mp3_plugin,
+#endif
+#ifdef FILEWRITER_VORBIS
+    &vorbis_plugin,
+#endif
+#ifdef FILEWRITER_FLAC
+    &flac_plugin,
+#endif
+};
+
 static void set_plugin(void)
 {
     if (fileext < 0 || fileext >= FILEEXT_MAX)
         fileext = 0;
 
-    if (fileext == WAV)
-        plugin = &wav_plugin;
-#ifdef FILEWRITER_MP3
-    if (fileext == MP3)
-        plugin = &mp3_plugin;
-#endif
-#ifdef FILEWRITER_VORBIS
-    if (fileext == VORBIS)
-        plugin = &vorbis_plugin;
-#endif
-#ifdef FILEWRITER_FLAC
-    if (fileext == FLAC)
-        plugin = &flac_plugin;
-#endif
+    plugin = plugins[fileext];
 }
 
 static OutputPluginInitStatus file_init(void)
