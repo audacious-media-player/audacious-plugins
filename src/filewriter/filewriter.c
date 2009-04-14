@@ -143,6 +143,8 @@ static OutputPluginInitStatus file_init(void)
 {
     ConfigDb *db;
 
+    g_print("file_init called\n");
+
     db = aud_cfg_db_open();
     aud_cfg_db_get_int(db, FILEWRITER_CFGID, "fileext", &fileext);
     aud_cfg_db_get_string(db, FILEWRITER_CFGID, "file_path", &file_path);
