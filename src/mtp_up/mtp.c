@@ -196,13 +196,8 @@ gint upload_file(Tuple *from_tuple)
 #if DEBUG
     g_print("Uploading track '%s'\n",filename);
 #endif
-#ifdef HAVE_LIBMTP_030
     gentrack->parent_id = mtp_device->default_music_folder;
     ret = LIBMTP_Send_Track_From_File(mtp_device, filename , gentrack, NULL , NULL);
-#else
-    parent_id = mtp_device->default_music_folder;
-    ret = LIBMTP_Send_Track_From_File(mtp_device, filename , gentrack, NULL , NULL, parent_id);
-#endif
     LIBMTP_destroy_track_t(gentrack);
     if (ret == 0) 
         g_print("Track upload finished!\n");
