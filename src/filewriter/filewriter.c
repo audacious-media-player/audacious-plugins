@@ -62,7 +62,7 @@ static gchar *fileext_str[] =
 #endif
 };
 
-static FileWriter plugin;
+static FileWriter *plugin;
 
 static GtkWidget *saveplace_hbox, *saveplace;
 static gboolean save_original = TRUE;
@@ -124,18 +124,18 @@ static void set_plugin(void)
         fileext = 0;
 
     if (fileext == WAV)
-        plugin = wav_plugin;
+        plugin = &wav_plugin;
 #ifdef FILEWRITER_MP3
     if (fileext == MP3)
-        plugin = mp3_plugin;
+        plugin = &mp3_plugin;
 #endif
 #ifdef FILEWRITER_VORBIS
     if (fileext == VORBIS)
-        plugin = vorbis_plugin;
+        plugin = &vorbis_plugin;
 #endif
 #ifdef FILEWRITER_FLAC
     if (fileext == FLAC)
-        plugin = flac_plugin;
+        plugin = &flac_plugin;
 #endif
 }
 
@@ -156,8 +156,8 @@ static OutputPluginInitStatus file_init(void)
         file_path = g_strdup(g_get_home_dir());
 
     set_plugin();
-    if (plugin.init)
-        plugin.init(&file_write_output);
+    if (plugin->init)
+        plugin->init(&file_write_output);
 
     return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }
@@ -259,9 +259,9 @@ static gint file_open(AFormat fmt, gint rate, gint nch)
     if (!output_file)
         return 0;
 
-    convert_init(fmt, plugin.format_required, nch);
+    convert_init(fmt, plugin->format_required, nch);
 
-    rv = (plugin.open)();
+    rv = (plugin->open)();
 
     return rv;
 }
@@ -272,7 +272,7 @@ static void file_write(void *ptr, gint length)
 
     len = convert_process(ptr, length);
 
-    plugin.write(convert_output, len);
+    plugin->write(convert_output, len);
 }
 
 static gint file_write_output(void *ptr, gint length)
@@ -282,7 +282,7 @@ static gint file_write_output(void *ptr, gint length)
 
 static void file_close(void)
 {
-    plugin.close();
+    plugin->close();
     convert_free();
 
     if (output_file)
@@ -309,17 +309,17 @@ static void file_pause(short p)
 
 static gint file_free(void)
 {
-    return plugin.free();
+    return plugin->free();
 }
 
 static gint file_playing(void)
 {
-    return plugin.playing();
+    return plugin->playing();
 }
 
 static gint file_get_written_time(void)
 {
-    return plugin.get_written_time();
+    return plugin->get_written_time();
 }
 
 static gint file_get_output_time(void)
@@ -361,16 +361,16 @@ static void fileext_cb(GtkWidget *combo, gpointer data)
 {
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
     set_plugin();
-    if (plugin.init)
-        plugin.init(&file_write_output);
+    if (plugin->init)
+        plugin->init(&file_write_output);
 
-    gtk_widget_set_sensitive(plugin_button, plugin.configure != NULL);
+    gtk_widget_set_sensitive(plugin_button, plugin->configure != NULL);
 }
 
 static void plugin_configure_cb(GtkWidget *button, gpointer data)
 {
-    if (plugin.configure)
-        plugin.configure();
+    if (plugin->configure)
+        plugin->configure();
 }
 
 
@@ -465,7 +465,7 @@ static void file_configure(void)
         g_signal_connect(G_OBJECT(fileext_combo), "changed", G_CALLBACK(fileext_cb), NULL);
 
         plugin_button = gtk_button_new_with_label(_("Configure"));
-        gtk_widget_set_sensitive(plugin_button, plugin.configure != NULL);
+        gtk_widget_set_sensitive(plugin_button, plugin->configure != NULL);
         g_signal_connect(G_OBJECT(plugin_button), "clicked", G_CALLBACK(plugin_configure_cb), NULL);
         gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, FALSE, FALSE, 0);
 
