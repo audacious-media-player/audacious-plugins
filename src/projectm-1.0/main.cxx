@@ -86,8 +86,8 @@ int maxsamples=512;
 int texsize=512;
 int gx=32,gy=24;
 int wvw=400,wvh=400;
-int fvw=1024,fvh=768;
-int fps=35, fullscreen=0;
+int fvw=1680,fvh=1050;
+int fps=35, fullscreen=1;
 
 // char *title;
 
