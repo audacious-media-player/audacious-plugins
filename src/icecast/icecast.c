@@ -95,7 +95,7 @@ Tuple *tuple = NULL;
 static shout_t *shout = NULL;
 static gboolean paused = FALSE;
 
-static void ice_init(void);
+static OutputPluginInitStatus ice_init(void);
 static void ice_cleanup(void);
 static void ice_about(void);
 static gint ice_open(AFormat fmt, gint rate, gint nch);
@@ -115,6 +115,7 @@ static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, 
 OutputPlugin ice_op =
 {
     .description = "Icecast Plugin (output)",
+    .probe_priority = 0,
     .init = ice_init,
     .cleanup = ice_cleanup,
     .about = ice_about,
@@ -161,7 +162,7 @@ static void set_plugin(void)
 #endif
 }
 
-static void ice_init(void)
+static OutputPluginInitStatus ice_init(void)
 {
     ConfigDb *db;
     shout_init();
@@ -201,6 +202,8 @@ static void ice_init(void)
     plugin = plugin_new;
     if (plugin.init)
         plugin.init(&ice_write_output);
+
+    return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }
 
 static void ice_cleanup(void)

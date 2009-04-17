@@ -187,7 +187,7 @@ _aud_tuple_copy_field(Tuple *tuple, Tuple *tuple2, const gint nfield, const gcha
 Tuple *
 get_song_tuple(gchar *uri) /* *.cue or *.cue?1- */
 {
-    Tuple *phys_tuple, *out;
+    Tuple *phys_tuple = NULL, *out;
     ProbeResult *pr = NULL;
     InputPlugin *dec = NULL;
     gint track = 0;
