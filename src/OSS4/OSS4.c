@@ -57,7 +57,7 @@ static void oss_about(void)
                      G_CALLBACK(gtk_widget_destroyed), &dialog);
 }
 
-static void oss_init(void)
+static OutputPluginInitStatus oss_init(void)
 {
     mcs_handle_t *db;
 
@@ -81,9 +81,19 @@ static void oss_init(void)
         aud_cfg_db_get_int(db, "OSS", "saved_volume", &vol);
         aud_cfg_db_close(db);
     }
-        //volume gets saved anyway, but is ignored unless "saved_volume" is true
-        if(!oss_cfg.save_volume)
-            vol=0x6464;  //maximum
+    
+    //volume gets saved anyway, but is ignored unless "saved_volume" is true
+    if(!oss_cfg.save_volume)
+        vol = 0x6464;  //maximum
+            
+    if (!oss_hardware_present())
+    {
+        return OUTPUT_PLUGIN_INIT_NO_DEVICES;
+    }
+    else
+    {
+        return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+    }
 }
 
 static void oss_cleanup(void)
@@ -101,7 +111,8 @@ static void oss_cleanup(void)
 }
 
 static OutputPlugin oss4_op = {
-    .description = "OSS4 Output Plugin",                      /* Description */
+    .description = "OSS4 Output Plugin",
+    .probe_priority = 1,
     .init = oss_init,
     .cleanup = oss_cleanup,
     .about = oss_about,

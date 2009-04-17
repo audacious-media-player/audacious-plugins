@@ -49,7 +49,7 @@ typedef struct {
 extern OSSConfig oss_cfg;
 int vol;
 void oss_configure(void);
-
+int oss_hardware_present(void);
 void oss_get_volume(int *l, int *r);
 void oss_set_volume(int l, int r);
 

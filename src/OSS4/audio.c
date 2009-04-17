@@ -19,7 +19,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-extern void close_mixer_device();
+static void oss_describe_error();
+static void close_mixer_device();
 
 #include <glib.h>
 #include <string.h>
@@ -35,7 +36,8 @@ extern void close_mixer_device();
 
 #define NFRAGS		32
 
-static gint fd = 0;
+static gint fd = -1, mixerfd = -1;
+static oss_sysinfo sysinfo;
 static char *buffer;
 static gboolean going, prebuffer, paused, unpause, do_pause, remove_prebuffer;
 static gint device_buffer_used, buffer_size, prebuffer_size, blk_size;
@@ -83,6 +85,82 @@ struct format_info effect;
  */
 struct format_info output;
 
+int oss_hardware_present()
+{    
+    /*
+     * Open the mixer device used for calling SNDCTL_SYSINFO and
+     * SNDCTL_AUDIOINFO.
+     */
+    if ((mixerfd = open("/dev/mixer", O_RDWR, 0)) == -1)
+    {
+        perror("/dev/mixer");
+        oss_describe_error();
+        close_mixer_device();
+        
+        return 0;
+    }
+
+    if (ioctl(mixerfd, SNDCTL_SYSINFO, &sysinfo) == -1)
+    {
+        perror("SNDCTL_SYSINFO");
+        oss_describe_error();
+        close_mixer_device();
+
+        return 0;
+    }
+    else
+    {
+        close_mixer_device();
+        
+        if (sysinfo.numaudios > 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+}
+
+static void
+oss_describe_error()
+{
+    switch (errno)
+    {
+        case ENXIO:
+            fprintf(stderr, "OSS has not detected any supported sound hardware in your system.\n");
+            break;
+            
+        case EINVAL:
+            fprintf(stderr, "Error: OSS version 4.0 or later is required\n");
+            break;
+
+        case ENODEV:
+            fprintf(stderr, "The device file was found in /dev but\n"
+            "OSS is not loaded. You need to load it by executing\n"
+            "the soundon command.\n");
+            break;
+
+        case ENOSPC:
+            fprintf(stderr, "Your system cannot allocate memory for the device\n"
+            "buffers. Reboot your machine and try again.\n");
+            break;
+
+        case ENOENT:
+            fprintf(stderr, "The device file is missing from /dev.\n"
+            "Perhaps you have not installed and started Open Sound System yet\n");
+            break;
+
+        case EBUSY:
+            fprintf(stderr, "The device is busy. There is some other application\n"
+            "using it.\n");
+            break;
+
+        default:
+             fprintf(stderr, "Unknown OSS error.\n");
+    }
+}
 
 static void
 oss_calc_device_buffer_used(void)
@@ -734,6 +812,15 @@ oss_set_volume(int l, int r)
 void
 close_mixer_device()
 {
+    if (fd != -1)
+    {
+        close(fd);
+        fd = -1;
+    }
+    
+    if (mixerfd != -1)
+    {
+        close(mixerfd);
+        mixerfd = -1;
+    }
 }
-
-
