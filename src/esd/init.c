@@ -27,12 +27,13 @@ esd_info_t *all_info;
 esd_player_info_t *player_info;
 
 
-void
+OutputPluginInitStatus
 esdout_init(void)
 {
     mcs_handle_t *db;
     char *env;
     int lp = 80 , rp = 80;
+    int fd;
 
     memset(&esd_cfg, 0, sizeof(ESDConfig));
     esd_cfg.port = ESD_DEFAULT_PORT;
@@ -71,4 +72,13 @@ esdout_init(void)
 
     if (!esd_cfg.server)
         esd_cfg.server = g_strdup("localhost");
+
+    fd = esd_open_sound(esd_cfg.hostname);
+    if (fd >= 0)
+    {
+        esd_close(fd);
+        return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+    }
+    else
+        return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }

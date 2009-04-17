@@ -44,7 +44,7 @@ typedef struct {
 
 extern ESDConfig esd_cfg;
 
-void esdout_init(void);
+OutputPluginInitStatus esdout_init(void);
 void esdout_about(void);
 void esdout_configure(void);
 
