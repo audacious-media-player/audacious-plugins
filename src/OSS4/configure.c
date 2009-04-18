@@ -27,7 +27,7 @@
 #include <string.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-
+#include <sys/ioctl.h>
 
 static GtkWidget *configure_win = NULL;
 static GtkWidget *mixer_save_check,*buffer_size_spin, *buffer_pre_spin;
@@ -75,9 +75,9 @@ configure_win_ok_cb(GtkWidget * w, gpointer data)
 }
 
 static void
-configure_win_audio_dev_cb(GtkWidget * widget, gint device)
+configure_win_audio_dev_cb(GtkWidget * widget, gpointer data)
 {
-    audio_device = device;
+    audio_device = GPOINTER_TO_INT(data);
 }
 
 static void
@@ -92,53 +92,76 @@ static void
 scan_devices(gchar * type, GtkWidget * option_menu, GtkSignalFunc sigfunc)
 {
     GtkWidget *menu, *item;
-    VFSFile *file;
-    gchar buffer[256], *temp, *tmp2;
-    gboolean found = FALSE;
-    gint index = 0;
-
+    oss_sysinfo sysinfo;
+    gint mixerfd = -1;
+    gint i, acc;
+    
     menu = gtk_menu_new();
-
-    if ((file = aud_vfs_fopen("/dev/sndstat", "r"))) {
-        while (aud_vfs_fgets(buffer, 255, file)) {
-            if (found && buffer[0] == '\n')
-                break;
-            if (buffer[strlen(buffer) - 1] == '\n')
-                buffer[strlen(buffer) - 1] = '\0';
-            if (found) {
-                if (index == 0) {
-                    tmp2 = strchr(buffer, ':');
-                    if (tmp2) {
-                        tmp2++;
-                        while (*tmp2 == ' ')
-                            tmp2++;
-                    }
-                    else
-                        tmp2 = buffer;
-                    temp = g_strdup_printf(_("Default (%s)"), tmp2);
-                    item = gtk_menu_item_new_with_label(temp);
-                    g_free(temp);
+    
+    /*
+     * Open the mixer device used for calling SNDCTL_SYSINFO and
+     * SNDCTL_AUDIOINFO.
+     */    
+    if ((mixerfd = open(DEFAULT_MIXER, O_RDWR, 0)) == -1)
+    {
+        perror(DEFAULT_MIXER);
+        oss_describe_error();
+    }
+    else
+    {
+        if (ioctl(mixerfd, SNDCTL_SYSINFO, &sysinfo) == -1)
+        {
+            perror("SNDCTL_SYSINFO");
+            oss_describe_error();
+            close(mixerfd);
+        }
+        else
+        {        
+            for (i = 0; i < sysinfo.numaudios; i++)
+            {
+                oss_audioinfo ainfo;
+                ainfo.dev = i;
+            
+                if (ioctl(mixerfd, SNDCTL_AUDIOINFO, &ainfo) == -1)
+                {
+                    perror("SNDCTL_AUDIOINFO");
+                    oss_describe_error();
+                    close(mixerfd);
                 }
                 else
-                    item = gtk_menu_item_new_with_label(buffer);
-                g_signal_connect(G_OBJECT(item), "activate",
-                                 G_CALLBACK(sigfunc), (gpointer)(long)(index++));
-                gtk_widget_show(item);
-                gtk_menu_append(GTK_MENU(menu), item);
-            }
-            if (!strcasecmp(buffer, type))
-                found = 1;
+                {
+                    acc = ainfo.caps & (PCM_CAP_INPUT | PCM_CAP_OUTPUT);
+                
+                    switch (acc)
+                    {
+                        case PCM_CAP_OUTPUT:
+                            item = gtk_menu_item_new_with_label(g_strdup_printf("%d. %s (OUTPUT)", i, ainfo.name));
+                            break;
 
+                        case PCM_CAP_INPUT | PCM_CAP_OUTPUT:
+                            item = gtk_menu_item_new_with_label(g_strdup_printf("%d. %s (INPUT/OUTPUT)", i, ainfo.name));
+                            break;
+                        
+                        case PCM_CAP_INPUT:
+                            item = gtk_menu_item_new_with_label(g_strdup_printf("%d. %s (INPUT)", i, ainfo.name));
+                            break;
+                            
+                        default:
+                            continue;
+                    }
+
+                    gtk_widget_show(item);
+                    gtk_menu_append(GTK_MENU(menu), item);
+                
+                    g_signal_connect(G_OBJECT(item), "activate",
+                                     G_CALLBACK(sigfunc), GINT_TO_POINTER(i));
+                }
+            }
+
+            close(mixerfd);
         }
-        aud_vfs_fclose(file);
     }
-    else {
-        item = gtk_menu_item_new_with_label(_("Default"));
-        g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(sigfunc),
-                         (gpointer) 0);
-        gtk_widget_show(item);
-        gtk_menu_append(GTK_MENU(menu), item);
-    }
+
     gtk_option_menu_set_menu(GTK_OPTION_MENU(option_menu), menu);
 }
 

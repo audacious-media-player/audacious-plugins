@@ -19,9 +19,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-static void oss_describe_error();
-static void close_mixer_device();
-
 #include <glib.h>
 #include <string.h>
 
@@ -36,8 +33,7 @@ static void close_mixer_device();
 
 #define NFRAGS		32
 
-static gint fd = -1, mixerfd = -1;
-static oss_sysinfo sysinfo;
+static gint fd = -1;
 static char *buffer;
 static gboolean going, prebuffer, paused, unpause, do_pause, remove_prebuffer;
 static gint device_buffer_used, buffer_size, prebuffer_size, blk_size;
@@ -85,17 +81,18 @@ struct format_info effect;
  */
 struct format_info output;
 
-int oss_hardware_present()
+gint oss_hardware_present()
 {    
+    gint mixerfd;
+    oss_sysinfo sysinfo;
+    
     /*
-     * Open the mixer device used for calling SNDCTL_SYSINFO and
-     * SNDCTL_AUDIOINFO.
+     * Open the mixer device used for calling SNDCTL_SYSINFO
      */
-    if ((mixerfd = open("/dev/mixer", O_RDWR, 0)) == -1)
+    if ((mixerfd = open(DEFAULT_MIXER, O_RDWR, 0)) == -1)
     {
-        perror("/dev/mixer");
+        perror(DEFAULT_MIXER);
         oss_describe_error();
-        close_mixer_device();
         
         return 0;
     }
@@ -104,13 +101,13 @@ int oss_hardware_present()
     {
         perror("SNDCTL_SYSINFO");
         oss_describe_error();
-        close_mixer_device();
+        close(mixerfd);
 
         return 0;
     }
     else
     {
-        close_mixer_device();
+        close(mixerfd);
         
         if (sysinfo.numaudios > 0)
         {
@@ -123,7 +120,7 @@ int oss_hardware_present()
     }
 }
 
-static void
+void
 oss_describe_error()
 {
     switch (errno)
@@ -574,7 +571,11 @@ oss_close(void)
     wr_index = 0;
     rd_index = 0;
 
-    close_mixer_device();
+    if (fd != -1)
+    {
+        close(fd);
+        fd = -1;
+    }
 }
 
 void
@@ -807,20 +808,4 @@ oss_set_volume(int l, int r)
     long cmd=SNDCTL_DSP_SETPLAYVOL;   
     vol = (r << 8) | l;
     ioctl(fd, cmd, &vol);
-}
-
-void
-close_mixer_device()
-{
-    if (fd != -1)
-    {
-        close(fd);
-        fd = -1;
-    }
-    
-    if (mixerfd != -1)
-    {
-        close(mixerfd);
-        mixerfd = -1;
-    }
 }

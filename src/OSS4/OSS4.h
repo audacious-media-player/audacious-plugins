@@ -34,6 +34,7 @@
 #include <glib.h>
 
 #define IS_BIG_ENDIAN (G_BYTE_ORDER == G_BIG_ENDIAN)
+#define DEFAULT_MIXER "/dev/mixer"
 
 extern OutputPlugin op;
 
@@ -50,6 +51,7 @@ extern OSSConfig oss_cfg;
 int vol;
 void oss_configure(void);
 int oss_hardware_present(void);
+void oss_describe_error();
 void oss_get_volume(int *l, int *r);
 void oss_set_volume(int l, int r);
 

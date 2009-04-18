@@ -107,7 +107,6 @@ static void oss_cleanup(void)
         g_free(oss_cfg.alt_audio_device);
         oss_cfg.alt_audio_device = NULL;
     }
-   
 }
 
 static OutputPlugin oss4_op = {
