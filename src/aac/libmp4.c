@@ -139,13 +139,15 @@ static void mp4_stop(InputPlayback *playback)
 /// aac_parse_frames needs a buffer at least 8 bytes long
 int aac_parse_frame(guchar *buf, int *srate, int *num)
 {
-        int i = 0, sr, fl = 0, id;
+        int i = 0, sr, fl = 0;
         static int srates[] = {96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 0, 0, 0};
 
         if((buf[i] != 0xFF) || ((buf[i+1] & 0xF6) != 0xF0))
                 return 0;
 
+/* We currently have no use for the id below.
         id = (buf[i+1] >> 3) & 0x01;    //id=1 mpeg2, 0: mpeg4
+*/
         sr = (buf[i+2] >> 2)  & 0x0F;
         if(sr > 11)
                 return 0;
