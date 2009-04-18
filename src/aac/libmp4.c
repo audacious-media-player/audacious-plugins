@@ -594,7 +594,6 @@ static int my_decode_mp4( InputPlayback *playback, char *filename, mp4ff_t *mp4f
         if((rc == 0) || (buffer== NULL) || (bufferSize == 0) || (bufferSize > BUFFER_SIZE)){
             g_print("MP4: read error\n");
             sampleBuffer = NULL;
-            sampleID=0;
             playback->output->buffer_free();
             playback->output->close_audio();
 
