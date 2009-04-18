@@ -85,7 +85,6 @@ scan_file(struct mad_info_t * info, gboolean fast)
     int tagsize = 0;
     unsigned char buffer[BUFFER_SIZE];
     struct mad_frame frame;     /* to read xing data */
-    gboolean has_xing = FALSE;
     guint bitrate_frames = 0;
     double xing_bitrate = 0.0;
     double accum_bitrate = 0.0;
@@ -189,7 +188,6 @@ scan_file(struct mad_info_t * info, gboolean fast)
                     }
                     if (xing_parse(&info->xing, stream.anc_ptr, stream.anc_bitlen) == 0) {
                         AUDDBG("xing header found\n");
-                        has_xing = TRUE;
                         info->vbr = TRUE;   /* otherwise xing header would have been 'Info' */
 
                         AUDDBG("xing: bytes = %ld frames = %ld\n", info->xing.bytes, info->xing.frames);
