@@ -701,7 +701,6 @@ void my_decode_aac( InputPlayback *playback, char *filename, VFSFile *file )
       memmove(streambuffer, &streambuffer[bufferconsumed], buffervalid);
       buffervalid += aud_vfs_fread(&streambuffer[buffervalid], 1,
                      BUFFER_SIZE-buffervalid, file);
-      bufferconsumed = 0;
     }
 
     bufferconsumed = faacDecInit(decoder,
