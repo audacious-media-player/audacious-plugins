@@ -165,7 +165,7 @@ static void wma_init(void)
 
 static int wma_is_our_fd(char *filename, VFSFile *fd)
 {
-    AVCodec *codec2;
+    AVCodec *codec2 = NULL;
     AVCodecContext *c2 = NULL;
     AVFormatContext *ic2 = NULL;
     int wma_idx2;
@@ -174,8 +174,15 @@ static int wma_is_our_fd(char *filename, VFSFile *fd)
 
     for(wma_idx2 = 0; wma_idx2 < ic2->nb_streams; wma_idx2++) {
         c2 = &ic2->streams[wma_idx2]->codec;
-        if(c2->codec_type == CODEC_TYPE_AUDIO) break;
+        if(c2->codec_type == CODEC_TYPE_AUDIO)
+        {
+	    av_find_stream_info(ic2);
+            codec2 = avcodec_find_decoder(c2->codec_id);
+            if (codec2) break;
+	}
     }
+
+    if (!codec2) return 0;
 
     av_find_stream_info(ic2);
 
@@ -300,7 +307,7 @@ static void do_pause (InputPlayback * playback, AVFormatContext * context, int i
 
 static void wma_play_file(InputPlayback *playback)
 {
-    AVCodec *codec;
+    AVCodec *codec = NULL;
     AVCodecContext *c = NULL;
     AVFormatContext *ic = NULL;
     uint8_t *inbuf_ptr;
@@ -313,14 +320,15 @@ static void wma_play_file(InputPlayback *playback)
 
     for(wma_idx = 0; wma_idx < ic->nb_streams; wma_idx++) {
         c = &ic->streams[wma_idx]->codec;
-        if(c->codec_type == CODEC_TYPE_AUDIO) break;
+        if(c->codec_type == CODEC_TYPE_AUDIO)
+        {
+	    av_find_stream_info(ic);
+            codec = avcodec_find_decoder(c->codec_id);
+            if (codec) break;
+	}
     }
 
-    av_find_stream_info(ic);
-
-    codec = avcodec_find_decoder(c->codec_id);
-
-    if(!codec) return;
+    if (!codec) return;
 
     if(avcodec_open(c, codec) < 0) return;
 
