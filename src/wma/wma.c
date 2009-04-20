@@ -103,7 +103,7 @@ static gchar *str_twenty_to_space(gchar * str)
     return str;
 }
 
-static void wma_about(void) 
+static void wma_about(void)
 {
     char *title;
     char *message;
@@ -203,7 +203,7 @@ static void wma_do_pause(InputPlayback *playback, short p)
     wma_pause = p;
 }
 
-static void wma_seek(InputPlayback *playback, int time) 
+static void wma_seek(InputPlayback *playback, int time)
 {
     wma_seekpos = time;
     while(wma_decode && wma_seekpos!=-1) g_usleep(10000);
@@ -381,8 +381,6 @@ static void wma_play_file(InputPlayback *playback)
             while(!fifo_read(&f, wma_s_outbuf, wma_st_buff, &f.rptr) && wma_decode)
             {
                  sst_buff = wma_st_buff;
-                 if (wma_pause)
-                     memset(wma_s_outbuf, 0, sst_buff);    
                  playback->pass_audio(playback, FMT_S16_NE,
                                       c->channels, sst_buff, (short *)wma_s_outbuf, NULL);
                  memset(wma_s_outbuf, 0, sst_buff);
@@ -404,11 +402,11 @@ static void wma_play_file(InputPlayback *playback)
     if(ic) av_close_input_file(ic);
 }
 
-static void wma_stop(InputPlayback *playback) 
+static void wma_stop(InputPlayback *playback)
 {
     wma_decode = 0;
     playback->playing = 0;
     if(wma_pause) wma_do_pause(playback, 0);
     g_thread_join(wma_decode_thread);
     playback->output->close_audio();
-}   
+}
