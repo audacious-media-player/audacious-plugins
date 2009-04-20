@@ -1239,12 +1239,12 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
     default:
         return FALSE;
     }
-#if 0
     if (refresh) {
+#if 0
         g_cond_signal(cond_scan);
+#endif
         playlistwin_update_list(aud_playlist_get_active());
     }
-#endif
     return TRUE;
 }
 
