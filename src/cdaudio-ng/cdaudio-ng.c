@@ -59,14 +59,13 @@ static gint			firsttrackno = -1;
 static gint			lasttrackno = -1;
 static CdIo_t			*pcdio = NULL;
 static trackinfo_t		*trackinfo = NULL;
-static gboolean			is_paused = FALSE;
+static GMutex			*trackinfo_mutex;
+static volatile gboolean	trackinfo_changed = FALSE;
+static volatile gboolean	is_paused = FALSE;
 static gint			playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
 static InputPlayback    	*pglobalinputplayback = NULL;
 static GtkWidget		*main_menu_item, *playlist_menu_item;
-static GThread			*scan_cd_thread = NULL;
-static gint			first_trackno_to_add_after_scan = -1;
-static gint			last_trackno_to_add_after_scan = -1;
 
 static void			cdaudio_init(void);
 static void			cdaudio_about(void);
@@ -88,7 +87,8 @@ static void			rescan_menu_click(void);
 static Tuple            	*create_tuple_from_trackinfo_and_filename(gchar *filename);
 static void			dae_play_loop(dae_params_t *pdae_params);
 static void			*scan_cd(void *nothing);
-static void			scan_cd_threaded(int firsttrackno, int lasttrackno);
+static void			refresh_trackinfo(void);
+static gboolean			refresh_playlist(gboolean force);
 static void			append_track_to_playlist(int trackno);
 static gboolean                 show_noaudiocd_info();
 static gint			calculate_track_length(gint startlsn, gint endlsn);
@@ -170,15 +170,6 @@ static void cdaudio_init()
 		return;
 	}
 
-	if (!cdio_init()) {
-		cdaudio_error("Failed to initialize cdio subsystem.\n");
-		cleanup_on_error();
-		aud_cfg_db_close(db);
-		return;
-	}
-
-	libcddb_init();
-
 	aud_cfg_db_get_bool(db, "CDDA", "use_dae", &cdng_cfg.use_dae);
 	aud_cfg_db_get_bool(db, "CDDA", "use_cdtext", &cdng_cfg.use_cdtext);
 	aud_cfg_db_get_bool(db, "CDDA", "use_cddb", &cdng_cfg.use_cddb);
@@ -201,6 +192,17 @@ static void cdaudio_init()
 		cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
           cdng_cfg.cddb_server, cdng_cfg.cddb_path, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);
 
+	if (!cdio_init()) {
+		cdaudio_error("Failed to initialize cdio subsystem.\n");
+		cleanup_on_error();
+		return;
+	}
+
+	libcddb_init();
+
+	trackinfo_mutex = g_mutex_new();
+	trackinfo_changed = FALSE;
+
 	menu_item_text = _("Rescan CD");
 	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_REFRESH, GTK_ICON_SIZE_MENU));
@@ -212,7 +214,7 @@ static void cdaudio_init()
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
 	gtk_widget_show(playlist_menu_item);
 	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
-	g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(menu_click), NULL);
+	g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(rescan_menu_click), NULL);
 
 	menu_item_text = _("Add CD");
 	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
@@ -267,27 +269,15 @@ static gint cdaudio_is_our_file(gchar *filename)
 
 	if (filename != NULL && !strcmp(filename, CDDA_DUMMYPATH)) {
 		debug("\"%s\" will add the whole audio cd\n", filename);
-		menu_click();
+		refresh_trackinfo();
+		refresh_playlist(TRUE);
 		return FALSE;
 	}
 
 	if ((filename != NULL) && strlen(filename) > 4 && (!strcasecmp(filename + strlen(filename) - 4, ".cda"))) {
 		gint trackno = find_trackno_from_filename(filename);
 
-		/* no CD information yet */
-		if (pcdio == NULL) {
-			debug("no CD information, scanning\n");
-			if (first_trackno_to_add_after_scan == -1)
-				scan_cd_threaded(0, 0);
-			else
-				scan_cd_threaded(trackno, trackno);
-		}
-
-		/* reload the cd information if the media has changed */
-		if (pcdio != NULL && cdio_get_media_changed(pcdio)) {
-			debug("CD changed, rescanning\n");
-			scan_cd_threaded(0, 0);
-		}
+		refresh_trackinfo ();
 		
 		/* check if the requested track actually exists on the current audio cd */
 		if (trackno < firsttrackno || trackno > lasttrackno) {
@@ -333,21 +323,12 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 
 	pglobalinputplayback = pinputplayback;
 
-	if (trackinfo == NULL) {
-		debug("no CD information, scanning\n");
-		if (scan_cd_thread != NULL)
-			g_thread_join(scan_cd_thread);
-		else
-			scan_cd(pinputplayback);
-	}
-	else
-		if (cdio_get_media_changed(pcdio)) {
-			debug("CD changed, rescanning\n");
-			if (scan_cd_thread != NULL)
-				g_thread_join(scan_cd_thread);
-			else
-				scan_cd(pinputplayback);
-		}
+	refresh_trackinfo ();
+
+	gint trackno = find_trackno_from_filename(pinputplayback->filename);
+
+	if (refresh_playlist(FALSE))
+		return;
 
 	if (trackinfo == NULL) {
 		debug("no CD information can be retrieved, aborting\n");
@@ -355,7 +336,6 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 		return;
 	}
 
-	gint trackno = find_trackno_from_filename(pinputplayback->filename);
 	if (trackno < firsttrackno || trackno > lasttrackno) {
 		cdaudio_error("Track #%d is out of range [%d..%d]\n", trackno, firsttrackno, lasttrackno);
 		cleanup_on_error();
@@ -568,8 +548,8 @@ static void cdaudio_cleanup(void)
 {
 	debug("cdaudio_cleanup()\n");
 
-	libcddb_shutdown();
-
+	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_MAIN, main_menu_item);
+	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST, playlist_menu_item);
 	if (pcdio != NULL) {
 		if (playing_track != -1 && !cdng_cfg.use_dae)
 			cdio_audio_stop(pcdio);
@@ -581,6 +561,10 @@ static void cdaudio_cleanup(void)
 		trackinfo = NULL;
 	}
 	playing_track = -1;
+
+	g_mutex_free(trackinfo_mutex);
+
+	libcddb_shutdown();
 
 	// todo: destroy the gui
 
@@ -597,8 +581,6 @@ static void cdaudio_cleanup(void)
 	aud_cfg_db_set_bool(db, "CDDA", "debug", cdng_cfg.debug);
 	aud_cfg_db_close(db);
 
-	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_MAIN, main_menu_item);
-	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST, playlist_menu_item);
 }
 
 static void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
@@ -632,31 +614,22 @@ static void menu_click(void)
 	debug("plugin services menu option selected\n");
 
 	/* reload the cd information if the media has changed, or no track information is available */
-	if (pcdio == NULL || cdio_get_media_changed(pcdio)) {
-		if (scan_cd_thread != NULL)
-			return;
-		else {
-			scan_cd_threaded(-1, -1);
-			debug("CD changed, rescanning\n");
-		}
-	}
-	else {
-		gint trackno;
-		for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
-			append_track_to_playlist(trackno);
-	}
+	refresh_trackinfo();
+	(void)refresh_playlist(TRUE);
 }
 
 static void rescan_menu_click(void)
 {
 	debug("plugin services rescan option selected\n");
 	
-	scan_cd_threaded(0, 0);
+	refresh_trackinfo();
 }
 
 static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
 {
 	Tuple *tuple = aud_tuple_new_from_filename(filename);
+
+	refresh_trackinfo ();
 
 	if (trackinfo == NULL)
 		return tuple;
@@ -774,29 +747,12 @@ static void dae_play_loop(dae_params_t *pdae_params)
 	g_free(buffer);
 }
 
-static void scan_cd_threaded(int firsttrackno, int lasttrackno)
-{
-	if (scan_cd_thread != NULL) {
-		debug("A scan_cd thread is already running.\n");
-		return;
-	}
-	
-	first_trackno_to_add_after_scan = firsttrackno;
-	last_trackno_to_add_after_scan = lasttrackno;
-
-	scan_cd_thread = g_thread_create((GThreadFunc)scan_cd, NULL, TRUE, NULL);
-	if (scan_cd_thread == NULL) {
-		cdaudio_error("Failed to create the thread for retrieving song information.\n");
-		return;
-	}
-}
-
 static void append_track_to_playlist(int trackno) 
 {
 	gchar pathname[DEF_STRING_LEN];
 
 	g_snprintf(pathname, DEF_STRING_LEN, "%strack%02u.cda", CDDA_DUMMYPATH, trackno);
-	aud_playlist_add(aud_playlist_get_active(), pathname);
+	audacious_drct_pl_add_url_string(pathname);
 
 	debug("added track \"%s\" to the playlist\n", pathname);		
 }
@@ -832,7 +788,6 @@ static void *scan_cd(void *nothing)
 		pcdio = cdio_open(cdng_cfg.device, DRIVER_UNKNOWN);
 		if (pcdio == NULL) {
 			cdaudio_error("Failed to open CD device \"%s\".\n", cdng_cfg.device);
-			scan_cd_thread = NULL;
 			show_noaudiocd_info();
 			return NULL;
 		}
@@ -845,7 +800,6 @@ static void *scan_cd(void *nothing)
 			if (pcdio == NULL) {
 				cdaudio_error("Failed to open CD.\n");
 				cleanup_on_error();
-				scan_cd_thread = NULL;
 				show_noaudiocd_info();
 				return NULL;
 			}
@@ -854,7 +808,6 @@ static void *scan_cd(void *nothing)
 		else {
 			cdaudio_error("Unable to find or access a CDDA capable drive.\n");
 			cleanup_on_error();
-			scan_cd_thread = NULL;
 			show_noaudiocd_info();
 			return NULL;
 		}
@@ -876,7 +829,6 @@ static void *scan_cd(void *nothing)
 	if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK) {
 		cdaudio_error("Failed to retrieve first/last track number.\n");
 		cleanup_on_error();
-		scan_cd_thread = NULL;
 		show_noaudiocd_info();
 		return NULL;
 	}
@@ -899,7 +851,6 @@ static void *scan_cd(void *nothing)
 		if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN || trackinfo[trackno].endlsn == CDIO_INVALID_LSN) {
 			cdaudio_error("Failed to retrieve stard/end lsn for track %d.\n", trackno);
 			cleanup_on_error();
-			scan_cd_thread = NULL;
 			show_noaudiocd_info();
 			return NULL;
 		}
@@ -1065,23 +1016,53 @@ static void *scan_cd(void *nothing)
 
 	debug("scan_cd ended\n");
 
-	scan_cd_thread = NULL;
-
-	
-	/* add the requested entries to the current playlist */
-	
-	if (first_trackno_to_add_after_scan == 0 || last_trackno_to_add_after_scan == 0)
-		return NULL;
-	
-	if (first_trackno_to_add_after_scan == -1)
-		first_trackno_to_add_after_scan = firsttrackno;
-	if (last_trackno_to_add_after_scan == -1)
-		last_trackno_to_add_after_scan = lasttrackno;
-	
-	for (trackno = first_trackno_to_add_after_scan; trackno <= last_trackno_to_add_after_scan; trackno++)
-		append_track_to_playlist(trackno);
-	
 	return NULL;
+}
+
+static void refresh_trackinfo (void)
+{
+
+	g_mutex_lock(trackinfo_mutex);
+
+	if (pcdio == NULL || cdio_get_media_changed(pcdio) || ! trackinfo) {
+		debug(pcdio ? "CD changed, rescanning\n"
+			    : "no CD information, scanning\n");
+		scan_cd(NULL);
+		trackinfo_changed = TRUE;
+	}
+
+	g_mutex_unlock(trackinfo_mutex);
+}
+
+static gboolean refresh_playlist (gboolean force)
+{
+	gint need_jump;
+	gint trackno;
+
+	g_mutex_lock(trackinfo_mutex);
+
+	if ((! trackinfo_changed && ! force) || ! trackinfo) {
+		g_mutex_unlock(trackinfo_mutex);
+		return FALSE;
+	}
+
+	need_jump = audacious_drct_pl_get_length () && trackinfo_changed;
+
+	audacious_drct_pl_clear ();
+
+	for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
+		append_track_to_playlist(trackno);
+
+	if (need_jump) {
+		audacious_drct_pq_clear ();
+		audacious_drct_pq_add (0);
+	}
+
+	trackinfo_changed = FALSE;
+
+	g_mutex_unlock(trackinfo_mutex);
+
+	return TRUE;
 }
 
 static gint calculate_track_length(gint startlsn, gint endlsn)
