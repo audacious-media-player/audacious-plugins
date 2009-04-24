@@ -10,8 +10,7 @@ SRCS = callbacks.c			\
        interface-2.0.c			\
        monitor.c			\
        player.c				\
-       support-2.0.c			\
-       timing.c				\
+       support-2.0.c
 
 include ../../buildsys.mk
 include ../../extra.mk

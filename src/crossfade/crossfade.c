@@ -30,7 +30,6 @@
 #include "cfgutil.h"
 #include "format.h"
 #include "convert.h"
-#include "timing.h"
 
 #include "configure.h"
 #include "monitor.h"
@@ -902,10 +901,7 @@ static gint
 xfade_open_audio(AFormat fmt, int rate, int nch)
 {
 	gint pos;
-	gchar *file, *title, *comment;
-#if defined(HAVE_ID3LIB)
-	id3_t id3;
-#endif
+	gchar *file, *title;
 
 	struct timeval tv;
 	glong dt;
@@ -921,7 +917,6 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 	pos     = xfplaylist_get_position ();
 	file    = xfplaylist_get_filename (pos);
 	title   = xfplaylist_get_songtitle(pos);
-	comment = playlist_get_fadeinfo ? playlist_get_fadeinfo(pos) : NULL;
 
 	if (!file)
 		file = g_strdup(title);
@@ -951,17 +946,6 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 		*xmms_gentitle_format = old_gentitle_format;
 	}
 #endif
-
-	/* try to read comment from ID3 tag */
-#if defined(HAVE_ID3LIB)
-	if (!comment && get_id3(file, &id3))
-		comment = g_strdup(id3.comment);
-#endif
-
-	if (comment)
-		DEBUG(("[crossfade] open_audio: comment=\"%s\"\n", comment))
-	else
-		DEBUG(("[crossfade] open_audio: comment=NULL\n"));
 
 	/* is this an automatic crossfade? */
 	if (last_filename && (fade_config == &config->fc[FADE_CONFIG_XFADE]))
@@ -1010,114 +994,9 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 	g_free(last_filename);
 	last_filename = g_strdup(file);
 
-#if 0
-	/* FIXME: finish this */
-	/* Check if this is a short song. */
-	if (fade_config == &config->fc[FADE_CONFIG_XFADE])
-	{
-		DEBUG(("*** XFADE:\n"));
-		int current_length = playlist_get_current_length();
-		DEBUG(("*** length=%d\n", current_length));
-		if (current_length < 30 * 1000)
-			fade_config = &config->fc[FADE_CONFIG_ALBUM];
-	}
-#endif
-
-#ifdef TIMING_COMMENTS
-	last_timing = current_timing;
-	current_timing. in.enable = FALSE;
-	current_timing.out.enable = FALSE;
-	if (comment)
-	{
-		gchar *str;
-		if ((str = strstr(comment, "fadein=")))
-		{
-			current_timing.in.enable =
-			(3 == sscanf(str + 7, "%d,%d,%d",
-				&current_timing.in.len_ms,
-				&current_timing.in.volume,
-				&current_timing.in.skip_ms));
-			current_timing.in.ofs_ms = 0;  /* not used */
-		}
-
-		if ((str = strstr(comment, "fadeout=")))
-		{
-			current_timing.out.enable =
-			(4 == sscanf(str + 8, "%d,%d,%d,%d",
-				&current_timing.out.len_ms,
-				&current_timing.out.volume,
-				&current_timing.out.skip_ms,
-				&current_timing.out.ofs_ms));
-		}
-	}
-
-#if 0
-	//
-	// use the fade info only on a regular, non-manual songchange
-	//
-	if (fade_config && !((fade_config->config == FADE_CONFIG_XFADE) ||
-	                     (fade_config->config == FADE_CONFIG_ALBUM)))
-	      last_timing.out.enable = FALSE;
-#endif
-
-#if 1	
-	if (last_timing.out.enable || current_timing.in.enable)
-#else
-	if ((last_timing.out.enable || current_timing.in.enable) &&
-	   (!fade_config ||
-	    (fade_config->config == FADE_CONFIG_XFADE) ||
-	    (fade_config->config == FADE_CONFIG_ALBUM)))
-#endif
-	{
-		config->fc[FADE_CONFIG_TIMING].out_len_ms    = xfade_cfg_fadeout_len   (fade_config);
-		config->fc[FADE_CONFIG_TIMING].out_volume    = xfade_cfg_fadeout_volume(fade_config);
-		config->fc[FADE_CONFIG_TIMING].out_skip_ms   = 0;
-		config->fc[FADE_CONFIG_TIMING].ofs_custom_ms = xfade_cfg_offset        (fade_config);
-		config->fc[FADE_CONFIG_TIMING].in_skip_ms    = 0;
-		config->fc[FADE_CONFIG_TIMING].in_len_ms     = xfade_cfg_fadein_len    (fade_config);
-		config->fc[FADE_CONFIG_TIMING].in_volume     = xfade_cfg_fadein_volume (fade_config);
-		config->fc[FADE_CONFIG_TIMING].flush         = fade_config && fade_config->flush;
-
-		if (last_timing.out.enable && current_timing.in.enable)
-			config->fc[FADE_CONFIG_TIMING].ofs_custom_ms = 0;
-
-		if (last_timing.out.enable)
-		{
-			DEBUG(("[crossfade] open_audio: TIMING: out: enable=%d len=%d volume=%d skip=%d ofs=%d\n",
-				last_timing.out.enable,
-				last_timing.out.len_ms,
-				last_timing.out.volume,
-				last_timing.out.skip_ms,
-				last_timing.out.ofs_ms));
-
-			config->fc[FADE_CONFIG_TIMING].out_len_ms     = last_timing.out.len_ms;
-			config->fc[FADE_CONFIG_TIMING].out_volume     = last_timing.out.volume;
-			config->fc[FADE_CONFIG_TIMING].out_skip_ms    = last_timing.out.skip_ms;
-			config->fc[FADE_CONFIG_TIMING].ofs_custom_ms += last_timing.out.ofs_ms;
-		}
-		if (current_timing.in.enable)
-		{
-			DEBUG(("[crossfade] open_audio: TIMING:  in: enable=%d len=%d volume=%d skip=%d\n",
-				current_timing.in.enable,
-				current_timing.in.len_ms,
-				current_timing.in.volume,
-				current_timing.in.skip_ms));
-				
-			config->fc[FADE_CONFIG_TIMING].in_skip_ms     = current_timing.in.skip_ms;
-			config->fc[FADE_CONFIG_TIMING].in_len_ms      = current_timing.in.len_ms;
-			config->fc[FADE_CONFIG_TIMING].in_volume      = current_timing.in.volume;
-			config->fc[FADE_CONFIG_TIMING].ofs_custom_ms -= current_timing.in.ofs_ms; 
-			/* NOTE: in.ofs_ms is currently not used always 0 */
-		}
-		
-		fade_config = &config->fc[FADE_CONFIG_TIMING];
-	}
-#endif
-
 	/* cleanup */
 	g_free(file); file = NULL;
 	g_free(title); title = NULL;
-	g_free(comment); comment = NULL;
 
 	/* check for HTTP streaming */
 	if (config->enable_http_workaround && (0 == strncasecmp(file, "http://", 7)))

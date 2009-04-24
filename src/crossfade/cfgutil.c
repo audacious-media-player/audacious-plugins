@@ -466,8 +466,6 @@ xfade_save_config()
 		xmms_cfg_write_int    (cfgfile, section, "op_max_used_ms",       config->op_max_used_ms);
 
 		/* config items introduced by v0.2.6 */
-		xmms_cfg_write_string (cfgfile, section, "effect_plugin",        config->ep_name ? config->ep_name : DEFAULT_EP_NAME);
-		xmms_cfg_write_boolean(cfgfile, section, "effect_enable",        config->ep_enable);
 		xmms_cfg_write_int    (cfgfile, section, "output_rate",          config->output_rate);
 
 		/* config items introduced by v0.2.7 */
