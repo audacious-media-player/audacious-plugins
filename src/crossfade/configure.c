@@ -33,10 +33,6 @@
 #include "interface-2.0.h"
 #include "support-2.0.h"
 
-#ifdef HAVE_OSS
-#  include "oss.h"
-#endif
-
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -47,14 +43,6 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
-
-#ifdef HAVE_OSS
-#  ifdef HAVE_SYS_SOUNDCARD_H
-#    include <sys/soundcard.h>
-#  elif defined(HAVE_MACHINE_SOUNDCARD_H)
-#    include <machine/soundcard.h>
-#  endif
-#endif
 
 #ifdef HAVE_LIBSAMPLERATE
 #  include <samplerate.h>
@@ -148,7 +136,6 @@ static config_t *xfg = &_xfg;
 static gboolean checking = FALSE;
 static gint op_index;
 static plugin_config_t op_config;
-static gint ep_index;
 
 /* from crossfade.c */
 extern MUTEX buffer_mutex;
@@ -202,27 +189,6 @@ gtk2_spin_button_hack(GtkSpinButton *spin)
 
 /*-- callbacks --------------------------------------------------------------*/
 
-void
-on_output_oss_radio_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	SET_PAGE("output_notebook", 0);
-	xfg->output_method = OUTPUT_METHOD_BUILTIN_OSS;
-}
-
-void
-on_output_plugin_radio_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	SET_PAGE("output_notebook", 1);
-	xfg->output_method = OUTPUT_METHOD_PLUGIN;
-}
-
-void
-on_output_none_radio_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	SET_PAGE("output_notebook", 2);
-	xfg->output_method = OUTPUT_METHOD_BUILTIN_NULL;
-}
-
 static void
 resampling_rate_cb(GtkWidget *widget, gint index)
 {
@@ -236,176 +202,6 @@ resampling_quality_cb(GtkWidget *widget, gint index)
 	xfg->output_quality = index;
 }
 #endif
-
-/*** oss output **************************************************************/
-
-static void
-scan_devices(gchar *type, GtkWidget *option_menu, activate_func_t signal_f)
-{
-#ifdef HAVE_OSS
-	gchar buffer[256];
-	FILE *file;
-
-	GtkWidget *item;
-	gboolean found = FALSE;
-	gint type_len = strlen(type);
-#endif
-
-	GtkWidget *menu;
-	gint index = 0;
-
-	menu = gtk_menu_new();
-
-#ifdef HAVE_OSS
-	/* look for devices in /dev/sndstat or /proc/asound/sndstat (OSS style) */
-	if ((file = fopen("/dev/sndstat",             "r")) ||
-	    (file = fopen("/proc/asound/sndstat",     "r")) ||
-	    (file = fopen("/proc/asound/oss/sndstat", "r")))
-	{
-		while (fgets(buffer, sizeof(buffer), file))
-		{
-			gint i = strlen(buffer) - 1;
-			while ((i >= 0) && isspace(buffer[i]))
-				buffer[i--] = 0;
-				
-			if (found)
-			{
-				if (!buffer[0] || !isdigit(buffer[0]))
-					break;
-					
-				if (index == 0)
-				{
-					gchar *label, *p = strchr(buffer, ':');
-					if (p)
-						while (*++p == ' ');
-					else
-						p = buffer;
-
-					label = g_strdup_printf("Default (%s)", p);
-					item = gtk_menu_item_new_with_label(label);
-					g_free(label);
-				}
-				else
-					item = gtk_menu_item_new_with_label(buffer);
-
-				gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)signal_f, (gpointer) index);
-				gtk_widget_show(item);
-				gtk_menu_append(GTK_MENU(menu), item);
-				index++;
-			}
-			else if (strcmp(buffer, type) == 0)
-				found = TRUE;
-			else if (strncmp(buffer, type, type_len) == 0)
-				DEBUG(("[crossfade] scan_devices: %s\n", buffer));
-		}
-		fclose(file);
-
-		if (!found)
-			DEBUG(("[crossfade] scan_devices: section \"%s\" not found!\n", type));
-	}
-	else
-	{
-		DEBUG(("[crossfade] scan_devices: no sndstat found!\n"));
-#ifdef SOUND_MIXER_INFO
-		/* from xmms-3dse7 by Frank Cornelis */
-		DEBUG(("[crossfade] scan_devices: using alternate method...\n"));
-		for (;;)
-		{
-			gchar dev_name[32];
-			int fd;
-			gint mixer = 0;
-			mixer_info info;
-			gchar *label;
-
-			if (mixer != 0)
-				sprintf(dev_name, "/dev/mixer%d", mixer);
-			else
-				strcpy(dev_name, "/dev/mixer");
-
-			if ((fd = open(dev_name, O_RDONLY)) != -1)
-			{
-				if (ioctl(fd, SOUND_MIXER_INFO, &info) != -1)
-				{
-					label = g_strdup_printf(index ? "%s" : "Default (%s)", info.name);
-					add_menu_item(menu, label, signal_f, index, NULL);
-					g_free(label);
-					index++;
-				}
-				close(fd);
-			}
-			else
-				break;
-			mixer++;
-		}
-#endif
-	}
-#endif /* HAVE_OSS */
-
-	/* create default entry if no device(s) could be found */
-	if (index == 0)
-		add_menu_item(menu, "Default", signal_f, 0, NULL);
-
-	/* attach menu */
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(option_menu), menu);
-}
-
-/*-- oss output callbacks ---------------------------------------------------*/
-
-void
-check_oss_dependencies()
-{
-	if (checking) return;
-	checking = TRUE;
-
-	SET_SENSITIVE("oss_adevice_optionmenu", !xfg->oss_use_alt_audio_device);
-	SET_SENSITIVE("oss_adevice_alt_entry",   xfg->oss_use_alt_audio_device);
-
-	SET_SENSITIVE("oss_mdevice_optionmenu", !xfg->oss_use_alt_mixer_device);
-	SET_SENSITIVE("oss_mdevice_alt_entry",   xfg->oss_use_alt_mixer_device);
-
-	SET_SENSITIVE("osshwb_fragments_label", !xfg->oss_maxbuf_enable);
-	SET_SENSITIVE("osshwb_fragments_spin",  !xfg->oss_maxbuf_enable);
-	SET_SENSITIVE("osshwb_fragsize_label",  !xfg->oss_maxbuf_enable);
-	SET_SENSITIVE("osshwb_fragsize_spin",   !xfg->oss_maxbuf_enable);
-
-	checking = FALSE;
-}
-
-void
-config_adevice_cb(GtkWidget *widget, gint device)
-{
-	xfg->oss_audio_device = device;
-}
-
-void
-config_mdevice_cb(GtkWidget *widget, gint device)
-{
-	xfg->oss_mixer_device = device;
-}
-
-void
-on_config_adevice_alt_check_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	if (checking) return;
-	xfg->oss_use_alt_audio_device = gtk_toggle_button_get_active(togglebutton);
-	check_oss_dependencies();
-}
-
-void
-on_config_mdevice_alt_check_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	if (checking) return;
-	xfg->oss_use_alt_mixer_device = gtk_toggle_button_get_active(togglebutton);
-	check_oss_dependencies();
-}
-
-void
-on_osshwb_maxbuf_check_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	if (checking) return;
-	xfg->oss_maxbuf_enable = gtk_toggle_button_get_active(togglebutton);
-	check_oss_dependencies();
-}
 
 /*** plugin output ***********************************************************/
 
@@ -541,136 +337,6 @@ void
 on_op_forcereopen_check_toggled(GtkToggleButton *togglebutton, gpointer user_data)
 {
 	op_config.max_write_enable = gtk_toggle_button_get_active(togglebutton);
-}
-
-/*** effects *****************************************************************/
-
-static void config_effect_plugin_cb(GtkWidget *widget, gint index);
-
-static gint
-scan_effect_plugins(GtkWidget *option_menu, gchar *selected)
-{
-	assert(xfplayer_get_effect_list());
-
-	GtkWidget *menu = gtk_menu_new();
-	GList *list = g_list_first(xfplayer_get_effect_list());
-	gint index = 0;
-	gint sel_index = -1;
-	gint def_index = -1;
-
-	/* sanity check */
-	if (selected == NULL)
-		selected = "";
-
-	/* parse module list */
-	while (list)
-	{
-		EffectPlugin *ep = (EffectPlugin *) list->data;
-		GtkWidget  *item = gtk_menu_item_new_with_label(ep->description);
-
-		if (def_index == -1)
-			def_index = index;
-			
-		if (ep->filename && !strcmp(g_basename(ep->filename), selected))
-			sel_index = index;
-
-		/* create menu item */
-		gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)config_effect_plugin_cb, (gpointer) index++);
-		gtk_widget_show(item);
-		gtk_menu_append(GTK_MENU(menu), item);
-
-		/* advance to next module */
-		list = g_list_next(list);
-	}
-
-	/* attach menu */
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(option_menu), menu);
-
-	if (sel_index == -1)
-	{
-		DEBUG(("[crossfade] scan_effect_plugins: plugin not found (\"%s\")\n", selected));
-		return def_index;	/* use default (first entry) */
-	}
-	return sel_index;
-}
-
-/*-- plugin output callbacks ------------------------------------------------*/
-
-static void
-config_effect_plugin_cb(GtkWidget *widget, gint index)
-{
-	assert(xfplayer_get_effect_list());
-	EffectPlugin *ep = g_list_nth_data(xfplayer_get_effect_list(), index);
-
-	/* select new plugin */
-	ep_index = index;
-
-	/* get new plugin's name */
-	if (xfg->ep_name) g_free(xfg->ep_name);
-	xfg->ep_name = (ep && ep->filename) ? g_strdup(g_basename(ep->filename)) : NULL;
-
-	/* update gui */
-	SET_SENSITIVE("ep_configure_button", ep && (ep->configure != NULL));
-	SET_SENSITIVE("ep_about_button",     ep && (ep->about     != NULL));
-
-	/* 0.3.5: apply effect config immediatelly */
-	if (config->ep_name) g_free(config->ep_name);
-	config->ep_name = g_strdup(xfg->ep_name);
-}
-
-void
-on_ep_configure_button_clicked(GtkButton *button, gpointer user_data)
-{
-	assert(xfplayer_get_effect_list());
-
-	EffectPlugin *ep = g_list_nth_data(xfplayer_get_effect_list(), ep_index);
-	if ((ep == NULL) || (ep->configure == NULL))
-		return;
-		
-	ep->configure();
-}
-
-void
-on_ep_about_button_clicked(GtkButton *button, gpointer user_data)
-{
-	assert(xfplayer_get_effect_list());
-
-	EffectPlugin *ep = g_list_nth_data(xfplayer_get_effect_list(), ep_index);
-	if ((ep == NULL) || (ep->about == NULL))
-		return;
-		
-	ep->about();
-}
-
-void
-on_ep_enable_check_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	/* 0.3.5: apply effect config immediatelly */
-	config->ep_enable = xfg->ep_enable = GET_TOGGLE("ep_enable_check");
-}
-
-/*-- volume normalizer ------------------------------------------------------*/
-
-void
-check_effects_dependencies()
-{
-	if (checking) return;
-	checking = TRUE;
-
-	SET_SENSITIVE("volnorm_target_spin",      xfg->volnorm_enable);
-	SET_SENSITIVE("volnorm_target_label",     xfg->volnorm_enable);
-	SET_SENSITIVE("volnorm_quantaudio_check", xfg->volnorm_enable);
-	SET_SENSITIVE("volnorm_target_spin",      xfg->volnorm_enable);
-
-	checking = FALSE;
-}
-
-void
-on_volnorm_enable_check_toggled(GtkToggleButton *togglebutton, gpointer user_data)
-{
-	if (checking) return;
-	xfg->volnorm_enable = gtk_toggle_button_get_active(togglebutton);
-	check_effects_dependencies();
 }
 
 /*** crossfader **************************************************************/
@@ -1345,22 +1011,6 @@ on_config_apply_clicked(GtkButton *button, gpointer user_data)
 	if ((widget = lookup_widget(config_win, "output_oss_notebook")))
 		xfg->oss_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(widget));
 
-	if ((widget = lookup_widget(config_win, "oss_adevice_alt_entry")))
-	{
-		if (xfg->oss_alt_audio_device)
-			g_free(xfg->oss_alt_audio_device);
-		xfg->oss_alt_audio_device = gtk_editable_get_chars(GTK_EDITABLE(widget), 0, -1);
-		g_strstrip(xfg->oss_alt_audio_device);
-	}
-
-	if ((widget = lookup_widget(config_win, "oss_mdevice_alt_entry")))
-	{
-		if (xfg->oss_alt_mixer_device)
-			g_free(xfg->oss_alt_mixer_device);
-		xfg->oss_alt_mixer_device = gtk_editable_get_chars(GTK_EDITABLE(widget), 0, -1);
-		g_strstrip(xfg->oss_alt_mixer_device);
-	}
-
 	xfg->oss_buffer_size_ms = GET_SPIN("ossbuf_buffer_spin");
 	xfg->oss_preload_size_ms = GET_SPIN("ossbuf_preload_spin");
 
@@ -1383,8 +1033,6 @@ on_config_apply_clicked(GtkButton *button, gpointer user_data)
 	/* effects: pre-mixing effect plugin */
 
 	/* effects: volume normalizer */
-	xfg->volnorm_target = GET_SPIN("volnorm_target_spin");
-	xfg->volnorm_use_qa = GET_TOGGLE("volnorm_quantaudio_check");
 
 	/* crossfader */
 	xfg->mix_size_auto = GET_TOGGLE("xf_autobuf_check");
@@ -1491,32 +1139,6 @@ xfade_configure()
 			gtk_notebook_set_page(GTK_NOTEBOOK(widget), config->page);
 
 		/* output: method */
-#ifdef HAVE_OSS
-		SET_SENSITIVE("output_oss_radio", TRUE);
-#else
-		SET_SENSITIVE("output_oss_radio", FALSE);
-#endif
-
-		switch (xfg->output_method)
-		{
-			case OUTPUT_METHOD_BUILTIN_OSS:
-				widget = lookup_widget(config_win, "output_oss_radio");
-				break;
-				
-			case OUTPUT_METHOD_PLUGIN:
-				widget = lookup_widget(config_win, "output_plugin_radio");
-				break;
-				
-			case OUTPUT_METHOD_BUILTIN_NULL:
-				widget = lookup_widget(config_win, "output_none_radio");
-				break;
-				
-			default:
-				widget = NULL;
-		}
-		if (widget)
-			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-
 		if ((widget = lookup_widget(config_win, "output_notebook")))
 			gtk_notebook_set_page(GTK_NOTEBOOK(widget), xfg->output_method);
 
@@ -1584,47 +1206,6 @@ xfade_configure()
 		HIDE("resampling_quality_optionmenu");
 #endif
 
-		/* output method: builtin OSS */
-		if ((widget = lookup_widget(config_win, "output_oss_notebook")))
-			gtk_notebook_set_page(GTK_NOTEBOOK(widget), xfg->oss_page);
-
-		if ((widget = lookup_widget(config_win, "oss_adevice_optionmenu")))
-		{
-			scan_devices("Audio devices:", widget, config_adevice_cb);
-			gtk_option_menu_set_history(GTK_OPTION_MENU(widget), xfg->oss_audio_device);
-			gtk_widget_set_sensitive(widget, !xfg->oss_use_alt_audio_device);
-		}
-		SET_TOGGLE("oss_adevice_alt_check", xfg->oss_use_alt_audio_device);
-		if ((widget = lookup_widget(config_win, "oss_adevice_alt_entry")))
-		{
-			gtk_entry_set_text(GTK_ENTRY(widget), xfg->oss_alt_audio_device ? xfg->oss_alt_audio_device : DEFAULT_OSS_ALT_AUDIO_DEVICE);
-			gtk_widget_set_sensitive(widget, xfg->oss_use_alt_audio_device);
-		}
-
-		if ((widget = lookup_widget(config_win, "oss_mdevice_optionmenu")))
-		{
-			scan_devices("Mixers:", widget, config_mdevice_cb);
-			gtk_option_menu_set_history(GTK_OPTION_MENU(widget), xfg->oss_mixer_device);
-			gtk_widget_set_sensitive(widget, !xfg->oss_use_alt_mixer_device);
-		}
-		SET_TOGGLE("oss_mdevice_alt_check", xfg->oss_use_alt_mixer_device);
-		if ((widget = lookup_widget(config_win, "oss_mdevice_alt_entry")))
-		{
-			gtk_entry_set_text(GTK_ENTRY(widget), xfg->oss_alt_mixer_device ? xfg->oss_alt_mixer_device : DEFAULT_OSS_ALT_MIXER_DEVICE);
-			gtk_widget_set_sensitive(widget, xfg->oss_use_alt_mixer_device);
-		}
-
-		SET_SPIN("ossbuf_buffer_spin",    xfg->oss_buffer_size_ms);
-		SET_SPIN("ossbuf_preload_spin",   xfg->oss_preload_size_ms);
-
-		SET_SPIN("osshwb_fragments_spin", xfg->oss_fragments);
-		SET_SPIN("osshwb_fragsize_spin",  xfg->oss_fragment_size);
-		SET_TOGGLE("osshwb_maxbuf_check", xfg->oss_maxbuf_enable);
-
-		SET_TOGGLE("ossmixer_pcm_check",  xfg->oss_mixer_use_master);
-
-		check_oss_dependencies();
-
 		/* output method: plugin */
 		xfade_load_plugin_config(xfg->op_config_string, xfg->op_name, &op_config);
 		SET_TOGGLE   ("op_throttle_check",    op_config.throttle_enable);
@@ -1644,33 +1225,6 @@ xfade_configure()
 			SET_SENSITIVE("op_configure_button", op && (op->configure != NULL));
 			SET_SENSITIVE("op_about_button",     op && (op->about     != NULL));
 		}
-
-		/* output method: none */
-
-		/* effects: pre-mixing effect plugin */
-		if (!xfplayer_get_effect_list())
-			HIDE("config_effects_page")
-		else if ((widget = lookup_widget(config_win, "ep_plugin_optionmenu")))
-		{
-			EffectPlugin *ep = NULL;
-			if ((ep_index = scan_effect_plugins(widget, xfg->ep_name)) >= 0)
-			{
-				gtk_option_menu_set_history(GTK_OPTION_MENU(widget), ep_index);
-				ep = g_list_nth_data(xfplayer_get_effect_list(), ep_index);
-			}
-			SET_SENSITIVE("ep_configure_button",  ep && (ep->configure != NULL));
-			SET_SENSITIVE("ep_about_button",      ep && (ep->about     != NULL));
-			SET_TOGGLE   ("ep_enable_check",      xfg->ep_enable);
-			SET_SENSITIVE("ep_enable_check",      ep_index != -1);
-			SET_SENSITIVE("ep_plugin_optionmenu", ep_index != -1);
-		}
-
-		/* effects: volume normalizer */
-		SET_TOGGLE("volnorm_enable_check",     xfg->volnorm_enable);
-		SET_TOGGLE("volnorm_quantaudio_check", xfg->volnorm_use_qa);
-		SET_SPIN  ("volnorm_target_spin",      xfg->volnorm_target);
-
-		check_effects_dependencies();
 
 		/* crossfader */
 		create_crossfader_config_menu();

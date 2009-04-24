@@ -34,13 +34,6 @@ create_config_win (void)
   GtkWidget *config_notebook;
   GtkWidget *config_output_page;
   GtkWidget *output_options_hbox;
-  GtkWidget *output_method_frame;
-  GtkWidget *output_method_vbox;
-  GtkWidget *output_oss_radio;
-  GSList *output_oss_radio_group = NULL;
-  GtkWidget *output_plugin_radio;
-  GtkWidget *output_none_radio;
-  GtkWidget *output_method_frame_label;
   GtkWidget *output_resampling_frame;
   GtkWidget *output_resampling_table;
   GtkWidget *resampling_rate_optionmenu;
@@ -135,29 +128,6 @@ create_config_win (void)
   GtkWidget *output_null_label;
   GtkWidget *output_help_label;
   GtkWidget *config_devices_label;
-  GtkWidget *config_effects_page;
-  GtkWidget *ep_plugin_frame;
-  GtkWidget *ep_plugin_vbox;
-  GtkWidget *ep_plugin_optionmenu;
-  GtkWidget *ep_plugin_optionmenu_menu;
-  GtkWidget *ep_plugin_optionmenu_dummy;
-  GtkWidget *ep_plugin_buttonbox;
-  GtkWidget *ep_configure_button;
-  GtkWidget *ep_about_button;
-  GtkWidget *ep_enable_check;
-  GtkWidget *ep_plugin_frame_label;
-  GtkWidget *effects_volnorm_frame;
-  GtkWidget *effects_volnorm_table;
-  GtkWidget *volnorm_quantaudio_check;
-  GtkObject *volnorm_target_spin_adj;
-  GtkWidget *volnorm_target_spin;
-  GtkWidget *volnorm_target_hbox;
-  GtkWidget *volnorm_target_label;
-  GtkWidget *volnorm_enable_check;
-  GtkWidget *volnorm_rva2_check;
-  GtkWidget *label11;
-  GtkWidget *effects_help_label;
-  GtkWidget *config_effects_label;
   GtkWidget *config_crossfader_page;
   GtkWidget *xf_bufsize_hbox;
   GtkWidget *xf_bufsize_label;
@@ -412,39 +382,6 @@ create_config_win (void)
   output_options_hbox = gtk_hbox_new (FALSE, 6);
   gtk_widget_show (output_options_hbox);
   gtk_box_pack_start (GTK_BOX (config_output_page), output_options_hbox, FALSE, TRUE, 0);
-
-  output_method_frame = gtk_frame_new (NULL);
-  gtk_widget_show (output_method_frame);
-  gtk_box_pack_start (GTK_BOX (output_options_hbox), output_method_frame, TRUE, TRUE, 0);
-
-  output_method_vbox = gtk_vbox_new (FALSE, 2);
-  gtk_widget_show (output_method_vbox);
-  gtk_container_add (GTK_CONTAINER (output_method_frame), output_method_vbox);
-  gtk_container_set_border_width (GTK_CONTAINER (output_method_vbox), 5);
-
-  output_oss_radio = gtk_radio_button_new_with_mnemonic (NULL, "Builtin OSS driver");
-  gtk_widget_show (output_oss_radio);
-  gtk_box_pack_start (GTK_BOX (output_method_vbox), output_oss_radio, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, output_oss_radio, "Use XMMS-crossfade's builtin OSS driver for output.", NULL);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (output_oss_radio), output_oss_radio_group);
-  output_oss_radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (output_oss_radio));
-
-  output_plugin_radio = gtk_radio_button_new_with_mnemonic (NULL, "Output plugin");
-  gtk_widget_show (output_plugin_radio);
-  gtk_box_pack_start (GTK_BOX (output_method_vbox), output_plugin_radio, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, output_plugin_radio, "Use an existing plugin for output.", NULL);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (output_plugin_radio), output_oss_radio_group);
-  output_oss_radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (output_plugin_radio));
-
-  output_none_radio = gtk_radio_button_new_with_mnemonic (NULL, "None [not implemented]");
-  gtk_box_pack_start (GTK_BOX (output_method_vbox), output_none_radio, FALSE, FALSE, 0);
-  gtk_widget_set_sensitive (output_none_radio, FALSE);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (output_none_radio), output_oss_radio_group);
-  output_oss_radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (output_none_radio));
-
-  output_method_frame_label = gtk_label_new ("Output method");
-  gtk_widget_show (output_method_frame_label);
-  gtk_frame_set_label_widget (GTK_FRAME (output_method_frame), output_method_frame_label);
 
   output_resampling_frame = gtk_frame_new (NULL);
   gtk_widget_show (output_resampling_frame);
@@ -849,123 +786,6 @@ create_config_win (void)
   gtk_widget_show (config_devices_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 0), config_devices_label);
   gtk_label_set_justify (GTK_LABEL (config_devices_label), GTK_JUSTIFY_CENTER);
-
-  config_effects_page = gtk_vbox_new (FALSE, 5);
-  gtk_widget_show (config_effects_page);
-  gtk_container_add (GTK_CONTAINER (config_notebook), config_effects_page);
-  gtk_container_set_border_width (GTK_CONTAINER (config_effects_page), 5);
-
-  ep_plugin_frame = gtk_frame_new (NULL);
-  gtk_widget_show (ep_plugin_frame);
-  gtk_box_pack_start (GTK_BOX (config_effects_page), ep_plugin_frame, FALSE, TRUE, 0);
-
-  ep_plugin_vbox = gtk_vbox_new (FALSE, 2);
-  gtk_widget_show (ep_plugin_vbox);
-  gtk_container_add (GTK_CONTAINER (ep_plugin_frame), ep_plugin_vbox);
-  gtk_container_set_border_width (GTK_CONTAINER (ep_plugin_vbox), 5);
-
-  ep_plugin_optionmenu = gtk_option_menu_new ();
-  gtk_widget_show (ep_plugin_optionmenu);
-  gtk_box_pack_start (GTK_BOX (ep_plugin_vbox), ep_plugin_optionmenu, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, ep_plugin_optionmenu, "Select an effect plugin. Take care not to use the same plugin as selected in XMMS' configuration dialog.", NULL);
-
-  ep_plugin_optionmenu_menu = gtk_menu_new ();
-
-  ep_plugin_optionmenu_dummy = gtk_menu_item_new_with_mnemonic ("dummy");
-  gtk_widget_show (ep_plugin_optionmenu_dummy);
-  gtk_container_add (GTK_CONTAINER (ep_plugin_optionmenu_menu), ep_plugin_optionmenu_dummy);
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (ep_plugin_optionmenu), ep_plugin_optionmenu_menu);
-
-  ep_plugin_buttonbox = gtk_hbutton_box_new ();
-  gtk_widget_show (ep_plugin_buttonbox);
-  gtk_box_pack_start (GTK_BOX (ep_plugin_vbox), ep_plugin_buttonbox, FALSE, TRUE, 0);
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (ep_plugin_buttonbox), GTK_BUTTONBOX_START);
-  gtk_box_set_spacing (GTK_BOX (ep_plugin_buttonbox), 5);
-
-  ep_configure_button = gtk_button_new_with_mnemonic ("Configure");
-  gtk_widget_show (ep_configure_button);
-  gtk_container_add (GTK_CONTAINER (ep_plugin_buttonbox), ep_configure_button);
-  GTK_WIDGET_SET_FLAGS (ep_configure_button, GTK_CAN_DEFAULT);
-  gtk_tooltips_set_tip (tooltips, ep_configure_button, "Open the configuration dialog of the plugin selected above.", NULL);
-
-  ep_about_button = gtk_button_new_with_mnemonic ("About");
-  gtk_widget_show (ep_about_button);
-  gtk_container_add (GTK_CONTAINER (ep_plugin_buttonbox), ep_about_button);
-  GTK_WIDGET_SET_FLAGS (ep_about_button, GTK_CAN_DEFAULT);
-  gtk_tooltips_set_tip (tooltips, ep_about_button, "Open the about dialog of the plugin selected above.", NULL);
-
-  ep_enable_check = gtk_check_button_new_with_mnemonic ("Use plugin");
-  gtk_widget_show (ep_enable_check);
-  gtk_container_add (GTK_CONTAINER (ep_plugin_buttonbox), ep_enable_check);
-  gtk_tooltips_set_tip (tooltips, ep_enable_check, "Enable the selected plugin. Note that after pressing 'Apply' it may take a while until you can hear the effect, since it is applied before the audio data goes into the buffer.", NULL);
-
-  ep_plugin_frame_label = gtk_label_new ("Pre-mixing effect plugin");
-  gtk_widget_show (ep_plugin_frame_label);
-  gtk_frame_set_label_widget (GTK_FRAME (ep_plugin_frame), ep_plugin_frame_label);
-
-  effects_volnorm_frame = gtk_frame_new (NULL);
-  gtk_box_pack_start (GTK_BOX (config_effects_page), effects_volnorm_frame, FALSE, FALSE, 0);
-
-  effects_volnorm_table = gtk_table_new (4, 2, FALSE);
-  gtk_widget_show (effects_volnorm_table);
-  gtk_container_add (GTK_CONTAINER (effects_volnorm_frame), effects_volnorm_table);
-  gtk_container_set_border_width (GTK_CONTAINER (effects_volnorm_table), 5);
-  gtk_table_set_row_spacings (GTK_TABLE (effects_volnorm_table), 2);
-  gtk_table_set_col_spacings (GTK_TABLE (effects_volnorm_table), 5);
-
-  volnorm_quantaudio_check = gtk_check_button_new_with_mnemonic ("Read Quantaudio comment field");
-  gtk_widget_show (volnorm_quantaudio_check);
-  gtk_table_attach (GTK_TABLE (effects_volnorm_table), volnorm_quantaudio_check, 1, 2, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  volnorm_target_spin_adj = gtk_adjustment_new (8000, 0, 32768, 100, 1000, 10);
-  volnorm_target_spin = gtk_spin_button_new (GTK_ADJUSTMENT (volnorm_target_spin_adj), 0, 0);
-  gtk_widget_show (volnorm_target_spin);
-  gtk_table_attach (GTK_TABLE (effects_volnorm_table), volnorm_target_spin, 1, 2, 3, 4,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, volnorm_target_spin, "Set the maximum length for gaps at the end of a stream.\nDefault: 500", NULL);
-  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (volnorm_target_spin), TRUE);
-
-  volnorm_target_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (volnorm_target_hbox);
-  gtk_table_attach (GTK_TABLE (effects_volnorm_table), volnorm_target_hbox, 0, 1, 3, 4,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  volnorm_target_label = gtk_label_new ("Target RMS:");
-  gtk_widget_show (volnorm_target_label);
-  gtk_box_pack_start (GTK_BOX (volnorm_target_hbox), volnorm_target_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (volnorm_target_label), GTK_JUSTIFY_CENTER);
-
-  volnorm_enable_check = gtk_check_button_new_with_mnemonic ("Enable");
-  gtk_widget_show (volnorm_enable_check);
-  gtk_table_attach (GTK_TABLE (effects_volnorm_table), volnorm_enable_check, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  volnorm_rva2_check = gtk_check_button_new_with_mnemonic ("Read ID3V2 RVA2 Tag");
-  gtk_widget_show (volnorm_rva2_check);
-  gtk_table_attach (GTK_TABLE (effects_volnorm_table), volnorm_rva2_check, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  label11 = gtk_label_new ("Volume normalizer");
-  gtk_widget_show (label11);
-  gtk_frame_set_label_widget (GTK_FRAME (effects_volnorm_frame), label11);
-
-  effects_help_label = gtk_label_new ("You do not need to press <b>Apply</b> after making changes to the effect plugin settings. It may take a while though until you can hear the change, since the plugin is applied before the mixing buffer.");
-  gtk_widget_show (effects_help_label);
-  gtk_box_pack_start (GTK_BOX (config_effects_page), effects_help_label, TRUE, TRUE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (effects_help_label), TRUE);
-  gtk_label_set_line_wrap (GTK_LABEL (effects_help_label), TRUE);
-
-  config_effects_label = gtk_label_new ("Effects");
-  gtk_widget_show (config_effects_label);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 1), config_effects_label);
-  gtk_label_set_justify (GTK_LABEL (config_effects_label), GTK_JUSTIFY_CENTER);
 
   config_crossfader_page = gtk_vbox_new (FALSE, 2);
   gtk_widget_show (config_crossfader_page);
@@ -1702,7 +1522,7 @@ create_config_win (void)
 
   config_crossfade_label = gtk_label_new ("Crossfader");
   gtk_widget_show (config_crossfade_label);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 2), config_crossfade_label);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 1), config_crossfade_label);
   gtk_label_set_justify (GTK_LABEL (config_crossfade_label), GTK_JUSTIFY_CENTER);
 
   config_gapkiller_page = gtk_vbox_new (FALSE, 5);
@@ -1859,7 +1679,7 @@ create_config_win (void)
 
   config_gapkiller_label = gtk_label_new ("Gap Killer");
   gtk_widget_show (config_gapkiller_label);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 3), config_gapkiller_label);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 2), config_gapkiller_label);
   gtk_label_set_justify (GTK_LABEL (config_gapkiller_label), GTK_JUSTIFY_CENTER);
 
   config_misc_page = gtk_vbox_new (FALSE, 5);
@@ -2014,7 +1834,7 @@ create_config_win (void)
 
   config_misc_label = gtk_label_new ("Advanced");
   gtk_widget_show (config_misc_label);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 4), config_misc_label);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 3), config_misc_label);
   gtk_label_set_justify (GTK_LABEL (config_misc_label), GTK_JUSTIFY_CENTER);
 
   config_presets_page = gtk_vbox_new (FALSE, 5);
@@ -2090,24 +1910,6 @@ create_config_win (void)
   gtk_container_add (GTK_CONTAINER (config_bbox), config_apply);
   GTK_WIDGET_SET_FLAGS (config_apply, GTK_CAN_DEFAULT);
 
-  g_signal_connect ((gpointer) output_oss_radio, "toggled",
-                    G_CALLBACK (on_output_oss_radio_toggled),
-                    NULL);
-  g_signal_connect ((gpointer) output_plugin_radio, "toggled",
-                    G_CALLBACK (on_output_plugin_radio_toggled),
-                    NULL);
-  g_signal_connect ((gpointer) output_none_radio, "toggled",
-                    G_CALLBACK (on_output_none_radio_toggled),
-                    NULL);
-  g_signal_connect ((gpointer) oss_adevice_alt_check, "toggled",
-                    G_CALLBACK (on_config_adevice_alt_check_toggled),
-                    NULL);
-  g_signal_connect ((gpointer) oss_mdevice_alt_check, "toggled",
-                    G_CALLBACK (on_config_mdevice_alt_check_toggled),
-                    NULL);
-  g_signal_connect ((gpointer) osshwb_maxbuf_check, "toggled",
-                    G_CALLBACK (on_osshwb_maxbuf_check_toggled),
-                    NULL);
   g_signal_connect ((gpointer) op_configure_button, "clicked",
                     G_CALLBACK (on_output_plugin_configure_button_clicked),
                     NULL);
@@ -2125,18 +1927,6 @@ create_config_win (void)
                     NULL);
   g_signal_connect ((gpointer) op_forcereopen_check, "toggled",
                     G_CALLBACK (on_op_forcereopen_check_toggled),
-                    NULL);
-  g_signal_connect ((gpointer) ep_configure_button, "clicked",
-                    G_CALLBACK (on_ep_configure_button_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) ep_about_button, "clicked",
-                    G_CALLBACK (on_ep_about_button_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) ep_enable_check, "toggled",
-                    G_CALLBACK (on_ep_enable_check_toggled),
-                    NULL);
-  g_signal_connect ((gpointer) volnorm_enable_check, "toggled",
-                    G_CALLBACK (on_volnorm_enable_check_toggled),
                     NULL);
   g_signal_connect ((gpointer) xf_buffer_spin, "changed",
                     G_CALLBACK (on_xf_buffer_spin_changed),
@@ -2283,12 +2073,6 @@ create_config_win (void)
   GLADE_HOOKUP_OBJECT (config_win, config_notebook, "config_notebook");
   GLADE_HOOKUP_OBJECT (config_win, config_output_page, "config_output_page");
   GLADE_HOOKUP_OBJECT (config_win, output_options_hbox, "output_options_hbox");
-  GLADE_HOOKUP_OBJECT (config_win, output_method_frame, "output_method_frame");
-  GLADE_HOOKUP_OBJECT (config_win, output_method_vbox, "output_method_vbox");
-  GLADE_HOOKUP_OBJECT (config_win, output_oss_radio, "output_oss_radio");
-  GLADE_HOOKUP_OBJECT (config_win, output_plugin_radio, "output_plugin_radio");
-  GLADE_HOOKUP_OBJECT (config_win, output_none_radio, "output_none_radio");
-  GLADE_HOOKUP_OBJECT (config_win, output_method_frame_label, "output_method_frame_label");
   GLADE_HOOKUP_OBJECT (config_win, output_resampling_frame, "output_resampling_frame");
   GLADE_HOOKUP_OBJECT (config_win, output_resampling_table, "output_resampling_table");
   GLADE_HOOKUP_OBJECT (config_win, resampling_rate_optionmenu, "resampling_rate_optionmenu");
@@ -2377,28 +2161,6 @@ create_config_win (void)
   GLADE_HOOKUP_OBJECT (config_win, output_null_label, "output_null_label");
   GLADE_HOOKUP_OBJECT (config_win, output_help_label, "output_help_label");
   GLADE_HOOKUP_OBJECT (config_win, config_devices_label, "config_devices_label");
-  GLADE_HOOKUP_OBJECT (config_win, config_effects_page, "config_effects_page");
-  GLADE_HOOKUP_OBJECT (config_win, ep_plugin_frame, "ep_plugin_frame");
-  GLADE_HOOKUP_OBJECT (config_win, ep_plugin_vbox, "ep_plugin_vbox");
-  GLADE_HOOKUP_OBJECT (config_win, ep_plugin_optionmenu, "ep_plugin_optionmenu");
-  GLADE_HOOKUP_OBJECT (config_win, ep_plugin_optionmenu_menu, "ep_plugin_optionmenu_menu");
-  GLADE_HOOKUP_OBJECT (config_win, ep_plugin_optionmenu_dummy, "ep_plugin_optionmenu_dummy");
-  GLADE_HOOKUP_OBJECT (config_win, ep_plugin_buttonbox, "ep_plugin_buttonbox");
-  GLADE_HOOKUP_OBJECT (config_win, ep_configure_button, "ep_configure_button");
-  GLADE_HOOKUP_OBJECT (config_win, ep_about_button, "ep_about_button");
-  GLADE_HOOKUP_OBJECT (config_win, ep_enable_check, "ep_enable_check");
-  GLADE_HOOKUP_OBJECT (config_win, ep_plugin_frame_label, "ep_plugin_frame_label");
-  GLADE_HOOKUP_OBJECT (config_win, effects_volnorm_frame, "effects_volnorm_frame");
-  GLADE_HOOKUP_OBJECT (config_win, effects_volnorm_table, "effects_volnorm_table");
-  GLADE_HOOKUP_OBJECT (config_win, volnorm_quantaudio_check, "volnorm_quantaudio_check");
-  GLADE_HOOKUP_OBJECT (config_win, volnorm_target_spin, "volnorm_target_spin");
-  GLADE_HOOKUP_OBJECT (config_win, volnorm_target_hbox, "volnorm_target_hbox");
-  GLADE_HOOKUP_OBJECT (config_win, volnorm_target_label, "volnorm_target_label");
-  GLADE_HOOKUP_OBJECT (config_win, volnorm_enable_check, "volnorm_enable_check");
-  GLADE_HOOKUP_OBJECT (config_win, volnorm_rva2_check, "volnorm_rva2_check");
-  GLADE_HOOKUP_OBJECT (config_win, label11, "label11");
-  GLADE_HOOKUP_OBJECT (config_win, effects_help_label, "effects_help_label");
-  GLADE_HOOKUP_OBJECT (config_win, config_effects_label, "config_effects_label");
   GLADE_HOOKUP_OBJECT (config_win, config_crossfader_page, "config_crossfader_page");
   GLADE_HOOKUP_OBJECT (config_win, xf_bufsize_hbox, "xf_bufsize_hbox");
   GLADE_HOOKUP_OBJECT (config_win, xf_bufsize_label, "xf_bufsize_label");
