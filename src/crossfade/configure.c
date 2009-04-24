@@ -1741,7 +1741,10 @@ xfade_about()
 	{
 		gchar *about_text =
 			"Audacious Crossfade Plugin\n"
-			"Copyright (C) 2000-2007  Peter Eisenlohr <peter@eisenlohr.org>\n"
+			"Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
+			"\n"
+			"...based in part on XMMS-Crossfade:\n"
+			"Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
 			"\n"
 			"based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
 			"Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
