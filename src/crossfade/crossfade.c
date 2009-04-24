@@ -58,7 +58,7 @@
 #undef  DEBUG_HARDCORE
 
 /* output plugin callback prototypes */
-static void xfade_init();
+static OutputPluginInitStatus xfade_init();
 static void xfade_cleanup();  /* audacious and patched only */
 static void xfade_set_volume(int l, int r);
 static void xfade_get_volume(int *l, int *r);
@@ -119,10 +119,6 @@ static void sync_output();
 static gboolean *xmms_playlist_get_info_going = NULL;   /* XMMS */
 static gboolean *xmms_is_quitting             = NULL;   /* XMMS */
 static gboolean *input_stopped_for_restart    = NULL;   /* XMMS */
-static char *  (*playlist_get_fadeinfo)(int)  = NULL;   /* XMMS patch */
-
-static void (*xmms_input_get_song_info)(gchar *, gchar **, gint *); /* XMMS */
-static gchar **xmms_gentitle_format = NULL;   /* XMMS private cfg */
 
 /* This function has been stolen from libxmms/util.c. */
 void xfade_usleep(gint usec)
@@ -176,24 +172,6 @@ static gint64   output_written    = 0;
        gint64   output_streampos  = 0;
 
 static gchar zero_4k[4096];
-
-#ifdef TIMING_COMMENTS
-typedef struct
-{
-	gboolean enable;
-	gint     len_ms, volume, skip_ms, ofs_ms;
-}
-timing_half_config_t;
-
-typedef struct
-{
-	timing_half_config_t in;
-	timing_half_config_t out;
-}
-timing_config_t;
-
-static timing_config_t last_timing, current_timing;
-#endif
 
 /*
  *  Available fade configs:
@@ -439,7 +417,7 @@ open_output()
 	return 0;
 }
 
-static void
+static OutputPluginInitStatus
 xfade_init()
 {
 	/* load config */
@@ -481,6 +459,8 @@ xfade_init()
 
 	/* realize config -- will also setup the pre-mixing effect plugin */
 	xfade_realize_config();
+
+	return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }
 
 static void

@@ -152,8 +152,10 @@ format_name(AFormat fmt)
 			return "FMT_S16_BE";
 		case FMT_S16_NE:
 			return "FMT_S16_NE";
+		default:
+			break;
 	}
-	return "UNKNOWN";
+	return "<unsupported>";
 }
 
 void

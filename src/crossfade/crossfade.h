@@ -45,7 +45,6 @@
 #include "debug.h"
 
 #undef  VOLUME_NORMALIZER
-#define TIMING_COMMENTS
 
 #define OUTPUT_RATE the_rate
 #define OUTPUT_NCH  2
