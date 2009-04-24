@@ -132,7 +132,7 @@
 { FALSE, FALSE, 2304, FALSE }
 
 #define CONFIG_DEFAULT							\
-{ 0,                            /* output_method */			\
+{ 1,                            /* output_method */			\
   44100,                        /* output_rate */			\
   2,                            /* output_quality */			\
   0,                            /* oss_audio_device */			\
