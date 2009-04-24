@@ -28,7 +28,6 @@
 #include "crossfade.h"
 #include "configure.h"
 #include "cfgutil.h"
-#include "monitor.h"
 
 #include "interface-2.0.h"
 #include "support-2.0.h"
@@ -1048,7 +1047,6 @@ on_config_apply_clicked(GtkButton *button, gpointer user_data)
 
 	/* misc */
 	xfg->enable_debug = GET_TOGGLE("debug_stderr_check");
-	xfg->enable_monitor = GET_TOGGLE("debug_monitor_check");
 	xfg->enable_mixer = GET_TOGGLE("mixopt_enable_check");
 	xfg->mixer_reverse = GET_TOGGLE("mixopt_reverse_check");
 	xfg->mixer_software = GET_TOGGLE("mixopt_software_check");
@@ -1087,9 +1085,6 @@ on_config_apply_clicked(GtkButton *button, gpointer user_data)
 
 	/* save configuration */
 	xfade_save_config();
-
-	/* show/hide monitor win depending on config->enable_monitor */
-	xfade_check_monitor_win();
 }
 
 void
@@ -1251,7 +1246,6 @@ xfade_configure()
 
 		/* misc */
 		SET_TOGGLE("debug_stderr_check",          xfg->enable_debug);
-		SET_TOGGLE("debug_monitor_check",         xfg->enable_monitor);
 		SET_TOGGLE("mixopt_enable_check",         xfg->enable_mixer);
 		SET_TOGGLE("mixopt_reverse_check",        xfg->mixer_reverse);
 		SET_TOGGLE("mixopt_software_check",       xfg->mixer_software);

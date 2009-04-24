@@ -32,7 +32,6 @@
 #include "convert.h"
 
 #include "configure.h"
-#include "monitor.h"
 
 #include "interface-2.0.h"
 #include "support-2.0.h"
@@ -409,9 +408,6 @@ open_output()
 	}
 	SCHED_YIELD;
 
-	/* start updating monitor */
-	xfade_start_monitor();
-
 	/* done */
 	output_opened = TRUE;
 	return 0;
@@ -433,9 +429,6 @@ xfade_init()
 
 	/* check for realtime priority, it needs some special attention */
 	realtime = xfplayer_check_realtime_priority();
-
-	/* show monitor win if enabled in config */
-	xfade_check_monitor_win();
 
 	/* init contexts */
 	convert_init(&convert_context);
@@ -1851,8 +1844,6 @@ buffer_thread_f(void *arg)
 	/* cleanup: close output */
 	if (output_opened)
 	{
-		xfade_stop_monitor();
-
 		DEBUG(("[crossfade] buffer_thread_f: closing output...\n"));
 
 		if (the_op->close_audio)
