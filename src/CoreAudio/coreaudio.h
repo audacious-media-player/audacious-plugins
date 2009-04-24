@@ -82,7 +82,7 @@ OSXConfig;
 
 extern OSXConfig osx_cfg;
 
-void osx_init(void);
+OutputPluginInitStatus osx_init(void);
 void osx_about(void);
 void osx_configure(void);
 

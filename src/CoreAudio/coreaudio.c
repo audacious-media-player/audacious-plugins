@@ -39,6 +39,7 @@ OutputPlugin osx_op =
 	.buffer_playing = osx_playing,
 	.output_time = osx_get_output_time,
 	.written_time = osx_get_written_time,
+	.probe_priority = 1,
 };
 
 OutputPlugin *coreaudio_oplist[] = { &osx_op, NULL };

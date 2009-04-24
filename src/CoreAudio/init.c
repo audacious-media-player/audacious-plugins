@@ -22,7 +22,7 @@ OSXConfig osx_cfg;
 
 extern float left_volume, right_volume;
 
-void osx_init(void)
+OutputPluginInitStatus osx_init(void)
 {
 	mcs_handle_t *cfgfile;
 
@@ -52,4 +52,6 @@ void osx_init(void)
 		aud_cfg_db_get_string(cfgfile, "OSX", "alt_mixer_device", &osx_cfg.alt_mixer_device);
 		aud_cfg_db_close(cfgfile);
 	}
+
+	return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
