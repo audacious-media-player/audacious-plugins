@@ -126,9 +126,8 @@
 
 #define DEFAULT_OSS_ALT_AUDIO_DEVICE "/dev/dsp"
 #define DEFAULT_OSS_ALT_MIXER_DEVICE "/dev/mixer"
-#define DEFAULT_OP_CONFIG_STRING     "libOSS.so=0,1,2304,0; libdisk_writer.so=1,0,2304,1"
-#define DEFAULT_OP_NAME              "libALSA.so"
-#define DEFAULT_EP_NAME              "libnormvol.so"
+#define DEFAULT_OP_CONFIG_STRING     "OSS.so=0,1,2304,0; filewriter.so=1,0,2304,1"
+#define DEFAULT_OP_NAME              "ALSA.so"
 
 #define DEFAULT_OP_CONFIG			\
 { FALSE, FALSE, 2304, FALSE }
