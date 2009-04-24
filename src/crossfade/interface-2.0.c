@@ -312,7 +312,6 @@ create_config_win (void)
   GtkWidget *misc_debug_frame;
   GtkWidget *misc_debug_vbox;
   GtkWidget *debug_stderr_check;
-  GtkWidget *debug_monitor_check;
   GtkWidget *label26;
   GtkWidget *misc_mixopt_frame;
   GtkWidget *misc_mixopt_vbox;
@@ -1701,11 +1700,6 @@ create_config_win (void)
   gtk_box_pack_start (GTK_BOX (misc_debug_vbox), debug_stderr_check, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, debug_stderr_check, "Monitors what is going on in XMMS-crossfade. If you think you found a bug in XMMS-crossfade, please enable this option and send me the output.\nNote that you should disable debug output if you start XMMS from within Netscape. Netscape will spam you with dialogs containing the debug output captured from <stderr>.\nDefault: Off", NULL);
 
-  debug_monitor_check = gtk_check_button_new_with_mnemonic ("Show Buffer Monitor");
-  gtk_widget_show (debug_monitor_check);
-  gtk_box_pack_start (GTK_BOX (misc_debug_vbox), debug_monitor_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, debug_monitor_check, "Enables the Buffer Monitor. This is a small window which shows how much data is in the buffers. The top display belongs to the mixing buffer, the bottom shows how much data is being buffered by the output plugin.\nDefault: Off", NULL);
-
   label26 = gtk_label_new ("Debug options");
   gtk_widget_show (label26);
   gtk_frame_set_label_widget (GTK_FRAME (misc_debug_frame), label26);
@@ -2321,7 +2315,6 @@ create_config_win (void)
   GLADE_HOOKUP_OBJECT (config_win, misc_debug_frame, "misc_debug_frame");
   GLADE_HOOKUP_OBJECT (config_win, misc_debug_vbox, "misc_debug_vbox");
   GLADE_HOOKUP_OBJECT (config_win, debug_stderr_check, "debug_stderr_check");
-  GLADE_HOOKUP_OBJECT (config_win, debug_monitor_check, "debug_monitor_check");
   GLADE_HOOKUP_OBJECT (config_win, label26, "label26");
   GLADE_HOOKUP_OBJECT (config_win, misc_mixopt_frame, "misc_mixopt_frame");
   GLADE_HOOKUP_OBJECT (config_win, misc_mixopt_vbox, "misc_mixopt_vbox");
@@ -2367,240 +2360,6 @@ create_config_win (void)
   GLADE_HOOKUP_OBJECT_NO_REF (config_win, tooltips, "tooltips");
 
   return config_win;
-}
-
-GtkWidget*
-create_monitor_win (void)
-{
-  GtkWidget *monitor_win;
-  GtkWidget *monitor_table;
-  GtkWidget *monitor_output_hbox;
-  GtkWidget *monitor_output_progress;
-  GtkWidget *monitor_output_ms_label;
-  GtkWidget *monitor_displaylabel_hbox;
-  GtkWidget *monitor_display_label;
-  GtkWidget *monitor_position_hbox;
-  GtkWidget *monpos_position_label;
-  GtkWidget *monpos_label1;
-  GtkWidget *monpos_total_label;
-  GtkWidget *monpos_label2;
-  GtkWidget *monpos_left_label;
-  GtkWidget *monpos_label3;
-  GtkWidget *monpos_written_time_label;
-  GtkWidget *monpos_output_time_separator_label;
-  GtkWidget *monpos_output_time_label;
-  GtkWidget *monitor_outputlabel_hbox;
-  GtkWidget *monitor_output_label;
-  GtkWidget *monitor_positionlabel_hbox;
-  GtkWidget *monitor_position_label;
-  GtkWidget *monitor_display_hbox;
-  GtkWidget *monitor_display_frame;
-  GtkWidget *monitor_display_drawingarea;
-  GtkWidget *monitor_display_space_label;
-  GtkWidget *monitor_button_hbox;
-  GtkWidget *monitor_seekeof_button;
-  GtkWidget *alignment1;
-  GtkWidget *hbox2;
-  GtkWidget *image1;
-  GtkWidget *label29;
-
-  monitor_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (monitor_win), "Crossfade Buffer Monitor");
-  gtk_window_set_default_size (GTK_WINDOW (monitor_win), 320, -1);
-
-  monitor_table = gtk_table_new (4, 2, FALSE);
-  gtk_widget_show (monitor_table);
-  gtk_container_add (GTK_CONTAINER (monitor_win), monitor_table);
-  gtk_container_set_border_width (GTK_CONTAINER (monitor_table), 5);
-  gtk_table_set_row_spacings (GTK_TABLE (monitor_table), 3);
-  gtk_table_set_col_spacings (GTK_TABLE (monitor_table), 5);
-
-  monitor_output_hbox = gtk_hbox_new (FALSE, 3);
-  gtk_widget_show (monitor_output_hbox);
-  gtk_table_attach (GTK_TABLE (monitor_table), monitor_output_hbox, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  monitor_output_progress = gtk_progress_bar_new ();
-  gtk_widget_show (monitor_output_progress);
-  gtk_box_pack_start (GTK_BOX (monitor_output_hbox), monitor_output_progress, TRUE, TRUE, 0);
-  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (monitor_output_progress), " ");
-
-  monitor_output_ms_label = gtk_label_new ("ms");
-  gtk_widget_show (monitor_output_ms_label);
-  gtk_box_pack_start (GTK_BOX (monitor_output_hbox), monitor_output_ms_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monitor_output_ms_label), GTK_JUSTIFY_CENTER);
-
-  monitor_displaylabel_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (monitor_displaylabel_hbox);
-  gtk_table_attach (GTK_TABLE (monitor_table), monitor_displaylabel_hbox, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  monitor_display_label = gtk_label_new ("Mixing Buffer:");
-  gtk_widget_show (monitor_display_label);
-  gtk_box_pack_end (GTK_BOX (monitor_displaylabel_hbox), monitor_display_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monitor_display_label), GTK_JUSTIFY_CENTER);
-
-  monitor_position_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (monitor_position_hbox);
-  gtk_table_attach (GTK_TABLE (monitor_table), monitor_position_hbox, 1, 2, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  monpos_position_label = gtk_label_new ("-:--.-");
-  gtk_widget_show (monpos_position_label);
-  gtk_box_pack_start (GTK_BOX (monitor_position_hbox), monpos_position_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_position_label), GTK_JUSTIFY_CENTER);
-
-  monpos_label1 = gtk_label_new (" / ");
-  gtk_widget_show (monpos_label1);
-  gtk_box_pack_start (GTK_BOX (monitor_position_hbox), monpos_label1, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_label1), GTK_JUSTIFY_CENTER);
-
-  monpos_total_label = gtk_label_new ("-:--");
-  gtk_widget_show (monpos_total_label);
-  gtk_box_pack_start (GTK_BOX (monitor_position_hbox), monpos_total_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_total_label), GTK_JUSTIFY_CENTER);
-
-  monpos_label2 = gtk_label_new (" total, ");
-  gtk_widget_show (monpos_label2);
-  gtk_box_pack_start (GTK_BOX (monitor_position_hbox), monpos_label2, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_label2), GTK_JUSTIFY_CENTER);
-
-  monpos_left_label = gtk_label_new ("-:--");
-  gtk_widget_show (monpos_left_label);
-  gtk_box_pack_start (GTK_BOX (monitor_position_hbox), monpos_left_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_left_label), GTK_JUSTIFY_CENTER);
-
-  monpos_label3 = gtk_label_new (" left");
-  gtk_widget_show (monpos_label3);
-  gtk_box_pack_start (GTK_BOX (monitor_position_hbox), monpos_label3, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_label3), GTK_JUSTIFY_CENTER);
-
-  monpos_written_time_label = gtk_label_new ("-:--:--.-");
-  gtk_widget_show (monpos_written_time_label);
-  gtk_box_pack_end (GTK_BOX (monitor_position_hbox), monpos_written_time_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_written_time_label), GTK_JUSTIFY_CENTER);
-
-  monpos_output_time_separator_label = gtk_label_new (" / ");
-  gtk_widget_show (monpos_output_time_separator_label);
-  gtk_box_pack_end (GTK_BOX (monitor_position_hbox), monpos_output_time_separator_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_output_time_separator_label), GTK_JUSTIFY_CENTER);
-
-  monpos_output_time_label = gtk_label_new ("-:--.---");
-  gtk_widget_show (monpos_output_time_label);
-  gtk_box_pack_end (GTK_BOX (monitor_position_hbox), monpos_output_time_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monpos_output_time_label), GTK_JUSTIFY_CENTER);
-
-  monitor_outputlabel_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (monitor_outputlabel_hbox);
-  gtk_table_attach (GTK_TABLE (monitor_table), monitor_outputlabel_hbox, 0, 1, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  monitor_output_label = gtk_label_new ("Output Buffer:");
-  gtk_widget_show (monitor_output_label);
-  gtk_box_pack_end (GTK_BOX (monitor_outputlabel_hbox), monitor_output_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monitor_output_label), GTK_JUSTIFY_CENTER);
-
-  monitor_positionlabel_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (monitor_positionlabel_hbox);
-  gtk_table_attach (GTK_TABLE (monitor_table), monitor_positionlabel_hbox, 0, 1, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  monitor_position_label = gtk_label_new ("Position:");
-  gtk_widget_show (monitor_position_label);
-  gtk_box_pack_end (GTK_BOX (monitor_positionlabel_hbox), monitor_position_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (monitor_position_label), GTK_JUSTIFY_CENTER);
-
-  monitor_display_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (monitor_display_hbox);
-  gtk_table_attach (GTK_TABLE (monitor_table), monitor_display_hbox, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
-
-  monitor_display_frame = gtk_frame_new (NULL);
-  gtk_widget_show (monitor_display_frame);
-  gtk_box_pack_start (GTK_BOX (monitor_display_hbox), monitor_display_frame, TRUE, TRUE, 0);
-
-  monitor_display_drawingarea = gtk_drawing_area_new ();
-  gtk_widget_show (monitor_display_drawingarea);
-  gtk_container_add (GTK_CONTAINER (monitor_display_frame), monitor_display_drawingarea);
-  gtk_widget_set_size_request (monitor_display_drawingarea, -1, 20);
-
-  monitor_display_space_label = gtk_label_new ("");
-  gtk_widget_show (monitor_display_space_label);
-  gtk_box_pack_start (GTK_BOX (monitor_display_hbox), monitor_display_space_label, FALSE, FALSE, 0);
-
-  monitor_button_hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (monitor_button_hbox);
-  gtk_table_attach (GTK_TABLE (monitor_table), monitor_button_hbox, 1, 2, 3, 4,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  monitor_seekeof_button = gtk_button_new ();
-  gtk_widget_show (monitor_seekeof_button);
-  gtk_box_pack_start (GTK_BOX (monitor_button_hbox), monitor_seekeof_button, FALSE, FALSE, 0);
-
-  alignment1 = gtk_alignment_new (0.5, 0.5, 0, 0);
-  gtk_widget_show (alignment1);
-  gtk_container_add (GTK_CONTAINER (monitor_seekeof_button), alignment1);
-
-  hbox2 = gtk_hbox_new (FALSE, 2);
-  gtk_widget_show (hbox2);
-  gtk_container_add (GTK_CONTAINER (alignment1), hbox2);
-
-  image1 = gtk_image_new_from_stock ("gtk-media-next", GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image1);
-  gtk_box_pack_start (GTK_BOX (hbox2), image1, FALSE, FALSE, 0);
-
-  label29 = gtk_label_new_with_mnemonic ("Seek to EOF");
-  gtk_widget_show (label29);
-  gtk_box_pack_start (GTK_BOX (hbox2), label29, FALSE, FALSE, 0);
-
-  g_signal_connect ((gpointer) monitor_win, "delete_event",
-                    G_CALLBACK (on_monitor_win_delete_event),
-                    NULL);
-  g_signal_connect ((gpointer) monitor_display_drawingarea, "expose_event",
-                    G_CALLBACK (on_monitor_display_drawingarea_expose_event),
-                    NULL);
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (monitor_win, monitor_win, "monitor_win");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_table, "monitor_table");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_output_hbox, "monitor_output_hbox");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_output_progress, "monitor_output_progress");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_output_ms_label, "monitor_output_ms_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_displaylabel_hbox, "monitor_displaylabel_hbox");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_display_label, "monitor_display_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_position_hbox, "monitor_position_hbox");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_position_label, "monpos_position_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_label1, "monpos_label1");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_total_label, "monpos_total_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_label2, "monpos_label2");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_left_label, "monpos_left_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_label3, "monpos_label3");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_written_time_label, "monpos_written_time_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_output_time_separator_label, "monpos_output_time_separator_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monpos_output_time_label, "monpos_output_time_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_outputlabel_hbox, "monitor_outputlabel_hbox");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_output_label, "monitor_output_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_positionlabel_hbox, "monitor_positionlabel_hbox");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_position_label, "monitor_position_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_display_hbox, "monitor_display_hbox");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_display_frame, "monitor_display_frame");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_display_drawingarea, "monitor_display_drawingarea");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_display_space_label, "monitor_display_space_label");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_button_hbox, "monitor_button_hbox");
-  GLADE_HOOKUP_OBJECT (monitor_win, monitor_seekeof_button, "monitor_seekeof_button");
-  GLADE_HOOKUP_OBJECT (monitor_win, alignment1, "alignment1");
-  GLADE_HOOKUP_OBJECT (monitor_win, hbox2, "hbox2");
-  GLADE_HOOKUP_OBJECT (monitor_win, image1, "image1");
-  GLADE_HOOKUP_OBJECT (monitor_win, label29, "label29");
-
-  return monitor_win;
 }
 
 GtkWidget*
