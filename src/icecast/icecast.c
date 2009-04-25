@@ -747,7 +747,7 @@ static void ice_configure(void)
         label = gtk_label_new(_("Buffer size (bytes):"));
         gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 
-        buffersize_spin = gtk_spin_button_new_with_range(1.0, 65535.0, 1.0);
+        buffersize_spin = gtk_spin_button_new_with_range(1.0, 256000.0, 1.0);
         gtk_widget_set_tooltip_text(buffersize_spin, _("Internal buffer size\nTry to increase this if you are experiencing audio skipping on client side"));
 
         gtk_spin_button_set_digits(GTK_SPIN_BUTTON(buffersize_spin), 0);
