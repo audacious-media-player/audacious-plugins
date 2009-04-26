@@ -108,7 +108,6 @@ DECLARE_PLUGIN(crossfade, NULL, NULL, NULL, xfade_oplist, NULL, NULL, NULL);
 
 /* internal prototypes */
 static void load_symbols();
-static void output_list_hack();
 static gint open_output();
 static void buffer_reset(buffer_t *buf, config_t *cfg);
 static void *buffer_thread_f(void *arg);
@@ -447,9 +446,6 @@ xfade_init()
 	/* load any dynamic linked symbols */
 	load_symbols();
 
-	/* HACK: make sure we are at the beginning of XMMS' output plugin list */
-	output_list_hack();
-
 	/* realize config -- will also setup the pre-mixing effect plugin */
 	xfade_realize_config();
 
@@ -506,30 +502,6 @@ load_symbols()
 
 	dlclose(handle);
 #endif
-}
-
-/*
-  HACK: Try to move ourselves to the beginning of XMMS output plugin list,
-        so that we will be freed first when XMMS is quitting. This way, we
-        avoid the segfault when using ALSA as the output plugin.     
-*/
-static void
-output_list_hack()
-{
-	GList *output_list = xfplayer_get_output_list();
-	if (!output_list)
-		return;
-
-	int i0 = g_list_index(output_list, xfade_op), i1;
-
-	GList *first = g_list_first(output_list);
-	GList *xfade = g_list_find(output_list, xfade_op);
-	xfade->data = first->data;
-	first->data = xfade_op;
-
-	i1 = g_list_index(output_list, xfade_op);
-	if (i0 != i1)
-		DEBUG(("[crossfade] output_list_hack: crossfade moved from index %d to %d\n", i0, i1));
 }
 
 void
@@ -1931,9 +1903,6 @@ xfade_close_audio()
 		 *       function. Otherwise, SEGFAULT may occur when
 		 *       XMMS tries to cleanup an output plugin which
 		 *       we are still using.
-		 *
-		 * NOTE: This hack has become obsolete as of 0.3.5.
-		 *       See output_list_hack().
 		 *
 		 * NOTE: Not quite. There still are some problems when
 		 *       XMMS is exitting while a song is playing. So
