@@ -967,18 +967,17 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 	g_free(last_filename);
 	last_filename = g_strdup(file);
 
-	/* cleanup */
-	g_free(file); file = NULL;
-	g_free(title); title = NULL;
-
-	/* check for HTTP streaming */
-	if (config->enable_http_workaround && (0 == strncasecmp(file, "http://", 7)))
+	/* check for streaming */
+	if (aud_vfs_is_remote(file))
 	{
 		DEBUG(("[crossfade] open_audio: HTTP underrun workaround enabled.\n"));
 		is_http = TRUE;
 	}
 	else
 		is_http = FALSE;
+
+	g_free(file); file = NULL;
+	g_free(title); title = NULL;
 
 	/* lock buffer */
 	MUTEX_LOCK(&buffer_mutex);
