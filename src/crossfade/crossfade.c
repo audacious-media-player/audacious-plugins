@@ -96,7 +96,7 @@ xfade_op_private =
 		.written_time   = xfade_written_time,
 		.about          = xfade_about,
 		.configure      = xfade_configure,
-		.probe_priority = 2,
+		.probe_priority = 0,
 	},
 	NULL
 };
