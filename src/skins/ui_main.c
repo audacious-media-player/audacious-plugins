@@ -1215,6 +1215,10 @@ mainwin_rev_release(void)
     GTimeVal delta_time;
     gulong now_dur;
 
+    g_source_remove (mainwin_timeout_id);
+    mainwin_timeout_id = 0;
+    seek_state = MAINWIN_SEEK_NIL;
+
     g_get_current_time(&now_time);
 
     delta_time.tv_usec = now_time.tv_usec - cb_time.tv_usec;
@@ -1232,11 +1236,6 @@ mainwin_rev_release(void)
         /* interpret as 'seek' */
         mainwin_position_release_cb( mainwin_position, ui_skinned_horizontal_slider_get_position(mainwin_position) );
     }
-
-    seek_state = MAINWIN_SEEK_NIL;
-
-    g_source_remove(mainwin_timeout_id);
-    mainwin_timeout_id = 0;
 }
 
 void
@@ -1257,6 +1256,10 @@ mainwin_fwd_release(void)
     GTimeVal delta_time;
     gulong now_dur;
 
+    g_source_remove (mainwin_timeout_id);
+    mainwin_timeout_id = 0;
+    seek_state = MAINWIN_SEEK_NIL;
+
     g_get_current_time(&now_time);
 
     delta_time.tv_usec = now_time.tv_usec - cb_time.tv_usec;
@@ -1274,11 +1277,6 @@ mainwin_fwd_release(void)
         /* interpret as 'seek' */
         mainwin_position_release_cb( mainwin_position, ui_skinned_horizontal_slider_get_position(mainwin_position) );
     }
-
-    seek_state = MAINWIN_SEEK_NIL;
-
-    g_source_remove(mainwin_timeout_id);
-    mainwin_timeout_id = 0;
 }
 
 void

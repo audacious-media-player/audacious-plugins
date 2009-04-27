@@ -338,6 +338,23 @@ playlist_manager_cb_keypress ( GtkWidget *win , GdkEventKey *event )
     }
 }
 
+void playlist_manager_catch_changes (void) {
+   aud_hook_associate ("playlist create", (HookFunction) playlist_manager_update,
+    0);
+   aud_hook_associate ("playlist destroy",
+    (HookFunction) playlist_manager_update, 0);
+   aud_hook_associate ("playlist update", (HookFunction) playlist_manager_update,
+    0);
+}
+
+void playlist_manager_uncatch_changes (void) {
+   aud_hook_dissociate ("playlist create",
+    (HookFunction) playlist_manager_update);
+   aud_hook_dissociate ("playlist destroy",
+    (HookFunction) playlist_manager_update);
+   aud_hook_dissociate ("playlist update",
+    (HookFunction) playlist_manager_update);
+}
 
 void
 playlist_manager_ui_show ( void )
@@ -469,6 +486,10 @@ playlist_manager_ui_show ( void )
     gtk_tree_path_free( active_path );
 
     g_object_unref( pl_store );
+
+    playlist_manager_catch_changes ();
+    g_signal_connect (G_OBJECT (playman_win), "destroy",
+     G_CALLBACK (playlist_manager_uncatch_changes), 0);
 
     gtk_widget_show_all( playman_win );
 }

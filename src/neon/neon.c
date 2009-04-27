@@ -17,6 +17,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <stdint.h>
+
 #include "neon.h"
 
 #include <audacious/plugin.h>
@@ -189,7 +191,7 @@ static gboolean neon_strcmp(const gchar *str, const gchar *cmp)
 }
 
 
-static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) { 
+static void add_icy(struct icy_metadata* m, gchar* name, gchar* value) {
 
     _ENTER;
 
@@ -1165,9 +1167,7 @@ gsize neon_aud_vfs_fwrite_impl(gconstpointer ptr, gsize size, gsize nmemb, VFSFi
  */
 
 gint neon_aud_vfs_getc_impl(VFSFile* file) {
-
-    gchar c;
-
+  unsigned char c;
     _ENTER;
 
     if (1 != neon_aud_vfs_fread_impl(&c, 1, 1, file)) {
