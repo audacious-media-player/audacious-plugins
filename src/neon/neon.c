@@ -470,7 +470,7 @@ static void handle_headers(struct neon_handle* h) {
             /*
              * The server sent us a bitrate. We might want to use it.
              */
-            _DEBUG("ICY bitrate: %d", atoi(value);
+            _DEBUG("ICY bitrate: %d", atoi(value));
             h->icy_metadata.stream_bitrate = atoi(value);
         }
 
