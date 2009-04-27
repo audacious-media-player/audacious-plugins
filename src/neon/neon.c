@@ -466,6 +466,14 @@ static void handle_headers(struct neon_handle* h) {
             h->icy_metadata.stream_name = g_strdup(value);
         }
 
+        if (neon_strcmp(name, "icy-br")) {
+            /*
+             * The server sent us a bitrate. We might want to use it.
+             */
+            _DEBUG("ICY bitrate: %d", atoi(value);
+            h->icy_metadata.stream_bitrate = atoi(value);
+        }
+
         continue;
     }
 
@@ -1362,6 +1370,10 @@ gchar *neon_aud_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
     if (neon_strcmp(field, "content-type")) {
         _LEAVE g_strdup(h->icy_metadata.stream_contenttype);
+    }
+
+    if (neon_strcmp(field, "content-bitrate")) {
+        _LEAVE g_strdup_printf("%d", h->icy_metadata.stream_bitrate * 1000);
     }
 
     _LEAVE NULL;
