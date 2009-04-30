@@ -129,7 +129,7 @@ EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo
 GENERAL_PLUGINS="song_change alarm skins"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
-TRANSPORT_PLUGINS="stdio"
+TRANSPORT_PLUGINS="gio"
 
 dnl Check for Audacious
 
@@ -140,9 +140,9 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 1.9.0],
 
 dnl Check for GTK/GLib/GThread/Pango/DBus
 
-PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.14.0 gthread-2.0],
-    [ADD_PC_REQUIRES([glib-2.0 >= 2.14.0])],
-    [AC_MSG_ERROR([Cannot find Glib2 >= 2.14.0])]
+PKG_CHECK_MODULES(GLIB, [glib-2.0 >= 2.16.0 gthread-2.0],
+    [ADD_PC_REQUIRES([glib-2.0 >= 2.16.0])],
+    [AC_MSG_ERROR([Cannot find Glib2 >= 2.16.0])]
 )
 
 PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0],
