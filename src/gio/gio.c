@@ -327,7 +327,7 @@ static void init(void)
 
     for (i = 0; schemes[i] != NULL; i++) {
          VFSConstructor *c;
-         if (!g_ascii_strcasecmp(schemes[i], "http"))
+         if (!g_ascii_strcasecmp(schemes[i], "http") || !g_ascii_strcasecmp(schemes[i], "file"))
              continue;
 
          g_print("GVfs supports %s - registering it\n", schemes[i]);
