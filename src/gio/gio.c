@@ -35,6 +35,8 @@ typedef struct {
     GSList *stream_stack;
 } VFSGIOHandle;
 
+static GVfs *gvfs = NULL;
+
 VFSFile *
 gio_aud_vfs_fopen_impl(const gchar *path, const gchar *mode)
 {
@@ -46,7 +48,7 @@ gio_aud_vfs_fopen_impl(const gchar *path, const gchar *mode)
 	    return NULL;
 
     handle = g_slice_new0(VFSGIOHandle);
-    handle->file = g_file_new_for_uri(path);
+    handle->file = g_vfs_get_file_for_uri(gvfs, path);
 
     if (*mode == 'r')
     {
@@ -298,28 +300,59 @@ gio_aud_vfs_fsize_impl(VFSFile * file)
 }
 
 VFSConstructor file_const = {
-	.uri_id = "file://",
-	.vfs_fopen_impl = gio_aud_vfs_fopen_impl,
-	.vfs_fclose_impl = gio_aud_vfs_fclose_impl,
-	.vfs_fread_impl = gio_aud_vfs_fread_impl,
-	.vfs_fwrite_impl = gio_aud_vfs_fwrite_impl,
-	.vfs_getc_impl = gio_aud_vfs_getc_impl,
-	.vfs_ungetc_impl = gio_aud_vfs_ungetc_impl,
-	.vfs_fseek_impl = gio_aud_vfs_fseek_impl,
-	.vfs_rewind_impl = gio_aud_vfs_rewind_impl,
-	.vfs_ftell_impl = gio_aud_vfs_ftell_impl,
-	.vfs_feof_impl = gio_aud_vfs_feof_impl,
-	.vfs_truncate_impl = gio_aud_vfs_truncate_impl,
-	.vfs_fsize_impl = gio_aud_vfs_fsize_impl
+    .uri_id = "file://",
+    .vfs_fopen_impl = gio_aud_vfs_fopen_impl,
+    .vfs_fclose_impl = gio_aud_vfs_fclose_impl,
+    .vfs_fread_impl = gio_aud_vfs_fread_impl,
+    .vfs_fwrite_impl = gio_aud_vfs_fwrite_impl,
+    .vfs_getc_impl = gio_aud_vfs_getc_impl,
+    .vfs_ungetc_impl = gio_aud_vfs_ungetc_impl,
+    .vfs_fseek_impl = gio_aud_vfs_fseek_impl,
+    .vfs_rewind_impl = gio_aud_vfs_rewind_impl,
+    .vfs_ftell_impl = gio_aud_vfs_ftell_impl,
+    .vfs_feof_impl = gio_aud_vfs_feof_impl,
+    .vfs_truncate_impl = gio_aud_vfs_truncate_impl,
+    .vfs_fsize_impl = gio_aud_vfs_fsize_impl
 };
 
 static void init(void)
 {
+    gint i;
+    const gchar * const *schemes;
+
+    gvfs = g_vfs_get_default();
+    schemes = g_vfs_get_supported_uri_schemes(gvfs);
+
     aud_vfs_register_transport(&file_const);
+
+    for (i = 0; schemes[i] != NULL; i++) {
+         VFSConstructor *c;
+         if (!g_ascii_strcasecmp(schemes[i], "http"))
+             continue;
+
+         g_print("GVfs supports %s - registering it\n", schemes[i]);
+
+         c = g_slice_new0(VFSConstructor);
+         c->uri_id = g_strdup_printf("%s://", schemes[i]);
+         c->vfs_fopen_impl = gio_aud_vfs_fopen_impl;
+         c->vfs_fclose_impl = gio_aud_vfs_fclose_impl;
+         c->vfs_fread_impl = gio_aud_vfs_fread_impl;
+         c->vfs_fwrite_impl = gio_aud_vfs_fwrite_impl;
+         c->vfs_getc_impl = gio_aud_vfs_getc_impl;
+         c->vfs_ungetc_impl = gio_aud_vfs_ungetc_impl;
+         c->vfs_fseek_impl = gio_aud_vfs_fseek_impl;
+         c->vfs_rewind_impl = gio_aud_vfs_rewind_impl;
+         c->vfs_ftell_impl = gio_aud_vfs_ftell_impl;
+         c->vfs_feof_impl = gio_aud_vfs_feof_impl;
+         c->vfs_truncate_impl = gio_aud_vfs_truncate_impl;
+         c->vfs_fsize_impl = gio_aud_vfs_fsize_impl;
+         aud_vfs_register_transport(c);
+    }
 }
 
 static void cleanup(void)
 {
+    g_object_unref(gvfs);
 #if 0
     aud_vfs_unregister_transport(&file_const);
 #endif
