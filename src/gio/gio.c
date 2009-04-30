@@ -32,6 +32,7 @@ typedef struct {
     GFileInputStream *istream;
     GFileOutputStream *ostream;
     GSeekable *seekable;
+    GSList *stream_stack;
 } VFSGIOHandle;
 
 VFSFile *
@@ -46,6 +47,8 @@ gio_aud_vfs_fopen_impl(const gchar *path, const gchar *mode)
 
     handle = g_slice_new0(VFSGIOHandle);
     handle->file = g_file_new_for_uri(path);
+
+    g_print("open %s\n", path);
 
     if (*mode == 'r')
     {
@@ -85,8 +88,7 @@ gio_aud_vfs_fclose_impl(VFSFile * file)
 {
     gint ret = 0;
 
-    if (file == NULL)
-        return -1;
+    g_return_val_if_fail(file != NULL, -1);
 
     if (file->handle)
     {
@@ -108,13 +110,27 @@ gio_aud_vfs_fread_impl(gpointer ptr,
           VFSFile * file)
 {
     VFSGIOHandle *handle;
+    goffset count = 0;
 
-    if (file == NULL)
-        return 0;
+    g_return_val_if_fail(file != NULL, EOF);
+    g_return_val_if_fail(file->handle != NULL, EOF);
 
     handle = (VFSGIOHandle *) file->handle;
 
-    return g_input_stream_read(G_INPUT_STREAM(handle->istream), ptr, size * nmemb, NULL, NULL);
+    /* handle ungetc() *grumble* --nenolod */
+    if (handle->stream_stack != NULL)
+    {
+        guchar uc;
+        while ((count < size) && (handle->stream_stack != NULL))
+        {
+            uc = GPOINTER_TO_INT(handle->stream_stack->data);
+            handle->stream_stack = g_slist_delete_link(handle->stream_stack, handle->stream_stack);
+            memcpy(ptr + count, &uc, 1);
+            count++;
+        }
+    }
+
+    return g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), ((size * nmemb) - count), NULL, NULL);
 }
 
 size_t
@@ -125,8 +141,8 @@ gio_aud_vfs_fwrite_impl(gconstpointer ptr,
 {
     VFSGIOHandle *handle;
 
-    if (file == NULL)
-        return 0;
+    g_return_val_if_fail(file != NULL, EOF);
+    g_return_val_if_fail(file->handle != NULL, EOF);
 
     handle = (VFSGIOHandle *) file->handle;
 
@@ -136,34 +152,40 @@ gio_aud_vfs_fwrite_impl(gconstpointer ptr,
 gint
 gio_aud_vfs_getc_impl(VFSFile *file)
 {
-    guchar buf[1];
+    guchar buf;
     VFSGIOHandle *handle;
 
-    if (file == NULL)
-        return -1;
+    g_return_val_if_fail(file != NULL, EOF);
+    g_return_val_if_fail(file->handle != NULL, EOF);
 
     handle = (VFSGIOHandle *) file->handle;
 
-    g_input_stream_read(G_INPUT_STREAM(handle->istream), &buf, 1, NULL, NULL);
+    if (handle->stream_stack != NULL)
+    {
+        buf = GPOINTER_TO_INT(handle->stream_stack->data);
+        handle->stream_stack = g_slist_delete_link(handle->stream_stack, handle->stream_stack);
+        return buf;
+    }
+    else if (g_input_stream_read(G_INPUT_STREAM(handle->istream), &buf, 1, NULL, NULL) == -1)
+        return EOF;
 
-    return *buf;
+    return buf;
 }
 
 gint
 gio_aud_vfs_ungetc_impl(gint c, VFSFile * file)
 {
-    g_print("ungetc(): unimplemented function!\n");
-    return 0;
-#if 0
     VFSGIOHandle *handle;
-    
-    if (file == NULL)
-        return -1;
-	
+
+    g_return_val_if_fail(file != NULL, EOF);
+    g_return_val_if_fail(file->handle != NULL, EOF);
+
     handle = (VFSGIOHandle *) file->handle;
-	
-    return ungetc(c, handle);
-#endif
+    handle->stream_stack = g_slist_prepend(handle->stream_stack, GINT_TO_POINTER(c));
+    if (handle->stream_stack != NULL)
+        return c;
+
+    return EOF;
 }
 
 gint
@@ -174,13 +196,13 @@ gio_aud_vfs_fseek_impl(VFSFile * file,
     VFSGIOHandle *handle;
     GSeekType seektype;
 
-    if (file == NULL)
-        return 0;
+    g_return_val_if_fail(file != NULL, -1);
+    g_return_val_if_fail(file->handle != NULL, -1);
 
     handle = (VFSGIOHandle *) file->handle;
 
     if (!g_seekable_can_seek(handle->seekable))
-        return 0;
+        return -1;
 
     switch (whence)
     {
@@ -195,14 +217,13 @@ gio_aud_vfs_fseek_impl(VFSFile * file,
         break;
     }
 
-    return g_seekable_seek(handle->seekable, seektype, offset, NULL, NULL);
+    return (g_seekable_seek(handle->seekable, offset, seektype, NULL, NULL) ? 0 : -1);
 }
 
 void
 gio_aud_vfs_rewind_impl(VFSFile * file)
 {
-    if (file == NULL)
-        return;
+    g_return_if_fail(file != NULL);
 
     file->base->vfs_fseek_impl(file, 0, SEEK_SET);
 }
@@ -212,8 +233,8 @@ gio_aud_vfs_ftell_impl(VFSFile * file)
 {
     VFSGIOHandle *handle;
 
-    if (file == NULL)
-        return 0;
+    g_return_val_if_fail(file != NULL, -1);
+    g_return_val_if_fail(file->handle != NULL, -1);
 
     handle = (VFSGIOHandle *) file->handle;
 
@@ -223,6 +244,8 @@ gio_aud_vfs_ftell_impl(VFSFile * file)
 gboolean
 gio_aud_vfs_feof_impl(VFSFile * file)
 {
+    g_return_val_if_fail(file != NULL, TRUE);
+
     return (file->base->vfs_ftell_impl(file) == file->base->vfs_fsize_impl(file));
 }
 
@@ -231,8 +254,7 @@ gio_aud_vfs_truncate_impl(VFSFile * file, glong size)
 {
     VFSGIOHandle *handle;
 
-    if (file == NULL)
-        return -1;
+    g_return_val_if_fail(file != NULL, -1);
 
     handle = (VFSGIOHandle *) file->handle;
 
@@ -247,8 +269,8 @@ gio_aud_vfs_fsize_impl(VFSFile * file)
     GError *error = NULL;
     goffset size;
 
-    if (file == NULL)
-        return -1;
+    g_return_val_if_fail(file != NULL, -1);
+    g_return_val_if_fail(file->handle != NULL, -1);
 
     handle = (VFSGIOHandle *) file->handle;
     info = g_file_query_info(handle->file, G_FILE_ATTRIBUTE_STANDARD_SIZE, G_FILE_QUERY_INFO_NONE, NULL, &error);
