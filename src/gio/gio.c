@@ -110,6 +110,7 @@ gio_aud_vfs_fread_impl(gpointer ptr,
     VFSGIOHandle *handle;
     goffset count = 0;
     gsize realsize = (size * nmemb);
+    gsize ret;
 
     g_return_val_if_fail(file != NULL, EOF);
     g_return_val_if_fail(file->handle != NULL, EOF);
@@ -129,7 +130,8 @@ gio_aud_vfs_fread_impl(gpointer ptr,
         }
     }
 
-    return (g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL) + count);
+    ret = (g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL) + count);
+    return (ret / size);
 }
 
 size_t
@@ -139,13 +141,15 @@ gio_aud_vfs_fwrite_impl(gconstpointer ptr,
            VFSFile * file)
 {
     VFSGIOHandle *handle;
+    gsize ret;
 
     g_return_val_if_fail(file != NULL, EOF);
     g_return_val_if_fail(file->handle != NULL, EOF);
 
     handle = (VFSGIOHandle *) file->handle;
 
-    return g_output_stream_write(G_OUTPUT_STREAM(handle->ostream), ptr, size * nmemb, NULL, NULL);
+    ret = g_output_stream_write(G_OUTPUT_STREAM(handle->ostream), ptr, size * nmemb, NULL, NULL);
+    return (ret / size);
 }
 
 gint
