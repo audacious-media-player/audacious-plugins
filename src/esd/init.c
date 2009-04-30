@@ -43,10 +43,18 @@ esdout_init(void)
     db = aud_cfg_db_open();
 
     if ((env = getenv("ESPEAKER")) != NULL) {
-        char *temp;
+        char *temp = NULL;
         esd_cfg.use_remote = TRUE;
         esd_cfg.server = g_strdup(env);
-        temp = strchr(esd_cfg.server, ':');
+        if (esd_cfg.server[0] == '[' &&
+                NULL != (temp = strchr(esd_cfg.server + 1, ']')) &&
+                temp[1] == ':') {
+            *temp = '\0';
+            memmove(esd_cfg.server, esd_cfg.server + 1, temp - esd_cfg.server);
+            temp++;
+        } else if (NULL != (temp = strchr(esd_cfg.server, ':'))) {
+            if (strchr(temp + 1, ':')) temp = NULL;
+        }
         if (temp != NULL) {
             *temp = '\0';
             esd_cfg.port = atoi(temp + 1);

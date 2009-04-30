@@ -410,7 +410,8 @@ esdout_open(AFormat fmt, gint rate, gint nch)
         g_free(esd_cfg.hostname);
     if (esd_cfg.use_remote)
         esd_cfg.hostname =
-            g_strdup_printf("%s:%d", esd_cfg.server, esd_cfg.port);
+            g_strdup_printf((strchr(esd_cfg.server, ':')) ? "[%s]:%d" : "%s:%d",
+                    esd_cfg.server, esd_cfg.port);
     else
         esd_cfg.hostname = NULL;
 
