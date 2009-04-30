@@ -171,7 +171,7 @@ gio_aud_vfs_getc_impl(VFSFile *file)
         handle->stream_stack = g_slist_delete_link(handle->stream_stack, handle->stream_stack);
         return buf;
     }
-    else if (g_input_stream_read(G_INPUT_STREAM(handle->istream), &buf, 1, NULL, NULL) == -1)
+    else if (g_input_stream_read(G_INPUT_STREAM(handle->istream), &buf, 1, NULL, NULL) != 1)
         return EOF;
 
     return buf;
