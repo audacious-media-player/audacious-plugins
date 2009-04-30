@@ -277,8 +277,8 @@ mp3_head_convert(const guchar * hbuf)
         ((guint32) hbuf[3]);
 }
 
-//#undef MADPROBE_DEBUG
-#define MADPROBE_DEBUG
+#undef MADPROBE_DEBUG
+//#define MADPROBE_DEBUG
 
 #ifdef MADPROBE_DEBUG
 static gchar *mp3_ver_table[4] = { "2.5", "INVALID", "2", "1" };
