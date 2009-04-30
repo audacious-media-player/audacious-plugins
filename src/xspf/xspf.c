@@ -313,12 +313,13 @@ static void xspf_playlist_load(const gchar *filename, gint pos)
 }
 
 
-static void xspf_add_node(xmlNodePtr node, TupleValueType type,
+static void xspf_add_node(xmlDocPtr doc, xmlNodePtr node, TupleValueType type,
         gboolean isMeta, const gchar *xspfName, const gchar *strVal,
         const gint intVal)
 {
     gchar tmps[64];
     xmlNodePtr tmp;
+    xmlChar *encVal;
     
     if (isMeta) {
         tmp = xmlNewNode(NULL, (xmlChar *) "meta");
@@ -328,7 +329,9 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
     
     switch (type) {
         case TUPLE_STRING:
-            xmlAddChild(tmp, xmlNewText((xmlChar *) strVal));
+            encVal = xmlEncodeEntitiesReentrant(doc, (xmlChar *)strVal);
+            xmlAddChild(tmp, xmlNewText(encVal));
+            free(encVal);
             break;
             
         case TUPLE_INT:
@@ -432,7 +435,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
 
     /* common */
     xmlDocSetRootElement(doc, rootnode);
-    xspf_add_node(rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
+    xspf_add_node(doc, rootnode, TUPLE_STRING, FALSE, "creator", PACKAGE "-" VERSION, 0);
 
     /* add staticlist marker */
     if (playlist->attribute & PLAYLIST_STATIC) {
@@ -451,7 +454,7 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
     /* save playlist title */
     if (playlist->title && playlist->title[0] &&
         g_utf8_validate(playlist->title, -1, NULL))
-        xspf_add_node(rootnode, TUPLE_STRING, FALSE, "title", playlist->title, 0);
+        xspf_add_node(doc, rootnode, TUPLE_STRING, FALSE, "title", playlist->title, 0);
 
 
     tracklist = xmlNewNode(NULL, (xmlChar *)"trackList");
@@ -519,19 +522,19 @@ static void xspf_playlist_save(const gchar *filename, gint pos)
                 }
                 
                 if (isOK)
-                    xspf_add_node(track, xs->type, xs->isMeta, xs->xspfName, scratch, scratchi);
+                    xspf_add_node(doc, track, xs->type, xs->isMeta, xs->xspfName, scratch, scratchi);
             }
 
         } else {
 
             if (entry->title != NULL && g_utf8_validate(entry->title, -1, NULL))
-                xspf_add_node(track, TUPLE_STRING, FALSE, "title", entry->title, 0);
+                xspf_add_node(doc, track, TUPLE_STRING, FALSE, "title", entry->title, 0);
 
             if (entry->length > 0)
-                xspf_add_node(track, TUPLE_INT, FALSE, "duration", NULL, entry->length);
+                xspf_add_node(doc, track, TUPLE_INT, FALSE, "duration", NULL, entry->length);
 
             /* Add mtime of -1 */
-            xspf_add_node(track, TUPLE_INT, TRUE, "mtime", NULL, -1);
+            xspf_add_node(doc, track, TUPLE_INT, TRUE, "mtime", NULL, -1);
         }
 
         g_free(filename);
