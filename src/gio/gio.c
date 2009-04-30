@@ -94,6 +94,12 @@ gio_aud_vfs_fclose_impl(VFSFile * file)
     {
         VFSGIOHandle *handle = (VFSGIOHandle *) file->handle;
 
+        if (handle->istream)
+            g_object_unref(handle->istream);
+
+        if (handle->ostream)
+            g_object_unref(handle->ostream);
+
         g_object_unref(handle->file);
         g_slice_free(VFSGIOHandle, handle);
 
