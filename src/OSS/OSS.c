@@ -54,7 +54,7 @@ static void oss_about(void)
                      G_CALLBACK(gtk_widget_destroyed), &about_dialog);
 }
 
-static void oss_init(void)
+static OutputPluginInitStatus oss_init(void)
 {
     mcs_handle_t *db;
 
@@ -84,6 +84,8 @@ static void oss_init(void)
                               &oss_cfg.alt_mixer_device);
         aud_cfg_db_close(db);
     }
+    
+    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 static void oss_cleanup(void)
@@ -100,7 +102,8 @@ static void oss_cleanup(void)
 }
 
 static OutputPlugin oss_op = {
-    .description = "OSS Output Plugin",                       /* Description */
+    .description = "OSS Output Plugin",
+    .probe_priority = 1,
     .init = oss_init,
     .cleanup = oss_cleanup,
     .about = oss_about,
