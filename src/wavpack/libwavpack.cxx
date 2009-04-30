@@ -113,22 +113,16 @@ gint push_back_byte (void *id, gint c)
 guint32 get_length (void *id)
 {
     VFSFile *file = (VFSFile *) id;
-    guint32 sz = 0;
 
     if (file == NULL)
         return 0;
 
-    aud_vfs_fseek(file, 0, SEEK_END);
-    sz = aud_vfs_ftell(file);
-    aud_vfs_fseek(file, 0, SEEK_SET);
-
-    return sz;
+    return aud_vfs_fsize (file);
 }
 
-/* XXX streams?? */
 gint can_seek (void *id)
 {
-    return 1;
+    return (aud_vfs_is_streaming ((VFSFile *) id) == FALSE);
 }
 
 gint32 write_bytes (void *id, void *data, gint32 bcount)
