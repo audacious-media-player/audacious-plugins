@@ -22,6 +22,7 @@
 
 OutputPlugin esd_op = {
     .description = "ESD Output Plugin",
+    .probe_priority = 2,
     .init = esdout_init,
     .about = esdout_about,
     .configure = esdout_configure,
