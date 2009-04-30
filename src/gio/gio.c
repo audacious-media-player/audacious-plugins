@@ -243,7 +243,7 @@ gio_aud_vfs_ftell_impl(VFSFile * file)
 
     handle = (VFSGIOHandle *) file->handle;
 
-    return (glong) g_seekable_tell(handle->seekable);
+    return (glong) (g_seekable_tell(handle->seekable) - g_slist_length(handle->stream_stack));
 }
 
 gboolean
