@@ -48,8 +48,6 @@ gio_aud_vfs_fopen_impl(const gchar *path, const gchar *mode)
     handle = g_slice_new0(VFSGIOHandle);
     handle->file = g_file_new_for_uri(path);
 
-    g_print("open %s\n", path);
-
     if (*mode == 'r')
     {
         handle->istream = g_file_read(handle->file, NULL, &error);
@@ -306,13 +304,13 @@ VFSConstructor file_const = {
 
 static void init(void)
 {
-	aud_vfs_register_transport(&file_const);
+    aud_vfs_register_transport(&file_const);
 }
 
 static void cleanup(void)
 {
 #if 0
-	aud_vfs_unregister_transport(&file_const);
+    aud_vfs_unregister_transport(&file_const);
 #endif
 }
 
