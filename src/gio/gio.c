@@ -203,6 +203,12 @@ gio_aud_vfs_fseek_impl(VFSFile * file,
     if (!g_seekable_can_seek(handle->seekable))
         return -1;
 
+    if (handle->stream_stack != NULL)
+    {
+        g_slist_free(handle->stream_stack);
+        handle->stream_stack = NULL;
+    }
+
     switch (whence)
     {
     case SEEK_CUR:
