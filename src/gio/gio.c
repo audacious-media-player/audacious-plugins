@@ -129,7 +129,7 @@ gio_aud_vfs_fread_impl(gpointer ptr,
         }
     }
 
-    return g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL);
+    return (g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL) + count);
 }
 
 size_t
