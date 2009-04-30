@@ -26,7 +26,6 @@
 
 #include "ui_skinned_number.h"
 #include "skins_cfg.h"
-#include "audstrings.h"
 #include <string.h>
 #include <ctype.h>
 #include <gtk/gtkmain.h>
