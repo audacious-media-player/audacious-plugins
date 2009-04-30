@@ -109,6 +109,7 @@ gio_aud_vfs_fread_impl(gpointer ptr,
 {
     VFSGIOHandle *handle;
     goffset count = 0;
+    gsize realsize = (size * nmemb);
 
     g_return_val_if_fail(file != NULL, EOF);
     g_return_val_if_fail(file->handle != NULL, EOF);
@@ -119,7 +120,7 @@ gio_aud_vfs_fread_impl(gpointer ptr,
     if (handle->stream_stack != NULL)
     {
         guchar uc;
-        while ((count < size) && (handle->stream_stack != NULL))
+        while ((count < realsize) && (handle->stream_stack != NULL))
         {
             uc = GPOINTER_TO_INT(handle->stream_stack->data);
             handle->stream_stack = g_slist_delete_link(handle->stream_stack, handle->stream_stack);
@@ -128,7 +129,7 @@ gio_aud_vfs_fread_impl(gpointer ptr,
         }
     }
 
-    return g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), ((size * nmemb) - count), NULL, NULL);
+    return g_input_stream_read(G_INPUT_STREAM(handle->istream), (ptr + count), (realsize - count), NULL, NULL);
 }
 
 size_t
