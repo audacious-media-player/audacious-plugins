@@ -115,9 +115,9 @@ equalizerwin_set_scaled(gboolean ds)
 
     if (config.scaled) {
         dock_window_resize(GTK_WINDOW(equalizerwin), 275 * config.scale_factor,
-            height * config.scale_factor, 275 * config.scale_factor, height * config.scale_factor);
+            height * config.scale_factor);
     } else {
-        dock_window_resize(GTK_WINDOW(equalizerwin), 275, height, 275, height);
+        dock_window_resize(GTK_WINDOW(equalizerwin), 275, height);
     }
 
     GList *iter;

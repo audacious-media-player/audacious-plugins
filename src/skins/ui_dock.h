@@ -38,11 +38,11 @@ void dock_move_motion(GtkWindow * w, GdkEventMotion * event);
 void dock_move_release(GtkWindow * w);
 void dock_get_widget_pos(GtkWindow * w, gint * x, gint * y);
 gboolean dock_is_moving(GtkWindow * w);
-void dock_shade(GList * window_list, GtkWindow * widget, gint new_h);
+void dock_shade (GList * window_list, GtkWindow * widget, int new_height);
 
 GList *dock_window_set_decorated(GList * list, GtkWindow * window,
                                  gboolean decorated);
-void dock_window_resize(GtkWindow * widget, gint new_w, gint new_h, gint w, gint h);
+void dock_window_resize (GtkWindow * widget, int width, int height);
 
 GList *get_dock_window_list();
 void set_dock_window_list(GList * list);

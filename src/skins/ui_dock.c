@@ -252,168 +252,58 @@ docked_list_move(GList * list, gint x, gint y)
     }
 }
 
-static GList *
-shade_move_list(GList * list, GtkWindow * widget, gint offset)
-{
-    gint x, y, w, h;
-    GList *node;
-    DockedWindow *dw;
-
-    gtk_window_get_position(widget, &x, &y);
-    gtk_window_get_size(widget, &w, &h);
-
-
-    for (node = list; node;) {
-        gint dx, dy, dwidth, dheight;
-
-        dw = node->data;
-        gtk_window_get_position(dw->w, &dx, &dy);
-        gtk_window_get_size(dw->w, &dwidth, &dheight);
-        if (is_docked(x, y, w, h, dx, dy, dwidth, dheight) &&
-            ((dx + dwidth) > x && dx < (x + w))) {
-            list = g_list_remove_link(list, node);
-            g_list_free_1(node);
-
-            node = list = shade_move_list(list, dw->w, offset);
-        }
-        else
-            node = g_list_next(node);
-    }
-    gtk_window_move(widget, x, y + offset);
-    return list;
+void dock_window_resize (GtkWindow * widget, int width, int height) {
+  GdkGeometry hints;
+   hints.min_width = width;
+   hints.min_height = height;
+   hints.max_width = width;
+   hints.max_height = height;
+   gtk_window_resize (widget, width, height);
+   gtk_window_set_geometry_hints (widget, 0, & hints,
+    GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 }
 
-/*
- * Builds a list of the windows in the list of DockedWindows "winlist"
- * that are docked to the top or bottom of the window, and recursively
- * adds all windows that are docked to the top or bottom of that window,
- * and so on...
- * Note: The data in "winlist" is not copied.
- */
-static GList *
-find_shade_list(GtkWindow * widget, GList * winlist, GList * shade_list)
-{
-    gint x, y, w, h;
-    gint dx, dy, dwidth, dheight;
-    GList *node;
-
-    gtk_window_get_position(widget, &x, &y);
-    gtk_window_get_size(widget, &w, &h);
-    for (node = winlist; node; node = g_list_next(node)) {
-        DockedWindow *dw = node->data;
-        if (g_list_find_custom
-            (shade_list, dw, (GCompareFunc) docked_list_compare))
-            continue;
-        gtk_window_get_position(dw->w, &dx, &dy);
-        gtk_window_get_size(dw->w, &dwidth, &dheight);
-
-        /* FIXME. Is the is_docked() necessary? */
-        if (is_docked(x, y, w, h, dx, dy, dwidth, dheight) &&
-            ((dx + dwidth) > x && dx < (x + w))) {
-            shade_list = g_list_append(shade_list, dw);
-            shade_list = find_shade_list(dw->w, winlist, shade_list);
-        }
-    }
-    return shade_list;
+static void move_attached (GtkWindow * window, GList * * others, int offset) {
+  int x, y, width, height, x2, y2;
+  GList * move, * scan, * next;
+   gtk_window_get_position (window, & x, & y);
+   gtk_window_get_size (window, & width, & height);
+   move = 0;
+   for (scan = * others; scan; scan = next) {
+      next = g_list_next (scan);
+      gtk_window_get_position (scan->data, & x2, & y2);
+      if (y2 == y + height) {
+         * others = g_list_remove_link (* others, scan);
+         move = g_list_concat (move, scan);
+      }
+   }
+   for (; move; move = g_list_delete_link (move, move))
+      move_attached (move->data, others, offset);
+   gtk_window_move (window, x, y + offset);
 }
 
-void
-dock_window_resize(GtkWindow * widget, gint new_w, gint new_h, gint w, gint h)
-{
-    GdkGeometry hints;
-    hints.min_width = new_w;
-    hints.min_height = new_h;
-    hints.max_width = new_w;
-    hints.max_height = new_h;
-    gtk_window_resize (widget, new_w, new_h);
-    gtk_window_set_geometry_hints (widget, 0, & hints,
-     GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
-}
-
-void
-dock_shade(GList * window_list, GtkWindow * widget, gint new_h)
-{
-    gint x, y, w, h, off_y, orig_off_y;
-    GList *node, *docked_list, *slist;
-    DockedWindow *dw;
-
-    gtk_window_get_position(widget, &x, &y);
-    gtk_window_get_size(widget, &w, &h);
-
-    if (config.show_wm_decorations) {
-        dock_window_resize(widget, w, new_h, w, h);
-        return;
-    }
-
-    docked_list = get_docked_list(NULL, window_list, widget, 0, 0);
-    slist = find_shade_list(widget, docked_list, NULL);
-
-    off_y = new_h - h;
-    do {
-        orig_off_y = off_y;
-        for (node = slist; node; node = g_list_next(node)) {
-            gint dx, dy, dwidth, dheight;
-
-            dw = node->data;
-            if (dw->w == widget)
-                continue;
-            gtk_window_get_position(dw->w, &dx, &dy);
-            gtk_window_get_size(dw->w, &dwidth, &dheight);
-            if ((dy >= y) && ((dy + off_y + dheight) > gdk_screen_height()))
-                off_y -= (dy + off_y + dheight) - gdk_screen_height();
-            else if ((dy >= y) && ((dy + dheight) == gdk_screen_height()))
-                off_y = 0;
-
-            if (((dy >= y) && ((dy + off_y) < 0)))
-                off_y -= dy + off_y;
-            if ((dy < y) && ((dy + (off_y - (new_h - h))) < 0))
-                off_y -= dy + (off_y - (new_h - h));
-        }
-    } while (orig_off_y != off_y);
-    if (slist) {
-        GList *mlist = g_list_copy(slist);
-
-        /* Remove this widget from the list */
-        for (node = mlist; node; node = g_list_next(node)) {
-            dw = node->data;
-            if (dw->w == widget) {
-                mlist = g_list_remove_link(mlist, node);
-                g_list_free_1(node);
-                break;
-            }
-        }
-        for (node = mlist; node;) {
-            GList *temp;
-            gint dx, dy, dwidth, dheight;
-
-            dw = node->data;
-
-            gtk_window_get_position(dw->w, &dx, &dy);
-            gtk_window_get_size(dw->w, &dwidth, &dheight);
-            /*
-             * Find windows that are directly docked to this window,
-             * move it, and any windows docked to that window again
-             */
-            if (is_docked(x, y, w, h, dx, dy, dwidth, dheight) &&
-                ((dx + dwidth) > x && dx < (x + w))) {
-                mlist = g_list_remove_link(mlist, node);
-                g_list_free_1(node);
-                if (dy > y)
-                    temp = shade_move_list(mlist, dw->w, off_y);
-                else if (off_y - (new_h - h) != 0)
-                    temp = shade_move_list(mlist, dw->w, off_y - (new_h - h));
-                else
-                    temp = mlist;
-                node = mlist = temp;
-            }
-            else
-                node = g_list_next(node);
-        }
-        g_list_free(mlist);
-    }
-    g_list_free(slist);
-    free_docked_list(docked_list);
-    dock_window_resize(widget, w, new_h, w, h);
+void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
+  int x, y, width, height, x2, y2;
+  GList * move, * others, * scan, * next;
+   if (! config.show_wm_decorations) {
+      gtk_window_get_position (window, & x, & y);
+      gtk_window_get_size (window, & width, & height);
+      others = g_list_copy (window_list);
+      others = g_list_remove (others, window);
+      move = 0;
+      for (scan = others; scan; scan = next) {
+         next = g_list_next (scan);
+         gtk_window_get_position (scan->data, & x2, & y2);
+         if (y2 == y + height) {
+            others = g_list_remove_link (others, scan);
+            move = g_list_concat (move, scan);
+         }
+      }
+      for (; move; move = g_list_delete_link (move, move))
+         move_attached (move->data, & others, new_height - height);
+      g_list_free (others);
+   }
+   dock_window_resize (window, width, new_height);
 }
 
 void

@@ -578,9 +578,7 @@ mainwin_refresh_hints(void)
     if (aud_active_skin->properties.mainwin_height && aud_active_skin->properties.mainwin_width)
     {
         dock_window_resize(GTK_WINDOW(mainwin), config.player_shaded ? MAINWIN_SHADED_WIDTH * MAINWIN_SCALE_FACTOR : aud_active_skin->properties.mainwin_width * MAINWIN_SCALE_FACTOR,
-                           config.player_shaded ? MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR : aud_active_skin->properties.mainwin_height * MAINWIN_SCALE_FACTOR,
-                           aud_active_skin->properties.mainwin_width * MAINWIN_SCALE_FACTOR,
-                           aud_active_skin->properties.mainwin_height * MAINWIN_SCALE_FACTOR);
+                           config.player_shaded ? MAINWIN_SHADED_HEIGHT * MAINWIN_SCALE_FACTOR : aud_active_skin->properties.mainwin_height * MAINWIN_SCALE_FACTOR);
 
         gdk_flush();
     }
@@ -1637,8 +1635,7 @@ mainwin_set_scaled(gboolean scaled)
         height = aud_active_skin->properties.mainwin_height;
 
     dock_window_resize(GTK_WINDOW(mainwin), config.player_shaded ? MAINWIN_SHADED_WIDTH : aud_active_skin->properties.mainwin_width,
-                       config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height,
-                       aud_active_skin->properties.mainwin_width * config.scale_factor , aud_active_skin->properties.mainwin_height * config.scale_factor);
+                       config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height);
 
     GList *iter;
     for (iter = GTK_FIXED (SKINNED_WINDOW(mainwin)->normal)->children; iter; iter = g_list_next (iter)) {
