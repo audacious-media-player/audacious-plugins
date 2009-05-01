@@ -150,6 +150,11 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0],
     [AC_MSG_ERROR([Cannot find Gtk+2 >= 2.10.0])]
 )
 
+PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.0],
+    [ADD_PC_REQUIRES([gio-2.0 >= 2.0])],
+    [AC_MSG_ERROR([Cannot find GIO >= 2.0])]
+)
+
 PKG_CHECK_MODULES(PANGO, [pango >= 1.8.0],
     [ADD_PC_REQUIRES([pango >= 1.8.0])],
     [AC_MSG_ERROR([Cannot find Pango >= 1.8.0])]

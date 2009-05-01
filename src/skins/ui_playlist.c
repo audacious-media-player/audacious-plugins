@@ -344,10 +344,6 @@ playlistwin_set_shade(gboolean shaded)
                playlistwin_get_height());
 
     playlistwin_set_geometry_hints(config.playlist_shaded);
-
-    gtk_window_resize(GTK_WINDOW(playlistwin),
-                      playlistwin_get_width(),
-                      playlistwin_get_height());
 }
 
 static void
@@ -356,8 +352,6 @@ playlistwin_set_shade_menu(gboolean shaded)
     GtkAction *action = gtk_action_group_get_action(
       toggleaction_group_others , "roll up playlist editor" );
     gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , shaded );
-
-    playlistwin_set_shade(shaded);
     playlistwin_update_list(aud_playlist_get_active());
 }
 

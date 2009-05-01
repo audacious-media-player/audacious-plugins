@@ -325,10 +325,9 @@ dock_window_resize(GtkWindow * widget, gint new_w, gint new_h, gint w, gint h)
     hints.min_height = new_h;
     hints.max_width = new_w;
     hints.max_height = new_h;
-
-    gdk_window_resize(GTK_WIDGET(widget)->window, new_w, new_h);
-    gdk_window_set_geometry_hints(GTK_WIDGET(widget)->window, &hints,
-                                  GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
+    gtk_window_resize (widget, new_w, new_h);
+    gtk_window_set_geometry_hints (widget, 0, & hints,
+     GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 }
 
 void
@@ -414,7 +413,6 @@ dock_shade(GList * window_list, GtkWindow * widget, gint new_h)
     }
     g_list_free(slist);
     free_docked_list(docked_list);
-    gtk_window_move(widget, x, y + off_y - (new_h - h));
     dock_window_resize(widget, w, new_h, w, h);
 }
 
