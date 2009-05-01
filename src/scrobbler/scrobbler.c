@@ -14,7 +14,6 @@
 #include <audacious/plugin.h>
 #include <audacious/audutil.h>
 
-#define SCROBBLER_HS_URL "http://post.audioscrobbler.com"
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800
 #define SCROBBLER_SB_WAIT 10
@@ -38,6 +37,7 @@ static int  sc_hs_status,
 
 static char     *sc_submit_url, /* queue */
         *sc_np_url, /* np */
+        *sc_hs_url, /* handshake url */
         *sc_session_id,
         *sc_username = NULL,
         *sc_password = NULL,
@@ -483,7 +483,7 @@ static int sc_handshake(void)
     auth_tmp = g_strdup(sc_response_hash);
 
     g_snprintf(buf, sizeof(buf), "%s/?hs=true&p=%s&c=%s&v=%s&u=%s&t=%ld&a=%s",
-            SCROBBLER_HS_URL, SCROBBLER_VERSION,
+            sc_hs_url, SCROBBLER_VERSION,
             SCROBBLER_CLI_ID, SCROBBLER_IMPLEMENTATION, sc_username, ts,
             auth_tmp);
     g_free(auth_tmp);
@@ -1072,7 +1072,7 @@ static void sc_checkhandshake(void)
 
 /* Called at session startup*/
 
-void sc_init(char *uname, char *pwd)
+void sc_init(char *uname, char *pwd, char *url)
 {
     sc_hs_status = sc_hs_timeout = sc_hs_errors = sc_submit_timeout =
         sc_srv_res_size = sc_giveup = sc_major_error_present =
@@ -1083,6 +1083,7 @@ void sc_init(char *uname, char *pwd)
         sc_challenge_hash = sc_major_error = NULL;
     sc_username = strdup(uname);
     sc_password = strdup(pwd);
+   	sc_hs_url = strdup(url);
     read_cache();
     pdebug("scrobbler starting up", DEBUG);
 }

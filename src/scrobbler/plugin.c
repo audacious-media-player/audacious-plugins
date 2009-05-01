@@ -99,7 +99,7 @@ static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 }
 
 void start(void) {
-	char *username = NULL, *password = NULL;
+	char *username = NULL, *password = NULL, *sc_url = NULL;
 	char *ge_username = NULL, *ge_password = NULL;
 	mcs_handle_t *cfgfile;
 	sc_going = 1;
@@ -111,6 +111,8 @@ void start(void) {
 				&username);
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "password",
 				&password);
+		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "sc_url",
+				&sc_url);		
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_username",
 				&ge_username);
 		aud_cfg_db_get_string(cfgfile, "audioscrobbler", "ge_password",
@@ -126,10 +128,11 @@ void start(void) {
 	}
 	else
 	{
-		sc_init(username, password);
+		sc_init(username, password, sc_url);
 
 		g_free(username);
 		g_free(password);
+		g_free(sc_url);
 	}
 	
 	if ((!ge_username || !ge_password) || (!*ge_username || !*ge_password))

@@ -19,7 +19,9 @@
 #include "configure.h"
 #include "plugin.h"
 
-GtkWidget *entry1, *entry2, *ge_entry1, *ge_entry2, *cfgdlg;
+#define LASTFM_HS_URL "http://post.audioscrobbler.com"
+
+GtkWidget *entry1, *entry2, *entry3, *ge_entry1, *ge_entry2, *cfgdlg;
 static GdkColor disabled_color;
 guint apply_timeout = 0; /* ID of timeout to save new config */
 gboolean running = TRUE; /* if plugin threads are running */
@@ -49,6 +51,7 @@ static void saveconfig(void)
     mcs_handle_t *cfgfile;
 
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
+    const char *url = gtk_entry_get_text(GTK_ENTRY(entry3));
     const char *ge_uid = gtk_entry_get_text(GTK_ENTRY(ge_entry1));
 
     if ((cfgfile = aud_cfg_db_open())) {
@@ -68,6 +71,11 @@ static void saveconfig(void)
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", "");
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password", "");
         }
+        
+        if (url != NULL && url[0] != '\0' && strlen(url))
+        	aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", (char *)url);
+       	else if (!url || url[0] == '\0')
+       		aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", LASTFM_HS_URL);
 
         if (ge_uid != NULL && ge_uid[0] != '\0' && strlen(ge_uid) &&
             ge_pwd != NULL && ge_pwd[0] != '\0' && strlen(ge_pwd))
@@ -154,6 +162,7 @@ create_cfgdlg(void)
   GtkWidget *label3;
   GtkWidget *label1;
   GtkWidget *label2;
+  GtkWidget *label4;
   GtkWidget *himage1;
   GtkWidget *align1;
   GtkWidget *notebook1;
@@ -197,6 +206,14 @@ create_cfgdlg(void)
   gtk_label_set_justify (GTK_LABEL (label3), GTK_JUSTIFY_RIGHT);
   gtk_misc_set_alignment (GTK_MISC (label3), 1, 0.5);
 
+  label4 = gtk_label_new (_("Scrobbler URL:"));
+  gtk_widget_show (label4);
+  gtk_table_attach (GTK_TABLE (table1), label4, 0, 1, 4, 5,
+  					(GtkAttachOptions) (GTK_FILL),
+  					(GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_justify (GTK_LABEL (label4), GTK_JUSTIFY_RIGHT);
+  gtk_misc_set_alignment (GTK_MISC (label4), 1, 0.5);
+
   entry1 = gtk_entry_new ();
   gtk_widget_show (entry1);
   gtk_table_attach_defaults (GTK_TABLE (table1), entry1, 1, 2, 2, 3);
@@ -216,6 +233,10 @@ create_cfgdlg(void)
                    NULL);
   gtk_widget_show (entry2);
   gtk_table_attach_defaults (GTK_TABLE (table1), entry2, 1, 2, 3, 4);
+  
+  entry3 = gtk_entry_new ();
+  gtk_widget_show (entry3);
+  gtk_table_attach_defaults (GTK_TABLE (table1), entry3, 1, 2, 4, 5);
 
   label1 = gtk_label_new (_("<b>Last.FM</b>"));
   gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
@@ -282,6 +303,7 @@ create_cfgdlg(void)
 
         if ((db = aud_cfg_db_open())) {
                 gchar *username = NULL;
+                gchar *sc_url = NULL;
 		// last fm
                 aud_cfg_db_get_string(db, "audioscrobbler", "username",
                         &username);
@@ -290,6 +312,14 @@ create_cfgdlg(void)
                         g_free(username);
 			username = NULL;
                 }
+                
+				aud_cfg_db_get_string(db, "audioscrobbler", "sc_url", &sc_url);
+				if (sc_url) {
+                		gtk_entry_set_text(GTK_ENTRY(entry3), sc_url);
+                		g_free(sc_url);
+		             	sc_url = NULL;
+				}
+				
 		// gerpok
                 aud_cfg_db_get_string(db, "audioscrobbler", "ge_username",
                         &username);
@@ -303,6 +333,7 @@ create_cfgdlg(void)
         }
 
   g_signal_connect(entry1, "changed", G_CALLBACK(entry_changed), NULL);
+  g_signal_connect(entry3, "changed", G_CALLBACK(entry_changed), NULL);
   g_signal_connect(ge_entry1, "changed", G_CALLBACK(entry_changed), NULL);
 
   return vbox2;
