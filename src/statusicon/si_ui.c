@@ -102,8 +102,7 @@ si_ui_statusicon_cb_btpress ( GtkWidget * evbox , GdkEventButton * event )
           break;
         case SI_CFG_RCLICK_MENU_AUD:
         default:
-          if(audacious_menu_main_show != NULL)
-              audacious_menu_main_show ( event->x_root , event->y_root , 3 , event->time );
+          aud_hook_call ("show main menu", event);
           break;
       }
       break;
@@ -133,7 +132,7 @@ si_ui_statusicon_cb_btscroll ( GtkWidget * evbox , GdkEventScroll * event )
       }
       break;
     }
-    
+
     case GDK_SCROLL_DOWN:
     {
       switch ( si_cfg.scroll_action )
@@ -340,7 +339,7 @@ si_ui_statusicon_image_update ( GtkWidget * image )
   GdkPixbuf *si_pixbuf, *si_scaled_pixbuf;
   gint size = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(image) , "size" ));
   static gchar *wmname = NULL;
-  
+
   AUDDBG("WM reported proposed icon size: %d\n", size);
 
   /* sometimes, KDE won't give the correct size-allocation; workaround this */
@@ -360,7 +359,7 @@ si_ui_statusicon_image_update ( GtkWidget * image )
 	const gchar *path;
 	gboolean scalable = FALSE;
 	gboolean catch = FALSE;
-	
+
 	theme = gtk_icon_theme_get_default ();
 	array = gtk_icon_theme_get_icon_sizes (theme, "audacious");
 	if (array[0] != 0) {
@@ -380,7 +379,7 @@ si_ui_statusicon_image_update ( GtkWidget * image )
 		info = gtk_icon_theme_lookup_icon (theme, "audacious", -1, GTK_ICON_LOOKUP_FORCE_SVG);
 		path = gtk_icon_info_get_filename (info);
 		si_pixbuf = gdk_pixbuf_new_from_file (path, NULL);
-		
+
 	} else {
 		si_pixbuf = gdk_pixbuf_new_from_file (DATA_DIR "/images/audacious_player.xpm", NULL);
 	}
@@ -405,7 +404,7 @@ si_ui_statusicon_cb_image_sizalloc ( GtkWidget * image , GtkAllocation * allocat
     size = allocation->height;
   else
     size = allocation->width;*/
-  
+
   size = MAX(allocation->height, allocation->width); /* some WMs doesn't report orientation correctly --asphyx */
 
   if ( prev_size != size )

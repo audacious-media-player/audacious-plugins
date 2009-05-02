@@ -51,7 +51,7 @@ typedef enum {
 
 enum {
     MAINWIN_GENERAL_ABOUT,
-    
+
     MAINWIN_GENERAL_PLAYFILE,
     MAINWIN_GENERAL_PLAYLOCATION,
 
@@ -187,7 +187,5 @@ void playback_get_sample_params(gint * bitrate,
                                 gint * numchannels);
 
 void ui_main_check_theme_engine(void);
-
-void util_menu_main_show( gint x , gint y , guint button , guint time );
 
 #endif /* AUDACIOUS_UI_MAIN_H */

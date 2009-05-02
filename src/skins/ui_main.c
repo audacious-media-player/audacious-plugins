@@ -329,9 +329,16 @@ mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
     return TRUE;
 }
 
+static void show_main_menu (GdkEventButton * event, void * unused)
+{
+    ui_manager_popup_menu_show ((GtkMenu *) mainwin_general_menu, event->x_root,
+     event->y_root, event->button, event->time);
+}
+
 static void
 mainwin_destroy(GtkWidget * widget, gpointer data)
 {
+    aud_hook_dissociate ("show main menu", (HookFunction) show_main_menu);
     mainwin_quit_cb();
 }
 
@@ -2364,6 +2371,7 @@ mainwin_create(void)
     gtk_window_add_accel_group( GTK_WINDOW(mainwin) , ui_manager_get_accel_group() );
 
     mainwin_create_widgets();
+    aud_hook_associate ("show main menu", (HookFunction) show_main_menu, 0);
 }
 
 gboolean
@@ -2791,13 +2799,4 @@ void
 action_quit( void )
 {
     mainwin_quit_cb();
-}
-
-void
-util_menu_main_show( gint x , gint y , guint button , guint time )
-{
-    /* convenience function that shows the main popup menu wherever requested */
-    ui_manager_popup_menu_show( GTK_MENU(mainwin_general_menu),
-                                x , y , button , time );
-    return;
 }
