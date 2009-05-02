@@ -492,22 +492,7 @@ equalizerwin_create(void)
     equalizerwin_create_widgets();
 }
 
-
-void
-equalizerwin_show(gboolean show)
-{
-    GtkAction *action = gtk_action_group_get_action(
-      toggleaction_group_others , "show equalizer" );
-    gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , show );
-
-    if (show)
-        equalizerwin_real_show();
-    else
-        equalizerwin_real_hide();
-}
-
-void
-equalizerwin_real_show(void)
+static void equalizerwin_real_show (void)
 {
     gtk_window_move(GTK_WINDOW(equalizerwin), config.equalizer_x, config.equalizer_y);
     if (config.scaled && config.eq_scaled_linked)
@@ -516,25 +501,39 @@ equalizerwin_real_show(void)
     else
         gtk_widget_set_size_request(equalizerwin, 275,
                                     (config.equalizer_shaded ? 14 : 116));
-    config.equalizer_visible = TRUE;
     ui_skinned_button_set_inside(mainwin_eq, TRUE);
     gtk_widget_show_all(equalizerwin);
 
     gtk_window_present(GTK_WINDOW(equalizerwin));
 }
 
-void
-equalizerwin_real_hide(void)
+static void equalizerwin_real_hide (void)
 {
-    /*
-     * This function should only be called from the
-     * main menu signal handler
-     */
     gtk_widget_hide(equalizerwin);
-    config.equalizer_visible = FALSE;
     ui_skinned_button_set_inside(mainwin_eq, FALSE);
     gtk_widget_queue_draw(mainwin_eq);
 }
+
+void
+equalizerwin_show(gboolean show)
+{
+    GtkAction * a;
+
+    a = gtk_action_group_get_action (toggleaction_group_others, "show equalizer");
+
+    if (a && gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (a)) != show)
+        gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
+    else
+    {
+        config.equalizer_visible = show;
+        aud_cfg->equalizer_visible = show;
+
+        if (show)
+           equalizerwin_real_show ();
+        else
+           equalizerwin_real_hide ();
+    }
+ }
 
 static EqualizerPreset *
 equalizerwin_find_preset(GList * list, const gchar * name)

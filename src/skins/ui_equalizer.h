@@ -47,8 +47,6 @@ void equalizerwin_set_shade_menu_cb(gboolean shaded);
 void draw_equalizer_window(gboolean force);
 void equalizerwin_create(void);
 void equalizerwin_show(gboolean show);
-void equalizerwin_real_show(void);
-void equalizerwin_real_hide(void);
 void equalizerwin_load_auto_preset(const gchar * filename);
 void equalizerwin_set_volume_slider(gint percent);
 void equalizerwin_set_balance_slider(gint percent);

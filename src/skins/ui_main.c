@@ -1345,10 +1345,7 @@ mainwin_eq_pushed(gboolean toggled)
 void
 mainwin_pl_pushed(gboolean toggled)
 {
-    if (toggled)
-        playlistwin_show();
-    else
-        playlistwin_hide();
+    playlistwin_show (toggled);
 }
 
 gint
@@ -1568,22 +1565,8 @@ mainwin_set_balance_diff(gint diff)
     equalizerwin_set_balance_slider(b);
 }
 
-void
-mainwin_show(gboolean show)
+static void mainwin_real_show (void)
 {
-    if (show)
-        mainwin_real_show();
-    else
-        mainwin_real_hide();
-}
-
-void
-mainwin_real_show(void)
-{
-    config.player_visible = TRUE;
-
-    check_set( toggleaction_group_others , "show player" , TRUE );
-
     if (config.player_shaded)
         ui_vis_clear_data(mainwin_vis);
 
@@ -1602,20 +1585,33 @@ mainwin_real_show(void)
     gtk_window_present(GTK_WINDOW(mainwin));
 }
 
-void
-mainwin_real_hide(void)
+static void mainwin_real_hide (void)
 {
-
-    check_set( toggleaction_group_others , "show player", FALSE);
-
     if (config.player_shaded)
         ui_svis_clear_data(mainwin_svis);
 
     gtk_widget_hide(mainwin);
-
-    config.player_visible = FALSE;
 }
 
+void mainwin_show (gboolean show)
+{
+    GtkAction * a;
+
+    a = gtk_action_group_get_action (toggleaction_group_others, "show player");
+
+    if (a && gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (a)) != show)
+        gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
+    else
+    {
+        config.player_visible = show;
+        aud_cfg->player_visible = show;
+
+        if (show)
+           mainwin_real_show ();
+        else
+           mainwin_real_hide ();
+   }
+}
 
 void
 mainwin_set_stopaftersong(gboolean stop)
@@ -1699,16 +1695,10 @@ mainwin_general_menu_callback(gpointer data,
             mainwin_show(GTK_CHECK_MENU_ITEM(item)->active);
             break;
         case MAINWIN_GENERAL_SHOWPLWIN:
-            if (GTK_CHECK_MENU_ITEM(item)->active)
-                playlistwin_show();
-            else
-                playlistwin_hide();
+            playlistwin_show (GTK_CHECK_MENU_ITEM(item) ->active);
             break;
         case MAINWIN_GENERAL_SHOWEQWIN:
-            if (GTK_CHECK_MENU_ITEM(item)->active)
-                equalizerwin_real_show();
-            else
-                equalizerwin_real_hide();
+            equalizerwin_show (GTK_CHECK_MENU_ITEM (item)->active);
             break;
         case MAINWIN_GENERAL_PREV:
             aud_playlist_prev(playlist);
@@ -2588,19 +2578,13 @@ action_roll_up_playlist_editor( GtkToggleAction * action )
 void
 action_show_equalizer( GtkToggleAction * action )
 {
-    if (gtk_toggle_action_get_active(action))
-        equalizerwin_real_show();
-    else
-        equalizerwin_real_hide();
+    equalizerwin_show (gtk_toggle_action_get_active (action));
 }
 
 void
 action_show_playlist_editor( GtkToggleAction * action )
 {
-    if (gtk_toggle_action_get_active(action))
-        playlistwin_show();
-    else
-        playlistwin_hide();
+    playlistwin_show (gtk_toggle_action_get_active (action));
 }
 
 void

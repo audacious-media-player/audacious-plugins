@@ -128,7 +128,7 @@ ui_main_evlistener_playback_begin(gpointer hook_data, gpointer user_data)
         gtk_widget_show(mainwin_position);
     }
 
-    song_info_timeout_source = 
+    song_info_timeout_source =
         g_timeout_add_seconds(1, (GSourceFunc) mainwin_update_song_info, NULL);
 
     update_vis_timeout_source =
@@ -206,7 +206,6 @@ static void
 ui_main_evlistener_mainwin_show(gpointer hook_data, gpointer user_data)
 {
     gboolean *show = (gboolean*)hook_data;
-    aud_cfg->player_visible = *show;
     mainwin_show(*show);
 }
 
@@ -214,7 +213,6 @@ static void
 ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
 {
     gboolean *show = (gboolean*)hook_data;
-    aud_cfg->equalizer_visible = *show;
     equalizerwin_show(*show);
 }
 

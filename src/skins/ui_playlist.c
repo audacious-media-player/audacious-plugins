@@ -1055,7 +1055,7 @@ playlistwin_press(GtkWidget * widget,
 static gboolean
 playlistwin_delete(GtkWidget * w, gpointer data)
 {
-    playlistwin_hide();
+    playlistwin_show (0);
     return TRUE;
 }
 
@@ -1343,6 +1343,11 @@ local_playlist_next(void)
     aud_playlist_next(aud_playlist_get_active());
 }
 
+static void playlistwin_hide (void)
+{
+    playlistwin_show (0);
+}
+
 static void
 playlistwin_create_widgets(void)
 {
@@ -1549,17 +1554,9 @@ playlistwin_create(void)
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 }
 
-
-void
-playlistwin_show(void)
+static void playlistwin_real_show (void)
 {
-    GtkAction *action = gtk_action_group_get_action(
-      toggleaction_group_others , "show playlist editor" );
-
     gtk_window_move(GTK_WINDOW(playlistwin), config.playlist_x, config.playlist_y);
-    gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , TRUE );
-
-    config.playlist_visible = TRUE;
     ui_skinned_button_set_inside(mainwin_pl, TRUE);
 
     playlistwin_set_toprow(0);
@@ -1570,15 +1567,9 @@ playlistwin_show(void)
     gtk_window_present(GTK_WINDOW(playlistwin));
 }
 
-void
-playlistwin_hide(void)
+static void playlistwin_real_hide (void)
 {
-    GtkAction *action = gtk_action_group_get_action(
-      toggleaction_group_others , "show playlist editor" );
-    gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , FALSE );
-
     gtk_widget_hide(playlistwin);
-    config.playlist_visible = FALSE;
     ui_skinned_button_set_inside(mainwin_pl, FALSE);
 
     if ( config.player_visible )
@@ -1586,6 +1577,26 @@ playlistwin_hide(void)
       gtk_window_present(GTK_WINDOW(mainwin));
       gtk_widget_grab_focus(mainwin);
     }
+}
+
+void playlistwin_show (char show)
+{
+    GtkAction * a;
+
+    a = gtk_action_group_get_action (toggleaction_group_others, "show playlist editor");
+
+    if (a && gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (a)) != show)
+        gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
+    else
+    {
+        config.playlist_visible = show;
+        aud_cfg->playlist_visible = show;
+
+        if (show)
+           playlistwin_real_show ();
+        else
+           playlistwin_real_hide ();
+   }
 }
 
 void action_playlist_track_info(void)

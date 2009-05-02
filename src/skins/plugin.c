@@ -98,9 +98,11 @@ gboolean skins_init(void) {
 
     aud_hook_call("create prefswin", NULL);
 
-    if (config.player_visible) mainwin_real_show();
+    if (config.player_visible)
+       mainwin_show (1);
     if (config.equalizer_visible) equalizerwin_show(TRUE);
-    if (config.playlist_visible) playlistwin_show();
+    if (config.playlist_visible)
+       playlistwin_show (1);
 
     g_message("Entering Gtk+ main loop!");
     gtk_main();

@@ -148,8 +148,6 @@ void mainwin_set_volume_diff(gint diff);
 void mainwin_set_balance_diff(gint diff);
 
 void mainwin_show(gboolean);
-void mainwin_real_show(void);
-void mainwin_real_hide(void);
 void mainwin_move(gint x, gint y);
 void mainwin_shuffle_pushed(gboolean toggled);
 void mainwin_repeat_pushed(gboolean toggled);
