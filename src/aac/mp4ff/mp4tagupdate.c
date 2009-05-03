@@ -144,7 +144,7 @@ unsigned membuffer_transfer_from_file(membuffer * buf,mp4ff_t * src,unsigned byt
 	bufptr = membuffer_get_ptr(buf);
 	if (bufptr==0) return 0;
 	
-	if ((unsigned)mp4ff_read_data(src,(char*)bufptr + oldsize,bytes)!=bytes)
+	if ((unsigned)mp4ff_read_data(src,(unsigned char*)bufptr + oldsize,bytes)!=bytes)
 	{
 		membuffer_set_error(buf);
 		return 0;
@@ -410,7 +410,7 @@ static uint32_t find_atom(mp4ff_t * f,uint64_t base,uint32_t size,const char * n
 	uint64_t atom_offset = base;
 	for(;;)
 	{
-		char atom_name[4];
+		unsigned char atom_name[4];
 		uint32_t atom_size;
 
 		mp4ff_set_position(f,atom_offset);

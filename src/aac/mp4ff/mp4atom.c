@@ -221,7 +221,7 @@ uint64_t mp4ff_atom_read_header(mp4ff_t *f, uint8_t *atom_type, uint8_t *header_
 {
     uint64_t size;
     int32_t ret;
-    int8_t atom_header[8];
+    uint8_t atom_header[8];
 
     ret = mp4ff_read_data(f, atom_header, 8);
     if (ret != 8)
