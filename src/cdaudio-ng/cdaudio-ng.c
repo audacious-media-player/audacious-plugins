@@ -20,7 +20,7 @@
 /*
  * todo :
  *	audacious -e cdda://track01.cda no longer works
- * 
+ *
  *
  */
 
@@ -65,7 +65,11 @@ static volatile gboolean	is_paused = FALSE;
 static gint			playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
 static InputPlayback    	*pglobalinputplayback = NULL;
-static GtkWidget		*main_menu_item, *playlist_menu_item;
+
+#define N_MENUS 3
+static const int menus [N_MENUS] = {AUDACIOUS_MENU_MAIN,
+ AUDACIOUS_MENU_PLAYLIST_ADD, AUDACIOUS_MENU_PLAYLIST_RCLICK};
+static GtkWidget * menu_items [N_MENUS * 2];
 
 static void			cdaudio_init(void);
 static void			cdaudio_about(void);
@@ -144,7 +148,8 @@ static void debug(const char *fmt, ...)
 static void cdaudio_init()
 {
 	mcs_handle_t *db;
-	gchar *menu_item_text;
+        int count;
+        GtkWidget * item;
 
 	debug("cdaudio_init()\n");
 
@@ -203,31 +208,26 @@ static void cdaudio_init()
 	trackinfo_mutex = g_mutex_new();
 	trackinfo_changed = FALSE;
 
-	menu_item_text = _("Rescan CD");
-	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
-	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_REFRESH, GTK_ICON_SIZE_MENU));
-	gtk_widget_show(main_menu_item);
-	audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
-	g_signal_connect(G_OBJECT(main_menu_item), "activate", G_CALLBACK(rescan_menu_click), NULL);
+        for (count = 0; count < N_MENUS; count ++)
+        {
+            item = gtk_image_menu_item_new_with_label (_ ("Add CD"));
+            gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+             gtk_image_new_from_stock (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+            gtk_widget_show (item);
+            menu_items [2 * count] = item;
+            audacious_menu_plugin_item_add (menus [count], item);
+            g_signal_connect (G_OBJECT (item), "activate",
+             G_CALLBACK (menu_click), NULL);
 
-	playlist_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
-	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-	gtk_widget_show(playlist_menu_item);
-	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
-	g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(rescan_menu_click), NULL);
-
-	menu_item_text = _("Add CD");
-	main_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
-	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(main_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-	gtk_widget_show(main_menu_item);
-	audacious_menu_plugin_item_add(AUDACIOUS_MENU_MAIN, main_menu_item);
-	g_signal_connect(G_OBJECT(main_menu_item), "activate", G_CALLBACK(menu_click), NULL);
-
-	playlist_menu_item = gtk_image_menu_item_new_with_label(menu_item_text);
-	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(playlist_menu_item), gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
-	gtk_widget_show(playlist_menu_item);
-	audacious_menu_plugin_item_add(AUDACIOUS_MENU_PLAYLIST_RCLICK, playlist_menu_item);
-	g_signal_connect(G_OBJECT(playlist_menu_item), "activate", G_CALLBACK(menu_click), NULL);
+            item = gtk_image_menu_item_new_with_label (_ ("Rescan CD"));
+            gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+             gtk_image_new_from_stock (GTK_STOCK_REFRESH, GTK_ICON_SIZE_MENU));
+            gtk_widget_show (item);
+            menu_items [2 * count + 1] = item;
+            audacious_menu_plugin_item_add (menus [count], item);
+            g_signal_connect (G_OBJECT (item), "activate",
+             G_CALLBACK (rescan_menu_click), NULL);
+        }
 
 	aud_uri_set_plugin("cdda://", &inputplugin);
 }
@@ -278,7 +278,7 @@ static gint cdaudio_is_our_file(gchar *filename)
 		gint trackno = find_trackno_from_filename(filename);
 
 		refresh_trackinfo ();
-		
+
 		/* check if the requested track actually exists on the current audio cd */
 		if (trackno < firsttrackno || trackno > lasttrackno) {
 			debug("\"%s\" is not our file (track number is out of the valid range)\n", filename);
@@ -318,7 +318,7 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 {
 	Tuple *tuple;
 	gchar *title;
-        
+
 	debug("cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
 
 	pglobalinputplayback = pinputplayback;
@@ -546,10 +546,18 @@ static gint cdaudio_set_volume(gint l, gint r)
 
 static void cdaudio_cleanup(void)
 {
+        int count;
+
 	debug("cdaudio_cleanup()\n");
 
-	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_MAIN, main_menu_item);
-	audacious_menu_plugin_item_remove(AUDACIOUS_MENU_PLAYLIST, playlist_menu_item);
+        for (count = 0; count < N_MENUS; count ++)
+        {
+            audacious_menu_plugin_item_remove (menus [count],
+             menu_items [2 * count]);
+            audacious_menu_plugin_item_remove (menus [count],
+             menu_items [2 * count + 1]);
+        }
+
 	if (pcdio != NULL) {
 		if (playing_track != -1 && !cdng_cfg.use_dae)
 			cdio_audio_stop(pcdio);
@@ -621,7 +629,7 @@ static void menu_click(void)
 static void rescan_menu_click(void)
 {
 	debug("plugin services rescan option selected\n");
-	
+
 	refresh_trackinfo();
 }
 
@@ -747,18 +755,18 @@ static void dae_play_loop(dae_params_t *pdae_params)
 	g_free(buffer);
 }
 
-static void append_track_to_playlist(int trackno) 
+static void append_track_to_playlist(int trackno)
 {
 	gchar pathname[DEF_STRING_LEN];
 
 	g_snprintf(pathname, DEF_STRING_LEN, "%strack%02u.cda", CDDA_DUMMYPATH, trackno);
 	audacious_drct_pl_add_url_string(pathname);
 
-	debug("added track \"%s\" to the playlist\n", pathname);		
+	debug("added track \"%s\" to the playlist\n", pathname);
 }
 
 static gboolean show_noaudiocd_info()
-{	
+{
 	GDK_THREADS_ENTER();
 	const gchar *markup =
                 N_("<b><big>No playable CD found.</big></b>\n\n"
