@@ -58,10 +58,10 @@ static void configure_values_to_gui(void)
 	gtk_widget_set_sensitive(cddbserverentry, cdng_cfg.use_cddb);
 	gtk_widget_set_sensitive(cddbpathentry, cdng_cfg.use_cddb);
 	gtk_widget_set_sensitive(cddbportentry, cdng_cfg.use_cddb);
-	
+
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cddbhttpcheckbutton), cdng_cfg.cddb_http);
 	gtk_widget_set_sensitive(cddbhttpcheckbutton, cdng_cfg.use_cddb);
-	
+
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton), strlen(cdng_cfg.device) > 0);
 
 	gtk_widget_set_sensitive(deviceentry, strlen(cdng_cfg.device) > 0);
@@ -74,24 +74,24 @@ static void configure_values_to_gui(void)
 static void configure_gui_to_values(void)
 {
 	/*usedae = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton));*/
-	
+
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(limitcheckbutton)))
 		cdng_cfg.limitspeed = gtk_spin_button_get_value(GTK_SPIN_BUTTON(limitspinbutton));
 	else
 		cdng_cfg.limitspeed = 0;
-	
+
 	cdng_cfg.use_cdtext = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecdtextcheckbutton));
 	cdng_cfg.use_cddb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton));
 	pstrcpy(&cdng_cfg.cddb_server, gtk_entry_get_text(GTK_ENTRY(cddbserverentry)));
 	pstrcpy(&cdng_cfg.cddb_path, gtk_entry_get_text(GTK_ENTRY(cddbpathentry)));
 	cdng_cfg.cddb_http = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cddbhttpcheckbutton));
 	cdng_cfg.cddb_port = strtol(gtk_entry_get_text(GTK_ENTRY(cddbportentry)), NULL, 10);
-	
+
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)))
 		pstrcpy(&cdng_cfg.device, gtk_entry_get_text(GTK_ENTRY(deviceentry)));
 	else
 		pstrcpy(&cdng_cfg.device, "");
-	
+
 	cdng_cfg.debug = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debugcheckbutton));
 }
 
@@ -116,7 +116,7 @@ static void button_clicked(GtkWidget *widget, gpointer data)
 static void checkbutton_toggled(GtkWidget *widget, gpointer data)
 {
 	(void) widget; (void) data;
-	
+
 	/*gtk_widget_set_sensitive(limitcheckbutton, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedaecheckbutton)));*/
 
 	gtk_widget_set_sensitive(limitspinbutton,
@@ -131,14 +131,14 @@ static void checkbutton_toggled(GtkWidget *widget, gpointer data)
 
 	gtk_widget_set_sensitive(cddbhttpcheckbutton,
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
-	
+
 	gtk_widget_set_sensitive(cddbportentry,
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usecddbcheckbutton)));
-	
+
 	gtk_widget_set_sensitive(deviceentry,
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)));
 
-	/*		
+	/*
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cddbhttpcheckbutton)) && (widget CDDEBUG("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
 	cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
 	cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);== cddbhttpcheckbutton))
@@ -152,6 +152,8 @@ static void checkbutton_toggled(GtkWidget *widget, gpointer data)
 void configure_create_gui()
 {
 	configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_type_hint (GTK_WINDOW (configwindow),
+         GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_window_set_title(GTK_WINDOW(configwindow), _("CD Audio Plugin Configuration"));
 	gtk_window_set_resizable(GTK_WINDOW(configwindow), FALSE);
 	gtk_window_set_position(GTK_WINDOW(configwindow), GTK_WIN_POS_CENTER_ALWAYS);
