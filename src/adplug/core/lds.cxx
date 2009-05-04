@@ -259,8 +259,11 @@ CldsPlayer::update ()
         comhi = comword >> 8;
         comlo = comword & 0xff;
         if (comword)
+        {
           if (comhi == 0x80)
+          {
             c->packwait = comlo;
+          }
           else if (comhi >= 0x80)
           {
             switch (comhi)
@@ -384,6 +387,7 @@ CldsPlayer::update ()
               c->chancheat.high = high;
             }
           }
+        }
 
         c->packpos++;
       }
