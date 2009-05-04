@@ -337,7 +337,7 @@ audmad_read_replaygain(struct mad_info_t *file_info)
             aud_vfs_fseek(fp, offs, SEEK_CUR);
             res = readAPE2Tag(fp, file_info);
             if (res != 0) {
-                g_message
+                AUDDBG
                     ("hmpf, was supposed to find a tag.. offs=%d, res=%d",
                      offs, res);
             }
