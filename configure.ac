@@ -1744,7 +1744,7 @@ echo "  RootVis plugin:                         $have_rootvis"
 echo
 echo "  Transport"
 echo "  ---------"
-echo "  stdio transport:                        yes"
+echo "  gio transport:                          yes"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  lastfm transport:                       $have_lastfm"
