@@ -47,6 +47,7 @@
 
 
 cdng_cfg_t			cdng_cfg;
+static char monitoring = 0;
 static gint			firsttrackno = -1;
 static gint			lasttrackno = -1;
 static CdIo_t			*pcdio = NULL;
@@ -80,7 +81,6 @@ static Tuple            	*create_tuple_from_trackinfo_and_filename(gchar *filena
 static void			dae_play_loop(dae_params_t *pdae_params);
 static void			*scan_cd(void *nothing);
 static void			refresh_trackinfo(void);
-static void			append_track_to_playlist(int trackno);
 static gboolean                 show_noaudiocd_info();
 static gint			calculate_track_length(gint startlsn, gint endlsn);
 static gint			find_trackno_from_filename(gchar *filename);
@@ -131,98 +131,208 @@ static void debug(const char *fmt, ...)
 	}
 }
 
-static void remove_tracks (void)
+static char is_our_playlist (Playlist * playlist)
 {
-    int pos, length;
+    char found;
+    int count, length;
+    char * filename;
 
-    length = audacious_drct_pl_get_length ();
+    found = 0;
+    length = aud_playlist_get_length (playlist);
 
-    for (pos = 0; pos < length; )
+    for (count = 0; ! found && count < length; count ++)
     {
-        if (cdaudio_is_our_file (audacious_drct_pl_get_file (pos)))
-        {
-            audacious_drct_pl_delete (pos);
-            length --;
-        }
-        else
-            pos ++;
+        filename = aud_playlist_get_filename (playlist, count);
+
+        if (cdaudio_is_our_file (filename))
+            found = 1;
+
+        g_free (filename);
+    }
+
+    return found;
+}
+
+static void add_cd_to_playlist (Playlist * playlist)
+{
+    static char filename [] = "cdda://trackxx.cda";
+    int track;
+
+    for (track = firsttrackno; track < lasttrackno; track ++)
+    {
+        filename [12] = '0' + track / 10;
+        filename [13] = '0' + track % 10;
+        aud_playlist_add (playlist, filename);
     }
 }
 
-static gboolean monitor (void)
+static void purge_playlist (Playlist * playlist)
 {
-    static guint source = 0;
+    int count, length;
+    char * filename;
+
+    length = aud_playlist_get_length (playlist);
+
+    for (count = 0; count < length; count ++)
+    {
+        filename = aud_playlist_get_filename (playlist, count);
+
+        if (cdaudio_is_our_file (filename))
+        {
+            aud_playlist_delete_index (playlist, count);
+            count --;
+            length --;
+        }
+
+        g_free (filename);
+    }
+}
+
+static void purge_all_playlists (void)
+{
+    GList * list;
+
+    for (list = aud_playlist_get_playlists (); list; list = list->next)
+        purge_playlist (list->data);
+}
+
+static void trim_playlist (Playlist * playlist)
+{
+    int count, length, track;
+    char * filename;
+
+    length = aud_playlist_get_length (playlist);
+
+    for (count = 0; count < length; count ++)
+    {
+        filename = aud_playlist_get_filename (playlist, count);
+
+        if (cdaudio_is_our_file (filename))
+        {
+            track = find_trackno_from_filename (filename);
+
+            if (track < firsttrackno || track > lasttrackno)
+            {
+                aud_playlist_delete_index (playlist, count);
+                count --;
+                length --;
+            }
+        }
+
+        g_free (filename);
+    }
+}
+
+static gboolean monitor (void * unused)
+{
+    refresh_trackinfo ();
+
+    if (trackinfo)
+        return 1;
+
+    monitoring = 0;
+    purge_all_playlists ();
+    return 0;
+}
+
+static void set_monitor (char set)
+{
+    static guint source;
+
+    if (set)
+    {
+        if (! monitoring)
+            source = g_timeout_add_seconds (3, monitor, & source);
+    }
+    else if (monitoring)
+        g_source_remove (source);
+
+    monitoring = set;
+}
+
+static void check_playlist (void * p, void * unused)
+{
+    Playlist * playlist;
+
+    playlist = p;
+
+    if (! is_our_playlist (playlist))
+        return;
+
+    if (monitoring)
+        trim_playlist (playlist);
+    else
+    {
+        refresh_trackinfo ();
+
+        if (trackinfo)
+        {
+            set_monitor (1);
+            trim_playlist (playlist);
+        }
+        else
+        {
+            set_monitor (0);
+            purge_all_playlists ();
+        }
+    }
+}
+
+static char check_disk (void)
+{
+    if (monitoring)
+        return 1;
 
     refresh_trackinfo ();
 
     if (trackinfo)
     {
-        if (! source)
-            source = g_timeout_add_seconds (3, (GSourceFunc) monitor, 0);
-    }
-    else
-    {
-        remove_tracks ();
-
-        if (source)
-        {
-            g_source_remove (source);
-            source = 0;
-        }
+        set_monitor (1);
+        return 1;
     }
 
-    return 1;
+    set_monitor (0);
+    show_noaudiocd_info ();
+    return 0;
 }
 
-static void add_tracks (void)
+static void play_our_playlist (Playlist * playlist)
 {
-    int track;
+    char found;
+    int count, length;
+    char * filename;
 
-    for (track = firsttrackno; track < lasttrackno; track ++)
-        append_track_to_playlist (track);
-}
+    found = 0;
+    length = aud_playlist_get_length (playlist);
 
-static void start_playback (void)
-{
-    int pos, length;
-
-    length = audacious_drct_pl_get_length ();
-
-    for (pos = 0; pos < length; pos ++)
+    for (count = 0; ! found && count < length; count ++)
     {
-        if (cdaudio_is_our_file (audacious_drct_pl_get_file (pos)))
+        filename = aud_playlist_get_filename (playlist, count);
+
+        if (cdaudio_is_our_file (filename))
         {
-            audacious_drct_pl_set_pos (pos);
+            aud_playlist_set_position (playlist, count);
             audacious_drct_play ();
-            break;
+            found = 1;
         }
+
+        g_free (filename);
     }
 }
 
 static void play_cd (void)
 {
+    Playlist * playlist;
+
     audacious_drct_stop ();
-    remove_tracks ();
-    monitor ();
+    playlist = aud_playlist_get_active ();
+    purge_playlist (playlist);
 
-    if (trackinfo)
-    {
-        add_tracks ();
-        start_playback ();
-    }
-    else
-        show_noaudiocd_info ();
-}
+    if (! check_disk ())
+        return;
 
-static void start_monitor (void)
-{
-    static char started = 0;
-
-    if (! started)
-    {
-        monitor ();
-        started = 1;
-    }
+    add_cd_to_playlist (playlist);
+    play_our_playlist (playlist);
 }
 
 static void cdaudio_init()
@@ -298,6 +408,9 @@ static void cdaudio_init()
         }
 
 	aud_uri_set_plugin("cdda://", &inputplugin);
+
+	aud_hook_associate ("playlist select", check_playlist, 0);
+	aud_hook_associate ("playlist load", check_playlist, 0);
 }
 
 static void cdaudio_about()
@@ -363,17 +476,12 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 
 	debug("cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
 
-        start_monitor ();
+        if (! check_disk ())
+            return;
 
 	pglobalinputplayback = pinputplayback;
 
 	gint trackno = find_trackno_from_filename(pinputplayback->filename);
-
-	if (trackinfo == NULL) {
-		debug("no CD information can be retrieved, aborting\n");
-		pinputplayback->playing = FALSE;
-		return;
-	}
 
 	if (trackno < firsttrackno || trackno > lasttrackno) {
 		cdaudio_error("Track #%d is out of range [%d..%d]\n", trackno, firsttrackno, lasttrackno);
@@ -592,6 +700,10 @@ static void cdaudio_cleanup(void)
         for (count = 0; count < N_MENUS; count ++)
             audacious_menu_plugin_item_remove (menus [count], menu_items [count]);
 
+	aud_hook_dissociate ("playlist select", check_playlist);
+	aud_hook_dissociate ("playlist load", check_playlist);
+        set_monitor (0);
+
 	if (pcdio != NULL) {
 		if (playing_track != -1 && !cdng_cfg.use_dae)
 			cdio_audio_stop(pcdio);
@@ -649,9 +761,7 @@ static Tuple *create_tuple_from_trackinfo_and_filename(gchar *filename)
 {
 	Tuple *tuple = aud_tuple_new_from_filename(filename);
 
-        start_monitor ();
-
-	if (trackinfo == NULL)
+        if (! check_disk ())
 		return tuple;
 
 	gint trackno = find_trackno_from_filename(filename);
@@ -765,16 +875,6 @@ static void dae_play_loop(dae_params_t *pdae_params)
 
 	pdae_params->pplayback->output->close_audio();
 	g_free(buffer);
-}
-
-static void append_track_to_playlist(int trackno)
-{
-	gchar pathname[DEF_STRING_LEN];
-
-	g_snprintf(pathname, DEF_STRING_LEN, "%strack%02u.cda", CDDA_DUMMYPATH, trackno);
-	audacious_drct_pl_add_url_string(pathname);
-
-	debug("added track \"%s\" to the playlist\n", pathname);
 }
 
 static void destroy_dialog (GtkWidget * dialog, gint response,
