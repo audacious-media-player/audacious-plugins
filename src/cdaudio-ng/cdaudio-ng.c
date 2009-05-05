@@ -60,7 +60,7 @@ static InputPlayback    	*pglobalinputplayback = NULL;
 #define N_MENUS 3
 static const int menus [N_MENUS] = {AUDACIOUS_MENU_MAIN,
  AUDACIOUS_MENU_PLAYLIST_ADD, AUDACIOUS_MENU_PLAYLIST_RCLICK};
-static GtkWidget * menu_items [N_MENUS];
+static GtkWidget * menu_items [2 * N_MENUS];
 
 static void			cdaudio_init(void);
 static void			cdaudio_about(void);
@@ -271,10 +271,7 @@ static void check_playlist (void * p, void * unused)
             trim_playlist (playlist);
         }
         else
-        {
-            set_monitor (0);
             purge_all_playlists ();
-        }
     }
 }
 
@@ -291,33 +288,8 @@ static char check_disk (void)
         return 1;
     }
 
-    set_monitor (0);
     show_noaudiocd_info ();
     return 0;
-}
-
-static void play_our_playlist (Playlist * playlist)
-{
-    char found;
-    int count, length;
-    char * filename;
-
-    found = 0;
-    length = aud_playlist_get_length (playlist);
-
-    for (count = 0; ! found && count < length; count ++)
-    {
-        filename = aud_playlist_get_filename (playlist, count);
-
-        if (cdaudio_is_our_file (filename))
-        {
-            aud_playlist_set_position (playlist, count);
-            audacious_drct_play ();
-            found = 1;
-        }
-
-        g_free (filename);
-    }
 }
 
 static void play_cd (void)
@@ -326,13 +298,26 @@ static void play_cd (void)
 
     audacious_drct_stop ();
     playlist = aud_playlist_get_active ();
+    aud_playlist_clear (playlist);
+
+    if (! check_disk ())
+        return;
+
+    add_cd_to_playlist (playlist);
+    audacious_drct_play ();
+}
+
+static void add_cd (void)
+{
+    Playlist * playlist;
+
+    playlist = aud_playlist_get_active ();
     purge_playlist (playlist);
 
     if (! check_disk ())
         return;
 
     add_cd_to_playlist (playlist);
-    play_our_playlist (playlist);
 }
 
 static void cdaudio_init()
@@ -401,15 +386,22 @@ static void cdaudio_init()
             gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
              gtk_image_new_from_stock (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
             gtk_widget_show (item);
-            menu_items [count] = item;
+            menu_items [2 * count] = item;
             audacious_menu_plugin_item_add (menus [count], item);
             g_signal_connect (G_OBJECT (item), "activate",
              G_CALLBACK (play_cd), NULL);
+
+            item = gtk_image_menu_item_new_with_label (_ ("Add CD"));
+            gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+             gtk_image_new_from_stock (GTK_STOCK_CDROM, GTK_ICON_SIZE_MENU));
+            gtk_widget_show (item);
+            menu_items [2 * count + 1] = item;
+            audacious_menu_plugin_item_add (menus [count], item);
+            g_signal_connect (G_OBJECT (item), "activate",
+             G_CALLBACK (add_cd), NULL);
         }
 
 	aud_uri_set_plugin("cdda://", &inputplugin);
-
-	aud_hook_associate ("playlist select", check_playlist, 0);
 	aud_hook_associate ("playlist load", check_playlist, 0);
 }
 
@@ -698,9 +690,13 @@ static void cdaudio_cleanup(void)
 	debug("cdaudio_cleanup()\n");
 
         for (count = 0; count < N_MENUS; count ++)
-            audacious_menu_plugin_item_remove (menus [count], menu_items [count]);
+        {
+            audacious_menu_plugin_item_remove (menus [count],
+             menu_items [2 * count]);
+            audacious_menu_plugin_item_remove (menus [count],
+             menu_items [2 * count + 1]);
+        }
 
-	aud_hook_dissociate ("playlist select", check_playlist);
 	aud_hook_dissociate ("playlist load", check_playlist);
         set_monitor (0);
 
