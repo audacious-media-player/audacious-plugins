@@ -199,7 +199,7 @@ static void ui_skinned_playlist_realize(GtkWidget *widget) {
     attributes.wclass = GDK_INPUT_OUTPUT;
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | 
+    attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK |
                              GDK_LEAVE_NOTIFY_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK;
     attributes.visual = gtk_widget_get_visual(widget);
     attributes.colormap = gtk_widget_get_colormap(widget);
@@ -411,7 +411,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     guint padding, padding_dwidth, padding_plength;
     guint max_time_len = 0;
     gfloat queue_tailpadding = 0;
-    gint tpadding; 
+    gint tpadding;
     gsize tpadding_dwidth = 0;
     gint x, y;
     guint tail_width;
@@ -836,19 +836,22 @@ static gboolean ui_skinned_playlist_button_press(GtkWidget *widget, GdkEventButt
     Playlist *playlist = aud_playlist_get_active();
 
     nr = ui_skinned_playlist_get_position(widget, event->x, event->y);
-    if (nr == -1)
-        return TRUE;
 
     if (event->button == 3) {
+        if (nr != -1 && ! g_list_find (aud_playlist_get_selected (playlist),
+         GINT_TO_POINTER (nr)))
+        {
+            aud_playlist_select_all (playlist, 0);
+            aud_playlist_select_range (playlist, nr, nr, 1);
+        }
+
         ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu),
                                    event->x_root, event->y_root + 5,
                                    event->button, event->time);
-        GList* selection = aud_playlist_get_selected(playlist);
-        if (g_list_find(selection, GINT_TO_POINTER(nr)) == NULL) {
-            aud_playlist_select_all(playlist, FALSE);
-            aud_playlist_select_range(playlist, nr, nr, TRUE);
-        }
     } else if (event->button == 1) {
+        if (nr == -1)
+            return 1;
+
         if (!(event->state & GDK_CONTROL_MASK))
             aud_playlist_select_all(playlist, FALSE);
 
