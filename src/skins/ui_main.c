@@ -378,10 +378,8 @@ mainwin_release_info_text(void)
 static gchar *
 make_mainwin_title(const gchar * title)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
     if (title)
-        return g_strdup_printf(_("%d. %s - Audacious"), (aud_playlist_get_position(playlist) + 1), title);
+        return g_strdup_printf(_("%s - Audacious"), title);
     else
         return g_strdup(_("Audacious"));
 }
