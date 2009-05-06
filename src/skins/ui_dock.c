@@ -218,6 +218,30 @@ free_docked_list(GList * dlist)
     g_list_free(dlist);
 }
 
+static void move_skinned_window (SkinnedWindow * window, int x, int y)
+{
+    gtk_window_move (GTK_WINDOW (window), x, y);
+
+    window->x = x;
+    window->y = y;
+
+    switch (window->type)
+    {
+    case WINDOW_MAIN:
+        config.player_x = x;
+        config.player_y = y;
+        break;
+    case WINDOW_EQ:
+        config.equalizer_x = x;
+        config.equalizer_y = y;
+        break;
+    case WINDOW_PLAYLIST:
+        config.playlist_x = x;
+        config.playlist_y = y;
+        break;
+    }
+}
+
 static void
 docked_list_move(GList * list, gint x, gint y)
 {
@@ -226,29 +250,8 @@ docked_list_move(GList * list, gint x, gint y)
 
     for (node = list; node; node = g_list_next(node)) {
         dw = node->data;
-        gtk_window_move(dw->w, x + dw->offset_x, y + dw->offset_y);
-
-        SkinnedWindow *window = SKINNED_WINDOW(dw->w);
-        if (window) {
-            switch(window->type) {
-
-            case WINDOW_MAIN:
-                config.player_x = x + dw->offset_x;
-                config.player_y = y + dw->offset_y;
-                break;
-            case WINDOW_EQ:
-                config.equalizer_x = x + dw->offset_x;
-                config.equalizer_y = y + dw->offset_y;
-                break;
-            case WINDOW_PLAYLIST:
-                config.playlist_x = x + dw->offset_x;
-                config.playlist_y = y + dw->offset_y;
-                break;
-            }
-
-            window->x = x + dw->offset_x;
-            window->y = y + dw->offset_y;
-        }
+        move_skinned_window (SKINNED_WINDOW (dw->w), x + dw->offset_x,
+         y + dw->offset_y);
     }
 }
 
@@ -279,7 +282,7 @@ static void move_attached (GtkWindow * window, GList * * others, int offset) {
    }
    for (; move; move = g_list_delete_link (move, move))
       move_attached (move->data, others, offset);
-   gtk_window_move (window, x, y + offset);
+   move_skinned_window (SKINNED_WINDOW (window), x, y + offset);
 }
 
 void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
