@@ -20,6 +20,8 @@
 
 #include <stdio.h>
 
+#define NEON_DEBUG
+
 #define _ENTER _DEBUG("enter")
 #define _LEAVE _DEBUG("leave"); return
 #define _MESSAGE(tag, string, ...) do { fprintf(stderr, "%s: neon: %s:%d (%s): " string "\n", \
