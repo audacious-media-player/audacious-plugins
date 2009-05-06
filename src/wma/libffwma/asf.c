@@ -41,7 +41,7 @@ typedef struct {
     int ds_chunk_size;
     int ds_data_size;
     int ds_silence_data;
-    
+
     int packet_pos;
 
 } ASFStream;
@@ -189,12 +189,12 @@ const CodecTag codec_wav_tags[] = {
     { CODEC_ID_MP3, 0x55 },
     { CODEC_ID_AC3, 0x2000 },
     { CODEC_ID_PCM_S16LE, 0x01 },
-    { CODEC_ID_PCM_U8, 0x01 }, 
+    { CODEC_ID_PCM_U8, 0x01 },
     { CODEC_ID_PCM_ALAW, 0x06 },
     { CODEC_ID_PCM_MULAW, 0x07 },
     { CODEC_ID_ADPCM_MS, 0x02 },
     { CODEC_ID_ADPCM_IMA_WAV, 0x11 },
-    { CODEC_ID_ADPCM_IMA_DK4, 0x61 },  
+    { CODEC_ID_ADPCM_IMA_DK4, 0x61 },
     { CODEC_ID_ADPCM_IMA_DK3, 0x62 },*/
     { CODEC_ID_WMAV1, 0x160, 0 },
     { CODEC_ID_WMAV2, 0x161, 0 },
@@ -360,6 +360,7 @@ static int asf_read_header(AVFormatContext *s, AVFormatParameters *ap)
     //int size, i;
     int i;
     int64_t gsize;
+    uint64_t block_begin;
 
     av_set_pts_info(s, 32, 1, 1000); /* 32 bit pts in ms */
 
@@ -370,8 +371,17 @@ static int asf_read_header(AVFormatContext *s, AVFormatParameters *ap)
     get_le32(pb);
     get_byte(pb);
     get_byte(pb);
+
+    block_begin = 30;
+
     memset(&asf->asfid2avid, -1, sizeof(asf->asfid2avid));
     for(;;) {
+        if (url_ftell (pb) != block_begin) /* sanity check */
+        {
+            printf ("ASF: error reading header; trying to recover...\n");
+            url_fseek (pb, block_begin, SEEK_SET);
+        }
+
         get_guid(pb, &g);
         gsize = get_le64(pb);
 #ifdef DEBUG
@@ -381,6 +391,9 @@ static int asf_read_header(AVFormatContext *s, AVFormatParameters *ap)
 #endif
         if (gsize < 24)
             goto fail;
+
+        block_begin += gsize;
+
         if (!memcmp(&g, &file_header, sizeof(GUID))) {
             get_guid(pb, &asf->hdr.guid);
 	    asf->hdr.file_size		= get_le64(pb);
@@ -411,7 +424,7 @@ static int asf_read_header(AVFormatContext *s, AVFormatParameters *ap)
                 goto fail;
             st->priv_data = asf_st;
             st->start_time = asf->hdr.preroll / (10000000 / AV_TIME_BASE);
-	    st->duration = (asf->hdr.send_time - asf->hdr.preroll) / 
+	    st->duration = (asf->hdr.send_time - asf->hdr.preroll) /
                 (10000000 / AV_TIME_BASE);
             get_guid(pb, &g);
             if (!memcmp(&g, &audio_stream, sizeof(GUID))) {
@@ -430,7 +443,7 @@ static int asf_read_header(AVFormatContext *s, AVFormatParameters *ap)
             get_le32(pb);
 	    st->codec.codec_type = type;
             /* 1 fps default (XXX: put 0 fps instead) */
-            st->codec.frame_rate = 1; 
+            st->codec.frame_rate = 1;
             st->codec.frame_rate_base = 1;
             if (type == CODEC_TYPE_AUDIO) {
                 get_wav_header(pb, &st->codec, type_specific_size);
@@ -565,9 +578,9 @@ static int asf_get_packet(AVFormatContext *s)
     uint32_t packet_length, padsize;
     int rsize = 9;
     int c;
-    
+
     assert((url_ftell(&s->pb) - s->data_offset) % asf->packet_size == 0);
-    
+
     c = get_byte(pb);
     if ((c & 0x0f) == 2) { // always true for now
 	if (get_le16(pb) != 0) {
@@ -738,11 +751,11 @@ static int asf_read_packet(AVFormatContext *s, AVPacket *pkt)
 	    asf_st->seq = asf->packet_seq;
 	    asf_st->pkt.pts = asf->packet_frag_timestamp - asf->hdr.preroll;
 	    asf_st->pkt.stream_index = asf->stream_index;
-            asf_st->packet_pos= asf->packet_pos;            
-//printf("new packet: stream:%d key:%d packet_key:%d audio:%d size:%d\n", 
+            asf_st->packet_pos= asf->packet_pos;
+//printf("new packet: stream:%d key:%d packet_key:%d audio:%d size:%d\n",
 //asf->stream_index, asf->packet_key_frame, asf_st->pkt.flags & PKT_FLAG_KEY,
 //s->streams[asf->stream_index]->codec.codec_type == CODEC_TYPE_AUDIO, asf->packet_obj_size);
-	    if (s->streams[asf->stream_index]->codec.codec_type == CODEC_TYPE_AUDIO) 
+	    if (s->streams[asf->stream_index]->codec.codec_type == CODEC_TYPE_AUDIO)
 		asf->packet_key_frame = 1;
 	    if (asf->packet_key_frame)
 		asf_st->pkt.flags |= PKT_FLAG_KEY;
@@ -835,7 +848,7 @@ static void asf_reset_header(AVFormatContext *s)
     asf->packet_obj_size = 0;
     asf->packet_time_delta = 0;
     asf->packet_time_start = 0;
-    
+
     for(i=0; i<s->nb_streams; i++){
         asf_st= s->streams[i]->priv_data;
         av_free_packet(&asf_st->pkt);
@@ -854,7 +867,7 @@ static int64_t asf_read_pts(AVFormatContext *s, int64_t *ppos, int stream_index)
     int64_t pos= *ppos;
     int i;
     int64_t start_pos[s->nb_streams];
-    
+
     for(i=0; i<s->nb_streams; i++){
         start_pos[i]= pos;
     }
@@ -880,7 +893,7 @@ static int64_t asf_read_pts(AVFormatContext *s, int64_t *ppos, int stream_index)
 
             av_add_index_entry(s->streams[i], pos, pts, pos - start_pos[i] + 1, AVINDEX_KEYFRAME);
             start_pos[i]= pos + 1;
-            
+
             if(pkt->stream_index == stream_index)
                break;
         }
@@ -899,10 +912,10 @@ static int asf_read_seek(AVFormatContext *s, int stream_index, int64_t pts)
     int64_t pos;
     int64_t pos_min, pos_max, pts_min, pts_max, cur_pts, pos_limit;
     int no_change;
-    
+
     if (stream_index == -1)
         stream_index= av_find_default_stream_index(s);
-    
+
     if (asf->packet_size <= 0)
         return -1;
 
@@ -942,7 +955,7 @@ static int asf_read_seek(AVFormatContext *s, int stream_index, int64_t pts)
         pos_max = (url_filesize(url_fileno(&s->pb)) - 1 - s->data_offset) / asf->packet_size; //FIXME wrong
         pts_max = s->duration; //FIXME wrong
         pos_limit= pos_max;
-    } 
+    }
 
     no_change=0;
     while (pos_min < pos_limit) {
@@ -968,8 +981,8 @@ static int asf_read_seek(AVFormatContext *s, int stream_index, int64_t pts)
             pos= pos_limit;
         start_pos= pos;
 
-        // read the next timestamp 
-    	cur_pts = asf_read_pts(s, &pos, stream_index);    
+        // read the next timestamp
+    	cur_pts = asf_read_pts(s, &pos, stream_index);
         if(pos == pos_max)
             no_change++;
         else
@@ -1009,6 +1022,6 @@ static AVInputFormat asf_iformat = {
 int asf_init(void)
 {
     av_register_input_format(&asf_iformat);
-    
+
     return 0;
 }
