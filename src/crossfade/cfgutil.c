@@ -313,7 +313,6 @@ xfade_load_config()
 	{
 		/* *INDENT-OFF* */
 		/* config items used in v0.1 */
-		xmms_cfg_read_int    (cfgfile, section, "output_method",        &config->output_method);
 		xmms_cfg_read_int    (cfgfile, section, "audio_device",         &config->oss_audio_device);
 		xmms_cfg_read_boolean(cfgfile, section, "use_alt_audio_device", &config->oss_use_alt_audio_device);
 		xmms_cfg_read_string (cfgfile, section, "alt_audio_device",     &config->oss_alt_audio_device);
@@ -330,9 +329,6 @@ xfade_load_config()
 		xmms_cfg_read_boolean(cfgfile, section, "enable_monitor",       &config->enable_monitor);
 
 		/* config items introduced by v0.2 */
-		xmms_cfg_read_int    (cfgfile, section, "oss_buffer_size",      &config->oss_buffer_size_ms);
-		xmms_cfg_read_int    (cfgfile, section, "oss_preload_size",     &config->oss_preload_size_ms);
-		xmms_cfg_read_boolean(cfgfile, section, "oss_mixer_use_master", &config->oss_mixer_use_master);
 		xmms_cfg_read_boolean(cfgfile, section, "gap_lead_enable",      &config->gap_lead_enable);
 		xmms_cfg_read_int    (cfgfile, section, "gap_lead_len_ms",      &config->gap_lead_len_ms);
 		xmms_cfg_read_int    (cfgfile, section, "gap_lead_level",       &config->gap_lead_level);
@@ -355,15 +351,9 @@ xfade_load_config()
 		/* config items introduced by v0.2.6 */
 		xmms_cfg_read_string (cfgfile, section, "effect_plugin",        &config->ep_name);
 		xmms_cfg_read_boolean(cfgfile, section, "effect_enable",        &config->ep_enable);
-		xmms_cfg_read_int    (cfgfile, section, "output_rate",          &config->output_rate);
-
-		/* config items introduced by v0.2.7 */
-		xmms_cfg_read_boolean(cfgfile, section, "oss_maxbuf_enable",    &config->oss_maxbuf_enable);
 
 		/* config items introduced by v0.3.0 */
 		xmms_cfg_read_boolean(cfgfile, section, "use_alt_mixer_device", &config->oss_use_alt_mixer_device);
-		xmms_cfg_read_int    (cfgfile, section, "oss_fragments",        &config->oss_fragments);
-		xmms_cfg_read_int    (cfgfile, section, "oss_fragment_size",    &config->oss_fragment_size);
 		xmms_cfg_read_boolean(cfgfile, section, "volnorm_enable",       &config->volnorm_enable);
 		xmms_cfg_read_boolean(cfgfile, section, "volnorm_use_qa",       &config->volnorm_use_qa);
 		xmms_cfg_read_int    (cfgfile, section, "volnorm_target",       &config->volnorm_target);
@@ -378,9 +368,6 @@ xfade_load_config()
 		/* config items introduced by v0.3.3 */
 		xmms_cfg_read_string (cfgfile, section, "alt_mixer_device",     &config->oss_alt_mixer_device);
 		xmms_cfg_read_boolean(cfgfile, section, "gap_crossing",         &config->gap_crossing);
-
-		/* config items introduced by v0.3.6 */
-		xmms_cfg_read_int    (cfgfile, section, "output_quality", &config->output_quality);
 
 		/* fade configs */
 		read_fade_config(cfgfile, section, "fc_xfade",  &config->fc[FADE_CONFIG_XFADE]);
@@ -426,7 +413,6 @@ xfade_save_config()
 		xmms_cfg_remove_key(cfgfile, section, "gap_lead_length");
 
 		/* config items used in v0.1 */
-		xmms_cfg_write_int    (cfgfile, section, "output_method",        config->output_method);
 		xmms_cfg_write_int    (cfgfile, section, "audio_device",         config->oss_audio_device);
 		xmms_cfg_write_boolean(cfgfile, section, "use_alt_audio_device", config->oss_use_alt_audio_device);
 		xmms_cfg_write_string (cfgfile, section, "alt_audio_device",     config->oss_alt_audio_device ? config->oss_alt_audio_device : DEFAULT_OSS_ALT_AUDIO_DEVICE);
@@ -443,9 +429,6 @@ xfade_save_config()
 		xmms_cfg_write_boolean(cfgfile, section, "enable_monitor",       config->enable_monitor);
 
 		/* config items introduced by v0.2 */
-		xmms_cfg_write_int    (cfgfile, section, "oss_buffer_size",      config->oss_buffer_size_ms);
-		xmms_cfg_write_int    (cfgfile, section, "oss_preload_size",     config->oss_preload_size_ms);
-		xmms_cfg_write_boolean(cfgfile, section, "oss_mixer_use_master", config->oss_mixer_use_master);
 		xmms_cfg_write_boolean(cfgfile, section, "gap_lead_enable",      config->gap_lead_enable);
 		xmms_cfg_write_int    (cfgfile, section, "gap_lead_len_ms",      config->gap_lead_len_ms);
 		xmms_cfg_write_int    (cfgfile, section, "gap_lead_level",       config->gap_lead_level);
@@ -465,16 +448,8 @@ xfade_save_config()
 		xmms_cfg_write_boolean(cfgfile, section, "enable_op_max_used",   config->enable_op_max_used);
 		xmms_cfg_write_int    (cfgfile, section, "op_max_used_ms",       config->op_max_used_ms);
 
-		/* config items introduced by v0.2.6 */
-		xmms_cfg_write_int    (cfgfile, section, "output_rate",          config->output_rate);
-
-		/* config items introduced by v0.2.7 */
-		xmms_cfg_write_boolean(cfgfile, section, "oss_maxbuf_enable",    config->oss_maxbuf_enable);
-
 		/* config items introduced by v0.3.0 */
 		xmms_cfg_write_boolean(cfgfile, section, "use_alt_mixer_device", config->oss_use_alt_mixer_device);
-		xmms_cfg_write_int    (cfgfile, section, "oss_fragments",        config->oss_fragments);
-		xmms_cfg_write_int    (cfgfile, section, "oss_fragment_size",    config->oss_fragment_size);
 #ifdef VOLUME_NORMALIZER
 		xmms_cfg_write_boolean(cfgfile, section, "volnorm_enable",       config->volnorm_enable);
 		xmms_cfg_write_boolean(cfgfile, section, "volnorm_use_qa",       config->volnorm_use_qa);
@@ -491,9 +466,6 @@ xfade_save_config()
 		/* config items introduced by v0.3.2 */
 		xmms_cfg_write_string (cfgfile, section, "alt_mixer_device",     config->oss_alt_mixer_device ? config->oss_alt_mixer_device : DEFAULT_OSS_ALT_MIXER_DEVICE);
 		xmms_cfg_write_boolean(cfgfile, section, "gap_crossing",         config->gap_crossing);
-
-		/* config items introduced by v0.3.6 */
-		xmms_cfg_write_int(cfgfile, section, "output_quality",           config->output_quality);
 
 		/* fade configs */
 		write_fade_config(cfgfile, section, "fc_xfade",  &config->fc[FADE_CONFIG_XFADE]);
