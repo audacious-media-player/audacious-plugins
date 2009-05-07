@@ -1043,6 +1043,17 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
                  * All is well, nothing to be done.
                  */
                 break;
+            case NEON_READER_ERROR:
+                /*
+                 * A reader error happened. Log it, and treat it like an EOF condition, by falling through
+                 * to the NEON_READER_EOF codepath.  --nenolod
+                 */
+                _DEBUG("<%p> NEON_READER_ERROR happened. Terminating reader thread and marking EOF.", h);
+                h->reader_status.status = NEON_READER_EOF;
+
+                if (NULL != h->reader)
+                    kill_reader(h);
+
             case NEON_READER_EOF:
                 /*
                  * If there still is data in the buffer, carry on.
@@ -1051,16 +1062,13 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
                 if (0 == used_rb_locked(&h->rb)) {
                     _DEBUG("<%p> Reached end of stream", h);
                     g_mutex_unlock(h->reader_status.mutex);
-                    kill_reader(h);
+
+                    if (NULL != h->reader)
+                        kill_reader(h);
+
                     h->eof = TRUE;
                     _LEAVE 0;
                 }
-                break;
-            case NEON_READER_ERROR:
-                /* Terminate the reader and return 0 */
-                g_mutex_unlock(h->reader_status.mutex);
-                kill_reader(h);
-                _LEAVE 0;
                 break;
             case NEON_READER_TERM:
                 /*
