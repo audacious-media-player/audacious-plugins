@@ -361,7 +361,6 @@ xfade_load_config()
 		xmms_cfg_read_boolean(cfgfile, section, "no_xfade_if_same_file",&config->no_xfade_if_same_file);
 
 		/* config items introduced by v0.3.3 */
-		//xmms_cfg_read_string (cfgfile, section, "alt_mixer_device",     &config->oss_alt_mixer_device);
 		xmms_cfg_read_boolean(cfgfile, section, "gap_crossing",         &config->gap_crossing);
 
 		/* fade configs */

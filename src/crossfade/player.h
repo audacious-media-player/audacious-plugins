@@ -35,10 +35,6 @@ gint   xfplaylist_current_length();
 
 GList *xfplayer_get_output_list();
 
-GList        *xfplayer_get_effect_list();
-EffectPlugin *xfplayer_get_current_effect_plugin();
-gboolean      xfplayer_effects_enabled();
-
 gboolean xfplayer_check_realtime_priority();
 
 #endif /* _PLAYER_H_ */

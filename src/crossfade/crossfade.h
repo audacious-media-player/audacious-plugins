@@ -24,9 +24,6 @@
 #ifndef _CROSSFADE_H_
 #define _CROSSFADE_H_
 
-#define COMPILE_FOR_AUDACIOUS
-#define AUDACIOUS_ABI_VERSION 2
-
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
