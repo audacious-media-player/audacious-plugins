@@ -291,21 +291,21 @@ int64_t mp4ff_get_track_duration_use_offsets(const mp4ff_t *f, const int32_t tra
 	return duration;
 }
 
-
 int32_t mp4ff_num_samples(const mp4ff_t *f, const int32_t track)
 {
-    int32_t i;
-    int32_t total = 0;
+	int32_t i;
+	int32_t total = 0;
 
-    for (i = 0; i < f->track[track]->stts_entry_count; i++)
-    {
-        total += f->track[track]->stts_sample_count[i];
-    }
-    return total;
+	if (track < 0)
+		return -1;
+
+	for (i = 0; i < f->track[track]->stts_entry_count; i++)
+	{
+		total += f->track[track]->stts_sample_count[i];
+	}
+
+	return total;
 }
-
-
-
 
 uint32_t mp4ff_get_sample_rate(const mp4ff_t *f, const int32_t track)
 {
