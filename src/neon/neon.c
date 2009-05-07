@@ -1050,9 +1050,12 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
                  */
                 _DEBUG("<%p> NEON_READER_ERROR happened. Terminating reader thread and marking EOF.", h);
                 h->reader_status.status = NEON_READER_EOF;
+                g_mutex_unlock(h->reader_status.mutex);
 
                 if (NULL != h->reader)
                     kill_reader(h);
+
+                g_mutex_lock(h->reader_status.mutex);
 
             case NEON_READER_EOF:
                 /*
