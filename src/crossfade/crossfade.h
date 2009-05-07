@@ -46,7 +46,7 @@
 
 #undef  VOLUME_NORMALIZER
 
-#define OUTPUT_RATE the_rate
+#define OUTPUT_RATE 44100 /*FIXME I know...*/
 #define OUTPUT_NCH  2
 #define OUTPUT_BPS (OUTPUT_RATE * OUTPUT_NCH * 2)
 
@@ -57,10 +57,6 @@
 #endif
 
 #define SYNC_OUTPUT_TIMEOUT 2000
-
-#define OUTPUT_METHOD_BUILTIN_OSS  0
-#define OUTPUT_METHOD_PLUGIN       1
-#define OUTPUT_METHOD_BUILTIN_NULL 2
 
 #define FADE_CONFIG_XFADE   0
 #define FADE_CONFIG_MANUAL  1
@@ -123,8 +119,6 @@
 #define FC_OFFSET_LOCK_OUT 2
 #define FC_OFFSET_CUSTOM   3
 
-#define DEFAULT_OSS_ALT_AUDIO_DEVICE "/dev/dsp"
-#define DEFAULT_OSS_ALT_MIXER_DEVICE "/dev/mixer"
 #define DEFAULT_OP_CONFIG_STRING     "OSS.so=0,1,2304,0; filewriter.so=1,0,2304,1"
 #define DEFAULT_OP_NAME              "ALSA.so"
 
@@ -132,22 +126,7 @@
 { FALSE, FALSE, 2304, FALSE }
 
 #define CONFIG_DEFAULT							\
-{ 1,                            /* output_method */			\
-  44100,                        /* output_rate */			\
-  2,                            /* output_quality */			\
-  0,                            /* oss_audio_device */			\
-  FALSE,                        /* oss_use_alt_audio_device */		\
-  NULL,                         /* oss_alt_audio_device */		\
-  0,                            /* oss_mixer_device */			\
-  FALSE,                        /* oss_use_alt_mixer_device */		\
-  NULL,                         /* oss_alt_mixer_device */		\
-  FALSE,                        /* oss_mixer_use_master */		\
-  0,                            /* oss_buffer_size_ms */		\
-  250,                          /* oss_preload_size_ms */		\
-  22,                           /* oss_fragments */			\
-  12,                           /* oss_fragment_size */			\
-  FALSE,                        /* oss_maxbuf_enable */			\
-  NULL,                         /* op_config_string */			\
+{ NULL,                         /* op_config_string */			\
   NULL,                         /* op_name */				\
   NULL,                         /* ep_name */				\
   FALSE,                        /* ep_enable */				\
@@ -454,28 +433,6 @@ plugin_config_t;
 
 typedef struct
 {
-	/* output: method */
-	gint output_method;
-	gint output_rate;
-	gint output_quality;
-
-	/* output: builtin OSS */
-	gint oss_audio_device;
-	gboolean oss_use_alt_audio_device;
-	gchar *oss_alt_audio_device;
-
-	gint oss_mixer_device;
-	gboolean oss_use_alt_mixer_device;
-	gchar *oss_alt_mixer_device;
-	gboolean oss_mixer_use_master;
-
-	gint oss_buffer_size_ms;
-	gint oss_preload_size_ms;
-
-	gint oss_fragments;
-	gint oss_fragment_size;
-	gboolean oss_maxbuf_enable;
-
 	/* output: plugin */
 	gchar *op_config_string;  /* stores configs for all plugins */
 	gchar *op_name;           /* name of the current plugin */

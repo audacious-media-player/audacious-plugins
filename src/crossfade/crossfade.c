@@ -347,7 +347,7 @@ open_output()
 	DEBUG(("\n"));
 
 	/* setup sample rate (note that OUTPUT_RATE is #defined as the_rate) */
-	the_rate = config->output_rate;
+	//the_rate = config->output_rate;
 
 	/* setup out_format. use host byte order for easy math */
 	setup_format(FMT_S16_NE, OUTPUT_RATE, OUTPUT_NCH, &out_format);
@@ -378,7 +378,7 @@ open_output()
 	       B2MS(buffer->preload_size),
 	       B2MS(buffer->sync_size),
 	       B2MS(buffer->size),
-	       the_rate));
+	       OUTPUT_RATE));
 
 	/* allocate buffer */
 	if (!(buffer->data = g_malloc0(buffer->size)))
@@ -421,9 +421,6 @@ xfade_init()
 	xfade_load_config();
 
 	/* set default strings if there is no existing config */
-	if (!config->oss_alt_audio_device) config->oss_alt_audio_device = g_strdup(DEFAULT_OSS_ALT_AUDIO_DEVICE);
-	if (!config->oss_alt_mixer_device) config->oss_alt_mixer_device = g_strdup(DEFAULT_OSS_ALT_MIXER_DEVICE);
-	if (!config->op_config_string)     config->op_config_string     = g_strdup(DEFAULT_OP_CONFIG_STRING);
 	if (!config->op_name)              config->op_name              = g_strdup(DEFAULT_OP_NAME);
 
 	/* check for realtime priority, it needs some special attention */

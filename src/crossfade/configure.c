@@ -1002,16 +1002,12 @@ on_config_apply_clicked(GtkButton *button, gpointer user_data)
 	MUTEX_LOCK(&buffer_mutex);
 
 	/* free existing strings */
-	if (config->oss_alt_audio_device) g_free(config->oss_alt_audio_device);
-	if (config->oss_alt_mixer_device) g_free(config->oss_alt_mixer_device);
 	if (config->op_config_string)     g_free(config->op_config_string);
 	if (config->op_name)              g_free(config->op_name);
 	if (config->ep_name)              g_free(config->ep_name);
 
 	/* copy current settings (dupping the strings) */
 	*config = *xfg;
-	config->oss_alt_audio_device = g_strdup(xfg->oss_alt_audio_device);
-	config->oss_alt_mixer_device = g_strdup(xfg->oss_alt_mixer_device);
 	config->op_config_string = g_strdup(xfg->op_config_string);
 	config->op_name = g_strdup(xfg->op_name);
 	config->ep_name = g_strdup(xfg->ep_name);
@@ -1054,16 +1050,12 @@ xfade_configure()
 		gtk_signal_connect(GTK_OBJECT(config_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &config_win);
 
 		/* free any strings that might be left in our local copy of the config */
-		if (xfg->oss_alt_audio_device) g_free(xfg->oss_alt_audio_device);
-		if (xfg->oss_alt_mixer_device) g_free(xfg->oss_alt_mixer_device);
 		if (xfg->op_config_string)     g_free(xfg->op_config_string);
 		if (xfg->op_name)              g_free(xfg->op_name);
 		if (xfg->ep_name)              g_free(xfg->ep_name);
 
 		/* copy current settings (dupping the strings) */
 		*xfg = *config;
-		xfg->oss_alt_audio_device = g_strdup(config->oss_alt_audio_device);
-		xfg->oss_alt_mixer_device = g_strdup(config->oss_alt_mixer_device);
 		xfg->op_config_string     = g_strdup(config->op_config_string);
 		xfg->op_name              = g_strdup(config->op_name);
 		xfg->ep_name              = g_strdup(config->ep_name);
