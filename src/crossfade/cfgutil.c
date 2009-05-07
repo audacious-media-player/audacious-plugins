@@ -313,10 +313,6 @@ xfade_load_config()
 	{
 		/* *INDENT-OFF* */
 		/* config items used in v0.1 */
-		xmms_cfg_read_int    (cfgfile, section, "audio_device",         &config->oss_audio_device);
-		xmms_cfg_read_boolean(cfgfile, section, "use_alt_audio_device", &config->oss_use_alt_audio_device);
-		xmms_cfg_read_string (cfgfile, section, "alt_audio_device",     &config->oss_alt_audio_device);
-		xmms_cfg_read_int    (cfgfile, section, "mixer_device",         &config->oss_mixer_device);
 		xmms_cfg_read_string (cfgfile, section, "output_plugin",        &config->op_name);
 		xmms_cfg_read_string (cfgfile, section, "op_config_string",     &config->op_config_string);
 		xmms_cfg_read_int    (cfgfile, section, "buffer_size",          &config->mix_size_ms);
@@ -353,7 +349,6 @@ xfade_load_config()
 		xmms_cfg_read_boolean(cfgfile, section, "effect_enable",        &config->ep_enable);
 
 		/* config items introduced by v0.3.0 */
-		xmms_cfg_read_boolean(cfgfile, section, "use_alt_mixer_device", &config->oss_use_alt_mixer_device);
 		xmms_cfg_read_boolean(cfgfile, section, "volnorm_enable",       &config->volnorm_enable);
 		xmms_cfg_read_boolean(cfgfile, section, "volnorm_use_qa",       &config->volnorm_use_qa);
 		xmms_cfg_read_int    (cfgfile, section, "volnorm_target",       &config->volnorm_target);
@@ -366,7 +361,6 @@ xfade_load_config()
 		xmms_cfg_read_boolean(cfgfile, section, "no_xfade_if_same_file",&config->no_xfade_if_same_file);
 
 		/* config items introduced by v0.3.3 */
-		xmms_cfg_read_string (cfgfile, section, "alt_mixer_device",     &config->oss_alt_mixer_device);
 		xmms_cfg_read_boolean(cfgfile, section, "gap_crossing",         &config->gap_crossing);
 
 		/* fade configs */
@@ -413,10 +407,6 @@ xfade_save_config()
 		xmms_cfg_remove_key(cfgfile, section, "gap_lead_length");
 
 		/* config items used in v0.1 */
-		xmms_cfg_write_int    (cfgfile, section, "audio_device",         config->oss_audio_device);
-		xmms_cfg_write_boolean(cfgfile, section, "use_alt_audio_device", config->oss_use_alt_audio_device);
-		xmms_cfg_write_string (cfgfile, section, "alt_audio_device",     config->oss_alt_audio_device ? config->oss_alt_audio_device : DEFAULT_OSS_ALT_AUDIO_DEVICE);
-		xmms_cfg_write_int    (cfgfile, section, "mixer_device",         config->oss_mixer_device);
 		xmms_cfg_write_string (cfgfile, section, "output_plugin",        config->op_name ? config->op_name : DEFAULT_OP_NAME);
 		xmms_cfg_write_string (cfgfile, section, "op_config_string",     config->op_config_string ? config->op_config_string : DEFAULT_OP_CONFIG_STRING);
 		xmms_cfg_write_int    (cfgfile, section, "buffer_size",          config->mix_size_ms);
@@ -449,7 +439,6 @@ xfade_save_config()
 		xmms_cfg_write_int    (cfgfile, section, "op_max_used_ms",       config->op_max_used_ms);
 
 		/* config items introduced by v0.3.0 */
-		xmms_cfg_write_boolean(cfgfile, section, "use_alt_mixer_device", config->oss_use_alt_mixer_device);
 #ifdef VOLUME_NORMALIZER
 		xmms_cfg_write_boolean(cfgfile, section, "volnorm_enable",       config->volnorm_enable);
 		xmms_cfg_write_boolean(cfgfile, section, "volnorm_use_qa",       config->volnorm_use_qa);
@@ -464,7 +453,6 @@ xfade_save_config()
 		xmms_cfg_write_boolean(cfgfile, section, "no_xfade_if_same_file",config->no_xfade_if_same_file);
 
 		/* config items introduced by v0.3.2 */
-		xmms_cfg_write_string (cfgfile, section, "alt_mixer_device",     config->oss_alt_mixer_device ? config->oss_alt_mixer_device : DEFAULT_OSS_ALT_MIXER_DEVICE);
 		xmms_cfg_write_boolean(cfgfile, section, "gap_crossing",         config->gap_crossing);
 
 		/* fade configs */
@@ -490,8 +478,6 @@ xfade_save_config()
 void
 xfade_free_config()
 {
-	SAFE_FREE(xfg->oss_alt_audio_device);
-	SAFE_FREE(xfg->oss_alt_mixer_device);
 	SAFE_FREE(xfg->op_config_string);
 	SAFE_FREE(xfg->op_name);
 

@@ -21,10 +21,6 @@
  *  USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-
 #include "crossfade.h"
 #include "configure.h"
 #include "cfgutil.h"
@@ -97,7 +93,6 @@
 
 
 static GtkWidget *config_win = NULL;
-static GtkWidget *about_win = NULL;
 static GtkWidget *set_wgt;
 static GtkWidget *get_wgt;
 
@@ -1002,16 +997,12 @@ on_config_apply_clicked(GtkButton *button, gpointer user_data)
 	MUTEX_LOCK(&buffer_mutex);
 
 	/* free existing strings */
-	if (config->oss_alt_audio_device) g_free(config->oss_alt_audio_device);
-	if (config->oss_alt_mixer_device) g_free(config->oss_alt_mixer_device);
 	if (config->op_config_string)     g_free(config->op_config_string);
 	if (config->op_name)              g_free(config->op_name);
 	if (config->ep_name)              g_free(config->ep_name);
 
 	/* copy current settings (dupping the strings) */
 	*config = *xfg;
-	config->oss_alt_audio_device = g_strdup(xfg->oss_alt_audio_device);
-	config->oss_alt_mixer_device = g_strdup(xfg->oss_alt_mixer_device);
 	config->op_config_string = g_strdup(xfg->op_config_string);
 	config->op_name = g_strdup(xfg->op_name);
 	config->ep_name = g_strdup(xfg->ep_name);
@@ -1054,16 +1045,12 @@ xfade_configure()
 		gtk_signal_connect(GTK_OBJECT(config_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &config_win);
 
 		/* free any strings that might be left in our local copy of the config */
-		if (xfg->oss_alt_audio_device) g_free(xfg->oss_alt_audio_device);
-		if (xfg->oss_alt_mixer_device) g_free(xfg->oss_alt_mixer_device);
 		if (xfg->op_config_string)     g_free(xfg->op_config_string);
 		if (xfg->op_name)              g_free(xfg->op_name);
 		if (xfg->ep_name)              g_free(xfg->ep_name);
 
 		/* copy current settings (dupping the strings) */
 		*xfg = *config;
-		xfg->oss_alt_audio_device = g_strdup(config->oss_alt_audio_device);
-		xfg->oss_alt_mixer_device = g_strdup(config->oss_alt_mixer_device);
 		xfg->op_config_string     = g_strdup(config->op_config_string);
 		xfg->op_name              = g_strdup(config->op_name);
 		xfg->ep_name              = g_strdup(config->ep_name);
@@ -1156,46 +1143,37 @@ xfade_configure()
 void
 xfade_about()
 {
-	if (!about_win)
-	{
-		gchar *about_text =
-			"Audacious Crossfade Plugin\n"
-			"Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
-			"\n"
-			"...based in part on XMMS-Crossfade:\n"
-			"Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
-			"\n"
-			"based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
-			"Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
-			"\n"
-			"This program is free software; you can redistribute it and/or modify\n"
-			"it under the terms of the GNU General Public License as published by\n"
-			"the Free Software Foundation; either version 2 of the License, or\n"
-			"(at your option) any later version.\n"
-			"\n"
-			"This program is distributed in the hope that it will be useful,\n"
-			"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-			"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-			"GNU General Public License for more details.\n"
-			"\n"
-			"You should have received a copy of the GNU General Public License\n"
-			"along with this program; if not, write to the Free Software\n"
-			"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n" "USA.";
+    static GtkWidget *dialog;
 
-		about_win = create_about_win();
+    if (dialog != NULL)
+        return;
 
-		/* update about_win when window is destroyed */
-		gtk_signal_connect(GTK_OBJECT(about_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &about_win);
+    dialog = audacious_info_dialog(
+        _("About Crossfade Plugin"),
+        _("Audacious Crossfade Plugin\n\n"
+          "Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
+          "\n"
+          "...based in part on XMMS-Crossfade:\n"
+          "Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
+          "\n"
+          "based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
+          "Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
+          "\n"
+          "This program is free software; you can redistribute it and/or modify\n"
+          "it under the terms of the GNU General Public License as published by\n"
+          "the Free Software Foundation; either version 2 of the License, or\n"
+          "(at your option) any later version.\n"
+          "\n"
+          "This program is distributed in the hope that it will be useful,\n"
+          "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+          "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+          "GNU General Public License for more details.\n"
+          "\n"
+          "You should have received a copy of the GNU General Public License\n"
+          "along with this program; if not, write to the Free Software\n"
+          "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n" "USA."),
+        _("Ok"), FALSE, NULL, NULL);
 
-		/* set about box text (this is done here and not in interface.c because
-		   of the VERSION #define -- there is no way to do this with GLADE */
-		if ((set_wgt = lookup_widget(about_win, "about_label")))
-			gtk_label_set_text(GTK_LABEL(set_wgt), about_text);
-
-		/* show near mouse pointer */
-		gtk_window_set_position(GTK_WINDOW(about_win), GTK_WIN_POS_MOUSE);
-		gtk_widget_show(about_win);
-	}
-	else
-		gdk_window_raise(about_win->window);
+    g_signal_connect(G_OBJECT(dialog), "destroy",
+                     G_CALLBACK(gtk_widget_destroyed), &dialog);
 }

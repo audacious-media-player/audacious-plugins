@@ -1905,49 +1905,6 @@ create_config_win (void)
 }
 
 GtkWidget*
-create_about_win (void)
-{
-  GtkWidget *about_win;
-  GtkWidget *about_vbox;
-  GtkWidget *about_label;
-  GtkWidget *about_actionarea;
-  GtkWidget *about_ok;
-
-  about_win = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (about_win), "About XMMS Crossfade Plugin");
-  gtk_window_set_type_hint (GTK_WINDOW (about_win), GDK_WINDOW_TYPE_HINT_DIALOG);
-
-  about_vbox = GTK_DIALOG (about_win)->vbox;
-  gtk_widget_show (about_vbox);
-
-  about_label = gtk_label_new ("dummy");
-  gtk_widget_show (about_label);
-  gtk_box_pack_start (GTK_BOX (about_vbox), about_label, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (about_label), GTK_JUSTIFY_CENTER);
-
-  about_actionarea = GTK_DIALOG (about_win)->action_area;
-  gtk_widget_show (about_actionarea);
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (about_actionarea), GTK_BUTTONBOX_END);
-
-  about_ok = gtk_button_new_with_mnemonic ("OK");
-  gtk_widget_show (about_ok);
-  gtk_dialog_add_action_widget (GTK_DIALOG (about_win), about_ok, 0);
-
-  g_signal_connect_swapped ((gpointer) about_ok, "clicked",
-                            G_CALLBACK (gtk_widget_destroy),
-                            GTK_OBJECT (about_win));
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (about_win, about_win, "about_win");
-  GLADE_HOOKUP_OBJECT_NO_REF (about_win, about_vbox, "about_vbox");
-  GLADE_HOOKUP_OBJECT (about_win, about_label, "about_label");
-  GLADE_HOOKUP_OBJECT_NO_REF (about_win, about_actionarea, "about_actionarea");
-  GLADE_HOOKUP_OBJECT (about_win, about_ok, "about_ok");
-
-  return about_win;
-}
-
-GtkWidget*
 create_help_win (void)
 {
   GtkWidget *help_win;
