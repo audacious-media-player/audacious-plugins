@@ -409,6 +409,13 @@ static void handle_headers(struct neon_handle* h) {
             continue;
         }
 
+        if (neon_strcmp(name, "server")) {
+            if (NULL != g_strrstr(value, "Twisted/")) {
+                _DEBUG("ugh. this is a twisted server, and therefore cannot REALLY seek: %s", value);
+                h->can_ranges = FALSE;
+            }
+        }
+
         if (neon_strcmp(name, "content-length")) {
             /*
              * The server sent us the content length. Parse and store.
