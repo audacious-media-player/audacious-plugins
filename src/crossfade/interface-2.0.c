@@ -290,6 +290,7 @@ create_config_win (void)
 
   config_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (config_win), "Crossfade Configuration");
+  gtk_window_set_type_hint(GTK_WINDOW(config_win), GDK_WINDOW_TYPE_HINT_DIALOG); 
 
   config_vbox = gtk_vbox_new (FALSE, 10);
   gtk_widget_show (config_vbox);
