@@ -21,10 +21,6 @@
  *  USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
-
 #include "crossfade.h"
 #include "configure.h"
 #include "cfgutil.h"
@@ -97,7 +93,6 @@
 
 
 static GtkWidget *config_win = NULL;
-static GtkWidget *about_win = NULL;
 static GtkWidget *set_wgt;
 static GtkWidget *get_wgt;
 
@@ -1148,46 +1143,37 @@ xfade_configure()
 void
 xfade_about()
 {
-	if (!about_win)
-	{
-		gchar *about_text =
-			"Audacious Crossfade Plugin\n"
-			"Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
-			"\n"
-			"...based in part on XMMS-Crossfade:\n"
-			"Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
-			"\n"
-			"based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
-			"Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
-			"\n"
-			"This program is free software; you can redistribute it and/or modify\n"
-			"it under the terms of the GNU General Public License as published by\n"
-			"the Free Software Foundation; either version 2 of the License, or\n"
-			"(at your option) any later version.\n"
-			"\n"
-			"This program is distributed in the hope that it will be useful,\n"
-			"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-			"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-			"GNU General Public License for more details.\n"
-			"\n"
-			"You should have received a copy of the GNU General Public License\n"
-			"along with this program; if not, write to the Free Software\n"
-			"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n" "USA.";
+    static GtkWidget *dialog;
 
-		about_win = create_about_win();
+    if (dialog != NULL)
+        return;
 
-		/* update about_win when window is destroyed */
-		gtk_signal_connect(GTK_OBJECT(about_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &about_win);
+    dialog = audacious_info_dialog(
+        _("About Crossfade Plugin"),
+        _("Audacious Crossfade Plugin\n\n"
+          "Copyright © 2009 William Pitcock <nenolod@atheme.org>\n"
+          "\n"
+          "...based in part on XMMS-Crossfade:\n"
+          "Copyright © 2000-2009 Peter Eisenlohr <peter@eisenlohr.org>\n"
+          "\n"
+          "based on the original OSS Output Plugin  Copyright (C) 1998-2000\n"
+          "Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies\n"
+          "\n"
+          "This program is free software; you can redistribute it and/or modify\n"
+          "it under the terms of the GNU General Public License as published by\n"
+          "the Free Software Foundation; either version 2 of the License, or\n"
+          "(at your option) any later version.\n"
+          "\n"
+          "This program is distributed in the hope that it will be useful,\n"
+          "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+          "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+          "GNU General Public License for more details.\n"
+          "\n"
+          "You should have received a copy of the GNU General Public License\n"
+          "along with this program; if not, write to the Free Software\n"
+          "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n" "USA."),
+        _("Ok"), FALSE, NULL, NULL);
 
-		/* set about box text (this is done here and not in interface.c because
-		   of the VERSION #define -- there is no way to do this with GLADE */
-		if ((set_wgt = lookup_widget(about_win, "about_label")))
-			gtk_label_set_text(GTK_LABEL(set_wgt), about_text);
-
-		/* show near mouse pointer */
-		gtk_window_set_position(GTK_WINDOW(about_win), GTK_WIN_POS_MOUSE);
-		gtk_widget_show(about_win);
-	}
-	else
-		gdk_window_raise(about_win->window);
+    g_signal_connect(G_OBJECT(dialog), "destroy",
+                     G_CALLBACK(gtk_widget_destroyed), &dialog);
 }

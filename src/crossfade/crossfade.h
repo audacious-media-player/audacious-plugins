@@ -24,9 +24,7 @@
 #ifndef _CROSSFADE_H_
 #define _CROSSFADE_H_
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
+#include "config.h"
 
 #if !defined(HAVE_GLIB_THREADS)
 #  include <pthread.h>
@@ -38,6 +36,7 @@
 #include <audacious/auddrct.h>
 #include <audacious/configdb.h>
 #include <audacious/util.h>
+#include <audacious/i18n.h>
 
 #include "debug.h"
 

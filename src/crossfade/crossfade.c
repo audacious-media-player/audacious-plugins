@@ -153,9 +153,6 @@ static gboolean paused;		/* TRUE: no playback (but still filling buffer) */
 static gboolean stopped;	/* TRUE: stop buffer thread ASAP */
 static gboolean eop;		/* TRUE: wait until buffer is empty then sync() */
 
-#ifdef HAVE_OSS			/* avoid 'defined but not used' compiler warning */
-static plugin_config_t default_op_config = DEFAULT_OP_CONFIG;
-#endif
 static plugin_config_t the_op_config = DEFAULT_OP_CONFIG;
        OutputPlugin          *the_op = NULL;
        gint                 the_rate = 44100;
