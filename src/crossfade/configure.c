@@ -43,32 +43,6 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 
-#ifdef HAVE_LIBSAMPLERATE
-#  include <samplerate.h>
-#endif
-
-
-/* available rates for resampling */
-gint sample_rates[] =
-{
-#if MAX_RATE > 48000
-	192000,
-	96000,
-	88200,
-	64000,
-#endif
-	48000,
-	44100,
-	32000,
-	22050,
-	16000,
-	11025,
-	8000,
-	6000,
-	0
-};
-
-
 #define HIDE(name)					\
 { if ((set_wgt = lookup_widget(config_win, name)))	\
     gtk_widget_hide(set_wgt); }
@@ -151,7 +125,7 @@ add_menu_item(GtkWidget *menu, gchar *title, activate_func_t func, gint index, g
 		return;
 		
 	item = gtk_menu_item_new_with_label(title);
-	gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)func, (gpointer) index);
+	gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)func, GINT_TO_POINTER(index));
 	gtk_widget_show(item);
 	gtk_menu_append(GTK_MENU(menu), item);
 
@@ -183,24 +157,6 @@ gtk2_spin_button_hack(GtkSpinButton *spin)
 	
 	entered = FALSE;
 }
-
-/*** output method ***********************************************************/
-
-/*-- callbacks --------------------------------------------------------------*/
-
-static void
-resampling_rate_cb(GtkWidget *widget, gint index)
-{
-	xfg->output_rate = index;
-}
-
-#ifdef HAVE_LIBSAMPLERATE
-static void
-resampling_quality_cb(GtkWidget *widget, gint index)
-{
-	xfg->output_quality = index;
-}
-#endif
 
 /*** plugin output ***********************************************************/
 
@@ -237,7 +193,7 @@ scan_plugins(GtkWidget *option_menu, gchar *selected)
 		}
 
 		/* create menu item */
-		gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)config_plugin_cb, (gpointer) index++);
+		gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)config_plugin_cb, GINT_TO_POINTER(index++));
 		gtk_widget_show(item);
 		gtk_menu_append(GTK_MENU(menu), item);
 
@@ -1002,23 +958,6 @@ on_config_apply_clicked(GtkButton *button, gpointer user_data)
 	if ((widget = lookup_widget(config_win, "config_notebook")))
 		xfg->page = gtk_notebook_get_current_page(GTK_NOTEBOOK(widget));
 
-	/* output method */
-
-	/* sample rate */
-
-	/* output method: builtin OSS */
-	if ((widget = lookup_widget(config_win, "output_oss_notebook")))
-		xfg->oss_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(widget));
-
-	xfg->oss_buffer_size_ms = GET_SPIN("ossbuf_buffer_spin");
-	xfg->oss_preload_size_ms = GET_SPIN("ossbuf_preload_spin");
-
-	xfg->oss_fragments = GET_SPIN("osshwb_fragments_spin");
-	xfg->oss_fragment_size = GET_SPIN("osshwb_fragsize_spin");
-	xfg->oss_maxbuf_enable = GET_TOGGLE("osshwb_maxbuf_check");
-
-	xfg->oss_mixer_use_master = GET_TOGGLE("ossmixer_pcm_check");
-
 	/* output method: plugin */
 	op_config.throttle_enable = GET_TOGGLE("op_throttle_check");
 	op_config.max_write_enable = GET_TOGGLE("op_maxblock_check");
@@ -1132,74 +1071,6 @@ xfade_configure()
 		/* go to remembered notebook page */
 		if ((widget = lookup_widget(config_win, "config_notebook")))
 			gtk_notebook_set_page(GTK_NOTEBOOK(widget), config->page);
-
-		/* output: method */
-		if ((widget = lookup_widget(config_win, "output_notebook")))
-			gtk_notebook_set_page(GTK_NOTEBOOK(widget), xfg->output_method);
-
-		/* output: resampling rate */
-		if ((widget = lookup_widget(config_win, "resampling_rate_optionmenu")))
-		{
-			GtkWidget *menu = gtk_menu_new();
-			GtkWidget *item;
-			gint index, *rate;
-			char label[16];
-
-			for (rate = &sample_rates[0]; *rate; rate++)
-			{
-				g_snprintf(label, sizeof(label), "%d Hz", *rate);
-				item = gtk_menu_item_new_with_label(label);
-				gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)resampling_rate_cb, (gpointer)*rate);
-				gtk_widget_show(item);
-				gtk_menu_append(GTK_MENU(menu), item);
-			}
-			gtk_option_menu_set_menu(GTK_OPTION_MENU(widget), menu);
-
-			/* find list index for xfg->output_rate */
-			for (rate = &sample_rates[0], index = 0; *rate && *rate != xfg->output_rate; rate++, index++);
-			
-			/* if the specified rate is not in the list of available rates, select default rate */
-			if (!*rate)
-			{
-				DEBUG(("[crossfade] plugin_configure: WARNING: invalid output sample rate (%d)!\n", xfg->output_rate));
-				DEBUG(("[crossfade] plugin_configure:          ... using default of 44100\n"));
-				for (rate = &sample_rates[0], index = 0; *rate && *rate != 44100; rate++, index++);
-			}
-			
-			/* finally, set the list selection */
-			gtk_option_menu_set_history(GTK_OPTION_MENU(widget), index);
-		}
-
-		/* output: resampling quality (libsamplerate setting) */
-#ifdef HAVE_LIBSAMPLERATE
-		if ((widget = lookup_widget(config_win, "resampling_quality_optionmenu")))
-		{
-			GtkWidget *menu = gtk_menu_new();
-			GtkWidget *item;
-
-			GtkTooltips *tooltips = (GtkTooltips *) gtk_object_get_data(GTK_OBJECT(config_win), "tooltips");
-
-			int converter_type;
-			const char *name, *description;
-			for (converter_type = 0; (name = src_get_name(converter_type)); converter_type++)
-			{
-				description = src_get_description(converter_type);
-
-				item = gtk_menu_item_new_with_label(name);
-				gtk_tooltips_set_tip(tooltips, item, description, NULL);
-
-				gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)resampling_quality_cb, (gpointer) converter_type);
-				gtk_widget_show(item);
-				gtk_menu_append(GTK_MENU(menu), item);
-			}
-
-			gtk_option_menu_set_menu(GTK_OPTION_MENU(widget), menu);
-			gtk_option_menu_set_history(GTK_OPTION_MENU(widget), xfg->output_quality);
-		}
-#else
-		HIDE("resampling_quality_hbox");
-		HIDE("resampling_quality_optionmenu");
-#endif
 
 		/* output method: plugin */
 		xfade_load_plugin_config(xfg->op_config_string, xfg->op_name, &op_config);
