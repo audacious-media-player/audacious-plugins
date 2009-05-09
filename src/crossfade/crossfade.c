@@ -1852,7 +1852,6 @@ xfade_close_audio()
 		return;
 	}
 
-#if defined(COMPILE_FOR_AUDACIOUS) && AUDACIOUS_ABI_VERSION >= 2
 	/* HACK: to distinguish between STOP and EOP, check Audacious'
 	   input_playing() variable. It seems to be TRUE at this point
 	   only when the end of the playlist is reached.
@@ -1864,16 +1863,6 @@ xfade_close_audio()
 	*/
 	if (xfplayer_input_playing())
 		playing = FALSE;
-#else
-	/* HACK: use patched XMMS 'input_stopped_for_restart' */
-	if (input_stopped_for_restart && *input_stopped_for_restart)
-	{
-		DEBUG(("[crossfade] close: playback will restart soon\n"));
-		output_restart = TRUE;
-	}
-	else
-		output_restart = FALSE;
-#endif
 
 	if (playing)
 	{
@@ -2042,7 +2031,6 @@ xfade_flush(gint time)
 	if (!file)
 		file = g_strdup(xfplaylist_get_songtitle(pos));
 
-#if defined(COMPILE_FOR_AUDACIOUS)
 	/* HACK: special handling for audacious, which just calls flush(0) on a songchange */
 	if (file && last_filename && strcmp(file, last_filename) != 0)
 	{
@@ -2055,7 +2043,6 @@ xfade_flush(gint time)
 		DEBUG(("[crossfade] flush: filename changed, forcing close/reopen... done\n"));
 		return;
 	}
-#endif
 
 	/* lock buffer */
 	MUTEX_LOCK(&buffer_mutex);
