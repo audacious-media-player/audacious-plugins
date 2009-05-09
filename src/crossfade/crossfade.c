@@ -418,6 +418,7 @@ xfade_init()
 	xfade_load_config();
 
 	/* set default strings if there is no existing config */
+	if (!config->op_config_string)     config->op_config_string     = g_strdup(DEFAULT_OP_CONFIG_STRING); 
 	if (!config->op_name)              config->op_name              = g_strdup(DEFAULT_OP_NAME);
 
 	/* check for realtime priority, it needs some special attention */
