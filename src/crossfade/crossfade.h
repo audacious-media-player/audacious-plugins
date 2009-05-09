@@ -484,7 +484,6 @@ typedef struct
 
 	/* additional stuff which is not saved to the config file */
 	gint page;
-	gint oss_page;
 	gint xf_index;
 }
 config_t;
