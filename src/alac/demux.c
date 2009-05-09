@@ -603,6 +603,7 @@ void read_chunk_udta(qtmovie_t *qtmovie, size_t chunk_len)
 		 break;
              }
 
+             udta_tgt = UDTA_NIL;
              bptr += 12;
 	     bptr += strlen(bptr);
              break;

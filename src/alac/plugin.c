@@ -56,7 +56,6 @@ static int input_opened = 0;
 
 gpointer decode_thread(void *args);
 static GThread *playback_thread;
-static int going = 0;
 static int seek_to = -1;
 
 extern void set_endian();
@@ -103,6 +102,18 @@ gboolean is_our_fd(char *filename, VFSFile* input_file)
     return TRUE;
 }
 
+static int get_duration(demux_res_t *demux_res)
+{
+    int i;
+    long long samples = 0;
+
+    for (i = 0; i < demux_res->num_time_to_samples; i++)
+        samples += demux_res->time_to_sample[i].sample_count *
+                    demux_res->time_to_sample[i].sample_duration;
+
+    return (samples * 1000) / demux_res->sample_rate;
+}
+
 Tuple *build_aud_tuple_from_demux(demux_res_t *demux_res, char *path)
 {
     Tuple *ti = aud_tuple_new_from_filename(path);
@@ -122,6 +133,7 @@ Tuple *build_aud_tuple_from_demux(demux_res_t *demux_res, char *path)
 
     aud_tuple_associate_string(ti, FIELD_CODEC, NULL, "Apple Lossless (ALAC)");
     aud_tuple_associate_string(ti, FIELD_QUALITY, NULL, "lossless");
+    aud_tuple_associate_int(ti, FIELD_LENGTH, NULL, get_duration(demux_res));
 
     return ti;
 }
@@ -163,8 +175,8 @@ static InputPlayback *playback;
 static void play_file(InputPlayback *data)
 {
     char *filename = data->filename;
-    going = 1;
     playback = data;
+    playback->playing = TRUE;
     playback_thread = g_thread_self();
     playback->set_pb_ready(playback);
     decode_thread(filename);
@@ -172,7 +184,7 @@ static void play_file(InputPlayback *data)
 
 static void stop(InputPlayback * data)
 {
-    going = 0;
+    playback->playing = FALSE;
     g_thread_join(playback_thread);
     data->output->close_audio();
 }
@@ -185,35 +197,6 @@ static void do_pause(InputPlayback *data, short paused)
 static void seek(InputPlayback * data, gint time)
 {
     seek_to = time;
-}
-
-static int get_sample_info(demux_res_t *demux_res, uint32_t samplenum,
-                           uint32_t *sample_duration,
-                           uint32_t *sample_byte_size)
-{
-    unsigned int duration_index_accum = 0;
-    unsigned int duration_cur_index = 0;
-
-    if (samplenum >= demux_res->num_sample_byte_sizes)
-        return 0;
-
-    if (!demux_res->num_time_to_samples)
-        return 0;
-
-    while ((demux_res->time_to_sample[duration_cur_index].sample_count + duration_index_accum)
-            <= samplenum)
-    {
-        duration_index_accum += demux_res->time_to_sample[duration_cur_index].sample_count;
-        duration_cur_index++;
-
-        if (duration_cur_index >= demux_res->num_time_to_samples)
-            return 0;
-    }
-
-    *sample_duration = demux_res->time_to_sample[duration_cur_index].sample_duration;
-    *sample_byte_size = demux_res->sample_byte_size[samplenum];
-
-    return 1;
 }
 
 void GetBuffer(demux_res_t *demux_res)
@@ -229,9 +212,8 @@ void GetBuffer(demux_res_t *demux_res)
 
     buffer = malloc(buffer_size);
 
-    for (i = 0; i < demux_res->num_sample_byte_sizes && going == 1; i++)
+    for (i = 0; i < demux_res->num_sample_byte_sizes && playback->playing; i++)
     {
-        uint32_t sample_duration;
         uint32_t sample_byte_size;
 
         int outputBytes;
@@ -253,9 +235,7 @@ void GetBuffer(demux_res_t *demux_res)
 #endif
 
         /* just get one sample for now */
-        if (!get_sample_info(demux_res, i,
-                             &sample_duration, &sample_byte_size))
-            return;
+        sample_byte_size = demux_res->sample_byte_size[i];
 
         if (buffer_size < sample_byte_size)
             return;
@@ -269,7 +249,7 @@ void GetBuffer(demux_res_t *demux_res)
         /* write */
         bytes_read += outputBytes;
 
-        playback->pass_audio(playback, FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &going);
+        playback->pass_audio(playback, FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &playback->playing);
     }
 
     free(buffer);
@@ -297,7 +277,6 @@ DECLARE_PLUGIN(alac, NULL, NULL, alac_iplist, NULL, NULL, NULL, NULL, NULL);
 gpointer decode_thread(void *args)
 {
     demux_res_t demux_res;
-    gulong duration = 0;	/* samples added up */
     VFSFile *input_file;
     stream_t *input_stream;
     Tuple *ti;
@@ -328,17 +307,18 @@ gpointer decode_thread(void *args)
     demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);
     alac_set_info(demux_res.alac, demux_res.codecdata);
 
-    /* Sample rates are multiples of 251?! Apple is *fucking* *insane*! -nenolod */
-    duration = (demux_res.num_sample_byte_sizes * (float)((1024 * demux_res.sample_size) - 1.0) /
-	(float)(demux_res.sample_rate / 251));
-
     playback->output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
-    playback->set_params(playback, title, duration, -1, demux_res.sample_rate, demux_res.num_channels);
+    playback->set_params(playback, title, get_duration(&demux_res), -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
     GetBuffer(&demux_res);
 
-    going = 0;
+    if (playback->playing) {
+        playback->output->buffer_free();
+        playback->output->buffer_free();
+        while (playback->output->buffer_playing() && playback->playing)
+            g_usleep(100000);
+    }
 
     stream_destroy(input_stream);
 
@@ -346,6 +326,8 @@ gpointer decode_thread(void *args)
         aud_vfs_fclose(input_file);
 
     playback->output->close_audio();
+
+    playback->playing = FALSE;
 
     return NULL;
 }
