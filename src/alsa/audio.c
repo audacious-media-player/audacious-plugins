@@ -141,13 +141,11 @@ int alsa_hardware_present(void)
 
 int alsa_playing(void)
 {
-	if (!going || paused || alsa_pcm == NULL)
+	if (!going || paused || prebuffer || alsa_pcm == NULL)
 		return FALSE;
 
-	return snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING &&
-               !paused &&
-               !prebuffer &&
-               get_thread_buffer_filled() > hw_period_size_in;
+	return snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING ||
+	       get_thread_buffer_filled();
 }
 
 static gint
@@ -647,7 +645,7 @@ static void alsa_write_out_thread_data(void)
 {
 	gint length, cnt, avail;
 
-	length = MIN(hw_period_size_in, get_thread_buffer_filled());
+	length = get_thread_buffer_filled();
 	avail = snd_pcm_frames_to_bytes(alsa_pcm, alsa_get_avail());
 	length = MIN(length, avail);
 	while (length > 0)
@@ -677,8 +675,7 @@ static void *alsa_loop(void *arg)
 	{
 		if (get_thread_buffer_filled() > prebuffer_size)
 			prebuffer = FALSE;
-		if (!paused && !prebuffer &&
-		    get_thread_buffer_filled() > hw_period_size_in)
+		if (!paused && !prebuffer && get_thread_buffer_filled())
 		{
 			wr = snd_pcm_wait(alsa_pcm, 10);
 			if (wr > 0)
