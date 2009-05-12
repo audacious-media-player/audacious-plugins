@@ -52,11 +52,10 @@
 #include "decomp.h"
 #include "stream.h"
 
-static int input_opened = 0;
-
-gpointer decode_thread(void *args);
+static void decode_thread(InputPlayback *playback);
 static GThread *playback_thread;
-static int seek_to = -1;
+static guint64 seek_to = -1;
+static guint64 packet0_offset;
 
 extern void set_endian();
 
@@ -170,86 +169,159 @@ Tuple *build_tuple(char *filename)
     return build_aud_tuple_from_demux(&demux_res, filename);
 }
 
-static InputPlayback *playback;
-
-static void play_file(InputPlayback *data)
+static void play_file(InputPlayback *playback)
 {
-    char *filename = data->filename;
-    playback = data;
     playback->playing = TRUE;
     playback_thread = g_thread_self();
     playback->set_pb_ready(playback);
-    decode_thread(filename);
+    decode_thread(playback);
 }
 
-static void stop(InputPlayback * data)
+static void stop(InputPlayback *playback)
 {
     playback->playing = FALSE;
     g_thread_join(playback_thread);
-    data->output->close_audio();
+    playback->output->close_audio();
 }
 
-static void do_pause(InputPlayback *data, short paused)
+static void do_pause(InputPlayback *playback, short paused)
 {
-    data->output->pause(paused);
+    playback->output->pause(paused);
 }
 
-static void seek(InputPlayback * data, gint time)
+static void mseek(InputPlayback* playback, gulong millisecond)
 {
-    seek_to = time;
+    if (!playback->playing)
+        return;
+
+    seek_to = millisecond;
+
+    while (seek_to != -1)
+        g_usleep(10000);
 }
 
-void GetBuffer(demux_res_t *demux_res)
+static void seek(InputPlayback *playback, gint time)
 {
-    unsigned long destBufferSize = 1024*16; /* 16kb buffer = 4096 frames = 1 alac sample */
-    void *pDestBuffer = malloc(destBufferSize);
-    int bytes_read = 0;
+    mseek(playback, time * 1000);
+}
 
-    unsigned int buffer_size = 1024*128;
-    void *buffer;
+static guint64 get_packet_offset(demux_res_t *demux_res, guint packet)
+{
+    guint i;
+    guint64 offset = 0;
 
-    unsigned int i;
+    for (i = 0; i < packet; i++)
+        offset += demux_res->sample_byte_size[i];
 
-    buffer = malloc(buffer_size);
+    return offset;
+}
 
-    for (i = 0; i < demux_res->num_sample_byte_sizes && playback->playing; i++)
+static guint handle_seek(InputPlayback *playback,
+    demux_res_t *demux_res, guint current_packet)
+{
+    guint i, packet;
+    guint64 offset, begin, end;
+    guint64 target = (seek_to * demux_res->sample_rate) / 1000;
+
+    begin = 0;
+    packet = 0;
+    for (i = 0; i < demux_res->num_time_to_samples; i++)
     {
-        uint32_t sample_byte_size;
+        end = begin + demux_res->time_to_sample[i].sample_count *
+                    demux_res->time_to_sample[i].sample_duration;
+        if (target >= begin && target < end)
+        {
+            offset = (target - begin) /
+                     demux_res->time_to_sample[i].sample_duration;
+            /* Calculate packet to seek to */
+            packet += offset;
+            /* Calculate resulting seek time */
+            seek_to = (begin + offset *
+                       demux_res->time_to_sample[i].sample_duration) * 1000 /
+                      demux_res->sample_rate;
+            /* Do the actual seek and flush */
+            offset = get_packet_offset(demux_res, packet) + packet0_offset;
+            stream_setpos(demux_res->stream, offset);
+            playback->output->flush(seek_to);
+            return packet;
+        }
+        begin = end;
+        packet += demux_res->time_to_sample[i].sample_count;
+    }
 
+    /* If we get here we somehow failed to find the target sample */
+    return current_packet;
+}
+
+static guint get_max_packet_size(demux_res_t *demux_res)
+{
+    guint i;
+    guint max = 0;
+
+    for (i = 0; i < demux_res->num_sample_byte_sizes; i++)
+        if (demux_res->sample_byte_size[i] > max)
+            max = demux_res->sample_byte_size[i];
+
+    return max;
+}
+
+static guint get_max_packet_duration(demux_res_t *demux_res)
+{
+    guint i;
+    guint max = 0;
+
+    for (i = 0; i < demux_res->num_time_to_samples; i++)
+        if (demux_res->time_to_sample[i].sample_duration > max)
+            max = demux_res->time_to_sample[i].sample_duration;
+
+    return max;
+}
+
+void GetBuffer(InputPlayback *playback, demux_res_t *demux_res)
+{
+    void *pDestBuffer = malloc(get_max_packet_duration(demux_res) * 4);
+    void *buffer = malloc(get_max_packet_size(demux_res));
+    guint i = 0;
+
+    while (playback->playing)
+    {
         int outputBytes;
 
-#if 0
-	/* XXX: Horribly inaccurate seek. -nenolod */
-	if (seek_to != -1)
-	{
-	    gulong duration =
-		(demux_res->num_sample_byte_sizes * (float)((1024 * demux_res->sample_size) - 1.0) /
-	       		(float)(demux_res->sample_rate / 251));
+        if (seek_to != -1)
+        {
+            i = handle_seek(playback, demux_res, i);
+            seek_to = -1;
+        }
 
-	    i = (duration - seek_to) / demux_res->num_sample_byte_sizes;
+        if (i < demux_res->num_sample_byte_sizes)
+        {
+            /* just get one sample for now */
+            stream_read(demux_res->stream, demux_res->sample_byte_size[i], buffer);
 
-	    g_print("seek to ALAC frame: %d\n", i);
+            /* now fetch */
+            decode_frame(demux_res->alac, buffer, pDestBuffer, &outputBytes);
 
-	    seek_to = -1;
-	}
-#endif
+            /* write */
+            playback->pass_audio(playback, FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &playback->playing);
 
-        /* just get one sample for now */
-        sample_byte_size = demux_res->sample_byte_size[i];
+            i++;
 
-        if (buffer_size < sample_byte_size)
-            return;
+            /* When we are at the end stop pre-buffering */
+            if (i == demux_res->num_sample_byte_sizes)
+            {
+                playback->output->buffer_free();
+                playback->output->buffer_free();
+            }
+        }
+        else
+        {
+            /* Wait for output buffer to drain */
+            if (!playback->output->buffer_playing())
+                playback->playing = FALSE;
 
-        stream_read(demux_res->stream, sample_byte_size, buffer);
-
-        /* now fetch */
-        outputBytes = destBufferSize;
-        decode_frame(demux_res->alac, buffer, pDestBuffer, &outputBytes);
-
-        /* write */
-        bytes_read += outputBytes;
-
-        playback->pass_audio(playback, FMT_S16_LE, demux_res->num_channels, outputBytes, pDestBuffer, &playback->playing);
+            if (playback->playing)
+                g_usleep(40000);
+        }
     }
 
     free(buffer);
@@ -265,6 +337,7 @@ InputPlugin alac_ip = {
     .stop = stop,
     .pause = do_pause,
     .seek = seek,
+    .mseek = mseek,
     .get_song_tuple = build_tuple,
     .is_our_file_from_vfs = is_our_fd,
     .vfs_extensions = fmts,
@@ -274,7 +347,7 @@ InputPlugin *alac_iplist[] = { &alac_ip, NULL };
 
 DECLARE_PLUGIN(alac, NULL, NULL, alac_iplist, NULL, NULL, NULL, NULL, NULL);
 
-gpointer decode_thread(void *args)
+static void decode_thread(InputPlayback *playback)
 {
     demux_res_t demux_res;
     VFSFile *input_file;
@@ -286,48 +359,43 @@ gpointer decode_thread(void *args)
 
     set_endian();
 
-    input_file = aud_vfs_fopen((char *) args, "rb");
-    input_stream = stream_create_file(input_file, 1);
+    input_file = aud_vfs_fopen(playback->filename, "rb");
+    if (!input_file)
+        goto exit;
 
-    if (!input_stream)
-        return NULL;
+    input_stream = stream_create_file(input_file, 1);
 
     /* if qtmovie_read returns successfully, the stream is up to
      * the movie data, which can be used directly by the decoder */
     if (!qtmovie_read(input_stream, &demux_res))
-        return NULL;
+        goto exit_free_stream;
 
     demux_res.stream = input_stream;
+    packet0_offset = stream_tell(input_stream);
 
     /* Get the titlestring ready. */
-    ti = build_aud_tuple_from_demux(&demux_res, (char *) args);
+    ti = build_aud_tuple_from_demux(&demux_res, playback->filename);
     title = aud_tuple_formatter_make_title_string(ti, aud_get_gentitle_format());
 
     /* initialise the sound converter */
     demux_res.alac = create_alac(demux_res.sample_size, demux_res.num_channels);
     alac_set_info(demux_res.alac, demux_res.codecdata);
 
-    playback->output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels);
+    if (!playback->output->open_audio(FMT_S16_LE, demux_res.sample_rate, demux_res.num_channels))
+        goto exit_free_alac;
+
     playback->set_params(playback, title, get_duration(&demux_res), -1, demux_res.sample_rate, demux_res.num_channels);
 
     /* will convert the entire buffer */
-    GetBuffer(&demux_res);
-
-    if (playback->playing) {
-        playback->output->buffer_free();
-        playback->output->buffer_free();
-        while (playback->output->buffer_playing() && playback->playing)
-            g_usleep(100000);
-    }
-
-    stream_destroy(input_stream);
-
-    if (input_opened)
-        aud_vfs_fclose(input_file);
+    GetBuffer(playback, &demux_res);
 
     playback->output->close_audio();
-
+exit_free_alac:
+    free(demux_res.alac);
+exit_free_stream:
+    stream_destroy(input_stream);
+    aud_vfs_fclose(input_file);
+exit:
     playback->playing = FALSE;
-
-    return NULL;
+    return;
 }
