@@ -63,6 +63,7 @@ static GThread *audio_thread;	 /* audio loop thread */
 static gint thread_buffer_size;	 /* size of intermediate buffer in bytes */
 static gchar *thread_buffer;	 /* audio intermediate buffer */
 static gint rd_index, wr_index;	 /* current read/write position in int-buffer */
+static gint buffer_empty;	 /* is the buffer empty? */
 static gboolean pause_request;	 /* pause status currently requested */
 static gint flush_request;	 /* flush status (time) currently requested */
 static gint prebuffer_size;
@@ -148,71 +149,16 @@ int alsa_playing(void)
 	if (!going || paused || prebuffer || alsa_pcm == NULL)
 		ret = FALSE;
 	else 
-		ret = snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING &&
-	               !paused &&
-        	       !prebuffer &&
-                       get_thread_buffer_filled() > hw_period_size_in;
+		ret = snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING ||
+		      get_thread_buffer_filled();
 
 	g_static_mutex_unlock(&alsa_mutex);
 
 	return ret;
 }
 
-static gint
-alsa_recovery(gint err)
-{
-	gint err2;
-
-	/* if debug mode is enabled, dump ALSA state to console */
-	if (alsa_cfg.debug)
-	{
-		snd_pcm_status_t *alsa_status = NULL;
-		snd_pcm_status_alloca(&alsa_status);
-		if (snd_pcm_status(alsa_pcm, alsa_status) < 0)
-			g_warning("xrun_recover(): snd_pcm_status() failed");
-		else
-		{
-			printf("Status:\n");
-			snd_pcm_status_dump(alsa_status, logs);
-		}
-	}
-
-	/*
-	 * specifically handle -EPIPE and -ESTRPIPE to recover 
-	 * PCM fragment periods without losing data.
-	 */
-	switch (err)
-	{
-	case -ESTRPIPE:
-	case ESTRPIPE:   /* "suspend": wait until ALSA is "running" again. */
-		while ((err2 = snd_pcm_resume(alsa_pcm)) == -EAGAIN)
-			g_usleep(100000);
-
-		if (err2 < 0)
-			return snd_pcm_prepare(alsa_pcm);
-
-		break;
-
-	case -EPIPE:
-	case EPIPE:      /* under-run and the I/O pipe closed on us */
-		return snd_pcm_prepare(alsa_pcm);
-		break;
-
-	case EINTR:
-	case -EINTR:
-		break;
-
-	default:
-		g_warning("Unhandled ALSA exception code %d (%s), trying hard restart.", err, snd_strerror(err));
-		return snd_pcm_prepare(alsa_pcm);
-		break;
-	}
-
-	return 0;
-}
-
-/* update and get the available space on h/w buffer (in frames) */
-static snd_pcm_sframes_t alsa_get_avail(void)
+/* update and get the available space on h/w buffer */
+static gint alsa_get_avail(void)
 {
 	snd_pcm_sframes_t ret;
 
@@ -221,7 +167,7 @@ static snd_pcm_sframes_t alsa_get_avail(void)
 
 	while ((ret = snd_pcm_avail_update(alsa_pcm)) < 0)
 	{
-		ret = alsa_recovery(ret);
+		ret = snd_pcm_recover(alsa_pcm, ret, !alsa_cfg.debug);
 		if (ret < 0)
 		{
 			g_warning("alsa_get_avail(): snd_pcm_avail_update() failed: %s",
@@ -229,7 +175,7 @@ static snd_pcm_sframes_t alsa_get_avail(void)
 			return 0;
 		}
 	}
-	return ret;
+	return snd_pcm_frames_to_bytes(alsa_pcm, ret);
 }
 
 /* get the free space on buffer */
@@ -247,7 +193,7 @@ int alsa_free(void)
 	if (prebuffer)
 		remove_prebuffer = TRUE;
 	
-	ret = thread_buffer_size - get_thread_buffer_filled() - 1;
+	ret = thread_buffer_size - get_thread_buffer_filled();
 
 	g_static_mutex_unlock(&alsa_mutex);
 
@@ -344,6 +290,7 @@ static void alsa_do_flush(gint time)
 	output_time_offset = time;
 	alsa_total_written = (guint64) time * inputf->bps / 1000;
 	rd_index = wr_index = alsa_hw_written = 0;
+	buffer_empty = 1;
 }
 
 void alsa_flush(gint time)
@@ -558,8 +505,12 @@ void alsa_set_volume(gint l, gint r)
 /* return the size of audio data filled in the audio thread buffer */
 static int get_thread_buffer_filled(void)
 {
-	if (wr_index >= rd_index)
+	if (buffer_empty)
+		return 0;
+
+	if (wr_index > rd_index)
 		return wr_index - rd_index;
+
 	return thread_buffer_size - (rd_index - wr_index);
 }
 
@@ -634,6 +585,7 @@ void alsa_write(gpointer data, gint length)
 		memcpy(thread_buffer + wr_index, src, cnt);
 		wr = (wr_index + cnt) % thread_buffer_size;
 		wr_index = wr;
+		buffer_empty = 0;
 		length -= cnt;
 		src += cnt;
 	}
@@ -660,7 +612,7 @@ static void alsa_write_audio(gchar *data, gint length)
 		}
 		else
 		{
-			int err = alsa_recovery((int)written_frames);
+			int err = snd_pcm_recover(alsa_pcm, written_frames, !alsa_cfg.debug);
 			if (err < 0)
 			{
 				g_warning("alsa_write_audio(): write error: %s",
@@ -672,13 +624,11 @@ static void alsa_write_audio(gchar *data, gint length)
 }
 
 /* transfer audio data from thread buffer to h/w */
-static void alsa_write_out_thread_data(void)
+static void alsa_write_out_thread_data(gint avail)
 {
-	gint length, cnt, avail;
+	gint length, cnt;
 
-	length = MIN(hw_period_size_in, get_thread_buffer_filled());
-	avail = snd_pcm_frames_to_bytes(alsa_pcm, alsa_get_avail());
-	length = MIN(length, avail);
+	length = MIN(avail, get_thread_buffer_filled());
 	while (length > 0)
 	{
 		int rd;
@@ -686,6 +636,8 @@ static void alsa_write_out_thread_data(void)
 		alsa_do_write(thread_buffer + rd_index, cnt);
 		rd = (rd_index + cnt) % thread_buffer_size;
 		rd_index = rd;
+		if (rd_index == wr_index)
+			buffer_empty = 1;
 		length -= cnt;
 	}
 }
@@ -695,8 +647,7 @@ static void alsa_write_out_thread_data(void)
 static void *alsa_loop(void *arg)
 {
 	struct pollfd *pfd;
-	unsigned short *revents;
-	gint i, npfds, err, wr;
+	gint npfds, err, avail;
 
 	g_static_mutex_lock(&alsa_mutex);
 
@@ -705,7 +656,6 @@ static void *alsa_loop(void *arg)
 		goto _error;
 
 	pfd = alloca(sizeof(*pfd) * npfds);
-	revents = alloca(sizeof(*revents) * npfds);
 	err = snd_pcm_poll_descriptors(alsa_pcm, pfd, npfds);
 	if (err != npfds)
                 goto _error;
@@ -714,46 +664,24 @@ static void *alsa_loop(void *arg)
 	{
 		if (get_thread_buffer_filled() > prebuffer_size)
 			prebuffer = FALSE;
-		if (!paused && !prebuffer &&
-		    get_thread_buffer_filled() > hw_period_size_in)
+		if (!paused && !prebuffer && get_thread_buffer_filled())
 		{
-			g_static_mutex_unlock(&alsa_mutex);
-			err = poll(pfd, npfds, 10);
-			g_static_mutex_lock(&alsa_mutex);
+			avail = alsa_get_avail();
 
-			if (err == 0)
-				continue;
+			if (avail == 0) {
+				g_static_mutex_unlock(&alsa_mutex);
+				err = poll(pfd, npfds, 10);
+				g_static_mutex_lock(&alsa_mutex);
 
-			if (err < 0) {
-				if (errno == EINTR)
-					continue;
-				goto _error;
+				if (err < 0 && errno != EINTR)
+					goto _error;
+
+				avail = alsa_get_avail();
 			}
 
-			err = snd_pcm_poll_descriptors_revents(alsa_pcm, pfd, npfds, revents);
-			if (err < 0)
-				goto _error;
-
-			wr = 0;
-			for (i = 0; i < npfds; i++) {
-				if (revents[i] & (POLLERR | POLLNVAL)) {
-					wr = -1;
-					break;
-				}
-				if (revents[i] & POLLOUT)
-					wr = 1;
-			}
-
-			if (wr > 0)
-			{
-				alsa_write_out_thread_data();
-			}
-			else if (wr < 0)
-			{
-				alsa_recovery(wr);
-			}
+			alsa_write_out_thread_data(avail);
 		}
-		else	/* XXX: why is this here? --nenolod */
+		else
 		{
 			g_static_mutex_unlock(&alsa_mutex);
 			g_usleep(10000);
@@ -817,6 +745,7 @@ gint alsa_open(AFormat fmt, gint rate, gint nch)
 	thread_buffer_size -= thread_buffer_size % hw_period_size;
 	thread_buffer = g_malloc0(thread_buffer_size);
 	wr_index = rd_index = 0;
+	buffer_empty = 1;
 	pause_request = FALSE;
 	flush_request = -1;
 
