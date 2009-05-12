@@ -289,8 +289,8 @@ create_config_win (void)
   tooltips = gtk_tooltips_new ();
 
   config_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (config_win), "Crossfade Configuration");
-  gtk_window_set_type_hint(GTK_WINDOW(config_win), GDK_WINDOW_TYPE_HINT_DIALOG); 
+  gtk_window_set_title (GTK_WINDOW (config_win), _("Crossfade Configuration"));
+  gtk_window_set_type_hint(GTK_WINDOW(config_win), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   config_vbox = gtk_vbox_new (FALSE, 10);
   gtk_widget_show (config_vbox);
@@ -337,17 +337,17 @@ create_config_win (void)
   gtk_button_box_set_layout (GTK_BUTTON_BOX (op_plugin_buttonbox), GTK_BUTTONBOX_START);
   gtk_box_set_spacing (GTK_BOX (op_plugin_buttonbox), 5);
 
-  op_configure_button = gtk_button_new_with_mnemonic ("Configure");
+  op_configure_button = gtk_button_new_with_mnemonic (_("Configure"));
   gtk_widget_show (op_configure_button);
   gtk_container_add (GTK_CONTAINER (op_plugin_buttonbox), op_configure_button);
   GTK_WIDGET_SET_FLAGS (op_configure_button, GTK_CAN_DEFAULT);
 
-  op_about_button = gtk_button_new_with_mnemonic ("About");
+  op_about_button = gtk_button_new_with_mnemonic (_("About"));
   gtk_widget_show (op_about_button);
   gtk_container_add (GTK_CONTAINER (op_plugin_buttonbox), op_about_button);
   GTK_WIDGET_SET_FLAGS (op_about_button, GTK_CAN_DEFAULT);
 
-  label8 = gtk_label_new ("Output plugin");
+  label8 = gtk_label_new (_("Output plugin"));
   gtk_widget_show (label8);
   gtk_frame_set_label_widget (GTK_FRAME (op_plugin_frame), label8);
 
@@ -360,7 +360,7 @@ create_config_win (void)
   gtk_container_add (GTK_CONTAINER (op_options_frame), op_options_vbox);
   gtk_container_set_border_width (GTK_CONTAINER (op_options_vbox), 5);
 
-  op_throttle_check = gtk_check_button_new_with_mnemonic ("Throttle Output");
+  op_throttle_check = gtk_check_button_new_with_mnemonic (_("Throttle Output"));
   gtk_widget_show (op_throttle_check);
   gtk_box_pack_start (GTK_BOX (op_options_vbox), op_throttle_check, FALSE, FALSE, 0);
 
@@ -368,7 +368,7 @@ create_config_win (void)
   gtk_widget_show (op_maxblock_hbox);
   gtk_box_pack_start (GTK_BOX (op_options_vbox), op_maxblock_hbox, TRUE, TRUE, 0);
 
-  op_maxblock_check = gtk_check_button_new_with_mnemonic ("Max block size (bytes):");
+  op_maxblock_check = gtk_check_button_new_with_mnemonic (_("Max block size (bytes):"));
   gtk_widget_show (op_maxblock_check);
   gtk_box_pack_start (GTK_BOX (op_maxblock_hbox), op_maxblock_check, FALSE, FALSE, 0);
 
@@ -379,20 +379,20 @@ create_config_win (void)
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (op_maxblock_spin), TRUE);
   gtk_spin_button_set_snap_to_ticks (GTK_SPIN_BUTTON (op_maxblock_spin), TRUE);
 
-  op_forcereopen_check = gtk_check_button_new_with_mnemonic ("Force close/reopen on songchange");
+  op_forcereopen_check = gtk_check_button_new_with_mnemonic (_("Force close/reopen on songchange"));
   gtk_widget_show (op_forcereopen_check);
   gtk_box_pack_start (GTK_BOX (op_options_vbox), op_forcereopen_check, FALSE, FALSE, 0);
 
-  label9 = gtk_label_new ("Plugin compatibility options");
+  label9 = gtk_label_new (_("Plugin compatibility options"));
   gtk_widget_show (label9);
   gtk_frame_set_label_widget (GTK_FRAME (op_options_frame), label9);
 
-  output_help_label = gtk_label_new ("When modifying the Output Options or the Mixing buffer size, you need to stop/restart playback for the settings to take effect.");
+  output_help_label = gtk_label_new (_("When modifying the Output Options or the Mixing buffer size, you need to stop/restart playback for the settings to take effect."));
   gtk_widget_show (output_help_label);
   gtk_box_pack_start (GTK_BOX (config_output_page), output_help_label, TRUE, TRUE, 0);
   gtk_label_set_line_wrap (GTK_LABEL (output_help_label), TRUE);
 
-  config_devices_label = gtk_label_new ("Output");
+  config_devices_label = gtk_label_new (_("Output"));
   gtk_widget_show (config_devices_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 0), config_devices_label);
   gtk_label_set_justify (GTK_LABEL (config_devices_label), GTK_JUSTIFY_CENTER);
@@ -406,7 +406,7 @@ create_config_win (void)
   gtk_widget_show (xf_bufsize_hbox);
   gtk_box_pack_start (GTK_BOX (config_crossfader_page), xf_bufsize_hbox, FALSE, FALSE, 0);
 
-  xf_bufsize_label = gtk_label_new ("Mixing buffer size (ms):");
+  xf_bufsize_label = gtk_label_new (_("Mixing buffer size (ms):"));
   gtk_widget_show (xf_bufsize_label);
   gtk_box_pack_start (GTK_BOX (xf_bufsize_hbox), xf_bufsize_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (xf_bufsize_label), GTK_JUSTIFY_CENTER);
@@ -415,19 +415,19 @@ create_config_win (void)
   xf_buffer_spin = gtk_spin_button_new (GTK_ADJUSTMENT (xf_buffer_spin_adj), 0, 0);
   gtk_widget_show (xf_buffer_spin);
   gtk_box_pack_start (GTK_BOX (xf_bufsize_hbox), xf_buffer_spin, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, xf_buffer_spin, "Specify the size of the mixing buffer. Mixing buffer space is required for pauses, fade-outs, offsetting (i.e. interleaving the end and beginning of two songs) and killing trailing gaps. Fade-ins and killing leading gaps are done on-the-fly and do not depend on mixing buffer space.\nDefault: n/a - calculated automatically", NULL);
+  gtk_tooltips_set_tip (tooltips, xf_buffer_spin, _("Specify the size of the mixing buffer. Mixing buffer space is required for pauses, fade-outs, offsetting (i.e. interleaving the end and beginning of two songs) and killing trailing gaps. Fade-ins and killing leading gaps are done on-the-fly and do not depend on mixing buffer space.\nDefault: n/a - calculated automatically"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xf_buffer_spin), TRUE);
 
-  xf_autobuf_check = gtk_check_button_new_with_mnemonic ("auto");
+  xf_autobuf_check = gtk_check_button_new_with_mnemonic (_("auto"));
   gtk_widget_show (xf_autobuf_check);
   gtk_box_pack_start (GTK_BOX (xf_bufsize_hbox), xf_autobuf_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, xf_autobuf_check, "Automatically calculate an optimal buffer size.\nDefault: On", NULL);
+  gtk_tooltips_set_tip (tooltips, xf_autobuf_check, _("Automatically calculate an optimal buffer size.\nDefault: On"), NULL);
 
   xf_config_hbox = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (xf_config_hbox);
   gtk_box_pack_start (GTK_BOX (config_crossfader_page), xf_config_hbox, FALSE, FALSE, 0);
 
-  xf_config_label = gtk_label_new ("Set parameters for:");
+  xf_config_label = gtk_label_new (_("Set parameters for:"));
   gtk_widget_show (xf_config_label);
   gtk_box_pack_start (GTK_BOX (xf_config_hbox), xf_config_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (xf_config_label), GTK_JUSTIFY_CENTER);
@@ -435,7 +435,7 @@ create_config_win (void)
   xf_config_optionmenu = gtk_option_menu_new ();
   gtk_widget_show (xf_config_optionmenu);
   gtk_box_pack_start (GTK_BOX (xf_config_hbox), xf_config_optionmenu, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, xf_config_optionmenu, "Select the type of songchange you want to configure:\n* Start of playback: When starting playback by pressing PLAY\n* Automatic songchange: When reaching the end of a song and the playlist advances to the next song\n* Manual songchange: When manually selecting another song, for example by pressing NEXT/PREV\n* Manual stop: When pressing the STOP button\n* End of playlist: After the last song in the playlist has been played\n* Seeking: When seeking within the current song", NULL);
+  gtk_tooltips_set_tip (tooltips, xf_config_optionmenu, _("Select the type of songchange you want to configure:\n* Start of playback: When starting playback by pressing PLAY\n* Automatic songchange: When reaching the end of a song and the playlist advances to the next song\n* Manual songchange: When manually selecting another song, for example by pressing NEXT/PREV\n* Manual stop: When pressing the STOP button\n* End of playlist: After the last song in the playlist has been played\n* Seeking: When seeking within the current song"), NULL);
 
   xf_config_optionmenu_menu = gtk_menu_new ();
 
@@ -449,7 +449,7 @@ create_config_win (void)
   gtk_widget_show (xf_type_hbox);
   gtk_box_pack_start (GTK_BOX (config_crossfader_page), xf_type_hbox, FALSE, FALSE, 0);
 
-  xf_type_label = gtk_label_new ("Crossfade/Transition type:");
+  xf_type_label = gtk_label_new (_("Crossfade/Transition type:"));
   gtk_widget_show (xf_type_label);
   gtk_box_pack_start (GTK_BOX (xf_type_hbox), xf_type_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (xf_type_label), GTK_JUSTIFY_CENTER);
@@ -457,7 +457,7 @@ create_config_win (void)
   xf_type_optionmenu = gtk_option_menu_new ();
   gtk_widget_show (xf_type_optionmenu);
   gtk_box_pack_start (GTK_BOX (xf_type_hbox), xf_type_optionmenu, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, xf_type_optionmenu, "Select the transition to be used for the songchange type selected above:\n* Fade-in: Fade-in at 'Start of playback'\n* Reopen output device: Force a close/open on the output plugin. This will most certainly re-introduce gaps and clicks, but might be usefull with some plugins.\n* Flush output device: Keeps the output plugin opened, but flushes its buffers. This will give you almost instant reaction when pressing NEXT/PREV.\n* None (gapless/off): Gapless mode. Keeps the device opened, but does not do any fading.\n* Simple crossfade: Does a simple crossfade between the previous and the next song.\n* Advanced crossfade: Allows you to configure the crossfade in more detail.\n* Fade-out: Fade-out at 'Manual stop' or 'End of playlist'.", NULL);
+  gtk_tooltips_set_tip (tooltips, xf_type_optionmenu, _("Select the transition to be used for the songchange type selected above:\n* Fade-in: Fade-in at 'Start of playback'\n* Reopen output device: Force a close/open on the output plugin. This will most certainly re-introduce gaps and clicks, but might be usefull with some plugins.\n* Flush output device: Keeps the output plugin opened, but flushes its buffers. This will give you almost instant reaction when pressing NEXT/PREV.\n* None (gapless/off): Gapless mode. Keeps the device opened, but does not do any fading.\n* Simple crossfade: Does a simple crossfade between the previous and the next song.\n* Advanced crossfade: Allows you to configure the crossfade in more detail.\n* Fade-out: Fade-out at 'Manual stop' or 'End of playlist'."), NULL);
 
   xf_type_optionmenu_menu = gtk_menu_new ();
 
@@ -478,7 +478,7 @@ create_config_win (void)
   gtk_widget_show (empty_notebook_page);
   gtk_container_add (GTK_CONTAINER (xf_type_notebook), empty_notebook_page);
 
-  xft_reopen_label = gtk_label_new ("Reopen");
+  xft_reopen_label = gtk_label_new (_("Reopen"));
   gtk_widget_show (xft_reopen_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 0), xft_reopen_label);
   gtk_label_set_justify (GTK_LABEL (xft_reopen_label), GTK_JUSTIFY_CENTER);
@@ -498,7 +498,7 @@ create_config_win (void)
   gtk_table_set_row_spacings (GTK_TABLE (xftf_pause_table), 2);
   gtk_table_set_col_spacings (GTK_TABLE (xftf_pause_table), 5);
 
-  xftfp_length_label = gtk_label_new ("Length (ms):");
+  xftfp_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (xftfp_length_label);
   gtk_table_attach (GTK_TABLE (xftf_pause_table), xftfp_length_label, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
@@ -510,16 +510,16 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftf_pause_table), xftfp_length_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfp_length_spin, "Specify the length of the silence to be inserted between the tracks.\nDefault: 2000", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfp_length_spin, _("Specify the length of the silence to be inserted between the tracks.\nDefault: 2000"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfp_length_spin), TRUE);
 
-  xftfp_enable_check = gtk_check_button_new_with_mnemonic ("Enable");
+  xftfp_enable_check = gtk_check_button_new_with_mnemonic (_("Enable"));
   gtk_widget_show (xftfp_enable_check);
   gtk_table_attach (GTK_TABLE (xftf_pause_table), xftfp_enable_check, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  label12 = gtk_label_new ("Pause");
+  label12 = gtk_label_new (_("Pause"));
   gtk_widget_show (label12);
   gtk_frame_set_label_widget (GTK_FRAME (xftf_pause_frame), label12);
 
@@ -540,7 +540,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xftffi_length_label = gtk_label_new ("Length (ms):");
+  xftffi_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (xftffi_length_label);
   gtk_box_pack_start (GTK_BOX (xftffi_length_hbox), xftffi_length_label, FALSE, FALSE, 0);
 
@@ -550,7 +550,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xftffi_volume_label = gtk_label_new ("Start volume (%):");
+  xftffi_volume_label = gtk_label_new (_("Start volume (%):"));
   gtk_widget_show (xftffi_volume_label);
   gtk_box_pack_start (GTK_BOX (xftffi_volume_hbox), xftffi_volume_label, FALSE, FALSE, 0);
 
@@ -560,10 +560,10 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftf_fadein_table), xftffi_length_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftffi_length_spin, "Set the duration for the fadein of the next song.", NULL);
+  gtk_tooltips_set_tip (tooltips, xftffi_length_spin, _("Set the duration for the fadein of the next song."), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftffi_length_spin), TRUE);
 
-  xftffi_enable_check = gtk_check_button_new_with_mnemonic ("Enable");
+  xftffi_enable_check = gtk_check_button_new_with_mnemonic (_("Enable"));
   gtk_widget_show (xftffi_enable_check);
   gtk_table_attach (GTK_TABLE (xftf_fadein_table), xftffi_enable_check, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -575,14 +575,14 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftf_fadein_table), xftffi_volume_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftffi_volume_spin, "Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0", NULL);
+  gtk_tooltips_set_tip (tooltips, xftffi_volume_spin, _("Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftffi_volume_spin), TRUE);
 
-  label13 = gtk_label_new ("Fade in");
+  label13 = gtk_label_new (_("Fade in"));
   gtk_widget_show (label13);
   gtk_frame_set_label_widget (GTK_FRAME (xftf_fadein_frame), label13);
 
-  xft_flush_label = gtk_label_new ("Flush");
+  xft_flush_label = gtk_label_new (_("Flush"));
   gtk_widget_show (xft_flush_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 1), xft_flush_label);
   gtk_label_set_justify (GTK_LABEL (xft_flush_label), GTK_JUSTIFY_CENTER);
@@ -591,7 +591,7 @@ create_config_win (void)
   gtk_widget_show (empty_notebook_page);
   gtk_container_add (GTK_CONTAINER (xf_type_notebook), empty_notebook_page);
 
-  xft_none_label = gtk_label_new ("None");
+  xft_none_label = gtk_label_new (_("None"));
   gtk_widget_show (xft_none_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 2), xft_none_label);
   gtk_label_set_justify (GTK_LABEL (xft_none_label), GTK_JUSTIFY_CENTER);
@@ -617,7 +617,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  pause_length_label = gtk_label_new ("Length (ms):");
+  pause_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (pause_length_label);
   gtk_box_pack_start (GTK_BOX (pause_length_hbox), pause_length_label, FALSE, FALSE, 0);
 
@@ -627,14 +627,14 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_pause_table), pause_length_spin, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, pause_length_spin, "Specify the length of the silence to be inserted between the tracks.\nDefault: 2000", NULL);
+  gtk_tooltips_set_tip (tooltips, pause_length_spin, _("Specify the length of the silence to be inserted between the tracks.\nDefault: 2000"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (pause_length_spin), TRUE);
 
-  label14 = gtk_label_new ("Pause");
+  label14 = gtk_label_new (_("Pause"));
   gtk_widget_show (label14);
   gtk_frame_set_label_widget (GTK_FRAME (xf_pause_frame), label14);
 
-  xft_pause_label = gtk_label_new ("Pause");
+  xft_pause_label = gtk_label_new (_("Pause"));
   gtk_widget_show (xft_pause_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 3), xft_pause_label);
   gtk_label_set_justify (GTK_LABEL (xft_pause_label), GTK_JUSTIFY_CENTER);
@@ -660,7 +660,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  simple_length_label = gtk_label_new ("Length (ms):");
+  simple_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (simple_length_label);
   gtk_box_pack_start (GTK_BOX (simple_length_hbox), simple_length_label, FALSE, FALSE, 0);
 
@@ -670,14 +670,14 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_simple_table), simple_length_spin, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, simple_length_spin, "Specify the length of the crosssfade.\nDefault: depends on songchange type", NULL);
+  gtk_tooltips_set_tip (tooltips, simple_length_spin, _("Specify the length of the crosssfade.\nDefault: depends on songchange type"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (simple_length_spin), TRUE);
 
-  label15 = gtk_label_new ("Crossfade");
+  label15 = gtk_label_new (_("Crossfade"));
   gtk_widget_show (label15);
   gtk_frame_set_label_widget (GTK_FRAME (xf_simple_frame), label15);
 
-  xft_simplexf_label = gtk_label_new ("Simple XF");
+  xft_simplexf_label = gtk_label_new (_("Simple XF"));
   gtk_widget_show (xft_simplexf_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 4), xft_simplexf_label);
   gtk_label_set_justify (GTK_LABEL (xft_simplexf_label), GTK_JUSTIFY_CENTER);
@@ -703,7 +703,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  fadeout_length_label = gtk_label_new ("Length (ms):");
+  fadeout_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (fadeout_length_label);
   gtk_box_pack_start (GTK_BOX (fadeout_length_hbox), fadeout_length_label, FALSE, FALSE, 0);
 
@@ -713,7 +713,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_fadeout_table), fadeout_length_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, fadeout_length_spin, "Set the duration for the fadeout of the previous song.", NULL);
+  gtk_tooltips_set_tip (tooltips, fadeout_length_spin, _("Set the duration for the fadeout of the previous song."), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fadeout_length_spin), TRUE);
 
   fadeout_volume_hbox = gtk_hbox_new (FALSE, 0);
@@ -722,7 +722,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  fadeout_volume_label = gtk_label_new ("End volume (%):");
+  fadeout_volume_label = gtk_label_new (_("End volume (%):"));
   gtk_widget_show (fadeout_volume_label);
   gtk_box_pack_start (GTK_BOX (fadeout_volume_hbox), fadeout_volume_label, FALSE, FALSE, 0);
 
@@ -732,7 +732,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_fadeout_table), fadeout_volume_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, fadeout_volume_spin, "Set the end volume. XMMS-crossfade will fade from 100% to this volume during the time specified above.\nDefault: 0", NULL);
+  gtk_tooltips_set_tip (tooltips, fadeout_volume_spin, _("Set the end volume. XMMS-crossfade will fade from 100% to this volume during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fadeout_volume_spin), TRUE);
 
   fadeout_options_hbox = gtk_hbox_new (FALSE, 5);
@@ -741,11 +741,11 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  fadeout_enable_check = gtk_check_button_new_with_mnemonic ("Enable");
+  fadeout_enable_check = gtk_check_button_new_with_mnemonic (_("Enable"));
   gtk_widget_show (fadeout_enable_check);
   gtk_box_pack_start (GTK_BOX (fadeout_options_hbox), fadeout_enable_check, FALSE, FALSE, 0);
 
-  label16 = gtk_label_new ("Fade out");
+  label16 = gtk_label_new (_("Fade out"));
   gtk_widget_show (label16);
   gtk_frame_set_label_widget (GTK_FRAME (xf_fadeout_frame), label16);
 
@@ -766,10 +766,10 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xfofs_custom_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, "Custom (ms):");
+  xfofs_custom_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, _("Custom (ms):"));
   gtk_widget_show (xfofs_custom_radiobutton);
   gtk_box_pack_start (GTK_BOX (xfofs_custom_hbox), xfofs_custom_radiobutton, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, xfofs_custom_radiobutton, "Set a custom offset.", NULL);
+  gtk_tooltips_set_tip (tooltips, xfofs_custom_radiobutton, _("Set a custom offset."), NULL);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (xfofs_custom_radiobutton), xfofs_custom_radiobutton_group);
   xfofs_custom_radiobutton_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (xfofs_custom_radiobutton));
 
@@ -777,37 +777,37 @@ create_config_win (void)
   xfofs_custom_spin = gtk_spin_button_new (GTK_ADJUSTMENT (xfofs_custom_spin_adj), 0, 0);
   gtk_widget_show (xfofs_custom_spin);
   gtk_box_pack_start (GTK_BOX (xfofs_custom_hbox), xfofs_custom_spin, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, xfofs_custom_spin, "Set how much the end of the previous and the beginning of the next song should overlap.\n* Negative values indicate that the next song should start before the previous has reached the end.\n* A value of 0 means that the songs are concatenated seamlessly.\n* Positive values will yield insert silence inbetween..", NULL);
+  gtk_tooltips_set_tip (tooltips, xfofs_custom_spin, _("Set how much the end of the previous and the beginning of the next song should overlap.\n* Negative values indicate that the next song should start before the previous has reached the end.\n* A value of 0 means that the songs are concatenated seamlessly.\n* Positive values will yield insert silence inbetween.."), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xfofs_custom_spin), TRUE);
 
-  xfofs_none_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, "None (0 ms)");
+  xfofs_none_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, _("None (0 ms)"));
   gtk_widget_show (xfofs_none_radiobutton);
   gtk_table_attach (GTK_TABLE (xf_offset_table), xfofs_none_radiobutton, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xfofs_none_radiobutton, "Don't overlap the two songs. The next song will start immediatelly after the previous has ended.", NULL);
+  gtk_tooltips_set_tip (tooltips, xfofs_none_radiobutton, _("Don't overlap the two songs. The next song will start immediatelly after the previous has ended."), NULL);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (xfofs_none_radiobutton), xfofs_custom_radiobutton_group);
   xfofs_custom_radiobutton_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (xfofs_none_radiobutton));
 
-  xfofs_lockout_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, "Lock to fadeout length");
+  xfofs_lockout_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, _("Lock to fadeout length"));
   gtk_widget_show (xfofs_lockout_radiobutton);
   gtk_table_attach (GTK_TABLE (xf_offset_table), xfofs_lockout_radiobutton, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xfofs_lockout_radiobutton, "Overlap by the fadeout duration specified above.", NULL);
+  gtk_tooltips_set_tip (tooltips, xfofs_lockout_radiobutton, _("Overlap by the fadeout duration specified above."), NULL);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (xfofs_lockout_radiobutton), xfofs_custom_radiobutton_group);
   xfofs_custom_radiobutton_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (xfofs_lockout_radiobutton));
 
-  xfofs_lockin_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, "Lock to fadein length");
+  xfofs_lockin_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, _("Lock to fadein length"));
   gtk_widget_show (xfofs_lockin_radiobutton);
   gtk_table_attach (GTK_TABLE (xf_offset_table), xfofs_lockin_radiobutton, 0, 1, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xfofs_lockin_radiobutton, "Overlap by the fadein duration specified below..", NULL);
+  gtk_tooltips_set_tip (tooltips, xfofs_lockin_radiobutton, _("Overlap by the fadein duration specified below.."), NULL);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (xfofs_lockin_radiobutton), xfofs_custom_radiobutton_group);
   xfofs_custom_radiobutton_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (xfofs_lockin_radiobutton));
 
-  label17 = gtk_label_new ("Offset");
+  label17 = gtk_label_new (_("Offset"));
   gtk_widget_show (label17);
   gtk_frame_set_label_widget (GTK_FRAME (xf_offset_frame), label17);
 
@@ -828,7 +828,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  fadein_length_label = gtk_label_new ("Length (ms):");
+  fadein_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (fadein_length_label);
   gtk_box_pack_start (GTK_BOX (fadein_length_hbox), fadein_length_label, FALSE, FALSE, 0);
 
@@ -838,7 +838,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  fadein_volume_label = gtk_label_new ("Start volume (%):");
+  fadein_volume_label = gtk_label_new (_("Start volume (%):"));
   gtk_widget_show (fadein_volume_label);
   gtk_box_pack_start (GTK_BOX (fadein_volume_hbox), fadein_volume_label, FALSE, FALSE, 0);
 
@@ -848,21 +848,21 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_fadein_table), fadein_length_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, fadein_length_spin, "Set the duration for the fadein of the next song.", NULL);
+  gtk_tooltips_set_tip (tooltips, fadein_length_spin, _("Set the duration for the fadein of the next song."), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fadein_length_spin), TRUE);
 
-  fadein_enable_check = gtk_check_button_new_with_mnemonic (" Enable");
+  fadein_enable_check = gtk_check_button_new_with_mnemonic (_(" Enable"));
   gtk_widget_show (fadein_enable_check);
   gtk_table_attach (GTK_TABLE (xf_fadein_table), fadein_enable_check, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  fadein_lock_check = gtk_check_button_new_with_mnemonic ("Lock to Fade-out");
+  fadein_lock_check = gtk_check_button_new_with_mnemonic (_("Lock to Fade-out"));
   gtk_widget_show (fadein_lock_check);
   gtk_table_attach (GTK_TABLE (xf_fadein_table), fadein_lock_check, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, fadein_lock_check, "Use the same settings as fade-out.", NULL);
+  gtk_tooltips_set_tip (tooltips, fadein_lock_check, _("Use the same settings as fade-out."), NULL);
 
   fadein_volume_spin_adj = gtk_adjustment_new (0, 0, 100, 1, 10, 10);
   fadein_volume_spin = gtk_spin_button_new (GTK_ADJUSTMENT (fadein_volume_spin_adj), 0, 0);
@@ -870,14 +870,14 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xf_fadein_table), fadein_volume_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, fadein_volume_spin, "Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0", NULL);
+  gtk_tooltips_set_tip (tooltips, fadein_volume_spin, _("Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fadein_volume_spin), TRUE);
 
-  label18 = gtk_label_new ("Fade in");
+  label18 = gtk_label_new (_("Fade in"));
   gtk_widget_show (label18);
   gtk_frame_set_label_widget (GTK_FRAME (xf_fadein_frame), label18);
 
-  xft_advancedxf_label = gtk_label_new ("Advanced XF");
+  xft_advancedxf_label = gtk_label_new (_("Advanced XF"));
   gtk_widget_show (xft_advancedxf_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 5), xft_advancedxf_label);
   gtk_label_set_justify (GTK_LABEL (xft_advancedxf_label), GTK_JUSTIFY_CENTER);
@@ -903,7 +903,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xftfi_length_label = gtk_label_new ("Length (ms):");
+  xftfi_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (xftfi_length_label);
   gtk_box_pack_start (GTK_BOX (xftfi_length_hbox), xftfi_length_label, FALSE, FALSE, 0);
 
@@ -913,7 +913,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xftfi_volume_label = gtk_label_new ("Start volume (%):");
+  xftfi_volume_label = gtk_label_new (_("Start volume (%):"));
   gtk_widget_show (xftfi_volume_label);
   gtk_box_pack_start (GTK_BOX (xftfi_volume_hbox), xftfi_volume_label, FALSE, FALSE, 0);
 
@@ -923,7 +923,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftfi_fadein_table), xftfi_length_spin, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfi_length_spin, "Set the duration for the fadein when starting playback.", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfi_length_spin, _("Set the duration for the fadein when starting playback."), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfi_length_spin), TRUE);
 
   xftfi_volume_spin_adj = gtk_adjustment_new (0, 0, 100, 1, 10, 10);
@@ -932,14 +932,14 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftfi_fadein_table), xftfi_volume_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfi_volume_spin, "Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfi_volume_spin, _("Set the start volume. XMMS-crossfade will fade from this volume to 100% during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfi_volume_spin), TRUE);
 
-  label19 = gtk_label_new ("Fade in");
+  label19 = gtk_label_new (_("Fade in"));
   gtk_widget_show (label19);
   gtk_frame_set_label_widget (GTK_FRAME (xftfi_fadein_frame), label19);
 
-  xft_fadein_label = gtk_label_new ("Fade in");
+  xft_fadein_label = gtk_label_new (_("Fade in"));
   gtk_widget_show (xft_fadein_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 6), xft_fadein_label);
   gtk_label_set_justify (GTK_LABEL (xft_fadein_label), GTK_JUSTIFY_CENTER);
@@ -965,7 +965,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xftfo_length_label = gtk_label_new ("Length (ms):");
+  xftfo_length_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (xftfo_length_label);
   gtk_box_pack_start (GTK_BOX (xftfo_length_hbox), xftfo_length_label, FALSE, FALSE, 0);
 
@@ -975,7 +975,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftfo_fadeout_table), xftfo_length_spin, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfo_length_spin, "Set the duration for the fadeout of the last song.", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfo_length_spin, _("Set the duration for the fadeout of the last song."), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfo_length_spin), TRUE);
 
   xftfo_volume_hbox = gtk_hbox_new (FALSE, 0);
@@ -984,7 +984,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xftfo_volume_label = gtk_label_new ("End volume (%):");
+  xftfo_volume_label = gtk_label_new (_("End volume (%):"));
   gtk_widget_show (xftfo_volume_label);
   gtk_box_pack_start (GTK_BOX (xftfo_volume_hbox), xftfo_volume_label, FALSE, FALSE, 0);
 
@@ -994,10 +994,10 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftfo_fadeout_table), xftfo_volume_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfo_volume_spin, "Set the end volume. XMMS-crossfade will fade from 100% to this volume during the time specified above.\nDefault: 0", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfo_volume_spin, _("Set the end volume. XMMS-crossfade will fade from 100% to this volume during the time specified above.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfo_volume_spin), TRUE);
 
-  label20 = gtk_label_new ("Fade out");
+  label20 = gtk_label_new (_("Fade out"));
   gtk_widget_show (label20);
   gtk_frame_set_label_widget (GTK_FRAME (xftfo_fadeout_frame), label20);
 
@@ -1018,7 +1018,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  xftfo_silence_label = gtk_label_new ("Length (ms):");
+  xftfo_silence_label = gtk_label_new (_("Length (ms):"));
   gtk_widget_show (xftfo_silence_label);
   gtk_box_pack_start (GTK_BOX (xftfo_silence_hbox), xftfo_silence_label, FALSE, FALSE, 0);
 
@@ -1028,14 +1028,14 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xftfo_silence_table), xftfo_silence_spin, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfo_silence_spin, "Set how much additional silence should be played after the end of the last song. This way, you can avoid the clicks some soundcards produce when being shut down during playback.\nDefault: 500", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfo_silence_spin, _("Set how much additional silence should be played after the end of the last song. This way, you can avoid the clicks some soundcards produce when being shut down during playback.\nDefault: 500"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfo_silence_spin), TRUE);
 
-  label21 = gtk_label_new ("Additional silence");
+  label21 = gtk_label_new (_("Additional silence"));
   gtk_widget_show (label21);
   gtk_frame_set_label_widget (GTK_FRAME (xftfo_silence_frame), label21);
 
-  xft_fadeout_label = gtk_label_new ("Fade out");
+  xft_fadeout_label = gtk_label_new (_("Fade out"));
   gtk_widget_show (xft_fadeout_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 7), xft_fadeout_label);
   gtk_label_set_justify (GTK_LABEL (xft_fadeout_label), GTK_JUSTIFY_CENTER);
@@ -1044,7 +1044,7 @@ create_config_win (void)
   gtk_widget_show (empty_notebook_page);
   gtk_container_add (GTK_CONTAINER (xf_type_notebook), empty_notebook_page);
 
-  xft_pause_none_label = gtk_label_new ("None");
+  xft_pause_none_label = gtk_label_new (_("None"));
   gtk_widget_show (xft_pause_none_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 8), xft_pause_none_label);
   gtk_label_set_justify (GTK_LABEL (xft_pause_none_label), GTK_JUSTIFY_CENTER);
@@ -1070,7 +1070,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xft_fadeoutin_table), xftfoi_fadeout_spin, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfoi_fadeout_spin, "Set the duration for the fadeout when pausing.\nDefault: 100", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfoi_fadeout_spin, _("Set the duration for the fadeout when pausing.\nDefault: 100"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfoi_fadeout_spin), TRUE);
 
   xftfoi_silence_spin_adj = gtk_adjustment_new (100, 0, 60000, 10, 100, 10);
@@ -1079,7 +1079,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xft_fadeoutin_table), xftfoi_silence_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfoi_silence_spin, "Set how much additional silence should be played after pausing. This way, you can avoid the clicks some soundcards produce when entering pause.\nDefault: 100", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfoi_silence_spin, _("Set how much additional silence should be played after pausing. This way, you can avoid the clicks some soundcards produce when entering pause.\nDefault: 100"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfoi_silence_spin), TRUE);
 
   xftfoi_fadein_spin_adj = gtk_adjustment_new (100, 0, 60000, 10, 100, 10);
@@ -1088,7 +1088,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (xft_fadeoutin_table), xftfoi_fadein_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, xftfoi_fadein_spin, "Set the duration for the fadein when unpausing.\nDefault: 100", NULL);
+  gtk_tooltips_set_tip (tooltips, xftfoi_fadein_spin, _("Set the duration for the fadein when unpausing.\nDefault: 100"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (xftfoi_fadein_spin), TRUE);
 
   xftfoi_fadein_hbox = gtk_hbox_new (FALSE, 0);
@@ -1097,7 +1097,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  xftfoi_fadein_label = gtk_label_new ("Fade out (ms):");
+  xftfoi_fadein_label = gtk_label_new (_("Fade out (ms):"));
   gtk_widget_show (xftfoi_fadein_label);
   gtk_box_pack_start (GTK_BOX (xftfoi_fadein_hbox), xftfoi_fadein_label, FALSE, FALSE, 0);
 
@@ -1107,7 +1107,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  xftfoi_silence_label = gtk_label_new ("Silence (ms):");
+  xftfoi_silence_label = gtk_label_new (_("Silence (ms):"));
   gtk_widget_show (xftfoi_silence_label);
   gtk_box_pack_start (GTK_BOX (xftfoi_silence_hbox), xftfoi_silence_label, FALSE, FALSE, 0);
 
@@ -1117,20 +1117,20 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  xftfoi_fadeout_label = gtk_label_new ("Fade in (ms):");
+  xftfoi_fadeout_label = gtk_label_new (_("Fade in (ms):"));
   gtk_widget_show (xftfoi_fadeout_label);
   gtk_box_pack_start (GTK_BOX (xftfoi_fadeout_hbox), xftfoi_fadeout_label, FALSE, FALSE, 0);
 
-  label22 = gtk_label_new ("Fade out / Fade in");
+  label22 = gtk_label_new (_("Fade out / Fade in"));
   gtk_widget_show (label22);
   gtk_frame_set_label_widget (GTK_FRAME (xft_fadeoutin_frame), label22);
 
-  xft_pause_adv_label = gtk_label_new ("Fade out / Fade in");
+  xft_pause_adv_label = gtk_label_new (_("Fade out / Fade in"));
   gtk_widget_show (xft_pause_adv_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (xf_type_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (xf_type_notebook), 9), xft_pause_adv_label);
   gtk_label_set_justify (GTK_LABEL (xft_pause_adv_label), GTK_JUSTIFY_CENTER);
 
-  config_crossfade_label = gtk_label_new ("Crossfader");
+  config_crossfade_label = gtk_label_new (_("Crossfader"));
   gtk_widget_show (config_crossfade_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 1), config_crossfade_label);
   gtk_label_set_justify (GTK_LABEL (config_crossfade_label), GTK_JUSTIFY_CENTER);
@@ -1157,7 +1157,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (gap_leading_table), lgap_length_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, lgap_length_spin, "Set the maximum length for gaps at the beginning of a stream.\nDefault: 500", NULL);
+  gtk_tooltips_set_tip (tooltips, lgap_length_spin, _("Set the maximum length for gaps at the beginning of a stream.\nDefault: 500"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (lgap_length_spin), TRUE);
 
   lgap_level_spin_adj = gtk_adjustment_new (512, 0, 32767, 16, 256, 10);
@@ -1166,7 +1166,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (gap_leading_table), lgap_level_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, lgap_level_spin, "Set the maximum volume for gaps at the beginning of a stream. All samples below this value are considered as silent.\nDefault: 512", NULL);
+  gtk_tooltips_set_tip (tooltips, lgap_level_spin, _("Set the maximum volume for gaps at the beginning of a stream. All samples below this value are considered as silent.\nDefault: 512"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (lgap_level_spin), TRUE);
 
   lgap_length_hbox = gtk_hbox_new (FALSE, 0);
@@ -1175,7 +1175,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
 
-  lgap_length_label = gtk_label_new ("Max. length (ms):");
+  lgap_length_label = gtk_label_new (_("Max. length (ms):"));
   gtk_widget_show (lgap_length_label);
   gtk_box_pack_start (GTK_BOX (lgap_length_hbox), lgap_length_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (lgap_length_label), GTK_JUSTIFY_CENTER);
@@ -1186,18 +1186,18 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
 
-  lgap_level_label = gtk_label_new ("Max. level (16bit sample):");
+  lgap_level_label = gtk_label_new (_("Max. level (16bit sample):"));
   gtk_widget_show (lgap_level_label);
   gtk_box_pack_start (GTK_BOX (lgap_level_hbox), lgap_level_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (lgap_level_label), GTK_JUSTIFY_CENTER);
 
-  lgap_enable_check = gtk_check_button_new_with_mnemonic ("Enable");
+  lgap_enable_check = gtk_check_button_new_with_mnemonic (_("Enable"));
   gtk_widget_show (lgap_enable_check);
   gtk_table_attach (GTK_TABLE (gap_leading_table), lgap_enable_check, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  label23 = gtk_label_new ("Leading gap killer");
+  label23 = gtk_label_new (_("Leading gap killer"));
   gtk_widget_show (label23);
   gtk_frame_set_label_widget (GTK_FRAME (gap_leading_frame), label23);
 
@@ -1218,7 +1218,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  tgap_length_label = gtk_label_new ("Max. length (ms):");
+  tgap_length_label = gtk_label_new (_("Max. length (ms):"));
   gtk_widget_show (tgap_length_label);
   gtk_box_pack_start (GTK_BOX (tgap_length_hbox), tgap_length_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (tgap_length_label), GTK_JUSTIFY_CENTER);
@@ -1229,7 +1229,7 @@ create_config_win (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-  tgap_level_label = gtk_label_new ("Max. level (16bit sample):");
+  tgap_level_label = gtk_label_new (_("Max. level (16bit sample):"));
   gtk_widget_show (tgap_level_label);
   gtk_box_pack_start (GTK_BOX (tgap_level_hbox), tgap_level_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (tgap_level_label), GTK_JUSTIFY_CENTER);
@@ -1240,7 +1240,7 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (gap_trailing_table), tgap_length_spin, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, tgap_length_spin, "Set the maximum length for gaps at the end of a stream.\nDefault: 500", NULL);
+  gtk_tooltips_set_tip (tooltips, tgap_length_spin, _("Set the maximum length for gaps at the end of a stream.\nDefault: 500"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (tgap_length_spin), TRUE);
 
   tgap_level_spin_adj = gtk_adjustment_new (512, 0, 32767, 1, 16, 10);
@@ -1249,23 +1249,23 @@ create_config_win (void)
   gtk_table_attach (GTK_TABLE (gap_trailing_table), tgap_level_spin, 1, 2, 2, 3,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, tgap_level_spin, "Set the maximum volume for gaps at the end of a stream. All samples below this value are considered as silent.\nDefault: 512", NULL);
+  gtk_tooltips_set_tip (tooltips, tgap_level_spin, _("Set the maximum volume for gaps at the end of a stream. All samples below this value are considered as silent.\nDefault: 512"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (tgap_level_spin), TRUE);
 
-  tgap_lock_check = gtk_check_button_new_with_mnemonic ("Lock to Leading");
+  tgap_lock_check = gtk_check_button_new_with_mnemonic (_("Lock to Leading"));
   gtk_widget_show (tgap_lock_check);
   gtk_table_attach (GTK_TABLE (gap_trailing_table), tgap_lock_check, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, tgap_lock_check, "Use the same settings as above.", NULL);
+  gtk_tooltips_set_tip (tooltips, tgap_lock_check, _("Use the same settings as above."), NULL);
 
-  tgap_enable_check = gtk_check_button_new_with_mnemonic ("Enable");
+  tgap_enable_check = gtk_check_button_new_with_mnemonic (_("Enable"));
   gtk_widget_show (tgap_enable_check);
   gtk_table_attach (GTK_TABLE (gap_trailing_table), tgap_enable_check, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  label24 = gtk_label_new ("Trailing gap killer");
+  label24 = gtk_label_new (_("Trailing gap killer"));
   gtk_widget_show (label24);
   gtk_frame_set_label_widget (GTK_FRAME (gap_trailing_frame), label24);
 
@@ -1278,16 +1278,16 @@ create_config_win (void)
   gtk_container_add (GTK_CONTAINER (gap_advanced_frame), gap_advanced_vbox);
   gtk_container_set_border_width (GTK_CONTAINER (gap_advanced_vbox), 5);
 
-  gadv_crossing_check = gtk_check_button_new_with_mnemonic ("Skip to next zero crossing");
+  gadv_crossing_check = gtk_check_button_new_with_mnemonic (_("Skip to next zero crossing"));
   gtk_widget_show (gadv_crossing_check);
   gtk_box_pack_start (GTK_BOX (gap_advanced_vbox), gadv_crossing_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, gadv_crossing_check, "If enabled, XMMS-crossfade will take additional care to avoid clicks with pre-faded (gapless) tracks. XMMS-crossfade will cut off the end of the previous song (the beginning of the next song) only at a zero-crossing of the sample values.\nDefault: On", NULL);
+  gtk_tooltips_set_tip (tooltips, gadv_crossing_check, _("If enabled, XMMS-crossfade will take additional care to avoid clicks with pre-faded (gapless) tracks. XMMS-crossfade will cut off the end of the previous song (the beginning of the next song) only at a zero-crossing of the sample values.\nDefault: On"), NULL);
 
-  label25 = gtk_label_new ("Advanced");
+  label25 = gtk_label_new (_("Advanced"));
   gtk_widget_show (label25);
   gtk_frame_set_label_widget (GTK_FRAME (gap_advanced_frame), label25);
 
-  config_gapkiller_label = gtk_label_new ("Gap Killer");
+  config_gapkiller_label = gtk_label_new (_("Gap Killer"));
   gtk_widget_show (config_gapkiller_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 2), config_gapkiller_label);
   gtk_label_set_justify (GTK_LABEL (config_gapkiller_label), GTK_JUSTIFY_CENTER);
@@ -1306,12 +1306,12 @@ create_config_win (void)
   gtk_container_add (GTK_CONTAINER (misc_debug_frame), misc_debug_vbox);
   gtk_container_set_border_width (GTK_CONTAINER (misc_debug_vbox), 5);
 
-  debug_stderr_check = gtk_check_button_new_with_mnemonic ("Write debug output to <stderr>");
+  debug_stderr_check = gtk_check_button_new_with_mnemonic (_("Write debug output to <stderr>"));
   gtk_widget_show (debug_stderr_check);
   gtk_box_pack_start (GTK_BOX (misc_debug_vbox), debug_stderr_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, debug_stderr_check, "Monitors what is going on in XMMS-crossfade. If you think you found a bug in XMMS-crossfade, please enable this option and send me the output.\nNote that you should disable debug output if you start XMMS from within Netscape. Netscape will spam you with dialogs containing the debug output captured from <stderr>.\nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, debug_stderr_check, _("Monitors what is going on in XMMS-crossfade. If you think you found a bug in XMMS-crossfade, please enable this option and send me the output.\nNote that you should disable debug output if you start XMMS from within Netscape. Netscape will spam you with dialogs containing the debug output captured from <stderr>.\nDefault: Off"), NULL);
 
-  label26 = gtk_label_new ("Debug options");
+  label26 = gtk_label_new (_("Debug options"));
   gtk_widget_show (label26);
   gtk_frame_set_label_widget (GTK_FRAME (misc_debug_frame), label26);
 
@@ -1324,22 +1324,22 @@ create_config_win (void)
   gtk_container_add (GTK_CONTAINER (misc_mixopt_frame), misc_mixopt_vbox);
   gtk_container_set_border_width (GTK_CONTAINER (misc_mixopt_vbox), 5);
 
-  mixopt_enable_check = gtk_check_button_new_with_mnemonic ("Enable volume control");
+  mixopt_enable_check = gtk_check_button_new_with_mnemonic (_("Enable volume control"));
   gtk_widget_show (mixopt_enable_check);
   gtk_box_pack_start (GTK_BOX (misc_mixopt_vbox), mixopt_enable_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, mixopt_enable_check, "Enables/disables XMMS volume and balance controls.\nDefault: On", NULL);
+  gtk_tooltips_set_tip (tooltips, mixopt_enable_check, _("Enables/disables XMMS volume and balance controls.\nDefault: On"), NULL);
 
-  mixopt_reverse_check = gtk_check_button_new_with_mnemonic ("Reverse balance");
+  mixopt_reverse_check = gtk_check_button_new_with_mnemonic (_("Reverse balance"));
   gtk_widget_show (mixopt_reverse_check);
   gtk_box_pack_start (GTK_BOX (misc_mixopt_vbox), mixopt_reverse_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, mixopt_reverse_check, "Reverses left and right with the balance control.\nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, mixopt_reverse_check, _("Reverses left and right with the balance control.\nDefault: Off"), NULL);
 
-  mixopt_software_check = gtk_check_button_new_with_mnemonic ("Software Mixer");
+  mixopt_software_check = gtk_check_button_new_with_mnemonic (_("Software Mixer"));
   gtk_widget_show (mixopt_software_check);
   gtk_box_pack_start (GTK_BOX (misc_mixopt_vbox), mixopt_software_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, mixopt_software_check, "Enable software mixer. Usefull for output plugins without mixer support.\nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, mixopt_software_check, _("Enable software mixer. Usefull for output plugins without mixer support.\nDefault: Off"), NULL);
 
-  label27 = gtk_label_new ("Volume control options");
+  label27 = gtk_label_new (_("Volume control options"));
   gtk_widget_show (label27);
   gtk_frame_set_label_widget (GTK_FRAME (misc_mixopt_frame), label27);
 
@@ -1356,7 +1356,7 @@ create_config_win (void)
   gtk_widget_show (moth_songchange_hbox);
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_songchange_hbox, TRUE, TRUE, 0);
 
-  moth_songchange_label = gtk_label_new ("Songchange timeout (ms):");
+  moth_songchange_label = gtk_label_new (_("Songchange timeout (ms):"));
   gtk_widget_show (moth_songchange_label);
   gtk_box_pack_start (GTK_BOX (moth_songchange_hbox), moth_songchange_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (moth_songchange_label), GTK_JUSTIFY_CENTER);
@@ -1365,14 +1365,14 @@ create_config_win (void)
   moth_songchange_spin = gtk_spin_button_new (GTK_ADJUSTMENT (moth_songchange_spin_adj), 0, 0);
   gtk_widget_show (moth_songchange_spin);
   gtk_box_pack_start (GTK_BOX (moth_songchange_hbox), moth_songchange_spin, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_songchange_spin, "The songchange timeout is the maximum time XMMS-crossfade waits for the next song. If this timeout is exceeded, the output plugin/device is closed.\nDefault: 100", NULL);
+  gtk_tooltips_set_tip (tooltips, moth_songchange_spin, _("The songchange timeout is the maximum time XMMS-crossfade waits for the next song. If this timeout is exceeded, the output plugin/device is closed.\nDefault: 100"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (moth_songchange_spin), TRUE);
 
   moth_preload_hbox = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (moth_preload_hbox);
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_preload_hbox, TRUE, TRUE, 0);
 
-  moth_preload_label = gtk_label_new ("Mixing buffer preload (ms):");
+  moth_preload_label = gtk_label_new (_("Mixing buffer preload (ms):"));
   gtk_widget_show (moth_preload_label);
   gtk_box_pack_start (GTK_BOX (moth_preload_hbox), moth_preload_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (moth_preload_label), GTK_JUSTIFY_CENTER);
@@ -1381,63 +1381,63 @@ create_config_win (void)
   moth_preload_spin = gtk_spin_button_new (GTK_ADJUSTMENT (moth_preload_spin_adj), 0, 0);
   gtk_widget_show (moth_preload_spin);
   gtk_box_pack_start (GTK_BOX (moth_preload_hbox), moth_preload_spin, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_preload_spin, "Tells XMMS-crossfade how much data it should buffer before it starts writing to the output plugin/device. Usually, this value can be set to 0, because the output plugin does preloading on its own.\nDefault: 0", NULL);
+  gtk_tooltips_set_tip (tooltips, moth_preload_spin, _("Tells XMMS-crossfade how much data it should buffer before it starts writing to the output plugin/device. Usually, this value can be set to 0, because the output plugin does preloading on its own.\nDefault: 0"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (moth_preload_spin), TRUE);
 
   moth_noxf_hbox = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (moth_noxf_hbox);
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_noxf_hbox, FALSE, FALSE, 0);
 
-  moth_noxf_label = gtk_label_new ("Don't  crossfade");
+  moth_noxf_label = gtk_label_new (_("Don't  crossfade"));
   gtk_widget_show (moth_noxf_label);
   gtk_box_pack_start (GTK_BOX (moth_noxf_hbox), moth_noxf_label, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (moth_noxf_label), GTK_JUSTIFY_CENTER);
 
-  noxf_album_check = gtk_check_button_new_with_mnemonic ("successive tracks");
+  noxf_album_check = gtk_check_button_new_with_mnemonic (_("successive tracks"));
   gtk_widget_show (noxf_album_check);
   gtk_box_pack_start (GTK_BOX (moth_noxf_hbox), noxf_album_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, noxf_album_check, "This option enables the automatic detection of pre-faded or gapless tracks, like the tracks on some compilations or on most live albums. If such tracks are detected, crossfading will be disabled and only the gapkiller (if enabled) will be used for the songchange.\nDefault: On", NULL);
+  gtk_tooltips_set_tip (tooltips, noxf_album_check, _("This option enables the automatic detection of pre-faded or gapless tracks, like the tracks on some compilations or on most live albums. If such tracks are detected, crossfading will be disabled and only the gapkiller (if enabled) will be used for the songchange.\nDefault: On"), NULL);
 
-  noxf_samefile_check = gtk_check_button_new_with_mnemonic ("same file");
+  noxf_samefile_check = gtk_check_button_new_with_mnemonic (_("same file"));
   gtk_widget_show (noxf_samefile_check);
   gtk_box_pack_start (GTK_BOX (moth_noxf_hbox), noxf_samefile_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, noxf_samefile_check, "This option disables crossfading between the same file. This can happen if you have only one file in the playlist and 'repeat' turned on.\nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, noxf_samefile_check, _("This option disables crossfading between the same file. This can happen if you have only one file in the playlist and 'repeat' turned on.\nDefault: Off"), NULL);
 
-  moth_httpworkaround_check = gtk_check_button_new_with_mnemonic ("Enable HTTP buffer underrun workaround");
+  moth_httpworkaround_check = gtk_check_button_new_with_mnemonic (_("Enable HTTP buffer underrun workaround"));
   gtk_widget_show (moth_httpworkaround_check);
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_httpworkaround_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_httpworkaround_check, "Enable this when you have problems playing internet HTTP audio streams. Unfortunatelly, it also breaks crossfading.\nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, moth_httpworkaround_check, _("Enable this when you have problems playing internet HTTP audio streams. Unfortunatelly, it also breaks crossfading.\nDefault: Off"), NULL);
 
   moth_opmaxused_hbox = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (moth_opmaxused_hbox);
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_opmaxused_hbox, TRUE, TRUE, 0);
 
-  moth_opmaxused_check = gtk_check_button_new_with_mnemonic ("Limit OP buffer usage (ms):");
+  moth_opmaxused_check = gtk_check_button_new_with_mnemonic (_("Limit OP buffer usage (ms):"));
   gtk_widget_show (moth_opmaxused_check);
   gtk_box_pack_start (GTK_BOX (moth_opmaxused_hbox), moth_opmaxused_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_opmaxused_check, "With this option enabled, XMMS-crossfade will limit the amount of data being buffered by the output plugin. This way, you can decrease the latency between pressing STOP/NEXT/PREV and the new song actually being played. \nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, moth_opmaxused_check, _("With this option enabled, XMMS-crossfade will limit the amount of data being buffered by the output plugin. This way, you can decrease the latency between pressing STOP/NEXT/PREV and the new song actually being played. \nDefault: Off"), NULL);
 
   moth_opmaxused_spin_adj = gtk_adjustment_new (500, 10, 10000, 10, 100, 10);
   moth_opmaxused_spin = gtk_spin_button_new (GTK_ADJUSTMENT (moth_opmaxused_spin_adj), 0, 0);
   gtk_widget_show (moth_opmaxused_spin);
   gtk_box_pack_start (GTK_BOX (moth_opmaxused_hbox), moth_opmaxused_spin, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_opmaxused_spin, "Beware that setting this value too low also increases the chance of buffer underruns.\nDefault: 250", NULL);
+  gtk_tooltips_set_tip (tooltips, moth_opmaxused_spin, _("Beware that setting this value too low also increases the chance of buffer underruns.\nDefault: 250"), NULL);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (moth_opmaxused_spin), TRUE);
 
-  moth_quantaudio_check = gtk_check_button_new_with_mnemonic ("Use Quantaudio timing comments");
+  moth_quantaudio_check = gtk_check_button_new_with_mnemonic (_("Use Quantaudio timing comments"));
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_quantaudio_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_quantaudio_check, "Enable this when you have problems playing internet HTTP audio streams. Unfortunatelly, it also breaks crossfading.\nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, moth_quantaudio_check, _("Enable this when you have problems playing internet HTTP audio streams. Unfortunatelly, it also breaks crossfading.\nDefault: Off"), NULL);
 
-  moth_outputkeepopened_check = gtk_check_button_new_with_mnemonic ("Keep output opened");
+  moth_outputkeepopened_check = gtk_check_button_new_with_mnemonic (_("Keep output opened"));
   gtk_widget_show (moth_outputkeepopened_check);
   gtk_box_pack_start (GTK_BOX (misc_other_vbox), moth_outputkeepopened_check, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, moth_outputkeepopened_check, "Keep the output device opened all the time, even if XMMS is stopped. This way, you can avoid clicks caused by the soundcard when the device is opened or closed\nDefault: Off", NULL);
+  gtk_tooltips_set_tip (tooltips, moth_outputkeepopened_check, _("Keep the output device opened all the time, even if XMMS is stopped. This way, you can avoid clicks caused by the soundcard when the device is opened or closed\nDefault: Off"), NULL);
 
-  label28 = gtk_label_new ("Advanced options");
+  label28 = gtk_label_new (_("Advanced options"));
   gtk_widget_show (label28);
   gtk_frame_set_label_widget (GTK_FRAME (misc_other_frame), label28);
 
-  config_misc_label = gtk_label_new ("Advanced");
+  config_misc_label = gtk_label_new (_("Advanced"));
   gtk_widget_show (config_misc_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 3), config_misc_label);
   gtk_label_set_justify (GTK_LABEL (config_misc_label), GTK_JUSTIFY_CENTER);
@@ -1454,11 +1454,11 @@ create_config_win (void)
   gtk_widget_show (presets_name_entry);
   gtk_box_pack_start (GTK_BOX (presets_name_hbox), presets_name_entry, TRUE, TRUE, 0);
 
-  presets_delete_button = gtk_button_new_with_mnemonic ("Delete");
+  presets_delete_button = gtk_button_new_with_mnemonic (_("Delete"));
   gtk_widget_show (presets_delete_button);
   gtk_box_pack_start (GTK_BOX (presets_name_hbox), presets_delete_button, FALSE, FALSE, 0);
 
-  presets_new_button = gtk_button_new_with_mnemonic ("New");
+  presets_new_button = gtk_button_new_with_mnemonic (_("New"));
   gtk_widget_show (presets_new_button);
   gtk_box_pack_start (GTK_BOX (presets_name_hbox), presets_new_button, FALSE, FALSE, 0);
 
@@ -1479,17 +1479,17 @@ create_config_win (void)
   gtk_button_box_set_layout (GTK_BUTTON_BOX (presets_list_bbox), GTK_BUTTONBOX_END);
   gtk_box_set_spacing (GTK_BOX (presets_list_bbox), 5);
 
-  presets_load_button = gtk_button_new_with_mnemonic ("Load");
+  presets_load_button = gtk_button_new_with_mnemonic (_("Load"));
   gtk_widget_show (presets_load_button);
   gtk_container_add (GTK_CONTAINER (presets_list_bbox), presets_load_button);
   GTK_WIDGET_SET_FLAGS (presets_load_button, GTK_CAN_DEFAULT);
 
-  presets_save_button = gtk_button_new_with_mnemonic ("Save");
+  presets_save_button = gtk_button_new_with_mnemonic (_("Save"));
   gtk_widget_show (presets_save_button);
   gtk_container_add (GTK_CONTAINER (presets_list_bbox), presets_save_button);
   GTK_WIDGET_SET_FLAGS (presets_save_button, GTK_CAN_DEFAULT);
 
-  config_presets_label = gtk_label_new ("Presets");
+  config_presets_label = gtk_label_new (_("Presets"));
   gtk_widget_show (config_presets_label);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (config_notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (config_notebook), 5), config_presets_label);
   gtk_label_set_justify (GTK_LABEL (config_presets_label), GTK_JUSTIFY_CENTER);
@@ -1500,17 +1500,17 @@ create_config_win (void)
   gtk_button_box_set_layout (GTK_BUTTON_BOX (config_bbox), GTK_BUTTONBOX_END);
   gtk_box_set_spacing (GTK_BOX (config_bbox), 5);
 
-  config_ok = gtk_button_new_with_mnemonic ("OK");
+  config_ok = gtk_button_new_with_mnemonic (_("OK"));
   gtk_widget_show (config_ok);
   gtk_container_add (GTK_CONTAINER (config_bbox), config_ok);
   GTK_WIDGET_SET_FLAGS (config_ok, GTK_CAN_DEFAULT);
 
-  config_cancel = gtk_button_new_with_mnemonic ("Cancel");
+  config_cancel = gtk_button_new_with_mnemonic (_("Cancel"));
   gtk_widget_show (config_cancel);
   gtk_container_add (GTK_CONTAINER (config_bbox), config_cancel);
   GTK_WIDGET_SET_FLAGS (config_cancel, GTK_CAN_DEFAULT);
 
-  config_apply = gtk_button_new_with_mnemonic ("Apply");
+  config_apply = gtk_button_new_with_mnemonic (_("Apply"));
   gtk_widget_show (config_apply);
   gtk_container_add (GTK_CONTAINER (config_bbox), config_apply);
   GTK_WIDGET_SET_FLAGS (config_apply, GTK_CAN_DEFAULT);
@@ -1915,7 +1915,7 @@ create_help_win (void)
   GtkWidget *help_close_button;
 
   help_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (help_win), "Help");
+  gtk_window_set_title (GTK_WINDOW (help_win), _("Help"));
 
   help_vbox = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (help_vbox);
@@ -1942,7 +1942,7 @@ create_help_win (void)
   gtk_button_box_set_layout (GTK_BUTTON_BOX (help_buttonbox), GTK_BUTTONBOX_END);
   gtk_box_set_spacing (GTK_BOX (help_buttonbox), 30);
 
-  help_close_button = gtk_button_new_with_mnemonic ("Close");
+  help_close_button = gtk_button_new_with_mnemonic (_("Close"));
   gtk_widget_show (help_close_button);
   gtk_container_add (GTK_CONTAINER (help_buttonbox), help_close_button);
   GTK_WIDGET_SET_FLAGS (help_close_button, GTK_CAN_DEFAULT);

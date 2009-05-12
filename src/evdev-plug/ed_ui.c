@@ -1289,7 +1289,7 @@ cfg_bindings_cb_commit ( gpointer bindings_win )
 }
 
 
-#define action_store_add(x) { gtk_list_store_append(action_store,&iter); gtk_list_store_set(action_store,&iter,0,player_actions[x].desc,1,x,-1); }
+#define action_store_add(x) { gtk_list_store_append(action_store,&iter); gtk_list_store_set(action_store,&iter,0,_(player_actions[x].desc),1,x,-1); }
 
 static void
 cfg_ui_bindings_show ( ed_device_t * dev , GtkTreeRowReference * rowref )
