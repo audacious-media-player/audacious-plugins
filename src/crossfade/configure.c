@@ -1,4 +1,4 @@
-/* 
+/*
  *  XMMS Crossfade Plugin
  *  Copyright (C) 2000-2007  Peter Eisenlohr <peter@eisenlohr.org>
  *
@@ -9,7 +9,7 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -118,7 +118,7 @@ add_menu_item(GtkWidget *menu, gchar *title, activate_func_t func, gint index, g
 	GtkWidget *item;
 	if (!menu || !title || !func)
 		return;
-		
+
 	item = gtk_menu_item_new_with_label(title);
 	gtk_signal_connect(GTK_OBJECT(item), "activate", (GtkSignalFunc)func, GINT_TO_POINTER(index));
 	gtk_widget_show(item);
@@ -133,11 +133,11 @@ gtk2_spin_button_hack(GtkSpinButton *spin)
 {
 	static gboolean entered = FALSE;
 	const gchar *text;
-	
+
 	if (entered) return;
 	entered = TRUE;
 
-	text = gtk_entry_get_text(GTK_ENTRY(spin));		
+	text = gtk_entry_get_text(GTK_ENTRY(spin));
 	if (text && *text)
 	{
 		gint value = atoi(text);
@@ -149,7 +149,7 @@ gtk2_spin_button_hack(GtkSpinButton *spin)
 		gtk_spin_button_set_value(spin, 0.0);
 		gtk_entry_set_text(GTK_ENTRY(spin), "");
 	}
-	
+
 	entered = FALSE;
 }
 
@@ -182,7 +182,7 @@ scan_plugins(GtkWidget *option_menu, gchar *selected)
 		{
 			if (def_index == -1)
 				def_index = index;
-				
+
 			if (op->filename && strcmp(g_basename(op->filename), selected) == 0)
 				sel_index = index;
 		}
@@ -249,7 +249,7 @@ on_output_plugin_configure_button_clicked(GtkButton *button, gpointer user_data)
 	OutputPlugin *op = g_list_nth_data(xfplayer_get_output_list(), op_index);
 	if ((op == NULL) || (op->configure == NULL))
 		return;
-		
+
 	op->configure();
 }
 
@@ -259,7 +259,7 @@ on_output_plugin_about_button_clicked(GtkButton *button, gpointer user_data)
 	OutputPlugin *op = g_list_nth_data(xfplayer_get_output_list(), op_index);
 	if ((op == NULL) || (op->about == NULL))
 		return;
-		
+
 	op->about();
 }
 
@@ -308,22 +308,22 @@ create_crossfader_config_menu()
 	{
 		for (i = 0; i < MAX_FADE_CONFIGS; i++)
 			xf_config_index_map[i] = -1;
-			
+
 		imap = xf_config_index_map;
 		menu = gtk_menu_new();
-		
-		add_menu_item(menu, "Start of playback",    xf_config_cb, FADE_CONFIG_START, &imap);
-		add_menu_item(menu, "Automatic songchange", xf_config_cb, FADE_CONFIG_XFADE, &imap);
+
+		add_menu_item(menu, _("Start of playback"),    xf_config_cb, FADE_CONFIG_START, &imap);
+		add_menu_item(menu, _("Automatic songchange"), xf_config_cb, FADE_CONFIG_XFADE, &imap);
 #if 0
 		/* this should be FADE_TYPE_NONE all the time, anyway,
 		   so no need to make it configureable by the user */
 		add_menu_item(menu, "Automatic (gapless)", xf_config_cb, FADE_CONFIG_ALBUM, &imap);
 #endif
-		add_menu_item(menu, "Manual songchange", xf_config_cb, FADE_CONFIG_MANUAL, &imap);
-		add_menu_item(menu, "Manual stop",       xf_config_cb, FADE_CONFIG_STOP,   &imap);
-		add_menu_item(menu, "End of playlist",   xf_config_cb, FADE_CONFIG_EOP,    &imap);
-		add_menu_item(menu, "Seeking",           xf_config_cb, FADE_CONFIG_SEEK,   &imap);
-		add_menu_item(menu, "Pause",             xf_config_cb, FADE_CONFIG_PAUSE,  &imap);
+		add_menu_item(menu, _("Manual songchange"), xf_config_cb, FADE_CONFIG_MANUAL, &imap);
+		add_menu_item(menu, _("Manual stop"),       xf_config_cb, FADE_CONFIG_STOP,   &imap);
+		add_menu_item(menu, _("End of playlist"),   xf_config_cb, FADE_CONFIG_EOP,    &imap);
+		add_menu_item(menu, _("Seeking"),           xf_config_cb, FADE_CONFIG_SEEK,   &imap);
+		add_menu_item(menu, _("Pause"),             xf_config_cb, FADE_CONFIG_PAUSE,  &imap);
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(optionmenu), menu);
 	}
 
@@ -340,21 +340,21 @@ create_crossfader_type_menu()
 	{
 		for (i = 0; i < MAX_FADE_TYPES; i++)
 			xf_type_index_map[i] = -1;
-			
+
 		imap = xf_type_index_map;
 		menu = gtk_menu_new();
 		mask = xfg->fc[xfg->xf_index].type_mask;
 
-		if (mask & (1 << FADE_TYPE_REOPEN))      add_menu_item(menu, "Reopen output device", xf_type_cb, FADE_TYPE_REOPEN,      &imap);
-		if (mask & (1 << FADE_TYPE_FLUSH))       add_menu_item(menu, "Flush output device",  xf_type_cb, FADE_TYPE_FLUSH,       &imap);
-		if (mask & (1 << FADE_TYPE_NONE))        add_menu_item(menu, "None (gapless/off)",   xf_type_cb, FADE_TYPE_NONE,        &imap);
-		if (mask & (1 << FADE_TYPE_PAUSE))       add_menu_item(menu, "Pause",                xf_type_cb, FADE_TYPE_PAUSE,       &imap);
-		if (mask & (1 << FADE_TYPE_SIMPLE_XF))   add_menu_item(menu, "Simple crossfade",     xf_type_cb, FADE_TYPE_SIMPLE_XF,   &imap);
-		if (mask & (1 << FADE_TYPE_ADVANCED_XF)) add_menu_item(menu, "Advanced crossfade",   xf_type_cb, FADE_TYPE_ADVANCED_XF, &imap);
-		if (mask & (1 << FADE_TYPE_FADEIN))      add_menu_item(menu, "Fadein",               xf_type_cb, FADE_TYPE_FADEIN,      &imap);
-		if (mask & (1 << FADE_TYPE_FADEOUT))     add_menu_item(menu, "Fadeout",              xf_type_cb, FADE_TYPE_FADEOUT,     &imap);
-		if (mask & (1 << FADE_TYPE_PAUSE_NONE))  add_menu_item(menu, "None",                 xf_type_cb, FADE_TYPE_PAUSE_NONE,  &imap);
-		if (mask & (1 << FADE_TYPE_PAUSE_ADV))   add_menu_item(menu, "Fadeout/Fadein",       xf_type_cb, FADE_TYPE_PAUSE_ADV,   &imap);
+		if (mask & (1 << FADE_TYPE_REOPEN))      add_menu_item(menu, _("Reopen output device"), xf_type_cb, FADE_TYPE_REOPEN,      &imap);
+		if (mask & (1 << FADE_TYPE_FLUSH))       add_menu_item(menu, _("Flush output device"),  xf_type_cb, FADE_TYPE_FLUSH,       &imap);
+		if (mask & (1 << FADE_TYPE_NONE))        add_menu_item(menu, _("None (gapless/off)"),   xf_type_cb, FADE_TYPE_NONE,        &imap);
+		if (mask & (1 << FADE_TYPE_PAUSE))       add_menu_item(menu, _("Pause"),                xf_type_cb, FADE_TYPE_PAUSE,       &imap);
+		if (mask & (1 << FADE_TYPE_SIMPLE_XF))   add_menu_item(menu, _("Simple crossfade"),     xf_type_cb, FADE_TYPE_SIMPLE_XF,   &imap);
+		if (mask & (1 << FADE_TYPE_ADVANCED_XF)) add_menu_item(menu, _("Advanced crossfade"),   xf_type_cb, FADE_TYPE_ADVANCED_XF, &imap);
+		if (mask & (1 << FADE_TYPE_FADEIN))      add_menu_item(menu, _("Fadein"),               xf_type_cb, FADE_TYPE_FADEIN,      &imap);
+		if (mask & (1 << FADE_TYPE_FADEOUT))     add_menu_item(menu, _("Fadeout"),              xf_type_cb, FADE_TYPE_FADEOUT,     &imap);
+		if (mask & (1 << FADE_TYPE_PAUSE_NONE))  add_menu_item(menu, _("None"),                 xf_type_cb, FADE_TYPE_PAUSE_NONE,  &imap);
+		if (mask & (1 << FADE_TYPE_PAUSE_ADV))   add_menu_item(menu, _("Fadeout/Fadein"),       xf_type_cb, FADE_TYPE_PAUSE_ADV,   &imap);
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(optionmenu), menu);
 	}
 }

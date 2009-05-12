@@ -1,4 +1,4 @@
-/* 
+/*
  *  XMMS Crossfade Plugin
  *  Copyright (C) 2000-2007  Peter Eisenlohr <peter@eisenlohr.org>
  *
@@ -9,7 +9,7 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -36,7 +36,6 @@
 #include <audacious/auddrct.h>
 #include <audacious/configdb.h>
 #include <audacious/util.h>
-#include <audacious/i18n.h>
 
 #include "debug.h"
 
@@ -411,7 +410,7 @@ typedef struct
 	/* additional stuff which is not configureable by the user */
 	gboolean flush;		// TRUE for manual, FALSE for xfade config
 	guint32 type_mask;	// bitmask for FADE_TYPEs
-	
+
 	/* new fields as of v0.3.11: skip beginning/end of song */
 	gint out_skip_ms;
 	gint in_skip_ms;
