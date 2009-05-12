@@ -19,8 +19,6 @@
 #include "configure.h"
 #include "plugin.h"
 
-#define LASTFM_HS_URL "http://post.audioscrobbler.com"
-
 GtkWidget *entry1, *entry2, *entry3, *ge_entry1, *ge_entry2, *cfgdlg;
 static GdkColor disabled_color;
 guint apply_timeout = 0; /* ID of timeout to save new config */

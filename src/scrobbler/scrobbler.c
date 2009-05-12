@@ -1083,7 +1083,10 @@ void sc_init(char *uname, char *pwd, char *url)
         sc_challenge_hash = sc_major_error = NULL;
     sc_username = strdup(uname);
     sc_password = strdup(pwd);
-   	sc_hs_url = strdup(url);
+    if (url)
+        sc_hs_url = strdup(url);
+    else
+        sc_hs_url = strdup(LASTFM_HS_URL);
     read_cache();
     pdebug("scrobbler starting up", DEBUG);
 }
