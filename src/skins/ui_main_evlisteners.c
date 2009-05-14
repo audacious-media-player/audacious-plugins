@@ -129,7 +129,7 @@ ui_main_evlistener_playback_begin(gpointer hook_data, gpointer user_data)
     }
 
     song_info_timeout_source =
-        g_timeout_add_seconds(1, (GSourceFunc) mainwin_update_song_info, NULL);
+        g_timeout_add (250, (GSourceFunc) mainwin_update_song_info, NULL);
 
     update_vis_timeout_source =
         g_timeout_add(10, (GSourceFunc) update_vis_func, NULL);

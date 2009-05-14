@@ -2420,8 +2420,6 @@ mainwin_update_song_info(void)
         g_free(time_str);
     }
 
-    time /= 1000;
-    length /= 1000;
     if (length > 0) {
         if (time > length) {
             ui_skinned_horizontal_slider_set_position(mainwin_position, 219);
