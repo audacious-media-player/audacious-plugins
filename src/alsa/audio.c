@@ -148,8 +148,8 @@ int alsa_playing(void)
 
 	if (!going || paused || prebuffer || alsa_pcm == NULL)
 		ret = FALSE;
-	else 
-		ret = snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING ||
+	else
+		ret = snd_pcm_state(alsa_pcm) == SND_PCM_STATE_RUNNING &&
 		      get_thread_buffer_filled();
 
 	g_static_mutex_unlock(&alsa_mutex);
@@ -193,7 +193,7 @@ int alsa_free(void)
 	}
 	if (prebuffer)
 		remove_prebuffer = TRUE;
-	
+
 	ret = thread_buffer_size - get_thread_buffer_filled();
 
 	g_static_mutex_unlock(&alsa_mutex);
@@ -573,11 +573,11 @@ void alsa_write(gpointer data, gint length)
 {
 	gint cnt;
 	gchar *src = (gchar *)data;
-	
+
 	g_static_mutex_lock(&alsa_mutex);
 
 	remove_prebuffer = FALSE;
-	
+
 	alsa_total_written += length;
 	while (length > 0)
 	{
