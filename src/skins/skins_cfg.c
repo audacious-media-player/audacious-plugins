@@ -106,8 +106,6 @@ skins_cfg_t skins_default_config = {
     .show_separator_in_pl = TRUE,
     .playlist_font = NULL,
     .mainwin_font = NULL,
-    .show_filepopup_for_tuple = TRUE,
-    .filepopup_delay = 20,             /* delay until the filepopup comes up */
     .random_skin_on_play = FALSE,
 };
 
@@ -145,7 +143,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
     {"show_numbers_in_pl", &config.show_numbers_in_pl, TRUE},
     {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
-    {"show_filepopup_for_tuple", &config.show_filepopup_for_tuple, TRUE},
     {"random_skin_on_play", &config.random_skin_on_play, TRUE},
 };
 
@@ -183,7 +180,6 @@ static skins_cfg_nument skins_numents[] = {
     {"colorize_g", &config.colorize_g, TRUE},
     {"colorize_b", &config.colorize_b, TRUE},
     {"snap_distance", &config.snap_distance, TRUE},
-    {"filepopup_delay", &config.filepopup_delay, TRUE},
 };
 
 static gint ncfgient = G_N_ELEMENTS(skins_numents);

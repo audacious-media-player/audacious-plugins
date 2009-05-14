@@ -958,7 +958,7 @@ static gboolean ui_skinned_playlist_motion_notify(GtkWidget *widget, GdkEventMot
             playlistwin_update_list(aud_playlist_get_active());
         }
         priv->drag_pos = nr;
-    } else if (config.show_filepopup_for_tuple) {
+    } else if (aud_cfg->show_filepopup_for_tuple) {
         gint pos = ui_skinned_playlist_get_position(widget, event->x, event->y);
         if (pos == -1) {
            ui_skinned_playlist_popup_hide (widget);
@@ -1070,7 +1070,10 @@ static void ui_skinned_playlist_popup_hide(GtkWidget *widget) {
 }
 
 static void ui_skinned_playlist_popup_timer_start(GtkWidget *widget) {
-    gint timer_id = g_timeout_add(config.filepopup_delay*100, ui_skinned_playlist_popup_show, widget);
+    int timer_id;
+
+    timer_id = g_timeout_add (aud_cfg->filepopup_delay * 100,
+     ui_skinned_playlist_popup_show, widget);
     g_object_set_data(G_OBJECT(widget), "timer_id", GINT_TO_POINTER(timer_id));
     g_object_set_data(G_OBJECT(widget), "timer_active", GINT_TO_POINTER(1));
 }

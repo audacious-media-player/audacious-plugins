@@ -75,8 +75,6 @@ typedef struct {
     gboolean eq_scaled_linked;
     gboolean show_numbers_in_pl, show_separator_in_pl;
     gchar *playlist_font, *mainwin_font;
-    gboolean show_filepopup_for_tuple;
-    gint filepopup_delay;
     gboolean random_skin_on_play;
 } skins_cfg_t;
 
