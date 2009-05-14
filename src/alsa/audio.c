@@ -167,6 +167,7 @@ static gint alsa_get_avail(void)
 
 	while ((ret = snd_pcm_avail_update(alsa_pcm)) < 0)
 	{
+		debug("snd_pcm_avail_update returned %d", ret);
 		ret = snd_pcm_recover(alsa_pcm, ret, !alsa_cfg.debug);
 		if (ret < 0)
 		{
@@ -668,9 +669,9 @@ static void *alsa_loop(void *arg)
 		{
 			avail = alsa_get_avail();
 
-			if (avail == 0) {
+			while (avail == 0) {
 				g_static_mutex_unlock(&alsa_mutex);
-				err = poll(pfd, npfds, 10);
+				err = poll(pfd, npfds, alsa_cfg.period_time);
 				g_static_mutex_lock(&alsa_mutex);
 
 				if (err < 0 && errno != EINTR)
