@@ -167,6 +167,7 @@ alsaplug_close_audio(void)
     wr_total = 0;
     wr_hwframes = 0;
     bps = 0;
+    alsaplug_ringbuffer_destroy(&pcm_ringbuf);
 }
 
 static void
