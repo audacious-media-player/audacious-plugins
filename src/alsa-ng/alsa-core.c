@@ -29,7 +29,8 @@ static gint bps;
 static gsize wr_total = 0;
 static gsize wr_hwframes = 0;
 
-static gint flush_request;
+static gint flush_request, pause_request, paused;
+static gboolean can_pause;
 
 /********************************************************************************
  * ALSA Mixer setting functions.                                                *
@@ -79,6 +80,13 @@ alsaplug_loop(gpointer unused)
             snd_pcm_prepare(pcm_handle);
             wr_total = flush_request * (bps / 1000);
             flush_request = -1;
+        }
+
+        if (pause_request != paused)
+        {
+            snd_pcm_pause(pcm_handle, pause_request);
+            paused = pause_request;
+            continue;
         }
 
         if (alsaplug_ringbuffer_read(&pcm_ringbuf, buf, 2048) == -1)
@@ -149,6 +157,7 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
         return -1;
     }
 
+    can_pause = snd_pcm_hw_params_can_pause(hwparams);
     bitwidth = snd_pcm_format_physical_width(afmt);
     bps = (rate * bitwidth * nch) >> 3;
     ringbuf_size = aud_cfg->output_buffer_size * bps / 1000;
@@ -233,6 +242,12 @@ alsaplug_buffer_playing(void)
     return alsaplug_ringbuffer_used(&pcm_ringbuf) != 0;
 }
 
+static void
+alsaplug_pause(short p)
+{
+    pause_request = p;
+}
+
 /********************************************************************************
  * Plugin glue.                                                                 *
  ********************************************************************************/
@@ -249,6 +264,7 @@ static OutputPlugin alsa_op = {
     .buffer_free = alsaplug_buffer_free,
     .buffer_playing = alsaplug_buffer_playing,
     .flush = alsaplug_flush,
+    .pause = alsaplug_pause,
 };
 
 OutputPlugin *alsa_oplist[] = { &alsa_op, NULL };
