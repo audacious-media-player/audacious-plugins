@@ -1,0 +1,6 @@
+The following things are not implemented yet.
+
+- mixer support
+- prerolling: this means that it is possible for buffer underruns occasionally.
+  we want to preroll at least 50% of buffer_size before actually writing anything
+  to the soundcard.
