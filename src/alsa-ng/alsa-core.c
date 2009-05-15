@@ -186,9 +186,10 @@ alsaplug_close_audio(void)
     g_mutex_unlock(pcm_state_mutex);
     g_cond_broadcast(pcm_state_cond);
 
-    g_thread_join(audio_thread);
-    audio_thread = NULL;
+    if (audio_thread != NULL)
+        g_thread_join(audio_thread);
 
+    audio_thread = NULL;
     wr_total = 0;
     wr_hwframes = 0;
     bps = 0;
