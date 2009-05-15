@@ -183,7 +183,12 @@ static void
 alsaplug_close_audio(void)
 {
     g_mutex_lock(pcm_state_mutex);
+
     pcm_going = FALSE;
+    wr_total = 0;
+    wr_hwframes = 0;
+    bps = 0;
+
     g_mutex_unlock(pcm_state_mutex);
     g_cond_broadcast(pcm_state_cond);
 
@@ -191,9 +196,6 @@ alsaplug_close_audio(void)
         g_thread_join(audio_thread);
 
     audio_thread = NULL;
-    wr_total = 0;
-    wr_hwframes = 0;
-    bps = 0;
 }
 
 static void
@@ -206,8 +208,10 @@ alsaplug_write_audio(gpointer data, gint length)
         g_mutex_unlock(pcm_pause_mutex);
     }
 
+    g_mutex_lock(pcm_state_mutex);
     wr_total += length;
     alsaplug_ringbuffer_write(&pcm_ringbuf, data, length);
+    g_mutex_unlock(pcm_state_mutex);
     g_cond_broadcast(pcm_state_cond);
 }
 
@@ -267,7 +271,18 @@ alsaplug_flush(gint time)
 static gint
 alsaplug_buffer_playing(void)
 {
-    return alsaplug_ringbuffer_used(&pcm_ringbuf) != 0;
+    gint ret;
+
+    g_mutex_lock(pcm_state_mutex);
+
+    if (pcm_going == FALSE)
+        ret = 0;
+    else 
+        ret = alsaplug_ringbuffer_used(&pcm_ringbuf) != 0;
+
+    g_mutex_unlock(pcm_state_mutex);
+
+    return ret;
 }
 
 static void
