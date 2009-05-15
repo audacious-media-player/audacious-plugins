@@ -218,8 +218,11 @@ alsaplug_write_audio(gpointer data, gint length)
 static gint
 alsaplug_output_time(void)
 {
+    gint ret = 0;
     snd_pcm_sframes_t delay;
     gsize bytes = wr_total;
+
+    g_mutex_lock(pcm_state_mutex);
 
     if (pcm_going && pcm_handle != NULL)
     {
@@ -232,19 +235,27 @@ alsaplug_output_time(void)
                 bytes -= d;
         }
 
-        return (bytes * 1000) / bps;
+        ret = (bytes * 1000) / bps;
     }
 
-    return 0;
+    g_mutex_unlock(pcm_state_mutex);
+
+    return ret;
 }
 
 static gint
 alsaplug_written_time(void)
 {
-    if (pcm_going)
-        return (wr_total * 1000) / bps;
+    gint ret = 0;
 
-    return 0;
+    g_mutex_lock(pcm_state_mutex);
+
+    if (pcm_going)
+        ret = (wr_total * 1000) / bps;
+
+    g_mutex_unlock(pcm_state_mutex);
+
+    return ret;
 }
 
 static gint
