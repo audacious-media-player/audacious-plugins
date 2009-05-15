@@ -25,13 +25,19 @@ static alsaplug_ringbuf_t pcm_ringbuf;
 static gboolean pcm_going = FALSE;
 static GThread *audio_thread = NULL;
 static gint bps;
-static GMutex *pcm_mutex;
-static GCond *pcm_cond;
 
 static gsize wr_total = 0;
 static gsize wr_hwframes = 0;
 
 static gint flush_request;
+
+/********************************************************************************
+ * ALSA Mixer setting functions.                                                *
+ ********************************************************************************/
+
+/********************************************************************************
+ * ALSA PCM I/O functions.                                                      *
+ ********************************************************************************/
 
 static void
 alsaplug_write_buffer(gpointer data, gint length)
@@ -77,14 +83,13 @@ alsaplug_loop(gpointer unused)
 
         if (alsaplug_ringbuffer_read(&pcm_ringbuf, buf, 2048) == -1)
         {
-            GTimeVal pcm_abs_time;
-
-            g_get_current_time(&pcm_abs_time);
-            g_time_val_add(&pcm_abs_time, 10000);
-
-            g_mutex_lock(pcm_mutex);
-            g_cond_timed_wait(pcm_cond, pcm_mutex, &pcm_abs_time);
-            g_mutex_unlock(pcm_mutex);
+            /* less than 2048 bytes to go...? */
+            gint remain = alsaplug_ringbuffer_used(&pcm_ringbuf);
+            if (remain <= 2048)
+            {
+                alsaplug_ringbuffer_read(&pcm_ringbuf, buf, remain);
+                alsaplug_write_buffer(buf, remain);
+            }
 
             continue;
         }
@@ -92,6 +97,7 @@ alsaplug_loop(gpointer unused)
         alsaplug_write_buffer(buf, 2048);
     }
 
+    snd_pcm_drain(pcm_handle);
     snd_pcm_close(pcm_handle);
     pcm_handle = NULL;
 
@@ -106,9 +112,6 @@ static OutputPluginInitStatus
 alsaplug_init(void)
 {
     gint card = -1;
-
-    pcm_mutex = g_mutex_new();
-    pcm_cond = g_cond_new();
 
     if (snd_card_next(&card) != 0)
         return OUTPUT_PLUGIN_INIT_NO_DEVICES;
@@ -163,6 +166,7 @@ alsaplug_close_audio(void)
     pcm_going = FALSE;
 
     g_thread_join(audio_thread);
+    audio_thread = NULL;
 
     wr_total = 0;
     wr_hwframes = 0;
@@ -226,7 +230,7 @@ alsaplug_flush(gint time)
 static gint
 alsaplug_buffer_playing(void)
 {
-    return pcm_going;
+    return alsaplug_ringbuffer_used(&pcm_ringbuf) != 0;
 }
 
 /********************************************************************************
