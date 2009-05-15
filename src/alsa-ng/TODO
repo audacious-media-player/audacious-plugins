@@ -11,3 +11,17 @@ The following things would be nice:
   majorly, I want to be able to just choose a soundcard and have it set up the mixer
   the right way on it's own. This is 2009, and this should be possible.
 
+Things that won't be reimplemented:
+
+- support for custom period sizes and buffer sizes. we want to use the ALSA defaults
+  since they provide the optimal values for each card. this means that specifying
+  period/buffer sizes is retarded.
+
+Notable differences between the old ALSA plugin and the new one:
+
+- tickless design:
+  The old ALSA plugin basically did a lot of polling. This does not, instead using
+  an event-driven tickless design using conditionals.
+
+- uses ALSA "safe" API subset:
+  Plugin should work correctly with all userspace plugins.
