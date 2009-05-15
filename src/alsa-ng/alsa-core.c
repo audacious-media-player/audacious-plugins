@@ -29,8 +29,10 @@ static gint bps;
 static gsize wr_total = 0;
 static gsize wr_hwframes = 0;
 
-static gint flush_request, pause_request, paused;
-static gboolean can_pause;
+static gint flush_request, paused;
+
+static GMutex *pcm_pause_mutex, *pcm_state_mutex;
+static GCond *pcm_pause_cond, *pcm_state_cond;
 
 /********************************************************************************
  * ALSA Mixer setting functions.                                                *
@@ -80,23 +82,24 @@ alsaplug_loop(gpointer unused)
             snd_pcm_prepare(pcm_handle);
             wr_total = flush_request * (bps / 1000);
             flush_request = -1;
-        }
 
-        if (pause_request != paused)
-        {
-            snd_pcm_pause(pcm_handle, pause_request);
-            paused = pause_request;
-            continue;
+            g_cond_broadcast(pcm_state_cond);
         }
 
         if (alsaplug_ringbuffer_read(&pcm_ringbuf, buf, 2048) == -1)
         {
             /* less than 2048 bytes to go...? */
             gint remain = alsaplug_ringbuffer_used(&pcm_ringbuf);
-            if (remain <= 2048)
+            if (remain <= 2048 && remain > 0)
             {
                 alsaplug_ringbuffer_read(&pcm_ringbuf, buf, remain);
                 alsaplug_write_buffer(buf, remain);
+            }
+            else
+            {
+                g_mutex_lock(pcm_state_mutex);
+                g_cond_wait(pcm_state_cond, pcm_state_mutex);
+                g_mutex_unlock(pcm_state_mutex);
             }
 
             continue;
@@ -108,6 +111,7 @@ alsaplug_loop(gpointer unused)
     snd_pcm_drain(pcm_handle);
     snd_pcm_close(pcm_handle);
     pcm_handle = NULL;
+    alsaplug_ringbuffer_destroy(&pcm_ringbuf);
 
     return NULL;
 }
@@ -120,6 +124,12 @@ static OutputPluginInitStatus
 alsaplug_init(void)
 {
     gint card = -1;
+
+    pcm_pause_mutex = g_mutex_new();
+    pcm_pause_cond = g_cond_new();
+
+    pcm_state_mutex = g_mutex_new();
+    pcm_state_cond = g_cond_new();
 
     if (snd_card_next(&card) != 0)
         return OUTPUT_PLUGIN_INIT_NO_DEVICES;
@@ -157,7 +167,6 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
         return -1;
     }
 
-    can_pause = snd_pcm_hw_params_can_pause(hwparams);
     bitwidth = snd_pcm_format_physical_width(afmt);
     bps = (rate * bitwidth * nch) >> 3;
     ringbuf_size = aud_cfg->output_buffer_size * bps / 1000;
@@ -172,7 +181,10 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
 static void
 alsaplug_close_audio(void)
 {
+    g_mutex_lock(pcm_state_mutex);
     pcm_going = FALSE;
+    g_mutex_unlock(pcm_state_mutex);
+    g_cond_broadcast(pcm_state_cond);
 
     g_thread_join(audio_thread);
     audio_thread = NULL;
@@ -180,14 +192,21 @@ alsaplug_close_audio(void)
     wr_total = 0;
     wr_hwframes = 0;
     bps = 0;
-    alsaplug_ringbuffer_destroy(&pcm_ringbuf);
 }
 
 static void
 alsaplug_write_audio(gpointer data, gint length)
 {
+    if (paused)
+    {
+        g_mutex_lock(pcm_pause_mutex);
+        g_cond_wait(pcm_pause_cond, pcm_pause_mutex);
+        g_mutex_unlock(pcm_pause_mutex);
+    }
+
     wr_total += length;
     alsaplug_ringbuffer_write(&pcm_ringbuf, data, length);
+    g_cond_broadcast(pcm_state_cond);
 }
 
 static gint
@@ -231,9 +250,16 @@ alsaplug_buffer_free(void)
 static void
 alsaplug_flush(gint time)
 {
+    /* make the request... */
+    g_mutex_lock(pcm_state_mutex);
     flush_request = time;
-    while (flush_request != -1 && pcm_going)
-        g_usleep(10000);
+    g_mutex_unlock(pcm_state_mutex);
+    g_cond_broadcast(pcm_state_cond);
+
+    /* ...then wait for the transaction to complete. */
+    g_mutex_lock(pcm_state_mutex);
+    g_cond_wait(pcm_state_cond, pcm_state_mutex);
+    g_mutex_unlock(pcm_state_mutex);
 }
 
 static gint
@@ -245,7 +271,10 @@ alsaplug_buffer_playing(void)
 static void
 alsaplug_pause(short p)
 {
-    pause_request = p;
+    g_mutex_lock(pcm_pause_mutex);
+    paused = p;
+    g_mutex_unlock(pcm_pause_mutex);
+    g_cond_broadcast(pcm_pause_cond);
 }
 
 /********************************************************************************
