@@ -111,6 +111,7 @@ alsaplug_loop(gpointer unused)
     snd_pcm_drain(pcm_handle);
     snd_pcm_close(pcm_handle);
     pcm_handle = NULL;
+    audio_thread = NULL;
     alsaplug_ringbuffer_destroy(&pcm_ringbuf);
 
     return NULL;
