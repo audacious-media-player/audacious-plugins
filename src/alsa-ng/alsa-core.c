@@ -250,7 +250,18 @@ alsaplug_written_time(void)
 static gint
 alsaplug_buffer_free(void)
 {
-    return alsaplug_ringbuffer_free(&pcm_ringbuf);
+    gint ret;
+
+    g_mutex_lock(pcm_state_mutex);
+
+    if (pcm_going == FALSE)
+        ret = 0;
+    else
+        ret = alsaplug_ringbuffer_free(&pcm_ringbuf);
+
+    g_mutex_unlock(pcm_state_mutex);
+
+    return ret;
 }
 
 static void
