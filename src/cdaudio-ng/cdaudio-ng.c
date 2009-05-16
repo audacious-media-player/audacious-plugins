@@ -56,6 +56,7 @@ static volatile gboolean	is_paused = FALSE;
 static gint			playing_track = -1;
 static dae_params_t		*pdae_params = NULL;
 static InputPlayback    	*pglobalinputplayback = NULL;
+static GMutex * mutex;
 
 #define N_MENUS 3
 static const int menus [N_MENUS] = {AUDACIOUS_MENU_MAIN,
@@ -328,6 +329,9 @@ static void cdaudio_init()
 
 	debug("cdaudio_init()\n");
 
+        mutex = g_mutex_new ();
+        g_mutex_lock (mutex);
+
 	cdng_cfg.use_dae = TRUE;
 	cdng_cfg.use_cdtext = TRUE;
 	cdng_cfg.use_cddb = TRUE;
@@ -347,7 +351,7 @@ static void cdaudio_init()
 	if ((db = aud_cfg_db_open()) == NULL) {
 		cdaudio_error("Failed to read configuration.\n");
 		cleanup_on_error();
-		return;
+                goto UNLOCK;
 	}
 
 	aud_cfg_db_get_bool(db, "CDDA", "use_dae", &cdng_cfg.use_dae);
@@ -375,7 +379,7 @@ static void cdaudio_init()
 	if (!cdio_init()) {
 		cdaudio_error("Failed to initialize cdio subsystem.\n");
 		cleanup_on_error();
-		return;
+                goto UNLOCK;
 	}
 
 	libcddb_init();
@@ -403,6 +407,9 @@ static void cdaudio_init()
 
 	aud_uri_set_plugin("cdda://", &inputplugin);
 	aud_hook_associate ("playlist load", check_playlist, 0);
+
+UNLOCK:
+    g_mutex_unlock (mutex);
 }
 
 static void cdaudio_about()
@@ -468,8 +475,10 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 
 	debug("cdaudio_play_file(\"%s\")\n", pinputplayback->filename);
 
+        g_mutex_lock (mutex);
+
         if (! check_disk ())
-            return;
+            goto UNLOCK;
 
 	pglobalinputplayback = pinputplayback;
 
@@ -478,7 +487,7 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 	if (trackno < firsttrackno || trackno > lasttrackno) {
 		cdaudio_error("Track #%d is out of range [%d..%d]\n", trackno, firsttrackno, lasttrackno);
 		cleanup_on_error();
-		return;
+                goto UNLOCK;
 	}
 
 	pinputplayback->playing = TRUE;
@@ -497,13 +506,13 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 
 		if (pdae_params != NULL) {
 			cdaudio_error("DAE playback seems to be already started.\n");
-			return;
+                        goto UNLOCK;
 		}
 
 		if (pinputplayback->output->open_audio(FMT_S16_LE, 44100, 2) == 0) {
 			cdaudio_error("Failed to open audio output.\n");
 			cleanup_on_error();
-			return;
+                        goto UNLOCK;
 		}
 
 		/*
@@ -517,7 +526,11 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 		pdae_params->currlsn = trackinfo[trackno].startlsn;
 		pdae_params->thread = g_thread_self();
 		pinputplayback->set_pb_ready(pinputplayback);
+
+                g_mutex_unlock (mutex);
+
 		dae_play_loop(pdae_params);
+                return;
 	}
 	else {
 		debug("not using digital audio extraction\n");
@@ -528,9 +541,12 @@ static void cdaudio_play_file(InputPlayback *pinputplayback)
 		if (cdio_audio_play_msf(pcdio, &startmsf, &endmsf) != DRIVER_OP_SUCCESS) {
 			cdaudio_error("Failed to play analog audio CD.\n");
 			cleanup_on_error();
-			return;
+                        goto UNLOCK;
 		}
 	}
+
+UNLOCK:
+    g_mutex_unlock (mutex);
 }
 
 static void cdaudio_stop(InputPlayback *pinputplayback)
@@ -590,13 +606,22 @@ static void cdaudio_seek(InputPlayback *pinputplayback, gint time)
 {
 	debug("cdaudio_seek(\"%s\", %d)\n", pinputplayback->filename, time);
 
-	if (playing_track == -1)
-		return;
+        g_mutex_lock (mutex);
 
-	if (cdng_cfg.use_dae) {
-		if (pdae_params != NULL) {
-			pdae_params->seektime = time * 1000;
-		}
+	if (playing_track == -1)
+	    goto UNLOCK;
+
+	if (cdng_cfg.use_dae)
+	{
+	    pdae_params->seektime = time * 1000;
+
+            do
+            {
+                g_mutex_unlock (mutex);
+                g_usleep (50000);
+                g_mutex_lock (mutex);
+            }
+            while (cdng_cfg.use_dae && pdae_params->seektime != -1);
 	}
 	else {
 		gint newstartlsn = trackinfo[playing_track].startlsn + time * 75;
@@ -607,9 +632,12 @@ static void cdaudio_seek(InputPlayback *pinputplayback, gint time)
 		if (cdio_audio_play_msf(pcdio, &startmsf, &endmsf) != DRIVER_OP_SUCCESS) {
 			cdaudio_error("Failed to play analog CD\n");
 			cleanup_on_error();
-			return;
+                        goto UNLOCK;
 		}
 	}
+
+UNLOCK:
+    g_mutex_unlock (mutex);
 }
 
 static gint cdaudio_get_time(InputPlayback *pinputplayback)
@@ -689,6 +717,8 @@ static void cdaudio_cleanup(void)
 
 	debug("cdaudio_cleanup()\n");
 
+        g_mutex_lock (mutex);
+
         for (count = 0; count < N_MENUS; count ++)
         {
             audacious_menu_plugin_item_remove (menus [count],
@@ -729,6 +759,8 @@ static void cdaudio_cleanup(void)
 	aud_cfg_db_set_bool(db, "CDDA", "debug", cdng_cfg.debug);
 	aud_cfg_db_close(db);
 
+        g_mutex_unlock (mutex);
+        g_mutex_free (mutex);
 }
 
 static void cdaudio_get_song_info(gchar *filename, gchar **title, gint *length)
