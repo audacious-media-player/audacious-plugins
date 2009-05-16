@@ -281,8 +281,8 @@ alsaplug_flush(gint time)
     /* make the request... */
     g_mutex_lock(pcm_state_mutex);
     flush_request = time;
-    g_mutex_unlock(pcm_state_mutex);
     g_cond_broadcast(pcm_state_cond);
+    g_mutex_unlock(pcm_state_mutex);
 
     /* ...then wait for the transaction to complete. */
     g_mutex_lock(pcm_state_mutex);
