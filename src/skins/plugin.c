@@ -104,6 +104,11 @@ gboolean skins_init(void) {
     if (config.playlist_visible)
        playlistwin_show (1);
 
+    if (audacious_drct_get_playing ())
+        ui_main_evlistener_playback_begin (0, 0);
+    if (audacious_drct_get_paused ())
+        ui_main_evlistener_playback_pause (0, 0);
+
     g_message("Entering Gtk+ main loop!");
     gtk_main();
 

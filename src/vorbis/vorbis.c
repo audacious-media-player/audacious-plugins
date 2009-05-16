@@ -119,7 +119,7 @@ DECLARE_PLUGIN(vorbis, NULL, NULL, vorbis_iplist, NULL, NULL, NULL, NULL, NULL);
 static OggVorbis_File vf;
 
 static GThread *thread;
-static volatile int seekneeded = -1;
+static volatile int seekneeded;
 static volatile char pause_flag;
 static int samplerate, channels;
 GMutex *vf_mutex;
@@ -291,8 +291,8 @@ vorbis_play_loop(gpointer arg)
      * alert us what section we're currently decoding in case we
      * need to change playback settings at a section boundary
      */
- 
-   
+
+
     g_mutex_lock(vf_mutex);
     if (ov_open_callbacks(datasource, &vf, NULL, 0, aud_vfs_is_streaming(fd->fd) ? vorbis_callbacks_stream : vorbis_callbacks) < 0) {
         vorbis_callbacks.close_func(datasource);
@@ -316,7 +316,7 @@ vorbis_play_loop(gpointer arg)
     title = vorbis_generate_title(&vf, filename);
     vorbis_update_replaygain(&rg_info);
     playback->set_replaygain_info(playback, &rg_info);
-    
+
     vi = ov_info(&vf, -1);
 
     samplerate = vi->rate;
@@ -331,8 +331,6 @@ vorbis_play_loop(gpointer arg)
         goto play_cleanup;
     }
 
-    seekneeded = -1;
-
     /*
      * Note that chaining changes things here; A vorbis file may
      * be a mix of different channels, bitrates and sample rates.
@@ -341,7 +339,7 @@ vorbis_play_loop(gpointer arg)
      */
 
     while (playback->playing) {
-       
+
         if (playback->eof) {
             g_usleep(20000);
             continue;
@@ -352,13 +350,13 @@ vorbis_play_loop(gpointer arg)
         if (pause_flag)
             do_pause (playback);
 
-        
+
         int current_section = last_section;
 
         g_mutex_lock(vf_mutex);
-        
+
         bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
-        
+
         if (bytes > 0)
             bytes = vorbis_interleave_buffer(pcm, bytes, channels, pcmout);
 
@@ -412,14 +410,8 @@ vorbis_play_loop(gpointer arg)
 
         playback->pass_audio(playback, FMT_FLOAT, channels, bytes, pcmout, &playback->playing);
 
-        if (!playback->playing)
-            goto stop_processing;
-
-        if (seekneeded != -1)
-            do_seek(playback);
-
         stop_processing:
-   
+
         if (current_section <= last_section) {
             /*
             * set total play time, bitrate, rate, and channels of
@@ -435,19 +427,19 @@ vorbis_play_loop(gpointer arg)
                 time = ov_time_total(&vf, -1) * 1000;
 
             g_mutex_unlock(vf_mutex);
-        
+
             playback->set_params(playback, title, time, br, samplerate, channels);
 
             timercount = playback->output->output_time();
 
             last_section = current_section;
-         
+
         }
     } /* main loop */
 
     if (!playback->error) {
-        /*this loop makes it not skip the last ~4 seconds, but the playback 
-         * timer isn't updated in this period, so it still needs a bit of work 
+        /*this loop makes it not skip the last ~4 seconds, but the playback
+         * timer isn't updated in this period, so it still needs a bit of work
          *
          * majeru
          */
@@ -481,6 +473,8 @@ vorbis_play(InputPlayback *playback)
     playback->playing = 1;
     playback->eof = 0;
     playback->error = FALSE;
+    seekneeded = -1;
+    pause_flag = 0;
 
     thread = g_thread_self();
     playback->set_pb_ready(playback);
@@ -527,14 +521,14 @@ vorbis_update_replaygain(ReplayGainInfo *rg_info)
     rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
     rg_info->album_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
-    
+
     rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
     rg_info->track_gain = rg_gain != NULL ? atof(rg_gain) : 0.0;
-    
+
     rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
     rg_info->album_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
-    
+
     rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
     if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
     rg_info->track_peak = rg_peak != NULL ? atof(rg_peak) : 0.0;
@@ -608,7 +602,7 @@ get_aud_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, gchar *filename)
     }
     else
         aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "Ogg Vorbis");
-    
+
     aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "application/ogg");
 
     return tuple;
