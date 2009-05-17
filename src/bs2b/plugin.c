@@ -17,8 +17,8 @@
  */
 
 #include <audacious/plugin.h>
-#include <bs2b/bs2b.h>
-#include <bs2b/bs2bversion.h>
+#include <bs2b.h>
+#include <bs2bversion.h>
 #define AB_EFFECT_LEVEL BS2B_DEFAULT_CLEVEL
 
 static t_bs2bdp bs2b = NULL;
