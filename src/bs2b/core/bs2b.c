@@ -222,7 +222,7 @@ t_bs2bdp bs2b_open( void )
 {
 	t_bs2bdp bs2bdp = 0;
 
-	if( bs2bdp = malloc( sizeof( t_bs2bd ) ) )
+	if( ( bs2bdp = malloc( sizeof( t_bs2bd ) ) ) )
 	{
 		memset( bs2bdp, 0, sizeof( t_bs2bd ) );
 		bs2b_set_srate( bs2bdp, BS2B_DEFAULT_SRATE );
