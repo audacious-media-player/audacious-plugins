@@ -1734,6 +1734,7 @@ echo "  Echo/Surround:                          yes"
 echo "  SndStretch:                             yes"
 echo "  Crystalizer:                            yes"
 echo "  Icecast effect plugin (icecast):        $have_shout"
+echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo
 echo "  Visualization"
 echo "  -------------"
