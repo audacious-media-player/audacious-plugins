@@ -125,7 +125,7 @@ dnl These plugins are always built.
 
 INPUT_PLUGINS="tonegen console sexypsf psf2 xsf cue alac metronom vtx"
 OUTPUT_PLUGINS="crossfade null"
-EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin bs2b"
+EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
 GENERAL_PLUGINS="song_change alarm skins vfstrace"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
@@ -1556,6 +1556,25 @@ AC_SUBST(FILEWRITER_LIBS)
 
 if test "x$have_shout" = "xyes"; then
    OUTPUT_PLUGINS="$OUTPUT_PLUGINS icecast"
+fi
+
+dnl *** BS2B effect plugin
+
+AC_ARG_ENABLE(bs2b,
+    [  --disable-bs2b          disable BS2B effect plugin (default=enabled)],
+    [enable_bs2b=$enableval],
+    [enable_bs2b=yes]
+)
+
+if test "x$enable_bs2b" = "xyes"; then
+    PKG_CHECK_MODULES([BS2B], [libbs2b >= 3.0.0], [have_bs2b=yes], [have_bs2b=no])
+else
+    AC_MSG_RESULT([*** BS2B effect plugin disabled per user request ***])
+    have_bs2b=no
+fi
+
+if test "x$have_bs2b" = "xyes"; then
+	EFFECT_PLUGINS="$EFFECT_PLUGINS bs2b"
 fi
 
 dnl *** End of all plugin checks ***
