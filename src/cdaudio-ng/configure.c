@@ -32,8 +32,7 @@ static GtkWidget *configwindow = NULL,
                  *usedevicecheckbutton = NULL,
                  *buttonbox = NULL,
                  *limitspinbutton = NULL,
-                 *deviceentry = NULL,
-                 *debugcheckbutton = NULL;
+                 *deviceentry = NULL;
 
 
 static void configure_values_to_gui(void)
@@ -66,8 +65,6 @@ static void configure_values_to_gui(void)
 
 	gtk_widget_set_sensitive(deviceentry, strlen(cdng_cfg.device) > 0);
 	gtk_entry_set_text(GTK_ENTRY(deviceentry), cdng_cfg.device);
-
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(debugcheckbutton), cdng_cfg.debug);
 }
 
 
@@ -91,8 +88,6 @@ static void configure_gui_to_values(void)
 		pstrcpy(&cdng_cfg.device, gtk_entry_get_text(GTK_ENTRY(deviceentry)));
 	else
 		pstrcpy(&cdng_cfg.device, "");
-
-	cdng_cfg.debug = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debugcheckbutton));
 }
 
 
@@ -137,15 +132,6 @@ static void checkbutton_toggled(GtkWidget *widget, gpointer data)
 
 	gtk_widget_set_sensitive(deviceentry,
 		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(usedevicecheckbutton)));
-
-	/*
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cddbhttpcheckbutton)) && (widget CDDEBUG("use_dae = %d, limitspeed = %d, use_cdtext = %d, use_cddb = %d, cddbserver = \"%s\", cddbport = %d, cddbhttp = %d, device = \"%s\", debug = %d\n",
-	cdng_cfg.use_dae, cdng_cfg.limitspeed, cdng_cfg.use_cdtext, cdng_cfg.use_cddb,
-	cdng_cfg.cddb_server, cdng_cfg.cddb_port, cdng_cfg.cddb_http, cdng_cfg.device, cdng_cfg.debug);== cddbhttpcheckbutton))
-		gtk_entry_set_text(GTK_ENTRY(cddbportentry), _("80"));
-	else
-		gtk_entry_set_text(GTK_ENTRY(cddbportentry), _("8880"));
-	*/
 }
 
 
@@ -231,11 +217,6 @@ void configure_create_gui()
 	deviceentry = gtk_entry_new();
 	gtk_table_attach_defaults(GTK_TABLE(misctable), deviceentry, 1, 2, 0, 1);
 
-	debugcheckbutton = gtk_check_button_new_with_label(_("Print debug information"));
-	g_signal_connect(G_OBJECT(debugcheckbutton), "toggled", G_CALLBACK(checkbutton_toggled), NULL);
-	gtk_table_attach_defaults(GTK_TABLE(misctable), debugcheckbutton, 0, 1, 1, 2);
-
-
 	buttonbox = gtk_hbutton_box_new();
         gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonbox), GTK_BUTTONBOX_END);
         gtk_box_set_spacing(GTK_BOX(buttonbox), 10);
@@ -264,7 +245,6 @@ void configure_create_gui()
 	gtk_widget_show(cddbportlabel);
 	gtk_widget_show(usedevicecheckbutton);
 	gtk_widget_show(deviceentry);
-	gtk_widget_show(debugcheckbutton);
 
 	gtk_widget_show(daetable);
 	gtk_widget_show(daeframe);
