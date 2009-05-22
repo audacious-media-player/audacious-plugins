@@ -1059,14 +1059,39 @@ playlistwin_delete(GtkWidget * w, gpointer data)
     return TRUE;
 }
 
+/* Checks for numbers out of range, so caller does not need to. */
+/* Caller is responsible for calling playlistwin_update_list. */
+static void select_song (UiSkinnedPlaylist * skinned, int number)
+{
+    Playlist * playlist;
+    int length;
+
+    playlist = aud_playlist_get_active ();
+    length = aud_playlist_get_length (playlist);
+
+    if (number < 0)
+        number = 0;
+    else if (number >= length)
+        number = length - 1;
+
+    aud_playlist_select_all (playlist, 0);
+    aud_playlist_select_range (playlist, number, number, 1);
+
+    skinned->prev_min = -1;
+    skinned->prev_max = -1;
+    skinned->prev_selected = number;
+
+    if (number < skinned->first)
+        skinned->first = number;
+    else if (number > skinned->first + skinned->num_visible - 1)
+        skinned->first = number + 1 - skinned->num_visible;
+}
+
 static gboolean
 playlistwin_keypress_up_down_handler(UiSkinnedPlaylist * pl,
                                      gboolean up, guint state)
 {
     Playlist *playlist = aud_playlist_get_active();
-    if ((!(pl->prev_selected || pl->first) && up) ||
-       ((pl->prev_selected >= aud_playlist_get_length(playlist) - 1) && !up))
-         return FALSE;
 
     if ((state & GDK_MOD1_MASK) && (state & GDK_SHIFT_MASK))
         return FALSE;
@@ -1084,7 +1109,7 @@ playlistwin_keypress_up_down_handler(UiSkinnedPlaylist * pl,
             pl->prev_min = pl->prev_selected;
         }
         pl->prev_max += (up ? -1 : 1);
-        pl->prev_max =
+        pl->prev_selected = pl->prev_max =
             CLAMP(pl->prev_max, 0, aud_playlist_get_length(playlist) - 1);
 
         pl->first = MIN(pl->first, pl->prev_max);
@@ -1104,22 +1129,8 @@ playlistwin_keypress_up_down_handler(UiSkinnedPlaylist * pl,
             pl->first = pl->prev_max - pl->num_visible + 1;
         return TRUE;
     }
-    else if (up)
-        pl->prev_selected--;
-    else
-        pl->prev_selected++;
 
-    pl->prev_selected =
-        CLAMP(pl->prev_selected, 0, aud_playlist_get_length(playlist) - 1);
-
-    if (pl->prev_selected < pl->first)
-        pl->first--;
-    else if (pl->prev_selected >= (pl->first + pl->num_visible))
-        pl->first++;
-
-    aud_playlist_select_range(playlist, pl->prev_selected, pl->prev_selected, TRUE);
-    pl->prev_min = -1;
-
+    select_song (pl, pl->prev_selected + (up ? -1 : 1));
     return TRUE;
 }
 
@@ -1128,12 +1139,12 @@ playlistwin_keypress_up_down_handler(UiSkinnedPlaylist * pl,
 static gboolean
 playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
 {
-    g_return_val_if_fail(UI_SKINNED_IS_PLAYLIST(playlistwin_list), FALSE);
     Playlist *playlist = aud_playlist_get_active();
-
+    UiSkinnedPlaylist * skinned;
     guint keyval;
     gboolean refresh = FALSE;
-    guint cur_pos;
+
+    skinned = UI_SKINNED_PLAYLIST (playlistwin_list);
 
     if (config.playlist_shaded)
         return FALSE;
@@ -1149,20 +1160,19 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
                                                        event->state);
         break;
     case GDK_Page_Up:
-        playlistwin_scroll(-UI_SKINNED_PLAYLIST(playlistwin_list)->num_visible);
+        select_song (skinned, skinned->prev_selected - skinned->num_visible);
         refresh = TRUE;
         break;
     case GDK_Page_Down:
-        playlistwin_scroll(UI_SKINNED_PLAYLIST(playlistwin_list)->num_visible);
+        select_song (skinned, skinned->prev_selected + skinned->num_visible);
         refresh = TRUE;
         break;
     case GDK_Home:
-        UI_SKINNED_PLAYLIST(playlistwin_list)->first = 0;
+        select_song (skinned, 0);
         refresh = TRUE;
         break;
     case GDK_End:
-        UI_SKINNED_PLAYLIST(playlistwin_list)->first =
-            aud_playlist_get_length(playlist) - UI_SKINNED_PLAYLIST(playlistwin_list)->num_visible;
+        select_song (skinned, aud_playlist_get_length (playlist) - 1);
         refresh = TRUE;
         break;
     case GDK_Return:
@@ -1212,10 +1222,6 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
     case GDK_KP_6:
         aud_playlist_next(playlist);
         break;
-
-    case GDK_Escape:
-        mainwin_minimize_cb();
-        break;
     case GDK_Tab:
         if (event->state & GDK_CONTROL_MASK) {
             if (config.player_visible)
@@ -1224,14 +1230,8 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
                 gtk_window_present(GTK_WINDOW(equalizerwin));
         }
         break;
-    case GDK_space:
-        cur_pos=aud_playlist_get_position(playlist);
-        UI_SKINNED_PLAYLIST(playlistwin_list)->first =
-            cur_pos - (UI_SKINNED_PLAYLIST(playlistwin_list)->num_visible >> 1);
-        refresh = TRUE;
-        break;
     default:
-        return FALSE;
+        return mainwin_keypress (0, event, 0);
     }
     if (refresh) {
 #if 0

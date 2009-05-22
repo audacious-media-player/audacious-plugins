@@ -179,6 +179,10 @@ void mainwin_ewmh_activate(void);
 
 void mainwin_show_visibility_warning(void);
 
+/* widget should be null if called manually. */
+gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
+ void * unused);
+
 /* FIXME: placed here for now */
 void playback_get_sample_params(gint * bitrate,
                                 gint * frequency,

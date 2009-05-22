@@ -794,10 +794,9 @@ mainwin_mouse_button_press(GtkWidget * widget,
     return FALSE;
 }
 
-static gboolean
-mainwin_keypress(GtkWidget * grab_widget,
-                 GdkEventKey * event,
-                 gpointer data)
+/* widget should be null if called manually. */
+gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
+ void * unused)
 {
     Playlist *playlist = aud_playlist_get_active();
 
