@@ -28,17 +28,11 @@
 
 #include "crossfade.h"
 #include "cfgutil.h"
-#include "format.h"
-#include "convert.h"
 
 #include "configure.h"
 
 #include "interface-2.0.h"
 #include "support-2.0.h"
-
-#ifdef HAVE_LIBFFTW
-#  include "fft.h"
-#endif
 
 #include <stdio.h>
 #include <string.h>
@@ -112,6 +106,7 @@ static gint open_output();
 static void buffer_reset(buffer_t *buf, config_t *cfg);
 static void *buffer_thread_f(void *arg);
 static void sync_output();
+static gint calc_bitrate();
 
 /* special XMMS symbols (dynamically looked up, see xfade_init) */
 static gboolean *xmms_playlist_get_info_going = NULL;   /* XMMS */
@@ -155,7 +150,6 @@ static gboolean eop;		/* TRUE: wait until buffer is empty then sync() */
 
 static plugin_config_t the_op_config = DEFAULT_OP_CONFIG;
        OutputPlugin          *the_op = NULL;
-       gint                 the_rate = 44100;
 
 static gboolean input_playing = FALSE;
 
@@ -210,7 +204,6 @@ static struct timeval last_write;
 static gchar *last_filename = NULL;
 
 static format_t  in_format;
-static format_t out_format;
 
 static buffer_t            the_buffer;
        buffer_t *buffer = &the_buffer;
@@ -218,17 +211,11 @@ static buffer_t            the_buffer;
 static THREAD buffer_thread;
        MUTEX  buffer_mutex = MUTEX_INITIALIZER;
 
-static convert_context_t convert_context;
-#ifdef HAVE_LIBFFTW
-static fft_context_t fft_context;
-#endif
-
 static config_t     the_config;
        config_t        *config = &the_config;
        config_t config_default = CONFIG_DEFAULT;
 
 static fade_config_t *fade_config = NULL;
-
 
 /* this is the entry point for XMMS */
 OutputPlugin *
@@ -310,7 +297,7 @@ find_output()
 
 static gint
 open_output()
-{
+{	
 	/* sanity check */
 	if (output_opened)
 		DEBUG(("[crossfade] open_output: WARNING: output_opened=TRUE!\n"));
@@ -343,14 +330,8 @@ open_output()
 
 	DEBUG(("\n"));
 
-	/* setup sample rate (note that OUTPUT_RATE is #defined as the_rate) */
-	//the_rate = config->output_rate;
-
-	/* setup out_format. use host byte order for easy math */
-	setup_format(FMT_S16_NE, OUTPUT_RATE, OUTPUT_NCH, &out_format);
-
 	/* open plugin */
-	if (!the_op->open_audio(out_format.fmt, out_format.rate, out_format.nch))
+	if (!the_op->open_audio(in_format.fmt, in_format.rate, in_format.nch))
 	{
 		DEBUG(("[crossfade] open_output: open_audio() failed!\n"));
 		the_op = NULL;
@@ -375,7 +356,7 @@ open_output()
 	       B2MS(buffer->preload_size),
 	       B2MS(buffer->sync_size),
 	       B2MS(buffer->size),
-	       OUTPUT_RATE));
+	       in_format.rate));
 
 	/* allocate buffer */
 	if (!(buffer->data = g_malloc0(buffer->size)))
@@ -423,12 +404,6 @@ xfade_init()
 
 	/* check for realtime priority, it needs some special attention */
 	realtime = xfplayer_check_realtime_priority();
-
-	/* init contexts */
-	convert_init(&convert_context);
-#ifdef HAVE_LIBFFTW
-	fft_init(&fft_context);
-#endif
 
 	/* reset */
 	stopped = FALSE;
@@ -845,6 +820,12 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 
 	struct timeval tv;
 	glong dt;
+	
+	in_format.fmt = FMT_S16_NE;
+	in_format.rate = rate;
+	in_format.nch = nch;
+	in_format.is_8bit = (in_format.fmt == FMT_U8 || in_format.fmt == FMT_S8);
+	in_format.bps = calc_bitrate(in_format.fmt, in_format.rate, in_format.nch);	
 
 	DEBUG(("[crossfade]\n"));
 	DEBUG(("[crossfade] open_audio: pid=%d\n", (int) getpid()));
@@ -961,14 +942,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 	else
 		dt = 0;
 
-	DEBUG(("[crossfade] open_audio: fmt=%s rate=%d nch=%d dt=%ld ms\n", format_name(fmt), rate, nch, dt));
-
-	/* check format */
-	if (setup_format(fmt, rate, nch, &in_format) < 0)
-	{
-		DEBUG(("[crossfade] open_audio: format not supported!\n"));
-		return 0;
-	}
+	DEBUG(("[crossfade] open_audio: fmt=%d rate=%d nch=%d dt=%ld ms\n", fmt, rate, nch, dt));
 
 	/* (re)open the device if necessary */
 	if (!output_opened)
@@ -1084,7 +1058,6 @@ xfade_write_audio(void *ptr, int length)
 {
 	gint free;
 	gint ofs = 0;
-	format_t format;
 
 #ifdef DEBUG_HARDCORE
 	DEBUG(("[crossfade] write_audio: ptr=0x%08lx, length=%d\n", (long) ptr, length));
@@ -1102,10 +1075,6 @@ xfade_write_audio(void *ptr, int length)
 
 	/* update input accumulator (using input format size) */
 	streampos += length;
-
-	/* convert sample format (signed-16bit-ne 44100hz stereo) */
-	format_copy(&format, &in_format);
-	length = convert_flow(&convert_context, (gpointer *) &ptr, length, &format);
 
 	/* lock buffer */
 	MUTEX_LOCK(&buffer_mutex);
@@ -1171,7 +1140,7 @@ xfade_write_audio(void *ptr, int length)
 			       B2MS(buffer->gap_killed), B2MS(buffer->gap_len)));
 
 			/* fix streampos */
-			streampos -= (gint64) buffer->gap_killed * in_format.bps / out_format.bps;
+			streampos -= (gint64) buffer->gap_killed;
 		}
 	}
 
@@ -1691,10 +1660,6 @@ buffer_thread_f(void *arg)
 				if (the_op_config.max_write_enable && (blen > the_op_config.max_write_len))
 					blen = the_op_config.max_write_len;
 
-#ifdef HAVE_LIBFFTW
-				/* fft playground */
-				fft_flow(&fft_context, (gpointer) data, blen);
-#endif
 				/* finally, write data */
 				the_op->write_audio(data, blen);
 
@@ -1756,7 +1721,7 @@ buffer_thread_f(void *arg)
 				if (the_op->close_audio)
 					the_op->close_audio();
 					
-				if (!the_op->open_audio(out_format.fmt, out_format.rate, out_format.nch))
+				if (!the_op->open_audio(in_format.fmt, in_format.rate, in_format.nch))
 				{
 					DEBUG(("[crossfade] buffer_thread_f: reopening output plugin failed!\n"));
 					g_free(buffer->data);
@@ -2241,7 +2206,7 @@ xfade_buffer_free()
 
 	/* Convert to input format size. For input rates > output rate this will
 	 * return less free space than actually is available, but we don't care. */
-	free /= (out_format.rate / (in_format.rate + 1)) + 1;
+	free /= 2;
 	if (in_format.is_8bit)
 		free /= 2;
 	if (in_format.nch == 1)
@@ -2267,11 +2232,13 @@ xfade_buffer_playing()
 	 *  2) the output plugin's buffer_playing() (this function) returns FALSE
 	 */
 
+
 	if (paused)
-		playing = TRUE;
+		playing = FALSE;
 	else
 		playing =
 			(is_http && (buffer->used > 0) && the_op->buffer_playing())
+			|| the_op->buffer_playing()
 			|| (buffer->reopen >= 0)
 			|| (buffer->silence > 0)
 			|| (buffer->silence_len > 0);
@@ -2345,4 +2312,15 @@ xfade_cleanup()
 	MUTEX_UNLOCK(&buffer_mutex);
 		
 	DEBUG(("[crossfade] cleanup: done\n"));
+}
+
+static gint
+calc_bitrate(gint fmt, gint rate, gint nch)
+{
+    gint bitrate = rate * nch;
+
+    if (!in_format.is_8bit)
+        bitrate *= 2;
+
+    return bitrate;
 }

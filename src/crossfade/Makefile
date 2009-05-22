@@ -3,10 +3,8 @@ PLUGIN = crossfade${PLUGIN_SUFFIX}
 SRCS = callbacks.c			\
        cfgutil.c			\
        configure.c			\
-       convert.c			\
        crossfade.c			\
        debug.c				\
-       format.c				\
        interface-2.0.c			\
        player.c				\
        support-2.0.c

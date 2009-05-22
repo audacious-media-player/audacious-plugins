@@ -29,7 +29,7 @@
 #if !defined(HAVE_GLIB_THREADS)
 #  include <pthread.h>
 #endif
-#include <glib.h>
+#  include <glib.h>
 
 #include <audacious/plugin.h>
 #include <audacious/playlist.h>
@@ -41,11 +41,7 @@
 
 #undef  VOLUME_NORMALIZER
 
-#define OUTPUT_RATE 44100 /*FIXME I know...*/
-#define OUTPUT_NCH  2
-#define OUTPUT_BPS (OUTPUT_RATE * OUTPUT_NCH * 2)
-
-#if defined(HAVE_LIBSAMPLERATE)
+#if defined(HAVE_SAMPLERATE)
 #  define MAX_RATE 192000
 #else
 #  define MAX_RATE 48000
@@ -306,14 +302,25 @@
   250                           /* sync_size_ms */			\
 }
 
-
 #define DEBUG(x)  { if (config->enable_debug) debug x; }
 #define PERROR(x) { if (config->enable_debug) perror(x); }
 
 #define WRAP(x,n) (((x)<0)?((n)-(x))%(n):((x)%(n)))
+
+typedef struct
+{
+	AFormat fmt;
+	gint rate;
+	gint nch;
+
+	gint bps;		/* format is valid if (bps > 0) */
+	gboolean is_8bit;
+}
+format_t;
+
+#define OUTPUT_BPS (in_format.rate * in_format.nch * 2)
 #define B2MS(x)   ((gint)((gint64)(x)*1000/OUTPUT_BPS))
 #define MS2B(x)   ((gint)((gint64)(x)*OUTPUT_BPS/1000))
-
 
 /* get plugin info (imported by XMMS) */
 OutputPlugin *get_oplugin_info();
