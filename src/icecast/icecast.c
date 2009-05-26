@@ -64,8 +64,8 @@ static unsigned int streamformat_shout[] =
 #endif
 };
 
-static FileWriter plugin;
-static FileWriter plugin_new;
+static FileWriter * plugin;
+static FileWriter * plugin_new;
 static uint8_t *outputbuffer = NULL;
 static guint outputlength = 0;
 static gint buffersize;
@@ -154,11 +154,11 @@ static void set_plugin(void)
 
 #ifdef FILEWRITER_MP3
     if (streamformat == MP3)
-        plugin_new = mp3_plugin;
+        plugin_new = &mp3_plugin;
 #endif
 #ifdef FILEWRITER_VORBIS
     if (streamformat == VORBIS)
-        plugin_new = vorbis_plugin;
+        plugin_new = &vorbis_plugin;
 #endif
 }
 
@@ -200,8 +200,8 @@ static OutputPluginInitStatus ice_init(void)
 
     set_plugin();
     plugin = plugin_new;
-    if (plugin.init)
-        plugin.init(&ice_write_output);
+    if (plugin->init)
+        plugin->init(&ice_write_output);
 
     return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 }
@@ -379,9 +379,9 @@ static gint ice_open(AFormat fmt, gint rate, gint nch)
         }
     }
 
-    convert_init(fmt, plugin.format_required, nch);
+    convert_init(fmt, plugin->format_required, nch);
 
-    rv = (plugin.open)();
+    rv = (plugin->open)();
 
     return rv;
 }
@@ -392,7 +392,7 @@ static void ice_write(void *ptr, gint length)
 
     len = convert_process(ptr, length);
 
-    plugin.write(convert_output, length);
+    plugin->write(convert_output, length);
 }
 
 static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, gint nch)
@@ -409,7 +409,7 @@ static int ice_mod_samples(gpointer * d, gint length, AFormat afmt, gint srate, 
         int len;
         ep_playing = TRUE;
         len = convert_process(*d, length);
-        plugin.write(convert_output, length);
+        plugin->write(convert_output, length);
         ice_tid = g_timeout_add_seconds(ice_close_timeout, ice_real_close, NULL);            
     }
     return length;
@@ -447,7 +447,7 @@ static gint ice_write_output(void *ptr, gint length)
 
 static gboolean ice_real_close(gpointer data)
 {
-    plugin.close();
+    plugin->close();
     convert_free();
 
     if (shout)
@@ -474,7 +474,7 @@ static void ice_flush(gint time)
     if (time < 0)
         return;
 
-    plugin.flush();
+    plugin->flush();
     ice_open(input.format, input.frequency, input.channels);
 
     offset = time;
@@ -487,7 +487,7 @@ static void ice_pause(short p)
 
 static gint ice_free(void)
 {
-    return paused ? 0 : plugin.free();
+    return paused ? 0 : plugin->free();
 }
 
 static gint ice_playing(void)
@@ -497,7 +497,7 @@ static gint ice_playing(void)
 
 static gint ice_get_written_time(void)
 {
-    return plugin.get_written_time();
+    return plugin->get_written_time();
 }
 
 static gint ice_get_output_time(void)
@@ -582,16 +582,16 @@ static void streamformat_cb(GtkWidget *combo, gpointer data)
 {
     streamformat = gtk_combo_box_get_active(GTK_COMBO_BOX(streamformat_combo));
     set_plugin();
-    if (plugin_new.init)
-        plugin_new.init(&ice_write_output);
+    if (plugin_new->init)
+        plugin_new->init(&ice_write_output);
 
-    gtk_widget_set_sensitive(plugin_button, plugin_new.configure != NULL);
+    gtk_widget_set_sensitive(plugin_button, plugin_new->configure != NULL);
 }
 
 static void plugin_configure_cb(GtkWidget *button, gpointer data)
 {
-    if (plugin_new.configure)
-        plugin_new.configure();
+    if (plugin_new->configure)
+        plugin_new->configure();
 }
 
 static void configure_destroy(void)
@@ -643,7 +643,7 @@ static void ice_configure(void)
         g_signal_connect(G_OBJECT(streamformat_combo), "changed", G_CALLBACK(streamformat_cb), NULL);
 
         plugin_button = gtk_button_new_with_label(_("Configure"));
-        gtk_widget_set_sensitive(plugin_button, plugin_new.configure != NULL);
+        gtk_widget_set_sensitive(plugin_button, plugin_new->configure != NULL);
         g_signal_connect(G_OBJECT(plugin_button), "clicked", G_CALLBACK(plugin_configure_cb), NULL);
         gtk_box_pack_end(GTK_BOX(hbox), plugin_button, FALSE, FALSE, 0);
 
