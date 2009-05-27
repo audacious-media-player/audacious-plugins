@@ -1477,6 +1477,11 @@ selection_received(GtkWidget * widget,
         aud_playlist_add_url(aud_playlist_get_active(), (gchar *) selection_data->data);
 }
 
+static void size_allocate (GtkWidget * widget, GtkAllocation * allocation)
+{
+    playlistwin_resize (allocation->width, allocation->height);
+}
+
 static void
 playlistwin_create_window(void)
 {
@@ -1540,6 +1545,9 @@ playlistwin_create_window(void)
                      G_CALLBACK(playlistwin_keypress), NULL);
     g_signal_connect(playlistwin, "selection_received",
                      G_CALLBACK(selection_received), NULL);
+
+    g_signal_connect (playlistwin, "size-allocate", G_CALLBACK (size_allocate),
+     0);
 }
 
 void

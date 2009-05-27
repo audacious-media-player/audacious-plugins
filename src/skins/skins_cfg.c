@@ -20,6 +20,7 @@
 
 
 #include "skins_cfg.h"
+#include "ui_dock.h"
 #include "ui_skin.h"
 #include "ui_vis.h"
 #include "ui_main.h"
@@ -316,9 +317,9 @@ bitmap_fonts_cb()
 static void
 show_wm_decorations_cb()
 {
-    gtk_window_set_decorated(GTK_WINDOW(mainwin), config.show_wm_decorations);
-    gtk_window_set_decorated(GTK_WINDOW(playlistwin), config.show_wm_decorations);
-    gtk_window_set_decorated(GTK_WINDOW(equalizerwin), config.show_wm_decorations);
+    dock_window_set_decorated (mainwin);
+    dock_window_set_decorated (playlistwin);
+    dock_window_set_decorated (equalizerwin);
 }
 
 static PreferencesWidget appearance_misc_widgets[] = {
