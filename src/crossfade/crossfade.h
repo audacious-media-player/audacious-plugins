@@ -110,8 +110,8 @@
 #define FC_OFFSET_LOCK_OUT 2
 #define FC_OFFSET_CUSTOM   3
 
-#define DEFAULT_OP_CONFIG_STRING     "OSS.so=0,1,2304,0; filewriter.so=1,0,2304,1"
-#define DEFAULT_OP_NAME              "ALSA.so"
+#define DEFAULT_OP_CONFIG_STRING     "OSS.so (#0)=0,1,2304,0; filewriter.so (#0)=1,0,2304,1"
+#define DEFAULT_OP_NAME              "ALSA.so (#0)"
 
 #define DEFAULT_OP_CONFIG			\
 { FALSE, FALSE, 2304, FALSE }
