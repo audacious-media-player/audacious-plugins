@@ -385,41 +385,17 @@ dock_is_moving(GtkWindow * w)
     return FALSE;
 }
 
-GList *
-dock_add_window(GList * list, GtkWindow * window)
+void dock_window_set_decorated (GtkWidget * widget)
 {
-    return g_list_append(list, window);
-}
-
-GList *
-dock_remove_window(GList * list, GtkWindow * window)
-{
-    return g_list_remove(list, window);
-}
-
-GList *
-dock_window_set_decorated(GList * list, GtkWindow * window,
-                          gboolean decorated)
-{
-    if (gtk_window_get_decorated(window) == decorated)
-        return list;
-
-    if (decorated)
-        list = dock_remove_window(list, window);
+    if (config.show_wm_decorations)
+        dock_window_list = g_list_remove (dock_window_list, widget);
     else
-        list = dock_add_window(list, window);
+        dock_window_list = g_list_append (dock_window_list, widget);
 
-    gtk_window_set_decorated(window, decorated);
-
-    return list;
+    gtk_window_set_decorated (GTK_WINDOW (widget), config.show_wm_decorations);
 }
 
 GList *
 get_dock_window_list() {
     return dock_window_list;
-}
-
-void
-set_dock_window_list(GList * list) {
-    dock_window_list = list;
 }

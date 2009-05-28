@@ -30,8 +30,6 @@
 #include <gtk/gtk.h>
 
 void dock_set_uposition(GtkWindow * widget, gint x, gint y);
-GList *dock_add_window(GList * window_list, GtkWindow * window);
-GList *dock_remove_window(GList * window_list, GtkWindow * window);
 void dock_move_press(GList * window_list, GtkWindow * w,
                      GdkEventButton * event, gboolean move_list);
 void dock_move_motion(GtkWindow * w, GdkEventMotion * event);
@@ -40,11 +38,9 @@ void dock_get_widget_pos(GtkWindow * w, gint * x, gint * y);
 gboolean dock_is_moving(GtkWindow * w);
 void dock_shade (GList * window_list, GtkWindow * widget, int new_height);
 
-GList *dock_window_set_decorated(GList * list, GtkWindow * window,
-                                 gboolean decorated);
+void dock_window_set_decorated (GtkWidget * widget);
 void dock_window_resize (GtkWindow * widget, int width, int height);
 
 GList *get_dock_window_list();
-void set_dock_window_list(GList * list);
 
 #endif
