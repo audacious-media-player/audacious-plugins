@@ -69,13 +69,6 @@ static void
 ui_skinned_window_map(GtkWidget *widget)
 {
     (* GTK_WIDGET_CLASS (parent)->map) (widget);
-
-    SkinnedWindow *window = SKINNED_WINDOW(widget);
-    if (window->type == WINDOW_MAIN)
-        gtk_widget_shape_combine_mask(widget, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
-    else if (window->type == WINDOW_EQ)
-        gtk_widget_shape_combine_mask(widget, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
-
     gtk_window_set_keep_above(GTK_WINDOW(widget), config.always_on_top);
 }
 
@@ -246,7 +239,6 @@ ui_skinned_window_new(const gchar *wmclass_name)
     dock_window_set_decorated (widget);
     gtk_widget_set_app_paintable(GTK_WIDGET(widget), TRUE);
     gdk_window_set_back_pixmap(widget->window, NULL, FALSE);
-    gtk_widget_shape_combine_mask(widget, NULL, 0, 0);
 
     if (!strcmp(wmclass_name, "player"))
         SKINNED_WINDOW(widget)->type = WINDOW_MAIN;

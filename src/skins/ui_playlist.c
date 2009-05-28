@@ -1504,7 +1504,7 @@ playlistwin_create_window(void)
     gtk_window_set_icon(GTK_WINDOW(playlistwin), icon);
     g_object_unref(icon);
 
-    if (config.playlist_x != -1 && config.save_window_position)
+    if (config.save_window_position)
         gtk_window_move(GTK_WINDOW(playlistwin),
                         config.playlist_x, config.playlist_y);
 
@@ -1564,7 +1564,6 @@ playlistwin_create(void)
 
 static void playlistwin_real_show (void)
 {
-    gtk_window_move(GTK_WINDOW(playlistwin), config.playlist_x, config.playlist_y);
     ui_skinned_button_set_inside(mainwin_pl, TRUE);
 
     playlistwin_set_toprow(0);
@@ -1577,6 +1576,10 @@ static void playlistwin_real_show (void)
 
 static void playlistwin_real_hide (void)
 {
+    if (config.save_window_position)
+        gtk_window_get_position ((GtkWindow *) playlistwin, & config.playlist_x,
+         & config.playlist_y);
+
     gtk_widget_hide(playlistwin);
     ui_skinned_button_set_inside(mainwin_pl, FALSE);
 

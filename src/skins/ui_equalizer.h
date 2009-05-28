@@ -42,6 +42,7 @@
 #define EQUALIZER_DEFAULT_DIR_PRESET "dir_default.preset"
 #define EQUALIZER_DEFAULT_PRESET_EXT "preset"
 
+void equalizerwin_set_shape (void);
 void equalizerwin_set_scaled(gboolean ds);
 void equalizerwin_set_shade_menu_cb(gboolean shaded);
 void draw_equalizer_window(gboolean force);

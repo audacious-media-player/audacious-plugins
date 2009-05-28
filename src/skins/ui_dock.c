@@ -224,22 +224,6 @@ static void move_skinned_window (SkinnedWindow * window, int x, int y)
 
     window->x = x;
     window->y = y;
-
-    switch (window->type)
-    {
-    case WINDOW_MAIN:
-        config.player_x = x;
-        config.player_y = y;
-        break;
-    case WINDOW_EQ:
-        config.equalizer_x = x;
-        config.equalizer_y = y;
-        break;
-    case WINDOW_PLAYLIST:
-        config.playlist_x = x;
-        config.playlist_y = y;
-        break;
-    }
 }
 
 static void
@@ -288,9 +272,11 @@ static void move_attached (GtkWindow * window, GList * * others, int offset) {
 void dock_shade (GList * window_list, GtkWindow * window, int new_height) {
   int x, y, width, height, x2, y2;
   GList * move, * others, * scan, * next;
+
+   gtk_window_get_size (window, & width, & height);
+
    if (! config.show_wm_decorations) {
       gtk_window_get_position (window, & x, & y);
-      gtk_window_get_size (window, & width, & height);
       others = g_list_copy (window_list);
       others = g_list_remove (others, window);
       move = 0;

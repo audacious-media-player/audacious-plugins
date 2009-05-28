@@ -168,6 +168,15 @@ mainwin_set_shade(gboolean shaded)
     gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , shaded );
 }
 
+void mainwin_set_shape (void)
+{
+    if (config.show_wm_decorations)
+        gtk_widget_shape_combine_mask (mainwin, 0, 0, 0);
+    else
+        gtk_widget_shape_combine_mask (mainwin, skin_get_mask (aud_active_skin,
+         config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN), 0, 0);
+}
+
 static void
 mainwin_set_shade_menu_cb(gboolean shaded)
 {
@@ -185,7 +194,7 @@ mainwin_set_shade_menu_cb(gboolean shaded)
     }
 
     mainwin_refresh_hints();
-    gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
+    mainwin_set_shape ();
 }
 
 static void
@@ -302,15 +311,6 @@ mainwin_shade_toggle(void)
     mainwin_set_shade(!config.player_shaded);
 }
 
-void
-mainwin_quit_cb(void)
-{
-    if (mainwin_timeout_id)
-        g_source_remove(mainwin_timeout_id);
-
-    audacious_drct_quit();
-}
-
 gboolean
 mainwin_vis_cb(GtkWidget *widget, GdkEventButton *event)
 {
@@ -333,13 +333,6 @@ static void show_main_menu (GdkEventButton * event, void * unused)
 {
     ui_manager_popup_menu_show ((GtkMenu *) mainwin_general_menu, event->x_root,
      event->y_root, event->button, event->time);
-}
-
-static void
-mainwin_destroy(GtkWidget * widget, gpointer data)
-{
-    aud_hook_dissociate ("show main menu", (HookFunction) show_main_menu);
-    mainwin_quit_cb();
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -1569,23 +1562,16 @@ static void mainwin_real_show (void)
     if (config.player_shaded)
         ui_vis_clear_data(mainwin_vis);
 
-    if (config.show_wm_decorations) {
-        if (config.player_x != -1 && config.save_window_position)
-            gtk_window_move(GTK_WINDOW(mainwin), config.player_x, config.player_y);
-
-        gtk_widget_show(mainwin);
-        return;
-    }
-
-    if (config.player_x != -1 && config.save_window_position)
-        gtk_window_move(GTK_WINDOW(mainwin), config.player_x, config.player_y);
-
     mainwin_refresh_hints();
     gtk_window_present(GTK_WINDOW(mainwin));
 }
 
 static void mainwin_real_hide (void)
 {
+    if (config.save_window_position)
+        gtk_window_get_position ((GtkWindow *) mainwin, & config.player_x,
+         & config.player_y);
+
     if (config.player_shaded)
         ui_svis_clear_data(mainwin_svis);
 
@@ -1630,6 +1616,10 @@ static void
 mainwin_set_scaled(gboolean scaled)
 {
     gint height;
+    GList * list;
+    SkinnedWindow * skinned;
+    GtkFixed * fixed;
+    GtkFixedChild * child;
 
     if (config.player_shaded)
         height = MAINWIN_SHADED_HEIGHT;
@@ -1639,15 +1629,25 @@ mainwin_set_scaled(gboolean scaled)
     dock_window_resize(GTK_WINDOW(mainwin), config.player_shaded ? MAINWIN_SHADED_WIDTH : aud_active_skin->properties.mainwin_width,
                        config.player_shaded ? MAINWIN_SHADED_HEIGHT : aud_active_skin->properties.mainwin_height);
 
-    GList *iter;
-    for (iter = GTK_FIXED (SKINNED_WINDOW(mainwin)->normal)->children; iter; iter = g_list_next (iter)) {
-        GtkFixedChild *child_data = (GtkFixedChild *) iter->data;
-        GtkWidget *child = child_data->widget;
-        g_signal_emit_by_name(child, "toggle-scaled");
+    skinned = (SkinnedWindow *) mainwin;
+    fixed = (GtkFixed *) skinned->normal;
+
+    for (list = fixed->children; list; list = list->next)
+    {
+        child = (GtkFixedChild *) list->data;
+        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
+    }
+
+    fixed = (GtkFixed *) skinned->shaded;
+
+    for (list = fixed->children; list; list = list->next)
+    {
+        child = (GtkFixedChild *) list->data;
+        g_signal_emit_by_name ((GObject *) child->widget, "toggle-scaled");
     }
 
     mainwin_refresh_hints();
-    gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
+    mainwin_set_shape ();
 }
 
 void
@@ -1736,7 +1736,7 @@ mainwin_general_menu_callback(gpointer data,
             action_jump_to_file();
             break;
         case MAINWIN_GENERAL_EXIT:
-            mainwin_quit_cb();
+            audacious_drct_quit ();
             break;
         case MAINWIN_GENERAL_SETAB:
             if (aud_playlist_get_current_length(playlist) != -1) {
@@ -2137,7 +2137,8 @@ mainwin_create_widgets(void)
     mainwin_close = ui_skinned_button_new();
     ui_skinned_push_button_setup(mainwin_close, SKINNED_WINDOW(mainwin)->normal,
                                  264, 3, 9, 9, 18, 0, 18, 9, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_close, "clicked", mainwin_quit_cb, NULL );
+    g_signal_connect ((GObject *) mainwin_close, "clicked", audacious_drct_quit,
+     0);
 
     mainwin_rew = ui_skinned_button_new();
     ui_skinned_push_button_setup(mainwin_rew, SKINNED_WINDOW(mainwin)->normal,
@@ -2273,7 +2274,8 @@ mainwin_create_widgets(void)
     mainwin_shaded_close = ui_skinned_button_new();
     ui_skinned_push_button_setup(mainwin_shaded_close, SKINNED_WINDOW(mainwin)->shaded,
                                  264, 3, 9, 9, 18, 0, 18, 9, SKIN_TITLEBAR);
-    g_signal_connect(mainwin_shaded_close, "clicked", mainwin_quit_cb, NULL );
+    g_signal_connect ((GObject *) mainwin_shaded_close, "clicked",
+     audacious_drct_quit, 0);
 
     mainwin_srew = ui_skinned_button_new();
     ui_skinned_small_button_setup(mainwin_srew, SKINNED_WINDOW(mainwin)->shaded, 169, 4, 8, 7);
@@ -2315,6 +2317,20 @@ mainwin_create_widgets(void)
     g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 }
 
+static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
+{
+    audacious_drct_quit ();
+    return 1;
+}
+
+static void destroy_cb (GtkObject * object, void * unused)
+{
+    if (mainwin_timeout_id)
+        g_source_remove (mainwin_timeout_id);
+
+    aud_hook_dissociate ("show main menu", (HookFunction) show_main_menu);
+}
+
 static void
 mainwin_create_window(void)
 {
@@ -2335,10 +2351,9 @@ mainwin_create_window(void)
 
     gtk_widget_set_size_request(mainwin, width, height);
 
-    if (config.player_x != -1 && config.save_window_position)
+    if (config.save_window_position)
         gtk_window_move(GTK_WINDOW(mainwin), config.player_x, config.player_y);
 
-    g_signal_connect(mainwin, "destroy", G_CALLBACK(mainwin_destroy), NULL);
     g_signal_connect(mainwin, "button_press_event",
                      G_CALLBACK(mainwin_mouse_button_press), NULL);
     g_signal_connect(mainwin, "scroll_event",
@@ -2350,6 +2365,10 @@ mainwin_create_window(void)
                      G_CALLBACK(mainwin_keypress), NULL);
 
     ui_main_evlistener_init();
+
+    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback) delete_cb,
+     0);
+    g_signal_connect ((GObject *) mainwin, "destroy", (GCallback) destroy_cb, 0);
 }
 
 void
@@ -2779,5 +2798,5 @@ action_preferences( void )
 void
 action_quit( void )
 {
-    mainwin_quit_cb();
+    audacious_drct_quit ();
 }

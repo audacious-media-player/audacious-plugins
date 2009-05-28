@@ -258,6 +258,19 @@ void skins_cfg_save() {
 
     int i;
 
+    if (config.save_window_position)
+    {
+        if (GTK_WIDGET_VISIBLE (mainwin))
+            gtk_window_get_position ((GtkWindow *) mainwin, & config.player_x,
+             & config.player_y);
+        if (GTK_WIDGET_VISIBLE (equalizerwin))
+            gtk_window_get_position ((GtkWindow *) equalizerwin,
+             & config.equalizer_x, & config.equalizer_y);
+        if (GTK_WIDGET_VISIBLE (playlistwin))
+            gtk_window_get_position ((GtkWindow *) playlistwin,
+             & config.playlist_x, & config.playlist_y);
+    }
+
     for (i = 0; i < ncfgsent; ++i) {
         if (skins_strents[i].se_wrt)
             aud_cfg_db_set_string(cfgfile, "skins",
@@ -320,6 +333,8 @@ show_wm_decorations_cb()
     dock_window_set_decorated (mainwin);
     dock_window_set_decorated (playlistwin);
     dock_window_set_decorated (equalizerwin);
+    mainwin_set_shape ();
+    equalizerwin_set_shape ();
 }
 
 static PreferencesWidget appearance_misc_widgets[] = {

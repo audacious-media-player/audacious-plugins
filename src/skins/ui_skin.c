@@ -163,10 +163,10 @@ skin_unlock(Skin * skin)
 }
 
 gboolean
-aud_active_skin_reload(void) 
+aud_active_skin_reload(void)
 {
     AUDDBG("\n");
-    return aud_active_skin_load(aud_active_skin->path); 
+    return aud_active_skin_load(aud_active_skin->path);
 }
 
 gboolean
@@ -298,7 +298,7 @@ skin_set_default_vis_color(Skin * skin)
  * I have rewritten this to take an array of possible targets,
  * once we find a matching target we now return, instead of loop
  * recursively. This allows for us to support many possible format
- * targets for our skinning engine than just the original winamp 
+ * targets for our skinning engine than just the original winamp
  * formats.
  *
  *    -- nenolod, 16 January 2006
@@ -310,7 +310,7 @@ skin_pixmap_locate(const gchar * dirname, gchar ** basenames)
     gint i;
 
     for (i = 0; basenames[i]; i++)
-    if (!(filename = find_path_recursively(dirname, basenames[i]))) 
+    if (!(filename = find_path_recursively(dirname, basenames[i])))
         g_free(filename);
     else
         return filename;
@@ -1399,7 +1399,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     guint i;
     gchar *filename;
     INIFile *inifile;
-    
+
     if(!skin) return FALSE;
     if(!path) return FALSE;
 
@@ -1571,8 +1571,8 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     if(archive) del_directory(skin_path);
     g_free(skin_path);
 
-    gtk_widget_shape_combine_mask(mainwin, skin_get_mask(aud_active_skin, SKIN_MASK_MAIN + config.player_shaded), 0, 0);
-    gtk_widget_shape_combine_mask(equalizerwin, skin_get_mask(aud_active_skin, SKIN_MASK_EQ + config.equalizer_shaded), 0, 0);
+    mainwin_set_shape ();
+    equalizerwin_set_shape ();
 
     return TRUE;
 }
@@ -1647,7 +1647,7 @@ skin_load(Skin * skin, const gchar * path)
 }
 
 gboolean
-skin_reload_forced(void) 
+skin_reload_forced(void)
 {
    gboolean error;
    AUDDBG("\n");
@@ -1805,7 +1805,7 @@ skin_get_eq_spline_colors(Skin * skin, guint32 colors[19])
     for (i = 0; i < 19; i++)
     {
         p = pixels + rowstride * (i + 294) + 115 * n_channels;
-        colors[i] = (p[0] << 16) | (p[1] << 8) | p[2]; 
+        colors[i] = (p[0] << 16) | (p[1] << 8) | p[2];
         /* should we really treat the Alpha channel? */
         /*if (n_channels == 4)
             colors[i] = (colors[i] << 8) | p[3];*/
@@ -1819,13 +1819,13 @@ skin_draw_playlistwin_frame_top(Skin * skin, GdkPixbuf * pix,
 {
     /* The title bar skin consists of 2 sets of 4 images, 1 set
      * for focused state and the other for unfocused. The 4 images
-     * are: 
+     * are:
      *
      * a. right corner (25,20)
      * b. left corner  (25,20)
      * c. tiler        (25,20)
      * d. title        (100,20)
-     * 
+     *
      * min allowed width = 100+25+25 = 150
      */
 
@@ -1884,7 +1884,7 @@ skin_draw_playlistwin_frame_bottom(Skin * skin, GdkPixbuf * pix,
      * b. visualization window (75,38)
      * c. right corner with play buttons (150,38)
      * d. frame tile (25,38)
-     * 
+     *
      * (min allowed width = 125+150+25=300
      */
 
@@ -1918,7 +1918,7 @@ skin_draw_playlistwin_frame_sides(Skin * skin, GdkPixbuf * pix,
                                   gint width, gint height, gboolean focus)
 {
     /* The side frames consist of 2 tile images. 1 for the left, 1 for
-     * the right. 
+     * the right.
      * a. left  (12,29)
      * b. right (19,29)
      */
@@ -1983,7 +1983,7 @@ skin_draw_mainwin_titlebar(Skin * skin, GdkPixbuf * pix,
      * shaded and the other for unshaded mode, giving a total of 4.
      * The images are exactly 275x14 pixels, aligned and arranged
      * vertically on each other in the pixmap in the following order:
-     * 
+     *
      * a) unshaded, focused      offset (27, 0)
      * b) unshaded, unfocused    offset (27, 15)
      * c) shaded, focused        offset (27, 29)

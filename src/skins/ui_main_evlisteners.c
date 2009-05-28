@@ -331,22 +331,6 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
         ui_vis_timeout_func(mainwin_vis, intern_vis_data);
 }
 
-static void
-ui_main_evlistener_config_save(gpointer hook_data, gpointer user_data)
-{
-    ConfigDb *db = (ConfigDb *) hook_data;
-
-    if (SKINNED_WINDOW(mainwin)->x != -1 &&
-        SKINNED_WINDOW(mainwin)->y != -1 )
-    {
-        aud_cfg_db_set_int(db, "skins", "player_x", SKINNED_WINDOW(mainwin)->x);
-        aud_cfg_db_set_int(db, "skins", "player_y", SKINNED_WINDOW(mainwin)->y);
-    }
-
-    aud_cfg_db_set_bool(db, "skins", "mainwin_use_bitmapfont",
-                    config.mainwin_use_bitmapfont);
-}
-
 void
 ui_main_evlistener_init(void)
 {
@@ -364,7 +348,6 @@ ui_main_evlistener_init(void)
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
     aud_hook_associate("visualization timeout", ui_main_evlistener_visualization_timeout, NULL);
-    aud_hook_associate("config save", ui_main_evlistener_config_save, NULL);
 
     aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
     aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
@@ -389,7 +372,6 @@ ui_main_evlistener_dissociate(void)
     aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
     aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
     aud_hook_dissociate("visualization timeout", ui_main_evlistener_visualization_timeout);
-    aud_hook_dissociate("config save", ui_main_evlistener_config_save);
 
     aud_hook_dissociate("playback audio error", (void *) mainwin_stop_pushed);
     aud_hook_dissociate("playback audio error", (void *) run_no_output_device_dialog);
