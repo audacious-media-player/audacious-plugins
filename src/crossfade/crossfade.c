@@ -90,7 +90,7 @@ xfade_op_private =
 		.written_time   = xfade_written_time,
 		.about          = xfade_about,
 		.configure      = xfade_configure,
-		.probe_priority = 0,
+		.probe_priority = 0
 	},
 	NULL
 };
@@ -815,19 +815,27 @@ album_match(gchar *old, gchar *new)
 static gint
 xfade_open_audio(AFormat fmt, int rate, int nch)
 {
-	gint pos;
+	gint pos, force_reopen = 0;
 	gchar *file, *title;
 
 	struct timeval tv;
 	glong dt;
 	
+	DEBUG(("[crossfade]\n"));
+	
 	in_format.fmt = FMT_S16_NE;
+	
+    if ((in_format.rate != rate && in_format.rate > 0) || (in_format.nch != nch && in_format.nch > 0))
+    {
+        DEBUG(("[crossfade] open_audio: format changed, reopen device forced\n"));
+        force_reopen = 1;
+    }
+
 	in_format.rate = rate;
 	in_format.nch = nch;
 	in_format.is_8bit = (in_format.fmt == FMT_U8 || in_format.fmt == FMT_S8);
-	in_format.bps = calc_bitrate(in_format.fmt, in_format.rate, in_format.nch);	
+	in_format.bps = calc_bitrate(in_format.fmt, in_format.rate, in_format.nch);
 
-	DEBUG(("[crossfade]\n"));
 	DEBUG(("[crossfade] open_audio: pid=%d\n", (int) getpid()));
 
 	/* sanity... don't do anything about it */
@@ -942,7 +950,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 	else
 		dt = 0;
 
-	DEBUG(("[crossfade] open_audio: fmt=%d rate=%d nch=%d dt=%ld ms\n", fmt, rate, nch, dt));
+	DEBUG(("[crossfade] open_audio: fmt=%d rate=%d nch=%d bps=%d dt=%ld ms\n", in_format.fmt, in_format.rate, in_format.nch, in_format.bps, dt));
 
 	/* (re)open the device if necessary */
 	if (!output_opened)
@@ -996,7 +1004,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 			xfade_apply_fade_config(fade_config);
 
 			/* also repopen device (if configured so in the plugin compat. options) */
-			if (the_op_config.force_reopen)
+			if (the_op_config.force_reopen || force_reopen)
 			{
 				buffer->reopen = 0;
 				buffer->reopen_sync = FALSE;
@@ -1032,7 +1040,7 @@ xfade_open_audio(AFormat fmt, int rate, int nch)
 
 			/* set reopen countdown. after buffer_thread_f has written
 			 * buffer->reopen bytes, it will close/reopen the output plugin. */
-			if (the_op_config.force_reopen && !(fade_config->config == FADE_CONFIG_START))
+			if ((the_op_config.force_reopen || force_reopen) && !(fade_config->config == FADE_CONFIG_START))
 			{
 				if (buffer->reopen >= 0)
 					DEBUG(("[crossfade] open_audio: XFADE: WARNING: reopen in progress (%d ms)\n",
