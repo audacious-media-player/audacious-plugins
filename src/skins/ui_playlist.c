@@ -1641,6 +1641,14 @@ void action_playlist_sort_by_title(void)
     playlistwin_update_list(playlist);
 }
 
+void action_playlist_sort_by_album(void)
+{
+    Playlist *playlist = aud_playlist_get_active();
+
+    aud_playlist_sort(playlist, PLAYLIST_SORT_ALBUM);
+    playlistwin_update_list(playlist);
+}
+
 void action_playlist_sort_by_artist(void)
 {
     Playlist *playlist = aud_playlist_get_active();
@@ -1694,6 +1702,14 @@ void action_playlist_sort_selected_by_title(void)
     Playlist *playlist = aud_playlist_get_active();
 
     aud_playlist_sort_selected(playlist, PLAYLIST_SORT_TITLE);
+    playlistwin_update_list(playlist);
+}
+
+void action_playlist_sort_selected_by_album(void)
+{
+    Playlist *playlist = aud_playlist_get_active();
+
+    aud_playlist_sort_selected(playlist, PLAYLIST_SORT_ALBUM);
     playlistwin_update_list(playlist);
 }
 
