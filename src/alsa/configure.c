@@ -50,7 +50,7 @@ static void configure_win_ok_cb(GtkWidget * w, gpointer data)
 	aud_cfg_db_set_int(cfgfile, ALSA_CFGID, "mixer_card", alsa_cfg.mixer_card);
 	aud_cfg_db_set_string(cfgfile,ALSA_CFGID,"mixer_device", alsa_cfg.mixer_device);
 	aud_cfg_db_close(cfgfile);
-	
+
 	/* Save volumes */
 	alsa_save_config();
 }
@@ -269,8 +269,9 @@ void alsa_configure(void)
 			   &configure_win);
 	gtk_window_set_title(GTK_WINDOW(configure_win),
 			     _("ALSA Driver configuration"));
-	gtk_window_set_policy(GTK_WINDOW(configure_win),
-			      FALSE, TRUE, FALSE);
+        gtk_window_set_type_hint ((GtkWindow *) configure_win,
+         GDK_WINDOW_TYPE_HINT_DIALOG);
+        gtk_window_set_resizable ((GtkWindow *) configure_win, 0);
 	gtk_container_border_width(GTK_CONTAINER(configure_win), 10);
 
 	vbox = gtk_vbox_new(FALSE, 10);
