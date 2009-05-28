@@ -140,6 +140,7 @@ static void start (void)
 
 static void restore (void)
 {
+#if 0
   mcs_handle_t *db;
   gint k, plugins= 0;
 
@@ -171,8 +172,10 @@ static void restore (void)
     g_free(section);
   }
 
-  state.initialised = TRUE;
   aud_cfg_db_close(db);
+#endif
+
+  state.initialised = TRUE;
 }
 
 static ladspa_plugin *get_plugin_by_id(const gchar *basename, long id)
@@ -188,7 +191,7 @@ static ladspa_plugin *get_plugin_by_id(const gchar *basename, long id)
     gchar *bn;
     plugin = (ladspa_plugin *) list->data;
 
-    bn = g_path_get_basename(instance->filename);
+    bn = g_path_get_basename(plugin->filename);
     if (plugin->unique_id == id && !g_ascii_strcasecmp(basename, bn)) {
       g_free(bn);
       return plugin;
@@ -282,7 +285,7 @@ static void stop (void)
     int port, ports= 0;
 
     bn = g_path_get_basename(instance->filename);
-    section = g_strdup_printf("ladspa_plugin:%s:%d", bn, plugins++);
+    section = g_strdup_printf("ladspa_plugin:%s:%ld", bn, instance->descriptor->UniqueID);
     g_free(bn);
 
     aud_cfg_db_set_int(db, section, "id", instance->descriptor->UniqueID);
