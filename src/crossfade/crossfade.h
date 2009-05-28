@@ -39,14 +39,6 @@
 
 #include "debug.h"
 
-#undef  VOLUME_NORMALIZER
-
-#if defined(HAVE_SAMPLERATE)
-#  define MAX_RATE 192000
-#else
-#  define MAX_RATE 48000
-#endif
-
 #define SYNC_OUTPUT_TIMEOUT 2000
 
 #define FADE_CONFIG_XFADE   0
