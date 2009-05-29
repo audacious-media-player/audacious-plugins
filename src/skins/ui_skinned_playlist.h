@@ -68,6 +68,8 @@ void ui_skinned_playlist_set_font(const gchar * font);
 void ui_skinned_playlist_move_up(UiSkinnedPlaylist *pl);
 void ui_skinned_playlist_move_down(UiSkinnedPlaylist *pl);
 gint ui_skinned_playlist_get_position(GtkWidget *widget, gint x, gint y);
+void ui_skinned_playlist_select (UiSkinnedPlaylist * skinned, int number);
+char ui_skinned_playlist_is_selected (UiSkinnedPlaylist * skinned, int number);
 
 #ifdef __cplusplus
 }

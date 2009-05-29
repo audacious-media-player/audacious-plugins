@@ -828,6 +828,41 @@ gint ui_skinned_playlist_get_position(GtkWidget *widget, gint x, gint y) {
     return ret;
 }
 
+void ui_skinned_playlist_select (UiSkinnedPlaylist * skinned, int number)
+{
+    Playlist * playlist;
+    int length;
+
+    playlist = aud_playlist_get_active ();
+    length = aud_playlist_get_length (playlist);
+
+    if (length < 1)
+        return;
+
+    if (number < 0)
+        number = 0;
+    else if (number > length - 1)
+        number = length - 1;
+
+    aud_playlist_select_all (playlist, 0);
+    aud_playlist_select_range (playlist, number, number, 1);
+
+    skinned->prev_selected = number;
+    skinned->prev_min = -1;
+    skinned->prev_max = -1;
+
+    if (number < skinned->first)
+        skinned->first = number;
+    else if (number > skinned->first + skinned->num_visible - 1)
+        skinned->first = number + 1 - skinned->num_visible;
+}
+
+char ui_skinned_playlist_is_selected (UiSkinnedPlaylist * skinned, int number)
+{
+    return number == skinned->prev_selected || (number >= skinned->prev_min &&
+     number <= skinned->prev_max);
+}
+
 static gboolean ui_skinned_playlist_button_press(GtkWidget *widget, GdkEventButton *event) {
     UiSkinnedPlaylist *pl = UI_SKINNED_PLAYLIST (widget);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(widget);
@@ -838,12 +873,8 @@ static gboolean ui_skinned_playlist_button_press(GtkWidget *widget, GdkEventButt
     nr = ui_skinned_playlist_get_position(widget, event->x, event->y);
 
     if (event->button == 3) {
-        if (nr != -1 && ! g_list_find (aud_playlist_get_selected (playlist),
-         GINT_TO_POINTER (nr)))
-        {
-            aud_playlist_select_all (playlist, 0);
-            aud_playlist_select_range (playlist, nr, nr, 1);
-        }
+        if (! ui_skinned_playlist_is_selected (pl, nr))
+            ui_skinned_playlist_select (pl, nr);
 
         ui_manager_popup_menu_show(GTK_MENU(playlistwin_popup_menu),
                                    event->x_root, event->y_root + 5,
