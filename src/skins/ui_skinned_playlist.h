@@ -69,6 +69,8 @@ void ui_skinned_playlist_move_up(UiSkinnedPlaylist *pl);
 void ui_skinned_playlist_move_down(UiSkinnedPlaylist *pl);
 gint ui_skinned_playlist_get_position(GtkWidget *widget, gint x, gint y);
 void ui_skinned_playlist_select (UiSkinnedPlaylist * skinned, int number);
+void ui_skinned_playlist_select_extend (UiSkinnedPlaylist * skinned, int number);
+void ui_skinned_playlist_select_reset (UiSkinnedPlaylist * skinned);
 char ui_skinned_playlist_is_selected (UiSkinnedPlaylist * skinned, int number);
 
 #ifdef __cplusplus

@@ -393,37 +393,31 @@ playlistwin_scroll_down_pushed(void)
 static void
 playlistwin_select_all(void)
 {
-    Playlist *playlist = aud_playlist_get_active();
+    Playlist * playlist;
+    int length;
 
-    aud_playlist_select_all(playlist, TRUE);
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list)) {
-        UI_SKINNED_PLAYLIST(playlistwin_list)->prev_selected = 0;
-        UI_SKINNED_PLAYLIST(playlistwin_list)->prev_min = 0;
-        UI_SKINNED_PLAYLIST(playlistwin_list)->prev_max = aud_playlist_get_length(playlist) - 1;
-    }
+    playlist = aud_playlist_get_active ();
+    length = aud_playlist_get_length (playlist);
+
+    if (length < 1)
+        return;
+
+    ui_skinned_playlist_select ((UiSkinnedPlaylist *) playlistwin_list, 0);
+    ui_skinned_playlist_select_extend ((UiSkinnedPlaylist *) playlistwin_list,
+     length - 1);
     playlistwin_update_list(playlist);
 }
 
 static void
 playlistwin_select_none(void)
 {
-    aud_playlist_select_all(aud_playlist_get_active(), FALSE);
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list)) {
-        UI_SKINNED_PLAYLIST(playlistwin_list)->prev_selected = -1;
-        UI_SKINNED_PLAYLIST(playlistwin_list)->prev_min = -1;
-    }
-    playlistwin_update_list(aud_playlist_get_active());
-}
-
-static void select_current (void)
-{
     Playlist * playlist;
-    UiSkinnedPlaylist * skinned;
 
     playlist = aud_playlist_get_active ();
-    skinned = (UiSkinnedPlaylist *) playlistwin_list;
 
-    ui_skinned_playlist_select (skinned, aud_playlist_get_position (playlist));
+    aud_playlist_select_all (playlist, 0);
+    ui_skinned_playlist_select_reset ((UiSkinnedPlaylist *) playlistwin_list);
+    playlistwin_update_list (playlist);
 }
 
 static void
@@ -585,12 +579,13 @@ playlistwin_select_search(void)
 static void
 playlistwin_inverse_selection(void)
 {
-    aud_playlist_select_invert_all(aud_playlist_get_active());
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list)) {
-        UI_SKINNED_PLAYLIST(playlistwin_list)->prev_selected = -1;
-        UI_SKINNED_PLAYLIST(playlistwin_list)->prev_min = -1;
-    }
-    playlistwin_update_list(aud_playlist_get_active());
+    Playlist * playlist;
+
+    playlist = aud_playlist_get_active ();
+
+    aud_playlist_select_invert_all (playlist);
+    ui_skinned_playlist_select_reset ((UiSkinnedPlaylist *) playlistwin_list);
+    playlistwin_update_list (playlist);
 }
 
 static void
@@ -1074,46 +1069,20 @@ static gboolean
 playlistwin_keypress_up_down_handler(UiSkinnedPlaylist * pl,
                                      gboolean up, guint state)
 {
-    Playlist *playlist = aud_playlist_get_active();
-
     if ((state & GDK_MOD1_MASK) && (state & GDK_SHIFT_MASK))
         return FALSE;
-    if (!(state & GDK_MOD1_MASK))
-        aud_playlist_select_all(playlist, FALSE);
 
-    if (pl->prev_selected == -1 ||
-        (!playlistwin_item_visible(pl->prev_selected) &&
-         !(state & GDK_SHIFT_MASK && pl->prev_min != -1))) {
-        pl->prev_selected = pl->first;
-    }
-    else if (state & GDK_SHIFT_MASK) {
-        if (pl->prev_min == -1) {
-            pl->prev_max = pl->prev_selected;
-            pl->prev_min = pl->prev_selected;
-        }
-        pl->prev_max += (up ? -1 : 1);
-        pl->prev_selected = pl->prev_max =
-            CLAMP(pl->prev_max, 0, aud_playlist_get_length(playlist) - 1);
-
-        pl->first = MIN(pl->first, pl->prev_max);
-        pl->first = MAX(pl->first, pl->prev_max -
-                           pl->num_visible + 1);
-        aud_playlist_select_range(playlist, pl->prev_min, pl->prev_max, TRUE);
-        return TRUE;
-    }
+    if (state & GDK_SHIFT_MASK)
+        ui_skinned_playlist_select_extend (pl, pl->prev_selected + (up ? -1 : 1));
     else if (state & GDK_MOD1_MASK) {
         if (up)
             ui_skinned_playlist_move_up(pl);
         else
             ui_skinned_playlist_move_down(pl);
-        if (pl->prev_min < pl->first)
-            pl->first = pl->prev_min;
-        else if (pl->prev_max >= (pl->first + pl->num_visible))
-            pl->first = pl->prev_max - pl->num_visible + 1;
-        return TRUE;
     }
+    else
+        ui_skinned_playlist_select (pl, pl->prev_selected + (up ? -1 : 1));
 
-    ui_skinned_playlist_select (pl, pl->prev_selected + (up ? -1 : 1));
     return TRUE;
 }
 
@@ -1162,16 +1131,13 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
         refresh = TRUE;
         break;
     case GDK_Escape:
-        select_current ();
+        ui_skinned_playlist_select (skinned, aud_playlist_get_position (playlist));
         refresh = 1;
         break;
     case GDK_Return:
-        if (UI_SKINNED_PLAYLIST(playlistwin_list)->prev_selected > -1
-            && playlistwin_item_visible(UI_SKINNED_PLAYLIST(playlistwin_list)->prev_selected)) {
-            aud_playlist_set_position(playlist, UI_SKINNED_PLAYLIST(playlistwin_list)->prev_selected);
-            if (!audacious_drct_get_playing())
-                audacious_drct_initiate();
-        }
+        ui_skinned_playlist_select (skinned, skinned->prev_selected);
+        aud_playlist_set_position (playlist, skinned->prev_selected);
+        audacious_drct_initiate ();
         refresh = TRUE;
         break;
     case GDK_3:
@@ -1540,19 +1506,21 @@ playlistwin_create_window(void)
      0);
 }
 
-static void playback_begin_cb (void * unused, void * another)
+static void select_song_cb (void * unused, void * another)
 {
     Playlist * playlist;
 
     playlist = aud_playlist_get_active ();
 
-    select_current ();
+    ui_skinned_playlist_select ((UiSkinnedPlaylist *) playlistwin_list,
+     aud_playlist_get_position (playlist));
     playlistwin_update_list (playlist);
 }
 
 static void destroy_cb (GtkObject * object, void * unused)
 {
-    aud_hook_dissociate ("playback begin", playback_begin_cb);
+    aud_hook_dissociate ("playback begin", select_song_cb);
+    aud_hook_dissociate ("playlist update", select_song_cb);
 }
 
 void
@@ -1566,7 +1534,9 @@ playlistwin_create(void)
 
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 
-    aud_hook_associate ("playback begin", playback_begin_cb, 0);
+    aud_hook_associate ("playback begin", select_song_cb, 0);
+    aud_hook_associate ("playlist update", select_song_cb, 0);
+
     g_signal_connect ((GObject *) playlistwin, "destroy", (GCallback) destroy_cb,
      0);
 }

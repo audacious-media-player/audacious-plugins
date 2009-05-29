@@ -265,6 +265,24 @@ static gboolean ui_skinned_playlist_auto_drag_up_func(gpointer data) {
     return FALSE;
 }
 
+static void scroll (UiSkinnedPlaylist * skinned, int number, int length)
+{
+    if (number < skinned->first)
+    {
+        skinned->first = number - skinned->num_visible / 2;
+
+        if (skinned->first < 0)
+            skinned->first = 0;
+    }
+    else if (number > skinned->first + skinned->num_visible - 1)
+    {
+        skinned->first = number - skinned->num_visible / 2;
+
+        if (skinned->first + skinned->num_visible > length)
+            skinned->first = length - skinned->num_visible;
+    }
+}
+
 void ui_skinned_playlist_move_up(UiSkinnedPlaylist * pl) {
     GList *list;
     Playlist *playlist = aud_playlist_get_active();
@@ -295,6 +313,8 @@ void ui_skinned_playlist_move_up(UiSkinnedPlaylist * pl) {
         pl->prev_min--;
     if (pl->prev_max != -1)
         pl->prev_max--;
+
+    scroll (pl, pl->prev_selected, aud_playlist_get_length (playlist));
 }
 
 void ui_skinned_playlist_move_down(UiSkinnedPlaylist * pl) {
@@ -332,6 +352,8 @@ void ui_skinned_playlist_move_down(UiSkinnedPlaylist * pl) {
         pl->prev_min++;
     if (pl->prev_max != -1)
         pl->prev_max++;
+
+    scroll (pl, pl->prev_selected, aud_playlist_get_length (playlist));
 }
 
 static void
@@ -407,7 +429,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     PangoLayout *layout;
     gchar *title;
     gint width, height;
-    gint i, max_first;
+    gint i;
     guint padding, padding_dwidth, padding_plength;
     guint max_time_len = 0;
     gfloat queue_tailpadding = 0;
@@ -458,11 +480,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     pl->num_visible = height / pl->fheight;
 
     rounding_offset = pl->fheight / 3;
-
-    max_first = aud_playlist_get_length(playlist) - pl->num_visible;
-    max_first = MAX(max_first, 0);
-
-    pl->first = CLAMP(pl->first, 0, max_first);
 
     PLAYLIST_LOCK(playlist);
     list = playlist->entries;
@@ -844,17 +861,50 @@ void ui_skinned_playlist_select (UiSkinnedPlaylist * skinned, int number)
     else if (number > length - 1)
         number = length - 1;
 
+    skinned->prev_min = -1;
+    skinned->prev_max = -1;
+    skinned->prev_selected = number;
+
     aud_playlist_select_all (playlist, 0);
     aud_playlist_select_range (playlist, number, number, 1);
 
+    scroll (skinned, number, length);
+}
+
+void ui_skinned_playlist_select_extend (UiSkinnedPlaylist * skinned, int number)
+{
+    Playlist * playlist;
+    int length;
+
+    playlist = aud_playlist_get_active ();
+    length = aud_playlist_get_length (playlist);
+
+    if (length < 1)
+        return;
+
+    if (number < 0)
+        number = 0;
+    else if (number > length - 1)
+        number = length - 1;
+
+    if (skinned->prev_min == -1)
+        skinned->prev_min = (skinned->prev_selected == -1) ? number :
+         skinned->prev_selected;
+
+    skinned->prev_max = number;
     skinned->prev_selected = number;
+
+    aud_playlist_select_all (playlist, 0);
+    aud_playlist_select_range (playlist, skinned->prev_min, number, 1);
+
+    scroll (skinned, number, length);
+}
+
+void ui_skinned_playlist_select_reset (UiSkinnedPlaylist * skinned)
+{
     skinned->prev_min = -1;
     skinned->prev_max = -1;
-
-    skinned->first = number - skinned->num_visible / 2;
-
-    if (skinned->first < 0)
-        skinned->first = 0;
+    skinned->prev_selected = -1;
 }
 
 char ui_skinned_playlist_is_selected (UiSkinnedPlaylist * skinned, int number)
