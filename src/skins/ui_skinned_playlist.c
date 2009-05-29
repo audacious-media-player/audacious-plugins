@@ -851,10 +851,10 @@ void ui_skinned_playlist_select (UiSkinnedPlaylist * skinned, int number)
     skinned->prev_min = -1;
     skinned->prev_max = -1;
 
-    if (number < skinned->first)
-        skinned->first = number;
-    else if (number > skinned->first + skinned->num_visible - 1)
-        skinned->first = number + 1 - skinned->num_visible;
+    skinned->first = number - skinned->num_visible / 2;
+
+    if (skinned->first < 0)
+        skinned->first = 0;
 }
 
 char ui_skinned_playlist_is_selected (UiSkinnedPlaylist * skinned, int number)
