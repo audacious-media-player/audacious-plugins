@@ -49,12 +49,6 @@ struct _UiSkinnedPlaylist {
     GtkWidget   widget;
     gboolean    pressed;
     gint        x, y;
-    gint        first;
-    gint        num_visible;
-    gint        prev_selected, prev_min, prev_max;
-    gboolean    drag_motion;
-    gint        drag_motion_x, drag_motion_y;
-    gint        fheight;
 };
 
 struct _UiSkinnedPlaylistClass {
@@ -65,13 +59,10 @@ GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gin
 GType ui_skinned_playlist_get_type(void);
 void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h);
 void ui_skinned_playlist_set_font(const gchar * font);
-void ui_skinned_playlist_move_up(UiSkinnedPlaylist *pl);
-void ui_skinned_playlist_move_down(UiSkinnedPlaylist *pl);
-gint ui_skinned_playlist_get_position(GtkWidget *widget, gint x, gint y);
-void ui_skinned_playlist_select (UiSkinnedPlaylist * skinned, int number);
-void ui_skinned_playlist_select_extend (UiSkinnedPlaylist * skinned, int number);
-void ui_skinned_playlist_select_reset (UiSkinnedPlaylist * skinned);
-char ui_skinned_playlist_is_selected (UiSkinnedPlaylist * skinned, int number);
+void ui_skinned_playlist_update (GtkWidget * widget);
+char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event);
+void ui_skinned_playlist_row_info (GtkWidget * widget, int * rows, int * first);
+void ui_skinned_playlist_scroll_to (GtkWidget * widget, int row);
 
 #ifdef __cplusplus
 }

@@ -67,8 +67,6 @@ static GtkWidget *playlistwin_list = NULL;
 static GtkWidget *playlistwin_shade, *playlistwin_close;
 static GtkWidget *playlistwin_shaded_shade, *playlistwin_shaded_close;
 
-static gboolean playlistwin_hint_flag = FALSE;
-
 static GtkWidget *playlistwin_slider;
 static GtkWidget *playlistwin_time_min, *playlistwin_time_sec;
 static GtkWidget *playlistwin_info, *playlistwin_sinfo;
@@ -209,51 +207,28 @@ playlistwin_update_sinfo(Playlist *playlist)
     g_free(info);
 }
 
-gboolean
-playlistwin_item_visible(gint index)
-{
-    g_return_val_if_fail(UI_SKINNED_IS_PLAYLIST(playlistwin_list), FALSE);
-
-    if (index >= UI_SKINNED_PLAYLIST(playlistwin_list)->first &&
-        index < (UI_SKINNED_PLAYLIST(playlistwin_list)->first + UI_SKINNED_PLAYLIST(playlistwin_list)->num_visible) ) {
-        return TRUE;
-    }
-    return FALSE;
-}
-
 gint
 playlistwin_list_get_visible_count(void)
 {
-    g_return_val_if_fail(UI_SKINNED_IS_PLAYLIST(playlistwin_list), -1);
+    int rows, first;
 
-    return UI_SKINNED_PLAYLIST(playlistwin_list)->num_visible;
+    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
+    return rows;
 }
 
 gint
 playlistwin_list_get_first(void)
 {
-    g_return_val_if_fail(UI_SKINNED_IS_PLAYLIST(playlistwin_list), -1);
+    int rows, first;
 
-    return UI_SKINNED_PLAYLIST(playlistwin_list)->first;
-}
-
-gint
-playlistwin_get_toprow(void)
-{
-    g_return_val_if_fail(UI_SKINNED_IS_PLAYLIST(playlistwin_list), -1);
-
-    return (UI_SKINNED_PLAYLIST(playlistwin_list)->first);
+    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
+    return first;
 }
 
 void
 playlistwin_set_toprow(gint toprow)
 {
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list))
-        UI_SKINNED_PLAYLIST(playlistwin_list)->first = toprow;
-#if 0
-    g_cond_signal(cond_scan);
-#endif
-    playlistwin_update_list(aud_playlist_get_active());
+    ui_skinned_playlist_scroll_to (playlistwin_list, toprow);
 }
 
 void
@@ -373,9 +348,10 @@ playlistwin_release(GtkWidget * widget,
 void
 playlistwin_scroll(gint num)
 {
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list))
-        UI_SKINNED_PLAYLIST(playlistwin_list)->first += num;
-    playlistwin_update_list(aud_playlist_get_active());
+    int rows, first;
+
+    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
+    ui_skinned_playlist_scroll_to (playlistwin_list, first + num);
 }
 
 void
@@ -394,18 +370,11 @@ static void
 playlistwin_select_all(void)
 {
     Playlist * playlist;
-    int length;
 
     playlist = aud_playlist_get_active ();
-    length = aud_playlist_get_length (playlist);
 
-    if (length < 1)
-        return;
-
-    ui_skinned_playlist_select ((UiSkinnedPlaylist *) playlistwin_list, 0);
-    ui_skinned_playlist_select_extend ((UiSkinnedPlaylist *) playlistwin_list,
-     length - 1);
-    playlistwin_update_list(playlist);
+    aud_playlist_select_all (playlist, 1);
+    playlistwin_update_list (playlist);
 }
 
 static void
@@ -416,7 +385,6 @@ playlistwin_select_none(void)
     playlist = aud_playlist_get_active ();
 
     aud_playlist_select_all (playlist, 0);
-    ui_skinned_playlist_select_reset ((UiSkinnedPlaylist *) playlistwin_list);
     playlistwin_update_list (playlist);
 }
 
@@ -584,7 +552,6 @@ playlistwin_inverse_selection(void)
     playlist = aud_playlist_get_active ();
 
     aud_playlist_select_invert_all (playlist);
-    ui_skinned_playlist_select_reset ((UiSkinnedPlaylist *) playlistwin_list);
     playlistwin_update_list (playlist);
 }
 
@@ -1065,27 +1032,6 @@ playlistwin_delete(GtkWidget * w, gpointer data)
     return TRUE;
 }
 
-static gboolean
-playlistwin_keypress_up_down_handler(UiSkinnedPlaylist * pl,
-                                     gboolean up, guint state)
-{
-    if ((state & GDK_MOD1_MASK) && (state & GDK_SHIFT_MASK))
-        return FALSE;
-
-    if (state & GDK_SHIFT_MASK)
-        ui_skinned_playlist_select_extend (pl, pl->prev_selected + (up ? -1 : 1));
-    else if (state & GDK_MOD1_MASK) {
-        if (up)
-            ui_skinned_playlist_move_up(pl);
-        else
-            ui_skinned_playlist_move_down(pl);
-    }
-    else
-        ui_skinned_playlist_select (pl, pl->prev_selected + (up ? -1 : 1));
-
-    return TRUE;
-}
-
 /* FIXME: Handle the keys through menu */
 
 static gboolean
@@ -1101,54 +1047,13 @@ playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
     if (config.playlist_shaded)
         return FALSE;
 
+    if (ui_skinned_playlist_key (playlistwin_list, event))
+        return 1;
+
     switch (keyval = event->keyval) {
-    case GDK_KP_Up:
-    case GDK_KP_Down:
-    case GDK_Up:
-    case GDK_Down:
-        refresh = playlistwin_keypress_up_down_handler(UI_SKINNED_PLAYLIST(playlistwin_list),
-                                                       keyval == GDK_Up
-                                                       || keyval == GDK_KP_Up,
-                                                       event->state);
-        break;
-    case GDK_Page_Up:
-        ui_skinned_playlist_select (skinned, skinned->prev_selected -
-         skinned->num_visible);
-        refresh = TRUE;
-        break;
-    case GDK_Page_Down:
-        ui_skinned_playlist_select (skinned, skinned->prev_selected +
-         skinned->num_visible);
-        refresh = TRUE;
-        break;
-    case GDK_Home:
-        ui_skinned_playlist_select (skinned, 0);
-        refresh = TRUE;
-        break;
-    case GDK_End:
-        ui_skinned_playlist_select (skinned, aud_playlist_get_length (playlist)
-         - 1);
-        refresh = TRUE;
-        break;
-    case GDK_Escape:
-        ui_skinned_playlist_select (skinned, aud_playlist_get_position (playlist));
-        refresh = 1;
-        break;
-    case GDK_Return:
-        ui_skinned_playlist_select (skinned, skinned->prev_selected);
-        aud_playlist_set_position (playlist, skinned->prev_selected);
-        audacious_drct_initiate ();
-        refresh = TRUE;
-        break;
     case GDK_3:
         if (event->state & GDK_CONTROL_MASK)
             playlistwin_fileinfo();
-        break;
-    case GDK_Delete:
-        if (event->state & GDK_CONTROL_MASK)
-            aud_playlist_delete(playlist, TRUE);
-        else
-            aud_playlist_delete(playlist, FALSE);
         break;
     case GDK_Insert:
         if (event->state & GDK_MOD1_MASK)
@@ -1234,28 +1139,9 @@ playlistwin_set_time(gint time, gint length, TimerMode mode)
 }
 
 static void
-playlistwin_drag_motion(GtkWidget * widget,
-                        GdkDragContext * context,
-                        gint x, gint y,
-                        GtkSelectionData * selection_data,
-                        guint info, guint time, gpointer user_data)
-{
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list)) {
-        UI_SKINNED_PLAYLIST(playlistwin_list)->drag_motion = TRUE;
-        UI_SKINNED_PLAYLIST(playlistwin_list)->drag_motion_x = x;
-        UI_SKINNED_PLAYLIST(playlistwin_list)->drag_motion_y = y;
-    }
-    playlistwin_update_list(aud_playlist_get_active());
-    playlistwin_hint_flag = TRUE;
-}
-
-static void
 playlistwin_drag_end(GtkWidget * widget,
                      GdkDragContext * context, gpointer user_data)
 {
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list))
-        UI_SKINNED_PLAYLIST(playlistwin_list)->drag_motion = FALSE;
-    playlistwin_hint_flag = FALSE;
     playlistwin_update_list(aud_playlist_get_active());
 }
 
@@ -1267,7 +1153,6 @@ playlistwin_drag_data_received(GtkWidget * widget,
                                selection_data, guint info,
                                guint time, gpointer user_data)
 {
-    gint pos;
     Playlist *playlist = aud_playlist_get_active();
 
     g_return_if_fail(selection_data);
@@ -1276,15 +1161,8 @@ playlistwin_drag_data_received(GtkWidget * widget,
         g_message("Received no DND data!");
         return;
     }
-    if (UI_SKINNED_IS_PLAYLIST(playlistwin_list) &&
-        (x < playlistwin_get_width() - 20 || y < config.playlist_height - 38)) {
-        pos = y / UI_SKINNED_PLAYLIST(playlistwin_list)->fheight + UI_SKINNED_PLAYLIST(playlistwin_list)->first;
 
-        pos = MIN(pos, aud_playlist_get_length(playlist));
-        aud_playlist_ins_url(playlist, (gchar *) selection_data->data, pos);
-    }
-    else
-        aud_playlist_add_url(playlist, (gchar *) selection_data->data);
+    aud_playlist_add_url (playlist, (char *) selection_data->data);
 }
 
 static void
@@ -1494,8 +1372,6 @@ playlistwin_create_window(void)
                      G_CALLBACK(playlistwin_drag_end), NULL);
     g_signal_connect(playlistwin, "drag-data-received",
                      G_CALLBACK(playlistwin_drag_data_received), NULL);
-    g_signal_connect(playlistwin, "drag-motion",
-                     G_CALLBACK(playlistwin_drag_motion), NULL);
 
     g_signal_connect(playlistwin, "key_press_event",
                      G_CALLBACK(playlistwin_keypress), NULL);
@@ -1506,21 +1382,15 @@ playlistwin_create_window(void)
      0);
 }
 
-static void select_song_cb (void * unused, void * another)
+static void update_cb (void * unused, void * another)
 {
-    Playlist * playlist;
-
-    playlist = aud_playlist_get_active ();
-
-    ui_skinned_playlist_select ((UiSkinnedPlaylist *) playlistwin_list,
-     aud_playlist_get_position (playlist));
-    playlistwin_update_list (playlist);
+    ui_skinned_playlist_update (playlistwin_list);
 }
 
 static void destroy_cb (GtkObject * object, void * unused)
 {
-    aud_hook_dissociate ("playback begin", select_song_cb);
-    aud_hook_dissociate ("playlist update", select_song_cb);
+    aud_hook_dissociate ("playback begin", update_cb);
+    aud_hook_dissociate ("playlist update", update_cb);
 }
 
 void
@@ -1534,8 +1404,8 @@ playlistwin_create(void)
 
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 
-    aud_hook_associate ("playback begin", select_song_cb, 0);
-    aud_hook_associate ("playlist update", select_song_cb, 0);
+    aud_hook_associate ("playback begin", update_cb, 0);
+    aud_hook_associate ("playlist update", update_cb, 0);
 
     g_signal_connect ((GObject *) playlistwin, "destroy", (GCallback) destroy_cb,
      0);
@@ -1544,8 +1414,6 @@ playlistwin_create(void)
 static void playlistwin_real_show (void)
 {
     ui_skinned_button_set_inside(mainwin_pl, TRUE);
-
-    playlistwin_set_toprow(0);
 
     gtk_widget_show_all(playlistwin);
     if (!config.playlist_shaded)
