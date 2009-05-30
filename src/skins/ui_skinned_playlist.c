@@ -240,6 +240,7 @@ static void ui_skinned_playlist_size_request(GtkWidget *widget, GtkRequisition *
 static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
     UiSkinnedPlaylist *playlist = UI_SKINNED_PLAYLIST (widget);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(playlist);
+    int length;
 
     widget->allocation = *allocation;
     if (GTK_WIDGET_REALIZED (widget))
@@ -264,6 +265,13 @@ static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *
 
     priv->row_height = ascent - descent;
     priv->rows = priv->height / priv->row_height;
+
+    length = aud_playlist_get_length (aud_playlist_get_active ());
+
+    if (priv->first + priv->rows > length)
+        priv->first = length - priv->rows;
+    if (priv->first < 0)
+        priv->first = 0;
 }
 
 static void
@@ -742,6 +750,7 @@ static void scroll_to (UiSkinnedPlaylistPrivate * private, int length, int
     }
 }
 
+/* This is very inefficient. Don't use it in any loops. */
 static char is_selected (Playlist * playlist, int position)
 {
     GList * selected;
@@ -821,16 +830,23 @@ static void select_single (UiSkinnedPlaylistPrivate * private, Playlist *
 static void select_extend (UiSkinnedPlaylistPrivate * private, Playlist *
  playlist, int length, char relative, int position)
 {
+    int sign;
+
     position = adjust_position (private, length, relative, position);
 
-    if (position == -1)
+    if (position == -1 || position == private->focused)
         return;
 
-    if (position == private->focused)
-        aud_playlist_select_range (playlist, position, position, 1);
-    else if (is_selected (playlist, position))
-        aud_playlist_select_range (playlist, private->focused, position +
-         (private->focused > position ? 1 : -1), 0);
+    sign = position > private->focused ? 1 : -1;
+
+    if (is_selected (playlist, private->focused + sign) != is_selected (playlist,
+     private->focused))
+        aud_playlist_select_range (playlist, private->focused + sign, position,
+         is_selected (playlist, private->focused));
+    else if (is_selected (playlist, private->focused - sign) != is_selected
+     (playlist, private->focused))
+        aud_playlist_select_range (playlist, private->focused, position - sign,
+         ! is_selected (playlist, private->focused));
     else
         aud_playlist_select_range (playlist, private->focused, position, 1);
 
@@ -919,6 +935,11 @@ static void delete_selected (UiSkinnedPlaylistPrivate * private, Playlist *
     private->no_update = 1;
     aud_playlist_delete (playlist, 0);
     private->no_update = 0;
+
+    if (private->first + private->rows > length)
+        private->first = length - private->rows;
+    if (private->first < 0)
+        private->first = 0;
 
     if (length == 0)
         private->focused = -1;
@@ -1113,6 +1134,8 @@ void ui_skinned_playlist_scroll_to (GtkWidget * widget, int row)
     playlist = aud_playlist_get_active ();
     length = aud_playlist_get_length (playlist);
 
+    cancel_all (widget, private);
+
     private->first = row;
 
     if (private->first + private->rows > length)
@@ -1168,6 +1191,7 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
                 break;
               case GDK_CONTROL_MASK:
                 select_toggle (private, playlist, length, 0, position);
+                private->drag = DRAG_SELECT;
                 break;
               default:
                 return 1;
