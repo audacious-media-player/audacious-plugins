@@ -93,22 +93,18 @@ static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, gint su
 void xs_error(const char *fmt, ...)
 {
     va_list ap;
-    fprintf(stderr, "AUD-SID: ");
     va_start(ap, fmt);
-    vfprintf(stderr, fmt, ap);
+    g_logv("AUD-SID", G_LOG_LEVEL_ERROR, fmt, ap);
     va_end(ap);
 }
 
-#ifndef DEBUG_NP
+#ifdef DEBUG
 void XSDEBUG(const char *fmt, ...)
 {
-#ifdef DEBUG
     va_list ap;
-    fprintf(stderr, "XSDEBUG: ");
     va_start(ap, fmt);
-    vfprintf(stderr, fmt, ap);
+    g_logv("AUD-SID", G_LOG_LEVEL_DEBUG, fmt, ap);
     va_end(ap);
-#endif
 }
 #endif
 

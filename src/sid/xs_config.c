@@ -405,7 +405,7 @@ static gboolean xs_fgetitem(gchar *inLine, size_t *linePos, gchar sep, gchar *tm
 static gboolean xs_filters_import(const gchar *pcFilename, xs_sid2_filter_t **pFilters, gint *nFilters)
 {
     FILE *inFile;
-    gchar inLine[XS_BUF_SIZE], tmpStr[XS_BUF_SIZE];
+    gchar inLine[XS_BUF_SIZE+1], tmpStr[XS_BUF_SIZE+1];
     gchar *sectName = NULL;
     gboolean sectBegin;
     size_t lineNum, i;
