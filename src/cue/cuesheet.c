@@ -29,6 +29,7 @@ static GCond *cue_block_cond;
 
 InputPlayback *caller_ip = NULL;
 
+static gchar *cue_cuefile = NULL;
 static gchar *cue_file = NULL;
 static gchar *cue_title = NULL;
 static gchar *cue_performer = NULL;
@@ -204,8 +205,7 @@ get_song_tuple(gchar *uri) /* *.cue or *.cue?1- */
     }
 
     /* parse file of uri and find actual file to play */
-    if(!cue_file)
-        cache_cue_file(path2);
+    cache_cue_file(path2);
     g_free(path2);
 
     /* obtain probe result for actual file */
@@ -393,8 +393,7 @@ play_cue_uri(InputPlayback * data, gchar *uri)
     }
     cur_cue_track = track;
 
-    if(!cue_file)
-        cache_cue_file(path2);
+    cache_cue_file(path2);
     g_free(path2);
 
     if (cue_file == NULL || !aud_vfs_file_test(cue_file, G_FILE_TEST_EXISTS))
@@ -473,7 +472,8 @@ play_cue_uri(InputPlayback * data, gchar *uri)
 void
 free_cue_info(void)
 {
-    g_free(cue_file);    cue_file = NULL;
+    g_free(cue_cuefile);  cue_cuefile = NULL;
+    g_free(cue_file);     cue_file = NULL;
     g_free(cue_title);    cue_title = NULL;
     g_free(cue_performer);    cue_performer = NULL;
     g_free(cue_genre);    cue_genre = NULL;
@@ -516,8 +516,16 @@ get_full_length(gchar *cue_file)
 }
 
 void
-cache_cue_file(char *f)
+cache_cue_file(gchar *f)
 {
+    /* Here we check if the cue_cuefile is the same, because then we do not need to read the cuefile */
+    if (cue_cuefile != NULL && f != NULL)
+    {
+    	if (strcmp(cue_cuefile, f) == 0)
+    	    return;
+    }
+    cue_cuefile = g_strdup(f);
+
     VFSFile *file = aud_vfs_fopen(f, "rb");
     gchar line[MAX_CUE_LINE_LENGTH+1];
 
