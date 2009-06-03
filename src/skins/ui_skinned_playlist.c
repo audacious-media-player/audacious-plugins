@@ -1006,9 +1006,6 @@ char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
       case 0:
         switch (event->keyval)
         {
-          case GDK_space:
-            select_single (private, playlist, length, 1, 0);
-            break;
           case GDK_Up:
             select_single (private, playlist, length, 1, -1);
             break;
