@@ -53,7 +53,7 @@ if (!mainloop || \
     !context || pa_context_get_state(context) != PA_CONTEXT_READY || \
     !stream || pa_stream_get_state(stream) != PA_STREAM_READY) { \
         if (warn) \
-            g_warning("Connection died: %s", context ? pa_strerror(pa_context_errno(context)) : "NULL"); \
+            AUDDBG("Connection died: %s", context ? pa_strerror(pa_context_errno(context)) : "NULL"); \
         goto label; \
     }  \
 } while(0);
@@ -101,7 +101,7 @@ static void subscribe_cb(struct pa_context *c, enum pa_subscription_event_type t
         return;
 
     if (!(o = pa_context_get_sink_input_info(c, index, info_cb, NULL))) {
-        g_warning("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(c)));
+        AUDDBG("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(c)));
         return;
     }
 
@@ -206,7 +206,7 @@ static void volume_time_cb(pa_mainloop_api *api, pa_time_event *e, const struct 
     pa_operation *o;
 
     if (!(o = pa_context_set_sink_input_volume(context, pa_stream_get_index(stream), &volume, NULL, NULL)))
-        g_warning("pa_context_set_sink_input_volume() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_context_set_sink_input_volume() failed: %s", pa_strerror(pa_context_errno(context)));
     else
         pa_operation_unref(o);
 
@@ -255,7 +255,7 @@ static void pulse_pause(short b) {
     CHECK_DEAD_GOTO(fail, 1);
 
     if (!(o = pa_stream_cork(stream, b, stream_success_cb, &success))) {
-        g_warning("pa_stream_cork() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_stream_cork() failed: %s", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
 
@@ -265,7 +265,7 @@ static void pulse_pause(short b) {
     }
 
     if (!success)
-        g_warning("pa_stream_cork() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_stream_cork() failed: %s", pa_strerror(pa_context_errno(context)));
 
 fail:
 
@@ -285,7 +285,7 @@ static int pulse_free(void) {
     CHECK_DEAD_GOTO(fail, 1);
 
     if ((l = pa_stream_writable_size(stream)) == (size_t) -1) {
-        g_warning("pa_stream_writable_size() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_stream_writable_size() failed: %s", pa_strerror(pa_context_errno(context)));
         l = 0;
         goto fail;
     }
@@ -296,7 +296,7 @@ static int pulse_free(void) {
         int success = 0;
 
         if (!(o = pa_stream_trigger(stream, stream_success_cb, &success))) {
-            g_warning("pa_stream_trigger() failed: %s", pa_strerror(pa_context_errno(context)));
+            AUDDBG("pa_stream_trigger() failed: %s", pa_strerror(pa_context_errno(context)));
             goto fail;
         }
 
@@ -306,7 +306,7 @@ static int pulse_free(void) {
         }
 
         if (!success)
-            g_warning("pa_stream_trigger() failed: %s", pa_strerror(pa_context_errno(context)));
+            AUDDBG("pa_stream_trigger() failed: %s", pa_strerror(pa_context_errno(context)));
     }
 
 fail:
@@ -350,7 +350,7 @@ static int pulse_get_output_time(void) {
             break;
 
         if (pa_context_errno(context) != PA_ERR_NODATA) {
-            g_warning("pa_stream_get_time() failed: %s", pa_strerror(pa_context_errno(context)));
+            AUDDBG("pa_stream_get_time() failed: %s", pa_strerror(pa_context_errno(context)));
             goto fail;
         }
 
@@ -387,7 +387,7 @@ static int pulse_playing(void) {
             break;
 
         if (pa_context_errno(context) != PA_ERR_NODATA) {
-            g_warning("pa_stream_get_timing_info() failed: %s", pa_strerror(pa_context_errno(context)));
+            AUDDBG("pa_stream_get_timing_info() failed: %s", pa_strerror(pa_context_errno(context)));
             goto fail;
         }
 
@@ -417,7 +417,7 @@ static void pulse_flush(int time) {
     }
 
     if (!(o = pa_stream_flush(stream, stream_success_cb, &success))) {
-        g_warning("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
 
@@ -427,7 +427,7 @@ static void pulse_flush(int time) {
     }
 
     if (!success)
-        g_warning("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_stream_flush() failed: %s", pa_strerror(pa_context_errno(context)));
 
     written = (uint64_t) (((double) time * pa_bytes_per_second(pa_stream_get_sample_spec(stream))) / 1000);
     just_flushed = 1;
@@ -463,7 +463,7 @@ static void pulse_write(void* ptr, int length) {
              writable = fragsize;
 
          if (pa_stream_write(stream, pptr, writable, NULL, PA_SEEK_RELATIVE, 0) < 0) {
-             g_warning("pa_stream_write() failed: %s", pa_strerror(pa_context_errno(context)));
+             AUDDBG("pa_stream_write() failed: %s", pa_strerror(pa_context_errno(context)));
              goto fail;
          }
     }
@@ -485,7 +485,7 @@ static void drain(void) {
     CHECK_DEAD_GOTO(fail, 0);
 
     if (!(o = pa_stream_drain(stream, stream_success_cb, &success))) {
-        g_warning("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
 
@@ -495,7 +495,7 @@ static void drain(void) {
     }
 
     if (!success)
-        g_warning("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_stream_drain() failed: %s", pa_strerror(pa_context_errno(context)));
 
 fail:
     if (o)
@@ -593,14 +593,14 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         pa_cvolume_set(&volume, ss.channels, pa_cvolume_avg(&volume));
 
     if (!(mainloop = pa_threaded_mainloop_new())) {
-        g_warning("Failed to allocate main loop");
+        AUDDBG("Failed to allocate main loop");
         goto fail;
     }
 
     pa_threaded_mainloop_lock(mainloop);
 
     if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "Audacious"))) {
-        g_warning("Failed to allocate context");
+        AUDDBG("Failed to allocate context");
         goto unlock_and_fail;
     }
 
@@ -608,12 +608,12 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_context_set_subscribe_callback(context, subscribe_cb, NULL);
 
     if (pa_context_connect(context, NULL, 0, NULL) < 0) {
-        g_warning("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
     if (pa_threaded_mainloop_start(mainloop) < 0) {
-        g_warning("Failed to start main loop");
+        AUDDBG("Failed to start main loop");
         goto unlock_and_fail;
     }
 
@@ -621,12 +621,12 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_threaded_mainloop_wait(mainloop);
 
     if (pa_context_get_state(context) != PA_CONTEXT_READY) {
-        g_warning("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
     if (!(stream = pa_stream_new(context, get_song_name(), &ss, NULL))) {
-        g_warning("Failed to create stream: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("Failed to create stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -635,7 +635,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_stream_set_latency_update_callback(stream, stream_latency_update_cb, NULL);
 
     if (pa_stream_connect_playback(stream, NULL, NULL, PA_STREAM_INTERPOLATE_TIMING|PA_STREAM_AUTO_TIMING_UPDATE, &volume, NULL) < 0) {
-        g_warning("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -643,13 +643,13 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_threaded_mainloop_wait(mainloop);
 
     if (pa_stream_get_state(stream) != PA_STREAM_READY) {
-        g_warning("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
     /* Now subscribe to events */
     if (!(o = pa_context_subscribe(context, PA_SUBSCRIPTION_MASK_SINK_INPUT, context_success_cb, &success))) {
-        g_warning("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -660,7 +660,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     }
 
     if (!success) {
-        g_warning("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -668,7 +668,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
 
     /* Now request the initial stream info */
     if (!(o = pa_context_get_sink_input_info(context, pa_stream_get_index(stream), info_cb, NULL))) {
-        g_warning("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
@@ -678,7 +678,7 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
     }
 
     if (!volume_valid) {
-        g_warning("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
+        AUDDBG("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
         goto unlock_and_fail;
     }
 
