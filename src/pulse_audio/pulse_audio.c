@@ -548,12 +548,6 @@ static OutputPluginInitStatus pulse_init(void) {
     if (!pa_sample_spec_valid(&ss))
         return OUTPUT_PLUGIN_INIT_FAIL;
 
-    if (!volume_valid) {
-        pa_cvolume_reset(&volume, ss.channels);
-        volume_valid = 1;
-    } else if (volume.channels != ss.channels)
-        pa_cvolume_set(&volume, ss.channels, pa_cvolume_avg(&volume));
-
     if (!(mainloop = pa_threaded_mainloop_new())) {
         pulse_close();
         return OUTPUT_PLUGIN_INIT_FAIL;
