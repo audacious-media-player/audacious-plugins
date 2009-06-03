@@ -987,7 +987,7 @@ char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
 
     cancel_all (widget, private);
 
-    switch (event->state)
+    switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
       case 0:
         switch (event->keyval)
@@ -1146,11 +1146,12 @@ void ui_skinned_playlist_scroll_to (GtkWidget * widget, int row)
     playlistwin_update_list (playlist);
 }
 
-static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventButton * event)
+static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
+ GdkEventButton * event)
 {
     UiSkinnedPlaylistPrivate * private;
     Playlist * playlist;
-    int length, position;
+    int length, position, state;
 
     private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) widget);
     playlist = aud_playlist_get_active ();
@@ -1159,6 +1160,7 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventBu
     cancel_all (widget, private);
 
     position = calc_position (private, length, event->y);
+    state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
 
     switch (event->type)
     {
@@ -1169,17 +1171,9 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventBu
             if (position == -1 || position == length)
                 return 1;
 
-            if (event->state & GDK_SHIFT_MASK)
+            switch (state)
             {
-                select_extend (private, playlist, length, 0, position);
-                private->drag = DRAG_SELECT;
-            }
-            else if (event->state & GDK_CONTROL_MASK)
-            {
-                select_toggle (private, playlist, length, 0, position);
-            }
-            else
-            {
+              case 0:
                 if (is_selected (playlist, position))
                 {
                     select_slide (private, length, 0, position);
@@ -1190,12 +1184,23 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventBu
                     select_single (private, playlist, length, 0, position);
                     private->drag = DRAG_SELECT;
                 }
+
+                break;
+              case GDK_SHIFT_MASK:
+                select_extend (private, playlist, length, 0, position);
                 private->drag = DRAG_SELECT;
+                break;
+              case GDK_CONTROL_MASK:
+                select_toggle (private, playlist, length, 0, position);
+                private->drag = DRAG_SELECT;
+                break;
+              default:
+                return 1;
             }
 
             break;
           case 3:
-            if (event->state)
+            if (state)
                 return 1;
 
             if (position != -1 && position != length)
@@ -1206,7 +1211,8 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventBu
                     select_single (private, playlist, length, 0, position);
             }
 
-            ui_manager_popup_menu_show ((GtkMenu *) playlistwin_popup_menu, event->x_root, event->y_root, 3, event->time);
+            ui_manager_popup_menu_show ((GtkMenu *) playlistwin_popup_menu,
+             event->x_root, event->y_root, 3, event->time);
             break;
           default:
             return 1;
@@ -1214,7 +1220,8 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventBu
 
         break;
       case GDK_2BUTTON_PRESS:
-        if (event->button != 1 || position == -1 || position == length)
+        if (event->button != 1 || state || position == -1 || position ==
+         length)
             return 1;
 
         aud_playlist_set_position (playlist, position);
