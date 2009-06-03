@@ -142,6 +142,7 @@ static void ui_skinned_playlist_init(UiSkinnedPlaylist *playlist) {
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(playlist);
     priv->resize_width = 0;
     priv->resize_height = 0;
+    priv->rows = 0;
     priv->first = 0;
     priv->focused = -1;
     priv->drag = 0;
@@ -240,6 +241,28 @@ static void ui_skinned_playlist_size_request(GtkWidget *widget, GtkRequisition *
     requisition->height = priv->height;
 }
 
+static void scroll_to (UiSkinnedPlaylistPrivate * private, int length, int
+ position)
+{
+    if (! private->rows)
+        return;
+
+    if (position < private->first)
+    {
+        private->first = position - private->rows / 2;
+
+        if (private->first < 0)
+            private->first = 0;
+    }
+    else if (position > private->first + private->rows - 1)
+    {
+        private->first = position - private->rows / 2;
+
+        if (private->first + private->rows > length)
+            private->first = length - private->rows;
+    }
+}
+
 static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
     UiSkinnedPlaylist *playlist = UI_SKINNED_PLAYLIST (widget);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(playlist);
@@ -272,6 +295,8 @@ static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *
         priv->first = length - priv->rows;
     if (priv->first < 0)
         priv->first = 0;
+
+    scroll_to (priv, length, priv->focused);
 }
 
 static void
@@ -741,25 +766,6 @@ static int adjust_position (UiSkinnedPlaylistPrivate * private, int length, char
         return length - 1;
 
     return position;
-}
-
-static void scroll_to (UiSkinnedPlaylistPrivate * private, int length, int
- position)
-{
-    if (position < private->first)
-    {
-        private->first = position - private->rows / 2;
-
-        if (private->first < 0)
-            private->first = 0;
-    }
-    else if (position > private->first + private->rows - 1)
-    {
-        private->first = position - private->rows / 2;
-
-        if (private->first + private->rows > length)
-            private->first = length - private->rows;
-    }
 }
 
 /* This is very inefficient. Don't use it in any loops. */

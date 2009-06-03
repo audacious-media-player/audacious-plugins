@@ -1393,7 +1393,7 @@ static void follow_cb (void * unused, void * another)
 
 static void destroy_cb (GtkObject * object, void * unused)
 {
-    aud_hook_dissociate ("playback begin", follow_cb);
+    aud_hook_dissociate ("playlist position", follow_cb);
     aud_hook_dissociate ("playlist update", update_cb);
 }
 
@@ -1404,14 +1404,13 @@ playlistwin_create(void)
     playlistwin_create_window();
 
     playlistwin_create_widgets();
-    playlistwin_update_info(aud_playlist_get_active());
 
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 
-    if (audacious_drct_get_playing ())
-        ui_skinned_playlist_follow (playlistwin_list);
+    // calls playlistwin_update_list, so we don't need to
+    ui_skinned_playlist_follow (playlistwin_list);
 
-    aud_hook_associate ("playback begin", follow_cb, 0);
+    aud_hook_associate ("playlist position", follow_cb, 0);
     aud_hook_associate ("playlist update", update_cb, 0);
     g_signal_connect ((GObject *) playlistwin, "destroy", (GCallback) destroy_cb,
      0);
