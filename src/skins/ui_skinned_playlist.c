@@ -1123,8 +1123,7 @@ void ui_skinned_playlist_scroll_to (GtkWidget * widget, int row)
     playlistwin_update_list (playlist);
 }
 
-static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
- GdkEventButton * event)
+static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventButton * event)
 {
     UiSkinnedPlaylistPrivate * private;
     Playlist * playlist;
@@ -1147,9 +1146,17 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
             if (position == -1 || position == length)
                 return 1;
 
-            switch (event->state)
+            if (event->state & GDK_SHIFT_MASK)
             {
-              case 0:
+                select_extend (private, playlist, length, 0, position);
+                private->drag = DRAG_SELECT;
+            }
+            else if (event->state & GDK_CONTROL_MASK)
+            {
+                select_toggle (private, playlist, length, 0, position);
+            }
+            else
+            {
                 if (is_selected (playlist, position))
                 {
                     select_slide (private, length, 0, position);
@@ -1160,17 +1167,6 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
                     select_single (private, playlist, length, 0, position);
                     private->drag = DRAG_SELECT;
                 }
-
-                break;
-              case GDK_SHIFT_MASK:
-                select_extend (private, playlist, length, 0, position);
-                private->drag = DRAG_SELECT;
-                break;
-              case GDK_CONTROL_MASK:
-                select_toggle (private, playlist, length, 0, position);
-                break;
-              default:
-                return 1;
             }
 
             break;
@@ -1186,8 +1182,7 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
                     select_single (private, playlist, length, 0, position);
             }
 
-            ui_manager_popup_menu_show ((GtkMenu *) playlistwin_popup_menu,
-             event->x_root, event->y_root, 3, event->time);
+            ui_manager_popup_menu_show ((GtkMenu *) playlistwin_popup_menu, event->x_root, event->y_root, 3, event->time);
             break;
           default:
             return 1;
@@ -1195,8 +1190,7 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
 
         break;
       case GDK_2BUTTON_PRESS:
-        if (event->button != 1 || event->state || position == -1 || position ==
-         length)
+        if (event->button != 1 || event->state || position == -1 || position == length)
             return 1;
 
         aud_playlist_set_position (playlist, position);
