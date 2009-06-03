@@ -83,6 +83,7 @@ static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
 
 static gboolean playlistwin_resizing = FALSE;
 static gint playlistwin_resize_x, playlistwin_resize_y;
+static int drop_position;
 
 gboolean
 playlistwin_is_shaded(void)
@@ -1138,31 +1139,31 @@ playlistwin_set_time(gint time, gint length, TimerMode mode)
     g_free(text);
 }
 
-static void
-playlistwin_drag_end(GtkWidget * widget,
-                     GdkDragContext * context, gpointer user_data)
+static void drag_motion (GtkWidget * widget, GdkDragContext * context, gint x,
+ gint y, guint time, void * unused)
 {
-    playlistwin_update_list(aud_playlist_get_active());
+    ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
 }
 
-static void
-playlistwin_drag_data_received(GtkWidget * widget,
-                               GdkDragContext * context,
-                               gint x, gint y,
-                               GtkSelectionData *
-                               selection_data, guint info,
-                               guint time, gpointer user_data)
+static void drag_leave (GtkWidget * widget, GdkDragContext * context, guint time,
+ void * unused)
 {
-    Playlist *playlist = aud_playlist_get_active();
+    ui_skinned_playlist_hover_end (playlistwin_list);
+}
 
-    g_return_if_fail(selection_data);
+static void drag_drop (GtkWidget * widget, GdkDragContext * context, gint x,
+ gint y, guint time, void * unused)
+{
+    ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
+    drop_position = ui_skinned_playlist_hover_end (playlistwin_list);
+}
 
-    if (!selection_data->data) {
-        g_message("Received no DND data!");
-        return;
-    }
-
-    aud_playlist_add_url (playlist, (char *) selection_data->data);
+static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
+ gint x, gint y, GtkSelectionData * data, guint info, guint time, void * unused)
+{
+    aud_playlist_ins_url (aud_playlist_get_active (), (char *) data->data,
+     drop_position);
+    drop_position = -1;
 }
 
 static void
@@ -1361,17 +1362,15 @@ playlistwin_create_window(void)
 
     aud_drag_dest_set(playlistwin);
 
-    /* DnD stuff */
-    g_signal_connect(playlistwin, "drag-leave",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-data-delete",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-end",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-drop",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-data-received",
-                     G_CALLBACK(playlistwin_drag_data_received), NULL);
+    drop_position = -1;
+    g_signal_connect ((GObject *) playlistwin, "drag-motion", (GCallback)
+     drag_motion, 0);
+    g_signal_connect ((GObject *) playlistwin, "drag-leave", (GCallback)
+     drag_leave, 0);
+    g_signal_connect ((GObject *) playlistwin, "drag-drop", (GCallback)
+     drag_drop, 0);
+    g_signal_connect ((GObject *) playlistwin, "drag-data-received", (GCallback)
+     drag_data_received, 0);
 
     g_signal_connect(playlistwin, "key_press_event",
                      G_CALLBACK(playlistwin_keypress), NULL);
@@ -1384,12 +1383,17 @@ playlistwin_create_window(void)
 
 static void update_cb (void * unused, void * another)
 {
-    ui_skinned_playlist_update (playlistwin_list);
+    playlistwin_update_list (aud_playlist_get_active ());
+}
+
+static void follow_cb (void * unused, void * another)
+{
+    ui_skinned_playlist_follow (playlistwin_list);
 }
 
 static void destroy_cb (GtkObject * object, void * unused)
 {
-    aud_hook_dissociate ("playback begin", update_cb);
+    aud_hook_dissociate ("playback begin", follow_cb);
     aud_hook_dissociate ("playlist update", update_cb);
 }
 
@@ -1404,9 +1408,11 @@ playlistwin_create(void)
 
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 
-    aud_hook_associate ("playback begin", update_cb, 0);
-    aud_hook_associate ("playlist update", update_cb, 0);
+    if (audacious_drct_get_playing ())
+        ui_skinned_playlist_follow (playlistwin_list);
 
+    aud_hook_associate ("playback begin", follow_cb, 0);
+    aud_hook_associate ("playlist update", update_cb, 0);
     g_signal_connect ((GObject *) playlistwin, "destroy", (GCallback) destroy_cb,
      0);
 }

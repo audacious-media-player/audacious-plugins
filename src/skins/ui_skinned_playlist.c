@@ -72,8 +72,8 @@ struct _UiSkinnedPlaylistPrivate {
     gint             width, height;
     gint             resize_width, resize_height;
     int row_height, rows, first, focused;
-    char no_update, drag;
-    int scroll, scroll_source;
+    char drag;
+    int scroll, scroll_source, hover;
 };
 
 static void ui_skinned_playlist_class_init         (UiSkinnedPlaylistClass *klass);
@@ -140,14 +140,13 @@ static void ui_skinned_playlist_class_init(UiSkinnedPlaylistClass *klass) {
 
 static void ui_skinned_playlist_init(UiSkinnedPlaylist *playlist) {
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(playlist);
-    playlist->pressed = FALSE;
     priv->resize_width = 0;
     priv->resize_height = 0;
     priv->first = 0;
     priv->focused = -1;
-    priv->no_update = 0;
     priv->drag = 0;
     priv->scroll = 0;
+    priv->hover = -1;
 
     g_object_set_data(G_OBJECT(playlist), "timer_id", GINT_TO_POINTER(0));
     g_object_set_data(G_OBJECT(playlist), "timer_active", GINT_TO_POINTER(0));
@@ -163,13 +162,11 @@ GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gin
     UiSkinnedPlaylist *hs = g_object_new (ui_skinned_playlist_get_type (), NULL);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(hs);
 
-    hs->x = x;
-    hs->y = y;
     priv->width = w;
     priv->height = h;
     priv->skin_index = SKIN_PLEDIT;
 
-    gtk_fixed_put(GTK_FIXED(fixed), GTK_WIDGET(hs), hs->x, hs->y);
+    gtk_fixed_put ((GtkFixed *) fixed, (GtkWidget *) hs, x, y);
     gtk_widget_set_double_buffered(GTK_WIDGET(hs), TRUE);
 
     return GTK_WIDGET(hs);
@@ -183,6 +180,12 @@ void cancel_all (GtkWidget * widget, UiSkinnedPlaylistPrivate * private)
     {
         private->scroll = 0;
         g_source_remove (private->scroll_source);
+    }
+
+    if (private->hover)
+    {
+        private->hover = -1;
+        gtk_widget_queue_draw (widget);
     }
 
     ui_skinned_playlist_popup_hide (widget);
@@ -245,9 +248,6 @@ static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *
     widget->allocation = *allocation;
     if (GTK_WIDGET_REALIZED (widget))
         gdk_window_move_resize(widget->window, widget->allocation.x, widget->allocation.y, allocation->width, allocation->height);
-
-    playlist->x = widget->allocation.x;
-    playlist->y = widget->allocation.y;
 
     if (priv->height != widget->allocation.height || priv->width != widget->allocation.width) {
         priv->width = priv->width + priv->resize_width;
@@ -634,6 +634,18 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         cairo_stroke (cr);
     }
 
+    if (priv->hover >= priv->first && priv->hover <= priv->first + priv->rows)
+    {
+        cairo_set_line_width (cr, 2);
+        gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
+         SKIN_PLEDIT_NORMAL));
+
+        cairo_new_path (cr);
+        cairo_move_to (cr, 0, priv->row_height * priv->hover);
+        cairo_rel_line_to (cr, width, 0);
+        cairo_stroke (cr);
+    }
+
     gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_NORMAL));
     cairo_set_line_width(cr, 1);
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
@@ -932,9 +944,7 @@ static void delete_selected (UiSkinnedPlaylistPrivate * private, Playlist *
 
     g_list_free (selected);
 
-    private->no_update = 1;
     aud_playlist_delete (playlist, 0);
-    private->no_update = 0;
 
     if (private->first + private->rows > length)
         private->first = length - private->rows;
@@ -947,17 +957,13 @@ static void delete_selected (UiSkinnedPlaylistPrivate * private, Playlist *
         select_single (private, playlist, length, 0, position + shift);
 }
 
-void ui_skinned_playlist_update (GtkWidget * widget)
+void ui_skinned_playlist_follow (GtkWidget * widget)
 {
     UiSkinnedPlaylistPrivate * private;
     Playlist * playlist;
     int length;
 
     private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) widget);
-
-    if (private->no_update)
-        return;
-
     playlist = aud_playlist_get_active ();
     length = aud_playlist_get_length (playlist);
 
@@ -973,6 +979,8 @@ void ui_skinned_playlist_update (GtkWidget * widget)
     else
         select_single (private, playlist, length, 0, aud_playlist_get_position
          (playlist));
+
+    playlistwin_update_list (playlist);
 }
 
 char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
@@ -1118,6 +1126,7 @@ char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
 void ui_skinned_playlist_row_info (GtkWidget * widget, int * rows, int * first)
 {
     UiSkinnedPlaylistPrivate * private;
+
     private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) widget);
 
     * rows = private->rows;
@@ -1144,6 +1153,44 @@ void ui_skinned_playlist_scroll_to (GtkWidget * widget, int row)
         private->first = 0;
 
     playlistwin_update_list (playlist);
+}
+
+void ui_skinned_playlist_hover (GtkWidget * widget, int x, int y)
+{
+    UiSkinnedPlaylistPrivate * private;
+    int length, new;
+
+    private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) widget);
+    length = aud_playlist_get_length (aud_playlist_get_active ());
+
+    if (y < 0)
+        new = private->first;
+    else if (y > private->row_height * private->rows)
+        new = private->first + private->rows;
+    else
+        new = (y + private->row_height / 2) / private->row_height;
+
+    if (new > length)
+        new = length;
+
+    if (new != private->hover)
+    {
+        private->hover = new;
+        gtk_widget_queue_draw (widget);
+    }
+}
+
+int ui_skinned_playlist_hover_end (GtkWidget * widget)
+{
+    UiSkinnedPlaylistPrivate * private;
+    int temp;
+
+    private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) widget);
+
+    temp = private->hover;
+    private->hover = -1;
+    gtk_widget_queue_draw (widget);
+    return temp;
 }
 
 static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
