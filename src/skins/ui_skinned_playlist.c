@@ -1214,7 +1214,7 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget, GdkEventBu
 
         break;
       case GDK_2BUTTON_PRESS:
-        if (event->button != 1 || event->state || position == -1 || position == length)
+        if (event->button != 1 || position == -1 || position == length)
             return 1;
 
         aud_playlist_set_position (playlist, position);
