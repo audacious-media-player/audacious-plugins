@@ -63,9 +63,6 @@ do { \
     if (!connected) return retval; \
 } while (0);
 
-/* This function is from xmms' core */
-gint ctrlsocket_get_session_id(void);
-
 static const char* get_song_name(void) {
     static char t[256];
     gint pos;
