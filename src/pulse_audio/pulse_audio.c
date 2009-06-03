@@ -442,7 +442,6 @@ fail:
 
 static void pulse_write(void* ptr, int length) {
     gint writeoffs, remain, writable;
-    gint fragsize = 1024; /* TODO: make fragment size configurable */
 
     CHECK_CONNECTED();
 
@@ -457,8 +456,9 @@ static void pulse_write(void* ptr, int length) {
          gpointer pptr = ptr + writeoffs;
 
          writable = length - writeoffs;
+         size_t fragsize = pa_stream_writable_size(stream);
 
-         /* don't write any more than a fragment the size of fragsize at a time. */
+         /* don't write more than what PA is willing to handle right now. */
          if (writable > fragsize)
              writable = fragsize;
 
