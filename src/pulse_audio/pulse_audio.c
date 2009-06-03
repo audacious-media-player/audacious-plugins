@@ -533,6 +533,36 @@ static void pulse_close(void)
     volume_time_event = NULL;
 }
 
+static OutputPluginInitStatus pulse_init(void) {
+    pa_sample_spec ss;
+
+    g_assert(!mainloop);
+    g_assert(!context);
+    g_assert(!stream);
+    g_assert(!connected);
+
+    ss.format = PA_SAMPLE_S16NE;
+    ss.rate = 44100;
+    ss.channels = 2;
+
+    if (!pa_sample_spec_valid(&ss))
+        return OUTPUT_PLUGIN_INIT_FAIL;
+
+    if (!volume_valid) {
+        pa_cvolume_reset(&volume, ss.channels);
+        volume_valid = 1;
+    } else if (volume.channels != ss.channels)
+        pa_cvolume_set(&volume, ss.channels, pa_cvolume_avg(&volume));
+
+    if (!(mainloop = pa_threaded_mainloop_new())) {
+        pulse_close();
+        return OUTPUT_PLUGIN_INIT_FAIL;
+    }
+
+    pulse_close();
+    return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
+}
+
 static int pulse_open(AFormat fmt, int rate, int nch) {
     pa_sample_spec ss;
     pa_operation *o = NULL;
@@ -744,6 +774,8 @@ static void pulse_about(void) {
 
 static OutputPlugin pulse_op = {
         .description = "PulseAudio Output Plugin",
+        .probe_priority = 8,
+        .init = pulse_init,
         .about = pulse_about,
         .get_volume = pulse_get_volume,
         .set_volume = pulse_set_volume,
