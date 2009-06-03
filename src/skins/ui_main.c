@@ -787,31 +787,23 @@ mainwin_mouse_button_press(GtkWidget * widget,
     return FALSE;
 }
 
-/* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused)
 {
     Playlist *playlist = aud_playlist_get_active();
 
-    switch (event->keyval) {
+    if (ui_skinned_playlist_key (playlistwin_list, event))
+        return 1;
 
-        case GDK_Up:
-        case GDK_KP_Up:
-        case GDK_KP_8:
-            mainwin_set_volume_diff(2);
-            break;
-        case GDK_Down:
-        case GDK_KP_Down:
-        case GDK_KP_2:
-            mainwin_set_volume_diff(-2);
-            break;
+    switch (event->keyval)
+    {
         case GDK_Left:
         case GDK_KP_Left:
         case GDK_KP_7:
             if (aud_playlist_get_current_length(playlist) != -1)
                 audacious_drct_seek(CLAMP
                               (audacious_drct_get_time() - 5000, 0,
-                               aud_playlist_get_current_length(playlist)) / 1000);
+                 aud_playlist_get_current_length (playlist)));
             break;
         case GDK_Right:
         case GDK_KP_Right:
@@ -819,7 +811,7 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
             if (aud_playlist_get_current_length(playlist) != -1)
                 audacious_drct_seek(CLAMP
                               (audacious_drct_get_time() + 5000, 0,
-                               aud_playlist_get_current_length(playlist)) / 1000);
+                 aud_playlist_get_current_length (playlist)));
             break;
         case GDK_KP_4:
             aud_playlist_prev(playlist);
@@ -830,24 +822,8 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
         case GDK_KP_Insert:
             action_jump_to_file();
             break;
-        case GDK_Return:
-        case GDK_KP_Enter:
-        case GDK_KP_5:
-            mainwin_play_pushed();
-            break;
         case GDK_space:
             audacious_drct_pause();
-            break;
-        case GDK_Escape:
-            mainwin_minimize_cb();
-            break;
-        case GDK_Tab:
-            if (event->state & GDK_CONTROL_MASK) {
-                if (config.equalizer_visible)
-                    gtk_window_present(GTK_WINDOW(equalizerwin));
-                else if (config.playlist_visible)
-                    gtk_window_present(GTK_WINDOW(playlistwin));
-            }
             break;
         case GDK_c:
             if (event->state & GDK_CONTROL_MASK) {

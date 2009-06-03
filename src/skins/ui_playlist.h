@@ -71,7 +71,7 @@ void playlistwin_set_sinfo_scroll(gboolean scroll);
 gint playlistwin_list_get_visible_count(void);
 gint playlistwin_list_get_first(void);
 
-extern GtkWidget *playlistwin;
+extern GtkWidget * playlistwin, * playlistwin_list;
 
 extern gboolean playlistwin_focus;
 

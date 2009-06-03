@@ -257,40 +257,6 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
     return FALSE;
 }
 
-static gboolean
-equalizerwin_keypress(GtkWidget * widget,
-                      GdkEventKey * event,
-                      gpointer data)
-{
-    if (event->keyval == GDK_Tab && event->state & GDK_CONTROL_MASK) {
-        if (config.playlist_visible)
-            gtk_window_present(GTK_WINDOW(playlistwin));
-        else if (config.player_visible)
-            gtk_window_present(GTK_WINDOW(mainwin));
-        return TRUE;
-    }
-    if (!config.equalizer_shaded) {
-        gtk_widget_event(mainwin, (GdkEvent *) event);
-        return TRUE;
-    }
-
-    switch (event->keyval) {
-    case GDK_Left:
-    case GDK_KP_Left:
-        mainwin_set_balance_diff(-4);
-        break;
-    case GDK_Right:
-    case GDK_KP_Right:
-        mainwin_set_balance_diff(4);
-        break;
-    default:
-        gtk_widget_event(mainwin, (GdkEvent *) event);
-        break;
-    }
-
-    return FALSE;
-}
-
 static void
 equalizerwin_close_cb(void)
 {
@@ -500,8 +466,8 @@ equalizerwin_create_window(void)
                      G_CALLBACK(equalizerwin_delete), NULL);
     g_signal_connect(equalizerwin, "button_press_event",
                      G_CALLBACK(equalizerwin_press), NULL);
-    g_signal_connect(equalizerwin, "key_press_event",
-                     G_CALLBACK(equalizerwin_keypress), NULL);
+    g_signal_connect ((GObject *) equalizerwin, "key-press-event", (GCallback)
+     mainwin_keypress, 0);
 }
 
 void

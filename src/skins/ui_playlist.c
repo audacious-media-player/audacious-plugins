@@ -59,11 +59,10 @@
 #include "icons-stock.h"
 #include "images/audacious_playlist.xpm"
 
-GtkWidget *playlistwin;
+GtkWidget * playlistwin, * playlistwin_list;
 
 static GMutex *resize_mutex = NULL;
 
-static GtkWidget *playlistwin_list = NULL;
 static GtkWidget *playlistwin_shade, *playlistwin_close;
 static GtkWidget *playlistwin_shaded_shade, *playlistwin_shaded_close;
 
@@ -83,6 +82,7 @@ static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
 
 static gboolean playlistwin_resizing = FALSE;
 static gint playlistwin_resize_x, playlistwin_resize_y;
+static int drop_position;
 
 gboolean
 playlistwin_is_shaded(void)
@@ -643,12 +643,6 @@ playlistwin_motion(GtkWidget * widget,
 }
 
 static void
-playlistwin_show_filebrowser(void)
-{
-    action_playlist_add_files();
-}
-
-static void
 playlistwin_fileinfo(void)
 {
     Playlist *playlist = aud_playlist_get_active();
@@ -1032,77 +1026,6 @@ playlistwin_delete(GtkWidget * w, gpointer data)
     return TRUE;
 }
 
-/* FIXME: Handle the keys through menu */
-
-static gboolean
-playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
-{
-    Playlist *playlist = aud_playlist_get_active();
-    UiSkinnedPlaylist * skinned;
-    guint keyval;
-    gboolean refresh = FALSE;
-
-    skinned = UI_SKINNED_PLAYLIST (playlistwin_list);
-
-    if (config.playlist_shaded)
-        return FALSE;
-
-    if (ui_skinned_playlist_key (playlistwin_list, event))
-        return 1;
-
-    switch (keyval = event->keyval) {
-    case GDK_3:
-        if (event->state & GDK_CONTROL_MASK)
-            playlistwin_fileinfo();
-        break;
-    case GDK_Insert:
-        if (event->state & GDK_MOD1_MASK)
-            action_playlist_add_url();
-        else
-            playlistwin_show_filebrowser();
-        break;
-    case GDK_Left:
-    case GDK_KP_Left:
-    case GDK_KP_7:
-        if (aud_playlist_get_current_length(playlist) != -1)
-            audacious_drct_seek(CLAMP
-                              (audacious_drct_get_time() - 5000, 0,
-                              aud_playlist_get_current_length(playlist)));
-        break;
-    case GDK_Right:
-    case GDK_KP_Right:
-    case GDK_KP_9:
-        if (aud_playlist_get_current_length(playlist) != -1)
-            audacious_drct_seek(CLAMP
-                              (audacious_drct_get_time() + 5000, 0,
-                              aud_playlist_get_current_length(playlist)));
-        break;
-    case GDK_KP_4:
-        aud_playlist_prev(playlist);
-        break;
-    case GDK_KP_6:
-        aud_playlist_next(playlist);
-        break;
-    case GDK_Tab:
-        if (event->state & GDK_CONTROL_MASK) {
-            if (config.player_visible)
-                gtk_window_present(GTK_WINDOW(mainwin));
-            else if (config.equalizer_visible)
-                gtk_window_present(GTK_WINDOW(equalizerwin));
-        }
-        break;
-    default:
-        return mainwin_keypress (0, event, 0);
-    }
-    if (refresh) {
-#if 0
-        g_cond_signal(cond_scan);
-#endif
-        playlistwin_update_list(aud_playlist_get_active());
-    }
-    return TRUE;
-}
-
 void
 playlistwin_hide_timer(void)
 {
@@ -1138,31 +1061,31 @@ playlistwin_set_time(gint time, gint length, TimerMode mode)
     g_free(text);
 }
 
-static void
-playlistwin_drag_end(GtkWidget * widget,
-                     GdkDragContext * context, gpointer user_data)
+static void drag_motion (GtkWidget * widget, GdkDragContext * context, gint x,
+ gint y, guint time, void * unused)
 {
-    playlistwin_update_list(aud_playlist_get_active());
+    ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
 }
 
-static void
-playlistwin_drag_data_received(GtkWidget * widget,
-                               GdkDragContext * context,
-                               gint x, gint y,
-                               GtkSelectionData *
-                               selection_data, guint info,
-                               guint time, gpointer user_data)
+static void drag_leave (GtkWidget * widget, GdkDragContext * context, guint time,
+ void * unused)
 {
-    Playlist *playlist = aud_playlist_get_active();
+    ui_skinned_playlist_hover_end (playlistwin_list);
+}
 
-    g_return_if_fail(selection_data);
+static void drag_drop (GtkWidget * widget, GdkDragContext * context, gint x,
+ gint y, guint time, void * unused)
+{
+    ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
+    drop_position = ui_skinned_playlist_hover_end (playlistwin_list);
+}
 
-    if (!selection_data->data) {
-        g_message("Received no DND data!");
-        return;
-    }
-
-    aud_playlist_add_url (playlist, (char *) selection_data->data);
+static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
+ gint x, gint y, GtkSelectionData * data, guint info, guint time, void * unused)
+{
+    aud_playlist_ins_url (aud_playlist_get_active (), (char *) data->data,
+     drop_position);
+    drop_position = -1;
 }
 
 static void
@@ -1361,20 +1284,18 @@ playlistwin_create_window(void)
 
     aud_drag_dest_set(playlistwin);
 
-    /* DnD stuff */
-    g_signal_connect(playlistwin, "drag-leave",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-data-delete",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-end",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-drop",
-                     G_CALLBACK(playlistwin_drag_end), NULL);
-    g_signal_connect(playlistwin, "drag-data-received",
-                     G_CALLBACK(playlistwin_drag_data_received), NULL);
+    drop_position = -1;
+    g_signal_connect ((GObject *) playlistwin, "drag-motion", (GCallback)
+     drag_motion, 0);
+    g_signal_connect ((GObject *) playlistwin, "drag-leave", (GCallback)
+     drag_leave, 0);
+    g_signal_connect ((GObject *) playlistwin, "drag-drop", (GCallback)
+     drag_drop, 0);
+    g_signal_connect ((GObject *) playlistwin, "drag-data-received", (GCallback)
+     drag_data_received, 0);
 
-    g_signal_connect(playlistwin, "key_press_event",
-                     G_CALLBACK(playlistwin_keypress), NULL);
+    g_signal_connect ((GObject *) playlistwin, "key-press-event", (GCallback)
+     mainwin_keypress, 0);
     g_signal_connect(playlistwin, "selection_received",
                      G_CALLBACK(selection_received), NULL);
 
@@ -1384,12 +1305,17 @@ playlistwin_create_window(void)
 
 static void update_cb (void * unused, void * another)
 {
-    ui_skinned_playlist_update (playlistwin_list);
+    playlistwin_update_list (aud_playlist_get_active ());
+}
+
+static void follow_cb (void * unused, void * another)
+{
+    ui_skinned_playlist_follow (playlistwin_list);
 }
 
 static void destroy_cb (GtkObject * object, void * unused)
 {
-    aud_hook_dissociate ("playback begin", update_cb);
+    aud_hook_dissociate ("playlist position", follow_cb);
     aud_hook_dissociate ("playlist update", update_cb);
 }
 
@@ -1400,13 +1326,14 @@ playlistwin_create(void)
     playlistwin_create_window();
 
     playlistwin_create_widgets();
-    playlistwin_update_info(aud_playlist_get_active());
 
     gtk_window_add_accel_group(GTK_WINDOW(playlistwin), ui_manager_get_accel_group());
 
-    aud_hook_associate ("playback begin", update_cb, 0);
-    aud_hook_associate ("playlist update", update_cb, 0);
+    // calls playlistwin_update_list, so we don't need to
+    ui_skinned_playlist_follow (playlistwin_list);
 
+    aud_hook_associate ("playlist position", follow_cb, 0);
+    aud_hook_associate ("playlist update", update_cb, 0);
     g_signal_connect ((GObject *) playlistwin, "destroy", (GCallback) destroy_cb,
      0);
 }
