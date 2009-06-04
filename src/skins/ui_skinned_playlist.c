@@ -1027,7 +1027,8 @@ char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
           case GDK_Return:
             select_single (private, playlist, length, 1, 0);
             aud_playlist_set_position (playlist, private->focused);
-            audacious_drct_initiate ();
+            aud_playlist_shuffle (playlist);
+            audacious_drct_play ();
             break;
           case GDK_Escape:
             select_single (private, playlist, length, 0,
@@ -1275,7 +1276,8 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
             return 1;
 
         aud_playlist_set_position (playlist, position);
-        audacious_drct_initiate ();
+        aud_playlist_shuffle (playlist);
+        audacious_drct_play ();
         break;
       default:
         return 1;
