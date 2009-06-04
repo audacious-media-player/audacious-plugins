@@ -32,7 +32,7 @@ static gsize wr_hwframes = 0;
 static gint flush_request, paused;
 
 static GMutex *pcm_pause_mutex, *pcm_state_mutex;
-static GCond *pcm_pause_cond, *pcm_state_cond;
+static GCond *pcm_pause_cond, *pcm_state_cond, *pcm_flush_cond;
 
 /********************************************************************************
  * ALSA Mixer setting functions.                                                *
@@ -83,7 +83,7 @@ alsaplug_loop(gpointer unused)
             wr_total = flush_request * (bps / 1000);
             flush_request = -1;
 
-            g_cond_broadcast(pcm_state_cond);
+            g_cond_broadcast(pcm_flush_cond);
         }
 
         if (alsaplug_ringbuffer_read(&pcm_ringbuf, buf, 2048) == -1)
@@ -131,6 +131,7 @@ alsaplug_init(void)
 
     pcm_state_mutex = g_mutex_new();
     pcm_state_cond = g_cond_new();
+    pcm_flush_cond = g_cond_new();
 
     if (snd_card_next(&card) != 0)
         return OUTPUT_PLUGIN_INIT_NO_DEVICES;
@@ -282,11 +283,9 @@ alsaplug_flush(gint time)
     g_mutex_lock(pcm_state_mutex);
     flush_request = time;
     g_cond_broadcast(pcm_state_cond);
-    g_mutex_unlock(pcm_state_mutex);
 
     /* ...then wait for the transaction to complete. */
-    g_mutex_lock(pcm_state_mutex);
-    g_cond_wait(pcm_state_cond, pcm_state_mutex);
+    g_cond_wait(pcm_flush_cond, pcm_state_mutex);
     g_mutex_unlock(pcm_state_mutex);
 }
 
