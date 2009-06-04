@@ -666,7 +666,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
          SKIN_PLEDIT_NORMAL));
 
         cairo_new_path (cr);
-        cairo_move_to (cr, 0, priv->row_height * priv->hover);
+        cairo_move_to (cr, 0, priv->row_height * (priv->hover - priv->first));
         cairo_rel_line_to (cr, width, 0);
         cairo_stroke (cr);
     }
@@ -1172,7 +1172,8 @@ void ui_skinned_playlist_hover (GtkWidget * widget, int x, int y)
     else if (y > private->row_height * private->rows)
         new = private->first + private->rows;
     else
-        new = (y + private->row_height / 2) / private->row_height;
+        new = private->first + (y + private->row_height / 2) /
+         private->row_height;
 
     if (new > length)
         new = length;
