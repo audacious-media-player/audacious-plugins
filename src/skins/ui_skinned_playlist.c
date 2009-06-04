@@ -666,7 +666,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
          SKIN_PLEDIT_NORMAL));
 
         cairo_new_path (cr);
-        cairo_move_to (cr, 0, priv->row_height * priv->hover);
+        cairo_move_to (cr, 0, priv->row_height * (priv->hover - priv->first));
         cairo_rel_line_to (cr, width, 0);
         cairo_stroke (cr);
     }
@@ -1027,7 +1027,8 @@ char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event)
           case GDK_Return:
             select_single (private, playlist, length, 1, 0);
             aud_playlist_set_position (playlist, private->focused);
-            audacious_drct_initiate ();
+            aud_playlist_shuffle (playlist);
+            audacious_drct_play ();
             break;
           case GDK_Escape:
             select_single (private, playlist, length, 0,
@@ -1171,7 +1172,8 @@ void ui_skinned_playlist_hover (GtkWidget * widget, int x, int y)
     else if (y > private->row_height * private->rows)
         new = private->first + private->rows;
     else
-        new = (y + private->row_height / 2) / private->row_height;
+        new = private->first + (y + private->row_height / 2) /
+         private->row_height;
 
     if (new > length)
         new = length;
@@ -1275,7 +1277,8 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
             return 1;
 
         aud_playlist_set_position (playlist, position);
-        audacious_drct_initiate ();
+        aud_playlist_shuffle (playlist);
+        audacious_drct_play ();
         break;
       default:
         return 1;
