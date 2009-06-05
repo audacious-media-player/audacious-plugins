@@ -46,7 +46,7 @@ ui_main_evlistener_title_change(gpointer hook_data, gpointer user_data)
     gchar *text = (gchar *) hook_data;
 
     ui_skinned_textbox_set_text(mainwin_info, text);
-    playlistwin_update_list(aud_playlist_get_active());
+    playlistwin_update ();
 }
 
 static void

@@ -57,6 +57,7 @@ GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gin
 GType ui_skinned_playlist_get_type(void);
 void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h);
 void ui_skinned_playlist_set_font(const gchar * font);
+void ui_skinned_playlist_update (GtkWidget * widget);
 void ui_skinned_playlist_follow (GtkWidget * widget);
 char ui_skinned_playlist_key (GtkWidget * widget, GdkEventKey * event);
 void ui_skinned_playlist_row_info (GtkWidget * widget, int * rows, int * first);

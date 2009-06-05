@@ -297,7 +297,7 @@ void skins_cfg_save() {
 static void
 playlist_show_pl_separator_numbers_cb()
 {
-    playlistwin_update_list(aud_playlist_get_active());
+    playlistwin_update ();
 }
 
 static void
@@ -312,7 +312,7 @@ playlist_font_set_cb()
     AUDDBG("Attempt to set font \"%s\"\n", config.playlist_font);
     ui_skinned_playlist_set_font(config.playlist_font);
     playlistwin_set_sinfo_font(config.playlist_font);  /* propagate font setting to playlistwin_sinfo */
-    playlistwin_update_list(aud_playlist_get_active());
+    playlistwin_update ();
 }
 
 static void
@@ -322,7 +322,7 @@ bitmap_fonts_cb()
     playlistwin_set_sinfo_font(config.playlist_font);
 
     if (config.playlist_shaded) {
-        playlistwin_update_list(aud_playlist_get_active());
+        playlistwin_update ();
         ui_skinned_window_draw_all(playlistwin);
     }
 }

@@ -184,7 +184,7 @@ aud_active_skin_load(const gchar * path)
     ui_skinned_window_draw_all(equalizerwin);
     ui_skinned_window_draw_all(playlistwin);
 
-    playlistwin_update_list(aud_playlist_get_active());
+    playlistwin_update ();
 
     SkinPixmap *pixmap;
     pixmap = &aud_active_skin->pixmaps[SKIN_POSBAR];

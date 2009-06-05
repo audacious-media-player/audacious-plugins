@@ -53,7 +53,7 @@
 gboolean playlistwin_is_shaded(void);
 gint playlistwin_get_width(void);
 gint playlistwin_get_height(void);
-void playlistwin_update_list(Playlist *playlist);
+void playlistwin_update (void);
 void playlistwin_set_toprow(gint top);
 void playlistwin_set_shade_menu_cb(gboolean shaded);
 void playlistwin_set_shade(gboolean shaded);
@@ -71,8 +71,8 @@ void playlistwin_set_sinfo_scroll(gboolean scroll);
 gint playlistwin_list_get_visible_count(void);
 gint playlistwin_list_get_first(void);
 
+extern Playlist * active_playlist;
+extern int active_length;
 extern GtkWidget * playlistwin, * playlistwin_list;
-
-extern gboolean playlistwin_focus;
 
 #endif /* AUDACIOUS_UI_PLAYLIST_H */
