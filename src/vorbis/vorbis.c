@@ -341,7 +341,7 @@ vorbis_play_loop(gpointer arg)
     while (playback->playing) {
 
         if (playback->eof) {
-            g_usleep(20000);
+            g_usleep(1000);
             continue;
         }
 
@@ -391,7 +391,8 @@ vorbis_play_loop(gpointer arg)
             if (vi->rate != samplerate || vi->channels != channels) {
                 samplerate = vi->rate;
                 channels = vi->channels;
-                while(playback->output->buffer_playing()) g_usleep(50000);
+                while (playback->output->buffer_playing())
+                    g_usleep(1000);
                 playback->output->close_audio();
                 if (!playback->output->
                         open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
@@ -438,6 +439,8 @@ vorbis_play_loop(gpointer arg)
     } /* main loop */
 
   play_cleanup:
+    playback->output->close_audio();
+
     g_free(title);
 
     /*
