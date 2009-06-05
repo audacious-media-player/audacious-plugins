@@ -437,23 +437,7 @@ vorbis_play_loop(gpointer arg)
         }
     } /* main loop */
 
-    if (!playback->error) {
-        /*this loop makes it not skip the last ~4 seconds, but the playback
-         * timer isn't updated in this period, so it still needs a bit of work
-         *
-         * majeru
-         */
-        if(playback->eof) /* do it only on EOF --asphyx */
-            while(playback->output->buffer_playing()) {
-                AUDDBG("waiting for empty output buffer\n");
-                g_usleep(50000);
-            }
-
-        playback->output->close_audio();
-    }
-
-
-    play_cleanup:
+  play_cleanup:
     g_free(title);
 
     /*
