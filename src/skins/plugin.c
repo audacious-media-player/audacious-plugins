@@ -29,6 +29,8 @@
 #include <audacious/i18n.h>
 #include <libintl.h>
 
+#include "ui_playlist_manager.h"
+
 gchar *skins_paths[SKINS_PATH_COUNT] = {};
 
 Interface skins_interface =
@@ -121,6 +123,10 @@ gboolean skins_cleanup(void) {
         gtk_widget_destroy (mainwin);
         gtk_widget_destroy (equalizerwin);
         gtk_widget_destroy (playlistwin);
+
+        if (playman_win)
+            gtk_widget_destroy (playman_win);
+
         cleanup_skins();
         skins_free_paths();
         ui_main_evlistener_dissociate();

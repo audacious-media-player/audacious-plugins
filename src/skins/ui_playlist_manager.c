@@ -17,23 +17,21 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include "ui_playlist_manager.h"
-#include "ui_playlist.h"
-#include <audacious/plugin.h>
-#include "ui_main.h"
-
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <audacious/plugin.h>
+
+#include "ui_playlist_manager.h"
+#include "ui_playlist.h"
+#include "ui_main.h"
 
 #define DISABLE_MANAGER_UPDATE() g_object_set_data(G_OBJECT(listview),"opt1",GINT_TO_POINTER(1))
 #define ENABLE_MANAGER_UPDATE() g_object_set_data(G_OBJECT(listview),"opt1",GINT_TO_POINTER(0))
 
-
-static GtkWidget *playman_win = NULL;
-
+GtkWidget * playman_win = 0;
 
 /* in this enum, place the columns according to visualization order
    (information not displayed in columns should be placed right before PLLIST_NUMCOLS) */
@@ -512,8 +510,5 @@ playlist_manager_update ( void )
             GtkListStore *store = (GtkListStore*)gtk_tree_view_get_model( GTK_TREE_VIEW(lv) );
             playlist_manager_populate( store );
         }
-        return;
     }
-    else
-        return; /* if the playlist manager is not active, simply return */
 }
