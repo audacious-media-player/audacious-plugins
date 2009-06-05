@@ -1209,16 +1209,11 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
             {
               case 0:
                 if (is_selected (position))
-                {
                     select_slide (private, 0, position);
-                    private->drag = DRAG_MOVE;
-                }
                 else
-                {
                     select_single (private, 0, position);
-                    private->drag = DRAG_SELECT;
-                }
 
+                private->drag = DRAG_MOVE;
                 break;
               case GDK_SHIFT_MASK:
                 select_extend (private, 0, position);
