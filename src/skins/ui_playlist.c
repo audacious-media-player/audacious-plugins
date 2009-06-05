@@ -1278,8 +1278,19 @@ playlistwin_create_window(void)
 
 static void update_cb (void * playlist, void * unused)
 {
+    Playlist * old;
+
+    old = active_playlist;
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_get_length (active_playlist);
+
+    if (active_playlist != old)
+    {
+        // calls playlistwin_update, so we don't need to
+        ui_skinned_playlist_scroll_to (playlistwin_list, 0);
+        ui_skinned_playlist_follow (playlistwin_list);
+        return;
+    }
 
     if (playlist != active_playlist)
         return;
