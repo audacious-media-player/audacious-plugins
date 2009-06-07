@@ -64,7 +64,7 @@ struct _UiSkinnedPlaylistPrivate {
     int width, height, ascent, descent, letter_width, digit_width;
     char slanted;
     gint             resize_width, resize_height;
-    int row_height, rows, first, focused;
+    int row_height, offset, rows, first, focused;
     char drag;
     int scroll, scroll_source, hover;
 };
@@ -249,6 +249,14 @@ static void calc_layout (UiSkinnedPlaylistPrivate * private)
     private->row_height = private->ascent - private->descent;
     private->rows = private->height / private->row_height;
 
+    if (private->rows && active_title)
+    {
+        private->offset = private->row_height;
+        private->rows --;
+    }
+    else
+        private->offset = 0;
+
     if (private->first + private->rows > active_length)
         private->first = active_length - private->rows;
     if (private->first < 0)
@@ -257,9 +265,6 @@ static void calc_layout (UiSkinnedPlaylistPrivate * private)
 
 static void scroll_to (UiSkinnedPlaylistPrivate * private, int position)
 {
-    if (! private->rows)
-        return;
-
     if (position < private->first)
     {
         private->first = position - private->rows / 2;
@@ -331,7 +336,7 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
 
         cairo_move_to (cr, (private->digit_width *
                          (-1 + plist_length_int - strlen(pos_string))) +
-         private->digit_width / 4, private->row_height * line);
+         private->digit_width / 4, private->offset + private->row_height * line);
         pango_cairo_show_layout(cr, layout);
 
         g_free(pos_string);
@@ -352,8 +357,8 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
     pango_layout_set_single_paragraph_mode(layout, TRUE);
     pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
 
-    cairo_move_to (cr, padding + private->letter_width / 4, private->row_height
-     * line);
+    cairo_move_to (cr, padding + private->letter_width / 4, private->offset +
+     private->row_height * line);
     pango_cairo_show_layout(cr, layout);
 
     g_object_unref(layout);
@@ -413,6 +418,20 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     rounding_offset = priv->row_height / 3;
 
+    if (priv->offset)
+    {
+        layout = gtk_widget_create_pango_layout (widget, active_title);
+        pango_layout_set_font_description (layout, priv->font);
+        pango_layout_set_width (layout, PANGO_SCALE * width);
+        pango_layout_set_height (layout, PANGO_SCALE * priv->offset);
+        pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
+        pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_MIDDLE);
+        cairo_move_to (cr, 0, 0);
+        gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
+         SKIN_PLEDIT_NORMAL));
+        pango_cairo_show_layout (cr, layout);
+    }
+
     PLAYLIST_LOCK (active_playlist);
     list = active_playlist->entries;
     list = g_list_nth(list, priv->first);
@@ -444,7 +463,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         entry = list->data;
 
         if (entry->selected && !in_selection) {
-            yc = ((i - priv->first) * priv->row_height);
+            yc = priv->offset + priv->row_height * (i - priv->first);
 
             cairo_new_path(cr);
 
@@ -463,9 +482,9 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
             && in_selection) {
 
             if (!entry->selected)
-                yc = (((i - 1) - priv->first) * priv->row_height);
+                yc = priv->offset + priv->row_height * (i - 1 - priv->first);
             else /* last visible item */
-                yc = ((i - priv->first) * priv->row_height);
+                yc = priv->offset + priv->row_height * (i - priv->first);
 
             cairo_line_to(cr, 0 + width, yc + priv->row_height - (rounding_offset * 2));
             cairo_curve_to (cr, 0 + width, yc + priv->row_height - rounding_offset,
@@ -551,7 +570,8 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
                                   i + 1);
 
         x = width - priv->digit_width * 2;
-        y = (i - priv->first - 1) * priv->row_height + priv->ascent;
+        y = priv->offset + (i - priv->first - 1) * priv->row_height +
+         priv->ascent;
 
         frags = NULL;
         frag0 = NULL;
@@ -627,7 +647,8 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
          SKIN_PLEDIT_NORMAL));
 
         left = 0.5;
-        top = priv->row_height * (priv->focused - priv->first) + 0.5;
+        top = priv->offset + priv->row_height * (priv->focused - priv->first) +
+         0.5;
         right = width - 0.5;
         bottom = top + priv->row_height - 1;
 
@@ -656,7 +677,8 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
          SKIN_PLEDIT_NORMAL));
 
         cairo_new_path (cr);
-        cairo_move_to (cr, 0, priv->row_height * (priv->hover - priv->first));
+        cairo_move_to (cr, 0, priv->offset + priv->row_height * (priv->hover -
+         priv->first));
         cairo_rel_line_to (cr, width, 0);
         cairo_stroke (cr);
     }
@@ -720,7 +742,7 @@ static int calc_position (UiSkinnedPlaylistPrivate * private, int y)
     if (y < 0)
         return -1;
 
-    position = private->first + y / private->row_height;
+    position = private->first + (y - private->offset) / private->row_height;
 
     if (position > private->first + private->rows - 1 || position >
      active_length - 1)
@@ -949,14 +971,10 @@ void ui_skinned_playlist_update (GtkWidget * widget)
 
     private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) widget);
 
-    if (private->first + private->rows > active_length)
-        private->first = active_length - private->rows;
-    if (private->first < 0)
-        private->first = 0;
-
     if (private->focused > active_length - 1)
         private->focused = active_length - 1;
 
+    calc_layout (private);
     gtk_widget_queue_draw (widget);
 
     if (private->slider)
@@ -1151,12 +1169,12 @@ void ui_skinned_playlist_hover (GtkWidget * widget, int x, int y)
 
     private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) widget);
 
-    if (y < 0)
+    if (y < private->offset)
         new = private->first;
-    else if (y > private->row_height * private->rows)
+    else if (y > private->offset + private->row_height * private->rows)
         new = private->first + private->rows;
     else
-        new = private->first + (y + private->row_height / 2) /
+        new = private->first + (y - private->offset + private->row_height / 2) /
          private->row_height;
 
     if (new > active_length)

@@ -70,6 +70,7 @@ gint playlistwin_list_get_first(void);
 
 extern Playlist * active_playlist;
 extern int active_length;
+extern char * active_title;
 extern GtkWidget * playlistwin, * playlistwin_list;
 
 #endif /* AUDACIOUS_UI_PLAYLIST_H */

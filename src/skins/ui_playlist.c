@@ -61,6 +61,7 @@
 
 Playlist * active_playlist;
 int active_length;
+char * active_title;
 GtkWidget * playlistwin, * playlistwin_list;
 
 static GMutex *resize_mutex = NULL;
@@ -1248,6 +1249,20 @@ playlistwin_create_window(void)
      0);
 }
 
+static void get_title (void)
+{
+    GList * playlists;
+
+    if (active_title)
+        g_free (active_title);
+
+    playlists = aud_playlist_get_playlists ();
+
+    active_title = playlists->next ? g_strdup_printf ("%s (%d of %d)",
+     active_playlist->title, 1 + g_list_index (playlists, active_playlist),
+     g_list_length (playlists)) : 0;
+}
+
 static void update_cb (void * playlist, void * unused)
 {
     Playlist * old;
@@ -1255,6 +1270,7 @@ static void update_cb (void * playlist, void * unused)
     old = active_playlist;
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_get_length (active_playlist);
+    get_title ();
 
     if (active_playlist != old)
     {
@@ -1263,9 +1279,6 @@ static void update_cb (void * playlist, void * unused)
         ui_skinned_playlist_follow (playlistwin_list);
         return;
     }
-
-    if (playlist != active_playlist)
-        return;
 
     playlistwin_update ();
 }
@@ -1289,6 +1302,8 @@ playlistwin_create(void)
 {
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_get_length (active_playlist);
+    active_title = 0;
+    get_title ();
 
     resize_mutex = g_mutex_new();
     playlistwin_create_window();
