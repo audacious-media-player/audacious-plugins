@@ -25,6 +25,7 @@
  */
 
 #include "ui_skin.h"
+#include "ui_skinned_playlist.h"
 #include "ui_skinned_playlist_slider.h"
 #include "ui_playlist.h"
 
@@ -32,6 +33,7 @@
 typedef struct _UiSkinnedPlaylistSliderPrivate UiSkinnedPlaylistSliderPrivate;
 
 struct _UiSkinnedPlaylistSliderPrivate {
+    GtkWidget * list;
     SkinPixmapId     skin_index;
     gint             width, height;
 
@@ -107,7 +109,9 @@ static void ui_skinned_playlist_slider_init(UiSkinnedPlaylistSlider *playlist_sl
     priv->prev_y = 0;
 }
 
-GtkWidget* ui_skinned_playlist_slider_new(GtkWidget *fixed, gint x, gint y, gint h) {
+GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * fixed, gint x, gint y,
+ gint h, GtkWidget * list)
+{
 
     UiSkinnedPlaylistSlider *hs = g_object_new (ui_skinned_playlist_slider_get_type (), NULL);
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(hs);
@@ -116,6 +120,7 @@ GtkWidget* ui_skinned_playlist_slider_new(GtkWidget *fixed, gint x, gint y, gint
     hs->y = y;
     priv->width = 8;
     priv->height = h;
+    priv->list = list;
     priv->skin_index = SKIN_PLEDIT;
 
     gtk_fixed_put(GTK_FIXED(fixed), GTK_WIDGET(hs), hs->x, hs->y);
@@ -153,7 +158,7 @@ static void ui_skinned_playlist_slider_realize(GtkWidget *widget) {
     attributes.wclass = GDK_INPUT_OUTPUT;
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | 
+    attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK |
                              GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK;
     attributes.visual = gtk_widget_get_visual(widget);
     attributes.colormap = gtk_widget_get_colormap(widget);
@@ -193,6 +198,8 @@ static void ui_skinned_playlist_slider_size_allocate(GtkWidget *widget, GtkAlloc
 }
 
 static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExpose *event) {
+    int rows, first, y;
+
     g_return_val_if_fail (widget != NULL, FALSE);
     g_return_val_if_fail (UI_SKINNED_IS_PLAYLIST_SLIDER (widget), FALSE);
     g_return_val_if_fail (event != NULL, FALSE);
@@ -204,16 +211,10 @@ static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExp
     GdkPixbuf *obj = NULL;
     obj = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, priv->width, priv->height);
 
-    gint num_visible;
-    num_visible = playlistwin_list_get_visible_count();
+    ui_skinned_playlist_row_info (priv->list, & rows, & first);
 
-
-    Playlist *playlist = aud_playlist_get_active();
-
-    gint y;
-    if (aud_playlist_get_length(playlist) > num_visible)
-        y = (playlistwin_list_get_first() * (priv->height - 19)) /
-            (aud_playlist_get_length(playlist) - num_visible);
+    if (active_length > rows)
+        y = first * (priv->height - 19) / (active_length - rows);
     else
         y = 0;
 
@@ -241,24 +242,25 @@ static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExp
 }
 
 static void ui_skinned_playlist_slider_set_position(GtkWidget *widget, gint y) {
-    gint pos;
-    Playlist *playlist = aud_playlist_get_active();
+    int rows, first;
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(widget);
 
     y = CLAMP(y, 0, priv->height - 19);
 
-    pos = (y * (aud_playlist_get_length(playlist) - playlistwin_list_get_visible_count())) / (priv->height - 19);
-    playlistwin_set_toprow(pos);
-
-    gtk_widget_queue_draw(widget);
+    ui_skinned_playlist_row_info (priv->list, & rows, & first);
+    ui_skinned_playlist_scroll_to (priv->list, y * (active_length - rows)
+     / (priv->height - 19));
 }
 
 static gboolean ui_skinned_playlist_slider_button_press(GtkWidget *widget, GdkEventButton *event) {
     UiSkinnedPlaylistSlider *ps = UI_SKINNED_PLAYLIST_SLIDER (widget);
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(widget);
+    int rows, first, n;
 
     if (event->button != 1 && event->button != 2)
         return TRUE;
+
+    ui_skinned_playlist_row_info (priv->list, & rows, & first);
 
     gint y = event->y;
     if (event->type == GDK_BUTTON_PRESS) {
@@ -269,10 +271,12 @@ static gboolean ui_skinned_playlist_slider_button_press(GtkWidget *widget, GdkEv
             ui_skinned_playlist_slider_set_position(widget, y);
             priv->drag_y = 0;
         } else {
-            gint n = playlistwin_list_get_visible_count() / 2;
+            n = rows / 2;
+
             if (y < priv->prev_y)
                 n *= -1;
-            playlistwin_scroll(n);
+
+            ui_skinned_playlist_scroll_to (priv->list, n);
         }
         gtk_widget_queue_draw(widget);
     }

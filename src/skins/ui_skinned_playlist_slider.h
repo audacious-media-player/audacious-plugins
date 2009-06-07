@@ -50,7 +50,8 @@ struct _UiSkinnedPlaylistSliderClass {
     GtkWidgetClass    parent_class;
 };
 
-GtkWidget* ui_skinned_playlist_slider_new(GtkWidget *fixed, gint x, gint y, gint h);
+GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * fixed, gint x, gint y,
+ gint h, GtkWidget * list);
 GType ui_skinned_playlist_slider_get_type(void);
 void ui_skinned_playlist_slider_move_relative(GtkWidget *widget, gint x);
 void ui_skinned_playlist_slider_resize_relative(GtkWidget *widget, gint h);

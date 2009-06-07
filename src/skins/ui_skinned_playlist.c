@@ -52,24 +52,17 @@
 #include "skins_cfg.h"
 #include <audacious/plugin.h>
 
-static PangoFontDescription *playlist_list_font = NULL;
-static gint ascent, descent, width_delta_digit_one;
-static gboolean has_slant;
-static guint padding;
-
-/* FIXME: the following globals should not be needed. */
-static gint width_approx_letters;
-static gint width_colon, width_colon_third;
-static gint width_approx_digits, width_approx_digits_half;
-
 #define UI_SKINNED_PLAYLIST_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ui_skinned_playlist_get_type(), UiSkinnedPlaylistPrivate))
 typedef struct _UiSkinnedPlaylistPrivate UiSkinnedPlaylistPrivate;
 
 enum {DRAG_SELECT = 1, DRAG_MOVE};
 
 struct _UiSkinnedPlaylistPrivate {
+    GtkWidget * slider;
+    PangoFontDescription * font;
     SkinPixmapId     skin_index;
-    gint             width, height;
+    int width, height, ascent, descent, letter_width, digit_width;
+    char slanted;
     gint             resize_width, resize_height;
     int row_height, rows, first, focused;
     char drag;
@@ -158,14 +151,18 @@ static void ui_skinned_playlist_init(UiSkinnedPlaylist *playlist) {
     g_object_set_data(G_OBJECT(playlist), "popup_position", GINT_TO_POINTER(-1));
 }
 
-GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gint h) {
-
+GtkWidget * ui_skinned_playlist_new (GtkWidget * fixed, int x, int y, int width,
+ int height, char * font)
+{
     UiSkinnedPlaylist *hs = g_object_new (ui_skinned_playlist_get_type (), NULL);
     UiSkinnedPlaylistPrivate *priv = UI_SKINNED_PLAYLIST_GET_PRIVATE(hs);
 
-    priv->width = w;
-    priv->height = h;
+    priv->width = width;
+    priv->height = height;
+    priv->slider = 0;
     priv->skin_index = SKIN_PLEDIT;
+
+    ui_skinned_playlist_set_font ((GtkWidget *) hs, font);
 
     gtk_fixed_put ((GtkFixed *) fixed, (GtkWidget *) hs, x, y);
     gtk_widget_set_double_buffered(GTK_WIDGET(hs), TRUE);
@@ -173,7 +170,13 @@ GtkWidget* ui_skinned_playlist_new(GtkWidget *fixed, gint x, gint y, gint w, gin
     return GTK_WIDGET(hs);
 }
 
-void cancel_all (GtkWidget * widget, UiSkinnedPlaylistPrivate * private)
+void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider)
+{
+    UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) list)->slider =
+     slider;
+}
+
+static void cancel_all (GtkWidget * widget, UiSkinnedPlaylistPrivate * private)
 {
     private->drag = 0;
 
@@ -241,6 +244,17 @@ static void ui_skinned_playlist_size_request(GtkWidget *widget, GtkRequisition *
     requisition->height = priv->height;
 }
 
+static void calc_layout (UiSkinnedPlaylistPrivate * private)
+{
+    private->row_height = private->ascent - private->descent;
+    private->rows = private->height / private->row_height;
+
+    if (private->first + private->rows > active_length)
+        private->first = active_length - private->rows;
+    if (private->first < 0)
+        private->first = 0;
+}
+
 static void scroll_to (UiSkinnedPlaylistPrivate * private, int position)
 {
     if (! private->rows)
@@ -275,24 +289,13 @@ static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *
         priv->height = priv->height + priv->resize_height;
         priv->resize_width = 0;
         priv->resize_height = 0;
-        gtk_widget_queue_draw(widget);
     }
 
-    if (! playlist_list_font)
-    {
-        printf ("ERROR: Cannot open playlist font.\n");
-        abort ();
-    }
+    calc_layout (priv);
+    gtk_widget_queue_draw (widget);
 
-    priv->row_height = ascent - descent;
-    priv->rows = priv->height / priv->row_height;
-
-    if (priv->first + priv->rows > active_length)
-        priv->first = active_length - priv->rows;
-    if (priv->first < 0)
-        priv->first = 0;
-
-    scroll_to (priv, priv->focused);
+    if (priv->slider)
+        gtk_widget_queue_draw (priv->slider);
 }
 
 static void
@@ -304,7 +307,7 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
                           guint ppos)
 {
     UiSkinnedPlaylistPrivate * private;
-    guint plist_length_int;
+    int plist_length_int, padding;
     PangoLayout *layout;
 
     private = UI_SKINNED_PLAYLIST_GET_PRIVATE (pl);
@@ -318,26 +321,24 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
         plist_length_int =
          gint_count_digits (active_length) + ! config.show_separator_in_pl + 1;
 
-        padding = plist_length_int;
-        padding = ((padding + 1) * width_approx_digits);
+        padding = private->digit_width * (plist_length_int + 1);
 
         layout = gtk_widget_create_pango_layout(playlistwin, pos_string);
-        pango_layout_set_font_description(layout, playlist_list_font);
+        pango_layout_set_font_description (layout, private->font);
         pango_layout_set_width(layout, plist_length_int * 100);
 
         pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
 
-        cairo_move_to(cr, (width_approx_digits *
+        cairo_move_to (cr, (private->digit_width *
                          (-1 + plist_length_int - strlen(pos_string))) +
-         width_approx_digits / 4, (line - 1) * private->row_height +
-                        ascent + abs(descent));
+         private->digit_width / 4, private->row_height * line);
         pango_cairo_show_layout(cr, layout);
 
         g_free(pos_string);
         g_object_unref(layout);
 
         if (!config.show_separator_in_pl)
-            padding -= (width_approx_digits * 1.5);
+            padding -= private->digit_width * 1.5;
     } else {
         padding = 3;
     }
@@ -346,14 +347,13 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
 
     layout = gtk_widget_create_pango_layout(playlistwin, text);
 
-    pango_layout_set_font_description(layout, playlist_list_font);
+    pango_layout_set_font_description (layout, private->font);
     pango_layout_set_width(layout, width * PANGO_SCALE);
     pango_layout_set_single_paragraph_mode(layout, TRUE);
     pango_layout_set_ellipsize(layout, PANGO_ELLIPSIZE_END);
 
-    cairo_move_to(cr, padding + (width_approx_letters / 4),
-     (line - 1) * private->row_height +
-                    ascent + abs(descent));
+    cairo_move_to (cr, padding + private->letter_width / 4, private->row_height
+     * line);
     pango_cairo_show_layout(cr, layout);
 
     g_object_unref(layout);
@@ -532,11 +532,12 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         max_time_len = MAX(max_time_len, tail_len);
 
         if (pos != -1 && tpadding_dwidth <= 0)
-            tail_width = width - (width_approx_digits * (strlen(queuepos) + 2.25));
+            tail_width = width - priv->digit_width * (strlen (queuepos) + 2.25);
         else if (pos != -1)
-            tail_width = width - (width_approx_digits * (tpadding_dwidth + strlen(queuepos) + 4));
+            tail_width = width - priv->digit_width * (tpadding_dwidth + strlen
+             (queuepos) + 4);
         else if (tpadding_dwidth > 0)
-            tail_width = width - (width_approx_digits * (tpadding_dwidth + 2.5));
+            tail_width = width - priv->digit_width * (tpadding_dwidth + 2.5);
         else
             tail_width = width;
 
@@ -545,12 +546,12 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         else
             gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_NORMAL));
 
-        playlist_list_draw_string(cr, pl, playlist_list_font,
+        playlist_list_draw_string (cr, pl, priv->font,
                                   i - priv->first, tail_width, title,
                                   i + 1);
 
-        x = width - width_approx_digits * 2;
-        y = ((i - priv->first) - 1) * priv->row_height + ascent;
+        x = width - priv->digit_width * 2;
+        y = (i - priv->first - 1) * priv->row_height + priv->ascent;
 
         frags = NULL;
         frag0 = NULL;
@@ -560,21 +561,21 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
             frag0 = g_strconcat(frags[0], ":", NULL);
 
             layout = gtk_widget_create_pango_layout(playlistwin, frags[1]);
-            pango_layout_set_font_description(layout, playlist_list_font);
+            pango_layout_set_font_description (layout, priv->font);
             pango_layout_set_width(layout, tail_len * 100);
             pango_layout_set_alignment(layout, PANGO_ALIGN_LEFT);
 
             cairo_new_path(cr);
-            cairo_move_to(cr, x - (0.5 * width_approx_digits), y + abs(descent));
+            cairo_move_to (cr, x - priv->digit_width * 0.5, y - priv->descent);
             pango_cairo_show_layout(cr, layout);
             g_object_unref(layout);
 
             layout = gtk_widget_create_pango_layout(playlistwin, frag0);
-            pango_layout_set_font_description(layout, playlist_list_font);
+            pango_layout_set_font_description (layout, priv->font);
             pango_layout_set_width(layout, tail_len * 100);
             pango_layout_set_alignment(layout, PANGO_ALIGN_RIGHT);
 
-            cairo_move_to(cr, x - (0.75 * width_approx_digits), y + abs(descent));
+            cairo_move_to (cr, x - priv->digit_width * 0.75, y - priv->descent);
             pango_cairo_show_layout(cr, layout);
             g_object_unref(layout);
 
@@ -592,25 +593,20 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
                             x -
                             (((queue_tailpadding +
                                strlen(queuepos)) *
-                              width_approx_digits) +
-                             (width_approx_digits / 4)),
-                            y + abs(descent),
+             priv->digit_width) + priv->digit_width / 4), y - priv->descent,
                             (strlen(queuepos)) *
-                            width_approx_digits +
-                            (width_approx_digits / 2),
-                            priv->row_height - 2);
+             priv->digit_width + priv->digit_width / 2, priv->row_height - 2);
 
             layout =
                 gtk_widget_create_pango_layout(playlistwin, queuepos);
-            pango_layout_set_font_description(layout, playlist_list_font);
+            pango_layout_set_font_description (layout, priv->font);
             pango_layout_set_alignment(layout, PANGO_ALIGN_CENTER);
 
             cairo_move_to(cr,
                             x -
                             ((queue_tailpadding +
-                              strlen(queuepos)) * width_approx_digits) +
-                            (width_approx_digits / 4),
-                            y + abs(descent));
+             strlen (queuepos)) * priv->digit_width) + priv->digit_width / 4, y
+             - priv->descent);
             pango_cairo_show_layout(cr, layout);
 
             g_object_unref(layout);
@@ -676,15 +672,12 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         else
             padding_dwidth = gint_count_digits (active_length);
 
-        padding =
-            (padding_dwidth *
-             width_approx_digits) + width_approx_digits;
-
+        padding = (padding_dwidth + 1) * priv->digit_width;
 
         /* For italic or oblique fonts we add another half of the
          * approximate width */
-        if (has_slant)
-            padding += width_approx_digits_half;
+        if (priv->slanted)
+            padding += priv->digit_width / 2;
 
         if (config.show_separator_in_pl) {
             cairo_new_path(cr);
@@ -698,10 +691,10 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     if (tpadding_dwidth != 0)
     {
-        tpadding = (tpadding_dwidth * width_approx_digits) + (width_approx_digits * 1.5);
+        tpadding = priv->digit_width * (tpadding_dwidth + 1.5);
 
-        if (has_slant)
-            tpadding += width_approx_digits_half;
+        if (priv->slanted)
+            tpadding += priv->digit_width / 2;
 
         if (config.show_separator_in_pl) {
             cairo_new_path(cr);
@@ -965,6 +958,9 @@ void ui_skinned_playlist_update (GtkWidget * widget)
         private->focused = active_length - 1;
 
     gtk_widget_queue_draw (widget);
+
+    if (private->slider)
+        gtk_widget_queue_draw (private->slider);
 }
 
 void ui_skinned_playlist_follow (GtkWidget * widget)
@@ -1142,7 +1138,10 @@ void ui_skinned_playlist_scroll_to (GtkWidget * widget, int row)
     if (private->first < 0)
         private->first = 0;
 
-    playlistwin_update ();
+    gtk_widget_queue_draw (widget);
+
+    if (private->slider)
+        gtk_widget_queue_draw (private->slider);
 }
 
 void ui_skinned_playlist_hover (GtkWidget * widget, int x, int y)
@@ -1377,52 +1376,37 @@ static gboolean ui_skinned_playlist_leave_notify (GtkWidget * widget,
     return 1;
 }
 
-void ui_skinned_playlist_set_font(const gchar * font) {
-    /* Welcome to bad hack central 2k3 */
+void ui_skinned_playlist_set_font (GtkWidget * list, char * font)
+{
+    UiSkinnedPlaylistPrivate * private;
     gchar *font_lower;
-    gint width_temp;
-    gint width_temp_0;
 
-    playlist_list_font = pango_font_description_from_string(font);
+    private = UI_SKINNED_PLAYLIST_GET_PRIVATE ((UiSkinnedPlaylist *) list);
+
+    private->font = pango_font_description_from_string (font);
 
     text_get_extents(font,
                      "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz ",
-                     &width_approx_letters, NULL, &ascent, &descent);
+     & private->letter_width, 0, & private->ascent, & private->descent);
+    private->letter_width /= 53;
 
-    width_approx_letters = (width_approx_letters / 53);
-
-    /* Experimental: We don't weigh the 1 into total because it's width is almost always
-     * very different from the rest
-     */
-    text_get_extents(font, "023456789", &width_approx_digits, NULL, NULL,
-                     NULL);
-    width_approx_digits = (width_approx_digits / 9);
-
-    /* Precache some often used calculations */
-    width_approx_digits_half = width_approx_digits / 2;
-
-    /* FIXME: We assume that any other number is broader than the "1" */
-    text_get_extents(font, "1", &width_temp, NULL, NULL, NULL);
-    text_get_extents(font, "2", &width_temp_0, NULL, NULL, NULL);
-
-    if (abs(width_temp_0 - width_temp) < 2) {
-        width_delta_digit_one = 0;
-    }
-    else {
-        width_delta_digit_one = ((width_temp_0 - width_temp) / 2) + 2;
-    }
-
-    text_get_extents(font, ":", &width_colon, NULL, NULL, NULL);
-    width_colon_third = width_colon / 4;
+    text_get_extents (font, "0123456789", & private->digit_width, 0, 0, 0);
+    private->digit_width /= 10;
 
     font_lower = g_utf8_strdown(font, strlen(font));
     /* This doesn't take any i18n into account, but i think there is none with TTF fonts
      * FIXME: This can probably be retrieved trough Pango too
      */
-    has_slant = g_strstr_len(font_lower, strlen(font_lower), "oblique")
-        || g_strstr_len(font_lower, strlen(font_lower), "italic");
+    private->slanted = strstr (font_lower, "oblique") || strstr (font_lower,
+     "italic");
 
     g_free(font_lower);
+
+    calc_layout (private);
+    gtk_widget_queue_draw (list);
+
+    if (private->slider)
+        gtk_widget_queue_draw (private->slider);
 }
 
 void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h) {

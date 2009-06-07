@@ -204,36 +204,11 @@ static void playlistwin_update_sinfo (void)
     g_free(info);
 }
 
-gint
-playlistwin_list_get_visible_count(void)
-{
-    int rows, first;
-
-    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
-    return rows;
-}
-
-gint
-playlistwin_list_get_first(void)
-{
-    int rows, first;
-
-    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
-    return first;
-}
-
-void
-playlistwin_set_toprow(gint toprow)
-{
-    ui_skinned_playlist_scroll_to (playlistwin_list, toprow);
-}
-
 void playlistwin_update (void)
 {
     ui_skinned_playlist_update (playlistwin_list);
     playlistwin_update_info ();
     playlistwin_update_sinfo ();
-    gtk_widget_queue_draw(playlistwin_slider);
 }
 
 static void
@@ -338,8 +313,7 @@ playlistwin_release(GtkWidget * widget,
     return FALSE;
 }
 
-void
-playlistwin_scroll(gint num)
+static void playlistwin_scroll (int num)
 {
     int rows, first;
 
@@ -347,14 +321,12 @@ playlistwin_scroll(gint num)
     ui_skinned_playlist_scroll_to (playlistwin_list, first + num);
 }
 
-void
-playlistwin_scroll_up_pushed(void)
+static void playlistwin_scroll_up_pushed (void)
 {
     playlistwin_scroll(-3);
 }
 
-void
-playlistwin_scroll_down_pushed(void)
+static void playlistwin_scroll_down_pushed (void)
 {
     playlistwin_scroll(3);
 }
@@ -1115,12 +1087,12 @@ playlistwin_create_widgets(void)
     /* playlist list box */
     playlistwin_list = ui_skinned_playlist_new(SKINNED_WINDOW(playlistwin)->normal, 12, 20,
                              playlistwin_get_width() - 31,
-                             config.playlist_height - 58);
-    ui_skinned_playlist_set_font(config.playlist_font);
+     config.playlist_height - 58, config.playlist_font);
 
     /* playlist list box slider */
     playlistwin_slider = ui_skinned_playlist_slider_new(SKINNED_WINDOW(playlistwin)->normal, playlistwin_get_width() - 15,
-                              20, config.playlist_height - 58);
+     20, config.playlist_height - 58, playlistwin_list);
+    ui_skinned_playlist_set_slider (playlistwin_list, playlistwin_slider);
 
     /* track time (minute) */
     playlistwin_time_min = ui_skinned_textbox_new(SKINNED_WINDOW(playlistwin)->normal,
@@ -1286,8 +1258,8 @@ static void update_cb (void * playlist, void * unused)
 
     if (active_playlist != old)
     {
-        // calls playlistwin_update, so we don't need to
         ui_skinned_playlist_scroll_to (playlistwin_list, 0);
+        // calls playlistwin_update, so we don't need to
         ui_skinned_playlist_follow (playlistwin_list);
         return;
     }

@@ -310,7 +310,7 @@ static void
 playlist_font_set_cb()
 {
     AUDDBG("Attempt to set font \"%s\"\n", config.playlist_font);
-    ui_skinned_playlist_set_font(config.playlist_font);
+    ui_skinned_playlist_set_font (playlistwin_list, config.playlist_font);
     playlistwin_set_sinfo_font(config.playlist_font);  /* propagate font setting to playlistwin_sinfo */
     playlistwin_update ();
 }

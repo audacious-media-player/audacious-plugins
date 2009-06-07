@@ -1006,8 +1006,7 @@ mainwin_drag_data_received(GtkWidget * widget,
             return;
 
         config.playlist_font = g_strconcat(decoded, strrchr(config.playlist_font, ' '), NULL);
-        ui_skinned_playlist_set_font(config.playlist_font);
-        playlistwin_update ();
+        ui_skinned_playlist_set_font (playlistwin_list, config.playlist_font);
 
         g_free(decoded);
 
