@@ -317,8 +317,9 @@ void xs_play_file(InputPlayback *pb)
     XSDEBUG("load ok\n");
 
     /* Set general status information */
+    pb->playing = TRUE;
     xs_status.isPlaying = TRUE;
-    xs_status.isError = FALSE;
+    pb->error = FALSE;
     tmpTune = xs_status.tuneInfo;
 
     if (subTune < 1 || subTune > xs_status.tuneInfo->nsubTunes)
@@ -378,7 +379,7 @@ void xs_play_file(InputPlayback *pb)
             xs_status.audioFrequency,
             xs_status.audioChannels);
 
-        xs_status.isError = TRUE;
+        pb->error = TRUE;
         XS_MUTEX_UNLOCK(xs_status);
         goto xs_err_exit;
     }
@@ -408,7 +409,7 @@ void xs_play_file(InputPlayback *pb)
     
     XS_MUTEX_UNLOCK(xs_status);
     XSDEBUG("playing\n");
-    while (xs_status.isPlaying) {
+    while (pb->playing) {
         /* Render audio data */
         XS_MUTEX_LOCK(xs_status);
         if (xs_status.oversampleEnable) {
@@ -424,7 +425,7 @@ void xs_play_file(InputPlayback *pb)
             if (xs_filter_rateconv(audioBuffer, oversampleBuffer,
                 xs_status.audioFormat, xs_status.oversampleFactor, audioGot) < 0) {
                 xs_error("Oversampling rate-conversion pass failed.\n");
-                xs_status.isError = TRUE;
+                pb->error = TRUE;
                 XS_MUTEX_UNLOCK(xs_status);
                 goto xs_err_exit;
             }
@@ -440,25 +441,31 @@ void xs_play_file(InputPlayback *pb)
         XS_MUTEX_UNLOCK(xs_status);
 
         /* Wait a little */
-        while (xs_status.isPlaying && (pb->output->buffer_free() < audioGot))
+        while (pb->playing && pb->output->buffer_free() < audioGot)
             g_usleep(500);
 
         /* Check if we have played enough */
         XS_MUTEX_LOCK(xs_status);
         if (xs_cfg.playMaxTimeEnable) {
             if (xs_cfg.playMaxTimeUnknown) {
-                if ((tmpLength < 0) &&
-                    (pb->output->output_time() >= (xs_cfg.playMaxTime * 1000)))
+                if (tmpLength < 0 &&
+                    pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
+                    pb->playing = FALSE;
                     xs_status.isPlaying = FALSE;
+                }
             } else {
-                if (pb->output->output_time() >= (xs_cfg.playMaxTime * 1000))
+                if (pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
+                    pb->playing = FALSE;
                     xs_status.isPlaying = FALSE;
+                }
             }
         }
 
         if (tmpLength >= 0) {
-            if (pb->output->output_time() >= (tmpLength * 1000))
+            if (pb->output->output_time() >= tmpLength * 1000) {
+                pb->playing = FALSE;
                 xs_status.isPlaying = FALSE;
+            }
         }
         XS_MUTEX_UNLOCK(xs_status);
     }
@@ -482,6 +489,7 @@ xs_err_exit:
      * next entry in the playlist .. or whatever it wishes.
      */
     XS_MUTEX_LOCK(xs_status);
+    pb->playing = FALSE;
     xs_status.isPlaying = FALSE;
     XS_MUTEX_UNLOCK(xs_status);
 
@@ -508,8 +516,9 @@ void xs_stop(InputPlayback *pb)
 
     /* Lock xs_status and stop playing thread */
     XS_MUTEX_LOCK(xs_status);
-    if (xs_status.isPlaying) {
+    if (pb != NULL && pb->playing) {
         XSDEBUG("stopping...\n");
+        pb->playing = FALSE;
         xs_status.isPlaying = FALSE;
         XS_MUTEX_UNLOCK(xs_status);
         XS_THREAD_JOIN(xs_decode_thread);
@@ -558,7 +567,7 @@ gint xs_get_time(InputPlayback *pb)
 {
     /* If errorflag is set, return -2 to signal it to XMMS's idle callback */
     XS_MUTEX_LOCK(xs_status);
-    if (xs_status.isError) {
+    if (pb->error) {
         XS_MUTEX_UNLOCK(xs_status);
         return -2;
     }
@@ -570,7 +579,7 @@ gint xs_get_time(InputPlayback *pb)
     }
 
     /* If tune has ended, return -1 */
-    if (!xs_status.isPlaying) {
+    if (!pb->playing) {
         XS_MUTEX_UNLOCK(xs_status);
         return -1;
     }
