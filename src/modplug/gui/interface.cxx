@@ -131,6 +131,7 @@ create_Config (void)
   GtkWidget *config_cancel;
 
   Config = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_type_hint(GTK_WINDOW(Config), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_widget_set_name (Config, "Config");
   gtk_widget_set_size_request (Config, 500, -1);
   gtk_window_set_title (GTK_WINDOW (Config), _("ModPlug Configuration"));

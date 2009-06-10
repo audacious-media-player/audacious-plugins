@@ -229,6 +229,7 @@ create_xs_configwin (void)
   tooltips = gtk_tooltips_new ();
 
   xs_configwin = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_type_hint(GTK_WINDOW(xs_configwin), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_widget_set_name (xs_configwin, "xs_configwin");
   gtk_window_set_title (GTK_WINDOW (xs_configwin), _("Audacious-SID configuration"));
 
