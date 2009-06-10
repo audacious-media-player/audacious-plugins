@@ -32,7 +32,6 @@ int const path_max = 4096;
 AudaciousConsoleConfig audcfg =
 { 180, FALSE, 32000, 0, 0, FALSE, 0, FALSE };
 static GThread* decode_thread;
-static int console_ip_is_going;
 static volatile long pending_seek;
 extern InputPlugin console_ip;
 static Music_Emu* emu = 0;
@@ -256,7 +255,7 @@ static void* play_loop_track( gpointer arg )
         InputPlayback *playback = (InputPlayback *) arg;
 
 	int end_delay = 0;	
-	while ( console_ip_is_going )
+	while ( playback->playing )
 	{
 		// handle pending seek
 		long s = pending_seek;
@@ -275,7 +274,7 @@ static void* play_loop_track( gpointer arg )
 		{
 			// TODO: remove delay once host doesn't cut the end of track off
 			if ( !--end_delay )
-				console_ip_is_going = false;
+				playback->playing = false;
 			memset( buf, 0, sizeof buf );
 
 		}
@@ -290,13 +289,13 @@ static void* play_loop_track( gpointer arg )
 		}
 		playback->pass_audio( playback, 
 			FMT_S16_NE, 1, sizeof buf, buf, 
-			&console_ip_is_going );
+			&playback->playing );
 	}
 	
 	// stop playing
 	unload_file();
 	playback->output->close_audio();
-	console_ip_is_going = 0;
+	playback->playing = 0;
 	return NULL;
 }
 
@@ -380,7 +379,7 @@ static void play_file( InputPlayback *playback )
 	fh.emu = 0;
 	
 	pending_seek = -1;
-	console_ip_is_going = 1;
+	playback->playing = 1;
 	decode_thread = g_thread_self();
 	playback->set_pb_ready(playback);
         play_loop_track( playback );
@@ -394,7 +393,7 @@ static void seek( InputPlayback * data, gint time )
 
 static void console_stop(InputPlayback *playback)
 {
-	console_ip_is_going = 0;
+	playback->playing = 0;
 	if ( decode_thread )
 	{
 		g_thread_join( decode_thread );
@@ -407,11 +406,6 @@ static void console_stop(InputPlayback *playback)
 static void console_pause(InputPlayback * playback, gshort p)
 {
 	playback->output->pause(p);
-}
-
-static int get_time(InputPlayback *playback)
-{
-	return console_ip_is_going ? playback->output->output_time() : -1;
 }
 
 static Tuple *probe_for_tuple(gchar *filename, VFSFile *fd)
@@ -470,7 +464,7 @@ InputPlugin console_ip =
 	console_stop,
 	console_pause,
 	seek,
-	get_time,
+	NULL,
 	NULL,
 	NULL,   
 	NULL,
