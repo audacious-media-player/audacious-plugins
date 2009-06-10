@@ -361,7 +361,7 @@ void setup_proxy(CURL *curl)
         aud_cfg_db_get_string(db, NULL, "proxy_host", &proxy_host);
         aud_cfg_db_get_string(db, NULL, "proxy_port", &proxy_port);
         curl_easy_setopt(curl, CURLOPT_PROXY, proxy_host);
-        curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxy_port);
+        curl_easy_setopt(curl, CURLOPT_PROXYPORT, atol(proxy_port));
         aud_cfg_db_get_bool(db, NULL, "proxy_use_auth", &proxy_use_auth);
         if (proxy_use_auth != FALSE)
         {
