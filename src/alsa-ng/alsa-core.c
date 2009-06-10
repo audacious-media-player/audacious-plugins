@@ -157,6 +157,31 @@ alsaplug_set_volume(gint l, gint r)
     snd_mixer_handle_events(amixer);
 }
 
+static void
+alsaplug_get_volume(gint *l, gint *r)
+{
+    snd_mixer_elem_t *elem = alsaplug_guess_mixer_elem(amixer);
+
+    if (elem == NULL)
+        return;
+
+    snd_mixer_handle_events(amixer);
+
+    *l = 0;
+    *r = 0;
+
+    if (snd_mixer_selem_is_playback_mono(elem))
+    {
+        snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_MONO, (glong *) l);
+        snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_MONO, (glong *) r);
+    }
+    else
+    {
+        snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_FRONT_LEFT, (glong *) l);
+        snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_FRONT_RIGHT, (glong *) r);
+    }
+}
+
 /********************************************************************************
  * ALSA PCM I/O functions.                                                      *
  ********************************************************************************/
@@ -456,6 +481,7 @@ static OutputPlugin alsa_op = {
     .flush = alsaplug_flush,
     .pause = alsaplug_pause,
     .set_volume = alsaplug_set_volume,
+    .get_volume = alsaplug_get_volume,
 };
 
 OutputPlugin *alsa_oplist[] = { &alsa_op, NULL };
