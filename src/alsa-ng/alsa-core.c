@@ -38,6 +38,125 @@ static GCond *pcm_pause_cond, *pcm_state_cond, *pcm_flush_cond;
  * ALSA Mixer setting functions.                                                *
  ********************************************************************************/
 
+static snd_mixer_t *amixer = NULL;
+static gboolean mixer_ready = FALSE;
+
+static snd_mixer_elem_t *
+alsaplug_get_mixer_elem_by_name(snd_mixer_t *mixer, gchar *name)
+{
+    snd_mixer_selem_id_t *selem_id;
+    snd_mixer_elem_t *elem;
+
+    g_return_val_if_fail(mixer != NULL, NULL);
+    g_return_val_if_fail(name != NULL, NULL);
+
+    snd_mixer_selem_id_alloca(&selem_id);
+    snd_mixer_selem_id_set_name(selem_id, name);
+
+    elem = snd_mixer_find_selem(mixer, selem_id);
+    if (elem == NULL) {
+        _ERROR("Requested mixer element %p/%s not found", mixer, name);
+        return NULL;
+    }
+
+    snd_mixer_selem_set_playback_volume_range(elem, 0, 100);
+
+    return elem;
+}
+
+/* try to determine the best choice... may need tweaking. --nenolod */
+static snd_mixer_elem_t *
+alsaplug_guess_mixer_elem(snd_mixer_t *mixer)
+{
+    gchar *elem_names[] = { "Wave", "PCM", "Front", "Master" };
+    gint i;
+    snd_mixer_elem_t *elem;
+
+    for (i = 0; i < G_N_ELEMENTS(elem_names); i++)
+    {
+        elem = alsaplug_get_mixer_elem_by_name(mixer, elem_names[i]);
+        if (elem != NULL)
+            return elem;
+    }
+
+    return NULL;
+}
+
+static gint
+alsaplug_mixer_new(snd_mixer_t **mixer)
+{
+    gint ret;
+
+    _ERROR("setting up mixer");
+
+    ret = snd_mixer_open(mixer, 0);
+    if (ret < 0)
+    {
+        _ERROR("mixer initialization failed: %s", snd_strerror(ret));
+        return ret;
+    }
+
+    ret = snd_mixer_attach(*mixer, "default");
+    if (ret < 0)
+    {
+        snd_mixer_close(*mixer);
+        _ERROR("failed to attach to hardware mixer: %s", snd_strerror(ret));
+        return ret;
+    }
+
+    ret = snd_mixer_selem_register(*mixer, NULL, NULL);
+    if (ret < 0)
+    {
+        snd_mixer_detach(*mixer, "default");
+        snd_mixer_close(*mixer);
+        _ERROR("failed to register hardware mixer: %s", snd_strerror(ret));
+        return ret;
+    }
+
+    ret = snd_mixer_load(*mixer);
+    if (ret < 0)
+    {
+        snd_mixer_detach(*mixer, "default");
+        snd_mixer_close(*mixer);
+        _ERROR("failed to load hardware mixer controls: %s", snd_strerror(ret));
+        return ret;
+    }    
+
+    return 0;
+}
+
+static void
+alsaplug_set_volume(gint l, gint r)
+{
+    snd_mixer_elem_t *elem = alsaplug_guess_mixer_elem(amixer);
+
+    if (elem == NULL)
+        return;
+
+    if (snd_mixer_selem_is_playback_mono(elem))
+    {
+        gint vol = (l > r) ? l : r;
+
+        snd_mixer_selem_set_playback_volume(elem, SND_MIXER_SCHN_MONO, vol);
+
+        if (snd_mixer_selem_has_playback_switch(elem))
+            snd_mixer_selem_set_playback_switch(elem, SND_MIXER_SCHN_MONO, vol != 0);
+    }
+    else
+    {
+        snd_mixer_selem_set_playback_volume(elem, SND_MIXER_SCHN_FRONT_LEFT, l);
+        snd_mixer_selem_set_playback_volume(elem, SND_MIXER_SCHN_FRONT_RIGHT, r);
+
+        if (snd_mixer_selem_has_playback_switch(elem) && !snd_mixer_selem_has_playback_switch_joined(elem))
+        {
+            snd_mixer_selem_set_playback_switch(elem, SND_MIXER_SCHN_FRONT_LEFT, l != 0);
+            snd_mixer_selem_set_playback_switch(elem, SND_MIXER_SCHN_FRONT_RIGHT, r != 0);
+        }
+    }    
+
+    snd_mixer_handle_events(amixer);
+}
+
 /********************************************************************************
  * ALSA PCM I/O functions.                                                      *
  ********************************************************************************/
@@ -136,6 +255,9 @@ alsaplug_init(void)
     if (snd_card_next(&card) != 0)
         return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 
+    if (!alsaplug_mixer_new(&amixer))
+        mixer_ready = TRUE;
+
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
@@ -202,6 +324,7 @@ alsaplug_close_audio(void)
 static void
 alsaplug_write_audio(gpointer data, gint length)
 {
+    /* software pause... snd_pcm_pause() is not safe. --nenolod */
     if (paused)
     {
         g_mutex_lock(pcm_pause_mutex);
@@ -332,6 +455,7 @@ static OutputPlugin alsa_op = {
     .buffer_playing = alsaplug_buffer_playing,
     .flush = alsaplug_flush,
     .pause = alsaplug_pause,
+    .set_volume = alsaplug_set_volume,
 };
 
 OutputPlugin *alsa_oplist[] = { &alsa_op, NULL };
