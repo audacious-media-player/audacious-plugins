@@ -452,8 +452,11 @@ void ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 	);
 
 	mDecodeThread = g_thread_self();
+
+	ipb->playing = TRUE;
 	ipb->set_pb_ready(ipb);
 	this->PlayLoop(ipb);
+	ipb->playing = FALSE;
 }
 
 void ModplugXMMS::Stop(void)
