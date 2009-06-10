@@ -424,8 +424,6 @@ play_loop (gpointer arg)
 
             playback->eof = TRUE;
             playback->playing = FALSE;
-
-            g_mutex_unlock(decode_mutex);
             break;
         }
 
