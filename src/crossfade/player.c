@@ -36,7 +36,7 @@ gint xfplaylist_get_position() {
 gchar *xfplaylist_get_filename(gint pos) {
 	Playlist *playlist = aud_playlist_get_active();
 	char *uri = aud_playlist_get_filename(playlist, pos);
-	return g_filename_from_uri(uri, NULL, NULL);
+	return g_strdup(uri);
 }
 
 gchar *xfplaylist_get_songtitle(gint pos) {
