@@ -336,8 +336,6 @@ static void init(void)
          if (!g_ascii_strcasecmp(schemes[i], "http") || !g_ascii_strcasecmp(schemes[i], "file") || !g_ascii_strcasecmp(schemes[i], "cdda"))
              continue;
 
-         g_print("GVfs supports %s - registering it\n", schemes[i]);
-
          c = g_slice_new0(VFSConstructor);
          c->uri_id = g_strdup_printf("%s://", schemes[i]);
          c->vfs_fopen_impl = gio_aud_vfs_fopen_impl;
