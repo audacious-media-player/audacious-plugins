@@ -615,7 +615,7 @@ static int open_request(struct neon_handle* handle, gulong startbyte) {
         default:
             /* Something went wrong. */
             _ERROR("<%p> Could not open URL: %d (%d)", handle, ret, status->code);
-            if (1 == ret) {
+            if (0 != ret) {
                 _ERROR("<%p> neon error string: %s", handle, ne_get_error(handle->session));
             }
             ne_request_destroy(handle->request);
