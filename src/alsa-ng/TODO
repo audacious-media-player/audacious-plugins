@@ -1,6 +1,5 @@
-The following things are not implemented yet.
+The following things are not implemented yet:
 
-- mixer support
 - prerolling: this means that it is possible for buffer underruns occasionally.
   we want to preroll at least 50% of buffer_size before actually writing anything
   to the soundcard.
@@ -10,6 +9,10 @@ The following things would be nice:
 - use HAL (or DeviceKit) to match up devices and mixer settings. The old way sucks
   majorly, I want to be able to just choose a soundcard and have it set up the mixer
   the right way on it's own. This is 2009, and this should be possible.
+
+(right now we don't use HAL/DeviceKit, but have a trivial function to determine what
+ mixer settings we use.  pcm:default seems like a good choice for finding the system
+ default soundcard/mixer, which we use already...)
 
 Things that won't be reimplemented:
 
