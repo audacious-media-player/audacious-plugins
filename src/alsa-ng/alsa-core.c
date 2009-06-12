@@ -54,10 +54,8 @@ alsaplug_get_mixer_elem_by_name(snd_mixer_t *mixer, gchar *name)
     snd_mixer_selem_id_set_name(selem_id, name);
 
     elem = snd_mixer_find_selem(mixer, selem_id);
-    if (elem == NULL) {
-        _ERROR("Requested mixer element %p/%s not found", mixer, name);
+    if (elem == NULL)
         return NULL;
-    }
 
     snd_mixer_selem_set_playback_volume_range(elem, 0, 100);
 
