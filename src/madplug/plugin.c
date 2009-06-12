@@ -153,7 +153,7 @@ audmad_cleanup()
 {
     g_free(audmad_config->id3_format);
     g_free(audmad_config);
-    
+
     g_cond_free(mad_cond);
     g_mutex_free(mad_mutex);
     g_mutex_free(pb_mutex);
@@ -178,7 +178,7 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
         frame->lsf = ((head >> 19) & 1) ? 0 : 1;
     else
         frame->lsf = 1;
-    
+
     /* check if layer bits (17-18) are good */
     frame->layer = (head >> 17) & 3;
     if (frame->layer == 0)
@@ -187,7 +187,7 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
 
     /* check CRC bit. if set, a 16-bit CRC follows header (not counted in frameSize!) */
     frame->hasCRC = (head >> 16) & 1;
-    
+
     /* check if bitrate index bits (12-15) are acceptable */
     bitIndex = (head >> 12) & 0xf;
 
@@ -221,7 +221,7 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
         default:
             return -6;
     }
-    
+
     if (frame->bitRate < 0)
         return -7;
 
@@ -248,22 +248,22 @@ mp3_head_validate(guint32 head, mp3_frame_t *frame)
     frame->sampleRate = mp3_samplerate_table[frame->version][sampleIndex];
     if (frame->sampleRate < 0)
         return -10;
-    
+
     switch (frame->layer) {
         case 1:
             frame->size = ((12 * 1000 * frame->bitRate) / frame->sampleRate + padding) * 4;
             break;
-        
+
         case 2:
             frame->size = (144 * 1000 * frame->bitRate) / frame->sampleRate + padding;
             break;
-        
+
         case 3:
         default:
             frame->size = (144 * 1000 * frame->bitRate) / (frame->sampleRate << frame->lsf) + padding;
             break;
     }
-    
+
     return 0;
 }
 
@@ -337,7 +337,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
 
     state = STATE_REBUFFER;
     next = STATE_HEADERS;
-    
+
     /* Check stream data for frame header(s). We employ a simple
      * state-machine approach here to find number of sequential
      * valid MPEG frame headers (with similar attributes).
@@ -352,14 +352,14 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 state = STATE_FATAL;
             } else {
                 state = STATE_GET_NEXT;
-                
+
                 if (memcmp(&chkbuf[chkpos], "ID3", 3) == 0) {
                     /* Skip ID3 header */
                     guint tagsize = (chkbuf[chkpos+6] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+7] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+8] & 0x7f); tagsize <<= 7;
                     tagsize |= (chkbuf[chkpos+9] & 0x7f);
-        
+
                     LULZ("ID3 size = %d\n", tagsize);
                     state = STATE_GOTO_NEXT;
                     skip = tagsize + 10;
@@ -372,7 +372,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                     return 1;
             }
             break;
-        
+
         case STATE_REBUFFER:
             streampos = aud_vfs_ftell(fin);
             if ((chksize = aud_vfs_fread(chkbuf, 1, sizeof(chkbuf), fin)) == 0) {
@@ -384,7 +384,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 LULZ("rebuffered = %d bytes @ %08lx\n", chksize, streampos);
             }
             break;
-        
+
         case STATE_VALIDATE:
             LULZ("validate %08x .. ", head);
             /* Check for valid header */
@@ -425,7 +425,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 }
             }
             break;
-        
+
         case STATE_GOTO_NEXT:
             LULZ("goto next (cpos=%x, csiz=%d :: skip=%d :: fpos=%lx) ? ", chkpos, chksize, skip, aud_vfs_ftell(fin));
             /* Check if we have the next possible header in buffer? */
@@ -447,14 +447,14 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                 state = STATE_REBUFFER;
             }
             break;
-        
+
         case STATE_GET_NEXT:
             /* Get a header */
             LULZ("get next @ chkpos=%08x, realpos=%08lx\n", chkpos, streampos+chkpos);
             head = mp3_head_convert(&chkbuf[chkpos]);
             state = STATE_VALIDATE;
             break;
-        
+
         case STATE_RESYNC:
             LULZ("resyncing try #%d ..\n", tries);
             /* Re-synchronize aka try to find a valid header */
@@ -464,13 +464,13 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
             state = STATE_RESYNC_DO;
             tries++;
             break;
-        
+
         case STATE_RESYNC_DO:
-            /* Scan for valid frame header */            
+            /* Scan for valid frame header */
             for (; chkpos < chksize; chkpos++) {
                 head <<= 8;
                 head |= chkbuf[chkpos];
-                
+
                 if (mp3_head_validate(head, &frame) >= 0) {
                     /* Found, exit resync */
                     chkpos -= 3;
@@ -478,7 +478,7 @@ audmad_is_our_fd(gchar *filename, VFSFile *fin)
                     state = STATE_VALIDATE;
                     break;
                 }
-                
+
                 /* Check for maximum bytes to search */
                 if (resync_max > 0) {
                     resync_max--;
@@ -571,6 +571,10 @@ audmad_play_file(InputPlayback *playback)
     AUDDBG("* album peak:          %f\n",     rg_info.album_peak);
     playback->set_replaygain_info(playback, &rg_info);
 
+    info.seek = -1;
+    info.is_paused = 0;
+    info.pause = 0;
+
     g_mutex_lock(pb_mutex);
     info.playback = playback;
     info.playback->playing = 1;
@@ -584,20 +588,19 @@ audmad_play_file(InputPlayback *playback)
 static void
 audmad_pause(InputPlayback *playback, short paused)
 {
-    g_mutex_lock(pb_mutex);
-    info.playback = playback;
-    g_mutex_unlock(pb_mutex);
-    playback->output->pause(paused);
+    info.pause = paused;
+
+    while (info.is_paused != paused)
+        g_usleep (20000);
 }
 
 static void
 audmad_mseek(InputPlayback *playback, gulong millisecond)
 {
-    g_mutex_lock(pb_mutex);
-    info.playback = playback;
     info.seek = millisecond;
-    g_mutex_unlock(pb_mutex);
-    playback->output->flush (millisecond);
+
+    while (info.seek != -1)
+        g_usleep (20000);
 }
 
 static void
@@ -653,7 +656,7 @@ audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
         AUDDBG("audmad_fill_info(): error initialising input\n");
         return FALSE;
     }
-    
+
     info->fileinfo_request = FALSE; /* we don't need to read tuple again */
     return input_get_info(info, aud_vfs_is_remote(fd->uri) ? TRUE : audmad_config->fast_play_time_calc);
 }
@@ -872,7 +875,7 @@ __audmad_get_song_tuple(char *filename, VFSFile *fd)
     g_free(string);
 
     aud_tuple_associate_string(tuple, FIELD_MIMETYPE, NULL, "audio/mpeg");
-    
+
     input_term(&myinfo);
 
     if(local_fd)

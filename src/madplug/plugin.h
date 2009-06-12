@@ -50,6 +50,7 @@ struct mad_info_t
 
     /* seek time */
     gulong seek;      /**< seek time in milliseconds */
+    char pause, is_paused;
 
     /* state */
     guint current_frame;/**< current mp3 frame */

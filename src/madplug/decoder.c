@@ -288,7 +288,7 @@ scan_file(struct mad_info_t * info, gboolean fast)
     else if (info->vbr && xing_bitrate == 0 && bitrate_frames != 0) {
         info->bitrate = accum_bitrate / bitrate_frames;
     }
-    
+
     aud_tuple_associate_int(info->tuple, FIELD_BITRATE, NULL, info->bitrate / 1000);
 
     mad_frame_finish(&frame);
@@ -321,7 +321,6 @@ decode_loop(gpointer arg)
 {
     unsigned char buffer[BUFFER_SIZE];
     int len;
-    gboolean seek_skip = FALSE;
     int remainder = 0;
     gint tlen;
     unsigned int iteration = 0;
@@ -356,7 +355,7 @@ decode_loop(gpointer arg)
         g_mutex_lock(pb_mutex);
         info->playback->error = TRUE;
         info->playback->eof = 1;
-        g_mutex_unlock(pb_mutex);        
+        g_mutex_unlock(pb_mutex);
         g_message("failed to open audio output: %s",
                   info->playback->output->description);
         return NULL;
@@ -368,8 +367,8 @@ decode_loop(gpointer arg)
     info->title = aud_tuple_formatter_make_title_string(info->tuple, audmad_config->title_override == TRUE ?
                                        audmad_config->id3_format : aud_get_gentitle_format());
 
-    tlen = (gint) mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS),
-        info->playback->set_params(info->playback, info->title,
+    tlen = mad_timer_count (info->duration, MAD_UNITS_MILLISECONDS);
+    info->playback->set_params (info->playback, info->title,
                              (tlen == 0 || info->size <= 0) ? -1 : tlen,
                              info->bitrate, info->freq, info->channels);
 
@@ -382,13 +381,27 @@ decode_loop(gpointer arg)
             break;
         }
 
-        if (seek_skip)
-            remainder = 0;
-        else {
-            remainder = stream.bufend - stream.next_frame;
-            if(buffer != stream.this_frame && remainder)
-                memmove(buffer, stream.this_frame, remainder);
+        if (info->seek != -1)
+        {
+            if (aud_vfs_fseek (info->infile, info->size * (long long) info->seek
+             / tlen, SEEK_SET))
+            {
+                fprintf (stderr, "madplug: Seek error.\n");
+                break;
+            }
+
+            stream.this_frame = stream.bufend;
+            stream.next_frame = stream.bufend;
+            stream.sync = 0;
+            mad_timer_set (& info->pos, 0, info->seek, 1000);
+            info->playback->output->flush (info->seek);
+            info->seek = -1;
         }
+
+        remainder = stream.bufend - stream.next_frame;
+
+        if (remainder > 0 && stream.this_frame > buffer)
+            memmove (buffer, stream.this_frame, remainder);
 
         len = input_get_data(info, buffer + remainder,
                              BUFFER_SIZE - remainder);
@@ -409,59 +422,18 @@ decode_loop(gpointer arg)
 
         mad_stream_buffer(&stream, buffer, len);
 
-        if (seek_skip) {
-
-            AUDDBG("skipping: %d\n", seek_skip);
-
-            int skip = 2;
-            do {
-                if (mad_frame_decode(&frame, &stream) == 0) {
-                    mad_timer_add(&info->pos, frame.header.duration);
-                    if (--skip == 0)
-                        mad_synth_frame(&synth, &frame);
-                }
-                else if (!MAD_RECOVERABLE(stream.error)) {
-                    g_mutex_lock(pb_mutex);
-                    info->playback->error = TRUE;
-                    info->playback->eof = 1;
-                    g_mutex_unlock(pb_mutex);
-                    break;
-                }
+        while (info->playback->playing && info->seek == -1)
+        {
+            if (info->pause != info->is_paused)
+            {
+                info->playback->output->pause (info->pause);
+                info->is_paused = info->pause;
             }
-            while (skip);
-            seek_skip = FALSE;
-        }
 
-        while (info->playback->playing) {
-            if (info->seek != -1 && info->size > 0) {
-
-                AUDDBG("seeking: %ld\n", info->seek);
-
-                int new_position;
-                gulong milliseconds =
-                    mad_timer_count(info->duration, MAD_UNITS_MILLISECONDS);
-                if (info->seek >= milliseconds)
-                    info->seek = milliseconds;
-
-                mad_timer_set(&info->pos, 0, info->seek, 1000); // in millisecond
-                new_position =
-                    ((double) info->seek / (double) milliseconds) * info->size;
-
-                if(new_position < 0)
-                    new_position = 0;
-
-                AUDDBG("seeking to: %d bytes\n", new_position);
-
-                if (aud_vfs_fseek(info->infile, new_position, SEEK_SET) == -1)
-                    audmad_error("failed to seek to: %d", new_position);
-                mad_frame_mute(&frame);
-                mad_synth_mute(&synth);
-                stream.error = MAD_ERROR_BUFLEN;
-                info->playback->output->flush(mad_timer_count(info->pos, MAD_UNITS_MILLISECONDS));
-                stream.sync = 0;
-                info->seek = -1;
-                seek_skip = TRUE;
-                break;
+            if (info->is_paused)
+            {
+                g_usleep (20000);
+                continue;
             }
 
             if (mad_header_decode(&frame.header, &stream) == -1) {
@@ -558,6 +530,9 @@ decode_loop(gpointer arg)
     }
     while (stream.error == MAD_ERROR_BUFLEN);
 
+    if (stream.error && stream.error != MAD_ERROR_BUFLEN)
+        fprintf (stderr, "madplug: Exiting on error %d.\n", stream.error);
+
     /* free mad stuff */
     mad_frame_finish(&frame);
     mad_stream_finish(&stream);
@@ -574,7 +549,7 @@ decode_loop(gpointer arg)
 
             g_get_current_time(&sleeptime);
             g_time_val_add(&sleeptime, 500000);
-            
+
             g_mutex_lock(mad_mutex);
             g_cond_timed_wait(mad_cond, mad_mutex, &sleeptime);
             g_mutex_unlock(mad_mutex);
