@@ -25,9 +25,9 @@
 
 #define SHOUTCAST_NAME				"Shoutcast"
 #define SHOUTCAST_ICON				DATA_DIR G_DIR_SEPARATOR_S "images" G_DIR_SEPARATOR_S "shoutcast.png"
-#define SHOUTCAST_STREAMDIR_URL		"http://www.shoutcast.com/sbin/newxml.phtml"
-#define SHOUTCAST_CATEGORY_URL		"http://www.shoutcast.com/sbin/newxml.phtml?genre=%s"
-#define SHOUTCAST_STREAMINFO_URL	"http://www.shoutcast.com/sbin/shoutcast-playlist.pls?rn=%s&file=filename.pls"
+#define SHOUTCAST_STREAMDIR_URL		"http://classic.shoutcast.com/sbin/newxml.phtml"
+#define SHOUTCAST_CATEGORY_URL		"http://classic.shoutcast.com/sbin/newxml.phtml?genre=%s"
+#define SHOUTCAST_STREAMINFO_URL	"http://classic.shoutcast.com/sbin/shoutcast-playlist.pls?rn=%s&file=filename.pls"
 
 
 gboolean							shoutcast_streaminfo_fetch(category_t *category, streaminfo_t *streaminfo);
