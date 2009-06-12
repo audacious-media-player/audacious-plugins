@@ -522,7 +522,8 @@ static int asf_read_header(AVFormatContext *s, AVFormatParameters *ap)
                                 if (strcmp(name,"WM/Year")==0) s->year = atoi(value);
                                 free(value);
                         }
-                        if ((value_type >= 2) || (value_type <= 5)) // boolean or DWORD or QWORD or WORD
+                        // BOOL, DWORD, QWORD, or WORD
+                        else if (value_type >= 2 && value_type <= 5)
                         {
                                 if (value_type==2) value_num = get_le32(pb);
                                 if (value_type==3) value_num = get_le32(pb);
@@ -531,6 +532,13 @@ static int asf_read_header(AVFormatContext *s, AVFormatParameters *ap)
                                 if (strcmp(name,"WM/Track")==0) s->track = value_num + 1;
                                 if (strcmp(name,"WM/TrackNumber")==0) s->track = value_num;
                         }
+                        else
+                        {
+                            printf ("ASF: Invalid content descriptor type "
+                             "(%d).\n", value_type);
+                            url_fseek (pb, value_len, SEEK_CUR);
+                        }
+
                         free(name);
                 }
         } else if (url_feof(pb)) {
