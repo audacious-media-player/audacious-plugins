@@ -94,7 +94,7 @@ void xs_error(const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    g_logv("AUD-SID", G_LOG_LEVEL_ERROR, fmt, ap);
+    g_logv("AUD-SID", G_LOG_LEVEL_WARNING, fmt, ap);
     va_end(ap);
 }
 
