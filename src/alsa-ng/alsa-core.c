@@ -396,7 +396,7 @@ alsaplug_written_time(void)
     g_mutex_lock(pcm_state_mutex);
 
     if (pcm_going)
-        ret = (wr_total * 1000) / bps;
+        ret = wr_total * (long long) 1000 / bps;
 
     g_mutex_unlock(pcm_state_mutex);
 
