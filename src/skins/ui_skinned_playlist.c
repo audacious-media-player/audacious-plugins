@@ -383,7 +383,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     gint x, y;
     guint tail_width;
     guint tail_len;
-    gboolean in_selection = FALSE;
 
     gchar tail[100];
     gchar queuepos[255];
@@ -395,9 +394,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     gint plw_w, plw_h;
 
     cairo_t *cr;
-    gint yc;
     gint pos;
-    gdouble rounding_offset;
 
     g_return_val_if_fail (widget != NULL, FALSE);
     g_return_val_if_fail (UI_SKINNED_IS_PLAYLIST (widget), FALSE);
@@ -415,8 +412,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
 
     cairo_rectangle(cr, 0, 0, width, height);
     cairo_paint(cr);
-
-    rounding_offset = priv->row_height / 3;
 
     if (priv->offset)
     {
@@ -462,47 +457,14 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
          list = g_list_next(list), i++) {
         entry = list->data;
 
-        if (entry->selected && !in_selection) {
-            yc = priv->offset + priv->row_height * (i - priv->first);
-
-            cairo_new_path(cr);
-
-            cairo_move_to(cr, 0, yc + (rounding_offset * 2));
-            cairo_curve_to(cr, 0, yc + rounding_offset, 0, yc + 0.5, 0 + rounding_offset, yc + 0.5);
-
-            cairo_line_to(cr, 0 + width - (rounding_offset * 2), yc + 0.5);
-            cairo_curve_to(cr, 0 + width - rounding_offset, yc + 0.5,
-                        0 + width, yc + 0.5, 0 + width, yc + rounding_offset);
-
-            in_selection = TRUE;
-        }
-
-        if ((!entry->selected ||
-            (i == priv->first + priv->rows - 1) || !g_list_next(list))
-            && in_selection) {
-
-            if (!entry->selected)
-                yc = priv->offset + priv->row_height * (i - 1 - priv->first);
-            else /* last visible item */
-                yc = priv->offset + priv->row_height * (i - priv->first);
-
-            cairo_line_to(cr, 0 + width, yc + priv->row_height - (rounding_offset * 2));
-            cairo_curve_to (cr, 0 + width, yc + priv->row_height - rounding_offset,
-                        0 + width, yc + priv->row_height - 0.5,
-                        0 + width-rounding_offset, yc + priv->row_height - 0.5);
-
-            cairo_line_to (cr, 0 + (rounding_offset * 2), yc + priv->row_height - 0.5);
-            cairo_curve_to (cr, 0 + rounding_offset, yc + priv->row_height - 0.5,
-                        0, yc + priv->row_height - 0.5,
-                        0, yc + priv->row_height - rounding_offset);
-
-            cairo_close_path (cr);
-
-            gdk_cairo_set_source_color(cr, skin_get_color(aud_active_skin, SKIN_PLEDIT_SELECTEDBG));
-
-            cairo_fill(cr);
-
-            in_selection = FALSE;
+        if (entry->selected)
+        {
+            gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
+             SKIN_PLEDIT_SELECTEDBG));
+            cairo_new_path (cr);
+            cairo_rectangle (cr, 0, priv->offset + priv->row_height * (i -
+             priv->first), width, priv->row_height);
+            cairo_fill (cr);
         }
     }
 
@@ -640,33 +602,12 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     if (priv->focused >= priv->first && priv->focused <= priv->first +
      priv->rows - 1)
     {
-        double left, top, right, bottom;
-
         cairo_set_line_width (cr, 1);
         gdk_cairo_set_source_color (cr, skin_get_color (aud_active_skin,
          SKIN_PLEDIT_NORMAL));
-
-        left = 0.5;
-        top = priv->offset + priv->row_height * (priv->focused - priv->first) +
-         0.5;
-        right = width - 0.5;
-        bottom = top + priv->row_height - 1;
-
         cairo_new_path (cr);
-        cairo_move_to (cr, left, top + rounding_offset * 2);
-        cairo_curve_to (cr, left, top + rounding_offset, left, top, left
-         + rounding_offset, top);
-        cairo_line_to (cr, right - rounding_offset * 2, top);
-        cairo_curve_to (cr, right - rounding_offset, top, right, top, right, top
-         + rounding_offset);
-        cairo_line_to (cr, right, bottom - rounding_offset * 2);
-        cairo_curve_to (cr, right, bottom - rounding_offset, right, bottom,
-         right - rounding_offset, bottom);
-        cairo_line_to (cr, left + rounding_offset * 2, bottom);
-        cairo_curve_to (cr, left + rounding_offset, bottom, left, bottom, left,
-         bottom - rounding_offset);
-        cairo_close_path (cr);
-
+        cairo_rectangle (cr, 0.5, priv->offset + priv->row_height *
+         (priv->focused - priv->first) + 0.5, width - 1, priv->row_height - 1);
         cairo_stroke (cr);
     }
 
