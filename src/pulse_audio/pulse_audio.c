@@ -601,6 +601,9 @@ static int pulse_open(AFormat fmt, int rate, int nch) {
         case FMT_S32_NE:
             ss.format = PA_SAMPLE_S32NE;
             break;
+	case FMT_FLOAT:
+            ss.format = PA_SAMPLE_FLOAT32NE;
+            break;
         default:
             return FALSE;
     }
