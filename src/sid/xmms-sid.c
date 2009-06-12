@@ -250,6 +250,7 @@ void xs_play_file(InputPlayback *pb)
     pb->playing = TRUE;
     xs_status.isPlaying = TRUE;
     pb->error = FALSE;
+    pb->eof = FALSE;
     tmpTune = xs_status.tuneInfo;
 
     if (subTune < 1 || subTune > xs_status.tuneInfo->nsubTunes)
@@ -263,7 +264,6 @@ void xs_play_file(InputPlayback *pb)
     /* We are ready */
     xs_decode_thread = g_thread_self();
     XSDEBUG("playing thread = %p\n", xs_decode_thread);
-    pb->set_pb_ready(pb);
 
 
     /* Allocate audio buffer */
@@ -315,6 +315,8 @@ void xs_play_file(InputPlayback *pb)
     }
 
     audioOpen = TRUE;
+
+    pb->set_pb_ready(pb);
 
     /* Set song information for current subtune */
     XSDEBUG("foobar #1\n");
@@ -382,11 +384,13 @@ void xs_play_file(InputPlayback *pb)
                     pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
                     pb->playing = FALSE;
                     xs_status.isPlaying = FALSE;
+                    pb->eof = TRUE;
                 }
             } else {
                 if (pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
                     pb->playing = FALSE;
                     xs_status.isPlaying = FALSE;
+                    pb->eof = TRUE;
                 }
             }
         }
@@ -395,6 +399,7 @@ void xs_play_file(InputPlayback *pb)
             if (pb->output->output_time() >= tmpLength * 1000) {
                 pb->playing = FALSE;
                 xs_status.isPlaying = FALSE;
+                pb->eof = TRUE;
             }
         }
         XS_MUTEX_UNLOCK(xs_status);
@@ -421,6 +426,7 @@ xs_err_exit:
     XS_MUTEX_LOCK(xs_status);
     pb->playing = FALSE;
     xs_status.isPlaying = FALSE;
+    pb->eof = TRUE;
     XS_MUTEX_UNLOCK(xs_status);
 
     /* Exit the playing thread */
