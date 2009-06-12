@@ -4,7 +4,7 @@
    libSIDPlay skeleton functions used both by v1 and 2 of the backends
 
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 2005-2007 Tecnic Software productions (TNSP)
+   (C) Copyright 2005-2009 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

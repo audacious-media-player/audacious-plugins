@@ -4,7 +4,7 @@
    Configuration dialog
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
    
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,32 +24,32 @@
 
 #ifdef AUDACIOUS_PLUGIN
 #include <audacious/plugin.h>
-#define XS_CONFIG_FILE      ConfigDb
-#define XS_CONFIG_OPEN      aud_cfg_db_open
-#define XS_CONFIG_FREE      aud_cfg_db_close
+#define XS_CONFIG_FILE          mcs_handle_t
+#define XS_CONFIG_OPEN          aud_cfg_db_open
+#define XS_CONFIG_FREE          aud_cfg_db_close
 
-#define XS_CFG_SET_STRING   aud_cfg_db_set_string
-#define XS_CFG_SET_FLOAT    aud_cfg_db_set_float
-#define XS_CFG_SET_INT      aud_cfg_db_set_int
-#define XS_CFG_SET_BOOL     aud_cfg_db_set_bool
-#define XS_CFG_GET_STRING   aud_cfg_db_get_string
-#define XS_CFG_GET_FLOAT    aud_cfg_db_get_float
-#define XS_CFG_GET_INT      aud_cfg_db_get_int
-#define XS_CFG_GET_BOOL     aud_cfg_db_get_bool
+#define XS_CFG_SET_STRING(q,z)  aud_cfg_db_set_string(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_SET_FLOAT(q,z)   aud_cfg_db_set_float(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_SET_INT(q,z)     aud_cfg_db_set_int(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_SET_BOOL(q,z)    aud_cfg_db_set_bool(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_STRING(q,z)  aud_cfg_db_get_string(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_FLOAT(q,z)   aud_cfg_db_get_float(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_INT(q,z)     aud_cfg_db_get_int(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_BOOL(q,z)    aud_cfg_db_get_bool(cfg, XS_CONFIG_IDENT, q, z)
 #else
 #include <xmms/configfile.h>
-#define XS_CONFIG_FILE      ConfigFile
-#define XS_CONFIG_OPEN      xmms_cfg_open_default_file
-#define XS_CONFIG_FREE      xmms_cfg_free
+#define XS_CONFIG_FILE          ConfigFile
+#define XS_CONFIG_OPEN          xmms_cfg_open_default_file
+#define XS_CONFIG_FREE          xmms_cfg_free
 
-#define XS_CFG_SET_STRING   xmms_cfg_write_string
-#define XS_CFG_SET_FLOAT    xmms_cfg_write_float
-#define XS_CFG_SET_INT      xmms_cfg_write_int
-#define XS_CFG_SET_BOOL     xmms_cfg_write_boolean
-#define XS_CFG_GET_STRING   xmms_cfg_read_string
-#define XS_CFG_GET_FLOAT    xmms_cfg_read_float
-#define XS_CFG_GET_INT      xmms_cfg_read_int
-#define XS_CFG_GET_BOOL     xmms_cfg_read_boolean
+#define XS_CFG_SET_STRING(q,z)  xmms_cfg_write_string(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_SET_FLOAT(q,z)   xmms_cfg_write_float(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_SET_INT(q,z)     xmms_cfg_write_int(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_SET_BOOL(q,z)    xmms_cfg_write_boolean(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_STRING(q,z)  xmms_cfg_read_string(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_FLOAT(q,z)   xmms_cfg_read_float(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_INT(q,z)     xmms_cfg_read_int(cfg, XS_CONFIG_IDENT, q, z)
+#define XS_CFG_GET_BOOL(q,z)    xmms_cfg_read_boolean(cfg, XS_CONFIG_IDENT, q, z)
 #endif
 #include <stdio.h>
 #include <ctype.h>
@@ -94,9 +94,9 @@ static xs_cfg_item_t xs_cfgtable[] = {
 { CTYPE_BOOL,   &xs_cfg.mos8580,                "mos8580" },
 { CTYPE_BOOL,   &xs_cfg.forceModel,             "forceModel" },
 { CTYPE_BOOL,   &xs_cfg.emulateFilters,         "emulateFilters" },
-{ CTYPE_FLOAT,  &xs_cfg.sid1FilterFs,           "filterFs" },
-{ CTYPE_FLOAT,  &xs_cfg.sid1FilterFm,           "filterFm" },
-{ CTYPE_FLOAT,  &xs_cfg.sid1FilterFt,           "filterFt" },
+{ CTYPE_FLOAT,  &xs_cfg.sid1Filter.fs,          "filterFs" },
+{ CTYPE_FLOAT,  &xs_cfg.sid1Filter.fm,          "filterFm" },
+{ CTYPE_FLOAT,  &xs_cfg.sid1Filter.ft,          "filterFt" },
 { CTYPE_INT,    &xs_cfg.memoryMode,             "memoryMode" },
 { CTYPE_INT,    &xs_cfg.clockSpeed,             "clockSpeed" },
 { CTYPE_BOOL,   &xs_cfg.forceSpeed,             "forceSpeed" },
@@ -166,9 +166,9 @@ static xs_wid_item_t xs_widtable[] = {
 { WTYPE_BGROUP, CTYPE_INT,      "cfg_emu_sp2_hardsid",  &xs_cfg.sid2Builder,            XS_BLD_HARDSID },
 
 { WTYPE_BUTTON, CTYPE_BOOL,     "cfg_emu_filters",      &xs_cfg.emulateFilters,         0 },
-{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_fs",    &xs_cfg.sid1FilterFs,           0 },
-{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_fm",    &xs_cfg.sid1FilterFm,           0 },
-{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_ft",    &xs_cfg.sid1FilterFt,           0 },
+{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_fs",    &xs_cfg.sid1Filter.fs,          0 },
+{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_fm",    &xs_cfg.sid1Filter.fm,          0 },
+{ WTYPE_SCALE,  CTYPE_FLOAT,    "cfg_sp1_filter_ft",    &xs_cfg.sid1Filter.ft,          0 },
 
 { WTYPE_BUTTON, CTYPE_BOOL,     "cfg_maxtime_enable",   &xs_cfg.playMaxTimeEnable,      0 },
 { WTYPE_BUTTON, CTYPE_BOOL,     "cfg_maxtime_unknown",  &xs_cfg.playMaxTimeUnknown,     0 },
@@ -222,9 +222,9 @@ void xs_init_configuration(void)
 
     /* Filter values */
     xs_cfg.emulateFilters = TRUE;
-    xs_cfg.sid1FilterFs = XS_SIDPLAY1_FS;
-    xs_cfg.sid1FilterFm = XS_SIDPLAY1_FM;
-    xs_cfg.sid1FilterFt = XS_SIDPLAY1_FT;
+    xs_cfg.sid1Filter.fs = XS_SIDPLAY1_FS;
+    xs_cfg.sid1Filter.fm = XS_SIDPLAY1_FM;
+    xs_cfg.sid1Filter.ft = XS_SIDPLAY1_FT;
 
 #ifdef HAVE_SIDPLAY2
     xs_cfg.playerEngine = XS_ENG_SIDPLAY2;
@@ -302,60 +302,128 @@ void xs_init_configuration(void)
 
 /* Filter configuration handling
  */
+static void xs_filters_error(const gchar *fmt, ...)
+{
+    va_list ap;
+
+#ifdef AUDACIOUS_PLUGIN
+    va_start(ap, fmt);
+    g_logv("AUD-SID", G_LOG_LEVEL_WARNING, fmt, ap);
+    va_end(ap);
+#else
+    gchar *msg;
+    
+    va_start(ap, fmt);
+    msg = g_strdup_vprintf(fmt, ap);
+    va_end(ap);
+    xmms_show_message(_(PACKAGE_NAME " Error"), msg, _("OK"), TRUE, NULL, NULL);
+    g_free(msg);
+#endif
+}
+
+
+static void xs_filter_free(xs_sid_filter_t *filter)
+{
+    if (filter) {
+        g_free(filter->name);
+        filter->name = NULL;
+        g_free(filter);
+    }
+}
+
+
 #define XS_FITEM (4 * 2)
 
-static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, xs_sid2_filter_t *pResult)
+static gboolean xs_filter_load_into(XS_CONFIG_FILE *cfg, gint nFilter, xs_sid_filter_t *filter)
 {
     gchar tmpKey[64], *tmpStr;
-    gint i, j;
 
     /* Get fields from config */
-    g_snprintf(tmpKey, sizeof(tmpKey), "filter%dNPoints", nFilter);
-    if (!XS_CFG_GET_INT(cfg, XS_CONFIG_IDENT, tmpKey, &(pResult->npoints)))
+    g_snprintf(tmpKey, sizeof(tmpKey), "filter%dType", nFilter);
+    if (!XS_CFG_GET_INT(tmpKey, &(filter->type)))
         return FALSE;
     
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dName", nFilter);
-    if (!XS_CFG_GET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, &tmpStr))
+    if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
         return FALSE;
     
-    pResult->name = g_strdup(tmpStr);
-    if (pResult->name == NULL) {
-        g_free(pResult);
-        return FALSE;
-    }
-    
-    g_snprintf(tmpKey, sizeof(tmpKey), "filter%dPoints", nFilter);
-    if (!XS_CFG_GET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, &tmpStr))
+    filter->name = g_strdup(tmpStr);
+    if (filter->name == NULL)
         return FALSE;
     
-    for (i = 0, j = 0; i < pResult->npoints; i++, j += XS_FITEM) {
-        if (sscanf(&tmpStr[j], "%4x%4x",
-            &(pResult->points[i].x),
-            &(pResult->points[i].y)) != 2)
+    if (filter->type == 1) {
+        gint i, j;
+        
+        /* Types 1 has points */
+        g_snprintf(tmpKey, sizeof(tmpKey), "filter%dNPoints", nFilter);
+        if (!XS_CFG_GET_INT(tmpKey, &(filter->npoints)))
             return FALSE;
+    
+        g_snprintf(tmpKey, sizeof(tmpKey), "filter%dPoints", nFilter);
+        if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
+            return FALSE;
+    
+        for (i = 0, j = 0; i < filter->npoints; i++, j += XS_FITEM) {
+            if (sscanf(&tmpStr[j], "%4x%4x",
+                &(filter->points[i].x),
+                &(filter->points[i].y)) != 2)
+                return FALSE;
+        }
+    } else if (filter->type == 3) {
+        /* Type 3 has tunables */
+        g_snprintf(tmpKey, sizeof(tmpKey), "filter%dData", nFilter);
+        if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
+            return FALSE;
+        
+        if (sscanf(tmpStr, "%f,%f,%f,%f", &filter->rate, &filter->point,
+            &filter->voice_nonlinearity, &filter->cf_treshold) != 4)
+            return FALSE;
+        
+        g_snprintf(tmpKey, sizeof(tmpKey), "filter%dData3", nFilter);
+        if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
+            return FALSE;
+        
+        if (sscanf(tmpStr, "%f,%f,%f,%f", &filter->baseresistance,
+            &filter->offset, &filter->steepness,
+            &filter->minimumfetresistance) != 4)
+            return FALSE;
+        
+    } else if (filter->type == 4) {
+        /* Type 4 has fewer tunables */
+        g_snprintf(tmpKey, sizeof(tmpKey), "filter%dData4", nFilter);
+        if (!XS_CFG_GET_STRING(tmpKey, &tmpStr))
+            return FALSE;
+        
+        if (sscanf(tmpStr, "%f,%f", &filter->k, &filter->b) != 2)
+            return FALSE;
+    } else {
+        xs_error("Unknown filter type %d for '%s' (#%d).\n", filter->type, filter->name, nFilter);
+        return FALSE;
     }
     
     return TRUE;
 }
 
 
-static xs_sid2_filter_t * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
+static xs_sid_filter_t * xs_filter_load(XS_CONFIG_FILE *cfg, gint nFilter)
 {
-    xs_sid2_filter_t *pResult;
+    xs_sid_filter_t *filter;
     
     /* Allocate filter struct */
-    if ((pResult = g_malloc0(sizeof(xs_sid2_filter_t))) == NULL)
+    if ((filter = g_malloc0(sizeof(xs_sid_filter_t))) == NULL)
         return NULL;
     
-    if (!xs_filter_load_into(cfg, nFilter, pResult)) {
-        g_free(pResult);
+    if (!xs_filter_load_into(cfg, nFilter, filter)) {
+        xs_error("Error loading filter %d from configuration.\n", nFilter);
+        xs_filter_free(filter);
         return NULL;
     } else
-        return pResult;
+        return filter;
 }
 
+
 #if 0
-static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid2_filter_t *pFilter, gint nFilter)
+static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid_filter_t *pFilter, gint nFilter)
 {
     gchar *tmpValue, tmpKey[64];
     gint i, j;
@@ -374,18 +442,19 @@ static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid2_filter_t *pFilter, g
     
     /* Write into the configuration */
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dName", nFilter);
-    XS_CFG_SET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, pFilter->name);
+    XS_CFG_SET_STRING(tmpKey, pFilter->name);
     
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dNPoints", nFilter);
-    XS_CFG_SET_INT(cfg, XS_CONFIG_IDENT, tmpKey, pFilter->npoints);
+    XS_CFG_SET_INT(tmpKey, pFilter->npoints);
 
     g_snprintf(tmpKey, sizeof(tmpKey), "filter%dPoints", nFilter);
-    XS_CFG_SET_STRING(cfg, XS_CONFIG_IDENT, tmpKey, tmpValue);
+    XS_CFG_SET_STRING(tmpKey, tmpValue);
     
     g_free(tmpValue);
     return TRUE;
 }
 #endif
+
 
 /* Filter exporting and importing. These functions export/import
  * filter settings to/from SIDPlay2 INI-type files.
@@ -393,60 +462,90 @@ static gboolean xs_filter_save(XS_CONFIG_FILE *cfg, xs_sid2_filter_t *pFilter, g
 static gboolean xs_fgetitem(gchar *inLine, size_t *linePos, gchar sep, gchar *tmpStr, size_t tmpMax)
 {
     size_t i;
+    
     for (i = 0; i < tmpMax && inLine[*linePos] &&
-        !isspace(inLine[*linePos]) &&
         inLine[*linePos] != sep; i++, (*linePos)++)
         tmpStr[i] = inLine[*linePos];
+    
     tmpStr[i] = 0;
+    while (--i > 0 && isspace(tmpStr[i])) tmpStr[i] = 0;
+    
     xs_findnext(inLine, linePos);
     return (inLine[*linePos] == sep);
 }
 
-static gboolean xs_filters_import(const gchar *pcFilename, xs_sid2_filter_t **pFilters, gint *nFilters)
+
+static gboolean xs_chkf(xs_sid_filter_t *filter, const gchar *str, const gchar *name, gint type)
+{
+    if (g_strncasecmp(str, name, strlen(name)))
+        return FALSE;
+    if (filter->type != type) {
+        if (filter->type == -1) {
+            filter->type = type;
+            return TRUE;
+        } else {
+            xs_error("Unexpected key '%s' for filter type %d.\n");
+            return FALSE;
+        }
+    } else
+        return TRUE;
+}
+
+static gboolean xs_filters_import(const gchar *filename, xs_sid_filter_t **pFilters, gint *nFilters)
 {
     FILE *inFile;
-    gchar inLine[XS_BUF_SIZE+1], tmpStr[XS_BUF_SIZE+1];
+    gchar inLine[XS_BUF_SIZE], tmpStr[XS_BUF_SIZE];
     gchar *sectName = NULL;
-    gboolean sectBegin;
+    gboolean inSection, isError = FALSE;
     size_t lineNum, i;
-    xs_sid2_filter_t *tmpFilter;
+    xs_sid_filter_t *filter = NULL;
 
-fprintf(stderr, "xs_filters_import(%s)\n", pcFilename);
+fprintf(stderr, "xs_filters_import(%s)\n", filename);
 
-    if ((inFile = fopen(pcFilename, "ra")) == NULL)
+    if ((inFile = fopen(filename, "ra")) == NULL) {
+        xs_filters_error("");
         return FALSE;
+    }
 
 fprintf(stderr, "importing...\n");
     
-    sectBegin = FALSE;
+    inSection = FALSE;
     lineNum = 0;
-    while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
+    while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL && !isError) {
         size_t linePos = 0;
         lineNum++;
         
         xs_findnext(inLine, &linePos);
-        if (isalpha(inLine[linePos]) && sectBegin) {
+        if (isalpha(inLine[linePos])) {
             /* A new key/value pair */
             if (!xs_fgetitem(inLine, &linePos, '=', tmpStr, XS_BUF_SIZE)) {
-                fprintf(stderr, "invalid line: %s [expect =']'", inLine);
-            } else {
+                xs_error("Invalid line '%s' :: expected =", inLine);
+                isError = TRUE;
+            } else if (inSection) {
                 linePos++;
                 xs_findnext(inLine, &linePos);
-                if (!strncmp(tmpStr, "points", 6)) {
-                    fprintf(stderr, "points=%s\n", &inLine[linePos]);
-                } else if (!strncmp(tmpStr, "point", 5)) {
-                } else if (!strncmp(tmpStr, "type", 4)) {
+                
+                if (xs_chkf(filter, tmpStr, "points", 1)) {
+                    
+                } else if (xs_chkf(filter, tmpStr, "point", 1)) {
+                
+                } else if (!g_strncasecmp(tmpStr, "type", 4)) {
+                    if (filter->type != -1) {
+                        xs_error("Filter type %d already set for '%s'\n",
+                            filter->type, sectName);
+                    }
+                    
                 } else {
-                    fprintf(stderr, "warning: ukn def: %s @ %s\n",
+                    xs_error("Unsupported definition '%s' @ '%s'\n",
                         tmpStr, sectName);
                 }
             }
         } else if (inLine[linePos] == '[') {
             /* Check for existing section */
-            if (sectBegin) {
+            if (inSection) {
                 /* Submit definition */
                 fprintf(stderr, "filter ends: %s\n", sectName);
-                if ((tmpFilter = g_malloc0(sizeof(xs_sid2_filter_t))) == NULL) {
+                if ((filter = g_malloc0(sizeof(xs_sid_filter_t))) == NULL) {
                     fprintf(stderr, "could not allocate ..\n");
                 } else {
                     
@@ -456,20 +555,26 @@ fprintf(stderr, "importing...\n");
             
             /* New filter(?) section starts */
             linePos++;
-            for (i = 0; i < XS_BUF_SIZE && inLine[linePos] && inLine[linePos] != ']'; i++, linePos++)
+            for (i = 0; i < XS_BUF_SIZE-1 && inLine[linePos] && inLine[linePos] != ']'; i++, linePos++)
                 tmpStr[i] = inLine[linePos];
             tmpStr[i] = 0;
             
             if (inLine[linePos] != ']') {
                 fprintf(stderr, "invalid! expected ']': %s\n", inLine);
             } else {
-                sectName = strdup(tmpStr);
-                fprintf(stderr, "filter: %s\n", sectName);
-                sectBegin = TRUE;
+                if (!g_strncasecmp(tmpStr, "filter", 6)) {
+                    sectName = strdup(tmpStr + 6);
+                    fprintf(stderr, "filter: %s\n", sectName);
+                    inSection = TRUE;
+                } else {
+                    fprintf(stderr, "ignoring section: %s\n", tmpStr);
+                    inSection = FALSE;
+                }
             }
-        } else if ((inLine[linePos] != ';') && (inLine[linePos] != 0)) {
+        } else if (inLine[linePos] != '#' && inLine[linePos] != ';' && inLine[linePos] != 0) {
             /* Syntax error */
-            fprintf(stderr, "syntax error: %s\n", inLine);
+            xs_error("Syntax error: '%s'\n", inLine);
+            isError = TRUE;
         }
     }
     
@@ -478,47 +583,91 @@ fprintf(stderr, "importing...\n");
 }
 
 
-static gboolean xs_filters_export(const gchar *pcFilename, xs_sid2_filter_t **pFilters, gint nFilters)
+static gboolean xs_filter_export(FILE *outFile, xs_sid_filter_t *filter)
 {
-    FILE *outFile;
-    xs_sid2_filter_t *f;
-    gint n;
-    
-    /* Open/create the file */
-    if ((outFile = fopen(pcFilename, "wa")) == NULL)
-        return FALSE;
-    
-    /* Header */
     fprintf(outFile,
-        "; SIDPlay2 compatible filter definition file\n"
-        "; Exported by " PACKAGE_STRING "\n\n");
+    "[Filter%s]\n"
+    "type=%d\n",
+    filter->name, filter->type);
     
-    /* Write each filter spec in "INI"-style format */
-    for (n = 0; n < nFilters; n++) {
+    if (filter->type == 1) {
         gint i;
-        f = pFilters[n];
+        fprintf(outFile, "points=%d\n", filter->npoints);
         
-        fprintf(outFile,
-        "[%s]\n"
-        "type=1\n"
-        "points=%d\n",
-        f->name, f->npoints);
-    
-        for (i = 0; i < f->npoints; i++) {
+        for (i = 0; i < filter->npoints; i++) {
             fprintf(outFile,
             "point%d=%d,%d\n",
             i + 1,
-            f->points[i].x,
-            f->points[i].y);
+            filter->points[i].x,
+            filter->points[i].y);
         }
+    } else if (filter->type == 3) {
+        fprintf(outFile,
+        "DistortionRate            = %f\n"
+        "DistortionPoint           = %f\n"
+        "VoiceNonlinearity         = %f\n"
+        "DistortionCFThreshold     = %f\n",
+        filter->rate, filter->point,
+        filter->voice_nonlinearity,
+        filter->cf_treshold);
+        
+        fprintf(outFile,
+        "Type3BaseResistance       = %f\n"
+        "Type3Offset               = %f\n"
+        "Type3Steepness            = %f\n"
+        "Type3MinimumFETResistance = %f\n",
+        filter->baseresistance, filter->offset,
+        filter->steepness, filter->minimumfetresistance);
+        
+    } else if (filter->type == 4) {
+        fprintf(outFile,
+        "Type4K=%f\n"
+        "Type4B=%f\n",
+        filter->k, filter->b);
+    } else {
+        xs_error("Filter '%s' has type %d, which is unsupported by export.\n",
+        filter->name, filter->type);
+        return FALSE;
+    }
     
-        fprintf(outFile, "\n");
-        f++;
+    fprintf(outFile, "\n");
+    return TRUE;
+}
+
+
+static gboolean xs_filters_export(const gchar *filename, xs_sid_filter_t **filters, gint nFilters)
+{
+    gboolean result = TRUE;
+    FILE *outFile;
+    gint n;
+    
+    /* Open/create the file */
+    if ((outFile = fopen(filename, "wa")) == NULL) {
+        xs_filters_error("Could not open '%s' for writing! Not exporting.", filename);
+        return FALSE;
+    }
+    
+    /* Header */
+    fprintf(outFile,
+    "; SIDPlay2 compatible filter definition file\n"
+    "; Exported by " PACKAGE_STRING "\n\n");
+    
+    /* Write each filter spec in "INI"-style format */
+    for (n = 0; n < nFilters; n++) {
+        if (!xs_filter_export(outFile, filters[n])) {
+            result = FALSE;
+            break;
+        }
     }
     
     fclose(outFile);
-    return TRUE;
+    
+    if (!result)
+        xs_filters_error("Some filters could not be exported!");
+    
+    return result;
 }
+
 
 /* Get the configuration (from file or default)
  */
@@ -544,26 +693,23 @@ void xs_read_configuration(void)
     for (i = 0; i < xs_cfgtable_max; i++) {
         switch (xs_cfgtable[i].itemType) {
         case CTYPE_INT:
-            XS_CFG_GET_INT(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName,
+            XS_CFG_GET_INT(xs_cfgtable[i].itemName,
                 (gint *) xs_cfgtable[i].itemData);
             break;
 
         case CTYPE_BOOL:
-            XS_CFG_GET_BOOL(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName,
+            XS_CFG_GET_BOOL(xs_cfgtable[i].itemName,
                 (gboolean *) xs_cfgtable[i].itemData);
             break;
 
         case CTYPE_FLOAT:
-            XS_CFG_GET_FLOAT(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName,
+            XS_CFG_GET_FLOAT(xs_cfgtable[i].itemName,
                 (gfloat *) xs_cfgtable[i].itemData);
             break;
         
         case CTYPE_STR:
-            if (XS_CFG_GET_STRING(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName, (gchar **) &tmpStr)) {
+            if (XS_CFG_GET_STRING(xs_cfgtable[i].itemName,
+                (gchar **) &tmpStr)) {
                 xs_pstrcpy((gchar **) xs_cfgtable[i].itemData, tmpStr);
                 g_free(tmpStr);
             }
@@ -575,7 +721,7 @@ void xs_read_configuration(void)
     xs_filter_load_into(cfg, 0, &xs_cfg.sid2Filter);
     
     if (xs_cfg.sid2NFilterPresets > 0) {
-        xs_cfg.sid2FilterPresets = g_malloc0(xs_cfg.sid2NFilterPresets * sizeof(xs_sid2_filter_t *));
+        xs_cfg.sid2FilterPresets = g_malloc0(xs_cfg.sid2NFilterPresets * sizeof(xs_sid_filter_t *));
         if (!xs_cfg.sid2FilterPresets) {
             xs_error("Allocation of sid2FilterPresets structure failed!\n");
         } else {
@@ -614,26 +760,22 @@ gint xs_write_configuration(void)
     for (i = 0; i < xs_cfgtable_max; i++) {
         switch (xs_cfgtable[i].itemType) {
         case CTYPE_INT:
-            XS_CFG_SET_INT(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName,
+            XS_CFG_SET_INT(xs_cfgtable[i].itemName,
                 *(gint *) xs_cfgtable[i].itemData);
             break;
 
         case CTYPE_BOOL:
-            XS_CFG_SET_BOOL(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName,
+            XS_CFG_SET_BOOL(xs_cfgtable[i].itemName,
                 *(gboolean *) xs_cfgtable[i].itemData);
             break;
 
         case CTYPE_FLOAT:
-            XS_CFG_SET_FLOAT(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName,
+            XS_CFG_SET_FLOAT(xs_cfgtable[i].itemName,
                 *(gfloat *) xs_cfgtable[i].itemData);
             break;
 
         case CTYPE_STR:
-            XS_CFG_SET_STRING(cfg, XS_CONFIG_IDENT,
-                xs_cfgtable[i].itemName,
+            XS_CFG_SET_STRING(xs_cfgtable[i].itemName,
                 *(gchar **) xs_cfgtable[i].itemData);
             break;
         }
@@ -896,7 +1038,7 @@ void xs_cfg_sp1_filter_reset(GtkButton * button, gpointer user_data)
 }
 
 
-void xs_cfg_sp2_filter_update(XSCurve *curve, xs_sid2_filter_t *f)
+void xs_cfg_sp2_filter_update(XSCurve *curve, xs_sid_filter_t *f)
 {
     assert(curve);
     assert(f);
@@ -1120,7 +1262,13 @@ void xs_cfg_emu_sidplay2_toggled(GtkToggleButton * togglebutton, gpointer user_d
     gtk_widget_set_sensitive(LUW("cfg_emu_mem_real"), isActive);
 
     gtk_widget_set_sensitive(LUW("cfg_sidplay2_frame"), isActive);
+
+#ifdef HAVE_SIDPLAY2_DISTORTION
+    /* Optimization mode removed from distortion patch */
+    gtk_widget_set_sensitive(LUW("cfg_emu_sp2_opt"), FALSE);
+#else
     gtk_widget_set_sensitive(LUW("cfg_emu_sp2_opt"), isActive);
+#endif
 
     gtk_widget_set_sensitive(LUW("cfg_chn_autopan"), !isActive);
 

@@ -68,11 +68,27 @@ enum XS_SIDMODEL {
 
 
 typedef struct {
+    gchar           *name;
     gint            type;
+    
+    /* Filter type 0 for SIDPlay 1 */
+    gfloat          fs, fm, ft;
+    
+    /* Filter type 1-2 points */
     xs_int_point_t  points[XS_SIDPLAY2_NFPOINTS];
     gint            npoints;
-    gchar           *name;
-} xs_sid2_filter_t;
+    
+    /* Distortion patch tunables */
+    gfloat          rate, point, voice_nonlinearity,
+                    cf_treshold;
+    
+    /* Filter Type 3 tunables */
+    gfloat          baseresistance, offset, steepness,
+                    minimumfetresistance;
+    
+    /* Filter Type 4 tunables */
+    gfloat          k, b;
+} xs_sid_filter_t;
 
 
 extern struct xs_cfg_t {
@@ -94,14 +110,12 @@ extern struct xs_cfg_t {
     gint        playerEngine;       /* Selected player engine */
 
     gboolean    emulateFilters;
-    gfloat      sid1FilterFs;
-    gfloat      sid1FilterFm;
-    gfloat      sid1FilterFt;
+    xs_sid_filter_t    sid1Filter;  /* Current SIDPlay1 filter */
 
     gint        sid2OptLevel;       /* SIDPlay2 emulation optimization */
     gint        sid2Builder;        /* SIDPlay2 "builder" aka SID-emu */
-    xs_sid2_filter_t    sid2Filter; /* Current SIDPlay2 filter */
-    xs_sid2_filter_t    **sid2FilterPresets;
+    xs_sid_filter_t    sid2Filter;  /* Current SIDPlay2 filter */
+    xs_sid_filter_t    **sid2FilterPresets;
     gint        sid2NFilterPresets;
     
     
