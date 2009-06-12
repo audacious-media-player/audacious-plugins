@@ -85,8 +85,6 @@ alsaplug_mixer_new(snd_mixer_t **mixer)
 {
     gint ret;
 
-    _ERROR("setting up mixer");
-
     ret = snd_mixer_open(mixer, 0);
     if (ret < 0)
     {
