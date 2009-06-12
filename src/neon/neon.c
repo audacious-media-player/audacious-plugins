@@ -999,8 +999,8 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
     }
 
     if (NULL == h->reader) {
-        /* NEON_READER_EOF != h->reader_status.status */
-        if (1) {
+        if ((NEON_READER_EOF != h->reader_status.status) ||
+            ((NEON_READER_EOF == h->reader_status.status) && (h->content_length != -1))) {
             /*
              * There is no reader thread yet. Read the first bytes from
              * the network ourselves, and then fire up the reader thread
