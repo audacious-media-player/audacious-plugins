@@ -15,6 +15,7 @@ SRCS = xs_init.c	\
        xs_sidplay2.cc	\
        xs_curve.c	\
        xs_slsup.c	\
+       xs_player.c	\
        xmms-sid.c
 
 include ../../buildsys.mk

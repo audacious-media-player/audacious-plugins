@@ -39,46 +39,6 @@
 
 
 /*
- * Include player engines
- */
-#ifdef HAVE_SIDPLAY1
-#include "xs_sidplay1.h"
-#endif
-#ifdef HAVE_SIDPLAY2
-#include "xs_sidplay2.h"
-#endif
-
-
-/*
- * List of players and links to their functions
- */
-static const xs_player_t xs_playerlist[] = {
-#ifdef HAVE_SIDPLAY1
-    {XS_ENG_SIDPLAY1,
-     xs_sidplay1_probe,
-     xs_sidplay1_init, xs_sidplay1_close,
-     xs_sidplay1_initsong, xs_sidplay1_fillbuffer,
-     xs_sidplay1_load, xs_sidplay1_delete,
-     xs_sidplay1_getinfo, xs_sidplay1_updateinfo,
-     NULL
-    },
-#endif
-#ifdef HAVE_SIDPLAY2
-    {XS_ENG_SIDPLAY2,
-     xs_sidplay2_probe,
-     xs_sidplay2_init, xs_sidplay2_close,
-     xs_sidplay2_initsong, xs_sidplay2_fillbuffer,
-     xs_sidplay2_load, xs_sidplay2_delete,
-     xs_sidplay2_getinfo, xs_sidplay2_updateinfo,
-     xs_sidplay2_flush
-    },
-#endif
-};
-
-static const gint xs_nplayerlist = (sizeof(xs_playerlist) / sizeof(xs_playerlist[0]));
-
-
-/*
  * Global variables
  */
 xs_status_t xs_status;
@@ -94,7 +54,7 @@ void xs_error(const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    g_logv("AUD-SID", G_LOG_LEVEL_ERROR, fmt, ap);
+    g_logv("AUD-SID", G_LOG_LEVEL_WARNING, fmt, ap);
     va_end(ap);
 }
 
@@ -114,9 +74,6 @@ void XSDEBUG(const char *fmt, ...)
  */
 void xs_reinit(void)
 {
-    gint player;
-    gboolean initialized;
-
     XSDEBUG("xs_reinit() thread = %p\n", g_thread_self());
 
     /* Stop playing, if we are */
@@ -153,35 +110,8 @@ void xs_reinit(void)
     xs_status.oversampleFactor = xs_cfg.oversampleFactor;
 
     /* Try to initialize emulator engine */
-    XSDEBUG("initializing emulator engine #%i...\n", xs_cfg.playerEngine);
-
-    player = 0;
-    initialized = FALSE;
-    while ((player < xs_nplayerlist) && !initialized) {
-        if (xs_playerlist[player].plrIdent == xs_cfg.playerEngine) {
-            if (xs_playerlist[player].plrInit(&xs_status)) {
-                initialized = TRUE;
-                xs_status.sidPlayer = (xs_player_t *) & xs_playerlist[player];
-            }
-        }
-        player++;
-    }
-
-    XSDEBUG("init#1: %s, %i\n", (initialized) ? "OK" : "FAILED", player);
-
-    player = 0;
-    while ((player < xs_nplayerlist) && !initialized) {
-        if (xs_playerlist[player].plrInit(&xs_status)) {
-            initialized = TRUE;
-            xs_status.sidPlayer = (xs_player_t *) & xs_playerlist[player];
-            xs_cfg.playerEngine = xs_playerlist[player].plrIdent;
-        } else
-            player++;
-    }
-
-    XSDEBUG("init#2: %s, %i\n", (initialized) ? "OK" : "FAILED", player);
-
-
+    xs_init_emu_engine(&xs_cfg.playerEngine, &xs_status);
+    
     /* Get settings back, in case the chosen emulator backend changed them */
     xs_cfg.audioFrequency = xs_status.audioFrequency;
     xs_cfg.audioBitsPerSample = xs_status.audioBitsPerSample;
@@ -320,6 +250,7 @@ void xs_play_file(InputPlayback *pb)
     pb->playing = TRUE;
     xs_status.isPlaying = TRUE;
     pb->error = FALSE;
+    pb->eof = FALSE;
     tmpTune = xs_status.tuneInfo;
 
     if (subTune < 1 || subTune > xs_status.tuneInfo->nsubTunes)
@@ -333,7 +264,6 @@ void xs_play_file(InputPlayback *pb)
     /* We are ready */
     xs_decode_thread = g_thread_self();
     XSDEBUG("playing thread = %p\n", xs_decode_thread);
-    pb->set_pb_ready(pb);
 
 
     /* Allocate audio buffer */
@@ -385,6 +315,8 @@ void xs_play_file(InputPlayback *pb)
     }
 
     audioOpen = TRUE;
+
+    pb->set_pb_ready(pb);
 
     /* Set song information for current subtune */
     XSDEBUG("foobar #1\n");
@@ -452,11 +384,13 @@ void xs_play_file(InputPlayback *pb)
                     pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
                     pb->playing = FALSE;
                     xs_status.isPlaying = FALSE;
+                    pb->eof = TRUE;
                 }
             } else {
                 if (pb->output->output_time() >= xs_cfg.playMaxTime * 1000) {
                     pb->playing = FALSE;
                     xs_status.isPlaying = FALSE;
+                    pb->eof = TRUE;
                 }
             }
         }
@@ -465,6 +399,7 @@ void xs_play_file(InputPlayback *pb)
             if (pb->output->output_time() >= tmpLength * 1000) {
                 pb->playing = FALSE;
                 xs_status.isPlaying = FALSE;
+                pb->eof = TRUE;
             }
         }
         XS_MUTEX_UNLOCK(xs_status);
@@ -491,6 +426,7 @@ xs_err_exit:
     XS_MUTEX_LOCK(xs_status);
     pb->playing = FALSE;
     xs_status.isPlaying = FALSE;
+    pb->eof = TRUE;
     XS_MUTEX_UNLOCK(xs_status);
 
     /* Exit the playing thread */

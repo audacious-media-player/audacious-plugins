@@ -228,9 +228,9 @@ gboolean xs_sidplay1_init(xs_status_t * myStatus)
     /* if (xs_cfg.forceModel) */
     myEngine->currConfig.mos8580 = xs_cfg.mos8580;
     myEngine->currConfig.emulateFilter = xs_cfg.emulateFilters;
-    myEngine->currConfig.filterFs = xs_cfg.sid1FilterFs;
-    myEngine->currConfig.filterFm = xs_cfg.sid1FilterFm;
-    myEngine->currConfig.filterFt = xs_cfg.sid1FilterFt;
+    myEngine->currConfig.filterFs = xs_cfg.sid1Filter.fs;
+    myEngine->currConfig.filterFm = xs_cfg.sid1Filter.fm;
+    myEngine->currConfig.filterFt = xs_cfg.sid1Filter.ft;
 
 
     /* Now set the emulator configuration */

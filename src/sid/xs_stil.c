@@ -4,7 +4,7 @@
    STIL-database handling functions
    
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
-   (C) Copyright 1999-2007 Tecnic Software productions (TNSP)
+   (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
