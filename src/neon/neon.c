@@ -19,6 +19,8 @@
 
 #include <stdint.h>
 
+//#define NEON_DEBUG
+
 #include "neon.h"
 
 #include <audacious/plugin.h>
@@ -997,7 +999,8 @@ gsize neon_aud_vfs_fread_impl(gpointer ptr_, gsize size, gsize nmemb, VFSFile* f
     }
 
     if (NULL == h->reader) {
-        if (NEON_READER_EOF != h->reader_status.status) {
+        /* NEON_READER_EOF != h->reader_status.status */
+        if (1) {
             /*
              * There is no reader thread yet. Read the first bytes from
              * the network ourselves, and then fire up the reader thread
