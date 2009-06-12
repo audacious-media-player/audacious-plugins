@@ -116,7 +116,7 @@ alsaplug_mixer_new(snd_mixer_t **mixer)
         snd_mixer_close(*mixer);
         _ERROR("failed to load hardware mixer controls: %s", snd_strerror(ret));
         return ret;
-    }    
+    }
 
     return 0;
 }
@@ -148,7 +148,7 @@ alsaplug_set_volume(gint l, gint r)
             snd_mixer_selem_set_playback_switch(elem, SND_MIXER_SCHN_FRONT_LEFT, l != 0);
             snd_mixer_selem_set_playback_switch(elem, SND_MIXER_SCHN_FRONT_RIGHT, r != 0);
         }
-    }    
+    }
 
     snd_mixer_handle_events(amixer);
 }
@@ -220,7 +220,7 @@ alsaplug_loop(gpointer unused)
         {
             snd_pcm_drop(pcm_handle);
             snd_pcm_prepare(pcm_handle);
-            wr_total = flush_request * (bps / 1000);
+            wr_total = flush_request * (long long) bps / 1000;
             flush_request = -1;
 
             g_cond_broadcast(pcm_flush_cond);
@@ -380,7 +380,7 @@ alsaplug_output_time(void)
                 bytes -= d;
         }
 
-        ret = (bytes * 1000) / bps;
+        ret = bytes * (long long) 1000 / bps;
     }
 
     g_mutex_unlock(pcm_state_mutex);
@@ -442,7 +442,7 @@ alsaplug_buffer_playing(void)
 
     if (pcm_going == FALSE)
         ret = 0;
-    else 
+    else
         ret = alsaplug_ringbuffer_used(&pcm_ringbuf) != 0;
 
     g_mutex_unlock(pcm_state_mutex);
