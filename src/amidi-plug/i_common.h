@@ -30,7 +30,7 @@
 
 #include <audacious/i18n.h>
 
-#define DEBUG 1
+#undef DEBUG
 
 #define textdomain(Domain)
 #define bindtextdomain(Package, Directory)
