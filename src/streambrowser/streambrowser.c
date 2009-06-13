@@ -231,7 +231,7 @@ void config_save()
 
     aud_cfg_db_set_bool(db, "streambrowser", "debug", streambrowser_cfg.debug);
     
-    int old_bookmarks_count, i;
+    int old_bookmarks_count = 0, i;
     gchar item[DEF_STRING_LEN];
     aud_cfg_db_get_int(db, "streambrowser", "bookmarks_count", &old_bookmarks_count);
 	aud_cfg_db_set_int(db, "streambrowser", "bookmarks_count", streambrowser_cfg.bookmarks_count);
