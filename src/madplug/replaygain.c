@@ -124,19 +124,18 @@ readAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
 
     end = buff + hdr.length - APE_HEADER_SIZE;
     
-    for (p = buff; p < end && hdr.tagCount--;) {
+    for (p = buff; p + 8 < end && hdr.tagCount--;) {
         guint32 vsize, flags;
-        size_t isize;
         gchar *tmp;
         
         /* Get and check size and string */
         if (!fetchLE32(&vsize, &p, end)) break;
         if (!fetchLE32(&flags, &p, end)) break;
-        for (tmp = p, isize = 0; tmp < end && *tmp != 0; isize++, tmp++);
+        for (tmp = p; tmp < end && *tmp != 0; tmp++);
         if (*tmp != 0) break;
         tmp++;
         
-        if (isize > 0 && vsize > 0) {
+        if (vsize > 0) {
             gdouble *scale = NULL;
             gchar **str = NULL;
             if (g_ascii_strcasecmp(p, "REPLAYGAIN_ALBUM_GAIN") == 0) {
@@ -176,19 +175,19 @@ readAPE2Tag(VFSFile * fp, struct mad_info_t *file_info)
                 str = &file_info->mp3gain_undo_str;
                 scale = &file_info->mp3gain_undo;
                 assert(4 < vsize);  /* this tag is +left,+right */
-                *str = g_strndup(p + isize + 1, vsize);
+                *str = g_strndup(tmp, vsize);
                 *scale = 1.50515 * atoi(*str);
             } else
             if (g_ascii_strcasecmp(p, "MP3GAIN_MINMAX") == 0) {
                 str = &file_info->mp3gain_minmax_str;
                 scale = &file_info->mp3gain_minmax;
-                *str = g_strndup(p + isize + 1, vsize);
+                *str = g_strndup(tmp, vsize);
                 assert(4 < vsize);  /* this tag is min,max */
                 *scale = 1.50515 * (atoi((*str) + 4) - atoi(*str));
             }
         }
         
-        p = tmp;
+        p = tmp + vsize;
     }
 
     g_free(buff);
