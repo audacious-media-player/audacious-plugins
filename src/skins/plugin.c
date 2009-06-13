@@ -133,7 +133,6 @@ gboolean skins_cleanup(void) {
         ui_playlist_evlistener_dissociate();
         skins_cfg_free();
         ui_manager_destroy();
-        mainwin_info = NULL;
         plugin_is_active = FALSE;
     }
 

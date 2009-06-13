@@ -527,7 +527,6 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
 }
 
 void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
-    g_return_if_fail(text != NULL);
     UiSkinnedTextbox *textbox = UI_SKINNED_TEXTBOX (widget);
     UiSkinnedTextboxPrivate *priv = UI_SKINNED_TEXTBOX_GET_PRIVATE(textbox);
 
