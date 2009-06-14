@@ -325,6 +325,7 @@ readId3v2TXXX(struct mad_info_t *file_info)
 	gchar *key;
 	gchar *value;
 	struct id3_frame *frame;
+	gint ret = FALSE;
 
 	AUDDBG("f: ReadId3v2TXXX\n");
 
@@ -345,23 +346,26 @@ readId3v2TXXX(struct mad_info_t *file_info)
 		if (strcasecmp(key, "replaygain_track_gain") == 0) {
 			file_info->replaygain_track_scale = g_strtod(value, NULL);
 			file_info->replaygain_track_str = g_strdup(value);
+			ret = TRUE;
 		} else if (strcasecmp(key, "replaygain_album_gain") == 0) {
 			file_info->replaygain_album_scale = g_strtod(value, NULL);
 			file_info->replaygain_album_str = g_strdup(value);
+			ret = TRUE;
 		} else if (strcasecmp(key, "replaygain_track_peak") == 0) {
 			file_info->replaygain_track_peak = g_strtod(value, NULL);
 			file_info->replaygain_track_peak_str = g_strdup(value);
+			ret = TRUE;
 		} else if (strcasecmp(key, "replaygain_album_peak") == 0) {
 			file_info->replaygain_album_peak = g_strtod(value, NULL);
 			file_info->replaygain_album_peak_str = g_strdup(value);
+			ret = TRUE;
 		}
 
 		free(key);
 		free(value);
-		return TRUE;
 	}
 
-	return FALSE;
+	return ret;
 }
 
 void
