@@ -225,6 +225,96 @@ findOffset(VFSFile * fp)
     return last_match + 1 - 8 + APE_HEADER_SIZE - N;
 }
 
+/**
+ * Read ReplayGain information from RVA2 frames.
+ *
+ * Return TRUE if ReplayGain information was found; otherwise return FALSE.
+ */
+static gint
+readId3v2RVA2(struct mad_info_t *file_info)
+{
+    gint i;
+    struct id3_frame *frame;
+    gint ret = FALSE;
+
+    AUDDBG("f: ReadId3v2RVA2\n");
+
+    /* tag must be read before! */
+    if (! file_info->tag ) {
+        AUDDBG("id3v2 not found\n");
+        return FALSE;
+    }
+
+    /* scan RVA2 frames */
+    for (i = 0; (frame = id3_tag_findframe(file_info->tag, "RVA2", i)); i++) {
+        const gchar *key;
+        const id3_byte_t *data;
+        id3_length_t datalen;
+        gdouble *scale = NULL, *peak = NULL;
+        guint p;
+
+        if (frame->nfields != 2)
+            continue;
+
+        key =  (const gchar*) id3_field_getlatin1(&frame->fields[0]);
+        data = id3_field_getbinarydata(&frame->fields[1], &datalen);
+
+        AUDDBG("got RVA2 frame id=(%s)\n", key);
+
+        /* the identification field should be "track" or "album" */
+        if (strcasecmp(key, "track") == 0) {
+            scale = &file_info->replaygain_track_scale;
+            peak =  &file_info->replaygain_track_peak;
+        } else if (strcasecmp(key, "album") == 0) {
+            scale = &file_info->replaygain_album_scale;
+            peak =  &file_info->replaygain_album_peak;
+        }
+
+        /* decode gain information */
+        p = 0;
+        while (p + 3 < datalen) {
+            /* p+0 :       channel type
+               p+1, p+2 :  16-bit signed BE int = scaledb * 512
+               p+3 :       nr of bits representing peak
+               p+4 :       unsigned multibyte BE int =  peak * 2**(peakbits-1)
+            */
+            gint channel, peakbits;
+            gdouble chgain, chpeak;
+
+            channel = data[p];
+            chgain =  (gdouble)((((signed char)(data[p+1])) << 8) | ((unsigned char)(data[p+2]))) / 512.0;
+            peakbits = data[p+3];
+
+            if (p + 4 + (peakbits + 7) / 8 > datalen)
+                break;
+
+            chpeak = 0;
+            if (peakbits > 0)
+                chpeak += (gdouble)(unsigned char)(data[p+4]);
+            if (peakbits > 8)
+                chpeak += (gdouble)(unsigned char)(data[p+5]) / 256.0;
+            if (peakbits > 16)
+                chpeak += (gdouble)(unsigned char)(data[p+6]) / 65536.0;
+            if (peakbits > 0)
+                chpeak = chpeak / (gdouble)(1 << ((peakbits - 1) & 7));
+            AUDDBG("channel=%d chgain=%f peakbits=%d chpeak=%f\n", channel, chgain, peakbits, chpeak);
+            if (channel == 1) {
+                /* channel 1 == master volume */
+                if (scale != NULL && peak != NULL) {
+                    *scale = chgain;
+                    *peak =  chpeak;
+                    ret = TRUE;
+                }
+            }
+
+            p += 4 + (peakbits + 7) / 8;
+        }
+
+    }
+
+    return ret;
+}
+
 /* Eugene Zagidullin:
  * Read ReplayGain info from foobar2000-style id3v2 frames.
  */
@@ -289,7 +379,7 @@ audmad_read_replaygain(struct mad_info_t *file_info)
     file_info->mp3gain_undo = -77;
     file_info->mp3gain_minmax = -77;
 
-    if (readId3v2TXXX(file_info)) {
+    if (readId3v2RVA2(file_info) || readId3v2TXXX(file_info)) {
         AUDDBG("found ReplayGain info in id3v2 tag\n");
 #ifdef AUD_DEBUG
 	gchar *tmp = g_filename_to_utf8(file_info->filename, -1, NULL, NULL, NULL);
