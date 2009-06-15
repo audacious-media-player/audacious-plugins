@@ -315,7 +315,10 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
     bitwidth = snd_pcm_format_physical_width(afmt);
     bps = (rate * bitwidth * nch) >> 3;
     ringbuf_size = aud_cfg->output_buffer_size * bps / 1000;
-    alsaplug_ringbuffer_init(&pcm_ringbuf, ringbuf_size);
+    if (alsaplug_ringbuffer_init(&pcm_ringbuf, ringbuf_size) == -1) {
+        _ERROR("alsaplug_ringbuffer_init failed");
+        return -1;
+    }
     pcm_going = TRUE;
     flush_request = -1;
 
@@ -371,14 +374,15 @@ alsaplug_output_time(void)
 
     if (pcm_going && pcm_handle != NULL)
     {
+        guint d = alsaplug_ringbuffer_used(&pcm_ringbuf);
+
         if (!snd_pcm_delay(pcm_handle, &delay))
-        {
-            guint d = snd_pcm_frames_to_bytes(pcm_handle, delay);
-            if (bytes < d)
-                bytes = 0;
-            else
-                bytes -= d;
-        }
+            d += snd_pcm_frames_to_bytes(pcm_handle, delay);
+
+        if (bytes < d)
+            bytes = 0;
+        else
+            bytes -= d;
 
         ret = bytes * (long long) 1000 / bps;
     }
