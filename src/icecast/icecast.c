@@ -52,7 +52,7 @@ enum streamformat_t
     streamformat_MAX
 };
 
-static gint streamformat = VORBIS;
+static gint streamformat = 0;
 
 static unsigned int streamformat_shout[] =
 {
