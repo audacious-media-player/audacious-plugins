@@ -3,8 +3,6 @@ src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
 src/alac/plugin.c
 src/alarm/interface.c
-src/alsa/about.c
-src/alsa/configure.c
 src/amidi-plug/amidi-plug.c
 src/amidi-plug/backend-alsa/b-alsa.c
 src/amidi-plug/backend-dummy/b-dummy.c
@@ -20,9 +18,11 @@ src/amidi-plug/i_utils.c
 src/aosd/aosd_style.c
 src/aosd/aosd_trigger.c
 src/aosd/aosd_ui.c
-src/arts/arts.c
-src/arts/configure.c
 src/audiocompress/audacious-glue.c
+src/bluetooth/agent.c
+src/bluetooth/bluetooth.c
+src/bluetooth/gui.c
+src/bluetooth/scan_gui.c
 src/blur_scope/blur_scope.c
 src/blur_scope/config.c
 src/cdaudio-ng/cdaudio-ng.c
@@ -57,6 +57,8 @@ src/console/Spc_Emu.cxx
 src/console/Vfs_File.cxx
 src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
+src/crossfade/configure.c
+src/crossfade/interface-2.0.c
 src/crystalizer/crystalizer.c
 src/demac/plugin.c
 src/echo_plugin/gui.c
@@ -71,9 +73,11 @@ src/filewriter/vorbis.c
 src/flacng/plugin.c
 src/gnomeshortcuts/gnomeshortcuts.c
 src/hotkey/gui.c
+src/icecast/icecast.c
 src/jack/bio2jack.c
 src/jack/configure.c
 src/jack/jack.c
+src/kanashi/plugin.c
 src/ladspa/ladspa.c
 src/lastfm/lastfm.c
 src/lirc/about.c
@@ -95,7 +99,6 @@ src/OSS/configure.c
 src/OSS/OSS.c
 src/paranormal-ng/plugin.c
 src/paranormal/plugin.c
-src/projectm-1.0/main.c
 src/pulse_audio/pulse_audio.c
 src/scrobbler/configure.c
 src/scrobbler/gerpok.c
@@ -104,6 +107,7 @@ src/scrobbler/plugin.c
 src/scrobbler/scrobbler.c
 src/sid/xmms-sid.glade
 src/sid/xs_about.c
+src/sid/xs_config.c
 src/sid/xs_fileinfo.c
 src/sid/xs_glade.c
 src/sid/xs_interface.c
@@ -113,6 +117,7 @@ src/skins/ui_equalizer.c
 src/skins/ui_main.c
 src/skins/ui_manager.c
 src/skins/ui_playlist.c
+src/skins/ui_playlist_manager.c
 src/skins/ui_skinned_equalizer_slider.c
 src/skins/ui_skinselector.c
 src/skins/util.c
@@ -123,6 +128,8 @@ src/spectrum/spectrum.c
 src/statusicon/gtktrayicon-x11.c
 src/statusicon/si_ui.c
 src/stereo_plugin/stereo.c
+src/streambrowser/gui/streambrowser_win.c
+src/streambrowser/streambrowser.c
 src/sun/about.c
 src/sun/configure.c
 src/timidity/interface.c
