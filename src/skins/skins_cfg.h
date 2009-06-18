@@ -73,7 +73,7 @@ typedef struct {
     gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
     gboolean eq_scaled_linked;
-    gboolean show_numbers_in_pl, show_separator_in_pl;
+    gboolean show_separator_in_pl;
     gchar *playlist_font, *mainwin_font;
     gboolean random_skin_on_play;
 } skins_cfg_t;

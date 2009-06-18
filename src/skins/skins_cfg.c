@@ -103,7 +103,6 @@ skins_cfg_t skins_default_config = {
     .twoway_scroll = TRUE,             /* use back and forth scroll */
     .mainwin_use_bitmapfont = TRUE,
     .eq_scaled_linked = TRUE,
-    .show_numbers_in_pl = TRUE,
     .show_separator_in_pl = TRUE,
     .playlist_font = NULL,
     .mainwin_font = NULL,
@@ -142,7 +141,6 @@ static skins_cfg_boolent skins_boolents[] = {
     {"warn_about_broken_gtk_engines", &config.warn_about_broken_gtk_engines, TRUE},
     {"mainwin_use_bitmapfont", &config.mainwin_use_bitmapfont, TRUE},
     {"eq_scaled_linked", &config.eq_scaled_linked, TRUE},
-    {"show_numbers_in_pl", &config.show_numbers_in_pl, TRUE},
     {"show_separator_in_pl", &config.show_separator_in_pl, TRUE},
     {"random_skin_on_play", &config.random_skin_on_play, TRUE},
 };
@@ -293,13 +291,6 @@ void skins_cfg_save() {
     aud_cfg_db_close(cfgfile);
 }
 
-
-static void
-playlist_show_pl_separator_numbers_cb()
-{
-    playlistwin_update ();
-}
-
 static void
 mainwin_font_set_cb()
 {
@@ -343,10 +334,8 @@ static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_FONT_BTN, N_("_Playlist:"), &config.playlist_font, G_CALLBACK(playlist_font_set_cb), N_("Select playlist font:"), FALSE},
     {WIDGET_CHK_BTN, N_("Use Bitmap fonts if available"), &config.mainwin_use_bitmapfont, G_CALLBACK(bitmap_fonts_cb), N_("Use bitmap fonts if they are available. Bitmap fonts do not support Unicode strings."), FALSE},
     {WIDGET_LABEL, N_("<b>_Miscellaneous</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_CHK_BTN, N_("Show track numbers in playlist"), &config.show_numbers_in_pl,
-        G_CALLBACK(playlist_show_pl_separator_numbers_cb), NULL, FALSE},
     {WIDGET_CHK_BTN, N_("Show separators in playlist"), &config.show_separator_in_pl,
-        G_CALLBACK(playlist_show_pl_separator_numbers_cb), NULL, FALSE},
+     (GCallback) playlistwin_update, 0, 0},
     {WIDGET_CHK_BTN, N_("Show window manager decoration"), &config.show_wm_decorations, G_CALLBACK(show_wm_decorations_cb),
         N_("This enables the window manager to show decorations for windows."), FALSE},
     {WIDGET_CHK_BTN, N_("Use two-way text scroller"), &config.twoway_scroll, NULL,

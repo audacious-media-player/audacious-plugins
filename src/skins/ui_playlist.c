@@ -183,7 +183,7 @@ static void playlistwin_update_sinfo (void)
 
     time = aud_playlist_get_songtime (active_playlist, pos);
 
-    if (config.show_numbers_in_pl)
+    if (aud_cfg->show_numbers_in_pl)
         posstr = g_strdup_printf("%d. ", pos + 1);
     else
         posstr = g_strdup("");

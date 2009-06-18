@@ -321,7 +321,8 @@ playlist_list_draw_string(cairo_t *cr, UiSkinnedPlaylist *pl,
 
     cairo_new_path(cr);
 
-    if (config.show_numbers_in_pl) {
+    if (aud_cfg->show_numbers_in_pl)
+    {
         gchar *pos_string = g_strdup_printf(config.show_separator_in_pl == TRUE ? "%d" : "%d.", ppos);
         plist_length_int =
          gint_count_digits (active_length) + ! config.show_separator_in_pl + 1;
@@ -628,7 +629,7 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
     cairo_set_line_width(cr, 1);
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
 
-    if (config.show_numbers_in_pl)
+    if (aud_cfg->show_numbers_in_pl)
     {
         if (active_length == 0)
             padding_dwidth = 0;

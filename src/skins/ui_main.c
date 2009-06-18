@@ -371,7 +371,7 @@ mainwin_release_info_text(void)
 static gchar *
 make_mainwin_title(const gchar * title)
 {
-    if (title[0])
+    if (title)
         return g_strdup_printf(_("%s - Audacious"), title);
     else
         return g_strdup(_("Audacious"));
@@ -385,7 +385,7 @@ mainwin_set_song_title(const gchar * title)
     g_free(mainwin_title_text);
 
     mainwin_release_info_text ();
-    ui_skinned_textbox_set_text (mainwin_info, title);
+    ui_skinned_textbox_set_text (mainwin_info, title ? title : "");
 }
 
 static void
@@ -649,16 +649,8 @@ mainwin_set_song_info(gint bitrate,
 void
 mainwin_clear_song_info(void)
 {
-    if (!mainwin)
-        return;
+    mainwin_set_song_title (0);
 
-    /* clear title */
-    mainwin_set_song_title ("");
-
-#if 0
-    /* clear sampling parameters */
-    playback_set_sample_params(0, 0, 0);
-#endif
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_position)->pressed = FALSE;
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->pressed = FALSE;
 
