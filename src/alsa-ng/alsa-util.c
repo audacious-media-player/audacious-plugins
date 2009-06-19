@@ -20,6 +20,7 @@
 #include "alsa-stdinc.h"
 
 static alsaplug_format_mapping_t alsaplug_format_conv_tbl[] = {
+    {FMT_FLOAT,  SND_PCM_FORMAT_FLOAT},
     {FMT_S24_LE, SND_PCM_FORMAT_S24_LE},
     {FMT_S24_BE, SND_PCM_FORMAT_S24_BE},
     {FMT_S24_NE, SND_PCM_FORMAT_S24},
