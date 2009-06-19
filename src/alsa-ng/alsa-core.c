@@ -212,7 +212,7 @@ alsaplug_write_buffer(gpointer data, gint length)
 static gpointer
 alsaplug_loop(gpointer unused)
 {
-    gchar buf[2048];
+    guchar buf[2048];
 
     while (pcm_going)
     {
