@@ -20,6 +20,7 @@
 #include "alsa-stdinc.h"
 
 static alsaplug_format_mapping_t alsaplug_format_conv_tbl[] = {
+#ifdef NOTYET
     {FMT_FLOAT,  SND_PCM_FORMAT_FLOAT},
     {FMT_S32_LE, SND_PCM_FORMAT_S32_LE},
     {FMT_S32_BE, SND_PCM_FORMAT_S32_BE},
@@ -30,6 +31,7 @@ static alsaplug_format_mapping_t alsaplug_format_conv_tbl[] = {
     {FMT_U24_LE, SND_PCM_FORMAT_U24_LE},
     {FMT_U24_BE, SND_PCM_FORMAT_U24_BE},
     {FMT_U24_NE, SND_PCM_FORMAT_U24},
+#endif
     {FMT_S16_LE, SND_PCM_FORMAT_S16_LE},
     {FMT_S16_BE, SND_PCM_FORMAT_S16_BE},
     {FMT_S16_NE, SND_PCM_FORMAT_S16},
