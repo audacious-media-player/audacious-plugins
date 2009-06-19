@@ -290,6 +290,11 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
     snd_pcm_hw_params_t *hwparams = NULL;
 
     afmt = alsaplug_format_convert(fmt);
+    if (afmt == SND_PCM_FORMAT_UNKNOWN)
+    {
+        _ERROR("unsupported format requested: %d -> %d", fmt, afmt);
+        return -1;
+    }
 
     if ((err = snd_pcm_open(&pcm_handle, "default", SND_PCM_STREAM_PLAYBACK, 0)) < 0)
     {
