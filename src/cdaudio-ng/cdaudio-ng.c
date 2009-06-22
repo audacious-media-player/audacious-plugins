@@ -56,6 +56,7 @@
 
 
 static GMutex * mutex;
+static GCond * control_cond;
 
 /* lock mutex to read / set these variables */
 cdng_cfg_t			cdng_cfg;
@@ -326,6 +327,7 @@ static void cdaudio_init()
         GtkWidget * item;
 
         mutex = g_mutex_new ();
+        control_cond = g_cond_new ();
         g_mutex_lock (mutex);
 
 	cdng_cfg.use_dae = TRUE;
@@ -565,7 +567,11 @@ static void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
 {
     g_mutex_lock (mutex);
 
-    if (! cdng_cfg.use_dae)
+    is_paused = paused;
+
+    if (cdng_cfg.use_dae)
+        g_cond_broadcast (control_cond);
+    else
     {
         if (paused)
         {
@@ -579,8 +585,6 @@ static void cdaudio_pause(InputPlayback *pinputplayback, gshort paused)
         }
     }
 
-    is_paused = paused;
-
     g_mutex_unlock (mutex);
 }
 
@@ -589,22 +593,13 @@ static void cdaudio_seek (InputPlayback * playback, gint time)
 {
     g_mutex_lock (mutex);
 
-    if (! playback->playing)
-        goto UNLOCK;
-
-	if (cdng_cfg.use_dae)
-	{
-	    pdae_params->seektime = time * 1000;
-
-            do
-            {
-                g_mutex_unlock (mutex);
-                g_usleep (50000);
-                g_mutex_lock (mutex);
-            }
-            while (playback->playing && pdae_params->seektime != -1);
-	}
-	else {
+    if (cdng_cfg.use_dae)
+    {
+        pdae_params->seektime = time * 1000;
+        g_cond_broadcast (control_cond);
+    }
+    else
+    {
 		gint newstartlsn = trackinfo[playing_track].startlsn + time * 75;
 		msf_t startmsf, endmsf;
 		cdio_lsn_to_msf(newstartlsn, &startmsf);
@@ -612,9 +607,8 @@ static void cdaudio_seek (InputPlayback * playback, gint time)
 
 		if (cdio_audio_play_msf(pcdio, &startmsf, &endmsf) != DRIVER_OP_SUCCESS)
 			cdaudio_error("Failed to play analog CD\n");
-	}
+    }
 
-UNLOCK:
     g_mutex_unlock (mutex);
 }
 
@@ -743,6 +737,7 @@ static void cdaudio_cleanup(void)
 
         g_mutex_unlock (mutex);
         g_mutex_free (mutex);
+        g_cond_free (control_cond);
 }
 
 /* thread safe */
@@ -788,30 +783,12 @@ UNLOCK:
 }
 
 /* play thread only, mutex must be locked */
-static void do_seek (dae_params_t * pdae_params) {
+static void do_seek (void)
+{
 	pdae_params->pplayback->output->flush(pdae_params->seektime);
 	pdae_params->currlsn = pdae_params->startlsn + (pdae_params->seektime * 75 / 1000);
 	cdio_lseek(pcdio, pdae_params->currlsn * CDIO_CD_FRAMESIZE_RAW, SEEK_SET);
 	pdae_params->seektime = -1;
-}
-
-/* play thread only, mutex must be locked */
-/* unlocks mutex temporarily */
-static void do_pause (dae_params_t * pdae_params)
-{
-    pdae_params->pplayback->output->pause (1);
-
-    while (pdae_params->pplayback->playing && is_paused)
-    {
-        if (pdae_params->seektime != -1)
-            do_seek (pdae_params);
-
-        g_mutex_unlock (mutex);
-        g_usleep (50000);
-        g_mutex_lock (mutex);
-    }
-
-    pdae_params->pplayback->output->pause (0);
 }
 
 /* play thread only, mutex must be locked */
@@ -827,11 +804,25 @@ static void dae_play_loop(dae_params_t *pdae_params)
 
 	//pdae_params->endlsn += 75 * 3;
 
-	while (pdae_params->pplayback->playing) {
-		if (pdae_params->seektime != -1)
-			do_seek (pdae_params);
-		if (is_paused)
-			do_pause (pdae_params);
+        while (pdae_params->pplayback->playing)
+        {
+            if (is_paused)
+            {
+                pdae_params->pplayback->output->pause (1);
+
+                while (is_paused)
+                {
+                    if (pdae_params->seektime != -1)
+                        do_seek ();
+
+                    g_cond_wait (control_cond, mutex);
+                }
+
+                pdae_params->pplayback->output->pause (0);
+            }
+
+            if (pdae_params->seektime != -1)
+                do_seek ();
 
 		/* compute the actual number of sectors to read */
 		gint lsncount = CDDA_DAE_FRAMES <= (pdae_params->endlsn - pdae_params->currlsn + 1) ? CDDA_DAE_FRAMES : (pdae_params->endlsn - pdae_params->currlsn + 1);
