@@ -33,11 +33,11 @@
 #include "cpuintrf.h"
 #include "psx.h"
 
-#include "peops2/stdafx.h"
-#include "peops2/externals.h"
-#include "peops2/regs.h"
-#include "peops2/registers.h"
-#include "peops2/spu.h"
+#include "peops/stdafx.h"
+#include "peops/externals.h"
+#include "peops/regs.h"
+#include "peops/registers.h"
+#include "peops/spu.h"
 
 
 #include "corlett.h"
@@ -46,7 +46,6 @@
 
 static corlett_t	*c = NULL;
 static char 		psfby[256];
-char			*spu_pOutput;
 int			psf_refresh  = -1;
 
 
@@ -61,12 +60,10 @@ extern void mips_init( void );
 extern void mips_reset( void *param );
 extern int mips_execute( int cycles );
 extern void mips_set_info(UINT32 state, union cpuinfo *info);
-
 extern void psx_hw_init(void);
-extern void ps2_hw_slice(void);
-extern void ps2_hw_frame(void);
-
-extern void setlength2(int32 stop, int32 fade);
+extern void psx_hw_slice(void);
+extern void psx_hw_frame(void);
+extern void setlength(int32 stop, int32 fade);
 
 int32 psf_start(uint8 *buffer, uint32 length)
 {
@@ -309,8 +306,8 @@ int32 psf_start(uint8 *buffer, uint32 length)
 	#endif
 
 	psx_hw_init();
-	SPU2init();
-	SPU2open(NULL);
+	SPUinit();
+	SPUopen();
 
 	lengthMS = psfTimeToMS(c->inf_length);
 	fadeMS = psfTimeToMS(c->inf_fade);
@@ -324,7 +321,7 @@ int32 psf_start(uint8 *buffer, uint32 length)
 		lengthMS = ~0;
 	}
 
-	setlength2(lengthMS, fadeMS);
+	setlength(lengthMS, fadeMS);
 
 	// patch illegal Chocobo Dungeon 2 code - CaitSith2 put a jump in the delay slot from a BNE
 	// and rely on Highly Experimental's buggy-ass CPU to rescue them.  Verified on real hardware
@@ -356,7 +353,26 @@ int32 psf_start(uint8 *buffer, uint32 length)
 	return AO_SUCCESS;
 }
 
-void spu_update(unsigned char* pSound,long lBytes)
+int32 psf_execute(InputPlayback *playback)
 {
-	memcpy(spu_pOutput, pSound, lBytes);
+	int i;
+
+	while (playback->playing && !playback->eof) {
+		for (i = 0; i < 44100 / 60; i++) {
+			psx_hw_slice();
+			SPUasync(384, playback);
+		}
+
+		psx_hw_frame();
+	}
+
+	return AO_SUCCESS;
+}
+
+int32 psf_stop(void)
+{
+	SPUclose();
+	free(c);
+
+	return AO_SUCCESS;
 }
