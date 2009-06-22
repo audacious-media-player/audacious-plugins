@@ -123,6 +123,8 @@ static volatile int seekneeded;
 static volatile char pause_flag;
 static int samplerate, channels;
 GMutex *vf_mutex;
+static GMutex * control_mutex;
+static GCond * control_cond;
 
 gchar **vorbis_tag_encoding_list = NULL;
 static GtkWidget *about_window;
@@ -217,26 +219,6 @@ vorbis_jump_to_time(InputPlayback *playback, long time)
     ov_time_seek(&vf, time);
 
     g_mutex_unlock(vf_mutex);
-}
-
-static void
-do_seek(InputPlayback *playback)
-{
-    if (seekneeded != -1) {
-        vorbis_jump_to_time(playback, seekneeded);
-        seekneeded = -1;
-        playback->eof = FALSE;
-    }
-}
-
-static void do_pause (InputPlayback * playback) {
-   playback->output->pause (1);
-   while (pause_flag) {
-      if (seekneeded != -1)
-         do_seek (playback);
-      g_usleep(50000);
-   }
-   playback->output->pause (0);
 }
 
 #define PCM_FRAMES 1024
@@ -338,18 +320,35 @@ vorbis_play_loop(gpointer arg)
      * using the ov_ interface.
      */
 
-    while (playback->playing) {
+    while (playback->playing)
+    {
+        g_mutex_lock (control_mutex);
 
-        if (playback->eof) {
-            g_usleep(1000);
-            continue;
+        if (pause_flag)
+        {
+            playback->output->pause (1);
+
+            while (pause_flag)
+            {
+                if (seekneeded != -1)
+                {
+                    vorbis_jump_to_time (playback, seekneeded);
+                    seekneeded = -1;
+                }
+
+                g_cond_wait (control_cond, control_mutex);
+            }
+
+            playback->output->pause (0);
         }
 
         if (seekneeded != -1)
-            do_seek(playback);
-        if (pause_flag)
-            do_pause (playback);
+        {
+            vorbis_jump_to_time (playback, seekneeded);
+            seekneeded = -1;
+        }
 
+        g_mutex_unlock (control_mutex);
 
         int current_section = last_section;
 
@@ -482,16 +481,19 @@ vorbis_stop(InputPlayback *playback)
 static void
 vorbis_pause(InputPlayback *playback, short p)
 {
+    g_mutex_lock (control_mutex);
     pause_flag = p;
+    g_cond_broadcast (control_cond);
+    g_mutex_unlock (control_mutex);
 }
 
 static void
 vorbis_seek(InputPlayback *data, int time)
 {
+    g_mutex_lock (control_mutex);
     seekneeded = time;
-
-    while (seekneeded != -1)
-        g_usleep(20000);
+    g_cond_broadcast (control_cond);
+    g_mutex_unlock (control_mutex);
 }
 
 /* Make sure you've locked vf_mutex */
@@ -741,6 +743,8 @@ vorbis_init(void)
     aud_cfg_db_close(db);
 
     vf_mutex = g_mutex_new();
+    control_mutex = g_mutex_new ();
+    control_cond = g_cond_new ();
 
     aud_mime_set_plugin("application/ogg", &vorbis_ip);
 }
@@ -780,6 +784,8 @@ vorbis_cleanup(void)
 
     g_strfreev(vorbis_tag_encoding_list);
     g_mutex_free(vf_mutex);
+    g_mutex_free (control_mutex);
+    g_cond_free (control_cond);
 }
 
 static size_t
