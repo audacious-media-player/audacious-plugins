@@ -4,6 +4,7 @@ SRCS = corlett.c \
        plugin.c \
        psx.c \
        psx_hw.c \
+       eng_psf.c \
        eng_psf2.c \
        peops2/dma.c \
        peops2/registers.c \
