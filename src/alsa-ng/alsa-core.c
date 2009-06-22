@@ -31,8 +31,8 @@ static gsize wr_hwframes = 0;
 
 static gint flush_request, paused;
 
-static GMutex *pcm_pause_mutex, *pcm_state_mutex;
-static GCond *pcm_pause_cond, *pcm_state_cond, *pcm_flush_cond;
+static GMutex * pcm_state_mutex;
+static GCond * pcm_state_cond, * pcm_flush_cond;
 
 /********************************************************************************
  * ALSA Mixer setting functions.                                                *
@@ -213,11 +213,15 @@ static gpointer
 alsaplug_loop(gpointer unused)
 {
     guchar buf[2048];
+    int size;
 
     while (pcm_going)
     {
+        g_mutex_lock (pcm_state_mutex);
+
         if (flush_request != -1)
         {
+            alsaplug_ringbuffer_reset (& pcm_ringbuf);
             snd_pcm_drop(pcm_handle);
             snd_pcm_prepare(pcm_handle);
             wr_total = flush_request * (long long) bps / 1000;
@@ -226,26 +230,21 @@ alsaplug_loop(gpointer unused)
             g_cond_broadcast(pcm_flush_cond);
         }
 
-        if (alsaplug_ringbuffer_read(&pcm_ringbuf, buf, 2048) == -1)
-        {
-            /* less than 2048 bytes to go...? */
-            gint remain = alsaplug_ringbuffer_used(&pcm_ringbuf);
-            if (remain <= 2048 && remain > 0)
-            {
-                alsaplug_ringbuffer_read(&pcm_ringbuf, buf, remain);
-                alsaplug_write_buffer(buf, remain);
-            }
-            else
-            {
-                g_mutex_lock(pcm_state_mutex);
-                g_cond_wait(pcm_state_cond, pcm_state_mutex);
-                g_mutex_unlock(pcm_state_mutex);
-            }
+        size = alsaplug_ringbuffer_used (& pcm_ringbuf);
 
+        if (size == 0 || paused)
+        {
+            g_cond_wait (pcm_state_cond, pcm_state_mutex);
+            g_mutex_unlock (pcm_state_mutex);
             continue;
         }
 
-        alsaplug_write_buffer(buf, 2048);
+        if (size > sizeof buf)
+            size = sizeof buf;
+
+        alsaplug_ringbuffer_read (& pcm_ringbuf, buf, size);
+        g_mutex_unlock (pcm_state_mutex);
+        alsaplug_write_buffer (buf, size);
     }
 
     snd_pcm_drain(pcm_handle);
@@ -265,9 +264,6 @@ static OutputPluginInitStatus
 alsaplug_init(void)
 {
     gint card = -1;
-
-    pcm_pause_mutex = g_mutex_new();
-    pcm_pause_cond = g_cond_new();
 
     pcm_state_mutex = g_mutex_new();
     pcm_state_cond = g_cond_new();
@@ -341,8 +337,8 @@ alsaplug_close_audio(void)
     wr_hwframes = 0;
     bps = 0;
 
+    g_cond_broadcast (pcm_state_cond);
     g_mutex_unlock(pcm_state_mutex);
-    g_cond_broadcast(pcm_state_cond);
 
     if (audio_thread != NULL)
         g_thread_join(audio_thread);
@@ -353,19 +349,11 @@ alsaplug_close_audio(void)
 static void
 alsaplug_write_audio(gpointer data, gint length)
 {
-    /* software pause... snd_pcm_pause() is not safe. --nenolod */
-    if (paused)
-    {
-        g_mutex_lock(pcm_pause_mutex);
-        g_cond_wait(pcm_pause_cond, pcm_pause_mutex);
-        g_mutex_unlock(pcm_pause_mutex);
-    }
-
     g_mutex_lock(pcm_state_mutex);
     wr_total += length;
     alsaplug_ringbuffer_write(&pcm_ringbuf, data, length);
+    g_cond_broadcast (pcm_state_cond);
     g_mutex_unlock(pcm_state_mutex);
-    g_cond_broadcast(pcm_state_cond);
 }
 
 static gint
@@ -462,10 +450,10 @@ alsaplug_buffer_playing(void)
 static void
 alsaplug_pause(short p)
 {
-    g_mutex_lock(pcm_pause_mutex);
+    g_mutex_lock (pcm_state_mutex);
     paused = p;
-    g_mutex_unlock(pcm_pause_mutex);
-    g_cond_broadcast(pcm_pause_cond);
+    g_cond_broadcast (pcm_state_cond);
+    g_mutex_unlock (pcm_state_mutex);
 }
 
 /********************************************************************************
