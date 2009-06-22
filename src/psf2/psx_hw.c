@@ -3043,12 +3043,6 @@ void psx_iop_call(uint32 pc, uint32 callnum)
 					a1 += 16;
 				}
 
-				if (a1 == 1114112)	// HACK for crappy code in Shadow Hearts rip that assumes the buffer address
-				{
-					printf("SH Hack: was %x now %x\n", newAlloc, 0x60000);
-					newAlloc = 0x60000;
-				}
-
 				psf2_set_loadaddr(newAlloc + a1);
 
 				#if DEBUG_HLE_IOP
