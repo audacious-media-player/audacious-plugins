@@ -168,18 +168,18 @@ void psf2_play(InputPlayback *data)
 
 	for (;;)
 	{
-		psf2_execute(data);
+		(eng == ENG_PSF1) ? psf_execute(data) : psf2_execute(data);
 
 		if (seek)
 		{
 			data->eof = FALSE;
 			data->output->flush(seek);
 
-			psf2_stop();
+			(eng == ENG_PSF1) ? psf_stop() : psf2_stop();
 
-			if (psf2_start(buffer, size) == AO_SUCCESS)
+			if ((eng == ENG_PSF1) ? psf_start(buffer, size) : psf2_start(buffer, size) == AO_SUCCESS)
 			{
-				psf2_seek(seek);
+				(eng == ENG_PSF1) ? psf_seek(seek) : psf2_seek(seek);
 				seek = 0;
 				continue;
 			}
@@ -190,7 +190,7 @@ void psf2_play(InputPlayback *data)
 			}
 		}
 
-		psf2_stop();
+		(eng == ENG_PSF1) ? psf_stop() : psf2_stop();
 
 		data->output->buffer_free();
 		data->output->buffer_free();

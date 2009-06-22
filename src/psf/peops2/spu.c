@@ -816,7 +816,6 @@ EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle, void *data)
    if(iSpuAsyncWait<=64) return;
    iSpuAsyncWait=0;
   }
-
  MAINThread(0, data);                                      // -> linux high-compat mode
 }
 
