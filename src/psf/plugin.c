@@ -280,7 +280,7 @@ gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", NULL };
 
 InputPlugin psf2_ip =
 {
-	.description = "PSF2 Audio Plugin",
+	.description = "OpenPSF PSF1/PSF2 Audio Plugin",
 	.play_file = psf2_play,
 	.stop = psf2_Stop,
 	.pause = psf2_pause,
