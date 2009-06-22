@@ -61,11 +61,12 @@ extern void mips_init( void );
 extern void mips_reset( void *param );
 extern int mips_execute( int cycles );
 extern void mips_set_info(UINT32 state, union cpuinfo *info);
-extern void setlength(int32 stop, int32 fade);
 
 extern void psx_hw_init(void);
 extern void ps2_hw_slice(void);
 extern void ps2_hw_frame(void);
+
+extern void setlength2(int32 stop, int32 fade);
 
 int32 psf_start(uint8 *buffer, uint32 length)
 {
@@ -323,7 +324,7 @@ int32 psf_start(uint8 *buffer, uint32 length)
 		lengthMS = ~0;
 	}
 
-	setlength(lengthMS, fadeMS);
+	setlength2(lengthMS, fadeMS);
 
 	// patch illegal Chocobo Dungeon 2 code - CaitSith2 put a jump in the delay slot from a BNE
 	// and rely on Highly Experimental's buggy-ass CPU to rescue them.  Verified on real hardware

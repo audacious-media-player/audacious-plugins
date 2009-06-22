@@ -34,6 +34,23 @@
 #include "corlett.h"
 #include "eng_protos.h"
 
+typedef enum {
+    ENG_NONE = 0,
+    ENG_PSF1,
+    ENG_PSF2,
+} PSFEngine;
+
+static PSFEngine psf_probe(uint8 *buffer)
+{
+	if (!memcmp(buffer, "PSF\x01", 4))
+		return ENG_PSF1;
+
+	if (!memcmp(buffer, "PSF\x02", 4))
+		return ENG_PSF2;
+
+	return ENG_NONE;
+}
+
 /* ao_get_lib: called to load secondary files */
 static gchar *path;
 
@@ -79,8 +96,8 @@ Tuple *psf2_tuple(gchar *filename)
 	aud_tuple_associate_string(t, FIELD_TITLE, NULL, c->inf_title);
 	aud_tuple_associate_string(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
 	aud_tuple_associate_string(t, FIELD_QUALITY, NULL, "sequenced");
-	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "PlayStation2 Audio");
-	aud_tuple_associate_string(t, -1, "console", "PlayStation 2");
+	aud_tuple_associate_string(t, FIELD_CODEC, NULL, "PlayStation 1/2 Audio");
+	aud_tuple_associate_string(t, -1, "console", "PlayStation 1/2");
 
 	free(c);
 	g_free(buf);
@@ -114,16 +131,34 @@ void psf2_play(InputPlayback *data)
 	gsize size;
 	gint length;
 	gchar *title = psf2_title(data->filename, &length);
+	PSFEngine eng;
 
 	path = g_strdup(data->filename);
 	aud_vfs_file_get_contents(data->filename, (gchar **) &buffer, &size);
 
-	if (psf2_start(buffer, size) != AO_SUCCESS)
+	eng = psf_probe(buffer);
+	if (eng == ENG_PSF2)
+	{
+		if (psf2_start(buffer, size) != AO_SUCCESS)
+		{
+			free(buffer);
+			return;
+		}
+	}
+	else if (eng == ENG_PSF1)
+	{
+		if (psf_start(buffer, size) != AO_SUCCESS)
+		{
+			free(buffer);
+			return;
+		}
+	}		
+	else
 	{
 		free(buffer);
 		return;
 	}
-	
+
 	data->output->open_audio(FMT_S16_NE, 44100, 2);
 
         data->set_params(data, title, length, 44100*2*2*8, 44100, 2);
@@ -230,13 +265,10 @@ void psf2_pause(InputPlayback *playback, short p)
 
 int psf2_is_our_fd(gchar *filename, VFSFile *file)
 {
-	gchar magic[4];
+	uint8 magic[4];
 	aud_vfs_fread(magic, 1, 4, file);
 
-	if (!memcmp(magic, "PSF\x02", 4))
-		return 1;
-
-	return 0;
+	return (psf_probe(magic) != ENG_NONE);
 }
 
 void psf2_Seek(InputPlayback *playback, int time)
@@ -244,7 +276,7 @@ void psf2_Seek(InputPlayback *playback, int time)
 	seek = time * 1000;
 }
 
-gchar *psf2_fmts[] = { "psf2", "minipsf2", NULL };
+gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", NULL };
 
 InputPlugin psf2_ip =
 {
