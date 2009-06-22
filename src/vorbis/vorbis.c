@@ -356,21 +356,24 @@ vorbis_play_loop(gpointer arg)
 
         bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
 
-        if (bytes > 0)
-            bytes = vorbis_interleave_buffer(pcm, bytes, channels, pcmout);
-
-        /*
-         * We got some sort of error. Bail.
-         */
-        if (bytes <= 0 && bytes != OV_HOLE) {
-           /*
-            * EOF
-            */
-            AUDDBG("EOF\n");
-            playback->playing = 0;
-            playback->eof = TRUE;
-            current_section = last_section;
+        if (bytes == OV_HOLE)
+        {
+            g_mutex_unlock (vf_mutex);
+            continue;
         }
+
+        if (bytes <= 0)
+        {
+            g_mutex_unlock (vf_mutex);
+
+            while (playback->output->buffer_playing ())
+                g_usleep (10000);
+
+            playback->eof = 1;
+            break;
+        }
+
+        bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
 
         if (current_section <= last_section) {
             /*
