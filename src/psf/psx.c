@@ -18,6 +18,8 @@
 #include "cpuintrf.h"
 #include "psx.h"
 
+#define PSXCPU_STRICT (0)	// define to 1 if you want to be strict about bad vaddrs, etc
+
 #define EXC_INT ( 0 )
 #define EXC_ADEL ( 4 )
 #define EXC_ADES ( 5 )
@@ -1154,6 +1156,7 @@ int mips_execute( int cycles )
 				UINT32 n_adr;
 				n_adr = mipscpu.r[ INS_RS( mipscpu.op ) ] + MIPS_WORD_EXTEND( INS_IMMEDIATE( mipscpu.op ) );
 
+				#if PSXCPU_STRICT
 				if( ( n_adr & ( ( ( mipscpu.cp0r[ CP0_SR ] & SR_KUC ) << 30 ) | 3 ) ) != 0 )
 				{
 					printf("ADEL\n");
@@ -1161,6 +1164,7 @@ int mips_execute( int cycles )
 					mips_set_cp0r( CP0_BADVADDR, n_adr );
 				}
 				else
+				#endif
 				{
 					mips_delayed_load( INS_RT( mipscpu.op ), program_read_dword_32le( n_adr ) );
 				}
