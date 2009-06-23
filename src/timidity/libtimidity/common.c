@@ -52,8 +52,11 @@ VFSFile *open_file(char *name)
   /* First try the given name */
 
   DEBUG_MSG("Trying to open %s\n", name);
-  uri = g_filename_to_uri(name, NULL, NULL);
-  fp = aud_vfs_fopen(uri, OPEN_MODE);
+  fp = NULL;
+  uri = g_filename_to_uri(name, NULL, NULL); 
+  if (aud_vfs_file_test(uri, G_FILE_TEST_EXISTS)) {
+    fp = aud_vfs_fopen(uri, OPEN_MODE);
+  }
   g_free(uri);
   if (fp)
     return fp;
@@ -79,8 +82,11 @@ VFSFile *open_file(char *name)
 	  }
 	strcat(current_filename, name);
 	DEBUG_MSG("Trying to open %s\n", current_filename);
+	fp = NULL;
 	uri = g_filename_to_uri(current_filename, NULL, NULL);
-	fp = aud_vfs_fopen(uri, OPEN_MODE);
+	if (aud_vfs_file_test(uri, G_FILE_TEST_EXISTS)) {
+	  fp = aud_vfs_fopen(uri, OPEN_MODE);
+	}
 	g_free(uri);
 	if (fp)
 	  return fp;
