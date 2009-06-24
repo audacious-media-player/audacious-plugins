@@ -131,9 +131,7 @@ _ui_playlist_widget_drag_end(GtkTreeView *widget, GdkDragContext *context, gpoin
 
     delta = t->new_index - t->old_index;
 
-#if 0
     aud_playlist_shift(playlist, delta);
-#endif
     g_slice_free(UiPlaylistDragTracker, t);
 
     sel = gtk_tree_view_get_selection(widget);
