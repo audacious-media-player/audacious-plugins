@@ -51,19 +51,11 @@ update_config(gpointer widgets)
 {
     const gchar *text = NULL;
 
-    AUDDBG("updating\n");
-
-    GtkWidget *reopen = g_object_get_data(widgets, "reopen");
     GtkWidget *fast_playback = g_object_get_data(widgets, "fast_playback");
     GtkWidget *use_xing = g_object_get_data(widgets, "use_xing");
     GtkWidget *sjis = g_object_get_data(widgets, "sjis");
-    GtkWidget *show_avg = g_object_get_data(widgets, "show_avg");
     GtkWidget *title_override = g_object_get_data(widgets, "title_override");
     GtkWidget *title_id3_entry = g_object_get_data(widgets, "title_id3_entry");
-
-    //audio
-    audmad_config->force_reopen_audio =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(reopen));
 
     //metadata
     audmad_config->fast_play_time_calc =
@@ -72,10 +64,6 @@ update_config(gpointer widgets)
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_xing));
     audmad_config->sjis =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(sjis));
-
-    //misc
-    audmad_config->show_avg_vbr_bitrate =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(show_avg));
 
     //text
     audmad_config->title_override =
@@ -92,20 +80,11 @@ save_config(void)
 {
     mcs_handle_t *db = aud_cfg_db_open();
 
-    AUDDBG("saving\n");
-
-    //audio
-    aud_cfg_db_set_bool(db, "MAD", "force_reopen_audio",
-                            audmad_config->force_reopen_audio);
     //metadata
     aud_cfg_db_set_bool(db, "MAD", "fast_play_time_calc",
                         audmad_config->fast_play_time_calc);
     aud_cfg_db_set_bool(db, "MAD", "use_xing", audmad_config->use_xing);
     aud_cfg_db_set_bool(db, "MAD", "sjis", audmad_config->sjis);
-
-    //misc
-    aud_cfg_db_set_bool(db, "MAD", "show_avg_vbr_bitrate",
-                            audmad_config->show_avg_vbr_bitrate);
 
     //text
     aud_cfg_db_set_bool(db, "MAD", "title_override", audmad_config->title_override);
@@ -177,10 +156,9 @@ audmad_configure(void)
     GtkWidget *vbox;
     GtkWidget *bbox, *ok, *cancel;
     GtkWidget *notebook, *vbox2, *title_id3_label, *title_id3_box;
-    GtkWidget *fast_playback, *use_xing, *sjis, *show_avg, *reopen;
+    GtkWidget * fast_playback, * use_xing, * sjis;
     GtkWidget *title_override, *title_id3_entry;
-    GtkWidget *metadataFrame, *audioFrame, *miscFrame;
-    GtkWidget *metadata_vbox, *audio_vbox, *misc_vbox;
+    GtkWidget * metadataFrame, * metadata_vbox;
 
     gpointer widgets = g_object_new(G_TYPE_OBJECT, NULL);
 
@@ -221,23 +199,6 @@ audmad_configure(void)
 
     vbox2 = gtk_vbox_new(FALSE, 5);
 
-    // audio frame
-    audioFrame = gtk_frame_new(_("Audio Settings"));
-    gtk_container_border_width(GTK_CONTAINER(audioFrame), 5);
-
-    audio_vbox = gtk_vbox_new(FALSE, 5);
-
-    gtk_container_add(GTK_CONTAINER(audioFrame), audio_vbox);
-    gtk_container_add(GTK_CONTAINER(vbox2), audioFrame);
-
-    reopen = gtk_check_button_new_with_label(_("Force reopen audio when audio type changed"));
-    g_object_set_data(widgets, "reopen", reopen);
-    gtk_box_pack_start(GTK_BOX(audio_vbox), reopen, FALSE, FALSE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(reopen),
-                                 audmad_config->force_reopen_audio);
-    g_signal_connect(G_OBJECT(reopen), "clicked", G_CALLBACK(simple_update_cb), widgets);
-
-
     // metadata frame
     metadataFrame = gtk_frame_new(_("Metadata Settings"));
     gtk_container_border_width(GTK_CONTAINER(metadataFrame), 5);
@@ -267,23 +228,6 @@ audmad_configure(void)
     gtk_box_pack_start(GTK_BOX(metadata_vbox), sjis, FALSE, FALSE, 0);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sjis), audmad_config->sjis);
     g_signal_connect(G_OBJECT(sjis), "clicked", G_CALLBACK(simple_update_cb), widgets);
-
-    // misc frame
-    miscFrame = gtk_frame_new(_("Miscellaneous Settings"));
-    gtk_container_border_width(GTK_CONTAINER(miscFrame), 5);
-
-    misc_vbox = gtk_vbox_new(FALSE, 5);
-
-    gtk_container_add(GTK_CONTAINER(miscFrame), misc_vbox);
-    gtk_container_add(GTK_CONTAINER(vbox2), miscFrame);
-
-
-    show_avg = gtk_check_button_new_with_label(_("Display average bitrate for VBR"));
-    g_object_set_data(widgets, "show_avg", show_avg);
-    gtk_box_pack_start(GTK_BOX(misc_vbox), show_avg, FALSE, FALSE, 0);
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(show_avg),
-                                 audmad_config->show_avg_vbr_bitrate);
-    g_signal_connect(G_OBJECT(show_avg), "clicked", G_CALLBACK(simple_update_cb), widgets);
 
     // add to notebook
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, gtk_label_new(_("General")));

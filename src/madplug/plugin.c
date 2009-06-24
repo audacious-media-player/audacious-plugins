@@ -102,32 +102,20 @@ audmad_init()
 
     audmad_config = g_malloc0(sizeof(audmad_config_t));
 
-    audmad_config->dither = TRUE;
-    audmad_config->force_reopen_audio = TRUE;
     audmad_config->fast_play_time_calc = TRUE;
     audmad_config->use_xing = TRUE;
     audmad_config->sjis = FALSE;
-    audmad_config->show_avg_vbr_bitrate = TRUE;
     audmad_config->title_override = FALSE;
 
 
     db = aud_cfg_db_open();
     if (db) {
-        //audio
-        aud_cfg_db_get_bool(db, "MAD", "dither", &audmad_config->dither);
-        aud_cfg_db_get_bool(db, "MAD", "force_reopen_audio",
-                            &audmad_config->force_reopen_audio);
-
         //metadata
         aud_cfg_db_get_bool(db, "MAD", "fast_play_time_calc",
                             &audmad_config->fast_play_time_calc);
         aud_cfg_db_get_bool(db, "MAD", "use_xing",
                             &audmad_config->use_xing);
         aud_cfg_db_get_bool(db, "MAD", "sjis", &audmad_config->sjis);
-
-        //misc
-        aud_cfg_db_get_bool(db, "MAD", "show_avg_vbr_bitrate",
-                            &audmad_config->show_avg_vbr_bitrate);
 
         //text
         aud_cfg_db_get_bool(db, "MAD", "title_override",

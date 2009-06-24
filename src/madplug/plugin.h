@@ -52,10 +52,6 @@ struct mad_info_t
     gulong seek;      /**< seek time in milliseconds */
     char pause;
 
-    /* state */
-    guint current_frame;/**< current mp3 frame */
-    mad_timer_t pos;    /**< current play position */
-
     /* song info */
     guint vbr;      /**< bool: is vbr? */
     guint bitrate;  /**< avg. bitrate */
@@ -98,18 +94,21 @@ struct mad_info_t
     gboolean remote;
     gboolean fileinfo_request;
 
+    // used in decoding
+    int length;
+    char resync;
+    unsigned char * buffer;
+    int buffer_size;
+    struct mad_stream * stream;
 };
 
 typedef struct audmad_config_t
 {
     gboolean fast_play_time_calc;
     gboolean use_xing;
-    gboolean dither;
     gboolean sjis;
     gboolean title_override;
     gchar *id3_format;
-    gboolean show_avg_vbr_bitrate;
-    gboolean force_reopen_audio;
 } audmad_config_t;
 
 // global variables

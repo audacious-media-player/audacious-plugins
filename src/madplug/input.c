@@ -82,7 +82,6 @@ input_init(struct mad_info_t * info, const char *url, VFSFile *fd)
     info->freq = -1;
     info->seek = -1;
     info->duration = mad_timer_zero;
-    info->pos = mad_timer_zero;
     info->url = g_strdup(url);
     info->filename = g_strdup(url);
 
@@ -238,7 +237,7 @@ mad_parse_genre(const id3_ucs4_t *string)
                  */
                 genre = (id3_ucs4_t *)id3_genre_name((const id3_ucs4_t *)tmp);
                 AUDDBG("genre length = %d\n", mad_ucs4len(genre));
-                
+
                 tmp_len = mad_ucs4len(genre);
                 memcpy(ret + ret_len, genre, BYTES(tmp_len));
                 ret_len += tmp_len;
@@ -316,7 +315,7 @@ input_id3_get_string(struct id3_tag * tag, const gchar *frame_name)
         break;
     }
     g_free((void *)string);
-        
+
     AUDDBG("i: string = %s\n", rtn);
 
     return rtn;
@@ -346,7 +345,7 @@ input_alloc_tag(struct mad_info_t *info)
 }
 
 /**
- * read the ID3 tag 
+ * read the ID3 tag
  */
 static void
 input_read_tag(struct mad_info_t *info)
@@ -359,7 +358,7 @@ input_read_tag(struct mad_info_t *info)
 
     if (info->tuple != NULL)
         aud_tuple_free(info->tuple);
-    
+
     tuple = aud_tuple_new_from_filename(info->filename);
     info->tuple = tuple;
 
@@ -412,7 +411,7 @@ input_read_tag(struct mad_info_t *info)
         g_free(string);
     } else
         aud_tuple_associate_int(tuple, FIELD_LENGTH, NULL, -1);
-    
+
     aud_tuple_associate_string(tuple, FIELD_CODEC, NULL, "MPEG Audio (MP3)");
     aud_tuple_associate_string(tuple, FIELD_QUALITY, NULL, "lossy");
 
@@ -424,7 +423,7 @@ input_read_tag(struct mad_info_t *info)
         aud_vfs_fseek(info->infile, -1, SEEK_SET); // an impossible request
         aud_vfs_fseek(info->infile, curpos, SEEK_SET);
     }
-    
+
     AUDDBG("e: input_read_tag\n");
 }
 
@@ -499,7 +498,7 @@ gboolean
 input_get_info(struct mad_info_t *info, gboolean fast_scan)
 {
 #ifdef AUD_DEBUG
-    gchar *tmp = g_filename_to_utf8(info->filename, -1, NULL, NULL, NULL);    
+    gchar *tmp = g_filename_to_utf8(info->filename, -1, NULL, NULL, NULL);
     AUDDBG("f: input_get_info: %s, fast_scan = %s\n", tmp, fast_scan ? "TRUE" : "FALSE");
     g_free(tmp);
 #endif                          /* DEBUG */
