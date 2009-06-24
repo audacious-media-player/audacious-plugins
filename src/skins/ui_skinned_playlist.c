@@ -1214,7 +1214,10 @@ static gboolean ui_skinned_playlist_button_press (GtkWidget * widget,
 
         aud_playlist_set_position (active_playlist, position);
         aud_playlist_shuffle (active_playlist);
-        audacious_drct_play ();
+
+        if (!audacious_drct_get_playing())
+            audacious_drct_play();
+
         break;
       default:
         return 1;
