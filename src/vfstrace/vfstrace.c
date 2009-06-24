@@ -37,7 +37,7 @@ vt_vfs_fopen_impl(const gchar *path, const gchar *mode)
     VFSFile *ret;
 
     ret = vfs_fopen_impl(path, mode);
-    g_print("fopen       : path:%s : mode:%s : ret:%p\n", path, mode, ret);
+    g_print("%p fopen       : path:%s : mode:%s : ret:%p\n", ret, path, mode, ret);
 
     return ret;
 }
@@ -48,7 +48,7 @@ vt_vfs_fclose_impl(VFSFile *file)
     gint ret;
 
     ret = vfs_fclose_impl(file);
-    g_print("fclose      : file:%p : ret:%d\n", file, ret);
+    g_print("%p fclose      : file:%p : ret:%d\n", file, file, ret);
 
     return ret;
 }
@@ -59,7 +59,7 @@ vt_vfs_fread_impl(gpointer ptr, size_t size, size_t nmemb, VFSFile *file)
     size_t ret;
 
     ret = vfs_fread_impl(ptr, size, nmemb, file);
-    g_print("fread       : size:%lu : nmemb:%lu : ret:%lu\n", size, nmemb, ret);
+    g_print("%p fread       : size:%lu : nmemb:%lu : ret:%lu\n", file, size, nmemb, ret);
 
     return ret;
 }
@@ -70,7 +70,7 @@ vt_vfs_fwrite_impl(gconstpointer ptr, size_t size, size_t nmemb, VFSFile *file)
     size_t ret;
 
     ret = vfs_fwrite_impl(ptr, size, nmemb, file);
-    g_print("fwrite      : size:%lu : nmemb:%lu : ret:%lu\n", size, nmemb, ret);
+    g_print("%p fwrite      : size:%lu : nmemb:%lu : ret:%lu\n", file, size, nmemb, ret);
 
     return ret;
 }
@@ -81,7 +81,7 @@ vt_vfs_getc_impl(VFSFile *stream)
     gint ret;
 
     ret = vfs_getc_impl(stream);
-    g_print("getc        : ret:%d\n", ret);
+    g_print("%p getc        : ret:%d\n", stream, ret);
 
     return ret;
 }
@@ -92,7 +92,7 @@ vt_vfs_ungetc_impl(gint c, VFSFile *stream)
     gint ret;
 
     ret = vfs_ungetc_impl(c, stream);
-    g_print("ungetc      : c:%d : ret:%d\n", c, ret);
+    g_print("%p ungetc      : c:%d : ret:%d\n", stream, c, ret);
 
     return ret;
 }
@@ -103,7 +103,7 @@ vt_vfs_fseek_impl(VFSFile *file, glong offset, gint whence)
     gint ret;
 
     ret = vfs_fseek_impl(file, offset, whence);
-    g_print("fseek       : offset:%ld : whence:%d : ret:%d\n", offset, whence, ret);
+    g_print("%p fseek       : offset:%ld : whence:%d : ret:%d\n", file, offset, whence, ret);
 
     return ret;
 }
@@ -111,8 +111,8 @@ vt_vfs_fseek_impl(VFSFile *file, glong offset, gint whence)
 void
 vt_vfs_rewind_impl(VFSFile *file)
 {
-    g_print("rewind\n");
     vfs_rewind_impl(file);
+    g_print("%p rewind\n", file);
 }
 
 glong
@@ -121,7 +121,7 @@ vt_vfs_ftell_impl(VFSFile *file)
     glong ret;
 
     ret = vfs_ftell_impl(file);
-    g_print("ftell       : ret:%ld\n", ret);
+    g_print("%p ftell       : ret:%ld\n", file, ret);
 
     return ret;
 }
@@ -132,7 +132,7 @@ vt_vfs_feof_impl(VFSFile *file)
     gboolean ret;
 
     ret = vfs_feof_impl(file);
-    g_print("feof        : ret:%d\n", ret);
+    g_print("%p feof        : ret:%d\n", file, ret);
 
     return ret;
 }
@@ -143,7 +143,7 @@ vt_vfs_truncate_impl(VFSFile *file, glong length)
     gboolean ret;
 
     ret = vfs_truncate_impl(file, length);
-    g_print("truncate    : length:%ld : ret:%d\n", length, ret);
+    g_print("%p truncate    : length:%ld : ret:%d\n", file, length, ret);
 
     return ret;
 }
@@ -154,7 +154,7 @@ vt_vfs_fsize_impl(VFSFile *file)
     off_t ret;
 
     ret = vfs_fsize_impl(file);
-    g_print("fsize       : ret:%lu\n", ret);
+    g_print("%p fsize       : ret:%lu\n", file, ret);
 
     return ret;
 }
