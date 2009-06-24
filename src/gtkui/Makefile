@@ -3,7 +3,8 @@ PLUGIN = gtkui${PLUGIN_SUFFIX}
 SRCS = ui_gtk.c \
        ui_manager.c \
        ui_playlist_widget.c \
-       ../skins/ui_playlist_manager.c \
+       ui_playlist_manager.c \
+       util.c \
        actions.c
 
 include ../../buildsys.mk

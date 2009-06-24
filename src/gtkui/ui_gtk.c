@@ -91,7 +91,7 @@ ui_playlist_destroy_tab(Playlist *playlist)
         GList *playlist_iter;
 
         /* update any tab indexes after this tab. */
-        MOWGLI_ITER_FOREACH(playlist_iter, playlist_get_playlists()) {
+        MOWGLI_ITER_FOREACH(playlist_iter, aud_playlist_get_playlists()) {
             Playlist *playlist2 = playlist_iter->data;
             UIPlaylistTab *tab2 = playlist2->ui_data;
 
@@ -111,12 +111,12 @@ ui_playlist_change_tab(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_id
 {
     GList *playlist_iter;
 
-    MOWGLI_ITER_FOREACH(playlist_iter, playlist_get_playlists()) {
+    MOWGLI_ITER_FOREACH(playlist_iter, aud_playlist_get_playlists()) {
         Playlist *playlist = playlist_iter->data;
         UIPlaylistTab *tab = playlist->ui_data;
 
         if (tab->tab_id == tab_id) {
-            playlist_select_playlist(playlist);
+            aud_playlist_select_playlist(playlist);
         }
     }
 }
@@ -124,7 +124,7 @@ ui_playlist_change_tab(GtkNotebook *notebook, GtkNotebookPage *page, gint tab_id
 static void
 ui_populate_playlist_notebook(void)
 {
-    GList *playlists = playlist_get_playlists(), *playlists_iter;
+    GList *playlists = aud_playlist_get_playlists(), *playlists_iter;
 
     MOWGLI_ITER_FOREACH(playlists_iter, playlists) {
         Playlist *playlist = playlists_iter->data;
@@ -221,7 +221,7 @@ ui_set_song_info(gchar *text, gpointer user_data)
 
     tab = playlist->ui_data;
     if (tab != NULL) {
-        ui_playlist_widget_set_current(tab->treeview, playlist_get_position(playlist));
+        ui_playlist_widget_set_current(tab->treeview, aud_playlist_get_position(playlist));
         ui_playlist_widget_update(tab->treeview);
     }
 }
@@ -243,7 +243,7 @@ ui_playlist_update(Playlist *playlist, gpointer user_data)
 {
     UIPlaylistTab *tab;
 
-    gchar *text = playlist_get_info_text(playlist);
+    gchar *text = aud_playlist_get_info_text(playlist);
     ui_set_song_info(text, NULL);
     g_free(text);
 
@@ -389,7 +389,7 @@ ui_slider_button_release_cb(GtkWidget *widget, GdkEventButton *event,
 static gboolean
 ui_volume_value_changed_cb(GtkButton *button, gdouble volume, gpointer user_data)
 {
-    input_set_volume((gint)volume, (gint)volume);
+    audacious_drct_set_volume((gint)volume, (gint)volume);
 
     return TRUE;
 }
@@ -417,7 +417,7 @@ ui_playback_stop(gpointer hook_data, gpointer user_data)
 
     ui_clear_song_info();
 
-    playlist = playlist_get_active();
+    playlist = aud_playlist_get_active();
     tab = playlist->ui_data;
     if (tab != NULL) {
         ui_playlist_widget_set_current(tab->treeview, -1);
@@ -467,29 +467,29 @@ gtk_markup_label_new(const gchar *str)
 static void
 ui_hooks_associate(void)
 {
-    hook_associate("title change", (HookFunction) ui_set_song_info, NULL);
-    hook_associate("playback seek", (HookFunction) ui_update_song_info, NULL);
-    hook_associate("playback begin", (HookFunction) ui_playback_begin, NULL);
-    hook_associate("playback stop", (HookFunction) ui_playback_stop, NULL);
-    hook_associate("playback end", (HookFunction) ui_playback_end, NULL);
-    hook_associate("playlist create", (HookFunction) ui_playlist_created, NULL);
-    hook_associate("playlist destroy", (HookFunction) ui_playlist_destroyed, NULL);
-    hook_associate("playlist update", (HookFunction) ui_playlist_update, NULL);
-    hook_associate("mainwin show", (HookFunction) ui_mainwin_show, NULL);
+    aud_hook_associate("title change", (HookFunction) ui_set_song_info, NULL);
+    aud_hook_associate("playback seek", (HookFunction) ui_update_song_info, NULL);
+    aud_hook_associate("playback begin", (HookFunction) ui_playback_begin, NULL);
+    aud_hook_associate("playback stop", (HookFunction) ui_playback_stop, NULL);
+    aud_hook_associate("playback end", (HookFunction) ui_playback_end, NULL);
+    aud_hook_associate("playlist create", (HookFunction) ui_playlist_created, NULL);
+    aud_hook_associate("playlist destroy", (HookFunction) ui_playlist_destroyed, NULL);
+    aud_hook_associate("playlist update", (HookFunction) ui_playlist_update, NULL);
+    aud_hook_associate("mainwin show", (HookFunction) ui_mainwin_show, NULL);
 }
 
 static void
 ui_hooks_disassociate(void)
 {
-    hook_dissociate("title change", (HookFunction) ui_set_song_info);
-    hook_dissociate("playback seek", (HookFunction) ui_update_song_info);
-    hook_dissociate("playback begin", (HookFunction) ui_playback_begin);
-    hook_dissociate("playback stop", (HookFunction) ui_playback_stop);
-    hook_dissociate("playback end", (HookFunction) ui_playback_end);
-    hook_dissociate("playlist create", (HookFunction) ui_playlist_created);
-    hook_dissociate("playlist destroy", (HookFunction) ui_playlist_destroyed);
-    hook_dissociate("playlist update", (HookFunction) ui_playlist_update);
-    hook_dissociate("mainwin show", (HookFunction) ui_mainwin_show);
+    aud_hook_dissociate("title change", (HookFunction) ui_set_song_info);
+    aud_hook_dissociate("playback seek", (HookFunction) ui_update_song_info);
+    aud_hook_dissociate("playback begin", (HookFunction) ui_playback_begin);
+    aud_hook_dissociate("playback stop", (HookFunction) ui_playback_stop);
+    aud_hook_dissociate("playback end", (HookFunction) ui_playback_end);
+    aud_hook_dissociate("playlist create", (HookFunction) ui_playlist_created);
+    aud_hook_dissociate("playlist destroy", (HookFunction) ui_playlist_destroyed);
+    aud_hook_dissociate("playlist update", (HookFunction) ui_playlist_update);
+    aud_hook_dissociate("mainwin show", (HookFunction) ui_mainwin_show);
 }
 
 static gboolean
@@ -511,7 +511,7 @@ _ui_initialize(void)
 
     gint lvol = 0, rvol = 0; /* Left and Right for the volume control */
 
-    playlist = playlist_get_active();
+    playlist = aud_playlist_get_active();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), 450, 150);
 
@@ -575,7 +575,7 @@ _ui_initialize(void)
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     /* Set the default volume to the balance average.
         (I'll add balance control later) -Ryan */
-    input_get_volume(&lvol, &rvol);
+    audacious_drct_get_volume(&lvol, &rvol);
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol+rvol)/2);
     gtk_box_pack_start(GTK_BOX(shbox), volume, FALSE, FALSE, 0);
 

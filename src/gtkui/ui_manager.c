@@ -328,58 +328,6 @@ static GtkActionEntry action_entries_others[] = {
 };
 
 
-static GtkActionEntry action_entries_equalizer[] = {
-
-    { "equ preset load menu", NULL, N_("Load") },
-    { "equ preset import menu", NULL, N_("Import") },
-    { "equ preset save menu", NULL, N_("Save") },
-    { "equ preset delete menu", NULL, N_("Delete") },
-
-    { "equ load preset", NULL, N_("Preset"), NULL,
-      N_("Load preset"), G_CALLBACK(action_equ_load_preset) },
-
-    { "equ load auto preset", NULL, N_("Auto-load preset"), NULL,
-      N_("Load auto-load preset"), G_CALLBACK(action_equ_load_auto_preset) },
-
-    { "equ load default preset", NULL, N_("Default"), NULL,
-      N_("Load default preset into equalizer"), G_CALLBACK(action_equ_load_default_preset) },
-
-    { "equ zero preset", NULL, N_("Zero"), NULL,
-      N_("Set equalizer preset levels to zero"), G_CALLBACK(action_equ_zero_preset) },
-
-    { "equ load preset file", NULL, N_("From file"), NULL,
-      N_("Load preset from file"), G_CALLBACK(action_equ_load_preset_file) },
-
-    { "equ load preset eqf", NULL, N_("From WinAMP EQF file"), NULL,
-      N_("Load preset from WinAMP EQF file"), G_CALLBACK(action_equ_load_preset_eqf) },
-
-    { "equ import winamp presets", NULL, N_("WinAMP Presets"), NULL,
-      N_("Import WinAMP presets"), G_CALLBACK(action_equ_import_winamp_presets) },
-
-    { "equ save preset", NULL, N_("Preset"), NULL,
-      N_("Save preset"), G_CALLBACK(action_equ_save_preset) },
-
-    { "equ save auto preset", NULL, N_("Auto-load preset"), NULL,
-      N_("Save auto-load preset"), G_CALLBACK(action_equ_save_auto_preset) },
-
-    { "equ save default preset", NULL, N_("Default"), NULL,
-      N_("Save default preset"), G_CALLBACK(action_equ_save_default_preset) },
-
-    { "equ save preset file", NULL, N_("To file"), NULL,
-      N_("Save preset to file"), G_CALLBACK(action_equ_save_preset_file) },
-
-    { "equ save preset eqf", NULL, N_("To WinAMP EQF file"), NULL,
-      N_("Save preset to WinAMP EQF file"), G_CALLBACK(action_equ_save_preset_eqf) },
-
-    { "equ delete preset", NULL, N_("Preset"), NULL,
-      N_("Delete preset"), G_CALLBACK(action_equ_delete_preset) },
-
-    { "equ delete auto preset", NULL, N_("Auto-load preset"), NULL,
-      N_("Delete auto-load preset"), G_CALLBACK(action_equ_delete_auto_preset) }
-};
-
-
-
 /* ***************************** */
 
 GtkWidget *
@@ -455,11 +403,6 @@ ui_manager_init ( void )
     action_group_playlist_sort, action_entries_playlist_sort,
     G_N_ELEMENTS(action_entries_playlist_sort), NULL );
 
-  action_group_equalizer = ui_manager_new_action_group("action_equalizer");
-  gtk_action_group_add_actions(
-    action_group_equalizer, action_entries_equalizer,
-    G_N_ELEMENTS(action_entries_equalizer), NULL);
-
   /* ui */
   ui_manager = gtk_ui_manager_new();
   gtk_ui_manager_insert_action_group( ui_manager , toggleaction_group_others , 0 );
@@ -482,7 +425,6 @@ ui_manager_init ( void )
   gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_select , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_delete , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_sort , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_equalizer , 0 );
 
   return;
 }
@@ -569,16 +511,6 @@ ui_manager_create_menus ( void )
    (ui_manager, "/playlist-menus/misc-menu/plugins-menu")), aud_get_plugin_menu
    (AUDACIOUS_MENU_PLAYLIST_MISC));
 
-  gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/equalizer.ui" , &gerr );
-
-  if ( gerr != NULL )
-  {
-    g_critical( "Error creating UI<ui/equalizer.ui>: %s" , gerr->message );
-    g_error_free( gerr );
-    return;
-  }
-
-  equalizerwin_presets_menu = ui_manager_get_popup_menu(ui_manager, "/equalizer-menus/preset-menu");
   return;
 }
 
@@ -655,7 +587,6 @@ ui_manager_destroy( void )
     g_object_unref((GObject*)action_group_playlist_select);
     g_object_unref((GObject*)action_group_playlist_delete);
     g_object_unref((GObject*)action_group_playlist_sort);
-    g_object_unref((GObject*)action_group_equalizer);
     g_object_unref((GObject*)ui_manager);
 }
 

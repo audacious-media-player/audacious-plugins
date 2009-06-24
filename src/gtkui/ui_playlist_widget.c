@@ -131,7 +131,9 @@ _ui_playlist_widget_drag_end(GtkTreeView *widget, GdkDragContext *context, gpoin
 
     delta = t->new_index - t->old_index;
 
-    playlist_shift(playlist, delta);
+#if 0
+    aud_playlist_shift(playlist, delta);
+#endif
     g_slice_free(UiPlaylistDragTracker, t);
 
     sel = gtk_tree_view_get_selection(widget);
@@ -153,7 +155,7 @@ _ui_playlist_widget_selection_update(GtkTreeModel *model, GtkTreePath *path, Gtk
 static void
 _ui_playlist_widget_selection_changed(GtkTreeSelection *selection, Playlist *playlist)
 {
-    playlist_clear_selected(playlist);
+    aud_playlist_clear_selected(playlist);
 
     gtk_tree_selection_selected_foreach(selection, _ui_playlist_widget_selection_update, NULL);
 }
@@ -162,7 +164,7 @@ static void
 ui_playlist_widget_change_song(GtkTreeView *treeview, guint pos)
 {
     Playlist *playlist = g_object_get_data(G_OBJECT(treeview), "my_playlist");
-    playlist_set_position(playlist, pos);
+    aud_playlist_set_position(playlist, pos);
 
     if (!audacious_drct_get_playing())
         audacious_drct_play();
@@ -338,7 +340,7 @@ ui_playlist_widget_update(GtkWidget *widget)
         valid = gtk_list_store_remove(GTK_LIST_STORE(store), &iter);
     }
 
-    ui_playlist_widget_set_current(widget, playlist_get_position(playlist));
+    ui_playlist_widget_set_current(widget, aud_playlist_get_position(playlist));
 }
 
 static gboolean
