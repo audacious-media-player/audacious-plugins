@@ -310,13 +310,16 @@ skin_pixmap_locate(const gchar * dirname, gchar ** basenames)
     gint i;
 
     for (i = 0; basenames[i]; i++)
-    if (!(filename = find_path_recursively(dirname, basenames[i])))
-        g_free(filename);
-    else
-        return filename;
+    {
+        filename = g_strdup_printf ("%s/%s", dirname, basenames[i]);
 
-    /* can't find any targets -- sorry */
-    return NULL;
+        if (aud_vfs_file_test (filename, G_FILE_TEST_IS_REGULAR))
+            return filename;
+
+        g_free (filename);
+    }
+
+    return 0;
 }
 
 /**
