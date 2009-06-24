@@ -430,7 +430,7 @@ ui_manager_create_menus ( void )
   GError *gerr = NULL;
 
   /* attach xml menu definitions */
-  gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/mainwin.ui" , &gerr );
+  gtk_ui_manager_add_ui_from_file( ui_manager , DATA_DIR "/ui/player.ui" , &gerr );
 
   if ( gerr != NULL )
   {
