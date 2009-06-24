@@ -511,6 +511,9 @@ _ui_initialize(void)
 
     gint lvol = 0, rvol = 0; /* Left and Right for the volume control */
 
+    ui_manager_init();
+    ui_manager_create_menus();
+
     playlist = aud_playlist_get_active();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), 450, 150);

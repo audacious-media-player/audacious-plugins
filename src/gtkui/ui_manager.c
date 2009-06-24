@@ -406,16 +406,6 @@ ui_manager_init ( void )
   /* ui */
   ui_manager = gtk_ui_manager_new();
   gtk_ui_manager_insert_action_group( ui_manager , toggleaction_group_others , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anamode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anatype , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_scomode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vprmode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_wshmode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_refrate , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anafoff , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_peafoff , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vismode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_viewtime , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , action_group_playback , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , action_group_visualization , 0 );
@@ -568,16 +558,6 @@ void
 ui_manager_destroy( void )
 {
     g_object_unref((GObject*)toggleaction_group_others);
-    g_object_unref((GObject*)radioaction_group_anamode);
-    g_object_unref((GObject*)radioaction_group_anatype);
-    g_object_unref((GObject*)radioaction_group_scomode);
-    g_object_unref((GObject*)radioaction_group_vprmode);
-    g_object_unref((GObject*)radioaction_group_wshmode);
-    g_object_unref((GObject*)radioaction_group_refrate);
-    g_object_unref((GObject*)radioaction_group_anafoff);
-    g_object_unref((GObject*)radioaction_group_peafoff);
-    g_object_unref((GObject*)radioaction_group_vismode);
-    g_object_unref((GObject*)radioaction_group_viewtime);
     g_object_unref((GObject*)action_group_playback);
     g_object_unref((GObject*)action_group_playlist);
     g_object_unref((GObject*)action_group_visualization);
