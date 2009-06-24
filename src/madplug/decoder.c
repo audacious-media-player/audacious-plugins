@@ -31,6 +31,8 @@
 #define BUFFER_SIZE (16*1024)
 #define N_AVERAGE_FRAMES 10
 
+#define error(...) fprintf (stderr, "madplug: " __VA_ARGS__)
+
 void
 write_output(struct mad_info_t *info, struct mad_pcm *pcm,
              struct mad_header *header)
@@ -96,7 +98,6 @@ scan_file(struct mad_info_t * info, gboolean fast)
     xing_init(&info->xing);
 
     info->bitrate = 0;
-    info->pos = mad_timer_zero;
     info->duration = mad_timer_zero; // should be cleared before loop, if we use it as break condition.
 
     if(info->fileinfo_request == TRUE) {
@@ -302,27 +303,79 @@ scan_file(struct mad_info_t * info, gboolean fast)
     return (info->frames != 0 || info->remote == TRUE);
 }
 
-/* sanity check for audio open parameters */
-static gboolean
-check_audio_param(struct mad_info_t *info)
+static void seek (struct mad_info_t * info)
 {
-    if(info->fmt != FMT_FIXED32 && (info->fmt < FMT_U8 || info->fmt > FMT_S16_NE))
-        return FALSE;
-    if(info->freq < 0) // not sure about maximum frequency. --yaz
-        return FALSE;
-    if(info->channels < 1 || info->channels > 2)
-        return FALSE;
+    if (info->length == -1)
+        goto DONE;
 
-    return TRUE;
+    if (aud_vfs_fseek (info->infile, info->size * (long long) info->seek /
+     info->length, SEEK_SET))
+    {
+        error ("aud_vfs_fseek failed.\n");
+        goto DONE;
+    }
+
+    mad_stream_buffer (info->stream, info->buffer, 0);
+    info->resync = 1;
+    info->playback->output->flush (info->seek);
+
+DONE:
+    info->seek = -1;
+}
+
+static char fill_buffer (struct mad_info_t * info)
+{
+    int remains, readed;
+
+    remains = info->stream->bufend - info->stream->next_frame;
+
+    if (remains >= info->buffer_size / 2)
+        return 1;
+
+    memmove (info->buffer, info->stream->next_frame, remains);
+    readed = aud_vfs_fread (info->buffer + remains, 1, info->buffer_size -
+     remains, info->infile);
+
+    if (readed < 0)
+    {
+        error ("aud_vfs_read failed.\n");
+        readed = 0;
+    }
+
+    mad_stream_buffer (info->stream, info->buffer, remains + readed);
+    return (remains + readed > 0);
+}
+
+static void watch_controls (struct mad_info_t * info)
+{
+    g_mutex_lock (control_mutex);
+
+    if (info->pause)
+    {
+        info->playback->output->pause (1);
+
+        while (info->pause)
+        {
+            if (info->seek != -1)
+                seek (info);
+
+            g_cond_wait (control_cond, control_mutex);
+        }
+
+        info->playback->output->pause (0);
+    }
+
+    if (info->seek != -1)
+        seek (info);
+
+    g_mutex_unlock (control_mutex);
 }
 
 gpointer
 decode_loop(gpointer arg)
 {
     unsigned char buffer[BUFFER_SIZE];
-    int len;
-    int remainder = 0;
-    gint tlen;
+    int skip, current;
     unsigned int iteration = 0;
 
     /* mad structs */
@@ -341,202 +394,110 @@ decode_loop(gpointer arg)
     mad_stream_options(&stream, MAD_OPTION_IGNORECRC);
     mad_synth_init(&synth);
 
-    if(!info->playback){
-        AUDDBG("decode: playback == NULL\n");
-        return NULL;
-    }
-
-    AUDDBG("decode: fmt = %d freq = %d channels = %d\n", info->fmt, info->freq, info->channels);
-
-    if(check_audio_param(info) == FALSE)
-        return NULL;
-
-    if (!info->playback->output->open_audio(info->fmt, info->freq, info->channels)) {
-        g_mutex_lock(pb_mutex);
-        info->playback->error = TRUE;
-        info->playback->eof = 1;
-        g_mutex_unlock(pb_mutex);
-        g_message("failed to open audio output: %s",
-                  info->playback->output->description);
-        return NULL;
-    }
-
     /* set mainwin title */
     if (info->title)
         g_free(info->title);
     info->title = aud_tuple_formatter_make_title_string(info->tuple, audmad_config->title_override == TRUE ?
                                        audmad_config->id3_format : aud_get_gentitle_format());
 
-    tlen = mad_timer_count (info->duration, MAD_UNITS_MILLISECONDS);
-    info->playback->set_params (info->playback, info->title,
-                             (tlen == 0 || info->size <= 0) ? -1 : tlen,
-                             info->bitrate, info->freq, info->channels);
+    info->length = mad_timer_count (info->duration, MAD_UNITS_MILLISECONDS);
 
-    AUDDBG("decode: tlen = %d\n", tlen);
+    if (info->length == 0)
+        info->length = -1;
 
-    /* main loop */
-    do {
-        if (!info->playback->playing) {
-            AUDDBG("decode: stop signaled\n");
-            break;
-        }
+    info->playback->set_params (info->playback, info->title, info->length,
+     info->bitrate, info->freq, info->channels);
 
-        if (info->seek != -1)
-        {
-            if (aud_vfs_fseek (info->infile, info->size * (long long) info->seek
-             / tlen, SEEK_SET))
-            {
-                fprintf (stderr, "madplug: Seek error.\n");
-                break;
-            }
+    info->resync = 0;
+    info->buffer = buffer;
+    info->buffer_size = sizeof buffer;
+    info->stream = & stream;
 
-            stream.this_frame = stream.bufend;
-            stream.next_frame = stream.bufend;
-            stream.sync = 0;
-            mad_timer_set (& info->pos, 0, info->seek, 1000);
-            info->playback->output->flush (info->seek);
-            info->seek = -1;
-        }
+    if (! info->playback->output->open_audio (info->fmt, info->freq,
+     info->channels))
+    {
+        error ("open_audio failed: %s.\n", info->playback->output->description);
+        goto CLEAN_UP;
+    }
 
-        remainder = stream.bufend - stream.next_frame;
-
-        if (remainder > 0 && stream.this_frame > buffer)
-            memmove (buffer, stream.this_frame, remainder);
-
-        len = input_get_data(info, buffer + remainder,
-                             BUFFER_SIZE - remainder);
-
+    while (info->playback->playing)
+    {
+        watch_controls (info);
         input_process_remote_metadata(info);
 
-        if (len <= 0) {
-            AUDDBG("finished decoding\n");
+        if (! fill_buffer (info))
             break;
-        }
-        len += remainder;
-        if (len < MAD_BUFFER_GUARD) {
-            int i;
-            for (i = len; i < MAD_BUFFER_GUARD; i++)
-                buffer[i] = 0;
-            len = MAD_BUFFER_GUARD;
-        }
 
-        mad_stream_buffer(&stream, buffer, len);
+        if (info->resync)
+            stream.sync = 0;
 
-        while (info->playback->playing && info->seek == -1)
+    RETRY:
+        if (mad_header_decode (& frame.header, & stream) == -1)
+            goto ERROR;
+
+        info->bitrate = frame.header.bitrate;
+
+        if (info->vbr && (iteration % 40 == 0))
         {
-            if (info->pause != info->is_paused)
-            {
-                info->playback->output->pause (info->pause);
-                info->is_paused = info->pause;
-            }
-
-            if (info->is_paused)
-            {
-                g_usleep (20000);
-                continue;
-            }
-
-            if (mad_header_decode(&frame.header, &stream) == -1) {
-                if (!MAD_RECOVERABLE(stream.error)) {
-                    break;
-                }
-                if (stream.error == MAD_ERROR_LOSTSYNC) {
-                    /* ignore LOSTSYNC due to ID3 tags */
-                    int tagsize = id3_tag_query(stream.this_frame,
-                                                stream.bufend -
-                                                stream.this_frame);
-                    if (tagsize > 0) {
-                        mad_stream_skip(&stream, tagsize);
-                        continue;
-                    }
-                }
-
-                AUDDBG("(recovered) error decoding header %d: %s\n",
-                          info->current_frame,
-                          mad_stream_errorstr(&stream));
-
-                continue;
-            }
-
-            info->bitrate = frame.header.bitrate;
-
-            if (!audmad_config->show_avg_vbr_bitrate && info->vbr && (iteration % 40 == 0)) {
-
-#ifdef DEBUG_INTENSIVELY
-                AUDDBG("decode vbr tlen = %d\n", tlen);
-#endif
-                info->playback->set_params(info->playback, info->title,
-                                     (tlen == 0 || info->size <= 0) ? -1 : tlen,
-                                     info->bitrate, info->freq, info->channels);
-            }
-            iteration++;
-
-            if (mad_frame_decode(&frame, &stream) == -1) {
-                if (!MAD_RECOVERABLE(stream.error))
-                    break;
-
-                AUDDBG("(recovered) error decoding frame %d: %s\n",
-                          info->current_frame,
-                          mad_stream_errorstr(&stream));
-
-            }
-
-            info->current_frame++;
-
-            if (info->freq != frame.header.samplerate
-                || info->channels !=
-                (guint) MAD_NCHANNELS(&frame.header)) {
-
-                AUDDBG("change in audio type detected\n");
-                AUDDBG("old: frequency = %d, channels = %d\n", info->freq,
-                          info->channels);
-                AUDDBG("new: frequency = %d, channels = %d\n",
-                          frame.header.samplerate,
-                          (guint) MAD_NCHANNELS(&frame.header));
-
-                info->freq = frame.header.samplerate;
-                info->channels = MAD_NCHANNELS(&frame.header);
-
-                if(audmad_config->force_reopen_audio && check_audio_param(info)) {
-                    gint current_time = info->playback->output->output_time();
-
-                    AUDDBG("re-opening audio due to change in audio type\n");
-
-                    info->playback->output->close_audio();
-                    if (!info->playback->output->open_audio(info->fmt, info->freq,
-                                                            info->channels)) {
-                        g_mutex_lock(pb_mutex);
-                        info->playback->error = TRUE;
-                        info->playback->eof = 1;
-                        g_mutex_unlock(pb_mutex);
-                        g_message("failed to re-open audio output: %s",
-                                  info->playback->output->description);
-                        return NULL;
-                    }
-                    // restore time and advance 0.5sec
-                    info->seek = current_time + 500;
-                }
-            }
-
-            if (!info->playback->playing)
-                break;
-            mad_synth_frame(&synth, &frame);
-            mad_stream_sync(&stream);
-
-            write_output(info, &synth.pcm, &frame.header);
-
-            mad_timer_add(&info->pos, frame.header.duration);
+            info->playback->set_params (info->playback, info->title,
+             info->length, info->bitrate, info->freq, info->channels);
         }
+
+        iteration ++;
+
+        if (mad_frame_decode (& frame, & stream) == -1)
+            goto ERROR;
+
+        if (info->freq != frame.header.samplerate || info->channels !=
+         MAD_NCHANNELS (& frame.header))
+        {
+            current = info->playback->output->output_time ();
+            info->playback->output->close_audio ();
+
+            info->freq = frame.header.samplerate;
+            info->channels = MAD_NCHANNELS (& frame.header);
+
+            if (! info->playback->output->open_audio (info->fmt, info->freq,
+             info->channels))
+            {
+                error ("open_audio failed: %s.\n",
+                 info->playback->output->description);
+                goto CLEAN_UP;
+            }
+
+            info->playback->output->flush (current);
+        }
+
+        mad_synth_frame (& synth, & frame);
+        write_output (info, & synth.pcm, & frame.header);
+        info->resync = 0;
+        continue;
+
+    ERROR:
+        // Did we get confused by a false sync marker?
+        if (info->resync && MAD_RECOVERABLE (stream.error))
+            goto RETRY;
+
+        // Did we hit an ID3 tag?
+        if (stream.error == MAD_ERROR_LOSTSYNC)
+        {
+            skip = id3_tag_query (stream.this_frame, stream.bufend -
+             stream.this_frame);
+
+            if (skip > 0)
+            {
+                mad_stream_skip (& stream, skip);
+                goto RETRY;
+            }
+        }
+
+        error ("%s.\n", mad_stream_errorstr (& stream));
+
+        if (MAD_RECOVERABLE (stream.error))
+            goto RETRY;
+
+        break;
     }
-    while (stream.error == MAD_ERROR_BUFLEN);
-
-    if (stream.error && stream.error != MAD_ERROR_BUFLEN)
-        fprintf (stderr, "madplug: Exiting on error %d.\n", stream.error);
-
-    /* free mad stuff */
-    mad_frame_finish(&frame);
-    mad_stream_finish(&stream);
-    mad_synth_finish(&synth);
 
     if (info->playback->playing) {
         GTimeVal sleeptime;
@@ -560,7 +521,10 @@ decode_loop(gpointer arg)
         }
     }
 
-    AUDDBG("e: decode\n");
+CLEAN_UP:
+    mad_frame_finish (& frame);
+    mad_stream_finish (& stream);
+    mad_synth_finish (& synth);
 
     aud_tuple_free(info->tuple);
     info->tuple = NULL;
