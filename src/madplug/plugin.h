@@ -50,7 +50,7 @@ struct mad_info_t
 
     /* seek time */
     gulong seek;      /**< seek time in milliseconds */
-    char pause, is_paused;
+    char pause;
 
     /* state */
     guint current_frame;/**< current mp3 frame */
@@ -116,10 +116,9 @@ typedef struct audmad_config_t
 extern InputPlugin *mad_plugin;
 extern audmad_config_t *audmad_config;
 
-// gcond
-extern GMutex *mad_mutex;
+extern GMutex * mad_mutex, * control_mutex;
 extern GMutex *pb_mutex;
-extern GCond *mad_cond;
+extern GCond * mad_cond, * control_cond;
 
 // prototypes
 void audmad_config_compute(struct audmad_config_t *config);

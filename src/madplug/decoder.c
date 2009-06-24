@@ -31,6 +31,8 @@
 #define BUFFER_SIZE (16*1024)
 #define N_AVERAGE_FRAMES 10
 
+#define error(...) fprintf (stderr, "madplug: " __VA_ARGS__)
+
 void
 write_output(struct mad_info_t *info, struct mad_pcm *pcm,
              struct mad_header *header)
@@ -316,6 +318,50 @@ check_audio_param(struct mad_info_t *info)
     return TRUE;
 }
 
+static void seek (struct mad_info_t * info, struct mad_stream * stream, int
+ length)
+{
+    if (aud_vfs_fseek (info->infile, info->size * (long long) info->seek /
+     length, SEEK_SET))
+    {
+        error ("aud_vfs_fseek failed.\n");
+        goto DONE;
+    }
+
+    stream->next_frame = stream->bufend;
+    mad_timer_set (& info->pos, 0, info->seek, 1000);
+    info->playback->output->flush (info->seek);
+
+DONE:
+    info->seek = -1;
+}
+
+static void watch_controls (struct mad_info_t * info, struct mad_stream *
+ stream, int length)
+{
+    g_mutex_lock (control_mutex);
+
+    if (info->pause)
+    {
+        info->playback->output->pause (1);
+
+        while (info->pause)
+        {
+            if (info->seek != -1)
+                seek (info, stream, length);
+
+            g_cond_wait (control_cond, control_mutex);
+        }
+
+        info->playback->output->pause (0);
+    }
+
+    if (info->seek != -1)
+        seek (info, stream, length);
+
+    g_mutex_unlock (control_mutex);
+}
+
 gpointer
 decode_loop(gpointer arg)
 {
@@ -372,36 +418,12 @@ decode_loop(gpointer arg)
                              (tlen == 0 || info->size <= 0) ? -1 : tlen,
                              info->bitrate, info->freq, info->channels);
 
-    AUDDBG("decode: tlen = %d\n", tlen);
-
-    /* main loop */
-    do {
-        if (!info->playback->playing) {
-            AUDDBG("decode: stop signaled\n");
-            break;
-        }
-
-        if (info->seek != -1)
-        {
-            if (aud_vfs_fseek (info->infile, info->size * (long long) info->seek
-             / tlen, SEEK_SET))
-            {
-                fprintf (stderr, "madplug: Seek error.\n");
-                break;
-            }
-
-            stream.this_frame = stream.bufend;
-            stream.next_frame = stream.bufend;
-            stream.sync = 0;
-            mad_timer_set (& info->pos, 0, info->seek, 1000);
-            info->playback->output->flush (info->seek);
-            info->seek = -1;
-        }
+    while (info->playback->playing)
+    {
+        watch_controls (info, & stream, tlen);
 
         remainder = stream.bufend - stream.next_frame;
-
-        if (remainder > 0 && stream.this_frame > buffer)
-            memmove (buffer, stream.this_frame, remainder);
+        memmove (buffer, stream.next_frame, remainder);
 
         len = input_get_data(info, buffer + remainder,
                              BUFFER_SIZE - remainder);
@@ -422,21 +444,16 @@ decode_loop(gpointer arg)
 
         mad_stream_buffer(&stream, buffer, len);
 
-        while (info->playback->playing && info->seek == -1)
+        /* Fix me: libmad (as of version 0.15) often finds false sync markers,
+         causing many (non-fatal) errors when seeking. -jlindgren */
+        stream.sync = 0;
+
+    RETRY:
         {
-            if (info->pause != info->is_paused)
-            {
-                info->playback->output->pause (info->pause);
-                info->is_paused = info->pause;
-            }
-
-            if (info->is_paused)
-            {
-                g_usleep (20000);
-                continue;
-            }
-
             if (mad_header_decode(&frame.header, &stream) == -1) {
+                error ("mad_header_decode failed: %s\n", mad_stream_errorstr
+                 (& stream));
+
                 if (!MAD_RECOVERABLE(stream.error)) {
                     break;
                 }
@@ -445,17 +462,11 @@ decode_loop(gpointer arg)
                     int tagsize = id3_tag_query(stream.this_frame,
                                                 stream.bufend -
                                                 stream.this_frame);
-                    if (tagsize > 0) {
+                    if (tagsize > 0)
                         mad_stream_skip(&stream, tagsize);
-                        continue;
-                    }
                 }
 
-                AUDDBG("(recovered) error decoding header %d: %s\n",
-                          info->current_frame,
-                          mad_stream_errorstr(&stream));
-
-                continue;
+                goto RETRY;
             }
 
             info->bitrate = frame.header.bitrate;
@@ -472,13 +483,13 @@ decode_loop(gpointer arg)
             iteration++;
 
             if (mad_frame_decode(&frame, &stream) == -1) {
+                error ("mad_frame_decode failed: %s\n", mad_stream_errorstr
+                 (& stream));
+
                 if (!MAD_RECOVERABLE(stream.error))
                     break;
 
-                AUDDBG("(recovered) error decoding frame %d: %s\n",
-                          info->current_frame,
-                          mad_stream_errorstr(&stream));
-
+                goto RETRY;
             }
 
             info->current_frame++;
@@ -513,25 +524,16 @@ decode_loop(gpointer arg)
                                   info->playback->output->description);
                         return NULL;
                     }
-                    // restore time and advance 0.5sec
-                    info->seek = current_time + 500;
+
+                    info->playback->output->flush (current_time);
                 }
             }
 
-            if (!info->playback->playing)
-                break;
             mad_synth_frame(&synth, &frame);
-            mad_stream_sync(&stream);
-
             write_output(info, &synth.pcm, &frame.header);
-
             mad_timer_add(&info->pos, frame.header.duration);
         }
     }
-    while (stream.error == MAD_ERROR_BUFLEN);
-
-    if (stream.error && stream.error != MAD_ERROR_BUFLEN)
-        fprintf (stderr, "madplug: Exiting on error %d.\n", stream.error);
 
     /* free mad stuff */
     mad_frame_finish(&frame);

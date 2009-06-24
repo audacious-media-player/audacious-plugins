@@ -37,9 +37,9 @@
  * Global variables
  */
 audmad_config_t *audmad_config;   /**< global configuration */
-GMutex *mad_mutex;
+GMutex * mad_mutex, * control_mutex;
 GMutex *pb_mutex;
-GCond *mad_cond;
+GCond * mad_cond, * control_cond;
 
 /*
  * static variables
@@ -141,6 +141,8 @@ audmad_init()
     mad_mutex = g_mutex_new();
     pb_mutex = g_mutex_new();
     mad_cond = g_cond_new();
+    control_mutex = g_mutex_new ();
+    control_cond = g_cond_new ();
 
     if (!audmad_config->id3_format)
         audmad_config->id3_format = g_strdup("(none)");
@@ -157,6 +159,8 @@ audmad_cleanup()
     g_cond_free(mad_cond);
     g_mutex_free(mad_mutex);
     g_mutex_free(pb_mutex);
+    g_mutex_free (control_mutex);
+    g_cond_free (control_cond);
 }
 
 /* Validate a MPEG Audio header and extract some information from it.
@@ -572,7 +576,6 @@ audmad_play_file(InputPlayback *playback)
     playback->set_replaygain_info(playback, &rg_info);
 
     info.seek = -1;
-    info.is_paused = 0;
     info.pause = 0;
 
     g_mutex_lock(pb_mutex);
@@ -588,19 +591,19 @@ audmad_play_file(InputPlayback *playback)
 static void
 audmad_pause(InputPlayback *playback, short paused)
 {
+    g_mutex_lock (control_mutex);
     info.pause = paused;
-
-    while (info.is_paused != paused)
-        g_usleep (20000);
+    g_cond_broadcast (control_cond);
+    g_mutex_unlock (control_mutex);
 }
 
 static void
 audmad_mseek(InputPlayback *playback, gulong millisecond)
 {
+    g_mutex_lock (control_mutex);
     info.seek = millisecond;
-
-    while (info.seek != -1)
-        g_usleep (20000);
+    g_cond_broadcast (control_cond);
+    g_mutex_unlock (control_mutex);
 }
 
 static void
