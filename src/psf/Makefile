@@ -6,6 +6,7 @@ SRCS = corlett.c \
        psx_hw.c \
        eng_psf.c \
        eng_psf2.c \
+       eng_spx.c \
        peops/spu.c \
        peops2/dma.c \
        peops2/registers.c \

@@ -38,7 +38,23 @@ typedef enum {
     ENG_NONE = 0,
     ENG_PSF1,
     ENG_PSF2,
+    ENG_SPX,
+    ENG_COUNT
 } PSFEngine;
+
+typedef struct {
+    int32 (*start)(uint8 *buffer, uint32 length);
+    int32 (*stop)(void);
+    int32 (*seek)(uint32);
+    int32 (*execute)(InputPlayback *data);
+} PSFEngineFunctors;
+
+static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
+    {NULL, NULL, NULL, NULL},
+    {psf_start, psf_stop, psf_seek, psf_execute},
+    {psf2_start, psf2_stop, psf2_seek, psf2_execute},
+    {spx_start, spx_stop, psf_seek, spx_execute},
+};
 
 static PSFEngine psf_probe(uint8 *buffer)
 {
@@ -47,6 +63,12 @@ static PSFEngine psf_probe(uint8 *buffer)
 
 	if (!memcmp(buffer, "PSF\x02", 4))
 		return ENG_PSF2;
+
+	if (!memcmp(buffer, "SPU", 3))
+		return ENG_SPX;
+
+	if (!memcmp(buffer, "SPX", 3))
+		return ENG_SPX;
 
 	return ENG_NONE;
 }
@@ -134,30 +156,22 @@ void psf2_play(InputPlayback *data)
 	gint length;
 	gchar *title = psf2_title(data->filename, &length);
 	PSFEngine eng;
+	PSFEngineFunctors *f;
 
 	path = g_strdup(data->filename);
 	aud_vfs_file_get_contents(data->filename, (gchar **) &buffer, &size);
 
 	eng = psf_probe(buffer);
-	if (eng == ENG_PSF2)
+	if (eng == ENG_NONE || eng == ENG_COUNT)
 	{
-		if (psf2_start(buffer, size) != AO_SUCCESS)
-		{
-			free(buffer);
-			return;
-		}
+		g_free(buffer);
+		return;
 	}
-	else if (eng == ENG_PSF1)
+
+	f = &psf_functor_map[eng];
+	if (f->start(buffer, size) != AO_SUCCESS)
 	{
-		if (psf_start(buffer, size) != AO_SUCCESS)
-		{
-			free(buffer);
-			return;
-		}
-	}		
-	else
-	{
-		free(buffer);
+		g_free(buffer);
 		return;
 	}
 
@@ -170,18 +184,18 @@ void psf2_play(InputPlayback *data)
 
 	for (;;)
 	{
-		(eng == ENG_PSF1) ? psf_execute(data) : psf2_execute(data);
+		f->execute(data);
 
 		if (seek)
 		{
 			data->eof = FALSE;
 			data->output->flush(seek);
 
-			(eng == ENG_PSF1) ? psf_stop() : psf2_stop();
+			f->stop();
 
-			if ((eng == ENG_PSF1) ? psf_start(buffer, size) : psf2_start(buffer, size) == AO_SUCCESS)
+			if (f->start(buffer, size) == AO_SUCCESS)
 			{
-				(eng == ENG_PSF1) ? psf_seek(seek) : psf2_seek(seek);
+				f->seek(seek);
 				seek = 0;
 				continue;
 			}
@@ -192,7 +206,7 @@ void psf2_play(InputPlayback *data)
 			}
 		}
 
-		(eng == ENG_PSF1) ? psf_stop() : psf2_stop();
+		f->stop();
 
 		data->output->buffer_free();
 		data->output->buffer_free();
@@ -278,7 +292,7 @@ void psf2_Seek(InputPlayback *playback, int time)
 	seek = time * 1000;
 }
 
-gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", NULL };
+gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
 
 InputPlugin psf2_ip =
 {
