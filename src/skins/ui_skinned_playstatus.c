@@ -86,7 +86,7 @@ static void ui_skinned_playstatus_class_init(UiSkinnedPlaystatusClass *klass) {
 
     klass->scaled = ui_skinned_playstatus_toggle_scaled;
 
-    playstatus_signals[DOUBLED] = 
+    playstatus_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedPlaystatusClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -148,10 +148,6 @@ static void ui_skinned_playstatus_size_allocate(GtkWidget *widget, GtkAllocation
 }
 
 static gboolean ui_skinned_playstatus_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_PLAYSTATUS (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedPlaystatus *playstatus = UI_SKINNED_PLAYSTATUS (widget);
     g_return_val_if_fail (playstatus->width > 0 && playstatus->height > 0, FALSE);
 
@@ -194,7 +190,8 @@ static void ui_skinned_playstatus_toggle_scaled(UiSkinnedPlaystatus *playstatus)
     playstatus->scaled = !playstatus->scaled;
     gtk_widget_set_size_request(widget, playstatus->width*(playstatus->scaled ? config.scale_factor : 1), playstatus->height*(playstatus->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(playstatus));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_playstatus_expose (widget, 0);
 }
 
 void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status) {
@@ -202,7 +199,9 @@ void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status) {
     UiSkinnedPlaystatus *playstatus = UI_SKINNED_PLAYSTATUS (widget);
 
     playstatus->status = status;
-    gtk_widget_queue_draw(widget);
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_playstatus_expose (widget, 0);
 }
 
 void ui_skinned_playstatus_set_buffering(GtkWidget *widget, gboolean status) {
@@ -210,7 +209,9 @@ void ui_skinned_playstatus_set_buffering(GtkWidget *widget, gboolean status) {
     UiSkinnedPlaystatus *playstatus = UI_SKINNED_PLAYSTATUS (widget);
 
     playstatus->buffering = status;
-    gtk_widget_queue_draw(widget);
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_playstatus_expose (widget, 0);
 }
 
 void ui_skinned_playstatus_set_size(GtkWidget *widget, gint width, gint height) {
