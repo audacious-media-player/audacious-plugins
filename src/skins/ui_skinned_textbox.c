@@ -316,10 +316,6 @@ static void ui_skinned_textbox_size_allocate(GtkWidget *widget, GtkAllocation *a
 }
 
 static gboolean ui_skinned_textbox_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_TEXTBOX (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedTextbox *textbox = UI_SKINNED_TEXTBOX (widget);
     UiSkinnedTextboxPrivate *priv = UI_SKINNED_TEXTBOX_GET_PRIVATE(textbox);
     g_return_val_if_fail (textbox->width > 0 && textbox->height > 0, FALSE);
@@ -537,7 +533,9 @@ void ui_skinned_textbox_set_text(GtkWidget *widget, const gchar *text) {
 
     textbox->text = aud_str_to_utf8(text);
     priv->scroll_back = FALSE;
-    gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_textbox_expose (widget, 0);
 }
 
 static void textbox_generate_xfont_pixmap(UiSkinnedTextbox *textbox, const gchar *pixmaptext) {

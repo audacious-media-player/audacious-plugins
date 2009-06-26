@@ -44,7 +44,7 @@ static void ui_skinned_number_destroy            (GtkObject *object);
 static void ui_skinned_number_realize            (GtkWidget *widget);
 static void ui_skinned_number_unrealize          (GtkWidget *widget);
 static void ui_skinned_number_map                (GtkWidget *widget);
-static void ui_skinned_number_unmap              (GtkWidget *widget); 
+static void ui_skinned_number_unmap              (GtkWidget *widget);
 static void ui_skinned_number_size_request       (GtkWidget *widget, GtkRequisition *requisition);
 static void ui_skinned_number_size_allocate      (GtkWidget *widget, GtkAllocation *allocation);
 static gboolean ui_skinned_number_expose         (GtkWidget *widget, GdkEventExpose *event);
@@ -86,14 +86,14 @@ static void ui_skinned_number_class_init(UiSkinnedNumberClass *klass) {
     widget_class->realize = ui_skinned_number_realize;
     widget_class->unrealize = ui_skinned_number_unrealize;
     widget_class->map = ui_skinned_number_map;
-    widget_class->unmap = ui_skinned_number_unmap; 
+    widget_class->unmap = ui_skinned_number_unmap;
     widget_class->expose_event = ui_skinned_number_expose;
     widget_class->size_request = ui_skinned_number_size_request;
     widget_class->size_allocate = ui_skinned_number_size_allocate;
 
     klass->scaled = ui_skinned_number_toggle_scaled;
 
-    number_signals[DOUBLED] = 
+    number_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedNumberClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -143,7 +143,7 @@ static void ui_skinned_number_realize(GtkWidget *widget) {
     g_return_if_fail (UI_SKINNED_IS_NUMBER(widget));
 
     if (GTK_WIDGET_CLASS (parent_class)->realize)
-        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget); 
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
     number = UI_SKINNED_NUMBER(widget);
 
     attributes.x = widget->allocation.x;
@@ -156,7 +156,7 @@ static void ui_skinned_number_realize(GtkWidget *widget) {
     attributes.event_mask |= GDK_BUTTON_PRESS_MASK;
 
     attributes_mask = GDK_WA_X | GDK_WA_Y;
-    number->event_window = gdk_window_new (widget->window, &attributes, attributes_mask); 
+    number->event_window = gdk_window_new (widget->window, &attributes, attributes_mask);
 
     gdk_window_set_user_data(number->event_window, widget);
 }
@@ -219,10 +219,6 @@ static void ui_skinned_number_size_allocate(GtkWidget *widget, GtkAllocation *al
 }
 
 static gboolean ui_skinned_number_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_NUMBER (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedNumber *number = UI_SKINNED_NUMBER (widget);
     g_return_val_if_fail (number->width > 0 && number->height > 0, FALSE);
 
@@ -264,7 +260,9 @@ void ui_skinned_number_set_number(GtkWidget *widget, gint num) {
          return;
 
     number->num = num;
-    gtk_widget_queue_draw(GTK_WIDGET(number));
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_number_expose (widget, 0);
 }
 
 void ui_skinned_number_set_size(GtkWidget *widget, gint width, gint height) {

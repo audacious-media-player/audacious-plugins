@@ -54,7 +54,7 @@ static void ui_skinned_horizontal_slider_destroy            (GtkObject *object);
 static void ui_skinned_horizontal_slider_realize            (GtkWidget *widget);
 static void ui_skinned_horizontal_slider_unrealize          (GtkWidget *widget);
 static void ui_skinned_horizontal_slider_map                (GtkWidget *widget);
-static void ui_skinned_horizontal_slider_unmap              (GtkWidget *widget); 
+static void ui_skinned_horizontal_slider_unmap              (GtkWidget *widget);
 static void ui_skinned_horizontal_slider_size_request       (GtkWidget *widget, GtkRequisition *requisition);
 static void ui_skinned_horizontal_slider_size_allocate      (GtkWidget *widget, GtkAllocation *allocation);
 static gboolean ui_skinned_horizontal_slider_expose         (GtkWidget *widget, GdkEventExpose *event);
@@ -101,7 +101,7 @@ static void ui_skinned_horizontal_slider_class_init(UiSkinnedHorizontalSliderCla
     widget_class->realize = ui_skinned_horizontal_slider_realize;
     widget_class->unrealize = ui_skinned_horizontal_slider_unrealize;
     widget_class->map = ui_skinned_horizontal_slider_map;
-    widget_class->unmap = ui_skinned_horizontal_slider_unmap; 
+    widget_class->unmap = ui_skinned_horizontal_slider_unmap;
     widget_class->expose_event = ui_skinned_horizontal_slider_expose;
     widget_class->size_request = ui_skinned_horizontal_slider_size_request;
     widget_class->size_allocate = ui_skinned_horizontal_slider_size_allocate;
@@ -113,17 +113,17 @@ static void ui_skinned_horizontal_slider_class_init(UiSkinnedHorizontalSliderCla
     klass->release = NULL;
     klass->scaled = ui_skinned_horizontal_slider_toggle_scaled;
 
-    horizontal_slider_signals[MOTION] = 
+    horizontal_slider_signals[MOTION] =
         g_signal_new ("motion", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedHorizontalSliderClass, motion), NULL, NULL,
                       g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
 
-    horizontal_slider_signals[RELEASE] = 
+    horizontal_slider_signals[RELEASE] =
         g_signal_new ("release", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedHorizontalSliderClass, release), NULL, NULL,
                       g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
 
-    horizontal_slider_signals[DOUBLED] = 
+    horizontal_slider_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedHorizontalSliderClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -191,7 +191,7 @@ static void ui_skinned_horizontal_slider_realize(GtkWidget *widget) {
     g_return_if_fail (UI_SKINNED_IS_HORIZONTAL_SLIDER(widget));
 
     if (GTK_WIDGET_CLASS (parent_class)->realize)
-        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget); 
+        (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
     horizontal_slider = UI_SKINNED_HORIZONTAL_SLIDER(widget);
 
     attributes.x = widget->allocation.x;
@@ -201,7 +201,7 @@ static void ui_skinned_horizontal_slider_realize(GtkWidget *widget) {
     attributes.wclass = GDK_INPUT_ONLY;
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.event_mask = gtk_widget_get_events(widget);
-    attributes.event_mask |= GDK_BUTTON_PRESS_MASK | 
+    attributes.event_mask |= GDK_BUTTON_PRESS_MASK |
                              GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK;
 
     attributes_mask = GDK_WA_X | GDK_WA_Y;
@@ -275,10 +275,6 @@ static void ui_skinned_horizontal_slider_size_allocate(GtkWidget *widget, GtkAll
 }
 
 static gboolean ui_skinned_horizontal_slider_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_HORIZONTAL_SLIDER (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedHorizontalSlider *hs = UI_SKINNED_HORIZONTAL_SLIDER (widget);
     UiSkinnedHorizontalSliderPrivate *priv = UI_SKINNED_HORIZONTAL_SLIDER_GET_PRIVATE(hs);
     g_return_val_if_fail (priv->width > 0 && priv->height > 0, FALSE);
@@ -391,7 +387,9 @@ static gboolean ui_skinned_horizontal_slider_motion_notify(GtkWidget *widget, Gd
             priv->frame = priv->frame_cb(priv->position);
 
         g_signal_emit_by_name(widget, "motion", priv->position);
-        gtk_widget_queue_draw(widget);
+
+        if (GTK_WIDGET_DRAWABLE (widget))
+            ui_skinned_horizontal_slider_expose (widget, 0);
     }
 
     return TRUE;
@@ -423,7 +421,8 @@ void ui_skinned_horizontal_slider_set_position(GtkWidget *widget, gint pos) {
     if (priv->frame_cb)
         priv->frame = priv->frame_cb(priv->position);
 
-    gtk_widget_queue_draw(widget);
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_horizontal_slider_expose (widget, 0);
 }
 
 gint ui_skinned_horizontal_slider_get_position(GtkWidget *widget) {

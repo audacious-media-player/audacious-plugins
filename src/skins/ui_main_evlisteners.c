@@ -168,14 +168,6 @@ ui_main_evlistener_equalizerwin_show(gpointer hook_data, gpointer user_data)
 static void
 ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
 {
-    if (hook_data == NULL) {
-        if (config.player_shaded && config.player_visible)
-            ui_svis_timeout_func(mainwin_svis, NULL);
-        else
-            ui_vis_timeout_func(mainwin_vis, NULL);
-        return;
-    }
-
     VisNode *vis = (VisNode*) hook_data;
 
     guint8 intern_vis_data[512];
@@ -185,7 +177,7 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
     gboolean mono_pcm_calced = FALSE, stereo_pcm_calced = FALSE;
     gint i;
 
-    if (config.vis_type == VIS_OFF)
+    if (! vis || config.vis_type == VIS_OFF)
         return;
 
     if (config.vis_type == VIS_ANALYZER) {
