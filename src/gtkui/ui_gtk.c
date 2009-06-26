@@ -346,7 +346,7 @@ ui_slider_value_changed_cb(GtkRange *range, gpointer user_data)
 {
     gint seek_;
 
-    seek_ = gtk_range_get_value(range) / 1000;
+    seek_ = gtk_range_get_value(range);
 
     /* XXX: work around a horrible bug in playback_seek(), also
        we should do mseek here. --nenolod */
