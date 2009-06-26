@@ -294,21 +294,23 @@ skin_set_default_vis_color(Skin * skin)
            sizeof(skin_default_viscolor));
 }
 
-/*
- * I have rewritten this to take an array of possible targets,
- * once we find a matching target we now return, instead of loop
- * recursively. This allows for us to support many possible format
- * targets for our skinning engine than just the original winamp
- * formats.
- *
- *    -- nenolod, 16 January 2006
- */
 gchar *
 skin_pixmap_locate(const gchar * dirname, gchar ** basenames)
 {
     gchar *filename;
     gint i;
 
+    for (i = 0; basenames[i]; i++)
+    {
+        filename = g_strdup_printf ("%s/%s", dirname, basenames[i]);
+
+        if (aud_vfs_file_test (filename, G_FILE_TEST_IS_REGULAR))
+            return filename;
+
+        g_free (filename);
+    }
+
+    // Case-insensitive search; much slower.
     for (i = 0; basenames[i]; i++)
     if (!(filename = find_path_recursively(dirname, basenames[i])))
         g_free(filename);
