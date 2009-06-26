@@ -195,7 +195,6 @@ equalizerwin_eq_changed(void)
         aud_cfg->equalizer_bands[i] = equalizerwin_get_band(i);
 
     aud_hook_call("equalizer changed", NULL);
-    gtk_widget_queue_draw(equalizerwin_graph);
 }
 
 static void
@@ -505,7 +504,6 @@ static void equalizerwin_real_hide (void)
 
     gtk_widget_hide(equalizerwin);
     ui_skinned_button_set_inside(mainwin_eq, FALSE);
-    gtk_widget_queue_draw(mainwin_eq);
 }
 
 void

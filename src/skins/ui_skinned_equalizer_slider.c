@@ -53,7 +53,7 @@ static void ui_skinned_equalizer_slider_destroy            (GtkObject *object);
 static void ui_skinned_equalizer_slider_realize            (GtkWidget *widget);
 static void ui_skinned_equalizer_slider_unrealize          (GtkWidget *widget);
 static void ui_skinned_equalizer_slider_map                (GtkWidget *widget);
-static void ui_skinned_equalizer_slider_unmap              (GtkWidget *widget); 
+static void ui_skinned_equalizer_slider_unmap              (GtkWidget *widget);
 static void ui_skinned_equalizer_slider_size_request       (GtkWidget *widget, GtkRequisition *requisition);
 static void ui_skinned_equalizer_slider_size_allocate      (GtkWidget *widget, GtkAllocation *allocation);
 static gboolean ui_skinned_equalizer_slider_expose         (GtkWidget *widget, GdkEventExpose *event);
@@ -102,7 +102,7 @@ static void ui_skinned_equalizer_slider_class_init(UiSkinnedEqualizerSliderClass
     widget_class->realize = ui_skinned_equalizer_slider_realize;
     widget_class->unrealize = ui_skinned_equalizer_slider_unrealize;
     widget_class->map = ui_skinned_equalizer_slider_map;
-    widget_class->unmap = ui_skinned_equalizer_slider_unmap; 
+    widget_class->unmap = ui_skinned_equalizer_slider_unmap;
     widget_class->expose_event = ui_skinned_equalizer_slider_expose;
     widget_class->size_request = ui_skinned_equalizer_slider_size_request;
     widget_class->size_allocate = ui_skinned_equalizer_slider_size_allocate;
@@ -113,7 +113,7 @@ static void ui_skinned_equalizer_slider_class_init(UiSkinnedEqualizerSliderClass
 
     klass->scaled = ui_skinned_equalizer_slider_toggle_scaled;
 
-    equalizer_slider_signals[DOUBLED] = 
+    equalizer_slider_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedEqualizerSliderClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -243,10 +243,6 @@ static void ui_skinned_equalizer_slider_size_allocate(GtkWidget *widget, GtkAllo
 }
 
 static gboolean ui_skinned_equalizer_slider_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_EQUALIZER_SLIDER (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedEqualizerSlider *es = UI_SKINNED_EQUALIZER_SLIDER (widget);
     UiSkinnedEqualizerSliderPrivate *priv = UI_SKINNED_EQUALIZER_SLIDER_GET_PRIVATE(es);
     g_return_val_if_fail (priv->width > 0 && priv->height > 0, FALSE);
@@ -308,7 +304,9 @@ static gboolean ui_skinned_equalizer_slider_button_press(GtkWidget *widget, GdkE
             }
 
             ui_skinned_equalizer_slider_set_mainwin_text(es);
-            gtk_widget_queue_draw(widget);
+
+            if (GTK_WIDGET_DRAWABLE (widget))
+                ui_skinned_equalizer_slider_expose (widget, 0);
         }
     }
 
@@ -321,7 +319,9 @@ static gboolean ui_skinned_equalizer_slider_button_release(GtkWidget *widget, Gd
     if (event->button == 1) {
         priv->pressed = FALSE;
         mainwin_release_info_text();
-        gtk_widget_queue_draw(widget);
+
+        if (GTK_WIDGET_DRAWABLE (widget))
+            ui_skinned_equalizer_slider_expose (widget, 0);
     }
     return TRUE;
 }
@@ -349,7 +349,9 @@ static gboolean ui_skinned_equalizer_slider_motion_notify(GtkWidget *widget, Gdk
         priv->value = ((gfloat) (25 - priv->position) * EQUALIZER_MAX_GAIN / 25.0 );
         ui_skinned_equalizer_slider_set_mainwin_text(es);
         equalizerwin_eq_changed();
-        gtk_widget_queue_draw(widget);
+
+        if (GTK_WIDGET_DRAWABLE (widget))
+            ui_skinned_equalizer_slider_expose (widget, 0);
     }
 
     return TRUE;
@@ -375,7 +377,10 @@ static gboolean ui_skinned_equalizer_slider_scroll(GtkWidget *widget, GdkEventSc
 
     priv->value = ((gfloat) (25 - priv->position) * EQUALIZER_MAX_GAIN / 25.0 );
     equalizerwin_eq_changed();
-    gtk_widget_queue_draw(widget);
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_equalizer_slider_expose (widget, 0);
+
     return TRUE;
 }
 
@@ -388,7 +393,8 @@ static void ui_skinned_equalizer_slider_toggle_scaled(UiSkinnedEqualizerSlider *
     gtk_widget_set_size_request(widget, priv->width*(priv->scaled ? config.scale_factor : 1),
     priv->height*(priv->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(equalizer_slider));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_equalizer_slider_expose (widget, 0);
 }
 
 void ui_skinned_equalizer_slider_set_position(GtkWidget *widget, gfloat pos) {
@@ -410,7 +416,8 @@ void ui_skinned_equalizer_slider_set_position(GtkWidget *widget, gfloat pos) {
     if (priv->position >= 24 && priv->position <= 26)
         priv->position = 25;
 
-    gtk_widget_queue_draw(widget);
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_equalizer_slider_expose (widget, 0);
 }
 
 gfloat ui_skinned_equalizer_slider_get_position(GtkWidget *widget) {

@@ -327,12 +327,8 @@ static char fill_buffer (struct mad_info_t * info)
 {
     int remains, readed;
 
-    remains = info->stream->bufend - info->stream->next_frame;
-
-    if (remains >= info->buffer_size / 2)
-        return 1;
-
-    memmove (info->buffer, info->stream->next_frame, remains);
+    remains = info->stream->bufend - info->stream->this_frame;
+    memmove (info->buffer, info->stream->this_frame, remains);
     readed = aud_vfs_fread (info->buffer + remains, 1, info->buffer_size -
      remains, info->infile);
 
@@ -343,7 +339,7 @@ static char fill_buffer (struct mad_info_t * info)
     }
 
     mad_stream_buffer (info->stream, info->buffer, remains + readed);
-    return (remains + readed > 0);
+    return (readed > 0);
 }
 
 static void watch_controls (struct mad_info_t * info)
@@ -374,7 +370,6 @@ static void watch_controls (struct mad_info_t * info)
 gpointer
 decode_loop(gpointer arg)
 {
-    unsigned char buffer[BUFFER_SIZE];
     int skip, current;
     unsigned int iteration = 0;
 
@@ -409,8 +404,9 @@ decode_loop(gpointer arg)
      info->bitrate, info->freq, info->channels);
 
     info->resync = 0;
-    info->buffer = buffer;
-    info->buffer_size = sizeof buffer;
+    info->buffer = malloc (1024);
+    info->buffer_size = 1024;
+    mad_stream_buffer (& stream, info->buffer, 0);
     info->stream = & stream;
 
     if (! info->playback->output->open_audio (info->fmt, info->freq,
@@ -424,9 +420,6 @@ decode_loop(gpointer arg)
     {
         watch_controls (info);
         input_process_remote_metadata(info);
-
-        if (! fill_buffer (info))
-            break;
 
         if (info->resync)
             stream.sync = 0;
@@ -474,6 +467,30 @@ decode_loop(gpointer arg)
         continue;
 
     ERROR:
+        // Not really an error; just need more data.
+        if (stream.error == MAD_ERROR_BUFLEN)
+        {
+            int buffered = stream.bufend - stream.this_frame;
+
+            if (buffered < info->buffer_size / 2)
+            {
+                fill_buffer (info);
+
+                if (stream.bufend - stream.this_frame == buffered)
+                    break;
+            }
+            else
+            {
+                int offset = stream.this_frame - info->buffer;
+
+                info->buffer_size *= 2;
+                info->buffer = realloc (info->buffer, info->buffer_size);
+                mad_stream_buffer (& stream, info->buffer + offset, buffered);
+            }
+
+            continue;
+        }
+
         // Did we get confused by a false sync marker?
         if (info->resync && MAD_RECOVERABLE (stream.error))
             goto RETRY;
@@ -522,6 +539,7 @@ decode_loop(gpointer arg)
     }
 
 CLEAN_UP:
+    free (info->buffer);
     mad_frame_finish (& frame);
     mad_stream_finish (& stream);
     mad_synth_finish (& synth);

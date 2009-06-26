@@ -2524,8 +2524,8 @@ void
 action_view_always_on_top( GtkToggleAction * action )
 {
     UI_SKINNED_MENUROW(mainwin_menurow)->always_selected = gtk_toggle_action_get_active( action );
+    ui_skinned_menurow_update (mainwin_menurow);
     config.always_on_top = UI_SKINNED_MENUROW(mainwin_menurow)->always_selected;
-    gtk_widget_queue_draw(mainwin_menurow);
     hint_set_always(config.always_on_top);
 }
 
@@ -2533,7 +2533,7 @@ void
 action_view_scaled( GtkToggleAction * action )
 {
     UI_SKINNED_MENUROW(mainwin_menurow)->scale_selected = gtk_toggle_action_get_active( action );
-    gtk_widget_queue_draw(mainwin_menurow);
+    ui_skinned_menurow_update (mainwin_menurow);
     set_scaled(UI_SKINNED_MENUROW(mainwin_menurow)->scale_selected);
     gdk_flush();
 }

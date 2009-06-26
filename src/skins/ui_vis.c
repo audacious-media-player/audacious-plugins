@@ -97,7 +97,7 @@ static void ui_vis_class_init(UiVisClass *klass) {
 
     klass->doubled = ui_vis_toggle_scaled;
 
-    vis_signals[DOUBLED] = 
+    vis_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiVisClass, doubled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -248,10 +248,6 @@ static void ui_vis_size_allocate(GtkWidget *widget, GtkAllocation *allocation) {
 }
 
 static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_IS_VIS (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiVis *vis = UI_VIS (widget);
 
     gint x, y, n, h = 0, h2;
@@ -358,7 +354,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 		*(ptr + (guint)(76 * config.scale_factor)) = 18 - h;
 		*(ptr + (guint)(76 * config.scale_factor)+1) = 18 - h;
 	      }
-	      
+
 	      break;
 	    }
 	  }
@@ -371,7 +367,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	  else if (config.analyzer_type == ANALYZER_LINES)
 	    h = vis->peak[x];
 	  if (h && (config.analyzer_type == ANALYZER_LINES || (x % 4) != 3)){
-	    
+
 	    if (!vis->scaled) {
 	      rgb_data[(16 - h) * 76 + x] = 23;
 	    }
@@ -395,7 +391,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	    voiceprint_data[y * 76] = vis->data[y];
       }
       if(audacious_drct_get_playing()){ /*Only draw the data if we're playing*/
-	if(config.voiceprint_mode == VOICEPRINT_NORMAL){ 
+	if(config.voiceprint_mode == VOICEPRINT_NORMAL){
 	  /* Create color gradient from the skin's background- and foreground color*/
 	  fgc = skin_get_color(aud_active_skin, SKIN_TEXTFG);
 	  bgc = skin_get_color(aud_active_skin, SKIN_TEXTBG);
@@ -424,7 +420,7 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 	for (y = 0; y < 16; y ++){
 	  for (x = 0; x < 76; x++){
 	    guint8 d = voiceprint_data[x + y*76];
-	    
+
 	    if(config.voiceprint_mode == VOICEPRINT_NORMAL){
 	      voice_c[0] = vis_voice_color[d][0];
 	      voice_c[1] = vis_voice_color[d][1];
@@ -440,10 +436,10 @@ static gboolean ui_vis_expose(GtkWidget *widget, GdkEventExpose *event) {
 		 voice_c[2] = d < 64 ? d << 2 : (d < 128 ? (128 - d) << 2 : 0);
 	      */
 	    }
-	    else if(config.voiceprint_mode == VOICEPRINT_ICE){	    
+	    else if(config.voiceprint_mode == VOICEPRINT_ICE){
 	      voice_c[0] = d;
 	      voice_c[1] = d < 128 ? d * 2 : 255;
-	      voice_c[2] = d < 64 ? d * 4 : 255; 
+	      voice_c[2] = d < 64 ? d * 4 : 255;
 	    }
 	    if(!vis->scaled){
 	      for(n=0;n<3;n++)
@@ -587,7 +583,8 @@ static void ui_vis_toggle_scaled(UiVis *vis) {
 
     gtk_widget_set_size_request(widget, vis->width*(vis->scaled ? config.scale_factor : 1), vis->height*(vis->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(vis));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_vis_expose (widget, 0);
 }
 
 void ui_vis_draw_pixel(GtkWidget *widget, guchar* texture, gint x, gint y, guint8 colour) {
@@ -716,7 +713,9 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
 
     if (micros > 14000) {
         if (!vis->refresh_delay) {
-            gtk_widget_queue_draw(widget);
+            if (GTK_WIDGET_DRAWABLE (widget))
+                ui_vis_expose (widget, 0);
+
             vis->refresh_delay = vis_redraw_delays[config.vis_refresh];
         }
         vis->refresh_delay--;

@@ -101,18 +101,18 @@ static void ui_skinned_menurow_class_init(UiSkinnedMenurowClass *klass) {
     klass->change = NULL;
     klass->release = NULL;
 
-    menurow_signals[DOUBLED] = 
+    menurow_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedMenurowClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
 
-    menurow_signals[CHANGE] = 
+    menurow_signals[CHANGE] =
         g_signal_new ("change", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedMenurowClass, change), NULL, NULL,
                       g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
 
-    menurow_signals[RELEASE] = 
+    menurow_signals[RELEASE] =
         g_signal_new ("release", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedMenurowClass, release), NULL, NULL,
                       g_cclosure_marshal_VOID__UINT_POINTER, G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_POINTER);
@@ -247,10 +247,6 @@ static void ui_skinned_menurow_size_allocate(GtkWidget *widget, GtkAllocation *a
 }
 
 static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_MENUROW (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedMenurow *menurow = UI_SKINNED_MENUROW (widget);
     g_return_val_if_fail (menurow->width > 0 && menurow->height > 0, FALSE);
 
@@ -289,6 +285,12 @@ static gboolean ui_skinned_menurow_expose(GtkWidget *widget, GdkEventExpose *eve
     return FALSE;
 }
 
+void ui_skinned_menurow_update (GtkWidget * row)
+{
+    if (GTK_WIDGET_DRAWABLE (row))
+        ui_skinned_menurow_expose (row, 0);
+}
+
 static MenuRowItem menurow_find_selected(UiSkinnedMenurow * mr, gint x, gint y) {
     MenuRowItem ret = MENUROW_NONE;
 
@@ -322,7 +324,7 @@ static gboolean ui_skinned_menurow_button_press(GtkWidget *widget, GdkEventButto
         menurow->pushed = TRUE;
         menurow->selected = menurow_find_selected(menurow, event->x, event->y);
 
-        gtk_widget_queue_draw(widget);
+        ui_skinned_menurow_update (widget);
         g_signal_emit_by_name(widget, "change", menurow->selected);
         }
     }
@@ -345,7 +347,7 @@ static gboolean ui_skinned_menurow_button_release(GtkWidget *widget, GdkEventBut
             g_signal_emit_by_name(widget, "release", menurow->selected, event);
 
         menurow->selected = MENUROW_NONE;
-        gtk_widget_queue_draw(widget);
+        ui_skinned_menurow_update (widget);
     }
 
     return TRUE;
@@ -360,7 +362,7 @@ static gboolean ui_skinned_menurow_motion_notify(GtkWidget *widget, GdkEventMoti
     if (menurow->pushed) {
         menurow->selected = menurow_find_selected(menurow, event->x, event->y);
 
-        gtk_widget_queue_draw(widget);
+        ui_skinned_menurow_update (widget);
         g_signal_emit_by_name(widget, "change", menurow->selected);
     }
 
@@ -374,5 +376,5 @@ static void ui_skinned_menurow_toggle_scaled(UiSkinnedMenurow *menurow) {
     gtk_widget_set_size_request(widget, menurow->width* (menurow->scaled ? config.scale_factor : 1),
     menurow->height * (menurow->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(menurow));
+    ui_skinned_menurow_update (widget);
 }

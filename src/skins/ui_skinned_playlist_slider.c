@@ -193,16 +193,12 @@ static void ui_skinned_playlist_slider_size_allocate(GtkWidget *widget, GtkAlloc
     if (priv->height != widget->allocation.height) {
         priv->height = priv->height + priv->resize_height;
         priv->resize_height = 0;
-        gtk_widget_queue_draw(widget);
+        ui_skinned_playlist_slider_update (widget);
     }
 }
 
 static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExpose *event) {
     int rows, first, y;
-
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_PLAYLIST_SLIDER (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
 
     UiSkinnedPlaylistSlider *ps = UI_SKINNED_PLAYLIST_SLIDER (widget);
     UiSkinnedPlaylistSliderPrivate *priv = UI_SKINNED_PLAYLIST_SLIDER_GET_PRIVATE(ps);
@@ -239,6 +235,12 @@ static gboolean ui_skinned_playlist_slider_expose(GtkWidget *widget, GdkEventExp
     g_object_unref(obj);
 
     return FALSE;
+}
+
+void ui_skinned_playlist_slider_update (GtkWidget * widget)
+{
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_playlist_slider_expose (widget, 0);
 }
 
 static void ui_skinned_playlist_slider_set_position(GtkWidget *widget, gint y) {
@@ -278,7 +280,8 @@ static gboolean ui_skinned_playlist_slider_button_press(GtkWidget *widget, GdkEv
 
             ui_skinned_playlist_scroll_to (priv->list, n);
         }
-        gtk_widget_queue_draw(widget);
+
+        ui_skinned_playlist_slider_update (widget);
     }
     return TRUE;
 }
@@ -288,7 +291,7 @@ static gboolean ui_skinned_playlist_slider_button_release(GtkWidget *widget, Gdk
 
     if (event->button == 1 || event->button == 2) {
         ps->pressed = FALSE;
-        gtk_widget_queue_draw(widget);
+        ui_skinned_playlist_slider_update (widget);
     }
     return TRUE;
 }
