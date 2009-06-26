@@ -271,10 +271,7 @@ void ui_skinned_window_draw_all(GtkWidget *widget) {
     if (skinned->type == WINDOW_MAIN)
         mainwin_refresh_hints();
 
-    if (GTK_WIDGET_DRAWABLE (skinned->normal))
-        ui_skinned_window_expose (skinned->normal, 0);
-    if (GTK_WIDGET_DRAWABLE (skinned->shaded))
-        ui_skinned_window_expose (skinned->shaded, 0);
+    gtk_widget_queue_draw (widget);
 }
 
 void ui_skinned_window_set_shade(GtkWidget *widget, gboolean shaded) {
