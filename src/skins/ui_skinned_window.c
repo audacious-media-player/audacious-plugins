@@ -117,6 +117,7 @@ static gboolean ui_skinned_window_expose(GtkWidget *widget, GdkEventExpose *even
     GdkPixbuf *obj = NULL;
 
     gint width = 0, height = 0;
+
     switch (window->type) {
         case WINDOW_MAIN:
             width = aud_active_skin->properties.mainwin_width;
@@ -248,13 +249,7 @@ ui_skinned_window_new(const gchar *wmclass_name)
         SKINNED_WINDOW(widget)->type = WINDOW_PLAYLIST;
 
     SKINNED_WINDOW(widget)->normal = gtk_fixed_new();
-    gtk_fixed_set_has_window(GTK_FIXED(SKINNED_WINDOW(widget)->normal), TRUE);
-    gtk_widget_add_events(SKINNED_WINDOW(widget)->normal, GDK_ALL_EVENTS_MASK);
-
     SKINNED_WINDOW(widget)->shaded = gtk_fixed_new();
-    gtk_fixed_set_has_window(GTK_FIXED(SKINNED_WINDOW(widget)->shaded), TRUE);
-    gtk_widget_add_events(SKINNED_WINDOW(widget)->shaded, GDK_ALL_EVENTS_MASK);
-
     g_object_ref(SKINNED_WINDOW(widget)->normal);
     g_object_ref(SKINNED_WINDOW(widget)->shaded);
 
@@ -271,10 +266,15 @@ ui_skinned_window_new(const gchar *wmclass_name)
 }
 
 void ui_skinned_window_draw_all(GtkWidget *widget) {
-    if (SKINNED_WINDOW(widget)->type == WINDOW_MAIN)
+    SkinnedWindow * skinned = (SkinnedWindow *) widget;
+
+    if (skinned->type == WINDOW_MAIN)
         mainwin_refresh_hints();
 
-    gtk_widget_queue_draw(widget);
+    if (GTK_WIDGET_DRAWABLE (skinned->normal))
+        ui_skinned_window_expose (skinned->normal, 0);
+    if (GTK_WIDGET_DRAWABLE (skinned->shaded))
+        ui_skinned_window_expose (skinned->shaded, 0);
 }
 
 void ui_skinned_window_set_shade(GtkWidget *widget, gboolean shaded) {

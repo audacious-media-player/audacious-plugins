@@ -249,7 +249,8 @@ static void ui_skinned_number_toggle_scaled(UiSkinnedNumber *number) {
     gtk_widget_set_size_request(widget, number->width * ( number->scaled ? config.scale_factor : 1),
         number->height * ( number->scaled ? config.scale_factor : 1) );
 
-    gtk_widget_queue_draw(GTK_WIDGET(number));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_number_expose (widget, 0);
 }
 
 void ui_skinned_number_set_number(GtkWidget *widget, gint num) {

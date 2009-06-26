@@ -337,12 +337,16 @@ static gboolean ui_skinned_horizontal_slider_button_press(GtkWidget *widget, Gdk
                 priv->frame = priv->frame_cb(priv->position);
 
             g_signal_emit_by_name(widget, "motion", priv->position);
-            gtk_widget_queue_draw(widget);
+
+            if (GTK_WIDGET_DRAWABLE (widget))
+                ui_skinned_horizontal_slider_expose (widget, 0);
         } else if (event->button == 3) {
             if (hs->pressed) {
                 hs->pressed = FALSE;
                 g_signal_emit_by_name(widget, "release", priv->position);
-                gtk_widget_queue_draw(widget);
+
+                if (GTK_WIDGET_DRAWABLE (widget))
+                    ui_skinned_horizontal_slider_expose (widget, 0);
             }
             event->x = event->x + hs->x;
             event->y = event->y + hs->y;
@@ -359,7 +363,9 @@ static gboolean ui_skinned_horizontal_slider_button_release(GtkWidget *widget, G
     if (hs->pressed) {
         hs->pressed = FALSE;
         g_signal_emit_by_name(widget, "release", priv->position);
-        gtk_widget_queue_draw(widget);
+
+        if (GTK_WIDGET_DRAWABLE (widget))
+            ui_skinned_horizontal_slider_expose (widget, 0);
     }
     return TRUE;
 }
@@ -405,7 +411,8 @@ static void ui_skinned_horizontal_slider_toggle_scaled(UiSkinnedHorizontalSlider
         priv->width*(priv->scaled ? config.scale_factor : 1),
         priv->height*(priv->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(horizontal_slider));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_horizontal_slider_expose (widget, 0);
 }
 
 void ui_skinned_horizontal_slider_set_position(GtkWidget *widget, gint pos) {

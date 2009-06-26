@@ -43,6 +43,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "ui_skinned_playlist.h"
+#include "ui_skinned_playlist_slider.h"
 
 #include "debug.h"
 #include "ui_playlist.h"
@@ -300,7 +301,7 @@ static void ui_skinned_playlist_size_allocate(GtkWidget *widget, GtkAllocation *
     gtk_widget_queue_draw (widget);
 
     if (priv->slider)
-        gtk_widget_queue_draw (priv->slider);
+        ui_skinned_playlist_slider_update (priv->slider);
 }
 
 static void
@@ -920,7 +921,7 @@ void ui_skinned_playlist_update (GtkWidget * widget)
     gtk_widget_queue_draw (widget);
 
     if (private->slider)
-        gtk_widget_queue_draw (private->slider);
+        ui_skinned_playlist_slider_update (private->slider);
 }
 
 void ui_skinned_playlist_follow (GtkWidget * widget)
@@ -1101,7 +1102,7 @@ void ui_skinned_playlist_scroll_to (GtkWidget * widget, int row)
     gtk_widget_queue_draw (widget);
 
     if (private->slider)
-        gtk_widget_queue_draw (private->slider);
+        ui_skinned_playlist_slider_update (private->slider);
 }
 
 void ui_skinned_playlist_hover (GtkWidget * widget, int x, int y)
@@ -1369,7 +1370,7 @@ void ui_skinned_playlist_set_font (GtkWidget * list, char * font)
     gtk_widget_queue_draw (list);
 
     if (private->slider)
-        gtk_widget_queue_draw (private->slider);
+        ui_skinned_playlist_slider_update (private->slider);
 }
 
 void ui_skinned_playlist_resize_relative(GtkWidget *widget, gint w, gint h) {

@@ -84,7 +84,7 @@ static void ui_skinned_equalizer_graph_class_init(UiSkinnedEqualizerGraphClass *
 
     klass->scaled = ui_skinned_equalizer_graph_toggle_scaled;
 
-    equalizer_graph_signals[DOUBLED] = 
+    equalizer_graph_signals[DOUBLED] =
         g_signal_new ("toggle-scaled", G_OBJECT_CLASS_TYPE (object_class), G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       G_STRUCT_OFFSET (UiSkinnedEqualizerGraphClass, scaled), NULL, NULL,
                       g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -196,10 +196,6 @@ eval_spline(gfloat xa[], gfloat ya[], gfloat y2a[], gint n, gfloat x)
 }
 
 static gboolean ui_skinned_equalizer_graph_expose(GtkWidget *widget, GdkEventExpose *event) {
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (UI_SKINNED_IS_EQUALIZER_GRAPH (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
-
     UiSkinnedEqualizerGraph *equalizer_graph = UI_SKINNED_EQUALIZER_GRAPH (widget);
     g_return_val_if_fail (equalizer_graph->width > 0 && equalizer_graph->height > 0, FALSE);
 
@@ -250,11 +246,11 @@ static gboolean ui_skinned_equalizer_graph_expose(GtkWidget *widget, GdkEventExp
 
         pixels = gdk_pixbuf_get_pixels(obj);
         rowstride = gdk_pixbuf_get_rowstride(obj);
-        n_channels = gdk_pixbuf_get_n_channels(obj); 
+        n_channels = gdk_pixbuf_get_n_channels(obj);
 
-        for (y = ymin; y <= ymax; y++) 
+        for (y = ymin; y <= ymax; y++)
         {
-            p = pixels + (y * rowstride) + (( i + 2) * n_channels); 
+            p = pixels + (y * rowstride) + (( i + 2) * n_channels);
             p[0] = (cols[y] & 0xff0000) >> 16;
             p[1] = (cols[y] & 0x00ff00) >> 8;
             p[2] = (cols[y] & 0x0000ff);
@@ -281,5 +277,6 @@ static void ui_skinned_equalizer_graph_toggle_scaled(UiSkinnedEqualizerGraph *eq
     gtk_widget_set_size_request(widget, equalizer_graph->width*(equalizer_graph->scaled ? config.scale_factor : 1),
                                         equalizer_graph->height*(equalizer_graph->scaled ? config.scale_factor : 1));
 
-    gtk_widget_queue_draw(GTK_WIDGET(equalizer_graph));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_equalizer_graph_expose (widget, 0);
 }

@@ -311,7 +311,9 @@ static void ui_skinned_textbox_size_allocate(GtkWidget *widget, GtkAllocation *a
             priv->pixbuf_text = NULL;
             priv->offset = 0;
             gtk_widget_set_size_request(widget, textbox->width, textbox->height);
-            gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+            if (GTK_WIDGET_DRAWABLE (widget))
+                ui_skinned_textbox_expose (widget, 0);
     }
 }
 
@@ -436,7 +438,8 @@ static gboolean ui_skinned_textbox_motion_notify(GtkWidget *widget, GdkEventMoti
             while (priv->offset > (priv->pixbuf_width - textbox->width))
                 priv->offset = (priv->pixbuf_width - textbox->width);
 
-            gtk_widget_queue_draw(widget);
+            if (GTK_WIDGET_DRAWABLE (widget))
+                ui_skinned_textbox_expose (widget, 0);
         }
     }
 
@@ -452,7 +455,8 @@ static void ui_skinned_textbox_toggle_scaled(UiSkinnedTextbox *textbox) {
     gtk_widget_set_size_request(widget, textbox->width*(priv->scaled ? config.scale_factor : 1 ),
     textbox->height*(priv->scaled ? config.scale_factor : 1 ));
 
-    gtk_widget_queue_draw(GTK_WIDGET(textbox));
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_skinned_textbox_expose (widget, 0);
 }
 
 static gboolean ui_skinned_textbox_should_scroll(UiSkinnedTextbox *textbox) {
@@ -485,7 +489,6 @@ void ui_skinned_textbox_set_xfont(GtkWidget *widget, gboolean use_xfont, const g
 
     g_return_if_fail(textbox != NULL);
     gtk_widget_queue_resize (widget);
-    gtk_widget_queue_draw (widget);
 
     if (priv->font) {
         pango_font_description_free(priv->font);
@@ -629,7 +632,9 @@ static gboolean textbox_scroll(gpointer data) {
                 priv->scroll_back = FALSE;
                 priv->offset += 1;
             }
-            gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+            if (GTK_WIDGET_DRAWABLE (data))
+                ui_skinned_textbox_expose (data, 0);
         }
     }
     return TRUE;
@@ -766,7 +771,9 @@ void ui_skinned_textbox_set_scroll(GtkWidget *widget, gboolean scroll) {
         }
 
         priv->offset = 0;
-        gtk_widget_queue_draw(GTK_WIDGET(textbox));
+
+        if (GTK_WIDGET_DRAWABLE (widget))
+            ui_skinned_textbox_expose (widget, 0);
     }
 }
 

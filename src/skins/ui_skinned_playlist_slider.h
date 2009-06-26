@@ -55,6 +55,7 @@ GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * fixed, gint x, gint y,
 GType ui_skinned_playlist_slider_get_type(void);
 void ui_skinned_playlist_slider_move_relative(GtkWidget *widget, gint x);
 void ui_skinned_playlist_slider_resize_relative(GtkWidget *widget, gint h);
+void ui_skinned_playlist_slider_update (GtkWidget * widget);
 
 #ifdef __cplusplus
 }
