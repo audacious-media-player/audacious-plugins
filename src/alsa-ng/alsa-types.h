@@ -29,4 +29,12 @@ typedef struct {
 
 extern snd_pcm_format_t alsaplug_format_convert(AFormat aud_fmt);
 
+typedef struct {
+     gchar *pcm_device;
+     gchar *mixer_card;
+     gchar *mixer_device;
+} alsaplug_cfg_t;
+
+extern alsaplug_cfg_t alsaplug_cfg;
+
 #endif

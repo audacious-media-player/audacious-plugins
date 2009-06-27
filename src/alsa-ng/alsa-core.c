@@ -20,6 +20,8 @@
 #define ALSA_DEBUG
 #include "alsa-stdinc.h"
 
+alsaplug_cfg_t alsaplug_cfg;
+
 static snd_pcm_t *pcm_handle = NULL;
 static alsaplug_ringbuf_t pcm_ringbuf;
 static gboolean pcm_going = FALSE;
@@ -33,6 +35,9 @@ static gint flush_request, paused;
 
 static GMutex * pcm_state_mutex;
 static GCond * pcm_state_cond, * pcm_flush_cond;
+
+extern void alsaplug_configure(void);
+extern void alsaplug_get_config(void);
 
 /********************************************************************************
  * ALSA Mixer setting functions.                                                *
@@ -70,6 +75,9 @@ alsaplug_guess_mixer_elem(snd_mixer_t *mixer)
     gint i;
     snd_mixer_elem_t *elem;
 
+    if (alsaplug_cfg.mixer_device != NULL)
+        return alsaplug_get_mixer_elem_by_name(mixer, alsaplug_cfg.mixer_device);
+
     for (i = 0; i < G_N_ELEMENTS(elem_names); i++)
     {
         elem = alsaplug_get_mixer_elem_by_name(mixer, elem_names[i]);
@@ -80,8 +88,8 @@ alsaplug_guess_mixer_elem(snd_mixer_t *mixer)
     return NULL;
 }
 
-static gint
-alsaplug_mixer_new(snd_mixer_t **mixer)
+gint
+alsaplug_mixer_new_for_card(snd_mixer_t **mixer, const gchar *card)
 {
     gint ret;
 
@@ -92,7 +100,7 @@ alsaplug_mixer_new(snd_mixer_t **mixer)
         return ret;
     }
 
-    ret = snd_mixer_attach(*mixer, "default");
+    ret = snd_mixer_attach(*mixer, card);
     if (ret < 0)
     {
         snd_mixer_close(*mixer);
@@ -103,7 +111,7 @@ alsaplug_mixer_new(snd_mixer_t **mixer)
     ret = snd_mixer_selem_register(*mixer, NULL, NULL);
     if (ret < 0)
     {
-        snd_mixer_detach(*mixer, "default");
+        snd_mixer_detach(*mixer, card);
         snd_mixer_close(*mixer);
         _ERROR("failed to register hardware mixer: %s", snd_strerror(ret));
         return ret;
@@ -112,13 +120,19 @@ alsaplug_mixer_new(snd_mixer_t **mixer)
     ret = snd_mixer_load(*mixer);
     if (ret < 0)
     {
-        snd_mixer_detach(*mixer, "default");
+        snd_mixer_detach(*mixer, card);
         snd_mixer_close(*mixer);
         _ERROR("failed to load hardware mixer controls: %s", snd_strerror(ret));
         return ret;
     }
 
     return 0;
+}
+
+gint
+alsaplug_mixer_new(snd_mixer_t **mixer)
+{
+    return alsaplug_mixer_new_for_card(mixer, alsaplug_cfg.mixer_card);
 }
 
 static void
@@ -272,8 +286,11 @@ alsaplug_init(void)
     if (snd_card_next(&card) != 0)
         return OUTPUT_PLUGIN_INIT_NO_DEVICES;
 
-    if (!alsaplug_mixer_new(&amixer))
-        mixer_ready = TRUE;
+    alsaplug_get_config();
+    if (alsaplug_cfg.pcm_device == NULL)
+        alsaplug_cfg.pcm_device = g_strdup("default");
+    if (alsaplug_cfg.mixer_card == NULL)
+        alsaplug_cfg.mixer_card = g_strdup("default");
 
     return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
@@ -292,7 +309,10 @@ alsaplug_open_audio(AFormat fmt, gint rate, gint nch)
         return -1;
     }
 
-    if ((err = snd_pcm_open(&pcm_handle, "default", SND_PCM_STREAM_PLAYBACK, 0)) < 0)
+    if (!alsaplug_mixer_new(&amixer))
+        mixer_ready = TRUE;
+
+    if ((err = snd_pcm_open(&pcm_handle, alsaplug_cfg.pcm_device, SND_PCM_STREAM_PLAYBACK, 0)) < 0)
     {
         _ERROR("snd_pcm_open: %s", snd_strerror(err));
         pcm_handle = NULL;
@@ -344,6 +364,15 @@ alsaplug_close_audio(void)
         g_thread_join(audio_thread);
 
     audio_thread = NULL;
+
+    if (mixer_ready == TRUE)
+    {
+        snd_mixer_detach(amixer, alsaplug_cfg.mixer_card);
+        snd_mixer_close(amixer);
+
+        amixer = NULL;
+        mixer_ready = FALSE;
+    }
 }
 
 static void
@@ -475,6 +504,7 @@ static OutputPlugin alsa_op = {
     .pause = alsaplug_pause,
     .set_volume = alsaplug_set_volume,
     .get_volume = alsaplug_get_volume,
+    .configure = alsaplug_configure,
 };
 
 OutputPlugin *alsa_oplist[] = { &alsa_op, NULL };
