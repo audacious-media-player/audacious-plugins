@@ -29,7 +29,6 @@
 #undef free
 #undef realloc
 
-#define _XOPEN_SOURCE 600
 #include <stdlib.h>
 
 /* you can redefine av_malloc and av_free in your project to use your
