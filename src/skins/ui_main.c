@@ -259,29 +259,7 @@ static void
 mainwin_vis_set_type_menu_cb(VisType mode)
 {
     config.vis_type = mode;
-
-    if (mode == VIS_OFF) {
-        if (config.player_shaded) {
-            ui_svis_set_visible(mainwin_svis, FALSE);
-            ui_vis_set_visible(mainwin_vis, TRUE);
-        } else {
-            ui_svis_set_visible(mainwin_svis, TRUE);
-            ui_vis_set_visible(mainwin_vis, FALSE);
-        }
-    }
-    if (mode == VIS_ANALYZER || mode == VIS_SCOPE || mode == VIS_VOICEPRINT) {
-        if (config.player_shaded) {
-            ui_svis_clear_data(mainwin_svis);
-            ui_svis_set_visible(mainwin_svis, TRUE);
-            ui_vis_clear_data(mainwin_vis);
-            ui_vis_set_visible(mainwin_vis, FALSE);
-        } else {
-            ui_svis_clear_data(mainwin_svis);
-            ui_svis_set_visible(mainwin_svis, FALSE);
-            ui_vis_clear_data(mainwin_vis);
-            ui_vis_set_visible(mainwin_vis, TRUE);
-        }
-    }
+    start_stop_visual ();
 }
 
 static void
@@ -413,20 +391,6 @@ mainwin_refresh_visible(void)
     show_hide_widget (mainwin_othertext,
      aud_active_skin->properties.mainwin_othertext &&
      aud_active_skin->properties.mainwin_othertext_visible);
-
-    if (config.player_shaded) {
-        ui_svis_clear_data(mainwin_svis);
-        if (config.vis_type != VIS_OFF)
-            ui_svis_set_visible(mainwin_svis, TRUE);
-        else
-            ui_svis_set_visible(mainwin_svis, FALSE);
-    } else {
-        ui_vis_clear_data(mainwin_vis);
-        if (config.vis_type != VIS_OFF)
-            ui_vis_set_visible(mainwin_vis, TRUE);
-        else
-            ui_vis_set_visible(mainwin_vis, FALSE);
-    }
 }
 
 void
@@ -636,9 +600,6 @@ mainwin_clear_song_info(void)
         ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_STOP);
 
     playlistwin_hide_timer();
-
-    ui_vis_clear_data(mainwin_vis);
-    ui_svis_clear_data(mainwin_svis);
 }
 
 void
@@ -1507,9 +1468,7 @@ mainwin_set_balance_diff(gint diff)
 
 static void mainwin_real_show (void)
 {
-    if (config.player_shaded)
-        ui_vis_clear_data(mainwin_vis);
-
+    start_stop_visual ();
     gtk_window_present(GTK_WINDOW(mainwin));
 }
 
@@ -1519,10 +1478,8 @@ static void mainwin_real_hide (void)
         gtk_window_get_position ((GtkWindow *) mainwin, & config.player_x,
          & config.player_y);
 
-    if (config.player_shaded)
-        ui_svis_clear_data(mainwin_svis);
-
     gtk_widget_hide(mainwin);
+    start_stop_visual ();
 }
 
 void mainwin_show (gboolean show)

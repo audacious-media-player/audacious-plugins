@@ -454,34 +454,6 @@ static void ui_svis_toggle_scaled(UiSVis *svis) {
         ui_svis_expose (widget, 0);
 }
 
-void ui_svis_set_visible(GtkWidget *widget, gboolean window_is_visible)
-{
-    UiSVis *svis;
-    gboolean widget_is_visible;
-
-    g_return_if_fail(UI_IS_SVIS(widget));
-
-    svis = UI_SVIS (widget);
-    widget_is_visible = GTK_WIDGET_VISIBLE(widget);
-
-    svis->visible_window = window_is_visible;
-
-    if (GTK_WIDGET_REALIZED (widget))
-    {
-        if ( widget_is_visible )
-            gtk_widget_hide(widget);
-
-        gtk_widget_unrealize(widget);
-        gtk_widget_realize(widget);
-
-        if ( widget_is_visible )
-            gtk_widget_show(widget);
-    }
-
-    if (widget_is_visible)
-        gtk_widget_queue_resize(widget);
-}
-
 void ui_svis_clear_data(GtkWidget *widget) {
     g_return_if_fail(UI_IS_SVIS(widget));
 

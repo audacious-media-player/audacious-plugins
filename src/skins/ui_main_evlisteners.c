@@ -114,6 +114,8 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
     gtk_widget_hide (mainwin_sposition);
 
     ui_skinned_playstatus_set_buffering(mainwin_playstatus, FALSE);
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
@@ -132,6 +134,12 @@ ui_main_evlistener_playback_play_file(gpointer hook_data, gpointer user_data)
 {
     if (config.random_skin_on_play)
         skin_set_random_skin();
+}
+
+static void seek_cb (void * unused, void * another)
+{
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
 }
 
 static void
@@ -250,7 +258,7 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
             }
     }
     else if(config.vis_type == VIS_VOICEPRINT){
-        if (config.player_shaded && config.player_visible) {
+        if (config.player_shaded) {
             /* VU */
             gint vu, val;
 
@@ -321,7 +329,7 @@ ui_main_evlistener_visualization_timeout(gpointer hook_data, gpointer user_data)
         }
     }
 
-    if (config.player_shaded && config.player_visible)
+    if (config.player_shaded)
         ui_svis_timeout_func(mainwin_svis, intern_vis_data);
     else
         ui_vis_timeout_func(mainwin_vis, intern_vis_data);
@@ -338,12 +346,12 @@ ui_main_evlistener_init(void)
     aud_hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
     aud_hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     aud_hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
+    aud_hook_associate ("playback seek", seek_cb, 0);
     aud_hook_associate("playlist end reached", ui_main_evlistener_playlist_end_reached, NULL);
     aud_hook_associate("playlist info change", ui_main_evlistener_playlist_info_change, NULL);
     aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
     aud_hook_associate("equalizerwin show", ui_main_evlistener_equalizerwin_show, NULL);
-    aud_hook_associate("visualization timeout", ui_main_evlistener_visualization_timeout, NULL);
 
     aud_hook_associate("playback audio error", (void *) mainwin_stop_pushed, NULL);
     aud_hook_associate("playback audio error", (void *) run_no_output_device_dialog, NULL);
@@ -362,15 +370,43 @@ ui_main_evlistener_dissociate(void)
     aud_hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
     aud_hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
     aud_hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
+    aud_hook_dissociate ("playback seek", seek_cb);
     aud_hook_dissociate("playlist end reached", ui_main_evlistener_playlist_end_reached);
     aud_hook_dissociate("playlist info change", ui_main_evlistener_playlist_info_change);
     aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
     aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
     aud_hook_dissociate("equalizerwin show", ui_main_evlistener_equalizerwin_show);
-    aud_hook_dissociate("visualization timeout", ui_main_evlistener_visualization_timeout);
 
     aud_hook_dissociate("playback audio error", (void *) mainwin_stop_pushed);
     aud_hook_dissociate("playback audio error", (void *) run_no_output_device_dialog);
 
     aud_hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
+}
+
+void start_stop_visual (void)
+{
+    static char started = 0;
+
+    if (config.player_visible && config.vis_type != VIS_OFF)
+    {
+        if (! started)
+        {
+            ui_vis_clear_data (mainwin_vis);
+            ui_svis_clear_data (mainwin_svis);
+            aud_hook_associate ("visualization timeout",
+             ui_main_evlistener_visualization_timeout, 0);
+            started = 1;
+        }
+    }
+    else
+    {
+        if (started)
+        {
+            aud_hook_dissociate ("visualization timeout",
+             ui_main_evlistener_visualization_timeout);
+            ui_vis_clear_data (mainwin_vis);
+            ui_svis_clear_data (mainwin_svis);
+            started = 0;
+        }
+    }
 }

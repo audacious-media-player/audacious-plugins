@@ -29,4 +29,6 @@ void ui_main_evlistener_dissociate(void);
 void ui_main_evlistener_playback_begin (void * hook_data, void * user_data);
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data);
 
+void start_stop_visual (void);
+
 #endif /* AUDACIOUS_UI_MAIN_EVLISTENERS_H */

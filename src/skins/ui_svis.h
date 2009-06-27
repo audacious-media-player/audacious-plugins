@@ -55,7 +55,6 @@ GtkWidget* ui_svis_new (GtkWidget *fixed, gint x, gint y);
 GType ui_svis_get_type(void);
 void ui_svis_clear_data(GtkWidget *widget);
 void ui_svis_timeout_func(GtkWidget *widget, guchar * data);
-void ui_svis_set_visible(GtkWidget *widget, gboolean window_is_visible);
 
 #ifdef __cplusplus
 }

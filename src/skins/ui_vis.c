@@ -599,34 +599,6 @@ void ui_vis_draw_pixel(GtkWidget *widget, guchar* texture, gint x, gint y, guint
     }
 }
 
-void ui_vis_set_visible(GtkWidget *widget, gboolean window_is_visible)
-{
-    UiVis *vis;
-    gboolean widget_is_visible;
-
-    g_return_if_fail(UI_IS_VIS(widget));
-
-    vis = UI_VIS (widget);
-    widget_is_visible = GTK_WIDGET_VISIBLE(widget);
-
-    vis->visible_window = window_is_visible;
-
-    if (GTK_WIDGET_REALIZED (widget))
-    {
-        if ( widget_is_visible )
-            gtk_widget_hide(widget);
-
-        gtk_widget_unrealize(widget);
-        gtk_widget_realize(widget);
-
-        if ( widget_is_visible )
-            gtk_widget_show(widget);
-    }
-
-    if (widget_is_visible)
-        gtk_widget_queue_resize(widget);
-}
-
 void ui_vis_clear_data(GtkWidget *widget) {
     g_return_if_fail(UI_IS_VIS(widget));
 
