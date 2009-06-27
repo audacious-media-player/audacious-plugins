@@ -1,6 +1,7 @@
 PLUGIN = ALSA${PLUGIN_SUFFIX}
 
 SRCS = alsa-core.c \
+       alsa-configure.c \
        alsa-ringbuffer.c \
        alsa-util.c
 
