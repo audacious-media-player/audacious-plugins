@@ -193,7 +193,6 @@ mainwin_set_shade_menu_cb(gboolean shaded)
         dock_shade(get_dock_window_list(), GTK_WINDOW(mainwin), height * MAINWIN_SCALE_FACTOR);
     }
 
-    mainwin_refresh_hints();
     mainwin_set_shape ();
 }
 
@@ -388,50 +387,32 @@ mainwin_set_song_title(const gchar * title)
     ui_skinned_textbox_set_text (mainwin_info, title ? title : "");
 }
 
+static void show_hide_widget (GtkWidget * widget, char show)
+{
+    if (show)
+        gtk_widget_show (widget);
+    else
+        gtk_widget_hide (widget);
+}
+
 static void
 mainwin_refresh_visible(void)
 {
-    if (!aud_active_skin || !config.player_visible)
-        return;
-
-    gtk_widget_show_all(mainwin);
-
-    if (!aud_active_skin->properties.mainwin_text_visible)
-        gtk_widget_hide(mainwin_info);
-
-    if (!aud_active_skin->properties.mainwin_vis_visible)
-        gtk_widget_hide(mainwin_vis);
-
-    if (!aud_active_skin->properties.mainwin_menurow_visible)
-        gtk_widget_hide(mainwin_menurow);
-
-    if (aud_active_skin->properties.mainwin_othertext) {
-        gtk_widget_hide(mainwin_rate_text);
-        gtk_widget_hide(mainwin_freq_text);
-        gtk_widget_hide(mainwin_monostereo);
-
-        if (!aud_active_skin->properties.mainwin_othertext_visible)
-            gtk_widget_hide(mainwin_othertext);
-    } else {
-        gtk_widget_hide(mainwin_othertext);
-    }
-
-    if (!aud_active_skin->properties.mainwin_vis_visible)
-        gtk_widget_hide(mainwin_vis);
-
-    if (!audacious_drct_get_playing()) {
-        gtk_widget_hide(mainwin_minus_num);
-        gtk_widget_hide(mainwin_10min_num);
-        gtk_widget_hide(mainwin_min_num);
-        gtk_widget_hide(mainwin_10sec_num);
-        gtk_widget_hide(mainwin_sec_num);
-
-        gtk_widget_hide(mainwin_stime_min);
-        gtk_widget_hide(mainwin_stime_sec);
-
-        gtk_widget_hide(mainwin_position);
-        gtk_widget_hide(mainwin_sposition);
-    }
+    show_hide_widget (mainwin_info,
+     aud_active_skin->properties.mainwin_text_visible);
+    show_hide_widget (mainwin_vis,
+     aud_active_skin->properties.mainwin_vis_visible);
+    show_hide_widget (mainwin_menurow,
+     aud_active_skin->properties.mainwin_menurow_visible);
+    show_hide_widget (mainwin_rate_text,
+     ! aud_active_skin->properties.mainwin_othertext);
+    show_hide_widget (mainwin_freq_text,
+     ! aud_active_skin->properties.mainwin_othertext);
+    show_hide_widget (mainwin_monostereo,
+     ! aud_active_skin->properties.mainwin_othertext);
+    show_hide_widget (mainwin_othertext,
+     aud_active_skin->properties.mainwin_othertext &&
+     aud_active_skin->properties.mainwin_othertext_visible);
 
     if (config.player_shaded) {
         ui_svis_clear_data(mainwin_svis);
@@ -439,21 +420,12 @@ mainwin_refresh_visible(void)
             ui_svis_set_visible(mainwin_svis, TRUE);
         else
             ui_svis_set_visible(mainwin_svis, FALSE);
-
-        ui_skinned_textbox_set_scroll(mainwin_info, FALSE);
-        if (!audacious_drct_get_playing()) {
-            gtk_widget_hide(mainwin_sposition);
-            gtk_widget_hide(mainwin_stime_min);
-            gtk_widget_hide(mainwin_stime_sec);
-        }
     } else {
         ui_vis_clear_data(mainwin_vis);
         if (config.vis_type != VIS_OFF)
             ui_vis_set_visible(mainwin_vis, TRUE);
         else
             ui_vis_set_visible(mainwin_vis, FALSE);
-
-        ui_skinned_textbox_set_scroll(mainwin_info, config.autoscroll);
     }
 }
 
@@ -662,8 +634,6 @@ mainwin_clear_song_info(void)
 
     if (mainwin_playstatus != NULL)
         ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_STOP);
-
-    mainwin_refresh_visible();
 
     playlistwin_hide_timer();
 
@@ -1540,7 +1510,6 @@ static void mainwin_real_show (void)
     if (config.player_shaded)
         ui_vis_clear_data(mainwin_vis);
 
-    mainwin_refresh_hints();
     gtk_window_present(GTK_WINDOW(mainwin));
 }
 
@@ -2295,6 +2264,29 @@ mainwin_create_widgets(void)
     g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), NULL);
 }
 
+static void show_widgets (void)
+{
+    gtk_widget_set_no_show_all (mainwin_minus_num, 1);
+    gtk_widget_set_no_show_all (mainwin_10min_num, 1);
+    gtk_widget_set_no_show_all (mainwin_min_num, 1);
+    gtk_widget_set_no_show_all (mainwin_10sec_num, 1);
+    gtk_widget_set_no_show_all (mainwin_sec_num, 1);
+    gtk_widget_set_no_show_all (mainwin_stime_min, 1);
+    gtk_widget_set_no_show_all (mainwin_stime_sec, 1);
+    gtk_widget_set_no_show_all (mainwin_position, 1);
+    gtk_widget_set_no_show_all (mainwin_sposition, 1);
+
+    gtk_widget_set_no_show_all (mainwin_info, 1);
+    gtk_widget_set_no_show_all (mainwin_vis, 1);
+    gtk_widget_set_no_show_all (mainwin_menurow, 1);
+    gtk_widget_set_no_show_all (mainwin_rate_text, 1);
+    gtk_widget_set_no_show_all (mainwin_freq_text, 1);
+    gtk_widget_set_no_show_all (mainwin_monostereo, 1);
+    gtk_widget_set_no_show_all (mainwin_othertext, 1);
+
+    ui_skinned_window_set_shade (mainwin, config.player_shaded);
+}
+
 static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
 {
     audacious_drct_quit ();
@@ -2357,6 +2349,8 @@ mainwin_create(void)
     gtk_window_add_accel_group( GTK_WINDOW(mainwin) , ui_manager_get_accel_group() );
 
     mainwin_create_widgets();
+    show_widgets ();
+
     aud_hook_associate ("show main menu", (HookFunction) show_main_menu, 0);
 }
 

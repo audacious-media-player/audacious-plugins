@@ -266,11 +266,6 @@ ui_skinned_window_new(const gchar *wmclass_name)
 }
 
 void ui_skinned_window_draw_all(GtkWidget *widget) {
-    SkinnedWindow * skinned = (SkinnedWindow *) widget;
-
-    if (skinned->type == WINDOW_MAIN)
-        mainwin_refresh_hints();
-
     gtk_widget_queue_draw (widget);
 }
 

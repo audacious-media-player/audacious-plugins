@@ -81,18 +81,15 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
     mainwin_disable_seekbar();
     mainwin_update_song_info();
 
-    if (config.player_shaded) {
-        gtk_widget_show(mainwin_stime_min);
-        gtk_widget_show(mainwin_stime_sec);
-        gtk_widget_show(mainwin_sposition);
-    } else {
-        gtk_widget_show(mainwin_minus_num);
-        gtk_widget_show(mainwin_10min_num);
-        gtk_widget_show(mainwin_min_num);
-        gtk_widget_show(mainwin_10sec_num);
-        gtk_widget_show(mainwin_sec_num);
-        gtk_widget_show(mainwin_position);
-    }
+    gtk_widget_show (mainwin_stime_min);
+    gtk_widget_show (mainwin_stime_sec);
+    gtk_widget_show (mainwin_sposition);
+    gtk_widget_show (mainwin_minus_num);
+    gtk_widget_show (mainwin_10min_num);
+    gtk_widget_show (mainwin_min_num);
+    gtk_widget_show (mainwin_10sec_num);
+    gtk_widget_show (mainwin_sec_num);
+    gtk_widget_show (mainwin_position);
 
     song_info_timeout_source =
         g_timeout_add (250, (GSourceFunc) mainwin_update_song_info, NULL);
@@ -105,6 +102,16 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 {
     if (song_info_timeout_source)
         g_source_remove(song_info_timeout_source);
+
+    gtk_widget_hide (mainwin_minus_num);
+    gtk_widget_hide (mainwin_10min_num);
+    gtk_widget_hide (mainwin_min_num);
+    gtk_widget_hide (mainwin_10sec_num);
+    gtk_widget_hide (mainwin_sec_num);
+    gtk_widget_hide (mainwin_stime_min);
+    gtk_widget_hide (mainwin_stime_sec);
+    gtk_widget_hide (mainwin_position);
+    gtk_widget_hide (mainwin_sposition);
 
     ui_skinned_playstatus_set_buffering(mainwin_playstatus, FALSE);
 }

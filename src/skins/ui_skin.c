@@ -180,6 +180,7 @@ aud_active_skin_load(const gchar * path)
         return FALSE;
     }
 
+    mainwin_refresh_hints ();
     ui_skinned_window_draw_all(mainwin);
     ui_skinned_window_draw_all(equalizerwin);
     ui_skinned_window_draw_all(playlistwin);
