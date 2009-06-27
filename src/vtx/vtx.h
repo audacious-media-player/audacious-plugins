@@ -11,7 +11,6 @@
 
 void vtx_init(void);
 void vtx_about(void);
-void vtx_config(void);
 void vtx_file_info(char *filename);
 
 extern int  vtx_is_our_file(char *filename);
