@@ -1215,7 +1215,6 @@ playlistwin_create_window(void)
                           GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_MOTION_MASK |
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
                           GDK_SCROLL_MASK | GDK_VISIBILITY_NOTIFY_MASK);
-    gtk_widget_realize(playlistwin);
 
     g_signal_connect(playlistwin, "delete_event",
                      G_CALLBACK(playlistwin_delete), NULL);

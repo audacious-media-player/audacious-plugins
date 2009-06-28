@@ -68,6 +68,7 @@ ui_skinned_window_get_type(void)
 static void
 ui_skinned_window_map(GtkWidget *widget)
 {
+    gdk_window_set_back_pixmap (widget->window, 0, 0);
     (* GTK_WIDGET_CLASS (parent)->map) (widget);
     gtk_window_set_keep_above(GTK_WINDOW(widget), config.always_on_top);
 }
@@ -235,11 +236,9 @@ ui_skinned_window_new(const gchar *wmclass_name)
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
                           GDK_SCROLL_MASK | GDK_KEY_PRESS_MASK |
                           GDK_VISIBILITY_NOTIFY_MASK | GDK_EXPOSURE_MASK);
-    gtk_widget_realize(GTK_WIDGET(widget));
 
     dock_window_set_decorated (widget);
     gtk_widget_set_app_paintable(GTK_WIDGET(widget), TRUE);
-    gdk_window_set_back_pixmap(widget->window, NULL, FALSE);
 
     if (!strcmp(wmclass_name, "player"))
         SKINNED_WINDOW(widget)->type = WINDOW_MAIN;
@@ -254,10 +253,6 @@ ui_skinned_window_new(const gchar *wmclass_name)
     g_object_ref(SKINNED_WINDOW(widget)->shaded);
 
     gtk_container_add(GTK_CONTAINER(widget), GTK_WIDGET(SKINNED_WINDOW(widget)->normal));
-
-    gtk_widget_realize(widget);
-    gtk_widget_realize(SKINNED_WINDOW(widget)->normal);
-    gtk_widget_realize(SKINNED_WINDOW(widget)->shaded);
 
     g_signal_connect(SKINNED_WINDOW(widget)->normal, "expose-event", G_CALLBACK(ui_skinned_window_expose), NULL);
     g_signal_connect(SKINNED_WINDOW(widget)->shaded, "expose-event", G_CALLBACK(ui_skinned_window_expose), NULL);
