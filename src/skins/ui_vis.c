@@ -610,6 +610,11 @@ void ui_vis_clear_data(GtkWidget *widget) {
         vis->data[i] = (config.vis_type == VIS_SCOPE) ? 6 : 0;
         vis->peak[i] = 0;
     }
+
+    vis->refresh_delay = 0;
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_vis_expose (widget, 0);
 }
 
 void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {

@@ -463,6 +463,11 @@ void ui_svis_clear_data(GtkWidget *widget) {
     for (i = 0; i < 75; i++) {
         svis->data[i] = (config.vis_type == VIS_SCOPE) ? 6 : 0;
     }
+
+    svis->refresh_delay = 0;
+
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_svis_expose (widget, 0);
 }
 
 void ui_svis_timeout_func(GtkWidget *widget, guchar * data) {
