@@ -38,8 +38,6 @@
 
 #define UI_TYPE_SVIS           (ui_svis_get_type())
 
-static gint svis_redraw_delays[] = { 1, 2, 4, 8 };
-
 /* FIXME: Are the svis_scope_colors correct? */
 static guint8 svis_scope_colors[] = { 20, 19, 18, 19, 20 };
 static guint8 svis_vu_normal_colors[] = { 17, 17, 17, 12, 12, 12, 2, 2 };
@@ -474,52 +472,17 @@ void ui_svis_timeout_func(GtkWidget *widget, guchar * data) {
     g_return_if_fail(UI_IS_SVIS(widget));
 
     UiSVis *svis = UI_SVIS (widget);
-    static GTimer *timer = NULL;
-    gulong micros = 9999999;
-    gboolean falloff = FALSE;
     gint i;
 
-    if (!timer) {
-        timer = g_timer_new();
-        g_timer_start(timer);
+    if (config.vis_type == VIS_VOICEPRINT) {
+        for (i = 0; i < 2; i++)
+            svis->data[i] = data[i];
     }
     else {
-        g_timer_elapsed(timer, &micros);
-        if (micros > 14000)
-            g_timer_reset(timer);
-
-    }
-
-    if (config.vis_type == VIS_VOICEPRINT) {
-        if (micros > 14000)
-            falloff = TRUE;
-
-        for (i = 0; i < 2; i++) {
-            if (falloff || data) {
-                if (data && data[i] > svis->data[i])
-                    svis->data[i] = data[i];
-                else if (falloff) {
-                    if (svis->data[i] >= 2)
-                        svis->data[i] -= 2;
-                    else
-                        svis->data[i] = 0;
-                }
-            }
-
-        }
-    }
-    else if (data) {
         for (i = 0; i < 75; i++)
             svis->data[i] = data[i];
     }
 
-    if (micros > 14000) {
-        if (!svis->refresh_delay) {
-            if (GTK_WIDGET_DRAWABLE (widget))
-                ui_svis_expose (widget, 0);
-
-            svis->refresh_delay = svis_redraw_delays[config.vis_refresh];
-        }
-        svis->refresh_delay--;
-    }
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_svis_expose (widget, 0);
 }

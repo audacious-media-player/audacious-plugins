@@ -63,7 +63,7 @@ typedef struct {
     gint analyzer_mode, analyzer_type;
     gint scope_mode;
     gint voiceprint_mode;
-    gint vu_mode, vis_refresh;
+    gint vu_mode;
     gint analyzer_falloff, peaks_falloff;
     gint playlist_position;
     gint mouse_change;

@@ -32,7 +32,6 @@
 
 static const gfloat vis_afalloff_speeds[] = { 0.34, 0.5, 1.0, 1.3, 1.6 };
 static const gfloat vis_pfalloff_speeds[] = { 1.2, 1.3, 1.4, 1.5, 1.6 };
-static const gint vis_redraw_delays[] = { 1, 2, 4, 8 };
 static const guint8 vis_scope_colors[] =
     { 21, 21, 20, 20, 19, 19, 18, 19, 19, 20, 20, 21, 21 };
 static guchar voiceprint_data[76*16];
@@ -621,26 +620,12 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
     g_return_if_fail(UI_IS_VIS(widget));
 
     UiVis *vis = UI_VIS (widget);
-    static GTimer *timer = NULL;
-    gulong micros = 9999999;
-    gboolean falloff = FALSE;
     gint i;
 
-    if (!timer) {
-        timer = g_timer_new();
-        g_timer_start(timer);
-    }
-    else {
-      g_timer_elapsed(timer, &micros);
-      if (micros > 14000)
-	g_timer_reset(timer);
-    }
     if (config.vis_type == VIS_ANALYZER) {
-        if (micros > 14000)
-            falloff = TRUE;
-        if (data || falloff) {
             for (i = 0; i < 75; i++) {
-                if (data && data[i] > vis->data[i]) {
+                if (data[i] > vis->data[i])
+                {
                     vis->data[i] = data[i];
                     if (vis->data[i] > vis->peak[i]) {
                         vis->peak[i] = vis->data[i];
@@ -657,7 +642,8 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
                             vis->peak[i] = 0.0;
                     }
                 }
-                else if (falloff) {
+                else
+                {
                     if (vis->data[i] > 0.0) {
                         vis->data[i] -=
                             vis_afalloff_speeds[config.analyzer_falloff];
@@ -675,26 +661,18 @@ void ui_vis_timeout_func(GtkWidget *widget, guchar * data) {
                     }
                 }
             }
-        }
     }
-    else if (config.vis_type == VIS_VOICEPRINT && data){
-      for(i = 0; i < 16; i++)
-	{
-	  vis->data[i] = data[15 - i];
-	}
+    else if (config.vis_type == VIS_VOICEPRINT)
+    {
+        for (i = 0; i < 16; i ++)
+            vis->data[i] = data[15 - i];
     }
-    else if (data) {
+    else
+    {
         for (i = 0; i < 75; i++)
             vis->data[i] = data[i];
     }
 
-    if (micros > 14000) {
-        if (!vis->refresh_delay) {
-            if (GTK_WIDGET_DRAWABLE (widget))
-                ui_vis_expose (widget, 0);
-
-            vis->refresh_delay = vis_redraw_delays[config.vis_refresh];
-        }
-        vis->refresh_delay--;
-    }
+    if (GTK_WIDGET_DRAWABLE (widget))
+        ui_vis_expose (widget, 0);
 }

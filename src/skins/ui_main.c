@@ -197,12 +197,6 @@ mainwin_set_shade_menu_cb(gboolean shaded)
 }
 
 static void
-mainwin_vis_set_refresh(RefreshRate rate)
-{
-    config.vis_refresh = rate;
-}
-
-static void
 mainwin_vis_set_afalloff(FalloffSpeed speed)
 {
     config.analyzer_falloff = speed;
@@ -1951,23 +1945,6 @@ mainwin_setup_menus(void)
             break;
     }
 
-    switch ( config.vis_refresh )
-    {
-        case REFRESH_HALF:
-            check_set(radioaction_group_refrate, "refrate half", TRUE);
-            break;
-        case REFRESH_QUARTER:
-            check_set(radioaction_group_refrate, "refrate quarter", TRUE);
-            break;
-        case REFRESH_EIGTH:
-            check_set(radioaction_group_refrate, "refrate eighth", TRUE);
-            break;
-        case REFRESH_FULL:
-        default:
-            check_set(radioaction_group_refrate, "refrate full", TRUE);
-            break;
-    }
-
     switch ( config.analyzer_falloff )
     {
         case FALLOFF_SLOW:
@@ -2563,12 +2540,6 @@ void
 action_peafoff( GtkAction *action, GtkRadioAction *current )
 {
     mainwin_vis_set_pfalloff(gtk_radio_action_get_current_value(current));
-}
-
-void
-action_refrate( GtkAction *action, GtkRadioAction *current )
-{
-    mainwin_vis_set_refresh(gtk_radio_action_get_current_value(current));
 }
 
 void

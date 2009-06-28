@@ -136,13 +136,6 @@ static GtkRadioActionEntry radioaction_entries_wshmode[] = {
 	{ "wshmode smooth", NULL , N_("Smooth"), NULL, N_("Smooth"), VU_SMOOTH }
 };
 
-static GtkRadioActionEntry radioaction_entries_refrate[] = {
-	{ "refrate full", NULL , N_("Full (~50 fps)"), NULL, N_("Full (~50 fps)"), REFRESH_FULL },
-	{ "refrate half", NULL , N_("Half (~25 fps)"), NULL, N_("Half (~25 fps)"), REFRESH_HALF },
-	{ "refrate quarter", NULL , N_("Quarter (~13 fps)"), NULL, N_("Quarter (~13 fps)"), REFRESH_QUARTER },
-	{ "refrate eighth", NULL , N_("Eighth (~6 fps)"), NULL, N_("Eighth (~6 fps)"), REFRESH_EIGTH }
-};
-
 static GtkRadioActionEntry radioaction_entries_anafoff[] = {
 	{ "anafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
 	{ "anafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
@@ -535,11 +528,6 @@ ui_manager_init ( void )
     radioaction_group_wshmode , radioaction_entries_wshmode ,
     G_N_ELEMENTS(radioaction_entries_wshmode) , 0 , G_CALLBACK(action_wshmode) , NULL );
 
-  radioaction_group_refrate = ui_manager_new_action_group("radioaction_refrate");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_refrate , radioaction_entries_refrate ,
-    G_N_ELEMENTS(radioaction_entries_refrate) , 0 , G_CALLBACK(action_refrate) , NULL );
-
   radioaction_group_anafoff = ui_manager_new_action_group("radioaction_anafoff");
   gtk_action_group_add_radio_actions(
     radioaction_group_anafoff , radioaction_entries_anafoff ,
@@ -619,7 +607,6 @@ ui_manager_init ( void )
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_scomode , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vprmode , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_wshmode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_refrate , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anafoff , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_peafoff , 0 );
   gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vismode , 0 );
@@ -792,7 +779,6 @@ ui_manager_destroy( void )
     g_object_unref((GObject*)radioaction_group_scomode);
     g_object_unref((GObject*)radioaction_group_vprmode);
     g_object_unref((GObject*)radioaction_group_wshmode);
-    g_object_unref((GObject*)radioaction_group_refrate);
     g_object_unref((GObject*)radioaction_group_anafoff);
     g_object_unref((GObject*)radioaction_group_peafoff);
     g_object_unref((GObject*)radioaction_group_vismode);
