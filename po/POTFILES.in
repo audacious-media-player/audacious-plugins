@@ -3,6 +3,7 @@ src/aac/libmp4.c
 src/adplug/adplug-xmms.cc
 src/alac/plugin.c
 src/alarm/interface.c
+src/alsa-ng/alsa-configure.c
 src/amidi-plug/amidi-plug.c
 src/amidi-plug/backend-alsa/b-alsa.c
 src/amidi-plug/backend-dummy/b-dummy.c
@@ -72,6 +73,10 @@ src/filewriter/mp3.c
 src/filewriter/vorbis.c
 src/flacng/plugin.c
 src/gnomeshortcuts/gnomeshortcuts.c
+src/gtkui/actions.c
+src/gtkui/ui_gtk.c
+src/gtkui/ui_manager.c
+src/gtkui/ui_playlist_manager.c
 src/hotkey/gui.c
 src/icecast/icecast.c
 src/jack/bio2jack.c
