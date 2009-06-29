@@ -522,7 +522,7 @@ mainwin_set_song_info(gint bitrate,
                       gint frequency,
                       gint n_channels)
 {
-    gchar *text;
+    char * bitrate_text, * text;
     gchar *title;
     Playlist *playlist = aud_playlist_get_active();
 
@@ -554,21 +554,17 @@ mainwin_set_song_info(gint bitrate,
     if (!audacious_drct_get_paused() && mainwin_playstatus != NULL)
         ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
 
-    if (aud_active_skin && aud_active_skin->properties.mainwin_othertext)
-    {
-        if (bitrate != -1)
-            text = g_strdup_printf("%d kbps, %0.1f kHz, %s",
-                                   bitrate,
-                                   (gfloat) frequency / 1000,
-                                   (n_channels > 1) ? _("stereo") : _("mono"));
-        else
-            text = g_strdup_printf("VBR, %0.1f kHz, %s",
-                                   (gfloat) frequency / 1000,
-                                   (n_channels > 1) ? _("stereo") : _("mono"));
+    if (bitrate == -1)
+        bitrate_text = g_strdup ("VBR");
+    else
+        bitrate_text = g_strdup_printf ("%d kbps", bitrate);
 
-        ui_skinned_textbox_set_text(mainwin_othertext, text);
-        g_free(text);
-    }
+    text = g_strdup_printf ("%s, %d kHz, %s", bitrate_text, frequency / 1000,
+     (n_channels > 1) ? _ ("stereo") : _ ("mono"));
+
+    ui_skinned_textbox_set_text (mainwin_othertext, text);
+    g_free (bitrate_text);
+    g_free (text);
 
     title = aud_playlist_get_info_text(playlist);
     mainwin_set_song_title(title);
