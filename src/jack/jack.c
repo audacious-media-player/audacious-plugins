@@ -192,7 +192,7 @@ void jack_set_port_connection_mode()
 }
 
 /* Initialize necessary things */
-static void jack_init(void)
+static OutputPluginInitStatus jack_init(void)
 {
   /* read the isTraceEnabled setting from the config file */
   mcs_handle_t *cfgfile;
@@ -229,6 +229,9 @@ static void jack_init(void)
   jack_set_port_connection_mode();
 
   output_opened = FALSE;
+  
+  /* Always return OK, as we don't know about physical devices here */
+  return OUTPUT_PLUGIN_INIT_FOUND_DEVICES;
 }
 
 
