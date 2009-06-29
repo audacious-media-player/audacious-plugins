@@ -58,8 +58,6 @@ static gboolean output_opened; /* true if we have a connection to jack */
 static GtkWidget *dialog, *button, *label;
 
 
-static void jack_set_volume(int l, int r);
-
 /* Giacomo's note: removed the destructor from the original xmms-jack, cause
    destructors + thread join + NPTL currently leads to problems; solved this
    by adding a cleanup function callback for output plugins in Audacious, this
@@ -102,6 +100,53 @@ static void jack_sample_rate_error(void)
 
 	gtk_widget_show(dialog);
 	gtk_widget_grab_focus(button);
+}
+
+
+/* Set the volume */
+static void jack_set_volume(int l, int r)
+{
+  if(output.channels == 1)
+  {
+    TRACE("l(%d)\n", l);
+  } else if(output.channels > 1)
+  {
+    TRACE("l(%d), r(%d)\n", l, r);
+  }
+
+  if(output.channels > 0) {
+      JACK_SetVolumeForChannel(driver, 0, l);
+      jack_cfg.volume_left = l;
+  }
+  if(output.channels > 1) {
+      JACK_SetVolumeForChannel(driver, 1, r);
+      jack_cfg.volume_right = r;
+  }
+}
+
+
+/* Get the current volume setting */
+static void jack_get_volume(int *l, int *r)
+{
+  unsigned int _l, _r;
+
+  if(output.channels > 0)
+  {
+      JACK_GetVolumeForChannel(driver, 0, &_l);
+      (*l) = _l;
+  }
+  if(output.channels > 1)
+  {
+      JACK_GetVolumeForChannel(driver, 1, &_r);
+      (*r) = _r;
+  }
+
+#if VERBOSE_OUTPUT
+  if(output.channels == 1)
+      TRACE("l(%d)\n", *l);
+  else if(output.channels > 1)
+      TRACE("l(%d), r(%d)\n", *l, *r);
+#endif
 }
 
 
@@ -390,53 +435,6 @@ static void jack_pause(short p)
     JACK_SetState(driver, PAUSED);
   else if(JACK_GetState(driver) == PAUSED)
     JACK_SetState(driver, PLAYING);
-}
-
-
-/* Set the volume */
-static void jack_set_volume(int l, int r)
-{
-  if(output.channels == 1)
-  {
-    TRACE("l(%d)\n", l);
-  } else if(output.channels > 1)
-  {
-    TRACE("l(%d), r(%d)\n", l, r);
-  }
-
-  if(output.channels > 0) {
-      JACK_SetVolumeForChannel(driver, 0, l);
-      jack_cfg.volume_left = l;
-  }
-  if(output.channels > 1) {
-      JACK_SetVolumeForChannel(driver, 1, r);
-      jack_cfg.volume_right = r;
-  }
-}
-
-
-/* Get the current volume setting */
-static void jack_get_volume(int *l, int *r)
-{
-  unsigned int _l, _r;
-
-  if(output.channels > 0)
-  {
-      JACK_GetVolumeForChannel(driver, 0, &_l);
-      (*l) = _l;
-  }
-  if(output.channels > 1)
-  {
-      JACK_GetVolumeForChannel(driver, 1, &_r);
-      (*r) = _r;
-  }
-
-#if VERBOSE_OUTPUT
-  if(output.channels == 1)
-      TRACE("l(%d)\n", *l);
-  else if(output.channels > 1)
-      TRACE("l(%d), r(%d)\n", *l, *r);
-#endif
 }
 
 
