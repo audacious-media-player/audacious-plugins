@@ -1577,7 +1577,7 @@ action_playlist_load_list(void)
 void
 action_playlist_refresh_list(void)
 {
-    aud_playlist_read_info_selection (active_playlist);
+    aud_playlist_rescan (active_playlist);
 }
 
 void
