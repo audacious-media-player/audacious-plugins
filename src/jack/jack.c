@@ -55,8 +55,6 @@ static format_info_t output;
 
 static gboolean output_opened; /* true if we have a connection to jack */
 
-static GtkWidget *dialog, *button, *label;
-
 
 /* Giacomo's note: removed the destructor from the original xmms-jack, cause
    destructors + thread join + NPTL currently leads to problems; solved this
@@ -71,35 +69,6 @@ static void jack_cleanup(void)
     ERR("error closing device, errval of %d\n", errval);
 
   return;
-}
-
-
-static void jack_sample_rate_error(void)
-{
-	dialog = gtk_dialog_new();
-	gtk_window_set_title(GTK_WINDOW(dialog), _("Sample rate mismatch"));
-	gtk_container_border_width(GTK_CONTAINER(dialog), 5);
-	label = gtk_label_new(_(
-		"Xmms is asking for a sample rate that differs from\n "
-		"that of the jack server.  Xmms 1.2.8 or later\n"
-		"contains resampling routines that xmms-jack will\n"
-		"dynamically load and use to perform resampling.\n"
-		"Or you can restart the jack server\n"
-		"with a sample rate that matches the one that\n"
-		"xmms desires.  -r is the option for the jack\n"
-		"alsa driver so -r 44100 or -r 48000 should do\n\n"
-		"Chris Morgan <cmorgan@alum.wpi.edu>\n"));
-
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 0);
-	gtk_widget_show(label);
-
-	button = gtk_button_new_with_label(_(" Close "));
-	gtk_signal_connect_object(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(dialog));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), button, FALSE, FALSE, 0);
-	gtk_widget_show(button);
-
-	gtk_widget_show(dialog);
-	gtk_widget_grab_focus(button);
 }
 
 
