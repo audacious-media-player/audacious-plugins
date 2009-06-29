@@ -1,9 +1,9 @@
 /*      xmms - jack output plugin
- *	Copyright 2002 Chris Morgan<cmorgan@alum.wpi.edu>
+ *    Copyright 2002 Chris Morgan<cmorgan@alum.wpi.edu>
  *
  *      audacious port (2005-2006) by Giacomo Lozito from develia.org
  *
- *	This code maps xmms calls into the jack translation library
+ *    This code maps xmms calls into the jack translation library
  */
 
 #include <audacious/plugin.h>
@@ -28,14 +28,14 @@ jackconfig jack_cfg;
 #define TRACE(...)                                      \
     if(jack_cfg.isTraceEnabled) {                       \
         fprintf(OUTFILE, "%s:", __FUNCTION__),          \
-        fprintf(OUTFILE, __VA_ARGS__),				    \
+        fprintf(OUTFILE, __VA_ARGS__),                    \
         fflush(OUTFILE);                                \
     }
 
 #define ERR(...)                                        \
     if(jack_cfg.isTraceEnabled) {                       \
         fprintf(OUTFILE, "ERR: %s:", __FUNCTION__),     \
-        fprintf(OUTFILE, __VA_ARGS__),				    \
+        fprintf(OUTFILE, __VA_ARGS__),                    \
         fflush(OUTFILE);                                \
     }
 
@@ -286,7 +286,7 @@ static gint jack_open(AFormat fmt, gint sample_rate, gint num_channels)
   unsigned long rate;
 
   TRACE("fmt == %d, sample_rate == %d, num_channels == %d\n",
-	fmt, sample_rate, num_channels);
+    fmt, sample_rate, num_channels);
 
   if((fmt == FMT_U8) || (fmt == FMT_S8))
   {
@@ -409,47 +409,47 @@ static void jack_pause(short p)
 
 static void jack_about(void)
 {
-	static GtkWidget *aboutbox = NULL;
+    static GtkWidget *aboutbox = NULL;
 
-	if ( aboutbox == NULL )
-	{
-		aboutbox = audacious_info_dialog(
-			_("About JACK Output Plugin 0.17"),
-			_("XMMS jack Driver 0.17\n\n"
-			  "xmms-jack.sf.net\nChris Morgan<cmorgan@alum.wpi.edu>\n\n"
-			  "Audacious port by\nGiacomo Lozito from develia.org"),
-			_("Ok"), FALSE, NULL, NULL);
-		g_signal_connect(GTK_OBJECT(aboutbox), "destroy",
-				   (GCallback)gtk_widget_destroyed, &aboutbox);
-	}
+    if (aboutbox == NULL)
+    {
+        aboutbox = audacious_info_dialog(
+            _("About JACK Output Plugin 0.17"),
+            _("XMMS jack Driver 0.17\n\n"
+              "xmms-jack.sf.net\nChris Morgan<cmorgan@alum.wpi.edu>\n\n"
+              "Audacious port by\nGiacomo Lozito from develia.org"),
+            _("Ok"), FALSE, NULL, NULL);
+        g_signal_connect(GTK_OBJECT(aboutbox), "destroy",
+                   (GCallback)gtk_widget_destroyed, &aboutbox);
+    }
 }
 
 static void jack_tell_audio(AFormat * fmt, gint * srate, gint * nch)
 {
-	(*fmt) = input.format;
-	(*srate) = input.frequency;
-	(*nch) = input.channels;
+    (*fmt) = input.format;
+    (*srate) = input.frequency;
+    (*nch) = input.channels;
 }
 
 OutputPlugin jack_op =
 {
-	.description = "JACK Output Plugin 0.17",
-	.init = jack_init,
-	.cleanup = jack_cleanup,
-	.about = jack_about,
-	.configure = jack_configure,
-	.get_volume = jack_get_volume,
-	.set_volume = jack_set_volume,
-	.open_audio = jack_open,
-	.write_audio = jack_write,
-	.close_audio = jack_close,
-	.flush = jack_flush,
-	.pause = jack_pause,
-	.buffer_free = jack_free,
-	.buffer_playing = jack_playing,
-	.output_time = jack_get_output_time,
-	.written_time = jack_get_written_time,
-	.tell_audio = jack_tell_audio
+    .description = "JACK Output Plugin 0.17",
+    .init = jack_init,
+    .cleanup = jack_cleanup,
+    .about = jack_about,
+    .configure = jack_configure,
+    .get_volume = jack_get_volume,
+    .set_volume = jack_set_volume,
+    .open_audio = jack_open,
+    .write_audio = jack_write,
+    .close_audio = jack_close,
+    .flush = jack_flush,
+    .pause = jack_pause,
+    .buffer_free = jack_free,
+    .buffer_playing = jack_playing,
+    .output_time = jack_get_output_time,
+    .written_time = jack_get_written_time,
+    .tell_audio = jack_tell_audio
 };
 
 OutputPlugin *jack_oplist[] = { &jack_op, NULL };
