@@ -71,7 +71,7 @@ alsaplug_get_mixer_elem_by_name(snd_mixer_t *mixer, gchar *name)
 static snd_mixer_elem_t *
 alsaplug_guess_mixer_elem(snd_mixer_t *mixer)
 {
-    gchar *elem_names[] = { "Wave", "PCM", "Front", "Master" };
+    gchar * elem_names[] = {"PCM", "Wave", "Front", "Master"};
     gint i;
     snd_mixer_elem_t *elem;
 
