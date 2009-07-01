@@ -574,6 +574,7 @@ audmad_play_file(InputPlayback *playback)
     decode_thread = g_thread_self();
     playback->set_pb_ready(playback);
     decode_loop(&info);
+    input_term (& info);
 }
 
 static void
@@ -640,6 +641,8 @@ audmad_get_song_info(char *url, char **title, int *length)
 static gboolean
 audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
 {
+    gboolean result;
+
     if (fd == NULL || info == NULL) return FALSE;
     AUDDBG("f: audmad_fill_info(): %s\n", fd->uri);
 
@@ -649,7 +652,10 @@ audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
     }
 
     info->fileinfo_request = FALSE; /* we don't need to read tuple again */
-    return input_get_info(info, aud_vfs_is_remote(fd->uri) ? TRUE : audmad_config->fast_play_time_calc);
+    result = input_get_info (info, aud_vfs_is_remote (fd->uri) ? TRUE :
+     audmad_config->fast_play_time_calc);
+    input_term (info);
+    return result;
 }
 
 static void
