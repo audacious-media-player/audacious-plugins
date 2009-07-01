@@ -342,7 +342,7 @@ mainwin_release_info_text(void)
 static gchar *
 make_mainwin_title(const gchar * title)
 {
-    if (title)
+    if (title != NULL)
         return g_strdup_printf(_("%s - Audacious"), title);
     else
         return g_strdup(_("Audacious"));
@@ -356,7 +356,7 @@ mainwin_set_song_title(const gchar * title)
     g_free(mainwin_title_text);
 
     mainwin_release_info_text ();
-    ui_skinned_textbox_set_text (mainwin_info, title ? title : "");
+    ui_skinned_textbox_set_text (mainwin_info, title != NULL ? title : "");
 }
 
 static void show_hide_widget (GtkWidget * widget, char show)
@@ -575,7 +575,20 @@ mainwin_set_song_info(gint bitrate,
 void
 mainwin_clear_song_info(void)
 {
-    mainwin_set_song_title (0);
+    mainwin_set_song_title (NULL);
+
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
+
+    gtk_widget_hide (mainwin_minus_num);
+    gtk_widget_hide (mainwin_10min_num);
+    gtk_widget_hide (mainwin_min_num);
+    gtk_widget_hide (mainwin_10sec_num);
+    gtk_widget_hide (mainwin_sec_num);
+    gtk_widget_hide (mainwin_stime_min);
+    gtk_widget_hide (mainwin_stime_sec);
+    gtk_widget_hide (mainwin_position);
+    gtk_widget_hide (mainwin_sposition);
 
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_position)->pressed = FALSE;
     UI_SKINNED_HORIZONTAL_SLIDER(mainwin_sposition)->pressed = FALSE;

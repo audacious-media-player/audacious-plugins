@@ -103,19 +103,8 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
     if (song_info_timeout_source)
         g_source_remove(song_info_timeout_source);
 
-    gtk_widget_hide (mainwin_minus_num);
-    gtk_widget_hide (mainwin_10min_num);
-    gtk_widget_hide (mainwin_min_num);
-    gtk_widget_hide (mainwin_10sec_num);
-    gtk_widget_hide (mainwin_sec_num);
-    gtk_widget_hide (mainwin_stime_min);
-    gtk_widget_hide (mainwin_stime_sec);
-    gtk_widget_hide (mainwin_position);
-    gtk_widget_hide (mainwin_sposition);
-
-    ui_skinned_playstatus_set_buffering(mainwin_playstatus, FALSE);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
+    mainwin_clear_song_info ();
+    mainwin_set_stopaftersong (FALSE);
 }
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
@@ -140,15 +129,6 @@ static void seek_cb (void * unused, void * another)
 {
     ui_vis_clear_data (mainwin_vis);
     ui_svis_clear_data (mainwin_svis);
-}
-
-static void
-ui_main_evlistener_playlist_end_reached(gpointer hook_data, gpointer user_data)
-{
-    mainwin_clear_song_info();
-
-    if (aud_cfg->stopaftersong)
-        mainwin_set_stopaftersong(FALSE);
 }
 
 static void
@@ -347,7 +327,6 @@ ui_main_evlistener_init(void)
     aud_hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
     aud_hook_associate("playback play file", ui_main_evlistener_playback_play_file, NULL);
     aud_hook_associate ("playback seek", seek_cb, 0);
-    aud_hook_associate("playlist end reached", ui_main_evlistener_playlist_end_reached, NULL);
     aud_hook_associate("playlist info change", ui_main_evlistener_playlist_info_change, NULL);
     aud_hook_associate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top, NULL);
     aud_hook_associate("mainwin show", ui_main_evlistener_mainwin_show, NULL);
@@ -371,7 +350,6 @@ ui_main_evlistener_dissociate(void)
     aud_hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
     aud_hook_dissociate("playback play file", ui_main_evlistener_playback_play_file);
     aud_hook_dissociate ("playback seek", seek_cb);
-    aud_hook_dissociate("playlist end reached", ui_main_evlistener_playlist_end_reached);
     aud_hook_dissociate("playlist info change", ui_main_evlistener_playlist_info_change);
     aud_hook_dissociate("mainwin set always on top", ui_main_evlistener_mainwin_set_always_on_top);
     aud_hook_dissociate("mainwin show", ui_main_evlistener_mainwin_show);
