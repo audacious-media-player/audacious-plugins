@@ -258,12 +258,15 @@ gio_aud_vfs_ftell_impl(VFSFile * file)
     return (glong) (g_seekable_tell(handle->seekable) - g_slist_length(handle->stream_stack));
 }
 
-gboolean
-gio_aud_vfs_feof_impl(VFSFile * file)
+gboolean gio_aud_vfs_feof_impl (VFSFile * file)
 {
-    g_return_val_if_fail(file != NULL, TRUE);
+    guchar test;
 
-    return (file->base->vfs_ftell_impl(file) == file->base->vfs_fsize_impl(file));
+    if (gio_aud_vfs_fread_impl (& test, 1, 1, file) < 1)
+        return TRUE;
+
+    gio_aud_vfs_ungetc_impl (test, file);
+    return FALSE;
 }
 
 gint
