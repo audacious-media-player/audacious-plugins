@@ -1182,7 +1182,9 @@ mainwin_play_pushed(void)
     {
         aud_playlist_set_position (active_playlist, aud_playlist_get_position
          (active_playlist)); /* reset the shuffle list */
-        audacious_drct_play ();
+
+        if (! audacious_drct_get_playing ())
+            audacious_drct_play ();
     }
     else
         mainwin_eject_pushed();
