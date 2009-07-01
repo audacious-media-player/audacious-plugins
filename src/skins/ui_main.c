@@ -1171,8 +1171,6 @@ mainwin_fwd_release(void)
 void
 mainwin_play_pushed(void)
 {
-    Playlist * playlist;
-
     if (ab_position_a != -1)
         audacious_drct_seek(ab_position_a / 1000);
     if (audacious_drct_get_paused()) {
@@ -1180,11 +1178,10 @@ mainwin_play_pushed(void)
         return;
     }
 
-    playlist = aud_playlist_get_active ();
-
-    if (aud_playlist_get_length (playlist))
+    if (aud_playlist_get_length (active_playlist))
     {
-        aud_playlist_shuffle (playlist);
+        aud_playlist_set_position (active_playlist, aud_playlist_get_position
+         (active_playlist)); /* reset the shuffle list */
         audacious_drct_play ();
     }
     else
