@@ -122,49 +122,47 @@ DECLARE_PLUGIN(cdaudio, NULL, NULL, cdaudio_iplist, NULL, NULL, NULL, NULL, NULL
 /* mutex must be locked */
 static void check_disk (void)
 {
-    if (! trackinfo)
+    if (trackinfo == NULL)
         refresh_trackinfo ();
 
-    if (! trackinfo)
+    if (trackinfo == NULL)
         cdaudio_error ("No audio CD found.\n");
 }
 
 /* thread safe */
-static char get_disk_info (int * first, int * last)
+static gboolean get_disk_info (gint * first, gint * last)
 {
     g_mutex_lock (mutex);
 
     check_disk ();
 
-    if (trackinfo)
+    if (trackinfo == NULL)
     {
-        * first = firsttrackno;
-        * last = lasttrackno;
-
         g_mutex_unlock (mutex);
-        return 1;
+        return FALSE;
     }
 
+    * first = firsttrackno;
+    * last = lasttrackno;
+
     g_mutex_unlock (mutex);
-    return 0;
+    return TRUE;
 }
 
 /* main thread only */
-static char is_our_playlist (Playlist * playlist)
+static gboolean is_our_playlist (Playlist * playlist)
 {
-    char found;
-    int count, length;
-    char * filename;
-
-    found = 0;
-    length = aud_playlist_get_length (playlist);
+    gint length = aud_playlist_get_length (playlist);
+    gboolean found = FALSE;
+    gint count;
+    gchar * filename;
 
     for (count = 0; ! found && count < length; count ++)
     {
         filename = aud_playlist_get_filename (playlist, count);
 
         if (cdaudio_is_our_file (filename))
-            found = 1;
+            found = TRUE;
 
         g_free (filename);
     }
@@ -173,10 +171,10 @@ static char is_our_playlist (Playlist * playlist)
 }
 
 /* main thread only */
-static void add_cd_to_playlist (Playlist * playlist, int first, int last)
+static void add_cd_to_playlist (Playlist * playlist, gint first, gint last)
 {
-    static char filename [] = "cdda://trackxx.cda";
-    int track;
+    static gchar filename [] = "cdda://track00.cda";
+    gint track;
 
     for (track = first; track <= last; track ++)
     {
@@ -189,10 +187,9 @@ static void add_cd_to_playlist (Playlist * playlist, int first, int last)
 /* main thread only */
 static void purge_playlist (Playlist * playlist)
 {
-    int count, length;
-    char * filename;
-
-    length = aud_playlist_get_length (playlist);
+    gint length = aud_playlist_get_length (playlist);
+    gint count;
+    gchar * filename;
 
     for (count = 0; count < length; count ++)
     {
@@ -214,17 +211,16 @@ static void purge_all_playlists (void)
 {
     GList * list;
 
-    for (list = aud_playlist_get_playlists (); list; list = list->next)
+    for (list = aud_playlist_get_playlists (); list != NULL; list = list->next)
         purge_playlist (list->data);
 }
 
 /* main thread only */
-static void trim_playlist (Playlist * playlist, int first, int last)
+static void trim_playlist (Playlist * playlist, gint first, gint last)
 {
-    int count, length, track;
-    char * filename;
-
-    length = aud_playlist_get_length (playlist);
+    gint length = aud_playlist_get_length (playlist);
+    gint count, track;
+    gchar * filename;
 
     for (count = 0; count < length; count ++)
     {
@@ -247,49 +243,45 @@ static void trim_playlist (Playlist * playlist, int first, int last)
 }
 
 /* main thread only */
-static gboolean monitor (void * unused)
+static gboolean monitor (gpointer unused)
 {
     g_mutex_lock (mutex);
 
-    if (trackinfo)
+    if (trackinfo != NULL)
     {
         refresh_trackinfo ();
 
-        if (! trackinfo)
+        if (trackinfo == NULL)
         {
             g_mutex_unlock (mutex);
             purge_all_playlists ();
-            return 1;
+            return FALSE;
         }
     }
 
     g_mutex_unlock (mutex);
-    return 1;
+    return TRUE;
 }
 
 /* main thread only */
-static void check_playlist (void * playlist, void * unused)
+static void check_playlist (gpointer hook_data, gpointer user_data)
 {
-    int first, last;
+    gint first, last;
 
-    if (! is_our_playlist (playlist))
+    if (! is_our_playlist (hook_data))
         return;
 
     if (get_disk_info (& first, & last))
-        trim_playlist (playlist, first, last);
+        trim_playlist (hook_data, first, last);
     else
         purge_all_playlists ();
 }
 
 /* main thread only */
-static void play_cd (GtkMenuItem * item, void * unused)
+static void play_cd (GtkMenuItem * item, gpointer user_data)
 {
-    Playlist * playlist;
-    int first, last;
-
-    audacious_drct_stop ();
-    playlist = aud_playlist_get_active ();
-    aud_playlist_clear (playlist);
+    Playlist * playlist = aud_playlist_get_active ();
+    gint first, last;
 
     if (! get_disk_info (& first, & last))
     {
@@ -297,18 +289,17 @@ static void play_cd (GtkMenuItem * item, void * unused)
         return;
     }
 
+    audacious_drct_stop ();
+    aud_playlist_clear (playlist);
     add_cd_to_playlist (playlist, first, last);
     audacious_drct_play ();
 }
 
 /* main thread only */
-static void add_cd (GtkMenuItem * item, void * unused)
+static void add_cd (GtkMenuItem * item, gpointer user_data)
 {
-    Playlist * playlist;
-    int first, last;
-
-    playlist = aud_playlist_get_active ();
-    purge_playlist (playlist);
+    Playlist * playlist = aud_playlist_get_active ();
+    gint first, last;
 
     if (! get_disk_info (& first, & last))
     {
@@ -316,6 +307,7 @@ static void add_cd (GtkMenuItem * item, void * unused)
         return;
     }
 
+    purge_playlist (playlist);
     add_cd_to_playlist (playlist, first, last);
 }
 
@@ -323,12 +315,11 @@ static void add_cd (GtkMenuItem * item, void * unused)
 static void cdaudio_init()
 {
 	mcs_handle_t *db;
-        int count;
+        gint count;
         GtkWidget * item;
 
         mutex = g_mutex_new ();
         control_cond = g_cond_new ();
-        g_mutex_lock (mutex);
 
 	cdng_cfg.use_dae = TRUE;
 	cdng_cfg.use_cdtext = TRUE;
@@ -347,7 +338,7 @@ static void cdaudio_init()
 
 	if ((db = aud_cfg_db_open()) == NULL) {
 		cdaudio_error("Failed to read configuration.\n");
-                goto UNLOCK;
+                return;
 	}
 
 	aud_cfg_db_get_bool(db, "CDDA", "use_dae", &cdng_cfg.use_dae);
@@ -376,7 +367,7 @@ static void cdaudio_init()
 
 	if (!cdio_init()) {
 		cdaudio_error("Failed to initialize cdio subsystem.\n");
-                goto UNLOCK;
+                return;
 	}
 
 	libcddb_init();
@@ -404,12 +395,9 @@ static void cdaudio_init()
 
 	aud_uri_set_plugin("cdda://", &inputplugin);
 
-        trackinfo = 0;
-        monitor_source = g_timeout_add_seconds (1, monitor, 0);
-	aud_hook_associate ("playlist load", check_playlist, 0);
-
-UNLOCK:
-    g_mutex_unlock (mutex);
+        trackinfo = NULL;
+        monitor_source = g_timeout_add_seconds (1, monitor, NULL);
+	aud_hook_associate ("playlist load", check_playlist, NULL);
 }
 
 /* main thread only */
@@ -471,12 +459,28 @@ static void cdaudio_set_fullinfo(trackinfo_t *t,
 	cdaudio_set_strinfo(t, performer, name, genre);
 }
 
+/* main thread only */
+static gboolean play_cd_cb (gpointer user_data)
+{
+    play_cd (NULL, NULL);
+    return FALSE;
+}
+
 /* play thread only */
 static void cdaudio_play_file(InputPlayback *pinputplayback)
 {
     Tuple * tuple;
-    char * title;
-    int trackno;
+    gchar * title;
+    gint trackno;
+
+    if (! strcmp (pinputplayback->filename, "cdda://"))
+    {
+        pinputplayback->playing = TRUE;
+        pinputplayback->set_pb_ready (pinputplayback);
+        pinputplayback->playing = FALSE;
+        g_timeout_add (0, play_cd_cb, NULL);
+        return;
+    }
 
     trackno = find_trackno_from_filename (pinputplayback->filename);
     tuple = create_tuple_from_trackinfo_and_filename (pinputplayback->filename);
