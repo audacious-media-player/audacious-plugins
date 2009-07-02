@@ -351,6 +351,7 @@ if test "x$enable_sse2" = "xyes"; then
   int main()
   {
     _mm_setzero_pd();
+    asm volatile("xorpd %xmm0,%xmm0\n\t");
     return 0;
   }
   ],
