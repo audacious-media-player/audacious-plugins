@@ -56,8 +56,8 @@ static void saveconfig(void)
         aud_md5state_t md5state;
         unsigned char md5pword[16], ge_md5pword[16];
 
-        if (uid != NULL && uid[0] != '\0' && strlen(uid) &&
-            pwd != NULL && pwd[0] != '\0' && strlen(pwd))
+        if (uid != NULL && uid[0] != '\0' &&
+            pwd != NULL && pwd[0] != '\0')
         {
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "username", (char *)uid);
             aud_md5_init(&md5state);
@@ -70,13 +70,13 @@ static void saveconfig(void)
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "password", "");
         }
         
-        if (url != NULL && url[0] != '\0' && strlen(url))
+        if (url != NULL && url[0] != '\0')
         	aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", (char *)url);
        	else if (!url || url[0] == '\0')
        		aud_cfg_db_set_string(cfgfile, "audioscrobbler", "sc_url", LASTFM_HS_URL);
 
-        if (ge_uid != NULL && ge_uid[0] != '\0' && strlen(ge_uid) &&
-            ge_pwd != NULL && ge_pwd[0] != '\0' && strlen(ge_pwd))
+        if (ge_uid != NULL && ge_uid[0] != '\0' &&
+            ge_pwd != NULL && ge_pwd[0] != '\0')
         {
             aud_cfg_db_set_string(cfgfile, "audioscrobbler", "ge_username", (char *)ge_uid);
             aud_md5_init(&md5state);
