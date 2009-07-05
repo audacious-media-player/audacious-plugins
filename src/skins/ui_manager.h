@@ -48,7 +48,6 @@ GtkActionGroup *radioaction_group_anatype; /* Analyzer type */
 GtkActionGroup *radioaction_group_scomode; /* Scope mode */
 GtkActionGroup *radioaction_group_vprmode; /* Voiceprint mode */
 GtkActionGroup *radioaction_group_wshmode; /* WindowShade VU mode */
-GtkActionGroup *radioaction_group_refrate; /* Refresh rate */
 GtkActionGroup *radioaction_group_anafoff; /* Analyzer Falloff */
 GtkActionGroup *radioaction_group_peafoff; /* Peak Falloff */
 GtkActionGroup *radioaction_group_vismode; /* Visualization mode */

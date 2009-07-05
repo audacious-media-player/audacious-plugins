@@ -87,7 +87,6 @@ static GtkActionEntry action_entries_visualization[] = {
 	{ "scomode", NULL, N_("Scope Mode") },
 	{ "vprmode", NULL, N_("Voiceprint Mode") },
 	{ "wshmode", NULL, N_("WindowShade VU Mode") },
-	{ "refrate", NULL, N_("Refresh Rate") },
 	{ "anafoff", NULL, N_("Analyzer Falloff") },
 	{ "peafoff", NULL, N_("Peaks Falloff") }
 };
