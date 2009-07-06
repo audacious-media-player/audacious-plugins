@@ -623,10 +623,10 @@ mainwin_scrolled(GtkWidget *widget, GdkEventScroll *event,
 
     switch (event->direction) {
         case GDK_SCROLL_UP:
-            mainwin_set_volume_diff(config.mouse_change);
+            mainwin_set_volume_diff (5);
             break;
         case GDK_SCROLL_DOWN:
-            mainwin_set_volume_diff(-config.mouse_change);
+            mainwin_set_volume_diff (-5);
             break;
         case GDK_SCROLL_LEFT:
             if (aud_playlist_get_current_length(playlist) != -1)

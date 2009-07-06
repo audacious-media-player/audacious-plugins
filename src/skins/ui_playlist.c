@@ -861,14 +861,15 @@ playlistwin_scrolled(GtkWidget * widget,
                      GdkEventScroll * event,
                      gpointer callback_data)
 {
-    if (event->direction == GDK_SCROLL_DOWN)
-        playlistwin_scroll(config.scroll_pl_by);
-
-    if (event->direction == GDK_SCROLL_UP)
-        playlistwin_scroll(-config.scroll_pl_by);
-#if 0
-    g_cond_signal(cond_scan);
-#endif
+    switch (event->direction)
+    {
+    case GDK_SCROLL_DOWN:
+        playlistwin_scroll (3);
+        break;
+    case GDK_SCROLL_UP:
+        playlistwin_scroll (-3);
+        break;
+    }
 }
 
 static gboolean

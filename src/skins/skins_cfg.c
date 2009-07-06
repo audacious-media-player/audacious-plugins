@@ -92,8 +92,6 @@ skins_cfg_t skins_default_config = {
     .playlist_width = PLAYLISTWIN_DEFAULT_WIDTH,
     .playlist_height = PLAYLISTWIN_DEFAULT_HEIGHT,
     .playlist_position = 0,
-    .mouse_change = 8,                 /* mouse wheel scroll step */
-    .scroll_pl_by = 3,
     .colorize_r = 255, .colorize_g = 255, .colorize_b = 255,
     .snap_distance = 10,
     .snap_windows = TRUE,
@@ -171,8 +169,6 @@ static skins_cfg_nument skins_numents[] = {
     {"playlist_position", &config.playlist_position, TRUE},
     {"equalizer_x", &config.equalizer_x, TRUE},
     {"equalizer_y", &config.equalizer_y, TRUE},
-    {"mouse_wheel_change", &config.mouse_change, TRUE},
-    {"scroll_pl_by", &config.scroll_pl_by, TRUE},
     {"colorize_r", &config.colorize_r, TRUE},
     {"colorize_g", &config.colorize_g, TRUE},
     {"colorize_b", &config.colorize_b, TRUE},

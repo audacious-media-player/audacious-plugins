@@ -66,9 +66,7 @@ typedef struct {
     gint vu_mode;
     gint analyzer_falloff, peaks_falloff;
     gint playlist_position;
-    gint mouse_change;
     gint colorize_r; gint colorize_g; gint colorize_b;
-    gint scroll_pl_by;
     gboolean warn_about_win_visibility;
     gboolean warn_about_broken_gtk_engines;
     gboolean mainwin_use_bitmapfont;
