@@ -420,7 +420,6 @@ static gboolean ui_skinned_playlist_expose(GtkWidget *widget, GdkEventExpose *ev
         layout = gtk_widget_create_pango_layout (widget, active_title);
         pango_layout_set_font_description (layout, priv->font);
         pango_layout_set_width (layout, PANGO_SCALE * width);
-        pango_layout_set_height (layout, PANGO_SCALE * priv->offset);
         pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_MIDDLE);
         cairo_move_to (cr, 0, 0);
