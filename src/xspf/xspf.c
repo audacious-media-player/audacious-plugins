@@ -73,9 +73,13 @@ static const xspf_entry_t xspf_entries[] = {
     { FIELD_GENRE,        "genre",        TUPLE_STRING,   TRUE,   CMP_DEF },
     { FIELD_MTIME,        "mtime",        TUPLE_INT,      TRUE,   CMP_DEF },
     { FIELD_FORMATTER,    "formatter",    TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_COPYRIGHT,    "copyright",    TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_PERFORMER,    "performer",    TUPLE_STRING,   TRUE,   CMP_DEF },
+    { FIELD_SUBSONG_ID,   "subsong-id",   TUPLE_INT,      TRUE,   CMP_DEF },
+    { FIELD_SUBSONG_NUM,  "subsong-num",  TUPLE_INT,      TRUE,   CMP_DEF },
 };
 
-static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entry_t));
+static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entries[0]));
 
 static gboolean is_uri(gchar *uri)
 {
