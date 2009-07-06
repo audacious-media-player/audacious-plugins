@@ -3,7 +3,7 @@
 
 #include "xmms-sid.h"
 #ifdef AUDACIOUS_PLUGIN
-#include <audacious/audutil.h>
+#include <libaudcore/md5.h>
 #define XS_MD5HASH_LENGTH   AUD_MD5HASH_LENGTH
 #define XS_MD5HASH_LENGTH_CH   AUD_MD5HASH_LENGTH_CH
 #define xs_md5hash_t        aud_md5hash_t

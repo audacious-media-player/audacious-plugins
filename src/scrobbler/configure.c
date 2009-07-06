@@ -10,7 +10,7 @@
 
 #include <glib.h>
 #include <audacious/plugin.h>
-#include <audacious/audutil.h>
+#include <libaudcore/md5.h>
 #include <audacious/i18n.h>
 
 #include <gdk/gdkkeysyms.h>

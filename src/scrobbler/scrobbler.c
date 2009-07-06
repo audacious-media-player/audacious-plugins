@@ -12,7 +12,7 @@
 #include <glib.h>
 
 #include <audacious/plugin.h>
-#include <audacious/audutil.h>
+#include <libaudcore/md5.h>
 
 #define SCROBBLER_CLI_ID "aud"
 #define SCROBBLER_HS_WAIT 1800
