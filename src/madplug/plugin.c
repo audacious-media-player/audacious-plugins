@@ -641,8 +641,6 @@ audmad_get_song_info(char *url, char **title, int *length)
 static gboolean
 audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
 {
-    gboolean result;
-
     if (fd == NULL || info == NULL) return FALSE;
     AUDDBG("f: audmad_fill_info(): %s\n", fd->uri);
 
@@ -652,10 +650,9 @@ audmad_fill_info(struct mad_info_t *info, VFSFile *fd)
     }
 
     info->fileinfo_request = FALSE; /* we don't need to read tuple again */
-    result = input_get_info (info, aud_vfs_is_remote (fd->uri) ? TRUE :
+
+    return input_get_info (info, aud_vfs_is_remote (fd->uri) ? TRUE :
      audmad_config->fast_play_time_calc);
-    input_term (info);
-    return result;
 }
 
 static void
