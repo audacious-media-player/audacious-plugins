@@ -126,7 +126,7 @@ dnl These plugins are always built.
 INPUT_PLUGINS="tonegen console psf xsf cue alac metronom vtx"
 OUTPUT_PLUGINS="crossfade null"
 EFFECT_PLUGINS="audiocompress crystalizer ladspa voice_removal sndstretch stereo_plugin echo_plugin"
-GENERAL_PLUGINS="song_change alarm skins vfstrace"
+GENERAL_PLUGINS="song_change alarm skins vfstrace gtkui"
 VISUALIZATION_PLUGINS="blur_scope spectrum"
 CONTAINER_PLUGINS="m3u pls"
 TRANSPORT_PLUGINS="gio"
